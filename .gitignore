@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Build output
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local Learning Kernel data (user-specific, never commit)
+.zam/
+kernel-data/
+learning-progress/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor & IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Test & coverage
+.coverage
+htmlcov/
+.pytest_cache/
+coverage.xml
