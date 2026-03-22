@@ -45,3 +45,9 @@ logs/
 htmlcov/
 .pytest_cache/
 coverage.xml
+coverage/
+
+# SQLite databases (PoC)
+*.db
+*.db-wal
+*.db-shm

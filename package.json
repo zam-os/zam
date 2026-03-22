@@ -1,0 +1,49 @@
+{
+  "name": "zam",
+  "version": "0.1.0",
+  "description": "The Symbiotic Learning Kernel: Elevating Human Intelligence through AI Collaboration.",
+  "type": "module",
+  "bin": {
+    "zam": "./dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsx src/cli/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "biome check src/",
+    "format": "biome format --write src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zam-os/zam.git"
+  },
+  "keywords": [
+    "learning",
+    "spaced-repetition",
+    "active-recall",
+    "ai-symbiosis",
+    "cli"
+  ],
+  "author": "ZAM Contributors",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/zam-os/zam/issues"
+  },
+  "homepage": "https://github.com/zam-os/zam#readme",
+  "dependencies": {
+    "@inquirer/prompts": "^8.3.2",
+    "better-sqlite3": "^12.8.0",
+    "commander": "^14.0.3",
+    "ulid": "^3.0.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.8",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^25.5.0",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0"
+  }
+}
