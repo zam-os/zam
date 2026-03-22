@@ -68,7 +68,7 @@ ZAM is a tool for the transition to a world where care and shared growth are the
 ## 📖 Documentation
 
 - [Deutsche Version](README.de.md)
-- Contributing Guide *(coming soon)*
+- [Contributing Guide](CONTRIBUTING.md)
 - Architecture Docs *(coming soon)*
 
 ---

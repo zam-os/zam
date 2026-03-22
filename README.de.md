@@ -68,7 +68,7 @@ ZAM ist das Werkzeug für den Übergang in eine Welt, in der Fürsorge und gemei
 ## 📖 Dokumentation
 
 - [English Version](README.md)
-- Beitragsleitfaden *(demnächst)*
+- [Beitragsleitfaden](CONTRIBUTING.md)
 - Architekturdokumentation *(demnächst)*
 
 ---
