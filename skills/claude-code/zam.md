@@ -45,11 +45,19 @@ zam skill list
 zam skill show --slug <slug>
 zam skill add --slug <slug> --description "<text>" --steps '<json>' [--tokens <slugs>]
 
+# Shell monitoring (observation mode)
+zam monitor open --session <id> [--dir <path>]        # open a monitored terminal window
+zam monitor start --session <id> [--shell zsh|bash]   # output hook code (wrap with eval)
+zam monitor stop --session <id>                        # output unhook code (wrap with eval)
+zam monitor status --session <id>                      # check monitoring stats
+
 # Bridge (machine-readable JSON protocol)
 zam bridge check-due --user <username>
 zam bridge get-review --user <username>
 zam bridge submit --user <username> --card-id <id> --rating <1-4>
 zam bridge get-skill --slug <slug>
+zam bridge get-monitor --session <id>                 # read monitor log as JSON
+echo '{"patterns":[...]}' | zam bridge analyze-monitor --session <id>  # auto-rate from log
 ```
 
 ---
@@ -140,11 +148,49 @@ zam session start --user <username> --task "<description>" --context shell
 Hand off to the user:
 > "This is now your job. Good luck!"
 
-Step back. Do not interrupt unless the user asks for help. Observe what happens.
+Step back. Do not interrupt unless the user asks for help.
 
-When the task completes, rate all tokens touched during execution:
-- Completed step correctly, no hesitation, no help → **4**
-- Slight pause or needed to look something up → **3**
+**Two ways to observe:**
+
+**Approach A — Inline (inside Claude Code):** User runs commands with the `!` prefix (e.g. `! docker build .`). The agent sees command + output in the conversation. Simple, but no timing data.
+
+**Approach B — Shell monitor (separate terminal):** For real tasks where speed and confidence matter. The agent opens a monitored terminal automatically:
+
+```bash
+zam monitor open --session <session-id> --dir /path/to/project
+```
+
+This spawns a new terminal window (Terminal.app or iTerm2 on macOS), already `cd`'d to the task directory, with observation hooks installed. The user just sees a shell and starts working. Tell them:
+
+> "I've opened a terminal for you. Go ahead and work there — come back here when you're done."
+
+Shell hooks silently capture every command with timestamps, exit codes, and working directory to a JSONL log. When the user returns:
+
+```bash
+# Read the raw command log
+zam bridge get-monitor --session <session-id>
+
+# Auto-rate tokens by matching commands to patterns
+echo '{"patterns":[{"slug":"docker-build","patterns":["docker build","docker image build"]}]}' \
+  | zam bridge analyze-monitor --session <session-id>
+```
+
+The analyzer infers ratings from:
+- **Help-seeking**: `--help`, `man`, `tldr` before a matching command → lower rating
+- **Error rate**: non-zero exit codes → lower rating
+- **Speed**: inter-command gaps, thinking pauses → lower if slow
+- **Self-corrections**: same command prefix run repeatedly with different args → lower rating
+
+Review the suggested ratings before submitting. Override if the heuristic seems wrong.
+
+When done, tell the user:
+> ```bash
+> eval "$(zam monitor stop --session <session-id>)"
+> ```
+
+**Rating scale (both approaches):**
+- Completed correctly, no hesitation, no help → **4**
+- Slight pause or looked something up → **3**
 - Made errors, corrected themselves → **2**
 - Asked for help or couldn't proceed → **1** (then explain the concept and continue)
 

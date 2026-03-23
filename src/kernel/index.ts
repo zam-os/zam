@@ -91,3 +91,34 @@ export type { EvaluateInput, EvaluateResult } from "./recall/evaluator.js";
 // Analytics
 export { getUserStats, getDomainCompetence } from "./analytics/stats.js";
 export type { UserStats, DomainCompetence } from "./analytics/stats.js";
+
+// Observation
+export {
+  parseMonitorLog,
+  pairCommands,
+  analyzeObservation,
+} from "./observation/analyzer.js";
+export type {
+  MonitorEvent,
+  CommandRecord,
+  TokenPattern,
+  ObservationRating,
+  AnalysisResult,
+} from "./observation/analyzer.js";
+
+export {
+  getMonitorDir,
+  getMonitorPath,
+  ensureMonitorDir,
+  writeMonitorEvent,
+  readMonitorLog,
+  monitorLogExists,
+  getMonitorLogStats,
+} from "./observation/monitor-io.js";
+
+export {
+  generateZshHooks,
+  generateBashHooks,
+  generateZshUnhooks,
+  generateBashUnhooks,
+} from "./observation/shell-hooks.js";

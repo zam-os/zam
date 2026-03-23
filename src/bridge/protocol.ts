@@ -82,3 +82,49 @@ export interface GetSkillResponse {
   tokenSlugs: string[];
   source: string;
 }
+
+// ── Get Monitor ─────────────────────────────────────────────────────────────
+
+export interface GetMonitorResponse {
+  sessionId: string;
+  exists: boolean;
+  commands: Array<{
+    seq: number;
+    command: string;
+    cwd: string;
+    startedAt: string;
+    endedAt: string | null;
+    durationMs: number | null;
+    exitCode: number | null;
+  }>;
+  timeSpan: { start: string; end: string; durationMs: number } | null;
+}
+
+// ── Analyze Monitor ─────────────────────────────────────────────────────────
+
+export interface AnalyzeMonitorRequest {
+  patterns: Array<{
+    slug: string;
+    patterns: string[];
+  }>;
+}
+
+export interface AnalyzeMonitorResponse {
+  sessionId: string;
+  ratings: Array<{
+    tokenSlug: string;
+    rating: 1 | 2 | 3 | 4 | null;
+    confidence: "high" | "medium" | "low";
+    evidence: {
+      matchedCommands: number;
+      helpSeeking: boolean;
+      errorCount: number;
+      selfCorrections: number;
+      medianGapMs: number | null;
+      thinkingGapMs: number | null;
+    };
+    matchedCommandTexts: string[];
+  }>;
+  unmatchedCommands: string[];
+  timeSpan: { start: string; end: string; durationMs: number } | null;
+}

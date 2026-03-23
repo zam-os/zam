@@ -7,6 +7,7 @@ import { statsCommand } from "./commands/stats.js";
 import { reviewCommand } from "./commands/review.js";
 import { bridgeCommand } from "./commands/bridge.js";
 import { skillCommand } from "./commands/skill.js";
+import { monitorCommand } from "./commands/monitor.js";
 
 const program = new Command();
 
@@ -25,5 +26,6 @@ program.addCommand(statsCommand);
 program.addCommand(reviewCommand);
 program.addCommand(bridgeCommand);
 program.addCommand(skillCommand);
+program.addCommand(monitorCommand);
 
 program.parse();

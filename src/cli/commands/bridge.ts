@@ -19,8 +19,12 @@ import {
   cascadeBlock,
   getPrerequisites,
   getAgentSkill,
+  readMonitorLog,
+  pairCommands,
+  analyzeObservation,
+  monitorLogExists,
 } from "../../kernel/index.js";
-import type { Rating, BloomLevel } from "../../kernel/index.js";
+import type { Rating, BloomLevel, TokenPattern } from "../../kernel/index.js";
 
 function jsonOut(data: unknown): void {
   console.log(JSON.stringify(data, null, 2));
@@ -195,6 +199,97 @@ bridgeCommand
         source: skill!.source,
       });
     });
+  });
+
+// ── zam bridge get-monitor ────────────────────────────────────────────────
+
+bridgeCommand
+  .command("get-monitor")
+  .description("Read monitor log for a session (JSON)")
+  .requiredOption("--session <id>", "Session ID")
+  .action((opts) => {
+    if (!monitorLogExists(opts.session)) {
+      jsonOut({ sessionId: opts.session, exists: false, commands: [], timeSpan: null });
+      return;
+    }
+
+    const events = readMonitorLog(opts.session);
+    const commands = pairCommands(events);
+
+    let timeSpan: { start: string; end: string; durationMs: number } | null = null;
+    if (commands.length > 0) {
+      const first = commands[0];
+      const last = commands[commands.length - 1];
+      const endTs = last.endedAt ?? last.startedAt;
+      timeSpan = {
+        start: first.startedAt,
+        end: endTs,
+        durationMs: new Date(endTs).getTime() - new Date(first.startedAt).getTime(),
+      };
+    }
+
+    jsonOut({
+      sessionId: opts.session,
+      exists: true,
+      commands: commands.map((c) => ({
+        seq: c.seq,
+        command: c.command,
+        cwd: c.cwd,
+        startedAt: c.startedAt,
+        endedAt: c.endedAt,
+        durationMs: c.durationMs,
+        exitCode: c.exitCode,
+      })),
+      timeSpan,
+    });
+  });
+
+// ── zam bridge analyze-monitor ───────────────────────────────────────────
+
+bridgeCommand
+  .command("analyze-monitor")
+  .description("Analyze monitor log with token patterns from stdin (JSON)")
+  .requiredOption("--session <id>", "Session ID")
+  .action(async (opts) => {
+    try {
+      if (!monitorLogExists(opts.session)) {
+        jsonOut({ sessionId: opts.session, ratings: [], unmatchedCommands: [], timeSpan: null });
+        return;
+      }
+
+      // Read token patterns from stdin
+      const chunks: Buffer[] = [];
+      for await (const chunk of process.stdin) {
+        chunks.push(chunk as Buffer);
+      }
+      const raw = Buffer.concat(chunks).toString("utf-8").trim();
+
+      if (!raw) {
+        jsonError("No input received on stdin. Pipe JSON with token patterns.");
+      }
+
+      let data: { patterns: TokenPattern[] };
+      try {
+        data = JSON.parse(raw);
+      } catch {
+        jsonError("Invalid JSON input");
+      }
+
+      if (!Array.isArray(data!.patterns)) {
+        jsonError("JSON must include 'patterns' array");
+      }
+
+      const events = readMonitorLog(opts.session);
+      const commands = pairCommands(events);
+      const result = analyzeObservation(commands, data!.patterns);
+
+      jsonOut({
+        sessionId: opts.session,
+        ...result,
+      });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
   });
 
 // ── zam bridge add-token ──────────────────────────────────────────────────
