@@ -15,6 +15,7 @@ export {
   getTokenById,
   findTokens,
   listTokens,
+  deprecateToken,
 } from "./models/token.js";
 export type {
   Token,
@@ -51,10 +52,22 @@ export {
 export type {
   Session,
   SessionStep,
+  ExecutionContext,
   CreateSessionInput,
   LogStepInput,
   SessionSummary,
 } from "./models/session.js";
+
+export {
+  createAgentSkill,
+  getAgentSkill,
+  listAgentSkills,
+} from "./models/agent-skill.js";
+export type {
+  AgentSkill,
+  SkillSource,
+  CreateAgentSkillInput,
+} from "./models/agent-skill.js";
 
 // Scheduler
 export { createFSRS } from "./scheduler/fsrs.js";

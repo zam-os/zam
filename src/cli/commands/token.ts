@@ -15,6 +15,7 @@ import {
   getDependents,
   ensureCard,
   getCard,
+  deprecateToken,
 } from "../../kernel/index.js";
 import type { BloomLevel } from "../../kernel/index.js";
 
@@ -160,6 +161,27 @@ tokenCommand
         console.log(JSON.stringify({ token: opts.token, requires: opts.requires }, null, 2));
       } else {
         console.log(`Added prerequisite: ${opts.token} requires ${opts.requires}`);
+      }
+    });
+  });
+
+// ── zam token deprecate ───────────────────────────────────────────────────
+
+tokenCommand
+  .command("deprecate")
+  .description("Mark a token as deprecated (excluded from reviews, not deleted)")
+  .requiredOption("--slug <slug>", "Token slug to deprecate")
+  .option("--json", "Output as JSON")
+  .action((opts) => {
+    withDb((db) => {
+      const token = deprecateToken(db, opts.slug);
+
+      if (opts.json) {
+        console.log(JSON.stringify(token, null, 2));
+      } else {
+        console.log(`Deprecated: ${token.slug}`);
+        console.log(`  Concept: ${token.concept}`);
+        console.log(`  At:      ${token.deprecated_at}`);
       }
     });
   });

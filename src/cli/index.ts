@@ -6,6 +6,7 @@ import { sessionCommand } from "./commands/session.js";
 import { statsCommand } from "./commands/stats.js";
 import { reviewCommand } from "./commands/review.js";
 import { bridgeCommand } from "./commands/bridge.js";
+import { skillCommand } from "./commands/skill.js";
 
 const program = new Command();
 
@@ -23,5 +24,6 @@ program.addCommand(sessionCommand);
 program.addCommand(statsCommand);
 program.addCommand(reviewCommand);
 program.addCommand(bridgeCommand);
+program.addCommand(skillCommand);
 
 program.parse();

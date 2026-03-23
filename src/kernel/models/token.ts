@@ -24,6 +24,7 @@ export interface Token {
   symbiosis_mode: SymbiosisMode | null;
   created_at: string;
   updated_at: string;
+  deprecated_at: string | null;
 }
 
 export interface CreateTokenInput {
@@ -95,6 +96,31 @@ export function getTokenById(db: Database, id: string): Token | undefined {
 }
 
 /**
+ * Mark a token as deprecated. Deprecated tokens are excluded from review queues
+ * and search results but are not deleted — they can still be consulted.
+ *
+ * Throws if the token does not exist or is already deprecated.
+ */
+export function deprecateToken(db: Database, slug: string): Token {
+  const token = getTokenBySlug(db, slug);
+  if (!token) {
+    throw new Error(`Token not found: ${slug}`);
+  }
+  if (token.deprecated_at) {
+    throw new Error(`Token already deprecated: ${slug}`);
+  }
+
+  const now = new Date().toISOString();
+  db.prepare("UPDATE tokens SET deprecated_at = ?, updated_at = ? WHERE slug = ?").run(
+    now,
+    now,
+    slug,
+  );
+
+  return getTokenBySlug(db, slug)!;
+}
+
+/**
  * Fuzzy search for tokens by keyword query.
  *
  * Ported from the PoC's find-token command: splits the query into word
@@ -110,7 +136,9 @@ export function findTokens(db: Database, query: string): ScoredToken[] {
       .filter((t) => t.length > 2),
   );
 
-  const tokens = db.prepare("SELECT * FROM tokens").all() as Token[];
+  const tokens = db
+    .prepare("SELECT * FROM tokens WHERE deprecated_at IS NULL")
+    .all() as Token[];
 
   const scored: ScoredToken[] = [];
 
@@ -146,10 +174,14 @@ export function findTokens(db: Database, query: string): ScoredToken[] {
 export function listTokens(db: Database, options?: ListTokensOptions): Token[] {
   if (options?.domain) {
     return db
-      .prepare("SELECT * FROM tokens WHERE domain = ? ORDER BY bloom_level, slug")
+      .prepare(
+        "SELECT * FROM tokens WHERE domain = ? AND deprecated_at IS NULL ORDER BY bloom_level, slug",
+      )
       .all(options.domain) as Token[];
   }
   return db
-    .prepare("SELECT * FROM tokens ORDER BY bloom_level, domain, slug")
+    .prepare(
+      "SELECT * FROM tokens WHERE deprecated_at IS NULL ORDER BY bloom_level, domain, slug",
+    )
     .all() as Token[];
 }

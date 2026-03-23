@@ -72,3 +72,13 @@ export interface AddTokenResponse {
   created: boolean;
   cardId?: string;
 }
+
+// ── Get Agent Skill ──────────────────────────────────────────────────────────
+
+export interface GetSkillResponse {
+  slug: string;
+  description: string;
+  steps: string[];
+  tokenSlugs: string[];
+  source: string;
+}

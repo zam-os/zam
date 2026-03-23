@@ -39,10 +39,47 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
     db.exec(SCHEMA);
   }
 
+  runMigrations(db);
+
   return db;
 }
 
 /** Get the default database path */
 export function getDefaultDbPath(): string {
   return DEFAULT_DB_PATH;
+}
+
+/**
+ * Run incremental schema migrations on every open.
+ * Each migration is idempotent — safe to run repeatedly.
+ */
+function runMigrations(db: DatabaseType): void {
+  // M001: add execution_context to sessions
+  const sessionCols = db.pragma("table_info(sessions)") as Array<{ name: string }>;
+  if (sessionCols.length > 0 && !sessionCols.some((c) => c.name === "execution_context")) {
+    db.exec(
+      `ALTER TABLE sessions ADD COLUMN execution_context TEXT NOT NULL DEFAULT 'shell'`,
+    );
+  }
+
+  // M002: add deprecated_at to tokens
+  const tokenCols = db.pragma("table_info(tokens)") as Array<{ name: string }>;
+  if (tokenCols.length > 0 && !tokenCols.some((c) => c.name === "deprecated_at")) {
+    db.exec(`ALTER TABLE tokens ADD COLUMN deprecated_at TEXT`);
+  }
+
+  // M003: create agent_skills table (idempotent via IF NOT EXISTS in SCHEMA,
+  // but also needed for databases that skipped the init path)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS agent_skills (
+      id          TEXT PRIMARY KEY,
+      slug        TEXT NOT NULL UNIQUE,
+      description TEXT NOT NULL,
+      steps       TEXT NOT NULL DEFAULT '[]',
+      token_slugs TEXT NOT NULL DEFAULT '[]',
+      source      TEXT NOT NULL DEFAULT 'learned',
+      created_at  TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at  TEXT NOT NULL DEFAULT (datetime('now'))
+    )
+  `);
 }

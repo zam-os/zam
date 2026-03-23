@@ -93,6 +93,7 @@ export function buildReviewQueue(
          AND c.blocked = 0
          AND c.due_at <= ?
          AND c.state IN ('review', 'relearning', 'learning')
+         AND t.deprecated_at IS NULL
        ORDER BY c.due_at ASC`,
     )
     .all(options.userId, nowISO) as CardRow[];
@@ -114,6 +115,7 @@ export function buildReviewQueue(
        WHERE c.user_id = ?
          AND c.blocked = 0
          AND c.state = 'new'
+         AND t.deprecated_at IS NULL
        ORDER BY t.bloom_level ASC, t.slug ASC
        LIMIT ?`,
     )

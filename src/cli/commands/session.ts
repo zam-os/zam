@@ -12,6 +12,7 @@ import {
   getSessionSummary,
   getTokenBySlug,
 } from "../../kernel/index.js";
+import type { ExecutionContext } from "../../kernel/index.js";
 
 function withDb(fn: (db: Database) => void): void {
   let db: Database | undefined;
@@ -36,21 +37,30 @@ sessionCommand
   .description("Start a new learning session")
   .requiredOption("--user <id>", "User ID")
   .requiredOption("--task <description>", "Task description")
+  .option("--context <level>", "Execution context: shell | ui | reallife (default: shell)", "shell")
   .option("--json", "Output as JSON")
   .action((opts) => {
     withDb((db) => {
+      const validContexts = ["shell", "ui", "reallife"];
+      if (!validContexts.includes(opts.context)) {
+        console.error(`Invalid context: ${opts.context}. Must be one of: ${validContexts.join(", ")}`);
+        process.exit(1);
+      }
+
       const session = startSession(db, {
         user_id: opts.user,
         task: opts.task,
+        execution_context: opts.context as ExecutionContext,
       });
 
       if (opts.json) {
         console.log(JSON.stringify(session, null, 2));
       } else {
         console.log(`Session started: ${session.id}`);
-        console.log(`  User: ${session.user_id}`);
-        console.log(`  Task: ${session.task}`);
-        console.log(`  Started at: ${session.started_at}`);
+        console.log(`  User:    ${session.user_id}`);
+        console.log(`  Task:    ${session.task}`);
+        console.log(`  Context: ${session.execution_context}`);
+        console.log(`  Started: ${session.started_at}`);
       }
     });
   });

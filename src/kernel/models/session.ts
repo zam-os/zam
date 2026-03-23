@@ -10,10 +10,13 @@ import { ulid } from "ulid";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
+export type ExecutionContext = "shell" | "ui" | "reallife";
+
 export interface Session {
   id: string;
   user_id: string;
   task: string;
+  execution_context: ExecutionContext;
   started_at: string;
   completed_at: string | null;
 }
@@ -31,6 +34,7 @@ export interface SessionStep {
 export interface CreateSessionInput {
   user_id: string;
   task: string;
+  execution_context?: ExecutionContext;
 }
 
 export interface LogStepInput {
@@ -64,11 +68,12 @@ export interface SessionSummary {
 export function startSession(db: Database, input: CreateSessionInput): Session {
   const id = ulid();
   const now = new Date().toISOString();
+  const ctx = input.execution_context ?? "shell";
 
   db.prepare(
-    `INSERT INTO sessions (id, user_id, task, started_at)
-     VALUES (?, ?, ?, ?)`,
-  ).run(id, input.user_id, input.task, now);
+    `INSERT INTO sessions (id, user_id, task, execution_context, started_at)
+     VALUES (?, ?, ?, ?, ?)`,
+  ).run(id, input.user_id, input.task, ctx, now);
 
   return db.prepare("SELECT * FROM sessions WHERE id = ?").get(id) as Session;
 }

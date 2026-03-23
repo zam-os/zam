@@ -18,6 +18,7 @@ import {
   getTokenBySlug,
   cascadeBlock,
   getPrerequisites,
+  getAgentSkill,
 } from "../../kernel/index.js";
 import type { Rating, BloomLevel } from "../../kernel/index.js";
 
@@ -169,6 +170,29 @@ bridgeCommand
         rating,
         evaluation: result,
         blocked,
+      });
+    });
+  });
+
+// ── zam bridge get-skill ──────────────────────────────────────────────────
+
+bridgeCommand
+  .command("get-skill")
+  .description("Get an agent skill by slug (JSON)")
+  .requiredOption("--slug <slug>", "Skill slug")
+  .action((opts) => {
+    withDb((db) => {
+      const skill = getAgentSkill(db, opts.slug);
+      if (!skill) {
+        jsonError(`Skill not found: ${opts.slug}`);
+      }
+
+      jsonOut({
+        slug: skill!.slug,
+        description: skill!.description,
+        steps: skill!.steps,
+        tokenSlugs: skill!.token_slugs,
+        source: skill!.source,
       });
     });
   });

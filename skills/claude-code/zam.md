@@ -25,6 +25,7 @@ zam token register --slug <slug> --concept "<one sentence>" --domain <d> --bloom
 zam token find --query "<keywords>"
 zam token list [--domain <d>]
 zam token prereq --token <child> --requires <parent>
+zam token deprecate --slug <slug>          # mark outdated knowledge
 
 # Card & review management
 zam card due --user <username>
@@ -32,17 +33,23 @@ zam card update --user <username> --token <slug> --rating <1-4>
 zam card unblock --user <username>
 
 # Sessions
-zam session start --user <username> --task "<description>"
+zam session start --user <username> --task "<description>" [--context shell|ui|reallife]
 zam session log --session <id> --token <slug> --done-by <user|agent> [--rating <n>]
 zam session end --session <id>
 
 # Stats
 zam stats --user <username>
 
+# Agent skills (task recipes)
+zam skill list
+zam skill show --slug <slug>
+zam skill add --slug <slug> --description "<text>" --steps '<json>' [--tokens <slugs>]
+
 # Bridge (machine-readable JSON protocol)
 zam bridge check-due --user <username>
 zam bridge get-review --user <username>
 zam bridge submit --user <username> --card-id <id> --rating <1-4>
+zam bridge get-skill --slug <slug>
 ```
 
 ---
@@ -70,6 +77,26 @@ Prerequisites: "to understand A, you must first know B." Register edges with `za
 
 ---
 
+## Two Modes of Knowledge Assessment
+
+**Observation (primary)**: Agent watches the user do the task. If done correctly without help or hesitation → silently rate all touched tokens as 4. No interruption, no questions. Like a driving examiner in the back seat.
+
+**Verbal probing (secondary)**: Used when observation is insufficient — conceptual sessions with no executable output, or when a token hasn't been exercised in a long time and a practice task isn't appropriate.
+
+Always prefer observation over probing. Talking interrupts flow. The best ZAM session is one the user barely notices.
+
+---
+
+## Observation Levels
+
+- **Level 1 — Shell** (current): Agent reads shell command history and output to infer success/failure
+- **Level 2 — Screen** (future): Agent observes full screen, guides UI interaction, auto-rates based on what it sees
+- **Level 3 — Real life** (future): Voice + visual overlay on device (phone, AR). The agent is an overlay; the user lives in their world.
+
+The interface is pluggable — future observers replace Level 1 shell calls with their own primitives. Today: always Level 1.
+
+---
+
 ## Session Protocol
 
 ### STEP 1 — Start session & check status
@@ -79,11 +106,15 @@ zam stats --user <username>
 ```
 Show stats as a brief friendly greeting. Mention how many tokens are due, how many are blocked.
 
+Classify session type:
+- **Executable** — real commands, code, or file edits (e.g. "set up Homebrew", "commit this change")
+- **Conceptual** — pure review with no concrete output (e.g. `/zam repeat`)
+
 ### STEP 2 — Generate the knowledge plan
 
 Think: *"What must a person know and understand to plan and then execute this task?"*
 
-Decompose into a dependency-ordered list of knowledge tokens. Think like a teacher writing lesson objectives.
+Decompose into a dependency-ordered list of knowledge tokens.
 
 **Deduplication before registering:**
 ```bash
@@ -99,27 +130,35 @@ zam token prereq --token <child> --requires <parent>
 
 ### STEP 3 — Start a session
 ```bash
-zam session start --user <username> --task "<description>"
+zam session start --user <username> --task "<description>" --context shell
 ```
 
-### STEP 4 — Work interleaved with probing
+### STEP 4 — Hand off, observe, rate
 
-For each token needed in the task:
+**For executable tasks (observation mode):**
 
-**Check if due:**
+Hand off to the user:
+> "This is now your job. Good luck!"
+
+Step back. Do not interrupt unless the user asks for help. Observe what happens.
+
+When the task completes, rate all tokens touched during execution:
+- Completed step correctly, no hesitation, no help → **4**
+- Slight pause or needed to look something up → **3**
+- Made errors, corrected themselves → **2**
+- Asked for help or couldn't proceed → **1** (then explain the concept and continue)
+
 ```bash
-zam bridge check-due --user <username>
+zam card update --user <username> --token <slug> --rating <n>
+zam session log --session <id> --token <slug> --done-by user --rating <n>
 ```
 
-- **Blocked** → agent handles silently; briefly mention the concept in passing
-- **Not due** → agent handles; explain what you did at the appropriate Bloom level
-- **Due** → probe the user (Active Recall)
+For tokens the user never touched (agent did them silently): log `--done-by agent`, no rating.
 
-**For each due token, probe at the natural moment it's needed in the actual work:**
+**For conceptual sessions (verbal probing):**
 
-Ask a conceptual question — not "can you do step 3" but "what does groupby() do?" or "which table would you query for application logs?"
+For each due token, ask a conceptual question at the right Bloom level:
 
-Match the Bloom level:
 | Level | Test format | Example |
 |-------|------------|---------|
 | 1 Remember | "What is X?" | "What table stores app logs?" |
@@ -128,34 +167,42 @@ Match the Bloom level:
 | 4 Analyze | "Why X over Y?" | "Why is == more efficient than contains?" |
 | 5 Synthesize | "Design a..." | "Build the full query from scratch" |
 
-After the user answers, collect a rating:
+After each answer, ask:
 > "How did that feel? 1 = drew a blank, 2 = hard recall, 3 = knew it, 4 = instant"
 
-**If rating 1 (forgot):**
-```bash
-zam card update --user <username> --token <slug> --rating 1
-```
-- Explain the concept clearly so the user learns it NOW
-- The token will be blocked if it has unmet prerequisites
-- Note which prerequisites were surfaced — probe those next if due
-
-**If rating 2-4:**
-```bash
-zam card update --user <username> --token <slug> --rating <n>
-```
-Give brief, genuine encouragement.
-
-**Always log the step:**
-```bash
-zam session log --session <id> --token <slug> --done-by <user|agent> [--rating <n>]
-```
+Submit the rating and log the step.
 
 ### STEP 5 — End session
 ```bash
 zam session end --session <id>
 zam stats --user <username>
 ```
-Show progress. Give encouragement. Mention 1-2 things to look forward to in the next session.
+Show progress. Be honest about what the user did vs. what the agent did. Mention 1-2 things to look forward to in the next session.
+
+---
+
+## Practice Tasks for Stale Skills
+
+When a token is long overdue and has no upcoming executable task to surface it naturally, propose a harmless practice task:
+
+> "You haven't done X in a while. Want to practice? We can install ripgrep via Homebrew, then remove it — just to keep the muscle memory alive."
+
+This is preferable to repeated verbal drilling. Doing > reciting.
+
+---
+
+## When the Agent Doesn't Know How
+
+If the agent cannot execute a step:
+
+1. Admit it explicitly: *"I'm not sure how to do this — I would try X or Y. Should I attempt it?"*
+2. If the user guides: attempt it, note what works
+3. Register any new concepts discovered as tokens (dedup first) — these are facts the user might later forget (e.g. "Azure DevOps Problem items require a priority field before creation"). Create user cards for them.
+4. Save the successful approach as an agent skill entry:
+   ```bash
+   zam skill add --slug <slug> --description "<one sentence>" --steps '<json array>' --tokens <related-slugs>
+   ```
+5. The linked tokens get user cards — they will decay via FSRS and resurface for review like any other card. Automation does not replace retention.
 
 ---
 
@@ -171,13 +218,24 @@ Never present a blocked token to the user.
 
 ---
 
+## Token Deprecation
+
+Knowledge goes stale. If a token comes up for review and the user indicates it's outdated ("that's not how it works anymore"):
+
+1. Ask: *"Should we drop this, update the concept, or keep it for legacy context?"*
+2. If drop: `zam token deprecate --slug <slug>` — archived, excluded from future reviews
+3. If update: `zam token register` a replacement token, then deprecate the old one
+4. Deprecated tokens are not deleted — they can be consulted, but won't appear in the review queue
+
+---
+
 ## Three Symbiosis Modes
 
 | Mode | When | How |
 |------|------|-----|
-| **Shadowing** | User is learning the domain | Agent drafts, user executes. Focus on concept + procedure tokens. |
-| **Co-Pilot** | User has basic competence | Agent executes with user validation. Focus on mental models. |
-| **Autonomy** | User has high retention | Agent handles routine. Only surface exception patterns. |
+| **Shadowing** | User is learning the domain | Agent plans, user executes. Agent observes silently and rates. |
+| **Co-Pilot** | User has basic competence | Agent and user alternate. Agent observes and rates what user does. |
+| **Autonomy** | User has high retention | Agent handles routine. Periodic practice tasks keep skills alive. |
 
 Use `zam stats` domain competence to determine the right mode for each domain.
 
@@ -191,3 +249,7 @@ Use `zam stats` domain competence to determine the right mode for each domain.
 - Never skip the knowledge plan — it's what makes this a training session, not just a task
 - Be honest in the session summary about what the agent did vs. what the user did
 - Rating scale is 1-4 (not 0-3 like the old PoC)
+- Agent execution (`done-by agent`) does NOT advance FSRS state — only user-rated recalls do
+- Observation ratings (from watching the user work) DO count — they are user actions
+- Prefer observation over verbal probing; interrupting flow has a cost
+- Do not deprecate tokens without the user's confirmation

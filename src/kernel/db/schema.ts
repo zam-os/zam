@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS tokens (
   context       TEXT NOT NULL DEFAULT '',
   symbiosis_mode TEXT CHECK (symbiosis_mode IN ('shadowing', 'copilot', 'autonomy')),
   created_at    TEXT NOT NULL DEFAULT (datetime('now')),
-  updated_at    TEXT NOT NULL DEFAULT (datetime('now'))
+  updated_at    TEXT NOT NULL DEFAULT (datetime('now')),
+  deprecated_at TEXT
 );
 
 -- Prerequisite dependency graph: "to learn A, first know B"
@@ -89,6 +90,19 @@ CREATE TABLE IF NOT EXISTS session_steps (
 CREATE TABLE IF NOT EXISTS user_config (
   key         TEXT PRIMARY KEY,
   value       TEXT NOT NULL,
+  updated_at  TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Agent skills: task recipes the agent learns from user guidance
+CREATE TABLE IF NOT EXISTS agent_skills (
+  id          TEXT PRIMARY KEY,
+  slug        TEXT NOT NULL UNIQUE,
+  description TEXT NOT NULL,
+  steps       TEXT NOT NULL DEFAULT '[]',       -- JSON array of step strings
+  token_slugs TEXT NOT NULL DEFAULT '[]',       -- JSON array of related token slugs
+  source      TEXT NOT NULL DEFAULT 'learned'
+    CHECK(source IN ('learned', 'builtin')),
+  created_at  TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at  TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
