@@ -69,6 +69,15 @@ export type {
   CreateAgentSkillInput,
 } from "./models/agent-skill.js";
 
+export {
+  getSetting,
+  getAllSettings,
+  getAllSettingsDetailed,
+  setSetting,
+  deleteSetting,
+} from "./models/settings.js";
+export type { UserSetting } from "./models/settings.js";
+
 // Scheduler
 export { createFSRS } from "./scheduler/fsrs.js";
 export type { Rating, SchedulingCard, FSRSParameters } from "./scheduler/fsrs.js";

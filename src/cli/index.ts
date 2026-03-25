@@ -8,6 +8,7 @@ import { reviewCommand } from "./commands/review.js";
 import { bridgeCommand } from "./commands/bridge.js";
 import { skillCommand } from "./commands/skill.js";
 import { monitorCommand } from "./commands/monitor.js";
+import { settingsCommand } from "./commands/settings.js";
 
 const program = new Command();
 
@@ -27,5 +28,6 @@ program.addCommand(reviewCommand);
 program.addCommand(bridgeCommand);
 program.addCommand(skillCommand);
 program.addCommand(monitorCommand);
+program.addCommand(settingsCommand);
 
 program.parse();

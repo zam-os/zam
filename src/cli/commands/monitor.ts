@@ -30,6 +30,8 @@ import {
   generateBashHooks,
   generateZshUnhooks,
   generateBashUnhooks,
+  getSetting,
+  setSetting,
 } from "../../kernel/index.js";
 import type { MonitorEvent } from "../../kernel/index.js";
 
@@ -236,6 +238,11 @@ monitorCommand
       if (session.completed_at) {
         console.error(`Error: Session already completed: ${opts.session}`);
         process.exit(1);
+      }
+
+      // Save monitor preference so the agent knows to default to terminal
+      if (!getSetting(db, "monitor_method")) {
+        setSetting(db, "monitor_method", "terminal");
       }
     } catch (err) {
       console.error(`Error: ${(err as Error).message}`);

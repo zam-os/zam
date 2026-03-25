@@ -45,6 +45,12 @@ zam skill list
 zam skill show --slug <slug>
 zam skill add --slug <slug> --description "<text>" --steps '<json>' [--tokens <slugs>]
 
+# User settings
+zam settings show                                      # display all settings
+zam settings get --key <key>                           # get a single setting
+zam settings set --key <key> --value <value>           # set a setting
+zam settings delete --key <key>                        # delete a setting
+
 # Shell monitoring (observation mode)
 zam monitor open --session <id> [--dir <path>]        # open a monitored terminal window
 zam monitor start --session <id> [--shell zsh|bash]   # output hook code (wrap with eval)
@@ -167,9 +173,18 @@ Step back. Do not interrupt unless the user asks for help.
 
 **Two ways to observe:**
 
+Check the user's preference first:
+```bash
+zam settings get --key monitor_method
+```
+If set to `terminal`, default to Approach B. If set to `inline` or not set, ask the user which they prefer on first use and save it:
+```bash
+zam settings set --key monitor_method --value terminal --quiet
+```
+
 **Approach A — Inline (inside Claude Code):** User runs commands with the `!` prefix (e.g. `! docker build .`). The agent sees command + output in the conversation. Simple, but no timing data.
 
-**Approach B — Shell monitor (separate terminal):** For real tasks where speed and confidence matter. The agent opens a monitored terminal automatically:
+**Approach B — Shell monitor (separate terminal):** The preferred approach for real tasks. The agent opens a monitored terminal automatically:
 
 ```bash
 zam monitor open --session <session-id> --dir /path/to/project
