@@ -198,10 +198,7 @@ The analyzer infers ratings from:
 
 Review the suggested ratings before submitting. Override if the heuristic seems wrong.
 
-When done, tell the user:
-> ```bash
-> eval "$(zam monitor stop --session <session-id>)"
-> ```
+When done, the user can simply close the monitored terminal window — hooks only live in that shell process. No cleanup command needed.
 
 **Rating scale (both approaches):**
 - Completed correctly, no hesitation, no help → **4**
