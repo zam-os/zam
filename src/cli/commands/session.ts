@@ -75,6 +75,7 @@ sessionCommand
   .requiredOption("--done-by <who>", "Who performed the step (user or agent)")
   .option("--rating <n>", "Rating (1-4)")
   .option("--json", "Output as JSON")
+  .option("--quiet", "Suppress output (exit code only)")
   .action((opts) => {
     withDb((db) => {
       const token = getTokenBySlug(db, opts.token);
@@ -90,6 +91,7 @@ sessionCommand
         rating: opts.rating ? Number(opts.rating) : undefined,
       });
 
+      if (opts.quiet) return;
       if (opts.json) {
         console.log(JSON.stringify(step, null, 2));
       } else {

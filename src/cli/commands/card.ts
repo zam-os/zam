@@ -99,6 +99,7 @@ cardCommand
   .requiredOption("--token <slug>", "Token slug")
   .requiredOption("--rating <n>", "Rating (1=Again, 2=Hard, 3=Good, 4=Easy)")
   .option("--json", "Output as JSON")
+  .option("--quiet", "Suppress output (exit code only)")
   .action((opts) => {
     withDb((db) => {
       const token = getTokenBySlug(db, opts.token);
@@ -127,6 +128,7 @@ cardCommand
         const prereqs = getPrerequisites(db, token.id);
         if (prereqs.length > 0) {
           const blockResult = cascadeBlock(db, opts.user, token.slug);
+          if (opts.quiet) return;
           if (opts.json) {
             console.log(JSON.stringify({ evaluation: result, blocked: blockResult }, null, 2));
           } else {
@@ -140,6 +142,7 @@ cardCommand
         }
       }
 
+      if (opts.quiet) return;
       if (opts.json) {
         console.log(JSON.stringify(result, null, 2));
       } else {
@@ -160,10 +163,12 @@ cardCommand
   .description("Unblock cards whose prerequisites are met")
   .requiredOption("--user <id>", "User ID")
   .option("--json", "Output as JSON")
+  .option("--quiet", "Suppress output (exit code only)")
   .action((opts) => {
     withDb((db) => {
       const result = unblockReady(db, opts.user);
 
+      if (opts.quiet) return;
       if (opts.json) {
         console.log(JSON.stringify(result, null, 2));
         return;

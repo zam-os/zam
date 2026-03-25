@@ -109,7 +109,7 @@ The interface is pluggable — future observers replace Level 1 shell calls with
 
 ### STEP 1 — Start session & check status
 ```bash
-zam card unblock --user <username>
+zam card unblock --user <username> --quiet
 zam stats --user <username>
 ```
 Show stats as a brief friendly greeting. Mention how many tokens are due, how many are blocked.
@@ -201,9 +201,11 @@ When done, tell the user:
 - Asked for help or couldn't proceed → **1** (then explain the concept and continue)
 
 ```bash
-zam card update --user <username> --token <slug> --rating <n>
-zam session log --session <id> --token <slug> --done-by user --rating <n>
+zam card update --user <username> --token <slug> --rating <n> --quiet
+zam session log --session <id> --token <slug> --done-by user --rating <n> --quiet
 ```
+
+Use `--quiet` to suppress FSRS internals — the learner does not need to see stability, reps, or next-due dates during a session.
 
 For tokens the user never touched (agent did them silently): log `--done-by agent`, no rating.
 
