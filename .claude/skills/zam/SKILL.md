@@ -143,6 +143,15 @@ zam token prereq --token <child> --requires <parent>
 ```
 
 ### STEP 3 — Start a session
+
+**For review/conceptual sessions**, load review data into a temp file so it stays out of the conversation, then start the session quietly:
+```bash
+zam bridge check-due --user <username> > /tmp/zam-review.json
+zam session start --user <username> --task "<description>" --context shell --quiet
+```
+Read `/tmp/zam-review.json` with the Read tool (not cat) to load card data silently. This gives you all cardIds, slugs, concepts, domains, and bloom levels for the session. **Do not call `bridge get-review` per card** — iterate through the cards from this data.
+
+**For executable/task sessions**, the normal start is fine:
 ```bash
 zam session start --user <username> --task "<description>" --context shell
 ```

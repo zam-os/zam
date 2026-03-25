@@ -39,6 +39,7 @@ sessionCommand
   .requiredOption("--task <description>", "Task description")
   .option("--context <level>", "Execution context: shell | ui | reallife (default: shell)", "shell")
   .option("--json", "Output as JSON")
+  .option("--quiet", "Output only the session ID")
   .action((opts) => {
     withDb((db) => {
       const validContexts = ["shell", "ui", "reallife"];
@@ -53,7 +54,9 @@ sessionCommand
         execution_context: opts.context as ExecutionContext,
       });
 
-      if (opts.json) {
+      if (opts.quiet) {
+        console.log(session.id);
+      } else if (opts.json) {
         console.log(JSON.stringify(session, null, 2));
       } else {
         console.log(`Session started: ${session.id}`);
