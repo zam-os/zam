@@ -114,6 +114,12 @@ zam stats --user <username>
 ```
 Show stats as a brief friendly greeting. Mention how many tokens are due, how many are blocked.
 
+For **review/conceptual** sessions, use `--summary` to avoid spoiling answers:
+```bash
+zam card due --user <username> --summary
+```
+For **executable/task** sessions, the full listing is fine since the agent needs to plan.
+
 Classify session type:
 - **Executable** — real commands, code, or file edits (e.g. "set up Homebrew", "commit this change")
 - **Conceptual** — pure review with no concrete output (e.g. `/zam repeat`)
@@ -298,4 +304,5 @@ Use `zam stats` domain competence to determine the right mode for each domain.
 - Agent execution (`done-by agent`) does NOT advance FSRS state — only user-rated recalls do
 - Observation ratings (from watching the user work) DO count — they are user actions
 - Prefer observation over verbal probing; interrupting flow has a cost
+- Never show card slugs or concept text to the user before asking a review question — they spoil the answer. Use `--summary` for due listings during review sessions.
 - Do not deprecate tokens without the user's confirmation

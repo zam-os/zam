@@ -39,6 +39,7 @@ cardCommand
   .description("Show due tokens for a user")
   .requiredOption("--user <id>", "User ID")
   .option("--json", "Output as JSON")
+  .option("--summary", "Show only counts per domain (no slugs or concepts)")
   .action((opts) => {
     withDb((db) => {
       const dueCards = getDueCards(db, opts.user);
@@ -50,6 +51,29 @@ cardCommand
 
       if (dueCards.length === 0) {
         console.log("No cards due for review.");
+        return;
+      }
+
+      if (opts.summary) {
+        const byDomain = new Map<string, { count: number; blooms: number[] }>();
+        for (const c of dueCards) {
+          const d = c.domain || "general";
+          const entry = byDomain.get(d) ?? { count: 0, blooms: [] };
+          entry.count++;
+          entry.blooms.push(c.bloom_level);
+          byDomain.set(d, entry);
+        }
+        console.log(`${dueCards.length} card(s) due:\n`);
+        console.log(
+          "Domain           Count  Bloom levels",
+        );
+        console.log("─".repeat(45));
+        for (const [domain, { count, blooms }] of [...byDomain.entries()].sort()) {
+          const bloomStr = blooms.sort().join(", ");
+          console.log(
+            `${domain.padEnd(16)} ${String(count).padEnd(6)} ${bloomStr}`,
+          );
+        }
         return;
       }
 
