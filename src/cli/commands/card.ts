@@ -15,6 +15,7 @@ import {
   getPrerequisites,
 } from "../../kernel/index.js";
 import type { Rating } from "../../kernel/index.js";
+import { resolveUser } from "./resolve-user.js";
 
 function withDb(fn: (db: Database) => void): void {
   let db: Database | undefined;
@@ -37,12 +38,13 @@ export const cardCommand = new Command("card")
 cardCommand
   .command("due")
   .description("Show due tokens for a user")
-  .requiredOption("--user <id>", "User ID")
+  .option("--user <id>", "User ID (default: whoami)")
   .option("--json", "Output as JSON")
   .option("--summary", "Show only counts per domain (no slugs or concepts)")
   .action((opts) => {
     withDb((db) => {
-      const dueCards = getDueCards(db, opts.user);
+      const userId = resolveUser(opts, db);
+      const dueCards = getDueCards(db, userId);
 
       if (opts.json) {
         console.log(JSON.stringify(dueCards, null, 2));
@@ -95,20 +97,21 @@ cardCommand
 cardCommand
   .command("update")
   .description("Apply a rating to a card")
-  .requiredOption("--user <id>", "User ID")
+  .option("--user <id>", "User ID (default: whoami)")
   .requiredOption("--token <slug>", "Token slug")
   .requiredOption("--rating <n>", "Rating (1=Again, 2=Hard, 3=Good, 4=Easy)")
   .option("--json", "Output as JSON")
   .option("--quiet", "Suppress output (exit code only)")
   .action((opts) => {
     withDb((db) => {
+      const userId = resolveUser(opts, db);
       const token = getTokenBySlug(db, opts.token);
       if (!token) {
         console.error(`Token not found: ${opts.token}`);
         process.exit(1);
       }
 
-      const card = ensureCard(db, token.id, opts.user);
+      const card = ensureCard(db, token.id, userId);
       const rating = Number(opts.rating) as Rating;
 
       if (rating < 1 || rating > 4) {
@@ -119,7 +122,7 @@ cardCommand
       const result = evaluateRating(db, {
         cardId: card.id,
         tokenId: token.id,
-        userId: opts.user,
+        userId,
         rating,
       });
 
@@ -127,7 +130,7 @@ cardCommand
       if (rating === 1) {
         const prereqs = getPrerequisites(db, token.id);
         if (prereqs.length > 0) {
-          const blockResult = cascadeBlock(db, opts.user, token.slug);
+          const blockResult = cascadeBlock(db, userId, token.slug);
           if (opts.quiet) return;
           if (opts.json) {
             console.log(JSON.stringify({ evaluation: result, blocked: blockResult }, null, 2));
@@ -161,12 +164,13 @@ cardCommand
 cardCommand
   .command("unblock")
   .description("Unblock cards whose prerequisites are met")
-  .requiredOption("--user <id>", "User ID")
+  .option("--user <id>", "User ID (default: whoami)")
   .option("--json", "Output as JSON")
   .option("--quiet", "Suppress output (exit code only)")
   .action((opts) => {
     withDb((db) => {
-      const result = unblockReady(db, opts.user);
+      const userId = resolveUser(opts, db);
+      const result = unblockReady(db, userId);
 
       if (opts.quiet) return;
       if (opts.json) {

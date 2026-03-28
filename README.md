@@ -52,6 +52,15 @@ ZAM is designed as an **AI-agnostic kernel** — a CLI tool that integrates seam
 - **CLI Integration** — Compatible with `Claude Code`, `Copilot CLI`, and `Gemini CLI`.
 - **Modularity** — The system can be forked for region- or culture-specific adaptations (*Social Forking*).
 
+### Two Repositories, One System
+
+ZAM is split into two concerns:
+
+- **Core** ([`zam-os/zam`](https://github.com/zam-os/zam)) — The AI-agnostic learning kernel, CLI, bridge protocol, and system beliefs. Shared by everyone.
+- **Personal** (fork of [`zam-os/zam-personal`](templates/personal/)) — Your beliefs, your goals, your identity. You fork it, you own it.
+
+Get started: `zam whoami --set <your-id>`
+
 ---
 
 ## 🏛 Vision: A Flourishing Future

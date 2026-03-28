@@ -1,0 +1,9 @@
+{
+  "name": "zam-personal",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Your personal ZAM kernel — beliefs, goals, and identity.",
+  "dependencies": {
+    "zam": "^0.1.0"
+  }
+}

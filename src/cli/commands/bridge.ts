@@ -25,6 +25,7 @@ import {
   monitorLogExists,
 } from "../../kernel/index.js";
 import type { Rating, BloomLevel, TokenPattern } from "../../kernel/index.js";
+import { resolveUser } from "./resolve-user.js";
 
 function jsonOut(data: unknown): void {
   console.log(JSON.stringify(data, null, 2));
@@ -56,14 +57,15 @@ export const bridgeCommand = new Command("bridge")
 bridgeCommand
   .command("check-due")
   .description("Check due cards for a user (JSON)")
-  .requiredOption("--user <id>", "User ID")
+  .option("--user <id>", "User ID (default: whoami)")
   .action((opts) => {
     withDb((db) => {
-      const dueCards = getDueCards(db, opts.user);
+      const userId = resolveUser(opts, db, { json: true });
+      const dueCards = getDueCards(db, userId);
       const domains = [...new Set(dueCards.map((c) => c.domain).filter(Boolean))].sort();
 
       jsonOut({
-        userId: opts.user,
+        userId,
         dueCount: dueCards.length,
         domains,
         cards: dueCards.map((c) => ({
@@ -85,14 +87,15 @@ bridgeCommand
 bridgeCommand
   .command("get-review")
   .description("Get next review card with prompt (JSON)")
-  .requiredOption("--user <id>", "User ID")
+  .option("--user <id>", "User ID (default: whoami)")
   .action((opts) => {
     withDb((db) => {
-      const queue = buildReviewQueue(db, { userId: opts.user, maxReviews: 1, maxNew: 1 });
+      const userId = resolveUser(opts, db, { json: true });
+      const queue = buildReviewQueue(db, { userId, maxReviews: 1, maxNew: 1 });
 
       if (queue.items.length === 0) {
         jsonOut({
-          userId: opts.user,
+          userId,
           hasReview: false,
           card: null,
           prompt: null,
@@ -112,10 +115,10 @@ bridgeCommand
       });
 
       // Get full queue size for context
-      const fullQueue = buildReviewQueue(db, { userId: opts.user });
+      const fullQueue = buildReviewQueue(db, { userId });
 
       jsonOut({
-        userId: opts.user,
+        userId,
         hasReview: true,
         card: item,
         prompt,
@@ -129,11 +132,12 @@ bridgeCommand
 bridgeCommand
   .command("submit")
   .description("Submit a rating for a card (JSON)")
-  .requiredOption("--user <id>", "User ID")
+  .option("--user <id>", "User ID (default: whoami)")
   .requiredOption("--card-id <id>", "Card ID")
   .requiredOption("--rating <n>", "Rating (1-4)")
   .action((opts) => {
     withDb((db) => {
+      const userId = resolveUser(opts, db, { json: true });
       const rating = Number(opts.rating) as Rating;
       if (rating < 1 || rating > 4) {
         jsonError("Rating must be between 1 and 4");
@@ -151,7 +155,7 @@ bridgeCommand
       const result = evaluateRating(db, {
         cardId: opts.cardId,
         tokenId: card!.token_id,
-        userId: opts.user,
+        userId,
         rating,
       });
 
@@ -164,7 +168,7 @@ bridgeCommand
         if (token) {
           const prereqs = getPrerequisites(db, card!.token_id);
           if (prereqs.length > 0) {
-            blocked = cascadeBlock(db, opts.user, token.slug);
+            blocked = cascadeBlock(db, userId, token.slug);
           }
         }
       }
@@ -297,7 +301,7 @@ bridgeCommand
 bridgeCommand
   .command("add-token")
   .description("Create a token + card from JSON stdin")
-  .requiredOption("--user <id>", "User ID")
+  .option("--user <id>", "User ID (default: whoami)")
   .action(async (opts) => {
     let db: Database | undefined;
     try {
@@ -332,6 +336,7 @@ bridgeCommand
       }
 
       db = openDatabase();
+      const userId = resolveUser(opts, db, { json: true });
 
       const token = createToken(db, {
         slug: data!.slug,
@@ -342,7 +347,7 @@ bridgeCommand
         symbiosis_mode: data!.symbiosis_mode as "shadowing" | "copilot" | "autonomy" | null | undefined,
       });
 
-      const card = ensureCard(db, token.id, opts.user);
+      const card = ensureCard(db, token.id, userId);
 
       jsonOut({
         success: true,

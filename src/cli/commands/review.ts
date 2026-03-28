@@ -14,19 +14,21 @@ import {
   getPrerequisites,
 } from "../../kernel/index.js";
 import type { Rating, BloomLevel } from "../../kernel/index.js";
+import { resolveUser } from "./resolve-user.js";
 
 export const reviewCommand = new Command("review")
   .description("Start an interactive review session")
-  .requiredOption("--user <id>", "User ID")
+  .option("--user <id>", "User ID (default: whoami)")
   .option("--max-new <n>", "Maximum new cards", "10")
   .option("--max-reviews <n>", "Maximum review cards", "50")
   .action(async (opts) => {
     let db: Database | undefined;
     try {
       db = openDatabase();
+      const userId = resolveUser(opts, db);
 
       const queue = buildReviewQueue(db, {
-        userId: opts.user,
+        userId,
         maxNew: Number(opts.maxNew),
         maxReviews: Number(opts.maxReviews),
       });
@@ -78,7 +80,7 @@ export const reviewCommand = new Command("review")
         const evalResult = evaluateRating(db, {
           cardId: item.cardId,
           tokenId: item.tokenId,
-          userId: opts.user,
+          userId,
           rating,
         });
 
@@ -86,7 +88,7 @@ export const reviewCommand = new Command("review")
         if (rating === 1) {
           const prereqs = getPrerequisites(db, item.tokenId);
           if (prereqs.length > 0) {
-            const blockResult = cascadeBlock(db, opts.user, item.slug);
+            const blockResult = cascadeBlock(db, userId, item.slug);
             console.log(`  Blocked ${blockResult.blockedSlug}. Review these prerequisites:`);
             for (const p of blockResult.prerequisites) {
               console.log(`    - ${p.slug}: ${p.concept}`);
