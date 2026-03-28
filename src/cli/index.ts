@@ -1,5 +1,6 @@
 import { Command } from "commander";
 import { initCommand } from "./commands/init.js";
+import { setupCommand } from "./commands/setup.js";
 import { tokenCommand } from "./commands/token.js";
 import { cardCommand } from "./commands/card.js";
 import { sessionCommand } from "./commands/session.js";
@@ -20,9 +21,10 @@ program
   .description(
     "The Symbiotic Learning Kernel: Elevating Human Intelligence through AI Collaboration.",
   )
-  .version("0.1.0");
+  .version("0.2.0");
 
 program.addCommand(initCommand);
+program.addCommand(setupCommand);
 program.addCommand(tokenCommand);
 program.addCommand(cardCommand);
 program.addCommand(sessionCommand);

@@ -1,8 +1,15 @@
 {
   "name": "zam",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "The Symbiotic Learning Kernel: Elevating Human Intelligence through AI Collaboration.",
   "type": "module",
+  "files": [
+    "dist/",
+    ".claude/",
+    ".gemini/",
+    "README.md",
+    "LICENSE"
+  ],
   "bin": {
     "zam": "./dist/cli/index.js"
   },
