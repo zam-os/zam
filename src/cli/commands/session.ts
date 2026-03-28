@@ -1,5 +1,9 @@
 /**
  * `zam session` — Session management subcommand group.
+ *
+ * Session start follows the two-phase flow from Increment 2:
+ * Phase 1 — Repetition: review due cards (pure recall first, skippable)
+ * Phase 2 — Task execution: pick a work item from ADO or enter a custom task
  */
 
 import { Command } from "commander";
@@ -14,8 +18,14 @@ import {
   getTokenBySlug,
   loadADOConfig,
   fetchActiveWorkItems,
+  buildReviewQueue,
+  generatePrompt,
+  evaluateRating,
+  cascadeBlock,
+  getPrerequisites,
+  getSetting,
 } from "../../kernel/index.js";
-import type { ExecutionContext } from "../../kernel/index.js";
+import type { ExecutionContext, Rating, BloomLevel } from "../../kernel/index.js";
 import { resolveUser } from "./resolve-user.js";
 
 function withDb(fn: (db: Database) => void): void {
@@ -38,10 +48,12 @@ export const sessionCommand = new Command("session")
 
 sessionCommand
   .command("start")
-  .description("Start a new learning session")
+  .description("Start a new learning session (review → task)")
   .option("--user <id>", "User ID (default: whoami)")
   .option("--task <description>", "Task description (interactive if omitted)")
   .option("--context <level>", "Execution context: shell | ui | reallife (default: shell)", "shell")
+  .option("--skip-review", "Skip the repetition phase and go straight to task selection")
+  .option("--review-minutes <n>", "Maximum minutes for the repetition phase (default: 20)", "20")
   .option("--json", "Output as JSON")
   .option("--quiet", "Output only the session ID")
   .action(async (opts) => {
@@ -56,42 +68,27 @@ sessionCommand
       }
 
       const userId = resolveUser(opts, db);
+      const reviewMinutes = Number(opts.reviewMinutes);
+
+      // ── Phase 1: Repetition ────────────────────────────────────────────
+      if (!opts.skipReview && !opts.quiet && !opts.json) {
+        const reviewResults = await runRepetitionPhase(db, userId, reviewMinutes);
+        if (reviewResults.reviewed > 0) {
+          console.log();
+        }
+      }
+
+      // ── Phase 2: Task Selection ────────────────────────────────────────
       let task: string = opts.task;
 
-      // Interactive task selection when --task is not provided
+      if (!task && !opts.quiet && !opts.json) {
+        task = await selectTask(db);
+      }
+
       if (!task) {
-        const adoConfig = loadADOConfig(db);
-
-        if (adoConfig) {
-          const items = await fetchActiveWorkItems(adoConfig);
-
-          if (items.length > 0) {
-            const choices = items.map((wi) => ({
-              name: `[${wi.type}] ${wi.title} (${wi.state})`,
-              value: `[ADO-${wi.id}] ${wi.title}`,
-            }));
-            choices.push({ name: "Enter a custom task...", value: "__custom__" });
-
-            const picked = await select({
-              message: `${items.length} active work item(s) — pick one:`,
-              choices,
-            });
-
-            task = picked === "__custom__"
-              ? await input({ message: "Task description:" })
-              : picked;
-          } else {
-            console.log("No active work items found in Azure DevOps.");
-            task = await input({ message: "Task description:" });
-          }
-        } else {
-          task = await input({ message: "Task description:" });
-        }
-
-        if (!task) {
-          console.error("Task description is required.");
-          process.exit(1);
-        }
+        // Fallback for --quiet/--json without --task
+        console.error("Task description is required. Use --task or run interactively.");
+        process.exit(1);
       }
 
       const session = startSession(db, {
@@ -107,7 +104,7 @@ sessionCommand
       } else if (opts.json) {
         console.log(JSON.stringify(session, null, 2));
       } else {
-        console.log(`Session started: ${session.id}`);
+        console.log(`\nSession started: ${session.id}`);
         console.log(`  User:    ${session.user_id}`);
         console.log(`  Task:    ${session.task}`);
         console.log(`  Context: ${session.execution_context}`);
@@ -116,13 +113,148 @@ sessionCommand
     } catch (err) {
       db?.close();
       if ((err as Error).name === "ExitPromptError") {
-        console.log("\nSession start cancelled.");
+        console.log("\nSession cancelled.");
         process.exit(0);
       }
       console.error("Error:", (err as Error).message);
       process.exit(1);
     }
   });
+
+// ── Phase 1: Repetition ─────────────────────────────────────────────────────
+
+interface RepetitionResult {
+  reviewed: number;
+  skipped: boolean;
+}
+
+async function runRepetitionPhase(
+  db: Database,
+  userId: string,
+  maxMinutes: number,
+): Promise<RepetitionResult> {
+  const queue = buildReviewQueue(db, { userId });
+
+  if (queue.items.length === 0) {
+    console.log("No cards due for review — moving to task selection.\n");
+    return { reviewed: 0, skipped: false };
+  }
+
+  console.log("═".repeat(50));
+  console.log("Phase 1: Repetition");
+  console.log("═".repeat(50));
+  console.log(`${queue.items.length} card(s) due`);
+  console.log(`  New: ${queue.newCount}  Review: ${queue.reviewCount}  Relearn: ${queue.relearnCount}`);
+  console.log(`  Domains: ${queue.totalDomains.join(", ")}`);
+  console.log(`  Time limit: ${maxMinutes} minutes (skip anytime with 's')`);
+  console.log();
+
+  const startTime = Date.now();
+  const timeLimitMs = maxMinutes * 60 * 1000;
+  let reviewed = 0;
+
+  for (const item of queue.items) {
+    // Check time limit
+    if (Date.now() - startTime >= timeLimitMs) {
+      console.log(`\nTime limit reached (${maxMinutes} min). Moving to task selection.`);
+      break;
+    }
+
+    reviewed++;
+
+    const prompt = generatePrompt({
+      cardId: item.cardId,
+      tokenId: item.tokenId,
+      slug: item.slug,
+      concept: item.concept,
+      domain: item.domain,
+      bloomLevel: item.bloomLevel as BloomLevel,
+    });
+
+    const elapsed = Math.round((Date.now() - startTime) / 60000);
+    console.log(`[${reviewed}/${queue.items.length}] ${prompt.bloomVerb} (Bloom ${prompt.bloomLevel}) — ${elapsed}/${maxMinutes} min`);
+    console.log(`Domain: ${prompt.domain || "(none)"}`);
+    console.log(`\n  ${prompt.question}\n`);
+
+    const rating = await select({
+      message: "How did you do?",
+      choices: [
+        { name: "1 - Again (forgot)", value: 1 },
+        { name: "2 - Hard", value: 2 },
+        { name: "3 - Good", value: 3 },
+        { name: "4 - Easy", value: 4 },
+        { name: "s - Skip to task selection", value: 0 },
+      ],
+    }) as number;
+
+    if (rating === 0) {
+      console.log("Skipping to task selection.");
+      reviewed--; // Don't count the skipped card
+      return { reviewed, skipped: true };
+    }
+
+    const evalResult = evaluateRating(db, {
+      cardId: item.cardId,
+      tokenId: item.tokenId,
+      userId,
+      rating: rating as Rating,
+    });
+
+    if (rating === 1) {
+      const prereqs = getPrerequisites(db, item.tokenId);
+      if (prereqs.length > 0) {
+        const blockResult = cascadeBlock(db, userId, item.slug);
+        console.log(`  Blocked ${blockResult.blockedSlug}. Review these prerequisites:`);
+        for (const p of blockResult.prerequisites) {
+          console.log(`    - ${p.slug}: ${p.concept}`);
+        }
+      }
+    }
+
+    const ratingLabels: Record<number, string> = { 1: "Again", 2: "Hard", 3: "Good", 4: "Easy" };
+    console.log(`  ${ratingLabels[rating]} — next due: ${evalResult.nextDueAt}\n`);
+  }
+
+  if (reviewed > 0) {
+    console.log("─".repeat(50));
+    console.log(`Repetition complete — ${reviewed} card(s) reviewed.`);
+  }
+
+  return { reviewed, skipped: false };
+}
+
+// ── Phase 2: Task Selection ─────────────────────────────────────────────────
+
+async function selectTask(db: Database): Promise<string> {
+  console.log("═".repeat(50));
+  console.log("Phase 2: Task Selection");
+  console.log("═".repeat(50));
+
+  const adoConfig = loadADOConfig(db);
+
+  if (adoConfig) {
+    const items = await fetchActiveWorkItems(adoConfig);
+
+    if (items.length > 0) {
+      const choices = items.map((wi) => ({
+        name: `[${wi.type}] ${wi.title} (${wi.state})`,
+        value: `[ADO-${wi.id}] ${wi.title}`,
+      }));
+      choices.push({ name: "Enter a custom task...", value: "__custom__" });
+
+      const picked = await select({
+        message: `${items.length} active work item(s) — pick one:`,
+        choices,
+      });
+
+      if (picked !== "__custom__") return picked;
+    } else {
+      console.log("No active work items found in Azure DevOps.");
+    }
+  }
+
+  return input({ message: "Task description:" });
+}
 
 // ── zam session log ───────────────────────────────────────────────────────
 
