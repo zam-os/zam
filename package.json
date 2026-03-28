@@ -11,7 +11,7 @@
     "LICENSE"
   ],
   "bin": {
-    "zam": "./dist/cli/index.js"
+    "zam": "dist/cli/index.js"
   },
   "scripts": {
     "build": "tsup",
