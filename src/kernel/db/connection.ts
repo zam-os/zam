@@ -86,8 +86,13 @@ export function openDatabaseWithSync(options: Omit<ConnectionOptions, "syncUrl" 
 
   if (!syncUrl || !authToken) return db;
 
-  // Reopen with sync enabled
+  // Checkpoint WAL and switch to DELETE journal mode before closing.
+  // On Windows, WAL mode holds auxiliary file locks (.wal, .shm) that prevent
+  // deletion even after close(). Switching to DELETE mode releases them cleanly.
+  db.pragma("wal_checkpoint(TRUNCATE)");
+  db.pragma("journal_mode = DELETE");
   db.close();
+
   return openDatabase({ ...options, syncUrl: syncUrl.value, authToken: authToken.value });
 }
 
