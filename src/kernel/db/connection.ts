@@ -37,22 +37,28 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
   const dbOpts: Record<string, unknown> = {};
   if (options.syncUrl) {
     dbOpts.syncUrl = options.syncUrl;
-    // libsql embedded replica requires a companion .meta file.
-    // If the db file already exists as plain SQLite (no .meta), it was created
-    // before Turso was configured. Delete it so libsql can sync fresh from cloud.
-    const metaPath = `${dbPath}.meta`;
-    if (existsSync(dbPath) && !existsSync(metaPath)) {
-      for (const suffix of ["", "-wal", "-shm"]) {
-        const f = `${dbPath}${suffix}`;
-        if (existsSync(f)) rmSync(f);
-      }
-    }
   }
   if (options.authToken) {
     dbOpts.authToken = options.authToken;
   }
 
-  const db = new Database(dbPath, dbOpts as Database.Options);
+  let db: DatabaseType;
+  try {
+    db = new Database(dbPath, dbOpts as Database.Options);
+  } catch (err) {
+    // libsql throws "InvalidLocalState" when the db file exists as plain SQLite
+    // but has no sync metadata (.meta file). This happens when Turso is configured
+    // after the db was created locally. Delete the stale file and retry.
+    if (options.syncUrl && (err as Error).message?.includes("InvalidLocalState")) {
+      for (const suffix of ["", "-wal", "-shm"]) {
+        const f = `${dbPath}${suffix}`;
+        if (existsSync(f)) rmSync(f, { force: true });
+      }
+      db = new Database(dbPath, dbOpts as Database.Options);
+    } else {
+      throw err;
+    }
+  }
 
   // Enable WAL mode and foreign keys
   db.pragma("journal_mode = WAL");
