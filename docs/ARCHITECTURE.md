@@ -1,6 +1,8 @@
 # ZAM Architecture
 
-> Last updated: 2026-03-23 · Phase 1: Individual Symbiosis
+> Last updated: 2026-03-28 · Phase 1: Individual Symbiosis
+>
+> Related: [TEMPLATES.md](TEMPLATES.md) — template/instance model, repo families, setup protocol
 
 ---
 
