@@ -2,7 +2,7 @@
  * User settings — key/value store backed by the user_config table.
  */
 
-import type { Database } from "better-sqlite3";
+import type { Database } from "libsql";
 
 export interface UserSetting {
   key: string;

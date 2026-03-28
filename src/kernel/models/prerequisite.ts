@@ -4,7 +4,7 @@
  * Models the dependency graph: "to learn token A, first know token B."
  */
 
-import type { Database } from "better-sqlite3";
+import type { Database } from "libsql";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 

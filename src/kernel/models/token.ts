@@ -5,7 +5,7 @@
  * and optional symbiosis modes (shadowing / copilot / autonomy).
  */
 
-import type { Database } from "better-sqlite3";
+import type { Database } from "libsql";
 import { ulid } from "ulid";
 
 // ── Types ────────────────────────────────────────────────────────────────────

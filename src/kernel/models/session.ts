@@ -5,7 +5,7 @@
  * record which tokens were touched and by whom (user or agent).
  */
 
-import type { Database } from "better-sqlite3";
+import type { Database } from "libsql";
 import { ulid } from "ulid";
 
 // ── Types ────────────────────────────────────────────────────────────────────

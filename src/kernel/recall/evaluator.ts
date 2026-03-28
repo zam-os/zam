@@ -5,7 +5,7 @@
  * Coordinates between FSRS scheduling, review logging, and blocking.
  */
 
-import type { Database } from "better-sqlite3";
+import type { Database } from "libsql";
 import { ulid } from "ulid";
 import { updateCard } from "../models/card.js";
 import type { Rating, SchedulingCard } from "../scheduler/fsrs.js";

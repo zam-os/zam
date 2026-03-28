@@ -5,7 +5,7 @@
  * and cross-domain interleaving into a single ready-to-review queue.
  */
 
-import type { Database } from "better-sqlite3";
+import type { Database } from "libsql";
 import { interleave } from "./interleaver.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
