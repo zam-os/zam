@@ -9,6 +9,7 @@ import {
   getUserStats,
   getDomainCompetence,
 } from "../../kernel/index.js";
+import { resolveUser } from "./resolve-user.js";
 
 function withDb(fn: (db: Database) => void): void {
   let db: Database | undefined;
@@ -25,12 +26,13 @@ function withDb(fn: (db: Database) => void): void {
 
 export const statsCommand = new Command("stats")
   .description("Show learning dashboard for a user")
-  .requiredOption("--user <id>", "User ID")
+  .option("--user <id>", "User ID (default: whoami)")
   .option("--json", "Output as JSON")
   .action((opts) => {
     withDb((db) => {
-      const stats = getUserStats(db, opts.user);
-      const domains = getDomainCompetence(db, opts.user);
+      const userId = resolveUser(opts, db);
+      const stats = getUserStats(db, userId);
+      const domains = getDomainCompetence(db, userId);
 
       if (opts.json) {
         console.log(JSON.stringify({ stats, domains }, null, 2));

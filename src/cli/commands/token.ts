@@ -18,6 +18,7 @@ import {
   deprecateToken,
 } from "../../kernel/index.js";
 import type { BloomLevel } from "../../kernel/index.js";
+import { resolveUser } from "./resolve-user.js";
 
 function withDb(fn: (db: Database) => void): void {
   let db: Database | undefined;
@@ -192,17 +193,18 @@ tokenCommand
   .command("status")
   .description("Show full status of a token for a user")
   .requiredOption("--token <slug>", "Token slug")
-  .requiredOption("--user <id>", "User ID")
+  .option("--user <id>", "User ID (default: whoami)")
   .option("--json", "Output as JSON")
   .action((opts) => {
     withDb((db) => {
+      const userId = resolveUser(opts, db);
       const token = getTokenBySlug(db, opts.token);
       if (!token) {
         console.error(`Token not found: ${opts.token}`);
         process.exit(1);
       }
 
-      const card = getCard(db, token.id, opts.user);
+      const card = getCard(db, token.id, userId);
       const prereqs = getPrerequisites(db, token.id);
       const dependents = getDependents(db, token.id);
 

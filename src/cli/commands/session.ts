@@ -13,6 +13,7 @@ import {
   getTokenBySlug,
 } from "../../kernel/index.js";
 import type { ExecutionContext } from "../../kernel/index.js";
+import { resolveUser } from "./resolve-user.js";
 
 function withDb(fn: (db: Database) => void): void {
   let db: Database | undefined;
@@ -35,7 +36,7 @@ export const sessionCommand = new Command("session")
 sessionCommand
   .command("start")
   .description("Start a new learning session")
-  .requiredOption("--user <id>", "User ID")
+  .option("--user <id>", "User ID (default: whoami)")
   .requiredOption("--task <description>", "Task description")
   .option("--context <level>", "Execution context: shell | ui | reallife (default: shell)", "shell")
   .option("--json", "Output as JSON")
@@ -48,8 +49,9 @@ sessionCommand
         process.exit(1);
       }
 
+      const userId = resolveUser(opts, db);
       const session = startSession(db, {
-        user_id: opts.user,
+        user_id: userId,
         task: opts.task,
         execution_context: opts.context as ExecutionContext,
       });
