@@ -1,5 +1,5 @@
 import Database, { type Database as DatabaseType } from "libsql";
-import { existsSync, mkdirSync } from "node:fs";
+import { existsSync, mkdirSync, rmSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { SCHEMA } from "./schema.js";
@@ -37,6 +37,16 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
   const dbOpts: Record<string, unknown> = {};
   if (options.syncUrl) {
     dbOpts.syncUrl = options.syncUrl;
+    // libsql embedded replica requires a companion .meta file.
+    // If the db file already exists as plain SQLite (no .meta), it was created
+    // before Turso was configured. Delete it so libsql can sync fresh from cloud.
+    const metaPath = `${dbPath}.meta`;
+    if (existsSync(dbPath) && !existsSync(metaPath)) {
+      for (const suffix of ["", "-wal", "-shm"]) {
+        const f = `${dbPath}${suffix}`;
+        if (existsSync(f)) rmSync(f);
+      }
+    }
   }
   if (options.authToken) {
     dbOpts.authToken = options.authToken;
