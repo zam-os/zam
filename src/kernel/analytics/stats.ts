@@ -5,7 +5,7 @@
  * Ported from PoC's `stats` command with additions for FSRS and symbiosis modes.
  */
 
-import type { Database } from "better-sqlite3";
+import type { Database } from "libsql";
 
 export interface UserStats {
   userId: string;

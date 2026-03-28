@@ -1,4 +1,4 @@
-import Database, { type Database as DatabaseType } from "better-sqlite3";
+import Database, { type Database as DatabaseType } from "libsql";
 import { existsSync, mkdirSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
@@ -12,11 +12,16 @@ export interface ConnectionOptions {
   dbPath?: string;
   /** If true, create the directory and run schema migrations on open */
   initialize?: boolean;
+  /** Turso sync URL for cloud replication (e.g. libsql://db-name.turso.io) */
+  syncUrl?: string;
+  /** Turso auth token for cloud replication */
+  authToken?: string;
 }
 
 /**
  * Open (or create) the ZAM database.
  * Uses WAL mode for concurrent access from AI CLI and user CLI.
+ * When syncUrl is provided, enables embedded replica sync with Turso.
  */
 export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
   const dbPath = options.dbPath ?? DEFAULT_DB_PATH;
@@ -28,7 +33,16 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
     }
   }
 
-  const db = new Database(dbPath);
+  // Build constructor options for libsql
+  const dbOpts: Record<string, unknown> = {};
+  if (options.syncUrl) {
+    dbOpts.syncUrl = options.syncUrl;
+  }
+  if (options.authToken) {
+    dbOpts.authToken = options.authToken;
+  }
+
+  const db = new Database(dbPath, dbOpts as Database.Options);
 
   // Enable WAL mode and foreign keys
   db.pragma("journal_mode = WAL");
@@ -41,7 +55,30 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
 
   runMigrations(db);
 
+  // Sync after migrations if cloud is configured
+  if (options.syncUrl) {
+    (db as unknown as { sync: () => void }).sync();
+  }
+
   return db;
+}
+
+/**
+ * Open the database with Turso cloud sync auto-detected from stored settings.
+ * Reads turso.url and turso.token from user_config. If present, reopens
+ * the database with embedded replica sync enabled.
+ */
+export function openDatabaseWithSync(options: Omit<ConnectionOptions, "syncUrl" | "authToken"> = {}): DatabaseType {
+  // First open locally to read settings
+  const db = openDatabase(options);
+  const syncUrl = db.prepare("SELECT value FROM user_config WHERE key = ?").get("turso.url") as { value: string } | undefined;
+  const authToken = db.prepare("SELECT value FROM user_config WHERE key = ?").get("turso.token") as { value: string } | undefined;
+
+  if (!syncUrl || !authToken) return db;
+
+  // Reopen with sync enabled
+  db.close();
+  return openDatabase({ ...options, syncUrl: syncUrl.value, authToken: authToken.value });
 }
 
 /** Get the default database path */

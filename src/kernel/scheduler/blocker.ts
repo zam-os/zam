@@ -8,7 +8,7 @@
  * the active deck. When all prerequisites are met, we unblock.
  */
 
-import type { Database } from "better-sqlite3";
+import type { Database } from "libsql";
 import { ensureCard } from "../models/card.js";
 import { getTokenBySlug } from "../models/token.js";
 import { getPrerequisites } from "../models/prerequisite.js";

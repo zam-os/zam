@@ -2,7 +2,7 @@
  * Azure DevOps connector — fetches work items from ADO boards.
  */
 
-import type { Database } from "better-sqlite3";
+import type { Database } from "libsql";
 import { getSetting } from "../models/settings.js";
 
 export interface ADOConfig {

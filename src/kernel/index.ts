@@ -6,7 +6,7 @@
  */
 
 // Database
-export { openDatabase, getDefaultDbPath } from "./db/connection.js";
+export { openDatabase, openDatabaseWithSync, getDefaultDbPath } from "./db/connection.js";
 
 // Models
 export {

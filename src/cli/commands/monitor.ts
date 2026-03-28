@@ -16,7 +16,7 @@ import { basename, join } from "node:path";
 import { execSync } from "node:child_process";
 import { writeFileSync, unlinkSync } from "node:fs";
 import { tmpdir } from "node:os";
-import type { Database } from "better-sqlite3";
+import type { Database } from "libsql";
 import {
   openDatabase,
   ensureMonitorDir,

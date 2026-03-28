@@ -3,10 +3,12 @@
  */
 
 import { Command } from "commander";
-import type { Database } from "better-sqlite3";
+import type { Database } from "libsql";
 import { input, password } from "@inquirer/prompts";
 import {
   openDatabase,
+  openDatabaseWithSync,
+  getSetting,
   setSetting,
   deleteSetting,
 } from "../../kernel/index.js";
@@ -36,10 +38,13 @@ export const connectorCommand = new Command("connector")
 connectorCommand
   .command("setup")
   .description("Configure a connector")
-  .argument("<type>", "Connector type (ado)")
+  .argument("<type>", "Connector type (ado, turso)")
   .action(async (type) => {
+    if (type === "turso") {
+      return setupTurso();
+    }
     if (type !== "ado") {
-      console.error(`Unknown connector type: ${type}. Supported: ado`);
+      console.error(`Unknown connector type: ${type}. Supported: ado, turso`);
       process.exit(1);
     }
 
@@ -130,10 +135,19 @@ connectorCommand
 connectorCommand
   .command("clear")
   .description("Remove a connector configuration")
-  .argument("<type>", "Connector type (ado)")
+  .argument("<type>", "Connector type (ado, turso)")
   .action((type) => {
+    if (type === "turso") {
+      withDb((db) => {
+        deleteSetting(db, "turso.url");
+        deleteSetting(db, "turso.token");
+        console.log("Turso cloud sync removed. Database remains local-only.");
+      });
+      return;
+    }
+
     if (type !== "ado") {
-      console.error(`Unknown connector type: ${type}. Supported: ado`);
+      console.error(`Unknown connector type: ${type}. Supported: ado, turso`);
       process.exit(1);
     }
 
@@ -144,3 +158,66 @@ connectorCommand
       console.log("Azure DevOps connector removed.");
     });
   });
+
+// ── zam connector sync ──────────────────────────────────────────────────────
+
+connectorCommand
+  .command("sync")
+  .description("Trigger a manual sync with Turso cloud database")
+  .action(() => {
+    let db: Database | undefined;
+    try {
+      db = openDatabaseWithSync();
+      const url = getSetting(db, "turso.url");
+      if (!url) {
+        console.error("No Turso cloud database configured. Run: zam connector setup turso");
+        process.exit(1);
+      }
+      (db as unknown as { sync: () => void }).sync();
+      console.log(`Synced with ${url}`);
+      db.close();
+    } catch (err) {
+      db?.close();
+      console.error("Error:", (err as Error).message);
+      process.exit(1);
+    }
+  });
+
+// ── Turso setup helper ──────────────────────────────────────────────────────
+
+async function setupTurso(): Promise<void> {
+  let db: Database | undefined;
+  try {
+    const url = await input({
+      message: "Turso database URL (e.g. libsql://my-db-user.turso.io):",
+    });
+    const token = await password({
+      message: "Auth token:",
+    });
+
+    if (!url || !token) {
+      console.error("Both URL and token are required.");
+      process.exit(1);
+    }
+
+    db = openDatabase();
+    setSetting(db, "turso.url", url);
+    setSetting(db, "turso.token", token);
+    db.close();
+
+    // Verify by opening with sync
+    db = openDatabaseWithSync();
+    (db as unknown as { sync: () => void }).sync();
+    db.close();
+
+    console.log(`Turso cloud sync configured and verified: ${url}`);
+  } catch (err) {
+    db?.close();
+    if ((err as Error).name === "ExitPromptError") {
+      console.log("\nSetup cancelled.");
+      process.exit(0);
+    }
+    console.error("Error:", (err as Error).message);
+    process.exit(1);
+  }
+}
