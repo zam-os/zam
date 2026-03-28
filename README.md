@@ -50,7 +50,6 @@ Agents communicate with each other to match community needs and offerings:
 ZAM is designed as an **AI-agnostic kernel** — a CLI tool that integrates seamlessly into existing workflows:
 
 - **CLI Integration** — Compatible with `Claude Code`, `Copilot CLI`, and `Gemini CLI`.
-- **Local-First** — Your learning progress and personal data belong to you. Everything lives locally inside your Learning Kernel.
 - **Modularity** — The system can be forked for region- or culture-specific adaptations (*Social Forking*).
 
 ---

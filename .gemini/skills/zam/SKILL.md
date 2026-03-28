@@ -45,6 +45,12 @@ zam skill list
 zam skill show --slug <slug>
 zam skill add --slug <slug> --description "<text>" --steps '<json>' [--tokens <slugs>]
 
+# User settings
+zam settings show                                      # display all settings
+zam settings get --key <key>                           # get a single setting
+zam settings set --key <key> --value <value>           # set a setting
+zam settings delete --key <key>                        # delete a setting
+
 # Shell monitoring (observation mode)
 zam monitor open --session <id> [--dir <path>]        # open a monitored terminal window
 zam monitor start --session <id> [--shell zsh|bash]   # output hook code (wrap with eval)
@@ -109,10 +115,16 @@ The interface is pluggable — future observers replace Level 1 shell calls with
 
 ### STEP 1 — Start session & check status
 ```bash
-zam card unblock --user <username>
+zam card unblock --user <username> --quiet
 zam stats --user <username>
 ```
 Show stats as a brief friendly greeting. Mention how many tokens are due, how many are blocked.
+
+For **review/conceptual** sessions, use `--summary` to avoid spoiling answers:
+```bash
+zam card due --user <username> --summary
+```
+For **executable/task** sessions, the full listing is fine since the agent needs to plan.
 
 Classify session type:
 - **Executable** — real commands, code, or file edits (e.g. "set up Homebrew", "commit this change")
@@ -137,6 +149,15 @@ zam token prereq --token <child> --requires <parent>
 ```
 
 ### STEP 3 — Start a session
+
+**For review/conceptual sessions**, load review data into a temp file so it stays out of the conversation, then start the session quietly:
+```bash
+zam bridge check-due --user <username> > /tmp/zam-review.json
+zam session start --user <username> --task "<description>" --context shell --quiet
+```
+Read `/tmp/zam-review.json` with the Read tool (not cat) to load card data silently. This gives you all cardIds, slugs, concepts, domains, and bloom levels for the session. **Do not call `bridge get-review` per card** — iterate through the cards from this data.
+
+**For executable/task sessions**, the normal start is fine:
 ```bash
 zam session start --user <username> --task "<description>" --context shell
 ```
@@ -152,9 +173,18 @@ Step back. Do not interrupt unless the user asks for help.
 
 **Two ways to observe:**
 
-**Approach A — Inline (inside Claude Code):** User runs commands with the `!` prefix (e.g. `! docker build .`). The agent sees command + output in the conversation. Simple, but no timing data.
+Check the user's preference first:
+```bash
+zam settings get --key monitor_method
+```
+If set to `terminal`, default to Approach B. If set to `inline` or not set, ask the user which they prefer on first use and save it:
+```bash
+zam settings set --key monitor_method --value terminal --quiet
+```
 
-**Approach B — Shell monitor (separate terminal):** For real tasks where speed and confidence matter. The agent opens a monitored terminal automatically:
+**Approach A — Inline (inside Gemini CLI):** User runs commands with the `!` prefix (e.g. `! docker build .`). The agent sees command + output in the conversation. Simple, but no timing data.
+
+**Approach B — Shell monitor (separate terminal):** The preferred approach for real tasks. The agent opens a monitored terminal automatically:
 
 ```bash
 zam monitor open --session <session-id> --dir /path/to/project
@@ -183,10 +213,7 @@ The analyzer infers ratings from:
 
 Review the suggested ratings before submitting. Override if the heuristic seems wrong.
 
-When done, tell the user:
-> ```bash
-> eval "$(zam monitor stop --session <session-id>)"
-> ```
+When done, the user can simply close the monitored terminal window — hooks only live in that shell process. No cleanup command needed.
 
 **Rating scale (both approaches):**
 - Completed correctly, no hesitation, no help → **4**
@@ -195,9 +222,11 @@ When done, tell the user:
 - Asked for help or couldn't proceed → **1** (then explain the concept and continue)
 
 ```bash
-zam card update --user <username> --token <slug> --rating <n>
-zam session log --session <id> --token <slug> --done-by user --rating <n>
+zam card update --user <username> --token <slug> --rating <n> --quiet
+zam session log --session <id> --token <slug> --done-by user --rating <n> --quiet
 ```
+
+Use `--quiet` to suppress FSRS internals — the learner does not need to see stability, reps, or next-due dates during a session.
 
 For tokens the user never touched (agent did them silently): log `--done-by agent`, no rating.
 
@@ -213,8 +242,12 @@ For each due token, ask a conceptual question at the right Bloom level:
 | 4 Analyze | "Why X over Y?" | "Why is == more efficient than contains?" |
 | 5 Synthesize | "Design a..." | "Build the full query from scratch" |
 
-After each answer, ask:
+**CRITICAL: Stop and WAIT for the user to provide their answer. Do not ask for the rating until the user has attempted to answer the conceptual question.**
+
+After the user answers, ask:
 > "How did that feel? 1 = drew a blank, 2 = hard recall, 3 = knew it, 4 = instant"
+
+**WAIT for the user to provide a rating (1-4).**
 
 Submit the rating and log the step.
 
@@ -254,7 +287,7 @@ If the agent cannot execute a step:
 
 ## Blocking Rule
 
-A token is blocked when:
+ A token is blocked when:
 - The user rated it 1 (forgot), AND
 - Its prerequisites have not yet been recalled at least once
 
@@ -298,4 +331,5 @@ Use `zam stats` domain competence to determine the right mode for each domain.
 - Agent execution (`done-by agent`) does NOT advance FSRS state — only user-rated recalls do
 - Observation ratings (from watching the user work) DO count — they are user actions
 - Prefer observation over verbal probing; interrupting flow has a cost
+- Never show card slugs or concept text to the user before asking a review question — they spoil the answer. Use `--summary` for due listings during review sessions.
 - Do not deprecate tokens without the user's confirmation
