@@ -3,6 +3,7 @@ import { existsSync, mkdirSync, rmSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { SCHEMA } from "./schema.js";
+import { getTursoCredentials } from "../credentials.js";
 
 const DEFAULT_DB_DIR = join(homedir(), ".zam");
 const DEFAULT_DB_PATH = join(DEFAULT_DB_DIR, "zam.db");
@@ -37,33 +38,40 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
   const dbOpts: Record<string, unknown> = {};
   if (options.syncUrl) {
     dbOpts.syncUrl = options.syncUrl;
+
+    // When syncUrl is provided, the db must be a libsql embedded replica (not
+    // plain SQLite). The presence of a companion .meta file proves it was
+    // created by libsql. If the db exists WITHOUT .meta, it was created before
+    // Turso was configured — delete it so libsql can sync fresh from cloud.
+    // This is safe because the credentials now live in credentials.json (not in
+    // the db), so no double-open or file-lock issues.
+    const metaPath = `${dbPath}.meta`;
+    if (existsSync(dbPath) && !existsSync(metaPath)) {
+      for (const suffix of ["", "-wal", "-shm"]) {
+        const f = `${dbPath}${suffix}`;
+        if (existsSync(f)) rmSync(f, { force: true });
+      }
+    }
   }
   if (options.authToken) {
     dbOpts.authToken = options.authToken;
   }
 
-  let db: DatabaseType;
-  try {
-    db = new Database(dbPath, dbOpts as Database.Options);
-  } catch (err) {
-    // libsql throws "InvalidLocalState" when the db file exists as plain SQLite
-    // but has no sync metadata (.meta file). This happens when Turso is configured
-    // after the db was created locally. Delete the stale file and retry.
-    if (options.syncUrl && (err as Error).message?.includes("InvalidLocalState")) {
-      for (const suffix of ["", "-wal", "-shm"]) {
-        const f = `${dbPath}${suffix}`;
-        if (existsSync(f)) rmSync(f, { force: true });
-      }
-      db = new Database(dbPath, dbOpts as Database.Options);
-    } else {
-      throw err;
-    }
-  }
+  const db = new Database(dbPath, dbOpts as Database.Options);
 
-  // Enable WAL mode and foreign keys
-  db.pragma("journal_mode = WAL");
+  // Enable WAL mode and foreign keys.
+  // libsql embedded replicas manage their own WAL — skip journal_mode when syncing.
+  if (!options.syncUrl) {
+    db.pragma("journal_mode = WAL");
+  }
   db.pragma("foreign_keys = ON");
   db.pragma("busy_timeout = 5000");
+
+  // For embedded replicas: sync from cloud FIRST so the local file has the
+  // primary's schema before we try to run migrations or create tables.
+  if (options.syncUrl) {
+    (db as unknown as { sync: () => void }).sync();
+  }
 
   if (options.initialize) {
     db.exec(SCHEMA);
@@ -71,35 +79,21 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
 
   runMigrations(db);
 
-  // Sync after migrations if cloud is configured
-  if (options.syncUrl) {
-    (db as unknown as { sync: () => void }).sync();
-  }
-
   return db;
 }
 
 /**
- * Open the database with Turso cloud sync auto-detected from stored settings.
- * Reads turso.url and turso.token from user_config. If present, reopens
- * the database with embedded replica sync enabled.
+ * Open the database with Turso cloud sync auto-detected from credentials file.
+ * Reads turso.url and turso.token from ~/.zam/credentials.json (NOT from the db).
+ * This avoids opening the db twice and eliminates the Windows file-lock issue
+ * when migrating from plain SQLite to a libsql embedded replica.
  */
 export function openDatabaseWithSync(options: Omit<ConnectionOptions, "syncUrl" | "authToken"> = {}): DatabaseType {
-  // First open locally to read settings
-  const db = openDatabase(options);
-  const syncUrl = db.prepare("SELECT value FROM user_config WHERE key = ?").get("turso.url") as { value: string } | undefined;
-  const authToken = db.prepare("SELECT value FROM user_config WHERE key = ?").get("turso.token") as { value: string } | undefined;
-
-  if (!syncUrl || !authToken) return db;
-
-  // Checkpoint WAL and switch to DELETE journal mode before closing.
-  // On Windows, WAL mode holds auxiliary file locks (.wal, .shm) that prevent
-  // deletion even after close(). Switching to DELETE mode releases them cleanly.
-  db.pragma("wal_checkpoint(TRUNCATE)");
-  db.pragma("journal_mode = DELETE");
-  db.close();
-
-  return openDatabase({ ...options, syncUrl: syncUrl.value, authToken: authToken.value });
+  const turso = getTursoCredentials();
+  if (turso) {
+    return openDatabase({ ...options, syncUrl: turso.url, authToken: turso.token });
+  }
+  return openDatabase(options);
 }
 
 /** Get the default database path */

@@ -2,8 +2,7 @@
  * Azure DevOps connector — fetches work items from ADO boards.
  */
 
-import type { Database } from "libsql";
-import { getSetting } from "../models/settings.js";
+import { getADOCredentials } from "../credentials.js";
 
 export interface ADOConfig {
   orgUrl: string;
@@ -19,15 +18,11 @@ export interface WorkItem {
   assignedTo: string;
 }
 
-/** Load ADO config from user settings. Returns null if not configured. */
-export function loadADOConfig(db: Database): ADOConfig | null {
-  const orgUrl = getSetting(db, "ado.org_url");
-  const project = getSetting(db, "ado.project");
-  const pat = getSetting(db, "ado.pat");
-
-  if (!orgUrl || !project || !pat) return null;
-
-  return { orgUrl: orgUrl.replace(/\/+$/, ""), project, pat };
+/** Load ADO config from credentials file. Returns null if not configured. */
+export function loadADOConfig(): ADOConfig | null {
+  const creds = getADOCredentials();
+  if (!creds) return null;
+  return { orgUrl: creds.org_url.replace(/\/+$/, ""), project: creds.project, pat: creds.pat };
 }
 
 function authHeader(pat: string): string {

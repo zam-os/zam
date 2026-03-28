@@ -157,6 +157,19 @@ export {
 } from "./goals/parser.js";
 export type { Goal, GoalStatus, GoalFrontmatter } from "./goals/parser.js";
 
+// Credentials (stored in ~/.zam/credentials.json, survives db deletion)
+export {
+  loadCredentials,
+  saveCredentials,
+  getTursoCredentials,
+  setTursoCredentials,
+  clearTursoCredentials,
+  getADOCredentials,
+  setADOCredentials,
+  clearADOCredentials,
+} from "./credentials.js";
+export type { Credentials, TursoCredentials, ADOCredentials } from "./credentials.js";
+
 // Connectors
 export { loadADOConfig, fetchActiveWorkItems } from "./connectors/azure-devops.js";
 export type { ADOConfig, WorkItem } from "./connectors/azure-devops.js";

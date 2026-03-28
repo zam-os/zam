@@ -6,29 +6,19 @@ import { Command } from "commander";
 import type { Database } from "libsql";
 import { input, password } from "@inquirer/prompts";
 import {
-  openDatabase,
   openDatabaseWithSync,
-  getSetting,
-  setSetting,
-  deleteSetting,
 } from "../../kernel/index.js";
 import {
-  loadADOConfig,
   fetchActiveWorkItems,
 } from "../../kernel/connectors/azure-devops.js";
-
-function withDb(fn: (db: Database) => void): void {
-  let db: Database | undefined;
-  try {
-    db = openDatabase();
-    fn(db);
-  } catch (err) {
-    console.error("Error:", (err as Error).message);
-    process.exit(1);
-  } finally {
-    db?.close();
-  }
-}
+import {
+  getTursoCredentials,
+  setTursoCredentials,
+  clearTursoCredentials,
+  getADOCredentials,
+  setADOCredentials,
+  clearADOCredentials,
+} from "../../kernel/credentials.js";
 
 export const connectorCommand = new Command("connector")
   .description("Manage external service connectors");
@@ -39,16 +29,17 @@ connectorCommand
   .command("setup")
   .description("Configure a connector")
   .argument("<type>", "Connector type (ado, turso)")
-  .action(async (type) => {
+  .option("--url <url>", "Turso database URL (non-interactive)")
+  .option("--token <token>", "Turso auth token (non-interactive)")
+  .action(async (type, opts) => {
     if (type === "turso") {
-      return setupTurso();
+      return setupTurso(opts.url, opts.token);
     }
     if (type !== "ado") {
       console.error(`Unknown connector type: ${type}. Supported: ado, turso`);
       process.exit(1);
     }
 
-    let db: Database | undefined;
     try {
       const orgUrl = await input({
         message: "Organization URL (e.g. https://dev.azure.com/myorg):",
@@ -65,15 +56,9 @@ connectorCommand
         process.exit(1);
       }
 
-      db = openDatabase();
-      setSetting(db, "ado.org_url", orgUrl.replace(/\/+$/, ""));
-      setSetting(db, "ado.project", project);
-      setSetting(db, "ado.pat", pat);
-      db.close();
-
+      setADOCredentials(orgUrl.replace(/\/+$/, ""), project, pat);
       console.log(`Azure DevOps connector configured for ${orgUrl}/${project}`);
     } catch (err) {
-      db?.close();
       if ((err as Error).name === "ExitPromptError") {
         console.log("\nSetup cancelled.");
         process.exit(0);
@@ -90,18 +75,19 @@ connectorCommand
   .description("List active tasks from connected board")
   .option("--json", "Output as JSON")
   .action(async (opts) => {
-    let db: Database | undefined;
     try {
-      db = openDatabase();
-      const config = loadADOConfig(db);
-      db.close();
+      const config = getADOCredentials();
 
       if (!config) {
         console.error("No connector configured. Run: zam connector setup ado");
         process.exit(1);
       }
 
-      const items = await fetchActiveWorkItems(config);
+      const items = await fetchActiveWorkItems({
+        orgUrl: config.org_url,
+        project: config.project,
+        pat: config.pat,
+      });
 
       if (opts.json) {
         console.log(JSON.stringify(items, null, 2));
@@ -124,7 +110,6 @@ connectorCommand
         );
       }
     } catch (err) {
-      db?.close();
       console.error("Error:", (err as Error).message);
       process.exit(1);
     }
@@ -138,11 +123,8 @@ connectorCommand
   .argument("<type>", "Connector type (ado, turso)")
   .action((type) => {
     if (type === "turso") {
-      withDb((db) => {
-        deleteSetting(db, "turso.url");
-        deleteSetting(db, "turso.token");
-        console.log("Turso cloud sync removed. Database remains local-only.");
-      });
+      clearTursoCredentials();
+      console.log("Turso cloud sync removed. Database remains local-only.");
       return;
     }
 
@@ -151,12 +133,8 @@ connectorCommand
       process.exit(1);
     }
 
-    withDb((db) => {
-      deleteSetting(db, "ado.org_url");
-      deleteSetting(db, "ado.project");
-      deleteSetting(db, "ado.pat");
-      console.log("Azure DevOps connector removed.");
-    });
+    clearADOCredentials();
+    console.log("Azure DevOps connector removed.");
   });
 
 // ── zam connector sync ──────────────────────────────────────────────────────
@@ -165,16 +143,17 @@ connectorCommand
   .command("sync")
   .description("Trigger a manual sync with Turso cloud database")
   .action(() => {
+    const turso = getTursoCredentials();
+    if (!turso) {
+      console.error("No Turso cloud database configured. Run: zam connector setup turso");
+      process.exit(1);
+    }
+
     let db: Database | undefined;
     try {
-      db = openDatabaseWithSync();
-      const url = getSetting(db, "turso.url");
-      if (!url) {
-        console.error("No Turso cloud database configured. Run: zam connector setup turso");
-        process.exit(1);
-      }
+      db = openDatabaseWithSync({ initialize: true });
       (db as unknown as { sync: () => void }).sync();
-      console.log(`Synced with ${url}`);
+      console.log(`Synced with ${turso.url}`);
       db.close();
     } catch (err) {
       db?.close();
@@ -185,13 +164,13 @@ connectorCommand
 
 // ── Turso setup helper ──────────────────────────────────────────────────────
 
-async function setupTurso(): Promise<void> {
+async function setupTurso(urlArg?: string, tokenArg?: string): Promise<void> {
   let db: Database | undefined;
   try {
-    const url = await input({
+    const url = urlArg ?? await input({
       message: "Turso database URL (e.g. libsql://my-db-user.turso.io):",
     });
-    const token = await password({
+    const token = tokenArg ?? await password({
       message: "Auth token:",
     });
 
@@ -200,13 +179,11 @@ async function setupTurso(): Promise<void> {
       process.exit(1);
     }
 
-    db = openDatabase();
-    setSetting(db, "turso.url", url);
-    setSetting(db, "turso.token", token);
-    db.close();
+    // Store credentials outside the db so they survive db deletion
+    setTursoCredentials(url, token);
 
     // Verify by opening with sync
-    db = openDatabaseWithSync();
+    db = openDatabaseWithSync({ initialize: true });
     (db as unknown as { sync: () => void }).sync();
     db.close();
 

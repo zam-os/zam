@@ -10,9 +10,8 @@
  */
 
 export const SCHEMA = `
--- Use WAL mode for concurrent reads (AI CLI + user CLI)
-PRAGMA journal_mode = WAL;
-PRAGMA foreign_keys = ON;
+-- PRAGMAs (WAL, foreign_keys) are set programmatically in connection.ts,
+-- not here, because libsql embedded replicas manage their own WAL.
 
 -- Knowledge tokens: atomic concepts/facts with Bloom levels
 CREATE TABLE IF NOT EXISTS tokens (
