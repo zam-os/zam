@@ -4,6 +4,7 @@
 
 import { Command } from "commander";
 import type { Database } from "better-sqlite3";
+import { select, input } from "@inquirer/prompts";
 import {
   openDatabase,
   startSession,
@@ -11,6 +12,8 @@ import {
   endSession,
   getSessionSummary,
   getTokenBySlug,
+  loadADOConfig,
+  fetchActiveWorkItems,
 } from "../../kernel/index.js";
 import type { ExecutionContext } from "../../kernel/index.js";
 import { resolveUser } from "./resolve-user.js";
@@ -37,12 +40,15 @@ sessionCommand
   .command("start")
   .description("Start a new learning session")
   .option("--user <id>", "User ID (default: whoami)")
-  .requiredOption("--task <description>", "Task description")
+  .option("--task <description>", "Task description (interactive if omitted)")
   .option("--context <level>", "Execution context: shell | ui | reallife (default: shell)", "shell")
   .option("--json", "Output as JSON")
   .option("--quiet", "Output only the session ID")
-  .action((opts) => {
-    withDb((db) => {
+  .action(async (opts) => {
+    let db: Database | undefined;
+    try {
+      db = openDatabase();
+
       const validContexts = ["shell", "ui", "reallife"];
       if (!validContexts.includes(opts.context)) {
         console.error(`Invalid context: ${opts.context}. Must be one of: ${validContexts.join(", ")}`);
@@ -50,11 +56,51 @@ sessionCommand
       }
 
       const userId = resolveUser(opts, db);
+      let task: string = opts.task;
+
+      // Interactive task selection when --task is not provided
+      if (!task) {
+        const adoConfig = loadADOConfig(db);
+
+        if (adoConfig) {
+          const items = await fetchActiveWorkItems(adoConfig);
+
+          if (items.length > 0) {
+            const choices = items.map((wi) => ({
+              name: `[${wi.type}] ${wi.title} (${wi.state})`,
+              value: `[ADO-${wi.id}] ${wi.title}`,
+            }));
+            choices.push({ name: "Enter a custom task...", value: "__custom__" });
+
+            const picked = await select({
+              message: `${items.length} active work item(s) — pick one:`,
+              choices,
+            });
+
+            task = picked === "__custom__"
+              ? await input({ message: "Task description:" })
+              : picked;
+          } else {
+            console.log("No active work items found in Azure DevOps.");
+            task = await input({ message: "Task description:" });
+          }
+        } else {
+          task = await input({ message: "Task description:" });
+        }
+
+        if (!task) {
+          console.error("Task description is required.");
+          process.exit(1);
+        }
+      }
+
       const session = startSession(db, {
         user_id: userId,
-        task: opts.task,
+        task,
         execution_context: opts.context as ExecutionContext,
       });
+
+      db.close();
 
       if (opts.quiet) {
         console.log(session.id);
@@ -67,7 +113,15 @@ sessionCommand
         console.log(`  Context: ${session.execution_context}`);
         console.log(`  Started: ${session.started_at}`);
       }
-    });
+    } catch (err) {
+      db?.close();
+      if ((err as Error).name === "ExitPromptError") {
+        console.log("\nSession start cancelled.");
+        process.exit(0);
+      }
+      console.error("Error:", (err as Error).message);
+      process.exit(1);
+    }
   });
 
 // ── zam session log ───────────────────────────────────────────────────────

@@ -131,3 +131,7 @@ export {
   generateZshUnhooks,
   generateBashUnhooks,
 } from "./observation/shell-hooks.js";
+
+// Connectors
+export { loadADOConfig, fetchActiveWorkItems } from "./connectors/azure-devops.js";
+export type { ADOConfig, WorkItem } from "./connectors/azure-devops.js";
