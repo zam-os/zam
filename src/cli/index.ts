@@ -11,6 +11,7 @@ import { monitorCommand } from "./commands/monitor.js";
 import { settingsCommand } from "./commands/settings.js";
 import { whoamiCommand } from "./commands/whoami.js";
 import { connectorCommand } from "./commands/connector.js";
+import { goalCommand } from "./commands/goal.js";
 
 const program = new Command();
 
@@ -33,5 +34,6 @@ program.addCommand(monitorCommand);
 program.addCommand(settingsCommand);
 program.addCommand(whoamiCommand);
 program.addCommand(connectorCommand);
+program.addCommand(goalCommand);
 
 program.parse();

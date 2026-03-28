@@ -132,6 +132,31 @@ export {
   generateBashUnhooks,
 } from "./observation/shell-hooks.js";
 
+export { discoverSkills } from "./observation/skill-discovery.js";
+export type {
+  CommandSequence,
+  SkillProposal,
+  DiscoveryOptions,
+} from "./observation/skill-discovery.js";
+
+// Goals
+export {
+  listGoals,
+  getGoal,
+  createGoal,
+  updateGoalStatus,
+  getGoalTree,
+} from "./goals/engine.js";
+export type { GoalSummary, CreateGoalInput } from "./goals/engine.js";
+
+export {
+  parseGoalFile,
+  serializeGoal,
+  extractTasks,
+  extractTokenRefs,
+} from "./goals/parser.js";
+export type { Goal, GoalStatus, GoalFrontmatter } from "./goals/parser.js";
+
 // Connectors
 export { loadADOConfig, fetchActiveWorkItems } from "./connectors/azure-devops.js";
 export type { ADOConfig, WorkItem } from "./connectors/azure-devops.js";

@@ -19,12 +19,17 @@ import {
   cascadeBlock,
   getPrerequisites,
   getAgentSkill,
+  listAgentSkills,
   readMonitorLog,
   pairCommands,
   analyzeObservation,
   monitorLogExists,
+  discoverSkills,
 } from "../../kernel/index.js";
 import type { Rating, BloomLevel, TokenPattern } from "../../kernel/index.js";
+import { readdirSync } from "node:fs";
+import { homedir } from "node:os";
+import { join } from "node:path";
 import { resolveUser } from "./resolve-user.js";
 
 function jsonOut(data: unknown): void {
@@ -369,5 +374,77 @@ bridgeCommand
       if ((err as Error).message) {
         jsonError((err as Error).message);
       }
+    }
+  });
+
+// ── zam bridge discover-skills ──────────────────────────────────────────────
+
+bridgeCommand
+  .command("discover-skills")
+  .description("Analyze monitor logs across sessions to discover recurring patterns")
+  .option("--min-sessions <n>", "Minimum sessions a pattern must appear in (default: 2)", "2")
+  .option("--limit <n>", "Max number of sessions to analyze (default: 20)", "20")
+  .action((opts) => {
+    try {
+      const monitorDir = join(homedir(), ".zam", "monitor");
+      let files: string[];
+      try {
+        files = readdirSync(monitorDir).filter((f) => f.endsWith(".jsonl"));
+      } catch {
+        jsonOut({ proposals: [], message: "No monitor logs found." });
+        return;
+      }
+
+      if (files.length === 0) {
+        jsonOut({ proposals: [], message: "No monitor logs found." });
+        return;
+      }
+
+      // Take the most recent N sessions by file modification time
+      const limit = Number(opts.limit);
+      const sorted = files
+        .map((f) => ({ name: f, path: join(monitorDir, f) }))
+        .sort((a, b) => b.name.localeCompare(a.name)) // ULID session IDs sort chronologically
+        .slice(0, limit);
+
+      // Load and parse each session's commands
+      const sessionCommands = new Map<string, ReturnType<typeof pairCommands>>();
+      for (const file of sorted) {
+        const sessionId = file.name.replace(".jsonl", "");
+        const events = readMonitorLog(sessionId);
+        const commands = pairCommands(events);
+        if (commands.length > 0) {
+          sessionCommands.set(sessionId, commands);
+        }
+      }
+
+      if (sessionCommands.size === 0) {
+        jsonOut({ proposals: [], message: "No command data in monitor logs." });
+        return;
+      }
+
+      // Get existing skills to exclude
+      let existingSkillSlugs: string[] = [];
+      let db;
+      try {
+        db = openDatabase();
+        existingSkillSlugs = listAgentSkills(db).map((s) => s.slug);
+      } catch {
+        // DB not available — proceed without exclusion
+      } finally {
+        db?.close();
+      }
+
+      const proposals = discoverSkills(sessionCommands, {
+        minSessions: Number(opts.minSessions),
+        existingSkillSlugs,
+      });
+
+      jsonOut({
+        sessionsAnalyzed: sessionCommands.size,
+        proposals,
+      });
+    } catch (err) {
+      jsonError((err as Error).message);
     }
   });
