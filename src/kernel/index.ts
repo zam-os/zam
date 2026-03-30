@@ -13,15 +13,21 @@ export {
   createToken,
   getTokenBySlug,
   getTokenById,
+  updateToken,
   findTokens,
   listTokens,
   deprecateToken,
+  getTokenDeleteImpact,
+  deleteToken,
 } from "./models/token.js";
 export type {
   Token,
   CreateTokenInput,
+  UpdateTokenInput,
   BloomLevel,
   SymbiosisMode,
+  TokenDeleteImpact,
+  DeleteTokenResult,
 } from "./models/token.js";
 
 export {
@@ -34,11 +40,20 @@ export type { Prerequisite, PrerequisiteWithToken } from "./models/prerequisite.
 export {
   ensureCard,
   getCard,
+  getCardById,
   updateCard,
+  getCardDeletionImpact,
+  deleteCardForUser,
   getDueCards,
   getBlockedCards,
 } from "./models/card.js";
-export type { Card, CardState, UpdateCardInput } from "./models/card.js";
+export type {
+  Card,
+  CardState,
+  UpdateCardInput,
+  CardDeletionImpact,
+  DeleteCardResult,
+} from "./models/card.js";
 
 export { logReview, getReviewsForCard, getReviewsForUser } from "./models/review.js";
 export type { ReviewLog, CreateReviewInput } from "./models/review.js";
@@ -96,6 +111,9 @@ export type { RecallPrompt, PromptInput } from "./recall/prompter.js";
 
 export { evaluateRating } from "./recall/evaluator.js";
 export type { EvaluateInput, EvaluateResult } from "./recall/evaluator.js";
+
+export { executeReviewAction } from "./recall/actions.js";
+export type { ExecuteReviewActionInput, ReviewActionResult, ReviewActionType } from "./recall/actions.js";
 
 // Analytics
 export { getUserStats, getDomainCompetence } from "./analytics/stats.js";

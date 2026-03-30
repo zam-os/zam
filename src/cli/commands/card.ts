@@ -13,6 +13,8 @@ import {
   cascadeBlock,
   unblockReady,
   getPrerequisites,
+  getCardDeletionImpact,
+  deleteCardForUser,
 } from "../../kernel/index.js";
 import type { Rating } from "../../kernel/index.js";
 import { resolveUser } from "./resolve-user.js";
@@ -186,5 +188,43 @@ cardCommand
           console.log(`  - ${u.slug}: ${u.concept}`);
         }
       }
+    });
+  });
+
+// ── zam card delete ───────────────────────────────────────────────────────
+
+cardCommand
+  .command("delete")
+  .description("Delete one user's card for a token")
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--token <slug>", "Token slug")
+  .option("--json", "Output as JSON")
+  .action((opts) => {
+    withDb((db) => {
+      const userId = resolveUser(opts, db);
+      const token = getTokenBySlug(db, opts.token);
+      if (!token) {
+        console.error(`Token not found: ${opts.token}`);
+        process.exit(1);
+      }
+
+      const impact = getCardDeletionImpact(db, token.id, userId);
+      const result = deleteCardForUser(db, token.id, userId);
+
+      if (opts.json) {
+        console.log(JSON.stringify({
+          token: opts.token,
+          userId,
+          deleted: true,
+          cardId: result.card.id,
+          impact: result.impact,
+        }, null, 2));
+        return;
+      }
+
+      console.log(`Deleted card for ${opts.token}`);
+      console.log(`  User:               ${userId}`);
+      console.log(`  Card ID:            ${result.card.id}`);
+      console.log(`  Review logs removed: ${impact.review_logs}`);
     });
   });

@@ -4,17 +4,14 @@
 
 import { Command } from "commander";
 import type { Database } from "libsql";
-import { select, input } from "@inquirer/prompts";
 import {
   openDatabase,
   buildReviewQueue,
   generatePrompt,
-  evaluateRating,
-  cascadeBlock,
-  getPrerequisites,
 } from "../../kernel/index.js";
 import type { Rating, BloomLevel } from "../../kernel/index.js";
 import { resolveUser } from "./resolve-user.js";
+import { runInteractiveReviewAction } from "../review-actions.js";
 
 export const reviewCommand = new Command("review")
   .description("Start an interactive review session")
@@ -45,15 +42,15 @@ export const reviewCommand = new Command("review")
       console.log();
 
       let completed = 0;
+      let stoppedEarly = false;
+      let maintenanceActions = 0;
       const results: Array<{
         slug: string;
         rating: number;
         nextDue: string;
       }> = [];
 
-      for (const item of queue.items) {
-        completed++;
-
+      for (const [index, item] of queue.items.entries()) {
         const prompt = generatePrompt({
           cardId: item.cardId,
           tokenId: item.tokenId,
@@ -63,60 +60,50 @@ export const reviewCommand = new Command("review")
           bloomLevel: item.bloomLevel as BloomLevel,
         });
 
-        console.log(`\n[${ completed }/${queue.items.length}] ${prompt.bloomVerb} (Bloom ${prompt.bloomLevel})`);
+        console.log(`\n[${index + 1}/${queue.items.length}] ${prompt.bloomVerb} (Bloom ${prompt.bloomLevel})`);
         console.log(`Domain: ${prompt.domain || "(none)"}`);
         console.log(`\n  ${prompt.question}\n`);
 
-        const rating = await select({
-          message: "How did you do?",
-          choices: [
-            { name: "1 - Again (forgot)", value: 1 },
-            { name: "2 - Hard", value: 2 },
-            { name: "3 - Good", value: 3 },
-            { name: "4 - Easy", value: 4 },
-          ],
-        }) as Rating;
-
-        const evalResult = evaluateRating(db, {
-          cardId: item.cardId,
-          tokenId: item.tokenId,
+        const action = await runInteractiveReviewAction({
+          db,
           userId,
-          rating,
+          item,
+          mode: "review",
         });
 
-        // If rating 1 and token has prereqs, cascade block
-        if (rating === 1) {
-          const prereqs = getPrerequisites(db, item.tokenId);
-          if (prereqs.length > 0) {
-            const blockResult = cascadeBlock(db, userId, item.slug);
-            console.log(`  Blocked ${blockResult.blockedSlug}. Review these prerequisites:`);
-            for (const p of blockResult.prerequisites) {
-              console.log(`    - ${p.slug}: ${p.concept}`);
-            }
-          }
+        if (action.action === "stop") {
+          stoppedEarly = true;
+          console.log("\nStopping review.");
+          break;
         }
 
-        const ratingLabels: Record<number, string> = { 1: "Again", 2: "Hard", 3: "Good", 4: "Easy" };
-        console.log(`  ${ratingLabels[rating]} — next due: ${evalResult.nextDueAt}`);
-
-        results.push({
-          slug: item.slug,
-          rating,
-          nextDue: evalResult.nextDueAt,
-        });
+        if (action.action === "rate") {
+          results.push({
+            slug: item.slug,
+            rating: action.rating!,
+            nextDue: action.result.evaluation!.nextDueAt,
+          });
+        } else if (action.action !== "skip") {
+          maintenanceActions++;
+        }
       }
 
       // Session summary
       console.log("\n" + "═".repeat(50));
-      console.log("Review session complete!");
-      console.log(`  Cards reviewed: ${results.length}`);
+      console.log(stoppedEarly ? "Review session ended." : "Review session complete!");
+      console.log(`  Cards rated: ${results.length}`);
+      if (maintenanceActions > 0) {
+        console.log(`  Maintenance actions: ${maintenanceActions}`);
+      }
 
-      const avgRating = results.reduce((s, r) => s + r.rating, 0) / results.length;
-      console.log(`  Average rating: ${avgRating.toFixed(1)}`);
+      if (results.length > 0) {
+        const avgRating = results.reduce((s, r) => s + r.rating, 0) / results.length;
+        console.log(`  Average rating: ${avgRating.toFixed(1)}`);
 
-      const forgot = results.filter((r) => r.rating === 1).length;
-      if (forgot > 0) {
-        console.log(`  Forgot: ${forgot} card(s)`);
+        const forgot = results.filter((r) => r.rating === 1).length;
+        if (forgot > 0) {
+          console.log(`  Forgot: ${forgot} card(s)`);
+        }
       }
 
       db.close();

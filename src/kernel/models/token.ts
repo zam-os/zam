@@ -36,8 +36,31 @@ export interface CreateTokenInput {
   symbiosis_mode?: SymbiosisMode | null;
 }
 
+export interface UpdateTokenInput {
+  concept?: string;
+  domain?: string;
+  bloom_level?: BloomLevel;
+  context?: string;
+  symbiosis_mode?: SymbiosisMode | null;
+}
+
 export interface ListTokensOptions {
   domain?: string;
+}
+
+export interface TokenDeleteImpact {
+  cards: number;
+  review_logs: number;
+  prerequisite_edges_from_token: number;
+  prerequisite_edges_to_token: number;
+  session_steps: number;
+  sessions_touched: number;
+  agent_skills: number;
+}
+
+export interface DeleteTokenResult {
+  token: Token;
+  impact: TokenDeleteImpact;
 }
 
 // ── Scored result from fuzzy search ──────────────────────────────────────────
@@ -96,6 +119,65 @@ export function getTokenById(db: Database, id: string): Token | undefined {
 }
 
 /**
+ * Update mutable fields on a token.
+ *
+ * Slug is intentionally immutable in v1 because it is referenced by other
+ * parts of the system (for example agent skill metadata).
+ */
+export function updateToken(
+  db: Database,
+  slug: string,
+  updates: UpdateTokenInput,
+): Token {
+  const token = getTokenBySlug(db, slug);
+  if (!token) {
+    throw new Error(`Token not found: ${slug}`);
+  }
+
+  const fields: string[] = [];
+  const values: unknown[] = [];
+
+  if (updates.concept !== undefined) {
+    fields.push("concept = ?");
+    values.push(updates.concept);
+  }
+  if (updates.domain !== undefined) {
+    fields.push("domain = ?");
+    values.push(updates.domain);
+  }
+  if (updates.bloom_level !== undefined) {
+    if (updates.bloom_level < 1 || updates.bloom_level > 5) {
+      throw new Error(`bloom_level must be between 1 and 5, got ${updates.bloom_level}`);
+    }
+    fields.push("bloom_level = ?");
+    values.push(updates.bloom_level);
+  }
+  if (updates.context !== undefined) {
+    fields.push("context = ?");
+    values.push(updates.context);
+  }
+  if (updates.symbiosis_mode !== undefined) {
+    const validModes = ["shadowing", "copilot", "autonomy"];
+    if (updates.symbiosis_mode !== null && !validModes.includes(updates.symbiosis_mode)) {
+      throw new Error(`Invalid symbiosis_mode: ${updates.symbiosis_mode}`);
+    }
+    fields.push("symbiosis_mode = ?");
+    values.push(updates.symbiosis_mode);
+  }
+
+  if (fields.length === 0) {
+    throw new Error("updateToken called with no fields to update");
+  }
+
+  fields.push("updated_at = ?");
+  values.push(new Date().toISOString());
+  values.push(slug);
+
+  db.prepare(`UPDATE tokens SET ${fields.join(", ")} WHERE slug = ?`).run(...values);
+  return getTokenBySlug(db, slug)!;
+}
+
+/**
  * Mark a token as deprecated. Deprecated tokens are excluded from review queues
  * and search results but are not deleted — they can still be consulted.
  *
@@ -118,6 +200,96 @@ export function deprecateToken(db: Database, slug: string): Token {
   );
 
   return getTokenBySlug(db, slug)!;
+}
+
+/**
+ * Preview the rows that will be removed or updated when deleting a token.
+ */
+export function getTokenDeleteImpact(
+  db: Database,
+  slug: string,
+): TokenDeleteImpact {
+  const token = getTokenBySlug(db, slug);
+  if (!token) {
+    throw new Error(`Token not found: ${slug}`);
+  }
+
+  const cards = db
+    .prepare("SELECT COUNT(*) AS n FROM cards WHERE token_id = ?")
+    .get(token.id) as { n: number };
+  const reviewLogs = db
+    .prepare("SELECT COUNT(*) AS n FROM review_logs WHERE token_id = ?")
+    .get(token.id) as { n: number };
+  const prereqsFrom = db
+    .prepare("SELECT COUNT(*) AS n FROM prerequisites WHERE token_id = ?")
+    .get(token.id) as { n: number };
+  const prereqsTo = db
+    .prepare("SELECT COUNT(*) AS n FROM prerequisites WHERE requires_id = ?")
+    .get(token.id) as { n: number };
+  const sessionSteps = db
+    .prepare("SELECT COUNT(*) AS n FROM session_steps WHERE token_id = ?")
+    .get(token.id) as { n: number };
+  const sessionsTouched = db
+    .prepare("SELECT COUNT(DISTINCT session_id) AS n FROM session_steps WHERE token_id = ?")
+    .get(token.id) as { n: number };
+
+  const skillRows = db
+    .prepare("SELECT token_slugs FROM agent_skills")
+    .all() as Array<{ token_slugs: string }>;
+  const agentSkills = skillRows.filter((row) => {
+    const tokenSlugs = JSON.parse(row.token_slugs) as string[];
+    return tokenSlugs.includes(slug);
+  }).length;
+
+  return {
+    cards: cards.n,
+    review_logs: reviewLogs.n,
+    prerequisite_edges_from_token: prereqsFrom.n,
+    prerequisite_edges_to_token: prereqsTo.n,
+    session_steps: sessionSteps.n,
+    sessions_touched: sessionsTouched.n,
+    agent_skills: agentSkills,
+  };
+}
+
+/**
+ * Hard-delete a token and clean up non-FK references that point at its slug.
+ */
+export function deleteToken(
+  db: Database,
+  slug: string,
+): DeleteTokenResult {
+  const token = getTokenBySlug(db, slug);
+  if (!token) {
+    throw new Error(`Token not found: ${slug}`);
+  }
+
+  const impact = getTokenDeleteImpact(db, slug);
+
+  db.exec("BEGIN");
+  try {
+    const now = new Date().toISOString();
+    const skillRows = db
+      .prepare("SELECT id, token_slugs FROM agent_skills")
+      .all() as Array<{ id: string; token_slugs: string }>;
+
+    for (const row of skillRows) {
+      const tokenSlugs = JSON.parse(row.token_slugs) as string[];
+      const filtered = tokenSlugs.filter((tokenSlug) => tokenSlug !== slug);
+      if (filtered.length !== tokenSlugs.length) {
+        db.prepare("UPDATE agent_skills SET token_slugs = ?, updated_at = ? WHERE id = ?")
+          .run(JSON.stringify(filtered), now, row.id);
+      }
+    }
+
+    db.prepare("DELETE FROM tokens WHERE id = ?").run(token.id);
+    db.exec("COMMIT");
+  } catch (err) {
+    db.exec("ROLLBACK");
+    throw err;
+  }
+
+  return { token, impact };
 }
 
 /**
