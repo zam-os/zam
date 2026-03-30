@@ -7,17 +7,19 @@ import type { Database } from "libsql";
 import {
   openDatabase,
   createToken,
+  updateToken,
   findTokens,
   listTokens,
   getTokenBySlug,
   addPrerequisite,
   getPrerequisites,
   getDependents,
-  ensureCard,
   getCard,
   deprecateToken,
+  getTokenDeleteImpact,
+  deleteToken,
 } from "../../kernel/index.js";
-import type { BloomLevel } from "../../kernel/index.js";
+import type { BloomLevel, SymbiosisMode } from "../../kernel/index.js";
 import { resolveUser } from "./resolve-user.js";
 
 function withDb(fn: (db: Database) => void): void {
@@ -31,6 +33,10 @@ function withDb(fn: (db: Database) => void): void {
   } finally {
     db?.close();
   }
+}
+
+function jsonOut(data: unknown): void {
+  console.log(JSON.stringify(data, null, 2));
 }
 
 export const tokenCommand = new Command("token")
@@ -134,6 +140,57 @@ tokenCommand
     });
   });
 
+// ── zam token edit ────────────────────────────────────────────────────────
+
+tokenCommand
+  .command("edit")
+  .description("Edit a token's mutable fields")
+  .requiredOption("--slug <slug>", "Token slug")
+  .option("--concept <concept>", "Updated concept text")
+  .option("--domain <domain>", "Updated domain (blank allowed)")
+  .option("--bloom <level>", "Updated Bloom taxonomy level (1-5)")
+  .option("--context <context>", "Updated context (blank allowed)")
+  .option("--mode <mode>", "Updated symbiosis mode: shadowing | copilot | autonomy | none")
+  .option("--json", "Output as JSON")
+  .action((opts) => {
+    withDb((db) => {
+      const updates: {
+        concept?: string;
+        domain?: string;
+        bloom_level?: BloomLevel;
+        context?: string;
+        symbiosis_mode?: SymbiosisMode | null;
+      } = {};
+
+      if (opts.concept !== undefined) updates.concept = opts.concept;
+      if (opts.domain !== undefined) updates.domain = opts.domain;
+      if (opts.bloom !== undefined) updates.bloom_level = Number(opts.bloom) as BloomLevel;
+      if (opts.context !== undefined) updates.context = opts.context;
+      if (opts.mode !== undefined) {
+        const validModes = ["shadowing", "copilot", "autonomy", "none"];
+        if (!validModes.includes(opts.mode)) {
+          console.error(`Invalid --mode: ${opts.mode}`);
+          process.exit(1);
+        }
+        updates.symbiosis_mode = opts.mode === "none" ? null : opts.mode as SymbiosisMode;
+      }
+
+      const token = updateToken(db, opts.slug, updates);
+
+      if (opts.json) {
+        jsonOut(token);
+        return;
+      }
+
+      console.log(`Updated token: ${token.slug}`);
+      console.log(`  Concept: ${token.concept}`);
+      console.log(`  Domain:  ${token.domain || "(none)"}`);
+      console.log(`  Bloom:   ${token.bloom_level}`);
+      console.log(`  Context: ${token.context || "(none)"}`);
+      console.log(`  Mode:    ${token.symbiosis_mode ?? "none"}`);
+    });
+  });
+
 // ── zam token prereq ─────────────────────────────────────────────────────
 
 tokenCommand
@@ -184,6 +241,62 @@ tokenCommand
         console.log(`  Concept: ${token.concept}`);
         console.log(`  At:      ${token.deprecated_at}`);
       }
+    });
+  });
+
+// ── zam token delete ──────────────────────────────────────────────────────
+
+tokenCommand
+  .command("delete")
+  .description("Hard-delete a token and its dependent learning data")
+  .requiredOption("--slug <slug>", "Token slug to delete")
+  .option("--force", "Actually delete the token")
+  .option("--json", "Output as JSON")
+  .action((opts) => {
+    withDb((db) => {
+      const impact = getTokenDeleteImpact(db, opts.slug);
+
+      if (!opts.force) {
+        const preview = {
+          slug: opts.slug,
+          deleted: false,
+          requiresForce: true,
+          impact,
+        };
+
+        if (opts.json) {
+          jsonOut(preview);
+          return;
+        }
+
+        console.log(`Delete preview for ${opts.slug}:`);
+        console.log(`  Cards:                 ${impact.cards}`);
+        console.log(`  Review logs:           ${impact.review_logs}`);
+        console.log(`  Prereq edges from it:  ${impact.prerequisite_edges_from_token}`);
+        console.log(`  Prereq edges to it:    ${impact.prerequisite_edges_to_token}`);
+        console.log(`  Session steps:         ${impact.session_steps}`);
+        console.log(`  Sessions touched:      ${impact.sessions_touched}`);
+        console.log(`  Agent skills updated:  ${impact.agent_skills}`);
+        console.log("\nRe-run with --force to delete.");
+        return;
+      }
+
+      const result = deleteToken(db, opts.slug);
+
+      if (opts.json) {
+        jsonOut({
+          slug: result.token.slug,
+          deleted: true,
+          impact: result.impact,
+        });
+        return;
+      }
+
+      console.log(`Deleted token: ${result.token.slug}`);
+      console.log(`  Cards removed:         ${result.impact.cards}`);
+      console.log(`  Review logs removed:   ${result.impact.review_logs}`);
+      console.log(`  Session steps removed: ${result.impact.session_steps}`);
+      console.log(`  Agent skills updated:  ${result.impact.agent_skills}`);
     });
   });
 

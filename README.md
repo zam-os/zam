@@ -63,6 +63,26 @@ Get started: `zam whoami --set <your-id>`
 
 ---
 
+## 🧹 Review maintenance
+
+Review sessions are not limited to `1`-`4` recall ratings anymore. When a card is wrong, obsolete, or unwanted, the review flow can now:
+
+- edit token fields inline
+- deprecate the token
+- hard-delete the token after an impact preview + confirmation
+- delete only your personal card while keeping the token
+
+The same maintenance actions are also available from the CLI:
+
+- `zam token edit --slug <slug> ...`
+- `zam token delete --slug <slug>` for preview, then `--force` to delete
+- `zam card delete --user <id> --token <slug>`
+- `zam bridge review-action ...` for AI clients
+
+Token deletion is global. Card deletion is per-user.
+
+---
+
 ## 🏛 Vision: A Flourishing Future
 
 ZAM is a tool for the transition to a world where care and shared growth are the common currency.

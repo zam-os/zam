@@ -41,6 +41,15 @@ export interface UpdateCardInput {
   blocked?: number;
 }
 
+export interface CardDeletionImpact {
+  review_logs: number;
+}
+
+export interface DeleteCardResult {
+  card: Card;
+  impact: CardDeletionImpact;
+}
+
 /** A due card joined with its token details. */
 export interface DueCard extends Card {
   slug: string;
@@ -102,6 +111,16 @@ export function getCard(
   return db
     .prepare("SELECT * FROM cards WHERE token_id = ? AND user_id = ?")
     .get(tokenId, userId) as Card | undefined;
+}
+
+/**
+ * Get a card by its ULID.
+ */
+export function getCardById(
+  db: Database,
+  cardId: string,
+): Card | undefined {
+  return db.prepare("SELECT * FROM cards WHERE id = ?").get(cardId) as Card | undefined;
 }
 
 /**
@@ -174,6 +193,45 @@ export function updateCard(
   }
 
   return db.prepare("SELECT * FROM cards WHERE id = ?").get(cardId) as Card;
+}
+
+/**
+ * Preview the review-log rows that will be removed when deleting a user's card.
+ */
+export function getCardDeletionImpact(
+  db: Database,
+  tokenId: string,
+  userId: string,
+): CardDeletionImpact {
+  const card = getCard(db, tokenId, userId);
+  if (!card) {
+    throw new Error(`Card not found for token ${tokenId} and user ${userId}`);
+  }
+
+  const reviewLogs = db
+    .prepare("SELECT COUNT(*) AS n FROM review_logs WHERE card_id = ?")
+    .get(card.id) as { n: number };
+
+  return { review_logs: reviewLogs.n };
+}
+
+/**
+ * Delete one user's card for a token. Review logs cascade via FK.
+ */
+export function deleteCardForUser(
+  db: Database,
+  tokenId: string,
+  userId: string,
+): DeleteCardResult {
+  const card = getCard(db, tokenId, userId);
+  if (!card) {
+    throw new Error(`Card not found for token ${tokenId} and user ${userId}`);
+  }
+
+  const impact = getCardDeletionImpact(db, tokenId, userId);
+  db.prepare("DELETE FROM cards WHERE id = ?").run(card.id);
+
+  return { card, impact };
 }
 
 /**

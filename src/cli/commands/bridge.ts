@@ -12,12 +12,9 @@ import {
   getDueCards,
   buildReviewQueue,
   generatePrompt,
-  evaluateRating,
   ensureCard,
   createToken,
   getTokenBySlug,
-  cascadeBlock,
-  getPrerequisites,
   getAgentSkill,
   listAgentSkills,
   readMonitorLog,
@@ -25,8 +22,17 @@ import {
   analyzeObservation,
   monitorLogExists,
   discoverSkills,
+  executeReviewAction,
+  getTokenDeleteImpact,
+  getCardDeletionImpact,
 } from "../../kernel/index.js";
-import type { Rating, BloomLevel, TokenPattern } from "../../kernel/index.js";
+import type {
+  Rating,
+  BloomLevel,
+  TokenPattern,
+  ReviewActionType,
+  SymbiosisMode,
+} from "../../kernel/index.js";
 import { readdirSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -52,6 +58,69 @@ function withDb(fn: (db: Database) => void): void {
   } finally {
     db?.close();
   }
+}
+
+interface ReviewTargetRow {
+  card_id: string;
+  token_id: string;
+  user_id: string;
+  slug: string;
+}
+
+function getReviewTarget(db: Database, cardId: string, userId: string): ReviewTargetRow {
+  const target = db
+    .prepare(
+      `SELECT c.id AS card_id, c.token_id, c.user_id, t.slug
+       FROM cards c
+       JOIN tokens t ON t.id = c.token_id
+       WHERE c.id = ?`,
+    )
+    .get(cardId) as ReviewTargetRow | undefined;
+
+  if (!target) {
+    jsonError(`Card not found: ${cardId}`);
+  }
+  if (target.user_id !== userId) {
+    jsonError(`Card ${cardId} does not belong to user ${userId}`);
+  }
+
+  return target!;
+}
+
+function parseTokenUpdates(opts: {
+  concept?: string;
+  domain?: string;
+  bloom?: string;
+  context?: string;
+  mode?: string;
+}): {
+  concept?: string;
+  domain?: string;
+  bloom_level?: BloomLevel;
+  context?: string;
+  symbiosis_mode?: SymbiosisMode | null;
+} {
+  const updates: {
+    concept?: string;
+    domain?: string;
+    bloom_level?: BloomLevel;
+    context?: string;
+    symbiosis_mode?: SymbiosisMode | null;
+  } = {};
+
+  if (opts.concept !== undefined) updates.concept = opts.concept;
+  if (opts.domain !== undefined) updates.domain = opts.domain;
+  if (opts.bloom !== undefined) updates.bloom_level = Number(opts.bloom) as BloomLevel;
+  if (opts.context !== undefined) updates.context = opts.context;
+  if (opts.mode !== undefined) {
+    const validModes = ["shadowing", "copilot", "autonomy", "none"];
+    if (!validModes.includes(opts.mode)) {
+      jsonError(`Invalid mode: ${opts.mode}`);
+    }
+    updates.symbiosis_mode = opts.mode === "none" ? null : opts.mode as SymbiosisMode;
+  }
+
+  return updates;
 }
 
 export const bridgeCommand = new Command("bridge")
@@ -148,41 +217,107 @@ bridgeCommand
         jsonError("Rating must be between 1 and 4");
       }
 
-      // Look up the card to get tokenId
-      const card = db
-        .prepare("SELECT * FROM cards WHERE id = ?")
-        .get(opts.cardId) as { id: string; token_id: string; user_id: string } | undefined;
-
-      if (!card) {
-        jsonError(`Card not found: ${opts.cardId}`);
-      }
-
-      const result = evaluateRating(db, {
+      const result = executeReviewAction(db, {
+        action: "rate",
         cardId: opts.cardId,
-        tokenId: card!.token_id,
         userId,
         rating,
       });
 
-      let blocked = null;
-      if (rating === 1) {
-        const token = db
-          .prepare("SELECT slug FROM tokens WHERE id = ?")
-          .get(card!.token_id) as { slug: string } | undefined;
-
-        if (token) {
-          const prereqs = getPrerequisites(db, card!.token_id);
-          if (prereqs.length > 0) {
-            blocked = cascadeBlock(db, userId, token.slug);
-          }
-        }
-      }
-
       jsonOut({
         success: true,
         rating,
-        evaluation: result,
-        blocked,
+        evaluation: result.evaluation,
+        blocked: result.blocked ?? null,
+      });
+    });
+  });
+
+// ── zam bridge review-action ───────────────────────────────────────────────
+
+bridgeCommand
+  .command("review-action")
+  .description("Apply a review action (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--card-id <id>", "Card ID")
+  .requiredOption("--action <action>", "Action: rate | skip | edit-token | deprecate-token | delete-token | delete-card | stop")
+  .option("--rating <n>", "Rating (1-4) for action=rate")
+  .option("--concept <concept>", "Updated concept text for action=edit-token")
+  .option("--domain <domain>", "Updated domain for action=edit-token")
+  .option("--bloom <level>", "Updated Bloom level for action=edit-token")
+  .option("--context <context>", "Updated context for action=edit-token")
+  .option("--mode <mode>", "Updated symbiosis mode for action=edit-token")
+  .option("--confirm", "Confirm destructive delete actions")
+  .action((opts) => {
+    withDb((db) => {
+      const userId = resolveUser(opts, db, { json: true });
+      const action = opts.action as ReviewActionType;
+      const validActions: ReviewActionType[] = [
+        "rate",
+        "skip",
+        "edit-token",
+        "deprecate-token",
+        "delete-token",
+        "delete-card",
+        "stop",
+      ];
+      if (!validActions.includes(action)) {
+        jsonError(`Unsupported action: ${opts.action}`);
+      }
+
+      const target = getReviewTarget(db, opts.cardId, userId);
+      if ((action === "delete-token" || action === "delete-card") && !opts.confirm) {
+        if (action === "delete-token") {
+          jsonOut({
+            success: true,
+            action,
+            preview: true,
+            requiresConfirmation: true,
+            token: { slug: target.slug, tokenId: target.token_id },
+            impact: getTokenDeleteImpact(db, target.slug),
+          });
+          return;
+        }
+
+        jsonOut({
+          success: true,
+          action,
+          preview: true,
+          requiresConfirmation: true,
+          token: { slug: target.slug, tokenId: target.token_id },
+          impact: getCardDeletionImpact(db, target.token_id, userId),
+        });
+        return;
+      }
+
+      const rating = opts.rating !== undefined ? Number(opts.rating) as Rating : undefined;
+      if (action === "rate" && (rating == null || rating < 1 || rating > 4)) {
+        jsonError("Rating must be between 1 and 4 for action=rate");
+      }
+
+      const result = executeReviewAction(db, {
+        action,
+        cardId: opts.cardId,
+        userId,
+        rating,
+        tokenUpdates: action === "edit-token" ? parseTokenUpdates(opts) : undefined,
+      });
+
+      jsonOut({
+        success: true,
+        action,
+        token: {
+          slug: result.token.slug,
+          tokenId: result.token.id,
+        },
+        rating: rating ?? null,
+        evaluation: result.evaluation ?? null,
+        blocked: result.blocked ?? null,
+        updatedToken: result.updatedToken ?? null,
+        deletedToken: result.deletedToken ?? null,
+        deletedCard: result.deletedCard ?? null,
+        skipped: result.skipped ?? false,
+        stopped: result.stopped ?? false,
       });
     });
   });

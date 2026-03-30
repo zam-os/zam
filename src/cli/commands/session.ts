@@ -20,13 +20,11 @@ import {
   fetchActiveWorkItems,
   buildReviewQueue,
   generatePrompt,
-  evaluateRating,
-  cascadeBlock,
-  getPrerequisites,
   getSetting,
 } from "../../kernel/index.js";
-import type { ExecutionContext, Rating, BloomLevel } from "../../kernel/index.js";
+import type { ExecutionContext, BloomLevel } from "../../kernel/index.js";
 import { resolveUser } from "./resolve-user.js";
+import { runInteractiveReviewAction } from "../review-actions.js";
 
 function withDb(fn: (db: Database) => void): void {
   let db: Database | undefined;
@@ -125,6 +123,7 @@ sessionCommand
 
 interface RepetitionResult {
   reviewed: number;
+  maintained: number;
   skipped: boolean;
 }
 
@@ -137,7 +136,7 @@ async function runRepetitionPhase(
 
   if (queue.items.length === 0) {
     console.log("No cards due for review — moving to task selection.\n");
-    return { reviewed: 0, skipped: false };
+    return { reviewed: 0, maintained: 0, skipped: false };
   }
 
   console.log("═".repeat(50));
@@ -152,15 +151,14 @@ async function runRepetitionPhase(
   const startTime = Date.now();
   const timeLimitMs = maxMinutes * 60 * 1000;
   let reviewed = 0;
+  let maintained = 0;
 
-  for (const item of queue.items) {
+  for (const [index, item] of queue.items.entries()) {
     // Check time limit
     if (Date.now() - startTime >= timeLimitMs) {
       console.log(`\nTime limit reached (${maxMinutes} min). Moving to task selection.`);
       break;
     }
-
-    reviewed++;
 
     const prompt = generatePrompt({
       cardId: item.cardId,
@@ -172,55 +170,38 @@ async function runRepetitionPhase(
     });
 
     const elapsed = Math.round((Date.now() - startTime) / 60000);
-    console.log(`[${reviewed}/${queue.items.length}] ${prompt.bloomVerb} (Bloom ${prompt.bloomLevel}) — ${elapsed}/${maxMinutes} min`);
+    console.log(`[${index + 1}/${queue.items.length}] ${prompt.bloomVerb} (Bloom ${prompt.bloomLevel}) — ${elapsed}/${maxMinutes} min`);
     console.log(`Domain: ${prompt.domain || "(none)"}`);
     console.log(`\n  ${prompt.question}\n`);
 
-    const rating = await select({
-      message: "How did you do?",
-      choices: [
-        { name: "1 - Again (forgot)", value: 1 },
-        { name: "2 - Hard", value: 2 },
-        { name: "3 - Good", value: 3 },
-        { name: "4 - Easy", value: 4 },
-        { name: "s - Skip to task selection", value: 0 },
-      ],
-    }) as number;
-
-    if (rating === 0) {
-      console.log("Skipping to task selection.");
-      reviewed--; // Don't count the skipped card
-      return { reviewed, skipped: true };
-    }
-
-    const evalResult = evaluateRating(db, {
-      cardId: item.cardId,
-      tokenId: item.tokenId,
+    const action = await runInteractiveReviewAction({
+      db,
       userId,
-      rating: rating as Rating,
+      item,
+      mode: "session",
     });
 
-    if (rating === 1) {
-      const prereqs = getPrerequisites(db, item.tokenId);
-      if (prereqs.length > 0) {
-        const blockResult = cascadeBlock(db, userId, item.slug);
-        console.log(`  Blocked ${blockResult.blockedSlug}. Review these prerequisites:`);
-        for (const p of blockResult.prerequisites) {
-          console.log(`    - ${p.slug}: ${p.concept}`);
-        }
-      }
+    if (action.action === "stop") {
+      console.log("Stopping review and moving to task selection.");
+      return { reviewed, maintained, skipped: true };
     }
 
-    const ratingLabels: Record<number, string> = { 1: "Again", 2: "Hard", 3: "Good", 4: "Easy" };
-    console.log(`  ${ratingLabels[rating]} — next due: ${evalResult.nextDueAt}\n`);
+    if (action.action === "rate") {
+      reviewed++;
+    } else if (action.action !== "skip") {
+      maintained++;
+    }
   }
 
-  if (reviewed > 0) {
+  if (reviewed > 0 || maintained > 0) {
     console.log("─".repeat(50));
-    console.log(`Repetition complete — ${reviewed} card(s) reviewed.`);
+    console.log(`Repetition complete — ${reviewed} card(s) rated.`);
+    if (maintained > 0) {
+      console.log(`Maintenance actions: ${maintained}`);
+    }
   }
 
-  return { reviewed, skipped: false };
+  return { reviewed, maintained, skipped: false };
 }
 
 // ── Phase 2: Task Selection ─────────────────────────────────────────────────
