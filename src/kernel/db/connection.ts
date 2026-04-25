@@ -40,27 +40,50 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
     dbOpts.syncUrl = options.syncUrl;
 
     // When syncUrl is provided, the db must be a libsql embedded replica (not
-    // plain SQLite). The presence of a companion .meta file proves it was
-    // created by libsql. If the db exists WITHOUT .meta, it was created before
-    // Turso was configured — delete it so libsql can sync fresh from cloud.
-    // This is safe because the credentials now live in credentials.json (not in
-    // the db), so no double-open or file-lock issues.
+    // plain SQLite). The presence of a companion .meta (or -info) file proves
+    // it was created by libsql. 
+    //
+    // If the db exists WITHOUT metadata, it was created before Turso was 
+    // configured â€” delete it so libsql can sync fresh from cloud.
+    //
+    // If metadata exists WITHOUT the db, libsql throws InvalidLocalState â€”
+    // delete the metadata so it can start fresh.
     const metaPath = `${dbPath}.meta`;
-    if (existsSync(dbPath) && !existsSync(metaPath)) {
+    const infoPath = `${dbPath}-info`;
+
+    if (existsSync(dbPath) && !existsSync(metaPath) && !existsSync(infoPath)) {
       for (const suffix of ["", "-wal", "-shm"]) {
         const f = `${dbPath}${suffix}`;
         if (existsSync(f)) rmSync(f, { force: true });
       }
+    } else if (!existsSync(dbPath) && (existsSync(metaPath) || existsSync(infoPath))) {
+      if (existsSync(metaPath)) rmSync(metaPath);
+      if (existsSync(infoPath)) rmSync(infoPath);
     }
   }
   if (options.authToken) {
     dbOpts.authToken = options.authToken;
   }
 
-  const db = new Database(dbPath, dbOpts as Database.Options);
+  let db: DatabaseType;
+  try {
+    db = new Database(dbPath, dbOpts as Database.Options);
+  } catch (err) {
+    const msg = (err as Error).message;
+    if (msg.includes("InvalidLocalState") && options.syncUrl) {
+      // Last-ditch recovery: metadata is corrupt or mismatched
+      const metaPath = `${dbPath}.meta`;
+      const infoPath = `${dbPath}-info`;
+      if (existsSync(metaPath)) rmSync(metaPath);
+      if (existsSync(infoPath)) rmSync(infoPath);
+      db = new Database(dbPath, dbOpts as Database.Options);
+    } else {
+      throw err;
+    }
+  }
 
   // Enable WAL mode and foreign keys.
-  // libsql embedded replicas manage their own WAL — skip journal_mode when syncing.
+  // libsql embedded replicas manage their own WAL â€” skip journal_mode when syncing.
   if (!options.syncUrl) {
     db.pragma("journal_mode = WAL");
   }
@@ -103,7 +126,7 @@ export function getDefaultDbPath(): string {
 
 /**
  * Run incremental schema migrations on every open.
- * Each migration is idempotent — safe to run repeatedly.
+ * Each migration is idempotent â€” safe to run repeatedly.
  */
 function runMigrations(db: DatabaseType): void {
   // M001: add execution_context to sessions

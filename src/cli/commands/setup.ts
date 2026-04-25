@@ -1,5 +1,5 @@
 /**
- * `zam setup` — Distribute skill files from the zam package into the current
+ * `zam setup` â€” Distribute skill files from the zam package into the current
  * personal instance's .claude/ and .gemini/ directories, and optionally
  * initialize the ZAM database and generate a CLAUDE.md.
  *
@@ -11,12 +11,12 @@ import { Command } from "commander";
 import { fileURLToPath } from "url";
 import { existsSync, mkdirSync, copyFileSync, writeFileSync } from "fs";
 import { join, dirname, basename } from "path";
-import { openDatabase, getDefaultDbPath } from "../../kernel/index.js";
+import { openDatabaseWithSync, getDefaultDbPath } from "../../kernel/index.js";
 
 // The compiled CLI lives at dist/cli/index.js inside the package.
-// Two levels up from there is the package root (dist/ → package root).
+// Two levels up from there is the package root (dist/ â†’ package root).
 // This same relative path also works when running via `tsx src/cli/index.ts`
-// (src/ → package root), so no branch logic is needed.
+// (src/ â†’ package root), so no branch logic is needed.
 const packageRoot = fileURLToPath(new URL("../..", import.meta.url));
 
 const SKILL_PAIRS: Array<{ from: string; to: string }> = [
@@ -43,7 +43,7 @@ function copySkills(force: boolean): void {
     }
 
     if (existsSync(dest) && !force) {
-      console.log(`  skip  ${to} (already present — use --force to update)`);
+      console.log(`  skip  ${to} (already present â€” use --force to update)`);
       continue;
     }
 
@@ -65,11 +65,11 @@ function initDatabase(skipInit: boolean): void {
 
   try {
     const dbPath = getDefaultDbPath();
-    const db = openDatabase({ initialize: true });
+    const db = openDatabaseWithSync({ initialize: true });
     db.close();
     console.log(`  init  ZAM database at ${dbPath}`);
   } catch (err) {
-    // Database may already exist — not an error during setup.
+    // Database may already exist â€” not an error during setup.
     const msg = (err as Error).message;
     if (!msg.includes("already")) {
       console.warn(`  warn  database init: ${msg}`);
@@ -91,10 +91,10 @@ function writeClaudeMd(skipClaudeMd: boolean): void {
   const name = basename(process.cwd());
   writeFileSync(
     dest,
-    `# ZAM Personal Kernel — ${name}
+    `# ZAM Personal Kernel â€” ${name}
 
 This is a ZAM personal instance. ZAM builds lasting skills through spaced
-repetition during real work — not separate study sessions.
+repetition during real work â€” not separate study sessions.
 
 ## First time here?
 Run \`/setup\` in Claude Code or Gemini CLI to complete first-time setup.
@@ -103,8 +103,8 @@ Run \`/setup\` in Claude Code or Gemini CLI to complete first-time setup.
 Run \`/zam\` to start a learning session on whatever you are working on.
 
 ## What lives here
-- \`beliefs/\` — your worldview, approved by git commit
-- \`goals/\` — your objectives, decomposed into tasks and learning tokens
+- \`beliefs/\` â€” your worldview, approved by git commit
+- \`goals/\` â€” your objectives, decomposed into tasks and learning tokens
 
 ## Fast-changing data
 Learning tokens, cards, and review history live in \`~/.zam/zam.db\` (local
