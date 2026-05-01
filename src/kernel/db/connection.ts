@@ -13,21 +13,34 @@ export interface ConnectionOptions {
   dbPath?: string;
   /** If true, create the directory and run schema migrations on open */
   initialize?: boolean;
-  /** Turso sync URL for cloud replication (e.g. libsql://db-name.turso.io) */
+  /** Turso sync URL for embedded replica mode (e.g. libsql://db-name.turso.io) */
   syncUrl?: string;
-  /** Turso auth token for cloud replication */
+  /** Turso auth token for direct remote or embedded replica access */
   authToken?: string;
+  /** If false, ignore ~/.zam/credentials.json and force the local/default database. */
+  useConfiguredCloud?: boolean;
+}
+
+function isRemoteDatabasePath(dbPath: string): boolean {
+  return /^(libsql|https?):\/\//i.test(dbPath);
 }
 
 /**
  * Open (or create) the ZAM database.
- * Uses WAL mode for concurrent access from AI CLI and user CLI.
- * When syncUrl is provided, enables embedded replica sync with Turso.
+ * Uses configured Turso credentials for the default database when present.
+ * Falls back to local SQLite and WAL mode when no cloud credentials exist.
+ * When syncUrl is provided explicitly, enables embedded replica sync with Turso.
  */
 export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
-  const dbPath = options.dbPath ?? DEFAULT_DB_PATH;
+  const configuredCloud =
+    options.useConfiguredCloud !== false && !options.dbPath && !options.syncUrl
+      ? getTursoCredentials()
+      : null;
+  const dbPath = configuredCloud?.url ?? options.dbPath ?? DEFAULT_DB_PATH;
+  const isRemote = isRemoteDatabasePath(dbPath);
+  const isEmbeddedReplica = Boolean(options.syncUrl);
 
-  if (options.initialize) {
+  if (options.initialize && !isRemote) {
     const dir = dirname(dbPath);
     if (!existsSync(dir)) {
       mkdirSync(dir, { recursive: true });
@@ -61,8 +74,9 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
       if (existsSync(infoPath)) rmSync(infoPath);
     }
   }
-  if (options.authToken) {
-    dbOpts.authToken = options.authToken;
+  const authToken = configuredCloud?.token ?? options.authToken;
+  if (authToken) {
+    dbOpts.authToken = authToken;
   }
 
   let db: DatabaseType;
@@ -82,17 +96,19 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
     }
   }
 
-  // Enable WAL mode and foreign keys.
-  // libsql embedded replicas manage their own WAL â€” skip journal_mode when syncing.
-  if (!options.syncUrl) {
+  // Enable WAL mode and foreign keys for local SQLite.
+  // Remote Turso databases and embedded replicas manage their own journaling.
+  if (!isRemote && !isEmbeddedReplica) {
     db.pragma("journal_mode = WAL");
   }
   db.pragma("foreign_keys = ON");
-  db.pragma("busy_timeout = 5000");
+  if (!isRemote) {
+    db.pragma("busy_timeout = 5000");
+  }
 
   // For embedded replicas: sync from cloud FIRST so the local file has the
   // primary's schema before we try to run migrations or create tables.
-  if (options.syncUrl) {
+  if (isEmbeddedReplica) {
     (db as unknown as { sync: () => void }).sync();
   }
 
@@ -106,16 +122,12 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
 }
 
 /**
- * Open the database with Turso cloud sync auto-detected from credentials file.
- * Reads turso.url and turso.token from ~/.zam/credentials.json (NOT from the db).
- * This avoids opening the db twice and eliminates the Windows file-lock issue
- * when migrating from plain SQLite to a libsql embedded replica.
+ * Open the database with Turso cloud credentials auto-detected.
+ * Credentials live in ~/.zam/credentials.json (NOT in the db), so a fresh
+ * machine only has to collect missing secrets instead of bootstrapping local
+ * state first.
  */
 export function openDatabaseWithSync(options: Omit<ConnectionOptions, "syncUrl" | "authToken"> = {}): DatabaseType {
-  const turso = getTursoCredentials();
-  if (turso) {
-    return openDatabase({ ...options, syncUrl: turso.url, authToken: turso.token });
-  }
   return openDatabase(options);
 }
 

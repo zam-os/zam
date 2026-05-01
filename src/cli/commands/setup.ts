@@ -107,9 +107,9 @@ Run \`/zam\` to start a learning session on whatever you are working on.
 - \`goals/\` â€” your objectives, decomposed into tasks and learning tokens
 
 ## Fast-changing data
-Learning tokens, cards, and review history live in \`~/.zam/zam.db\` (local
-SQLite, not committed to git). Use \`zam connector setup turso\` to enable
-cloud sync across machines.
+Learning tokens, cards, and review history live in local SQLite by default.
+Use \`zam connector setup turso\` to store cloud credentials in
+\`~/.zam/credentials.json\` and use a Turso database across machines.
 `,
     "utf8",
   );

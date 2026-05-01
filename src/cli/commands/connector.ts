@@ -141,7 +141,7 @@ connectorCommand
 
 connectorCommand
   .command("sync")
-  .description("Trigger a manual sync with Turso cloud database")
+  .description("Verify the Turso cloud database connection")
   .action(() => {
     const turso = getTursoCredentials();
     if (!turso) {
@@ -152,8 +152,8 @@ connectorCommand
     let db: Database | undefined;
     try {
       db = openDatabaseWithSync({ initialize: true });
-      (db as unknown as { sync: () => void }).sync();
-      console.log(`Synced with ${turso.url}`);
+      db.prepare("SELECT 1").get();
+      console.log(`Connected to ${turso.url}`);
       db.close();
     } catch (err) {
       db?.close();
@@ -182,12 +182,12 @@ async function setupTurso(urlArg?: string, tokenArg?: string): Promise<void> {
     // Store credentials outside the db so they survive db deletion
     setTursoCredentials(url, token);
 
-    // Verify by opening with sync
+    // Verify by opening the configured cloud database.
     db = openDatabaseWithSync({ initialize: true });
-    (db as unknown as { sync: () => void }).sync();
+    db.prepare("SELECT 1").get();
     db.close();
 
-    console.log(`Turso cloud sync configured and verified: ${url}`);
+    console.log(`Turso cloud database configured and verified: ${url}`);
   } catch (err) {
     db?.close();
     if ((err as Error).name === "ExitPromptError") {

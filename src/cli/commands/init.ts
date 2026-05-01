@@ -10,7 +10,7 @@ export const initCommand = new Command("init")
   .action(() => {
     try {
       const dbPath = getDefaultDbPath();
-      const db = openDatabase({ initialize: true });
+      const db = openDatabase({ initialize: true, useConfiguredCloud: false });
       db.close();
       console.log(`Initialized ZAM database at ${dbPath}`);
     } catch (err) {
