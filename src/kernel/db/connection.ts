@@ -1,5 +1,5 @@
 import Database, { type Database as DatabaseType } from "libsql";
-import { existsSync, mkdirSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, rmSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { SCHEMA } from "./schema.js";
@@ -36,6 +36,21 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
     options.useConfiguredCloud !== false && !options.dbPath && !options.syncUrl
       ? getTursoCredentials()
       : null;
+
+  let requiresTurso = false;
+  try {
+    const configPath = join(process.cwd(), ".zam", "config.yaml");
+    if (existsSync(configPath)) {
+      const configText = readFileSync(configPath, "utf-8");
+      if (/[\s\S]*turso:[\s\S]*url:/m.test(configText)) {
+        requiresTurso = true;
+      }
+    }
+  } catch (e) {}
+
+  if (requiresTurso && !configuredCloud && options.useConfiguredCloud !== false && !options.dbPath && !options.syncUrl) {
+    throw new Error("Turso cloud database is configured in .zam/config.yaml but missing local credentials. Run: zam connector setup turso");
+  }
   const dbPath = configuredCloud?.url ?? options.dbPath ?? DEFAULT_DB_PATH;
   const isRemote = isRemoteDatabasePath(dbPath);
   const isEmbeddedReplica = Boolean(options.syncUrl);
