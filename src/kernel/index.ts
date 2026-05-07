@@ -146,8 +146,10 @@ export {
 export {
   generateZshHooks,
   generateBashHooks,
+  generatePowerShellHooks,
   generateZshUnhooks,
   generateBashUnhooks,
+  generatePowerShellUnhooks,
 } from "./observation/shell-hooks.js";
 
 export { discoverSkills } from "./observation/skill-discovery.js";

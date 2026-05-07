@@ -1,10 +1,13 @@
 /**
- * Shell hook code generation for zsh and bash.
+ * Shell hook code generation for zsh, bash, and PowerShell.
  *
  * Pure functions that return shell code strings. The CLI command
  * `zam monitor start/stop` calls these and prints to stdout.
- * The user wraps with `eval "$(zam monitor start ...)"`.
  */
+
+function psSingleQuoted(value: string): string {
+  return `'${value.replace(/'/g, "''")}'`;
+}
 
 /**
  * Generate zsh hooks that capture commands to a JSONL file.
@@ -101,6 +104,110 @@ echo "ZAM monitor active for session \$__ZAM_MONITOR_SESSION"
 `.trim();
 }
 
+/**
+ * Generate PowerShell hooks that capture completed commands to a JSONL file.
+ * PowerShell has no zsh-style preexec hook, so this records the most recent
+ * history item from the prompt function after each command completes.
+ */
+export function generatePowerShellHooks(monitorFile: string, sessionId: string): string {
+  return `
+# ZAM monitor hooks for session ${sessionId}
+$global:__ZAM_MONITOR_FILE = ${psSingleQuoted(monitorFile)}
+$global:__ZAM_MONITOR_SEQ = 0
+$global:__ZAM_MONITOR_SESSION = ${psSingleQuoted(sessionId)}
+$global:__ZAM_MONITOR_SKIP_NEXT_PROMPT = $true
+
+function global:__zam_write_monitor_event {
+  param([hashtable]$Event)
+  $json = $Event | ConvertTo-Json -Compress -Depth 4
+  $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+  [System.IO.File]::AppendAllText($global:__ZAM_MONITOR_FILE, $json + [Environment]::NewLine, $utf8NoBom)
+}
+
+function global:__zam_iso_utc {
+  param([datetime]$Date)
+  if ($Date -eq [datetime]::MinValue) {
+    return (Get-Date).ToUniversalTime().ToString("o")
+  }
+  return $Date.ToUniversalTime().ToString("o")
+}
+
+function global:__zam_update_last_history_id {
+  $history = Get-History -Count 1
+  if ($null -ne $history) {
+    $global:__ZAM_MONITOR_LAST_HISTORY_ID = $history.Id
+  } elseif ($null -eq $global:__ZAM_MONITOR_LAST_HISTORY_ID) {
+    $global:__ZAM_MONITOR_LAST_HISTORY_ID = 0
+  }
+}
+
+function global:__zam_record_last_history {
+  param(
+    [bool]$Success,
+    [object]$NativeExitCode
+  )
+
+  $history = Get-History -Count 1
+  if ($null -eq $history) { return }
+  if ($history.Id -le $global:__ZAM_MONITOR_LAST_HISTORY_ID) { return }
+
+  $global:__ZAM_MONITOR_LAST_HISTORY_ID = $history.Id
+  $global:__ZAM_MONITOR_SEQ += 1
+
+  $exitCode = 0
+  if (-not $Success) {
+    if ($NativeExitCode -is [int] -and $NativeExitCode -ne 0) {
+      $exitCode = $NativeExitCode
+    } else {
+      $exitCode = 1
+    }
+  }
+
+  $cwd = (Get-Location).Path
+  __zam_write_monitor_event @{
+    type = "command_start"
+    ts = (__zam_iso_utc $history.StartExecutionTime)
+    command = $history.CommandLine
+    cwd = $cwd
+    seq = $global:__ZAM_MONITOR_SEQ
+    pid = $PID
+  }
+  __zam_write_monitor_event @{
+    type = "command_end"
+    ts = (__zam_iso_utc $history.EndExecutionTime)
+    exit_code = $exitCode
+    seq = $global:__ZAM_MONITOR_SEQ
+    pid = $PID
+  }
+}
+
+if (-not (Test-Path function:\\__zam_previous_prompt) -and (Test-Path function:\\prompt)) {
+  Set-Item -Path function:\\__zam_previous_prompt -Value (Get-Item function:\\prompt).ScriptBlock
+}
+__zam_update_last_history_id
+
+function global:prompt {
+  $zamSuccess = $?
+  $zamNativeExitCode = $global:LASTEXITCODE
+
+  if ($global:__ZAM_MONITOR_SKIP_NEXT_PROMPT) {
+    __zam_update_last_history_id
+    $global:__ZAM_MONITOR_SKIP_NEXT_PROMPT = $false
+  } else {
+    __zam_record_last_history -Success $zamSuccess -NativeExitCode $zamNativeExitCode
+  }
+
+  if (Test-Path function:\\__zam_previous_prompt) {
+    & (Get-Item function:\\__zam_previous_prompt).ScriptBlock
+  } else {
+    "PS $($executionContext.SessionState.Path.CurrentLocation)$('>' * ($nestedPromptLevel + 1)) "
+  }
+}
+
+Write-Host "ZAM monitor active for session $global:__ZAM_MONITOR_SESSION"
+`.trim();
+}
+
 /** Generate zsh code to remove monitor hooks. */
 export function generateZshUnhooks(): string {
   return `
@@ -122,5 +229,19 @@ PROMPT_COMMAND="\${PROMPT_COMMAND/__zam_prompt_cmd;/}"
 unset -f __zam_debug_trap __zam_prompt_cmd __zam_ts 2>/dev/null
 unset __ZAM_MONITOR_FILE __ZAM_MONITOR_SEQ __ZAM_MONITOR_SESSION __ZAM_MONITOR_CMD_ACTIVE 2>/dev/null
 echo "ZAM monitor stopped."
+`.trim();
+}
+
+/** Generate PowerShell code to remove monitor hooks. */
+export function generatePowerShellUnhooks(): string {
+  return `
+# Remove ZAM monitor hooks
+if (Test-Path function:\\__zam_previous_prompt) {
+  Set-Item -Path function:\\prompt -Value (Get-Item function:\\__zam_previous_prompt).ScriptBlock
+  Remove-Item function:\\__zam_previous_prompt -Force -ErrorAction SilentlyContinue
+}
+Remove-Item function:\\__zam_write_monitor_event,function:\\__zam_iso_utc,function:\\__zam_update_last_history_id,function:\\__zam_record_last_history -ErrorAction SilentlyContinue
+Remove-Variable -Name __ZAM_MONITOR_FILE,__ZAM_MONITOR_SEQ,__ZAM_MONITOR_SESSION,__ZAM_MONITOR_LAST_HISTORY_ID,__ZAM_MONITOR_SKIP_NEXT_PROMPT -Scope Global -ErrorAction SilentlyContinue
+Write-Host "ZAM monitor stopped."
 `.trim();
 }

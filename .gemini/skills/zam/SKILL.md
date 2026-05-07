@@ -53,8 +53,8 @@ zam settings delete --key <key>                        # delete a setting
 
 # Shell monitoring (observation mode)
 zam monitor open --session <id> [--dir <path>]        # open a monitored terminal window
-zam monitor start --session <id> [--shell zsh|bash]   # output hook code (wrap with eval)
-zam monitor stop --session <id>                        # output unhook code (wrap with eval)
+zam monitor start --session <id> [--shell zsh|bash|pwsh] # output hook code (eval/Invoke-Expression)
+zam monitor stop --session <id>                        # output unhook code (eval/Invoke-Expression)
 zam monitor status --session <id>                      # check monitoring stats
 
 # Bridge (machine-readable JSON protocol)
