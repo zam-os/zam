@@ -6,7 +6,7 @@
   "files": [
     "dist/",
     ".claude/",
-    ".gemini/",
+    ".agent/",
     "README.md",
     "LICENSE"
   ],

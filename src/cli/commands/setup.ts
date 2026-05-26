@@ -1,6 +1,6 @@
 /**
- * `zam setup` â€” Distribute skill files from the zam package into the current
- * personal instance's .claude/ and .gemini/ directories, and optionally
+ * `zam setup` — Distribute skill files from the zam package into the current
+ * personal instance's .claude/ and .agent/ directories, and optionally
  * initialize the ZAM database and generate a CLAUDE.md.
  *
  * Run this once after cloning a ZAM personal instance, and again after
@@ -25,8 +25,8 @@ const SKILL_PAIRS: Array<{ from: string; to: string }> = [
     to: join(".claude", "skills", "zam", "SKILL.md"),
   },
   {
-    from: join(packageRoot, ".gemini", "skills", "zam", "SKILL.md"),
-    to: join(".gemini", "skills", "zam", "SKILL.md"),
+    from: join(packageRoot, ".agent", "skills", "zam", "SKILL.md"),
+    to: join(".agent", "skills", "zam", "SKILL.md"),
   },
 ];
 
@@ -136,7 +136,7 @@ export const setupCommand = new Command("setup")
       writeClaudeMd(opts.skipClaudeMd);
 
       console.log(
-        "\nDone. Run `zam whoami --set <your-id>` to set your identity, then open Claude Code or Gemini CLI and run /zam to start a learning session.",
+        "\nDone. Run `zam whoami --set <your-id>` to set your identity, then open Claude Code or Antigravity CLI and run /zam to start a learning session.",
       );
     },
   );
