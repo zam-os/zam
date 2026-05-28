@@ -4,7 +4,7 @@
 
 ## Target Components
 
-1. **Agent-to-Agent Marketplace** — P2P discovery of skills, resources, and learning opportunities without central authority.
+1. **Agent-to-Agent Marketplace** — P2P discovery of skills, resources, and learning opportunities without central authority. The lifestyle this enables is described in [The Successful Artist](successful-artist.md).
 2. **Growth-Aware Matching** — Finding the right person for a task not just by "who can do it now," but "who wants to learn it."
 3. **Accredited Circles** — Trust hierarchies (parishes, neighborhoods, NGOs) where agents prioritize internal matching.
 4. **Knowledge Synchronization** — Sharing "Social Forks" of knowledge graphs — common "expert domains" anyone can import.
