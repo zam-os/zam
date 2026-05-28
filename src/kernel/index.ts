@@ -108,6 +108,8 @@ export type { ReviewQueue, ReviewQueueItem, ReviewQueueOptions } from "./schedul
 // Recall
 export { generatePrompt } from "./recall/prompter.js";
 export type { RecallPrompt, PromptInput } from "./recall/prompter.js";
+export { resolveReference, matchesFilePath, normalizePath } from "./recall/reference-resolver.js";
+export type { ResolvedReference } from "./recall/reference-resolver.js";
 
 export { evaluateRating } from "./recall/evaluator.js";
 export type { EvaluateInput, EvaluateResult } from "./recall/evaluator.js";

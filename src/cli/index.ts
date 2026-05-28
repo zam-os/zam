@@ -13,6 +13,7 @@ import { settingsCommand } from "./commands/settings.js";
 import { whoamiCommand } from "./commands/whoami.js";
 import { connectorCommand } from "./commands/connector.js";
 import { goalCommand } from "./commands/goal.js";
+import { gitSyncCommand } from "./commands/git-sync.js";
 
 const program = new Command();
 
@@ -37,5 +38,6 @@ program.addCommand(settingsCommand);
 program.addCommand(whoamiCommand);
 program.addCommand(connectorCommand);
 program.addCommand(goalCommand);
+program.addCommand(gitSyncCommand);
 
 program.parse();

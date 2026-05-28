@@ -1,0 +1,104 @@
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import {
+  resolveReference,
+  matchesFilePath,
+  normalizePath,
+} from "../../src/kernel/index.js";
+
+describe("ZAM Reference Resolver & Path Matching", () => {
+  let tempDir: string;
+
+  beforeEach(() => {
+    tempDir = mkdtempSync(join(tmpdir(), "zam-ref-test-"));
+  });
+
+  afterEach(() => {
+    try {
+      rmSync(tempDir, { recursive: true, force: true });
+    } catch {
+      // ignore
+    }
+  });
+
+  describe("normalizePath", () => {
+    it("strips anchors and normalizes separators", () => {
+      expect(normalizePath("src\\kernel\\db\\schema.ts#L10-L20")).toBe("src/kernel/db/schema.ts");
+      expect(normalizePath("CLAUDE.md#L45")).toBe("claude.md");
+      expect(normalizePath("  docs/architecture.md  ")).toBe("docs/architecture.md");
+    });
+  });
+
+  describe("matchesFilePath", () => {
+    it("matches basic relative paths", () => {
+      expect(matchesFilePath("src/kernel/db/schema.ts", "src/kernel/db/schema.ts")).toBe(true);
+      expect(matchesFilePath("src\\kernel\\db\\schema.ts", "src/kernel/db/schema.ts")).toBe(true);
+      expect(matchesFilePath("src/kernel/db/schema.ts#L10-L20", "src/kernel/db/schema.ts")).toBe(true);
+    });
+
+    it("matches trailing segments for relative/absolute mappings", () => {
+      expect(matchesFilePath("C:/src/github/zam/src/kernel/db/schema.ts", "src/kernel/db/schema.ts")).toBe(true);
+      expect(matchesFilePath("src/kernel/db/schema.ts", "C:/src/github/zam/src/kernel/db/schema.ts")).toBe(true);
+    });
+
+    it("matches GitHub URIs against local relative paths", () => {
+      expect(
+        matchesFilePath(
+          "https://github.com/zam-os/zam/blob/main/src/kernel/db/schema.ts#L15-L30",
+          "src/kernel/db/schema.ts",
+        ),
+      ).toBe(true);
+      expect(
+        matchesFilePath(
+          "https://github.com/zam-os/zam/blob/main/docs/architecture.md",
+          "docs/architecture.md",
+        ),
+      ).toBe(true);
+      expect(
+        matchesFilePath(
+          "https://github.com/zam-os/zam/blob/main/docs/architecture.md",
+          "src/kernel/db/schema.ts",
+        ),
+      ).toBe(false);
+    });
+
+    it("does not match generic web links or mismatched files", () => {
+      expect(matchesFilePath("https://google.com/search?q=test", "src/kernel/db/schema.ts")).toBe(false);
+      expect(matchesFilePath("src/kernel/db/schema.ts", "src/kernel/db/connection.ts")).toBe(false);
+    });
+  });
+
+  describe("resolveReference", () => {
+    it("resolves dynamic search directives", async () => {
+      const result = await resolveReference("search://websearch?q=fsrs+algorithm");
+      expect(result.sourceType).toBe("dynamic_search");
+      expect(result.content).toBe('QUERY_DIRECTIVE: Run web search for "fsrs algorithm"');
+    });
+
+    it("resolves local file paths and slices lines using anchors", async () => {
+      const testFilePath = join(tempDir, "test.txt");
+      writeFileSync(
+        testFilePath,
+        "Line 1\nLine 2\nLine 3\nLine 4\nLine 5\nLine 6",
+        "utf-8",
+      );
+
+      // Resolve whole file
+      const resultWhole = await resolveReference(testFilePath);
+      expect(resultWhole.sourceType).toBe("local");
+      expect(resultWhole.content).toContain("Line 1\nLine 2");
+
+      // Resolve specific range
+      const resultRange = await resolveReference(`${testFilePath}#L2-L4`);
+      expect(resultRange.sourceType).toBe("local");
+      expect(resultRange.content).toBe("Line 2\nLine 3\nLine 4");
+
+      // Resolve single line
+      const resultSingle = await resolveReference(`${testFilePath}#L5`);
+      expect(resultSingle.sourceType).toBe("local");
+      expect(resultSingle.content).toBe("Line 5");
+    });
+  });
+});
