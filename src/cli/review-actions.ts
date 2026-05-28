@@ -151,6 +151,9 @@ export async function runInteractiveReviewAction(
       console.log(`  Concept: ${updatedToken.concept}`);
       console.log(`  Domain:  ${updatedToken.domain || "(none)"}`);
       console.log(`  Bloom:   ${updatedToken.bloom_level}`);
+      if (updatedToken.source_link) {
+        console.log(`  Source:  ${updatedToken.source_link}`);
+      }
       console.log(`\n  ${refreshedPrompt.question}\n`);
       continue;
     }
@@ -242,6 +245,7 @@ async function promptTokenEdit(
       { name: "Bloom level", value: "bloom_level" },
       { name: "Context", value: "context" },
       { name: "Symbiosis mode", value: "symbiosis_mode" },
+      { name: "Source link", value: "source_link" },
       { name: "Cancel", value: "cancel" },
     ],
   }) as keyof UpdateTokenInput | "cancel";
@@ -297,6 +301,14 @@ async function promptTokenEdit(
         ],
       }) as SymbiosisMode | null;
       return mode === token.symbiosis_mode ? null : { symbiosis_mode: mode };
+    }
+
+    case "source_link": {
+      const link = await input({
+        message: "Source link (blank allowed):",
+        default: token.source_link ?? "",
+      });
+      return link === token.source_link ? null : { source_link: link || null };
     }
   }
 }

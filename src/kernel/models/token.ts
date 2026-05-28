@@ -22,6 +22,7 @@ export interface Token {
   bloom_level: BloomLevel;
   context: string;
   symbiosis_mode: SymbiosisMode | null;
+  source_link: string | null;
   created_at: string;
   updated_at: string;
   deprecated_at: string | null;
@@ -34,6 +35,7 @@ export interface CreateTokenInput {
   bloom_level?: BloomLevel;
   context?: string;
   symbiosis_mode?: SymbiosisMode | null;
+  source_link?: string | null;
 }
 
 export interface UpdateTokenInput {
@@ -42,6 +44,7 @@ export interface UpdateTokenInput {
   bloom_level?: BloomLevel;
   context?: string;
   symbiosis_mode?: SymbiosisMode | null;
+  source_link?: string | null;
 }
 
 export interface ListTokensOptions {
@@ -85,8 +88,8 @@ export function createToken(db: Database, input: CreateTokenInput): Token {
   }
 
   db.prepare(`
-    INSERT INTO tokens (id, slug, concept, domain, bloom_level, context, symbiosis_mode, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO tokens (id, slug, concept, domain, bloom_level, context, symbiosis_mode, source_link, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
     id,
     input.slug,
@@ -95,6 +98,7 @@ export function createToken(db: Database, input: CreateTokenInput): Token {
     bloom,
     input.context ?? "",
     input.symbiosis_mode ?? null,
+    input.source_link ?? null,
     now,
     now,
   );
@@ -163,6 +167,10 @@ export function updateToken(
     }
     fields.push("symbiosis_mode = ?");
     values.push(updates.symbiosis_mode);
+  }
+  if (updates.source_link !== undefined) {
+    fields.push("source_link = ?");
+    values.push(updates.source_link);
   }
 
   if (fields.length === 0) {

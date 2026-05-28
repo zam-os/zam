@@ -31,6 +31,7 @@ export interface GetReviewResponse {
   bloomVerb: string;
   question: string;
   state: string;
+  sourceLink?: string | null;
 }
 
 // ── Submit Rating ───────────────────────────────────────────────────────────
@@ -73,6 +74,7 @@ export interface ReviewActionRequest {
   bloomLevel?: number;
   context?: string;
   symbiosisMode?: "shadowing" | "copilot" | "autonomy" | "none";
+  sourceLink?: string | null;
   confirm?: boolean;
 }
 
@@ -106,6 +108,7 @@ export interface ReviewActionResponse {
     bloom_level: number;
     context: string;
     symbiosis_mode: "shadowing" | "copilot" | "autonomy" | null;
+    source_link: string | null;
     created_at: string;
     updated_at: string;
     deprecated_at: string | null;
@@ -119,6 +122,7 @@ export interface ReviewActionResponse {
       bloom_level: number;
       context: string;
       symbiosis_mode: "shadowing" | "copilot" | "autonomy" | null;
+      source_link: string | null;
       created_at: string;
       updated_at: string;
       deprecated_at: string | null;

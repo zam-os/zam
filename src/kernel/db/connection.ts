@@ -170,6 +170,11 @@ function runMigrations(db: DatabaseType): void {
     db.exec(`ALTER TABLE tokens ADD COLUMN deprecated_at TEXT`);
   }
 
+  // M004: add source_link to tokens
+  if (tokenCols.length > 0 && !tokenCols.some((c) => c.name === "source_link")) {
+    db.exec(`ALTER TABLE tokens ADD COLUMN source_link TEXT`);
+  }
+
   // M003: create agent_skills table (idempotent via IF NOT EXISTS in SCHEMA,
   // but also needed for databases that skipped the init path)
   db.exec(`

@@ -93,12 +93,14 @@ function parseTokenUpdates(opts: {
   bloom?: string;
   context?: string;
   mode?: string;
+  sourceLink?: string;
 }): {
   concept?: string;
   domain?: string;
   bloom_level?: BloomLevel;
   context?: string;
   symbiosis_mode?: SymbiosisMode | null;
+  source_link?: string | null;
 } {
   const updates: {
     concept?: string;
@@ -106,12 +108,16 @@ function parseTokenUpdates(opts: {
     bloom_level?: BloomLevel;
     context?: string;
     symbiosis_mode?: SymbiosisMode | null;
+    source_link?: string | null;
   } = {};
 
   if (opts.concept !== undefined) updates.concept = opts.concept;
   if (opts.domain !== undefined) updates.domain = opts.domain;
   if (opts.bloom !== undefined) updates.bloom_level = Number(opts.bloom) as BloomLevel;
   if (opts.context !== undefined) updates.context = opts.context;
+  if (opts.sourceLink !== undefined) {
+    updates.source_link = opts.sourceLink === "" ? null : opts.sourceLink;
+  }
   if (opts.mode !== undefined) {
     const validModes = ["shadowing", "copilot", "autonomy", "none"];
     if (!validModes.includes(opts.mode)) {
@@ -186,6 +192,7 @@ bridgeCommand
         concept: item.concept,
         domain: item.domain,
         bloomLevel: item.bloomLevel as BloomLevel,
+        sourceLink: item.sourceLink,
       });
 
       // Get full queue size for context
@@ -247,6 +254,7 @@ bridgeCommand
   .option("--bloom <level>", "Updated Bloom level for action=edit-token")
   .option("--context <context>", "Updated context for action=edit-token")
   .option("--mode <mode>", "Updated symbiosis mode for action=edit-token")
+  .option("--source-link <link>", "Updated source link for action=edit-token")
   .option("--confirm", "Confirm destructive delete actions")
   .action((opts) => {
     withDb((db) => {

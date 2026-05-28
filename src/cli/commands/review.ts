@@ -58,10 +58,14 @@ export const reviewCommand = new Command("review")
           concept: item.concept,
           domain: item.domain,
           bloomLevel: item.bloomLevel as BloomLevel,
+          sourceLink: item.sourceLink,
         });
 
         console.log(`\n[${index + 1}/${queue.items.length}] ${prompt.bloomVerb} (Bloom ${prompt.bloomLevel})`);
         console.log(`Domain: ${prompt.domain || "(none)"}`);
+        if (prompt.sourceLink) {
+          console.log(`Source: ${prompt.sourceLink}`);
+        }
         console.log(`\n  ${prompt.question}\n`);
 
         const action = await runInteractiveReviewAction({

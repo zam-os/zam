@@ -18,6 +18,7 @@ export interface RecallPrompt {
   bloomLevel: BloomLevel;
   bloomVerb: string;
   hints: string[];
+  sourceLink?: string | null;
 }
 
 const BLOOM_VERBS: Record<BloomLevel, string> = {
@@ -43,6 +44,7 @@ export interface PromptInput {
   concept: string;
   domain: string;
   bloomLevel: BloomLevel;
+  sourceLink?: string | null;
 }
 
 /**
@@ -65,5 +67,6 @@ export function generatePrompt(input: PromptInput): RecallPrompt {
     bloomLevel: bloom,
     bloomVerb: BLOOM_VERBS[bloom],
     hints: [],
+    sourceLink: input.sourceLink ?? null,
   };
 }

@@ -51,6 +51,7 @@ tokenCommand
   .requiredOption("--concept <concept>", "Concept description")
   .option("--domain <domain>", "Knowledge domain", "")
   .option("--bloom <level>", "Bloom taxonomy level (1-5)", "1")
+  .option("--source-link <link>", "Source file path or reference URL", "")
   .option("--json", "Output as JSON")
   .action((opts) => {
     withDb((db) => {
@@ -59,6 +60,7 @@ tokenCommand
         concept: opts.concept,
         domain: opts.domain,
         bloom_level: Number(opts.bloom) as BloomLevel,
+        source_link: opts.sourceLink || null,
       });
 
       if (opts.json) {
@@ -68,6 +70,9 @@ tokenCommand
         console.log(`  Concept: ${token.concept}`);
         console.log(`  Domain:  ${token.domain || "(none)"}`);
         console.log(`  Bloom:   ${token.bloom_level}`);
+        if (token.source_link) {
+          console.log(`  Source:  ${token.source_link}`);
+        }
       }
     });
   });
@@ -151,6 +156,7 @@ tokenCommand
   .option("--bloom <level>", "Updated Bloom taxonomy level (1-5)")
   .option("--context <context>", "Updated context (blank allowed)")
   .option("--mode <mode>", "Updated symbiosis mode: shadowing | copilot | autonomy | none")
+  .option("--source-link <link>", "Updated source file path or reference URL (blank allowed)")
   .option("--json", "Output as JSON")
   .action((opts) => {
     withDb((db) => {
@@ -160,12 +166,16 @@ tokenCommand
         bloom_level?: BloomLevel;
         context?: string;
         symbiosis_mode?: SymbiosisMode | null;
+        source_link?: string | null;
       } = {};
 
       if (opts.concept !== undefined) updates.concept = opts.concept;
       if (opts.domain !== undefined) updates.domain = opts.domain;
       if (opts.bloom !== undefined) updates.bloom_level = Number(opts.bloom) as BloomLevel;
       if (opts.context !== undefined) updates.context = opts.context;
+      if (opts.sourceLink !== undefined) {
+        updates.source_link = opts.sourceLink === "" ? null : opts.sourceLink;
+      }
       if (opts.mode !== undefined) {
         const validModes = ["shadowing", "copilot", "autonomy", "none"];
         if (!validModes.includes(opts.mode)) {
@@ -188,6 +198,7 @@ tokenCommand
       console.log(`  Bloom:   ${token.bloom_level}`);
       console.log(`  Context: ${token.context || "(none)"}`);
       console.log(`  Mode:    ${token.symbiosis_mode ?? "none"}`);
+      console.log(`  Source:  ${token.source_link || "(none)"}`);
     });
   });
 
@@ -337,6 +348,9 @@ tokenCommand
       console.log(`  Concept: ${token.concept}`);
       console.log(`  Domain:  ${token.domain || "(none)"}`);
       console.log(`  Bloom:   ${token.bloom_level}`);
+      if (token.source_link) {
+        console.log(`  Source:  ${token.source_link}`);
+      }
       console.log();
 
       if (card) {

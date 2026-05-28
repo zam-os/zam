@@ -52,7 +52,10 @@ describe("review maintenance primitives", () => {
       concept: "git branch shows branches",
       domain: "git",
       bloom_level: 1,
+      source_link: "src/git.ts#L10",
     });
+
+    expect(token.source_link).toBe("src/git.ts#L10");
 
     const updated = updateToken(db, token.slug, {
       concept: "git branch marks the current branch with *",
@@ -60,6 +63,7 @@ describe("review maintenance primitives", () => {
       bloom_level: 2,
       context: "cli",
       symbiosis_mode: "copilot",
+      source_link: "src/git.ts#L25",
     });
 
     expect(updated.slug).toBe(token.slug);
@@ -68,6 +72,12 @@ describe("review maintenance primitives", () => {
     expect(updated.bloom_level).toBe(2);
     expect(updated.context).toBe("cli");
     expect(updated.symbiosis_mode).toBe("copilot");
+    expect(updated.source_link).toBe("src/git.ts#L25");
+
+    const cleared = updateToken(db, token.slug, {
+      source_link: null,
+    });
+    expect(cleared.source_link).toBeNull();
   });
 
   it("previews and deletes a token with dependent learning data and skill references", () => {

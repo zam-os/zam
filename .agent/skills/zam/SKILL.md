@@ -21,7 +21,7 @@ All knowledge management is done through the `zam` CLI:
 zam init
 
 # Token management
-zam token register --slug <slug> --concept "<one sentence>" --domain <d> --bloom <1-5>
+zam token register --slug <slug> --concept "<one sentence>" --domain <d> --bloom <1-5> [--source-link <link>]
 zam token find --query "<keywords>"
 zam token list [--domain <d>]
 zam token prereq --token <child> --requires <parent>
@@ -250,6 +250,12 @@ After the user answers, ask:
 **WAIT for the user to provide a rating (1-4).**
 
 Submit the rating and log the step.
+
+#### Leveraging Source Links for AI Agent Context
+Each due token in a review session may contain a `sourceLink` attribute (which can be a workspace-relative file path like `src/db/connection.ts#L45-L60` or a remote documentation URL):
+1. **Retrieve the Context**: Before presenting the review question, the AI agent must attempt to inspect the referenced file or document. For local repository paths, use the `view_file` tool. For external URLs, use `read_url_content`.
+2. **Formulate Contextual Questions**: Instead of asking generic questions based strictly on the one-sentence concept text, use the retrieved code or documentation context to ask highly targeted, realistic, and deep conceptual questions (e.g., at Bloom level 2, 3, or 4).
+3. **Verify Responses Precisely**: Reference the retrieved material to precisely verify the user's answers, addressing specific edge cases, syntax, or trade-offs present in the actual codebase or documentation.
 
 ### STEP 5 — End session
 ```bash

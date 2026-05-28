@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS tokens (
   bloom_level   INTEGER NOT NULL DEFAULT 1 CHECK (bloom_level BETWEEN 1 AND 5),
   context       TEXT NOT NULL DEFAULT '',
   symbiosis_mode TEXT CHECK (symbiosis_mode IN ('shadowing', 'copilot', 'autonomy')),
+  source_link   TEXT,
   created_at    TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at    TEXT NOT NULL DEFAULT (datetime('now')),
   deprecated_at TEXT
