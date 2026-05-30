@@ -80,6 +80,7 @@ export const learnCommand = new Command("learn")
           domain: item.domain,
           bloomLevel: item.bloomLevel as BloomLevel,
           sourceLink: item.sourceLink,
+          question: item.question,
         });
 
         console.log(`\n${"─".repeat(50)}`);

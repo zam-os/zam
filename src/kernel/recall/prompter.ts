@@ -29,12 +29,12 @@ const BLOOM_VERBS: Record<BloomLevel, string> = {
   5: "Synthesize",
 };
 
-const BLOOM_PROMPTS: Record<BloomLevel, (concept: string) => string> = {
-  1: (c) => `What is: ${c}?`,
-  2: (c) => `Explain how this works: ${c}`,
-  3: (c) => `Apply this concept: ${c}`,
-  4: (c) => `Analyze the trade-offs: ${c}`,
-  5: (c) => `Design a solution using: ${c}`,
+const BLOOM_CUES: Record<BloomLevel, (slug: string) => string> = {
+  1: (slug) => `Recall the definition and core concept of: #${slug}`,
+  2: (slug) => `Explain the concept and how #${slug} works.`,
+  3: (slug) => `Describe how or where you would apply the concept of #${slug}.`,
+  4: (slug) => `Analyze the trade-offs, advantages, or alternatives of #${slug}.`,
+  5: (slug) => `How would you design a solution using the concept of #${slug}?`,
 };
 
 export interface PromptInput {
@@ -45,6 +45,15 @@ export interface PromptInput {
   domain: string;
   bloomLevel: BloomLevel;
   sourceLink?: string | null;
+  question?: string | null;
+}
+
+/**
+ * Generate a template-based concept-free recall cue using the slug and domain.
+ */
+export function generateConceptFreeCue(bloomLevel: BloomLevel, slug: string, domain: string): string {
+  const bloom = (bloomLevel >= 1 && bloomLevel <= 5 ? bloomLevel : 1) as BloomLevel;
+  return BLOOM_CUES[bloom](slug);
 }
 
 /**
@@ -57,11 +66,15 @@ export function generatePrompt(input: PromptInput): RecallPrompt {
     ? input.bloomLevel
     : 1) as BloomLevel;
 
+  const question = input.question?.trim()
+    ? input.question.trim()
+    : generateConceptFreeCue(bloom, input.slug, input.domain);
+
   return {
     cardId: input.cardId,
     tokenId: input.tokenId,
     slug: input.slug,
-    question: BLOOM_PROMPTS[bloom](input.concept),
+    question,
     concept: input.concept,
     domain: input.domain,
     bloomLevel: bloom,

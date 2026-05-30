@@ -18,15 +18,19 @@ import {
   deprecateToken,
   getTokenDeleteImpact,
   deleteToken,
+  getSetting,
+  generateQuestionViaLLM,
+  generateConceptFreeCue,
+  resolveReviewContext,
 } from "../../kernel/index.js";
 import type { BloomLevel, SymbiosisMode } from "../../kernel/index.js";
 import { resolveUser } from "./resolve-user.js";
 
-function withDb(fn: (db: Database) => void): void {
+async function withDb(fn: (db: Database) => Promise<void> | void): Promise<void> {
   let db: Database | undefined;
   try {
     db = openDatabase();
-    fn(db);
+    await fn(db);
   } catch (err) {
     console.error("Error:", (err as Error).message);
     process.exit(1);
@@ -52,26 +56,61 @@ tokenCommand
   .option("--domain <domain>", "Knowledge domain", "")
   .option("--bloom <level>", "Bloom taxonomy level (1-5)", "1")
   .option("--source-link <link>", "Source file path or reference URL", "")
+  .option("--question <question>", "Specific question prompt for recall", "")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      let question: string | null = opts.question || null;
+      if (!question) {
+        const isLlmEnabled = getSetting(db, "llm.enabled") === "true";
+        if (isLlmEnabled) {
+          console.log("Generating high-quality active-recall question via local LLM...");
+          try {
+            let sourceLinkContent: string | null = null;
+            if (opts.sourceLink) {
+              const resolved = await resolveReviewContext(opts.sourceLink).catch(() => null);
+              if (resolved) {
+                sourceLinkContent = resolved.content;
+              }
+            }
+            question = await generateQuestionViaLLM(db, {
+              slug: opts.slug,
+              concept: opts.concept,
+              domain: opts.domain,
+              bloomLevel: Number(opts.bloom),
+              context: "",
+              sourceLinkContent,
+            });
+            console.log(`Generated: "${question}"`);
+          } catch (err) {
+            console.warn(`LLM question generation failed: ${(err as Error).message}. Falling back to template.`);
+          }
+        }
+
+        if (!question) {
+          question = generateConceptFreeCue(Number(opts.bloom) as BloomLevel, opts.slug, opts.domain);
+        }
+      }
+
       const token = createToken(db, {
         slug: opts.slug,
         concept: opts.concept,
         domain: opts.domain,
         bloom_level: Number(opts.bloom) as BloomLevel,
         source_link: opts.sourceLink || null,
+        question,
       });
 
       if (opts.json) {
         console.log(JSON.stringify(token, null, 2));
       } else {
         console.log(`Registered token: ${token.slug} (${token.id})`);
-        console.log(`  Concept: ${token.concept}`);
-        console.log(`  Domain:  ${token.domain || "(none)"}`);
-        console.log(`  Bloom:   ${token.bloom_level}`);
+        console.log(`  Concept:  ${token.concept}`);
+        console.log(`  Domain:   ${token.domain || "(none)"}`);
+        console.log(`  Bloom:    ${token.bloom_level}`);
+        console.log(`  Question: ${token.question}`);
         if (token.source_link) {
-          console.log(`  Source:  ${token.source_link}`);
+          console.log(`  Source:   ${token.source_link}`);
         }
       }
     });
@@ -157,9 +196,10 @@ tokenCommand
   .option("--context <context>", "Updated context (blank allowed)")
   .option("--mode <mode>", "Updated symbiosis mode: shadowing | copilot | autonomy | none")
   .option("--source-link <link>", "Updated source file path or reference URL (blank allowed)")
+  .option("--question <question>", "Updated question text (blank allowed)")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
+  .action(async (opts) => {
+    await withDb(async (db) => {
       const updates: {
         concept?: string;
         domain?: string;
@@ -167,6 +207,7 @@ tokenCommand
         context?: string;
         symbiosis_mode?: SymbiosisMode | null;
         source_link?: string | null;
+        question?: string | null;
       } = {};
 
       if (opts.concept !== undefined) updates.concept = opts.concept;
@@ -175,6 +216,9 @@ tokenCommand
       if (opts.context !== undefined) updates.context = opts.context;
       if (opts.sourceLink !== undefined) {
         updates.source_link = opts.sourceLink === "" ? null : opts.sourceLink;
+      }
+      if (opts.question !== undefined) {
+        updates.question = opts.question === "" ? null : opts.question;
       }
       if (opts.mode !== undefined) {
         const validModes = ["shadowing", "copilot", "autonomy", "none"];
@@ -193,12 +237,13 @@ tokenCommand
       }
 
       console.log(`Updated token: ${token.slug}`);
-      console.log(`  Concept: ${token.concept}`);
-      console.log(`  Domain:  ${token.domain || "(none)"}`);
-      console.log(`  Bloom:   ${token.bloom_level}`);
-      console.log(`  Context: ${token.context || "(none)"}`);
-      console.log(`  Mode:    ${token.symbiosis_mode ?? "none"}`);
-      console.log(`  Source:  ${token.source_link || "(none)"}`);
+      console.log(`  Concept:  ${token.concept}`);
+      console.log(`  Domain:   ${token.domain || "(none)"}`);
+      console.log(`  Bloom:    ${token.bloom_level}`);
+      console.log(`  Question: ${token.question || "(none)"}`);
+      console.log(`  Context:  ${token.context || "(none)"}`);
+      console.log(`  Mode:     ${token.symbiosis_mode ?? "none"}`);
+      console.log(`  Source:   ${token.source_link || "(none)"}`);
     });
   });
 
@@ -345,11 +390,12 @@ tokenCommand
       }
 
       console.log(`Token: ${token.slug} (${token.id})`);
-      console.log(`  Concept: ${token.concept}`);
-      console.log(`  Domain:  ${token.domain || "(none)"}`);
-      console.log(`  Bloom:   ${token.bloom_level}`);
+      console.log(`  Concept:  ${token.concept}`);
+      console.log(`  Question: ${token.question || "(none)"}`);
+      console.log(`  Domain:   ${token.domain || "(none)"}`);
+      console.log(`  Bloom:    ${token.bloom_level}`);
       if (token.source_link) {
-        console.log(`  Source:  ${token.source_link}`);
+        console.log(`  Source:   ${token.source_link}`);
       }
       console.log();
 

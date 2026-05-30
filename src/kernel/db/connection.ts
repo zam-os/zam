@@ -175,6 +175,11 @@ function runMigrations(db: DatabaseType): void {
     db.exec(`ALTER TABLE tokens ADD COLUMN source_link TEXT`);
   }
 
+  // M005: add question to tokens
+  if (tokenCols.length > 0 && !tokenCols.some((c) => c.name === "question")) {
+    db.exec(`ALTER TABLE tokens ADD COLUMN question TEXT`);
+  }
+
   // M003: create agent_skills table (idempotent via IF NOT EXISTS in SCHEMA,
   // but also needed for databases that skipped the init path)
   db.exec(`

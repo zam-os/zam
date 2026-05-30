@@ -27,6 +27,7 @@ export interface ReviewQueueItem {
   state: string;         // 'new' | 'learning' | 'review' | 'relearning'
   dueAt: string;
   sourceLink: string | null;
+  question: string | null;
 }
 
 export interface ReviewQueue {
@@ -49,6 +50,7 @@ interface CardRow {
   state: string;
   due_at: string;
   source_link: string | null;
+  question: string | null;
 }
 
 // ── Functions ────────────────────────────────────────────────────────────────
@@ -89,7 +91,8 @@ export function buildReviewQueue(
          t.bloom_level AS bloom_level,
          c.state    AS state,
          c.due_at   AS due_at,
-         t.source_link AS source_link
+         t.source_link AS source_link,
+         t.question AS question
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
@@ -113,7 +116,8 @@ export function buildReviewQueue(
          t.bloom_level AS bloom_level,
          c.state    AS state,
          c.due_at   AS due_at,
-         t.source_link AS source_link
+         t.source_link AS source_link,
+         t.question AS question
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
@@ -189,6 +193,7 @@ function rowToItem(row: CardRow): ReviewQueueItem {
     state: row.state,
     dueAt: row.due_at,
     sourceLink: row.source_link,
+    question: row.question,
   };
 }
 

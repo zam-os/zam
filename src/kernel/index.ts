@@ -106,8 +106,9 @@ export { buildReviewQueue } from "./scheduler/queue.js";
 export type { ReviewQueue, ReviewQueueItem, ReviewQueueOptions } from "./scheduler/queue.js";
 
 // Recall
-export { generatePrompt } from "./recall/prompter.js";
+export { generatePrompt, generateConceptFreeCue } from "./recall/prompter.js";
 export type { RecallPrompt, PromptInput } from "./recall/prompter.js";
+export { generateQuestionViaLLM } from "./recall/llm.js";
 export {
   resolveReference,
   resolveReviewContext,
