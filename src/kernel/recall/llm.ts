@@ -377,18 +377,44 @@ export async function ensureLocalLlmRunning(db: Database): Promise<void> {
   // Poll server to verify it starts and becomes online
   console.log("Waiting for LLM server to become responsive and load the model...");
   let attempts = 0;
-  const maxAttempts = 15; // 7.5 seconds total
-  while (attempts < maxAttempts) {
+  const dotsPerLine = 30; // 15 seconds per line of dots
+  
+  while (true) {
     await new Promise((resolve) => setTimeout(resolve, 500));
     const isOnlineNow = await isLlmOnline(url);
     if (isOnlineNow) {
+      if (attempts > 0) {
+        process.stdout.write("\n");
+      }
       console.log("\x1b[32m✓ Local LLM server is online and ready!\x1b[0m");
       return;
     }
     attempts++;
     process.stdout.write(".");
+    if (attempts % dotsPerLine === 0) {
+      process.stdout.write("\n");
+    }
+    
+    // 60 attempts * 500ms = 30 seconds
+    if (attempts >= 60) {
+      process.stdout.write("\n");
+      console.log("\n\x1b[33m⚠ The LLM server is taking a while to load the model.\x1b[0m");
+      console.log("\x1b[2m(This is expected when transitioning between models or starting up from cold.)\x1b[0m");
+      
+      const { confirm } = await import("@inquirer/prompts");
+      const keepWaiting = await confirm({
+        message: "Would you like to keep waiting?",
+        default: true,
+      }).catch(() => false);
+      
+      if (!keepWaiting) {
+        console.warn("\x1b[33m⚠ Proceeding in offline-mode (without active LLM evaluations for this session).\x1b[0m\n");
+        return;
+      }
+      
+      console.log("Continuing to wait for model loading...");
+      attempts = 0; // reset counter
+    }
   }
-  process.stdout.write("\n");
-  console.warn("\x1b[33m⚠ LLM server is taking a while to respond. Proceeding without active evaluations for now.\x1b[0m");
 }
 
