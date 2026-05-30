@@ -246,7 +246,7 @@ export async function ensureLocalLlmRunning(db: Database): Promise<void> {
   // Detect which runner to start
   // Port 8000 or 8080 -> FastFlowLM
   // Port 11434 -> Ollama
-  let runner: "fastflowlm" | "ollama" | "unknown" = "unknown";
+  let runner: "fastflowlm" | "ollama" | "generic" | "unknown" = "unknown";
   let port = "8000";
 
   try {
@@ -286,7 +286,7 @@ export async function ensureLocalLlmRunning(db: Database): Promise<void> {
       console.error(`\x1b[31m✗ Failed to launch FastFlowLM process: ${(err as Error).message}\x1b[0m`);
       return;
     }
-  } else if (runner === "ollama") {
+  } else if (runner === "ollama" || runner === "generic") {
     const hasOllamaCmd = hasCommand("ollama");
     if (!hasOllamaCmd) {
       console.warn("\x1b[31m✗ Ollama is configured but the 'ollama' command is not available in PATH.\x1b[0m");
