@@ -76,7 +76,7 @@ export const learnCommand = new Command("learn")
           "\n\x1b[33m⚠ LLM-Feedback & automatische Übersetzung sind deaktiviert.\x1b[0m",
         );
         console.log(
-          "  Aktivieren mit: \x1b[36mnpm run dev -- settings set --key llm.enabled --value true\x1b[0m\n",
+          "  Aktivieren mit: \x1b[36mnpm run dev -- settings llm on\x1b[0m\n",
         );
       }
 

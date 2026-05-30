@@ -62,21 +62,20 @@ settingsCommand
 // ── zam settings get ──────────────────────────────────────────────────────
 
 settingsCommand
-  .command("get")
+  .command("get <key>")
   .description("Get a single setting")
-  .requiredOption("--key <key>", "Setting key")
   .option("--json", "Output as JSON")
-  .action((opts) => {
+  .action((key, opts) => {
     withDb((db) => {
-      const value = getSetting(db, opts.key);
+      const value = getSetting(db, key);
 
       if (opts.json) {
-        console.log(JSON.stringify({ key: opts.key, value: value ?? null }));
+        console.log(JSON.stringify({ key, value: value ?? null }));
         return;
       }
 
       if (value === undefined) {
-        console.log(`Not set: ${opts.key}`);
+        console.log(`Not set: ${key}`);
       } else {
         console.log(value);
       }
@@ -86,16 +85,23 @@ settingsCommand
 // ── zam settings set ──────────────────────────────────────────────────────
 
 settingsCommand
-  .command("set")
+  .command("set <key> <value>")
   .description("Set a setting")
-  .requiredOption("--key <key>", "Setting key")
-  .requiredOption("--value <value>", "Setting value")
   .option("--quiet", "Suppress output")
-  .action((opts) => {
+  .action((key, value, opts) => {
     withDb((db) => {
-      setSetting(db, opts.key, opts.value);
+      let parsedVal = value;
+      if (key === "llm.enabled") {
+        const lower = value.toLowerCase();
+        if (lower === "on" || lower === "enable" || lower === "enabled" || lower === "true") {
+          parsedVal = "true";
+        } else if (lower === "off" || lower === "disable" || lower === "disabled" || lower === "false") {
+          parsedVal = "false";
+        }
+      }
+      setSetting(db, key, parsedVal);
       if (!opts.quiet) {
-        console.log(`Set ${opts.key} = ${opts.value}`);
+        console.log(`Set ${key} = ${parsedVal}`);
       }
     });
   });
@@ -103,19 +109,70 @@ settingsCommand
 // ── zam settings delete ───────────────────────────────────────────────────
 
 settingsCommand
-  .command("delete")
+  .command("delete <key>")
   .description("Delete a setting")
-  .requiredOption("--key <key>", "Setting key")
   .option("--quiet", "Suppress output")
-  .action((opts) => {
+  .action((key, opts) => {
     withDb((db) => {
-      const deleted = deleteSetting(db, opts.key);
+      const deleted = deleteSetting(db, key);
       if (!opts.quiet) {
         if (deleted) {
-          console.log(`Deleted: ${opts.key}`);
+          console.log(`Deleted: ${key}`);
         } else {
-          console.log(`Not found: ${opts.key}`);
+          console.log(`Not found: ${key}`);
         }
       }
     });
   });
+
+// ── zam settings llm [state] ──────────────────────────────────────────────
+
+settingsCommand
+  .command("llm [state]")
+  .description("Quickly enable/disable or check local LLM integration (on/off/enable/disable)")
+  .action((state) => {
+    withDb((db) => {
+      if (!state) {
+        const enabled = getSetting(db, "llm.enabled") || "false";
+        console.log(
+          `LLM Integration is currently: ${
+            enabled === "true"
+              ? "\x1b[32mON (enabled)\x1b[0m"
+              : "\x1b[31mOFF (disabled)\x1b[0m"
+          }`,
+        );
+        return;
+      }
+
+      const lower = state.toLowerCase();
+      let value = "false";
+      if (
+        lower === "on" ||
+        lower === "enable" ||
+        lower === "enabled" ||
+        lower === "true"
+      ) {
+        value = "true";
+      } else if (
+        lower === "off" ||
+        lower === "disable" ||
+        lower === "disabled" ||
+        lower === "false"
+      ) {
+        value = "false";
+      } else {
+        console.error(`Invalid state: ${state}. Use on, off, enable, or disable.`);
+        process.exit(1);
+      }
+
+      setSetting(db, "llm.enabled", value);
+      console.log(
+        `LLM Integration is now: ${
+          value === "true"
+            ? "\x1b[32mON (enabled)\x1b[0m"
+            : "\x1b[31mOFF (disabled)\x1b[0m"
+        }`,
+      );
+    });
+  });
+
