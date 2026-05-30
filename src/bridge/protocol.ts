@@ -21,6 +21,24 @@ export interface CheckDueResponse {
 
 // ── Get Review ──────────────────────────────────────────────────────────────
 
+/**
+ * A token's source_link resolved into ready-to-use context.
+ *
+ * `sourceType` tells the AI client how to treat `content`:
+ * - `local` / `remote_web`: the literal file/page text (already line-sliced
+ *   when the link carried a `#Lx-Ly` anchor). Ground questions in it directly.
+ * - `dynamic_search`: `content` is a `QUERY_DIRECTIVE` — run the web search it
+ *   names, then ground the review in the results.
+ */
+export interface ResolvedReviewContext {
+  sourceLink: string;
+  sourceType: "local" | "remote_web" | "dynamic_search";
+  content: string;
+  filePath?: string;
+  url?: string;
+  truncated: boolean;
+}
+
 export interface GetReviewResponse {
   cardId: string;
   tokenId: string;
@@ -32,6 +50,8 @@ export interface GetReviewResponse {
   question: string;
   state: string;
   sourceLink?: string | null;
+  /** Present when the token has a source_link and resolution was not disabled. */
+  resolvedContext?: ResolvedReviewContext | null;
 }
 
 // ── Submit Rating ───────────────────────────────────────────────────────────
@@ -170,6 +190,7 @@ export interface AddTokenRequest {
   bloomLevel: number;
   context?: string;
   symbiosisMode?: "shadowing" | "copilot" | "autonomy";
+  source_link?: string | null; // file path / reference URL; stdin payload is snake_case
   prerequisites?: string[]; // slugs of prerequisite tokens
   userId?: string;          // if provided, ensures a card is created
 }

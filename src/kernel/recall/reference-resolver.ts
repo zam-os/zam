@@ -9,6 +9,22 @@ export interface ResolvedReference {
 }
 
 /**
+ * A source reference resolved and bounded for inclusion in a review payload.
+ * Same shape as ResolvedReference plus the originating link and a truncation flag.
+ */
+export interface ReviewContext {
+  sourceLink: string;
+  sourceType: ResolvedReference["sourceType"];
+  content: string;
+  filePath?: string;
+  url?: string;
+  truncated: boolean;
+}
+
+/** Default cap on resolved content length, so bridge JSON / terminal output stays bounded. */
+export const DEFAULT_REVIEW_CONTEXT_MAX_CHARS = 6000;
+
+/**
  * Strips HTML tags and attempts to convert basic structure to readable text/markdown.
  */
 function htmlToText(html: string): string {
@@ -187,6 +203,40 @@ export async function resolveReference(sourceLink: string): Promise<ResolvedRefe
     sourceType: "local",
     content: `Local reference file not found or unreadable.\nReference: ${cleaned}`,
     filePath: absolutePath,
+  };
+}
+
+/**
+ * Resolve a token's source_link into bounded, review-ready context.
+ *
+ * Wraps {@link resolveReference} for the review/bridge flow: returns `null`
+ * for empty links and caps content length so the surrounding payload (bridge
+ * JSON or terminal output) stays manageable, flagging when truncation occurred.
+ */
+export async function resolveReviewContext(
+  sourceLink: string | null | undefined,
+  opts: { maxChars?: number } = {},
+): Promise<ReviewContext | null> {
+  const cleaned = sourceLink?.trim();
+  if (!cleaned) return null;
+
+  const maxChars = opts.maxChars ?? DEFAULT_REVIEW_CONTEXT_MAX_CHARS;
+  const resolved = await resolveReference(cleaned);
+
+  let content = resolved.content;
+  let truncated = false;
+  if (content.length > maxChars) {
+    content = content.slice(0, maxChars);
+    truncated = true;
+  }
+
+  return {
+    sourceLink: cleaned,
+    sourceType: resolved.sourceType,
+    content,
+    filePath: resolved.filePath,
+    url: resolved.url,
+    truncated,
   };
 }
 

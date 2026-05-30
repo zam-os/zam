@@ -8,6 +8,7 @@ import {
   openDatabase,
   buildReviewQueue,
   generatePrompt,
+  resolveReviewContext,
 } from "../../kernel/index.js";
 import type { Rating, BloomLevel } from "../../kernel/index.js";
 import { resolveUser } from "./resolve-user.js";
@@ -18,6 +19,7 @@ export const reviewCommand = new Command("review")
   .option("--user <id>", "User ID (default: whoami)")
   .option("--max-new <n>", "Maximum new cards", "10")
   .option("--max-reviews <n>", "Maximum review cards", "50")
+  .option("--no-resolve", "Skip resolving source_link into inline context")
   .action(async (opts) => {
     let db: Database | undefined;
     try {
@@ -65,6 +67,25 @@ export const reviewCommand = new Command("review")
         console.log(`Domain: ${prompt.domain || "(none)"}`);
         if (prompt.sourceLink) {
           console.log(`Source: ${prompt.sourceLink}`);
+          if (opts.resolve !== false) {
+            const ctx = await resolveReviewContext(item.sourceLink, { maxChars: 1200 }).catch(
+              () => null,
+            );
+            if (ctx && ctx.sourceType === "dynamic_search") {
+              console.log(`  ↳ ${ctx.content}`);
+            } else if (ctx?.content.trim()) {
+              const indented = ctx.content
+                .trimEnd()
+                .split("\n")
+                .map((line) => `  │ ${line}`)
+                .join("\n");
+              console.log("  Context:");
+              console.log(indented);
+              if (ctx.truncated) {
+                console.log("  │ … (truncated)");
+              }
+            }
+          }
         }
         console.log(`\n  ${prompt.question}\n`);
 
