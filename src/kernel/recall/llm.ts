@@ -1,5 +1,9 @@
 import type { Database } from "libsql";
 import { getSetting } from "../models/settings.js";
+import { spawn } from "node:child_process";
+import { existsSync } from "node:fs";
+import { hasCommand } from "../system/installer.js";
+import { getSystemProfile } from "../system/profiler.js";
 
 const BLOOM_VERBS = {
   1: "Remember",
@@ -131,7 +135,7 @@ FSRS Rating scale:
 - 4: perfect, instant, and accurate recall (Easy)
 
 Guidelines:
-1. Provide a constructive, encouraging evaluation in German (2-3 sentences) to promote the joy of learning.
+1. Provide a constructive, encouraging evaluation in German (2-3 sentences) to promote the joy of learning. Explicitly include a brief German translation/explanation of the original English question and target concept to ensure absolute clarity.
 2. Celebrate every honest attempt! Offer high praise or a motivating word of encouragement if they did well or tried hard.
 3. Suggest a clear FSRS rating (1 to 4) at the very end of your response (e.g. "Empfohlene Bewertung: 3").
 4. Output ONLY the evaluation and rating suggestion. Keep it concise, friendly, and clean. No conversational introduction or markdown wrapper.`;
@@ -188,3 +192,143 @@ Evaluation:`;
     throw err;
   }
 }
+
+/**
+ * Checks if the LLM server is online at the specified URL.
+ */
+export async function isLlmOnline(url: string): Promise<boolean> {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1500); // 1.5 seconds timeout
+    // Check OpenAI standard /models list to verify readiness
+    const res = await fetch(`${url}/models`, {
+      method: "GET",
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
+    return res.ok || res.status < 500;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Ensures that the local LLM server is running.
+ * If the setting `llm.enabled` is true, and the URL points to localhost,
+ * and the server is not responding, it attempts to launch the runner (flm or ollama)
+ * in the background and wait for it to become online.
+ */
+export async function ensureLocalLlmRunning(db: Database): Promise<void> {
+  const isEnabled = getSetting(db, "llm.enabled") === "true";
+  if (!isEnabled) {
+    return;
+  }
+
+  const url = getSetting(db, "llm.url") || "http://localhost:8000/v1";
+  const model = getSetting(db, "llm.model") || "qwen3.5:4b";
+
+  // Check if it's a local address
+  const isLocal = url.includes("localhost") || url.includes("127.0.0.1");
+  if (!isLocal) {
+    return;
+  }
+
+  console.log(`Checking if local LLM server is online at ${url}...`);
+  const online = await isLlmOnline(url);
+  if (online) {
+    console.log("\x1b[32m✓ Local LLM server is online and responsive.\x1b[0m");
+    return;
+  }
+
+  // Not online. Try to auto-start it.
+  console.log(`\x1b[33m⚠ Local LLM server is offline on ${url}.\x1b[0m`);
+
+  // Detect which runner to start
+  // Port 8000 or 8080 -> FastFlowLM
+  // Port 11434 -> Ollama
+  let runner: "fastflowlm" | "ollama" | "unknown" = "unknown";
+  let port = "8000";
+
+  try {
+    const urlObj = new URL(url);
+    port = urlObj.port || (urlObj.protocol === "https:" ? "443" : "80");
+    if (port === "8000" || port === "8080" || model.includes("qwen")) {
+      runner = "fastflowlm";
+    } else if (port === "11434" || model.includes("llama")) {
+      runner = "ollama";
+    }
+  } catch {
+    // fallback based on system recommendation
+    const profile = getSystemProfile();
+    runner = profile.recommendedRunner;
+  }
+
+  if (runner === "fastflowlm") {
+    const hasFlm = hasCommand("flm") || existsSync("C:\\Program Files\\flm\\flm.exe");
+    if (!hasFlm) {
+      console.warn("\x1b[31m✗ FastFlowLM is configured but could not be found on the system.\x1b[0m");
+      console.warn("Please run 'zam init' or install it manually.");
+      return;
+    }
+
+    const exe = existsSync("C:\\Program Files\\flm\\flm.exe") ? "C:\\Program Files\\flm\\flm.exe" : "flm";
+    const args = ["serve", model, "--port", port];
+
+    console.log(`\x1b[36mStarting FastFlowLM serve process: ${exe} ${args.join(" ")}\x1b[0m`);
+    
+    try {
+      const child = spawn(exe, args, {
+        detached: true,
+        stdio: "ignore",
+      });
+      child.unref();
+    } catch (err) {
+      console.error(`\x1b[31m✗ Failed to launch FastFlowLM process: ${(err as Error).message}\x1b[0m`);
+      return;
+    }
+  } else if (runner === "ollama") {
+    const hasOllamaCmd = hasCommand("ollama");
+    if (!hasOllamaCmd) {
+      console.warn("\x1b[31m✗ Ollama is configured but the 'ollama' command is not available in PATH.\x1b[0m");
+      console.warn("Please run 'zam init' or install it manually.");
+      return;
+    }
+
+    const exe = "ollama";
+    const args = ["serve"];
+
+    console.log(`\x1b[36mStarting Ollama serve process: ${exe} ${args.join(" ")}\x1b[0m`);
+    
+    try {
+      const child = spawn(exe, args, {
+        detached: true,
+        stdio: "ignore",
+      });
+      child.unref();
+    } catch (err) {
+      console.error(`\x1b[31m✗ Failed to launch Ollama process: ${(err as Error).message}\x1b[0m`);
+      return;
+    }
+  } else {
+    console.warn(`\x1b[33m⚠ Unknown local LLM runner configured. Cannot auto-start.\x1b[0m`);
+    return;
+  }
+
+  // Poll server to verify it starts and becomes online
+  console.log("Waiting for LLM server to become responsive and load the model...");
+  let attempts = 0;
+  const maxAttempts = 15; // 7.5 seconds total
+  while (attempts < maxAttempts) {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const isOnlineNow = await isLlmOnline(url);
+    if (isOnlineNow) {
+      console.log("\x1b[32m✓ Local LLM server is online and ready!\x1b[0m");
+      return;
+    }
+    attempts++;
+    process.stdout.write(".");
+  }
+  process.stdout.write("\n");
+  console.warn("\x1b[33m⚠ LLM server is taking a while to respond. Proceeding without active evaluations for now.\x1b[0m");
+}
+

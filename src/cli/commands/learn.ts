@@ -22,6 +22,7 @@ import {
   resolveReviewContext,
   getSetting,
   evaluateAnswerViaLLM,
+  ensureLocalLlmRunning,
 } from "../../kernel/index.js";
 import type { BloomLevel } from "../../kernel/index.js";
 import { formatHeader, formatReveal } from "../learn-format.js";
@@ -46,6 +47,9 @@ export const learnCommand = new Command("learn")
     try {
       db = openDatabase();
       const userId = resolveUser(opts, db);
+
+      // Ensure local LLM runner is running if enabled and configured locally
+      await ensureLocalLlmRunning(db);
 
       const queue = buildReviewQueue(db, {
         userId,
