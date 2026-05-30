@@ -129,8 +129,10 @@ export const gitSyncCommand = new Command("git-sync")
       for (const token of matchedTokens) {
         const card = getCard(db, token.id, userId);
         if (card) {
-          // Reset interval / decay stability: FSRS stability is cut significantly to trigger quick review
-          const newStability = Math.min(0.2, card.stability / 4.0);
+          // Decay stability to a quarter (concept's source changed → likely stale),
+          // with a 0.2-day floor so the card surfaces for review soon. Using max,
+          // not min: min would collapse every card to <=0.2 regardless of prior strength.
+          const newStability = Math.max(0.2, card.stability / 4.0);
           
           db.prepare(`
             UPDATE cards
