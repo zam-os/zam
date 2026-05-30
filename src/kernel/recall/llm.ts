@@ -194,6 +194,66 @@ Evaluation:`;
 }
 
 /**
+ * Translate a question from English into German using the local LLM.
+ */
+export async function translateQuestionViaLLM(
+  db: Database,
+  question: string
+): Promise<string> {
+  const isEnabled = getSetting(db, "llm.enabled") === "true";
+  if (!isEnabled) {
+    throw new Error("LLM integration is disabled in settings");
+  }
+
+  const url = getSetting(db, "llm.url") || "http://localhost:8000/v1";
+  const model = getSetting(db, "llm.model") || "qwen3.5:4b";
+  const apiKey = getSetting(db, "llm.api_key") || "sk-none";
+
+  const systemPrompt = `You are a highly precise translator. Translate the given English active-recall question into clear, natural German.
+Output ONLY the raw translation. Do not include any headers, preamble, quotes, or conversational filler.`;
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 seconds timeout
+
+  try {
+    const res = await fetch(`${url}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: question },
+        ],
+        temperature: 0.1,
+        max_tokens: 150,
+      }),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!res.ok) {
+      throw new Error(`Translation failed: ${res.statusText}`);
+    }
+
+    const data = (await res.json()) as any;
+    const content = data.choices?.[0]?.message?.content;
+    if (!content) {
+      throw new Error("Empty translation response");
+    }
+
+    return content.trim();
+  } catch (err) {
+    clearTimeout(timeoutId);
+    throw err;
+  }
+}
+
+/**
  * Checks if the LLM server is online at the specified URL.
  */
 export async function isLlmOnline(url: string): Promise<boolean> {

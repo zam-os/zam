@@ -23,6 +23,7 @@ import {
   getSetting,
   evaluateAnswerViaLLM,
   ensureLocalLlmRunning,
+  translateQuestionViaLLM,
 } from "../../kernel/index.js";
 import type { BloomLevel } from "../../kernel/index.js";
 import { formatHeader, formatReveal } from "../learn-format.js";
@@ -68,6 +69,17 @@ export const learnCommand = new Command("learn")
         `  New: ${queue.newCount}  Review: ${queue.reviewCount}  Relearn: ${queue.relearnCount}`,
       );
       console.log(`  Domains: ${queue.totalDomains.join(", ")}`);
+      
+      const isLlmEnabled = getSetting(db, "llm.enabled") === "true";
+      if (!isLlmEnabled) {
+        console.log(
+          "\n\x1b[33m⚠ LLM-Feedback & automatische Übersetzung sind deaktiviert.\x1b[0m",
+        );
+        console.log(
+          "  Aktivieren mit: \x1b[36mnpm run dev -- settings set --key llm.enabled --value true\x1b[0m\n",
+        );
+      }
+
       console.log(
         "\nRecall each answer first, reveal it, then rate yourself honestly.",
       );
@@ -92,6 +104,16 @@ export const learnCommand = new Command("learn")
         console.log(`\n${"─".repeat(50)}`);
         console.log(`[${index + 1}/${queue.items.length}] ${formatHeader(item)}`);
         console.log(`\n  ${prompt.question}`);
+
+        // Dynamically translate question if LLM is enabled
+        if (isLlmEnabled) {
+          try {
+            const translation = await translateQuestionViaLLM(db, prompt.question);
+            console.log(`  \x1b[2m(Deutsch: ${translation})\x1b[0m`);
+          } catch {
+            // ignore translation failures gracefully
+          }
+        }
 
         // Capture the learner's answer FIRST — nothing is revealed yet.
         // Typing a stop word (or Ctrl+C) ends the session gracefully.
