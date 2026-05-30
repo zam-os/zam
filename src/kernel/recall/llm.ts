@@ -93,3 +93,98 @@ Active-Recall Question:`;
     throw err;
   }
 }
+
+/**
+ * Warmly evaluate the learner's active-recall answer against the target concept.
+ * Suggests an FSRS rating (1-4) and translates or explains in German with praise/motivation.
+ */
+export async function evaluateAnswerViaLLM(
+  db: Database,
+  input: {
+    slug: string;
+    concept: string;
+    domain: string;
+    bloomLevel: number;
+    context?: string;
+    question: string;
+    userAnswer: string;
+    sourceLinkContent?: string | null;
+  }
+): Promise<string> {
+  const isEnabled = getSetting(db, "llm.enabled") === "true";
+  if (!isEnabled) {
+    throw new Error("LLM integration is disabled in settings (llm.enabled)");
+  }
+
+  const url = getSetting(db, "llm.url") || "http://localhost:8000/v1";
+  const model = getSetting(db, "llm.model") || "qwen3.5:4b";
+  const apiKey = getSetting(db, "llm.api_key") || "sk-none";
+
+  const systemPrompt = `You are ZAM, an extremely warm, encouraging, and patient skills trainer.
+Your mission is to build lasting autonomy through conceptual knowledge, not rote procedure.
+Compare the learner's active-recall answer against the target concept, context, and optional source code.
+
+FSRS Rating scale:
+- 1: drew a blank / completely forgot or wrong (Again)
+- 2: hard recall / partially correct (Hard)
+- 3: knew it / mostly correct (Good)
+- 4: perfect, instant, and accurate recall (Easy)
+
+Guidelines:
+1. Provide a constructive, encouraging evaluation in German (2-3 sentences) to promote the joy of learning.
+2. Celebrate every honest attempt! Offer high praise or a motivating word of encouragement if they did well or tried hard.
+3. Suggest a clear FSRS rating (1 to 4) at the very end of your response (e.g. "Empfohlene Bewertung: 3").
+4. Output ONLY the evaluation and rating suggestion. Keep it concise, friendly, and clean. No conversational introduction or markdown wrapper.`;
+
+  const userPrompt = `Domain: ${input.domain}
+Slug: ${input.slug}
+Recall Question: ${input.question}
+Learner's Answer: ${input.userAnswer}
+
+Target Concept (Correct Answer): ${input.concept}
+Target Context: ${input.context || "(none)"}
+${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}` : ""}
+
+Evaluation:`;
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 12000); // 12 seconds timeout
+
+  try {
+    const res = await fetch(`${url}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.2,
+        max_tokens: 300,
+      }),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!res.ok) {
+      const errorText = await res.text().catch(() => "");
+      throw new Error(`LLM evaluation failed: ${res.statusText} (${res.status}) - ${errorText}`);
+    }
+
+    const data = (await res.json()) as any;
+    const content = data.choices?.[0]?.message?.content;
+    if (!content) {
+      throw new Error("Empty response from LLM");
+    }
+
+    return content.trim();
+  } catch (err) {
+    clearTimeout(timeoutId);
+    throw err;
+  }
+}

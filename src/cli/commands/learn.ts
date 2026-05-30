@@ -20,6 +20,8 @@ import {
   getTokenById,
   openDatabase,
   resolveReviewContext,
+  getSetting,
+  evaluateAnswerViaLLM,
 } from "../../kernel/index.js";
 import type { BloomLevel } from "../../kernel/index.js";
 import { formatHeader, formatReveal } from "../learn-format.js";
@@ -115,6 +117,30 @@ export const learnCommand = new Command("learn")
           resolved = await resolveReviewContext(item.sourceLink).catch(() => null);
         }
         const token = getTokenById(db, item.tokenId);
+
+        // Perform LLM evaluation if enabled and there is a typed answer
+        const isLlmEnabled = getSetting(db, "llm.enabled") === "true";
+        if (isLlmEnabled && answer.trim().length > 0) {
+          console.log("\n  Evaluating answer via local LLM...");
+          try {
+            const evaluation = await evaluateAnswerViaLLM(db, {
+              slug: item.slug,
+              concept: item.concept,
+              domain: item.domain,
+              bloomLevel: item.bloomLevel,
+              context: token?.context,
+              question: prompt.question,
+              userAnswer: answer,
+              sourceLinkContent: resolved?.content,
+            });
+            console.log(`\n  ── ZAM Feedback ${"─".repeat(34)}`);
+            for (const line of evaluation.split("\n")) {
+              console.log(`  ${line}`);
+            }
+          } catch (err) {
+            console.warn(`\n  [LLM Evaluation skipped: ${(err as Error).message}]`);
+          }
+        }
 
         console.log(`\n  ── Answer ${"─".repeat(38)}`);
         const reveal = formatReveal({
