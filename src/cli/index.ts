@@ -15,6 +15,7 @@ import { whoamiCommand } from "./commands/whoami.js";
 import { connectorCommand } from "./commands/connector.js";
 import { goalCommand } from "./commands/goal.js";
 import { gitSyncCommand } from "./commands/git-sync.js";
+import { workspaceCommand } from "./commands/workspace.js";
 
 const program = new Command();
 
@@ -41,5 +42,6 @@ program.addCommand(whoamiCommand);
 program.addCommand(connectorCommand);
 program.addCommand(goalCommand);
 program.addCommand(gitSyncCommand);
+program.addCommand(workspaceCommand);
 
 program.parse();

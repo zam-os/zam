@@ -202,3 +202,10 @@ export type { Credentials, TursoCredentials, ADOCredentials } from "./credential
 // Connectors
 export { loadADOConfig, fetchActiveWorkItems } from "./connectors/azure-devops.js";
 export type { ADOConfig, WorkItem } from "./connectors/azure-devops.js";
+
+// System Profiling & Onboarding
+export { getSystemProfile } from "./system/profiler.js";
+export type { SystemProfile } from "./system/profiler.js";
+export { hasCommand, installFastFlowLM, installOllama } from "./system/installer.js";
+export type { InstallResult } from "./system/installer.js";
+export { getPackageSkillPath, distributeGlobalSkills, injectShellHooks } from "./system/hooks.js";
