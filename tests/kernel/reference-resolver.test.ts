@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
   resolveReference,
+  resolveReviewContext,
   matchesFilePath,
   normalizePath,
 } from "../../src/kernel/index.js";
@@ -99,6 +100,42 @@ describe("ZAM Reference Resolver & Path Matching", () => {
       const resultSingle = await resolveReference(`${testFilePath}#L5`);
       expect(resultSingle.sourceType).toBe("local");
       expect(resultSingle.content).toBe("Line 5");
+    });
+  });
+
+  describe("resolveReviewContext", () => {
+    it("returns null for empty or whitespace-only links", async () => {
+      expect(await resolveReviewContext(null)).toBeNull();
+      expect(await resolveReviewContext(undefined)).toBeNull();
+      expect(await resolveReviewContext("   ")).toBeNull();
+    });
+
+    it("wraps resolved content with the originating link and a truncation flag", async () => {
+      const testFilePath = join(tempDir, "ctx.txt");
+      writeFileSync(testFilePath, "alpha\nbeta\ngamma", "utf-8");
+
+      const ctx = await resolveReviewContext(`${testFilePath}#L2`);
+      expect(ctx).not.toBeNull();
+      expect(ctx?.sourceLink).toBe(`${testFilePath}#L2`);
+      expect(ctx?.sourceType).toBe("local");
+      expect(ctx?.content).toBe("beta");
+      expect(ctx?.truncated).toBe(false);
+    });
+
+    it("caps oversized content and flags truncation", async () => {
+      const testFilePath = join(tempDir, "big.txt");
+      writeFileSync(testFilePath, "x".repeat(5000), "utf-8");
+
+      const ctx = await resolveReviewContext(testFilePath, { maxChars: 100 });
+      expect(ctx?.content.length).toBe(100);
+      expect(ctx?.truncated).toBe(true);
+    });
+
+    it("passes through dynamic search directives", async () => {
+      const ctx = await resolveReviewContext("search://websearch?q=spaced+repetition");
+      expect(ctx?.sourceType).toBe("dynamic_search");
+      expect(ctx?.content).toBe('QUERY_DIRECTIVE: Run web search for "spaced repetition"');
+      expect(ctx?.truncated).toBe(false);
     });
   });
 });

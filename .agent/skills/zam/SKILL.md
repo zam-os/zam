@@ -252,10 +252,16 @@ After the user answers, ask:
 Submit the rating and log the step.
 
 #### Leveraging Source Links for AI Agent Context
-Each due token in a review session may contain a `sourceLink` attribute (which can be a workspace-relative file path like `src/db/connection.ts#L45-L60` or a remote documentation URL):
-1. **Retrieve the Context**: Before presenting the review question, the AI agent must attempt to inspect the referenced file or document. For local repository paths, use the `view_file` tool. For external URLs, use `read_url_content`.
-2. **Formulate Contextual Questions**: Instead of asking generic questions based strictly on the one-sentence concept text, use the retrieved code or documentation context to ask highly targeted, realistic, and deep conceptual questions (e.g., at Bloom level 2, 3, or 4).
-3. **Verify Responses Precisely**: Reference the retrieved material to precisely verify the user's answers, addressing specific edge cases, syntax, or trade-offs present in the actual codebase or documentation.
+When a token has a `source_link`, `zam bridge get-review` resolves it for you and returns a `resolvedContext` object alongside `prompt` — you no longer need to fetch the file or URL yourself. Its shape:
+
+- `sourceType: "local" | "remote_web"` → `content` is the literal file/page text, already line-sliced when the link carried a `#L10-L25` anchor. Ground your question and verification directly in it.
+- `sourceType: "dynamic_search"` → `content` is a `QUERY_DIRECTIVE: Run web search for "..."`. Run that web search yourself, then ground the review in the results.
+- `truncated: true` → the content was capped; fetch the full `filePath`/`url` only if you need more.
+- `resolvedContext: null` → no link, or resolution was disabled (`--no-resolve`); fall back to the one-sentence concept, or inspect the path yourself.
+
+Use it to:
+1. **Formulate Contextual Questions**: Instead of asking generic questions based strictly on the one-sentence concept text, use the resolved code or documentation to ask targeted, realistic, deep conceptual questions (e.g., at Bloom level 2, 3, or 4).
+2. **Verify Responses Precisely**: Reference the resolved material to verify the user's answers, addressing specific edge cases, syntax, or trade-offs present in the actual codebase or documentation.
 
 ### STEP 5 — End session
 ```bash

@@ -25,6 +25,7 @@ import {
   executeReviewAction,
   getTokenDeleteImpact,
   getCardDeletionImpact,
+  resolveReviewContext,
 } from "../../kernel/index.js";
 import type {
   Rating,
@@ -52,6 +53,19 @@ function withDb(fn: (db: Database) => void): void {
   try {
     db = openDatabase();
     fn(db);
+  } catch (err) {
+    db?.close();
+    jsonError((err as Error).message);
+  } finally {
+    db?.close();
+  }
+}
+
+async function withDbAsync(fn: (db: Database) => Promise<void>): Promise<void> {
+  let db: Database | undefined;
+  try {
+    db = openDatabase();
+    await fn(db);
   } catch (err) {
     db?.close();
     jsonError((err as Error).message);
@@ -168,8 +182,9 @@ bridgeCommand
   .command("get-review")
   .description("Get next review card with prompt (JSON)")
   .option("--user <id>", "User ID (default: whoami)")
-  .action((opts) => {
-    withDb((db) => {
+  .option("--no-resolve", "Skip resolving the token's source_link into context")
+  .action(async (opts) => {
+    await withDbAsync(async (db) => {
       const userId = resolveUser(opts, db, { json: true });
       const queue = buildReviewQueue(db, { userId, maxReviews: 1, maxNew: 1 });
 
@@ -179,6 +194,7 @@ bridgeCommand
           hasReview: false,
           card: null,
           prompt: null,
+          resolvedContext: null,
           queueSize: 0,
         });
         return;
@@ -195,6 +211,17 @@ bridgeCommand
         sourceLink: item.sourceLink,
       });
 
+      // Resolve the source_link into ready-to-use context for the AI client.
+      // Defensive: never let a bad/unreachable reference break the review payload.
+      let resolvedContext = null;
+      if (opts.resolve !== false) {
+        try {
+          resolvedContext = await resolveReviewContext(item.sourceLink);
+        } catch {
+          resolvedContext = null;
+        }
+      }
+
       // Get full queue size for context
       const fullQueue = buildReviewQueue(db, { userId });
 
@@ -203,6 +230,7 @@ bridgeCommand
         hasReview: true,
         card: item,
         prompt,
+        resolvedContext,
         queueSize: fullQueue.items.length,
       });
     });
@@ -471,6 +499,7 @@ bridgeCommand
         bloom_level?: number;
         context?: string;
         symbiosis_mode?: string | null;
+        source_link?: string | null;
       };
 
       try {
@@ -493,6 +522,7 @@ bridgeCommand
         bloom_level: (data!.bloom_level ?? 1) as BloomLevel,
         context: data!.context,
         symbiosis_mode: data!.symbiosis_mode as "shadowing" | "copilot" | "autonomy" | null | undefined,
+        source_link: data!.source_link ?? null,
       });
 
       const card = ensureCard(db, token.id, userId);
