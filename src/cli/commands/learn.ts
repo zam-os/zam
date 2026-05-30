@@ -145,7 +145,6 @@ export const learnCommand = new Command("learn")
         const token = getTokenById(db, item.tokenId);
 
         // Perform LLM evaluation if enabled and there is a typed answer
-        const isLlmEnabled = getSetting(db, "llm.enabled") === "true";
         if (isLlmEnabled && answer.trim().length > 0) {
           console.log("\n  Evaluating answer via local LLM...");
           try {
