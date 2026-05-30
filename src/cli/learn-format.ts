@@ -22,24 +22,22 @@ function clampBloom(n: number): number {
 }
 
 /**
- * Build the card header, e.g. "Understand (Bloom 2) · web · #http-caching".
- * The slug is tagged so the learner can reference it for edit/delete actions.
+ * Build the card header, e.g. "Understand (Bloom 2) · web".
  */
 export function formatHeader(input: {
   bloomLevel: number;
   domain: string;
-  slug: string;
 }): string {
   const lvl = clampBloom(input.bloomLevel);
   const parts = [`${BLOOM_VERBS[lvl]} (Bloom ${lvl})`];
   if (input.domain?.trim()) {
     parts.push(input.domain.trim());
   }
-  parts.push(`#${input.slug}`);
   return parts.join(" · ");
 }
 
 export interface RevealInput {
+  slug: string;
   concept: string;
   context?: string | null;
   resolved?: ReviewContext | null;
@@ -47,10 +45,13 @@ export interface RevealInput {
 
 /**
  * Format the stored answer revealed AFTER the learner has committed: the
- * concept, optional context, and resolved source_link content.
+ * token slug, concept, optional context, and resolved source_link content.
  */
 export function formatReveal(input: RevealInput): string {
-  const lines: string[] = [`Concept: ${input.concept}`];
+  const lines: string[] = [
+    `Token: #${input.slug}`,
+    `Concept: ${input.concept}`
+  ];
 
   if (input.context?.trim()) {
     lines.push("", `Context: ${input.context.trim()}`);

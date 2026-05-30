@@ -169,6 +169,7 @@ export const learnCommand = new Command("learn")
 
         console.log(`\n  ── Answer ${"─".repeat(38)}`);
         const reveal = formatReveal({
+          slug: item.slug,
           concept: item.concept,
           context: token?.context,
           resolved,
