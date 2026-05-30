@@ -21,18 +21,20 @@ function runCommand(cmd: string): string {
   }
 }
 
-/**
- * Detect if an AMD NPU is present under Windows.
- * Queries WMI/PNP entities for AMD IPU/NPU hardware drivers.
- */
 function detectWindowsAMDIPU(): boolean {
   if (process.platform !== "win32") return false;
   
-  // WMI query for AMD IPU (Image Processing Unit) or NPU
-  const cmd = `powershell -NoProfile -Command "Get-CimInstance Win32_PnPEntity | Where-Object { $_.Name -like '*AMD IPU*' -or $_.Name -like '*AMD NPU*' -or $_.HardwareID -like '*VEN_1022&DEV_1502*' } | Select-Object -First 1 -ExpandProperty Name"`;
+  // WMI query for AMD IPU (Image Processing Unit), NPU, Ryzen AI CPUs, and modern NPU compute devices (DEV_1502, DEV_17F0)
+  const cmd = `powershell -NoProfile -Command "Get-CimInstance Win32_PnPEntity | Where-Object { $_.Name -like '*AMD IPU*' -or $_.Name -like '*AMD NPU*' -or $_.Name -like '*NPU Compute*' -or $_.Name -like '*Ryzen AI*' -or $_.HardwareID -like '*VEN_1022&DEV_1502*' -or $_.HardwareID -like '*VEN_1022&DEV_17F0*' } | Select-Object -First 1 -ExpandProperty Name"`;
   const output = runCommand(cmd);
   
-  return Boolean(output && (output.toLowerCase().includes("amd") || output.toLowerCase().includes("ipu") || output.toLowerCase().includes("npu")));
+  return Boolean(
+    output &&
+      (output.toLowerCase().includes("amd") ||
+        output.toLowerCase().includes("ipu") ||
+        output.toLowerCase().includes("npu") ||
+        output.toLowerCase().includes("ryzen"))
+  );
 }
 
 /**
