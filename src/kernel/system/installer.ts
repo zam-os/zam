@@ -1,4 +1,7 @@
 import { execSync } from "node:child_process";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+import { homedir } from "node:os";
 
 export interface InstallResult {
   success: boolean;
@@ -26,6 +29,12 @@ export function installFastFlowLM(): InstallResult {
     return { success: false, message: "FastFlowLM is only supported on Windows." };
   }
 
+  // Check if already installed
+  const hasFlm = hasCommand("flm") || existsSync("C:\\Program Files\\flm\\flm.exe");
+  if (hasFlm) {
+    return { success: true, message: "FastFlowLM is already installed." };
+  }
+
   if (!hasCommand("winget")) {
     return { success: false, message: "winget package manager was not found on this system." };
   }
@@ -44,6 +53,18 @@ export function installFastFlowLM(): InstallResult {
  * Install Ollama via Homebrew on macOS.
  */
 export function installOllama(): InstallResult {
+  // Check if already installed
+  const isMac = process.platform === "darwin";
+  const isWin = process.platform === "win32";
+  const hasOllama = 
+    hasCommand("ollama") || 
+    (isMac && existsSync("/Applications/Ollama.app")) || 
+    (isWin && existsSync(join(homedir(), "AppData", "Local", "Programs", "Ollama", "ollama.exe")));
+  
+  if (hasOllama) {
+    return { success: true, message: "Ollama is already installed." };
+  }
+
   if (process.platform === "darwin") {
     if (!hasCommand("brew")) {
       return { success: false, message: "Homebrew was not found. Please install Homebrew from brew.sh first." };
