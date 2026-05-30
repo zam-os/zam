@@ -164,6 +164,20 @@ zam session start --user <username> --task "<description>" --context shell
 
 ### STEP 4 — Hand off, observe, rate
 
+> **Spoiler-free console option:** For pure conceptual recall, you can hand the
+> whole review off to the standalone console harness instead of probing card by
+> card here:
+> > "Let's do your reviews in the dedicated console — run `zam learn` and rate
+> > yourself. I'll wait."
+>
+> `zam learn` shows a concept-free cue, captures the answer, and only then
+> reveals the stored answer (concept + context + resolved `source_link`) before a
+> single 1–4 self-rating — all in-process. This sidesteps agent-CLI autocomplete
+> that would otherwise ghost the answer, and the per-subcommand permission
+> prompts from chained `card update` / `session log` calls. Use the verbal
+> probing below when you want to drive the discussion yourself or add depth a
+> stored answer can't (that richer mode will later be backed by an LLM).
+
 **For executable tasks (observation mode):**
 
 Hand off to the user:
