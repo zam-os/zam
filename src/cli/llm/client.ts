@@ -279,34 +279,47 @@ export async function isLlmOnline(url: string): Promise<boolean> {
 }
 
 /**
- * Ensures that the local LLM server is running.
- * If `llm.enabled` is true, the URL points to localhost, and the server is not
- * responding, attempts to launch the runner (flm or ollama) in the background
- * and waits for it to become online.
+ * List the model ids the server actually serves (OpenAI `/v1/models`).
+ * Returns [] on any error so callers can treat "unknown" as "skip validation".
  */
-export async function ensureLocalLlmRunning(db: Database): Promise<void> {
-  const cfg = getLlmConfig(db);
-  if (!cfg.enabled) {
-    return;
+export async function getAvailableModels(
+  url: string,
+  apiKey = DEFAULT_LLM_API_KEY,
+): Promise<string[]> {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
+    const res = await fetch(`${url}/models`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${apiKey}` },
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
+    if (!res.ok) return [];
+    const data = (await res.json()) as { data?: Array<{ id?: string }> };
+    return (data.data ?? [])
+      .map((m) => m.id)
+      .filter((id): id is string => typeof id === "string" && id.length > 0);
+  } catch {
+    return [];
   }
+}
 
-  const { url, model, locale } = cfg;
+/** Whether the local LLM can actually be used this session, and if not, why. */
+export interface LlmReadiness {
+  usable: boolean;
+  reason?: "disabled" | "offline" | "model-not-found";
+}
 
-  // Only auto-start servers we host locally.
-  const isLocal = url.includes("localhost") || url.includes("127.0.0.1");
-  if (!isLocal) {
-    return;
-  }
-
-  console.log(`Checking if local LLM server is online at ${url}...`);
-  if (await isLlmOnline(url)) {
-    console.log("\x1b[32m✓ Local LLM server is online and responsive.\x1b[0m");
-    return;
-  }
-
-  console.log(`\x1b[33m⚠ Local LLM server is offline on ${url}.\x1b[0m`);
-
-  // Detect which runner to start (port- or model-name-based heuristic).
+/**
+ * Detect the configured runner and start it, then poll until the server is
+ * online (or the user opts out). Returns true once reachable, false otherwise.
+ */
+async function startLocalRunner(
+  url: string,
+  model: string,
+  locale: SupportedLocale,
+): Promise<boolean> {
   let runner: "fastflowlm" | "ollama" | "generic" | "unknown" = "unknown";
   let port = "8000";
   try {
@@ -335,7 +348,7 @@ export async function ensureLocalLlmRunning(db: Database): Promise<void> {
         "\x1b[31m✗ FastFlowLM is configured but could not be found on the system.\x1b[0m",
       );
       console.warn("Please run 'zam init' or install it manually.");
-      return;
+      return false;
     }
     const args = ["serve", model, "--port", port];
     console.log(
@@ -347,7 +360,7 @@ export async function ensureLocalLlmRunning(db: Database): Promise<void> {
       console.error(
         `\x1b[31m✗ Failed to launch FastFlowLM process: ${(err as Error).message}\x1b[0m`,
       );
-      return;
+      return false;
     }
   } else if (runner === "ollama" || runner === "generic") {
     if (!hasCommand("ollama")) {
@@ -355,7 +368,7 @@ export async function ensureLocalLlmRunning(db: Database): Promise<void> {
         "\x1b[31m✗ Ollama is configured but the 'ollama' command is not available in PATH.\x1b[0m",
       );
       console.warn("Please run 'zam init' or install it manually.");
-      return;
+      return false;
     }
     console.log("\x1b[36mStarting Ollama serve process: ollama serve\x1b[0m");
     try {
@@ -364,13 +377,13 @@ export async function ensureLocalLlmRunning(db: Database): Promise<void> {
       console.error(
         `\x1b[31m✗ Failed to launch Ollama process: ${(err as Error).message}\x1b[0m`,
       );
-      return;
+      return false;
     }
   } else {
     console.warn(
       "\x1b[33m⚠ Unknown local LLM runner configured. Cannot auto-start.\x1b[0m",
     );
-    return;
+    return false;
   }
 
   // Poll until the server is online (or the user opts out).
@@ -383,8 +396,7 @@ export async function ensureLocalLlmRunning(db: Database): Promise<void> {
     await new Promise((resolve) => setTimeout(resolve, 500));
     if (await isLlmOnline(url)) {
       if (attempts > 0) process.stdout.write("\n");
-      console.log("\x1b[32m✓ Local LLM server is online and ready!\x1b[0m");
-      return;
+      return true;
     }
     attempts++;
     process.stdout.write(".");
@@ -403,12 +415,71 @@ export async function ensureLocalLlmRunning(db: Database): Promise<void> {
       }).catch(() => false);
 
       if (!keepWaiting) {
-        console.warn(`\x1b[33m${t(locale, "proceeding_offline")}\x1b[0m\n`);
-        return;
+        return false;
       }
       attempts = 0;
     }
   }
+}
+
+/**
+ * Make the local LLM ready for the session and report whether it is usable.
+ *
+ * Starts the local runner if needed, then — crucially — verifies the configured
+ * model is actually served. A wrong model name otherwise leaves the server
+ * reachable but every request hanging/failing, which previously looked like
+ * "the AI is just slow". We now fail fast with an actionable message instead.
+ */
+export async function ensureLocalLlmRunning(
+  db: Database,
+): Promise<LlmReadiness> {
+  const cfg = getLlmConfig(db);
+  if (!cfg.enabled) {
+    return { usable: false, reason: "disabled" };
+  }
+
+  const { url, model, apiKey, locale } = cfg;
+  const isLocal = url.includes("localhost") || url.includes("127.0.0.1");
+
+  console.log(`Checking if local LLM server is online at ${url}...`);
+  let online = await isLlmOnline(url);
+
+  if (!online && isLocal) {
+    console.log(`\x1b[33m⚠ Local LLM server is offline on ${url}.\x1b[0m`);
+    online = await startLocalRunner(url, model, locale);
+  }
+
+  if (!online) {
+    console.warn(
+      `\x1b[33m⚠ LLM server is not reachable at ${url}. Continuing without AI coaching.\x1b[0m\n`,
+    );
+    return { usable: false, reason: "offline" };
+  }
+
+  console.log("\x1b[32m✓ Local LLM server is online.\x1b[0m");
+
+  // Validate the configured model against what the server actually serves, so
+  // a typo / wrong tag fails immediately instead of hanging on every request.
+  const available = await getAvailableModels(url, apiKey);
+  const modelKnown =
+    available.length === 0 ||
+    available.some((m) => m.toLowerCase() === model.toLowerCase());
+
+  if (!modelKnown) {
+    console.warn(
+      `\x1b[31m✗ Configured model "${model}" is not available on the server.\x1b[0m`,
+    );
+    console.warn(`  Available models: ${available.join(", ")}`);
+    console.warn(
+      `  Set the right one: \x1b[36mzam settings set llm.model <name>\x1b[0m`,
+    );
+    console.warn(
+      "\x1b[33m  Continuing this session without AI coaching.\x1b[0m\n",
+    );
+    return { usable: false, reason: "model-not-found" };
+  }
+
+  return { usable: true };
 }
 
 /**

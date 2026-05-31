@@ -55,9 +55,6 @@ export const learnCommand = new Command("learn")
       db = openDatabase();
       const userId = resolveUser(opts, db);
 
-      // Ensure local LLM runner is running if enabled and configured locally
-      await ensureLocalLlmRunning(db);
-
       const queue = buildReviewQueue(db, {
         userId,
         maxNew: Number(opts.maxNew),
@@ -73,6 +70,12 @@ export const learnCommand = new Command("learn")
         return;
       }
 
+      // Start the local LLM if needed and verify it is actually usable
+      // (reachable AND serving the configured model). A wrong model name
+      // otherwise looks like "the AI is slow" — instead we fall back cleanly.
+      const llm = await ensureLocalLlmRunning(db);
+      const isLlmEnabled = llm.usable;
+
       console.log(`\n${t(locale, "welcome", { count: queue.items.length })}`);
       console.log(
         t(locale, "new_review_relearn", {
@@ -85,8 +88,9 @@ export const learnCommand = new Command("learn")
         t(locale, "domains", { domains: queue.totalDomains.join(", ") }),
       );
 
-      const isLlmEnabled = getSetting(db, "llm.enabled") === "true";
-      if (!isLlmEnabled) {
+      // When the LLM is simply switched off, nudge the user; offline /
+      // model-not-found already printed their own actionable message.
+      if (!isLlmEnabled && llm.reason === "disabled") {
         console.log(t(locale, "offline_warning"));
         console.log(t(locale, "offline_instruction"));
       }

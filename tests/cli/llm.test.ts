@@ -18,13 +18,33 @@ describe("LLM client utilities (CLI layer)", () => {
     expect(status).toBe(false);
   });
 
-  it("ensureLocalLlmRunning returns immediately if llm.enabled is false", async () => {
+  it("ensureLocalLlmRunning reports 'disabled' immediately if llm.enabled is false", async () => {
     const db = openDatabase({ dbPath: ":memory:", initialize: true, useConfiguredCloud: false });
     setSetting(db, "llm.enabled", "false");
 
-    // Should not throw or attempt connections
-    await expect(ensureLocalLlmRunning(db)).resolves.not.toThrow();
+    const readiness = await ensureLocalLlmRunning(db);
+    expect(readiness).toEqual({ usable: false, reason: "disabled" });
     db.close();
+  });
+
+  it("ensureLocalLlmRunning reports 'model-not-found' when the server doesn't serve the configured model", async () => {
+    const db = openDatabase({ dbPath: ":memory:", initialize: true, useConfiguredCloud: false });
+    setSetting(db, "llm.enabled", "true");
+    setSetting(db, "llm.url", "http://localhost:8000/v1");
+    setSetting(db, "llm.model", "gemma4-it:e4b");
+
+    const originalFetch = global.fetch;
+    // Server is reachable, but /models lists a different model than configured.
+    global.fetch = (async () =>
+      new Response(JSON.stringify({ data: [{ id: "qwen3.5:4b" }] }))) as typeof fetch;
+    try {
+      const readiness = await ensureLocalLlmRunning(db);
+      expect(readiness.usable).toBe(false);
+      expect(readiness.reason).toBe("model-not-found");
+    } finally {
+      global.fetch = originalFetch;
+      db.close();
+    }
   });
 
   it("fetchWithInteractiveTimeout resolves when fetch resolves successfully", async () => {

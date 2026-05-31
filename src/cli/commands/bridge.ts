@@ -42,6 +42,7 @@ import {
 import {
   ensureHighQualityQuestion,
   evaluateAnswerViaLLM,
+  getAvailableModels,
   getLlmConfig,
   isLlmOnline,
   translateQuestionViaLLM,
@@ -709,16 +710,29 @@ bridgeCommand
   .description("Check if LLM is enabled and online (JSON)")
   .action(async () => {
     await withDbAsync(async (db) => {
-      const { enabled, url, model } = getLlmConfig(db);
+      const { enabled, url, model, apiKey } = getLlmConfig(db);
       let online = false;
+      let availableModels: string[] = [];
+      let modelAvailable = false;
       if (enabled) {
         online = await isLlmOnline(url);
+        if (online) {
+          availableModels = await getAvailableModels(url, apiKey);
+          // Empty list = server doesn't expose /models; don't claim it's wrong.
+          modelAvailable =
+            availableModels.length === 0 ||
+            availableModels.some(
+              (m) => m.toLowerCase() === model.toLowerCase(),
+            );
+        }
       }
       jsonOut({
         enabled,
         online,
         url,
         model,
+        modelAvailable,
+        availableModels,
       });
     });
   });
