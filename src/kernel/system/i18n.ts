@@ -10,6 +10,7 @@ export type TranslationKey =
   | "offline_instruction"
   | "nothing_due"
   | "evaluating"
+  | "generating_question"
   | "translating"
   | "prompt_answer"
   | "session_ended"
@@ -38,6 +39,7 @@ export const TRANSLATIONS: Record<SupportedLocale, Record<TranslationKey, string
     offline_instruction: "  Enable with: \x1b[36mnpm run dev -- settings llm on\x1b[0m\n",
     nothing_due: "Nothing due to learn. You're all caught up!",
     evaluating: "Evaluating answer via local AI...",
+    generating_question: "Generating dynamic question...",
     translating: "Translating question dynamically...",
     prompt_answer: "Your answer (Enter to reveal · 'q' to stop):",
     session_ended: "Learning session ended.",
@@ -65,6 +67,7 @@ export const TRANSLATIONS: Record<SupportedLocale, Record<TranslationKey, string
     offline_instruction: "  Aktivieren mit: \x1b[36mnpm run dev -- settings llm on\x1b[0m\n",
     nothing_due: "Nichts fällig zu lernen. Du bist komplett auf dem Laufenden!",
     evaluating: "Bewerte Antwort via lokaler KI...",
+    generating_question: "Generiere dynamische Frage...",
     translating: "Übersetze Frage dynamisch...",
     prompt_answer: "Deine Antwort (Eingabe zum Aufdecken · 'q' zum Beenden):",
     session_ended: "Lern-Session beendet.",
@@ -92,6 +95,7 @@ export const TRANSLATIONS: Record<SupportedLocale, Record<TranslationKey, string
     offline_instruction: "  Activar con: \x1b[36mnpm run dev -- settings llm on\x1b[0m\n",
     nothing_due: "No hay nada pendiente para aprender. ¡Estás al día!",
     evaluating: "Evaluando respuesta con IA local...",
+    generating_question: "Generando pregunta dinámica...",
     translating: "Traduciendo pregunta dinámicamente...",
     prompt_answer: "Tu respuesta (Intro para revelar · 'q' para salir):",
     session_ended: "Sesión de aprendizaje finalizada.",
@@ -119,6 +123,7 @@ export const TRANSLATIONS: Record<SupportedLocale, Record<TranslationKey, string
     offline_instruction: "  Activer avec : \x1b[36mnpm run dev -- settings llm on\x1b[0m\n",
     nothing_due: "Rien à apprendre. Vous êtes à jour !",
     evaluating: "Évaluation de la réponse via l'IA locale...",
+    generating_question: "Génération d'une question dynamique...",
     translating: "Traduction dynamique de la question...",
     prompt_answer: "Votre réponse (Entrée pour révéler · 'q' pour quitter) :",
     session_ended: "Session d'apprentissage arrêtée.",
@@ -146,6 +151,7 @@ export const TRANSLATIONS: Record<SupportedLocale, Record<TranslationKey, string
     offline_instruction: "  Ativar com: \x1b[36mnpm run dev -- settings llm on\x1b[0m\n",
     nothing_due: "Nada faturado para aprender. Você está atualizado!",
     evaluating: "Avaliando a resposta via IA local...",
+    generating_question: "Gerando pergunta dinâmica...",
     translating: "Traduzindo pergunta dinamicamente...",
     prompt_answer: "Sua resposta (Enter para revelar · 'q' para parar):",
     session_ended: "Sessão de aprendizado encerrada.",
@@ -173,6 +179,7 @@ export const TRANSLATIONS: Record<SupportedLocale, Record<TranslationKey, string
     offline_instruction: "  开启命令: \x1b[36mnpm run dev -- settings llm on\x1b[0m\n",
     nothing_due: "目前没有需要学习的内容。您已全部掌握！",
     evaluating: "正在通过本地 AI 评估回答...",
+    generating_question: "正在动态生成问题...",
     translating: "正在动态翻译问题...",
     prompt_answer: "您的回答 (按回车揭晓 · 输入 'q' 退出):",
     session_ended: "学习课已结束。",
@@ -200,6 +207,7 @@ export const TRANSLATIONS: Record<SupportedLocale, Record<TranslationKey, string
     offline_instruction: "  有効化するには: \x1b[36mnpm run dev -- settings llm on\x1b[0m\n",
     nothing_due: "学習予定のカードはありません。すべて完了しています！",
     evaluating: "ローカルAIによる回答の評価中...",
+    generating_question: "質問を動的に生成中...",
     translating: "質問を動的に翻訳中...",
     prompt_answer: "あなたの回答 (Enterで表示 · 'q'で終了):",
     session_ended: "学習セッションが終了しました。",

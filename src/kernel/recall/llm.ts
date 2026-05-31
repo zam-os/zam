@@ -1,5 +1,7 @@
 import type { Database } from "libsql";
 import { getSetting } from "../models/settings.js";
+import { updateToken } from "../models/token.js";
+import { resolveReviewContext } from "./reference-resolver.js";
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import { hasCommand } from "../system/installer.js";
@@ -494,4 +496,62 @@ export async function fetchWithInteractiveTimeout(
     }
   }
 }
+
+/**
+ * Automatically ensures that a token has a high-quality LLM-generated active-recall question.
+ * If the question is null or empty, and LLM is enabled, it generates one on the fly,
+ * writes it to the database (self-healing), and returns it. Otherwise, it returns the existing question.
+ */
+export async function ensureHighQualityQuestion(
+  db: Database,
+  token: {
+    id: string;
+    slug: string;
+    concept: string;
+    domain: string;
+    bloomLevel: number;
+    sourceLink?: string | null;
+    question?: string | null;
+  }
+): Promise<string | null> {
+  const isEnabled = getSetting(db, "llm.enabled") === "true";
+
+  if (isEnabled) {
+    try {
+      // 1. Resolve source link content if present to capture full latest context
+      let sourceLinkContent: string | null = null;
+      if (token.sourceLink) {
+        const resolved = await resolveReviewContext(token.sourceLink).catch(() => null);
+        if (resolved) {
+          sourceLinkContent = resolved.content;
+        }
+      }
+
+      // 2. Generate a fresh, dynamic, lively question on-the-fly
+      const generated = await generateQuestionViaLLM(db, {
+        slug: token.slug,
+        concept: token.concept,
+        domain: token.domain,
+        bloomLevel: token.bloomLevel,
+        sourceLinkContent,
+      });
+
+      if (generated && generated.trim().length > 0) {
+        // 3. Save question in the database as the latest high-quality offline fallback
+        updateToken(db, token.slug, { question: generated });
+        return generated;
+      }
+    } catch (err) {
+      // Fail silently and fall back to the stored database question
+    }
+  }
+
+  // Fallback to stored database question if available (e.g., offline or LLM disabled)
+  if (token.question && token.question.trim().length > 0) {
+    return token.question;
+  }
+
+  return null;
+}
+
 

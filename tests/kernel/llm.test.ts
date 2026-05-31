@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { openDatabase, isLlmOnline, ensureLocalLlmRunning, setSetting } from "../../src/kernel/index.js";
+import { openDatabase, isLlmOnline, ensureLocalLlmRunning, setSetting, ensureHighQualityQuestion, createToken, getTokenBySlug } from "../../src/kernel/index.js";
 import { fetchWithInteractiveTimeout } from "../../src/kernel/recall/llm.js";
 
 describe("LLM Runner Utilities", () => {
@@ -28,4 +28,54 @@ describe("LLM Runner Utilities", () => {
       global.fetch = originalFetch;
     }
   });
+
+  it("ensureHighQualityQuestion dynamically generates and self-heals a missing question when LLM is enabled", async () => {
+    const db = openDatabase();
+    setSetting(db, "llm.enabled", "true");
+    setSetting(db, "llm.url", "http://dummy/v1");
+
+    const slug = "test-self-heal-" + Date.now();
+    const token = createToken(db, {
+      slug,
+      concept: "Azure DevOps secure HTTPS credential storage on macOS Keychain",
+      domain: "DevOps",
+      bloom_level: 2,
+    });
+
+    const originalFetch = global.fetch;
+    global.fetch = async () =>
+      new Response(
+        JSON.stringify({
+          choices: [
+            {
+              message: {
+                content: "How do you securely store Azure DevOps HTTPS credentials on macOS?",
+              },
+            },
+          ],
+        })
+      );
+
+    try {
+      const question = await ensureHighQualityQuestion(db, {
+        id: token.id,
+        slug: token.slug,
+        concept: token.concept,
+        domain: token.domain,
+        bloomLevel: token.bloom_level,
+        sourceLink: token.source_link,
+        question: token.question,
+      });
+
+      expect(question).toBe("How do you securely store Azure DevOps HTTPS credentials on macOS?");
+
+      // Verify that it self-healed in the database!
+      const updated = getTokenBySlug(db, slug);
+      expect(updated?.question).toBe("How do you securely store Azure DevOps HTTPS credentials on macOS?");
+    } finally {
+      global.fetch = originalFetch;
+      db.close();
+    }
+  });
 });
+

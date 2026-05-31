@@ -24,6 +24,7 @@ import {
   evaluateAnswerViaLLM,
   ensureLocalLlmRunning,
   translateQuestionViaLLM,
+  ensureHighQualityQuestion,
   t,
 } from "../../kernel/index.js";
 import type { BloomLevel, SupportedLocale } from "../../kernel/index.js";
@@ -91,6 +92,28 @@ export const learnCommand = new Command("learn")
       const results: Array<{ slug: string; rating: number }> = [];
 
       for (const [index, item] of queue.items.entries()) {
+        // Dynamically generate a fresh, living active-recall question if LLM is enabled
+        let resolvedQuestion = item.question;
+        if (isLlmEnabled) {
+          console.log(`  \x1b[2m${t(locale, "generating_question")}\x1b[0m`);
+          try {
+            const healed = await ensureHighQualityQuestion(db, {
+              id: item.tokenId,
+              slug: item.slug,
+              concept: item.concept,
+              domain: item.domain,
+              bloomLevel: item.bloomLevel as BloomLevel,
+              sourceLink: item.sourceLink,
+              question: item.question,
+            });
+            if (healed) {
+              resolvedQuestion = healed;
+            }
+          } catch {
+            // ignore and proceed
+          }
+        }
+
         const prompt = generatePrompt({
           cardId: item.cardId,
           tokenId: item.tokenId,
@@ -99,7 +122,7 @@ export const learnCommand = new Command("learn")
           domain: item.domain,
           bloomLevel: item.bloomLevel as BloomLevel,
           sourceLink: item.sourceLink,
-          question: item.question,
+          question: resolvedQuestion,
         });
 
         console.log(`\n${"─".repeat(50)}`);

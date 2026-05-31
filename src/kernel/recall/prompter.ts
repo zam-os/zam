@@ -29,12 +29,16 @@ const BLOOM_VERBS: Record<BloomLevel, string> = {
   5: "Synthesize",
 };
 
+function formatSlugForCue(slug: string): string {
+  return slug.replace(/[-_]/g, " ");
+}
+
 const BLOOM_CUES: Record<BloomLevel, (slug: string) => string> = {
-  1: (slug) => `Recall the definition and core concept of: #${slug}`,
-  2: (slug) => `Explain the concept and how #${slug} works.`,
-  3: (slug) => `Describe how or where you would apply the concept of #${slug}.`,
-  4: (slug) => `Analyze the trade-offs, advantages, or alternatives of #${slug}.`,
-  5: (slug) => `How would you design a solution using the concept of #${slug}?`,
+  1: (slug) => `Recall the definition and core concept of: ${formatSlugForCue(slug)}`,
+  2: (slug) => `Explain the concept and how ${formatSlugForCue(slug)} works.`,
+  3: (slug) => `Describe how or where you would apply the concept of ${formatSlugForCue(slug)}.`,
+  4: (slug) => `Analyze the trade-offs, advantages, or alternatives of ${formatSlugForCue(slug)}.`,
+  5: (slug) => `How would you design a solution using the concept of ${formatSlugForCue(slug)}?`,
 };
 
 export interface PromptInput {

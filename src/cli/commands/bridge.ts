@@ -31,6 +31,7 @@ import {
   evaluateAnswerViaLLM,
   getSetting,
   getTokenById,
+  ensureHighQualityQuestion,
 } from "../../kernel/index.js";
 import type {
   Rating,
@@ -206,6 +207,29 @@ bridgeCommand
       }
 
       const item = queue.items[0];
+      const isLlmEnabled = getSetting(db, "llm.enabled") === "true";
+
+      // Dynamically generate a fresh, living active-recall question if LLM is enabled
+      let resolvedQuestion = item.question;
+      if (isLlmEnabled) {
+        try {
+          const healed = await ensureHighQualityQuestion(db, {
+            id: item.tokenId,
+            slug: item.slug,
+            concept: item.concept,
+            domain: item.domain,
+            bloomLevel: item.bloomLevel as BloomLevel,
+            sourceLink: item.sourceLink,
+            question: item.question,
+          });
+          if (healed) {
+            resolvedQuestion = healed;
+          }
+        } catch {
+          // ignore and proceed
+        }
+      }
+
       const prompt = generatePrompt({
         cardId: item.cardId,
         tokenId: item.tokenId,
@@ -214,6 +238,7 @@ bridgeCommand
         domain: item.domain,
         bloomLevel: item.bloomLevel as BloomLevel,
         sourceLink: item.sourceLink,
+        question: resolvedQuestion,
       });
 
       // Resolve the source_link into ready-to-use context for the AI client.
