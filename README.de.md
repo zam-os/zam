@@ -96,6 +96,22 @@ ZAM enthält nun eine plattformübergreifende Desktop-Anwendung im Verzeichnis [
 
 Dies kompiliert das Rust-Backend im Hintergrund, startet den Vite-Entwicklungsserver und öffnet das native Anwendungsfenster. Detaillierte Informationen und Konfigurationsschritte für lokale KI (Ollama/FastFlowLM) findest du im [Desktop-Handbuch](desktop/README.md).
 
+### 📦 Automatische GitHub Releases & Native Installer
+
+Wir haben eine **GitHub Actions CI/CD-Pipeline** integriert, die automatisch native Installationsdateien (Windows `.msi`/`.exe`, macOS `.dmg` und Linux `.deb`/`.AppImage`) kompiliert und verpackt, sobald ein neuer Git-Tag gepusht wird.
+
+Um eine neue Version zu veröffentlichen (z.B. `v0.1.0`):
+
+```bash
+# Aktuellen Commit taggen
+git tag v0.1.0
+
+# Den Tag zu GitHub pushen
+git push origin v0.1.0
+```
+
+Dies startet automatisch die Build-Umgebungen auf GitHub-Runnern und erstellt einen Entwurf (Draft) für ein GitHub Release, das alle kompilierten Installationsdateien enthält!
+
 ---
 
 ## 📖 Dokumentation

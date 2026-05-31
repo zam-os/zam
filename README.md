@@ -116,6 +116,22 @@ ZAM now includes a cross-platform desktop application inside the [`desktop/`](de
 
 This will compile the secure Rust backend, spin up the Vite development server, and open the native desktop window. For detailed settings, key bindings, and local AI (Ollama/FastFlowLM) configurations, see the [Desktop README](desktop/README.md).
 
+### 📦 Automated GitHub Releases & Native Installers
+
+We have integrated a **GitHub Actions CI/CD workflow** that automatically compiles and packages native installers (Windows `.msi`/`.exe`, macOS Intel/Silicon `.dmg`, and Linux `.deb`/`.AppImage`) when a new git tag is pushed.
+
+To release a new version (e.g., `v0.1.0`):
+
+```bash
+# Tag the current commit
+git tag v0.1.0
+
+# Push the tag to GitHub
+git push origin v0.1.0
+```
+
+This automatically spins up the multi-platform compiler environments on GitHub and creates a drafted GitHub Release containing the native redistributables for all platforms!
+
 ---
 
 ## 📖 Documentation
