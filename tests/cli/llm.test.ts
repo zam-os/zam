@@ -1,8 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { openDatabase, isLlmOnline, ensureLocalLlmRunning, setSetting, ensureHighQualityQuestion, createToken, getTokenBySlug } from "../../src/kernel/index.js";
-import { fetchWithInteractiveTimeout } from "../../src/kernel/recall/llm.js";
+import {
+  openDatabase,
+  setSetting,
+  createToken,
+  getTokenBySlug,
+} from "../../src/kernel/index.js";
+import {
+  isLlmOnline,
+  ensureLocalLlmRunning,
+  ensureHighQualityQuestion,
+  fetchWithInteractiveTimeout,
+} from "../../src/cli/llm/client.js";
 
-describe("LLM Runner Utilities", () => {
+describe("LLM client utilities (CLI layer)", () => {
   it("isLlmOnline returns false for invalid or unreachable URLs", async () => {
     const status = await isLlmOnline("http://localhost:9999/v1");
     expect(status).toBe(false);
@@ -11,7 +21,7 @@ describe("LLM Runner Utilities", () => {
   it("ensureLocalLlmRunning returns immediately if llm.enabled is false", async () => {
     const db = openDatabase({ dbPath: ":memory:", initialize: true, useConfiguredCloud: false });
     setSetting(db, "llm.enabled", "false");
-    
+
     // Should not throw or attempt connections
     await expect(ensureLocalLlmRunning(db)).resolves.not.toThrow();
     db.close();
@@ -21,7 +31,7 @@ describe("LLM Runner Utilities", () => {
     const originalFetch = global.fetch;
     global.fetch = async () => new Response("ok");
     try {
-      const res = await fetchWithInteractiveTimeout("http://dummy", {}, 500);
+      const res = await fetchWithInteractiveTimeout("http://dummy", { timeoutMs: 500 });
       const text = await res.text();
       expect(text).toBe("ok");
     } finally {
@@ -53,7 +63,7 @@ describe("LLM Runner Utilities", () => {
               },
             },
           ],
-        })
+        }),
       );
 
     try {
@@ -71,11 +81,12 @@ describe("LLM Runner Utilities", () => {
 
       // Verify that it self-healed in the database!
       const updated = getTokenBySlug(db, slug);
-      expect(updated?.question).toBe("How do you securely store Azure DevOps HTTPS credentials on macOS?");
+      expect(updated?.question).toBe(
+        "How do you securely store Azure DevOps HTTPS credentials on macOS?",
+      );
     } finally {
       global.fetch = originalFetch;
       db.close();
     }
   });
 });
-

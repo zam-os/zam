@@ -14,21 +14,23 @@
 import { input } from "@inquirer/prompts";
 import { Command } from "commander";
 import type { Database } from "libsql";
+import type { BloomLevel, SupportedLocale } from "../../kernel/index.js";
 import {
   buildReviewQueue,
   generatePrompt,
+  getSetting,
   getTokenById,
   openDatabase,
   resolveReviewContext,
-  getSetting,
-  evaluateAnswerViaLLM,
-  ensureLocalLlmRunning,
-  translateQuestionViaLLM,
-  ensureHighQualityQuestion,
   t,
 } from "../../kernel/index.js";
-import type { BloomLevel, SupportedLocale } from "../../kernel/index.js";
 import { formatHeader, formatReveal } from "../learn-format.js";
+import {
+  ensureHighQualityQuestion,
+  ensureLocalLlmRunning,
+  evaluateAnswerViaLLM,
+  translateQuestionViaLLM,
+} from "../llm/client.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
 import { resolveUser } from "./resolve-user.js";
 
@@ -40,7 +42,9 @@ function isExitPrompt(err: unknown): boolean {
 }
 
 export const learnCommand = new Command("learn")
-  .description("Run a spoiler-free, in-process learning session (recall → reveal → self-rate)")
+  .description(
+    "Run a spoiler-free, in-process learning session (recall → reveal → self-rate)",
+  )
   .option("--user <id>", "User ID (default: whoami)")
   .option("--max-new <n>", "Maximum new cards", "10")
   .option("--max-reviews <n>", "Maximum review cards", "50")
@@ -60,7 +64,8 @@ export const learnCommand = new Command("learn")
         maxReviews: Number(opts.maxReviews),
       });
 
-      const locale = (getSetting(db, "system.locale") || "en") as SupportedLocale;
+      const locale = (getSetting(db, "system.locale") ||
+        "en") as SupportedLocale;
 
       if (queue.items.length === 0) {
         console.log(t(locale, "nothing_due"));
@@ -76,8 +81,10 @@ export const learnCommand = new Command("learn")
           relearnC: queue.relearnCount,
         }),
       );
-      console.log(t(locale, "domains", { domains: queue.totalDomains.join(", ") }));
-      
+      console.log(
+        t(locale, "domains", { domains: queue.totalDomains.join(", ") }),
+      );
+
       const isLlmEnabled = getSetting(db, "llm.enabled") === "true";
       if (!isLlmEnabled) {
         console.log(t(locale, "offline_warning"));
@@ -126,14 +133,19 @@ export const learnCommand = new Command("learn")
         });
 
         console.log(`\n${"─".repeat(50)}`);
-        console.log(`[${index + 1}/${queue.items.length}] ${formatHeader(item)}`);
+        console.log(
+          `[${index + 1}/${queue.items.length}] ${formatHeader(item)}`,
+        );
 
         // Dynamically translate question if LLM is enabled and locale is not English
         let displayQuestion = prompt.question;
         if (locale !== "en" && isLlmEnabled) {
           console.log(`  \x1b[2m${t(locale, "translating")}\x1b[0m`);
           try {
-            displayQuestion = await translateQuestionViaLLM(db, prompt.question);
+            displayQuestion = await translateQuestionViaLLM(
+              db,
+              prompt.question,
+            );
           } catch {
             // fallback to original question on error/offline
           }
@@ -166,7 +178,9 @@ export const learnCommand = new Command("learn")
         // Now reveal the stored answer.
         let resolved = null;
         if (opts.resolve !== false && item.sourceLink) {
-          resolved = await resolveReviewContext(item.sourceLink).catch(() => null);
+          resolved = await resolveReviewContext(item.sourceLink).catch(
+            () => null,
+          );
         }
         const token = getTokenById(db, item.tokenId);
 
@@ -184,16 +198,22 @@ export const learnCommand = new Command("learn")
               userAnswer: answer,
               sourceLinkContent: resolved?.content,
             });
-            console.log(`\n  ${t(locale, "feedback_title", { line: "─".repeat(34) })}`);
+            console.log(
+              `\n  ${t(locale, "feedback_title", { line: "─".repeat(34) })}`,
+            );
             for (const line of evaluation.split("\n")) {
               console.log(`  ${line}`);
             }
           } catch (err) {
-            console.warn(`\n${t(locale, "eval_skipped", { reason: (err as Error).message })}`);
+            console.warn(
+              `\n${t(locale, "eval_skipped", { reason: (err as Error).message })}`,
+            );
           }
         }
 
-        console.log(`\n  ${t(locale, "answer_title", { line: "─".repeat(38) })}`);
+        console.log(
+          `\n  ${t(locale, "answer_title", { line: "─".repeat(38) })}`,
+        );
         const reveal = formatReveal({
           slug: item.slug,
           concept: item.concept,
@@ -207,7 +227,12 @@ export const learnCommand = new Command("learn")
 
         let action: Awaited<ReturnType<typeof runInteractiveReviewAction>>;
         try {
-          action = await runInteractiveReviewAction({ db, userId, item, mode: "review" });
+          action = await runInteractiveReviewAction({
+            db,
+            userId,
+            item,
+            mode: "review",
+          });
         } catch (err) {
           if (isExitPrompt(err)) {
             stoppedEarly = true;

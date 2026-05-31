@@ -5,44 +5,47 @@
  * Errors are also JSON: { "error": "message" }
  */
 
-import { Command } from "commander";
-import type { Database } from "libsql";
-import {
-  openDatabase,
-  getDueCards,
-  buildReviewQueue,
-  generatePrompt,
-  ensureCard,
-  createToken,
-  getTokenBySlug,
-  getAgentSkill,
-  listAgentSkills,
-  readMonitorLog,
-  pairCommands,
-  analyzeObservation,
-  monitorLogExists,
-  discoverSkills,
-  executeReviewAction,
-  getTokenDeleteImpact,
-  getCardDeletionImpact,
-  resolveReviewContext,
-  isLlmOnline,
-  translateQuestionViaLLM,
-  evaluateAnswerViaLLM,
-  getSetting,
-  getTokenById,
-  ensureHighQualityQuestion,
-} from "../../kernel/index.js";
-import type {
-  Rating,
-  BloomLevel,
-  TokenPattern,
-  ReviewActionType,
-  SymbiosisMode,
-} from "../../kernel/index.js";
 import { readdirSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
+import { Command } from "commander";
+import type { Database } from "libsql";
+import type {
+  BloomLevel,
+  Rating,
+  ReviewActionType,
+  SymbiosisMode,
+  TokenPattern,
+} from "../../kernel/index.js";
+import {
+  analyzeObservation,
+  buildReviewQueue,
+  createToken,
+  discoverSkills,
+  ensureCard,
+  executeReviewAction,
+  generatePrompt,
+  getAgentSkill,
+  getCardDeletionImpact,
+  getDueCards,
+  getSetting,
+  getTokenById,
+  getTokenBySlug,
+  getTokenDeleteImpact,
+  listAgentSkills,
+  monitorLogExists,
+  openDatabase,
+  pairCommands,
+  readMonitorLog,
+  resolveReviewContext,
+} from "../../kernel/index.js";
+import {
+  ensureHighQualityQuestion,
+  evaluateAnswerViaLLM,
+  getLlmConfig,
+  isLlmOnline,
+  translateQuestionViaLLM,
+} from "../llm/client.js";
 import { resolveUser } from "./resolve-user.js";
 
 function jsonOut(data: unknown): void {
@@ -87,7 +90,11 @@ interface ReviewTargetRow {
   slug: string;
 }
 
-function getReviewTarget(db: Database, cardId: string, userId: string): ReviewTargetRow {
+function getReviewTarget(
+  db: Database,
+  cardId: string,
+  userId: string,
+): ReviewTargetRow {
   const target = db
     .prepare(
       `SELECT c.id AS card_id, c.token_id, c.user_id, t.slug
@@ -133,7 +140,8 @@ function parseTokenUpdates(opts: {
 
   if (opts.concept !== undefined) updates.concept = opts.concept;
   if (opts.domain !== undefined) updates.domain = opts.domain;
-  if (opts.bloom !== undefined) updates.bloom_level = Number(opts.bloom) as BloomLevel;
+  if (opts.bloom !== undefined)
+    updates.bloom_level = Number(opts.bloom) as BloomLevel;
   if (opts.context !== undefined) updates.context = opts.context;
   if (opts.sourceLink !== undefined) {
     updates.source_link = opts.sourceLink === "" ? null : opts.sourceLink;
@@ -143,14 +151,16 @@ function parseTokenUpdates(opts: {
     if (!validModes.includes(opts.mode)) {
       jsonError(`Invalid mode: ${opts.mode}`);
     }
-    updates.symbiosis_mode = opts.mode === "none" ? null : opts.mode as SymbiosisMode;
+    updates.symbiosis_mode =
+      opts.mode === "none" ? null : (opts.mode as SymbiosisMode);
   }
 
   return updates;
 }
 
-export const bridgeCommand = new Command("bridge")
-  .description("Machine-readable JSON protocol for AI integration");
+export const bridgeCommand = new Command("bridge").description(
+  "Machine-readable JSON protocol for AI integration",
+);
 
 // ── zam bridge check-due ──────────────────────────────────────────────────
 
@@ -162,7 +172,9 @@ bridgeCommand
     withDb((db) => {
       const userId = resolveUser(opts, db, { json: true });
       const dueCards = getDueCards(db, userId);
-      const domains = [...new Set(dueCards.map((c) => c.domain).filter(Boolean))].sort();
+      const domains = [
+        ...new Set(dueCards.map((c) => c.domain).filter(Boolean)),
+      ].sort();
 
       jsonOut({
         userId,
@@ -305,7 +317,10 @@ bridgeCommand
   .description("Apply a review action (JSON)")
   .option("--user <id>", "User ID (default: whoami)")
   .requiredOption("--card-id <id>", "Card ID")
-  .requiredOption("--action <action>", "Action: rate | skip | edit-token | deprecate-token | delete-token | delete-card | stop")
+  .requiredOption(
+    "--action <action>",
+    "Action: rate | skip | edit-token | deprecate-token | delete-token | delete-card | stop",
+  )
   .option("--rating <n>", "Rating (1-4) for action=rate")
   .option("--concept <concept>", "Updated concept text for action=edit-token")
   .option("--domain <domain>", "Updated domain for action=edit-token")
@@ -332,7 +347,10 @@ bridgeCommand
       }
 
       const target = getReviewTarget(db, opts.cardId, userId);
-      if ((action === "delete-token" || action === "delete-card") && !opts.confirm) {
+      if (
+        (action === "delete-token" || action === "delete-card") &&
+        !opts.confirm
+      ) {
         if (action === "delete-token") {
           jsonOut({
             success: true,
@@ -356,7 +374,8 @@ bridgeCommand
         return;
       }
 
-      const rating = opts.rating !== undefined ? Number(opts.rating) as Rating : undefined;
+      const rating =
+        opts.rating !== undefined ? (Number(opts.rating) as Rating) : undefined;
       if (action === "rate" && (rating == null || rating < 1 || rating > 4)) {
         jsonError("Rating must be between 1 and 4 for action=rate");
       }
@@ -366,7 +385,8 @@ bridgeCommand
         cardId: opts.cardId,
         userId,
         rating,
-        tokenUpdates: action === "edit-token" ? parseTokenUpdates(opts) : undefined,
+        tokenUpdates:
+          action === "edit-token" ? parseTokenUpdates(opts) : undefined,
       });
 
       jsonOut({
@@ -419,14 +439,20 @@ bridgeCommand
   .requiredOption("--session <id>", "Session ID")
   .action((opts) => {
     if (!monitorLogExists(opts.session)) {
-      jsonOut({ sessionId: opts.session, exists: false, commands: [], timeSpan: null });
+      jsonOut({
+        sessionId: opts.session,
+        exists: false,
+        commands: [],
+        timeSpan: null,
+      });
       return;
     }
 
     const events = readMonitorLog(opts.session);
     const commands = pairCommands(events);
 
-    let timeSpan: { start: string; end: string; durationMs: number } | null = null;
+    let timeSpan: { start: string; end: string; durationMs: number } | null =
+      null;
     if (commands.length > 0) {
       const first = commands[0];
       const last = commands[commands.length - 1];
@@ -434,7 +460,8 @@ bridgeCommand
       timeSpan = {
         start: first.startedAt,
         end: endTs,
-        durationMs: new Date(endTs).getTime() - new Date(first.startedAt).getTime(),
+        durationMs:
+          new Date(endTs).getTime() - new Date(first.startedAt).getTime(),
       };
     }
 
@@ -463,7 +490,12 @@ bridgeCommand
   .action(async (opts) => {
     try {
       if (!monitorLogExists(opts.session)) {
-        jsonOut({ sessionId: opts.session, ratings: [], unmatchedCommands: [], timeSpan: null });
+        jsonOut({
+          sessionId: opts.session,
+          ratings: [],
+          unmatchedCommands: [],
+          timeSpan: null,
+        });
         return;
       }
 
@@ -551,7 +583,12 @@ bridgeCommand
         domain: data!.domain,
         bloom_level: (data!.bloom_level ?? 1) as BloomLevel,
         context: data!.context,
-        symbiosis_mode: data!.symbiosis_mode as "shadowing" | "copilot" | "autonomy" | null | undefined,
+        symbiosis_mode: data!.symbiosis_mode as
+          | "shadowing"
+          | "copilot"
+          | "autonomy"
+          | null
+          | undefined,
         source_link: data!.source_link ?? null,
       });
 
@@ -584,9 +621,19 @@ bridgeCommand
 
 bridgeCommand
   .command("discover-skills")
-  .description("Analyze monitor logs across sessions to discover recurring patterns")
-  .option("--min-sessions <n>", "Minimum sessions a pattern must appear in (default: 2)", "2")
-  .option("--limit <n>", "Max number of sessions to analyze (default: 20)", "20")
+  .description(
+    "Analyze monitor logs across sessions to discover recurring patterns",
+  )
+  .option(
+    "--min-sessions <n>",
+    "Minimum sessions a pattern must appear in (default: 2)",
+    "2",
+  )
+  .option(
+    "--limit <n>",
+    "Max number of sessions to analyze (default: 20)",
+    "20",
+  )
   .action((opts) => {
     try {
       const monitorDir = join(homedir(), ".zam", "monitor");
@@ -611,7 +658,10 @@ bridgeCommand
         .slice(0, limit);
 
       // Load and parse each session's commands
-      const sessionCommands = new Map<string, ReturnType<typeof pairCommands>>();
+      const sessionCommands = new Map<
+        string,
+        ReturnType<typeof pairCommands>
+      >();
       for (const file of sorted) {
         const sessionId = file.name.replace(".jsonl", "");
         const events = readMonitorLog(sessionId);
@@ -628,7 +678,7 @@ bridgeCommand
 
       // Get existing skills to exclude
       let existingSkillSlugs: string[] = [];
-      let db;
+      let db: Database | undefined;
       try {
         db = openDatabase();
         existingSkillSlugs = listAgentSkills(db).map((s) => s.slug);
@@ -659,15 +709,13 @@ bridgeCommand
   .description("Check if LLM is enabled and online (JSON)")
   .action(async () => {
     await withDbAsync(async (db) => {
-      const isEnabled = getSetting(db, "llm.enabled") === "true";
-      const url = getSetting(db, "llm.url") || "http://localhost:8000/v1";
-      const model = getSetting(db, "llm.model") || "qwen3.5:4b";
+      const { enabled, url, model } = getLlmConfig(db);
       let online = false;
-      if (isEnabled) {
+      if (enabled) {
         online = await isLlmOnline(url);
       }
       jsonOut({
-        enabled: isEnabled,
+        enabled,
         online,
         url,
         model,
@@ -685,14 +733,22 @@ bridgeCommand
     await withDbAsync(async (db) => {
       const isEnabled = getSetting(db, "llm.enabled") === "true";
       if (!isEnabled) {
-        jsonOut({ success: false, error: "LLM integration is disabled", translation: opts.question });
+        jsonOut({
+          success: false,
+          error: "LLM integration is disabled",
+          translation: opts.question,
+        });
         return;
       }
       try {
         const translation = await translateQuestionViaLLM(db, opts.question);
         jsonOut({ success: true, translation });
       } catch (err) {
-        jsonOut({ success: false, error: (err as Error).message, translation: opts.question });
+        jsonOut({
+          success: false,
+          error: (err as Error).message,
+          translation: opts.question,
+        });
       }
     });
   });
@@ -701,7 +757,9 @@ bridgeCommand
 
 bridgeCommand
   .command("evaluate-answer")
-  .description("Evaluate the learner's active-recall answer using the local LLM (JSON)")
+  .description(
+    "Evaluate the learner's active-recall answer using the local LLM (JSON)",
+  )
   .requiredOption("--slug <slug>", "Token slug")
   .requiredOption("--concept <concept>", "Target concept text")
   .requiredOption("--domain <domain>", "Token domain")
@@ -714,10 +772,14 @@ bridgeCommand
     await withDbAsync(async (db) => {
       const isEnabled = getSetting(db, "llm.enabled") === "true";
       if (!isEnabled) {
-        jsonOut({ success: false, error: "LLM integration is disabled", evaluation: "" });
+        jsonOut({
+          success: false,
+          error: "LLM integration is disabled",
+          evaluation: "",
+        });
         return;
       }
-      
+
       let resolvedContextContent = null;
       if (opts.sourceLink) {
         try {
@@ -741,7 +803,11 @@ bridgeCommand
         });
         jsonOut({ success: true, evaluation });
       } catch (err) {
-        jsonOut({ success: false, error: (err as Error).message, evaluation: "" });
+        jsonOut({
+          success: false,
+          error: (err as Error).message,
+          evaluation: "",
+        });
       }
     });
   });
@@ -753,17 +819,14 @@ bridgeCommand
   .description("Get active ZAM settings (JSON)")
   .action(() => {
     withDb((db) => {
-      const locale = getSetting(db, "system.locale") || "en";
-      const isLlmEnabled = getSetting(db, "llm.enabled") === "true";
-      const llmUrl = getSetting(db, "llm.url") || "http://localhost:8000/v1";
-      const llmModel = getSetting(db, "llm.model") || "qwen3.5:4b";
+      const { enabled, url, model, locale } = getLlmConfig(db);
       jsonOut({
         locale,
         llm: {
-          enabled: isLlmEnabled,
-          url: llmUrl,
-          model: llmModel,
-        }
+          enabled,
+          url,
+          model,
+        },
       });
     });
   });

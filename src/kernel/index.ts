@@ -5,211 +5,230 @@
  * It is pure learning science logic.
  */
 
+export type { DomainCompetence, UserStats } from "./analytics/stats.js";
+// Analytics
+export { getDomainCompetence, getUserStats } from "./analytics/stats.js";
+export type { ADOConfig, WorkItem } from "./connectors/azure-devops.js";
+// Connectors
+export {
+  fetchActiveWorkItems,
+  loadADOConfig,
+} from "./connectors/azure-devops.js";
+export type {
+  ADOCredentials,
+  Credentials,
+  TursoCredentials,
+} from "./credentials.js";
+// Credentials (stored in ~/.zam/credentials.json, survives db deletion)
+export {
+  clearADOCredentials,
+  clearTursoCredentials,
+  getADOCredentials,
+  getTursoCredentials,
+  loadCredentials,
+  saveCredentials,
+  setADOCredentials,
+  setTursoCredentials,
+} from "./credentials.js";
 // Database
-export { openDatabase, openDatabaseWithSync, getDefaultDbPath } from "./db/connection.js";
-
-// Models
 export {
-  createToken,
-  getTokenBySlug,
-  getTokenById,
-  updateToken,
-  findTokens,
-  listTokens,
-  deprecateToken,
-  getTokenDeleteImpact,
-  deleteToken,
-} from "./models/token.js";
+  getDefaultDbPath,
+  openDatabase,
+  openDatabaseWithSync,
+} from "./db/connection.js";
+export type { CreateGoalInput, GoalSummary } from "./goals/engine.js";
+// Goals
+export {
+  createGoal,
+  getGoal,
+  getGoalTree,
+  listGoals,
+  updateGoalStatus,
+} from "./goals/engine.js";
+export type { Goal, GoalFrontmatter, GoalStatus } from "./goals/parser.js";
+export {
+  extractTasks,
+  extractTokenRefs,
+  parseGoalFile,
+  serializeGoal,
+} from "./goals/parser.js";
 export type {
-  Token,
-  CreateTokenInput,
-  UpdateTokenInput,
-  BloomLevel,
-  SymbiosisMode,
-  TokenDeleteImpact,
-  DeleteTokenResult,
-} from "./models/token.js";
-
-export {
-  addPrerequisite,
-  getPrerequisites,
-  getDependents,
-} from "./models/prerequisite.js";
-export type { Prerequisite, PrerequisiteWithToken } from "./models/prerequisite.js";
-
-export {
-  ensureCard,
-  getCard,
-  getCardById,
-  updateCard,
-  getCardDeletionImpact,
-  deleteCardForUser,
-  getDueCards,
-  getBlockedCards,
-} from "./models/card.js";
-export type {
-  Card,
-  CardState,
-  UpdateCardInput,
-  CardDeletionImpact,
-  DeleteCardResult,
-} from "./models/card.js";
-
-export { logReview, getReviewsForCard, getReviewsForUser } from "./models/review.js";
-export type { ReviewLog, CreateReviewInput } from "./models/review.js";
-
-export {
-  startSession,
-  endSession,
-  logStep,
-  getSessionSummary,
-} from "./models/session.js";
-export type {
-  Session,
-  SessionStep,
-  ExecutionContext,
-  CreateSessionInput,
-  LogStepInput,
-  SessionSummary,
-} from "./models/session.js";
-
+  AgentSkill,
+  CreateAgentSkillInput,
+  SkillSource,
+} from "./models/agent-skill.js";
 export {
   createAgentSkill,
   getAgentSkill,
   listAgentSkills,
 } from "./models/agent-skill.js";
 export type {
-  AgentSkill,
-  SkillSource,
-  CreateAgentSkillInput,
-} from "./models/agent-skill.js";
-
+  Card,
+  CardDeletionImpact,
+  CardState,
+  DeleteCardResult,
+  UpdateCardInput,
+} from "./models/card.js";
 export {
-  getSetting,
+  deleteCardForUser,
+  ensureCard,
+  getBlockedCards,
+  getCard,
+  getCardById,
+  getCardDeletionImpact,
+  getDueCards,
+  updateCard,
+} from "./models/card.js";
+export type {
+  Prerequisite,
+  PrerequisiteWithToken,
+} from "./models/prerequisite.js";
+export {
+  addPrerequisite,
+  getDependents,
+  getPrerequisites,
+} from "./models/prerequisite.js";
+export type { CreateReviewInput, ReviewLog } from "./models/review.js";
+export {
+  getReviewsForCard,
+  getReviewsForUser,
+  logReview,
+} from "./models/review.js";
+export type {
+  CreateSessionInput,
+  ExecutionContext,
+  LogStepInput,
+  Session,
+  SessionStep,
+  SessionSummary,
+} from "./models/session.js";
+export {
+  endSession,
+  getSessionSummary,
+  logStep,
+  startSession,
+} from "./models/session.js";
+export type { UserSetting } from "./models/settings.js";
+export {
+  deleteSetting,
   getAllSettings,
   getAllSettingsDetailed,
+  getSetting,
   setSetting,
-  deleteSetting,
 } from "./models/settings.js";
-export type { UserSetting } from "./models/settings.js";
-
-// Scheduler
-export { createFSRS } from "./scheduler/fsrs.js";
-export type { Rating, SchedulingCard, FSRSParameters } from "./scheduler/fsrs.js";
-
-export { cascadeBlock, unblockReady } from "./scheduler/blocker.js";
-export type { CascadeBlockResult, UnblockResult } from "./scheduler/blocker.js";
-
-export { interleave } from "./scheduler/interleaver.js";
-
-export { buildReviewQueue } from "./scheduler/queue.js";
-export type { ReviewQueue, ReviewQueueItem, ReviewQueueOptions } from "./scheduler/queue.js";
-
-// Recall
-export { generatePrompt, generateConceptFreeCue } from "./recall/prompter.js";
-export type { RecallPrompt, PromptInput } from "./recall/prompter.js";
-export { generateQuestionViaLLM, evaluateAnswerViaLLM, ensureLocalLlmRunning, isLlmOnline, translateQuestionViaLLM, ensureHighQualityQuestion } from "./recall/llm.js";
+export type {
+  BloomLevel,
+  CreateTokenInput,
+  DeleteTokenResult,
+  SymbiosisMode,
+  Token,
+  TokenDeleteImpact,
+  UpdateTokenInput,
+} from "./models/token.js";
+// Models
 export {
-  resolveReference,
-  resolveReviewContext,
-  matchesFilePath,
-  normalizePath,
-  DEFAULT_REVIEW_CONTEXT_MAX_CHARS,
-} from "./recall/reference-resolver.js";
-export type { ResolvedReference, ReviewContext } from "./recall/reference-resolver.js";
-
-export { evaluateRating } from "./recall/evaluator.js";
-export type { EvaluateInput, EvaluateResult } from "./recall/evaluator.js";
-
-export { executeReviewAction } from "./recall/actions.js";
-export type { ExecuteReviewActionInput, ReviewActionResult, ReviewActionType } from "./recall/actions.js";
-
-// Analytics
-export { getUserStats, getDomainCompetence } from "./analytics/stats.js";
-export type { UserStats, DomainCompetence } from "./analytics/stats.js";
-
+  createToken,
+  deleteToken,
+  deprecateToken,
+  findTokens,
+  getTokenById,
+  getTokenBySlug,
+  getTokenDeleteImpact,
+  listTokens,
+  updateToken,
+} from "./models/token.js";
+export type {
+  AnalysisResult,
+  CommandRecord,
+  MonitorEvent,
+  ObservationRating,
+  TokenPattern,
+} from "./observation/analyzer.js";
 // Observation
 export {
-  parseMonitorLog,
-  pairCommands,
   analyzeObservation,
+  pairCommands,
+  parseMonitorLog,
 } from "./observation/analyzer.js";
-export type {
-  MonitorEvent,
-  CommandRecord,
-  TokenPattern,
-  ObservationRating,
-  AnalysisResult,
-} from "./observation/analyzer.js";
-
 export {
-  getMonitorDir,
-  getMonitorPath,
   ensureMonitorDir,
-  writeMonitorEvent,
-  readMonitorLog,
-  monitorLogExists,
+  getMonitorDir,
   getMonitorLogStats,
+  getMonitorPath,
+  monitorLogExists,
+  readMonitorLog,
+  writeMonitorEvent,
 } from "./observation/monitor-io.js";
-
 export {
-  generateZshHooks,
   generateBashHooks,
-  generatePowerShellHooks,
-  generateZshUnhooks,
   generateBashUnhooks,
+  generatePowerShellHooks,
   generatePowerShellUnhooks,
+  generateZshHooks,
+  generateZshUnhooks,
 } from "./observation/shell-hooks.js";
-
-export { discoverSkills } from "./observation/skill-discovery.js";
 export type {
   CommandSequence,
-  SkillProposal,
   DiscoveryOptions,
+  SkillProposal,
 } from "./observation/skill-discovery.js";
-
-// Goals
+export { discoverSkills } from "./observation/skill-discovery.js";
+export type {
+  ExecuteReviewActionInput,
+  ReviewActionResult,
+  ReviewActionType,
+} from "./recall/actions.js";
+export { executeReviewAction } from "./recall/actions.js";
+export type { EvaluateInput, EvaluateResult } from "./recall/evaluator.js";
+export { evaluateRating } from "./recall/evaluator.js";
+export type { PromptInput, RecallPrompt } from "./recall/prompter.js";
+// Recall
+export { generateConceptFreeCue, generatePrompt } from "./recall/prompter.js";
+export type {
+  ResolvedReference,
+  ReviewContext,
+} from "./recall/reference-resolver.js";
+// NOTE: LLM integration is intentionally NOT part of the kernel. The kernel is
+// AI-agnostic (zero LLM dependencies). The local-LLM client lives in the CLI
+// layer at src/cli/llm/client.ts.
 export {
-  listGoals,
-  getGoal,
-  createGoal,
-  updateGoalStatus,
-  getGoalTree,
-} from "./goals/engine.js";
-export type { GoalSummary, CreateGoalInput } from "./goals/engine.js";
-
+  DEFAULT_REVIEW_CONTEXT_MAX_CHARS,
+  matchesFilePath,
+  normalizePath,
+  resolveReference,
+  resolveReviewContext,
+} from "./recall/reference-resolver.js";
+export type { CascadeBlockResult, UnblockResult } from "./scheduler/blocker.js";
+export { cascadeBlock, unblockReady } from "./scheduler/blocker.js";
+export type {
+  FSRSParameters,
+  Rating,
+  SchedulingCard,
+} from "./scheduler/fsrs.js";
+// Scheduler
+export { createFSRS } from "./scheduler/fsrs.js";
+export { interleave } from "./scheduler/interleaver.js";
+export type {
+  ReviewQueue,
+  ReviewQueueItem,
+  ReviewQueueOptions,
+} from "./scheduler/queue.js";
+export { buildReviewQueue } from "./scheduler/queue.js";
 export {
-  parseGoalFile,
-  serializeGoal,
-  extractTasks,
-  extractTokenRefs,
-} from "./goals/parser.js";
-export type { Goal, GoalStatus, GoalFrontmatter } from "./goals/parser.js";
-
-// Credentials (stored in ~/.zam/credentials.json, survives db deletion)
+  distributeGlobalSkills,
+  getPackageSkillPath,
+  injectShellHooks,
+} from "./system/hooks.js";
+export type { TranslationKey } from "./system/i18n.js";
+export { t } from "./system/i18n.js";
+export type { InstallResult } from "./system/installer.js";
 export {
-  loadCredentials,
-  saveCredentials,
-  getTursoCredentials,
-  setTursoCredentials,
-  clearTursoCredentials,
-  getADOCredentials,
-  setADOCredentials,
-  clearADOCredentials,
-} from "./credentials.js";
-export type { Credentials, TursoCredentials, ADOCredentials } from "./credentials.js";
-
-// Connectors
-export { loadADOConfig, fetchActiveWorkItems } from "./connectors/azure-devops.js";
-export type { ADOConfig, WorkItem } from "./connectors/azure-devops.js";
-
+  hasCommand,
+  installFastFlowLM,
+  installOllama,
+} from "./system/installer.js";
+export type { SupportedLocale } from "./system/locale.js";
+export { detectSystemLocale, normalizeLocale } from "./system/locale.js";
+export type { SystemProfile } from "./system/profiler.js";
 // System Profiling & Onboarding
 export { getSystemProfile } from "./system/profiler.js";
-export type { SystemProfile } from "./system/profiler.js";
-export { hasCommand, installFastFlowLM, installOllama } from "./system/installer.js";
-export type { InstallResult } from "./system/installer.js";
-export { getPackageSkillPath, distributeGlobalSkills, injectShellHooks } from "./system/hooks.js";
-export { detectSystemLocale, normalizeLocale } from "./system/locale.js";
-export type { SupportedLocale } from "./system/locale.js";
-export { t } from "./system/i18n.js";
-export type { TranslationKey } from "./system/i18n.js";
