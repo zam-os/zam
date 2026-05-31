@@ -21,7 +21,7 @@ All knowledge management is done through the `zam` CLI:
 zam init
 
 # Token management
-zam token register --slug <slug> --concept "<one sentence>" --domain <d> --bloom <1-5> [--source-link <link>]
+zam token register --slug <slug> --concept "<one sentence>" --domain <d> --bloom <1-5> [--question "<concept-free recall question>"] [--source-link <link>]
 zam token find --query "<keywords>"
 zam token list [--domain <d>]
 zam token prereq --token <child> --requires <parent>
@@ -143,8 +143,13 @@ zam token find --query "<keywords>"
 Only register genuinely new concepts. Reuse existing slugs where the concept matches.
 
 **Register tokens and prerequisites:**
+
+As the frontier model, YOU author both the concept and the recall question. The
+local LLM is reserved for review time, where it rephrases the question live so
+the learner never memorizes a fixed input->output pair. Pass a clear,
+concept-free `--question` so the offline fallback stays high quality:
 ```bash
-zam token register --slug <slug> --concept "<one sentence>" --domain <d> --bloom <1-5>
+zam token register --slug <slug> --concept "<one sentence>" --domain <d> --bloom <1-5> --question "<concept-free recall question>"
 zam token prereq --token <child> --requires <parent>
 ```
 

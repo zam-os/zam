@@ -15,15 +15,12 @@ import {
   getCard,
   getDependents,
   getPrerequisites,
-  getSetting,
   getTokenBySlug,
   getTokenDeleteImpact,
   listTokens,
   openDatabase,
-  resolveReviewContext,
   updateToken,
 } from "../../kernel/index.js";
-import { generateQuestionViaLLM } from "../llm/client.js";
 import { resolveUser } from "./resolve-user.js";
 
 async function withDb(
@@ -63,46 +60,19 @@ tokenCommand
   .option("--json", "Output as JSON")
   .action(async (opts) => {
     await withDb(async (db) => {
+      // Token creation is the frontier model's job: the agent (Claude Code,
+      // Copilot / Antigravity CLI, …) decomposes the concept into atomic units
+      // and may pass an explicit --question. The local LLM is deliberately NOT
+      // called here — it is reserved for REVIEW time, where it rephrases the
+      // question freshly each session so the learner never memorizes a fixed
+      // "exact input → exact output" pair (see ensureHighQualityQuestion()).
       let question: string | null = opts.question || null;
       if (!question) {
-        const isLlmEnabled = getSetting(db, "llm.enabled") === "true";
-        if (isLlmEnabled) {
-          console.log(
-            "Generating high-quality active-recall question via local LLM...",
-          );
-          try {
-            let sourceLinkContent: string | null = null;
-            if (opts.sourceLink) {
-              const resolved = await resolveReviewContext(
-                opts.sourceLink,
-              ).catch(() => null);
-              if (resolved) {
-                sourceLinkContent = resolved.content;
-              }
-            }
-            question = await generateQuestionViaLLM(db, {
-              slug: opts.slug,
-              concept: opts.concept,
-              domain: opts.domain,
-              bloomLevel: Number(opts.bloom),
-              context: "",
-              sourceLinkContent,
-            });
-            console.log(`Generated: "${question}"`);
-          } catch (err) {
-            console.warn(
-              `LLM question generation failed: ${(err as Error).message}. Falling back to template.`,
-            );
-          }
-        }
-
-        if (!question) {
-          question = generateConceptFreeCue(
-            Number(opts.bloom) as BloomLevel,
-            opts.slug,
-            opts.domain,
-          );
-        }
+        question = generateConceptFreeCue(
+          Number(opts.bloom) as BloomLevel,
+          opts.slug,
+          opts.domain,
+        );
       }
 
       const token = createToken(db, {
