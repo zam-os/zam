@@ -111,14 +111,16 @@ export async function generateQuestionViaLLM(
   ) as keyof typeof BLOOM_VERBS;
   const verb = BLOOM_VERBS[bloom];
 
+  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+
   const systemPrompt = `You are ZAM, a highly precise agentic skills trainer.
-Your task is to generate a single, clear, conceptual active-recall question (flashcard front) in English for a knowledge token.
+Your task is to generate a single, clear, conceptual active-recall question (flashcard front) in ${langName} for a knowledge token.
 
 Guidelines:
 1. The question MUST match the Bloom level: ${verb} (Level ${bloom}).
 2. CRITICAL: The question MUST NOT contain or reveal the concept text itself! The concept is the answer (flashcard back) that the learner needs to recall.
 3. Keep the question concise, highly specific, and clear. Avoid generic prompts like "What is the concept of..." if possible, and ask about the core mechanism, function, or purpose of the slug/concept without giving the answer away.
-4. Output ONLY the raw question text. Do not include any preamble, headers, markdown fences, or conversational filler.`;
+4. Output ONLY the raw question text in ${langName}. Do not include any preamble, headers, markdown fences, or conversational filler.`;
 
   const userPrompt = `Domain: ${input.domain}
 Slug: ${input.slug}

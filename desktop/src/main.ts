@@ -320,28 +320,8 @@ async function loadNextCard() {
     const translationLoading = document.getElementById("translation-loading")!;
     translationLoading.classList.add("hidden");
 
-    // Set question text (with localized dynamic translation in one run if enabled)
-    if (currentLocale !== "en" && isLlmEnabled) {
-      questionText.innerHTML = `<span class="loading-pulse">${t("lbl_translating")}</span>`;
-      translationLoading.classList.remove("hidden");
-      try {
-        const transPayload = await runBridge<{ success: boolean; translation: string }>("translate-question", [
-          "--question", activePromptQuestion
-        ]);
-        if (transPayload.success) {
-          questionText.textContent = transPayload.translation;
-        } else {
-          questionText.textContent = activePromptQuestion;
-        }
-      } catch (err) {
-        console.warn("Translation failed, falling back to original English question", err);
-        questionText.textContent = activePromptQuestion;
-      } finally {
-        translationLoading.classList.add("hidden");
-      }
-    } else {
-      questionText.textContent = activePromptQuestion;
-    }
+    // Set question text
+    questionText.textContent = activePromptQuestion;
   } catch (err) {
     console.error("Failed to load next card:", err);
   }

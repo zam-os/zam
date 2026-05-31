@@ -141,21 +141,7 @@ export const learnCommand = new Command("learn")
           `[${index + 1}/${queue.items.length}] ${formatHeader(item)}`,
         );
 
-        // Dynamically translate question if LLM is enabled and locale is not English
-        let displayQuestion = prompt.question;
-        if (locale !== "en" && isLlmEnabled) {
-          console.log(`  \x1b[2m${t(locale, "translating")}\x1b[0m`);
-          try {
-            displayQuestion = await translateQuestionViaLLM(
-              db,
-              prompt.question,
-            );
-          } catch {
-            // fallback to original question on error/offline
-          }
-        }
-
-        console.log(`\n  ${displayQuestion}`);
+        console.log(`\n  ${prompt.question}`);
 
         // Capture the learner's answer FIRST — nothing is revealed yet.
         // Typing a stop word (or Ctrl+C) ends the session gracefully.
