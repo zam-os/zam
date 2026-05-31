@@ -73,6 +73,31 @@ ZAM ist das Werkzeug für den Übergang in eine Welt, in der Fürsorge und gemei
 
 ---
 
+## 🖥 ZAM Desktop Studio
+
+ZAM enthält nun eine plattformübergreifende Desktop-Anwendung im Verzeichnis [`desktop/`](desktop/). Entwickelt mit **Tauri v2**, **Vite**, **TypeScript** und **Vanilla CSS**, bietet sie ein hochmodernes Dark-Mode-Lernstudio, das dieselbe SQLite-Datenbank wie das CLI nutzt.
+
+### Starten unter Windows oder macOS:
+
+1. **CLI Bridge kompilieren**:
+   Stelle sicher, dass der neueste CLI-Code im Hauptverzeichnis kompiliert ist:
+   ```bash
+   npm install
+   npm run build
+   ```
+
+2. **Desktop-Anwendung starten**:
+   Wechsle in das Verzeichnis `desktop/`, installiere die Abhängigkeiten und starte Tauri:
+   ```bash
+   cd desktop
+   npm install
+   npm run tauri dev
+   ```
+
+Dies kompiliert das Rust-Backend im Hintergrund, startet den Vite-Entwicklungsserver und öffnet das native Anwendungsfenster. Detaillierte Informationen und Konfigurationsschritte für lokale KI (Ollama/FastFlowLM) findest du im [Desktop-Handbuch](desktop/README.md).
+
+---
+
 ## 📖 Dokumentation
 
 - [English Version](README.md)
