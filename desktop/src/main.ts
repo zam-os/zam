@@ -298,7 +298,6 @@ async function loadNextCard() {
     bloomBadge.className = `badge bloom-badge bloom-${bloomVal}`;
 
     // Set question text (English first)
-    const questionText = document.getElementById("question-text")!;
     questionText.textContent = activePromptQuestion;
 
     // Handle translation if required
