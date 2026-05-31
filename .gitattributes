@@ -1,0 +1,17 @@
+# Normalize all text files to LF in the repository AND in the working tree,
+# regardless of the contributor's core.autocrlf setting. This keeps Biome's
+# formatter (lineEnding: lf) green on Windows checkouts and silences the
+# perpetual "LF will be replaced by CRLF" warnings.
+* text=auto eol=lf
+
+# Binary assets — never apply EOL conversion to these.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.icns binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
