@@ -447,9 +447,8 @@ export async function fetchWithInteractiveTimeout(
       }
       
       // Timeout hit. Prompt user.
-      process.stdout.write("\n");
       console.log("\n\x1b[33m⚠ Die LLM-Generierung dauert ungewöhnlich lange...\x1b[0m");
-      console.log("\x1b[2m(Das lokale NPU-Modell arbeitet noch an der Antwort.)\x1b[0m");
+      console.log("\x1b[2m(Die lokale KI arbeitet noch an der Antwort.)\x1b[0m");
       
       const { confirm } = await import("@inquirer/prompts");
       const keepWaiting = await confirm({
