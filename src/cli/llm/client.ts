@@ -59,6 +59,16 @@ const LANGUAGE_NAMES: Record<SupportedLocale, string> = {
   ja: "Japanese",
 };
 
+const LOCALIZED_RATING_PREFIX: Record<SupportedLocale, string> = {
+  en: "Suggested rating",
+  de: "Empfohlene Bewertung",
+  es: "Calificación sugerida",
+  fr: "Note suggérée",
+  pt: "Avaliação sugerida",
+  zh: "建议评分",
+  ja: "推奨評価",
+};
+
 const BLOOM_VERBS = {
   1: "Remember",
   2: "Understand",
@@ -173,6 +183,7 @@ export async function evaluateAnswerViaLLM(
     throw new Error("LLM integration is disabled in settings (llm.enabled)");
   }
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+  const ratingPrefix = LOCALIZED_RATING_PREFIX[cfg.locale] || "Suggested rating";
 
   const systemPrompt = `You are ZAM, an extremely warm, encouraging, and patient skills trainer.
 Your mission is to build lasting autonomy through conceptual knowledge, not rote procedure.
@@ -185,10 +196,10 @@ FSRS Rating scale:
 - 4: perfect, instant, and accurate recall (Easy)
 
 Guidelines:
-1. Provide a constructive, encouraging evaluation in ${langName} (2-3 sentences) to promote the joy of learning. Explicitly include a brief ${langName} translation/explanation of the original question and target concept to ensure absolute clarity and completeness.
+1. Provide a constructive, encouraging evaluation in ${langName} (2-3 sentences) to promote the joy of learning. Seamlessly weave a brief explanation of the correct solution (target concept) into your feedback paragraphs. Do NOT append a separate, duplicate reference answer or raw "Musterlösung" block at the end of your response.
 2. Celebrate every honest attempt! Offer high praise or a motivating word of encouragement in ${langName} if they did well or tried hard.
 3. CRITICAL: ZAM is a strict one-shot card flow, NOT an interactive chat. The correct Musterlösung (reference answer) is revealed alongside your feedback. Therefore, NEVER ask the user to think further, keep guessing, or suggest they try to solve the remaining parts of the question. Instead, immediately evaluate what they wrote, explain the complete solution and target concept directly.
-4. Suggest a clear FSRS rating (1 to 4) at the very end of your response in the format "Suggested rating: X" or localized equivalent (e.g. "Empfohlene Bewertung: X" in German) in ${langName}.
+4. Suggest a clear FSRS rating (1 to 4) at the very end of your response in the exact format: "${ratingPrefix}: X" in ${langName}.
 5. Output ONLY the evaluation and rating suggestion. Keep it concise, friendly, and clean. No conversational introduction or markdown wrapper.`;
 
   const userPrompt = `Domain: ${input.domain}
