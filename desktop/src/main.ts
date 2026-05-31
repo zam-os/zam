@@ -164,6 +164,7 @@ function initializeTranslations() {
   document.getElementById("lbl-reveal-title")!.textContent = t("lbl_reveal_title");
   document.getElementById("lbl-rating-instruction")!.textContent = t("lbl_rating_instruction");
   document.getElementById("btn-pause-session")!.textContent = t("btn_pause_session");
+  document.getElementById("btn-reveal-answer")!.textContent = t("btn_reveal_answer");
   
   // Rating labels
   document.getElementById("lbl-rate-1")!.textContent = t("lbl_rate_1");
@@ -264,6 +265,10 @@ async function loadNextCard() {
     textarea.value = "";
     textarea.disabled = false;
     textarea.focus();
+
+    // Set question text to a pulsing loading state so the user has immediate visual feedback
+    const questionText = document.getElementById("question-text")!;
+    questionText.innerHTML = `<span class="loading-pulse">${currentLocale === "de" ? "Erstelle lebendige Frage..." : "Generating dynamic question..."}</span>`;
 
     // Fetch review
     const payload = await runBridge<ReviewPayload>("get-review");

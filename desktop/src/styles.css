@@ -786,6 +786,16 @@ textarea::placeholder {
 }
 
 /* Util Helpers */
+.loading-pulse {
+  animation: dotsPulseAnimation 1.2s infinite alternate ease-in-out;
+  color: var(--clr-text-muted);
+  font-style: italic;
+  font-weight: 400;
+  display: block;
+  text-align: center;
+  padding: 10px 0;
+}
+
 .hidden {
   display: none !important;
 }
