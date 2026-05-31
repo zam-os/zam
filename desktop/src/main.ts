@@ -5,6 +5,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
   en: {
     ai_status_offline: "Local AI Offline",
     ai_status_online: "Local AI Online",
+    ai_status_starting: "Starting Local AI...",
+    ai_status_model_missing: "Local AI: model not found",
     lbl_due_reviews: "Due Reviews",
     lbl_caught_up: "You're all caught up!",
     lbl_domains: "Active Domains",
@@ -41,6 +43,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
   de: {
     ai_status_offline: "Lokale KI offline",
     ai_status_online: "Lokale KI online",
+    ai_status_starting: "Starte lokale KI...",
+    ai_status_model_missing: "Lokale KI: Modell fehlt",
     lbl_due_reviews: "Anstehende Wiederholungen",
     lbl_caught_up: "Du bist voll auf dem Laufenden!",
     lbl_domains: "Aktive Wissensbereiche",
@@ -235,18 +239,34 @@ async function loadDashboard() {
       domainsContainer.appendChild(span);
     }
 
-    // 3. Check Local LLM Status
-    const llmStatus = await runBridge<{ enabled: boolean; online: boolean }>("check-llm");
+    // 3. Bring the local LLM online (auto-starts the server like `zam learn`)
+    //    and reflect status. Don't block the dashboard on model load — show a
+    //    "starting" state and update the badge once it resolves.
     const aiStatusLabel = document.getElementById("ai-status-label")!;
     const pulseDot = document.querySelector(".pulse-dot")!;
-    
-    if (llmStatus.enabled && llmStatus.online) {
-      aiStatusLabel.textContent = t("ai_status_online");
-      pulseDot.className = "pulse-dot green";
-    } else {
-      aiStatusLabel.textContent = t("ai_status_offline");
-      pulseDot.className = "pulse-dot gray";
-    }
+    aiStatusLabel.textContent = t("ai_status_starting");
+    pulseDot.className = "pulse-dot amber";
+
+    runBridge<{ usable: boolean; online: boolean; reason?: string }>("ensure-llm", [
+      "--timeout",
+      "45000",
+    ])
+      .then((llm) => {
+        if (llm.usable) {
+          aiStatusLabel.textContent = t("ai_status_online");
+          pulseDot.className = "pulse-dot green";
+        } else if (llm.reason === "model-not-found") {
+          aiStatusLabel.textContent = t("ai_status_model_missing");
+          pulseDot.className = "pulse-dot gray";
+        } else {
+          aiStatusLabel.textContent = t("ai_status_offline");
+          pulseDot.className = "pulse-dot gray";
+        }
+      })
+      .catch(() => {
+        aiStatusLabel.textContent = t("ai_status_offline");
+        pulseDot.className = "pulse-dot gray";
+      });
   } catch (err) {
     console.error("Failed to load dashboard:", err);
   }

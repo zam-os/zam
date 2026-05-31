@@ -41,6 +41,7 @@ import {
 } from "../../kernel/index.js";
 import {
   ensureHighQualityQuestion,
+  ensureLlmReadyHeadless,
   evaluateAnswerViaLLM,
   getAvailableModels,
   getLlmConfig,
@@ -734,6 +735,27 @@ bridgeCommand
         modelAvailable,
         availableModels,
       });
+    });
+  });
+
+// ── zam bridge ensure-llm ─────────────────────────────────────────────────
+
+bridgeCommand
+  .command("ensure-llm")
+  .description(
+    "Start the local LLM server if needed and report readiness (JSON)",
+  )
+  .option(
+    "--timeout <ms>",
+    "Max time to wait for the server to come online",
+    "25000",
+  )
+  .action(async (opts) => {
+    await withDbAsync(async (db) => {
+      const result = await ensureLlmReadyHeadless(db, {
+        timeoutMs: Number(opts.timeout),
+      });
+      jsonOut(result);
     });
   });
 

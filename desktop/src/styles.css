@@ -176,6 +176,20 @@ body {
   background-color: var(--clr-text-muted);
 }
 
+.pulse-dot.amber {
+  background-color: #f5a623;
+  box-shadow: 0 0 10px #f5a623;
+}
+
+.pulse-dot.amber::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 50%;
+  border: 1px solid #f5a623;
+  animation: pulseAnimation 2s infinite ease-out;
+}
+
 @keyframes pulseAnimation {
   0% { transform: scale(1); opacity: 1; }
   100% { transform: scale(3.5); opacity: 0; }
