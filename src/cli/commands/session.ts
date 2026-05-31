@@ -6,25 +6,25 @@
  * Phase 2 — Task execution: pick a work item from ADO or enter a custom task
  */
 
+import { input, select } from "@inquirer/prompts";
 import { Command } from "commander";
 import type { Database } from "libsql";
-import { select, input } from "@inquirer/prompts";
+import type { BloomLevel, ExecutionContext } from "../../kernel/index.js";
 import {
-  openDatabase,
-  startSession,
-  logStep,
+  buildReviewQueue,
   endSession,
+  fetchActiveWorkItems,
+  generatePrompt,
   getSessionSummary,
+  getSetting,
   getTokenBySlug,
   loadADOConfig,
-  fetchActiveWorkItems,
-  buildReviewQueue,
-  generatePrompt,
-  getSetting,
+  logStep,
+  openDatabase,
+  startSession,
 } from "../../kernel/index.js";
-import type { ExecutionContext, BloomLevel } from "../../kernel/index.js";
-import { resolveUser } from "./resolve-user.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
+import { resolveUser } from "./resolve-user.js";
 
 function withDb(fn: (db: Database) => void): void {
   let db: Database | undefined;
@@ -39,8 +39,9 @@ function withDb(fn: (db: Database) => void): void {
   }
 }
 
-export const sessionCommand = new Command("session")
-  .description("Manage learning sessions");
+export const sessionCommand = new Command("session").description(
+  "Manage learning sessions",
+);
 
 // ── zam session start ─────────────────────────────────────────────────────
 
@@ -49,9 +50,20 @@ sessionCommand
   .description("Start a new learning session (review → task)")
   .option("--user <id>", "User ID (default: whoami)")
   .option("--task <description>", "Task description (interactive if omitted)")
-  .option("--context <level>", "Execution context: shell | ui | reallife (default: shell)", "shell")
-  .option("--skip-review", "Skip the repetition phase and go straight to task selection")
-  .option("--review-minutes <n>", "Maximum minutes for the repetition phase (default: 20)", "20")
+  .option(
+    "--context <level>",
+    "Execution context: shell | ui | reallife (default: shell)",
+    "shell",
+  )
+  .option(
+    "--skip-review",
+    "Skip the repetition phase and go straight to task selection",
+  )
+  .option(
+    "--review-minutes <n>",
+    "Maximum minutes for the repetition phase (default: 20)",
+    "20",
+  )
   .option("--json", "Output as JSON")
   .option("--quiet", "Output only the session ID")
   .action(async (opts) => {
@@ -61,7 +73,9 @@ sessionCommand
 
       const validContexts = ["shell", "ui", "reallife"];
       if (!validContexts.includes(opts.context)) {
-        console.error(`Invalid context: ${opts.context}. Must be one of: ${validContexts.join(", ")}`);
+        console.error(
+          `Invalid context: ${opts.context}. Must be one of: ${validContexts.join(", ")}`,
+        );
         process.exit(1);
       }
 
@@ -70,7 +84,11 @@ sessionCommand
 
       // ── Phase 1: Repetition ────────────────────────────────────────────
       if (!opts.skipReview && !opts.quiet && !opts.json) {
-        const reviewResults = await runRepetitionPhase(db, userId, reviewMinutes);
+        const reviewResults = await runRepetitionPhase(
+          db,
+          userId,
+          reviewMinutes,
+        );
         if (reviewResults.reviewed > 0) {
           console.log();
         }
@@ -85,7 +103,9 @@ sessionCommand
 
       if (!task) {
         // Fallback for --quiet/--json without --task
-        console.error("Task description is required. Use --task or run interactively.");
+        console.error(
+          "Task description is required. Use --task or run interactively.",
+        );
         process.exit(1);
       }
 
@@ -143,7 +163,9 @@ async function runRepetitionPhase(
   console.log("Phase 1: Repetition");
   console.log("═".repeat(50));
   console.log(`${queue.items.length} card(s) due`);
-  console.log(`  New: ${queue.newCount}  Review: ${queue.reviewCount}  Relearn: ${queue.relearnCount}`);
+  console.log(
+    `  New: ${queue.newCount}  Review: ${queue.reviewCount}  Relearn: ${queue.relearnCount}`,
+  );
   console.log(`  Domains: ${queue.totalDomains.join(", ")}`);
   console.log(`  Time limit: ${maxMinutes} minutes (skip anytime with 's')`);
   console.log();
@@ -156,7 +178,9 @@ async function runRepetitionPhase(
   for (const [index, item] of queue.items.entries()) {
     // Check time limit
     if (Date.now() - startTime >= timeLimitMs) {
-      console.log(`\nTime limit reached (${maxMinutes} min). Moving to task selection.`);
+      console.log(
+        `\nTime limit reached (${maxMinutes} min). Moving to task selection.`,
+      );
       break;
     }
 
@@ -170,7 +194,9 @@ async function runRepetitionPhase(
     });
 
     const elapsed = Math.round((Date.now() - startTime) / 60000);
-    console.log(`[${index + 1}/${queue.items.length}] ${prompt.bloomVerb} (Bloom ${prompt.bloomLevel}) — ${elapsed}/${maxMinutes} min`);
+    console.log(
+      `[${index + 1}/${queue.items.length}] ${prompt.bloomVerb} (Bloom ${prompt.bloomLevel}) — ${elapsed}/${maxMinutes} min`,
+    );
     console.log(`Domain: ${prompt.domain || "(none)"}`);
     console.log(`\n  ${prompt.question}\n`);
 
@@ -302,9 +328,7 @@ sessionCommand
 
       if (summary.steps.length > 0) {
         console.log("\nSteps:");
-        console.log(
-          "  Token                 Done by  Rating  Concept",
-        );
+        console.log("  Token                 Done by  Rating  Concept");
         console.log("  " + "─".repeat(70));
         for (const s of summary.steps) {
           console.log(

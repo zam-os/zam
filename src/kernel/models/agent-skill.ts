@@ -17,7 +17,7 @@ export interface AgentSkill {
   id: string;
   slug: string;
   description: string;
-  steps: string[];       // parsed from JSON
+  steps: string[]; // parsed from JSON
   token_slugs: string[]; // parsed from JSON
   source: SkillSource;
   created_at: string;
@@ -86,7 +86,9 @@ export function createAgentSkill(
   );
 
   return parseRow(
-    db.prepare("SELECT * FROM agent_skills WHERE id = ?").get(id) as AgentSkillRow,
+    db
+      .prepare("SELECT * FROM agent_skills WHERE id = ?")
+      .get(id) as AgentSkillRow,
   );
 }
 

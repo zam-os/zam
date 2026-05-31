@@ -73,7 +73,9 @@ export function logReview(db: Database, input: CreateReviewInput): ReviewLog {
     input.session_id ?? null,
   );
 
-  return db.prepare("SELECT * FROM review_logs WHERE id = ?").get(id) as ReviewLog;
+  return db
+    .prepare("SELECT * FROM review_logs WHERE id = ?")
+    .get(id) as ReviewLog;
 }
 
 /**

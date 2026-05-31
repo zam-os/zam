@@ -39,23 +39,45 @@ export function getUserStats(db: Database, userId: string): UserStats {
   return {
     userId,
     totalTokens: (q(db, "SELECT COUNT(*) as n FROM tokens") as { n: number }).n,
-    cardsInDeck: (q(db, "SELECT COUNT(*) as n FROM cards WHERE user_id = ?", userId) as { n: number }).n,
-    dueToday: (q(
-      db,
-      "SELECT COUNT(*) as n FROM cards WHERE user_id = ? AND blocked = 0 AND due_at <= datetime('now')",
-      userId,
-    ) as { n: number }).n,
-    blocked: (q(db, "SELECT COUNT(*) as n FROM cards WHERE user_id = ? AND blocked = 1", userId) as { n: number }).n,
-    mature: (q(
-      db,
-      "SELECT COUNT(*) as n FROM cards WHERE user_id = ? AND reps >= 3 AND stability >= 21",
-      userId,
-    ) as { n: number }).n,
+    cardsInDeck: (
+      q(db, "SELECT COUNT(*) as n FROM cards WHERE user_id = ?", userId) as {
+        n: number;
+      }
+    ).n,
+    dueToday: (
+      q(
+        db,
+        "SELECT COUNT(*) as n FROM cards WHERE user_id = ? AND blocked = 0 AND due_at <= datetime('now')",
+        userId,
+      ) as { n: number }
+    ).n,
+    blocked: (
+      q(
+        db,
+        "SELECT COUNT(*) as n FROM cards WHERE user_id = ? AND blocked = 1",
+        userId,
+      ) as { n: number }
+    ).n,
+    mature: (
+      q(
+        db,
+        "SELECT COUNT(*) as n FROM cards WHERE user_id = ? AND reps >= 3 AND stability >= 21",
+        userId,
+      ) as { n: number }
+    ).n,
     avgStability: (() => {
-      const v = q(db, "SELECT AVG(stability) as v FROM cards WHERE user_id = ? AND reps > 0", userId) as { v: number | null };
+      const v = q(
+        db,
+        "SELECT AVG(stability) as v FROM cards WHERE user_id = ? AND reps > 0",
+        userId,
+      ) as { v: number | null };
       return v.v ? Math.round(v.v * 100) / 100 : null;
     })(),
-    totalSessions: (q(db, "SELECT COUNT(*) as n FROM sessions WHERE user_id = ?", userId) as { n: number }).n,
+    totalSessions: (
+      q(db, "SELECT COUNT(*) as n FROM sessions WHERE user_id = ?", userId) as {
+        n: number;
+      }
+    ).n,
     lastSession: (() => {
       const r = db
         .prepare(
@@ -84,32 +106,39 @@ export function getDomainCompetence(
     .all(userId) as { domain: string }[];
 
   return domains.map((d) => {
-    const total = (q(
-      db,
-      `SELECT COUNT(*) as n FROM cards c
+    const total = (
+      q(
+        db,
+        `SELECT COUNT(*) as n FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ? AND t.domain = ?`,
-      userId,
-      d.domain,
-    ) as { n: number }).n;
+        userId,
+        d.domain,
+      ) as { n: number }
+    ).n;
 
-    const mature = (q(
-      db,
-      `SELECT COUNT(*) as n FROM cards c
+    const mature = (
+      q(
+        db,
+        `SELECT COUNT(*) as n FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ? AND t.domain = ? AND c.reps >= 3 AND c.stability >= 21`,
-      userId,
-      d.domain,
-    ) as { n: number }).n;
+        userId,
+        d.domain,
+      ) as { n: number }
+    ).n;
 
-    const avgStab = (q(
-      db,
-      `SELECT AVG(c.stability) as v FROM cards c
+    const avgStab =
+      (
+        q(
+          db,
+          `SELECT AVG(c.stability) as v FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ? AND t.domain = ? AND c.reps > 0`,
-      userId,
-      d.domain,
-    ) as { v: number | null }).v ?? 0;
+          userId,
+          d.domain,
+        ) as { v: number | null }
+      ).v ?? 0;
 
     // Estimate retention from review history
     const reviews = q(

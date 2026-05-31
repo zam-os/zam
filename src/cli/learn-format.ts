@@ -50,7 +50,7 @@ export interface RevealInput {
 export function formatReveal(input: RevealInput): string {
   const lines: string[] = [
     `Token: #${input.slug}`,
-    `Concept: ${input.concept}`
+    `Concept: ${input.concept}`,
   ];
 
   if (input.context?.trim()) {

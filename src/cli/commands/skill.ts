@@ -5,10 +5,10 @@
 import { Command } from "commander";
 import type { Database } from "libsql";
 import {
-  openDatabase,
   createAgentSkill,
   getAgentSkill,
   listAgentSkills,
+  openDatabase,
 } from "../../kernel/index.js";
 
 function withDb(fn: (db: Database) => void): void {
@@ -24,8 +24,9 @@ function withDb(fn: (db: Database) => void): void {
   }
 }
 
-export const skillCommand = new Command("skill")
-  .description("Manage agent skill entries (task recipes)");
+export const skillCommand = new Command("skill").description(
+  "Manage agent skill entries (task recipes)",
+);
 
 // ── zam skill list ────────────────────────────────────────────────────────
 
@@ -50,8 +51,12 @@ skillCommand
       console.log(`Agent Skills (${skills.length})`);
       console.log("─".repeat(60));
       for (const s of skills) {
-        console.log(`  ${s.slug.padEnd(30)} [${s.source}]  ${s.description.slice(0, 40)}`);
-        console.log(`    ${s.steps.length} step(s)  tokens: ${s.token_slugs.join(", ") || "none"}`);
+        console.log(
+          `  ${s.slug.padEnd(30)} [${s.source}]  ${s.description.slice(0, 40)}`,
+        );
+        console.log(
+          `    ${s.steps.length} step(s)  tokens: ${s.token_slugs.join(", ") || "none"}`,
+        );
       }
     });
   });
@@ -96,22 +101,33 @@ skillCommand
   .requiredOption("--slug <slug>", "Unique skill identifier")
   .requiredOption("--description <text>", "One-sentence description")
   .requiredOption("--steps <json>", "JSON array of step strings")
-  .option("--tokens <slugs>", "Comma-separated token slugs related to this skill")
-  .option("--source <type>", "Source: learned | builtin (default: learned)", "learned")
+  .option(
+    "--tokens <slugs>",
+    "Comma-separated token slugs related to this skill",
+  )
+  .option(
+    "--source <type>",
+    "Source: learned | builtin (default: learned)",
+    "learned",
+  )
   .option("--json", "Output as JSON")
   .action((opts) => {
     withDb((db) => {
       let steps: string[];
       try {
         steps = JSON.parse(opts.steps) as string[];
-        if (!Array.isArray(steps)) throw new Error("steps must be a JSON array");
+        if (!Array.isArray(steps))
+          throw new Error("steps must be a JSON array");
       } catch {
         console.error("Invalid --steps: must be a valid JSON array of strings");
         process.exit(1);
       }
 
       const tokenSlugs = opts.tokens
-        ? opts.tokens.split(",").map((s: string) => s.trim()).filter(Boolean)
+        ? opts.tokens
+            .split(",")
+            .map((s: string) => s.trim())
+            .filter(Boolean)
         : [];
 
       const skill = createAgentSkill(db, {

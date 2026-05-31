@@ -4,19 +4,19 @@
 
 import { Command } from "commander";
 import type { Database } from "libsql";
+import type { Rating } from "../../kernel/index.js";
 import {
-  openDatabase,
-  getDueCards,
-  getTokenBySlug,
+  cascadeBlock,
+  deleteCardForUser,
   ensureCard,
   evaluateRating,
-  cascadeBlock,
-  unblockReady,
-  getPrerequisites,
   getCardDeletionImpact,
-  deleteCardForUser,
+  getDueCards,
+  getPrerequisites,
+  getTokenBySlug,
+  openDatabase,
+  unblockReady,
 } from "../../kernel/index.js";
-import type { Rating } from "../../kernel/index.js";
 import { resolveUser } from "./resolve-user.js";
 
 function withDb(fn: (db: Database) => void): void {
@@ -32,8 +32,9 @@ function withDb(fn: (db: Database) => void): void {
   }
 }
 
-export const cardCommand = new Command("card")
-  .description("Manage spaced-repetition cards");
+export const cardCommand = new Command("card").description(
+  "Manage spaced-repetition cards",
+);
 
 // ── zam card due ──────────────────────────────────────────────────────────
 
@@ -68,11 +69,11 @@ cardCommand
           byDomain.set(d, entry);
         }
         console.log(`${dueCards.length} card(s) due:\n`);
-        console.log(
-          "Domain           Count  Bloom levels",
-        );
+        console.log("Domain           Count  Bloom levels");
         console.log("─".repeat(45));
-        for (const [domain, { count, blooms }] of [...byDomain.entries()].sort()) {
+        for (const [domain, { count, blooms }] of [
+          ...byDomain.entries(),
+        ].sort()) {
           const bloomStr = blooms.sort().join(", ");
           console.log(
             `${domain.padEnd(16)} ${String(count).padEnd(6)} ${bloomStr}`,
@@ -135,10 +136,20 @@ cardCommand
           const blockResult = cascadeBlock(db, userId, token.slug);
           if (opts.quiet) return;
           if (opts.json) {
-            console.log(JSON.stringify({ evaluation: result, blocked: blockResult }, null, 2));
+            console.log(
+              JSON.stringify(
+                { evaluation: result, blocked: blockResult },
+                null,
+                2,
+              ),
+            );
           } else {
-            console.log(`Rated ${token.slug} as Again (1) — next due: ${result.nextDueAt}`);
-            console.log(`Blocked ${blockResult.blockedSlug}. Prerequisites surfaced:`);
+            console.log(
+              `Rated ${token.slug} as Again (1) — next due: ${result.nextDueAt}`,
+            );
+            console.log(
+              `Blocked ${blockResult.blockedSlug}. Prerequisites surfaced:`,
+            );
             for (const p of blockResult.prerequisites) {
               console.log(`  - ${p.slug}: ${p.concept}`);
             }
@@ -151,8 +162,15 @@ cardCommand
       if (opts.json) {
         console.log(JSON.stringify(result, null, 2));
       } else {
-        const ratingLabels: Record<number, string> = { 1: "Again", 2: "Hard", 3: "Good", 4: "Easy" };
-        console.log(`Rated ${token.slug} as ${ratingLabels[rating]} (${rating})`);
+        const ratingLabels: Record<number, string> = {
+          1: "Again",
+          2: "Hard",
+          3: "Good",
+          4: "Easy",
+        };
+        console.log(
+          `Rated ${token.slug} as ${ratingLabels[rating]} (${rating})`,
+        );
         console.log(`  Next due:   ${result.nextDueAt}`);
         console.log(`  Stability:  ${result.stability.toFixed(2)}`);
         console.log(`  State:      ${result.state}`);
@@ -212,13 +230,19 @@ cardCommand
       const result = deleteCardForUser(db, token.id, userId);
 
       if (opts.json) {
-        console.log(JSON.stringify({
-          token: opts.token,
-          userId,
-          deleted: true,
-          cardId: result.card.id,
-          impact: result.impact,
-        }, null, 2));
+        console.log(
+          JSON.stringify(
+            {
+              token: opts.token,
+              userId,
+              deleted: true,
+              cardId: result.card.id,
+              impact: result.impact,
+            },
+            null,
+            2,
+          ),
+        );
         return;
       }
 

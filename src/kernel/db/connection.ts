@@ -1,9 +1,9 @@
-import Database, { type Database as DatabaseType } from "libsql";
-import { existsSync, mkdirSync, rmSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
-import { SCHEMA } from "./schema.js";
+import Database, { type Database as DatabaseType } from "libsql";
 import { getTursoCredentials } from "../credentials.js";
+import { SCHEMA } from "./schema.js";
 
 const DEFAULT_DB_DIR = join(homedir(), ".zam");
 const DEFAULT_DB_PATH = join(DEFAULT_DB_DIR, "zam.db");
@@ -48,8 +48,16 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
     }
   } catch (e) {}
 
-  if (requiresTurso && !configuredCloud && options.useConfiguredCloud !== false && !options.dbPath && !options.syncUrl) {
-    throw new Error("Turso cloud database is configured in .zam/config.yaml but missing local credentials. Run: zam connector setup turso");
+  if (
+    requiresTurso &&
+    !configuredCloud &&
+    options.useConfiguredCloud !== false &&
+    !options.dbPath &&
+    !options.syncUrl
+  ) {
+    throw new Error(
+      "Turso cloud database is configured in .zam/config.yaml but missing local credentials. Run: zam connector setup turso",
+    );
   }
   const dbPath = configuredCloud?.url ?? options.dbPath ?? DEFAULT_DB_PATH;
   const isRemote = isRemoteDatabasePath(dbPath);
@@ -69,9 +77,9 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
 
     // When syncUrl is provided, the db must be a libsql embedded replica (not
     // plain SQLite). The presence of a companion .meta (or -info) file proves
-    // it was created by libsql. 
+    // it was created by libsql.
     //
-    // If the db exists WITHOUT metadata, it was created before Turso was 
+    // If the db exists WITHOUT metadata, it was created before Turso was
     // configured â€” delete it so libsql can sync fresh from cloud.
     //
     // If metadata exists WITHOUT the db, libsql throws InvalidLocalState â€”
@@ -84,7 +92,10 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
         const f = `${dbPath}${suffix}`;
         if (existsSync(f)) rmSync(f, { force: true });
       }
-    } else if (!existsSync(dbPath) && (existsSync(metaPath) || existsSync(infoPath))) {
+    } else if (
+      !existsSync(dbPath) &&
+      (existsSync(metaPath) || existsSync(infoPath))
+    ) {
       if (existsSync(metaPath)) rmSync(metaPath);
       if (existsSync(infoPath)) rmSync(infoPath);
     }
@@ -142,7 +153,9 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
  * machine only has to collect missing secrets instead of bootstrapping local
  * state first.
  */
-export function openDatabaseWithSync(options: Omit<ConnectionOptions, "syncUrl" | "authToken"> = {}): DatabaseType {
+export function openDatabaseWithSync(
+  options: Omit<ConnectionOptions, "syncUrl" | "authToken"> = {},
+): DatabaseType {
   return openDatabase(options);
 }
 
@@ -157,8 +170,13 @@ export function getDefaultDbPath(): string {
  */
 function runMigrations(db: DatabaseType): void {
   // M001: add execution_context to sessions
-  const sessionCols = db.pragma("table_info(sessions)") as Array<{ name: string }>;
-  if (sessionCols.length > 0 && !sessionCols.some((c) => c.name === "execution_context")) {
+  const sessionCols = db.pragma("table_info(sessions)") as Array<{
+    name: string;
+  }>;
+  if (
+    sessionCols.length > 0 &&
+    !sessionCols.some((c) => c.name === "execution_context")
+  ) {
     db.exec(
       `ALTER TABLE sessions ADD COLUMN execution_context TEXT NOT NULL DEFAULT 'shell'`,
     );
@@ -166,12 +184,18 @@ function runMigrations(db: DatabaseType): void {
 
   // M002: add deprecated_at to tokens
   const tokenCols = db.pragma("table_info(tokens)") as Array<{ name: string }>;
-  if (tokenCols.length > 0 && !tokenCols.some((c) => c.name === "deprecated_at")) {
+  if (
+    tokenCols.length > 0 &&
+    !tokenCols.some((c) => c.name === "deprecated_at")
+  ) {
     db.exec(`ALTER TABLE tokens ADD COLUMN deprecated_at TEXT`);
   }
 
   // M004: add source_link to tokens
-  if (tokenCols.length > 0 && !tokenCols.some((c) => c.name === "source_link")) {
+  if (
+    tokenCols.length > 0 &&
+    !tokenCols.some((c) => c.name === "source_link")
+  ) {
     db.exec(`ALTER TABLE tokens ADD COLUMN source_link TEXT`);
   }
 

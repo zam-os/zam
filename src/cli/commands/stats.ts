@@ -5,9 +5,9 @@
 import { Command } from "commander";
 import type { Database } from "libsql";
 import {
-  openDatabase,
-  getUserStats,
   getDomainCompetence,
+  getUserStats,
+  openDatabase,
 } from "../../kernel/index.js";
 import { resolveUser } from "./resolve-user.js";
 

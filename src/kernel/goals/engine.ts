@@ -6,15 +6,15 @@
  * It does not depend on the database — goals are git-tracked, not DB-tracked.
  */
 
-import { readdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
-import { join, basename } from "node:path";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { basename, join } from "node:path";
+import type { Goal, GoalStatus } from "./parser.js";
 import {
-  parseGoalFile,
-  serializeGoal,
   extractTasks,
   extractTokenRefs,
+  parseGoalFile,
+  serializeGoal,
 } from "./parser.js";
-import type { Goal, GoalStatus } from "./parser.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -149,7 +149,9 @@ export function updateGoalStatus(
  * Get the goal tree — goals organized by parent relationships.
  * Returns root goals (no parent) with nested children.
  */
-export function getGoalTree(goalsDir: string): Array<GoalSummary & { children: GoalSummary[] }> {
+export function getGoalTree(
+  goalsDir: string,
+): Array<GoalSummary & { children: GoalSummary[] }> {
   const all = listGoals(goalsDir);
   const bySlug = new Map(all.map((g) => [g.slug, g]));
 

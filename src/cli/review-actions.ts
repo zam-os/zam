@@ -1,12 +1,5 @@
 import { confirm, input, select } from "@inquirer/prompts";
 import type { Database } from "libsql";
-import {
-  executeReviewAction,
-  generatePrompt,
-  getCardDeletionImpact,
-  getTokenById,
-  getTokenDeleteImpact,
-} from "../kernel/index.js";
 import type {
   BloomLevel,
   Rating,
@@ -15,6 +8,13 @@ import type {
   SymbiosisMode,
   Token,
   UpdateTokenInput,
+} from "../kernel/index.js";
+import {
+  executeReviewAction,
+  generatePrompt,
+  getCardDeletionImpact,
+  getTokenById,
+  getTokenDeleteImpact,
 } from "../kernel/index.js";
 
 type InteractiveTerminalAction =
@@ -44,7 +44,7 @@ export async function runInteractiveReviewAction(
   let currentItem = { ...inputData.item };
 
   while (true) {
-    const choice = await select({
+    const choice = (await select({
       message: "What next?",
       choices: [
         { name: "1 - Again (forgot)", value: 1 },
@@ -57,13 +57,14 @@ export async function runInteractiveReviewAction(
         { name: "Delete token", value: "delete-token" },
         { name: "Delete my card", value: "delete-card" },
         {
-          name: inputData.mode === "session"
-            ? "Stop review and continue to task selection"
-            : "Stop review",
+          name:
+            inputData.mode === "session"
+              ? "Stop review and continue to task selection"
+              : "Stop review",
           value: "stop",
         },
       ],
-    }) as Rating | InteractiveTerminalAction | "edit-token";
+    })) as Rating | InteractiveTerminalAction | "edit-token";
 
     if (typeof choice === "number") {
       const result = executeReviewAction(inputData.db, {
@@ -73,11 +74,20 @@ export async function runInteractiveReviewAction(
         rating: choice,
       });
 
-      const ratingLabels: Record<number, string> = { 1: "Again", 2: "Hard", 3: "Good", 4: "Easy" };
-      console.log(`  ${ratingLabels[choice]} — next due: ${result.evaluation!.nextDueAt}`);
+      const ratingLabels: Record<number, string> = {
+        1: "Again",
+        2: "Hard",
+        3: "Good",
+        4: "Easy",
+      };
+      console.log(
+        `  ${ratingLabels[choice]} — next due: ${result.evaluation!.nextDueAt}`,
+      );
 
       if (result.blocked) {
-        console.log(`  Blocked ${result.blocked.blockedSlug}. Review these prerequisites:`);
+        console.log(
+          `  Blocked ${result.blocked.blockedSlug}. Review these prerequisites:`,
+        );
         for (const prereq of result.blocked.prerequisites) {
           console.log(`    - ${prereq.slug}: ${prereq.concept}`);
         }
@@ -183,14 +193,19 @@ export async function runInteractiveReviewAction(
       console.log(`Delete token ${currentItem.slug}?`);
       console.log(`  Cards:                 ${impact.cards}`);
       console.log(`  Review logs:           ${impact.review_logs}`);
-      console.log(`  Prereq edges from it:  ${impact.prerequisite_edges_from_token}`);
-      console.log(`  Prereq edges to it:    ${impact.prerequisite_edges_to_token}`);
+      console.log(
+        `  Prereq edges from it:  ${impact.prerequisite_edges_from_token}`,
+      );
+      console.log(
+        `  Prereq edges to it:    ${impact.prerequisite_edges_to_token}`,
+      );
       console.log(`  Session steps:         ${impact.session_steps}`);
       console.log(`  Sessions touched:      ${impact.sessions_touched}`);
       console.log(`  Agent skills updated:  ${impact.agent_skills}`);
 
       const approved = await confirm({
-        message: "Permanently delete this token and its dependent learning data?",
+        message:
+          "Permanently delete this token and its dependent learning data?",
         default: false,
       });
       if (!approved) {
@@ -209,7 +224,11 @@ export async function runInteractiveReviewAction(
     }
 
     if (choice === "delete-card") {
-      const impact = getCardDeletionImpact(inputData.db, currentItem.tokenId, inputData.userId);
+      const impact = getCardDeletionImpact(
+        inputData.db,
+        currentItem.tokenId,
+        inputData.userId,
+      );
       console.log(`Delete your card for ${currentItem.slug}?`);
       console.log(`  Review logs removed: ${impact.review_logs}`);
 
@@ -234,10 +253,8 @@ export async function runInteractiveReviewAction(
   }
 }
 
-async function promptTokenEdit(
-  token: Token,
-): Promise<UpdateTokenInput | null> {
-  const field = await select({
+async function promptTokenEdit(token: Token): Promise<UpdateTokenInput | null> {
+  const field = (await select({
     message: `Edit which field on ${token.slug}?`,
     choices: [
       { name: "Concept", value: "concept" },
@@ -248,7 +265,7 @@ async function promptTokenEdit(
       { name: "Source link", value: "source_link" },
       { name: "Cancel", value: "cancel" },
     ],
-  }) as keyof UpdateTokenInput | "cancel";
+  })) as keyof UpdateTokenInput | "cancel";
 
   if (field === "cancel") {
     return null;
@@ -280,26 +297,48 @@ async function promptTokenEdit(
     }
 
     case "bloom_level": {
-      const bloom = await select({
+      const bloom = (await select({
         message: "Bloom level:",
         choices: [1, 2, 3, 4, 5].map((value) => ({
-          name: value === token.bloom_level ? `${value} (current)` : String(value),
+          name:
+            value === token.bloom_level ? `${value} (current)` : String(value),
           value,
         })),
-      }) as BloomLevel;
+      })) as BloomLevel;
       return bloom === token.bloom_level ? null : { bloom_level: bloom };
     }
 
     case "symbiosis_mode": {
-      const mode = await select({
+      const mode = (await select({
         message: "Symbiosis mode:",
         choices: [
-          { name: token.symbiosis_mode === null ? "none (current)" : "none", value: null },
-          { name: token.symbiosis_mode === "shadowing" ? "shadowing (current)" : "shadowing", value: "shadowing" },
-          { name: token.symbiosis_mode === "copilot" ? "copilot (current)" : "copilot", value: "copilot" },
-          { name: token.symbiosis_mode === "autonomy" ? "autonomy (current)" : "autonomy", value: "autonomy" },
+          {
+            name: token.symbiosis_mode === null ? "none (current)" : "none",
+            value: null,
+          },
+          {
+            name:
+              token.symbiosis_mode === "shadowing"
+                ? "shadowing (current)"
+                : "shadowing",
+            value: "shadowing",
+          },
+          {
+            name:
+              token.symbiosis_mode === "copilot"
+                ? "copilot (current)"
+                : "copilot",
+            value: "copilot",
+          },
+          {
+            name:
+              token.symbiosis_mode === "autonomy"
+                ? "autonomy (current)"
+                : "autonomy",
+            value: "autonomy",
+          },
         ],
-      }) as SymbiosisMode | null;
+      })) as SymbiosisMode | null;
       return mode === token.symbiosis_mode ? null : { symbiosis_mode: mode };
     }
 

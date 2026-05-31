@@ -86,9 +86,9 @@ export function startSession(db: Database, input: CreateSessionInput): Session {
  * Ported from the PoC's end-session command.
  */
 export function endSession(db: Database, sessionId: string): Session {
-  const session = db.prepare("SELECT * FROM sessions WHERE id = ?").get(sessionId) as
-    | Session
-    | undefined;
+  const session = db
+    .prepare("SELECT * FROM sessions WHERE id = ?")
+    .get(sessionId) as Session | undefined;
 
   if (!session) {
     throw new Error(`Session not found: ${sessionId}`);
@@ -98,9 +98,14 @@ export function endSession(db: Database, sessionId: string): Session {
   }
 
   const now = new Date().toISOString();
-  db.prepare("UPDATE sessions SET completed_at = ? WHERE id = ?").run(now, sessionId);
+  db.prepare("UPDATE sessions SET completed_at = ? WHERE id = ?").run(
+    now,
+    sessionId,
+  );
 
-  return db.prepare("SELECT * FROM sessions WHERE id = ?").get(sessionId) as Session;
+  return db
+    .prepare("SELECT * FROM sessions WHERE id = ?")
+    .get(sessionId) as Session;
 }
 
 /**
@@ -113,14 +118,18 @@ export function endSession(db: Database, sessionId: string): Session {
  */
 export function logStep(db: Database, input: LogStepInput): SessionStep {
   if (input.done_by !== "user" && input.done_by !== "agent") {
-    throw new Error(`done_by must be 'user' or 'agent', got '${input.done_by}'`);
+    throw new Error(
+      `done_by must be 'user' or 'agent', got '${input.done_by}'`,
+    );
   }
   if (input.rating != null && (input.rating < 1 || input.rating > 4)) {
     throw new Error(`Rating must be between 1 and 4, got ${input.rating}`);
   }
 
   // Verify the session exists
-  const session = db.prepare("SELECT id FROM sessions WHERE id = ?").get(input.session_id);
+  const session = db
+    .prepare("SELECT id FROM sessions WHERE id = ?")
+    .get(input.session_id);
   if (!session) {
     throw new Error(`Session not found: ${input.session_id}`);
   }
@@ -141,7 +150,9 @@ export function logStep(db: Database, input: LogStepInput): SessionStep {
     now,
   );
 
-  return db.prepare("SELECT * FROM session_steps WHERE id = ?").get(id) as SessionStep;
+  return db
+    .prepare("SELECT * FROM session_steps WHERE id = ?")
+    .get(id) as SessionStep;
 }
 
 /**

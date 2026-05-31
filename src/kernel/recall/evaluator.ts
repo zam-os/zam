@@ -44,17 +44,19 @@ export function evaluateRating(
   // Get current card state
   const card = db
     .prepare("SELECT * FROM cards WHERE id = ?")
-    .get(input.cardId) as {
-    stability: number;
-    difficulty: number;
-    elapsed_days: number;
-    scheduled_days: number;
-    reps: number;
-    lapses: number;
-    state: string;
-    due_at: string;
-    last_review_at: string | null;
-  } | undefined;
+    .get(input.cardId) as
+    | {
+        stability: number;
+        difficulty: number;
+        elapsed_days: number;
+        scheduled_days: number;
+        reps: number;
+        lapses: number;
+        state: string;
+        due_at: string;
+        last_review_at: string | null;
+      }
+    | undefined;
 
   if (!card) {
     throw new Error(`Card not found: ${input.cardId}`);

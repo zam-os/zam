@@ -115,7 +115,9 @@ export function createToken(db: Database, input: CreateTokenInput): Token {
  * Returns undefined if not found.
  */
 export function getTokenBySlug(db: Database, slug: string): Token | undefined {
-  return db.prepare("SELECT * FROM tokens WHERE slug = ?").get(slug) as Token | undefined;
+  return db.prepare("SELECT * FROM tokens WHERE slug = ?").get(slug) as
+    | Token
+    | undefined;
 }
 
 /**
@@ -123,7 +125,9 @@ export function getTokenBySlug(db: Database, slug: string): Token | undefined {
  * Returns undefined if not found.
  */
 export function getTokenById(db: Database, id: string): Token | undefined {
-  return db.prepare("SELECT * FROM tokens WHERE id = ?").get(id) as Token | undefined;
+  return db.prepare("SELECT * FROM tokens WHERE id = ?").get(id) as
+    | Token
+    | undefined;
 }
 
 /**
@@ -155,7 +159,9 @@ export function updateToken(
   }
   if (updates.bloom_level !== undefined) {
     if (updates.bloom_level < 1 || updates.bloom_level > 5) {
-      throw new Error(`bloom_level must be between 1 and 5, got ${updates.bloom_level}`);
+      throw new Error(
+        `bloom_level must be between 1 and 5, got ${updates.bloom_level}`,
+      );
     }
     fields.push("bloom_level = ?");
     values.push(updates.bloom_level);
@@ -166,7 +172,10 @@ export function updateToken(
   }
   if (updates.symbiosis_mode !== undefined) {
     const validModes = ["shadowing", "copilot", "autonomy"];
-    if (updates.symbiosis_mode !== null && !validModes.includes(updates.symbiosis_mode)) {
+    if (
+      updates.symbiosis_mode !== null &&
+      !validModes.includes(updates.symbiosis_mode)
+    ) {
       throw new Error(`Invalid symbiosis_mode: ${updates.symbiosis_mode}`);
     }
     fields.push("symbiosis_mode = ?");
@@ -189,7 +198,9 @@ export function updateToken(
   values.push(new Date().toISOString());
   values.push(slug);
 
-  db.prepare(`UPDATE tokens SET ${fields.join(", ")} WHERE slug = ?`).run(...values);
+  db.prepare(`UPDATE tokens SET ${fields.join(", ")} WHERE slug = ?`).run(
+    ...values,
+  );
   return getTokenBySlug(db, slug)!;
 }
 
@@ -209,11 +220,9 @@ export function deprecateToken(db: Database, slug: string): Token {
   }
 
   const now = new Date().toISOString();
-  db.prepare("UPDATE tokens SET deprecated_at = ?, updated_at = ? WHERE slug = ?").run(
-    now,
-    now,
-    slug,
-  );
+  db.prepare(
+    "UPDATE tokens SET deprecated_at = ?, updated_at = ? WHERE slug = ?",
+  ).run(now, now, slug);
 
   return getTokenBySlug(db, slug)!;
 }
@@ -246,7 +255,9 @@ export function getTokenDeleteImpact(
     .prepare("SELECT COUNT(*) AS n FROM session_steps WHERE token_id = ?")
     .get(token.id) as { n: number };
   const sessionsTouched = db
-    .prepare("SELECT COUNT(DISTINCT session_id) AS n FROM session_steps WHERE token_id = ?")
+    .prepare(
+      "SELECT COUNT(DISTINCT session_id) AS n FROM session_steps WHERE token_id = ?",
+    )
     .get(token.id) as { n: number };
 
   const skillRows = db
@@ -271,10 +282,7 @@ export function getTokenDeleteImpact(
 /**
  * Hard-delete a token and clean up non-FK references that point at its slug.
  */
-export function deleteToken(
-  db: Database,
-  slug: string,
-): DeleteTokenResult {
+export function deleteToken(db: Database, slug: string): DeleteTokenResult {
   const token = getTokenBySlug(db, slug);
   if (!token) {
     throw new Error(`Token not found: ${slug}`);
@@ -293,8 +301,9 @@ export function deleteToken(
       const tokenSlugs = JSON.parse(row.token_slugs) as string[];
       const filtered = tokenSlugs.filter((tokenSlug) => tokenSlug !== slug);
       if (filtered.length !== tokenSlugs.length) {
-        db.prepare("UPDATE agent_skills SET token_slugs = ?, updated_at = ? WHERE id = ?")
-          .run(JSON.stringify(filtered), now, row.id);
+        db.prepare(
+          "UPDATE agent_skills SET token_slugs = ?, updated_at = ? WHERE id = ?",
+        ).run(JSON.stringify(filtered), now, row.id);
       }
     }
 
@@ -319,9 +328,7 @@ export function deleteToken(
 export function findTokens(db: Database, query: string): ScoredToken[] {
   const normalised = query.toLowerCase();
   const qTokens = new Set(
-    normalised
-      .split(/[\s,.\-_/\\:;!?()\[\]{}]+/)
-      .filter((t) => t.length > 2),
+    normalised.split(/[\s,.\-_/\\:;!?()[\]{}]+/).filter((t) => t.length > 2),
   );
 
   const tokens = db
@@ -333,7 +340,7 @@ export function findTokens(db: Database, query: string): ScoredToken[] {
   for (const t of tokens) {
     const words = (t.slug + " " + t.concept + " " + t.domain)
       .toLowerCase()
-      .split(/[\s,.\-_/\\:;!?()\[\]{}]+/)
+      .split(/[\s,.\-_/\\:;!?()[\]{}]+/)
       .filter(Boolean);
 
     let score = 0;

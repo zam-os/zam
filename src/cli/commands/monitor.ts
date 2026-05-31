@@ -11,31 +11,31 @@
  *   zam monitor status --session <id>             # check log stats
  */
 
-import { Command } from "commander";
-import { basename, join } from "node:path";
 import { execFileSync, execSync } from "node:child_process";
-import { writeFileSync, unlinkSync } from "node:fs";
+import { unlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
+import { basename, join } from "node:path";
+import { Command } from "commander";
 import type { Database } from "libsql";
-import {
-  openDatabase,
-  ensureMonitorDir,
-  getMonitorPath,
-  writeMonitorEvent,
-  readMonitorLog,
-  pairCommands,
-  monitorLogExists,
-  getMonitorLogStats,
-  generateZshHooks,
-  generateBashHooks,
-  generatePowerShellHooks,
-  generateZshUnhooks,
-  generateBashUnhooks,
-  generatePowerShellUnhooks,
-  getSetting,
-  setSetting,
-} from "../../kernel/index.js";
 import type { MonitorEvent } from "../../kernel/index.js";
+import {
+  ensureMonitorDir,
+  generateBashHooks,
+  generateBashUnhooks,
+  generatePowerShellHooks,
+  generatePowerShellUnhooks,
+  generateZshHooks,
+  generateZshUnhooks,
+  getMonitorLogStats,
+  getMonitorPath,
+  getSetting,
+  monitorLogExists,
+  openDatabase,
+  pairCommands,
+  readMonitorLog,
+  setSetting,
+  writeMonitorEvent,
+} from "../../kernel/index.js";
 
 type MonitorShell = "zsh" | "bash" | "pwsh" | "powershell";
 
@@ -54,7 +54,9 @@ function normalizeShell(shell: string | undefined): MonitorShell {
   ) {
     return normalized;
   }
-  throw new Error(`Unsupported shell: ${shell}. Expected zsh, bash, pwsh, or powershell.`);
+  throw new Error(
+    `Unsupported shell: ${shell}. Expected zsh, bash, pwsh, or powershell.`,
+  );
 }
 
 function psSingleQuoted(value: string): string {
@@ -62,13 +64,15 @@ function psSingleQuoted(value: string): string {
 }
 
 function detectShell(): MonitorShell {
-  if (process.platform === "win32") return findExecutable("pwsh.exe") ? "pwsh" : "powershell";
+  if (process.platform === "win32")
+    return findExecutable("pwsh.exe") ? "pwsh" : "powershell";
   const shell = process.env.SHELL ?? "";
   return basename(shell) === "bash" ? "bash" : "zsh";
 }
 
-export const monitorCommand = new Command("monitor")
-  .description("Shell observation for real-time task monitoring");
+export const monitorCommand = new Command("monitor").description(
+  "Shell observation for real-time task monitoring",
+);
 
 // ── zam monitor start ─────────────────────────────────────────────────────
 
@@ -76,7 +80,10 @@ monitorCommand
   .command("start")
   .description("Output shell hook code to install monitoring")
   .requiredOption("--session <id>", "Session ID to monitor")
-  .option("--shell <type>", "Shell type: zsh | bash | pwsh | powershell (auto-detected)")
+  .option(
+    "--shell <type>",
+    "Shell type: zsh | bash | pwsh | powershell (auto-detected)",
+  )
   .action((opts) => {
     let shell: MonitorShell;
     try {
@@ -92,7 +99,9 @@ monitorCommand
       db = openDatabase();
       const session = db
         .prepare("SELECT id, completed_at FROM sessions WHERE id = ?")
-        .get(opts.session) as { id: string; completed_at: string | null } | undefined;
+        .get(opts.session) as
+        | { id: string; completed_at: string | null }
+        | undefined;
 
       if (!session) {
         console.error(`# Error: Session not found: ${opts.session}`);
@@ -139,7 +148,10 @@ monitorCommand
   .command("stop")
   .description("Output shell code to remove monitoring hooks")
   .requiredOption("--session <id>", "Session ID")
-  .option("--shell <type>", "Shell type: zsh | bash | pwsh | powershell (auto-detected)")
+  .option(
+    "--shell <type>",
+    "Shell type: zsh | bash | pwsh | powershell (auto-detected)",
+  )
   .action((opts) => {
     // Write stop meta event
     if (monitorLogExists(opts.session)) {
@@ -190,10 +202,16 @@ monitorCommand
 
     const events = readMonitorLog(opts.session);
     const commands = pairCommands(events);
-    const errors = commands.filter((c) => c.exitCode != null && c.exitCode !== 0).length;
+    const errors = commands.filter(
+      (c) => c.exitCode != null && c.exitCode !== 0,
+    ).length;
 
-    const meta = events.find((e) => e.type === "monitor_meta" && e.event === "start");
-    const stopped = events.some((e) => e.type === "monitor_meta" && e.event === "stop");
+    const meta = events.find(
+      (e) => e.type === "monitor_meta" && e.event === "start",
+    );
+    const stopped = events.some(
+      (e) => e.type === "monitor_meta" && e.event === "stop",
+    );
 
     const result = {
       sessionId: opts.session,
@@ -203,12 +221,15 @@ monitorCommand
       totalCommands: commands.length,
       errors,
       sizeBytes: stats.sizeBytes,
-      timeSpan: commands.length > 0
-        ? {
-            start: commands[0].startedAt,
-            end: commands[commands.length - 1].endedAt ?? commands[commands.length - 1].startedAt,
-          }
-        : null,
+      timeSpan:
+        commands.length > 0
+          ? {
+              start: commands[0].startedAt,
+              end:
+                commands[commands.length - 1].endedAt ??
+                commands[commands.length - 1].startedAt,
+            }
+          : null,
     };
 
     if (opts.json) {
@@ -235,8 +256,13 @@ monitorCommand
  */
 function findExecutable(command: string): string | null {
   try {
-    const lookup = process.platform === "win32" ? `where.exe ${command}` : `command -v ${command}`;
-    const result = execSync(lookup, { encoding: "utf-8" }).split(/\r?\n/)[0]?.trim();
+    const lookup =
+      process.platform === "win32"
+        ? `where.exe ${command}`
+        : `command -v ${command}`;
+    const result = execSync(lookup, { encoding: "utf-8" })
+      .split(/\r?\n/)[0]
+      ?.trim();
     return result || null;
   } catch {
     return null;
@@ -246,7 +272,9 @@ function findExecutable(command: string): string | null {
 function resolveZamInvocation(shell: MonitorShell): string {
   const installed = findExecutable("zam");
   if (installed) {
-    return isPowerShellShell(shell) ? `& ${psSingleQuoted(installed)}` : installed;
+    return isPowerShellShell(shell)
+      ? `& ${psSingleQuoted(installed)}`
+      : installed;
   }
 
   const projectRoot = join(import.meta.dirname, "..", "..", "..");
@@ -257,7 +285,11 @@ function resolveZamInvocation(shell: MonitorShell): string {
   return `npx --prefix ${JSON.stringify(projectRoot)} tsx ${JSON.stringify(cliSource)}`;
 }
 
-function buildMonitorSetupCommand(dir: string, sessionId: string, shell: MonitorShell): string {
+function buildMonitorSetupCommand(
+  dir: string,
+  sessionId: string,
+  shell: MonitorShell,
+): string {
   const zamInvocation = resolveZamInvocation(shell);
   if (isPowerShellShell(shell)) {
     return [
@@ -277,7 +309,7 @@ function buildMonitorSetupCommand(dir: string, sessionId: string, shell: Monitor
 function isItermRunning(): boolean {
   try {
     const result = execSync(
-      "osascript -e 'tell application \"System Events\" to (name of processes) contains \"iTerm2\"' 2>/dev/null",
+      'osascript -e \'tell application "System Events" to (name of processes) contains "iTerm2"\' 2>/dev/null',
       { encoding: "utf-8" },
     ).trim();
     return result === "true";
@@ -291,7 +323,10 @@ monitorCommand
   .description("Open a new monitored terminal window for a session")
   .requiredOption("--session <id>", "Session ID to monitor")
   .option("--dir <path>", "Working directory (defaults to cwd)")
-  .option("--shell <type>", "Shell type: zsh | bash | pwsh | powershell (auto-detected)")
+  .option(
+    "--shell <type>",
+    "Shell type: zsh | bash | pwsh | powershell (auto-detected)",
+  )
   .action((opts) => {
     let shell: MonitorShell;
     try {
@@ -307,7 +342,9 @@ monitorCommand
       db = openDatabase();
       const session = db
         .prepare("SELECT id, completed_at FROM sessions WHERE id = ?")
-        .get(opts.session) as { id: string; completed_at: string | null } | undefined;
+        .get(opts.session) as
+        | { id: string; completed_at: string | null }
+        | undefined;
 
       if (!session) {
         console.error(`Error: Session not found: ${opts.session}`);
@@ -339,7 +376,9 @@ monitorCommand
     } else {
       console.log(`Run this in a new terminal:\n`);
       console.log(`  ${shellSetup}\n`);
-      console.log(`(Automatic terminal opening is only supported on macOS Terminal/iTerm2 and Windows PowerShell for now.)`);
+      console.log(
+        `(Automatic terminal opening is only supported on macOS Terminal/iTerm2 and Windows PowerShell for now.)`,
+      );
     }
   });
 
@@ -347,7 +386,11 @@ monitorCommand
  * Open a macOS terminal window via AppleScript.
  * Uses a temp .scpt file to avoid shell quoting hell.
  */
-function openMacTerminal(shellSetup: string, sessionId: string, dir: string): void {
+function openMacTerminal(
+  shellSetup: string,
+  sessionId: string,
+  dir: string,
+): void {
   const useIterm = isItermRunning();
   const escaped = shellSetup.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
 
@@ -368,14 +411,20 @@ end tell`;
   try {
     writeFileSync(tmpFile, appleScript);
     execSync(`osascript ${JSON.stringify(tmpFile)}`, { stdio: "ignore" });
-    console.log(`Opened ${useIterm ? "iTerm2" : "Terminal.app"} window with monitoring for session ${sessionId}`);
+    console.log(
+      `Opened ${useIterm ? "iTerm2" : "Terminal.app"} window with monitoring for session ${sessionId}`,
+    );
     console.log(`  Directory: ${dir}`);
   } catch (err) {
     console.error(`Failed to open terminal: ${(err as Error).message}`);
     console.log(`\nRun this manually in a new terminal:\n`);
     console.log(`  ${shellSetup}`);
   } finally {
-    try { unlinkSync(tmpFile); } catch { /* ignore */ }
+    try {
+      unlinkSync(tmpFile);
+    } catch {
+      /* ignore */
+    }
   }
 }
 
@@ -388,8 +437,11 @@ function openWindowsPowerShell(
   dir: string,
   requestedShell: MonitorShell,
 ): void {
-  const requestedExecutable = requestedShell === "powershell" ? "powershell.exe" : "pwsh.exe";
-  const executable = findExecutable(requestedExecutable) ? requestedExecutable : "powershell.exe";
+  const requestedExecutable =
+    requestedShell === "powershell" ? "powershell.exe" : "pwsh.exe";
+  const executable = findExecutable(requestedExecutable)
+    ? requestedExecutable
+    : "powershell.exe";
   const startCommand = [
     "Start-Process",
     `-FilePath ${psSingleQuoted(executable)}`,
@@ -397,10 +449,16 @@ function openWindowsPowerShell(
   ].join(" ");
 
   try {
-    execFileSync("powershell.exe", ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", startCommand], {
-      stdio: "ignore",
-    });
-    console.log(`Opened ${executable === "pwsh.exe" ? "PowerShell" : "Windows PowerShell"} window with monitoring for session ${sessionId}`);
+    execFileSync(
+      "powershell.exe",
+      ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", startCommand],
+      {
+        stdio: "ignore",
+      },
+    );
+    console.log(
+      `Opened ${executable === "pwsh.exe" ? "PowerShell" : "Windows PowerShell"} window with monitoring for session ${sessionId}`,
+    );
     console.log(`  Directory: ${dir}`);
   } catch (err) {
     console.error(`Failed to open PowerShell: ${(err as Error).message}`);

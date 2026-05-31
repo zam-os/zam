@@ -95,9 +95,7 @@ export function ensureCard(
      VALUES (?, ?, ?, ?)`,
   ).run(id, tokenId, userId, now);
 
-  return db
-    .prepare("SELECT * FROM cards WHERE id = ?")
-    .get(id) as Card;
+  return db.prepare("SELECT * FROM cards WHERE id = ?").get(id) as Card;
 }
 
 /**
@@ -116,11 +114,10 @@ export function getCard(
 /**
  * Get a card by its ULID.
  */
-export function getCardById(
-  db: Database,
-  cardId: string,
-): Card | undefined {
-  return db.prepare("SELECT * FROM cards WHERE id = ?").get(cardId) as Card | undefined;
+export function getCardById(db: Database, cardId: string): Card | undefined {
+  return db.prepare("SELECT * FROM cards WHERE id = ?").get(cardId) as
+    | Card
+    | undefined;
 }
 
 /**
@@ -267,10 +264,7 @@ export function getDueCards(
  * Returns cards joined with their token details so the caller can
  * see what is waiting and why.
  */
-export function getBlockedCards(
-  db: Database,
-  userId: string,
-): BlockedCard[] {
+export function getBlockedCards(db: Database, userId: string): BlockedCard[] {
   return db
     .prepare(
       `SELECT c.*, t.slug, t.concept, t.domain, t.bloom_level

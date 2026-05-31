@@ -22,7 +22,11 @@ export interface WorkItem {
 export function loadADOConfig(): ADOConfig | null {
   const creds = getADOCredentials();
   if (!creds) return null;
-  return { orgUrl: creds.org_url.replace(/\/+$/, ""), project: creds.project, pat: creds.pat };
+  return {
+    orgUrl: creds.org_url.replace(/\/+$/, ""),
+    project: creds.project,
+    pat: creds.pat,
+  };
 }
 
 function authHeader(pat: string): string {
@@ -33,7 +37,9 @@ function authHeader(pat: string): string {
  * Fetch active work items assigned to the current user.
  * Uses WIQL to query, then batch-fetches work item details.
  */
-export async function fetchActiveWorkItems(config: ADOConfig): Promise<WorkItem[]> {
+export async function fetchActiveWorkItems(
+  config: ADOConfig,
+): Promise<WorkItem[]> {
   const { orgUrl, project, pat } = config;
 
   // Step 1: WIQL query for work item IDs
@@ -63,7 +69,8 @@ export async function fetchActiveWorkItems(config: ADOConfig): Promise<WorkItem[
 
   // Step 2: Batch fetch work item details (max 200 per request)
   const batchIds = ids.slice(0, 200);
-  const fields = "System.Id,System.Title,System.State,System.WorkItemType,System.AssignedTo";
+  const fields =
+    "System.Id,System.Title,System.State,System.WorkItemType,System.AssignedTo";
   const detailUrl = `${orgUrl}/${project}/_apis/wit/workitems?ids=${batchIds.join(",")}&fields=${fields}&api-version=7.1`;
 
   const detailRes = await fetch(detailUrl, {
@@ -72,7 +79,9 @@ export async function fetchActiveWorkItems(config: ADOConfig): Promise<WorkItem[
 
   if (!detailRes.ok) {
     const text = await detailRes.text();
-    throw new Error(`ADO work items fetch failed (${detailRes.status}): ${text}`);
+    throw new Error(
+      `ADO work items fetch failed (${detailRes.status}): ${text}`,
+    );
   }
 
   const detailData = (await detailRes.json()) as {

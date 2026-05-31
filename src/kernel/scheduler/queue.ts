@@ -12,8 +12,8 @@ import { interleave } from "./interleaver.js";
 
 export interface ReviewQueueOptions {
   userId: string;
-  maxNew?: number;       // default 10
-  maxReviews?: number;   // default 50
+  maxNew?: number; // default 10
+  maxReviews?: number; // default 50
   now?: Date;
 }
 
@@ -24,7 +24,7 @@ export interface ReviewQueueItem {
   concept: string;
   domain: string;
   bloomLevel: number;
-  state: string;         // 'new' | 'learning' | 'review' | 'relearning'
+  state: string; // 'new' | 'learning' | 'review' | 'relearning'
   dueAt: string;
   sourceLink: string | null;
   question: string | null;
