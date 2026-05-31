@@ -431,6 +431,10 @@ export async function fetchWithInteractiveTimeout(
   const controller = new AbortController();
   const fetchPromise = fetch(url, { ...options, signal: controller.signal });
   
+  if (!process.stdout.isTTY || process.env.ZAM_BRIDGE === "true") {
+    return fetchPromise;
+  }
+  
   let attempts = 0;
   const dotsPerLine = 30; // 15 seconds per line of dots
   

@@ -51,3 +51,6 @@ coverage/
 *.db
 *.db-wal
 *.db-shm
+
+# Scratch & temporary
+scratch/

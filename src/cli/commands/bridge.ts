@@ -26,6 +26,11 @@ import {
   getTokenDeleteImpact,
   getCardDeletionImpact,
   resolveReviewContext,
+  isLlmOnline,
+  translateQuestionViaLLM,
+  evaluateAnswerViaLLM,
+  getSetting,
+  getTokenById,
 } from "../../kernel/index.js";
 import type {
   Rating,
@@ -620,4 +625,120 @@ bridgeCommand
     } catch (err) {
       jsonError((err as Error).message);
     }
+  });
+
+// ── zam bridge check-llm ──────────────────────────────────────────────────
+
+bridgeCommand
+  .command("check-llm")
+  .description("Check if LLM is enabled and online (JSON)")
+  .action(async () => {
+    await withDbAsync(async (db) => {
+      const isEnabled = getSetting(db, "llm.enabled") === "true";
+      const url = getSetting(db, "llm.url") || "http://localhost:8000/v1";
+      const model = getSetting(db, "llm.model") || "qwen3.5:4b";
+      let online = false;
+      if (isEnabled) {
+        online = await isLlmOnline(url);
+      }
+      jsonOut({
+        enabled: isEnabled,
+        online,
+        url,
+        model,
+      });
+    });
+  });
+
+// ── zam bridge translate-question ──────────────────────────────────────────
+
+bridgeCommand
+  .command("translate-question")
+  .description("Translate a question dynamically using the local LLM (JSON)")
+  .requiredOption("--question <text>", "Question in English to translate")
+  .action(async (opts) => {
+    await withDbAsync(async (db) => {
+      const isEnabled = getSetting(db, "llm.enabled") === "true";
+      if (!isEnabled) {
+        jsonOut({ success: false, error: "LLM integration is disabled", translation: opts.question });
+        return;
+      }
+      try {
+        const translation = await translateQuestionViaLLM(db, opts.question);
+        jsonOut({ success: true, translation });
+      } catch (err) {
+        jsonOut({ success: false, error: (err as Error).message, translation: opts.question });
+      }
+    });
+  });
+
+// ── zam bridge evaluate-answer ────────────────────────────────────────────
+
+bridgeCommand
+  .command("evaluate-answer")
+  .description("Evaluate the learner's active-recall answer using the local LLM (JSON)")
+  .requiredOption("--slug <slug>", "Token slug")
+  .requiredOption("--concept <concept>", "Target concept text")
+  .requiredOption("--domain <domain>", "Token domain")
+  .requiredOption("--bloom-level <level>", "Bloom taxonomy level")
+  .requiredOption("--question <question>", "Question prompt presented")
+  .requiredOption("--user-answer <answer>", "User's typed answer")
+  .option("--context <context>", "Optional token context details")
+  .option("--source-link <link>", "Optional source link")
+  .action(async (opts) => {
+    await withDbAsync(async (db) => {
+      const isEnabled = getSetting(db, "llm.enabled") === "true";
+      if (!isEnabled) {
+        jsonOut({ success: false, error: "LLM integration is disabled", evaluation: "" });
+        return;
+      }
+      
+      let resolvedContextContent = null;
+      if (opts.sourceLink) {
+        try {
+          const resolved = await resolveReviewContext(opts.sourceLink);
+          resolvedContextContent = resolved?.content ?? null;
+        } catch {
+          // ignore context resolution errors
+        }
+      }
+
+      try {
+        const evaluation = await evaluateAnswerViaLLM(db, {
+          slug: opts.slug,
+          concept: opts.concept,
+          domain: opts.domain,
+          bloomLevel: Number(opts.bloomLevel),
+          context: opts.context,
+          question: opts.question,
+          userAnswer: opts.userAnswer,
+          sourceLinkContent: resolvedContextContent,
+        });
+        jsonOut({ success: true, evaluation });
+      } catch (err) {
+        jsonOut({ success: false, error: (err as Error).message, evaluation: "" });
+      }
+    });
+  });
+
+// ── zam bridge get-settings ───────────────────────────────────────────────
+
+bridgeCommand
+  .command("get-settings")
+  .description("Get active ZAM settings (JSON)")
+  .action(() => {
+    withDb((db) => {
+      const locale = getSetting(db, "system.locale") || "en";
+      const isLlmEnabled = getSetting(db, "llm.enabled") === "true";
+      const llmUrl = getSetting(db, "llm.url") || "http://localhost:8000/v1";
+      const llmModel = getSetting(db, "llm.model") || "qwen3.5:4b";
+      jsonOut({
+        locale,
+        llm: {
+          enabled: isLlmEnabled,
+          url: llmUrl,
+          model: llmModel,
+        }
+      });
+    });
   });

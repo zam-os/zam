@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZAM — Active-Recall Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" src="/src/main.ts" defer></script>
+  </head>
+
+  <body>
+    <!-- BACKGROUND GLOWS -->
+    <div class="blur-glow glow-1"></div>
+    <div class="blur-glow glow-2"></div>
+
+    <main class="container">
+      <!-- HEADER BAR -->
+      <header class="app-header">
+        <div class="logo-area">
+          <span class="logo-accent">ZAM</span>
+          <span class="logo-sub">Recall Studio</span>
+        </div>
+        <div class="status-area" id="system-status">
+          <div class="status-indicator">
+            <span class="pulse-dot green"></span>
+            <span class="status-text" id="ai-status-label">Local AI Offline</span>
+          </div>
+          <span class="locale-badge" id="locale-badge">EN</span>
+        </div>
+      </header>
+
+      <!-- VIEW 1: DASHBOARD OVERVIEW -->
+      <section id="dashboard-view" class="view active">
+        <div class="dashboard-grid">
+          <div class="card stat-card frosted">
+            <h2 id="lbl-due-reviews">Due Reviews</h2>
+            <div class="large-number" id="due-count">0</div>
+            <p id="lbl-caught-up" class="sub-label">You're all caught up!</p>
+          </div>
+
+          <div class="card stat-card frosted">
+            <h2 id="lbl-domains">Active Domains</h2>
+            <div class="domain-list" id="dashboard-domains">
+              <span class="empty-tag">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button id="btn-start-session" class="btn primary-btn btn-large glow-btn" disabled>
+            Start Learning Session
+          </button>
+        </div>
+      </section>
+
+      <!-- VIEW 2: STUDY SESSION CARD -->
+      <section id="study-view" class="view">
+        <div class="study-card frosted">
+          <!-- CARD HEADER -->
+          <div class="card-header">
+            <span class="card-progress" id="card-progress">1/10</span>
+            <div class="tag-row">
+              <span class="badge bloom-badge" id="bloom-badge">Understand (Bloom 2)</span>
+              <span class="badge domain-badge" id="domain-badge">git</span>
+            </div>
+          </div>
+
+          <!-- CARD BODY -->
+          <div class="card-body">
+            <!-- RECALL QUESTION -->
+            <div class="question-container">
+              <p class="question-text" id="question-text">
+                What command initializes a new local Git repository?
+              </p>
+              <div id="translation-loading" class="mini-loader hidden">
+                <span class="dots-pulse"></span>
+                <span class="loader-text" id="lbl-translating">Translating dynamically...</span>
+              </div>
+            </div>
+
+            <!-- ANSWER CAPTURE SCREEN -->
+            <div class="answer-capture" id="answer-capture-box">
+              <textarea id="user-answer-input" placeholder="Type your conceptual answer here... (Enter to submit)"></textarea>
+              <div class="card-buttons">
+                <button id="btn-reveal-answer" class="btn primary-btn btn-block">
+                  Submit & Reveal Answer
+                </button>
+              </div>
+            </div>
+
+            <!-- GENERATING STATE SPINNER -->
+            <div id="npu-loading" class="npu-loader-box hidden">
+              <div class="dots-bounce">
+                <div class="bounce-dot"></div>
+                <div class="bounce-dot"></div>
+                <div class="bounce-dot"></div>
+              </div>
+              <p class="loader-message" id="lbl-ai-evaluating">Local AI is evaluating your answer...</p>
+              <p class="loader-sub" id="lbl-ai-working">(This may take a moment as the NPU model processes.)</p>
+              
+              <!-- INTERACTIVE TIMEOUT DIALOG -->
+              <div id="wait-prompt" class="wait-confirm-box hidden">
+                <p id="lbl-wait-warn" class="wait-warning-text">⚠ Generation is taking longer than expected.</p>
+                <div class="wait-buttons">
+                  <button id="btn-wait-keep" class="btn secondary-btn btn-sm">Keep Waiting</button>
+                  <button id="btn-wait-skip" class="btn danger-btn btn-sm">Skip Offline</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- REVEALED SCREEN -->
+            <div class="revealed-container hidden" id="revealed-box">
+              <!-- AI FEEDBACK -->
+              <div class="ai-feedback-box hidden" id="ai-feedback-container">
+                <h3 class="box-title" id="lbl-ai-feedback-title">ZAM Feedback</h3>
+                <p class="ai-feedback-text" id="ai-feedback-text">
+                  Your answer matches perfectly! Good job.
+                </p>
+              </div>
+
+              <!-- CORE REFERENCE ANSWER -->
+              <div class="answer-box">
+                <h3 class="box-title" id="lbl-reveal-title">Reference Answer</h3>
+                <div class="reveal-content-list" id="reveal-content-list">
+                  <!-- Generated dynamically: Token, Concept, Context, Source -->
+                </div>
+              </div>
+
+              <!-- SELF-RATING ACTION BAR -->
+              <div class="rating-bar-container">
+                <p class="rating-instruction" id="lbl-rating-instruction">Rate your active recall honestly:</p>
+                <div class="rating-buttons">
+                  <button class="btn rating-btn again" data-rating="1">
+                    <span class="rating-num">1</span>
+                    <span class="rating-label" id="lbl-rate-1">Again</span>
+                  </button>
+                  <button class="btn rating-btn hard" data-rating="2">
+                    <span class="rating-num">2</span>
+                    <span class="rating-label" id="lbl-rate-2">Hard</span>
+                  </button>
+                  <button class="btn rating-btn good" data-rating="3">
+                    <span class="rating-num">3</span>
+                    <span class="rating-label" id="lbl-rate-3">Good</span>
+                  </button>
+                  <button class="btn rating-btn easy" data-rating="4">
+                    <span class="rating-num">4</span>
+                    <span class="rating-label" id="lbl-rate-4">Easy</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAUSE/EXIT BUTTON -->
+        <div class="study-footer">
+          <button id="btn-pause-session" class="btn secondary-btn">
+            Pause & Exit Session
+          </button>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
