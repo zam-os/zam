@@ -317,14 +317,12 @@ async function loadNextCard() {
     bloomBadge.textContent = BLOOM_LEVEL_NAMES[currentLocale]?.[bloomVal] || BLOOM_LEVEL_NAMES["en"]?.[bloomVal] || `Level ${bloomVal}`;
     bloomBadge.className = `badge bloom-badge bloom-${bloomVal}`;
 
-    // Set question text (English first)
-    questionText.textContent = activePromptQuestion;
-
-    // Handle translation if required
     const translationLoading = document.getElementById("translation-loading")!;
     translationLoading.classList.add("hidden");
 
+    // Set question text (with localized dynamic translation in one run if enabled)
     if (currentLocale !== "en" && isLlmEnabled) {
+      questionText.innerHTML = `<span class="loading-pulse">${t("lbl_translating")}</span>`;
       translationLoading.classList.remove("hidden");
       try {
         const transPayload = await runBridge<{ success: boolean; translation: string }>("translate-question", [
@@ -332,12 +330,17 @@ async function loadNextCard() {
         ]);
         if (transPayload.success) {
           questionText.textContent = transPayload.translation;
+        } else {
+          questionText.textContent = activePromptQuestion;
         }
       } catch (err) {
         console.warn("Translation failed, falling back to original English question", err);
+        questionText.textContent = activePromptQuestion;
       } finally {
         translationLoading.classList.add("hidden");
       }
+    } else {
+      questionText.textContent = activePromptQuestion;
     }
   } catch (err) {
     console.error("Failed to load next card:", err);
@@ -457,6 +460,16 @@ async function submitAndReveal() {
       codeBox.className = "reveal-code-box";
       codeBox.textContent = resolvedContextContent;
       revealContentList.appendChild(codeBox);
+    }
+  }
+
+  // Show/hide the static reference answer box based on whether local AI evaluation succeeded
+  const answerBox = document.querySelector("#revealed-box .answer-box") as HTMLElement;
+  if (answerBox) {
+    if (evaluationSuccessful) {
+      answerBox.classList.add("hidden");
+    } else {
+      answerBox.classList.remove("hidden");
     }
   }
 

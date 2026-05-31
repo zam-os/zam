@@ -4,6 +4,9 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
+#[cfg(target_os = "windows")]
+use std::os::windows::process::CommandExt;
+
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
@@ -67,6 +70,9 @@ fn execute_zam_bridge(cmd: String, args: Vec<String>) -> Result<String, String> 
 
     // Run command: node <cli_path> bridge <cmd> <args...>
     let mut command = Command::new("node");
+    #[cfg(target_os = "windows")]
+    command.creation_flags(0x08000000); // CREATE_NO_WINDOW
+
     command.arg(&cli_path);
     command.arg("bridge");
     command.arg(cmd);

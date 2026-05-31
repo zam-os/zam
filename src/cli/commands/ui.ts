@@ -182,6 +182,7 @@ function launchApp(appPath: string, repoRoot: string): void {
       cwd: repoRoot,
       detached: true,
       stdio: "ignore",
+      windowsHide: true,
     }).unref();
   }
 }

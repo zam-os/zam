@@ -183,10 +183,11 @@ FSRS Rating scale:
 - 4: perfect, instant, and accurate recall (Easy)
 
 Guidelines:
-1. Provide a constructive, encouraging evaluation in ${langName} (2-3 sentences) to promote the joy of learning. Explicitly include a brief ${langName} translation/explanation of the original question and target concept to ensure absolute clarity.
+1. Provide a constructive, encouraging evaluation in ${langName} (2-3 sentences) to promote the joy of learning. Explicitly include a brief ${langName} translation/explanation of the original question and target concept to ensure absolute clarity and completeness.
 2. Celebrate every honest attempt! Offer high praise or a motivating word of encouragement in ${langName} if they did well or tried hard.
-3. Suggest a clear FSRS rating (1 to 4) at the very end of your response in the format "Suggested rating: X" or localized equivalent (e.g. "Empfohlene Bewertung: X" in German) in ${langName}.
-4. Output ONLY the evaluation and rating suggestion. Keep it concise, friendly, and clean. No conversational introduction or markdown wrapper.`;
+3. CRITICAL: ZAM is a strict one-shot card flow, NOT an interactive chat. The correct Musterlösung (reference answer) is revealed alongside your feedback. Therefore, NEVER ask the user to think further, keep guessing, or suggest they try to solve the remaining parts of the question. Instead, immediately evaluate what they wrote, explain the complete solution and target concept directly.
+4. Suggest a clear FSRS rating (1 to 4) at the very end of your response in the format "Suggested rating: X" or localized equivalent (e.g. "Empfohlene Bewertung: X" in German) in ${langName}.
+5. Output ONLY the evaluation and rating suggestion. Keep it concise, friendly, and clean. No conversational introduction or markdown wrapper.`;
 
   const userPrompt = `Domain: ${input.domain}
 Slug: ${input.slug}
@@ -354,10 +355,15 @@ function spawnLocalRunner(url: string, model: string): void {
       spawn(flmExe, ["serve", model, "--port", port], {
         detached: true,
         stdio: "ignore",
+        windowsHide: true,
       }).unref();
     } else if (runner === "ollama" || runner === "generic") {
       if (!hasCommand("ollama")) return;
-      spawn("ollama", ["serve"], { detached: true, stdio: "ignore" }).unref();
+      spawn("ollama", ["serve"], {
+        detached: true,
+        stdio: "ignore",
+        windowsHide: true,
+      }).unref();
     }
   } catch {
     // best-effort: caller polls for the server and reports offline if it fails
@@ -391,7 +397,11 @@ async function startLocalRunner(
       `\x1b[36mStarting FastFlowLM serve process: ${flmExe} ${args.join(" ")}\x1b[0m`,
     );
     try {
-      spawn(flmExe, args, { detached: true, stdio: "ignore" }).unref();
+      spawn(flmExe, args, {
+        detached: true,
+        stdio: "ignore",
+        windowsHide: true,
+      }).unref();
     } catch (err) {
       console.error(
         `\x1b[31m✗ Failed to launch FastFlowLM process: ${(err as Error).message}\x1b[0m`,
@@ -408,7 +418,11 @@ async function startLocalRunner(
     }
     console.log("\x1b[36mStarting Ollama serve process: ollama serve\x1b[0m");
     try {
-      spawn("ollama", ["serve"], { detached: true, stdio: "ignore" }).unref();
+      spawn("ollama", ["serve"], {
+        detached: true,
+        stdio: "ignore",
+        windowsHide: true,
+      }).unref();
     } catch (err) {
       console.error(
         `\x1b[31m✗ Failed to launch Ollama process: ${(err as Error).message}\x1b[0m`,
