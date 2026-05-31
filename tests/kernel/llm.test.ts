@@ -9,7 +9,7 @@ describe("LLM Runner Utilities", () => {
   });
 
   it("ensureLocalLlmRunning returns immediately if llm.enabled is false", async () => {
-    const db = openDatabase();
+    const db = openDatabase({ dbPath: ":memory:", initialize: true, useConfiguredCloud: false });
     setSetting(db, "llm.enabled", "false");
     
     // Should not throw or attempt connections
@@ -30,7 +30,7 @@ describe("LLM Runner Utilities", () => {
   });
 
   it("ensureHighQualityQuestion dynamically generates and self-heals a missing question when LLM is enabled", async () => {
-    const db = openDatabase();
+    const db = openDatabase({ dbPath: ":memory:", initialize: true, useConfiguredCloud: false });
     setSetting(db, "llm.enabled", "true");
     setSetting(db, "llm.url", "http://dummy/v1");
 
