@@ -14,6 +14,7 @@ import { setupCommand } from "./commands/setup.js";
 import { skillCommand } from "./commands/skill.js";
 import { statsCommand } from "./commands/stats.js";
 import { tokenCommand } from "./commands/token.js";
+import { uiCommand } from "./commands/ui.js";
 import { whoamiCommand } from "./commands/whoami.js";
 import { workspaceCommand } from "./commands/workspace.js";
 
@@ -34,6 +35,7 @@ program.addCommand(sessionCommand);
 program.addCommand(statsCommand);
 program.addCommand(reviewCommand);
 program.addCommand(learnCommand);
+program.addCommand(uiCommand);
 program.addCommand(bridgeCommand);
 program.addCommand(skillCommand);
 program.addCommand(monitorCommand);
