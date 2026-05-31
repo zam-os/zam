@@ -97,6 +97,53 @@ function requireRust(): boolean {
   return false;
 }
 
+/**
+ * On Windows the default MSVC Rust target needs the Visual Studio C++ linker
+ * (link.exe), which rustup does NOT install. Detect it via vswhere so we fail
+ * with guidance up front instead of after minutes of compiling.
+ */
+function hasMsvcBuildTools(): boolean {
+  if (process.platform !== "win32") return true;
+  const pf86 = process.env["ProgramFiles(x86)"] || "C:\\Program Files (x86)";
+  const vswhere = join(
+    pf86,
+    "Microsoft Visual Studio",
+    "Installer",
+    "vswhere.exe",
+  );
+  if (!existsSync(vswhere)) return false;
+  const res = spawnSync(
+    vswhere,
+    [
+      "-latest",
+      "-products",
+      "*",
+      "-requires",
+      "Microsoft.VisualStudio.Component.VC.Tools.x86.x64",
+      "-property",
+      "installationPath",
+    ],
+    { encoding: "utf8" },
+  );
+  return (res.stdout ?? "").trim().length > 0;
+}
+
+function requireMsvcOnWindows(): boolean {
+  if (hasMsvcBuildTools()) return true;
+  console.error(
+    `${C.red}✗ The MSVC C++ linker (link.exe) is missing.${C.reset}`,
+  );
+  console.error(
+    "  Rust on Windows needs the Visual Studio Build Tools with the C++ workload",
+  );
+  console.error("  (rustup does not include it). Install it once (~a few GB),");
+  console.error("  then open a NEW terminal and retry:");
+  console.error(
+    `    ${C.cyan}winget install --id Microsoft.VisualStudio.2022.BuildTools -e --override "--quiet --wait --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"${C.reset}`,
+  );
+  return false;
+}
+
 function warnIfCliMissing(repoRoot: string): void {
   if (!existsSync(join(repoRoot, "dist", "cli", "index.js"))) {
     console.warn(
@@ -180,6 +227,7 @@ export const uiCommand = new Command("ui")
     // --build: compile the native installer.
     if (opts.build) {
       if (!requireRust()) process.exit(1);
+      if (!requireMsvcOnWindows()) process.exit(1);
       if (!ensureDesktopDeps(desktopDir)) process.exit(1);
       console.log(
         `${C.cyan}Building the native ZAM installer (this takes a few minutes)...${C.reset}`,
@@ -206,6 +254,7 @@ export const uiCommand = new Command("ui")
     // --dev: hot-reload development mode.
     if (opts.dev) {
       if (!requireRust()) process.exit(1);
+      if (!requireMsvcOnWindows()) process.exit(1);
       if (!ensureDesktopDeps(desktopDir)) process.exit(1);
       warnIfCliMissing(repoRoot);
       console.log(
