@@ -15,7 +15,8 @@
  */
 
 import { type SpawnSyncOptions, spawn, spawnSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Command } from "commander";
@@ -152,6 +153,21 @@ function warnIfCliMissing(repoRoot: string): void {
   }
 }
 
+/**
+ * Record this repo root in ~/.zam/cli_path so the installed GUI can locate the
+ * CLI bridge regardless of where it is launched from (Start menu / Program
+ * Files have no idea where the repo lives). The Tauri backend reads this file.
+ */
+function recordCliHome(repoRoot: string): void {
+  try {
+    const zamDir = join(homedir(), ".zam");
+    if (!existsSync(zamDir)) mkdirSync(zamDir, { recursive: true });
+    writeFileSync(join(zamDir, "cli_path"), repoRoot, "utf8");
+  } catch {
+    // best-effort: a missing marker just falls back to cwd resolution
+  }
+}
+
 function launchApp(appPath: string, repoRoot: string): void {
   // Run from the repo root so the Tauri backend resolves dist/cli/index.js.
   console.log(`${C.green}✓ Launching ZAM Desktop...${C.reset}`);
@@ -224,6 +240,10 @@ export const uiCommand = new Command("ui")
     }
     const repoRoot = dirname(desktopDir);
 
+    // Record where the CLI lives so the installed GUI can always find the
+    // bridge, no matter which directory it is launched from.
+    recordCliHome(repoRoot);
+
     // --build: compile the native installer.
     if (opts.build) {
       if (!requireRust()) process.exit(1);
@@ -246,6 +266,9 @@ export const uiCommand = new Command("ui")
         );
         console.log(
           `${C.dim}Run that installer once — it adds ZAM to the Start menu and Desktop automatically.${C.reset}`,
+        );
+        console.log(
+          `${C.dim}Recorded this repo (${repoRoot}) in ~/.zam/cli_path so the installed app finds the CLI.${C.reset}`,
         );
       }
       process.exit(code);
