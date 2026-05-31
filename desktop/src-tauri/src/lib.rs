@@ -1,7 +1,6 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 use std::process::Command;
 use std::env;
-use std::path::PathBuf;
 
 #[tauri::command]
 fn greet(name: &str) -> String {
