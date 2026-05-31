@@ -22,6 +22,7 @@ import {
   installOllama,
   distributeGlobalSkills,
   injectShellHooks,
+  detectSystemLocale,
 } from "../../kernel/index.js";
 
 const HOME = homedir();
@@ -146,6 +147,11 @@ export const initCommand = new Command("init")
       
       // Save workspace directory to settings
       setSetting(db, "personal.workspace_dir", workspacePath);
+
+      // Auto-detect and save system locale
+      const detectedLocale = detectSystemLocale();
+      setSetting(db, "system.locale", detectedLocale);
+      console.log(`\x1b[32m✓ Detected and set system language to: ${detectedLocale}\x1b[0m`);
 
       if (installSuccess) {
         setSetting(db, "llm.enabled", "true");

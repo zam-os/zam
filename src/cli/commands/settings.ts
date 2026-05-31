@@ -176,3 +176,28 @@ settingsCommand
     });
   });
 
+// ── zam settings locale [lang] ───────────────────────────────────────────
+
+settingsCommand
+  .command("locale [lang]")
+  .description("Quickly set or check manual ZAM language override (en/de/es/fr/pt/zh/ja)")
+  .action((lang) => {
+    withDb((db) => {
+      if (!lang) {
+        const locale = getSetting(db, "system.locale") || "en";
+        console.log(`Active language (locale): \x1b[36m${locale}\x1b[0m`);
+        return;
+      }
+
+      const lower = lang.toLowerCase();
+      const supported = ["en", "de", "es", "fr", "pt", "zh", "ja"];
+      if (!supported.includes(lower)) {
+        console.error(`Invalid language code: ${lang}. Supported: ${supported.join(", ")}`);
+        process.exit(1);
+      }
+
+      setSetting(db, "system.locale", lower);
+      console.log(`Language set to: \x1b[32m${lower}\x1b[0m`);
+    });
+  });
+

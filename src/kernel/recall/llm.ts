@@ -4,6 +4,17 @@ import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import { hasCommand } from "../system/installer.js";
 import { getSystemProfile } from "../system/profiler.js";
+import type { SupportedLocale } from "../system/locale.js";
+
+const LANGUAGE_NAMES: Record<SupportedLocale, string> = {
+  en: "English",
+  de: "German",
+  es: "Spanish",
+  fr: "French",
+  pt: "Portuguese",
+  zh: "Chinese",
+  ja: "Japanese",
+};
 
 const BLOOM_VERBS = {
   1: "Remember",
@@ -121,8 +132,10 @@ export async function evaluateAnswerViaLLM(
   }
 
   const url = getSetting(db, "llm.url") || "http://localhost:8000/v1";
-  const model = getSetting(db, "llm.model") || "qwen3.5:4b";
+  const model = getSetting(db, "llm.model") || "gemma4-it:e4b";
   const apiKey = getSetting(db, "llm.api_key") || "sk-none";
+  const locale = (getSetting(db, "system.locale") || "en") as SupportedLocale;
+  const langName = LANGUAGE_NAMES[locale] || "English";
 
   const systemPrompt = `You are ZAM, an extremely warm, encouraging, and patient skills trainer.
 Your mission is to build lasting autonomy through conceptual knowledge, not rote procedure.
@@ -135,9 +148,9 @@ FSRS Rating scale:
 - 4: perfect, instant, and accurate recall (Easy)
 
 Guidelines:
-1. Provide a constructive, encouraging evaluation in German (2-3 sentences) to promote the joy of learning. Explicitly include a brief German translation/explanation of the original English question and target concept to ensure absolute clarity.
-2. Celebrate every honest attempt! Offer high praise or a motivating word of encouragement if they did well or tried hard.
-3. Suggest a clear FSRS rating (1 to 4) at the very end of your response (e.g. "Empfohlene Bewertung: 3").
+1. Provide a constructive, encouraging evaluation in ${langName} (2-3 sentences) to promote the joy of learning. Explicitly include a brief ${langName} translation/explanation of the original question and target concept to ensure absolute clarity.
+2. Celebrate every honest attempt! Offer high praise or a motivating word of encouragement in ${langName} if they did well or tried hard.
+3. Suggest a clear FSRS rating (1 to 4) at the very end of your response in the format "Suggested rating: X" or localized equivalent (e.g. "Empfohlene Bewertung: X" in German) in ${langName}.
 4. Output ONLY the evaluation and rating suggestion. Keep it concise, friendly, and clean. No conversational introduction or markdown wrapper.`;
 
   const userPrompt = `Domain: ${input.domain}
@@ -199,10 +212,12 @@ export async function translateQuestionViaLLM(
   }
 
   const url = getSetting(db, "llm.url") || "http://localhost:8000/v1";
-  const model = getSetting(db, "llm.model") || "qwen3.5:4b";
+  const model = getSetting(db, "llm.model") || "gemma4-it:e4b";
   const apiKey = getSetting(db, "llm.api_key") || "sk-none";
+  const locale = (getSetting(db, "system.locale") || "en") as SupportedLocale;
+  const targetLang = LANGUAGE_NAMES[locale] || "English";
 
-  const systemPrompt = `You are a highly precise translator. Translate the given English active-recall question into clear, natural German.
+  const systemPrompt = `You are a highly precise translator. Translate the given active-recall question into clear, natural ${targetLang}.
 Output ONLY the raw translation. Do not include any headers, preamble, quotes, or conversational filler.`;
 
   try {

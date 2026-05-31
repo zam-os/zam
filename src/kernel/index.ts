@@ -209,3 +209,7 @@ export type { SystemProfile } from "./system/profiler.js";
 export { hasCommand, installFastFlowLM, installOllama } from "./system/installer.js";
 export type { InstallResult } from "./system/installer.js";
 export { getPackageSkillPath, distributeGlobalSkills, injectShellHooks } from "./system/hooks.js";
+export { detectSystemLocale, normalizeLocale } from "./system/locale.js";
+export type { SupportedLocale } from "./system/locale.js";
+export { t } from "./system/i18n.js";
+export type { TranslationKey } from "./system/i18n.js";

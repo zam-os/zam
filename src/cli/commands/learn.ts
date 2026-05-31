@@ -24,8 +24,9 @@ import {
   evaluateAnswerViaLLM,
   ensureLocalLlmRunning,
   translateQuestionViaLLM,
+  t,
 } from "../../kernel/index.js";
-import type { BloomLevel } from "../../kernel/index.js";
+import type { BloomLevel, SupportedLocale } from "../../kernel/index.js";
 import { formatHeader, formatReveal } from "../learn-format.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
 import { resolveUser } from "./resolve-user.js";
@@ -58,32 +59,32 @@ export const learnCommand = new Command("learn")
         maxReviews: Number(opts.maxReviews),
       });
 
+      const locale = (getSetting(db, "system.locale") || "en") as SupportedLocale;
+
       if (queue.items.length === 0) {
-        console.log("Nothing due to learn. You're all caught up!");
+        console.log(t(locale, "nothing_due"));
         db.close();
         return;
       }
 
-      console.log(`\nLearning session: ${queue.items.length} card(s)`);
+      console.log(`\n${t(locale, "welcome", { count: queue.items.length })}`);
       console.log(
-        `  New: ${queue.newCount}  Review: ${queue.reviewCount}  Relearn: ${queue.relearnCount}`,
+        t(locale, "new_review_relearn", {
+          newC: queue.newCount,
+          reviewC: queue.reviewCount,
+          relearnC: queue.relearnCount,
+        }),
       );
-      console.log(`  Domains: ${queue.totalDomains.join(", ")}`);
+      console.log(t(locale, "domains", { domains: queue.totalDomains.join(", ") }));
       
       const isLlmEnabled = getSetting(db, "llm.enabled") === "true";
       if (!isLlmEnabled) {
-        console.log(
-          "\n\x1b[33m⚠ LLM-Feedback & automatische Übersetzung sind deaktiviert.\x1b[0m",
-        );
-        console.log(
-          "  Aktivieren mit: \x1b[36mnpm run dev -- settings llm on\x1b[0m\n",
-        );
+        console.log(t(locale, "offline_warning"));
+        console.log(t(locale, "offline_instruction"));
       }
 
-      console.log(
-        "\nRecall each answer first, reveal it, then rate yourself honestly.",
-      );
-      console.log("Type 'q' at the answer prompt (or press Ctrl+C) to stop anytime.");
+      console.log(t(locale, "instruction"));
+      console.log(t(locale, "quit_hint"));
 
       let stoppedEarly = false;
       let maintenanceActions = 0;
@@ -103,24 +104,26 @@ export const learnCommand = new Command("learn")
 
         console.log(`\n${"─".repeat(50)}`);
         console.log(`[${index + 1}/${queue.items.length}] ${formatHeader(item)}`);
-        console.log(`\n  ${prompt.question}`);
 
-        // Dynamically translate question if LLM is enabled
-        if (isLlmEnabled) {
+        // Dynamically translate question if LLM is enabled and locale is not English
+        let displayQuestion = prompt.question;
+        if (locale !== "en" && isLlmEnabled) {
+          console.log(`  \x1b[2m${t(locale, "translating")}\x1b[0m`);
           try {
-            const translation = await translateQuestionViaLLM(db, prompt.question);
-            console.log(`  \x1b[2m(Deutsch: ${translation})\x1b[0m`);
+            displayQuestion = await translateQuestionViaLLM(db, prompt.question);
           } catch {
-            // ignore translation failures gracefully
+            // fallback to original question on error/offline
           }
         }
+
+        console.log(`\n  ${displayQuestion}`);
 
         // Capture the learner's answer FIRST — nothing is revealed yet.
         // Typing a stop word (or Ctrl+C) ends the session gracefully.
         let answer: string;
         try {
           answer = await input({
-            message: "Your answer (Enter to reveal · 'q' to stop):",
+            message: t(locale, "prompt_answer"),
           });
         } catch (err) {
           if (isExitPrompt(err)) {
@@ -146,7 +149,7 @@ export const learnCommand = new Command("learn")
 
         // Perform LLM evaluation if enabled and there is a typed answer
         if (isLlmEnabled && answer.trim().length > 0) {
-          console.log("\n  Evaluating answer via local LLM...");
+          console.log(`\n  ${t(locale, "evaluating")}`);
           try {
             const evaluation = await evaluateAnswerViaLLM(db, {
               slug: item.slug,
@@ -158,16 +161,16 @@ export const learnCommand = new Command("learn")
               userAnswer: answer,
               sourceLinkContent: resolved?.content,
             });
-            console.log(`\n  ── ZAM Feedback ${"─".repeat(34)}`);
+            console.log(`\n  ${t(locale, "feedback_title", { line: "─".repeat(34) })}`);
             for (const line of evaluation.split("\n")) {
               console.log(`  ${line}`);
             }
           } catch (err) {
-            console.warn(`\n  [LLM Evaluation skipped: ${(err as Error).message}]`);
+            console.warn(`\n${t(locale, "eval_skipped", { reason: (err as Error).message })}`);
           }
         }
 
-        console.log(`\n  ── Answer ${"─".repeat(38)}`);
+        console.log(`\n  ${t(locale, "answer_title", { line: "─".repeat(38) })}`);
         const reveal = formatReveal({
           slug: item.slug,
           concept: item.concept,
@@ -204,17 +207,21 @@ export const learnCommand = new Command("learn")
       }
 
       console.log(`\n${"═".repeat(50)}`);
-      console.log(stoppedEarly ? "Learning session ended." : "Learning session complete!");
-      console.log(`  Cards rated: ${results.length}`);
+      console.log(
+        stoppedEarly
+          ? t(locale, "session_ended")
+          : t(locale, "session_complete"),
+      );
+      console.log(t(locale, "cards_rated", { count: results.length }));
       if (maintenanceActions > 0) {
         console.log(`  Maintenance actions: ${maintenanceActions}`);
       }
       if (results.length > 0) {
         const avg = results.reduce((s, r) => s + r.rating, 0) / results.length;
-        console.log(`  Average rating: ${avg.toFixed(1)}`);
+        console.log(t(locale, "avg_rating", { avg: avg.toFixed(1) }));
         const forgot = results.filter((r) => r.rating === 1).length;
         if (forgot > 0) {
-          console.log(`  Forgot: ${forgot} card(s)`);
+          console.log(t(locale, "forgot", { count: forgot }));
         }
       }
 
