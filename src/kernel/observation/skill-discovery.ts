@@ -139,7 +139,12 @@ export function discoverSkills(
       description: describeSequence(seq.steps),
       steps: seq.steps,
       sessionCount: seq.sessionCount,
-      confidence: seq.sessionCount >= 4 ? "high" : seq.sessionCount >= 3 ? "medium" : "low",
+      confidence:
+        seq.sessionCount >= 4
+          ? "high"
+          : seq.sessionCount >= 3
+            ? "medium"
+            : "low",
       examples: seq.examples,
     });
   }
@@ -147,7 +152,8 @@ export function discoverSkills(
   // Sort: high confidence first, then by session count
   const confidenceOrder = { high: 0, medium: 1, low: 2 };
   proposals.sort((a, b) => {
-    const confDiff = confidenceOrder[a.confidence] - confidenceOrder[b.confidence];
+    const confDiff =
+      confidenceOrder[a.confidence] - confidenceOrder[b.confidence];
     if (confDiff !== 0) return confDiff;
     return b.sessionCount - a.sessionCount;
   });
@@ -172,7 +178,10 @@ function normalizeCommand(command: string): string {
 
   for (const mw of multiWord) {
     if (lower.startsWith(mw) && parts.length >= mw.split(" ").length + 1) {
-      return parts.slice(0, mw.split(" ").length + 1).join(" ").toLowerCase();
+      return parts
+        .slice(0, mw.split(" ").length + 1)
+        .join(" ")
+        .toLowerCase();
     }
   }
 
@@ -253,7 +262,9 @@ function findExamplesForSequence(
  */
 function removeSubsequences(candidates: CommandSequence[]): CommandSequence[] {
   // Sort by length descending so we check long sequences first
-  const sorted = [...candidates].sort((a, b) => b.steps.length - a.steps.length);
+  const sorted = [...candidates].sort(
+    (a, b) => b.steps.length - a.steps.length,
+  );
   const result: CommandSequence[] = [];
 
   for (const candidate of sorted) {

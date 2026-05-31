@@ -3,10 +3,10 @@
  */
 
 export type {
+  AddTokenRequest,
+  AddTokenResponse,
   CheckDueResponse,
   GetReviewResponse,
   SubmitRatingRequest,
   SubmitRatingResponse,
-  AddTokenRequest,
-  AddTokenResponse,
 } from "./protocol.js";

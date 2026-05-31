@@ -5,12 +5,12 @@
 import { Command } from "commander";
 import type { Database } from "libsql";
 import {
-  openDatabase,
-  getSetting,
+  deleteSetting,
   getAllSettings,
   getAllSettingsDetailed,
+  getSetting,
+  openDatabase,
   setSetting,
-  deleteSetting,
 } from "../../kernel/index.js";
 
 function withDb(fn: (db: Database) => void): void {
@@ -26,8 +26,9 @@ function withDb(fn: (db: Database) => void): void {
   }
 }
 
-export const settingsCommand = new Command("settings")
-  .description("Manage user settings");
+export const settingsCommand = new Command("settings").description(
+  "Manage user settings",
+);
 
 // ── zam settings show ─────────────────────────────────────────────────────
 
@@ -93,9 +94,19 @@ settingsCommand
       let parsedVal = value;
       if (key === "llm.enabled") {
         const lower = value.toLowerCase();
-        if (lower === "on" || lower === "enable" || lower === "enabled" || lower === "true") {
+        if (
+          lower === "on" ||
+          lower === "enable" ||
+          lower === "enabled" ||
+          lower === "true"
+        ) {
           parsedVal = "true";
-        } else if (lower === "off" || lower === "disable" || lower === "disabled" || lower === "false") {
+        } else if (
+          lower === "off" ||
+          lower === "disable" ||
+          lower === "disabled" ||
+          lower === "false"
+        ) {
           parsedVal = "false";
         }
       }
@@ -129,7 +140,9 @@ settingsCommand
 
 settingsCommand
   .command("llm [state]")
-  .description("Quickly enable/disable or check local LLM integration (on/off/enable/disable)")
+  .description(
+    "Quickly enable/disable or check local LLM integration (on/off/enable/disable)",
+  )
   .action((state) => {
     withDb((db) => {
       if (!state) {
@@ -161,7 +174,9 @@ settingsCommand
       ) {
         value = "false";
       } else {
-        console.error(`Invalid state: ${state}. Use on, off, enable, or disable.`);
+        console.error(
+          `Invalid state: ${state}. Use on, off, enable, or disable.`,
+        );
         process.exit(1);
       }
 
@@ -180,7 +195,9 @@ settingsCommand
 
 settingsCommand
   .command("locale [lang]")
-  .description("Quickly set or check manual ZAM language override (en/de/es/fr/pt/zh/ja)")
+  .description(
+    "Quickly set or check manual ZAM language override (en/de/es/fr/pt/zh/ja)",
+  )
   .action((lang) => {
     withDb((db) => {
       if (!lang) {
@@ -192,7 +209,9 @@ settingsCommand
       const lower = lang.toLowerCase();
       const supported = ["en", "de", "es", "fr", "pt", "zh", "ja"];
       if (!supported.includes(lower)) {
-        console.error(`Invalid language code: ${lang}. Supported: ${supported.join(", ")}`);
+        console.error(
+          `Invalid language code: ${lang}. Supported: ${supported.join(", ")}`,
+        );
         process.exit(1);
       }
 
@@ -200,4 +219,3 @@ settingsCommand
       console.log(`Language set to: \x1b[32m${lower}\x1b[0m`);
     });
   });
-

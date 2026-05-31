@@ -52,11 +52,25 @@ export interface FSRSParameters {
 // ── FSRS-5 default weights ──────────────────────────────────────────────────
 
 const DEFAULT_W: number[] = [
-  0.4072, 1.1829, 3.1262, 15.4722, // w0–w3:  initial stability per rating
-  7.2102, 0.5316, 1.0651,           // w4–w6:  difficulty
-  0.0092, 1.5988, 0.1176, 1.0014,  // w7–w10: stability after forgetting
-  2.0032, 0.0266, 0.3077, 0.15,    // w11–w14: stability increase
-  0.0, 2.7849, 0.3477, 0.6831,     // w15–w18: additional parameters
+  0.4072,
+  1.1829,
+  3.1262,
+  15.4722, // w0–w3:  initial stability per rating
+  7.2102,
+  0.5316,
+  1.0651, // w4–w6:  difficulty
+  0.0092,
+  1.5988,
+  0.1176,
+  1.0014, // w7–w10: stability after forgetting
+  2.0032,
+  0.0266,
+  0.3077,
+  0.15, // w11–w14: stability increase
+  0.0,
+  2.7849,
+  0.3477,
+  0.6831, // w15–w18: additional parameters
 ];
 
 const DEFAULT_REQUEST_RETENTION = 0.9;
@@ -118,7 +132,7 @@ function nextDifficulty(w: number[], d: number, rating: Rating): number {
  */
 function retrievability(elapsed: number, stability: number): number {
   if (stability <= 0) return 0;
-  return Math.pow(1 + elapsed / (9 * stability), -1);
+  return (1 + elapsed / (9 * stability)) ** -1;
 }
 
 /**
@@ -138,7 +152,7 @@ function stabilityAfterSuccess(
   const inner =
     Math.exp(w[8]) *
     (11 - d) *
-    Math.pow(s, -w[9]) *
+    s ** -w[9] *
     (Math.exp(w[10] * (1 - r)) - 1) *
     hardPenalty *
     easyBonus;
@@ -157,10 +171,7 @@ function stabilityAfterForgetting(
   r: number,
 ): number {
   return (
-    w[11] *
-    Math.pow(d, -w[12]) *
-    (Math.pow(s + 1, w[13]) - 1) *
-    Math.exp(w[14] * (1 - r))
+    w[11] * d ** -w[12] * ((s + 1) ** w[13] - 1) * Math.exp(w[14] * (1 - r))
   );
 }
 
@@ -256,14 +267,25 @@ export function createFSRS(params?: Partial<FSRSParameters>): FSRS {
 
     if (rating === 1) {
       // Forgot — apply forgetting formula
-      newStability = stabilityAfterForgetting(w, card.stability, card.difficulty, r);
+      newStability = stabilityAfterForgetting(
+        w,
+        card.stability,
+        card.difficulty,
+        r,
+      );
       newDifficulty = nextDifficulty(w, card.difficulty, rating);
       newReps = 0;
       newLapses = card.lapses + 1;
       newState = "relearning";
     } else {
       // Recalled — apply success formula
-      newStability = stabilityAfterSuccess(w, card.stability, card.difficulty, r, rating);
+      newStability = stabilityAfterSuccess(
+        w,
+        card.stability,
+        card.difficulty,
+        r,
+        rating,
+      );
       newDifficulty = nextDifficulty(w, card.difficulty, rating);
       newReps = card.reps + 1;
       newLapses = card.lapses;
@@ -271,7 +293,10 @@ export function createFSRS(params?: Partial<FSRSParameters>): FSRS {
       newState = "review";
     }
 
-    const interval = nextInterval(newStability, resolvedParams.requestRetention);
+    const interval = nextInterval(
+      newStability,
+      resolvedParams.requestRetention,
+    );
 
     const dueAt = new Date(reviewTime);
     dueAt.setDate(dueAt.getDate() + interval);

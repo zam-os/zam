@@ -10,8 +10,8 @@
 
 import type { Database } from "libsql";
 import { ensureCard } from "../models/card.js";
-import { getTokenBySlug } from "../models/token.js";
 import { getPrerequisites } from "../models/prerequisite.js";
+import { getTokenBySlug } from "../models/token.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -57,7 +57,8 @@ export function cascadeBlock(
 
   // Surface all direct prerequisites — ensure cards exist (unblocked, due now)
   const prereqs = getPrerequisites(db, token.id);
-  const surfaced: Array<{ slug: string; concept: string; bloomLevel: number }> = [];
+  const surfaced: Array<{ slug: string; concept: string; bloomLevel: number }> =
+    [];
 
   for (const prereq of prereqs) {
     // ensureCard creates a new card if missing (defaults: blocked=0, due_at=now)
@@ -106,10 +107,7 @@ export function cascadeBlock(
  * @param userId - The user whose blocked cards to check
  * @returns List of cards that were unblocked
  */
-export function unblockReady(
-  db: Database,
-  userId: string,
-): UnblockResult {
+export function unblockReady(db: Database, userId: string): UnblockResult {
   const blockedCards = db
     .prepare(
       `SELECT c.token_id, t.slug, t.concept

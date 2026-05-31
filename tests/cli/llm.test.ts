@@ -1,27 +1,57 @@
 import { describe, expect, it } from "vitest";
-import { openDatabase, isLlmOnline, ensureLocalLlmRunning, setSetting, ensureHighQualityQuestion, createToken, getTokenBySlug } from "../../src/kernel/index.js";
-import { fetchWithInteractiveTimeout } from "../../src/kernel/recall/llm.js";
+import {
+  openDatabase,
+  setSetting,
+  createToken,
+  getTokenBySlug,
+} from "../../src/kernel/index.js";
+import {
+  isLlmOnline,
+  ensureLocalLlmRunning,
+  ensureHighQualityQuestion,
+  fetchWithInteractiveTimeout,
+} from "../../src/cli/llm/client.js";
 
-describe("LLM Runner Utilities", () => {
+describe("LLM client utilities (CLI layer)", () => {
   it("isLlmOnline returns false for invalid or unreachable URLs", async () => {
     const status = await isLlmOnline("http://localhost:9999/v1");
     expect(status).toBe(false);
   });
 
-  it("ensureLocalLlmRunning returns immediately if llm.enabled is false", async () => {
+  it("ensureLocalLlmRunning reports 'disabled' immediately if llm.enabled is false", async () => {
     const db = openDatabase({ dbPath: ":memory:", initialize: true, useConfiguredCloud: false });
     setSetting(db, "llm.enabled", "false");
-    
-    // Should not throw or attempt connections
-    await expect(ensureLocalLlmRunning(db)).resolves.not.toThrow();
+
+    const readiness = await ensureLocalLlmRunning(db);
+    expect(readiness).toEqual({ usable: false, reason: "disabled" });
     db.close();
+  });
+
+  it("ensureLocalLlmRunning reports 'model-not-found' when the server doesn't serve the configured model", async () => {
+    const db = openDatabase({ dbPath: ":memory:", initialize: true, useConfiguredCloud: false });
+    setSetting(db, "llm.enabled", "true");
+    setSetting(db, "llm.url", "http://localhost:8000/v1");
+    setSetting(db, "llm.model", "gemma4-it:e4b");
+
+    const originalFetch = global.fetch;
+    // Server is reachable, but /models lists a different model than configured.
+    global.fetch = (async () =>
+      new Response(JSON.stringify({ data: [{ id: "qwen3.5:4b" }] }))) as typeof fetch;
+    try {
+      const readiness = await ensureLocalLlmRunning(db);
+      expect(readiness.usable).toBe(false);
+      expect(readiness.reason).toBe("model-not-found");
+    } finally {
+      global.fetch = originalFetch;
+      db.close();
+    }
   });
 
   it("fetchWithInteractiveTimeout resolves when fetch resolves successfully", async () => {
     const originalFetch = global.fetch;
     global.fetch = async () => new Response("ok");
     try {
-      const res = await fetchWithInteractiveTimeout("http://dummy", {}, 500);
+      const res = await fetchWithInteractiveTimeout("http://dummy", { timeoutMs: 500 });
       const text = await res.text();
       expect(text).toBe("ok");
     } finally {
@@ -53,7 +83,7 @@ describe("LLM Runner Utilities", () => {
               },
             },
           ],
-        })
+        }),
       );
 
     try {
@@ -71,11 +101,12 @@ describe("LLM Runner Utilities", () => {
 
       // Verify that it self-healed in the database!
       const updated = getTokenBySlug(db, slug);
-      expect(updated?.question).toBe("How do you securely store Azure DevOps HTTPS credentials on macOS?");
+      expect(updated?.question).toBe(
+        "How do you securely store Azure DevOps HTTPS credentials on macOS?",
+      );
     } finally {
       global.fetch = originalFetch;
       db.close();
     }
   });
 });
-

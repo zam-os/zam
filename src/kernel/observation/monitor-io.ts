@@ -5,7 +5,13 @@
  * Separated from analyzer.ts so the analyzer remains pure-function testable.
  */
 
-import { existsSync, mkdirSync, readFileSync, appendFileSync, statSync } from "node:fs";
+import {
+  appendFileSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  statSync,
+} from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import type { MonitorEvent } from "./analyzer.js";
@@ -31,7 +37,10 @@ export function ensureMonitorDir(): void {
 }
 
 /** Append a single event to the session's JSONL file. */
-export function writeMonitorEvent(sessionId: string, event: MonitorEvent): void {
+export function writeMonitorEvent(
+  sessionId: string,
+  event: MonitorEvent,
+): void {
   ensureMonitorDir();
   const path = getMonitorPath(sessionId);
   appendFileSync(path, JSON.stringify(event) + "\n");

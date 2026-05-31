@@ -392,32 +392,45 @@ async function submitAndReveal() {
   const revealContentList = document.getElementById("reveal-content-list")!;
   revealContentList.innerHTML = "";
 
+  // Build rows via DOM + textContent (never innerHTML) so that card content —
+  // which can include resolved remote source links / web text — cannot inject
+  // markup or script into the Tauri webview.
+  const addRevealRow = (labelKey: string, value: string, opts?: { code?: boolean }) => {
+    const row = document.createElement("div");
+    row.className = "reveal-item";
+
+    const label = document.createElement("span");
+    label.className = "reveal-label";
+    label.textContent = `${t(labelKey)}:`;
+
+    const val = document.createElement("span");
+    val.className = "reveal-val";
+    if (opts?.code) {
+      const code = document.createElement("code");
+      code.textContent = value;
+      val.appendChild(code);
+    } else {
+      val.textContent = value;
+    }
+
+    row.append(label, document.createTextNode(" "), val);
+    revealContentList.appendChild(row);
+  };
+
   // 1. Concept Row
-  const conceptRow = document.createElement("div");
-  conceptRow.className = "reveal-item";
-  conceptRow.innerHTML = `<span class="reveal-label">${t("concept")}:</span> <span class="reveal-val">${activeCard.concept}</span>`;
-  revealContentList.appendChild(conceptRow);
+  addRevealRow("concept", activeCard.concept);
 
   // 2. Token Slug Row
-  const slugRow = document.createElement("div");
-  slugRow.className = "reveal-item";
-  slugRow.innerHTML = `<span class="reveal-label">${t("token")}:</span> <span class="reveal-val"><code>${activeCard.slug}</code></span>`;
-  revealContentList.appendChild(slugRow);
+  addRevealRow("token", activeCard.slug, { code: true });
 
   // 3. Context Row (if any)
   if (activeCard.context) {
-    const contextRow = document.createElement("div");
-    contextRow.className = "reveal-item";
-    contextRow.innerHTML = `<span class="reveal-label">${t("context")}:</span> <span class="reveal-val">${activeCard.context}</span>`;
-    revealContentList.appendChild(contextRow);
+    addRevealRow("context", activeCard.context);
   }
 
   // 4. Source Reference / Code Context Row (if any)
   if (activeCard.sourceLink) {
-    const srcRow = document.createElement("div");
-    srcRow.className = "reveal-item";
-    srcRow.innerHTML = `<span class="reveal-label">${t("source")}:</span> <span class="reveal-val"><code style="font-size:12px;color:var(--clr-accent-cyan);">${activeCard.sourceLink}</code></span>`;
-    revealContentList.appendChild(srcRow);
+    addRevealRow("source", activeCard.sourceLink, { code: true });
 
     if (resolvedContextContent) {
       const codeBox = document.createElement("pre");

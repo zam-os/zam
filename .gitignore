@@ -54,3 +54,10 @@ coverage/
 
 # Scratch & temporary
 scratch/
+
+# Agent worktrees & external CLI caches (never commit)
+.claude/worktrees/
+.antigravitycli/
+
+# Tauri / Rust build output
+desktop/src-tauri/target/

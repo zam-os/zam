@@ -123,7 +123,9 @@ export function pairCommands(events: MonitorEvent[]): CommandRecord[] {
     });
   }
 
-  records.sort((a, b) => new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime());
+  records.sort(
+    (a, b) => new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime(),
+  );
   return records;
 }
 
@@ -151,7 +153,9 @@ function computeMedian(values: number[]): number | null {
   if (values.length === 0) return null;
   const sorted = [...values].sort((a, b) => a - b);
   const mid = Math.floor(sorted.length / 2);
-  return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+  return sorted.length % 2 !== 0
+    ? sorted[mid]
+    : (sorted[mid - 1] + sorted[mid]) / 2;
 }
 
 /**
@@ -236,7 +240,8 @@ export function analyzeObservation(
       const prev = commands[matchIndices[k - 1]];
       const curr = commands[matchIndices[k]];
       if (prev.endedAt) {
-        const gap = new Date(curr.startedAt).getTime() - new Date(prev.endedAt).getTime();
+        const gap =
+          new Date(curr.startedAt).getTime() - new Date(prev.endedAt).getTime();
         if (gap >= 0) gaps.push(gap);
       }
     }
@@ -267,7 +272,11 @@ export function analyzeObservation(
 
     // Confidence: more matched commands = higher confidence
     const confidence =
-      matchIndices.length >= 3 ? "high" : matchIndices.length >= 2 ? "medium" : "low";
+      matchIndices.length >= 3
+        ? "high"
+        : matchIndices.length >= 2
+          ? "medium"
+          : "low";
 
     ratings.push({
       tokenSlug: tp.slug,
@@ -302,7 +311,8 @@ export function analyzeObservation(
     timeSpan = {
       start: first.startedAt,
       end: endTs,
-      durationMs: new Date(endTs).getTime() - new Date(first.startedAt).getTime(),
+      durationMs:
+        new Date(endTs).getTime() - new Date(first.startedAt).getTime(),
     };
   }
 
@@ -321,7 +331,13 @@ interface RatingSignals {
 }
 
 function inferRating(signals: RatingSignals): 1 | 2 | 3 | 4 {
-  const { helpSeeking, errorCount, selfCorrections, medianGapMs, thinkingGapMs } = signals;
+  const {
+    helpSeeking,
+    errorCount,
+    selfCorrections,
+    medianGapMs,
+    thinkingGapMs,
+  } = signals;
 
   // Count negative signals
   let negatives = 0;

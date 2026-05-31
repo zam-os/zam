@@ -11,14 +11,14 @@
 export type GoalStatus = "active" | "completed" | "paused" | "abandoned";
 
 export interface Goal {
-  slug: string;          // derived from filename (e.g., "learn-rust" from "learn-rust.md")
+  slug: string; // derived from filename (e.g., "learn-rust" from "learn-rust.md")
   title: string;
   status: GoalStatus;
   parent: string | null; // slug of parent goal
-  created: string;       // ISO date
-  updated: string;       // ISO date
-  body: string;          // markdown body after frontmatter
-  filePath: string;      // absolute path to the file
+  created: string; // ISO date
+  updated: string; // ISO date
+  body: string; // markdown body after frontmatter
+  filePath: string; // absolute path to the file
 }
 
 export interface GoalFrontmatter {
@@ -52,10 +52,19 @@ export interface GoalFrontmatter {
  * @param slug - Goal slug (derived from filename by caller)
  * @param filePath - Absolute path to the file
  */
-export function parseGoalFile(content: string, slug: string, filePath: string): Goal {
+export function parseGoalFile(
+  content: string,
+  slug: string,
+  filePath: string,
+): Goal {
   const { frontmatter, body } = splitFrontmatter(content);
 
-  const validStatuses: GoalStatus[] = ["active", "completed", "paused", "abandoned"];
+  const validStatuses: GoalStatus[] = [
+    "active",
+    "completed",
+    "paused",
+    "abandoned",
+  ];
   const status = validStatuses.includes(frontmatter.status as GoalStatus)
     ? (frontmatter.status as GoalStatus)
     : "active";
@@ -78,11 +87,7 @@ export function parseGoalFile(content: string, slug: string, filePath: string): 
  * Serialize a Goal back to markdown with frontmatter.
  */
 export function serializeGoal(goal: Goal): string {
-  const lines = [
-    "---",
-    `title: ${goal.title}`,
-    `status: ${goal.status}`,
-  ];
+  const lines = ["---", `title: ${goal.title}`, `status: ${goal.status}`];
 
   if (goal.parent) {
     lines.push(`parent: ${goal.parent}`);
@@ -105,16 +110,19 @@ export function serializeGoal(goal: Goal): string {
  * Extract tasks (checklist items) from goal body.
  * Returns items like { text: "Complete Rustlings", done: false }.
  */
-export function extractTasks(body: string): Array<{ text: string; done: boolean }> {
+export function extractTasks(
+  body: string,
+): Array<{ text: string; done: boolean }> {
   const tasks: Array<{ text: string; done: boolean }> = [];
   const taskRegex = /^[-*]\s+\[([ xX])\]\s+(.+)$/gm;
-  let match: RegExpExecArray | null;
+  let match: RegExpExecArray | null = taskRegex.exec(body);
 
-  while ((match = taskRegex.exec(body)) !== null) {
+  while (match !== null) {
     tasks.push({
       done: match[1] !== " ",
       text: match[2].trim(),
     });
+    match = taskRegex.exec(body);
   }
 
   return tasks;
@@ -143,7 +151,10 @@ export function extractTokenRefs(body: string): string[] {
 
 // ── Internal helpers ─────────────────────────────────────────────────────────
 
-function splitFrontmatter(content: string): { frontmatter: GoalFrontmatter; body: string } {
+function splitFrontmatter(content: string): {
+  frontmatter: GoalFrontmatter;
+  body: string;
+} {
   const trimmed = content.trim();
 
   if (!trimmed.startsWith("---")) {

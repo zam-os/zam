@@ -38,7 +38,10 @@ function htmlToText(html: string): string {
   // Strip script, style, and head tags completely
   content = content.replace(/<(script|style|head)[^>]*>([\s\S]*?)<\/\1>/gi, "");
   // Replace headings
-  content = content.replace(/<h[1-6][^>]*>([\s\S]*?)<\/h[1-6]>/gi, "\n\n# $1\n");
+  content = content.replace(
+    /<h[1-6][^>]*>([\s\S]*?)<\/h[1-6]>/gi,
+    "\n\n# $1\n",
+  );
   // Replace paragraph/div/li tags with line breaks
   content = content.replace(/<(p|div|li)[^>]*>/gi, "\n");
   content = content.replace(/<\/(p|div|li)>/gi, "\n");
@@ -79,7 +82,9 @@ function extractLines(content: string, anchor: string): string {
 /**
  * Resolves a given token's source_link into readable textual content.
  */
-export async function resolveReference(sourceLink: string): Promise<ResolvedReference> {
+export async function resolveReference(
+  sourceLink: string,
+): Promise<ResolvedReference> {
   const cleaned = sourceLink.trim();
 
   // 1. Dynamic Web Search
@@ -106,12 +111,19 @@ export async function resolveReference(sourceLink: string): Promise<ResolvedRefe
   // 2. HTTP/HTTPS URLs
   if (cleaned.startsWith("http://") || cleaned.startsWith("https://")) {
     // 2.a GitHub URIs
-    const gitHubMatch = /^https?:\/\/(?:www\.)?github\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.+)$/i.exec(cleaned);
+    const gitHubMatch =
+      /^https?:\/\/(?:www\.)?github\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.+)$/i.exec(
+        cleaned,
+      );
     if (gitHubMatch) {
       const [_, owner, repo, branch, fullPathWithAnchor] = gitHubMatch;
       const anchorIndex = fullPathWithAnchor.indexOf("#");
-      const filePath = anchorIndex !== -1 ? fullPathWithAnchor.slice(0, anchorIndex) : fullPathWithAnchor;
-      const anchor = anchorIndex !== -1 ? fullPathWithAnchor.slice(anchorIndex) : "";
+      const filePath =
+        anchorIndex !== -1
+          ? fullPathWithAnchor.slice(0, anchorIndex)
+          : fullPathWithAnchor;
+      const anchor =
+        anchorIndex !== -1 ? fullPathWithAnchor.slice(anchorIndex) : "";
 
       // Try local resolution: check if repo folder exists in sibling directories
       const parentDir = dirname(process.cwd());
@@ -178,7 +190,8 @@ export async function resolveReference(sourceLink: string): Promise<ResolvedRefe
 
   // 3. Local Workspace Path (relative to process.cwd)
   const anchorIndex = cleaned.indexOf("#");
-  const relativePath = anchorIndex !== -1 ? cleaned.slice(0, anchorIndex) : cleaned;
+  const relativePath =
+    anchorIndex !== -1 ? cleaned.slice(0, anchorIndex) : cleaned;
   const anchor = anchorIndex !== -1 ? cleaned.slice(anchorIndex) : "";
   const absolutePath = resolve(process.cwd(), relativePath);
 
@@ -251,16 +264,22 @@ export function normalizePath(p: string): string {
 /**
  * Checks if a token's source_link references a changed file.
  */
-export function matchesFilePath(sourceLink: string | null, changedFile: string): boolean {
+export function matchesFilePath(
+  sourceLink: string | null,
+  changedFile: string,
+): boolean {
   if (!sourceLink) return false;
-  
+
   const normSource = normalizePath(sourceLink);
   const normChanged = normalizePath(changedFile);
 
   if (!normSource || !normChanged) return false;
 
   // 1. GitHub URI matching
-  const gitHubMatch = /^https?:\/\/(?:www\.)?github\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.+)$/i.exec(normSource);
+  const gitHubMatch =
+    /^https?:\/\/(?:www\.)?github\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.+)$/i.exec(
+      normSource,
+    );
   if (gitHubMatch) {
     const filePath = gitHubMatch[4];
     return filePath === normChanged;

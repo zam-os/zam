@@ -6,27 +6,27 @@
  * or defaults to `./goals` relative to the current working directory.
  */
 
-import { Command } from "commander";
 import { existsSync, mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { input, select } from "@inquirer/prompts";
+import { Command } from "commander";
+import type { GoalStatus } from "../../kernel/index.js";
 import {
-  openDatabase,
-  getSetting,
-  listGoals,
-  getGoal,
   createGoal,
-  updateGoalStatus,
-  getGoalTree,
   extractTasks,
   extractTokenRefs,
+  getGoal,
+  getGoalTree,
+  getSetting,
+  listGoals,
+  openDatabase,
+  updateGoalStatus,
 } from "../../kernel/index.js";
-import type { GoalStatus } from "../../kernel/index.js";
 
 function resolveGoalsDir(): string {
   let goalsDir: string | undefined;
 
-  let db;
+  let db: ReturnType<typeof openDatabase> | undefined;
   try {
     db = openDatabase();
     goalsDir = getSetting(db, "personal.goals_dir");
@@ -39,15 +39,19 @@ function resolveGoalsDir(): string {
   return goalsDir ? resolve(goalsDir) : resolve("goals");
 }
 
-export const goalCommand = new Command("goal")
-  .description("Manage learning goals (markdown files)");
+export const goalCommand = new Command("goal").description(
+  "Manage learning goals (markdown files)",
+);
 
 // ── zam goal list ────────────────────────────────────────────────────────────
 
 goalCommand
   .command("list")
   .description("List all goals")
-  .option("--status <status>", "Filter by status (active, completed, paused, abandoned)")
+  .option(
+    "--status <status>",
+    "Filter by status (active, completed, paused, abandoned)",
+  )
   .option("--tree", "Show goals as a tree with parent/child relationships")
   .option("--json", "Output as JSON")
   .action((opts) => {
@@ -55,7 +59,9 @@ goalCommand
 
     if (!existsSync(goalsDir)) {
       console.error(`Goals directory not found: ${goalsDir}`);
-      console.error("Set it with: zam settings set personal.goals_dir /path/to/goals");
+      console.error(
+        "Set it with: zam settings set personal.goals_dir /path/to/goals",
+      );
       process.exit(1);
     }
 
@@ -108,7 +114,13 @@ goalCommand
   });
 
 function printGoalLine(
-  g: { slug: string; title: string; status: string; taskCount: number; tasksDone: number },
+  g: {
+    slug: string;
+    title: string;
+    status: string;
+    taskCount: number;
+    tasksDone: number;
+  },
   indent: number,
 ): void {
   const prefix = "  ".repeat(indent + 1);
@@ -154,7 +166,9 @@ goalCommand
 
     const tasks = extractTasks(goal.body);
     if (tasks.length > 0) {
-      console.log(`\nTasks (${tasks.filter((t) => t.done).length}/${tasks.length}):`);
+      console.log(
+        `\nTasks (${tasks.filter((t) => t.done).length}/${tasks.length}):`,
+      );
       for (const t of tasks) {
         console.log(`  [${t.done ? "x" : " "}] ${t.text}`);
       }
@@ -241,9 +255,16 @@ goalCommand
   .description("Update a goal's status (active, paused, completed, abandoned)")
   .option("--json", "Output as JSON")
   .action((slug, status, opts) => {
-    const validStatuses: GoalStatus[] = ["active", "completed", "paused", "abandoned"];
+    const validStatuses: GoalStatus[] = [
+      "active",
+      "completed",
+      "paused",
+      "abandoned",
+    ];
     if (!validStatuses.includes(status)) {
-      console.error(`Invalid status: ${status}. Must be one of: ${validStatuses.join(", ")}`);
+      console.error(
+        `Invalid status: ${status}. Must be one of: ${validStatuses.join(", ")}`,
+      );
       process.exit(1);
     }
 

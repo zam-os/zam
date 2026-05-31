@@ -4,6 +4,21 @@ Welcome to the **ZAM Cross-Platform Desktop GUI**! This native desktop applicati
 
 ---
 
+## ⚡ Quick start: `zam ui`
+
+You don't need to remember the steps below — the CLI launches the GUI for you:
+
+```bash
+zam ui            # launch the desktop app
+zam ui --build    # one-time: build a native installer (needs Rust) → adds a Start-menu + Desktop entry
+zam ui --dev      # hot-reload development mode (needs Rust)
+zam ui --shortcut # create Desktop + Start-menu shortcuts to the built app
+```
+
+First time on a machine without the GUI built, `zam ui` tells you exactly what to do. After a one-time `zam ui --build` and running the installer, ZAM lives in your Start menu — and `zam ui` launches it directly.
+
+---
+
 ## 🚀 Mac Mini M4 & Cross-Platform Launch Plan
 
 When you switch to your **Mac Mini M4** (or any other machine), follow these exact steps to pull, run, and test the ZAM Active-Recall Studio:

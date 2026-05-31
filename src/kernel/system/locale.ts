@@ -46,7 +46,7 @@ export function detectSystemLocale(): SupportedLocale {
     if (process.platform === "win32") {
       const output = execSync(
         'powershell -NoProfile -Command "[System.Globalization.CultureInfo]::CurrentCulture.Name"',
-        { stdio: "pipe", encoding: "utf8", timeout: 2000 }
+        { stdio: "pipe", encoding: "utf8", timeout: 2000 },
       ).trim();
       if (output && output.length > 0) {
         return normalizeLocale(output);

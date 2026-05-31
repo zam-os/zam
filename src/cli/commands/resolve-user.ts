@@ -24,7 +24,8 @@ export function resolveUser(
   const stored = getSetting(db, "user.id");
   if (stored) return stored;
 
-  const message = 'No user specified. Set a default with: zam whoami --set <id>';
+  const message =
+    "No user specified. Set a default with: zam whoami --set <id>";
   if (resolveOpts?.json) {
     console.log(JSON.stringify({ error: message }, null, 2));
   } else {

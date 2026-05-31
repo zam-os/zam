@@ -34,11 +34,15 @@ function formatSlugForCue(slug: string): string {
 }
 
 const BLOOM_CUES: Record<BloomLevel, (slug: string) => string> = {
-  1: (slug) => `Recall the definition and core concept of: ${formatSlugForCue(slug)}`,
+  1: (slug) =>
+    `Recall the definition and core concept of: ${formatSlugForCue(slug)}`,
   2: (slug) => `Explain the concept and how ${formatSlugForCue(slug)} works.`,
-  3: (slug) => `Describe how or where you would apply the concept of ${formatSlugForCue(slug)}.`,
-  4: (slug) => `Analyze the trade-offs, advantages, or alternatives of ${formatSlugForCue(slug)}.`,
-  5: (slug) => `How would you design a solution using the concept of ${formatSlugForCue(slug)}?`,
+  3: (slug) =>
+    `Describe how or where you would apply the concept of ${formatSlugForCue(slug)}.`,
+  4: (slug) =>
+    `Analyze the trade-offs, advantages, or alternatives of ${formatSlugForCue(slug)}.`,
+  5: (slug) =>
+    `How would you design a solution using the concept of ${formatSlugForCue(slug)}?`,
 };
 
 export interface PromptInput {
@@ -55,8 +59,14 @@ export interface PromptInput {
 /**
  * Generate a template-based concept-free recall cue using the slug and domain.
  */
-export function generateConceptFreeCue(bloomLevel: BloomLevel, slug: string, domain: string): string {
-  const bloom = (bloomLevel >= 1 && bloomLevel <= 5 ? bloomLevel : 1) as BloomLevel;
+export function generateConceptFreeCue(
+  bloomLevel: BloomLevel,
+  slug: string,
+  domain: string,
+): string {
+  const bloom = (
+    bloomLevel >= 1 && bloomLevel <= 5 ? bloomLevel : 1
+  ) as BloomLevel;
   return BLOOM_CUES[bloom](slug);
 }
 
@@ -66,9 +76,9 @@ export function generateConceptFreeCue(bloomLevel: BloomLevel, slug: string, dom
  * When called from the AI bridge, the JSON is returned for the AI to present conversationally.
  */
 export function generatePrompt(input: PromptInput): RecallPrompt {
-  const bloom = (input.bloomLevel >= 1 && input.bloomLevel <= 5
-    ? input.bloomLevel
-    : 1) as BloomLevel;
+  const bloom = (
+    input.bloomLevel >= 1 && input.bloomLevel <= 5 ? input.bloomLevel : 1
+  ) as BloomLevel;
 
   const question = input.question?.trim()
     ? input.question.trim()

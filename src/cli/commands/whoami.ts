@@ -5,10 +5,10 @@
 import { Command } from "commander";
 import type { Database } from "libsql";
 import {
-  openDatabase,
-  getSetting,
-  setSetting,
   deleteSetting,
+  getSetting,
+  openDatabase,
+  setSetting,
 } from "../../kernel/index.js";
 
 function withDb(fn: (db: Database) => void): void {

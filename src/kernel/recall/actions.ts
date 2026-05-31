@@ -1,22 +1,23 @@
 import type { Database } from "libsql";
+import type { DeleteCardResult } from "../models/card.js";
+import { deleteCardForUser, getCardById } from "../models/card.js";
+import { getPrerequisites } from "../models/prerequisite.js";
+import type {
+  DeleteTokenResult,
+  Token,
+  UpdateTokenInput,
+} from "../models/token.js";
 import {
-  getCardById,
-  deleteCardForUser,
-} from "../models/card.js";
-import {
+  deleteToken,
+  deprecateToken,
   getTokenById,
   updateToken,
-  deprecateToken,
-  deleteToken,
 } from "../models/token.js";
-import { getPrerequisites } from "../models/prerequisite.js";
-import { cascadeBlock } from "../scheduler/blocker.js";
-import { evaluateRating } from "./evaluator.js";
-import type { Rating } from "../scheduler/fsrs.js";
-import type { UpdateTokenInput, Token, DeleteTokenResult } from "../models/token.js";
-import type { DeleteCardResult } from "../models/card.js";
-import type { EvaluateResult } from "./evaluator.js";
 import type { CascadeBlockResult } from "../scheduler/blocker.js";
+import { cascadeBlock } from "../scheduler/blocker.js";
+import type { Rating } from "../scheduler/fsrs.js";
+import type { EvaluateResult } from "./evaluator.js";
+import { evaluateRating } from "./evaluator.js";
 
 export type ReviewActionType =
   | "rate"
@@ -110,7 +111,11 @@ export function executeReviewAction(
       return { action: input.action, token: target.token, stopped: true };
 
     case "edit-token": {
-      const updatedToken = updateToken(db, target.token.slug, input.tokenUpdates ?? {});
+      const updatedToken = updateToken(
+        db,
+        target.token.slug,
+        input.tokenUpdates ?? {},
+      );
       return {
         action: input.action,
         token: target.token,

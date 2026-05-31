@@ -2,26 +2,23 @@
  * `zam connector` — Manage external service connectors.
  */
 
+import { input, password } from "@inquirer/prompts";
 import { Command } from "commander";
 import type { Database } from "libsql";
-import { input, password } from "@inquirer/prompts";
+import { fetchActiveWorkItems } from "../../kernel/connectors/azure-devops.js";
 import {
-  openDatabaseWithSync,
-} from "../../kernel/index.js";
-import {
-  fetchActiveWorkItems,
-} from "../../kernel/connectors/azure-devops.js";
-import {
-  getTursoCredentials,
-  setTursoCredentials,
+  clearADOCredentials,
   clearTursoCredentials,
   getADOCredentials,
+  getTursoCredentials,
   setADOCredentials,
-  clearADOCredentials,
+  setTursoCredentials,
 } from "../../kernel/credentials.js";
+import { openDatabaseWithSync } from "../../kernel/index.js";
 
-export const connectorCommand = new Command("connector")
-  .description("Manage external service connectors");
+export const connectorCommand = new Command("connector").description(
+  "Manage external service connectors",
+);
 
 // ── zam connector setup ado ─────────────────────────────────────────────────
 
@@ -100,9 +97,7 @@ connectorCommand
       }
 
       console.log(`${items.length} active work item(s):\n`);
-      console.log(
-        "ID       Type          State       Title",
-      );
+      console.log("ID       Type          State       Title");
       console.log("─".repeat(80));
       for (const wi of items) {
         console.log(
@@ -145,7 +140,9 @@ connectorCommand
   .action(() => {
     const turso = getTursoCredentials();
     if (!turso) {
-      console.error("No Turso cloud database configured. Run: zam connector setup turso");
+      console.error(
+        "No Turso cloud database configured. Run: zam connector setup turso",
+      );
       process.exit(1);
     }
 
@@ -167,12 +164,16 @@ connectorCommand
 async function setupTurso(urlArg?: string, tokenArg?: string): Promise<void> {
   let db: Database | undefined;
   try {
-    const url = urlArg ?? await input({
-      message: "Turso database URL (e.g. libsql://my-db-user.turso.io):",
-    });
-    const token = tokenArg ?? await password({
-      message: "Auth token:",
-    });
+    const url =
+      urlArg ??
+      (await input({
+        message: "Turso database URL (e.g. libsql://my-db-user.turso.io):",
+      }));
+    const token =
+      tokenArg ??
+      (await password({
+        message: "Auth token:",
+      }));
 
     if (!url || !token) {
       console.error("Both URL and token are required.");

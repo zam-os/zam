@@ -4,15 +4,15 @@
 
 import { Command } from "commander";
 import type { Database } from "libsql";
+import type { BloomLevel, Rating } from "../../kernel/index.js";
 import {
-  openDatabase,
   buildReviewQueue,
   generatePrompt,
+  openDatabase,
   resolveReviewContext,
 } from "../../kernel/index.js";
-import type { Rating, BloomLevel } from "../../kernel/index.js";
-import { resolveUser } from "./resolve-user.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
+import { resolveUser } from "./resolve-user.js";
 
 export const reviewCommand = new Command("review")
   .description("Start an interactive review session")
@@ -39,11 +39,13 @@ export const reviewCommand = new Command("review")
       }
 
       console.log(`\nReview session: ${queue.items.length} card(s)`);
-      console.log(`  New: ${queue.newCount}  Review: ${queue.reviewCount}  Relearn: ${queue.relearnCount}`);
+      console.log(
+        `  New: ${queue.newCount}  Review: ${queue.reviewCount}  Relearn: ${queue.relearnCount}`,
+      );
       console.log(`  Domains: ${queue.totalDomains.join(", ")}`);
       console.log();
 
-      let completed = 0;
+      const completed = 0;
       let stoppedEarly = false;
       let maintenanceActions = 0;
       const results: Array<{
@@ -63,14 +65,16 @@ export const reviewCommand = new Command("review")
           sourceLink: item.sourceLink,
         });
 
-        console.log(`\n[${index + 1}/${queue.items.length}] ${prompt.bloomVerb} (Bloom ${prompt.bloomLevel})`);
+        console.log(
+          `\n[${index + 1}/${queue.items.length}] ${prompt.bloomVerb} (Bloom ${prompt.bloomLevel})`,
+        );
         console.log(`Domain: ${prompt.domain || "(none)"}`);
         if (prompt.sourceLink) {
           console.log(`Source: ${prompt.sourceLink}`);
           if (opts.resolve !== false) {
-            const ctx = await resolveReviewContext(item.sourceLink, { maxChars: 1200 }).catch(
-              () => null,
-            );
+            const ctx = await resolveReviewContext(item.sourceLink, {
+              maxChars: 1200,
+            }).catch(() => null);
             if (ctx && ctx.sourceType === "dynamic_search") {
               console.log(`  ↳ ${ctx.content}`);
             } else if (ctx?.content.trim()) {
@@ -115,14 +119,17 @@ export const reviewCommand = new Command("review")
 
       // Session summary
       console.log("\n" + "═".repeat(50));
-      console.log(stoppedEarly ? "Review session ended." : "Review session complete!");
+      console.log(
+        stoppedEarly ? "Review session ended." : "Review session complete!",
+      );
       console.log(`  Cards rated: ${results.length}`);
       if (maintenanceActions > 0) {
         console.log(`  Maintenance actions: ${maintenanceActions}`);
       }
 
       if (results.length > 0) {
-        const avgRating = results.reduce((s, r) => s + r.rating, 0) / results.length;
+        const avgRating =
+          results.reduce((s, r) => s + r.rating, 0) / results.length;
         console.log(`  Average rating: ${avgRating.toFixed(1)}`);
 
         const forgot = results.filter((r) => r.rating === 1).length;

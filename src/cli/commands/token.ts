@@ -4,29 +4,31 @@
 
 import { Command } from "commander";
 import type { Database } from "libsql";
-import {
-  openDatabase,
-  createToken,
-  updateToken,
-  findTokens,
-  listTokens,
-  getTokenBySlug,
-  addPrerequisite,
-  getPrerequisites,
-  getDependents,
-  getCard,
-  deprecateToken,
-  getTokenDeleteImpact,
-  deleteToken,
-  getSetting,
-  generateQuestionViaLLM,
-  generateConceptFreeCue,
-  resolveReviewContext,
-} from "../../kernel/index.js";
 import type { BloomLevel, SymbiosisMode } from "../../kernel/index.js";
+import {
+  addPrerequisite,
+  createToken,
+  deleteToken,
+  deprecateToken,
+  findTokens,
+  generateConceptFreeCue,
+  getCard,
+  getDependents,
+  getPrerequisites,
+  getSetting,
+  getTokenBySlug,
+  getTokenDeleteImpact,
+  listTokens,
+  openDatabase,
+  resolveReviewContext,
+  updateToken,
+} from "../../kernel/index.js";
+import { generateQuestionViaLLM } from "../llm/client.js";
 import { resolveUser } from "./resolve-user.js";
 
-async function withDb(fn: (db: Database) => Promise<void> | void): Promise<void> {
+async function withDb(
+  fn: (db: Database) => Promise<void> | void,
+): Promise<void> {
   let db: Database | undefined;
   try {
     db = openDatabase();
@@ -43,8 +45,9 @@ function jsonOut(data: unknown): void {
   console.log(JSON.stringify(data, null, 2));
 }
 
-export const tokenCommand = new Command("token")
-  .description("Manage knowledge tokens");
+export const tokenCommand = new Command("token").description(
+  "Manage knowledge tokens",
+);
 
 // ── zam token register ────────────────────────────────────────────────────
 
@@ -64,11 +67,15 @@ tokenCommand
       if (!question) {
         const isLlmEnabled = getSetting(db, "llm.enabled") === "true";
         if (isLlmEnabled) {
-          console.log("Generating high-quality active-recall question via local LLM...");
+          console.log(
+            "Generating high-quality active-recall question via local LLM...",
+          );
           try {
             let sourceLinkContent: string | null = null;
             if (opts.sourceLink) {
-              const resolved = await resolveReviewContext(opts.sourceLink).catch(() => null);
+              const resolved = await resolveReviewContext(
+                opts.sourceLink,
+              ).catch(() => null);
               if (resolved) {
                 sourceLinkContent = resolved.content;
               }
@@ -83,12 +90,18 @@ tokenCommand
             });
             console.log(`Generated: "${question}"`);
           } catch (err) {
-            console.warn(`LLM question generation failed: ${(err as Error).message}. Falling back to template.`);
+            console.warn(
+              `LLM question generation failed: ${(err as Error).message}. Falling back to template.`,
+            );
           }
         }
 
         if (!question) {
-          question = generateConceptFreeCue(Number(opts.bloom) as BloomLevel, opts.slug, opts.domain);
+          question = generateConceptFreeCue(
+            Number(opts.bloom) as BloomLevel,
+            opts.slug,
+            opts.domain,
+          );
         }
       }
 
@@ -159,7 +172,10 @@ tokenCommand
   .option("--json", "Output as JSON")
   .action((opts) => {
     withDb((db) => {
-      const tokens = listTokens(db, opts.domain ? { domain: opts.domain } : undefined);
+      const tokens = listTokens(
+        db,
+        opts.domain ? { domain: opts.domain } : undefined,
+      );
 
       if (opts.json) {
         console.log(JSON.stringify(tokens, null, 2));
@@ -194,8 +210,14 @@ tokenCommand
   .option("--domain <domain>", "Updated domain (blank allowed)")
   .option("--bloom <level>", "Updated Bloom taxonomy level (1-5)")
   .option("--context <context>", "Updated context (blank allowed)")
-  .option("--mode <mode>", "Updated symbiosis mode: shadowing | copilot | autonomy | none")
-  .option("--source-link <link>", "Updated source file path or reference URL (blank allowed)")
+  .option(
+    "--mode <mode>",
+    "Updated symbiosis mode: shadowing | copilot | autonomy | none",
+  )
+  .option(
+    "--source-link <link>",
+    "Updated source file path or reference URL (blank allowed)",
+  )
   .option("--question <question>", "Updated question text (blank allowed)")
   .option("--json", "Output as JSON")
   .action(async (opts) => {
@@ -212,7 +234,8 @@ tokenCommand
 
       if (opts.concept !== undefined) updates.concept = opts.concept;
       if (opts.domain !== undefined) updates.domain = opts.domain;
-      if (opts.bloom !== undefined) updates.bloom_level = Number(opts.bloom) as BloomLevel;
+      if (opts.bloom !== undefined)
+        updates.bloom_level = Number(opts.bloom) as BloomLevel;
       if (opts.context !== undefined) updates.context = opts.context;
       if (opts.sourceLink !== undefined) {
         updates.source_link = opts.sourceLink === "" ? null : opts.sourceLink;
@@ -226,7 +249,8 @@ tokenCommand
           console.error(`Invalid --mode: ${opts.mode}`);
           process.exit(1);
         }
-        updates.symbiosis_mode = opts.mode === "none" ? null : opts.mode as SymbiosisMode;
+        updates.symbiosis_mode =
+          opts.mode === "none" ? null : (opts.mode as SymbiosisMode);
       }
 
       const token = updateToken(db, opts.slug, updates);
@@ -272,9 +296,17 @@ tokenCommand
       addPrerequisite(db, token.id, requires.id);
 
       if (opts.json) {
-        console.log(JSON.stringify({ token: opts.token, requires: opts.requires }, null, 2));
+        console.log(
+          JSON.stringify(
+            { token: opts.token, requires: opts.requires },
+            null,
+            2,
+          ),
+        );
       } else {
-        console.log(`Added prerequisite: ${opts.token} requires ${opts.requires}`);
+        console.log(
+          `Added prerequisite: ${opts.token} requires ${opts.requires}`,
+        );
       }
     });
   });
@@ -283,7 +315,9 @@ tokenCommand
 
 tokenCommand
   .command("deprecate")
-  .description("Mark a token as deprecated (excluded from reviews, not deleted)")
+  .description(
+    "Mark a token as deprecated (excluded from reviews, not deleted)",
+  )
   .requiredOption("--slug <slug>", "Token slug to deprecate")
   .option("--json", "Output as JSON")
   .action((opts) => {
@@ -328,8 +362,12 @@ tokenCommand
         console.log(`Delete preview for ${opts.slug}:`);
         console.log(`  Cards:                 ${impact.cards}`);
         console.log(`  Review logs:           ${impact.review_logs}`);
-        console.log(`  Prereq edges from it:  ${impact.prerequisite_edges_from_token}`);
-        console.log(`  Prereq edges to it:    ${impact.prerequisite_edges_to_token}`);
+        console.log(
+          `  Prereq edges from it:  ${impact.prerequisite_edges_from_token}`,
+        );
+        console.log(
+          `  Prereq edges to it:    ${impact.prerequisite_edges_to_token}`,
+        );
         console.log(`  Session steps:         ${impact.session_steps}`);
         console.log(`  Sessions touched:      ${impact.sessions_touched}`);
         console.log(`  Agent skills updated:  ${impact.agent_skills}`);

@@ -5,17 +5,17 @@
  */
 
 import { execSync } from "node:child_process";
-import { existsSync, writeFileSync, chmodSync } from "node:fs";
+import { chmodSync, existsSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { Command } from "commander";
 import type { Database } from "libsql";
-import {
-  openDatabase,
-  getCard,
-  updateCard,
-  matchesFilePath,
-} from "../../kernel/index.js";
 import type { Token } from "../../kernel/index.js";
+import {
+  getCard,
+  matchesFilePath,
+  openDatabase,
+  updateCard,
+} from "../../kernel/index.js";
 import { resolveUser } from "./resolve-user.js";
 
 function withDb(fn: (db: Database) => void): void {
@@ -37,7 +37,9 @@ function withDb(fn: (db: Database) => void): void {
 function installHook(): void {
   const gitDir = join(process.cwd(), ".git");
   if (!existsSync(gitDir)) {
-    console.error("Error: Current directory is not the root of a Git repository.");
+    console.error(
+      "Error: Current directory is not the root of a Git repository.",
+    );
     process.exit(1);
   }
 
@@ -57,7 +59,9 @@ zam git-sync --commit HEAD --quiet
     } catch (e) {
       // Best-effort chmod (Windows might ignore/fail, which is fine)
     }
-    console.log("Successfully installed ZAM post-commit hook at .git/hooks/post-commit");
+    console.log(
+      "Successfully installed ZAM post-commit hook at .git/hooks/post-commit",
+    );
   } catch (err) {
     console.error("Failed to write post-commit hook:", (err as Error).message);
     process.exit(1);
@@ -78,17 +82,25 @@ export const gitSyncCommand = new Command("git-sync")
 
     withDb((db) => {
       const userId = resolveUser(opts, db);
-      
+
       let changedFiles: string[] = [];
       try {
-        const output = execSync(`git diff-tree --no-commit-id --name-only -r ${opts.commit}`, {
-          encoding: "utf-8",
-          stdio: ["ignore", "pipe", "ignore"],
-        });
-        changedFiles = output.split(/\r?\n/).map((f) => f.trim()).filter(Boolean);
+        const output = execSync(
+          `git diff-tree --no-commit-id --name-only -r ${opts.commit}`,
+          {
+            encoding: "utf-8",
+            stdio: ["ignore", "pipe", "ignore"],
+          },
+        );
+        changedFiles = output
+          .split(/\r?\n/)
+          .map((f) => f.trim())
+          .filter(Boolean);
       } catch (err) {
         if (!opts.quiet) {
-          console.warn("Notice: Failed to read git modifications. Ensure you are in a Git repo and commit hash is valid.");
+          console.warn(
+            "Notice: Failed to read git modifications. Ensure you are in a Git repo and commit hash is valid.",
+          );
         }
         return;
       }
@@ -101,16 +113,20 @@ export const gitSyncCommand = new Command("git-sync")
       }
 
       // Fetch active tokens
-      const tokens = db.prepare(`
+      const tokens = db
+        .prepare(`
         SELECT * FROM tokens 
         WHERE source_link IS NOT NULL 
           AND deprecated_at IS NULL
-      `).all() as Token[];
+      `)
+        .all() as Token[];
 
       const matchedTokens: Token[] = [];
 
       for (const token of tokens) {
-        const matches = changedFiles.some((cf) => matchesFilePath(token.source_link, cf));
+        const matches = changedFiles.some((cf) =>
+          matchesFilePath(token.source_link, cf),
+        );
         if (matches) {
           matchedTokens.push(token);
         }
@@ -118,7 +134,9 @@ export const gitSyncCommand = new Command("git-sync")
 
       if (matchedTokens.length === 0) {
         if (!opts.quiet) {
-          console.log(`Scanned ${changedFiles.length} file(s), no associated learning tokens found.`);
+          console.log(
+            `Scanned ${changedFiles.length} file(s), no associated learning tokens found.`,
+          );
         }
         return;
       }
@@ -133,7 +151,7 @@ export const gitSyncCommand = new Command("git-sync")
           // with a 0.2-day floor so the card surfaces for review soon. Using max,
           // not min: min would collapse every card to <=0.2 regardless of prior strength.
           const newStability = Math.max(0.2, card.stability / 4.0);
-          
+
           db.prepare(`
             UPDATE cards
             SET due_at = ?,
@@ -146,14 +164,20 @@ export const gitSyncCommand = new Command("git-sync")
 
           decayedCount++;
           if (!opts.quiet) {
-            console.log(`  Decayed card for: ${token.slug} (Source: ${token.source_link})`);
+            console.log(
+              `  Decayed card for: ${token.slug} (Source: ${token.source_link})`,
+            );
           }
         }
       }
 
       if (!opts.quiet) {
-        console.log(`\nZAM Auto-Stale Complete: Scanned ${changedFiles.length} file(s).`);
-        console.log(`Successfully decayed FSRS stability and scheduled reviews for ${decayedCount} concept(s).`);
+        console.log(
+          `\nZAM Auto-Stale Complete: Scanned ${changedFiles.length} file(s).`,
+        );
+        console.log(
+          `Successfully decayed FSRS stability and scheduled reviews for ${decayedCount} concept(s).`,
+        );
       }
     });
   });

@@ -60,7 +60,11 @@ export function getTursoCredentials(path?: string): TursoCredentials | null {
 }
 
 /** Set Turso credentials. */
-export function setTursoCredentials(url: string, token: string, path?: string): void {
+export function setTursoCredentials(
+  url: string,
+  token: string,
+  path?: string,
+): void {
   const creds = loadCredentials(path);
   creds.turso = { url, token };
   saveCredentials(creds, path);
@@ -77,13 +81,22 @@ export function clearTursoCredentials(path?: string): void {
 export function getADOCredentials(path?: string): ADOCredentials | null {
   const creds = loadCredentials(path);
   if (creds.ado?.org_url && creds.ado?.project && creds.ado?.pat) {
-    return { org_url: creds.ado.org_url, project: creds.ado.project, pat: creds.ado.pat };
+    return {
+      org_url: creds.ado.org_url,
+      project: creds.ado.project,
+      pat: creds.ado.pat,
+    };
   }
   return null;
 }
 
 /** Set ADO credentials. */
-export function setADOCredentials(orgUrl: string, project: string, pat: string, path?: string): void {
+export function setADOCredentials(
+  orgUrl: string,
+  project: string,
+  pat: string,
+  path?: string,
+): void {
   const creds = loadCredentials(path);
   creds.ado = { org_url: orgUrl, project, pat };
   saveCredentials(creds, path);

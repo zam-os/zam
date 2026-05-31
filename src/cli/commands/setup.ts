@@ -8,10 +8,10 @@
  */
 
 import { Command } from "commander";
+import { copyFileSync, existsSync, mkdirSync, writeFileSync } from "fs";
+import { basename, dirname, join } from "path";
 import { fileURLToPath } from "url";
-import { existsSync, mkdirSync, copyFileSync, writeFileSync } from "fs";
-import { join, dirname, basename } from "path";
-import { openDatabaseWithSync, getDefaultDbPath } from "../../kernel/index.js";
+import { getDefaultDbPath, openDatabaseWithSync } from "../../kernel/index.js";
 
 // The compiled CLI lives at dist/cli/index.js inside the package.
 // Two levels up from there is the package root (dist/ â†’ package root).

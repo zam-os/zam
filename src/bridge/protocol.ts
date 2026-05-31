@@ -192,7 +192,7 @@ export interface AddTokenRequest {
   symbiosisMode?: "shadowing" | "copilot" | "autonomy";
   source_link?: string | null; // file path / reference URL; stdin payload is snake_case
   prerequisites?: string[]; // slugs of prerequisite tokens
-  userId?: string;          // if provided, ensures a card is created
+  userId?: string; // if provided, ensures a card is created
 }
 
 export interface AddTokenResponse {
