@@ -57,7 +57,7 @@ ${input.sourceLinkContent ? `Source Reference:\n${input.sourceLinkContent}` : ""
 Active-Recall Question:`;
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 12000); // 12 seconds timeout (generous for local models)
+  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds timeout (generous for local models)
 
   try {
     const res = await fetch(`${url}/chat/completions`, {
@@ -151,11 +151,8 @@ ${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}`
 
 Evaluation:`;
 
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 12000); // 12 seconds timeout
-
   try {
-    const res = await fetch(`${url}/chat/completions`, {
+    const res = await fetchWithInteractiveTimeout(`${url}/chat/completions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -170,10 +167,7 @@ Evaluation:`;
         temperature: 0.2,
         max_tokens: 300,
       }),
-      signal: controller.signal,
     });
-
-    clearTimeout(timeoutId);
 
     if (!res.ok) {
       const errorText = await res.text().catch(() => "");
@@ -188,7 +182,6 @@ Evaluation:`;
 
     return content.trim();
   } catch (err) {
-    clearTimeout(timeoutId);
     throw err;
   }
 }
@@ -212,11 +205,8 @@ export async function translateQuestionViaLLM(
   const systemPrompt = `You are a highly precise translator. Translate the given English active-recall question into clear, natural German.
 Output ONLY the raw translation. Do not include any headers, preamble, quotes, or conversational filler.`;
 
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 seconds timeout
-
   try {
-    const res = await fetch(`${url}/chat/completions`, {
+    const res = await fetchWithInteractiveTimeout(`${url}/chat/completions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -231,10 +221,7 @@ Output ONLY the raw translation. Do not include any headers, preamble, quotes, o
         temperature: 0.1,
         max_tokens: 150,
       }),
-      signal: controller.signal,
     });
-
-    clearTimeout(timeoutId);
 
     if (!res.ok) {
       throw new Error(`Translation failed: ${res.statusText}`);
@@ -248,7 +235,6 @@ Output ONLY the raw translation. Do not include any headers, preamble, quotes, o
 
     return content.trim();
   } catch (err) {
-    clearTimeout(timeoutId);
     throw err;
   }
 }
@@ -414,6 +400,79 @@ export async function ensureLocalLlmRunning(db: Database): Promise<void> {
       
       console.log("Continuing to wait for model loading...");
       attempts = 0; // reset counter
+    }
+  }
+}
+
+/**
+ * Wraps a fetch call in an interactive wait loop with progress dots.
+ * Every 20 seconds, prompts the user to either keep waiting or skip.
+ */
+export async function fetchWithInteractiveTimeout(
+  url: string,
+  options: RequestInit,
+  timeoutMs = 20000
+): Promise<Response> {
+  const controller = new AbortController();
+  const fetchPromise = fetch(url, { ...options, signal: controller.signal });
+  
+  let attempts = 0;
+  const dotsPerLine = 30; // 15 seconds per line of dots
+  
+  while (true) {
+    let timeoutId: NodeJS.Timeout;
+    const timeoutPromise = new Promise<"timeout">((resolve) => {
+      timeoutId = setTimeout(() => resolve("timeout"), timeoutMs);
+    });
+    
+    let dotsInterval = setInterval(() => {
+      process.stdout.write(".");
+      attempts++;
+      if (attempts % dotsPerLine === 0) {
+        process.stdout.write("\n");
+      }
+    }, 500);
+    
+    try {
+      const result = await Promise.race([fetchPromise, timeoutPromise]);
+      
+      clearInterval(dotsInterval);
+      clearTimeout(timeoutId!);
+      
+      if (result !== "timeout") {
+        if (attempts > 0) {
+          process.stdout.write("\n");
+        }
+        return result;
+      }
+      
+      // Timeout hit. Prompt user.
+      process.stdout.write("\n");
+      console.log("\n\x1b[33m⚠ Die LLM-Generierung dauert ungewöhnlich lange...\x1b[0m");
+      console.log("\x1b[2m(Das lokale NPU-Modell arbeitet noch an der Antwort.)\x1b[0m");
+      
+      const { confirm } = await import("@inquirer/prompts");
+      const keepWaiting = await confirm({
+        message: "Möchtest du weiter auf die Bewertung warten?",
+        default: true,
+      }).catch(() => false);
+      
+      if (!keepWaiting) {
+        controller.abort();
+        console.log("\x1b[33m⚠ LLM-Verbindung abgebrochen. Fahre offline fort.\x1b[0m\n");
+        throw new Error("User cancelled waiting for slow LLM response");
+      }
+      
+      console.log("Warte weiter auf die Generierung...");
+      attempts = 0;
+      
+    } catch (err) {
+      clearInterval(dotsInterval);
+      clearTimeout(timeoutId!);
+      if (attempts > 0) {
+        process.stdout.write("\n");
+      }
+      throw err;
     }
   }
 }
