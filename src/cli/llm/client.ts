@@ -311,16 +311,14 @@ export interface LlmReadiness {
   reason?: "disabled" | "offline" | "model-not-found";
 }
 
-/**
- * Detect the configured runner and start it, then poll until the server is
- * online (or the user opts out). Returns true once reachable, false otherwise.
- */
-async function startLocalRunner(
+type RunnerKind = "fastflowlm" | "ollama" | "generic" | "unknown";
+
+/** Pick the local runner from the URL port / model name (shared heuristic). */
+function detectRunner(
   url: string,
   model: string,
-  locale: SupportedLocale,
-): Promise<boolean> {
-  let runner: "fastflowlm" | "ollama" | "generic" | "unknown" = "unknown";
+): { runner: RunnerKind; port: string } {
+  let runner: RunnerKind = "unknown";
   let port = "8000";
   try {
     const urlObj = new URL(url);
@@ -338,6 +336,44 @@ async function startLocalRunner(
   } catch {
     runner = getSystemProfile().recommendedRunner;
   }
+  return { runner, port };
+}
+
+/**
+ * Best-effort, SILENT runner start for non-interactive contexts (bridge / GUI).
+ * No console output, no prompts — just spawn the detached server if we can.
+ */
+function spawnLocalRunner(url: string, model: string): void {
+  const { runner, port } = detectRunner(url, model);
+  try {
+    if (runner === "fastflowlm") {
+      const flmExe = existsSync("C:\\Program Files\\flm\\flm.exe")
+        ? "C:\\Program Files\\flm\\flm.exe"
+        : "flm";
+      if (!hasCommand("flm") && flmExe === "flm") return;
+      spawn(flmExe, ["serve", model, "--port", port], {
+        detached: true,
+        stdio: "ignore",
+      }).unref();
+    } else if (runner === "ollama" || runner === "generic") {
+      if (!hasCommand("ollama")) return;
+      spawn("ollama", ["serve"], { detached: true, stdio: "ignore" }).unref();
+    }
+  } catch {
+    // best-effort: caller polls for the server and reports offline if it fails
+  }
+}
+
+/**
+ * Detect the configured runner and start it, then poll until the server is
+ * online (or the user opts out). Returns true once reachable, false otherwise.
+ */
+async function startLocalRunner(
+  url: string,
+  model: string,
+  locale: SupportedLocale,
+): Promise<boolean> {
+  const { runner, port } = detectRunner(url, model);
 
   if (runner === "fastflowlm") {
     const flmExe = existsSync("C:\\Program Files\\flm\\flm.exe")
@@ -480,6 +516,76 @@ export async function ensureLocalLlmRunning(
   }
 
   return { usable: true };
+}
+
+/** Readiness plus the live status details a UI needs to render. */
+export interface LlmReadyResult extends LlmReadiness {
+  online: boolean;
+  model: string;
+  availableModels: string[];
+}
+
+/**
+ * Non-interactive readiness check for the bridge / desktop GUI: start the local
+ * runner if needed, wait (bounded) for it to come online, validate the model —
+ * all WITHOUT console output or prompts, so the bridge's JSON stays clean.
+ */
+export async function ensureLlmReadyHeadless(
+  db: Database,
+  opts: { timeoutMs?: number } = {},
+): Promise<LlmReadyResult> {
+  const timeoutMs = opts.timeoutMs ?? 25000;
+  const { enabled, url, model, apiKey } = getLlmConfig(db);
+  if (!enabled) {
+    return {
+      usable: false,
+      reason: "disabled",
+      online: false,
+      model,
+      availableModels: [],
+    };
+  }
+
+  const isLocal = url.includes("localhost") || url.includes("127.0.0.1");
+
+  let online = await isLlmOnline(url);
+  if (!online && isLocal) {
+    spawnLocalRunner(url, model);
+    const deadline = Date.now() + timeoutMs;
+    while (Date.now() < deadline) {
+      await new Promise((r) => setTimeout(r, 1000));
+      if (await isLlmOnline(url)) {
+        online = true;
+        break;
+      }
+    }
+  }
+
+  if (!online) {
+    return {
+      usable: false,
+      reason: "offline",
+      online: false,
+      model,
+      availableModels: [],
+    };
+  }
+
+  const availableModels = await getAvailableModels(url, apiKey);
+  const modelKnown =
+    availableModels.length === 0 ||
+    availableModels.some((m) => m.toLowerCase() === model.toLowerCase());
+  if (!modelKnown) {
+    return {
+      usable: false,
+      reason: "model-not-found",
+      online: true,
+      model,
+      availableModels,
+    };
+  }
+
+  return { usable: true, online: true, model, availableModels };
 }
 
 /**
