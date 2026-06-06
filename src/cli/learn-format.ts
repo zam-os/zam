@@ -58,7 +58,7 @@ export function formatReveal(input: RevealInput): string {
   }
 
   const resolved = input.resolved;
-  if (resolved && resolved.content.trim()) {
+  if (resolved?.content.trim()) {
     lines.push("");
     if (resolved.sourceType === "dynamic_search") {
       // content is a QUERY_DIRECTIVE — there is nothing to quote inline

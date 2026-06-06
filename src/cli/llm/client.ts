@@ -183,7 +183,8 @@ export async function evaluateAnswerViaLLM(
     throw new Error("LLM integration is disabled in settings (llm.enabled)");
   }
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
-  const ratingPrefix = LOCALIZED_RATING_PREFIX[cfg.locale] || "Suggested rating";
+  const ratingPrefix =
+    LOCALIZED_RATING_PREFIX[cfg.locale] || "Suggested rating";
 
   const systemPrompt = `You are ZAM, an extremely warm, encouraging, and patient skills trainer.
 Your mission is to build lasting autonomy through conceptual knowledge, not rote procedure.

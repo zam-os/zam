@@ -56,7 +56,7 @@ export const statsCommand = new Command("stats")
         console.log(
           "  Domain           Cards  Mature  Stability  Retention  Suggested Mode",
         );
-        console.log("  " + "─".repeat(74));
+        console.log(`  ${"─".repeat(74)}`);
         for (const d of domains) {
           console.log(
             `  ${d.domain.padEnd(17)} ${String(d.totalCards).padEnd(6)} ${String(d.matureCards).padEnd(7)} ${String(d.avgStability).padEnd(10)} ${(d.retentionRate * 100).toFixed(1).padStart(5)}%     ${d.suggestedMode}`,

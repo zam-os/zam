@@ -10,12 +10,7 @@ import { join } from "node:path";
 import { Command } from "commander";
 import type { Database } from "libsql";
 import type { Token } from "../../kernel/index.js";
-import {
-  getCard,
-  matchesFilePath,
-  openDatabase,
-  updateCard,
-} from "../../kernel/index.js";
+import { getCard, matchesFilePath, openDatabase } from "../../kernel/index.js";
 import { resolveUser } from "./resolve-user.js";
 
 function withDb(fn: (db: Database) => void): void {
@@ -56,7 +51,7 @@ zam git-sync --commit HEAD --quiet
     writeFileSync(hookPath, hookContent, { encoding: "utf-8", flag: "w" });
     try {
       chmodSync(hookPath, "755");
-    } catch (e) {
+    } catch (_e) {
       // Best-effort chmod (Windows might ignore/fail, which is fine)
     }
     console.log(
@@ -96,7 +91,7 @@ export const gitSyncCommand = new Command("git-sync")
           .split(/\r?\n/)
           .map((f) => f.trim())
           .filter(Boolean);
-      } catch (err) {
+      } catch (_err) {
         if (!opts.quiet) {
           console.warn(
             "Notice: Failed to read git modifications. Ensure you are in a Git repo and commit hash is valid.",

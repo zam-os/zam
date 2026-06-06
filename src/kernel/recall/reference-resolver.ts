@@ -141,7 +141,7 @@ export async function resolveReference(
             content: fileContent,
             filePath: localFilePath,
           };
-        } catch (e) {
+        } catch (_e) {
           // Fallback to fetch if file read fails
         }
       }
@@ -161,7 +161,7 @@ export async function resolveReference(
             url: cleaned,
           };
         }
-      } catch (e) {
+      } catch (_e) {
         // Fallback to generic URL loading
       }
     }
@@ -206,7 +206,7 @@ export async function resolveReference(
         content: fileContent,
         filePath: absolutePath,
       };
-    } catch (e) {
+    } catch (_e) {
       // Fallback
     }
   }

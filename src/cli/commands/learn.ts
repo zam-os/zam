@@ -29,7 +29,6 @@ import {
   ensureHighQualityQuestion,
   ensureLocalLlmRunning,
   evaluateAnswerViaLLM,
-  translateQuestionViaLLM,
 } from "../llm/client.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
 import { resolveUser } from "./resolve-user.js";

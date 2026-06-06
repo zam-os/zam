@@ -81,7 +81,7 @@ export async function runInteractiveReviewAction(
         4: "Easy",
       };
       console.log(
-        `  ${ratingLabels[choice]} — next due: ${result.evaluation!.nextDueAt}`,
+        `  ${ratingLabels[choice]} — next due: ${result.evaluation?.nextDueAt}`,
       );
 
       if (result.blocked) {

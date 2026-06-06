@@ -29,8 +29,6 @@ import {
   getCardDeletionImpact,
   getDueCards,
   getSetting,
-  getTokenById,
-  getTokenBySlug,
   getTokenDeleteImpact,
   listAgentSkills,
   monitorLogExists,
@@ -424,11 +422,11 @@ bridgeCommand
       }
 
       jsonOut({
-        slug: skill!.slug,
-        description: skill!.description,
-        steps: skill!.steps,
-        tokenSlugs: skill!.token_slugs,
-        source: skill!.source,
+        slug: skill?.slug,
+        description: skill?.description,
+        steps: skill?.steps,
+        tokenSlugs: skill?.token_slugs,
+        source: skill?.source,
       });
     });
   });
@@ -519,13 +517,13 @@ bridgeCommand
         jsonError("Invalid JSON input");
       }
 
-      if (!Array.isArray(data!.patterns)) {
+      if (!Array.isArray(data?.patterns)) {
         jsonError("JSON must include 'patterns' array");
       }
 
       const events = readMonitorLog(opts.session);
       const commands = pairCommands(events);
-      const result = analyzeObservation(commands, data!.patterns);
+      const result = analyzeObservation(commands, data?.patterns);
 
       jsonOut({
         sessionId: opts.session,
@@ -572,7 +570,7 @@ bridgeCommand
         jsonError("Invalid JSON input");
       }
 
-      if (!data!.slug || !data!.concept) {
+      if (!data?.slug || !data?.concept) {
         jsonError("JSON must include 'slug' and 'concept' fields");
       }
 
@@ -580,18 +578,18 @@ bridgeCommand
       const userId = resolveUser(opts, db, { json: true });
 
       const token = createToken(db, {
-        slug: data!.slug,
-        concept: data!.concept,
-        domain: data!.domain,
-        bloom_level: (data!.bloom_level ?? 1) as BloomLevel,
-        context: data!.context,
-        symbiosis_mode: data!.symbiosis_mode as
+        slug: data?.slug,
+        concept: data?.concept,
+        domain: data?.domain,
+        bloom_level: (data?.bloom_level ?? 1) as BloomLevel,
+        context: data?.context,
+        symbiosis_mode: data?.symbiosis_mode as
           | "shadowing"
           | "copilot"
           | "autonomy"
           | null
           | undefined,
-        source_link: data!.source_link ?? null,
+        source_link: data?.source_link ?? null,
       });
 
       const card = ensureCard(db, token.id, userId);

@@ -16,7 +16,6 @@ import {
   fetchActiveWorkItems,
   generatePrompt,
   getSessionSummary,
-  getSetting,
   getTokenBySlug,
   loadADOConfig,
   logStep,
@@ -329,7 +328,7 @@ sessionCommand
       if (summary.steps.length > 0) {
         console.log("\nSteps:");
         console.log("  Token                 Done by  Rating  Concept");
-        console.log("  " + "─".repeat(70));
+        console.log(`  ${"─".repeat(70)}`);
         for (const s of summary.steps) {
           console.log(
             `  ${s.slug.padEnd(21)} ${s.done_by.padEnd(8)} ${String(s.rating ?? "-").padEnd(7)} ${s.concept.slice(0, 30)}`,

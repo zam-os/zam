@@ -9,7 +9,7 @@
 import { execSync } from "node:child_process";
 import { existsSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { confirm, input, select } from "@inquirer/prompts";
+import { confirm, input } from "@inquirer/prompts";
 import { Command } from "commander";
 import { getSetting, hasCommand, openDatabase } from "../../kernel/index.js";
 

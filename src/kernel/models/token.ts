@@ -338,7 +338,7 @@ export function findTokens(db: Database, query: string): ScoredToken[] {
   const scored: ScoredToken[] = [];
 
   for (const t of tokens) {
-    const words = (t.slug + " " + t.concept + " " + t.domain)
+    const words = `${t.slug} ${t.concept} ${t.domain}`
       .toLowerCase()
       .split(/[\s,.\-_/\\:;!?()[\]{}]+/)
       .filter(Boolean);

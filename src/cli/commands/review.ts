@@ -4,7 +4,7 @@
 
 import { Command } from "commander";
 import type { Database } from "libsql";
-import type { BloomLevel, Rating } from "../../kernel/index.js";
+import type { BloomLevel } from "../../kernel/index.js";
 import {
   buildReviewQueue,
   generatePrompt,
@@ -45,7 +45,7 @@ export const reviewCommand = new Command("review")
       console.log(`  Domains: ${queue.totalDomains.join(", ")}`);
       console.log();
 
-      const completed = 0;
+      const _completed = 0;
       let stoppedEarly = false;
       let maintenanceActions = 0;
       const results: Array<{
@@ -110,7 +110,7 @@ export const reviewCommand = new Command("review")
           results.push({
             slug: item.slug,
             rating: action.rating!,
-            nextDue: action.result.evaluation!.nextDueAt,
+            nextDue: action.result.evaluation?.nextDueAt,
           });
         } else if (action.action !== "skip") {
           maintenanceActions++;
@@ -118,7 +118,7 @@ export const reviewCommand = new Command("review")
       }
 
       // Session summary
-      console.log("\n" + "═".repeat(50));
+      console.log(`\n${"═".repeat(50)}`);
       console.log(
         stoppedEarly ? "Review session ended." : "Review session complete!",
       );

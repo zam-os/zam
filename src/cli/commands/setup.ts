@@ -7,10 +7,10 @@
  * upgrading zam (with --force) to refresh the skill files.
  */
 
+import { copyFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { basename, dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { Command } from "commander";
-import { copyFileSync, existsSync, mkdirSync, writeFileSync } from "fs";
-import { basename, dirname, join } from "path";
-import { fileURLToPath } from "url";
 import { getDefaultDbPath, openDatabaseWithSync } from "../../kernel/index.js";
 
 // The compiled CLI lives at dist/cli/index.js inside the package.

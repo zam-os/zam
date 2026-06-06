@@ -4,7 +4,6 @@ import {
   existsSync,
   mkdirSync,
   readFileSync,
-  writeFileSync,
 } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -57,7 +56,7 @@ export function distributeGlobalSkills(): Array<{
       path: join(claudeSkillsDir, "SKILL.md"),
       success: true,
     });
-  } catch (err) {
+  } catch (_err) {
     results.push({
       name: "Claude Code Global",
       path: claudeSkillsDir,
@@ -75,7 +74,7 @@ export function distributeGlobalSkills(): Array<{
       path: join(geminiSkillsDir, "SKILL.md"),
       success: true,
     });
-  } catch (err) {
+  } catch (_err) {
     results.push({
       name: "Gemini CLI Global",
       path: geminiSkillsDir,
@@ -93,7 +92,7 @@ export function distributeGlobalSkills(): Array<{
       path: join(gooseSkillsDir, "SKILL.md"),
       success: true,
     });
-  } catch (err) {
+  } catch (_err) {
     results.push({
       name: "Goose Global",
       path: gooseSkillsDir,

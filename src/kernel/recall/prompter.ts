@@ -62,7 +62,7 @@ export interface PromptInput {
 export function generateConceptFreeCue(
   bloomLevel: BloomLevel,
   slug: string,
-  domain: string,
+  _domain: string,
 ): string {
   const bloom = (
     bloomLevel >= 1 && bloomLevel <= 5 ? bloomLevel : 1
