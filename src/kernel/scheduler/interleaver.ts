@@ -66,7 +66,10 @@ export function interleave<T extends { domain: string }>(
   while (result.length < items.length) {
     // Get domains that still have items, sorted by remaining count descending
     const activeDomains = [...byDomain.entries()]
-      .filter(([domain]) => (cursors.get(domain) ?? 0) < (byDomain.get(domain)?.length ?? 0))
+      .filter(
+        ([domain]) =>
+          (cursors.get(domain) ?? 0) < (byDomain.get(domain)?.length ?? 0),
+      )
       .sort((a, b) => {
         const remainA = a[1].length - (cursors.get(a[0]) ?? 0);
         const remainB = b[1].length - (cursors.get(b[0]) ?? 0);
