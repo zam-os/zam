@@ -232,3 +232,10 @@ export { detectSystemLocale, normalizeLocale } from "./system/locale.js";
 export type { SystemProfile } from "./system/profiler.js";
 // System Profiling & Onboarding
 export { getSystemProfile } from "./system/profiler.js";
+export type { RepoPaths } from "./system/repos.js";
+export {
+  getRepoPaths,
+  resolveAllBeliefPaths,
+  resolveAllGoalPaths,
+  resolveRepoPath,
+} from "./system/repos.js";

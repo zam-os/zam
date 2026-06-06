@@ -2,25 +2,35 @@
  * Tests for observation/analyzer.ts — pure-function monitor log analysis.
  */
 
-import { describe, it, expect } from "vitest";
-import {
-  parseMonitorLog,
-  pairCommands,
-  analyzeObservation,
-} from "../../../src/kernel/observation/analyzer.js";
+import { describe, expect, it } from "vitest";
 import type {
-  MonitorEvent,
   CommandRecord,
+  MonitorEvent,
   TokenPattern,
+} from "../../../src/kernel/observation/analyzer.js";
+import {
+  analyzeObservation,
+  pairCommands,
+  parseMonitorLog,
 } from "../../../src/kernel/observation/analyzer.js";
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 
-function makeStart(seq: number, command: string, ts: string, pid = 1000): MonitorEvent {
+function makeStart(
+  seq: number,
+  command: string,
+  ts: string,
+  pid = 1000,
+): MonitorEvent {
   return { type: "command_start", ts, command, cwd: "/home/user", seq, pid };
 }
 
-function makeEnd(seq: number, exitCode: number, ts: string, pid = 1000): MonitorEvent {
+function makeEnd(
+  seq: number,
+  exitCode: number,
+  ts: string,
+  pid = 1000,
+): MonitorEvent {
   return { type: "command_end", ts, exit_code: exitCode, seq, pid };
 }
 
@@ -36,9 +46,27 @@ function ts(minuteOffset: number, secondOffset = 0): string {
 describe("parseMonitorLog", () => {
   it("parses valid JSONL", () => {
     const jsonl = [
-      JSON.stringify({ type: "monitor_meta", ts: ts(0), event: "start", session_id: "s1" }),
-      JSON.stringify({ type: "command_start", ts: ts(0, 5), command: "ls", cwd: "/", seq: 1, pid: 100 }),
-      JSON.stringify({ type: "command_end", ts: ts(0, 6), exit_code: 0, seq: 1, pid: 100 }),
+      JSON.stringify({
+        type: "monitor_meta",
+        ts: ts(0),
+        event: "start",
+        session_id: "s1",
+      }),
+      JSON.stringify({
+        type: "command_start",
+        ts: ts(0, 5),
+        command: "ls",
+        cwd: "/",
+        seq: 1,
+        pid: 100,
+      }),
+      JSON.stringify({
+        type: "command_end",
+        ts: ts(0, 6),
+        exit_code: 0,
+        seq: 1,
+        pid: 100,
+      }),
     ].join("\n");
 
     const events = parseMonitorLog(jsonl);
@@ -84,9 +112,7 @@ describe("pairCommands", () => {
   });
 
   it("handles unpaired start events", () => {
-    const events: MonitorEvent[] = [
-      makeStart(1, "long-running-cmd", ts(0)),
-    ];
+    const events: MonitorEvent[] = [makeStart(1, "long-running-cmd", ts(0))];
 
     const records = pairCommands(events);
     expect(records).toHaveLength(1);
@@ -147,7 +173,16 @@ describe("analyzeObservation", () => {
 
   it("returns null rating when no commands match", () => {
     const commands: CommandRecord[] = [
-      { seq: 1, pid: 1, command: "ls", cwd: "/", startedAt: ts(0), endedAt: ts(0, 1), durationMs: 1000, exitCode: 0 },
+      {
+        seq: 1,
+        pid: 1,
+        command: "ls",
+        cwd: "/",
+        startedAt: ts(0),
+        endedAt: ts(0, 1),
+        durationMs: 1000,
+        exitCode: 0,
+      },
     ];
 
     const result = analyzeObservation(commands, dockerPatterns);
@@ -159,12 +194,42 @@ describe("analyzeObservation", () => {
   it("rates 4 for clean, fast execution with no errors", () => {
     // Each command needs a unique 2-word prefix to avoid self-correction signal
     const widePatterns: TokenPattern[] = [
-      { slug: "docker-build", patterns: ["docker build", "docker image build", "docker buildx build"] },
+      {
+        slug: "docker-build",
+        patterns: ["docker build", "docker image build", "docker buildx build"],
+      },
     ];
     const commands: CommandRecord[] = [
-      { seq: 1, pid: 1, command: "docker build -t app .", cwd: "/project", startedAt: ts(0), endedAt: ts(0, 5), durationMs: 5000, exitCode: 0 },
-      { seq: 2, pid: 1, command: "docker image build -t app:v2 .", cwd: "/project", startedAt: ts(0, 8), endedAt: ts(0, 12), durationMs: 4000, exitCode: 0 },
-      { seq: 3, pid: 1, command: "docker buildx build --no-cache .", cwd: "/project", startedAt: ts(0, 15), endedAt: ts(0, 25), durationMs: 10000, exitCode: 0 },
+      {
+        seq: 1,
+        pid: 1,
+        command: "docker build -t app .",
+        cwd: "/project",
+        startedAt: ts(0),
+        endedAt: ts(0, 5),
+        durationMs: 5000,
+        exitCode: 0,
+      },
+      {
+        seq: 2,
+        pid: 1,
+        command: "docker image build -t app:v2 .",
+        cwd: "/project",
+        startedAt: ts(0, 8),
+        endedAt: ts(0, 12),
+        durationMs: 4000,
+        exitCode: 0,
+      },
+      {
+        seq: 3,
+        pid: 1,
+        command: "docker buildx build --no-cache .",
+        cwd: "/project",
+        startedAt: ts(0, 15),
+        endedAt: ts(0, 25),
+        durationMs: 10000,
+        exitCode: 0,
+      },
     ];
 
     const result = analyzeObservation(commands, widePatterns);
@@ -177,8 +242,26 @@ describe("analyzeObservation", () => {
 
   it("rates lower when help-seeking detected", () => {
     const commands: CommandRecord[] = [
-      { seq: 1, pid: 1, command: "docker build --help", cwd: "/", startedAt: ts(0), endedAt: ts(0, 1), durationMs: 1000, exitCode: 0 },
-      { seq: 2, pid: 1, command: "docker build -t app .", cwd: "/project", startedAt: ts(0, 15), endedAt: ts(0, 20), durationMs: 5000, exitCode: 0 },
+      {
+        seq: 1,
+        pid: 1,
+        command: "docker build --help",
+        cwd: "/",
+        startedAt: ts(0),
+        endedAt: ts(0, 1),
+        durationMs: 1000,
+        exitCode: 0,
+      },
+      {
+        seq: 2,
+        pid: 1,
+        command: "docker build -t app .",
+        cwd: "/project",
+        startedAt: ts(0, 15),
+        endedAt: ts(0, 20),
+        durationMs: 5000,
+        exitCode: 0,
+      },
     ];
 
     const result = analyzeObservation(commands, dockerPatterns);
@@ -188,9 +271,36 @@ describe("analyzeObservation", () => {
 
   it("rates lower with errors", () => {
     const commands: CommandRecord[] = [
-      { seq: 1, pid: 1, command: "docker build .", cwd: "/project", startedAt: ts(0), endedAt: ts(0, 2), durationMs: 2000, exitCode: 1 },
-      { seq: 2, pid: 1, command: "docker build -f Dockerfile .", cwd: "/project", startedAt: ts(0, 10), endedAt: ts(0, 12), durationMs: 2000, exitCode: 1 },
-      { seq: 3, pid: 1, command: "docker build -f Dockerfile.dev .", cwd: "/project", startedAt: ts(0, 20), endedAt: ts(0, 25), durationMs: 5000, exitCode: 0 },
+      {
+        seq: 1,
+        pid: 1,
+        command: "docker build .",
+        cwd: "/project",
+        startedAt: ts(0),
+        endedAt: ts(0, 2),
+        durationMs: 2000,
+        exitCode: 1,
+      },
+      {
+        seq: 2,
+        pid: 1,
+        command: "docker build -f Dockerfile .",
+        cwd: "/project",
+        startedAt: ts(0, 10),
+        endedAt: ts(0, 12),
+        durationMs: 2000,
+        exitCode: 1,
+      },
+      {
+        seq: 3,
+        pid: 1,
+        command: "docker build -f Dockerfile.dev .",
+        cwd: "/project",
+        startedAt: ts(0, 20),
+        endedAt: ts(0, 25),
+        durationMs: 5000,
+        exitCode: 0,
+      },
     ];
 
     const result = analyzeObservation(commands, dockerPatterns);
@@ -200,11 +310,56 @@ describe("analyzeObservation", () => {
 
   it("rates 1 for extensive errors + help-seeking + slow", () => {
     const commands: CommandRecord[] = [
-      { seq: 1, pid: 1, command: "man docker", cwd: "/", startedAt: ts(0), endedAt: ts(0, 30), durationMs: 30000, exitCode: 0 },
-      { seq: 2, pid: 1, command: "docker build .", cwd: "/project", startedAt: ts(0, 45), endedAt: ts(0, 50), durationMs: 5000, exitCode: 1 },
-      { seq: 3, pid: 1, command: "docker build --help", cwd: "/", startedAt: ts(1), endedAt: ts(1, 2), durationMs: 2000, exitCode: 0 },
-      { seq: 4, pid: 1, command: "docker build -t x .", cwd: "/project", startedAt: ts(2), endedAt: ts(2, 3), durationMs: 3000, exitCode: 1 },
-      { seq: 5, pid: 1, command: "docker build -t x .", cwd: "/project", startedAt: ts(3), endedAt: ts(3, 5), durationMs: 5000, exitCode: 1 },
+      {
+        seq: 1,
+        pid: 1,
+        command: "man docker",
+        cwd: "/",
+        startedAt: ts(0),
+        endedAt: ts(0, 30),
+        durationMs: 30000,
+        exitCode: 0,
+      },
+      {
+        seq: 2,
+        pid: 1,
+        command: "docker build .",
+        cwd: "/project",
+        startedAt: ts(0, 45),
+        endedAt: ts(0, 50),
+        durationMs: 5000,
+        exitCode: 1,
+      },
+      {
+        seq: 3,
+        pid: 1,
+        command: "docker build --help",
+        cwd: "/",
+        startedAt: ts(1),
+        endedAt: ts(1, 2),
+        durationMs: 2000,
+        exitCode: 0,
+      },
+      {
+        seq: 4,
+        pid: 1,
+        command: "docker build -t x .",
+        cwd: "/project",
+        startedAt: ts(2),
+        endedAt: ts(2, 3),
+        durationMs: 3000,
+        exitCode: 1,
+      },
+      {
+        seq: 5,
+        pid: 1,
+        command: "docker build -t x .",
+        cwd: "/project",
+        startedAt: ts(3),
+        endedAt: ts(3, 5),
+        durationMs: 5000,
+        exitCode: 1,
+      },
     ];
 
     const result = analyzeObservation(commands, dockerPatterns);
@@ -215,9 +370,36 @@ describe("analyzeObservation", () => {
 
   it("tracks unmatched commands", () => {
     const commands: CommandRecord[] = [
-      { seq: 1, pid: 1, command: "cd /project", cwd: "/", startedAt: ts(0), endedAt: ts(0, 1), durationMs: 1000, exitCode: 0 },
-      { seq: 2, pid: 1, command: "docker build .", cwd: "/project", startedAt: ts(0, 2), endedAt: ts(0, 5), durationMs: 3000, exitCode: 0 },
-      { seq: 3, pid: 1, command: "git status", cwd: "/project", startedAt: ts(0, 6), endedAt: ts(0, 7), durationMs: 1000, exitCode: 0 },
+      {
+        seq: 1,
+        pid: 1,
+        command: "cd /project",
+        cwd: "/",
+        startedAt: ts(0),
+        endedAt: ts(0, 1),
+        durationMs: 1000,
+        exitCode: 0,
+      },
+      {
+        seq: 2,
+        pid: 1,
+        command: "docker build .",
+        cwd: "/project",
+        startedAt: ts(0, 2),
+        endedAt: ts(0, 5),
+        durationMs: 3000,
+        exitCode: 0,
+      },
+      {
+        seq: 3,
+        pid: 1,
+        command: "git status",
+        cwd: "/project",
+        startedAt: ts(0, 6),
+        endedAt: ts(0, 7),
+        durationMs: 1000,
+        exitCode: 0,
+      },
     ];
 
     const result = analyzeObservation(commands, dockerPatterns);
@@ -228,8 +410,26 @@ describe("analyzeObservation", () => {
 
   it("computes time span", () => {
     const commands: CommandRecord[] = [
-      { seq: 1, pid: 1, command: "docker build .", cwd: "/", startedAt: ts(0), endedAt: ts(0, 30), durationMs: 30000, exitCode: 0 },
-      { seq: 2, pid: 1, command: "docker build -t app .", cwd: "/", startedAt: ts(1), endedAt: ts(2), durationMs: 60000, exitCode: 0 },
+      {
+        seq: 1,
+        pid: 1,
+        command: "docker build .",
+        cwd: "/",
+        startedAt: ts(0),
+        endedAt: ts(0, 30),
+        durationMs: 30000,
+        exitCode: 0,
+      },
+      {
+        seq: 2,
+        pid: 1,
+        command: "docker build -t app .",
+        cwd: "/",
+        startedAt: ts(1),
+        endedAt: ts(2),
+        durationMs: 60000,
+        exitCode: 0,
+      },
     ];
 
     const result = analyzeObservation(commands, dockerPatterns);
@@ -244,8 +444,26 @@ describe("analyzeObservation", () => {
     ];
 
     const commands: CommandRecord[] = [
-      { seq: 1, pid: 1, command: "docker build .", cwd: "/", startedAt: ts(0), endedAt: ts(0, 5), durationMs: 5000, exitCode: 0 },
-      { seq: 2, pid: 1, command: "git commit -m 'init'", cwd: "/", startedAt: ts(0, 10), endedAt: ts(0, 11), durationMs: 1000, exitCode: 0 },
+      {
+        seq: 1,
+        pid: 1,
+        command: "docker build .",
+        cwd: "/",
+        startedAt: ts(0),
+        endedAt: ts(0, 5),
+        durationMs: 5000,
+        exitCode: 0,
+      },
+      {
+        seq: 2,
+        pid: 1,
+        command: "git commit -m 'init'",
+        cwd: "/",
+        startedAt: ts(0, 10),
+        endedAt: ts(0, 11),
+        durationMs: 1000,
+        exitCode: 0,
+      },
     ];
 
     const result = analyzeObservation(commands, patterns);
@@ -256,12 +474,32 @@ describe("analyzeObservation", () => {
 
   it("detects self-corrections (same prefix, different args)", () => {
     const commands: CommandRecord[] = [
-      { seq: 1, pid: 1, command: "docker build -t wrong .", cwd: "/", startedAt: ts(0), endedAt: ts(0, 5), durationMs: 5000, exitCode: 1 },
-      { seq: 2, pid: 1, command: "docker build -t correct .", cwd: "/", startedAt: ts(0, 10), endedAt: ts(0, 15), durationMs: 5000, exitCode: 0 },
+      {
+        seq: 1,
+        pid: 1,
+        command: "docker build -t wrong .",
+        cwd: "/",
+        startedAt: ts(0),
+        endedAt: ts(0, 5),
+        durationMs: 5000,
+        exitCode: 1,
+      },
+      {
+        seq: 2,
+        pid: 1,
+        command: "docker build -t correct .",
+        cwd: "/",
+        startedAt: ts(0, 10),
+        endedAt: ts(0, 15),
+        durationMs: 5000,
+        exitCode: 0,
+      },
     ];
 
     const result = analyzeObservation(commands, dockerPatterns);
-    expect(result.ratings[0].evidence.selfCorrections).toBeGreaterThanOrEqual(1);
+    expect(result.ratings[0].evidence.selfCorrections).toBeGreaterThanOrEqual(
+      1,
+    );
   });
 
   it("returns empty results for empty command list", () => {

@@ -1,28 +1,28 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { Database } from "libsql";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import type { Database } from "libsql";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
-  openDatabase,
-  createToken,
-  updateToken,
-  getTokenBySlug,
-  getTokenDeleteImpact,
-  deleteToken,
   addPrerequisite,
-  getPrerequisites,
+  createAgentSkill,
+  createToken,
+  deleteCardForUser,
+  deleteToken,
   ensureCard,
+  executeReviewAction,
   getCard,
   getCardDeletionImpact,
-  deleteCardForUser,
+  getPrerequisites,
   getReviewsForCard,
-  startSession,
-  logStep,
   getSessionSummary,
-  createAgentSkill,
+  getTokenBySlug,
+  getTokenDeleteImpact,
   listAgentSkills,
-  executeReviewAction,
+  logStep,
+  openDatabase,
+  startSession,
+  updateToken,
 } from "../../src/kernel/index.js";
 
 describe("review maintenance primitives", () => {
@@ -40,7 +40,12 @@ describe("review maintenance primitives", () => {
   afterEach(() => {
     db.close();
     try {
-      rmSync(tempDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+      rmSync(tempDir, {
+        recursive: true,
+        force: true,
+        maxRetries: 10,
+        retryDelay: 50,
+      });
     } catch {
       // Best-effort cleanup only: Windows may hold SQLite sidecar files briefly.
     }
@@ -169,7 +174,9 @@ describe("review maintenance primitives", () => {
       rating: 4,
     });
 
-    expect(getCardDeletionImpact(db, token.id, "thomas")).toEqual({ review_logs: 1 });
+    expect(getCardDeletionImpact(db, token.id, "thomas")).toEqual({
+      review_logs: 1,
+    });
 
     const deleted = deleteCardForUser(db, token.id, "thomas");
     expect(deleted.impact).toEqual({ review_logs: 1 });
@@ -224,7 +231,9 @@ describe("review maintenance primitives", () => {
       userId: "thomas",
       tokenUpdates: { concept: "brew install --cask installs GUI macOS apps" },
     });
-    expect(edited.updatedToken?.concept).toBe("brew install --cask installs GUI macOS apps");
+    expect(edited.updatedToken?.concept).toBe(
+      "brew install --cask installs GUI macOS apps",
+    );
 
     const skipped = executeReviewAction(db, {
       action: "skip",

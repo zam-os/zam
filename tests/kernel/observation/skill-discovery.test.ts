@@ -1,6 +1,6 @@
-import { describe, it, expect } from "vitest";
-import { discoverSkills } from "../../../src/kernel/observation/skill-discovery.js";
+import { describe, expect, it } from "vitest";
 import type { CommandRecord } from "../../../src/kernel/observation/analyzer.js";
+import { discoverSkills } from "../../../src/kernel/observation/skill-discovery.js";
 
 function makeCommand(command: string, seq: number): CommandRecord {
   return {
@@ -114,8 +114,8 @@ describe("discoverSkills", () => {
     }
 
     const proposals = discoverSkills(sessions, { minSessions: 2 });
-    const addCommit = proposals.find((p) =>
-      p.steps.includes("git add") && p.steps.includes("git commit"),
+    const addCommit = proposals.find(
+      (p) => p.steps.includes("git add") && p.steps.includes("git commit"),
     );
 
     expect(addCommit).toBeDefined();

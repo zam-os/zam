@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { getSystemProfile, hasCommand, getPackageSkillPath } from "../../src/kernel/index.js";
+import {
+  getPackageSkillPath,
+  getSystemProfile,
+  hasCommand,
+} from "../../src/kernel/index.js";
 
 describe("System Profiling & Tool Detections", () => {
   describe("getSystemProfile", () => {
@@ -11,10 +15,10 @@ describe("System Profiling & Tool Detections", () => {
       expect(profile).toHaveProperty("hasAppleSilicon");
       expect(profile).toHaveProperty("recommendedRunner");
       expect(profile).toHaveProperty("recommendedModel");
-      
+
       const validOS = ["windows", "macos", "linux", "unknown"];
       expect(validOS).toContain(profile.os);
-      
+
       const validArch = ["x64", "arm64", "unknown"];
       expect(validArch).toContain(profile.arch);
 
