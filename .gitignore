@@ -61,3 +61,4 @@ scratch/
 
 # Tauri / Rust build output
 desktop/src-tauri/target/
+desktop/src-tauri/resources/zam-cli/

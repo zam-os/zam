@@ -1,4 +1,10 @@
-import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import {
+  existsSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -7,6 +13,7 @@ import {
   getPackageSkillPath,
   getSystemProfile,
   hasCommand,
+  injectShellHooks,
 } from "../../src/kernel/index.js";
 
 describe("System Profiling & Tool Detections", () => {
@@ -75,6 +82,57 @@ describe("System Profiling & Tool Detections", () => {
         expect(readFileSync(codexPath, "utf8")).toContain(
           "Codex does not expose repository skills",
         );
+      } finally {
+        rmSync(home, { recursive: true, force: true });
+      }
+    });
+  });
+
+  describe("injectShellHooks", () => {
+    it("installs explicit monitored-session helpers idempotently", () => {
+      const home = mkdtempSync(join(tmpdir(), "zam-shell-hooks-"));
+      const bashrc = join(home, ".bashrc");
+      const zshrc = join(home, ".zshrc");
+
+      try {
+        writeFileSync(bashrc, "# bash profile\n", "utf8");
+        writeFileSync(zshrc, "# zsh profile\n", "utf8");
+
+        const first = injectShellHooks(home);
+        const second = injectShellHooks(home);
+        const bashContent = readFileSync(bashrc, "utf8");
+        const zshContent = readFileSync(zshrc, "utf8");
+
+        expect(first.every((result) => result.success)).toBe(true);
+        expect(second.every((result) => result.alreadyHooked)).toBe(true);
+        expect(bashContent).toContain(
+          'monitor start --session "$session_id" --shell bash',
+        );
+        expect(zshContent).toContain(
+          'monitor start --session "$session_id" --shell zsh',
+        );
+        expect(bashContent).not.toContain("--quiet");
+      } finally {
+        rmSync(home, { recursive: true, force: true });
+      }
+    });
+
+    it("migrates the invalid automatic startup hook", () => {
+      const home = mkdtempSync(join(tmpdir(), "zam-shell-hook-migration-"));
+      const bashrc = join(home, ".bashrc");
+
+      try {
+        writeFileSync(
+          bashrc,
+          '# ZAM Shell Observation Hooks\nif (command -v zam >/dev/null 2>&1); then eval "$(zam monitor start --quiet)"; fi\n',
+          "utf8",
+        );
+
+        injectShellHooks(home);
+        const content = readFileSync(bashrc, "utf8");
+
+        expect(content).toContain("# ZAM Monitor Session Helper");
+        expect(content).not.toContain("--quiet");
       } finally {
         rmSync(home, { recursive: true, force: true });
       }

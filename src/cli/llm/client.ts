@@ -27,7 +27,7 @@ import {
 
 /** Single source of truth for connection defaults (easy to bump as models evolve). */
 export const DEFAULT_LLM_URL = "http://localhost:8000/v1";
-export const DEFAULT_LLM_MODEL = "gemma4-it:e4b";
+export const DEFAULT_LLM_MODEL = "qwen3.5:4b";
 export const DEFAULT_LLM_API_KEY = "sk-none";
 
 export interface LlmConfig {

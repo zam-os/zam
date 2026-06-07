@@ -222,11 +222,15 @@ export {
 } from "./system/hooks.js";
 export type { TranslationKey } from "./system/i18n.js";
 export { t } from "./system/i18n.js";
-export type { InstallResult } from "./system/installer.js";
+export type {
+  InstallResult,
+  LocalLLMRunner,
+} from "./system/installer.js";
 export {
   hasCommand,
   installFastFlowLM,
   installOllama,
+  prepareLocalModel,
 } from "./system/installer.js";
 export type { SupportedLocale } from "./system/locale.js";
 export { detectSystemLocale, normalizeLocale } from "./system/locale.js";

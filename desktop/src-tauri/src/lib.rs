@@ -3,17 +3,19 @@ use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
+use tauri::Manager;
 
 #[cfg(target_os = "windows")]
 use std::os::windows::process::CommandExt;
 
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
 fn cli_in(root: &Path) -> PathBuf {
     root.join("dist").join("cli").join("index.js")
+}
+
+struct BridgeRuntime {
+    node_path: PathBuf,
+    cli_path: PathBuf,
+    working_dir: PathBuf,
 }
 
 fn home_dir() -> Option<PathBuf> {
@@ -25,7 +27,7 @@ fn home_dir() -> Option<PathBuf> {
 /// Locate the compiled ZAM CLI (`dist/cli/index.js`) independently of the
 /// process working directory, so the installed GUI works when launched from
 /// the Start menu / Program Files (where the cwd is NOT the repo).
-fn resolve_cli_path() -> Option<PathBuf> {
+fn resolve_dev_cli_path() -> Option<PathBuf> {
     // 1. Explicit override.
     if let Some(home) = env::var_os("ZAM_HOME") {
         let p = cli_in(&PathBuf::from(home));
@@ -60,20 +62,79 @@ fn resolve_cli_path() -> Option<PathBuf> {
     None
 }
 
+fn bundled_runtime(app: &tauri::AppHandle) -> Option<BridgeRuntime> {
+    let resource_dir = app.path().resource_dir().ok()?;
+    let roots = [
+        resource_dir.join("resources").join("zam-cli"),
+        resource_dir.join("zam-cli"),
+    ];
+
+    for root in roots {
+        let cli_path = cli_in(&root);
+        if !cli_path.exists() {
+            continue;
+        }
+
+        #[cfg(target_os = "windows")]
+        let bundled_node = root.join("runtime").join("node.exe");
+        #[cfg(not(target_os = "windows"))]
+        let bundled_node = root.join("runtime").join("node");
+
+        let node_path = if bundled_node.exists() {
+            bundled_node
+        } else {
+            PathBuf::from("node")
+        };
+        return Some(BridgeRuntime {
+            node_path,
+            cli_path,
+            working_dir: root,
+        });
+    }
+
+    None
+}
+
+fn resolve_bridge_runtime(app: &tauri::AppHandle) -> Option<BridgeRuntime> {
+    if let Some(runtime) = bundled_runtime(app) {
+        return Some(runtime);
+    }
+
+    let cli_path = resolve_dev_cli_path()?;
+    let working_dir = cli_path
+        .parent()
+        .and_then(Path::parent)
+        .and_then(Path::parent)
+        .map(Path::to_path_buf)
+        .unwrap_or_else(|| PathBuf::from("."));
+    Some(BridgeRuntime {
+        node_path: env::var_os("ZAM_NODE")
+            .map(PathBuf::from)
+            .unwrap_or_else(|| PathBuf::from("node")),
+        cli_path,
+        working_dir,
+    })
+}
+
 #[tauri::command]
-fn execute_zam_bridge(cmd: String, args: Vec<String>) -> Result<String, String> {
-    let cli_path = resolve_cli_path().ok_or_else(|| {
-        "Could not locate the ZAM CLI build (dist/cli/index.js). Set the ZAM_HOME \
-         environment variable to your repo, or run `zam ui` once from the repo to record it."
+fn execute_zam_bridge(
+    app: tauri::AppHandle,
+    cmd: String,
+    args: Vec<String>,
+) -> Result<String, String> {
+    let runtime = resolve_bridge_runtime(&app).ok_or_else(|| {
+        "Could not locate the bundled ZAM CLI. Reinstall the desktop app, or set \
+         ZAM_HOME to a source checkout for development."
             .to_string()
     })?;
 
     // Run command: node <cli_path> bridge <cmd> <args...>
-    let mut command = Command::new("node");
+    let mut command = Command::new(&runtime.node_path);
     #[cfg(target_os = "windows")]
     command.creation_flags(0x08000000); // CREATE_NO_WINDOW
 
-    command.arg(&cli_path);
+    command.current_dir(&runtime.working_dir);
+    command.arg(&runtime.cli_path);
     command.arg("bridge");
     command.arg(cmd);
 
@@ -97,7 +158,7 @@ fn execute_zam_bridge(cmd: String, args: Vec<String>) -> Result<String, String> 
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet, execute_zam_bridge])
+        .invoke_handler(tauri::generate_handler![execute_zam_bridge])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

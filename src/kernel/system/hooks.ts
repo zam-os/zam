@@ -4,6 +4,7 @@ import {
   existsSync,
   mkdirSync,
   readFileSync,
+  writeFileSync,
 } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -156,11 +157,64 @@ export function distributeGlobalSkills(home: string = HOME): Array<{
   return results;
 }
 
+const POSIX_OLD_HOOK = `
+# ZAM Shell Observation Hooks
+if (command -v zam >/dev/null 2>&1); then eval "$(zam monitor start --quiet)"; fi
+`;
+const POWERSHELL_OLD_HOOK = `
+# ZAM Shell Observation Hooks
+if (Get-Command zam -ErrorAction SilentlyContinue) { Invoke-Expression (& zam monitor start --quiet pwsh) }
+`;
+const HOOK_MARKER = "# ZAM Monitor Session Helper";
+
+function posixHook(shell: "bash" | "zsh"): string {
+  return `
+${HOOK_MARKER}
+zam-monitor-session() {
+  local session_id="\${1:-}"
+  if [ -z "$session_id" ]; then
+    printf 'Usage: zam-monitor-session <session-id>\n' >&2
+    return 2
+  fi
+  eval "$(command zam monitor start --session "$session_id" --shell ${shell})"
+}
+`;
+}
+
+const POWERSHELL_HOOK = `
+${HOOK_MARKER}
+function Start-ZamMonitor {
+  param([Parameter(Mandatory = $true)][string]$Session)
+  Invoke-Expression (& zam monitor start --session $Session --shell pwsh)
+}
+`;
+
+function installHook(
+  file: string,
+  hook: string,
+  oldHook: string,
+): { success: boolean; alreadyHooked: boolean } {
+  try {
+    const content = existsSync(file) ? readFileSync(file, "utf8") : "";
+    if (content.includes(HOOK_MARKER)) {
+      return { success: true, alreadyHooked: true };
+    }
+
+    if (content.includes(oldHook.trim())) {
+      writeFileSync(file, content.replace(oldHook.trim(), hook.trim()), "utf8");
+    } else {
+      appendFileSync(file, hook);
+    }
+    return { success: true, alreadyHooked: false };
+  } catch {
+    return { success: false, alreadyHooked: false };
+  }
+}
+
 /**
- * Inject the ZAM shell observation hook into user profile scripts so monitoring
- * is automatically initialized on startup.
+ * Add opt-in helpers for starting a monitored session to user shell profiles.
  */
-export function injectShellHooks(): Array<{
+export function injectShellHooks(home: string = HOME): Array<{
   shell: string;
   file: string;
   success: boolean;
@@ -172,103 +226,42 @@ export function injectShellHooks(): Array<{
     success: boolean;
     alreadyHooked: boolean;
   }> = [];
-  const hookLine = `\n# ZAM Shell Observation Hooks\nif (command -v zam >/dev/null 2>&1); then eval "$(zam monitor start --quiet)"; fi\n`;
-  const pwshHookLine = `\n# ZAM Shell Observation Hooks\nif (Get-Command zam -ErrorAction SilentlyContinue) { Invoke-Expression (& zam monitor start --quiet pwsh) }\n`;
 
   // 1. Zsh profile (~/.zshrc)
-  const zshrc = join(HOME, ".zshrc");
+  const zshrc = join(home, ".zshrc");
   if (existsSync(zshrc)) {
-    try {
-      const content = readFileSync(zshrc, "utf8");
-      if (content.includes("zam monitor start")) {
-        results.push({
-          shell: "zsh",
-          file: zshrc,
-          success: true,
-          alreadyHooked: true,
-        });
-      } else {
-        appendFileSync(zshrc, hookLine);
-        results.push({
-          shell: "zsh",
-          file: zshrc,
-          success: true,
-          alreadyHooked: false,
-        });
-      }
-    } catch {
-      results.push({
-        shell: "zsh",
-        file: zshrc,
-        success: false,
-        alreadyHooked: false,
-      });
-    }
+    const status = installHook(zshrc, posixHook("zsh"), POSIX_OLD_HOOK);
+    results.push({ shell: "zsh", file: zshrc, ...status });
   }
 
   // 2. Bash profile (~/.bashrc)
-  const bashrc = join(HOME, ".bashrc");
+  const bashrc = join(home, ".bashrc");
   if (existsSync(bashrc)) {
-    try {
-      const content = readFileSync(bashrc, "utf8");
-      if (content.includes("zam monitor start")) {
-        results.push({
-          shell: "bash",
-          file: bashrc,
-          success: true,
-          alreadyHooked: true,
-        });
-      } else {
-        appendFileSync(bashrc, hookLine);
-        results.push({
-          shell: "bash",
-          file: bashrc,
-          success: true,
-          alreadyHooked: false,
-        });
-      }
-    } catch {
-      results.push({
-        shell: "bash",
-        file: bashrc,
-        success: false,
-        alreadyHooked: false,
-      });
-    }
+    const status = installHook(bashrc, posixHook("bash"), POSIX_OLD_HOOK);
+    results.push({ shell: "bash", file: bashrc, ...status });
   }
 
   // 3. PowerShell Profile ($HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1)
   // Check both PowerShell and WindowsPowerShell
   const pwshDirs = [
-    join(HOME, "Documents", "PowerShell"),
-    join(HOME, "Documents", "WindowsPowerShell"),
+    join(home, "Documents", "PowerShell"),
+    join(home, "Documents", "WindowsPowerShell"),
   ];
 
   for (const dir of pwshDirs) {
     const profileFile = join(dir, "Microsoft.PowerShell_profile.ps1");
     try {
       mkdirSync(dir, { recursive: true });
-      let content = "";
-      if (existsSync(profileFile)) {
-        content = readFileSync(profileFile, "utf8");
-      }
-
-      if (content.includes("zam monitor start")) {
-        results.push({
-          shell: "powershell",
-          file: profileFile,
-          success: true,
-          alreadyHooked: true,
-        });
-      } else {
-        appendFileSync(profileFile, pwshHookLine);
-        results.push({
-          shell: "powershell",
-          file: profileFile,
-          success: true,
-          alreadyHooked: false,
-        });
-      }
+      const status = installHook(
+        profileFile,
+        POWERSHELL_HOOK,
+        POWERSHELL_OLD_HOOK,
+      );
+      results.push({
+        shell: "powershell",
+        file: profileFile,
+        ...status,
+      });
     } catch {
       results.push({
         shell: "powershell",

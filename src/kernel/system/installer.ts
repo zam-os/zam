@@ -1,4 +1,4 @@
-import { execSync } from "node:child_process";
+import { execFileSync, execSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -7,6 +7,8 @@ export interface InstallResult {
   success: boolean;
   message: string;
 }
+
+export type LocalLLMRunner = "fastflowlm" | "ollama" | "generic";
 
 /**
  * Check if a command is executable on the system.
@@ -134,5 +136,72 @@ export function installOllama(): InstallResult {
         message: `Failed to install Ollama: ${(err as Error).message}`,
       };
     }
+  }
+}
+
+function resolveOllamaCommand(): string | undefined {
+  if (hasCommand("ollama")) return "ollama";
+
+  const candidates =
+    process.platform === "win32"
+      ? [
+          join(
+            homedir(),
+            "AppData",
+            "Local",
+            "Programs",
+            "Ollama",
+            "ollama.exe",
+          ),
+        ]
+      : process.platform === "darwin"
+        ? ["/Applications/Ollama.app/Contents/Resources/ollama"]
+        : [];
+
+  return candidates.find((candidate) => existsSync(candidate));
+}
+
+/**
+ * Prepare the recommended model after installing a local LLM runner.
+ */
+export function prepareLocalModel(
+  runner: LocalLLMRunner,
+  model: string,
+): InstallResult {
+  if (runner === "fastflowlm") {
+    return {
+      success: true,
+      message: `${model} will be downloaded by FastFlowLM on first use.`,
+    };
+  }
+
+  if (runner !== "ollama") {
+    return {
+      success: false,
+      message: "No supported local LLM runner was selected.",
+    };
+  }
+
+  const ollamaCommand = resolveOllamaCommand();
+  if (!ollamaCommand) {
+    return {
+      success: false,
+      message:
+        "Ollama was installed but its command is not available yet. Restart the terminal, then run " +
+        `ollama pull ${model}.`,
+    };
+  }
+
+  console.log(`Downloading ${model} with Ollama...`);
+  try {
+    execFileSync(ollamaCommand, ["pull", model], { stdio: "inherit" });
+    return { success: true, message: `${model} is ready in Ollama.` };
+  } catch (err) {
+    return {
+      success: false,
+      message:
+        `Could not prepare ${model}: ${(err as Error).message}. ` +
+        `Start Ollama and run: ollama pull ${model}`,
+    };
   }
 }

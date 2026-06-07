@@ -8,6 +8,7 @@
     ".claude/skills/zam/",
     ".agent/skills/zam/",
     ".agents/skills/zam/",
+    "templates/personal/",
     "README.md",
     "LICENSE"
   ],
@@ -22,7 +23,8 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src/",
-    "format": "biome format --write src/"
+    "format": "biome format --write src/",
+    "desktop:prepare": "node scripts/prepare-desktop-bridge.mjs"
   },
   "repository": {
     "type": "git",

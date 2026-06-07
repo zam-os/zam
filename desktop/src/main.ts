@@ -27,6 +27,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_rate_3: "Good",
     lbl_rate_4: "Easy",
     btn_pause_session: "Pause & Exit Session",
+    lbl_generating_question: "Generating dynamic question...",
     token: "Token",
     concept: "Concept",
     context: "Context",
@@ -65,6 +66,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_rate_3: "Gut",
     lbl_rate_4: "Einfach",
     btn_pause_session: "Pause & Sitzung beenden",
+    lbl_generating_question: "Erstelle dynamische Frage...",
     token: "Token",
     concept: "Konzept",
     context: "Kontext",
@@ -137,6 +139,8 @@ let resolvedContextContent: string | null = null;
 let studySessionActive = false;
 let isWaitingForAi = false;
 let waitTimeoutId: number | null = null;
+let evaluationRequestId = 0;
+let revealInProgress = false;
 
 // ── BRIDGE COMMAND RUNNER ────────────────────────────────────────────────
 async function runBridge<T = any>(cmd: string, args: string[] = []): Promise<T> {
@@ -188,6 +192,11 @@ function initializeTranslations() {
 
 // ── VIEW ROUTING ──────────────────────────────────────────────────────────
 function switchView(viewId: "dashboard-view" | "study-view") {
+  if (viewId === "dashboard-view" && studySessionActive) {
+    evaluationRequestId++;
+    revealInProgress = false;
+    finishAiWait();
+  }
   document.querySelectorAll(".view").forEach((el) => el.classList.remove("active"));
   document.getElementById(viewId)?.classList.add("active");
   studySessionActive = viewId === "study-view";
@@ -275,6 +284,10 @@ async function loadDashboard() {
 // ── ACTIVE STUDY FLOW ─────────────────────────────────────────────────────
 async function loadNextCard() {
   try {
+    evaluationRequestId++;
+    revealInProgress = false;
+    finishAiWait();
+
     // Reset study screen elements
     document.getElementById("revealed-box")!.classList.add("hidden");
     document.getElementById("npu-loading")!.classList.add("hidden");
@@ -288,7 +301,11 @@ async function loadNextCard() {
 
     // Set question text to a pulsing loading state so the user has immediate visual feedback
     const questionText = document.getElementById("question-text")!;
-    questionText.innerHTML = `<span class="loading-pulse">${currentLocale === "de" ? "Erstelle lebendige Frage..." : "Generating dynamic question..."}</span>`;
+    questionText.innerHTML = "";
+    const loadingText = document.createElement("span");
+    loadingText.className = "loading-pulse";
+    loadingText.textContent = t("lbl_generating_question");
+    questionText.appendChild(loadingText);
 
     // Fetch review
     const payload = await runBridge<ReviewPayload>("get-review");
@@ -329,7 +346,9 @@ async function loadNextCard() {
 
 // ── SUBMIT & REVEAL FLOW ──────────────────────────────────────────────────
 async function submitAndReveal() {
-  if (!activeCard) return;
+  if (!activeCard || revealInProgress) return;
+  revealInProgress = true;
+  const requestId = ++evaluationRequestId;
 
   const textarea = document.getElementById("user-answer-input") as HTMLTextAreaElement;
   const userAnswer = textarea.value.trim();
@@ -366,7 +385,8 @@ async function submitAndReveal() {
       }
 
       const evalPayload = await runBridge<{ success: boolean; evaluation: string; error?: string }>("evaluate-answer", evalArgs);
-      
+
+      if (requestId !== evaluationRequestId) return;
       if (evalPayload.success) {
         aiFeedbackText = evalPayload.evaluation;
         evaluationSuccessful = true;
@@ -374,11 +394,22 @@ async function submitAndReveal() {
         console.warn("LLM evaluation returned error state:", evalPayload.error);
       }
     } catch (err) {
+      if (requestId !== evaluationRequestId) return;
       console.warn("LLM evaluation call failed:", err);
     } finally {
-      stopAiWaitTimer();
+      if (requestId === evaluationRequestId) {
+        finishAiWait();
+      }
     }
   }
+
+  if (requestId !== evaluationRequestId) return;
+  renderReveal(aiFeedbackText, evaluationSuccessful);
+  revealInProgress = false;
+}
+
+function renderReveal(aiFeedbackText: string, evaluationSuccessful: boolean) {
+  if (!activeCard) return;
 
   // Display feedback if evaluated
   const feedbackContainer = document.getElementById("ai-feedback-container")!;
@@ -459,8 +490,8 @@ async function submitAndReveal() {
 
 // ── INTERACTIVE TIMEOUT TIMER ────────────────────────────────────────────
 function startAiWaitTimer() {
-  stopAiWaitTimer();
-  
+  clearAiWaitTimer();
+
   // Triggers alert after 30 seconds
   waitTimeoutId = window.setTimeout(() => {
     if (isWaitingForAi) {
@@ -469,19 +500,26 @@ function startAiWaitTimer() {
   }, 30000);
 }
 
-function stopAiWaitTimer() {
+function clearAiWaitTimer() {
   if (waitTimeoutId) {
     clearTimeout(waitTimeoutId);
     waitTimeoutId = null;
   }
-  isWaitingForAi = false;
-  document.getElementById("npu-loading")!.classList.add("hidden");
   document.getElementById("wait-prompt")!.classList.add("hidden");
 }
 
+function finishAiWait() {
+  clearAiWaitTimer();
+  isWaitingForAi = false;
+  document.getElementById("npu-loading")!.classList.add("hidden");
+}
+
 function skipAiWaitingAndReveal() {
-  stopAiWaitTimer();
-  submitAndReveal(); // triggers immediate reveal, ignoring LLM evaluation
+  if (!revealInProgress) return;
+  evaluationRequestId++;
+  finishAiWait();
+  renderReveal("", false);
+  revealInProgress = false;
 }
 
 // ── RATING ACTION SUBMIT ─────────────────────────────────────────────────

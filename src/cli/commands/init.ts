@@ -22,6 +22,7 @@ import {
   installFastFlowLM,
   installOllama,
   openDatabaseWithSync,
+  prepareLocalModel,
   setSetting,
 } from "../../kernel/index.js";
 
@@ -138,7 +139,7 @@ export const initCommand = new Command("init")
       default: true,
     });
 
-    let installSuccess = false;
+    let llmReady = false;
     if (proceedInstall) {
       let result: ReturnType<typeof installFastFlowLM> | undefined;
       if (profile.recommendedRunner === "fastflowlm") {
@@ -149,7 +150,18 @@ export const initCommand = new Command("init")
 
       if (result.success) {
         console.log(`\x1b[32m✓ ${result.message}\x1b[0m`);
-        installSuccess = true;
+        const modelResult = prepareLocalModel(
+          profile.recommendedRunner,
+          profile.recommendedModel,
+        );
+        if (modelResult.success) {
+          console.log(`\x1b[32m✓ ${modelResult.message}\x1b[0m`);
+          llmReady = true;
+        } else {
+          console.warn(
+            `\x1b[33m⚠ Model setup incomplete: ${modelResult.message}\x1b[0m`,
+          );
+        }
       } else {
         console.warn(`\x1b[33m⚠ Installation failed: ${result.message}\x1b[0m`);
         console.log(
@@ -174,15 +186,14 @@ export const initCommand = new Command("init")
         `\x1b[32m✓ Detected and set system language to: ${detectedLocale}\x1b[0m`,
       );
 
-      if (installSuccess) {
+      if (llmReady) {
         setSetting(db, "llm.enabled", "true");
         if (profile.recommendedRunner === "fastflowlm") {
           setSetting(db, "llm.url", "http://localhost:8000/v1");
-          setSetting(db, "llm.model", "gemma4-it:e4b");
         } else {
           setSetting(db, "llm.url", "http://localhost:11434/v1");
-          setSetting(db, "llm.model", "llama3.2:3b");
         }
+        setSetting(db, "llm.model", profile.recommendedModel);
         console.log(
           "\x1b[32m✓ Configured LLM runner settings in database.\x1b[0m",
         );
@@ -198,13 +209,13 @@ export const initCommand = new Command("init")
       db?.close();
     }
 
-    // ── STEP 5: Distribute Agent Skills & Hooks ──────────────────────────────
+    // ── STEP 5: Distribute Agent Skills & Helpers ────────────────────────────
     console.log(
-      "\n\x1b[1m[5/5] Wiring Developer Agents & Terminal Hooks\x1b[0m",
+      "\n\x1b[1m[5/5] Wiring Developer Agents & Terminal Helpers\x1b[0m",
     );
     const proceedHooks = await confirm({
       message:
-        "Distribute ZAM active-recall skills and enable automatic terminal command observation?",
+        "Distribute ZAM skills and install optional monitored-session shell helpers?",
       default: true,
     });
 
@@ -219,20 +230,23 @@ export const initCommand = new Command("init")
         }
       }
 
-      console.log("Injecting observation hooks into shell profiles...");
+      console.log("Installing monitored-session helpers in shell profiles...");
       const hookResults = injectShellHooks();
       for (const res of hookResults) {
         if (res.success) {
           const action = res.alreadyHooked
             ? "already up-to-date"
-            : "injected successfully";
-          console.log(`  \x1b[32m✓ ${res.shell} hook: ${action}\x1b[0m`);
+            : "installed successfully";
+          console.log(`  \x1b[32m✓ ${res.shell} helper: ${action}\x1b[0m`);
         } else {
           console.log(
-            `  \x1b[31m✗ Failed to inject hook in ${res.shell} (${res.file})\x1b[0m`,
+            `  \x1b[31m✗ Failed to install helper in ${res.shell} (${res.file})\x1b[0m`,
           );
         }
       }
+      console.log(
+        "  Start monitoring with zam-monitor-session <id> (bash/zsh) or Start-ZamMonitor <id> (PowerShell).",
+      );
     }
 
     printLine();

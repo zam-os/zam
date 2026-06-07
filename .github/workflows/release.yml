@@ -13,12 +13,18 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: 'macos-latest'
-            args: '--target universal-apple-darwin'
+          - platform: 'macos-15-intel'
+            target: 'x86_64-apple-darwin'
+            args: '--target x86_64-apple-darwin'
+          - platform: 'macos-15'
+            target: 'aarch64-apple-darwin'
+            args: '--target aarch64-apple-darwin'
           - platform: 'ubuntu-22.04'
-            args: ''
+            target: 'x86_64-unknown-linux-gnu'
+            args: '--target x86_64-unknown-linux-gnu'
           - platform: 'windows-latest'
-            args: ''
+            target: 'x86_64-pc-windows-msvc'
+            args: '--target x86_64-pc-windows-msvc'
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -33,7 +39,7 @@ jobs:
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+          targets: ${{ matrix.target }}
 
       - name: Install system dependencies (Ubuntu only)
         if: matrix.platform == 'ubuntu-22.04'
@@ -47,19 +53,21 @@ jobs:
       - name: Build ZAM CLI Bridge (Root Workspace)
         run: npm run build
 
+      - name: Prepare Self-Contained Desktop Bridge
+        run: npm run desktop:prepare -- --bundle-node
+
       - name: Install dependencies (Desktop Application)
-        run: |
-          cd desktop
-          npm ci
+        working-directory: desktop
+        run: npm ci
 
       - name: Build Tauri Desktop Application & Publish Draft Release
         uses: tauri-apps/tauri-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: app-v__VERSION__
-          releaseName: 'ZAM Desktop v__VERSION__'
-          releaseBody: 'Welcome to the ZAM Active-Recall Studio desktop release! Extract/install the binary for your platform below. Keep learning!'
+          tagName: ${{ github.ref_name }}
+          releaseName: 'ZAM Desktop ${{ github.ref_name }}'
+          releaseBody: 'Install the ZAM Active-Recall Studio package for your platform. The CLI bridge and Node runtime are included.'
           releaseDraft: true
           prerelease: false
           projectPath: './desktop'

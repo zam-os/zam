@@ -15,7 +15,7 @@
  */
 
 import { type SpawnSyncOptions, spawn, spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -68,6 +68,27 @@ function findBuiltApp(desktopDir: string): string | null {
   return null;
 }
 
+/** Locate an app installed by a released ZAM desktop installer. */
+function findInstalledApp(): string | null {
+  const candidates =
+    process.platform === "win32"
+      ? [
+          process.env.LOCALAPPDATA &&
+            join(process.env.LOCALAPPDATA, "Programs", "ZAM", "ZAM.exe"),
+          process.env.ProgramFiles &&
+            join(process.env.ProgramFiles, "ZAM", "ZAM.exe"),
+          process.env["ProgramFiles(x86)"] &&
+            join(process.env["ProgramFiles(x86)"], "ZAM", "ZAM.exe"),
+        ]
+      : process.platform === "darwin"
+        ? ["/Applications/ZAM.app", join(homedir(), "Applications", "ZAM.app")]
+        : ["/opt/ZAM/zam", "/usr/bin/zam-desktop"];
+
+  return (
+    candidates.find((candidate) => candidate && existsSync(candidate)) || null
+  );
+}
+
 /** npm is npm.cmd on Windows, so child processes need a shell there. */
 function runNpm(args: string[], opts: SpawnSyncOptions): number {
   const res = spawnSync("npm", args, {
@@ -84,6 +105,15 @@ function ensureDesktopDeps(desktopDir: string): boolean {
     `${C.cyan}Installing desktop dependencies (one-time)...${C.reset}`,
   );
   return runNpm(["install"], { cwd: desktopDir }) === 0;
+}
+
+function prepareDesktopBridge(repoRoot: string): boolean {
+  console.log(`${C.cyan}Preparing self-contained desktop bridge...${C.reset}`);
+  return (
+    runNpm(["run", "desktop:prepare", "--", "--bundle-node"], {
+      cwd: repoRoot,
+    }) === 0
+  );
 }
 
 function requireRust(): boolean {
@@ -153,33 +183,17 @@ function warnIfCliMissing(repoRoot: string): void {
   }
 }
 
-/**
- * Record this repo root in ~/.zam/cli_path so the installed GUI can locate the
- * CLI bridge regardless of where it is launched from (Start menu / Program
- * Files have no idea where the repo lives). The Tauri backend reads this file.
- */
-function recordCliHome(repoRoot: string): void {
-  try {
-    const zamDir = join(homedir(), ".zam");
-    if (!existsSync(zamDir)) mkdirSync(zamDir, { recursive: true });
-    writeFileSync(join(zamDir, "cli_path"), repoRoot, "utf8");
-  } catch {
-    // best-effort: a missing marker just falls back to cwd resolution
-  }
-}
-
-function launchApp(appPath: string, repoRoot: string): void {
-  // Run from the repo root so the Tauri backend resolves dist/cli/index.js.
+function launchApp(appPath: string, workingDir: string): void {
   console.log(`${C.green}✓ Launching ZAM Desktop...${C.reset}`);
   if (process.platform === "darwin" && appPath.endsWith(".app")) {
     spawn("open", [appPath], {
-      cwd: repoRoot,
+      cwd: workingDir,
       detached: true,
       stdio: "ignore",
     }).unref();
   } else {
     spawn(appPath, [], {
-      cwd: repoRoot,
+      cwd: workingDir,
       detached: true,
       stdio: "ignore",
       windowsHide: true,
@@ -232,6 +246,12 @@ export const uiCommand = new Command("ui")
   )
   .option("--shortcut", "Create Desktop + Start-menu shortcuts to the GUI")
   .action((opts) => {
+    const installedApp = findInstalledApp();
+    if (!opts.dev && !opts.build && !opts.shortcut && installedApp) {
+      launchApp(installedApp, homedir());
+      return;
+    }
+
     const desktopDir = findDesktopDir();
     if (!desktopDir) {
       console.error(
@@ -241,15 +261,12 @@ export const uiCommand = new Command("ui")
     }
     const repoRoot = dirname(desktopDir);
 
-    // Record where the CLI lives so the installed GUI can always find the
-    // bridge, no matter which directory it is launched from.
-    recordCliHome(repoRoot);
-
     // --build: compile the native installer.
     if (opts.build) {
       if (!requireRust()) process.exit(1);
       if (!requireMsvcOnWindows()) process.exit(1);
       if (!ensureDesktopDeps(desktopDir)) process.exit(1);
+      if (!prepareDesktopBridge(repoRoot)) process.exit(1);
       console.log(
         `${C.cyan}Building the native ZAM installer (this takes a few minutes)...${C.reset}`,
       );
@@ -269,7 +286,7 @@ export const uiCommand = new Command("ui")
           `${C.dim}Run that installer once — it adds ZAM to the Start menu and Desktop automatically.${C.reset}`,
         );
         console.log(
-          `${C.dim}Recorded this repo (${repoRoot}) in ~/.zam/cli_path so the installed app finds the CLI.${C.reset}`,
+          `${C.dim}The installer includes the CLI bridge and Node runtime.${C.reset}`,
         );
       }
       process.exit(code);
@@ -291,19 +308,19 @@ export const uiCommand = new Command("ui")
 
     // --shortcut: needs a built binary to point at.
     if (opts.shortcut) {
-      if (!builtApp) {
+      const shortcutTarget = installedApp || builtApp;
+      if (!shortcutTarget) {
         console.error(
           `${C.red}✗ No built app yet. Build it first:${C.reset} ${C.cyan}zam ui --build${C.reset}`,
         );
         process.exit(1);
       }
-      createShortcuts(builtApp, repoRoot);
+      createShortcuts(shortcutTarget, dirname(shortcutTarget));
       return;
     }
 
     // Default: launch the built app, or guide the user to get one.
     if (builtApp) {
-      warnIfCliMissing(repoRoot);
       launchApp(builtApp, repoRoot);
       return;
     }

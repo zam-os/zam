@@ -4,7 +4,7 @@
 
 /* ── DESIGN SYSTEM VARIABLES ────────────────────────────────────────────── */
 :root {
-  --font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   
   /* Primary Gradients & Glow Accents */
   --bg-deep-space: #07080d;
