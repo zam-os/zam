@@ -1,5 +1,14 @@
+import {
+  existsSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  distributeGlobalSkills,
   getPackageSkillPath,
   getSystemProfile,
   hasCommand,
@@ -43,6 +52,42 @@ describe("System Profiling & Tool Detections", () => {
       expect(typeof path).toBe("string");
       if (path) {
         expect(path).toContain("SKILL.md");
+      }
+    });
+
+    it("resolves the Codex-specific skill source", () => {
+      const path = getPackageSkillPath("codex");
+
+      expect(path).toContain(join(".agents", "skills", "zam", "SKILL.md"));
+      expect(readFileSync(path, "utf8")).toContain("$zam");
+    });
+  });
+
+  describe("distributeGlobalSkills", () => {
+    it("installs the Codex-specific skill under the user .agents directory", () => {
+      const home = mkdtempSync(join(tmpdir(), "zam-global-skills-"));
+
+      try {
+        const results = distributeGlobalSkills(home);
+        const codexPath = join(
+          home,
+          ".agents",
+          "skills",
+          "zam",
+          "SKILL.md",
+        );
+
+        expect(results).toContainEqual({
+          name: "Codex Global",
+          path: codexPath,
+          success: true,
+        });
+        expect(existsSync(codexPath)).toBe(true);
+        expect(readFileSync(codexPath, "utf8")).toContain(
+          "Codex does not expose repository skills",
+        );
+      } finally {
+        rmSync(home, { recursive: true, force: true });
       }
     });
   });

@@ -49,7 +49,7 @@ Agenten kommunizieren untereinander, um Bedarfe und Angebote der Gemeinschaft ab
 
 ZAM ist als **KI-agnostischer Kernel** konzipiert — ein CLI-Tool, das sich nahtlos in bestehende Workflows integriert:
 
-- **CLI-Integration** — Kompatibel mit `Claude Code`, `Copilot CLI` und `Gemini CLI`.
+- **CLI-Integration** — Kompatibel mit `Claude Code`, `Codex`, `Copilot CLI` und `Gemini CLI`.
 - **Modularität** — Das System kann für länderspezifische oder kulturelle Eigenheiten „geforkt" werden (*Social Forking*).
 
 ### Zwei Repositories, ein System

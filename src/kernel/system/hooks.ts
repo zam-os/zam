@@ -14,9 +14,36 @@ const HOME = homedir();
 /**
  * Get the path to ZAM's internal package SKILL.md.
  */
-export function getPackageSkillPath(): string {
-  // relative to built dist/kernel/system/hooks.js -> packageRoot/.agent/skills/zam/SKILL.md
-  const packageRoot = fileURLToPath(new URL("../../..", import.meta.url));
+export function getPackageSkillPath(
+  agent: "default" | "claude" | "codex" = "default",
+): string {
+  // Support source modules plus the dist/index.js and dist/cli/index.js bundles.
+  const packageRoot =
+    [
+      fileURLToPath(new URL("../../..", import.meta.url)),
+      fileURLToPath(new URL("../..", import.meta.url)),
+      fileURLToPath(new URL("..", import.meta.url)),
+    ].find((candidate) => existsSync(join(candidate, "package.json"))) ?? "";
+
+  if (!packageRoot) return "";
+
+  if (agent === "codex") {
+    const codexPath = join(packageRoot, ".agents", "skills", "zam", "SKILL.md");
+    if (existsSync(codexPath)) return codexPath;
+    return "";
+  }
+
+  if (agent === "claude") {
+    const claudePath = join(
+      packageRoot,
+      ".claude",
+      "skills",
+      "zam",
+      "SKILL.md",
+    );
+    if (existsSync(claudePath)) return claudePath;
+    return "";
+  }
 
   // Try .agent first
   let path = join(packageRoot, ".agent", "skills", "zam", "SKILL.md");
@@ -31,14 +58,16 @@ export function getPackageSkillPath(): string {
 
 /**
  * Distribute the ZAM active-recall training skill globally.
- * Copies SKILL.md into global directories for Claude Code and Gemini.
+ * Copies SKILL.md into global directories for supported coding agents.
  */
-export function distributeGlobalSkills(): Array<{
+export function distributeGlobalSkills(home: string = HOME): Array<{
   name: string;
   path: string;
   success: boolean;
 }> {
   const sourceSkill = getPackageSkillPath();
+  const claudeSourceSkill = getPackageSkillPath("claude");
+  const codexSourceSkill = getPackageSkillPath("codex");
   const results: Array<{ name: string; path: string; success: boolean }> = [];
 
   if (!sourceSkill) {
@@ -47,10 +76,13 @@ export function distributeGlobalSkills(): Array<{
   }
 
   // 1. Claude Code global directory
-  const claudeSkillsDir = join(HOME, ".claude", "skills", "zam");
+  const claudeSkillsDir = join(home, ".claude", "skills", "zam");
   try {
+    if (!claudeSourceSkill) {
+      throw new Error("Claude skill source not found");
+    }
     mkdirSync(claudeSkillsDir, { recursive: true });
-    copyFileSync(sourceSkill, join(claudeSkillsDir, "SKILL.md"));
+    copyFileSync(claudeSourceSkill, join(claudeSkillsDir, "SKILL.md"));
     results.push({
       name: "Claude Code Global",
       path: join(claudeSkillsDir, "SKILL.md"),
@@ -65,7 +97,7 @@ export function distributeGlobalSkills(): Array<{
   }
 
   // 2. Gemini/agy global directory
-  const geminiSkillsDir = join(HOME, ".gemini", "skills", "zam");
+  const geminiSkillsDir = join(home, ".gemini", "skills", "zam");
   try {
     mkdirSync(geminiSkillsDir, { recursive: true });
     copyFileSync(sourceSkill, join(geminiSkillsDir, "SKILL.md"));
@@ -82,8 +114,29 @@ export function distributeGlobalSkills(): Array<{
     });
   }
 
-  // 3. Goose skills directory
-  const gooseSkillsDir = join(HOME, ".goose", "skills", "zam");
+  // 3. Codex global skills directory
+  const codexSkillsDir = join(home, ".agents", "skills", "zam");
+  try {
+    if (!codexSourceSkill) {
+      throw new Error("Codex skill source not found");
+    }
+    mkdirSync(codexSkillsDir, { recursive: true });
+    copyFileSync(codexSourceSkill, join(codexSkillsDir, "SKILL.md"));
+    results.push({
+      name: "Codex Global",
+      path: join(codexSkillsDir, "SKILL.md"),
+      success: true,
+    });
+  } catch (_err) {
+    results.push({
+      name: "Codex Global",
+      path: codexSkillsDir,
+      success: false,
+    });
+  }
+
+  // 4. Goose skills directory
+  const gooseSkillsDir = join(home, ".goose", "skills", "zam");
   try {
     mkdirSync(gooseSkillsDir, { recursive: true });
     copyFileSync(sourceSkill, join(gooseSkillsDir, "SKILL.md"));
