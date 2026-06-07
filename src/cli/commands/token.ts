@@ -22,8 +22,8 @@ import {
   updateToken,
 } from "../../kernel/index.js";
 import { generateQuestionViaLLM } from "../llm/client.js";
-import { withDb, withDbAsync, jsonOut } from "./shared/db.js";
 import { resolveUser } from "./resolve-user.js";
+import { jsonOut, withDb, withDbAsync } from "./shared/db.js";
 
 export const tokenCommand = new Command("token").description(
   "Manage knowledge tokens",

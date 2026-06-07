@@ -1,16 +1,8 @@
-import {
-  existsSync,
-  mkdtempSync,
-  readFileSync,
-  rmSync,
-} from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import {
-  copySkills,
-  writeAgentsMd,
-} from "../../src/cli/commands/setup.js";
+import { copySkills, writeAgentsMd } from "../../src/cli/commands/setup.js";
 
 describe("setup command helpers", () => {
   it("copies ZAM skills for Claude, shared agents, and Codex", () => {

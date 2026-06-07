@@ -3,11 +3,7 @@
  */
 
 import { Command } from "commander";
-import {
-  deleteSetting,
-  getSetting,
-  setSetting,
-} from "../../kernel/index.js";
+import { deleteSetting, getSetting, setSetting } from "../../kernel/index.js";
 import { withDb } from "./shared/db.js";
 
 export const whoamiCommand = new Command("whoami")

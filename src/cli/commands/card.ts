@@ -15,8 +15,8 @@ import {
   getTokenBySlug,
   unblockReady,
 } from "../../kernel/index.js";
-import { withDb } from "./shared/db.js";
 import { resolveUser } from "./resolve-user.js";
+import { withDb } from "./shared/db.js";
 
 export const cardCommand = new Command("card").description(
   "Manage spaced-repetition cards",

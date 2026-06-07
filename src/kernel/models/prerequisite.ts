@@ -30,9 +30,9 @@ export interface PrerequisiteWithToken extends Prerequisite {
  * addPrerequisite call (small N in practice).
  */
 function buildAncestorMap(db: Database): Map<string, Set<string>> {
-  const rows = db.prepare(
-    "SELECT token_id, requires_id FROM prerequisites",
-  ).all() as Array<{ token_id: string; requires_id: string }>;
+  const rows = db
+    .prepare("SELECT token_id, requires_id FROM prerequisites")
+    .all() as Array<{ token_id: string; requires_id: string }>;
   const map = new Map<string, Set<string>>();
   for (const row of rows) {
     let ancestors = map.get(row.token_id);
@@ -99,7 +99,7 @@ export function addPrerequisite(
   if (wouldCreateCycle(db, tokenId, requiresId)) {
     throw new Error(
       `Cannot add prerequisite: would create a cycle. ` +
-      `${requiresId} already depends on ${tokenId} (directly or transitively).`,
+        `${requiresId} already depends on ${tokenId} (directly or transitively).`,
     );
   }
 

@@ -45,8 +45,11 @@ import {
   isLlmOnline,
   translateQuestionViaLLM,
 } from "../llm/client.js";
-import { withDb as sharedWithDb, withDbAsync as sharedWithDbAsync } from "./shared/db.js";
 import { resolveUser } from "./resolve-user.js";
+import {
+  withDb as sharedWithDb,
+  withDbAsync as sharedWithDbAsync,
+} from "./shared/db.js";
 
 function jsonOut(data: unknown): void {
   console.log(JSON.stringify(data, null, 2));

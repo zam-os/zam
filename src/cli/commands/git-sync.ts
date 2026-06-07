@@ -4,14 +4,14 @@
  * Automatically marks cards as stale/due when their source files change in git.
  */
 
-import { existsSync, writeFileSync, chmodSync } from "node:fs";
 import { execSync } from "node:child_process";
+import { chmodSync, existsSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { Command } from "commander";
 import type { Token } from "../../kernel/index.js";
 import { getCard, matchesFilePath } from "../../kernel/index.js";
-import { withDb } from "./shared/db.js";
 import { resolveUser } from "./resolve-user.js";
+import { withDb } from "./shared/db.js";
 
 /**
  * Installs the Git post-commit hook.

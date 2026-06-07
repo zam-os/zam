@@ -20,8 +20,8 @@ import {
   startSession,
 } from "../../kernel/index.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
-import { withDb } from "./shared/db.js";
 import { resolveUser } from "./resolve-user.js";
+import { withDb } from "./shared/db.js";
 
 export const sessionCommand = new Command("session").description(
   "Manage learning sessions",

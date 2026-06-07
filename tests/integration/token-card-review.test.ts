@@ -40,7 +40,12 @@ describe("integration: token → card → review flow", () => {
   afterEach(() => {
     db.close();
     try {
-      rmSync(tempDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+      rmSync(tempDir, {
+        recursive: true,
+        force: true,
+        maxRetries: 10,
+        retryDelay: 50,
+      });
     } catch {
       // Best-effort cleanup
     }
@@ -265,7 +270,10 @@ describe("integration: token → card → review flow", () => {
 
       // The card should now be in the due queue (scheduled for future)
       // Newly rated cards won't be "due" yet, but the queue building works
-      const queue = buildReviewQueue(db, "thomas", { maxNew: 5, maxReviews: 10 });
+      const queue = buildReviewQueue(db, "thomas", {
+        maxNew: 5,
+        maxReviews: 10,
+      });
       expect(queue).toBeDefined();
       expect(queue.items).toBeDefined();
       expect(queue.items.length).toBeGreaterThanOrEqual(0);
@@ -319,7 +327,9 @@ describe("integration: token → card → review flow", () => {
       // Now unblock — the target should become ready
       const unblocked = unblockReady(db, "thomas");
       expect(unblocked.unblocked.length).toBeGreaterThanOrEqual(1);
-      expect(unblocked.unblocked.some((u) => u.slug === target.slug)).toBe(true);
+      expect(unblocked.unblocked.some((u) => u.slug === target.slug)).toBe(
+        true,
+      );
     });
   });
 });

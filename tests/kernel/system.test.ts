@@ -1,9 +1,4 @@
-import {
-  existsSync,
-  mkdtempSync,
-  readFileSync,
-  rmSync,
-} from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -69,13 +64,7 @@ describe("System Profiling & Tool Detections", () => {
 
       try {
         const results = distributeGlobalSkills(home);
-        const codexPath = join(
-          home,
-          ".agents",
-          "skills",
-          "zam",
-          "SKILL.md",
-        );
+        const codexPath = join(home, ".agents", "skills", "zam", "SKILL.md");
 
         expect(results).toContainEqual({
           name: "Codex Global",
