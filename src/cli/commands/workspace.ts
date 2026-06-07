@@ -77,7 +77,7 @@ workspaceCommand
     if (!existsSync(gitignorePath)) {
       writeFileSync(
         gitignorePath,
-        "node_modules/\n.agent/\n.claude/\n.gemini/\n.goose/\n*.log\n",
+        "node_modules/\n.agent/\n.agents/\n.claude/\n.gemini/\n.goose/\n*.log\n",
         "utf8",
       );
     }

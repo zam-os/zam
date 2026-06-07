@@ -10,7 +10,7 @@
 
 ZAM is built on three principles:
 
-1. **AI-agnostic kernel** — The learning engine has zero LLM dependencies. It is pure learning science: spaced repetition (FSRS-5), Bloom taxonomy, prerequisite graphs, and review scheduling. Any AI CLI (Claude Code, Copilot CLI, Gemini CLI, or future systems) integrates through a JSON bridge protocol.
+1. **AI-agnostic kernel** — The learning engine has zero LLM dependencies. It is pure learning science: spaced repetition (FSRS-5), Bloom taxonomy, prerequisite graphs, and review scheduling. Any AI CLI (Claude Code, Codex, Copilot CLI, Gemini CLI, or future systems) integrates through a JSON bridge protocol.
 
 2. **Local-first** — All data lives in a single SQLite file at `~/.zam/zam.db`, owned by the user. WAL mode enables concurrent access from multiple CLI processes.
 
@@ -23,7 +23,7 @@ ZAM is built on three principles:
 ```
 ┌──────────────────────────────────────────────────────────┐
 │  AI Skill Layer  (SKILL.md)                              │
-│  Claude Code / Copilot CLI / Gemini CLI / Voice / AR     │
+│  Claude Code / Codex / Copilot / Gemini / Voice / AR     │
 │  ─ Reads SKILL.md instructions                           │
 │  ─ Drives session protocol (observe → probe → rate)      │
 │  ─ Calls zam bridge commands for data                    │

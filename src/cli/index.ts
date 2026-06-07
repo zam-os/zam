@@ -25,7 +25,7 @@ program
   .description(
     "The Symbiotic Learning Kernel: Elevating Human Intelligence through AI Collaboration.",
   )
-  .version("0.3.4");
+  .version("0.3.5");
 
 program.addCommand(initCommand);
 program.addCommand(setupCommand);
