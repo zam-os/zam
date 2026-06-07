@@ -6,9 +6,7 @@
  * Phase 2 — Task execution: pick a work item from ADO or enter a custom task
  */
 
-import { input, select } from "@inquirer/prompts";
 import { Command } from "commander";
-import type { Database } from "libsql";
 import type { BloomLevel, ExecutionContext } from "../../kernel/index.js";
 import {
   buildReviewQueue,
@@ -19,24 +17,11 @@ import {
   getTokenBySlug,
   loadADOConfig,
   logStep,
-  openDatabase,
   startSession,
 } from "../../kernel/index.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
+import { withDb } from "./shared/db.js";
 import { resolveUser } from "./resolve-user.js";
-
-function withDb(fn: (db: Database) => void): void {
-  let db: Database | undefined;
-  try {
-    db = openDatabase();
-    fn(db);
-  } catch (err) {
-    console.error("Error:", (err as Error).message);
-    process.exit(1);
-  } finally {
-    db?.close();
-  }
-}
 
 export const sessionCommand = new Command("session").description(
   "Manage learning sessions",

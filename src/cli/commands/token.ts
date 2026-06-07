@@ -3,7 +3,6 @@
  */
 
 import { Command } from "commander";
-import type { Database } from "libsql";
 import type { BloomLevel, SymbiosisMode } from "../../kernel/index.js";
 import {
   addPrerequisite,
@@ -19,31 +18,12 @@ import {
   getTokenBySlug,
   getTokenDeleteImpact,
   listTokens,
-  openDatabase,
   resolveReviewContext,
   updateToken,
 } from "../../kernel/index.js";
 import { generateQuestionViaLLM } from "../llm/client.js";
+import { withDb, withDbAsync, jsonOut } from "./shared/db.js";
 import { resolveUser } from "./resolve-user.js";
-
-async function withDb(
-  fn: (db: Database) => Promise<void> | void,
-): Promise<void> {
-  let db: Database | undefined;
-  try {
-    db = openDatabase();
-    await fn(db);
-  } catch (err) {
-    console.error("Error:", (err as Error).message);
-    process.exit(1);
-  } finally {
-    db?.close();
-  }
-}
-
-function jsonOut(data: unknown): void {
-  console.log(JSON.stringify(data, null, 2));
-}
 
 export const tokenCommand = new Command("token").description(
   "Manage knowledge tokens",
@@ -62,7 +42,7 @@ tokenCommand
   .option("--question <question>", "Specific question prompt for recall", "")
   .option("--json", "Output as JSON")
   .action(async (opts) => {
-    await withDb(async (db) => {
+    await withDbAsync(async (db) => {
       let question: string | null = opts.question || null;
       if (!question) {
         const isLlmEnabled = getSetting(db, "llm.enabled") === "true";
@@ -221,7 +201,7 @@ tokenCommand
   .option("--question <question>", "Updated question text (blank allowed)")
   .option("--json", "Output as JSON")
   .action(async (opts) => {
-    await withDb(async (db) => {
+    await withDbAsync(async (db) => {
       const updates: {
         concept?: string;
         domain?: string;

@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { Command } from "commander";
 import { bridgeCommand } from "./commands/bridge.js";
 import { cardCommand } from "./commands/card.js";
@@ -18,6 +21,11 @@ import { uiCommand } from "./commands/ui.js";
 import { whoamiCommand } from "./commands/whoami.js";
 import { workspaceCommand } from "./commands/workspace.js";
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const pkg = JSON.parse(
+  readFileSync(join(__dirname, "..", "package.json"), "utf-8"),
+) as { version: string };
+
 const program = new Command();
 
 program
@@ -25,7 +33,7 @@ program
   .description(
     "The Symbiotic Learning Kernel: Elevating Human Intelligence through AI Collaboration.",
   )
-  .version("0.3.5");
+  .version(pkg.version);
 
 program.addCommand(initCommand);
 program.addCommand(setupCommand);

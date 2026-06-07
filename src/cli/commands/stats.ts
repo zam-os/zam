@@ -3,26 +3,12 @@
  */
 
 import { Command } from "commander";
-import type { Database } from "libsql";
 import {
   getDomainCompetence,
   getUserStats,
-  openDatabase,
 } from "../../kernel/index.js";
+import { withDb } from "./shared/db.js";
 import { resolveUser } from "./resolve-user.js";
-
-function withDb(fn: (db: Database) => void): void {
-  let db: Database | undefined;
-  try {
-    db = openDatabase();
-    fn(db);
-  } catch (err) {
-    console.error("Error:", (err as Error).message);
-    process.exit(1);
-  } finally {
-    db?.close();
-  }
-}
 
 export const statsCommand = new Command("stats")
   .description("Show learning dashboard for a user")

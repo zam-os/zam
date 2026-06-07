@@ -87,6 +87,7 @@ export {
   addPrerequisite,
   getDependents,
   getPrerequisites,
+  wouldCreateCycle,
 } from "./models/prerequisite.js";
 export type { CreateReviewInput, ReviewLog } from "./models/review.js";
 export {

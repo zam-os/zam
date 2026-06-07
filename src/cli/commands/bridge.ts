@@ -32,7 +32,6 @@ import {
   getTokenDeleteImpact,
   listAgentSkills,
   monitorLogExists,
-  openDatabase,
   pairCommands,
   readMonitorLog,
   resolveReviewContext,
@@ -46,6 +45,7 @@ import {
   isLlmOnline,
   translateQuestionViaLLM,
 } from "../llm/client.js";
+import { withDb as sharedWithDb, withDbAsync as sharedWithDbAsync } from "./shared/db.js";
 import { resolveUser } from "./resolve-user.js";
 
 function jsonOut(data: unknown): void {
@@ -58,29 +58,11 @@ function jsonError(message: string): never {
 }
 
 function withDb(fn: (db: Database) => void): void {
-  let db: Database | undefined;
-  try {
-    db = openDatabase();
-    fn(db);
-  } catch (err) {
-    db?.close();
-    jsonError((err as Error).message);
-  } finally {
-    db?.close();
-  }
+  sharedWithDb(fn, jsonError);
 }
 
 async function withDbAsync(fn: (db: Database) => Promise<void>): Promise<void> {
-  let db: Database | undefined;
-  try {
-    db = openDatabase();
-    await fn(db);
-  } catch (err) {
-    db?.close();
-    jsonError((err as Error).message);
-  } finally {
-    db?.close();
-  }
+  await sharedWithDbAsync(fn, jsonError);
 }
 
 interface ReviewTargetRow {
