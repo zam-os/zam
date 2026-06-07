@@ -21,7 +21,7 @@ All knowledge management is done through the `zam` CLI:
 zam init
 
 # Token management
-zam token register --slug <slug> --concept "<one sentence>" --domain <d> --bloom <1-5>
+zam token register --slug <slug> --concept "<one sentence>" --domain <d> --bloom <1-5> [--source-link <link>]
 zam token find --query "<keywords>"
 zam token list [--domain <d>]
 zam token prereq --token <child> --requires <parent>
@@ -164,6 +164,20 @@ zam session start --user <username> --task "<description>" --context shell
 
 ### STEP 4 — Hand off, observe, rate
 
+> **Spoiler-free console option:** For pure conceptual recall, you can hand the
+> whole review off to the standalone console harness instead of probing card by
+> card here:
+> > "Let's do your reviews in the dedicated console — run `zam learn` and rate
+> > yourself. I'll wait."
+>
+> `zam learn` shows a concept-free cue, captures the answer, and only then
+> reveals the stored answer (concept + context + resolved `source_link`) before a
+> single 1–4 self-rating — all in-process. This sidesteps agent-CLI autocomplete
+> that would otherwise ghost the answer, and the per-subcommand permission
+> prompts from chained `card update` / `session log` calls. Use the verbal
+> probing below when you want to drive the discussion yourself or add depth a
+> stored answer can't (that richer mode will later be backed by an LLM).
+
 **For executable tasks (observation mode):**
 
 Hand off to the user:
@@ -242,10 +256,26 @@ For each due token, ask a conceptual question at the right Bloom level:
 | 4 Analyze | "Why X over Y?" | "Why is == more efficient than contains?" |
 | 5 Synthesize | "Design a..." | "Build the full query from scratch" |
 
-After each answer, ask:
+**CRITICAL: Stop and WAIT for the user to provide their answer. Do not ask for the rating until the user has attempted to answer the conceptual question.**
+
+After the user answers, ask:
 > "How did that feel? 1 = drew a blank, 2 = hard recall, 3 = knew it, 4 = instant"
 
+**WAIT for the user to provide a rating (1-4).**
+
 Submit the rating and log the step.
+
+#### Leveraging Source Links for AI Agent Context
+When a token has a `source_link`, `zam bridge get-review` resolves it for you and returns a `resolvedContext` object alongside `prompt` — you no longer need to fetch the file or URL yourself. Its shape:
+
+- `sourceType: "local" | "remote_web"` → `content` is the literal file/page text, already line-sliced when the link carried a `#L10-L25` anchor. Ground your question and verification directly in it.
+- `sourceType: "dynamic_search"` → `content` is a `QUERY_DIRECTIVE: Run web search for "..."`. Run that web search yourself, then ground the review in the results.
+- `truncated: true` → the content was capped; fetch the full `filePath`/`url` only if you need more.
+- `resolvedContext: null` → no link, or resolution was disabled (`--no-resolve`); fall back to the one-sentence concept, or inspect the path yourself.
+
+Use it to:
+1. **Formulate Contextual Questions**: Instead of asking generic questions based strictly on the one-sentence concept text, use the resolved code or documentation to ask targeted, realistic, deep conceptual questions (e.g., at Bloom level 2, 3, or 4).
+2. **Verify Responses Precisely**: Reference the resolved material to verify the user's answers, addressing specific edge cases, syntax, or trade-offs present in the actual codebase or documentation.
 
 ### STEP 5 — End session
 ```bash

@@ -316,7 +316,7 @@ If the agent cannot execute a step:
 
 ## Blocking Rule
 
- A token is blocked when:
+A token is blocked when:
 - The user rated it 1 (forgot), AND
 - Its prerequisites have not yet been recalled at least once
 
