@@ -12,7 +12,9 @@ describe("zam learn — formatting", () => {
     it("clamps out-of-range or non-finite bloom levels to 1", () => {
       expect(formatHeader({ domain: "", bloomLevel: 9 })).toContain("Bloom 1");
       expect(formatHeader({ domain: "", bloomLevel: 0 })).toContain("Bloom 1");
-      expect(formatHeader({ domain: "", bloomLevel: Number.NaN })).toContain("Bloom 1");
+      expect(formatHeader({ domain: "", bloomLevel: Number.NaN })).toContain(
+        "Bloom 1",
+      );
     });
 
     it("omits the domain segment when domain is blank", () => {
@@ -23,9 +25,14 @@ describe("zam learn — formatting", () => {
 
   describe("formatReveal", () => {
     it("reveals the concept", () => {
-      const out = formatReveal({ slug: "test-slug", concept: "FSRS stability is the memory half-life in days" });
+      const out = formatReveal({
+        slug: "test-slug",
+        concept: "FSRS stability is the memory half-life in days",
+      });
       expect(out).toContain("Token: #test-slug");
-      expect(out).toContain("Concept: FSRS stability is the memory half-life in days");
+      expect(out).toContain(
+        "Concept: FSRS stability is the memory half-life in days",
+      );
     });
 
     it("includes context and quotes resolved source content", () => {
@@ -36,7 +43,12 @@ describe("zam learn — formatting", () => {
         filePath: "lib.txt",
         truncated: false,
       };
-      const out = formatReveal({ slug: "test-slug", concept: "C", context: "extra context", resolved });
+      const out = formatReveal({
+        slug: "test-slug",
+        concept: "C",
+        context: "extra context",
+        resolved,
+      });
       expect(out).toContain("Token: #test-slug");
       expect(out).toContain("Context: extra context");
       expect(out).toContain("Source (local: lib.txt):");
@@ -69,7 +81,12 @@ describe("zam learn — formatting", () => {
     });
 
     it("omits blank context and empty resolved content", () => {
-      const out = formatReveal({ slug: "test-slug", concept: "C", context: "   ", resolved: null });
+      const out = formatReveal({
+        slug: "test-slug",
+        concept: "C",
+        context: "   ",
+        resolved: null,
+      });
       expect(out).toContain("Token: #test-slug");
       expect(out).toContain("Concept: C");
     });

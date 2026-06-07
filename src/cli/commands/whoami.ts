@@ -3,26 +3,8 @@
  */
 
 import { Command } from "commander";
-import type { Database } from "libsql";
-import {
-  deleteSetting,
-  getSetting,
-  openDatabase,
-  setSetting,
-} from "../../kernel/index.js";
-
-function withDb(fn: (db: Database) => void): void {
-  let db: Database | undefined;
-  try {
-    db = openDatabase();
-    fn(db);
-  } catch (err) {
-    console.error("Error:", (err as Error).message);
-    process.exit(1);
-  } finally {
-    db?.close();
-  }
-}
+import { deleteSetting, getSetting, setSetting } from "../../kernel/index.js";
+import { withDb } from "./shared/db.js";
 
 export const whoamiCommand = new Command("whoami")
   .description("Show or set the default user identity")

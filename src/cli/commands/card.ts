@@ -3,7 +3,6 @@
  */
 
 import { Command } from "commander";
-import type { Database } from "libsql";
 import type { Rating } from "../../kernel/index.js";
 import {
   cascadeBlock,
@@ -14,23 +13,10 @@ import {
   getDueCards,
   getPrerequisites,
   getTokenBySlug,
-  openDatabase,
   unblockReady,
 } from "../../kernel/index.js";
 import { resolveUser } from "./resolve-user.js";
-
-function withDb(fn: (db: Database) => void): void {
-  let db: Database | undefined;
-  try {
-    db = openDatabase();
-    fn(db);
-  } catch (err) {
-    console.error("Error:", (err as Error).message);
-    process.exit(1);
-  } finally {
-    db?.close();
-  }
-}
+import { withDb } from "./shared/db.js";
 
 export const cardCommand = new Command("card").description(
   "Manage spaced-repetition cards",

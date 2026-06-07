@@ -58,6 +58,7 @@ repo in `~/.zam/zam.db`.
 ```
 zam-personal/           ← GitHub template repo
 ├── CLAUDE.md           ← Context for Claude Code before skill files exist
+├── AGENTS.md           ← Context for Codex before skill files exist
 ├── README.md           ← How to create and set up a personal instance
 ├── .gitignore          ← Excludes node_modules/, .zam/*.db
 ├── package.json        ← { "dependencies": { "zam-core": "^x.y.z" } }
@@ -67,18 +68,22 @@ zam-personal/           ← GitHub template repo
 │   └── README.md       ← What beliefs are; Miller's number (max 7)
 ├── goals/
 │   └── README.md       ← What goals are; decomposition model
-└── .claude/
-    └── skills/
-        └── setup/
-            └── SKILL.md ← /setup onboarding skill (static, always present)
+├── .claude/skills/setup/SKILL.md ← Claude onboarding skill (static)
+├── .gemini/skills/setup/SKILL.md ← Gemini onboarding skill (static)
+└── .agents/skills/setup/SKILL.md ← Codex onboarding skill (static)
 ```
 
-After running `/setup`, `zam-core` distributes its own skill file:
+After running the setup skill, `zam-core` distributes its own skill file:
 
 ```
 .claude/skills/zam/SKILL.md    ← from node_modules/zam-core/.claude/skills/zam/
-.gemini/skills/zam/SKILL.md    ← from node_modules/zam-core/.gemini/skills/zam/
+.agent/skills/zam/SKILL.md     ← from node_modules/zam-core/.agent/skills/zam/
+.agents/skills/zam/SKILL.md    ← from node_modules/zam-core/.agents/skills/zam/
 ```
+
+Claude- and Gemini-compatible clients invoke their skills with `/setup` and
+`/zam`. Codex invokes repository skills with `$setup` and `$zam`, or selects
+them through `/skills`.
 
 ### Personal config schema (`.zam/config.yaml`)
 
@@ -123,6 +128,7 @@ published identity) but may be private for internal teams.
 ```
 zam-community/          ← GitHub template repo
 ├── CLAUDE.md           ← Context for Claude Code
+├── AGENTS.md           ← Context for Codex
 ├── README.md           ← How to create and set up a community instance
 ├── .gitignore          ← Excludes node_modules/, .zam/*.db
 ├── package.json        ← { "dependencies": { "zam-core": "^x.y.z" } }
@@ -134,10 +140,9 @@ zam-community/          ← GitHub template repo
 │   └── README.md       ← Community's shared objectives
 ├── members/
 │   └── README.md       ← Membership model; how to join
-└── .claude/
-    └── skills/
-        └── setup/
-            └── SKILL.md ← /setup skill (community-aware)
+├── .claude/skills/setup/SKILL.md ← Claude setup skill
+├── .gemini/skills/setup/SKILL.md ← Gemini setup skill
+└── .agents/skills/setup/SKILL.md ← Codex setup skill
 ```
 
 ### Community config schema (`.zam/config.yaml`)
@@ -160,7 +165,7 @@ repos:                   # source repositories members should clone
 
 ## Setup Protocol
 
-The `/setup` skill in a personal instance follows this sequence:
+The `setup` skill in a personal instance follows this sequence:
 
 ```
 1. Read .zam/config.yaml
@@ -185,7 +190,7 @@ The `/setup` skill in a personal instance follows this sequence:
 This means the personal setup skill does **not** hardcode community-specific logic.
 The community's config drives what gets cloned and linked. Adding a new community
 to a personal instance is as simple as appending to `communities:` and re-running
-`/setup`.
+the setup skill.
 
 ---
 
@@ -221,7 +226,7 @@ communities:
     role: developer
 ```
 
-When `/setup` runs on such a personal instance, it automatically clones all three
+When the setup skill runs on such a personal instance, it automatically clones all three
 repos and sets up the `npm link` chain — no manual steps, no tribal knowledge.
 
 ---
@@ -232,11 +237,12 @@ Skill files always travel with the package that defines them:
 
 | Package / repo | Owns skill group | Distributes via |
 |----------------|-----------------|-----------------|
-| `zam-core` | `.claude/skills/zam/` | `zam setup` (copies from `node_modules/zam-core/`) |
-| `zam-community` | `.claude/skills/setup/` | Static in template (always present before setup runs) |
-| Future: `zam-devops` | `.claude/skills/devops/` | `devops setup` (copies from `node_modules/zam-devops/`) |
+| `zam-core` | `.claude/skills/zam/`, `.agent/skills/zam/`, `.agents/skills/zam/` | `zam setup` (copies from `node_modules/zam-core/`) |
+| Personal/community template | `.claude/skills/setup/`, `.gemini/skills/setup/`, `.agents/skills/setup/` | Static in template (always present before setup runs) |
+| Future: `zam-devops` | Per-client `skills/devops/` | `devops setup` (copies from `node_modules/zam-devops/`) |
 
-The naming convention `<ai-cli>/skills/<group>/SKILL.md` provides natural namespacing.
+The naming convention `<ai-cli>/skills/<group>/SKILL.md` provides natural
+namespacing. Codex specifically requires the plural `.agents/skills` path.
 No central registry is needed — each package owns its subdirectory.
 
 ---

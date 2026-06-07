@@ -133,7 +133,7 @@ export function pairCommands(events: MonitorEvent[]): CommandRecord[] {
 
 const HELP_PATTERNS = ["--help", "man ", "tldr ", "help "];
 const HELP_WINDOW_MS = 60_000;
-const RETRY_WINDOW_MS = 30_000;
+const _RETRY_WINDOW_MS = 30_000;
 
 function matchesToken(command: string, patterns: string[]): boolean {
   const lower = command.toLowerCase();

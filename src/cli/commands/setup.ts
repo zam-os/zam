@@ -1,23 +1,26 @@
 /**
  * `zam setup` — Distribute skill files from the zam package into the current
- * personal instance's .claude/ and .agent/ directories, and optionally
- * initialize the ZAM database and generate a CLAUDE.md.
+ * personal instance's agent skill directories, and optionally initialize the
+ * ZAM database and generate agent-specific instruction files.
  *
  * Run this once after cloning a ZAM personal instance, and again after
  * upgrading zam (with --force) to refresh the skill files.
  */
 
+import { copyFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { basename, dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { Command } from "commander";
-import { copyFileSync, existsSync, mkdirSync, writeFileSync } from "fs";
-import { basename, dirname, join } from "path";
-import { fileURLToPath } from "url";
 import { getDefaultDbPath, openDatabaseWithSync } from "../../kernel/index.js";
 
-// The compiled CLI lives at dist/cli/index.js inside the package.
-// Two levels up from there is the package root (dist/ â†’ package root).
-// This same relative path also works when running via `tsx src/cli/index.ts`
-// (src/ â†’ package root), so no branch logic is needed.
-const packageRoot = fileURLToPath(new URL("../..", import.meta.url));
+// The bundled CLI resolves from dist/cli/index.js; source tests resolve from
+// src/cli/commands/setup.ts. Select the first candidate containing package.json.
+const packageRoot =
+  [
+    fileURLToPath(new URL("../..", import.meta.url)),
+    fileURLToPath(new URL("../../..", import.meta.url)),
+  ].find((candidate) => existsSync(join(candidate, "package.json"))) ??
+  fileURLToPath(new URL("../..", import.meta.url));
 
 const SKILL_PAIRS: Array<{ from: string; to: string }> = [
   {
@@ -28,10 +31,13 @@ const SKILL_PAIRS: Array<{ from: string; to: string }> = [
     from: join(packageRoot, ".agent", "skills", "zam", "SKILL.md"),
     to: join(".agent", "skills", "zam", "SKILL.md"),
   },
+  {
+    from: join(packageRoot, ".agents", "skills", "zam", "SKILL.md"),
+    to: join(".agents", "skills", "zam", "SKILL.md"),
+  },
 ];
 
-function copySkills(force: boolean): void {
-  const cwd = process.cwd();
+export function copySkills(force: boolean, cwd: string = process.cwd()): void {
   let anyAction = false;
 
   for (const { from, to } of SKILL_PAIRS) {
@@ -79,16 +85,19 @@ function initDatabase(skipInit: boolean): void {
   }
 }
 
-function writeClaudeMd(skipClaudeMd: boolean): void {
+export function writeClaudeMd(
+  skipClaudeMd: boolean,
+  cwd: string = process.cwd(),
+): void {
   if (skipClaudeMd) return;
 
-  const dest = join(process.cwd(), "CLAUDE.md");
+  const dest = join(cwd, "CLAUDE.md");
   if (existsSync(dest)) {
     console.log(`  skip  CLAUDE.md (already present)`);
     return;
   }
 
-  const name = basename(process.cwd());
+  const name = basename(cwd);
   writeFileSync(
     dest,
     `# ZAM Personal Kernel â€” ${name}
@@ -116,6 +125,53 @@ Use \`zam connector setup turso\` to store cloud credentials in
   console.log(`  write CLAUDE.md`);
 }
 
+export function writeAgentsMd(
+  skipAgentsMd: boolean,
+  cwd: string = process.cwd(),
+): void {
+  if (skipAgentsMd) return;
+
+  const dest = join(cwd, "AGENTS.md");
+  if (existsSync(dest)) {
+    console.log(`  skip  AGENTS.md (already present)`);
+    return;
+  }
+
+  const name = basename(cwd);
+  writeFileSync(
+    dest,
+    `# ZAM Personal Kernel - ${name}
+
+This is a ZAM personal instance. ZAM builds lasting skills through spaced
+repetition during real work, not separate study sessions.
+
+## First time here?
+Run \`zam setup\` from the shell. When this repository includes
+\`.agents/skills/setup/\`, you can instead select \`setup\` through \`/skills\`
+or invoke \`$setup\`.
+
+## Regular use
+Select the \`zam\` skill through \`/skills\` or invoke \`$zam\` to start a
+learning session on whatever you are working on.
+
+## What lives here
+- \`beliefs/\` - your worldview, approved by git commit
+- \`goals/\` - your objectives, decomposed into tasks and learning tokens
+
+## Fast-changing data
+Learning tokens, cards, and review history live in local SQLite by default.
+Use \`zam connector setup turso\` to store cloud credentials in
+\`~/.zam/credentials.json\` and use a Turso database across machines.
+
+## Codex skills
+Codex discovers repository skills under \`.agents/skills/\`. Run
+\`zam setup --force\` after upgrading \`zam-core\` to refresh them.
+`,
+    "utf8",
+  );
+  console.log(`  write AGENTS.md`);
+}
+
 export const setupCommand = new Command("setup")
   .description(
     "Distribute ZAM skill files into this personal instance and initialize the database",
@@ -127,16 +183,23 @@ export const setupCommand = new Command("setup")
   )
   .option("--skip-init", "skip database initialization", false)
   .option("--skip-claude-md", "skip CLAUDE.md generation", false)
+  .option("--skip-agents-md", "skip AGENTS.md generation", false)
   .action(
-    (opts: { force: boolean; skipInit: boolean; skipClaudeMd: boolean }) => {
+    (opts: {
+      force: boolean;
+      skipInit: boolean;
+      skipClaudeMd: boolean;
+      skipAgentsMd: boolean;
+    }) => {
       console.log(`Setting up ZAM in ${process.cwd()}\n`);
 
       copySkills(opts.force);
       initDatabase(opts.skipInit);
       writeClaudeMd(opts.skipClaudeMd);
+      writeAgentsMd(opts.skipAgentsMd);
 
       console.log(
-        "\nDone. Run `zam whoami --set <your-id>` to set your identity, then open Claude Code or Antigravity CLI and run /zam to start a learning session.",
+        "\nDone. Run `zam whoami --set <your-id>` to set your identity. Start the `zam` skill with `/zam` in Claude/Gemini-compatible clients or `$zam` (or `/skills`) in Codex.",
       );
     },
   );

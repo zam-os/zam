@@ -1,12 +1,12 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
-  resolveReference,
-  resolveReviewContext,
   matchesFilePath,
   normalizePath,
+  resolveReference,
+  resolveReviewContext,
 } from "../../src/kernel/index.js";
 
 describe("ZAM Reference Resolver & Path Matching", () => {
@@ -26,22 +26,48 @@ describe("ZAM Reference Resolver & Path Matching", () => {
 
   describe("normalizePath", () => {
     it("strips anchors and normalizes separators", () => {
-      expect(normalizePath("src\\kernel\\db\\schema.ts#L10-L20")).toBe("src/kernel/db/schema.ts");
+      expect(normalizePath("src\\kernel\\db\\schema.ts#L10-L20")).toBe(
+        "src/kernel/db/schema.ts",
+      );
       expect(normalizePath("CLAUDE.md#L45")).toBe("claude.md");
-      expect(normalizePath("  docs/architecture.md  ")).toBe("docs/architecture.md");
+      expect(normalizePath("  docs/architecture.md  ")).toBe(
+        "docs/architecture.md",
+      );
     });
   });
 
   describe("matchesFilePath", () => {
     it("matches basic relative paths", () => {
-      expect(matchesFilePath("src/kernel/db/schema.ts", "src/kernel/db/schema.ts")).toBe(true);
-      expect(matchesFilePath("src\\kernel\\db\\schema.ts", "src/kernel/db/schema.ts")).toBe(true);
-      expect(matchesFilePath("src/kernel/db/schema.ts#L10-L20", "src/kernel/db/schema.ts")).toBe(true);
+      expect(
+        matchesFilePath("src/kernel/db/schema.ts", "src/kernel/db/schema.ts"),
+      ).toBe(true);
+      expect(
+        matchesFilePath(
+          "src\\kernel\\db\\schema.ts",
+          "src/kernel/db/schema.ts",
+        ),
+      ).toBe(true);
+      expect(
+        matchesFilePath(
+          "src/kernel/db/schema.ts#L10-L20",
+          "src/kernel/db/schema.ts",
+        ),
+      ).toBe(true);
     });
 
     it("matches trailing segments for relative/absolute mappings", () => {
-      expect(matchesFilePath("C:/src/github/zam/src/kernel/db/schema.ts", "src/kernel/db/schema.ts")).toBe(true);
-      expect(matchesFilePath("src/kernel/db/schema.ts", "C:/src/github/zam/src/kernel/db/schema.ts")).toBe(true);
+      expect(
+        matchesFilePath(
+          "C:/src/github/zam/src/kernel/db/schema.ts",
+          "src/kernel/db/schema.ts",
+        ),
+      ).toBe(true);
+      expect(
+        matchesFilePath(
+          "src/kernel/db/schema.ts",
+          "C:/src/github/zam/src/kernel/db/schema.ts",
+        ),
+      ).toBe(true);
     });
 
     it("matches GitHub URIs against local relative paths", () => {
@@ -66,16 +92,30 @@ describe("ZAM Reference Resolver & Path Matching", () => {
     });
 
     it("does not match generic web links or mismatched files", () => {
-      expect(matchesFilePath("https://google.com/search?q=test", "src/kernel/db/schema.ts")).toBe(false);
-      expect(matchesFilePath("src/kernel/db/schema.ts", "src/kernel/db/connection.ts")).toBe(false);
+      expect(
+        matchesFilePath(
+          "https://google.com/search?q=test",
+          "src/kernel/db/schema.ts",
+        ),
+      ).toBe(false);
+      expect(
+        matchesFilePath(
+          "src/kernel/db/schema.ts",
+          "src/kernel/db/connection.ts",
+        ),
+      ).toBe(false);
     });
   });
 
   describe("resolveReference", () => {
     it("resolves dynamic search directives", async () => {
-      const result = await resolveReference("search://websearch?q=fsrs+algorithm");
+      const result = await resolveReference(
+        "search://websearch?q=fsrs+algorithm",
+      );
       expect(result.sourceType).toBe("dynamic_search");
-      expect(result.content).toBe('QUERY_DIRECTIVE: Run web search for "fsrs algorithm"');
+      expect(result.content).toBe(
+        'QUERY_DIRECTIVE: Run web search for "fsrs algorithm"',
+      );
     });
 
     it("resolves local file paths and slices lines using anchors", async () => {
@@ -132,9 +172,13 @@ describe("ZAM Reference Resolver & Path Matching", () => {
     });
 
     it("passes through dynamic search directives", async () => {
-      const ctx = await resolveReviewContext("search://websearch?q=spaced+repetition");
+      const ctx = await resolveReviewContext(
+        "search://websearch?q=spaced+repetition",
+      );
       expect(ctx?.sourceType).toBe("dynamic_search");
-      expect(ctx?.content).toBe('QUERY_DIRECTIVE: Run web search for "spaced repetition"');
+      expect(ctx?.content).toBe(
+        'QUERY_DIRECTIVE: Run web search for "spaced repetition"',
+      );
       expect(ctx?.truncated).toBe(false);
     });
   });

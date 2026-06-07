@@ -10,9 +10,14 @@ import {
 
 describe("PowerShell monitor hooks", () => {
   it("generates PowerShell hook code for the existing monitor event schema", () => {
-    const script = generatePowerShellHooks("C:\\Users\\Thomas\\.zam\\monitor\\session.jsonl", "session-1");
+    const script = generatePowerShellHooks(
+      "C:\\Users\\Thomas\\.zam\\monitor\\session.jsonl",
+      "session-1",
+    );
 
-    expect(script).toContain("$global:__ZAM_MONITOR_FILE = 'C:\\Users\\Thomas\\.zam\\monitor\\session.jsonl'");
+    expect(script).toContain(
+      "$global:__ZAM_MONITOR_FILE = 'C:\\Users\\Thomas\\.zam\\monitor\\session.jsonl'",
+    );
     expect(script).toContain("$global:__ZAM_MONITOR_SESSION = 'session-1'");
     expect(script).toContain("ConvertTo-Json -Compress -Depth 4");
     expect(script).toContain('type = "command_start"');
@@ -22,9 +27,14 @@ describe("PowerShell monitor hooks", () => {
   });
 
   it("escapes single quotes in PowerShell string literals", () => {
-    const script = generatePowerShellHooks("C:\\tmp\\zam's\\session.jsonl", "session'2");
+    const script = generatePowerShellHooks(
+      "C:\\tmp\\zam's\\session.jsonl",
+      "session'2",
+    );
 
-    expect(script).toContain("$global:__ZAM_MONITOR_FILE = 'C:\\tmp\\zam''s\\session.jsonl'");
+    expect(script).toContain(
+      "$global:__ZAM_MONITOR_FILE = 'C:\\tmp\\zam''s\\session.jsonl'",
+    );
     expect(script).toContain("$global:__ZAM_MONITOR_SESSION = 'session''2'");
   });
 

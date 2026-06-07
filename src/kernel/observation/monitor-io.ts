@@ -43,7 +43,7 @@ export function writeMonitorEvent(
 ): void {
   ensureMonitorDir();
   const path = getMonitorPath(sessionId);
-  appendFileSync(path, JSON.stringify(event) + "\n");
+  appendFileSync(path, `${JSON.stringify(event)}\n`);
 }
 
 /** Read and parse all events from a session's monitor log. */

@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { detectSystemLocale, normalizeLocale, t } from "../../src/kernel/index.js";
+import {
+  detectSystemLocale,
+  normalizeLocale,
+  t,
+} from "../../src/kernel/index.js";
 
 describe("Locale Detection & i18n Translation", () => {
   describe("normalizeLocale", () => {

@@ -8,28 +8,10 @@ import { execSync } from "node:child_process";
 import { chmodSync, existsSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { Command } from "commander";
-import type { Database } from "libsql";
 import type { Token } from "../../kernel/index.js";
-import {
-  getCard,
-  matchesFilePath,
-  openDatabase,
-  updateCard,
-} from "../../kernel/index.js";
+import { getCard, matchesFilePath } from "../../kernel/index.js";
 import { resolveUser } from "./resolve-user.js";
-
-function withDb(fn: (db: Database) => void): void {
-  let db: Database | undefined;
-  try {
-    db = openDatabase();
-    fn(db);
-  } catch (err) {
-    console.error("Error:", (err as Error).message);
-    process.exit(1);
-  } finally {
-    db?.close();
-  }
-}
+import { withDb } from "./shared/db.js";
 
 /**
  * Installs the Git post-commit hook.
@@ -56,7 +38,7 @@ zam git-sync --commit HEAD --quiet
     writeFileSync(hookPath, hookContent, { encoding: "utf-8", flag: "w" });
     try {
       chmodSync(hookPath, "755");
-    } catch (e) {
+    } catch (_e) {
       // Best-effort chmod (Windows might ignore/fail, which is fine)
     }
     console.log(
@@ -96,7 +78,7 @@ export const gitSyncCommand = new Command("git-sync")
           .split(/\r?\n/)
           .map((f) => f.trim())
           .filter(Boolean);
-      } catch (err) {
+      } catch (_err) {
         if (!opts.quiet) {
           console.warn(
             "Notice: Failed to read git modifications. Ensure you are in a Git repo and commit hash is valid.",

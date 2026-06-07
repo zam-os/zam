@@ -111,7 +111,7 @@ export function discoverSkills(
   const lastSessionId = [...sessionCommands.keys()].pop();
   if (lastSessionId) {
     const lastCommands = sessionCommands.get(lastSessionId)!;
-    for (const [key, entry] of sequenceIndex) {
+    for (const [_key, entry] of sequenceIndex) {
       if (entry.sessionCount >= minSessions) {
         entry.examples = findExamplesForSequence(lastCommands, entry.steps);
       }

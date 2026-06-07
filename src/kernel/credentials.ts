@@ -47,7 +47,7 @@ export function saveCredentials(creds: Credentials, path?: string): void {
   if (!existsSync(dir)) {
     mkdirSync(dir, { recursive: true });
   }
-  writeFileSync(p, JSON.stringify(creds, null, 2) + "\n", "utf-8");
+  writeFileSync(p, `${JSON.stringify(creds, null, 2)}\n`, "utf-8");
 }
 
 /** Get complete Turso credentials, or null if incomplete. */

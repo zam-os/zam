@@ -46,7 +46,7 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
         requiresTurso = true;
       }
     }
-  } catch (e) {}
+  } catch (_e) {}
 
   if (
     requiresTurso &&

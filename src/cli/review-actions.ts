@@ -25,6 +25,20 @@ type InteractiveTerminalAction =
   | "delete-card"
   | "stop";
 
+type InteractiveReviewChoice =
+  | Rating
+  | InteractiveTerminalAction
+  | "edit-token";
+
+type EditableTokenField =
+  | "concept"
+  | "domain"
+  | "bloom_level"
+  | "context"
+  | "symbiosis_mode"
+  | "source_link"
+  | "question";
+
 export interface RunInteractiveReviewActionInput {
   db: Database;
   userId: string;
@@ -44,7 +58,7 @@ export async function runInteractiveReviewAction(
   let currentItem = { ...inputData.item };
 
   while (true) {
-    const choice = (await select({
+    const choice = await select<InteractiveReviewChoice>({
       message: "What next?",
       choices: [
         { name: "1 - Again (forgot)", value: 1 },
@@ -64,7 +78,7 @@ export async function runInteractiveReviewAction(
           value: "stop",
         },
       ],
-    })) as Rating | InteractiveTerminalAction | "edit-token";
+    });
 
     if (typeof choice === "number") {
       const result = executeReviewAction(inputData.db, {
@@ -81,7 +95,7 @@ export async function runInteractiveReviewAction(
         4: "Easy",
       };
       console.log(
-        `  ${ratingLabels[choice]} — next due: ${result.evaluation!.nextDueAt}`,
+        `  ${ratingLabels[choice]} — next due: ${result.evaluation?.nextDueAt}`,
       );
 
       if (result.blocked) {
@@ -254,7 +268,7 @@ export async function runInteractiveReviewAction(
 }
 
 async function promptTokenEdit(token: Token): Promise<UpdateTokenInput | null> {
-  const field = (await select({
+  const field = await select<EditableTokenField | "cancel">({
     message: `Edit which field on ${token.slug}?`,
     choices: [
       { name: "Concept", value: "concept" },
@@ -263,9 +277,10 @@ async function promptTokenEdit(token: Token): Promise<UpdateTokenInput | null> {
       { name: "Context", value: "context" },
       { name: "Symbiosis mode", value: "symbiosis_mode" },
       { name: "Source link", value: "source_link" },
+      { name: "Question", value: "question" },
       { name: "Cancel", value: "cancel" },
     ],
-  })) as keyof UpdateTokenInput | "cancel";
+  });
 
   if (field === "cancel") {
     return null;
@@ -348,6 +363,21 @@ async function promptTokenEdit(token: Token): Promise<UpdateTokenInput | null> {
         default: token.source_link ?? "",
       });
       return link === token.source_link ? null : { source_link: link || null };
+    }
+
+    case "question": {
+      const question = await input({
+        message: "Recall question (blank allowed):",
+        default: token.question ?? "",
+      });
+      return question === token.question
+        ? null
+        : { question: question || null };
+    }
+
+    default: {
+      const exhaustive: never = field;
+      throw new Error(`Unsupported token field: ${exhaustive}`);
     }
   }
 }

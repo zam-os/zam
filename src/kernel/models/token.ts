@@ -320,42 +320,85 @@ export function deleteToken(db: Database, slug: string): DeleteTokenResult {
 /**
  * Fuzzy search for tokens by keyword query.
  *
- * Ported from the PoC's find-token command: splits the query into word
- * tokens, scores each database token by word overlap plus a substring
- * bonus on the concept field, and returns all matches sorted by score
- * descending.
+ * Uses SQLite LIKE queries on slug, concept, and domain to avoid loading
+ * every non-deprecated token into memory.  Each search term runs its own
+ * LIKE query; results are aggregated in JS with a word-overlap score plus
+ * a substring bonus on the concept field.  Results are returned sorted by
+ * relevance score descending.
+ *
+ * For very small search terms (< 3 chars) a light in-memory fallback is
+ * used to avoid matching every token.
  */
 export function findTokens(db: Database, query: string): ScoredToken[] {
   const normalised = query.toLowerCase();
-  const qTokens = new Set(
-    normalised.split(/[\s,.\-_/\\:;!?()[\]{}]+/).filter((t) => t.length > 2),
-  );
+  const searchTokens = normalised
+    .split(/[\s,.\-_/\\:;!?()[\]{}]+/)
+    .filter((t) => t.length > 0);
 
-  const tokens = db
-    .prepare("SELECT * FROM tokens WHERE deprecated_at IS NULL")
-    .all() as Token[];
+  if (searchTokens.length === 0) return [];
 
+  // Short terms: fall back to in-memory scan (cheap — few tokens match anyway)
+  const shortTerms = searchTokens.filter((t) => t.length <= 2);
+  const longTerms = searchTokens.filter((t) => t.length > 2);
+
+  const scoreMap = new Map<string, { token: Token; score: number }>();
+
+  // Per-term SQL LIKE queries for each substantive search token.
+  const likeSQL =
+    `SELECT * FROM tokens WHERE deprecated_at IS NULL AND ` +
+    `(lower(slug) LIKE ? OR lower(concept) LIKE ? OR lower(domain) LIKE ?)`;
+
+  for (const term of longTerms) {
+    const pattern = `%${term}%`;
+    const rows = db.prepare(likeSQL).all(pattern, pattern, pattern) as Token[];
+    for (const row of rows) {
+      const entry = scoreMap.get(row.id);
+      if (entry) {
+        entry.score++;
+      } else {
+        scoreMap.set(row.id, { token: row, score: 1 });
+      }
+    }
+  }
+
+  // If there were short terms, or all terms were short, scan in-memory.
+  if (shortTerms.length > 0 || longTerms.length === 0) {
+    const allTokens = db
+      .prepare("SELECT * FROM tokens WHERE deprecated_at IS NULL")
+      .all() as Token[];
+
+    for (const token of allTokens) {
+      const words = `${token.slug} ${token.concept} ${token.domain}`
+        .toLowerCase()
+        .split(/[\s,.\-_/\\:;!?()[\]{}]+/)
+        .filter(Boolean);
+
+      let matchCount = 0;
+      for (const term of shortTerms.length > 0 ? shortTerms : searchTokens) {
+        for (const w of words) {
+          if (w === term) matchCount++;
+        }
+      }
+
+      if (matchCount > 0) {
+        const entry = scoreMap.get(token.id);
+        if (entry) {
+          entry.score += matchCount;
+        } else {
+          scoreMap.set(token.id, { token, score: matchCount });
+        }
+      }
+    }
+  }
+
+  // Apply substring bonus and build result.
   const scored: ScoredToken[] = [];
-
-  for (const t of tokens) {
-    const words = (t.slug + " " + t.concept + " " + t.domain)
-      .toLowerCase()
-      .split(/[\s,.\-_/\\:;!?()[\]{}]+/)
-      .filter(Boolean);
-
-    let score = 0;
-    for (const w of words) {
-      if (qTokens.has(w)) score++;
+  for (const { token, score } of scoreMap.values()) {
+    let finalScore = score;
+    if (token.concept.toLowerCase().includes(normalised.slice(0, 25))) {
+      finalScore += 3;
     }
-
-    // Substring bonus: if the concept contains the start of the query
-    if (t.concept.toLowerCase().includes(normalised.slice(0, 25))) {
-      score += 3;
-    }
-
-    if (score > 0) {
-      scored.push({ score, ...t });
-    }
+    scored.push({ score: finalScore, ...token });
   }
 
   scored.sort((a, b) => b.score - a.score);

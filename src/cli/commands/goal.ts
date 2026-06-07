@@ -8,7 +8,7 @@
 
 import { existsSync, mkdirSync } from "node:fs";
 import { resolve } from "node:path";
-import { input, select } from "@inquirer/prompts";
+import { input } from "@inquirer/prompts";
 import { Command } from "commander";
 import type { GoalStatus } from "../../kernel/index.js";
 import {
@@ -107,7 +107,7 @@ goalCommand
     }
 
     console.log("Goals:");
-    console.log("  " + "─".repeat(70));
+    console.log(`  ${"─".repeat(70)}`);
     for (const g of goals) {
       printGoalLine(g, 0);
     }

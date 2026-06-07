@@ -1,12 +1,13 @@
 {
   "name": "zam-core",
-  "version": "0.3.4",
+  "version": "0.3.6",
   "description": "The Symbiotic Learning Kernel: Elevating Human Intelligence through AI Collaboration.",
   "type": "module",
   "files": [
     "dist/",
-    ".claude/",
-    ".agent/",
+    ".claude/skills/zam/",
+    ".agent/skills/zam/",
+    ".agents/skills/zam/",
     "README.md",
     "LICENSE"
   ],

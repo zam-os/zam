@@ -2,7 +2,7 @@
  * ZAM Bridge Protocol — JSON IPC for AI CLI Integration
  *
  * Defines the request/response shapes for communication between
- * AI CLI skills (Claude Code, Copilot CLI, Gemini CLI) and the
+ * AI CLI skills (Claude Code, Codex, Copilot CLI, Gemini CLI) and the
  * ZAM Learning Kernel.
  *
  * The bridge uses stdin/stdout JSON: the AI CLI calls `zam bridge <command>`

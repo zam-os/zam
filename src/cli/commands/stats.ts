@@ -3,26 +3,9 @@
  */
 
 import { Command } from "commander";
-import type { Database } from "libsql";
-import {
-  getDomainCompetence,
-  getUserStats,
-  openDatabase,
-} from "../../kernel/index.js";
+import { getDomainCompetence, getUserStats } from "../../kernel/index.js";
 import { resolveUser } from "./resolve-user.js";
-
-function withDb(fn: (db: Database) => void): void {
-  let db: Database | undefined;
-  try {
-    db = openDatabase();
-    fn(db);
-  } catch (err) {
-    console.error("Error:", (err as Error).message);
-    process.exit(1);
-  } finally {
-    db?.close();
-  }
-}
+import { withDb } from "./shared/db.js";
 
 export const statsCommand = new Command("stats")
   .description("Show learning dashboard for a user")
@@ -56,7 +39,7 @@ export const statsCommand = new Command("stats")
         console.log(
           "  Domain           Cards  Mature  Stability  Retention  Suggested Mode",
         );
-        console.log("  " + "─".repeat(74));
+        console.log(`  ${"─".repeat(74)}`);
         for (const d of domains) {
           console.log(
             `  ${d.domain.padEnd(17)} ${String(d.totalCards).padEnd(6)} ${String(d.matureCards).padEnd(7)} ${String(d.avgStability).padEnd(10)} ${(d.retentionRate * 100).toFixed(1).padStart(5)}%     ${d.suggestedMode}`,

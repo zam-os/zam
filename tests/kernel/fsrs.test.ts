@@ -18,11 +18,8 @@ function addDays(base: Date, days: number): Date {
 // ── Default FSRS-5 weights for reference in assertions ──────────────────────
 
 const W = [
-  0.4072, 1.1829, 3.1262, 15.4722,
-  7.2102, 0.5316, 1.0651,
-  0.0092, 1.5988, 0.1176, 1.0014,
-  2.0032, 0.0266, 0.3077, 0.15,
-  0.0, 2.7849, 0.3477, 0.6831,
+  0.4072, 1.1829, 3.1262, 15.4722, 7.2102, 0.5316, 1.0651, 0.0092, 1.5988,
+  0.1176, 1.0014, 2.0032, 0.0266, 0.3077, 0.15, 0.0, 2.7849, 0.3477, 0.6831,
 ];
 
 // ── Tests ───────────────────────────────────────────────────────────────────
@@ -192,7 +189,9 @@ describe("FSRS-5 scheduler", () => {
       const nextGood = fsrs.schedule(card, 3, reviewTime);
       const nextEasy = fsrs.schedule(card, 4, reviewTime);
 
-      expect(nextEasy.scheduledDays).toBeGreaterThanOrEqual(nextGood.scheduledDays);
+      expect(nextEasy.scheduledDays).toBeGreaterThanOrEqual(
+        nextGood.scheduledDays,
+      );
       expect(nextEasy.stability).toBeGreaterThan(nextGood.stability);
     });
 
@@ -205,7 +204,9 @@ describe("FSRS-5 scheduler", () => {
       const nextHard = fsrs.schedule(card, 2, reviewTime);
       const nextGood = fsrs.schedule(card, 3, reviewTime);
 
-      expect(nextHard.scheduledDays).toBeLessThanOrEqual(nextGood.scheduledDays);
+      expect(nextHard.scheduledDays).toBeLessThanOrEqual(
+        nextGood.scheduledDays,
+      );
     });
   });
 

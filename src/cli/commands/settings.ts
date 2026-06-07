@@ -2,29 +2,17 @@
  * `zam settings` — User settings management.
  */
 
+import { existsSync } from "node:fs";
 import { Command } from "commander";
-import type { Database } from "libsql";
 import {
   deleteSetting,
   getAllSettings,
   getAllSettingsDetailed,
+  getRepoPaths,
   getSetting,
-  openDatabase,
   setSetting,
 } from "../../kernel/index.js";
-
-function withDb(fn: (db: Database) => void): void {
-  let db: Database | undefined;
-  try {
-    db = openDatabase();
-    fn(db);
-  } catch (err) {
-    console.error("Error:", (err as Error).message);
-    process.exit(1);
-  } finally {
-    db?.close();
-  }
-}
+import { withDb } from "./shared/db.js";
 
 export const settingsCommand = new Command("settings").description(
   "Manage user settings",
@@ -217,5 +205,81 @@ settingsCommand
 
       setSetting(db, "system.locale", lower);
       console.log(`Language set to: \x1b[32m${lower}\x1b[0m`);
+    });
+  });
+
+// ── zam settings repos ───────────────────────────────────────────────────
+
+settingsCommand
+  .command("repos")
+  .description("Show or set Personal, Team, and Organization repository paths")
+  .option("--personal <path>", "Set the Personal Repository path")
+  .option("--team <path>", "Set the Team Repository path")
+  .option("--org <path>", "Set the Organization Repository path")
+  .action((opts) => {
+    withDb((db) => {
+      let changed = false;
+
+      if (opts.personal !== undefined) {
+        setSetting(db, "repo.personal", opts.personal);
+        console.log(`Set repo.personal = ${opts.personal}`);
+        changed = true;
+      }
+      if (opts.team !== undefined) {
+        setSetting(db, "repo.team", opts.team);
+        console.log(`Set repo.team = ${opts.team}`);
+        changed = true;
+      }
+      if (opts.org !== undefined) {
+        setSetting(db, "repo.org", opts.org);
+        console.log(`Set repo.org = ${opts.org}`);
+        changed = true;
+      }
+
+      if (changed) {
+        console.log("\nUpdated Repository Settings:\n");
+      } else {
+        console.log("Repository Settings:\n");
+      }
+
+      const paths = getRepoPaths(db);
+      console.log(
+        `Personal Repo:  ${
+          paths.personal
+            ? `\x1b[32m${paths.personal}\x1b[0m`
+            : "\x1b[31mNot Configured\x1b[0m"
+        }`,
+      );
+      console.log(
+        `Team Repo:      ${
+          paths.team
+            ? `\x1b[32m${paths.team}\x1b[0m`
+            : "\x1b[31mNot Configured\x1b[0m"
+        }`,
+      );
+      console.log(
+        `Org Repo:       ${
+          paths.org
+            ? `\x1b[32m${paths.org}\x1b[0m`
+            : "\x1b[31mNot Configured\x1b[0m"
+        }`,
+      );
+
+      // Check if folders exist
+      console.log("\nValidation:");
+      for (const [name, path] of Object.entries(paths)) {
+        if (path) {
+          const exists = existsSync(path);
+          console.log(
+            `  ${name.padEnd(9)}: ${
+              exists
+                ? "\x1b[32m✓ Valid folder\x1b[0m"
+                : "\x1b[31m✗ Directory does not exist\x1b[0m"
+            }`,
+          );
+        } else {
+          console.log(`  ${name.padEnd(9)}: \x1b[33m- Not Set\x1b[0m`);
+        }
+      }
     });
   });

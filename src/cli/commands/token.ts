@@ -3,7 +3,6 @@
  */
 
 import { Command } from "commander";
-import type { Database } from "libsql";
 import type { BloomLevel, SymbiosisMode } from "../../kernel/index.js";
 import {
   addPrerequisite,
@@ -18,29 +17,10 @@ import {
   getTokenBySlug,
   getTokenDeleteImpact,
   listTokens,
-  openDatabase,
   updateToken,
 } from "../../kernel/index.js";
 import { resolveUser } from "./resolve-user.js";
-
-async function withDb(
-  fn: (db: Database) => Promise<void> | void,
-): Promise<void> {
-  let db: Database | undefined;
-  try {
-    db = openDatabase();
-    await fn(db);
-  } catch (err) {
-    console.error("Error:", (err as Error).message);
-    process.exit(1);
-  } finally {
-    db?.close();
-  }
-}
-
-function jsonOut(data: unknown): void {
-  console.log(JSON.stringify(data, null, 2));
-}
+import { jsonOut, withDb } from "./shared/db.js";
 
 export const tokenCommand = new Command("token").description(
   "Manage knowledge tokens",
@@ -58,8 +38,8 @@ tokenCommand
   .option("--source-link <link>", "Source file path or reference URL", "")
   .option("--question <question>", "Specific question prompt for recall", "")
   .option("--json", "Output as JSON")
-  .action(async (opts) => {
-    await withDb(async (db) => {
+  .action((opts) => {
+    withDb((db) => {
       // Token creation is the frontier model's job: the agent (Claude Code,
       // Copilot / Antigravity CLI, …) decomposes the concept into atomic units
       // and may pass an explicit --question. The local LLM is deliberately NOT
@@ -190,8 +170,8 @@ tokenCommand
   )
   .option("--question <question>", "Updated question text (blank allowed)")
   .option("--json", "Output as JSON")
-  .action(async (opts) => {
-    await withDb(async (db) => {
+  .action((opts) => {
+    withDb((db) => {
       const updates: {
         concept?: string;
         domain?: string;

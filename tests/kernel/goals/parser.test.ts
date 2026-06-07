@@ -1,9 +1,9 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
-  parseGoalFile,
-  serializeGoal,
   extractTasks,
   extractTokenRefs,
+  parseGoalFile,
+  serializeGoal,
 } from "../../../src/kernel/goals/parser.js";
 
 describe("parseGoalFile", () => {
@@ -119,7 +119,10 @@ describe("extractTasks", () => {
 
     const tasks = extractTasks(body);
     expect(tasks).toHaveLength(4);
-    expect(tasks[0]).toEqual({ text: "Complete Rustlings exercises", done: false });
+    expect(tasks[0]).toEqual({
+      text: "Complete Rustlings exercises",
+      done: false,
+    });
     expect(tasks[1]).toEqual({ text: "Read the Rust Book", done: true });
     expect(tasks[2]).toEqual({ text: "Install Rust toolchain", done: true });
     expect(tasks[3]).toEqual({ text: "Build a CLI tool", done: false });

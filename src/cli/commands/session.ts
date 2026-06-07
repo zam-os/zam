@@ -16,7 +16,6 @@ import {
   fetchActiveWorkItems,
   generatePrompt,
   getSessionSummary,
-  getSetting,
   getTokenBySlug,
   loadADOConfig,
   logStep,
@@ -25,19 +24,7 @@ import {
 } from "../../kernel/index.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
 import { resolveUser } from "./resolve-user.js";
-
-function withDb(fn: (db: Database) => void): void {
-  let db: Database | undefined;
-  try {
-    db = openDatabase();
-    fn(db);
-  } catch (err) {
-    console.error("Error:", (err as Error).message);
-    process.exit(1);
-  } finally {
-    db?.close();
-  }
-}
+import { withDb } from "./shared/db.js";
 
 export const sessionCommand = new Command("session").description(
   "Manage learning sessions",
@@ -98,7 +85,7 @@ sessionCommand
       let task: string = opts.task;
 
       if (!task && !opts.quiet && !opts.json) {
-        task = await selectTask(db);
+        task = await selectTask();
       }
 
       if (!task) {
@@ -232,12 +219,12 @@ async function runRepetitionPhase(
 
 // ── Phase 2: Task Selection ─────────────────────────────────────────────────
 
-async function selectTask(db: Database): Promise<string> {
+async function selectTask(): Promise<string> {
   console.log("═".repeat(50));
   console.log("Phase 2: Task Selection");
   console.log("═".repeat(50));
 
-  const adoConfig = loadADOConfig(db);
+  const adoConfig = loadADOConfig();
 
   if (adoConfig) {
     const items = await fetchActiveWorkItems(adoConfig);
@@ -329,7 +316,7 @@ sessionCommand
       if (summary.steps.length > 0) {
         console.log("\nSteps:");
         console.log("  Token                 Done by  Rating  Concept");
-        console.log("  " + "─".repeat(70));
+        console.log(`  ${"─".repeat(70)}`);
         for (const s of summary.steps) {
           console.log(
             `  ${s.slug.padEnd(21)} ${s.done_by.padEnd(8)} ${String(s.rating ?? "-").padEnd(7)} ${s.concept.slice(0, 30)}`,

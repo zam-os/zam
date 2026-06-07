@@ -66,10 +66,13 @@ export function interleave<T extends { domain: string }>(
   while (result.length < items.length) {
     // Get domains that still have items, sorted by remaining count descending
     const activeDomains = [...byDomain.entries()]
-      .filter(([domain]) => cursors.get(domain)! < byDomain.get(domain)!.length)
+      .filter(
+        ([domain]) =>
+          (cursors.get(domain) ?? 0) < (byDomain.get(domain)?.length ?? 0),
+      )
       .sort((a, b) => {
-        const remainA = a[1].length - cursors.get(a[0])!;
-        const remainB = b[1].length - cursors.get(b[0])!;
+        const remainA = a[1].length - (cursors.get(a[0]) ?? 0);
+        const remainB = b[1].length - (cursors.get(b[0]) ?? 0);
         return remainB - remainA;
       });
 
@@ -78,7 +81,7 @@ export function interleave<T extends { domain: string }>(
     let pickedThisRound = false;
 
     for (const [domain, group] of activeDomains) {
-      const cursor = cursors.get(domain)!;
+      const cursor = cursors.get(domain) ?? 0;
       if (cursor >= group.length) continue;
 
       // Check if adding from this domain would exceed maxConsecutive
@@ -106,7 +109,7 @@ export function interleave<T extends { domain: string }>(
     // a streak from whatever domain has items left
     if (!pickedThisRound) {
       for (const [domain, group] of activeDomains) {
-        const cursor = cursors.get(domain)!;
+        const cursor = cursors.get(domain) ?? 0;
         if (cursor >= group.length) continue;
 
         result.push(group[cursor]);

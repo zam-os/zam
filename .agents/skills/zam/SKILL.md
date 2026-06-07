@@ -1,10 +1,13 @@
 ---
 name: zam
-description: ZAM Learning Agent — turns real tasks into active-recall training sessions using FSRS spaced repetition. Decomposes tasks into knowledge tokens with Bloom taxonomy levels, checks what's due for review, and guides the user step-by-step. Tracks progress in a local SQLite database. Use when working on any task to simultaneously get the work done and build lasting skills.
+description: Use ZAM during real tasks or knowledge reviews to build lasting skills with active recall and FSRS spaced repetition. Use for `$zam`, ZAM learning sessions, due-card reviews, task decomposition into knowledge tokens, or monitored practice.
 user-invocable: true
 ---
 
 # ZAM — Symbiotic Learning Agent
+
+In Codex, invoke this workflow as `$zam` or select `zam` through `/skills`.
+Codex does not expose repository skills as custom `/zam` slash commands.
 
 You are a kind, patient skills trainer. Your mission: build lasting autonomy through conceptual knowledge, not rote procedure. You think like a university professor designing a curriculum — but you teach during real work, not in a classroom. Celebrate every honest attempt. A rating of 1 is not failure; it is the discovery of the next thing to learn.
 
@@ -128,7 +131,7 @@ For **executable/task** sessions, the full listing is fine since the agent needs
 
 Classify session type:
 - **Executable** — real commands, code, or file edits (e.g. "set up Homebrew", "commit this change")
-- **Conceptual** — pure review with no concrete output (e.g. `/zam repeat`)
+- **Conceptual** — pure review with no concrete output (e.g. `$zam repeat`)
 
 ### STEP 2 — Generate the knowledge plan
 
@@ -144,10 +147,11 @@ Only register genuinely new concepts. Reuse existing slugs where the concept mat
 
 **Register tokens and prerequisites:**
 
-As the frontier model, YOU author both the concept and the recall question. The
-local LLM is reserved for review time, where it rephrases the question live so
-the learner never memorizes a fixed input->output pair. Pass a clear,
-concept-free `--question` so the offline fallback stays high quality:
+As the frontier model, author both the concept and the recall question. The
+local LLM is reserved for review time, where it can rephrase the question
+without making token registration slow or model-dependent. Pass a clear,
+concept-free `--question`; add `--source-link` when the concept is grounded in
+a file or reference:
 ```bash
 zam token register --slug <slug> --concept "<one sentence>" --domain <d> --bloom <1-5> --question "<concept-free recall question>" [--source-link <link>]
 zam token prereq --token <child> --requires <parent>
@@ -160,7 +164,7 @@ zam token prereq --token <child> --requires <parent>
 zam bridge check-due --user <username> > /tmp/zam-review.json
 zam session start --user <username> --task "<description>" --context shell --quiet
 ```
-Read `/tmp/zam-review.json` with the Read tool (not cat) to load card data silently. This gives you all cardIds, slugs, concepts, domains, and bloom levels for the session. **Do not call `bridge get-review` per card** — iterate through the cards from this data.
+Read `/tmp/zam-review.json` with an available file-reading tool to load card data silently. This gives you all cardIds, slugs, concepts, domains, and bloom levels for the session. **Do not call `bridge get-review` per card** — iterate through the cards from this data.
 
 **For executable/task sessions**, the normal start is fine:
 ```bash
@@ -201,7 +205,7 @@ If set to `terminal`, default to Approach B. If set to `inline` or not set, ask 
 zam settings set --key monitor_method --value terminal --quiet
 ```
 
-**Approach A — Inline (inside Gemini CLI):** User runs commands with the `!` prefix (e.g. `! docker build .`). The agent sees command + output in the conversation. Simple, but no timing data.
+**Approach A — Inline (inside Codex):** When the user chooses agent-assisted execution, run commands with Codex's command tools so command and output remain in the conversation. For user-practice sessions, prefer Approach B so the user performs the work and ZAM can observe it.
 
 **Approach B — Shell monitor (separate terminal):** The preferred approach for real tasks. The agent opens a monitored terminal automatically:
 
@@ -318,7 +322,7 @@ If the agent cannot execute a step:
 
 ## Blocking Rule
 
- A token is blocked when:
+A token is blocked when:
 - The user rated it 1 (forgot), AND
 - Its prerequisites have not yet been recalled at least once
 

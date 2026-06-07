@@ -3,26 +3,12 @@
  */
 
 import { Command } from "commander";
-import type { Database } from "libsql";
 import {
   createAgentSkill,
   getAgentSkill,
   listAgentSkills,
-  openDatabase,
 } from "../../kernel/index.js";
-
-function withDb(fn: (db: Database) => void): void {
-  let db: Database | undefined;
-  try {
-    db = openDatabase();
-    fn(db);
-  } catch (err) {
-    console.error("Error:", (err as Error).message);
-    process.exit(1);
-  } finally {
-    db?.close();
-  }
-}
+import { withDb } from "./shared/db.js";
 
 export const skillCommand = new Command("skill").description(
   "Manage agent skill entries (task recipes)",
