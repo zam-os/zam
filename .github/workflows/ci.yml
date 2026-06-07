@@ -26,8 +26,14 @@ jobs:
       - name: Run linter
         run: npm run lint
 
+      - name: Type-check project
+        run: npm run typecheck
+
       - name: Build project
         run: npm run build
+
+      - name: Smoke-test built CLI
+        run: node dist/cli/index.js --version
 
       - name: Run tests
         run: npm run test
