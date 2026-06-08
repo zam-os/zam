@@ -4,7 +4,6 @@
 
 import { input, password } from "@inquirer/prompts";
 import { Command } from "commander";
-import type { Database } from "libsql";
 import { fetchActiveWorkItems } from "../../kernel/connectors/azure-devops.js";
 import {
   clearADOCredentials,
@@ -14,6 +13,7 @@ import {
   setADOCredentials,
   setTursoCredentials,
 } from "../../kernel/credentials.js";
+import type { Database } from "../../kernel/index.js";
 import { openDatabaseWithSync } from "../../kernel/index.js";
 
 export const connectorCommand = new Command("connector").description(

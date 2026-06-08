@@ -5,7 +5,7 @@
  * The graph must remain acyclic — cycles are rejected at insert time.
  */
 
-import type { Database } from "libsql";
+import type { Database } from "../db/types.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 

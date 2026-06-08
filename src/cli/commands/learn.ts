@@ -13,8 +13,11 @@
 
 import { input } from "@inquirer/prompts";
 import { Command } from "commander";
-import type { Database } from "libsql";
-import type { BloomLevel, SupportedLocale } from "../../kernel/index.js";
+import type {
+  BloomLevel,
+  Database,
+  SupportedLocale,
+} from "../../kernel/index.js";
 import {
   buildReviewQueue,
   generatePrompt,

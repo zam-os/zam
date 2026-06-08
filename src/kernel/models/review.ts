@@ -6,8 +6,8 @@
  * learning history.
  */
 
-import type { Database } from "libsql";
 import { ulid } from "ulid";
+import type { Database } from "../db/types.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 

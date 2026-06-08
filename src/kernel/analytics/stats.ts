@@ -5,7 +5,7 @@
  * Ported from PoC's `stats` command with additions for FSRS and symbiosis modes.
  */
 
-import type { Database } from "libsql";
+import type { Database } from "../db/types.js";
 
 export interface UserStats {
   userId: string;

@@ -5,8 +5,8 @@
  * record which tokens were touched and by whom (user or agent).
  */
 
-import type { Database } from "libsql";
 import { ulid } from "ulid";
+import type { Database } from "../db/types.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 

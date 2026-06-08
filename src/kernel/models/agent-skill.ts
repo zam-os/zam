@@ -6,8 +6,8 @@
  * FSRS decay naturally resurfaces them for review — automation ≠ retention.
  */
 
-import type { Database } from "libsql";
 import { ulid } from "ulid";
+import type { Database } from "../db/types.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 

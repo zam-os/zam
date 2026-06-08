@@ -8,7 +8,7 @@
  * the active deck. When all prerequisites are met, we unblock.
  */
 
-import type { Database } from "libsql";
+import type { Database } from "../db/types.js";
 import { ensureCard } from "../models/card.js";
 import { getPrerequisites } from "../models/prerequisite.js";
 import { getTokenBySlug } from "../models/token.js";

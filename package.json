@@ -3,6 +3,17 @@
   "version": "0.3.6",
   "description": "The Symbiotic Learning Kernel: Elevating Human Intelligence through AI Collaboration.",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "files": [
     "dist/",
     ".claude/skills/zam/",
@@ -45,12 +56,16 @@
   "homepage": "https://github.com/zam-os/zam#readme",
   "dependencies": {
     "@inquirer/prompts": "^8.3.2",
+    "better-sqlite3": "^12.10.0",
     "commander": "^14.0.3",
-    "libsql": "^0.5.29",
     "ulid": "^3.0.2"
+  },
+  "optionalDependencies": {
+    "libsql": "^0.5.29"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.8",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^25.5.0",
     "tsup": "^8.5.1",
     "tsx": "^4.21.0",

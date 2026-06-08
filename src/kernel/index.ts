@@ -36,6 +36,12 @@ export {
   openDatabase,
   openDatabaseWithSync,
 } from "./db/connection.js";
+export type {
+  Database,
+  DatabaseValue,
+  RunResult,
+  Statement,
+} from "./db/types.js";
 export type { CreateGoalInput, GoalSummary } from "./goals/engine.js";
 // Goals
 export {

@@ -14,8 +14,7 @@
 
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
-import type { Database } from "libsql";
-import type { SupportedLocale } from "../../kernel/index.js";
+import type { Database, SupportedLocale } from "../../kernel/index.js";
 import {
   getSetting,
   getSystemProfile,

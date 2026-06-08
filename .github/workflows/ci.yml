@@ -82,3 +82,37 @@ jobs:
       - name: Check Tauri backend
         working-directory: desktop/src-tauri
         run: cargo check
+
+  windows-arm64:
+    runs-on: windows-11-arm
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+
+      - name: Verify native ARM64 runtime
+        shell: pwsh
+        run: |
+          if (node -p "process.arch" | Select-String -NotMatch '^arm64$') {
+            throw "Expected an ARM64 Node.js runtime"
+          }
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and test
+        run: |
+          npm run typecheck
+          npm run build
+          npm test
+
+      - name: Smoke-test local database
+        run: |
+          node dist/cli/index.js setup --skip-claude-md --skip-agents-md
+          node dist/cli/index.js stats

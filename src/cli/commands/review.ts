@@ -3,8 +3,7 @@
  */
 
 import { Command } from "commander";
-import type { Database } from "libsql";
-import type { BloomLevel } from "../../kernel/index.js";
+import type { BloomLevel, Database } from "../../kernel/index.js";
 import {
   buildReviewQueue,
   generatePrompt,

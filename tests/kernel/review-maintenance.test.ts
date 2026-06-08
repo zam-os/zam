@@ -1,10 +1,10 @@
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import type { Database } from "libsql";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   addPrerequisite,
+  type Database,
   createAgentSkill,
   createToken,
   deleteCardForUser,

@@ -1,7 +1,7 @@
 import { confirm, input, select } from "@inquirer/prompts";
-import type { Database } from "libsql";
 import type {
   BloomLevel,
+  Database,
   Rating,
   ReviewActionResult,
   ReviewQueueItem,

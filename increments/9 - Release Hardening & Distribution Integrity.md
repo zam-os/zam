@@ -25,6 +25,8 @@ that users receive.
   triggering Git tag.
 - Adds CI coverage for frontend compilation, Rust checks, resource preparation,
   and packaged bridge startup.
+- Uses an ARM64-capable SQLite backend for local data, keeps native libSQL
+  optional for Turso sync, and validates Windows ARM64 natively in CI.
 
 ## Acceptance Checklist
 
@@ -34,6 +36,6 @@ that users receive.
 - [x] Generated bundled bridge starts with its included Node runtime.
 - [ ] GitHub desktop CI job passes on Ubuntu.
 - [ ] A tagged release produces installable Windows, Linux, macOS Intel, and
-      macOS ARM artifacts.
+      macOS ARM artifacts, including Windows ARM64.
 - [ ] Install each artifact on a clean machine without Node or a ZAM checkout
       and complete one review.

@@ -5,8 +5,8 @@
  * using FSRS fields (stability, difficulty, elapsed_days, etc.).
  */
 
-import type { Database } from "libsql";
 import { ulid } from "ulid";
+import type { Database } from "../db/types.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 

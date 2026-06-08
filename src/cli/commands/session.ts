@@ -8,8 +8,11 @@
 
 import { input, select } from "@inquirer/prompts";
 import { Command } from "commander";
-import type { Database } from "libsql";
-import type { BloomLevel, ExecutionContext } from "../../kernel/index.js";
+import type {
+  BloomLevel,
+  Database,
+  ExecutionContext,
+} from "../../kernel/index.js";
 import {
   buildReviewQueue,
   endSession,

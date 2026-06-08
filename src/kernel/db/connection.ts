@@ -1,12 +1,20 @@
 import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
+import { createRequire } from "node:module";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
-import Database, { type Database as DatabaseType } from "libsql";
+import BetterSqlite3 from "better-sqlite3";
 import { getTursoCredentials } from "../credentials.js";
 import { SCHEMA } from "./schema.js";
+import type { Database as DatabaseType } from "./types.js";
 
 const DEFAULT_DB_DIR = join(homedir(), ".zam");
 const DEFAULT_DB_PATH = join(DEFAULT_DB_DIR, "zam.db");
+const require = createRequire(import.meta.url);
+
+type LibsqlConstructor = new (
+  path: string,
+  options?: Record<string, unknown>,
+) => DatabaseType;
 
 export interface ConnectionOptions {
   /** Path to the SQLite database file. Defaults to ~/.zam/zam.db */
@@ -23,6 +31,25 @@ export interface ConnectionOptions {
 
 function isRemoteDatabasePath(dbPath: string): boolean {
   return /^(libsql|https?):\/\//i.test(dbPath);
+}
+
+function openLocalSqlite(dbPath: string): DatabaseType {
+  return new BetterSqlite3(dbPath) as unknown as DatabaseType;
+}
+
+function loadLibsql(): LibsqlConstructor {
+  try {
+    const module = require("libsql") as
+      | LibsqlConstructor
+      | { default: LibsqlConstructor };
+    return "default" in module ? module.default : module;
+  } catch (err) {
+    const detail = err instanceof Error ? ` ${err.message}` : "";
+    throw new Error(
+      "Turso sync requires the optional native libsql backend, which is not " +
+        `available for ${process.platform}/${process.arch}.${detail}`,
+    );
+  }
 }
 
 /**
@@ -70,7 +97,7 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
     }
   }
 
-  // Build constructor options for libsql
+  // Build constructor options for the optional libsql cloud/sync backend.
   const dbOpts: Record<string, unknown> = {};
   if (options.syncUrl) {
     dbOpts.syncUrl = options.syncUrl;
@@ -106,20 +133,25 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
   }
 
   let db: DatabaseType;
-  try {
-    db = new Database(dbPath, dbOpts as Database.Options);
-  } catch (err) {
-    const msg = (err as Error).message;
-    if (msg.includes("InvalidLocalState") && options.syncUrl) {
-      // Last-ditch recovery: metadata is corrupt or mismatched
-      const metaPath = `${dbPath}.meta`;
-      const infoPath = `${dbPath}-info`;
-      if (existsSync(metaPath)) rmSync(metaPath);
-      if (existsSync(infoPath)) rmSync(infoPath);
-      db = new Database(dbPath, dbOpts as Database.Options);
-    } else {
-      throw err;
+  if (isRemote || isEmbeddedReplica) {
+    const LibsqlDatabase = loadLibsql();
+    try {
+      db = new LibsqlDatabase(dbPath, dbOpts);
+    } catch (err) {
+      const msg = (err as Error).message;
+      if (msg.includes("InvalidLocalState") && options.syncUrl) {
+        // Last-ditch recovery: metadata is corrupt or mismatched
+        const metaPath = `${dbPath}.meta`;
+        const infoPath = `${dbPath}-info`;
+        if (existsSync(metaPath)) rmSync(metaPath);
+        if (existsSync(infoPath)) rmSync(infoPath);
+        db = new LibsqlDatabase(dbPath, dbOpts);
+      } else {
+        throw err;
+      }
     }
+  } else {
+    db = openLocalSqlite(dbPath);
   }
 
   // Enable WAL mode and foreign keys for local SQLite.
@@ -135,7 +167,7 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
   // For embedded replicas: sync from cloud FIRST so the local file has the
   // primary's schema before we try to run migrations or create tables.
   if (isEmbeddedReplica) {
-    (db as unknown as { sync: () => void }).sync();
+    db.sync?.();
   }
 
   if (options.initialize) {

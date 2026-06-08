@@ -2,7 +2,7 @@
  * Resolve the active user ID from --user flag or stored whoami setting.
  */
 
-import type { Database } from "libsql";
+import type { Database } from "../../kernel/index.js";
 import { getSetting } from "../../kernel/index.js";
 
 export interface ResolveUserOptions {

@@ -9,9 +9,9 @@ import { readdirSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { Command } from "commander";
-import type { Database } from "libsql";
 import type {
   BloomLevel,
+  Database,
   Rating,
   ReviewActionType,
   SymbiosisMode,

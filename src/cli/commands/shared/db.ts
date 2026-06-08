@@ -5,7 +5,7 @@
  * pattern.  These wrappers keep command files focused on their domain logic.
  */
 
-import type { Database } from "libsql";
+import type { Database } from "../../../kernel/index.js";
 import { openDatabase } from "../../../kernel/index.js";
 
 type ErrorHandler = (message: string) => void;

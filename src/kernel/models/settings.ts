@@ -2,7 +2,7 @@
  * User settings — key/value store backed by the user_config table.
  */
 
-import type { Database } from "libsql";
+import type { Database } from "../db/types.js";
 
 export interface UserSetting {
   key: string;

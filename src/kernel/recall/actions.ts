@@ -1,4 +1,4 @@
-import type { Database } from "libsql";
+import type { Database } from "../db/types.js";
 import type { DeleteCardResult } from "../models/card.js";
 import { deleteCardForUser, getCardById } from "../models/card.js";
 import { getPrerequisites } from "../models/prerequisite.js";

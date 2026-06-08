@@ -16,8 +16,7 @@ import { unlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, join } from "node:path";
 import { Command } from "commander";
-import type { Database } from "libsql";
-import type { MonitorEvent } from "../../kernel/index.js";
+import type { Database, MonitorEvent } from "../../kernel/index.js";
 import {
   ensureMonitorDir,
   generateBashHooks,

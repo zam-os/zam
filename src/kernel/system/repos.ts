@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
-import type { Database } from "libsql";
+import type { Database } from "../db/types.js";
 import { getSetting } from "../models/settings.js";
 
 export interface RepoPaths {

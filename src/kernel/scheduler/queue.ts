@@ -5,7 +5,7 @@
  * and cross-domain interleaving into a single ready-to-review queue.
  */
 
-import type { Database } from "libsql";
+import type { Database } from "../db/types.js";
 import { interleave } from "./interleaver.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
