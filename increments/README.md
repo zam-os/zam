@@ -17,6 +17,7 @@ override the evidence in the repository.
 | 7 - Locale-aware recall | Partial product coverage | Seven-locale CLI i18n, locale detection/settings, localized LLM generation and evaluation | Desktop static chrome currently has dedicated English/German copy and English fallback for five locales |
 | 8 - Tauri recall studio | Implemented, release verification pending | Tauri UI, secure CLI bridge, self-contained CLI/Node resources, CSP, native release matrix | Exercise the release workflow from a tag and add automated frontend interaction tests |
 | 9 - Release hardening | In progress | See `9 - Release Hardening & Distribution Integrity.md` | Complete the acceptance checklist and validate CI on GitHub |
+| 10 - Async database providers and Turso Sync | Planned | Windows ARM64 local SQLite and an internal database contract provide the migration foundation | Async kernel migration, remote HTTP Turso provider, local-first Turso Sync, and removal of native libSQL |
 
 ## Current Product Sequence
 
@@ -25,6 +26,8 @@ override the evidence in the repository.
 3. Implement the missing generalized connector and active-task workflow from Increment 2.
 4. Select exactly one Increment 3 product direction before implementing more
    proactive or governance behavior.
+5. Implement Increment 10 when cross-platform Turso access and multi-device
+   local-first sync become the active product priority.
 
 The files named `Josefczak.thoughts` and `Gemini.retro` are planning inputs, not
 separate shipped increments. The three numbered Increment 3 specifications are
