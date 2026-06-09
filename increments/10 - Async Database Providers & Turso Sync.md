@@ -5,19 +5,29 @@
 Planned for later implementation. This increment is not required for the
 Windows ARM64 local-storage fix delivered in Increment 9.
 
-Only Phase 0 (ARM64 release closure) is near-term work. All later phases stay
-gated until cross-platform Turso access and multi-device sync become the
-active product priority, and Phase 4 is additionally gated on upstream
-Windows ARM64 support (see below).
+Only Phase 0 (ARM64 release closure) is near-term work. Later phases stay
+gated until cloud database access from every architecture becomes the active
+product priority. Turso Sync is parked; see Product Assumptions and the
+parked provider section.
 
 ## Goal
 
 Replace ZAM's synchronous database dependency boundary with an asynchronous
 provider interface so every supported architecture can use:
 
-- local SQLite without network access,
+- local SQLite for zero-account onboarding,
 - remote Turso without native libSQL binaries, and
-- a future local-first synchronization provider based on Turso Sync.
+- (parked) a local-first synchronization provider based on Turso Sync, only
+  if offline-first ever becomes a requirement.
+
+## Product Assumptions (2026-06-09)
+
+- Users are online in practice (around 99% of the time); offline capability
+  is not a product goal. In the rare offline moments, learning can wait.
+- The local LLM exists for cost saving, not for offline operation.
+- The local database exists for fast, zero-account onboarding, not for
+  offline operation. Once cloud credentials are configured, the cloud
+  database is the source of truth.
 
 ## Why
 
@@ -44,7 +54,7 @@ package for all of them:
 
 1. Local persistence.
 2. Remote database access.
-3. Local-first synchronization.
+3. Local-first synchronization (parked).
 
 ## Target Architecture
 
@@ -52,7 +62,7 @@ package for all of them:
 AsyncDatabase
 |- LocalSQLiteProvider
 |- RemoteTursoProvider
-`- TursoSyncProvider
+`- TursoSyncProvider (parked)
 ```
 
 ### LocalSQLiteProvider
@@ -70,22 +80,20 @@ AsyncDatabase
 - Avoid native libSQL bindings.
 - Support authenticated remote reads, writes, batches, and transactions on all
   supported architectures, including native Windows ARM64.
-- Intended audience: administrative and reporting commands (for example
-  `zam stats --user <id>` against the cloud database) and cloud access from
-  architectures without native sync support.
-- Not a supported configuration for interactive review sessions: a network
-  round trip per review and broken offline behavior contradict ZAM's
-  local-first learning loop.
+- Primary cloud mode for all architectures, including interactive review
+  sessions: the per-review local LLM call dominates latency, so an HTTP
+  round trip per query is acceptable under the online-first assumption.
+- Also serves administrative and reporting commands (for example
+  `zam stats --user <id>` against the cloud database).
 
-### TursoSyncProvider
+### TursoSyncProvider (parked)
 
-- Use Turso Sync rather than legacy embedded replicas.
-- Support explicit pull/push operations and offline-first writes.
-- Define conflict behavior before enabling automatic background sync.
-- Remain optional until Turso Sync is stable enough for ZAM's data guarantees
-  and upstream publishes Windows ARM64 npm binaries (missing as of
-  `@tursodatabase/sync` 0.6.1; track the upstream issue before starting
-  Phase 4).
+Parked indefinitely: synchronization exists to serve offline-first usage,
+which is not a product goal. With the online-first assumption, every device
+talks to the same remote database directly and no conflict semantics are
+needed. Revisit only if that assumption changes, and then only once Turso
+Sync is stable enough for ZAM's data guarantees and upstream publishes
+Windows ARM64 npm binaries (missing as of `@tursodatabase/sync` 0.6.1).
 
 ## Implementation Phases
 
@@ -99,7 +107,7 @@ AsyncDatabase
   artifact.
 
 After Phase 0, local-only ZAM fully supports Windows ARM64. Everything below
-is deferred until sync becomes the active priority.
+is deferred until cloud database access becomes the active priority.
 
 ### Phase 1: Async Database Contract
 
@@ -122,12 +130,14 @@ is deferred until sync becomes the active priority.
 - Add timeout, retry, authentication, and actionable offline errors.
 - Test the provider on Windows ARM64 CI.
 
-### Phase 4: Local-First Sync
+### Phase 4: Local-to-Cloud Promotion
 
-- Evaluate the current Turso Sync SDK and storage support.
-- Define ownership and conflict rules for cards, reviews, settings, and tokens.
-- Implement explicit sync status, pull, push, and recovery commands.
-- Add interruption, conflict, and multi-device integration tests.
+- Implement a one-time promotion command that uploads an existing local
+  onboarding database into a configured cloud database.
+- Verify row counts after promotion and keep the local file as a backup
+  until the user confirms.
+- Document the onboarding ramp: start local with zero accounts, attach cloud
+  credentials later, promote history, continue remote.
 
 ### Phase 5: Remove Legacy Backend
 
@@ -150,15 +160,17 @@ is deferred until sync becomes the active priority.
 
 ## Acceptance Criteria
 
-- Local-only ZAM behavior remains available without network access.
+- Local mode remains the zero-configuration onboarding default.
 - Remote Turso works with native Windows ARM64 Node.js.
 - No kernel or public API type depends on a concrete database package.
 - Provider contract tests run against local SQLite and remote Turso.
 - Schema migrations are atomic and equivalent across providers.
 - Multi-step model operations preserve transaction guarantees.
-- Sync conflicts never silently discard learning or review history.
-- The Turso Sync provider ships only after upstream publishes Windows ARM64
-  binaries.
+- Local-to-cloud promotion transfers existing history losslessly and
+  verifiably.
+- If a sync provider ever ships: conflicts never silently discard learning
+  or review history, and it ships only after upstream publishes Windows
+  ARM64 binaries.
 - The legacy native `libsql` dependency is removed from installation.
 
 ## Non-Goals
@@ -168,6 +180,8 @@ is deferred until sync becomes the active priority.
   Postgres service); it would duplicate integration surface without solving
   Windows ARM64.
 - Making every CLI command concurrent.
+- Offline capability as a product goal; ZAM assumes users are online and
+  lets learning wait in rare offline moments.
 - Enabling automatic background sync before conflict semantics are defined.
 - Treating the legacy embedded-replica API as the final sync architecture.
 
