@@ -4,8 +4,10 @@ import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import BetterSqlite3 from "better-sqlite3";
 import { getTursoCredentials } from "../credentials.js";
+import { openRemoteDatabase } from "./remote/provider.js";
 import { SCHEMA } from "./schema.js";
-import type { Database as DatabaseType } from "./types.js";
+import { wrapSyncDatabase } from "./sync-adapter.js";
+import type { Database, SyncDatabase } from "./types.js";
 
 const DEFAULT_DB_DIR = join(homedir(), ".zam");
 const DEFAULT_DB_PATH = join(DEFAULT_DB_DIR, "zam.db");
@@ -14,7 +16,14 @@ const require = createRequire(import.meta.url);
 type LibsqlConstructor = new (
   path: string,
   options?: Record<string, unknown>,
-) => DatabaseType;
+) => SyncDatabase;
+
+/**
+ * - `local`: better-sqlite3 file database (default without cloud credentials)
+ * - `native`: legacy native libsql driver (remote URLs and embedded replicas)
+ * - `remote`: Turso over HTTP, no native bindings (works on Windows ARM64)
+ */
+export type DatabaseProvider = "local" | "native" | "remote";
 
 export interface ConnectionOptions {
   /** Path to the SQLite database file. Defaults to ~/.zam/zam.db */
@@ -27,14 +36,20 @@ export interface ConnectionOptions {
   authToken?: string;
   /** If false, ignore ~/.zam/credentials.json and force the local/default database. */
   useConfiguredCloud?: boolean;
+  /** Explicit provider; overrides ZAM_DB_PROVIDER and the credentials mode. */
+  provider?: DatabaseProvider;
 }
 
 function isRemoteDatabasePath(dbPath: string): boolean {
-  return /^(libsql|https?):\/\//i.test(dbPath);
+  return /^(libsql|https?|wss?):\/\//i.test(dbPath);
 }
 
-function openLocalSqlite(dbPath: string): DatabaseType {
-  return new BetterSqlite3(dbPath) as unknown as DatabaseType;
+function isDatabaseProvider(value: unknown): value is DatabaseProvider {
+  return value === "local" || value === "native" || value === "remote";
+}
+
+function openLocalSqlite(dbPath: string): SyncDatabase {
+  return new BetterSqlite3(dbPath) as unknown as SyncDatabase;
 }
 
 function loadLibsql(): LibsqlConstructor {
@@ -47,7 +62,9 @@ function loadLibsql(): LibsqlConstructor {
     const detail = err instanceof Error ? ` ${err.message}` : "";
     throw new Error(
       "Turso sync requires the optional native libsql backend, which is not " +
-        `available for ${process.platform}/${process.arch}.${detail}`,
+        `available for ${process.platform}/${process.arch}. Switch to the ` +
+        "HTTP provider instead: zam connector setup turso --mode remote " +
+        `(or set ZAM_DB_PROVIDER=remote).${detail}`,
     );
   }
 }
@@ -58,7 +75,9 @@ function loadLibsql(): LibsqlConstructor {
  * Falls back to local SQLite and WAL mode when no cloud credentials exist.
  * When syncUrl is provided explicitly, enables embedded replica sync with Turso.
  */
-export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
+export async function openDatabase(
+  options: ConnectionOptions = {},
+): Promise<Database> {
   const configuredCloud =
     options.useConfiguredCloud !== false && !options.dbPath && !options.syncUrl
       ? getTursoCredentials()
@@ -89,6 +108,26 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
   const dbPath = configuredCloud?.url ?? options.dbPath ?? DEFAULT_DB_PATH;
   const isRemote = isRemoteDatabasePath(dbPath);
   const isEmbeddedReplica = Boolean(options.syncUrl);
+  const provider = resolveProvider(options, configuredCloud?.mode, isRemote);
+
+  if (provider === "remote") {
+    const url = isRemote ? dbPath : options.syncUrl;
+    if (!url) {
+      throw new Error(
+        "The remote database provider is selected but no Turso URL is " +
+          "configured. Run: zam connector setup turso",
+      );
+    }
+    const db = openRemoteDatabase({
+      url,
+      authToken: configuredCloud?.token ?? options.authToken,
+    });
+    if (options.initialize) {
+      await db.exec(SCHEMA);
+    }
+    await runMigrations(db);
+    return db;
+  }
 
   if (options.initialize && !isRemote) {
     const dir = dirname(dbPath);
@@ -107,9 +146,9 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
     // it was created by libsql.
     //
     // If the db exists WITHOUT metadata, it was created before Turso was
-    // configured â€” delete it so libsql can sync fresh from cloud.
+    // configured — delete it so libsql can sync fresh from cloud.
     //
-    // If metadata exists WITHOUT the db, libsql throws InvalidLocalState â€”
+    // If metadata exists WITHOUT the db, libsql throws InvalidLocalState —
     // delete the metadata so it can start fresh.
     const metaPath = `${dbPath}.meta`;
     const infoPath = `${dbPath}-info`;
@@ -132,11 +171,11 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
     dbOpts.authToken = authToken;
   }
 
-  let db: DatabaseType;
+  let driver: SyncDatabase;
   if (isRemote || isEmbeddedReplica) {
     const LibsqlDatabase = loadLibsql();
     try {
-      db = new LibsqlDatabase(dbPath, dbOpts);
+      driver = new LibsqlDatabase(dbPath, dbOpts);
     } catch (err) {
       const msg = (err as Error).message;
       if (msg.includes("InvalidLocalState") && options.syncUrl) {
@@ -145,38 +184,56 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
         const infoPath = `${dbPath}-info`;
         if (existsSync(metaPath)) rmSync(metaPath);
         if (existsSync(infoPath)) rmSync(infoPath);
-        db = new LibsqlDatabase(dbPath, dbOpts);
+        driver = new LibsqlDatabase(dbPath, dbOpts);
       } else {
         throw err;
       }
     }
   } else {
-    db = openLocalSqlite(dbPath);
+    driver = openLocalSqlite(dbPath);
   }
 
   // Enable WAL mode and foreign keys for local SQLite.
   // Remote Turso databases and embedded replicas manage their own journaling.
   if (!isRemote && !isEmbeddedReplica) {
-    db.pragma("journal_mode = WAL");
+    driver.pragma("journal_mode = WAL");
   }
-  db.pragma("foreign_keys = ON");
+  driver.pragma("foreign_keys = ON");
   if (!isRemote) {
-    db.pragma("busy_timeout = 5000");
+    driver.pragma("busy_timeout = 5000");
   }
+
+  const db = wrapSyncDatabase(driver);
 
   // For embedded replicas: sync from cloud FIRST so the local file has the
   // primary's schema before we try to run migrations or create tables.
   if (isEmbeddedReplica) {
-    db.sync?.();
+    await db.sync?.();
   }
 
   if (options.initialize) {
-    db.exec(SCHEMA);
+    await db.exec(SCHEMA);
   }
 
-  runMigrations(db);
+  await runMigrations(db);
 
   return db;
+}
+
+function resolveProvider(
+  options: ConnectionOptions,
+  credentialsMode: string | undefined,
+  isRemote: boolean,
+): DatabaseProvider {
+  if (options.provider) return options.provider;
+  const env = process.env.ZAM_DB_PROVIDER;
+  if (isDatabaseProvider(env)) return env;
+  if (isDatabaseProvider(credentialsMode) && (isRemote || options.syncUrl)) {
+    return credentialsMode;
+  }
+  // Legacy default: cloud URLs and embedded replicas use the native driver.
+  if (isRemote || options.syncUrl) return "native";
+  return "local";
 }
 
 /**
@@ -185,9 +242,9 @@ export function openDatabase(options: ConnectionOptions = {}): DatabaseType {
  * machine only has to collect missing secrets instead of bootstrapping local
  * state first.
  */
-export function openDatabaseWithSync(
+export async function openDatabaseWithSync(
   options: Omit<ConnectionOptions, "syncUrl" | "authToken"> = {},
-): DatabaseType {
+): Promise<Database> {
   return openDatabase(options);
 }
 
@@ -198,47 +255,46 @@ export function getDefaultDbPath(): string {
 
 /**
  * Run incremental schema migrations on every open.
- * Each migration is idempotent â€” safe to run repeatedly.
+ * Each migration is idempotent — safe to run repeatedly.
  */
-function runMigrations(db: DatabaseType): void {
+async function runMigrations(db: Database): Promise<void> {
   // M001: add execution_context to sessions
-  const sessionCols = db.pragma("table_info(sessions)") as Array<{
+  const sessionCols = (await db.pragma("table_info(sessions)")) as Array<{
     name: string;
   }>;
   if (
     sessionCols.length > 0 &&
     !sessionCols.some((c) => c.name === "execution_context")
   ) {
-    db.exec(
+    await db.exec(
       `ALTER TABLE sessions ADD COLUMN execution_context TEXT NOT NULL DEFAULT 'shell'`,
     );
   }
 
   // M002: add deprecated_at to tokens
-  const tokenCols = db.pragma("table_info(tokens)") as Array<{ name: string }>;
+  const tokenCols = (await db.pragma("table_info(tokens)")) as Array<{
+    name: string;
+  }>;
   if (
     tokenCols.length > 0 &&
     !tokenCols.some((c) => c.name === "deprecated_at")
   ) {
-    db.exec(`ALTER TABLE tokens ADD COLUMN deprecated_at TEXT`);
+    await db.exec(`ALTER TABLE tokens ADD COLUMN deprecated_at TEXT`);
   }
 
   // M004: add source_link to tokens
-  if (
-    tokenCols.length > 0 &&
-    !tokenCols.some((c) => c.name === "source_link")
-  ) {
-    db.exec(`ALTER TABLE tokens ADD COLUMN source_link TEXT`);
+  if (tokenCols.length > 0 && !tokenCols.some((c) => c.name === "source_link")) {
+    await db.exec(`ALTER TABLE tokens ADD COLUMN source_link TEXT`);
   }
 
   // M005: add question to tokens
   if (tokenCols.length > 0 && !tokenCols.some((c) => c.name === "question")) {
-    db.exec(`ALTER TABLE tokens ADD COLUMN question TEXT`);
+    await db.exec(`ALTER TABLE tokens ADD COLUMN question TEXT`);
   }
 
   // M003: create agent_skills table (idempotent via IF NOT EXISTS in SCHEMA,
   // but also needed for databases that skipped the init path)
-  db.exec(`
+  await db.exec(`
     CREATE TABLE IF NOT EXISTS agent_skills (
       id          TEXT PRIMARY KEY,
       slug        TEXT NOT NULL UNIQUE,

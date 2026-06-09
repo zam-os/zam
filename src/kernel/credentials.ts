@@ -16,6 +16,11 @@ const DEFAULT_CREDENTIALS_PATH = join(homedir(), ".zam", "credentials.json");
 export interface TursoCredentials {
   url: string;
   token: string;
+  /**
+   * Database access mode: "native" uses the legacy libsql driver, "remote"
+   * uses the HTTP provider (no native bindings; required on Windows ARM64).
+   */
+  mode?: "native" | "remote";
 }
 
 export interface ADOCredentials {
@@ -54,7 +59,11 @@ export function saveCredentials(creds: Credentials, path?: string): void {
 export function getTursoCredentials(path?: string): TursoCredentials | null {
   const creds = loadCredentials(path);
   if (creds.turso?.url && creds.turso?.token) {
-    return { url: creds.turso.url, token: creds.turso.token };
+    return {
+      url: creds.turso.url,
+      token: creds.turso.token,
+      ...(creds.turso.mode ? { mode: creds.turso.mode } : {}),
+    };
   }
   return null;
 }
@@ -64,9 +73,10 @@ export function setTursoCredentials(
   url: string,
   token: string,
   path?: string,
+  mode?: TursoCredentials["mode"],
 ): void {
   const creds = loadCredentials(path);
-  creds.turso = { url, token };
+  creds.turso = { url, token, ...(mode ? { mode } : {}) };
   saveCredentials(creds, path);
 }
 

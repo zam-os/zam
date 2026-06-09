@@ -31,11 +31,17 @@ export {
   setTursoCredentials,
 } from "./credentials.js";
 // Database
+export type {
+  ConnectionOptions,
+  DatabaseProvider,
+} from "./db/connection.js";
 export {
   getDefaultDbPath,
   openDatabase,
   openDatabaseWithSync,
 } from "./db/connection.js";
+export type { RemoteDatabaseOptions } from "./db/remote/provider.js";
+export { openRemoteDatabase } from "./db/remote/provider.js";
 export type {
   Database,
   DatabaseValue,
