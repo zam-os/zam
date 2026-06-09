@@ -17,11 +17,12 @@ override the evidence in the repository.
 | 7 - Locale-aware recall | Partial product coverage | Seven-locale CLI i18n, locale detection/settings, localized LLM generation and evaluation | Desktop static chrome currently has dedicated English/German copy and English fallback for five locales |
 | 8 - Tauri recall studio | Implemented, release verification pending | Tauri UI, secure CLI bridge, self-contained CLI/Node resources, CSP, native release matrix | Exercise the release workflow from a tag and add automated frontend interaction tests |
 | 9 - Release hardening | In progress | See `9 - Release Hardening & Distribution Integrity.md` | Complete the acceptance checklist and validate CI on GitHub |
-| 10 - Async database providers and Turso Sync | Planned | Windows ARM64 local SQLite and an internal database contract provide the migration foundation | Async kernel migration, remote HTTP Turso provider, local-first Turso Sync, and removal of native libSQL |
+| 10 - Async database providers and Turso Sync | Planned | Windows ARM64 local SQLite and an internal database contract provide the migration foundation | Phase 0 ARM64 release closure (`zam-core` 0.3.7), then async kernel migration, remote HTTP Turso provider, local-first Turso Sync gated on upstream Windows ARM64 binaries, and removal of native libSQL |
 
 ## Current Product Sequence
 
-1. Finish Increment 9 and publish a signed/test release candidate.
+1. Finish Increment 9 and publish a signed/test release candidate, including
+   `zam-core` 0.3.7 so npm installs work on Windows ARM64.
 2. Close the user-visible gaps in Increment 7 and add desktop interaction tests.
 3. Implement the missing generalized connector and active-task workflow from Increment 2.
 4. Select exactly one Increment 3 product direction before implementing more
