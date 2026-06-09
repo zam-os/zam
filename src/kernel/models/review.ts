@@ -50,7 +50,10 @@ export interface ListReviewsOptions {
  * Validates that the rating is between 1 and 4 (matching the schema CHECK).
  * Returns the created review log entry.
  */
-export function logReview(db: Database, input: CreateReviewInput): ReviewLog {
+export async function logReview(
+  db: Database,
+  input: CreateReviewInput,
+): Promise<ReviewLog> {
   if (input.rating < 1 || input.rating > 4) {
     throw new Error(`Rating must be between 1 and 4, got ${input.rating}`);
   }
@@ -58,35 +61,40 @@ export function logReview(db: Database, input: CreateReviewInput): ReviewLog {
   const id = ulid();
   const now = new Date().toISOString();
 
-  db.prepare(
-    `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, response_time_ms, reviewed_at, scheduled_at, session_id)
+  await db
+    .prepare(
+      `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, response_time_ms, reviewed_at, scheduled_at, session_id)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-  ).run(
-    id,
-    input.card_id,
-    input.token_id,
-    input.user_id,
-    input.rating,
-    input.response_time_ms ?? null,
-    now,
-    input.scheduled_at,
-    input.session_id ?? null,
-  );
+    )
+    .run(
+      id,
+      input.card_id,
+      input.token_id,
+      input.user_id,
+      input.rating,
+      input.response_time_ms ?? null,
+      now,
+      input.scheduled_at,
+      input.session_id ?? null,
+    );
 
-  return db
+  return (await db
     .prepare("SELECT * FROM review_logs WHERE id = ?")
-    .get(id) as ReviewLog;
+    .get(id)) as ReviewLog;
 }
 
 /**
  * Get all reviews for a specific card, ordered by reviewed_at ascending.
  */
-export function getReviewsForCard(db: Database, cardId: string): ReviewLog[] {
-  return db
+export async function getReviewsForCard(
+  db: Database,
+  cardId: string,
+): Promise<ReviewLog[]> {
+  return (await db
     .prepare(
       "SELECT * FROM review_logs WHERE card_id = ? ORDER BY reviewed_at ASC",
     )
-    .all(cardId) as ReviewLog[];
+    .all(cardId)) as ReviewLog[];
 }
 
 /**
@@ -94,11 +102,11 @@ export function getReviewsForCard(db: Database, cardId: string): ReviewLog[] {
  *
  * Results are ordered by reviewed_at descending (most recent first).
  */
-export function getReviewsForUser(
+export async function getReviewsForUser(
   db: Database,
   userId: string,
   options?: ListReviewsOptions,
-): ReviewLog[] {
+): Promise<ReviewLog[]> {
   const conditions = ["user_id = ?"];
   const params: unknown[] = [userId];
 
@@ -118,5 +126,5 @@ export function getReviewsForUser(
     params.push(options.limit);
   }
 
-  return db.prepare(sql).all(...params) as ReviewLog[];
+  return (await db.prepare(sql).all(...params)) as ReviewLog[];
 }

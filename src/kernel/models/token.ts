@@ -81,7 +81,10 @@ export interface ScoredToken extends Token {
  * Create a new knowledge token.
  * Throws if a token with the same slug already exists.
  */
-export function createToken(db: Database, input: CreateTokenInput): Token {
+export async function createToken(
+  db: Database,
+  input: CreateTokenInput,
+): Promise<Token> {
   const id = ulid();
   const now = new Date().toISOString();
 
@@ -90,32 +93,37 @@ export function createToken(db: Database, input: CreateTokenInput): Token {
     throw new Error(`bloom_level must be between 1 and 5, got ${bloom}`);
   }
 
-  db.prepare(`
+  await db
+    .prepare(`
     INSERT INTO tokens (id, slug, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, created_at, updated_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `).run(
-    id,
-    input.slug,
-    input.concept,
-    input.domain ?? "",
-    bloom,
-    input.context ?? "",
-    input.symbiosis_mode ?? null,
-    input.source_link ?? null,
-    input.question ?? null,
-    now,
-    now,
-  );
+  `)
+    .run(
+      id,
+      input.slug,
+      input.concept,
+      input.domain ?? "",
+      bloom,
+      input.context ?? "",
+      input.symbiosis_mode ?? null,
+      input.source_link ?? null,
+      input.question ?? null,
+      now,
+      now,
+    );
 
-  return getTokenById(db, id)!;
+  return (await getTokenById(db, id)) as Token;
 }
 
 /**
  * Look up a token by its unique slug.
  * Returns undefined if not found.
  */
-export function getTokenBySlug(db: Database, slug: string): Token | undefined {
-  return db.prepare("SELECT * FROM tokens WHERE slug = ?").get(slug) as
+export async function getTokenBySlug(
+  db: Database,
+  slug: string,
+): Promise<Token | undefined> {
+  return (await db.prepare("SELECT * FROM tokens WHERE slug = ?").get(slug)) as
     | Token
     | undefined;
 }
@@ -124,8 +132,11 @@ export function getTokenBySlug(db: Database, slug: string): Token | undefined {
  * Look up a token by its ULID.
  * Returns undefined if not found.
  */
-export function getTokenById(db: Database, id: string): Token | undefined {
-  return db.prepare("SELECT * FROM tokens WHERE id = ?").get(id) as
+export async function getTokenById(
+  db: Database,
+  id: string,
+): Promise<Token | undefined> {
+  return (await db.prepare("SELECT * FROM tokens WHERE id = ?").get(id)) as
     | Token
     | undefined;
 }
@@ -136,12 +147,12 @@ export function getTokenById(db: Database, id: string): Token | undefined {
  * Slug is intentionally immutable in v1 because it is referenced by other
  * parts of the system (for example agent skill metadata).
  */
-export function updateToken(
+export async function updateToken(
   db: Database,
   slug: string,
   updates: UpdateTokenInput,
-): Token {
-  const token = getTokenBySlug(db, slug);
+): Promise<Token> {
+  const token = await getTokenBySlug(db, slug);
   if (!token) {
     throw new Error(`Token not found: ${slug}`);
   }
@@ -198,10 +209,10 @@ export function updateToken(
   values.push(new Date().toISOString());
   values.push(slug);
 
-  db.prepare(`UPDATE tokens SET ${fields.join(", ")} WHERE slug = ?`).run(
-    ...values,
-  );
-  return getTokenBySlug(db, slug)!;
+  await db
+    .prepare(`UPDATE tokens SET ${fields.join(", ")} WHERE slug = ?`)
+    .run(...values);
+  return (await getTokenBySlug(db, slug)) as Token;
 }
 
 /**
@@ -210,8 +221,11 @@ export function updateToken(
  *
  * Throws if the token does not exist or is already deprecated.
  */
-export function deprecateToken(db: Database, slug: string): Token {
-  const token = getTokenBySlug(db, slug);
+export async function deprecateToken(
+  db: Database,
+  slug: string,
+): Promise<Token> {
+  const token = await getTokenBySlug(db, slug);
   if (!token) {
     throw new Error(`Token not found: ${slug}`);
   }
@@ -220,49 +234,51 @@ export function deprecateToken(db: Database, slug: string): Token {
   }
 
   const now = new Date().toISOString();
-  db.prepare(
-    "UPDATE tokens SET deprecated_at = ?, updated_at = ? WHERE slug = ?",
-  ).run(now, now, slug);
+  await db
+    .prepare(
+      "UPDATE tokens SET deprecated_at = ?, updated_at = ? WHERE slug = ?",
+    )
+    .run(now, now, slug);
 
-  return getTokenBySlug(db, slug)!;
+  return (await getTokenBySlug(db, slug)) as Token;
 }
 
 /**
  * Preview the rows that will be removed or updated when deleting a token.
  */
-export function getTokenDeleteImpact(
+export async function getTokenDeleteImpact(
   db: Database,
   slug: string,
-): TokenDeleteImpact {
-  const token = getTokenBySlug(db, slug);
+): Promise<TokenDeleteImpact> {
+  const token = await getTokenBySlug(db, slug);
   if (!token) {
     throw new Error(`Token not found: ${slug}`);
   }
 
-  const cards = db
+  const cards = (await db
     .prepare("SELECT COUNT(*) AS n FROM cards WHERE token_id = ?")
-    .get(token.id) as { n: number };
-  const reviewLogs = db
+    .get(token.id)) as { n: number };
+  const reviewLogs = (await db
     .prepare("SELECT COUNT(*) AS n FROM review_logs WHERE token_id = ?")
-    .get(token.id) as { n: number };
-  const prereqsFrom = db
+    .get(token.id)) as { n: number };
+  const prereqsFrom = (await db
     .prepare("SELECT COUNT(*) AS n FROM prerequisites WHERE token_id = ?")
-    .get(token.id) as { n: number };
-  const prereqsTo = db
+    .get(token.id)) as { n: number };
+  const prereqsTo = (await db
     .prepare("SELECT COUNT(*) AS n FROM prerequisites WHERE requires_id = ?")
-    .get(token.id) as { n: number };
-  const sessionSteps = db
+    .get(token.id)) as { n: number };
+  const sessionSteps = (await db
     .prepare("SELECT COUNT(*) AS n FROM session_steps WHERE token_id = ?")
-    .get(token.id) as { n: number };
-  const sessionsTouched = db
+    .get(token.id)) as { n: number };
+  const sessionsTouched = (await db
     .prepare(
       "SELECT COUNT(DISTINCT session_id) AS n FROM session_steps WHERE token_id = ?",
     )
-    .get(token.id) as { n: number };
+    .get(token.id)) as { n: number };
 
-  const skillRows = db
+  const skillRows = (await db
     .prepare("SELECT token_slugs FROM agent_skills")
-    .all() as Array<{ token_slugs: string }>;
+    .all()) as Array<{ token_slugs: string }>;
   const agentSkills = skillRows.filter((row) => {
     const tokenSlugs = JSON.parse(row.token_slugs) as string[];
     return tokenSlugs.includes(slug);
@@ -282,37 +298,37 @@ export function getTokenDeleteImpact(
 /**
  * Hard-delete a token and clean up non-FK references that point at its slug.
  */
-export function deleteToken(db: Database, slug: string): DeleteTokenResult {
-  const token = getTokenBySlug(db, slug);
+export async function deleteToken(
+  db: Database,
+  slug: string,
+): Promise<DeleteTokenResult> {
+  const token = await getTokenBySlug(db, slug);
   if (!token) {
     throw new Error(`Token not found: ${slug}`);
   }
 
-  const impact = getTokenDeleteImpact(db, slug);
+  const impact = await getTokenDeleteImpact(db, slug);
 
-  db.exec("BEGIN");
-  try {
+  await db.transaction(async (tx) => {
     const now = new Date().toISOString();
-    const skillRows = db
+    const skillRows = (await tx
       .prepare("SELECT id, token_slugs FROM agent_skills")
-      .all() as Array<{ id: string; token_slugs: string }>;
+      .all()) as Array<{ id: string; token_slugs: string }>;
 
     for (const row of skillRows) {
       const tokenSlugs = JSON.parse(row.token_slugs) as string[];
       const filtered = tokenSlugs.filter((tokenSlug) => tokenSlug !== slug);
       if (filtered.length !== tokenSlugs.length) {
-        db.prepare(
-          "UPDATE agent_skills SET token_slugs = ?, updated_at = ? WHERE id = ?",
-        ).run(JSON.stringify(filtered), now, row.id);
+        await tx
+          .prepare(
+            "UPDATE agent_skills SET token_slugs = ?, updated_at = ? WHERE id = ?",
+          )
+          .run(JSON.stringify(filtered), now, row.id);
       }
     }
 
-    db.prepare("DELETE FROM tokens WHERE id = ?").run(token.id);
-    db.exec("COMMIT");
-  } catch (err) {
-    db.exec("ROLLBACK");
-    throw err;
-  }
+    await tx.prepare("DELETE FROM tokens WHERE id = ?").run(token.id);
+  });
 
   return { token, impact };
 }
@@ -329,7 +345,10 @@ export function deleteToken(db: Database, slug: string): DeleteTokenResult {
  * For very small search terms (< 3 chars) a light in-memory fallback is
  * used to avoid matching every token.
  */
-export function findTokens(db: Database, query: string): ScoredToken[] {
+export async function findTokens(
+  db: Database,
+  query: string,
+): Promise<ScoredToken[]> {
   const normalised = query.toLowerCase();
   const searchTokens = normalised
     .split(/[\s,.\-_/\\:;!?()[\]{}]+/)
@@ -350,7 +369,9 @@ export function findTokens(db: Database, query: string): ScoredToken[] {
 
   for (const term of longTerms) {
     const pattern = `%${term}%`;
-    const rows = db.prepare(likeSQL).all(pattern, pattern, pattern) as Token[];
+    const rows = (await db
+      .prepare(likeSQL)
+      .all(pattern, pattern, pattern)) as Token[];
     for (const row of rows) {
       const entry = scoreMap.get(row.id);
       if (entry) {
@@ -363,9 +384,9 @@ export function findTokens(db: Database, query: string): ScoredToken[] {
 
   // If there were short terms, or all terms were short, scan in-memory.
   if (shortTerms.length > 0 || longTerms.length === 0) {
-    const allTokens = db
+    const allTokens = (await db
       .prepare("SELECT * FROM tokens WHERE deprecated_at IS NULL")
-      .all() as Token[];
+      .all()) as Token[];
 
     for (const token of allTokens) {
       const words = `${token.slug} ${token.concept} ${token.domain}`
@@ -409,17 +430,20 @@ export function findTokens(db: Database, query: string): ScoredToken[] {
  * List all tokens, optionally filtered by domain.
  * Results are ordered by bloom_level then slug.
  */
-export function listTokens(db: Database, options?: ListTokensOptions): Token[] {
+export async function listTokens(
+  db: Database,
+  options?: ListTokensOptions,
+): Promise<Token[]> {
   if (options?.domain) {
-    return db
+    return (await db
       .prepare(
         "SELECT * FROM tokens WHERE domain = ? AND deprecated_at IS NULL ORDER BY bloom_level, slug",
       )
-      .all(options.domain) as Token[];
+      .all(options.domain)) as Token[];
   }
-  return db
+  return (await db
     .prepare(
       "SELECT * FROM tokens WHERE deprecated_at IS NULL ORDER BY bloom_level, domain, slug",
     )
-    .all() as Token[];
+    .all()) as Token[];
 }

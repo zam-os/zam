@@ -76,46 +76,51 @@ export interface BlockedCard extends Card {
  *
  * Ported from the PoC's ensureCard helper.
  */
-export function ensureCard(
+export async function ensureCard(
   db: Database,
   tokenId: string,
   userId: string,
-): Card {
-  const existing = db
+): Promise<Card> {
+  const existing = (await db
     .prepare("SELECT * FROM cards WHERE token_id = ? AND user_id = ?")
-    .get(tokenId, userId) as Card | undefined;
+    .get(tokenId, userId)) as Card | undefined;
 
   if (existing) return existing;
 
   const id = ulid();
   const now = new Date().toISOString();
 
-  db.prepare(
-    `INSERT INTO cards (id, token_id, user_id, due_at)
+  await db
+    .prepare(
+      `INSERT INTO cards (id, token_id, user_id, due_at)
      VALUES (?, ?, ?, ?)`,
-  ).run(id, tokenId, userId, now);
+    )
+    .run(id, tokenId, userId, now);
 
-  return db.prepare("SELECT * FROM cards WHERE id = ?").get(id) as Card;
+  return (await db.prepare("SELECT * FROM cards WHERE id = ?").get(id)) as Card;
 }
 
 /**
  * Get a card by token+user. Returns undefined if no card exists.
  */
-export function getCard(
+export async function getCard(
   db: Database,
   tokenId: string,
   userId: string,
-): Card | undefined {
-  return db
+): Promise<Card | undefined> {
+  return (await db
     .prepare("SELECT * FROM cards WHERE token_id = ? AND user_id = ?")
-    .get(tokenId, userId) as Card | undefined;
+    .get(tokenId, userId)) as Card | undefined;
 }
 
 /**
  * Get a card by its ULID.
  */
-export function getCardById(db: Database, cardId: string): Card | undefined {
-  return db.prepare("SELECT * FROM cards WHERE id = ?").get(cardId) as
+export async function getCardById(
+  db: Database,
+  cardId: string,
+): Promise<Card | undefined> {
+  return (await db.prepare("SELECT * FROM cards WHERE id = ?").get(cardId)) as
     | Card
     | undefined;
 }
@@ -126,11 +131,11 @@ export function getCardById(db: Database, cardId: string): Card | undefined {
  * Only the fields present in `updates` are changed. Throws if the card
  * does not exist.
  */
-export function updateCard(
+export async function updateCard(
   db: Database,
   cardId: string,
   updates: UpdateCardInput,
-): Card {
+): Promise<Card> {
   const fields: string[] = [];
   const values: unknown[] = [];
 
@@ -181,7 +186,7 @@ export function updateCard(
 
   values.push(cardId);
 
-  const result = db
+  const result = await db
     .prepare(`UPDATE cards SET ${fields.join(", ")} WHERE id = ?`)
     .run(...values);
 
@@ -189,25 +194,27 @@ export function updateCard(
     throw new Error(`Card not found: ${cardId}`);
   }
 
-  return db.prepare("SELECT * FROM cards WHERE id = ?").get(cardId) as Card;
+  return (await db
+    .prepare("SELECT * FROM cards WHERE id = ?")
+    .get(cardId)) as Card;
 }
 
 /**
  * Preview the review-log rows that will be removed when deleting a user's card.
  */
-export function getCardDeletionImpact(
+export async function getCardDeletionImpact(
   db: Database,
   tokenId: string,
   userId: string,
-): CardDeletionImpact {
-  const card = getCard(db, tokenId, userId);
+): Promise<CardDeletionImpact> {
+  const card = await getCard(db, tokenId, userId);
   if (!card) {
     throw new Error(`Card not found for token ${tokenId} and user ${userId}`);
   }
 
-  const reviewLogs = db
+  const reviewLogs = (await db
     .prepare("SELECT COUNT(*) AS n FROM review_logs WHERE card_id = ?")
-    .get(card.id) as { n: number };
+    .get(card.id)) as { n: number };
 
   return { review_logs: reviewLogs.n };
 }
@@ -215,18 +222,18 @@ export function getCardDeletionImpact(
 /**
  * Delete one user's card for a token. Review logs cascade via FK.
  */
-export function deleteCardForUser(
+export async function deleteCardForUser(
   db: Database,
   tokenId: string,
   userId: string,
-): DeleteCardResult {
-  const card = getCard(db, tokenId, userId);
+): Promise<DeleteCardResult> {
+  const card = await getCard(db, tokenId, userId);
   if (!card) {
     throw new Error(`Card not found for token ${tokenId} and user ${userId}`);
   }
 
-  const impact = getCardDeletionImpact(db, tokenId, userId);
-  db.prepare("DELETE FROM cards WHERE id = ?").run(card.id);
+  const impact = await getCardDeletionImpact(db, tokenId, userId);
+  await db.prepare("DELETE FROM cards WHERE id = ?").run(card.id);
 
   return { card, impact };
 }
@@ -240,14 +247,14 @@ export function deleteCardForUser(
  *
  * Ported from the PoC's due-tokens command.
  */
-export function getDueCards(
+export async function getDueCards(
   db: Database,
   userId: string,
   now?: string,
-): DueCard[] {
+): Promise<DueCard[]> {
   const cutoff = now ?? new Date().toISOString();
 
-  return db
+  return (await db
     .prepare(
       `SELECT c.*, t.slug, t.concept, t.domain, t.bloom_level
        FROM cards c
@@ -255,7 +262,7 @@ export function getDueCards(
        WHERE c.user_id = ? AND c.blocked = 0 AND c.due_at <= ?
        ORDER BY t.bloom_level ASC, c.due_at ASC`,
     )
-    .all(userId, cutoff) as DueCard[];
+    .all(userId, cutoff)) as DueCard[];
 }
 
 /**
@@ -264,8 +271,11 @@ export function getDueCards(
  * Returns cards joined with their token details so the caller can
  * see what is waiting and why.
  */
-export function getBlockedCards(db: Database, userId: string): BlockedCard[] {
-  return db
+export async function getBlockedCards(
+  db: Database,
+  userId: string,
+): Promise<BlockedCard[]> {
+  return (await db
     .prepare(
       `SELECT c.*, t.slug, t.concept, t.domain, t.bloom_level
        FROM cards c
@@ -273,5 +283,5 @@ export function getBlockedCards(db: Database, userId: string): BlockedCard[] {
        WHERE c.user_id = ? AND c.blocked = 1
        ORDER BY t.bloom_level ASC, t.slug ASC`,
     )
-    .all(userId) as BlockedCard[];
+    .all(userId)) as BlockedCard[];
 }
