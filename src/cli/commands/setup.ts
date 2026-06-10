@@ -66,13 +66,13 @@ export function copySkills(force: boolean, cwd: string = process.cwd()): void {
   }
 }
 
-function initDatabase(skipInit: boolean): void {
+async function initDatabase(skipInit: boolean): Promise<void> {
   if (skipInit) return;
 
   try {
     const dbPath = getDefaultDbPath();
-    const db = openDatabaseWithSync({ initialize: true });
-    db.close();
+    const db = await openDatabaseWithSync({ initialize: true });
+    await db.close();
     console.log(`  init  ZAM database at ${dbPath}`);
   } catch (err) {
     // Database may already exist â€” not an error during setup.
@@ -185,7 +185,7 @@ export const setupCommand = new Command("setup")
   .option("--skip-claude-md", "skip CLAUDE.md generation", false)
   .option("--skip-agents-md", "skip AGENTS.md generation", false)
   .action(
-    (opts: {
+    async (opts: {
       force: boolean;
       skipInit: boolean;
       skipClaudeMd: boolean;
@@ -194,7 +194,7 @@ export const setupCommand = new Command("setup")
       console.log(`Setting up ZAM in ${process.cwd()}\n`);
 
       copySkills(opts.force);
-      initDatabase(opts.skipInit);
+      await initDatabase(opts.skipInit);
       writeClaudeMd(opts.skipClaudeMd);
       writeAgentsMd(opts.skipAgentsMd);
 

@@ -56,14 +56,14 @@ export const gitSyncCommand = new Command("git-sync")
   .option("--user <id>", "User ID (default: whoami)")
   .option("--install", "Install git post-commit hook in current repo")
   .option("--quiet", "Suppress verbose output")
-  .action((opts) => {
+  .action(async (opts) => {
     if (opts.install) {
       installHook();
       return;
     }
 
-    withDb((db) => {
-      const userId = resolveUser(opts, db);
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db);
 
       let changedFiles: string[] = [];
       try {
@@ -95,13 +95,13 @@ export const gitSyncCommand = new Command("git-sync")
       }
 
       // Fetch active tokens
-      const tokens = db
+      const tokens = (await db
         .prepare(`
-        SELECT * FROM tokens 
-        WHERE source_link IS NOT NULL 
+        SELECT * FROM tokens
+        WHERE source_link IS NOT NULL
           AND deprecated_at IS NULL
       `)
-        .all() as Token[];
+        .all()) as Token[];
 
       const matchedTokens: Token[] = [];
 
@@ -127,14 +127,15 @@ export const gitSyncCommand = new Command("git-sync")
       const now = new Date().toISOString();
 
       for (const token of matchedTokens) {
-        const card = getCard(db, token.id, userId);
+        const card = await getCard(db, token.id, userId);
         if (card) {
           // Decay stability to a quarter (concept's source changed → likely stale),
           // with a 0.2-day floor so the card surfaces for review soon. Using max,
           // not min: min would collapse every card to <=0.2 regardless of prior strength.
           const newStability = Math.max(0.2, card.stability / 4.0);
 
-          db.prepare(`
+          await db
+            .prepare(`
             UPDATE cards
             SET due_at = ?,
                 stability = ?,
@@ -142,7 +143,8 @@ export const gitSyncCommand = new Command("git-sync")
                 elapsed_days = 0.0,
                 scheduled_days = 0.0
             WHERE id = ?
-          `).run(now, newStability, card.id);
+          `)
+            .run(now, newStability, card.id);
 
           decayedCount++;
           if (!opts.quiet) {

@@ -54,4 +54,4 @@ program.addCommand(goalCommand);
 program.addCommand(gitSyncCommand);
 program.addCommand(workspaceCommand);
 
-program.parse();
+await program.parseAsync();

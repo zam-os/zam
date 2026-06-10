@@ -70,17 +70,17 @@ interface CardRow {
  * @param options - Queue building options
  * @returns The assembled review queue with metadata
  */
-export function buildReviewQueue(
+export async function buildReviewQueue(
   db: Database,
   options: ReviewQueueOptions,
-): ReviewQueue {
+): Promise<ReviewQueue> {
   const maxNew = options.maxNew ?? 10;
   const maxReviews = options.maxReviews ?? 50;
   const now = options.now ?? new Date();
   const nowISO = now.toISOString();
 
   // ── Step 1: Fetch due cards (review, relearning, learning — not new) ───
-  const dueRows = db
+  const dueRows = (await db
     .prepare(
       `SELECT
          c.id       AS card_id,
@@ -102,10 +102,10 @@ export function buildReviewQueue(
          AND t.deprecated_at IS NULL
        ORDER BY c.due_at ASC`,
     )
-    .all(options.userId, nowISO) as CardRow[];
+    .all(options.userId, nowISO)) as CardRow[];
 
   // ── Step 2: Fetch new cards ────────────────────────────────────────────
-  const newRows = db
+  const newRows = (await db
     .prepare(
       `SELECT
          c.id       AS card_id,
@@ -127,7 +127,7 @@ export function buildReviewQueue(
        ORDER BY t.bloom_level ASC, t.slug ASC
        LIMIT ?`,
     )
-    .all(options.userId, maxNew) as CardRow[];
+    .all(options.userId, maxNew)) as CardRow[];
 
   // ── Step 3: Sort overdue cards by urgency (most overdue first) ─────────
   const nowMs = now.getTime();

@@ -38,13 +38,14 @@ export interface LlmConfig {
 }
 
 /** Read all LLM-related settings at once, applying defaults in one place. */
-export function getLlmConfig(db: Database): LlmConfig {
+export async function getLlmConfig(db: Database): Promise<LlmConfig> {
   return {
-    enabled: getSetting(db, "llm.enabled") === "true",
-    url: getSetting(db, "llm.url") || DEFAULT_LLM_URL,
-    model: getSetting(db, "llm.model") || DEFAULT_LLM_MODEL,
-    apiKey: getSetting(db, "llm.api_key") || DEFAULT_LLM_API_KEY,
-    locale: (getSetting(db, "system.locale") || "en") as SupportedLocale,
+    enabled: (await getSetting(db, "llm.enabled")) === "true",
+    url: (await getSetting(db, "llm.url")) || DEFAULT_LLM_URL,
+    model: (await getSetting(db, "llm.model")) || DEFAULT_LLM_MODEL,
+    apiKey: (await getSetting(db, "llm.api_key")) || DEFAULT_LLM_API_KEY,
+    locale: ((await getSetting(db, "system.locale")) ||
+      "en") as SupportedLocale,
   };
 }
 
@@ -110,7 +111,7 @@ export async function generateQuestionViaLLM(
     sourceLinkContent?: string | null;
   },
 ): Promise<string> {
-  const cfg = getLlmConfig(db);
+  const cfg = await getLlmConfig(db);
   if (!cfg.enabled) {
     throw new Error("LLM integration is disabled in settings (llm.enabled)");
   }
@@ -177,7 +178,7 @@ export async function evaluateAnswerViaLLM(
     sourceLinkContent?: string | null;
   },
 ): Promise<string> {
-  const cfg = getLlmConfig(db);
+  const cfg = await getLlmConfig(db);
   if (!cfg.enabled) {
     throw new Error("LLM integration is disabled in settings (llm.enabled)");
   }
@@ -241,7 +242,7 @@ export async function translateQuestionViaLLM(
   db: Database,
   question: string,
 ): Promise<string> {
-  const cfg = getLlmConfig(db);
+  const cfg = await getLlmConfig(db);
   if (!cfg.enabled) {
     throw new Error("LLM integration is disabled in settings");
   }
@@ -496,7 +497,7 @@ async function startLocalRunner(
 export async function ensureLocalLlmRunning(
   db: Database,
 ): Promise<LlmReadiness> {
-  const cfg = getLlmConfig(db);
+  const cfg = await getLlmConfig(db);
   if (!cfg.enabled) {
     return { usable: false, reason: "disabled" };
   }
@@ -562,7 +563,7 @@ export async function ensureLlmReadyHeadless(
   opts: { timeoutMs?: number } = {},
 ): Promise<LlmReadyResult> {
   const timeoutMs = opts.timeoutMs ?? 25000;
-  const { enabled, url, model, apiKey } = getLlmConfig(db);
+  const { enabled, url, model, apiKey } = await getLlmConfig(db);
   if (!enabled) {
     return {
       usable: false,
@@ -698,7 +699,7 @@ export async function ensureHighQualityQuestion(
     question?: string | null;
   },
 ): Promise<string | null> {
-  const { enabled } = getLlmConfig(db);
+  const { enabled } = await getLlmConfig(db);
 
   if (enabled) {
     try {
@@ -722,7 +723,7 @@ export async function ensureHighQualityQuestion(
 
       if (generated && generated.trim().length > 0) {
         // Persist the latest high-quality question as the offline fallback.
-        updateToken(db, token.slug, { question: generated });
+        await updateToken(db, token.slug, { question: generated });
         return generated;
       }
     } catch {

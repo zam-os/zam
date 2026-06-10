@@ -59,7 +59,7 @@ sessionCommand
   .action(async (opts) => {
     let db: Database | undefined;
     try {
-      db = openDatabase();
+      db = await openDatabase();
 
       const validContexts = ["shell", "ui", "reallife"];
       if (!validContexts.includes(opts.context)) {
@@ -69,7 +69,7 @@ sessionCommand
         process.exit(1);
       }
 
-      const userId = resolveUser(opts, db);
+      const userId = await resolveUser(opts, db);
       const reviewMinutes = Number(opts.reviewMinutes);
 
       // ── Phase 1: Repetition ────────────────────────────────────────────
@@ -99,13 +99,13 @@ sessionCommand
         process.exit(1);
       }
 
-      const session = startSession(db, {
+      const session = await startSession(db, {
         user_id: userId,
         task,
         execution_context: opts.context as ExecutionContext,
       });
 
-      db.close();
+      await db.close();
 
       if (opts.quiet) {
         console.log(session.id);
@@ -119,7 +119,7 @@ sessionCommand
         console.log(`  Started: ${session.started_at}`);
       }
     } catch (err) {
-      db?.close();
+      await db?.close();
       if ((err as Error).name === "ExitPromptError") {
         console.log("\nSession cancelled.");
         process.exit(0);
@@ -142,7 +142,7 @@ async function runRepetitionPhase(
   userId: string,
   maxMinutes: number,
 ): Promise<RepetitionResult> {
-  const queue = buildReviewQueue(db, { userId });
+  const queue = await buildReviewQueue(db, { userId });
 
   if (queue.items.length === 0) {
     console.log("No cards due for review — moving to task selection.\n");
@@ -264,15 +264,15 @@ sessionCommand
   .option("--rating <n>", "Rating (1-4)")
   .option("--json", "Output as JSON")
   .option("--quiet", "Suppress output (exit code only)")
-  .action((opts) => {
-    withDb((db) => {
-      const token = getTokenBySlug(db, opts.token);
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const token = await getTokenBySlug(db, opts.token);
       if (!token) {
         console.error(`Token not found: ${opts.token}`);
         process.exit(1);
       }
 
-      const step = logStep(db, {
+      const step = await logStep(db, {
         session_id: opts.session,
         token_id: token.id,
         done_by: opts.doneBy as "user" | "agent",
@@ -300,10 +300,10 @@ sessionCommand
   .description("End a session and show summary")
   .requiredOption("--session <id>", "Session ID")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
-      endSession(db, opts.session);
-      const summary = getSessionSummary(db, opts.session);
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      await endSession(db, opts.session);
+      const summary = await getSessionSummary(db, opts.session);
 
       if (opts.json) {
         console.log(JSON.stringify(summary, null, 2));

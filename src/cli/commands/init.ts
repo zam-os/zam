@@ -172,41 +172,41 @@ export const initCommand = new Command("init")
 
     // ── STEP 4: Initialize Database & Write Local Settings ─────────────────
     console.log("\n\x1b[1m[4/5] Bootstrapping database & settings...\x1b[0m");
-    let db: ReturnType<typeof openDatabaseWithSync> | undefined;
+    let db: Awaited<ReturnType<typeof openDatabaseWithSync>> | undefined;
     try {
-      db = openDatabaseWithSync({ initialize: true });
+      db = await openDatabaseWithSync({ initialize: true });
 
       // Save workspace directory to settings
-      setSetting(db, "personal.workspace_dir", workspacePath);
+      await setSetting(db, "personal.workspace_dir", workspacePath);
 
       // Auto-detect and save system locale
       const detectedLocale = detectSystemLocale();
-      setSetting(db, "system.locale", detectedLocale);
+      await setSetting(db, "system.locale", detectedLocale);
       console.log(
         `\x1b[32m✓ Detected and set system language to: ${detectedLocale}\x1b[0m`,
       );
 
       if (llmReady) {
-        setSetting(db, "llm.enabled", "true");
+        await setSetting(db, "llm.enabled", "true");
         if (profile.recommendedRunner === "fastflowlm") {
-          setSetting(db, "llm.url", "http://localhost:8000/v1");
+          await setSetting(db, "llm.url", "http://localhost:8000/v1");
         } else {
-          setSetting(db, "llm.url", "http://localhost:11434/v1");
+          await setSetting(db, "llm.url", "http://localhost:11434/v1");
         }
-        setSetting(db, "llm.model", profile.recommendedModel);
+        await setSetting(db, "llm.model", profile.recommendedModel);
         console.log(
           "\x1b[32m✓ Configured LLM runner settings in database.\x1b[0m",
         );
       } else {
-        setSetting(db, "llm.enabled", "false");
+        await setSetting(db, "llm.enabled", "false");
       }
-      db.close();
+      await db.close();
       console.log("\x1b[32m✓ Database initialized successfully.\x1b[0m");
     } catch (err) {
       console.error(
         `\x1b[31m✗ Database setup failed: ${(err as Error).message}\x1b[0m`,
       );
-      db?.close();
+      await db?.close();
     }
 
     // ── STEP 5: Distribute Agent Skills & Helpers ────────────────────────────

@@ -15,35 +15,19 @@ function defaultErrorHandler(message: string): void {
   process.exit(1);
 }
 
-/** Synchronous wrapper: opens DB, calls fn, closes DB, handles errors. */
-export function withDb(
-  fn: (db: Database) => void,
-  onError: ErrorHandler = defaultErrorHandler,
-): void {
-  let db: Database | undefined;
-  try {
-    db = openDatabase();
-    fn(db);
-  } catch (err) {
-    onError((err as Error).message);
-  } finally {
-    db?.close();
-  }
-}
-
-/** Asynchronous wrapper for commands that need async operations (LLM, etc.). */
-export async function withDbAsync(
-  fn: (db: Database) => Promise<void>,
+/** Opens the DB, awaits fn, closes the DB, handles errors. */
+export async function withDb(
+  fn: (db: Database) => void | Promise<void>,
   onError: ErrorHandler = defaultErrorHandler,
 ): Promise<void> {
   let db: Database | undefined;
   try {
-    db = openDatabase();
+    db = await openDatabase();
     await fn(db);
   } catch (err) {
     onError((err as Error).message);
   } finally {
-    db?.close();
+    await db?.close();
   }
 }
 

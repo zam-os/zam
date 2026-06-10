@@ -9,15 +9,14 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   addPrerequisite,
-  type Database,
   buildReviewQueue,
   createToken,
+  type Database,
   ensureCard,
   evaluateRating,
   executeReviewAction,
   findTokens,
   getDependents,
-  getDueCards,
   getPrerequisites,
   getTokenBySlug,
   openDatabase,
@@ -29,16 +28,16 @@ describe("integration: token → card → review flow", () => {
   let db: Database;
   let tempDir: string;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     tempDir = mkdtempSync(join(tmpdir(), "zam-integration-"));
-    db = openDatabase({
+    db = await openDatabase({
       dbPath: join(tempDir, "zam-test.db"),
       initialize: true,
     });
   });
 
-  afterEach(() => {
-    db.close();
+  afterEach(async () => {
+    await db.close();
     try {
       rmSync(tempDir, {
         recursive: true,
@@ -54,85 +53,85 @@ describe("integration: token → card → review flow", () => {
   // ── Prerequisite cycle detection ─────────────────────────────────────────
 
   describe("prerequisite cycle detection", () => {
-    it("rejects a direct self-loop", () => {
-      const a = createToken(db, {
+    it("rejects a direct self-loop", async () => {
+      const a = await createToken(db, {
         slug: "token-a",
         concept: "Concept A",
         domain: "test",
         bloom_level: 1,
       });
-      expect(() => addPrerequisite(db, a.id, a.id)).toThrow(
+      await expect(addPrerequisite(db, a.id, a.id)).rejects.toThrow(
         "A token cannot be a prerequisite of itself",
       );
     });
 
-    it("rejects a direct back-edge (A → B, then B → A)", () => {
-      const a = createToken(db, {
+    it("rejects a direct back-edge (A → B, then B → A)", async () => {
+      const a = await createToken(db, {
         slug: "token-a",
         concept: "Concept A",
         domain: "test",
         bloom_level: 1,
       });
-      const b = createToken(db, {
+      const b = await createToken(db, {
         slug: "token-b",
         concept: "Concept B",
         domain: "test",
         bloom_level: 1,
       });
 
-      addPrerequisite(db, a.id, b.id);
-      expect(() => addPrerequisite(db, b.id, a.id)).toThrow(
+      await addPrerequisite(db, a.id, b.id);
+      await expect(addPrerequisite(db, b.id, a.id)).rejects.toThrow(
         "Cannot add prerequisite: would create a cycle",
       );
     });
 
-    it("rejects a transitive cycle (A → B → C, then C → A)", () => {
-      const a = createToken(db, {
+    it("rejects a transitive cycle (A → B → C, then C → A)", async () => {
+      const a = await createToken(db, {
         slug: "token-a",
         concept: "Concept A",
         domain: "test",
         bloom_level: 1,
       });
-      const b = createToken(db, {
+      const b = await createToken(db, {
         slug: "token-b",
         concept: "Concept B",
         domain: "test",
         bloom_level: 1,
       });
-      const c = createToken(db, {
+      const c = await createToken(db, {
         slug: "token-c",
         concept: "Concept C",
         domain: "test",
         bloom_level: 1,
       });
 
-      addPrerequisite(db, a.id, b.id);
-      addPrerequisite(db, b.id, c.id);
-      expect(() => addPrerequisite(db, c.id, a.id)).toThrow(
+      await addPrerequisite(db, a.id, b.id);
+      await addPrerequisite(db, b.id, c.id);
+      await expect(addPrerequisite(db, c.id, a.id)).rejects.toThrow(
         "Cannot add prerequisite: would create a cycle",
       );
     });
 
-    it("allows valid acyclic edges (diamond: D → B, D → C, B → A, C → A)", () => {
-      const a = createToken(db, {
+    it("allows valid acyclic edges (diamond: D → B, D → C, B → A, C → A)", async () => {
+      const a = await createToken(db, {
         slug: "token-a",
         concept: "Concept A",
         domain: "test",
         bloom_level: 1,
       });
-      const b = createToken(db, {
+      const b = await createToken(db, {
         slug: "token-b",
         concept: "Concept B",
         domain: "test",
         bloom_level: 1,
       });
-      const c = createToken(db, {
+      const c = await createToken(db, {
         slug: "token-c",
         concept: "Concept C",
         domain: "test",
         bloom_level: 1,
       });
-      const d = createToken(db, {
+      const d = await createToken(db, {
         slug: "token-d",
         concept: "Concept D",
         domain: "test",
@@ -140,70 +139,70 @@ describe("integration: token → card → review flow", () => {
       });
 
       // Diamond: D requires B and C; B and C both require A
-      addPrerequisite(db, b.id, a.id);
-      addPrerequisite(db, c.id, a.id);
-      addPrerequisite(db, d.id, b.id);
-      addPrerequisite(db, d.id, c.id);
+      await addPrerequisite(db, b.id, a.id);
+      await addPrerequisite(db, c.id, a.id);
+      await addPrerequisite(db, d.id, b.id);
+      await addPrerequisite(db, d.id, c.id);
 
       // Verify the structure
-      expect(getPrerequisites(db, d.id)).toHaveLength(2);
-      expect(getDependents(db, a.id)).toHaveLength(2);
+      expect(await getPrerequisites(db, d.id)).toHaveLength(2);
+      expect(await getDependents(db, a.id)).toHaveLength(2);
     });
 
-    it("wouldCreateCycle returns false for disconnected tokens", () => {
-      const a = createToken(db, {
+    it("wouldCreateCycle returns false for disconnected tokens", async () => {
+      const a = await createToken(db, {
         slug: "token-a",
         concept: "Concept A",
         domain: "test",
         bloom_level: 1,
       });
-      const b = createToken(db, {
+      const b = await createToken(db, {
         slug: "token-b",
         concept: "Concept B",
         domain: "test",
         bloom_level: 1,
       });
-      expect(wouldCreateCycle(db, a.id, b.id)).toBe(false);
+      expect(await wouldCreateCycle(db, a.id, b.id)).toBe(false);
     });
 
-    it("idempotent duplicate edge does not throw", () => {
-      const a = createToken(db, {
+    it("idempotent duplicate edge does not throw", async () => {
+      const a = await createToken(db, {
         slug: "token-a",
         concept: "Concept A",
         domain: "test",
         bloom_level: 1,
       });
-      const b = createToken(db, {
+      const b = await createToken(db, {
         slug: "token-b",
         concept: "Concept B",
         domain: "test",
         bloom_level: 1,
       });
 
-      addPrerequisite(db, a.id, b.id);
+      await addPrerequisite(db, a.id, b.id);
       // Adding the same edge again should be a no-op, not a cycle error
-      expect(() => addPrerequisite(db, a.id, b.id)).not.toThrow();
-      expect(getPrerequisites(db, a.id)).toHaveLength(1);
+      await expect(addPrerequisite(db, a.id, b.id)).resolves.not.toThrow();
+      expect(await getPrerequisites(db, a.id)).toHaveLength(1);
     });
   });
 
   // ── Fuzzy search ─────────────────────────────────────────────────────────
 
   describe("findTokens fuzzy search", () => {
-    beforeEach(() => {
-      createToken(db, {
+    beforeEach(async () => {
+      await createToken(db, {
         slug: "git-commit",
         concept: "git commit records staged changes to the repository",
         domain: "git",
         bloom_level: 2,
       });
-      createToken(db, {
+      await createToken(db, {
         slug: "git-branch",
         concept: "git branch lists, creates, or deletes branches",
         domain: "git",
         bloom_level: 1,
       });
-      createToken(db, {
+      await createToken(db, {
         slug: "docker-run",
         concept: "docker run starts a new container from an image",
         domain: "docker",
@@ -211,25 +210,25 @@ describe("integration: token → card → review flow", () => {
       });
     });
 
-    it("finds tokens by slug keyword", () => {
-      const results = findTokens(db, "branch");
+    it("finds tokens by slug keyword", async () => {
+      const results = await findTokens(db, "branch");
       expect(results).toHaveLength(1);
       expect(results[0].slug).toBe("git-branch");
     });
 
-    it("finds tokens by concept text", () => {
-      const results = findTokens(db, "container");
+    it("finds tokens by concept text", async () => {
+      const results = await findTokens(db, "container");
       expect(results).toHaveLength(1);
       expect(results[0].slug).toBe("docker-run");
     });
 
-    it("returns empty for no match", () => {
-      const results = findTokens(db, "nonexistent123");
+    it("returns empty for no match", async () => {
+      const results = await findTokens(db, "nonexistent123");
       expect(results).toHaveLength(0);
     });
 
-    it("ranks by word overlap score", () => {
-      const results = findTokens(db, "git branch");
+    it("ranks by word overlap score", async () => {
+      const results = await findTokens(db, "git branch");
       expect(results.length).toBeGreaterThanOrEqual(2);
       // "git-branch" should score higher than plain "git" tokens
       expect(results[0].slug).toBe("git-branch");
@@ -239,8 +238,8 @@ describe("integration: token → card → review flow", () => {
   // ── Token → Card → Review flow ───────────────────────────────────────────
 
   describe("token → card → review lifecycle", () => {
-    it("creates a token, ensures a card, rates it, and shows due cards", () => {
-      const token = createToken(db, {
+    it("creates a token, ensures a card, rates it, and shows due cards", async () => {
+      const token = await createToken(db, {
         slug: "test-concept",
         concept: "A test concept for integration testing",
         domain: "testing",
@@ -251,13 +250,13 @@ describe("integration: token → card → review flow", () => {
       expect(token.bloom_level).toBe(2);
 
       // Card does not exist yet
-      const card = ensureCard(db, token.id, "thomas");
+      const card = await ensureCard(db, token.id, "thomas");
       expect(card.token_id).toBe(token.id);
       expect(card.user_id).toBe("thomas");
       expect(card.state).toBe("new");
 
       // Rate the card
-      const result = evaluateRating(db, {
+      const result = await evaluateRating(db, {
         cardId: card.id,
         tokenId: token.id,
         userId: "thomas",
@@ -270,7 +269,8 @@ describe("integration: token → card → review flow", () => {
 
       // The card should now be in the due queue (scheduled for future)
       // Newly rated cards won't be "due" yet, but the queue building works
-      const queue = buildReviewQueue(db, "thomas", {
+      const queue = await buildReviewQueue(db, {
+        userId: "thomas",
         maxNew: 5,
         maxReviews: 10,
       });
@@ -279,26 +279,26 @@ describe("integration: token → card → review flow", () => {
       expect(queue.items.length).toBeGreaterThanOrEqual(0);
     });
 
-    it("full lifecycle: token → prerequisite chain → block → unblock", () => {
-      const prereq = createToken(db, {
+    it("full lifecycle: token → prerequisite chain → block → unblock", async () => {
+      const prereq = await createToken(db, {
         slug: "prerequisite-token",
         concept: "A prerequisite concept",
         domain: "testing",
         bloom_level: 1,
       });
-      const target = createToken(db, {
+      const target = await createToken(db, {
         slug: "target-token",
         concept: "A dependent concept",
         domain: "testing",
         bloom_level: 2,
       });
 
-      addPrerequisite(db, target.id, prereq.id);
+      await addPrerequisite(db, target.id, prereq.id);
 
-      const targetCard = ensureCard(db, target.id, "thomas");
+      const targetCard = await ensureCard(db, target.id, "thomas");
 
       // Rating 1 (forgot) on the target should cascade-block it and surface prerequisites
-      const result = executeReviewAction(db, {
+      const result = await executeReviewAction(db, {
         action: "rate",
         cardId: targetCard.id,
         userId: "thomas",
@@ -312,12 +312,12 @@ describe("integration: token → card → review flow", () => {
       expect(result.blocked?.prerequisites[0]?.slug).toBe(prereq.slug);
 
       // The target card should now be blocked
-      const blockedToken = getTokenBySlug(db, target.slug);
+      const blockedToken = await getTokenBySlug(db, target.slug);
       expect(blockedToken).toBeDefined();
 
       // Learn the prerequisite
-      const prereqCard = ensureCard(db, prereq.id, "thomas");
-      executeReviewAction(db, {
+      const prereqCard = await ensureCard(db, prereq.id, "thomas");
+      await executeReviewAction(db, {
         action: "rate",
         cardId: prereqCard.id,
         userId: "thomas",
@@ -325,7 +325,7 @@ describe("integration: token → card → review flow", () => {
       });
 
       // Now unblock — the target should become ready
-      const unblocked = unblockReady(db, "thomas");
+      const unblocked = await unblockReady(db, "thomas");
       expect(unblocked.unblocked.length).toBeGreaterThanOrEqual(1);
       expect(unblocked.unblocked.some((u) => u.slug === target.slug)).toBe(
         true,

@@ -56,13 +56,13 @@ function parseRow(row: AgentSkillRow): AgentSkill {
 
 // ── Functions ────────────────────────────────────────────────────────────────
 
-export function createAgentSkill(
+export async function createAgentSkill(
   db: Database,
   input: CreateAgentSkillInput,
-): AgentSkill {
-  const existing = db
+): Promise<AgentSkill> {
+  const existing = (await db
     .prepare("SELECT * FROM agent_skills WHERE slug = ?")
-    .get(input.slug) as AgentSkillRow | undefined;
+    .get(input.slug)) as AgentSkillRow | undefined;
 
   if (existing) {
     throw new Error(`Agent skill already exists: ${input.slug}`);
@@ -71,42 +71,44 @@ export function createAgentSkill(
   const id = ulid();
   const now = new Date().toISOString();
 
-  db.prepare(
-    `INSERT INTO agent_skills (id, slug, description, steps, token_slugs, source, created_at, updated_at)
+  await db
+    .prepare(
+      `INSERT INTO agent_skills (id, slug, description, steps, token_slugs, source, created_at, updated_at)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-  ).run(
-    id,
-    input.slug,
-    input.description,
-    JSON.stringify(input.steps),
-    JSON.stringify(input.token_slugs ?? []),
-    input.source ?? "learned",
-    now,
-    now,
-  );
+    )
+    .run(
+      id,
+      input.slug,
+      input.description,
+      JSON.stringify(input.steps),
+      JSON.stringify(input.token_slugs ?? []),
+      input.source ?? "learned",
+      now,
+      now,
+    );
 
   return parseRow(
-    db
+    (await db
       .prepare("SELECT * FROM agent_skills WHERE id = ?")
-      .get(id) as AgentSkillRow,
+      .get(id)) as AgentSkillRow,
   );
 }
 
-export function getAgentSkill(
+export async function getAgentSkill(
   db: Database,
   slug: string,
-): AgentSkill | undefined {
-  const row = db
+): Promise<AgentSkill | undefined> {
+  const row = (await db
     .prepare("SELECT * FROM agent_skills WHERE slug = ?")
-    .get(slug) as AgentSkillRow | undefined;
+    .get(slug)) as AgentSkillRow | undefined;
 
   return row ? parseRow(row) : undefined;
 }
 
-export function listAgentSkills(db: Database): AgentSkill[] {
-  const rows = db
+export async function listAgentSkills(db: Database): Promise<AgentSkill[]> {
+  const rows = (await db
     .prepare("SELECT * FROM agent_skills ORDER BY created_at ASC")
-    .all() as AgentSkillRow[];
+    .all()) as AgentSkillRow[];
 
   return rows.map(parseRow);
 }

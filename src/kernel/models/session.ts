@@ -65,17 +65,24 @@ export interface SessionSummary {
  *
  * Ported from the PoC's start-session command.
  */
-export function startSession(db: Database, input: CreateSessionInput): Session {
+export async function startSession(
+  db: Database,
+  input: CreateSessionInput,
+): Promise<Session> {
   const id = ulid();
   const now = new Date().toISOString();
   const ctx = input.execution_context ?? "shell";
 
-  db.prepare(
-    `INSERT INTO sessions (id, user_id, task, execution_context, started_at)
+  await db
+    .prepare(
+      `INSERT INTO sessions (id, user_id, task, execution_context, started_at)
      VALUES (?, ?, ?, ?, ?)`,
-  ).run(id, input.user_id, input.task, ctx, now);
+    )
+    .run(id, input.user_id, input.task, ctx, now);
 
-  return db.prepare("SELECT * FROM sessions WHERE id = ?").get(id) as Session;
+  return (await db
+    .prepare("SELECT * FROM sessions WHERE id = ?")
+    .get(id)) as Session;
 }
 
 /**
@@ -85,10 +92,13 @@ export function startSession(db: Database, input: CreateSessionInput): Session {
  *
  * Ported from the PoC's end-session command.
  */
-export function endSession(db: Database, sessionId: string): Session {
-  const session = db
+export async function endSession(
+  db: Database,
+  sessionId: string,
+): Promise<Session> {
+  const session = (await db
     .prepare("SELECT * FROM sessions WHERE id = ?")
-    .get(sessionId) as Session | undefined;
+    .get(sessionId)) as Session | undefined;
 
   if (!session) {
     throw new Error(`Session not found: ${sessionId}`);
@@ -98,14 +108,13 @@ export function endSession(db: Database, sessionId: string): Session {
   }
 
   const now = new Date().toISOString();
-  db.prepare("UPDATE sessions SET completed_at = ? WHERE id = ?").run(
-    now,
-    sessionId,
-  );
+  await db
+    .prepare("UPDATE sessions SET completed_at = ? WHERE id = ?")
+    .run(now, sessionId);
 
-  return db
+  return (await db
     .prepare("SELECT * FROM sessions WHERE id = ?")
-    .get(sessionId) as Session;
+    .get(sessionId)) as Session;
 }
 
 /**
@@ -116,7 +125,10 @@ export function endSession(db: Database, sessionId: string): Session {
  *
  * Ported from the PoC's log-step command.
  */
-export function logStep(db: Database, input: LogStepInput): SessionStep {
+export async function logStep(
+  db: Database,
+  input: LogStepInput,
+): Promise<SessionStep> {
   if (input.done_by !== "user" && input.done_by !== "agent") {
     throw new Error(
       `done_by must be 'user' or 'agent', got '${input.done_by}'`,
@@ -127,7 +139,7 @@ export function logStep(db: Database, input: LogStepInput): SessionStep {
   }
 
   // Verify the session exists
-  const session = db
+  const session = await db
     .prepare("SELECT id FROM sessions WHERE id = ?")
     .get(input.session_id);
   if (!session) {
@@ -137,22 +149,24 @@ export function logStep(db: Database, input: LogStepInput): SessionStep {
   const id = ulid();
   const now = new Date().toISOString();
 
-  db.prepare(
-    `INSERT INTO session_steps (id, session_id, token_id, done_by, rating, notes, created_at)
+  await db
+    .prepare(
+      `INSERT INTO session_steps (id, session_id, token_id, done_by, rating, notes, created_at)
      VALUES (?, ?, ?, ?, ?, ?, ?)`,
-  ).run(
-    id,
-    input.session_id,
-    input.token_id,
-    input.done_by,
-    input.rating ?? null,
-    input.notes ?? null,
-    now,
-  );
+    )
+    .run(
+      id,
+      input.session_id,
+      input.token_id,
+      input.done_by,
+      input.rating ?? null,
+      input.notes ?? null,
+      now,
+    );
 
-  return db
+  return (await db
     .prepare("SELECT * FROM session_steps WHERE id = ?")
-    .get(id) as SessionStep;
+    .get(id)) as SessionStep;
 }
 
 /**
@@ -162,19 +176,19 @@ export function logStep(db: Database, input: LogStepInput): SessionStep {
  * Ported from the PoC's session-summary command.
  * Throws if the session does not exist.
  */
-export function getSessionSummary(
+export async function getSessionSummary(
   db: Database,
   sessionId: string,
-): SessionSummary {
-  const session = db
+): Promise<SessionSummary> {
+  const session = (await db
     .prepare("SELECT * FROM sessions WHERE id = ?")
-    .get(sessionId) as Session | undefined;
+    .get(sessionId)) as Session | undefined;
 
   if (!session) {
     throw new Error(`Session not found: ${sessionId}`);
   }
 
-  const steps = db
+  const steps = (await db
     .prepare(
       `SELECT ss.*, t.slug, t.concept, t.domain, t.bloom_level
        FROM session_steps ss
@@ -182,7 +196,7 @@ export function getSessionSummary(
        WHERE ss.session_id = ?
        ORDER BY ss.created_at ASC`,
     )
-    .all(sessionId) as StepWithToken[];
+    .all(sessionId)) as StepWithToken[];
 
   return { session, steps };
 }

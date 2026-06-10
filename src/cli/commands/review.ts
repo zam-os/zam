@@ -22,10 +22,10 @@ export const reviewCommand = new Command("review")
   .action(async (opts) => {
     let db: Database | undefined;
     try {
-      db = openDatabase();
-      const userId = resolveUser(opts, db);
+      db = await openDatabase();
+      const userId = await resolveUser(opts, db);
 
-      const queue = buildReviewQueue(db, {
+      const queue = await buildReviewQueue(db, {
         userId,
         maxNew: Number(opts.maxNew),
         maxReviews: Number(opts.maxReviews),
@@ -33,7 +33,7 @@ export const reviewCommand = new Command("review")
 
       if (queue.items.length === 0) {
         console.log("No cards due for review. You're all caught up!");
-        db.close();
+        await db.close();
         return;
       }
 
@@ -137,9 +137,9 @@ export const reviewCommand = new Command("review")
         }
       }
 
-      db.close();
+      await db.close();
     } catch (err) {
-      db?.close();
+      await db?.close();
       // User cancelled with Ctrl+C — exit gracefully
       if ((err as Error).name === "ExitPromptError") {
         console.log("\nReview session cancelled.");

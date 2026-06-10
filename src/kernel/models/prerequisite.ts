@@ -29,10 +29,12 @@ export interface PrerequisiteWithToken extends Prerequisite {
  * Only used for cycle detection; the full graph is loaded once per
  * addPrerequisite call (small N in practice).
  */
-function buildAncestorMap(db: Database): Map<string, Set<string>> {
-  const rows = db
+async function buildAncestorMap(
+  db: Database,
+): Promise<Map<string, Set<string>>> {
+  const rows = (await db
     .prepare("SELECT token_id, requires_id FROM prerequisites")
-    .all() as Array<{ token_id: string; requires_id: string }>;
+    .all()) as Array<{ token_id: string; requires_id: string }>;
   const map = new Map<string, Set<string>>();
   for (const row of rows) {
     let ancestors = map.get(row.token_id);
@@ -50,19 +52,19 @@ function buildAncestorMap(db: Database): Map<string, Set<string>> {
  * Uses BFS from requiresId: if tokenId is reachable, adding the edge closes
  * a loop.
  */
-export function wouldCreateCycle(
+export async function wouldCreateCycle(
   db: Database,
   tokenId: string,
   requiresId: string,
-): boolean {
+): Promise<boolean> {
   if (tokenId === requiresId) return true;
 
-  const ancestors = buildAncestorMap(db);
+  const ancestors = await buildAncestorMap(db);
   const visited = new Set<string>();
   const queue = [requiresId];
 
   while (queue.length > 0) {
-    const current = queue.shift()!;
+    const current = queue.shift() as string;
     if (current === tokenId) return true;
     if (visited.has(current)) continue;
     visited.add(current);
@@ -87,25 +89,27 @@ export function wouldCreateCycle(
  * Throws if a token is declared as its own prerequisite.
  * Throws if the edge would create a cycle in the prerequisite graph.
  */
-export function addPrerequisite(
+export async function addPrerequisite(
   db: Database,
   tokenId: string,
   requiresId: string,
-): void {
+): Promise<void> {
   if (tokenId === requiresId) {
     throw new Error("A token cannot be a prerequisite of itself");
   }
 
-  if (wouldCreateCycle(db, tokenId, requiresId)) {
+  if (await wouldCreateCycle(db, tokenId, requiresId)) {
     throw new Error(
       `Cannot add prerequisite: would create a cycle. ` +
         `${requiresId} already depends on ${tokenId} (directly or transitively).`,
     );
   }
 
-  db.prepare(
-    "INSERT OR IGNORE INTO prerequisites (token_id, requires_id) VALUES (?, ?)",
-  ).run(tokenId, requiresId);
+  await db
+    .prepare(
+      "INSERT OR IGNORE INTO prerequisites (token_id, requires_id) VALUES (?, ?)",
+    )
+    .run(tokenId, requiresId);
 }
 
 /**
@@ -113,18 +117,18 @@ export function addPrerequisite(
  *
  * Returns prerequisite rows joined with the required token's details.
  */
-export function getPrerequisites(
+export async function getPrerequisites(
   db: Database,
   tokenId: string,
-): PrerequisiteWithToken[] {
-  return db
+): Promise<PrerequisiteWithToken[]> {
+  return (await db
     .prepare(
       `SELECT p.token_id, p.requires_id, t.slug, t.concept, t.domain, t.bloom_level
        FROM prerequisites p
        JOIN tokens t ON t.id = p.requires_id
        WHERE p.token_id = ?`,
     )
-    .all(tokenId) as PrerequisiteWithToken[];
+    .all(tokenId)) as PrerequisiteWithToken[];
 }
 
 /**
@@ -132,16 +136,16 @@ export function getPrerequisites(
  *
  * Returns prerequisite rows joined with the dependent token's details.
  */
-export function getDependents(
+export async function getDependents(
   db: Database,
   tokenId: string,
-): PrerequisiteWithToken[] {
-  return db
+): Promise<PrerequisiteWithToken[]> {
+  return (await db
     .prepare(
       `SELECT p.token_id, p.requires_id, t.slug, t.concept, t.domain, t.bloom_level
        FROM prerequisites p
        JOIN tokens t ON t.id = p.token_id
        WHERE p.requires_id = ?`,
     )
-    .all(tokenId) as PrerequisiteWithToken[];
+    .all(tokenId)) as PrerequisiteWithToken[];
 }

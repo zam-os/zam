@@ -28,64 +28,67 @@ export interface DomainCompetence {
   suggestedMode: "shadowing" | "copilot" | "autonomy";
 }
 
-function q(db: Database, sql: string, ...params: unknown[]) {
-  return db.prepare(sql).get(...params) as Record<string, unknown>;
+async function q(db: Database, sql: string, ...params: unknown[]) {
+  return (await db.prepare(sql).get(...params)) as Record<string, unknown>;
+}
+
+async function count(
+  db: Database,
+  sql: string,
+  ...params: unknown[]
+): Promise<number> {
+  return ((await q(db, sql, ...params)) as { n: number }).n;
 }
 
 /**
  * Get overall learning stats for a user (ported from PoC's `stats` command).
  */
-export function getUserStats(db: Database, userId: string): UserStats {
+export async function getUserStats(
+  db: Database,
+  userId: string,
+): Promise<UserStats> {
+  const avgRow = (await q(
+    db,
+    "SELECT AVG(stability) as v FROM cards WHERE user_id = ? AND reps > 0",
+    userId,
+  )) as { v: number | null };
+
+  const lastSessionRow = (await db
+    .prepare(
+      "SELECT started_at FROM sessions WHERE user_id = ? ORDER BY started_at DESC LIMIT 1",
+    )
+    .get(userId)) as { started_at: string } | undefined;
+
   return {
     userId,
-    totalTokens: (q(db, "SELECT COUNT(*) as n FROM tokens") as { n: number }).n,
-    cardsInDeck: (
-      q(db, "SELECT COUNT(*) as n FROM cards WHERE user_id = ?", userId) as {
-        n: number;
-      }
-    ).n,
-    dueToday: (
-      q(
-        db,
-        "SELECT COUNT(*) as n FROM cards WHERE user_id = ? AND blocked = 0 AND due_at <= datetime('now')",
-        userId,
-      ) as { n: number }
-    ).n,
-    blocked: (
-      q(
-        db,
-        "SELECT COUNT(*) as n FROM cards WHERE user_id = ? AND blocked = 1",
-        userId,
-      ) as { n: number }
-    ).n,
-    mature: (
-      q(
-        db,
-        "SELECT COUNT(*) as n FROM cards WHERE user_id = ? AND reps >= 3 AND stability >= 21",
-        userId,
-      ) as { n: number }
-    ).n,
-    avgStability: (() => {
-      const v = q(
-        db,
-        "SELECT AVG(stability) as v FROM cards WHERE user_id = ? AND reps > 0",
-        userId,
-      ) as { v: number | null };
-      return v.v ? Math.round(v.v * 100) / 100 : null;
-    })(),
-    totalSessions: (
-      q(db, "SELECT COUNT(*) as n FROM sessions WHERE user_id = ?", userId) as {
-        n: number;
-      }
-    ).n,
-    lastSession: (() => {
-      const r = db
-        .prepare(
-          "SELECT started_at FROM sessions WHERE user_id = ? ORDER BY started_at DESC LIMIT 1",
-        )
-        .get(userId) as { started_at: string } | undefined;
-      return r?.started_at ?? null;
-    })(),
+    totalTokens: await count(db, "SELECT COUNT(*) as n FROM tokens"),
+    cardsInDeck: await count(
+      db,
+      "SELECT COUNT(*) as n FROM cards WHERE user_id = ?",
+      userId,
+    ),
+    dueToday: await count(
+      db,
+      "SELECT COUNT(*) as n FROM cards WHERE user_id = ? AND blocked = 0 AND due_at <= datetime('now')",
+      userId,
+    ),
+    blocked: await count(
+      db,
+      "SELECT COUNT(*) as n FROM cards WHERE user_id = ? AND blocked = 1",
+      userId,
+    ),
+    mature: await count(
+      db,
+      "SELECT COUNT(*) as n FROM cards WHERE user_id = ? AND reps >= 3 AND stability >= 21",
+      userId,
+    ),
+    avgStability: avgRow.v ? Math.round(avgRow.v * 100) / 100 : null,
+    totalSessions: await count(
+      db,
+      "SELECT COUNT(*) as n FROM sessions WHERE user_id = ?",
+      userId,
+    ),
+    lastSession: lastSessionRow?.started_at ?? null,
   };
 }
 
@@ -93,55 +96,52 @@ export function getUserStats(db: Database, userId: string): UserStats {
  * Get competence per domain for a user.
  * Used to suggest symbiosis mode transitions.
  */
-export function getDomainCompetence(
+export async function getDomainCompetence(
   db: Database,
   userId: string,
-): DomainCompetence[] {
-  const domains = db
+): Promise<DomainCompetence[]> {
+  const domains = (await db
     .prepare(
       `SELECT DISTINCT t.domain FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ? AND t.domain != ''`,
     )
-    .all(userId) as { domain: string }[];
+    .all(userId)) as { domain: string }[];
 
-  return domains.map((d) => {
-    const total = (
-      q(
-        db,
-        `SELECT COUNT(*) as n FROM cards c
+  const competences: DomainCompetence[] = [];
+  for (const d of domains) {
+    const total = await count(
+      db,
+      `SELECT COUNT(*) as n FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ? AND t.domain = ?`,
-        userId,
-        d.domain,
-      ) as { n: number }
-    ).n;
+      userId,
+      d.domain,
+    );
 
-    const mature = (
-      q(
-        db,
-        `SELECT COUNT(*) as n FROM cards c
+    const mature = await count(
+      db,
+      `SELECT COUNT(*) as n FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ? AND t.domain = ? AND c.reps >= 3 AND c.stability >= 21`,
-        userId,
-        d.domain,
-      ) as { n: number }
-    ).n;
+      userId,
+      d.domain,
+    );
 
     const avgStab =
       (
-        q(
+        (await q(
           db,
           `SELECT AVG(c.stability) as v FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ? AND t.domain = ? AND c.reps > 0`,
           userId,
           d.domain,
-        ) as { v: number | null }
+        )) as { v: number | null }
       ).v ?? 0;
 
     // Estimate retention from review history
-    const reviews = q(
+    const reviews = (await q(
       db,
       `SELECT COUNT(*) as total,
               SUM(CASE WHEN rating >= 2 THEN 1 ELSE 0 END) as passed
@@ -149,7 +149,7 @@ export function getDomainCompetence(
        WHERE user_id = ? AND token_id IN (SELECT id FROM tokens WHERE domain = ?)`,
       userId,
       d.domain,
-    ) as { total: number; passed: number };
+    )) as { total: number; passed: number };
 
     const retentionRate =
       reviews.total > 0 ? reviews.passed / reviews.total : 0;
@@ -163,13 +163,14 @@ export function getDomainCompetence(
       suggestedMode = "shadowing";
     }
 
-    return {
+    competences.push({
       domain: d.domain,
       totalCards: total,
       matureCards: mature,
       avgStability: Math.round(avgStab * 100) / 100,
       retentionRate: Math.round(retentionRate * 1000) / 1000,
       suggestedMode,
-    };
-  });
+    });
+  }
+  return competences;
 }

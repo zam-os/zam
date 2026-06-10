@@ -14,14 +14,14 @@ export interface ResolveUserOptions {
  * Returns the user ID from the explicit --user flag, or falls back to the
  * stored `user.id` setting. Exits with an error if neither is available.
  */
-export function resolveUser(
+export async function resolveUser(
   opts: { user?: string },
   db: Database,
   resolveOpts?: ResolveUserOptions,
-): string {
+): Promise<string> {
   if (opts.user) return opts.user;
 
-  const stored = getSetting(db, "user.id");
+  const stored = await getSetting(db, "user.id");
   if (stored) return stored;
 
   const message =

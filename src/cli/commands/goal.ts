@@ -23,17 +23,17 @@ import {
   updateGoalStatus,
 } from "../../kernel/index.js";
 
-function resolveGoalsDir(): string {
+async function resolveGoalsDir(): Promise<string> {
   let goalsDir: string | undefined;
 
-  let db: ReturnType<typeof openDatabase> | undefined;
+  let db: Awaited<ReturnType<typeof openDatabase>> | undefined;
   try {
-    db = openDatabase();
-    goalsDir = getSetting(db, "personal.goals_dir");
+    db = await openDatabase();
+    goalsDir = await getSetting(db, "personal.goals_dir");
   } catch {
     // DB not available — fall back to default
   } finally {
-    db?.close();
+    await db?.close();
   }
 
   return goalsDir ? resolve(goalsDir) : resolve("goals");
@@ -54,8 +54,8 @@ goalCommand
   )
   .option("--tree", "Show goals as a tree with parent/child relationships")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    const goalsDir = resolveGoalsDir();
+  .action(async (opts) => {
+    const goalsDir = await resolveGoalsDir();
 
     if (!existsSync(goalsDir)) {
       console.error(`Goals directory not found: ${goalsDir}`);
@@ -141,8 +141,8 @@ goalCommand
   .command("show <slug>")
   .description("Show a goal's details")
   .option("--json", "Output as JSON")
-  .action((slug, opts) => {
-    const goalsDir = resolveGoalsDir();
+  .action(async (slug, opts) => {
+    const goalsDir = await resolveGoalsDir();
     const goal = getGoal(goalsDir, slug);
 
     if (!goal) {
@@ -199,7 +199,7 @@ goalCommand
   .option("--description <text>", "Goal description")
   .option("--json", "Output as JSON")
   .action(async (opts) => {
-    const goalsDir = resolveGoalsDir();
+    const goalsDir = await resolveGoalsDir();
 
     if (!existsSync(goalsDir)) {
       mkdirSync(goalsDir, { recursive: true });
@@ -254,7 +254,7 @@ goalCommand
   .command("status <slug> <status>")
   .description("Update a goal's status (active, paused, completed, abandoned)")
   .option("--json", "Output as JSON")
-  .action((slug, status, opts) => {
+  .action(async (slug, status, opts) => {
     const validStatuses: GoalStatus[] = [
       "active",
       "completed",
@@ -268,7 +268,7 @@ goalCommand
       process.exit(1);
     }
 
-    const goalsDir = resolveGoalsDir();
+    const goalsDir = await resolveGoalsDir();
     const goal = updateGoalStatus(goalsDir, slug, status);
 
     if (opts.json) {

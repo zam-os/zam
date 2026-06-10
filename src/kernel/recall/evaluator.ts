@@ -37,14 +37,14 @@ export interface EvaluateResult {
  * Note: blocking logic (cascade-block) is handled separately by the caller
  * when rating === 1 and the token has prerequisites.
  */
-export function evaluateRating(
+export async function evaluateRating(
   db: Database,
   input: EvaluateInput,
-): EvaluateResult {
+): Promise<EvaluateResult> {
   // Get current card state
-  const card = db
+  const card = (await db
     .prepare("SELECT * FROM cards WHERE id = ?")
-    .get(input.cardId) as
+    .get(input.cardId)) as
     | {
         stability: number;
         difficulty: number;
@@ -82,7 +82,7 @@ export function evaluateRating(
   const updated = fsrs.schedule(schedulingCard, input.rating, now);
 
   // Update the card in the DB
-  updateCard(db, input.cardId, {
+  await updateCard(db, input.cardId, {
     stability: updated.stability,
     difficulty: updated.difficulty,
     elapsed_days: updated.elapsedDays,
@@ -95,20 +95,22 @@ export function evaluateRating(
   });
 
   // Log the review (immutable)
-  db.prepare(
-    `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, response_time_ms, reviewed_at, scheduled_at, session_id)
+  await db
+    .prepare(
+      `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, response_time_ms, reviewed_at, scheduled_at, session_id)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-  ).run(
-    ulid(),
-    input.cardId,
-    input.tokenId,
-    input.userId,
-    input.rating,
-    input.responseTimeMs ?? null,
-    now.toISOString(),
-    card.due_at,
-    input.sessionId ?? null,
-  );
+    )
+    .run(
+      ulid(),
+      input.cardId,
+      input.tokenId,
+      input.userId,
+      input.rating,
+      input.responseTimeMs ?? null,
+      now.toISOString(),
+      card.due_at,
+      input.sessionId ?? null,
+    );
 
   return {
     nextDueAt: updated.dueAt.toISOString(),
