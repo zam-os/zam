@@ -106,6 +106,20 @@ Windows ARM64 npm binaries (missing as of `@tursodatabase/sync` 0.6.1).
 - Verify one tagged desktop release including the `aarch64-pc-windows-msvc`
   artifact.
 
+**Validation log — 2026-06-10, physical Windows ARM64, Node 26.3.0 (PASS):**
+`npx zam setup` plus one review ran end to end over the async Hrana HTTP Turso
+provider with no native `libsql`. Verified on hardware: the 0.3.7 CLI loads
+where 0.3.6 crashed (`Cannot find module '@libsql/win32-arm64-msvc'`);
+`better-sqlite3` 12.10.0 ARM64 prebuild loads; `whoami`/`stats` read the Turso
+cloud DB over HTTP; `zam setup` ran remote migrations idempotently; and one
+`bridge submit` review wrote + FSRS-rescheduled a card (the blocking rule fired
+correctly). Caveat: exercised against the **source-HEAD build (npm-linked)**,
+because the published `zam-core@0.3.7` predates the HTTP provider (#31 landed
+after the #29 release tag). To close this for npm users, cut **0.3.8**, and
+ensure `~/.zam/credentials.json` carries `turso.mode: "remote"` (otherwise
+remote paths default to native libsql and crash on ARM64). The tagged
+`aarch64-pc-windows-msvc` desktop artifact bullet remains unverified.
+
 After Phase 0, local-only ZAM fully supports Windows ARM64. Everything below
 is deferred until cloud database access becomes the active priority.
 
