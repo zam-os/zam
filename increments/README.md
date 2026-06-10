@@ -30,6 +30,6 @@ override the evidence in the repository.
 5. Implement Increment 10 when cloud database access from every architecture
    becomes the active product priority.
 
-The files named `Josefczak.thoughts` and `Gemini.retro` are planning inputs, not
+The files named `Product Vision.thoughts` and `Gemini.retro` are planning inputs, not
 separate shipped increments. The three numbered Increment 3 specifications are
 alternative product directions and must not be reported as one completed scope.

@@ -93,7 +93,7 @@ them through `/skills`.
 # This file is git-tracked. Never put tokens, passwords, or PATs here.
 
 identity:
-  user_id: ""              # lowercase, no spaces (e.g. thomas)
+  user_id: ""              # lowercase, no spaces (e.g. learner)
 
 communities:               # communities this person belongs to
   - url: ""                # GitHub URL of the community instance repo

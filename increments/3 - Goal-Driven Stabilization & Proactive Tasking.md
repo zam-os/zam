@@ -15,7 +15,7 @@ ZAM's kernel is strong, but its integration with the user's actual work environm
 
 ### 2. Multi-Repo Context & User Identity
 - **Default User**: Eliminate the mandatory `--user` flag by establishing a `whoami` and default user preference.
-- **Repo Settings**: Implement the settings structure for `personal_repo`, `team_repo`, and `org_repo` as described in Thomas's vision.
+- **Repo Settings**: Implement the settings structure for `personal_repo`, `team_repo`, and `org_repo` as described in the product vision.
 - **Automated Summarization**: Equip the agent with the "skill" to process organization wikis and OKRs to build context.
 
 ### 3. The Goal Engine (Markdown-Based)
@@ -46,4 +46,4 @@ ZAM's kernel is strong, but its integration with the user's actual work environm
 2. A user can start a session and receive a personalized task/learning proposal without manual flags.
 3. Personal goals are documented in markdown and linked to the learning queue.
 4. Database state is automatically backed up to a user-defined folder.
-5. The team trial (PO Thomas + 2 members) has a clear starting point and documented success metrics for the first quarter.
+5. A product-owner-led team trial with three members has a clear starting point and documented success metrics for the first quarter.

@@ -1,6 +1,6 @@
 # Foundation Thoughts
 
-Raw thinking from Thomas on what this folder should be and how it should work.
+Raw product thinking on what this folder should be and how it should work.
 
 ## Purpose
 

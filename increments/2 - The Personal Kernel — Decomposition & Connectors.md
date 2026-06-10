@@ -11,7 +11,7 @@ Phase 1 proved the learning kernel works: FSRS scheduling, Bloom-adapted prompti
 ### 1. Repository Decomposition
 The monorepo splits into two concerns:
 - **`zam-os/zam`** (core) — The AI-agnostic learning kernel, CLI, bridge protocol, and shared infrastructure. This is what everyone depends on.
-- **`zam-os/zam-personal`** (template) — A forkable repository that each user clones into their own private personal repo (e.g. `Josefczak/zam-Thomas`). This is where ZAM is started from.
+- **`zam-os/zam-personal`** (template) — A forkable repository that each user clones into their own private personal repo (e.g. `example-user/zam-personal`). This is where ZAM is started from.
 - **What moves to personal**: Beliefs, top-level goals, and the entry point for starting ZAM. The personal repo is the user's individual world view.
 - **Commits as approval**: All ground-breaking changes to beliefs and goals must be committed and pushed. No policy layer needed — the git history *is* the approval trail.
 
