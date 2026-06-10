@@ -49,7 +49,6 @@ import {
 import { resolveUser } from "./resolve-user.js";
 import {
   withDb as sharedWithDb,
-  withDbAsync as sharedWithDbAsync,
 } from "./shared/db.js";
 
 function jsonOut(data: unknown): void {
@@ -61,12 +60,10 @@ function jsonError(message: string): never {
   process.exit(1);
 }
 
-function withDb(fn: (db: Database) => void): void {
-  sharedWithDb(fn, jsonError);
-}
-
-async function withDbAsync(fn: (db: Database) => Promise<void>): Promise<void> {
-  await sharedWithDbAsync(fn, jsonError);
+async function withDb(
+  fn: (db: Database) => void | Promise<void>,
+): Promise<void> {
+  await sharedWithDb(fn, jsonError);
 }
 
 interface ReviewTargetRow {
@@ -76,19 +73,19 @@ interface ReviewTargetRow {
   slug: string;
 }
 
-function getReviewTarget(
+async function getReviewTarget(
   db: Database,
   cardId: string,
   userId: string,
-): ReviewTargetRow {
-  const target = db
+): Promise<ReviewTargetRow> {
+  const target = (await db
     .prepare(
       `SELECT c.id AS card_id, c.token_id, c.user_id, t.slug
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.id = ?`,
     )
-    .get(cardId) as ReviewTargetRow | undefined;
+    .get(cardId)) as ReviewTargetRow | undefined;
 
   if (!target) {
     jsonError(`Card not found: ${cardId}`);
@@ -154,10 +151,10 @@ bridgeCommand
   .command("check-due")
   .description("Check due cards for a user (JSON)")
   .option("--user <id>", "User ID (default: whoami)")
-  .action((opts) => {
-    withDb((db) => {
-      const userId = resolveUser(opts, db, { json: true });
-      const dueCards = getDueCards(db, userId);
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const dueCards = await getDueCards(db, userId);
       const domains = [
         ...new Set(dueCards.map((c) => c.domain).filter(Boolean)),
       ].sort();
@@ -188,9 +185,13 @@ bridgeCommand
   .option("--user <id>", "User ID (default: whoami)")
   .option("--no-resolve", "Skip resolving the token's source_link into context")
   .action(async (opts) => {
-    await withDbAsync(async (db) => {
-      const userId = resolveUser(opts, db, { json: true });
-      const queue = buildReviewQueue(db, { userId, maxReviews: 1, maxNew: 1 });
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const queue = await buildReviewQueue(db, {
+        userId,
+        maxReviews: 1,
+        maxNew: 1,
+      });
 
       if (queue.items.length === 0) {
         jsonOut({
@@ -205,7 +206,7 @@ bridgeCommand
       }
 
       const item = queue.items[0];
-      const isLlmEnabled = getSetting(db, "llm.enabled") === "true";
+      const isLlmEnabled = (await getSetting(db, "llm.enabled")) === "true";
 
       // Dynamically generate a fresh, living active-recall question if LLM is enabled
       let resolvedQuestion = item.question;
@@ -251,7 +252,7 @@ bridgeCommand
       }
 
       // Get full queue size for context
-      const fullQueue = buildReviewQueue(db, { userId });
+      const fullQueue = await buildReviewQueue(db, { userId });
 
       jsonOut({
         userId,
@@ -272,15 +273,15 @@ bridgeCommand
   .option("--user <id>", "User ID (default: whoami)")
   .requiredOption("--card-id <id>", "Card ID")
   .requiredOption("--rating <n>", "Rating (1-4)")
-  .action((opts) => {
-    withDb((db) => {
-      const userId = resolveUser(opts, db, { json: true });
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
       const rating = Number(opts.rating) as Rating;
       if (rating < 1 || rating > 4) {
         jsonError("Rating must be between 1 and 4");
       }
 
-      const result = executeReviewAction(db, {
+      const result = await executeReviewAction(db, {
         action: "rate",
         cardId: opts.cardId,
         userId,
@@ -315,9 +316,9 @@ bridgeCommand
   .option("--mode <mode>", "Updated symbiosis mode for action=edit-token")
   .option("--source-link <link>", "Updated source link for action=edit-token")
   .option("--confirm", "Confirm destructive delete actions")
-  .action((opts) => {
-    withDb((db) => {
-      const userId = resolveUser(opts, db, { json: true });
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
       const action = opts.action as ReviewActionType;
       const validActions: ReviewActionType[] = [
         "rate",
@@ -332,7 +333,7 @@ bridgeCommand
         jsonError(`Unsupported action: ${opts.action}`);
       }
 
-      const target = getReviewTarget(db, opts.cardId, userId);
+      const target = await getReviewTarget(db, opts.cardId, userId);
       if (
         (action === "delete-token" || action === "delete-card") &&
         !opts.confirm
@@ -344,7 +345,7 @@ bridgeCommand
             preview: true,
             requiresConfirmation: true,
             token: { slug: target.slug, tokenId: target.token_id },
-            impact: getTokenDeleteImpact(db, target.slug),
+            impact: await getTokenDeleteImpact(db, target.slug),
           });
           return;
         }
@@ -355,7 +356,7 @@ bridgeCommand
           preview: true,
           requiresConfirmation: true,
           token: { slug: target.slug, tokenId: target.token_id },
-          impact: getCardDeletionImpact(db, target.token_id, userId),
+          impact: await getCardDeletionImpact(db, target.token_id, userId),
         });
         return;
       }
@@ -366,7 +367,7 @@ bridgeCommand
         jsonError("Rating must be between 1 and 4 for action=rate");
       }
 
-      const result = executeReviewAction(db, {
+      const result = await executeReviewAction(db, {
         action,
         cardId: opts.cardId,
         userId,
@@ -402,7 +403,7 @@ bridgeCommand
   .requiredOption("--slug <slug>", "Skill slug")
   .action((opts) => {
     withDb((db) => {
-      const skill = getAgentSkill(db, opts.slug);
+      const skill = await getAgentSkill(db, opts.slug);
       if (!skill) {
         jsonError(`Skill not found: ${opts.slug}`);
       }
@@ -560,10 +561,10 @@ bridgeCommand
         jsonError("JSON must include 'slug' and 'concept' fields");
       }
 
-      db = openDatabase();
-      const userId = resolveUser(opts, db, { json: true });
+      db = await openDatabase();
+      const userId = await resolveUser(opts, db, { json: true });
 
-      const token = createToken(db, {
+      const token = await createToken(db, {
         slug: data?.slug,
         concept: data?.concept,
         domain: data?.domain,
@@ -578,7 +579,7 @@ bridgeCommand
         source_link: data?.source_link ?? null,
       });
 
-      const card = ensureCard(db, token.id, userId);
+      const card = await ensureCard(db, token.id, userId);
 
       jsonOut({
         success: true,
@@ -593,9 +594,9 @@ bridgeCommand
         },
       });
 
-      db.close();
+      await db.close();
     } catch (err) {
-      db?.close();
+      await db?.close();
       // If it's already a JSON error exit, let it propagate
       if ((err as Error).message) {
         jsonError((err as Error).message);
@@ -620,7 +621,7 @@ bridgeCommand
     "Max number of sessions to analyze (default: 20)",
     "20",
   )
-  .action((opts) => {
+  .action(async (opts) => {
     try {
       const monitorDir = join(homedir(), ".zam", "monitor");
       let files: string[];
@@ -666,12 +667,12 @@ bridgeCommand
       let existingSkillSlugs: string[] = [];
       let db: Database | undefined;
       try {
-        db = openDatabase();
-        existingSkillSlugs = listAgentSkills(db).map((s) => s.slug);
+        db = await openDatabase();
+        existingSkillSlugs = (await listAgentSkills(db)).map((s) => s.slug);
       } catch {
         // DB not available — proceed without exclusion
       } finally {
-        db?.close();
+        await db?.close();
       }
 
       const proposals = discoverSkills(sessionCommands, {
@@ -694,8 +695,8 @@ bridgeCommand
   .command("check-llm")
   .description("Check if LLM is enabled and online (JSON)")
   .action(async () => {
-    await withDbAsync(async (db) => {
-      const { enabled, url, model, apiKey } = getLlmConfig(db);
+    await withDb(async (db) => {
+      const { enabled, url, model, apiKey } = await getLlmConfig(db);
       let online = false;
       let availableModels: string[] = [];
       let modelAvailable = false;
@@ -735,7 +736,7 @@ bridgeCommand
     "25000",
   )
   .action(async (opts) => {
-    await withDbAsync(async (db) => {
+    await withDb(async (db) => {
       const result = await ensureLlmReadyHeadless(db, {
         timeoutMs: Number(opts.timeout),
       });
@@ -750,8 +751,8 @@ bridgeCommand
   .description("Translate a question dynamically using the local LLM (JSON)")
   .requiredOption("--question <text>", "Question in English to translate")
   .action(async (opts) => {
-    await withDbAsync(async (db) => {
-      const isEnabled = getSetting(db, "llm.enabled") === "true";
+    await withDb(async (db) => {
+      const isEnabled = (await getSetting(db, "llm.enabled")) === "true";
       if (!isEnabled) {
         jsonOut({
           success: false,
@@ -789,8 +790,8 @@ bridgeCommand
   .option("--context <context>", "Optional token context details")
   .option("--source-link <link>", "Optional source link")
   .action(async (opts) => {
-    await withDbAsync(async (db) => {
-      const isEnabled = getSetting(db, "llm.enabled") === "true";
+    await withDb(async (db) => {
+      const isEnabled = (await getSetting(db, "llm.enabled")) === "true";
       if (!isEnabled) {
         jsonOut({
           success: false,
@@ -837,9 +838,9 @@ bridgeCommand
 bridgeCommand
   .command("get-settings")
   .description("Get active ZAM settings (JSON)")
-  .action(() => {
-    withDb((db) => {
-      const { enabled, url, model, locale } = getLlmConfig(db);
+  .action(async () => {
+    await withDb(async (db) => {
+      const { enabled, url, model, locale } = await getLlmConfig(db);
       jsonOut({
         locale,
         llm: {

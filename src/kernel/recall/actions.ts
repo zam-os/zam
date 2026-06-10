@@ -48,12 +48,12 @@ export interface ReviewActionResult {
   stopped?: boolean;
 }
 
-function getReviewTarget(
+async function getReviewTarget(
   db: Database,
   cardId: string,
   userId: string,
-): { cardId: string; token: Token } {
-  const card = getCardById(db, cardId);
+): Promise<{ cardId: string; token: Token }> {
+  const card = await getCardById(db, cardId);
   if (!card) {
     throw new Error(`Card not found: ${cardId}`);
   }
@@ -61,7 +61,7 @@ function getReviewTarget(
     throw new Error(`Card ${cardId} does not belong to user ${userId}`);
   }
 
-  const token = getTokenById(db, card.token_id);
+  const token = await getTokenById(db, card.token_id);
   if (!token) {
     throw new Error(`Token not found for card ${cardId}`);
   }
@@ -69,11 +69,11 @@ function getReviewTarget(
   return { cardId: card.id, token };
 }
 
-export function executeReviewAction(
+export async function executeReviewAction(
   db: Database,
   input: ExecuteReviewActionInput,
-): ReviewActionResult {
-  const target = getReviewTarget(db, input.cardId, input.userId);
+): Promise<ReviewActionResult> {
+  const target = await getReviewTarget(db, input.cardId, input.userId);
 
   switch (input.action) {
     case "rate": {
@@ -81,7 +81,7 @@ export function executeReviewAction(
         throw new Error("rating is required for action=rate");
       }
 
-      const evaluation = evaluateRating(db, {
+      const evaluation = await evaluateRating(db, {
         cardId: target.cardId,
         tokenId: target.token.id,
         userId: input.userId,
@@ -90,9 +90,9 @@ export function executeReviewAction(
 
       let blocked: CascadeBlockResult | undefined;
       if (input.rating === 1) {
-        const prereqs = getPrerequisites(db, target.token.id);
+        const prereqs = await getPrerequisites(db, target.token.id);
         if (prereqs.length > 0) {
-          blocked = cascadeBlock(db, input.userId, target.token.slug);
+          blocked = await cascadeBlock(db, input.userId, target.token.slug);
         }
       }
 
@@ -111,7 +111,7 @@ export function executeReviewAction(
       return { action: input.action, token: target.token, stopped: true };
 
     case "edit-token": {
-      const updatedToken = updateToken(
+      const updatedToken = await updateToken(
         db,
         target.token.slug,
         input.tokenUpdates ?? {},
@@ -124,7 +124,7 @@ export function executeReviewAction(
     }
 
     case "deprecate-token": {
-      const updatedToken = deprecateToken(db, target.token.slug);
+      const updatedToken = await deprecateToken(db, target.token.slug);
       return {
         action: input.action,
         token: target.token,
@@ -133,7 +133,7 @@ export function executeReviewAction(
     }
 
     case "delete-token": {
-      const deletedToken = deleteToken(db, target.token.slug);
+      const deletedToken = await deleteToken(db, target.token.slug);
       return {
         action: input.action,
         token: target.token,
@@ -142,7 +142,11 @@ export function executeReviewAction(
     }
 
     case "delete-card": {
-      const deletedCard = deleteCardForUser(db, target.token.id, input.userId);
+      const deletedCard = await deleteCardForUser(
+        db,
+        target.token.id,
+        input.userId,
+      );
       return {
         action: input.action,
         token: target.token,

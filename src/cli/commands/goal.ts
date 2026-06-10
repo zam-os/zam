@@ -23,17 +23,17 @@ import {
   updateGoalStatus,
 } from "../../kernel/index.js";
 
-function resolveGoalsDir(): string {
+async function resolveGoalsDir(): Promise<string> {
   let goalsDir: string | undefined;
 
-  let db: ReturnType<typeof openDatabase> | undefined;
+  let db: Awaited<ReturnType<typeof openDatabase>> | undefined;
   try {
-    db = openDatabase();
-    goalsDir = getSetting(db, "personal.goals_dir");
+    db = await openDatabase();
+    goalsDir = await getSetting(db, "personal.goals_dir");
   } catch {
     // DB not available — fall back to default
   } finally {
-    db?.close();
+    await db?.close();
   }
 
   return goalsDir ? resolve(goalsDir) : resolve("goals");

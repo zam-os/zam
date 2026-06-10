@@ -30,10 +30,10 @@ cardCommand
   .option("--user <id>", "User ID (default: whoami)")
   .option("--json", "Output as JSON")
   .option("--summary", "Show only counts per domain (no slugs or concepts)")
-  .action((opts) => {
-    withDb((db) => {
-      const userId = resolveUser(opts, db);
-      const dueCards = getDueCards(db, userId);
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db);
+      const dueCards = await getDueCards(db, userId);
 
       if (opts.json) {
         console.log(JSON.stringify(dueCards, null, 2));
@@ -91,16 +91,16 @@ cardCommand
   .requiredOption("--rating <n>", "Rating (1=Again, 2=Hard, 3=Good, 4=Easy)")
   .option("--json", "Output as JSON")
   .option("--quiet", "Suppress output (exit code only)")
-  .action((opts) => {
-    withDb((db) => {
-      const userId = resolveUser(opts, db);
-      const token = getTokenBySlug(db, opts.token);
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db);
+      const token = await getTokenBySlug(db, opts.token);
       if (!token) {
         console.error(`Token not found: ${opts.token}`);
         process.exit(1);
       }
 
-      const card = ensureCard(db, token.id, userId);
+      const card = await ensureCard(db, token.id, userId);
       const rating = Number(opts.rating) as Rating;
 
       if (rating < 1 || rating > 4) {
@@ -108,7 +108,7 @@ cardCommand
         process.exit(1);
       }
 
-      const result = evaluateRating(db, {
+      const result = await evaluateRating(db, {
         cardId: card.id,
         tokenId: token.id,
         userId,
@@ -117,9 +117,9 @@ cardCommand
 
       // If rating is 1 (forgot) and token has prerequisites, cascade block
       if (rating === 1) {
-        const prereqs = getPrerequisites(db, token.id);
+        const prereqs = await getPrerequisites(db, token.id);
         if (prereqs.length > 0) {
-          const blockResult = cascadeBlock(db, userId, token.slug);
+          const blockResult = await cascadeBlock(db, userId, token.slug);
           if (opts.quiet) return;
           if (opts.json) {
             console.log(
@@ -173,10 +173,10 @@ cardCommand
   .option("--user <id>", "User ID (default: whoami)")
   .option("--json", "Output as JSON")
   .option("--quiet", "Suppress output (exit code only)")
-  .action((opts) => {
-    withDb((db) => {
-      const userId = resolveUser(opts, db);
-      const result = unblockReady(db, userId);
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db);
+      const result = await unblockReady(db, userId);
 
       if (opts.quiet) return;
       if (opts.json) {
@@ -203,17 +203,17 @@ cardCommand
   .option("--user <id>", "User ID (default: whoami)")
   .requiredOption("--token <slug>", "Token slug")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
-      const userId = resolveUser(opts, db);
-      const token = getTokenBySlug(db, opts.token);
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db);
+      const token = await getTokenBySlug(db, opts.token);
       if (!token) {
         console.error(`Token not found: ${opts.token}`);
         process.exit(1);
       }
 
-      const impact = getCardDeletionImpact(db, token.id, userId);
-      const result = deleteCardForUser(db, token.id, userId);
+      const impact = await getCardDeletionImpact(db, token.id, userId);
+      const result = await deleteCardForUser(db, token.id, userId);
 
       if (opts.json) {
         console.log(

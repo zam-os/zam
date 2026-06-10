@@ -11,10 +11,10 @@ export const whoamiCommand = new Command("whoami")
   .option("--set <id>", "Set the default user ID")
   .option("--clear", "Remove the default user ID")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
+  .action(async (opts) => {
+    await withDb(async (db) => {
       if (opts.set) {
-        setSetting(db, "user.id", opts.set);
+        await setSetting(db, "user.id", opts.set);
         if (opts.json) {
           console.log(JSON.stringify({ userId: opts.set }));
         } else {
@@ -24,7 +24,7 @@ export const whoamiCommand = new Command("whoami")
       }
 
       if (opts.clear) {
-        const deleted = deleteSetting(db, "user.id");
+        const deleted = await deleteSetting(db, "user.id");
         if (opts.json) {
           console.log(JSON.stringify({ userId: null, cleared: deleted }));
         } else if (deleted) {
@@ -35,7 +35,7 @@ export const whoamiCommand = new Command("whoami")
         return;
       }
 
-      const userId = getSetting(db, "user.id");
+      const userId = await getSetting(db, "user.id");
       if (opts.json) {
         console.log(JSON.stringify({ userId: userId ?? null }));
         return;

@@ -54,21 +54,21 @@ export const learnCommand = new Command("learn")
   .action(async (opts) => {
     let db: Database | undefined;
     try {
-      db = openDatabase();
-      const userId = resolveUser(opts, db);
+      db = await openDatabase();
+      const userId = await resolveUser(opts, db);
 
-      const queue = buildReviewQueue(db, {
+      const queue = await buildReviewQueue(db, {
         userId,
         maxNew: Number(opts.maxNew),
         maxReviews: Number(opts.maxReviews),
       });
 
-      const locale = (getSetting(db, "system.locale") ||
+      const locale = ((await getSetting(db, "system.locale")) ||
         "en") as SupportedLocale;
 
       if (queue.items.length === 0) {
         console.log(t(locale, "nothing_due"));
-        db.close();
+        await db.close();
         return;
       }
 
@@ -174,7 +174,7 @@ export const learnCommand = new Command("learn")
             () => null,
           );
         }
-        const token = getTokenById(db, item.tokenId);
+        const token = await getTokenById(db, item.tokenId);
 
         // Perform LLM evaluation if enabled and there is a typed answer
         if (isLlmEnabled && answer.trim().length > 0) {
@@ -265,9 +265,9 @@ export const learnCommand = new Command("learn")
         }
       }
 
-      db.close();
+      await db.close();
     } catch (err) {
-      db?.close();
+      await db?.close();
       if ((err as Error).name === "ExitPromptError") {
         console.log("\nLearning session cancelled.");
         process.exit(0);

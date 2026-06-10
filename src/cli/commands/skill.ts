@@ -20,9 +20,9 @@ skillCommand
   .command("list")
   .description("List all agent skills")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
-      const skills = listAgentSkills(db);
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const skills = await listAgentSkills(db);
 
       if (opts.json) {
         console.log(JSON.stringify(skills, null, 2));
@@ -54,9 +54,9 @@ skillCommand
   .description("Show a specific agent skill")
   .requiredOption("--slug <slug>", "Skill slug")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
-      const skill = getAgentSkill(db, opts.slug);
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const skill = await getAgentSkill(db, opts.slug);
       if (!skill) {
         console.error(`Skill not found: ${opts.slug}`);
         process.exit(1);
@@ -97,8 +97,8 @@ skillCommand
     "learned",
   )
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
+  .action(async (opts) => {
+    await withDb(async (db) => {
       let steps: string[];
       try {
         steps = JSON.parse(opts.steps) as string[];
@@ -116,7 +116,7 @@ skillCommand
             .filter(Boolean)
         : [];
 
-      const skill = createAgentSkill(db, {
+      const skill = await createAgentSkill(db, {
         slug: opts.slug,
         description: opts.description,
         steps,

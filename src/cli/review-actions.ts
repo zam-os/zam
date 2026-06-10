@@ -81,7 +81,7 @@ export async function runInteractiveReviewAction(
     });
 
     if (typeof choice === "number") {
-      const result = executeReviewAction(inputData.db, {
+      const result = await executeReviewAction(inputData.db, {
         action: "rate",
         cardId: currentItem.cardId,
         userId: inputData.userId,
@@ -115,7 +115,7 @@ export async function runInteractiveReviewAction(
       console.log("Skipped this card.\n");
       return {
         action: "skip",
-        result: executeReviewAction(inputData.db, {
+        result: await executeReviewAction(inputData.db, {
           action: "skip",
           cardId: currentItem.cardId,
           userId: inputData.userId,
@@ -126,7 +126,7 @@ export async function runInteractiveReviewAction(
     if (choice === "stop") {
       return {
         action: "stop",
-        result: executeReviewAction(inputData.db, {
+        result: await executeReviewAction(inputData.db, {
           action: "stop",
           cardId: currentItem.cardId,
           userId: inputData.userId,
@@ -135,7 +135,7 @@ export async function runInteractiveReviewAction(
     }
 
     if (choice === "edit-token") {
-      const token = getTokenById(inputData.db, currentItem.tokenId);
+      const token = await getTokenById(inputData.db, currentItem.tokenId);
       if (!token) {
         throw new Error(`Token not found: ${currentItem.tokenId}`);
       }
@@ -146,7 +146,7 @@ export async function runInteractiveReviewAction(
         continue;
       }
 
-      const result = executeReviewAction(inputData.db, {
+      const result = await executeReviewAction(inputData.db, {
         action: "edit-token",
         cardId: currentItem.cardId,
         userId: inputData.userId,
@@ -192,7 +192,7 @@ export async function runInteractiveReviewAction(
         continue;
       }
 
-      const result = executeReviewAction(inputData.db, {
+      const result = await executeReviewAction(inputData.db, {
         action: "deprecate-token",
         cardId: currentItem.cardId,
         userId: inputData.userId,
@@ -203,7 +203,7 @@ export async function runInteractiveReviewAction(
     }
 
     if (choice === "delete-token") {
-      const impact = getTokenDeleteImpact(inputData.db, currentItem.slug);
+      const impact = await getTokenDeleteImpact(inputData.db, currentItem.slug);
       console.log(`Delete token ${currentItem.slug}?`);
       console.log(`  Cards:                 ${impact.cards}`);
       console.log(`  Review logs:           ${impact.review_logs}`);
@@ -227,7 +227,7 @@ export async function runInteractiveReviewAction(
         continue;
       }
 
-      const result = executeReviewAction(inputData.db, {
+      const result = await executeReviewAction(inputData.db, {
         action: "delete-token",
         cardId: currentItem.cardId,
         userId: inputData.userId,
@@ -238,7 +238,7 @@ export async function runInteractiveReviewAction(
     }
 
     if (choice === "delete-card") {
-      const impact = getCardDeletionImpact(
+      const impact = await getCardDeletionImpact(
         inputData.db,
         currentItem.tokenId,
         inputData.userId,
@@ -255,7 +255,7 @@ export async function runInteractiveReviewAction(
         continue;
       }
 
-      const result = executeReviewAction(inputData.db, {
+      const result = await executeReviewAction(inputData.db, {
         action: "delete-card",
         cardId: currentItem.cardId,
         userId: inputData.userId,

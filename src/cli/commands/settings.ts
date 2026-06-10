@@ -24,14 +24,14 @@ settingsCommand
   .command("show")
   .description("Show all settings")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
+  .action(async (opts) => {
+    await withDb(async (db) => {
       if (opts.json) {
-        console.log(JSON.stringify(getAllSettings(db), null, 2));
+        console.log(JSON.stringify(await getAllSettings(db), null, 2));
         return;
       }
 
-      const settings = getAllSettingsDetailed(db);
+      const settings = await getAllSettingsDetailed(db);
       if (settings.length === 0) {
         console.log("No settings configured.");
         return;
@@ -54,9 +54,9 @@ settingsCommand
   .command("get <key>")
   .description("Get a single setting")
   .option("--json", "Output as JSON")
-  .action((key, opts) => {
-    withDb((db) => {
-      const value = getSetting(db, key);
+  .action(async (key, opts) => {
+    await withDb(async (db) => {
+      const value = await getSetting(db, key);
 
       if (opts.json) {
         console.log(JSON.stringify({ key, value: value ?? null }));
@@ -77,8 +77,8 @@ settingsCommand
   .command("set <key> <value>")
   .description("Set a setting")
   .option("--quiet", "Suppress output")
-  .action((key, value, opts) => {
-    withDb((db) => {
+  .action(async (key, value, opts) => {
+    await withDb(async (db) => {
       let parsedVal = value;
       if (key === "llm.enabled") {
         const lower = value.toLowerCase();
@@ -98,7 +98,7 @@ settingsCommand
           parsedVal = "false";
         }
       }
-      setSetting(db, key, parsedVal);
+      await setSetting(db, key, parsedVal);
       if (!opts.quiet) {
         console.log(`Set ${key} = ${parsedVal}`);
       }
@@ -111,9 +111,9 @@ settingsCommand
   .command("delete <key>")
   .description("Delete a setting")
   .option("--quiet", "Suppress output")
-  .action((key, opts) => {
-    withDb((db) => {
-      const deleted = deleteSetting(db, key);
+  .action(async (key, opts) => {
+    await withDb(async (db) => {
+      const deleted = await deleteSetting(db, key);
       if (!opts.quiet) {
         if (deleted) {
           console.log(`Deleted: ${key}`);
@@ -131,10 +131,10 @@ settingsCommand
   .description(
     "Quickly enable/disable or check local LLM integration (on/off/enable/disable)",
   )
-  .action((state) => {
-    withDb((db) => {
+  .action(async (state) => {
+    await withDb(async (db) => {
       if (!state) {
-        const enabled = getSetting(db, "llm.enabled") || "false";
+        const enabled = (await getSetting(db, "llm.enabled")) || "false";
         console.log(
           `LLM Integration is currently: ${
             enabled === "true"
@@ -168,7 +168,7 @@ settingsCommand
         process.exit(1);
       }
 
-      setSetting(db, "llm.enabled", value);
+      await setSetting(db, "llm.enabled", value);
       console.log(
         `LLM Integration is now: ${
           value === "true"
@@ -186,10 +186,10 @@ settingsCommand
   .description(
     "Quickly set or check manual ZAM language override (en/de/es/fr/pt/zh/ja)",
   )
-  .action((lang) => {
-    withDb((db) => {
+  .action(async (lang) => {
+    await withDb(async (db) => {
       if (!lang) {
-        const locale = getSetting(db, "system.locale") || "en";
+        const locale = (await getSetting(db, "system.locale")) || "en";
         console.log(`Active language (locale): \x1b[36m${locale}\x1b[0m`);
         return;
       }
@@ -203,7 +203,7 @@ settingsCommand
         process.exit(1);
       }
 
-      setSetting(db, "system.locale", lower);
+      await setSetting(db, "system.locale", lower);
       console.log(`Language set to: \x1b[32m${lower}\x1b[0m`);
     });
   });
@@ -216,22 +216,22 @@ settingsCommand
   .option("--personal <path>", "Set the Personal Repository path")
   .option("--team <path>", "Set the Team Repository path")
   .option("--org <path>", "Set the Organization Repository path")
-  .action((opts) => {
-    withDb((db) => {
+  .action(async (opts) => {
+    await withDb(async (db) => {
       let changed = false;
 
       if (opts.personal !== undefined) {
-        setSetting(db, "repo.personal", opts.personal);
+        await setSetting(db, "repo.personal", opts.personal);
         console.log(`Set repo.personal = ${opts.personal}`);
         changed = true;
       }
       if (opts.team !== undefined) {
-        setSetting(db, "repo.team", opts.team);
+        await setSetting(db, "repo.team", opts.team);
         console.log(`Set repo.team = ${opts.team}`);
         changed = true;
       }
       if (opts.org !== undefined) {
-        setSetting(db, "repo.org", opts.org);
+        await setSetting(db, "repo.org", opts.org);
         console.log(`Set repo.org = ${opts.org}`);
         changed = true;
       }
@@ -242,7 +242,7 @@ settingsCommand
         console.log("Repository Settings:\n");
       }
 
-      const paths = getRepoPaths(db);
+      const paths = await getRepoPaths(db);
       console.log(
         `Personal Repo:  ${
           paths.personal

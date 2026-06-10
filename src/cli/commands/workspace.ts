@@ -36,16 +36,16 @@ workspaceCommand
   .command("publish")
   .description("Publish your local workspace sandbox to GitHub")
   .action(async () => {
-    let db: ReturnType<typeof openDatabase> | undefined;
+    let db: Awaited<ReturnType<typeof openDatabase>> | undefined;
     let workspaceDir = "";
 
     try {
-      db = openDatabase();
-      workspaceDir = getSetting(db, "personal.workspace_dir") || "";
-      db.close();
+      db = await openDatabase();
+      workspaceDir = (await getSetting(db, "personal.workspace_dir")) || "";
+      await db.close();
     } catch {
       // Fallback if DB doesn't exist
-      db?.close();
+      await db?.close();
     }
 
     if (!workspaceDir) {

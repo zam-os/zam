@@ -28,9 +28,17 @@ connectorCommand
   .argument("<type>", "Connector type (ado, turso)")
   .option("--url <url>", "Turso database URL (non-interactive)")
   .option("--token <token>", "Turso auth token (non-interactive)")
+  .option(
+    "--mode <mode>",
+    "Turso access mode: native (libsql driver) | remote (HTTP, works on Windows ARM64)",
+  )
   .action(async (type, opts) => {
     if (type === "turso") {
-      return setupTurso(opts.url, opts.token);
+      if (opts.mode && opts.mode !== "native" && opts.mode !== "remote") {
+        console.error(`Invalid --mode: ${opts.mode}. Use native or remote.`);
+        process.exit(1);
+      }
+      return setupTurso(opts.url, opts.token, opts.mode);
     }
     if (type !== "ado") {
       console.error(`Unknown connector type: ${type}. Supported: ado, turso`);
@@ -137,7 +145,7 @@ connectorCommand
 connectorCommand
   .command("sync")
   .description("Verify the Turso cloud database connection")
-  .action(() => {
+  .action(async () => {
     const turso = getTursoCredentials();
     if (!turso) {
       console.error(
@@ -148,12 +156,12 @@ connectorCommand
 
     let db: Database | undefined;
     try {
-      db = openDatabaseWithSync({ initialize: true });
-      db.prepare("SELECT 1").get();
+      db = await openDatabaseWithSync({ initialize: true });
+      await db.prepare("SELECT 1").get();
       console.log(`Connected to ${turso.url}`);
-      db.close();
+      await db.close();
     } catch (err) {
-      db?.close();
+      await db?.close();
       console.error("Error:", (err as Error).message);
       process.exit(1);
     }
@@ -161,7 +169,11 @@ connectorCommand
 
 // ── Turso setup helper ──────────────────────────────────────────────────────
 
-async function setupTurso(urlArg?: string, tokenArg?: string): Promise<void> {
+async function setupTurso(
+  urlArg?: string,
+  tokenArg?: string,
+  mode?: "native" | "remote",
+): Promise<void> {
   let db: Database | undefined;
   try {
     const url =
@@ -181,16 +193,19 @@ async function setupTurso(urlArg?: string, tokenArg?: string): Promise<void> {
     }
 
     // Store credentials outside the db so they survive db deletion
-    setTursoCredentials(url, token);
+    setTursoCredentials(url, token, undefined, mode);
 
     // Verify by opening the configured cloud database.
-    db = openDatabaseWithSync({ initialize: true });
-    db.prepare("SELECT 1").get();
-    db.close();
+    db = await openDatabaseWithSync({ initialize: true });
+    await db.prepare("SELECT 1").get();
+    await db.close();
 
-    console.log(`Turso cloud database configured and verified: ${url}`);
+    console.log(
+      `Turso cloud database configured and verified: ${url}` +
+        (mode ? ` (mode: ${mode})` : ""),
+    );
   } catch (err) {
-    db?.close();
+    await db?.close();
     if ((err as Error).name === "ExitPromptError") {
       console.log("\nSetup cancelled.");
       process.exit(0);

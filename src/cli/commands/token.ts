@@ -38,8 +38,8 @@ tokenCommand
   .option("--source-link <link>", "Source file path or reference URL", "")
   .option("--question <question>", "Specific question prompt for recall", "")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
+  .action(async (opts) => {
+    await withDb(async (db) => {
       // Token creation is the frontier model's job: the agent (Claude Code,
       // Copilot / Antigravity CLI, …) decomposes the concept into atomic units
       // and may pass an explicit --question. The local LLM is deliberately NOT
@@ -55,7 +55,7 @@ tokenCommand
         );
       }
 
-      const token = createToken(db, {
+      const token = await createToken(db, {
         slug: opts.slug,
         concept: opts.concept,
         domain: opts.domain,
@@ -86,9 +86,9 @@ tokenCommand
   .description("Fuzzy search for tokens")
   .requiredOption("--query <query>", "Search query")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
-      const results = findTokens(db, opts.query);
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const results = await findTokens(db, opts.query);
 
       if (opts.json) {
         console.log(JSON.stringify(results, null, 2));
@@ -120,9 +120,9 @@ tokenCommand
   .description("List all tokens")
   .option("--domain <domain>", "Filter by domain")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
-      const tokens = listTokens(
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const tokens = await listTokens(
         db,
         opts.domain ? { domain: opts.domain } : undefined,
       );
@@ -170,8 +170,8 @@ tokenCommand
   )
   .option("--question <question>", "Updated question text (blank allowed)")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
+  .action(async (opts) => {
+    await withDb(async (db) => {
       const updates: {
         concept?: string;
         domain?: string;
@@ -203,7 +203,7 @@ tokenCommand
           opts.mode === "none" ? null : (opts.mode as SymbiosisMode);
       }
 
-      const token = updateToken(db, opts.slug, updates);
+      const token = await updateToken(db, opts.slug, updates);
 
       if (opts.json) {
         jsonOut(token);
@@ -229,21 +229,21 @@ tokenCommand
   .requiredOption("--token <slug>", "Token that requires a prerequisite")
   .requiredOption("--requires <slug>", "Required prerequisite token")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
-      const token = getTokenBySlug(db, opts.token);
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const token = await getTokenBySlug(db, opts.token);
       if (!token) {
         console.error(`Token not found: ${opts.token}`);
         process.exit(1);
       }
 
-      const requires = getTokenBySlug(db, opts.requires);
+      const requires = await getTokenBySlug(db, opts.requires);
       if (!requires) {
         console.error(`Prerequisite token not found: ${opts.requires}`);
         process.exit(1);
       }
 
-      addPrerequisite(db, token.id, requires.id);
+      await addPrerequisite(db, token.id, requires.id);
 
       if (opts.json) {
         console.log(
@@ -270,9 +270,9 @@ tokenCommand
   )
   .requiredOption("--slug <slug>", "Token slug to deprecate")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
-      const token = deprecateToken(db, opts.slug);
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const token = await deprecateToken(db, opts.slug);
 
       if (opts.json) {
         console.log(JSON.stringify(token, null, 2));
@@ -292,9 +292,9 @@ tokenCommand
   .requiredOption("--slug <slug>", "Token slug to delete")
   .option("--force", "Actually delete the token")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
-      const impact = getTokenDeleteImpact(db, opts.slug);
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const impact = await getTokenDeleteImpact(db, opts.slug);
 
       if (!opts.force) {
         const preview = {
@@ -325,7 +325,7 @@ tokenCommand
         return;
       }
 
-      const result = deleteToken(db, opts.slug);
+      const result = await deleteToken(db, opts.slug);
 
       if (opts.json) {
         jsonOut({
@@ -352,18 +352,18 @@ tokenCommand
   .requiredOption("--token <slug>", "Token slug")
   .option("--user <id>", "User ID (default: whoami)")
   .option("--json", "Output as JSON")
-  .action((opts) => {
-    withDb((db) => {
-      const userId = resolveUser(opts, db);
-      const token = getTokenBySlug(db, opts.token);
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db);
+      const token = await getTokenBySlug(db, opts.token);
       if (!token) {
         console.error(`Token not found: ${opts.token}`);
         process.exit(1);
       }
 
-      const card = getCard(db, token.id, userId);
-      const prereqs = getPrerequisites(db, token.id);
-      const dependents = getDependents(db, token.id);
+      const card = await getCard(db, token.id, userId);
+      const prereqs = await getPrerequisites(db, token.id);
+      const dependents = await getDependents(db, token.id);
 
       const status = {
         token,

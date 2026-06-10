@@ -13,11 +13,12 @@ export interface RepoPaths {
  * Resolve absolute paths for personal, team, and organization repositories.
  * Personal falls back to personal.workspace_dir if repo.personal is not set.
  */
-export function getRepoPaths(db: Database): RepoPaths {
+export async function getRepoPaths(db: Database): Promise<RepoPaths> {
   const personalSetting =
-    getSetting(db, "repo.personal") || getSetting(db, "personal.workspace_dir");
-  const teamSetting = getSetting(db, "repo.team");
-  const orgSetting = getSetting(db, "repo.org");
+    (await getSetting(db, "repo.personal")) ||
+    (await getSetting(db, "personal.workspace_dir"));
+  const teamSetting = await getSetting(db, "repo.team");
+  const orgSetting = await getSetting(db, "repo.org");
 
   return {
     personal: personalSetting ? resolve(personalSetting) : null,
@@ -29,11 +30,11 @@ export function getRepoPaths(db: Database): RepoPaths {
 /**
  * Resolve a specific repo's path, or null if not configured.
  */
-export function resolveRepoPath(
+export async function resolveRepoPath(
   db: Database,
   type: "personal" | "team" | "org",
-): string | null {
-  const paths = getRepoPaths(db);
+): Promise<string | null> {
+  const paths = await getRepoPaths(db);
   return paths[type];
 }
 
@@ -41,8 +42,8 @@ export function resolveRepoPath(
  * Resolve paths to all existing "/beliefs" directories in the hierarchy,
  * sorted from most specific (personal) to most general (org).
  */
-export function resolveAllBeliefPaths(db: Database): string[] {
-  const paths = getRepoPaths(db);
+export async function resolveAllBeliefPaths(db: Database): Promise<string[]> {
+  const paths = await getRepoPaths(db);
   const dirs: string[] = [];
 
   if (paths.personal) {
@@ -65,8 +66,8 @@ export function resolveAllBeliefPaths(db: Database): string[] {
  * Resolve paths to all existing "/goals" directories in the hierarchy,
  * sorted from most specific (personal) to most general (org).
  */
-export function resolveAllGoalPaths(db: Database): string[] {
-  const paths = getRepoPaths(db);
+export async function resolveAllGoalPaths(db: Database): Promise<string[]> {
+  const paths = await getRepoPaths(db);
   const dirs: string[] = [];
 
   if (paths.personal) {
