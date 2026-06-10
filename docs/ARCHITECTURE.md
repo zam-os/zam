@@ -161,6 +161,8 @@ These are template-based (not LLM-generated). The AI skill layer uses them as st
 6. Return result (next due date, stability, state)
 
 Blocking logic is **not** in the evaluator. Callers invoke `cascadeBlock()` separately after a rating of 1.
+If prerequisites are discovered and added only after the rating, run
+`zam card block --user <id> --token <slug>` to invoke the same blocking path.
 
 ---
 
@@ -275,7 +277,7 @@ src/
 │   └── commands/
 │       ├── init.ts               ← zam init
 │       ├── token.ts              ← zam token register/find/list/prereq/deprecate/status
-│       ├── card.ts               ← zam card due/update/unblock
+│       ├── card.ts               ← zam card due/update/block/unblock
 │       ├── review.ts             ← zam review (interactive)
 │       ├── session.ts            ← zam session start/log/end
 │       ├── stats.ts              ← zam stats
