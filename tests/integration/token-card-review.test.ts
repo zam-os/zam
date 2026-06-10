@@ -10,13 +10,16 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   addPrerequisite,
   buildReviewQueue,
+  cascadeBlock,
   createToken,
   type Database,
   ensureCard,
   evaluateRating,
   executeReviewAction,
   findTokens,
+  getCard,
   getDependents,
+  getDueCards,
   getPrerequisites,
   getTokenBySlug,
   openDatabase,
@@ -330,6 +333,87 @@ describe("integration: token → card → review flow", () => {
       expect(unblocked.unblocked.some((u) => u.slug === target.slug)).toBe(
         true,
       );
+    });
+
+    it("blocks retroactively after missing prerequisites are discovered", async () => {
+      const target = await createToken(db, {
+        slug: "analyze-enlightenment",
+        concept: "Analyze how Enlightenment ideas shaped political change",
+        domain: "history",
+        bloom_level: 4,
+      });
+      const targetCard = await ensureCard(db, target.id, "thomas");
+
+      const rating = await executeReviewAction(db, {
+        action: "rate",
+        cardId: targetCard.id,
+        userId: "thomas",
+        rating: 1,
+      });
+
+      expect(rating.blocked).toBeUndefined();
+      expect((await getCard(db, target.id, "thomas"))?.blocked).toBe(0);
+
+      const prerequisite = await createToken(db, {
+        slug: "define-popular-sovereignty",
+        concept: "Popular sovereignty means political authority comes from the people",
+        domain: "history",
+        bloom_level: 1,
+      });
+      await addPrerequisite(db, target.id, prerequisite.id);
+
+      const blocked = await cascadeBlock(db, "thomas", target.slug);
+      expect(blocked.blockedSlug).toBe(target.slug);
+      expect(blocked.prerequisites).toEqual([
+        {
+          slug: prerequisite.slug,
+          concept: prerequisite.concept,
+          bloomLevel: prerequisite.bloom_level,
+        },
+      ]);
+      expect((await getCard(db, target.id, "thomas"))?.blocked).toBe(1);
+
+      const prerequisiteCard = await getCard(
+        db,
+        prerequisite.id,
+        "thomas",
+      );
+      expect(prerequisiteCard).toBeDefined();
+      expect(prerequisiteCard?.blocked).toBe(0);
+
+      const dueSlugs = (await getDueCards(db, "thomas")).map(
+        (card) => card.slug,
+      );
+      expect(dueSlugs).toContain(prerequisite.slug);
+      expect(dueSlugs).not.toContain(target.slug);
+
+      await executeReviewAction(db, {
+        action: "rate",
+        cardId: prerequisiteCard!.id,
+        userId: "thomas",
+        rating: 3,
+      });
+
+      const unblocked = await unblockReady(db, "thomas");
+      expect(unblocked.unblocked).toContainEqual({
+        slug: target.slug,
+        concept: target.concept,
+      });
+      expect((await getCard(db, target.id, "thomas"))?.blocked).toBe(0);
+    });
+
+    it("refuses to block a token without prerequisites", async () => {
+      const token = await createToken(db, {
+        slug: "standalone-token",
+        concept: "A token without prerequisites",
+        domain: "testing",
+        bloom_level: 2,
+      });
+
+      await expect(cascadeBlock(db, "thomas", token.slug)).rejects.toThrow(
+        "Cannot block standalone-token: token has no prerequisites",
+      );
+      expect(await getCard(db, token.id, "thomas")).toBeUndefined();
     });
   });
 });

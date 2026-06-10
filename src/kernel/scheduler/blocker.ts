@@ -49,6 +49,11 @@ export async function cascadeBlock(
     throw new Error(`Unknown token slug: ${tokenSlug}`);
   }
 
+  const prereqs = await getPrerequisites(db, token.id);
+  if (prereqs.length === 0) {
+    throw new Error(`Cannot block ${tokenSlug}: token has no prerequisites`);
+  }
+
   // Ensure a card exists, then block it
   await ensureCard(db, token.id, userId);
   await db
@@ -56,7 +61,6 @@ export async function cascadeBlock(
     .run(token.id, userId);
 
   // Surface all direct prerequisites — ensure cards exist (unblocked, due now)
-  const prereqs = await getPrerequisites(db, token.id);
   const surfaced: Array<{ slug: string; concept: string; bloomLevel: number }> =
     [];
 
