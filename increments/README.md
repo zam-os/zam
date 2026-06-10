@@ -17,7 +17,7 @@ override the evidence in the repository.
 | 7 - Locale-aware recall | Partial product coverage | Seven-locale CLI i18n, locale detection/settings, localized LLM generation and evaluation | Desktop static chrome currently has dedicated English/German copy and English fallback for five locales |
 | 8 - Tauri recall studio | Implemented, release verification pending | Tauri UI, secure CLI bridge, self-contained CLI/Node resources, CSP, native release matrix | Exercise the release workflow from a tag and add automated frontend interaction tests |
 | 9 - Release hardening | In progress | See `9 - Release Hardening & Distribution Integrity.md` | Complete the acceptance checklist and validate CI on GitHub |
-| 10 - Async database providers and Turso Sync | Planned | Windows ARM64 local SQLite and an internal database contract provide the migration foundation | Phase 0 ARM64 release closure (`zam-core` 0.3.7), then async kernel migration, remote HTTP Turso as the primary cloud mode, local-to-cloud promotion, and removal of native libSQL; Turso Sync parked while offline-first stays a non-goal |
+| 10 - Async database providers and Turso Sync | Phases 1-3 implemented | Async `Database` contract, sync adapter, kernel/CLI migration, hand-rolled Hrana-v3 remote HTTP provider with explicit `local\|native\|remote` selection (`--mode`, `ZAM_DB_PROVIDER`), provider contract tests against local SQLite and an hrana stub on all CI platforms incl. Windows ARM64 | Phase 0 closure (`npm publish` 0.3.7, physical ARM64 validation), Phase 4 local-to-cloud promotion, Phase 5 native libSQL removal after machine migration; Turso Sync parked while offline-first stays a non-goal |
 
 ## Current Product Sequence
 
