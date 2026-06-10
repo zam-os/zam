@@ -328,6 +328,150 @@ Never present a blocked token to the user.
 
 ---
 
+## Dynamic Token Decomposition
+
+**Principle:** Do not pre-create hundreds of tokens. Let the dependency graph grow
+from real gaps discovered during review. Every rating of 1 is an opportunity to
+diagnose *why* the user couldn't answer — and to create the missing foundations.
+
+This applies primarily to tokens at Bloom 3-5 (apply, analyze, synthesize) that
+cover broad learning areas. School curricula — where a single "Lernbereich" spans
+many underlying concepts — are the canonical use case.
+
+### When to split
+
+A token should be decomposed when ALL of the following hold:
+
+1. The user rated it **1** (drew a blank / couldn't answer)
+2. The token is at **Bloom ≥ 3** (application or above)
+3. The token covers **multiple distinct concepts** (not atomic)
+4. No prerequisite tokens already exist for the specific gap you diagnose
+
+### How to diagnose
+
+After a rating of 1, pause. Do not just re-ask the same question or move on.
+Ask yourself: **"What would the user have needed to know to answer this?"**
+
+| Symptom | Missing foundation | Create Bloom 1-2 token for |
+|---------|-------------------|---------------------------|
+| Couldn't name key terms | Factual recall | Definitions, terminology |
+| Used terms incorrectly | Conceptual understanding | Explain the concept in own words |
+| Knew facts but couldn't connect them | Structural understanding | How A relates to B |
+| Understood but couldn't apply | Procedural knowledge | Apply concept to a simple case first |
+
+### Source-grounded splitting
+
+When the high-level token has a `source_link` pointing to a curriculum (LehrplanPLUS,
+school syllabus, certification exam outline), **consult it before creating any
+foundation tokens**. The source defines the official scope — your foundations must
+stay inside it.
+
+**Protocol:**
+
+1. Fetch or follow the `source_link` (WebFetch for URLs, Read for local files)
+2. Locate the relevant Lernbereich / topic section in the source
+3. Extract the **explicitly listed** basic terms, dates, concepts, and
+   "grundlegende Daten und Begriffe" (for LehrplanPLUS) or equivalent
+4. Create foundation tokens ONLY for items that appear in the source
+
+**Example of a BAD split (terms not in curriculum):**
+
+> `ge-aufklaerung-begriffe`: "Define: Aufklärung, Emanzipation, Toleranz,
+> Vernunft, Fortschritt, Naturrecht."
+>
+> Problem: The LehrplanPLUS Geschichte 8 LB2 lists "Aufklärung, Menschenrechte,
+> Volkssouveränität, Gewaltenteilung, Parlament, konstitutionelle Monarchie,
+> Bürgertum" as required terms. Emanzipation, Toleranz, and Fortschrittsglaube
+> are NOT part of the 8th-grade Realschule curriculum for this Lernbereich.
+
+**Example of a CORRECT split (terms from the source):**
+
+> `ge-aufklaerung-begriffe`: "Define: Aufklärung, Volkssouveränität,
+> Gewaltenteilung, konstitutionelle Monarchie, Menschenrechte."
+>
+> Every term appears in the LehrplanPLUS. The student won't be tested on
+> anything outside this list.
+
+**Rule of thumb:** For curriculum-based tokens, the source is the contract.
+If the source says "grundlegende Daten und Begriffe: X, Y, Z", only X, Y,
+and Z are fair game for Bloom 1-2 foundations. Adding extra terms is scope
+creep and undermines the learner's trust.
+
+### Registration protocol
+
+For each gap you diagnose, register a new token and wire it immediately:
+
+```bash
+# 1. Register the foundation token (Bloom 1-2, atomic, single concept)
+zam token register \
+  --slug <parent-slug>-<gap-keyword> \
+  --concept "<one atomic concept the user was missing>" \
+  --domain <same-domain> \
+  --bloom <1-or-2> \
+  --question "<direct recall or explain question>"
+
+# 2. Wire it as a prerequisite of the high-level token
+zam token prereq --token <high-level-slug> --requires <parent-slug>-<gap-keyword>
+```
+
+### What happens next (automatic)
+
+After wiring prerequisites:
+- The high-level token is **automatically blocked** because it was rated 1
+  and its prerequisites haven't been recalled yet (Blocking Rule)
+- The next `/zam` session will surface the *foundation tokens first*
+- Once all prerequisites reach `reps >= 1`, `zam card unblock` promotes the
+  high-level token back into the review queue
+
+### Example: High-school history
+
+> User rates `ge-aufklaerung` (Bloom 4: "How did Enlightenment ideas shape the
+> French Revolution and transform Europe's political order?") as **1**.
+
+Agent diagnoses:
+- *"You couldn't name the three estates. You weren't sure what 'popular sovereignty'
+  means. You mixed up 1789 and 1793."*
+
+Agent creates three foundations:
+
+| Token | Bloom | Question |
+|-------|-------|----------|
+| `ge-aufklaerung-staende` | 1 | Who belonged to each of the three estates in 18th-century France? |
+| `ge-aufklaerung-begriffe` | 1 | Define: Enlightenment, popular sovereignty, separation of powers, natural rights. |
+| `ge-aufklaerung-daten` | 1 | Name the five key events of the French Revolution (1789–1799) with dates. |
+
+Agent wires them:
+```bash
+zam token prereq --token ge-aufklaerung --requires ge-aufklaerung-staende
+zam token prereq --token ge-aufklaerung --requires ge-aufklaerung-begriffe
+zam token prereq --token ge-aufklaerung --requires ge-aufklaerung-daten
+```
+
+`ge-aufklaerung` is now blocked. Next session: foundations first. When they
+stick → `ge-aufklaerung` reappears — this time with a fighting chance.
+
+### Sizing rule
+
+- Create **2–4 foundations per failed high-level token**, not 10
+- Each foundation must be **genuinely atomic** — one fact or concept
+- If the user still fails a foundation, split it further (e.g. "too many dates
+  at once" → one token per date)
+- Over time this builds a **Bloom ladder**: Level 1 facts → Level 2 understanding
+  → Level 3 application → Level 4+ analysis
+
+### Safety
+
+- **Never create more than 10 new tokens in a single session** — if a rating of 1
+  reveals massive gaps, prioritize the 3 most urgent foundations and let the rest
+  emerge in subsequent sessions
+- **Always dedup before registering** — `zam token find --query "<keywords>"`
+- **Do not split Bloom 1-2 tokens** — they are already atomic; if the user fails
+  them, the fix is re-exposure and practice, not further decomposition
+- A rating of 1 on a Bloom 1 token means the user needs simpler wording or a
+  mnemonic, not more tokens
+
+---
+
 ## Token Deprecation
 
 Knowledge goes stale. If a token comes up for review and the user indicates it's outdated ("that's not how it works anymore"):
