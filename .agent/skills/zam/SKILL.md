@@ -359,6 +359,44 @@ Ask yourself: **"What would the user have needed to know to answer this?"**
 | Knew facts but couldn't connect them | Structural understanding | How A relates to B |
 | Understood but couldn't apply | Procedural knowledge | Apply concept to a simple case first |
 
+### Source-grounded splitting
+
+When the high-level token has a `source_link` pointing to a curriculum (LehrplanPLUS,
+school syllabus, certification exam outline), **consult it before creating any
+foundation tokens**. The source defines the official scope — your foundations must
+stay inside it.
+
+**Protocol:**
+
+1. Fetch or follow the `source_link` (WebFetch for URLs, Read for local files)
+2. Locate the relevant Lernbereich / topic section in the source
+3. Extract the **explicitly listed** basic terms, dates, concepts, and
+   "grundlegende Daten und Begriffe" (for LehrplanPLUS) or equivalent
+4. Create foundation tokens ONLY for items that appear in the source
+
+**Example of a BAD split (terms not in curriculum):**
+
+> `ge-aufklaerung-begriffe`: "Define: Aufklärung, Emanzipation, Toleranz,
+> Vernunft, Fortschritt, Naturrecht."
+>
+> Problem: The LehrplanPLUS Geschichte 8 LB2 lists "Aufklärung, Menschenrechte,
+> Volkssouveränität, Gewaltenteilung, Parlament, konstitutionelle Monarchie,
+> Bürgertum" as required terms. Emanzipation, Toleranz, and Fortschrittsglaube
+> are NOT part of the 8th-grade Realschule curriculum for this Lernbereich.
+
+**Example of a CORRECT split (terms from the source):**
+
+> `ge-aufklaerung-begriffe`: "Define: Aufklärung, Volkssouveränität,
+> Gewaltenteilung, konstitutionelle Monarchie, Menschenrechte."
+>
+> Every term appears in the LehrplanPLUS. The student won't be tested on
+> anything outside this list.
+
+**Rule of thumb:** For curriculum-based tokens, the source is the contract.
+If the source says "grundlegende Daten und Begriffe: X, Y, Z", only X, Y,
+and Z are fair game for Bloom 1-2 foundations. Adding extra terms is scope
+creep and undermines the learner's trust.
+
 ### Registration protocol
 
 For each gap you diagnose, register a new token and wire it immediately:
