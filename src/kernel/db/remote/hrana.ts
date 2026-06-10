@@ -244,9 +244,7 @@ export function unwrapResult(
 ): HranaStmtResult | undefined {
   const entry = response.results[index];
   if (!entry) {
-    throw new HranaResponseError(
-      `Turso response is missing result #${index}`,
-    );
+    throw new HranaResponseError(`Turso response is missing result #${index}`);
   }
   if (entry.type === "error") {
     throw new Error(entry.error.message);

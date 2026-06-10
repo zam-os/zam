@@ -101,16 +101,16 @@ export async function evaluateRating(
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .run(
-    ulid(),
-    input.cardId,
-    input.tokenId,
-    input.userId,
-    input.rating,
-    input.responseTimeMs ?? null,
-    now.toISOString(),
-    card.due_at,
-    input.sessionId ?? null,
-  );
+      ulid(),
+      input.cardId,
+      input.tokenId,
+      input.userId,
+      input.rating,
+      input.responseTimeMs ?? null,
+      now.toISOString(),
+      card.due_at,
+      input.sessionId ?? null,
+    );
 
   return {
     nextDueAt: updated.dueAt.toISOString(),

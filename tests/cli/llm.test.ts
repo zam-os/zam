@@ -19,27 +19,27 @@ describe("LLM client utilities (CLI layer)", () => {
   });
 
   it("ensureLocalLlmRunning reports 'disabled' immediately if llm.enabled is false", async () => {
-    const db = openDatabase({
+    const db = await openDatabase({
       dbPath: ":memory:",
       initialize: true,
       useConfiguredCloud: false,
     });
-    setSetting(db, "llm.enabled", "false");
+    await setSetting(db, "llm.enabled", "false");
 
     const readiness = await ensureLocalLlmRunning(db);
     expect(readiness).toEqual({ usable: false, reason: "disabled" });
-    db.close();
+    await db.close();
   });
 
   it("ensureLocalLlmRunning reports 'model-not-found' when the server doesn't serve the configured model", async () => {
-    const db = openDatabase({
+    const db = await openDatabase({
       dbPath: ":memory:",
       initialize: true,
       useConfiguredCloud: false,
     });
-    setSetting(db, "llm.enabled", "true");
-    setSetting(db, "llm.url", "http://localhost:8000/v1");
-    setSetting(db, "llm.model", "gemma4-it:e4b");
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://localhost:8000/v1");
+    await setSetting(db, "llm.model", "gemma4-it:e4b");
 
     const originalFetch = global.fetch;
     // Server is reachable, but /models lists a different model than configured.
@@ -53,7 +53,7 @@ describe("LLM client utilities (CLI layer)", () => {
       expect(readiness.reason).toBe("model-not-found");
     } finally {
       global.fetch = originalFetch;
-      db.close();
+      await db.close();
     }
   });
 
@@ -72,16 +72,16 @@ describe("LLM client utilities (CLI layer)", () => {
   });
 
   it("ensureHighQualityQuestion dynamically generates and self-heals a missing question when LLM is enabled", async () => {
-    const db = openDatabase({
+    const db = await openDatabase({
       dbPath: ":memory:",
       initialize: true,
       useConfiguredCloud: false,
     });
-    setSetting(db, "llm.enabled", "true");
-    setSetting(db, "llm.url", "http://dummy/v1");
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
 
     const slug = "test-self-heal-" + Date.now();
-    const token = createToken(db, {
+    const token = await createToken(db, {
       slug,
       concept: "Azure DevOps secure HTTPS credential storage on macOS Keychain",
       domain: "DevOps",
@@ -119,13 +119,13 @@ describe("LLM client utilities (CLI layer)", () => {
       );
 
       // Verify that it self-healed in the database!
-      const updated = getTokenBySlug(db, slug);
+      const updated = await getTokenBySlug(db, slug);
       expect(updated?.question).toBe(
         "How do you securely store Azure DevOps HTTPS credentials on macOS?",
       );
     } finally {
       global.fetch = originalFetch;
-      db.close();
+      await db.close();
     }
   });
 });

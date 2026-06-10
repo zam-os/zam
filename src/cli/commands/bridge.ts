@@ -47,9 +47,7 @@ import {
   translateQuestionViaLLM,
 } from "../llm/client.js";
 import { resolveUser } from "./resolve-user.js";
-import {
-  withDb as sharedWithDb,
-} from "./shared/db.js";
+import { withDb as sharedWithDb } from "./shared/db.js";
 
 function jsonOut(data: unknown): void {
   console.log(JSON.stringify(data, null, 2));
@@ -401,8 +399,8 @@ bridgeCommand
   .command("get-skill")
   .description("Get an agent skill by slug (JSON)")
   .requiredOption("--slug <slug>", "Skill slug")
-  .action((opts) => {
-    withDb((db) => {
+  .action(async (opts) => {
+    await withDb(async (db) => {
       const skill = await getAgentSkill(db, opts.slug);
       if (!skill) {
         jsonError(`Skill not found: ${opts.slug}`);

@@ -13,31 +13,33 @@ afterEach(() => {
 });
 
 describe("local database backend", () => {
-  it("opens and persists a local SQLite database without libsql features", () => {
+  it("opens and persists a local SQLite database without libsql features", async () => {
     const dir = mkdtempSync(join(tmpdir(), "zam-local-sqlite-"));
     tempDirs.push(dir);
     const dbPath = join(dir, "zam.db");
 
-    const first = openDatabase({
+    const first = await openDatabase({
       dbPath,
       initialize: true,
       useConfiguredCloud: false,
     });
-    first
+    await first
       .prepare("INSERT INTO user_config (key, value) VALUES (?, ?)")
       .run("arm64.test", "ready");
-    first.close();
+    await first.close();
 
-    const second = openDatabase({
+    const second = await openDatabase({
       dbPath,
       useConfiguredCloud: false,
     });
-    const row = second
+    const row = (await second
       .prepare("SELECT value FROM user_config WHERE key = ?")
-      .get("arm64.test") as { value: string };
+      .get("arm64.test")) as { value: string };
 
     expect(row.value).toBe("ready");
-    expect(second.pragma("journal_mode")).toEqual([{ journal_mode: "wal" }]);
-    second.close();
+    expect(await second.pragma("journal_mode")).toEqual([
+      { journal_mode: "wal" },
+    ]);
+    await second.close();
   });
 });

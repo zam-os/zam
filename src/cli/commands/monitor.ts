@@ -83,7 +83,7 @@ monitorCommand
     "--shell <type>",
     "Shell type: zsh | bash | pwsh | powershell (auto-detected)",
   )
-  .action((opts) => {
+  .action(async (opts) => {
     let shell: MonitorShell;
     try {
       shell = normalizeShell(opts.shell);
@@ -95,10 +95,10 @@ monitorCommand
     // Validate session exists
     let db: Database | undefined;
     try {
-      db = openDatabase();
-      const session = db
+      db = await openDatabase();
+      const session = (await db
         .prepare("SELECT id, completed_at FROM sessions WHERE id = ?")
-        .get(opts.session) as
+        .get(opts.session)) as
         | { id: string; completed_at: string | null }
         | undefined;
 
@@ -114,7 +114,7 @@ monitorCommand
       console.error(`# Error: ${(err as Error).message}`);
       process.exit(1);
     } finally {
-      db?.close();
+      await db?.close();
     }
 
     ensureMonitorDir();
@@ -326,7 +326,7 @@ monitorCommand
     "--shell <type>",
     "Shell type: zsh | bash | pwsh | powershell (auto-detected)",
   )
-  .action((opts) => {
+  .action(async (opts) => {
     let shell: MonitorShell;
     try {
       shell = normalizeShell(opts.shell);
@@ -338,10 +338,10 @@ monitorCommand
     // Validate session exists
     let db: Database | undefined;
     try {
-      db = openDatabase();
-      const session = db
+      db = await openDatabase();
+      const session = (await db
         .prepare("SELECT id, completed_at FROM sessions WHERE id = ?")
-        .get(opts.session) as
+        .get(opts.session)) as
         | { id: string; completed_at: string | null }
         | undefined;
 
@@ -355,14 +355,14 @@ monitorCommand
       }
 
       // Save monitor preference so the agent knows to default to terminal
-      if (!getSetting(db, "monitor_method")) {
-        setSetting(db, "monitor_method", "terminal");
+      if (!(await getSetting(db, "monitor_method"))) {
+        await setSetting(db, "monitor_method", "terminal");
       }
     } catch (err) {
       console.error(`Error: ${(err as Error).message}`);
       process.exit(1);
     } finally {
-      db?.close();
+      await db?.close();
     }
 
     const dir = opts.dir ?? process.cwd();

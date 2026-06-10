@@ -283,7 +283,10 @@ async function runMigrations(db: Database): Promise<void> {
   }
 
   // M004: add source_link to tokens
-  if (tokenCols.length > 0 && !tokenCols.some((c) => c.name === "source_link")) {
+  if (
+    tokenCols.length > 0 &&
+    !tokenCols.some((c) => c.name === "source_link")
+  ) {
     await db.exec(`ALTER TABLE tokens ADD COLUMN source_link TEXT`);
   }
 

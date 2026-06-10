@@ -11,9 +11,9 @@
 import type { Database, RunResult, Statement } from "../types.js";
 import {
   encodeValue,
-  HranaTransport,
   type HranaRequest,
   type HranaStmtResult,
+  HranaTransport,
   type HranaTransportOptions,
   rowsToObjects,
   unwrapResult,
@@ -85,7 +85,10 @@ function makeDatabase(run: RunPipeline, transport: HranaTransport): Database {
         const stream = openStream(transport);
         try {
           await stream.run([
-            { type: "execute", stmt: { sql: "BEGIN IMMEDIATE", want_rows: false } },
+            {
+              type: "execute",
+              stmt: { sql: "BEGIN IMMEDIATE", want_rows: false },
+            },
           ]);
           const result = await fn(makeDatabase(stream.run, transport));
           await stream.run(
@@ -96,7 +99,12 @@ function makeDatabase(run: RunPipeline, transport: HranaTransport): Database {
         } catch (err) {
           await stream
             .run(
-              [{ type: "execute", stmt: { sql: "ROLLBACK", want_rows: false } }],
+              [
+                {
+                  type: "execute",
+                  stmt: { sql: "ROLLBACK", want_rows: false },
+                },
+              ],
               true,
             )
             .catch(() => {});
@@ -146,10 +154,7 @@ export function openRemoteDatabase(options: RemoteDatabaseOptions): Database {
   const transport = new HranaTransport(options);
 
   const statelessRun: RunPipeline = async (requests) => {
-    const response = await transport.pipeline([
-      ...requests,
-      { type: "close" },
-    ]);
+    const response = await transport.pipeline([...requests, { type: "close" }]);
     return { results: requests.map((_, i) => unwrapResult(response, i)) };
   };
 

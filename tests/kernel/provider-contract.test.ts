@@ -71,7 +71,7 @@ describe("remote provider transport behavior", () => {
       maxAttempts: 2,
     });
     await expect(db.prepare("SELECT 1").get()).rejects.toThrow(
-      /Cannot reach the Turso database .* ZAM_DB_PROVIDER=local/s,
+      /Cannot reach the Turso database .*ZAM_DB_PROVIDER=local/s,
     );
   });
 

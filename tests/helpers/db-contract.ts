@@ -76,9 +76,7 @@ export function describeDatabaseContract(
     it("round-trips text, integers, floats, nulls, and blobs", async () => {
       const payload = new Uint8Array([0, 1, 254, 255]);
       await ctx.db
-        .prepare(
-          "INSERT INTO items (label, weight, payload) VALUES (?, ?, ?)",
-        )
+        .prepare("INSERT INTO items (label, weight, payload) VALUES (?, ?, ?)")
         .run("blob-row", 2.5, payload);
       await ctx.db
         .prepare("INSERT INTO items (label, weight, payload) VALUES (?, ?, ?)")
@@ -155,7 +153,9 @@ export function describeDatabaseContract(
     it("transaction rolls back every write on error", async () => {
       await expect(
         ctx.db.transaction(async (tx) => {
-          await tx.prepare("INSERT INTO items (label) VALUES (?)").run("doomed");
+          await tx
+            .prepare("INSERT INTO items (label) VALUES (?)")
+            .run("doomed");
           await tx.prepare("INSERT INTO audit (item_id) VALUES (?)").run(1);
           throw new Error("boom");
         }),
