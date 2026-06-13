@@ -53,11 +53,16 @@ import {
 import { resolveUser } from "./resolve-user.js";
 import { withDb as sharedWithDb } from "./shared/db.js";
 
+let isServeMode = false;
+
 function jsonOut(data: unknown): void {
   console.log(JSON.stringify(data, null, 2));
 }
 
 function jsonError(message: string): never {
+  if (isServeMode) {
+    throw new Error(JSON.stringify({ error: message }));
+  }
   console.log(JSON.stringify({ error: message }, null, 2));
   process.exit(1);
 }
@@ -986,3 +991,105 @@ bridgeCommand
       });
     });
   });
+
+// ── zam bridge serve ──────────────────────────────────────────────────────
+
+bridgeCommand
+  .command("serve")
+  .description("Start the persistent JSON-RPC stdin/stdout server")
+  .option("--stdin", "Use stdin/stdout for communication")
+  .action(async (opts) => {
+    isServeMode = true;
+
+    // Configure exitOverride so commander doesn't process.exit on parsing errors
+    bridgeCommand.exitOverride();
+    for (const cmd of bridgeCommand.commands) {
+      cmd.exitOverride();
+    }
+
+    // Prevent Commander from writing directly to stdout/stderr
+    let outputBuffer = "";
+    const outputOpts = {
+      writeOut: (str: string) => {
+        outputBuffer += str;
+      },
+      writeErr: (str: string) => {
+        outputBuffer += str;
+      },
+    };
+    bridgeCommand.configureOutput(outputOpts);
+    for (const cmd of bridgeCommand.commands) {
+      cmd.configureOutput(outputOpts);
+    }
+
+    const processRequest = async (line: string): Promise<string> => {
+      outputBuffer = "";
+      let requestId: string | number | null = null;
+      try {
+        const req = JSON.parse(line);
+        requestId = req.id ?? null;
+        const cmd = req.cmd;
+        const args = req.args ?? [];
+
+        if (!cmd) {
+          return JSON.stringify({ id: requestId, error: "Missing 'cmd' field" });
+        }
+
+        const originalLog = console.log;
+        const originalError = console.error;
+        console.log = (...logArgs) => {
+          outputBuffer += logArgs.map(a => typeof a === "object" ? JSON.stringify(a) : String(a)).join(" ") + "\n";
+        };
+        console.error = (...logArgs) => {
+          outputBuffer += logArgs.map(a => typeof a === "object" ? JSON.stringify(a) : String(a)).join(" ") + "\n";
+        };
+
+        try {
+          await bridgeCommand.parseAsync(["node", "bridge", cmd, ...args]);
+        } catch (err: any) {
+          if (err instanceof Error && err.message.startsWith('{"error":')) {
+            try {
+              const parsed = JSON.parse(err.message);
+              return JSON.stringify({ id: requestId, error: parsed.error });
+            } catch {
+              return JSON.stringify({ id: requestId, error: err.message });
+            }
+          }
+          if (err.code?.startsWith("commander.")) {
+            return JSON.stringify({ id: requestId, error: outputBuffer.trim() || err.message });
+          }
+          return JSON.stringify({ id: requestId, error: err.message || String(err) });
+        } finally {
+          console.log = originalLog;
+          console.error = originalError;
+        }
+
+        // Parse stdout accumulated output
+        let result: any;
+        const trimmed = outputBuffer.trim();
+        try {
+          result = JSON.parse(trimmed);
+        } catch {
+          result = trimmed;
+        }
+
+        return JSON.stringify({ id: requestId, result });
+      } catch (err: any) {
+        return JSON.stringify({ id: requestId, error: "Invalid JSON request: " + err.message });
+      }
+    };
+
+    const readline = await import("node:readline");
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+      terminal: false,
+    });
+
+    rl.on("line", async (line) => {
+      if (!line.trim()) return;
+      const response = await processRequest(line);
+      process.stdout.write(response + "\n");
+    });
+  });
+

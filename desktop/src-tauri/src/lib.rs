@@ -1,8 +1,10 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 use std::env;
 use std::fs;
+use std::io::{BufRead, BufReader, Write};
 use std::path::{Path, PathBuf};
-use std::process::Command;
+use std::process::{Child, ChildStdin, ChildStdout, Command};
+use std::sync::Mutex;
 use tauri::Manager;
 
 #[cfg(target_os = "windows")]
@@ -116,41 +118,139 @@ fn resolve_bridge_runtime(app: &tauri::AppHandle) -> Option<BridgeRuntime> {
     })
 }
 
+struct PersistentBridge {
+    child: Child,
+    stdin: ChildStdin,
+    stdout: BufReader<ChildStdout>,
+    request_counter: u64,
+}
+
+#[derive(serde::Serialize)]
+struct BridgeRequest {
+    id: u64,
+    cmd: String,
+    args: Vec<String>,
+}
+
+#[derive(serde::Deserialize)]
+struct BridgeResponse {
+    id: Option<u64>,
+    result: Option<serde_json::Value>,
+    error: Option<String>,
+}
+
 #[tauri::command]
 fn execute_zam_bridge(
     app: tauri::AppHandle,
+    state: tauri::State<'_, Mutex<Option<PersistentBridge>>>,
     cmd: String,
     args: Vec<String>,
 ) -> Result<String, String> {
-    let runtime = resolve_bridge_runtime(&app).ok_or_else(|| {
-        "Could not locate the bundled ZAM CLI. Reinstall the desktop app, or set \
-         ZAM_HOME to a source checkout for development."
-            .to_string()
-    })?;
+    let mut lock = state.lock().map_err(|e| e.to_string())?;
 
-    // Run command: node <cli_path> bridge <cmd> <args...>
-    let mut command = Command::new(&runtime.node_path);
-    #[cfg(target_os = "windows")]
-    command.creation_flags(0x08000000); // CREATE_NO_WINDOW
+    // 1. Ensure the persistent bridge process is running.
+    let is_alive = if let Some(ref mut bridge) = *lock {
+        match bridge.child.try_wait() {
+            Ok(None) => true,
+            _ => false,
+        }
+    } else {
+        false
+    };
 
-    command.current_dir(&runtime.working_dir);
-    command.arg(&runtime.cli_path);
-    command.arg("bridge");
-    command.arg(cmd);
+    if !is_alive {
+        if let Some(mut bridge) = lock.take() {
+            let _ = bridge.child.kill();
+        }
 
-    for arg in args {
-        command.arg(arg);
+        let runtime = resolve_bridge_runtime(&app).ok_or_else(|| {
+            "Could not locate the ZAM CLI. Reinstall the desktop app, or set \
+             ZAM_HOME to a source checkout for development."
+                .to_string()
+        })?;
+
+        let mut command = Command::new(&runtime.node_path);
+        #[cfg(target_os = "windows")]
+        command.creation_flags(0x08000000); // CREATE_NO_WINDOW
+
+        command.current_dir(&runtime.working_dir);
+        command.arg(&runtime.cli_path);
+        command.arg("bridge");
+        command.arg("serve");
+        command.arg("--stdin");
+        
+        command.stdin(std::process::Stdio::piped());
+        command.stdout(std::process::Stdio::piped());
+
+        let mut child = command.spawn().map_err(|e| format!("Failed to spawn ZAM CLI: {}", e))?;
+        let stdin = child.stdin.take().ok_or_else(|| "Failed to open stdin".to_string())?;
+        let stdout = child.stdout.take().ok_or_else(|| "Failed to open stdout".to_string())?;
+        let stdout_reader = BufReader::new(stdout);
+
+        *lock = Some(PersistentBridge {
+            child,
+            stdin,
+            stdout: stdout_reader,
+            request_counter: 0,
+        });
     }
 
-    let output = command.output().map_err(|e| e.to_string())?;
+    // 2. Perform the request-response transaction.
+    let bridge = lock.as_mut().unwrap();
+    bridge.request_counter += 1;
+    let req_id = bridge.request_counter;
 
-    let stdout = String::from_utf8_lossy(&output.stdout).to_string();
-    let stderr = String::from_utf8_lossy(&output.stderr).to_string();
+    let request = BridgeRequest {
+        id: req_id,
+        cmd,
+        args,
+    };
 
-    if output.status.success() {
-        Ok(stdout)
-    } else {
-        Err(format!("Bridge failed: {}\nStderr: {}", stdout, stderr))
+    let mut payload = serde_json::to_string(&request).map_err(|e| e.to_string())?;
+    payload.push('\n');
+
+    if let Err(err) = bridge.stdin.write_all(payload.as_bytes()) {
+        let _ = bridge.child.kill();
+        *lock = None;
+        return Err(format!("Failed to write to bridge stdin: {}", err));
+    }
+    if let Err(err) = bridge.stdin.flush() {
+        let _ = bridge.child.kill();
+        *lock = None;
+        return Err(format!("Failed to flush bridge stdin: {}", err));
+    }
+
+    // Read responses line-by-line until we find our request ID.
+    let mut line = String::new();
+    loop {
+        line.clear();
+        match bridge.stdout.read_line(&mut line) {
+            Ok(0) => {
+                let _ = bridge.child.kill();
+                *lock = None;
+                return Err("Bridge connection closed".to_string());
+            }
+            Ok(_) => {
+                if let Ok(resp) = serde_json::from_str::<BridgeResponse>(&line) {
+                    if resp.id == Some(req_id) {
+                        if let Some(err_msg) = resp.error {
+                            return Err(err_msg);
+                        }
+                        if let Some(res_val) = resp.result {
+                            let serialized = serde_json::to_string(&res_val).map_err(|e| e.to_string())?;
+                            return Ok(serialized);
+                        }
+                        return Ok("".to_string());
+                    }
+                }
+                eprintln!("[ZAM Bridge Stream Debug] {}", line.trim_end());
+            }
+            Err(err) => {
+                let _ = bridge.child.kill();
+                *lock = None;
+                return Err(format!("Failed to read from bridge stdout: {}", err));
+            }
+        }
     }
 }
 
@@ -158,6 +258,10 @@ fn execute_zam_bridge(
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
+        .setup(|app| {
+            app.manage(Mutex::new(None::<PersistentBridge>));
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![execute_zam_bridge])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
