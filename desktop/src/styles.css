@@ -813,3 +813,145 @@ textarea::placeholder {
 .hidden {
   display: none !important;
 }
+
+/* ==========================================================================
+   3D KNOWLEDGE GRAPH VIEW (experimental)
+   ========================================================================== */
+
+.graph-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  min-height: 520px;
+}
+
+.graph-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.graph-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--clr-accent-cyan);
+}
+
+.focus-label {
+  margin-left: 10px;
+  font-size: 12px;
+  padding: 2px 8px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 999px;
+  color: var(--clr-text-secondary);
+}
+
+.graph-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.graph-main {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 16px;
+  flex: 1;
+  min-height: 420px;
+}
+
+.graph-canvas-wrap {
+  position: relative;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#graph-canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  cursor: grab;
+}
+
+#graph-canvas:active {
+  cursor: grabbing;
+}
+
+.graph-side {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 13px;
+  overflow: auto;
+}
+
+.side-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--clr-text-secondary);
+  margin-bottom: 6px;
+}
+
+.focus-slug {
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--clr-accent-purple);
+}
+
+.focus-concept {
+  font-size: 14px;
+  line-height: 1.3;
+  margin: 4px 0 8px;
+}
+
+.focus-meta {
+  font-size: 12px;
+  color: var(--clr-text-muted);
+}
+
+.neighbor-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.neighbor-pill {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+  transition: all 0.1s ease;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.neighbor-pill:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: var(--clr-accent-cyan);
+}
+
+.graph-hint {
+  margin-top: auto;
+  font-size: 10px;
+  color: var(--clr-text-muted);
+  font-style: italic;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
