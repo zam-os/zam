@@ -1,6 +1,6 @@
 # ZAM Architecture
 
-> Last updated: 2026-03-28 · Phase 1: Individual Symbiosis
+> Last updated: 2026-06-13 · Phase 1: Individual Symbiosis
 >
 > Related: [TEMPLATES.md](TEMPLATES.md) — template/instance model, repo families, setup protocol
 
@@ -36,6 +36,7 @@ ZAM is built on three principles:
 │  Kernel  (src/kernel/)                                   │
 │  ─ Models: token, card, prerequisite, review, session,   │
 │            agent-skill                                   │
+│  ─ Observation: monitor analysis + confirmed synthesis   │
 │  ─ Scheduler: FSRS-5, queue builder, blocker,            │
 │               interleaver                                │
 │  ─ Recall: Bloom-adapted prompter, rating evaluator      │
@@ -57,6 +58,7 @@ tokens ──1:N──▶ cards       (one concept, many user cards)
 tokens ──M:N──▶ tokens      (prerequisites — directed graph)
 cards  ──1:N──▶ review_logs (immutable audit trail)
 sessions ─1:N─▶ session_steps ──▶ tokens
+sessions ─1:N─▶ session_syntheses ──▶ tokens
 agent_skills ──▶ token_slugs (JSON link to related tokens)
 ```
 
@@ -70,6 +72,7 @@ agent_skills ──▶ token_slugs (JSON link to related tokens)
 | **review_logs** | Immutable record of every review | `card_id`, `rating` (1–4), `reviewed_at`, `session_id` |
 | **sessions** | Work + learning episodes | `user_id`, `task`, `execution_context` (shell/ui/reallife) |
 | **session_steps** | Who did what in a session | `token_id`, `done_by` (user/agent), `rating` |
+| **session_syntheses** | Confirmed monitor-derived ratings and idempotence keys | `session_id`, `token_id`, `inferred_rating`, `confirmed_rating`, `evidence` |
 | **agent_skills** | Task recipes learned from user guidance | `slug`, `description`, `steps` (JSON), `token_slugs` (JSON) |
 | **user_config** | Key-value store for user settings | `key`, `value` |
 
@@ -262,6 +265,9 @@ Migrations run automatically on every `openDatabase()` call and are idempotent:
 | M001 | `ALTER TABLE sessions ADD COLUMN execution_context` | Observation level tracking |
 | M002 | `ALTER TABLE tokens ADD COLUMN deprecated_at` | Token deprecation |
 | M003 | `CREATE TABLE IF NOT EXISTS agent_skills` | Bidirectional learning |
+| M004 | `ALTER TABLE tokens ADD COLUMN source_link` | Source-grounded recall |
+| M005 | `ALTER TABLE tokens ADD COLUMN question` | Stable concept-free fallback questions |
+| M006 | `CREATE TABLE IF NOT EXISTS session_syntheses` | Confirmed synthesis audit and idempotence |
 
 New migrations are appended to `runMigrations()` in `src/kernel/db/connection.ts`. The schema in `schema.ts` reflects the latest state for fresh databases initialized via `zam init`.
 
@@ -279,7 +285,7 @@ src/
 │       ├── token.ts              ← zam token register/find/list/prereq/deprecate/status
 │       ├── card.ts               ← zam card due/update/block/unblock
 │       ├── review.ts             ← zam review (interactive)
-│       ├── session.ts            ← zam session start/log/end
+│       ├── session.ts            ← zam session start/log/end/synthesize
 │       ├── stats.ts              ← zam stats
 │       ├── skill.ts              ← zam skill list/show/add
 │       └── bridge.ts             ← zam bridge (JSON-only API)
@@ -287,7 +293,7 @@ src/
 │   ├── index.ts                  ← Public kernel API
 │   ├── db/
 │   │   ├── connection.ts         ← SQLite lifecycle + migrations
-│   │   └── schema.ts             ← DDL (8 tables, indexes)
+│   │   └── schema.ts             ← DDL (9 tables, indexes)
 │   ├── models/
 │   │   ├── token.ts              ← Concepts with Bloom levels
 │   │   ├── card.ts               ← Per-user FSRS state
@@ -303,6 +309,8 @@ src/
 │   ├── recall/
 │   │   ├── prompter.ts           ← Bloom-level prompt generation
 │   │   └── evaluator.ts          ← Rating → FSRS → DB update
+│   ├── observation/
+│   │   └── session-synthesis.ts  ← Monitor evidence → confirmed learning state
 │   └── analytics/
 │       └── stats.ts              ← Dashboard + domain competence
 └── bridge/

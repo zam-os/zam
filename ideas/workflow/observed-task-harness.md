@@ -8,7 +8,7 @@ monitor log, confirm inferred ratings, and persist the results in one lifecycle.
 ## Depends on
 
 - [Reusable session engine](reusable-session-engine.md)
-- [Automatic session synthesis](../learning/automatic-session-synthesis.md)
+- [Automatic session synthesis](../../increments/11%20-%20Automatic%20Session%20Synthesis.md)
 
 ## Promote when
 
