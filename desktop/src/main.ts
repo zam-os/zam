@@ -215,11 +215,29 @@ function switchView(viewId: "dashboard-view" | "study-view" | "graph-view") {
   document.querySelectorAll(".view").forEach((el) => el.classList.remove("active"));
   document.getElementById(viewId)?.classList.add("active");
   studySessionActive = viewId === "study-view";
+
+  const mainContainer = document.querySelector('main.container');
   if (viewId === "graph-view") {
+    mainContainer?.classList.add('graph-full');
     // lazy init three when first shown
     requestAnimationFrame(() => initOrShowGraph());
+  } else {
+    mainContainer?.classList.remove('graph-full');
   }
 }
+
+// Global window resize handler for the 3D graph (ensures full space usage on maximize/resize)
+window.addEventListener('resize', () => {
+  const graphView = document.getElementById('graph-view');
+  if (graphView && graphView.classList.contains('active') && graphRenderer && graphCamera) {
+    const c = document.getElementById("graph-canvas-container") as HTMLElement;
+    if (c) {
+      graphRenderer.setSize(c.clientWidth, c.clientHeight);
+      graphCamera.aspect = c.clientWidth / c.clientHeight;
+      graphCamera.updateProjectionMatrix();
+    }
+  }
+});
 
 // ── 3D KNOWLEDGE GRAPH (experimental, focus + direct prereqs/dependents) ──
 let graphRenderer: THREE.WebGLRenderer | null = null;
@@ -235,6 +253,8 @@ let graphPitch = 0.3;
 let graphDist = 7.5;
 let currentNeighborhood: any = null;
 let graphUserId: string | null = null;
+let currentDomain: string | null = null;
+let availableDomains: string[] = [];
 
 function disposeGraph() {
   if (graphAnimationId) {
@@ -249,6 +269,7 @@ function disposeGraph() {
   graphCamera = null;
   graphNodeMeshes.clear();
   currentNeighborhood = null;
+  currentDomain = null;
 }
 
 function updateGraphCamera() {
@@ -298,8 +319,11 @@ function buildGraphScene(nb: any) {
   };
 
   prereqList.innerHTML = "";
-  nb.prerequisites.forEach((p: any) => makePill(p, prereqList));
-  if (nb.prerequisites.length === 0) {
+  const visiblePrereqs = currentDomain
+    ? nb.prerequisites.filter((p: any) => p.domain === currentDomain)
+    : nb.prerequisites;
+  visiblePrereqs.forEach((p: any) => makePill(p, prereqList));
+  if (visiblePrereqs.length === 0) {
     const empty = document.createElement("span");
     empty.style.color = "var(--clr-text-muted)";
     empty.textContent = "—";
@@ -307,8 +331,11 @@ function buildGraphScene(nb: any) {
   }
 
   depList.innerHTML = "";
-  nb.dependents.forEach((d: any) => makePill(d, depList));
-  if (nb.dependents.length === 0) {
+  const visibleDependents = currentDomain
+    ? nb.dependents.filter((d: any) => d.domain === currentDomain)
+    : nb.dependents;
+  visibleDependents.forEach((d: any) => makePill(d, depList));
+  if (visibleDependents.length === 0) {
     const empty = document.createElement("span");
     empty.style.color = "var(--clr-text-muted)";
     empty.textContent = "—";
@@ -325,6 +352,51 @@ function buildGraphScene(nb: any) {
     for (let i = 0; i < domain.length; i++) h = (h * 31 + domain.charCodeAt(i)) | 0;
     return ((Math.abs(h) % 360) / 360);
   };
+
+  function createLabelSprite(text: string, isCenter: boolean): THREE.Sprite {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d")!;
+    const fontSize = isCenter ? 64 : 42;
+    context.font = `bold ${fontSize}px Inter, system-ui, sans-serif`;
+
+    let displayText = text;
+    if (text.length > 22) {
+      displayText = text.slice(0, 19) + "…";
+    }
+
+    const metrics = context.measureText(displayText);
+    const textWidth = Math.ceil(metrics.width);
+    canvas.width = textWidth + 24;
+    canvas.height = fontSize + 16;
+
+    // Redraw text after canvas resize (width/height reset the context)
+    context.font = `bold ${fontSize}px Inter, system-ui, sans-serif`;
+    context.fillStyle = isCenter ? "#67e8f9" : "#bae6fd";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillText(displayText, canvas.width / 2, canvas.height / 2);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+
+    const spriteMaterial = new THREE.SpriteMaterial({
+      map: texture,
+      transparent: true,
+      depthTest: false, // labels should stay readable
+    });
+    const sprite = new THREE.Sprite(spriteMaterial);
+
+    const scaleFactor = isCenter ? 0.85 : 0.65;
+    sprite.scale.set(
+      (canvas.width / 95) * scaleFactor,
+      (canvas.height / 95) * scaleFactor,
+      1
+    );
+
+    // Position label above the sphere
+    sprite.position.y = isCenter ? 0.95 : 0.72;
+    return sprite;
+  }
 
   const makeNode = (gt: any, isCenter: boolean) => {
     const size = 0.35 + (gt.bloomLevel || 1) * 0.12;
@@ -349,6 +421,11 @@ function buildGraphScene(nb: any) {
     const mesh = new THREE.Mesh(geom, mat);
     mesh.userData.slug = gt.slug;
     graphNodeMeshes.set(gt.slug, mesh);
+
+    // Add visible label (sprite with canvas text)
+    const label = createLabelSprite(gt.slug, isCenter);
+    mesh.add(label);
+
     return mesh;
   };
 
@@ -364,6 +441,7 @@ function buildGraphScene(nb: any) {
   const depRadius = 2.1;
 
   prereqs.forEach((p: any, i: number) => {
+    if (currentDomain && p.domain !== currentDomain) return; // stay within independent knowledge area
     const angle = (i / Math.max(1, prereqs.length)) * Math.PI * 2;
     const m = makeNode(p, false);
     const y = -1.9 - (p.bloomLevel - 1) * 0.08;
@@ -383,6 +461,7 @@ function buildGraphScene(nb: any) {
 
   // Dependents (upper)
   depnds.forEach((d: any, i: number) => {
+    if (currentDomain && d.domain !== currentDomain) return; // stay within independent knowledge area
     const angle = (i / Math.max(1, depnds.length)) * Math.PI * 2 + 0.4;
     const m = makeNode(d, false);
     const y = 1.85 + (d.bloomLevel - 1) * 0.06;
@@ -420,6 +499,163 @@ async function loadGraphFocus(slug: string) {
     console.error("Failed to load neighborhood for", slug, e);
   }
 }
+
+// --- Domain filter helpers for browsing independent knowledge areas ---
+async function loadAndRenderDomains() {
+  try {
+    const resp = await runBridge<any>("list-tokens", ["--user", graphUserId || ""]);
+    const tokens = resp.tokens || [];
+    const domSet = new Set<string>();
+    tokens.forEach((t: any) => {
+      if (t.domain) domSet.add(t.domain);
+    });
+    availableDomains = Array.from(domSet).sort();
+    renderDomainSelector();
+  } catch (e) {
+    console.warn("Could not load domains for selector", e);
+  }
+}
+
+function renderDomainSelector() {
+  const container = document.getElementById("graph-domain-selector");
+  if (!container) return;
+  container.innerHTML = "";
+
+  // "All" pill
+  const allPill = document.createElement("span");
+  allPill.className = "domain-pill" + (currentDomain === null ? " active" : "");
+  allPill.textContent = "All";
+  allPill.onclick = () => switchToDomain(null);
+  container.appendChild(allPill);
+
+  availableDomains.forEach((dom) => {
+    const pill = document.createElement("span");
+    pill.className = "domain-pill" + (currentDomain === dom ? " active" : "");
+    pill.textContent = dom;
+    pill.onclick = () => switchToDomain(dom);
+    container.appendChild(pill);
+  });
+}
+
+async function switchToDomain(domain: string | null) {
+  currentDomain = domain;
+  renderDomainSelector();
+
+  // Clear current to force re-bootstrap with (or without) domain scope
+  currentNeighborhood = null;
+
+  // Re-run the bootstrap logic with domain awareness
+  await bootstrapGraphWithDomain();
+}
+
+async function bootstrapGraphWithDomain() {
+  // Similar to the original bootstrap but domain-aware
+  let startSlug: string | null = null;
+
+  try {
+    if (currentDomain) {
+      // Load only tokens of this domain and pick a good entry point (lowest bloom = base of the area)
+      const list = await runBridge<any>("list-tokens", [
+        "--domain", currentDomain,
+        "--user", graphUserId || ""
+      ]);
+      const domTokens: any[] = list.tokens || [];
+      if (domTokens.length > 0) {
+        domTokens.sort((a, b) => (a.bloomLevel || 99) - (b.bloomLevel || 99));
+        startSlug = domTokens[0].slug;
+
+        // Also show a browsable list of all tokens in this domain in the side panel
+        populateDomainTokenList(domTokens);
+      }
+    } else {
+      // All domains: use the "next to be queried" logic
+      const review = await runBridge<any>("get-review");
+      if (review && review.hasReview && review.card && review.card.slug) {
+        startSlug = review.card.slug;
+      }
+    }
+  } catch (e) {
+    console.warn("Domain-aware bootstrap get-review/list failed", e);
+  }
+
+  if (!startSlug) {
+    // Fallback to general list (respecting domain if set)
+    try {
+      const args = ["--user", graphUserId || ""];
+      if (currentDomain) args.push("--domain", currentDomain);
+      const list = await runBridge<any>("list-tokens", args);
+      const tokens: any[] = list.tokens || [];
+      if (tokens.length > 0) {
+        const withCard = tokens.find((t: any) => t.card);
+        startSlug = (withCard || tokens[0]).slug;
+
+        if (currentDomain) {
+          populateDomainTokenList(tokens);
+        }
+      }
+    } catch (e) {
+      console.warn("Fallback list-tokens failed", e);
+    }
+  }
+
+  if (startSlug) {
+    await loadGraphFocus(startSlug);
+  } else {
+    // No tokens at all (or for this domain)
+    const dummy = {
+      focus: "empty",
+      center: {
+        id: "x",
+        slug: currentDomain ? `no-tokens-in-${currentDomain}` : "no-tokens-yet",
+        concept: currentDomain
+          ? `No tokens in domain "${currentDomain}" yet`
+          : "Register some tokens first (zam token register)",
+        domain: currentDomain || "",
+        bloomLevel: 1,
+        card: null
+      },
+      prerequisites: [],
+      dependents: []
+    };
+    buildGraphScene(dummy);
+  }
+}
+
+function populateDomainTokenList(tokens: any[]) {
+  // Add or update a "Browse in domain" section in the side panel for full browsability
+  const side = document.querySelector(".graph-side");
+  if (!side) return;
+
+  let listSection = document.getElementById("domain-tokens-list");
+  if (!listSection) {
+    listSection = document.createElement("div");
+    listSection.id = "domain-tokens-list";
+    listSection.className = "side-section";
+    const title = document.createElement("div");
+    title.className = "side-title";
+    title.textContent = "Alle Tokens in Bereich (klickbar)";
+    listSection.appendChild(title);
+    const listEl = document.createElement("div");
+    listEl.id = "domain-full-list";
+    listEl.className = "neighbor-list";
+    listSection.appendChild(listEl);
+    side.appendChild(listSection);
+  }
+
+  const listEl = document.getElementById("domain-full-list")!;
+  listEl.innerHTML = "";
+
+  tokens.forEach((t: any) => {
+    const pill = document.createElement("div");
+    pill.className = "neighbor-pill";
+    pill.textContent = t.slug;
+    pill.title = t.concept || "";
+    pill.onclick = () => loadGraphFocus(t.slug);
+    listEl.appendChild(pill);
+  });
+}
+
+// ── end domain helpers ────────────────────────────────────────────────────
 
 async function initOrShowGraph() {
   const container = document.getElementById("graph-canvas-container") as HTMLDivElement;
@@ -497,7 +733,7 @@ async function initOrShowGraph() {
       const my = -((e.clientY - rect.top) / rect.height) * 2 + 1;
 
       const ray = new THREE.Raycaster();
-      ray.setFromCamera({ x: mx, y: my }, graphCamera);
+      ray.setFromCamera(new THREE.Vector2(mx, my), graphCamera);
 
       const candidates: THREE.Mesh[] = [];
       graphNodeMeshes.forEach((m) => candidates.push(m));
@@ -517,35 +753,14 @@ async function initOrShowGraph() {
     });
   }
 
-  // bootstrap data if we don't have a neighborhood yet
+  // bootstrap / reload with current domain filter (if any)
   if (!currentNeighborhood) {
-    try {
-      // prefer a token that already has some personal progress
-      const list = await runBridge<any>("list-tokens", ["--user", graphUserId || ""]);
-      let startSlug: string | null = null;
-      if (list && list.tokens && list.tokens.length) {
-        // pick first with reps > 0, else first with card, else first
-        const withProgress = list.tokens.find((t: any) => t.card && (t.card.reps || 0) > 0);
-        const withCard = list.tokens.find((t: any) => t.card);
-        startSlug = (withProgress || withCard || list.tokens[0]).slug;
-      }
-      if (startSlug) {
-        await loadGraphFocus(startSlug);
-      } else {
-        // fallback: just create a tiny demo scene
-        const dummy = {
-          focus: "demo",
-          center: { id: "demo", slug: "demo-token", concept: "Open a token with `zam token status`", domain: "demo", bloomLevel: 2, card: null },
-          prerequisites: [],
-          dependents: [],
-        };
-        buildGraphScene(dummy);
-      }
-    } catch (err) {
-      console.warn("Graph bootstrap failed, showing minimal scene", err);
-      const dummy = { focus: "empty", center: { id: "x", slug: "no-tokens-yet", concept: "Register some tokens first (zam token register)", domain: "", bloomLevel: 1, card: null }, prerequisites: [], dependents: [] };
-      buildGraphScene(dummy);
-    }
+    await bootstrapGraphWithDomain();
+  }
+
+  // Load domain list for the filter/selector (only once per graph session)
+  if (availableDomains.length === 0) {
+    loadAndRenderDomains();
   }
 
   // start render loop (idempotent-ish)
@@ -566,10 +781,16 @@ async function initOrShowGraph() {
       graphCamera.updateProjectionMatrix();
     }
   }, 30);
-}
 
-async function loadGraphInitial() {
-  // called from button; switchView already triggers initOrShowGraph
+  // Force full space usage right after init (important for maximize / large windows)
+  requestAnimationFrame(() => {
+    const c = document.getElementById("graph-canvas-container") as HTMLElement;
+    if (graphRenderer && graphCamera && c) {
+      graphRenderer.setSize(c.clientWidth, c.clientHeight);
+      graphCamera.aspect = c.clientWidth / c.clientHeight;
+      graphCamera.updateProjectionMatrix();
+    }
+  });
 }
 
 // ── DASHBOARD LOADING ─────────────────────────────────────────────────────
