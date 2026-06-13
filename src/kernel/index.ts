@@ -42,6 +42,14 @@ export {
 } from "./db/connection.js";
 export type { RemoteDatabaseOptions } from "./db/remote/provider.js";
 export { openRemoteDatabase } from "./db/remote/provider.js";
+export type { ImportResult, SnapshotManifest } from "./db/snapshot.js";
+export {
+  exportSnapshot,
+  importSnapshot,
+  parseSnapshot,
+  SNAPSHOT_VERSION,
+  verifySnapshot,
+} from "./db/snapshot.js";
 export type {
   Database,
   DatabaseValue,
