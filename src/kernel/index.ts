@@ -100,6 +100,8 @@ export {
   updateCard,
 } from "./models/card.js";
 export type {
+  Neighborhood,
+  NeighborhoodToken,
   Prerequisite,
   PrerequisiteWithToken,
 } from "./models/prerequisite.js";
@@ -107,6 +109,7 @@ export {
   addPrerequisite,
   getDependents,
   getPrerequisites,
+  getTokenNeighborhood,
   wouldCreateCycle,
 } from "./models/prerequisite.js";
 export type { CreateReviewInput, ReviewLog } from "./models/review.js";

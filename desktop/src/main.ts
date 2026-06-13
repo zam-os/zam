@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
+import * as THREE from "three";
 
 // ── LOCALIZATION DICTIONARIES ─────────────────────────────────────────────
 const TRANSLATIONS: Record<string, Record<string, string>> = {
@@ -40,6 +41,13 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     session_completed: "Learning Session Completed!",
     session_completed_sub: "Great job completing this session! Your memory traces have been updated.",
     btn_back_to_dashboard: "Back to Dashboard",
+    btn_open_graph: "Knowledge Map (3D)",
+    graph_title: "Knowledge Graph (3D)",
+    graph_hint: "Drag to rotate • Click nodes to focus • Scroll to zoom",
+    graph_focus: "Focus",
+    graph_prereqs: "Bases (Prerequisites)",
+    graph_dependents: "Higher Abilities (Dependents)",
+    graph_no_card: "no personal card yet",
   },
   de: {
     ai_status_offline: "Lokale KI offline",
@@ -79,6 +87,13 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     session_completed: "Lernsitzung erfolgreich abgeschlossen!",
     session_completed_sub: "Hervorragende Arbeit! Deine Gedächtnispfade wurden aktualisiert.",
     btn_back_to_dashboard: "Zurück zur Übersicht",
+    btn_open_graph: "Wissensnetz (3D)",
+    graph_title: "Wissensnetz (3D)",
+    graph_hint: "Ziehen zum Drehen • Knoten klicken = Fokus • Scroll = Zoomen",
+    graph_focus: "Fokus",
+    graph_prereqs: "Basis (Voraussetzungen)",
+    graph_dependents: "Höhere Fähigkeiten (Darauf aufbauend)",
+    graph_no_card: "noch keine persönliche Karte",
   }
 };
 
@@ -191,7 +206,7 @@ function initializeTranslations() {
 }
 
 // ── VIEW ROUTING ──────────────────────────────────────────────────────────
-function switchView(viewId: "dashboard-view" | "study-view") {
+function switchView(viewId: "dashboard-view" | "study-view" | "graph-view") {
   if (viewId === "dashboard-view" && studySessionActive) {
     evaluationRequestId++;
     revealInProgress = false;
@@ -200,6 +215,361 @@ function switchView(viewId: "dashboard-view" | "study-view") {
   document.querySelectorAll(".view").forEach((el) => el.classList.remove("active"));
   document.getElementById(viewId)?.classList.add("active");
   studySessionActive = viewId === "study-view";
+  if (viewId === "graph-view") {
+    // lazy init three when first shown
+    requestAnimationFrame(() => initOrShowGraph());
+  }
+}
+
+// ── 3D KNOWLEDGE GRAPH (experimental, focus + direct prereqs/dependents) ──
+let graphRenderer: THREE.WebGLRenderer | null = null;
+let graphScene: THREE.Scene | null = null;
+let graphCamera: THREE.PerspectiveCamera | null = null;
+let graphAnimationId: number | null = null;
+let graphNodeMeshes: Map<string, THREE.Mesh> = new Map();
+let graphIsDragging = false;
+let graphLastX = 0;
+let graphLastY = 0;
+let graphYaw = 0.6;
+let graphPitch = 0.3;
+let graphDist = 7.5;
+let currentNeighborhood: any = null;
+let graphUserId: string | null = null;
+
+function disposeGraph() {
+  if (graphAnimationId) {
+    cancelAnimationFrame(graphAnimationId);
+    graphAnimationId = null;
+  }
+  if (graphRenderer) {
+    graphRenderer.dispose();
+    graphRenderer = null;
+  }
+  graphScene = null;
+  graphCamera = null;
+  graphNodeMeshes.clear();
+  currentNeighborhood = null;
+}
+
+function updateGraphCamera() {
+  if (!graphCamera) return;
+  const x = graphDist * Math.sin(graphPitch) * Math.sin(graphYaw);
+  const y = graphDist * Math.cos(graphPitch);
+  const z = graphDist * Math.sin(graphPitch) * Math.cos(graphYaw);
+  graphCamera.position.set(x, y, z);
+  graphCamera.lookAt(0, 0, 0);
+}
+
+function buildGraphScene(nb: any) {
+  if (!graphScene) return;
+  // clear previous
+  while (graphScene.children.length > 0) {
+    const child = graphScene.children[0];
+    graphScene.remove(child);
+    if ((child as any).geometry) (child as any).geometry.dispose();
+    if ((child as any).material) (child as any).material.dispose?.();
+  }
+  graphNodeMeshes.clear();
+
+  currentNeighborhood = nb;
+
+  // update side panel
+  const focusSlugEl = document.getElementById("focus-slug")!;
+  const focusConceptEl = document.getElementById("focus-concept")!;
+  const focusMetaEl = document.getElementById("focus-meta")!;
+  const prereqList = document.getElementById("prereq-list")!;
+  const depList = document.getElementById("dependent-list")!;
+
+  focusSlugEl.textContent = nb.center.slug;
+  focusConceptEl.textContent = nb.center.concept;
+  const c = nb.center.card;
+  focusMetaEl.textContent = c
+    ? `Bloom ${nb.center.bloomLevel} · ${c.state} · reps=${c.reps} · stab=${c.stability.toFixed(1)} ${c.blocked ? "· BLOCKED" : ""}`
+    : `Bloom ${nb.center.bloomLevel} · ${t("graph_no_card")}`;
+
+  // helper to make clickable pill
+  const makePill = (gt: any, container: HTMLElement) => {
+    const pill = document.createElement("div");
+    pill.className = "neighbor-pill";
+    pill.textContent = gt.slug;
+    pill.title = gt.concept;
+    pill.onclick = () => loadGraphFocus(gt.slug);
+    container.appendChild(pill);
+  };
+
+  prereqList.innerHTML = "";
+  nb.prerequisites.forEach((p: any) => makePill(p, prereqList));
+  if (nb.prerequisites.length === 0) {
+    const empty = document.createElement("span");
+    empty.style.color = "var(--clr-text-muted)";
+    empty.textContent = "—";
+    prereqList.appendChild(empty);
+  }
+
+  depList.innerHTML = "";
+  nb.dependents.forEach((d: any) => makePill(d, depList));
+  if (nb.dependents.length === 0) {
+    const empty = document.createElement("span");
+    empty.style.color = "var(--clr-text-muted)";
+    empty.textContent = "—";
+    depList.appendChild(empty);
+  }
+
+  // --- Three.js objects ---
+  const group = new THREE.Group();
+  graphScene.add(group);
+
+  // simple palette by domain (stable hue per domain string)
+  const domainHue = (domain: string) => {
+    let h = 0;
+    for (let i = 0; i < domain.length; i++) h = (h * 31 + domain.charCodeAt(i)) | 0;
+    return ((Math.abs(h) % 360) / 360);
+  };
+
+  const makeNode = (gt: any, isCenter: boolean) => {
+    const size = 0.35 + (gt.bloomLevel || 1) * 0.12;
+    const geom = new THREE.SphereGeometry(size, 24, 18);
+    let color = new THREE.Color().setHSL(domainHue(gt.domain || "general"), 0.65, 0.6);
+
+    const card = gt.card;
+    if (card) {
+      if (card.blocked) {
+        color = new THREE.Color(0xe11d48); // red-ish for blocked
+      } else {
+        const mastery = Math.min(1, (card.reps || 0) / 6 + (card.stability || 0) / 30);
+        color = new THREE.Color().setHSL(domainHue(gt.domain || ""), 0.7, 0.45 + mastery * 0.35);
+      }
+    }
+
+    const mat = new THREE.MeshPhongMaterial({
+      color,
+      emissive: isCenter ? 0x222233 : 0x111111,
+      shininess: isCenter ? 30 : 12,
+    });
+    const mesh = new THREE.Mesh(geom, mat);
+    mesh.userData.slug = gt.slug;
+    graphNodeMeshes.set(gt.slug, mesh);
+    return mesh;
+  };
+
+  // Center
+  const centerMesh = makeNode(nb.center, true);
+  centerMesh.position.set(0, 0, 0);
+  group.add(centerMesh);
+
+  // Place prerequisites (lower hemisphere / ring)
+  const prereqs = nb.prerequisites;
+  const depnds = nb.dependents;
+  const prereqRadius = 2.4;
+  const depRadius = 2.1;
+
+  prereqs.forEach((p: any, i: number) => {
+    const angle = (i / Math.max(1, prereqs.length)) * Math.PI * 2;
+    const m = makeNode(p, false);
+    const y = -1.9 - (p.bloomLevel - 1) * 0.08;
+    m.position.set(
+      Math.cos(angle) * prereqRadius,
+      y,
+      Math.sin(angle) * prereqRadius * 0.9
+    );
+    group.add(m);
+
+    // edge to center
+    const points = [m.position.clone(), new THREE.Vector3(0, 0.1, 0)];
+    const lineGeom = new THREE.BufferGeometry().setFromPoints(points);
+    const line = new THREE.Line(lineGeom, new THREE.LineBasicMaterial({ color: 0x555566, transparent: true, opacity: 0.55 }));
+    group.add(line);
+  });
+
+  // Dependents (upper)
+  depnds.forEach((d: any, i: number) => {
+    const angle = (i / Math.max(1, depnds.length)) * Math.PI * 2 + 0.4;
+    const m = makeNode(d, false);
+    const y = 1.85 + (d.bloomLevel - 1) * 0.06;
+    m.position.set(
+      Math.cos(angle) * depRadius,
+      y,
+      Math.sin(angle) * depRadius * 0.85
+    );
+    group.add(m);
+
+    const points = [new THREE.Vector3(0, 0.1, 0), m.position.clone()];
+    const lineGeom = new THREE.BufferGeometry().setFromPoints(points);
+    const line = new THREE.Line(lineGeom, new THREE.LineBasicMaterial({ color: 0x555566, transparent: true, opacity: 0.55 }));
+    group.add(line);
+  });
+
+  // lights
+  const amb = new THREE.AmbientLight(0x666688, 0.6);
+  graphScene.add(amb);
+  const p1 = new THREE.PointLight(0xaabbff, 0.9, 50);
+  p1.position.set(4, 6, 3);
+  graphScene.add(p1);
+}
+
+async function loadGraphFocus(slug: string) {
+  try {
+    const data = await runBridge<any>("get-neighborhood", ["--focus", slug, "--user", graphUserId || ""]);
+    buildGraphScene(data);
+    // recenter camera nicely
+    graphYaw = 0.7;
+    graphPitch = 0.35;
+    graphDist = 7.2;
+    updateGraphCamera();
+  } catch (e) {
+    console.error("Failed to load neighborhood for", slug, e);
+  }
+}
+
+async function initOrShowGraph() {
+  const container = document.getElementById("graph-canvas-container") as HTMLDivElement;
+  const canvas = document.getElementById("graph-canvas") as HTMLCanvasElement;
+  if (!container || !canvas) return;
+
+  // ensure we have a user
+  if (!graphUserId) {
+    try {
+      const due = await runBridge<any>("check-due");
+      graphUserId = due.userId || "default";
+    } catch {
+      graphUserId = "default";
+    }
+  }
+
+  if (!graphRenderer) {
+    graphRenderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    graphRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    graphRenderer.setSize(container.clientWidth, container.clientHeight);
+
+    graphScene = new THREE.Scene();
+    graphCamera = new THREE.PerspectiveCamera(
+      52,
+      container.clientWidth / container.clientHeight,
+      0.1,
+      200
+    );
+    updateGraphCamera();
+
+    // initial empty scene with soft fog
+    graphScene.fog = new THREE.Fog(0x07080d, 12, 28);
+
+    // resize observer
+    const ro = new ResizeObserver(() => {
+      if (!graphRenderer || !graphCamera || !container) return;
+      graphRenderer.setSize(container.clientWidth, container.clientHeight);
+      graphCamera.aspect = container.clientWidth / container.clientHeight;
+      graphCamera.updateProjectionMatrix();
+    });
+    ro.observe(container);
+
+    // mouse orbit + click
+    canvas.addEventListener("pointerdown", (e) => {
+      graphIsDragging = true;
+      graphLastX = e.clientX;
+      graphLastY = e.clientY;
+    });
+    window.addEventListener("pointerup", () => { graphIsDragging = false; });
+    canvas.addEventListener("pointermove", (e) => {
+      if (!graphIsDragging || !graphCamera) return;
+      const dx = e.clientX - graphLastX;
+      const dy = e.clientY - graphLastY;
+      graphYaw += dx * 0.0045;
+      graphPitch = Math.max(0.15, Math.min(1.35, graphPitch - dy * 0.0045));
+      graphLastX = e.clientX;
+      graphLastY = e.clientY;
+      updateGraphCamera();
+    });
+    canvas.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      graphDist = Math.max(2.5, Math.min(22, graphDist + e.deltaY * 0.012));
+      updateGraphCamera();
+    }, { passive: false });
+
+    // click to focus (after possible drag)
+    let clickStart = 0;
+    canvas.addEventListener("pointerdown", () => { clickStart = Date.now(); });
+    canvas.addEventListener("pointerup", (e) => {
+      if (Date.now() - clickStart > 220 || graphIsDragging) return; // was a drag
+      if (!graphRenderer || !graphCamera || !graphScene) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const mx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      const my = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+      const ray = new THREE.Raycaster();
+      ray.setFromCamera({ x: mx, y: my }, graphCamera);
+
+      const candidates: THREE.Mesh[] = [];
+      graphNodeMeshes.forEach((m) => candidates.push(m));
+      const hits = ray.intersectObjects(candidates, false);
+      if (hits.length > 0) {
+        const hitSlug = (hits[0].object as any).userData?.slug;
+        if (hitSlug && hitSlug !== currentNeighborhood?.center?.slug) {
+          loadGraphFocus(hitSlug);
+        }
+      }
+    });
+
+    // double click anywhere resets a bit
+    canvas.addEventListener("dblclick", () => {
+      graphYaw = 0.6; graphPitch = 0.3; graphDist = 7.5;
+      updateGraphCamera();
+    });
+  }
+
+  // bootstrap data if we don't have a neighborhood yet
+  if (!currentNeighborhood) {
+    try {
+      // prefer a token that already has some personal progress
+      const list = await runBridge<any>("list-tokens", ["--user", graphUserId || ""]);
+      let startSlug: string | null = null;
+      if (list && list.tokens && list.tokens.length) {
+        // pick first with reps > 0, else first with card, else first
+        const withProgress = list.tokens.find((t: any) => t.card && (t.card.reps || 0) > 0);
+        const withCard = list.tokens.find((t: any) => t.card);
+        startSlug = (withProgress || withCard || list.tokens[0]).slug;
+      }
+      if (startSlug) {
+        await loadGraphFocus(startSlug);
+      } else {
+        // fallback: just create a tiny demo scene
+        const dummy = {
+          focus: "demo",
+          center: { id: "demo", slug: "demo-token", concept: "Open a token with `zam token status`", domain: "demo", bloomLevel: 2, card: null },
+          prerequisites: [],
+          dependents: [],
+        };
+        buildGraphScene(dummy);
+      }
+    } catch (err) {
+      console.warn("Graph bootstrap failed, showing minimal scene", err);
+      const dummy = { focus: "empty", center: { id: "x", slug: "no-tokens-yet", concept: "Register some tokens first (zam token register)", domain: "", bloomLevel: 1, card: null }, prerequisites: [], dependents: [] };
+      buildGraphScene(dummy);
+    }
+  }
+
+  // start render loop (idempotent-ish)
+  const renderLoop = () => {
+    if (graphRenderer && graphScene && graphCamera) {
+      graphRenderer.render(graphScene, graphCamera);
+    }
+    graphAnimationId = requestAnimationFrame(renderLoop);
+  };
+  if (!graphAnimationId) renderLoop();
+
+  // size once more
+  setTimeout(() => {
+    const c = document.getElementById("graph-canvas-container") as HTMLElement;
+    if (graphRenderer && graphCamera && c) {
+      graphRenderer.setSize(c.clientWidth, c.clientHeight);
+      graphCamera.aspect = c.clientWidth / c.clientHeight;
+      graphCamera.updateProjectionMatrix();
+    }
+  }, 30);
+}
+
+async function loadGraphInitial() {
+  // called from button; switchView already triggers initOrShowGraph
 }
 
 // ── DASHBOARD LOADING ─────────────────────────────────────────────────────
@@ -565,6 +935,30 @@ window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-start-session")!.addEventListener("click", () => {
     switchView("study-view");
     loadNextCard();
+  });
+
+  // Open 3D Graph (experimental)
+  const openGraphBtn = document.getElementById("btn-open-graph") as HTMLButtonElement | null;
+  if (openGraphBtn) {
+    openGraphBtn.textContent = t("btn_open_graph");
+    openGraphBtn.addEventListener("click", () => {
+      switchView("graph-view");
+    });
+  }
+
+  // Graph back + refresh
+  const backBtn = document.getElementById("btn-graph-back");
+  if (backBtn) backBtn.addEventListener("click", () => {
+    disposeGraph();
+    switchView("dashboard-view");
+    loadDashboard();
+  });
+
+  const refreshBtn = document.getElementById("btn-graph-refresh");
+  if (refreshBtn) refreshBtn.addEventListener("click", () => {
+    if (currentNeighborhood?.center?.slug) {
+      loadGraphFocus(currentNeighborhood.center.slug);
+    }
   });
 
   // Pause & Exit Session Button

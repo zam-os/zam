@@ -257,3 +257,34 @@ export interface AnalyzeMonitorResponse {
   unmatchedCommands: string[];
   timeSpan: { start: string; end: string; durationMs: number } | null;
 }
+
+// ── Knowledge Graph / 3D Neighborhood (experimental feature) ─────────────────
+
+/** Token shape used by graph endpoints (camelCase for the JSON bridge contract). */
+export interface GraphToken {
+  id: string;
+  slug: string;
+  concept: string;
+  domain: string;
+  bloomLevel: number;
+  card?: {
+    state: string;
+    reps: number;
+    stability: number;
+    difficulty: number;
+    blocked: boolean;
+    dueAt: string;
+    lastReviewAt: string | null;
+  } | null;
+}
+
+export interface GetNeighborhoodResponse {
+  focus: string; // slug of the node in focus
+  center: GraphToken;
+  prerequisites: GraphToken[];
+  dependents: GraphToken[];
+}
+
+export interface ListTokensResponse {
+  tokens: GraphToken[];
+}
