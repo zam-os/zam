@@ -64,3 +64,4 @@ implemented. Each file describes one independently promotable capability.
 - [Desktop interaction tests](distribution/desktop-interaction-tests.md)
 - [Agent-mediated, console-free operation](distribution/agent-mediated-operation.md)
 - [Prepaid cloud LLM provider setup](distribution/cloud-llm-provider-setup.md)
+- [Hermes Desktop as an alternative bundled agent](distribution/hermes-bundled-agent.md)
