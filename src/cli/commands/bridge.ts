@@ -998,7 +998,7 @@ bridgeCommand
   .command("serve")
   .description("Start the persistent JSON-RPC stdin/stdout server")
   .option("--stdin", "Use stdin/stdout for communication")
-  .action(async (opts) => {
+  .action(async (_opts) => {
     isServeMode = true;
 
     // Configure exitOverride so commander doesn't process.exit on parsing errors
@@ -1032,21 +1032,28 @@ bridgeCommand
         const args = req.args ?? [];
 
         if (!cmd) {
-          return JSON.stringify({ id: requestId, error: "Missing 'cmd' field" });
+          return JSON.stringify({
+            id: requestId,
+            error: "Missing 'cmd' field",
+          });
         }
 
         const originalLog = console.log;
         const originalError = console.error;
         console.log = (...logArgs) => {
-          outputBuffer += logArgs.map(a => typeof a === "object" ? JSON.stringify(a) : String(a)).join(" ") + "\n";
+          outputBuffer += `${logArgs
+            .map((a) => (typeof a === "object" ? JSON.stringify(a) : String(a)))
+            .join(" ")}\n`;
         };
         console.error = (...logArgs) => {
-          outputBuffer += logArgs.map(a => typeof a === "object" ? JSON.stringify(a) : String(a)).join(" ") + "\n";
+          outputBuffer += `${logArgs
+            .map((a) => (typeof a === "object" ? JSON.stringify(a) : String(a)))
+            .join(" ")}\n`;
         };
 
         try {
           await bridgeCommand.parseAsync(["node", "bridge", cmd, ...args]);
-        } catch (err: any) {
+        } catch (err) {
           if (err instanceof Error && err.message.startsWith('{"error":')) {
             try {
               const parsed = JSON.parse(err.message);
@@ -1055,17 +1062,23 @@ bridgeCommand
               return JSON.stringify({ id: requestId, error: err.message });
             }
           }
-          if (err.code?.startsWith("commander.")) {
-            return JSON.stringify({ id: requestId, error: outputBuffer.trim() || err.message });
+          if ((err as { code?: string }).code?.startsWith("commander.")) {
+            return JSON.stringify({
+              id: requestId,
+              error: outputBuffer.trim() || (err as Error).message,
+            });
           }
-          return JSON.stringify({ id: requestId, error: err.message || String(err) });
+          return JSON.stringify({
+            id: requestId,
+            error: (err as Error).message || String(err),
+          });
         } finally {
           console.log = originalLog;
           console.error = originalError;
         }
 
         // Parse stdout accumulated output
-        let result: any;
+        let result: unknown;
         const trimmed = outputBuffer.trim();
         try {
           result = JSON.parse(trimmed);
@@ -1074,8 +1087,11 @@ bridgeCommand
         }
 
         return JSON.stringify({ id: requestId, result });
-      } catch (err: any) {
-        return JSON.stringify({ id: requestId, error: "Invalid JSON request: " + err.message });
+      } catch (err) {
+        return JSON.stringify({
+          id: requestId,
+          error: `Invalid JSON request: ${(err as Error).message}`,
+        });
       }
     };
 
@@ -1089,7 +1105,6 @@ bridgeCommand
     rl.on("line", async (line) => {
       if (!line.trim()) return;
       const response = await processRequest(line);
-      process.stdout.write(response + "\n");
+      process.stdout.write(`${response}\n`);
     });
   });
-
