@@ -21,3 +21,4 @@ is rewritten as implementation evidence and retained here.
 9. [Release Hardening](9%20-%20Release%20Hardening.md)
 10. [Async Database Providers](10%20-%20Async%20Database%20Providers.md)
 11. [Automatic Session Synthesis](11%20-%20Automatic%20Session%20Synthesis.md)
+12. [Approachable Setup and Self-Update](12%20-%20Approachable%20Setup%20and%20Self-Update.md) *(planned)*

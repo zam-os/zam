@@ -62,3 +62,5 @@ implemented. Each file describes one independently promotable capability.
 - [Release artifact validation](distribution/release-artifact-validation.md)
 - [Desktop locale parity](distribution/desktop-locale-parity.md)
 - [Desktop interaction tests](distribution/desktop-interaction-tests.md)
+- [Agent-mediated, console-free operation](distribution/agent-mediated-operation.md)
+- [Prepaid cloud LLM provider setup](distribution/cloud-llm-provider-setup.md)
