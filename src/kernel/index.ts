@@ -263,9 +263,11 @@ export { t } from "./system/i18n.js";
 export type { InstallConfig, InstallMode } from "./system/install-config.js";
 export {
   detectSyncProvider,
+  getInstallChannel,
   getInstallMode,
   loadInstallConfig,
   saveInstallConfig,
+  setInstallChannel,
   setInstallMode,
 } from "./system/install-config.js";
 export type {
@@ -290,3 +292,14 @@ export {
   resolveAllGoalPaths,
   resolveRepoPath,
 } from "./system/repos.js";
+export type {
+  InstallChannel,
+  UpdateActionKind,
+  UpdateDecision,
+} from "./system/update-check.js";
+export {
+  compareVersions,
+  decideUpdate,
+  HOMEBREW_CASK,
+  WINGET_PACKAGE_ID,
+} from "./system/update-check.js";

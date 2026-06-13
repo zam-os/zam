@@ -16,11 +16,14 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
+import type { InstallChannel } from "./update-check.js";
 
 export type InstallMode = "developer" | "default";
 
 export interface InstallConfig {
   mode?: InstallMode;
+  /** How this copy was installed; drives the self-update mechanism. */
+  channel?: InstallChannel;
 }
 
 const DEFAULT_CONFIG_PATH = join(homedir(), ".zam", "config.json");
@@ -60,6 +63,26 @@ export function setInstallMode(
 ): void {
   const config = loadInstallConfig(path);
   config.mode = mode;
+  saveInstallConfig(config, path);
+}
+
+/**
+ * How this copy was installed, used to pick the self-update mechanism. Falls
+ * back to "developer" for developer mode and "direct" for an installed app
+ * whose channel was not recorded.
+ */
+export function getInstallChannel(path = DEFAULT_CONFIG_PATH): InstallChannel {
+  const config = loadInstallConfig(path);
+  if (config.channel) return config.channel;
+  return (config.mode ?? "developer") === "developer" ? "developer" : "direct";
+}
+
+export function setInstallChannel(
+  channel: InstallChannel,
+  path = DEFAULT_CONFIG_PATH,
+): void {
+  const config = loadInstallConfig(path);
+  config.channel = channel;
   saveInstallConfig(config, path);
 }
 

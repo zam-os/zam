@@ -20,6 +20,7 @@ import { snapshotCommand } from "./commands/snapshot.js";
 import { statsCommand } from "./commands/stats.js";
 import { tokenCommand } from "./commands/token.js";
 import { uiCommand } from "./commands/ui.js";
+import { updateCommand } from "./commands/update.js";
 import { whoamiCommand } from "./commands/whoami.js";
 import { workspaceCommand } from "./commands/workspace.js";
 
@@ -54,6 +55,7 @@ program.addCommand(whoamiCommand);
 program.addCommand(connectorCommand);
 program.addCommand(snapshotCommand);
 program.addCommand(profileCommand);
+program.addCommand(updateCommand);
 program.addCommand(goalCommand);
 program.addCommand(gitSyncCommand);
 program.addCommand(workspaceCommand);
