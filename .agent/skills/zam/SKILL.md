@@ -30,6 +30,7 @@ zam token deprecate --slug <slug>          # mark outdated knowledge
 # Card & review management
 zam card due --user <username>
 zam card update --user <username> --token <slug> --rating <1-4>
+zam card block --user <username> --token <slug>
 zam card unblock --user <username>
 
 # Sessions
@@ -412,16 +413,22 @@ zam token register \
 
 # 2. Wire it as a prerequisite of the high-level token
 zam token prereq --token <high-level-slug> --requires <parent-slug>-<gap-keyword>
+
+# 3. Block the high-level card after all new prerequisites are wired
+zam card block --user <username> --token <high-level-slug>
 ```
 
-### What happens next (automatic)
+### What happens next
 
-After wiring prerequisites:
-- The high-level token is **automatically blocked** because it was rated 1
-  and its prerequisites haven't been recalled yet (Blocking Rule)
+After wiring prerequisites and blocking the card:
+- The high-level token is removed from the review queue
 - The next review session will surface the *foundation tokens first*
 - Once all prerequisites reach `reps >= 1`, `zam card unblock` promotes the
   high-level token back into the review queue
+
+If prerequisites already existed when the token was rated 1, the rating command
+blocks it automatically. Use `zam card block` when the missing prerequisites were
+discovered and registered only after the rating.
 
 ### Example: High-school history
 
@@ -445,6 +452,7 @@ Agent wires them:
 zam token prereq --token ge-aufklaerung --requires ge-aufklaerung-staende
 zam token prereq --token ge-aufklaerung --requires ge-aufklaerung-begriffe
 zam token prereq --token ge-aufklaerung --requires ge-aufklaerung-daten
+zam card block --user <username> --token ge-aufklaerung
 ```
 
 `ge-aufklaerung` is now blocked. Next session: foundations first. When they
