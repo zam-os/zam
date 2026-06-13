@@ -260,6 +260,14 @@ export {
 } from "./system/hooks.js";
 export type { TranslationKey } from "./system/i18n.js";
 export { t } from "./system/i18n.js";
+export type { InstallConfig, InstallMode } from "./system/install-config.js";
+export {
+  detectSyncProvider,
+  getInstallMode,
+  loadInstallConfig,
+  saveInstallConfig,
+  setInstallMode,
+} from "./system/install-config.js";
 export type {
   InstallResult,
   LocalLLMRunner,

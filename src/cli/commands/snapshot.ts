@@ -8,17 +8,19 @@
  */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname } from "node:path";
+import { homedir } from "node:os";
+import { dirname, join } from "node:path";
 import { Command } from "commander";
 import {
   exportSnapshot,
+  getSetting,
   importSnapshot,
   openDatabaseWithSync,
   verifySnapshot,
 } from "../../kernel/index.js";
 
-/** `2026-06-13T09-41-22` — filesystem-safe, sorts chronologically. */
-function defaultOutPath(): string {
+/** `zam-snapshot-2026-06-13T09-41-22.sql` — sorts chronologically. */
+function defaultOutName(): string {
   const stamp = new Date()
     .toISOString()
     .replace(/\.\d+Z$/, "")
@@ -47,6 +49,11 @@ const exportCmd = new Command("export")
     try {
       db = await openDatabaseWithSync({ initialize: true });
       const snapshot = await exportSnapshot(db);
+      // Default snapshots into the personal folder (which may be file-synced),
+      // so cross-device moves work without copying the live database.
+      const personalDir =
+        (await getSetting(db, "personal.workspace_dir")) ||
+        join(homedir(), "Documents", "zam");
       await db.close();
       db = undefined;
 
@@ -58,7 +65,7 @@ const exportCmd = new Command("export")
         return;
       }
 
-      const out = opts.out ?? defaultOutPath();
+      const out = opts.out ?? join(personalDir, "snapshots", defaultOutName());
       const dir = dirname(out);
       if (dir && dir !== "." && !existsSync(dir)) {
         mkdirSync(dir, { recursive: true });
