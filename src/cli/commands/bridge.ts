@@ -29,8 +29,11 @@ import {
   getCardDeletionImpact,
   getDueCards,
   getSetting,
+  getTokenBySlug,
   getTokenDeleteImpact,
+  getTokenNeighborhood,
   listAgentSkills,
+  listTokens,
   monitorLogExists,
   openDatabase,
   pairCommands,
@@ -846,6 +849,106 @@ bridgeCommand
           url,
           model,
         },
+      });
+    });
+  });
+
+// ── zam bridge list-tokens (for graph pickers / entry points) ───────────────
+
+bridgeCommand
+  .command("list-tokens")
+  .description("List tokens (optionally enriched with user card state for viz) (JSON)")
+  .option("--user <id>", "User ID (default: whoami) — when provided, includes personal card info")
+  .option("--domain <domain>", "Filter by domain")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = opts.user ? await resolveUser(opts, db, { json: true }) : undefined;
+      const tokens = await listTokens(
+        db,
+        opts.domain ? { domain: opts.domain } : undefined,
+      );
+
+      let cardMap = new Map<string, any>();
+      if (userId && tokens.length > 0) {
+        const ids = tokens.map((t) => t.id);
+        const placeholders = ids.map(() => "?").join(",");
+        const cards = (await db
+          .prepare(
+            `SELECT token_id, state, reps, stability, difficulty, blocked, due_at, last_review_at
+             FROM cards WHERE token_id IN (${placeholders}) AND user_id = ?`,
+          )
+          .all(...ids, userId)) as Array<any>;
+        for (const c of cards) cardMap.set(c.token_id, c);
+      }
+
+      const out = tokens.map((t) => {
+        const c = cardMap.get(t.id);
+        return {
+          id: t.id,
+          slug: t.slug,
+          concept: t.concept,
+          domain: t.domain,
+          bloomLevel: t.bloom_level,
+          card: c
+            ? {
+                state: c.state,
+                reps: c.reps,
+                stability: c.stability,
+                difficulty: c.difficulty,
+                blocked: c.blocked === 1,
+                dueAt: c.due_at,
+                lastReviewAt: c.last_review_at ?? null,
+              }
+            : null,
+        };
+      });
+
+      jsonOut({ tokens: out } as any);
+    });
+  });
+
+// ── zam bridge get-neighborhood (core for 3D focus + direct prereqs/dependents) ─
+
+bridgeCommand
+  .command("get-neighborhood")
+  .description("Get direct prerequisite neighborhood around a token (for 3D graph viz) (JSON)")
+  .requiredOption("--focus <slug>", "Token slug to center the neighborhood on")
+  .option("--user <id>", "User ID (default: whoami) for personal card state in the result")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+
+      const token = await getTokenBySlug(db, opts.focus);
+      if (!token) {
+        jsonError(`Token not found: ${opts.focus}`);
+      }
+
+      const nb = await getTokenNeighborhood(db, token!.id, userId);
+
+      const mapToken = (nt: any) => ({
+        id: nt.id,
+        slug: nt.slug,
+        concept: nt.concept,
+        domain: nt.domain,
+        bloomLevel: nt.bloom_level,
+        card: nt.card
+          ? {
+              state: nt.card.state,
+              reps: nt.card.reps,
+              stability: nt.card.stability,
+              difficulty: nt.card.difficulty,
+              blocked: nt.card.blocked,
+              dueAt: nt.card.due_at,
+              lastReviewAt: nt.card.last_review_at,
+            }
+          : null,
+      });
+
+      jsonOut({
+        focus: opts.focus,
+        center: mapToken(nb.center),
+        prerequisites: nb.prerequisites.map(mapToken),
+        dependents: nb.dependents.map(mapToken),
       });
     });
   });

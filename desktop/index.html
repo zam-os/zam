@@ -51,6 +51,10 @@
             Start Learning Session
           </button>
         </div>
+
+        <div class="action-row" style="margin-top: 12px;">
+          <button id="btn-open-graph" class="btn secondary-btn btn-large">Wissensnetz / Knowledge Map (3D)</button>
+        </div>
       </section>
 
       <!-- VIEW 2: STUDY SESSION CARD -->
@@ -157,6 +161,53 @@
           <button id="btn-pause-session" class="btn secondary-btn">
             Pause & Exit Session
           </button>
+        </div>
+      </section>
+
+      <!-- VIEW 3: 3D KNOWLEDGE GRAPH (experimental focus + direct prereqs/dependents) -->
+      <section id="graph-view" class="view">
+        <div class="graph-container frosted">
+          <div class="graph-header">
+            <div>
+              <span class="graph-title">Wissensnetz (3D)</span>
+              <span id="graph-focus-label" class="focus-label"></span>
+            </div>
+            <div class="graph-actions">
+              <button id="btn-graph-back" class="btn secondary-btn btn-sm">Zurück zum Dashboard</button>
+              <button id="btn-graph-refresh" class="btn secondary-btn btn-sm">Neu laden</button>
+            </div>
+          </div>
+
+          <div class="graph-main">
+            <!-- Three.js canvas container -->
+            <div id="graph-canvas-container" class="graph-canvas-wrap">
+              <canvas id="graph-canvas" width="800" height="600"></canvas>
+            </div>
+
+            <!-- Side panel: focus details + quick neighbors -->
+            <div class="graph-side frosted">
+              <div id="graph-focus-info">
+                <div class="side-title">Fokus</div>
+                <div id="focus-slug" class="focus-slug"></div>
+                <div id="focus-concept" class="focus-concept"></div>
+                <div id="focus-meta" class="focus-meta"></div>
+              </div>
+
+              <div class="side-section">
+                <div class="side-title">Basis (Prereqs)</div>
+                <div id="prereq-list" class="neighbor-list"></div>
+              </div>
+
+              <div class="side-section">
+                <div class="side-title">Höhere Fähigkeiten (Dependents)</div>
+                <div id="dependent-list" class="neighbor-list"></div>
+              </div>
+
+              <div class="graph-hint">
+                Ziehen zum Drehen • Klicken auf Knoten = neuer Fokus • Scroll = Zoomen
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>
