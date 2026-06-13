@@ -42,6 +42,14 @@ export {
 } from "./db/connection.js";
 export type { RemoteDatabaseOptions } from "./db/remote/provider.js";
 export { openRemoteDatabase } from "./db/remote/provider.js";
+export type { ImportResult, SnapshotManifest } from "./db/snapshot.js";
+export {
+  exportSnapshot,
+  importSnapshot,
+  parseSnapshot,
+  SNAPSHOT_VERSION,
+  verifySnapshot,
+} from "./db/snapshot.js";
 export type {
   Database,
   DatabaseValue,
@@ -252,7 +260,18 @@ export {
 } from "./system/hooks.js";
 export type { TranslationKey } from "./system/i18n.js";
 export { t } from "./system/i18n.js";
+export type { InstallConfig, InstallMode } from "./system/install-config.js";
+export {
+  detectSyncProvider,
+  getInstallChannel,
+  getInstallMode,
+  loadInstallConfig,
+  saveInstallConfig,
+  setInstallChannel,
+  setInstallMode,
+} from "./system/install-config.js";
 export type {
+  InstallPlan,
   InstallResult,
   LocalLLMRunner,
 } from "./system/installer.js";
@@ -260,6 +279,8 @@ export {
   hasCommand,
   installFastFlowLM,
   installOllama,
+  installOpenCode,
+  planOpenCodeInstall,
   prepareLocalModel,
 } from "./system/installer.js";
 export type { SupportedLocale } from "./system/locale.js";
@@ -274,3 +295,14 @@ export {
   resolveAllGoalPaths,
   resolveRepoPath,
 } from "./system/repos.js";
+export type {
+  InstallChannel,
+  UpdateActionKind,
+  UpdateDecision,
+} from "./system/update-check.js";
+export {
+  compareVersions,
+  decideUpdate,
+  HOMEBREW_CASK,
+  WINGET_PACKAGE_ID,
+} from "./system/update-check.js";
