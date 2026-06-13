@@ -43,16 +43,20 @@
   padding: 0;
 }
 
+html {
+  height: 100vh;
+}
+
 body {
   font-family: var(--font-family);
   background-color: var(--bg-deep-space);
   color: var(--clr-text-primary);
-  min-height: 100vh;
-  overflow-x: hidden;
+  height: 100vh;
+  overflow: hidden;
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -93,7 +97,10 @@ body {
 .container {
   width: 100%;
   max-width: 950px;
-  min-height: 720px;
+  height: 100vh;
+  max-height: 100vh;
+  min-height: 0;
+  overflow-y: auto;
   padding: 30px;
   display: flex;
   flex-direction: column;
@@ -105,7 +112,7 @@ body {
   max-width: 100%;
   width: 100%;
   padding: 8px 12px;
-  min-height: 100vh;
+  overflow: hidden;
 }
 
 /* ── HEADER BAR ──────────────────────────────────────────────────────────── */
@@ -831,6 +838,20 @@ textarea::placeholder {
 
 .hidden {
   display: none !important;
+}
+
+/* Visible error banner (e.g. bridge/data failures) */
+.error-banner {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fecaca;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  word-break: break-word;
 }
 
 /* ==========================================================================

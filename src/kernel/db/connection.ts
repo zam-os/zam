@@ -2,7 +2,6 @@ import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import { createRequire } from "node:module";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
-import BetterSqlite3 from "better-sqlite3";
 import { getTursoCredentials } from "../credentials.js";
 import { openRemoteDatabase } from "./remote/provider.js";
 import { SCHEMA } from "./schema.js";
@@ -49,6 +48,18 @@ function isDatabaseProvider(value: unknown): value is DatabaseProvider {
 }
 
 function openLocalSqlite(dbPath: string): SyncDatabase {
+  // Loaded lazily (not as a top-level import) so that remote/HTTP Turso users
+  // never trigger the native better-sqlite3 binding. A failure to load that
+  // binding inside the packaged desktop app would otherwise crash the whole
+  // CLI at startup — before any provider selection or error handling runs.
+  const mod = require("better-sqlite3") as
+    | (new (
+        path: string,
+      ) => unknown)
+    | { default: new (path: string) => unknown };
+  const BetterSqlite3 = ("default" in mod ? mod.default : mod) as new (
+    path: string,
+  ) => unknown;
   return new BetterSqlite3(dbPath) as unknown as SyncDatabase;
 }
 
@@ -176,21 +187,42 @@ export async function openDatabase(
 
   let driver: SyncDatabase;
   if (isRemote || isEmbeddedReplica) {
-    const LibsqlDatabase = loadLibsql();
     try {
-      driver = new LibsqlDatabase(dbPath, dbOpts);
-    } catch (err) {
-      const msg = (err as Error).message;
-      if (msg.includes("InvalidLocalState") && options.syncUrl) {
-        // Last-ditch recovery: metadata is corrupt or mismatched
-        const metaPath = `${dbPath}.meta`;
-        const infoPath = `${dbPath}-info`;
-        if (existsSync(metaPath)) rmSync(metaPath);
-        if (existsSync(infoPath)) rmSync(infoPath);
+      const LibsqlDatabase = loadLibsql();
+      try {
         driver = new LibsqlDatabase(dbPath, dbOpts);
-      } else {
-        throw err;
+      } catch (err) {
+        const msg = (err as Error).message;
+        if (msg.includes("InvalidLocalState") && options.syncUrl) {
+          // Last-ditch recovery: metadata is corrupt or mismatched
+          const metaPath = `${dbPath}.meta`;
+          const infoPath = `${dbPath}-info`;
+          if (existsSync(metaPath)) rmSync(metaPath);
+          if (existsSync(infoPath)) rmSync(infoPath);
+          driver = new LibsqlDatabase(dbPath, dbOpts);
+        } else {
+          throw err;
+        }
       }
+    } catch (nativeErr) {
+      // The native libsql driver is unavailable or failed to initialise — a
+      // failure mode that can occur inside the packaged desktop app. For a pure
+      // remote database we transparently fall back to the HTTP provider, which
+      // needs no native bindings. Embedded replicas require the native driver,
+      // so those still surface the original error.
+      const fallbackUrl = isRemote ? dbPath : options.syncUrl;
+      if (isRemote && !isEmbeddedReplica && fallbackUrl) {
+        const db = openRemoteDatabase({
+          url: fallbackUrl,
+          authToken: configuredCloud?.token ?? options.authToken,
+        });
+        if (options.initialize) {
+          await db.exec(SCHEMA);
+        }
+        await runMigrations(db);
+        return db;
+      }
+      throw nativeErr;
     }
   } else {
     driver = openLocalSqlite(dbPath);

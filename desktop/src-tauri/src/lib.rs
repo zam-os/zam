@@ -27,6 +27,32 @@ fn home_dir() -> Option<PathBuf> {
         .map(PathBuf::from)
 }
 
+/// Append a diagnostic line to ~/.zam/desktop-bridge.rust.log. A windowed app
+/// discards stdout/stderr, so this file is the only way to see how the bridge
+/// process is resolved and spawned when launched from the GUI. Best-effort.
+fn diag_log(msg: &str) {
+    if let Some(home) = home_dir() {
+        let dir = home.join(".zam");
+        let _ = fs::create_dir_all(&dir);
+        if let Ok(mut f) = fs::OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(dir.join("desktop-bridge.rust.log"))
+        {
+            let _ = writeln!(f, "[{}] {}", chrono_now(), msg);
+        }
+    }
+}
+
+/// Minimal timestamp without pulling in a date crate.
+fn chrono_now() -> u64 {
+    use std::time::{SystemTime, UNIX_EPOCH};
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or(0)
+}
+
 /// Locate the compiled ZAM CLI (`dist/cli/index.js`) independently of the
 /// process working directory, so the installed GUI works when launched from
 /// the Start menu / Program Files (where the cwd is NOT the repo).
@@ -65,8 +91,24 @@ fn resolve_dev_cli_path() -> Option<PathBuf> {
     None
 }
 
+/// Strip the Windows `\\?\` verbatim (extended-length) path prefix.
+/// Tauri's `resource_dir()` can return verbatim paths, but Node's module loader
+/// cannot resolve a main script whose path starts with `\\?\` — it fails with
+/// `EISDIR: illegal operation on a directory, lstat 'C:'`, crashing the spawned
+/// bridge before any CLI code runs. Returning a normal path keeps it loadable.
+fn strip_verbatim(p: PathBuf) -> PathBuf {
+    let s = p.to_string_lossy();
+    if let Some(rest) = s.strip_prefix(r"\\?\UNC\") {
+        return PathBuf::from(format!(r"\\{}", rest));
+    }
+    if let Some(rest) = s.strip_prefix(r"\\?\") {
+        return PathBuf::from(rest.to_string());
+    }
+    p
+}
+
 fn bundled_runtime(app: &tauri::AppHandle) -> Option<BridgeRuntime> {
-    let resource_dir = app.path().resource_dir().ok()?;
+    let resource_dir = strip_verbatim(app.path().resource_dir().ok()?);
     let roots = [
         resource_dir.join("resources").join("zam-cli"),
         resource_dir.join("zam-cli"),
@@ -200,11 +242,26 @@ fn execute_zam_bridge_blocking(
             let _ = bridge.child.kill();
         }
 
-        let runtime = resolve_bridge_runtime(&app).ok_or_else(|| {
-            "Could not locate the ZAM CLI. Reinstall the desktop app, or set \
-             ZAM_HOME to a source checkout for development."
-                .to_string()
-        })?;
+        diag_log(&format!(
+            "spawning bridge | home={:?} | cwd={:?}",
+            home_dir(),
+            env::current_dir().ok()
+        ));
+
+        let runtime = match resolve_bridge_runtime(&app) {
+            Some(r) => r,
+            None => {
+                diag_log("resolve_bridge_runtime returned None — CLI not found");
+                return Err("Could not locate the ZAM CLI. Reinstall the desktop \
+                    app, or set ZAM_HOME to a source checkout for development."
+                    .to_string());
+            }
+        };
+
+        diag_log(&format!(
+            "runtime resolved | node={:?} | cli={:?} | working_dir={:?}",
+            runtime.node_path, runtime.cli_path, runtime.working_dir
+        ));
 
         let mut command = Command::new(&runtime.node_path);
         #[cfg(target_os = "windows")]
@@ -219,9 +276,27 @@ fn execute_zam_bridge_blocking(
         command.stdin(std::process::Stdio::piped());
         command.stdout(std::process::Stdio::piped());
 
-        let mut child = command
-            .spawn()
-            .map_err(|e| format!("Failed to spawn ZAM CLI: {}", e))?;
+        // A windowed app discards the child's inherited stderr, so a node crash
+        // on startup would be invisible. Capture it to a log file so bridge
+        // failures that only happen under the GUI are diagnosable.
+        if let Some(home) = home_dir() {
+            let log_dir = home.join(".zam");
+            let _ = fs::create_dir_all(&log_dir);
+            if let Ok(file) = fs::File::create(log_dir.join("desktop-bridge.stderr.log")) {
+                command.stderr(std::process::Stdio::from(file));
+            }
+        }
+
+        let mut child = match command.spawn() {
+            Ok(c) => {
+                diag_log(&format!("spawn OK | pid={}", c.id()));
+                c
+            }
+            Err(e) => {
+                diag_log(&format!("spawn FAILED: {}", e));
+                return Err(format!("Failed to spawn ZAM CLI: {}", e));
+            }
+        };
         let stdin = child
             .stdin
             .take()
@@ -333,7 +408,20 @@ fn cancel_zam_bridge(state: tauri::State<'_, Arc<BridgeState>>) -> Result<bool, 
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    tauri::Builder::default()
+    let builder = tauri::Builder::default();
+
+    // Enforce a single running instance. A second launch focuses the existing
+    // window instead of opening another GUI (and another bridge daemon).
+    #[cfg(desktop)]
+    let builder = builder.plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
+        if let Some(window) = app.get_webview_window("main") {
+            let _ = window.unminimize();
+            let _ = window.show();
+            let _ = window.set_focus();
+        }
+    }));
+
+    builder
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
