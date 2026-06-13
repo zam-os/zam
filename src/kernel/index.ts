@@ -271,6 +271,7 @@ export {
   setInstallMode,
 } from "./system/install-config.js";
 export type {
+  InstallPlan,
   InstallResult,
   LocalLLMRunner,
 } from "./system/installer.js";
@@ -278,6 +279,8 @@ export {
   hasCommand,
   installFastFlowLM,
   installOllama,
+  installOpenCode,
+  planOpenCodeInstall,
   prepareLocalModel,
 } from "./system/installer.js";
 export type { SupportedLocale } from "./system/locale.js";
