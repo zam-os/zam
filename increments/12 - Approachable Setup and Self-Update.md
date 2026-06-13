@@ -84,6 +84,35 @@ opening a terminal or learning git.
 - Mac App Store / Microsoft Store submission.
 - Real-time sync of fast-changing learning state through a file-sync provider.
 
+## Progress (on `feat/increment-12-setup`)
+
+Implemented and verified (lint + typecheck + 189 tests + smoke tests):
+
+- **Phase 4 — Snapshots.** `zam snapshot export|import|verify`: portable,
+  checksummed SQL text that never copies the live WAL file; import is
+  transactional and row-count verified, defaulting into `<personal>/snapshots/`.
+  Evidence: `src/kernel/db/snapshot.ts`, `src/cli/commands/snapshot.ts`,
+  `tests/kernel/snapshot.test.ts`.
+- **Phase 3 — Install mode & profile.** `zam profile` shows/sets the per-machine
+  mode (`~/.zam/config.json`, not the DB) and personal folder, with file-sync
+  detection. Evidence: `src/kernel/system/install-config.ts`,
+  `src/cli/commands/profile.ts`, `tests/kernel/install-config.test.ts`.
+- **Phase 5 — Update-decision logic.** `zam update check`: pure, channel-aware
+  `decideUpdate` + `compareVersions`, fetching the latest GitHub release.
+  Evidence: `src/kernel/system/update-check.ts`, `src/cli/commands/update.ts`,
+  `tests/kernel/update-check.test.ts`. The in-app Tauri apply and GUI banner
+  remain for the desktop, pending an updater keypair.
+- **Phase 6 — Agent provisioning.** `zam agent install|status`: installs
+  opencode (npm-first; native on Apple Silicon and Windows on ARM), wired via
+  the AGENTS.md that `zam setup` writes. Evidence:
+  `src/kernel/system/installer.ts`, `src/cli/commands/agent.ts`,
+  `tests/kernel/agent-install.test.ts`.
+
+Remaining: Phases 0–2 (signed installers, winget/Homebrew cask, self-contained
+desktop, Tauri updater config). **Update-manifest host: GitHub Releases
+(interim)** — `zam update check` works once a non-draft release is published;
+the in-place signed self-update still needs an updater keypair.
+
 ## Phases (each a shippable PR)
 
 0. **Release & signing foundation** — code-signing/notarization identities,
@@ -120,10 +149,15 @@ opening a terminal or learning git.
 
 ## Open decisions
 
-- Default personal-folder location (platform Documents/ZAM vs a hidden data dir)
-  and whether first run forces an explicit choice.
-- Which default agent to provision (opencode / goose / kilocode / a GUI agent).
-- Signing/notarization identities and the host for the update manifest.
+- **Resolved — default agent: opencode.** Only candidate native on both Apple
+  Silicon and Windows on ARM that also ships its own GUI; goose has no native
+  Windows-on-ARM build, kilo's GUI lives inside VS Code. Hermes Desktop parked
+  as a follow-on idea.
+- **Resolved — personal-folder location:** default `~/Documents/zam` (the
+  existing `personal.workspace_dir`); first run does not force a choice.
+- **Resolved — update-manifest host: GitHub Releases (interim).**
+- Pending: code-signing/notarization identities and a Tauri updater keypair
+  (required for the in-place signed self-update).
 
 ## Risks
 
