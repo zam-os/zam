@@ -10,6 +10,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     ai_status_model_missing: "Local AI: model not found",
     lbl_due_reviews: "Due Reviews",
     lbl_caught_up: "You're all caught up!",
+    dashboard_error: "Could not load your data",
     lbl_domains: "Active Domains",
     btn_start_session: "Start Learning Session",
     lbl_translating: "Translating dynamically...",
@@ -56,6 +57,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     ai_status_model_missing: "Lokale KI: Modell fehlt",
     lbl_due_reviews: "Anstehende Wiederholungen",
     lbl_caught_up: "Du bist voll auf dem Laufenden!",
+    dashboard_error: "Deine Daten konnten nicht geladen werden",
     lbl_domains: "Aktive Wissensbereiche",
     btn_start_session: "Lernsitzung starten",
     lbl_translating: "Übersetze dynamisch...",
@@ -798,6 +800,7 @@ async function initOrShowGraph() {
 // ── DASHBOARD LOADING ─────────────────────────────────────────────────────
 async function loadDashboard() {
   try {
+    clearDashboardError();
     // 1. Initialize first-run state, then apply settings and translations.
     const settings = await runBridge<{ locale: string; llm: { enabled: boolean } }>("desktop-bootstrap");
     currentLocale = settings.locale || "en";
@@ -871,7 +874,32 @@ async function loadDashboard() {
       });
   } catch (err) {
     console.error("Failed to load dashboard:", err);
+    showDashboardError(err);
   }
+}
+
+/**
+ * Surface a bridge/data error directly in the dashboard. Previously these were
+ * only logged to the (invisible) console, so a failing bridge looked like an
+ * empty "no tokens" dashboard with no explanation.
+ */
+function showDashboardError(err: unknown): void {
+  const view = document.getElementById("dashboard-view");
+  if (!view) return;
+  let banner = document.getElementById("dashboard-error");
+  if (!banner) {
+    banner = document.createElement("div");
+    banner.id = "dashboard-error";
+    banner.className = "error-banner";
+    view.prepend(banner);
+  }
+  const msg = err instanceof Error ? err.message : String(err);
+  banner.textContent = `⚠ ${t("dashboard_error")}: ${msg}`;
+  banner.classList.remove("hidden");
+}
+
+function clearDashboardError(): void {
+  document.getElementById("dashboard-error")?.classList.add("hidden");
 }
 
 // ── ACTIVE STUDY FLOW ─────────────────────────────────────────────────────

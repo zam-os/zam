@@ -1017,6 +1017,33 @@ bridgeCommand
   .action(async (_opts) => {
     isServeMode = true;
 
+    // Diagnostic log. A windowed GUI swallows the daemon's stderr, so failures
+    // that only happen when the bridge is spawned by the desktop app are
+    // otherwise invisible. Logging the resolved environment makes a wrong
+    // home directory (→ missing credentials → empty database) obvious.
+    const {
+      appendFileSync,
+      existsSync: fileExists,
+      mkdirSync: makeDir,
+    } = await import("node:fs");
+    const nodeOs = await import("node:os");
+    const nodePath = await import("node:path");
+    const logDir = nodePath.join(nodeOs.homedir(), ".zam");
+    const logPath = nodePath.join(logDir, "desktop-bridge.log");
+    const logDiag = (msg: string): void => {
+      try {
+        if (!fileExists(logDir)) makeDir(logDir, { recursive: true });
+        appendFileSync(logPath, `[${new Date().toISOString()}] ${msg}\n`);
+      } catch {
+        // best-effort only — never let logging break the bridge
+      }
+    };
+    logDiag(
+      `serve start | homedir=${nodeOs.homedir()} | USERPROFILE=${
+        process.env.USERPROFILE ?? ""
+      } | HOME=${process.env.HOME ?? ""} | cwd=${process.cwd()}`,
+    );
+
     // Configure exitOverride so commander doesn't process.exit on parsing errors
     bridgeCommand.exitOverride();
     for (const cmd of bridgeCommand.commands) {
@@ -1118,9 +1145,16 @@ bridgeCommand
       terminal: false,
     });
 
-    rl.on("line", async (line) => {
+    // Process requests strictly one at a time. processRequest() relies on a
+    // shared output buffer and temporarily swaps the global console methods, so
+    // overlapping executions would corrupt each other's responses. Chaining on
+    // a single promise serialises them regardless of how fast lines arrive.
+    let pending: Promise<void> = Promise.resolve();
+    rl.on("line", (line) => {
       if (!line.trim()) return;
-      const response = await processRequest(line);
-      process.stdout.write(`${response}\n`);
+      pending = pending.then(async () => {
+        const response = await processRequest(line);
+        process.stdout.write(`${response}\n`);
+      });
     });
   });
