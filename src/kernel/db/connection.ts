@@ -309,4 +309,21 @@ async function runMigrations(db: Database): Promise<void> {
       updated_at  TEXT NOT NULL DEFAULT (datetime('now'))
     )
   `);
+
+  // M006: persist confirmed monitor-derived ratings for audit and idempotence.
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS session_syntheses (
+      session_id       TEXT NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,
+      token_id         TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+      card_id          TEXT NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
+      inferred_rating  INTEGER NOT NULL CHECK (inferred_rating BETWEEN 1 AND 4),
+      confirmed_rating INTEGER NOT NULL CHECK (confirmed_rating BETWEEN 1 AND 4),
+      confidence       TEXT NOT NULL CHECK (confidence IN ('medium', 'high')),
+      evidence         TEXT NOT NULL DEFAULT '{}',
+      review_log_id    TEXT NOT NULL REFERENCES review_logs(id) ON DELETE CASCADE,
+      session_step_id  TEXT NOT NULL REFERENCES session_steps(id) ON DELETE CASCADE,
+      created_at       TEXT NOT NULL DEFAULT (datetime('now')),
+      PRIMARY KEY (session_id, token_id)
+    )
+  `);
 }

@@ -25,7 +25,6 @@ implemented. Each file describes one independently promotable capability.
 
 ## Learning Loop
 
-- [Automatic session synthesis](learning/automatic-session-synthesis.md)
 - [Contextual token discovery](learning/contextual-token-discovery.md)
 - [Conversational review integration](learning/conversational-review-integration.md)
 - [Learning-gated automation](learning/learning-gated-automation.md)

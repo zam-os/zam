@@ -18,6 +18,7 @@ export interface EvaluateInput {
   rating: Rating;
   sessionId?: string;
   responseTimeMs?: number;
+  reviewLogId?: string;
 }
 
 export interface EvaluateResult {
@@ -95,13 +96,14 @@ export async function evaluateRating(
   });
 
   // Log the review (immutable)
+  const reviewLogId = input.reviewLogId ?? ulid();
   await db
     .prepare(
       `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, response_time_ms, reviewed_at, scheduled_at, session_id)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .run(
-      ulid(),
+      reviewLogId,
       input.cardId,
       input.tokenId,
       input.userId,

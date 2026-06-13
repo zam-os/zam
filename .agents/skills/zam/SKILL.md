@@ -39,7 +39,7 @@ zam card unblock --user <username>
 # Sessions
 zam session start --user <username> --task "<description>" [--context shell|ui|reallife]
 zam session log --session <id> --token <slug> --done-by <user|agent> [--rating <n>]
-zam session end --session <id>
+zam session end --session <id> [--synthesize] [--patterns <json-file>]
 
 # Stats
 zam stats --user <username>
@@ -221,12 +221,11 @@ This spawns a new terminal window (Terminal.app or iTerm2 on macOS), already `cd
 Shell hooks silently capture every command with timestamps, exit codes, and working directory to a JSONL log. When the user returns:
 
 ```bash
-# Read the raw command log
-zam bridge get-monitor --session <session-id>
+# Preview evidence, confirm each rating, and end the session
+zam session end --session <session-id> --synthesize
 
-# Auto-rate tokens by matching commands to patterns
-echo '{"patterns":[{"slug":"docker-build","patterns":["docker build","docker image build"]}]}' \
-  | zam bridge analyze-monitor --session <session-id>
+# Supply task-specific mappings when skill-to-token links are ambiguous
+zam session end --session <session-id> --synthesize --patterns <json-file>
 ```
 
 The analyzer infers ratings from:
@@ -235,7 +234,15 @@ The analyzer infers ratings from:
 - **Speed**: inter-command gaps, thinking pauses → lower if slow
 - **Self-corrections**: same command prefix run repeatedly with different args → lower rating
 
-Review the suggested ratings before submitting. Override if the heuristic seems wrong.
+Single-token agent skills supply command patterns automatically. A pattern file
+contains an array (or `{ "patterns": [...] }`) of
+`{ "slug": "<token>", "patterns": ["<command>"] }` entries. Only medium- and
+high-confidence candidates are proposed. Accept, override, or skip every
+rating; accepted ratings are applied atomically and repeated synthesis is
+idempotent.
+
+Use `zam bridge get-monitor` and `zam bridge analyze-monitor` only when raw
+diagnostic output is needed.
 
 When done, the user can simply close the monitored terminal window — hooks only live in that shell process. No cleanup command needed.
 
@@ -289,6 +296,10 @@ Use it to:
 
 ### STEP 5 — End session
 ```bash
+# Monitored executable session
+zam session end --session <id> --synthesize
+
+# Conceptual or unmonitored session
 zam session end --session <id>
 zam stats --user <username>
 ```

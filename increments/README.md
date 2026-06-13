@@ -20,3 +20,4 @@ is rewritten as implementation evidence and retained here.
 8. [Tauri Active-Recall Studio](8%20-%20Tauri%20Active-Recall%20Studio.md)
 9. [Release Hardening](9%20-%20Release%20Hardening.md)
 10. [Async Database Providers](10%20-%20Async%20Database%20Providers.md)
+11. [Automatic Session Synthesis](11%20-%20Automatic%20Session%20Synthesis.md)

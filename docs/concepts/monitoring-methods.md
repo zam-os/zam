@@ -9,6 +9,24 @@ The first level of user observation monitors shell activity. Two approaches are 
 
 The user should be prompted once to choose their preferred approach. The preference is saved in user settings so they are not asked again.
 
+### Session Synthesis
+
+End a monitored session with:
+
+```bash
+zam session end --session <id> --synthesize
+```
+
+ZAM matches monitor commands against steps from agent skills linked to exactly
+one token. Task-specific or multi-token mappings can be supplied as a JSON file
+with `--patterns <path>`. Only medium- and high-confidence candidates are
+shown, and each rating must be accepted, overridden, or skipped before any
+learning state changes.
+
+Confirmed ratings update the card, review log, session step, prerequisite
+blocking state, and synthesis audit in one transaction. Repeating synthesis
+for the same session and token does not apply the rating twice.
+
 ## Level 2 — System-Level Tracing
 
 Depending on the operating system, native tracing facilities could track broader system changes beyond the terminal:

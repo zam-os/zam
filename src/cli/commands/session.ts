@@ -6,14 +6,19 @@
  * Phase 2 — Task execution: pick a work item from ADO or enter a custom task
  */
 
+import { readFileSync } from "node:fs";
 import { input, select } from "@inquirer/prompts";
 import { Command } from "commander";
 import type {
   BloomLevel,
   Database,
   ExecutionContext,
+  Rating,
+  SynthesisConfidence,
+  TokenPattern,
 } from "../../kernel/index.js";
 import {
+  applySessionSynthesis,
   buildReviewQueue,
   endSession,
   fetchActiveWorkItems,
@@ -23,6 +28,7 @@ import {
   loadADOConfig,
   logStep,
   openDatabase,
+  prepareSessionSynthesis,
   startSession,
 } from "../../kernel/index.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
@@ -253,6 +259,161 @@ async function selectTask(): Promise<string> {
   return input({ message: "Task description:" });
 }
 
+// ── Session synthesis ───────────────────────────────────────────────────────
+
+const RATING_LABELS: Record<Rating, string> = {
+  1: "Again",
+  2: "Hard",
+  3: "Good",
+  4: "Easy",
+};
+
+function loadPatternFile(path: string | undefined): TokenPattern[] {
+  if (!path) return [];
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(readFileSync(path, "utf-8"));
+  } catch (err) {
+    throw new Error(
+      `Cannot read synthesis patterns from ${path}: ${(err as Error).message}`,
+    );
+  }
+
+  const patterns =
+    typeof parsed === "object" &&
+    parsed !== null &&
+    "patterns" in parsed &&
+    Array.isArray(parsed.patterns)
+      ? parsed.patterns
+      : parsed;
+
+  if (!Array.isArray(patterns)) {
+    throw new Error(
+      "Synthesis pattern file must contain an array or { patterns: [...] }",
+    );
+  }
+
+  return patterns.map((entry: unknown, index: number) => {
+    if (
+      typeof entry !== "object" ||
+      entry === null ||
+      !("slug" in entry) ||
+      typeof entry.slug !== "string" ||
+      !("patterns" in entry) ||
+      !Array.isArray(entry.patterns) ||
+      !entry.patterns.every((pattern) => typeof pattern === "string")
+    ) {
+      throw new Error(
+        `Invalid synthesis pattern at index ${index}: expected { slug, patterns[] }`,
+      );
+    }
+    return { slug: entry.slug, patterns: entry.patterns };
+  });
+}
+
+async function runSynthesisPhase(
+  db: Database,
+  sessionId: string,
+  options: {
+    patternFile?: string;
+    minConfidence: SynthesisConfidence;
+  },
+): Promise<number> {
+  const preview = await prepareSessionSynthesis(db, {
+    sessionId,
+    explicitPatterns: loadPatternFile(options.patternFile),
+    minConfidence: options.minConfidence,
+  });
+
+  console.log("\nObservation synthesis");
+  console.log("─".repeat(50));
+  console.log(
+    `  Commands: ${preview.commandCount}  Token patterns: ${preview.patternCount}`,
+  );
+  if (preview.alreadyApplied > 0) {
+    console.log(`  Already applied: ${preview.alreadyApplied}`);
+  }
+  if (preview.skippedLowConfidence > 0) {
+    console.log(
+      `  Below ${options.minConfidence} confidence: ${preview.skippedLowConfidence}`,
+    );
+  }
+
+  if (preview.patternCount === 0) {
+    console.log(
+      "  No token patterns found. Link tokens to agent skills or pass --patterns <file>.",
+    );
+    return 0;
+  }
+  if (preview.candidates.length === 0) {
+    console.log("  No new medium/high-confidence ratings to confirm.");
+    return 0;
+  }
+
+  let applied = 0;
+  for (const candidate of preview.candidates) {
+    console.log(`\n${candidate.tokenSlug}: ${candidate.concept}`);
+    console.log(
+      `  Suggested: ${candidate.inferredRating} - ${RATING_LABELS[candidate.inferredRating]} (${candidate.confidence} confidence)`,
+    );
+    console.log(
+      `  Evidence: ${candidate.evidence.matchedCommands} command(s), ${candidate.evidence.errorCount} error(s), ${candidate.evidence.selfCorrections} correction(s)${candidate.evidence.helpSeeking ? ", help used" : ""}`,
+    );
+    for (const command of candidate.matchedCommandTexts.slice(0, 5)) {
+      console.log(`    ${command}`);
+    }
+
+    const otherRatings = ([1, 2, 3, 4] as Rating[]).filter(
+      (rating) => rating !== candidate.inferredRating,
+    );
+    const choice = await select<Rating | "skip">({
+      message: `Confirm rating for ${candidate.tokenSlug}:`,
+      choices: [
+        {
+          name: `Accept ${candidate.inferredRating} - ${RATING_LABELS[candidate.inferredRating]}`,
+          value: candidate.inferredRating,
+        },
+        ...otherRatings.map((rating) => ({
+          name: `Override with ${rating} - ${RATING_LABELS[rating]}`,
+          value: rating,
+        })),
+        { name: "Skip without changing learning state", value: "skip" },
+      ],
+    });
+
+    if (choice === "skip") {
+      console.log("  Skipped.");
+      continue;
+    }
+
+    const result = await applySessionSynthesis(db, {
+      sessionId,
+      tokenSlug: candidate.tokenSlug,
+      inferredRating: candidate.inferredRating,
+      confirmedRating: choice,
+      confidence: candidate.confidence,
+      evidence: candidate.evidence,
+      matchedCommandTexts: candidate.matchedCommandTexts,
+    });
+
+    if (!result.applied) {
+      console.log("  Already applied; learning state unchanged.");
+      continue;
+    }
+
+    applied++;
+    console.log(`  Applied ${choice} - ${RATING_LABELS[choice]}.`);
+    if (result.blocked) {
+      console.log(
+        `  Blocked ${result.blocked.blockedSlug}; prerequisites surfaced.`,
+      );
+    }
+  }
+
+  return applied;
+}
+
 // ── zam session log ───────────────────────────────────────────────────────
 
 sessionCommand
@@ -299,10 +460,46 @@ sessionCommand
   .command("end")
   .description("End a session and show summary")
   .requiredOption("--session <id>", "Session ID")
+  .option(
+    "--synthesize",
+    "Analyze monitor evidence and confirm ratings before ending",
+  )
+  .option(
+    "--patterns <path>",
+    "JSON file with additional { slug, patterns[] } mappings",
+  )
+  .option(
+    "--min-confidence <level>",
+    "Minimum synthesis confidence: medium | high",
+    "medium",
+  )
   .option("--json", "Output as JSON")
   .action(async (opts) => {
     await withDb(async (db) => {
-      await endSession(db, opts.session);
+      if (opts.patterns && !opts.synthesize) {
+        throw new Error("--patterns requires --synthesize");
+      }
+      if (opts.synthesize && opts.json) {
+        throw new Error("--json cannot be combined with interactive synthesis");
+      }
+      if (!["medium", "high"].includes(opts.minConfidence)) {
+        throw new Error("--min-confidence must be medium or high");
+      }
+
+      const before = await getSessionSummary(db, opts.session);
+      if (opts.synthesize) {
+        await runSynthesisPhase(db, opts.session, {
+          patternFile: opts.patterns,
+          minConfidence: opts.minConfidence as SynthesisConfidence,
+        });
+      }
+
+      if (!before.session.completed_at) {
+        await endSession(db, opts.session);
+      } else if (!opts.synthesize) {
+        throw new Error(`Session already completed: ${opts.session}`);
+      }
+
       const summary = await getSessionSummary(db, opts.session);
 
       if (opts.json) {

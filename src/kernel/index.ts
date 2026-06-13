@@ -172,6 +172,21 @@ export {
   readMonitorLog,
   writeMonitorEvent,
 } from "./observation/monitor-io.js";
+export type {
+  ApplySessionSynthesisInput,
+  ApplySessionSynthesisResult,
+  PrepareSessionSynthesisInput,
+  SessionSynthesisCandidate,
+  SessionSynthesisEvidence,
+  SessionSynthesisPreview,
+  SessionSynthesisRecord,
+  SynthesisConfidence,
+} from "./observation/session-synthesis.js";
+export {
+  applySessionSynthesis,
+  getSessionSynthesisRecords,
+  prepareSessionSynthesis,
+} from "./observation/session-synthesis.js";
 export {
   generateBashHooks,
   generateBashUnhooks,
