@@ -9,6 +9,10 @@ jobs:
   publish-tauri:
     permissions:
       contents: write
+    env:
+      NPM_CONFIG_FETCH_RETRIES: '5'
+      NPM_CONFIG_FETCH_RETRY_MINTIMEOUT: '20000'
+      NPM_CONFIG_FETCH_RETRY_MAXTIMEOUT: '120000'
     strategy:
       fail-fast: false
       matrix:
@@ -19,7 +23,10 @@ jobs:
         include:
           - platform: 'ubuntu-22.04'
             target: 'x86_64-unknown-linux-gnu'
-            args: '--target x86_64-unknown-linux-gnu'
+            # AppImage's linuxdeploy currently fails when it scans the bundled
+            # native libsql module. Keep libsql support and ship deb/rpm until
+            # upstream AppImage packaging can handle that resource.
+            args: '--target x86_64-unknown-linux-gnu --bundles deb,rpm'
           - platform: 'windows-latest'
             target: 'x86_64-pc-windows-msvc'
             args: '--target x86_64-pc-windows-msvc'
