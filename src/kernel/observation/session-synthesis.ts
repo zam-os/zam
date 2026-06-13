@@ -15,7 +15,7 @@ import type { Session } from "../models/session.js";
 import { logStep } from "../models/session.js";
 import type { Token } from "../models/token.js";
 import { getTokenBySlug } from "../models/token.js";
-import { evaluateRating } from "../recall/evaluator.js";
+import { evaluateRatingWithinTransaction } from "../recall/evaluator.js";
 import { cascadeBlock } from "../scheduler/blocker.js";
 import type { Rating } from "../scheduler/fsrs.js";
 import type {
@@ -271,7 +271,7 @@ export async function applySessionSynthesis(
 
     const card = await ensureCard(tx, token.id, session.user_id);
     const reviewLogId = ulid();
-    await evaluateRating(tx, {
+    await evaluateRatingWithinTransaction(tx, {
       cardId: card.id,
       tokenId: token.id,
       userId: session.user_id,

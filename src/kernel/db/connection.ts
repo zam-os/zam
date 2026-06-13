@@ -28,7 +28,7 @@ export type DatabaseProvider = "local" | "native" | "remote";
 export interface ConnectionOptions {
   /** Path to the SQLite database file. Defaults to ~/.zam/zam.db */
   dbPath?: string;
-  /** If true, create the directory and run schema migrations on open */
+  /** If true, run the schema even when the database already exists. */
   initialize?: boolean;
   /** Turso sync URL for embedded replica mode (e.g. libsql://db-name.turso.io) */
   syncUrl?: string;
@@ -109,6 +109,9 @@ export async function openDatabase(
   const isRemote = isRemoteDatabasePath(dbPath);
   const isEmbeddedReplica = Boolean(options.syncUrl);
   const provider = resolveProvider(options, configuredCloud?.mode, isRemote);
+  const shouldInitialize =
+    options.initialize === true ||
+    (!isRemote && !isEmbeddedReplica && !existsSync(dbPath));
 
   if (provider === "remote") {
     const url = isRemote ? dbPath : options.syncUrl;
@@ -129,7 +132,7 @@ export async function openDatabase(
     return db;
   }
 
-  if (options.initialize && !isRemote) {
+  if (shouldInitialize && !isRemote) {
     const dir = dirname(dbPath);
     if (!existsSync(dir)) {
       mkdirSync(dir, { recursive: true });
@@ -211,7 +214,7 @@ export async function openDatabase(
     await db.sync?.();
   }
 
-  if (options.initialize) {
+  if (shouldInitialize) {
     await db.exec(SCHEMA);
   }
 

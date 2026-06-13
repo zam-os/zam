@@ -4,7 +4,8 @@ use std::fs;
 use std::io::{BufRead, BufReader, Write};
 use std::path::{Path, PathBuf};
 use std::process::{Child, ChildStdin, ChildStdout, Command};
-use std::sync::Mutex;
+use std::sync::atomic::{AtomicU32, Ordering};
+use std::sync::{Arc, Mutex};
 use tauri::Manager;
 
 #[cfg(target_os = "windows")]
@@ -125,6 +126,28 @@ struct PersistentBridge {
     request_counter: u64,
 }
 
+struct BridgeState {
+    bridge: Mutex<Option<PersistentBridge>>,
+    active_pid: AtomicU32,
+}
+
+impl BridgeState {
+    fn new() -> Self {
+        Self {
+            bridge: Mutex::new(None),
+            active_pid: AtomicU32::new(0),
+        }
+    }
+}
+
+struct ActiveRequestGuard<'a>(&'a AtomicU32);
+
+impl Drop for ActiveRequestGuard<'_> {
+    fn drop(&mut self) {
+        self.0.store(0, Ordering::SeqCst);
+    }
+}
+
 #[derive(serde::Serialize)]
 struct BridgeRequest {
     id: u64,
@@ -140,13 +163,27 @@ struct BridgeResponse {
 }
 
 #[tauri::command]
-fn execute_zam_bridge(
+async fn execute_zam_bridge(
     app: tauri::AppHandle,
-    state: tauri::State<'_, Mutex<Option<PersistentBridge>>>,
+    state: tauri::State<'_, Arc<BridgeState>>,
     cmd: String,
     args: Vec<String>,
 ) -> Result<String, String> {
-    let mut lock = state.lock().map_err(|e| e.to_string())?;
+    let state = Arc::clone(state.inner());
+    tauri::async_runtime::spawn_blocking(move || {
+        execute_zam_bridge_blocking(&app, &state, cmd, args)
+    })
+    .await
+    .map_err(|e| format!("Bridge task failed: {}", e))?
+}
+
+fn execute_zam_bridge_blocking(
+    app: &tauri::AppHandle,
+    state: &BridgeState,
+    cmd: String,
+    args: Vec<String>,
+) -> Result<String, String> {
+    let mut lock = state.bridge.lock().map_err(|e| e.to_string())?;
 
     // 1. Ensure the persistent bridge process is running.
     let is_alive = if let Some(ref mut bridge) = *lock {
@@ -178,13 +215,21 @@ fn execute_zam_bridge(
         command.arg("bridge");
         command.arg("serve");
         command.arg("--stdin");
-        
+
         command.stdin(std::process::Stdio::piped());
         command.stdout(std::process::Stdio::piped());
 
-        let mut child = command.spawn().map_err(|e| format!("Failed to spawn ZAM CLI: {}", e))?;
-        let stdin = child.stdin.take().ok_or_else(|| "Failed to open stdin".to_string())?;
-        let stdout = child.stdout.take().ok_or_else(|| "Failed to open stdout".to_string())?;
+        let mut child = command
+            .spawn()
+            .map_err(|e| format!("Failed to spawn ZAM CLI: {}", e))?;
+        let stdin = child
+            .stdin
+            .take()
+            .ok_or_else(|| "Failed to open stdin".to_string())?;
+        let stdout = child
+            .stdout
+            .take()
+            .ok_or_else(|| "Failed to open stdout".to_string())?;
         let stdout_reader = BufReader::new(stdout);
 
         *lock = Some(PersistentBridge {
@@ -197,6 +242,8 @@ fn execute_zam_bridge(
 
     // 2. Perform the request-response transaction.
     let bridge = lock.as_mut().unwrap();
+    state.active_pid.store(bridge.child.id(), Ordering::SeqCst);
+    let _active_request = ActiveRequestGuard(&state.active_pid);
     bridge.request_counter += 1;
     let req_id = bridge.request_counter;
 
@@ -237,7 +284,8 @@ fn execute_zam_bridge(
                             return Err(err_msg);
                         }
                         if let Some(res_val) = resp.result {
-                            let serialized = serde_json::to_string(&res_val).map_err(|e| e.to_string())?;
+                            let serialized =
+                                serde_json::to_string(&res_val).map_err(|e| e.to_string())?;
                             return Ok(serialized);
                         }
                         return Ok("".to_string());
@@ -254,16 +302,48 @@ fn execute_zam_bridge(
     }
 }
 
+#[tauri::command]
+fn cancel_zam_bridge(state: tauri::State<'_, Arc<BridgeState>>) -> Result<bool, String> {
+    let pid = state.active_pid.swap(0, Ordering::SeqCst);
+    if pid == 0 {
+        return Ok(false);
+    }
+
+    #[cfg(target_os = "windows")]
+    let status = {
+        let mut command = Command::new("taskkill");
+        command.creation_flags(0x08000000); // CREATE_NO_WINDOW
+        command.args(["/PID", &pid.to_string(), "/F"]).status()
+    };
+
+    #[cfg(not(target_os = "windows"))]
+    let status = Command::new("kill")
+        .args(["-TERM", &pid.to_string()])
+        .status();
+
+    match status {
+        Ok(result) if result.success() => Ok(true),
+        Ok(result) => Err(format!(
+            "Failed to cancel bridge process {} (status {})",
+            pid, result
+        )),
+        Err(err) => Err(format!("Failed to cancel bridge process {}: {}", pid, err)),
+    }
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
-            app.manage(Mutex::new(None::<PersistentBridge>));
+            app.manage(Arc::new(BridgeState::new()));
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![execute_zam_bridge])
+        .invoke_handler(tauri::generate_handler![
+            execute_zam_bridge,
+            cancel_zam_bridge
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

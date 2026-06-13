@@ -683,6 +683,12 @@ textarea::placeholder {
   color: var(--clr-text-primary);
 }
 
+.rating-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* Dynamic Hover Glow styles per FSRS rating button */
 .rating-btn.again:hover {
   background: rgba(239, 68, 68, 0.06);

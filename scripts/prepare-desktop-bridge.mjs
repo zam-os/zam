@@ -36,6 +36,10 @@ if (!existsSync(cliEntry)) {
 const packageJson = JSON.parse(
   readFileSync(join(repoRoot, "package.json"), "utf8"),
 );
+const packageLock = join(repoRoot, "package-lock.json");
+if (!existsSync(packageLock)) {
+  throw new Error("Root package-lock.json is required for desktop packaging.");
+}
 const requestedNode = optionValue("--node");
 const nodeSource = requestedNode
   ? resolve(requestedNode)
@@ -57,19 +61,31 @@ writeFileSync(
   join(resourceRoot, "package.json"),
   `${JSON.stringify(
     {
-      name: "zam-desktop-bridge",
+      name: packageJson.name,
       version: packageJson.version,
       private: true,
       type: "module",
+      license: packageJson.license,
+      engines: packageJson.engines,
+      bin: packageJson.bin,
       dependencies: packageJson.dependencies,
+      optionalDependencies: packageJson.optionalDependencies,
+      devDependencies: packageJson.devDependencies,
     },
     null,
     2,
   )}\n`,
   "utf8",
 );
+cpSync(packageLock, join(resourceRoot, "package-lock.json"));
 
-const npmArgs = ["install", "--omit=dev", "--no-audit", "--no-fund"];
+const npmArgs = [
+  "ci",
+  "--omit=dev",
+  "--include=optional",
+  "--no-audit",
+  "--no-fund",
+];
 const npmExecPath = process.env.npm_execpath;
 const install = npmExecPath
   ? spawnSync(process.execPath, [npmExecPath, ...npmArgs], {

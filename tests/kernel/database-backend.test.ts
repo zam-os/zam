@@ -13,6 +13,25 @@ afterEach(() => {
 });
 
 describe("local database backend", () => {
+  it("initializes a brand-new local database and parent directory automatically", async () => {
+    const dir = mkdtempSync(join(tmpdir(), "zam-local-first-run-"));
+    tempDirs.push(dir);
+    const dbPath = join(dir, "nested", ".zam", "zam.db");
+
+    const db = await openDatabase({
+      dbPath,
+      useConfiguredCloud: false,
+    });
+    const tables = (await db
+      .prepare(
+        "SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'user_config'",
+      )
+      .all()) as Array<{ name: string }>;
+
+    expect(tables).toEqual([{ name: "user_config" }]);
+    await db.close();
+  });
+
   it("opens and persists a local SQLite database without libsql features", async () => {
     const dir = mkdtempSync(join(tmpdir(), "zam-local-sqlite-"));
     tempDirs.push(dir);

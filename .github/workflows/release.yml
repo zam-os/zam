@@ -57,6 +57,25 @@ jobs:
       - name: Prepare Self-Contained Desktop Bridge
         run: npm run desktop:prepare -- --bundle-node
 
+      - name: Verify locked Rust dependency graph
+        working-directory: desktop/src-tauri
+        run: cargo metadata --locked --format-version 1 --no-deps
+
+      - name: Smoke-test first launch (Linux)
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          export HOME="$RUNNER_TEMP/zam-first-run"
+          desktop/src-tauri/resources/zam-cli/runtime/node desktop/src-tauri/resources/zam-cli/dist/cli/index.js bridge desktop-bootstrap
+          desktop/src-tauri/resources/zam-cli/runtime/node desktop/src-tauri/resources/zam-cli/dist/cli/index.js bridge check-due
+
+      - name: Smoke-test first launch (Windows)
+        if: startsWith(matrix.platform, 'windows')
+        shell: pwsh
+        run: |
+          $env:USERPROFILE = Join-Path $env:RUNNER_TEMP "zam-first-run"
+          & ".\desktop\src-tauri\resources\zam-cli\runtime\node.exe" ".\desktop\src-tauri\resources\zam-cli\dist\cli\index.js" bridge desktop-bootstrap
+          & ".\desktop\src-tauri\resources\zam-cli\runtime\node.exe" ".\desktop\src-tauri\resources\zam-cli\dist\cli\index.js" bridge check-due
+
       - name: Install dependencies (Desktop Application)
         working-directory: desktop
         run: npm ci
