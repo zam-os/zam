@@ -98,7 +98,7 @@ Dies kompiliert das Rust-Backend im Hintergrund, startet den Vite-Entwicklungsse
 
 ### 📦 Automatische GitHub Releases & Native Installer
 
-Wir haben eine **GitHub Actions CI/CD-Pipeline** integriert, die derzeit native Installationsdateien für Windows (`.msi`/`.exe`) und Linux (`.deb`/`.rpm`/`.AppImage`) kompiliert und verpackt, sobald ein neuer Git-Tag gepusht wird. macOS kann weiterhin aus dem Quellcode gebaut werden; signierte und notarisierte macOS-Release-Artefakte folgen, sobald der Apple-Signing-Account verfügbar ist.
+Wir haben eine **GitHub Actions CI/CD-Pipeline** integriert, die derzeit native Installationsdateien für Windows (`.msi`/`.exe`) und Linux (`.deb`/`.rpm`) kompiliert und verpackt, sobald ein neuer Git-Tag gepusht wird. AppImage-Pakete sind vorläufig ausgesetzt, weil `linuxdeploy` das mitgelieferte native `libsql`-Modul noch nicht zuverlässig verarbeiten kann. macOS kann weiterhin aus dem Quellcode gebaut werden; signierte und notarisierte macOS-Release-Artefakte folgen, sobald der Apple-Signing-Account verfügbar ist.
 
 Um eine neue Version zu veröffentlichen (z.B. `v0.1.0`):
 

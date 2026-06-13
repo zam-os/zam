@@ -2,7 +2,7 @@
 
 Welcome to the **ZAM Cross-Platform Desktop GUI**! This native desktop application co-exists with the ZAM CLI, utilizing a **100% DRY architecture** by executing the compiled ZAM CLI bridge directly via a secure Rust backend. This enables native execution across **Windows, macOS, and Linux**, securely sharing the local SQLite database at `~/.zam/zam.db`.
 
-Published release installers currently target Windows and Linux. macOS source builds are supported, while signed/notarized macOS release artifacts are deferred until Apple signing is configured.
+Published release installers currently target Windows and Linux. Linux AppImage packaging is temporarily deferred because `linuxdeploy` cannot process the bundled native `libsql` module reliably. macOS source builds are supported, while signed/notarized macOS release artifacts are deferred until Apple signing is configured.
 
 ---
 
@@ -113,7 +113,7 @@ To verify the bundle and package a standalone native binary for your platform:
 # Verify TypeScript & Vite compilation inside desktop/
 npm run build
 
-# Package locally (Windows: .msi/.exe, macOS source build: .dmg/.app, Linux: .deb/.rpm/.AppImage)
+# Package locally (Windows: .msi/.exe, macOS source build: .dmg/.app, Linux: .deb/.rpm)
 npm run tauri build
 ```
 The compiled release binary will be packaged inside `desktop/src-tauri/target/release/bundle/`!

@@ -118,7 +118,7 @@ This will compile the secure Rust backend, spin up the Vite development server, 
 
 ### 📦 Automated GitHub Releases & Native Installers
 
-We have integrated a **GitHub Actions CI/CD workflow** that currently compiles and packages native installers for Windows (`.msi`/`.exe`) and Linux (`.deb`/`.rpm`/`.AppImage`) when a new git tag is pushed. macOS builds remain supported from source, but signed/notarized macOS release artifacts are deferred until the Apple signing account is available.
+We have integrated a **GitHub Actions CI/CD workflow** that currently compiles and packages native installers for Windows (`.msi`/`.exe`) and Linux (`.deb`/`.rpm`) when a new git tag is pushed. AppImage packaging is temporarily deferred because `linuxdeploy` cannot process the bundled native `libsql` module reliably. macOS builds remain supported from source, but signed/notarized macOS release artifacts are deferred until the Apple signing account is available.
 
 To release a new version (e.g., `v0.1.0`):
 
