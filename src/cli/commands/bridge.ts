@@ -12,6 +12,7 @@ import { Command } from "commander";
 import type {
   BloomLevel,
   Database,
+  NeighborhoodToken,
   Rating,
   ReviewActionType,
   SymbiosisMode,
@@ -857,18 +858,37 @@ bridgeCommand
 
 bridgeCommand
   .command("list-tokens")
-  .description("List tokens (optionally enriched with user card state for viz) (JSON)")
-  .option("--user <id>", "User ID (default: whoami) — when provided, includes personal card info")
+  .description(
+    "List tokens (optionally enriched with user card state for viz) (JSON)",
+  )
+  .option(
+    "--user <id>",
+    "User ID (default: whoami) — when provided, includes personal card info",
+  )
   .option("--domain <domain>", "Filter by domain")
   .action(async (opts) => {
     await withDb(async (db) => {
-      const userId = opts.user ? await resolveUser(opts, db, { json: true }) : undefined;
+      const userId = opts.user
+        ? await resolveUser(opts, db, { json: true })
+        : undefined;
       const tokens = await listTokens(
         db,
         opts.domain ? { domain: opts.domain } : undefined,
       );
 
-      let cardMap = new Map<string, any>();
+      const cardMap = new Map<
+        string,
+        {
+          token_id: string;
+          state: string;
+          reps: number;
+          stability: number;
+          difficulty: number;
+          blocked: number;
+          due_at: string;
+          last_review_at: string | null;
+        }
+      >();
       if (userId && tokens.length > 0) {
         const ids = tokens.map((t) => t.id);
         const placeholders = ids.map(() => "?").join(",");
@@ -877,7 +897,16 @@ bridgeCommand
             `SELECT token_id, state, reps, stability, difficulty, blocked, due_at, last_review_at
              FROM cards WHERE token_id IN (${placeholders}) AND user_id = ?`,
           )
-          .all(...ids, userId)) as Array<any>;
+          .all(...ids, userId)) as Array<{
+          token_id: string;
+          state: string;
+          reps: number;
+          stability: number;
+          difficulty: number;
+          blocked: number;
+          due_at: string;
+          last_review_at: string | null;
+        }>;
         for (const c of cards) cardMap.set(c.token_id, c);
       }
 
@@ -903,7 +932,7 @@ bridgeCommand
         };
       });
 
-      jsonOut({ tokens: out } as any);
+      jsonOut({ tokens: out });
     });
   });
 
@@ -911,9 +940,14 @@ bridgeCommand
 
 bridgeCommand
   .command("get-neighborhood")
-  .description("Get direct prerequisite neighborhood around a token (for 3D graph viz) (JSON)")
+  .description(
+    "Get direct prerequisite neighborhood around a token (for 3D graph viz) (JSON)",
+  )
   .requiredOption("--focus <slug>", "Token slug to center the neighborhood on")
-  .option("--user <id>", "User ID (default: whoami) for personal card state in the result")
+  .option(
+    "--user <id>",
+    "User ID (default: whoami) for personal card state in the result",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
@@ -925,7 +959,7 @@ bridgeCommand
 
       const nb = await getTokenNeighborhood(db, token!.id, userId);
 
-      const mapToken = (nt: any) => ({
+      const mapToken = (nt: NeighborhoodToken) => ({
         id: nt.id,
         slug: nt.slug,
         concept: nt.concept,

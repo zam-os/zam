@@ -6,7 +6,7 @@
  */
 
 import type { Database } from "../db/types.js";
-import { getCard, type Card, type CardState } from "./card.js";
+import { type Card, type CardState, getCard } from "./card.js";
 import { getTokenById } from "./token.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -226,7 +226,13 @@ export async function getTokenNeighborhood(
   }
 
   const toNode = (
-    t: { id: string; slug: string; concept: string; domain: string; bloom_level: number },
+    t: {
+      id: string;
+      slug: string;
+      concept: string;
+      domain: string;
+      bloom_level: number;
+    },
     card?: Card,
   ): NeighborhoodToken => ({
     id: t.id,
