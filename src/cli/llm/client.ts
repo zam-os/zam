@@ -619,13 +619,23 @@ export async function ensureLlmReadyHeadless(
 /**
  * Wraps a fetch call in an interactive wait loop with progress dots.
  * Every `timeoutMs`, prompts the user (in their locale) to keep waiting or skip.
- * In non-TTY / bridge contexts it degrades to a plain fetch.
+ * In non-TTY / bridge contexts the timeout is a hard deadline because there
+ * is no interactive prompt that can ask whether to keep waiting.
  */
 export async function fetchWithInteractiveTimeout(
   url: string,
-  options: RequestInit & { timeoutMs?: number; locale?: SupportedLocale } = {},
+  options: RequestInit & {
+    timeoutMs?: number;
+    hardTimeoutMs?: number;
+    locale?: SupportedLocale;
+  } = {},
 ): Promise<Response> {
-  const { timeoutMs = 20000, locale = "en", ...fetchOptions } = options;
+  const {
+    timeoutMs = 20000,
+    hardTimeoutMs = 120000,
+    locale = "en",
+    ...fetchOptions
+  } = options;
   const controller = new AbortController();
   const fetchPromise = fetch(url, {
     ...fetchOptions,
@@ -633,7 +643,18 @@ export async function fetchWithInteractiveTimeout(
   });
 
   if (!process.stdout.isTTY || process.env.ZAM_BRIDGE === "true") {
-    return fetchPromise;
+    let timeoutId: NodeJS.Timeout | undefined;
+    const hardTimeout = new Promise<never>((_resolve, reject) => {
+      timeoutId = setTimeout(() => {
+        reject(new Error(`LLM request timed out after ${hardTimeoutMs}ms`));
+        controller.abort();
+      }, hardTimeoutMs);
+    });
+    try {
+      return await Promise.race([fetchPromise, hardTimeout]);
+    } finally {
+      clearTimeout(timeoutId);
+    }
   }
 
   let attempts = 0;

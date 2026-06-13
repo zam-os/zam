@@ -71,6 +71,34 @@ describe("LLM client utilities (CLI layer)", () => {
     }
   });
 
+  it("fetchWithInteractiveTimeout aborts hung bridge requests at the hard deadline", async () => {
+    const originalFetch = global.fetch;
+    const originalBridge = process.env.ZAM_BRIDGE;
+    let aborted = false;
+    global.fetch = ((_url, options) =>
+      new Promise<Response>((_resolve, reject) => {
+        options?.signal?.addEventListener("abort", () => {
+          aborted = true;
+          reject(new DOMException("Aborted", "AbortError"));
+        });
+      })) as typeof fetch;
+    process.env.ZAM_BRIDGE = "true";
+
+    try {
+      await expect(
+        fetchWithInteractiveTimeout("http://dummy", { hardTimeoutMs: 10 }),
+      ).rejects.toThrow("LLM request timed out after 10ms");
+      expect(aborted).toBe(true);
+    } finally {
+      global.fetch = originalFetch;
+      if (originalBridge === undefined) {
+        delete process.env.ZAM_BRIDGE;
+      } else {
+        process.env.ZAM_BRIDGE = originalBridge;
+      }
+    }
+  });
+
   it("ensureHighQualityQuestion dynamically generates and self-heals a missing question when LLM is enabled", async () => {
     const db = await openDatabase({
       dbPath: ":memory:",
@@ -80,7 +108,7 @@ describe("LLM client utilities (CLI layer)", () => {
     await setSetting(db, "llm.enabled", "true");
     await setSetting(db, "llm.url", "http://dummy/v1");
 
-    const slug = "test-self-heal-" + Date.now();
+    const slug = `test-self-heal-${Date.now()}`;
     const token = await createToken(db, {
       slug,
       concept: "Azure DevOps secure HTTPS credential storage on macOS Keychain",

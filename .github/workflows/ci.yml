@@ -68,8 +68,11 @@ jobs:
       - name: Prepare bundled desktop bridge
         run: npm run desktop:prepare -- --bundle-node
 
-      - name: Smoke-test bundled desktop bridge
-        run: desktop/src-tauri/resources/zam-cli/runtime/node desktop/src-tauri/resources/zam-cli/dist/cli/index.js bridge --help
+      - name: Smoke-test bundled desktop bridge on a clean machine
+        run: |
+          export HOME="$RUNNER_TEMP/zam-first-run"
+          desktop/src-tauri/resources/zam-cli/runtime/node desktop/src-tauri/resources/zam-cli/dist/cli/index.js bridge desktop-bootstrap
+          desktop/src-tauri/resources/zam-cli/runtime/node desktop/src-tauri/resources/zam-cli/dist/cli/index.js bridge check-due
 
       - name: Install desktop dependencies
         working-directory: desktop
@@ -81,7 +84,7 @@ jobs:
 
       - name: Check Tauri backend
         working-directory: desktop/src-tauri
-        run: cargo check
+        run: cargo check --locked
 
   windows-arm64:
     runs-on: windows-11-arm

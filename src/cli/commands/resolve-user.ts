@@ -3,11 +3,32 @@
  */
 
 import type { Database } from "../../kernel/index.js";
-import { getSetting } from "../../kernel/index.js";
+import { getSetting, setSetting } from "../../kernel/index.js";
 
 export interface ResolveUserOptions {
   /** If true, output JSON error instead of console.error (for bridge commands). */
   json?: boolean;
+}
+
+/**
+ * Ensure the desktop has a usable local identity on first launch.
+ * Existing explicit configuration always wins.
+ */
+export async function ensureDefaultUser(
+  db: Database,
+  preferredUserId?: string,
+): Promise<string> {
+  const stored = await getSetting(db, "user.id");
+  if (stored) return stored;
+
+  const userId =
+    preferredUserId?.trim() ||
+    process.env.ZAM_USER?.trim() ||
+    process.env.USERNAME?.trim() ||
+    process.env.USER?.trim() ||
+    "default";
+  await setSetting(db, "user.id", userId);
+  return userId;
 }
 
 /**

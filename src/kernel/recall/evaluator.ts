@@ -42,6 +42,17 @@ export async function evaluateRating(
   db: Database,
   input: EvaluateInput,
 ): Promise<EvaluateResult> {
+  return db.transaction((tx) => evaluateRatingWithinTransaction(tx, input));
+}
+
+/**
+ * Apply a rating using a transaction already owned by the caller.
+ * This is used when prerequisite blocking must commit with the review.
+ */
+export async function evaluateRatingWithinTransaction(
+  db: Database,
+  input: EvaluateInput,
+): Promise<EvaluateResult> {
   // Get current card state
   const card = (await db
     .prepare("SELECT * FROM cards WHERE id = ?")

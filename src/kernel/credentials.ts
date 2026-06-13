@@ -7,7 +7,13 @@
  * replica (Turso cloud sync).
  */
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  chmodSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 
@@ -49,10 +55,24 @@ export function loadCredentials(path?: string): Credentials {
 export function saveCredentials(creds: Credentials, path?: string): void {
   const p = path ?? DEFAULT_CREDENTIALS_PATH;
   const dir = dirname(p);
+  let createdDirectory = false;
   if (!existsSync(dir)) {
-    mkdirSync(dir, { recursive: true });
+    mkdirSync(dir, { recursive: true, mode: 0o700 });
+    createdDirectory = true;
   }
-  writeFileSync(p, `${JSON.stringify(creds, null, 2)}\n`, "utf-8");
+  if (
+    process.platform !== "win32" &&
+    (path === undefined || createdDirectory)
+  ) {
+    chmodSync(dir, 0o700);
+  }
+  writeFileSync(p, `${JSON.stringify(creds, null, 2)}\n`, {
+    encoding: "utf-8",
+    mode: 0o600,
+  });
+  if (process.platform !== "win32") {
+    chmodSync(p, 0o600);
+  }
 }
 
 /** Get complete Turso credentials, or null if incomplete. */

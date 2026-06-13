@@ -282,6 +282,36 @@ describe("integration: token → card → review flow", () => {
       expect(queue.items.length).toBeGreaterThanOrEqual(0);
     });
 
+    it("rolls back the card update when immutable review logging fails", async () => {
+      const token = await createToken(db, {
+        slug: "review-log-rollback",
+        concept: "A review must update scheduling and history atomically",
+        domain: "testing",
+        bloom_level: 2,
+      });
+      const card = await ensureCard(db, token.id, "thomas");
+      await db.exec(`
+        CREATE TRIGGER fail_review_log
+        BEFORE INSERT ON review_logs
+        BEGIN
+          SELECT RAISE(ABORT, 'simulated review log failure');
+        END;
+      `);
+
+      await expect(
+        evaluateRating(db, {
+          cardId: card.id,
+          tokenId: token.id,
+          userId: "thomas",
+          rating: 3,
+        }),
+      ).rejects.toThrow("simulated review log failure");
+
+      const unchanged = await getCard(db, token.id, "thomas");
+      expect(unchanged?.reps).toBe(0);
+      expect(unchanged?.last_review_at).toBeNull();
+    });
+
     it("full lifecycle: token → prerequisite chain → block → unblock", async () => {
       const prereq = await createToken(db, {
         slug: "prerequisite-token",
@@ -335,6 +365,51 @@ describe("integration: token → card → review flow", () => {
       );
     });
 
+    it("rolls back rating, review log, and cascade blocking together", async () => {
+      const prereq = await createToken(db, {
+        slug: "transaction-prerequisite",
+        concept: "A prerequisite surfaced by a failed rating",
+        domain: "testing",
+        bloom_level: 1,
+      });
+      const target = await createToken(db, {
+        slug: "transaction-target",
+        concept: "A target whose review must be atomic",
+        domain: "testing",
+        bloom_level: 2,
+      });
+      await addPrerequisite(db, target.id, prereq.id);
+      const targetCard = await ensureCard(db, target.id, "thomas");
+
+      await db.exec(`
+        CREATE TRIGGER fail_review_block
+        BEFORE UPDATE OF blocked ON cards
+        WHEN NEW.blocked = 1
+        BEGIN
+          SELECT RAISE(ABORT, 'simulated block failure');
+        END;
+      `);
+
+      await expect(
+        executeReviewAction(db, {
+          action: "rate",
+          cardId: targetCard.id,
+          userId: "thomas",
+          rating: 1,
+        }),
+      ).rejects.toThrow("simulated block failure");
+
+      const cardAfterFailure = await getCard(db, target.id, "thomas");
+      expect(cardAfterFailure?.reps).toBe(0);
+      expect(cardAfterFailure?.blocked).toBe(0);
+      expect(
+        await db
+          .prepare("SELECT id FROM review_logs WHERE card_id = ?")
+          .all(targetCard.id),
+      ).toHaveLength(0);
+      expect(await getCard(db, prereq.id, "thomas")).toBeUndefined();
+    });
+
     it("blocks retroactively after missing prerequisites are discovered", async () => {
       const target = await createToken(db, {
         slug: "analyze-enlightenment",
@@ -356,7 +431,8 @@ describe("integration: token → card → review flow", () => {
 
       const prerequisite = await createToken(db, {
         slug: "define-popular-sovereignty",
-        concept: "Popular sovereignty means political authority comes from the people",
+        concept:
+          "Popular sovereignty means political authority comes from the people",
         domain: "history",
         bloom_level: 1,
       });
@@ -373,11 +449,7 @@ describe("integration: token → card → review flow", () => {
       ]);
       expect((await getCard(db, target.id, "thomas"))?.blocked).toBe(1);
 
-      const prerequisiteCard = await getCard(
-        db,
-        prerequisite.id,
-        "thomas",
-      );
+      const prerequisiteCard = await getCard(db, prerequisite.id, "thomas");
       expect(prerequisiteCard).toBeDefined();
       expect(prerequisiteCard?.blocked).toBe(0);
 

@@ -156,6 +156,7 @@ let isWaitingForAi = false;
 let waitTimeoutId: number | null = null;
 let evaluationRequestId = 0;
 let revealInProgress = false;
+let ratingSubmitInProgress = false;
 
 // ── BRIDGE COMMAND RUNNER ────────────────────────────────────────────────
 async function runBridge<T = any>(cmd: string, args: string[] = []): Promise<T> {
@@ -209,6 +210,7 @@ function initializeTranslations() {
 function switchView(viewId: "dashboard-view" | "study-view" | "graph-view") {
   if (viewId === "dashboard-view" && studySessionActive) {
     evaluationRequestId++;
+    if (revealInProgress) cancelActiveBridgeRequest();
     revealInProgress = false;
     finishAiWait();
   }
@@ -796,8 +798,8 @@ async function initOrShowGraph() {
 // ── DASHBOARD LOADING ─────────────────────────────────────────────────────
 async function loadDashboard() {
   try {
-    // 1. Get settings and apply translations
-    const settings = await runBridge<{ locale: string; llm: { enabled: boolean } }>("get-settings");
+    // 1. Initialize first-run state, then apply settings and translations.
+    const settings = await runBridge<{ locale: string; llm: { enabled: boolean } }>("desktop-bootstrap");
     currentLocale = settings.locale || "en";
     isLlmEnabled = settings.llm?.enabled || false;
     
@@ -1105,9 +1107,16 @@ function finishAiWait() {
   document.getElementById("npu-loading")!.classList.add("hidden");
 }
 
+function cancelActiveBridgeRequest() {
+  void invoke<boolean>("cancel_zam_bridge").catch((err) => {
+    console.warn("Failed to cancel active bridge request:", err);
+  });
+}
+
 function skipAiWaitingAndReveal() {
   if (!revealInProgress) return;
   evaluationRequestId++;
+  cancelActiveBridgeRequest();
   finishAiWait();
   renderReveal("", false);
   revealInProgress = false;
@@ -1115,7 +1124,11 @@ function skipAiWaitingAndReveal() {
 
 // ── RATING ACTION SUBMIT ─────────────────────────────────────────────────
 async function submitRating(ratingVal: number) {
-  if (!activeCard) return;
+  if (!activeCard || ratingSubmitInProgress) return;
+  ratingSubmitInProgress = true;
+  document.querySelectorAll<HTMLButtonElement>(".rating-btn").forEach((button) => {
+    button.disabled = true;
+  });
 
   try {
     await runBridge("submit", [
@@ -1127,6 +1140,11 @@ async function submitRating(ratingVal: number) {
     await loadNextCard();
   } catch (err) {
     console.error("Failed to submit rating:", err);
+  } finally {
+    ratingSubmitInProgress = false;
+    document.querySelectorAll<HTMLButtonElement>(".rating-btn").forEach((button) => {
+      button.disabled = false;
+    });
   }
 }
 

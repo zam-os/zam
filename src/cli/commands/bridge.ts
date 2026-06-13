@@ -50,7 +50,7 @@ import {
   isLlmOnline,
   translateQuestionViaLLM,
 } from "../llm/client.js";
-import { resolveUser } from "./resolve-user.js";
+import { ensureDefaultUser, resolveUser } from "./resolve-user.js";
 import { withDb as sharedWithDb } from "./shared/db.js";
 
 let isServeMode = false;
@@ -840,7 +840,23 @@ bridgeCommand
     });
   });
 
-// ── zam bridge get-settings ───────────────────────────────────────────────
+// ── zam bridge desktop-bootstrap / get-settings ───────────────────────────
+
+bridgeCommand
+  .command("desktop-bootstrap")
+  .description("Initialize first-run desktop state (JSON)")
+  .option("--user <id>", "Preferred user ID when none is configured")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await ensureDefaultUser(db, opts.user);
+      const { enabled, url, model, locale } = await getLlmConfig(db);
+      jsonOut({
+        userId,
+        locale,
+        llm: { enabled, url, model },
+      });
+    });
+  });
 
 bridgeCommand
   .command("get-settings")
