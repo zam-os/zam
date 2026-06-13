@@ -101,6 +101,13 @@ body {
   z-index: 1;
 }
 
+.container.graph-full {
+  max-width: 100%;
+  width: 100%;
+  padding: 8px 12px;
+  min-height: 100vh;
+}
+
 /* ── HEADER BAR ──────────────────────────────────────────────────────────── */
 .app-header {
   display: flex;
@@ -242,6 +249,12 @@ body {
   flex-direction: column;
   opacity: 1;
   transform: translateY(0);
+}
+
+#graph-view.view.active {
+  height: 100%;
+  flex: 1;
+  min-height: 0;
 }
 
 /* ── VIEW 1: DASHBOARD OVERVIEW ──────────────────────────────────────────── */
@@ -826,10 +839,19 @@ textarea::placeholder {
   min-height: 520px;
 }
 
+.container.graph-full .graph-container {
+  padding: 4px;
+  min-height: 0;
+  flex: 1;
+  height: 100%;
+}
+
 .graph-header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 8px;
   margin-bottom: 12px;
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -864,6 +886,23 @@ textarea::placeholder {
   min-height: 420px;
 }
 
+.container.graph-full .graph-main {
+  min-height: 0;
+  flex: 1;
+  height: 100%;
+}
+
+.container.graph-full .graph-header {
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+}
+
+.container.graph-full .graph-side {
+  height: 100%;
+  max-height: 100%;
+  overflow: auto;
+}
+
 .graph-canvas-wrap {
   position: relative;
   background: rgba(0,0,0,0.25);
@@ -871,8 +910,10 @@ textarea::placeholder {
   border-radius: 16px;
   overflow: hidden;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: stretch;
+  flex: 1;
+  min-height: 0;
 }
 
 #graph-canvas {
@@ -954,4 +995,38 @@ textarea::placeholder {
   font-style: italic;
   padding-top: 8px;
   border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Domain filter / selector for independent knowledge areas */
+.domain-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
+
+.domain-pill {
+  font-size: 11px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--clr-text-secondary);
+  cursor: pointer;
+  transition: all 0.1s ease;
+  white-space: nowrap;
+}
+
+.domain-pill:hover {
+  background: rgba(103, 232, 249, 0.12);
+  border-color: var(--clr-accent-cyan);
+  color: #67e8f9;
+}
+
+.domain-pill.active {
+  background: rgba(103, 232, 249, 0.18);
+  border-color: var(--clr-accent-cyan);
+  color: #67e8f9;
+  font-weight: 600;
 }
