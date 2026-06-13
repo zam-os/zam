@@ -258,6 +258,7 @@ fn execute_zam_bridge(
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
             app.manage(Mutex::new(None::<PersistentBridge>));
             Ok(())
