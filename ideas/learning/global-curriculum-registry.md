@@ -78,7 +78,8 @@ To qualify knowledge, every Token in the GCR has an `epistemic_status` attribute
    * Filtered/activated based on the user's educational path (e.g., Biology class vs. Religious studies).
 3. **Beobachtungen & Spekulation (Observations & Fringe/Conspiracy Theories):**
    * Unverified, speculative, or scientifically refuted claims.
-   * These are flagged with an `observational` tag. They do not enter the standard educational graph unless explicitly enabled by the user or flagged in an observation context (e.g., studying media literacy).
+   * These are flagged with an `observational` tag and do not enter the standard educational graph unless explicitly enabled by the user or flagged in an observation context (e.g., studying media literacy/critical thinking).
+   * **Mandatory Assessment of Adherents:** Any observational/speculative token *must* contain a clearly recognizable assessment of how many people support or believe this thesis (demographic scale, e.g., estimated percentage of a population). This prevents highly obscure fringe theories from being treated on the same level as widely discussed perspectives.
 
 ---
 
@@ -90,6 +91,7 @@ To integrate the GCR, the ZAM Core schema (see [ARCHITECTURE.md](file:///c:/src/
 * `registry_id`: `TEXT NULL` (Reference to the GCR UUID; if null, the token is purely local).
 * `epistemic_status`: `TEXT` (Values: `consolidated`, `perspective`, `speculative`, `observational`).
 * `namespace`: `TEXT` (e.g., `math.geometry`, `history.modern`).
+* `estimated_support`: `TEXT NULL` (JSON metadata holding qualitative or quantitative metrics of demographic support, e.g., estimated percentage of population or scale of adherents in a given region).
 
 ### 2. `token_relations` (formerly `prerequisites`)
 Extends the simple prerequisite structure to support semantic connections:
