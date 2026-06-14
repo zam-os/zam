@@ -33,6 +33,7 @@ implemented. Each file describes one independently promotable capability.
 - [Agent-skill revalidation](learning/agent-skill-revalidation.md)
 - [Project-local knowledge](learning/project-local-knowledge.md)
 - [Symbiosis balance dashboard](learning/symbiosis-balance-dashboard.md)
+- [Global curriculum registry](learning/global-curriculum-registry.md)
 
 ## Development and Operations
 
