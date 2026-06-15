@@ -70,7 +70,6 @@ writeFileSync(
       bin: packageJson.bin,
       dependencies: packageJson.dependencies,
       optionalDependencies: packageJson.optionalDependencies,
-      devDependencies: packageJson.devDependencies,
     },
     null,
     2,

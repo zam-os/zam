@@ -2,7 +2,7 @@
 
 ZAM (Bavarian: "together") is built on the belief that as AI becomes more capable, the right response is not to hand over control, but to **deepen human capability through collaboration**.
 
-This folder captures the premises on which ZAM is built. They are beliefs, not proven truths. They represent the current understanding of the group creating ZAM and will evolve as knowledge and discoveries challenge them.
+This folder captures the premises on which ZAM is built. They are beliefs, not proven truths — each is a theory the group has formed, a thesis not yet a proven concept, that time, data, and user feedback may confirm or overturn. They represent the current understanding of the group creating ZAM and will evolve as knowledge and discoveries challenge them.
 
 ## Beliefs
 
@@ -12,9 +12,9 @@ This folder captures the premises on which ZAM is built. They are beliefs, not p
 4. **[Learning in context](learning-in-context/)** — Real work is the most effective classroom.
 5. **[Openness](openness/)** — The learning kernel must not depend on any specific AI vendor or interface.
 
-## External foundations
+## Grounding in external work
 
-ZAM builds on established science. These are not restated here — they are referenced where needed:
+A belief may rest on work that already exists — established science, or other people's theories and written statements. We don't restate that work here; we **link** to it where it lives, or to a stable reference such as Wikipedia. This keeps the repo free of other people's ideas and focused on our own theses. The science ZAM builds on:
 
 - [Spaced repetition](https://en.wikipedia.org/wiki/Spaced_repetition) — reviewing at expanding intervals strengthens long-term retention
 - [FSRS-5](https://github.com/open-spaced-repetition/fsrs4anki) — the scheduling algorithm (replaces SM-2)
