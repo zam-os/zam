@@ -6,7 +6,7 @@ The ZAM agent reads these beliefs to understand your perspective. When new evide
 
 ## Structure
 
-Each subfolder holds a belief and decomposes it into at most 7 components (Miller's number). Follow the same pattern as the [core beliefs](https://github.com/zam-os/zam/tree/main/beliefs).
+Each subfolder holds a belief and decomposes it into at most 7 components (Miller's number). Follow the same pattern as the [core beliefs](https://github.com/zam-os/zam/tree/main/beliefs). Where a belief rests on a chosen, unprovable starting point, that ground belongs in [foundations](../foundations/) instead.
 
 ## Example
 
