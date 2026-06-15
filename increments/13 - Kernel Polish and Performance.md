@@ -29,16 +29,17 @@ card (totalPrereqs + metPrereqs). With 50 blocked cards that is 100 DB calls.
 **Fix:** Replace the per-card loop with a single JOIN query that returns all
 blocked cards along with their prerequisite counts in one pass.
 
-### 2. N+1 queries in `buildSkillPatterns()`
+### 2. N+1 queries in `prepareSessionSynthesis()`
 
-**File:** `src/kernel/observation/session-synthesis.ts:130-147`
+**File:** `src/kernel/observation/session-synthesis.ts:198-205`
 
-Iterates over all agent skills and calls `getTokenBySlug()` for each
-single-token skill. Should batch-load all tokens in one query.
+`buildSkillPatterns()` itself is in-memory only (no DB calls). The N+1 is in
+`prepareSessionSynthesis()` which calls `getTokenBySlug()` per pattern in a
+loop (line 201). Should batch-load all tokens in one query.
 
-**Fix:** Collect all unique token slugs first, then run a single
-`SELECT * FROM tokens WHERE slug IN (...)` query, and build the pattern map
-from the result.
+**Fix:** Collect all unique token slugs from the merged patterns first, then
+run a single `SELECT * FROM tokens WHERE slug IN (...)` query, and build the
+pattern map from the result.
 
 ### 3. Question-source provenance (`question_source`)
 
@@ -105,25 +106,22 @@ lack them (currently only `tokens` and `agent_skills` have them). The delta
 snapshot format uses the same SQL-text approach but includes only INSERT
 statements for changed rows and DELETE statements for removed rows.
 
-### 8. Dynamic import of `@inquirer/prompts`
+### ~~8. Dynamic import of `@inquirer/prompts`~~ — withdrawn
 
-**File:** `src/cli/llm/client.ts:475`, `src/cli/llm/client.ts:685`
-
-`@inquirer/prompts` is imported dynamically inside `fetchWithInteractiveTimeout`
-and `startLocalRunner`. This can cause race conditions or unexpected behavior
-if the module is not yet loaded.
-
-**Fix:** Move the import to the top of the file as a static import. The module
-is already a dependency in `package.json`.
+The dynamic `await import()` in `src/cli/llm/client.ts` is **intentional**: it
+keeps `@inquirer/prompts` out of the non-interactive bridge/headless path (the
+bridge daemon runs non-TTY). A static top-level import would always load
+inquirer, even in the daemon — a regression for startup and path isolation.
+No change needed.
 
 ## Evidence (files to modify)
 
 - `src/kernel/scheduler/blocker.ts` — item 1
-- `src/kernel/observation/session-synthesis.ts` — item 2
+- `src/kernel/observation/session-synthesis.ts` — item 2 (prepareSessionSynthesis)
 - `src/kernel/models/token.ts` — item 3
 - `src/kernel/db/schema.ts` — item 3
 - `src/kernel/db/connection.ts` — item 3 (migration M007)
-- `src/cli/llm/client.ts` — items 3, 8
+- `src/cli/llm/client.ts` — item 3
 - `src/kernel/scheduler/interleaver.ts` — item 4
 - `src/kernel/recall/reference-resolver.ts` — item 5
 - `src/kernel/goals/engine.ts` — item 6
@@ -135,7 +133,7 @@ is already a dependency in `package.json`.
 Each item should have a corresponding test:
 
 - `tests/kernel/blocker.test.ts` — verify unblockReady() with multiple blocked cards
-- `tests/kernel/session-synthesis.test.ts` — verify buildSkillPatterns() batching
+- `tests/kernel/session-synthesis.test.ts` — verify prepareSessionSynthesis() batching
 - `tests/kernel/token.test.ts` — verify question_source field
 - `tests/kernel/interleaver.test.ts` — verify performance with large inputs
 - `tests/kernel/reference-resolver.test.ts` — verify cache behavior
