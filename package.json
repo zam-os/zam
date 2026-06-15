@@ -63,6 +63,9 @@
   "optionalDependencies": {
     "libsql": "^0.5.29"
   },
+  "overrides": {
+    "esbuild": "0.28.1"
+  },
   "devDependencies": {
     "@biomejs/biome": "^2.4.8",
     "@types/better-sqlite3": "^7.6.13",
