@@ -17,6 +17,7 @@ pub struct WindowInfo {
     pub version: u8,
     pub hwnd: u64,
     pub process_id: u32,
+    pub process_name: String,
     pub title: String,
     pub width: i32,
     pub height: i32,
@@ -45,11 +46,16 @@ pub fn list_windows() -> Result<Vec<WindowInfo>, String> {
 #[cfg(target_os = "windows")]
 mod windows_picker {
     use std::ffi::c_void;
+    use std::path::Path;
     use std::time::{Duration, Instant};
 
-    use windows::core::{factory, Interface, BOOL};
+    use windows::core::{factory, Interface, BOOL, PWSTR};
     use windows::Graphics::Capture::{GraphicsCaptureItem, GraphicsCapturePicker};
-    use windows::Win32::Foundation::{HWND, LPARAM, RECT};
+    use windows::Win32::Foundation::{CloseHandle, HWND, LPARAM, RECT};
+    use windows::Win32::System::Threading::{
+        OpenProcess, QueryFullProcessImageNameW, PROCESS_NAME_FORMAT,
+        PROCESS_QUERY_LIMITED_INFORMATION,
+    };
     use windows::Win32::System::WinRT::Graphics::Capture::IGraphicsCaptureItemInterop;
     use windows::Win32::System::WinRT::{RoInitialize, RO_INIT_SINGLETHREADED};
     use windows::Win32::UI::Shell::IInitializeWithWindow;
@@ -240,10 +246,48 @@ mod windows_picker {
             version: PROTOCOL_VERSION,
             hwnd: hwnd_to_u64(hwnd),
             process_id,
+            process_name: process_name(process_id),
             title,
             width,
             height,
         })
+    }
+
+    fn process_name(process_id: u32) -> String {
+        let fallback = || format!("pid-{process_id}");
+        if process_id == 0 {
+            return fallback();
+        }
+
+        let Ok(process) =
+            (unsafe { OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, process_id) })
+        else {
+            return fallback();
+        };
+
+        let mut buffer = vec![0u16; 32768];
+        let mut len = buffer.len() as u32;
+        let result = unsafe {
+            QueryFullProcessImageNameW(
+                process,
+                PROCESS_NAME_FORMAT(0),
+                PWSTR(buffer.as_mut_ptr()),
+                &mut len,
+            )
+        };
+        let _ = unsafe { CloseHandle(process) };
+
+        if result.is_err() || len == 0 {
+            return fallback();
+        }
+
+        let path = String::from_utf16_lossy(&buffer[..len as usize]);
+        Path::new(&path)
+            .file_name()
+            .and_then(|name| name.to_str())
+            .filter(|name| !name.trim().is_empty())
+            .unwrap_or(path.as_str())
+            .to_string()
     }
 
     fn window_title(hwnd: HWND) -> String {

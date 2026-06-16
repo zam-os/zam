@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
+import { appDataDir, join as joinPath } from "@tauri-apps/api/path";
 import * as THREE from "three";
 
 // ── LOCALIZATION DICTIONARIES ─────────────────────────────────────────────
@@ -43,6 +44,29 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     session_completed_sub: "Great job completing this session! Your memory traces have been updated.",
     btn_back_to_dashboard: "Back to Dashboard",
     btn_open_graph: "Knowledge Map (3D)",
+    observer_title: "UI Observer",
+    observer_idle: "Load windows and choose one application window to observe.",
+    observer_loading: "Loading observable windows...",
+    observer_ready: "Selected: {title}",
+    observer_analyzing: "Capturing snapshot and asking the vision model...",
+    observer_done: "Observation saved. Latest report confidence: {confidence}",
+    observer_canceled: "Observation canceled.",
+    observer_error: "Observer error: {message}",
+    observer_refresh: "Refresh Windows",
+    observer_analyze: "Snapshot & Analyze",
+    observer_cancel: "Cancel",
+    observer_empty: "No observable windows found.",
+    observer_select_placeholder: "Select a window",
+    observer_history_title: "Observation Reports",
+    observer_history_refresh: "Refresh Reports",
+    observer_history_empty: "No observation reports yet.",
+    observer_history_loaded: "Loaded {count} observation report(s).",
+    observer_loop_start: "Start Loop",
+    observer_loop_stop: "Stop Loop",
+    observer_loop_idle: "Manual snapshots only.",
+    observer_loop_running: "Observer loop running. One snapshot at a time.",
+    observer_loop_waiting: "Observer loop running. Next snapshot in {seconds}s.",
+    observer_loop_stopped: "Observer loop stopped.",
     graph_title: "Knowledge Graph (3D)",
     graph_hint: "Drag to rotate • Click nodes to focus • Scroll to zoom",
     graph_focus: "Focus",
@@ -90,6 +114,29 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     session_completed_sub: "Hervorragende Arbeit! Deine Gedächtnispfade wurden aktualisiert.",
     btn_back_to_dashboard: "Zurück zur Übersicht",
     btn_open_graph: "Wissensnetz (3D)",
+    observer_title: "UI Observer",
+    observer_idle: "Fenster laden und ein Anwendungsfenster zur Beobachtung auswählen.",
+    observer_loading: "Beobachtbare Fenster werden geladen...",
+    observer_ready: "Ausgewählt: {title}",
+    observer_analyzing: "Erzeuge Snapshot und frage das Vision-Modell...",
+    observer_done: "Beobachtung gespeichert. Confidence des letzten Reports: {confidence}",
+    observer_canceled: "Beobachtung abgebrochen.",
+    observer_error: "Observer-Fehler: {message}",
+    observer_refresh: "Fenster aktualisieren",
+    observer_analyze: "Snapshot analysieren",
+    observer_cancel: "Abbrechen",
+    observer_empty: "Keine beobachtbaren Fenster gefunden.",
+    observer_select_placeholder: "Fenster auswählen",
+    observer_history_title: "Beobachtungsberichte",
+    observer_history_refresh: "Berichte aktualisieren",
+    observer_history_empty: "Noch keine Beobachtungsberichte.",
+    observer_history_loaded: "{count} Beobachtungsbericht(e) geladen.",
+    observer_loop_start: "Loop starten",
+    observer_loop_stop: "Loop stoppen",
+    observer_loop_idle: "Nur manuelle Snapshots.",
+    observer_loop_running: "Observer-Loop läuft. Immer nur ein Snapshot gleichzeitig.",
+    observer_loop_waiting: "Observer-Loop läuft. Nächster Snapshot in {seconds}s.",
+    observer_loop_stopped: "Observer-Loop gestoppt.",
     graph_title: "Wissensnetz (3D)",
     graph_hint: "Ziehen zum Drehen • Knoten klicken = Fokus • Scroll = Zoomen",
     graph_focus: "Fokus",
@@ -159,6 +206,52 @@ let waitTimeoutId: number | null = null;
 let evaluationRequestId = 0;
 let revealInProgress = false;
 let ratingSubmitInProgress = false;
+let observerWindows: ObserverWindowInfo[] = [];
+let observerReports: UiObservationReport[] = [];
+let observerSequence = 0;
+let observerAnalyzeInProgress = false;
+let observerAnalysisRequestId = 0;
+let observerLoopRunning = false;
+let observerLoopTimerId: number | null = null;
+const OBSERVER_LOOP_DELAY_MS = 60000;
+const observerSessionId = `desktop-${new Date().toISOString().replace(/[^0-9]/g, "").slice(0, 14)}`;
+
+interface ObserverWindowInfo {
+  version: number;
+  hwnd: number;
+  processId: number;
+  processName?: string;
+  title: string;
+  width: number;
+  height: number;
+}
+
+interface UiObservationReport {
+  version: number;
+  sessionId: string;
+  sequence: number;
+  observedFrom: string;
+  observedTo: string;
+  kind: string;
+  application: {
+    processName: string;
+    processId?: number;
+    windowTitle?: string;
+  };
+  summary: string;
+  actions: Array<{ type: string; target?: string; result?: string }>;
+  evidence: Array<{ type: string; ref: string; redacted: boolean }>;
+  confidence: number;
+  candidateTokens: Array<{ slug: string; confidence: number; rationale: string }>;
+}
+
+interface UiObservationsResponse {
+  sessionId: string;
+  after: number | null;
+  count: number;
+  nextSequence: number | null;
+  observations: UiObservationReport[];
+}
 
 // ── BRIDGE COMMAND RUNNER ────────────────────────────────────────────────
 async function runBridge<T = any>(cmd: string, args: string[] = []): Promise<T> {
@@ -173,6 +266,13 @@ async function runBridge<T = any>(cmd: string, args: string[] = []): Promise<T> 
 
 function t(key: string): string {
   return TRANSLATIONS[currentLocale]?.[key] || TRANSLATIONS["en"]?.[key] || key;
+}
+
+function tf(key: string, values: Record<string, string | number>): string {
+  return Object.entries(values).reduce(
+    (text, [name, value]) => text.split(`{${name}}`).join(String(value)),
+    t(key),
+  );
 }
 
 // ── STATIC TRANSLATIONS INITIALIZER ──────────────────────────────────────
@@ -191,6 +291,17 @@ function initializeTranslations() {
   document.getElementById("lbl-rating-instruction")!.textContent = t("lbl_rating_instruction");
   document.getElementById("btn-pause-session")!.textContent = t("btn_pause_session");
   document.getElementById("btn-reveal-answer")!.textContent = t("btn_reveal_answer");
+  document.getElementById("lbl-observer-title")!.textContent = t("observer_title");
+  document.getElementById("observer-status")!.textContent = t("observer_idle");
+  document.getElementById("btn-observer-refresh")!.textContent = t("observer_refresh");
+  document.getElementById("btn-observer-analyze")!.textContent = t("observer_analyze");
+  document.getElementById("btn-observer-cancel")!.textContent = t("observer_cancel");
+  document.getElementById("lbl-observer-history-title")!.textContent = t("observer_history_title");
+  document.getElementById("btn-observer-reports-refresh")!.textContent = t("observer_history_refresh");
+  document.getElementById("btn-observer-loop-start")!.textContent = t("observer_loop_start");
+  document.getElementById("btn-observer-loop-stop")!.textContent = t("observer_loop_stop");
+  document.getElementById("observer-loop-note")!.textContent = t("observer_loop_idle");
+  renderObserverHistory();
   
   // Rating labels
   document.getElementById("lbl-rate-1")!.textContent = t("lbl_rate_1");
@@ -206,6 +317,308 @@ function initializeTranslations() {
 
   // Locale badge
   document.getElementById("locale-badge")!.textContent = currentLocale.toUpperCase();
+}
+
+async function listObserverWindows(): Promise<void> {
+  const select = document.getElementById("observer-window-select") as HTMLSelectElement;
+  const analyzeButton = document.getElementById("btn-observer-analyze") as HTMLButtonElement;
+  const status = document.getElementById("observer-status")!;
+  const preview = document.getElementById("observer-report-preview")!;
+
+  status.textContent = t("observer_loading");
+  preview.classList.add("hidden");
+  analyzeButton.disabled = true;
+  select.disabled = true;
+  select.innerHTML = "";
+
+  try {
+    const raw = await invoke<string>("list_zam_observer_windows");
+    observerWindows = JSON.parse(raw) as ObserverWindowInfo[];
+
+    if (observerWindows.length === 0) {
+      const option = document.createElement("option");
+      option.value = "";
+      option.textContent = t("observer_empty");
+      select.appendChild(option);
+      status.textContent = t("observer_empty");
+      return;
+    }
+
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = t("observer_select_placeholder");
+    select.appendChild(placeholder);
+
+    for (const windowInfo of observerWindows) {
+      const option = document.createElement("option");
+      const processName = windowInfo.processName ?? `pid-${windowInfo.processId}`;
+      option.value = String(windowInfo.hwnd);
+      option.textContent = `${windowInfo.title} (${processName}, ${windowInfo.width}x${windowInfo.height})`;
+      select.appendChild(option);
+    }
+
+    status.textContent = t("observer_idle");
+  } catch (err) {
+    observerWindows = [];
+    status.textContent = tf("observer_error", { message: errorMessage(err) });
+  } finally {
+    syncObserverControls();
+  }
+}
+
+function selectedObserverWindow(): ObserverWindowInfo | null {
+  const select = document.getElementById("observer-window-select") as HTMLSelectElement;
+  const hwnd = Number(select.value);
+  if (!Number.isFinite(hwnd) || hwnd <= 0) return null;
+  return observerWindows.find((windowInfo) => windowInfo.hwnd === hwnd) ?? null;
+}
+
+function updateObserverSelection(): void {
+  const status = document.getElementById("observer-status")!;
+  const selected = selectedObserverWindow();
+  syncObserverControls();
+  status.textContent = selected
+    ? tf("observer_ready", { title: selected.title })
+    : t("observer_idle");
+}
+
+function syncObserverControls(): void {
+  const selected = selectedObserverWindow();
+  const refreshButton = document.getElementById("btn-observer-refresh") as HTMLButtonElement;
+  const analyzeButton = document.getElementById("btn-observer-analyze") as HTMLButtonElement;
+  const cancelButton = document.getElementById("btn-observer-cancel") as HTMLButtonElement;
+  const loopStartButton = document.getElementById("btn-observer-loop-start") as HTMLButtonElement;
+  const loopStopButton = document.getElementById("btn-observer-loop-stop") as HTMLButtonElement;
+  const select = document.getElementById("observer-window-select") as HTMLSelectElement;
+  const locked = observerAnalyzeInProgress || observerLoopRunning;
+
+  refreshButton.disabled = locked;
+  select.disabled = locked;
+  analyzeButton.disabled = locked || selected === null;
+  cancelButton.classList.toggle("hidden", !observerAnalyzeInProgress);
+  cancelButton.disabled = !observerAnalyzeInProgress;
+  loopStartButton.disabled = locked || selected === null;
+  loopStopButton.classList.toggle("hidden", !observerLoopRunning);
+  loopStopButton.disabled = !observerLoopRunning;
+}
+
+function setObserverAnalysisBusy(busy: boolean): void {
+  observerAnalyzeInProgress = busy;
+  syncObserverControls();
+}
+
+async function analyzeSelectedObserverWindow(): Promise<boolean> {
+  if (observerAnalyzeInProgress) return false;
+  const selected = selectedObserverWindow();
+  if (!selected) return false;
+
+  const status = document.getElementById("observer-status")!;
+  const preview = document.getElementById("observer-report-preview")!;
+  const observedFrom = new Date().toISOString();
+  const requestId = observerAnalysisRequestId + 1;
+  observerAnalysisRequestId = requestId;
+
+  setObserverAnalysisBusy(true);
+  status.textContent = t("observer_analyzing");
+  preview.classList.add("hidden");
+
+  try {
+    const sequence = observerSequence + 1;
+    const snapshotDir = await joinPath(await appDataDir(), "observer", observerSessionId);
+    const snapshotPath = await joinPath(snapshotDir, `${String(sequence).padStart(6, "0")}.png`);
+
+    await invoke<string>("snapshot_zam_observer_window", {
+      hwnd: String(selected.hwnd),
+      output: snapshotPath,
+    });
+    if (requestId !== observerAnalysisRequestId) return false;
+
+    const observedTo = new Date().toISOString();
+    const report = await runBridge<UiObservationReport>("observe-ui-snapshot", [
+      "--session",
+      observerSessionId,
+      "--sequence",
+      String(sequence),
+      "--image",
+      snapshotPath,
+      "--observed-from",
+      observedFrom,
+      "--observed-to",
+      observedTo,
+      "--process-name",
+      selected.processName ?? `pid-${selected.processId}`,
+      "--process-id",
+      String(selected.processId),
+      "--window-title",
+      selected.title,
+      "--evidence-ref",
+      snapshotPath,
+      "--write-log",
+    ]);
+    if (requestId !== observerAnalysisRequestId) return false;
+
+    observerSequence = sequence;
+    await loadObserverReports({ updateStatus: false });
+    status.textContent = tf("observer_done", {
+      confidence: report.confidence.toFixed(2),
+    });
+    preview.textContent = JSON.stringify(report, null, 2);
+    preview.classList.remove("hidden");
+    return true;
+  } catch (err) {
+    if (requestId === observerAnalysisRequestId) {
+      status.textContent = tf("observer_error", { message: errorMessage(err) });
+    }
+    return false;
+  } finally {
+    if (requestId === observerAnalysisRequestId) {
+      setObserverAnalysisBusy(false);
+    }
+  }
+}
+
+function cancelObserverAnalysis(): void {
+  if (!observerAnalyzeInProgress) return;
+  observerAnalysisRequestId++;
+  setObserverAnalysisBusy(false);
+  document.getElementById("observer-status")!.textContent = t("observer_canceled");
+  cancelActiveBridgeRequest();
+}
+
+function startObserverLoop(): void {
+  if (observerLoopRunning || observerAnalyzeInProgress || !selectedObserverWindow()) return;
+  observerLoopRunning = true;
+  document.getElementById("observer-loop-note")!.textContent = t("observer_loop_running");
+  document.getElementById("observer-status")!.textContent = t("observer_loop_running");
+  syncObserverControls();
+  void runObserverLoopIteration();
+}
+
+function stopObserverLoop(): void {
+  if (!observerLoopRunning) return;
+  observerLoopRunning = false;
+  clearObserverLoopTimer();
+  if (observerAnalyzeInProgress) {
+    cancelObserverAnalysis();
+  }
+  document.getElementById("observer-loop-note")!.textContent = t("observer_loop_idle");
+  document.getElementById("observer-status")!.textContent = t("observer_loop_stopped");
+  syncObserverControls();
+}
+
+async function runObserverLoopIteration(): Promise<void> {
+  if (!observerLoopRunning) return;
+
+  const success = await analyzeSelectedObserverWindow();
+  if (!observerLoopRunning) return;
+
+  if (!success) {
+    observerLoopRunning = false;
+    document.getElementById("observer-loop-note")!.textContent = t("observer_loop_idle");
+    syncObserverControls();
+    return;
+  }
+
+  const seconds = Math.round(OBSERVER_LOOP_DELAY_MS / 1000);
+  document.getElementById("observer-loop-note")!.textContent = tf("observer_loop_waiting", {
+    seconds,
+  });
+  clearObserverLoopTimer();
+  observerLoopTimerId = window.setTimeout(() => {
+    void runObserverLoopIteration();
+  }, OBSERVER_LOOP_DELAY_MS);
+}
+
+function clearObserverLoopTimer(): void {
+  if (observerLoopTimerId !== null) {
+    clearTimeout(observerLoopTimerId);
+    observerLoopTimerId = null;
+  }
+}
+
+async function loadObserverReports(
+  opts: { updateStatus?: boolean } = {},
+): Promise<void> {
+  const status = document.getElementById("observer-status")!;
+
+  try {
+    const response = await runBridge<UiObservationsResponse>("get-observations", [
+      "--session",
+      observerSessionId,
+      "--after",
+      "0",
+      "--limit",
+      "25",
+    ]);
+    observerReports = response.observations;
+    observerSequence = Math.max(
+      observerSequence,
+      ...observerReports.map((report) => report.sequence),
+    );
+    renderObserverHistory();
+    if (opts.updateStatus) {
+      status.textContent = tf("observer_history_loaded", {
+        count: observerReports.length,
+      });
+    }
+  } catch (err) {
+    if (opts.updateStatus) {
+      status.textContent = tf("observer_error", { message: errorMessage(err) });
+    }
+  }
+}
+
+function renderObserverHistory(): void {
+  const list = document.getElementById("observer-history-list");
+  if (!list) return;
+
+  list.innerHTML = "";
+  if (observerReports.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "observer-history-empty";
+    empty.textContent = t("observer_history_empty");
+    list.appendChild(empty);
+    return;
+  }
+
+  for (const report of [...observerReports].sort((left, right) => right.sequence - left.sequence)) {
+    const card = document.createElement("article");
+    card.className = "observer-report-card";
+
+    const meta = document.createElement("div");
+    meta.className = "observer-report-meta";
+    const processName = report.application.processName;
+    const observedAt = new Date(report.observedTo).toLocaleTimeString();
+    meta.textContent = `#${report.sequence} · ${report.kind} · ${processName} · ${observedAt} · ${report.confidence.toFixed(2)}`;
+
+    const summary = document.createElement("p");
+    summary.className = "observer-report-summary";
+    summary.textContent = report.summary;
+
+    card.appendChild(meta);
+    card.appendChild(summary);
+
+    if (report.candidateTokens.length > 0) {
+      const tokens = document.createElement("div");
+      tokens.className = "observer-report-tokens";
+      tokens.textContent = report.candidateTokens
+        .map((token) => `${token.slug} (${token.confidence.toFixed(2)})`)
+        .join(", ");
+      card.appendChild(tokens);
+    }
+
+    card.addEventListener("click", () => {
+      const preview = document.getElementById("observer-report-preview")!;
+      preview.textContent = JSON.stringify(report, null, 2);
+      preview.classList.remove("hidden");
+    });
+
+    list.appendChild(card);
+  }
+}
+
+function errorMessage(err: unknown): string {
+  return err instanceof Error ? err.message : String(err);
 }
 
 // ── VIEW ROUTING ──────────────────────────────────────────────────────────
@@ -1212,6 +1625,34 @@ window.addEventListener("DOMContentLoaded", () => {
       switchView("graph-view");
     });
   }
+
+  document.getElementById("btn-observer-refresh")!.addEventListener("click", () => {
+    void listObserverWindows();
+  });
+
+  document.getElementById("observer-window-select")!.addEventListener("change", () => {
+    updateObserverSelection();
+  });
+
+  document.getElementById("btn-observer-analyze")!.addEventListener("click", () => {
+    void analyzeSelectedObserverWindow();
+  });
+
+  document.getElementById("btn-observer-cancel")!.addEventListener("click", () => {
+    cancelObserverAnalysis();
+  });
+
+  document.getElementById("btn-observer-loop-start")!.addEventListener("click", () => {
+    startObserverLoop();
+  });
+
+  document.getElementById("btn-observer-loop-stop")!.addEventListener("click", () => {
+    stopObserverLoop();
+  });
+
+  document.getElementById("btn-observer-reports-refresh")!.addEventListener("click", () => {
+    void loadObserverReports({ updateStatus: true });
+  });
 
   // Graph back + refresh
   const backBtn = document.getElementById("btn-graph-back");

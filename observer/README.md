@@ -69,3 +69,8 @@ back with:
 ```bash
 zam bridge get-observations --session session-1 --after 0
 ```
+
+The desktop dashboard includes a manual MVP panel for this path: refresh visible
+windows, choose one HWND, run `Snapshot & Analyze`, and inspect the persisted
+report preview and session report history. This is intentionally a one-shot
+diagnostic flow before the continuous observer loop is added.

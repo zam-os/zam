@@ -343,6 +343,146 @@ body {
   margin-top: 15px;
 }
 
+.observer-panel {
+  margin-top: 28px;
+  padding: 22px;
+}
+
+.observer-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.observer-panel h2 {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: var(--clr-accent-cyan);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.observer-status {
+  font-size: 13px;
+  color: var(--clr-text-secondary);
+  line-height: 1.4;
+}
+
+.observer-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.observer-window-select {
+  min-width: 0;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: var(--clr-text-primary);
+  font: inherit;
+  font-size: 13px;
+  padding: 10px 12px;
+  outline: none;
+}
+
+.observer-window-select:focus {
+  border-color: var(--clr-accent-cyan);
+}
+
+.observer-loop-controls {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.observer-loop-note {
+  color: var(--clr-text-secondary);
+  font-size: 12px;
+}
+
+.observer-report-preview {
+  margin-top: 16px;
+  max-height: 220px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  color: #a5f3fc;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  line-height: 1.45;
+  padding: 12px;
+}
+
+.observer-history {
+  margin-top: 18px;
+}
+
+.observer-history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.observer-history-header h3 {
+  color: var(--clr-text-primary);
+  font-size: 13px;
+  letter-spacing: 0.4px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.observer-history-list {
+  display: grid;
+  gap: 10px;
+}
+
+.observer-history-empty {
+  color: var(--clr-text-secondary);
+  font-size: 13px;
+  margin: 0;
+}
+
+.observer-report-card {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.observer-report-meta {
+  color: var(--clr-text-secondary);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 12px;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.observer-report-summary {
+  color: var(--clr-text-primary);
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.observer-report-tokens {
+  color: var(--clr-accent-cyan);
+  font-size: 12px;
+  margin-top: 8px;
+}
+
 /* ── VIEW 2: STUDY SESSION CARD ──────────────────────────────────────────── */
 .study-card {
   padding: 35px;
