@@ -20,6 +20,7 @@ import type {
 } from "../../kernel/index.js";
 import {
   analyzeObservation,
+  appendUiObservationReport,
   buildReviewQueue,
   createToken,
   discoverSkills,
@@ -39,6 +40,7 @@ import {
   openDatabase,
   pairCommands,
   readMonitorLog,
+  readUiObservationLog,
   resolveReviewContext,
 } from "../../kernel/index.js";
 import {
@@ -708,6 +710,36 @@ bridgeCommand
 // ── zam bridge observe-ui-snapshot ─────────────────────────────────────────
 
 bridgeCommand
+  .command("get-observations")
+  .description("Read UI observer reports for a session (JSON)")
+  .requiredOption("--session <id>", "Observer session ID")
+  .option("--after <n>", "Only return observations after this sequence")
+  .option("--limit <n>", "Maximum observations to return", "100")
+  .action((opts) => {
+    try {
+      const after =
+        opts.after === undefined
+          ? undefined
+          : parseNonNegativeIntegerOption("after", opts.after);
+      const limit = parseNonNegativeIntegerOption("limit", opts.limit);
+      const observations = readUiObservationLog(opts.session)
+        .filter((report) => after === undefined || report.sequence > after)
+        .slice(0, limit);
+      const last = observations[observations.length - 1];
+
+      jsonOut({
+        sessionId: opts.session,
+        after: after ?? null,
+        count: observations.length,
+        nextSequence: last?.sequence ?? after ?? null,
+        observations,
+      });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
+bridgeCommand
   .command("observe-ui-snapshot")
   .description(
     "Analyze a captured UI snapshot with the configured vision LLM (JSON)",
@@ -725,6 +757,7 @@ bridgeCommand
   .option("--max-tokens <n>", "Model response token budget")
   .option("--timeout <ms>", "Hard request timeout in milliseconds")
   .option("--redacted", "Mark the snapshot evidence as redacted")
+  .option("--write-log", "Append the generated report to the session JSONL")
   .action(async (opts) => {
     const sequence = parseNonNegativeIntegerOption("sequence", opts.sequence);
     const processId =
@@ -758,6 +791,9 @@ bridgeCommand
         maxTokens,
         hardTimeoutMs,
       });
+      if (opts.writeLog === true) {
+        appendUiObservationReport(report);
+      }
       jsonOut(report);
     });
   });

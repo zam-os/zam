@@ -1,10 +1,18 @@
+import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   isUiObservationReport,
   parseUiObservationLog,
   type UiObservationReport,
 } from "../../../src/kernel/observation/ui-observer.js";
-import { getUiObservationPath } from "../../../src/kernel/observation/ui-observer-io.js";
+import {
+  appendUiObservationReport,
+  getUiObservationPath,
+  getUiObserverDir,
+  readUiObservationLog,
+} from "../../../src/kernel/observation/ui-observer-io.js";
 
 function report(sequence: number): UiObservationReport {
   return {
@@ -56,5 +64,54 @@ describe("UI observer protocol", () => {
     expect(() => getUiObservationPath("../other-session")).toThrow(
       "Invalid observer session ID",
     );
+  });
+
+  it("appends schema-valid reports and reads them back sorted", () => {
+    const originalDir = process.env.ZAM_OBSERVER_DIR;
+    const dir = mkdtempSync(join(tmpdir(), "zam-observer-log-"));
+    process.env.ZAM_OBSERVER_DIR = dir;
+
+    try {
+      expect(getUiObserverDir()).toBe(dir);
+      appendUiObservationReport(report(2));
+      appendUiObservationReport(report(1));
+
+      const path = getUiObservationPath("session-1");
+      expect(existsSync(path)).toBe(true);
+      expect(readFileSync(path, "utf8").trim().split("\n")).toHaveLength(2);
+      expect(
+        readUiObservationLog("session-1").map((item) => item.sequence),
+      ).toEqual([1, 2]);
+    } finally {
+      if (originalDir === undefined) {
+        delete process.env.ZAM_OBSERVER_DIR;
+      } else {
+        process.env.ZAM_OBSERVER_DIR = originalDir;
+      }
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects invalid reports before appending", () => {
+    const originalDir = process.env.ZAM_OBSERVER_DIR;
+    const dir = mkdtempSync(join(tmpdir(), "zam-observer-invalid-"));
+    process.env.ZAM_OBSERVER_DIR = dir;
+
+    try {
+      expect(() =>
+        appendUiObservationReport({
+          ...report(1),
+          confidence: 2,
+        }),
+      ).toThrow("Invalid UI observation report");
+      expect(readUiObservationLog("session-1")).toEqual([]);
+    } finally {
+      if (originalDir === undefined) {
+        delete process.env.ZAM_OBSERVER_DIR;
+      } else {
+        process.env.ZAM_OBSERVER_DIR = originalDir;
+      }
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });

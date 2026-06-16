@@ -263,7 +263,7 @@ observer stop --session <id>
 bridge get-observations --session <id> --after <sequence>
 bridge inspect-observation --session <id> --sequence <n>
 bridge observe-ui-snapshot --session <id> --sequence <n> --image <path.png> \
-  --observed-from <iso> --observed-to <iso> --process-name <name>
+  --observed-from <iso> --observed-to <iso> --process-name <name> --write-log
 ```
 
 The session agent may also send a narrow watch directive:
@@ -434,6 +434,8 @@ Implemented foundation:
 - OpenAI-compatible vision snapshot adapter in the CLI layer;
 - `zam bridge observe-ui-snapshot` for turning a PNG keyframe into a validated
   `UiObservationReport`;
+- append/read support for UI observation session JSONL via
+  `appendUiObservationReport` and `zam bridge get-observations`;
 - native x64 and ARM64 observer CI builds;
 - release-resource preparation for the Tauri package;
 - Tauri commands for observer probe and window selection.

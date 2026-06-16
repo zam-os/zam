@@ -228,6 +228,7 @@ export {
   UI_OBSERVATION_PROTOCOL_VERSION,
 } from "./observation/ui-observer.js";
 export {
+  appendUiObservationReport,
   ensureUiObserverDir,
   getUiObservationPath,
   getUiObserverDir,

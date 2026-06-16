@@ -56,9 +56,16 @@ zam bridge observe-ui-snapshot \
   --observed-from 2026-06-16T07:00:00.000Z \
   --observed-to 2026-06-16T07:00:01.000Z \
   --process-name WindowsTerminal.exe \
-  --window-title zam
+  --window-title zam \
+  --write-log
 ```
 
 It sends the PNG to the configured OpenAI-compatible vision model and returns a
 schema-validated `UiObservationReport`. Invalid model output is downgraded to an
 `uncertain` report instead of letting the model define the observer contract.
+With `--write-log`, the same report is appended to the session JSONL. Read it
+back with:
+
+```bash
+zam bridge get-observations --session session-1 --after 0
+```
