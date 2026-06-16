@@ -104,6 +104,12 @@ jobs:
       - name: Prepare Self-Contained Desktop Bridge
         run: npm run desktop:prepare -- --bundle-node
 
+      - name: Build Native Observer Sidecar
+        run: cargo build --manifest-path observer/Cargo.toml --release --target ${{ matrix.target }}
+
+      - name: Prepare Observer Sidecar
+        run: npm run observer:prepare -- --target ${{ matrix.target }}
+
       - name: Verify locked Rust dependency graph
         working-directory: desktop/src-tauri
         run: cargo metadata --locked --format-version 1 --no-deps

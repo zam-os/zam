@@ -21,6 +21,11 @@ struct BridgeRuntime {
     working_dir: PathBuf,
 }
 
+struct ObserverRuntime {
+    executable_path: PathBuf,
+    working_dir: PathBuf,
+}
+
 fn home_dir() -> Option<PathBuf> {
     env::var_os("USERPROFILE")
         .or_else(|| env::var_os("HOME"))
@@ -140,6 +145,127 @@ fn bundled_runtime(app: &tauri::AppHandle) -> Option<BridgeRuntime> {
     None
 }
 
+fn observer_target_triple() -> &'static str {
+    #[cfg(all(target_os = "windows", target_arch = "x86_64"))]
+    {
+        "x86_64-pc-windows-msvc"
+    }
+    #[cfg(all(target_os = "windows", target_arch = "aarch64"))]
+    {
+        "aarch64-pc-windows-msvc"
+    }
+    #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
+    {
+        "x86_64-unknown-linux-gnu"
+    }
+    #[cfg(not(any(
+        all(target_os = "windows", target_arch = "x86_64"),
+        all(target_os = "windows", target_arch = "aarch64"),
+        all(target_os = "linux", target_arch = "x86_64")
+    )))]
+    {
+        "unsupported"
+    }
+}
+
+fn observer_executable_name() -> &'static str {
+    #[cfg(target_os = "windows")]
+    {
+        "zam-observer.exe"
+    }
+    #[cfg(not(target_os = "windows"))]
+    {
+        "zam-observer"
+    }
+}
+
+fn resolve_observer_runtime(app: &tauri::AppHandle) -> Option<ObserverRuntime> {
+    if let Some(path) = env::var_os("ZAM_OBSERVER") {
+        let executable_path = PathBuf::from(path);
+        if executable_path.exists() {
+            let working_dir = executable_path
+                .parent()
+                .map(Path::to_path_buf)
+                .unwrap_or_else(|| PathBuf::from("."));
+            return Some(ObserverRuntime {
+                executable_path,
+                working_dir,
+            });
+        }
+    }
+
+    let target = observer_target_triple();
+    if target != "unsupported" {
+        if let Ok(resource_dir) = app.path().resource_dir() {
+            let resource_dir = strip_verbatim(resource_dir);
+            let candidates = [
+                resource_dir
+                    .join("resources")
+                    .join("zam-observer")
+                    .join(target)
+                    .join(observer_executable_name()),
+                resource_dir
+                    .join("zam-observer")
+                    .join(target)
+                    .join(observer_executable_name()),
+            ];
+
+            for executable_path in candidates {
+                if executable_path.exists() {
+                    let working_dir = executable_path
+                        .parent()
+                        .map(Path::to_path_buf)
+                        .unwrap_or_else(|| PathBuf::from("."));
+                    return Some(ObserverRuntime {
+                        executable_path,
+                        working_dir,
+                    });
+                }
+            }
+        }
+    }
+
+    if let Ok(cwd) = env::current_dir() {
+        let candidates = [
+            cwd.join("observer")
+                .join("target")
+                .join("debug")
+                .join(observer_executable_name()),
+            cwd.join("..")
+                .join("observer")
+                .join("target")
+                .join("debug")
+                .join(observer_executable_name()),
+            cwd.join("observer")
+                .join("target")
+                .join(target)
+                .join("release")
+                .join(observer_executable_name()),
+            cwd.join("..")
+                .join("observer")
+                .join("target")
+                .join(target)
+                .join("release")
+                .join(observer_executable_name()),
+        ];
+
+        for executable_path in candidates {
+            if executable_path.exists() {
+                let working_dir = executable_path
+                    .parent()
+                    .map(Path::to_path_buf)
+                    .unwrap_or_else(|| PathBuf::from("."));
+                return Some(ObserverRuntime {
+                    executable_path,
+                    working_dir,
+                });
+            }
+        }
+    }
+
+    None
+}
+
 fn resolve_bridge_runtime(app: &tauri::AppHandle) -> Option<BridgeRuntime> {
     if let Some(runtime) = bundled_runtime(app) {
         return Some(runtime);
@@ -159,6 +285,136 @@ fn resolve_bridge_runtime(app: &tauri::AppHandle) -> Option<BridgeRuntime> {
         cli_path,
         working_dir,
     })
+}
+
+#[tauri::command]
+async fn probe_zam_observer(app: tauri::AppHandle) -> Result<String, String> {
+    tauri::async_runtime::spawn_blocking(move || probe_zam_observer_blocking(&app))
+        .await
+        .map_err(|e| format!("Observer probe task failed: {}", e))?
+}
+
+fn probe_zam_observer_blocking(app: &tauri::AppHandle) -> Result<String, String> {
+    run_zam_observer_blocking(app, &["probe"])
+}
+
+#[tauri::command]
+async fn list_zam_observer_windows(app: tauri::AppHandle) -> Result<String, String> {
+    tauri::async_runtime::spawn_blocking(move || list_zam_observer_windows_blocking(&app))
+        .await
+        .map_err(|e| format!("Observer window list task failed: {}", e))?
+}
+
+fn list_zam_observer_windows_blocking(app: &tauri::AppHandle) -> Result<String, String> {
+    run_zam_observer_blocking(app, &["list-windows"])
+}
+
+#[tauri::command]
+async fn pick_zam_observer_window(app: tauri::AppHandle) -> Result<String, String> {
+    tauri::async_runtime::spawn_blocking(move || pick_zam_observer_window_blocking(&app))
+        .await
+        .map_err(|e| format!("Observer window picker task failed: {}", e))?
+}
+
+fn pick_zam_observer_window_blocking(app: &tauri::AppHandle) -> Result<String, String> {
+    run_zam_observer_blocking(app, &["pick-window"])
+}
+
+#[tauri::command]
+async fn capture_zam_observer_once(app: tauri::AppHandle) -> Result<String, String> {
+    tauri::async_runtime::spawn_blocking(move || capture_zam_observer_once_blocking(&app))
+        .await
+        .map_err(|e| format!("Observer capture task failed: {}", e))?
+}
+
+fn capture_zam_observer_once_blocking(app: &tauri::AppHandle) -> Result<String, String> {
+    run_zam_observer_blocking(app, &["capture-once"])
+}
+
+#[tauri::command]
+async fn capture_zam_observer_window(
+    app: tauri::AppHandle,
+    hwnd: String,
+) -> Result<String, String> {
+    tauri::async_runtime::spawn_blocking(move || capture_zam_observer_window_blocking(&app, hwnd))
+        .await
+        .map_err(|e| format!("Observer window capture task failed: {}", e))?
+}
+
+fn capture_zam_observer_window_blocking(
+    app: &tauri::AppHandle,
+    hwnd: String,
+) -> Result<String, String> {
+    let args = vec!["capture-window".to_string(), "--hwnd".to_string(), hwnd];
+    run_zam_observer_blocking_owned(app, &args)
+}
+
+#[tauri::command]
+async fn snapshot_zam_observer_window(
+    app: tauri::AppHandle,
+    hwnd: String,
+    output: String,
+) -> Result<String, String> {
+    tauri::async_runtime::spawn_blocking(move || {
+        snapshot_zam_observer_window_blocking(&app, hwnd, output)
+    })
+    .await
+    .map_err(|e| format!("Observer window snapshot task failed: {}", e))?
+}
+
+fn snapshot_zam_observer_window_blocking(
+    app: &tauri::AppHandle,
+    hwnd: String,
+    output: String,
+) -> Result<String, String> {
+    let args = vec![
+        "snapshot-window".to_string(),
+        "--hwnd".to_string(),
+        hwnd,
+        "--output".to_string(),
+        output,
+    ];
+    run_zam_observer_blocking_owned(app, &args)
+}
+
+fn run_zam_observer_blocking(app: &tauri::AppHandle, args: &[&str]) -> Result<String, String> {
+    let args: Vec<String> = args.iter().map(|arg| (*arg).to_string()).collect();
+    run_zam_observer_blocking_owned(app, &args)
+}
+
+fn run_zam_observer_blocking_owned(
+    app: &tauri::AppHandle,
+    args: &[String],
+) -> Result<String, String> {
+    let runtime = resolve_observer_runtime(app).ok_or_else(|| {
+        "Could not locate the ZAM observer sidecar. Reinstall the desktop app, \
+         build observer/Cargo.toml, or set ZAM_OBSERVER to the executable path."
+            .to_string()
+    })?;
+
+    let mut command = Command::new(&runtime.executable_path);
+    #[cfg(target_os = "windows")]
+    command.creation_flags(0x08000000); // CREATE_NO_WINDOW
+
+    command.current_dir(&runtime.working_dir);
+    command.args(args);
+    command.stdout(std::process::Stdio::piped());
+    command.stderr(std::process::Stdio::piped());
+
+    let output = command
+        .output()
+        .map_err(|e| format!("Failed to run ZAM observer: {}", e))?;
+
+    if !output.status.success() {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        return Err(format!(
+            "ZAM observer command failed with status {}: {}",
+            output.status,
+            stderr.trim()
+        ));
+    }
+
+    String::from_utf8(output.stdout).map_err(|e| format!("Invalid observer output: {}", e))
 }
 
 struct PersistentBridge {
@@ -430,7 +686,13 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             execute_zam_bridge,
-            cancel_zam_bridge
+            cancel_zam_bridge,
+            probe_zam_observer,
+            list_zam_observer_windows,
+            pick_zam_observer_window,
+            capture_zam_observer_once,
+            capture_zam_observer_window,
+            snapshot_zam_observer_window
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

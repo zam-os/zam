@@ -35,7 +35,11 @@
     "typecheck": "tsc --noEmit",
     "lint": "biome check src/",
     "format": "biome format --write src/",
-    "desktop:prepare": "node scripts/prepare-desktop-bridge.mjs"
+    "desktop:prepare": "node scripts/prepare-desktop-bridge.mjs",
+    "observer:check": "cargo check --manifest-path observer/Cargo.toml",
+    "observer:test": "cargo test --manifest-path observer/Cargo.toml",
+    "observer:build": "cargo build --manifest-path observer/Cargo.toml --release",
+    "observer:prepare": "node scripts/prepare-observer-sidecar.mjs"
   },
   "repository": {
     "type": "git",

@@ -27,7 +27,17 @@ Confirmed ratings update the card, review log, session step, prerequisite
 blocking state, and synthesis audit in one transaction. Repeating synthesis
 for the same session and token does not apply the rating twice.
 
-## Level 2 — System-Level Tracing
+## Level 2 — Screen and UI Observation
+
+The first Windows 11 architecture proposal combines native UI events, input
+metadata, and sparse visual evidence in a separate observer agent:
+
+- [Windows 11 UI observer proposal](../windows-ui-observer-proposal.md)
+
+The observer reports structured evidence to the session agent. It does not
+directly update cards or FSRS state.
+
+## Supplemental System-Level Tracing
 
 Depending on the operating system, native tracing facilities could track broader system changes beyond the terminal:
 

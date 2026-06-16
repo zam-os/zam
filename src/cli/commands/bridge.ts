@@ -50,6 +50,7 @@ import {
   isLlmOnline,
   translateQuestionViaLLM,
 } from "../llm/client.js";
+import { observeUiSnapshotViaLLM } from "../llm/vision.js";
 import { ensureDefaultUser, resolveUser } from "./resolve-user.js";
 import { withDb as sharedWithDb } from "./shared/db.js";
 
@@ -65,6 +66,14 @@ function jsonError(message: string): never {
   }
   console.log(JSON.stringify({ error: message }, null, 2));
   process.exit(1);
+}
+
+function parseNonNegativeIntegerOption(name: string, value: string): number {
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed < 0) {
+    jsonError(`${name} must be a non-negative integer`);
+  }
+  return parsed;
 }
 
 async function withDb(
@@ -694,6 +703,63 @@ bridgeCommand
     } catch (err) {
       jsonError((err as Error).message);
     }
+  });
+
+// ── zam bridge observe-ui-snapshot ─────────────────────────────────────────
+
+bridgeCommand
+  .command("observe-ui-snapshot")
+  .description(
+    "Analyze a captured UI snapshot with the configured vision LLM (JSON)",
+  )
+  .requiredOption("--session <id>", "Observer session ID")
+  .requiredOption("--sequence <n>", "Monotonic observation sequence number")
+  .requiredOption("--image <path>", "PNG snapshot path")
+  .requiredOption("--observed-from <iso>", "Observation window start time")
+  .requiredOption("--observed-to <iso>", "Observation window end time")
+  .requiredOption("--process-name <name>", "Observed application process name")
+  .option("--process-id <n>", "Observed application process ID")
+  .option("--window-title <title>", "Observed window title")
+  .option("--evidence-ref <ref>", "Evidence reference to put in the report")
+  .option("--model <model>", "Override configured LLM model for this request")
+  .option("--max-tokens <n>", "Model response token budget")
+  .option("--timeout <ms>", "Hard request timeout in milliseconds")
+  .option("--redacted", "Mark the snapshot evidence as redacted")
+  .action(async (opts) => {
+    const sequence = parseNonNegativeIntegerOption("sequence", opts.sequence);
+    const processId =
+      opts.processId === undefined
+        ? undefined
+        : parseNonNegativeIntegerOption("process-id", opts.processId);
+    const maxTokens =
+      opts.maxTokens === undefined
+        ? undefined
+        : parseNonNegativeIntegerOption("max-tokens", opts.maxTokens);
+    const hardTimeoutMs =
+      opts.timeout === undefined
+        ? undefined
+        : parseNonNegativeIntegerOption("timeout", opts.timeout);
+
+    await withDb(async (db) => {
+      const report = await observeUiSnapshotViaLLM(db, {
+        sessionId: opts.session,
+        sequence,
+        observedFrom: opts.observedFrom,
+        observedTo: opts.observedTo,
+        imagePath: opts.image,
+        application: {
+          processName: opts.processName,
+          processId,
+          windowTitle: opts.windowTitle,
+        },
+        evidenceRef: opts.evidenceRef,
+        redacted: opts.redacted === true,
+        model: opts.model,
+        maxTokens,
+        hardTimeoutMs,
+      });
+      jsonOut(report);
+    });
   });
 
 // ── zam bridge check-llm ──────────────────────────────────────────────────
