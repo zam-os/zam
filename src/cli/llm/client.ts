@@ -49,6 +49,27 @@ export async function getLlmConfig(db: Database): Promise<LlmConfig> {
   };
 }
 
+/**
+ * Vision/UI-observer model settings, kept separate from the text-chat config.
+ *
+ * The default text model (e.g. a local German chat model) cannot interpret
+ * images, so screen snapshots must target a deliberately chosen multimodal
+ * endpoint. `llm.vision.enabled` is therefore an explicit, default-off opt-in:
+ * it doubles as the consent gate for sending captured screen content to a
+ * provider. `url`/`model`/`apiKey` fall back to the base `llm.*` config so a
+ * single multimodal endpoint only needs `llm.vision.enabled=true`.
+ */
+export async function getVisionConfig(db: Database): Promise<LlmConfig> {
+  const base = await getLlmConfig(db);
+  return {
+    enabled: (await getSetting(db, "llm.vision.enabled")) === "true",
+    url: (await getSetting(db, "llm.vision.url")) || base.url,
+    model: (await getSetting(db, "llm.vision.model")) || base.model,
+    apiKey: (await getSetting(db, "llm.vision.api_key")) || base.apiKey,
+    locale: base.locale,
+  };
+}
+
 const LANGUAGE_NAMES: Record<SupportedLocale, string> = {
   en: "English",
   de: "German",

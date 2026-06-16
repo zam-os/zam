@@ -213,6 +213,11 @@ let observerAnalyzeInProgress = false;
 let observerAnalysisRequestId = 0;
 let observerLoopRunning = false;
 let observerLoopTimerId: number | null = null;
+// Forward-paging cursor for get-observations. The bridge returns reports with
+// sequence > after (oldest-first), so we advance this past everything seen to
+// keep pulling only new reports instead of re-reading the first page forever.
+let observerReportsAfter = 0;
+const OBSERVER_HISTORY_LIMIT = 100;
 const OBSERVER_LOOP_DELAY_MS = 60000;
 const observerSessionId = `desktop-${new Date().toISOString().replace(/[^0-9]/g, "").slice(0, 14)}`;
 
@@ -424,8 +429,12 @@ async function analyzeSelectedObserverWindow(): Promise<boolean> {
 
   try {
     const sequence = observerSequence + 1;
+    const snapshotName = `${String(sequence).padStart(6, "0")}.png`;
     const snapshotDir = await joinPath(await appDataDir(), "observer", observerSessionId);
-    const snapshotPath = await joinPath(snapshotDir, `${String(sequence).padStart(6, "0")}.png`);
+    const snapshotPath = await joinPath(snapshotDir, snapshotName);
+    // Portable, non-leaking evidence reference for the persisted report; the
+    // absolute path stays in --image only.
+    const evidenceRef = `${observerSessionId}/${snapshotName}`;
 
     await invoke<string>("snapshot_zam_observer_window", {
       hwnd: String(selected.hwnd),
@@ -452,7 +461,7 @@ async function analyzeSelectedObserverWindow(): Promise<boolean> {
       "--window-title",
       selected.title,
       "--evidence-ref",
-      snapshotPath,
+      evidenceRef,
       "--write-log",
     ]);
     if (requestId !== observerAnalysisRequestId) return false;
@@ -546,15 +555,27 @@ async function loadObserverReports(
       "--session",
       observerSessionId,
       "--after",
-      "0",
+      String(observerReportsAfter),
       "--limit",
-      "25",
+      String(OBSERVER_HISTORY_LIMIT),
     ]);
-    observerReports = response.observations;
-    observerSequence = Math.max(
-      observerSequence,
-      ...observerReports.map((report) => report.sequence),
-    );
+
+    if (response.observations.length > 0) {
+      const known = new Set(observerReports.map((report) => report.sequence));
+      for (const report of response.observations) {
+        if (!known.has(report.sequence)) observerReports.push(report);
+      }
+      observerReports.sort((left, right) => left.sequence - right.sequence);
+      if (observerReports.length > OBSERVER_HISTORY_LIMIT) {
+        observerReports = observerReports.slice(-OBSERVER_HISTORY_LIMIT);
+      }
+      // Advance the cursor so the next poll only fetches newer reports.
+      observerReportsAfter = response.nextSequence ?? observerReportsAfter;
+      observerSequence = Math.max(
+        observerSequence,
+        ...observerReports.map((report) => report.sequence),
+      );
+    }
     renderObserverHistory();
     if (opts.updateStatus) {
       status.textContent = tf("observer_history_loaded", {

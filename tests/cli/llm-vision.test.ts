@@ -26,6 +26,7 @@ async function openConfiguredDb() {
   await setSetting(db, "llm.enabled", "true");
   await setSetting(db, "llm.url", "http://dummy/v1");
   await setSetting(db, "llm.model", "qwen2.5vl-it:3b");
+  await setSetting(db, "llm.vision.enabled", "true");
   await setSetting(db, "system.locale", "de");
   return db;
 }
@@ -155,6 +156,41 @@ describe("vision UI observer adapter", () => {
       );
       expect(userContent[1]).toMatchObject({ type: "image_url" });
       expect(userContent[1].image_url?.url).toMatch(/^data:image\/png;base64,/);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("refuses to send a snapshot when vision is not explicitly enabled", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    // Base text LLM is on, but vision (the cloud consent gate) is left off.
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+    const imagePath = makeSnapshot();
+    const originalFetch = global.fetch;
+    let fetchCalled = false;
+    global.fetch = (async () => {
+      fetchCalled = true;
+      return new Response("{}");
+    }) as typeof fetch;
+
+    try {
+      await expect(
+        observeUiSnapshotViaLLM(db, {
+          sessionId: "session-1",
+          sequence: 1,
+          observedFrom: "2026-06-16T07:00:00.000Z",
+          observedTo: "2026-06-16T07:00:01.000Z",
+          imagePath,
+          application: { processName: "WindowsTerminal.exe" },
+        }),
+      ).rejects.toThrow("llm.vision.enabled");
+      expect(fetchCalled).toBe(false);
     } finally {
       global.fetch = originalFetch;
       await db.close();

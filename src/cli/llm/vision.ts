@@ -17,7 +17,7 @@ import {
 import {
   DEFAULT_LLM_API_KEY,
   fetchWithInteractiveTimeout,
-  getLlmConfig,
+  getVisionConfig,
 } from "./client.js";
 
 const LANGUAGE_NAMES: Record<SupportedLocale, string> = {
@@ -79,9 +79,11 @@ export async function observeUiSnapshotViaLLM(
   db: Database,
   input: UiSnapshotObservationInput,
 ): Promise<UiObservationReport> {
-  const cfg = await getLlmConfig(db);
+  const cfg = await getVisionConfig(db);
   if (!cfg.enabled) {
-    throw new Error("LLM integration is disabled in settings (llm.enabled)");
+    throw new Error(
+      "Vision observation is disabled in settings (llm.vision.enabled)",
+    );
   }
 
   const imageBytes = readFileSync(input.imagePath);

@@ -63,6 +63,19 @@ zam bridge observe-ui-snapshot \
 It sends the PNG to the configured OpenAI-compatible vision model and returns a
 schema-validated `UiObservationReport`. Invalid model output is downgraded to an
 `uncertain` report instead of letting the model define the observer contract.
+
+Screen snapshots go to a **separate, default-off** vision endpoint — the base
+`llm.*` chat model is usually text-only and cannot read images, and this opt-in
+doubles as the consent gate for sending captured screen content to a provider:
+
+```bash
+zam settings set llm.vision.enabled true
+zam settings set llm.vision.model <multimodal-model>   # falls back to llm.model
+zam settings set llm.vision.url <endpoint>             # falls back to llm.url
+```
+
+Until `llm.vision.enabled` is `true`, `observe-ui-snapshot` refuses to run and
+no image leaves the machine.
 With `--write-log`, the same report is appended to the session JSONL. Read it
 back with:
 
