@@ -202,6 +202,34 @@ Track the foreground window, executable name, process ID, title, bounds, and
 virtual desktop/display. Window titles must pass through the privacy filter
 before persistence or model submission.
 
+### Audio and spoken narration (think-aloud)
+
+Screen and input signals show *what* the learner did; they rarely reveal *why*.
+Optional spoken narration closes that gap. This is the established think-aloud
+protocol from usability research: the learner says what they are attempting
+("I am creating a new folder for the invoices"), and the session agent gains a
+stated intent to align against the observed UI actions. It is the cheapest
+high-value signal for the observer's hardest problem — inferring intent from
+pixels.
+
+Capture and footprint:
+
+- record the microphone (optionally also the loopback/system audio) through
+  WASAPI on a dedicated thread;
+- speech is small: Opus at 16–24 kbps is roughly 120–180 KB per minute
+  (uncompressed 16 kHz mono PCM is about 1.9 MB per minute);
+- transcribe locally with a lightweight ASR model (for example a `whisper.cpp`
+  tiny/base build, CPU-only, ~75–140 MB) and attach the **transcript**, not the
+  audio, to the report;
+- a local transcript is far cheaper than a second large model and keeps raw
+  audio on the device.
+
+The transcript is evidence text and is treated as untrusted exactly like
+on-screen text: it can inform the session agent but cannot issue instructions.
+Audio is strictly opt-in and default-off, with its own consent gate and active
+indicator, push-to-talk as the conservative default, and the same allow/deny and
+password-pause rules that suppress capture also suppress recording.
+
 ## Observer Event Contract
 
 The first implementation can mirror shell monitoring: append events to a
@@ -304,6 +332,11 @@ interface ObserverModel {
 }
 ```
 
+When spoken narration is enabled, the recent transcript window is passed as
+request metadata alongside the frames or clip and referenced in the report as a
+`transcript` evidence source. The transcript is untrusted input and never an
+instruction channel.
+
 Every provider must return the same validated JSON schema. Invalid or overly
 confident output is downgraded to `uncertain`.
 
@@ -330,6 +363,22 @@ Use the cheapest adequate path:
 MiMo-V2.5 should be in the benchmark from the beginning, but model selection
 must be evidence-driven. A cheap model that misses errors or invents completed
 steps is not cheap for a learning system.
+
+### Capture footprint
+
+Measured single-window PNG snapshots on a 1080p display: a content-rich window
+(full Windows Settings, 1536×816) is about 475 KB, a dense table (Task Manager)
+about 280 KB, and a near-empty overlay 40–60 KB. Base64 inflates the wire
+payload by roughly 1.33×, so a snapshot request carries ~200–650 KB.
+
+Short clips are far smaller than their raw frames suggest. A raw 1920×1080 BGRA
+frame is ~8.3 MB, so raw video is never stored; encoded low-motion UI video
+(H.264 at 0.5–2 Mbps, or about half that for H.265/AV1) is roughly 4–15 MB per
+minute. For model cost, video is billed by time, not bytes: at ~100–300 tokens
+per second a 60-second clip is ~6k–18k input tokens, a fraction of a cent on a
+low-cost cloud tier. The real constraint is local: multimodal video inference is
+much heavier than single frames, so on modest hardware clips should be short,
+event-triggered, and preferably analyzed in the cloud.
 
 ### Cost control
 
@@ -364,6 +413,11 @@ following are MVP requirements, not later polish:
 - automatic pause for password managers, authentication dialogs, banking
   applications, private browsing, and UI Automation password fields;
 - no raw keystroke text;
+- microphone and system-audio capture off by default and opt-in per session,
+  with their own active indicator;
+- raw audio kept on the device; only a redactable transcript may be persisted or
+  sent;
+- push-to-talk as the conservative default for spoken narration;
 - in-memory raw-frame retention by default;
 - redaction before any cloud request;
 - a local audit showing what was sent to which provider;
@@ -457,6 +511,8 @@ around it.
 - Benchmark MiMo-V2.5, MiMo-VL, Gemini Flash-Lite, and Qwen VL.
 - Emit structured progress, error, completion, and uncertainty reports.
 - Enforce cost and request-rate budgets.
+- Optionally add opt-in spoken-narration capture with local transcription,
+  attaching the transcript as untrusted intent evidence.
 
 ### Phase 3: ZAM synthesis
 
@@ -522,6 +578,8 @@ help-seeking, and privacy-sensitive intervals. Compare models on:
    additional evidence?
 6. Which UI tasks form the minimum benchmark before a provider can become the
    default?
+7. Should spoken narration be push-to-talk only, or may continuous microphone
+   capture be offered under the same indicator and pause rules as screen capture?
 
 ## References
 
