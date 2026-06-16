@@ -52,10 +52,11 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     observer_done: "Observation saved. Latest report confidence: {confidence}",
     observer_canceled: "Observation canceled.",
     observer_error: "Observer error: {message}",
-    observer_refresh: "Refresh Windows",
+    observer_refresh: "Load Windows",
     observer_analyze: "Snapshot & Analyze",
     observer_cancel: "Cancel",
     observer_empty: "No observable windows found.",
+    observer_select_initial: "No windows loaded yet",
     observer_select_placeholder: "Select a window",
     observer_history_title: "Observation Reports",
     observer_history_refresh: "Refresh Reports",
@@ -122,10 +123,11 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     observer_done: "Beobachtung gespeichert. Confidence des letzten Reports: {confidence}",
     observer_canceled: "Beobachtung abgebrochen.",
     observer_error: "Observer-Fehler: {message}",
-    observer_refresh: "Fenster aktualisieren",
+    observer_refresh: "Fenster laden",
     observer_analyze: "Snapshot analysieren",
     observer_cancel: "Abbrechen",
     observer_empty: "Keine beobachtbaren Fenster gefunden.",
+    observer_select_initial: "Noch keine Fenster geladen",
     observer_select_placeholder: "Fenster auswählen",
     observer_history_title: "Beobachtungsberichte",
     observer_history_refresh: "Berichte aktualisieren",
@@ -298,6 +300,7 @@ function initializeTranslations() {
   document.getElementById("btn-reveal-answer")!.textContent = t("btn_reveal_answer");
   document.getElementById("lbl-observer-title")!.textContent = t("observer_title");
   document.getElementById("observer-status")!.textContent = t("observer_idle");
+  document.getElementById("observer-window-initial")!.textContent = t("observer_select_initial");
   document.getElementById("btn-observer-refresh")!.textContent = t("observer_refresh");
   document.getElementById("btn-observer-analyze")!.textContent = t("observer_analyze");
   document.getElementById("btn-observer-cancel")!.textContent = t("observer_cancel");

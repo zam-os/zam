@@ -101,7 +101,7 @@ body {
   max-height: 100vh;
   min-height: 0;
   overflow-y: auto;
-  padding: 30px;
+  padding: 22px 30px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -115,13 +115,30 @@ body {
   overflow: hidden;
 }
 
+/* Slim, unobtrusive scrollbar so any residual overflow doesn't show the chunky
+   default Windows bar. */
+.container {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.14) transparent;
+}
+.container::-webkit-scrollbar {
+  width: 8px;
+}
+.container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 4px;
+}
+.container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 /* ── HEADER BAR ──────────────────────────────────────────────────────────── */
 .app-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
-  padding-bottom: 20px;
+  margin-bottom: 22px;
+  padding-bottom: 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -269,11 +286,11 @@ body {
   display: grid;
   grid-template-columns: 1fr 1.3fr;
   gap: 25px;
-  margin-bottom: 40px;
+  margin-bottom: 22px;
 }
 
 .stat-card {
-  padding: 35px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -288,7 +305,7 @@ body {
   color: var(--clr-text-secondary);
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .large-number {
@@ -344,8 +361,8 @@ body {
 }
 
 .observer-panel {
-  margin-top: 28px;
-  padding: 22px;
+  margin-top: 16px;
+  padding: 16px 20px;
 }
 
 .observer-panel-header {
@@ -353,7 +370,7 @@ body {
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .observer-panel h2 {
@@ -380,14 +397,23 @@ body {
 
 .observer-window-select {
   min-width: 0;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(7, 8, 13, 0.55);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 10px;
   color: var(--clr-text-primary);
+  /* Render the native popup list dark so options aren't grey-on-white. */
+  color-scheme: dark;
   font: inherit;
   font-size: 13px;
   padding: 10px 12px;
   outline: none;
+}
+
+/* Explicit dark option styling for WebView2/Chromium, which otherwise paints
+   the dropdown list on a light system background. */
+.observer-window-select option {
+  background-color: #121621;
+  color: var(--clr-text-primary);
 }
 
 .observer-window-select:focus {
@@ -446,6 +472,8 @@ body {
 .observer-history-list {
   display: grid;
   gap: 10px;
+  max-height: 240px;
+  overflow-y: auto;
 }
 
 .observer-history-empty {
