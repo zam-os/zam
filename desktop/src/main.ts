@@ -48,10 +48,14 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     observer_idle: "Load windows and choose one application window to observe.",
     observer_loading: "Loading observable windows...",
     observer_ready: "Selected: {title}",
+    observer_vision_checking: "Checking vision observation settings...",
     observer_analyzing: "Capturing snapshot and asking the vision model...",
     observer_done: "Observation saved. Latest report confidence: {confidence}",
     observer_canceled: "Observation canceled.",
     observer_error: "Observer error: {message}",
+    observer_vision_disabled: "Vision observation is disabled. Enable it with: zam settings set llm.vision.enabled true",
+    observer_vision_offline: "Vision endpoint is offline: {url}",
+    observer_vision_model_missing: "Vision model is not available: {model}",
     observer_refresh: "Load Windows",
     observer_analyze: "Snapshot & Analyze",
     observer_cancel: "Cancel",
@@ -119,10 +123,14 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     observer_idle: "Fenster laden und ein Anwendungsfenster zur Beobachtung auswählen.",
     observer_loading: "Beobachtbare Fenster werden geladen...",
     observer_ready: "Ausgewählt: {title}",
+    observer_vision_checking: "Prüfe Vision-Beobachtungseinstellungen...",
     observer_analyzing: "Erzeuge Snapshot und frage das Vision-Modell...",
     observer_done: "Beobachtung gespeichert. Confidence des letzten Reports: {confidence}",
     observer_canceled: "Beobachtung abgebrochen.",
     observer_error: "Observer-Fehler: {message}",
+    observer_vision_disabled: "Vision-Beobachtung ist deaktiviert. Aktiviere sie mit: zam settings set llm.vision.enabled true",
+    observer_vision_offline: "Vision-Endpunkt ist offline: {url}",
+    observer_vision_model_missing: "Vision-Modell ist nicht verfügbar: {model}",
     observer_refresh: "Fenster laden",
     observer_analyze: "Snapshot analysieren",
     observer_cancel: "Abbrechen",
@@ -258,6 +266,16 @@ interface UiObservationsResponse {
   count: number;
   nextSequence: number | null;
   observations: UiObservationReport[];
+}
+
+interface VisionStatus {
+  enabled: boolean;
+  online: boolean;
+  url: string;
+  model: string;
+  modelAvailable: boolean;
+  availableModels: string[];
+  usable: boolean;
 }
 
 // ── BRIDGE COMMAND RUNNER ────────────────────────────────────────────────
@@ -422,15 +440,19 @@ async function analyzeSelectedObserverWindow(): Promise<boolean> {
 
   const status = document.getElementById("observer-status")!;
   const preview = document.getElementById("observer-report-preview")!;
-  const observedFrom = new Date().toISOString();
   const requestId = observerAnalysisRequestId + 1;
   observerAnalysisRequestId = requestId;
 
   setObserverAnalysisBusy(true);
-  status.textContent = t("observer_analyzing");
+  status.textContent = t("observer_vision_checking");
   preview.classList.add("hidden");
 
   try {
+    const visionReady = await ensureObserverVisionReady();
+    if (!visionReady || requestId !== observerAnalysisRequestId) return false;
+
+    status.textContent = t("observer_analyzing");
+    const observedFrom = new Date().toISOString();
     const sequence = observerSequence + 1;
     const snapshotName = `${String(sequence).padStart(6, "0")}.png`;
     const snapshotDir = await joinPath(await appDataDir(), "observer", observerSessionId);
@@ -487,6 +509,28 @@ async function analyzeSelectedObserverWindow(): Promise<boolean> {
       setObserverAnalysisBusy(false);
     }
   }
+}
+
+async function ensureObserverVisionReady(): Promise<boolean> {
+  const status = document.getElementById("observer-status")!;
+  const vision = await runBridge<VisionStatus>("check-vision");
+
+  if (!vision.enabled) {
+    status.textContent = t("observer_vision_disabled");
+    return false;
+  }
+  if (!vision.online) {
+    status.textContent = tf("observer_vision_offline", { url: vision.url });
+    return false;
+  }
+  if (!vision.modelAvailable) {
+    status.textContent = tf("observer_vision_model_missing", {
+      model: vision.model,
+    });
+    return false;
+  }
+
+  return true;
 }
 
 function cancelObserverAnalysis(): void {

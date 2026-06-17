@@ -2,6 +2,7 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
+import { checkVisionReadiness } from "../../src/cli/llm/client.js";
 import { observeUiSnapshotViaLLM } from "../../src/cli/llm/vision.js";
 import { openDatabase, setSetting } from "../../src/kernel/index.js";
 
@@ -38,6 +39,94 @@ afterEach(() => {
 });
 
 describe("vision UI observer adapter", () => {
+  it("reports vision readiness as disabled without touching the endpoint", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+    await setSetting(db, "llm.model", "text-only");
+
+    const originalFetch = global.fetch;
+    let fetchCalled = false;
+    global.fetch = (async () => {
+      fetchCalled = true;
+      return new Response("{}");
+    }) as typeof fetch;
+
+    try {
+      await expect(checkVisionReadiness(db)).resolves.toMatchObject({
+        enabled: false,
+        online: false,
+        model: "text-only",
+        modelAvailable: false,
+        usable: false,
+      });
+      expect(fetchCalled).toBe(false);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("checks the opt-in vision endpoint and validates the configured model", async () => {
+    const db = await openConfiguredDb();
+    await setSetting(db, "llm.vision.url", "http://vision/v1");
+    await setSetting(db, "llm.vision.model", "mimo-v2.5");
+
+    const originalFetch = global.fetch;
+    global.fetch = (async (url) => {
+      expect(String(url)).toBe("http://vision/v1/models");
+      return new Response(
+        JSON.stringify({ data: [{ id: "mimo-v2.5" }] }),
+        { status: 200 },
+      );
+    }) as typeof fetch;
+
+    try {
+      await expect(checkVisionReadiness(db)).resolves.toMatchObject({
+        enabled: true,
+        online: true,
+        url: "http://vision/v1",
+        model: "mimo-v2.5",
+        modelAvailable: true,
+        availableModels: ["mimo-v2.5"],
+        usable: true,
+      });
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("reports an unavailable configured vision model", async () => {
+    const db = await openConfiguredDb();
+    await setSetting(db, "llm.vision.model", "missing-vl");
+
+    const originalFetch = global.fetch;
+    global.fetch = (async () =>
+      new Response(
+        JSON.stringify({ data: [{ id: "qwen2.5vl-it:3b" }] }),
+        { status: 200 },
+      )) as typeof fetch;
+
+    try {
+      await expect(checkVisionReadiness(db)).resolves.toMatchObject({
+        enabled: true,
+        online: true,
+        model: "missing-vl",
+        modelAvailable: false,
+        availableModels: ["qwen2.5vl-it:3b"],
+        usable: false,
+      });
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
   it("sends a PNG snapshot as OpenAI-compatible image_url and builds a validated report", async () => {
     const db = await openConfiguredDb();
     const imagePath = makeSnapshot();

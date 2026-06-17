@@ -18,6 +18,31 @@ export const settingsCommand = new Command("settings").description(
   "Manage user settings",
 );
 
+const BOOLEAN_SETTING_KEYS = new Set(["llm.enabled", "llm.vision.enabled"]);
+
+export function normalizeSettingValue(key: string, value: string): string {
+  if (!BOOLEAN_SETTING_KEYS.has(key)) return value;
+
+  const lower = value.toLowerCase();
+  if (
+    lower === "on" ||
+    lower === "enable" ||
+    lower === "enabled" ||
+    lower === "true"
+  ) {
+    return "true";
+  }
+  if (
+    lower === "off" ||
+    lower === "disable" ||
+    lower === "disabled" ||
+    lower === "false"
+  ) {
+    return "false";
+  }
+  return value;
+}
+
 // ── zam settings show ─────────────────────────────────────────────────────
 
 settingsCommand
@@ -79,25 +104,7 @@ settingsCommand
   .option("--quiet", "Suppress output")
   .action(async (key, value, opts) => {
     await withDb(async (db) => {
-      let parsedVal = value;
-      if (key === "llm.enabled") {
-        const lower = value.toLowerCase();
-        if (
-          lower === "on" ||
-          lower === "enable" ||
-          lower === "enabled" ||
-          lower === "true"
-        ) {
-          parsedVal = "true";
-        } else if (
-          lower === "off" ||
-          lower === "disable" ||
-          lower === "disabled" ||
-          lower === "false"
-        ) {
-          parsedVal = "false";
-        }
-      }
+      const parsedVal = normalizeSettingValue(key, value);
       await setSetting(db, key, parsedVal);
       if (!opts.quiet) {
         console.log(`Set ${key} = ${parsedVal}`);

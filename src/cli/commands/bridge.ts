@@ -44,6 +44,7 @@ import {
   resolveReviewContext,
 } from "../../kernel/index.js";
 import {
+  checkVisionReadiness,
   ensureHighQualityQuestion,
   ensureLlmReadyHeadless,
   evaluateAnswerViaLLM,
@@ -829,6 +830,19 @@ bridgeCommand
         modelAvailable,
         availableModels,
       });
+    });
+  });
+
+// ── zam bridge check-vision ────────────────────────────────────────────────
+
+bridgeCommand
+  .command("check-vision")
+  .description(
+    "Check if UI observer vision analysis is enabled and ready (JSON)",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      jsonOut(await checkVisionReadiness(db));
     });
   });
 

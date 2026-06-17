@@ -341,6 +341,48 @@ export async function getAvailableModels(
   }
 }
 
+export interface VisionReadyResult {
+  enabled: boolean;
+  online: boolean;
+  url: string;
+  model: string;
+  modelAvailable: boolean;
+  availableModels: string[];
+  usable: boolean;
+}
+
+/** Non-starting readiness check for the opt-in UI observer vision endpoint. */
+export async function checkVisionReadiness(
+  db: Database,
+): Promise<VisionReadyResult> {
+  const { enabled, url, model, apiKey } = await getVisionConfig(db);
+  let online = false;
+  let availableModels: string[] = [];
+  let modelAvailable = false;
+
+  if (enabled) {
+    online = await isLlmOnline(url);
+    if (online) {
+      availableModels = await getAvailableModels(url, apiKey);
+      modelAvailable =
+        availableModels.length === 0 ||
+        availableModels.some(
+          (candidate) => candidate.toLowerCase() === model.toLowerCase(),
+        );
+    }
+  }
+
+  return {
+    enabled,
+    online,
+    url,
+    model,
+    modelAvailable,
+    availableModels,
+    usable: enabled && online && modelAvailable,
+  };
+}
+
 /** Whether the local LLM can actually be used this session, and if not, why. */
 export interface LlmReadiness {
   usable: boolean;

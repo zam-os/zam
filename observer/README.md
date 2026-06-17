@@ -75,7 +75,8 @@ zam settings set llm.vision.url <endpoint>             # falls back to llm.url
 ```
 
 Until `llm.vision.enabled` is `true`, `observe-ui-snapshot` refuses to run and
-no image leaves the machine.
+no image leaves the machine. The desktop UI checks this with
+`zam bridge check-vision` before writing a snapshot.
 With `--write-log`, the same report is appended to the session JSONL. Read it
 back with:
 
