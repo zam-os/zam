@@ -505,7 +505,8 @@ Implemented foundation:
   built-in sensitive-context pauses;
 - native x64 and ARM64 observer CI builds;
 - release-resource preparation for the Tauri package;
-- Tauri commands for observer probe and window selection.
+- Tauri commands for observer probe, window listing/foreground metadata,
+  bounded foreground watching, capture, sampling, and snapshots.
 
 The remaining Phase 0 work is to add UI Automation, Raw Input, and
 event-triggered keyframe retention around the live capture source.

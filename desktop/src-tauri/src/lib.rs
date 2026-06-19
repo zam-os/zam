@@ -310,6 +310,49 @@ fn list_zam_observer_windows_blocking(app: &tauri::AppHandle) -> Result<String, 
 }
 
 #[tauri::command]
+async fn foreground_zam_observer_window(app: tauri::AppHandle) -> Result<String, String> {
+    tauri::async_runtime::spawn_blocking(move || foreground_zam_observer_window_blocking(&app))
+        .await
+        .map_err(|e| format!("Observer foreground window task failed: {}", e))?
+}
+
+fn foreground_zam_observer_window_blocking(app: &tauri::AppHandle) -> Result<String, String> {
+    run_zam_observer_blocking(app, &["foreground-window"])
+}
+
+#[tauri::command]
+async fn watch_zam_observer_foreground(
+    app: tauri::AppHandle,
+    session: String,
+    samples: String,
+    interval_ms: String,
+) -> Result<String, String> {
+    tauri::async_runtime::spawn_blocking(move || {
+        watch_zam_observer_foreground_blocking(&app, session, samples, interval_ms)
+    })
+    .await
+    .map_err(|e| format!("Observer foreground watch task failed: {}", e))?
+}
+
+fn watch_zam_observer_foreground_blocking(
+    app: &tauri::AppHandle,
+    session: String,
+    samples: String,
+    interval_ms: String,
+) -> Result<String, String> {
+    let args = vec![
+        "watch-foreground".to_string(),
+        "--session".to_string(),
+        session,
+        "--samples".to_string(),
+        samples,
+        "--interval-ms".to_string(),
+        interval_ms,
+    ];
+    run_zam_observer_blocking_owned(app, &args)
+}
+
+#[tauri::command]
 async fn pick_zam_observer_window(app: tauri::AppHandle) -> Result<String, String> {
     tauri::async_runtime::spawn_blocking(move || pick_zam_observer_window_blocking(&app))
         .await
@@ -346,6 +389,38 @@ fn capture_zam_observer_window_blocking(
     hwnd: String,
 ) -> Result<String, String> {
     let args = vec!["capture-window".to_string(), "--hwnd".to_string(), hwnd];
+    run_zam_observer_blocking_owned(app, &args)
+}
+
+#[tauri::command]
+async fn sample_zam_observer_window(
+    app: tauri::AppHandle,
+    hwnd: String,
+    frames: String,
+    interval_ms: String,
+) -> Result<String, String> {
+    tauri::async_runtime::spawn_blocking(move || {
+        sample_zam_observer_window_blocking(&app, hwnd, frames, interval_ms)
+    })
+    .await
+    .map_err(|e| format!("Observer window sample task failed: {}", e))?
+}
+
+fn sample_zam_observer_window_blocking(
+    app: &tauri::AppHandle,
+    hwnd: String,
+    frames: String,
+    interval_ms: String,
+) -> Result<String, String> {
+    let args = vec![
+        "sample-window".to_string(),
+        "--hwnd".to_string(),
+        hwnd,
+        "--frames".to_string(),
+        frames,
+        "--interval-ms".to_string(),
+        interval_ms,
+    ];
     run_zam_observer_blocking_owned(app, &args)
 }
 
@@ -689,9 +764,12 @@ pub fn run() {
             cancel_zam_bridge,
             probe_zam_observer,
             list_zam_observer_windows,
+            foreground_zam_observer_window,
+            watch_zam_observer_foreground,
             pick_zam_observer_window,
             capture_zam_observer_once,
             capture_zam_observer_window,
+            sample_zam_observer_window,
             snapshot_zam_observer_window
         ])
         .run(tauri::generate_context!())
