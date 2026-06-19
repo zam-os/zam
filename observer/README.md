@@ -54,10 +54,10 @@ checked before any pixels are captured.
 
 `sample-window --hwnd <decimal|0xhex>` is Windows-only. It keeps one capture
 session open and returns a bounded sequence of frame metadata without writing
-pixels. Use `--frames` and `--interval-ms` to exercise the live frame source
-before the in-memory ring buffer and event triggers are wired in. Samples after
-the first frame include `changed = false` when Windows did not deliver a new
-frame during that interval.
+pixels. Use `--frames` and `--interval-ms` to exercise the live frame source and
+in-memory frame ring before event triggers are wired in. Samples after the first
+frame include `changed = false` when Windows did not deliver a new frame during
+that interval.
 
 The matching bridge command is:
 

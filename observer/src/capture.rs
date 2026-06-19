@@ -114,6 +114,7 @@ mod windows_capture {
     };
 
     use super::{CapturedFrameProbe, CapturedFrameSample, CapturedFrameSequence, PROTOCOL_VERSION};
+    use crate::frame_ring::FrameRing;
     use crate::picker::{capture_item_for_hwnd, pick_graphics_capture_item, PickedWindow};
     use crate::privacy::ensure_capture_allowed;
 
@@ -196,7 +197,7 @@ mod windows_capture {
 
         let devices = create_direct3d_devices()?;
         let (frame, session, pool) = capture_first_frame(&devices.winrt, &item)?;
-        let mut frames = Vec::with_capacity(frame_count);
+        let mut frames = FrameRing::new(frame_count)?;
         let first_sample = frame_sample(&frame, true)?;
         let mut last_sample = first_sample.clone();
         frames.push(first_sample);
@@ -224,7 +225,7 @@ mod windows_capture {
         Ok(CapturedFrameSequence {
             version: PROTOCOL_VERSION,
             window,
-            frames,
+            frames: frames.snapshot(),
         })
     }
 

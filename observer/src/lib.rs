@@ -1,4 +1,5 @@
 mod capture;
+mod frame_ring;
 mod model;
 mod picker;
 mod privacy;
@@ -8,6 +9,7 @@ pub use capture::{
     capture_once, capture_window, sample_window, snapshot_window, CapturedFrameProbe,
     CapturedFrameSample, CapturedFrameSequence,
 };
+pub use frame_ring::FrameRing;
 pub use model::{
     ActionType, ApplicationContext, CandidateToken, EvidenceRef, EvidenceType, ObservedAction,
     ObserverCapabilities, ObserverProbe, ReportKind, SensorEvent, SensorKind, SensorSource,
