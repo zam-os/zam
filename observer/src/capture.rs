@@ -1,4 +1,5 @@
 use std::path::Path;
+use std::time::Duration;
 
 use serde::{Deserialize, Serialize};
 
@@ -13,6 +14,24 @@ pub struct CapturedFrameProbe {
     pub frame_width: i32,
     pub frame_height: i32,
     pub system_relative_time_ticks: i64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct CapturedFrameSample {
+    pub version: u8,
+    pub frame_width: i32,
+    pub frame_height: i32,
+    pub system_relative_time_ticks: i64,
+    pub changed: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct CapturedFrameSequence {
+    pub version: u8,
+    pub window: PickedWindow,
+    pub frames: Vec<CapturedFrameSample>,
 }
 
 #[cfg(target_os = "windows")]
@@ -30,6 +49,15 @@ pub fn snapshot_window(hwnd: u64, output: &Path) -> Result<CapturedFrameProbe, S
     windows_capture::snapshot_window(hwnd, output)
 }
 
+#[cfg(target_os = "windows")]
+pub fn sample_window(
+    hwnd: u64,
+    frames: usize,
+    interval: Duration,
+) -> Result<CapturedFrameSequence, String> {
+    windows_capture::sample_window(hwnd, frames, interval)
+}
+
 #[cfg(not(target_os = "windows"))]
 pub fn capture_once() -> Result<Option<CapturedFrameProbe>, String> {
     Err("window capture is only available on Windows".to_string())
@@ -42,6 +70,15 @@ pub fn capture_window(_hwnd: u64) -> Result<CapturedFrameProbe, String> {
 
 #[cfg(not(target_os = "windows"))]
 pub fn snapshot_window(_hwnd: u64, _output: &Path) -> Result<CapturedFrameProbe, String> {
+    Err("window capture is only available on Windows".to_string())
+}
+
+#[cfg(not(target_os = "windows"))]
+pub fn sample_window(
+    _hwnd: u64,
+    _frames: usize,
+    _interval: Duration,
+) -> Result<CapturedFrameSequence, String> {
     Err("window capture is only available on Windows".to_string())
 }
 
@@ -76,7 +113,7 @@ mod windows_capture {
         CreateDirect3D11DeviceFromDXGIDevice, IDirect3DDxgiInterfaceAccess,
     };
 
-    use super::{CapturedFrameProbe, PROTOCOL_VERSION};
+    use super::{CapturedFrameProbe, CapturedFrameSample, CapturedFrameSequence, PROTOCOL_VERSION};
     use crate::picker::{capture_item_for_hwnd, pick_graphics_capture_item, PickedWindow};
     use crate::privacy::ensure_capture_allowed;
 
@@ -101,6 +138,15 @@ mod windows_capture {
     pub fn snapshot_window(hwnd: u64, output: &Path) -> Result<CapturedFrameProbe, String> {
         let (item, window) = capture_item_for_hwnd(hwnd)?;
         snapshot_item(item, window, output)
+    }
+
+    pub fn sample_window(
+        hwnd: u64,
+        frame_count: usize,
+        interval: Duration,
+    ) -> Result<CapturedFrameSequence, String> {
+        let (item, window) = capture_item_for_hwnd(hwnd)?;
+        sample_item(item, window, frame_count, interval)
     }
 
     fn capture_item(
@@ -135,6 +181,51 @@ mod windows_capture {
         let _ = pool.Close();
 
         Ok(probe)
+    }
+
+    fn sample_item(
+        item: GraphicsCaptureItem,
+        window: PickedWindow,
+        frame_count: usize,
+        interval: Duration,
+    ) -> Result<CapturedFrameSequence, String> {
+        ensure_capture_allowed(&window.privacy)?;
+        if frame_count == 0 {
+            return Err("--frames must be greater than 0".to_string());
+        }
+
+        let devices = create_direct3d_devices()?;
+        let (frame, session, pool) = capture_first_frame(&devices.winrt, &item)?;
+        let mut frames = Vec::with_capacity(frame_count);
+        let first_sample = frame_sample(&frame, true)?;
+        let mut last_sample = first_sample.clone();
+        frames.push(first_sample);
+        let _ = frame.Close();
+
+        while frames.len() < frame_count {
+            if !interval.is_zero() {
+                thread::sleep(interval);
+            }
+            if let Some(frame) = try_wait_for_frame(&pool, Duration::from_millis(250))? {
+                let sample = frame_sample(&frame, true)?;
+                last_sample = sample.clone();
+                frames.push(sample);
+                let _ = frame.Close();
+            } else {
+                let mut sample = last_sample.clone();
+                sample.changed = false;
+                frames.push(sample);
+            }
+        }
+
+        let _ = session.Close();
+        let _ = pool.Close();
+
+        Ok(CapturedFrameSequence {
+            version: PROTOCOL_VERSION,
+            window,
+            frames,
+        })
     }
 
     fn capture_first_frame(
@@ -187,6 +278,26 @@ mod windows_capture {
             frame_width: content_size.Width,
             frame_height: content_size.Height,
             system_relative_time_ticks: system_time.Duration,
+        })
+    }
+
+    fn frame_sample(
+        frame: &Direct3D11CaptureFrame,
+        changed: bool,
+    ) -> Result<CapturedFrameSample, String> {
+        let content_size = frame
+            .ContentSize()
+            .map_err(|error| format!("failed to read frame content size: {error}"))?;
+        let system_time = frame
+            .SystemRelativeTime()
+            .map_err(|error| format!("failed to read frame timestamp: {error}"))?;
+
+        Ok(CapturedFrameSample {
+            version: PROTOCOL_VERSION,
+            frame_width: content_size.Width,
+            frame_height: content_size.Height,
+            system_relative_time_ticks: system_time.Duration,
+            changed,
         })
     }
 
@@ -372,15 +483,23 @@ mod windows_capture {
         pool: &Direct3D11CaptureFramePool,
         timeout: Duration,
     ) -> Result<Direct3D11CaptureFrame, String> {
+        try_wait_for_frame(pool, timeout)?
+            .ok_or_else(|| "timed out waiting for first frame".to_string())
+    }
+
+    fn try_wait_for_frame(
+        pool: &Direct3D11CaptureFramePool,
+        timeout: Duration,
+    ) -> Result<Option<Direct3D11CaptureFrame>, String> {
         let started = Instant::now();
         loop {
             match pool.TryGetNextFrame() {
-                Ok(frame) => return Ok(frame),
+                Ok(frame) => return Ok(Some(frame)),
                 Err(error) if started.elapsed() < timeout => {
                     let _ = error;
                     thread::sleep(Duration::from_millis(25));
                 }
-                Err(error) => return Err(format!("timed out waiting for first frame: {error}")),
+                Err(_) => return Ok(None),
             }
         }
     }

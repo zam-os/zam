@@ -4,7 +4,10 @@ mod picker;
 mod privacy;
 mod replay;
 
-pub use capture::{capture_once, capture_window, snapshot_window, CapturedFrameProbe};
+pub use capture::{
+    capture_once, capture_window, sample_window, snapshot_window, CapturedFrameProbe,
+    CapturedFrameSample, CapturedFrameSequence,
+};
 pub use model::{
     ActionType, ApplicationContext, CandidateToken, EvidenceRef, EvidenceType, ObservedAction,
     ObserverCapabilities, ObserverProbe, ReportKind, SensorEvent, SensorKind, SensorSource,

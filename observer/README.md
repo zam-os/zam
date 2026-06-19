@@ -19,6 +19,8 @@ cargo run --manifest-path observer/Cargo.toml -- capture-once
 cargo run --manifest-path observer/Cargo.toml -- capture-window --hwnd 0x123456
 cargo run --manifest-path observer/Cargo.toml -- \
   snapshot-window --hwnd 0x123456 --output .zam-observer/snapshot.png
+cargo run --manifest-path observer/Cargo.toml -- \
+  sample-window --hwnd 0x123456 --frames 5 --interval-ms 1000
 ```
 
 `replay` reads `UiSensorEvent` JSONL and writes `UiObservationReport` JSONL.
@@ -49,6 +51,13 @@ window is classified as a privacy pause.
 copies the first captured frame back to CPU memory and writes it as an RGBA PNG.
 Use this as the handoff format for local vision models. The same privacy gate is
 checked before any pixels are captured.
+
+`sample-window --hwnd <decimal|0xhex>` is Windows-only. It keeps one capture
+session open and returns a bounded sequence of frame metadata without writing
+pixels. Use `--frames` and `--interval-ms` to exercise the live frame source
+before the in-memory ring buffer and event triggers are wired in. Samples after
+the first frame include `changed = false` when Windows did not deliver a new
+frame during that interval.
 
 The matching bridge command is:
 

@@ -484,6 +484,8 @@ Implemented foundation:
   selected-window metadata without starting capture;
 - first-frame capture and PNG snapshot commands for a selected or explicit
   top-level window;
+- bounded `sample-window` frame metadata collection from a single live capture
+  session, without persisting pixels;
 - TypeScript report parsing in the ZAM kernel;
 - OpenAI-compatible vision snapshot adapter in the CLI layer;
 - `zam bridge observe-ui-snapshot` for turning a PNG keyframe into a validated
@@ -497,9 +499,8 @@ Implemented foundation:
 - release-resource preparation for the Tauri package;
 - Tauri commands for observer probe and window selection.
 
-The remaining Phase 0 work is to turn one-shot frame capture into a live frame
-source, then add UI Automation, Raw Input, configurable allow/deny policies, and
-the frame ring around it.
+The remaining Phase 0 work is to add UI Automation, Raw Input, configurable
+allow/deny policies, and an in-memory frame ring around the live capture source.
 
 ### Phase 1: deterministic observer
 
