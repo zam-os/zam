@@ -38,6 +38,7 @@ tokenCommand
   .option("--source-link <link>", "Source file path or reference URL", "")
   .option("--question <question>", "Specific question prompt for recall", "")
   .option("--json", "Output as JSON")
+  .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
     await withDb(async (db) => {
       // Token creation is the frontier model's job: the agent (Claude Code,
@@ -64,6 +65,8 @@ tokenCommand
         question,
       });
 
+      if (opts.quiet) return;
+
       if (opts.json) {
         console.log(JSON.stringify(token, null, 2));
       } else {
@@ -86,9 +89,12 @@ tokenCommand
   .description("Fuzzy search for tokens")
   .requiredOption("--query <query>", "Search query")
   .option("--json", "Output as JSON")
+  .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
     await withDb(async (db) => {
       const results = await findTokens(db, opts.query);
+
+      if (opts.quiet) return;
 
       if (opts.json) {
         console.log(JSON.stringify(results, null, 2));
@@ -120,12 +126,15 @@ tokenCommand
   .description("List all tokens")
   .option("--domain <domain>", "Filter by domain")
   .option("--json", "Output as JSON")
+  .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
     await withDb(async (db) => {
       const tokens = await listTokens(
         db,
         opts.domain ? { domain: opts.domain } : undefined,
       );
+
+      if (opts.quiet) return;
 
       if (opts.json) {
         console.log(JSON.stringify(tokens, null, 2));
@@ -170,6 +179,7 @@ tokenCommand
   )
   .option("--question <question>", "Updated question text (blank allowed)")
   .option("--json", "Output as JSON")
+  .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
     await withDb(async (db) => {
       const updates: {
@@ -205,6 +215,8 @@ tokenCommand
 
       const token = await updateToken(db, opts.slug, updates);
 
+      if (opts.quiet) return;
+
       if (opts.json) {
         jsonOut(token);
         return;
@@ -229,6 +241,7 @@ tokenCommand
   .requiredOption("--token <slug>", "Token that requires a prerequisite")
   .requiredOption("--requires <slug>", "Required prerequisite token")
   .option("--json", "Output as JSON")
+  .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
     await withDb(async (db) => {
       const token = await getTokenBySlug(db, opts.token);
@@ -244,6 +257,8 @@ tokenCommand
       }
 
       await addPrerequisite(db, token.id, requires.id);
+
+      if (opts.quiet) return;
 
       if (opts.json) {
         console.log(
@@ -270,9 +285,12 @@ tokenCommand
   )
   .requiredOption("--slug <slug>", "Token slug to deprecate")
   .option("--json", "Output as JSON")
+  .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
     await withDb(async (db) => {
       const token = await deprecateToken(db, opts.slug);
+
+      if (opts.quiet) return;
 
       if (opts.json) {
         console.log(JSON.stringify(token, null, 2));
@@ -292,6 +310,7 @@ tokenCommand
   .requiredOption("--slug <slug>", "Token slug to delete")
   .option("--force", "Actually delete the token")
   .option("--json", "Output as JSON")
+  .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
     await withDb(async (db) => {
       const impact = await getTokenDeleteImpact(db, opts.slug);
@@ -303,6 +322,8 @@ tokenCommand
           requiresForce: true,
           impact,
         };
+
+        if (opts.quiet) return;
 
         if (opts.json) {
           jsonOut(preview);
@@ -326,6 +347,8 @@ tokenCommand
       }
 
       const result = await deleteToken(db, opts.slug);
+
+      if (opts.quiet) return;
 
       if (opts.json) {
         jsonOut({
@@ -352,6 +375,7 @@ tokenCommand
   .requiredOption("--token <slug>", "Token slug")
   .option("--user <id>", "User ID (default: whoami)")
   .option("--json", "Output as JSON")
+  .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db);
@@ -371,6 +395,8 @@ tokenCommand
         prerequisites: prereqs,
         dependents,
       };
+
+      if (opts.quiet) return;
 
       if (opts.json) {
         console.log(JSON.stringify(status, null, 2));
