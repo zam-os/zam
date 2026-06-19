@@ -20,8 +20,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: lts/*
+          # Trusted publishing requires npm CLI >= 11.5.1 and Node >= 22.14.0.
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
 
       - name: Install dependencies
         run: npm ci
@@ -41,10 +43,11 @@ jobs:
             exit 1
           fi
 
+      # Publishes via npm Trusted Publishing (OIDC). Configure on npmjs.com:
+      # Package zam-core → Settings → Trusted publishing → GitHub Actions
+      #   org/user: zam-os, repo: zam, workflow: release.yml, action: npm publish
       - name: Publish to npm
         run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-tauri:
     permissions:
