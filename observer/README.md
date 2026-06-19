@@ -122,6 +122,15 @@ window privacy filter mute Raw Input before events are written. `--samples`
 bounds the number of emitted events; omit it for a continuous stream that stops
 when stdin closes or the parent process exits.
 
+Pass `--reports` to run the live sensor stream through the replay engine
+in-process and emit `UiObservationReport` JSONL instead of raw events. This keeps
+raw sensor events inside the observer process — only the abstracted reports reach
+stdout — and removes the need for a separate `| replay` stage:
+
+```bash
+zam-observer watch --session s1 --hwnd 0x123456 --reports --samples 60
+```
+
 `watch-uia --session <id>` is Windows-only. It polls the focused UI Automation
 element and emits an `element-focused` `UiSensorEvent` whenever focus moves,
 with a bounded property set — control type, automation id, accessible name — and

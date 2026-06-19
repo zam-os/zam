@@ -243,19 +243,38 @@ fn watch_window_command(options: WatchWindowOptions) -> Result<(), String> {
 
 fn watch_command(options: WatchOptions) -> Result<(), String> {
     let mut writer = BufWriter::new(io::stdout());
-    let result = watch_session(
-        WatchSessionOptions {
-            hwnd: options.hwnd,
-            session_id: &options.session_id,
-            keyframe_dir: options.keyframe_dir.as_deref(),
-            keyframe_retain: options.keyframe_retain,
-            change_threshold: options.change_threshold,
-            interval_ms: options.interval_ms,
-            heartbeat_every: options.heartbeat_every,
-            samples: options.samples,
-        },
-        &mut |event| write_event(&mut writer, &event),
-    );
+    let session_options = WatchSessionOptions {
+        hwnd: options.hwnd,
+        session_id: &options.session_id,
+        keyframe_dir: options.keyframe_dir.as_deref(),
+        keyframe_retain: options.keyframe_retain,
+        change_threshold: options.change_threshold,
+        interval_ms: options.interval_ms,
+        heartbeat_every: options.heartbeat_every,
+        samples: options.samples,
+    };
+
+    let result = if options.emit_reports {
+        // Run the live sensor stream through the replay engine in-process so
+        // only abstracted observation reports leave the observer; raw sensor
+        // events never reach stdout.
+        let mut engine = ReplayEngine::default();
+        let result = watch_session(session_options, &mut |event| {
+            if let Some(report) = engine.process(event).map_err(|error| error.to_string())? {
+                write_report(&mut writer, &report)?;
+            }
+            Ok(())
+        });
+        if let Some(report) = engine.finish().map_err(|error| error.to_string())? {
+            write_report(&mut writer, &report)?;
+        }
+        result
+    } else {
+        watch_session(session_options, &mut |event| {
+            write_event(&mut writer, &event)
+        })
+    };
+
     writer.flush().map_err(|error| error.to_string())?;
     result
 }
@@ -401,7 +420,7 @@ Usage:
   zam-observer snapshot-window --hwnd <decimal|0xhex> --output <path.png>
   zam-observer sample-window --hwnd <decimal|0xhex> [--frames <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>]
   zam-observer watch-window --session <id> --hwnd <decimal|0xhex> [--samples <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>] [--heartbeat-every <n>] [--keyframe-dir <dir> [--keyframe-retain <n>]]
-  zam-observer watch --session <id> --hwnd <decimal|0xhex> [--samples <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>] [--heartbeat-every <n>] [--keyframe-dir <dir> [--keyframe-retain <n>]]
+  zam-observer watch --session <id> --hwnd <decimal|0xhex> [--reports] [--samples <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>] [--heartbeat-every <n>] [--keyframe-dir <dir> [--keyframe-retain <n>]]
   zam-observer watch-uia --session <id> [--samples <n>] [--interval-ms <n>]
   zam-observer watch-raw-input --session <id> [--duration-ms <n>]
   zam-observer replay --input <path|-> [--output <path|->]
@@ -942,6 +961,7 @@ struct WatchOptions {
     heartbeat_every: u64,
     keyframe_dir: Option<PathBuf>,
     keyframe_retain: usize,
+    emit_reports: bool,
 }
 
 impl WatchOptions {
@@ -963,6 +983,7 @@ impl WatchOptions {
         let mut heartbeat_every = Self::DEFAULT_HEARTBEAT_EVERY;
         let mut keyframe_dir = None;
         let mut keyframe_retain = Self::DEFAULT_KEYFRAME_RETAIN;
+        let mut emit_reports = false;
         let mut index = 0;
 
         while index < args.len() {
@@ -987,6 +1008,9 @@ impl WatchOptions {
                         .parse::<usize>()
                         .map_err(|error| format!("invalid --samples '{raw}': {error}"))?;
                     samples = Some(val);
+                }
+                "--reports" => {
+                    emit_reports = true;
                 }
                 "--interval-ms" => {
                     index += 1;
@@ -1078,6 +1102,7 @@ impl WatchOptions {
             heartbeat_every,
             keyframe_dir,
             keyframe_retain,
+            emit_reports,
         })
     }
 }
@@ -1366,6 +1391,21 @@ mod tests {
             options.keyframe_retain,
             WatchOptions::DEFAULT_KEYFRAME_RETAIN
         );
+        assert!(!options.emit_reports);
+    }
+
+    #[test]
+    fn parses_unified_watch_reports_flag() {
+        let options = WatchOptions::parse(vec![
+            "--session".to_string(),
+            "session-1".to_string(),
+            "--hwnd".to_string(),
+            "0x2a".to_string(),
+            "--reports".to_string(),
+        ])
+        .expect("watch options");
+
+        assert!(options.emit_reports);
     }
 
     #[test]
