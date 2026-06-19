@@ -3,6 +3,7 @@ mod clock;
 mod frame_ring;
 mod frame_signature;
 mod keyframe;
+mod keyframe_archive;
 mod model;
 mod picker;
 mod privacy;
@@ -16,6 +17,7 @@ pub use clock::observed_at_now;
 pub use frame_ring::FrameRing;
 pub use frame_signature::{FrameSignature, DEFAULT_CHANGE_THRESHOLD, SIGNATURE_GRID};
 pub use keyframe::KeyframeStream;
+pub use keyframe_archive::KeyframeArchive;
 pub use model::{
     ActionType, ApplicationContext, CandidateToken, EvidenceRef, EvidenceType, ObservedAction,
     ObserverCapabilities, ObserverProbe, ReportKind, SensorEvent, SensorKind, SensorSource,

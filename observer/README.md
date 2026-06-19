@@ -100,6 +100,13 @@ zam-observer watch-window --session s1 --hwnd 0x123456 --samples 4 --interval-ms
 turns a live window into schema-valid `UiObservationReport`s without persisting
 pixels. The same privacy gate as `sample-window` is enforced before any capture.
 
+By default no pixels are written to disk. Opt in with `--keyframe-dir <dir>` to
+retain each keyframe as a PNG there; `--keyframe-retain <n>` (default 30) bounds
+the directory like a ring, deleting the oldest keyframe once it is full. When
+retention is on, the `frame-changed` `data.ref` resolves to the written file
+(`file:<path>`) instead of the in-memory `memory:keyframe-NNNN` handle, so a
+report's evidence can be opened directly.
+
 The matching bridge command is:
 
 ```bash

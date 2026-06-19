@@ -220,6 +220,8 @@ fn watch_window_command(options: WatchWindowOptions) -> Result<(), String> {
         options.change_threshold,
         options.heartbeat_every,
         &options.session_id,
+        options.keyframe_dir.as_deref(),
+        options.keyframe_retain,
         &mut |event| write_event(&mut writer, event),
     );
     writer.flush().map_err(|error| error.to_string())?;
@@ -343,7 +345,7 @@ Usage:
   zam-observer capture-window --hwnd <decimal|0xhex>
   zam-observer snapshot-window --hwnd <decimal|0xhex> --output <path.png>
   zam-observer sample-window --hwnd <decimal|0xhex> [--frames <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>]
-  zam-observer watch-window --session <id> --hwnd <decimal|0xhex> [--samples <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>] [--heartbeat-every <n>]
+  zam-observer watch-window --session <id> --hwnd <decimal|0xhex> [--samples <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>] [--heartbeat-every <n>] [--keyframe-dir <dir> [--keyframe-retain <n>]]
   zam-observer replay --input <path|-> [--output <path|->]
   zam-observer validate --input <path|-> [--output <path|->]"
     );
@@ -606,6 +608,8 @@ struct WatchWindowOptions {
     interval_ms: u64,
     change_threshold: f64,
     heartbeat_every: u64,
+    keyframe_dir: Option<PathBuf>,
+    keyframe_retain: usize,
 }
 
 impl WatchWindowOptions {
@@ -616,6 +620,8 @@ impl WatchWindowOptions {
     const MAX_INTERVAL_MS: u64 = 60_000;
     const DEFAULT_HEARTBEAT_EVERY: u64 = 10;
     const MAX_HEARTBEAT_EVERY: u64 = 100_000;
+    const DEFAULT_KEYFRAME_RETAIN: usize = 30;
+    const MAX_KEYFRAME_RETAIN: usize = 10_000;
 
     fn parse(args: Vec<String>) -> Result<Self, String> {
         let mut session_id = None;
@@ -624,6 +630,8 @@ impl WatchWindowOptions {
         let mut interval_ms = Self::DEFAULT_INTERVAL_MS;
         let mut change_threshold = DEFAULT_CHANGE_THRESHOLD;
         let mut heartbeat_every = Self::DEFAULT_HEARTBEAT_EVERY;
+        let mut keyframe_dir = None;
+        let mut keyframe_retain = Self::DEFAULT_KEYFRAME_RETAIN;
         let mut index = 0;
 
         while index < args.len() {
@@ -675,6 +683,19 @@ impl WatchWindowOptions {
                         .parse::<u64>()
                         .map_err(|error| format!("invalid --heartbeat-every '{raw}': {error}"))?;
                 }
+                "--keyframe-dir" => {
+                    index += 1;
+                    keyframe_dir = args.get(index).map(PathBuf::from);
+                }
+                "--keyframe-retain" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--keyframe-retain requires a value".to_string())?;
+                    keyframe_retain = raw
+                        .parse::<usize>()
+                        .map_err(|error| format!("invalid --keyframe-retain '{raw}': {error}"))?;
+                }
                 unknown => return Err(format!("unknown option '{unknown}'")),
             }
             index += 1;
@@ -705,6 +726,12 @@ impl WatchWindowOptions {
                 Self::MAX_HEARTBEAT_EVERY
             ));
         }
+        if keyframe_retain == 0 || keyframe_retain > Self::MAX_KEYFRAME_RETAIN {
+            return Err(format!(
+                "--keyframe-retain must be between 1 and {}",
+                Self::MAX_KEYFRAME_RETAIN
+            ));
+        }
 
         Ok(Self {
             session_id,
@@ -713,6 +740,8 @@ impl WatchWindowOptions {
             interval_ms,
             change_threshold,
             heartbeat_every,
+            keyframe_dir,
+            keyframe_retain,
         })
     }
 }
@@ -916,6 +945,11 @@ mod tests {
             options.heartbeat_every,
             WatchWindowOptions::DEFAULT_HEARTBEAT_EVERY
         );
+        assert_eq!(options.keyframe_dir, None);
+        assert_eq!(
+            options.keyframe_retain,
+            WatchWindowOptions::DEFAULT_KEYFRAME_RETAIN
+        );
     }
 
     #[test]
@@ -933,6 +967,10 @@ mod tests {
             "0.1".to_string(),
             "--heartbeat-every".to_string(),
             "4".to_string(),
+            "--keyframe-dir".to_string(),
+            "frames".to_string(),
+            "--keyframe-retain".to_string(),
+            "5".to_string(),
         ])
         .expect("watch window options");
 
@@ -940,6 +978,8 @@ mod tests {
         assert_eq!(options.interval_ms, 250);
         assert_eq!(options.change_threshold, 0.1);
         assert_eq!(options.heartbeat_every, 4);
+        assert_eq!(options.keyframe_dir, Some(PathBuf::from("frames")));
+        assert_eq!(options.keyframe_retain, 5);
     }
 
     #[test]
@@ -949,5 +989,20 @@ mod tests {
                 .unwrap_err();
 
         assert!(error.contains("--hwnd is required"));
+    }
+
+    #[test]
+    fn rejects_zero_keyframe_retain() {
+        let error = WatchWindowOptions::parse(vec![
+            "--session".to_string(),
+            "session-1".to_string(),
+            "--hwnd".to_string(),
+            "42".to_string(),
+            "--keyframe-retain".to_string(),
+            "0".to_string(),
+        ])
+        .unwrap_err();
+
+        assert!(error.contains("--keyframe-retain must be between"));
     }
 }

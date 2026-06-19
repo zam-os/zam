@@ -62,6 +62,10 @@ pub fn sample_window(
 /// Stream sparse capture `SensorEvent`s for a window: a `frame-changed` event
 /// per visual keyframe plus periodic `heartbeat`s. `on_event` is called for each
 /// emitted event so callers can write them out incrementally.
+///
+/// When `keyframe_dir` is set, each keyframe's pixels are encoded to PNG and
+/// retained there (oldest pruned beyond `keyframe_retain`), and the event's
+/// `data.ref` resolves to the written file instead of a symbolic handle.
 #[cfg(target_os = "windows")]
 #[allow(clippy::too_many_arguments)]
 pub fn watch_window_keyframes(
@@ -71,6 +75,8 @@ pub fn watch_window_keyframes(
     change_threshold: f64,
     heartbeat_every: u64,
     session_id: &str,
+    keyframe_dir: Option<&Path>,
+    keyframe_retain: usize,
     on_event: &mut dyn FnMut(&SensorEvent) -> Result<(), String>,
 ) -> Result<(), String> {
     windows_capture::watch_window_keyframes(
@@ -80,6 +86,8 @@ pub fn watch_window_keyframes(
         change_threshold,
         heartbeat_every,
         session_id,
+        keyframe_dir,
+        keyframe_retain,
         on_event,
     )
 }
@@ -118,6 +126,8 @@ pub fn watch_window_keyframes(
     _change_threshold: f64,
     _heartbeat_every: u64,
     _session_id: &str,
+    _keyframe_dir: Option<&Path>,
+    _keyframe_retain: usize,
     _on_event: &mut dyn FnMut(&SensorEvent) -> Result<(), String>,
 ) -> Result<(), String> {
     Err("window capture is only available on Windows".to_string())
@@ -125,8 +135,6 @@ pub fn watch_window_keyframes(
 
 #[cfg(target_os = "windows")]
 mod windows_capture {
-    use std::fs::File;
-    use std::io::BufWriter;
     use std::path::Path;
     use std::slice;
     use std::thread;
@@ -159,7 +167,8 @@ mod windows_capture {
     use crate::frame_ring::FrameRing;
     use crate::frame_signature::FrameSignature;
     use crate::keyframe::KeyframeStream;
-    use crate::model::{ApplicationContext, SensorEvent};
+    use crate::keyframe_archive::KeyframeArchive;
+    use crate::model::{ApplicationContext, SensorEvent, SensorKind};
     use crate::picker::{capture_item_for_hwnd, pick_graphics_capture_item, window_info, PickedWindow};
     use crate::privacy::ensure_capture_allowed;
 
@@ -204,6 +213,8 @@ mod windows_capture {
         change_threshold: f64,
         heartbeat_every: u64,
         session_id: &str,
+        keyframe_dir: Option<&Path>,
+        keyframe_retain: usize,
         on_event: &mut dyn FnMut(&SensorEvent) -> Result<(), String>,
     ) -> Result<(), String> {
         if samples == 0 {
@@ -242,34 +253,93 @@ mod windows_capture {
             change_threshold,
             heartbeat_every,
         );
+        let mut archive = keyframe_dir
+            .map(|dir| KeyframeArchive::new(dir, keyframe_retain))
+            .transpose()?;
+        let archiving = archive.is_some();
 
         let devices = create_direct3d_devices()?;
         let (frame, session, pool) = capture_first_frame(&devices.winrt, &item)?;
-        let first_signature = read_frame_signature(&devices.native, &frame)?;
+        let first = read_frame_capture(&devices.native, &frame, archiving)?;
         let _ = frame.Close();
-        if let Some(event) = stream.observe(Some(first_signature), observed_at_now()) {
-            on_event(&event)?;
-        }
+        emit_capture_event(&mut stream, &mut archive, Some(first), on_event)?;
 
         for _ in 1..samples {
             if !interval.is_zero() {
                 thread::sleep(interval);
             }
-            let signature = match try_wait_for_frame(&pool, Duration::from_millis(250))? {
+            let capture = match try_wait_for_frame(&pool, Duration::from_millis(250))? {
                 Some(frame) => {
-                    let signature = read_frame_signature(&devices.native, &frame)?;
+                    let capture = read_frame_capture(&devices.native, &frame, archiving)?;
                     let _ = frame.Close();
-                    Some(signature)
+                    Some(capture)
                 }
                 None => None,
             };
-            if let Some(event) = stream.observe(signature, observed_at_now()) {
-                on_event(&event)?;
-            }
+            emit_capture_event(&mut stream, &mut archive, capture, on_event)?;
         }
 
         let _ = session.Close();
         let _ = pool.Close();
+        Ok(())
+    }
+
+    /// A sampled frame: its signature plus, when keyframe retention is on, the
+    /// pixels needed to persist it.
+    struct CapturedKeyframe {
+        signature: FrameSignature,
+        pixels: Option<(u32, u32, Vec<u8>)>,
+    }
+
+    fn read_frame_capture(
+        device: &ID3D11Device,
+        frame: &Direct3D11CaptureFrame,
+        with_pixels: bool,
+    ) -> Result<CapturedKeyframe, String> {
+        read_frame(device, frame, |data, row_pitch, desc| {
+            if data.is_null() {
+                return Err("mapped texture returned a null data pointer".to_string());
+            }
+            let width = desc.Width as usize;
+            let height = desc.Height as usize;
+            let bytes = unsafe { slice::from_raw_parts(data, row_pitch.saturating_mul(height)) };
+            let signature = FrameSignature::from_bgra(bytes, width, height, row_pitch);
+            // Only copy pixels when retention is on; the copy is ~8 MB at 1080p.
+            let pixels = if with_pixels {
+                let rgba = bgra_to_rgba(data, width, height, row_pitch)?;
+                Some((desc.Width, desc.Height, rgba))
+            } else {
+                None
+            };
+            Ok(CapturedKeyframe { signature, pixels })
+        })
+    }
+
+    fn emit_capture_event(
+        stream: &mut KeyframeStream,
+        archive: &mut Option<KeyframeArchive>,
+        capture: Option<CapturedKeyframe>,
+        on_event: &mut dyn FnMut(&SensorEvent) -> Result<(), String>,
+    ) -> Result<(), String> {
+        let (signature, pixels) = match capture {
+            Some(capture) => (Some(capture.signature), capture.pixels),
+            None => (None, None),
+        };
+
+        if let Some(mut event) = stream.observe(signature, observed_at_now()) {
+            if event.kind == SensorKind::FrameChanged {
+                if let (Some(archive), Some((width, height, rgba))) = (archive.as_mut(), &pixels) {
+                    let png = encode_png_to_vec(*width, *height, rgba)?;
+                    let path = archive.store(&png)?;
+                    event.data.insert(
+                        "ref".to_string(),
+                        serde_json::Value::String(format!("file:{}", path.display())),
+                    );
+                }
+            }
+            on_event(&event)?;
+        }
+
         Ok(())
     }
 
@@ -614,6 +684,22 @@ mod windows_capture {
         Ok(rgba)
     }
 
+    fn encode_png_to_vec(width: u32, height: u32, rgba: &[u8]) -> Result<Vec<u8>, String> {
+        let mut buffer = Vec::new();
+        {
+            let mut encoder = png::Encoder::new(&mut buffer, width, height);
+            encoder.set_color(png::ColorType::Rgba);
+            encoder.set_depth(png::BitDepth::Eight);
+            let mut writer = encoder
+                .write_header()
+                .map_err(|error| format!("failed to write PNG header: {error}"))?;
+            writer
+                .write_image_data(rgba)
+                .map_err(|error| format!("failed to write PNG data: {error}"))?;
+        }
+        Ok(buffer)
+    }
+
     fn encode_png(output: &Path, width: u32, height: u32, rgba: &[u8]) -> Result<(), String> {
         if let Some(parent) = output.parent() {
             std::fs::create_dir_all(parent).map_err(|error| {
@@ -623,18 +709,9 @@ mod windows_capture {
                 )
             })?;
         }
-        let file = File::create(output)
-            .map_err(|error| format!("failed to create snapshot {}: {error}", output.display()))?;
-        let writer = BufWriter::new(file);
-        let mut encoder = png::Encoder::new(writer, width, height);
-        encoder.set_color(png::ColorType::Rgba);
-        encoder.set_depth(png::BitDepth::Eight);
-        let mut writer = encoder
-            .write_header()
-            .map_err(|error| format!("failed to write PNG header: {error}"))?;
-        writer
-            .write_image_data(rgba)
-            .map_err(|error| format!("failed to write PNG data: {error}"))
+        let png = encode_png_to_vec(width, height, rgba)?;
+        std::fs::write(output, png)
+            .map_err(|error| format!("failed to write snapshot {}: {error}", output.display()))
     }
 
     fn configure_session(session: &GraphicsCaptureSession) {

@@ -498,6 +498,10 @@ Implemented foundation:
   `UiSensorEvent` stream — a `frame-changed` keyframe event per visual change
   plus periodic heartbeats — which the existing replay engine consumes directly
   into `UiObservationReport`s without persisting pixels;
+- opt-in keyframe retention (`--keyframe-dir`) that writes each keyframe PNG into
+  a ring-bounded directory (oldest pruned beyond `--keyframe-retain`) and rewrites
+  the event `ref` to the file, so report evidence resolves to real pixels while
+  the default stays no-disk;
 - TypeScript report parsing in the ZAM kernel;
 - OpenAI-compatible vision snapshot adapter in the CLI layer;
 - `zam bridge observe-ui-snapshot` for turning a PNG keyframe into a validated
@@ -516,9 +520,8 @@ Implemented foundation:
   bounded foreground watching, capture, sampling, and snapshots.
 
 The remaining Phase 0 work is to add UI Automation and Raw Input as additional
-sensor sources, and to retain the actual keyframe pixels referenced by
-`frame-changed` events in the in-memory ring so a report's evidence can be
-fetched on demand (today the keyframe `ref` is a symbolic handle).
+sensor sources so clicks, shortcuts, focus changes, and dialogs join the keyframe
+stream the replay engine already consumes.
 
 ### Phase 1: deterministic observer
 

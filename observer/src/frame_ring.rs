@@ -30,11 +30,15 @@ impl<T> FrameRing<T> {
         self.frames.is_empty()
     }
 
-    pub fn push(&mut self, frame: T) {
-        if self.frames.len() == self.capacity {
-            self.frames.pop_front();
-        }
+    /// Append a frame, evicting and returning the oldest one when full.
+    pub fn push(&mut self, frame: T) -> Option<T> {
+        let evicted = if self.frames.len() == self.capacity {
+            self.frames.pop_front()
+        } else {
+            None
+        };
         self.frames.push_back(frame);
+        evicted
     }
 }
 
@@ -71,9 +75,9 @@ mod tests {
     fn evicts_oldest_frame_when_full() {
         let mut ring = FrameRing::new(2).expect("ring");
 
-        ring.push("first");
-        ring.push("second");
-        ring.push("third");
+        assert_eq!(ring.push("first"), None);
+        assert_eq!(ring.push("second"), None);
+        assert_eq!(ring.push("third"), Some("first"));
 
         assert_eq!(ring.len(), 2);
         assert_eq!(ring.snapshot(), vec!["second", "third"]);
