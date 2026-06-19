@@ -194,11 +194,11 @@ mod windows_capture {
         D3D_DRIVER_TYPE_HARDWARE, D3D_FEATURE_LEVEL, D3D_FEATURE_LEVEL_11_0, D3D_FEATURE_LEVEL_11_1,
     };
     use windows::Win32::Graphics::Direct3D11::{
-        D3D11CreateDevice, ID3D11Device, ID3D11Resource, ID3D11Texture2D, D3D11_CPU_ACCESS_READ,
-        D3D11_CREATE_DEVICE_BGRA_SUPPORT, D3D11_MAPPED_SUBRESOURCE, D3D11_MAP_READ,
-        D3D11_SDK_VERSION, D3D11_TEXTURE2D_DESC, D3D11_USAGE_STAGING,
+        D3D11CreateDevice, ID3D11Device, ID3D11DeviceContext, ID3D11Resource, ID3D11Texture2D,
+        D3D11_CPU_ACCESS_READ, D3D11_CREATE_DEVICE_BGRA_SUPPORT, D3D11_MAPPED_SUBRESOURCE,
+        D3D11_MAP_READ, D3D11_SDK_VERSION, D3D11_TEXTURE2D_DESC, D3D11_USAGE_STAGING,
     };
-    use windows::Win32::Graphics::Dxgi::Common::DXGI_FORMAT_B8G8R8A8_UNORM;
+    use windows::Win32::Graphics::Dxgi::Common::{DXGI_FORMAT, DXGI_FORMAT_B8G8R8A8_UNORM};
     use windows::Win32::Graphics::Dxgi::IDXGIDevice;
     use windows::Win32::System::WinRT::Direct3D11::{
         CreateDirect3D11DeviceFromDXGIDevice, IDirect3DDxgiInterfaceAccess,
@@ -304,7 +304,8 @@ mod windows_capture {
 
         let devices = create_direct3d_devices()?;
         let (frame, session, pool) = capture_first_frame(&devices.winrt, &item)?;
-        let first = read_frame_capture(&devices.native, &frame, archiving)?;
+        let mut reader = StagingReader::new(&devices.native)?;
+        let first = read_frame_capture(&mut reader, &frame, archiving)?;
         let _ = frame.Close();
         emit_capture_event(&mut stream, &mut archive, Some(first), on_event)?;
 
@@ -332,7 +333,7 @@ mod windows_capture {
                         );
                         current_size = content_size;
                     }
-                    let capture = read_frame_capture(&devices.native, &frame, archiving)?;
+                    let capture = read_frame_capture(&mut reader, &frame, archiving)?;
                     let _ = frame.Close();
                     Some(capture)
                 }
@@ -395,7 +396,8 @@ mod windows_capture {
 
         let devices = create_direct3d_devices()?;
         let (frame, session, pool) = capture_first_frame(&devices.winrt, &item)?;
-        let first = read_frame_capture(&devices.native, &frame, archiving)?;
+        let mut reader = StagingReader::new(&devices.native)?;
+        let first = read_frame_capture(&mut reader, &frame, archiving)?;
         let _ = frame.Close();
         emit_capture_event_continuous(&mut stream, &mut archive, Some(first), on_event)?;
 
@@ -426,7 +428,7 @@ mod windows_capture {
                         );
                         current_size = content_size;
                     }
-                    let capture = read_frame_capture(&devices.native, &frame, archiving)?;
+                    let capture = read_frame_capture(&mut reader, &frame, archiving)?;
                     let _ = frame.Close();
                     Some(capture)
                 }
@@ -448,11 +450,11 @@ mod windows_capture {
     }
 
     fn read_frame_capture(
-        device: &ID3D11Device,
+        reader: &mut StagingReader,
         frame: &Direct3D11CaptureFrame,
         with_pixels: bool,
     ) -> Result<CapturedKeyframe, String> {
-        read_frame(device, frame, |data, row_pitch, desc| {
+        reader.read_frame(frame, |data, row_pitch, desc| {
             if data.is_null() {
                 return Err("mapped texture returned a null data pointer".to_string());
             }
@@ -575,10 +577,11 @@ mod windows_capture {
 
         let devices = create_direct3d_devices()?;
         let (frame, session, pool) = capture_first_frame(&devices.winrt, &item)?;
+        let mut reader = StagingReader::new(&devices.native)?;
         let mut frames = FrameRing::new(frame_count)?;
         // The first frame establishes the baseline keyframe and is always
         // reported as changed.
-        let mut keyframe = read_frame_signature(&devices.native, &frame)?;
+        let mut keyframe = read_frame_signature(&mut reader, &frame)?;
         let first_sample = frame_sample(&frame, true)?;
         let mut last_sample = first_sample.clone();
         frames.push(first_sample);
@@ -607,7 +610,7 @@ mod windows_capture {
                     );
                     current_size = content_size;
                 }
-                let signature = read_frame_signature(&devices.native, &frame)?;
+                let signature = read_frame_signature(&mut reader, &frame)?;
                 // Compare against the last retained keyframe so slow drift that
                 // crosses the threshold is still captured exactly once.
                 let changed = signature.differs_from(&keyframe, change_threshold);
@@ -754,7 +757,8 @@ mod windows_capture {
         frame: &Direct3D11CaptureFrame,
         output: &Path,
     ) -> Result<(), String> {
-        let (width, height, rgba) = read_frame(device, frame, |data, row_pitch, desc| {
+        let mut reader = StagingReader::new(device)?;
+        let (width, height, rgba) = reader.read_frame(frame, |data, row_pitch, desc| {
             let rgba = bgra_to_rgba(data, desc.Width as usize, desc.Height as usize, row_pitch)?;
             Ok((desc.Width, desc.Height, rgba))
         })?;
@@ -763,10 +767,10 @@ mod windows_capture {
     }
 
     fn read_frame_signature(
-        device: &ID3D11Device,
+        reader: &mut StagingReader,
         frame: &Direct3D11CaptureFrame,
     ) -> Result<FrameSignature, String> {
-        read_frame(device, frame, |data, row_pitch, desc| {
+        reader.read_frame(frame, |data, row_pitch, desc| {
             if data.is_null() {
                 return Err("mapped texture returned a null data pointer".to_string());
             }
@@ -779,75 +783,129 @@ mod windows_capture {
         })
     }
 
-    /// Copy a captured frame into a CPU-readable staging texture, run `read`
-    /// against the mapped BGRA bytes, and always unmap before returning.
-    fn read_frame<R>(
-        device: &ID3D11Device,
-        frame: &Direct3D11CaptureFrame,
-        read: impl FnOnce(*const u8, usize, &D3D11_TEXTURE2D_DESC) -> Result<R, String>,
-    ) -> Result<R, String> {
-        let surface = frame
-            .Surface()
-            .map_err(|error| format!("failed to read frame surface: {error}"))?;
-        let access: IDirect3DDxgiInterfaceAccess = surface
-            .cast()
-            .map_err(|error| format!("failed to access DXGI frame surface: {error}"))?;
-        let source_texture: ID3D11Texture2D = unsafe { access.GetInterface() }
-            .map_err(|error| format!("failed to get D3D11 texture from frame surface: {error}"))?;
+    /// Reusable CPU readback path for captured frames.
+    ///
+    /// The immediate context and the CPU-readable staging texture are created
+    /// once and reused across frames, so a continuous capture loop does not
+    /// allocate and free a full-resolution staging texture on every sample —
+    /// only when the frame size or format actually changes (e.g. a window
+    /// resize). This addresses the per-frame staging churn called out in the
+    /// observer review; full async double-buffering is intentionally avoided
+    /// because at the observer's sampling cadence the single copy completes
+    /// well within the interval.
+    struct StagingReader {
+        device: ID3D11Device,
+        context: ID3D11DeviceContext,
+        staging: Option<ID3D11Texture2D>,
+        width: u32,
+        height: u32,
+        format: DXGI_FORMAT,
+    }
 
-        let mut desc = D3D11_TEXTURE2D_DESC::default();
-        unsafe {
-            source_texture.GetDesc(&mut desc);
-        }
-        if desc.Format != DXGI_FORMAT_B8G8R8A8_UNORM {
-            return Err(format!(
-                "unsupported frame format {:?}; expected BGRA8",
-                desc.Format
-            ));
-        }
-
-        let mut staging_desc = desc;
-        staging_desc.Usage = D3D11_USAGE_STAGING;
-        staging_desc.BindFlags = 0;
-        staging_desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ.0 as u32;
-        staging_desc.MiscFlags = 0;
-
-        let mut staging_texture = None;
-        unsafe {
-            device
-                .CreateTexture2D(&staging_desc, None, Some(&mut staging_texture))
-                .map_err(|error| format!("failed to create staging texture: {error}"))?;
-        }
-        let staging_texture =
-            staging_texture.ok_or_else(|| "staging texture was not returned".to_string())?;
-
-        let source_resource: ID3D11Resource = source_texture
-            .cast()
-            .map_err(|error| format!("failed to cast source texture to resource: {error}"))?;
-        let staging_resource: ID3D11Resource = staging_texture
-            .cast()
-            .map_err(|error| format!("failed to cast staging texture to resource: {error}"))?;
-        let context = unsafe { device.GetImmediateContext() }
-            .map_err(|error| format!("failed to get D3D11 immediate context: {error}"))?;
-
-        unsafe {
-            context.CopyResource(&staging_resource, &source_resource);
+    impl StagingReader {
+        fn new(device: &ID3D11Device) -> Result<Self, String> {
+            let context = unsafe { device.GetImmediateContext() }
+                .map_err(|error| format!("failed to get D3D11 immediate context: {error}"))?;
+            Ok(Self {
+                device: device.clone(),
+                context,
+                staging: None,
+                width: 0,
+                height: 0,
+                format: DXGI_FORMAT_B8G8R8A8_UNORM,
+            })
         }
 
-        let mut mapped = D3D11_MAPPED_SUBRESOURCE::default();
-        unsafe {
-            context
-                .Map(&staging_resource, 0, D3D11_MAP_READ, 0, Some(&mut mapped))
-                .map_err(|error| format!("failed to map staging texture: {error}"))?;
+        /// Return a staging texture matching `desc`, (re)creating it only when
+        /// the cached one is missing or the dimensions/format changed.
+        fn staging_for(&mut self, desc: &D3D11_TEXTURE2D_DESC) -> Result<ID3D11Texture2D, String> {
+            let reuse = self.staging.is_some()
+                && self.width == desc.Width
+                && self.height == desc.Height
+                && self.format == desc.Format;
+            if !reuse {
+                let mut staging_desc = *desc;
+                staging_desc.Usage = D3D11_USAGE_STAGING;
+                staging_desc.BindFlags = 0;
+                staging_desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ.0 as u32;
+                staging_desc.MiscFlags = 0;
+
+                let mut staging_texture = None;
+                unsafe {
+                    self.device
+                        .CreateTexture2D(&staging_desc, None, Some(&mut staging_texture))
+                        .map_err(|error| format!("failed to create staging texture: {error}"))?;
+                }
+                self.staging = Some(
+                    staging_texture
+                        .ok_or_else(|| "staging texture was not returned".to_string())?,
+                );
+                self.width = desc.Width;
+                self.height = desc.Height;
+                self.format = desc.Format;
+            }
+            Ok(self
+                .staging
+                .clone()
+                .expect("staging texture is present after staging_for"))
         }
 
-        let result = read(mapped.pData.cast::<u8>(), mapped.RowPitch as usize, &desc);
+        /// Copy a captured frame into the cached staging texture, run `read`
+        /// against the mapped BGRA bytes, and always unmap before returning.
+        fn read_frame<R>(
+            &mut self,
+            frame: &Direct3D11CaptureFrame,
+            read: impl FnOnce(*const u8, usize, &D3D11_TEXTURE2D_DESC) -> Result<R, String>,
+        ) -> Result<R, String> {
+            let surface = frame
+                .Surface()
+                .map_err(|error| format!("failed to read frame surface: {error}"))?;
+            let access: IDirect3DDxgiInterfaceAccess = surface
+                .cast()
+                .map_err(|error| format!("failed to access DXGI frame surface: {error}"))?;
+            let source_texture: ID3D11Texture2D =
+                unsafe { access.GetInterface() }.map_err(|error| {
+                    format!("failed to get D3D11 texture from frame surface: {error}")
+                })?;
 
-        unsafe {
-            context.Unmap(&staging_resource, 0);
+            let mut desc = D3D11_TEXTURE2D_DESC::default();
+            unsafe {
+                source_texture.GetDesc(&mut desc);
+            }
+            if desc.Format != DXGI_FORMAT_B8G8R8A8_UNORM {
+                return Err(format!(
+                    "unsupported frame format {:?}; expected BGRA8",
+                    desc.Format
+                ));
+            }
+
+            let staging_texture = self.staging_for(&desc)?;
+            let source_resource: ID3D11Resource = source_texture
+                .cast()
+                .map_err(|error| format!("failed to cast source texture to resource: {error}"))?;
+            let staging_resource: ID3D11Resource = staging_texture
+                .cast()
+                .map_err(|error| format!("failed to cast staging texture to resource: {error}"))?;
+
+            unsafe {
+                self.context.CopyResource(&staging_resource, &source_resource);
+            }
+
+            let mut mapped = D3D11_MAPPED_SUBRESOURCE::default();
+            unsafe {
+                self.context
+                    .Map(&staging_resource, 0, D3D11_MAP_READ, 0, Some(&mut mapped))
+                    .map_err(|error| format!("failed to map staging texture: {error}"))?;
+            }
+
+            let result = read(mapped.pData.cast::<u8>(), mapped.RowPitch as usize, &desc);
+
+            unsafe {
+                self.context.Unmap(&staging_resource, 0);
+            }
+
+            result
         }
-
-        result
     }
 
     fn bgra_to_rgba(
