@@ -108,3 +108,18 @@ diagnostic flow before the continuous observer loop is added.
 The desktop dropdown marks privacy-paused windows and keeps snapshot analysis
 disabled for them. The sidecar enforces the same decision again so direct CLI or
 Tauri calls cannot bypass the UI.
+
+Custom privacy policy:
+
+```json
+{
+  "allowProcesses": ["notepad.exe"],
+  "denyProcesses": ["teams.exe", "slack*"],
+  "denyTitleMarkers": ["payroll", "customer data"]
+}
+```
+
+Set `ZAM_OBSERVER_PRIVACY_POLICY` to the JSON file path before starting the
+sidecar. `allowProcesses` bypasses only custom policy rules; built-in pauses for
+password managers, authentication/private-browsing, and financial contexts still
+win.

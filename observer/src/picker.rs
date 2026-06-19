@@ -71,7 +71,10 @@ mod windows_picker {
     use windows_future::{AsyncStatus, IAsyncOperation};
 
     use super::{PickedWindow, WindowInfo, PROTOCOL_VERSION};
-    use crate::privacy::{classify_window_privacy, ensure_capture_allowed, redact_window_title};
+    use crate::privacy::{
+        classify_window_privacy_with_policy, ensure_capture_allowed,
+        load_window_privacy_policy_from_env, redact_window_title, WindowPrivacyPolicy,
+    };
 
     const PICKER_TIMEOUT: Duration = Duration::from_secs(120);
 
@@ -80,6 +83,7 @@ mod windows_picker {
             RoInitialize(RO_INIT_SINGLETHREADED)
                 .map_err(|error| format!("failed to initialize WinRT: {error}"))?;
         }
+        let policy = load_window_privacy_policy_from_env()?;
 
         let picker = GraphicsCapturePicker::new()
             .map_err(|error| format!("failed to create capture picker: {error}"))?;
@@ -100,7 +104,7 @@ mod windows_picker {
         let Some(item) = wait_for_capture_item(&operation, PICKER_TIMEOUT)? else {
             return Ok(None);
         };
-        let window = picked_window_from_item(&item)?;
+        let window = picked_window_from_item(&item, &policy)?;
 
         Ok(Some((item, window)))
     }
@@ -112,6 +116,7 @@ mod windows_picker {
             RoInitialize(RO_INIT_SINGLETHREADED)
                 .map_err(|error| format!("failed to initialize WinRT: {error}"))?;
         }
+        let policy = load_window_privacy_policy_from_env()?;
 
         let hwnd = hwnd_from_u64(raw_hwnd);
         if hwnd.is_invalid() {
@@ -121,7 +126,7 @@ mod windows_picker {
         if !is_window {
             return Err(format!("HWND 0x{raw_hwnd:x} is not a valid window"));
         }
-        let window_info = describe_window(hwnd);
+        let window_info = describe_window(hwnd, &policy);
         if let Some(window) = &window_info {
             ensure_capture_allowed(&window.privacy)?;
         }
@@ -133,7 +138,7 @@ mod windows_picker {
             unsafe { interop.CreateForWindow::<GraphicsCaptureItem>(hwnd) }.map_err(|error| {
                 format!("failed to create capture item for HWND 0x{raw_hwnd:x}: {error}")
             })?;
-        let mut window = picked_window_from_item(&item)?;
+        let mut window = picked_window_from_item(&item, &policy)?;
         if let Some(window_info) = window_info {
             window.display_name = window_info.title;
             window.privacy = window_info.privacy;
@@ -142,22 +147,33 @@ mod windows_picker {
     }
 
     pub(crate) fn list_windows() -> Result<Vec<WindowInfo>, String> {
-        let mut windows = Vec::<WindowInfo>::new();
+        let policy = load_window_privacy_policy_from_env()?;
+        let mut state = WindowEnumerationState {
+            windows: Vec::new(),
+            policy,
+        };
         unsafe {
             EnumWindows(
                 Some(enum_window_proc),
-                LPARAM((&mut windows as *mut Vec<WindowInfo>) as isize),
+                LPARAM((&mut state as *mut WindowEnumerationState) as isize),
             )
             .map_err(|error| format!("failed to enumerate windows: {error}"))?;
         }
-        windows.sort_by(|left, right| left.title.cmp(&right.title));
-        Ok(windows)
+        state
+            .windows
+            .sort_by(|left, right| left.title.cmp(&right.title));
+        Ok(state.windows)
+    }
+
+    struct WindowEnumerationState {
+        windows: Vec<WindowInfo>,
+        policy: WindowPrivacyPolicy,
     }
 
     unsafe extern "system" fn enum_window_proc(hwnd: HWND, lparam: LPARAM) -> BOOL {
-        let windows = &mut *(lparam.0 as *mut Vec<WindowInfo>);
-        if let Some(window) = describe_window(hwnd) {
-            windows.push(window);
+        let state = &mut *(lparam.0 as *mut WindowEnumerationState);
+        if let Some(window) = describe_window(hwnd, &state.policy) {
+            state.windows.push(window);
         }
         BOOL(1)
     }
@@ -213,7 +229,10 @@ mod windows_picker {
         }
     }
 
-    fn picked_window_from_item(item: &GraphicsCaptureItem) -> Result<PickedWindow, String> {
+    fn picked_window_from_item(
+        item: &GraphicsCaptureItem,
+        policy: &WindowPrivacyPolicy,
+    ) -> Result<PickedWindow, String> {
         let size = item
             .Size()
             .map_err(|error| format!("failed to read picked window size: {error}"))?;
@@ -221,7 +240,7 @@ mod windows_picker {
             .DisplayName()
             .map_err(|error| format!("failed to read picked window name: {error}"))?
             .to_string_lossy();
-        let privacy = classify_window_privacy("", &raw_display_name);
+        let privacy = classify_window_privacy_with_policy("", &raw_display_name, policy);
         let display_name = redact_window_title(raw_display_name, &privacy);
 
         Ok(PickedWindow {
@@ -233,7 +252,7 @@ mod windows_picker {
         })
     }
 
-    fn describe_window(hwnd: HWND) -> Option<WindowInfo> {
+    fn describe_window(hwnd: HWND, policy: &WindowPrivacyPolicy) -> Option<WindowInfo> {
         let visible = unsafe { IsWindowVisible(hwnd).as_bool() };
         if !visible {
             return None;
@@ -258,7 +277,7 @@ mod windows_picker {
         }
 
         let process_name = process_name(process_id);
-        let privacy = classify_window_privacy(&process_name, &title);
+        let privacy = classify_window_privacy_with_policy(&process_name, &title, policy);
         let title = redact_window_title(title, &privacy);
 
         Some(WindowInfo {

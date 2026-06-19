@@ -17,7 +17,8 @@ pub use model::{
 };
 pub use picker::{list_windows, pick_window, PickedWindow, WindowInfo};
 pub use privacy::{
-    classify_window_privacy, ensure_capture_allowed, redact_window_title, PrivacyAction,
-    WindowPrivacy, REDACTED_WINDOW_TITLE,
+    classify_window_privacy, classify_window_privacy_with_policy, ensure_capture_allowed,
+    load_window_privacy_policy, load_window_privacy_policy_from_env, redact_window_title,
+    PrivacyAction, WindowPrivacy, WindowPrivacyPolicy, PRIVACY_POLICY_ENV, REDACTED_WINDOW_TITLE,
 };
 pub use replay::{ReplayEngine, ReplayError, ReplaySummary};

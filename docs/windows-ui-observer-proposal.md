@@ -496,13 +496,15 @@ Implemented foundation:
 - built-in privacy classification for selected/listed windows, with title
   redaction and capture refusal for password managers, authentication/private
   browsing, and financial contexts;
+- JSON-configurable custom process/title privacy policy through
+  `ZAM_OBSERVER_PRIVACY_POLICY`, without allowing custom allow rules to bypass
+  built-in sensitive-context pauses;
 - native x64 and ARM64 observer CI builds;
 - release-resource preparation for the Tauri package;
 - Tauri commands for observer probe and window selection.
 
-The remaining Phase 0 work is to add UI Automation, Raw Input, configurable
-allow/deny policies, and event-triggered keyframe retention around the live
-capture source.
+The remaining Phase 0 work is to add UI Automation, Raw Input, and
+event-triggered keyframe retention around the live capture source.
 
 ### Phase 1: deterministic observer
 

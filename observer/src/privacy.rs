@@ -1,6 +1,10 @@
+use std::env;
+use std::path::Path;
+
 use serde::{Deserialize, Serialize};
 
 pub const REDACTED_WINDOW_TITLE: &str = "[redacted by privacy filter]";
+pub const PRIVACY_POLICY_ENV: &str = "ZAM_OBSERVER_PRIVACY_POLICY";
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "kebab-case")]
@@ -19,6 +23,14 @@ pub struct WindowPrivacy {
     pub title_redacted: bool,
 }
 
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase", default)]
+pub struct WindowPrivacyPolicy {
+    pub allow_processes: Vec<String>,
+    pub deny_processes: Vec<String>,
+    pub deny_title_markers: Vec<String>,
+}
+
 impl WindowPrivacy {
     pub fn observe() -> Self {
         Self {
@@ -34,6 +46,14 @@ impl WindowPrivacy {
 }
 
 pub fn classify_window_privacy(process_name: &str, title: &str) -> WindowPrivacy {
+    classify_window_privacy_with_policy(process_name, title, &WindowPrivacyPolicy::default())
+}
+
+pub fn classify_window_privacy_with_policy(
+    process_name: &str,
+    title: &str,
+    policy: &WindowPrivacyPolicy,
+) -> WindowPrivacy {
     let mut reasons = Vec::new();
     let process = normalize_process(process_name);
     let title = normalize_text(title);
@@ -51,6 +71,14 @@ pub fn classify_window_privacy(process_name: &str, title: &str) -> WindowPrivacy
         reasons.push("financial".to_string());
     }
 
+    let policy_allowed = process_matches_any(&process, &policy.allow_processes);
+    if !policy_allowed && process_matches_any(&process, &policy.deny_processes) {
+        reasons.push("policy-process".to_string());
+    }
+    if !policy_allowed && contains_configured_marker(&title, &policy.deny_title_markers) {
+        reasons.push("policy-title".to_string());
+    }
+
     reasons.sort();
     reasons.dedup();
 
@@ -63,6 +91,24 @@ pub fn classify_window_privacy(process_name: &str, title: &str) -> WindowPrivacy
             title_redacted: true,
         }
     }
+}
+
+pub fn load_window_privacy_policy_from_env() -> Result<WindowPrivacyPolicy, String> {
+    let Some(path) = env::var_os(PRIVACY_POLICY_ENV) else {
+        return Ok(WindowPrivacyPolicy::default());
+    };
+    if path.is_empty() {
+        return Ok(WindowPrivacyPolicy::default());
+    }
+
+    load_window_privacy_policy(Path::new(&path))
+}
+
+pub fn load_window_privacy_policy(path: &Path) -> Result<WindowPrivacyPolicy, String> {
+    let raw = std::fs::read_to_string(path)
+        .map_err(|error| format!("failed to read privacy policy {}: {error}", path.display()))?;
+    serde_json::from_str::<WindowPrivacyPolicy>(&raw)
+        .map_err(|error| format!("failed to parse privacy policy {}: {error}", path.display()))
 }
 
 pub fn redact_window_title(title: String, privacy: &WindowPrivacy) -> String {
@@ -101,10 +147,31 @@ fn contains_any(value: &str, markers: &[&str]) -> bool {
     markers.iter().any(|marker| value.contains(marker))
 }
 
+fn contains_configured_marker(value: &str, markers: &[String]) -> bool {
+    markers
+        .iter()
+        .map(|marker| normalize_text(marker))
+        .filter(|marker| !marker.is_empty())
+        .any(|marker| value.contains(&marker))
+}
+
 fn is_sensitive_process(process: &str) -> bool {
     SENSITIVE_PROCESS_MARKERS
         .iter()
         .any(|marker| process == *marker || process.starts_with(marker))
+}
+
+fn process_matches_any(process: &str, patterns: &[String]) -> bool {
+    patterns.iter().any(|pattern| {
+        let pattern = normalize_process(pattern);
+        if pattern.is_empty() {
+            return false;
+        }
+        pattern
+            .strip_suffix('*')
+            .is_some_and(|prefix| process.starts_with(prefix))
+            || process == pattern
+    })
 }
 
 const SENSITIVE_PROCESS_MARKERS: &[&str] = &[
@@ -198,5 +265,45 @@ mod tests {
             REDACTED_WINDOW_TITLE
         );
         assert!(ensure_capture_allowed(&privacy).is_err());
+    }
+
+    #[test]
+    fn policy_can_pause_custom_processes() {
+        let policy = WindowPrivacyPolicy {
+            deny_processes: vec!["Teams.exe".to_string()],
+            ..Default::default()
+        };
+        let privacy = classify_window_privacy_with_policy("teams.exe", "Chat", &policy);
+
+        assert_eq!(privacy.action, PrivacyAction::PrivacyPause);
+        assert_eq!(privacy.reasons, vec!["policy-process"]);
+    }
+
+    #[test]
+    fn policy_can_pause_custom_title_markers() {
+        let policy = WindowPrivacyPolicy {
+            deny_title_markers: vec!["Payroll".to_string()],
+            ..Default::default()
+        };
+        let privacy = classify_window_privacy_with_policy("excel.exe", "Payroll 2026", &policy);
+
+        assert_eq!(privacy.action, PrivacyAction::PrivacyPause);
+        assert_eq!(privacy.reasons, vec!["policy-title"]);
+    }
+
+    #[test]
+    fn policy_allow_processes_only_bypass_policy_rules() {
+        let policy = WindowPrivacyPolicy {
+            allow_processes: vec!["chrome.exe".to_string()],
+            deny_title_markers: vec!["internal".to_string()],
+            ..Default::default()
+        };
+
+        let allowed = classify_window_privacy_with_policy("chrome.exe", "internal docs", &policy);
+        assert_eq!(allowed.action, PrivacyAction::Observe);
+
+        let built_in = classify_window_privacy_with_policy("chrome.exe", "Sign in", &policy);
+        assert_eq!(built_in.action, PrivacyAction::PrivacyPause);
+        assert_eq!(built_in.reasons, vec!["authentication"]);
     }
 }
