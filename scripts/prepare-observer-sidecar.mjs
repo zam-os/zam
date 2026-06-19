@@ -18,13 +18,18 @@ if (!target) {
 const executable = target.includes("windows")
   ? "zam-observer.exe"
   : "zam-observer";
-const source = resolve(
-  optionValue("--binary") ??
-    join(repoRoot, "observer", "target", target, "release", executable),
-);
+const explicitBinary = optionValue("--binary");
+const source = explicitBinary
+  ? resolve(explicitBinary)
+  : [
+      join(repoRoot, "observer", "target", "release", executable),
+      join(repoRoot, "observer", "target", target, "release", executable),
+    ].find((candidate) => existsSync(candidate));
 
-if (!existsSync(source)) {
-  throw new Error(`Observer binary not found: ${source}`);
+if (!source) {
+  throw new Error(
+    `Observer binary not found. Run \`npm run observer:build\` first, or pass --binary <path>.`,
+  );
 }
 
 const destinationDir = join(
