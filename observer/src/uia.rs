@@ -83,7 +83,13 @@ pub fn watch_focused_element_continuous(
     pause_input: std::sync::Arc<std::sync::atomic::AtomicBool>,
     on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
 ) -> Result<(), String> {
-    windows_uia::watch_focused_element_continuous(interval, session_id, should_stop, pause_input, on_event)
+    windows_uia::watch_focused_element_continuous(
+        interval,
+        session_id,
+        should_stop,
+        pause_input,
+        on_event,
+    )
 }
 
 #[cfg(not(target_os = "windows"))]
@@ -107,27 +113,25 @@ pub fn watch_focused_element_continuous(
     Err("UI Automation is only available on Windows".to_string())
 }
 
-
 #[cfg(target_os = "windows")]
 mod windows_uia {
     use std::collections::BTreeMap;
     use std::thread;
     use std::time::Duration;
 
+    use windows::core::Interface;
+    use windows::Win32::Foundation::HWND;
     use windows::Win32::System::Com::{
         CoCreateInstance, CoInitializeEx, CLSCTX_INPROC_SERVER, COINIT_MULTITHREADED,
     };
     use windows::Win32::UI::Accessibility::{
-        CUIAutomation, IUIAutomation, IUIAutomationElement,
-        IUIAutomationTogglePattern, IUIAutomationSelectionItemPattern,
-        UIA_TogglePatternId, UIA_SelectionItemPatternId,
+        CUIAutomation, IUIAutomation, IUIAutomationElement, IUIAutomationSelectionItemPattern,
+        IUIAutomationTogglePattern, UIA_SelectionItemPatternId, UIA_TogglePatternId,
     };
     use windows::Win32::UI::WindowsAndMessaging::{
-        GetClassNameW, GetWindow, GetForegroundWindow, GW_OWNER,
-        GetWindowTextLengthW, GetWindowTextW,
+        GetClassNameW, GetForegroundWindow, GetWindow, GetWindowTextLengthW, GetWindowTextW,
+        GW_OWNER,
     };
-    use windows::Win32::Foundation::HWND;
-    use windows::core::Interface;
 
     use super::control_type_name;
     use crate::clock::observed_at_now;
@@ -328,7 +332,8 @@ mod windows_uia {
             .unwrap_or(0);
 
         let toggle_state = unsafe {
-            element.GetCurrentPattern(UIA_TogglePatternId)
+            element
+                .GetCurrentPattern(UIA_TogglePatternId)
                 .ok()
                 .and_then(|pattern| {
                     let toggle_pattern: IUIAutomationTogglePattern = pattern.cast().ok()?;
@@ -337,11 +342,16 @@ mod windows_uia {
         };
 
         let selected = unsafe {
-            element.GetCurrentPattern(UIA_SelectionItemPatternId)
+            element
+                .GetCurrentPattern(UIA_SelectionItemPatternId)
                 .ok()
                 .and_then(|pattern| {
-                    let selection_pattern: IUIAutomationSelectionItemPattern = pattern.cast().ok()?;
-                    selection_pattern.CurrentIsSelected().map(|s| s.as_bool()).ok()
+                    let selection_pattern: IUIAutomationSelectionItemPattern =
+                        pattern.cast().ok()?;
+                    selection_pattern
+                        .CurrentIsSelected()
+                        .map(|s| s.as_bool())
+                        .ok()
                 })
         };
 
@@ -409,28 +419,25 @@ mod windows_uia {
         }
     }
 
-    fn toggle_event(
-        session_id: &str,
-        sequence: u64,
-        focused: &FocusedElement,
-    ) -> SensorEvent {
+    fn toggle_event(session_id: &str, sequence: u64, focused: &FocusedElement) -> SensorEvent {
         let mut event = focus_event(session_id, sequence, focused);
         event.kind = SensorKind::ToggleChanged;
         if let Some(state) = focused.toggle_state {
-            event.data.insert("state".to_string(), serde_json::Value::Number(serde_json::Number::from(state)));
+            event.data.insert(
+                "state".to_string(),
+                serde_json::Value::Number(serde_json::Number::from(state)),
+            );
         }
         event
     }
 
-    fn selection_event(
-        session_id: &str,
-        sequence: u64,
-        focused: &FocusedElement,
-    ) -> SensorEvent {
+    fn selection_event(session_id: &str, sequence: u64, focused: &FocusedElement) -> SensorEvent {
         let mut event = focus_event(session_id, sequence, focused);
         event.kind = SensorKind::SelectionChanged;
         if let Some(selected) = focused.selected {
-            event.data.insert("selected".to_string(), serde_json::Value::Bool(selected));
+            event
+                .data
+                .insert("selected".to_string(), serde_json::Value::Bool(selected));
         }
         event
     }
@@ -467,12 +474,7 @@ mod windows_uia {
         false
     }
 
-    fn dialog_event(
-        session_id: &str,
-        sequence: u64,
-        hwnd: HWND,
-        opened: bool,
-    ) -> SensorEvent {
+    fn dialog_event(session_id: &str, sequence: u64, hwnd: HWND, opened: bool) -> SensorEvent {
         let mut process_id = 0u32;
         unsafe {
             use windows::Win32::UI::WindowsAndMessaging::GetWindowThreadProcessId;
@@ -516,9 +518,12 @@ mod windows_uia {
                 || lower_title.contains("fault")
                 || lower_title.contains("fehler")
                 || lower_title.contains("fehlgeschlagen");
-            
+
             let severity = if is_error { "error" } else { "info" };
-            data.insert("severity".to_string(), serde_json::Value::String(severity.to_string()));
+            data.insert(
+                "severity".to_string(),
+                serde_json::Value::String(severity.to_string()),
+            );
         }
 
         SensorEvent {
@@ -527,7 +532,11 @@ mod windows_uia {
             sequence,
             observed_at: observed_at_now(),
             source: SensorSource::Uia,
-            kind: if opened { SensorKind::DialogOpened } else { SensorKind::DialogClosed },
+            kind: if opened {
+                SensorKind::DialogOpened
+            } else {
+                SensorKind::DialogClosed
+            },
             application,
             target: None,
             data,

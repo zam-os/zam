@@ -9,20 +9,35 @@ use crate::model::SensorEvent;
 use crate::raw_input::watch_raw_input_continuous;
 use crate::uia::watch_focused_element_continuous;
 
+pub struct WatchSessionOptions<'a> {
+    pub hwnd: u64,
+    pub session_id: &'a str,
+    pub keyframe_dir: Option<&'a Path>,
+    pub keyframe_retain: usize,
+    pub change_threshold: f64,
+    pub interval_ms: u64,
+    pub heartbeat_every: u64,
+    pub samples: Option<usize>,
+}
+
 /// Orchestrates the unified watch loop.
 /// Spawns separate threads for UIA focus polling, Raw Input hooks, and Graphics Capture,
 /// channeling all events to a single sequence on stdout.
 pub fn watch_session(
-    hwnd: u64,
-    session_id: &str,
-    keyframe_dir: Option<&Path>,
-    keyframe_retain: usize,
-    change_threshold: f64,
-    interval_ms: u64,
-    heartbeat_every: u64,
-    samples: Option<usize>,
+    options: WatchSessionOptions<'_>,
     on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
 ) -> Result<(), String> {
+    let WatchSessionOptions {
+        hwnd,
+        session_id,
+        keyframe_dir,
+        keyframe_retain,
+        change_threshold,
+        interval_ms,
+        heartbeat_every,
+        samples,
+    } = options;
+
     let should_stop = Arc::new(AtomicBool::new(false));
     let pause_input = Arc::new(AtomicBool::new(false));
 
@@ -48,9 +63,7 @@ pub fn watch_session(
     let session_id_uia = session_id.to_string();
     let uia_tx = tx.clone();
     let uia_handle = thread::spawn(move || {
-        let mut forward_event = |event| {
-            uia_tx.send(event).map_err(|error| error.to_string())
-        };
+        let mut forward_event = |event| uia_tx.send(event).map_err(|error| error.to_string());
         let result = watch_focused_element_continuous(
             Duration::from_millis(500),
             &session_id_uia,
@@ -70,9 +83,7 @@ pub fn watch_session(
     let session_id_input = session_id.to_string();
     let input_tx = tx.clone();
     let input_handle = thread::spawn(move || {
-        let mut forward_event = |event| {
-            input_tx.send(event).map_err(|error| error.to_string())
-        };
+        let mut forward_event = |event| input_tx.send(event).map_err(|error| error.to_string());
         let result = watch_raw_input_continuous(
             &session_id_input,
             12, // TYPING_FLUSH_THRESHOLD
@@ -92,9 +103,7 @@ pub fn watch_session(
     let keyframe_dir_capture = keyframe_dir.map(|path| path.to_path_buf());
     let capture_tx = tx;
     let capture_handle = thread::spawn(move || {
-        let mut forward_event = |event| {
-            capture_tx.send(event).map_err(|error| error.to_string())
-        };
+        let mut forward_event = |event| capture_tx.send(event).map_err(|error| error.to_string());
         let result = watch_window_keyframes_continuous(
             hwnd,
             Duration::from_millis(interval_ms),

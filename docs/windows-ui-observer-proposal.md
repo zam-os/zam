@@ -498,6 +498,9 @@ Implemented foundation:
   `UiSensorEvent` stream — a `frame-changed` keyframe event per visual change
   plus periodic heartbeats — which the existing replay engine consumes directly
   into `UiObservationReport`s without persisting pixels;
+- unified `watch` command that runs keyframe capture, UI Automation focus, and
+  Raw Input sensors in worker threads, mutes input on privacy pauses, and emits
+  one monotonically sequenced JSONL event bus for the session agent;
 - opt-in keyframe retention (`--keyframe-dir`) that writes each keyframe PNG into
   a ring-bounded directory (oldest pruned beyond `--keyframe-retain`) and rewrites
   the event `ref` to the file, so report evidence resolves to real pixels while
@@ -529,11 +532,12 @@ Implemented foundation:
   bounded foreground watching, capture, sampling, and snapshots.
 
 Foreground, frame keyframes, UI Automation focus, and Raw Input are now live
-sensor sources feeding the replay engine. The remaining Phase 0 work is to merge
-the independent per-command streams into a single sequenced event bus and to
-broaden UI Automation beyond focus to invoke, dialog, and structure events, so
+sensor sources feeding both independent diagnostic commands and the unified
+`watch` event bus. The remaining Phase 0 work is to expose that continuous bus
+through desktop/bridge lifecycle controls and to broaden UI Automation beyond
+polled focus/dialog heuristics to invoke, text-change, and structure events, so
 the full event vocabulary the replay engine already understands is produced from
-one continuous observer process.
+one supervised observer process.
 
 ### Phase 1: deterministic observer
 

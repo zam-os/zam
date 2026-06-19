@@ -38,4 +38,4 @@ pub use privacy::{
 pub use raw_input::{watch_raw_input, watch_raw_input_continuous};
 pub use replay::{ReplayEngine, ReplayError, ReplaySummary};
 pub use uia::{watch_focused_element, watch_focused_element_continuous};
-pub use watch::watch_session;
+pub use watch::{watch_session, WatchSessionOptions};

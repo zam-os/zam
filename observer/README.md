@@ -27,6 +27,8 @@ cargo run --manifest-path observer/Cargo.toml -- \
 cargo run --manifest-path observer/Cargo.toml -- \
   watch-window --session session-1 --hwnd 0x123456 --samples 60 --interval-ms 1000
 cargo run --manifest-path observer/Cargo.toml -- \
+  watch --session session-1 --hwnd 0x123456 --samples 60 --interval-ms 1000
+cargo run --manifest-path observer/Cargo.toml -- \
   watch-uia --session session-1 --samples 60 --interval-ms 500
 cargo run --manifest-path observer/Cargo.toml -- \
   watch-raw-input --session session-1 --duration-ms 10000
@@ -111,6 +113,14 @@ the directory like a ring, deleting the oldest keyframe once it is full. When
 retention is on, the `frame-changed` `data.ref` resolves to the written file
 (`file:<path>`) instead of the in-memory `memory:keyframe-NNNN` handle, so a
 report's evidence can be opened directly.
+
+`watch --session <id> --hwnd <decimal|0xhex>` is the unified live observer
+stream. It runs the window keyframe, UI Automation focus, and Raw Input sensors
+in worker threads, assigns one monotonic sequence across all emitted events, and
+writes combined `UiSensorEvent` JSONL to stdout. UIA password focus and the
+window privacy filter mute Raw Input before events are written. `--samples`
+bounds the number of emitted events; omit it for a continuous stream that stops
+when stdin closes or the parent process exits.
 
 `watch-uia --session <id>` is Windows-only. It polls the focused UI Automation
 element and emits an `element-focused` `UiSensorEvent` whenever focus moves,

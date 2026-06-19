@@ -108,8 +108,10 @@ mod tests {
     #[test]
     fn identical_frames_have_no_difference() {
         let frame = solid_frame(10, 20, 30);
-        let a = FrameSignature::from_bgra(&frame, SIGNATURE_GRID, SIGNATURE_GRID, SIGNATURE_GRID * 4);
-        let b = FrameSignature::from_bgra(&frame, SIGNATURE_GRID, SIGNATURE_GRID, SIGNATURE_GRID * 4);
+        let a =
+            FrameSignature::from_bgra(&frame, SIGNATURE_GRID, SIGNATURE_GRID, SIGNATURE_GRID * 4);
+        let b =
+            FrameSignature::from_bgra(&frame, SIGNATURE_GRID, SIGNATURE_GRID, SIGNATURE_GRID * 4);
 
         assert_eq!(a.difference(&b), 0.0);
         assert!(!a.differs_from(&b, DEFAULT_CHANGE_THRESHOLD));
@@ -119,8 +121,10 @@ mod tests {
     fn black_and_white_frames_are_maximally_different() {
         let black = solid_frame(0, 0, 0);
         let white = solid_frame(255, 255, 255);
-        let a = FrameSignature::from_bgra(&black, SIGNATURE_GRID, SIGNATURE_GRID, SIGNATURE_GRID * 4);
-        let b = FrameSignature::from_bgra(&white, SIGNATURE_GRID, SIGNATURE_GRID, SIGNATURE_GRID * 4);
+        let a =
+            FrameSignature::from_bgra(&black, SIGNATURE_GRID, SIGNATURE_GRID, SIGNATURE_GRID * 4);
+        let b =
+            FrameSignature::from_bgra(&white, SIGNATURE_GRID, SIGNATURE_GRID, SIGNATURE_GRID * 4);
 
         assert_eq!(a.difference(&b), 1.0);
         assert!(a.differs_from(&b, DEFAULT_CHANGE_THRESHOLD));
@@ -135,7 +139,8 @@ mod tests {
         changed[1] = 255;
         changed[2] = 255;
 
-        let a = FrameSignature::from_bgra(&base, SIGNATURE_GRID, SIGNATURE_GRID, SIGNATURE_GRID * 4);
+        let a =
+            FrameSignature::from_bgra(&base, SIGNATURE_GRID, SIGNATURE_GRID, SIGNATURE_GRID * 4);
         let b =
             FrameSignature::from_bgra(&changed, SIGNATURE_GRID, SIGNATURE_GRID, SIGNATURE_GRID * 4);
 

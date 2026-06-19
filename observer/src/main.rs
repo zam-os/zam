@@ -8,10 +8,10 @@ use std::time::Duration;
 
 use zam_observer::{
     capture_once, capture_window, foreground_window, list_windows, observed_at_now, pick_window,
-    sample_window, snapshot_window, watch_focused_element, watch_raw_input, watch_window_keyframes,
-    watch_session, ApplicationContext, ObserverCapabilities, ObserverProbe, ReplayEngine,
-    SensorEvent, SensorKind, SensorSource, UiObservationReport, DEFAULT_CHANGE_THRESHOLD,
-    PROTOCOL_VERSION,
+    sample_window, snapshot_window, watch_focused_element, watch_raw_input, watch_session,
+    watch_window_keyframes, ApplicationContext, ObserverCapabilities, ObserverProbe, ReplayEngine,
+    SensorEvent, SensorKind, SensorSource, UiObservationReport, WatchSessionOptions,
+    DEFAULT_CHANGE_THRESHOLD, PROTOCOL_VERSION,
 };
 
 fn main() {
@@ -244,14 +244,16 @@ fn watch_window_command(options: WatchWindowOptions) -> Result<(), String> {
 fn watch_command(options: WatchOptions) -> Result<(), String> {
     let mut writer = BufWriter::new(io::stdout());
     let result = watch_session(
-        options.hwnd,
-        &options.session_id,
-        options.keyframe_dir.as_deref(),
-        options.keyframe_retain,
-        options.change_threshold,
-        options.interval_ms,
-        options.heartbeat_every,
-        options.samples,
+        WatchSessionOptions {
+            hwnd: options.hwnd,
+            session_id: &options.session_id,
+            keyframe_dir: options.keyframe_dir.as_deref(),
+            keyframe_retain: options.keyframe_retain,
+            change_threshold: options.change_threshold,
+            interval_ms: options.interval_ms,
+            heartbeat_every: options.heartbeat_every,
+            samples: options.samples,
+        },
         &mut |event| write_event(&mut writer, &event),
     );
     writer.flush().map_err(|error| error.to_string())?;
@@ -1038,7 +1040,10 @@ impl WatchOptions {
 
         if let Some(max) = samples {
             if max == 0 || max > Self::MAX_SAMPLES {
-                return Err(format!("--samples must be between 1 and {}", Self::MAX_SAMPLES));
+                return Err(format!(
+                    "--samples must be between 1 and {}",
+                    Self::MAX_SAMPLES
+                ));
             }
         }
         if !(Self::MIN_INTERVAL_MS..=Self::MAX_INTERVAL_MS).contains(&interval_ms) {
@@ -1338,6 +1343,70 @@ mod tests {
     }
 
     #[test]
+    fn parses_unified_watch_defaults() {
+        let options = WatchOptions::parse(vec![
+            "--session".to_string(),
+            "session-1".to_string(),
+            "--hwnd".to_string(),
+            "0x2a".to_string(),
+        ])
+        .expect("watch options");
+
+        assert_eq!(options.session_id, "session-1");
+        assert_eq!(options.hwnd, 42);
+        assert_eq!(options.samples, None);
+        assert_eq!(options.interval_ms, WatchOptions::DEFAULT_INTERVAL_MS);
+        assert_eq!(options.change_threshold, DEFAULT_CHANGE_THRESHOLD);
+        assert_eq!(
+            options.heartbeat_every,
+            WatchOptions::DEFAULT_HEARTBEAT_EVERY
+        );
+        assert_eq!(options.keyframe_dir, None);
+        assert_eq!(
+            options.keyframe_retain,
+            WatchOptions::DEFAULT_KEYFRAME_RETAIN
+        );
+    }
+
+    #[test]
+    fn parses_unified_watch_overrides() {
+        let options = WatchOptions::parse(vec![
+            "--session".to_string(),
+            "session-1".to_string(),
+            "--hwnd".to_string(),
+            "42".to_string(),
+            "--samples".to_string(),
+            "3".to_string(),
+            "--interval-ms".to_string(),
+            "250".to_string(),
+            "--change-threshold".to_string(),
+            "0.1".to_string(),
+            "--heartbeat-every".to_string(),
+            "4".to_string(),
+            "--keyframe-dir".to_string(),
+            "frames".to_string(),
+            "--keyframe-retain".to_string(),
+            "5".to_string(),
+        ])
+        .expect("watch options");
+
+        assert_eq!(options.samples, Some(3));
+        assert_eq!(options.interval_ms, 250);
+        assert_eq!(options.change_threshold, 0.1);
+        assert_eq!(options.heartbeat_every, 4);
+        assert_eq!(options.keyframe_dir, Some(PathBuf::from("frames")));
+        assert_eq!(options.keyframe_retain, 5);
+    }
+
+    #[test]
+    fn rejects_unified_watch_without_hwnd() {
+        let error = WatchOptions::parse(vec!["--session".to_string(), "session-1".to_string()])
+            .unwrap_err();
+
+        assert!(error.contains("--hwnd is required"));
+    }
+
+    #[test]
     fn parses_watch_uia_defaults() {
         let options =
             WatchUiaOptions::parse(vec!["--session".to_string(), "session-1".to_string()])
@@ -1350,11 +1419,8 @@ mod tests {
 
     #[test]
     fn rejects_watch_uia_without_session() {
-        let error = WatchUiaOptions::parse(vec![
-            "--samples".to_string(),
-            "5".to_string(),
-        ])
-        .unwrap_err();
+        let error =
+            WatchUiaOptions::parse(vec!["--samples".to_string(), "5".to_string()]).unwrap_err();
 
         assert!(error.contains("--session is required"));
     }

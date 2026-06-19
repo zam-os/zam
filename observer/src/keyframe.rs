@@ -77,7 +77,11 @@ impl KeyframeStream {
             self.samples_since_event = 0;
             self.keyframe_index += 1;
             let reference = format!("memory:keyframe-{:04}", self.keyframe_index);
-            return Some(self.event(SensorKind::FrameChanged, observed_at.into(), Some(reference)));
+            return Some(self.event(
+                SensorKind::FrameChanged,
+                observed_at.into(),
+                Some(reference),
+            ));
         }
 
         self.samples_since_event += 1;

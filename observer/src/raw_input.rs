@@ -82,7 +82,10 @@ impl RawInputAggregator {
             }
             RawInput::MouseButton(button) => {
                 let mut data = BTreeMap::new();
-                data.insert("button".to_string(), Value::String(button.label().to_string()));
+                data.insert(
+                    "button".to_string(),
+                    Value::String(button.label().to_string()),
+                );
                 self.discrete(SensorKind::Click, data, observed_at)
             }
             RawInput::Wheel { up } => {
@@ -257,7 +260,13 @@ pub fn watch_raw_input_continuous(
     pause_input: std::sync::Arc<std::sync::atomic::AtomicBool>,
     on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
 ) -> Result<(), String> {
-    windows_raw_input::watch_raw_input_continuous(session_id, flush_threshold, should_stop, pause_input, on_event)
+    windows_raw_input::watch_raw_input_continuous(
+        session_id,
+        flush_threshold,
+        should_stop,
+        pause_input,
+        on_event,
+    )
 }
 
 #[cfg(not(target_os = "windows"))]
@@ -291,7 +300,7 @@ mod windows_raw_input {
     use windows::Win32::Foundation::{HWND, LPARAM};
     use windows::Win32::UI::Input::{
         GetRawInputData, RegisterRawInputDevices, HRAWINPUT, RAWINPUT, RAWINPUTDEVICE,
-        RAWINPUTHEADER, RID_INPUT, RIDEV_INPUTSINK,
+        RAWINPUTHEADER, RIDEV_INPUTSINK, RID_INPUT,
     };
     use windows::Win32::UI::WindowsAndMessaging::{
         CreateWindowExW, DispatchMessageW, PeekMessageW, TranslateMessage, HWND_MESSAGE, MSG,
