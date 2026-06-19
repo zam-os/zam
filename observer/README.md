@@ -32,8 +32,9 @@ Use `--input -` or `--output -` for stdin/stdout.
 The replay engine provides a stable fixture boundary for developing Windows
 sensor adapters and observer-model integrations independently.
 
-`probe` reports sidecar capabilities. On Windows, `liveCapture` and
-`frameSampling` are true once the Graphics Capture backend is available.
+`probe` reports sidecar capabilities. On Windows, `windowContext`,
+`foregroundWatch`, `liveCapture`, and `frameSampling` are true once the native
+window and Graphics Capture backends are available.
 
 `list-windows` is Windows-only. It returns visible top-level windows with HWND,
 process ID, title, bounds metadata, and a privacy classification. Windows that

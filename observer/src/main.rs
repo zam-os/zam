@@ -70,6 +70,8 @@ fn print_probe() -> Result<(), String> {
         arch: env::consts::ARCH.to_string(),
         capabilities: ObserverCapabilities {
             replay: true,
+            window_context: cfg!(target_os = "windows"),
+            foreground_watch: cfg!(target_os = "windows"),
             live_capture: cfg!(target_os = "windows"),
             frame_sampling: cfg!(target_os = "windows"),
             ui_automation: false,
