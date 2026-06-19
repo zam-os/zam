@@ -482,6 +482,8 @@ Implemented foundation:
 - deterministic replay and validation commands;
 - Windows-only `pick-window` command backed by `GraphicsCapturePicker`, returning
   selected-window metadata without starting capture;
+- Windows-only `foreground-window` metadata command using the same privacy
+  policy as window listing and capture;
 - first-frame capture and PNG snapshot commands for a selected or explicit
   top-level window;
 - bounded `sample-window` frame metadata collection from a single live capture

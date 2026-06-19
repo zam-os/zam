@@ -15,7 +15,7 @@ pub use model::{
     ObserverCapabilities, ObserverProbe, ReportKind, SensorEvent, SensorKind, SensorSource,
     SensorTarget, UiObservationReport, PROTOCOL_VERSION,
 };
-pub use picker::{list_windows, pick_window, PickedWindow, WindowInfo};
+pub use picker::{foreground_window, list_windows, pick_window, PickedWindow, WindowInfo};
 pub use privacy::{
     classify_window_privacy, classify_window_privacy_with_policy, ensure_capture_allowed,
     load_window_privacy_policy, load_window_privacy_policy_from_env, redact_window_title,

@@ -47,6 +47,16 @@ pub fn list_windows() -> Result<Vec<WindowInfo>, String> {
 }
 
 #[cfg(target_os = "windows")]
+pub fn foreground_window() -> Result<Option<WindowInfo>, String> {
+    windows_picker::foreground_window()
+}
+
+#[cfg(not(target_os = "windows"))]
+pub fn foreground_window() -> Result<Option<WindowInfo>, String> {
+    Err("foreground window inspection is only available on Windows".to_string())
+}
+
+#[cfg(target_os = "windows")]
 mod windows_picker {
     use std::ffi::c_void;
     use std::path::Path;
@@ -163,6 +173,16 @@ mod windows_picker {
             .windows
             .sort_by(|left, right| left.title.cmp(&right.title));
         Ok(state.windows)
+    }
+
+    pub(crate) fn foreground_window() -> Result<Option<WindowInfo>, String> {
+        let policy = load_window_privacy_policy_from_env()?;
+        let hwnd = unsafe { GetForegroundWindow() };
+        if hwnd.is_invalid() {
+            return Ok(None);
+        }
+
+        Ok(describe_window(hwnd, &policy))
     }
 
     struct WindowEnumerationState {

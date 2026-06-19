@@ -14,6 +14,7 @@ cargo run --manifest-path observer/Cargo.toml -- \
 cargo run --manifest-path observer/Cargo.toml -- \
   validate --input observer/fixtures/file-explorer-create-folder.jsonl
 cargo run --manifest-path observer/Cargo.toml -- list-windows
+cargo run --manifest-path observer/Cargo.toml -- foreground-window
 cargo run --manifest-path observer/Cargo.toml -- pick-window
 cargo run --manifest-path observer/Cargo.toml -- capture-once
 cargo run --manifest-path observer/Cargo.toml -- capture-window --hwnd 0x123456
@@ -37,6 +38,10 @@ process ID, title, bounds metadata, and a privacy classification. Windows that
 match the built-in privacy filter return a redacted title and
 `privacy.action = "privacy-pause"`. Use it to test capture without opening the
 native picker.
+
+`foreground-window` is Windows-only. It returns the current foreground window
+with the same metadata and privacy policy as `list-windows`. This is the
+metadata primitive for future `ForegroundChanged` sensor events.
 
 `pick-window` is Windows-only. It opens the native Windows capture picker and
 returns metadata for the selected window. It does not persist pixels.

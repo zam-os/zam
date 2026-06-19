@@ -5,9 +5,9 @@ use std::path::{Path, PathBuf};
 use std::time::Duration;
 
 use zam_observer::{
-    capture_once, capture_window, list_windows, pick_window, sample_window, snapshot_window,
-    ObserverCapabilities, ObserverProbe, ReplayEngine, SensorEvent, UiObservationReport,
-    PROTOCOL_VERSION,
+    capture_once, capture_window, foreground_window, list_windows, pick_window, sample_window,
+    snapshot_window, ObserverCapabilities, ObserverProbe, ReplayEngine, SensorEvent,
+    UiObservationReport, PROTOCOL_VERSION,
 };
 
 fn main() {
@@ -24,6 +24,7 @@ fn run() -> Result<(), String> {
     match command.as_str() {
         "probe" => print_probe(),
         "list-windows" => list_windows_command(),
+        "foreground-window" => foreground_window_command(),
         "pick-window" => pick_window_command(),
         "capture-once" => capture_once_command(),
         "capture-window" => {
@@ -78,6 +79,18 @@ fn print_probe() -> Result<(), String> {
 
 fn list_windows_command() -> Result<(), String> {
     print_pretty(&list_windows()?)
+}
+
+fn foreground_window_command() -> Result<(), String> {
+    match foreground_window()? {
+        Some(window) => {
+            print_pretty(&window)?;
+        }
+        None => {
+            println!("null");
+        }
+    }
+    Ok(())
 }
 
 fn pick_window_command() -> Result<(), String> {
@@ -189,6 +202,7 @@ fn print_usage() {
 Usage:
   zam-observer probe
   zam-observer list-windows
+  zam-observer foreground-window
   zam-observer pick-window
   zam-observer capture-once
   zam-observer capture-window --hwnd <decimal|0xhex>
