@@ -498,9 +498,12 @@ Implemented foundation:
   `UiSensorEvent` stream — a `frame-changed` keyframe event per visual change
   plus periodic heartbeats — which the existing replay engine consumes directly
   into `UiObservationReport`s without persisting pixels;
-- unified `watch` command that runs keyframe capture, UI Automation focus, and
-  Raw Input sensors in worker threads, mutes input on privacy pauses, and emits
-  one monotonically sequenced JSONL event bus for the session agent;
+- unified `watch` command that runs keyframe capture, UI Automation, and Raw
+  Input sensors in worker threads, mutes input on privacy pauses, and emits one
+  monotonically sequenced JSONL event bus for the session agent — including UIA
+  `element-invoked` events captured through a UIA Invoke event subscription (not
+  polling) — with a `--reports` mode that runs the bus through the replay engine
+  in-process so only abstracted `UiObservationReport`s leave the observer;
 - opt-in keyframe retention (`--keyframe-dir`) that writes each keyframe PNG into
   a ring-bounded directory (oldest pruned beyond `--keyframe-retain`) and rewrites
   the event `ref` to the file, so report evidence resolves to real pixels while
@@ -531,16 +534,22 @@ Implemented foundation:
 - Tauri commands for observer probe, window listing/foreground metadata,
   bounded foreground watching, capture, sampling, snapshots, and managed
   start/status/stop lifecycle control for the unified `watch` stream, writing
-  its JSONL events into the desktop app data directory.
+  its JSONL events into the desktop app data directory;
+- desktop UI Observer panel control to start/stop the continuous `watch` and
+  poll its live status (event count, last error, stopped state), reusing the
+  existing window picker and privacy gating;
+- a reused capture staging texture (recreated only on size/format change) so a
+  continuous capture loop no longer allocates a full-resolution staging texture
+  per sampled frame.
 
-Foreground, frame keyframes, UI Automation focus, and Raw Input are now live
-sensor sources feeding both independent diagnostic commands and the unified
-`watch` event bus. Tauri can now supervise that bus and persist the raw JSONL
-stream per session. The remaining Phase 0 work is to expose the lifecycle in the
-desktop UI, replay or bridge the persisted events into observation reports, and
-broaden UI Automation beyond polled focus/dialog heuristics to invoke,
-text-change, and structure events, so the full event vocabulary the replay
-engine already understands is produced from one supervised observer process.
+Foreground, frame keyframes, UI Automation, and Raw Input are now live sensor
+sources feeding both independent diagnostic commands and the unified `watch`
+event bus, whose UIA thread now produces the full focus/dialog/toggle/selection/
+invoke vocabulary the replay engine understands. Tauri supervises that bus, can
+turn it directly into reports (`--reports`), and exposes start/stop lifecycle in
+the desktop UI. The remaining Phase 0 work is to feed the persisted live reports
+into the learning kernel during a session, and to broaden UI Automation further
+to text-change and structure events.
 
 ### Phase 1: deterministic observer
 

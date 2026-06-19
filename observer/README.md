@@ -115,12 +115,15 @@ retention is on, the `frame-changed` `data.ref` resolves to the written file
 report's evidence can be opened directly.
 
 `watch --session <id> --hwnd <decimal|0xhex>` is the unified live observer
-stream. It runs the window keyframe, UI Automation focus, and Raw Input sensors
-in worker threads, assigns one monotonic sequence across all emitted events, and
-writes combined `UiSensorEvent` JSONL to stdout. UIA password focus and the
-window privacy filter mute Raw Input before events are written. `--samples`
-bounds the number of emitted events; omit it for a continuous stream that stops
-when stdin closes or the parent process exits.
+stream. It runs the window keyframe, UI Automation, and Raw Input sensors in
+worker threads, assigns one monotonic sequence across all emitted events, and
+writes combined `UiSensorEvent` JSONL to stdout. Its UI Automation thread emits
+the full semantic event set — `element-focused`, `dialog-opened`/`dialog-closed`,
+`toggle-changed`, `selection-changed`, and `element-invoked` (button, menu, and
+link activation, captured via a UIA Invoke event subscription rather than
+polling). UIA password focus and the window privacy filter mute Raw Input before
+events are written. `--samples` bounds the number of emitted events; omit it for
+a continuous stream that stops when stdin closes or the parent process exits.
 
 Pass `--reports` to run the live sensor stream through the replay engine
 in-process and emit `UiObservationReport` JSONL instead of raw events. This keeps

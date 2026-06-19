@@ -119,14 +119,16 @@ mod windows_uia {
     use std::thread;
     use std::time::Duration;
 
-    use windows::core::Interface;
+    use windows::core::{implement, Interface, Ref};
     use windows::Win32::Foundation::HWND;
     use windows::Win32::System::Com::{
         CoCreateInstance, CoInitializeEx, CLSCTX_INPROC_SERVER, COINIT_MULTITHREADED,
     };
     use windows::Win32::UI::Accessibility::{
-        CUIAutomation, IUIAutomation, IUIAutomationElement, IUIAutomationSelectionItemPattern,
-        IUIAutomationTogglePattern, UIA_SelectionItemPatternId, UIA_TogglePatternId,
+        CUIAutomation, IUIAutomation, IUIAutomationElement, IUIAutomationEventHandler,
+        IUIAutomationEventHandler_Impl, IUIAutomationSelectionItemPattern,
+        IUIAutomationTogglePattern, TreeScope_Subtree, UIA_SelectionItemPatternId,
+        UIA_TogglePatternId, UIA_EVENT_ID, UIA_Invoke_InvokedEventId,
     };
     use windows::Win32::UI::WindowsAndMessaging::{
         GetClassNameW, GetForegroundWindow, GetWindow, GetWindowTextLengthW, GetWindowTextW,
@@ -174,6 +176,44 @@ mod windows_uia {
                 selected: element.selected,
             }
         }
+    }
+
+    /// COM event handler that turns UIA `Invoke` events (button, menu item, and
+    /// link activation) into `element-invoked` sensor events. UIA delivers
+    /// events on its own threads, so the handler forwards each one through a
+    /// channel that the polling loop drains and re-sequences on its single
+    /// output path.
+    #[implement(IUIAutomationEventHandler)]
+    struct InvokeEventHandler {
+        sender: std::sync::Mutex<std::sync::mpsc::Sender<SensorEvent>>,
+        session_id: String,
+    }
+
+    impl IUIAutomationEventHandler_Impl for InvokeEventHandler_Impl {
+        fn HandleAutomationEvent(
+            &self,
+            sender: Ref<'_, IUIAutomationElement>,
+            _eventid: UIA_EVENT_ID,
+        ) -> windows::core::Result<()> {
+            if let Some(element) = sender.as_ref() {
+                if let Some(event) = build_invoke_event(&self.session_id, element) {
+                    if let Ok(tx) = self.sender.lock() {
+                        let _ = tx.send(event);
+                    }
+                }
+            }
+            Ok(())
+        }
+    }
+
+    /// Build an `element-invoked` event from the invoked element, reusing the
+    /// focus event's bounded property set and privacy redaction. Sequence is set
+    /// to 0 here and reassigned when the polling loop forwards the event.
+    fn build_invoke_event(session_id: &str, element: &IUIAutomationElement) -> Option<SensorEvent> {
+        let focused = focused_element_from(element)?;
+        let mut event = focus_event(session_id, 0, &focused);
+        event.kind = SensorKind::ElementInvoked;
+        Some(event)
     }
 
     pub fn watch_focused_element(
@@ -231,6 +271,31 @@ mod windows_uia {
         let mut last: Option<FocusFingerprint> = None;
         let mut sequence = 0u64;
         let mut last_dialog_hwnd: Option<HWND> = None;
+
+        // Subscribe to UIA Invoke events so button, menu, and link activations
+        // are reported even though invocation itself is not pollable. The
+        // handler runs on UIA threads and forwards events through this channel,
+        // which the loop drains and re-sequences on its single output path.
+        let (invoke_tx, invoke_rx) = std::sync::mpsc::channel::<SensorEvent>();
+        let invoke_handler: IUIAutomationEventHandler = InvokeEventHandler {
+            sender: std::sync::Mutex::new(invoke_tx),
+            session_id: session_id.to_string(),
+        }
+        .into();
+        let invoke_registered = match unsafe { automation.GetRootElement() } {
+            Ok(root) => unsafe {
+                automation
+                    .AddAutomationEventHandler(
+                        UIA_Invoke_InvokedEventId,
+                        &root,
+                        TreeScope_Subtree,
+                        None,
+                        &invoke_handler,
+                    )
+                    .is_ok()
+            },
+            Err(_) => false,
+        };
 
         while !should_stop.load(std::sync::atomic::Ordering::Relaxed) {
             // 1. Dialog Detection
@@ -307,7 +372,20 @@ mod windows_uia {
                 last = Some(fingerprint);
             }
 
+            // 3. Forward any UIA Invoke events captured since the last poll.
+            while let Ok(mut event) = invoke_rx.try_recv() {
+                sequence += 1;
+                event.sequence = sequence;
+                on_event(event)?;
+            }
+
             thread::sleep(interval);
+        }
+
+        if invoke_registered {
+            unsafe {
+                let _ = automation.RemoveAllEventHandlers();
+            }
         }
 
         Ok(())
@@ -315,6 +393,10 @@ mod windows_uia {
 
     fn read_focused_element(automation: &IUIAutomation) -> Option<FocusedElement> {
         let element: IUIAutomationElement = unsafe { automation.GetFocusedElement() }.ok()?;
+        focused_element_from(&element)
+    }
+
+    fn focused_element_from(element: &IUIAutomationElement) -> Option<FocusedElement> {
         let control_type = unsafe { element.CurrentControlType() }
             .map(|value| value.0)
             .unwrap_or(0);
