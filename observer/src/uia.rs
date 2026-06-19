@@ -81,15 +81,10 @@ pub fn watch_focused_element_continuous(
     session_id: &str,
     should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
     pause_input: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    event_driven: bool,
     on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
 ) -> Result<(), String> {
-    windows_uia::watch_focused_element_continuous(
-        interval,
-        session_id,
-        should_stop,
-        pause_input,
-        on_event,
-    )
+    windows_uia::watch_focused_element_continuous(interval, session_id, should_stop, pause_input, event_driven, on_event)
 }
 
 #[cfg(not(target_os = "windows"))]
@@ -108,6 +103,7 @@ pub fn watch_focused_element_continuous(
     _session_id: &str,
     _should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
     _pause_input: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    _event_driven: bool,
     _on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
 ) -> Result<(), String> {
     Err("UI Automation is only available on Windows".to_string())
@@ -129,11 +125,20 @@ mod windows_uia {
         IUIAutomationEventHandler_Impl, IUIAutomationSelectionItemPattern,
         IUIAutomationTogglePattern, TreeScope_Subtree, UIA_SelectionItemPatternId,
         UIA_TogglePatternId, UIA_EVENT_ID, UIA_Invoke_InvokedEventId,
+        SetWinEventHook, UnhookWinEvent, HWINEVENTHOOK,
     };
     use windows::Win32::UI::WindowsAndMessaging::{
         GetClassNameW, GetForegroundWindow, GetWindow, GetWindowTextLengthW, GetWindowTextW,
-        GW_OWNER,
+        GW_OWNER, PeekMessageW, TranslateMessage, DispatchMessageW, PM_REMOVE, MSG,
+        WINEVENT_OUTOFCONTEXT, EVENT_SYSTEM_FOREGROUND, EVENT_OBJECT_FOCUS,
     };
+    use windows::Win32::Graphics::Gdi::{
+        GetDC, ReleaseDC, CreateCompatibleDC, CreateCompatibleBitmap, SelectObject, BitBlt, DeleteDC, DeleteObject,
+        GetDIBits, SRCCOPY, DIB_RGB_COLORS, BITMAPINFOHEADER, BITMAPINFO,
+    };
+    use windows::Graphics::Imaging::{SoftwareBitmap, BitmapPixelFormat};
+    use windows::Security::Cryptography::CryptographicBuffer;
+    use windows::Media::Ocr::OcrEngine;
 
     use super::control_type_name;
     use crate::clock::observed_at_now;
@@ -142,6 +147,145 @@ mod windows_uia {
     };
     use crate::picker::process_name_for_pid;
     use crate::privacy::classify_window_privacy;
+
+    #[allow(dead_code)]
+    #[derive(Debug, Clone, Copy)]
+    enum WinEventNotification {
+        ForegroundChanged(HWND),
+        FocusChanged,
+    }
+
+    unsafe impl Send for WinEventNotification {}
+    unsafe impl Sync for WinEventNotification {}
+
+    static EVENT_SENDER: std::sync::Mutex<Option<std::sync::mpsc::Sender<WinEventNotification>>> = std::sync::Mutex::new(None);
+
+    unsafe extern "system" fn win_event_hook_callback(
+        _h_hook: HWINEVENTHOOK,
+        event: u32,
+        hwnd: HWND,
+        _id_object: i32,
+        _id_child: i32,
+        _id_event_thread: u32,
+        _dwms_event_time: u32,
+    ) {
+        if let Ok(guard) = EVENT_SENDER.lock() {
+            if let Some(ref sender) = *guard {
+                if event == EVENT_SYSTEM_FOREGROUND {
+                    let _ = sender.send(WinEventNotification::ForegroundChanged(hwnd));
+                } else if event == EVENT_OBJECT_FOCUS {
+                    let _ = sender.send(WinEventNotification::FocusChanged);
+                }
+            }
+        }
+    }
+
+    fn capture_rect_gdi(rect: windows::Win32::Foundation::RECT) -> Result<(Vec<u8>, i32, i32), String> {
+        let x = rect.left;
+        let y = rect.top;
+        let width = rect.right - rect.left;
+        let height = rect.bottom - rect.top;
+
+        if width <= 0 || height <= 0 {
+            return Err("Invalid rect dimensions".to_string());
+        }
+
+        unsafe {
+            let hdc_screen = GetDC(None);
+            if hdc_screen.0 as usize == 0 {
+                return Err("Failed to get screen DC".to_string());
+            }
+
+            let hdc_mem = CreateCompatibleDC(Some(hdc_screen));
+            if hdc_mem.0 as usize == 0 {
+                ReleaseDC(None, hdc_screen);
+                return Err("Failed to create compatible DC".to_string());
+            }
+
+            let hbitmap = CreateCompatibleBitmap(hdc_screen, width, height);
+            if hbitmap.0 as usize == 0 {
+                let _ = DeleteDC(hdc_mem);
+                ReleaseDC(None, hdc_screen);
+                return Err("Failed to create compatible bitmap".to_string());
+            }
+
+            let old_obj = SelectObject(hdc_mem, hbitmap.into());
+
+            let success = BitBlt(hdc_mem, 0, 0, width, height, Some(hdc_screen), x, y, SRCCOPY);
+            if let Err(e) = success {
+                SelectObject(hdc_mem, old_obj);
+                let _ = DeleteObject(hbitmap.into());
+                let _ = DeleteDC(hdc_mem);
+                ReleaseDC(None, hdc_screen);
+                return Err(format!("BitBlt failed: {e}"));
+            }
+
+            let mut bmi = BITMAPINFO {
+                bmiHeader: BITMAPINFOHEADER {
+                    biSize: std::mem::size_of::<BITMAPINFOHEADER>() as u32,
+                    biWidth: width,
+                    biHeight: -height, // top-down
+                    biPlanes: 1,
+                    biBitCount: 32, // BGRA8
+                    biCompression: 0,
+                    biSizeImage: 0,
+                    biXPelsPerMeter: 0,
+                    biYPelsPerMeter: 0,
+                    biClrUsed: 0,
+                    biClrImportant: 0,
+                },
+                bmiColors: [windows::Win32::Graphics::Gdi::RGBQUAD::default(); 1],
+            };
+
+            let mut buf = vec![0u8; (width * height * 4) as usize];
+            let lines = GetDIBits(
+                hdc_screen,
+                hbitmap,
+                0,
+                height as u32,
+                Some(buf.as_mut_ptr() as *mut _),
+                &mut bmi,
+                DIB_RGB_COLORS,
+            );
+
+            SelectObject(hdc_mem, old_obj);
+            let _ = DeleteObject(hbitmap.into());
+            let _ = DeleteDC(hdc_mem);
+            ReleaseDC(None, hdc_screen);
+
+            if lines == 0 {
+                return Err("GetDIBits failed".to_string());
+            }
+
+            Ok((buf, width, height))
+        }
+    }
+
+    fn ocr_bitmap(bytes: &[u8], width: i32, height: i32) -> Result<String, String> {
+        let buffer = CryptographicBuffer::CreateFromByteArray(bytes)
+            .map_err(|e| format!("Failed to create CryptographicBuffer: {e}"))?;
+
+        let bitmap = SoftwareBitmap::CreateCopyFromBuffer(
+            &buffer,
+            BitmapPixelFormat::Bgra8,
+            width,
+            height,
+        ).map_err(|e| format!("Failed to create SoftwareBitmap: {e}"))?;
+
+        let engine = OcrEngine::TryCreateFromUserProfileLanguages()
+            .map_err(|e| format!("Failed to create OcrEngine: {e}"))?;
+
+        let async_op = engine.RecognizeAsync(&bitmap)
+            .map_err(|e| format!("Failed to start RecognizeAsync: {e}"))?;
+        
+        let result = async_op.get()
+            .map_err(|e| format!("Failed to complete RecognizeAsync: {e}"))?;
+
+        let text = result.Text()
+            .map_err(|e| format!("Failed to get recognized text: {e}"))?;
+
+        Ok(text.to_string())
+    }
 
     struct FocusedElement {
         control_type: i32,
@@ -257,6 +401,7 @@ mod windows_uia {
         session_id: &str,
         should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
         pause_input: std::sync::Arc<std::sync::atomic::AtomicBool>,
+        event_driven: bool,
         on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
     ) -> Result<(), String> {
         unsafe {
@@ -297,7 +442,80 @@ mod windows_uia {
             Err(_) => false,
         };
 
+        let (win_event_tx, win_event_rx) = std::sync::mpsc::channel::<WinEventNotification>();
+        let mut hook_fg = HWINEVENTHOOK::default();
+        let mut hook_focus = HWINEVENTHOOK::default();
+
+        if event_driven {
+            if let Ok(mut guard) = EVENT_SENDER.lock() {
+                *guard = Some(win_event_tx);
+            }
+
+            unsafe {
+                hook_fg = SetWinEventHook(
+                    EVENT_SYSTEM_FOREGROUND,
+                    EVENT_SYSTEM_FOREGROUND,
+                    None,
+                    Some(win_event_hook_callback),
+                    0,
+                    0,
+                    WINEVENT_OUTOFCONTEXT,
+                );
+                hook_focus = SetWinEventHook(
+                    EVENT_OBJECT_FOCUS,
+                    EVENT_OBJECT_FOCUS,
+                    None,
+                    Some(win_event_hook_callback),
+                    0,
+                    0,
+                    WINEVENT_OUTOFCONTEXT,
+                );
+            }
+        }
+
+        let check_interval = if event_driven {
+            Duration::from_millis(50)
+        } else {
+            interval
+        };
+
         while !should_stop.load(std::sync::atomic::Ordering::Relaxed) {
+            let mut got_event = false;
+
+            if event_driven {
+                // Drain message queue to invoke hooks
+                let mut message = MSG::default();
+                unsafe {
+                    while PeekMessageW(&mut message, None, 0, 0, PM_REMOVE).as_bool() {
+                        let _ = TranslateMessage(&message);
+                        DispatchMessageW(&message);
+                    }
+                }
+
+                // Drain notifications
+                while let Ok(_notification) = win_event_rx.try_recv() {
+                    got_event = true;
+                }
+
+                // If no event, check invoke events, check stop and sleep
+                if !got_event {
+                    let mut invoke_triggered = false;
+                    while let Ok(mut event) = invoke_rx.try_recv() {
+                        sequence += 1;
+                        event.sequence = sequence;
+                        on_event(event)?;
+                        invoke_triggered = true;
+                    }
+                    if invoke_triggered {
+                        crate::capture::trigger_capture();
+                    }
+                    thread::sleep(check_interval);
+                    continue;
+                }
+            }
+
+            let mut state_changed = false;
+
             // 1. Dialog Detection
             let fg_hwnd = unsafe { GetForegroundWindow() };
             if fg_hwnd.0 as usize != 0 {
@@ -313,6 +531,7 @@ mod windows_uia {
                         sequence += 1;
                         on_event(dialog_event(session_id, sequence, fg_hwnd, true))?;
                         last_dialog_hwnd = Some(fg_hwnd);
+                        state_changed = true;
                     }
                 } else {
                     // Not a dialog. If we had a dialog, close it
@@ -320,6 +539,7 @@ mod windows_uia {
                         sequence += 1;
                         on_event(dialog_event(session_id, sequence, old_dialog_hwnd, false))?;
                         last_dialog_hwnd = None;
+                        state_changed = true;
                     }
                 }
             } else {
@@ -328,6 +548,7 @@ mod windows_uia {
                     sequence += 1;
                     on_event(dialog_event(session_id, sequence, old_dialog_hwnd, false))?;
                     last_dialog_hwnd = None;
+                    state_changed = true;
                 }
             }
 
@@ -356,30 +577,54 @@ mod windows_uia {
                         if prev.toggle_state != fingerprint.toggle_state {
                             sequence += 1;
                             on_event(toggle_event(session_id, sequence, &focused))?;
+                            state_changed = true;
                         }
                         if prev.selected != fingerprint.selected {
                             sequence += 1;
                             on_event(selection_event(session_id, sequence, &focused))?;
+                            state_changed = true;
                         }
                     } else {
                         sequence += 1;
                         on_event(focus_event(session_id, sequence, &focused))?;
+                        state_changed = true;
                     }
                 } else {
                     sequence += 1;
                     on_event(focus_event(session_id, sequence, &focused))?;
+                    state_changed = true;
                 }
                 last = Some(fingerprint);
             }
 
             // 3. Forward any UIA Invoke events captured since the last poll.
+            let mut invoke_triggered = false;
             while let Ok(mut event) = invoke_rx.try_recv() {
                 sequence += 1;
                 event.sequence = sequence;
                 on_event(event)?;
+                invoke_triggered = true;
             }
 
-            thread::sleep(interval);
+            if state_changed || invoke_triggered {
+                crate::capture::trigger_capture();
+            }
+
+            thread::sleep(check_interval);
+        }
+
+        if event_driven {
+            if let Ok(mut guard) = EVENT_SENDER.lock() {
+                *guard = None;
+            }
+            unsafe {
+                if hook_fg.0 as usize != 0 {
+                    let _ = UnhookWinEvent(hook_fg);
+                }
+                if hook_focus.0 as usize != 0 {
+                    let _ = UnhookWinEvent(hook_focus);
+                }
+            }
         }
 
         if invoke_registered {
@@ -403,12 +648,31 @@ mod windows_uia {
         let automation_id = unsafe { element.CurrentAutomationId() }
             .map(|value| value.to_string())
             .unwrap_or_default();
-        let name = unsafe { element.CurrentName() }
-            .map(|value| value.to_string())
-            .unwrap_or_default();
         let password = unsafe { element.CurrentIsPassword() }
             .map(|value| value.as_bool())
             .unwrap_or(false);
+
+        let mut name = unsafe { element.CurrentName() }
+            .map(|value| value.to_string())
+            .unwrap_or_default();
+
+        if name.trim().is_empty() && !password {
+            if let Ok(rect) = unsafe { element.CurrentBoundingRectangle() } {
+                let width = rect.right - rect.left;
+                let height = rect.bottom - rect.top;
+                if rect.left >= 0 && rect.top >= 0 && width > 0 && height > 0 {
+                    if let Ok((pixels, w, h)) = capture_rect_gdi(rect) {
+                        if let Ok(ocr_text) = ocr_bitmap(&pixels, w, h) {
+                            let trimmed = ocr_text.trim().to_string();
+                            if !trimmed.is_empty() {
+                                name = trimmed;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         let process_id = unsafe { element.CurrentProcessId() }
             .map(|value| value as u32)
             .unwrap_or(0);

@@ -235,6 +235,7 @@ fn watch_window_command(options: WatchWindowOptions) -> Result<(), String> {
         &options.session_id,
         options.keyframe_dir.as_deref(),
         options.keyframe_retain,
+        options.event_driven,
         &mut |event| write_event(&mut writer, event),
     );
     writer.flush().map_err(|error| error.to_string())?;
@@ -252,6 +253,7 @@ fn watch_command(options: WatchOptions) -> Result<(), String> {
         interval_ms: options.interval_ms,
         heartbeat_every: options.heartbeat_every,
         samples: options.samples,
+        event_driven: options.event_driven,
     };
 
     let result = if options.emit_reports {
@@ -815,6 +817,7 @@ struct WatchWindowOptions {
     heartbeat_every: u64,
     keyframe_dir: Option<PathBuf>,
     keyframe_retain: usize,
+    event_driven: bool,
 }
 
 impl WatchWindowOptions {
@@ -837,6 +840,7 @@ impl WatchWindowOptions {
         let mut heartbeat_every = Self::DEFAULT_HEARTBEAT_EVERY;
         let mut keyframe_dir = None;
         let mut keyframe_retain = Self::DEFAULT_KEYFRAME_RETAIN;
+        let mut event_driven = false;
         let mut index = 0;
 
         while index < args.len() {
@@ -901,6 +905,9 @@ impl WatchWindowOptions {
                         .parse::<usize>()
                         .map_err(|error| format!("invalid --keyframe-retain '{raw}': {error}"))?;
                 }
+                "--event-driven" => {
+                    event_driven = true;
+                }
                 unknown => return Err(format!("unknown option '{unknown}'")),
             }
             index += 1;
@@ -947,6 +954,7 @@ impl WatchWindowOptions {
             heartbeat_every,
             keyframe_dir,
             keyframe_retain,
+            event_driven,
         })
     }
 }
@@ -962,6 +970,7 @@ struct WatchOptions {
     keyframe_dir: Option<PathBuf>,
     keyframe_retain: usize,
     emit_reports: bool,
+    event_driven: bool,
 }
 
 impl WatchOptions {
@@ -984,6 +993,7 @@ impl WatchOptions {
         let mut keyframe_dir = None;
         let mut keyframe_retain = Self::DEFAULT_KEYFRAME_RETAIN;
         let mut emit_reports = false;
+        let mut event_driven = false;
         let mut index = 0;
 
         while index < args.len() {
@@ -1052,6 +1062,9 @@ impl WatchOptions {
                         .parse::<usize>()
                         .map_err(|error| format!("invalid --keyframe-retain '{raw}': {error}"))?;
                 }
+                "--event-driven" => {
+                    event_driven = true;
+                }
                 unknown => return Err(format!("unknown option '{unknown}'")),
             }
             index += 1;
@@ -1103,6 +1116,7 @@ impl WatchOptions {
             keyframe_dir,
             keyframe_retain,
             emit_reports,
+            event_driven,
         })
     }
 }

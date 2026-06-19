@@ -77,6 +77,7 @@ pub fn watch_window_keyframes(
     session_id: &str,
     keyframe_dir: Option<&Path>,
     keyframe_retain: usize,
+    event_driven: bool,
     on_event: &mut dyn FnMut(&SensorEvent) -> Result<(), String>,
 ) -> Result<(), String> {
     windows_capture::watch_window_keyframes(
@@ -88,6 +89,7 @@ pub fn watch_window_keyframes(
         session_id,
         keyframe_dir,
         keyframe_retain,
+        event_driven,
         on_event,
     )
 }
@@ -103,6 +105,7 @@ pub fn watch_window_keyframes_continuous(
     keyframe_dir: Option<&Path>,
     keyframe_retain: usize,
     should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    event_driven: bool,
     on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
 ) -> Result<(), String> {
     windows_capture::watch_window_keyframes_continuous(
@@ -114,6 +117,7 @@ pub fn watch_window_keyframes_continuous(
         keyframe_dir,
         keyframe_retain,
         should_stop,
+        event_driven,
         on_event,
     )
 }
@@ -154,6 +158,7 @@ pub fn watch_window_keyframes(
     _session_id: &str,
     _keyframe_dir: Option<&Path>,
     _keyframe_retain: usize,
+    _event_driven: bool,
     _on_event: &mut dyn FnMut(&SensorEvent) -> Result<(), String>,
 ) -> Result<(), String> {
     Err("window capture is only available on Windows".to_string())
@@ -170,9 +175,24 @@ pub fn watch_window_keyframes_continuous(
     _keyframe_dir: Option<&Path>,
     _keyframe_retain: usize,
     _should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    _event_driven: bool,
     _on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
 ) -> Result<(), String> {
     Err("window capture is only available on Windows".to_string())
+}
+
+#[cfg(target_os = "windows")]
+pub static CAPTURE_TRIGGER: std::sync::Mutex<Option<std::sync::mpsc::Sender<()>>> = std::sync::Mutex::new(None);
+
+pub fn trigger_capture() {
+    #[cfg(target_os = "windows")]
+    {
+        if let Ok(lock) = CAPTURE_TRIGGER.lock() {
+            if let Some(ref sender) = *lock {
+                let _ = sender.send(());
+            }
+        }
+    }
 }
 
 #[cfg(target_os = "windows")]
@@ -259,6 +279,7 @@ mod windows_capture {
         session_id: &str,
         keyframe_dir: Option<&Path>,
         keyframe_retain: usize,
+        event_driven: bool,
         on_event: &mut dyn FnMut(&SensorEvent) -> Result<(), String>,
     ) -> Result<(), String> {
         if samples == 0 {
@@ -313,9 +334,20 @@ mod windows_capture {
             .Size()
             .map_err(|error| format!("failed to read capture item size: {error}"))?;
 
+        let (trigger_tx, trigger_rx) = std::sync::mpsc::channel::<()>();
+        if event_driven {
+            if let Ok(mut lock) = super::CAPTURE_TRIGGER.lock() {
+                *lock = Some(trigger_tx);
+            }
+        }
+
         for _ in 1..samples {
-            if !interval.is_zero() {
-                thread::sleep(interval);
+            if event_driven {
+                let _ = trigger_rx.recv_timeout(Duration::from_secs(5));
+            } else {
+                if !interval.is_zero() {
+                    thread::sleep(interval);
+                }
             }
             let capture = match try_wait_for_frame(&pool, Duration::from_millis(250))? {
                 Some(frame) => {
@@ -342,11 +374,18 @@ mod windows_capture {
             emit_capture_event(&mut stream, &mut archive, capture, on_event)?;
         }
 
+        if event_driven {
+            if let Ok(mut lock) = super::CAPTURE_TRIGGER.lock() {
+                *lock = None;
+            }
+        }
+
         let _ = session.Close();
         let _ = pool.Close();
         Ok(())
     }
 
+    #[allow(clippy::too_many_arguments)]
     #[allow(clippy::too_many_arguments)]
     pub fn watch_window_keyframes_continuous(
         hwnd: u64,
@@ -357,6 +396,7 @@ mod windows_capture {
         keyframe_dir: Option<&Path>,
         keyframe_retain: usize,
         should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
+        event_driven: bool,
         on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
     ) -> Result<(), String> {
         let (item, picked) = capture_item_for_hwnd(hwnd)?;
@@ -405,9 +445,20 @@ mod windows_capture {
             .Size()
             .map_err(|error| format!("failed to read capture item size: {error}"))?;
 
+        let (trigger_tx, trigger_rx) = std::sync::mpsc::channel::<()>();
+        if event_driven {
+            if let Ok(mut lock) = super::CAPTURE_TRIGGER.lock() {
+                *lock = Some(trigger_tx);
+            }
+        }
+
         while !should_stop.load(std::sync::atomic::Ordering::Relaxed) {
-            if !interval.is_zero() {
-                thread::sleep(interval);
+            if event_driven {
+                let _ = trigger_rx.recv_timeout(Duration::from_secs(5));
+            } else {
+                if !interval.is_zero() {
+                    thread::sleep(interval);
+                }
             }
             if should_stop.load(std::sync::atomic::Ordering::Relaxed) {
                 break;
@@ -435,6 +486,12 @@ mod windows_capture {
                 None => None,
             };
             emit_capture_event_continuous(&mut stream, &mut archive, capture, on_event)?;
+        }
+
+        if event_driven {
+            if let Ok(mut lock) = super::CAPTURE_TRIGGER.lock() {
+                *lock = None;
+            }
         }
 
         let _ = session.Close();

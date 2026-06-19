@@ -18,6 +18,7 @@ pub struct WatchSessionOptions<'a> {
     pub interval_ms: u64,
     pub heartbeat_every: u64,
     pub samples: Option<usize>,
+    pub event_driven: bool,
 }
 
 /// Orchestrates the unified watch loop.
@@ -36,6 +37,7 @@ pub fn watch_session(
         interval_ms,
         heartbeat_every,
         samples,
+        event_driven,
     } = options;
 
     let should_stop = Arc::new(AtomicBool::new(false));
@@ -57,7 +59,7 @@ pub fn watch_session(
         }
     });
 
-    // Thread 1: UIA Focus polling
+    // Thread 1: UIA Focus polling / event hooks
     let should_stop_uia = should_stop.clone();
     let pause_input_uia = pause_input.clone();
     let session_id_uia = session_id.to_string();
@@ -69,6 +71,7 @@ pub fn watch_session(
             &session_id_uia,
             should_stop_uia.clone(),
             pause_input_uia,
+            event_driven,
             &mut forward_event,
         );
         if result.is_err() {
@@ -113,6 +116,7 @@ pub fn watch_session(
             keyframe_dir_capture.as_deref(),
             keyframe_retain,
             should_stop_capture.clone(),
+            event_driven,
             &mut forward_event,
         );
         if result.is_err() {
