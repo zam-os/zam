@@ -1,248 +1,123 @@
-# Observer: Prioritätenliste für nächste Erweiterungen
+# Observer: Next Steps
 
-> Stand: 2026-06-19
+> Status: 2026-06-20
 >
 > Branch: `feat/windows-ui-observer-proposal`
 >
-> Phase 0 Status: ~90% abgeschlossen
+> Phase 0: **complete**
 
-## Aktueller Stand
+## Current State
 
-### Was funktioniert (Phase 0)
+### Phase 0 — shipped
 
-- **Screen Capture**: `Windows.Graphics.Capture` mit Resizing-Handling, wiederverwendbarer Staging-Textur
-- **UI Automation**: Focus-Polling, Dialog-Erkennung, Toggle/Selection-Änderungen, Invoke-Events (COM-Handler)
-- **Raw Input**: Klicks, Scroll, Shortcuts, aggregierte Tastatur-Aktivität (nie Zeichen)
-- **Unified Watch**: 3-Thread-Architektur (Capture + UIA + Input) mit MPSC-Kanal, atomarem Privacy-Pause
-- **Privacy**: Password-Manager, Banking, Private Browsing; Custom-Policy via JSON
-- **Replay Engine**: `UiSensorEvent` → `UiObservationReport` (deterministisch, LLM-frei)
-- **Desktop Integration**: Tauri-Commands für Watch-Lifecycle, Observer-Panel, Snapshot-Analyse
-- **CI/CD**: x64 + ARM64 Builds
-- **Tests**: 56 Rust-Tests + 211 TypeScript-Tests, alle grün
-- **Code-Qualität**: Clippy, Biome, TypeScript-Check bestanden
+- **Screen capture**: `Windows.Graphics.Capture`, resize handling, reused staging texture
+- **UI Automation**: HWND-scoped subtree; focus, dialog, toggle, selection, invoke; COM handlers for text-change and structure-change; `SetWinEventHook` for foreground/focus; local OCR fallback for unnamed elements
+- **Raw Input**: clicks, scroll, shortcuts, aggregated typing activity (never characters)
+- **Unified watch**: 3-thread architecture (capture + UIA + input), MPSC channel, atomic privacy pause; `--event-driven` mode; monotonic session start/stop sequences
+- **Privacy**: password managers, banking, private browsing; custom policy via `ZAM_OBSERVER_PRIVACY_POLICY`; password-field text events dropped
+- **Replay engine**: `UiSensorEvent` → `UiObservationReport` (deterministic, LLM-free)
+- **Session integration**: `zam bridge start-session --context ui`, `observe-ui-watch`, `end-session`; desktop links watch to ZAM UI sessions; `prepareSessionSynthesis` reads UI reports when `execution_context === "ui"`
+- **Desktop**: Tauri watch lifecycle (start/status/stop), observer panel, reports polling via bridge; sidecar prepare fixed to use native release binary
+- **Vision path**: `observe-ui-snapshot` for PNG → `UiObservationReport` with `candidateTokens` (requires LLM)
+- **CI/CD**: x64 + ARM64 observer builds
+- **Tests**: 58 Rust + 214 TypeScript, all green
 
-### Was fehlt für Phase 0-Abschluss
+### Deferred (not blocking release)
 
-Laut Proposal (Zeile 550-552):
-1. Persistierte Live-Reports in den Learning-Kernel einspeisen
-2. UI Automation um `text-change` und `structure` Events erweitern
+| Criterion | Notes |
+|-----------|-------|
+| 30-minute stability soak | Skipped for this release |
+| CPU overhead benchmark (<5% at ~1 FPS) | Skipped for this release |
 
----
+### Known gap
 
-## Priorität 1: Phase 0 abschließen (1-2 Wochen)
-
-### 1.1 Session-Integration für Live-Reports
-**Aufwand**: Mittel | **Impact**: Hoch
-
-`watch --reports` produziert bereits `UiObservationReport`-JSONL. Diese müssen jetzt in eine laufende ZAM-Session fließen:
-
-- `zam bridge observe-ui-watch --session <id>` implementieren
-- Reports in Session-JSONL anhängen (wie `observe-ui-snapshot`)
-- Session-Synthesis kann Reports als Evidenz nutzen
-
-### 1.2 UIA Text-Change Events
-**Aufwand**: Gering | **Impact**: Mittel
-
-UIA `TextChangedEvent` abonnieren (analog zu `InvokeEvent`):
-- `IUIAutomationEventHandler` für `UIA_Text_TextChangedEventId`
-- Nur Zeichenanzahl erfassen, nie den Text selbst
-- Privacy-Gate: Events in Passwort-Feldern verwerfen
-
-### 1.3 UIA Structure-Change Events
-**Aufwand**: Gering | **Impact**: Mittel
-
-UIA `StructureChangedEvent` für Baum-Änderungen:
-- Neue/geschlossene Child-Elemente melden
-- Nützlich für dynamische UIs (z.B. TreeView, ListView)
+Deterministic replay reports have **empty `candidateTokens`**, so UI session synthesis produces no candidates unless vision snapshots populate tokens. See Priority 1 below.
 
 ---
 
-## Priorität 2: Phase 1 — Deterministischer Observer (2-4 Wochen)
+## Priority 1: Phase 1 — deterministic observer (2–4 weeks)
 
-### 2.0a Lokaler OCR-Fallback für UIA-Elemente (Agy-P0)
-**Aufwand**: Gering | **Impact**: Hoch
+### 1.1 Tray indicator
 
-Wenn UIA `CurrentName()` leer ist, lokales OCR auf dem Bounding-Rectangle des Elements:
-- `Windows.Media.Ocr.OcrEngine` — bereits in `uia.rs` importiert, 100% offline
-- `capture_rect_gdi()` + `ocr_bitmap()` sind implementiert — nur noch in `focused_element_from()` integrieren
-- Nützlich für: Web-Apps ohne ARIA-Labels, Canvas-basierte UIs, Legacy-Anwendungen
-- Keine Netzwerk-Kosten, keine Privacy-Einbußen
+Persistent system-tray icon while watch is active: session name, event count, pause/stop. Required by the main proposal MVP.
 
-> **Status**: `uia.rs:659-673` hat bereits eine Implementierung — prüfen ob sie korrekt funktioniert
+### 1.2 Activity segmentation
 
-### 2.1 Activity-Segmentierung (Action Grouping)
-**Aufwand**: Mittel | **Impact**: Hoch
+Group raw events into meaningful segments:
 
-Roh-Events zu sinnvollen Aktionen gruppieren:
-- Idle-Erkennung via AFK-Schwellwert (kein Input >30s)
-- App-Wechsel als Segment-Grenze
-- Dialog-Open/Close als Segment-Grenze
-- Lauter Antigravity Review: Heartbeat-basierte AFK-Erkennung elegant integrieren
+- idle / AFK via heartbeat + input silence threshold
+- app switch as segment boundary
+- dialog open/close as segment boundary
 
-### 2.2 Event-getriebene Capture-Trigger (Screenpipe + Agy-Pattern)
-**Aufwand**: Mittel | **Impact**: Hoch
+### 1.3 Synthesis candidates from deterministic reports
 
-Aus `MiMo-OpenSource-Research-Proposal.md` + `Agy-OpenSource-Research-Proposal.md`:
-- UIA-Events und Input-Events triggern sofortige Keyframe-Erfassung
-- Polling-Intervall als Heartbeat-Fallback beibehalten
-- `trigger_capture()` ist bereits implementiert — nur noch in UIA-Thread und Input-Thread aufrufen
-- `SetWinEventHook` für `EVENT_SYSTEM_FOREGROUND` + `EVENT_OBJECT_FOCUS` bereits in `uia.rs:454-473`
-- Reduziert Storage und API-Kosten um ~60-80% (Agy-Schätzung)
+Bridge the learning gap without requiring vision on every frame:
 
-### 2.3 Tray-Indicator für aktive Beobachtung
-**Aufwand**: Gering | **Impact**: Mittel
+- match report actions/summaries to registered token slugs (pattern-based, like shell command matching), or
+- populate `candidateTokens` in replay from session watch directives
 
-Windows-System-Tray-Icon während aktiver `watch`-Session:
-- Pausieren/Stoppen über Tray-Menü
-- Zeigt an: Session-Name, Event-Zähler, Privacy-Status
+### 1.4 Event-driven capture tuning
 
-### 2.4 Performance-Validierung
-**Aufwand**: Gering | **Impact**: Mittel
-
-Acceptance-Criteria aus dem Proposal:
-- 30-Minuten-Stabilitätstest ohne Crash
-- CPU/Memory-Messung auf x64 und ARM64
-- Latenz-Messung für Event-to-Report-Pipeline
+`trigger_capture()` and `--event-driven` are implemented; validate storage/CPU savings vs heartbeat-only mode.
 
 ---
 
-## Priorität 3: Phase 2 — Vision-Model-Integration (4-8 Wochen)
+## Priority 2: Vision integration (4–8 weeks)
 
-### 3.1 Provider-neutraler Frame/Clip-Adapter
-**Aufwand**: Hoch | **Impact**: Hoch
+### 2.1 Provider-neutral frame/clip adapter
 
-Interface für multimodale Modelle:
-- `analyzeFrames`: Keyframes + Event-Metadata
-- `analyzeClip`: kurzes Video + Event-Metadata
-- OpenAI-kompatibel als Baseline
+`analyzeFrames` / `analyzeClip` with OpenAI-compatible baseline.
 
-### 3.2 Modell-Benchmarking
-**Aufwand**: Mittel | **Impact**: Hoch
+### 2.2 Model benchmarking
 
-Eval-Dataset aus dem Proposal:
-- File Explorer, Browser-Formular, Windows-Einstellungen
-- Metriken: Step-Segmentation F1, Completion-Precision, Error-Recall
-- Modelle: MiMo-V2.5, MiMo-VL, Gemini Flash-Lite, Qwen VL
+Eval set: File Explorer, browser form, Windows Settings. Models: MiMo-V2.5, MiMo-VL, Gemini Flash-Lite, Qwen VL.
 
-### 3.3 Coordinate Scaling (Anthropic-Pattern)
-**Aufwand**: Gering | **Impact**: Mittel
+### 2.3 Coordinate scaling
 
-Keyframes auf 1024×768 runterskalieren vor Vision-Request:
-- Original-Keyframe nur bei unklarem UIA-Text
-- Reduziert Token-Kosten um ~60-70%
+Downscale keyframes to 1024×768 before vision requests (~60–70% token savings).
 
-### 3.4 Kosten-Kontrolle
-**Aufwand**: Mittel | **Impact**: Hoch
+### 2.4 Cost controls
 
-- Per-Session-Budget konfigurierbar
-- Idle-Perioden: keine Vision-Calls
-- Event-getriebene Analyse statt kontinuierlich
-- Kosten-Tracking pro Session
+Per-session budget, no vision during idle, event-driven analysis only.
 
 ---
 
-## Priorität 4: Open-Source-Integrationen (fortlaufend)
+## Priority 3: Open-source integrations (ongoing)
 
-### 4.1 PII-Erkennungsmodell (Screenpipe-Pattern)
-**Aufwand**: Hoch | **Impact**: Hoch
+See [`observer-open-source-research.md`](observer-open-source-research.md) for the full table. Highlights:
 
-Phase 1: Regex-basierte PII-Erkennung (E-Mail, IBAN, Kreditkarte)
-Phase 2: Kleines ONNX-Modell (<50 MB) für Screenshot-PII
-
-### 4.2 Per-Provider-Privacy-Policy (Screenpipe-Pattern)
-**Aufwand**: Mittel | **Impact**: Mittel
-
-YAML/JSON-Konfiguration pro Vision-Provider:
-- `local.mimo-vl`: Alles erlaubt
-- `cloud.gemini`: Keyframes erlaubt, Window-Titles redacted
-- Enforcement in der Bridge-Schicht
-
-### 4.3 Trajectory-Recording-Format (CUA-Pattern)
-**Aufwand**: Mittel | **Impact**: Mittel
-
-Standardisiertes Export-Format für Evaluation:
-- JSONL + Keyframe-Referenzen
-- Kompatibilität mit CUA prüfen
-- Ermöglicht A/B-Tests zwischen Modellen
-
-### 4.4 Accessibility-Tree-Tiefe (PyWinAssistant-Pattern)
-**Aufwand**: Mittel | **Impact**: Mittel
-
-Nicht nur fokussiertes Element, sondern Children erfassen:
-- Toolbar-Buttons, ListView-Items, Menu-Einträge
-- UIA-Baum-Tiefe begrenzt (max 3 Level)
-- Mehr semantische Daten ohne Vision-Kosten
-
-### 4.5 Sichere UIA-Wrapper-Integration (Agy-P1)
-**Aufwand**: Mittel | **Impact**: Mittel
-
-`uiautomation-rs` als sicherer Rust-Wrapper für UIA-COM:
-- Eliminiert manuelles Casting von rohen COM-Pointern in `uia.rs`
-- Reduziert Risiko von Memory-Leaks und COM-Threading-Fehlern
-- Prüfung: Ist der Wrapper reif genug für Production-Use?
-
-### 4.6 OmniParser-kompatibles Grounding-Format (Agy-P2)
-**Aufwand**: Gering | **Impact**: Mittel
-
-`UiObservationReport` um optionales `grounding`-Feld erweitern:
-- Bounding-Boxes + funktionale Beschreibungen im OmniParser-Format
-- ZAM-Aufnahmen direkt als Input für Computer-Use-Agenten nutzbar
-- Kompatibilität mit Microsoft OmniParser-Ökosystem
-
-### 4.7 Capture-Library-Migration (Agy-P2)
-**Aufwand**: Mittel | **Impact**: Niedrig
-
-Langfristig: Migration von Custom-D3D11-Loop zu etablierter Library:
-- `windows-capture` für Windows-only (weniger Wartungsaufwand)
-- `CrabGrab` für Cross-Platform (macOS-Support)
-- Aktuell: eigener Code ist stabil — Migration nur bei geplantem macOS-Support
+- PII detection (regex → ONNX)
+- Per-provider privacy policy
+- Trajectory export (CUA-compatible evaluation)
+- Deeper UIA tree reads
+- OmniParser-style grounding field
+- `uiautomation-rs` / capture-library migration (deferred)
 
 ---
 
-## Priorität 5: Phase 3+4 — Synthesis & Live Guidance (8+ Wochen)
+## Priority 4: Synthesis and live guidance (8+ weeks)
 
-### 5.1 Watch-Direktiven vom Session-Agent
-- Observer erhält erwartete Outcomes + Candidate-Token-Slugs
-- Observer bewertet nicht — meldet nur Evidenz
-
-### 5.2 Synthesis-Candidates aus Observer-Reports
-- Reports → reviewbare Synthesis-Candidates
-- User-Bestätigung vor FSRS-Update
-
-### 5.3 Live-Intervention bei wiederholten Fehlern
-- Session-Agent darf eingreifen bei Help-Seeking
-- Silent Shadowing als Default
+- Watch directives from session agent (expected outcomes, candidate slugs)
+- Reports → reviewable synthesis candidates with user confirmation before FSRS
+- Live intervention on repeated errors or help-seeking
 
 ---
 
-## Offene technische Fragen
+## Phase 0 Acceptance Metrics
 
-1. **UIA-Event-Reliabilität**: Wie zuverlässig sind Invoke/TextChanged Events across Apps? Fallback auf Polling?
-2. **ARM64-D3D11**: Funktioniert `Windows.Graphics.Capture` identisch auf ARM64?
-3. **Multi-Monitor**: Wie verhält sich Capture bei Multi-Monitor-Setup?
-4. **Secure Desktop**: UAC-Prompt-Erkennung implementieren?
-5. **Audio/Think-Aloud**: WASAPI + whisper.cpp Integration — Wann sinnvoll?
-6. **OCR-Fallback-Performance**: Wie schnell ist `OcrEngine` auf einzelnen UI-Elementen? Akzeptabel für Echtzeit-Polling?
-7. **`uiautomation-rs`-Reife**: Ist der Wrapper stabil genug für Production? COM-Threading korrekt?
-
----
-
-## Metriken für Phase 0-Abnahme
-
-| Kriterium | Ziel | Status |
-|-----------|------|--------|
-| 30-Minuten-Stabilität | Kein Crash | Offen |
-| Kein persistierter Text | 0 Leaks | ✅ Implementiert |
-| Events im Log | Click, Shortcut, App-Wechsel, Dialog | ✅ Implementiert |
-| Schema-valid Reports | Replay erzeugt valide JSONL | ✅ Implementiert |
-| CPU-Overhead | <5% bei 1 FPS Sampling | Offen |
-| ARM64-Build | CI grün | ✅ Implementiert |
+| Criterion | Target | Status |
+|-----------|--------|--------|
+| No persisted keystroke text | 0 leaks | Done |
+| Event vocabulary in log | click, shortcut, app change, dialog, UIA events | Done |
+| Schema-valid reports | replay → valid JSONL | Done |
+| Live reports in kernel | `observe-ui-watch` + session synthesis | Done |
+| ARM64 build | CI green | Done |
+| 30-minute stability | no crash | Deferred |
+| CPU overhead | <5% at ~1 FPS | Deferred |
 
 ---
 
-## Quellen
+## Sources
 
-- `docs/windows-ui-observer-proposal.md` — Phase 0-4 Delivery Plan
-- `docs/MiMo-OpenSource-Research-Proposal.md` — 7 Lernpunkte (Screenpipe, ActivityWatch, PyWinAssistant, CUA, Selfspy, Anthropic CU)
-- `docs/Agy-OpenSource-Research-Proposal.md` — 5 Zusatzpunkte (OpenAdapt, ShowUI, OmniParser, Windows APIs, Rust Libraries)
-- `antigravity-review.md` — Code-Review mit 4 kritischen Punkten (alle behoben)
+- [`windows-ui-observer-proposal.md`](windows-ui-observer-proposal.md) — architecture and delivery plan
+- [`observer-open-source-research.md`](observer-open-source-research.md) — merged open-source research (formerly MiMo + Agy)

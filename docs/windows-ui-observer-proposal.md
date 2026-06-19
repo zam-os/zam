@@ -1,6 +1,6 @@
 # Windows 11 UI Observer Proposal
 
-> Status: Phase 0 implementation started
+> Status: Phase 0 complete (release candidate)
 >
 > Scope: Windows 11 on x64 and ARM64
 >
@@ -540,16 +540,29 @@ Implemented foundation:
   existing window picker and privacy gating;
 - a reused capture staging texture (recreated only on size/format change) so a
   continuous capture loop no longer allocates a full-resolution staging texture
-  per sampled frame.
+  per sampled frame;
+- HWND-scoped UIA observation on the watched window subtree, with privacy pause
+  applied immediately from COM handlers (invoke, text-change, structure-change);
+- UIA `text-change` and `structure-change` COM event subscriptions;
+- `SetWinEventHook` foreground/focus notifications and `--event-driven` capture
+  triggers via `trigger_capture()`;
+- local `Windows.Media.Ocr` fallback when UIA element names are empty;
+- `zam bridge start-session` / `end-session` with `execution_context: ui`;
+- `zam bridge observe-ui-watch` for polling persisted reports from
+  `~/.zam/observer/<session>.reports.jsonl`;
+- desktop UI sessions linked to ZAM learning sessions (replacing ad-hoc
+  `desktop-<timestamp>` IDs), with in-process report polling through the bridge;
+- kernel `prepareSessionSynthesis` integration for UI execution context;
+- observer sidecar prepare script preferring the native `target/release` binary.
 
-Foreground, frame keyframes, UI Automation, and Raw Input are now live sensor
+Foreground, frame keyframes, UI Automation, and Raw Input are live sensor
 sources feeding both independent diagnostic commands and the unified `watch`
-event bus, whose UIA thread now produces the full focus/dialog/toggle/selection/
-invoke vocabulary the replay engine understands. Tauri supervises that bus, can
-turn it directly into reports (`--reports`), and exposes start/stop lifecycle in
-the desktop UI. The remaining Phase 0 work is to feed the persisted live reports
-into the learning kernel during a session, and to broaden UI Automation further
-to text-change and structure events.
+event bus. Tauri supervises that bus, turns it into reports (`--reports`), and
+exposes start/stop lifecycle in the desktop UI. Persisted live reports flow into
+the learning kernel during UI sessions. Phase 1 work (tray indicator, activity
+segmentation, synthesis candidates from deterministic reports) is tracked in
+[`observer-next-steps.md`](observer-next-steps.md). Open-source research is
+consolidated in [`observer-open-source-research.md`](observer-open-source-research.md).
 
 ### Phase 1: deterministic observer
 
