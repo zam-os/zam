@@ -9,8 +9,9 @@ use std::time::Duration;
 use zam_observer::{
     capture_once, capture_window, foreground_window, list_windows, observed_at_now, pick_window,
     sample_window, snapshot_window, watch_focused_element, watch_raw_input, watch_window_keyframes,
-    ApplicationContext, ObserverCapabilities, ObserverProbe, ReplayEngine, SensorEvent, SensorKind,
-    SensorSource, UiObservationReport, DEFAULT_CHANGE_THRESHOLD, PROTOCOL_VERSION,
+    watch_session, ApplicationContext, ObserverCapabilities, ObserverProbe, ReplayEngine,
+    SensorEvent, SensorKind, SensorSource, UiObservationReport, DEFAULT_CHANGE_THRESHOLD,
+    PROTOCOL_VERSION,
 };
 
 fn main() {
@@ -49,6 +50,10 @@ fn run() -> Result<(), String> {
         "watch-window" => {
             let options = WatchWindowOptions::parse(args.collect())?;
             watch_window_command(options)
+        }
+        "watch" => {
+            let options = WatchOptions::parse(args.collect())?;
+            watch_command(options)
         }
         "watch-uia" => {
             let options = WatchUiaOptions::parse(args.collect())?;
@@ -236,6 +241,23 @@ fn watch_window_command(options: WatchWindowOptions) -> Result<(), String> {
     result
 }
 
+fn watch_command(options: WatchOptions) -> Result<(), String> {
+    let mut writer = BufWriter::new(io::stdout());
+    let result = watch_session(
+        options.hwnd,
+        &options.session_id,
+        options.keyframe_dir.as_deref(),
+        options.keyframe_retain,
+        options.change_threshold,
+        options.interval_ms,
+        options.heartbeat_every,
+        options.samples,
+        &mut |event| write_event(&mut writer, &event),
+    );
+    writer.flush().map_err(|error| error.to_string())?;
+    result
+}
+
 fn watch_uia_command(options: WatchUiaOptions) -> Result<(), String> {
     let mut writer = BufWriter::new(io::stdout());
     let result = watch_focused_element(
@@ -377,6 +399,7 @@ Usage:
   zam-observer snapshot-window --hwnd <decimal|0xhex> --output <path.png>
   zam-observer sample-window --hwnd <decimal|0xhex> [--frames <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>]
   zam-observer watch-window --session <id> --hwnd <decimal|0xhex> [--samples <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>] [--heartbeat-every <n>] [--keyframe-dir <dir> [--keyframe-retain <n>]]
+  zam-observer watch --session <id> --hwnd <decimal|0xhex> [--samples <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>] [--heartbeat-every <n>] [--keyframe-dir <dir> [--keyframe-retain <n>]]
   zam-observer watch-uia --session <id> [--samples <n>] [--interval-ms <n>]
   zam-observer watch-raw-input --session <id> [--duration-ms <n>]
   zam-observer replay --input <path|-> [--output <path|->]
@@ -897,6 +920,153 @@ impl WatchWindowOptions {
         Ok(Self {
             session_id,
             hwnd: hwnd.ok_or_else(|| "--hwnd is required".to_string())?,
+            samples,
+            interval_ms,
+            change_threshold,
+            heartbeat_every,
+            keyframe_dir,
+            keyframe_retain,
+        })
+    }
+}
+
+#[derive(Debug)]
+struct WatchOptions {
+    session_id: String,
+    hwnd: u64,
+    samples: Option<usize>,
+    interval_ms: u64,
+    change_threshold: f64,
+    heartbeat_every: u64,
+    keyframe_dir: Option<PathBuf>,
+    keyframe_retain: usize,
+}
+
+impl WatchOptions {
+    const DEFAULT_INTERVAL_MS: u64 = 1000;
+    const MIN_INTERVAL_MS: u64 = 50;
+    const MAX_INTERVAL_MS: u64 = 60_000;
+    const DEFAULT_HEARTBEAT_EVERY: u64 = 10;
+    const MAX_HEARTBEAT_EVERY: u64 = 100_000;
+    const DEFAULT_KEYFRAME_RETAIN: usize = 30;
+    const MAX_KEYFRAME_RETAIN: usize = 10_000;
+    const MAX_SAMPLES: usize = 100_000;
+
+    fn parse(args: Vec<String>) -> Result<Self, String> {
+        let mut session_id = None;
+        let mut hwnd = None;
+        let mut samples = None;
+        let mut interval_ms = Self::DEFAULT_INTERVAL_MS;
+        let mut change_threshold = DEFAULT_CHANGE_THRESHOLD;
+        let mut heartbeat_every = Self::DEFAULT_HEARTBEAT_EVERY;
+        let mut keyframe_dir = None;
+        let mut keyframe_retain = Self::DEFAULT_KEYFRAME_RETAIN;
+        let mut index = 0;
+
+        while index < args.len() {
+            match args[index].as_str() {
+                "--session" => {
+                    index += 1;
+                    session_id = args.get(index).cloned();
+                }
+                "--hwnd" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--hwnd requires a value".to_string())?;
+                    hwnd = Some(parse_hwnd(raw)?);
+                }
+                "--samples" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--samples requires a value".to_string())?;
+                    let val = raw
+                        .parse::<usize>()
+                        .map_err(|error| format!("invalid --samples '{raw}': {error}"))?;
+                    samples = Some(val);
+                }
+                "--interval-ms" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--interval-ms requires a value".to_string())?;
+                    interval_ms = raw
+                        .parse::<u64>()
+                        .map_err(|error| format!("invalid --interval-ms '{raw}': {error}"))?;
+                }
+                "--change-threshold" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--change-threshold requires a value".to_string())?;
+                    change_threshold = raw
+                        .parse::<f64>()
+                        .map_err(|error| format!("invalid --change-threshold '{raw}': {error}"))?;
+                }
+                "--heartbeat-every" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--heartbeat-every requires a value".to_string())?;
+                    heartbeat_every = raw
+                        .parse::<u64>()
+                        .map_err(|error| format!("invalid --heartbeat-every '{raw}': {error}"))?;
+                }
+                "--keyframe-dir" => {
+                    index += 1;
+                    keyframe_dir = args.get(index).map(PathBuf::from);
+                }
+                "--keyframe-retain" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--keyframe-retain requires a value".to_string())?;
+                    keyframe_retain = raw
+                        .parse::<usize>()
+                        .map_err(|error| format!("invalid --keyframe-retain '{raw}': {error}"))?;
+                }
+                unknown => return Err(format!("unknown option '{unknown}'")),
+            }
+            index += 1;
+        }
+
+        let session_id = session_id
+            .filter(|value| !value.trim().is_empty())
+            .ok_or_else(|| "--session is required".to_string())?;
+        let hwnd = hwnd.ok_or_else(|| "--hwnd is required".to_string())?;
+
+        if let Some(max) = samples {
+            if max == 0 || max > Self::MAX_SAMPLES {
+                return Err(format!("--samples must be between 1 and {}", Self::MAX_SAMPLES));
+            }
+        }
+        if !(Self::MIN_INTERVAL_MS..=Self::MAX_INTERVAL_MS).contains(&interval_ms) {
+            return Err(format!(
+                "--interval-ms must be between {} and {}",
+                Self::MIN_INTERVAL_MS,
+                Self::MAX_INTERVAL_MS
+            ));
+        }
+        if !change_threshold.is_finite() || !(0.0..=1.0).contains(&change_threshold) {
+            return Err("--change-threshold must be between 0.0 and 1.0".to_string());
+        }
+        if heartbeat_every > Self::MAX_HEARTBEAT_EVERY {
+            return Err(format!(
+                "--heartbeat-every must be at most {}",
+                Self::MAX_HEARTBEAT_EVERY
+            ));
+        }
+        if keyframe_retain == 0 || keyframe_retain > Self::MAX_KEYFRAME_RETAIN {
+            return Err(format!(
+                "--keyframe-retain must be between 1 and {}",
+                Self::MAX_KEYFRAME_RETAIN
+            ));
+        }
+
+        Ok(Self {
+            session_id,
+            hwnd,
             samples,
             interval_ms,
             change_threshold,

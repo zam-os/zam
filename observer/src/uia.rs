@@ -75,6 +75,17 @@ pub fn watch_focused_element(
     windows_uia::watch_focused_element(samples, interval, session_id, on_event)
 }
 
+#[cfg(target_os = "windows")]
+pub fn watch_focused_element_continuous(
+    interval: Duration,
+    session_id: &str,
+    should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    pause_input: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
+) -> Result<(), String> {
+    windows_uia::watch_focused_element_continuous(interval, session_id, should_stop, pause_input, on_event)
+}
+
 #[cfg(not(target_os = "windows"))]
 pub fn watch_focused_element(
     _samples: usize,
@@ -84,6 +95,18 @@ pub fn watch_focused_element(
 ) -> Result<(), String> {
     Err("UI Automation is only available on Windows".to_string())
 }
+
+#[cfg(not(target_os = "windows"))]
+pub fn watch_focused_element_continuous(
+    _interval: Duration,
+    _session_id: &str,
+    _should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    _pause_input: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    _on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
+) -> Result<(), String> {
+    Err("UI Automation is only available on Windows".to_string())
+}
+
 
 #[cfg(target_os = "windows")]
 mod windows_uia {
@@ -164,6 +187,51 @@ mod windows_uia {
             if sample_index + 1 < samples {
                 thread::sleep(interval);
             }
+        }
+
+        Ok(())
+    }
+
+    pub fn watch_focused_element_continuous(
+        interval: Duration,
+        session_id: &str,
+        should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
+        pause_input: std::sync::Arc<std::sync::atomic::AtomicBool>,
+        on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
+    ) -> Result<(), String> {
+        unsafe {
+            CoInitializeEx(None, COINIT_MULTITHREADED)
+                .ok()
+                .map_err(|error| format!("failed to initialize COM: {error}"))?;
+        }
+        let automation: IUIAutomation =
+            unsafe { CoCreateInstance(&CUIAutomation, None, CLSCTX_INPROC_SERVER) }
+                .map_err(|error| format!("failed to create UI Automation: {error}"))?;
+
+        let mut last: Option<FocusFingerprint> = None;
+        let mut sequence = 0u64;
+
+        while !should_stop.load(std::sync::atomic::Ordering::Relaxed) {
+            if let Some(focused) = read_focused_element(&automation) {
+                let process_name = if focused.process_id == 0 {
+                    String::new()
+                } else {
+                    process_name_for_pid(focused.process_id)
+                };
+                let privacy = classify_window_privacy(&process_name, &focused.name);
+                let is_password = focused.password;
+                let is_paused = privacy.is_paused() || is_password;
+                pause_input.store(is_paused, std::sync::atomic::Ordering::Relaxed);
+
+                let fingerprint = FocusFingerprint::from_element(&focused);
+                if last.as_ref() != Some(&fingerprint) {
+                    sequence += 1;
+                    on_event(focus_event(session_id, sequence, focused))?;
+                    last = Some(fingerprint);
+                }
+            }
+
+            thread::sleep(interval);
         }
 
         Ok(())

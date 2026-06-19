@@ -10,10 +10,12 @@ mod privacy;
 mod raw_input;
 mod replay;
 mod uia;
+mod watch;
 
 pub use capture::{
     capture_once, capture_window, sample_window, snapshot_window, watch_window_keyframes,
-    CapturedFrameProbe, CapturedFrameSample, CapturedFrameSequence,
+    watch_window_keyframes_continuous, CapturedFrameProbe, CapturedFrameSample,
+    CapturedFrameSequence,
 };
 pub use clock::observed_at_now;
 pub use frame_ring::FrameRing;
@@ -33,6 +35,7 @@ pub use privacy::{
     load_window_privacy_policy, load_window_privacy_policy_from_env, redact_window_title,
     PrivacyAction, WindowPrivacy, WindowPrivacyPolicy, PRIVACY_POLICY_ENV, REDACTED_WINDOW_TITLE,
 };
-pub use raw_input::watch_raw_input;
+pub use raw_input::{watch_raw_input, watch_raw_input_continuous};
 pub use replay::{ReplayEngine, ReplayError, ReplaySummary};
-pub use uia::watch_focused_element;
+pub use uia::{watch_focused_element, watch_focused_element_continuous};
+pub use watch::watch_session;

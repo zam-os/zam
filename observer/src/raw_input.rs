@@ -249,11 +249,33 @@ pub fn watch_raw_input(
     windows_raw_input::watch_raw_input(duration, session_id, TYPING_FLUSH_THRESHOLD, on_event)
 }
 
+#[cfg(target_os = "windows")]
+pub fn watch_raw_input_continuous(
+    session_id: &str,
+    flush_threshold: u32,
+    should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    pause_input: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
+) -> Result<(), String> {
+    windows_raw_input::watch_raw_input_continuous(session_id, flush_threshold, should_stop, pause_input, on_event)
+}
+
 #[cfg(not(target_os = "windows"))]
 pub fn watch_raw_input(
     _duration: Duration,
     _session_id: &str,
     _on_event: &mut dyn FnMut(&SensorEvent) -> Result<(), String>,
+) -> Result<(), String> {
+    Err("Raw Input is only available on Windows".to_string())
+}
+
+#[cfg(not(target_os = "windows"))]
+pub fn watch_raw_input_continuous(
+    _session_id: &str,
+    _flush_threshold: u32,
+    _should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    _pause_input: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    _on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
 ) -> Result<(), String> {
     Err("Raw Input is only available on Windows".to_string())
 }
@@ -325,6 +347,42 @@ mod windows_raw_input {
         Ok(())
     }
 
+    pub fn watch_raw_input_continuous(
+        session_id: &str,
+        flush_threshold: u32,
+        should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
+        pause_input: std::sync::Arc<std::sync::atomic::AtomicBool>,
+        on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
+    ) -> Result<(), String> {
+        let hwnd = create_message_window()?;
+        register_devices(hwnd)?;
+
+        let mut aggregator = RawInputAggregator::new(session_id, flush_threshold);
+
+        while !should_stop.load(std::sync::atomic::Ordering::Relaxed) {
+            let mut message = MSG::default();
+            while unsafe { PeekMessageW(&mut message, None, 0, 0, PM_REMOVE) }.as_bool() {
+                if message.message == WM_INPUT {
+                    for input in read_raw_inputs(message.lParam) {
+                        let observed_at = observed_at_now();
+                        for event in aggregator.observe(input, &observed_at) {
+                            emit_continuous(event, &pause_input, on_event)?;
+                        }
+                    }
+                } else {
+                    let _ = unsafe { TranslateMessage(&message) };
+                    unsafe { DispatchMessageW(&message) };
+                }
+            }
+            thread::sleep(Duration::from_millis(5));
+        }
+
+        for event in aggregator.finish(&observed_at_now()) {
+            emit_continuous(event, &pause_input, on_event)?;
+        }
+        Ok(())
+    }
+
     /// Attach the foreground process to an event, or drop it while a
     /// privacy-paused window (password manager, auth dialog) is in front.
     fn emit(
@@ -342,6 +400,28 @@ mod windows_raw_input {
             });
         }
         on_event(&event)
+    }
+
+    fn emit_continuous(
+        mut event: SensorEvent,
+        pause_input: &std::sync::atomic::AtomicBool,
+        on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
+    ) -> Result<(), String> {
+        if pause_input.load(std::sync::atomic::Ordering::Relaxed) {
+            return Ok(());
+        }
+
+        if let Ok(Some(window)) = foreground_window() {
+            if window.privacy.is_paused() {
+                return Ok(());
+            }
+            event.application = Some(ApplicationContext {
+                process_name: window.process_name,
+                process_id: Some(window.process_id),
+                window_title: None,
+            });
+        }
+        on_event(event)
     }
 
     fn create_message_window() -> Result<HWND, String> {

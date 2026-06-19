@@ -92,6 +92,32 @@ pub fn watch_window_keyframes(
     )
 }
 
+#[cfg(target_os = "windows")]
+#[allow(clippy::too_many_arguments)]
+pub fn watch_window_keyframes_continuous(
+    hwnd: u64,
+    interval: Duration,
+    change_threshold: f64,
+    heartbeat_every: u64,
+    session_id: &str,
+    keyframe_dir: Option<&Path>,
+    keyframe_retain: usize,
+    should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
+) -> Result<(), String> {
+    windows_capture::watch_window_keyframes_continuous(
+        hwnd,
+        interval,
+        change_threshold,
+        heartbeat_every,
+        session_id,
+        keyframe_dir,
+        keyframe_retain,
+        should_stop,
+        on_event,
+    )
+}
+
 #[cfg(not(target_os = "windows"))]
 pub fn capture_once() -> Result<Option<CapturedFrameProbe>, String> {
     Err("window capture is only available on Windows".to_string())
@@ -129,6 +155,22 @@ pub fn watch_window_keyframes(
     _keyframe_dir: Option<&Path>,
     _keyframe_retain: usize,
     _on_event: &mut dyn FnMut(&SensorEvent) -> Result<(), String>,
+) -> Result<(), String> {
+    Err("window capture is only available on Windows".to_string())
+}
+
+#[cfg(not(target_os = "windows"))]
+#[allow(clippy::too_many_arguments)]
+pub fn watch_window_keyframes_continuous(
+    _hwnd: u64,
+    _interval: Duration,
+    _change_threshold: f64,
+    _heartbeat_every: u64,
+    _session_id: &str,
+    _keyframe_dir: Option<&Path>,
+    _keyframe_retain: usize,
+    _should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    _on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
 ) -> Result<(), String> {
     Err("window capture is only available on Windows".to_string())
 }
@@ -284,6 +326,82 @@ mod windows_capture {
         Ok(())
     }
 
+    #[allow(clippy::too_many_arguments)]
+    pub fn watch_window_keyframes_continuous(
+        hwnd: u64,
+        interval: Duration,
+        change_threshold: f64,
+        heartbeat_every: u64,
+        session_id: &str,
+        keyframe_dir: Option<&Path>,
+        keyframe_retain: usize,
+        should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
+        on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
+    ) -> Result<(), String> {
+        let (item, picked) = capture_item_for_hwnd(hwnd)?;
+        let (application, redacted) = match window_info(hwnd)? {
+            Some(info) => {
+                let redacted = info.privacy.title_redacted;
+                (
+                    ApplicationContext {
+                        process_name: info.process_name,
+                        process_id: Some(info.process_id),
+                        window_title: Some(info.title),
+                    },
+                    redacted,
+                )
+            }
+            None => (
+                ApplicationContext {
+                    process_name: format!("hwnd-0x{hwnd:x}"),
+                    process_id: None,
+                    window_title: Some(picked.display_name.clone()),
+                },
+                picked.privacy.title_redacted,
+            ),
+        };
+
+        let mut stream = KeyframeStream::new(
+            session_id,
+            application,
+            redacted,
+            change_threshold,
+            heartbeat_every,
+        );
+        let mut archive = keyframe_dir
+            .map(|dir| KeyframeArchive::new(dir, keyframe_retain))
+            .transpose()?;
+        let archiving = archive.is_some();
+
+        let devices = create_direct3d_devices()?;
+        let (frame, session, pool) = capture_first_frame(&devices.winrt, &item)?;
+        let first = read_frame_capture(&devices.native, &frame, archiving)?;
+        let _ = frame.Close();
+        emit_capture_event_continuous(&mut stream, &mut archive, Some(first), on_event)?;
+
+        while !should_stop.load(std::sync::atomic::Ordering::Relaxed) {
+            if !interval.is_zero() {
+                thread::sleep(interval);
+            }
+            if should_stop.load(std::sync::atomic::Ordering::Relaxed) {
+                break;
+            }
+            let capture = match try_wait_for_frame(&pool, Duration::from_millis(250))? {
+                Some(frame) => {
+                    let capture = read_frame_capture(&devices.native, &frame, archiving)?;
+                    let _ = frame.Close();
+                    Some(capture)
+                }
+                None => None,
+            };
+            emit_capture_event_continuous(&mut stream, &mut archive, capture, on_event)?;
+        }
+
+        let _ = session.Close();
+        let _ = pool.Close();
+        Ok(())
+    }
+
     /// A sampled frame: its signature plus, when keyframe retention is on, the
     /// pixels needed to persist it.
     struct CapturedKeyframe {
@@ -338,6 +456,34 @@ mod windows_capture {
                 }
             }
             on_event(&event)?;
+        }
+
+        Ok(())
+    }
+
+    fn emit_capture_event_continuous(
+        stream: &mut KeyframeStream,
+        archive: &mut Option<KeyframeArchive>,
+        capture: Option<CapturedKeyframe>,
+        on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
+    ) -> Result<(), String> {
+        let (signature, pixels) = match capture {
+            Some(capture) => (Some(capture.signature), capture.pixels),
+            None => (None, None),
+        };
+
+        if let Some(mut event) = stream.observe(signature, observed_at_now()) {
+            if event.kind == SensorKind::FrameChanged {
+                if let (Some(archive), Some((width, height, rgba))) = (archive.as_mut(), &pixels) {
+                    let png = encode_png_to_vec(*width, *height, rgba)?;
+                    let path = archive.store(&png)?;
+                    event.data.insert(
+                        "ref".to_string(),
+                        serde_json::Value::String(format!("file:{}", path.display())),
+                    );
+                }
+            }
+            on_event(event)?;
         }
 
         Ok(())
