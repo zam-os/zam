@@ -78,6 +78,7 @@ mod windows_capture {
 
     use super::{CapturedFrameProbe, PROTOCOL_VERSION};
     use crate::picker::{capture_item_for_hwnd, pick_graphics_capture_item, PickedWindow};
+    use crate::privacy::ensure_capture_allowed;
 
     struct CaptureDevices {
         winrt: IDirect3DDevice,
@@ -106,6 +107,7 @@ mod windows_capture {
         item: GraphicsCaptureItem,
         window: PickedWindow,
     ) -> Result<CapturedFrameProbe, String> {
+        ensure_capture_allowed(&window.privacy)?;
         let devices = create_direct3d_devices()?;
         let (frame, session, pool) = capture_first_frame(&devices.winrt, &item)?;
         let probe = frame_probe(&frame, window)?;
@@ -122,6 +124,7 @@ mod windows_capture {
         window: PickedWindow,
         output: &Path,
     ) -> Result<CapturedFrameProbe, String> {
+        ensure_capture_allowed(&window.privacy)?;
         let devices = create_direct3d_devices()?;
         let (frame, session, pool) = capture_first_frame(&devices.winrt, &item)?;
         write_frame_png(&devices.native, &frame, output)?;

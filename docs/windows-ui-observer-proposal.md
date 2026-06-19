@@ -490,13 +490,16 @@ Implemented foundation:
   `UiObservationReport`;
 - append/read support for UI observation session JSONL via
   `appendUiObservationReport` and `zam bridge get-observations`;
+- built-in privacy classification for selected/listed windows, with title
+  redaction and capture refusal for password managers, authentication/private
+  browsing, and financial contexts;
 - native x64 and ARM64 observer CI builds;
 - release-resource preparation for the Tauri package;
 - Tauri commands for observer probe and window selection.
 
 The remaining Phase 0 work is to turn one-shot frame capture into a live frame
-source, then add UI Automation, Raw Input, privacy filtering, and the frame ring
-around it.
+source, then add UI Automation, Raw Input, configurable allow/deny policies, and
+the frame ring around it.
 
 ### Phase 1: deterministic observer
 

@@ -28,8 +28,10 @@ The replay engine provides a stable fixture boundary for developing Windows
 sensor adapters and observer-model integrations independently.
 
 `list-windows` is Windows-only. It returns visible top-level windows with HWND,
-process ID, title, and bounds metadata. Use it to test capture without opening
-the native picker.
+process ID, title, bounds metadata, and a privacy classification. Windows that
+match the built-in privacy filter return a redacted title and
+`privacy.action = "privacy-pause"`. Use it to test capture without opening the
+native picker.
 
 `pick-window` is Windows-only. It opens the native Windows capture picker and
 returns metadata for the selected window. It does not persist pixels.
@@ -40,11 +42,13 @@ metadata without persisting pixels.
 
 `capture-window --hwnd <decimal|0xhex>` is Windows-only. It starts the same
 first-frame capture for an explicit top-level window handle, which keeps picker
-threading separate from capture diagnostics.
+threading separate from capture diagnostics. Capture is refused when the target
+window is classified as a privacy pause.
 
 `snapshot-window --hwnd <decimal|0xhex> --output <path.png>` is Windows-only. It
 copies the first captured frame back to CPU memory and writes it as an RGBA PNG.
-Use this as the handoff format for local vision models.
+Use this as the handoff format for local vision models. The same privacy gate is
+checked before any pixels are captured.
 
 The matching bridge command is:
 
@@ -88,3 +92,7 @@ The desktop dashboard includes a manual MVP panel for this path: refresh visible
 windows, choose one HWND, run `Snapshot & Analyze`, and inspect the persisted
 report preview and session report history. This is intentionally a one-shot
 diagnostic flow before the continuous observer loop is added.
+
+The desktop dropdown marks privacy-paused windows and keeps snapshot analysis
+disabled for them. The sidecar enforces the same decision again so direct CLI or
+Tauri calls cannot bypass the UI.

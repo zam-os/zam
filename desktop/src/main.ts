@@ -56,6 +56,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     observer_vision_disabled: "Vision observation is disabled. Enable it with: zam settings set llm.vision.enabled true",
     observer_vision_offline: "Vision endpoint is offline: {url}",
     observer_vision_model_missing: "Vision model is not available: {model}",
+    observer_privacy_paused: "Privacy pause: this window is blocked by the privacy filter ({reason}).",
+    observer_privacy_option: "privacy pause",
     observer_refresh: "Load Windows",
     observer_analyze: "Snapshot & Analyze",
     observer_cancel: "Cancel",
@@ -131,6 +133,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     observer_vision_disabled: "Vision-Beobachtung ist deaktiviert. Aktiviere sie mit: zam settings set llm.vision.enabled true",
     observer_vision_offline: "Vision-Endpunkt ist offline: {url}",
     observer_vision_model_missing: "Vision-Modell ist nicht verfügbar: {model}",
+    observer_privacy_paused: "Privacy-Pause: Dieses Fenster wird durch den Privacy-Filter blockiert ({reason}).",
+    observer_privacy_option: "Privacy-Pause",
     observer_refresh: "Fenster laden",
     observer_analyze: "Snapshot analysieren",
     observer_cancel: "Abbrechen",
@@ -239,6 +243,11 @@ interface ObserverWindowInfo {
   title: string;
   width: number;
   height: number;
+  privacy?: {
+    action: "observe" | "privacy-pause";
+    reasons?: string[];
+    titleRedacted?: boolean;
+  };
 }
 
 interface UiObservationReport {
@@ -277,6 +286,21 @@ interface VisionStatus {
   availableModels: string[];
   usable: boolean;
 }
+
+const OBSERVER_PRIVACY_REASON_LABELS: Record<string, Record<string, string>> = {
+  en: {
+    authentication: "authentication or password screen",
+    financial: "financial or payment screen",
+    "private-browsing": "private browsing",
+    "sensitive-process": "sensitive application",
+  },
+  de: {
+    authentication: "Anmelde- oder Passwortfenster",
+    financial: "Finanz- oder Zahlungsfenster",
+    "private-browsing": "privater Browsermodus",
+    "sensitive-process": "sensible Anwendung",
+  },
+};
 
 // ── BRIDGE COMMAND RUNNER ────────────────────────────────────────────────
 async function runBridge<T = any>(cmd: string, args: string[] = []): Promise<T> {
@@ -380,6 +404,11 @@ async function listObserverWindows(): Promise<void> {
       const processName = windowInfo.processName ?? `pid-${windowInfo.processId}`;
       option.value = String(windowInfo.hwnd);
       option.textContent = `${windowInfo.title} (${processName}, ${windowInfo.width}x${windowInfo.height})`;
+      if (observerWindowPrivacyPaused(windowInfo)) {
+        const reason = observerPrivacyReasonText(windowInfo);
+        option.textContent += ` - ${t("observer_privacy_option")}`;
+        option.title = tf("observer_privacy_paused", { reason });
+      }
       select.appendChild(option);
     }
 
@@ -399,13 +428,29 @@ function selectedObserverWindow(): ObserverWindowInfo | null {
   return observerWindows.find((windowInfo) => windowInfo.hwnd === hwnd) ?? null;
 }
 
+function observerWindowPrivacyPaused(windowInfo: ObserverWindowInfo | null): boolean {
+  return windowInfo?.privacy?.action === "privacy-pause";
+}
+
+function observerPrivacyReasonText(windowInfo: ObserverWindowInfo): string {
+  const reasons = windowInfo.privacy?.reasons ?? [];
+  const labels = OBSERVER_PRIVACY_REASON_LABELS[currentLocale] ?? OBSERVER_PRIVACY_REASON_LABELS.en;
+  return reasons.map((reason) => labels[reason] ?? reason).join(", ") || "privacy filter";
+}
+
 function updateObserverSelection(): void {
   const status = document.getElementById("observer-status")!;
   const selected = selectedObserverWindow();
   syncObserverControls();
-  status.textContent = selected
-    ? tf("observer_ready", { title: selected.title })
-    : t("observer_idle");
+  if (selected && observerWindowPrivacyPaused(selected)) {
+    status.textContent = tf("observer_privacy_paused", {
+      reason: observerPrivacyReasonText(selected),
+    });
+  } else {
+    status.textContent = selected
+      ? tf("observer_ready", { title: selected.title })
+      : t("observer_idle");
+  }
 }
 
 function syncObserverControls(): void {
@@ -417,13 +462,14 @@ function syncObserverControls(): void {
   const loopStopButton = document.getElementById("btn-observer-loop-stop") as HTMLButtonElement;
   const select = document.getElementById("observer-window-select") as HTMLSelectElement;
   const locked = observerAnalyzeInProgress || observerLoopRunning;
+  const privacyPaused = observerWindowPrivacyPaused(selected);
 
   refreshButton.disabled = locked;
   select.disabled = locked;
-  analyzeButton.disabled = locked || selected === null;
+  analyzeButton.disabled = locked || selected === null || privacyPaused;
   cancelButton.classList.toggle("hidden", !observerAnalyzeInProgress);
   cancelButton.disabled = !observerAnalyzeInProgress;
-  loopStartButton.disabled = locked || selected === null;
+  loopStartButton.disabled = locked || selected === null || privacyPaused;
   loopStopButton.classList.toggle("hidden", !observerLoopRunning);
   loopStopButton.disabled = !observerLoopRunning;
 }
@@ -440,6 +486,12 @@ async function analyzeSelectedObserverWindow(): Promise<boolean> {
 
   const status = document.getElementById("observer-status")!;
   const preview = document.getElementById("observer-report-preview")!;
+  if (observerWindowPrivacyPaused(selected)) {
+    status.textContent = tf("observer_privacy_paused", {
+      reason: observerPrivacyReasonText(selected),
+    });
+    return false;
+  }
   const requestId = observerAnalysisRequestId + 1;
   observerAnalysisRequestId = requestId;
 

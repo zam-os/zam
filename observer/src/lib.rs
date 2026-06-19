@@ -1,6 +1,7 @@
 mod capture;
 mod model;
 mod picker;
+mod privacy;
 mod replay;
 
 pub use capture::{capture_once, capture_window, snapshot_window, CapturedFrameProbe};
@@ -10,4 +11,8 @@ pub use model::{
     SensorTarget, UiObservationReport, PROTOCOL_VERSION,
 };
 pub use picker::{list_windows, pick_window, PickedWindow, WindowInfo};
+pub use privacy::{
+    classify_window_privacy, ensure_capture_allowed, redact_window_title, PrivacyAction,
+    WindowPrivacy, REDACTED_WINDOW_TITLE,
+};
 pub use replay::{ReplayEngine, ReplayError, ReplaySummary};

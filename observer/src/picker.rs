@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::model::PROTOCOL_VERSION;
+use crate::privacy::WindowPrivacy;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
@@ -9,6 +10,7 @@ pub struct PickedWindow {
     pub display_name: String,
     pub width: i32,
     pub height: i32,
+    pub privacy: WindowPrivacy,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -21,6 +23,7 @@ pub struct WindowInfo {
     pub title: String,
     pub width: i32,
     pub height: i32,
+    pub privacy: WindowPrivacy,
 }
 
 #[cfg(target_os = "windows")]
@@ -68,6 +71,7 @@ mod windows_picker {
     use windows_future::{AsyncStatus, IAsyncOperation};
 
     use super::{PickedWindow, WindowInfo, PROTOCOL_VERSION};
+    use crate::privacy::{classify_window_privacy, ensure_capture_allowed, redact_window_title};
 
     const PICKER_TIMEOUT: Duration = Duration::from_secs(120);
 
@@ -117,6 +121,10 @@ mod windows_picker {
         if !is_window {
             return Err(format!("HWND 0x{raw_hwnd:x} is not a valid window"));
         }
+        let window_info = describe_window(hwnd);
+        if let Some(window) = &window_info {
+            ensure_capture_allowed(&window.privacy)?;
+        }
 
         let interop: IGraphicsCaptureItemInterop =
             factory::<GraphicsCaptureItem, IGraphicsCaptureItemInterop>()
@@ -125,7 +133,11 @@ mod windows_picker {
             unsafe { interop.CreateForWindow::<GraphicsCaptureItem>(hwnd) }.map_err(|error| {
                 format!("failed to create capture item for HWND 0x{raw_hwnd:x}: {error}")
             })?;
-        let window = picked_window_from_item(&item)?;
+        let mut window = picked_window_from_item(&item)?;
+        if let Some(window_info) = window_info {
+            window.display_name = window_info.title;
+            window.privacy = window_info.privacy;
+        }
         Ok((item, window))
     }
 
@@ -205,16 +217,19 @@ mod windows_picker {
         let size = item
             .Size()
             .map_err(|error| format!("failed to read picked window size: {error}"))?;
-        let display_name = item
+        let raw_display_name = item
             .DisplayName()
             .map_err(|error| format!("failed to read picked window name: {error}"))?
             .to_string_lossy();
+        let privacy = classify_window_privacy("", &raw_display_name);
+        let display_name = redact_window_title(raw_display_name, &privacy);
 
         Ok(PickedWindow {
             version: PROTOCOL_VERSION,
             display_name,
             width: size.Width,
             height: size.Height,
+            privacy,
         })
     }
 
@@ -242,14 +257,19 @@ mod windows_picker {
             GetWindowThreadProcessId(hwnd, Some(&mut process_id));
         }
 
+        let process_name = process_name(process_id);
+        let privacy = classify_window_privacy(&process_name, &title);
+        let title = redact_window_title(title, &privacy);
+
         Some(WindowInfo {
             version: PROTOCOL_VERSION,
             hwnd: hwnd_to_u64(hwnd),
             process_id,
-            process_name: process_name(process_id),
+            process_name,
             title,
             width,
             height,
+            privacy,
         })
     }
 
