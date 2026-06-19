@@ -28,12 +28,13 @@ cardCommand
   .command("due")
   .description("Show due tokens for a user")
   .option("--user <id>", "User ID (default: whoami)")
+  .option("--domain <domain>", "Filter by knowledge domain")
   .option("--json", "Output as JSON")
   .option("--summary", "Show only counts per domain (no slugs or concepts)")
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db);
-      const dueCards = await getDueCards(db, userId);
+      const dueCards = await getDueCards(db, userId, undefined, opts.domain);
 
       if (opts.json) {
         console.log(JSON.stringify(dueCards, null, 2));

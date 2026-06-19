@@ -53,6 +53,35 @@ describe("integration: token → card → review flow", () => {
     }
   });
 
+  describe("getDueCards domain filter", () => {
+    it("returns only due cards in the requested domain", async () => {
+      const physics = await createToken(db, {
+        slug: "physics-token",
+        concept: "Newton's first law",
+        domain: "Physik",
+        bloom_level: 1,
+      });
+      const history = await createToken(db, {
+        slug: "history-token",
+        concept: "French Revolution",
+        domain: "history",
+        bloom_level: 1,
+      });
+
+      await ensureCard(db, physics.id, "klara");
+      await ensureCard(db, history.id, "klara");
+
+      const physicsDue = await getDueCards(db, "klara", undefined, "Physik");
+      expect(physicsDue.map((card) => card.slug)).toEqual(["physics-token"]);
+
+      const allDue = await getDueCards(db, "klara");
+      expect(allDue.map((card) => card.slug).sort()).toEqual([
+        "history-token",
+        "physics-token",
+      ]);
+    });
+  });
+
   // ── Prerequisite cycle detection ─────────────────────────────────────────
 
   describe("prerequisite cycle detection", () => {

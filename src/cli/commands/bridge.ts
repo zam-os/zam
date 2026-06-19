@@ -173,16 +173,18 @@ bridgeCommand
   .command("check-due")
   .description("Check due cards for a user (JSON)")
   .option("--user <id>", "User ID (default: whoami)")
+  .option("--domain <domain>", "Filter by knowledge domain")
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
-      const dueCards = await getDueCards(db, userId);
+      const dueCards = await getDueCards(db, userId, undefined, opts.domain);
       const domains = [
         ...new Set(dueCards.map((c) => c.domain).filter(Boolean)),
       ].sort();
 
       jsonOut({
         userId,
+        domain: opts.domain ?? null,
         dueCount: dueCards.length,
         domains,
         cards: dueCards.map((c) => ({
