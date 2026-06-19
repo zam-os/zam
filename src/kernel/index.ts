@@ -213,6 +213,33 @@ export type {
 } from "./observation/skill-discovery.js";
 export { discoverSkills } from "./observation/skill-discovery.js";
 export type {
+  UiActionType,
+  UiApplicationContext,
+  UiCandidateToken,
+  UiEvidenceRef,
+  UiEvidenceType,
+  UiObservationKind,
+  UiObservationReport,
+  UiObservedAction,
+} from "./observation/ui-observer.js";
+export {
+  isUiObservationReport,
+  parseUiObservationLog,
+  UI_OBSERVATION_PROTOCOL_VERSION,
+} from "./observation/ui-observer.js";
+export {
+  appendUiObservationReport,
+  ensureUiObserverDir,
+  getUiObservationPath,
+  getUiObserverDir,
+  readUiObservationLog,
+  uiObservationLogExists,
+} from "./observation/ui-observer-io.js";
+export {
+  buildUiSynthesisCandidates,
+  uiObservationTimeSpan,
+} from "./observation/ui-observer-synthesis.js";
+export type {
   ExecuteReviewActionInput,
   ReviewActionResult,
   ReviewActionType,

@@ -1,0 +1,226 @@
+# ZAM Observer
+
+`zam-observer` is the native, per-user sidecar for UI observation. The first
+increment provides the provider-neutral protocol and a deterministic JSONL
+replay engine. On Windows, it can also capture a user-selected or explicit
+window and write a single PNG snapshot for model handoff.
+
+## Commands
+
+```bash
+cargo run --manifest-path observer/Cargo.toml -- probe
+cargo run --manifest-path observer/Cargo.toml -- \
+  replay --input observer/fixtures/file-explorer-create-folder.jsonl
+cargo run --manifest-path observer/Cargo.toml -- \
+  validate --input observer/fixtures/file-explorer-create-folder.jsonl
+cargo run --manifest-path observer/Cargo.toml -- list-windows
+cargo run --manifest-path observer/Cargo.toml -- foreground-window
+cargo run --manifest-path observer/Cargo.toml -- \
+  watch-foreground --session session-1 --samples 20 --interval-ms 1000
+cargo run --manifest-path observer/Cargo.toml -- pick-window
+cargo run --manifest-path observer/Cargo.toml -- capture-once
+cargo run --manifest-path observer/Cargo.toml -- capture-window --hwnd 0x123456
+cargo run --manifest-path observer/Cargo.toml -- \
+  snapshot-window --hwnd 0x123456 --output .zam-observer/snapshot.png
+cargo run --manifest-path observer/Cargo.toml -- \
+  sample-window --hwnd 0x123456 --frames 5 --interval-ms 1000
+cargo run --manifest-path observer/Cargo.toml -- \
+  watch-window --session session-1 --hwnd 0x123456 --samples 60 --interval-ms 1000
+cargo run --manifest-path observer/Cargo.toml -- \
+  watch --session session-1 --hwnd 0x123456 --samples 60 --interval-ms 1000
+cargo run --manifest-path observer/Cargo.toml -- \
+  watch-uia --session session-1 --samples 60 --interval-ms 500
+cargo run --manifest-path observer/Cargo.toml -- \
+  watch-raw-input --session session-1 --duration-ms 10000
+```
+
+`replay` reads `UiSensorEvent` JSONL and writes `UiObservationReport` JSONL.
+Use `--input -` or `--output -` for stdin/stdout.
+
+The replay engine provides a stable fixture boundary for developing Windows
+sensor adapters and observer-model integrations independently.
+
+`probe` reports sidecar capabilities. On Windows, `windowContext`,
+`foregroundWatch`, `liveCapture`, `frameSampling`, `uiAutomation`, and `rawInput`
+are true once the native window, Graphics Capture, UI Automation, and Raw Input
+backends are available.
+
+`list-windows` is Windows-only. It returns visible top-level windows with HWND,
+process ID, title, bounds metadata, and a privacy classification. Windows that
+match the built-in privacy filter return a redacted title and
+`privacy.action = "privacy-pause"`. Use it to test capture without opening the
+native picker.
+
+`foreground-window` is Windows-only. It returns the current foreground window
+with the same metadata and privacy policy as `list-windows`. This is the
+metadata primitive for future `ForegroundChanged` sensor events.
+
+`watch-foreground` is Windows-only. It polls the foreground window for a bounded
+number of samples and writes `UiSensorEvent` JSONL only when the window context
+changes. Privacy-paused windows produce `privacy-paused` events instead of
+foreground activity.
+
+`pick-window` is Windows-only. It opens the native Windows capture picker and
+returns metadata for the selected window. It does not persist pixels.
+
+`capture-once` is Windows-only. It opens the same picker, starts a capture
+session for the selected window, waits for the first frame, and returns frame
+metadata without persisting pixels.
+
+`capture-window --hwnd <decimal|0xhex>` is Windows-only. It starts the same
+first-frame capture for an explicit top-level window handle, which keeps picker
+threading separate from capture diagnostics. Capture is refused when the target
+window is classified as a privacy pause.
+
+`snapshot-window --hwnd <decimal|0xhex> --output <path.png>` is Windows-only. It
+copies the first captured frame back to CPU memory and writes it as an RGBA PNG.
+Use this as the handoff format for local vision models. The same privacy gate is
+checked before any pixels are captured.
+
+`sample-window --hwnd <decimal|0xhex>` is Windows-only. It keeps one capture
+session open and returns a bounded sequence of frame metadata without writing
+pixels. Use `--frames` and `--interval-ms` to exercise the live frame source and
+in-memory frame ring. Each delivered frame is reduced to a small luminance
+signature and compared against the last retained keyframe, so `changed` reflects
+real visual change rather than just frame delivery: it is `false` both when
+Windows delivered no new frame during the interval and when the new frame is
+visually identical to the previous keyframe. `--change-threshold <0.0-1.0>`
+(default `0.02`) tunes how much mean luminance must move before a frame counts as
+a new keyframe — raise it to ignore more motion, lower it to retain subtler
+changes. This is the keyframe-retention primitive event triggers will build on.
+
+`watch-window --session <id> --hwnd <decimal|0xhex>` is Windows-only. It keeps a
+capture session open and streams sparse `UiSensorEvent` JSONL — the same shape as
+`watch-foreground` — instead of one-shot frame metadata: a `frame-changed` event
+(carrying an in-memory `data.ref` keyframe handle) whenever the window visually
+changes beyond `--change-threshold`, plus a `heartbeat` every `--heartbeat-every`
+unchanged samples (default 10; `0` disables) so a static window still reports
+liveness. `--samples` and `--interval-ms` bound the run. The stream feeds the
+deterministic replay engine directly — keyframe events accumulate as evidence and
+a heartbeat flushes them into a `progress` report, so
+
+```bash
+zam-observer watch-window --session s1 --hwnd 0x123456 --samples 4 --interval-ms 250 \
+  | zam-observer replay --input -
+```
+
+turns a live window into schema-valid `UiObservationReport`s without persisting
+pixels. The same privacy gate as `sample-window` is enforced before any capture.
+
+By default no pixels are written to disk. Opt in with `--keyframe-dir <dir>` to
+retain each keyframe as a PNG there; `--keyframe-retain <n>` (default 30) bounds
+the directory like a ring, deleting the oldest keyframe once it is full. When
+retention is on, the `frame-changed` `data.ref` resolves to the written file
+(`file:<path>`) instead of the in-memory `memory:keyframe-NNNN` handle, so a
+report's evidence can be opened directly.
+
+`watch --session <id> --hwnd <decimal|0xhex>` is the unified live observer
+stream. It runs the window keyframe, UI Automation, and Raw Input sensors in
+worker threads, assigns one monotonic sequence across all emitted events, and
+writes combined `UiSensorEvent` JSONL to stdout. Its UI Automation thread emits
+the full semantic event set — `element-focused`, `dialog-opened`/`dialog-closed`,
+`toggle-changed`, `selection-changed`, and `element-invoked` (button, menu, and
+link activation, captured via a UIA Invoke event subscription rather than
+polling). UIA password focus and the window privacy filter mute Raw Input before
+events are written. `--samples` bounds the number of emitted events; omit it for
+a continuous stream that stops when stdin closes or the parent process exits.
+
+Pass `--reports` to run the live sensor stream through the replay engine
+in-process and emit `UiObservationReport` JSONL instead of raw events. This keeps
+raw sensor events inside the observer process — only the abstracted reports reach
+stdout — and removes the need for a separate `| replay` stage:
+
+```bash
+zam-observer watch --session s1 --hwnd 0x123456 --reports --samples 60
+```
+
+`watch-uia --session <id>` is Windows-only. It polls the focused UI Automation
+element and emits an `element-focused` `UiSensorEvent` whenever focus moves,
+with a bounded property set — control type, automation id, accessible name — and
+the owning process. It never reads element values, so typed text is not
+captured. A focused password field is reported with `target.password = true` and
+its name redacted, which the replay engine turns into a privacy pause; focus
+inside a privacy-sensitive application (password manager, auth dialog) likewise
+has its accessible name redacted. Polling mirrors `watch-foreground`, so it pairs
+with the keyframe stream as a second, semantic sensor source:
+
+```bash
+zam-observer watch-uia --session s1 --samples 20 --interval-ms 500 \
+  | zam-observer replay --input -
+```
+
+`watch-raw-input --session <id>` is Windows-only. It registers a Raw Input sink
+for mouse and keyboard and emits sparse, privacy-safe `UiSensorEvent`s for
+`--duration-ms`: a `click` per mouse button, a `scroll` per wheel notch, a
+`shortcut` (with a label such as `Ctrl+S`) when a modifier is held, and an
+aggregated `typing-activity` carrying only a keystroke count for unmodified keys.
+Free text is never reconstructed — typed keys are counted, not identified — and
+the owning process is attached to each event. While a privacy-paused window
+(password manager, auth dialog) is in the foreground, input events are dropped:
+
+```bash
+zam-observer watch-raw-input --session s1 --duration-ms 10000 \
+  | zam-observer replay --input -
+```
+
+The matching bridge command is:
+
+```bash
+zam bridge observe-ui-snapshot \
+  --session session-1 \
+  --sequence 1 \
+  --image .zam-observer/snapshot.png \
+  --observed-from 2026-06-16T07:00:00.000Z \
+  --observed-to 2026-06-16T07:00:01.000Z \
+  --process-name WindowsTerminal.exe \
+  --window-title zam \
+  --write-log
+```
+
+It sends the PNG to the configured OpenAI-compatible vision model and returns a
+schema-validated `UiObservationReport`. Invalid model output is downgraded to an
+`uncertain` report instead of letting the model define the observer contract.
+
+Screen snapshots go to a **separate, default-off** vision endpoint — the base
+`llm.*` chat model is usually text-only and cannot read images, and this opt-in
+doubles as the consent gate for sending captured screen content to a provider:
+
+```bash
+zam settings set llm.vision.enabled true
+zam settings set llm.vision.model <multimodal-model>   # falls back to llm.model
+zam settings set llm.vision.url <endpoint>             # falls back to llm.url
+```
+
+Until `llm.vision.enabled` is `true`, `observe-ui-snapshot` refuses to run and
+no image leaves the machine. The desktop UI checks this with
+`zam bridge check-vision` before writing a snapshot.
+With `--write-log`, the same report is appended to the session JSONL. Read it
+back with:
+
+```bash
+zam bridge get-observations --session session-1 --after 0
+```
+
+The desktop dashboard includes a manual MVP panel for this path: refresh visible
+windows, choose one HWND, run `Snapshot & Analyze`, and inspect the persisted
+report preview and session report history. This is intentionally a one-shot
+diagnostic flow before the continuous observer loop is added.
+
+The desktop dropdown marks privacy-paused windows and keeps snapshot analysis
+disabled for them. The sidecar enforces the same decision again so direct CLI or
+Tauri calls cannot bypass the UI.
+
+Custom privacy policy:
+
+```json
+{
+  "allowProcesses": ["notepad.exe"],
+  "denyProcesses": ["teams.exe", "slack*"],
+  "denyTitleMarkers": ["payroll", "customer data"]
+}
+```
+
+Set `ZAM_OBSERVER_PRIVACY_POLICY` to the JSON file path before starting the
+sidecar. `allowProcesses` bypasses only custom policy rules; built-in pauses for
+password managers, authentication/private-browsing, and financial contexts still
+win.

@@ -20,9 +20,11 @@ import type {
 } from "../../kernel/index.js";
 import {
   analyzeObservation,
+  appendUiObservationReport,
   buildReviewQueue,
   createToken,
   discoverSkills,
+  endSession,
   ensureCard,
   executeReviewAction,
   generatePrompt,
@@ -39,9 +41,13 @@ import {
   openDatabase,
   pairCommands,
   readMonitorLog,
+  readUiObservationLog,
   resolveReviewContext,
+  startSession,
+  uiObservationLogExists,
 } from "../../kernel/index.js";
 import {
+  checkVisionReadiness,
   ensureHighQualityQuestion,
   ensureLlmReadyHeadless,
   evaluateAnswerViaLLM,
@@ -50,6 +56,7 @@ import {
   isLlmOnline,
   translateQuestionViaLLM,
 } from "../llm/client.js";
+import { observeUiSnapshotViaLLM } from "../llm/vision.js";
 import { ensureDefaultUser, resolveUser } from "./resolve-user.js";
 import { withDb as sharedWithDb } from "./shared/db.js";
 
@@ -65,6 +72,14 @@ function jsonError(message: string): never {
   }
   console.log(JSON.stringify({ error: message }, null, 2));
   process.exit(1);
+}
+
+function parseNonNegativeIntegerOption(name: string, value: string): number {
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed < 0) {
+    jsonError(`${name} must be a non-negative integer`);
+  }
+  return parsed;
 }
 
 async function withDb(
@@ -425,6 +440,60 @@ bridgeCommand
     });
   });
 
+// ── zam bridge start-session / end-session ────────────────────────────────
+
+bridgeCommand
+  .command("start-session")
+  .description("Start a ZAM learning session (JSON)")
+  .requiredOption("--task <task>", "Session task description")
+  .option(
+    "--context <context>",
+    "Execution context: shell | ui | reallife",
+    "shell",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    const context = opts.context as "shell" | "ui" | "reallife";
+    if (!["shell", "ui", "reallife"].includes(context)) {
+      jsonError("context must be shell, ui, or reallife");
+    }
+
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const session = await startSession(db, {
+        user_id: userId,
+        task: opts.task,
+        execution_context: context,
+      });
+      jsonOut({
+        id: session.id,
+        userId: session.user_id,
+        task: session.task,
+        executionContext: session.execution_context,
+        startedAt: session.started_at,
+        completedAt: session.completed_at,
+      });
+    });
+  });
+
+bridgeCommand
+  .command("end-session")
+  .description("Complete an active ZAM learning session (JSON)")
+  .requiredOption("--session <id>", "Session ID")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const session = await endSession(db, opts.session);
+      jsonOut({
+        id: session.id,
+        userId: session.user_id,
+        task: session.task,
+        executionContext: session.execution_context,
+        startedAt: session.started_at,
+        completedAt: session.completed_at,
+      });
+    });
+  });
+
 // ── zam bridge get-monitor ────────────────────────────────────────────────
 
 bridgeCommand
@@ -696,6 +765,142 @@ bridgeCommand
     }
   });
 
+// ── zam bridge observe-ui-watch / get-observations ─────────────────────────
+
+bridgeCommand
+  .command("observe-ui-watch")
+  .description(
+    "Poll live UI observer watch reports for a ZAM learning session (JSON)",
+  )
+  .requiredOption(
+    "--session <id>",
+    "ZAM session ID (also the observer log key)",
+  )
+  .option("--after <n>", "Only return observations after this sequence")
+  .option("--limit <n>", "Maximum observations to return", "100")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const session = (await db
+        .prepare("SELECT id, execution_context FROM sessions WHERE id = ?")
+        .get(opts.session)) as
+        | { id: string; execution_context: string }
+        | undefined;
+      if (!session) {
+        jsonError(`Session not found: ${opts.session}`);
+      }
+
+      const after =
+        opts.after === undefined
+          ? undefined
+          : parseNonNegativeIntegerOption("after", opts.after);
+      const limit = parseNonNegativeIntegerOption("limit", opts.limit);
+      const observations = readUiObservationLog(opts.session)
+        .filter((report) => after === undefined || report.sequence > after)
+        .slice(0, limit);
+      const last = observations[observations.length - 1];
+
+      jsonOut({
+        sessionId: opts.session,
+        executionContext: session.execution_context,
+        observationSource: "ui",
+        logExists: uiObservationLogExists(opts.session),
+        after: after ?? null,
+        count: observations.length,
+        nextSequence: last?.sequence ?? after ?? null,
+        observations,
+      });
+    });
+  });
+
+bridgeCommand
+  .command("get-observations")
+  .description("Read UI observer reports for a session (JSON)")
+  .requiredOption("--session <id>", "Observer session ID")
+  .option("--after <n>", "Only return observations after this sequence")
+  .option("--limit <n>", "Maximum observations to return", "100")
+  .action((opts) => {
+    try {
+      const after =
+        opts.after === undefined
+          ? undefined
+          : parseNonNegativeIntegerOption("after", opts.after);
+      const limit = parseNonNegativeIntegerOption("limit", opts.limit);
+      const observations = readUiObservationLog(opts.session)
+        .filter((report) => after === undefined || report.sequence > after)
+        .slice(0, limit);
+      const last = observations[observations.length - 1];
+
+      jsonOut({
+        sessionId: opts.session,
+        after: after ?? null,
+        count: observations.length,
+        nextSequence: last?.sequence ?? after ?? null,
+        observations,
+      });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
+bridgeCommand
+  .command("observe-ui-snapshot")
+  .description(
+    "Analyze a captured UI snapshot with the configured vision LLM (JSON)",
+  )
+  .requiredOption("--session <id>", "Observer session ID")
+  .requiredOption("--sequence <n>", "Monotonic observation sequence number")
+  .requiredOption("--image <path>", "PNG snapshot path")
+  .requiredOption("--observed-from <iso>", "Observation window start time")
+  .requiredOption("--observed-to <iso>", "Observation window end time")
+  .requiredOption("--process-name <name>", "Observed application process name")
+  .option("--process-id <n>", "Observed application process ID")
+  .option("--window-title <title>", "Observed window title")
+  .option("--evidence-ref <ref>", "Evidence reference to put in the report")
+  .option("--model <model>", "Override configured LLM model for this request")
+  .option("--max-tokens <n>", "Model response token budget")
+  .option("--timeout <ms>", "Hard request timeout in milliseconds")
+  .option("--redacted", "Mark the snapshot evidence as redacted")
+  .option("--write-log", "Append the generated report to the session JSONL")
+  .action(async (opts) => {
+    const sequence = parseNonNegativeIntegerOption("sequence", opts.sequence);
+    const processId =
+      opts.processId === undefined
+        ? undefined
+        : parseNonNegativeIntegerOption("process-id", opts.processId);
+    const maxTokens =
+      opts.maxTokens === undefined
+        ? undefined
+        : parseNonNegativeIntegerOption("max-tokens", opts.maxTokens);
+    const hardTimeoutMs =
+      opts.timeout === undefined
+        ? undefined
+        : parseNonNegativeIntegerOption("timeout", opts.timeout);
+
+    await withDb(async (db) => {
+      const report = await observeUiSnapshotViaLLM(db, {
+        sessionId: opts.session,
+        sequence,
+        observedFrom: opts.observedFrom,
+        observedTo: opts.observedTo,
+        imagePath: opts.image,
+        application: {
+          processName: opts.processName,
+          processId,
+          windowTitle: opts.windowTitle,
+        },
+        evidenceRef: opts.evidenceRef,
+        redacted: opts.redacted === true,
+        model: opts.model,
+        maxTokens,
+        hardTimeoutMs,
+      });
+      if (opts.writeLog === true) {
+        appendUiObservationReport(report);
+      }
+      jsonOut(report);
+    });
+  });
+
 // ── zam bridge check-llm ──────────────────────────────────────────────────
 
 bridgeCommand
@@ -727,6 +932,19 @@ bridgeCommand
         modelAvailable,
         availableModels,
       });
+    });
+  });
+
+// ── zam bridge check-vision ────────────────────────────────────────────────
+
+bridgeCommand
+  .command("check-vision")
+  .description(
+    "Check if UI observer vision analysis is enabled and ready (JSON)",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      jsonOut(await checkVisionReadiness(db));
     });
   });
 

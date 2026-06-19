@@ -55,6 +55,68 @@
         <div class="action-row" style="margin-top: 12px;">
           <button id="btn-open-graph" class="btn secondary-btn btn-large">Wissensnetz / Knowledge Map (3D)</button>
         </div>
+
+        <div class="observer-panel frosted">
+          <div class="observer-panel-header">
+            <div>
+              <h2 id="lbl-observer-title">UI Observer</h2>
+              <p id="observer-status" class="observer-status">No window selected.</p>
+            </div>
+            <button id="btn-observer-refresh" class="btn secondary-btn btn-sm" type="button">
+              Refresh Windows
+            </button>
+          </div>
+
+          <div class="observer-controls">
+            <select id="observer-window-select" class="observer-window-select">
+              <option value="" id="observer-window-initial">Load windows to start observation</option>
+            </select>
+            <button id="btn-observer-analyze" class="btn primary-btn btn-sm" type="button" disabled>
+              Snapshot & Analyze
+            </button>
+            <button id="btn-observer-cancel" class="btn danger-btn btn-sm hidden" type="button">
+              Cancel
+            </button>
+          </div>
+
+          <div class="observer-loop-controls">
+            <button id="btn-observer-loop-start" class="btn secondary-btn btn-sm" type="button" disabled>
+              Start Loop
+            </button>
+            <button id="btn-observer-loop-stop" class="btn danger-btn btn-sm hidden" type="button">
+              Stop Loop
+            </button>
+            <span id="observer-loop-note" class="observer-loop-note">
+              Manual snapshots only.
+            </span>
+          </div>
+
+          <div class="observer-watch-controls">
+            <button id="btn-observer-watch-start" class="btn secondary-btn btn-sm" type="button" disabled>
+              Start Watch
+            </button>
+            <button id="btn-observer-watch-stop" class="btn danger-btn btn-sm hidden" type="button">
+              Stop Watch
+            </button>
+            <span id="observer-watch-note" class="observer-loop-note">
+              Continuous watch is off.
+            </span>
+          </div>
+
+          <pre id="observer-report-preview" class="observer-report-preview hidden"></pre>
+
+          <div class="observer-history">
+            <div class="observer-history-header">
+              <h3 id="lbl-observer-history-title">Observation Reports</h3>
+              <button id="btn-observer-reports-refresh" class="btn secondary-btn btn-sm" type="button">
+                Refresh Reports
+              </button>
+            </div>
+            <div id="observer-history-list" class="observer-history-list">
+              <p class="observer-history-empty">No observation reports yet.</p>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- VIEW 2: STUDY SESSION CARD -->

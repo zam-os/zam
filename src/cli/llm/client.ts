@@ -49,6 +49,27 @@ export async function getLlmConfig(db: Database): Promise<LlmConfig> {
   };
 }
 
+/**
+ * Vision/UI-observer model settings, kept separate from the text-chat config.
+ *
+ * The default text model (e.g. a local German chat model) cannot interpret
+ * images, so screen snapshots must target a deliberately chosen multimodal
+ * endpoint. `llm.vision.enabled` is therefore an explicit, default-off opt-in:
+ * it doubles as the consent gate for sending captured screen content to a
+ * provider. `url`/`model`/`apiKey` fall back to the base `llm.*` config so a
+ * single multimodal endpoint only needs `llm.vision.enabled=true`.
+ */
+export async function getVisionConfig(db: Database): Promise<LlmConfig> {
+  const base = await getLlmConfig(db);
+  return {
+    enabled: (await getSetting(db, "llm.vision.enabled")) === "true",
+    url: (await getSetting(db, "llm.vision.url")) || base.url,
+    model: (await getSetting(db, "llm.vision.model")) || base.model,
+    apiKey: (await getSetting(db, "llm.vision.api_key")) || base.apiKey,
+    locale: base.locale,
+  };
+}
+
 const LANGUAGE_NAMES: Record<SupportedLocale, string> = {
   en: "English",
   de: "German",
@@ -318,6 +339,67 @@ export async function getAvailableModels(
   } catch {
     return [];
   }
+}
+
+export interface VisionReadyResult {
+  enabled: boolean;
+  online: boolean;
+  url: string;
+  model: string;
+  modelAvailable: boolean;
+  availableModels: string[];
+  usable: boolean;
+  /** True when llm.vision.model is explicitly configured (not a fallback). */
+  visionModelExplicit: boolean;
+  /** Human-readable warning when usable but likely misconfigured. */
+  warning?: string;
+}
+
+/** Non-starting readiness check for the opt-in UI observer vision endpoint. */
+export async function checkVisionReadiness(
+  db: Database,
+): Promise<VisionReadyResult> {
+  const { enabled, url, model, apiKey } = await getVisionConfig(db);
+  const visionModelSetting = await getSetting(db, "llm.vision.model");
+  const visionModelExplicit = !!visionModelSetting;
+
+  let online = false;
+  let availableModels: string[] = [];
+  let modelAvailable = false;
+
+  if (enabled) {
+    online = await isLlmOnline(url);
+    if (online) {
+      availableModels = await getAvailableModels(url, apiKey);
+      modelAvailable =
+        availableModels.length === 0 ||
+        availableModels.some(
+          (candidate) => candidate.toLowerCase() === model.toLowerCase(),
+        );
+    }
+  }
+
+  // Warn when vision falls back to the base text model — it is almost
+  // certainly a text-only model that cannot interpret images.
+  let warning: string | undefined;
+  if (enabled && online && modelAvailable && !visionModelExplicit) {
+    warning =
+      `No explicit vision model configured (llm.vision.model). ` +
+      `Falling back to base model "${model}", which may not support image input. ` +
+      `Set a multimodal model: zam settings set llm.vision.model <model>`;
+  }
+
+  return {
+    enabled,
+    online,
+    url,
+    model,
+    modelAvailable,
+    availableModels,
+    usable: enabled && online && modelAvailable,
+    visionModelExplicit,
+    warning,
+  };
 }
 
 /** Whether the local LLM can actually be used this session, and if not, why. */

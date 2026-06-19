@@ -27,7 +27,25 @@ Confirmed ratings update the card, review log, session step, prerequisite
 blocking state, and synthesis audit in one transaction. Repeating synthesis
 for the same session and token does not apply the rating twice.
 
-## Level 2 — System-Level Tracing
+## Level 2 — Screen and UI Observation
+
+The Windows 11 UI observer (Phase 0) combines native UI events, input metadata,
+and sparse visual evidence in a separate observer sidecar:
+
+- [Windows 11 UI observer proposal](../windows-ui-observer-proposal.md)
+- [Observer next steps](../observer-next-steps.md)
+
+Start a UI learning session with `zam bridge start-session --context ui`,
+run watch from the desktop observer panel or `zam-observer watch --reports`,
+and poll reports with `zam bridge observe-ui-watch --session <id>`. End with
+`zam bridge end-session`. UI session synthesis uses the same review flow as
+shell sessions when `candidateTokens` are present (vision snapshots) or once
+deterministic token matching lands in Phase 1.
+
+The observer reports structured evidence to the session agent. It does not
+directly update cards or FSRS state.
+
+## Supplemental System-Level Tracing
 
 Depending on the operating system, native tracing facilities could track broader system changes beyond the terminal:
 

@@ -25,6 +25,11 @@ import type {
 } from "./analyzer.js";
 import { analyzeObservation, pairCommands } from "./analyzer.js";
 import { readMonitorLog } from "./monitor-io.js";
+import { readUiObservationLog } from "./ui-observer-io.js";
+import {
+  buildUiSynthesisCandidates,
+  uiObservationTimeSpan,
+} from "./ui-observer-synthesis.js";
 
 export type SynthesisConfidence = "medium" | "high";
 
@@ -204,15 +209,49 @@ export async function prepareSessionSynthesis(
     tokens.set(pattern.slug, token);
   }
 
-  const commands =
-    input.commands ?? pairCommands(readMonitorLog(input.sessionId));
-  const analysis = analyzeObservation(commands, validPatterns);
   const applied = new Set(
     (await getSessionSynthesisRecords(db, input.sessionId)).map(
       (record) => record.token_id,
     ),
   );
-  const minRank = confidenceRank(input.minConfidence ?? "medium");
+  const minConfidence = input.minConfidence ?? "medium";
+
+  if (session.execution_context === "ui") {
+    const reports = readUiObservationLog(input.sessionId);
+    for (const report of reports) {
+      for (const candidate of report.candidateTokens) {
+        if (tokens.has(candidate.slug)) continue;
+        const token = await getTokenBySlug(db, candidate.slug);
+        if (token && !token.deprecated_at) {
+          tokens.set(candidate.slug, token);
+        }
+      }
+    }
+
+    const { candidates, skippedLowConfidence } = buildUiSynthesisCandidates(
+      reports,
+      tokens,
+      applied,
+      minConfidence,
+    );
+
+    return {
+      sessionId: session.id,
+      userId: session.user_id,
+      patternCount: validPatterns.length,
+      commandCount: reports.length,
+      alreadyApplied: applied.size,
+      skippedLowConfidence,
+      candidates,
+      unmatchedCommands: [],
+      timeSpan: uiObservationTimeSpan(reports),
+    };
+  }
+
+  const commands =
+    input.commands ?? pairCommands(readMonitorLog(input.sessionId));
+  const analysis = analyzeObservation(commands, validPatterns);
+  const minRank = confidenceRank(minConfidence);
   let skippedLowConfidence = 0;
   const candidates: SessionSynthesisCandidate[] = [];
 
