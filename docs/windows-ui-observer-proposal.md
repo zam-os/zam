@@ -484,6 +484,8 @@ Implemented foundation:
   selected-window metadata without starting capture;
 - Windows-only `foreground-window` metadata command using the same privacy
   policy as window listing and capture;
+- bounded `watch-foreground` JSONL event stream for foreground-window changes
+  and privacy pause/resume transitions;
 - first-frame capture and PNG snapshot commands for a selected or explicit
   top-level window;
 - bounded `sample-window` frame metadata collection from a single live capture

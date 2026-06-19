@@ -1,13 +1,15 @@
+use std::collections::BTreeMap;
 use std::env;
 use std::fs::File;
 use std::io::{self, BufRead, BufReader, BufWriter, Write};
 use std::path::{Path, PathBuf};
-use std::time::Duration;
+use std::thread;
+use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
 use zam_observer::{
     capture_once, capture_window, foreground_window, list_windows, pick_window, sample_window,
-    snapshot_window, ObserverCapabilities, ObserverProbe, ReplayEngine, SensorEvent,
-    UiObservationReport, PROTOCOL_VERSION,
+    snapshot_window, ApplicationContext, ObserverCapabilities, ObserverProbe, ReplayEngine,
+    SensorEvent, SensorKind, SensorSource, UiObservationReport, PROTOCOL_VERSION,
 };
 
 fn main() {
@@ -25,6 +27,10 @@ fn run() -> Result<(), String> {
         "probe" => print_probe(),
         "list-windows" => list_windows_command(),
         "foreground-window" => foreground_window_command(),
+        "watch-foreground" => {
+            let options = WatchForegroundOptions::parse(args.collect())?;
+            watch_foreground_command(options)
+        }
         "pick-window" => pick_window_command(),
         "capture-once" => capture_once_command(),
         "capture-window" => {
@@ -91,6 +97,70 @@ fn foreground_window_command() -> Result<(), String> {
         }
     }
     Ok(())
+}
+
+fn watch_foreground_command(options: WatchForegroundOptions) -> Result<(), String> {
+    let mut writer = BufWriter::new(io::stdout());
+    let mut last_fingerprint: Option<ForegroundFingerprint> = None;
+    let mut privacy_paused = false;
+    let mut sequence = 0u64;
+
+    for sample_index in 0..options.samples {
+        if let Some(window) = foreground_window()? {
+            let fingerprint = ForegroundFingerprint::from_window(&window);
+            if last_fingerprint.as_ref() != Some(&fingerprint) {
+                if window.privacy.is_paused() {
+                    if !privacy_paused {
+                        sequence += 1;
+                        write_event(
+                            &mut writer,
+                            foreground_event(
+                                &options.session_id,
+                                sequence,
+                                SensorSource::Privacy,
+                                SensorKind::PrivacyPaused,
+                                &window,
+                            ),
+                        )?;
+                        privacy_paused = true;
+                    }
+                } else {
+                    if privacy_paused {
+                        sequence += 1;
+                        write_event(
+                            &mut writer,
+                            foreground_event(
+                                &options.session_id,
+                                sequence,
+                                SensorSource::Privacy,
+                                SensorKind::PrivacyResumed,
+                                &window,
+                            ),
+                        )?;
+                        privacy_paused = false;
+                    }
+                    sequence += 1;
+                    write_event(
+                        &mut writer,
+                        foreground_event(
+                            &options.session_id,
+                            sequence,
+                            SensorSource::Window,
+                            SensorKind::ForegroundChanged,
+                            &window,
+                        ),
+                    )?;
+                }
+                last_fingerprint = Some(fingerprint);
+            }
+        }
+
+        if sample_index + 1 < options.samples {
+            thread::sleep(Duration::from_millis(options.interval_ms));
+        }
+    }
+
+    writer.flush().map_err(|error| error.to_string())
 }
 
 fn pick_window_command() -> Result<(), String> {
@@ -195,6 +265,54 @@ fn write_report(writer: &mut dyn Write, report: &UiObservationReport) -> Result<
     writeln!(writer).map_err(|error| error.to_string())
 }
 
+fn write_event(writer: &mut dyn Write, event: SensorEvent) -> Result<(), String> {
+    serde_json::to_writer(&mut *writer, &event).map_err(|error| error.to_string())?;
+    writeln!(writer).map_err(|error| error.to_string())
+}
+
+fn foreground_event(
+    session_id: &str,
+    sequence: u64,
+    source: SensorSource,
+    kind: SensorKind,
+    window: &zam_observer::WindowInfo,
+) -> SensorEvent {
+    let mut data = BTreeMap::new();
+    data.insert("hwnd".to_string(), serde_json::json!(window.hwnd));
+    data.insert("width".to_string(), serde_json::json!(window.width));
+    data.insert("height".to_string(), serde_json::json!(window.height));
+    if !window.privacy.reasons.is_empty() {
+        data.insert(
+            "privacyReasons".to_string(),
+            serde_json::json!(window.privacy.reasons),
+        );
+    }
+
+    SensorEvent {
+        version: PROTOCOL_VERSION,
+        session_id: session_id.to_string(),
+        sequence,
+        observed_at: observed_at_now(),
+        source,
+        kind,
+        application: Some(ApplicationContext {
+            process_name: window.process_name.clone(),
+            process_id: Some(window.process_id),
+            window_title: Some(window.title.clone()),
+        }),
+        target: None,
+        data,
+        redacted: window.privacy.title_redacted,
+    }
+}
+
+fn observed_at_now() -> String {
+    let elapsed = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap_or_default();
+    format!("unix-ms:{}", elapsed.as_millis())
+}
+
 fn print_usage() {
     println!(
         "ZAM UI observer sidecar
@@ -203,6 +321,7 @@ Usage:
   zam-observer probe
   zam-observer list-windows
   zam-observer foreground-window
+  zam-observer watch-foreground --session <id> [--samples <n>] [--interval-ms <n>]
   zam-observer pick-window
   zam-observer capture-once
   zam-observer capture-window --hwnd <decimal|0xhex>
@@ -285,6 +404,99 @@ struct SampleOptions {
     hwnd: u64,
     frames: usize,
     interval_ms: u64,
+}
+
+#[derive(Debug)]
+struct WatchForegroundOptions {
+    session_id: String,
+    samples: usize,
+    interval_ms: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+struct ForegroundFingerprint {
+    hwnd: u64,
+    process_name: String,
+    title: String,
+    privacy_paused: bool,
+}
+
+impl ForegroundFingerprint {
+    fn from_window(window: &zam_observer::WindowInfo) -> Self {
+        Self {
+            hwnd: window.hwnd,
+            process_name: window.process_name.clone(),
+            title: window.title.clone(),
+            privacy_paused: window.privacy.is_paused(),
+        }
+    }
+}
+
+impl WatchForegroundOptions {
+    const DEFAULT_SAMPLES: usize = 20;
+    const MAX_SAMPLES: usize = 10_000;
+    const DEFAULT_INTERVAL_MS: u64 = 1000;
+    const MIN_INTERVAL_MS: u64 = 50;
+    const MAX_INTERVAL_MS: u64 = 60_000;
+
+    fn parse(args: Vec<String>) -> Result<Self, String> {
+        let mut session_id = None;
+        let mut samples = Self::DEFAULT_SAMPLES;
+        let mut interval_ms = Self::DEFAULT_INTERVAL_MS;
+        let mut index = 0;
+
+        while index < args.len() {
+            match args[index].as_str() {
+                "--session" => {
+                    index += 1;
+                    session_id = args.get(index).cloned();
+                }
+                "--samples" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--samples requires a value".to_string())?;
+                    samples = raw
+                        .parse::<usize>()
+                        .map_err(|error| format!("invalid --samples '{raw}': {error}"))?;
+                }
+                "--interval-ms" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--interval-ms requires a value".to_string())?;
+                    interval_ms = raw
+                        .parse::<u64>()
+                        .map_err(|error| format!("invalid --interval-ms '{raw}': {error}"))?;
+                }
+                unknown => return Err(format!("unknown option '{unknown}'")),
+            }
+            index += 1;
+        }
+
+        let session_id = session_id
+            .filter(|value| !value.trim().is_empty())
+            .ok_or_else(|| "--session is required".to_string())?;
+        if samples == 0 || samples > Self::MAX_SAMPLES {
+            return Err(format!(
+                "--samples must be between 1 and {}",
+                Self::MAX_SAMPLES
+            ));
+        }
+        if !(Self::MIN_INTERVAL_MS..=Self::MAX_INTERVAL_MS).contains(&interval_ms) {
+            return Err(format!(
+                "--interval-ms must be between {} and {}",
+                Self::MIN_INTERVAL_MS,
+                Self::MAX_INTERVAL_MS
+            ));
+        }
+
+        Ok(Self {
+            session_id,
+            samples,
+            interval_ms,
+        })
+    }
 }
 
 impl SampleOptions {
@@ -478,5 +690,42 @@ mod tests {
         .unwrap_err();
 
         assert!(error.contains("--interval-ms must be between"));
+    }
+
+    #[test]
+    fn parses_watch_foreground_defaults() {
+        let options =
+            WatchForegroundOptions::parse(vec!["--session".to_string(), "session-1".to_string()])
+                .expect("watch foreground options");
+
+        assert_eq!(options.session_id, "session-1");
+        assert_eq!(options.samples, WatchForegroundOptions::DEFAULT_SAMPLES);
+        assert_eq!(
+            options.interval_ms,
+            WatchForegroundOptions::DEFAULT_INTERVAL_MS
+        );
+    }
+
+    #[test]
+    fn parses_watch_foreground_overrides() {
+        let options = WatchForegroundOptions::parse(vec![
+            "--session".to_string(),
+            "session-1".to_string(),
+            "--samples".to_string(),
+            "3".to_string(),
+            "--interval-ms".to_string(),
+            "250".to_string(),
+        ])
+        .expect("watch foreground options");
+
+        assert_eq!(options.samples, 3);
+        assert_eq!(options.interval_ms, 250);
+    }
+
+    #[test]
+    fn rejects_watch_foreground_without_session() {
+        let error = WatchForegroundOptions::parse(vec![]).unwrap_err();
+
+        assert!(error.contains("--session is required"));
     }
 }

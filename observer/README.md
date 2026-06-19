@@ -15,6 +15,8 @@ cargo run --manifest-path observer/Cargo.toml -- \
   validate --input observer/fixtures/file-explorer-create-folder.jsonl
 cargo run --manifest-path observer/Cargo.toml -- list-windows
 cargo run --manifest-path observer/Cargo.toml -- foreground-window
+cargo run --manifest-path observer/Cargo.toml -- \
+  watch-foreground --session session-1 --samples 20 --interval-ms 1000
 cargo run --manifest-path observer/Cargo.toml -- pick-window
 cargo run --manifest-path observer/Cargo.toml -- capture-once
 cargo run --manifest-path observer/Cargo.toml -- capture-window --hwnd 0x123456
@@ -42,6 +44,11 @@ native picker.
 `foreground-window` is Windows-only. It returns the current foreground window
 with the same metadata and privacy policy as `list-windows`. This is the
 metadata primitive for future `ForegroundChanged` sensor events.
+
+`watch-foreground` is Windows-only. It polls the foreground window for a bounded
+number of samples and writes `UiSensorEvent` JSONL only when the window context
+changes. Privacy-paused windows produce `privacy-paused` events instead of
+foreground activity.
 
 `pick-window` is Windows-only. It opens the native Windows capture picker and
 returns metadata for the selected window. It does not persist pixels.
