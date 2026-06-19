@@ -306,12 +306,24 @@ mod windows_capture {
         let _ = frame.Close();
         emit_capture_event(&mut stream, &mut archive, Some(first), on_event)?;
 
+        let mut current_size = item.Size().map_err(|error| format!("failed to read capture item size: {error}"))?;
+
         for _ in 1..samples {
             if !interval.is_zero() {
                 thread::sleep(interval);
             }
             let capture = match try_wait_for_frame(&pool, Duration::from_millis(250))? {
                 Some(frame) => {
+                    let content_size = frame.ContentSize().map_err(|error| format!("failed to read frame size: {error}"))?;
+                    if content_size.Width != current_size.Width || content_size.Height != current_size.Height {
+                        let _ = pool.Recreate(
+                            &devices.winrt,
+                            DirectXPixelFormat::B8G8R8A8UIntNormalized,
+                            1,
+                            content_size,
+                        );
+                        current_size = content_size;
+                    }
                     let capture = read_frame_capture(&devices.native, &frame, archiving)?;
                     let _ = frame.Close();
                     Some(capture)
@@ -379,6 +391,8 @@ mod windows_capture {
         let _ = frame.Close();
         emit_capture_event_continuous(&mut stream, &mut archive, Some(first), on_event)?;
 
+        let mut current_size = item.Size().map_err(|error| format!("failed to read capture item size: {error}"))?;
+
         while !should_stop.load(std::sync::atomic::Ordering::Relaxed) {
             if !interval.is_zero() {
                 thread::sleep(interval);
@@ -388,6 +402,16 @@ mod windows_capture {
             }
             let capture = match try_wait_for_frame(&pool, Duration::from_millis(250))? {
                 Some(frame) => {
+                    let content_size = frame.ContentSize().map_err(|error| format!("failed to read frame size: {error}"))?;
+                    if content_size.Width != current_size.Width || content_size.Height != current_size.Height {
+                        let _ = pool.Recreate(
+                            &devices.winrt,
+                            DirectXPixelFormat::B8G8R8A8UIntNormalized,
+                            1,
+                            content_size,
+                        );
+                        current_size = content_size;
+                    }
                     let capture = read_frame_capture(&devices.native, &frame, archiving)?;
                     let _ = frame.Close();
                     Some(capture)
@@ -546,11 +570,23 @@ mod windows_capture {
         frames.push(first_sample);
         let _ = frame.Close();
 
+        let mut current_size = item.Size().map_err(|error| format!("failed to read capture item size: {error}"))?;
+
         while frames.len() < frame_count {
             if !interval.is_zero() {
                 thread::sleep(interval);
             }
             if let Some(frame) = try_wait_for_frame(&pool, Duration::from_millis(250))? {
+                let content_size = frame.ContentSize().map_err(|error| format!("failed to read frame size: {error}"))?;
+                if content_size.Width != current_size.Width || content_size.Height != current_size.Height {
+                    let _ = pool.Recreate(
+                        &devices.winrt,
+                        DirectXPixelFormat::B8G8R8A8UIntNormalized,
+                        1,
+                        content_size,
+                    );
+                    current_size = content_size;
+                }
                 let signature = read_frame_signature(&devices.native, &frame)?;
                 // Compare against the last retained keyframe so slow drift that
                 // crosses the threshold is still captured exactly once.

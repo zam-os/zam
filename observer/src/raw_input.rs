@@ -311,6 +311,33 @@ mod windows_raw_input {
     const RI_MOUSE_MIDDLE_DOWN: u16 = 0x0010;
     const RI_MOUSE_WHEEL: u16 = 0x0400;
 
+    struct ForegroundCache {
+        last_window: Option<crate::picker::WindowInfo>,
+        last_checked: Option<Instant>,
+    }
+
+    impl ForegroundCache {
+        fn new() -> Self {
+            Self {
+                last_window: None,
+                last_checked: None,
+            }
+        }
+
+        fn get(&mut self) -> Option<crate::picker::WindowInfo> {
+            let now = Instant::now();
+            if let Some(last_time) = self.last_checked {
+                if now.duration_since(last_time) < Duration::from_millis(250) {
+                    return self.last_window.clone();
+                }
+            }
+
+            self.last_window = foreground_window().ok().flatten();
+            self.last_checked = Some(now);
+            self.last_window.clone()
+        }
+    }
+
     pub fn watch_raw_input(
         duration: Duration,
         session_id: &str,
@@ -321,6 +348,7 @@ mod windows_raw_input {
         register_devices(hwnd)?;
 
         let mut aggregator = RawInputAggregator::new(session_id, flush_threshold);
+        let mut cache = ForegroundCache::new();
         let started = Instant::now();
 
         while started.elapsed() < duration {
@@ -330,7 +358,7 @@ mod windows_raw_input {
                     for input in read_raw_inputs(message.lParam) {
                         let observed_at = observed_at_now();
                         for event in aggregator.observe(input, &observed_at) {
-                            emit(event, on_event)?;
+                            emit(event, &mut cache, on_event)?;
                         }
                     }
                 } else {
@@ -342,7 +370,7 @@ mod windows_raw_input {
         }
 
         for event in aggregator.finish(&observed_at_now()) {
-            emit(event, on_event)?;
+            emit(event, &mut cache, on_event)?;
         }
         Ok(())
     }
@@ -358,6 +386,7 @@ mod windows_raw_input {
         register_devices(hwnd)?;
 
         let mut aggregator = RawInputAggregator::new(session_id, flush_threshold);
+        let mut cache = ForegroundCache::new();
 
         while !should_stop.load(std::sync::atomic::Ordering::Relaxed) {
             let mut message = MSG::default();
@@ -366,7 +395,7 @@ mod windows_raw_input {
                     for input in read_raw_inputs(message.lParam) {
                         let observed_at = observed_at_now();
                         for event in aggregator.observe(input, &observed_at) {
-                            emit_continuous(event, &pause_input, on_event)?;
+                            emit_continuous(event, &pause_input, &mut cache, on_event)?;
                         }
                     }
                 } else {
@@ -378,7 +407,7 @@ mod windows_raw_input {
         }
 
         for event in aggregator.finish(&observed_at_now()) {
-            emit_continuous(event, &pause_input, on_event)?;
+            emit_continuous(event, &pause_input, &mut cache, on_event)?;
         }
         Ok(())
     }
@@ -387,9 +416,10 @@ mod windows_raw_input {
     /// privacy-paused window (password manager, auth dialog) is in front.
     fn emit(
         mut event: SensorEvent,
+        cache: &mut ForegroundCache,
         on_event: &mut dyn FnMut(&SensorEvent) -> Result<(), String>,
     ) -> Result<(), String> {
-        if let Ok(Some(window)) = foreground_window() {
+        if let Some(window) = cache.get() {
             if window.privacy.is_paused() {
                 return Ok(());
             }
@@ -405,13 +435,14 @@ mod windows_raw_input {
     fn emit_continuous(
         mut event: SensorEvent,
         pause_input: &std::sync::atomic::AtomicBool,
+        cache: &mut ForegroundCache,
         on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
     ) -> Result<(), String> {
         if pause_input.load(std::sync::atomic::Ordering::Relaxed) {
             return Ok(());
         }
 
-        if let Ok(Some(window)) = foreground_window() {
+        if let Some(window) = cache.get() {
             if window.privacy.is_paused() {
                 return Ok(());
             }

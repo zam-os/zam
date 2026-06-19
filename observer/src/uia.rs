@@ -117,7 +117,17 @@ mod windows_uia {
     use windows::Win32::System::Com::{
         CoCreateInstance, CoInitializeEx, CLSCTX_INPROC_SERVER, COINIT_MULTITHREADED,
     };
-    use windows::Win32::UI::Accessibility::{CUIAutomation, IUIAutomation, IUIAutomationElement};
+    use windows::Win32::UI::Accessibility::{
+        CUIAutomation, IUIAutomation, IUIAutomationElement,
+        IUIAutomationTogglePattern, IUIAutomationSelectionItemPattern,
+        UIA_TogglePatternId, UIA_SelectionItemPatternId,
+    };
+    use windows::Win32::UI::WindowsAndMessaging::{
+        GetClassNameW, GetWindow, GetForegroundWindow, GW_OWNER,
+        GetWindowTextLengthW, GetWindowTextW,
+    };
+    use windows::Win32::Foundation::HWND;
+    use windows::core::Interface;
 
     use super::control_type_name;
     use crate::clock::observed_at_now;
@@ -133,6 +143,8 @@ mod windows_uia {
         name: String,
         password: bool,
         process_id: u32,
+        toggle_state: Option<i32>,
+        selected: Option<bool>,
     }
 
     #[derive(PartialEq, Eq)]
@@ -142,6 +154,8 @@ mod windows_uia {
         name: String,
         password: bool,
         process_id: u32,
+        toggle_state: Option<i32>,
+        selected: Option<bool>,
     }
 
     impl FocusFingerprint {
@@ -152,6 +166,8 @@ mod windows_uia {
                 name: element.name.clone(),
                 password: element.password,
                 process_id: element.process_id,
+                toggle_state: element.toggle_state,
+                selected: element.selected,
             }
         }
     }
@@ -179,7 +195,7 @@ mod windows_uia {
                 let fingerprint = FocusFingerprint::from_element(&focused);
                 if last.as_ref() != Some(&fingerprint) {
                     sequence += 1;
-                    on_event(&focus_event(session_id, sequence, focused))?;
+                    on_event(&focus_event(session_id, sequence, &focused))?;
                     last = Some(fingerprint);
                 }
             }
@@ -210,8 +226,43 @@ mod windows_uia {
 
         let mut last: Option<FocusFingerprint> = None;
         let mut sequence = 0u64;
+        let mut last_dialog_hwnd: Option<HWND> = None;
 
         while !should_stop.load(std::sync::atomic::Ordering::Relaxed) {
+            // 1. Dialog Detection
+            let fg_hwnd = unsafe { GetForegroundWindow() };
+            if fg_hwnd.0 as usize != 0 {
+                let is_currently_dialog = is_dialog(fg_hwnd);
+                if is_currently_dialog {
+                    if last_dialog_hwnd != Some(fg_hwnd) {
+                        // Close previous dialog if there was one
+                        if let Some(old_dialog_hwnd) = last_dialog_hwnd {
+                            sequence += 1;
+                            on_event(dialog_event(session_id, sequence, old_dialog_hwnd, false))?;
+                        }
+                        // Open new dialog
+                        sequence += 1;
+                        on_event(dialog_event(session_id, sequence, fg_hwnd, true))?;
+                        last_dialog_hwnd = Some(fg_hwnd);
+                    }
+                } else {
+                    // Not a dialog. If we had a dialog, close it
+                    if let Some(old_dialog_hwnd) = last_dialog_hwnd {
+                        sequence += 1;
+                        on_event(dialog_event(session_id, sequence, old_dialog_hwnd, false))?;
+                        last_dialog_hwnd = None;
+                    }
+                }
+            } else {
+                // Foreground window is invalid/none. Close any open dialog
+                if let Some(old_dialog_hwnd) = last_dialog_hwnd {
+                    sequence += 1;
+                    on_event(dialog_event(session_id, sequence, old_dialog_hwnd, false))?;
+                    last_dialog_hwnd = None;
+                }
+            }
+
+            // 2. Focused Element Polling
             if let Some(focused) = read_focused_element(&automation) {
                 let process_name = if focused.process_id == 0 {
                     String::new()
@@ -224,11 +275,32 @@ mod windows_uia {
                 pause_input.store(is_paused, std::sync::atomic::Ordering::Relaxed);
 
                 let fingerprint = FocusFingerprint::from_element(&focused);
-                if last.as_ref() != Some(&fingerprint) {
+
+                if let Some(ref prev) = last {
+                    let same_identity = prev.control_type == fingerprint.control_type
+                        && prev.automation_id == fingerprint.automation_id
+                        && prev.name == fingerprint.name
+                        && prev.password == fingerprint.password
+                        && prev.process_id == fingerprint.process_id;
+
+                    if same_identity {
+                        if prev.toggle_state != fingerprint.toggle_state {
+                            sequence += 1;
+                            on_event(toggle_event(session_id, sequence, &focused))?;
+                        }
+                        if prev.selected != fingerprint.selected {
+                            sequence += 1;
+                            on_event(selection_event(session_id, sequence, &focused))?;
+                        }
+                    } else {
+                        sequence += 1;
+                        on_event(focus_event(session_id, sequence, &focused))?;
+                    }
+                } else {
                     sequence += 1;
-                    on_event(focus_event(session_id, sequence, focused))?;
-                    last = Some(fingerprint);
+                    on_event(focus_event(session_id, sequence, &focused))?;
                 }
+                last = Some(fingerprint);
             }
 
             thread::sleep(interval);
@@ -255,16 +327,36 @@ mod windows_uia {
             .map(|value| value as u32)
             .unwrap_or(0);
 
+        let toggle_state = unsafe {
+            element.GetCurrentPattern(UIA_TogglePatternId)
+                .ok()
+                .and_then(|pattern| {
+                    let toggle_pattern: IUIAutomationTogglePattern = pattern.cast().ok()?;
+                    toggle_pattern.CurrentToggleState().map(|s| s.0).ok()
+                })
+        };
+
+        let selected = unsafe {
+            element.GetCurrentPattern(UIA_SelectionItemPatternId)
+                .ok()
+                .and_then(|pattern| {
+                    let selection_pattern: IUIAutomationSelectionItemPattern = pattern.cast().ok()?;
+                    selection_pattern.CurrentIsSelected().map(|s| s.as_bool()).ok()
+                })
+        };
+
         Some(FocusedElement {
             control_type,
             automation_id,
             name,
             password,
             process_id,
+            toggle_state,
+            selected,
         })
     }
 
-    fn focus_event(session_id: &str, sequence: u64, focused: FocusedElement) -> SensorEvent {
+    fn focus_event(session_id: &str, sequence: u64, focused: &FocusedElement) -> SensorEvent {
         let process_name = if focused.process_id == 0 {
             String::new()
         } else {
@@ -278,12 +370,12 @@ mod windows_uia {
         let name = if redacted || focused.name.trim().is_empty() {
             None
         } else {
-            Some(focused.name)
+            Some(focused.name.clone())
         };
         let automation_id = if focused.automation_id.trim().is_empty() {
             None
         } else {
-            Some(focused.automation_id)
+            Some(focused.automation_id.clone())
         };
 
         let target = SensorTarget {
@@ -313,6 +405,132 @@ mod windows_uia {
             application,
             target: Some(target),
             data: BTreeMap::new(),
+            redacted,
+        }
+    }
+
+    fn toggle_event(
+        session_id: &str,
+        sequence: u64,
+        focused: &FocusedElement,
+    ) -> SensorEvent {
+        let mut event = focus_event(session_id, sequence, focused);
+        event.kind = SensorKind::ToggleChanged;
+        if let Some(state) = focused.toggle_state {
+            event.data.insert("state".to_string(), serde_json::Value::Number(serde_json::Number::from(state)));
+        }
+        event
+    }
+
+    fn selection_event(
+        session_id: &str,
+        sequence: u64,
+        focused: &FocusedElement,
+    ) -> SensorEvent {
+        let mut event = focus_event(session_id, sequence, focused);
+        event.kind = SensorKind::SelectionChanged;
+        if let Some(selected) = focused.selected {
+            event.data.insert("selected".to_string(), serde_json::Value::Bool(selected));
+        }
+        event
+    }
+
+    fn get_window_title(hwnd: HWND) -> String {
+        let len = unsafe { GetWindowTextLengthW(hwnd) };
+        if len <= 0 {
+            return String::new();
+        }
+        let mut buffer = vec![0u16; len as usize + 1];
+        let copied = unsafe { GetWindowTextW(hwnd, &mut buffer) };
+        String::from_utf16_lossy(&buffer[..copied.max(0) as usize])
+    }
+
+    fn is_dialog(hwnd: HWND) -> bool {
+        if hwnd.0 as usize == 0 {
+            return false;
+        }
+        let mut class_name = [0u16; 256];
+        let len = unsafe { GetClassNameW(hwnd, &mut class_name) };
+        if len > 0 {
+            if let Ok(name) = String::from_utf16(&class_name[..len as usize]) {
+                if name == "#32770" {
+                    return true;
+                }
+            }
+        }
+        let owner = unsafe { GetWindow(hwnd, GW_OWNER) };
+        if let Ok(owner) = owner {
+            if owner.0 as usize != 0 {
+                return true;
+            }
+        }
+        false
+    }
+
+    fn dialog_event(
+        session_id: &str,
+        sequence: u64,
+        hwnd: HWND,
+        opened: bool,
+    ) -> SensorEvent {
+        let mut process_id = 0u32;
+        unsafe {
+            use windows::Win32::UI::WindowsAndMessaging::GetWindowThreadProcessId;
+            GetWindowThreadProcessId(hwnd, Some(&mut process_id));
+        }
+
+        let process_name = if process_id == 0 {
+            String::new()
+        } else {
+            process_name_for_pid(process_id)
+        };
+
+        let title = get_window_title(hwnd);
+        let privacy = classify_window_privacy(&process_name, &title);
+        let redacted = privacy.title_redacted;
+
+        let redacted_title = if redacted || title.trim().is_empty() {
+            None
+        } else {
+            Some(title.clone())
+        };
+
+        let application = if process_id == 0 {
+            None
+        } else {
+            Some(ApplicationContext {
+                process_name,
+                process_id: Some(process_id),
+                window_title: redacted_title,
+            })
+        };
+
+        let mut data = BTreeMap::new();
+        if opened {
+            let lower_title = title.to_lowercase();
+            let is_error = lower_title.contains("error")
+                || lower_title.contains("failed")
+                || lower_title.contains("warning")
+                || lower_title.contains("critical")
+                || lower_title.contains("problem")
+                || lower_title.contains("fault")
+                || lower_title.contains("fehler")
+                || lower_title.contains("fehlgeschlagen");
+            
+            let severity = if is_error { "error" } else { "info" };
+            data.insert("severity".to_string(), serde_json::Value::String(severity.to_string()));
+        }
+
+        SensorEvent {
+            version: PROTOCOL_VERSION,
+            session_id: session_id.to_string(),
+            sequence,
+            observed_at: observed_at_now(),
+            source: SensorSource::Uia,
+            kind: if opened { SensorKind::DialogOpened } else { SensorKind::DialogClosed },
+            application,
+            target: None,
+            data,
             redacted,
         }
     }
