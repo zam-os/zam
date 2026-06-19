@@ -9,7 +9,8 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use zam_observer::{
     capture_once, capture_window, foreground_window, list_windows, pick_window, sample_window,
     snapshot_window, ApplicationContext, ObserverCapabilities, ObserverProbe, ReplayEngine,
-    SensorEvent, SensorKind, SensorSource, UiObservationReport, PROTOCOL_VERSION,
+    SensorEvent, SensorKind, SensorSource, UiObservationReport, DEFAULT_CHANGE_THRESHOLD,
+    PROTOCOL_VERSION,
 };
 
 fn main() {
@@ -202,6 +203,7 @@ fn sample_window_command(options: SampleOptions) -> Result<(), String> {
         options.hwnd,
         options.frames,
         Duration::from_millis(options.interval_ms),
+        options.change_threshold,
     )?)
 }
 
@@ -355,7 +357,7 @@ Usage:
   zam-observer capture-once
   zam-observer capture-window --hwnd <decimal|0xhex>
   zam-observer snapshot-window --hwnd <decimal|0xhex> --output <path.png>
-  zam-observer sample-window --hwnd <decimal|0xhex> [--frames <n>] [--interval-ms <n>]
+  zam-observer sample-window --hwnd <decimal|0xhex> [--frames <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>]
   zam-observer replay --input <path|-> [--output <path|->]
   zam-observer validate --input <path|-> [--output <path|->]"
     );
@@ -433,6 +435,7 @@ struct SampleOptions {
     hwnd: u64,
     frames: usize,
     interval_ms: u64,
+    change_threshold: f64,
 }
 
 #[derive(Debug)]
@@ -539,6 +542,7 @@ impl SampleOptions {
         let mut hwnd = None;
         let mut frames = Self::DEFAULT_FRAMES;
         let mut interval_ms = Self::DEFAULT_INTERVAL_MS;
+        let mut change_threshold = DEFAULT_CHANGE_THRESHOLD;
         let mut index = 0;
 
         while index < args.len() {
@@ -568,6 +572,15 @@ impl SampleOptions {
                         .parse::<u64>()
                         .map_err(|error| format!("invalid --interval-ms '{raw}': {error}"))?;
                 }
+                "--change-threshold" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--change-threshold requires a value".to_string())?;
+                    change_threshold = raw
+                        .parse::<f64>()
+                        .map_err(|error| format!("invalid --change-threshold '{raw}': {error}"))?;
+                }
                 unknown => return Err(format!("unknown option '{unknown}'")),
             }
             index += 1;
@@ -586,11 +599,15 @@ impl SampleOptions {
                 Self::MAX_INTERVAL_MS
             ));
         }
+        if !change_threshold.is_finite() || !(0.0..=1.0).contains(&change_threshold) {
+            return Err("--change-threshold must be between 0.0 and 1.0".to_string());
+        }
 
         Ok(Self {
             hwnd: hwnd.ok_or_else(|| "--hwnd is required".to_string())?,
             frames,
             interval_ms,
+            change_threshold,
         })
     }
 }
@@ -676,6 +693,7 @@ mod tests {
         assert_eq!(options.hwnd, 42);
         assert_eq!(options.frames, SampleOptions::DEFAULT_FRAMES);
         assert_eq!(options.interval_ms, SampleOptions::DEFAULT_INTERVAL_MS);
+        assert_eq!(options.change_threshold, DEFAULT_CHANGE_THRESHOLD);
     }
 
     #[test]
@@ -687,12 +705,28 @@ mod tests {
             "3".to_string(),
             "--interval-ms".to_string(),
             "250".to_string(),
+            "--change-threshold".to_string(),
+            "0.1".to_string(),
         ])
         .expect("sample options");
 
         assert_eq!(options.hwnd, 42);
         assert_eq!(options.frames, 3);
         assert_eq!(options.interval_ms, 250);
+        assert_eq!(options.change_threshold, 0.1);
+    }
+
+    #[test]
+    fn rejects_out_of_range_change_threshold() {
+        let error = SampleOptions::parse(vec![
+            "--hwnd".to_string(),
+            "42".to_string(),
+            "--change-threshold".to_string(),
+            "1.5".to_string(),
+        ])
+        .unwrap_err();
+
+        assert!(error.contains("--change-threshold must be between"));
     }
 
     #[test]

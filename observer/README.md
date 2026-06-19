@@ -71,9 +71,14 @@ checked before any pixels are captured.
 `sample-window --hwnd <decimal|0xhex>` is Windows-only. It keeps one capture
 session open and returns a bounded sequence of frame metadata without writing
 pixels. Use `--frames` and `--interval-ms` to exercise the live frame source and
-in-memory frame ring before event triggers are wired in. Samples after the first
-frame include `changed = false` when Windows did not deliver a new frame during
-that interval.
+in-memory frame ring. Each delivered frame is reduced to a small luminance
+signature and compared against the last retained keyframe, so `changed` reflects
+real visual change rather than just frame delivery: it is `false` both when
+Windows delivered no new frame during the interval and when the new frame is
+visually identical to the previous keyframe. `--change-threshold <0.0-1.0>`
+(default `0.02`) tunes how much mean luminance must move before a frame counts as
+a new keyframe — raise it to ignore more motion, lower it to retain subtler
+changes. This is the keyframe-retention primitive event triggers will build on.
 
 The matching bridge command is:
 

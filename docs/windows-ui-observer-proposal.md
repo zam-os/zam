@@ -491,6 +491,9 @@ Implemented foundation:
 - bounded `sample-window` frame metadata collection from a single live capture
   session, without persisting pixels;
 - reusable in-memory frame ring retention for bounded live sampling;
+- downsampled-luminance frame signatures with a configurable change threshold,
+  so sampled frames are flagged as changed only when they visually differ from
+  the last retained keyframe (the keyframe-retention primitive for cost control);
 - TypeScript report parsing in the ZAM kernel;
 - OpenAI-compatible vision snapshot adapter in the CLI layer;
 - `zam bridge observe-ui-snapshot` for turning a PNG keyframe into a validated
@@ -508,8 +511,9 @@ Implemented foundation:
 - Tauri commands for observer probe, window listing/foreground metadata,
   bounded foreground watching, capture, sampling, and snapshots.
 
-The remaining Phase 0 work is to add UI Automation, Raw Input, and
-event-triggered keyframe retention around the live capture source.
+The remaining Phase 0 work is to add UI Automation and Raw Input, and to wire
+the frame-change detection into a continuous, event-triggered capture loop that
+retains keyframes to the ring around important events.
 
 ### Phase 1: deterministic observer
 

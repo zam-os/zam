@@ -54,8 +54,9 @@ pub fn sample_window(
     hwnd: u64,
     frames: usize,
     interval: Duration,
+    change_threshold: f64,
 ) -> Result<CapturedFrameSequence, String> {
-    windows_capture::sample_window(hwnd, frames, interval)
+    windows_capture::sample_window(hwnd, frames, interval, change_threshold)
 }
 
 #[cfg(not(target_os = "windows"))]
@@ -78,6 +79,7 @@ pub fn sample_window(
     _hwnd: u64,
     _frames: usize,
     _interval: Duration,
+    _change_threshold: f64,
 ) -> Result<CapturedFrameSequence, String> {
     Err("window capture is only available on Windows".to_string())
 }
@@ -115,6 +117,7 @@ mod windows_capture {
 
     use super::{CapturedFrameProbe, CapturedFrameSample, CapturedFrameSequence, PROTOCOL_VERSION};
     use crate::frame_ring::FrameRing;
+    use crate::frame_signature::FrameSignature;
     use crate::picker::{capture_item_for_hwnd, pick_graphics_capture_item, PickedWindow};
     use crate::privacy::ensure_capture_allowed;
 
@@ -145,9 +148,10 @@ mod windows_capture {
         hwnd: u64,
         frame_count: usize,
         interval: Duration,
+        change_threshold: f64,
     ) -> Result<CapturedFrameSequence, String> {
         let (item, window) = capture_item_for_hwnd(hwnd)?;
-        sample_item(item, window, frame_count, interval)
+        sample_item(item, window, frame_count, interval, change_threshold)
     }
 
     fn capture_item(
@@ -189,6 +193,7 @@ mod windows_capture {
         window: PickedWindow,
         frame_count: usize,
         interval: Duration,
+        change_threshold: f64,
     ) -> Result<CapturedFrameSequence, String> {
         ensure_capture_allowed(&window.privacy)?;
         if frame_count == 0 {
@@ -198,6 +203,9 @@ mod windows_capture {
         let devices = create_direct3d_devices()?;
         let (frame, session, pool) = capture_first_frame(&devices.winrt, &item)?;
         let mut frames = FrameRing::new(frame_count)?;
+        // The first frame establishes the baseline keyframe and is always
+        // reported as changed.
+        let mut keyframe = read_frame_signature(&devices.native, &frame)?;
         let first_sample = frame_sample(&frame, true)?;
         let mut last_sample = first_sample.clone();
         frames.push(first_sample);
@@ -208,11 +216,20 @@ mod windows_capture {
                 thread::sleep(interval);
             }
             if let Some(frame) = try_wait_for_frame(&pool, Duration::from_millis(250))? {
-                let sample = frame_sample(&frame, true)?;
+                let signature = read_frame_signature(&devices.native, &frame)?;
+                // Compare against the last retained keyframe so slow drift that
+                // crosses the threshold is still captured exactly once.
+                let changed = signature.differs_from(&keyframe, change_threshold);
+                if changed {
+                    keyframe = signature;
+                }
+                let sample = frame_sample(&frame, changed)?;
                 last_sample = sample.clone();
                 frames.push(sample);
                 let _ = frame.Close();
             } else {
+                // Windows delivered no new frame in this interval: reuse the last
+                // metadata but record that nothing visually changed.
                 let mut sample = last_sample.clone();
                 sample.changed = false;
                 frames.push(sample);
@@ -346,6 +363,38 @@ mod windows_capture {
         frame: &Direct3D11CaptureFrame,
         output: &Path,
     ) -> Result<(), String> {
+        let (width, height, rgba) = read_frame(device, frame, |data, row_pitch, desc| {
+            let rgba = bgra_to_rgba(data, desc.Width as usize, desc.Height as usize, row_pitch)?;
+            Ok((desc.Width, desc.Height, rgba))
+        })?;
+
+        encode_png(output, width, height, &rgba)
+    }
+
+    fn read_frame_signature(
+        device: &ID3D11Device,
+        frame: &Direct3D11CaptureFrame,
+    ) -> Result<FrameSignature, String> {
+        read_frame(device, frame, |data, row_pitch, desc| {
+            if data.is_null() {
+                return Err("mapped texture returned a null data pointer".to_string());
+            }
+            let width = desc.Width as usize;
+            let height = desc.Height as usize;
+            // The mapped staging region holds at least `row_pitch * height`
+            // bytes; `FrameSignature::from_bgra` clamps reads to that range.
+            let bytes = unsafe { slice::from_raw_parts(data, row_pitch.saturating_mul(height)) };
+            Ok(FrameSignature::from_bgra(bytes, width, height, row_pitch))
+        })
+    }
+
+    /// Copy a captured frame into a CPU-readable staging texture, run `read`
+    /// against the mapped BGRA bytes, and always unmap before returning.
+    fn read_frame<R>(
+        device: &ID3D11Device,
+        frame: &Direct3D11CaptureFrame,
+        read: impl FnOnce(*const u8, usize, &D3D11_TEXTURE2D_DESC) -> Result<R, String>,
+    ) -> Result<R, String> {
         let surface = frame
             .Surface()
             .map_err(|error| format!("failed to read frame surface: {error}"))?;
@@ -401,18 +450,13 @@ mod windows_capture {
                 .map_err(|error| format!("failed to map staging texture: {error}"))?;
         }
 
-        let rgba = bgra_to_rgba(
-            mapped.pData.cast::<u8>(),
-            desc.Width as usize,
-            desc.Height as usize,
-            mapped.RowPitch as usize,
-        );
+        let result = read(mapped.pData.cast::<u8>(), mapped.RowPitch as usize, &desc);
+
         unsafe {
             context.Unmap(&staging_resource, 0);
         }
-        let rgba = rgba?;
 
-        encode_png(output, desc.Width, desc.Height, &rgba)
+        result
     }
 
     fn bgra_to_rgba(
