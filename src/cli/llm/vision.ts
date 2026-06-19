@@ -180,6 +180,17 @@ ${schema}`,
 
   if (!res.ok) {
     const errorText = await res.text().catch(() => "");
+    // Provide a clear hint when the model rejects image input — this
+    // typically means the configured model is text-only.
+    if (
+      errorText.includes("image") &&
+      (errorText.includes("not support") || errorText.includes("unsupported"))
+    ) {
+      throw new Error(
+        `Vision model "${args.model}" does not support image input. ` +
+          `Set a multimodal model: zam settings set llm.vision.model <model>`,
+      );
+    }
     throw new Error(
       `Vision LLM request failed: ${res.statusText} (${res.status}) - ${errorText}`,
     );
@@ -187,7 +198,18 @@ ${schema}`,
 
   const data = (await res.json()) as ChatCompletionResponse;
   if (data.error !== undefined) {
-    throw new Error(`Vision model failed: ${formatModelError(data.error)}`);
+    const errorMsg = formatModelError(data.error);
+    // Provide a clear hint when the model rejects image input.
+    if (
+      errorMsg.includes("image") &&
+      (errorMsg.includes("not support") || errorMsg.includes("unsupported"))
+    ) {
+      throw new Error(
+        `Vision model "${args.model}" does not support image input. ` +
+          `Set a multimodal model: zam settings set llm.vision.model <model>`,
+      );
+    }
+    throw new Error(`Vision model failed: ${errorMsg}`);
   }
 
   const content = data.choices?.[0]?.message?.content;

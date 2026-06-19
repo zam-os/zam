@@ -349,6 +349,10 @@ export interface VisionReadyResult {
   modelAvailable: boolean;
   availableModels: string[];
   usable: boolean;
+  /** True when llm.vision.model is explicitly configured (not a fallback). */
+  visionModelExplicit: boolean;
+  /** Human-readable warning when usable but likely misconfigured. */
+  warning?: string;
 }
 
 /** Non-starting readiness check for the opt-in UI observer vision endpoint. */
@@ -356,6 +360,9 @@ export async function checkVisionReadiness(
   db: Database,
 ): Promise<VisionReadyResult> {
   const { enabled, url, model, apiKey } = await getVisionConfig(db);
+  const visionModelSetting = await getSetting(db, "llm.vision.model");
+  const visionModelExplicit = !!visionModelSetting;
+
   let online = false;
   let availableModels: string[] = [];
   let modelAvailable = false;
@@ -372,6 +379,16 @@ export async function checkVisionReadiness(
     }
   }
 
+  // Warn when vision falls back to the base text model — it is almost
+  // certainly a text-only model that cannot interpret images.
+  let warning: string | undefined;
+  if (enabled && online && modelAvailable && !visionModelExplicit) {
+    warning =
+      `No explicit vision model configured (llm.vision.model). ` +
+      `Falling back to base model "${model}", which may not support image input. ` +
+      `Set a multimodal model: zam settings set llm.vision.model <model>`;
+  }
+
   return {
     enabled,
     online,
@@ -380,6 +397,8 @@ export async function checkVisionReadiness(
     modelAvailable,
     availableModels,
     usable: enabled && online && modelAvailable,
+    visionModelExplicit,
+    warning,
   };
 }
 

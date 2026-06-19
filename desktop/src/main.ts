@@ -377,6 +377,8 @@ interface VisionStatus {
   modelAvailable: boolean;
   availableModels: string[];
   usable: boolean;
+  visionModelExplicit: boolean;
+  warning?: string;
 }
 
 const OBSERVER_PRIVACY_REASON_LABELS: Record<string, Record<string, string>> = {
@@ -683,6 +685,10 @@ async function ensureObserverVisionReady(): Promise<boolean> {
       model: vision.model,
     });
     return false;
+  }
+  if (vision.warning) {
+    status.textContent = vision.warning;
+    // Continue anyway — the model might actually support images.
   }
 
   return true;
