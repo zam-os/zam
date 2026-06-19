@@ -40,8 +40,11 @@ import {
   openDatabase,
   pairCommands,
   readMonitorLog,
+  endSession,
   readUiObservationLog,
   resolveReviewContext,
+  startSession,
+  uiObservationLogExists,
 } from "../../kernel/index.js";
 import {
   checkVisionReadiness,
@@ -437,6 +440,60 @@ bridgeCommand
     });
   });
 
+// ── zam bridge start-session / end-session ────────────────────────────────
+
+bridgeCommand
+  .command("start-session")
+  .description("Start a ZAM learning session (JSON)")
+  .requiredOption("--task <task>", "Session task description")
+  .option(
+    "--context <context>",
+    "Execution context: shell | ui | reallife",
+    "shell",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    const context = opts.context as "shell" | "ui" | "reallife";
+    if (!["shell", "ui", "reallife"].includes(context)) {
+      jsonError("context must be shell, ui, or reallife");
+    }
+
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const session = await startSession(db, {
+        user_id: userId,
+        task: opts.task,
+        execution_context: context,
+      });
+      jsonOut({
+        id: session.id,
+        userId: session.user_id,
+        task: session.task,
+        executionContext: session.execution_context,
+        startedAt: session.started_at,
+        completedAt: session.completed_at,
+      });
+    });
+  });
+
+bridgeCommand
+  .command("end-session")
+  .description("Complete an active ZAM learning session (JSON)")
+  .requiredOption("--session <id>", "Session ID")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const session = await endSession(db, opts.session);
+      jsonOut({
+        id: session.id,
+        userId: session.user_id,
+        task: session.task,
+        executionContext: session.execution_context,
+        startedAt: session.started_at,
+        completedAt: session.completed_at,
+      });
+    });
+  });
+
 // ── zam bridge get-monitor ────────────────────────────────────────────────
 
 bridgeCommand
@@ -708,7 +765,52 @@ bridgeCommand
     }
   });
 
-// ── zam bridge observe-ui-snapshot ─────────────────────────────────────────
+// ── zam bridge observe-ui-watch / get-observations ─────────────────────────
+
+bridgeCommand
+  .command("observe-ui-watch")
+  .description(
+    "Poll live UI observer watch reports for a ZAM learning session (JSON)",
+  )
+  .requiredOption(
+    "--session <id>",
+    "ZAM session ID (also the observer log key)",
+  )
+  .option("--after <n>", "Only return observations after this sequence")
+  .option("--limit <n>", "Maximum observations to return", "100")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const session = (await db
+        .prepare("SELECT id, execution_context FROM sessions WHERE id = ?")
+        .get(opts.session)) as
+        | { id: string; execution_context: string }
+        | undefined;
+      if (!session) {
+        jsonError(`Session not found: ${opts.session}`);
+      }
+
+      const after =
+        opts.after === undefined
+          ? undefined
+          : parseNonNegativeIntegerOption("after", opts.after);
+      const limit = parseNonNegativeIntegerOption("limit", opts.limit);
+      const observations = readUiObservationLog(opts.session)
+        .filter((report) => after === undefined || report.sequence > after)
+        .slice(0, limit);
+      const last = observations[observations.length - 1];
+
+      jsonOut({
+        sessionId: opts.session,
+        executionContext: session.execution_context,
+        observationSource: "ui",
+        logExists: uiObservationLogExists(opts.session),
+        after: after ?? null,
+        count: observations.length,
+        nextSequence: last?.sequence ?? after ?? null,
+        observations,
+      });
+    });
+  });
 
 bridgeCommand
   .command("get-observations")

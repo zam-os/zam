@@ -233,7 +233,12 @@ export {
   getUiObservationPath,
   getUiObserverDir,
   readUiObservationLog,
+  uiObservationLogExists,
 } from "./observation/ui-observer-io.js";
+export {
+  buildUiSynthesisCandidates,
+  uiObservationTimeSpan,
+} from "./observation/ui-observer-synthesis.js";
 export type {
   ExecuteReviewActionInput,
   ReviewActionResult,

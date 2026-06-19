@@ -245,6 +245,7 @@ let observerLoopRunning = false;
 let observerLoopTimerId: number | null = null;
 let observerWatchRunning = false;
 let observerWatchPollId: number | null = null;
+let observerWatchLastEventCount = 0;
 const OBSERVER_WATCH_POLL_MS = 1000;
 // Forward-paging cursor for get-observations. The bridge returns reports with
 // sequence > after (oldest-first), so we advance this past everything seen to
@@ -252,7 +253,8 @@ const OBSERVER_WATCH_POLL_MS = 1000;
 let observerReportsAfter = 0;
 const OBSERVER_HISTORY_LIMIT = 100;
 const OBSERVER_LOOP_DELAY_MS = 60000;
-const observerSessionId = `desktop-${new Date().toISOString().replace(/[^0-9]/g, "").slice(0, 14)}`;
+let desktopUserId: string | null = null;
+let zamUiSessionId: string | null = null;
 
 interface ObserverWindowInfo {
   version: number;
@@ -301,12 +303,70 @@ interface ObserverWatchStatus {
   lastError: string | null;
 }
 
+interface ZamSessionResponse {
+  id: string;
+  userId: string;
+  task: string;
+  executionContext: string;
+  startedAt: string;
+  completedAt: string | null;
+}
+
 interface UiObservationsResponse {
   sessionId: string;
+  executionContext?: string;
+  observationSource?: string;
+  logExists?: boolean;
   after: number | null;
   count: number;
   nextSequence: number | null;
   observations: UiObservationReport[];
+}
+
+function resetObserverReportState(): void {
+  observerSequence = 0;
+  observerReportsAfter = 0;
+  observerReports = [];
+}
+
+async function ensureDesktopUserId(): Promise<string> {
+  if (desktopUserId) return desktopUserId;
+  const bootstrap = await runBridge<{ userId: string }>("desktop-bootstrap");
+  desktopUserId = bootstrap.userId;
+  return desktopUserId;
+}
+
+async function ensureUiLearningSession(task: string): Promise<string> {
+  if (zamUiSessionId) return zamUiSessionId;
+
+  const userId = await ensureDesktopUserId();
+  const session = await runBridge<ZamSessionResponse>("start-session", [
+    "--task",
+    task,
+    "--context",
+    "ui",
+    "--user",
+    userId,
+  ]);
+  zamUiSessionId = session.id;
+  resetObserverReportState();
+  return zamUiSessionId;
+}
+
+async function getObserverSessionId(): Promise<string> {
+  return ensureUiLearningSession("Desktop UI observation");
+}
+
+async function closeUiLearningSession(): Promise<void> {
+  if (!zamUiSessionId) return;
+
+  const sessionId = zamUiSessionId;
+  zamUiSessionId = null;
+  try {
+    await runBridge<ZamSessionResponse>("end-session", ["--session", sessionId]);
+  } catch (error) {
+    console.warn("Failed to end UI learning session", error);
+  }
 }
 
 interface VisionStatus {
@@ -546,14 +606,15 @@ async function analyzeSelectedObserverWindow(): Promise<boolean> {
     if (!visionReady || requestId !== observerAnalysisRequestId) return false;
 
     status.textContent = t("observer_analyzing");
+    const sessionId = await getObserverSessionId();
     const observedFrom = new Date().toISOString();
-    const sequence = observerSequence + 1;
+    const sequence = await nextObserverReportSequence();
     const snapshotName = `${String(sequence).padStart(6, "0")}.png`;
-    const snapshotDir = await joinPath(await appDataDir(), "observer", observerSessionId);
+    const snapshotDir = await joinPath(await appDataDir(), "observer", sessionId);
     const snapshotPath = await joinPath(snapshotDir, snapshotName);
     // Portable, non-leaking evidence reference for the persisted report; the
     // absolute path stays in --image only.
-    const evidenceRef = `${observerSessionId}/${snapshotName}`;
+    const evidenceRef = `${sessionId}/${snapshotName}`;
 
     await invoke<string>("snapshot_zam_observer_window", {
       hwnd: String(selected.hwnd),
@@ -564,7 +625,7 @@ async function analyzeSelectedObserverWindow(): Promise<boolean> {
     const observedTo = new Date().toISOString();
     const report = await runBridge<UiObservationReport>("observe-ui-snapshot", [
       "--session",
-      observerSessionId,
+      sessionId,
       "--sequence",
       String(sequence),
       "--image",
@@ -703,13 +764,19 @@ async function startObserverWatch(): Promise<void> {
   }
 
   observerWatchRunning = true;
+  observerWatchLastEventCount = 0;
   note.textContent = t("observer_watch_starting");
   status.textContent = t("observer_watch_starting");
   syncObserverControls();
 
   try {
+    const task = selected.title.trim() || "Desktop UI observation";
+    const sessionId = await ensureUiLearningSession(task);
+    // Tauri truncates the reports JSONL on each watch start, so replay
+    // sequences begin again at 1. Keep the desktop cursor aligned.
+    resetObserverReportState();
     const result = await invoke<ObserverWatchStatus>("start_zam_observer_watch", {
-      session: observerSessionId,
+      session: sessionId,
       hwnd: String(selected.hwnd),
       intervalMs: "1000",
     });
@@ -762,10 +829,15 @@ async function pollObserverWatchStatus(): Promise<void> {
     const result = await invoke<ObserverWatchStatus>("status_zam_observer_watch");
     const selected = selectedObserverWindow();
     renderObserverWatchStatus(result, selected?.title);
+    if (result.running && result.eventCount > observerWatchLastEventCount) {
+      observerWatchLastEventCount = result.eventCount;
+      await loadObserverReports({ updateStatus: false });
+    }
     if (!result.running) {
       // The watch process exited on its own (sample bound or crash).
       observerWatchRunning = false;
       clearObserverWatchPoll();
+      await loadObserverReports({ updateStatus: false });
       syncObserverControls();
       return;
     }
@@ -793,15 +865,50 @@ function renderObserverWatchStatus(status: ObserverWatchStatus, fallbackTitle?: 
   }
 }
 
+/** Align the in-memory sequence cursor with the persisted observation log. */
+async function syncObserverSequenceFromLog(): Promise<void> {
+  if (!zamUiSessionId) return;
+
+  try {
+    const response = await runBridge<UiObservationsResponse>("observe-ui-watch", [
+      "--session",
+      zamUiSessionId,
+      "--after",
+      "0",
+      "--limit",
+      "10000",
+    ]);
+    if (response.observations.length === 0) return;
+
+    const maxSequence = Math.max(...response.observations.map((report) => report.sequence));
+    observerSequence = Math.max(observerSequence, maxSequence);
+    observerReportsAfter = Math.max(observerReportsAfter, maxSequence);
+  } catch {
+    // Fall back to the in-memory cursor when the bridge is unavailable.
+  }
+}
+
+async function nextObserverReportSequence(): Promise<number> {
+  await syncObserverSequenceFromLog();
+  return observerSequence + 1;
+}
+
 async function loadObserverReports(
   opts: { updateStatus?: boolean } = {},
 ): Promise<void> {
   const status = document.getElementById("observer-status")!;
 
+  if (!zamUiSessionId) {
+    if (opts.updateStatus) {
+      status.textContent = t("observer_idle");
+    }
+    return;
+  }
+
   try {
-    const response = await runBridge<UiObservationsResponse>("get-observations", [
+    const response = await runBridge<UiObservationsResponse>("observe-ui-watch", [
       "--session",
-      observerSessionId,
+      zamUiSessionId,
       "--after",
       String(observerReportsAfter),
       "--limit",
@@ -1484,7 +1591,12 @@ async function loadDashboard() {
   try {
     clearDashboardError();
     // 1. Initialize first-run state, then apply settings and translations.
-    const settings = await runBridge<{ locale: string; llm: { enabled: boolean } }>("desktop-bootstrap");
+    const settings = await runBridge<{
+      userId: string;
+      locale: string;
+      llm: { enabled: boolean };
+    }>("desktop-bootstrap");
+    desktopUserId = settings.userId;
     currentLocale = settings.locale || "en";
     isLlmEnabled = settings.llm?.enabled || false;
     
@@ -1882,8 +1994,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Start Session Button
   document.getElementById("btn-start-session")!.addEventListener("click", () => {
-    switchView("study-view");
-    loadNextCard();
+    void (async () => {
+      await ensureUiLearningSession("Desktop learning session");
+      switchView("study-view");
+      loadNextCard();
+    })();
   });
 
   // Open 3D Graph (experimental)
@@ -1948,8 +2063,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Pause & Exit Session Button
   document.getElementById("btn-pause-session")!.addEventListener("click", () => {
-    switchView("dashboard-view");
-    loadDashboard();
+    void (async () => {
+      if (observerWatchRunning) {
+        await stopObserverWatch();
+      }
+      await closeUiLearningSession();
+      switchView("dashboard-view");
+      loadDashboard();
+    })();
   });
 
   // Submit Answer / Reveal Answer Button

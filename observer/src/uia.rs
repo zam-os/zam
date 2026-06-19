@@ -77,6 +77,7 @@ pub fn watch_focused_element(
 
 #[cfg(target_os = "windows")]
 pub fn watch_focused_element_continuous(
+    watch_hwnd: u64,
     interval: Duration,
     session_id: &str,
     should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
@@ -84,7 +85,15 @@ pub fn watch_focused_element_continuous(
     event_driven: bool,
     on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
 ) -> Result<(), String> {
-    windows_uia::watch_focused_element_continuous(interval, session_id, should_stop, pause_input, event_driven, on_event)
+    windows_uia::watch_focused_element_continuous(
+        watch_hwnd,
+        interval,
+        session_id,
+        should_stop,
+        pause_input,
+        event_driven,
+        on_event,
+    )
 }
 
 #[cfg(not(target_os = "windows"))]
@@ -99,6 +108,7 @@ pub fn watch_focused_element(
 
 #[cfg(not(target_os = "windows"))]
 pub fn watch_focused_element_continuous(
+    _watch_hwnd: u64,
     _interval: Duration,
     _session_id: &str,
     _should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
@@ -130,8 +140,9 @@ mod windows_uia {
     };
     use windows::Win32::UI::WindowsAndMessaging::{
         GetClassNameW, GetForegroundWindow, GetWindow, GetWindowTextLengthW, GetWindowTextW,
-        GW_OWNER, PeekMessageW, TranslateMessage, DispatchMessageW, PM_REMOVE, MSG,
-        WINEVENT_OUTOFCONTEXT, EVENT_SYSTEM_FOREGROUND, EVENT_OBJECT_FOCUS,
+        GetWindowThreadProcessId, GW_OWNER, IsChild, IsWindow, PeekMessageW, TranslateMessage,
+        DispatchMessageW, PM_REMOVE, MSG, WINEVENT_OUTOFCONTEXT, EVENT_SYSTEM_FOREGROUND,
+        EVENT_OBJECT_FOCUS,
     };
     use windows::Win32::Graphics::Gdi::{
         GetDC, ReleaseDC, CreateCompatibleDC, CreateCompatibleBitmap, SelectObject, BitBlt, DeleteDC, DeleteObject,
@@ -159,7 +170,53 @@ mod windows_uia {
     unsafe impl Send for WinEventNotification {}
     unsafe impl Sync for WinEventNotification {}
 
-    static EVENT_SENDER: std::sync::Mutex<Option<std::sync::mpsc::Sender<WinEventNotification>>> = std::sync::Mutex::new(None);
+    static EVENT_SENDER: std::sync::Mutex<Option<std::sync::mpsc::Sender<WinEventNotification>>> =
+        std::sync::Mutex::new(None);
+    static WATCH_HWND: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+
+    fn hwnd_from_u64(raw_hwnd: u64) -> HWND {
+        HWND(raw_hwnd as usize as *mut core::ffi::c_void)
+    }
+
+    fn hwnd_in_watched_window(hwnd: HWND, watch_hwnd: HWND) -> bool {
+        if hwnd.0 as usize == 0 || watch_hwnd.0 as usize == 0 {
+            return false;
+        }
+        if hwnd == watch_hwnd {
+            return true;
+        }
+        unsafe { IsChild(watch_hwnd, hwnd).as_bool() }
+    }
+
+    fn element_in_watched_window(
+        automation: &IUIAutomation,
+        element: &IUIAutomationElement,
+        watch_hwnd: HWND,
+    ) -> bool {
+        if let Ok(hwnd) = unsafe { element.CurrentNativeWindowHandle() } {
+            if hwnd.0 as usize != 0 && hwnd_in_watched_window(hwnd, watch_hwnd) {
+                return true;
+            }
+        }
+
+        let walker = match unsafe { automation.RawViewWalker() } {
+            Ok(walker) => walker,
+            Err(_) => return false,
+        };
+        let mut current = element.clone();
+        for _ in 0..32 {
+            if let Ok(hwnd) = unsafe { current.CurrentNativeWindowHandle() } {
+                if hwnd.0 as usize != 0 && hwnd_in_watched_window(hwnd, watch_hwnd) {
+                    return true;
+                }
+            }
+            current = match unsafe { walker.GetParentElement(&current) } {
+                Ok(parent) => parent,
+                Err(_) => break,
+            };
+        }
+        false
+    }
 
     unsafe extern "system" fn win_event_hook_callback(
         _h_hook: HWINEVENTHOOK,
@@ -173,6 +230,10 @@ mod windows_uia {
         if let Ok(guard) = EVENT_SENDER.lock() {
             if let Some(ref sender) = *guard {
                 if event == EVENT_SYSTEM_FOREGROUND {
+                    let watch = WATCH_HWND.load(std::sync::atomic::Ordering::Relaxed);
+                    if watch != 0 && !hwnd_in_watched_window(hwnd, hwnd_from_u64(watch)) {
+                        return;
+                    }
                     let _ = sender.send(WinEventNotification::ForegroundChanged(hwnd));
                 } else if event == EVENT_OBJECT_FOCUS {
                     let _ = sender.send(WinEventNotification::FocusChanged);
@@ -323,6 +384,42 @@ mod windows_uia {
         }
     }
 
+    fn is_password_element(element: &IUIAutomationElement) -> bool {
+        unsafe { element.CurrentIsPassword() }
+            .map(|value| value.as_bool())
+            .unwrap_or(false)
+    }
+
+    /// Mute Raw Input immediately when UIA reports a password field or other
+    /// privacy-sensitive context. COM handlers can fire before the polling loop
+    /// next samples focus, so this must not wait for the 500ms poll interval.
+    fn update_pause_input_from_element(
+        element: &IUIAutomationElement,
+        pause_input: &std::sync::atomic::AtomicBool,
+    ) {
+        use std::sync::atomic::Ordering;
+
+        if is_password_element(element) {
+            pause_input.store(true, Ordering::Relaxed);
+            return;
+        }
+
+        let process_id = unsafe { element.CurrentProcessId() }
+            .map(|value| value as u32)
+            .unwrap_or(0);
+        if process_id == 0 {
+            return;
+        }
+
+        let process_name = process_name_for_pid(process_id);
+        let name = unsafe { element.CurrentName() }
+            .map(|value| value.to_string())
+            .unwrap_or_default();
+        if classify_window_privacy(&process_name, &name).is_paused() {
+            pause_input.store(true, Ordering::Relaxed);
+        }
+    }
+
     /// COM event handler that turns UIA `Invoke` events (button, menu item, and
     /// link activation) into `element-invoked` sensor events. UIA delivers
     /// events on its own threads, so the handler forwards each one through a
@@ -332,6 +429,7 @@ mod windows_uia {
     struct InvokeEventHandler {
         sender: std::sync::Mutex<std::sync::mpsc::Sender<SensorEvent>>,
         session_id: String,
+        pause_input: std::sync::Arc<std::sync::atomic::AtomicBool>,
     }
 
     impl IUIAutomationEventHandler_Impl for InvokeEventHandler_Impl {
@@ -341,6 +439,7 @@ mod windows_uia {
             _eventid: UIA_EVENT_ID,
         ) -> windows::core::Result<()> {
             if let Some(element) = sender.as_ref() {
+                update_pause_input_from_element(element, &self.pause_input);
                 if let Some(event) = build_invoke_event(&self.session_id, element) {
                     if let Ok(tx) = self.sender.lock() {
                         let _ = tx.send(event);
@@ -368,6 +467,7 @@ mod windows_uia {
     struct TextChangedEventHandler {
         sender: std::sync::Mutex<std::sync::mpsc::Sender<SensorEvent>>,
         session_id: String,
+        pause_input: std::sync::Arc<std::sync::atomic::AtomicBool>,
     }
 
     impl IUIAutomationEventHandler_Impl for TextChangedEventHandler_Impl {
@@ -377,6 +477,12 @@ mod windows_uia {
             _eventid: UIA_EVENT_ID,
         ) -> windows::core::Result<()> {
             if let Some(element) = sender.as_ref() {
+                update_pause_input_from_element(element, &self.pause_input);
+                // Never record text-change metadata (or run OCR) for password
+                // fields — only mute input as early as possible.
+                if is_password_element(element) {
+                    return Ok(());
+                }
                 if let Some(event) = build_text_changed_event(&self.session_id, element) {
                     if let Ok(tx) = self.sender.lock() {
                         let _ = tx.send(event);
@@ -411,6 +517,7 @@ mod windows_uia {
     struct StructureChangedEventHandler {
         sender: std::sync::Mutex<std::sync::mpsc::Sender<SensorEvent>>,
         session_id: String,
+        pause_input: std::sync::Arc<std::sync::atomic::AtomicBool>,
     }
 
     impl IUIAutomationEventHandler_Impl for StructureChangedEventHandler_Impl {
@@ -420,6 +527,7 @@ mod windows_uia {
             _eventid: UIA_EVENT_ID,
         ) -> windows::core::Result<()> {
             if let Some(element) = sender.as_ref() {
+                update_pause_input_from_element(element, &self.pause_input);
                 if let Some(event) = build_structure_changed_event(&self.session_id, element) {
                     if let Ok(tx) = self.sender.lock() {
                         let _ = tx.send(event);
@@ -482,6 +590,7 @@ mod windows_uia {
     }
 
     pub fn watch_focused_element_continuous(
+        watch_hwnd_raw: u64,
         interval: Duration,
         session_id: &str,
         should_stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
@@ -498,6 +607,18 @@ mod windows_uia {
             unsafe { CoCreateInstance(&CUIAutomation, None, CLSCTX_INPROC_SERVER) }
                 .map_err(|error| format!("failed to create UI Automation: {error}"))?;
 
+        let watch_hwnd = hwnd_from_u64(watch_hwnd_raw);
+        if watch_hwnd.0 as usize == 0 || !unsafe { IsWindow(Some(watch_hwnd)).as_bool() } {
+            return Err(format!(
+                "HWND 0x{watch_hwnd_raw:x} is not a valid watch target"
+            ));
+        }
+        WATCH_HWND.store(watch_hwnd_raw, std::sync::atomic::Ordering::Relaxed);
+
+        let window_element = unsafe { automation.ElementFromHandle(watch_hwnd) }.map_err(|error| {
+            format!("failed to resolve UI Automation element for HWND 0x{watch_hwnd_raw:x}: {error}")
+        })?;
+
         let mut last: Option<FocusFingerprint> = None;
         let mut sequence = 0u64;
         let mut last_dialog_hwnd: Option<HWND> = None;
@@ -510,21 +631,19 @@ mod windows_uia {
         let invoke_handler: IUIAutomationEventHandler = InvokeEventHandler {
             sender: std::sync::Mutex::new(invoke_tx),
             session_id: session_id.to_string(),
+            pause_input: pause_input.clone(),
         }
         .into();
-        let invoke_registered = match unsafe { automation.GetRootElement() } {
-            Ok(root) => unsafe {
-                automation
-                    .AddAutomationEventHandler(
-                        UIA_Invoke_InvokedEventId,
-                        &root,
-                        TreeScope_Subtree,
-                        None,
-                        &invoke_handler,
-                    )
-                    .is_ok()
-            },
-            Err(_) => false,
+        let invoke_registered = unsafe {
+            automation
+                .AddAutomationEventHandler(
+                    UIA_Invoke_InvokedEventId,
+                    &window_element,
+                    TreeScope_Subtree,
+                    None,
+                    &invoke_handler,
+                )
+                .is_ok()
         };
 
         // Subscribe to UIA TextChanged events so text edits in fields are
@@ -533,21 +652,19 @@ mod windows_uia {
         let text_changed_handler: IUIAutomationEventHandler = TextChangedEventHandler {
             sender: std::sync::Mutex::new(text_changed_tx),
             session_id: session_id.to_string(),
+            pause_input: pause_input.clone(),
         }
         .into();
-        let text_changed_registered = match unsafe { automation.GetRootElement() } {
-            Ok(root) => unsafe {
-                automation
-                    .AddAutomationEventHandler(
-                        UIA_Text_TextChangedEventId,
-                        &root,
-                        TreeScope_Subtree,
-                        None,
-                        &text_changed_handler,
-                    )
-                    .is_ok()
-            },
-            Err(_) => false,
+        let text_changed_registered = unsafe {
+            automation
+                .AddAutomationEventHandler(
+                    UIA_Text_TextChangedEventId,
+                    &window_element,
+                    TreeScope_Subtree,
+                    None,
+                    &text_changed_handler,
+                )
+                .is_ok()
         };
 
         // Subscribe to UIA StructureChanged events so tree mutations
@@ -556,21 +673,19 @@ mod windows_uia {
         let structure_changed_handler: IUIAutomationEventHandler = StructureChangedEventHandler {
             sender: std::sync::Mutex::new(structure_changed_tx),
             session_id: session_id.to_string(),
+            pause_input: pause_input.clone(),
         }
         .into();
-        let structure_changed_registered = match unsafe { automation.GetRootElement() } {
-            Ok(root) => unsafe {
-                automation
-                    .AddAutomationEventHandler(
-                        UIA_StructureChangedEventId,
-                        &root,
-                        TreeScope_Subtree,
-                        None,
-                        &structure_changed_handler,
-                    )
-                    .is_ok()
-            },
-            Err(_) => false,
+        let structure_changed_registered = unsafe {
+            automation
+                .AddAutomationEventHandler(
+                    UIA_StructureChangedEventId,
+                    &window_element,
+                    TreeScope_Subtree,
+                    None,
+                    &structure_changed_handler,
+                )
+                .is_ok()
         };
 
         let (win_event_tx, win_event_rx) = std::sync::mpsc::channel::<WinEventNotification>();
@@ -659,9 +774,9 @@ mod windows_uia {
 
             let mut state_changed = false;
 
-            // 1. Dialog Detection
+            // 1. Dialog Detection (only for dialogs owned by the watched window)
             let fg_hwnd = unsafe { GetForegroundWindow() };
-            if fg_hwnd.0 as usize != 0 {
+            if fg_hwnd.0 as usize != 0 && dialog_belongs_to_watch(fg_hwnd, watch_hwnd) {
                 let is_currently_dialog = is_dialog(fg_hwnd);
                 if is_currently_dialog {
                     if last_dialog_hwnd != Some(fg_hwnd) {
@@ -695,8 +810,8 @@ mod windows_uia {
                 }
             }
 
-            // 2. Focused Element Polling
-            if let Some(focused) = read_focused_element(&automation) {
+            // 2. Focused Element Polling (only inside the watched window)
+            if let Some(focused) = read_focused_element_in_window(&automation, watch_hwnd) {
                 let process_name = if focused.process_id == 0 {
                     String::new()
                 } else {
@@ -738,6 +853,9 @@ mod windows_uia {
                     state_changed = true;
                 }
                 last = Some(fingerprint);
+            } else {
+                pause_input.store(false, std::sync::atomic::Ordering::Relaxed);
+                last = None;
             }
 
             // 3. Forward any UIA Invoke/TextChanged/StructureChanged events captured since the last poll.
@@ -788,11 +906,40 @@ mod windows_uia {
             }
         }
 
+        WATCH_HWND.store(0, std::sync::atomic::Ordering::Relaxed);
         Ok(())
+    }
+
+    fn dialog_belongs_to_watch(fg_hwnd: HWND, watch_hwnd: HWND) -> bool {
+        if hwnd_in_watched_window(fg_hwnd, watch_hwnd) {
+            return true;
+        }
+        if !is_dialog(fg_hwnd) {
+            return false;
+        }
+
+        let mut watch_pid = 0u32;
+        let mut fg_pid = 0u32;
+        unsafe {
+            GetWindowThreadProcessId(watch_hwnd, Some(&mut watch_pid));
+            GetWindowThreadProcessId(fg_hwnd, Some(&mut fg_pid));
+        }
+        watch_pid != 0 && watch_pid == fg_pid
     }
 
     fn read_focused_element(automation: &IUIAutomation) -> Option<FocusedElement> {
         let element: IUIAutomationElement = unsafe { automation.GetFocusedElement() }.ok()?;
+        focused_element_from(&element)
+    }
+
+    fn read_focused_element_in_window(
+        automation: &IUIAutomation,
+        watch_hwnd: HWND,
+    ) -> Option<FocusedElement> {
+        let element: IUIAutomationElement = unsafe { automation.GetFocusedElement() }.ok()?;
+        if !element_in_watched_window(automation, &element, watch_hwnd) {
+            return None;
+        }
         focused_element_from(&element)
     }
 

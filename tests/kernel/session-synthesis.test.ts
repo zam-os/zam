@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   addPrerequisite,
+  appendUiObservationReport,
   applySessionSynthesis,
   createAgentSkill,
   createToken,
@@ -338,5 +339,65 @@ describe("automatic session synthesis", () => {
       "table_info(session_syntheses)",
     )) as Array<{ name: string }>;
     expect(columns.map((column) => column.name)).toContain("review_log_id");
+  });
+
+  it("builds UI synthesis candidates from persisted observer reports", async () => {
+    const originalDir = process.env.ZAM_OBSERVER_DIR;
+    const observerDir = mkdtempSync(join(tmpdir(), "zam-ui-synthesis-"));
+    process.env.ZAM_OBSERVER_DIR = observerDir;
+
+    try {
+      const token = await createToken(db, {
+        slug: "explorer-create-folder",
+        concept: "Create a folder in File Explorer",
+        domain: "windows",
+        bloom_level: 3,
+      });
+      const session = await startSession(db, {
+        user_id: "tester",
+        task: "Organize invoices",
+        execution_context: "ui",
+      });
+
+      appendUiObservationReport({
+        version: 1,
+        sessionId: session.id,
+        sequence: 1,
+        observedFrom: "2026-06-15T10:00:00Z",
+        observedTo: "2026-06-15T10:00:05Z",
+        kind: "step-completed",
+        application: { processName: "explorer.exe", processId: 42 },
+        summary: "Created a folder named Invoices.",
+        actions: [{ type: "click", target: "New folder" }],
+        evidence: [{ type: "uia", ref: "event:4", redacted: false }],
+        candidateTokens: [
+          {
+            slug: token.slug,
+            confidence: 0.91,
+            rationale: "Folder creation completed.",
+          },
+        ],
+        confidence: 0.91,
+      });
+
+      const preview = await prepareSessionSynthesis(db, {
+        sessionId: session.id,
+      });
+
+      expect(preview.commandCount).toBe(1);
+      expect(preview.candidates).toHaveLength(1);
+      expect(preview.candidates[0]).toMatchObject({
+        tokenSlug: token.slug,
+        inferredRating: 4,
+        confidence: "high",
+      });
+    } finally {
+      if (originalDir === undefined) {
+        delete process.env.ZAM_OBSERVER_DIR;
+      } else {
+        process.env.ZAM_OBSERVER_DIR = originalDir;
+      }
+      rmSync(observerDir, { recursive: true, force: true });
+    }
   });
 });

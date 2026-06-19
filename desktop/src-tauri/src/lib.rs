@@ -661,8 +661,16 @@ fn start_zam_observer_watch_blocking(
             observer_dir.display()
         )
     })?;
-    let event_log_path = observer_dir.join("watch-events.jsonl");
+    let event_log_path = observer_dir.join("watch-reports.jsonl");
     let reports_log_path = observer_reports_path(&session);
+    if let Some(parent) = reports_log_path.parent() {
+        fs::create_dir_all(parent).map_err(|error| {
+            format!(
+                "Failed to create observer reports directory {}: {error}",
+                parent.display()
+            )
+        })?;
+    }
     let stderr_log_path = observer_dir.join("watch.stderr.log");
     let event_file = fs::OpenOptions::new()
         .create(true)
@@ -709,6 +717,7 @@ fn start_zam_observer_watch_blocking(
             .filter(|value| !value.trim().is_empty())
             .unwrap_or_else(|| "1000".to_string()),
         "--reports".to_string(),
+        "--event-driven".to_string(),
     ];
     if let Some(samples) = samples.filter(|value| !value.trim().is_empty()) {
         args.push("--samples".to_string());

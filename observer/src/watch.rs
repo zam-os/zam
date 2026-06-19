@@ -5,7 +5,8 @@ use std::thread;
 use std::time::Duration;
 
 use crate::capture::watch_window_keyframes_continuous;
-use crate::model::SensorEvent;
+use crate::clock::observed_at_now;
+use crate::model::{SensorEvent, SensorKind, SensorSource, PROTOCOL_VERSION};
 use crate::raw_input::watch_raw_input_continuous;
 use crate::uia::watch_focused_element_continuous;
 
@@ -45,6 +46,8 @@ pub fn watch_session(
 
     let (tx, rx) = mpsc::channel::<SensorEvent>();
 
+    on_event(session_control_event(session_id, SensorKind::SessionStarted))?;
+
     // Spawn a thread to monitor stdin EOF so we shut down cleanly when parent closes stdin.
     let should_stop_stdin = should_stop.clone();
     thread::spawn(move || {
@@ -67,6 +70,7 @@ pub fn watch_session(
     let uia_handle = thread::spawn(move || {
         let mut forward_event = |event| uia_tx.send(event).map_err(|error| error.to_string());
         let result = watch_focused_element_continuous(
+            hwnd,
             Duration::from_millis(500),
             &session_id_uia,
             should_stop_uia.clone(),
@@ -158,11 +162,29 @@ pub fn watch_session(
         .join()
         .map_err(|_| "Capture thread panicked".to_string())?;
 
+    let stop_result = on_event(session_control_event(session_id, SensorKind::SessionStopped));
+
     uia_res?;
     input_res?;
     capture_res?;
+    stop_result?;
 
     Ok(())
+}
+
+fn session_control_event(session_id: &str, kind: SensorKind) -> SensorEvent {
+    SensorEvent {
+        version: PROTOCOL_VERSION,
+        session_id: session_id.to_string(),
+        sequence: 0,
+        observed_at: observed_at_now(),
+        source: SensorSource::System,
+        kind,
+        application: None,
+        target: None,
+        data: std::collections::BTreeMap::new(),
+        redacted: false,
+    }
 }
 
 #[cfg(test)]

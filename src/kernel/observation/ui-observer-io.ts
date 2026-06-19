@@ -28,6 +28,10 @@ export function ensureUiObserverDir(): void {
   }
 }
 
+export function uiObservationLogExists(sessionId: string): boolean {
+  return existsSync(getUiObservationPath(sessionId));
+}
+
 export function readUiObservationLog(sessionId: string): UiObservationReport[] {
   const path = getUiObservationPath(sessionId);
   if (!existsSync(path)) return [];
