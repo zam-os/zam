@@ -1018,10 +1018,7 @@ fn execute_zam_bridge_blocking(
 
     // 1. Ensure the persistent bridge process is running.
     let is_alive = if let Some(ref mut bridge) = *lock {
-        match bridge.child.try_wait() {
-            Ok(None) => true,
-            _ => false,
-        }
+        matches!(bridge.child.try_wait(), Ok(None))
     } else {
         false
     };
@@ -1037,7 +1034,7 @@ fn execute_zam_bridge_blocking(
             env::current_dir().ok()
         ));
 
-        let runtime = match resolve_bridge_runtime(&app) {
+        let runtime = match resolve_bridge_runtime(app) {
             Some(r) => r,
             None => {
                 diag_log("resolve_bridge_runtime returned None — CLI not found");
