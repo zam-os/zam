@@ -420,7 +420,8 @@ body {
   border-color: var(--clr-accent-cyan);
 }
 
-.observer-loop-controls {
+.observer-loop-controls,
+.observer-watch-controls {
   align-items: center;
   display: flex;
   flex-wrap: wrap;

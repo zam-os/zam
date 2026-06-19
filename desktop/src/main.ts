@@ -74,6 +74,14 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     observer_loop_running: "Observer loop running. One snapshot at a time.",
     observer_loop_waiting: "Observer loop running. Next snapshot in {seconds}s.",
     observer_loop_stopped: "Observer loop stopped.",
+    observer_watch_start: "Start Watch",
+    observer_watch_stop: "Stop Watch",
+    observer_watch_idle: "Continuous watch is off.",
+    observer_watch_starting: "Starting continuous watch...",
+    observer_watch_running: "Watching {title} — {count} event(s).",
+    observer_watch_stopping: "Stopping continuous watch...",
+    observer_watch_stopped: "Continuous watch stopped.",
+    observer_watch_error: "Watch error: {message}",
     graph_title: "Knowledge Graph (3D)",
     graph_hint: "Drag to rotate • Click nodes to focus • Scroll to zoom",
     graph_focus: "Focus",
@@ -151,6 +159,14 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     observer_loop_running: "Observer-Loop läuft. Immer nur ein Snapshot gleichzeitig.",
     observer_loop_waiting: "Observer-Loop läuft. Nächster Snapshot in {seconds}s.",
     observer_loop_stopped: "Observer-Loop gestoppt.",
+    observer_watch_start: "Watch starten",
+    observer_watch_stop: "Watch stoppen",
+    observer_watch_idle: "Kontinuierliche Beobachtung ist aus.",
+    observer_watch_starting: "Kontinuierliche Beobachtung wird gestartet...",
+    observer_watch_running: "Beobachte {title} — {count} Ereignis(se).",
+    observer_watch_stopping: "Kontinuierliche Beobachtung wird gestoppt...",
+    observer_watch_stopped: "Kontinuierliche Beobachtung gestoppt.",
+    observer_watch_error: "Watch-Fehler: {message}",
     graph_title: "Wissensnetz (3D)",
     graph_hint: "Ziehen zum Drehen • Knoten klicken = Fokus • Scroll = Zoomen",
     graph_focus: "Fokus",
@@ -227,6 +243,9 @@ let observerAnalyzeInProgress = false;
 let observerAnalysisRequestId = 0;
 let observerLoopRunning = false;
 let observerLoopTimerId: number | null = null;
+let observerWatchRunning = false;
+let observerWatchPollId: number | null = null;
+const OBSERVER_WATCH_POLL_MS = 1000;
 // Forward-paging cursor for get-observations. The bridge returns reports with
 // sequence > after (oldest-first), so we advance this past everything seen to
 // keep pulling only new reports instead of re-reading the first page forever.
@@ -267,6 +286,19 @@ interface UiObservationReport {
   evidence: Array<{ type: string; ref: string; redacted: boolean }>;
   confidence: number;
   candidateTokens: Array<{ slug: string; confidence: number; rationale: string }>;
+}
+
+interface ObserverWatchStatus {
+  running: boolean;
+  pid: number | null;
+  session: string | null;
+  hwnd: string | null;
+  eventLogPath: string | null;
+  stderrLogPath: string | null;
+  startedAt: number | null;
+  eventCount: number;
+  lastEventAt: number | null;
+  lastError: string | null;
 }
 
 interface UiObservationsResponse {
@@ -351,6 +383,11 @@ function initializeTranslations() {
   document.getElementById("btn-observer-loop-start")!.textContent = t("observer_loop_start");
   document.getElementById("btn-observer-loop-stop")!.textContent = t("observer_loop_stop");
   document.getElementById("observer-loop-note")!.textContent = t("observer_loop_idle");
+  document.getElementById("btn-observer-watch-start")!.textContent = t("observer_watch_start");
+  document.getElementById("btn-observer-watch-stop")!.textContent = t("observer_watch_stop");
+  if (!observerWatchRunning) {
+    document.getElementById("observer-watch-note")!.textContent = t("observer_watch_idle");
+  }
   renderObserverHistory();
   
   // Rating labels
@@ -460,8 +497,10 @@ function syncObserverControls(): void {
   const cancelButton = document.getElementById("btn-observer-cancel") as HTMLButtonElement;
   const loopStartButton = document.getElementById("btn-observer-loop-start") as HTMLButtonElement;
   const loopStopButton = document.getElementById("btn-observer-loop-stop") as HTMLButtonElement;
+  const watchStartButton = document.getElementById("btn-observer-watch-start") as HTMLButtonElement;
+  const watchStopButton = document.getElementById("btn-observer-watch-stop") as HTMLButtonElement;
   const select = document.getElementById("observer-window-select") as HTMLSelectElement;
-  const locked = observerAnalyzeInProgress || observerLoopRunning;
+  const locked = observerAnalyzeInProgress || observerLoopRunning || observerWatchRunning;
   const privacyPaused = observerWindowPrivacyPaused(selected);
 
   refreshButton.disabled = locked;
@@ -472,6 +511,9 @@ function syncObserverControls(): void {
   loopStartButton.disabled = locked || selected === null || privacyPaused;
   loopStopButton.classList.toggle("hidden", !observerLoopRunning);
   loopStopButton.disabled = !observerLoopRunning;
+  watchStartButton.disabled = locked || selected === null || privacyPaused;
+  watchStopButton.classList.toggle("hidden", !observerWatchRunning);
+  watchStopButton.disabled = !observerWatchRunning;
 }
 
 function setObserverAnalysisBusy(busy: boolean): void {
@@ -641,6 +683,113 @@ function clearObserverLoopTimer(): void {
   if (observerLoopTimerId !== null) {
     clearTimeout(observerLoopTimerId);
     observerLoopTimerId = null;
+  }
+}
+
+// Continuous watch: spawns the unified observer daemon as a background child
+// process and polls its lifecycle status (event count, last event, errors).
+async function startObserverWatch(): Promise<void> {
+  if (observerWatchRunning || observerAnalyzeInProgress || observerLoopRunning) return;
+  const selected = selectedObserverWindow();
+  if (!selected) return;
+
+  const status = document.getElementById("observer-status")!;
+  const note = document.getElementById("observer-watch-note")!;
+  if (observerWindowPrivacyPaused(selected)) {
+    status.textContent = tf("observer_privacy_paused", {
+      reason: observerPrivacyReasonText(selected),
+    });
+    return;
+  }
+
+  observerWatchRunning = true;
+  note.textContent = t("observer_watch_starting");
+  status.textContent = t("observer_watch_starting");
+  syncObserverControls();
+
+  try {
+    const result = await invoke<ObserverWatchStatus>("start_zam_observer_watch", {
+      session: observerSessionId,
+      hwnd: String(selected.hwnd),
+      intervalMs: "1000",
+    });
+    renderObserverWatchStatus(result, selected.title);
+    scheduleObserverWatchPoll();
+  } catch (error) {
+    observerWatchRunning = false;
+    const message = tf("observer_watch_error", { message: String(error) });
+    note.textContent = message;
+    status.textContent = message;
+    syncObserverControls();
+  }
+}
+
+async function stopObserverWatch(): Promise<void> {
+  if (!observerWatchRunning) return;
+  clearObserverWatchPoll();
+  const note = document.getElementById("observer-watch-note")!;
+  const status = document.getElementById("observer-status")!;
+  note.textContent = t("observer_watch_stopping");
+  try {
+    await invoke<ObserverWatchStatus>("stop_zam_observer_watch");
+  } catch (error) {
+    note.textContent = tf("observer_watch_error", { message: String(error) });
+  } finally {
+    observerWatchRunning = false;
+    note.textContent = t("observer_watch_stopped");
+    status.textContent = t("observer_watch_stopped");
+    syncObserverControls();
+  }
+}
+
+function scheduleObserverWatchPoll(): void {
+  clearObserverWatchPoll();
+  observerWatchPollId = window.setTimeout(() => {
+    void pollObserverWatchStatus();
+  }, OBSERVER_WATCH_POLL_MS);
+}
+
+function clearObserverWatchPoll(): void {
+  if (observerWatchPollId !== null) {
+    clearTimeout(observerWatchPollId);
+    observerWatchPollId = null;
+  }
+}
+
+async function pollObserverWatchStatus(): Promise<void> {
+  if (!observerWatchRunning) return;
+  try {
+    const result = await invoke<ObserverWatchStatus>("status_zam_observer_watch");
+    const selected = selectedObserverWindow();
+    renderObserverWatchStatus(result, selected?.title);
+    if (!result.running) {
+      // The watch process exited on its own (sample bound or crash).
+      observerWatchRunning = false;
+      clearObserverWatchPoll();
+      syncObserverControls();
+      return;
+    }
+  } catch (error) {
+    document.getElementById("observer-watch-note")!.textContent = tf("observer_watch_error", {
+      message: String(error),
+    });
+  }
+  if (observerWatchRunning) scheduleObserverWatchPoll();
+}
+
+function renderObserverWatchStatus(status: ObserverWatchStatus, fallbackTitle?: string): void {
+  const note = document.getElementById("observer-watch-note")!;
+  if (status.lastError) {
+    note.textContent = tf("observer_watch_error", { message: status.lastError });
+    return;
+  }
+  if (status.running) {
+    note.textContent = tf("observer_watch_running", {
+      title: fallbackTitle ?? status.session ?? "window",
+      count: status.eventCount,
+    });
+  } else {
+    note.textContent = t("observer_watch_stopped");
   }
 }
 
@@ -1768,6 +1917,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("btn-observer-loop-stop")!.addEventListener("click", () => {
     stopObserverLoop();
+  });
+
+  document.getElementById("btn-observer-watch-start")!.addEventListener("click", () => {
+    void startObserverWatch();
+  });
+
+  document.getElementById("btn-observer-watch-stop")!.addEventListener("click", () => {
+    void stopObserverWatch();
   });
 
   document.getElementById("btn-observer-reports-refresh")!.addEventListener("click", () => {
