@@ -529,15 +529,18 @@ Implemented foundation:
 - native x64 and ARM64 observer CI builds;
 - release-resource preparation for the Tauri package;
 - Tauri commands for observer probe, window listing/foreground metadata,
-  bounded foreground watching, capture, sampling, and snapshots.
+  bounded foreground watching, capture, sampling, snapshots, and managed
+  start/status/stop lifecycle control for the unified `watch` stream, writing
+  its JSONL events into the desktop app data directory.
 
 Foreground, frame keyframes, UI Automation focus, and Raw Input are now live
 sensor sources feeding both independent diagnostic commands and the unified
-`watch` event bus. The remaining Phase 0 work is to expose that continuous bus
-through desktop/bridge lifecycle controls and to broaden UI Automation beyond
-polled focus/dialog heuristics to invoke, text-change, and structure events, so
-the full event vocabulary the replay engine already understands is produced from
-one supervised observer process.
+`watch` event bus. Tauri can now supervise that bus and persist the raw JSONL
+stream per session. The remaining Phase 0 work is to expose the lifecycle in the
+desktop UI, replay or bridge the persisted events into observation reports, and
+broaden UI Automation beyond polled focus/dialog heuristics to invoke,
+text-change, and structure events, so the full event vocabulary the replay
+engine already understands is produced from one supervised observer process.
 
 ### Phase 1: deterministic observer
 
