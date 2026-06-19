@@ -7,6 +7,7 @@ mod keyframe_archive;
 mod model;
 mod picker;
 mod privacy;
+mod raw_input;
 mod replay;
 mod uia;
 
@@ -32,5 +33,6 @@ pub use privacy::{
     load_window_privacy_policy, load_window_privacy_policy_from_env, redact_window_title,
     PrivacyAction, WindowPrivacy, WindowPrivacyPolicy, PRIVACY_POLICY_ENV, REDACTED_WINDOW_TITLE,
 };
+pub use raw_input::watch_raw_input;
 pub use replay::{ReplayEngine, ReplayError, ReplaySummary};
 pub use uia::watch_focused_element;

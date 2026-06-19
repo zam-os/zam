@@ -507,6 +507,10 @@ Implemented foundation:
   automation id, accessible name) and the owning process, redacting names for
   password fields and privacy-sensitive applications and never reading element
   values;
+- duration-bounded `watch-raw-input` command that turns Raw Input into sparse
+  `click`, `scroll`, `shortcut`, and aggregated `typing-activity` events (a
+  keystroke count, never the characters), attaches the foreground process, and
+  drops events while a privacy-paused window is in front;
 - TypeScript report parsing in the ZAM kernel;
 - OpenAI-compatible vision snapshot adapter in the CLI layer;
 - `zam bridge observe-ui-snapshot` for turning a PNG keyframe into a validated
@@ -524,11 +528,12 @@ Implemented foundation:
 - Tauri commands for observer probe, window listing/foreground metadata,
   bounded foreground watching, capture, sampling, and snapshots.
 
-UI Automation focus is now a live sensor source. The remaining Phase 0 work is
-to add Raw Input (clicks, shortcuts, scroll, typing activity without text) and to
+Foreground, frame keyframes, UI Automation focus, and Raw Input are now live
+sensor sources feeding the replay engine. The remaining Phase 0 work is to merge
+the independent per-command streams into a single sequenced event bus and to
 broaden UI Automation beyond focus to invoke, dialog, and structure events, so
-the full event vocabulary the replay engine already understands is produced
-live.
+the full event vocabulary the replay engine already understands is produced from
+one continuous observer process.
 
 ### Phase 1: deterministic observer
 

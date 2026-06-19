@@ -28,6 +28,8 @@ cargo run --manifest-path observer/Cargo.toml -- \
   watch-window --session session-1 --hwnd 0x123456 --samples 60 --interval-ms 1000
 cargo run --manifest-path observer/Cargo.toml -- \
   watch-uia --session session-1 --samples 60 --interval-ms 500
+cargo run --manifest-path observer/Cargo.toml -- \
+  watch-raw-input --session session-1 --duration-ms 10000
 ```
 
 `replay` reads `UiSensorEvent` JSONL and writes `UiObservationReport` JSONL.
@@ -37,9 +39,9 @@ The replay engine provides a stable fixture boundary for developing Windows
 sensor adapters and observer-model integrations independently.
 
 `probe` reports sidecar capabilities. On Windows, `windowContext`,
-`foregroundWatch`, `liveCapture`, `frameSampling`, and `uiAutomation` are true
-once the native window, Graphics Capture, and UI Automation backends are
-available.
+`foregroundWatch`, `liveCapture`, `frameSampling`, `uiAutomation`, and `rawInput`
+are true once the native window, Graphics Capture, UI Automation, and Raw Input
+backends are available.
 
 `list-windows` is Windows-only. It returns visible top-level windows with HWND,
 process ID, title, bounds metadata, and a privacy classification. Windows that
@@ -122,6 +124,20 @@ with the keyframe stream as a second, semantic sensor source:
 
 ```bash
 zam-observer watch-uia --session s1 --samples 20 --interval-ms 500 \
+  | zam-observer replay --input -
+```
+
+`watch-raw-input --session <id>` is Windows-only. It registers a Raw Input sink
+for mouse and keyboard and emits sparse, privacy-safe `UiSensorEvent`s for
+`--duration-ms`: a `click` per mouse button, a `scroll` per wheel notch, a
+`shortcut` (with a label such as `Ctrl+S`) when a modifier is held, and an
+aggregated `typing-activity` carrying only a keystroke count for unmodified keys.
+Free text is never reconstructed — typed keys are counted, not identified — and
+the owning process is attached to each event. While a privacy-paused window
+(password manager, auth dialog) is in the foreground, input events are dropped:
+
+```bash
+zam-observer watch-raw-input --session s1 --duration-ms 10000 \
   | zam-observer replay --input -
 ```
 

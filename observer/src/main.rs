@@ -8,7 +8,7 @@ use std::time::Duration;
 
 use zam_observer::{
     capture_once, capture_window, foreground_window, list_windows, observed_at_now, pick_window,
-    sample_window, snapshot_window, watch_focused_element, watch_window_keyframes,
+    sample_window, snapshot_window, watch_focused_element, watch_raw_input, watch_window_keyframes,
     ApplicationContext, ObserverCapabilities, ObserverProbe, ReplayEngine, SensorEvent, SensorKind,
     SensorSource, UiObservationReport, DEFAULT_CHANGE_THRESHOLD, PROTOCOL_VERSION,
 };
@@ -54,6 +54,10 @@ fn run() -> Result<(), String> {
             let options = WatchUiaOptions::parse(args.collect())?;
             watch_uia_command(options)
         }
+        "watch-raw-input" => {
+            let options = WatchRawInputOptions::parse(args.collect())?;
+            watch_raw_input_command(options)
+        }
         "replay" => {
             let options = IoOptions::parse(args.collect())?;
             replay(options)
@@ -84,7 +88,7 @@ fn print_probe() -> Result<(), String> {
             live_capture: cfg!(target_os = "windows"),
             frame_sampling: cfg!(target_os = "windows"),
             ui_automation: cfg!(target_os = "windows"),
-            raw_input: false,
+            raw_input: cfg!(target_os = "windows"),
         },
     };
     println!(
@@ -244,6 +248,17 @@ fn watch_uia_command(options: WatchUiaOptions) -> Result<(), String> {
     result
 }
 
+fn watch_raw_input_command(options: WatchRawInputOptions) -> Result<(), String> {
+    let mut writer = BufWriter::new(io::stdout());
+    let result = watch_raw_input(
+        Duration::from_millis(options.duration_ms),
+        &options.session_id,
+        &mut |event| write_event(&mut writer, event),
+    );
+    writer.flush().map_err(|error| error.to_string())?;
+    result
+}
+
 fn print_pretty(value: &impl serde::Serialize) -> Result<(), String> {
     println!(
         "{}",
@@ -363,6 +378,7 @@ Usage:
   zam-observer sample-window --hwnd <decimal|0xhex> [--frames <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>]
   zam-observer watch-window --session <id> --hwnd <decimal|0xhex> [--samples <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>] [--heartbeat-every <n>] [--keyframe-dir <dir> [--keyframe-retain <n>]]
   zam-observer watch-uia --session <id> [--samples <n>] [--interval-ms <n>]
+  zam-observer watch-raw-input --session <id> [--duration-ms <n>]
   zam-observer replay --input <path|-> [--output <path|->]
   zam-observer validate --input <path|-> [--output <path|->]"
     );
@@ -613,6 +629,60 @@ impl SampleOptions {
             frames,
             interval_ms,
             change_threshold,
+        })
+    }
+}
+
+#[derive(Debug)]
+struct WatchRawInputOptions {
+    session_id: String,
+    duration_ms: u64,
+}
+
+impl WatchRawInputOptions {
+    const DEFAULT_DURATION_MS: u64 = 10_000;
+    const MIN_DURATION_MS: u64 = 100;
+    const MAX_DURATION_MS: u64 = 3_600_000;
+
+    fn parse(args: Vec<String>) -> Result<Self, String> {
+        let mut session_id = None;
+        let mut duration_ms = Self::DEFAULT_DURATION_MS;
+        let mut index = 0;
+
+        while index < args.len() {
+            match args[index].as_str() {
+                "--session" => {
+                    index += 1;
+                    session_id = args.get(index).cloned();
+                }
+                "--duration-ms" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--duration-ms requires a value".to_string())?;
+                    duration_ms = raw
+                        .parse::<u64>()
+                        .map_err(|error| format!("invalid --duration-ms '{raw}': {error}"))?;
+                }
+                unknown => return Err(format!("unknown option '{unknown}'")),
+            }
+            index += 1;
+        }
+
+        let session_id = session_id
+            .filter(|value| !value.trim().is_empty())
+            .ok_or_else(|| "--session is required".to_string())?;
+        if !(Self::MIN_DURATION_MS..=Self::MAX_DURATION_MS).contains(&duration_ms) {
+            return Err(format!(
+                "--duration-ms must be between {} and {}",
+                Self::MIN_DURATION_MS,
+                Self::MAX_DURATION_MS
+            ));
+        }
+
+        Ok(Self {
+            session_id,
+            duration_ms,
         })
     }
 }
@@ -1117,5 +1187,31 @@ mod tests {
         .unwrap_err();
 
         assert!(error.contains("--session is required"));
+    }
+
+    #[test]
+    fn parses_watch_raw_input_defaults() {
+        let options =
+            WatchRawInputOptions::parse(vec!["--session".to_string(), "session-1".to_string()])
+                .expect("watch raw input options");
+
+        assert_eq!(options.session_id, "session-1");
+        assert_eq!(
+            options.duration_ms,
+            WatchRawInputOptions::DEFAULT_DURATION_MS
+        );
+    }
+
+    #[test]
+    fn rejects_watch_raw_input_with_excessive_duration() {
+        let error = WatchRawInputOptions::parse(vec![
+            "--session".to_string(),
+            "session-1".to_string(),
+            "--duration-ms".to_string(),
+            "99999999".to_string(),
+        ])
+        .unwrap_err();
+
+        assert!(error.contains("--duration-ms must be between"));
     }
 }
