@@ -4,13 +4,13 @@ use std::fs::File;
 use std::io::{self, BufRead, BufReader, BufWriter, Write};
 use std::path::{Path, PathBuf};
 use std::thread;
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
+use std::time::Duration;
 
 use zam_observer::{
-    capture_once, capture_window, foreground_window, list_windows, pick_window, sample_window,
-    snapshot_window, ApplicationContext, ObserverCapabilities, ObserverProbe, ReplayEngine,
-    SensorEvent, SensorKind, SensorSource, UiObservationReport, DEFAULT_CHANGE_THRESHOLD,
-    PROTOCOL_VERSION,
+    capture_once, capture_window, foreground_window, list_windows, observed_at_now, pick_window,
+    sample_window, snapshot_window, watch_window_keyframes, ApplicationContext,
+    ObserverCapabilities, ObserverProbe, ReplayEngine, SensorEvent, SensorKind, SensorSource,
+    UiObservationReport, DEFAULT_CHANGE_THRESHOLD, PROTOCOL_VERSION,
 };
 
 fn main() {
@@ -45,6 +45,10 @@ fn run() -> Result<(), String> {
         "sample-window" => {
             let options = SampleOptions::parse(args.collect())?;
             sample_window_command(options)
+        }
+        "watch-window" => {
+            let options = WatchWindowOptions::parse(args.collect())?;
+            watch_window_command(options)
         }
         "replay" => {
             let options = IoOptions::parse(args.collect())?;
@@ -117,7 +121,7 @@ fn watch_foreground_command(options: WatchForegroundOptions) -> Result<(), Strin
                         sequence += 1;
                         write_event(
                             &mut writer,
-                            foreground_event(
+                            &foreground_event(
                                 &options.session_id,
                                 sequence,
                                 SensorSource::Privacy,
@@ -132,7 +136,7 @@ fn watch_foreground_command(options: WatchForegroundOptions) -> Result<(), Strin
                         sequence += 1;
                         write_event(
                             &mut writer,
-                            foreground_event(
+                            &foreground_event(
                                 &options.session_id,
                                 sequence,
                                 SensorSource::Privacy,
@@ -145,7 +149,7 @@ fn watch_foreground_command(options: WatchForegroundOptions) -> Result<(), Strin
                     sequence += 1;
                     write_event(
                         &mut writer,
-                        foreground_event(
+                        &foreground_event(
                             &options.session_id,
                             sequence,
                             SensorSource::Window,
@@ -205,6 +209,21 @@ fn sample_window_command(options: SampleOptions) -> Result<(), String> {
         Duration::from_millis(options.interval_ms),
         options.change_threshold,
     )?)
+}
+
+fn watch_window_command(options: WatchWindowOptions) -> Result<(), String> {
+    let mut writer = BufWriter::new(io::stdout());
+    let result = watch_window_keyframes(
+        options.hwnd,
+        options.samples,
+        Duration::from_millis(options.interval_ms),
+        options.change_threshold,
+        options.heartbeat_every,
+        &options.session_id,
+        &mut |event| write_event(&mut writer, event),
+    );
+    writer.flush().map_err(|error| error.to_string())?;
+    result
 }
 
 fn print_pretty(value: &impl serde::Serialize) -> Result<(), String> {
@@ -269,8 +288,8 @@ fn write_report(writer: &mut dyn Write, report: &UiObservationReport) -> Result<
     writeln!(writer).map_err(|error| error.to_string())
 }
 
-fn write_event(writer: &mut dyn Write, event: SensorEvent) -> Result<(), String> {
-    serde_json::to_writer(&mut *writer, &event).map_err(|error| error.to_string())?;
+fn write_event(writer: &mut dyn Write, event: &SensorEvent) -> Result<(), String> {
+    serde_json::to_writer(&mut *writer, event).map_err(|error| error.to_string())?;
     writeln!(writer).map_err(|error| error.to_string())
 }
 
@@ -310,40 +329,6 @@ fn foreground_event(
     }
 }
 
-fn observed_at_now() -> String {
-    let elapsed = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .unwrap_or_default();
-    format_unix_time_millis(elapsed.as_secs() as i64, elapsed.subsec_millis())
-}
-
-fn format_unix_time_millis(seconds: i64, millis: u32) -> String {
-    let days = seconds.div_euclid(86_400);
-    let seconds_of_day = seconds.rem_euclid(86_400);
-    let hour = seconds_of_day / 3_600;
-    let minute = (seconds_of_day % 3_600) / 60;
-    let second = seconds_of_day % 60;
-    let (year, month, day) = civil_from_unix_days(days);
-
-    format!("{year:04}-{month:02}-{day:02}T{hour:02}:{minute:02}:{second:02}.{millis:03}Z")
-}
-
-fn civil_from_unix_days(days: i64) -> (i32, u32, u32) {
-    let z = days + 719_468;
-    let era = if z >= 0 { z } else { z - 146_096 } / 146_097;
-    let day_of_era = z - era * 146_097;
-    let year_of_era =
-        (day_of_era - day_of_era / 1_460 + day_of_era / 36_524 - day_of_era / 146_096) / 365;
-    let year = year_of_era + era * 400;
-    let day_of_year = day_of_era - (365 * year_of_era + year_of_era / 4 - year_of_era / 100);
-    let month_prime = (5 * day_of_year + 2) / 153;
-    let day = day_of_year - (153 * month_prime + 2) / 5 + 1;
-    let month = month_prime + if month_prime < 10 { 3 } else { -9 };
-    let year = year + if month <= 2 { 1 } else { 0 };
-
-    (year as i32, month as u32, day as u32)
-}
-
 fn print_usage() {
     println!(
         "ZAM UI observer sidecar
@@ -358,6 +343,7 @@ Usage:
   zam-observer capture-window --hwnd <decimal|0xhex>
   zam-observer snapshot-window --hwnd <decimal|0xhex> --output <path.png>
   zam-observer sample-window --hwnd <decimal|0xhex> [--frames <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>]
+  zam-observer watch-window --session <id> --hwnd <decimal|0xhex> [--samples <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>] [--heartbeat-every <n>]
   zam-observer replay --input <path|-> [--output <path|->]
   zam-observer validate --input <path|-> [--output <path|->]"
     );
@@ -612,6 +598,125 @@ impl SampleOptions {
     }
 }
 
+#[derive(Debug)]
+struct WatchWindowOptions {
+    session_id: String,
+    hwnd: u64,
+    samples: usize,
+    interval_ms: u64,
+    change_threshold: f64,
+    heartbeat_every: u64,
+}
+
+impl WatchWindowOptions {
+    const DEFAULT_SAMPLES: usize = 60;
+    const MAX_SAMPLES: usize = 100_000;
+    const DEFAULT_INTERVAL_MS: u64 = 1000;
+    const MIN_INTERVAL_MS: u64 = 50;
+    const MAX_INTERVAL_MS: u64 = 60_000;
+    const DEFAULT_HEARTBEAT_EVERY: u64 = 10;
+    const MAX_HEARTBEAT_EVERY: u64 = 100_000;
+
+    fn parse(args: Vec<String>) -> Result<Self, String> {
+        let mut session_id = None;
+        let mut hwnd = None;
+        let mut samples = Self::DEFAULT_SAMPLES;
+        let mut interval_ms = Self::DEFAULT_INTERVAL_MS;
+        let mut change_threshold = DEFAULT_CHANGE_THRESHOLD;
+        let mut heartbeat_every = Self::DEFAULT_HEARTBEAT_EVERY;
+        let mut index = 0;
+
+        while index < args.len() {
+            match args[index].as_str() {
+                "--session" => {
+                    index += 1;
+                    session_id = args.get(index).cloned();
+                }
+                "--hwnd" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--hwnd requires a value".to_string())?;
+                    hwnd = Some(parse_hwnd(raw)?);
+                }
+                "--samples" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--samples requires a value".to_string())?;
+                    samples = raw
+                        .parse::<usize>()
+                        .map_err(|error| format!("invalid --samples '{raw}': {error}"))?;
+                }
+                "--interval-ms" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--interval-ms requires a value".to_string())?;
+                    interval_ms = raw
+                        .parse::<u64>()
+                        .map_err(|error| format!("invalid --interval-ms '{raw}': {error}"))?;
+                }
+                "--change-threshold" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--change-threshold requires a value".to_string())?;
+                    change_threshold = raw
+                        .parse::<f64>()
+                        .map_err(|error| format!("invalid --change-threshold '{raw}': {error}"))?;
+                }
+                "--heartbeat-every" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--heartbeat-every requires a value".to_string())?;
+                    heartbeat_every = raw
+                        .parse::<u64>()
+                        .map_err(|error| format!("invalid --heartbeat-every '{raw}': {error}"))?;
+                }
+                unknown => return Err(format!("unknown option '{unknown}'")),
+            }
+            index += 1;
+        }
+
+        let session_id = session_id
+            .filter(|value| !value.trim().is_empty())
+            .ok_or_else(|| "--session is required".to_string())?;
+        if samples == 0 || samples > Self::MAX_SAMPLES {
+            return Err(format!(
+                "--samples must be between 1 and {}",
+                Self::MAX_SAMPLES
+            ));
+        }
+        if !(Self::MIN_INTERVAL_MS..=Self::MAX_INTERVAL_MS).contains(&interval_ms) {
+            return Err(format!(
+                "--interval-ms must be between {} and {}",
+                Self::MIN_INTERVAL_MS,
+                Self::MAX_INTERVAL_MS
+            ));
+        }
+        if !change_threshold.is_finite() || !(0.0..=1.0).contains(&change_threshold) {
+            return Err("--change-threshold must be between 0.0 and 1.0".to_string());
+        }
+        if heartbeat_every > Self::MAX_HEARTBEAT_EVERY {
+            return Err(format!(
+                "--heartbeat-every must be between 0 and {}",
+                Self::MAX_HEARTBEAT_EVERY
+            ));
+        }
+
+        Ok(Self {
+            session_id,
+            hwnd: hwnd.ok_or_else(|| "--hwnd is required".to_string())?,
+            samples,
+            interval_ms,
+            change_threshold,
+            heartbeat_every,
+        })
+    }
+}
+
 fn parse_hwnd(raw: &str) -> Result<u64, String> {
     if let Some(hex) = raw.strip_prefix("0x").or_else(|| raw.strip_prefix("0X")) {
         u64::from_str_radix(hex, 16).map_err(|error| format!("invalid --hwnd '{raw}': {error}"))
@@ -793,15 +898,56 @@ mod tests {
     }
 
     #[test]
-    fn formats_unix_time_as_utc_rfc3339_millis() {
-        assert_eq!(format_unix_time_millis(0, 0), "1970-01-01T00:00:00.000Z");
+    fn parses_watch_window_defaults() {
+        let options = WatchWindowOptions::parse(vec![
+            "--session".to_string(),
+            "session-1".to_string(),
+            "--hwnd".to_string(),
+            "0x2a".to_string(),
+        ])
+        .expect("watch window options");
+
+        assert_eq!(options.session_id, "session-1");
+        assert_eq!(options.hwnd, 42);
+        assert_eq!(options.samples, WatchWindowOptions::DEFAULT_SAMPLES);
+        assert_eq!(options.interval_ms, WatchWindowOptions::DEFAULT_INTERVAL_MS);
+        assert_eq!(options.change_threshold, DEFAULT_CHANGE_THRESHOLD);
         assert_eq!(
-            format_unix_time_millis(1_609_459_200, 42),
-            "2021-01-01T00:00:00.042Z"
+            options.heartbeat_every,
+            WatchWindowOptions::DEFAULT_HEARTBEAT_EVERY
         );
-        assert_eq!(
-            format_unix_time_millis(1_709_164_800, 999),
-            "2024-02-29T00:00:00.999Z"
-        );
+    }
+
+    #[test]
+    fn parses_watch_window_overrides() {
+        let options = WatchWindowOptions::parse(vec![
+            "--session".to_string(),
+            "session-1".to_string(),
+            "--hwnd".to_string(),
+            "42".to_string(),
+            "--samples".to_string(),
+            "3".to_string(),
+            "--interval-ms".to_string(),
+            "250".to_string(),
+            "--change-threshold".to_string(),
+            "0.1".to_string(),
+            "--heartbeat-every".to_string(),
+            "4".to_string(),
+        ])
+        .expect("watch window options");
+
+        assert_eq!(options.samples, 3);
+        assert_eq!(options.interval_ms, 250);
+        assert_eq!(options.change_threshold, 0.1);
+        assert_eq!(options.heartbeat_every, 4);
+    }
+
+    #[test]
+    fn rejects_watch_window_without_hwnd() {
+        let error =
+            WatchWindowOptions::parse(vec!["--session".to_string(), "session-1".to_string()])
+                .unwrap_err();
+
+        assert!(error.contains("--hwnd is required"));
     }
 }

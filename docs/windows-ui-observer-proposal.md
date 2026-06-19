@@ -494,6 +494,10 @@ Implemented foundation:
 - downsampled-luminance frame signatures with a configurable change threshold,
   so sampled frames are flagged as changed only when they visually differ from
   the last retained keyframe (the keyframe-retention primitive for cost control);
+- bounded `watch-window` command that turns a live capture session into a sparse
+  `UiSensorEvent` stream — a `frame-changed` keyframe event per visual change
+  plus periodic heartbeats — which the existing replay engine consumes directly
+  into `UiObservationReport`s without persisting pixels;
 - TypeScript report parsing in the ZAM kernel;
 - OpenAI-compatible vision snapshot adapter in the CLI layer;
 - `zam bridge observe-ui-snapshot` for turning a PNG keyframe into a validated
@@ -511,9 +515,10 @@ Implemented foundation:
 - Tauri commands for observer probe, window listing/foreground metadata,
   bounded foreground watching, capture, sampling, and snapshots.
 
-The remaining Phase 0 work is to add UI Automation and Raw Input, and to wire
-the frame-change detection into a continuous, event-triggered capture loop that
-retains keyframes to the ring around important events.
+The remaining Phase 0 work is to add UI Automation and Raw Input as additional
+sensor sources, and to retain the actual keyframe pixels referenced by
+`frame-changed` events in the in-memory ring so a report's evidence can be
+fetched on demand (today the keyframe `ref` is a symbolic handle).
 
 ### Phase 1: deterministic observer
 

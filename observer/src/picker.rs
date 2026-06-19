@@ -57,6 +57,16 @@ pub fn foreground_window() -> Result<Option<WindowInfo>, String> {
 }
 
 #[cfg(target_os = "windows")]
+pub fn window_info(hwnd: u64) -> Result<Option<WindowInfo>, String> {
+    windows_picker::window_info(hwnd)
+}
+
+#[cfg(not(target_os = "windows"))]
+pub fn window_info(_hwnd: u64) -> Result<Option<WindowInfo>, String> {
+    Err("window inspection is only available on Windows".to_string())
+}
+
+#[cfg(target_os = "windows")]
 mod windows_picker {
     use std::ffi::c_void;
     use std::path::Path;
@@ -180,6 +190,19 @@ mod windows_picker {
         let hwnd = unsafe { GetForegroundWindow() };
         if hwnd.is_invalid() {
             return Ok(None);
+        }
+
+        Ok(describe_window(hwnd, &policy))
+    }
+
+    pub(crate) fn window_info(raw_hwnd: u64) -> Result<Option<WindowInfo>, String> {
+        let policy = load_window_privacy_policy_from_env()?;
+        let hwnd = hwnd_from_u64(raw_hwnd);
+        if hwnd.is_invalid() {
+            return Err("invalid HWND 0".to_string());
+        }
+        if !unsafe { IsWindow(Some(hwnd)).as_bool() } {
+            return Err(format!("HWND 0x{raw_hwnd:x} is not a valid window"));
         }
 
         Ok(describe_window(hwnd, &policy))

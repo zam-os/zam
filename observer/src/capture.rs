@@ -3,7 +3,7 @@ use std::time::Duration;
 
 use serde::{Deserialize, Serialize};
 
-use crate::model::PROTOCOL_VERSION;
+use crate::model::{SensorEvent, PROTOCOL_VERSION};
 use crate::picker::PickedWindow;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -59,6 +59,31 @@ pub fn sample_window(
     windows_capture::sample_window(hwnd, frames, interval, change_threshold)
 }
 
+/// Stream sparse capture `SensorEvent`s for a window: a `frame-changed` event
+/// per visual keyframe plus periodic `heartbeat`s. `on_event` is called for each
+/// emitted event so callers can write them out incrementally.
+#[cfg(target_os = "windows")]
+#[allow(clippy::too_many_arguments)]
+pub fn watch_window_keyframes(
+    hwnd: u64,
+    samples: usize,
+    interval: Duration,
+    change_threshold: f64,
+    heartbeat_every: u64,
+    session_id: &str,
+    on_event: &mut dyn FnMut(&SensorEvent) -> Result<(), String>,
+) -> Result<(), String> {
+    windows_capture::watch_window_keyframes(
+        hwnd,
+        samples,
+        interval,
+        change_threshold,
+        heartbeat_every,
+        session_id,
+        on_event,
+    )
+}
+
 #[cfg(not(target_os = "windows"))]
 pub fn capture_once() -> Result<Option<CapturedFrameProbe>, String> {
     Err("window capture is only available on Windows".to_string())
@@ -81,6 +106,20 @@ pub fn sample_window(
     _interval: Duration,
     _change_threshold: f64,
 ) -> Result<CapturedFrameSequence, String> {
+    Err("window capture is only available on Windows".to_string())
+}
+
+#[cfg(not(target_os = "windows"))]
+#[allow(clippy::too_many_arguments)]
+pub fn watch_window_keyframes(
+    _hwnd: u64,
+    _samples: usize,
+    _interval: Duration,
+    _change_threshold: f64,
+    _heartbeat_every: u64,
+    _session_id: &str,
+    _on_event: &mut dyn FnMut(&SensorEvent) -> Result<(), String>,
+) -> Result<(), String> {
     Err("window capture is only available on Windows".to_string())
 }
 
@@ -116,9 +155,12 @@ mod windows_capture {
     };
 
     use super::{CapturedFrameProbe, CapturedFrameSample, CapturedFrameSequence, PROTOCOL_VERSION};
+    use crate::clock::observed_at_now;
     use crate::frame_ring::FrameRing;
     use crate::frame_signature::FrameSignature;
-    use crate::picker::{capture_item_for_hwnd, pick_graphics_capture_item, PickedWindow};
+    use crate::keyframe::KeyframeStream;
+    use crate::model::{ApplicationContext, SensorEvent};
+    use crate::picker::{capture_item_for_hwnd, pick_graphics_capture_item, window_info, PickedWindow};
     use crate::privacy::ensure_capture_allowed;
 
     struct CaptureDevices {
@@ -152,6 +194,83 @@ mod windows_capture {
     ) -> Result<CapturedFrameSequence, String> {
         let (item, window) = capture_item_for_hwnd(hwnd)?;
         sample_item(item, window, frame_count, interval, change_threshold)
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    pub fn watch_window_keyframes(
+        hwnd: u64,
+        samples: usize,
+        interval: Duration,
+        change_threshold: f64,
+        heartbeat_every: u64,
+        session_id: &str,
+        on_event: &mut dyn FnMut(&SensorEvent) -> Result<(), String>,
+    ) -> Result<(), String> {
+        if samples == 0 {
+            return Err("--samples must be greater than 0".to_string());
+        }
+
+        // `capture_item_for_hwnd` re-checks the privacy gate before any pixels
+        // are read; `window_info` adds the process name the picker item lacks.
+        let (item, picked) = capture_item_for_hwnd(hwnd)?;
+        let (application, redacted) = match window_info(hwnd)? {
+            Some(info) => {
+                let redacted = info.privacy.title_redacted;
+                (
+                    ApplicationContext {
+                        process_name: info.process_name,
+                        process_id: Some(info.process_id),
+                        window_title: Some(info.title),
+                    },
+                    redacted,
+                )
+            }
+            None => (
+                ApplicationContext {
+                    process_name: format!("hwnd-0x{hwnd:x}"),
+                    process_id: None,
+                    window_title: Some(picked.display_name.clone()),
+                },
+                picked.privacy.title_redacted,
+            ),
+        };
+
+        let mut stream = KeyframeStream::new(
+            session_id,
+            application,
+            redacted,
+            change_threshold,
+            heartbeat_every,
+        );
+
+        let devices = create_direct3d_devices()?;
+        let (frame, session, pool) = capture_first_frame(&devices.winrt, &item)?;
+        let first_signature = read_frame_signature(&devices.native, &frame)?;
+        let _ = frame.Close();
+        if let Some(event) = stream.observe(Some(first_signature), observed_at_now()) {
+            on_event(&event)?;
+        }
+
+        for _ in 1..samples {
+            if !interval.is_zero() {
+                thread::sleep(interval);
+            }
+            let signature = match try_wait_for_frame(&pool, Duration::from_millis(250))? {
+                Some(frame) => {
+                    let signature = read_frame_signature(&devices.native, &frame)?;
+                    let _ = frame.Close();
+                    Some(signature)
+                }
+                None => None,
+            };
+            if let Some(event) = stream.observe(signature, observed_at_now()) {
+                on_event(&event)?;
+            }
+        }
+
+        let _ = session.Close();
+        let _ = pool.Close();
+        Ok(())
     }
 
     fn capture_item(

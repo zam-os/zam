@@ -24,6 +24,8 @@ cargo run --manifest-path observer/Cargo.toml -- \
   snapshot-window --hwnd 0x123456 --output .zam-observer/snapshot.png
 cargo run --manifest-path observer/Cargo.toml -- \
   sample-window --hwnd 0x123456 --frames 5 --interval-ms 1000
+cargo run --manifest-path observer/Cargo.toml -- \
+  watch-window --session session-1 --hwnd 0x123456 --samples 60 --interval-ms 1000
 ```
 
 `replay` reads `UiSensorEvent` JSONL and writes `UiObservationReport` JSONL.
@@ -79,6 +81,24 @@ visually identical to the previous keyframe. `--change-threshold <0.0-1.0>`
 (default `0.02`) tunes how much mean luminance must move before a frame counts as
 a new keyframe — raise it to ignore more motion, lower it to retain subtler
 changes. This is the keyframe-retention primitive event triggers will build on.
+
+`watch-window --session <id> --hwnd <decimal|0xhex>` is Windows-only. It keeps a
+capture session open and streams sparse `UiSensorEvent` JSONL — the same shape as
+`watch-foreground` — instead of one-shot frame metadata: a `frame-changed` event
+(carrying an in-memory `data.ref` keyframe handle) whenever the window visually
+changes beyond `--change-threshold`, plus a `heartbeat` every `--heartbeat-every`
+unchanged samples (default 10; `0` disables) so a static window still reports
+liveness. `--samples` and `--interval-ms` bound the run. The stream feeds the
+deterministic replay engine directly — keyframe events accumulate as evidence and
+a heartbeat flushes them into a `progress` report, so
+
+```bash
+zam-observer watch-window --session s1 --hwnd 0x123456 --samples 4 --interval-ms 250 \
+  | zam-observer replay --input -
+```
+
+turns a live window into schema-valid `UiObservationReport`s without persisting
+pixels. The same privacy gate as `sample-window` is enforced before any capture.
 
 The matching bridge command is:
 
