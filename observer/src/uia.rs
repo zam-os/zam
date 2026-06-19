@@ -125,6 +125,7 @@ mod windows_uia {
         IUIAutomationEventHandler_Impl, IUIAutomationSelectionItemPattern,
         IUIAutomationTogglePattern, TreeScope_Subtree, UIA_SelectionItemPatternId,
         UIA_TogglePatternId, UIA_EVENT_ID, UIA_Invoke_InvokedEventId,
+        UIA_Text_TextChangedEventId, UIA_StructureChangedEventId,
         SetWinEventHook, UnhookWinEvent, HWINEVENTHOOK,
     };
     use windows::Win32::UI::WindowsAndMessaging::{
@@ -360,6 +361,90 @@ mod windows_uia {
         Some(event)
     }
 
+    /// COM event handler for UIA `TextChanged` events. Fires when text content
+    /// of an element changes (e.g. typing in an edit field). Only the fact that
+    /// text changed is recorded — never the content — preserving privacy.
+    #[implement(IUIAutomationEventHandler)]
+    struct TextChangedEventHandler {
+        sender: std::sync::Mutex<std::sync::mpsc::Sender<SensorEvent>>,
+        session_id: String,
+    }
+
+    impl IUIAutomationEventHandler_Impl for TextChangedEventHandler_Impl {
+        fn HandleAutomationEvent(
+            &self,
+            sender: Ref<'_, IUIAutomationElement>,
+            _eventid: UIA_EVENT_ID,
+        ) -> windows::core::Result<()> {
+            if let Some(element) = sender.as_ref() {
+                if let Some(event) = build_text_changed_event(&self.session_id, element) {
+                    if let Ok(tx) = self.sender.lock() {
+                        let _ = tx.send(event);
+                    }
+                }
+            }
+            Ok(())
+        }
+    }
+
+    /// Build a `text-changed` event. Captures the element identity (control
+    /// type, automation id) but never the text value itself. Privacy redaction
+    /// applies as for focus events.
+    fn build_text_changed_event(
+        session_id: &str,
+        element: &IUIAutomationElement,
+    ) -> Option<SensorEvent> {
+        let focused = focused_element_from(element)?;
+        let mut event = focus_event(session_id, 0, &focused);
+        event.kind = SensorKind::TextChanged;
+        // Record keystroke count hint if available from aggregator, otherwise
+        // just the fact that text changed.
+        event
+            .data
+            .insert("changed".to_string(), serde_json::Value::Bool(true));
+        Some(event)
+    }
+
+    /// COM event handler for UIA `StructureChanged` events. Fires when the
+    /// UI tree structure changes (e.g. a child element is added or removed).
+    #[implement(IUIAutomationEventHandler)]
+    struct StructureChangedEventHandler {
+        sender: std::sync::Mutex<std::sync::mpsc::Sender<SensorEvent>>,
+        session_id: String,
+    }
+
+    impl IUIAutomationEventHandler_Impl for StructureChangedEventHandler_Impl {
+        fn HandleAutomationEvent(
+            &self,
+            sender: Ref<'_, IUIAutomationElement>,
+            _eventid: UIA_EVENT_ID,
+        ) -> windows::core::Result<()> {
+            if let Some(element) = sender.as_ref() {
+                if let Some(event) = build_structure_changed_event(&self.session_id, element) {
+                    if let Ok(tx) = self.sender.lock() {
+                        let _ = tx.send(event);
+                    }
+                }
+            }
+            Ok(())
+        }
+    }
+
+    /// Build a `structure-changed` event from the element whose subtree
+    /// changed. Reports the element identity without dumping the full tree.
+    fn build_structure_changed_event(
+        session_id: &str,
+        element: &IUIAutomationElement,
+    ) -> Option<SensorEvent> {
+        let focused = focused_element_from(element)?;
+        let mut event = focus_event(session_id, 0, &focused);
+        event.kind = SensorKind::StructureChanged;
+        event
+            .data
+            .insert("changed".to_string(), serde_json::Value::Bool(true));
+        Some(event)
+    }
+
     pub fn watch_focused_element(
         samples: usize,
         interval: Duration,
@@ -442,6 +527,52 @@ mod windows_uia {
             Err(_) => false,
         };
 
+        // Subscribe to UIA TextChanged events so text edits in fields are
+        // reported without capturing the typed content.
+        let (text_changed_tx, text_changed_rx) = std::sync::mpsc::channel::<SensorEvent>();
+        let text_changed_handler: IUIAutomationEventHandler = TextChangedEventHandler {
+            sender: std::sync::Mutex::new(text_changed_tx),
+            session_id: session_id.to_string(),
+        }
+        .into();
+        let text_changed_registered = match unsafe { automation.GetRootElement() } {
+            Ok(root) => unsafe {
+                automation
+                    .AddAutomationEventHandler(
+                        UIA_Text_TextChangedEventId,
+                        &root,
+                        TreeScope_Subtree,
+                        None,
+                        &text_changed_handler,
+                    )
+                    .is_ok()
+            },
+            Err(_) => false,
+        };
+
+        // Subscribe to UIA StructureChanged events so tree mutations
+        // (child added/removed) are reported.
+        let (structure_changed_tx, structure_changed_rx) = std::sync::mpsc::channel::<SensorEvent>();
+        let structure_changed_handler: IUIAutomationEventHandler = StructureChangedEventHandler {
+            sender: std::sync::Mutex::new(structure_changed_tx),
+            session_id: session_id.to_string(),
+        }
+        .into();
+        let structure_changed_registered = match unsafe { automation.GetRootElement() } {
+            Ok(root) => unsafe {
+                automation
+                    .AddAutomationEventHandler(
+                        UIA_StructureChangedEventId,
+                        &root,
+                        TreeScope_Subtree,
+                        None,
+                        &structure_changed_handler,
+                    )
+                    .is_ok()
+            },
+            Err(_) => false,
+        };
+
         let (win_event_tx, win_event_rx) = std::sync::mpsc::channel::<WinEventNotification>();
         let mut hook_fg = HWINEVENTHOOK::default();
         let mut hook_focus = HWINEVENTHOOK::default();
@@ -497,16 +628,28 @@ mod windows_uia {
                     got_event = true;
                 }
 
-                // If no event, check invoke events, check stop and sleep
+                // If no event, check invoke/text-changed/structure-changed events, check stop and sleep
                 if !got_event {
-                    let mut invoke_triggered = false;
+                    let mut ui_event_triggered = false;
                     while let Ok(mut event) = invoke_rx.try_recv() {
                         sequence += 1;
                         event.sequence = sequence;
                         on_event(event)?;
-                        invoke_triggered = true;
+                        ui_event_triggered = true;
                     }
-                    if invoke_triggered {
+                    while let Ok(mut event) = text_changed_rx.try_recv() {
+                        sequence += 1;
+                        event.sequence = sequence;
+                        on_event(event)?;
+                        ui_event_triggered = true;
+                    }
+                    while let Ok(mut event) = structure_changed_rx.try_recv() {
+                        sequence += 1;
+                        event.sequence = sequence;
+                        on_event(event)?;
+                        ui_event_triggered = true;
+                    }
+                    if ui_event_triggered {
                         crate::capture::trigger_capture();
                     }
                     thread::sleep(check_interval);
@@ -597,16 +740,28 @@ mod windows_uia {
                 last = Some(fingerprint);
             }
 
-            // 3. Forward any UIA Invoke events captured since the last poll.
-            let mut invoke_triggered = false;
+            // 3. Forward any UIA Invoke/TextChanged/StructureChanged events captured since the last poll.
+            let mut ui_event_triggered = false;
             while let Ok(mut event) = invoke_rx.try_recv() {
                 sequence += 1;
                 event.sequence = sequence;
                 on_event(event)?;
-                invoke_triggered = true;
+                ui_event_triggered = true;
+            }
+            while let Ok(mut event) = text_changed_rx.try_recv() {
+                sequence += 1;
+                event.sequence = sequence;
+                on_event(event)?;
+                ui_event_triggered = true;
+            }
+            while let Ok(mut event) = structure_changed_rx.try_recv() {
+                sequence += 1;
+                event.sequence = sequence;
+                on_event(event)?;
+                ui_event_triggered = true;
             }
 
-            if state_changed || invoke_triggered {
+            if state_changed || ui_event_triggered {
                 crate::capture::trigger_capture();
             }
 
@@ -627,7 +782,7 @@ mod windows_uia {
             }
         }
 
-        if invoke_registered {
+        if invoke_registered || text_changed_registered || structure_changed_registered {
             unsafe {
                 let _ = automation.RemoveAllEventHandlers();
             }

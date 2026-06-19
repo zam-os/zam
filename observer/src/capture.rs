@@ -386,7 +386,6 @@ mod windows_capture {
     }
 
     #[allow(clippy::too_many_arguments)]
-    #[allow(clippy::too_many_arguments)]
     pub fn watch_window_keyframes_continuous(
         hwnd: u64,
         interval: Duration,

@@ -27,6 +27,7 @@ pub enum SensorKind {
     SelectionChanged,
     ToggleChanged,
     TextChanged,
+    StructureChanged,
     Click,
     Shortcut,
     TypingActivity,

@@ -156,7 +156,8 @@ impl ReplayEngine {
             SensorKind::ElementFocused
             | SensorKind::SelectionChanged
             | SensorKind::ToggleChanged
-            | SensorKind::DialogClosed => {
+            | SensorKind::DialogClosed
+            | SensorKind::StructureChanged => {
                 self.push_uia_evidence(&event);
                 Ok(None)
             }
@@ -532,5 +533,59 @@ mod tests {
         assert_eq!(resumed.kind, ReportKind::Heartbeat);
         assert_eq!(resumed.application.process_name, "explorer.exe");
         assert_eq!(resumed.observed_from, "2026-06-15T10:00:04Z");
+    }
+
+    #[test]
+    fn text_changed_aggregates_as_typing() {
+        let mut engine = ReplayEngine::default();
+        engine
+            .process(event(1, SensorKind::SessionStarted))
+            .unwrap();
+
+        let mut text_changed = event(2, SensorKind::TextChanged);
+        text_changed.target = Some(SensorTarget {
+            control_type: Some("Edit".to_string()),
+            automation_id: Some("SearchBox".to_string()),
+            name: Some("Search".to_string()),
+            password: false,
+        });
+        assert!(engine.process(text_changed).unwrap().is_none());
+
+        let mut completed = event(3, SensorKind::StepCompleted);
+        completed.data.insert(
+            "summary".to_string(),
+            json!("Typed a search query."),
+        );
+        let report = engine.process(completed).unwrap().unwrap();
+
+        assert_eq!(report.actions.len(), 1);
+        assert_eq!(report.actions[0].action_type, ActionType::Typing);
+    }
+
+    #[test]
+    fn structure_changed_produces_uia_evidence() {
+        let mut engine = ReplayEngine::default();
+        engine
+            .process(event(1, SensorKind::SessionStarted))
+            .unwrap();
+
+        let mut structure = event(2, SensorKind::StructureChanged);
+        structure.target = Some(SensorTarget {
+            control_type: Some("Tree".to_string()),
+            automation_id: Some("FileTree".to_string()),
+            name: None,
+            password: false,
+        });
+        assert!(engine.process(structure).unwrap().is_none());
+
+        let mut completed = event(3, SensorKind::StepCompleted);
+        completed.data.insert(
+            "summary".to_string(),
+            json!("Expanded a folder."),
+        );
+        let report = engine.process(completed).unwrap().unwrap();
+
+        assert_eq!(report.evidence.len(), 1);
+        assert_eq!(report.evidence[0].evidence_type, EvidenceType::Uia);
     }
 }

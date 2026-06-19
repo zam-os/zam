@@ -662,6 +662,7 @@ fn start_zam_observer_watch_blocking(
         )
     })?;
     let event_log_path = observer_dir.join("watch-events.jsonl");
+    let reports_log_path = observer_reports_path(&session);
     let stderr_log_path = observer_dir.join("watch.stderr.log");
     let event_file = fs::OpenOptions::new()
         .create(true)
@@ -672,6 +673,17 @@ fn start_zam_observer_watch_blocking(
             format!(
                 "Failed to create observer event log {}: {error}",
                 event_log_path.display()
+            )
+        })?;
+    let reports_file = fs::OpenOptions::new()
+        .create(true)
+        .write(true)
+        .truncate(true)
+        .open(&reports_log_path)
+        .map_err(|error| {
+            format!(
+                "Failed to create observer reports log {}: {error}",
+                reports_log_path.display()
             )
         })?;
     let stderr_file = fs::OpenOptions::new()
@@ -696,6 +708,7 @@ fn start_zam_observer_watch_blocking(
         interval_ms
             .filter(|value| !value.trim().is_empty())
             .unwrap_or_else(|| "1000".to_string()),
+        "--reports".to_string(),
     ];
     if let Some(samples) = samples.filter(|value| !value.trim().is_empty()) {
         args.push("--samples".to_string());
@@ -731,6 +744,7 @@ fn start_zam_observer_watch_blocking(
     spawn_observer_stdout_writer(
         stdout,
         event_file,
+        Some(reports_file),
         Arc::clone(&event_count),
         Arc::clone(&last_event_at),
         Arc::clone(&last_error),
@@ -841,6 +855,19 @@ fn observer_session_dir(app: &tauri::AppHandle, session: &str) -> Result<PathBuf
     Ok(base.join("observer").join(safe_path_segment(session)))
 }
 
+/// Returns the path where UI observation reports are persisted so the bridge
+/// (`bridge get-observations`) can read them. This is `~/.zam/observer/<session>.reports.jsonl`,
+/// matching the TypeScript kernel's `getUiObservationPath`.
+fn observer_reports_path(session: &str) -> PathBuf {
+    let home = env::var_os("USERPROFILE")
+        .or_else(|| env::var_os("HOME"))
+        .map(PathBuf::from)
+        .unwrap_or_else(|| PathBuf::from("."));
+    home.join(".zam")
+        .join("observer")
+        .join(format!("{}.reports.jsonl", safe_path_segment(session)))
+}
+
 fn safe_path_segment(value: &str) -> String {
     let sanitized: String = value
         .chars()
@@ -881,6 +908,7 @@ fn set_observer_watch_error(last_error: &Arc<Mutex<Option<String>>>, message: im
 fn spawn_observer_stdout_writer(
     stdout: ChildStdout,
     mut file: fs::File,
+    mut reports_file: Option<fs::File>,
     event_count: Arc<AtomicU64>,
     last_event_at: Arc<AtomicU64>,
     last_error: Arc<Mutex<Option<String>>>,
@@ -901,6 +929,19 @@ fn spawn_observer_stdout_writer(
                         break;
                     }
                     let _ = file.flush();
+                    // When --reports is active, also write to the reports JSONL
+                    // so `bridge get-observations` can read them.
+                    if let Some(ref mut reports) = reports_file {
+                        if let Err(error) = reports.write_all(line.as_bytes()) {
+                            set_observer_watch_error(
+                                &last_error,
+                                format!("Failed to write observer reports log: {error}"),
+                            );
+                            // Don't break — the event log is still valuable
+                        } else {
+                            let _ = reports.flush();
+                        }
+                    }
                     if !line.trim().is_empty() {
                         event_count.fetch_add(1, Ordering::SeqCst);
                         last_event_at.store(chrono_now(), Ordering::SeqCst);
