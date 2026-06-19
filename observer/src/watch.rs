@@ -45,8 +45,12 @@ pub fn watch_session(
     let pause_input = Arc::new(AtomicBool::new(false));
 
     let (tx, rx) = mpsc::channel::<SensorEvent>();
+    let mut sequence = 0u64;
 
-    on_event(session_control_event(session_id, SensorKind::SessionStarted))?;
+    sequence += 1;
+    let mut started = session_control_event(session_id, SensorKind::SessionStarted);
+    started.sequence = sequence;
+    on_event(started)?;
 
     // Spawn a thread to monitor stdin EOF so we shut down cleanly when parent closes stdin.
     let should_stop_stdin = should_stop.clone();
@@ -129,7 +133,6 @@ pub fn watch_session(
         result
     });
 
-    let mut sequence = 0u64;
     let mut emitted = 0usize;
 
     // Process events sequentially on the main thread.
@@ -162,7 +165,10 @@ pub fn watch_session(
         .join()
         .map_err(|_| "Capture thread panicked".to_string())?;
 
-    let stop_result = on_event(session_control_event(session_id, SensorKind::SessionStopped));
+    sequence += 1;
+    let mut stopped = session_control_event(session_id, SensorKind::SessionStopped);
+    stopped.sequence = sequence;
+    let stop_result = on_event(stopped);
 
     uia_res?;
     input_res?;
