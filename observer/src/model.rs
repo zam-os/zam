@@ -166,6 +166,7 @@ pub struct UiObservationReport {
 pub struct ObserverCapabilities {
     pub replay: bool,
     pub live_capture: bool,
+    pub frame_sampling: bool,
     pub ui_automation: bool,
     pub raw_input: bool,
 }

@@ -64,6 +64,7 @@ fn print_probe() -> Result<(), String> {
         capabilities: ObserverCapabilities {
             replay: true,
             live_capture: cfg!(target_os = "windows"),
+            frame_sampling: cfg!(target_os = "windows"),
             ui_automation: false,
             raw_input: false,
         },
