@@ -26,6 +26,8 @@ cargo run --manifest-path observer/Cargo.toml -- \
   sample-window --hwnd 0x123456 --frames 5 --interval-ms 1000
 cargo run --manifest-path observer/Cargo.toml -- \
   watch-window --session session-1 --hwnd 0x123456 --samples 60 --interval-ms 1000
+cargo run --manifest-path observer/Cargo.toml -- \
+  watch-uia --session session-1 --samples 60 --interval-ms 500
 ```
 
 `replay` reads `UiSensorEvent` JSONL and writes `UiObservationReport` JSONL.
@@ -35,8 +37,9 @@ The replay engine provides a stable fixture boundary for developing Windows
 sensor adapters and observer-model integrations independently.
 
 `probe` reports sidecar capabilities. On Windows, `windowContext`,
-`foregroundWatch`, `liveCapture`, and `frameSampling` are true once the native
-window and Graphics Capture backends are available.
+`foregroundWatch`, `liveCapture`, `frameSampling`, and `uiAutomation` are true
+once the native window, Graphics Capture, and UI Automation backends are
+available.
 
 `list-windows` is Windows-only. It returns visible top-level windows with HWND,
 process ID, title, bounds metadata, and a privacy classification. Windows that
@@ -106,6 +109,21 @@ the directory like a ring, deleting the oldest keyframe once it is full. When
 retention is on, the `frame-changed` `data.ref` resolves to the written file
 (`file:<path>`) instead of the in-memory `memory:keyframe-NNNN` handle, so a
 report's evidence can be opened directly.
+
+`watch-uia --session <id>` is Windows-only. It polls the focused UI Automation
+element and emits an `element-focused` `UiSensorEvent` whenever focus moves,
+with a bounded property set — control type, automation id, accessible name — and
+the owning process. It never reads element values, so typed text is not
+captured. A focused password field is reported with `target.password = true` and
+its name redacted, which the replay engine turns into a privacy pause; focus
+inside a privacy-sensitive application (password manager, auth dialog) likewise
+has its accessible name redacted. Polling mirrors `watch-foreground`, so it pairs
+with the keyframe stream as a second, semantic sensor source:
+
+```bash
+zam-observer watch-uia --session s1 --samples 20 --interval-ms 500 \
+  | zam-observer replay --input -
+```
 
 The matching bridge command is:
 

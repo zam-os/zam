@@ -67,6 +67,11 @@ pub fn window_info(_hwnd: u64) -> Result<Option<WindowInfo>, String> {
 }
 
 #[cfg(target_os = "windows")]
+pub(crate) fn process_name_for_pid(process_id: u32) -> String {
+    windows_picker::process_name(process_id)
+}
+
+#[cfg(target_os = "windows")]
 mod windows_picker {
     use std::ffi::c_void;
     use std::path::Path;
@@ -335,7 +340,7 @@ mod windows_picker {
         })
     }
 
-    fn process_name(process_id: u32) -> String {
+    pub(crate) fn process_name(process_id: u32) -> String {
         let fallback = || format!("pid-{process_id}");
         if process_id == 0 {
             return fallback();

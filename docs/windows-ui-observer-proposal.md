@@ -502,6 +502,11 @@ Implemented foundation:
   a ring-bounded directory (oldest pruned beyond `--keyframe-retain`) and rewrites
   the event `ref` to the file, so report evidence resolves to real pixels while
   the default stays no-disk;
+- bounded `watch-uia` command that polls the focused UI Automation element and
+  emits `element-focused` events with a bounded property set (control type,
+  automation id, accessible name) and the owning process, redacting names for
+  password fields and privacy-sensitive applications and never reading element
+  values;
 - TypeScript report parsing in the ZAM kernel;
 - OpenAI-compatible vision snapshot adapter in the CLI layer;
 - `zam bridge observe-ui-snapshot` for turning a PNG keyframe into a validated
@@ -519,9 +524,11 @@ Implemented foundation:
 - Tauri commands for observer probe, window listing/foreground metadata,
   bounded foreground watching, capture, sampling, and snapshots.
 
-The remaining Phase 0 work is to add UI Automation and Raw Input as additional
-sensor sources so clicks, shortcuts, focus changes, and dialogs join the keyframe
-stream the replay engine already consumes.
+UI Automation focus is now a live sensor source. The remaining Phase 0 work is
+to add Raw Input (clicks, shortcuts, scroll, typing activity without text) and to
+broaden UI Automation beyond focus to invoke, dialog, and structure events, so
+the full event vocabulary the replay engine already understands is produced
+live.
 
 ### Phase 1: deterministic observer
 

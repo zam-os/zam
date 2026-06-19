@@ -8,6 +8,7 @@ mod model;
 mod picker;
 mod privacy;
 mod replay;
+mod uia;
 
 pub use capture::{
     capture_once, capture_window, sample_window, snapshot_window, watch_window_keyframes,
@@ -32,3 +33,4 @@ pub use privacy::{
     PrivacyAction, WindowPrivacy, WindowPrivacyPolicy, PRIVACY_POLICY_ENV, REDACTED_WINDOW_TITLE,
 };
 pub use replay::{ReplayEngine, ReplayError, ReplaySummary};
+pub use uia::watch_focused_element;

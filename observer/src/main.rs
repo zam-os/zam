@@ -8,9 +8,9 @@ use std::time::Duration;
 
 use zam_observer::{
     capture_once, capture_window, foreground_window, list_windows, observed_at_now, pick_window,
-    sample_window, snapshot_window, watch_window_keyframes, ApplicationContext,
-    ObserverCapabilities, ObserverProbe, ReplayEngine, SensorEvent, SensorKind, SensorSource,
-    UiObservationReport, DEFAULT_CHANGE_THRESHOLD, PROTOCOL_VERSION,
+    sample_window, snapshot_window, watch_focused_element, watch_window_keyframes,
+    ApplicationContext, ObserverCapabilities, ObserverProbe, ReplayEngine, SensorEvent, SensorKind,
+    SensorSource, UiObservationReport, DEFAULT_CHANGE_THRESHOLD, PROTOCOL_VERSION,
 };
 
 fn main() {
@@ -50,6 +50,10 @@ fn run() -> Result<(), String> {
             let options = WatchWindowOptions::parse(args.collect())?;
             watch_window_command(options)
         }
+        "watch-uia" => {
+            let options = WatchUiaOptions::parse(args.collect())?;
+            watch_uia_command(options)
+        }
         "replay" => {
             let options = IoOptions::parse(args.collect())?;
             replay(options)
@@ -79,7 +83,7 @@ fn print_probe() -> Result<(), String> {
             foreground_watch: cfg!(target_os = "windows"),
             live_capture: cfg!(target_os = "windows"),
             frame_sampling: cfg!(target_os = "windows"),
-            ui_automation: false,
+            ui_automation: cfg!(target_os = "windows"),
             raw_input: false,
         },
     };
@@ -228,6 +232,18 @@ fn watch_window_command(options: WatchWindowOptions) -> Result<(), String> {
     result
 }
 
+fn watch_uia_command(options: WatchUiaOptions) -> Result<(), String> {
+    let mut writer = BufWriter::new(io::stdout());
+    let result = watch_focused_element(
+        options.samples,
+        Duration::from_millis(options.interval_ms),
+        &options.session_id,
+        &mut |event| write_event(&mut writer, event),
+    );
+    writer.flush().map_err(|error| error.to_string())?;
+    result
+}
+
 fn print_pretty(value: &impl serde::Serialize) -> Result<(), String> {
     println!(
         "{}",
@@ -346,6 +362,7 @@ Usage:
   zam-observer snapshot-window --hwnd <decimal|0xhex> --output <path.png>
   zam-observer sample-window --hwnd <decimal|0xhex> [--frames <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>]
   zam-observer watch-window --session <id> --hwnd <decimal|0xhex> [--samples <n>] [--interval-ms <n>] [--change-threshold <0.0-1.0>] [--heartbeat-every <n>] [--keyframe-dir <dir> [--keyframe-retain <n>]]
+  zam-observer watch-uia --session <id> [--samples <n>] [--interval-ms <n>]
   zam-observer replay --input <path|-> [--output <path|->]
   zam-observer validate --input <path|-> [--output <path|->]"
     );
@@ -596,6 +613,80 @@ impl SampleOptions {
             frames,
             interval_ms,
             change_threshold,
+        })
+    }
+}
+
+#[derive(Debug)]
+struct WatchUiaOptions {
+    session_id: String,
+    samples: usize,
+    interval_ms: u64,
+}
+
+impl WatchUiaOptions {
+    const DEFAULT_SAMPLES: usize = 60;
+    const MAX_SAMPLES: usize = 100_000;
+    const DEFAULT_INTERVAL_MS: u64 = 500;
+    const MIN_INTERVAL_MS: u64 = 50;
+    const MAX_INTERVAL_MS: u64 = 60_000;
+
+    fn parse(args: Vec<String>) -> Result<Self, String> {
+        let mut session_id = None;
+        let mut samples = Self::DEFAULT_SAMPLES;
+        let mut interval_ms = Self::DEFAULT_INTERVAL_MS;
+        let mut index = 0;
+
+        while index < args.len() {
+            match args[index].as_str() {
+                "--session" => {
+                    index += 1;
+                    session_id = args.get(index).cloned();
+                }
+                "--samples" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--samples requires a value".to_string())?;
+                    samples = raw
+                        .parse::<usize>()
+                        .map_err(|error| format!("invalid --samples '{raw}': {error}"))?;
+                }
+                "--interval-ms" => {
+                    index += 1;
+                    let raw = args
+                        .get(index)
+                        .ok_or_else(|| "--interval-ms requires a value".to_string())?;
+                    interval_ms = raw
+                        .parse::<u64>()
+                        .map_err(|error| format!("invalid --interval-ms '{raw}': {error}"))?;
+                }
+                unknown => return Err(format!("unknown option '{unknown}'")),
+            }
+            index += 1;
+        }
+
+        let session_id = session_id
+            .filter(|value| !value.trim().is_empty())
+            .ok_or_else(|| "--session is required".to_string())?;
+        if samples == 0 || samples > Self::MAX_SAMPLES {
+            return Err(format!(
+                "--samples must be between 1 and {}",
+                Self::MAX_SAMPLES
+            ));
+        }
+        if !(Self::MIN_INTERVAL_MS..=Self::MAX_INTERVAL_MS).contains(&interval_ms) {
+            return Err(format!(
+                "--interval-ms must be between {} and {}",
+                Self::MIN_INTERVAL_MS,
+                Self::MAX_INTERVAL_MS
+            ));
+        }
+
+        Ok(Self {
+            session_id,
+            samples,
+            interval_ms,
         })
     }
 }
@@ -1004,5 +1095,27 @@ mod tests {
         .unwrap_err();
 
         assert!(error.contains("--keyframe-retain must be between"));
+    }
+
+    #[test]
+    fn parses_watch_uia_defaults() {
+        let options =
+            WatchUiaOptions::parse(vec!["--session".to_string(), "session-1".to_string()])
+                .expect("watch uia options");
+
+        assert_eq!(options.session_id, "session-1");
+        assert_eq!(options.samples, WatchUiaOptions::DEFAULT_SAMPLES);
+        assert_eq!(options.interval_ms, WatchUiaOptions::DEFAULT_INTERVAL_MS);
+    }
+
+    #[test]
+    fn rejects_watch_uia_without_session() {
+        let error = WatchUiaOptions::parse(vec![
+            "--samples".to_string(),
+            "5".to_string(),
+        ])
+        .unwrap_err();
+
+        assert!(error.contains("--session is required"));
     }
 }
