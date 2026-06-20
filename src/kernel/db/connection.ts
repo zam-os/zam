@@ -39,12 +39,113 @@ export interface ConnectionOptions {
   provider?: DatabaseProvider;
 }
 
+export interface DatabaseTargetInfo {
+  /** User-facing category of database target selected for this connection. */
+  kind: "local" | "turso-native" | "turso-remote" | "turso-replica";
+  /** Driver/provider that will be used for the selected target. */
+  provider: DatabaseProvider;
+  /** Local filesystem path or remote URL selected as the database target. */
+  location: string;
+  /** Turso primary URL when the selected target is an embedded replica. */
+  syncUrl?: string;
+}
+
+interface ResolvedDatabaseTarget {
+  dbPath: string;
+  provider: DatabaseProvider;
+  isRemote: boolean;
+  isEmbeddedReplica: boolean;
+  configuredCloud: ReturnType<typeof getTursoCredentials>;
+}
+
 function isRemoteDatabasePath(dbPath: string): boolean {
   return /^(libsql|https?|wss?):\/\//i.test(dbPath);
 }
 
 function isDatabaseProvider(value: unknown): value is DatabaseProvider {
   return value === "local" || value === "native" || value === "remote";
+}
+
+function cwdRequiresTursoCredentials(): boolean {
+  try {
+    const configPath = join(process.cwd(), ".zam", "config.yaml");
+    if (existsSync(configPath)) {
+      const configText = readFileSync(configPath, "utf-8");
+      return /[\s\S]*turso:[\s\S]*url:/m.test(configText);
+    }
+  } catch (_e) {}
+  return false;
+}
+
+function resolveDatabaseTarget(
+  options: ConnectionOptions = {},
+): ResolvedDatabaseTarget {
+  const configuredCloud =
+    options.useConfiguredCloud !== false && !options.dbPath && !options.syncUrl
+      ? getTursoCredentials()
+      : null;
+
+  if (
+    cwdRequiresTursoCredentials() &&
+    !configuredCloud &&
+    options.useConfiguredCloud !== false &&
+    !options.dbPath &&
+    !options.syncUrl
+  ) {
+    throw new Error(
+      "Turso cloud database is configured in .zam/config.yaml but missing local credentials. Run: zam connector setup turso",
+    );
+  }
+
+  const dbPath = configuredCloud?.url ?? options.dbPath ?? DEFAULT_DB_PATH;
+  const isRemote = isRemoteDatabasePath(dbPath);
+  const isEmbeddedReplica = Boolean(options.syncUrl);
+  const provider = resolveProvider(options, configuredCloud?.mode, isRemote);
+
+  return {
+    dbPath,
+    provider,
+    isRemote,
+    isEmbeddedReplica,
+    configuredCloud,
+  };
+}
+
+export function getDatabaseTargetInfo(
+  options: ConnectionOptions = {},
+): DatabaseTargetInfo {
+  const target = resolveDatabaseTarget(options);
+
+  if (target.isEmbeddedReplica) {
+    return {
+      kind: "turso-replica",
+      provider: target.provider,
+      location: target.dbPath,
+      syncUrl: options.syncUrl,
+    };
+  }
+
+  if (target.provider === "remote" && target.isRemote) {
+    return {
+      kind: "turso-remote",
+      provider: target.provider,
+      location: target.dbPath,
+    };
+  }
+
+  if (target.isRemote) {
+    return {
+      kind: "turso-native",
+      provider: target.provider,
+      location: target.dbPath,
+    };
+  }
+
+  return {
+    kind: "local",
+    provider: target.provider,
+    location: target.dbPath,
+  };
 }
 
 function openLocalSqlite(dbPath: string): SyncDatabase {
@@ -89,37 +190,8 @@ function loadLibsql(): LibsqlConstructor {
 export async function openDatabase(
   options: ConnectionOptions = {},
 ): Promise<Database> {
-  const configuredCloud =
-    options.useConfiguredCloud !== false && !options.dbPath && !options.syncUrl
-      ? getTursoCredentials()
-      : null;
-
-  let requiresTurso = false;
-  try {
-    const configPath = join(process.cwd(), ".zam", "config.yaml");
-    if (existsSync(configPath)) {
-      const configText = readFileSync(configPath, "utf-8");
-      if (/[\s\S]*turso:[\s\S]*url:/m.test(configText)) {
-        requiresTurso = true;
-      }
-    }
-  } catch (_e) {}
-
-  if (
-    requiresTurso &&
-    !configuredCloud &&
-    options.useConfiguredCloud !== false &&
-    !options.dbPath &&
-    !options.syncUrl
-  ) {
-    throw new Error(
-      "Turso cloud database is configured in .zam/config.yaml but missing local credentials. Run: zam connector setup turso",
-    );
-  }
-  const dbPath = configuredCloud?.url ?? options.dbPath ?? DEFAULT_DB_PATH;
-  const isRemote = isRemoteDatabasePath(dbPath);
-  const isEmbeddedReplica = Boolean(options.syncUrl);
-  const provider = resolveProvider(options, configuredCloud?.mode, isRemote);
+  const { dbPath, provider, isRemote, isEmbeddedReplica, configuredCloud } =
+    resolveDatabaseTarget(options);
   const shouldInitialize =
     options.initialize === true ||
     (!isRemote && !isEmbeddedReplica && !existsSync(dbPath));
