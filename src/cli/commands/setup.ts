@@ -11,7 +11,11 @@ import { copyFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Command } from "commander";
-import { getDefaultDbPath, openDatabaseWithSync } from "../../kernel/index.js";
+import {
+  type DatabaseTargetInfo,
+  getDatabaseTargetInfo,
+  openDatabaseWithSync,
+} from "../../kernel/index.js";
 
 // The bundled CLI resolves from dist/cli/index.js; source tests resolve from
 // src/cli/commands/setup.ts. Select the first candidate containing package.json.
@@ -66,14 +70,27 @@ export function copySkills(force: boolean, cwd: string = process.cwd()): void {
   }
 }
 
+export function formatDatabaseInitTarget(target: DatabaseTargetInfo): string {
+  switch (target.kind) {
+    case "local":
+      return `ZAM database at ${target.location} (local SQLite)`;
+    case "turso-remote":
+      return `ZAM database via Turso remote at ${target.location}`;
+    case "turso-native":
+      return `ZAM database via Turso native driver at ${target.location}`;
+    case "turso-replica":
+      return `ZAM database replica at ${target.location} syncing from ${target.syncUrl}`;
+  }
+}
+
 async function initDatabase(skipInit: boolean): Promise<void> {
   if (skipInit) return;
 
   try {
-    const dbPath = getDefaultDbPath();
+    const target = getDatabaseTargetInfo();
     const db = await openDatabaseWithSync({ initialize: true });
     await db.close();
-    console.log(`  init  ZAM database at ${dbPath}`);
+    console.log(`  init  ${formatDatabaseInitTarget(target)}`);
   } catch (err) {
     // Database may already exist â€” not an error during setup.
     const msg = (err as Error).message;

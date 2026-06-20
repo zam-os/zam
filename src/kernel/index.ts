@@ -34,8 +34,10 @@ export {
 export type {
   ConnectionOptions,
   DatabaseProvider,
+  DatabaseTargetInfo,
 } from "./db/connection.js";
 export {
+  getDatabaseTargetInfo,
   getDefaultDbPath,
   openDatabase,
   openDatabaseWithSync,
