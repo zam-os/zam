@@ -5,9 +5,13 @@
  * Errors are also JSON: { "error": "message" }
  */
 
+import { readFileSync } from "node:fs";
 import { readdirSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
+import { execFileSync } from "node:child_process";
+import { tmpdir } from "node:os";
+import { randomBytes } from "node:crypto";
 import { Command } from "commander";
 import type {
   BloomLevel,
@@ -901,6 +905,77 @@ bridgeCommand
       }
       jsonOut(report);
     });
+  });
+
+// ── zam bridge capture-ui ──────────────────────────────────────────────────
+
+function captureScreenshot(outputPath: string): void {
+  const platform = process.platform;
+  if (platform === "win32") {
+    execFileSync(
+      "powershell",
+      [
+        "-NoProfile",
+        "-Command",
+        `
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+$screen = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
+$bitmap = New-Object System.Drawing.Bitmap($screen.Width, $screen.Height)
+$graphics = [System.Drawing.Graphics]::FromImage($bitmap)
+$graphics.CopyFromScreen($screen.Location, [System.Drawing.Point]::Empty, $screen.Size)
+$bitmap.Save('${outputPath.replace(/\\/g, "\\\\")}')
+$graphics.Dispose()
+$bitmap.Dispose()
+        `.trim(),
+      ],
+      { stdio: "pipe" },
+    );
+  } else if (platform === "darwin") {
+    execFileSync("screencapture", ["-x", outputPath], { stdio: "pipe" });
+  } else {
+    throw new Error(
+      `Screen capture not supported on platform: ${platform}. Use zam-observer or provide --image.`,
+    );
+  }
+}
+
+bridgeCommand
+  .command("capture-ui")
+  .description(
+    "Capture a screenshot for agent-side vision analysis (JSON)",
+  )
+  .option("--session <id>", "ZAM session ID (for metadata)")
+  .option("--output <path>", "PNG output path (defaults to temp file)")
+  .option(
+    "--image <path>",
+    "Skip capture; return an existing image instead",
+  )
+  .action(async (opts) => {
+    try {
+      const outputPath =
+        opts.image ??
+        opts.output ??
+        join(tmpdir(), `zam-capture-${randomBytes(4).toString("hex")}.png`);
+
+      if (!opts.image) {
+        captureScreenshot(outputPath);
+      }
+
+      const imageBytes = readFileSync(outputPath);
+      const base64 = imageBytes.toString("base64");
+
+      jsonOut({
+        sessionId: opts.session ?? null,
+        imagePath: outputPath,
+        base64,
+        mimeType: "image/png",
+        capturedAt: new Date().toISOString(),
+        platform: process.platform,
+      });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
   });
 
 // ── zam bridge check-llm ──────────────────────────────────────────────────
