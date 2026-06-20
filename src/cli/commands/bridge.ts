@@ -629,6 +629,7 @@ bridgeCommand
         context?: string;
         symbiosis_mode?: string | null;
         source_link?: string | null;
+        question?: string | null;
       };
 
       try {
@@ -657,6 +658,7 @@ bridgeCommand
           | null
           | undefined,
         source_link: data?.source_link ?? null,
+        question: data?.question ?? null,
       });
 
       const card = await ensureCard(db, token.id, userId);
