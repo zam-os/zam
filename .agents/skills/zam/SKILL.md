@@ -291,12 +291,18 @@ Workflow:
 1. Tell the user: *"Perform the task in the app, leave the relevant window visible, and come back when you're done."*
 2. When the user returns, capture the screen:
    ```bash
-   zam bridge capture-ui --session <session-id>
+   zam bridge capture-ui --session <session-id> --process-name <app>
    ```
-   Returns JSON with `imagePath`, `base64` (PNG screenshot), `captureMethod`,
-   and `captureTarget` metadata when a target window was resolved. Save to a
-   stable file with `--output <path>` whenever you will pass the image to a
-   subagent.
+   Under the default observer policy (`observer.scope=window`) a capture must
+   target a window: pass `--process-name <app>` or `--hwnd <handle>`. An
+   untargeted call is refused with `{ "granted": false, "denied": true,
+   "denialReason": "scope-requires-target", ... }` — retry with a target, or
+   for a deliberate whole-screen grab set `observer.scope=fullscreen`.
+
+   A granted response is JSON with `granted: true`, `imagePath`, `base64`
+   (PNG screenshot), `captureMethod`, `captureTarget` metadata, and a
+   `permission` block. Save to a stable file with `--output <path>` whenever
+   you will pass the image to a subagent.
 3. If Codex subagents are available, spawn a cheap vision-capable subagent (for example a mini model) and pass the screenshot as a local image plus the task, expected evidence, and candidate token slugs. Ask it for observed facts and suggested 1-4 ratings with brief evidence.
 4. Review `captureTarget` and the visual evidence yourself before writing
    ratings. If `captureMethod` is `fullscreen`, the target is missing, the
@@ -314,6 +320,16 @@ The `capture-ui` command supports:
 - `--process-name <name>` or `--hwnd <handle>` — target a specific window when known
 
 On Windows, uses PowerShell/.NET for screen capture. On macOS, uses `screencapture`.
+
+**Observer permissions (Layer 2, ADR-0001).** `capture-ui` enforces a
+user-configurable policy resolved from `zam settings`: `observer.scope`
+(`off` | `window` | `fullscreen`), `observer.allowlist`, `observer.denylist`,
+`observer.consent`, `observer.retention`. Set them with e.g.
+`zam settings set --key observer.scope --value window`. A built-in sensitive
+set (password managers, auth/UAC dialogs, banking) is always refused and
+cannot be allowlisted — those return `denied: true` with
+`denialReason: "sensitive"`. Treat any `denied` response as final: do not
+retry to work around it; tell the user which surface was blocked.
 
 **Rating scale (all observation approaches):**
 - Completed correctly, no hesitation, no help → **4**

@@ -7,7 +7,7 @@
 
 import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
-import { readdirSync, readFileSync } from "node:fs";
+import { readdirSync, readFileSync, rmSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { join } from "node:path";
 import { Command } from "commander";
@@ -25,6 +25,8 @@ import {
   appendUiObservationReport,
   buildReviewQueue,
   createToken,
+  decidePostCapture,
+  decidePreCapture,
   discoverSkills,
   endSession,
   ensureCard,
@@ -44,6 +46,7 @@ import {
   pairCommands,
   readMonitorLog,
   readUiObservationLog,
+  resolveObserverPolicy,
   resolveReviewContext,
   startSession,
   uiObservationLogExists,
@@ -1321,21 +1324,84 @@ bridgeCommand
   .option("--hwnd <hwnd>", "Window handle (decimal or hex) to capture")
   .option("--process-name <name>", "Process name to capture")
   .action(async (opts) => {
-    try {
+    await withDb(async (db) => {
+      const policy = await resolveObserverPolicy(db);
+      const permission = {
+        scope: policy.scope,
+        consent: policy.consent,
+        retention: policy.retention,
+      };
+      const isProvided = Boolean(opts.image);
+
+      // A caller-provided --image is "analyze this file", not a capture: ZAM
+      // is not holding the camera, so scope/target policy does not apply.
+      // Live captures are gated below.
+      if (!isProvided) {
+        const pre = decidePreCapture(policy, {
+          hasExplicitTarget: Boolean(opts.hwnd || opts.processName),
+          requestedProcessName: opts.processName ?? null,
+        });
+        if (!pre.allowed) {
+          jsonOut({
+            sessionId: opts.session ?? null,
+            granted: false,
+            denied: true,
+            denialReason: pre.denialReason,
+            reason: pre.reason,
+            capturedAt: new Date().toISOString(),
+            platform: process.platform,
+            permission: { ...permission, granted: false },
+          });
+          return;
+        }
+      }
+
       const outputPath =
         opts.image ??
         opts.output ??
         join(tmpdir(), `zam-capture-${randomBytes(4).toString("hex")}.png`);
 
-      const captureResult = opts.image
+      const captureResult = isProvided
         ? ({ method: "provided", target: null } satisfies CaptureResult)
         : captureScreenshot(outputPath, opts.hwnd, opts.processName);
+
+      // Post-resolution gate: the real process/title are only known now, so
+      // the sensitive/denylist check runs against the window actually
+      // captured. If it fails, discard the pixels before they leave.
+      if (!isProvided) {
+        const post = decidePostCapture(policy, {
+          method: captureResult.method,
+          processName: captureResult.target?.processName ?? null,
+          windowTitle: captureResult.target?.windowTitle ?? null,
+        });
+        if (!post.allowed) {
+          if (!opts.output) {
+            try {
+              rmSync(outputPath, { force: true });
+            } catch {
+              // best-effort discard
+            }
+          }
+          jsonOut({
+            sessionId: opts.session ?? null,
+            granted: false,
+            denied: true,
+            denialReason: post.denialReason,
+            reason: post.reason,
+            capturedAt: new Date().toISOString(),
+            platform: process.platform,
+            permission: { ...permission, granted: false },
+          });
+          return;
+        }
+      }
 
       const imageBytes = readFileSync(outputPath);
       const base64 = imageBytes.toString("base64");
 
       jsonOut({
         sessionId: opts.session ?? null,
+        granted: true,
         imagePath: outputPath,
         base64,
         mimeType: "image/png",
@@ -1343,10 +1409,9 @@ bridgeCommand
         captureTarget: captureResult.target,
         capturedAt: new Date().toISOString(),
         platform: process.platform,
+        permission: { ...permission, granted: true },
       });
-    } catch (err) {
-      jsonError((err as Error).message);
-    }
+    });
   });
 
 // ── zam bridge check-llm ──────────────────────────────────────────────────

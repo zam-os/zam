@@ -260,12 +260,22 @@ and future agent.
 Ordered so a fresh agent with a token budget can pick up any item. File paths are
 load-bearing.
 
-1. [ ] **Define the policy.** Add `ObserverPolicy`, defaults, the built-in
+> **Progress (2026-06-20):** Items 1–2 are done. The wire-contract half of item 3
+> (`CaptureUiResponse` / `ObserverPermission` / `denialReason` / the denied
+> variant) shipped with them; the `GetObserverPolicyResponse` introspection
+> endpoint is still open. Item 8 is partly done (SKILL.md Approach C updated;
+> ARCHITECTURE.md + proposal note still TODO). Settings keys are dotted
+> (`observer.scope`, …), not `observer_*` — see item 5. Enforcement is two-phase
+> (pre-capture for scope/explicit target; post-resolution for the captured
+> window's process/title); the deny discriminator is `denialReason`, not the
+> originally sketched `kind: "privacy-pause"`.
+
+1. [x] **Define the policy.** Add `ObserverPolicy`, defaults, the built-in
    sensitive denylist, and `resolveObserverPolicy(db)` in
    `src/kernel/observation/policy.ts`. Unit tests in
-   `tests/kernel/observer-policy.test.ts` (built-in denylist must win over
-   user allowlist; default = `window`/`per-session`/`none`).
-2. [ ] **Enforce on the bridge path.** In
+   `tests/kernel/observation/observer-policy.test.ts` (built-in denylist must win
+   over user allowlist; default = `window`/`per-session`/`none`).
+2. [x] **Enforce on the bridge path.** In
    [`src/cli/commands/bridge.ts`](../../src/cli/commands/bridge.ts) `capture-ui`:
    before `captureScreenshot()`, resolve policy → if `scope: "off"` or target is
    denylisted or the frontmost window is sensitive, return a typed
@@ -280,7 +290,7 @@ load-bearing.
    `ZAM_OBSERVER_PRIVACY_POLICY` env path with the resolved policy passed from the
    kernel (JSON on spawn or a resolved config file). Keep the env var as a
    deprecated fallback for one release.
-5. [ ] **Expose settings.** Wire the `observer_*` keys through `zam settings`; add
+5. [ ] **Expose settings.** Wire the `observer.*` keys through `zam settings`; add
    optional `zam observer grant|revoke|status` sugar over the picker. Surface an
    unset-policy prompt at the first `--context ui` session (per
    [user-settings.md](../concepts/user-settings.md) discoverability).
