@@ -13,9 +13,9 @@
  * live screen, and reused unchanged under a future `zam mcp serve`.
  */
 
+import { getDomainCompetence } from "../analytics/stats.js";
 import type { Database } from "../db/types.js";
 import { getAllSettings, getSetting } from "../models/settings.js";
-import { getDomainCompetence } from "../analytics/stats.js";
 import type { SymbiosisMode } from "../models/token.js";
 
 export const OBSERVER_POLICY_VERSION = 1 as const;
@@ -159,9 +159,10 @@ export function parseObserverPolicy(
 /**
  * Map symbiosis modes to default policy presets.
  */
-export function getDefaultsForSymbiosisMode(
-  mode: SymbiosisMode,
-): { scope: ObserverScope; consent: ObserverConsent } {
+export function getDefaultsForSymbiosisMode(mode: SymbiosisMode): {
+  scope: ObserverScope;
+  consent: ObserverConsent;
+} {
   if (mode === "autonomy") {
     return { scope: "fullscreen", consent: "standing" };
   }
