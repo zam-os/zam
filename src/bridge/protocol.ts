@@ -288,3 +288,72 @@ export interface GetNeighborhoodResponse {
 export interface ListTokensResponse {
   tokens: GraphToken[];
 }
+
+// ── Observer Policy / UI Capture ─────────────────────────────────────────────
+//
+// Layer 2 of the two-layer consent model (docs/adr/0001-observer-permission-model.md).
+// Every `bridge capture-ui` response echoes the resolved permission summary and
+// is either granted (pixels returned) or denied (refused by policy).
+
+export type ObserverScope = "off" | "window" | "fullscreen";
+export type ObserverConsent = "per-capture" | "per-session" | "standing";
+export type ObserverRetention = "none" | "session" | "persist";
+
+/** The permission summary echoed back on every capture-ui response. */
+export interface ObserverPermission {
+  scope: ObserverScope;
+  consent: ObserverConsent;
+  retention: ObserverRetention;
+  granted: boolean;
+}
+
+export type CaptureDenialReason =
+  | "scope-off"
+  | "scope-requires-target"
+  | "denylisted"
+  | "not-allowlisted"
+  | "sensitive";
+
+export interface CaptureUiTarget {
+  requestedHwnd: string | null;
+  requestedProcessName: string | null;
+  matchedBy: string;
+  hwnd: number | null;
+  processId: number | null;
+  processName: string | null;
+  windowTitle: string | null;
+  bounds: {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
+    width: number;
+    height: number;
+  } | null;
+}
+
+/** Granted capture (or a caller-provided `--image`). */
+export interface CaptureUiResponse {
+  sessionId: string | null;
+  granted: true;
+  imagePath: string;
+  base64: string;
+  mimeType: "image/png";
+  captureMethod: string;
+  captureTarget: CaptureUiTarget | null;
+  capturedAt: string;
+  platform: string;
+  permission: ObserverPermission;
+}
+
+/** Capture refused by the observer policy; no pixels are returned. */
+export interface CaptureUiDeniedResponse {
+  sessionId: string | null;
+  granted: false;
+  denied: true;
+  denialReason: CaptureDenialReason;
+  reason: string;
+  capturedAt: string;
+  platform: string;
+  permission: ObserverPermission;
+}

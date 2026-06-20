@@ -184,6 +184,28 @@ export {
   writeMonitorEvent,
 } from "./observation/monitor-io.js";
 export type {
+  CaptureDecision,
+  CaptureDenialReason,
+  CaptureRequest,
+  ObserverConsent,
+  ObserverPolicy,
+  ObserverRetention,
+  ObserverScope,
+  ObserverSettingKey,
+  ResolvedCaptureTarget,
+} from "./observation/policy.js";
+export {
+  BUILT_IN_SENSITIVE_MATCHERS,
+  DEFAULT_OBSERVER_POLICY,
+  decidePostCapture,
+  decidePreCapture,
+  matchBuiltInSensitive,
+  matchDenylist,
+  OBSERVER_POLICY_VERSION,
+  parseObserverPolicy,
+  resolveObserverPolicy,
+} from "./observation/policy.js";
+export type {
   ApplySessionSynthesisInput,
   ApplySessionSynthesisResult,
   PrepareSessionSynthesisInput,
