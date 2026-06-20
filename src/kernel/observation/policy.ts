@@ -15,6 +15,8 @@
 
 import type { Database } from "../db/types.js";
 import { getAllSettings, getSetting } from "../models/settings.js";
+import { getDomainCompetence } from "../analytics/stats.js";
+import type { SymbiosisMode } from "../models/token.js";
 
 export const OBSERVER_POLICY_VERSION = 1 as const;
 
@@ -100,16 +102,24 @@ export function parseObserverList(raw: string | undefined): string[] {
   return parseList(raw);
 }
 
-function parseScope(raw: string | undefined): ObserverScope {
-  return raw === "off" || raw === "window" || raw === "fullscreen"
-    ? raw
-    : DEFAULT_OBSERVER_POLICY.scope;
+function parseScope(
+  raw: string | undefined,
+  defaultScope?: ObserverScope,
+): ObserverScope {
+  if (raw === "off" || raw === "window" || raw === "fullscreen") {
+    return raw;
+  }
+  return defaultScope ?? DEFAULT_OBSERVER_POLICY.scope;
 }
 
-function parseConsent(raw: string | undefined): ObserverConsent {
-  return raw === "per-capture" || raw === "per-session" || raw === "standing"
-    ? raw
-    : DEFAULT_OBSERVER_POLICY.consent;
+function parseConsent(
+  raw: string | undefined,
+  defaultConsent?: ObserverConsent,
+): ObserverConsent {
+  if (raw === "per-capture" || raw === "per-session" || raw === "standing") {
+    return raw;
+  }
+  return defaultConsent ?? DEFAULT_OBSERVER_POLICY.consent;
 }
 
 function parseRetention(raw: string | undefined): ObserverRetention {
@@ -126,13 +136,14 @@ function parseBool(raw: string | undefined, fallback: boolean): boolean {
 /** Pure: build a policy from raw setting strings (no DB access). */
 export function parseObserverPolicy(
   raw: Partial<Record<ObserverSettingKey, string>>,
+  defaults?: { scope: ObserverScope; consent: ObserverConsent },
 ): ObserverPolicy {
   return {
     version: OBSERVER_POLICY_VERSION,
-    scope: parseScope(raw["observer.scope"]),
+    scope: parseScope(raw["observer.scope"], defaults?.scope),
     allowlist: parseList(raw["observer.allowlist"]),
     denylist: parseList(raw["observer.denylist"]),
-    consent: parseConsent(raw["observer.consent"]),
+    consent: parseConsent(raw["observer.consent"], defaults?.consent),
     retention: parseRetention(raw["observer.retention"]),
     redactWindowTitles: parseBool(
       raw["observer.redact_titles"],
@@ -145,7 +156,96 @@ export function parseObserverPolicy(
   };
 }
 
-/** Read the policy from `user_config`, falling back to safe defaults. */
+/**
+ * Map symbiosis modes to default policy presets.
+ */
+export function getDefaultsForSymbiosisMode(
+  mode: SymbiosisMode,
+): { scope: ObserverScope; consent: ObserverConsent } {
+  if (mode === "autonomy") {
+    return { scope: "fullscreen", consent: "standing" };
+  }
+  return { scope: "window", consent: "per-session" };
+}
+
+/**
+ * Resolves the active symbiosis mode based on:
+ * 1. An active/running session's last logged token's mode or domain suggested mode.
+ * 2. The user's last review log token's mode or domain suggested mode.
+ * 3. Defaulting to "shadowing" if neither context is found.
+ */
+export async function resolveActiveSymbiosisMode(
+  db: Database,
+): Promise<SymbiosisMode> {
+  const userId = (await getSetting(db, "user.id")) || "default";
+
+  // 1. Check for a running session
+  const activeSession = (await db
+    .prepare(
+      "SELECT id FROM sessions WHERE user_id = ? AND completed_at IS NULL ORDER BY started_at DESC LIMIT 1",
+    )
+    .get(userId)) as { id: string } | undefined;
+
+  if (activeSession) {
+    const stepToken = (await db
+      .prepare(
+        `SELECT t.symbiosis_mode, t.domain
+         FROM session_steps s
+         JOIN tokens t ON t.id = s.token_id
+         WHERE s.session_id = ?
+         ORDER BY s.created_at DESC, s.id DESC
+         LIMIT 1`,
+      )
+      .get(activeSession.id)) as
+      | { symbiosis_mode: SymbiosisMode | null; domain: string }
+      | undefined;
+
+    if (stepToken) {
+      if (stepToken.symbiosis_mode) {
+        return stepToken.symbiosis_mode;
+      }
+      if (stepToken.domain) {
+        const competence = await getDomainCompetence(db, userId);
+        const comp = competence.find((c) => c.domain === stepToken.domain);
+        if (comp) {
+          return comp.suggestedMode;
+        }
+      }
+    }
+  }
+
+  // 2. Fall back to user's last review log
+  const lastReviewToken = (await db
+    .prepare(
+      `SELECT t.symbiosis_mode, t.domain
+       FROM review_logs r
+       JOIN tokens t ON t.id = r.token_id
+       WHERE r.user_id = ?
+       ORDER BY r.reviewed_at DESC, r.id DESC
+       LIMIT 1`,
+    )
+    .get(userId)) as
+    | { symbiosis_mode: SymbiosisMode | null; domain: string }
+    | undefined;
+
+  if (lastReviewToken) {
+    if (lastReviewToken.symbiosis_mode) {
+      return lastReviewToken.symbiosis_mode;
+    }
+    if (lastReviewToken.domain) {
+      const competence = await getDomainCompetence(db, userId);
+      const comp = competence.find((c) => c.domain === lastReviewToken.domain);
+      if (comp) {
+        return comp.suggestedMode;
+      }
+    }
+  }
+
+  // 3. Default to shadowing
+  return "shadowing";
+}
+
+/** Read the policy from `user_config`, falling back to active symbiosis mode presets, then safe defaults. */
 export async function resolveObserverPolicy(
   db: Database,
 ): Promise<ObserverPolicy> {
@@ -159,15 +259,22 @@ export async function resolveObserverPolicy(
       getSetting(db, "observer.redact_titles"),
       getSetting(db, "observer.audio"),
     ]);
-  return parseObserverPolicy({
-    "observer.scope": scope,
-    "observer.allowlist": allowlist,
-    "observer.denylist": denylist,
-    "observer.consent": consent,
-    "observer.retention": retention,
-    "observer.redact_titles": redactTitles,
-    "observer.audio": audio,
-  });
+
+  const mode = await resolveActiveSymbiosisMode(db);
+  const defaults = getDefaultsForSymbiosisMode(mode);
+
+  return parseObserverPolicy(
+    {
+      "observer.scope": scope,
+      "observer.allowlist": allowlist,
+      "observer.denylist": denylist,
+      "observer.consent": consent,
+      "observer.retention": retention,
+      "observer.redact_titles": redactTitles,
+      "observer.audio": audio,
+    },
+    defaults,
+  );
 }
 
 // ── Capture decisions (pure) ────────────────────────────────────────────────

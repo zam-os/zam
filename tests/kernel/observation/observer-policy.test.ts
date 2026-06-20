@@ -1,4 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, beforeEach, afterEach } from "vitest";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { openDatabase } from "../../../src/kernel/db/connection.js";
+import type { Database } from "../../../src/kernel/db/types.js";
 import {
   DEFAULT_OBSERVER_POLICY,
   decidePostCapture,
@@ -7,6 +12,9 @@ import {
   type ObserverPolicy,
   OBSERVER_POLICY_VERSION,
   parseObserverPolicy,
+  getDefaultsForSymbiosisMode,
+  resolveActiveSymbiosisMode,
+  resolveObserverPolicy,
 } from "../../../src/kernel/observation/policy.js";
 
 function policy(overrides: Partial<ObserverPolicy> = {}): ObserverPolicy {
@@ -187,5 +195,157 @@ describe("matchBuiltInSensitive", () => {
 
   it("returns null for an ordinary app", () => {
     expect(matchBuiltInSensitive("notepad", "Untitled")).toBeNull();
+  });
+});
+
+describe("symbiosis mode presets", () => {
+  it("getDefaultsForSymbiosisMode returns correct presets", () => {
+    expect(getDefaultsForSymbiosisMode("autonomy")).toEqual({
+      scope: "fullscreen",
+      consent: "standing",
+    });
+    expect(getDefaultsForSymbiosisMode("copilot")).toEqual({
+      scope: "window",
+      consent: "per-session",
+    });
+    expect(getDefaultsForSymbiosisMode("shadowing")).toEqual({
+      scope: "window",
+      consent: "per-session",
+    });
+  });
+
+  describe("database-backed resolvers", () => {
+    let db: Database;
+    let tempDir: string;
+
+    beforeEach(async () => {
+      tempDir = mkdtempSync(join(tmpdir(), "zam-policy-test-"));
+      db = await openDatabase({
+        dbPath: join(tempDir, "zam-policy-test.db"),
+        initialize: true,
+      });
+      // Set the default user setting
+      await db.prepare("INSERT INTO user_config (key, value) VALUES ('user.id', 'test-user')").run();
+    });
+
+    afterEach(async () => {
+      await db.close();
+      try {
+        rmSync(tempDir, { recursive: true, force: true });
+      } catch {
+        // Best-effort cleanup
+      }
+    });
+
+    async function seedToken(id: string, slug: string, domain: string, mode: string | null) {
+      await db.prepare(`
+        INSERT INTO tokens (id, slug, concept, domain, symbiosis_mode)
+        VALUES (?, ?, ?, ?, ?)
+      `).run(id, slug, `Concept for ${slug}`, domain, mode);
+    }
+
+    async function seedCard(id: string, tokenId: string, reps: number, stability: number) {
+      await db.prepare(`
+        INSERT INTO cards (id, token_id, user_id, reps, stability)
+        VALUES (?, ?, 'test-user', ?, ?)
+      `).run(id, tokenId, reps, stability);
+    }
+
+    async function seedReviewLog(id: string, cardId: string, tokenId: string, rating: number, reviewedAt: string) {
+      await db.prepare(`
+        INSERT INTO review_logs (id, card_id, token_id, user_id, rating, reviewed_at, scheduled_at)
+        VALUES (?, ?, ?, 'test-user', ?, ?, datetime('now'))
+      `).run(id, cardId, tokenId, rating, reviewedAt);
+    }
+
+    async function seedSession(id: string, completedAt: string | null) {
+      await db.prepare(`
+        INSERT INTO sessions (id, user_id, task, started_at, completed_at)
+        VALUES (?, 'test-user', 'Task', datetime('now'), ?)
+      `).run(id, completedAt);
+    }
+
+    async function seedSessionStep(id: string, sessionId: string, tokenId: string, createdAt: string) {
+      await db.prepare(`
+        INSERT INTO session_steps (id, session_id, token_id, done_by, created_at)
+        VALUES (?, ?, ?, 'user', ?)
+      `).run(id, sessionId, tokenId, createdAt);
+    }
+
+    it("resolveActiveSymbiosisMode defaults to shadowing on empty database", async () => {
+      const mode = await resolveActiveSymbiosisMode(db);
+      expect(mode).toBe("shadowing");
+    });
+
+    it("resolveActiveSymbiosisMode resolves running session step token mode directly", async () => {
+      await seedToken("t1", "slug1", "domain1", "autonomy");
+      await seedSession("s1", null);
+      await seedSessionStep("step1", "s1", "t1", "2026-06-20T12:00:00Z");
+
+      const mode = await resolveActiveSymbiosisMode(db);
+      expect(mode).toBe("autonomy");
+    });
+
+    it("resolveActiveSymbiosisMode resolves running session step domain competence suggestedMode", async () => {
+      // Suggested Mode for autonomy requires avgStab > 30, retentionRate > 0.9
+      await seedToken("t1", "slug1", "domain1", null);
+      await seedCard("c1", "t1", 3, 35);
+      await seedReviewLog("r1", "c1", "t1", 3, "2026-06-20T11:00:00Z");
+      await seedSession("s1", null);
+      await seedSessionStep("step1", "s1", "t1", "2026-06-20T12:00:00Z");
+
+      const mode = await resolveActiveSymbiosisMode(db);
+      expect(mode).toBe("autonomy");
+    });
+
+    it("resolveActiveSymbiosisMode falls back to review log token mode", async () => {
+      // No active session
+      await seedToken("t1", "slug1", "domain1", "copilot");
+      await seedCard("c1", "t1", 1, 10);
+      await seedReviewLog("r1", "c1", "t1", 3, "2026-06-20T11:00:00Z");
+
+      const mode = await resolveActiveSymbiosisMode(db);
+      expect(mode).toBe("copilot");
+    });
+
+    it("resolveActiveSymbiosisMode falls back to review log domain Suggested Mode", async () => {
+      // No active session, token symbiosis_mode is null
+      await seedToken("t1", "slug1", "domain1", null);
+      await seedCard("c1", "t1", 3, 35);
+      await seedReviewLog("r1", "c1", "t1", 4, "2026-06-20T11:00:00Z");
+
+      const mode = await resolveActiveSymbiosisMode(db);
+      expect(mode).toBe("autonomy");
+    });
+
+    it("resolveObserverPolicy defaults fall back to presets depending on resolved mode", async () => {
+      // empty DB -> mode = shadowing -> defaults to scope="window", consent="per-session"
+      let policy = await resolveObserverPolicy(db);
+      expect(policy.scope).toBe("window");
+      expect(policy.consent).toBe("per-session");
+
+      // Set active session step -> mode = autonomy -> defaults to scope="fullscreen", consent="standing"
+      await seedToken("t1", "slug1", "domain1", "autonomy");
+      await seedSession("s1", null);
+      await seedSessionStep("step1", "s1", "t1", "2026-06-20T12:00:00Z");
+
+      policy = await resolveObserverPolicy(db);
+      expect(policy.scope).toBe("fullscreen");
+      expect(policy.consent).toBe("standing");
+    });
+
+    it("resolveObserverPolicy uses explicit user settings over active mode presets", async () => {
+      // mode = autonomy -> default scope="fullscreen", consent="standing"
+      await seedToken("t1", "slug1", "domain1", "autonomy");
+      await seedSession("s1", null);
+      await seedSessionStep("step1", "s1", "t1", "2026-06-20T12:00:00Z");
+
+      // explicitly set scope to window
+      await db.prepare("INSERT INTO user_config (key, value) VALUES ('observer.scope', 'window')").run();
+
+      const policy = await resolveObserverPolicy(db);
+      expect(policy.scope).toBe("window");      // overridden by user_config
+      expect(policy.consent).toBe("standing");   // still default preset
+    });
   });
 });
