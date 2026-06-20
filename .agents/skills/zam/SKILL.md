@@ -293,9 +293,19 @@ Workflow:
    ```bash
    zam bridge capture-ui --session <session-id>
    ```
-   Returns JSON with `imagePath` and `base64` (PNG screenshot).
+   Returns JSON with `imagePath`, `base64` (PNG screenshot), `captureMethod`,
+   and `captureTarget` metadata when a target window was resolved. Save to a
+   stable file with `--output <path>` whenever you will pass the image to a
+   subagent.
 3. If Codex subagents are available, spawn a cheap vision-capable subagent (for example a mini model) and pass the screenshot as a local image plus the task, expected evidence, and candidate token slugs. Ask it for observed facts and suggested 1-4 ratings with brief evidence.
-4. Review the subagent's evidence yourself before writing ratings. If the screenshot is ambiguous, ask the user instead of guessing.
+4. Review `captureTarget` and the visual evidence yourself before writing
+   ratings. If `captureMethod` is `fullscreen`, the target is missing, the
+   title/process does not match the intended app, or the screenshot is
+   ambiguous, recapture with `--process-name <name>` or `--hwnd <handle>`
+   before rating. For Windows Store/UWP apps such as Calculator, the visible
+   window may belong to `ApplicationFrameHost` even when the app process is
+   `CalculatorApp`; prefer a targeted recapture and verify the returned window
+   title.
 5. Submit ratings and session logs for only the tokens the user actually exercised.
 
 The `capture-ui` command supports:

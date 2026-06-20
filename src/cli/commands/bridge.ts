@@ -924,11 +924,34 @@ function resolveWindowsPowerShell(): string {
   }
 }
 
+type CaptureTarget = {
+  requestedHwnd: string | null;
+  requestedProcessName: string | null;
+  matchedBy: string;
+  hwnd: number | null;
+  processId: number | null;
+  processName: string | null;
+  windowTitle: string | null;
+  bounds: {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
+    width: number;
+    height: number;
+  } | null;
+};
+
+type CaptureResult = {
+  method: string;
+  target: CaptureTarget | null;
+};
+
 function captureScreenshot(
   outputPath: string,
   hwnd?: string,
   processName?: string,
-): string {
+): CaptureResult {
   const platform = process.platform;
   if (hwnd && !/^(0x)?[0-9a-fA-F]+$/.test(hwnd)) {
     throw new Error(`Invalid HWND format: ${hwnd}`);
@@ -952,8 +975,34 @@ using System;
 using System.Runtime.InteropServices;
 
 public class Win32 {
+    public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    public static extern bool SetProcessDPIAware();
+
+    [DllImport("user32.dll")]
+    public static extern bool SetProcessDpiAwarenessContext(IntPtr dpiContext);
+
     [DllImport("user32.dll")]
     public static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
+
+    [DllImport("user32.dll")]
+    public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    public static extern bool EnumChildWindows(IntPtr hWnd, EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    public static extern bool IsWindowVisible(IntPtr hWnd);
+
+    [DllImport("user32.dll", SetLastError=true)]
+    public static extern int GetWindowText(IntPtr hWnd, System.Text.StringBuilder lpString, int nMaxCount);
+
+    [DllImport("user32.dll", SetLastError=true)]
+    public static extern int GetWindowTextLength(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
     [DllImport("user32.dll")]
     public static extern bool SetForegroundWindow(IntPtr hWnd);
@@ -978,7 +1027,137 @@ public class Win32 {
 '@
 Add-Type -TypeDefinition $code
 
+try {
+    # DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 = -4. Without this, Windows
+    # can return logical window bounds while PrintWindow renders physical
+    # pixels, causing high-DPI captures to crop the right/bottom edge.
+    [Win32]::SetProcessDpiAwarenessContext([IntPtr](-4)) | Out-Null
+} catch {
+    try { [Win32]::SetProcessDPIAware() | Out-Null } catch {}
+}
+
+function Get-WindowTitle([IntPtr]$hWnd) {
+    $length = [Win32]::GetWindowTextLength($hWnd)
+    $capacity = [Math]::Max(1, $length + 1)
+    $builder = New-Object System.Text.StringBuilder $capacity
+    [Win32]::GetWindowText($hWnd, $builder, $builder.Capacity) | Out-Null
+    $builder.ToString()
+}
+
+function Get-WindowProcess([IntPtr]$hWnd) {
+    [uint32]$processId = 0
+    [Win32]::GetWindowThreadProcessId($hWnd, [ref]$processId) | Out-Null
+    if ($processId -eq 0) { return $null }
+    Get-Process -Id $processId -ErrorAction SilentlyContinue
+}
+
+function Get-VisibleTopLevelWindows {
+    $script:windowCandidates = New-Object System.Collections.ArrayList
+    $callback = [Win32+EnumWindowsProc]{
+        param([IntPtr]$candidateHwnd, [IntPtr]$lParam)
+        if ([Win32]::IsWindowVisible($candidateHwnd)) {
+            $candidateRect = New-Object Win32+RECT
+            if ([Win32]::GetWindowRect($candidateHwnd, [ref]$candidateRect)) {
+                $candidateWidth = $candidateRect.Right - $candidateRect.Left
+                $candidateHeight = $candidateRect.Bottom - $candidateRect.Top
+                if ($candidateWidth -gt 0 -and $candidateHeight -gt 0) {
+                    [void]$script:windowCandidates.Add($candidateHwnd)
+                }
+            }
+        }
+        return $true
+    }
+    [Win32]::EnumWindows($callback, [IntPtr]::Zero) | Out-Null
+    $windows = $script:windowCandidates
+    Remove-Variable -Name windowCandidates -Scope Script -ErrorAction SilentlyContinue
+    $windows
+}
+
+function Find-TopLevelWindowByProcessName([string]$name) {
+    foreach ($candidateHwnd in Get-VisibleTopLevelWindows) {
+        $candidateProcess = Get-WindowProcess $candidateHwnd
+        if ($candidateProcess -and $candidateProcess.ProcessName -ieq $name) {
+            return [pscustomobject]@{
+                Hwnd = $candidateHwnd
+                MatchedBy = "process-top-level-window"
+            }
+        }
+
+        $script:desiredChildProcessName = $name
+        $script:foundChildProcessWindow = $false
+        $childCallback = [Win32+EnumWindowsProc]{
+            param([IntPtr]$childHwnd, [IntPtr]$lParam)
+            $childProcess = Get-WindowProcess $childHwnd
+            if ($childProcess -and $childProcess.ProcessName -ieq $script:desiredChildProcessName) {
+                $script:foundChildProcessWindow = $true
+                return $false
+            }
+            return $true
+        }
+        [Win32]::EnumChildWindows($candidateHwnd, $childCallback, [IntPtr]::Zero) | Out-Null
+        $foundChild = $script:foundChildProcessWindow
+        Remove-Variable -Name desiredChildProcessName -Scope Script -ErrorAction SilentlyContinue
+        Remove-Variable -Name foundChildProcessWindow -Scope Script -ErrorAction SilentlyContinue
+
+        if ($foundChild) {
+            return [pscustomobject]@{
+                Hwnd = $candidateHwnd
+                MatchedBy = "process-child-window"
+            }
+        }
+    }
+
+    return $null
+}
+
+function New-CaptureTarget([IntPtr]$hWnd, [string]$matchedBy) {
+    $target = [ordered]@{
+        requestedHwnd = if ($targetHwnd -ne '') { $targetHwnd } else { $null }
+        requestedProcessName = if ($processName -ne '') { $processName } else { $null }
+        matchedBy = $matchedBy
+        hwnd = $null
+        processId = $null
+        processName = $null
+        windowTitle = $null
+        bounds = $null
+    }
+
+    if ($hWnd -ne [IntPtr]::Zero) {
+        $target.hwnd = $hWnd.ToInt64()
+        $target.windowTitle = Get-WindowTitle $hWnd
+
+        $windowProcess = Get-WindowProcess $hWnd
+        if ($windowProcess) {
+            $target.processId = $windowProcess.Id
+            $target.processName = $windowProcess.ProcessName
+        }
+
+        $targetRect = New-Object Win32+RECT
+        if ([Win32]::GetWindowRect($hWnd, [ref]$targetRect)) {
+            $target.bounds = [ordered]@{
+                left = $targetRect.Left
+                top = $targetRect.Top
+                right = $targetRect.Right
+                bottom = $targetRect.Bottom
+                width = $targetRect.Right - $targetRect.Left
+                height = $targetRect.Bottom - $targetRect.Top
+            }
+        }
+    }
+
+    $target
+}
+
+function Write-CaptureResult([string]$method, [IntPtr]$hWnd, [string]$matchedBy) {
+    $result = [ordered]@{
+        method = $method
+        target = New-CaptureTarget $hWnd $matchedBy
+    }
+    Write-Output ("CAPTURE_RESULT:" + ($result | ConvertTo-Json -Compress -Depth 6))
+}
+
 $hwndVal = [IntPtr]::Zero
+$matchedBy = "fullscreen-fallback"
 $targetHwnd = '${hwnd || ""}'
 $processName = '${processName || ""}'
 
@@ -988,14 +1167,25 @@ if ($targetHwnd -ne '') {
     } else {
         $hwndVal = [IntPtr][Convert]::ToInt64($targetHwnd, 10)
     }
+    $matchedBy = "hwnd"
 } elseif ($processName -ne '') {
     $proc = Get-Process -Name $processName -ErrorAction SilentlyContinue | Where-Object {$_.MainWindowHandle -ne 0} | Select-Object -First 1
     if ($proc) {
         $hwndVal = $proc.MainWindowHandle
+        $matchedBy = "process-main-window"
     } else {
         $proc = Get-Process -Name $processName -ErrorAction SilentlyContinue | Select-Object -First 1
         if ($proc) {
             $hwndVal = $proc.MainWindowHandle
+            $matchedBy = "process-zero-main-window"
+        }
+    }
+
+    if ($hwndVal -eq [IntPtr]::Zero) {
+        $windowMatch = Find-TopLevelWindowByProcessName $processName
+        if ($windowMatch) {
+            $hwndVal = $windowMatch.Hwnd
+            $matchedBy = $windowMatch.MatchedBy
         }
     }
 }
@@ -1052,7 +1242,7 @@ if ($hwndVal -ne [IntPtr]::Zero) {
             $bitmap.Save('${outputPath.replace(/\\/g, "\\\\")}', [System.Drawing.Imaging.ImageFormat]::Png)
             $graphics.Dispose()
             $bitmap.Dispose()
-            Write-Output "CAPTURE_METHOD:$method"
+            Write-CaptureResult $method $hwndVal $matchedBy
             exit 0
         }
     }
@@ -1066,13 +1256,21 @@ $graphics.CopyFromScreen($screen.Location, [System.Drawing.Point]::Empty, $scree
 $bitmap.Save('${outputPath.replace(/\\/g, "\\\\")}', [System.Drawing.Imaging.ImageFormat]::Png)
 $graphics.Dispose()
 $bitmap.Dispose()
-Write-Output "CAPTURE_METHOD:fullscreen"
+Write-CaptureResult "fullscreen" $hwndVal $matchedBy
         `.trim(),
       ],
       { stdio: "pipe", encoding: "utf8" },
     );
-    const match = /CAPTURE_METHOD:(\w+)/.exec(stdout ?? "");
-    return match ? match[1] : "unknown";
+    const resultMatch = /CAPTURE_RESULT:(\{.*\})/.exec(stdout ?? "");
+    if (resultMatch) {
+      const parsed = JSON.parse(resultMatch[1]) as CaptureResult;
+      return parsed;
+    }
+    const methodMatch = /CAPTURE_METHOD:(\w+)/.exec(stdout ?? "");
+    return {
+      method: methodMatch ? methodMatch[1] : "unknown",
+      target: null,
+    };
   } else if (platform === "darwin") {
     if (hwnd) {
       const parsedHwnd = hwnd.startsWith("0x")
@@ -1081,7 +1279,7 @@ Write-Output "CAPTURE_METHOD:fullscreen"
       execFileSync("screencapture", ["-l", String(parsedHwnd), outputPath], {
         stdio: "pipe",
       });
-      return "screencapture-window";
+      return { method: "screencapture-window", target: null };
     } else if (processName) {
       try {
         const windowId = execFileSync(
@@ -1096,16 +1294,16 @@ Write-Output "CAPTURE_METHOD:fullscreen"
           execFileSync("screencapture", ["-l", windowId, outputPath], {
             stdio: "pipe",
           });
-          return "screencapture-window";
+          return { method: "screencapture-window", target: null };
         }
       } catch {
         // Fallback if AppleScript fails
       }
       execFileSync("screencapture", ["-x", outputPath], { stdio: "pipe" });
-      return "screencapture-full";
+      return { method: "screencapture-full", target: null };
     } else {
       execFileSync("screencapture", ["-x", outputPath], { stdio: "pipe" });
-      return "screencapture-full";
+      return { method: "screencapture-full", target: null };
     }
   } else {
     throw new Error(
@@ -1129,8 +1327,8 @@ bridgeCommand
         opts.output ??
         join(tmpdir(), `zam-capture-${randomBytes(4).toString("hex")}.png`);
 
-      const captureMethod = opts.image
-        ? "provided"
+      const captureResult = opts.image
+        ? ({ method: "provided", target: null } satisfies CaptureResult)
         : captureScreenshot(outputPath, opts.hwnd, opts.processName);
 
       const imageBytes = readFileSync(outputPath);
@@ -1141,7 +1339,8 @@ bridgeCommand
         imagePath: outputPath,
         base64,
         mimeType: "image/png",
-        captureMethod,
+        captureMethod: captureResult.method,
+        captureTarget: captureResult.target,
         capturedAt: new Date().toISOString(),
         platform: process.platform,
       });
