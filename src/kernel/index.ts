@@ -183,6 +183,12 @@ export {
   readMonitorLog,
   writeMonitorEvent,
 } from "./observation/monitor-io.js";
+export type { SidecarPrivacyPolicy } from "./observation/observer-sidecar-policy.js";
+export {
+  SIDECAR_POLICY_FILE,
+  syncObserverSidecarPolicy,
+  toSidecarPrivacyPolicy,
+} from "./observation/observer-sidecar-policy.js";
 export type {
   CaptureDecision,
   CaptureDenialReason,

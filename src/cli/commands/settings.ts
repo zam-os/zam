@@ -11,6 +11,7 @@ import {
   getRepoPaths,
   getSetting,
   setSetting,
+  syncObserverSidecarPolicy,
 } from "../../kernel/index.js";
 import { withDb } from "./shared/db.js";
 
@@ -106,6 +107,10 @@ settingsCommand
     await withDb(async (db) => {
       const parsedVal = normalizeSettingValue(key, value);
       await setSetting(db, key, parsedVal);
+      if (key.startsWith("observer.")) {
+        // Keep the native sidecar's policy file in sync with observer.* settings.
+        await syncObserverSidecarPolicy(db);
+      }
       if (!opts.quiet) {
         console.log(`Set ${key} = ${parsedVal}`);
       }
@@ -121,6 +126,10 @@ settingsCommand
   .action(async (key, opts) => {
     await withDb(async (db) => {
       const deleted = await deleteSetting(db, key);
+      if (key.startsWith("observer.")) {
+        // Regenerate the sidecar policy file after an observer.* change.
+        await syncObserverSidecarPolicy(db);
+      }
       if (!opts.quiet) {
         if (deleted) {
           console.log(`Deleted: ${key}`);

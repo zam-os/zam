@@ -49,6 +49,7 @@ import {
   resolveObserverPolicy,
   resolveReviewContext,
   startSession,
+  syncObserverSidecarPolicy,
   uiObservationLogExists,
 } from "../../kernel/index.js";
 import {
@@ -1411,6 +1412,20 @@ bridgeCommand
         platform: process.platform,
         permission: { ...permission, granted: true },
       });
+    });
+  });
+
+// ── zam bridge sync-observer-policy ────────────────────────────────────────
+
+bridgeCommand
+  .command("sync-observer-policy")
+  .description(
+    "Write the resolved observer policy to the native sidecar file (JSON)",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      const { path, policy } = await syncObserverSidecarPolicy(db);
+      jsonOut({ synced: true, path, policy });
     });
   });
 
