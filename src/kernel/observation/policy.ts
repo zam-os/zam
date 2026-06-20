@@ -273,7 +273,7 @@ export function decidePreCapture(
     if (denied) {
       return deny(`process is denylisted (${denied})`, "denylisted");
     }
-    if (!inAllowlist(policy, requested)) {
+    if (policy.scope === "window" && !inAllowlist(policy, requested)) {
       return deny(
         `process not in observer.allowlist (${requested.toLowerCase()})`,
         "not-allowlisted",

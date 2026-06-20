@@ -1,6 +1,16 @@
-# Increment 8: Tauri Active-Recall Studio
+# ADR-0008: Tauri Active-Recall Studio
 
-## Implemented
+**Status:** Implemented
+**Date:** 2026-06-20
+**Deciders:** Thomas (project owner)
+
+---
+
+## Context
+
+Designing a desktop application for ZAM card reviews using Tauri v2, integrating the existing bridge, adding shortcut systems, packaging dependencies, and setting up release targets.
+
+## Decisions
 
 - A Tauri v2 desktop review application.
 - A Rust command boundary that invokes the shared ZAM bridge.

@@ -1,6 +1,16 @@
-# Increment 1: Kernel and Shell Observation
+# ADR-0002: Kernel and Shell Observation
 
-## Implemented
+**Status:** Implemented
+**Date:** 2026-06-20
+**Deciders:** Thomas (project owner)
+
+---
+
+## Context
+
+Implementation of the initial core behavior: scheduling, knowledge tokens, shell hooks, monitor log analysis, session persistence, and agent-skill bridge.
+
+## Decisions
 
 - FSRS-5 scheduling with card states, stability, difficulty, and due dates.
 - Atomic knowledge tokens with Bloom levels and prerequisite graphs.

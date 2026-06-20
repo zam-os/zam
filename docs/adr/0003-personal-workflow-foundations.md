@@ -1,6 +1,16 @@
-# Increment 2: Personal Workflow Foundations
+# ADR-0003: Personal Workflow Foundations
 
-## Implemented
+**Status:** Implemented
+**Date:** 2026-06-20
+**Deciders:** Thomas (project owner)
+
+---
+
+## Context
+
+Establishing default user identity, configuration of repository paths, parsing/executing goals, Azure DevOps connection, and skill discovery.
+
+## Decisions
 
 - A default user identity through `zam whoami`.
 - Configurable personal, team, and organization repository paths.

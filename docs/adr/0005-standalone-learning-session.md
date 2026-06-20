@@ -1,6 +1,16 @@
-# Increment 5: Standalone Learning Session
+# ADR-0005: Standalone Learning Session
 
-## Implemented
+**Status:** Implemented
+**Date:** 2026-06-20
+**Deciders:** Thomas (project owner)
+
+---
+
+## Context
+
+Decoupling the learning session from host agents to provide a spoiler-free, in-process, LLM-evaluated CLI console learning experience.
+
+## Decisions
 
 - A spoiler-free `zam learn` console flow.
 - Answer capture before concept and source context are revealed.

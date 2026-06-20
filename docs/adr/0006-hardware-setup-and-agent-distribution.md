@@ -1,6 +1,16 @@
-# Increment 6: Hardware Setup and Agent Distribution
+# ADR-0006: Hardware Setup and Agent Distribution
 
-## Implemented
+**Status:** Implemented
+**Date:** 2026-06-20
+**Deciders:** Thomas (project owner)
+
+---
+
+## Context
+
+Establishing guided initialization commands, local LLM configurations, hardware profiling, and shell hook environments.
+
+## Decisions
 
 - Guided workspace initialization with `zam init`.
 - Hardware and operating-system profiling.

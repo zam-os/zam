@@ -112,6 +112,14 @@ describe("decidePreCapture", () => {
       denialReason: "not-allowlisted",
     });
   });
+
+  it("does not enforce allowlist under fullscreen scope", () => {
+    const d = decidePreCapture(
+      policy({ scope: "fullscreen", allowlist: ["calculator"] }),
+      { hasExplicitTarget: true, requestedProcessName: "notepad" },
+    );
+    expect(d.allowed).toBe(true);
+  });
 });
 
 describe("decidePostCapture", () => {

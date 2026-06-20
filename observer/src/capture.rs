@@ -232,9 +232,9 @@ mod windows_capture {
     use crate::keyframe_archive::KeyframeArchive;
     use crate::model::{ApplicationContext, SensorEvent, SensorKind};
     use crate::picker::{
-        capture_item_for_hwnd, pick_graphics_capture_item, window_info, PickedWindow,
+        capture_item_for_hwnd, pick_graphics_capture_item, window_info, window_info_with_policy, PickedWindow,
     };
-    use crate::privacy::ensure_capture_allowed;
+    use crate::privacy::{ensure_capture_allowed, resolve_window_privacy_policy};
 
     struct CaptureDevices {
         winrt: IDirect3DDevice,
@@ -285,6 +285,8 @@ mod windows_capture {
         if samples == 0 {
             return Err("--samples must be greater than 0".to_string());
         }
+
+        let policy = resolve_window_privacy_policy()?;
 
         // `capture_item_for_hwnd` re-checks the privacy gate before any pixels
         // are read; `window_info` adds the process name the picker item lacks.
@@ -349,27 +351,43 @@ mod windows_capture {
                     thread::sleep(interval);
                 }
             }
-            let capture = match try_wait_for_frame(&pool, Duration::from_millis(250))? {
-                Some(frame) => {
-                    let content_size = frame
-                        .ContentSize()
-                        .map_err(|error| format!("failed to read frame size: {error}"))?;
-                    if content_size.Width != current_size.Width
-                        || content_size.Height != current_size.Height
-                    {
-                        let _ = pool.Recreate(
-                            &devices.winrt,
-                            DirectXPixelFormat::B8G8R8A8UIntNormalized,
-                            1,
-                            content_size,
-                        );
-                        current_size = content_size;
+            let info = match window_info_with_policy(hwnd, &policy)? {
+                Some(info) => info,
+                None => break,
+            };
+            stream.update_context(
+                ApplicationContext {
+                    process_name: info.process_name.clone(),
+                    process_id: Some(info.process_id),
+                    window_title: Some(info.title.clone()),
+                },
+                info.privacy.title_redacted,
+            );
+            let capture = if info.privacy.is_paused() {
+                None
+            } else {
+                match try_wait_for_frame(&pool, Duration::from_millis(250))? {
+                    Some(frame) => {
+                        let content_size = frame
+                            .ContentSize()
+                            .map_err(|error| format!("failed to read frame size: {error}"))?;
+                        if content_size.Width != current_size.Width
+                            || content_size.Height != current_size.Height
+                        {
+                            let _ = pool.Recreate(
+                                &devices.winrt,
+                                DirectXPixelFormat::B8G8R8A8UIntNormalized,
+                                1,
+                                content_size,
+                            );
+                            current_size = content_size;
+                        }
+                        let capture = read_frame_capture(&mut reader, &frame, archiving)?;
+                        let _ = frame.Close();
+                        Some(capture)
                     }
-                    let capture = read_frame_capture(&mut reader, &frame, archiving)?;
-                    let _ = frame.Close();
-                    Some(capture)
+                    None => None,
                 }
-                None => None,
             };
             emit_capture_event(&mut stream, &mut archive, capture, on_event)?;
         }
@@ -398,6 +416,8 @@ mod windows_capture {
         event_driven: bool,
         on_event: &mut dyn FnMut(SensorEvent) -> Result<(), String>,
     ) -> Result<(), String> {
+        let policy = resolve_window_privacy_policy()?;
+
         let (item, picked) = capture_item_for_hwnd(hwnd)?;
         let (application, redacted) = match window_info(hwnd)? {
             Some(info) => {
@@ -462,27 +482,43 @@ mod windows_capture {
             if should_stop.load(std::sync::atomic::Ordering::Relaxed) {
                 break;
             }
-            let capture = match try_wait_for_frame(&pool, Duration::from_millis(250))? {
-                Some(frame) => {
-                    let content_size = frame
-                        .ContentSize()
-                        .map_err(|error| format!("failed to read frame size: {error}"))?;
-                    if content_size.Width != current_size.Width
-                        || content_size.Height != current_size.Height
-                    {
-                        let _ = pool.Recreate(
-                            &devices.winrt,
-                            DirectXPixelFormat::B8G8R8A8UIntNormalized,
-                            1,
-                            content_size,
-                        );
-                        current_size = content_size;
+            let info = match window_info_with_policy(hwnd, &policy)? {
+                Some(info) => info,
+                None => break,
+            };
+            stream.update_context(
+                ApplicationContext {
+                    process_name: info.process_name.clone(),
+                    process_id: Some(info.process_id),
+                    window_title: Some(info.title.clone()),
+                },
+                info.privacy.title_redacted,
+            );
+            let capture = if info.privacy.is_paused() {
+                None
+            } else {
+                match try_wait_for_frame(&pool, Duration::from_millis(250))? {
+                    Some(frame) => {
+                        let content_size = frame
+                            .ContentSize()
+                            .map_err(|error| format!("failed to read frame size: {error}"))?;
+                        if content_size.Width != current_size.Width
+                            || content_size.Height != current_size.Height
+                        {
+                            let _ = pool.Recreate(
+                                &devices.winrt,
+                                DirectXPixelFormat::B8G8R8A8UIntNormalized,
+                                1,
+                                content_size,
+                            );
+                            current_size = content_size;
+                        }
+                        let capture = read_frame_capture(&mut reader, &frame, archiving)?;
+                        let _ = frame.Close();
+                        Some(capture)
                     }
-                    let capture = read_frame_capture(&mut reader, &frame, archiving)?;
-                    let _ = frame.Close();
-                    Some(capture)
+                    None => None,
                 }
-                None => None,
             };
             emit_capture_event_continuous(&mut stream, &mut archive, capture, on_event)?;
         }

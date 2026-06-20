@@ -28,7 +28,7 @@ pub use model::{
     SensorTarget, UiObservationReport, PROTOCOL_VERSION,
 };
 pub use picker::{
-    foreground_window, list_windows, pick_window, window_info, PickedWindow, WindowInfo,
+    foreground_window, list_windows, pick_window, window_info, window_info_with_policy, PickedWindow, WindowInfo,
 };
 pub use privacy::{
     classify_window_privacy, classify_window_privacy_with_policy, ensure_capture_allowed,

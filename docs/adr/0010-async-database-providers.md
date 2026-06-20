@@ -1,10 +1,19 @@
-# Increment 10: Async Database Providers
+# ADR-0010: Async Database Providers
 
-## Implemented
+**Status:** Implemented
+**Date:** 2026-06-20
+**Deciders:** Thomas (project owner)
+
+---
+
+## Context
+
+Refactoring the kernel and database architecture to support async interfaces for future cloud sync and Turso connection.
+
+## Decisions
 
 - An asynchronous database, statement, result, and transaction contract.
-- Promise-based adapters for local SQLite and the optional native libSQL
-  backend.
+- Promise-based adapters for local SQLite and the optional native libSQL backend.
 - An Hrana v3 HTTP transport for remote Turso access.
 - Explicit `local`, `native`, and `remote` provider selection.
 - Async kernel and CLI database access.

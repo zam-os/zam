@@ -1,6 +1,16 @@
-# Increment 3: Stabilization and Workflow Integrity
+# ADR-0004: Stabilization and Workflow Integrity
 
-## Implemented
+**Status:** Implemented
+**Date:** 2026-06-20
+**Deciders:** Thomas (project owner)
+
+---
+
+## Context
+
+Adding CI validation, integration tests, prerequisite check refinements, review maintenance, and multi-client skill distribution.
+
+## Decisions
 
 - Continuous integration for linting, type checking, builds, and tests.
 - Database-backed integration tests for tokens, cards, reviews, and blocking.

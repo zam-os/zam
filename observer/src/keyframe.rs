@@ -55,6 +55,12 @@ impl KeyframeStream {
         }
     }
 
+    /// Update the application context and redaction status dynamically.
+    pub fn update_context(&mut self, application: ApplicationContext, redacted: bool) {
+        self.application = application;
+        self.redacted = redacted;
+    }
+
     /// Feed one sample. `signature` is `None` when the capture source delivered
     /// no new frame during the interval, which counts as "unchanged". Returns a
     /// `SensorEvent` to emit, or `None` when nothing is worth reporting yet.
@@ -212,5 +218,22 @@ mod tests {
 
         // Only one unchanged sample since the reset: no heartbeat yet.
         assert!(stream.observe(Some(solid_signature(255)), "t3").is_none());
+    }
+
+    #[test]
+    fn can_update_context() {
+        let mut stream = KeyframeStream::new("session-1", application(), false, 0.02, 0);
+        let updated = ApplicationContext {
+            process_name: "chrome.exe".to_string(),
+            process_id: Some(99),
+            window_title: Some("New Title".to_string()),
+        };
+        stream.update_context(updated.clone(), true);
+
+        let event = stream
+            .observe(Some(solid_signature(0)), "t0")
+            .expect("emits keyframe");
+        assert_eq!(event.application.unwrap().process_name, "chrome.exe");
+        assert!(event.redacted);
     }
 }

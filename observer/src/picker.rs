@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::model::PROTOCOL_VERSION;
-use crate::privacy::WindowPrivacy;
+use crate::privacy::{WindowPrivacy, WindowPrivacyPolicy};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
@@ -63,6 +63,16 @@ pub fn window_info(hwnd: u64) -> Result<Option<WindowInfo>, String> {
 
 #[cfg(not(target_os = "windows"))]
 pub fn window_info(_hwnd: u64) -> Result<Option<WindowInfo>, String> {
+    Err("window inspection is only available on Windows".to_string())
+}
+
+#[cfg(target_os = "windows")]
+pub fn window_info_with_policy(hwnd: u64, policy: &WindowPrivacyPolicy) -> Result<Option<WindowInfo>, String> {
+    windows_picker::window_info_with_policy(hwnd, policy)
+}
+
+#[cfg(not(target_os = "windows"))]
+pub fn window_info_with_policy(_hwnd: u64, _policy: &WindowPrivacyPolicy) -> Result<Option<WindowInfo>, String> {
     Err("window inspection is only available on Windows".to_string())
 }
 
@@ -211,6 +221,18 @@ mod windows_picker {
         }
 
         Ok(describe_window(hwnd, &policy))
+    }
+
+    pub(crate) fn window_info_with_policy(raw_hwnd: u64, policy: &WindowPrivacyPolicy) -> Result<Option<WindowInfo>, String> {
+        let hwnd = hwnd_from_u64(raw_hwnd);
+        if hwnd.is_invalid() {
+            return Err("invalid HWND 0".to_string());
+        }
+        if !unsafe { IsWindow(Some(hwnd)).as_bool() } {
+            return Err(format!("HWND 0x{raw_hwnd:x} is not a valid window"));
+        }
+
+        Ok(describe_window(hwnd, policy))
     }
 
     struct WindowEnumerationState {

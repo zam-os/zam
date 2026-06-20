@@ -1,6 +1,16 @@
-# Increment 9: Release Hardening
+# ADR-0009: Release Hardening
 
-## Implemented
+**Status:** Implemented
+**Date:** 2026-06-20
+**Deciders:** Thomas (project owner)
+
+---
+
+## Context
+
+Hardening the desktop releases, decoupling startup dependencies, validating resource packaging, and testing cross-compilation environments.
+
+## Decisions
 
 - Bundled bridge startup without a source checkout.
 - Packaged production dependencies and a Node runtime.
@@ -9,8 +19,7 @@
 - Local fonts and a desktop content security policy.
 - Separate Intel and ARM macOS release targets.
 - Windows ARM64-compatible local SQLite storage.
-- CI checks for frontend compilation, Rust, resource preparation, and bridge
-  startup.
+- CI checks for frontend compilation, Rust, resource preparation, and bridge startup.
 
 ## Evidence
 
