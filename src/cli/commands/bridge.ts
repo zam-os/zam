@@ -909,6 +909,21 @@ bridgeCommand
 
 // ── zam bridge capture-ui ──────────────────────────────────────────────────
 
+/**
+ * Resolve the PowerShell executable, preferring PowerShell 7+ (`pwsh`) over
+ * the legacy Windows PowerShell 5.1 (`powershell`). pwsh 7 still ships the
+ * Windows Desktop assemblies the screen-capture script needs, so it is the
+ * default; `powershell` remains a fallback for machines without pwsh.
+ */
+function resolveWindowsPowerShell(): string {
+  try {
+    execFileSync("where.exe", ["pwsh.exe"], { stdio: "ignore" });
+    return "pwsh";
+  } catch {
+    return "powershell";
+  }
+}
+
 function captureScreenshot(
   outputPath: string,
   hwnd?: string,
@@ -924,7 +939,7 @@ function captureScreenshot(
 
   if (platform === "win32") {
     const stdout = execFileSync(
-      "powershell",
+      resolveWindowsPowerShell(),
       [
         "-NoProfile",
         "-Command",
