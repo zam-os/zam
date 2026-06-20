@@ -253,16 +253,47 @@ monitorCommand
  * Resolve the `zam` invocation — built CLI if available, otherwise tsx source.
  * This ensures the spawned terminal uses the correct entrypoint.
  */
+/**
+ * Pick the path PowerShell/cmd can actually run from `where.exe` output.
+ *
+ * `where.exe zam` can return both an extensionless shim (the npm Unix shell
+ * wrapper at ...\npm\zam) and the Windows-executable variant (...\npm\zam.cmd).
+ * PowerShell and cmd can only run the latter — invoking the extensionless shim
+ * silently produces no output, which left the spawned monitor window with no
+ * hooks installed (#51). Prefer a result whose extension is in PATHEXT.
+ */
+export function selectWindowsExecutable(
+  results: string[],
+  pathext: string = process.env.PATHEXT ?? ".COM;.EXE;.BAT;.CMD",
+): string | null {
+  if (results.length === 0) return null;
+  const extensions = pathext
+    .split(";")
+    .map((ext) => ext.trim().toLowerCase())
+    .filter(Boolean);
+  const runnable = results.find((result) =>
+    extensions.some((ext) => result.toLowerCase().endsWith(ext)),
+  );
+  return runnable ?? results[0];
+}
+
 function findExecutable(command: string): string | null {
   try {
     const lookup =
       process.platform === "win32"
         ? `where.exe ${command}`
         : `command -v ${command}`;
-    const result = execSync(lookup, { encoding: "utf-8" })
-      .split(/\r?\n/)[0]
-      ?.trim();
-    return result || null;
+    const results = execSync(lookup, { encoding: "utf-8" })
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+    if (results.length === 0) return null;
+
+    if (process.platform === "win32") {
+      return selectWindowsExecutable(results);
+    }
+
+    return results[0];
   } catch {
     return null;
   }
