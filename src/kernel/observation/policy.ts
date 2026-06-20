@@ -14,7 +14,7 @@
  */
 
 import type { Database } from "../db/types.js";
-import { getSetting } from "../models/settings.js";
+import { getAllSettings, getSetting } from "../models/settings.js";
 
 export const OBSERVER_POLICY_VERSION = 1 as const;
 
@@ -90,6 +90,14 @@ function parseList(raw: string | undefined): string[] {
     .split(",")
     .map((entry) => entry.trim().toLowerCase())
     .filter((entry) => entry.length > 0);
+}
+
+/**
+ * Public wrapper around the allow/denylist normalizer so CLI list mutation
+ * (`zam observer grant/revoke`) parses entries exactly like resolveObserverPolicy.
+ */
+export function parseObserverList(raw: string | undefined): string[] {
+  return parseList(raw);
 }
 
 function parseScope(raw: string | undefined): ObserverScope {
@@ -311,3 +319,17 @@ export function decidePostCapture(
   }
   return { allowed: true };
 }
+
+/** True if the user has set any `observer.*` key in user_config. */
+export async function isObserverPolicyConfigured(
+  db: Database,
+): Promise<boolean> {
+  const settings = await getAllSettings(db);
+  return Object.keys(settings).some((key) => key.startsWith("observer."));
+}
+
+/** Hint surfaced when a UI session starts with no observer policy configured. */
+export const OBSERVER_POLICY_UNSET_HINT =
+  "Observer policy is at defaults (scope=window: only a targeted window is captured). " +
+  "Configure with `zam observer status|grant|revoke` or " +
+  "`zam settings set observer.scope <off|window|fullscreen>`.";

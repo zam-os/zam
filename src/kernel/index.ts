@@ -205,9 +205,12 @@ export {
   DEFAULT_OBSERVER_POLICY,
   decidePostCapture,
   decidePreCapture,
+  isObserverPolicyConfigured,
   matchBuiltInSensitive,
   matchDenylist,
+  OBSERVER_POLICY_UNSET_HINT,
   OBSERVER_POLICY_VERSION,
+  parseObserverList,
   parseObserverPolicy,
   resolveObserverPolicy,
 } from "./observation/policy.js";

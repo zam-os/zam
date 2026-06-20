@@ -40,9 +40,11 @@ import {
   getTokenBySlug,
   getTokenDeleteImpact,
   getTokenNeighborhood,
+  isObserverPolicyConfigured,
   listAgentSkills,
   listTokens,
   monitorLogExists,
+  OBSERVER_POLICY_UNSET_HINT,
   openDatabase,
   pairCommands,
   readMonitorLog,
@@ -474,6 +476,10 @@ bridgeCommand
         task: opts.task,
         execution_context: context,
       });
+      const observerPolicyHint =
+        context === "ui" && !(await isObserverPolicyConfigured(db))
+          ? OBSERVER_POLICY_UNSET_HINT
+          : undefined;
       jsonOut({
         id: session.id,
         userId: session.user_id,
@@ -481,6 +487,7 @@ bridgeCommand
         executionContext: session.execution_context,
         startedAt: session.started_at,
         completedAt: session.completed_at,
+        ...(observerPolicyHint ? { observerPolicyHint } : {}),
       });
     });
   });
