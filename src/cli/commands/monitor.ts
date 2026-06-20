@@ -478,9 +478,12 @@ function openWindowsPowerShell(
     `-ArgumentList @('-NoExit','-NoProfile','-Command',${psSingleQuoted(shellSetup)})`,
   ].join(" ");
 
+  // Prefer pwsh 7+ as the launcher too; fall back to Windows PowerShell 5.1.
+  const launcher = findExecutable("pwsh.exe") ? "pwsh.exe" : "powershell.exe";
+
   try {
     execFileSync(
-      "powershell.exe",
+      launcher,
       ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", startCommand],
       {
         stdio: "ignore",
