@@ -913,7 +913,7 @@ function captureScreenshot(
   outputPath: string,
   hwnd?: string,
   processName?: string,
-): void {
+): string {
   const platform = process.platform;
   if (hwnd && !/^(0x)?[0-9a-fA-F]+$/.test(hwnd)) {
     throw new Error(`Invalid HWND format: ${hwnd}`);
@@ -923,7 +923,7 @@ function captureScreenshot(
   }
 
   if (platform === "win32") {
-    execFileSync(
+    const stdout = execFileSync(
       "powershell",
       [
         "-NoProfile",
@@ -948,6 +948,9 @@ public class Win32 {
 
     [DllImport("user32.dll")]
     public static extern bool IsIconic(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    public static extern bool PrintWindow(IntPtr hWnd, IntPtr hdcBlt, uint nFlags);
 
     [StructLayout(LayoutKind.Sequential)]
     public struct RECT {
@@ -984,12 +987,10 @@ if ($targetHwnd -ne '') {
 
 if ($hwndVal -ne [IntPtr]::Zero) {
     if ([Win32]::IsIconic($hwndVal)) {
-        [Win32]::ShowWindow($hwndVal, 9) # SW_RESTORE = 9
+        [Win32]::ShowWindow($hwndVal, 9) | Out-Null # SW_RESTORE = 9
         Start-Sleep -Milliseconds 250
     }
-    [Win32]::SetForegroundWindow($hwndVal)
-    Start-Sleep -Milliseconds 250
-    
+
     $rect = New-Object Win32+RECT
     if ([Win32]::GetWindowRect($hwndVal, [ref]$rect)) {
         $width = $rect.Right - $rect.Left
@@ -997,10 +998,46 @@ if ($hwndVal -ne [IntPtr]::Zero) {
         if ($width -gt 0 -and $height -gt 0) {
             $bitmap = New-Object System.Drawing.Bitmap($width, $height)
             $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
-            $graphics.CopyFromScreen($rect.Left, $rect.Top, 0, 0, $bitmap.Size)
+            # PrintWindow renders the target window directly, regardless of
+            # z-order, so an occluded or background window is still captured
+            # correctly. SetForegroundWindow from a background process is
+            # blocked by Windows, so CopyFromScreen would grab whatever sits
+            # on top. PW_RENDERFULLCONTENT (0x2) handles modern/UWP windows.
+            $hdc = $graphics.GetHdc()
+            $printed = [Win32]::PrintWindow($hwndVal, $hdc, 2)
+            $graphics.ReleaseHdc($hdc)
+            $method = "printwindow"
+
+            # Black-frame guard: PrintWindow can return a near-black frame on
+            # some hardware-accelerated / DirectComposition surfaces. Sample a
+            # sparse grid; if it is essentially black, fall back to a foreground
+            # CopyFromScreen grab so the capture self-heals on those drivers.
+            $needFallback = -not $printed
+            if (-not $needFallback) {
+                $sum = 0.0
+                $cnt = 0
+                $stepX = [Math]::Max(1, [int]($width / 12))
+                $stepY = [Math]::Max(1, [int]($height / 12))
+                for ($sy = 0; $sy -lt $height; $sy += $stepY) {
+                    for ($sx = 0; $sx -lt $width; $sx += $stepX) {
+                        $px = $bitmap.GetPixel($sx, $sy)
+                        $sum += ($px.R + $px.G + $px.B) / 3.0
+                        $cnt++
+                    }
+                }
+                if ($cnt -gt 0 -and ($sum / $cnt) -lt 6) { $needFallback = $true }
+            }
+
+            if ($needFallback) {
+                [Win32]::SetForegroundWindow($hwndVal) | Out-Null
+                Start-Sleep -Milliseconds 250
+                $graphics.CopyFromScreen($rect.Left, $rect.Top, 0, 0, $bitmap.Size)
+                $method = "copyfromscreen"
+            }
             $bitmap.Save('${outputPath.replace(/\\/g, "\\\\")}', [System.Drawing.Imaging.ImageFormat]::Png)
             $graphics.Dispose()
             $bitmap.Dispose()
+            Write-Output "CAPTURE_METHOD:$method"
             exit 0
         }
     }
@@ -1014,10 +1051,13 @@ $graphics.CopyFromScreen($screen.Location, [System.Drawing.Point]::Empty, $scree
 $bitmap.Save('${outputPath.replace(/\\/g, "\\\\")}', [System.Drawing.Imaging.ImageFormat]::Png)
 $graphics.Dispose()
 $bitmap.Dispose()
+Write-Output "CAPTURE_METHOD:fullscreen"
         `.trim(),
       ],
-      { stdio: "pipe" },
+      { stdio: "pipe", encoding: "utf8" },
     );
+    const match = /CAPTURE_METHOD:(\w+)/.exec(stdout ?? "");
+    return match ? match[1] : "unknown";
   } else if (platform === "darwin") {
     if (hwnd) {
       const parsedHwnd = hwnd.startsWith("0x")
@@ -1026,6 +1066,7 @@ $bitmap.Dispose()
       execFileSync("screencapture", ["-l", String(parsedHwnd), outputPath], {
         stdio: "pipe",
       });
+      return "screencapture-window";
     } else if (processName) {
       try {
         const windowId = execFileSync(
@@ -1040,14 +1081,16 @@ $bitmap.Dispose()
           execFileSync("screencapture", ["-l", windowId, outputPath], {
             stdio: "pipe",
           });
-          return;
+          return "screencapture-window";
         }
       } catch {
         // Fallback if AppleScript fails
       }
       execFileSync("screencapture", ["-x", outputPath], { stdio: "pipe" });
+      return "screencapture-full";
     } else {
       execFileSync("screencapture", ["-x", outputPath], { stdio: "pipe" });
+      return "screencapture-full";
     }
   } else {
     throw new Error(
@@ -1071,9 +1114,9 @@ bridgeCommand
         opts.output ??
         join(tmpdir(), `zam-capture-${randomBytes(4).toString("hex")}.png`);
 
-      if (!opts.image) {
-        captureScreenshot(outputPath, opts.hwnd, opts.processName);
-      }
+      const captureMethod = opts.image
+        ? "provided"
+        : captureScreenshot(outputPath, opts.hwnd, opts.processName);
 
       const imageBytes = readFileSync(outputPath);
       const base64 = imageBytes.toString("base64");
@@ -1083,6 +1126,7 @@ bridgeCommand
         imagePath: outputPath,
         base64,
         mimeType: "image/png",
+        captureMethod,
         capturedAt: new Date().toISOString(),
         platform: process.platform,
       });
