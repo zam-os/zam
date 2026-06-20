@@ -260,7 +260,7 @@ and future agent.
 Ordered so a fresh agent with a token budget can pick up any item. File paths are
 load-bearing.
 
-> **Progress (2026-06-20):** Items 1–4 are done. The wire-contract half of item 3
+> **Progress (2026-06-20):** Items 1–5 are done. The wire-contract half of item 3
 > (`CaptureUiResponse` / `ObserverPermission` / `denialReason` / the denied
 > variant) shipped with them; the `GetObserverPolicyResponse` introspection
 > endpoint (`zam bridge get-observer-policy`) completes it. Item 8 is partly done (SKILL.md Approach C updated;
@@ -274,7 +274,9 @@ load-bearing.
 > it via `zam bridge sync-observer-policy` and on every `observer.*` settings
 > change — one policy source for both capture paths. Caveat: if the desktop
 > launches the observer with a custom `ZAM_OBSERVER_DIR`, the sync must target
-> that dir.
+> that dir. Item 5: `zam observer status|grant|revoke` (process-name based —
+> option B; picker-based grant deferred) plus a non-blocking first-run hint on
+> `--context ui` sessions (human + bridge JSON `observerPolicyHint`).
 
 1. [x] **Define the policy.** Add `ObserverPolicy`, defaults, the built-in
    sensitive denylist, and `resolveObserverPolicy(db)` in
@@ -296,7 +298,7 @@ load-bearing.
    `ZAM_OBSERVER_PRIVACY_POLICY` env path with the resolved policy passed from the
    kernel (JSON on spawn or a resolved config file). Keep the env var as a
    deprecated fallback for one release.
-5. [ ] **Expose settings.** Wire the `observer.*` keys through `zam settings`; add
+5. [x] **Expose settings.** Wire the `observer.*` keys through `zam settings`; add
    optional `zam observer grant|revoke|status` sugar over the picker. Surface an
    unset-policy prompt at the first `--context ui` session (per
    [user-settings.md](../concepts/user-settings.md) discoverability).

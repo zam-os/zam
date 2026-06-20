@@ -25,8 +25,10 @@ import {
   generatePrompt,
   getSessionSummary,
   getTokenBySlug,
+  isObserverPolicyConfigured,
   loadADOConfig,
   logStep,
+  OBSERVER_POLICY_UNSET_HINT,
   openDatabase,
   prepareSessionSynthesis,
   startSession,
@@ -111,18 +113,34 @@ sessionCommand
         execution_context: opts.context as ExecutionContext,
       });
 
+      const observerHint =
+        opts.context === "ui" && !(await isObserverPolicyConfigured(db))
+          ? OBSERVER_POLICY_UNSET_HINT
+          : null;
+
       await db.close();
 
       if (opts.quiet) {
         console.log(session.id);
       } else if (opts.json) {
-        console.log(JSON.stringify(session, null, 2));
+        console.log(
+          JSON.stringify(
+            observerHint
+              ? { ...session, observerPolicyHint: observerHint }
+              : session,
+            null,
+            2,
+          ),
+        );
       } else {
         console.log(`\nSession started: ${session.id}`);
         console.log(`  User:    ${session.user_id}`);
         console.log(`  Task:    ${session.task}`);
         console.log(`  Context: ${session.execution_context}`);
         console.log(`  Started: ${session.started_at}`);
+        if (observerHint) {
+          console.log(`\n${observerHint}`);
+        }
       }
     } catch (err) {
       await db?.close();
