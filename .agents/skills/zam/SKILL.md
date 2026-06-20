@@ -329,7 +329,8 @@ user-configurable policy resolved from `zam settings`: `observer.scope`
 set (password managers, auth/UAC dialogs, banking) is always refused and
 cannot be allowlisted — those return `denied: true` with
 `denialReason: "sensitive"`. Treat any `denied` response as final: do not
-retry to work around it; tell the user which surface was blocked.
+retry to work around it; tell the user which surface was blocked. To check the
+active scope/allow/denylist up front, call `zam bridge get-observer-policy`.
 
 **Rating scale (all observation approaches):**
 - Completed correctly, no hesitation, no help → **4**
