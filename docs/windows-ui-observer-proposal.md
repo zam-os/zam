@@ -635,6 +635,7 @@ help-seeking, and privacy-sensitive intervals. Compare models on:
 
 1. When should ZAM escalate from single-window observation to full-display
    observation?
+   *Note: Partially resolved in ADR-0001: The default scope is `window` (restricting capture to a targeted application process or HWND). The user can explicitly escalate to `fullscreen` by setting `observer.scope = "fullscreen"` in user config, which is also the default for autonomy mode.*
 2. How long may derived keyframes survive after the session?
 3. Which cloud regions and provider contracts are acceptable for personal and
    organizational deployments?

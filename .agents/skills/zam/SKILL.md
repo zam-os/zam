@@ -294,10 +294,15 @@ Workflow:
    zam bridge capture-ui --session <session-id> --process-name <app>
    ```
    Under the default observer policy (`observer.scope=window`) a capture must
-   target a window: pass `--process-name <app>` or `--hwnd <handle>`. An
-   untargeted call is refused with `{ "granted": false, "denied": true,
-   "denialReason": "scope-requires-target", ... }` — retry with a target, or
-   for a deliberate whole-screen grab set `observer.scope=fullscreen`.
+   target a window: pass `--process-name <app>` or `--hwnd <handle>`.
+   
+   If a capture is refused, the response will be `{ "granted": false, "denied": true, "denialReason": "<reason>", "reason": "<explanation>", ... }`.
+   Handle these denial reasons accordingly:
+   - `scope-requires-target`: Pass a target window (`--process-name` or `--hwnd`), or tell the user to enable full-screen captures via `zam settings set observer.scope fullscreen`.
+   - `scope-off`: The observer is disabled. Tell the user to enable it via `zam settings set observer.scope window`.
+   - `sensitive`: The targeted or active window matches the built-in sensitive filter (e.g., password manager, banking, private browsing). Skip UI observation for this step and inform the user.
+   - `denylisted`: The process is explicitly blocked by the user's denylist. Skip UI observation.
+   - `not-allowlisted`: The process is not in the user's allowlist. Suggest the user grant access via `zam observer grant <process>` if appropriate.
 
    A granted response is JSON with `granted: true`, `imagePath`, `base64`
    (PNG screenshot), `captureMethod`, `captureTarget` metadata, and a
