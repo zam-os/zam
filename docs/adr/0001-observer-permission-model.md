@@ -260,7 +260,7 @@ and future agent.
 Ordered so a fresh agent with a token budget can pick up any item. File paths are
 load-bearing.
 
-> **Progress (2026-06-20):** Items 1–2 are done. The wire-contract half of item 3
+> **Progress (2026-06-20):** Items 1–2 and 4 are done. The wire-contract half of item 3
 > (`CaptureUiResponse` / `ObserverPermission` / `denialReason` / the denied
 > variant) shipped with them; the `GetObserverPolicyResponse` introspection
 > endpoint is still open. Item 8 is partly done (SKILL.md Approach C updated;
@@ -268,7 +268,13 @@ load-bearing.
 > (`observer.scope`, …), not `observer_*` — see item 5. Enforcement is two-phase
 > (pre-capture for scope/explicit target; post-resolution for the captured
 > window's process/title); the deny discriminator is `denialReason`, not the
-> originally sketched `kind: "privacy-pause"`.
+> originally sketched `kind: "privacy-pause"`. Item 4: the native Rust sidecar
+> now resolves `<observer-dir>/policy.json` (kernel-written;
+> `ZAM_OBSERVER_PRIVACY_POLICY` is a deprecated fallback), and the kernel writes
+> it via `zam bridge sync-observer-policy` and on every `observer.*` settings
+> change — one policy source for both capture paths. Caveat: if the desktop
+> launches the observer with a custom `ZAM_OBSERVER_DIR`, the sync must target
+> that dir.
 
 1. [x] **Define the policy.** Add `ObserverPolicy`, defaults, the built-in
    sensitive denylist, and `resolveObserverPolicy(db)` in
@@ -286,7 +292,7 @@ load-bearing.
    `CaptureUiResponse` (currently ad hoc), an exported `ObserverPolicy`, a
    `GetObserverPolicyResponse` (lets an agent ask "what may I capture?"), and the
    `denied` variant. Bump the policy/protocol version.
-4. [ ] **Unify the sidecar.** Replace the Rust observer's
+4. [x] **Unify the sidecar.** Replace the Rust observer's
    `ZAM_OBSERVER_PRIVACY_POLICY` env path with the resolved policy passed from the
    kernel (JSON on spawn or a resolved config file). Keep the env var as a
    deprecated fallback for one release.

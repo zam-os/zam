@@ -33,7 +33,8 @@ pub use picker::{
 pub use privacy::{
     classify_window_privacy, classify_window_privacy_with_policy, ensure_capture_allowed,
     load_window_privacy_policy, load_window_privacy_policy_from_env, redact_window_title,
-    PrivacyAction, WindowPrivacy, WindowPrivacyPolicy, PRIVACY_POLICY_ENV, REDACTED_WINDOW_TITLE,
+    resolve_window_privacy_policy, PrivacyAction, WindowPrivacy, WindowPrivacyPolicy,
+    PRIVACY_POLICY_ENV, REDACTED_WINDOW_TITLE, RESOLVED_POLICY_FILE,
 };
 pub use raw_input::{watch_raw_input, watch_raw_input_continuous};
 pub use replay::{ReplayEngine, ReplayError, ReplaySummary};

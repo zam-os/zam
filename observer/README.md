@@ -220,7 +220,13 @@ Custom privacy policy:
 }
 ```
 
-Set `ZAM_OBSERVER_PRIVACY_POLICY` to the JSON file path before starting the
-sidecar. `allowProcesses` bypasses only custom policy rules; built-in pauses for
-password managers, authentication/private-browsing, and financial contexts still
-win.
+The sidecar resolves this policy from, in order: the kernel-written
+`<observer-dir>/policy.json` (`<observer-dir>` is `ZAM_OBSERVER_DIR`, else
+`~/.zam/observer`); then the `ZAM_OBSERVER_PRIVACY_POLICY` env file (deprecated
+fallback); then the built-in default. The kernel derives that file from the
+user's `observer.*` settings — `zam bridge sync-observer-policy` writes it and
+`zam settings set observer.*` refreshes it — so the native sidecar and the
+headless `capture-ui` path share one policy source (see
+[ADR-0001](../docs/adr/0001-observer-permission-model.md)). `allowProcesses`
+bypasses only custom policy rules; built-in pauses for password managers,
+authentication/private-browsing, and financial contexts still win.

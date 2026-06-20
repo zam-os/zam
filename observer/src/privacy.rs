@@ -1,5 +1,6 @@
 use std::env;
-use std::path::Path;
+use std::ffi::OsString;
+use std::path::{Path, PathBuf};
 
 use serde::{Deserialize, Serialize};
 
@@ -109,6 +110,60 @@ pub fn load_window_privacy_policy(path: &Path) -> Result<WindowPrivacyPolicy, St
         .map_err(|error| format!("failed to read privacy policy {}: {error}", path.display()))?;
     serde_json::from_str::<WindowPrivacyPolicy>(&raw)
         .map_err(|error| format!("failed to parse privacy policy {}: {error}", path.display()))
+}
+
+/// Filename, under the observer directory, of the policy the ZAM kernel writes
+/// from the user's `observer.*` settings.
+pub const RESOLVED_POLICY_FILE: &str = "policy.json";
+
+const OBSERVER_DIR_ENV: &str = "ZAM_OBSERVER_DIR";
+
+/// Resolve the active window-privacy policy from the unified ZAM source.
+///
+/// Precedence (Layer 2 of the two-layer consent model — see
+/// docs/adr/0001-observer-permission-model.md, item 4):
+/// 1. the kernel-written file at `<observer-dir>/policy.json` (primary);
+/// 2. the `ZAM_OBSERVER_PRIVACY_POLICY` env file (deprecated fallback);
+/// 3. the built-in default.
+///
+/// The observer directory mirrors the kernel's resolution: `ZAM_OBSERVER_DIR`,
+/// else `~/.zam/observer`. The built-in sensitive set is always enforced on top
+/// of whatever this returns; user config can only make the policy stricter.
+pub fn resolve_window_privacy_policy() -> Result<WindowPrivacyPolicy, String> {
+    resolve_window_privacy_policy_with(observer_dir(), env::var_os(PRIVACY_POLICY_ENV))
+}
+
+fn resolve_window_privacy_policy_with(
+    observer_dir: Option<PathBuf>,
+    env_policy_path: Option<OsString>,
+) -> Result<WindowPrivacyPolicy, String> {
+    if let Some(dir) = observer_dir {
+        let resolved = dir.join(RESOLVED_POLICY_FILE);
+        if resolved.is_file() {
+            return load_window_privacy_policy(&resolved);
+        }
+    }
+    if let Some(path) = env_policy_path {
+        if !path.is_empty() {
+            return load_window_privacy_policy(Path::new(&path));
+        }
+    }
+    Ok(WindowPrivacyPolicy::default())
+}
+
+fn observer_dir() -> Option<PathBuf> {
+    if let Some(dir) = env::var_os(OBSERVER_DIR_ENV) {
+        if !dir.is_empty() {
+            return Some(PathBuf::from(dir));
+        }
+    }
+    let home = if cfg!(windows) {
+        env::var_os("USERPROFILE")
+    } else {
+        env::var_os("HOME")
+    };
+    home.filter(|value| !value.is_empty())
+        .map(|value| PathBuf::from(value).join(".zam").join("observer"))
 }
 
 pub fn redact_window_title(title: String, privacy: &WindowPrivacy) -> String {
@@ -305,5 +360,46 @@ mod tests {
         let built_in = classify_window_privacy_with_policy("chrome.exe", "Sign in", &policy);
         assert_eq!(built_in.action, PrivacyAction::PrivacyPause);
         assert_eq!(built_in.reasons, vec!["authentication"]);
+    }
+
+    #[test]
+    fn resolves_kernel_file_over_env_and_default() {
+        let dir = std::env::temp_dir().join(format!("zam-policy-file-{}", std::process::id()));
+        let observer_dir = dir.join("observer");
+        std::fs::create_dir_all(&observer_dir).expect("create observer dir");
+        std::fs::write(
+            observer_dir.join(RESOLVED_POLICY_FILE),
+            r#"{"denyProcesses":["slack"]}"#,
+        )
+        .expect("write policy");
+
+        let policy =
+            resolve_window_privacy_policy_with(Some(observer_dir), None).expect("resolve policy");
+        assert_eq!(policy.deny_processes, vec!["slack".to_string()]);
+
+        std::fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn falls_back_to_env_when_no_kernel_file() {
+        let dir = std::env::temp_dir().join(format!("zam-policy-env-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).expect("create dir");
+        let env_file = dir.join("env-policy.json");
+        std::fs::write(&env_file, r#"{"denyTitleMarkers":["payroll"]}"#).expect("write env policy");
+
+        let policy = resolve_window_privacy_policy_with(
+            Some(dir.join("missing-observer")),
+            Some(env_file.into_os_string()),
+        )
+        .expect("resolve policy");
+        assert_eq!(policy.deny_title_markers, vec!["payroll".to_string()]);
+
+        std::fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn defaults_when_neither_file_nor_env() {
+        let policy = resolve_window_privacy_policy_with(None, None).expect("resolve policy");
+        assert_eq!(policy, WindowPrivacyPolicy::default());
     }
 }

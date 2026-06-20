@@ -97,8 +97,8 @@ mod windows_picker {
 
     use super::{PickedWindow, WindowInfo, PROTOCOL_VERSION};
     use crate::privacy::{
-        classify_window_privacy_with_policy, ensure_capture_allowed,
-        load_window_privacy_policy_from_env, redact_window_title, WindowPrivacyPolicy,
+        classify_window_privacy_with_policy, ensure_capture_allowed, redact_window_title,
+        resolve_window_privacy_policy, WindowPrivacyPolicy,
     };
 
     const PICKER_TIMEOUT: Duration = Duration::from_secs(120);
@@ -108,7 +108,7 @@ mod windows_picker {
             RoInitialize(RO_INIT_SINGLETHREADED)
                 .map_err(|error| format!("failed to initialize WinRT: {error}"))?;
         }
-        let policy = load_window_privacy_policy_from_env()?;
+        let policy = resolve_window_privacy_policy()?;
 
         let picker = GraphicsCapturePicker::new()
             .map_err(|error| format!("failed to create capture picker: {error}"))?;
@@ -141,7 +141,7 @@ mod windows_picker {
             RoInitialize(RO_INIT_SINGLETHREADED)
                 .map_err(|error| format!("failed to initialize WinRT: {error}"))?;
         }
-        let policy = load_window_privacy_policy_from_env()?;
+        let policy = resolve_window_privacy_policy()?;
 
         let hwnd = hwnd_from_u64(raw_hwnd);
         if hwnd.is_invalid() {
@@ -172,7 +172,7 @@ mod windows_picker {
     }
 
     pub(crate) fn list_windows() -> Result<Vec<WindowInfo>, String> {
-        let policy = load_window_privacy_policy_from_env()?;
+        let policy = resolve_window_privacy_policy()?;
         let mut state = WindowEnumerationState {
             windows: Vec::new(),
             policy,
@@ -191,7 +191,7 @@ mod windows_picker {
     }
 
     pub(crate) fn foreground_window() -> Result<Option<WindowInfo>, String> {
-        let policy = load_window_privacy_policy_from_env()?;
+        let policy = resolve_window_privacy_policy()?;
         let hwnd = unsafe { GetForegroundWindow() };
         if hwnd.is_invalid() {
             return Ok(None);
@@ -201,7 +201,7 @@ mod windows_picker {
     }
 
     pub(crate) fn window_info(raw_hwnd: u64) -> Result<Option<WindowInfo>, String> {
-        let policy = load_window_privacy_policy_from_env()?;
+        let policy = resolve_window_privacy_policy()?;
         let hwnd = hwnd_from_u64(raw_hwnd);
         if hwnd.is_invalid() {
             return Err("invalid HWND 0".to_string());
