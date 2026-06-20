@@ -306,7 +306,7 @@ load-bearing.
    (shadowing/copilot/autonomy).
 7. [ ] **(Later) MCP.** Sketch `zam mcp serve` exposing `zam_observe` with declared
    tool-consent (Layer 1); reuse `resolveObserverPolicy` + enforcement (Layer 2).
-8. [ ] **Docs.** Update [ARCHITECTURE.md](../ARCHITECTURE.md) (Observation Levels +
+8. [x] **Docs.** Update [ARCHITECTURE.md](../ARCHITECTURE.md) (Observation Levels +
    policy), note the partial resolution of Open Question #1 in
    [windows-ui-observer-proposal.md](../windows-ui-observer-proposal.md), and
    document the `denied` response in
