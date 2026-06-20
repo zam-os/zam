@@ -5,13 +5,11 @@
  * Errors are also JSON: { "error": "message" }
  */
 
-import { readFileSync } from "node:fs";
-import { readdirSync } from "node:fs";
-import { homedir } from "node:os";
-import { join } from "node:path";
 import { execFileSync } from "node:child_process";
-import { tmpdir } from "node:os";
 import { randomBytes } from "node:crypto";
+import { readdirSync, readFileSync } from "node:fs";
+import { homedir, tmpdir } from "node:os";
+import { join } from "node:path";
 import { Command } from "commander";
 import type {
   BloomLevel,
@@ -909,8 +907,19 @@ bridgeCommand
 
 // ── zam bridge capture-ui ──────────────────────────────────────────────────
 
-function captureScreenshot(outputPath: string): void {
+function captureScreenshot(
+  outputPath: string,
+  hwnd?: string,
+  processName?: string,
+): void {
   const platform = process.platform;
+  if (hwnd && !/^(0x)?[0-9a-fA-F]+$/.test(hwnd)) {
+    throw new Error(`Invalid HWND format: ${hwnd}`);
+  }
+  if (processName && !/^[a-zA-Z0-9\-_.]+$/.test(processName)) {
+    throw new Error(`Invalid process name format: ${processName}`);
+  }
+
   if (platform === "win32") {
     execFileSync(
       "powershell",
@@ -920,11 +929,87 @@ function captureScreenshot(outputPath: string): void {
         `
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
+
+$code = @'
+using System;
+using System.Runtime.InteropServices;
+
+public class Win32 {
+    [DllImport("user32.dll")]
+    public static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
+
+    [DllImport("user32.dll")]
+    public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+    [DllImport("user32.dll")]
+    public static extern bool IsIconic(IntPtr hWnd);
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct RECT {
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
+    }
+}
+'@
+Add-Type -TypeDefinition $code
+
+$hwndVal = [IntPtr]::Zero
+$targetHwnd = '${hwnd || ""}'
+$processName = '${processName || ""}'
+
+if ($targetHwnd -ne '') {
+    if ($targetHwnd.StartsWith("0x")) {
+        $hwndVal = [IntPtr][Convert]::ToInt64($targetHwnd, 16)
+    } else {
+        $hwndVal = [IntPtr][Convert]::ToInt64($targetHwnd, 10)
+    }
+} elseif ($processName -ne '') {
+    $proc = Get-Process -Name $processName -ErrorAction SilentlyContinue | Where-Object {$_.MainWindowHandle -ne 0} | Select-Object -First 1
+    if ($proc) {
+        $hwndVal = $proc.MainWindowHandle
+    } else {
+        $proc = Get-Process -Name $processName -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($proc) {
+            $hwndVal = $proc.MainWindowHandle
+        }
+    }
+}
+
+if ($hwndVal -ne [IntPtr]::Zero) {
+    if ([Win32]::IsIconic($hwndVal)) {
+        [Win32]::ShowWindow($hwndVal, 9) # SW_RESTORE = 9
+        Start-Sleep -Milliseconds 250
+    }
+    [Win32]::SetForegroundWindow($hwndVal)
+    Start-Sleep -Milliseconds 250
+    
+    $rect = New-Object Win32+RECT
+    if ([Win32]::GetWindowRect($hwndVal, [ref]$rect)) {
+        $width = $rect.Right - $rect.Left
+        $height = $rect.Bottom - $rect.Top
+        if ($width -gt 0 -and $height -gt 0) {
+            $bitmap = New-Object System.Drawing.Bitmap($width, $height)
+            $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
+            $graphics.CopyFromScreen($rect.Left, $rect.Top, 0, 0, $bitmap.Size)
+            $bitmap.Save('${outputPath.replace(/\\/g, "\\\\")}', [System.Drawing.Imaging.ImageFormat]::Png)
+            $graphics.Dispose()
+            $bitmap.Dispose()
+            exit 0
+        }
+    }
+}
+
+# Fallback: full primary screen
 $screen = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
 $bitmap = New-Object System.Drawing.Bitmap($screen.Width, $screen.Height)
 $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
 $graphics.CopyFromScreen($screen.Location, [System.Drawing.Point]::Empty, $screen.Size)
-$bitmap.Save('${outputPath.replace(/\\/g, "\\\\")}')
+$bitmap.Save('${outputPath.replace(/\\/g, "\\\\")}', [System.Drawing.Imaging.ImageFormat]::Png)
 $graphics.Dispose()
 $bitmap.Dispose()
         `.trim(),
@@ -932,7 +1017,36 @@ $bitmap.Dispose()
       { stdio: "pipe" },
     );
   } else if (platform === "darwin") {
-    execFileSync("screencapture", ["-x", outputPath], { stdio: "pipe" });
+    if (hwnd) {
+      const parsedHwnd = hwnd.startsWith("0x")
+        ? parseInt(hwnd, 16)
+        : parseInt(hwnd, 10);
+      execFileSync("screencapture", ["-l", String(parsedHwnd), outputPath], {
+        stdio: "pipe",
+      });
+    } else if (processName) {
+      try {
+        const windowId = execFileSync(
+          "osascript",
+          [
+            "-e",
+            `tell application "System Events" to get id of window 1 of process "${processName}"`,
+          ],
+          { encoding: "utf8", stdio: ["pipe", "pipe", "ignore"] },
+        ).trim();
+        if (windowId && /^\d+$/.test(windowId)) {
+          execFileSync("screencapture", ["-l", windowId, outputPath], {
+            stdio: "pipe",
+          });
+          return;
+        }
+      } catch {
+        // Fallback if AppleScript fails
+      }
+      execFileSync("screencapture", ["-x", outputPath], { stdio: "pipe" });
+    } else {
+      execFileSync("screencapture", ["-x", outputPath], { stdio: "pipe" });
+    }
   } else {
     throw new Error(
       `Screen capture not supported on platform: ${platform}. Use zam-observer or provide --image.`,
@@ -942,15 +1056,12 @@ $bitmap.Dispose()
 
 bridgeCommand
   .command("capture-ui")
-  .description(
-    "Capture a screenshot for agent-side vision analysis (JSON)",
-  )
+  .description("Capture a screenshot for agent-side vision analysis (JSON)")
   .option("--session <id>", "ZAM session ID (for metadata)")
   .option("--output <path>", "PNG output path (defaults to temp file)")
-  .option(
-    "--image <path>",
-    "Skip capture; return an existing image instead",
-  )
+  .option("--image <path>", "Skip capture; return an existing image instead")
+  .option("--hwnd <hwnd>", "Window handle (decimal or hex) to capture")
+  .option("--process-name <name>", "Process name to capture")
   .action(async (opts) => {
     try {
       const outputPath =
@@ -959,7 +1070,7 @@ bridgeCommand
         join(tmpdir(), `zam-capture-${randomBytes(4).toString("hex")}.png`);
 
       if (!opts.image) {
-        captureScreenshot(outputPath);
+        captureScreenshot(outputPath, opts.hwnd, opts.processName);
       }
 
       const imageBytes = readFileSync(outputPath);
