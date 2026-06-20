@@ -23,6 +23,7 @@ import type {
 import {
   analyzeObservation,
   appendUiObservationReport,
+  BUILT_IN_SENSITIVE_MATCHERS,
   buildReviewQueue,
   createToken,
   decidePostCapture,
@@ -1411,6 +1412,30 @@ bridgeCommand
         capturedAt: new Date().toISOString(),
         platform: process.platform,
         permission: { ...permission, granted: true },
+      });
+    });
+  });
+
+// ── zam bridge get-observer-policy ─────────────────────────────────────────
+
+bridgeCommand
+  .command("get-observer-policy")
+  .description(
+    "Report the resolved observer policy so an agent can check before capturing (JSON)",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      const policy = await resolveObserverPolicy(db);
+      jsonOut({
+        scope: policy.scope,
+        consent: policy.consent,
+        retention: policy.retention,
+        allowlist: policy.allowlist,
+        denylist: policy.denylist,
+        redactWindowTitles: policy.redactWindowTitles,
+        audioOptIn: policy.audioOptIn,
+        builtInSensitiveAlwaysRefused: true,
+        builtInSensitiveMatchers: [...BUILT_IN_SENSITIVE_MATCHERS],
       });
     });
   });

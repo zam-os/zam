@@ -357,3 +357,21 @@ export interface CaptureUiDeniedResponse {
   platform: string;
   permission: ObserverPermission;
 }
+
+/**
+ * Reported by `bridge get-observer-policy` so an agent can check the rules
+ * before attempting a capture (the check-before-acting / list-granted pattern).
+ * `denylist` is the user's configured list; the surfaces in
+ * `builtInSensitiveMatchers` are always refused regardless of `allowlist`.
+ */
+export interface GetObserverPolicyResponse {
+  scope: ObserverScope;
+  consent: ObserverConsent;
+  retention: ObserverRetention;
+  allowlist: string[];
+  denylist: string[];
+  redactWindowTitles: boolean;
+  audioOptIn: boolean;
+  builtInSensitiveAlwaysRefused: true;
+  builtInSensitiveMatchers: string[];
+}

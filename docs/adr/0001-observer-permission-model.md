@@ -260,10 +260,10 @@ and future agent.
 Ordered so a fresh agent with a token budget can pick up any item. File paths are
 load-bearing.
 
-> **Progress (2026-06-20):** Items 1–2 and 4 are done. The wire-contract half of item 3
+> **Progress (2026-06-20):** Items 1–4 are done. The wire-contract half of item 3
 > (`CaptureUiResponse` / `ObserverPermission` / `denialReason` / the denied
 > variant) shipped with them; the `GetObserverPolicyResponse` introspection
-> endpoint is still open. Item 8 is partly done (SKILL.md Approach C updated;
+> endpoint (`zam bridge get-observer-policy`) completes it. Item 8 is partly done (SKILL.md Approach C updated;
 > ARCHITECTURE.md + proposal note still TODO). Settings keys are dotted
 > (`observer.scope`, …), not `observer_*` — see item 5. Enforcement is two-phase
 > (pre-capture for scope/explicit target; post-resolution for the captured
@@ -287,7 +287,7 @@ load-bearing.
    denylisted or the frontmost window is sensitive, return a typed
    `{ denied: true, reason, kind: "privacy-pause" }` instead of pixels; honor
    `consent` and `retention`.
-3. [ ] **Extend the contract.** In
+3. [x] **Extend the contract.** In
    [`src/bridge/protocol.ts`](../../src/bridge/protocol.ts) add a typed
    `CaptureUiResponse` (currently ad hoc), an exported `ObserverPolicy`, a
    `GetObserverPolicyResponse` (lets an agent ask "what may I capture?"), and the
