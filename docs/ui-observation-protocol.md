@@ -25,6 +25,7 @@ zam bridge capture-ui --session <id> [--output <path>] [--image <path>]
   "imagePath": "C:\\Users\\...\\zam-capture-abc123.png",
   "base64": "<PNG base64>",
   "mimeType": "image/png",
+  "captureMethod": "printwindow",
   "capturedAt": "2026-06-20T04:43:27.592Z",
   "platform": "win32"
 }
@@ -46,9 +47,35 @@ zam bridge capture-ui --session <id> [--output <path>] [--image <path>]
 - `--image <path>` bypasses capture and returns an existing image
 - Token registration, session start/end with `--context ui` all work
 
+### Window targeting — DONE (via PrintWindow)
+`--hwnd` and `--process-name` now capture a specific window correctly, even when
+it is occluded or in the background. The first implementation used
+`SetForegroundWindow` + `CopyFromScreen`, but Windows blocks a background process
+from forcing a window to the foreground, so `CopyFromScreen` grabbed whatever sat
+on top at the target window's rectangle (e.g. the agent's own window). The capture
+now uses `PrintWindow(hwnd, hdc, PW_RENDERFULLCONTENT=0x2)`, which renders the
+target window directly regardless of z-order and does not steal focus. Verified
+against scientific Calculator (UWP, hosted by ApplicationFrameHost), Notepad,
+and Electron/Chromium windows (OpenCode, Claude desktop, Edge WebView2) — all
+captured correctly while in the background.
+
+A **black-frame guard** makes the capture self-healing: PrintWindow can return a
+near-black frame on some hardware-accelerated/DirectComposition surfaces, so the
+capture samples mean luminance and, if it is essentially black, falls back to a
+foreground `CopyFromScreen` grab. The JSON reports which method actually ran via
+`captureMethod`: `printwindow` | `copyfromscreen` | `fullscreen` | `provided`
+(or `screencapture-window` | `screencapture-full` on macOS). A harness can use
+this field to judge the evidence quality — `fullscreen` means no specific window
+was targeted, `copyfromscreen` means the window may have been occluded.
+
+> Scope of verification: confirmed on Windows 11 with classic `powershell.exe`
+> and this machine's GPU/driver. PrintWindow behavior on some
+> DirectComposition surfaces is driver-dependent; the guard exists precisely so
+> untested environments degrade gracefully instead of returning a black image.
+> The macOS path is unchanged and was not tested here.
+
 ### Doesn't Work Yet
-- **No vision analysis** — the agent (Mimo-V2.5 via Opencode) received the base64 but cannot analyze images (model limitation)
-- **No window targeting** — `capture-ui` captures the entire primary screen, not a specific window. When Calculator was open, the screenshot showed the Opencode window instead (foreground problem)
+- **No vision analysis in-model** — a text-only local LLM cannot analyze images. Use the agent harness's own multimodal model or a vision-capable subagent (see SKILL.md Approach C).
 - **No event-driven observation** — currently the agent asks "are you done?" and then takes one screenshot. No process launch detection, no UIA events, no delta detection
 
 ---
@@ -184,5 +211,7 @@ Compare two screenshots to detect meaningful changes:
 | PowerShell screenshot capture | ✅ Works, captures full primary screen |
 | macOS screencapture | Not tested (no macOS available) |
 | Vision analysis (local LLM) | ❌ Model doesn't support images |
-| Vision analysis (agent multimodal) | ❌ Mimo-V2.5-Pro is text-only; Mimo-V2.5 can but no image was re-sent |
-| Window targeting | ❌ Captures foreground, not target window |
+| Vision analysis (agent multimodal) | ✅ Multimodal harness / vision subagent reads the base64 PNG and identifies the app |
+| Window targeting (`--hwnd`) | ✅ PrintWindow captures the real target window even when occluded |
+| Window targeting (`--process-name`) | ✅ Resolves MainWindowHandle, then PrintWindow (Notepad verified) |
+| Background capture without focus steal | ✅ PrintWindow does not call SetForegroundWindow |

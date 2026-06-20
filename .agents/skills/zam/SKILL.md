@@ -68,7 +68,35 @@ zam bridge submit --user <username> --card-id <id> --rating <1-4>
 zam bridge get-skill --slug <slug>
 zam bridge get-monitor --session <id>                 # read monitor log as JSON
 echo '{"patterns":[...]}' | zam bridge analyze-monitor --session <id>  # auto-rate from log
+zam bridge add-token --user <username>                # create token + user card from JSON stdin
+zam bridge capture-ui [--session <id>] [--output <path>] [--image <path>]  # screenshot for agent-side vision
 ```
+
+### Codex Execution Notes
+
+Use `npx zam ...` from the personal instance unless a linked `zam` binary is known
+to resolve correctly. The configured Turso database is remote; if a ZAM command
+fails with network sandbox errors such as `EACCES ...:443`, retry the same
+command with escalated permissions and a scoped prefix rule like `["npx","zam"]`.
+
+On Windows in Codex, prefer the classic Windows PowerShell executable for ZAM
+commands that contain quoted or multi-word arguments:
+
+```text
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+```
+
+The default `pwsh.exe` runner can fail with `CreateProcessAsUserW failed: 1312`,
+and `cmd` can split quoted arguments in surprising ways. `cmd` is fine for simple
+no-space commands such as `npx zam stats --user thomas`, but use Windows
+PowerShell for `--task`, `--concept`, `--question`, and multi-word `--query`
+values.
+
+For a concept that should immediately enter the user's learning queue, prefer
+`zam bridge add-token --user <username>` with JSON on stdin. `zam token register`
+creates the token only; it does not ensure the user's card exists. Do not use
+`bridge add-token` through `zam bridge serve --stdin`, because `add-token` reads
+raw stdin itself.
 
 ---
 
@@ -107,11 +135,11 @@ Always prefer observation over probing. Talking interrupts flow. The best ZAM se
 
 ## Observation Levels
 
-- **Level 1 — Shell** (current): Agent reads shell command history and output to infer success/failure
-- **Level 2 — Screen** (future): Agent observes full screen, guides UI interaction, auto-rates based on what it sees
+- **Level 1 — Shell**: Agent reads shell command history and output to infer success/failure
+- **Level 2 — Screen**: Agent captures screenshots via `zam bridge capture-ui` and analyzes them with Codex's multimodal capabilities or a vision-capable subagent
 - **Level 3 — Real life** (future): Voice + visual overlay on device (phone, AR). The agent is an overlay; the user lives in their world.
 
-The interface is pluggable — future observers replace Level 1 shell calls with their own primitives. Today: always Level 1.
+The interface is pluggable — future observers replace Level 1 shell calls with their own primitives.
 
 ---
 
@@ -158,6 +186,13 @@ zam token register --slug <slug> --concept "<one sentence>" --domain <d> --bloom
 zam token prereq --token <child> --requires <parent>
 ```
 
+If the token should be reviewed by this user, create the card in the same step:
+
+```bash
+printf '%s\n' '{"slug":"<slug>","concept":"<one sentence>","domain":"<d>","bloom_level":2,"question":"<concept-free recall question>"}' \
+  | zam bridge add-token --user <username>
+```
+
 ### STEP 3 — Start a session
 
 **For review/conceptual sessions**, load review data into a temp file so it stays out of the conversation, then start the session quietly:
@@ -195,7 +230,7 @@ Hand off to the user:
 
 Step back. Do not interrupt unless the user asks for help.
 
-**Two ways to observe:**
+**Choose the observation approach:**
 
 Check the user's preference first:
 ```bash
@@ -246,7 +281,31 @@ diagnostic output is needed.
 
 When done, the user can simply close the monitored terminal window — hooks only live in that shell process. No cleanup command needed.
 
-**Rating scale (both approaches):**
+**Approach C — Agent-side UI observation (Level 2):** For GUI tasks where shell hooks can't see what's happening. The agent captures screenshots and analyzes them with Codex's multimodal capabilities, preferably a cost-efficient vision-capable subagent when one is available. Do not rely on the laptop's local LLM for rating unless the user explicitly wants that; it may be too weak for UI evidence.
+
+```bash
+zam session start --user <username> --task "<description>" --context ui --skip-review --json
+```
+
+Workflow:
+1. Tell the user: *"Perform the task in the app, leave the relevant window visible, and come back when you're done."*
+2. When the user returns, capture the screen:
+   ```bash
+   zam bridge capture-ui --session <session-id>
+   ```
+   Returns JSON with `imagePath` and `base64` (PNG screenshot).
+3. If Codex subagents are available, spawn a cheap vision-capable subagent (for example a mini model) and pass the screenshot as a local image plus the task, expected evidence, and candidate token slugs. Ask it for observed facts and suggested 1-4 ratings with brief evidence.
+4. Review the subagent's evidence yourself before writing ratings. If the screenshot is ambiguous, ask the user instead of guessing.
+5. Submit ratings and session logs for only the tokens the user actually exercised.
+
+The `capture-ui` command supports:
+- `--image <path>` — analyze an existing image instead of capturing
+- `--output <path>` — save the screenshot to a specific path
+- `--process-name <name>` or `--hwnd <handle>` — target a specific window when known
+
+On Windows, uses PowerShell/.NET for screen capture. On macOS, uses `screencapture`.
+
+**Rating scale (all observation approaches):**
 - Completed correctly, no hesitation, no help → **4**
 - Slight pause or looked something up → **3**
 - Made errors, corrected themselves → **2**

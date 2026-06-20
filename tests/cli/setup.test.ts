@@ -54,4 +54,17 @@ describe("setup command helpers", () => {
       expect(frontmatter?.[1]).toMatch(/^description:\s+.+/m);
     }
   });
+
+  it("ships Codex-specific UI observation and Windows execution guidance", () => {
+    const content = readFileSync(
+      join(process.cwd(), ".agents", "skills", "zam", "SKILL.md"),
+      "utf8",
+    );
+
+    expect(content).toContain("Codex Execution Notes");
+    expect(content).toContain("WindowsPowerShell");
+    expect(content).toContain("zam bridge add-token --user <username>");
+    expect(content).toContain("zam bridge capture-ui");
+    expect(content).toContain("vision-capable subagent");
+  });
 });
