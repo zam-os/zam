@@ -63,6 +63,25 @@ Einstieg: `zam whoami --set <deine-id>`
 
 ---
 
+## 🔄 ZAM aktuell halten
+
+Prüfe, ob eine neuere Version vorliegt, und aktualisiere — ZAM wählt den passenden Mechanismus je nachdem, wie diese Kopie installiert wurde:
+
+```bash
+zam update          # neueste Version anwenden (fragt nach; -y überspringt)
+zam update check    # nur prüfen, ob ein Update verfügbar ist
+```
+
+Was `zam update` je nach Installationskanal tut:
+
+- **Developer** (Quell-Checkout, Standard für Mitwirkende) — holt den neuesten Quellcode, installiert Abhängigkeiten neu, baut die CLI und frischt die Skill-Dateien auf (`zam setup --force`). Danach den Agent-Client (z. B. Claude Code) neu starten, damit der aktualisierte `/zam`-Skill geladen wird.
+- **winget / Homebrew** — delegiert an `winget upgrade` / `brew upgrade`, damit eine paketverwaltete Installation nie selbst ersetzt wird.
+- **Direkt-Download / Desktop** — installiert ein signiertes In-place-Update über ZAM Desktop.
+
+`zam update` verweigert einen Developer-Checkout mit uncommitteten Änderungen; committe oder stashe sie zuerst, oder nutze `--force`. Design-Details: [ADR-0012](docs/adr/0012-approachable-setup-and-self-update.md).
+
+---
+
 ## 🏛 Vision: Eine paradiesische Zukunft
 
 ZAM ist das Werkzeug für den Übergang in eine Welt, in der Fürsorge und gemeinsames Wachstum die Währung sind.

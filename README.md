@@ -83,6 +83,25 @@ Token deletion is global. Card deletion is per-user.
 
 ---
 
+## 🔄 Keeping ZAM up to date
+
+Check whether a newer release is out, then update — ZAM picks the right mechanism for how this copy was installed:
+
+```bash
+zam update          # apply the latest release (asks first; -y to skip)
+zam update check    # only report whether an update is available
+```
+
+What `zam update` does per install channel:
+
+- **Developer** (source checkout, the default for contributors) — pulls the latest source, reinstalls dependencies, rebuilds the CLI, and refreshes the skill files (`zam setup --force`) in the current instance. Restart your agent client (e.g. Claude Code) afterwards to load the refreshed `/zam` skill.
+- **winget / Homebrew** — defers to `winget upgrade` / `brew upgrade`, so a package-managed install is never self-replaced.
+- **Direct download / desktop** — applies a signed in-place update through ZAM Desktop.
+
+`zam update` refuses to touch a developer checkout with uncommitted changes; commit or stash them first, or pass `--force`. See [ADR-0012](docs/adr/0012-approachable-setup-and-self-update.md) for the design.
+
+---
+
 ## 🏛 Vision: A Flourishing Future
 
 ZAM is a tool for the transition to a world where care and shared growth are the common currency.

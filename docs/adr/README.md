@@ -5,7 +5,7 @@ the consequences. ADRs are immutable once **Accepted** — supersede with a new 
 rather than rewriting history.
 
 Naming: `NNNN-kebab-title.md`, zero-padded sequential number.
-Status: `Proposed` → `Accepted` → (`Deprecated` | `Superseded by ADR-NNNN`).
+Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`) → (`Deprecated` | `Superseded by ADR-NNNN`).
 
 | ADR | Title | Status |
 |-----|-------|--------|
@@ -20,5 +20,5 @@ Status: `Proposed` → `Accepted` → (`Deprecated` | `Superseded by ADR-NNNN`).
 | [0009](0009-release-hardening.md) | Release Hardening | Implemented |
 | [0010](0010-async-database-providers.md) | Async Database Providers | Implemented |
 | [0011](0011-automatic-session-synthesis.md) | Automatic Session Synthesis | Implemented |
-| [0012](0012-approachable-setup-and-self-update.md) | Approachable Setup and Self-Update | Proposed |
+| [0012](0012-approachable-setup-and-self-update.md) | Approachable Setup and Self-Update | Partially implemented |
 | [0013](0013-kernel-polish-and-performance.md) | Kernel Polish and Performance | Proposed |

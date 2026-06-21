@@ -3,6 +3,7 @@ import {
   compareVersions,
   decideUpdate,
   type InstallChannel,
+  planUpdate,
 } from "../../src/kernel/index.js";
 
 describe("compareVersions", () => {
@@ -93,5 +94,48 @@ describe("decideUpdate", () => {
     });
     expect(d.action).toBe("inform");
     expect(d.command).toContain("git pull");
+  });
+});
+
+describe("planUpdate", () => {
+  const upgrade = (channel: InstallChannel) =>
+    decideUpdate({
+      currentVersion: "0.3.7",
+      latestVersion: "0.4.0",
+      channel,
+    });
+
+  it("returns no steps when no update is available", () => {
+    const d = decideUpdate({
+      currentVersion: "0.4.0",
+      latestVersion: "0.4.0",
+      channel: "developer",
+    });
+    expect(planUpdate(d)).toEqual([]);
+  });
+
+  it("plans pull → install → build → skills for a developer install", () => {
+    expect(planUpdate(upgrade("developer")).map((s) => s.kind)).toEqual([
+      "git-pull",
+      "npm-install",
+      "npm-build",
+      "distribute-skills",
+    ]);
+  });
+
+  it("defers winget/homebrew to a single package-manager command", () => {
+    for (const channel of ["winget", "homebrew"] as const) {
+      const decision = upgrade(channel);
+      const steps = planUpdate(decision);
+      expect(steps).toHaveLength(1);
+      expect(steps[0]?.kind).toBe("run-command");
+      expect(steps[0]?.command).toBe(decision.command);
+    }
+  });
+
+  it("routes a direct install to the desktop self-updater", () => {
+    expect(planUpdate(upgrade("direct")).map((s) => s.kind)).toEqual([
+      "self-update",
+    ]);
   });
 });
