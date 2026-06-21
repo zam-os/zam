@@ -57,6 +57,20 @@ cpSync(join(repoRoot, "dist"), join(resourceRoot, "dist"), {
   recursive: true,
 });
 
+// Bundle the agent skill files alongside the CLI so the desktop app's `zam
+// setup` can provision them from the installed program directory in Default
+// mode — end users have no git checkout to copy them from. `copySkills`
+// resolves them relative to its own (self-located) packageRoot, which in the
+// bundle is this resource root.
+for (const agentDir of [".claude", ".agent", ".agents"]) {
+  const skillsSrc = join(repoRoot, agentDir, "skills");
+  if (existsSync(skillsSrc)) {
+    cpSync(skillsSrc, join(resourceRoot, agentDir, "skills"), {
+      recursive: true,
+    });
+  }
+}
+
 writeFileSync(
   join(resourceRoot, "package.json"),
   `${JSON.stringify(
