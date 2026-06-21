@@ -1,7 +1,7 @@
 # ZAM Architecture Handbook
 *The Complete System Reference Manual for the Symbiotic Learning Kernel*
 
-> Last updated: 2026-06-20 · Version 0.4.0 (Phase 1: Individual Symbiosis)
+> Last updated: 2026-06-21 · Version 0.4.1 (Phase 1: Individual Symbiosis)
 >
 > Related Documentation:
 > - [TEMPLATES.md](TEMPLATES.md) — template/instance model, repo families, setup protocol
