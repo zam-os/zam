@@ -359,10 +359,13 @@ export type {
   InstallChannel,
   UpdateActionKind,
   UpdateDecision,
+  UpdateStep,
+  UpdateStepKind,
 } from "./system/update-check.js";
 export {
   compareVersions,
   decideUpdate,
   HOMEBREW_CASK,
+  planUpdate,
   WINGET_PACKAGE_ID,
 } from "./system/update-check.js";

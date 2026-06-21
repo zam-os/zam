@@ -1,8 +1,32 @@
 # ADR-0012: Approachable Setup and Self-Update
 
-**Status:** Proposed
-**Date:** 2026-06-20
+**Status:** Partially implemented
+**Date:** 2026-06-20 *(migrated to ADR; originally decided 2026-06-13)*
 **Deciders:** Thomas (project owner)
+
+---
+
+## Implementation status
+
+*As of 2026-06-21 (v0.4.0): the decision below is accepted; the consumer-facing
+rollout is in progress.*
+
+- ✅ **Install-channel model** — per-machine `~/.zam/config.json` records
+  developer vs default mode and the update channel.
+- ✅ **Channel-aware update check** — `zam update check` reports whether a newer
+  release exists and how this copy should update.
+- ✅ **Developer self-update** — `zam update` applies it for a source checkout
+  (pull → install → build → `zam setup --force`); see "Keeping ZAM up to date"
+  in the [README](../../README.md).
+- ⏳ **Default mode + signed installers** (`.dmg`/`.msi`/`.deb`), winget
+  manifest, Homebrew cask — not yet shipped.
+- ⏳ **Skills as program resources** — in Default mode, bundle the skill files
+  and have `zam setup` provision them from the program directory. Today
+  `copySkills` resolves them only from a source checkout
+  (`packageRoot/.claude/skills/…`), which end users will not have.
+- ⏳ **Desktop in-place self-update** — pending the Tauri updater keypair and
+  Apple signing identity.
+- ⏳ **Bundled open agent** (opencode) — not yet shipped.
 
 ---
 
@@ -37,7 +61,7 @@ Make ZAM installable and updatable like any consumer application, while keeping 
 
 - Default vs Developer mode selection and the Default-mode application/data directory layout.
 - Signed installers + winget manifest + Homebrew cask, validated on clean machines (no Node, no source) before release.
-- A self-contained desktop bundle: the compiled CLI bridge ships as a Tauri resource (extends `scripts/prepare-desktop-bridge.mjs`) so the app runs with no repo and no Node.
+- A self-contained desktop bundle: the compiled CLI bridge **and the agent skill files** ship as Tauri resources (extends `scripts/prepare-desktop-bridge.mjs`) so the app runs with no repo and no Node. In Default mode `zam setup` provisions skills from the bundled program directory — not from a git checkout, which end users do not have. Prefer pointing a configurable-skill-path agent straight at the program directory; otherwise copy on install/update (symlinks are avoided because they need elevated rights on Windows).
 - Personal-folder chooser (local or any synced directory) plus verified DB snapshot export/import.
 - Channel-aware in-app update detection and apply/notify flow.
 - Optional download + configuration of one default open agent.

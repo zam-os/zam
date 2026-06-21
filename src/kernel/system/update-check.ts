@@ -141,3 +141,59 @@ export function decideUpdate(input: {
       };
   }
 }
+
+/** A single step an executor runs to APPLY an update, in order. */
+export type UpdateStepKind =
+  | "git-pull"
+  | "npm-install"
+  | "npm-build"
+  | "distribute-skills"
+  | "run-command"
+  | "self-update";
+
+export interface UpdateStep {
+  kind: UpdateStepKind;
+  /** Human-readable description of the step. */
+  label: string;
+  /** For "run-command": the exact command to run. */
+  command?: string;
+}
+
+/**
+ * Turn a decision into the ordered steps that APPLY it — the counterpart to
+ * `decideUpdate`, which only decides whether and how. Pure and side-effect
+ * free, so the sequencing is unit-tested; the CLI resolves paths and runs each
+ * step. Empty when no update is available.
+ */
+export function planUpdate(decision: UpdateDecision): UpdateStep[] {
+  if (!decision.updateAvailable) return [];
+
+  switch (decision.channel) {
+    case "developer":
+      return [
+        { kind: "git-pull", label: "Pull the latest source" },
+        { kind: "npm-install", label: "Install dependencies" },
+        { kind: "npm-build", label: "Rebuild the CLI" },
+        {
+          kind: "distribute-skills",
+          label: "Refresh skill files (zam setup --force)",
+        },
+      ];
+    case "winget":
+    case "homebrew":
+      return [
+        {
+          kind: "run-command",
+          label: `Update via ${decision.channel}`,
+          command: decision.command,
+        },
+      ];
+    case "direct":
+      return [
+        {
+          kind: "self-update",
+          label: "Apply the signed update via the desktop app",
+        },
+      ];
+  }
+}
