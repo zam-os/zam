@@ -1,7 +1,6 @@
-# ADR-0002: Kernel and Shell Observation
+# Kernel and Shell Observation
 
 **Status:** Implemented
-**Date:** 2026-06-20
 **Deciders:** Thomas (project owner)
 
 ---

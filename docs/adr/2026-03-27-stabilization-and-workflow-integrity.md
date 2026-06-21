@@ -1,7 +1,6 @@
-# ADR-0004: Stabilization and Workflow Integrity
+# Stabilization and Workflow Integrity
 
 **Status:** Implemented
-**Date:** 2026-06-20
 **Deciders:** Thomas (project owner)
 
 ---

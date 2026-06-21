@@ -1,7 +1,6 @@
-# ADR-0010: Async Database Providers
+# Async Database Providers
 
 **Status:** Implemented
-**Date:** 2026-06-20
 **Deciders:** Thomas (project owner)
 
 ---

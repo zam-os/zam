@@ -1,7 +1,6 @@
-# ADR-0003: Personal Workflow Foundations
+# Personal Workflow Foundations
 
 **Status:** Implemented
-**Date:** 2026-06-20
 **Deciders:** Thomas (project owner)
 
 ---

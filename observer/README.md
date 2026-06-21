@@ -227,6 +227,6 @@ fallback); then the built-in default. The kernel derives that file from the
 user's `observer.*` settings — `zam bridge sync-observer-policy` writes it and
 `zam settings set observer.*` refreshes it — so the native sidecar and the
 headless `capture-ui` path share one policy source (see
-[ADR-0001](../docs/adr/0001-observer-permission-model.md)). `allowProcesses`
+[the Observer permission model ADR](../docs/adr/2026-06-20-observer-permission-model.md)). `allowProcesses`
 bypasses only custom policy rules; built-in pauses for password managers,
 authentication/private-browsing, and financial contexts still win.

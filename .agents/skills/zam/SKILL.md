@@ -326,7 +326,7 @@ The `capture-ui` command supports:
 
 On Windows, uses PowerShell/.NET for screen capture. On macOS, uses `screencapture`.
 
-**Observer permissions (Layer 2, ADR-0001).** `capture-ui` enforces a
+**Observer permissions (Layer 2).** `capture-ui` enforces a
 user-configurable policy resolved from `zam settings`: `observer.scope`
 (`off` | `window` | `fullscreen`), `observer.allowlist`, `observer.denylist`,
 `observer.consent`, `observer.retention`. Set them with e.g.
