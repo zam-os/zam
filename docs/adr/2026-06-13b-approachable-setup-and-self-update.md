@@ -19,10 +19,11 @@ rollout is in progress.*
   in the [README](../../README.md).
 - ⏳ **Default mode + signed installers** (`.dmg`/`.msi`/`.deb`), winget
   manifest, Homebrew cask — not yet shipped.
-- ⏳ **Skills as program resources** — in Default mode, bundle the skill files
-  and have `zam setup` provision them from the program directory. Today
-  `copySkills` resolves them only from a source checkout
-  (`packageRoot/.claude/skills/…`), which end users will not have.
+- ✅ **Skills as program resources** — `prepare-desktop-bridge.mjs` bundles the
+  skill files into the app resources, so the desktop app's `zam setup` provisions
+  them from the program directory (its self-located `packageRoot`) — no git
+  checkout needed. The end-to-end Default-mode install still depends on the
+  installer work above.
 - ⏳ **Desktop in-place self-update** — pending the Tauri updater keypair and
   Apple signing identity.
 - ⏳ **Bundled open agent** (opencode) — not yet shipped.
