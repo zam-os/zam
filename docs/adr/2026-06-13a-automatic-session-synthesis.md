@@ -1,7 +1,6 @@
-# ADR-0011: Automatic Session Synthesis
+# Automatic Session Synthesis
 
 **Status:** Implemented
-**Date:** 2026-06-20
 **Deciders:** Thomas (project owner)
 
 ---

@@ -78,7 +78,7 @@ Was `zam update` je nach Installationskanal tut:
 - **winget / Homebrew** — delegiert an `winget upgrade` / `brew upgrade`, damit eine paketverwaltete Installation nie selbst ersetzt wird.
 - **Direkt-Download / Desktop** — installiert ein signiertes In-place-Update über ZAM Desktop.
 
-`zam update` verweigert einen Developer-Checkout mit uncommitteten Änderungen; committe oder stashe sie zuerst, oder nutze `--force`. Design-Details: [ADR-0012](docs/adr/0012-approachable-setup-and-self-update.md).
+`zam update` verweigert einen Developer-Checkout mit uncommitteten Änderungen; committe oder stashe sie zuerst, oder nutze `--force`. Design-Details: [ADR „Approachable Setup and Self-Update“](docs/adr/2026-06-13b-approachable-setup-and-self-update.md).
 
 ---
 

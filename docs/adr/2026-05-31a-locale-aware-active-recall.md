@@ -1,7 +1,6 @@
-# ADR-0007: Locale-Aware Active Recall
+# Locale-Aware Active Recall
 
 **Status:** Implemented
-**Date:** 2026-06-20
 **Deciders:** Thomas (project owner)
 
 ---

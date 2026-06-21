@@ -1,7 +1,6 @@
-# ADR-0013: Kernel Polish and Performance
+# Kernel Polish and Performance
 
 **Status:** Proposed
-**Date:** 2026-06-20
 **Deciders:** Thomas (project owner)
 
 ---

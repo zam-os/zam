@@ -1,7 +1,6 @@
-# ADR-0001: Configurable Observer Permission Model (`ObserverPolicy`) and Two-Layer Consent
+# Configurable Observer Permission Model (`ObserverPolicy`) and Two-Layer Consent
 
 **Status:** Accepted
-**Date:** 2026-06-20
 **Deciders:** Thomas (project owner)
 **Related:**
 [windows-ui-observer-proposal.md](../windows-ui-observer-proposal.md) ·

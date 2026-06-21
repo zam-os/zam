@@ -1,7 +1,6 @@
-# ADR-0012: Approachable Setup and Self-Update
+# Approachable Setup and Self-Update
 
 **Status:** Partially implemented
-**Date:** 2026-06-20 *(migrated to ADR; originally decided 2026-06-13)*
 **Deciders:** Thomas (project owner)
 
 ---

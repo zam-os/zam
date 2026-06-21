@@ -1,7 +1,6 @@
-# ADR-0005: Standalone Learning Session
+# Standalone Learning Session
 
 **Status:** Implemented
-**Date:** 2026-06-20
 **Deciders:** Thomas (project owner)
 
 ---

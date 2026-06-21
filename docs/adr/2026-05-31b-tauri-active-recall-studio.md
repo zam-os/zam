@@ -1,7 +1,6 @@
-# ADR-0008: Tauri Active-Recall Studio
+# Tauri Active-Recall Studio
 
 **Status:** Implemented
-**Date:** 2026-06-20
 **Deciders:** Thomas (project owner)
 
 ---
