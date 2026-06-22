@@ -1436,7 +1436,8 @@ bridgeCommand
       jsonOut({
         sessionId: opts.session,
         started: false,
-        error: "Screen recording is only supported on macOS (darwin) and Windows (win32)",
+        error:
+          "Screen recording is only supported on macOS (darwin) and Windows (win32)",
       });
       return;
     }
@@ -1551,7 +1552,8 @@ bridgeCommand
       jsonOut({
         sessionId: opts.session,
         stopped: false,
-        error: "Screen recording is only supported on macOS (darwin) and Windows (win32)",
+        error:
+          "Screen recording is only supported on macOS (darwin) and Windows (win32)",
       });
       return;
     }
