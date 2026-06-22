@@ -55,9 +55,10 @@ export function getSystemProfile(): SystemProfile {
   let recommendedModel = "qwen3.5:4b";
 
   if (hasNpu) {
-    const isQualcomm = runCommand(
-      `powershell -NoProfile -Command "Get-CimInstance Win32_PnPEntity | Where-Object { $_.Name -like '*Qualcomm*' } | Select-Object -First 1"`,
-    ).length > 0;
+    const isQualcomm =
+      runCommand(
+        `powershell -NoProfile -Command "Get-CimInstance Win32_PnPEntity | Where-Object { $_.Name -like '*Qualcomm*' } | Select-Object -First 1"`,
+      ).length > 0;
     if (isQualcomm) {
       // Snapdragon NPU PC runs Microsoft Foundry Local (generic/external service)
       recommendedRunner = "generic";
