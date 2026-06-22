@@ -1994,9 +1994,29 @@ function showCompletionState() {
 }
 
 // ── KEYBOARD SHORTCUTS & EVENT BINDINGS ──────────────────────────────────
+/**
+ * Dev-only gate for the manual "UI Observer" capture panel. Capture scope is
+ * normally decided by the Agent harness (ADR 2026-06-23), so this panel is
+ * hidden by default. Enable it for debugging from the devtools console:
+ *   localStorage.setItem("zam:dev-observer", "1")  // then reload
+ */
+function devObserverEnabled(): boolean {
+  try {
+    return localStorage.getItem("zam:dev-observer") === "1";
+  } catch {
+    return false;
+  }
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   // Load initial dashboard state
   loadDashboard();
+
+  // The manual UI Observer is a developer-only affordance; reveal it only when
+  // the dev key is set (see devObserverEnabled).
+  if (devObserverEnabled()) {
+    document.getElementById("observer-panel")?.classList.remove("hidden");
+  }
 
   // Start Session Button
   document.getElementById("btn-start-session")!.addEventListener("click", () => {
