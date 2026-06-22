@@ -11,10 +11,6 @@
  *   zam monitor status --session <id>             # check log stats
  */
 
-import { execFileSync, execSync } from "node:child_process";
-import { unlinkSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { basename, join } from "node:path";
 import { Command } from "commander";
 import type { Database, MonitorEvent } from "../../kernel/index.js";
 import {
@@ -35,39 +31,19 @@ import {
   setSetting,
   writeMonitorEvent,
 } from "../../kernel/index.js";
+import {
+  isPowerShellShell,
+  normalizeShell,
+  openTerminalWindow,
+  psSingleQuoted,
+  resolveZamInvocation,
+  selectWindowsExecutable,
+  type TerminalShell,
+} from "../terminal-open.js";
 
-type MonitorShell = "zsh" | "bash" | "pwsh" | "powershell";
+export { selectWindowsExecutable };
 
-function isPowerShellShell(shell: MonitorShell): boolean {
-  return shell === "pwsh" || shell === "powershell";
-}
-
-function normalizeShell(shell: string | undefined): MonitorShell {
-  if (!shell) return detectShell();
-  const normalized = shell.toLowerCase();
-  if (
-    normalized === "zsh" ||
-    normalized === "bash" ||
-    normalized === "pwsh" ||
-    normalized === "powershell"
-  ) {
-    return normalized;
-  }
-  throw new Error(
-    `Unsupported shell: ${shell}. Expected zsh, bash, pwsh, or powershell.`,
-  );
-}
-
-function psSingleQuoted(value: string): string {
-  return `'${value.replace(/'/g, "''")}'`;
-}
-
-function detectShell(): MonitorShell {
-  if (process.platform === "win32")
-    return findExecutable("pwsh.exe") ? "pwsh" : "powershell";
-  const shell = process.env.SHELL ?? "";
-  return basename(shell) === "bash" ? "bash" : "zsh";
-}
+type MonitorShell = TerminalShell;
 
 export const monitorCommand = new Command("monitor").description(
   "Shell observation for real-time task monitoring",
@@ -249,72 +225,6 @@ monitorCommand
 
 // ── zam monitor open ─────────────────────────────────────────────────────
 
-/**
- * Resolve the `zam` invocation — built CLI if available, otherwise tsx source.
- * This ensures the spawned terminal uses the correct entrypoint.
- */
-/**
- * Pick the path PowerShell/cmd can actually run from `where.exe` output.
- *
- * `where.exe zam` can return both an extensionless shim (the npm Unix shell
- * wrapper at ...\npm\zam) and the Windows-executable variant (...\npm\zam.cmd).
- * PowerShell and cmd can only run the latter — invoking the extensionless shim
- * silently produces no output, which left the spawned monitor window with no
- * hooks installed (#51). Prefer a result whose extension is in PATHEXT.
- */
-export function selectWindowsExecutable(
-  results: string[],
-  pathext: string = process.env.PATHEXT ?? ".COM;.EXE;.BAT;.CMD",
-): string | null {
-  if (results.length === 0) return null;
-  const extensions = pathext
-    .split(";")
-    .map((ext) => ext.trim().toLowerCase())
-    .filter(Boolean);
-  const runnable = results.find((result) =>
-    extensions.some((ext) => result.toLowerCase().endsWith(ext)),
-  );
-  return runnable ?? results[0];
-}
-
-function findExecutable(command: string): string | null {
-  try {
-    const lookup =
-      process.platform === "win32"
-        ? `where.exe ${command}`
-        : `command -v ${command}`;
-    const results = execSync(lookup, { encoding: "utf-8" })
-      .split(/\r?\n/)
-      .map((line) => line.trim())
-      .filter(Boolean);
-    if (results.length === 0) return null;
-
-    if (process.platform === "win32") {
-      return selectWindowsExecutable(results);
-    }
-
-    return results[0];
-  } catch {
-    return null;
-  }
-}
-
-function resolveZamInvocation(shell: MonitorShell): string {
-  const installed = findExecutable("zam");
-  if (installed) {
-    return isPowerShellShell(shell)
-      ? `& ${psSingleQuoted(installed)}`
-      : installed;
-  }
-
-  const projectRoot = join(import.meta.dirname, "..", "..", "..");
-  const cliSource = join(projectRoot, "src/cli/index.ts");
-  if (isPowerShellShell(shell)) {
-    return `& npx --prefix ${psSingleQuoted(projectRoot)} tsx ${psSingleQuoted(cliSource)}`;
-  }
-  return `npx --prefix ${JSON.stringify(projectRoot)} tsx ${JSON.stringify(cliSource)}`;
-}
-
 function buildMonitorSetupCommand(
   dir: string,
   sessionId: string,
@@ -331,21 +241,6 @@ function buildMonitorSetupCommand(
   }
 
   return `cd ${JSON.stringify(dir)} && eval "$(${zamInvocation} monitor start --session ${sessionId} --shell ${shell})"`;
-}
-
-/**
- * Detect whether iTerm2 is running (preferred on macOS).
- */
-function isItermRunning(): boolean {
-  try {
-    const result = execSync(
-      'osascript -e \'tell application "System Events" to (name of processes) contains "iTerm2"\' 2>/dev/null',
-      { encoding: "utf-8" },
-    ).trim();
-    return result === "true";
-  } catch {
-    return false;
-  }
 }
 
 monitorCommand
@@ -399,103 +294,10 @@ monitorCommand
     const dir = opts.dir ?? process.cwd();
     const shellSetup = buildMonitorSetupCommand(dir, opts.session, shell);
 
-    if (process.platform === "darwin" && !isPowerShellShell(shell)) {
-      openMacTerminal(shellSetup, opts.session, dir);
-    } else if (process.platform === "win32" && isPowerShellShell(shell)) {
-      openWindowsPowerShell(shellSetup, opts.session, dir, shell);
-    } else {
-      console.log(`Run this in a new terminal:\n`);
-      console.log(`  ${shellSetup}\n`);
-      console.log(
-        `(Automatic terminal opening is only supported on macOS Terminal/iTerm2 and Windows PowerShell for now.)`,
-      );
-    }
+    openTerminalWindow({
+      shellSetup,
+      label: `monitor-${opts.session}`,
+      dir,
+      shell,
+    });
   });
-
-/**
- * Open a macOS terminal window via AppleScript.
- * Uses a temp .scpt file to avoid shell quoting hell.
- */
-function openMacTerminal(
-  shellSetup: string,
-  sessionId: string,
-  dir: string,
-): void {
-  const useIterm = isItermRunning();
-  const escaped = shellSetup.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
-
-  const appleScript = useIterm
-    ? `tell application "iTerm2"
-  activate
-  set newWindow to (create window with default profile)
-  tell current session of newWindow
-    write text "${escaped}"
-  end tell
-end tell`
-    : `tell application "Terminal"
-  activate
-  do script "${escaped}"
-end tell`;
-
-  const tmpFile = join(tmpdir(), `zam-monitor-${sessionId}.scpt`);
-  try {
-    writeFileSync(tmpFile, appleScript);
-    execSync(`osascript ${JSON.stringify(tmpFile)}`, { stdio: "ignore" });
-    console.log(
-      `Opened ${useIterm ? "iTerm2" : "Terminal.app"} window with monitoring for session ${sessionId}`,
-    );
-    console.log(`  Directory: ${dir}`);
-  } catch (err) {
-    console.error(`Failed to open terminal: ${(err as Error).message}`);
-    console.log(`\nRun this manually in a new terminal:\n`);
-    console.log(`  ${shellSetup}`);
-  } finally {
-    try {
-      unlinkSync(tmpFile);
-    } catch {
-      /* ignore */
-    }
-  }
-}
-
-/**
- * Open a Windows PowerShell/pwsh window with monitoring installed.
- */
-function openWindowsPowerShell(
-  shellSetup: string,
-  sessionId: string,
-  dir: string,
-  requestedShell: MonitorShell,
-): void {
-  const requestedExecutable =
-    requestedShell === "powershell" ? "powershell.exe" : "pwsh.exe";
-  const executable = findExecutable(requestedExecutable)
-    ? requestedExecutable
-    : "powershell.exe";
-  const startCommand = [
-    "Start-Process",
-    `-FilePath ${psSingleQuoted(executable)}`,
-    `-ArgumentList @('-NoExit','-NoProfile','-Command',${psSingleQuoted(shellSetup)})`,
-  ].join(" ");
-
-  // Prefer pwsh 7+ as the launcher too; fall back to Windows PowerShell 5.1.
-  const launcher = findExecutable("pwsh.exe") ? "pwsh.exe" : "powershell.exe";
-
-  try {
-    execFileSync(
-      launcher,
-      ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", startCommand],
-      {
-        stdio: "ignore",
-      },
-    );
-    console.log(
-      `Opened ${executable === "pwsh.exe" ? "PowerShell" : "Windows PowerShell"} window with monitoring for session ${sessionId}`,
-    );
-    console.log(`  Directory: ${dir}`);
-  } catch (err) {
-    console.error(`Failed to open PowerShell: ${(err as Error).message}`);
-    console.log(`\nRun this manually in a new PowerShell terminal:\n`);
-    console.log(`  ${shellSetup}`);
-  }
-}

@@ -25,6 +25,7 @@ import {
   getTokenById,
   openDatabase,
   resolveReviewContext,
+  setSetting,
   t,
 } from "../../kernel/index.js";
 import { formatHeader, formatReveal } from "../learn-format.js";
@@ -34,6 +35,12 @@ import {
   evaluateAnswerViaLLM,
 } from "../llm/client.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
+import {
+  buildShellSetupCommand,
+  normalizeShell,
+  openTerminalWindow,
+  resolveZamInvocation,
+} from "../terminal-open.js";
 import { resolveUser } from "./resolve-user.js";
 
 /** Words the learner can type at the answer prompt to end the session. */
@@ -275,4 +282,61 @@ export const learnCommand = new Command("learn")
       console.error("Error:", (err as Error).message);
       process.exit(1);
     }
+  });
+
+function buildLearnCommand(
+  shell: ReturnType<typeof normalizeShell>,
+  userId: string,
+): string {
+  const zamInvocation = resolveZamInvocation(shell);
+  const learnArgs = userId ? ` learn --user ${userId}` : " learn";
+  return `${zamInvocation}${learnArgs}`;
+}
+
+learnCommand
+  .command("open")
+  .description("Open a new terminal window running zam learn (Active Recall)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .option("--dir <path>", "Working directory (defaults to cwd)")
+  .option(
+    "--shell <type>",
+    "Shell type: zsh | bash | pwsh | powershell (auto-detected)",
+  )
+  .action(async (opts) => {
+    let shell: ReturnType<typeof normalizeShell>;
+    try {
+      shell = normalizeShell(opts.shell);
+    } catch (err) {
+      console.error(`Error: ${(err as Error).message}`);
+      process.exit(1);
+    }
+
+    let db: Database | undefined;
+    let userId = opts.user;
+    try {
+      db = await openDatabase();
+      if (!userId) {
+        userId = await resolveUser(opts, db);
+      }
+
+      if (!(await getSetting(db, "review_method"))) {
+        await setSetting(db, "review_method", "console");
+      }
+    } catch (err) {
+      console.error(`Error: ${(err as Error).message}`);
+      process.exit(1);
+    } finally {
+      await db?.close();
+    }
+
+    const dir = opts.dir ?? process.cwd();
+    const learnCommandLine = buildLearnCommand(shell, userId);
+    const shellSetup = buildShellSetupCommand(dir, shell, learnCommandLine);
+
+    openTerminalWindow({
+      shellSetup,
+      label: "learn",
+      dir,
+      shell,
+    });
   });
