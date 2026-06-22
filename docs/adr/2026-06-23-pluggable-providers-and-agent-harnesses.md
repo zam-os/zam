@@ -169,11 +169,13 @@ Select a **visible workspace**, but **do not move the live database into it.**
   supported) for cross-machine sync. Relocating the live DB itself is possible
   but would require teaching all three consumers a configurable path; deferred.
 
-### 4. Capture scope follows task type
+### 4. Capture scope is decided by the Agent harness, by task type
 
 Resolve Open Question #1 from
 [2026-06-20](2026-06-20-observer-permission-model.md): scope is chosen by **what
-the task is about**, not a single global default.
+the task is about**, and is decided **automatically by the Agent harness** — not
+by a manual control. The harness set up the task, so it already knows which case
+applies and passes the scope to `capture-ui` / the recorder:
 
 - **App-discovery / start-flow tasks** ("find and launch the right app") begin
   at **`fullscreen`** — the target window does not exist yet, so the observer
@@ -181,6 +183,11 @@ the task is about**, not a single global default.
 - **Known-application tasks** start the app **for** the learner when its icon is
   pinned to the taskbar (ZAM launches it), then capture **`window`-only** — the
   app identity is known and the desktop need not be recorded.
+
+Because the harness already knows the scope, **there is no user-facing
+capture-scope picker.** The window-capture UI currently in the Recall Studio is
+demoted to a **developer-only affordance** (behind a dev flag), not a default
+feature.
 
 This composes with the screen-recording observer
 ([2026-06-22](2026-06-22-screen-recording-observer.md)): the recording's early
@@ -235,8 +242,9 @@ over-captures known-app tasks; a global `window` cannot observe app discovery.
 
 **To revisit**
 - Whether to ever allow relocating the live DB (vs. backup/export + Turso only).
-- How task-type → capture-scope is declared: inferred by the session agent, or an
-  explicit field on `zam session start`.
+- The wire mechanism for the harness to signal scope: an explicit field on
+  `zam session start` / `capture-ui`, vs. inferred from the session's task
+  metadata.
 - Pricing/availability of the default providers (MiMo-V2.5, DeepSeek-V4-Flash)
   must be verified against the live catalogs; tags churn.
 
@@ -266,6 +274,8 @@ Ordered so a fresh agent can pick up any item; file paths are load-bearing.
    button + "Practice solo".
 6. [ ] **Studio setup**: workspace picker (default `~/Documents/ZAM`), "Open data
    folder" reveal, DB backup/export into the workspace.
-7. [ ] **Task-typed capture scope** in the session/observer flow; document the
-   fullscreen→window transition in
+7. [ ] **Harness-driven capture scope** in the session/observer flow (the Agent
+   harness selects fullscreen vs. window from task context and passes it to
+   `capture-ui` / the recorder); **gate the existing Recall Studio window-capture
+   UI behind a developer flag**; document the fullscreen→window transition in
    [windows-ui-observer-proposal.md](../windows-ui-observer-proposal.md).
