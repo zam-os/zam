@@ -26,3 +26,4 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-06-15](2026-06-15-kernel-polish-and-performance.md) | Kernel Polish and Performance | Proposed |
 | [2026-06-20](2026-06-20-observer-permission-model.md) | Configurable Observer permission model (`ObserverPolicy`) and two-layer consent | Accepted |
 | [2026-06-21](2026-06-21-code-signing-and-trusted-installers.md) | Code Signing and Trusted Installers | Proposed |
+| [2026-06-22](2026-06-22-screen-recording-observer.md) | Screen Recording Observer and Local/Cloud Vision Fallbacks | Proposed |

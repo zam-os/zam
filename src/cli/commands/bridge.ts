@@ -1427,24 +1427,25 @@ bridgeCommand
 
 bridgeCommand
   .command("start-recording")
-  .description("Start screen recording in the background (macOS only) (JSON)")
+  .description("Start screen recording in the background (JSON)")
   .requiredOption("--session <id>", "ZAM session ID")
   .option("--output <path>", "Video output path")
   .action(async (opts) => {
     const platform = process.platform;
-    if (platform !== "darwin") {
+    if (platform !== "darwin" && platform !== "win32") {
       jsonOut({
         sessionId: opts.session,
         started: false,
-        error: "Screen recording is only supported on macOS (darwin)",
+        error: "Screen recording is only supported on macOS (darwin) and Windows (win32)",
       });
       return;
     }
 
     const sessionId = opts.session;
     const statePath = join(tmpdir(), `zam-recording-${sessionId}.json`);
+    const defaultExt = platform === "win32" ? ".mkv" : ".mov";
     const outputPath =
-      opts.output ?? join(tmpdir(), `zam-recording-${sessionId}.mov`);
+      opts.output ?? join(tmpdir(), `zam-recording-${sessionId}${defaultExt}`);
 
     const { existsSync, writeFileSync, openSync, closeSync } = await import(
       "node:fs"
@@ -1472,25 +1473,37 @@ bridgeCommand
     }
 
     const { spawn } = await import("node:child_process");
-    const child = spawn(
-      "ffmpeg",
-      [
-        "-y",
-        "-f",
-        "avfoundation",
-        "-r",
-        "5",
-        "-i",
-        "0",
-        "-pix_fmt",
-        "yuv420p",
-        outputPath,
-      ],
-      {
-        detached: true,
-        stdio: ["pipe", logFd, logFd],
-      },
-    );
+    const ffmpegArgs =
+      platform === "darwin"
+        ? [
+            "-y",
+            "-f",
+            "avfoundation",
+            "-r",
+            "5",
+            "-i",
+            "0",
+            "-pix_fmt",
+            "yuv420p",
+            outputPath,
+          ]
+        : [
+            "-y",
+            "-f",
+            "gdigrab",
+            "-framerate",
+            "5",
+            "-i",
+            "desktop",
+            "-pix_fmt",
+            "yuv420p",
+            outputPath,
+          ];
+
+    const child = spawn("ffmpeg", ffmpegArgs, {
+      detached: true,
+      stdio: ["pipe", logFd, logFd],
+    });
 
     try {
       closeSync(logFd);
@@ -1529,16 +1542,16 @@ bridgeCommand
 bridgeCommand
   .command("stop-recording")
   .description(
-    "Stop active screen recording and apply idle-frame compression (macOS only) (JSON)",
+    "Stop active screen recording and apply idle-frame compression (JSON)",
   )
   .requiredOption("--session <id>", "ZAM session ID")
   .action(async (opts) => {
     const platform = process.platform;
-    if (platform !== "darwin") {
+    if (platform !== "darwin" && platform !== "win32") {
       jsonOut({
         sessionId: opts.session,
         stopped: false,
-        error: "Screen recording is only supported on macOS (darwin)",
+        error: "Screen recording is only supported on macOS (darwin) and Windows (win32)",
       });
       return;
     }

@@ -60,14 +60,45 @@ export async function getLlmConfig(db: Database): Promise<LlmConfig> {
  * provider. `url`/`model`/`apiKey` fall back to the base `llm.*` config so a
  * single multimodal endpoint only needs `llm.vision.enabled=true`.
  */
+/** Suggests a cheap/appropriate cloud vision model based on the endpoint URL. */
+export function getCloudModelRecommendation(url: string): string | null {
+  const lowercase = url.toLowerCase();
+  if (lowercase.includes("openrouter.ai")) {
+    return "openrouter/free";
+  }
+  if (lowercase.includes("openai.com") || lowercase.includes("api.openai")) {
+    return "gpt-5-mini";
+  }
+  if (lowercase.includes("googleapis.com") || lowercase.includes("google")) {
+    return "gemini-3.5-flash"; // extremely cost-effective cloud vision
+  }
+  if (lowercase.includes("deepseek.com")) {
+    return "deepseek-v4-flash";
+  }
+  if (lowercase.includes("mimo")) {
+    return "mimo-v2.5";
+  }
+  return null;
+}
+
 export async function getVisionConfig(db: Database): Promise<LlmConfig> {
   const base = await getLlmConfig(db);
   const maxFramesStr = await getSetting(db, "llm.vision.max_frames");
   const maxFrames = maxFramesStr ? parseInt(maxFramesStr, 10) : 100;
+
+  const url = (await getSetting(db, "llm.vision.url")) || base.url;
+  let model = await getSetting(db, "llm.vision.model");
+
+  if (!model) {
+    // If not set explicitly, try to recommend a cheap cloud model based on URL, otherwise fall back to base
+    const cloudRec = getCloudModelRecommendation(url);
+    model = cloudRec || base.model;
+  }
+
   return {
     enabled: (await getSetting(db, "llm.vision.enabled")) === "true",
-    url: (await getSetting(db, "llm.vision.url")) || base.url,
-    model: (await getSetting(db, "llm.vision.model")) || base.model,
+    url,
+    model,
     apiKey: (await getSetting(db, "llm.vision.api_key")) || base.apiKey,
     locale: base.locale,
     maxFrames: Number.isNaN(maxFrames) ? 100 : maxFrames,
@@ -387,10 +418,15 @@ export async function checkVisionReadiness(
   // certainly a text-only model that cannot interpret images.
   let warning: string | undefined;
   if (enabled && online && modelAvailable && !visionModelExplicit) {
-    warning =
-      `No explicit vision model configured (llm.vision.model). ` +
-      `Falling back to base model "${model}", which may not support image input. ` +
-      `Set a multimodal model: zam settings set llm.vision.model <model>`;
+    const cloudRec = getCloudModelRecommendation(url);
+    if (cloudRec && model === cloudRec) {
+      // Auto-recommended cloud vision model is active; do not warn about text-only fallback.
+    } else {
+      warning =
+        `No explicit vision model configured (llm.vision.model). ` +
+        `Falling back to base model "${model}", which may not support image input. ` +
+        `Set a multimodal model: zam settings set llm.vision.model <model>`;
+    }
   }
 
   return {
