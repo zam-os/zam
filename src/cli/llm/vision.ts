@@ -1,5 +1,5 @@
-import { readFileSync } from "node:fs";
 import { randomBytes } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, join } from "node:path";
 import type {
@@ -94,32 +94,44 @@ export async function observeUiSnapshotViaLLM(
   if (isVideo) {
     const { mkdirSync, readdirSync, rmSync } = await import("node:fs");
     const { execSync } = await import("node:child_process");
-    const tempDir = join(tmpdir(), `zam-frames-${randomBytes(4).toString("hex")}`);
+    const tempDir = join(
+      tmpdir(),
+      `zam-frames-${randomBytes(4).toString("hex")}`,
+    );
     mkdirSync(tempDir, { recursive: true });
 
     try {
       execSync(
         `ffmpeg -i "${input.imagePath}" -vf "fps=1/3,scale=1280:-1" -vsync vfr "${tempDir}/frame_%03d.png"`,
-        { stdio: "ignore" }
+        { stdio: "ignore" },
       );
-      
-      let files = readdirSync(tempDir).filter((f) => f.endsWith(".png")).sort();
-      
+
+      let files = readdirSync(tempDir)
+        .filter((f) => f.endsWith(".png"))
+        .sort();
+
       if (files.length === 0) {
         execSync(
           `ffmpeg -i "${input.imagePath}" -vframes 1 "${tempDir}/frame_001.png"`,
-          { stdio: "ignore" }
+          { stdio: "ignore" },
         );
-        files = readdirSync(tempDir).filter((f) => f.endsWith(".png")).sort();
+        files = readdirSync(tempDir)
+          .filter((f) => f.endsWith(".png"))
+          .sort();
       }
 
+      const maxFrames = cfg.maxFrames ?? 100;
       let sampledFiles = files;
-      if (files.length > 12) {
-        const step = (files.length - 1) / 11;
-        sampledFiles = [];
-        for (let i = 0; i < 12; i++) {
-          const index = Math.round(i * step);
-          sampledFiles.push(files[index]);
+      if (files.length > maxFrames) {
+        if (maxFrames <= 1) {
+          sampledFiles = [files[0]];
+        } else {
+          const step = (files.length - 1) / (maxFrames - 1);
+          sampledFiles = [];
+          for (let i = 0; i < maxFrames; i++) {
+            const index = Math.round(i * step);
+            sampledFiles.push(files[index]);
+          }
         }
       }
 
@@ -211,14 +223,15 @@ async function requestVisionDraft(args: {
             content: [
               {
                 type: "text",
-                text: args.imageUrls.length > 1
-                  ? `Observe this sequence of Windows/macOS application snapshots showing a task performed over time.
+                text:
+                  args.imageUrls.length > 1
+                    ? `Observe this sequence of Windows/macOS application snapshots showing a task performed over time.
 Application process: ${args.input.application.processName}
 Window title: ${args.input.application.windowTitle ?? "(unknown)"}
 
 Return this JSON draft only:
 ${schema}`
-                  : `Observe this Windows/macOS application snapshot for a learning session.
+                    : `Observe this Windows/macOS application snapshot for a learning session.
 Application process: ${args.input.application.processName}
 Window title: ${args.input.application.windowTitle ?? "(unknown)"}
 

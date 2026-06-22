@@ -1443,9 +1443,12 @@ bridgeCommand
 
     const sessionId = opts.session;
     const statePath = join(tmpdir(), `zam-recording-${sessionId}.json`);
-    const outputPath = opts.output ?? join(tmpdir(), `zam-recording-${sessionId}.mov`);
+    const outputPath =
+      opts.output ?? join(tmpdir(), `zam-recording-${sessionId}.mov`);
 
-    const { existsSync, writeFileSync, openSync, closeSync } = await import("node:fs");
+    const { existsSync, writeFileSync, openSync, closeSync } = await import(
+      "node:fs"
+    );
     if (existsSync(statePath)) {
       jsonOut({
         sessionId,
@@ -1486,7 +1489,7 @@ bridgeCommand
       {
         detached: true,
         stdio: ["pipe", logFd, logFd],
-      }
+      },
     );
 
     try {
@@ -1503,7 +1506,7 @@ bridgeCommand
           outputPath,
           startedAt: new Date().toISOString(),
         }),
-        "utf8"
+        "utf8",
       );
 
       jsonOut({
@@ -1558,7 +1561,7 @@ bridgeCommand
 
     try {
       process.kill(pid, "SIGINT");
-    } catch (e) {
+    } catch (_e) {
       // Process might already be dead
     }
 
@@ -1566,7 +1569,7 @@ bridgeCommand
       try {
         process.kill(pId, 0);
         return true;
-      } catch (e) {
+      } catch (_e) {
         return false;
       }
     };
@@ -1580,7 +1583,7 @@ bridgeCommand
     if (isProcessRunning(pid)) {
       try {
         process.kill(pid, "SIGKILL");
-      } catch (e) {}
+      } catch (_e) {}
     }
 
     try {
@@ -1602,7 +1605,7 @@ bridgeCommand
     try {
       execSync(
         `ffmpeg -y -i "${outputPath}" -vf "mpdecimate,setpts=N/FRAME_RATE/TB" -an -pix_fmt yuv420p "${decimatedPath}"`,
-        { stdio: "ignore" }
+        { stdio: "ignore" },
       );
     } catch (ffmpegErr) {
       jsonOut({

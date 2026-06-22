@@ -35,6 +35,7 @@ export interface LlmConfig {
   model: string;
   apiKey: string;
   locale: SupportedLocale;
+  maxFrames?: number;
 }
 
 /** Read all LLM-related settings at once, applying defaults in one place. */
@@ -61,12 +62,15 @@ export async function getLlmConfig(db: Database): Promise<LlmConfig> {
  */
 export async function getVisionConfig(db: Database): Promise<LlmConfig> {
   const base = await getLlmConfig(db);
+  const maxFramesStr = await getSetting(db, "llm.vision.max_frames");
+  const maxFrames = maxFramesStr ? parseInt(maxFramesStr, 10) : 100;
   return {
     enabled: (await getSetting(db, "llm.vision.enabled")) === "true",
     url: (await getSetting(db, "llm.vision.url")) || base.url,
     model: (await getSetting(db, "llm.vision.model")) || base.model,
     apiKey: (await getSetting(db, "llm.vision.api_key")) || base.apiKey,
     locale: base.locale,
+    maxFrames: Number.isNaN(maxFrames) ? 100 : maxFrames,
   };
 }
 
