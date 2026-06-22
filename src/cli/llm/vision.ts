@@ -1,5 +1,7 @@
 import { readFileSync } from "node:fs";
-import { basename } from "node:path";
+import { randomBytes } from "node:crypto";
+import { tmpdir } from "node:os";
+import { basename, join } from "node:path";
 import type {
   Database,
   SupportedLocale,
@@ -86,15 +88,68 @@ export async function observeUiSnapshotViaLLM(
     );
   }
 
-  const imageBytes = readFileSync(input.imagePath);
-  const imageUrl = `data:image/png;base64,${imageBytes.toString("base64")}`;
+  const imageUrls: string[] = [];
+  const isVideo = /\.(mp4|mov|m4v|avi|mkv|webm)$/i.test(input.imagePath);
+
+  if (isVideo) {
+    const { mkdirSync, readdirSync, rmSync } = await import("node:fs");
+    const { execSync } = await import("node:child_process");
+    const tempDir = join(tmpdir(), `zam-frames-${randomBytes(4).toString("hex")}`);
+    mkdirSync(tempDir, { recursive: true });
+
+    try {
+      execSync(
+        `ffmpeg -i "${input.imagePath}" -vf "fps=1/3,scale=1280:-1" -vsync vfr "${tempDir}/frame_%03d.png"`,
+        { stdio: "ignore" }
+      );
+      
+      let files = readdirSync(tempDir).filter((f) => f.endsWith(".png")).sort();
+      
+      if (files.length === 0) {
+        execSync(
+          `ffmpeg -i "${input.imagePath}" -vframes 1 "${tempDir}/frame_001.png"`,
+          { stdio: "ignore" }
+        );
+        files = readdirSync(tempDir).filter((f) => f.endsWith(".png")).sort();
+      }
+
+      let sampledFiles = files;
+      if (files.length > 12) {
+        const step = (files.length - 1) / 11;
+        sampledFiles = [];
+        for (let i = 0; i < 12; i++) {
+          const index = Math.round(i * step);
+          sampledFiles.push(files[index]);
+        }
+      }
+
+      for (const file of sampledFiles) {
+        const bytes = readFileSync(join(tempDir, file));
+        imageUrls.push(`data:image/png;base64,${bytes.toString("base64")}`);
+      }
+    } finally {
+      try {
+        rmSync(tempDir, { recursive: true, force: true });
+      } catch {}
+    }
+  } else {
+    const imageBytes = readFileSync(input.imagePath);
+    const ext = input.imagePath.split(".").pop()?.toLowerCase();
+    const mime = ext === "jpg" || ext === "jpeg" ? "image/jpeg" : "image/png";
+    imageUrls.push(`data:${mime};base64,${imageBytes.toString("base64")}`);
+  }
+
+  if (imageUrls.length === 0) {
+    throw new Error("No image data available for vision analysis");
+  }
+
   const model = input.model ?? cfg.model;
   const content = await requestVisionDraft({
     url: cfg.url,
     apiKey: cfg.apiKey || DEFAULT_LLM_API_KEY,
     model,
     locale: cfg.locale,
-    imageUrl,
+    imageUrls,
     input,
   });
 
@@ -123,7 +178,7 @@ async function requestVisionDraft(args: {
   apiKey: string;
   model: string;
   locale: SupportedLocale;
-  imageUrl: string;
+  imageUrls: string[];
   input: UiSnapshotObservationInput;
 }): Promise<string> {
   const language = LANGUAGE_NAMES[args.locale] ?? "English";
@@ -156,17 +211,24 @@ async function requestVisionDraft(args: {
             content: [
               {
                 type: "text",
-                text: `Observe this Windows application snapshot for a learning session.
+                text: args.imageUrls.length > 1
+                  ? `Observe this sequence of Windows/macOS application snapshots showing a task performed over time.
+Application process: ${args.input.application.processName}
+Window title: ${args.input.application.windowTitle ?? "(unknown)"}
+
+Return this JSON draft only:
+${schema}`
+                  : `Observe this Windows/macOS application snapshot for a learning session.
 Application process: ${args.input.application.processName}
 Window title: ${args.input.application.windowTitle ?? "(unknown)"}
 
 Return this JSON draft only:
 ${schema}`,
               },
-              {
+              ...args.imageUrls.map((url) => ({
                 type: "image_url",
-                image_url: { url: args.imageUrl },
-              },
+                image_url: { url },
+              })),
             ],
           },
         ],

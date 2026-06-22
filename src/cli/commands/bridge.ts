@@ -863,11 +863,11 @@ bridgeCommand
 bridgeCommand
   .command("observe-ui-snapshot")
   .description(
-    "Analyze a captured UI snapshot with the configured vision LLM (JSON)",
+    "Analyze a captured UI snapshot or video recording with the configured vision LLM (JSON)",
   )
   .requiredOption("--session <id>", "Observer session ID")
   .requiredOption("--sequence <n>", "Monotonic observation sequence number")
-  .requiredOption("--image <path>", "PNG snapshot path")
+  .requiredOption("--image <path>", "PNG snapshot or video recording path")
   .requiredOption("--observed-from <iso>", "Observation window start time")
   .requiredOption("--observed-to <iso>", "Observation window end time")
   .requiredOption("--process-name <name>", "Observed application process name")
@@ -1420,6 +1420,210 @@ bridgeCommand
         platform: process.platform,
         permission: { ...permission, granted: true },
       });
+    });
+  });
+
+// ── zam bridge start-recording ──────────────────────────────────────────────
+
+bridgeCommand
+  .command("start-recording")
+  .description("Start screen recording in the background (macOS only) (JSON)")
+  .requiredOption("--session <id>", "ZAM session ID")
+  .option("--output <path>", "Video output path")
+  .action(async (opts) => {
+    const platform = process.platform;
+    if (platform !== "darwin") {
+      jsonOut({
+        sessionId: opts.session,
+        started: false,
+        error: "Screen recording is only supported on macOS (darwin)",
+      });
+      return;
+    }
+
+    const sessionId = opts.session;
+    const statePath = join(tmpdir(), `zam-recording-${sessionId}.json`);
+    const outputPath = opts.output ?? join(tmpdir(), `zam-recording-${sessionId}.mov`);
+
+    const { existsSync, writeFileSync, openSync, closeSync } = await import("node:fs");
+    if (existsSync(statePath)) {
+      jsonOut({
+        sessionId,
+        started: false,
+        error: `Recording is already active for session ${sessionId}`,
+      });
+      return;
+    }
+
+    const logPath = join(tmpdir(), `zam-recording-${sessionId}.log`);
+    let logFd: number;
+    try {
+      logFd = openSync(logPath, "w");
+    } catch (e) {
+      jsonOut({
+        sessionId,
+        started: false,
+        error: `Failed to open log file at ${logPath}: ${(e as Error).message}`,
+      });
+      return;
+    }
+
+    const { spawn } = await import("node:child_process");
+    const child = spawn(
+      "ffmpeg",
+      [
+        "-y",
+        "-f",
+        "avfoundation",
+        "-r",
+        "5",
+        "-i",
+        "0",
+        "-pix_fmt",
+        "yuv420p",
+        outputPath,
+      ],
+      {
+        detached: true,
+        stdio: ["pipe", logFd, logFd],
+      }
+    );
+
+    try {
+      closeSync(logFd);
+    } catch {}
+
+    child.unref();
+
+    if (child.pid) {
+      writeFileSync(
+        statePath,
+        JSON.stringify({
+          pid: child.pid,
+          outputPath,
+          startedAt: new Date().toISOString(),
+        }),
+        "utf8"
+      );
+
+      jsonOut({
+        sessionId,
+        started: true,
+        outputPath,
+        pid: child.pid,
+      });
+    } else {
+      jsonOut({
+        sessionId,
+        started: false,
+        error: "Failed to spawn ffmpeg process",
+      });
+    }
+  });
+
+// ── zam bridge stop-recording ───────────────────────────────────────────────
+
+bridgeCommand
+  .command("stop-recording")
+  .description(
+    "Stop active screen recording and apply idle-frame compression (macOS only) (JSON)",
+  )
+  .requiredOption("--session <id>", "ZAM session ID")
+  .action(async (opts) => {
+    const platform = process.platform;
+    if (platform !== "darwin") {
+      jsonOut({
+        sessionId: opts.session,
+        stopped: false,
+        error: "Screen recording is only supported on macOS (darwin)",
+      });
+      return;
+    }
+
+    const sessionId = opts.session;
+    const statePath = join(tmpdir(), `zam-recording-${sessionId}.json`);
+    const { existsSync, readFileSync, rmSync } = await import("node:fs");
+
+    if (!existsSync(statePath)) {
+      jsonOut({
+        sessionId,
+        stopped: false,
+        error: `No active recording found for session ${sessionId}`,
+      });
+      return;
+    }
+
+    const state = JSON.parse(readFileSync(statePath, "utf8"));
+    const { pid, outputPath } = state;
+
+    try {
+      process.kill(pid, "SIGINT");
+    } catch (e) {
+      // Process might already be dead
+    }
+
+    const isProcessRunning = (pId: number) => {
+      try {
+        process.kill(pId, 0);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    };
+
+    let attempts = 0;
+    while (isProcessRunning(pid) && attempts < 20) {
+      await new Promise((resolve) => setTimeout(resolve, 250));
+      attempts++;
+    }
+
+    if (isProcessRunning(pid)) {
+      try {
+        process.kill(pid, "SIGKILL");
+      } catch (e) {}
+    }
+
+    try {
+      rmSync(statePath, { force: true });
+    } catch {}
+
+    if (!existsSync(outputPath)) {
+      jsonOut({
+        sessionId,
+        stopped: false,
+        error: `Recording file not found at ${outputPath}`,
+      });
+      return;
+    }
+
+    const decimatedPath = outputPath.replace(/\.[^.]+$/, "-decimated.mp4");
+    const { execSync } = await import("node:child_process");
+
+    try {
+      execSync(
+        `ffmpeg -y -i "${outputPath}" -vf "mpdecimate,setpts=N/FRAME_RATE/TB" -an -pix_fmt yuv420p "${decimatedPath}"`,
+        { stdio: "ignore" }
+      );
+    } catch (ffmpegErr) {
+      jsonOut({
+        sessionId,
+        stopped: true,
+        videoPath: outputPath,
+        decimated: false,
+        warning: `mpdecimate post-processing failed: ${(ffmpegErr as Error).message}`,
+      });
+      return;
+    }
+
+    try {
+      rmSync(outputPath, { force: true });
+    } catch {}
+
+    jsonOut({
+      sessionId,
+      stopped: true,
+      videoPath: decimatedPath,
+      decimated: true,
     });
   });
 
