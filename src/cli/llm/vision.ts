@@ -247,6 +247,11 @@ ${schema}`,
         ],
         temperature: 0,
         max_tokens: args.input.maxTokens ?? 450,
+        ...(args.url.includes("11434") ||
+        args.url.includes("localhost") ||
+        args.url.includes("127.0.0.1")
+          ? { options: { num_ctx: 32768 } }
+          : {}),
       }),
       locale: args.locale,
       hardTimeoutMs: args.input.hardTimeoutMs ?? 180000,
