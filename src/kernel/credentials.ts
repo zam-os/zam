@@ -38,6 +38,12 @@ export interface ADOCredentials {
 export interface Credentials {
   turso?: Partial<TursoCredentials>;
   ado?: Partial<ADOCredentials>;
+  /**
+   * API keys for named LLM providers, keyed by the provider's reference name
+   * (the `apiKeyRef` in the `llm.providers` setting). Kept here — not in the
+   * database — so workspace exports / DB snapshots never carry provider keys.
+   */
+  llmProviders?: Record<string, { apiKey: string }>;
 }
 
 /** Load credentials from ~/.zam/credentials.json. Returns empty object if missing. */
@@ -136,5 +142,22 @@ export function setADOCredentials(
 export function clearADOCredentials(path?: string): void {
   const creds = loadCredentials(path);
   delete creds.ado;
+  saveCredentials(creds, path);
+}
+
+/** Get a named LLM provider's API key (by `apiKeyRef`), or null if unset. */
+export function getProviderApiKey(name: string, path?: string): string | null {
+  const key = loadCredentials(path).llmProviders?.[name]?.apiKey;
+  return key && key.length > 0 ? key : null;
+}
+
+/** Store a named LLM provider's API key (referenced by `apiKeyRef`). */
+export function setProviderApiKey(
+  name: string,
+  apiKey: string,
+  path?: string,
+): void {
+  const creds = loadCredentials(path);
+  creds.llmProviders = { ...creds.llmProviders, [name]: { apiKey } };
   saveCredentials(creds, path);
 }

@@ -17,9 +17,10 @@ import {
   UI_OBSERVATION_PROTOCOL_VERSION,
 } from "../../kernel/index.js";
 import {
+  type ApiFlavor,
   DEFAULT_LLM_API_KEY,
   fetchWithInteractiveTimeout,
-  getVisionConfig,
+  getProviderForRole,
 } from "./client.js";
 
 const LANGUAGE_NAMES: Record<SupportedLocale, string> = {
@@ -81,7 +82,7 @@ export async function observeUiSnapshotViaLLM(
   db: Database,
   input: UiSnapshotObservationInput,
 ): Promise<UiObservationReport> {
-  const cfg = await getVisionConfig(db);
+  const cfg = await getProviderForRole(db, "vision");
   if (!cfg.enabled) {
     throw new Error(
       "Vision observation is disabled in settings (llm.vision.enabled)",
@@ -160,6 +161,7 @@ export async function observeUiSnapshotViaLLM(
     url: cfg.url,
     apiKey: cfg.apiKey || DEFAULT_LLM_API_KEY,
     model,
+    apiFlavor: cfg.apiFlavor,
     locale: cfg.locale,
     imageUrls,
     input,
@@ -185,22 +187,54 @@ export async function observeUiSnapshotViaLLM(
   return report;
 }
 
-async function requestVisionDraft(args: {
+type VisionRequestArgs = {
   url: string;
   apiKey: string;
   model: string;
+  apiFlavor: ApiFlavor;
   locale: SupportedLocale;
   imageUrls: string[];
   input: UiSnapshotObservationInput;
-}): Promise<string> {
-  const language = LANGUAGE_NAMES[args.locale] ?? "English";
-  const schema = `{
+};
+
+const VISION_SYSTEM_PROMPT =
+  "You are ZAM's UI observer. Return only strict JSON. Do not include markdown, prose, or fields outside the requested schema.";
+
+function visionSchema(language: string): string {
+  return `{
   "kind": "progress | step-completed | error | help-seeking | uncertain",
   "summary": "short factual UI summary in ${language}",
   "actions": [{"type": "click | shortcut | typing | scroll | window-change", "target": "optional UI target", "result": "optional visible result"}],
   "candidateTokens": [{"slug": "optional-kebab-case-skill-token", "confidence": 0.0, "rationale": "why this token may matter"}],
   "confidence": 0.0
 }`;
+}
+
+function visionUserText(args: VisionRequestArgs, language: string): string {
+  const intro =
+    args.imageUrls.length > 1
+      ? "Observe this sequence of Windows/macOS application snapshots showing a task performed over time."
+      : "Observe this Windows/macOS application snapshot for a learning session.";
+  return `${intro}
+Application process: ${args.input.application.processName}
+Window title: ${args.input.application.windowTitle ?? "(unknown)"}
+
+Return this JSON draft only:
+${visionSchema(language)}`;
+}
+
+/** Dispatch to the configured wire protocol for the vision endpoint. */
+async function requestVisionDraft(args: VisionRequestArgs): Promise<string> {
+  if (args.apiFlavor === "anthropic-messages") {
+    return requestAnthropicVisionDraft(args);
+  }
+  return requestChatCompletionsVisionDraft(args);
+}
+
+async function requestChatCompletionsVisionDraft(
+  args: VisionRequestArgs,
+): Promise<string> {
+  const language = LANGUAGE_NAMES[args.locale] ?? "English";
 
   const res = await fetchWithInteractiveTimeout(
     `${args.url}/chat/completions`,
@@ -213,31 +247,11 @@ async function requestVisionDraft(args: {
       body: JSON.stringify({
         model: args.model,
         messages: [
-          {
-            role: "system",
-            content:
-              "You are ZAM's UI observer. Return only strict JSON. Do not include markdown, prose, or fields outside the requested schema.",
-          },
+          { role: "system", content: VISION_SYSTEM_PROMPT },
           {
             role: "user",
             content: [
-              {
-                type: "text",
-                text:
-                  args.imageUrls.length > 1
-                    ? `Observe this sequence of Windows/macOS application snapshots showing a task performed over time.
-Application process: ${args.input.application.processName}
-Window title: ${args.input.application.windowTitle ?? "(unknown)"}
-
-Return this JSON draft only:
-${schema}`
-                    : `Observe this Windows/macOS application snapshot for a learning session.
-Application process: ${args.input.application.processName}
-Window title: ${args.input.application.windowTitle ?? "(unknown)"}
-
-Return this JSON draft only:
-${schema}`,
-              },
+              { type: "text", text: visionUserText(args, language) },
               ...args.imageUrls.map((url) => ({
                 type: "image_url",
                 image_url: { url },
@@ -297,6 +311,87 @@ ${schema}`,
     throw new Error("Empty response from vision model");
   }
   return content.trim();
+}
+
+interface AnthropicImageBlock {
+  type: "image";
+  source: { type: "base64"; media_type: string; data: string };
+}
+
+interface AnthropicMessageResponse {
+  content?: Array<{ type?: string; text?: string }>;
+  stop_reason?: string;
+  error?: unknown;
+}
+
+function dataUrlToAnthropicImage(dataUrl: string): AnthropicImageBlock {
+  const match = dataUrl.match(/^data:(image\/[a-zA-Z]+);base64,(.+)$/);
+  if (!match) {
+    throw new Error("Unsupported image data for Anthropic vision request");
+  }
+  return {
+    type: "image",
+    source: { type: "base64", media_type: match[1], data: match[2] },
+  };
+}
+
+/**
+ * Anthropic Messages API vision request (ADR 2026-06-23 item 2). The Messages
+ * API is not OpenAI-shaped: keys go on `x-api-key`, images are base64 source
+ * blocks, and the reply is a content-block array.
+ */
+async function requestAnthropicVisionDraft(
+  args: VisionRequestArgs,
+): Promise<string> {
+  const language = LANGUAGE_NAMES[args.locale] ?? "English";
+  const base = args.url.replace(/\/+$/, "").replace(/\/v1$/, "");
+
+  const res = await fetchWithInteractiveTimeout(`${base}/v1/messages`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": args.apiKey,
+      "anthropic-version": "2023-06-01",
+    },
+    body: JSON.stringify({
+      model: args.model,
+      max_tokens: args.input.maxTokens ?? 450,
+      system: VISION_SYSTEM_PROMPT,
+      messages: [
+        {
+          role: "user",
+          content: [
+            { type: "text", text: visionUserText(args, language) },
+            ...args.imageUrls.map(dataUrlToAnthropicImage),
+          ],
+        },
+      ],
+    }),
+    locale: args.locale,
+    hardTimeoutMs: args.input.hardTimeoutMs ?? 180000,
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text().catch(() => "");
+    throw new Error(
+      `Vision LLM request failed: ${res.statusText} (${res.status}) - ${errorText}`,
+    );
+  }
+
+  const data = (await res.json()) as AnthropicMessageResponse;
+  if (data.error !== undefined) {
+    throw new Error(`Vision model failed: ${formatModelError(data.error)}`);
+  }
+  if (data.stop_reason === "refusal") {
+    throw new Error("Vision model refused the request (safety classifier).");
+  }
+  const text = data.content?.find(
+    (b) => b.type === "text" && typeof b.text === "string",
+  )?.text;
+  if (!text) {
+    throw new Error("Empty response from vision model");
+  }
+  return text.trim();
 }
 
 function extractDraft(content: string): VisionObservationDraft {

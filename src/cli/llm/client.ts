@@ -16,6 +16,7 @@ import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import type { Database, SupportedLocale } from "../../kernel/index.js";
 import {
+  getProviderApiKey,
   getSetting,
   getSystemProfile,
   hasCommand,
@@ -81,27 +82,187 @@ export function getCloudModelRecommendation(url: string): string | null {
   return null;
 }
 
-export async function getVisionConfig(db: Database): Promise<LlmConfig> {
-  const base = await getLlmConfig(db);
-  const maxFramesStr = await getSetting(db, "llm.vision.max_frames");
-  const maxFrames = maxFramesStr ? parseInt(maxFramesStr, 10) : 100;
+// ── Role-based provider resolution (ADR 2026-06-23) ──────────────────────────
 
-  const url = (await getSetting(db, "llm.vision.url")) || base.url;
-  let model = await getSetting(db, "llm.vision.model");
+export type LlmRole = "vision" | "recall" | "text";
+export type ApiFlavor = "chat-completions" | "anthropic-messages";
 
-  if (!model) {
-    // If not set explicitly, try to recommend a cheap cloud model based on URL, otherwise fall back to base
-    const cloudRec = getCloudModelRecommendation(url);
-    model = cloudRec || base.model;
+/** A resolved endpoint for one role, with an optional fallback to try next. */
+export interface ProviderConfig {
+  enabled: boolean;
+  url: string;
+  model: string;
+  apiKey: string;
+  apiFlavor: ApiFlavor;
+  locale: SupportedLocale;
+  /** Vision only: max frames to sample from a recording. */
+  maxFrames?: number;
+  /** Optional next endpoint to try when the primary is unusable. */
+  fallback?: ProviderConfig;
+}
+
+/** Infer the wire protocol from the endpoint host (anthropic.com → Messages API). */
+export function inferApiFlavor(url: string): ApiFlavor {
+  try {
+    return new URL(url).hostname.toLowerCase().endsWith("anthropic.com")
+      ? "anthropic-messages"
+      : "chat-completions";
+  } catch {
+    return "chat-completions";
+  }
+}
+
+interface ProviderRecord {
+  url?: string;
+  model?: string;
+  apiFlavor?: ApiFlavor;
+  apiKey?: string;
+  apiKeyRef?: string;
+}
+type ProvidersMap = Record<string, ProviderRecord>;
+interface RoleBinding {
+  primary?: string;
+  fallback?: string;
+}
+type RolesMap = Partial<Record<LlmRole, RoleBinding>>;
+
+async function readJsonSetting<T>(
+  db: Database,
+  key: string,
+): Promise<T | null> {
+  const raw = await getSetting(db, key);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as T;
+  } catch {
+    return null;
+  }
+}
+
+function resolveProviderApiKey(rec: ProviderRecord): string {
+  if (rec.apiKey) return rec.apiKey;
+  if (rec.apiKeyRef) {
+    const key = getProviderApiKey(rec.apiKeyRef);
+    if (key) return key;
+  }
+  return DEFAULT_LLM_API_KEY;
+}
+
+/**
+ * Resolve the configured provider for a role.
+ *
+ * New-style config: JSON `llm.providers` (named endpoint records) + `llm.roles`
+ * (role → {primary, fallback}). When either is absent, falls back to the legacy
+ * `llm.*` / `llm.vision.*` keys, so existing installs behave identically.
+ *
+ * Enablement stays on the existing gates — `llm.enabled` for recall/text,
+ * `llm.vision.enabled` for vision — so the vision consent/privacy semantics are
+ * preserved regardless of how providers are wired.
+ */
+export async function getProviderForRole(
+  db: Database,
+  role: LlmRole,
+): Promise<ProviderConfig> {
+  const enabled =
+    role === "vision"
+      ? (await getSetting(db, "llm.vision.enabled")) === "true"
+      : (await getSetting(db, "llm.enabled")) === "true";
+
+  const base = await getLegacyRoleConfig(db, role, enabled);
+
+  const providers = await readJsonSetting<ProvidersMap>(db, "llm.providers");
+  const roles = await readJsonSetting<RolesMap>(db, "llm.roles");
+  const binding = roles?.[role];
+
+  if (providers && binding?.primary && providers[binding.primary]) {
+    const primary = materializeProvider(providers[binding.primary], base, role);
+    const fallback =
+      binding.fallback && providers[binding.fallback]
+        ? materializeProvider(providers[binding.fallback], base, role)
+        : undefined;
+    return { ...primary, fallback };
   }
 
+  return base;
+}
+
+function materializeProvider(
+  rec: ProviderRecord,
+  base: ProviderConfig,
+  role: LlmRole,
+): ProviderConfig {
+  const url = rec.url || base.url;
   return {
-    enabled: (await getSetting(db, "llm.vision.enabled")) === "true",
+    enabled: base.enabled,
     url,
-    model,
-    apiKey: (await getSetting(db, "llm.vision.api_key")) || base.apiKey,
+    model: rec.model || base.model,
+    apiKey: resolveProviderApiKey(rec),
+    apiFlavor: rec.apiFlavor || inferApiFlavor(url),
     locale: base.locale,
-    maxFrames: Number.isNaN(maxFrames) ? 100 : maxFrames,
+    ...(role === "vision" ? { maxFrames: base.maxFrames } : {}),
+  };
+}
+
+/** Legacy `llm.*` / `llm.vision.*` resolution — the back-compat default. */
+async function getLegacyRoleConfig(
+  db: Database,
+  role: LlmRole,
+  enabled: boolean,
+): Promise<ProviderConfig> {
+  const base = await getLlmConfig(db);
+
+  if (role === "vision") {
+    const maxFramesStr = await getSetting(db, "llm.vision.max_frames");
+    const parsed = maxFramesStr ? parseInt(maxFramesStr, 10) : 100;
+    const url = (await getSetting(db, "llm.vision.url")) || base.url;
+    let model = await getSetting(db, "llm.vision.model");
+    if (!model) model = getCloudModelRecommendation(url) || base.model;
+    return {
+      enabled,
+      url,
+      model,
+      apiKey: (await getSetting(db, "llm.vision.api_key")) || base.apiKey,
+      apiFlavor: inferApiFlavor(url),
+      locale: base.locale,
+      maxFrames: Number.isNaN(parsed) ? 100 : parsed,
+    };
+  }
+
+  // recall / text both map to the base text endpoint today.
+  return {
+    enabled,
+    url: base.url,
+    model: base.model,
+    apiKey: base.apiKey,
+    apiFlavor: inferApiFlavor(base.url),
+    locale: base.locale,
+  };
+}
+
+/** Guard for paths that only speak chat-completions (recall text today). */
+function assertChatCompletions(cfg: ProviderConfig): void {
+  if (cfg.apiFlavor !== "chat-completions") {
+    throw new Error(
+      `This role is configured for a "${cfg.apiFlavor}" provider, which is not ` +
+        `supported here yet. Use a chat-completions provider for the recall role.`,
+    );
+  }
+}
+
+/**
+ * Vision/UI-observer config in the legacy `LlmConfig` shape, for callers that
+ * don't need flavor/fallback (e.g. `checkVisionReadiness`). Delegates to
+ * {@link getProviderForRole} so the role config stays the single source.
+ */
+export async function getVisionConfig(db: Database): Promise<LlmConfig> {
+  const p = await getProviderForRole(db, "vision");
+  return {
+    enabled: p.enabled,
+    url: p.url,
+    model: p.model,
+    apiKey: p.apiKey,
+    locale: p.locale,
+    maxFrames: p.maxFrames,
   };
 }
 
@@ -167,10 +328,11 @@ export async function generateQuestionViaLLM(
     sourceLinkContent?: string | null;
   },
 ): Promise<string> {
-  const cfg = await getLlmConfig(db);
+  const cfg = await getProviderForRole(db, "recall");
   if (!cfg.enabled) {
     throw new Error("LLM integration is disabled in settings (llm.enabled)");
   }
+  assertChatCompletions(cfg);
 
   const bloom = (
     input.bloomLevel >= 1 && input.bloomLevel <= 5 ? input.bloomLevel : 1
@@ -234,10 +396,11 @@ export async function evaluateAnswerViaLLM(
     sourceLinkContent?: string | null;
   },
 ): Promise<string> {
-  const cfg = await getLlmConfig(db);
+  const cfg = await getProviderForRole(db, "recall");
   if (!cfg.enabled) {
     throw new Error("LLM integration is disabled in settings (llm.enabled)");
   }
+  assertChatCompletions(cfg);
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
   const ratingPrefix =
     LOCALIZED_RATING_PREFIX[cfg.locale] || "Suggested rating";
@@ -298,10 +461,11 @@ export async function translateQuestionViaLLM(
   db: Database,
   question: string,
 ): Promise<string> {
-  const cfg = await getLlmConfig(db);
+  const cfg = await getProviderForRole(db, "recall");
   if (!cfg.enabled) {
     throw new Error("LLM integration is disabled in settings");
   }
+  assertChatCompletions(cfg);
   const targetLang = LANGUAGE_NAMES[cfg.locale] || "English";
 
   const systemPrompt = `You are a highly precise translator. Translate the given active-recall question into clear, natural ${targetLang}.

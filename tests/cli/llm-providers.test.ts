@@ -1,0 +1,290 @@
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterEach, describe, expect, it } from "vitest";
+import {
+  getProviderForRole,
+  inferApiFlavor,
+} from "../../src/cli/llm/client.js";
+import { observeUiSnapshotViaLLM } from "../../src/cli/llm/vision.js";
+import {
+  getProviderApiKey,
+  openDatabase,
+  setProviderApiKey,
+  setSetting,
+} from "../../src/kernel/index.js";
+
+function openDb() {
+  return openDatabase({
+    dbPath: ":memory:",
+    initialize: true,
+    useConfiguredCloud: false,
+  });
+}
+
+const tempDirs: string[] = [];
+function makeSnapshot(): string {
+  const dir = mkdtempSync(join(tmpdir(), "zam-providers-"));
+  tempDirs.push(dir);
+  const path = join(dir, "snapshot.png");
+  writeFileSync(path, Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a]));
+  return path;
+}
+
+afterEach(() => {
+  for (const dir of tempDirs.splice(0)) {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+describe("inferApiFlavor", () => {
+  it("maps anthropic.com to the Messages API, everything else to chat-completions", () => {
+    expect(inferApiFlavor("https://api.anthropic.com")).toBe(
+      "anthropic-messages",
+    );
+    expect(inferApiFlavor("https://api.deepseek.com/v1")).toBe(
+      "chat-completions",
+    );
+    expect(inferApiFlavor("http://localhost:8000/v1")).toBe("chat-completions");
+    expect(inferApiFlavor("not a url")).toBe("chat-completions");
+  });
+});
+
+describe("getProviderForRole", () => {
+  it("falls back to legacy llm.* keys for recall when no role config exists", async () => {
+    const db = await openDb();
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "https://api.deepseek.com/v1");
+    await setSetting(db, "llm.model", "deepseek-v4-flash");
+    try {
+      const p = await getProviderForRole(db, "recall");
+      expect(p).toMatchObject({
+        enabled: true,
+        url: "https://api.deepseek.com/v1",
+        model: "deepseek-v4-flash",
+        apiFlavor: "chat-completions",
+      });
+      expect(p.fallback).toBeUndefined();
+    } finally {
+      await db.close();
+    }
+  });
+
+  it("falls back to legacy llm.vision.* keys for vision", async () => {
+    const db = await openDb();
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://localhost:8000/v1");
+    await setSetting(db, "llm.model", "gemma4-it:e4b");
+    await setSetting(db, "llm.vision.enabled", "true");
+    await setSetting(db, "llm.vision.url", "http://localhost:8000/v1");
+    await setSetting(db, "llm.vision.model", "mimo-vl");
+    try {
+      const p = await getProviderForRole(db, "vision");
+      expect(p).toMatchObject({
+        enabled: true,
+        url: "http://localhost:8000/v1",
+        model: "mimo-vl",
+        apiFlavor: "chat-completions",
+        maxFrames: 100,
+      });
+    } finally {
+      await db.close();
+    }
+  });
+
+  it("resolves a role to its configured provider + fallback", async () => {
+    const db = await openDb();
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(
+      db,
+      "llm.providers",
+      JSON.stringify({
+        deepseek: {
+          url: "https://api.deepseek.com/v1",
+          model: "deepseek-v4-flash",
+          apiKey: "sk-ds",
+        },
+        mimo: {
+          url: "https://api.xiaomi.com/mimo/v1",
+          model: "mimo-v2.5",
+          apiKey: "sk-mimo",
+        },
+      }),
+    );
+    await setSetting(
+      db,
+      "llm.roles",
+      JSON.stringify({ recall: { primary: "deepseek", fallback: "mimo" } }),
+    );
+    try {
+      const p = await getProviderForRole(db, "recall");
+      expect(p).toMatchObject({
+        enabled: true,
+        url: "https://api.deepseek.com/v1",
+        model: "deepseek-v4-flash",
+        apiKey: "sk-ds",
+        apiFlavor: "chat-completions",
+      });
+      expect(p.fallback).toMatchObject({
+        model: "mimo-v2.5",
+        apiKey: "sk-mimo",
+      });
+    } finally {
+      await db.close();
+    }
+  });
+
+  it("infers the anthropic-messages flavor from an anthropic provider URL", async () => {
+    const db = await openDb();
+    await setSetting(db, "llm.vision.enabled", "true");
+    await setSetting(
+      db,
+      "llm.providers",
+      JSON.stringify({
+        claude: {
+          url: "https://api.anthropic.com",
+          model: "claude-haiku-4-5",
+          apiKey: "sk-ant",
+        },
+      }),
+    );
+    await setSetting(
+      db,
+      "llm.roles",
+      JSON.stringify({ vision: { primary: "claude" } }),
+    );
+    try {
+      const p = await getProviderForRole(db, "vision");
+      expect(p).toMatchObject({
+        enabled: true,
+        url: "https://api.anthropic.com",
+        model: "claude-haiku-4-5",
+        apiFlavor: "anthropic-messages",
+      });
+    } finally {
+      await db.close();
+    }
+  });
+
+  it("keeps the vision consent gate independent of provider wiring", async () => {
+    const db = await openDb();
+    // Providers/roles configured, but llm.vision.enabled is left off.
+    await setSetting(
+      db,
+      "llm.providers",
+      JSON.stringify({
+        claude: { url: "https://api.anthropic.com", model: "claude-haiku-4-5" },
+      }),
+    );
+    await setSetting(
+      db,
+      "llm.roles",
+      JSON.stringify({ vision: { primary: "claude" } }),
+    );
+    try {
+      const p = await getProviderForRole(db, "vision");
+      expect(p.enabled).toBe(false);
+    } finally {
+      await db.close();
+    }
+  });
+});
+
+describe("provider API key store (apiKeyRef)", () => {
+  it("round-trips a provider key via credentials.json", () => {
+    const dir = mkdtempSync(join(tmpdir(), "zam-creds-"));
+    const path = join(dir, "credentials.json");
+    try {
+      expect(getProviderApiKey("deepseek", path)).toBeNull();
+      setProviderApiKey("deepseek", "sk-secret", path);
+      expect(getProviderApiKey("deepseek", path)).toBe("sk-secret");
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+});
+
+describe("anthropic-messages vision adapter", () => {
+  it("posts base64 image blocks to /v1/messages with x-api-key", async () => {
+    const db = await openDb();
+    await setSetting(db, "llm.vision.enabled", "true");
+    await setSetting(
+      db,
+      "llm.providers",
+      JSON.stringify({
+        claude: {
+          url: "https://api.anthropic.com",
+          model: "claude-haiku-4-5",
+          apiKey: "sk-ant-test",
+        },
+      }),
+    );
+    await setSetting(
+      db,
+      "llm.roles",
+      JSON.stringify({ vision: { primary: "claude" } }),
+    );
+    await setSetting(db, "system.locale", "de");
+
+    const imagePath = makeSnapshot();
+    const originalFetch = global.fetch;
+    let requestUrl: string | undefined;
+    let requestHeaders: Record<string, string> | undefined;
+    let requestBody: Record<string, unknown> | undefined;
+
+    global.fetch = (async (url, init) => {
+      requestUrl = String(url);
+      requestHeaders = init?.headers as Record<string, string>;
+      requestBody = JSON.parse(String(init?.body));
+      return new Response(
+        JSON.stringify({
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify({
+                kind: "progress",
+                summary: "Das Fenster zeigt eine einfache UI.",
+                actions: [],
+                candidateTokens: [],
+                confidence: 0.6,
+              }),
+            },
+          ],
+          stop_reason: "end_turn",
+        }),
+      );
+    }) as typeof fetch;
+
+    try {
+      const report = await observeUiSnapshotViaLLM(db, {
+        sessionId: "s1",
+        sequence: 1,
+        observedFrom: "2026-06-23T00:00:00.000Z",
+        observedTo: "2026-06-23T00:00:01.000Z",
+        imagePath,
+        application: { processName: "notepad.exe" },
+      });
+
+      expect(report).toMatchObject({
+        kind: "progress",
+        summary: "Das Fenster zeigt eine einfache UI.",
+        confidence: 0.6,
+      });
+      expect(requestUrl).toBe("https://api.anthropic.com/v1/messages");
+      expect(requestHeaders?.["x-api-key"]).toBe("sk-ant-test");
+      expect(requestHeaders?.["anthropic-version"]).toBe("2023-06-01");
+      expect(requestBody?.model).toBe("claude-haiku-4-5");
+      const messages = requestBody?.messages as Array<{
+        content: Array<Record<string, unknown>>;
+      }>;
+      expect(messages[0].content[0]).toMatchObject({ type: "text" });
+      expect(messages[0].content[1]).toMatchObject({
+        type: "image",
+        source: { type: "base64", media_type: "image/png" },
+      });
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+});

@@ -24,10 +24,12 @@ export {
   clearADOCredentials,
   clearTursoCredentials,
   getADOCredentials,
+  getProviderApiKey,
   getTursoCredentials,
   loadCredentials,
   saveCredentials,
   setADOCredentials,
+  setProviderApiKey,
   setTursoCredentials,
 } from "./credentials.js";
 // Database
