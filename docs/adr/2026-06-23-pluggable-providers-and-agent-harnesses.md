@@ -259,7 +259,9 @@ Ordered so a fresh agent can pick up any item; file paths are load-bearing.
 > `apiKeyRef`→`credentials.json`, and the legacy back-compat fallback; #74 added
 > the vision primary→fallback loop, unified with the frame-sampling path. The
 > item-7 Studio capture-UI dev-flag gate shipped in #71. #75 landed the
-> agent-harness registry + `zam agent open` / `list` (item 5, CLI side).
+> agent-harness registry + `zam agent open` / `list` (item 5, CLI side). #76
+> added the CLI workspace plumbing for item 6 (`zam workspace data-dir` /
+> `backup`, SQLite `VACUUM INTO`).
 > Deviations/remainder: the adapter uses a strict-JSON system prompt + tolerant
 > parse rather than structured outputs; an Anthropic *text* path for recall is
 > guarded (throws); a migration command, the Studio "Open Agent" button, and the
@@ -286,8 +288,11 @@ Ordered so a fresh agent can pick up any item; file paths are load-bearing.
    / `list` built on [`terminal-open.ts`](../../src/cli/terminal-open.ts) (#75).
    The Studio "Open Agent" button is deferred to the Studio frontend (item 6);
    "Practice solo" is `zam learn open` (#69).
-6. [ ] **Studio setup**: workspace picker (default `~/Documents/ZAM`), "Open data
-   folder" reveal, DB backup/export into the workspace.
+6. [ ] **Studio setup**: workspace picker (default `~/Documents/zam`), "Open data
+   folder" reveal, DB backup/export into the workspace. CLI plumbing landed in
+   #76 — `zam workspace data-dir` and `zam workspace backup` (SQLite
+   `VACUUM INTO`, local DB only); the Tauri Studio UI that calls it (picker,
+   reveal, backup + "Open Agent" buttons) is the remainder.
 7. [ ] **Harness-driven capture scope** in the session/observer flow (the Agent
    harness selects fullscreen vs. window from task context and passes it to
    `capture-ui` / the recorder); **gate the existing Recall Studio window-capture
