@@ -7,11 +7,18 @@
  */
 
 import { execSync } from "node:child_process";
-import { existsSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
 import { join } from "node:path";
 import { confirm, input } from "@inquirer/prompts";
 import { Command } from "commander";
-import { getSetting, hasCommand, openDatabase } from "../../kernel/index.js";
+import type { Database } from "../../kernel/index.js";
+import {
+  getDatabaseTargetInfo,
+  getSetting,
+  hasCommand,
+  openDatabase,
+} from "../../kernel/index.js";
 
 /**
  * Execute a shell command inside a specific directory.
@@ -188,5 +195,77 @@ workspaceCommand
           "You can push manually later using: git push -u origin main",
         );
       }
+    }
+  });
+
+/**
+ * Consistent single-file backup of the open database into
+ * `<targetDir>/zam-backups/`. Uses SQLite `VACUUM INTO`, which writes a clean
+ * snapshot even in WAL mode with a live connection. Returns the backup path.
+ */
+export async function backupDatabaseTo(
+  db: Database,
+  targetDir: string,
+): Promise<string> {
+  const backupDir = join(targetDir, "zam-backups");
+  mkdirSync(backupDir, { recursive: true });
+  const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+  const dest = join(backupDir, `zam-${stamp}.db`);
+  await db.exec(`VACUUM INTO '${dest.replace(/'/g, "''")}'`);
+  return dest;
+}
+
+workspaceCommand
+  .command("data-dir")
+  .description("Print the ZAM data directory (database, credentials, config)")
+  .option("--json", "Output as JSON")
+  .action((opts: { json?: boolean }) => {
+    const dir = join(homedir(), ".zam");
+    console.log(opts.json ? JSON.stringify({ dataDir: dir }) : dir);
+  });
+
+workspaceCommand
+  .command("backup")
+  .description("Back up the local ZAM database into your workspace")
+  .option(
+    "--dir <path>",
+    "Target directory (default: workspace dir, else ~/Documents/zam)",
+  )
+  .option("--json", "Output as JSON")
+  .action(async (opts: { dir?: string; json?: boolean }) => {
+    const target = getDatabaseTargetInfo();
+    if (target.kind !== "local") {
+      const reason = `The database is ${target.kind} (${target.location}); file backup applies only to a local database — your Turso remote is already the cloud backup.`;
+      if (opts.json) {
+        console.log(JSON.stringify({ ok: false, reason }));
+        return;
+      }
+      console.error(`\x1b[33m⚠ ${reason}\x1b[0m`);
+      process.exit(1);
+    }
+
+    let db: Database | undefined;
+    try {
+      db = await openDatabase();
+      const workspaceDir =
+        opts.dir ||
+        (await getSetting(db, "personal.workspace_dir")) ||
+        join(homedir(), "Documents", "zam");
+      const dest = await backupDatabaseTo(db, workspaceDir);
+      if (opts.json) {
+        console.log(JSON.stringify({ ok: true, path: dest }));
+      } else {
+        console.log(`\x1b[32m✓ Database backed up to ${dest}\x1b[0m`);
+      }
+    } catch (err) {
+      const reason = (err as Error).message;
+      if (opts.json) {
+        console.log(JSON.stringify({ ok: false, reason }));
+      } else {
+        console.error(`\x1b[31m✗ Backup failed: ${reason}\x1b[0m`);
+      }
+      process.exit(1);
+    } finally {
+      await db?.close();
     }
   });
