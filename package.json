@@ -71,7 +71,7 @@
     "esbuild": "0.28.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.8",
+    "@biomejs/biome": "2.5.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^25.5.0",
     "tsup": "^8.5.1",
