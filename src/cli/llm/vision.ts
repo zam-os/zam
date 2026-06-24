@@ -156,35 +156,77 @@ export async function observeUiSnapshotViaLLM(
     throw new Error("No image data available for vision analysis");
   }
 
-  const model = input.model ?? cfg.model;
-  const content = await requestVisionDraft({
-    url: cfg.url,
-    apiKey: cfg.apiKey || DEFAULT_LLM_API_KEY,
-    model,
-    apiFlavor: cfg.apiFlavor,
-    locale: cfg.locale,
-    imageUrls,
-    input,
-  });
-
-  let draft: VisionObservationDraft;
-  try {
-    draft = extractDraft(content);
-  } catch {
-    return uncertainReport(
-      input,
-      "Vision model returned output that could not be parsed as JSON.",
-    );
+  // Try the role's primary endpoint, then its configured fallback. The
+  // frame-sampled `imageUrls` are shared across endpoints; only the endpoint
+  // (url/key/model/flavor) changes. `input.model` overrides the primary only.
+  const endpoints: Array<
+    Pick<VisionRequestArgs, "url" | "apiKey" | "model" | "apiFlavor">
+  > = [
+    {
+      url: cfg.url,
+      apiKey: cfg.apiKey || DEFAULT_LLM_API_KEY,
+      model: input.model ?? cfg.model,
+      apiFlavor: cfg.apiFlavor,
+    },
+  ];
+  if (cfg.fallback) {
+    endpoints.push({
+      url: cfg.fallback.url,
+      apiKey: cfg.fallback.apiKey || DEFAULT_LLM_API_KEY,
+      model: cfg.fallback.model,
+      apiFlavor: cfg.fallback.apiFlavor,
+    });
   }
 
-  const report = buildReport(input, draft);
-  if (!isUiObservationReport(report)) {
+  let lastRequestError: Error | undefined;
+  let sawUnparseableDraft = false;
+  let sawInvalidDraft = false;
+
+  for (const endpoint of endpoints) {
+    let content: string;
+    try {
+      content = await requestVisionDraft({
+        ...endpoint,
+        locale: cfg.locale,
+        imageUrls,
+        input,
+      });
+    } catch (err) {
+      lastRequestError = err as Error;
+      continue;
+    }
+
+    let draft: VisionObservationDraft;
+    try {
+      draft = extractDraft(content);
+    } catch {
+      sawUnparseableDraft = true;
+      continue;
+    }
+
+    const report = buildReport(input, draft);
+    if (isUiObservationReport(report)) {
+      return report;
+    }
+    sawInvalidDraft = true;
+  }
+
+  // All endpoints exhausted. Surface a hard request error only when no endpoint
+  // produced any draft at all; otherwise return an uncertain report reflecting
+  // the most informative failure seen.
+  if (lastRequestError && !sawUnparseableDraft && !sawInvalidDraft) {
+    throw lastRequestError;
+  }
+  if (sawInvalidDraft) {
     return uncertainReport(
       input,
       "Vision model returned an invalid UI report draft.",
     );
   }
-  return report;
+  return uncertainReport(
+    input,
+    "Vision model returned output that could not be parsed as JSON.",
+  );
 }
 
 type VisionRequestArgs = {

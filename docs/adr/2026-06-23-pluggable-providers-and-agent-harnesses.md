@@ -254,20 +254,29 @@ over-captures known-app tasks; a global `window` cannot observe app discovery.
 
 Ordered so a fresh agent can pick up any item; file paths are load-bearing.
 
-1. [ ] **Provider records + resolver.** Add the `providers`/`roles` schema and
+> **Progress (2026-06-23):** Items 1–4 are done. #73 landed the resolver
+> (`getProviderForRole`), the `anthropic-messages` vision adapter,
+> `apiKeyRef`→`credentials.json`, and the legacy back-compat fallback; #74 added
+> the vision primary→fallback loop, unified with the frame-sampling path. The
+> item-7 Studio capture-UI dev-flag gate shipped in #71. Deviations/remainder:
+> the adapter uses a strict-JSON system prompt + tolerant parse rather than
+> structured outputs; an Anthropic *text* path for recall is guarded (throws);
+> a migration command + Studio providers/roles editor are still open.
+
+1. [x] **Provider records + resolver.** Added the `providers`/`roles` schema and
    `getProviderForRole(db, role)` in [`src/cli/llm/client.ts`](../../src/cli/llm/client.ts);
-   route `getVisionConfig` → role `vision`, `getLlmConfig`/`evaluateAnswerViaLLM`
-   → role `recall`. Keep the `{primary, fallback}` shape.
-2. [ ] **`anthropic-messages` adapter.** Add the Messages-API request function in
+   `getVisionConfig` → role `vision`, the recall text functions → role `recall`.
+   Keeps the `{primary, fallback}` shape.
+2. [x] **`anthropic-messages` adapter.** Messages-API request function in
    [`src/cli/llm/vision.ts`](../../src/cli/llm/vision.ts) beside the
-   chat-completions / responses paths; use structured outputs for the report
-   schema; check `stop_reason === "refusal"` before reading content.
-3. [ ] **Back-compat shim + migration** from `llm.*` / `llm.vision.*`; `apiKeyRef`
-   → [`credentials.ts`](../../src/kernel/credentials.ts).
-4. [ ] **Reconcile with [2026-06-22](2026-06-22-screen-recording-observer.md):**
-   fold the frame-sampling (`ffmpeg`/`maxFrames`) loop and the role-based
-   per-endpoint flavor/fallback into one path (the WIP on
-   `wip/codex-observer-vision-and-learn-open` is the starting point).
+   chat-completions path; checks `stop_reason === "refusal"`. (Structured outputs
+   deferred — uses a strict-JSON prompt + tolerant parse.)
+3. [x] **Back-compat shim + `apiKeyRef`** → [`credentials.ts`](../../src/kernel/credentials.ts).
+   (Standalone migration command still open; the legacy fallback covers
+   unmigrated installs.)
+4. [x] **Reconciled with [2026-06-22](2026-06-22-screen-recording-observer.md):**
+   the frame-sampling (`ffmpeg`/`maxFrames`) loop and the role-based
+   primary→fallback now share one path in `observeUiSnapshotViaLLM` (#74).
 5. [ ] **Agent harness registry** generalizing
    [`terminal-open.ts`](../../src/cli/terminal-open.ts); detection à la
    [`installer.ts`](../../src/kernel/system/installer.ts); Studio "Open Agent"

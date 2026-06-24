@@ -288,3 +288,82 @@ describe("anthropic-messages vision adapter", () => {
     }
   });
 });
+
+describe("vision endpoint fallback", () => {
+  it("falls back to the configured fallback endpoint when the primary fails", async () => {
+    const db = await openDb();
+    await setSetting(db, "llm.vision.enabled", "true");
+    await setSetting(
+      db,
+      "llm.providers",
+      JSON.stringify({
+        local: {
+          url: "http://local/v1",
+          model: "text-only",
+          apiKey: "sk-local",
+        },
+        cloud: {
+          url: "https://api.deepseek.com/v1",
+          model: "deepseek-v4-flash",
+          apiKey: "sk-cloud",
+        },
+      }),
+    );
+    await setSetting(
+      db,
+      "llm.roles",
+      JSON.stringify({ vision: { primary: "local", fallback: "cloud" } }),
+    );
+
+    const imagePath = makeSnapshot();
+    const originalFetch = global.fetch;
+    const urls: string[] = [];
+    global.fetch = (async (url) => {
+      urls.push(String(url));
+      if (String(url) === "http://local/v1/chat/completions") {
+        // Primary (local, text-only) rejects image input → request throws.
+        return new Response("image input unsupported", { status: 400 });
+      }
+      return new Response(
+        JSON.stringify({
+          choices: [
+            {
+              message: {
+                content: JSON.stringify({
+                  kind: "help-seeking",
+                  summary: "Cloud-Fallback lief.",
+                  actions: [],
+                  candidateTokens: [],
+                  confidence: 0.7,
+                }),
+              },
+            },
+          ],
+        }),
+      );
+    }) as typeof fetch;
+
+    try {
+      const report = await observeUiSnapshotViaLLM(db, {
+        sessionId: "s2",
+        sequence: 2,
+        observedFrom: "2026-06-23T00:00:00.000Z",
+        observedTo: "2026-06-23T00:00:01.000Z",
+        imagePath,
+        application: { processName: "explorer.exe" },
+      });
+
+      expect(urls).toEqual([
+        "http://local/v1/chat/completions",
+        "https://api.deepseek.com/v1/chat/completions",
+      ]);
+      expect(report).toMatchObject({
+        kind: "help-seeking",
+        summary: "Cloud-Fallback lief.",
+      });
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+});
