@@ -367,12 +367,15 @@ For each due token, ask a conceptual question at the right Bloom level:
 
 **CRITICAL: Stop and WAIT for the user to provide their answer. Do not ask for the rating until the user has attempted to answer the conceptual question.**
 
-After the user answers, ask:
-> "How did that feel? 1 = drew a blank, 2 = hard recall, 3 = knew it, 4 = instant"
+After the user answers, always run this explicit review loop:
 
-**WAIT for the user to provide a rating (1-4).**
-
-Submit the rating and log the step.
+1. **Check the answer first.** Compare the user's answer with the token concept, the recall question, and any resolved source context. Decide whether it is `correct`, `partially correct`, or `incorrect`.
+2. **Give learning feedback before asking for a rating.** State the verdict, give a short reference answer, and explain what was missing or incorrect. Keep this concise, but never skip it — this is where the learning happens.
+3. **Suggest a self-rating.** Propose a rating using the 1-4 scale, based on correctness and recall quality: 4 = complete and instant, 3 = correct with small hesitation or minor gap, 2 = partially correct or needed correction, 1 = blank/incorrect/needed help.
+4. **Ask the user to choose the final rating.**
+   > "My suggested rating is <n>. How do you want to rate it? 1 = drew a blank, 2 = hard recall/partial, 3 = knew it, 4 = instant"
+5. **WAIT for the user to provide a rating (1-4).**
+6. **Only then submit the rating and log the step.** Never save the suggested rating without the user's confirmation.
 
 #### Leveraging Source Links for AI Agent Context
 When a token has a `source_link`, `zam bridge get-review` resolves it for you and returns a `resolvedContext` object alongside `prompt` — you no longer need to fetch the file or URL yourself. Its shape:
