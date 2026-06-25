@@ -1,6 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
-import { appDataDir, homeDir, join as joinPath } from "@tauri-apps/api/path";
-import { openPath } from "@tauri-apps/plugin-opener";
+import { appDataDir, join as joinPath } from "@tauri-apps/api/path";
 import * as THREE from "three";
 
 // ── LOCALIZATION DICTIONARIES ─────────────────────────────────────────────
@@ -89,6 +88,16 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     graph_prereqs: "Bases (Prerequisites)",
     graph_dependents: "Higher Abilities (Dependents)",
     graph_no_card: "no personal card yet",
+    setup_title: "Setup & Data",
+    btn_open_data_folder: "Open data folder",
+    btn_backup_db: "Back up database",
+    setup_backing_up: "Backing up database…",
+    setup_backed_up: "Backed up to {path}",
+    setup_remote_no_backup:
+      "Your database syncs to the cloud ({target}) — no separate local backup needed.",
+    setup_backup_failed: "Backup failed: {message}",
+    setup_backup_failed_generic: "Backup failed.",
+    setup_open_folder_failed: "Could not open the data folder: {message}",
   },
   de: {
     ai_status_offline: "Lokale KI offline",
@@ -174,6 +183,16 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     graph_prereqs: "Basis (Voraussetzungen)",
     graph_dependents: "Höhere Fähigkeiten (Darauf aufbauend)",
     graph_no_card: "noch keine persönliche Karte",
+    setup_title: "Einrichtung & Daten",
+    btn_open_data_folder: "Datenordner öffnen",
+    btn_backup_db: "Datenbank sichern",
+    setup_backing_up: "Datenbank wird gesichert…",
+    setup_backed_up: "Gesichert nach {path}",
+    setup_remote_no_backup:
+      "Deine Datenbank synchronisiert in die Cloud ({target}) — kein separates lokales Backup nötig.",
+    setup_backup_failed: "Sicherung fehlgeschlagen: {message}",
+    setup_backup_failed_generic: "Sicherung fehlgeschlagen.",
+    setup_open_folder_failed: "Datenordner konnte nicht geöffnet werden: {message}",
   }
 };
 
@@ -464,6 +483,11 @@ function initializeTranslations() {
   if (answerInput) {
     answerInput.placeholder = t("placeholder_answer");
   }
+
+  // Setup & Data card
+  document.getElementById("lbl-setup-title")!.textContent = t("setup_title");
+  document.getElementById("btn-open-data-folder")!.textContent = t("btn_open_data_folder");
+  document.getElementById("btn-backup-db")!.textContent = t("btn_backup_db");
 
   // Locale badge
   document.getElementById("locale-badge")!.textContent = currentLocale.toUpperCase();
@@ -2033,12 +2057,17 @@ window.addEventListener("DOMContentLoaded", () => {
     .getElementById("btn-open-data-folder")
     ?.addEventListener("click", () => {
       void (async () => {
-        const dir = await joinPath(await homeDir(), ".zam");
         const status = document.getElementById("setup-status");
         try {
-          await openPath(dir);
+          // Dedicated command resolves ~/.zam server-side, so the webview never
+          // passes arbitrary paths to the opener (tighter than allow-open-path).
+          await invoke("open_data_folder");
         } catch (err) {
-          if (status) status.textContent = `Could not open ${dir}: ${err}`;
+          if (status) {
+            status.textContent = tf("setup_open_folder_failed", {
+              message: errorMessage(err),
+            });
+          }
         }
       })();
     });
@@ -2046,20 +2075,30 @@ window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-backup-db")?.addEventListener("click", () => {
     void (async () => {
       const status = document.getElementById("setup-status");
-      if (status) status.textContent = "Backing up database…";
+      if (status) status.textContent = t("setup_backing_up");
       try {
         const res = await runBridge<{
           ok?: boolean;
           path?: string;
-          error?: string;
+          reason?: string;
+          target?: string;
         }>("backup-db");
-        if (status) {
-          status.textContent = res.path
-            ? `Backed up to ${res.path}`
-            : (res.error ?? "Backup failed.");
+        if (!status) return;
+        if (res.ok && res.path) {
+          status.textContent = tf("setup_backed_up", { path: res.path });
+        } else if (res.reason === "remote") {
+          status.textContent = tf("setup_remote_no_backup", {
+            target: res.target ?? "remote",
+          });
+        } else {
+          status.textContent = t("setup_backup_failed_generic");
         }
       } catch (err) {
-        if (status) status.textContent = `Backup failed: ${err}`;
+        if (status) {
+          status.textContent = tf("setup_backup_failed", {
+            message: errorMessage(err),
+          });
+        }
       }
     })();
   });

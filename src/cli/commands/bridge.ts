@@ -225,9 +225,16 @@ bridgeCommand
   .action(async (opts) => {
     const target = getDatabaseTargetInfo();
     if (target.kind !== "local") {
-      jsonError(
-        `Database is ${target.kind} (${target.location}); file backup applies only to a local database — your Turso remote is already the cloud backup.`,
-      );
+      // Not an error: a Turso-backed database already lives in the cloud, so a
+      // local file backup does not apply. Return a structured result the caller
+      // (e.g. the Studio) can present as an informational, localized message.
+      jsonOut({
+        ok: false,
+        reason: "remote",
+        target: target.kind,
+        location: target.location,
+      });
+      return;
     }
     await withDb(async (db) => {
       const workspaceDir =

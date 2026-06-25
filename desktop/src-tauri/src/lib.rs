@@ -9,6 +9,7 @@ use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::Duration;
 use tauri::Manager;
+use tauri_plugin_opener::OpenerExt;
 
 #[cfg(target_os = "windows")]
 use std::os::windows::process::CommandExt;
@@ -1242,6 +1243,22 @@ fn cancel_zam_bridge(state: tauri::State<'_, Arc<BridgeState>>) -> Result<bool, 
     }
 }
 
+/// Open the ZAM data folder (`~/.zam`) in the OS file manager. A dedicated
+/// command so the webview never passes arbitrary paths to the opener plugin —
+/// tighter than granting the broad `opener:allow-open-path` capability to JS.
+#[tauri::command]
+fn open_data_folder(app: tauri::AppHandle) -> Result<(), String> {
+    let dir = home_dir()
+        .ok_or_else(|| "Could not resolve home directory".to_string())?
+        .join(".zam");
+    fs::create_dir_all(&dir).map_err(|e| {
+        format!("Failed to create data directory {}: {e}", dir.display())
+    })?;
+    app.opener()
+        .open_path(dir.to_string_lossy().to_string(), None::<&str>)
+        .map_err(|e| format!("Failed to open data folder: {e}"))
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let builder = tauri::Builder::default();
@@ -1279,7 +1296,8 @@ pub fn run() {
             capture_zam_observer_once,
             capture_zam_observer_window,
             sample_zam_observer_window,
-            snapshot_zam_observer_window
+            snapshot_zam_observer_window,
+            open_data_folder
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
