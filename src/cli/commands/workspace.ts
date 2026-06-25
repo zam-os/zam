@@ -9,16 +9,28 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { confirm, input } from "@inquirer/prompts";
 import { Command } from "commander";
 import type { Database } from "../../kernel/index.js";
 import {
+  getConfiguredWorkspaces,
   getDatabaseTargetInfo,
   getSetting,
   hasCommand,
   openDatabase,
+  upsertConfiguredWorkspace,
+  type WorkspaceConfig,
+  type WorkspaceKind,
+  type WorkspaceSourceControl,
 } from "../../kernel/index.js";
+import {
+  copySkills,
+  parseSetupAgents,
+  writeAgentsMd,
+  writeClaudeMd,
+  writeCopilotInstructions,
+} from "./setup.js";
 
 /**
  * Execute a shell command inside a specific directory.
@@ -51,6 +63,195 @@ export function gitRemoteArgs(githubUrl: string, hasOrigin: boolean): string[] {
 export const workspaceCommand = new Command("workspace").description(
   "Manage your ZAM learning workspace",
 );
+
+const WORKSPACE_KINDS: WorkspaceKind[] = [
+  "personal",
+  "team",
+  "family",
+  "community",
+  "organization",
+  "custom",
+];
+const WORKSPACE_SOURCE_CONTROLS: WorkspaceSourceControl[] = [
+  "github",
+  "azure-devops",
+  "git",
+  "none",
+];
+
+function parseWorkspaceKind(value?: string): WorkspaceKind {
+  const kind = (value ?? "custom").toLowerCase();
+  if (WORKSPACE_KINDS.includes(kind as WorkspaceKind)) {
+    return kind as WorkspaceKind;
+  }
+  throw new Error(
+    `Invalid workspace kind: ${value}. Use ${WORKSPACE_KINDS.join(", ")}.`,
+  );
+}
+
+function parseWorkspaceSourceControl(
+  value?: string,
+): WorkspaceSourceControl | undefined {
+  if (!value) return undefined;
+  const source = value.toLowerCase();
+  if (WORKSPACE_SOURCE_CONTROLS.includes(source as WorkspaceSourceControl)) {
+    return source as WorkspaceSourceControl;
+  }
+  throw new Error(
+    `Invalid source control: ${value}. Use ${WORKSPACE_SOURCE_CONTROLS.join(", ")}.`,
+  );
+}
+
+function parseScopes(value?: string): string[] | undefined {
+  if (!value) return undefined;
+  const scopes = value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  return scopes.length > 0 ? scopes : undefined;
+}
+
+function requireWorkspace(id: string): WorkspaceConfig {
+  const workspace = getConfiguredWorkspaces().find((item) => item.id === id);
+  if (!workspace) {
+    throw new Error(
+      `Workspace "${id}" is not configured. Add it with: zam workspace add ${id} --path <dir>`,
+    );
+  }
+  return workspace;
+}
+
+workspaceCommand
+  .command("list")
+  .description("List configured ZAM workspaces")
+  .option("--json", "Output as JSON")
+  .action((opts: { json?: boolean }) => {
+    const workspaces = getConfiguredWorkspaces();
+    if (opts.json) {
+      console.log(JSON.stringify({ workspaces }, null, 2));
+      return;
+    }
+
+    console.log("Configured ZAM workspaces:\n");
+    if (workspaces.length === 0) {
+      console.log(
+        "  (none) — add one: zam workspace add personal --path <dir>",
+      );
+      return;
+    }
+
+    for (const workspace of workspaces) {
+      const label = workspace.label ? ` (${workspace.label})` : "";
+      console.log(`  ${workspace.id}${label}`);
+      console.log(`      kind: ${workspace.kind}`);
+      console.log(`      path: ${workspace.path}`);
+      if (workspace.sourceControl) {
+        console.log(`      source: ${workspace.sourceControl}`);
+      }
+      if (workspace.knowledgeScopes?.length) {
+        console.log(`      scopes: ${workspace.knowledgeScopes.join(", ")}`);
+      }
+    }
+  });
+
+workspaceCommand
+  .command("add <id>")
+  .description("Register an existing directory as a ZAM workspace")
+  .requiredOption("--path <dir>", "Existing workspace/repository directory")
+  .option(
+    "--kind <kind>",
+    `Workspace kind (${WORKSPACE_KINDS.join(" | ")})`,
+    "custom",
+  )
+  .option("--label <label>", "Human-readable label")
+  .option(
+    "--source-control <provider>",
+    `Source-control provider (${WORKSPACE_SOURCE_CONTROLS.join(" | ")})`,
+  )
+  .option("--scopes <list>", "Comma-separated knowledge scopes")
+  .option("--default-agent <id>", "Default agent harness for this workspace")
+  .action((id, opts) => {
+    try {
+      const path = resolve(String(opts.path));
+      if (!existsSync(path)) {
+        console.error(`Workspace path does not exist: ${path}`);
+        process.exit(1);
+      }
+      const workspace: WorkspaceConfig = {
+        id,
+        kind: parseWorkspaceKind(opts.kind),
+        path,
+        ...(opts.label ? { label: opts.label } : {}),
+        ...(opts.sourceControl
+          ? { sourceControl: parseWorkspaceSourceControl(opts.sourceControl) }
+          : {}),
+        ...(parseScopes(opts.scopes)
+          ? { knowledgeScopes: parseScopes(opts.scopes) }
+          : {}),
+        ...(opts.defaultAgent ? { defaultAgent: opts.defaultAgent } : {}),
+      };
+      upsertConfiguredWorkspace(workspace);
+      console.log(`Registered workspace "${id}" at ${path}.`);
+    } catch (err) {
+      console.error(`Error: ${(err as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+workspaceCommand
+  .command("setup <id>")
+  .description("Install ZAM skills into a configured workspace")
+  .option(
+    "--agents <list>",
+    "comma-separated agents to wire: all, claude, copilot, codex, agent",
+  )
+  .option(
+    "--force",
+    "overwrite existing skill files and refresh ZAM blocks",
+    false,
+  )
+  .option(
+    "--dry-run",
+    "show what would be written without changing files",
+    false,
+  )
+  .action((id, opts) => {
+    try {
+      const workspace = requireWorkspace(id);
+      const agents = parseSetupAgents(opts.agents);
+      console.log(
+        `Setting up workspace "${workspace.id}" in ${workspace.path}${opts.dryRun ? " (dry run)" : ""}\n`,
+      );
+
+      copySkills(
+        Boolean(opts.force),
+        workspace.path,
+        agents,
+        Boolean(opts.dryRun),
+      );
+      if (agents.has("claude")) {
+        writeClaudeMd(false, workspace.path, {
+          dryRun: Boolean(opts.dryRun),
+          updateExisting: true,
+        });
+      }
+      if (agents.has("copilot") || agents.has("codex") || agents.has("agent")) {
+        writeAgentsMd(false, workspace.path, {
+          dryRun: Boolean(opts.dryRun),
+          updateExisting: true,
+        });
+      }
+      if (agents.has("copilot")) {
+        writeCopilotInstructions(workspace.path, {
+          dryRun: Boolean(opts.dryRun),
+          updateExisting: true,
+        });
+      }
+    } catch (err) {
+      console.error(`Error: ${(err as Error).message}`);
+      process.exit(1);
+    }
+  });
 
 workspaceCommand
   .command("publish")

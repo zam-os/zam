@@ -138,7 +138,13 @@ export function planHarnessLaunch(
 /** Launch the harness: a terminal window for CLI, a detached process for app. */
 export function launchHarness(
   harness: AgentHarness,
-  opts: { executable: string; workspace: string; shell: TerminalShell },
+  opts: {
+    executable: string;
+    workspace: string;
+    shell: TerminalShell;
+    silent?: boolean;
+    platform?: NodeJS.Platform;
+  },
 ): void {
   const plan = planHarnessLaunch(harness, opts);
   if (plan.kind === "cli") {
@@ -147,6 +153,8 @@ export function launchHarness(
       label: `agent-${harness.id}`,
       dir: opts.workspace,
       shell: plan.shell,
+      silent: opts.silent,
+      platform: opts.platform,
     });
     return;
   }
@@ -155,5 +163,7 @@ export function launchHarness(
     stdio: "ignore",
     windowsHide: true,
   }).unref();
-  console.log(`Launched ${harness.label} in ${opts.workspace}`);
+  if (!opts.silent) {
+    console.log(`Launched ${harness.label} in ${opts.workspace}`);
+  }
 }

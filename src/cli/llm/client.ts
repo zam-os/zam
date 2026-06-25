@@ -16,6 +16,7 @@ import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import type { Database, SupportedLocale } from "../../kernel/index.js";
 import {
+  getMachineAiConfig,
   getProviderApiKey,
   getSetting,
   getSystemProfile,
@@ -95,6 +96,10 @@ export interface ProviderConfig {
   apiKey: string;
   apiFlavor: ApiFlavor;
   locale: SupportedLocale;
+  providerName?: string;
+  label?: string;
+  source: "legacy" | "shared" | "machine";
+  local: boolean;
   /** Vision only: max frames to sample from a recording. */
   maxFrames?: number;
   /** Optional next endpoint to try when the primary is unusable. */
@@ -113,11 +118,14 @@ export function inferApiFlavor(url: string): ApiFlavor {
 }
 
 interface ProviderRecord {
+  label?: string;
   url?: string;
   model?: string;
   apiFlavor?: ApiFlavor;
   apiKey?: string;
   apiKeyRef?: string;
+  local?: boolean;
+  runner?: string;
 }
 type ProvidersMap = Record<string, ProviderRecord>;
 interface RoleBinding {
@@ -174,22 +182,64 @@ export async function getProviderForRole(
   const roles = await readJsonSetting<RolesMap>(db, "llm.roles");
   const binding = roles?.[role];
 
+  let resolved = base;
   if (providers && binding?.primary && providers[binding.primary]) {
-    const primary = materializeProvider(providers[binding.primary], base, role);
+    const primary = materializeProvider(
+      providers[binding.primary],
+      base,
+      role,
+      {
+        providerName: binding.primary,
+        source: "shared",
+      },
+    );
     const fallback =
       binding.fallback && providers[binding.fallback]
-        ? materializeProvider(providers[binding.fallback], base, role)
+        ? materializeProvider(providers[binding.fallback], base, role, {
+            providerName: binding.fallback,
+            source: "shared",
+          })
+        : undefined;
+    resolved = { ...primary, fallback };
+  }
+
+  const machine = getMachineAiConfig();
+  const machineProviders = machine.providers as ProvidersMap | undefined;
+  const machineBinding = machine.roles?.[role];
+  if (
+    machineProviders &&
+    machineBinding?.primary &&
+    machineProviders[machineBinding.primary]
+  ) {
+    const primary = materializeProvider(
+      machineProviders[machineBinding.primary],
+      resolved,
+      role,
+      { providerName: machineBinding.primary, source: "machine" },
+    );
+    const fallback =
+      machineBinding.fallback && machineProviders[machineBinding.fallback]
+        ? materializeProvider(
+            machineProviders[machineBinding.fallback],
+            resolved,
+            role,
+            { providerName: machineBinding.fallback, source: "machine" },
+          )
         : undefined;
     return { ...primary, fallback };
   }
 
-  return base;
+  return resolved;
 }
 
 function materializeProvider(
   rec: ProviderRecord,
   base: ProviderConfig,
   role: LlmRole,
+  meta: {
+    providerName: string;
+    source: ProviderConfig["source"];
+  },
 ): ProviderConfig {
   const url = rec.url || base.url;
   return {
@@ -199,6 +249,10 @@ function materializeProvider(
     apiKey: resolveProviderApiKey(rec),
     apiFlavor: rec.apiFlavor || inferApiFlavor(url),
     locale: base.locale,
+    providerName: meta.providerName,
+    label: rec.label,
+    source: meta.source,
+    local: rec.local ?? isLocalEndpoint(url),
     ...(role === "vision" ? { maxFrames: base.maxFrames } : {}),
   };
 }
@@ -224,6 +278,8 @@ async function getLegacyRoleConfig(
       apiKey: (await getSetting(db, "llm.vision.api_key")) || base.apiKey,
       apiFlavor: inferApiFlavor(url),
       locale: base.locale,
+      source: "legacy",
+      local: isLocalEndpoint(url),
       maxFrames: Number.isNaN(parsed) ? 100 : parsed,
     };
   }
@@ -236,6 +292,8 @@ async function getLegacyRoleConfig(
     apiKey: base.apiKey,
     apiFlavor: inferApiFlavor(base.url),
     locale: base.locale,
+    source: "legacy",
+    local: isLocalEndpoint(base.url),
   };
 }
 
@@ -628,11 +686,21 @@ async function isVisionProviderModelExplicit(
   const providers = await readJsonSetting<ProvidersMap>(db, "llm.providers");
   const roles = await readJsonSetting<RolesMap>(db, "llm.roles");
   const binding = roles?.vision;
-  if (!providers || !binding) return false;
-
-  return [binding.primary, binding.fallback].some((id) => {
+  const sharedExplicit = [binding?.primary, binding?.fallback].some((id) => {
     if (!id) return false;
-    const rec = providers[id];
+    const rec = providers?.[id];
+    return (
+      rec?.model === active.model &&
+      (rec.url === undefined || rec.url === active.url)
+    );
+  });
+  if (sharedExplicit) return true;
+
+  const machine = getMachineAiConfig();
+  const machineBinding = machine.roles?.vision;
+  return [machineBinding?.primary, machineBinding?.fallback].some((id) => {
+    if (!id) return false;
+    const rec = machine.providers?.[id];
     return (
       rec?.model === active.model &&
       (rec.url === undefined || rec.url === active.url)
@@ -678,6 +746,130 @@ export async function checkVisionReadiness(
     usable: cfg.enabled && online && modelAvailable,
     visionModelExplicit,
     warning,
+  };
+}
+
+export interface ProviderRoleStatus {
+  role: LlmRole;
+  enabled: boolean;
+  providerName?: string;
+  label?: string;
+  source: ProviderConfig["source"];
+  url: string;
+  model: string;
+  apiFlavor: ApiFlavor;
+  local: boolean;
+  online: boolean;
+  modelAvailable: boolean;
+  availableModels: string[];
+  usable: boolean;
+  reason?: "disabled" | "offline" | "model-not-found" | "unsupported-provider";
+  fallback?: {
+    providerName?: string;
+    label?: string;
+    source: ProviderConfig["source"];
+    url: string;
+    model: string;
+    apiFlavor: ApiFlavor;
+    local: boolean;
+  };
+}
+
+function summarizeFallback(
+  provider: ProviderConfig | undefined,
+): ProviderRoleStatus["fallback"] {
+  if (!provider) return undefined;
+  return {
+    providerName: provider.providerName,
+    label: provider.label,
+    source: provider.source,
+    url: provider.url,
+    model: provider.model,
+    apiFlavor: provider.apiFlavor,
+    local: provider.local,
+  };
+}
+
+/** Secret-safe status for a provider role, suitable for bridge/UI output. */
+export async function getProviderRoleStatus(
+  db: Database,
+  role: LlmRole,
+): Promise<ProviderRoleStatus> {
+  const cfg = await getProviderForRole(db, role);
+  const unsupportedProvider =
+    role !== "vision" && cfg.apiFlavor !== "chat-completions";
+
+  if (!cfg.enabled) {
+    return {
+      role,
+      enabled: false,
+      providerName: cfg.providerName,
+      label: cfg.label,
+      source: cfg.source,
+      url: cfg.url,
+      model: cfg.model,
+      apiFlavor: cfg.apiFlavor,
+      local: cfg.local,
+      online: false,
+      modelAvailable: false,
+      availableModels: [],
+      usable: false,
+      reason: "disabled",
+      fallback: summarizeFallback(cfg.fallback),
+    };
+  }
+
+  if (unsupportedProvider) {
+    return {
+      role,
+      enabled: true,
+      providerName: cfg.providerName,
+      label: cfg.label,
+      source: cfg.source,
+      url: cfg.url,
+      model: cfg.model,
+      apiFlavor: cfg.apiFlavor,
+      local: cfg.local,
+      online: false,
+      modelAvailable: false,
+      availableModels: [],
+      usable: false,
+      reason: "unsupported-provider",
+      fallback: summarizeFallback(cfg.fallback),
+    };
+  }
+
+  let selected: ProviderEndpointReadiness;
+  if (role === "vision") {
+    const chain = await checkProviderChain(cfg);
+    selected = chain.firstUsable ?? chain.primary;
+  } else {
+    selected = await checkProviderEndpoint(cfg);
+  }
+  const active = selected.endpoint;
+  const usable = selected.online && selected.modelAvailable;
+  const reason = usable
+    ? undefined
+    : selected.online
+      ? "model-not-found"
+      : "offline";
+
+  return {
+    role,
+    enabled: true,
+    providerName: active.providerName,
+    label: active.label,
+    source: active.source,
+    url: active.url,
+    model: active.model,
+    apiFlavor: active.apiFlavor,
+    local: active.local,
+    online: selected.online,
+    modelAvailable: selected.modelAvailable,
+    availableModels: selected.availableModels,
+    usable,
+    reason,
+    fallback: summarizeFallback(cfg.fallback),
   };
 }
 

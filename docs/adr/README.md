@@ -28,3 +28,6 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-06-21](2026-06-21-code-signing-and-trusted-installers.md) | Code Signing and Trusted Installers | Proposed |
 | [2026-06-22](2026-06-22-screen-recording-observer.md) | Screen Recording Observer and Local/Cloud Vision Fallbacks | Proposed |
 | [2026-06-23](2026-06-23-pluggable-providers-and-agent-harnesses.md) | Pluggable AI Providers, Agent Harnesses, and Approachable UI Setup | Proposed |
+| [2026-06-25a](2026-06-25a-machine-local-llm-role-configuration.md) | Machine-local LLM Role Configuration | Proposed |
+| [2026-06-25b](2026-06-25b-visible-ai-status-in-studio.md) | Visible AI Status in the Studio | Proposed |
+| [2026-06-25c](2026-06-25c-flexible-zam-workspaces-and-skill-wiring.md) | Flexible ZAM Workspaces and Skill Wiring | Proposed |
