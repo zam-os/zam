@@ -9,7 +9,7 @@ import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { readdirSync, readFileSync, rmSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { Command } from "commander";
 import type {
   BloomLevel,
@@ -52,6 +52,7 @@ import {
   readUiObservationLog,
   resolveObserverPolicy,
   resolveReviewContext,
+  setSetting,
   startSession,
   syncObserverSidecarPolicy,
   uiObservationLogExists,
@@ -243,6 +244,37 @@ bridgeCommand
         join(homedir(), "Documents", "zam");
       const path = await backupDatabaseTo(db, workspaceDir);
       jsonOut({ ok: true, path });
+    });
+  });
+
+// ── zam bridge workspace-info / set-workspace-dir ──────────────────────────
+
+bridgeCommand
+  .command("workspace-info")
+  .description("Report the workspace dir, its default, and the data dir (JSON)")
+  .action(async () => {
+    await withDb(async (db) => {
+      const workspaceDir =
+        (await getSetting(db, "personal.workspace_dir")) || null;
+      jsonOut({
+        workspaceDir,
+        defaultWorkspaceDir: join(homedir(), "Documents", "zam"),
+        dataDir: join(homedir(), ".zam"),
+      });
+    });
+  });
+
+bridgeCommand
+  .command("set-workspace-dir")
+  .description("Set the personal workspace directory (JSON)")
+  .requiredOption("--dir <path>", "Path to the workspace directory")
+  .action(async (opts) => {
+    const raw = String(opts.dir ?? "").trim();
+    if (!raw) jsonError("A non-empty --dir is required");
+    const dir = resolve(raw);
+    await withDb(async (db) => {
+      await setSetting(db, "personal.workspace_dir", dir);
+      jsonOut({ ok: true, workspaceDir: dir });
     });
   });
 
