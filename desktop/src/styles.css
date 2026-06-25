@@ -360,6 +360,40 @@ body {
   margin-top: 15px;
 }
 
+.setup-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  margin-top: 10px;
+}
+
+.setup-meta-item,
+#setup-status,
+#update-status {
+  line-height: 1.4;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+#setup-card code {
+  color: var(--clr-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.setup-update-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+#update-status {
+  min-height: 18px;
+  margin-top: 6px;
+}
+
 .observer-panel {
   margin-top: 16px;
   padding: 16px 20px;
