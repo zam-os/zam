@@ -1,6 +1,10 @@
-import { describe, expect, it } from "vitest";
+import { chmodSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { delimiter, dirname, join } from "node:path";
+import { afterEach, describe, expect, it } from "vitest";
 import {
   buildShellSetupCommand,
+  findExecutable,
   isPowerShellShell,
   normalizeShell,
   psSingleQuoted,
@@ -9,6 +13,23 @@ import {
 // `selectWindowsExecutable` is exercised via the monitor.js re-export in
 // monitor.test.ts; here we cover the rest of the extracted shared helpers.
 
+const tempDirs: string[] = [];
+
+afterEach(() => {
+  for (const dir of tempDirs.splice(0)) {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+function makeExecutable(name: string): string {
+  const dir = mkdtempSync(join(tmpdir(), "zam-terminal-open-"));
+  tempDirs.push(dir);
+  const fileName = process.platform === "win32" ? `${name}.cmd` : name;
+  const file = join(dir, fileName);
+  writeFileSync(file, process.platform === "win32" ? "@echo off\r\n" : "#!/bin/sh\n");
+  if (process.platform !== "win32") chmodSync(file, 0o755);
+  return file;
+}
 describe("isPowerShellShell", () => {
   it("is true for PowerShell variants", () => {
     expect(isPowerShellShell("pwsh")).toBe(true);
@@ -54,5 +75,34 @@ describe("buildShellSetupCommand", () => {
     expect(buildShellSetupCommand("/home/me/proj", "bash", "zam learn")).toBe(
       'cd "/home/me/proj" && zam learn',
     );
+  });
+});
+
+describe("findExecutable", () => {
+  it("resolves a quoted executable path with spaces without shell interpolation", () => {
+    const executable = makeExecutable("tool with spaces");
+    expect(findExecutable(`"${executable}"`)).toBe(executable);
+  });
+
+  it("finds commands on PATH without invoking a shell command string", () => {
+    const executable = makeExecutable("zam-path-probe");
+    const originalPath = process.env.PATH;
+    process.env.PATH = [
+      dirname(executable),
+      originalPath,
+    ]
+      .filter(Boolean)
+      .join(delimiter);
+
+    try {
+      const resolved = findExecutable("zam-path-probe");
+      if (process.platform === "win32") {
+        expect(resolved?.toLowerCase()).toBe(executable.toLowerCase());
+      } else {
+        expect(resolved).toBe(executable);
+      }
+    } finally {
+      process.env.PATH = originalPath;
+    }
   });
 });

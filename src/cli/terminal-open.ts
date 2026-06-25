@@ -4,9 +4,15 @@
  */
 
 import { execFileSync, execSync } from "node:child_process";
-import { unlinkSync, writeFileSync } from "node:fs";
+import {
+  accessSync,
+  constants,
+  existsSync,
+  unlinkSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
-import { basename, join } from "node:path";
+import { basename, delimiter, extname, isAbsolute, join } from "node:path";
 
 export type TerminalShell = "zsh" | "bash" | "pwsh" | "powershell";
 
@@ -59,26 +65,70 @@ export function selectWindowsExecutable(
   return runnable ?? results[0];
 }
 
-export function findExecutable(command: string): string | null {
-  try {
-    const lookup =
-      process.platform === "win32"
-        ? `where.exe ${command}`
-        : `command -v ${command}`;
-    const results = execSync(lookup, { encoding: "utf-8" })
-      .split(/\r?\n/)
-      .map((line) => line.trim())
-      .filter(Boolean);
-    if (results.length === 0) return null;
-
-    if (process.platform === "win32") {
-      return selectWindowsExecutable(results);
-    }
-
-    return results[0];
-  } catch {
-    return null;
+function stripSurroundingQuotes(command: string): string {
+  const trimmed = command.trim();
+  if (trimmed.length < 2) return trimmed;
+  const first = trimmed[0];
+  const last = trimmed[trimmed.length - 1];
+  if ((first === '"' && last === '"') || (first === "'" && last === "'")) {
+    return trimmed.slice(1, -1);
   }
+  return trimmed;
+}
+
+function executableExists(path: string): boolean {
+  if (!existsSync(path)) return false;
+  if (process.platform === "win32") return true;
+  try {
+    accessSync(path, constants.X_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function windowsExecutableNames(command: string): string[] {
+  if (process.platform !== "win32") return [command];
+  if (extname(command)) return [command];
+  const extensions = (process.env.PATHEXT ?? ".COM;.EXE;.BAT;.CMD")
+    .split(";")
+    .map((ext) => ext.trim())
+    .filter(Boolean);
+  return extensions.map((ext) => `${command}${ext}`);
+}
+
+function hasDirectoryPart(command: string): boolean {
+  return isAbsolute(command) || command.includes("/") || command.includes("\\");
+}
+
+export function findExecutable(command: string): string | null {
+  const normalized = stripSurroundingQuotes(command);
+  if (!normalized) return null;
+
+  const matches: string[] = [];
+  if (hasDirectoryPart(normalized)) {
+    for (const candidate of windowsExecutableNames(normalized)) {
+      if (executableExists(candidate)) matches.push(candidate);
+    }
+    return process.platform === "win32"
+      ? selectWindowsExecutable(matches)
+      : (matches[0] ?? null);
+  }
+
+  const pathEntries = (process.env.PATH ?? "")
+    .split(delimiter)
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+  for (const entry of pathEntries) {
+    for (const name of windowsExecutableNames(normalized)) {
+      const candidate = join(entry, name);
+      if (executableExists(candidate)) matches.push(candidate);
+    }
+  }
+
+  return process.platform === "win32"
+    ? selectWindowsExecutable(matches)
+    : (matches[0] ?? null);
 }
 
 export function resolveZamInvocation(shell: TerminalShell): string {

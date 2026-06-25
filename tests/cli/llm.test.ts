@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   ensureHighQualityQuestion,
+  ensureLlmReadyHeadless,
   ensureLocalLlmRunning,
   fetchWithInteractiveTimeout,
   isLlmOnline,
@@ -51,6 +52,56 @@ describe("LLM client utilities (CLI layer)", () => {
       const readiness = await ensureLocalLlmRunning(db);
       expect(readiness.usable).toBe(false);
       expect(readiness.reason).toBe("model-not-found");
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+  it("ensureLlmReadyHeadless checks the recall role provider, not legacy llm.*", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://legacy-localhost:8000/v1");
+    await setSetting(db, "llm.model", "legacy-model");
+    await setSetting(
+      db,
+      "llm.providers",
+      JSON.stringify({
+        recallCloud: {
+          url: "https://recall.example/v1",
+          model: "role-model",
+          apiKey: "sk-role",
+        },
+      }),
+    );
+    await setSetting(
+      db,
+      "llm.roles",
+      JSON.stringify({ recall: { primary: "recallCloud" } }),
+    );
+
+    const originalFetch = global.fetch;
+    const urls: string[] = [];
+    global.fetch = (async (url) => {
+      urls.push(String(url));
+      return new Response(JSON.stringify({ data: [{ id: "role-model" }] }));
+    }) as typeof fetch;
+
+    try {
+      const readiness = await ensureLlmReadyHeadless(db);
+      expect(readiness).toMatchObject({
+        usable: true,
+        online: true,
+        model: "role-model",
+        availableModels: ["role-model"],
+      });
+      expect(urls).toEqual([
+        "https://recall.example/v1/models",
+        "https://recall.example/v1/models",
+      ]);
     } finally {
       global.fetch = originalFetch;
       await db.close();

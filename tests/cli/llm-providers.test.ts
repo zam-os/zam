@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
+  checkVisionReadiness,
   getProviderForRole,
   inferApiFlavor,
 } from "../../src/cli/llm/client.js";
@@ -361,6 +362,65 @@ describe("vision endpoint fallback", () => {
         kind: "help-seeking",
         summary: "Cloud-Fallback lief.",
       });
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+  it("reports vision ready when the primary is down but the fallback is usable", async () => {
+    const db = await openDb();
+    await setSetting(db, "llm.vision.enabled", "true");
+    await setSetting(
+      db,
+      "llm.providers",
+      JSON.stringify({
+        local: {
+          url: "http://local/v1",
+          model: "text-only",
+          apiKey: "sk-local",
+        },
+        cloud: {
+          url: "https://api.deepseek.com/v1",
+          model: "deepseek-v4-flash",
+          apiKey: "sk-cloud",
+        },
+      }),
+    );
+    await setSetting(
+      db,
+      "llm.roles",
+      JSON.stringify({ vision: { primary: "local", fallback: "cloud" } }),
+    );
+
+    const originalFetch = global.fetch;
+    const urls: string[] = [];
+    global.fetch = (async (url) => {
+      urls.push(String(url));
+      if (String(url) === "http://local/v1/models") {
+        return new Response("down", { status: 503 });
+      }
+      return new Response(
+        JSON.stringify({ data: [{ id: "deepseek-v4-flash" }] }),
+      );
+    }) as typeof fetch;
+
+    try {
+      const readiness = await checkVisionReadiness(db);
+      expect(readiness).toMatchObject({
+        enabled: true,
+        online: true,
+        url: "https://api.deepseek.com/v1",
+        model: "deepseek-v4-flash",
+        modelAvailable: true,
+        usable: true,
+        visionModelExplicit: true,
+      });
+      expect(readiness.warning).toBeUndefined();
+      expect(urls).toEqual([
+        "http://local/v1/models",
+        "https://api.deepseek.com/v1/models",
+        "https://api.deepseek.com/v1/models",
+      ]);
     } finally {
       global.fetch = originalFetch;
       await db.close();

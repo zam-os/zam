@@ -1,5 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
-import { appDataDir, join as joinPath } from "@tauri-apps/api/path";
+import { appDataDir, homeDir, join as joinPath } from "@tauri-apps/api/path";
+import { openPath } from "@tauri-apps/plugin-opener";
 import * as THREE from "three";
 
 // ── LOCALIZATION DICTIONARIES ─────────────────────────────────────────────
@@ -2024,6 +2025,42 @@ window.addEventListener("DOMContentLoaded", () => {
       await ensureUiLearningSession("Desktop learning session");
       switchView("study-view");
       loadNextCard();
+    })();
+  });
+
+  // Setup & Data: reveal the data folder, back up the database.
+  document
+    .getElementById("btn-open-data-folder")
+    ?.addEventListener("click", () => {
+      void (async () => {
+        const dir = await joinPath(await homeDir(), ".zam");
+        const status = document.getElementById("setup-status");
+        try {
+          await openPath(dir);
+        } catch (err) {
+          if (status) status.textContent = `Could not open ${dir}: ${err}`;
+        }
+      })();
+    });
+
+  document.getElementById("btn-backup-db")?.addEventListener("click", () => {
+    void (async () => {
+      const status = document.getElementById("setup-status");
+      if (status) status.textContent = "Backing up database…";
+      try {
+        const res = await runBridge<{
+          ok?: boolean;
+          path?: string;
+          error?: string;
+        }>("backup-db");
+        if (status) {
+          status.textContent = res.path
+            ? `Backed up to ${res.path}`
+            : (res.error ?? "Backup failed.");
+        }
+      } catch (err) {
+        if (status) status.textContent = `Backup failed: ${err}`;
+      }
     })();
   });
 

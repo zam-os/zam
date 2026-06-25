@@ -35,6 +35,7 @@ import {
   generatePrompt,
   getAgentSkill,
   getCardDeletionImpact,
+  getDatabaseTargetInfo,
   getDueCards,
   getSetting,
   getTokenBySlug,
@@ -62,12 +63,14 @@ import {
   evaluateAnswerViaLLM,
   getAvailableModels,
   getLlmConfig,
+  getProviderForRole,
   isLlmOnline,
   translateQuestionViaLLM,
 } from "../llm/client.js";
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
 import { ensureDefaultUser, resolveUser } from "./resolve-user.js";
 import { withDb as sharedWithDb } from "./shared/db.js";
+import { backupDatabaseTo } from "./workspace.js";
 
 let isServeMode = false;
 
@@ -207,6 +210,32 @@ bridgeCommand
           dueAt: c.due_at,
         })),
       });
+    });
+  });
+
+// ── zam bridge backup-db ──────────────────────────────────────────────────
+
+bridgeCommand
+  .command("backup-db")
+  .description("Back up the local database into the workspace (JSON)")
+  .option(
+    "--dir <path>",
+    "Target directory (default: workspace dir, else ~/Documents/zam)",
+  )
+  .action(async (opts) => {
+    const target = getDatabaseTargetInfo();
+    if (target.kind !== "local") {
+      jsonError(
+        `Database is ${target.kind} (${target.location}); file backup applies only to a local database — your Turso remote is already the cloud backup.`,
+      );
+    }
+    await withDb(async (db) => {
+      const workspaceDir =
+        opts.dir ||
+        (await getSetting(db, "personal.workspace_dir")) ||
+        join(homedir(), "Documents", "zam");
+      const path = await backupDatabaseTo(db, workspaceDir);
+      jsonOut({ ok: true, path });
     });
   });
 
@@ -1690,11 +1719,13 @@ bridgeCommand
   .description("Check if LLM is enabled and online (JSON)")
   .action(async () => {
     await withDb(async (db) => {
-      const { enabled, url, model, apiKey } = await getLlmConfig(db);
+      const provider = await getProviderForRole(db, "recall");
+      const { enabled, url, model, apiKey } = provider;
+      const unsupportedProvider = provider.apiFlavor !== "chat-completions";
       let online = false;
       let availableModels: string[] = [];
       let modelAvailable = false;
-      if (enabled) {
+      if (enabled && !unsupportedProvider) {
         online = await isLlmOnline(url);
         if (online) {
           availableModels = await getAvailableModels(url, apiKey);
@@ -1713,6 +1744,8 @@ bridgeCommand
         model,
         modelAvailable,
         availableModels,
+        apiFlavor: provider.apiFlavor,
+        unsupportedProvider,
       });
     });
   });
