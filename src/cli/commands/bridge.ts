@@ -7,7 +7,7 @@
 
 import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
-import { readdirSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { Command } from "commander";
@@ -58,6 +58,12 @@ import {
   uiObservationLogExists,
 } from "../../kernel/index.js";
 import {
+  AGENT_HARNESSES,
+  getHarness,
+  launchHarness,
+  resolveHarnessExecutable,
+} from "../agent-harness.js";
+import {
   checkVisionReadiness,
   ensureHighQualityQuestion,
   ensureLlmReadyHeadless,
@@ -69,6 +75,7 @@ import {
   translateQuestionViaLLM,
 } from "../llm/client.js";
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
+import { normalizeShell } from "../terminal-open.js";
 import { ensureDefaultUser, resolveUser } from "./resolve-user.js";
 import { withDb as sharedWithDb } from "./shared/db.js";
 import { backupDatabaseTo } from "./workspace.js";
@@ -275,6 +282,81 @@ bridgeCommand
     await withDb(async (db) => {
       await setSetting(db, "personal.workspace_dir", dir);
       jsonOut({ ok: true, workspaceDir: dir });
+    });
+  });
+
+// ── zam bridge agent-list / agent-open ─────────────────────────────────────
+
+bridgeCommand
+  .command("agent-list")
+  .description("List agent harnesses with detection state + the default (JSON)")
+  .action(async () => {
+    await withDb(async (db) => {
+      const configuredDefault = (await getSetting(db, "agent.default")) || null;
+      const harnesses = await Promise.all(
+        AGENT_HARNESSES.map(async (h) => {
+          const override =
+            (await getSetting(db, `agent.${h.id}.command`)) || undefined;
+          return {
+            id: h.id,
+            label: h.label,
+            kind: h.kind,
+            detected: resolveHarnessExecutable(h, override) !== null,
+          };
+        }),
+      );
+      const fallbackDefault = harnesses.find((h) => h.detected)?.id ?? null;
+      jsonOut({ harnesses, default: configuredDefault ?? fallbackDefault });
+    });
+  });
+
+bridgeCommand
+  .command("agent-open")
+  .description("Launch an agent harness in the workspace (JSON)")
+  .option(
+    "--id <id>",
+    "Harness id (default: agent.default setting, else first detected)",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      let id: string | undefined =
+        opts.id || (await getSetting(db, "agent.default")) || undefined;
+      if (!id) {
+        id = AGENT_HARNESSES.find((h) => resolveHarnessExecutable(h))?.id;
+      }
+      if (!id) {
+        jsonError(
+          "No agent harness configured or detected. Install one (Claude Code, Codex, opencode) or set agent.default.",
+        );
+      }
+      const harness = getHarness(id);
+      if (!harness) {
+        jsonError(`Unknown harness: ${id}`);
+      }
+      const override =
+        (await getSetting(db, `agent.${harness.id}.command`)) || undefined;
+      const executable = resolveHarnessExecutable(harness, override);
+      if (!executable) {
+        jsonError(
+          `${harness.label} was not detected. Set its path: zam settings set agent.${harness.id}.command <path>`,
+        );
+      }
+      let workspace =
+        (await getSetting(db, "personal.workspace_dir")) ||
+        join(homedir(), "Documents", "zam");
+      if (!existsSync(workspace)) workspace = homedir();
+      launchHarness(harness, {
+        executable,
+        workspace,
+        shell: normalizeShell(undefined),
+      });
+      jsonOut({
+        ok: true,
+        id: harness.id,
+        label: harness.label,
+        kind: harness.kind,
+        workspace,
+      });
     });
   });
 
