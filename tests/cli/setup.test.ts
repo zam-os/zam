@@ -1,11 +1,19 @@
-import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import {
+  existsSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   copySkills,
   formatDatabaseInitTarget,
+  parseSetupAgents,
   writeAgentsMd,
+  writeCopilotInstructions,
 } from "../../src/cli/commands/setup.js";
 
 describe("setup command helpers", () => {
@@ -40,6 +48,49 @@ describe("setup command helpers", () => {
       expect(content).toContain("$setup");
       expect(content).toContain("$zam");
       expect(content).toContain(".agents/skills/");
+    } finally {
+      rmSync(cwd, { recursive: true, force: true });
+    }
+  });
+
+  it("parses targeted agent setup selections", () => {
+    expect([...parseSetupAgents("copilot,claude")].sort()).toEqual([
+      "claude",
+      "copilot",
+    ]);
+    expect(parseSetupAgents("all").has("agent")).toBe(true);
+  });
+
+  it("updates existing instruction files with a marked ZAM block", () => {
+    const cwd = mkdtempSync(join(tmpdir(), "zam-existing-instructions-"));
+
+    try {
+      const agentsPath = join(cwd, "AGENTS.md");
+      writeFileSync(agentsPath, "# Existing instructions\n", "utf8");
+
+      writeAgentsMd(false, cwd, { updateExisting: true });
+
+      const content = readFileSync(agentsPath, "utf8");
+      expect(content).toContain("# Existing instructions");
+      expect(content).toContain("<!-- ZAM:START -->");
+      expect(content).toContain(".agents/skills/zam/");
+    } finally {
+      rmSync(cwd, { recursive: true, force: true });
+    }
+  });
+
+  it("writes Copilot instructions non-destructively", () => {
+    const cwd = mkdtempSync(join(tmpdir(), "zam-copilot-instructions-"));
+
+    try {
+      writeCopilotInstructions(cwd);
+
+      const content = readFileSync(
+        join(cwd, ".github", "copilot-instructions.md"),
+        "utf8",
+      );
+      expect(content).toContain("<!-- ZAM:START -->");
+      expect(content).toContain(".agents/skills/zam/");
     } finally {
       rmSync(cwd, { recursive: true, force: true });
     }

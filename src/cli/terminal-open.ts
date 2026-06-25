@@ -173,7 +173,12 @@ function isItermRunning(): boolean {
   }
 }
 
-function openMacTerminal(shellSetup: string, label: string, dir: string): void {
+function openMacTerminal(
+  shellSetup: string,
+  label: string,
+  dir: string,
+  silent: boolean,
+): void {
   const useIterm = isItermRunning();
   const escaped = shellSetup.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
 
@@ -194,14 +199,18 @@ end tell`;
   try {
     writeFileSync(tmpFile, appleScript);
     execSync(`osascript ${JSON.stringify(tmpFile)}`, { stdio: "ignore" });
-    console.log(
-      `Opened ${useIterm ? "iTerm2" : "Terminal.app"} window (${label})`,
-    );
-    console.log(`  Directory: ${dir}`);
+    if (!silent) {
+      console.log(
+        `Opened ${useIterm ? "iTerm2" : "Terminal.app"} window (${label})`,
+      );
+      console.log(`  Directory: ${dir}`);
+    }
   } catch (err) {
-    console.error(`Failed to open terminal: ${(err as Error).message}`);
-    console.log(`\nRun this manually in a new terminal:\n`);
-    console.log(`  ${shellSetup}`);
+    if (!silent) {
+      console.error(`Failed to open terminal: ${(err as Error).message}`);
+      console.log(`\nRun this manually in a new terminal:\n`);
+      console.log(`  ${shellSetup}`);
+    }
   } finally {
     try {
       unlinkSync(tmpFile);
@@ -216,6 +225,7 @@ function openWindowsPowerShell(
   label: string,
   dir: string,
   requestedShell: TerminalShell,
+  silent: boolean,
 ): void {
   const requestedExecutable =
     requestedShell === "powershell" ? "powershell.exe" : "pwsh.exe";
@@ -238,14 +248,18 @@ function openWindowsPowerShell(
         stdio: "ignore",
       },
     );
-    console.log(
-      `Opened ${executable === "pwsh.exe" ? "PowerShell" : "Windows PowerShell"} window (${label})`,
-    );
-    console.log(`  Directory: ${dir}`);
+    if (!silent) {
+      console.log(
+        `Opened ${executable === "pwsh.exe" ? "PowerShell" : "Windows PowerShell"} window (${label})`,
+      );
+      console.log(`  Directory: ${dir}`);
+    }
   } catch (err) {
-    console.error(`Failed to open PowerShell: ${(err as Error).message}`);
-    console.log(`\nRun this manually in a new PowerShell terminal:\n`);
-    console.log(`  ${shellSetup}`);
+    if (!silent) {
+      console.error(`Failed to open PowerShell: ${(err as Error).message}`);
+      console.log(`\nRun this manually in a new PowerShell terminal:\n`);
+      console.log(`  ${shellSetup}`);
+    }
   }
 }
 
@@ -254,22 +268,27 @@ export function openTerminalWindow(opts: {
   label: string;
   dir: string;
   shell: TerminalShell;
+  silent?: boolean;
+  platform?: NodeJS.Platform;
 }): void {
-  const { shellSetup, label, dir, shell } = opts;
+  const { shellSetup, label, dir, shell, silent = false } = opts;
+  const platform = opts.platform ?? process.platform;
 
-  if (process.platform === "darwin" && !isPowerShellShell(shell)) {
-    openMacTerminal(shellSetup, label, dir);
+  if (platform === "darwin" && !isPowerShellShell(shell)) {
+    openMacTerminal(shellSetup, label, dir, silent);
     return;
   }
 
-  if (process.platform === "win32" && isPowerShellShell(shell)) {
-    openWindowsPowerShell(shellSetup, label, dir, shell);
+  if (platform === "win32" && isPowerShellShell(shell)) {
+    openWindowsPowerShell(shellSetup, label, dir, shell, silent);
     return;
   }
 
-  console.log(`Run this in a new terminal:\n`);
-  console.log(`  ${shellSetup}\n`);
-  console.log(
-    `(Automatic terminal opening is only supported on macOS Terminal/iTerm2 and Windows PowerShell for now.)`,
-  );
+  if (!silent) {
+    console.log(`Run this in a new terminal:\n`);
+    console.log(`  ${shellSetup}\n`);
+    console.log(
+      `(Automatic terminal opening is only supported on macOS Terminal/iTerm2 and Windows PowerShell for now.)`,
+    );
+  }
 }

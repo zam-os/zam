@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="/src/styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="ZAM Active-Recall Studio for learning sessions, knowledge maps, local AI status, and workspace settings."
+    />
     <title>ZAM — Active-Recall Studio</title>
     <script type="module" src="/src/main.ts" defer></script>
   </head>
@@ -20,9 +24,13 @@
           <span class="logo-accent">ZAM</span>
           <span class="logo-sub">Recall Studio</span>
         </div>
+        <nav class="top-nav" aria-label="Main navigation">
+          <button id="nav-dashboard" class="nav-btn active" type="button">Dashboard</button>
+          <button id="nav-settings" class="nav-btn" type="button">Settings</button>
+        </nav>
         <div class="status-area" id="system-status">
           <div class="status-indicator">
-            <span class="pulse-dot green"></span>
+            <span class="pulse-dot gray" role="img" aria-label="Local AI Offline"></span>
             <span class="status-text" id="ai-status-label">Local AI Offline</span>
           </div>
           <span class="locale-badge" id="locale-badge">EN</span>
@@ -31,11 +39,28 @@
 
       <!-- VIEW 1: DASHBOARD OVERVIEW -->
       <section id="dashboard-view" class="view active">
+        <div class="dashboard-hero frosted">
+          <div class="dashboard-copy">
+            <p id="lbl-dashboard-kicker" class="eyebrow">Today in ZAM</p>
+            <h1 id="lbl-dashboard-title">Learn deliberately.</h1>
+            <p id="lbl-dashboard-subtitle">
+              Review what is due, open your knowledge map, or configure local AI and workspaces in Settings.
+            </p>
+          </div>
+          <div class="hero-actions">
+            <button id="btn-start-session" class="btn primary-btn btn-large glow-btn" disabled>
+              Start Learning Session
+            </button>
+            <button id="btn-open-graph" class="btn secondary-btn btn-large">Knowledge Map (3D)</button>
+            <button id="btn-open-settings" class="btn secondary-btn btn-large" type="button">Settings</button>
+          </div>
+        </div>
+
         <div class="dashboard-grid">
           <div class="card stat-card frosted">
             <h2 id="lbl-due-reviews">Due Reviews</h2>
             <div class="large-number" id="due-count">0</div>
-            <p id="lbl-caught-up" class="sub-label">You're all caught up!</p>
+            <p id="lbl-caught-up" class="sub-label" aria-live="polite">You're all caught up!</p>
           </div>
 
           <div class="card stat-card frosted">
@@ -44,16 +69,6 @@
               <span class="empty-tag">—</span>
             </div>
           </div>
-        </div>
-
-        <div class="action-row">
-          <button id="btn-start-session" class="btn primary-btn btn-large glow-btn" disabled>
-            Start Learning Session
-          </button>
-        </div>
-
-        <div class="action-row" style="margin-top: 12px;">
-          <button id="btn-open-graph" class="btn secondary-btn btn-large">Wissensnetz / Knowledge Map (3D)</button>
         </div>
 
         <div id="observer-panel" class="observer-panel frosted hidden">
@@ -117,19 +132,29 @@
             </div>
           </div>
         </div>
+      </section>
 
-        <div class="card frosted" id="setup-card">
-          <h2 id="lbl-setup-title">Setup &amp; Data</h2>
-          <p class="sub-label" style="margin-top: 8px;">
-            <span id="lbl-workspace">Workspace</span>:
-            <code id="workspace-path">—</code>
-          </p>
-          <div class="setup-meta-row">
-            <p class="sub-label setup-meta-item">
-              <span id="lbl-app-version">Version</span>:
-              <code id="app-version">—</code>
+      <!-- VIEW 2: SETTINGS -->
+      <section id="settings-view" class="view">
+        <div class="settings-hero frosted">
+          <div>
+            <p id="lbl-settings-kicker" class="eyebrow">Local configuration</p>
+            <h1 id="lbl-settings-title">Settings</h1>
+            <p id="lbl-settings-subtitle" class="settings-subtitle">
+              Configure this machine without forcing the same choices onto every workspace or device.
             </p>
-            <div class="setup-update-actions">
+          </div>
+          <button id="btn-settings-back" class="btn secondary-btn btn-sm" type="button">Back to dashboard</button>
+        </div>
+
+        <div class="settings-list" id="setup-card">
+          <article class="card frosted settings-card">
+            <h2 id="lbl-settings-system-title">System</h2>
+            <div class="settings-row">
+              <span id="lbl-app-version">Version</span>
+              <code id="app-version">—</code>
+            </div>
+            <div class="settings-actions">
               <button id="btn-check-updates" class="btn secondary-btn btn-sm" type="button">
                 Check for updates
               </button>
@@ -137,24 +162,69 @@
                 Releases
               </button>
             </div>
+            <p id="update-status" class="sub-label" aria-live="polite"></p>
+          </article>
+
+          <article class="card frosted settings-card">
+            <h2 id="lbl-settings-ai-title">AI models</h2>
+            <div class="settings-row">
+              <span id="lbl-learning-model">Learning model</span>
+              <code id="learning-model-status">—</code>
+            </div>
+            <div class="settings-row">
+              <span id="lbl-observer-model">Observer model</span>
+              <code id="observer-model-status">—</code>
+            </div>
+          </article>
+
+          <article class="card frosted settings-card">
+            <div class="settings-card-header">
+              <div>
+                <h2 id="lbl-settings-workspace-title">Workspace &amp; agents</h2>
+                <p id="lbl-workspaces-help" class="settings-card-help">Register personal, team, family, or community work directories for this machine.</p>
+              </div>
+            </div>
+            <div id="workspace-list" class="workspace-list" aria-live="polite"></div>
+            <div class="settings-actions">
+              <button id="btn-choose-workspace" class="btn secondary-btn btn-sm" type="button">
+                Choose workspace…
+              </button>
+              <button id="btn-open-terminal" class="btn primary-btn btn-sm" type="button">
+                Open Terminal
+              </button>
+            </div>
+          </article>
+
+          <article class="card frosted settings-card">
+            <h2 id="lbl-settings-appearance-title">Appearance</h2>
+            <label class="settings-field" for="theme-select">
+              <span id="lbl-settings-theme">Theme</span>
+              <select id="theme-select">
+                <option value="light" id="theme-light-option">Light</option>
+                <option value="dark" id="theme-dark-option">Dark</option>
+              </select>
+            </label>
+          </article>
+
+          <article class="card frosted settings-card">
+            <h2 id="lbl-settings-data-title">Data</h2>
+            <div class="settings-actions">
+              <button id="btn-open-data-folder" class="btn secondary-btn btn-sm" type="button">
+                Open data folder
+              </button>
+              <button id="btn-backup-db" class="btn secondary-btn btn-sm" type="button">
+                Back up database
+              </button>
+            </div>
+          </article>
+
+          <div class="settings-status-row">
+            <p id="setup-status" class="sub-label" aria-live="polite"></p>
           </div>
-          <p id="update-status" class="sub-label"></p>
-          <div class="action-row" style="margin-top: 8px; gap: 8px;">
-            <button id="btn-choose-workspace" class="btn secondary-btn btn-sm" type="button">
-              Choose workspace…
-            </button>
-            <button id="btn-open-data-folder" class="btn secondary-btn btn-sm" type="button">
-              Open data folder
-            </button>
-            <button id="btn-backup-db" class="btn secondary-btn btn-sm" type="button">
-              Back up database
-            </button>
-          </div>
-          <p id="setup-status" class="sub-label"></p>
         </div>
       </section>
 
-      <!-- VIEW 2: STUDY SESSION CARD -->
+      <!-- VIEW 3: STUDY SESSION CARD -->
       <section id="study-view" class="view">
         <div class="study-card frosted">
           <!-- CARD HEADER -->
@@ -261,50 +331,50 @@
         </div>
       </section>
 
-      <!-- VIEW 3: 3D KNOWLEDGE GRAPH (experimental focus + direct prereqs/dependents) -->
+      <!-- VIEW 4: 3D KNOWLEDGE GRAPH (experimental focus + direct prereqs/dependents) -->
       <section id="graph-view" class="view">
         <div class="graph-container frosted">
           <div class="graph-header">
             <div>
-              <span class="graph-title">Wissensnetz (3D)</span>
+              <span id="graph-title" class="graph-title">Knowledge Graph (3D)</span>
               <span id="graph-focus-label" class="focus-label"></span>
             </div>
             <div id="graph-domain-selector" class="domain-selector">
               <!-- JS populated: "All" + domain pills for filtering independent knowledge areas -->
             </div>
             <div class="graph-actions">
-              <button id="btn-graph-back" class="btn secondary-btn btn-sm">Zurück zum Dashboard</button>
-              <button id="btn-graph-refresh" class="btn secondary-btn btn-sm">Neu laden</button>
+              <button id="btn-graph-back" class="btn secondary-btn btn-sm">Back to Dashboard</button>
+              <button id="btn-graph-refresh" class="btn secondary-btn btn-sm">Refresh</button>
             </div>
           </div>
 
           <div class="graph-main">
             <!-- Three.js canvas container -->
             <div id="graph-canvas-container" class="graph-canvas-wrap">
-              <canvas id="graph-canvas" width="800" height="600"></canvas>
+              <canvas id="graph-canvas" width="800" height="600" tabindex="0"></canvas>
             </div>
 
             <!-- Side panel: focus details + quick neighbors -->
             <div class="graph-side frosted">
               <div id="graph-focus-info">
-                <div class="side-title">Fokus</div>
+                <div id="graph-focus-title" class="side-title">Focus</div>
                 <div id="focus-slug" class="focus-slug"></div>
                 <div id="focus-concept" class="focus-concept"></div>
                 <div id="focus-meta" class="focus-meta"></div>
               </div>
 
               <div class="side-section">
-                <div class="side-title">Basis (Prereqs)</div>
+                <div id="graph-prereqs-title" class="side-title">Bases (Prerequisites)</div>
                 <div id="prereq-list" class="neighbor-list"></div>
               </div>
 
               <div class="side-section">
-                <div class="side-title">Höhere Fähigkeiten (Dependents)</div>
+                <div id="graph-dependents-title" class="side-title">Higher Abilities (Dependents)</div>
                 <div id="dependent-list" class="neighbor-list"></div>
               </div>
 
-              <div class="graph-hint">
-                Ziehen zum Drehen • Klicken auf Knoten = neuer Fokus • Scroll = Zoomen
+              <div id="graph-hint" class="graph-hint" role="note">
+                Drag to rotate • Click nodes to focus • Scroll to zoom
               </div>
             </div>
           </div>

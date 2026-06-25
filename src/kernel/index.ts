@@ -324,15 +324,29 @@ export {
 } from "./system/hooks.js";
 export type { TranslationKey } from "./system/i18n.js";
 export { t } from "./system/i18n.js";
-export type { InstallConfig, InstallMode } from "./system/install-config.js";
+export type {
+  InstallConfig,
+  InstallMode,
+  MachineAiConfig,
+  MachineProviderRecord,
+  MachineRoleBinding,
+  WorkspaceConfig,
+  WorkspaceKind,
+  WorkspaceSourceControl,
+} from "./system/install-config.js";
 export {
   detectSyncProvider,
+  getConfiguredWorkspaces,
   getInstallChannel,
   getInstallMode,
+  getMachineAiConfig,
   loadInstallConfig,
+  saveConfiguredWorkspaces,
   saveInstallConfig,
+  saveMachineAiConfig,
   setInstallChannel,
   setInstallMode,
+  upsertConfiguredWorkspace,
 } from "./system/install-config.js";
 export type {
   InstallPlan,

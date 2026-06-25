@@ -24,12 +24,61 @@ export interface InstallConfig {
   mode?: InstallMode;
   /** How this copy was installed; drives the self-update mechanism. */
   channel?: InstallChannel;
+  /** Machine-local AI provider choices; never synchronized through the DB. */
+  ai?: MachineAiConfig;
+  /** Machine-local paths to existing personal/team/community workspaces. */
+  workspaces?: WorkspaceConfig[];
 }
 
-const DEFAULT_CONFIG_PATH = join(homedir(), ".zam", "config.json");
+export type MachineAiRole = "vision" | "recall" | "text";
+export type MachineApiFlavor = "chat-completions" | "anthropic-messages";
+
+export interface MachineProviderRecord {
+  label?: string;
+  url?: string;
+  model?: string;
+  apiFlavor?: MachineApiFlavor;
+  apiKeyRef?: string;
+  local?: boolean;
+  runner?: string;
+}
+
+export interface MachineRoleBinding {
+  primary?: string;
+  fallback?: string;
+}
+
+export interface MachineAiConfig {
+  providers?: Record<string, MachineProviderRecord>;
+  roles?: Partial<Record<MachineAiRole, MachineRoleBinding>>;
+}
+
+export type WorkspaceKind =
+  | "personal"
+  | "team"
+  | "family"
+  | "community"
+  | "organization"
+  | "custom";
+
+export type WorkspaceSourceControl = "github" | "azure-devops" | "git" | "none";
+
+export interface WorkspaceConfig {
+  id: string;
+  label?: string;
+  kind: WorkspaceKind;
+  path: string;
+  sourceControl?: WorkspaceSourceControl;
+  knowledgeScopes?: string[];
+  defaultAgent?: string;
+}
+
+function defaultConfigPath(): string {
+  return process.env.ZAM_CONFIG_PATH || join(homedir(), ".zam", "config.json");
+}
 
 /** Load ~/.zam/config.json. Returns an empty config if missing or unreadable. */
-export function loadInstallConfig(path = DEFAULT_CONFIG_PATH): InstallConfig {
+export function loadInstallConfig(path = defaultConfigPath()): InstallConfig {
   if (!existsSync(path)) return {};
   try {
     return JSON.parse(readFileSync(path, "utf-8")) as InstallConfig;
@@ -41,7 +90,7 @@ export function loadInstallConfig(path = DEFAULT_CONFIG_PATH): InstallConfig {
 /** Persist the install config, preserving any unrelated keys already on disk. */
 export function saveInstallConfig(
   config: InstallConfig,
-  path = DEFAULT_CONFIG_PATH,
+  path = defaultConfigPath(),
 ): void {
   const dir = dirname(path);
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
@@ -53,13 +102,13 @@ export function saveInstallConfig(
  * mode — so existing source/CLI installs keep their behavior. A packaged
  * "default" install writes mode explicitly at install time.
  */
-export function getInstallMode(path = DEFAULT_CONFIG_PATH): InstallMode {
+export function getInstallMode(path = defaultConfigPath()): InstallMode {
   return loadInstallConfig(path).mode ?? "developer";
 }
 
 export function setInstallMode(
   mode: InstallMode,
-  path = DEFAULT_CONFIG_PATH,
+  path = defaultConfigPath(),
 ): void {
   const config = loadInstallConfig(path);
   config.mode = mode;
@@ -71,7 +120,7 @@ export function setInstallMode(
  * back to "developer" for developer mode and "direct" for an installed app
  * whose channel was not recorded.
  */
-export function getInstallChannel(path = DEFAULT_CONFIG_PATH): InstallChannel {
+export function getInstallChannel(path = defaultConfigPath()): InstallChannel {
   const config = loadInstallConfig(path);
   if (config.channel) return config.channel;
   return (config.mode ?? "developer") === "developer" ? "developer" : "direct";
@@ -79,11 +128,54 @@ export function getInstallChannel(path = DEFAULT_CONFIG_PATH): InstallChannel {
 
 export function setInstallChannel(
   channel: InstallChannel,
-  path = DEFAULT_CONFIG_PATH,
+  path = defaultConfigPath(),
 ): void {
   const config = loadInstallConfig(path);
   config.channel = channel;
   saveInstallConfig(config, path);
+}
+
+export function getMachineAiConfig(
+  path = defaultConfigPath(),
+): MachineAiConfig {
+  return loadInstallConfig(path).ai ?? {};
+}
+
+export function saveMachineAiConfig(
+  ai: MachineAiConfig,
+  path = defaultConfigPath(),
+): void {
+  const config = loadInstallConfig(path);
+  config.ai = ai;
+  saveInstallConfig(config, path);
+}
+
+export function getConfiguredWorkspaces(
+  path = defaultConfigPath(),
+): WorkspaceConfig[] {
+  return loadInstallConfig(path).workspaces ?? [];
+}
+
+export function saveConfiguredWorkspaces(
+  workspaces: WorkspaceConfig[],
+  path = defaultConfigPath(),
+): void {
+  const config = loadInstallConfig(path);
+  config.workspaces = workspaces;
+  saveInstallConfig(config, path);
+}
+
+export function upsertConfiguredWorkspace(
+  workspace: WorkspaceConfig,
+  path = defaultConfigPath(),
+): WorkspaceConfig[] {
+  const current = getConfiguredWorkspaces(path);
+  const next = [
+    ...current.filter((candidate) => candidate.id !== workspace.id),
+    workspace,
+  ];
+  saveConfiguredWorkspaces(next, path);
+  return next;
 }
 
 /**

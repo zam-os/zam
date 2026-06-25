@@ -1,11 +1,16 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   type AgentHarness,
   AGENT_HARNESSES,
   getHarness,
+  launchHarness,
   planHarnessLaunch,
   resolveHarnessExecutable,
 } from "../../src/cli/agent-harness.js";
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe("agent harness registry", () => {
   it("includes the documented harnesses (ADR 2026-06-23)", () => {
@@ -99,6 +104,23 @@ describe("planHarnessLaunch", () => {
       kind: "cli",
       shell: "pwsh",
       shellSetup: "Set-Location -LiteralPath 'C:/work'; & 'C:/bin/claude.cmd'",
+    });
+  });
+
+  describe("launchHarness", () => {
+    it("passes silent mode through for CLI harness terminal output", () => {
+      const claude = getHarness("claude-code") as AgentHarness;
+      const log = vi.spyOn(console, "log").mockImplementation(() => {});
+
+      launchHarness(claude, {
+        executable: "/usr/bin/claude",
+        workspace: "/work",
+        shell: "bash",
+        platform: "linux",
+        silent: true,
+      });
+
+      expect(log).not.toHaveBeenCalled();
     });
   });
 

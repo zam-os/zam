@@ -15,9 +15,11 @@ import { Command } from "commander";
 import type { Database } from "../../kernel/index.js";
 import {
   clearProviderApiKey,
+  getMachineAiConfig,
   getProviderApiKey,
   getSetting,
   listProviderApiKeyRefs,
+  saveMachineAiConfig,
   setProviderApiKey,
   setSetting,
 } from "../../kernel/index.js";
@@ -31,10 +33,13 @@ export const VALID_API_FLAVORS: ApiFlavor[] = [
 export const VALID_ROLES: LlmRole[] = ["vision", "recall", "text"];
 
 export interface ProviderRecord {
+  label?: string;
   url?: string;
   model?: string;
   apiFlavor?: ApiFlavor;
   apiKeyRef?: string;
+  local?: boolean;
+  runner?: string;
 }
 export type ProvidersMap = Record<string, ProviderRecord>;
 export interface RoleBinding {
@@ -56,6 +61,9 @@ export function upsertProviderRecord(
   if (patch.model !== undefined) merged.model = patch.model;
   if (patch.apiFlavor !== undefined) merged.apiFlavor = patch.apiFlavor;
   if (patch.apiKeyRef !== undefined) merged.apiKeyRef = patch.apiKeyRef;
+  if (patch.label !== undefined) merged.label = patch.label;
+  if (patch.local !== undefined) merged.local = patch.local;
+  if (patch.runner !== undefined) merged.runner = patch.runner;
   return { ...providers, [name]: merged };
 }
 
@@ -101,6 +109,9 @@ export interface ProviderListingRow {
   model?: string;
   apiFlavor: ApiFlavor;
   apiKeyRef?: string;
+  label?: string;
+  local?: boolean;
+  runner?: string;
   keyState: "set" | "missing" | "none";
 }
 
@@ -115,7 +126,7 @@ export function buildProviderListing(
     let keyState: ProviderListingRow["keyState"];
     if (!rec.apiKeyRef) keyState = "none";
     else keyState = hasKey(rec.apiKeyRef) ? "set" : "missing";
-    return {
+    const row: ProviderListingRow = {
       name,
       url: rec.url,
       model: rec.model,
@@ -123,6 +134,10 @@ export function buildProviderListing(
       apiKeyRef: rec.apiKeyRef,
       keyState,
     };
+    if (rec.label !== undefined) row.label = rec.label;
+    if (rec.local !== undefined) row.local = rec.local;
+    if (rec.runner !== undefined) row.runner = rec.runner;
+    return row;
   });
 }
 
@@ -156,11 +171,65 @@ const readProviders = (db: Database): Promise<ProvidersMap> =>
 const readRoles = (db: Database): Promise<RolesMap> =>
   readJson<RolesMap>(db, "llm.roles", {});
 
-async function writeProviders(db: Database, p: ProvidersMap): Promise<void> {
+async function readScopedProviders(
+  db: Database | undefined,
+  machine: boolean,
+): Promise<ProvidersMap> {
+  if (machine) return getMachineAiConfig().providers ?? {};
+  if (!db)
+    throw new Error("Database is required for shared provider settings.");
+  return readProviders(db);
+}
+
+async function readScopedRoles(
+  db: Database | undefined,
+  machine: boolean,
+): Promise<RolesMap> {
+  if (machine) return getMachineAiConfig().roles ?? {};
+  if (!db)
+    throw new Error("Database is required for shared provider settings.");
+  return readRoles(db);
+}
+
+async function writeScopedProviders(
+  db: Database | undefined,
+  machine: boolean,
+  p: ProvidersMap,
+): Promise<void> {
+  if (machine) {
+    const config = getMachineAiConfig();
+    saveMachineAiConfig({ ...config, providers: p });
+    return;
+  }
+  if (!db)
+    throw new Error("Database is required for shared provider settings.");
   await setSetting(db, "llm.providers", JSON.stringify(p));
 }
-async function writeRoles(db: Database, r: RolesMap): Promise<void> {
+
+async function writeScopedRoles(
+  db: Database | undefined,
+  machine: boolean,
+  r: RolesMap,
+): Promise<void> {
+  if (machine) {
+    const config = getMachineAiConfig();
+    saveMachineAiConfig({ ...config, roles: r });
+    return;
+  }
+  if (!db)
+    throw new Error("Database is required for shared provider settings.");
   await setSetting(db, "llm.roles", JSON.stringify(r));
+}
+
+async function withProviderScope(
+  machine: boolean,
+  action: (db: Database | undefined) => Promise<void>,
+): Promise<void> {
+  if (machine) {
+    await action(undefined);
+    return;
+  }
+  await withDb(action);
 }
 
 // ── Command ──────────────────────────────────────────────────────────────────
@@ -175,10 +244,12 @@ providerCommand
   .command("list")
   .description("Show configured providers, role bindings, and key status")
   .option("--json", "Output as JSON")
+  .option("--machine", "Read machine-local providers from ~/.zam/config.json")
   .action(async (opts) => {
-    await withDb(async (db) => {
-      const providers = await readProviders(db);
-      const roles = await readRoles(db);
+    const machine = Boolean(opts.machine);
+    await withProviderScope(machine, async (db) => {
+      const providers = await readScopedProviders(db, machine);
+      const roles = await readScopedRoles(db, machine);
       const rows = buildProviderListing(
         providers,
         (ref) => getProviderApiKey(ref) !== null,
@@ -187,12 +258,23 @@ providerCommand
 
       if (opts.json) {
         console.log(
-          JSON.stringify({ providers: rows, roles, orphans }, null, 2),
+          JSON.stringify(
+            {
+              scope: machine ? "machine" : "shared",
+              providers: rows,
+              roles,
+              orphans,
+            },
+            null,
+            2,
+          ),
         );
         return;
       }
 
-      console.log("Providers (llm.providers):\n");
+      console.log(
+        `Providers (${opts.machine ? "~/.zam/config.json ai.providers" : "llm.providers"}):\n`,
+      );
       if (rows.length === 0) {
         console.log(
           "  (none) — add one: zam provider add <name> --url <url> --model <model>",
@@ -209,6 +291,11 @@ providerCommand
           console.log(`      url:    ${row.url ?? "(inherits llm.url)"}`);
           console.log(`      model:  ${row.model ?? "(inherits llm.model)"}`);
           console.log(`      flavor: ${row.apiFlavor}`);
+          if (row.label) console.log(`      label:  ${row.label}`);
+          if (row.local !== undefined) {
+            console.log(`      local:  ${row.local ? "yes" : "no"}`);
+          }
+          if (row.runner) console.log(`      runner: ${row.runner}`);
           if (row.apiKeyRef) console.log(`      key-ref: ${row.apiKeyRef}`);
         }
       }
@@ -237,8 +324,14 @@ providerCommand
 providerCommand
   .command("add <name>")
   .description("Add or update a provider record in llm.providers")
+  .option("--label <label>", "Human-readable provider label")
   .option("--url <url>", "Endpoint base URL (e.g. https://api.deepseek.com/v1)")
   .option("--model <model>", "Model id (e.g. deepseek-v4-flash)")
+  .option("--local", "Mark this provider as a local/on-device endpoint")
+  .option(
+    "--runner <runner>",
+    "Local runner hint (flm, foundry-local, ollama, ...)",
+  )
   .option(
     "--flavor <flavor>",
     `Wire protocol: ${VALID_API_FLAVORS.join(" | ")} (default: inferred from URL)`,
@@ -251,6 +344,7 @@ providerCommand
     "--key <value>",
     "Store this API key now (prefer `set-key` to keep it out of shell history)",
   )
+  .option("--machine", "Store this provider in ~/.zam/config.json")
   .action(async (name, opts) => {
     let apiFlavor: ApiFlavor | undefined;
     if (opts.flavor) {
@@ -265,21 +359,32 @@ providerCommand
     const apiKeyRef: string | undefined =
       opts.keyRef ?? (opts.key ? name : undefined);
 
-    await withDb(async (db) => {
-      const providers = await readProviders(db);
+    const machine = Boolean(opts.machine);
+    await withProviderScope(machine, async (db) => {
+      const providers = await readScopedProviders(db, machine);
       const next = upsertProviderRecord(providers, name, {
+        label: opts.label,
         url: opts.url,
         model: opts.model,
         apiFlavor,
         apiKeyRef,
+        local: opts.local ? true : undefined,
+        runner: opts.runner,
       });
-      await writeProviders(db, next);
+      await writeScopedProviders(db, machine, next);
       if (opts.key && apiKeyRef) setProviderApiKey(apiKeyRef, opts.key);
 
       const rec = next[name];
-      console.log(`Provider "${name}" saved:`);
+      console.log(
+        `Provider "${name}" saved (${machine ? "machine-local" : "shared"}):`,
+      );
       console.log(`  url:     ${rec.url ?? "(inherits llm.url)"}`);
       console.log(`  model:   ${rec.model ?? "(inherits llm.model)"}`);
+      if (rec.label) console.log(`  label:   ${rec.label}`);
+      if (rec.local !== undefined) {
+        console.log(`  local:   ${rec.local ? "yes" : "no"}`);
+      }
+      if (rec.runner) console.log(`  runner:  ${rec.runner}`);
       console.log(
         `  flavor:  ${
           rec.apiFlavor ??
@@ -310,9 +415,11 @@ providerCommand
 providerCommand
   .command("remove <name>")
   .description("Remove a provider record from llm.providers")
-  .action(async (name) => {
-    await withDb(async (db) => {
-      const providers = await readProviders(db);
+  .option("--machine", "Remove from ~/.zam/config.json instead of the DB")
+  .action(async (name, opts) => {
+    const machine = Boolean(opts.machine);
+    await withProviderScope(machine, async (db) => {
+      const providers = await readScopedProviders(db, machine);
       const { providers: next, removed } = removeProviderRecord(
         providers,
         name,
@@ -321,10 +428,15 @@ providerCommand
         console.log(`No such provider: ${name}`);
         return;
       }
-      await writeProviders(db, next);
-      console.log(`Removed provider "${name}".`);
+      await writeScopedProviders(db, machine, next);
+      console.log(
+        `Removed provider "${name}" (${machine ? "machine-local" : "shared"}).`,
+      );
 
-      const referencing = rolesReferencing(await readRoles(db), name);
+      const referencing = rolesReferencing(
+        await readScopedRoles(db, machine),
+        name,
+      );
       if (referencing.length > 0) {
         console.log(
           `  ⚠ Still referenced by role(s): ${referencing.join(", ")} — rebind with: zam provider use <role> --primary <name>`,
@@ -340,6 +452,7 @@ providerCommand
   .description(`Bind providers to a role (${VALID_ROLES.join(" | ")})`)
   .option("--primary <name>", "Primary provider")
   .option("--fallback <name>", "Fallback provider (optional)")
+  .option("--machine", "Bind the role in ~/.zam/config.json")
   .action(async (role, opts) => {
     if (!VALID_ROLES.includes(role)) {
       console.error(`Invalid role: ${role}. Use ${VALID_ROLES.join(", ")}.`);
@@ -349,19 +462,23 @@ providerCommand
       console.error("--primary is required.");
       process.exit(1);
     }
-    await withDb(async (db) => {
-      const providers = await readProviders(db);
-      await writeRoles(
+    const machine = Boolean(opts.machine);
+    await withProviderScope(machine, async (db) => {
+      const providers = await readScopedProviders(db, machine);
+      await writeScopedRoles(
         db,
+        machine,
         bindRoleProviders(
-          await readRoles(db),
+          await readScopedRoles(db, machine),
           role,
           opts.primary,
           opts.fallback,
         ),
       );
       const fb = opts.fallback ? `, fallback: ${opts.fallback}` : "";
-      console.log(`Role "${role}" → primary: ${opts.primary}${fb}`);
+      console.log(
+        `Role "${role}" → primary: ${opts.primary}${fb} (${machine ? "machine-local" : "shared"})`,
+      );
 
       for (const [label, ref] of [
         ["primary", opts.primary],

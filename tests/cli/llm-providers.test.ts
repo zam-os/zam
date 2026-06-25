@@ -11,6 +11,7 @@ import { observeUiSnapshotViaLLM } from "../../src/cli/llm/vision.js";
 import {
   getProviderApiKey,
   openDatabase,
+  saveMachineAiConfig,
   setProviderApiKey,
   setSetting,
 } from "../../src/kernel/index.js";
@@ -131,6 +132,62 @@ describe("getProviderForRole", () => {
         apiKey: "sk-mimo",
       });
     } finally {
+      await db.close();
+    }
+  });
+
+  it("lets machine-local role bindings override shared DB bindings", async () => {
+    const db = await openDb();
+    const configDir = mkdtempSync(join(tmpdir(), "zam-machine-ai-"));
+    tempDirs.push(configDir);
+    const configPath = join(configDir, "config.json");
+    const previousConfigPath = process.env.ZAM_CONFIG_PATH;
+    process.env.ZAM_CONFIG_PATH = configPath;
+
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(
+      db,
+      "llm.providers",
+      JSON.stringify({
+        shared: {
+          url: "https://api.deepseek.com/v1",
+          model: "deepseek-v4-flash",
+        },
+      }),
+    );
+    await setSetting(
+      db,
+      "llm.roles",
+      JSON.stringify({ recall: { primary: "shared" } }),
+    );
+    saveMachineAiConfig({
+      providers: {
+        localFoundry: {
+          label: "Foundry Gemma",
+          url: "http://localhost:8000/v1",
+          model: "gemma4-it:e4b",
+          local: true,
+        },
+      },
+      roles: { recall: { primary: "localFoundry" } },
+    });
+
+    try {
+      const p = await getProviderForRole(db, "recall");
+      expect(p).toMatchObject({
+        providerName: "localFoundry",
+        label: "Foundry Gemma",
+        source: "machine",
+        url: "http://localhost:8000/v1",
+        model: "gemma4-it:e4b",
+        local: true,
+      });
+    } finally {
+      if (previousConfigPath === undefined) {
+        delete process.env.ZAM_CONFIG_PATH;
+      } else {
+        process.env.ZAM_CONFIG_PATH = previousConfigPath;
+      }
       await db.close();
     }
   });

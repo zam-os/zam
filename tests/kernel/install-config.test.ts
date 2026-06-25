@@ -4,10 +4,14 @@ import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   detectSyncProvider,
+  getConfiguredWorkspaces,
   getInstallMode,
+  getMachineAiConfig,
   loadInstallConfig,
   saveInstallConfig,
+  saveMachineAiConfig,
   setInstallMode,
+  upsertConfiguredWorkspace,
 } from "../../src/kernel/index.js";
 
 const tempDirs: string[] = [];
@@ -57,6 +61,65 @@ describe("install config", () => {
     const path = tempConfigPath();
     writeFileSync(path, "{ not json", "utf-8");
     expect(getInstallMode(path)).toBe("developer");
+  });
+
+  it("round-trips machine-local AI config without touching install mode", () => {
+    const path = tempConfigPath();
+    saveInstallConfig({ mode: "default" }, path);
+
+    saveMachineAiConfig(
+      {
+        providers: {
+          foundry: {
+            label: "Foundry Gemma",
+            url: "http://localhost:8000/v1",
+            model: "gemma4-it:e4b",
+            local: true,
+          },
+        },
+        roles: { recall: { primary: "foundry" } },
+      },
+      path,
+    );
+
+    expect(getInstallMode(path)).toBe("default");
+    expect(getMachineAiConfig(path).roles?.recall?.primary).toBe("foundry");
+    expect(getMachineAiConfig(path).providers?.foundry?.model).toBe(
+      "gemma4-it:e4b",
+    );
+  });
+
+  it("upserts configured workspaces", () => {
+    const path = tempConfigPath();
+    upsertConfiguredWorkspace(
+      {
+        id: "team",
+        kind: "team",
+        path: "C:\\src\\Cops.Management",
+        sourceControl: "azure-devops",
+        knowledgeScopes: ["goals", "concepts"],
+      },
+      path,
+    );
+
+    upsertConfiguredWorkspace(
+      {
+        id: "team",
+        label: "Cops Management",
+        kind: "team",
+        path: "D:\\work\\Cops.Management",
+      },
+      path,
+    );
+
+    expect(getConfiguredWorkspaces(path)).toEqual([
+      {
+        id: "team",
+        label: "Cops Management",
+        kind: "team",
+        path: "D:\\work\\Cops.Management",
+      },
+    ]);
   });
 
   it("detects file-sync providers from a folder path", () => {

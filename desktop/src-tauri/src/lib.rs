@@ -1259,6 +1259,51 @@ fn open_data_folder(app: tauri::AppHandle) -> Result<(), String> {
         .map_err(|e| format!("Failed to open data folder: {e}"))
 }
 
+#[tauri::command]
+fn open_terminal_in_dir(dir: String) -> Result<(), String> {
+    let path = PathBuf::from(dir);
+    if !path.exists() {
+        return Err(format!("Workspace path does not exist: {}", path.display()));
+    }
+    if !path.is_dir() {
+        return Err(format!("Workspace path is not a directory: {}", path.display()));
+    }
+
+    #[cfg(target_os = "windows")]
+    {
+        if Command::new("wt.exe").arg("-d").arg(&path).spawn().is_ok() {
+            return Ok(());
+        }
+        Command::new("powershell.exe")
+            .current_dir(&path)
+            .args(["-NoExit", "-NoProfile"])
+            .spawn()
+            .map(|_| ())
+            .map_err(|e| format!("Failed to open PowerShell in {}: {e}", path.display()))
+    }
+
+    #[cfg(target_os = "macos")]
+    {
+        Command::new("open")
+            .args(["-a", "Terminal"])
+            .arg(&path)
+            .spawn()
+            .map(|_| ())
+            .map_err(|e| format!("Failed to open Terminal in {}: {e}", path.display()))
+    }
+
+    #[cfg(all(unix, not(target_os = "macos")))]
+    {
+        let candidates = ["x-terminal-emulator", "gnome-terminal", "konsole", "xfce4-terminal"];
+        for candidate in candidates {
+            if Command::new(candidate).current_dir(&path).spawn().is_ok() {
+                return Ok(());
+            }
+        }
+        Err(format!("No supported terminal emulator found for {}", path.display()))
+    }
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let builder = tauri::Builder::default();
@@ -1298,7 +1343,8 @@ pub fn run() {
             capture_zam_observer_window,
             sample_zam_observer_window,
             snapshot_zam_observer_window,
-            open_data_folder
+            open_data_folder,
+            open_terminal_in_dir
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -9,7 +9,7 @@ import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { basename, join, resolve } from "node:path";
 import { Command } from "commander";
 import type {
   BloomLevel,
@@ -35,6 +35,7 @@ import {
   generatePrompt,
   getAgentSkill,
   getCardDeletionImpact,
+  getConfiguredWorkspaces,
   getDatabaseTargetInfo,
   getDueCards,
   getSetting,
@@ -56,6 +57,8 @@ import {
   startSession,
   syncObserverSidecarPolicy,
   uiObservationLogExists,
+  upsertConfiguredWorkspace,
+  type WorkspaceKind,
 } from "../../kernel/index.js";
 import {
   AGENT_HARNESSES,
@@ -71,6 +74,7 @@ import {
   getAvailableModels,
   getLlmConfig,
   getProviderForRole,
+  getProviderRoleStatus,
   isLlmOnline,
   translateQuestionViaLLM,
 } from "../llm/client.js";
@@ -272,6 +276,82 @@ bridgeCommand
   });
 
 bridgeCommand
+  .command("workspace-list")
+  .description("List configured ZAM workspaces (JSON)")
+  .action(async () => {
+    await withDb(async (db) => {
+      const workspaceDir =
+        (await getSetting(db, "personal.workspace_dir")) || null;
+      jsonOut({
+        workspaces: getConfiguredWorkspaces(),
+        workspaceDir,
+        defaultWorkspaceDir: join(homedir(), "Documents", "zam"),
+        dataDir: join(homedir(), ".zam"),
+      });
+    });
+  });
+
+function workspaceIdFromPath(dir: string): string {
+  const base = basename(dir)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  const prefix = base || "workspace";
+  const existing = new Set(getConfiguredWorkspaces().map((item) => item.id));
+  if (!existing.has(prefix)) return prefix;
+  let index = 2;
+  while (existing.has(`${prefix}-${index}`)) index++;
+  return `${prefix}-${index}`;
+}
+
+function parseBridgeWorkspaceKind(value?: string): WorkspaceKind {
+  const kind = (value || "custom").toLowerCase();
+  if (
+    kind === "personal" ||
+    kind === "team" ||
+    kind === "family" ||
+    kind === "community" ||
+    kind === "organization" ||
+    kind === "custom"
+  ) {
+    return kind;
+  }
+  jsonError(`Invalid workspace kind: ${value}`);
+}
+
+bridgeCommand
+  .command("workspace-add")
+  .description("Register an existing directory as a ZAM workspace (JSON)")
+  .requiredOption("--path <dir>", "Existing workspace/repository directory")
+  .option("--id <id>", "Workspace id")
+  .option("--label <label>", "Human-readable label")
+  .option("--kind <kind>", "Workspace kind", "custom")
+  .action(async (opts) => {
+    const raw = String(opts.path ?? "").trim();
+    if (!raw) jsonError("A non-empty --path is required");
+    const path = resolve(raw);
+    if (!existsSync(path)) jsonError(`Workspace path does not exist: ${path}`);
+    const id = String(opts.id || workspaceIdFromPath(path)).trim();
+    if (!id) jsonError("A non-empty --id is required");
+    const workspace = {
+      id,
+      label: opts.label || basename(path) || id,
+      kind: parseBridgeWorkspaceKind(opts.kind),
+      path,
+    };
+    await withDb(async (db) => {
+      await setSetting(db, "personal.workspace_dir", path);
+      upsertConfiguredWorkspace(workspace);
+      jsonOut({
+        ok: true,
+        workspace,
+        workspaces: getConfiguredWorkspaces(),
+        workspaceDir: path,
+      });
+    });
+  });
+
+bridgeCommand
   .command("set-workspace-dir")
   .description("Set the personal workspace directory (JSON)")
   .requiredOption("--dir <path>", "Path to the workspace directory")
@@ -317,6 +397,8 @@ bridgeCommand
     "--id <id>",
     "Harness id (default: agent.default setting, else first detected)",
   )
+  .option("--workspace <id>", "Configured workspace id to open")
+  .option("--dir <path>", "Explicit workspace directory to open")
   .action(async (opts) => {
     await withDb(async (db) => {
       let id: string | undefined =
@@ -341,7 +423,15 @@ bridgeCommand
           `${harness.label} was not detected. Set its path: zam settings set agent.${harness.id}.command <path>`,
         );
       }
+      const configuredWorkspace = opts.workspace
+        ? getConfiguredWorkspaces().find((item) => item.id === opts.workspace)
+        : undefined;
+      if (opts.workspace && !configuredWorkspace) {
+        jsonError(`Workspace is not configured: ${opts.workspace}`);
+      }
       let workspace =
+        opts.dir ||
+        configuredWorkspace?.path ||
         (await getSetting(db, "personal.workspace_dir")) ||
         join(homedir(), "Documents", "zam");
       if (!existsSync(workspace)) workspace = homedir();
@@ -349,6 +439,7 @@ bridgeCommand
         executable,
         workspace,
         shell: normalizeShell(undefined),
+        silent: true,
       });
       jsonOut({
         ok: true,
@@ -1868,6 +1959,20 @@ bridgeCommand
         apiFlavor: provider.apiFlavor,
         unsupportedProvider,
       });
+    });
+  });
+
+bridgeCommand
+  .command("provider-status")
+  .description("Show secret-safe provider status for LLM roles (JSON)")
+  .action(async () => {
+    await withDb(async (db) => {
+      const [recall, vision, text] = await Promise.all([
+        getProviderRoleStatus(db, "recall"),
+        getProviderRoleStatus(db, "vision"),
+        getProviderRoleStatus(db, "text"),
+      ]);
+      jsonOut({ roles: { recall, vision, text } });
     });
   });
 

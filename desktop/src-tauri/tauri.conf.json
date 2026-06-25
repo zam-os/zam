@@ -15,7 +15,10 @@
       {
         "title": "ZAM",
         "width": 950,
-        "height": 720
+        "height": 720,
+        "minWidth": 720,
+        "minHeight": 580,
+        "theme": "Light"
       }
     ],
     "security": {

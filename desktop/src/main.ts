@@ -1,6 +1,7 @@
 import { getVersion } from "@tauri-apps/api/app";
 import { invoke } from "@tauri-apps/api/core";
 import { appDataDir, join as joinPath } from "@tauri-apps/api/path";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 import { open as openFolderDialog } from "@tauri-apps/plugin-dialog";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { check as checkForUpdate } from "@tauri-apps/plugin-updater";
@@ -15,6 +16,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     ai_status_online: "Local AI Online",
     ai_status_starting: "Starting Local AI...",
     ai_status_model_missing: "Local AI: model not found",
+    nav_dashboard: "Dashboard",
+    nav_settings: "Settings",
+    dashboard_kicker: "Today in ZAM",
+    dashboard_title: "Learn deliberately.",
+    dashboard_subtitle:
+      "Review what is due, open your knowledge map, or configure local AI and workspaces in Settings.",
     lbl_due_reviews: "Due Reviews",
     lbl_caught_up: "You're all caught up!",
     dashboard_error: "Could not load your data",
@@ -50,6 +57,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     session_completed_sub: "Great job completing this session! Your memory traces have been updated.",
     btn_back_to_dashboard: "Back to Dashboard",
     btn_open_graph: "Knowledge Map (3D)",
+    btn_open_settings: "Settings",
     observer_title: "UI Observer",
     observer_idle: "Load windows and choose one application window to observe.",
     observer_loading: "Loading observable windows...",
@@ -94,7 +102,24 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     graph_prereqs: "Bases (Prerequisites)",
     graph_dependents: "Higher Abilities (Dependents)",
     graph_no_card: "no personal card yet",
+    graph_refresh: "Refresh",
+    graph_domain_token_list_title: "All tokens in this domain",
     setup_title: "Setup & Data",
+    settings_kicker: "Local configuration",
+    settings_title: "Settings",
+    settings_subtitle:
+      "Configure this machine without forcing the same choices onto every workspace or device.",
+    settings_back: "Back to dashboard",
+    settings_system_title: "System",
+    settings_ai_title: "AI models",
+    settings_workspace_title: "Workspaces",
+    workspaces_help:
+      "Register personal, team, family, or community work directories for this machine.",
+    settings_appearance_title: "Appearance",
+    settings_data_title: "Data",
+    settings_theme: "Theme",
+    theme_light: "Light",
+    theme_dark: "Dark",
     btn_open_data_folder: "Open data folder",
     btn_backup_db: "Back up database",
     setup_backing_up: "Backing up database…",
@@ -106,10 +131,38 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     setup_open_folder_failed: "Could not open the data folder: {message}",
     lbl_workspace: "Workspace",
     btn_choose_workspace: "Choose workspace…",
+    btn_open_terminal: "Open Terminal",
+    terminal_opening: "Opening terminal...",
+    terminal_opened: "Opened terminal in {workspace}",
+    terminal_open_failed: "Could not open terminal: {message}",
+    workspace_active: "active",
+    workspace_default_label: "Default workspace",
+    workspace_empty: "No workspace registered yet.",
+    workspace_kind: "{kind} workspace",
+    workspace_kind_personal: "Personal workspace",
+    workspace_kind_team: "Team workspace",
+    workspace_kind_family: "Family workspace",
+    workspace_kind_community: "Community workspace",
+    workspace_kind_organization: "Organization workspace",
+    workspace_kind_custom: "Custom workspace",
+    workspace_more: "{count} more workspace(s) hidden. Use the CLI for the full list.",
+    workspace_use: "Use",
+    workspace_open: "Terminal",
     workspace_default_suffix: "(default)",
     workspace_set: "Workspace set to {path}",
+    workspace_added: "Workspace added: {path}",
     workspace_pick_failed: "Could not set workspace: {message}",
     lbl_app_version: "Version",
+    lbl_learning_model: "Learning model",
+    lbl_observer_model: "Observer model",
+    provider_ready: "ready",
+    provider_disabled: "disabled",
+    provider_offline: "offline",
+    provider_model_missing: "model missing",
+    provider_unsupported: "unsupported provider",
+    provider_local: "local",
+    provider_cloud: "cloud",
+    provider_unknown: "unknown",
     btn_check_updates: "Check for updates",
     btn_open_releases: "Releases",
     version_unknown: "unknown",
@@ -124,6 +177,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     ai_status_online: "Lokale KI online",
     ai_status_starting: "Starte lokale KI...",
     ai_status_model_missing: "Lokale KI: Modell fehlt",
+    nav_dashboard: "Übersicht",
+    nav_settings: "Einstellungen",
+    dashboard_kicker: "Heute in ZAM",
+    dashboard_title: "Bewusst lernen.",
+    dashboard_subtitle:
+      "Wiederhole, was fällig ist, öffne dein Wissensnetz oder konfiguriere lokale KI und Arbeitsbereiche in den Einstellungen.",
     lbl_due_reviews: "Anstehende Wiederholungen",
     lbl_caught_up: "Du bist voll auf dem Laufenden!",
     dashboard_error: "Deine Daten konnten nicht geladen werden",
@@ -159,6 +218,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     session_completed_sub: "Hervorragende Arbeit! Deine Gedächtnispfade wurden aktualisiert.",
     btn_back_to_dashboard: "Zurück zur Übersicht",
     btn_open_graph: "Wissensnetz (3D)",
+    btn_open_settings: "Einstellungen",
     observer_title: "UI Observer",
     observer_idle: "Fenster laden und ein Anwendungsfenster zur Beobachtung auswählen.",
     observer_loading: "Beobachtbare Fenster werden geladen...",
@@ -203,7 +263,24 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     graph_prereqs: "Basis (Voraussetzungen)",
     graph_dependents: "Höhere Fähigkeiten (Darauf aufbauend)",
     graph_no_card: "noch keine persönliche Karte",
+    graph_refresh: "Neu laden",
+    graph_domain_token_list_title: "Alle Tokens in diesem Bereich",
     setup_title: "Einrichtung & Daten",
+    settings_kicker: "Lokale Konfiguration",
+    settings_title: "Einstellungen",
+    settings_subtitle:
+      "Konfiguriere diesen Rechner, ohne dieselben Entscheidungen auf jeden Arbeitsbereich oder jedes Gerät zu übertragen.",
+    settings_back: "Zurück zur Übersicht",
+    settings_system_title: "System",
+    settings_ai_title: "KI-Modelle",
+    settings_workspace_title: "Arbeitsbereiche",
+    workspaces_help:
+      "Registriere persönliche, Team-, Familien- oder Community-Arbeitsverzeichnisse für diesen Rechner.",
+    settings_appearance_title: "Darstellung",
+    settings_data_title: "Daten",
+    settings_theme: "Theme",
+    theme_light: "Hell",
+    theme_dark: "Dunkel",
     btn_open_data_folder: "Datenordner öffnen",
     btn_backup_db: "Datenbank sichern",
     setup_backing_up: "Datenbank wird gesichert…",
@@ -213,12 +290,39 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     setup_backup_failed: "Sicherung fehlgeschlagen: {message}",
     setup_backup_failed_generic: "Sicherung fehlgeschlagen.",
     setup_open_folder_failed: "Datenordner konnte nicht geöffnet werden: {message}",
-    lbl_workspace: "Arbeitsbereich",
     btn_choose_workspace: "Arbeitsbereich wählen…",
+    btn_open_terminal: "Terminal öffnen",
+    terminal_opening: "Terminal wird geöffnet...",
+    terminal_opened: "Terminal in {workspace} geöffnet",
+    terminal_open_failed: "Terminal konnte nicht geöffnet werden: {message}",
+    workspace_active: "aktiv",
+    workspace_default_label: "Standard-Arbeitsbereich",
+    workspace_empty: "Noch kein Arbeitsbereich registriert.",
+    workspace_kind: "{kind}-Arbeitsbereich",
+    workspace_kind_personal: "Persönlicher Arbeitsbereich",
+    workspace_kind_team: "Team-Arbeitsbereich",
+    workspace_kind_family: "Familien-Arbeitsbereich",
+    workspace_kind_community: "Community-Arbeitsbereich",
+    workspace_kind_organization: "Organisations-Arbeitsbereich",
+    workspace_kind_custom: "Benutzerdefinierter Arbeitsbereich",
+    workspace_more: "{count} weitere Arbeitsbereiche ausgeblendet. Die vollständige Liste ist in der CLI.",
+    workspace_use: "Nutzen",
+    workspace_open: "Terminal",
     workspace_default_suffix: "(Standard)",
     workspace_set: "Arbeitsbereich gesetzt: {path}",
+    workspace_added: "Arbeitsbereich hinzugefügt: {path}",
     workspace_pick_failed: "Arbeitsbereich konnte nicht gesetzt werden: {message}",
     lbl_app_version: "Version",
+    lbl_learning_model: "Lernmodell",
+    lbl_observer_model: "Observer-Modell",
+    provider_ready: "bereit",
+    provider_disabled: "deaktiviert",
+    provider_offline: "offline",
+    provider_model_missing: "Modell fehlt",
+    provider_unsupported: "Provider nicht unterstützt",
+    provider_local: "lokal",
+    provider_cloud: "Cloud",
+    provider_unknown: "unbekannt",
     btn_check_updates: "Nach Updates suchen",
     btn_open_releases: "Releases",
     version_unknown: "unbekannt",
@@ -248,10 +352,49 @@ const BLOOM_LEVEL_NAMES: Record<string, Record<number, string>> = {
 };
 
 // ── STATE MANAGEMENT ──────────────────────────────────────────────────────
+type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view";
+type ThemePreference = "light" | "dark";
+
 let currentLocale = "en";
 let isLlmEnabled = false;
 let totalDue = 0;
 let cardsReviewedThisSession = 0;
+
+interface ProviderRoleStatus {
+  enabled: boolean;
+  providerName?: string;
+  label?: string;
+  source: "legacy" | "shared" | "machine";
+  model: string;
+  apiFlavor: string;
+  local: boolean;
+  usable: boolean;
+  reason?: "disabled" | "offline" | "model-not-found" | "unsupported-provider";
+}
+
+interface ProviderStatusResponse {
+  roles: {
+    recall: ProviderRoleStatus;
+    vision: ProviderRoleStatus;
+  };
+}
+
+interface WorkspaceConfig {
+  id: string;
+  label?: string;
+  kind: string;
+  path: string;
+  sourceControl?: string;
+  knowledgeScopes?: string[];
+  defaultAgent?: string;
+}
+
+interface WorkspaceListResponse {
+  workspaces: WorkspaceConfig[];
+  workspaceDir: string | null;
+  defaultWorkspaceDir: string;
+  dataDir: string;
+}
 
 interface BridgeCard {
   cardId: string;
@@ -309,6 +452,8 @@ const OBSERVER_HISTORY_LIMIT = 100;
 const OBSERVER_LOOP_DELAY_MS = 60000;
 let desktopUserId: string | null = null;
 let zamUiSessionId: string | null = null;
+let activeWorkspaceDir: string | null = null;
+const MAX_VISIBLE_WORKSPACES = 5;
 
 interface ObserverWindowInfo {
   version: number;
@@ -472,11 +617,57 @@ function tf(key: string, values: Record<string, string | number>): string {
   );
 }
 
+function loadThemePreference(): ThemePreference {
+  try {
+    return localStorage.getItem("zam:theme") === "dark" ? "dark" : "light";
+  } catch {
+    return "light";
+  }
+}
+
+function applyTheme(theme: ThemePreference): void {
+  document.documentElement.dataset.theme = theme;
+  const select = document.getElementById("theme-select") as HTMLSelectElement | null;
+  if (select) select.value = theme;
+  try {
+    void getCurrentWindow()
+      .setTheme(theme)
+      .catch(() => {
+        // Browser preview has no native Tauri window; CSS theme still applies.
+      });
+  } catch {
+    // Browser preview has no native Tauri window; CSS theme still applies.
+  }
+  if (graphScene) {
+    graphScene.fog = new THREE.Fog(cssColorHex("--bg-deep-space", "#f5f7fb"), 12, 28);
+  }
+}
+
+function saveThemePreference(theme: ThemePreference): void {
+  try {
+    localStorage.setItem("zam:theme", theme);
+  } catch {
+    // The visual preference is non-critical; keep the current page theme.
+  }
+  applyTheme(theme);
+}
+
 // ── STATIC TRANSLATIONS INITIALIZER ──────────────────────────────────────
 function initializeTranslations() {
+  document.getElementById("nav-dashboard")!.textContent = t("nav_dashboard");
+  document.getElementById("nav-settings")!.textContent = t("nav_settings");
+  document.getElementById("lbl-dashboard-kicker")!.textContent =
+    t("dashboard_kicker");
+  document.getElementById("lbl-dashboard-title")!.textContent =
+    t("dashboard_title");
+  document.getElementById("lbl-dashboard-subtitle")!.textContent =
+    t("dashboard_subtitle");
   document.getElementById("lbl-due-reviews")!.textContent = t("lbl_due_reviews");
   document.getElementById("lbl-domains")!.textContent = t("lbl_domains");
   document.getElementById("btn-start-session")!.textContent = t("btn_start_session");
+  document.getElementById("btn-open-graph")!.textContent = t("btn_open_graph");
+  document.getElementById("btn-open-settings")!.textContent =
+    t("btn_open_settings");
   document.getElementById("lbl-translating")!.textContent = t("lbl_translating");
   document.getElementById("lbl-ai-evaluating")!.textContent = t("lbl_ai_evaluating");
   document.getElementById("lbl-ai-working")!.textContent = t("lbl_ai_working");
@@ -519,35 +710,233 @@ function initializeTranslations() {
   }
 
   // Setup & Data card
-  document.getElementById("lbl-setup-title")!.textContent = t("setup_title");
+  document.getElementById("lbl-settings-kicker")!.textContent =
+    t("settings_kicker");
+  document.getElementById("lbl-settings-title")!.textContent =
+    t("settings_title");
+  document.getElementById("lbl-settings-subtitle")!.textContent =
+    t("settings_subtitle");
+  document.getElementById("btn-settings-back")!.textContent =
+    t("settings_back");
+  document.getElementById("lbl-settings-system-title")!.textContent =
+    t("settings_system_title");
+  document.getElementById("lbl-settings-ai-title")!.textContent =
+    t("settings_ai_title");
+  document.getElementById("lbl-settings-workspace-title")!.textContent =
+    t("settings_workspace_title");
+  document.getElementById("lbl-workspaces-help")!.textContent =
+    t("workspaces_help");
+  document.getElementById("lbl-settings-appearance-title")!.textContent =
+    t("settings_appearance_title");
+  document.getElementById("lbl-settings-data-title")!.textContent =
+    t("settings_data_title");
+  document.getElementById("lbl-settings-theme")!.textContent =
+    t("settings_theme");
+  document.getElementById("theme-light-option")!.textContent = t("theme_light");
+  document.getElementById("theme-dark-option")!.textContent = t("theme_dark");
   document.getElementById("btn-open-data-folder")!.textContent = t("btn_open_data_folder");
   document.getElementById("btn-backup-db")!.textContent = t("btn_backup_db");
-  document.getElementById("lbl-workspace")!.textContent = t("lbl_workspace");
   document.getElementById("btn-choose-workspace")!.textContent =
     t("btn_choose_workspace");
+  document.getElementById("btn-open-terminal")!.textContent =
+    t("btn_open_terminal");
   document.getElementById("lbl-app-version")!.textContent = t("lbl_app_version");
+  document.getElementById("lbl-learning-model")!.textContent =
+    t("lbl_learning_model");
+  document.getElementById("lbl-observer-model")!.textContent =
+    t("lbl_observer_model");
   document.getElementById("btn-check-updates")!.textContent = t("btn_check_updates");
   document.getElementById("btn-open-releases")!.textContent = t("btn_open_releases");
+  document.getElementById("graph-title")!.textContent = t("graph_title");
+  document.getElementById("btn-graph-back")!.textContent =
+    t("btn_back_to_dashboard");
+  document.getElementById("btn-graph-refresh")!.textContent =
+    t("graph_refresh");
+  document.getElementById("graph-focus-title")!.textContent = t("graph_focus");
+  document.getElementById("graph-prereqs-title")!.textContent =
+    t("graph_prereqs");
+  document.getElementById("graph-dependents-title")!.textContent =
+    t("graph_dependents");
+  document.getElementById("graph-hint")!.textContent = t("graph_hint");
 
   // Locale badge
   document.getElementById("locale-badge")!.textContent = currentLocale.toUpperCase();
+  applyTheme(loadThemePreference());
 }
 
-/** Show the configured workspace dir (or the default, marked as such). */
-async function loadWorkspaceInfo(): Promise<void> {
-  const pathEl = document.getElementById("workspace-path");
-  if (!pathEl) return;
+function comparablePath(path: string): string {
+  return path.replace(/[\\/]+$/, "").toLowerCase();
+}
+
+function isActiveWorkspacePath(path: string): boolean {
+  return Boolean(activeWorkspaceDir && comparablePath(path) === comparablePath(activeWorkspaceDir));
+}
+
+function workspaceKindLabel(kind: string): string {
+  switch (kind) {
+    case "personal":
+      return t("workspace_kind_personal");
+    case "team":
+      return t("workspace_kind_team");
+    case "family":
+      return t("workspace_kind_family");
+    case "community":
+      return t("workspace_kind_community");
+    case "organization":
+      return t("workspace_kind_organization");
+    case "custom":
+      return t("workspace_kind_custom");
+    default:
+      return tf("workspace_kind", { kind });
+  }
+}
+
+function workspaceMeta(workspace: WorkspaceConfig): string {
+  const parts = [workspaceKindLabel(workspace.kind)];
+  if (workspace.sourceControl) parts.push(workspace.sourceControl);
+  if (workspace.knowledgeScopes?.length) {
+    parts.push(workspace.knowledgeScopes.slice(0, 3).join(", "));
+  }
+  return parts.join(" · ");
+}
+
+function buildVisibleWorkspaces(info: WorkspaceListResponse): WorkspaceConfig[] {
+  const activeDir = info.workspaceDir ?? info.defaultWorkspaceDir;
+  activeWorkspaceDir = activeDir;
+  const workspaces = [...info.workspaces];
+  const activeRegistered = workspaces.some((workspace) =>
+    comparablePath(workspace.path) === comparablePath(activeDir),
+  );
+  if (!activeRegistered) {
+    workspaces.unshift({
+      id: "current",
+      label: info.workspaceDir ? t("lbl_workspace") : t("workspace_default_label"),
+      kind: "personal",
+      path: activeDir,
+    });
+  }
+  return workspaces.sort((left, right) => {
+    const leftActive = isActiveWorkspacePath(left.path) ? 1 : 0;
+    const rightActive = isActiveWorkspacePath(right.path) ? 1 : 0;
+    return rightActive - leftActive;
+  });
+}
+
+function renderWorkspaceList(info: WorkspaceListResponse): void {
+  const list = document.getElementById("workspace-list");
+  if (!list) return;
+  list.replaceChildren();
+
+  const workspaces = buildVisibleWorkspaces(info);
+  const visible = workspaces.slice(0, MAX_VISIBLE_WORKSPACES);
+
+  for (const workspace of visible) {
+    const row = document.createElement("div");
+    row.className = "workspace-row";
+    row.dataset.active = String(isActiveWorkspacePath(workspace.path));
+
+    const main = document.createElement("div");
+    main.className = "workspace-main";
+
+    const titleRow = document.createElement("div");
+    titleRow.className = "workspace-title-row";
+    const title = document.createElement("span");
+    title.className = "workspace-title";
+    title.textContent = workspace.label || workspace.id;
+    titleRow.appendChild(title);
+    if (isActiveWorkspacePath(workspace.path)) {
+      const badge = document.createElement("span");
+      badge.className = "workspace-badge";
+      badge.textContent = t("workspace_active");
+      titleRow.appendChild(badge);
+    }
+
+    const path = document.createElement("code");
+    path.textContent = workspace.path;
+
+    const meta = document.createElement("span");
+    meta.className = "workspace-meta";
+    meta.textContent = workspaceMeta(workspace);
+
+    main.append(titleRow, path, meta);
+
+    const actions = document.createElement("div");
+    actions.className = "workspace-actions";
+
+    const useButton = document.createElement("button");
+    useButton.className = "btn secondary-btn btn-sm";
+    useButton.type = "button";
+    useButton.textContent = t("workspace_use");
+    useButton.disabled = isActiveWorkspacePath(workspace.path);
+    useButton.addEventListener("click", () => {
+      void setActiveWorkspace(workspace.path);
+    });
+
+    const terminalButton = document.createElement("button");
+    terminalButton.className = "btn primary-btn btn-sm";
+    terminalButton.type = "button";
+    terminalButton.textContent = t("workspace_open");
+    terminalButton.addEventListener("click", () => {
+      void openWorkspaceTerminal(workspace.path);
+    });
+
+    actions.append(useButton, terminalButton);
+    row.append(main, actions);
+    list.appendChild(row);
+  }
+
+  const hiddenCount = workspaces.length - visible.length;
+  if (hiddenCount > 0) {
+    const more = document.createElement("p");
+    more.className = "workspace-more";
+    more.textContent = tf("workspace_more", { count: hiddenCount });
+    list.appendChild(more);
+  }
+}
+
+async function loadWorkspaceList(): Promise<void> {
   try {
-    const info = await runBridge<{
-      workspaceDir: string | null;
-      defaultWorkspaceDir: string;
-    }>("workspace-info");
-    const dir = info.workspaceDir ?? info.defaultWorkspaceDir;
-    pathEl.textContent = info.workspaceDir
-      ? dir
-      : `${dir} ${t("workspace_default_suffix")}`;
+    const info = await runBridge<WorkspaceListResponse>("workspace-list");
+    renderWorkspaceList(info);
   } catch {
     // Leave the placeholder in place if the bridge is unavailable.
+  }
+}
+
+async function setActiveWorkspace(dir: string): Promise<void> {
+  const status = document.getElementById("setup-status");
+  const res = await runBridge<{ ok?: boolean; workspaceDir?: string }>(
+    "set-workspace-dir",
+    ["--dir", dir],
+  );
+  if (res.workspaceDir) {
+    activeWorkspaceDir = res.workspaceDir;
+    await loadWorkspaceList();
+    if (status) {
+      status.textContent = tf("workspace_set", { path: res.workspaceDir });
+    }
+  }
+}
+
+async function openWorkspaceTerminal(dir?: string | null): Promise<void> {
+  const workspace = dir ?? activeWorkspaceDir;
+  const status = document.getElementById("setup-status");
+  if (!workspace) {
+    if (status) status.textContent = t("workspace_empty");
+    return;
+  }
+  if (status) status.textContent = t("terminal_opening");
+  try {
+    await invoke("open_terminal_in_dir", { dir: workspace });
+    if (status) {
+      status.textContent = tf("terminal_opened", { workspace });
+    }
+  } catch (err) {
+    if (status) {
+      status.textContent = tf("terminal_open_failed", {
+        message: errorMessage(err),
+      });
+    }
   }
 }
 
@@ -558,6 +947,57 @@ async function loadAppVersion(): Promise<void> {
     versionEl.textContent = `v${await getVersion()}`;
   } catch {
     versionEl.textContent = t("version_unknown");
+  }
+}
+
+function providerReasonText(status: ProviderRoleStatus): string {
+  if (!status.enabled) return t("provider_disabled");
+  if (status.usable) return t("provider_ready");
+  switch (status.reason) {
+    case "model-not-found":
+      return t("provider_model_missing");
+    case "unsupported-provider":
+      return t("provider_unsupported");
+    case "offline":
+      return t("provider_offline");
+    case "disabled":
+      return t("provider_disabled");
+    default:
+      return t("provider_unknown");
+  }
+}
+
+function formatProviderStatus(status: ProviderRoleStatus): string {
+  const name =
+    status.label ||
+    status.providerName ||
+    (status.source === "legacy" ? "legacy" : status.source);
+  const location = status.local ? t("provider_local") : t("provider_cloud");
+  return `${name}: ${status.model} · ${location} · ${providerReasonText(status)}`;
+}
+
+function setAiStatus(label: string, dotClass: "green" | "amber" | "gray"): void {
+  const aiStatusLabel = document.getElementById("ai-status-label");
+  const pulseDot = document.querySelector(".pulse-dot");
+  if (aiStatusLabel) aiStatusLabel.textContent = label;
+  if (pulseDot) {
+    pulseDot.className = `pulse-dot ${dotClass}`;
+    pulseDot.setAttribute("aria-label", label);
+  }
+}
+
+async function loadProviderStatus(): Promise<void> {
+  const recallEl = document.getElementById("learning-model-status");
+  const visionEl = document.getElementById("observer-model-status");
+  if (!recallEl || !visionEl) return;
+
+  try {
+    const status = await runBridge<ProviderStatusResponse>("provider-status");
+    recallEl.textContent = formatProviderStatus(status.roles.recall);
+    visionEl.textContent = formatProviderStatus(status.roles.vision);
+  } catch {
+    recallEl.textContent = t("provider_unknown");
+    visionEl.textContent = t("provider_unknown");
   }
 }
 
@@ -1129,8 +1569,26 @@ function errorMessage(err: unknown): string {
 }
 
 // ── VIEW ROUTING ──────────────────────────────────────────────────────────
-function switchView(viewId: "dashboard-view" | "study-view" | "graph-view") {
-  if (viewId === "dashboard-view" && studySessionActive) {
+function setActiveNav(viewId: AppView): void {
+  const navByView: Partial<Record<AppView, string>> = {
+    "dashboard-view": "nav-dashboard",
+    "settings-view": "nav-settings",
+  };
+  for (const button of document.querySelectorAll<HTMLButtonElement>(".nav-btn")) {
+    const active = button.id === navByView[viewId];
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-current", active ? "page" : "false");
+  }
+}
+
+function refreshSettingsData(): void {
+  void loadAppVersion();
+  void loadWorkspaceList();
+  void loadProviderStatus();
+}
+
+function switchView(viewId: AppView) {
+  if (viewId !== "study-view" && studySessionActive) {
     evaluationRequestId++;
     if (revealInProgress) cancelActiveBridgeRequest();
     revealInProgress = false;
@@ -1139,6 +1597,7 @@ function switchView(viewId: "dashboard-view" | "study-view" | "graph-view") {
   document.querySelectorAll(".view").forEach((el) => el.classList.remove("active"));
   document.getElementById(viewId)?.classList.add("active");
   studySessionActive = viewId === "study-view";
+  setActiveNav(viewId);
 
   const mainContainer = document.querySelector('main.container');
   if (viewId === "graph-view") {
@@ -1147,6 +1606,10 @@ function switchView(viewId: "dashboard-view" | "study-view" | "graph-view") {
     requestAnimationFrame(() => initOrShowGraph());
   } else {
     mainContainer?.classList.remove('graph-full');
+  }
+
+  if (viewId === "settings-view") {
+    refreshSettingsData();
   }
 }
 
@@ -1205,6 +1668,13 @@ function updateGraphCamera() {
   graphCamera.lookAt(0, 0, 0);
 }
 
+function cssColorHex(variableName: string, fallback: string): number {
+  const value = getComputedStyle(document.documentElement)
+    .getPropertyValue(variableName)
+    .trim();
+  return new THREE.Color(value || fallback).getHex();
+}
+
 function buildGraphScene(nb: any) {
   if (!graphScene) return;
   // clear previous
@@ -1234,11 +1704,12 @@ function buildGraphScene(nb: any) {
 
   // helper to make clickable pill
   const makePill = (gt: any, container: HTMLElement) => {
-    const pill = document.createElement("div");
+    const pill = document.createElement("button");
+    pill.type = "button";
     pill.className = "neighbor-pill";
     pill.textContent = gt.slug;
     pill.title = gt.concept;
-    pill.onclick = () => loadGraphFocus(gt.slug);
+    pill.addEventListener("click", () => loadGraphFocus(gt.slug));
     container.appendChild(pill);
   };
 
@@ -1557,7 +2028,7 @@ function populateDomainTokenList(tokens: any[]) {
     listSection.className = "side-section";
     const title = document.createElement("div");
     title.className = "side-title";
-    title.textContent = "Alle Tokens in Bereich (klickbar)";
+    title.textContent = t("graph_domain_token_list_title");
     listSection.appendChild(title);
     const listEl = document.createElement("div");
     listEl.id = "domain-full-list";
@@ -1570,11 +2041,12 @@ function populateDomainTokenList(tokens: any[]) {
   listEl.innerHTML = "";
 
   tokens.forEach((t: any) => {
-    const pill = document.createElement("div");
+    const pill = document.createElement("button");
+    pill.type = "button";
     pill.className = "neighbor-pill";
     pill.textContent = t.slug;
     pill.title = t.concept || "";
-    pill.onclick = () => loadGraphFocus(t.slug);
+    pill.addEventListener("click", () => loadGraphFocus(t.slug));
     listEl.appendChild(pill);
   });
 }
@@ -1611,7 +2083,7 @@ async function initOrShowGraph() {
     updateGraphCamera();
 
     // initial empty scene with soft fog
-    graphScene.fog = new THREE.Fog(0x07080d, 12, 28);
+    graphScene.fog = new THREE.Fog(cssColorHex("--bg-deep-space", "#f5f7fb"), 12, 28);
 
     // resize observer
     const ro = new ResizeObserver(() => {
@@ -1644,6 +2116,23 @@ async function initOrShowGraph() {
       graphDist = Math.max(2.5, Math.min(22, graphDist + e.deltaY * 0.012));
       updateGraphCamera();
     }, { passive: false });
+
+    canvas.addEventListener("keydown", (e) => {
+      const step = e.shiftKey ? 0.12 : 0.06;
+      if (e.key === "ArrowLeft") {
+        graphYaw -= step;
+      } else if (e.key === "ArrowRight") {
+        graphYaw += step;
+      } else if (e.key === "ArrowUp") {
+        graphPitch = Math.max(0.15, graphPitch - step);
+      } else if (e.key === "ArrowDown") {
+        graphPitch = Math.min(1.35, graphPitch + step);
+      } else {
+        return;
+      }
+      e.preventDefault();
+      updateGraphCamera();
+    });
 
     // click to focus (after possible drag)
     let clickStart = 0;
@@ -1732,7 +2221,8 @@ async function loadDashboard() {
     isLlmEnabled = settings.llm?.enabled || false;
     
     initializeTranslations();
-    void loadWorkspaceInfo();
+    void loadWorkspaceList();
+    void loadProviderStatus();
 
     // 2. Check due cards count and active domains
     const dueInfo = await runBridge<{ dueCount: number; domains: string[] }>("check-due");
@@ -1773,10 +2263,7 @@ async function loadDashboard() {
     // 3. Bring the local LLM online (auto-starts the server like `zam learn`)
     //    and reflect status. Don't block the dashboard on model load — show a
     //    "starting" state and update the badge once it resolves.
-    const aiStatusLabel = document.getElementById("ai-status-label")!;
-    const pulseDot = document.querySelector(".pulse-dot")!;
-    aiStatusLabel.textContent = t("ai_status_starting");
-    pulseDot.className = "pulse-dot amber";
+    setAiStatus(t("ai_status_starting"), "amber");
 
     runBridge<{ usable: boolean; online: boolean; reason?: string }>("ensure-llm", [
       "--timeout",
@@ -1784,19 +2271,15 @@ async function loadDashboard() {
     ])
       .then((llm) => {
         if (llm.usable) {
-          aiStatusLabel.textContent = t("ai_status_online");
-          pulseDot.className = "pulse-dot green";
+          setAiStatus(t("ai_status_online"), "green");
         } else if (llm.reason === "model-not-found") {
-          aiStatusLabel.textContent = t("ai_status_model_missing");
-          pulseDot.className = "pulse-dot gray";
+          setAiStatus(t("ai_status_model_missing"), "gray");
         } else {
-          aiStatusLabel.textContent = t("ai_status_offline");
-          pulseDot.className = "pulse-dot gray";
+          setAiStatus(t("ai_status_offline"), "gray");
         }
       })
       .catch(() => {
-        aiStatusLabel.textContent = t("ai_status_offline");
-        pulseDot.className = "pulse-dot gray";
+        setAiStatus(t("ai_status_offline"), "gray");
       });
   } catch (err) {
     console.error("Failed to load dashboard:", err);
@@ -2105,18 +2588,30 @@ async function submitRating(ratingVal: number) {
 // ── SESSION COMPLETION SCREEN ────────────────────────────────────────────
 function showCompletionState() {
   const studyView = document.getElementById("study-view")!;
-  studyView.innerHTML = `
-    <div class="study-card frosted" style="text-align: center; justify-content: center; align-items: center; gap: 20px; padding: 50px 30px;">
-      <div class="large-number" style="font-size: 60px; filter: drop-shadow(0 0 15px rgba(34, 197, 94, 0.4));">✓</div>
-      <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 10px;">${t("session_completed")}</h2>
-      <p style="color: var(--clr-text-secondary); max-width: 500px; line-height: 1.6; margin-bottom: 25px;">${t("session_completed_sub")}</p>
-      <button id="btn-back-to-dashboard" class="btn primary-btn btn-large glow-btn">${t("btn_back_to_dashboard")}</button>
-    </div>
-  `;
+  studyView.textContent = "";
+  const card = document.createElement("div");
+  card.className = "study-card frosted completion-card";
 
-  document.getElementById("btn-back-to-dashboard")!.addEventListener("click", () => {
+  const mark = document.createElement("div");
+  mark.className = "completion-mark";
+  mark.textContent = "✓";
+
+  const title = document.createElement("h2");
+  title.textContent = t("session_completed");
+
+  const subtitle = document.createElement("p");
+  subtitle.textContent = t("session_completed_sub");
+
+  const button = document.createElement("button");
+  button.id = "btn-back-to-dashboard";
+  button.className = "btn primary-btn btn-large glow-btn";
+  button.textContent = t("btn_back_to_dashboard");
+  button.addEventListener("click", () => {
     window.location.reload();
   });
+
+  card.append(mark, title, subtitle, button);
+  studyView.appendChild(card);
 }
 
 // ── KEYBOARD SHORTCUTS & EVENT BINDINGS ──────────────────────────────────
@@ -2135,6 +2630,9 @@ function devObserverEnabled(): boolean {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+  applyTheme(loadThemePreference());
+  initializeTranslations();
+
   // Load initial dashboard state
   loadDashboard();
   void loadAppVersion();
@@ -2152,6 +2650,27 @@ window.addEventListener("DOMContentLoaded", () => {
       switchView("study-view");
       loadNextCard();
     })();
+  });
+
+  document.getElementById("nav-dashboard")?.addEventListener("click", () => {
+    switchView("dashboard-view");
+  });
+
+  document.getElementById("nav-settings")?.addEventListener("click", () => {
+    switchView("settings-view");
+  });
+
+  document.getElementById("btn-open-settings")?.addEventListener("click", () => {
+    switchView("settings-view");
+  });
+
+  document.getElementById("btn-settings-back")?.addEventListener("click", () => {
+    switchView("dashboard-view");
+  });
+
+  document.getElementById("theme-select")?.addEventListener("change", (event) => {
+    const value = (event.target as HTMLSelectElement).value;
+    saveThemePreference(value === "dark" ? "dark" : "light");
   });
 
   // Setup & Data: reveal the data folder, back up the database.
@@ -2173,6 +2692,12 @@ window.addEventListener("DOMContentLoaded", () => {
         }
       })();
     });
+
+  document.getElementById("btn-open-terminal")?.addEventListener("click", () => {
+    void (async () => {
+      await openWorkspaceTerminal();
+    })();
+  });
 
   document.getElementById("btn-backup-db")?.addEventListener("click", () => {
     void (async () => {
@@ -2226,14 +2751,16 @@ window.addEventListener("DOMContentLoaded", () => {
             title: t("btn_choose_workspace"),
           });
           if (typeof selected !== "string") return; // cancelled
-          const res = await runBridge<{ ok?: boolean; workspaceDir?: string }>(
-            "set-workspace-dir",
-            ["--dir", selected],
-          );
+          const res = await runBridge<{
+            ok?: boolean;
+            workspace?: WorkspaceConfig;
+            workspaceDir?: string;
+          }>("workspace-add", ["--path", selected]);
           if (res.workspaceDir) {
-            await loadWorkspaceInfo();
+            activeWorkspaceDir = res.workspaceDir;
+            await loadWorkspaceList();
             if (status) {
-              status.textContent = tf("workspace_set", {
+              status.textContent = tf("workspace_added", {
                 path: res.workspaceDir,
               });
             }

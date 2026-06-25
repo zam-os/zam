@@ -1,12 +1,13 @@
 import { chmodSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { delimiter, dirname, join } from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   buildShellSetupCommand,
   findExecutable,
   isPowerShellShell,
   normalizeShell,
+  openTerminalWindow,
   psSingleQuoted,
 } from "../../src/cli/terminal-open.js";
 
@@ -19,6 +20,7 @@ afterEach(() => {
   for (const dir of tempDirs.splice(0)) {
     rmSync(dir, { recursive: true, force: true });
   }
+  vi.restoreAllMocks();
 });
 
 function makeExecutable(name: string): string {
@@ -104,5 +106,22 @@ describe("findExecutable", () => {
     } finally {
       process.env.PATH = originalPath;
     }
+  });
+});
+
+describe("openTerminalWindow", () => {
+  it("suppresses fallback instructions when silent", () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {});
+
+    openTerminalWindow({
+      shellSetup: "echo hello",
+      label: "agent-codex",
+      dir: "/work",
+      shell: "bash",
+      platform: "linux",
+      silent: true,
+    });
+
+    expect(log).not.toHaveBeenCalled();
   });
 });
