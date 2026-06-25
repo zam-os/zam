@@ -6,7 +6,7 @@
  * and change-managed team workflow.
  */
 
-import { execSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -23,9 +23,9 @@ import {
 /**
  * Execute a shell command inside a specific directory.
  */
-function runGit(cwd: string, args: string): string {
+function runGit(cwd: string, args: string[]): string {
   try {
-    return execSync(`git ${args}`, {
+    return execFileSync("git", args, {
       cwd,
       stdio: "pipe",
       encoding: "utf8",
@@ -33,6 +33,19 @@ function runGit(cwd: string, args: string): string {
   } catch (err) {
     throw new Error(`Git command failed: ${(err as Error).message}`);
   }
+}
+
+export function ghRepoCreateArgs(
+  repoName: string,
+  repoVisibility: "--private" | "--public",
+): string[] {
+  return ["repo", "create", repoName, repoVisibility, "--source=.", "--push"];
+}
+
+export function gitRemoteArgs(githubUrl: string, hasOrigin: boolean): string[] {
+  return hasOrigin
+    ? ["remote", "set-url", "origin", githubUrl]
+    : ["remote", "add", "origin", githubUrl];
 }
 
 export const workspaceCommand = new Command("workspace").description(
@@ -93,12 +106,13 @@ workspaceCommand
     const hasGitRepo = existsSync(join(workspaceDir, ".git"));
     if (!hasGitRepo) {
       console.log("Initializing local Git repository...");
-      runGit(workspaceDir, "init -b main");
-      runGit(workspaceDir, "add .");
-      runGit(
-        workspaceDir,
-        'commit -m "chore: initial workspace sandbox bootstrap"',
-      );
+      runGit(workspaceDir, ["init", "-b", "main"]);
+      runGit(workspaceDir, ["add", "."]);
+      runGit(workspaceDir, [
+        "commit",
+        "-m",
+        "chore: initial workspace sandbox bootstrap",
+      ]);
       console.log("\x1b[32m✓ Local Git repository initialized.\x1b[0m");
     } else {
       console.log("Git repository is already initialized.");
@@ -129,13 +143,10 @@ workspaceCommand
       if (proceedGh) {
         try {
           console.log(`Creating GitHub repository ${repoName}...`);
-          execSync(
-            `gh repo create ${repoName} ${repoVisibility} --source=. --push`,
-            {
-              cwd: workspaceDir,
-              stdio: "inherit",
-            },
-          );
+          execFileSync("gh", ghRepoCreateArgs(repoName, repoVisibility), {
+            cwd: workspaceDir,
+            stdio: "inherit",
+          });
           console.log(
             "\n\x1b[32m✓ Successfully published workspace to GitHub!\x1b[0m",
           );
@@ -173,17 +184,13 @@ workspaceCommand
         // Check if origin already exists
         let hasOrigin = false;
         try {
-          runGit(workspaceDir, "remote get-url origin");
+          runGit(workspaceDir, ["remote", "get-url", "origin"]);
           hasOrigin = true;
         } catch {}
 
-        if (hasOrigin) {
-          runGit(workspaceDir, `remote set-url origin ${githubUrl}`);
-        } else {
-          runGit(workspaceDir, `remote add origin ${githubUrl}`);
-        }
+        runGit(workspaceDir, gitRemoteArgs(githubUrl, hasOrigin));
 
-        runGit(workspaceDir, "push -u origin main");
+        runGit(workspaceDir, ["push", "-u", "origin", "main"]);
         console.log(
           "\x1b[32m✓ Successfully linked and pushed to GitHub!\x1b[0m",
         );

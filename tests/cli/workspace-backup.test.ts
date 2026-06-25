@@ -2,7 +2,11 @@ import { existsSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { backupDatabaseTo } from "../../src/cli/commands/workspace.js";
+import {
+  backupDatabaseTo,
+  ghRepoCreateArgs,
+  gitRemoteArgs,
+} from "../../src/cli/commands/workspace.js";
 import {
   createToken,
   getTokenBySlug,
@@ -20,6 +24,36 @@ afterEach(() => {
   for (const dir of dirs.splice(0)) {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+describe("workspace publish command arguments", () => {
+  it("passes gh repo creation inputs as argv segments", () => {
+    expect(ghRepoCreateArgs("name; touch nope", "--private")).toEqual([
+      "repo",
+      "create",
+      "name; touch nope",
+      "--private",
+      "--source=.",
+      "--push",
+    ]);
+  });
+
+  it("passes remote URLs as a single git argv segment", () => {
+    expect(
+      gitRemoteArgs("git@github.com:user/repo.git; touch nope", false),
+    ).toEqual([
+      "remote",
+      "add",
+      "origin",
+      "git@github.com:user/repo.git; touch nope",
+    ]);
+    expect(gitRemoteArgs("git@github.com:user/repo.git", true)).toEqual([
+      "remote",
+      "set-url",
+      "origin",
+      "git@github.com:user/repo.git",
+    ]);
+  });
 });
 
 describe("workspace database backup", () => {
