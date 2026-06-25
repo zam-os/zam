@@ -554,53 +554,128 @@ export interface VisionReadyResult {
   warning?: string;
 }
 
+interface ProviderEndpointReadiness {
+  endpoint: ProviderConfig;
+  online: boolean;
+  availableModels: string[];
+  modelAvailable: boolean;
+}
+
+function isLocalEndpoint(url: string): boolean {
+  return (
+    url.includes("localhost") ||
+    url.includes("127.0.0.1") ||
+    url.includes("[::1]") ||
+    url.includes("::1")
+  );
+}
+
+async function checkProviderEndpoint(
+  endpoint: ProviderConfig,
+): Promise<ProviderEndpointReadiness> {
+  const online = await isLlmOnline(endpoint.url);
+  if (!online) {
+    return {
+      endpoint,
+      online: false,
+      availableModels: [],
+      modelAvailable: false,
+    };
+  }
+
+  const availableModels = await getAvailableModels(
+    endpoint.url,
+    endpoint.apiKey,
+  );
+  const modelAvailable =
+    availableModels.length === 0 ||
+    availableModels.some(
+      (candidate) => candidate.toLowerCase() === endpoint.model.toLowerCase(),
+    );
+
+  return { endpoint, online, availableModels, modelAvailable };
+}
+
+function isEndpointUsable(readiness: ProviderEndpointReadiness): boolean {
+  return readiness.online && readiness.modelAvailable;
+}
+
+function providerChain(primary: ProviderConfig): ProviderConfig[] {
+  return [primary, ...(primary.fallback ? [primary.fallback] : [])];
+}
+
+async function checkProviderChain(primary: ProviderConfig): Promise<{
+  primary: ProviderEndpointReadiness;
+  firstUsable?: ProviderEndpointReadiness;
+}> {
+  let first: ProviderEndpointReadiness | undefined;
+  for (const endpoint of providerChain(primary)) {
+    const readiness = await checkProviderEndpoint(endpoint);
+    first ??= readiness;
+    if (isEndpointUsable(readiness)) {
+      return { primary: first, firstUsable: readiness };
+    }
+  }
+  return { primary: first! };
+}
+
+async function isVisionProviderModelExplicit(
+  db: Database,
+  active: ProviderConfig,
+): Promise<boolean> {
+  if (await getSetting(db, "llm.vision.model")) return true;
+
+  const providers = await readJsonSetting<ProvidersMap>(db, "llm.providers");
+  const roles = await readJsonSetting<RolesMap>(db, "llm.roles");
+  const binding = roles?.vision;
+  if (!providers || !binding) return false;
+
+  return [binding.primary, binding.fallback].some((id) => {
+    if (!id) return false;
+    const rec = providers[id];
+    return (
+      rec?.model === active.model &&
+      (rec.url === undefined || rec.url === active.url)
+    );
+  });
+}
+
 /** Non-starting readiness check for the opt-in UI observer vision endpoint. */
 export async function checkVisionReadiness(
   db: Database,
 ): Promise<VisionReadyResult> {
-  const { enabled, url, model, apiKey } = await getVisionConfig(db);
-  const visionModelSetting = await getSetting(db, "llm.vision.model");
-  const visionModelExplicit = !!visionModelSetting;
-
-  let online = false;
-  let availableModels: string[] = [];
-  let modelAvailable = false;
-
-  if (enabled) {
-    online = await isLlmOnline(url);
-    if (online) {
-      availableModels = await getAvailableModels(url, apiKey);
-      modelAvailable =
-        availableModels.length === 0 ||
-        availableModels.some(
-          (candidate) => candidate.toLowerCase() === model.toLowerCase(),
-        );
-    }
-  }
+  const cfg = await getProviderForRole(db, "vision");
+  const chain = cfg.enabled ? await checkProviderChain(cfg) : undefined;
+  const selected = chain?.firstUsable ?? chain?.primary;
+  const active = selected?.endpoint ?? cfg;
+  const online = selected?.online ?? false;
+  const availableModels = selected?.availableModels ?? [];
+  const modelAvailable = selected?.modelAvailable ?? false;
+  const visionModelExplicit = await isVisionProviderModelExplicit(db, active);
 
   // Warn when vision falls back to the base text model — it is almost
   // certainly a text-only model that cannot interpret images.
   let warning: string | undefined;
-  if (enabled && online && modelAvailable && !visionModelExplicit) {
-    const cloudRec = getCloudModelRecommendation(url);
-    if (cloudRec && model === cloudRec) {
+  if (cfg.enabled && online && modelAvailable && !visionModelExplicit) {
+    const cloudRec = getCloudModelRecommendation(active.url);
+    if (cloudRec && active.model === cloudRec) {
       // Auto-recommended cloud vision model is active; do not warn about text-only fallback.
     } else {
       warning =
         `No explicit vision model configured (llm.vision.model). ` +
-        `Falling back to base model "${model}", which may not support image input. ` +
+        `Falling back to base model "${active.model}", which may not support image input. ` +
         `Set a multimodal model: zam settings set llm.vision.model <model>`;
     }
   }
 
   return {
-    enabled,
+    enabled: cfg.enabled,
     online,
-    url,
-    model,
+    url: active.url,
+    model: active.model,
     modelAvailable,
     availableModels,
-    usable: enabled && online && modelAvailable,
+    usable: cfg.enabled && online && modelAvailable,
     visionModelExplicit,
     warning,
   };
@@ -609,7 +684,7 @@ export async function checkVisionReadiness(
 /** Whether the local LLM can actually be used this session, and if not, why. */
 export interface LlmReadiness {
   usable: boolean;
-  reason?: "disabled" | "offline" | "model-not-found";
+  reason?: "disabled" | "offline" | "model-not-found" | "unsupported-provider";
 }
 
 type RunnerKind = "fastflowlm" | "ollama" | "generic" | "unknown";
@@ -783,13 +858,19 @@ async function startLocalRunner(
 export async function ensureLocalLlmRunning(
   db: Database,
 ): Promise<LlmReadiness> {
-  const cfg = await getLlmConfig(db);
+  const cfg = await getProviderForRole(db, "recall");
   if (!cfg.enabled) {
     return { usable: false, reason: "disabled" };
   }
+  if (cfg.apiFlavor !== "chat-completions") {
+    console.warn(
+      `\x1b[31m✗ Recall is configured for "${cfg.apiFlavor}", but active recall currently supports chat-completions providers only.\x1b[0m`,
+    );
+    return { usable: false, reason: "unsupported-provider" };
+  }
 
   const { url, model, apiKey, locale } = cfg;
-  const isLocal = url.includes("localhost") || url.includes("127.0.0.1");
+  const isLocal = isLocalEndpoint(url);
 
   console.log(`Checking if local LLM server is online at ${url}...`);
   let online = await isLlmOnline(url);
@@ -849,8 +930,9 @@ export async function ensureLlmReadyHeadless(
   opts: { timeoutMs?: number } = {},
 ): Promise<LlmReadyResult> {
   const timeoutMs = opts.timeoutMs ?? 25000;
-  const { enabled, url, model, apiKey } = await getLlmConfig(db);
-  if (!enabled) {
+  const cfg = await getProviderForRole(db, "recall");
+  const { url, model, apiKey } = cfg;
+  if (!cfg.enabled) {
     return {
       usable: false,
       reason: "disabled",
@@ -859,8 +941,17 @@ export async function ensureLlmReadyHeadless(
       availableModels: [],
     };
   }
+  if (cfg.apiFlavor !== "chat-completions") {
+    return {
+      usable: false,
+      reason: "unsupported-provider",
+      online: false,
+      model,
+      availableModels: [],
+    };
+  }
 
-  const isLocal = url.includes("localhost") || url.includes("127.0.0.1");
+  const isLocal = isLocalEndpoint(url);
 
   let online = await isLlmOnline(url);
   if (!online && isLocal) {

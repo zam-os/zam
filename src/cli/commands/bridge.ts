@@ -63,6 +63,7 @@ import {
   evaluateAnswerViaLLM,
   getAvailableModels,
   getLlmConfig,
+  getProviderForRole,
   isLlmOnline,
   translateQuestionViaLLM,
 } from "../llm/client.js";
@@ -1718,11 +1719,13 @@ bridgeCommand
   .description("Check if LLM is enabled and online (JSON)")
   .action(async () => {
     await withDb(async (db) => {
-      const { enabled, url, model, apiKey } = await getLlmConfig(db);
+      const provider = await getProviderForRole(db, "recall");
+      const { enabled, url, model, apiKey } = provider;
+      const unsupportedProvider = provider.apiFlavor !== "chat-completions";
       let online = false;
       let availableModels: string[] = [];
       let modelAvailable = false;
-      if (enabled) {
+      if (enabled && !unsupportedProvider) {
         online = await isLlmOnline(url);
         if (online) {
           availableModels = await getAvailableModels(url, apiKey);
@@ -1741,6 +1744,8 @@ bridgeCommand
         model,
         modelAvailable,
         availableModels,
+        apiFlavor: provider.apiFlavor,
+        unsupportedProvider,
       });
     });
   });
