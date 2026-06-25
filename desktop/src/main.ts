@@ -1,7 +1,12 @@
+import { getVersion } from "@tauri-apps/api/app";
 import { invoke } from "@tauri-apps/api/core";
 import { appDataDir, join as joinPath } from "@tauri-apps/api/path";
 import { open as openFolderDialog } from "@tauri-apps/plugin-dialog";
+import { openUrl } from "@tauri-apps/plugin-opener";
+import { check as checkForUpdate } from "@tauri-apps/plugin-updater";
 import * as THREE from "three";
+
+const ZAM_RELEASES_URL = "https://github.com/zam-os/zam/releases";
 
 // ── LOCALIZATION DICTIONARIES ─────────────────────────────────────────────
 const TRANSLATIONS: Record<string, Record<string, string>> = {
@@ -104,6 +109,15 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     workspace_default_suffix: "(default)",
     workspace_set: "Workspace set to {path}",
     workspace_pick_failed: "Could not set workspace: {message}",
+    lbl_app_version: "Version",
+    btn_check_updates: "Check for updates",
+    btn_open_releases: "Releases",
+    version_unknown: "unknown",
+    update_checking: "Checking for updates...",
+    update_available: "Update available: {version}",
+    update_none: "You are on the latest version.",
+    update_failed: "Update check failed: {message}",
+    release_link_failed: "Could not open releases: {message}",
   },
   de: {
     ai_status_offline: "Lokale KI offline",
@@ -204,6 +218,15 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     workspace_default_suffix: "(Standard)",
     workspace_set: "Arbeitsbereich gesetzt: {path}",
     workspace_pick_failed: "Arbeitsbereich konnte nicht gesetzt werden: {message}",
+    lbl_app_version: "Version",
+    btn_check_updates: "Nach Updates suchen",
+    btn_open_releases: "Releases",
+    version_unknown: "unbekannt",
+    update_checking: "Suche nach Updates...",
+    update_available: "Update verfügbar: {version}",
+    update_none: "Du nutzt die aktuelle Version.",
+    update_failed: "Update-Prüfung fehlgeschlagen: {message}",
+    release_link_failed: "Releases konnten nicht geöffnet werden: {message}",
   }
 };
 
@@ -502,6 +525,9 @@ function initializeTranslations() {
   document.getElementById("lbl-workspace")!.textContent = t("lbl_workspace");
   document.getElementById("btn-choose-workspace")!.textContent =
     t("btn_choose_workspace");
+  document.getElementById("lbl-app-version")!.textContent = t("lbl_app_version");
+  document.getElementById("btn-check-updates")!.textContent = t("btn_check_updates");
+  document.getElementById("btn-open-releases")!.textContent = t("btn_open_releases");
 
   // Locale badge
   document.getElementById("locale-badge")!.textContent = currentLocale.toUpperCase();
@@ -522,6 +548,48 @@ async function loadWorkspaceInfo(): Promise<void> {
       : `${dir} ${t("workspace_default_suffix")}`;
   } catch {
     // Leave the placeholder in place if the bridge is unavailable.
+  }
+}
+
+async function loadAppVersion(): Promise<void> {
+  const versionEl = document.getElementById("app-version");
+  if (!versionEl) return;
+  try {
+    versionEl.textContent = `v${await getVersion()}`;
+  } catch {
+    versionEl.textContent = t("version_unknown");
+  }
+}
+
+async function checkDesktopUpdates(): Promise<void> {
+  const status = document.getElementById("update-status");
+  const button = document.getElementById("btn-check-updates") as HTMLButtonElement | null;
+  if (status) status.textContent = t("update_checking");
+  if (button) button.disabled = true;
+  try {
+    const update = await checkForUpdate();
+    if (status) {
+      status.textContent = update
+        ? tf("update_available", { version: update.version })
+        : t("update_none");
+    }
+  } catch (err) {
+    if (status) {
+      status.textContent = tf("update_failed", { message: errorMessage(err) });
+    }
+  } finally {
+    if (button) button.disabled = false;
+  }
+}
+
+async function openReleasesPage(): Promise<void> {
+  try {
+    await openUrl(ZAM_RELEASES_URL);
+  } catch (err) {
+    const status = document.getElementById("update-status");
+    if (status) {
+      status.textContent = tf("release_link_failed", { message: errorMessage(err) });
+    }
   }
 }
 
@@ -2069,6 +2137,7 @@ function devObserverEnabled(): boolean {
 window.addEventListener("DOMContentLoaded", () => {
   // Load initial dashboard state
   loadDashboard();
+  void loadAppVersion();
 
   // The manual UI Observer is a developer-only affordance; reveal it only when
   // the dev key is set (see devObserverEnabled).
@@ -2134,6 +2203,14 @@ window.addEventListener("DOMContentLoaded", () => {
         }
       }
     })();
+  });
+
+  document.getElementById("btn-check-updates")?.addEventListener("click", () => {
+    void checkDesktopUpdates();
+  });
+
+  document.getElementById("btn-open-releases")?.addEventListener("click", () => {
+    void openReleasesPage();
   });
 
   // Setup & Data: choose the workspace directory (native folder picker).
