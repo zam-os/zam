@@ -1,5 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import { appDataDir, join as joinPath } from "@tauri-apps/api/path";
+import { open as openFolderDialog } from "@tauri-apps/plugin-dialog";
 import * as THREE from "three";
 
 // ── LOCALIZATION DICTIONARIES ─────────────────────────────────────────────
@@ -98,6 +99,11 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     setup_backup_failed: "Backup failed: {message}",
     setup_backup_failed_generic: "Backup failed.",
     setup_open_folder_failed: "Could not open the data folder: {message}",
+    lbl_workspace: "Workspace",
+    btn_choose_workspace: "Choose workspace…",
+    workspace_default_suffix: "(default)",
+    workspace_set: "Workspace set to {path}",
+    workspace_pick_failed: "Could not set workspace: {message}",
   },
   de: {
     ai_status_offline: "Lokale KI offline",
@@ -193,6 +199,11 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     setup_backup_failed: "Sicherung fehlgeschlagen: {message}",
     setup_backup_failed_generic: "Sicherung fehlgeschlagen.",
     setup_open_folder_failed: "Datenordner konnte nicht geöffnet werden: {message}",
+    lbl_workspace: "Arbeitsbereich",
+    btn_choose_workspace: "Arbeitsbereich wählen…",
+    workspace_default_suffix: "(Standard)",
+    workspace_set: "Arbeitsbereich gesetzt: {path}",
+    workspace_pick_failed: "Arbeitsbereich konnte nicht gesetzt werden: {message}",
   }
 };
 
@@ -488,9 +499,30 @@ function initializeTranslations() {
   document.getElementById("lbl-setup-title")!.textContent = t("setup_title");
   document.getElementById("btn-open-data-folder")!.textContent = t("btn_open_data_folder");
   document.getElementById("btn-backup-db")!.textContent = t("btn_backup_db");
+  document.getElementById("lbl-workspace")!.textContent = t("lbl_workspace");
+  document.getElementById("btn-choose-workspace")!.textContent =
+    t("btn_choose_workspace");
 
   // Locale badge
   document.getElementById("locale-badge")!.textContent = currentLocale.toUpperCase();
+}
+
+/** Show the configured workspace dir (or the default, marked as such). */
+async function loadWorkspaceInfo(): Promise<void> {
+  const pathEl = document.getElementById("workspace-path");
+  if (!pathEl) return;
+  try {
+    const info = await runBridge<{
+      workspaceDir: string | null;
+      defaultWorkspaceDir: string;
+    }>("workspace-info");
+    const dir = info.workspaceDir ?? info.defaultWorkspaceDir;
+    pathEl.textContent = info.workspaceDir
+      ? dir
+      : `${dir} ${t("workspace_default_suffix")}`;
+  } catch {
+    // Leave the placeholder in place if the bridge is unavailable.
+  }
 }
 
 async function listObserverWindows(): Promise<void> {
@@ -1632,6 +1664,7 @@ async function loadDashboard() {
     isLlmEnabled = settings.llm?.enabled || false;
     
     initializeTranslations();
+    void loadWorkspaceInfo();
 
     // 2. Check due cards count and active domains
     const dueInfo = await runBridge<{ dueCount: number; domains: string[] }>("check-due");
@@ -2102,6 +2135,41 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     })();
   });
+
+  // Setup & Data: choose the workspace directory (native folder picker).
+  document
+    .getElementById("btn-choose-workspace")
+    ?.addEventListener("click", () => {
+      void (async () => {
+        const status = document.getElementById("setup-status");
+        try {
+          const selected = await openFolderDialog({
+            directory: true,
+            multiple: false,
+            title: t("btn_choose_workspace"),
+          });
+          if (typeof selected !== "string") return; // cancelled
+          const res = await runBridge<{ ok?: boolean; workspaceDir?: string }>(
+            "set-workspace-dir",
+            ["--dir", selected],
+          );
+          if (res.workspaceDir) {
+            await loadWorkspaceInfo();
+            if (status) {
+              status.textContent = tf("workspace_set", {
+                path: res.workspaceDir,
+              });
+            }
+          }
+        } catch (err) {
+          if (status) {
+            status.textContent = tf("workspace_pick_failed", {
+              message: errorMessage(err),
+            });
+          }
+        }
+      })();
+    });
 
   // Open 3D Graph (experimental)
   const openGraphBtn = document.getElementById("btn-open-graph") as HTMLButtonElement | null;
