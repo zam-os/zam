@@ -161,3 +161,17 @@ export function setProviderApiKey(
   creds.llmProviders = { ...creds.llmProviders, [name]: { apiKey } };
   saveCredentials(creds, path);
 }
+
+/** Remove a named LLM provider's stored API key. No-op if it was unset. */
+export function clearProviderApiKey(name: string, path?: string): void {
+  const creds = loadCredentials(path);
+  if (creds.llmProviders && name in creds.llmProviders) {
+    delete creds.llmProviders[name];
+    saveCredentials(creds, path);
+  }
+}
+
+/** List the reference names (`apiKeyRef`) that currently have a stored key. */
+export function listProviderApiKeyRefs(path?: string): string[] {
+  return Object.keys(loadCredentials(path).llmProviders ?? {});
+}

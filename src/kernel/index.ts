@@ -22,10 +22,12 @@ export type {
 // Credentials (stored in ~/.zam/credentials.json, survives db deletion)
 export {
   clearADOCredentials,
+  clearProviderApiKey,
   clearTursoCredentials,
   getADOCredentials,
   getProviderApiKey,
   getTursoCredentials,
+  listProviderApiKeyRefs,
   loadCredentials,
   saveCredentials,
   setADOCredentials,
