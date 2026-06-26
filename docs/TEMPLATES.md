@@ -81,9 +81,9 @@ After running the setup skill, `zam-core` distributes its own skill file:
 .agents/skills/zam/SKILL.md    ← from node_modules/zam-core/.agents/skills/zam/
 ```
 
-Claude- and Gemini-compatible clients invoke their skills with `/setup` and
-`/zam`. Codex invokes repository skills with `$setup` and `$zam`, or selects
-them through `/skills`.
+Claude-, Copilot-, and Gemini-compatible clients invoke their skills with
+`/setup` and `/zam`. Codex invokes repository skills with `$setup` and `$zam`,
+or selects them through `/skills`.
 
 ### Personal config schema (`.zam/config.yaml`)
 
@@ -237,12 +237,14 @@ Skill files always travel with the package that defines them:
 
 | Package / repo | Owns skill group | Distributes via |
 |----------------|-----------------|-----------------|
-| `zam-core` | `.claude/skills/zam/`, `.agent/skills/zam/`, `.agents/skills/zam/` | `zam setup` (copies from `node_modules/zam-core/`) |
+| `zam-core` | `.claude/skills/zam/` for Claude/Copilot, `.agent/skills/zam/`, `.agents/skills/zam/` for Codex | `zam setup` (copies from `node_modules/zam-core/`) |
 | Personal/community template | `.claude/skills/setup/`, `.gemini/skills/setup/`, `.agents/skills/setup/` | Static in template (always present before setup runs) |
 | Future: `zam-devops` | Per-client `skills/devops/` | `devops setup` (copies from `node_modules/zam-devops/`) |
 
 The naming convention `<ai-cli>/skills/<group>/SKILL.md` provides natural
-namespacing. Codex specifically requires the plural `.agents/skills` path.
+namespacing. Copilot CLI currently reads the Claude-compatible
+`.claude/skills` project manifest path, while Codex specifically requires the
+plural `.agents/skills` path.
 No central registry is needed — each package owns its subdirectory.
 
 ---

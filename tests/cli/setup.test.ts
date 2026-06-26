@@ -17,7 +17,7 @@ import {
 } from "../../src/cli/commands/setup.js";
 
 describe("setup command helpers", () => {
-  it("copies ZAM skills for Claude, shared agents, and Codex", () => {
+  it("copies ZAM skills for Claude/Copilot, shared agents, and Codex", () => {
     const cwd = mkdtempSync(join(tmpdir(), "zam-setup-skills-"));
 
     try {
@@ -61,6 +61,26 @@ describe("setup command helpers", () => {
     expect(parseSetupAgents("all").has("agent")).toBe(true);
   });
 
+  it("maps Copilot setup to the project skill manifest path Copilot loads", () => {
+    const cwd = mkdtempSync(join(tmpdir(), "zam-copilot-skills-"));
+
+    try {
+      copySkills(false, cwd, parseSetupAgents("copilot"));
+
+      expect(
+        existsSync(join(cwd, ".claude", "skills", "zam", "SKILL.md")),
+      ).toBe(true);
+      expect(
+        existsSync(join(cwd, ".agents", "skills", "zam", "SKILL.md")),
+      ).toBe(false);
+      expect(
+        existsSync(join(cwd, ".agent", "skills", "zam", "SKILL.md")),
+      ).toBe(false);
+    } finally {
+      rmSync(cwd, { recursive: true, force: true });
+    }
+  });
+
   it("updates existing instruction files with a marked ZAM block", () => {
     const cwd = mkdtempSync(join(tmpdir(), "zam-existing-instructions-"));
 
@@ -90,7 +110,7 @@ describe("setup command helpers", () => {
         "utf8",
       );
       expect(content).toContain("<!-- ZAM:START -->");
-      expect(content).toContain(".agents/skills/zam/");
+      expect(content).toContain(".claude/skills/zam/");
     } finally {
       rmSync(cwd, { recursive: true, force: true });
     }

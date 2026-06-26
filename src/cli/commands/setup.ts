@@ -44,7 +44,7 @@ const SKILL_PAIRS: Array<{
   {
     from: join(packageRoot, ".claude", "skills", "zam", "SKILL.md"),
     to: join(".claude", "skills", "zam", "SKILL.md"),
-    agents: ["claude"],
+    agents: ["claude", "copilot"],
   },
   {
     from: join(packageRoot, ".agent", "skills", "zam", "SKILL.md"),
@@ -54,7 +54,7 @@ const SKILL_PAIRS: Array<{
   {
     from: join(packageRoot, ".agents", "skills", "zam", "SKILL.md"),
     to: join(".agents", "skills", "zam", "SKILL.md"),
-    agents: ["copilot", "codex"],
+    agents: ["codex"],
   },
 ];
 
@@ -225,7 +225,7 @@ ZAM is available in this repository. Use the \`zam\` skill in Claude Code to tur
 
 - Skill files live under \`.claude/skills/zam/\`.
 - Fast-changing review data lives in \`~/.zam/\`, not in this repository.
-- Run \`zam setup --target . --agents claude --force\` after upgrading ZAM to refresh the skill.`,
+- Run \`zam setup --target . --agents claude,copilot --force\` after upgrading ZAM to refresh the skill.`,
       Boolean(opts.dryRun),
     );
     logInstructionAction(action, "CLAUDE.md", Boolean(opts.dryRun));
@@ -282,7 +282,7 @@ ZAM is available in this repository. Select the \`zam\` skill through \`/skills\
 
 - Skill files live under \`.agents/skills/zam/\`.
 - Fast-changing review data lives in \`~/.zam/\`, not in this repository.
-- Run \`zam setup --target . --agents copilot,codex --force\` after upgrading ZAM to refresh the skill.`,
+- Run \`zam setup --target . --agents codex,agent --force\` after upgrading ZAM to refresh the skill.`,
       Boolean(opts.dryRun),
     );
     logInstructionAction(action, "AGENTS.md", Boolean(opts.dryRun));
@@ -334,7 +334,7 @@ export function writeCopilotInstructions(
     dest,
     `## ZAM learning sessions
 
-ZAM is available in this repository through \`.agents/skills/zam/\`. Use the \`zam\` skill from Copilot-compatible skill selection surfaces to turn real work into an observed learning session with active recall and FSRS scheduling.
+ZAM is available in this repository through \`.claude/skills/zam/\`. Use the \`zam\` project skill from Copilot-compatible skill selection surfaces to turn real work into an observed learning session with active recall and FSRS scheduling.
 
 - Fast-changing review data lives in \`~/.zam/\`, not in this repository.
 - Run \`zam setup --target . --agents copilot --force\` after upgrading ZAM to refresh the skill.`,
@@ -401,7 +401,7 @@ export const setupCommand = new Command("setup")
           updateExisting: updateExistingInstructions,
         });
       }
-      if (agents.has("copilot") || agents.has("codex") || agents.has("agent")) {
+      if (agents.has("codex") || agents.has("agent")) {
         writeAgentsMd(opts.skipAgentsMd, target, {
           dryRun: opts.dryRun,
           updateExisting: updateExistingInstructions,
@@ -415,7 +415,7 @@ export const setupCommand = new Command("setup")
       }
 
       console.log(
-        "\nDone. Run `zam whoami --set <your-id>` to set your identity. Start the `zam` skill with `/zam` in Claude/Gemini-compatible clients or `$zam` (or `/skills`) in Codex.",
+        "\nDone. Run `zam whoami --set <your-id>` to set your identity. Start the `zam` skill with `/zam` in Claude/Copilot/Gemini-compatible clients or `$zam` (or `/skills`) in Codex.",
       );
     },
   );
