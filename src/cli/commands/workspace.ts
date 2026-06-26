@@ -235,7 +235,7 @@ workspaceCommand
           updateExisting: true,
         });
       }
-      if (agents.has("copilot") || agents.has("codex") || agents.has("agent")) {
+      if (agents.has("codex") || agents.has("agent")) {
         writeAgentsMd(false, workspace.path, {
           dryRun: Boolean(opts.dryRun),
           updateExisting: true,

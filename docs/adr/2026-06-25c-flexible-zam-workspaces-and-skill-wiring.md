@@ -58,9 +58,9 @@ zam workspace setup cops-management --agents copilot,claude
 
 Skill setup is non-destructive:
 
-- copy or refresh `.agents\skills\zam\SKILL.md` for Copilot/Codex-style repo
-  skills;
-- copy or refresh `.claude\skills\zam\SKILL.md` for Claude Code;
+- copy or refresh `.claude\skills\zam\SKILL.md` for Claude Code and
+  Copilot CLI project skills;
+- copy or refresh `.agents\skills\zam\SKILL.md` for Codex-style repo skills;
 - preserve existing `CLAUDE.md`, `AGENTS.md`, and
   `.github\copilot-instructions.md`;
 - create or refresh only clearly marked ZAM instruction blocks;
