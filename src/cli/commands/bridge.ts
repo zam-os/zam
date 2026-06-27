@@ -7,7 +7,13 @@
 
 import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
-import { existsSync, readdirSync, readFileSync, rmSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+} from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { basename, join, resolve } from "node:path";
 import { Command } from "commander";
@@ -51,6 +57,7 @@ import {
   pairCommands,
   readMonitorLog,
   readUiObservationLog,
+  removeConfiguredWorkspace,
   resolveObserverPolicy,
   resolveReviewContext,
   setSetting,
@@ -81,6 +88,7 @@ import {
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
 import { normalizeShell } from "../terminal-open.js";
 import { ensureDefaultUser, resolveUser } from "./resolve-user.js";
+import { parseSetupAgents, wireSkills } from "./setup.js";
 import { withDb as sharedWithDb } from "./shared/db.js";
 import { backupDatabaseTo } from "./workspace.js";
 
@@ -275,6 +283,55 @@ bridgeCommand
     });
   });
 
+function sameWorkspacePath(left: string, right: string): boolean {
+  const normalize = (value: string) => {
+    const path = resolve(value);
+    return process.platform === "win32" ? path.toLowerCase() : path;
+  };
+  return normalize(left) === normalize(right);
+}
+
+async function ensureDesktopWorkspace(db: Database): Promise<{
+  workspaceDir: string;
+  skillLinks: ReturnType<typeof wireSkills>;
+}> {
+  const configured = getConfiguredWorkspaces();
+  const savedWorkspaceDir = await getSetting(db, "personal.workspace_dir");
+  const workspaceDir =
+    savedWorkspaceDir ||
+    configured.find((workspace) => workspace.kind === "personal")?.path ||
+    join(homedir(), "Documents", "zam");
+
+  mkdirSync(workspaceDir, { recursive: true });
+  if (!savedWorkspaceDir) {
+    await setSetting(db, "personal.workspace_dir", workspaceDir);
+  }
+
+  if (
+    !configured.some((workspace) =>
+      sameWorkspacePath(workspace.path, workspaceDir),
+    )
+  ) {
+    const id = configured.some((workspace) => workspace.id === "personal")
+      ? workspaceIdFromPath(workspaceDir)
+      : "personal";
+    upsertConfiguredWorkspace({
+      id,
+      label: basename(workspaceDir) || "ZAM",
+      kind: "personal",
+      path: workspaceDir,
+    });
+  }
+
+  const skillLinks = getConfiguredWorkspaces().flatMap((workspace) =>
+    existsSync(workspace.path)
+      ? wireSkills(workspace.path, parseSetupAgents(), { quiet: true })
+      : [],
+  );
+
+  return { workspaceDir, skillLinks };
+}
+
 bridgeCommand
   .command("workspace-list")
   .description("List configured ZAM workspaces (JSON)")
@@ -339,6 +396,7 @@ bridgeCommand
       kind: parseBridgeWorkspaceKind(opts.kind),
       path,
     };
+    const skillLinks = wireSkills(path, parseSetupAgents(), { quiet: true });
     await withDb(async (db) => {
       await setSetting(db, "personal.workspace_dir", path);
       upsertConfiguredWorkspace(workspace);
@@ -347,6 +405,50 @@ bridgeCommand
         workspace,
         workspaces: getConfiguredWorkspaces(),
         workspaceDir: path,
+        skillLinks,
+      });
+    });
+  });
+
+bridgeCommand
+  .command("workspace-remove")
+  .description("Unregister a ZAM workspace without deleting its files (JSON)")
+  .requiredOption("--id <id>", "Workspace id")
+  .action(async (opts) => {
+    const id = String(opts.id ?? "").trim();
+    if (!id) jsonError("A non-empty --id is required");
+    const workspace = getConfiguredWorkspaces().find((item) => item.id === id);
+    if (!workspace) jsonError(`Workspace "${id}" is not configured`);
+
+    await withDb(async (db) => {
+      const activeWorkspaceDir =
+        (await getSetting(db, "personal.workspace_dir")) || null;
+      const remaining = removeConfiguredWorkspace(id);
+      let workspaceDir = activeWorkspaceDir;
+      let skillLinks: ReturnType<typeof wireSkills> = [];
+
+      if (
+        activeWorkspaceDir &&
+        sameWorkspacePath(activeWorkspaceDir, workspace.path)
+      ) {
+        if (remaining.length > 0) {
+          workspaceDir = remaining[0].path;
+          await setSetting(db, "personal.workspace_dir", workspaceDir);
+        } else {
+          workspaceDir = join(homedir(), "Documents", "zam");
+          await setSetting(db, "personal.workspace_dir", workspaceDir);
+          const ensured = await ensureDesktopWorkspace(db);
+          workspaceDir = ensured.workspaceDir;
+          skillLinks = ensured.skillLinks;
+        }
+      }
+
+      jsonOut({
+        ok: true,
+        removed: workspace,
+        workspaces: getConfiguredWorkspaces(),
+        workspaceDir,
+        skillLinks,
       });
     });
   });
@@ -359,9 +461,11 @@ bridgeCommand
     const raw = String(opts.dir ?? "").trim();
     if (!raw) jsonError("A non-empty --dir is required");
     const dir = resolve(raw);
+    if (!existsSync(dir)) jsonError(`Workspace path does not exist: ${dir}`);
+    const skillLinks = wireSkills(dir, parseSetupAgents(), { quiet: true });
     await withDb(async (db) => {
       await setSetting(db, "personal.workspace_dir", dir);
-      jsonOut({ ok: true, workspaceDir: dir });
+      jsonOut({ ok: true, workspaceDir: dir, skillLinks });
     });
   });
 
@@ -2109,10 +2213,13 @@ bridgeCommand
     await withDb(async (db) => {
       const userId = await ensureDefaultUser(db, opts.user);
       const { enabled, url, model, locale } = await getLlmConfig(db);
+      const { workspaceDir, skillLinks } = await ensureDesktopWorkspace(db);
       jsonOut({
         userId,
         locale,
         llm: { enabled, url, model },
+        workspaceDir,
+        skillLinks,
       });
     });
   });

@@ -1,6 +1,6 @@
 # Flexible ZAM Workspaces and Skill Wiring
 
-**Status:** Proposed
+**Status:** Accepted
 **Deciders:** Thomas (project owner)
 **Related:**
 [2026-03-26-personal-workflow-foundations.md](2026-03-26-personal-workflow-foundations.md) ·
@@ -58,16 +58,19 @@ zam workspace setup cops-management --agents copilot,claude
 
 Skill setup is non-destructive:
 
-- copy or refresh `.claude\skills\zam\SKILL.md` for Claude Code and
-  Copilot CLI project skills;
-- copy or refresh `.agents\skills\zam\SKILL.md` for Codex-style repo skills;
+- create a directory junction on Windows, or a directory symlink on macOS/Linux,
+  from each agent-specific `skills/zam` directory to the installed ZAM skill;
+- migrate the old single-file ZAM copies automatically;
+- preserve unmanaged skill directories unless `--force` is explicit;
 - preserve existing `CLAUDE.md`, `AGENTS.md`, and
   `.github\copilot-instructions.md`;
 - create or refresh only clearly marked ZAM instruction blocks;
 - support `--dry-run` and `--force`.
 
-The installed ZAM package or desktop resource bundle remains the source of skill
-files. A source checkout is not required.
+The installed ZAM package, desktop resource bundle, or developer checkout
+remains the single source of skill files. Updating that source immediately
+updates every linked workspace. Workspace-specific ignore rules remain under
+the repository owner's control.
 
 ## Consequences
 
@@ -81,7 +84,7 @@ files. A source checkout is not required.
 
 **Harder**
 
-- Setup must avoid clobbering existing agent instructions.
+- Setup must avoid clobbering existing agent instructions or unmanaged skill directories.
 - Host-specific invocation differs. Not every agent exposes a literal `/zam`
   slash command; the skill must be installed and documented according to each
   host's supported mechanism.

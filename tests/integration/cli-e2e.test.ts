@@ -4,6 +4,11 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
+// Each test shells out to the built CLI several times via execSync. Cold Node
+// startup on Windows makes 6–7 spawns exceed Vitest's 5s default, so give these
+// process-spawning integration tests generous, file-scoped headroom.
+const E2E_TIMEOUT_MS = 30_000;
+
 describe("cli E2E tests", () => {
   let tempHome: string;
   let tempCwd: string;
@@ -61,7 +66,7 @@ describe("cli E2E tests", () => {
     // 4. Verify identity is saved and read correctly
     const whoamiOutput = runCli(["whoami"]);
     expect(whoamiOutput).toContain("e2e-test-user");
-  });
+  }, E2E_TIMEOUT_MS);
 
   it("can get and set observer policy settings", () => {
     // Initialize DB
@@ -85,7 +90,7 @@ describe("cli E2E tests", () => {
     // Verify change via settings get
     const settingsGetScope = runCli(["settings", "get", "observer.scope"]);
     expect(settingsGetScope.trim()).toBe("fullscreen");
-  });
+  }, E2E_TIMEOUT_MS);
 
   it("bridge get-observer-policy returns the parsed presets", () => {
     runCli(["setup", "--skip-claude-md", "--skip-agents-md"]);
@@ -102,5 +107,5 @@ describe("cli E2E tests", () => {
       runCli(["bridge", "get-observer-policy"]),
     );
     expect(updatedBridgePolicy.scope).toBe("off");
-  });
+  }, E2E_TIMEOUT_MS);
 });

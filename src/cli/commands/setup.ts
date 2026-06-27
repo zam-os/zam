@@ -1,17 +1,21 @@
 /**
- * `zam setup` — Distribute skill files from the zam package into the current
+ * `zam setup` — Link skill directories from the ZAM package into the current
  * personal instance's agent skill directories, and optionally initialize the
  * ZAM database and generate agent-specific instruction files.
  *
- * Run this once after cloning a ZAM personal instance, and again after
- * upgrading zam (with --force) to refresh the skill files.
+ * Run this once after cloning a ZAM personal instance. Linked workspaces pick
+ * up future ZAM updates automatically.
  */
 
 import {
-  copyFileSync,
   existsSync,
+  lstatSync,
   mkdirSync,
+  readdirSync,
   readFileSync,
+  realpathSync,
+  rmSync,
+  symlinkSync,
   writeFileSync,
 } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
@@ -83,45 +87,162 @@ export function parseSetupAgents(value?: string): Set<SetupAgent> {
   return selected;
 }
 
-export function copySkills(
-  force: boolean,
+export type SkillWireAction = "linked" | "relinked" | "skipped";
+
+export interface SkillWireResult {
+  source: string;
+  destination: string;
+  action: SkillWireAction;
+  reason?: string;
+}
+
+export interface SkillWireOptions {
+  force?: boolean;
+  dryRun?: boolean;
+  quiet?: boolean;
+}
+
+function pathExists(path: string): boolean {
+  try {
+    lstatSync(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function comparableRealPath(path: string): string {
+  const real = realpathSync(path);
+  return process.platform === "win32" ? real.toLowerCase() : real;
+}
+
+function pathsResolveToSameDirectory(
+  sourceDir: string,
+  destinationDir: string,
+): boolean {
+  try {
+    return comparableRealPath(destinationDir) === comparableRealPath(sourceDir);
+  } catch {
+    return false;
+  }
+}
+
+function linkPointsTo(sourceDir: string, destinationDir: string): boolean {
+  try {
+    return (
+      lstatSync(destinationDir).isSymbolicLink() &&
+      pathsResolveToSameDirectory(sourceDir, destinationDir)
+    );
+  } catch {
+    return false;
+  }
+}
+
+function isReplaceableCopiedSkill(destinationDir: string): boolean {
+  try {
+    if (!lstatSync(destinationDir).isDirectory()) return false;
+    const entries = readdirSync(destinationDir);
+    if (entries.length !== 1 || entries[0] !== "SKILL.md") return false;
+    return /^name:\s*zam\s*$/m.test(
+      readFileSync(join(destinationDir, "SKILL.md"), "utf8"),
+    );
+  } catch {
+    return false;
+  }
+}
+
+export function wireSkills(
   cwd: string = process.cwd(),
   agents: Set<SetupAgent> = parseSetupAgents(),
-  dryRun = false,
-): void {
-  let anyAction = false;
+  opts: SkillWireOptions = {},
+): SkillWireResult[] {
+  const results: SkillWireResult[] = [];
+  const log = (message: string) => {
+    if (!opts.quiet) console.log(message);
+  };
 
   for (const { from, to, agents: pairAgents } of SKILL_PAIRS) {
     if (!pairAgents.some((agent) => agents.has(agent))) continue;
-    const dest = join(cwd, to);
+    const sourceDir = dirname(from);
+    const destinationDir = dirname(join(cwd, to));
 
-    if (!existsSync(from)) {
-      console.warn(`  warn  source not found, skipping: ${from}`);
+    if (!existsSync(sourceDir)) {
+      if (!opts.quiet) {
+        console.warn(`  warn  source not found, skipping: ${sourceDir}`);
+      }
+      results.push({
+        source: sourceDir,
+        destination: destinationDir,
+        action: "skipped",
+        reason: "source-not-found",
+      });
       continue;
     }
 
-    if (existsSync(dest) && !force) {
-      console.log(`  skip  ${to} (already present â€” use --force to update)`);
+    if (
+      pathsResolveToSameDirectory(sourceDir, destinationDir) &&
+      !lstatSync(destinationDir).isSymbolicLink()
+    ) {
+      log(`  skip  ${dirname(to)} (package source)`);
+      results.push({
+        source: sourceDir,
+        destination: destinationDir,
+        action: "skipped",
+        reason: "source-directory",
+      });
       continue;
     }
 
-    if (dryRun) {
-      console.log(`  would copy  ${to}`);
-      anyAction = true;
+    if (linkPointsTo(sourceDir, destinationDir)) {
+      log(`  skip  ${dirname(to)} (already linked)`);
+      results.push({
+        source: sourceDir,
+        destination: destinationDir,
+        action: "skipped",
+        reason: "already-linked",
+      });
       continue;
     }
 
-    mkdirSync(dirname(dest), { recursive: true });
-    copyFileSync(from, dest);
-    console.log(`  copy  ${to}`);
-    anyAction = true;
+    const destinationExists = pathExists(destinationDir);
+    const replaceExisting =
+      destinationExists &&
+      (Boolean(opts.force) || isReplaceableCopiedSkill(destinationDir));
+
+    if (destinationExists && !replaceExisting) {
+      if (!opts.quiet) {
+        console.warn(
+          `  warn  ${dirname(to)} already exists and is not managed by ZAM; use --force to replace it`,
+        );
+      }
+      results.push({
+        source: sourceDir,
+        destination: destinationDir,
+        action: "skipped",
+        reason: "unmanaged-destination",
+      });
+      continue;
+    }
+
+    const action: SkillWireAction = destinationExists ? "relinked" : "linked";
+    if (opts.dryRun) {
+      log(`  would ${action === "linked" ? "link" : "relink"}  ${dirname(to)}`);
+    } else {
+      if (destinationExists) {
+        rmSync(destinationDir, { recursive: true, force: true });
+      }
+      mkdirSync(dirname(destinationDir), { recursive: true });
+      symlinkSync(
+        sourceDir,
+        destinationDir,
+        process.platform === "win32" ? "junction" : "dir",
+      );
+      log(`  ${action === "linked" ? "link" : "relink"}  ${dirname(to)}`);
+    }
+    results.push({ source: sourceDir, destination: destinationDir, action });
   }
 
-  if (!anyAction && !force) {
-    console.log(
-      "\nSkill files are already up to date. Run with --force to overwrite.",
-    );
-  }
+  return results;
 }
 
 export function formatDatabaseInitTarget(target: DatabaseTargetInfo): string {
@@ -225,7 +346,7 @@ ZAM is available in this repository. Use the \`zam\` skill in Claude Code to tur
 
 - Skill files live under \`.claude/skills/zam/\`.
 - Fast-changing review data lives in \`~/.zam/\`, not in this repository.
-- Run \`zam setup --target . --agents claude,copilot --force\` after upgrading ZAM to refresh the skill.`,
+- The skill directory is linked to this ZAM installation and updates with it.`,
       Boolean(opts.dryRun),
     );
     logInstructionAction(action, "CLAUDE.md", Boolean(opts.dryRun));
@@ -282,7 +403,7 @@ ZAM is available in this repository. Select the \`zam\` skill through \`/skills\
 
 - Skill files live under \`.agents/skills/zam/\`.
 - Fast-changing review data lives in \`~/.zam/\`, not in this repository.
-- Run \`zam setup --target . --agents codex,agent --force\` after upgrading ZAM to refresh the skill.`,
+- The skill directory is linked to this ZAM installation and updates with it.`,
       Boolean(opts.dryRun),
     );
     logInstructionAction(action, "AGENTS.md", Boolean(opts.dryRun));
@@ -337,7 +458,7 @@ export function writeCopilotInstructions(
 ZAM is available in this repository through \`.claude/skills/zam/\`. Use the \`zam\` project skill from Copilot-compatible skill selection surfaces to turn real work into an observed learning session with active recall and FSRS scheduling.
 
 - Fast-changing review data lives in \`~/.zam/\`, not in this repository.
-- Run \`zam setup --target . --agents copilot --force\` after upgrading ZAM to refresh the skill.`,
+- The skill directory is linked to this ZAM installation and updates with it.`,
     Boolean(opts.dryRun),
   );
   logInstructionAction(
@@ -349,13 +470,9 @@ ZAM is available in this repository through \`.claude/skills/zam/\`. Use the \`z
 
 export const setupCommand = new Command("setup")
   .description(
-    "Distribute ZAM skill files into this personal instance and initialize the database",
+    "Link ZAM skill directories into this workspace and initialize the database",
   )
-  .option(
-    "--force",
-    "overwrite existing skill files (use after upgrading zam)",
-    false,
-  )
+  .option("--force", "replace an unmanaged existing ZAM skill directory", false)
   .option("--skip-init", "skip database initialization", false)
   .option("--skip-claude-md", "skip CLAUDE.md generation", false)
   .option("--skip-agents-md", "skip AGENTS.md generation", false)
@@ -393,7 +510,10 @@ export const setupCommand = new Command("setup")
         `Setting up ZAM in ${target}${opts.dryRun ? " (dry run)" : ""}\n`,
       );
 
-      copySkills(opts.force, target, agents, opts.dryRun);
+      wireSkills(target, agents, {
+        force: opts.force,
+        dryRun: opts.dryRun,
+      });
       await initDatabase(opts.skipInit || opts.dryRun);
       if (agents.has("claude")) {
         writeClaudeMd(opts.skipClaudeMd, target, {

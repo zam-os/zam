@@ -1,27 +1,30 @@
 import {
   existsSync,
+  lstatSync,
+  mkdirSync,
   mkdtempSync,
   readFileSync,
+  realpathSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
-  copySkills,
   formatDatabaseInitTarget,
   parseSetupAgents,
   writeAgentsMd,
+  wireSkills,
   writeCopilotInstructions,
 } from "../../src/cli/commands/setup.js";
 
 describe("setup command helpers", () => {
-  it("copies ZAM skills for Claude/Copilot, shared agents, and Codex", () => {
+  it("links ZAM skills for Claude/Copilot, shared agents, and Codex", () => {
     const cwd = mkdtempSync(join(tmpdir(), "zam-setup-skills-"));
 
     try {
-      copySkills(false, cwd);
+      const first = wireSkills(cwd);
 
       const destinations = [
         join(cwd, ".claude", "skills", "zam", "SKILL.md"),
@@ -31,8 +34,94 @@ describe("setup command helpers", () => {
 
       for (const destination of destinations) {
         expect(existsSync(destination)).toBe(true);
+        expect(lstatSync(dirname(destination)).isSymbolicLink()).toBe(true);
       }
+      expect(first.map((result) => result.action)).toEqual([
+        "linked",
+        "linked",
+        "linked",
+      ]);
       expect(readFileSync(destinations[2], "utf8")).toContain("$zam");
+      expect(realpathSync(dirname(destinations[2]))).toBe(
+        realpathSync(join(process.cwd(), ".agents", "skills", "zam")),
+      );
+
+      const second = wireSkills(cwd, parseSetupAgents(), { quiet: true });
+      expect(second.every((result) => result.reason === "already-linked")).toBe(
+        true,
+      );
+    } finally {
+      rmSync(cwd, { recursive: true, force: true });
+    }
+  });
+
+  it("never replaces the package skill source with a self-link", () => {
+    const [result] = wireSkills(
+      process.cwd(),
+      parseSetupAgents("codex"),
+      { quiet: true },
+    );
+
+    expect(result).toMatchObject({
+      action: "skipped",
+      reason: "source-directory",
+    });
+    expect(
+      lstatSync(join(process.cwd(), ".agents", "skills", "zam")).isSymbolicLink(),
+    ).toBe(false);
+  });
+
+  it("migrates an old copied ZAM skill into a live link", () => {
+    const cwd = mkdtempSync(join(tmpdir(), "zam-setup-migrate-"));
+    const destinationDir = join(cwd, ".agents", "skills", "zam");
+
+    try {
+      mkdirSync(destinationDir, { recursive: true });
+      writeFileSync(
+        join(destinationDir, "SKILL.md"),
+        readFileSync(
+          join(process.cwd(), ".agents", "skills", "zam", "SKILL.md"),
+          "utf8",
+        ),
+        "utf8",
+      );
+
+      const [result] = wireSkills(cwd, parseSetupAgents("codex"), {
+        quiet: true,
+      });
+
+      expect(result.action).toBe("relinked");
+      expect(lstatSync(destinationDir).isSymbolicLink()).toBe(true);
+    } finally {
+      rmSync(cwd, { recursive: true, force: true });
+    }
+  });
+
+  it("preserves an unmanaged skill directory unless force is explicit", () => {
+    const cwd = mkdtempSync(join(tmpdir(), "zam-setup-unmanaged-"));
+    const destinationDir = join(cwd, ".agents", "skills", "zam");
+
+    try {
+      mkdirSync(destinationDir, { recursive: true });
+      writeFileSync(
+        join(destinationDir, "SKILL.md"),
+        "---\nname: custom-zam\n---\n",
+        "utf8",
+      );
+      writeFileSync(join(destinationDir, "notes.md"), "keep", "utf8");
+
+      const [result] = wireSkills(cwd, parseSetupAgents("codex"), {
+        quiet: true,
+      });
+
+      expect(result).toMatchObject({
+        action: "skipped",
+        reason: "unmanaged-destination",
+      });
+      expect(lstatSync(destinationDir).isSymbolicLink()).toBe(false);
+      expect(readFileSync(join(destinationDir, "notes.md"), "utf8")).toBe(
+        "keep",
+      );
     } finally {
       rmSync(cwd, { recursive: true, force: true });
     }
@@ -65,7 +154,7 @@ describe("setup command helpers", () => {
     const cwd = mkdtempSync(join(tmpdir(), "zam-copilot-skills-"));
 
     try {
-      copySkills(false, cwd, parseSetupAgents("copilot"));
+      wireSkills(cwd, parseSetupAgents("copilot"));
 
       expect(
         existsSync(join(cwd, ".claude", "skills", "zam", "SKILL.md")),

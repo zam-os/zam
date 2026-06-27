@@ -19,14 +19,15 @@ import {
   getSetting,
   hasCommand,
   openDatabase,
+  removeConfiguredWorkspace,
   upsertConfiguredWorkspace,
   type WorkspaceConfig,
   type WorkspaceKind,
   type WorkspaceSourceControl,
 } from "../../kernel/index.js";
 import {
-  copySkills,
   parseSetupAgents,
+  wireSkills,
   writeAgentsMd,
   writeClaudeMd,
   writeCopilotInstructions,
@@ -190,12 +191,30 @@ workspaceCommand
           : {}),
         ...(opts.defaultAgent ? { defaultAgent: opts.defaultAgent } : {}),
       };
+      // Provision the skill junctions first; only record the workspace once
+      // linking succeeds, so a junction failure never leaves an orphaned entry.
+      wireSkills(path, parseSetupAgents());
       upsertConfiguredWorkspace(workspace);
-      console.log(`Registered workspace "${id}" at ${path}.`);
+      console.log(`Registered and linked workspace "${id}" at ${path}.`);
     } catch (err) {
       console.error(`Error: ${(err as Error).message}`);
       process.exit(1);
     }
+  });
+
+workspaceCommand
+  .command("remove <id>")
+  .description("Unregister a ZAM workspace without deleting its files")
+  .action((id) => {
+    const existing = getConfiguredWorkspaces().find((item) => item.id === id);
+    if (!existing) {
+      console.error(`Workspace "${id}" is not configured.`);
+      process.exit(1);
+    }
+    removeConfiguredWorkspace(id);
+    console.log(
+      `Unregistered workspace "${id}". Files in ${existing.path} were not changed.`,
+    );
   });
 
 workspaceCommand
@@ -223,12 +242,10 @@ workspaceCommand
         `Setting up workspace "${workspace.id}" in ${workspace.path}${opts.dryRun ? " (dry run)" : ""}\n`,
       );
 
-      copySkills(
-        Boolean(opts.force),
-        workspace.path,
-        agents,
-        Boolean(opts.dryRun),
-      );
+      wireSkills(workspace.path, agents, {
+        force: Boolean(opts.force),
+        dryRun: Boolean(opts.dryRun),
+      });
       if (agents.has("claude")) {
         writeClaudeMd(false, workspace.path, {
           dryRun: Boolean(opts.dryRun),

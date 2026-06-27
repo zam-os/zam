@@ -130,7 +130,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     setup_backup_failed_generic: "Backup failed.",
     setup_open_folder_failed: "Could not open the data folder: {message}",
     lbl_workspace: "Workspace",
-    btn_choose_workspace: "Choose workspace…",
+    btn_choose_workspace: "+ Add workspace…",
     btn_open_terminal: "Open Terminal",
     terminal_opening: "Opening terminal...",
     terminal_opened: "Opened terminal in {workspace}",
@@ -152,6 +152,11 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     workspace_set: "Workspace set to {path}",
     workspace_added: "Workspace added: {path}",
     workspace_pick_failed: "Could not set workspace: {message}",
+    workspace_remove: "Remove",
+    workspace_remove_confirm:
+      'Remove "{label}" from ZAM? Files and links in the folder will stay unchanged.',
+    workspace_removed: "Workspace removed: {label}",
+    workspace_remove_failed: "Could not remove workspace: {message}",
     lbl_app_version: "Version",
     lbl_learning_model: "Learning model",
     lbl_observer_model: "Observer model",
@@ -290,7 +295,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     setup_backup_failed: "Sicherung fehlgeschlagen: {message}",
     setup_backup_failed_generic: "Sicherung fehlgeschlagen.",
     setup_open_folder_failed: "Datenordner konnte nicht geöffnet werden: {message}",
-    btn_choose_workspace: "Arbeitsbereich wählen…",
+    btn_choose_workspace: "+ Arbeitsbereich hinzufügen…",
     btn_open_terminal: "Terminal öffnen",
     terminal_opening: "Terminal wird geöffnet...",
     terminal_opened: "Terminal in {workspace} geöffnet",
@@ -312,6 +317,11 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     workspace_set: "Arbeitsbereich gesetzt: {path}",
     workspace_added: "Arbeitsbereich hinzugefügt: {path}",
     workspace_pick_failed: "Arbeitsbereich konnte nicht gesetzt werden: {message}",
+    workspace_remove: "Entfernen",
+    workspace_remove_confirm:
+      '"{label}" aus ZAM entfernen? Dateien und Verknüpfungen im Ordner bleiben unverändert.',
+    workspace_removed: "Arbeitsbereich entfernt: {label}",
+    workspace_remove_failed: "Arbeitsbereich konnte nicht entfernt werden: {message}",
     lbl_app_version: "Version",
     lbl_learning_model: "Lernmodell",
     lbl_observer_model: "Observer-Modell",
@@ -881,6 +891,16 @@ function renderWorkspaceList(info: WorkspaceListResponse): void {
     });
 
     actions.append(useButton, terminalButton);
+    if (info.workspaces.some((item) => item.id === workspace.id)) {
+      const removeButton = document.createElement("button");
+      removeButton.className = "btn danger-btn btn-sm";
+      removeButton.type = "button";
+      removeButton.textContent = t("workspace_remove");
+      removeButton.addEventListener("click", () => {
+        void removeWorkspace(workspace);
+      });
+      actions.appendChild(removeButton);
+    }
     row.append(main, actions);
     list.appendChild(row);
   }
@@ -914,6 +934,30 @@ async function setActiveWorkspace(dir: string): Promise<void> {
     await loadWorkspaceList();
     if (status) {
       status.textContent = tf("workspace_set", { path: res.workspaceDir });
+    }
+  }
+}
+
+async function removeWorkspace(workspace: WorkspaceConfig): Promise<void> {
+  const label = workspace.label || workspace.id;
+  if (!window.confirm(tf("workspace_remove_confirm", { label }))) return;
+
+  const status = document.getElementById("setup-status");
+  try {
+    const result = await runBridge<{ workspaceDir?: string }>(
+      "workspace-remove",
+      ["--id", workspace.id],
+    );
+    activeWorkspaceDir = result.workspaceDir ?? activeWorkspaceDir;
+    await loadWorkspaceList();
+    if (status) {
+      status.textContent = tf("workspace_removed", { label });
+    }
+  } catch (err) {
+    if (status) {
+      status.textContent = tf("workspace_remove_failed", {
+        message: errorMessage(err),
+      });
     }
   }
 }
