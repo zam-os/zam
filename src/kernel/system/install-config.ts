@@ -178,6 +178,17 @@ export function upsertConfiguredWorkspace(
   return next;
 }
 
+export function removeConfiguredWorkspace(
+  id: string,
+  path = defaultConfigPath(),
+): WorkspaceConfig[] {
+  const next = getConfiguredWorkspaces(path).filter(
+    (workspace) => workspace.id !== id,
+  );
+  saveConfiguredWorkspaces(next, path);
+  return next;
+}
+
 /**
  * Best-effort detection of the file-sync provider a folder lives in, from its
  * path. Used only for friendly messaging ("this folder syncs via OneDrive —

@@ -341,6 +341,7 @@ export {
   getInstallMode,
   getMachineAiConfig,
   loadInstallConfig,
+  removeConfiguredWorkspace,
   saveConfiguredWorkspaces,
   saveInstallConfig,
   saveMachineAiConfig,

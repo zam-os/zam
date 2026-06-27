@@ -8,6 +8,7 @@ import {
   getInstallMode,
   getMachineAiConfig,
   loadInstallConfig,
+  removeConfiguredWorkspace,
   saveInstallConfig,
   saveMachineAiConfig,
   setInstallMode,
@@ -120,6 +121,25 @@ describe("install config", () => {
         path: "D:\\work\\Cops.Management",
       },
     ]);
+  });
+
+  it("removes a configured workspace without touching the others", () => {
+    const path = tempConfigPath();
+    upsertConfiguredWorkspace(
+      { id: "family", kind: "family", path: "C:\\family" },
+      path,
+    );
+    upsertConfiguredWorkspace(
+      { id: "team", kind: "team", path: "C:\\team" },
+      path,
+    );
+
+    const remaining = removeConfiguredWorkspace("family", path);
+
+    expect(remaining).toEqual([
+      { id: "team", kind: "team", path: "C:\\team" },
+    ]);
+    expect(getConfiguredWorkspaces(path)).toEqual(remaining);
   });
 
   it("detects file-sync providers from a folder path", () => {

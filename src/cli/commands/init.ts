@@ -11,7 +11,7 @@
 
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { confirm, input } from "@inquirer/prompts";
 import { Command } from "commander";
 import {
@@ -24,7 +24,9 @@ import {
   openDatabaseWithSync,
   prepareLocalModel,
   setSetting,
+  upsertConfiguredWorkspace,
 } from "../../kernel/index.js";
+import { parseSetupAgents, wireSkills } from "./setup.js";
 
 const HOME = homedir();
 
@@ -89,13 +91,22 @@ export const initCommand = new Command("init")
     console.log("\n\x1b[1m[1/5] Setting up Local Workspace Sandbox\x1b[0m");
     const defaultWorkspace = join(HOME, "Documents", "zam");
 
-    const workspacePath = await input({
-      message: "Choose your ZAM workspace directory:",
-      default: defaultWorkspace,
-    });
+    const workspacePath = resolve(
+      await input({
+        message: "Choose your ZAM workspace directory:",
+        default: defaultWorkspace,
+      }),
+    );
 
     try {
       bootstrapSandboxWorkspace(workspacePath);
+      wireSkills(workspacePath, parseSetupAgents());
+      upsertConfiguredWorkspace({
+        id: "personal",
+        label: "Personal",
+        kind: "personal",
+        path: workspacePath,
+      });
       console.log(
         `\x1b[32m✓ Local Sandbox created at: ${workspacePath}\x1b[0m`,
       );
