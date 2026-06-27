@@ -127,7 +127,7 @@ export const learnCommand = new Command("learn")
               question: item.question,
             });
             if (healed) {
-              resolvedQuestion = healed;
+              resolvedQuestion = healed.question;
             }
           } catch {
             // ignore and proceed
@@ -200,7 +200,8 @@ export const learnCommand = new Command("learn")
             console.log(
               `\n  ${t(locale, "feedback_title", { line: "─".repeat(34) })}`,
             );
-            for (const line of evaluation.split("\n")) {
+            console.log(`  \x1b[2m[${evaluation.model}]\x1b[0m`);
+            for (const line of evaluation.text.split("\n")) {
               console.log(`  ${line}`);
             }
           } catch (err) {

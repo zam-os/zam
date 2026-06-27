@@ -295,11 +295,13 @@ export type {
 // AI-agnostic (zero LLM dependencies). The local-LLM client lives in the CLI
 // layer at src/cli/llm/client.ts.
 export {
+  clearReviewContextCache,
   DEFAULT_REVIEW_CONTEXT_MAX_CHARS,
   matchesFilePath,
   normalizePath,
   resolveReference,
   resolveReviewContext,
+  REVIEW_CONTEXT_CACHE_TTL_MS,
 } from "./recall/reference-resolver.js";
 export type { CascadeBlockResult, UnblockResult } from "./scheduler/blocker.js";
 export { cascadeBlock, unblockReady } from "./scheduler/blocker.js";

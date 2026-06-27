@@ -31,6 +31,7 @@ import {
   appendUiObservationReport,
   BUILT_IN_SENSITIVE_MATCHERS,
   buildReviewQueue,
+  clearProviderApiKey,
   createToken,
   decidePostCapture,
   decidePreCapture,
@@ -44,12 +45,16 @@ import {
   getConfiguredWorkspaces,
   getDatabaseTargetInfo,
   getDueCards,
+  getProviderApiKey,
   getSetting,
+  getSystemProfile,
   getTokenBySlug,
   getTokenDeleteImpact,
   getTokenNeighborhood,
+  hasCommand,
   isObserverPolicyConfigured,
   listAgentSkills,
+  listProviderApiKeyRefs,
   listTokens,
   monitorLogExists,
   OBSERVER_POLICY_UNSET_HINT,
@@ -60,6 +65,7 @@ import {
   removeConfiguredWorkspace,
   resolveObserverPolicy,
   resolveReviewContext,
+  setProviderApiKey,
   setSetting,
   startSession,
   syncObserverSidecarPolicy,
@@ -74,19 +80,41 @@ import {
   resolveHarnessExecutable,
 } from "../agent-harness.js";
 import {
+  type ApiFlavor,
   checkVisionReadiness,
+  DEFAULT_LLM_MODEL,
+  DEFAULT_LLM_URL,
   ensureHighQualityQuestion,
   ensureLlmReadyHeadless,
   evaluateAnswerViaLLM,
   getAvailableModels,
+  getCloudModelRecommendation,
   getLlmConfig,
   getProviderForRole,
   getProviderRoleStatus,
   isLlmOnline,
+  type LlmRole,
   translateQuestionViaLLM,
 } from "../llm/client.js";
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
 import { normalizeShell } from "../terminal-open.js";
+import {
+  bindRoleProviders,
+  buildProviderListing,
+  findOrphanKeyRefs,
+  maskSecret,
+  type ProviderRecord,
+  readScopedProviders,
+  readScopedRoles,
+  removeProviderRecord,
+  rolesReferencing,
+  upsertProviderRecord,
+  VALID_API_FLAVORS,
+  VALID_ROLES,
+  withProviderScope,
+  writeScopedProviders,
+  writeScopedRoles,
+} from "./provider.js";
 import { ensureDefaultUser, resolveUser } from "./resolve-user.js";
 import { parseSetupAgents, wireSkills } from "./setup.js";
 import { withDb as sharedWithDb } from "./shared/db.js";
@@ -112,6 +140,13 @@ function parseNonNegativeIntegerOption(name: string, value: string): number {
     jsonError(`${name} must be a non-negative integer`);
   }
   return parsed;
+}
+
+function parseProviderScope(scope: string | undefined): boolean {
+  const value = scope ?? "machine";
+  if (value === "machine") return true;
+  if (value === "shared") return false;
+  jsonError(`Invalid --scope: ${value}. Use machine or shared.`);
 }
 
 async function withDb(
@@ -588,6 +623,8 @@ bridgeCommand
 
       // Dynamically generate a fresh, living active-recall question if LLM is enabled
       let resolvedQuestion = item.question;
+      let questionSource: "llm" | "original" = "original";
+      let questionModel: string | undefined;
       if (isLlmEnabled) {
         try {
           const healed = await ensureHighQualityQuestion(db, {
@@ -600,7 +637,9 @@ bridgeCommand
             question: item.question,
           });
           if (healed) {
-            resolvedQuestion = healed;
+            resolvedQuestion = healed.question;
+            questionSource = healed.source;
+            questionModel = healed.model;
           }
         } catch {
           // ignore and proceed
@@ -637,6 +676,8 @@ bridgeCommand
         hasReview: true,
         card: item,
         prompt,
+        questionSource,
+        questionModel: questionModel ?? null,
         resolvedContext,
         queueSize: fullQueue.items.length,
       });
@@ -2080,6 +2121,260 @@ bridgeCommand
     });
   });
 
+// ── zam bridge provider-config-* ───────────────────────────────────────────
+
+bridgeCommand
+  .command("provider-config-list")
+  .description("List provider records and role bindings (JSON)")
+  .option("--scope <scope>", "machine (default) or shared", "machine")
+  .action(async (opts) => {
+    const machine = parseProviderScope(opts.scope);
+    await withProviderScope(machine, async (db) => {
+      const providers = await readScopedProviders(db, machine);
+      const roles = await readScopedRoles(db, machine);
+      const rows = buildProviderListing(
+        providers,
+        (ref) => getProviderApiKey(ref) !== null,
+      );
+      jsonOut({
+        scope: machine ? "machine" : "shared",
+        providers: rows,
+        roles,
+        orphans: findOrphanKeyRefs(listProviderApiKeyRefs(), providers),
+      });
+    });
+  });
+
+bridgeCommand
+  .command("provider-config-upsert")
+  .description("Add or update a provider record (JSON)")
+  .requiredOption("--name <name>", "Provider name")
+  .option("--label <label>", "Human-readable label")
+  .option("--url <url>", "Endpoint base URL")
+  .option("--model <model>", "Model id")
+  .option(
+    "--flavor <flavor>",
+    `Wire protocol: ${VALID_API_FLAVORS.join(" | ")}`,
+  )
+  .option("--local", "Mark as local endpoint")
+  .option("--no-local", "Mark as cloud/non-local endpoint")
+  .option("--runner <runner>", "Local runner hint")
+  .option("--key-ref <ref>", "Credential reference for API key")
+  .option("--scope <scope>", "machine (default) or shared", "machine")
+  .action(async (opts) => {
+    const machine = parseProviderScope(opts.scope);
+    let apiFlavor: ApiFlavor | undefined;
+    if (opts.flavor) {
+      if (!VALID_API_FLAVORS.includes(opts.flavor)) {
+        jsonError(
+          `Invalid --flavor: ${opts.flavor}. Use ${VALID_API_FLAVORS.join(" or ")}.`,
+        );
+      }
+      apiFlavor = opts.flavor;
+    }
+    let local: boolean | undefined;
+    if (opts.local) local = true;
+    else if (opts.noLocal) local = false;
+    const patch: ProviderRecord = {};
+    if (opts.label !== undefined) patch.label = opts.label;
+    if (opts.url !== undefined) patch.url = opts.url;
+    if (opts.model !== undefined) patch.model = opts.model;
+    if (apiFlavor !== undefined) patch.apiFlavor = apiFlavor;
+    if (opts.keyRef !== undefined) patch.apiKeyRef = opts.keyRef;
+    if (local !== undefined) patch.local = local;
+    if (opts.runner !== undefined) patch.runner = opts.runner;
+
+    await withProviderScope(machine, async (db) => {
+      const providers = await readScopedProviders(db, machine);
+      const next = upsertProviderRecord(providers, opts.name, patch);
+      await writeScopedProviders(db, machine, next);
+      const rows = buildProviderListing(
+        next,
+        (ref) => getProviderApiKey(ref) !== null,
+      );
+      const row = rows.find((entry) => entry.name === opts.name);
+      jsonOut({
+        ok: true,
+        scope: machine ? "machine" : "shared",
+        name: opts.name,
+        provider: row,
+        cloudModelHint: opts.url ? getCloudModelRecommendation(opts.url) : null,
+      });
+    });
+  });
+
+bridgeCommand
+  .command("provider-config-remove")
+  .description("Remove a provider record (JSON)")
+  .requiredOption("--name <name>", "Provider name")
+  .option("--scope <scope>", "machine (default) or shared", "machine")
+  .action(async (opts) => {
+    const machine = parseProviderScope(opts.scope);
+    await withProviderScope(machine, async (db) => {
+      const providers = await readScopedProviders(db, machine);
+      const { providers: next, removed } = removeProviderRecord(
+        providers,
+        opts.name,
+      );
+      if (!removed) {
+        jsonError(`No such provider: ${opts.name}`);
+      }
+      await writeScopedProviders(db, machine, next);
+      jsonOut({
+        ok: true,
+        scope: machine ? "machine" : "shared",
+        name: opts.name,
+        removed: true,
+        referencingRoles: rolesReferencing(
+          await readScopedRoles(db, machine),
+          opts.name,
+        ),
+      });
+    });
+  });
+
+bridgeCommand
+  .command("provider-config-bind")
+  .description("Bind providers to an LLM role (JSON)")
+  .requiredOption("--role <role>", `Role: ${VALID_ROLES.join(" | ")}`)
+  .requiredOption("--primary <name>", "Primary provider name")
+  .option("--fallback <name>", "Fallback provider name")
+  .option("--scope <scope>", "machine (default) or shared", "machine")
+  .action(async (opts) => {
+    if (!VALID_ROLES.includes(opts.role)) {
+      jsonError(`Invalid --role: ${opts.role}. Use ${VALID_ROLES.join(", ")}.`);
+    }
+    const machine = parseProviderScope(opts.scope);
+    await withProviderScope(machine, async (db) => {
+      const providers = await readScopedProviders(db, machine);
+      const roles = await readScopedRoles(db, machine);
+      const nextRoles = bindRoleProviders(
+        roles,
+        opts.role as LlmRole,
+        opts.primary,
+        opts.fallback,
+      );
+      await writeScopedRoles(db, machine, nextRoles);
+      const binding = nextRoles[opts.role as LlmRole];
+      const primary = providers[opts.primary];
+      jsonOut({
+        ok: true,
+        scope: machine ? "machine" : "shared",
+        role: opts.role,
+        binding,
+        warnings: [
+          ...(primary &&
+          primary.apiFlavor === "anthropic-messages" &&
+          (opts.role === "recall" || opts.role === "text")
+            ? ["unsupported-provider-for-role"]
+            : []),
+          ...(opts.primary && !(opts.primary in providers)
+            ? ["primary-provider-undefined"]
+            : []),
+          ...(opts.fallback && !(opts.fallback in providers)
+            ? ["fallback-provider-undefined"]
+            : []),
+        ],
+      });
+    });
+  });
+
+bridgeCommand
+  .command("provider-set-key")
+  .description("Store an API key for a provider reference (JSON)")
+  .requiredOption("--ref <ref>", "Credential reference name")
+  .requiredOption("--key <value>", "API key value (write-only)")
+  .action((opts) => {
+    const key = opts.key.trim();
+    if (!key) jsonError("No key provided.");
+    setProviderApiKey(opts.ref, key);
+    jsonOut({ ok: true, ref: opts.ref, masked: maskSecret(key) });
+  });
+
+bridgeCommand
+  .command("provider-clear-key")
+  .description("Remove a stored provider API key (JSON)")
+  .requiredOption("--ref <ref>", "Credential reference name")
+  .action((opts) => {
+    clearProviderApiKey(opts.ref);
+    jsonOut({ ok: true, ref: opts.ref });
+  });
+
+bridgeCommand
+  .command("list-models")
+  .description("List models exposed by an LLM endpoint (JSON)")
+  .requiredOption("--url <url>", "Endpoint base URL")
+  .option("--key-ref <ref>", "Resolve API key from credentials by reference")
+  .action(async (opts) => {
+    const apiKey = opts.keyRef
+      ? (getProviderApiKey(opts.keyRef) ?? undefined)
+      : undefined;
+    const models = await getAvailableModels(opts.url, apiKey);
+    jsonOut({ models });
+  });
+
+bridgeCommand
+  .command("cloud-model-hint")
+  .description("Suggest a cloud model for an endpoint URL (JSON)")
+  .requiredOption("--url <url>", "Endpoint base URL")
+  .action((opts) => {
+    jsonOut({ recommendation: getCloudModelRecommendation(opts.url) });
+  });
+
+bridgeCommand
+  .command("local-llm-hints")
+  .description("Detect installed local LLM servers and suggest defaults (JSON)")
+  .action(() => {
+    const profile = getSystemProfile();
+    const flmInstalled =
+      hasCommand("flm") || existsSync("C:\\Program Files\\flm\\flm.exe");
+    const ollamaInstalled = hasCommand("ollama");
+    const runners = [
+      { id: "flm", label: "FastFlowLM", installed: flmInstalled },
+      { id: "ollama", label: "Ollama", installed: ollamaInstalled },
+      {
+        id: "foundry-local",
+        label: "Foundry Local",
+        installed: false,
+      },
+    ];
+
+    let recommended = "ollama";
+    if (profile.recommendedRunner === "fastflowlm" && flmInstalled) {
+      recommended = "flm";
+    } else if (profile.recommendedRunner === "ollama" && ollamaInstalled) {
+      recommended = "ollama";
+    } else if (flmInstalled) {
+      recommended = "flm";
+    } else if (ollamaInstalled) {
+      recommended = "ollama";
+    } else if (profile.recommendedRunner === "fastflowlm") {
+      recommended = "flm";
+    }
+
+    const defaultUrl =
+      recommended === "ollama" ? "http://localhost:11434/v1" : DEFAULT_LLM_URL;
+
+    jsonOut({
+      runners,
+      recommended,
+      defaultUrl,
+      defaultModel: profile.recommendedModel || DEFAULT_LLM_MODEL,
+    });
+  });
+
+bridgeCommand
+  .command("setting-set")
+  .description("Set a single ZAM setting value (JSON)")
+  .requiredOption("--key <key>", "Setting key")
+  .requiredOption("--value <value>", "Setting value")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      await setSetting(db, opts.key, opts.value);
+      jsonOut({ ok: true, key: opts.key, value: opts.value });
+    });
+  });
+
 // ── zam bridge check-vision ────────────────────────────────────────────────
 
 bridgeCommand
@@ -2159,6 +2454,10 @@ bridgeCommand
   .requiredOption("--user-answer <answer>", "User's typed answer")
   .option("--context <context>", "Optional token context details")
   .option("--source-link <link>", "Optional source link")
+  .option(
+    "--source-content <content>",
+    "Pre-resolved source reference content (skips re-fetch when set)",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const isEnabled = (await getSetting(db, "llm.enabled")) === "true";
@@ -2171,8 +2470,8 @@ bridgeCommand
         return;
       }
 
-      let resolvedContextContent = null;
-      if (opts.sourceLink) {
+      let resolvedContextContent: string | null = opts.sourceContent ?? null;
+      if (resolvedContextContent == null && opts.sourceLink) {
         try {
           const resolved = await resolveReviewContext(opts.sourceLink);
           resolvedContextContent = resolved?.content ?? null;
@@ -2182,7 +2481,7 @@ bridgeCommand
       }
 
       try {
-        const evaluation = await evaluateAnswerViaLLM(db, {
+        const result = await evaluateAnswerViaLLM(db, {
           slug: opts.slug,
           concept: opts.concept,
           domain: opts.domain,
@@ -2192,7 +2491,11 @@ bridgeCommand
           userAnswer: opts.userAnswer,
           sourceLinkContent: resolvedContextContent,
         });
-        jsonOut({ success: true, evaluation });
+        jsonOut({
+          success: true,
+          evaluation: result.text,
+          evaluationModel: result.model,
+        });
       } catch (err) {
         jsonOut({
           success: false,

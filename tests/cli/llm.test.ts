@@ -1,3 +1,6 @@
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   ensureHighQualityQuestion,
@@ -12,6 +15,22 @@ import {
   openDatabase,
   setSetting,
 } from "../../src/kernel/index.js";
+
+function withIsolatedMachineConfig<T>(run: () => Promise<T>): Promise<T> {
+  const configDir = mkdtempSync(join(tmpdir(), "zam-llm-test-"));
+  const configPath = join(configDir, "config.json");
+  writeFileSync(configPath, JSON.stringify({ ai: { providers: {}, roles: {} } }));
+  const previousConfigPath = process.env.ZAM_CONFIG_PATH;
+  process.env.ZAM_CONFIG_PATH = configPath;
+  return run().finally(() => {
+    if (previousConfigPath === undefined) {
+      delete process.env.ZAM_CONFIG_PATH;
+    } else {
+      process.env.ZAM_CONFIG_PATH = previousConfigPath;
+    }
+    rmSync(configDir, { recursive: true, force: true });
+  });
+}
 
 describe("LLM client utilities (CLI layer)", () => {
   it("isLlmOnline returns false for invalid or unreachable URLs", async () => {
@@ -33,31 +52,90 @@ describe("LLM client utilities (CLI layer)", () => {
   });
 
   it("ensureLocalLlmRunning reports 'model-not-found' when the server doesn't serve the configured model", async () => {
+    await withIsolatedMachineConfig(async () => {
+      const db = await openDatabase({
+        dbPath: ":memory:",
+        initialize: true,
+        useConfiguredCloud: false,
+      });
+      await setSetting(db, "llm.enabled", "true");
+      await setSetting(db, "llm.url", "http://localhost:8000/v1");
+      await setSetting(db, "llm.model", "gemma4-it:e4b");
+
+      const originalFetch = global.fetch;
+      // Server is reachable, but /models lists a different model than configured.
+      global.fetch = (async () =>
+        new Response(
+          JSON.stringify({ data: [{ id: "qwen3.5:4b" }] }),
+        )) as typeof fetch;
+      try {
+        const readiness = await ensureLocalLlmRunning(db);
+        expect(readiness.usable).toBe(false);
+        expect(readiness.reason).toBe("model-not-found");
+      } finally {
+        global.fetch = originalFetch;
+        await db.close();
+      }
+    });
+  });
+  it("ensureLlmReadyHeadless does not probe local fallback when cloud primary is online", async () => {
+    await withIsolatedMachineConfig(async () => {
     const db = await openDatabase({
       dbPath: ":memory:",
       initialize: true,
       useConfiguredCloud: false,
     });
     await setSetting(db, "llm.enabled", "true");
-    await setSetting(db, "llm.url", "http://localhost:8000/v1");
-    await setSetting(db, "llm.model", "gemma4-it:e4b");
+    await setSetting(
+      db,
+      "llm.providers",
+      JSON.stringify({
+        mimo: {
+          url: "https://recall.example/v1",
+          model: "mimo-v2.5",
+          apiKey: "sk-mimo",
+        },
+        localFlm: {
+          url: "http://localhost:8000/v1",
+          model: "qwen3.5:4b",
+          local: true,
+        },
+      }),
+    );
+    await setSetting(
+      db,
+      "llm.roles",
+      JSON.stringify({
+        recall: { primary: "mimo", fallback: "localFlm" },
+      }),
+    );
 
     const originalFetch = global.fetch;
-    // Server is reachable, but /models lists a different model than configured.
-    global.fetch = (async () =>
-      new Response(
-        JSON.stringify({ data: [{ id: "qwen3.5:4b" }] }),
-      )) as typeof fetch;
+    const urls: string[] = [];
+    global.fetch = (async (url) => {
+      urls.push(String(url));
+      return new Response(JSON.stringify({ data: [{ id: "mimo-v2.5" }] }));
+    }) as typeof fetch;
+
     try {
-      const readiness = await ensureLocalLlmRunning(db);
-      expect(readiness.usable).toBe(false);
-      expect(readiness.reason).toBe("model-not-found");
+      const readiness = await ensureLlmReadyHeadless(db);
+      expect(readiness).toMatchObject({
+        usable: true,
+        online: true,
+        model: "mimo-v2.5",
+        local: false,
+        activeTier: "primary",
+      });
+      expect(urls.every((url) => !url.includes("localhost:8000"))).toBe(true);
     } finally {
       global.fetch = originalFetch;
       await db.close();
     }
+    });
   });
+
   it("ensureLlmReadyHeadless checks the recall role provider, not legacy llm.*", async () => {
+    await withIsolatedMachineConfig(async () => {
     const db = await openDatabase({
       dbPath: ":memory:",
       initialize: true,
@@ -106,6 +184,7 @@ describe("LLM client utilities (CLI layer)", () => {
       global.fetch = originalFetch;
       await db.close();
     }
+    });
   });
 
   it("fetchWithInteractiveTimeout resolves when fetch resolves successfully", async () => {
@@ -193,9 +272,11 @@ describe("LLM client utilities (CLI layer)", () => {
         question: token.question,
       });
 
-      expect(question).toBe(
-        "How do you securely store Azure DevOps HTTPS credentials on macOS?",
-      );
+      expect(question).toMatchObject({
+        question:
+          "How do you securely store Azure DevOps HTTPS credentials on macOS?",
+        source: "llm",
+      });
 
       // Verify that it self-healed in the database!
       const updated = await getTokenBySlug(db, slug);

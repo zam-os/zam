@@ -24,6 +24,28 @@ export interface ReviewContext {
 /** Default cap on resolved content length, so bridge JSON / terminal output stays bounded. */
 export const DEFAULT_REVIEW_CONTEXT_MAX_CHARS = 6000;
 
+/** How long resolved review context stays in the in-process cache (5 minutes). */
+export const REVIEW_CONTEXT_CACHE_TTL_MS = 5 * 60 * 1000;
+
+type CachedReviewContext = {
+  context: ReviewContext;
+  expiresAt: number;
+};
+
+const reviewContextCache = new Map<string, CachedReviewContext>();
+
+function reviewContextCacheKey(
+  sourceLink: string,
+  maxChars: number,
+): string {
+  return `${sourceLink}\0${maxChars}`;
+}
+
+/** Clear the in-process review-context cache (mainly for tests). */
+export function clearReviewContextCache(): void {
+  reviewContextCache.clear();
+}
+
 /**
  * Strips HTML tags and attempts to convert basic structure to readable text/markdown.
  */
@@ -234,6 +256,12 @@ export async function resolveReviewContext(
   if (!cleaned) return null;
 
   const maxChars = opts.maxChars ?? DEFAULT_REVIEW_CONTEXT_MAX_CHARS;
+  const cacheKey = reviewContextCacheKey(cleaned, maxChars);
+  const cached = reviewContextCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) {
+    return cached.context;
+  }
+
   const resolved = await resolveReference(cleaned);
 
   let content = resolved.content;
@@ -243,7 +271,7 @@ export async function resolveReviewContext(
     truncated = true;
   }
 
-  return {
+  const context: ReviewContext = {
     sourceLink: cleaned,
     sourceType: resolved.sourceType,
     content,
@@ -251,6 +279,13 @@ export async function resolveReviewContext(
     url: resolved.url,
     truncated,
   };
+
+  reviewContextCache.set(cacheKey, {
+    context,
+    expiresAt: Date.now() + REVIEW_CONTEXT_CACHE_TTL_MS,
+  });
+
+  return context;
 }
 
 /**
