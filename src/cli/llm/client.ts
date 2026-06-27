@@ -34,17 +34,37 @@ export const DEFAULT_LLM_MAX_TOKENS = 10_000;
 
 /** Tight output caps for recall — short questions/evaluations, faster round-trips. */
 export const RECALL_QUESTION_MAX_OUTPUT_TOKENS = 400;
-export const RECALL_EVALUATION_MAX_OUTPUT_TOKENS = 600;
+export const RECALL_EVALUATION_MAX_OUTPUT_TOKENS = 1200;
 
 const RECALL_ENDPOINT_CACHE_MS = 60_000;
 let cachedRecallEndpoint: {
   endpoint: ProviderConfig;
+  signature: string;
   expiresAt: number;
 } | null = null;
 
-/** Clear the in-process recall-endpoint cache (mainly for tests). */
+/** Clear the in-process recall-endpoint cache (used by tests and explicit resets). */
 export function clearRecallEndpointCache(): void {
   cachedRecallEndpoint = null;
+}
+
+/**
+ * Compact fingerprint of the resolved recall provider. When any of these change
+ * — a role rebind, a provider url/model/flavor edit, or an enable toggle — the
+ * cached endpoint is treated as stale even within its TTL, so a configuration
+ * change in Studio takes effect on the next card instead of after up to
+ * RECALL_ENDPOINT_CACHE_MS.
+ */
+function recallEndpointSignature(cfg: ProviderConfig): string {
+  return [
+    cfg.enabled ? "on" : "off",
+    cfg.providerName ?? "",
+    cfg.url,
+    cfg.model,
+    cfg.apiFlavor,
+    cfg.fallback?.url ?? "",
+    cfg.fallback?.model ?? "",
+  ].join("|");
 }
 export const DEFAULT_LLM_MODEL = "qwen3.5:4b";
 export const DEFAULT_LLM_API_KEY = "sk-none";
@@ -722,18 +742,28 @@ export interface QuestionResolution {
   model?: string;
 }
 
-async function resolveUsableRecallEndpoint(
+export async function resolveUsableRecallEndpoint(
   db: Database,
 ): Promise<ProviderConfig> {
-  if (cachedRecallEndpoint && cachedRecallEndpoint.expiresAt > Date.now()) {
-    return cachedRecallEndpoint.endpoint;
-  }
-
+  // Resolve the role config first (cheap, local reads) so configuration changes
+  // are observed immediately. The cached value reuses only the *network* health
+  // check, and only while the resolved provider signature is unchanged AND the
+  // TTL holds — so the enable gate and a Studio rebind both take effect at once.
   const cfg = await getProviderForRole(db, "recall");
   if (!cfg.enabled) {
     throw new Error("LLM integration is disabled in settings (llm.enabled)");
   }
   assertChatCompletions(cfg);
+
+  const signature = recallEndpointSignature(cfg);
+  if (
+    cachedRecallEndpoint &&
+    cachedRecallEndpoint.signature === signature &&
+    cachedRecallEndpoint.expiresAt > Date.now()
+  ) {
+    return cachedRecallEndpoint.endpoint;
+  }
+
   const chain = await checkProviderChain(cfg);
   const selected = chain.firstUsable;
   if (!selected || !isEndpointUsable(selected)) {
@@ -741,6 +771,7 @@ async function resolveUsableRecallEndpoint(
   }
   cachedRecallEndpoint = {
     endpoint: selected.endpoint,
+    signature,
     expiresAt: Date.now() + RECALL_ENDPOINT_CACHE_MS,
   };
   return selected.endpoint;

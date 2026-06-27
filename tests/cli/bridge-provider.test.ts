@@ -97,6 +97,7 @@ describe("bridge provider-config commands", () => {
     expect(listed.providers[0]).toMatchObject({
       name: "deepseek-work",
       keyState: "set",
+      local: false,
     });
     expect(JSON.stringify(listed)).not.toContain(SECRET);
 

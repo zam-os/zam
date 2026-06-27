@@ -3,11 +3,13 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  clearRecallEndpointCache,
   ensureHighQualityQuestion,
   ensureLlmReadyHeadless,
   ensureLocalLlmRunning,
   fetchWithInteractiveTimeout,
   isLlmOnline,
+  resolveUsableRecallEndpoint,
 } from "../../src/cli/llm/client.js";
 import {
   createToken,
@@ -131,6 +133,76 @@ describe("LLM client utilities (CLI layer)", () => {
       global.fetch = originalFetch;
       await db.close();
     }
+    });
+  });
+
+  it("recall endpoint cache is reused, then invalidated when the binding changes", async () => {
+    await withIsolatedMachineConfig(async () => {
+      clearRecallEndpointCache();
+      const db = await openDatabase({
+        dbPath: ":memory:",
+        initialize: true,
+        useConfiguredCloud: false,
+      });
+      await setSetting(db, "llm.enabled", "true");
+      await setSetting(
+        db,
+        "llm.providers",
+        JSON.stringify({
+          cloudA: {
+            url: "https://a.example/v1",
+            model: "model-a",
+            apiKey: "sk-a",
+          },
+          cloudB: {
+            url: "https://b.example/v1",
+            model: "model-b",
+            apiKey: "sk-b",
+          },
+        }),
+      );
+      await setSetting(
+        db,
+        "llm.roles",
+        JSON.stringify({ recall: { primary: "cloudA" } }),
+      );
+
+      const originalFetch = global.fetch;
+      const urls: string[] = [];
+      global.fetch = (async (url) => {
+        urls.push(String(url));
+        return new Response(
+          JSON.stringify({ data: [{ id: "model-a" }, { id: "model-b" }] }),
+        );
+      }) as typeof fetch;
+
+      try {
+        const first = await resolveUsableRecallEndpoint(db);
+        expect(first.url).toBe("https://a.example/v1");
+        const probesAfterFirst = urls.length;
+        expect(probesAfterFirst).toBeGreaterThan(0);
+
+        // Unchanged config → served from cache, no new network probes.
+        const second = await resolveUsableRecallEndpoint(db);
+        expect(second.url).toBe("https://a.example/v1");
+        expect(urls.length).toBe(probesAfterFirst);
+
+        // Rebind recall → cloudB: the signature changes, so the cache must be
+        // bypassed and the new endpoint resolved immediately (not after the TTL).
+        await setSetting(
+          db,
+          "llm.roles",
+          JSON.stringify({ recall: { primary: "cloudB" } }),
+        );
+        const third = await resolveUsableRecallEndpoint(db);
+        expect(third.url).toBe("https://b.example/v1");
+        expect(urls.length).toBeGreaterThan(probesAfterFirst);
+        expect(urls.some((u) => u.includes("b.example"))).toBe(true);
+      } finally {
+        global.fetch = originalFetch;
+        clearRecallEndpointCache();
+        await db.close();
+      }
     });
   });
 

@@ -2161,7 +2161,7 @@ bridgeCommand
   .option("--runner <runner>", "Local runner hint")
   .option("--key-ref <ref>", "Credential reference for API key")
   .option("--scope <scope>", "machine (default) or shared", "machine")
-  .action(async (opts) => {
+  .action(async (opts, command) => {
     const machine = parseProviderScope(opts.scope);
     let apiFlavor: ApiFlavor | undefined;
     if (opts.flavor) {
@@ -2172,9 +2172,14 @@ bridgeCommand
       }
       apiFlavor = opts.flavor;
     }
+    // Commander stores the `--local` / `--no-local` pair on opts.local (true /
+    // false) — there is no opts.noLocal. Because `--no-local` defaults opts.local
+    // to true, only treat it as set when a flag was actually passed; otherwise
+    // leave `local` undefined so an update doesn't clobber the stored value.
     let local: boolean | undefined;
-    if (opts.local) local = true;
-    else if (opts.noLocal) local = false;
+    if (command.getOptionValueSource("local") === "cli") {
+      local = opts.local === true;
+    }
     const patch: ProviderRecord = {};
     if (opts.label !== undefined) patch.label = opts.label;
     if (opts.url !== undefined) patch.url = opts.url;
@@ -2363,12 +2368,26 @@ bridgeCommand
     });
   });
 
+// Settings the Studio UI may write through the generic setter. Secret-bearing
+// keys (llm.api_key) and structured provider config (llm.providers/llm.roles)
+// must go through their dedicated commands, never this escape hatch.
+const UI_WRITABLE_SETTINGS = new Set([
+  "llm.enabled",
+  "llm.vision.enabled",
+  "system.locale",
+]);
+
 bridgeCommand
   .command("setting-set")
-  .description("Set a single ZAM setting value (JSON)")
+  .description("Set a single allowlisted ZAM setting value (JSON)")
   .requiredOption("--key <key>", "Setting key")
   .requiredOption("--value <value>", "Setting value")
   .action(async (opts) => {
+    if (!UI_WRITABLE_SETTINGS.has(opts.key)) {
+      jsonError(
+        `Setting "${opts.key}" is not writable via setting-set. Allowed: ${[...UI_WRITABLE_SETTINGS].join(", ")}.`,
+      );
+    }
     await withDb(async (db) => {
       await setSetting(db, opts.key, opts.value);
       jsonOut({ ok: true, key: opts.key, value: opts.value });
