@@ -14,7 +14,7 @@ import {
   setTursoCredentials,
 } from "../../kernel/credentials.js";
 import type { Database } from "../../kernel/index.js";
-import { openDatabaseWithSync } from "../../kernel/index.js";
+import { getSystemProfile, openDatabaseWithSync } from "../../kernel/index.js";
 
 export const connectorCommand = new Command("connector").description(
   "Manage external service connectors",
@@ -175,6 +175,20 @@ async function setupTurso(
   mode?: "native" | "remote",
 ): Promise<void> {
   let db: Database | undefined;
+
+  // Auto-detect Windows ARM64 and default to remote mode, since the libsql
+  // native driver has no prebuilt ARM64 binaries for Windows.
+  const arch = getSystemProfile().arch;
+  const isWindowsArm64 = process.platform === "win32" && arch === "arm64";
+  const effectiveMode = mode ?? (isWindowsArm64 ? "remote" : undefined);
+  if (!mode && isWindowsArm64) {
+    console.log(
+      "Detected Windows ARM64 — defaulting to remote (HTTP) mode.\n" +
+        "  The native libsql driver is not available on this architecture.\n" +
+        "  Remote mode uses the Turso HTTP API and works everywhere.\n",
+    );
+  }
+
   try {
     const url =
       urlArg ??
@@ -193,7 +207,7 @@ async function setupTurso(
     }
 
     // Store credentials outside the db so they survive db deletion
-    setTursoCredentials(url, token, undefined, mode);
+    setTursoCredentials(url, token, undefined, effectiveMode);
 
     // Verify by opening the configured cloud database.
     db = await openDatabaseWithSync({ initialize: true });
@@ -202,7 +216,7 @@ async function setupTurso(
 
     console.log(
       `Turso cloud database configured and verified: ${url}` +
-        (mode ? ` (mode: ${mode})` : ""),
+        (effectiveMode ? ` (mode: ${effectiveMode})` : ""),
     );
   } catch (err) {
     await db?.close();

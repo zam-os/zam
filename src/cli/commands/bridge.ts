@@ -20,9 +20,11 @@ import type {
 import {
   analyzeObservation,
   buildReviewQueue,
+  countUncardedTokens,
   createToken,
   discoverSkills,
   ensureCard,
+  ensureCardsForAllTokens,
   executeReviewAction,
   generatePrompt,
   getAgentSkill,
@@ -31,6 +33,7 @@ import {
   getSetting,
   getTokenDeleteImpact,
   listAgentSkills,
+  listTokens,
   monitorLogExists,
   openDatabase,
   pairCommands,
@@ -152,14 +155,26 @@ bridgeCommand
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
+
+      // Auto-create cards for tokens that don't have one yet.
+      // Tokens registered via `zam token register` have no cards,
+      // so they would be invisible to the review queue otherwise.
+      await ensureCardsForAllTokens(db, userId);
+
       const dueCards = await getDueCards(db, userId);
       const domains = [
         ...new Set(dueCards.map((c) => c.domain).filter(Boolean)),
       ].sort();
 
+      // Count total non-deprecated tokens (all have cards now thanks to ensureCardsForAllTokens).
+      const totalTokens = (await listTokens(db)).length;
+      const uncardedCount = await countUncardedTokens(db, userId);
+
       jsonOut({
         userId,
         dueCount: dueCards.length,
+        totalTokens,
+        uncardedTokens: uncardedCount,
         domains,
         cards: dueCards.map((c) => ({
           cardId: c.id,
@@ -175,6 +190,54 @@ bridgeCommand
     });
   });
 
+// ── zam bridge ensure-cards ──────────────────────────────────────────────────
+
+bridgeCommand
+  .command("ensure-cards")
+  .description("Ensure every token has a card for the user (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const created = await ensureCardsForAllTokens(db, userId);
+      const totalTokens = (await listTokens(db)).length;
+
+      jsonOut({
+        userId,
+        totalTokens,
+        cardsCreated: created,
+        allCarded: true,
+      });
+    });
+  });
+
+// ── zam bridge token-stats ──────────────────────────────────────────────────
+
+bridgeCommand
+  .command("token-stats")
+  .description("Get token and card counts for a user (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const totalTokens = (await listTokens(db)).length;
+      const uncarded = await countUncardedTokens(db, userId);
+      const dueCards = await getDueCards(db, userId);
+      const domains = [
+        ...new Set(dueCards.map((c) => c.domain).filter(Boolean)),
+      ].sort();
+
+      jsonOut({
+        userId,
+        totalTokens,
+        cardedTokens: totalTokens - uncarded,
+        uncardedTokens: uncarded,
+        dueCount: dueCards.length,
+        domains,
+      });
+    });
+  });
+
 // ── zam bridge get-review ─────────────────────────────────────────────────
 
 bridgeCommand
@@ -185,6 +248,12 @@ bridgeCommand
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
+
+      // Ensure every token has a card so the queue is never empty just
+      // because tokens were registered via `zam token register` (which
+      // creates tokens but not cards).
+      await ensureCardsForAllTokens(db, userId);
+
       const queue = await buildReviewQueue(db, {
         userId,
         maxReviews: 1,
@@ -848,4 +917,53 @@ bridgeCommand
         },
       });
     });
+  });
+
+// ── zam bridge cloud-model-hint ─────────────────────────────────────────────
+
+/**
+ * Known cloud LLM endpoints with their recommended model and API flavor.
+ *
+ * The flavor is critical: for recall/text roles ZAM currently only supports
+ * `chat-completions` (OpenAI-compatible protocol).  Providers like DeepSeek
+ * expose both an `/anthropic` endpoint (anthropic-messages) and a `/v1`
+ * endpoint (chat-completions) — always recommend the chat-completions one
+ * so the provider works for ALL roles, not just vision.
+ */
+interface CloudModelRecommendation {
+  model: string;
+  flavor: "chat-completions" | "anthropic-messages";
+}
+
+function getCloudModelRecommendation(url: string): CloudModelRecommendation | null {
+  const lower = url.toLowerCase();
+  if (lower.includes("openrouter.ai")) {
+    return { model: "openrouter/free", flavor: "chat-completions" };
+  }
+  if (lower.includes("openai.com") || lower.includes("api.openai")) {
+    return { model: "gpt-5-mini", flavor: "chat-completions" };
+  }
+  if (lower.includes("googleapis.com") || lower.includes("google")) {
+    return { model: "gemini-3.5-flash", flavor: "chat-completions" };
+  }
+  if (lower.includes("deepseek.com")) {
+    // DeepSeek has OpenAI-compatible /v1 AND Anthropic-compatible /anthropic.
+    // /v1 (chat-completions) works for ALL roles; /anthropic is vision-only.
+    return { model: "deepseek-v4-flash", flavor: "chat-completions" };
+  }
+  if (lower.includes("mimo")) {
+    return { model: "mimo-v2.5", flavor: "chat-completions" };
+  }
+  if (lower.includes("anthropic.com")) {
+    return { model: "claude-haiku-4-5-20251001", flavor: "anthropic-messages" };
+  }
+  return null;
+}
+
+bridgeCommand
+  .command("cloud-model-hint")
+  .description("Suggest a cloud model and API flavor for an endpoint URL (JSON)")
+  .requiredOption("--url <url>", "Endpoint base URL")
+  .action((opts) => {
+    jsonOut({ recommendation: getCloudModelRecommendation(opts.url) });
   });
