@@ -434,23 +434,26 @@ ${input.sourceLinkContent ? `Source Reference:\n${input.sourceLinkContent}` : ""
 
 Active-Recall Question:`;
 
-  const res = await fetchWithInteractiveTimeout(`${endpoint.url}/chat/completions`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${endpoint.apiKey}`,
+  const res = await fetchWithInteractiveTimeout(
+    `${endpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.1,
+        max_tokens: RECALL_QUESTION_MAX_OUTPUT_TOKENS,
+      }),
+      locale: cfg.locale,
     },
-    body: JSON.stringify({
-      model: endpoint.model,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
-      temperature: 0.1,
-      max_tokens: RECALL_QUESTION_MAX_OUTPUT_TOKENS,
-    }),
-    locale: cfg.locale,
-  });
+  );
 
   const text = await readChatContent(res, "LLM request");
   return {
@@ -511,23 +514,26 @@ ${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}`
 
 Evaluation:`;
 
-  const res = await fetchWithInteractiveTimeout(`${endpoint.url}/chat/completions`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${endpoint.apiKey}`,
+  const res = await fetchWithInteractiveTimeout(
+    `${endpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.2,
+        max_tokens: RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
+      }),
+      locale: cfg.locale,
     },
-    body: JSON.stringify({
-      model: endpoint.model,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
-      temperature: 0.2,
-      max_tokens: RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
-    }),
-    locale: cfg.locale,
-  });
+  );
 
   const text = await readChatContent(res, "LLM evaluation");
   return {
@@ -551,23 +557,26 @@ export async function translateQuestionViaLLM(
   const systemPrompt = `You are a highly precise translator. Translate the given active-recall question into clear, natural ${targetLang}.
 Output ONLY the raw translation. Do not include any headers, preamble, quotes, or conversational filler.`;
 
-  const res = await fetchWithInteractiveTimeout(`${endpoint.url}/chat/completions`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${endpoint.apiKey}`,
+  const res = await fetchWithInteractiveTimeout(
+    `${endpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: question },
+        ],
+        temperature: 0.1,
+        max_tokens: DEFAULT_LLM_MAX_TOKENS,
+      }),
+      locale: cfg.locale,
     },
-    body: JSON.stringify({
-      model: endpoint.model,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: question },
-      ],
-      temperature: 0.1,
-      max_tokens: DEFAULT_LLM_MAX_TOKENS,
-    }),
-    locale: cfg.locale,
-  });
+  );
 
   return readChatContent(res, "Translation");
 }
@@ -716,10 +725,7 @@ export interface QuestionResolution {
 async function resolveUsableRecallEndpoint(
   db: Database,
 ): Promise<ProviderConfig> {
-  if (
-    cachedRecallEndpoint &&
-    cachedRecallEndpoint.expiresAt > Date.now()
-  ) {
+  if (cachedRecallEndpoint && cachedRecallEndpoint.expiresAt > Date.now()) {
     return cachedRecallEndpoint.endpoint;
   }
 

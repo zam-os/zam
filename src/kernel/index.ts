@@ -299,9 +299,9 @@ export {
   DEFAULT_REVIEW_CONTEXT_MAX_CHARS,
   matchesFilePath,
   normalizePath,
+  REVIEW_CONTEXT_CACHE_TTL_MS,
   resolveReference,
   resolveReviewContext,
-  REVIEW_CONTEXT_CACHE_TTL_MS,
 } from "./recall/reference-resolver.js";
 export type { CascadeBlockResult, UnblockResult } from "./scheduler/blocker.js";
 export { cascadeBlock, unblockReady } from "./scheduler/blocker.js";

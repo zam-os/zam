@@ -34,10 +34,7 @@ type CachedReviewContext = {
 
 const reviewContextCache = new Map<string, CachedReviewContext>();
 
-function reviewContextCacheKey(
-  sourceLink: string,
-  maxChars: number,
-): string {
+function reviewContextCacheKey(sourceLink: string, maxChars: number): string {
   return `${sourceLink}\0${maxChars}`;
 }
 

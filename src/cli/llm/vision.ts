@@ -19,9 +19,9 @@ import {
 import {
   type ApiFlavor,
   DEFAULT_LLM_API_KEY,
+  DEFAULT_LLM_MAX_TOKENS,
   fetchWithInteractiveTimeout,
   getProviderForRole,
-  DEFAULT_LLM_MAX_TOKENS,
 } from "./client.js";
 
 const LANGUAGE_NAMES: Record<SupportedLocale, string> = {
