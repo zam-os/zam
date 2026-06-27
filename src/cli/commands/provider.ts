@@ -171,7 +171,7 @@ const readProviders = (db: Database): Promise<ProvidersMap> =>
 const readRoles = (db: Database): Promise<RolesMap> =>
   readJson<RolesMap>(db, "llm.roles", {});
 
-async function readScopedProviders(
+export async function readScopedProviders(
   db: Database | undefined,
   machine: boolean,
 ): Promise<ProvidersMap> {
@@ -181,7 +181,7 @@ async function readScopedProviders(
   return readProviders(db);
 }
 
-async function readScopedRoles(
+export async function readScopedRoles(
   db: Database | undefined,
   machine: boolean,
 ): Promise<RolesMap> {
@@ -191,7 +191,7 @@ async function readScopedRoles(
   return readRoles(db);
 }
 
-async function writeScopedProviders(
+export async function writeScopedProviders(
   db: Database | undefined,
   machine: boolean,
   p: ProvidersMap,
@@ -206,7 +206,7 @@ async function writeScopedProviders(
   await setSetting(db, "llm.providers", JSON.stringify(p));
 }
 
-async function writeScopedRoles(
+export async function writeScopedRoles(
   db: Database | undefined,
   machine: boolean,
   r: RolesMap,
@@ -221,7 +221,7 @@ async function writeScopedRoles(
   await setSetting(db, "llm.roles", JSON.stringify(r));
 }
 
-async function withProviderScope(
+export async function withProviderScope(
   machine: boolean,
   action: (db: Database | undefined) => Promise<void>,
 ): Promise<void> {

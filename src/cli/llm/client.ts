@@ -28,6 +28,44 @@ import {
 
 /** Single source of truth for connection defaults (easy to bump as models evolve). */
 export const DEFAULT_LLM_URL = "http://localhost:8000/v1";
+
+/** Default completion budget for open-ended tasks (vision, translation, …). */
+export const DEFAULT_LLM_MAX_TOKENS = 10_000;
+
+/** Tight output caps for recall — short questions/evaluations, faster round-trips. */
+export const RECALL_QUESTION_MAX_OUTPUT_TOKENS = 400;
+export const RECALL_EVALUATION_MAX_OUTPUT_TOKENS = 1200;
+
+const RECALL_ENDPOINT_CACHE_MS = 60_000;
+let cachedRecallEndpoint: {
+  endpoint: ProviderConfig;
+  signature: string;
+  expiresAt: number;
+} | null = null;
+
+/** Clear the in-process recall-endpoint cache (used by tests and explicit resets). */
+export function clearRecallEndpointCache(): void {
+  cachedRecallEndpoint = null;
+}
+
+/**
+ * Compact fingerprint of the resolved recall provider. When any of these change
+ * — a role rebind, a provider url/model/flavor edit, or an enable toggle — the
+ * cached endpoint is treated as stale even within its TTL, so a configuration
+ * change in Studio takes effect on the next card instead of after up to
+ * RECALL_ENDPOINT_CACHE_MS.
+ */
+function recallEndpointSignature(cfg: ProviderConfig): string {
+  return [
+    cfg.enabled ? "on" : "off",
+    cfg.providerName ?? "",
+    cfg.url,
+    cfg.model,
+    cfg.apiFlavor,
+    cfg.fallback?.url ?? "",
+    cfg.fallback?.model ?? "",
+  ].join("|");
+}
 export const DEFAULT_LLM_MODEL = "qwen3.5:4b";
 export const DEFAULT_LLM_API_KEY = "sk-none";
 
@@ -100,6 +138,8 @@ export interface ProviderConfig {
   label?: string;
   source: "legacy" | "shared" | "machine";
   local: boolean;
+  /** Optional hint for which local server process to auto-start (flm, ollama, …). */
+  runner?: string;
   /** Vision only: max frames to sample from a recording. */
   maxFrames?: number;
   /** Optional next endpoint to try when the primary is unusable. */
@@ -253,6 +293,7 @@ function materializeProvider(
     label: rec.label,
     source: meta.source,
     local: rec.local ?? isLocalEndpoint(url),
+    ...(rec.runner ? { runner: rec.runner } : {}),
     ...(role === "vision" ? { maxFrames: base.maxFrames } : {}),
   };
 }
@@ -385,12 +426,9 @@ export async function generateQuestionViaLLM(
     context?: string;
     sourceLinkContent?: string | null;
   },
-): Promise<string> {
+): Promise<LlmTextResult> {
   const cfg = await getProviderForRole(db, "recall");
-  if (!cfg.enabled) {
-    throw new Error("LLM integration is disabled in settings (llm.enabled)");
-  }
-  assertChatCompletions(cfg);
+  const endpoint = await resolveUsableRecallEndpoint(db);
 
   const bloom = (
     input.bloomLevel >= 1 && input.bloomLevel <= 5 ? input.bloomLevel : 1
@@ -416,25 +454,33 @@ ${input.sourceLinkContent ? `Source Reference:\n${input.sourceLinkContent}` : ""
 
 Active-Recall Question:`;
 
-  const res = await fetchWithInteractiveTimeout(`${cfg.url}/chat/completions`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${cfg.apiKey}`,
+  const res = await fetchWithInteractiveTimeout(
+    `${endpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.1,
+        max_tokens: RECALL_QUESTION_MAX_OUTPUT_TOKENS,
+      }),
+      locale: cfg.locale,
     },
-    body: JSON.stringify({
-      model: cfg.model,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
-      temperature: 0.1,
-      max_tokens: 150,
-    }),
-    locale: cfg.locale,
-  });
+  );
 
-  return readChatContent(res, "LLM request");
+  const text = await readChatContent(res, "LLM request");
+  return {
+    text,
+    model: endpoint.model,
+    providerName: endpoint.providerName,
+  };
 }
 
 /**
@@ -453,12 +499,9 @@ export async function evaluateAnswerViaLLM(
     userAnswer: string;
     sourceLinkContent?: string | null;
   },
-): Promise<string> {
+): Promise<LlmTextResult> {
   const cfg = await getProviderForRole(db, "recall");
-  if (!cfg.enabled) {
-    throw new Error("LLM integration is disabled in settings (llm.enabled)");
-  }
-  assertChatCompletions(cfg);
+  const endpoint = await resolveUsableRecallEndpoint(db);
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
   const ratingPrefix =
     LOCALIZED_RATING_PREFIX[cfg.locale] || "Suggested rating";
@@ -491,25 +534,33 @@ ${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}`
 
 Evaluation:`;
 
-  const res = await fetchWithInteractiveTimeout(`${cfg.url}/chat/completions`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${cfg.apiKey}`,
+  const res = await fetchWithInteractiveTimeout(
+    `${endpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.2,
+        max_tokens: RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
+      }),
+      locale: cfg.locale,
     },
-    body: JSON.stringify({
-      model: cfg.model,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
-      temperature: 0.2,
-      max_tokens: 300,
-    }),
-    locale: cfg.locale,
-  });
+  );
 
-  return readChatContent(res, "LLM evaluation");
+  const text = await readChatContent(res, "LLM evaluation");
+  return {
+    text,
+    model: endpoint.model,
+    providerName: endpoint.providerName,
+  };
 }
 
 /**
@@ -520,32 +571,32 @@ export async function translateQuestionViaLLM(
   question: string,
 ): Promise<string> {
   const cfg = await getProviderForRole(db, "recall");
-  if (!cfg.enabled) {
-    throw new Error("LLM integration is disabled in settings");
-  }
-  assertChatCompletions(cfg);
+  const endpoint = await resolveUsableRecallEndpoint(db);
   const targetLang = LANGUAGE_NAMES[cfg.locale] || "English";
 
   const systemPrompt = `You are a highly precise translator. Translate the given active-recall question into clear, natural ${targetLang}.
 Output ONLY the raw translation. Do not include any headers, preamble, quotes, or conversational filler.`;
 
-  const res = await fetchWithInteractiveTimeout(`${cfg.url}/chat/completions`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${cfg.apiKey}`,
+  const res = await fetchWithInteractiveTimeout(
+    `${endpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: question },
+        ],
+        temperature: 0.1,
+        max_tokens: DEFAULT_LLM_MAX_TOKENS,
+      }),
+      locale: cfg.locale,
     },
-    body: JSON.stringify({
-      model: cfg.model,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: question },
-      ],
-      temperature: 0.1,
-      max_tokens: 150,
-    }),
-    locale: cfg.locale,
-  });
+  );
 
   return readChatContent(res, "Translation");
 }
@@ -675,6 +726,152 @@ async function checkProviderChain(primary: ProviderConfig): Promise<{
     }
   }
   return { primary: first! };
+}
+
+/** LLM-generated or stored text plus the model that produced it (when applicable). */
+export interface LlmTextResult {
+  text: string;
+  model: string;
+  providerName?: string;
+}
+
+/** How a review question was resolved for display in the UI. */
+export interface QuestionResolution {
+  question: string;
+  source: "llm" | "original";
+  model?: string;
+}
+
+export async function resolveUsableRecallEndpoint(
+  db: Database,
+): Promise<ProviderConfig> {
+  // Resolve the role config first (cheap, local reads) so configuration changes
+  // are observed immediately. The cached value reuses only the *network* health
+  // check, and only while the resolved provider signature is unchanged AND the
+  // TTL holds — so the enable gate and a Studio rebind both take effect at once.
+  const cfg = await getProviderForRole(db, "recall");
+  if (!cfg.enabled) {
+    throw new Error("LLM integration is disabled in settings (llm.enabled)");
+  }
+  assertChatCompletions(cfg);
+
+  const signature = recallEndpointSignature(cfg);
+  if (
+    cachedRecallEndpoint &&
+    cachedRecallEndpoint.signature === signature &&
+    cachedRecallEndpoint.expiresAt > Date.now()
+  ) {
+    return cachedRecallEndpoint.endpoint;
+  }
+
+  const chain = await checkProviderChain(cfg);
+  const selected = chain.firstUsable;
+  if (!selected || !isEndpointUsable(selected)) {
+    throw new Error("No recall LLM endpoint is online");
+  }
+  cachedRecallEndpoint = {
+    endpoint: selected.endpoint,
+    signature,
+    expiresAt: Date.now() + RECALL_ENDPOINT_CACHE_MS,
+  };
+  return selected.endpoint;
+}
+
+async function prepareRecallChain(
+  db: Database,
+  opts: { timeoutMs: number; interactive: boolean },
+): Promise<LlmReadyResult> {
+  const cfg = await getProviderForRole(db, "recall");
+  const fail = (
+    reason: LlmReadiness["reason"],
+    partial: Partial<LlmReadyResult> = {},
+  ): LlmReadyResult => ({
+    usable: false,
+    reason,
+    online: false,
+    model: cfg.model,
+    availableModels: [],
+    providerName: cfg.providerName,
+    label: cfg.label,
+    local: cfg.local ?? isLocalEndpoint(cfg.url),
+    activeTier: "primary",
+    ...partial,
+  });
+
+  if (!cfg.enabled) return fail("disabled");
+  if (cfg.apiFlavor !== "chat-completions") return fail("unsupported-provider");
+
+  const chain = providerChain(cfg);
+  const deadline = Date.now() + opts.timeoutMs;
+  let lastReason: LlmReadiness["reason"] = "offline";
+  let lastOnline = false;
+  let lastModel = cfg.model;
+  let lastAvailable: string[] = [];
+
+  for (let index = 0; index < chain.length; index++) {
+    const endpoint = chain[index];
+    let online = await isLlmOnline(endpoint.url);
+
+    if (!online && (endpoint.local ?? isLocalEndpoint(endpoint.url))) {
+      if (opts.interactive) {
+        online = await startLocalRunner(
+          endpoint.url,
+          endpoint.model,
+          cfg.locale,
+          endpoint.runner,
+        );
+      } else {
+        spawnLocalRunner(endpoint.url, endpoint.model, endpoint.runner);
+        while (Date.now() < deadline) {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          if (await isLlmOnline(endpoint.url)) {
+            online = true;
+            break;
+          }
+        }
+      }
+    }
+
+    lastOnline = online;
+    lastModel = endpoint.model;
+
+    if (!online) {
+      lastReason = "offline";
+      continue;
+    }
+
+    const availableModels = await getAvailableModels(
+      endpoint.url,
+      endpoint.apiKey,
+    );
+    lastAvailable = availableModels;
+    const modelKnown =
+      availableModels.length === 0 ||
+      availableModels.some(
+        (candidate) => candidate.toLowerCase() === endpoint.model.toLowerCase(),
+      );
+    if (!modelKnown) {
+      lastReason = "model-not-found";
+      continue;
+    }
+
+    return {
+      usable: true,
+      online: true,
+      model: endpoint.model,
+      availableModels,
+      providerName: endpoint.providerName,
+      label: endpoint.label,
+      local: endpoint.local ?? isLocalEndpoint(endpoint.url),
+      activeTier: index === 0 ? "primary" : "fallback",
+    };
+  }
+
+  return fail(lastReason, {
+    online: lastOnline,
+    model: lastModel,
+    availableModels: lastAvailable,
+  });
 }
 
 async function isVisionProviderModelExplicit(
@@ -839,13 +1036,8 @@ export async function getProviderRoleStatus(
     };
   }
 
-  let selected: ProviderEndpointReadiness;
-  if (role === "vision") {
-    const chain = await checkProviderChain(cfg);
-    selected = chain.firstUsable ?? chain.primary;
-  } else {
-    selected = await checkProviderEndpoint(cfg);
-  }
+  const chain = await checkProviderChain(cfg);
+  const selected = chain.firstUsable ?? chain.primary;
   const active = selected.endpoint;
   const usable = selected.online && selected.modelAvailable;
   const reason = usable
@@ -881,11 +1073,47 @@ export interface LlmReadiness {
 
 type RunnerKind = "fastflowlm" | "ollama" | "generic" | "unknown";
 
-/** Pick the local runner from the URL port / model name (shared heuristic). */
+function runnerKindFromHint(hint?: string): RunnerKind | undefined {
+  if (!hint) return undefined;
+  const normalized = hint.trim().toLowerCase();
+  if (normalized === "flm" || normalized === "fastflowlm") {
+    return "fastflowlm";
+  }
+  if (normalized === "ollama") return "ollama";
+  if (
+    normalized === "foundry-local" ||
+    normalized === "foundry" ||
+    normalized === "generic"
+  ) {
+    return "generic";
+  }
+  return undefined;
+}
+
+function defaultPortForRunner(runner: RunnerKind, url: string): string {
+  try {
+    const urlObj = new URL(url);
+    const explicit = urlObj.port;
+    if (explicit) return explicit;
+    if (runner === "ollama") return "11434";
+    if (urlObj.protocol === "https:") return "443";
+    return "80";
+  } catch {
+    return runner === "ollama" ? "11434" : "8000";
+  }
+}
+
+/** Pick the local runner from an explicit hint, else URL port / model name. */
 function detectRunner(
   url: string,
   model: string,
+  hint?: string,
 ): { runner: RunnerKind; port: string } {
+  const fromHint = runnerKindFromHint(hint);
+  if (fromHint) {
+    return { runner: fromHint, port: defaultPortForRunner(fromHint, url) };
+  }
+
   let runner: RunnerKind = "unknown";
   let port = "8000";
   try {
@@ -911,8 +1139,8 @@ function detectRunner(
  * Best-effort, SILENT runner start for non-interactive contexts (bridge / GUI).
  * No console output, no prompts — just spawn the detached server if we can.
  */
-function spawnLocalRunner(url: string, model: string): void {
-  const { runner, port } = detectRunner(url, model);
+function spawnLocalRunner(url: string, model: string, hint?: string): void {
+  const { runner, port } = detectRunner(url, model, hint);
   try {
     if (runner === "fastflowlm") {
       const flmExe = existsSync("C:\\Program Files\\flm\\flm.exe")
@@ -945,8 +1173,9 @@ async function startLocalRunner(
   url: string,
   model: string,
   locale: SupportedLocale,
+  hint?: string,
 ): Promise<boolean> {
-  const { runner, port } = detectRunner(url, model);
+  const { runner, port } = detectRunner(url, model, hint);
 
   if (runner === "fastflowlm") {
     const flmExe = existsSync("C:\\Program Files\\flm\\flm.exe")
@@ -1050,59 +1279,32 @@ async function startLocalRunner(
 export async function ensureLocalLlmRunning(
   db: Database,
 ): Promise<LlmReadiness> {
-  const cfg = await getProviderForRole(db, "recall");
-  if (!cfg.enabled) {
-    return { usable: false, reason: "disabled" };
-  }
-  if (cfg.apiFlavor !== "chat-completions") {
-    console.warn(
-      `\x1b[31m✗ Recall is configured for "${cfg.apiFlavor}", but active recall currently supports chat-completions providers only.\x1b[0m`,
+  const result = await prepareRecallChain(db, {
+    timeoutMs: 25_000,
+    interactive: true,
+  });
+  if (result.usable) {
+    const location = result.local ? "local" : "cloud";
+    console.log(
+      `\x1b[32m✓ Recall LLM ready (${location}: ${result.model}).\x1b[0m`,
     );
-    return { usable: false, reason: "unsupported-provider" };
+    return { usable: true };
   }
-
-  const { url, model, apiKey, locale } = cfg;
-  const isLocal = isLocalEndpoint(url);
-
-  console.log(`Checking if local LLM server is online at ${url}...`);
-  let online = await isLlmOnline(url);
-
-  if (!online && isLocal) {
-    console.log(`\x1b[33m⚠ Local LLM server is offline on ${url}.\x1b[0m`);
-    online = await startLocalRunner(url, model, locale);
+  if (result.reason === "unsupported-provider") {
+    console.warn(
+      `\x1b[31m✗ Recall provider is not supported for active recall.\x1b[0m`,
+    );
+  } else if (result.reason === "model-not-found") {
+    console.warn(
+      `\x1b[31m✗ Configured model "${result.model}" is not available on the server.\x1b[0m`,
+    );
+    console.warn(`  Available models: ${result.availableModels.join(", ")}`);
+  } else if (result.reason === "offline") {
+    console.warn(
+      `\x1b[33m⚠ No recall LLM endpoint is reachable. Continuing without AI coaching.\x1b[0m\n`,
+    );
   }
-
-  if (!online) {
-    console.warn(
-      `\x1b[33m⚠ LLM server is not reachable at ${url}. Continuing without AI coaching.\x1b[0m\n`,
-    );
-    return { usable: false, reason: "offline" };
-  }
-
-  console.log("\x1b[32m✓ Local LLM server is online.\x1b[0m");
-
-  // Validate the configured model against what the server actually serves, so
-  // a typo / wrong tag fails immediately instead of hanging on every request.
-  const available = await getAvailableModels(url, apiKey);
-  const modelKnown =
-    available.length === 0 ||
-    available.some((m) => m.toLowerCase() === model.toLowerCase());
-
-  if (!modelKnown) {
-    console.warn(
-      `\x1b[31m✗ Configured model "${model}" is not available on the server.\x1b[0m`,
-    );
-    console.warn(`  Available models: ${available.join(", ")}`);
-    console.warn(
-      `  Set the right one: \x1b[36mzam settings set llm.model <name>\x1b[0m`,
-    );
-    console.warn(
-      "\x1b[33m  Continuing this session without AI coaching.\x1b[0m\n",
-    );
-    return { usable: false, reason: "model-not-found" };
-  }
-
-  return { usable: true };
+  return { usable: false, reason: result.reason };
 }
 
 /** Readiness plus the live status details a UI needs to render. */
@@ -1110,6 +1312,10 @@ export interface LlmReadyResult extends LlmReadiness {
   online: boolean;
   model: string;
   availableModels: string[];
+  providerName?: string;
+  label?: string;
+  local?: boolean;
+  activeTier?: "primary" | "fallback";
 }
 
 /**
@@ -1121,68 +1327,10 @@ export async function ensureLlmReadyHeadless(
   db: Database,
   opts: { timeoutMs?: number } = {},
 ): Promise<LlmReadyResult> {
-  const timeoutMs = opts.timeoutMs ?? 25000;
-  const cfg = await getProviderForRole(db, "recall");
-  const { url, model, apiKey } = cfg;
-  if (!cfg.enabled) {
-    return {
-      usable: false,
-      reason: "disabled",
-      online: false,
-      model,
-      availableModels: [],
-    };
-  }
-  if (cfg.apiFlavor !== "chat-completions") {
-    return {
-      usable: false,
-      reason: "unsupported-provider",
-      online: false,
-      model,
-      availableModels: [],
-    };
-  }
-
-  const isLocal = isLocalEndpoint(url);
-
-  let online = await isLlmOnline(url);
-  if (!online && isLocal) {
-    spawnLocalRunner(url, model);
-    const deadline = Date.now() + timeoutMs;
-    while (Date.now() < deadline) {
-      await new Promise((r) => setTimeout(r, 1000));
-      if (await isLlmOnline(url)) {
-        online = true;
-        break;
-      }
-    }
-  }
-
-  if (!online) {
-    return {
-      usable: false,
-      reason: "offline",
-      online: false,
-      model,
-      availableModels: [],
-    };
-  }
-
-  const availableModels = await getAvailableModels(url, apiKey);
-  const modelKnown =
-    availableModels.length === 0 ||
-    availableModels.some((m) => m.toLowerCase() === model.toLowerCase());
-  if (!modelKnown) {
-    return {
-      usable: false,
-      reason: "model-not-found",
-      online: true,
-      model,
-      availableModels,
-    };
-  }
-
-  return { usable: true, online: true, model, availableModels };
+  return prepareRecallChain(db, {
+    timeoutMs: opts.timeoutMs ?? 25_000,
+    interactive: false,
+  });
 }
 
 /**
@@ -1288,7 +1436,7 @@ export async function ensureHighQualityQuestion(
     sourceLink?: string | null;
     question?: string | null;
   },
-): Promise<string | null> {
+): Promise<QuestionResolution | null> {
   const { enabled } = await getLlmConfig(db);
 
   if (enabled) {
@@ -1311,10 +1459,14 @@ export async function ensureHighQualityQuestion(
         sourceLinkContent,
       });
 
-      if (generated && generated.trim().length > 0) {
+      if (generated.text.trim().length > 0) {
         // Persist the latest high-quality question as the offline fallback.
-        await updateToken(db, token.slug, { question: generated });
-        return generated;
+        await updateToken(db, token.slug, { question: generated.text });
+        return {
+          question: generated.text,
+          source: "llm",
+          model: generated.model,
+        };
       }
     } catch {
       // Fail silently and fall back to the stored database question.
@@ -1322,7 +1474,10 @@ export async function ensureHighQualityQuestion(
   }
 
   if (token.question && token.question.trim().length > 0) {
-    return token.question;
+    return {
+      question: token.question.trim(),
+      source: "original",
+    };
   }
 
   return null;

@@ -166,7 +166,14 @@
           </article>
 
           <article class="card frosted settings-card">
-            <h2 id="lbl-settings-ai-title">AI models</h2>
+            <div class="settings-card-header">
+              <div>
+                <h2 id="lbl-settings-ai-title">AI models</h2>
+              </div>
+              <button id="btn-toggle-ai-config" class="btn secondary-btn btn-sm" type="button">
+                Configure
+              </button>
+            </div>
             <div class="settings-row">
               <span id="lbl-learning-model">Learning model</span>
               <code id="learning-model-status">—</code>
@@ -174,6 +181,17 @@
             <div class="settings-row">
               <span id="lbl-observer-model">Observer model</span>
               <code id="observer-model-status">—</code>
+            </div>
+            <div id="ai-config-editor" class="ai-config-editor hidden" aria-live="polite">
+              <p id="ai-config-status" class="sub-label settings-status-row"></p>
+              <div id="ai-provider-list" class="ai-provider-list"></div>
+              <div class="settings-actions">
+                <button id="btn-add-ai-provider" class="btn secondary-btn btn-sm" type="button">
+                  + Add provider
+                </button>
+              </div>
+              <div id="ai-provider-form" class="ai-provider-form hidden"></div>
+              <div id="ai-role-bindings" class="ai-role-bindings"></div>
             </div>
           </article>
 
@@ -240,6 +258,9 @@
           <div class="card-body">
             <!-- RECALL QUESTION -->
             <div class="question-container">
+              <div class="question-header">
+                <span class="model-attribution-badge hidden" id="question-model-badge"></span>
+              </div>
               <p class="question-text" id="question-text">
                 What command initializes a new local Git repository?
               </p>
@@ -283,7 +304,10 @@
             <div class="revealed-container hidden" id="revealed-box">
               <!-- AI FEEDBACK -->
               <div class="ai-feedback-box hidden" id="ai-feedback-container">
-                <h3 class="box-title" id="lbl-ai-feedback-title">ZAM Feedback</h3>
+                <div class="feedback-title-row">
+                  <h3 class="box-title" id="lbl-ai-feedback-title">ZAM Feedback</h3>
+                  <span class="model-attribution-badge hidden" id="evaluation-model-badge"></span>
+                </div>
                 <p class="ai-feedback-text" id="ai-feedback-text">
                   Your answer matches perfectly! Good job.
                 </p>

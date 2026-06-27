@@ -1,7 +1,7 @@
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { checkVisionReadiness } from "../../src/cli/llm/client.js";
 import { observeUiSnapshotViaLLM } from "../../src/cli/llm/vision.js";
 import { openDatabase, setSetting } from "../../src/kernel/index.js";
@@ -36,6 +36,24 @@ afterEach(() => {
   for (const dir of tempDirs.splice(0)) {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+// Isolate the per-machine config (~/.zam/config.json) so vision resolution uses
+// the in-test DB settings instead of the developer's real machine providers.
+let machineConfigDir: string;
+let previousZamConfigPath: string | undefined;
+beforeEach(() => {
+  machineConfigDir = mkdtempSync(join(tmpdir(), "zam-machine-cfg-"));
+  previousZamConfigPath = process.env.ZAM_CONFIG_PATH;
+  process.env.ZAM_CONFIG_PATH = join(machineConfigDir, "config.json");
+});
+afterEach(() => {
+  if (previousZamConfigPath === undefined) {
+    delete process.env.ZAM_CONFIG_PATH;
+  } else {
+    process.env.ZAM_CONFIG_PATH = previousZamConfigPath;
+  }
+  rmSync(machineConfigDir, { recursive: true, force: true });
 });
 
 describe("vision UI observer adapter", () => {
@@ -79,10 +97,9 @@ describe("vision UI observer adapter", () => {
     const originalFetch = global.fetch;
     global.fetch = (async (url) => {
       expect(String(url)).toBe("http://vision/v1/models");
-      return new Response(
-        JSON.stringify({ data: [{ id: "mimo-v2.5" }] }),
-        { status: 200 },
-      );
+      return new Response(JSON.stringify({ data: [{ id: "mimo-v2.5" }] }), {
+        status: 200,
+      });
     }) as typeof fetch;
 
     try {
@@ -107,10 +124,9 @@ describe("vision UI observer adapter", () => {
 
     const originalFetch = global.fetch;
     global.fetch = (async () =>
-      new Response(
-        JSON.stringify({ data: [{ id: "qwen2.5vl-it:3b" }] }),
-        { status: 200 },
-      )) as typeof fetch;
+      new Response(JSON.stringify({ data: [{ id: "qwen2.5vl-it:3b" }] }), {
+        status: 200,
+      })) as typeof fetch;
 
     try {
       await expect(checkVisionReadiness(db)).resolves.toMatchObject({

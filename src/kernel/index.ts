@@ -295,9 +295,11 @@ export type {
 // AI-agnostic (zero LLM dependencies). The local-LLM client lives in the CLI
 // layer at src/cli/llm/client.ts.
 export {
+  clearReviewContextCache,
   DEFAULT_REVIEW_CONTEXT_MAX_CHARS,
   matchesFilePath,
   normalizePath,
+  REVIEW_CONTEXT_CACHE_TTL_MS,
   resolveReference,
   resolveReviewContext,
 } from "./recall/reference-resolver.js";

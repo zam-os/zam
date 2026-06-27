@@ -572,7 +572,25 @@ textarea:focus-visible {
   gap: 8px;
 }
 
+.settings-field-stack {
+  gap: 6px;
+}
+
+.settings-field-checkbox {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+}
+
+.settings-field-checkbox input[type="checkbox"] {
+  flex-shrink: 0;
+  margin: 0;
+}
+
 .settings-field select,
+.settings-field input,
+.ai-provider-select,
 .observer-window-select {
   background: var(--bg-field);
   border: 1px solid var(--border-soft);
@@ -583,9 +601,188 @@ textarea:focus-visible {
   padding: 10px 12px;
 }
 
+.settings-field input[type="checkbox"] {
+  height: auto;
+  padding: 0;
+  width: auto;
+}
+
 :root[data-theme="dark"] .settings-field select,
+:root[data-theme="dark"] .settings-field input,
 :root[data-theme="dark"] .observer-window-select {
   color-scheme: dark;
+}
+
+.ai-config-editor {
+  border-top: 1px solid var(--border-soft);
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
+}
+
+.ai-provider-list,
+.ai-role-bindings {
+  display: grid;
+  gap: 8px;
+}
+
+.ai-provider-row {
+  align-items: flex-start;
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+  padding: 12px;
+}
+
+.ai-provider-main {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ai-provider-title-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ai-provider-title {
+  color: var(--clr-text-primary);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.ai-provider-badge {
+  background: rgba(14, 165, 233, 0.12);
+  border: 1px solid rgba(14, 165, 233, 0.28);
+  border-radius: 999px;
+  color: var(--clr-accent-cyan);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  text-transform: uppercase;
+}
+
+.ai-provider-meta,
+.ai-provider-hint,
+.ai-role-bindings h3 {
+  color: var(--clr-text-muted);
+  font-size: 12px;
+}
+
+.ai-role-bindings h3 {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin: 8px 0 0;
+  text-transform: uppercase;
+}
+
+.ai-provider-form {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.ai-provider-form h3 {
+  color: var(--clr-text-primary);
+  font-size: 14px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.ai-provider-form-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.ai-provider-section-title {
+  color: var(--clr-text-muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin: 12px 0 0;
+  text-transform: uppercase;
+}
+
+.ai-provider-section-title:first-child {
+  margin-top: 0;
+}
+
+.provider-kind-switch {
+  display: grid;
+  gap: 0;
+  grid-template-columns: 1fr 1fr;
+}
+
+.provider-kind-option {
+  align-items: center;
+  background: var(--bg-field);
+  border: 1px solid var(--border-soft);
+  cursor: pointer;
+  display: flex;
+  font-size: 13px;
+  font-weight: 700;
+  justify-content: center;
+  margin: 0;
+  padding: 10px 12px;
+  position: relative;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.provider-kind-option input {
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  position: absolute;
+}
+
+.provider-kind-option:first-of-type {
+  border-radius: 10px 0 0 10px;
+}
+
+.provider-kind-option:last-of-type {
+  border-left: 0;
+  border-radius: 0 10px 10px 0;
+}
+
+.provider-kind-option:has(input:checked) {
+  background: rgba(14, 165, 233, 0.12);
+  border-color: rgba(14, 165, 233, 0.38);
+  color: var(--clr-accent-cyan);
+  z-index: 1;
+}
+
+.provider-kind-option:has(input:focus-visible) {
+  outline: 2px solid rgba(14, 165, 233, 0.45);
+  outline-offset: 2px;
+}
+
+.ai-role-row {
+  align-items: end;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.ai-provider-actions,
+.ai-role-actions {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
 }
 
 .settings-status-row {
@@ -821,6 +1018,7 @@ textarea:focus-visible {
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
+  min-height: 0;
   position: relative;
 }
 
@@ -873,12 +1071,55 @@ textarea:focus-visible {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 /* Question Section */
 .question-container {
+  flex: 0 1 auto;
   margin-bottom: 25px;
+  max-height: min(55vh, 560px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 4px;
   text-align: left;
+}
+
+.question-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+  min-height: 22px;
+}
+
+.feedback-title-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.feedback-title-row .box-title {
+  margin-bottom: 0;
+}
+
+.model-field-stack {
+  display: grid;
+  gap: 8px;
+}
+
+.model-attribution-badge {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  color: var(--clr-text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  padding: 3px 10px;
+  white-space: nowrap;
 }
 
 .question-text {
@@ -886,6 +1127,8 @@ textarea:focus-visible {
   font-weight: 500;
   line-height: 1.5;
   color: var(--clr-text-primary);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
 }
 
 /* Answer Input capture */
@@ -1062,6 +1305,11 @@ textarea::placeholder {
   font-size: 15px;
   line-height: 1.5;
   color: var(--clr-text-primary);
+  max-height: min(45vh, 480px);
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+  overscroll-behavior: contain;
+  white-space: pre-wrap;
 }
 
 .answer-box {
@@ -1079,6 +1327,9 @@ textarea::placeholder {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  max-height: min(50vh, 520px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .reveal-item {
@@ -1107,7 +1358,9 @@ textarea::placeholder {
   font-family: 'Courier New', Courier, monospace;
   font-size: 13px;
   color: var(--clr-accent-cyan);
-  overflow-x: auto;
+  max-height: min(40vh, 420px);
+  overflow: auto;
+  overscroll-behavior: contain;
   white-space: pre-wrap;
 }
 

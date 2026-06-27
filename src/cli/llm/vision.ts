@@ -19,6 +19,7 @@ import {
 import {
   type ApiFlavor,
   DEFAULT_LLM_API_KEY,
+  DEFAULT_LLM_MAX_TOKENS,
   fetchWithInteractiveTimeout,
   getProviderForRole,
 } from "./client.js";
@@ -302,7 +303,7 @@ async function requestChatCompletionsVisionDraft(
           },
         ],
         temperature: 0,
-        max_tokens: args.input.maxTokens ?? 450,
+        max_tokens: args.input.maxTokens ?? DEFAULT_LLM_MAX_TOKENS,
         ...(args.url.includes("11434") ||
         args.url.includes("localhost") ||
         args.url.includes("127.0.0.1")
@@ -397,7 +398,7 @@ async function requestAnthropicVisionDraft(
     },
     body: JSON.stringify({
       model: args.model,
-      max_tokens: args.input.maxTokens ?? 450,
+      max_tokens: args.input.maxTokens ?? DEFAULT_LLM_MAX_TOKENS,
       system: VISION_SYSTEM_PROMPT,
       messages: [
         {
