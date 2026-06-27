@@ -270,24 +270,29 @@ fn resolve_observer_runtime(app: &tauri::AppHandle) -> Option<ObserverRuntime> {
 }
 
 fn resolve_bridge_runtime(app: &tauri::AppHandle) -> Option<BridgeRuntime> {
-    if let Some(runtime) = bundled_runtime(app) {
-        return Some(runtime);
+    // Prefer an explicit developer checkout (ZAM_HOME, ~/.zam/cli_path written
+    // by `zam ui`, or a checkout in the working directory) over the bundled
+    // runtime. This keeps a `git pull` + `npm run build` immediately live in the
+    // desktop app, and — crucially — makes skill junctions created from the UI
+    // point at the checkout, so `git pull` refreshes every workspace. Installed
+    // apps have no checkout marker and fall through to the bundled runtime.
+    if let Some(cli_path) = resolve_dev_cli_path() {
+        let working_dir = cli_path
+            .parent()
+            .and_then(Path::parent)
+            .and_then(Path::parent)
+            .map(Path::to_path_buf)
+            .unwrap_or_else(|| PathBuf::from("."));
+        return Some(BridgeRuntime {
+            node_path: env::var_os("ZAM_NODE")
+                .map(PathBuf::from)
+                .unwrap_or_else(|| PathBuf::from("node")),
+            cli_path,
+            working_dir,
+        });
     }
 
-    let cli_path = resolve_dev_cli_path()?;
-    let working_dir = cli_path
-        .parent()
-        .and_then(Path::parent)
-        .and_then(Path::parent)
-        .map(Path::to_path_buf)
-        .unwrap_or_else(|| PathBuf::from("."));
-    Some(BridgeRuntime {
-        node_path: env::var_os("ZAM_NODE")
-            .map(PathBuf::from)
-            .unwrap_or_else(|| PathBuf::from("node")),
-        cli_path,
-        working_dir,
-    })
+    bundled_runtime(app)
 }
 
 #[tauri::command]
