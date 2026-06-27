@@ -1,7 +1,7 @@
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   checkVisionReadiness,
   getProviderForRole,
@@ -37,6 +37,25 @@ afterEach(() => {
   for (const dir of tempDirs.splice(0)) {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+// Isolate the per-machine config (~/.zam/config.json) so these tests neither
+// read the developer's real machine providers/roles nor clobber them when they
+// call saveMachineAiConfig. getMachineAiConfig() honors ZAM_CONFIG_PATH.
+let machineConfigDir: string;
+let previousZamConfigPath: string | undefined;
+beforeEach(() => {
+  machineConfigDir = mkdtempSync(join(tmpdir(), "zam-machine-cfg-"));
+  previousZamConfigPath = process.env.ZAM_CONFIG_PATH;
+  process.env.ZAM_CONFIG_PATH = join(machineConfigDir, "config.json");
+});
+afterEach(() => {
+  if (previousZamConfigPath === undefined) {
+    delete process.env.ZAM_CONFIG_PATH;
+  } else {
+    process.env.ZAM_CONFIG_PATH = previousZamConfigPath;
+  }
+  rmSync(machineConfigDir, { recursive: true, force: true });
 });
 
 describe("inferApiFlavor", () => {
