@@ -11,6 +11,7 @@ This folder captures the premises on which ZAM is built. They are beliefs, not p
 3. **[Knowledge structure](knowledge-structure/)** — Knowledge is a shared graph; learning is a personal journey through it.
 4. **[Learning in context](learning-in-context/)** — Real work is the most effective classroom.
 5. **[Openness](openness/)** — The learning kernel must not depend on any specific AI vendor or interface.
+6. **[Funded learning](funded-learning/)** — Learning is free to the learner when those who benefit from an informed person fund it, and ZAM stays a connector, not a toll booth.
 
 ## Grounding in external work
 
