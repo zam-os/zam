@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import type { Database } from "../db/types.js";
 import { getSetting } from "../models/settings.js";
+import { getActiveWorkspace } from "./install-config.js";
 
 export interface RepoPaths {
   personal: string | null;
@@ -11,12 +12,12 @@ export interface RepoPaths {
 
 /**
  * Resolve absolute paths for personal, team, and organization repositories.
- * Personal falls back to personal.workspace_dir if repo.personal is not set.
+ * Personal falls back to the active machine-local workspace if repo.personal is
+ * not set.
  */
 export async function getRepoPaths(db: Database): Promise<RepoPaths> {
   const personalSetting =
-    (await getSetting(db, "repo.personal")) ||
-    (await getSetting(db, "personal.workspace_dir"));
+    (await getSetting(db, "repo.personal")) || getActiveWorkspace()?.path;
   const teamSetting = await getSetting(db, "repo.team");
   const orgSetting = await getSetting(db, "repo.org");
 

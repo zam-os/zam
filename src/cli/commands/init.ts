@@ -15,6 +15,7 @@ import { join, resolve } from "node:path";
 import { confirm, input } from "@inquirer/prompts";
 import { Command } from "commander";
 import {
+  deleteSetting,
   detectSystemLocale,
   distributeGlobalSkills,
   getSystemProfile,
@@ -23,6 +24,7 @@ import {
   installOllama,
   openDatabaseWithSync,
   prepareLocalModel,
+  setActiveWorkspaceId,
   setSetting,
   upsertConfiguredWorkspace,
 } from "../../kernel/index.js";
@@ -107,6 +109,7 @@ export const initCommand = new Command("init")
         kind: "personal",
         path: workspacePath,
       });
+      setActiveWorkspaceId("personal");
       console.log(
         `\x1b[32m✓ Local Sandbox created at: ${workspacePath}\x1b[0m`,
       );
@@ -187,8 +190,9 @@ export const initCommand = new Command("init")
     try {
       db = await openDatabaseWithSync({ initialize: true });
 
-      // Save workspace directory to settings
-      await setSetting(db, "personal.workspace_dir", workspacePath);
+      // Workspace selection is stored in machine-local config; clear the legacy
+      // DB setting so future runs do not migrate stale paths back in.
+      await deleteSetting(db, "personal.workspace_dir");
 
       // Auto-detect and save system locale
       const detectedLocale = detectSystemLocale();

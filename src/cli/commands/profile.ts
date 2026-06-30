@@ -10,20 +10,21 @@
  * (Increment 12, Phase 3.)
  */
 
-import { homedir } from "node:os";
-import { dirname, join, resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { Command } from "commander";
 import {
   type Database,
   detectSyncProvider,
   getDefaultDbPath,
   getInstallMode,
-  getSetting,
   type InstallMode,
   openDatabaseWithSync,
   setInstallMode,
-  setSetting,
 } from "../../kernel/index.js";
+import {
+  activateWorkspacePath,
+  ensureActiveWorkspace,
+} from "../workspaces/active.js";
 
 const C = {
   reset: "\x1b[0m",
@@ -32,10 +33,6 @@ const C = {
   dim: "\x1b[2m",
   green: "\x1b[32m",
 };
-
-function defaultPersonalDir(): string {
-  return join(homedir(), "Documents", "zam");
-}
 
 interface Profile {
   mode: InstallMode;
@@ -75,11 +72,12 @@ export const profileCommand = new Command("profile")
 
       db = await openDatabaseWithSync({ initialize: true });
       if (opts.dir) {
-        await setSetting(db, "personal.workspace_dir", resolve(opts.dir));
+        await activateWorkspacePath(db, resolve(opts.dir), {
+          kind: "personal",
+          label: "Personal",
+        });
       }
-      const personalDir =
-        (await getSetting(db, "personal.workspace_dir")) ||
-        defaultPersonalDir();
+      const personalDir = (await ensureActiveWorkspace(db)).path;
       await db.close();
       db = undefined;
 

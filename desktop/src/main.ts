@@ -587,6 +587,8 @@ interface WorkspaceConfig {
 
 interface WorkspaceListResponse {
   workspaces: WorkspaceConfig[];
+  activeWorkspaceId: string | null;
+  activeWorkspace?: WorkspaceConfig | null;
   workspaceDir: string | null;
   defaultWorkspaceDir: string;
   dataDir: string;
@@ -650,6 +652,7 @@ const OBSERVER_HISTORY_LIMIT = 100;
 const OBSERVER_LOOP_DELAY_MS = 60000;
 let desktopUserId: string | null = null;
 let zamUiSessionId: string | null = null;
+let activeWorkspaceId: string | null = null;
 let activeWorkspaceDir: string | null = null;
 const MAX_VISIBLE_WORKSPACES = 5;
 
@@ -970,12 +973,8 @@ function initializeTranslations() {
   applyTheme(loadThemePreference());
 }
 
-function comparablePath(path: string): string {
-  return path.replace(/[\\/]+$/, "").toLowerCase();
-}
-
-function isActiveWorkspacePath(path: string): boolean {
-  return Boolean(activeWorkspaceDir && comparablePath(path) === comparablePath(activeWorkspaceDir));
+function isActiveWorkspace(workspace: WorkspaceConfig): boolean {
+  return Boolean(activeWorkspaceId && workspace.id === activeWorkspaceId);
 }
 
 function workspaceKindLabel(kind: string): string {
@@ -1007,23 +1006,12 @@ function workspaceMeta(workspace: WorkspaceConfig): string {
 }
 
 function buildVisibleWorkspaces(info: WorkspaceListResponse): WorkspaceConfig[] {
-  const activeDir = info.workspaceDir ?? info.defaultWorkspaceDir;
-  activeWorkspaceDir = activeDir;
+  activeWorkspaceId = info.activeWorkspaceId ?? info.activeWorkspace?.id ?? null;
+  activeWorkspaceDir = info.activeWorkspace?.path ?? info.workspaceDir ?? null;
   const workspaces = [...info.workspaces];
-  const activeRegistered = workspaces.some((workspace) =>
-    comparablePath(workspace.path) === comparablePath(activeDir),
-  );
-  if (!activeRegistered) {
-    workspaces.unshift({
-      id: "current",
-      label: info.workspaceDir ? t("lbl_workspace") : t("workspace_default_label"),
-      kind: "personal",
-      path: activeDir,
-    });
-  }
   return workspaces.sort((left, right) => {
-    const leftActive = isActiveWorkspacePath(left.path) ? 1 : 0;
-    const rightActive = isActiveWorkspacePath(right.path) ? 1 : 0;
+    const leftActive = isActiveWorkspace(left) ? 1 : 0;
+    const rightActive = isActiveWorkspace(right) ? 1 : 0;
     return rightActive - leftActive;
   });
 }
@@ -1039,7 +1027,7 @@ function renderWorkspaceList(info: WorkspaceListResponse): void {
   for (const workspace of visible) {
     const row = document.createElement("div");
     row.className = "workspace-row";
-    row.dataset.active = String(isActiveWorkspacePath(workspace.path));
+    row.dataset.active = String(isActiveWorkspace(workspace));
 
     const main = document.createElement("div");
     main.className = "workspace-main";
@@ -1050,7 +1038,7 @@ function renderWorkspaceList(info: WorkspaceListResponse): void {
     title.className = "workspace-title";
     title.textContent = workspace.label || workspace.id;
     titleRow.appendChild(title);
-    if (isActiveWorkspacePath(workspace.path)) {
+    if (isActiveWorkspace(workspace)) {
       const badge = document.createElement("span");
       badge.className = "workspace-badge";
       badge.textContent = t("workspace_active");
@@ -1073,7 +1061,7 @@ function renderWorkspaceList(info: WorkspaceListResponse): void {
     useButton.className = "btn secondary-btn btn-sm";
     useButton.type = "button";
     useButton.textContent = t("workspace_use");
-    useButton.disabled = isActiveWorkspacePath(workspace.path);
+    useButton.disabled = isActiveWorkspace(workspace);
     useButton.addEventListener("click", () => {
       void setActiveWorkspace(workspace.path);
     });
@@ -1121,11 +1109,14 @@ async function loadWorkspaceList(): Promise<void> {
 
 async function setActiveWorkspace(dir: string): Promise<void> {
   const status = document.getElementById("setup-status");
-  const res = await runBridge<{ ok?: boolean; workspaceDir?: string }>(
-    "set-workspace-dir",
-    ["--dir", dir],
-  );
+  const res = await runBridge<{
+    ok?: boolean;
+    activeWorkspaceId?: string;
+    activeWorkspace?: WorkspaceConfig;
+    workspaceDir?: string;
+  }>("set-workspace-dir", ["--dir", dir]);
   if (res.workspaceDir) {
+    activeWorkspaceId = res.activeWorkspaceId ?? res.activeWorkspace?.id ?? null;
     activeWorkspaceDir = res.workspaceDir;
     await loadWorkspaceList();
     if (status) {
@@ -1140,10 +1131,13 @@ async function removeWorkspace(workspace: WorkspaceConfig): Promise<void> {
 
   const status = document.getElementById("setup-status");
   try {
-    const result = await runBridge<{ workspaceDir?: string }>(
-      "workspace-remove",
-      ["--id", workspace.id],
-    );
+    const result = await runBridge<{
+      activeWorkspaceId?: string;
+      activeWorkspace?: WorkspaceConfig;
+      workspaceDir?: string;
+    }>("workspace-remove", ["--id", workspace.id]);
+    activeWorkspaceId =
+      result.activeWorkspaceId ?? result.activeWorkspace?.id ?? activeWorkspaceId;
     activeWorkspaceDir = result.workspaceDir ?? activeWorkspaceDir;
     await loadWorkspaceList();
     if (status) {
@@ -3325,10 +3319,14 @@ async function loadDashboard() {
       userId: string;
       locale: string;
       llm: { enabled: boolean };
+      activeWorkspaceId?: string;
+      workspaceDir?: string;
     }>("desktop-bootstrap");
     desktopUserId = settings.userId;
     currentLocale = settings.locale || "en";
     isLlmEnabled = settings.llm?.enabled || false;
+    activeWorkspaceId = settings.activeWorkspaceId ?? activeWorkspaceId;
+    activeWorkspaceDir = settings.workspaceDir ?? activeWorkspaceDir;
     
     initializeTranslations();
     void loadWorkspaceList();
@@ -3914,9 +3912,12 @@ window.addEventListener("DOMContentLoaded", () => {
           const res = await runBridge<{
             ok?: boolean;
             workspace?: WorkspaceConfig;
+            activeWorkspaceId?: string;
+            activeWorkspace?: WorkspaceConfig;
             workspaceDir?: string;
           }>("workspace-add", ["--path", selected]);
           if (res.workspaceDir) {
+            activeWorkspaceId = res.activeWorkspaceId ?? res.workspace?.id ?? null;
             activeWorkspaceDir = res.workspaceDir;
             await loadWorkspaceList();
             if (status) {

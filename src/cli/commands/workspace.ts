@@ -16,7 +16,6 @@ import type { Database } from "../../kernel/index.js";
 import {
   getConfiguredWorkspaces,
   getDatabaseTargetInfo,
-  getSetting,
   hasCommand,
   openDatabase,
   removeConfiguredWorkspace,
@@ -32,6 +31,7 @@ import {
   writeClaudeMd,
   writeCopilotInstructions,
 } from "../provisioning/index.js";
+import { ensureActiveWorkspace } from "../workspaces/active.js";
 import { backupDatabaseTo } from "../workspaces/backup.js";
 
 /**
@@ -280,7 +280,7 @@ workspaceCommand
 
     try {
       db = await openDatabase();
-      workspaceDir = (await getSetting(db, "personal.workspace_dir")) || "";
+      workspaceDir = (await ensureActiveWorkspace(db)).path;
       await db.close();
     } catch {
       // Fallback if DB doesn't exist
@@ -456,10 +456,7 @@ workspaceCommand
     let db: Database | undefined;
     try {
       db = await openDatabase();
-      const workspaceDir =
-        opts.dir ||
-        (await getSetting(db, "personal.workspace_dir")) ||
-        join(homedir(), "Documents", "zam");
+      const workspaceDir = opts.dir || (await ensureActiveWorkspace(db)).path;
       const dest = await backupDatabaseTo(db, workspaceDir);
       if (opts.json) {
         console.log(JSON.stringify({ ok: true, path: dest }));

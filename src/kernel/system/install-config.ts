@@ -8,9 +8,8 @@
  * and NOT the personal folder, so the mode never travels through a shared Turso
  * database or a synced folder, where it would be wrong for the other machine.
  *
- * The personal-content folder itself is unchanged: it stays the existing
- * `personal.workspace_dir` setting, and can already point at any local or
- * file-synced directory (Drive, OneDrive, Dropbox, iCloud) — no GitHub required.
+ * Workspace selection is machine-local too: `activeWorkspaceId` points at one
+ * entry in `workspaces`, while legacy database settings are migrated by the CLI.
  */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -28,6 +27,8 @@ export interface InstallConfig {
   ai?: MachineAiConfig;
   /** Machine-local paths to existing personal/team/community workspaces. */
   workspaces?: WorkspaceConfig[];
+  /** Machine-local id of the workspace currently active in this install. */
+  activeWorkspaceId?: string;
 }
 
 export type MachineAiRole = "vision" | "recall" | "text";
@@ -162,19 +163,56 @@ export function saveConfiguredWorkspaces(
 ): void {
   const config = loadInstallConfig(path);
   config.workspaces = workspaces;
+  if (
+    config.activeWorkspaceId &&
+    !workspaces.some((workspace) => workspace.id === config.activeWorkspaceId)
+  ) {
+    config.activeWorkspaceId = workspaces[0]?.id;
+  }
   saveInstallConfig(config, path);
+}
+
+export function getActiveWorkspaceId(
+  path = defaultConfigPath(),
+): string | undefined {
+  return loadInstallConfig(path).activeWorkspaceId;
+}
+
+export function setActiveWorkspaceId(
+  id: string | undefined,
+  path = defaultConfigPath(),
+): void {
+  const config = loadInstallConfig(path);
+  if (id) {
+    config.activeWorkspaceId = id;
+  } else {
+    delete config.activeWorkspaceId;
+  }
+  saveInstallConfig(config, path);
+}
+
+export function getActiveWorkspace(
+  path = defaultConfigPath(),
+): WorkspaceConfig | undefined {
+  const config = loadInstallConfig(path);
+  const id = config.activeWorkspaceId;
+  return id
+    ? config.workspaces?.find((workspace) => workspace.id === id)
+    : undefined;
 }
 
 export function upsertConfiguredWorkspace(
   workspace: WorkspaceConfig,
   path = defaultConfigPath(),
 ): WorkspaceConfig[] {
-  const current = getConfiguredWorkspaces(path);
+  const config = loadInstallConfig(path);
+  const current = config.workspaces ?? [];
   const next = [
     ...current.filter((candidate) => candidate.id !== workspace.id),
     workspace,
   ];
-  saveConfiguredWorkspaces(next, path);
+  config.workspaces = next;
+  saveInstallConfig(config, path);
   return next;
 }
 
@@ -182,10 +220,15 @@ export function removeConfiguredWorkspace(
   id: string,
   path = defaultConfigPath(),
 ): WorkspaceConfig[] {
-  const next = getConfiguredWorkspaces(path).filter(
+  const config = loadInstallConfig(path);
+  const next = (config.workspaces ?? []).filter(
     (workspace) => workspace.id !== id,
   );
-  saveConfiguredWorkspaces(next, path);
+  config.workspaces = next;
+  if (config.activeWorkspaceId === id) {
+    config.activeWorkspaceId = next[0]?.id;
+  }
+  saveInstallConfig(config, path);
   return next;
 }
 
