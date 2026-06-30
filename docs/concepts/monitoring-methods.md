@@ -9,7 +9,43 @@ The first level of user observation monitors shell activity. Two approaches are 
 
 The user should be prompted once to choose their preferred approach. The preference is saved in user settings so they are not asked again.
 
-## Level 2 — System-Level Tracing
+### Session Synthesis
+
+End a monitored session with:
+
+```bash
+zam session end --session <id> --synthesize
+```
+
+ZAM matches monitor commands against steps from agent skills linked to exactly
+one token. Task-specific or multi-token mappings can be supplied as a JSON file
+with `--patterns <path>`. Only medium- and high-confidence candidates are
+shown, and each rating must be accepted, overridden, or skipped before any
+learning state changes.
+
+Confirmed ratings update the card, review log, session step, prerequisite
+blocking state, and synthesis audit in one transaction. Repeating synthesis
+for the same session and token does not apply the rating twice.
+
+## Level 2 — Screen and UI Observation
+
+The Windows 11 UI observer (Phase 0) combines native UI events, input metadata,
+and sparse visual evidence in a separate observer sidecar:
+
+- [Windows 11 UI observer proposal](../windows-ui-observer-proposal.md)
+- [Observer next steps](../observer-next-steps.md)
+
+Start a UI learning session with `zam bridge start-session --context ui`,
+run watch from the desktop observer panel or `zam-observer watch --reports`,
+and poll reports with `zam bridge observe-ui-watch --session <id>`. End with
+`zam bridge end-session`. UI session synthesis uses the same review flow as
+shell sessions when `candidateTokens` are present (vision snapshots) or once
+deterministic token matching lands in Phase 1.
+
+The observer reports structured evidence to the session agent. It does not
+directly update cards or FSRS state.
+
+## Supplemental System-Level Tracing
 
 Depending on the operating system, native tracing facilities could track broader system changes beyond the terminal:
 

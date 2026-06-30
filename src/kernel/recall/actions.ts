@@ -17,7 +17,7 @@ import type { CascadeBlockResult } from "../scheduler/blocker.js";
 import { cascadeBlock } from "../scheduler/blocker.js";
 import type { Rating } from "../scheduler/fsrs.js";
 import type { EvaluateResult } from "./evaluator.js";
-import { evaluateRating } from "./evaluator.js";
+import { evaluateRatingWithinTransaction } from "./evaluator.js";
 
 export type ReviewActionType =
   | "rate"
@@ -73,26 +73,27 @@ export async function executeReviewAction(
   db: Database,
   input: ExecuteReviewActionInput,
 ): Promise<ReviewActionResult> {
-  const target = await getReviewTarget(db, input.cardId, input.userId);
+  if (input.action === "rate") {
+    if (input.rating == null) {
+      throw new Error("rating is required for action=rate");
+    }
+    const rating = input.rating;
 
-  switch (input.action) {
-    case "rate": {
-      if (input.rating == null) {
-        throw new Error("rating is required for action=rate");
-      }
+    return db.transaction(async (tx) => {
+      const target = await getReviewTarget(tx, input.cardId, input.userId);
 
-      const evaluation = await evaluateRating(db, {
+      const evaluation = await evaluateRatingWithinTransaction(tx, {
         cardId: target.cardId,
         tokenId: target.token.id,
         userId: input.userId,
-        rating: input.rating,
+        rating,
       });
 
       let blocked: CascadeBlockResult | undefined;
-      if (input.rating === 1) {
-        const prereqs = await getPrerequisites(db, target.token.id);
+      if (rating === 1) {
+        const prereqs = await getPrerequisites(tx, target.token.id);
         if (prereqs.length > 0) {
-          blocked = await cascadeBlock(db, input.userId, target.token.slug);
+          blocked = await cascadeBlock(tx, input.userId, target.token.slug);
         }
       }
 
@@ -102,8 +103,12 @@ export async function executeReviewAction(
         evaluation,
         blocked,
       };
-    }
+    });
+  }
 
+  const target = await getReviewTarget(db, input.cardId, input.userId);
+
+  switch (input.action) {
     case "skip":
       return { action: input.action, token: target.token, skipped: true };
 

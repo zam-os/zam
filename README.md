@@ -83,6 +83,25 @@ Token deletion is global. Card deletion is per-user.
 
 ---
 
+## 🔄 Keeping ZAM up to date
+
+Check whether a newer release is out, then update — ZAM picks the right mechanism for how this copy was installed:
+
+```bash
+zam update          # apply the latest release (asks first; -y to skip)
+zam update check    # only report whether an update is available
+```
+
+What `zam update` does per install channel:
+
+- **Developer** (source checkout, the default for contributors) — pulls the latest source, reinstalls dependencies, rebuilds the CLI, and refreshes the skill files (`zam setup --force`) in the current instance. Restart your agent client (e.g. Claude Code) afterwards to load the refreshed `/zam` skill.
+- **winget / Homebrew** — defers to `winget upgrade` / `brew upgrade`, so a package-managed install is never self-replaced.
+- **Direct download / desktop** — applies a signed in-place update through ZAM Desktop.
+
+`zam update` refuses to touch a developer checkout with uncommitted changes; commit or stash them first, or pass `--force`. See the [“Approachable Setup and Self-Update” ADR](docs/adr/2026-06-13b-approachable-setup-and-self-update.md) for the design.
+
+---
+
 ## 🏛 Vision: A Flourishing Future
 
 ZAM is a tool for the transition to a world where care and shared growth are the common currency.
@@ -97,7 +116,7 @@ ZAM is a tool for the transition to a world where care and shared growth are the
 
 ZAM now includes a cross-platform desktop application inside the [`desktop/`](desktop/) directory. Built with **Tauri v2**, **Vite**, **TypeScript**, and **Vanilla CSS**, it provides a premium dark-mode dashboard and active-recall learning studio that securely shares the same SQLite database as the CLI.
 
-### How to Run on Windows or macOS:
+### How to Run on Windows, macOS, or Linux:
 
 1. **Build the CLI Bridge**:
    Ensure you have compiled the latest CLI code in the repository root:
@@ -118,7 +137,7 @@ This will compile the secure Rust backend, spin up the Vite development server, 
 
 ### 📦 Automated GitHub Releases & Native Installers
 
-We have integrated a **GitHub Actions CI/CD workflow** that automatically compiles and packages native installers (Windows `.msi`/`.exe`, macOS Intel/Silicon `.dmg`, and Linux `.deb`/`.AppImage`) when a new git tag is pushed.
+We have integrated a **GitHub Actions CI/CD workflow** that currently compiles and packages native installers for Windows (`.msi`/`.exe`) and Linux (`.deb`/`.rpm`) when a new git tag is pushed. AppImage packaging is temporarily deferred because `linuxdeploy` cannot process the bundled native `libsql` module reliably. macOS builds remain supported from source, but signed/notarized macOS release artifacts are deferred until the Apple signing account is available.
 
 To release a new version (e.g., `v0.1.0`):
 
@@ -130,7 +149,7 @@ git tag v0.1.0
 git push origin v0.1.0
 ```
 
-This automatically spins up the multi-platform compiler environments on GitHub and creates a drafted GitHub Release containing the native redistributables for all platforms!
+This automatically spins up the Windows and Linux compiler environments on GitHub and creates a drafted GitHub Release containing their native redistributables.
 
 ---
 

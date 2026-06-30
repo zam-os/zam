@@ -30,12 +30,13 @@ zam token deprecate --slug <slug>          # mark outdated knowledge
 # Card & review management
 zam card due --user <username>
 zam card update --user <username> --token <slug> --rating <1-4>
+zam card block --user <username> --token <slug>
 zam card unblock --user <username>
 
 # Sessions
 zam session start --user <username> --task "<description>" [--context shell|ui|reallife]
 zam session log --session <id> --token <slug> --done-by <user|agent> [--rating <n>]
-zam session end --session <id>
+zam session end --session <id> [--synthesize] [--patterns <json-file>]
 
 # Stats
 zam stats --user <username>
@@ -216,12 +217,11 @@ This spawns a new terminal window (Terminal.app or iTerm2 on macOS), already `cd
 Shell hooks silently capture every command with timestamps, exit codes, and working directory to a JSONL log. When the user returns:
 
 ```bash
-# Read the raw command log
-zam bridge get-monitor --session <session-id>
+# Preview evidence, confirm each rating, and end the session
+zam session end --session <session-id> --synthesize
 
-# Auto-rate tokens by matching commands to patterns
-echo '{"patterns":[{"slug":"docker-build","patterns":["docker build","docker image build"]}]}' \
-  | zam bridge analyze-monitor --session <session-id>
+# Supply task-specific mappings when skill-to-token links are ambiguous
+zam session end --session <session-id> --synthesize --patterns <json-file>
 ```
 
 The analyzer infers ratings from:
@@ -230,7 +230,15 @@ The analyzer infers ratings from:
 - **Speed**: inter-command gaps, thinking pauses → lower if slow
 - **Self-corrections**: same command prefix run repeatedly with different args → lower rating
 
-Review the suggested ratings before submitting. Override if the heuristic seems wrong.
+Single-token agent skills supply command patterns automatically. A pattern file
+contains an array (or `{ "patterns": [...] }`) of
+`{ "slug": "<token>", "patterns": ["<command>"] }` entries. Only medium- and
+high-confidence candidates are proposed. Accept, override, or skip every
+rating; accepted ratings are applied atomically and repeated synthesis is
+idempotent.
+
+Use `zam bridge get-monitor` and `zam bridge analyze-monitor` only when raw
+diagnostic output is needed.
 
 When done, the user can simply close the monitored terminal window — hooks only live in that shell process. No cleanup command needed.
 
@@ -263,12 +271,15 @@ For each due token, ask a conceptual question at the right Bloom level:
 
 **CRITICAL: Stop and WAIT for the user to provide their answer. Do not ask for the rating until the user has attempted to answer the conceptual question.**
 
-After the user answers, ask:
-> "How did that feel? 1 = drew a blank, 2 = hard recall, 3 = knew it, 4 = instant"
+After the user answers, always run this explicit review loop:
 
-**WAIT for the user to provide a rating (1-4).**
-
-Submit the rating and log the step.
+1. **Check the answer first.** Compare the user's answer with the token concept, the recall question, and any resolved source context. Decide whether it is `correct`, `partially correct`, or `incorrect`.
+2. **Give learning feedback before asking for a rating.** State the verdict, give a short reference answer, and explain what was missing or incorrect. Keep this concise, but never skip it — this is where the learning happens.
+3. **Suggest a self-rating.** Propose a rating using the 1-4 scale, based on correctness and recall quality: 4 = complete and instant, 3 = correct with small hesitation or minor gap, 2 = partially correct or needed correction, 1 = blank/incorrect/needed help.
+4. **Ask the user to choose the final rating.**
+   > "My suggested rating is <n>. How do you want to rate it? 1 = drew a blank, 2 = hard recall/partial, 3 = knew it, 4 = instant"
+5. **WAIT for the user to provide a rating (1-4).**
+6. **Only then submit the rating and log the step.** Never save the suggested rating without the user's confirmation.
 
 #### Leveraging Source Links for AI Agent Context
 When a token has a `source_link`, `zam bridge get-review` resolves it for you and returns a `resolvedContext` object alongside `prompt` — you no longer need to fetch the file or URL yourself. Its shape:
@@ -284,6 +295,10 @@ Use it to:
 
 ### STEP 5 — End session
 ```bash
+# Monitored executable session
+zam session end --session <id> --synthesize
+
+# Conceptual or unmonitored session
 zam session end --session <id>
 zam stats --user <username>
 ```
@@ -325,6 +340,157 @@ A token is blocked when:
 The agent works on prerequisites first. When all direct prerequisites reach `reps >= 1`, `zam card unblock` promotes the token back automatically (run at session start).
 
 Never present a blocked token to the user.
+
+---
+
+## Dynamic Token Decomposition
+
+**Principle:** Do not pre-create hundreds of tokens. Let the dependency graph grow
+from real gaps discovered during review. Every rating of 1 is an opportunity to
+diagnose *why* the user couldn't answer — and to create the missing foundations.
+
+This applies primarily to tokens at Bloom 3-5 (apply, analyze, synthesize) that
+cover broad learning areas. School curricula — where a single "Lernbereich" spans
+many underlying concepts — are the canonical use case.
+
+### When to split
+
+A token should be decomposed when ALL of the following hold:
+
+1. The user rated it **1** (drew a blank / couldn't answer)
+2. The token is at **Bloom ≥ 3** (application or above)
+3. The token covers **multiple distinct concepts** (not atomic)
+4. No prerequisite tokens already exist for the specific gap you diagnose
+
+### How to diagnose
+
+After a rating of 1, pause. Do not just re-ask the same question or move on.
+Ask yourself: **"What would the user have needed to know to answer this?"**
+
+| Symptom | Missing foundation | Create Bloom 1-2 token for |
+|---------|-------------------|---------------------------|
+| Couldn't name key terms | Factual recall | Definitions, terminology |
+| Used terms incorrectly | Conceptual understanding | Explain the concept in own words |
+| Knew facts but couldn't connect them | Structural understanding | How A relates to B |
+| Understood but couldn't apply | Procedural knowledge | Apply concept to a simple case first |
+
+### Source-grounded splitting
+
+When the high-level token has a `source_link` pointing to a curriculum (LehrplanPLUS,
+school syllabus, certification exam outline), **consult it before creating any
+foundation tokens**. The source defines the official scope — your foundations must
+stay inside it.
+
+**Protocol:**
+
+1. Fetch or follow the `source_link` (WebFetch for URLs, Read for local files)
+2. Locate the relevant Lernbereich / topic section in the source
+3. Extract the **explicitly listed** basic terms, dates, concepts, and
+   "grundlegende Daten und Begriffe" (for LehrplanPLUS) or equivalent
+4. Create foundation tokens ONLY for items that appear in the source
+
+**Example of a BAD split (terms not in curriculum):**
+
+> `ge-aufklaerung-begriffe`: "Define: Aufklärung, Emanzipation, Toleranz,
+> Vernunft, Fortschritt, Naturrecht."
+>
+> Problem: The LehrplanPLUS Geschichte 8 LB2 lists "Aufklärung, Menschenrechte,
+> Volkssouveränität, Gewaltenteilung, Parlament, konstitutionelle Monarchie,
+> Bürgertum" as required terms. Emanzipation, Toleranz, and Fortschrittsglaube
+> are NOT part of the 8th-grade Realschule curriculum for this Lernbereich.
+
+**Example of a CORRECT split (terms from the source):**
+
+> `ge-aufklaerung-begriffe`: "Define: Aufklärung, Volkssouveränität,
+> Gewaltenteilung, konstitutionelle Monarchie, Menschenrechte."
+>
+> Every term appears in the LehrplanPLUS. The student won't be tested on
+> anything outside this list.
+
+**Rule of thumb:** For curriculum-based tokens, the source is the contract.
+If the source says "grundlegende Daten und Begriffe: X, Y, Z", only X, Y,
+and Z are fair game for Bloom 1-2 foundations. Adding extra terms is scope
+creep and undermines the learner's trust.
+
+### Registration protocol
+
+For each gap you diagnose, register a new token and wire it immediately:
+
+```bash
+# 1. Register the foundation token (Bloom 1-2, atomic, single concept)
+zam token register \
+  --slug <parent-slug>-<gap-keyword> \
+  --concept "<one atomic concept the user was missing>" \
+  --domain <same-domain> \
+  --bloom <1-or-2> \
+  --question "<direct recall or explain question>"
+
+# 2. Wire it as a prerequisite of the high-level token
+zam token prereq --token <high-level-slug> --requires <parent-slug>-<gap-keyword>
+
+# 3. Block the high-level card after all new prerequisites are wired
+zam card block --user <username> --token <high-level-slug>
+```
+
+### What happens next
+
+After wiring prerequisites and blocking the card:
+- The high-level token is removed from the review queue
+- The next `/zam` session will surface the *foundation tokens first*
+- Once all prerequisites reach `reps >= 1`, `zam card unblock` promotes the
+  high-level token back into the review queue
+
+If prerequisites already existed when the token was rated 1, the rating command
+blocks it automatically. Use `zam card block` when the missing prerequisites were
+discovered and registered only after the rating.
+
+### Example: High-school history
+
+> User rates `ge-aufklaerung` (Bloom 4: "How did Enlightenment ideas shape the
+> French Revolution and transform Europe's political order?") as **1**.
+
+Agent diagnoses:
+- *"You couldn't name the three estates. You weren't sure what 'popular sovereignty'
+  means. You mixed up 1789 and 1793."*
+
+Agent creates three foundations:
+
+| Token | Bloom | Question |
+|-------|-------|----------|
+| `ge-aufklaerung-staende` | 1 | Who belonged to each of the three estates in 18th-century France? |
+| `ge-aufklaerung-begriffe` | 1 | Define: Enlightenment, popular sovereignty, separation of powers, natural rights. |
+| `ge-aufklaerung-daten` | 1 | Name the five key events of the French Revolution (1789–1799) with dates. |
+
+Agent wires them:
+```bash
+zam token prereq --token ge-aufklaerung --requires ge-aufklaerung-staende
+zam token prereq --token ge-aufklaerung --requires ge-aufklaerung-begriffe
+zam token prereq --token ge-aufklaerung --requires ge-aufklaerung-daten
+zam card block --user <username> --token ge-aufklaerung
+```
+
+`ge-aufklaerung` is now blocked. Next session: foundations first. When they
+stick → `ge-aufklaerung` reappears — this time with a fighting chance.
+
+### Sizing rule
+
+- Create **2–4 foundations per failed high-level token**, not 10
+- Each foundation must be **genuinely atomic** — one fact or concept
+- If the user still fails a foundation, split it further (e.g. "too many dates
+  at once" → one token per date)
+- Over time this builds a **Bloom ladder**: Level 1 facts → Level 2 understanding
+  → Level 3 application → Level 4+ analysis
+
+### Safety
+
+- **Never create more than 10 new tokens in a single session** — if a rating of 1
+  reveals massive gaps, prioritize the 3 most urgent foundations and let the rest
+  emerge in subsequent sessions
+- **Always dedup before registering** — `zam token find --query "<keywords>"`
+- **Do not split Bloom 1-2 tokens** — they are already atomic; if the user fails
+  them, the fix is re-exposure and practice, not further decomposition
+- A rating of 1 on a Bloom 1 token means the user needs simpler wording or a
+  mnemonic, not more tokens
 
 ---
 

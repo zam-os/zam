@@ -6,6 +6,8 @@
  */
 
 import type { Database } from "../db/types.js";
+import { type Card, type CardState, getCard } from "./card.js";
+import { getTokenById } from "./token.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -148,4 +150,136 @@ export async function getDependents(
        WHERE p.requires_id = ?`,
     )
     .all(tokenId)) as PrerequisiteWithToken[];
+}
+
+// ── Visualization Neighborhood (for 3D focus graph) ──────────────────────────
+
+/** Token + optional per-user card snapshot, tailored for visual encoding (mastery, blocked state, bloom). */
+export interface NeighborhoodToken {
+  id: string;
+  slug: string;
+  concept: string;
+  domain: string;
+  bloom_level: number;
+  card: {
+    state: CardState;
+    reps: number;
+    stability: number;
+    difficulty: number;
+    blocked: boolean;
+    due_at: string;
+    last_review_at: string | null;
+  } | null;
+}
+
+/**
+ * The direct neighborhood for a focus-centric 3D view:
+ * - center: the token in focus
+ * - prerequisites: direct "basis" tokens required by the center (foundations, placed "below")
+ * - dependents: direct tokens that require the center (higher-order abilities, placed "above")
+ *
+ * When userId is supplied, every node includes the user's Card state so the viz can
+ * encode personal mastery (e.g. color by stability/reps, highlight blocked or due).
+ */
+export interface Neighborhood {
+  center: NeighborhoodToken;
+  prerequisites: NeighborhoodToken[];
+  dependents: NeighborhoodToken[];
+}
+
+/**
+ * Fetch the direct (depth-1) prerequisite neighborhood around one token.
+ * This is the primary data source for the experimental 3D knowledge graph.
+ */
+export async function getTokenNeighborhood(
+  db: Database,
+  tokenId: string,
+  userId?: string,
+): Promise<Neighborhood> {
+  const token = await getTokenById(db, tokenId);
+  if (!token) {
+    throw new Error(`Token not found: ${tokenId}`);
+  }
+
+  const centerCard = userId ? await getCard(db, tokenId, userId) : undefined;
+
+  const prereqRows = await getPrerequisites(db, tokenId);
+  const depRows = await getDependents(db, tokenId);
+
+  // Collect all related token ids for batched card lookup (when userId given)
+  const relatedTokenIds = new Set<string>();
+  for (const p of prereqRows) relatedTokenIds.add(p.requires_id);
+  for (const d of depRows) relatedTokenIds.add(d.token_id);
+
+  const cardMap = new Map<string, Card>();
+  if (userId && relatedTokenIds.size > 0) {
+    const ids = Array.from(relatedTokenIds);
+    const placeholders = ids.map(() => "?").join(",");
+    const rows = (await db
+      .prepare(
+        `SELECT * FROM cards WHERE token_id IN (${placeholders}) AND user_id = ?`,
+      )
+      .all(...ids, userId)) as Card[];
+    for (const row of rows) {
+      cardMap.set(row.token_id, row);
+    }
+  }
+
+  const toNode = (
+    t: {
+      id: string;
+      slug: string;
+      concept: string;
+      domain: string;
+      bloom_level: number;
+    },
+    card?: Card,
+  ): NeighborhoodToken => ({
+    id: t.id,
+    slug: t.slug,
+    concept: t.concept,
+    domain: t.domain,
+    bloom_level: t.bloom_level,
+    card: card
+      ? {
+          state: card.state,
+          reps: card.reps,
+          stability: card.stability,
+          difficulty: card.difficulty,
+          blocked: card.blocked === 1,
+          due_at: card.due_at,
+          last_review_at: card.last_review_at,
+        }
+      : null,
+  });
+
+  const center: NeighborhoodToken = toNode(token, centerCard);
+
+  const prerequisites: NeighborhoodToken[] = prereqRows.map((p) =>
+    toNode(
+      {
+        id: p.requires_id,
+        slug: p.slug,
+        concept: p.concept,
+        domain: p.domain,
+        bloom_level: p.bloom_level,
+      },
+      cardMap.get(p.requires_id),
+    ),
+  );
+
+  const dependents: NeighborhoodToken[] = depRows.map((d) =>
+    toNode(
+      {
+        id: d.token_id,
+        slug: d.slug,
+        concept: d.concept,
+        domain: d.domain,
+        bloom_level: d.bloom_level,
+      },
+      cardMap.get(d.token_id),
+    ),
+  );
+
+  return { center, prerequisites, dependents };
 }

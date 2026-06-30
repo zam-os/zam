@@ -5,13 +5,22 @@
  * Errors are also JSON: { "error": "message" }
  */
 
-import { readdirSync } from "node:fs";
-import { homedir } from "node:os";
-import { join } from "node:path";
+import { execFileSync } from "node:child_process";
+import { randomBytes } from "node:crypto";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+} from "node:fs";
+import { homedir, tmpdir } from "node:os";
+import { basename, join, resolve } from "node:path";
 import { Command } from "commander";
 import type {
   BloomLevel,
   Database,
+  NeighborhoodToken,
   Rating,
   ReviewActionType,
   SymbiosisMode,
@@ -19,46 +28,125 @@ import type {
 } from "../../kernel/index.js";
 import {
   analyzeObservation,
+  appendUiObservationReport,
+  BUILT_IN_SENSITIVE_MATCHERS,
   buildReviewQueue,
-  countUncardedTokens,
+  clearProviderApiKey,
   createToken,
+  decidePostCapture,
+  decidePreCapture,
   discoverSkills,
+  endSession,
   ensureCard,
-  ensureCardsForAllTokens,
   executeReviewAction,
   generatePrompt,
   getAgentSkill,
   getCardDeletionImpact,
+  getConfiguredWorkspaces,
+  getDatabaseTargetInfo,
   getDueCards,
+  getProviderApiKey,
   getSetting,
+  getSystemProfile,
+  getTokenBySlug,
   getTokenDeleteImpact,
+  getTokenNeighborhood,
+  hasCommand,
+  isObserverPolicyConfigured,
   listAgentSkills,
+  listProviderApiKeyRefs,
   listTokens,
   monitorLogExists,
+  OBSERVER_POLICY_UNSET_HINT,
   openDatabase,
   pairCommands,
   readMonitorLog,
+  readUiObservationLog,
+  removeConfiguredWorkspace,
+  resolveObserverPolicy,
   resolveReviewContext,
+  setProviderApiKey,
+  setSetting,
+  startSession,
+  syncObserverSidecarPolicy,
+  uiObservationLogExists,
+  upsertConfiguredWorkspace,
+  type WorkspaceKind,
 } from "../../kernel/index.js";
 import {
+  AGENT_HARNESSES,
+  getHarness,
+  launchHarness,
+  resolveHarnessExecutable,
+} from "../agent-harness.js";
+import {
+  type ApiFlavor,
+  checkVisionReadiness,
+  DEFAULT_LLM_MODEL,
+  DEFAULT_LLM_URL,
   ensureHighQualityQuestion,
   ensureLlmReadyHeadless,
   evaluateAnswerViaLLM,
   getAvailableModels,
+  getCloudModelRecommendation,
   getLlmConfig,
+  getProviderForRole,
+  getProviderRoleStatus,
   isLlmOnline,
+  type LlmRole,
   translateQuestionViaLLM,
 } from "../llm/client.js";
-import { resolveUser } from "./resolve-user.js";
+import { observeUiSnapshotViaLLM } from "../llm/vision.js";
+import { normalizeShell } from "../terminal-open.js";
+import {
+  bindRoleProviders,
+  buildProviderListing,
+  findOrphanKeyRefs,
+  maskSecret,
+  type ProviderRecord,
+  readScopedProviders,
+  readScopedRoles,
+  removeProviderRecord,
+  rolesReferencing,
+  upsertProviderRecord,
+  VALID_API_FLAVORS,
+  VALID_ROLES,
+  withProviderScope,
+  writeScopedProviders,
+  writeScopedRoles,
+} from "./provider.js";
+import { ensureDefaultUser, resolveUser } from "./resolve-user.js";
+import { parseSetupAgents, wireSkills } from "./setup.js";
 import { withDb as sharedWithDb } from "./shared/db.js";
+import { backupDatabaseTo } from "./workspace.js";
+
+let isServeMode = false;
 
 function jsonOut(data: unknown): void {
   console.log(JSON.stringify(data, null, 2));
 }
 
 function jsonError(message: string): never {
+  if (isServeMode) {
+    throw new Error(JSON.stringify({ error: message }));
+  }
   console.log(JSON.stringify({ error: message }, null, 2));
   process.exit(1);
+}
+
+function parseNonNegativeIntegerOption(name: string, value: string): number {
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed < 0) {
+    jsonError(`${name} must be a non-negative integer`);
+  }
+  return parsed;
+}
+
+function parseProviderScope(scope: string | undefined): boolean {
+  const value = scope ?? "machine";
+  if (value === "machine") return true;
+  if (value === "shared") return false;
+  jsonError(`Invalid --scope: ${value}. Use machine or shared.`);
 }
 
 async function withDb(
@@ -152,29 +240,19 @@ bridgeCommand
   .command("check-due")
   .description("Check due cards for a user (JSON)")
   .option("--user <id>", "User ID (default: whoami)")
+  .option("--domain <domain>", "Filter by knowledge domain")
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
-
-      // Auto-create cards for tokens that don't have one yet.
-      // Tokens registered via `zam token register` have no cards,
-      // so they would be invisible to the review queue otherwise.
-      await ensureCardsForAllTokens(db, userId);
-
-      const dueCards = await getDueCards(db, userId);
+      const dueCards = await getDueCards(db, userId, undefined, opts.domain);
       const domains = [
         ...new Set(dueCards.map((c) => c.domain).filter(Boolean)),
       ].sort();
 
-      // Count total non-deprecated tokens (all have cards now thanks to ensureCardsForAllTokens).
-      const totalTokens = (await listTokens(db)).length;
-      const uncardedCount = await countUncardedTokens(db, userId);
-
       jsonOut({
         userId,
+        domain: opts.domain ?? null,
         dueCount: dueCards.length,
-        totalTokens,
-        uncardedTokens: uncardedCount,
         domains,
         cards: dueCards.map((c) => ({
           cardId: c.id,
@@ -190,50 +268,324 @@ bridgeCommand
     });
   });
 
-// ── zam bridge ensure-cards ──────────────────────────────────────────────────
+// ── zam bridge backup-db ──────────────────────────────────────────────────
 
 bridgeCommand
-  .command("ensure-cards")
-  .description("Ensure every token has a card for the user (JSON)")
-  .option("--user <id>", "User ID (default: whoami)")
+  .command("backup-db")
+  .description("Back up the local database into the workspace (JSON)")
+  .option(
+    "--dir <path>",
+    "Target directory (default: workspace dir, else ~/Documents/zam)",
+  )
   .action(async (opts) => {
-    await withDb(async (db) => {
-      const userId = await resolveUser(opts, db, { json: true });
-      const created = await ensureCardsForAllTokens(db, userId);
-      const totalTokens = (await listTokens(db)).length;
-
+    const target = getDatabaseTargetInfo();
+    if (target.kind !== "local") {
+      // Not an error: a Turso-backed database already lives in the cloud, so a
+      // local file backup does not apply. Return a structured result the caller
+      // (e.g. the Studio) can present as an informational, localized message.
       jsonOut({
-        userId,
-        totalTokens,
-        cardsCreated: created,
-        allCarded: true,
+        ok: false,
+        reason: "remote",
+        target: target.kind,
+        location: target.location,
+      });
+      return;
+    }
+    await withDb(async (db) => {
+      const workspaceDir =
+        opts.dir ||
+        (await getSetting(db, "personal.workspace_dir")) ||
+        join(homedir(), "Documents", "zam");
+      const path = await backupDatabaseTo(db, workspaceDir);
+      jsonOut({ ok: true, path });
+    });
+  });
+
+// ── zam bridge workspace-info / set-workspace-dir ──────────────────────────
+
+bridgeCommand
+  .command("workspace-info")
+  .description("Report the workspace dir, its default, and the data dir (JSON)")
+  .action(async () => {
+    await withDb(async (db) => {
+      const workspaceDir =
+        (await getSetting(db, "personal.workspace_dir")) || null;
+      jsonOut({
+        workspaceDir,
+        defaultWorkspaceDir: join(homedir(), "Documents", "zam"),
+        dataDir: join(homedir(), ".zam"),
       });
     });
   });
 
-// ── zam bridge token-stats ──────────────────────────────────────────────────
+function sameWorkspacePath(left: string, right: string): boolean {
+  const normalize = (value: string) => {
+    const path = resolve(value);
+    return process.platform === "win32" ? path.toLowerCase() : path;
+  };
+  return normalize(left) === normalize(right);
+}
+
+async function ensureDesktopWorkspace(db: Database): Promise<{
+  workspaceDir: string;
+  skillLinks: ReturnType<typeof wireSkills>;
+}> {
+  const configured = getConfiguredWorkspaces();
+  const savedWorkspaceDir = await getSetting(db, "personal.workspace_dir");
+  const workspaceDir =
+    savedWorkspaceDir ||
+    configured.find((workspace) => workspace.kind === "personal")?.path ||
+    join(homedir(), "Documents", "zam");
+
+  mkdirSync(workspaceDir, { recursive: true });
+  if (!savedWorkspaceDir) {
+    await setSetting(db, "personal.workspace_dir", workspaceDir);
+  }
+
+  if (
+    !configured.some((workspace) =>
+      sameWorkspacePath(workspace.path, workspaceDir),
+    )
+  ) {
+    const id = configured.some((workspace) => workspace.id === "personal")
+      ? workspaceIdFromPath(workspaceDir)
+      : "personal";
+    upsertConfiguredWorkspace({
+      id,
+      label: basename(workspaceDir) || "ZAM",
+      kind: "personal",
+      path: workspaceDir,
+    });
+  }
+
+  const skillLinks = getConfiguredWorkspaces().flatMap((workspace) =>
+    existsSync(workspace.path)
+      ? wireSkills(workspace.path, parseSetupAgents(), { quiet: true })
+      : [],
+  );
+
+  return { workspaceDir, skillLinks };
+}
 
 bridgeCommand
-  .command("token-stats")
-  .description("Get token and card counts for a user (JSON)")
-  .option("--user <id>", "User ID (default: whoami)")
-  .action(async (opts) => {
+  .command("workspace-list")
+  .description("List configured ZAM workspaces (JSON)")
+  .action(async () => {
     await withDb(async (db) => {
-      const userId = await resolveUser(opts, db, { json: true });
-      const totalTokens = (await listTokens(db)).length;
-      const uncarded = await countUncardedTokens(db, userId);
-      const dueCards = await getDueCards(db, userId);
-      const domains = [
-        ...new Set(dueCards.map((c) => c.domain).filter(Boolean)),
-      ].sort();
+      const workspaceDir =
+        (await getSetting(db, "personal.workspace_dir")) || null;
+      jsonOut({
+        workspaces: getConfiguredWorkspaces(),
+        workspaceDir,
+        defaultWorkspaceDir: join(homedir(), "Documents", "zam"),
+        dataDir: join(homedir(), ".zam"),
+      });
+    });
+  });
+
+function workspaceIdFromPath(dir: string): string {
+  const base = basename(dir)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  const prefix = base || "workspace";
+  const existing = new Set(getConfiguredWorkspaces().map((item) => item.id));
+  if (!existing.has(prefix)) return prefix;
+  let index = 2;
+  while (existing.has(`${prefix}-${index}`)) index++;
+  return `${prefix}-${index}`;
+}
+
+function parseBridgeWorkspaceKind(value?: string): WorkspaceKind {
+  const kind = (value || "custom").toLowerCase();
+  if (
+    kind === "personal" ||
+    kind === "team" ||
+    kind === "family" ||
+    kind === "community" ||
+    kind === "organization" ||
+    kind === "custom"
+  ) {
+    return kind;
+  }
+  jsonError(`Invalid workspace kind: ${value}`);
+}
+
+bridgeCommand
+  .command("workspace-add")
+  .description("Register an existing directory as a ZAM workspace (JSON)")
+  .requiredOption("--path <dir>", "Existing workspace/repository directory")
+  .option("--id <id>", "Workspace id")
+  .option("--label <label>", "Human-readable label")
+  .option("--kind <kind>", "Workspace kind", "custom")
+  .action(async (opts) => {
+    const raw = String(opts.path ?? "").trim();
+    if (!raw) jsonError("A non-empty --path is required");
+    const path = resolve(raw);
+    if (!existsSync(path)) jsonError(`Workspace path does not exist: ${path}`);
+    const id = String(opts.id || workspaceIdFromPath(path)).trim();
+    if (!id) jsonError("A non-empty --id is required");
+    const workspace = {
+      id,
+      label: opts.label || basename(path) || id,
+      kind: parseBridgeWorkspaceKind(opts.kind),
+      path,
+    };
+    const skillLinks = wireSkills(path, parseSetupAgents(), { quiet: true });
+    await withDb(async (db) => {
+      await setSetting(db, "personal.workspace_dir", path);
+      upsertConfiguredWorkspace(workspace);
+      jsonOut({
+        ok: true,
+        workspace,
+        workspaces: getConfiguredWorkspaces(),
+        workspaceDir: path,
+        skillLinks,
+      });
+    });
+  });
+
+bridgeCommand
+  .command("workspace-remove")
+  .description("Unregister a ZAM workspace without deleting its files (JSON)")
+  .requiredOption("--id <id>", "Workspace id")
+  .action(async (opts) => {
+    const id = String(opts.id ?? "").trim();
+    if (!id) jsonError("A non-empty --id is required");
+    const workspace = getConfiguredWorkspaces().find((item) => item.id === id);
+    if (!workspace) jsonError(`Workspace "${id}" is not configured`);
+
+    await withDb(async (db) => {
+      const activeWorkspaceDir =
+        (await getSetting(db, "personal.workspace_dir")) || null;
+      const remaining = removeConfiguredWorkspace(id);
+      let workspaceDir = activeWorkspaceDir;
+      let skillLinks: ReturnType<typeof wireSkills> = [];
+
+      if (
+        activeWorkspaceDir &&
+        sameWorkspacePath(activeWorkspaceDir, workspace.path)
+      ) {
+        if (remaining.length > 0) {
+          workspaceDir = remaining[0].path;
+          await setSetting(db, "personal.workspace_dir", workspaceDir);
+        } else {
+          workspaceDir = join(homedir(), "Documents", "zam");
+          await setSetting(db, "personal.workspace_dir", workspaceDir);
+          const ensured = await ensureDesktopWorkspace(db);
+          workspaceDir = ensured.workspaceDir;
+          skillLinks = ensured.skillLinks;
+        }
+      }
 
       jsonOut({
-        userId,
-        totalTokens,
-        cardedTokens: totalTokens - uncarded,
-        uncardedTokens: uncarded,
-        dueCount: dueCards.length,
-        domains,
+        ok: true,
+        removed: workspace,
+        workspaces: getConfiguredWorkspaces(),
+        workspaceDir,
+        skillLinks,
+      });
+    });
+  });
+
+bridgeCommand
+  .command("set-workspace-dir")
+  .description("Set the personal workspace directory (JSON)")
+  .requiredOption("--dir <path>", "Path to the workspace directory")
+  .action(async (opts) => {
+    const raw = String(opts.dir ?? "").trim();
+    if (!raw) jsonError("A non-empty --dir is required");
+    const dir = resolve(raw);
+    if (!existsSync(dir)) jsonError(`Workspace path does not exist: ${dir}`);
+    const skillLinks = wireSkills(dir, parseSetupAgents(), { quiet: true });
+    await withDb(async (db) => {
+      await setSetting(db, "personal.workspace_dir", dir);
+      jsonOut({ ok: true, workspaceDir: dir, skillLinks });
+    });
+  });
+
+// ── zam bridge agent-list / agent-open ─────────────────────────────────────
+
+bridgeCommand
+  .command("agent-list")
+  .description("List agent harnesses with detection state + the default (JSON)")
+  .action(async () => {
+    await withDb(async (db) => {
+      const configuredDefault = (await getSetting(db, "agent.default")) || null;
+      const harnesses = await Promise.all(
+        AGENT_HARNESSES.map(async (h) => {
+          const override =
+            (await getSetting(db, `agent.${h.id}.command`)) || undefined;
+          return {
+            id: h.id,
+            label: h.label,
+            kind: h.kind,
+            detected: resolveHarnessExecutable(h, override) !== null,
+          };
+        }),
+      );
+      const fallbackDefault = harnesses.find((h) => h.detected)?.id ?? null;
+      jsonOut({ harnesses, default: configuredDefault ?? fallbackDefault });
+    });
+  });
+
+bridgeCommand
+  .command("agent-open")
+  .description("Launch an agent harness in the workspace (JSON)")
+  .option(
+    "--id <id>",
+    "Harness id (default: agent.default setting, else first detected)",
+  )
+  .option("--workspace <id>", "Configured workspace id to open")
+  .option("--dir <path>", "Explicit workspace directory to open")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      let id: string | undefined =
+        opts.id || (await getSetting(db, "agent.default")) || undefined;
+      if (!id) {
+        id = AGENT_HARNESSES.find((h) => resolveHarnessExecutable(h))?.id;
+      }
+      if (!id) {
+        jsonError(
+          "No agent harness configured or detected. Install one (Claude Code, Codex, opencode) or set agent.default.",
+        );
+      }
+      const harness = getHarness(id);
+      if (!harness) {
+        jsonError(`Unknown harness: ${id}`);
+      }
+      const override =
+        (await getSetting(db, `agent.${harness.id}.command`)) || undefined;
+      const executable = resolveHarnessExecutable(harness, override);
+      if (!executable) {
+        jsonError(
+          `${harness.label} was not detected. Set its path: zam settings set agent.${harness.id}.command <path>`,
+        );
+      }
+      const configuredWorkspace = opts.workspace
+        ? getConfiguredWorkspaces().find((item) => item.id === opts.workspace)
+        : undefined;
+      if (opts.workspace && !configuredWorkspace) {
+        jsonError(`Workspace is not configured: ${opts.workspace}`);
+      }
+      let workspace =
+        opts.dir ||
+        configuredWorkspace?.path ||
+        (await getSetting(db, "personal.workspace_dir")) ||
+        join(homedir(), "Documents", "zam");
+      if (!existsSync(workspace)) workspace = homedir();
+      launchHarness(harness, {
+        executable,
+        workspace,
+        shell: normalizeShell(undefined),
+        silent: true,
+      });
+      jsonOut({
+        ok: true,
+        id: harness.id,
+        label: harness.label,
+        kind: harness.kind,
+        workspace,
       });
     });
   });
@@ -248,12 +600,6 @@ bridgeCommand
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
-
-      // Ensure every token has a card so the queue is never empty just
-      // because tokens were registered via `zam token register` (which
-      // creates tokens but not cards).
-      await ensureCardsForAllTokens(db, userId);
-
       const queue = await buildReviewQueue(db, {
         userId,
         maxReviews: 1,
@@ -277,6 +623,8 @@ bridgeCommand
 
       // Dynamically generate a fresh, living active-recall question if LLM is enabled
       let resolvedQuestion = item.question;
+      let questionSource: "llm" | "original" = "original";
+      let questionModel: string | undefined;
       if (isLlmEnabled) {
         try {
           const healed = await ensureHighQualityQuestion(db, {
@@ -289,7 +637,9 @@ bridgeCommand
             question: item.question,
           });
           if (healed) {
-            resolvedQuestion = healed;
+            resolvedQuestion = healed.question;
+            questionSource = healed.source;
+            questionModel = healed.model;
           }
         } catch {
           // ignore and proceed
@@ -326,6 +676,8 @@ bridgeCommand
         hasReview: true,
         card: item,
         prompt,
+        questionSource,
+        questionModel: questionModel ?? null,
         resolvedContext,
         queueSize: fullQueue.items.length,
       });
@@ -485,6 +837,65 @@ bridgeCommand
     });
   });
 
+// ── zam bridge start-session / end-session ────────────────────────────────
+
+bridgeCommand
+  .command("start-session")
+  .description("Start a ZAM learning session (JSON)")
+  .requiredOption("--task <task>", "Session task description")
+  .option(
+    "--context <context>",
+    "Execution context: shell | ui | reallife",
+    "shell",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    const context = opts.context as "shell" | "ui" | "reallife";
+    if (!["shell", "ui", "reallife"].includes(context)) {
+      jsonError("context must be shell, ui, or reallife");
+    }
+
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const session = await startSession(db, {
+        user_id: userId,
+        task: opts.task,
+        execution_context: context,
+      });
+      const observerPolicyHint =
+        context === "ui" && !(await isObserverPolicyConfigured(db))
+          ? OBSERVER_POLICY_UNSET_HINT
+          : undefined;
+      jsonOut({
+        id: session.id,
+        userId: session.user_id,
+        task: session.task,
+        executionContext: session.execution_context,
+        startedAt: session.started_at,
+        completedAt: session.completed_at,
+        ...(observerPolicyHint ? { observerPolicyHint } : {}),
+      });
+    });
+  });
+
+bridgeCommand
+  .command("end-session")
+  .description("Complete an active ZAM learning session (JSON)")
+  .requiredOption("--session <id>", "Session ID")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const session = await endSession(db, opts.session);
+      jsonOut({
+        id: session.id,
+        userId: session.user_id,
+        task: session.task,
+        executionContext: session.execution_context,
+        startedAt: session.started_at,
+        completedAt: session.completed_at,
+      });
+    });
+  });
+
 // ── zam bridge get-monitor ────────────────────────────────────────────────
 
 bridgeCommand
@@ -616,6 +1027,7 @@ bridgeCommand
         context?: string;
         symbiosis_mode?: string | null;
         source_link?: string | null;
+        question?: string | null;
       };
 
       try {
@@ -644,6 +1056,7 @@ bridgeCommand
           | null
           | undefined,
         source_link: data?.source_link ?? null,
+        question: data?.question ?? null,
       });
 
       const card = await ensureCard(db, token.id, userId);
@@ -756,6 +1169,906 @@ bridgeCommand
     }
   });
 
+// ── zam bridge observe-ui-watch / get-observations ─────────────────────────
+
+bridgeCommand
+  .command("observe-ui-watch")
+  .description(
+    "Poll live UI observer watch reports for a ZAM learning session (JSON)",
+  )
+  .requiredOption(
+    "--session <id>",
+    "ZAM session ID (also the observer log key)",
+  )
+  .option("--after <n>", "Only return observations after this sequence")
+  .option("--limit <n>", "Maximum observations to return", "100")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const session = (await db
+        .prepare("SELECT id, execution_context FROM sessions WHERE id = ?")
+        .get(opts.session)) as
+        | { id: string; execution_context: string }
+        | undefined;
+      if (!session) {
+        jsonError(`Session not found: ${opts.session}`);
+      }
+
+      const after =
+        opts.after === undefined
+          ? undefined
+          : parseNonNegativeIntegerOption("after", opts.after);
+      const limit = parseNonNegativeIntegerOption("limit", opts.limit);
+      const observations = readUiObservationLog(opts.session)
+        .filter((report) => after === undefined || report.sequence > after)
+        .slice(0, limit);
+      const last = observations[observations.length - 1];
+
+      jsonOut({
+        sessionId: opts.session,
+        executionContext: session.execution_context,
+        observationSource: "ui",
+        logExists: uiObservationLogExists(opts.session),
+        after: after ?? null,
+        count: observations.length,
+        nextSequence: last?.sequence ?? after ?? null,
+        observations,
+      });
+    });
+  });
+
+bridgeCommand
+  .command("get-observations")
+  .description("Read UI observer reports for a session (JSON)")
+  .requiredOption("--session <id>", "Observer session ID")
+  .option("--after <n>", "Only return observations after this sequence")
+  .option("--limit <n>", "Maximum observations to return", "100")
+  .action((opts) => {
+    try {
+      const after =
+        opts.after === undefined
+          ? undefined
+          : parseNonNegativeIntegerOption("after", opts.after);
+      const limit = parseNonNegativeIntegerOption("limit", opts.limit);
+      const observations = readUiObservationLog(opts.session)
+        .filter((report) => after === undefined || report.sequence > after)
+        .slice(0, limit);
+      const last = observations[observations.length - 1];
+
+      jsonOut({
+        sessionId: opts.session,
+        after: after ?? null,
+        count: observations.length,
+        nextSequence: last?.sequence ?? after ?? null,
+        observations,
+      });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
+bridgeCommand
+  .command("observe-ui-snapshot")
+  .description(
+    "Analyze a captured UI snapshot or video recording with the configured vision LLM (JSON)",
+  )
+  .requiredOption("--session <id>", "Observer session ID")
+  .requiredOption("--sequence <n>", "Monotonic observation sequence number")
+  .requiredOption("--image <path>", "PNG snapshot or video recording path")
+  .requiredOption("--observed-from <iso>", "Observation window start time")
+  .requiredOption("--observed-to <iso>", "Observation window end time")
+  .requiredOption("--process-name <name>", "Observed application process name")
+  .option("--process-id <n>", "Observed application process ID")
+  .option("--window-title <title>", "Observed window title")
+  .option("--evidence-ref <ref>", "Evidence reference to put in the report")
+  .option("--model <model>", "Override configured LLM model for this request")
+  .option("--max-tokens <n>", "Model response token budget")
+  .option("--timeout <ms>", "Hard request timeout in milliseconds")
+  .option("--redacted", "Mark the snapshot evidence as redacted")
+  .option("--write-log", "Append the generated report to the session JSONL")
+  .action(async (opts) => {
+    const sequence = parseNonNegativeIntegerOption("sequence", opts.sequence);
+    const processId =
+      opts.processId === undefined
+        ? undefined
+        : parseNonNegativeIntegerOption("process-id", opts.processId);
+    const maxTokens =
+      opts.maxTokens === undefined
+        ? undefined
+        : parseNonNegativeIntegerOption("max-tokens", opts.maxTokens);
+    const hardTimeoutMs =
+      opts.timeout === undefined
+        ? undefined
+        : parseNonNegativeIntegerOption("timeout", opts.timeout);
+
+    await withDb(async (db) => {
+      const report = await observeUiSnapshotViaLLM(db, {
+        sessionId: opts.session,
+        sequence,
+        observedFrom: opts.observedFrom,
+        observedTo: opts.observedTo,
+        imagePath: opts.image,
+        application: {
+          processName: opts.processName,
+          processId,
+          windowTitle: opts.windowTitle,
+        },
+        evidenceRef: opts.evidenceRef,
+        redacted: opts.redacted === true,
+        model: opts.model,
+        maxTokens,
+        hardTimeoutMs,
+      });
+      if (opts.writeLog === true) {
+        appendUiObservationReport(report);
+      }
+      jsonOut(report);
+    });
+  });
+
+// ── zam bridge capture-ui ──────────────────────────────────────────────────
+
+/**
+ * Resolve the PowerShell executable, preferring PowerShell 7+ (`pwsh`) over
+ * the legacy Windows PowerShell 5.1 (`powershell`). pwsh 7 still ships the
+ * Windows Desktop assemblies the screen-capture script needs, so it is the
+ * default; `powershell` remains a fallback for machines without pwsh.
+ */
+function resolveWindowsPowerShell(): string {
+  try {
+    execFileSync("where.exe", ["pwsh.exe"], { stdio: "ignore" });
+    return "pwsh";
+  } catch {
+    return "powershell";
+  }
+}
+
+type CaptureTarget = {
+  requestedHwnd: string | null;
+  requestedProcessName: string | null;
+  matchedBy: string;
+  hwnd: number | null;
+  processId: number | null;
+  processName: string | null;
+  windowTitle: string | null;
+  bounds: {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
+    width: number;
+    height: number;
+  } | null;
+};
+
+type CaptureResult = {
+  method: string;
+  target: CaptureTarget | null;
+};
+
+function captureScreenshot(
+  outputPath: string,
+  hwnd?: string,
+  processName?: string,
+): CaptureResult {
+  const platform = process.platform;
+  if (hwnd && !/^(0x)?[0-9a-fA-F]+$/.test(hwnd)) {
+    throw new Error(`Invalid HWND format: ${hwnd}`);
+  }
+  if (processName && !/^[a-zA-Z0-9\-_.]+$/.test(processName)) {
+    throw new Error(`Invalid process name format: ${processName}`);
+  }
+
+  if (platform === "win32") {
+    const stdout = execFileSync(
+      resolveWindowsPowerShell(),
+      [
+        "-NoProfile",
+        "-Command",
+        `
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+$code = @'
+using System;
+using System.Runtime.InteropServices;
+
+public class Win32 {
+    public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    public static extern bool SetProcessDPIAware();
+
+    [DllImport("user32.dll")]
+    public static extern bool SetProcessDpiAwarenessContext(IntPtr dpiContext);
+
+    [DllImport("user32.dll")]
+    public static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
+
+    [DllImport("user32.dll")]
+    public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    public static extern bool EnumChildWindows(IntPtr hWnd, EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    public static extern bool IsWindowVisible(IntPtr hWnd);
+
+    [DllImport("user32.dll", SetLastError=true)]
+    public static extern int GetWindowText(IntPtr hWnd, System.Text.StringBuilder lpString, int nMaxCount);
+
+    [DllImport("user32.dll", SetLastError=true)]
+    public static extern int GetWindowTextLength(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+    [DllImport("user32.dll")]
+    public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+    [DllImport("user32.dll")]
+    public static extern bool IsIconic(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    public static extern bool PrintWindow(IntPtr hWnd, IntPtr hdcBlt, uint nFlags);
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct RECT {
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
+    }
+}
+'@
+Add-Type -TypeDefinition $code
+
+try {
+    # DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 = -4. Without this, Windows
+    # can return logical window bounds while PrintWindow renders physical
+    # pixels, causing high-DPI captures to crop the right/bottom edge.
+    [Win32]::SetProcessDpiAwarenessContext([IntPtr](-4)) | Out-Null
+} catch {
+    try { [Win32]::SetProcessDPIAware() | Out-Null } catch {}
+}
+
+function Get-WindowTitle([IntPtr]$hWnd) {
+    $length = [Win32]::GetWindowTextLength($hWnd)
+    $capacity = [Math]::Max(1, $length + 1)
+    $builder = New-Object System.Text.StringBuilder $capacity
+    [Win32]::GetWindowText($hWnd, $builder, $builder.Capacity) | Out-Null
+    $builder.ToString()
+}
+
+function Get-WindowProcess([IntPtr]$hWnd) {
+    [uint32]$processId = 0
+    [Win32]::GetWindowThreadProcessId($hWnd, [ref]$processId) | Out-Null
+    if ($processId -eq 0) { return $null }
+    Get-Process -Id $processId -ErrorAction SilentlyContinue
+}
+
+function Get-VisibleTopLevelWindows {
+    $script:windowCandidates = New-Object System.Collections.ArrayList
+    $callback = [Win32+EnumWindowsProc]{
+        param([IntPtr]$candidateHwnd, [IntPtr]$lParam)
+        if ([Win32]::IsWindowVisible($candidateHwnd)) {
+            $candidateRect = New-Object Win32+RECT
+            if ([Win32]::GetWindowRect($candidateHwnd, [ref]$candidateRect)) {
+                $candidateWidth = $candidateRect.Right - $candidateRect.Left
+                $candidateHeight = $candidateRect.Bottom - $candidateRect.Top
+                if ($candidateWidth -gt 0 -and $candidateHeight -gt 0) {
+                    [void]$script:windowCandidates.Add($candidateHwnd)
+                }
+            }
+        }
+        return $true
+    }
+    [Win32]::EnumWindows($callback, [IntPtr]::Zero) | Out-Null
+    $windows = $script:windowCandidates
+    Remove-Variable -Name windowCandidates -Scope Script -ErrorAction SilentlyContinue
+    $windows
+}
+
+function Find-TopLevelWindowByProcessName([string]$name) {
+    foreach ($candidateHwnd in Get-VisibleTopLevelWindows) {
+        $candidateProcess = Get-WindowProcess $candidateHwnd
+        if ($candidateProcess -and $candidateProcess.ProcessName -ieq $name) {
+            return [pscustomobject]@{
+                Hwnd = $candidateHwnd
+                MatchedBy = "process-top-level-window"
+            }
+        }
+
+        $script:desiredChildProcessName = $name
+        $script:foundChildProcessWindow = $false
+        $childCallback = [Win32+EnumWindowsProc]{
+            param([IntPtr]$childHwnd, [IntPtr]$lParam)
+            $childProcess = Get-WindowProcess $childHwnd
+            if ($childProcess -and $childProcess.ProcessName -ieq $script:desiredChildProcessName) {
+                $script:foundChildProcessWindow = $true
+                return $false
+            }
+            return $true
+        }
+        [Win32]::EnumChildWindows($candidateHwnd, $childCallback, [IntPtr]::Zero) | Out-Null
+        $foundChild = $script:foundChildProcessWindow
+        Remove-Variable -Name desiredChildProcessName -Scope Script -ErrorAction SilentlyContinue
+        Remove-Variable -Name foundChildProcessWindow -Scope Script -ErrorAction SilentlyContinue
+
+        if ($foundChild) {
+            return [pscustomobject]@{
+                Hwnd = $candidateHwnd
+                MatchedBy = "process-child-window"
+            }
+        }
+    }
+
+    return $null
+}
+
+function New-CaptureTarget([IntPtr]$hWnd, [string]$matchedBy) {
+    $target = [ordered]@{
+        requestedHwnd = if ($targetHwnd -ne '') { $targetHwnd } else { $null }
+        requestedProcessName = if ($processName -ne '') { $processName } else { $null }
+        matchedBy = $matchedBy
+        hwnd = $null
+        processId = $null
+        processName = $null
+        windowTitle = $null
+        bounds = $null
+    }
+
+    if ($hWnd -ne [IntPtr]::Zero) {
+        $target.hwnd = $hWnd.ToInt64()
+        $target.windowTitle = Get-WindowTitle $hWnd
+
+        $windowProcess = Get-WindowProcess $hWnd
+        if ($windowProcess) {
+            $target.processId = $windowProcess.Id
+            $target.processName = $windowProcess.ProcessName
+        }
+
+        $targetRect = New-Object Win32+RECT
+        if ([Win32]::GetWindowRect($hWnd, [ref]$targetRect)) {
+            $target.bounds = [ordered]@{
+                left = $targetRect.Left
+                top = $targetRect.Top
+                right = $targetRect.Right
+                bottom = $targetRect.Bottom
+                width = $targetRect.Right - $targetRect.Left
+                height = $targetRect.Bottom - $targetRect.Top
+            }
+        }
+    }
+
+    $target
+}
+
+function Write-CaptureResult([string]$method, [IntPtr]$hWnd, [string]$matchedBy) {
+    $result = [ordered]@{
+        method = $method
+        target = New-CaptureTarget $hWnd $matchedBy
+    }
+    Write-Output ("CAPTURE_RESULT:" + ($result | ConvertTo-Json -Compress -Depth 6))
+}
+
+$hwndVal = [IntPtr]::Zero
+$matchedBy = "fullscreen-fallback"
+$targetHwnd = '${hwnd || ""}'
+$processName = '${processName || ""}'
+
+if ($targetHwnd -ne '') {
+    if ($targetHwnd.StartsWith("0x")) {
+        $hwndVal = [IntPtr][Convert]::ToInt64($targetHwnd, 16)
+    } else {
+        $hwndVal = [IntPtr][Convert]::ToInt64($targetHwnd, 10)
+    }
+    $matchedBy = "hwnd"
+} elseif ($processName -ne '') {
+    $proc = Get-Process -Name $processName -ErrorAction SilentlyContinue | Where-Object {$_.MainWindowHandle -ne 0} | Select-Object -First 1
+    if ($proc) {
+        $hwndVal = $proc.MainWindowHandle
+        $matchedBy = "process-main-window"
+    } else {
+        $proc = Get-Process -Name $processName -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($proc) {
+            $hwndVal = $proc.MainWindowHandle
+            $matchedBy = "process-zero-main-window"
+        }
+    }
+
+    if ($hwndVal -eq [IntPtr]::Zero) {
+        $windowMatch = Find-TopLevelWindowByProcessName $processName
+        if ($windowMatch) {
+            $hwndVal = $windowMatch.Hwnd
+            $matchedBy = $windowMatch.MatchedBy
+        }
+    }
+}
+
+if ($hwndVal -ne [IntPtr]::Zero) {
+    if ([Win32]::IsIconic($hwndVal)) {
+        [Win32]::ShowWindow($hwndVal, 9) | Out-Null # SW_RESTORE = 9
+        Start-Sleep -Milliseconds 250
+    }
+
+    $rect = New-Object Win32+RECT
+    if ([Win32]::GetWindowRect($hwndVal, [ref]$rect)) {
+        $width = $rect.Right - $rect.Left
+        $height = $rect.Bottom - $rect.Top
+        if ($width -gt 0 -and $height -gt 0) {
+            $bitmap = New-Object System.Drawing.Bitmap($width, $height)
+            $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
+            # PrintWindow renders the target window directly, regardless of
+            # z-order, so an occluded or background window is still captured
+            # correctly. SetForegroundWindow from a background process is
+            # blocked by Windows, so CopyFromScreen would grab whatever sits
+            # on top. PW_RENDERFULLCONTENT (0x2) handles modern/UWP windows.
+            $hdc = $graphics.GetHdc()
+            $printed = [Win32]::PrintWindow($hwndVal, $hdc, 2)
+            $graphics.ReleaseHdc($hdc)
+            $method = "printwindow"
+
+            # Black-frame guard: PrintWindow can return a near-black frame on
+            # some hardware-accelerated / DirectComposition surfaces. Sample a
+            # sparse grid; if it is essentially black, fall back to a foreground
+            # CopyFromScreen grab so the capture self-heals on those drivers.
+            $needFallback = -not $printed
+            if (-not $needFallback) {
+                $sum = 0.0
+                $cnt = 0
+                $stepX = [Math]::Max(1, [int]($width / 12))
+                $stepY = [Math]::Max(1, [int]($height / 12))
+                for ($sy = 0; $sy -lt $height; $sy += $stepY) {
+                    for ($sx = 0; $sx -lt $width; $sx += $stepX) {
+                        $px = $bitmap.GetPixel($sx, $sy)
+                        $sum += ($px.R + $px.G + $px.B) / 3.0
+                        $cnt++
+                    }
+                }
+                if ($cnt -gt 0 -and ($sum / $cnt) -lt 6) { $needFallback = $true }
+            }
+
+            if ($needFallback) {
+                [Win32]::SetForegroundWindow($hwndVal) | Out-Null
+                Start-Sleep -Milliseconds 250
+                $graphics.CopyFromScreen($rect.Left, $rect.Top, 0, 0, $bitmap.Size)
+                $method = "copyfromscreen"
+            }
+            $bitmap.Save('${outputPath.replace(/\\/g, "\\\\")}', [System.Drawing.Imaging.ImageFormat]::Png)
+            $graphics.Dispose()
+            $bitmap.Dispose()
+            Write-CaptureResult $method $hwndVal $matchedBy
+            exit 0
+        }
+    }
+}
+
+# Fallback: full primary screen
+$screen = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
+$bitmap = New-Object System.Drawing.Bitmap($screen.Width, $screen.Height)
+$graphics = [System.Drawing.Graphics]::FromImage($bitmap)
+$graphics.CopyFromScreen($screen.Location, [System.Drawing.Point]::Empty, $screen.Size)
+$bitmap.Save('${outputPath.replace(/\\/g, "\\\\")}', [System.Drawing.Imaging.ImageFormat]::Png)
+$graphics.Dispose()
+$bitmap.Dispose()
+Write-CaptureResult "fullscreen" $hwndVal $matchedBy
+        `.trim(),
+      ],
+      { stdio: "pipe", encoding: "utf8" },
+    );
+    const resultMatch = /CAPTURE_RESULT:(\{.*\})/.exec(stdout ?? "");
+    if (resultMatch) {
+      const parsed = JSON.parse(resultMatch[1]) as CaptureResult;
+      return parsed;
+    }
+    const methodMatch = /CAPTURE_METHOD:(\w+)/.exec(stdout ?? "");
+    return {
+      method: methodMatch ? methodMatch[1] : "unknown",
+      target: null,
+    };
+  } else if (platform === "darwin") {
+    if (hwnd) {
+      const parsedHwnd = hwnd.startsWith("0x")
+        ? parseInt(hwnd, 16)
+        : parseInt(hwnd, 10);
+      execFileSync("screencapture", ["-l", String(parsedHwnd), outputPath], {
+        stdio: "pipe",
+      });
+      return { method: "screencapture-window", target: null };
+    } else if (processName) {
+      try {
+        const windowId = execFileSync(
+          "osascript",
+          [
+            "-e",
+            `tell application "System Events" to get id of window 1 of process "${processName}"`,
+          ],
+          { encoding: "utf8", stdio: ["pipe", "pipe", "ignore"] },
+        ).trim();
+        if (windowId && /^\d+$/.test(windowId)) {
+          execFileSync("screencapture", ["-l", windowId, outputPath], {
+            stdio: "pipe",
+          });
+          return { method: "screencapture-window", target: null };
+        }
+      } catch {
+        // Fallback if AppleScript fails
+      }
+      execFileSync("screencapture", ["-x", outputPath], { stdio: "pipe" });
+      return { method: "screencapture-full", target: null };
+    } else {
+      execFileSync("screencapture", ["-x", outputPath], { stdio: "pipe" });
+      return { method: "screencapture-full", target: null };
+    }
+  } else {
+    throw new Error(
+      `Screen capture not supported on platform: ${platform}. Use zam-observer or provide --image.`,
+    );
+  }
+}
+
+bridgeCommand
+  .command("capture-ui")
+  .description("Capture a screenshot for agent-side vision analysis (JSON)")
+  .option("--session <id>", "ZAM session ID (for metadata)")
+  .option("--output <path>", "PNG output path (defaults to temp file)")
+  .option("--image <path>", "Skip capture; return an existing image instead")
+  .option("--hwnd <hwnd>", "Window handle (decimal or hex) to capture")
+  .option("--process-name <name>", "Process name to capture")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const policy = await resolveObserverPolicy(db);
+      const permission = {
+        scope: policy.scope,
+        consent: policy.consent,
+        retention: policy.retention,
+      };
+      const isProvided = Boolean(opts.image);
+
+      // A caller-provided --image is "analyze this file", not a capture: ZAM
+      // is not holding the camera, so scope/target policy does not apply.
+      // Live captures are gated below.
+      if (!isProvided) {
+        const pre = decidePreCapture(policy, {
+          hasExplicitTarget: Boolean(opts.hwnd || opts.processName),
+          requestedProcessName: opts.processName ?? null,
+        });
+        if (!pre.allowed) {
+          jsonOut({
+            sessionId: opts.session ?? null,
+            granted: false,
+            denied: true,
+            denialReason: pre.denialReason,
+            reason: pre.reason,
+            capturedAt: new Date().toISOString(),
+            platform: process.platform,
+            permission: { ...permission, granted: false },
+          });
+          return;
+        }
+      }
+
+      const outputPath =
+        opts.image ??
+        opts.output ??
+        join(tmpdir(), `zam-capture-${randomBytes(4).toString("hex")}.png`);
+
+      const captureResult = isProvided
+        ? ({ method: "provided", target: null } satisfies CaptureResult)
+        : captureScreenshot(outputPath, opts.hwnd, opts.processName);
+
+      // Post-resolution gate: the real process/title are only known now, so
+      // the sensitive/denylist check runs against the window actually
+      // captured. If it fails, discard the pixels before they leave.
+      if (!isProvided) {
+        const post = decidePostCapture(policy, {
+          method: captureResult.method,
+          processName: captureResult.target?.processName ?? null,
+          windowTitle: captureResult.target?.windowTitle ?? null,
+        });
+        if (!post.allowed) {
+          if (!opts.output) {
+            try {
+              rmSync(outputPath, { force: true });
+            } catch {
+              // best-effort discard
+            }
+          }
+          jsonOut({
+            sessionId: opts.session ?? null,
+            granted: false,
+            denied: true,
+            denialReason: post.denialReason,
+            reason: post.reason,
+            capturedAt: new Date().toISOString(),
+            platform: process.platform,
+            permission: { ...permission, granted: false },
+          });
+          return;
+        }
+      }
+
+      const imageBytes = readFileSync(outputPath);
+      const base64 = imageBytes.toString("base64");
+
+      jsonOut({
+        sessionId: opts.session ?? null,
+        granted: true,
+        imagePath: outputPath,
+        base64,
+        mimeType: "image/png",
+        captureMethod: captureResult.method,
+        captureTarget: captureResult.target,
+        capturedAt: new Date().toISOString(),
+        platform: process.platform,
+        permission: { ...permission, granted: true },
+      });
+    });
+  });
+
+// ── zam bridge start-recording ──────────────────────────────────────────────
+
+bridgeCommand
+  .command("start-recording")
+  .description("Start screen recording in the background (JSON)")
+  .requiredOption("--session <id>", "ZAM session ID")
+  .option("--output <path>", "Video output path")
+  .action(async (opts) => {
+    const platform = process.platform;
+    if (platform !== "darwin" && platform !== "win32") {
+      jsonOut({
+        sessionId: opts.session,
+        started: false,
+        error:
+          "Screen recording is only supported on macOS (darwin) and Windows (win32)",
+      });
+      return;
+    }
+
+    const sessionId = opts.session;
+    const statePath = join(tmpdir(), `zam-recording-${sessionId}.json`);
+    const defaultExt = platform === "win32" ? ".mkv" : ".mov";
+    const outputPath =
+      opts.output ?? join(tmpdir(), `zam-recording-${sessionId}${defaultExt}`);
+
+    const { existsSync, writeFileSync, openSync, closeSync } = await import(
+      "node:fs"
+    );
+    if (existsSync(statePath)) {
+      jsonOut({
+        sessionId,
+        started: false,
+        error: `Recording is already active for session ${sessionId}`,
+      });
+      return;
+    }
+
+    const logPath = join(tmpdir(), `zam-recording-${sessionId}.log`);
+    let logFd: number;
+    try {
+      logFd = openSync(logPath, "w");
+    } catch (e) {
+      jsonOut({
+        sessionId,
+        started: false,
+        error: `Failed to open log file at ${logPath}: ${(e as Error).message}`,
+      });
+      return;
+    }
+
+    const { spawn } = await import("node:child_process");
+    const ffmpegArgs =
+      platform === "darwin"
+        ? [
+            "-y",
+            "-f",
+            "avfoundation",
+            "-r",
+            "5",
+            "-i",
+            "0",
+            "-pix_fmt",
+            "yuv420p",
+            outputPath,
+          ]
+        : [
+            "-y",
+            "-f",
+            "gdigrab",
+            "-framerate",
+            "5",
+            "-i",
+            "desktop",
+            "-pix_fmt",
+            "yuv420p",
+            outputPath,
+          ];
+
+    const child = spawn("ffmpeg", ffmpegArgs, {
+      detached: true,
+      stdio: ["pipe", logFd, logFd],
+    });
+
+    try {
+      closeSync(logFd);
+    } catch {}
+
+    child.unref();
+
+    if (child.pid) {
+      writeFileSync(
+        statePath,
+        JSON.stringify({
+          pid: child.pid,
+          outputPath,
+          startedAt: new Date().toISOString(),
+        }),
+        "utf8",
+      );
+
+      jsonOut({
+        sessionId,
+        started: true,
+        outputPath,
+        pid: child.pid,
+      });
+    } else {
+      jsonOut({
+        sessionId,
+        started: false,
+        error: "Failed to spawn ffmpeg process",
+      });
+    }
+  });
+
+// ── zam bridge stop-recording ───────────────────────────────────────────────
+
+bridgeCommand
+  .command("stop-recording")
+  .description(
+    "Stop active screen recording and apply idle-frame compression (JSON)",
+  )
+  .requiredOption("--session <id>", "ZAM session ID")
+  .action(async (opts) => {
+    const platform = process.platform;
+    if (platform !== "darwin" && platform !== "win32") {
+      jsonOut({
+        sessionId: opts.session,
+        stopped: false,
+        error:
+          "Screen recording is only supported on macOS (darwin) and Windows (win32)",
+      });
+      return;
+    }
+
+    const sessionId = opts.session;
+    const statePath = join(tmpdir(), `zam-recording-${sessionId}.json`);
+    const { existsSync, readFileSync, rmSync } = await import("node:fs");
+
+    if (!existsSync(statePath)) {
+      jsonOut({
+        sessionId,
+        stopped: false,
+        error: `No active recording found for session ${sessionId}`,
+      });
+      return;
+    }
+
+    const state = JSON.parse(readFileSync(statePath, "utf8"));
+    const { pid, outputPath } = state;
+
+    try {
+      process.kill(pid, "SIGINT");
+    } catch (_e) {
+      // Process might already be dead
+    }
+
+    const isProcessRunning = (pId: number) => {
+      try {
+        process.kill(pId, 0);
+        return true;
+      } catch (_e) {
+        return false;
+      }
+    };
+
+    let attempts = 0;
+    while (isProcessRunning(pid) && attempts < 20) {
+      await new Promise((resolve) => setTimeout(resolve, 250));
+      attempts++;
+    }
+
+    if (isProcessRunning(pid)) {
+      try {
+        process.kill(pid, "SIGKILL");
+      } catch (_e) {}
+    }
+
+    try {
+      rmSync(statePath, { force: true });
+    } catch {}
+
+    if (!existsSync(outputPath)) {
+      jsonOut({
+        sessionId,
+        stopped: false,
+        error: `Recording file not found at ${outputPath}`,
+      });
+      return;
+    }
+
+    const decimatedPath = outputPath.replace(/\.[^.]+$/, "-decimated.mp4");
+    const { execSync } = await import("node:child_process");
+
+    try {
+      execSync(
+        `ffmpeg -y -i "${outputPath}" -vf "mpdecimate,setpts=N/FRAME_RATE/TB" -an -pix_fmt yuv420p "${decimatedPath}"`,
+        { stdio: "ignore" },
+      );
+    } catch (ffmpegErr) {
+      jsonOut({
+        sessionId,
+        stopped: true,
+        videoPath: outputPath,
+        decimated: false,
+        warning: `mpdecimate post-processing failed: ${(ffmpegErr as Error).message}`,
+      });
+      return;
+    }
+
+    try {
+      rmSync(outputPath, { force: true });
+    } catch {}
+
+    jsonOut({
+      sessionId,
+      stopped: true,
+      videoPath: decimatedPath,
+      decimated: true,
+    });
+  });
+
+// ── zam bridge get-observer-policy ─────────────────────────────────────────
+
+bridgeCommand
+  .command("get-observer-policy")
+  .description(
+    "Report the resolved observer policy so an agent can check before capturing (JSON)",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      const policy = await resolveObserverPolicy(db);
+      jsonOut({
+        scope: policy.scope,
+        consent: policy.consent,
+        retention: policy.retention,
+        allowlist: policy.allowlist,
+        denylist: policy.denylist,
+        redactWindowTitles: policy.redactWindowTitles,
+        audioOptIn: policy.audioOptIn,
+        builtInSensitiveAlwaysRefused: true,
+        builtInSensitiveMatchers: [...BUILT_IN_SENSITIVE_MATCHERS],
+      });
+    });
+  });
+
+// ── zam bridge sync-observer-policy ────────────────────────────────────────
+
+bridgeCommand
+  .command("sync-observer-policy")
+  .description(
+    "Write the resolved observer policy to the native sidecar file (JSON)",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      const { path, policy } = await syncObserverSidecarPolicy(db);
+      jsonOut({ synced: true, path, policy });
+    });
+  });
+
 // ── zam bridge check-llm ──────────────────────────────────────────────────
 
 bridgeCommand
@@ -763,11 +2076,13 @@ bridgeCommand
   .description("Check if LLM is enabled and online (JSON)")
   .action(async () => {
     await withDb(async (db) => {
-      const { enabled, url, model, apiKey } = await getLlmConfig(db);
+      const provider = await getProviderForRole(db, "recall");
+      const { enabled, url, model, apiKey } = provider;
+      const unsupportedProvider = provider.apiFlavor !== "chat-completions";
       let online = false;
       let availableModels: string[] = [];
       let modelAvailable = false;
-      if (enabled) {
+      if (enabled && !unsupportedProvider) {
         online = await isLlmOnline(url);
         if (online) {
           availableModels = await getAvailableModels(url, apiKey);
@@ -786,7 +2101,309 @@ bridgeCommand
         model,
         modelAvailable,
         availableModels,
+        apiFlavor: provider.apiFlavor,
+        unsupportedProvider,
       });
+    });
+  });
+
+bridgeCommand
+  .command("provider-status")
+  .description("Show secret-safe provider status for LLM roles (JSON)")
+  .action(async () => {
+    await withDb(async (db) => {
+      const [recall, vision, text] = await Promise.all([
+        getProviderRoleStatus(db, "recall"),
+        getProviderRoleStatus(db, "vision"),
+        getProviderRoleStatus(db, "text"),
+      ]);
+      jsonOut({ roles: { recall, vision, text } });
+    });
+  });
+
+// ── zam bridge provider-config-* ───────────────────────────────────────────
+
+bridgeCommand
+  .command("provider-config-list")
+  .description("List provider records and role bindings (JSON)")
+  .option("--scope <scope>", "machine (default) or shared", "machine")
+  .action(async (opts) => {
+    const machine = parseProviderScope(opts.scope);
+    await withProviderScope(machine, async (db) => {
+      const providers = await readScopedProviders(db, machine);
+      const roles = await readScopedRoles(db, machine);
+      const rows = buildProviderListing(
+        providers,
+        (ref) => getProviderApiKey(ref) !== null,
+      );
+      jsonOut({
+        scope: machine ? "machine" : "shared",
+        providers: rows,
+        roles,
+        orphans: findOrphanKeyRefs(listProviderApiKeyRefs(), providers),
+      });
+    });
+  });
+
+bridgeCommand
+  .command("provider-config-upsert")
+  .description("Add or update a provider record (JSON)")
+  .requiredOption("--name <name>", "Provider name")
+  .option("--label <label>", "Human-readable label")
+  .option("--url <url>", "Endpoint base URL")
+  .option("--model <model>", "Model id")
+  .option(
+    "--flavor <flavor>",
+    `Wire protocol: ${VALID_API_FLAVORS.join(" | ")}`,
+  )
+  .option("--local", "Mark as local endpoint")
+  .option("--no-local", "Mark as cloud/non-local endpoint")
+  .option("--runner <runner>", "Local runner hint")
+  .option("--key-ref <ref>", "Credential reference for API key")
+  .option("--scope <scope>", "machine (default) or shared", "machine")
+  .action(async (opts, command) => {
+    const machine = parseProviderScope(opts.scope);
+    let apiFlavor: ApiFlavor | undefined;
+    if (opts.flavor) {
+      if (!VALID_API_FLAVORS.includes(opts.flavor)) {
+        jsonError(
+          `Invalid --flavor: ${opts.flavor}. Use ${VALID_API_FLAVORS.join(" or ")}.`,
+        );
+      }
+      apiFlavor = opts.flavor;
+    }
+    // Commander stores the `--local` / `--no-local` pair on opts.local (true /
+    // false) — there is no opts.noLocal. Because `--no-local` defaults opts.local
+    // to true, only treat it as set when a flag was actually passed; otherwise
+    // leave `local` undefined so an update doesn't clobber the stored value.
+    let local: boolean | undefined;
+    if (command.getOptionValueSource("local") === "cli") {
+      local = opts.local === true;
+    }
+    const patch: ProviderRecord = {};
+    if (opts.label !== undefined) patch.label = opts.label;
+    if (opts.url !== undefined) patch.url = opts.url;
+    if (opts.model !== undefined) patch.model = opts.model;
+    if (apiFlavor !== undefined) patch.apiFlavor = apiFlavor;
+    if (opts.keyRef !== undefined) patch.apiKeyRef = opts.keyRef;
+    if (local !== undefined) patch.local = local;
+    if (opts.runner !== undefined) patch.runner = opts.runner;
+
+    await withProviderScope(machine, async (db) => {
+      const providers = await readScopedProviders(db, machine);
+      const next = upsertProviderRecord(providers, opts.name, patch);
+      await writeScopedProviders(db, machine, next);
+      const rows = buildProviderListing(
+        next,
+        (ref) => getProviderApiKey(ref) !== null,
+      );
+      const row = rows.find((entry) => entry.name === opts.name);
+      jsonOut({
+        ok: true,
+        scope: machine ? "machine" : "shared",
+        name: opts.name,
+        provider: row,
+        cloudModelHint: opts.url ? getCloudModelRecommendation(opts.url) : null,
+      });
+    });
+  });
+
+bridgeCommand
+  .command("provider-config-remove")
+  .description("Remove a provider record (JSON)")
+  .requiredOption("--name <name>", "Provider name")
+  .option("--scope <scope>", "machine (default) or shared", "machine")
+  .action(async (opts) => {
+    const machine = parseProviderScope(opts.scope);
+    await withProviderScope(machine, async (db) => {
+      const providers = await readScopedProviders(db, machine);
+      const { providers: next, removed } = removeProviderRecord(
+        providers,
+        opts.name,
+      );
+      if (!removed) {
+        jsonError(`No such provider: ${opts.name}`);
+      }
+      await writeScopedProviders(db, machine, next);
+      jsonOut({
+        ok: true,
+        scope: machine ? "machine" : "shared",
+        name: opts.name,
+        removed: true,
+        referencingRoles: rolesReferencing(
+          await readScopedRoles(db, machine),
+          opts.name,
+        ),
+      });
+    });
+  });
+
+bridgeCommand
+  .command("provider-config-bind")
+  .description("Bind providers to an LLM role (JSON)")
+  .requiredOption("--role <role>", `Role: ${VALID_ROLES.join(" | ")}`)
+  .requiredOption("--primary <name>", "Primary provider name")
+  .option("--fallback <name>", "Fallback provider name")
+  .option("--scope <scope>", "machine (default) or shared", "machine")
+  .action(async (opts) => {
+    if (!VALID_ROLES.includes(opts.role)) {
+      jsonError(`Invalid --role: ${opts.role}. Use ${VALID_ROLES.join(", ")}.`);
+    }
+    const machine = parseProviderScope(opts.scope);
+    await withProviderScope(machine, async (db) => {
+      const providers = await readScopedProviders(db, machine);
+      const roles = await readScopedRoles(db, machine);
+      const nextRoles = bindRoleProviders(
+        roles,
+        opts.role as LlmRole,
+        opts.primary,
+        opts.fallback,
+      );
+      await writeScopedRoles(db, machine, nextRoles);
+      const binding = nextRoles[opts.role as LlmRole];
+      const primary = providers[opts.primary];
+      jsonOut({
+        ok: true,
+        scope: machine ? "machine" : "shared",
+        role: opts.role,
+        binding,
+        warnings: [
+          ...(primary &&
+          primary.apiFlavor === "anthropic-messages" &&
+          (opts.role === "recall" || opts.role === "text")
+            ? ["unsupported-provider-for-role"]
+            : []),
+          ...(opts.primary && !(opts.primary in providers)
+            ? ["primary-provider-undefined"]
+            : []),
+          ...(opts.fallback && !(opts.fallback in providers)
+            ? ["fallback-provider-undefined"]
+            : []),
+        ],
+      });
+    });
+  });
+
+bridgeCommand
+  .command("provider-set-key")
+  .description("Store an API key for a provider reference (JSON)")
+  .requiredOption("--ref <ref>", "Credential reference name")
+  .requiredOption("--key <value>", "API key value (write-only)")
+  .action((opts) => {
+    const key = opts.key.trim();
+    if (!key) jsonError("No key provided.");
+    setProviderApiKey(opts.ref, key);
+    jsonOut({ ok: true, ref: opts.ref, masked: maskSecret(key) });
+  });
+
+bridgeCommand
+  .command("provider-clear-key")
+  .description("Remove a stored provider API key (JSON)")
+  .requiredOption("--ref <ref>", "Credential reference name")
+  .action((opts) => {
+    clearProviderApiKey(opts.ref);
+    jsonOut({ ok: true, ref: opts.ref });
+  });
+
+bridgeCommand
+  .command("list-models")
+  .description("List models exposed by an LLM endpoint (JSON)")
+  .requiredOption("--url <url>", "Endpoint base URL")
+  .option("--key-ref <ref>", "Resolve API key from credentials by reference")
+  .action(async (opts) => {
+    const apiKey = opts.keyRef
+      ? (getProviderApiKey(opts.keyRef) ?? undefined)
+      : undefined;
+    const models = await getAvailableModels(opts.url, apiKey);
+    jsonOut({ models });
+  });
+
+bridgeCommand
+  .command("cloud-model-hint")
+  .description("Suggest a cloud model for an endpoint URL (JSON)")
+  .requiredOption("--url <url>", "Endpoint base URL")
+  .action((opts) => {
+    jsonOut({ recommendation: getCloudModelRecommendation(opts.url) });
+  });
+
+bridgeCommand
+  .command("local-llm-hints")
+  .description("Detect installed local LLM servers and suggest defaults (JSON)")
+  .action(() => {
+    const profile = getSystemProfile();
+    const flmInstalled =
+      hasCommand("flm") || existsSync("C:\\Program Files\\flm\\flm.exe");
+    const ollamaInstalled = hasCommand("ollama");
+    const runners = [
+      { id: "flm", label: "FastFlowLM", installed: flmInstalled },
+      { id: "ollama", label: "Ollama", installed: ollamaInstalled },
+      {
+        id: "foundry-local",
+        label: "Foundry Local",
+        installed: false,
+      },
+    ];
+
+    let recommended = "ollama";
+    if (profile.recommendedRunner === "fastflowlm" && flmInstalled) {
+      recommended = "flm";
+    } else if (profile.recommendedRunner === "ollama" && ollamaInstalled) {
+      recommended = "ollama";
+    } else if (flmInstalled) {
+      recommended = "flm";
+    } else if (ollamaInstalled) {
+      recommended = "ollama";
+    } else if (profile.recommendedRunner === "fastflowlm") {
+      recommended = "flm";
+    }
+
+    const defaultUrl =
+      recommended === "ollama" ? "http://localhost:11434/v1" : DEFAULT_LLM_URL;
+
+    jsonOut({
+      runners,
+      recommended,
+      defaultUrl,
+      defaultModel: profile.recommendedModel || DEFAULT_LLM_MODEL,
+    });
+  });
+
+// Settings the Studio UI may write through the generic setter. Secret-bearing
+// keys (llm.api_key) and structured provider config (llm.providers/llm.roles)
+// must go through their dedicated commands, never this escape hatch.
+const UI_WRITABLE_SETTINGS = new Set([
+  "llm.enabled",
+  "llm.vision.enabled",
+  "system.locale",
+]);
+
+bridgeCommand
+  .command("setting-set")
+  .description("Set a single allowlisted ZAM setting value (JSON)")
+  .requiredOption("--key <key>", "Setting key")
+  .requiredOption("--value <value>", "Setting value")
+  .action(async (opts) => {
+    if (!UI_WRITABLE_SETTINGS.has(opts.key)) {
+      jsonError(
+        `Setting "${opts.key}" is not writable via setting-set. Allowed: ${[...UI_WRITABLE_SETTINGS].join(", ")}.`,
+      );
+    }
+    await withDb(async (db) => {
+      await setSetting(db, opts.key, opts.value);
+      jsonOut({ ok: true, key: opts.key, value: opts.value });
+    });
+  });
+
+// ── zam bridge check-vision ────────────────────────────────────────────────
+
+bridgeCommand
+  .command("check-vision")
+  .description(
+    "Check if UI observer vision analysis is enabled and ready (JSON)",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      jsonOut(await checkVisionReadiness(db));
     });
   });
 
@@ -856,6 +2473,10 @@ bridgeCommand
   .requiredOption("--user-answer <answer>", "User's typed answer")
   .option("--context <context>", "Optional token context details")
   .option("--source-link <link>", "Optional source link")
+  .option(
+    "--source-content <content>",
+    "Pre-resolved source reference content (skips re-fetch when set)",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const isEnabled = (await getSetting(db, "llm.enabled")) === "true";
@@ -868,8 +2489,8 @@ bridgeCommand
         return;
       }
 
-      let resolvedContextContent = null;
-      if (opts.sourceLink) {
+      let resolvedContextContent: string | null = opts.sourceContent ?? null;
+      if (resolvedContextContent == null && opts.sourceLink) {
         try {
           const resolved = await resolveReviewContext(opts.sourceLink);
           resolvedContextContent = resolved?.content ?? null;
@@ -879,7 +2500,7 @@ bridgeCommand
       }
 
       try {
-        const evaluation = await evaluateAnswerViaLLM(db, {
+        const result = await evaluateAnswerViaLLM(db, {
           slug: opts.slug,
           concept: opts.concept,
           domain: opts.domain,
@@ -889,7 +2510,11 @@ bridgeCommand
           userAnswer: opts.userAnswer,
           sourceLinkContent: resolvedContextContent,
         });
-        jsonOut({ success: true, evaluation });
+        jsonOut({
+          success: true,
+          evaluation: result.text,
+          evaluationModel: result.model,
+        });
       } catch (err) {
         jsonOut({
           success: false,
@@ -900,7 +2525,26 @@ bridgeCommand
     });
   });
 
-// ── zam bridge get-settings ───────────────────────────────────────────────
+// ── zam bridge desktop-bootstrap / get-settings ───────────────────────────
+
+bridgeCommand
+  .command("desktop-bootstrap")
+  .description("Initialize first-run desktop state (JSON)")
+  .option("--user <id>", "Preferred user ID when none is configured")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await ensureDefaultUser(db, opts.user);
+      const { enabled, url, model, locale } = await getLlmConfig(db);
+      const { workspaceDir, skillLinks } = await ensureDesktopWorkspace(db);
+      jsonOut({
+        userId,
+        locale,
+        llm: { enabled, url, model },
+        workspaceDir,
+        skillLinks,
+      });
+    });
+  });
 
 bridgeCommand
   .command("get-settings")
@@ -919,51 +2563,286 @@ bridgeCommand
     });
   });
 
-// ── zam bridge cloud-model-hint ─────────────────────────────────────────────
-
-/**
- * Known cloud LLM endpoints with their recommended model and API flavor.
- *
- * The flavor is critical: for recall/text roles ZAM currently only supports
- * `chat-completions` (OpenAI-compatible protocol).  Providers like DeepSeek
- * expose both an `/anthropic` endpoint (anthropic-messages) and a `/v1`
- * endpoint (chat-completions) — always recommend the chat-completions one
- * so the provider works for ALL roles, not just vision.
- */
-interface CloudModelRecommendation {
-  model: string;
-  flavor: "chat-completions" | "anthropic-messages";
-}
-
-function getCloudModelRecommendation(url: string): CloudModelRecommendation | null {
-  const lower = url.toLowerCase();
-  if (lower.includes("openrouter.ai")) {
-    return { model: "openrouter/free", flavor: "chat-completions" };
-  }
-  if (lower.includes("openai.com") || lower.includes("api.openai")) {
-    return { model: "gpt-5-mini", flavor: "chat-completions" };
-  }
-  if (lower.includes("googleapis.com") || lower.includes("google")) {
-    return { model: "gemini-3.5-flash", flavor: "chat-completions" };
-  }
-  if (lower.includes("deepseek.com")) {
-    // DeepSeek has OpenAI-compatible /v1 AND Anthropic-compatible /anthropic.
-    // /v1 (chat-completions) works for ALL roles; /anthropic is vision-only.
-    return { model: "deepseek-v4-flash", flavor: "chat-completions" };
-  }
-  if (lower.includes("mimo")) {
-    return { model: "mimo-v2.5", flavor: "chat-completions" };
-  }
-  if (lower.includes("anthropic.com")) {
-    return { model: "claude-haiku-4-5-20251001", flavor: "anthropic-messages" };
-  }
-  return null;
-}
+// ── zam bridge list-tokens (for graph pickers / entry points) ───────────────
 
 bridgeCommand
-  .command("cloud-model-hint")
-  .description("Suggest a cloud model and API flavor for an endpoint URL (JSON)")
-  .requiredOption("--url <url>", "Endpoint base URL")
-  .action((opts) => {
-    jsonOut({ recommendation: getCloudModelRecommendation(opts.url) });
+  .command("list-tokens")
+  .description(
+    "List tokens (optionally enriched with user card state for viz) (JSON)",
+  )
+  .option(
+    "--user <id>",
+    "User ID (default: whoami) — when provided, includes personal card info",
+  )
+  .option("--domain <domain>", "Filter by domain")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = opts.user
+        ? await resolveUser(opts, db, { json: true })
+        : undefined;
+      const tokens = await listTokens(
+        db,
+        opts.domain ? { domain: opts.domain } : undefined,
+      );
+
+      const cardMap = new Map<
+        string,
+        {
+          token_id: string;
+          state: string;
+          reps: number;
+          stability: number;
+          difficulty: number;
+          blocked: number;
+          due_at: string;
+          last_review_at: string | null;
+        }
+      >();
+      if (userId && tokens.length > 0) {
+        const ids = tokens.map((t) => t.id);
+        const placeholders = ids.map(() => "?").join(",");
+        const cards = (await db
+          .prepare(
+            `SELECT token_id, state, reps, stability, difficulty, blocked, due_at, last_review_at
+             FROM cards WHERE token_id IN (${placeholders}) AND user_id = ?`,
+          )
+          .all(...ids, userId)) as Array<{
+          token_id: string;
+          state: string;
+          reps: number;
+          stability: number;
+          difficulty: number;
+          blocked: number;
+          due_at: string;
+          last_review_at: string | null;
+        }>;
+        for (const c of cards) cardMap.set(c.token_id, c);
+      }
+
+      const out = tokens.map((t) => {
+        const c = cardMap.get(t.id);
+        return {
+          id: t.id,
+          slug: t.slug,
+          concept: t.concept,
+          domain: t.domain,
+          bloomLevel: t.bloom_level,
+          card: c
+            ? {
+                state: c.state,
+                reps: c.reps,
+                stability: c.stability,
+                difficulty: c.difficulty,
+                blocked: c.blocked === 1,
+                dueAt: c.due_at,
+                lastReviewAt: c.last_review_at ?? null,
+              }
+            : null,
+        };
+      });
+
+      jsonOut({ tokens: out });
+    });
+  });
+
+// ── zam bridge get-neighborhood (core for 3D focus + direct prereqs/dependents) ─
+
+bridgeCommand
+  .command("get-neighborhood")
+  .description(
+    "Get direct prerequisite neighborhood around a token (for 3D graph viz) (JSON)",
+  )
+  .requiredOption("--focus <slug>", "Token slug to center the neighborhood on")
+  .option(
+    "--user <id>",
+    "User ID (default: whoami) for personal card state in the result",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+
+      const token = await getTokenBySlug(db, opts.focus);
+      if (!token) {
+        jsonError(`Token not found: ${opts.focus}`);
+      }
+
+      const nb = await getTokenNeighborhood(db, token!.id, userId);
+
+      const mapToken = (nt: NeighborhoodToken) => ({
+        id: nt.id,
+        slug: nt.slug,
+        concept: nt.concept,
+        domain: nt.domain,
+        bloomLevel: nt.bloom_level,
+        card: nt.card
+          ? {
+              state: nt.card.state,
+              reps: nt.card.reps,
+              stability: nt.card.stability,
+              difficulty: nt.card.difficulty,
+              blocked: nt.card.blocked,
+              dueAt: nt.card.due_at,
+              lastReviewAt: nt.card.last_review_at,
+            }
+          : null,
+      });
+
+      jsonOut({
+        focus: opts.focus,
+        center: mapToken(nb.center),
+        prerequisites: nb.prerequisites.map(mapToken),
+        dependents: nb.dependents.map(mapToken),
+      });
+    });
+  });
+
+// ── zam bridge serve ──────────────────────────────────────────────────────
+
+bridgeCommand
+  .command("serve")
+  .description("Start the persistent JSON-RPC stdin/stdout server")
+  .option("--stdin", "Use stdin/stdout for communication")
+  .action(async (_opts) => {
+    isServeMode = true;
+
+    // Diagnostic log. A windowed GUI swallows the daemon's stderr, so failures
+    // that only happen when the bridge is spawned by the desktop app are
+    // otherwise invisible. Logging the resolved environment makes a wrong
+    // home directory (→ missing credentials → empty database) obvious.
+    const {
+      appendFileSync,
+      existsSync: fileExists,
+      mkdirSync: makeDir,
+    } = await import("node:fs");
+    const nodeOs = await import("node:os");
+    const nodePath = await import("node:path");
+    const logDir = nodePath.join(nodeOs.homedir(), ".zam");
+    const logPath = nodePath.join(logDir, "desktop-bridge.log");
+    const logDiag = (msg: string): void => {
+      try {
+        if (!fileExists(logDir)) makeDir(logDir, { recursive: true });
+        appendFileSync(logPath, `[${new Date().toISOString()}] ${msg}\n`);
+      } catch {
+        // best-effort only — never let logging break the bridge
+      }
+    };
+    logDiag(
+      `serve start | homedir=${nodeOs.homedir()} | USERPROFILE=${
+        process.env.USERPROFILE ?? ""
+      } | HOME=${process.env.HOME ?? ""} | cwd=${process.cwd()}`,
+    );
+
+    // Configure exitOverride so commander doesn't process.exit on parsing errors
+    bridgeCommand.exitOverride();
+    for (const cmd of bridgeCommand.commands) {
+      cmd.exitOverride();
+    }
+
+    // Prevent Commander from writing directly to stdout/stderr
+    let outputBuffer = "";
+    const outputOpts = {
+      writeOut: (str: string) => {
+        outputBuffer += str;
+      },
+      writeErr: (str: string) => {
+        outputBuffer += str;
+      },
+    };
+    bridgeCommand.configureOutput(outputOpts);
+    for (const cmd of bridgeCommand.commands) {
+      cmd.configureOutput(outputOpts);
+    }
+
+    const processRequest = async (line: string): Promise<string> => {
+      outputBuffer = "";
+      let requestId: string | number | null = null;
+      try {
+        const req = JSON.parse(line);
+        requestId = req.id ?? null;
+        const cmd = req.cmd;
+        const args = req.args ?? [];
+
+        if (!cmd) {
+          return JSON.stringify({
+            id: requestId,
+            error: "Missing 'cmd' field",
+          });
+        }
+
+        const originalLog = console.log;
+        const originalError = console.error;
+        console.log = (...logArgs) => {
+          outputBuffer += `${logArgs
+            .map((a) => (typeof a === "object" ? JSON.stringify(a) : String(a)))
+            .join(" ")}\n`;
+        };
+        console.error = (...logArgs) => {
+          outputBuffer += `${logArgs
+            .map((a) => (typeof a === "object" ? JSON.stringify(a) : String(a)))
+            .join(" ")}\n`;
+        };
+
+        try {
+          await bridgeCommand.parseAsync(["node", "bridge", cmd, ...args]);
+        } catch (err) {
+          if (err instanceof Error && err.message.startsWith('{"error":')) {
+            try {
+              const parsed = JSON.parse(err.message);
+              return JSON.stringify({ id: requestId, error: parsed.error });
+            } catch {
+              return JSON.stringify({ id: requestId, error: err.message });
+            }
+          }
+          if ((err as { code?: string }).code?.startsWith("commander.")) {
+            return JSON.stringify({
+              id: requestId,
+              error: outputBuffer.trim() || (err as Error).message,
+            });
+          }
+          return JSON.stringify({
+            id: requestId,
+            error: (err as Error).message || String(err),
+          });
+        } finally {
+          console.log = originalLog;
+          console.error = originalError;
+        }
+
+        // Parse stdout accumulated output
+        let result: unknown;
+        const trimmed = outputBuffer.trim();
+        try {
+          result = JSON.parse(trimmed);
+        } catch {
+          result = trimmed;
+        }
+
+        return JSON.stringify({ id: requestId, result });
+      } catch (err) {
+        return JSON.stringify({
+          id: requestId,
+          error: `Invalid JSON request: ${(err as Error).message}`,
+        });
+      }
+    };
+
+    const readline = await import("node:readline");
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+      terminal: false,
+    });
+
+    // Process requests strictly one at a time. processRequest() relies on a
+    // shared output buffer and temporarily swaps the global console methods, so
+    // overlapping executions would corrupt each other's responses. Chaining on
+    // a single promise serialises them regardless of how fast lines arrive.
+    let pending: Promise<void> = Promise.resolve();
+    rl.on("line", (line) => {
+      if (!line.trim()) return;
+      pending = pending.then(async () => {
+        const response = await processRequest(line);
+        process.stdout.write(`${response}\n`);
+      });
+    });
   });

@@ -28,12 +28,13 @@ cardCommand
   .command("due")
   .description("Show due tokens for a user")
   .option("--user <id>", "User ID (default: whoami)")
+  .option("--domain <domain>", "Filter by knowledge domain")
   .option("--json", "Output as JSON")
   .option("--summary", "Show only counts per domain (no slugs or concepts)")
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db);
-      const dueCards = await getDueCards(db, userId);
+      const dueCards = await getDueCards(db, userId, undefined, opts.domain);
 
       if (opts.json) {
         console.log(JSON.stringify(dueCards, null, 2));
@@ -161,6 +162,47 @@ cardCommand
         console.log(`  Stability:  ${result.stability.toFixed(2)}`);
         console.log(`  State:      ${result.state}`);
         console.log(`  Reps:       ${result.reps}`);
+      }
+    });
+  });
+
+// ── zam card block ────────────────────────────────────────────────────────
+
+cardCommand
+  .command("block")
+  .description("Block a card and surface its prerequisites")
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--token <slug>", "Token slug")
+  .option("--json", "Output as JSON")
+  .option("--quiet", "Suppress output (exit code only)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db);
+      const token = await getTokenBySlug(db, opts.token);
+      if (!token) {
+        console.error(`Token not found: ${opts.token}`);
+        process.exit(1);
+      }
+
+      const prereqs = await getPrerequisites(db, token.id);
+      if (prereqs.length === 0) {
+        console.error(
+          `Cannot block ${opts.token}: token has no prerequisites.`,
+        );
+        process.exit(1);
+      }
+
+      const result = await cascadeBlock(db, userId, token.slug);
+
+      if (opts.quiet) return;
+      if (opts.json) {
+        console.log(JSON.stringify(result, null, 2));
+        return;
+      }
+
+      console.log(`Blocked ${result.blockedSlug}. Prerequisites surfaced:`);
+      for (const prerequisite of result.prerequisites) {
+        console.log(`  - ${prerequisite.slug}: ${prerequisite.concept}`);
       }
     });
   });

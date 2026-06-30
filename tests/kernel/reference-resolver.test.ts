@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
+  clearReviewContextCache,
   matchesFilePath,
   normalizePath,
   resolveReference,
@@ -13,10 +14,12 @@ describe("ZAM Reference Resolver & Path Matching", () => {
   let tempDir: string;
 
   beforeEach(() => {
+    clearReviewContextCache();
     tempDir = mkdtempSync(join(tmpdir(), "zam-ref-test-"));
   });
 
   afterEach(() => {
+    clearReviewContextCache();
     try {
       rmSync(tempDir, { recursive: true, force: true });
     } catch {
@@ -180,6 +183,18 @@ describe("ZAM Reference Resolver & Path Matching", () => {
         'QUERY_DIRECTIVE: Run web search for "spaced repetition"',
       );
       expect(ctx?.truncated).toBe(false);
+    });
+
+    it("reuses cached context for the same source link within TTL", async () => {
+      const testFilePath = join(tempDir, "cache.txt");
+      writeFileSync(testFilePath, "version-one", "utf-8");
+
+      const first = await resolveReviewContext(testFilePath);
+      writeFileSync(testFilePath, "version-two", "utf-8");
+      const second = await resolveReviewContext(testFilePath);
+
+      expect(first?.content).toBe("version-one");
+      expect(second?.content).toBe("version-one");
     });
   });
 });

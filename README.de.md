@@ -63,6 +63,25 @@ Einstieg: `zam whoami --set <deine-id>`
 
 ---
 
+## 🔄 ZAM aktuell halten
+
+Prüfe, ob eine neuere Version vorliegt, und aktualisiere — ZAM wählt den passenden Mechanismus je nachdem, wie diese Kopie installiert wurde:
+
+```bash
+zam update          # neueste Version anwenden (fragt nach; -y überspringt)
+zam update check    # nur prüfen, ob ein Update verfügbar ist
+```
+
+Was `zam update` je nach Installationskanal tut:
+
+- **Developer** (Quell-Checkout, Standard für Mitwirkende) — holt den neuesten Quellcode, installiert Abhängigkeiten neu, baut die CLI und frischt die Skill-Dateien auf (`zam setup --force`). Danach den Agent-Client (z. B. Claude Code) neu starten, damit der aktualisierte `/zam`-Skill geladen wird.
+- **winget / Homebrew** — delegiert an `winget upgrade` / `brew upgrade`, damit eine paketverwaltete Installation nie selbst ersetzt wird.
+- **Direkt-Download / Desktop** — installiert ein signiertes In-place-Update über ZAM Desktop.
+
+`zam update` verweigert einen Developer-Checkout mit uncommitteten Änderungen; committe oder stashe sie zuerst, oder nutze `--force`. Design-Details: [ADR „Approachable Setup and Self-Update“](docs/adr/2026-06-13b-approachable-setup-and-self-update.md).
+
+---
+
 ## 🏛 Vision: Eine paradiesische Zukunft
 
 ZAM ist das Werkzeug für den Übergang in eine Welt, in der Fürsorge und gemeinsames Wachstum die Währung sind.
@@ -77,7 +96,7 @@ ZAM ist das Werkzeug für den Übergang in eine Welt, in der Fürsorge und gemei
 
 ZAM enthält nun eine plattformübergreifende Desktop-Anwendung im Verzeichnis [`desktop/`](desktop/). Entwickelt mit **Tauri v2**, **Vite**, **TypeScript** und **Vanilla CSS**, bietet sie ein hochmodernes Dark-Mode-Lernstudio, das dieselbe SQLite-Datenbank wie das CLI nutzt.
 
-### Starten unter Windows oder macOS:
+### Starten unter Windows, macOS oder Linux:
 
 1. **CLI Bridge kompilieren**:
    Stelle sicher, dass der neueste CLI-Code im Hauptverzeichnis kompiliert ist:
@@ -98,7 +117,7 @@ Dies kompiliert das Rust-Backend im Hintergrund, startet den Vite-Entwicklungsse
 
 ### 📦 Automatische GitHub Releases & Native Installer
 
-Wir haben eine **GitHub Actions CI/CD-Pipeline** integriert, die automatisch native Installationsdateien (Windows `.msi`/`.exe`, macOS `.dmg` und Linux `.deb`/`.AppImage`) kompiliert und verpackt, sobald ein neuer Git-Tag gepusht wird.
+Wir haben eine **GitHub Actions CI/CD-Pipeline** integriert, die derzeit native Installationsdateien für Windows (`.msi`/`.exe`) und Linux (`.deb`/`.rpm`) kompiliert und verpackt, sobald ein neuer Git-Tag gepusht wird. AppImage-Pakete sind vorläufig ausgesetzt, weil `linuxdeploy` das mitgelieferte native `libsql`-Modul noch nicht zuverlässig verarbeiten kann. macOS kann weiterhin aus dem Quellcode gebaut werden; signierte und notarisierte macOS-Release-Artefakte folgen, sobald der Apple-Signing-Account verfügbar ist.
 
 Um eine neue Version zu veröffentlichen (z.B. `v0.1.0`):
 
@@ -110,7 +129,7 @@ git tag v0.1.0
 git push origin v0.1.0
 ```
 
-Dies startet automatisch die Build-Umgebungen auf GitHub-Runnern und erstellt einen Entwurf (Draft) für ein GitHub Release, das alle kompilierten Installationsdateien enthält!
+Dies startet automatisch die Windows- und Linux-Builds auf GitHub-Runnern und erstellt einen Entwurf (Draft) mit den kompilierten Installationsdateien.
 
 ---
 

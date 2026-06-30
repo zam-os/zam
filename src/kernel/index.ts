@@ -22,26 +22,40 @@ export type {
 // Credentials (stored in ~/.zam/credentials.json, survives db deletion)
 export {
   clearADOCredentials,
+  clearProviderApiKey,
   clearTursoCredentials,
   getADOCredentials,
+  getProviderApiKey,
   getTursoCredentials,
+  listProviderApiKeyRefs,
   loadCredentials,
   saveCredentials,
   setADOCredentials,
+  setProviderApiKey,
   setTursoCredentials,
 } from "./credentials.js";
 // Database
 export type {
   ConnectionOptions,
   DatabaseProvider,
+  DatabaseTargetInfo,
 } from "./db/connection.js";
 export {
+  getDatabaseTargetInfo,
   getDefaultDbPath,
   openDatabase,
   openDatabaseWithSync,
 } from "./db/connection.js";
 export type { RemoteDatabaseOptions } from "./db/remote/provider.js";
 export { openRemoteDatabase } from "./db/remote/provider.js";
+export type { ImportResult, SnapshotManifest } from "./db/snapshot.js";
+export {
+  exportSnapshot,
+  importSnapshot,
+  parseSnapshot,
+  SNAPSHOT_VERSION,
+  verifySnapshot,
+} from "./db/snapshot.js";
 export type {
   Database,
   DatabaseValue,
@@ -92,6 +106,8 @@ export {
   updateCard,
 } from "./models/card.js";
 export type {
+  Neighborhood,
+  NeighborhoodToken,
   Prerequisite,
   PrerequisiteWithToken,
 } from "./models/prerequisite.js";
@@ -99,6 +115,7 @@ export {
   addPrerequisite,
   getDependents,
   getPrerequisites,
+  getTokenNeighborhood,
   wouldCreateCycle,
 } from "./models/prerequisite.js";
 export type { CreateReviewInput, ReviewLog } from "./models/review.js";
@@ -172,6 +189,52 @@ export {
   readMonitorLog,
   writeMonitorEvent,
 } from "./observation/monitor-io.js";
+export type { SidecarPrivacyPolicy } from "./observation/observer-sidecar-policy.js";
+export {
+  SIDECAR_POLICY_FILE,
+  syncObserverSidecarPolicy,
+  toSidecarPrivacyPolicy,
+} from "./observation/observer-sidecar-policy.js";
+export type {
+  CaptureDecision,
+  CaptureDenialReason,
+  CaptureRequest,
+  ObserverConsent,
+  ObserverPolicy,
+  ObserverRetention,
+  ObserverScope,
+  ObserverSettingKey,
+  ResolvedCaptureTarget,
+} from "./observation/policy.js";
+export {
+  BUILT_IN_SENSITIVE_MATCHERS,
+  DEFAULT_OBSERVER_POLICY,
+  decidePostCapture,
+  decidePreCapture,
+  isObserverPolicyConfigured,
+  matchBuiltInSensitive,
+  matchDenylist,
+  OBSERVER_POLICY_UNSET_HINT,
+  OBSERVER_POLICY_VERSION,
+  parseObserverList,
+  parseObserverPolicy,
+  resolveObserverPolicy,
+} from "./observation/policy.js";
+export type {
+  ApplySessionSynthesisInput,
+  ApplySessionSynthesisResult,
+  PrepareSessionSynthesisInput,
+  SessionSynthesisCandidate,
+  SessionSynthesisEvidence,
+  SessionSynthesisPreview,
+  SessionSynthesisRecord,
+  SynthesisConfidence,
+} from "./observation/session-synthesis.js";
+export {
+  applySessionSynthesis,
+  getSessionSynthesisRecords,
+  prepareSessionSynthesis,
+} from "./observation/session-synthesis.js";
 export {
   generateBashHooks,
   generateBashUnhooks,
@@ -186,6 +249,33 @@ export type {
   SkillProposal,
 } from "./observation/skill-discovery.js";
 export { discoverSkills } from "./observation/skill-discovery.js";
+export type {
+  UiActionType,
+  UiApplicationContext,
+  UiCandidateToken,
+  UiEvidenceRef,
+  UiEvidenceType,
+  UiObservationKind,
+  UiObservationReport,
+  UiObservedAction,
+} from "./observation/ui-observer.js";
+export {
+  isUiObservationReport,
+  parseUiObservationLog,
+  UI_OBSERVATION_PROTOCOL_VERSION,
+} from "./observation/ui-observer.js";
+export {
+  appendUiObservationReport,
+  ensureUiObserverDir,
+  getUiObservationPath,
+  getUiObserverDir,
+  readUiObservationLog,
+  uiObservationLogExists,
+} from "./observation/ui-observer-io.js";
+export {
+  buildUiSynthesisCandidates,
+  uiObservationTimeSpan,
+} from "./observation/ui-observer-synthesis.js";
 export type {
   ExecuteReviewActionInput,
   ReviewActionResult,
@@ -205,9 +295,11 @@ export type {
 // AI-agnostic (zero LLM dependencies). The local-LLM client lives in the CLI
 // layer at src/cli/llm/client.ts.
 export {
+  clearReviewContextCache,
   DEFAULT_REVIEW_CONTEXT_MAX_CHARS,
   matchesFilePath,
   normalizePath,
+  REVIEW_CONTEXT_CACHE_TTL_MS,
   resolveReference,
   resolveReviewContext,
 } from "./recall/reference-resolver.js";
@@ -235,6 +327,32 @@ export {
 export type { TranslationKey } from "./system/i18n.js";
 export { t } from "./system/i18n.js";
 export type {
+  InstallConfig,
+  InstallMode,
+  MachineAiConfig,
+  MachineProviderRecord,
+  MachineRoleBinding,
+  WorkspaceConfig,
+  WorkspaceKind,
+  WorkspaceSourceControl,
+} from "./system/install-config.js";
+export {
+  detectSyncProvider,
+  getConfiguredWorkspaces,
+  getInstallChannel,
+  getInstallMode,
+  getMachineAiConfig,
+  loadInstallConfig,
+  removeConfiguredWorkspace,
+  saveConfiguredWorkspaces,
+  saveInstallConfig,
+  saveMachineAiConfig,
+  setInstallChannel,
+  setInstallMode,
+  upsertConfiguredWorkspace,
+} from "./system/install-config.js";
+export type {
+  InstallPlan,
   InstallResult,
   LocalLLMRunner,
 } from "./system/installer.js";
@@ -242,6 +360,8 @@ export {
   hasCommand,
   installFastFlowLM,
   installOllama,
+  installOpenCode,
+  planOpenCodeInstall,
   prepareLocalModel,
 } from "./system/installer.js";
 export type { SupportedLocale } from "./system/locale.js";
@@ -256,3 +376,17 @@ export {
   resolveAllGoalPaths,
   resolveRepoPath,
 } from "./system/repos.js";
+export type {
+  InstallChannel,
+  UpdateActionKind,
+  UpdateDecision,
+  UpdateStep,
+  UpdateStepKind,
+} from "./system/update-check.js";
+export {
+  compareVersions,
+  decideUpdate,
+  HOMEBREW_CASK,
+  planUpdate,
+  WINGET_PACKAGE_ID,
+} from "./system/update-check.js";

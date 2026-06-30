@@ -1,0 +1,49 @@
+[package]
+name = "zam-observer"
+version = "0.1.0"
+description = "Native UI observation sidecar for ZAM"
+edition = "2021"
+license = "Apache-2.0"
+publish = false
+
+[lib]
+name = "zam_observer"
+path = "src/lib.rs"
+
+[[bin]]
+name = "zam-observer"
+path = "src/main.rs"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[target.'cfg(target_os = "windows")'.dependencies]
+png = "0.17.16"
+windows-core = "0.61"
+windows = { version = "0.61.3", features = [
+  "Foundation",
+  "Graphics_Capture",
+  "Graphics_DirectX_Direct3D11",
+  "Graphics_DirectX",
+  "Win32_Graphics_Direct3D",
+  "Win32_Graphics_Direct3D11",
+  "Win32_Graphics_Dxgi",
+  "Win32_Graphics_Dxgi_Common",
+  "Win32_Graphics_Gdi",
+  "Win32_Foundation",
+  "Win32_System_Com",
+  "Win32_System_Threading",
+  "Win32_System_WinRT_Direct3D11",
+  "Win32_System_WinRT_Graphics_Capture",
+  "Win32_System_WinRT",
+  "Win32_UI_Accessibility",
+  "Win32_UI_Input",
+  "Win32_UI_Shell",
+  "Win32_UI_WindowsAndMessaging",
+  "Media_Ocr",
+  "Graphics_Imaging",
+  "Security_Cryptography",
+  "Storage_Streams",
+] }
+windows-future = "0.2.1"

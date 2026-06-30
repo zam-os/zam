@@ -7,6 +7,7 @@ ZAM's purpose is to ensure that as AI becomes more capable, humans become more c
 1. **[Phase 1: Individual Symbiosis](phase-1/README.md)** — Creating a deep, learning-focused connection between a person and their personal agent.
 2. **[Phase 2: Connected Community](phase-2/README.md)** — Scaling symbiosis to the community layer through agent-to-agent matching.
 3. **[Human Elevation](human-elevation/README.md)** — The long-term philosophical goal: automation that prevents cognitive decline and fosters growth.
+4. **[Free Learning](free-learning/README.md)** — Capability at no personal cost, turned into a livelihood through credentials or demonstrated, rated work. Bridges Phase 1 growth and Phase 2 marketplace.
 
 ## Architecture Guidelines for Goals
 

@@ -11,12 +11,38 @@ import {
   getRepoPaths,
   getSetting,
   setSetting,
+  syncObserverSidecarPolicy,
 } from "../../kernel/index.js";
 import { withDb } from "./shared/db.js";
 
 export const settingsCommand = new Command("settings").description(
   "Manage user settings",
 );
+
+const BOOLEAN_SETTING_KEYS = new Set(["llm.enabled", "llm.vision.enabled"]);
+
+export function normalizeSettingValue(key: string, value: string): string {
+  if (!BOOLEAN_SETTING_KEYS.has(key)) return value;
+
+  const lower = value.toLowerCase();
+  if (
+    lower === "on" ||
+    lower === "enable" ||
+    lower === "enabled" ||
+    lower === "true"
+  ) {
+    return "true";
+  }
+  if (
+    lower === "off" ||
+    lower === "disable" ||
+    lower === "disabled" ||
+    lower === "false"
+  ) {
+    return "false";
+  }
+  return value;
+}
 
 // ── zam settings show ─────────────────────────────────────────────────────
 
@@ -79,26 +105,12 @@ settingsCommand
   .option("--quiet", "Suppress output")
   .action(async (key, value, opts) => {
     await withDb(async (db) => {
-      let parsedVal = value;
-      if (key === "llm.enabled") {
-        const lower = value.toLowerCase();
-        if (
-          lower === "on" ||
-          lower === "enable" ||
-          lower === "enabled" ||
-          lower === "true"
-        ) {
-          parsedVal = "true";
-        } else if (
-          lower === "off" ||
-          lower === "disable" ||
-          lower === "disabled" ||
-          lower === "false"
-        ) {
-          parsedVal = "false";
-        }
-      }
+      const parsedVal = normalizeSettingValue(key, value);
       await setSetting(db, key, parsedVal);
+      if (key.startsWith("observer.")) {
+        // Keep the native sidecar's policy file in sync with observer.* settings.
+        await syncObserverSidecarPolicy(db);
+      }
       if (!opts.quiet) {
         console.log(`Set ${key} = ${parsedVal}`);
       }
@@ -114,6 +126,10 @@ settingsCommand
   .action(async (key, opts) => {
     await withDb(async (db) => {
       const deleted = await deleteSetting(db, key);
+      if (key.startsWith("observer.")) {
+        // Regenerate the sidecar policy file after an observer.* change.
+        await syncObserverSidecarPolicy(db);
+      }
       if (!opts.quiet) {
         if (deleted) {
           console.log(`Deleted: ${key}`);

@@ -1,19 +1,35 @@
 /**
- * `zam setup` — Distribute skill files from the zam package into the current
+ * `zam setup` — Link skill directories from the ZAM package into the current
  * personal instance's agent skill directories, and optionally initialize the
  * ZAM database and generate agent-specific instruction files.
  *
- * Run this once after cloning a ZAM personal instance, and again after
- * upgrading zam (with --force) to refresh the skill files.
+ * Run this once after cloning a ZAM personal instance. Linked workspaces pick
+ * up future ZAM updates automatically.
  */
 
-import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { homedir } from "node:os";
-import { basename, dirname, join } from "node:path";
+import {
+  existsSync,
+  lstatSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  realpathSync,
+  rmSync,
+  symlinkSync,
+  writeFileSync,
+} from "node:fs";
+import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Command } from "commander";
-import type { Database } from "../../kernel/index.js";
-import { getDefaultDbPath, openDatabaseWithSync, setSetting } from "../../kernel/index.js";
+import {
+  type Database,
+  type DatabaseTargetInfo,
+  getDatabaseTargetInfo,
+  getMachineAiConfig,
+  getSetting,
+  openDatabaseWithSync,
+  setSetting,
+} from "../../kernel/index.js";
 
 // The bundled CLI resolves from dist/cli/index.js; source tests resolve from
 // src/cli/commands/setup.ts. Select the first candidate containing package.json.
@@ -24,47 +40,225 @@ const packageRoot =
   ].find((candidate) => existsSync(join(candidate, "package.json"))) ??
   fileURLToPath(new URL("../..", import.meta.url));
 
-const SKILL_PAIRS: Array<{ from: string; to: string }> = [
+export type SetupAgent = "claude" | "copilot" | "codex" | "agent";
+
+const ALL_SETUP_AGENTS: SetupAgent[] = ["claude", "copilot", "codex", "agent"];
+
+const SKILL_PAIRS: Array<{
+  from: string;
+  to: string;
+  agents: SetupAgent[];
+}> = [
   {
     from: join(packageRoot, ".claude", "skills", "zam", "SKILL.md"),
     to: join(".claude", "skills", "zam", "SKILL.md"),
+    agents: ["claude", "copilot"],
   },
   {
     from: join(packageRoot, ".agent", "skills", "zam", "SKILL.md"),
     to: join(".agent", "skills", "zam", "SKILL.md"),
+    agents: ["agent"],
   },
   {
     from: join(packageRoot, ".agents", "skills", "zam", "SKILL.md"),
     to: join(".agents", "skills", "zam", "SKILL.md"),
+    agents: ["codex"],
   },
 ];
 
-export function copySkills(force: boolean, cwd: string = process.cwd()): void {
-  let anyAction = false;
+export function parseSetupAgents(value?: string): Set<SetupAgent> {
+  if (!value || value.trim().toLowerCase() === "all") {
+    return new Set(ALL_SETUP_AGENTS);
+  }
+  const aliases: Record<string, SetupAgent[]> = {
+    claude: ["claude"],
+    copilot: ["copilot"],
+    codex: ["codex"],
+    agent: ["agent"],
+    opencode: ["agent"],
+  };
+  const selected = new Set<SetupAgent>();
+  for (const raw of value.split(",")) {
+    const key = raw.trim().toLowerCase();
+    const mapped = aliases[key];
+    if (!mapped) {
+      throw new Error(
+        `Unknown agent "${raw}". Use: all, claude, copilot, codex, agent.`,
+      );
+    }
+    for (const item of mapped) selected.add(item);
+  }
+  return selected;
+}
 
-  for (const { from, to } of SKILL_PAIRS) {
-    const dest = join(cwd, to);
+export type SkillWireAction = "linked" | "relinked" | "skipped";
 
-    if (!existsSync(from)) {
-      console.warn(`  warn  source not found, skipping: ${from}`);
+export interface SkillWireResult {
+  source: string;
+  destination: string;
+  action: SkillWireAction;
+  reason?: string;
+}
+
+export interface SkillWireOptions {
+  force?: boolean;
+  dryRun?: boolean;
+  quiet?: boolean;
+}
+
+function pathExists(path: string): boolean {
+  try {
+    lstatSync(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function comparableRealPath(path: string): string {
+  const real = realpathSync(path);
+  return process.platform === "win32" ? real.toLowerCase() : real;
+}
+
+function pathsResolveToSameDirectory(
+  sourceDir: string,
+  destinationDir: string,
+): boolean {
+  try {
+    return comparableRealPath(destinationDir) === comparableRealPath(sourceDir);
+  } catch {
+    return false;
+  }
+}
+
+function linkPointsTo(sourceDir: string, destinationDir: string): boolean {
+  try {
+    return (
+      lstatSync(destinationDir).isSymbolicLink() &&
+      pathsResolveToSameDirectory(sourceDir, destinationDir)
+    );
+  } catch {
+    return false;
+  }
+}
+
+function isReplaceableCopiedSkill(destinationDir: string): boolean {
+  try {
+    if (!lstatSync(destinationDir).isDirectory()) return false;
+    const entries = readdirSync(destinationDir);
+    if (entries.length !== 1 || entries[0] !== "SKILL.md") return false;
+    return /^name:\s*zam\s*$/m.test(
+      readFileSync(join(destinationDir, "SKILL.md"), "utf8"),
+    );
+  } catch {
+    return false;
+  }
+}
+
+export function wireSkills(
+  cwd: string = process.cwd(),
+  agents: Set<SetupAgent> = parseSetupAgents(),
+  opts: SkillWireOptions = {},
+): SkillWireResult[] {
+  const results: SkillWireResult[] = [];
+  const log = (message: string) => {
+    if (!opts.quiet) console.log(message);
+  };
+
+  for (const { from, to, agents: pairAgents } of SKILL_PAIRS) {
+    if (!pairAgents.some((agent) => agents.has(agent))) continue;
+    const sourceDir = dirname(from);
+    const destinationDir = dirname(join(cwd, to));
+
+    if (!existsSync(sourceDir)) {
+      if (!opts.quiet) {
+        console.warn(`  warn  source not found, skipping: ${sourceDir}`);
+      }
+      results.push({
+        source: sourceDir,
+        destination: destinationDir,
+        action: "skipped",
+        reason: "source-not-found",
+      });
       continue;
     }
 
-    if (existsSync(dest) && !force) {
-      console.log(`  skip  ${to} (already present — use --force to update)`);
+    if (
+      pathsResolveToSameDirectory(sourceDir, destinationDir) &&
+      !lstatSync(destinationDir).isSymbolicLink()
+    ) {
+      log(`  skip  ${dirname(to)} (package source)`);
+      results.push({
+        source: sourceDir,
+        destination: destinationDir,
+        action: "skipped",
+        reason: "source-directory",
+      });
       continue;
     }
 
-    mkdirSync(dirname(dest), { recursive: true });
-    copyFileSync(from, dest);
-    console.log(`  copy  ${to}`);
-    anyAction = true;
+    if (linkPointsTo(sourceDir, destinationDir)) {
+      log(`  skip  ${dirname(to)} (already linked)`);
+      results.push({
+        source: sourceDir,
+        destination: destinationDir,
+        action: "skipped",
+        reason: "already-linked",
+      });
+      continue;
+    }
+
+    const destinationExists = pathExists(destinationDir);
+    const replaceExisting =
+      destinationExists &&
+      (Boolean(opts.force) || isReplaceableCopiedSkill(destinationDir));
+
+    if (destinationExists && !replaceExisting) {
+      if (!opts.quiet) {
+        console.warn(
+          `  warn  ${dirname(to)} already exists and is not managed by ZAM; use --force to replace it`,
+        );
+      }
+      results.push({
+        source: sourceDir,
+        destination: destinationDir,
+        action: "skipped",
+        reason: "unmanaged-destination",
+      });
+      continue;
+    }
+
+    const action: SkillWireAction = destinationExists ? "relinked" : "linked";
+    if (opts.dryRun) {
+      log(`  would ${action === "linked" ? "link" : "relink"}  ${dirname(to)}`);
+    } else {
+      if (destinationExists) {
+        rmSync(destinationDir, { recursive: true, force: true });
+      }
+      mkdirSync(dirname(destinationDir), { recursive: true });
+      symlinkSync(
+        sourceDir,
+        destinationDir,
+        process.platform === "win32" ? "junction" : "dir",
+      );
+      log(`  ${action === "linked" ? "link" : "relink"}  ${dirname(to)}`);
+    }
+    results.push({ source: sourceDir, destination: destinationDir, action });
   }
 
-  if (!anyAction && !force) {
-    console.log(
-      "\nSkill files are already up to date. Run with --force to overwrite.",
-    );
+  return results;
+}
+
+export function formatDatabaseInitTarget(target: DatabaseTargetInfo): string {
+  switch (target.kind) {
+    case "local":
+      return `ZAM database at ${target.location} (local SQLite)`;
+    case "turso-remote":
+      return `ZAM database via Turso remote at ${target.location}`;
+    case "turso-native":
+      return `ZAM database via Turso native driver at ${target.location}`;
+    case "turso-replica":
+      return `ZAM database replica at ${target.location} syncing from ${target.syncUrl}`;
   }
 }
 
@@ -72,13 +266,13 @@ async function initDatabase(skipInit: boolean): Promise<void> {
   if (skipInit) return;
 
   try {
-    const dbPath = getDefaultDbPath();
+    const target = getDatabaseTargetInfo();
     const db = await openDatabaseWithSync({ initialize: true });
-    await migrateProviderConfig(db);
+    await activateMachineProviderConfig(db);
     await db.close();
-    console.log(`  init  ZAM database at ${dbPath}`);
+    console.log(`  init  ${formatDatabaseInitTarget(target)}`);
   } catch (err) {
-    // Database may already exist — not an error during setup.
+    // Database may already exist â€” not an error during setup.
     const msg = (err as Error).message;
     if (!msg.includes("already")) {
       console.warn(`  warn  database init: ${msg}`);
@@ -88,106 +282,102 @@ async function initDatabase(skipInit: boolean): Promise<void> {
   }
 }
 
-/**
- * Migrate legacy AI provider config from ~/.zam/config.json into the ZAM
- * settings store (llm.providers, llm.roles).  Pre-0.5.x config kept
- * provider definitions and role bindings in a machine-local JSON file
- * under `ai.providers` / `ai.roles`.  After migration the settings store
- * is the single source of truth and the old config.json section is
- * stripped so it never collides again.
- *
- * Keys stored under `llmProviders` in credentials.json are left in place
- * — they already use the reference format that the settings store expects.
- */
-async function migrateProviderConfig(db: Database): Promise<void> {
-  // Only run once: if llm.providers already exists, migration already happened.
-  const { getSetting } = await import("../../kernel/models/settings.js");
-  if (await getSetting(db, "llm.providers")) return;
+export async function activateMachineProviderConfig(
+  db: Database,
+): Promise<void> {
+  const machineAi = getMachineAiConfig();
+  const providerCount = Object.keys(machineAi.providers ?? {}).length;
+  const roleCount = Object.keys(machineAi.roles ?? {}).length;
+  if (providerCount === 0 && roleCount === 0) return;
+  if ((await getSetting(db, "llm.enabled")) !== undefined) return;
 
-  const configPath = join(homedir(), ".zam", "config.json");
-  if (!existsSync(configPath)) return;
+  await setSetting(db, "llm.enabled", "true");
+  console.log(
+    `  activate  ${providerCount} machine-local provider(s) from ~/.zam/config.json`,
+  );
+}
 
-  let config: Record<string, unknown>;
-  try {
-    config = JSON.parse(readFileSync(configPath, "utf-8"));
-  } catch {
-    return; // unreadable — skip silently
-  }
+const ZAM_BLOCK_START = "<!-- ZAM:START -->";
+const ZAM_BLOCK_END = "<!-- ZAM:END -->";
 
-  const aiSection = config.ai as Record<string, unknown> | undefined;
-  if (!aiSection) return;
-
-  const providers = aiSection.providers as Record<string, unknown> | undefined;
-  const roles = aiSection.roles as Record<string, unknown> | undefined;
-
-  if (!providers && !roles) return;
-
-  let migrated = 0;
-
-  if (providers && Object.keys(providers).length > 0) {
-    // Normalise legacy field names to the settings-store schema.
-    const normalised: Record<string, Record<string, unknown>> = {};
-    for (const [name, rec] of Object.entries(providers)) {
-      const r = rec as Record<string, unknown>;
-      normalised[name] = {
-        url: r.url ?? "",
-        model: r.model ?? "",
-        apiFlavor: r.apiFlavor ?? r.flavor ?? "chat-completions",
-        ...(r.apiKeyRef ? { apiKeyRef: r.apiKeyRef } : {}),
-        ...(r.label ? { label: r.label } : {}),
-        ...(r.local !== undefined ? { local: Boolean(r.local) } : {}),
-        ...(r.runner ? { runner: r.runner } : {}),
-      };
+function upsertMarkedBlock(
+  dest: string,
+  blockBody: string,
+  dryRun: boolean,
+): "write" | "update" | "skip" {
+  const block = `${ZAM_BLOCK_START}\n${blockBody.trim()}\n${ZAM_BLOCK_END}`;
+  if (!existsSync(dest)) {
+    if (!dryRun) {
+      mkdirSync(dirname(dest), { recursive: true });
+      writeFileSync(dest, `${block}\n`, "utf8");
     }
-    await setSetting(db, "llm.providers", JSON.stringify(normalised));
-    migrated += Object.keys(normalised).length;
+    return "write";
   }
 
-  if (roles && Object.keys(roles).length > 0) {
-    await setSetting(db, "llm.roles", JSON.stringify(roles));
-    migrated += Object.keys(roles).length;
+  const existing = readFileSync(dest, "utf8");
+  if (existing.includes(block)) return "skip";
+
+  const start = existing.indexOf(ZAM_BLOCK_START);
+  const end = existing.indexOf(ZAM_BLOCK_END);
+  const next =
+    start >= 0 && end > start
+      ? `${existing.slice(0, start)}${block}${existing.slice(end + ZAM_BLOCK_END.length)}`
+      : `${existing.trimEnd()}\n\n${block}\n`;
+
+  if (!dryRun) writeFileSync(dest, next, "utf8");
+  return start >= 0 && end > start ? "update" : "write";
+}
+
+function logInstructionAction(
+  action: "write" | "update" | "skip",
+  label: string,
+  dryRun: boolean,
+): void {
+  if (action === "skip") {
+    console.log(`  skip  ${label} (ZAM block already present)`);
+  } else {
+    console.log(`  ${dryRun ? "would " : ""}${action} ${label}`);
   }
+}
 
-  if (migrated > 0) {
-    // Enable LLM globally so the migrated providers actually work.
-    // (Pre-0.5.x had no per-role LLM toggle; if you had providers,
-    // you wanted the LLM on.)
-    await setSetting(db, "llm.enabled", "true");
-
-    // Strip the legacy ai section from config.json so it never shadows
-    // the settings store again.
-    delete config.ai;
-    try {
-      writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`, "utf-8");
-    } catch {
-      // best-effort — the settings migration already succeeded
-    }
-
-    console.log(
-      `  migrate  ${migrated} provider/role config(s) from ~/.zam/config.json`,
-    );
-  }
+export interface InstructionWriteOptions {
+  dryRun?: boolean;
+  updateExisting?: boolean;
 }
 
 export function writeClaudeMd(
   skipClaudeMd: boolean,
   cwd: string = process.cwd(),
+  opts: InstructionWriteOptions = {},
 ): void {
   if (skipClaudeMd) return;
 
   const dest = join(cwd, "CLAUDE.md");
   if (existsSync(dest)) {
-    console.log(`  skip  CLAUDE.md (already present)`);
+    if (!opts.updateExisting) {
+      console.log(`  skip  CLAUDE.md (already present)`);
+      return;
+    }
+    const action = upsertMarkedBlock(
+      dest,
+      `## ZAM learning sessions
+
+ZAM is available in this repository. Use the \`zam\` skill in Claude Code to turn real work into an observed learning session with active recall and FSRS scheduling.
+
+- Skill files live under \`.claude/skills/zam/\`.
+- Fast-changing review data lives in \`~/.zam/\`, not in this repository.
+- The skill directory is linked to this ZAM installation and updates with it.`,
+      Boolean(opts.dryRun),
+    );
+    logInstructionAction(action, "CLAUDE.md", Boolean(opts.dryRun));
     return;
   }
 
   const name = basename(cwd);
-  writeFileSync(
-    dest,
-    `# ZAM Personal Kernel — ${name}
+  const content = `# ZAM Personal Kernel â€” ${name}
 
 This is a ZAM personal instance. ZAM builds lasting skills through spaced
-repetition during real work — not separate study sessions.
+repetition during real work â€” not separate study sessions.
 
 ## First time here?
 Run \`/setup\` in Claude Code or Gemini CLI to complete first-time setup.
@@ -196,35 +386,52 @@ Run \`/setup\` in Claude Code or Gemini CLI to complete first-time setup.
 Run \`/zam\` to start a learning session on whatever you are working on.
 
 ## What lives here
-- \`beliefs/\` — your worldview, approved by git commit
-- \`goals/\` — your objectives, decomposed into tasks and learning tokens
+- \`beliefs/\` â€” your worldview, approved by git commit
+- \`goals/\` â€” your objectives, decomposed into tasks and learning tokens
 
 ## Fast-changing data
 Learning tokens, cards, and review history live in local SQLite by default.
 Use \`zam connector setup turso\` to store cloud credentials in
 \`~/.zam/credentials.json\` and use a Turso database across machines.
-`,
-    "utf8",
-  );
-  console.log(`  write CLAUDE.md`);
+`;
+  if (opts.dryRun) {
+    console.log(`  would write CLAUDE.md`);
+  } else {
+    writeFileSync(dest, content, "utf8");
+    console.log(`  write CLAUDE.md`);
+  }
 }
 
 export function writeAgentsMd(
   skipAgentsMd: boolean,
   cwd: string = process.cwd(),
+  opts: InstructionWriteOptions = {},
 ): void {
   if (skipAgentsMd) return;
 
   const dest = join(cwd, "AGENTS.md");
   if (existsSync(dest)) {
-    console.log(`  skip  AGENTS.md (already present)`);
+    if (!opts.updateExisting) {
+      console.log(`  skip  AGENTS.md (already present)`);
+      return;
+    }
+    const action = upsertMarkedBlock(
+      dest,
+      `## ZAM learning sessions
+
+ZAM is available in this repository. Select the \`zam\` skill through \`/skills\` or invoke \`$zam\` where supported to turn real work into an observed learning session with active recall and FSRS scheduling.
+
+- Skill files live under \`.agents/skills/zam/\`.
+- Fast-changing review data lives in \`~/.zam/\`, not in this repository.
+- The skill directory is linked to this ZAM installation and updates with it.`,
+      Boolean(opts.dryRun),
+    );
+    logInstructionAction(action, "AGENTS.md", Boolean(opts.dryRun));
     return;
   }
 
   const name = basename(cwd);
-  writeFileSync(
-    dest,
-    `# ZAM Personal Kernel - ${name}
+  const content = `# ZAM Personal Kernel - ${name}
 
 This is a ZAM personal instance. ZAM builds lasting skills through spaced
 repetition during real work, not separate study sessions.
@@ -250,40 +457,105 @@ Use \`zam connector setup turso\` to store cloud credentials in
 ## Codex skills
 Codex discovers repository skills under \`.agents/skills/\`. Run
 \`zam setup --force\` after upgrading \`zam-core\` to refresh them.
-`,
-    "utf8",
+`;
+  if (opts.dryRun) {
+    console.log(`  would write AGENTS.md`);
+  } else {
+    writeFileSync(dest, content, "utf8");
+    console.log(`  write AGENTS.md`);
+  }
+}
+
+export function writeCopilotInstructions(
+  cwd: string = process.cwd(),
+  opts: InstructionWriteOptions = {},
+): void {
+  const dest = join(cwd, ".github", "copilot-instructions.md");
+  const action = upsertMarkedBlock(
+    dest,
+    `## ZAM learning sessions
+
+ZAM is available in this repository through \`.claude/skills/zam/\`. Use the \`zam\` project skill from Copilot-compatible skill selection surfaces to turn real work into an observed learning session with active recall and FSRS scheduling.
+
+- Fast-changing review data lives in \`~/.zam/\`, not in this repository.
+- The skill directory is linked to this ZAM installation and updates with it.`,
+    Boolean(opts.dryRun),
   );
-  console.log(`  write AGENTS.md`);
+  logInstructionAction(
+    action,
+    ".github/copilot-instructions.md",
+    Boolean(opts.dryRun),
+  );
 }
 
 export const setupCommand = new Command("setup")
   .description(
-    "Distribute ZAM skill files into this personal instance and initialize the database",
+    "Link ZAM skill directories into this workspace and initialize the database",
   )
-  .option(
-    "--force",
-    "overwrite existing skill files (use after upgrading zam)",
-    false,
-  )
+  .option("--force", "replace an unmanaged existing ZAM skill directory", false)
   .option("--skip-init", "skip database initialization", false)
   .option("--skip-claude-md", "skip CLAUDE.md generation", false)
   .option("--skip-agents-md", "skip AGENTS.md generation", false)
+  .option("--target <path>", "repository/workspace directory to set up")
+  .option(
+    "--agents <list>",
+    "comma-separated agents to wire: all, claude, copilot, codex, agent",
+  )
+  .option(
+    "--dry-run",
+    "show what would be written without changing files",
+    false,
+  )
   .action(
     async (opts: {
       force: boolean;
       skipInit: boolean;
       skipClaudeMd: boolean;
       skipAgentsMd: boolean;
+      target?: string;
+      agents?: string;
+      dryRun: boolean;
     }) => {
-      console.log(`Setting up ZAM in ${process.cwd()}\n`);
+      let agents: Set<SetupAgent>;
+      try {
+        agents = parseSetupAgents(opts.agents);
+      } catch (err) {
+        console.error(`Error: ${(err as Error).message}`);
+        process.exit(1);
+      }
 
-      copySkills(opts.force);
-      await initDatabase(opts.skipInit);
-      writeClaudeMd(opts.skipClaudeMd);
-      writeAgentsMd(opts.skipAgentsMd);
+      const target = resolve(opts.target ?? process.cwd());
+      const updateExistingInstructions = Boolean(opts.target) || opts.force;
+      console.log(
+        `Setting up ZAM in ${target}${opts.dryRun ? " (dry run)" : ""}\n`,
+      );
+
+      wireSkills(target, agents, {
+        force: opts.force,
+        dryRun: opts.dryRun,
+      });
+      await initDatabase(opts.skipInit || opts.dryRun);
+      if (agents.has("claude")) {
+        writeClaudeMd(opts.skipClaudeMd, target, {
+          dryRun: opts.dryRun,
+          updateExisting: updateExistingInstructions,
+        });
+      }
+      if (agents.has("codex") || agents.has("agent")) {
+        writeAgentsMd(opts.skipAgentsMd, target, {
+          dryRun: opts.dryRun,
+          updateExisting: updateExistingInstructions,
+        });
+      }
+      if (agents.has("copilot") && (opts.target || opts.agents)) {
+        writeCopilotInstructions(target, {
+          dryRun: opts.dryRun,
+          updateExisting: updateExistingInstructions,
+        });
+      }
 
       console.log(
-        "\nDone. Run `zam whoami --set <your-id>` to set your identity. Start the `zam` skill with `/zam` in Claude/Gemini-compatible clients or `$zam` (or `/skills`) in Codex.",
+        "\nDone. Run `zam whoami --set <your-id>` to set your identity. Start the `zam` skill with `/zam` in Claude/Copilot/Gemini-compatible clients or `$zam` (or `/skills`) in Codex.",
       );
     },
   );

@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="/src/styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="ZAM Active-Recall Studio for learning sessions, knowledge maps, local AI status, and workspace settings."
+    />
     <title>ZAM — Active-Recall Studio</title>
     <script type="module" src="/src/main.ts" defer></script>
   </head>
@@ -20,9 +24,13 @@
           <span class="logo-accent">ZAM</span>
           <span class="logo-sub">Recall Studio</span>
         </div>
+        <nav class="top-nav" aria-label="Main navigation">
+          <button id="nav-dashboard" class="nav-btn active" type="button">Dashboard</button>
+          <button id="nav-settings" class="nav-btn" type="button">Settings</button>
+        </nav>
         <div class="status-area" id="system-status">
           <div class="status-indicator">
-            <span class="pulse-dot green"></span>
+            <span class="pulse-dot gray" role="img" aria-label="Local AI Offline"></span>
             <span class="status-text" id="ai-status-label">Local AI Offline</span>
           </div>
           <span class="locale-badge" id="locale-badge">EN</span>
@@ -31,11 +39,28 @@
 
       <!-- VIEW 1: DASHBOARD OVERVIEW -->
       <section id="dashboard-view" class="view active">
+        <div class="dashboard-hero frosted">
+          <div class="dashboard-copy">
+            <p id="lbl-dashboard-kicker" class="eyebrow">Today in ZAM</p>
+            <h1 id="lbl-dashboard-title">Learn deliberately.</h1>
+            <p id="lbl-dashboard-subtitle">
+              Review what is due, open your knowledge map, or configure local AI and workspaces in Settings.
+            </p>
+          </div>
+          <div class="hero-actions">
+            <button id="btn-start-session" class="btn primary-btn btn-large glow-btn" disabled>
+              Start Learning Session
+            </button>
+            <button id="btn-open-graph" class="btn secondary-btn btn-large">Knowledge Map (3D)</button>
+            <button id="btn-open-settings" class="btn secondary-btn btn-large" type="button">Settings</button>
+          </div>
+        </div>
+
         <div class="dashboard-grid">
           <div class="card stat-card frosted">
             <h2 id="lbl-due-reviews">Due Reviews</h2>
             <div class="large-number" id="due-count">0</div>
-            <p id="lbl-caught-up" class="sub-label">You're all caught up!</p>
+            <p id="lbl-caught-up" class="sub-label" aria-live="polite">You're all caught up!</p>
           </div>
 
           <div class="card stat-card frosted">
@@ -46,14 +71,178 @@
           </div>
         </div>
 
-        <div class="action-row">
-          <button id="btn-start-session" class="btn primary-btn btn-large glow-btn" disabled>
-            Start Learning Session
-          </button>
+        <div id="observer-panel" class="observer-panel frosted hidden">
+          <div class="observer-panel-header">
+            <div>
+              <h2 id="lbl-observer-title">UI Observer</h2>
+              <p id="observer-status" class="observer-status">No window selected.</p>
+            </div>
+            <button id="btn-observer-refresh" class="btn secondary-btn btn-sm" type="button">
+              Refresh Windows
+            </button>
+          </div>
+
+          <div class="observer-controls">
+            <select id="observer-window-select" class="observer-window-select">
+              <option value="" id="observer-window-initial">Load windows to start observation</option>
+            </select>
+            <button id="btn-observer-analyze" class="btn primary-btn btn-sm" type="button" disabled>
+              Snapshot & Analyze
+            </button>
+            <button id="btn-observer-cancel" class="btn danger-btn btn-sm hidden" type="button">
+              Cancel
+            </button>
+          </div>
+
+          <div class="observer-loop-controls">
+            <button id="btn-observer-loop-start" class="btn secondary-btn btn-sm" type="button" disabled>
+              Start Loop
+            </button>
+            <button id="btn-observer-loop-stop" class="btn danger-btn btn-sm hidden" type="button">
+              Stop Loop
+            </button>
+            <span id="observer-loop-note" class="observer-loop-note">
+              Manual snapshots only.
+            </span>
+          </div>
+
+          <div class="observer-watch-controls">
+            <button id="btn-observer-watch-start" class="btn secondary-btn btn-sm" type="button" disabled>
+              Start Watch
+            </button>
+            <button id="btn-observer-watch-stop" class="btn danger-btn btn-sm hidden" type="button">
+              Stop Watch
+            </button>
+            <span id="observer-watch-note" class="observer-loop-note">
+              Continuous watch is off.
+            </span>
+          </div>
+
+          <pre id="observer-report-preview" class="observer-report-preview hidden"></pre>
+
+          <div class="observer-history">
+            <div class="observer-history-header">
+              <h3 id="lbl-observer-history-title">Observation Reports</h3>
+              <button id="btn-observer-reports-refresh" class="btn secondary-btn btn-sm" type="button">
+                Refresh Reports
+              </button>
+            </div>
+            <div id="observer-history-list" class="observer-history-list">
+              <p class="observer-history-empty">No observation reports yet.</p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <!-- VIEW 2: STUDY SESSION CARD -->
+      <!-- VIEW 2: SETTINGS -->
+      <section id="settings-view" class="view">
+        <div class="settings-hero frosted">
+          <div>
+            <p id="lbl-settings-kicker" class="eyebrow">Local configuration</p>
+            <h1 id="lbl-settings-title">Settings</h1>
+            <p id="lbl-settings-subtitle" class="settings-subtitle">
+              Configure this machine without forcing the same choices onto every workspace or device.
+            </p>
+          </div>
+          <button id="btn-settings-back" class="btn secondary-btn btn-sm" type="button">Back to dashboard</button>
+        </div>
+
+        <div class="settings-list" id="setup-card">
+          <article class="card frosted settings-card">
+            <h2 id="lbl-settings-system-title">System</h2>
+            <div class="settings-row">
+              <span id="lbl-app-version">Version</span>
+              <code id="app-version">—</code>
+            </div>
+            <div class="settings-actions">
+              <button id="btn-check-updates" class="btn secondary-btn btn-sm" type="button">
+                Check for updates
+              </button>
+              <button id="btn-open-releases" class="btn secondary-btn btn-sm" type="button">
+                Releases
+              </button>
+            </div>
+            <p id="update-status" class="sub-label" aria-live="polite"></p>
+          </article>
+
+          <article class="card frosted settings-card">
+            <div class="settings-card-header">
+              <div>
+                <h2 id="lbl-settings-ai-title">AI models</h2>
+              </div>
+              <button id="btn-toggle-ai-config" class="btn secondary-btn btn-sm" type="button">
+                Configure
+              </button>
+            </div>
+            <div class="settings-row">
+              <span id="lbl-learning-model">Learning model</span>
+              <code id="learning-model-status">—</code>
+            </div>
+            <div class="settings-row">
+              <span id="lbl-observer-model">Observer model</span>
+              <code id="observer-model-status">—</code>
+            </div>
+            <div id="ai-config-editor" class="ai-config-editor hidden" aria-live="polite">
+              <p id="ai-config-status" class="sub-label settings-status-row"></p>
+              <div id="ai-provider-list" class="ai-provider-list"></div>
+              <div class="settings-actions">
+                <button id="btn-add-ai-provider" class="btn secondary-btn btn-sm" type="button">
+                  + Add provider
+                </button>
+              </div>
+              <div id="ai-provider-form" class="ai-provider-form hidden"></div>
+              <div id="ai-role-bindings" class="ai-role-bindings"></div>
+            </div>
+          </article>
+
+          <article class="card frosted settings-card">
+            <div class="settings-card-header">
+              <div>
+                <h2 id="lbl-settings-workspace-title">Workspace &amp; agents</h2>
+                <p id="lbl-workspaces-help" class="settings-card-help">Register personal, team, family, or community work directories for this machine.</p>
+              </div>
+              <button id="btn-choose-workspace" class="btn secondary-btn btn-sm" type="button">
+                + Add workspace…
+              </button>
+            </div>
+            <div id="workspace-list" class="workspace-list" aria-live="polite"></div>
+            <div class="settings-actions">
+              <button id="btn-open-terminal" class="btn primary-btn btn-sm" type="button">
+                Open Terminal
+              </button>
+            </div>
+          </article>
+
+          <article class="card frosted settings-card">
+            <h2 id="lbl-settings-appearance-title">Appearance</h2>
+            <label class="settings-field" for="theme-select">
+              <span id="lbl-settings-theme">Theme</span>
+              <select id="theme-select">
+                <option value="light" id="theme-light-option">Light</option>
+                <option value="dark" id="theme-dark-option">Dark</option>
+              </select>
+            </label>
+          </article>
+
+          <article class="card frosted settings-card">
+            <h2 id="lbl-settings-data-title">Data</h2>
+            <div class="settings-actions">
+              <button id="btn-open-data-folder" class="btn secondary-btn btn-sm" type="button">
+                Open data folder
+              </button>
+              <button id="btn-backup-db" class="btn secondary-btn btn-sm" type="button">
+                Back up database
+              </button>
+            </div>
+          </article>
+
+          <div class="settings-status-row">
+            <p id="setup-status" class="sub-label" aria-live="polite"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 3: STUDY SESSION CARD -->
       <section id="study-view" class="view">
         <div class="study-card frosted">
           <!-- CARD HEADER -->
@@ -69,6 +258,9 @@
           <div class="card-body">
             <!-- RECALL QUESTION -->
             <div class="question-container">
+              <div class="question-header">
+                <span class="model-attribution-badge hidden" id="question-model-badge"></span>
+              </div>
               <p class="question-text" id="question-text">
                 What command initializes a new local Git repository?
               </p>
@@ -112,7 +304,10 @@
             <div class="revealed-container hidden" id="revealed-box">
               <!-- AI FEEDBACK -->
               <div class="ai-feedback-box hidden" id="ai-feedback-container">
-                <h3 class="box-title" id="lbl-ai-feedback-title">ZAM Feedback</h3>
+                <div class="feedback-title-row">
+                  <h3 class="box-title" id="lbl-ai-feedback-title">ZAM Feedback</h3>
+                  <span class="model-attribution-badge hidden" id="evaluation-model-badge"></span>
+                </div>
                 <p class="ai-feedback-text" id="ai-feedback-text">
                   Your answer matches perfectly! Good job.
                 </p>
@@ -157,6 +352,56 @@
           <button id="btn-pause-session" class="btn secondary-btn">
             Pause & Exit Session
           </button>
+        </div>
+      </section>
+
+      <!-- VIEW 4: 3D KNOWLEDGE GRAPH (experimental focus + direct prereqs/dependents) -->
+      <section id="graph-view" class="view">
+        <div class="graph-container frosted">
+          <div class="graph-header">
+            <div>
+              <span id="graph-title" class="graph-title">Knowledge Graph (3D)</span>
+              <span id="graph-focus-label" class="focus-label"></span>
+            </div>
+            <div id="graph-domain-selector" class="domain-selector">
+              <!-- JS populated: "All" + domain pills for filtering independent knowledge areas -->
+            </div>
+            <div class="graph-actions">
+              <button id="btn-graph-back" class="btn secondary-btn btn-sm">Back to Dashboard</button>
+              <button id="btn-graph-refresh" class="btn secondary-btn btn-sm">Refresh</button>
+            </div>
+          </div>
+
+          <div class="graph-main">
+            <!-- Three.js canvas container -->
+            <div id="graph-canvas-container" class="graph-canvas-wrap">
+              <canvas id="graph-canvas" width="800" height="600" tabindex="0"></canvas>
+            </div>
+
+            <!-- Side panel: focus details + quick neighbors -->
+            <div class="graph-side frosted">
+              <div id="graph-focus-info">
+                <div id="graph-focus-title" class="side-title">Focus</div>
+                <div id="focus-slug" class="focus-slug"></div>
+                <div id="focus-concept" class="focus-concept"></div>
+                <div id="focus-meta" class="focus-meta"></div>
+              </div>
+
+              <div class="side-section">
+                <div id="graph-prereqs-title" class="side-title">Bases (Prerequisites)</div>
+                <div id="prereq-list" class="neighbor-list"></div>
+              </div>
+
+              <div class="side-section">
+                <div id="graph-dependents-title" class="side-title">Higher Abilities (Dependents)</div>
+                <div id="dependent-list" class="neighbor-list"></div>
+              </div>
+
+              <div id="graph-hint" class="graph-hint" role="note">
+                Drag to rotate • Click nodes to focus • Scroll to zoom
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>

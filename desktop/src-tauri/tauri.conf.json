@@ -15,7 +15,10 @@
       {
         "title": "ZAM",
         "width": 950,
-        "height": 720
+        "height": 720,
+        "minWidth": 720,
+        "minHeight": 580,
+        "theme": "Light"
       }
     ],
     "security": {
@@ -25,6 +28,7 @@
   "bundle": {
     "active": true,
     "targets": "all",
+    "createUpdaterArtifacts": true,
     "resources": [
       "resources/**/*"
     ],
@@ -35,5 +39,14 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ]
+  },
+  "plugins": {
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://github.com/zam-os/zam/releases/latest/download/latest.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQ3NEYzOEU2Mjc4QTU2MTMKUldRVFZvb241amhQMXg1Y0tlYkdPdkxuTDNBU3Z3Q2poZzg2ekR1Z0JqRnJTVFR3ZTBOREROMVAK"
+    }
   }
 }

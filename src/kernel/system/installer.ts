@@ -10,6 +10,12 @@ export interface InstallResult {
 
 export type LocalLLMRunner = "fastflowlm" | "ollama" | "generic";
 
+/** A resolved way to install a tool: a human label and the command to run. */
+export interface InstallPlan {
+  method: string;
+  command: string;
+}
+
 /**
  * Check if a command is executable on the system.
  */
@@ -202,6 +208,94 @@ export function prepareLocalModel(
       message:
         `Could not prepare ${model}: ${(err as Error).message}. ` +
         `Start Ollama and run: ollama pull ${model}`,
+    };
+  }
+}
+
+/**
+ * Pick how to install the opencode agent for the current machine.
+ *
+ * npm is preferred on every platform: ZAM already requires Node, and the
+ * `opencode-ai` package pulls the correct native binary for Apple Silicon and
+ * Windows on ARM — avoiding the bash-on-Windows and Homebrew-tap caveats.
+ * Returns null when no automatic method is available (e.g. Windows without npm,
+ * Scoop, or Chocolatey).
+ */
+export function planOpenCodeInstall(env: {
+  platform: NodeJS.Platform;
+  hasNpm: boolean;
+  hasBrew: boolean;
+  hasScoop: boolean;
+  hasChoco: boolean;
+}): InstallPlan | null {
+  if (env.hasNpm) {
+    return { method: "npm", command: "npm install -g opencode-ai" };
+  }
+  if (env.platform === "darwin") {
+    if (env.hasBrew) {
+      return {
+        method: "homebrew",
+        command: "brew install anomalyco/tap/opencode",
+      };
+    }
+    return {
+      method: "script",
+      command: "curl -fsSL https://opencode.ai/install | bash",
+    };
+  }
+  if (env.platform === "win32") {
+    if (env.hasScoop)
+      return { method: "scoop", command: "scoop install opencode" };
+    if (env.hasChoco) {
+      return { method: "chocolatey", command: "choco install opencode" };
+    }
+    return null;
+  }
+  // Linux and other Unix-likes.
+  return {
+    method: "script",
+    command: "curl -fsSL https://opencode.ai/install | bash",
+  };
+}
+
+/**
+ * Install the opencode agent (the default agent ZAM provisions). opencode reads
+ * the AGENTS.md that `zam setup` writes, so it picks up the ZAM skill once both
+ * are present.
+ */
+export function installOpenCode(): InstallResult {
+  if (hasCommand("opencode")) {
+    return { success: true, message: "opencode is already installed." };
+  }
+
+  const plan = planOpenCodeInstall({
+    platform: process.platform,
+    hasNpm: hasCommand("npm"),
+    hasBrew: hasCommand("brew"),
+    hasScoop: hasCommand("scoop"),
+    hasChoco: hasCommand("choco"),
+  });
+
+  if (!plan) {
+    return {
+      success: false,
+      message:
+        "Could not find a way to install opencode automatically. Install npm, " +
+        "Scoop, or Chocolatey, or follow https://opencode.ai/docs (native " +
+        "Apple Silicon and Windows on ARM builds are available).",
+    };
+  }
+
+  console.log(`Installing opencode via ${plan.method}...`);
+  try {
+    execSync(plan.command, { stdio: "inherit" });
+    return { success: true, message: `opencode installed via ${plan.method}.` };
+  } catch (err) {
+    return {
+      success: false,
+      message:
+        `Failed to install opencode: ${(err as Error).message}. ` +
+        `Try manually: ${plan.command}`,
     };
   }
 }

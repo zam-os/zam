@@ -246,13 +246,28 @@ export async function deleteCardForUser(
  * then by due_at ascending (oldest first).
  *
  * Ported from the PoC's due-tokens command.
+ *
+ * When `domain` is set, only due cards in that token domain are returned.
  */
 export async function getDueCards(
   db: Database,
   userId: string,
   now?: string,
+  domain?: string,
 ): Promise<DueCard[]> {
   const cutoff = now ?? new Date().toISOString();
+
+  if (domain) {
+    return (await db
+      .prepare(
+        `SELECT c.*, t.slug, t.concept, t.domain, t.bloom_level
+         FROM cards c
+         JOIN tokens t ON t.id = c.token_id
+         WHERE c.user_id = ? AND c.blocked = 0 AND c.due_at <= ? AND t.domain = ?
+         ORDER BY t.bloom_level ASC, c.due_at ASC`,
+      )
+      .all(userId, cutoff, domain)) as DueCard[];
+  }
 
   return (await db
     .prepare(

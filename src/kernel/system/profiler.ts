@@ -21,20 +21,15 @@ function runCommand(cmd: string): string {
   }
 }
 
-function detectWindowsAMDIPU(): boolean {
+function detectWindowsNPU(): boolean {
   if (process.platform !== "win32") return false;
 
-  // WMI query for AMD IPU (Image Processing Unit), NPU, Ryzen AI CPUs, and modern NPU compute devices (DEV_1502, DEV_17F0)
-  const cmd = `powershell -NoProfile -Command "Get-CimInstance Win32_PnPEntity | Where-Object { $_.Name -like '*AMD IPU*' -or $_.Name -like '*AMD NPU*' -or $_.Name -like '*NPU Compute*' -or $_.Name -like '*Ryzen AI*' -or $_.HardwareID -like '*VEN_1022&DEV_1502*' -or $_.HardwareID -like '*VEN_1022&DEV_17F0*' } | Select-Object -First 1 -ExpandProperty Name"`;
+  // Query for devices belonging to ComputeAccelerator class (standard for modern NPUs/IPUs under MCDM)
+  // or names matching known NPU/IPU vendor terms (AMD IPU/NPU, Qualcomm Hexagon NPU, Intel AI Boost NPU).
+  const cmd = `powershell -NoProfile -Command "Get-CimInstance Win32_PnPEntity | Where-Object { $_.PNPClass -eq 'ComputeAccelerator' -or $_.Name -like '*AMD IPU*' -or $_.Name -like '*AMD NPU*' -or $_.Name -like '*Qualcomm*NPU*' -or $_.Name -like '*Hexagon*NPU*' -or $_.Name -like '*Intel*AI Boost*' -or $_.Name -like '*NPU Compute*' -or $_.Name -like '*Ryzen AI*' } | Select-Object -First 1 -ExpandProperty Name"`;
   const output = runCommand(cmd);
 
-  return Boolean(
-    output &&
-      (output.toLowerCase().includes("amd") ||
-        output.toLowerCase().includes("ipu") ||
-        output.toLowerCase().includes("npu") ||
-        output.toLowerCase().includes("ryzen")),
-  );
+  return Boolean(output && output.length > 0);
 }
 
 /**
@@ -53,15 +48,25 @@ export function getSystemProfile(): SystemProfile {
   if (archStr === "x64") arch = "x64";
   else if (archStr === "arm64") arch = "arm64";
 
-  const hasRyzenNPU = os === "windows" && detectWindowsAMDIPU();
+  const hasNpu = os === "windows" && detectWindowsNPU();
   const hasAppleSilicon = os === "macos" && arch === "arm64";
 
   let recommendedRunner: "fastflowlm" | "ollama" | "generic" = "generic";
   let recommendedModel = "qwen3.5:4b";
 
-  if (hasRyzenNPU) {
-    recommendedRunner = "fastflowlm";
-    recommendedModel = "qwen3.5:4b";
+  if (hasNpu) {
+    const isQualcomm =
+      runCommand(
+        `powershell -NoProfile -Command "Get-CimInstance Win32_PnPEntity | Where-Object { $_.Name -like '*Qualcomm*' } | Select-Object -First 1"`,
+      ).length > 0;
+    if (isQualcomm) {
+      // Snapdragon NPU PC runs Microsoft Foundry Local (generic/external service)
+      recommendedRunner = "generic";
+      recommendedModel = "qwen3.5-4b";
+    } else {
+      recommendedRunner = "fastflowlm";
+      recommendedModel = "qwen3.5:4b";
+    }
   } else if (hasAppleSilicon) {
     recommendedRunner = "ollama";
     recommendedModel = "llama3.2:3b";
@@ -74,7 +79,7 @@ export function getSystemProfile(): SystemProfile {
   return {
     os,
     arch,
-    hasRyzenNPU,
+    hasRyzenNPU: hasNpu && !archStr.includes("arm64"), // backwards compatibility flag
     hasAppleSilicon,
     recommendedRunner,
     recommendedModel,

@@ -1,6 +1,6 @@
 {
   "name": "zam-core",
-  "version": "0.3.7",
+  "version": "0.5.2",
   "description": "The Symbiotic Learning Kernel: Elevating Human Intelligence through AI Collaboration.",
   "type": "module",
   "engines": {
@@ -35,7 +35,11 @@
     "typecheck": "tsc --noEmit",
     "lint": "biome check src/",
     "format": "biome format --write src/",
-    "desktop:prepare": "node scripts/prepare-desktop-bridge.mjs"
+    "desktop:prepare": "node scripts/prepare-desktop-bridge.mjs",
+    "observer:check": "cargo check --manifest-path observer/Cargo.toml",
+    "observer:test": "cargo test --manifest-path observer/Cargo.toml",
+    "observer:build": "cargo build --manifest-path observer/Cargo.toml --release",
+    "observer:prepare": "node scripts/prepare-observer-sidecar.mjs"
   },
   "repository": {
     "type": "git",
@@ -63,8 +67,11 @@
   "optionalDependencies": {
     "libsql": "^0.5.29"
   },
+  "overrides": {
+    "esbuild": "0.28.1"
+  },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.8",
+    "@biomejs/biome": "2.5.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^25.5.0",
     "tsup": "^8.5.1",

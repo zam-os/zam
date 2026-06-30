@@ -2,7 +2,6 @@ import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import { createRequire } from "node:module";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
-import BetterSqlite3 from "better-sqlite3";
 import { getTursoCredentials } from "../credentials.js";
 import { openRemoteDatabase } from "./remote/provider.js";
 import { SCHEMA } from "./schema.js";
@@ -28,7 +27,7 @@ export type DatabaseProvider = "local" | "native" | "remote";
 export interface ConnectionOptions {
   /** Path to the SQLite database file. Defaults to ~/.zam/zam.db */
   dbPath?: string;
-  /** If true, create the directory and run schema migrations on open */
+  /** If true, run the schema even when the database already exists. */
   initialize?: boolean;
   /** Turso sync URL for embedded replica mode (e.g. libsql://db-name.turso.io) */
   syncUrl?: string;
@@ -40,6 +39,25 @@ export interface ConnectionOptions {
   provider?: DatabaseProvider;
 }
 
+export interface DatabaseTargetInfo {
+  /** User-facing category of database target selected for this connection. */
+  kind: "local" | "turso-native" | "turso-remote" | "turso-replica";
+  /** Driver/provider that will be used for the selected target. */
+  provider: DatabaseProvider;
+  /** Local filesystem path or remote URL selected as the database target. */
+  location: string;
+  /** Turso primary URL when the selected target is an embedded replica. */
+  syncUrl?: string;
+}
+
+interface ResolvedDatabaseTarget {
+  dbPath: string;
+  provider: DatabaseProvider;
+  isRemote: boolean;
+  isEmbeddedReplica: boolean;
+  configuredCloud: ReturnType<typeof getTursoCredentials>;
+}
+
 function isRemoteDatabasePath(dbPath: string): boolean {
   return /^(libsql|https?|wss?):\/\//i.test(dbPath);
 }
@@ -48,7 +66,101 @@ function isDatabaseProvider(value: unknown): value is DatabaseProvider {
   return value === "local" || value === "native" || value === "remote";
 }
 
+function cwdRequiresTursoCredentials(): boolean {
+  try {
+    const configPath = join(process.cwd(), ".zam", "config.yaml");
+    if (existsSync(configPath)) {
+      const configText = readFileSync(configPath, "utf-8");
+      return /[\s\S]*turso:[\s\S]*url:/m.test(configText);
+    }
+  } catch (_e) {}
+  return false;
+}
+
+function resolveDatabaseTarget(
+  options: ConnectionOptions = {},
+): ResolvedDatabaseTarget {
+  const configuredCloud =
+    options.useConfiguredCloud !== false && !options.dbPath && !options.syncUrl
+      ? getTursoCredentials()
+      : null;
+
+  if (
+    cwdRequiresTursoCredentials() &&
+    !configuredCloud &&
+    options.useConfiguredCloud !== false &&
+    !options.dbPath &&
+    !options.syncUrl
+  ) {
+    throw new Error(
+      "Turso cloud database is configured in .zam/config.yaml but missing local credentials. Run: zam connector setup turso",
+    );
+  }
+
+  const dbPath = configuredCloud?.url ?? options.dbPath ?? DEFAULT_DB_PATH;
+  const isRemote = isRemoteDatabasePath(dbPath);
+  const isEmbeddedReplica = Boolean(options.syncUrl);
+  const provider = resolveProvider(options, configuredCloud?.mode, isRemote);
+
+  return {
+    dbPath,
+    provider,
+    isRemote,
+    isEmbeddedReplica,
+    configuredCloud,
+  };
+}
+
+export function getDatabaseTargetInfo(
+  options: ConnectionOptions = {},
+): DatabaseTargetInfo {
+  const target = resolveDatabaseTarget(options);
+
+  if (target.isEmbeddedReplica) {
+    return {
+      kind: "turso-replica",
+      provider: target.provider,
+      location: target.dbPath,
+      syncUrl: options.syncUrl,
+    };
+  }
+
+  if (target.provider === "remote" && target.isRemote) {
+    return {
+      kind: "turso-remote",
+      provider: target.provider,
+      location: target.dbPath,
+    };
+  }
+
+  if (target.isRemote) {
+    return {
+      kind: "turso-native",
+      provider: target.provider,
+      location: target.dbPath,
+    };
+  }
+
+  return {
+    kind: "local",
+    provider: target.provider,
+    location: target.dbPath,
+  };
+}
+
 function openLocalSqlite(dbPath: string): SyncDatabase {
+  // Loaded lazily (not as a top-level import) so that remote/HTTP Turso users
+  // never trigger the native better-sqlite3 binding. A failure to load that
+  // binding inside the packaged desktop app would otherwise crash the whole
+  // CLI at startup — before any provider selection or error handling runs.
+  const mod = require("better-sqlite3") as
+    | (new (
+        path: string,
+      ) => unknown)
+    | { default: new (path: string) => unknown };
+  const BetterSqlite3 = ("default" in mod ? mod.default : mod) as new (
+    path: string,
+  ) => unknown;
   return new BetterSqlite3(dbPath) as unknown as SyncDatabase;
 }
 
@@ -78,37 +190,11 @@ function loadLibsql(): LibsqlConstructor {
 export async function openDatabase(
   options: ConnectionOptions = {},
 ): Promise<Database> {
-  const configuredCloud =
-    options.useConfiguredCloud !== false && !options.dbPath && !options.syncUrl
-      ? getTursoCredentials()
-      : null;
-
-  let requiresTurso = false;
-  try {
-    const configPath = join(process.cwd(), ".zam", "config.yaml");
-    if (existsSync(configPath)) {
-      const configText = readFileSync(configPath, "utf-8");
-      if (/[\s\S]*turso:[\s\S]*url:/m.test(configText)) {
-        requiresTurso = true;
-      }
-    }
-  } catch (_e) {}
-
-  if (
-    requiresTurso &&
-    !configuredCloud &&
-    options.useConfiguredCloud !== false &&
-    !options.dbPath &&
-    !options.syncUrl
-  ) {
-    throw new Error(
-      "Turso cloud database is configured in .zam/config.yaml but missing local credentials. Run: zam connector setup turso",
-    );
-  }
-  const dbPath = configuredCloud?.url ?? options.dbPath ?? DEFAULT_DB_PATH;
-  const isRemote = isRemoteDatabasePath(dbPath);
-  const isEmbeddedReplica = Boolean(options.syncUrl);
-  const provider = resolveProvider(options, configuredCloud?.mode, isRemote);
+  const { dbPath, provider, isRemote, isEmbeddedReplica, configuredCloud } =
+    resolveDatabaseTarget(options);
+  const shouldInitialize =
+    options.initialize === true ||
+    (!isRemote && !isEmbeddedReplica && !existsSync(dbPath));
 
   if (provider === "remote") {
     const url = isRemote ? dbPath : options.syncUrl;
@@ -129,7 +215,7 @@ export async function openDatabase(
     return db;
   }
 
-  if (options.initialize && !isRemote) {
+  if (shouldInitialize && !isRemote) {
     const dir = dirname(dbPath);
     if (!existsSync(dir)) {
       mkdirSync(dir, { recursive: true });
@@ -173,21 +259,42 @@ export async function openDatabase(
 
   let driver: SyncDatabase;
   if (isRemote || isEmbeddedReplica) {
-    const LibsqlDatabase = loadLibsql();
     try {
-      driver = new LibsqlDatabase(dbPath, dbOpts);
-    } catch (err) {
-      const msg = (err as Error).message;
-      if (msg.includes("InvalidLocalState") && options.syncUrl) {
-        // Last-ditch recovery: metadata is corrupt or mismatched
-        const metaPath = `${dbPath}.meta`;
-        const infoPath = `${dbPath}-info`;
-        if (existsSync(metaPath)) rmSync(metaPath);
-        if (existsSync(infoPath)) rmSync(infoPath);
+      const LibsqlDatabase = loadLibsql();
+      try {
         driver = new LibsqlDatabase(dbPath, dbOpts);
-      } else {
-        throw err;
+      } catch (err) {
+        const msg = (err as Error).message;
+        if (msg.includes("InvalidLocalState") && options.syncUrl) {
+          // Last-ditch recovery: metadata is corrupt or mismatched
+          const metaPath = `${dbPath}.meta`;
+          const infoPath = `${dbPath}-info`;
+          if (existsSync(metaPath)) rmSync(metaPath);
+          if (existsSync(infoPath)) rmSync(infoPath);
+          driver = new LibsqlDatabase(dbPath, dbOpts);
+        } else {
+          throw err;
+        }
       }
+    } catch (nativeErr) {
+      // The native libsql driver is unavailable or failed to initialise — a
+      // failure mode that can occur inside the packaged desktop app. For a pure
+      // remote database we transparently fall back to the HTTP provider, which
+      // needs no native bindings. Embedded replicas require the native driver,
+      // so those still surface the original error.
+      const fallbackUrl = isRemote ? dbPath : options.syncUrl;
+      if (isRemote && !isEmbeddedReplica && fallbackUrl) {
+        const db = openRemoteDatabase({
+          url: fallbackUrl,
+          authToken: configuredCloud?.token ?? options.authToken,
+        });
+        if (options.initialize) {
+          await db.exec(SCHEMA);
+        }
+        await runMigrations(db);
+        return db;
+      }
+      throw nativeErr;
     }
   } else {
     driver = openLocalSqlite(dbPath);
@@ -211,7 +318,7 @@ export async function openDatabase(
     await db.sync?.();
   }
 
-  if (options.initialize) {
+  if (shouldInitialize) {
     await db.exec(SCHEMA);
   }
 
@@ -307,6 +414,23 @@ async function runMigrations(db: Database): Promise<void> {
       source      TEXT NOT NULL DEFAULT 'learned',
       created_at  TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at  TEXT NOT NULL DEFAULT (datetime('now'))
+    )
+  `);
+
+  // M006: persist confirmed monitor-derived ratings for audit and idempotence.
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS session_syntheses (
+      session_id       TEXT NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,
+      token_id         TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+      card_id          TEXT NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
+      inferred_rating  INTEGER NOT NULL CHECK (inferred_rating BETWEEN 1 AND 4),
+      confirmed_rating INTEGER NOT NULL CHECK (confirmed_rating BETWEEN 1 AND 4),
+      confidence       TEXT NOT NULL CHECK (confidence IN ('medium', 'high')),
+      evidence         TEXT NOT NULL DEFAULT '{}',
+      review_log_id    TEXT NOT NULL REFERENCES review_logs(id) ON DELETE CASCADE,
+      session_step_id  TEXT NOT NULL REFERENCES session_steps(id) ON DELETE CASCADE,
+      created_at       TEXT NOT NULL DEFAULT (datetime('now')),
+      PRIMARY KEY (session_id, token_id)
     )
   `);
 }

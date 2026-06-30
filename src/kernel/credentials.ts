@@ -7,7 +7,13 @@
  * replica (Turso cloud sync).
  */
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  chmodSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 
@@ -32,6 +38,12 @@ export interface ADOCredentials {
 export interface Credentials {
   turso?: Partial<TursoCredentials>;
   ado?: Partial<ADOCredentials>;
+  /**
+   * API keys for named LLM providers, keyed by the provider's reference name
+   * (the `apiKeyRef` in the `llm.providers` setting). Kept here — not in the
+   * database — so workspace exports / DB snapshots never carry provider keys.
+   */
+  llmProviders?: Record<string, { apiKey: string }>;
 }
 
 /** Load credentials from ~/.zam/credentials.json. Returns empty object if missing. */
@@ -49,10 +61,24 @@ export function loadCredentials(path?: string): Credentials {
 export function saveCredentials(creds: Credentials, path?: string): void {
   const p = path ?? DEFAULT_CREDENTIALS_PATH;
   const dir = dirname(p);
+  let createdDirectory = false;
   if (!existsSync(dir)) {
-    mkdirSync(dir, { recursive: true });
+    mkdirSync(dir, { recursive: true, mode: 0o700 });
+    createdDirectory = true;
   }
-  writeFileSync(p, `${JSON.stringify(creds, null, 2)}\n`, "utf-8");
+  if (
+    process.platform !== "win32" &&
+    (path === undefined || createdDirectory)
+  ) {
+    chmodSync(dir, 0o700);
+  }
+  writeFileSync(p, `${JSON.stringify(creds, null, 2)}\n`, {
+    encoding: "utf-8",
+    mode: 0o600,
+  });
+  if (process.platform !== "win32") {
+    chmodSync(p, 0o600);
+  }
 }
 
 /** Get complete Turso credentials, or null if incomplete. */
@@ -117,4 +143,35 @@ export function clearADOCredentials(path?: string): void {
   const creds = loadCredentials(path);
   delete creds.ado;
   saveCredentials(creds, path);
+}
+
+/** Get a named LLM provider's API key (by `apiKeyRef`), or null if unset. */
+export function getProviderApiKey(name: string, path?: string): string | null {
+  const key = loadCredentials(path).llmProviders?.[name]?.apiKey;
+  return key && key.length > 0 ? key : null;
+}
+
+/** Store a named LLM provider's API key (referenced by `apiKeyRef`). */
+export function setProviderApiKey(
+  name: string,
+  apiKey: string,
+  path?: string,
+): void {
+  const creds = loadCredentials(path);
+  creds.llmProviders = { ...creds.llmProviders, [name]: { apiKey } };
+  saveCredentials(creds, path);
+}
+
+/** Remove a named LLM provider's stored API key. No-op if it was unset. */
+export function clearProviderApiKey(name: string, path?: string): void {
+  const creds = loadCredentials(path);
+  if (creds.llmProviders && name in creds.llmProviders) {
+    delete creds.llmProviders[name];
+    saveCredentials(creds, path);
+  }
+}
+
+/** List the reference names (`apiKeyRef`) that currently have a stored key. */
+export function listProviderApiKeyRefs(path?: string): string[] {
+  return Object.keys(loadCredentials(path).llmProviders ?? {});
 }

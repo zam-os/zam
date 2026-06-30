@@ -18,6 +18,7 @@ export interface EvaluateInput {
   rating: Rating;
   sessionId?: string;
   responseTimeMs?: number;
+  reviewLogId?: string;
 }
 
 export interface EvaluateResult {
@@ -38,6 +39,17 @@ export interface EvaluateResult {
  * when rating === 1 and the token has prerequisites.
  */
 export async function evaluateRating(
+  db: Database,
+  input: EvaluateInput,
+): Promise<EvaluateResult> {
+  return db.transaction((tx) => evaluateRatingWithinTransaction(tx, input));
+}
+
+/**
+ * Apply a rating using a transaction already owned by the caller.
+ * This is used when prerequisite blocking must commit with the review.
+ */
+export async function evaluateRatingWithinTransaction(
   db: Database,
   input: EvaluateInput,
 ): Promise<EvaluateResult> {
@@ -95,13 +107,14 @@ export async function evaluateRating(
   });
 
   // Log the review (immutable)
+  const reviewLogId = input.reviewLogId ?? ulid();
   await db
     .prepare(
       `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, response_time_ms, reviewed_at, scheduled_at, session_id)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .run(
-      ulid(),
+      reviewLogId,
       input.cardId,
       input.tokenId,
       input.userId,

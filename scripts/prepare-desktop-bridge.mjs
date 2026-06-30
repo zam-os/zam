@@ -36,6 +36,10 @@ if (!existsSync(cliEntry)) {
 const packageJson = JSON.parse(
   readFileSync(join(repoRoot, "package.json"), "utf8"),
 );
+const packageLock = join(repoRoot, "package-lock.json");
+if (!existsSync(packageLock)) {
+  throw new Error("Root package-lock.json is required for desktop packaging.");
+}
 const requestedNode = optionValue("--node");
 const nodeSource = requestedNode
   ? resolve(requestedNode)
@@ -53,23 +57,48 @@ cpSync(join(repoRoot, "dist"), join(resourceRoot, "dist"), {
   recursive: true,
 });
 
+// Bundle the agent skill files alongside the CLI so the desktop app's `zam
+// setup` can provision them from the installed program directory in Default
+// mode — end users have no git checkout to copy them from. `copySkills`
+// resolves them relative to its own (self-located) packageRoot, which in the
+// bundle is this resource root.
+for (const agentDir of [".claude", ".agent", ".agents"]) {
+  const skillsSrc = join(repoRoot, agentDir, "skills");
+  if (existsSync(skillsSrc)) {
+    cpSync(skillsSrc, join(resourceRoot, agentDir, "skills"), {
+      recursive: true,
+    });
+  }
+}
+
 writeFileSync(
   join(resourceRoot, "package.json"),
   `${JSON.stringify(
     {
-      name: "zam-desktop-bridge",
+      name: packageJson.name,
       version: packageJson.version,
       private: true,
       type: "module",
+      license: packageJson.license,
+      engines: packageJson.engines,
+      bin: packageJson.bin,
       dependencies: packageJson.dependencies,
+      optionalDependencies: packageJson.optionalDependencies,
     },
     null,
     2,
   )}\n`,
   "utf8",
 );
+cpSync(packageLock, join(resourceRoot, "package-lock.json"));
 
-const npmArgs = ["install", "--omit=dev", "--no-audit", "--no-fund"];
+const npmArgs = [
+  "ci",
+  "--omit=dev",
+  "--include=optional",
+  "--no-audit",
+  "--no-fund",
+];
 const npmExecPath = process.env.npm_execpath;
 const install = npmExecPath
   ? spawnSync(process.execPath, [npmExecPath, ...npmArgs], {

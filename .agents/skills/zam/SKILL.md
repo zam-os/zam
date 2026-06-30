@@ -33,12 +33,13 @@ zam token deprecate --slug <slug>          # mark outdated knowledge
 # Card & review management
 zam card due --user <username>
 zam card update --user <username> --token <slug> --rating <1-4>
+zam card block --user <username> --token <slug>
 zam card unblock --user <username>
 
 # Sessions
 zam session start --user <username> --task "<description>" [--context shell|ui|reallife]
 zam session log --session <id> --token <slug> --done-by <user|agent> [--rating <n>]
-zam session end --session <id>
+zam session end --session <id> [--synthesize] [--patterns <json-file>]
 
 # Stats
 zam stats --user <username>
@@ -67,7 +68,35 @@ zam bridge submit --user <username> --card-id <id> --rating <1-4>
 zam bridge get-skill --slug <slug>
 zam bridge get-monitor --session <id>                 # read monitor log as JSON
 echo '{"patterns":[...]}' | zam bridge analyze-monitor --session <id>  # auto-rate from log
+zam bridge add-token --user <username>                # create token + user card from JSON stdin
+zam bridge capture-ui [--session <id>] [--output <path>] [--image <path>]  # screenshot for agent-side vision
 ```
+
+### Codex Execution Notes
+
+Use `npx zam ...` from the personal instance unless a linked `zam` binary is known
+to resolve correctly. The configured Turso database is remote; if a ZAM command
+fails with network sandbox errors such as `EACCES ...:443`, retry the same
+command with escalated permissions and a scoped prefix rule like `["npx","zam"]`.
+
+On Windows in Codex, prefer the classic Windows PowerShell executable for ZAM
+commands that contain quoted or multi-word arguments:
+
+```text
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+```
+
+The default `pwsh.exe` runner can fail with `CreateProcessAsUserW failed: 1312`,
+and `cmd` can split quoted arguments in surprising ways. `cmd` is fine for simple
+no-space commands such as `npx zam stats --user thomas`, but use Windows
+PowerShell for `--task`, `--concept`, `--question`, and multi-word `--query`
+values.
+
+For a concept that should immediately enter the user's learning queue, prefer
+`zam bridge add-token --user <username>` with JSON on stdin. `zam token register`
+creates the token only; it does not ensure the user's card exists. Do not use
+`bridge add-token` through `zam bridge serve --stdin`, because `add-token` reads
+raw stdin itself.
 
 ---
 
@@ -106,11 +135,11 @@ Always prefer observation over probing. Talking interrupts flow. The best ZAM se
 
 ## Observation Levels
 
-- **Level 1 — Shell** (current): Agent reads shell command history and output to infer success/failure
-- **Level 2 — Screen** (future): Agent observes full screen, guides UI interaction, auto-rates based on what it sees
+- **Level 1 — Shell**: Agent reads shell command history and output to infer success/failure
+- **Level 2 — Screen**: Agent captures screenshots via `zam bridge capture-ui` and analyzes them with Codex's multimodal capabilities or a vision-capable subagent
 - **Level 3 — Real life** (future): Voice + visual overlay on device (phone, AR). The agent is an overlay; the user lives in their world.
 
-The interface is pluggable — future observers replace Level 1 shell calls with their own primitives. Today: always Level 1.
+The interface is pluggable — future observers replace Level 1 shell calls with their own primitives.
 
 ---
 
@@ -157,6 +186,13 @@ zam token register --slug <slug> --concept "<one sentence>" --domain <d> --bloom
 zam token prereq --token <child> --requires <parent>
 ```
 
+If the token should be reviewed by this user, create the card in the same step:
+
+```bash
+printf '%s\n' '{"slug":"<slug>","concept":"<one sentence>","domain":"<d>","bloom_level":2,"question":"<concept-free recall question>"}' \
+  | zam bridge add-token --user <username>
+```
+
 ### STEP 3 — Start a session
 
 **For review/conceptual sessions**, load review data into a temp file so it stays out of the conversation, then start the session quietly:
@@ -194,7 +230,7 @@ Hand off to the user:
 
 Step back. Do not interrupt unless the user asks for help.
 
-**Two ways to observe:**
+**Choose the observation approach:**
 
 Check the user's preference first:
 ```bash
@@ -220,12 +256,11 @@ This spawns a new terminal window (Terminal.app or iTerm2 on macOS), already `cd
 Shell hooks silently capture every command with timestamps, exit codes, and working directory to a JSONL log. When the user returns:
 
 ```bash
-# Read the raw command log
-zam bridge get-monitor --session <session-id>
+# Preview evidence, confirm each rating, and end the session
+zam session end --session <session-id> --synthesize
 
-# Auto-rate tokens by matching commands to patterns
-echo '{"patterns":[{"slug":"docker-build","patterns":["docker build","docker image build"]}]}' \
-  | zam bridge analyze-monitor --session <session-id>
+# Supply task-specific mappings when skill-to-token links are ambiguous
+zam session end --session <session-id> --synthesize --patterns <json-file>
 ```
 
 The analyzer infers ratings from:
@@ -234,11 +269,76 @@ The analyzer infers ratings from:
 - **Speed**: inter-command gaps, thinking pauses → lower if slow
 - **Self-corrections**: same command prefix run repeatedly with different args → lower rating
 
-Review the suggested ratings before submitting. Override if the heuristic seems wrong.
+Single-token agent skills supply command patterns automatically. A pattern file
+contains an array (or `{ "patterns": [...] }`) of
+`{ "slug": "<token>", "patterns": ["<command>"] }` entries. Only medium- and
+high-confidence candidates are proposed. Accept, override, or skip every
+rating; accepted ratings are applied atomically and repeated synthesis is
+idempotent.
+
+Use `zam bridge get-monitor` and `zam bridge analyze-monitor` only when raw
+diagnostic output is needed.
 
 When done, the user can simply close the monitored terminal window — hooks only live in that shell process. No cleanup command needed.
 
-**Rating scale (both approaches):**
+**Approach C — Agent-side UI observation (Level 2):** For GUI tasks where shell hooks can't see what's happening. The agent captures screenshots and analyzes them with Codex's multimodal capabilities, preferably a cost-efficient vision-capable subagent when one is available. Do not rely on the laptop's local LLM for rating unless the user explicitly wants that; it may be too weak for UI evidence.
+
+```bash
+zam session start --user <username> --task "<description>" --context ui --skip-review --json
+```
+
+Workflow:
+1. Tell the user: *"Perform the task in the app, leave the relevant window visible, and come back when you're done."*
+2. When the user returns, capture the screen:
+   ```bash
+   zam bridge capture-ui --session <session-id> --process-name <app>
+   ```
+   Under the default observer policy (`observer.scope=window`) a capture must
+   target a window: pass `--process-name <app>` or `--hwnd <handle>`.
+   
+   If a capture is refused, the response will be `{ "granted": false, "denied": true, "denialReason": "<reason>", "reason": "<explanation>", ... }`.
+   Handle these denial reasons accordingly:
+   - `scope-requires-target`: Pass a target window (`--process-name` or `--hwnd`), or tell the user to enable full-screen captures via `zam settings set observer.scope fullscreen`.
+   - `scope-off`: The observer is disabled. Tell the user to enable it via `zam settings set observer.scope window`.
+   - `sensitive`: The targeted or active window matches the built-in sensitive filter (e.g., password manager, banking, private browsing). Skip UI observation for this step and inform the user.
+   - `denylisted`: The process is explicitly blocked by the user's denylist. Skip UI observation.
+   - `not-allowlisted`: The process is not in the user's allowlist. Suggest the user grant access via `zam observer grant <process>` if appropriate.
+
+   A granted response is JSON with `granted: true`, `imagePath`, `base64`
+   (PNG screenshot), `captureMethod`, `captureTarget` metadata, and a
+   `permission` block. Save to a stable file with `--output <path>` whenever
+   you will pass the image to a subagent.
+3. If Codex subagents are available, spawn a cheap vision-capable subagent (for example a mini model) and pass the screenshot as a local image plus the task, expected evidence, and candidate token slugs. Ask it for observed facts and suggested 1-4 ratings with brief evidence.
+4. Review `captureTarget` and the visual evidence yourself before writing
+   ratings. If `captureMethod` is `fullscreen`, the target is missing, the
+   title/process does not match the intended app, or the screenshot is
+   ambiguous, recapture with `--process-name <name>` or `--hwnd <handle>`
+   before rating. For Windows Store/UWP apps such as Calculator, the visible
+   window may belong to `ApplicationFrameHost` even when the app process is
+   `CalculatorApp`; prefer a targeted recapture and verify the returned window
+   title.
+5. Submit ratings and session logs for only the tokens the user actually exercised.
+
+The `capture-ui` command supports:
+- `--image <path>` — analyze an existing image instead of capturing
+- `--output <path>` — save the screenshot to a specific path
+- `--process-name <name>` or `--hwnd <handle>` — target a specific window when known
+
+On Windows, uses PowerShell/.NET for screen capture. On macOS, uses `screencapture`.
+
+**Observer permissions (Layer 2).** `capture-ui` enforces a
+user-configurable policy resolved from `zam settings`: `observer.scope`
+(`off` | `window` | `fullscreen`), `observer.allowlist`, `observer.denylist`,
+`observer.consent`, `observer.retention`. Set them with e.g.
+`zam settings set --key observer.scope --value window`. A built-in sensitive
+set (password managers, auth/UAC dialogs, banking) is always refused and
+cannot be allowlisted — those return `denied: true` with
+`denialReason: "sensitive"`. Treat any `denied` response as final: do not
+retry to work around it; tell the user which surface was blocked. To check the
+active scope/allow/denylist up front, call `zam bridge get-observer-policy`.
+The user can adjust it with `zam observer status | grant <app> | revoke <app>`.
+
+**Rating scale (all observation approaches):**
 - Completed correctly, no hesitation, no help → **4**
 - Slight pause or looked something up → **3**
 - Made errors, corrected themselves → **2**
@@ -267,12 +367,15 @@ For each due token, ask a conceptual question at the right Bloom level:
 
 **CRITICAL: Stop and WAIT for the user to provide their answer. Do not ask for the rating until the user has attempted to answer the conceptual question.**
 
-After the user answers, ask:
-> "How did that feel? 1 = drew a blank, 2 = hard recall, 3 = knew it, 4 = instant"
+After the user answers, always run this explicit review loop:
 
-**WAIT for the user to provide a rating (1-4).**
-
-Submit the rating and log the step.
+1. **Check the answer first.** Compare the user's answer with the token concept, the recall question, and any resolved source context. Decide whether it is `correct`, `partially correct`, or `incorrect`.
+2. **Give learning feedback before asking for a rating.** State the verdict, give a short reference answer, and explain what was missing or incorrect. Keep this concise, but never skip it — this is where the learning happens.
+3. **Suggest a self-rating.** Propose a rating using the 1-4 scale, based on correctness and recall quality: 4 = complete and instant, 3 = correct with small hesitation or minor gap, 2 = partially correct or needed correction, 1 = blank/incorrect/needed help.
+4. **Ask the user to choose the final rating.**
+   > "My suggested rating is <n>. How do you want to rate it? 1 = drew a blank, 2 = hard recall/partial, 3 = knew it, 4 = instant"
+5. **WAIT for the user to provide a rating (1-4).**
+6. **Only then submit the rating and log the step.** Never save the suggested rating without the user's confirmation.
 
 #### Leveraging Source Links for AI Agent Context
 When a token has a `source_link`, `zam bridge get-review` resolves it for you and returns a `resolvedContext` object alongside `prompt` — you no longer need to fetch the file or URL yourself. Its shape:
@@ -288,6 +391,10 @@ Use it to:
 
 ### STEP 5 — End session
 ```bash
+# Monitored executable session
+zam session end --session <id> --synthesize
+
+# Conceptual or unmonitored session
 zam session end --session <id>
 zam stats --user <username>
 ```
@@ -329,6 +436,157 @@ A token is blocked when:
 The agent works on prerequisites first. When all direct prerequisites reach `reps >= 1`, `zam card unblock` promotes the token back automatically (run at session start).
 
 Never present a blocked token to the user.
+
+---
+
+## Dynamic Token Decomposition
+
+**Principle:** Do not pre-create hundreds of tokens. Let the dependency graph grow
+from real gaps discovered during review. Every rating of 1 is an opportunity to
+diagnose *why* the user couldn't answer — and to create the missing foundations.
+
+This applies primarily to tokens at Bloom 3-5 (apply, analyze, synthesize) that
+cover broad learning areas. School curricula — where a single "Lernbereich" spans
+many underlying concepts — are the canonical use case.
+
+### When to split
+
+A token should be decomposed when ALL of the following hold:
+
+1. The user rated it **1** (drew a blank / couldn't answer)
+2. The token is at **Bloom ≥ 3** (application or above)
+3. The token covers **multiple distinct concepts** (not atomic)
+4. No prerequisite tokens already exist for the specific gap you diagnose
+
+### How to diagnose
+
+After a rating of 1, pause. Do not just re-ask the same question or move on.
+Ask yourself: **"What would the user have needed to know to answer this?"**
+
+| Symptom | Missing foundation | Create Bloom 1-2 token for |
+|---------|-------------------|---------------------------|
+| Couldn't name key terms | Factual recall | Definitions, terminology |
+| Used terms incorrectly | Conceptual understanding | Explain the concept in own words |
+| Knew facts but couldn't connect them | Structural understanding | How A relates to B |
+| Understood but couldn't apply | Procedural knowledge | Apply concept to a simple case first |
+
+### Source-grounded splitting
+
+When the high-level token has a `source_link` pointing to a curriculum (LehrplanPLUS,
+school syllabus, certification exam outline), **consult it before creating any
+foundation tokens**. The source defines the official scope — your foundations must
+stay inside it.
+
+**Protocol:**
+
+1. Fetch or follow the `source_link` (WebFetch for URLs, Read for local files)
+2. Locate the relevant Lernbereich / topic section in the source
+3. Extract the **explicitly listed** basic terms, dates, concepts, and
+   "grundlegende Daten und Begriffe" (for LehrplanPLUS) or equivalent
+4. Create foundation tokens ONLY for items that appear in the source
+
+**Example of a BAD split (terms not in curriculum):**
+
+> `ge-aufklaerung-begriffe`: "Define: Aufklärung, Emanzipation, Toleranz,
+> Vernunft, Fortschritt, Naturrecht."
+>
+> Problem: The LehrplanPLUS Geschichte 8 LB2 lists "Aufklärung, Menschenrechte,
+> Volkssouveränität, Gewaltenteilung, Parlament, konstitutionelle Monarchie,
+> Bürgertum" as required terms. Emanzipation, Toleranz, and Fortschrittsglaube
+> are NOT part of the 8th-grade Realschule curriculum for this Lernbereich.
+
+**Example of a CORRECT split (terms from the source):**
+
+> `ge-aufklaerung-begriffe`: "Define: Aufklärung, Volkssouveränität,
+> Gewaltenteilung, konstitutionelle Monarchie, Menschenrechte."
+>
+> Every term appears in the LehrplanPLUS. The student won't be tested on
+> anything outside this list.
+
+**Rule of thumb:** For curriculum-based tokens, the source is the contract.
+If the source says "grundlegende Daten und Begriffe: X, Y, Z", only X, Y,
+and Z are fair game for Bloom 1-2 foundations. Adding extra terms is scope
+creep and undermines the learner's trust.
+
+### Registration protocol
+
+For each gap you diagnose, register a new token and wire it immediately:
+
+```bash
+# 1. Register the foundation token (Bloom 1-2, atomic, single concept)
+zam token register \
+  --slug <parent-slug>-<gap-keyword> \
+  --concept "<one atomic concept the user was missing>" \
+  --domain <same-domain> \
+  --bloom <1-or-2> \
+  --question "<direct recall or explain question>"
+
+# 2. Wire it as a prerequisite of the high-level token
+zam token prereq --token <high-level-slug> --requires <parent-slug>-<gap-keyword>
+
+# 3. Block the high-level card after all new prerequisites are wired
+zam card block --user <username> --token <high-level-slug>
+```
+
+### What happens next
+
+After wiring prerequisites and blocking the card:
+- The high-level token is removed from the review queue
+- The next review session will surface the *foundation tokens first*
+- Once all prerequisites reach `reps >= 1`, `zam card unblock` promotes the
+  high-level token back into the review queue
+
+If prerequisites already existed when the token was rated 1, the rating command
+blocks it automatically. Use `zam card block` when the missing prerequisites were
+discovered and registered only after the rating.
+
+### Example: High-school history
+
+> User rates `ge-aufklaerung` (Bloom 4: "How did Enlightenment ideas shape the
+> French Revolution and transform Europe's political order?") as **1**.
+
+Agent diagnoses:
+- *"You couldn't name the three estates. You weren't sure what 'popular sovereignty'
+  means. You mixed up 1789 and 1793."*
+
+Agent creates three foundations:
+
+| Token | Bloom | Question |
+|-------|-------|----------|
+| `ge-aufklaerung-staende` | 1 | Who belonged to each of the three estates in 18th-century France? |
+| `ge-aufklaerung-begriffe` | 1 | Define: Enlightenment, popular sovereignty, separation of powers, natural rights. |
+| `ge-aufklaerung-daten` | 1 | Name the five key events of the French Revolution (1789–1799) with dates. |
+
+Agent wires them:
+```bash
+zam token prereq --token ge-aufklaerung --requires ge-aufklaerung-staende
+zam token prereq --token ge-aufklaerung --requires ge-aufklaerung-begriffe
+zam token prereq --token ge-aufklaerung --requires ge-aufklaerung-daten
+zam card block --user <username> --token ge-aufklaerung
+```
+
+`ge-aufklaerung` is now blocked. Next session: foundations first. When they
+stick → `ge-aufklaerung` reappears — this time with a fighting chance.
+
+### Sizing rule
+
+- Create **2–4 foundations per failed high-level token**, not 10
+- Each foundation must be **genuinely atomic** — one fact or concept
+- If the user still fails a foundation, split it further (e.g. "too many dates
+  at once" → one token per date)
+- Over time this builds a **Bloom ladder**: Level 1 facts → Level 2 understanding
+  → Level 3 application → Level 4+ analysis
+
+### Safety
+
+- **Never create more than 10 new tokens in a single session** — if a rating of 1
+  reveals massive gaps, prioritize the 3 most urgent foundations and let the rest
+  emerge in subsequent sessions
+- **Always dedup before registering** — `zam token find --query "<keywords>"`
+- **Do not split Bloom 1-2 tokens** — they are already atomic; if the user fails
+  them, the fix is re-exposure and practice, not further decomposition
+- A rating of 1 on a Bloom 1 token means the user needs simpler wording or a
+  mnemonic, not more tokens
 
 ---
 
