@@ -6,6 +6,14 @@ import { open as openFolderDialog } from "@tauri-apps/plugin-dialog";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { check as checkForUpdate } from "@tauri-apps/plugin-updater";
 import * as THREE from "three";
+import {
+  BLOOM_PACKS,
+  type Locale,
+  LOCALE_LABELS,
+  LOCALES,
+  PRIVACY_PACKS,
+  TRANSLATION_PACKS,
+} from "./i18n.js";
 
 const ZAM_RELEASES_URL = "https://github.com/zam-os/zam/releases";
 
@@ -161,6 +169,15 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       'Remove "{label}" from ZAM? Files and links in the folder will stay unchanged.',
     workspace_removed: "Workspace removed: {label}",
     workspace_remove_failed: "Could not remove workspace: {message}",
+    workspace_link_ok: "Skill link OK",
+    workspace_link_broken: "Skill link broken",
+    workspace_link_unmanaged: "Foreign skill folder",
+    workspace_repair: "Repair skill link",
+    workspace_repair_confirm:
+      'The folder for "{label}" contains a skills/zam directory that ZAM did not create. Repair deletes it and replaces it with a link. Continue?',
+    workspace_repairing: "Repairing skill link…",
+    workspace_repaired: "Skill link repaired: {label}",
+    workspace_repair_failed: "Could not repair skill link: {message}",
     lbl_app_version: "Version",
     lbl_learning_model: "Learning model",
     lbl_observer_model: "Observer model",
@@ -395,6 +412,15 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       '"{label}" aus ZAM entfernen? Dateien und Verknüpfungen im Ordner bleiben unverändert.',
     workspace_removed: "Arbeitsbereich entfernt: {label}",
     workspace_remove_failed: "Arbeitsbereich konnte nicht entfernt werden: {message}",
+    workspace_link_ok: "Skill-Link OK",
+    workspace_link_broken: "Skill-Link defekt",
+    workspace_link_unmanaged: "Fremder Skill-Ordner",
+    workspace_repair: "Skill-Link reparieren",
+    workspace_repair_confirm:
+      'Im Ordner von "{label}" liegt ein skills/zam-Verzeichnis, das nicht von ZAM stammt. Beim Reparieren wird es gelöscht und durch eine Verknüpfung ersetzt. Fortfahren?',
+    workspace_repairing: "Skill-Link wird repariert…",
+    workspace_repaired: "Skill-Link repariert: {label}",
+    workspace_repair_failed: "Skill-Link konnte nicht repariert werden: {message}",
     lbl_app_version: "Version",
     lbl_learning_model: "Lernmodell",
     lbl_observer_model: "Observer-Modell",
@@ -479,7 +505,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     update_none: "Du nutzt die aktuelle Version.",
     update_failed: "Update-Prüfung fehlgeschlagen: {message}",
     release_link_failed: "Releases konnten nicht geöffnet werden: {message}",
-  }
+  },
+  // es, fr, pt, zh, ja live in ./i18n.ts; en/de stay here as reference locales.
+  ...TRANSLATION_PACKS,
 };
 
 const BLOOM_LEVEL_NAMES: Record<string, Record<number, string>> = {
@@ -496,7 +524,8 @@ const BLOOM_LEVEL_NAMES: Record<string, Record<number, string>> = {
     3: "Anwenden (Bloom 3)",
     4: "Analysieren (Bloom 4)",
     5: "Synthetisieren (Bloom 5)"
-  }
+  },
+  ...BLOOM_PACKS,
 };
 
 // ── STATE MANAGEMENT ──────────────────────────────────────────────────────
@@ -585,6 +614,13 @@ interface WorkspaceConfig {
   defaultAgent?: string;
 }
 
+type SkillLinkHealth = "healthy" | "needs-repair" | "unmanaged";
+
+interface WorkspaceLinkHealth {
+  health: SkillLinkHealth;
+  states?: Record<string, string>;
+}
+
 interface WorkspaceListResponse {
   workspaces: WorkspaceConfig[];
   activeWorkspaceId: string | null;
@@ -592,6 +628,7 @@ interface WorkspaceListResponse {
   workspaceDir: string | null;
   defaultWorkspaceDir: string;
   dataDir: string;
+  linkHealth?: Record<string, WorkspaceLinkHealth>;
 }
 
 interface BridgeCard {
@@ -794,6 +831,7 @@ const OBSERVER_PRIVACY_REASON_LABELS: Record<string, Record<string, string>> = {
     "private-browsing": "privater Browsermodus",
     "sensitive-process": "sensible Anwendung",
   },
+  ...PRIVACY_PACKS,
 };
 
 // ── BRIDGE COMMAND RUNNER ────────────────────────────────────────────────
@@ -968,9 +1006,119 @@ function initializeTranslations() {
     t("graph_dependents");
   document.getElementById("graph-hint")!.textContent = t("graph_hint");
 
-  // Locale badge
-  document.getElementById("locale-badge")!.textContent = currentLocale.toUpperCase();
+  // Locale badge — shows the active locale code; full language name on hover.
+  const localeBadge = document.getElementById("locale-badge")!;
+  localeBadge.textContent = currentLocale.toUpperCase();
+  const safeLocale: Locale = isSupportedLocale(currentLocale) ? currentLocale : "en";
+  localeBadge.title = LOCALE_LABELS[safeLocale];
   applyTheme(loadThemePreference());
+}
+
+// ── LOCALE SWITCHER ───────────────────────────────────────────────────────
+// The locale derives from the OS by default (system.locale, resolved by the
+// bridge). Clicking the badge lets the user override it for this machine; the
+// choice persists via the system.locale setting and is read back on next launch.
+
+function isSupportedLocale(value: string): value is Locale {
+  return (LOCALES as string[]).includes(value);
+}
+
+function closeLocaleMenu(): void {
+  document.getElementById("locale-menu")?.classList.add("hidden");
+  document
+    .getElementById("locale-badge")
+    ?.setAttribute("aria-expanded", "false");
+}
+
+function renderLocaleMenu(menu: HTMLElement): void {
+  menu.replaceChildren();
+  for (const locale of LOCALES) {
+    const item = document.createElement("button");
+    item.type = "button";
+    item.className = "locale-menu-item";
+    item.setAttribute("aria-current", String(locale === currentLocale));
+    const code = document.createElement("span");
+    code.className = "locale-menu-code";
+    code.textContent = locale.toUpperCase();
+    const label = document.createElement("span");
+    label.textContent = LOCALE_LABELS[locale];
+    item.append(code, label);
+    item.addEventListener("click", () => {
+      closeLocaleMenu();
+      void setLocale(locale);
+    });
+    menu.appendChild(item);
+  }
+}
+
+function setupLocaleSwitcher(): void {
+  const badge = document.getElementById("locale-badge");
+  if (!badge) return;
+
+  badge.setAttribute("role", "button");
+  badge.setAttribute("tabindex", "0");
+  badge.setAttribute("aria-haspopup", "listbox");
+  badge.setAttribute("aria-expanded", "false");
+
+  const menu = document.createElement("div");
+  menu.id = "locale-menu";
+  menu.className = "locale-menu hidden";
+  badge.parentElement?.appendChild(menu);
+
+  const toggle = () => {
+    if (menu.classList.contains("hidden")) {
+      renderLocaleMenu(menu);
+      menu.classList.remove("hidden");
+      badge.setAttribute("aria-expanded", "true");
+    } else {
+      closeLocaleMenu();
+    }
+  };
+
+  badge.addEventListener("click", (event) => {
+    event.stopPropagation();
+    toggle();
+  });
+  badge.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggle();
+    } else if (event.key === "Escape") {
+      closeLocaleMenu();
+    }
+  });
+  document.addEventListener("click", (event) => {
+    if (
+      !menu.classList.contains("hidden") &&
+      event.target instanceof Node &&
+      !menu.contains(event.target) &&
+      event.target !== badge
+    ) {
+      closeLocaleMenu();
+    }
+  });
+}
+
+async function setLocale(locale: Locale): Promise<void> {
+  if (locale === currentLocale) return;
+  currentLocale = locale;
+
+  // Persist as an OS-default override; read back by desktop-bootstrap on launch.
+  try {
+    await runBridge("setting-set", [
+      "--key",
+      "system.locale",
+      "--value",
+      locale,
+    ]);
+  } catch (error) {
+    console.warn("Failed to persist locale override", error);
+  }
+
+  // Re-render static chrome plus the localized dynamic panels currently shown.
+  initializeTranslations();
+  void loadWorkspaceList();
+  void loadProviderStatus();
 }
 
 function isActiveWorkspace(workspace: WorkspaceConfig): boolean {
@@ -1028,6 +1176,8 @@ function renderWorkspaceList(info: WorkspaceListResponse): void {
     const row = document.createElement("div");
     row.className = "workspace-row";
     row.dataset.active = String(isActiveWorkspace(workspace));
+    const health = info.linkHealth?.[workspace.id]?.health;
+    if (health && health !== "healthy") row.dataset.linkHealth = health;
 
     const main = document.createElement("div");
     main.className = "workspace-main";
@@ -1044,6 +1194,19 @@ function renderWorkspaceList(info: WorkspaceListResponse): void {
       badge.textContent = t("workspace_active");
       titleRow.appendChild(badge);
     }
+    if (health) {
+      const linkBadge = document.createElement("span");
+      linkBadge.className = `workspace-badge workspace-link-badge ${
+        health === "healthy" ? "ok" : "warn"
+      }`;
+      linkBadge.textContent =
+        health === "healthy"
+          ? t("workspace_link_ok")
+          : health === "unmanaged"
+            ? t("workspace_link_unmanaged")
+            : t("workspace_link_broken");
+      titleRow.appendChild(linkBadge);
+    }
 
     const path = document.createElement("code");
     path.textContent = workspace.path;
@@ -1056,6 +1219,17 @@ function renderWorkspaceList(info: WorkspaceListResponse): void {
 
     const actions = document.createElement("div");
     actions.className = "workspace-actions";
+
+    if (health === "needs-repair" || health === "unmanaged") {
+      const repairButton = document.createElement("button");
+      repairButton.className = "btn warn-btn btn-sm";
+      repairButton.type = "button";
+      repairButton.textContent = t("workspace_repair");
+      repairButton.addEventListener("click", () => {
+        void repairWorkspaceLinks(workspace, health);
+      });
+      actions.appendChild(repairButton);
+    }
 
     const useButton = document.createElement("button");
     useButton.className = "btn secondary-btn btn-sm";
@@ -1146,6 +1320,37 @@ async function removeWorkspace(workspace: WorkspaceConfig): Promise<void> {
   } catch (err) {
     if (status) {
       status.textContent = tf("workspace_remove_failed", {
+        message: errorMessage(err),
+      });
+    }
+  }
+}
+
+async function repairWorkspaceLinks(
+  workspace: WorkspaceConfig,
+  health: SkillLinkHealth,
+): Promise<void> {
+  const label = workspace.label || workspace.id;
+  // Replacing a foreign skills/zam directory is destructive, so confirm first.
+  // Broken links and outdated copies are clearly ZAM's and repair silently.
+  if (
+    health === "unmanaged" &&
+    !window.confirm(tf("workspace_repair_confirm", { label }))
+  ) {
+    return;
+  }
+
+  const status = document.getElementById("setup-status");
+  if (status) status.textContent = t("workspace_repairing");
+  try {
+    await runBridge("workspace-repair-links", ["--id", workspace.id]);
+    await loadWorkspaceList();
+    if (status) {
+      status.textContent = tf("workspace_repaired", { label });
+    }
+  } catch (err) {
+    if (status) {
+      status.textContent = tf("workspace_repair_failed", {
         message: errorMessage(err),
       });
     }
@@ -3782,6 +3987,7 @@ function devObserverEnabled(): boolean {
 window.addEventListener("DOMContentLoaded", () => {
   applyTheme(loadThemePreference());
   initializeTranslations();
+  setupLocaleSwitcher();
 
   // Load initial dashboard state
   loadDashboard();

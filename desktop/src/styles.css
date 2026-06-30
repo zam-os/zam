@@ -248,6 +248,7 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   gap: 15px;
+  position: relative;
 }
 
 .status-indicator {
@@ -323,6 +324,73 @@ textarea:focus-visible {
   padding: 4px 8px;
   border-radius: 6px;
   text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+}
+
+.locale-badge:hover {
+  background: rgba(0, 240, 255, 0.16);
+  border-color: rgba(0, 240, 255, 0.4);
+}
+
+.locale-badge::after {
+  content: "▾";
+  margin-left: 5px;
+  font-size: 9px;
+  opacity: 0.75;
+}
+
+.locale-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  min-width: 168px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+}
+
+.locale-menu.hidden {
+  display: none;
+}
+
+.locale-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 10px;
+  border: none;
+  background: transparent;
+  border-radius: 7px;
+  color: var(--clr-text-secondary);
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.locale-menu-item:hover {
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--clr-text-primary);
+}
+
+.locale-menu-item[aria-current="true"] {
+  background: rgba(14, 165, 233, 0.14);
+  color: var(--clr-text-primary);
+}
+
+.locale-menu-code {
+  min-width: 22px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--clr-accent-cyan);
 }
 
 /* ── FROSTED GLASS CARDS ─────────────────────────────────────────────────── */
@@ -838,6 +906,23 @@ textarea:focus-visible {
   font-weight: 800;
   padding: 2px 8px;
   text-transform: uppercase;
+}
+
+.workspace-link-badge.ok {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: var(--clr-good);
+}
+
+.workspace-link-badge.warn {
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.32);
+  color: var(--clr-hard);
+}
+
+.workspace-row[data-link-health="needs-repair"],
+.workspace-row[data-link-health="unmanaged"] {
+  border-color: rgba(245, 158, 11, 0.4);
 }
 
 .workspace-row code {
@@ -1526,6 +1611,18 @@ textarea::placeholder {
 .danger-btn:hover {
   background: rgba(239, 68, 68, 0.2);
   border-color: var(--clr-again);
+  color: #ffffff;
+}
+
+.warn-btn {
+  background: rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: var(--clr-hard);
+}
+
+.warn-btn:hover {
+  background: rgba(245, 158, 11, 0.24);
+  border-color: var(--clr-hard);
   color: #ffffff;
 }
 

@@ -2,7 +2,6 @@ import {
   existsSync,
   lstatSync,
   mkdirSync,
-  readdirSync,
   readFileSync,
   realpathSync,
   rmSync,
@@ -87,10 +86,32 @@ export interface SkillWireOptions {
   quiet?: boolean;
 }
 
+/**
+ * Health of a single agent's `skills/zam` destination relative to the packaged
+ * source. Drives both wiring decisions and the read-only status surfaced to the
+ * CLI and Studio.
+ */
+export type SkillLinkState =
+  | "linked"
+  | "missing"
+  | "broken"
+  | "stale-copy"
+  | "unmanaged"
+  | "source-directory"
+  | "source-missing";
+
 function pathExists(path: string): boolean {
   try {
     lstatSync(path);
     return true;
+  } catch {
+    return false;
+  }
+}
+
+function isSymbolicLink(path: string): boolean {
+  try {
+    return lstatSync(path).isSymbolicLink();
   } catch {
     return false;
   }
@@ -113,27 +134,51 @@ function pathsResolveToSameDirectory(
 }
 
 function linkPointsTo(sourceDir: string, destinationDir: string): boolean {
+  return (
+    isSymbolicLink(destinationDir) &&
+    pathsResolveToSameDirectory(sourceDir, destinationDir)
+  );
+}
+
+/**
+ * True when the destination is a real directory that carries the ZAM skill
+ * fingerprint (`name: zam` in SKILL.md). Such a directory is an outdated copy of
+ * the skill — safe to replace with a live link even without `--force`. A
+ * directory whose SKILL.md names a different skill is treated as unmanaged.
+ */
+function isZamSkillCopy(destinationDir: string): boolean {
   try {
-    return (
-      lstatSync(destinationDir).isSymbolicLink() &&
-      pathsResolveToSameDirectory(sourceDir, destinationDir)
-    );
+    if (!lstatSync(destinationDir).isDirectory()) return false;
+    const skillFile = join(destinationDir, "SKILL.md");
+    if (!existsSync(skillFile)) return false;
+    return /^name:\s*zam\s*$/m.test(readFileSync(skillFile, "utf8"));
   } catch {
     return false;
   }
 }
 
-function isReplaceableCopiedSkill(destinationDir: string): boolean {
-  try {
-    if (!lstatSync(destinationDir).isDirectory()) return false;
-    const entries = readdirSync(destinationDir);
-    if (entries.length !== 1 || entries[0] !== "SKILL.md") return false;
-    return /^name:\s*zam\s*$/m.test(
-      readFileSync(join(destinationDir, "SKILL.md"), "utf8"),
-    );
-  } catch {
-    return false;
+/**
+ * Classify a destination directory against its packaged source so wiring and
+ * inspection share one decision. `broken` covers a symlink that no longer
+ * resolves to the source (a dangling junction after a ZAM move/update);
+ * `stale-copy` is an outdated copied skill; `unmanaged` is a foreign directory.
+ */
+export function classifySkillDestination(
+  sourceDir: string,
+  destinationDir: string,
+): SkillLinkState {
+  if (!existsSync(sourceDir)) return "source-missing";
+  if (
+    !isSymbolicLink(destinationDir) &&
+    pathsResolveToSameDirectory(sourceDir, destinationDir)
+  ) {
+    return "source-directory";
   }
+  if (linkPointsTo(sourceDir, destinationDir)) return "linked";
+  if (!pathExists(destinationDir)) return "missing";
+  if (isSymbolicLink(destinationDir)) return "broken";
+  if (isZamSkillCopy(destinationDir)) return "stale-copy";
+  return "unmanaged";
 }
 
 export function wireSkills(
@@ -150,8 +195,10 @@ export function wireSkills(
     if (!pairAgents.some((agent) => agents.has(agent))) continue;
     const sourceDir = dirname(from);
     const destinationDir = dirname(join(cwd, to));
+    const label = dirname(to);
+    const state = classifySkillDestination(sourceDir, destinationDir);
 
-    if (!existsSync(sourceDir)) {
+    if (state === "source-missing") {
       if (!opts.quiet) {
         console.warn(`  warn  source not found, skipping: ${sourceDir}`);
       }
@@ -164,11 +211,8 @@ export function wireSkills(
       continue;
     }
 
-    if (
-      pathsResolveToSameDirectory(sourceDir, destinationDir) &&
-      !lstatSync(destinationDir).isSymbolicLink()
-    ) {
-      log(`  skip  ${dirname(to)} (package source)`);
+    if (state === "source-directory") {
+      log(`  skip  ${label} (package source)`);
       results.push({
         source: sourceDir,
         destination: destinationDir,
@@ -178,8 +222,8 @@ export function wireSkills(
       continue;
     }
 
-    if (linkPointsTo(sourceDir, destinationDir)) {
-      log(`  skip  ${dirname(to)} (already linked)`);
+    if (state === "linked") {
+      log(`  skip  ${label} (already linked)`);
       results.push({
         source: sourceDir,
         destination: destinationDir,
@@ -189,15 +233,18 @@ export function wireSkills(
       continue;
     }
 
-    const destinationExists = pathExists(destinationDir);
+    // A dangling ZAM junction or an outdated ZAM copy is clearly ours, so heal
+    // it even without --force. A directory with no ZAM fingerprint stays put
+    // unless the caller forces the replacement.
+    const destinationExists = state !== "missing";
     const replaceExisting =
       destinationExists &&
-      (Boolean(opts.force) || isReplaceableCopiedSkill(destinationDir));
+      (Boolean(opts.force) || state === "broken" || state === "stale-copy");
 
     if (destinationExists && !replaceExisting) {
       if (!opts.quiet) {
         console.warn(
-          `  warn  ${dirname(to)} already exists and is not managed by ZAM; use --force to replace it`,
+          `  warn  ${label} already exists and is not managed by ZAM; use --force to replace it`,
         );
       }
       results.push({
@@ -211,7 +258,7 @@ export function wireSkills(
 
     const action: SkillWireAction = destinationExists ? "relinked" : "linked";
     if (opts.dryRun) {
-      log(`  would ${action === "linked" ? "link" : "relink"}  ${dirname(to)}`);
+      log(`  would ${action === "linked" ? "link" : "relink"}  ${label}`);
     } else {
       if (destinationExists) {
         rmSync(destinationDir, { recursive: true, force: true });
@@ -222,12 +269,63 @@ export function wireSkills(
         destinationDir,
         process.platform === "win32" ? "junction" : "dir",
       );
-      log(`  ${action === "linked" ? "link" : "relink"}  ${dirname(to)}`);
+      log(`  ${action === "linked" ? "link" : "relink"}  ${label}`);
     }
     results.push({ source: sourceDir, destination: destinationDir, action });
   }
 
   return results;
+}
+
+export type SkillLinkHealth = "healthy" | "needs-repair" | "unmanaged";
+
+export interface SkillLinkInspection {
+  agents: SetupAgent[];
+  source: string;
+  destination: string;
+  state: SkillLinkState;
+}
+
+/**
+ * Read-only counterpart to {@link wireSkills}: report the link state for each
+ * agent destination without touching the filesystem. Used to show whether a
+ * workspace is cleanly linked and whether a repair is warranted.
+ */
+export function inspectSkillLinks(
+  cwd: string = process.cwd(),
+  agents: Set<SetupAgent> = parseSetupAgents(),
+): SkillLinkInspection[] {
+  const results: SkillLinkInspection[] = [];
+  for (const { from, to, agents: pairAgents } of SKILL_PAIRS) {
+    if (!pairAgents.some((agent) => agents.has(agent))) continue;
+    const sourceDir = dirname(from);
+    const destinationDir = dirname(join(cwd, to));
+    results.push({
+      agents: pairAgents,
+      source: sourceDir,
+      destination: destinationDir,
+      state: classifySkillDestination(sourceDir, destinationDir),
+    });
+  }
+  return results;
+}
+
+/**
+ * Collapse per-agent link states into one workspace verdict. `unmanaged` wins
+ * because replacing a foreign directory needs explicit confirmation; otherwise
+ * a missing, broken, or stale link reads as `needs-repair`.
+ */
+export function summarizeSkillLinkHealth(
+  inspections: SkillLinkInspection[],
+): SkillLinkHealth {
+  if (inspections.some((item) => item.state === "unmanaged")) {
+    return "unmanaged";
+  }
+  const repairable: SkillLinkState[] = ["missing", "broken", "stale-copy"];
+  if (inspections.some((item) => repairable.includes(item.state))) {
+    return "needs-repair";
+  }
+  return "healthy";
 }
 
 const ZAM_BLOCK_START = "<!-- ZAM:START -->";

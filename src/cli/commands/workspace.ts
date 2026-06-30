@@ -25,7 +25,10 @@ import {
   type WorkspaceSourceControl,
 } from "../../kernel/index.js";
 import {
+  inspectSkillLinks,
   parseSetupAgents,
+  type SkillLinkHealth,
+  summarizeSkillLinkHealth,
   wireSkills,
   writeAgentsMd,
   writeClaudeMd,
@@ -123,14 +126,34 @@ function requireWorkspace(id: string): WorkspaceConfig {
   return workspace;
 }
 
+function formatLinkHealth(id: string, health: SkillLinkHealth): string {
+  switch (health) {
+    case "healthy":
+      return "ok";
+    case "needs-repair":
+      return `needs repair — run: zam workspace setup ${id}`;
+    case "unmanaged":
+      return `unmanaged skill dir — run: zam workspace setup ${id} --force`;
+  }
+}
+
 workspaceCommand
   .command("list")
   .description("List configured ZAM workspaces")
   .option("--json", "Output as JSON")
   .action((opts: { json?: boolean }) => {
     const workspaces = getConfiguredWorkspaces();
+    const agents = parseSetupAgents();
+    const linkHealth: Record<string, SkillLinkHealth> = Object.fromEntries(
+      workspaces
+        .filter((workspace) => existsSync(workspace.path))
+        .map((workspace) => [
+          workspace.id,
+          summarizeSkillLinkHealth(inspectSkillLinks(workspace.path, agents)),
+        ]),
+    );
     if (opts.json) {
-      console.log(JSON.stringify({ workspaces }, null, 2));
+      console.log(JSON.stringify({ workspaces, linkHealth }, null, 2));
       return;
     }
 
@@ -152,6 +175,10 @@ workspaceCommand
       }
       if (workspace.knowledgeScopes?.length) {
         console.log(`      scopes: ${workspace.knowledgeScopes.join(", ")}`);
+      }
+      const health = linkHealth[workspace.id];
+      if (health) {
+        console.log(`      links: ${formatLinkHealth(workspace.id, health)}`);
       }
     }
   });
