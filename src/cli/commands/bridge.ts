@@ -63,6 +63,7 @@ import {
   startSession,
   syncObserverSidecarPolicy,
   uiObservationLogExists,
+  type WorkspaceConfig,
   type WorkspaceKind,
 } from "../../kernel/index.js";
 import {
@@ -106,7 +107,14 @@ import {
   writeScopedProviders,
   writeScopedRoles,
 } from "../providers/config.js";
-import { parseSetupAgents, wireSkills } from "../provisioning/index.js";
+import {
+  inspectSkillLinks,
+  parseSetupAgents,
+  type SkillLinkHealth,
+  type SkillLinkState,
+  summarizeSkillLinkHealth,
+  wireSkills,
+} from "../provisioning/index.js";
 import { normalizeShell } from "../terminal-open.js";
 import { ensureDefaultUser, resolveUser } from "../users/identity.js";
 import {
@@ -323,6 +331,34 @@ function provisionConfiguredWorkspaces(): ReturnType<typeof wireSkills> {
   );
 }
 
+interface WorkspaceLinkHealth {
+  health: SkillLinkHealth;
+  states: Record<string, SkillLinkState>;
+}
+
+/**
+ * Report, per workspace id, whether ZAM is cleanly linked. Read-only — it never
+ * mutates the filesystem, so listing a workspace cannot change its links.
+ * Workspaces whose directory is missing (e.g. an offline drive) are omitted.
+ */
+function buildWorkspaceLinkHealth(
+  workspaces: WorkspaceConfig[],
+): Record<string, WorkspaceLinkHealth> {
+  const agents = parseSetupAgents();
+  const map: Record<string, WorkspaceLinkHealth> = {};
+  for (const workspace of workspaces) {
+    if (!existsSync(workspace.path)) continue;
+    const links = inspectSkillLinks(workspace.path, agents);
+    map[workspace.id] = {
+      health: summarizeSkillLinkHealth(links),
+      states: Object.fromEntries(
+        links.map((link) => [link.agents.join("+"), link.state]),
+      ),
+    };
+  }
+  return map;
+}
+
 async function ensureDesktopWorkspace(db: Database): Promise<{
   workspaceDir: string;
   activeWorkspaceId: string;
@@ -343,14 +379,57 @@ bridgeCommand
   .action(async () => {
     await withDb(async (db) => {
       const activeWorkspace = await ensureActiveWorkspace(db);
+      const workspaces = getConfiguredWorkspaces();
       jsonOut({
-        workspaces: getConfiguredWorkspaces(),
+        workspaces,
         activeWorkspaceId: activeWorkspace.id,
         activeWorkspace,
         workspaceDir: activeWorkspace.path,
         defaultWorkspaceDir: defaultWorkspaceDir(),
         dataDir: join(homedir(), ".zam"),
+        linkHealth: buildWorkspaceLinkHealth(workspaces),
       });
+    });
+  });
+
+bridgeCommand
+  .command("workspace-repair-links")
+  .description(
+    "Relink ZAM skill junctions for a configured workspace, replacing broken links and outdated copies (JSON)",
+  )
+  .requiredOption("--id <id>", "Workspace id")
+  .option(
+    "--agents <list>",
+    "comma-separated agents to wire: all, claude, copilot, codex, agent",
+  )
+  .action(async (opts) => {
+    const id = String(opts.id ?? "").trim();
+    if (!id) jsonError("A non-empty --id is required");
+    const workspace = getConfiguredWorkspaces().find((item) => item.id === id);
+    if (!workspace) jsonError(`Workspace "${id}" is not configured`);
+    if (!existsSync(workspace.path)) {
+      jsonError(`Workspace path does not exist: ${workspace.path}`);
+    }
+
+    const agents = parseSetupAgents(opts.agents);
+    // Force replaces anything that is not already a correct link — dangling
+    // junctions and outdated copies alike. The Studio confirms before calling
+    // this for a directory with no ZAM fingerprint.
+    const skillLinks = wireSkills(workspace.path, agents, {
+      force: true,
+      quiet: true,
+    });
+    const links = inspectSkillLinks(workspace.path, agents);
+    jsonOut({
+      ok: true,
+      workspace,
+      skillLinks,
+      linkHealth: {
+        health: summarizeSkillLinkHealth(links),
+        states: Object.fromEntries(
+          links.map((link) => [link.agents.join("+"), link.state]),
+        ),
+      },
     });
   });
 
