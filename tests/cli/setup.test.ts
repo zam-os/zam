@@ -12,12 +12,18 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  activateMachineProviderConfig,
   formatDatabaseInitTarget,
   parseSetupAgents,
   writeAgentsMd,
   wireSkills,
   writeCopilotInstructions,
 } from "../../src/cli/commands/setup.js";
+import {
+  getSetting,
+  openDatabase,
+  saveInstallConfig,
+} from "../../src/kernel/index.js";
 
 describe("setup command helpers", () => {
   it("links ZAM skills for Claude/Copilot, shared agents, and Codex", () => {
@@ -227,6 +233,47 @@ describe("setup command helpers", () => {
     ).toBe(
       "ZAM database via Turso remote at libsql://zam-example.turso.io",
     );
+  });
+
+  it("activates legacy machine-local provider config without moving it into shared settings", async () => {
+    const configDir = mkdtempSync(join(tmpdir(), "zam-setup-ai-config-"));
+    const previousConfigPath = process.env.ZAM_CONFIG_PATH;
+    process.env.ZAM_CONFIG_PATH = join(configDir, "config.json");
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+
+    try {
+      saveInstallConfig({
+        ai: {
+          providers: {
+            deepseek: {
+              url: "https://api.deepseek.com/v1",
+              model: "deepseek-v4-flash",
+              apiFlavor: "chat-completions",
+              apiKeyRef: "deepseek",
+            },
+          },
+          roles: { recall: { primary: "deepseek" } },
+        },
+      });
+
+      await activateMachineProviderConfig(db);
+
+      expect(await getSetting(db, "llm.enabled")).toBe("true");
+      expect(await getSetting(db, "llm.providers")).toBeUndefined();
+      expect(await getSetting(db, "llm.roles")).toBeUndefined();
+    } finally {
+      await db.close();
+      if (previousConfigPath === undefined) {
+        delete process.env.ZAM_CONFIG_PATH;
+      } else {
+        process.env.ZAM_CONFIG_PATH = previousConfigPath;
+      }
+      rmSync(configDir, { recursive: true, force: true });
+    }
   });
 
   it("ships valid frontmatter for every packaged ZAM skill", () => {

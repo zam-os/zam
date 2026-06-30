@@ -100,23 +100,38 @@ export async function getLlmConfig(db: Database): Promise<LlmConfig> {
  * provider. `url`/`model`/`apiKey` fall back to the base `llm.*` config so a
  * single multimodal endpoint only needs `llm.vision.enabled=true`.
  */
-/** Suggests a cheap/appropriate cloud vision model based on the endpoint URL. */
-export function getCloudModelRecommendation(url: string): string | null {
+export type ApiFlavor = "chat-completions" | "anthropic-messages";
+
+export interface CloudModelRecommendation {
+  model: string;
+  flavor: ApiFlavor;
+}
+
+/** Suggests a cheap/appropriate cloud model and API flavor based on the endpoint URL. */
+export function getCloudModelRecommendation(
+  url: string,
+): CloudModelRecommendation | null {
   const lowercase = url.toLowerCase();
   if (lowercase.includes("openrouter.ai")) {
-    return "openrouter/free";
+    return { model: "openrouter/free", flavor: "chat-completions" };
   }
   if (lowercase.includes("openai.com") || lowercase.includes("api.openai")) {
-    return "gpt-5-mini";
+    return { model: "gpt-5-mini", flavor: "chat-completions" };
   }
   if (lowercase.includes("googleapis.com") || lowercase.includes("google")) {
-    return "gemini-3.5-flash"; // extremely cost-effective cloud vision
+    return { model: "gemini-3.5-flash", flavor: "chat-completions" };
   }
   if (lowercase.includes("deepseek.com")) {
-    return "deepseek-v4-flash";
+    return { model: "deepseek-v4-flash", flavor: "chat-completions" };
   }
   if (lowercase.includes("mimo")) {
-    return "mimo-v2.5";
+    return { model: "mimo-v2.5", flavor: "chat-completions" };
+  }
+  if (lowercase.includes("anthropic.com")) {
+    return {
+      model: "claude-haiku-4-5-20251001",
+      flavor: "anthropic-messages",
+    };
   }
   return null;
 }
@@ -124,7 +139,6 @@ export function getCloudModelRecommendation(url: string): string | null {
 // ── Role-based provider resolution (ADR 2026-06-23) ──────────────────────────
 
 export type LlmRole = "vision" | "recall" | "text";
-export type ApiFlavor = "chat-completions" | "anthropic-messages";
 
 /** A resolved endpoint for one role, with an optional fallback to try next. */
 export interface ProviderConfig {
@@ -310,14 +324,15 @@ async function getLegacyRoleConfig(
     const maxFramesStr = await getSetting(db, "llm.vision.max_frames");
     const parsed = maxFramesStr ? parseInt(maxFramesStr, 10) : 100;
     const url = (await getSetting(db, "llm.vision.url")) || base.url;
+    const recommendation = getCloudModelRecommendation(url);
     let model = await getSetting(db, "llm.vision.model");
-    if (!model) model = getCloudModelRecommendation(url) || base.model;
+    if (!model) model = recommendation?.model || base.model;
     return {
       enabled,
       url,
       model,
       apiKey: (await getSetting(db, "llm.vision.api_key")) || base.apiKey,
-      apiFlavor: inferApiFlavor(url),
+      apiFlavor: recommendation?.flavor || inferApiFlavor(url),
       locale: base.locale,
       source: "legacy",
       local: isLocalEndpoint(url),
@@ -923,7 +938,7 @@ export async function checkVisionReadiness(
   let warning: string | undefined;
   if (cfg.enabled && online && modelAvailable && !visionModelExplicit) {
     const cloudRec = getCloudModelRecommendation(active.url);
-    if (cloudRec && active.model === cloudRec) {
+    if (cloudRec && active.model === cloudRec.model) {
       // Auto-recommended cloud vision model is active; do not warn about text-only fallback.
     } else {
       warning =

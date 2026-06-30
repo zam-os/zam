@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   checkVisionReadiness,
+  getCloudModelRecommendation,
   getProviderForRole,
   inferApiFlavor,
 } from "../../src/cli/llm/client.js";
@@ -68,6 +69,25 @@ describe("inferApiFlavor", () => {
     );
     expect(inferApiFlavor("http://localhost:8000/v1")).toBe("chat-completions");
     expect(inferApiFlavor("not a url")).toBe("chat-completions");
+  });
+});
+
+describe("getCloudModelRecommendation", () => {
+  it("returns model and API flavor hints for cloud endpoints", () => {
+    expect(getCloudModelRecommendation("https://api.deepseek.com/v1")).toEqual({
+      model: "deepseek-v4-flash",
+      flavor: "chat-completions",
+    });
+    expect(
+      getCloudModelRecommendation("https://api.deepseek.com/anthropic"),
+    ).toEqual({
+      model: "deepseek-v4-flash",
+      flavor: "chat-completions",
+    });
+    expect(getCloudModelRecommendation("https://api.anthropic.com")).toEqual({
+      model: "claude-haiku-4-5-20251001",
+      flavor: "anthropic-messages",
+    });
   });
 });
 

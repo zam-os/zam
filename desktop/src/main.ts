@@ -1846,13 +1846,18 @@ async function refreshCloudModelHint(): Promise<void> {
     return;
   }
   try {
-    const response = await runBridge<{ recommendation: string | null }>(
-      "cloud-model-hint",
-      ["--url", url],
-    );
+    const response = await runBridge<{
+      recommendation: { model: string; flavor: string } | null;
+    }>("cloud-model-hint", ["--url", url]);
     hint.textContent = response.recommendation
-      ? tf("ai_provider_cloud_hint", { model: response.recommendation })
+      ? tf("ai_provider_cloud_hint", { model: response.recommendation.model })
       : "";
+    const flavorSelect = document.getElementById(
+      "ai-provider-flavor",
+    ) as HTMLSelectElement | null;
+    if (flavorSelect && response.recommendation?.flavor) {
+      flavorSelect.value = response.recommendation.flavor;
+    }
   } catch {
     hint.textContent = "";
   }

@@ -22,9 +22,13 @@ import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Command } from "commander";
 import {
+  type Database,
   type DatabaseTargetInfo,
   getDatabaseTargetInfo,
+  getMachineAiConfig,
+  getSetting,
   openDatabaseWithSync,
+  setSetting,
 } from "../../kernel/index.js";
 
 // The bundled CLI resolves from dist/cli/index.js; source tests resolve from
@@ -264,6 +268,7 @@ async function initDatabase(skipInit: boolean): Promise<void> {
   try {
     const target = getDatabaseTargetInfo();
     const db = await openDatabaseWithSync({ initialize: true });
+    await activateMachineProviderConfig(db);
     await db.close();
     console.log(`  init  ${formatDatabaseInitTarget(target)}`);
   } catch (err) {
@@ -275,6 +280,21 @@ async function initDatabase(skipInit: boolean): Promise<void> {
       console.log(`  skip  database already initialized`);
     }
   }
+}
+
+export async function activateMachineProviderConfig(
+  db: Database,
+): Promise<void> {
+  const machineAi = getMachineAiConfig();
+  const providerCount = Object.keys(machineAi.providers ?? {}).length;
+  const roleCount = Object.keys(machineAi.roles ?? {}).length;
+  if (providerCount === 0 && roleCount === 0) return;
+  if ((await getSetting(db, "llm.enabled")) !== undefined) return;
+
+  await setSetting(db, "llm.enabled", "true");
+  console.log(
+    `  activate  ${providerCount} machine-local provider(s) from ~/.zam/config.json`,
+  );
 }
 
 const ZAM_BLOCK_START = "<!-- ZAM:START -->";
