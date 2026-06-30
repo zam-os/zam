@@ -29,12 +29,16 @@ import {
   createToken,
   decidePostCapture,
   decidePreCapture,
+  deleteCardForUser,
+  deleteToken,
   discoverSkills,
   endSession,
   ensureCard,
   executeReviewAction,
   generatePrompt,
+  generateTokenSlug,
   getAgentSkill,
+  getCard,
   getCardDeletionImpact,
   getConfiguredWorkspaces,
   getDatabaseTargetInfo,
@@ -48,6 +52,7 @@ import {
   hasCommand,
   isObserverPolicyConfigured,
   listAgentSkills,
+  listPersonalCards,
   listProviderApiKeyRefs,
   listTokens,
   monitorLogExists,
@@ -63,6 +68,7 @@ import {
   startSession,
   syncObserverSidecarPolicy,
   uiObservationLogExists,
+  updateToken,
   type WorkspaceConfig,
   type WorkspaceKind,
 } from "../../kernel/index.js";
@@ -2723,6 +2729,253 @@ bridgeCommand
         center: mapToken(nb.center),
         prerequisites: nb.prerequisites.map(mapToken),
         dependents: nb.dependents.map(mapToken),
+      });
+    });
+  });
+
+// ── zam bridge personal-card-list ──────────────────────────────────────────
+
+bridgeCommand
+  .command("personal-card-list")
+  .description("List and search personal learning cards (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .option("--query <query>", "Text search query")
+  .option("--domain <domain>", "Filter by category/domain")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const cards = await listPersonalCards(db, userId, {
+        query: opts.query,
+        domain: opts.domain,
+      });
+      jsonOut({ cards });
+    });
+  });
+
+// ── zam bridge personal-card-create ────────────────────────────────────────
+
+bridgeCommand
+  .command("personal-card-create")
+  .description("Atomically create a token and its personal card (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--concept <concept>", "Concept description / answer")
+  .option("--domain <domain>", "Knowledge category / domain", "")
+  .option("--question <question>", "Question prompt for recall")
+  .option("--source-link <link>", "Source file path or reference URL")
+  .option("--bloom <level>", "Bloom taxonomy level (1-5)", "1")
+  .option("--mode <mode>", "Symbiosis mode: shadowing | copilot | autonomy | none", "none")
+  .option("--context <context>", "Context description", "")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      
+      const bloom = Number(opts.bloom) as BloomLevel;
+      if (bloom < 1 || bloom > 5) {
+        jsonError("bloom must be between 1 and 5");
+      }
+      
+      const mode = opts.mode === "none" ? null : (opts.mode as SymbiosisMode);
+      if (mode && !["shadowing", "copilot", "autonomy"].includes(mode)) {
+        jsonError(`Invalid mode: ${opts.mode}`);
+      }
+      
+      const slug = await generateTokenSlug(db, opts.domain, opts.concept, opts.question);
+      
+      let question: string | null = opts.question || null;
+      if (!question) {
+        question = generateConceptFreeCue(bloom, slug, opts.domain);
+      }
+      
+      const token = await createToken(db, {
+        slug,
+        concept: opts.concept,
+        domain: opts.domain,
+        bloom_level: bloom,
+        context: opts.context,
+        symbiosis_mode: mode,
+        source_link: opts.sourceLink || null,
+        question,
+      });
+      
+      const card = await ensureCard(db, token.id, userId);
+      
+      jsonOut({
+        success: true,
+        token: {
+          id: token.id,
+          slug: token.slug,
+          concept: token.concept,
+          domain: token.domain,
+          bloomLevel: token.bloom_level,
+          context: token.context,
+          symbiosisMode: token.symbiosis_mode,
+          sourceLink: token.source_link,
+          question: token.question,
+          createdAt: token.created_at,
+          updatedAt: token.updated_at,
+        },
+        card: {
+          id: card.id,
+          tokenId: card.token_id,
+          userId: card.user_id,
+          state: card.state,
+          dueAt: card.due_at,
+          blocked: card.blocked,
+        }
+      });
+    });
+  });
+
+// ── zam bridge personal-card-update ────────────────────────────────────────
+
+bridgeCommand
+  .command("personal-card-update")
+  .description("Update the mutable token fields of a personal card (JSON)")
+  .requiredOption("--slug <slug>", "Token slug to update")
+  .option("--concept <concept>", "Updated concept text")
+  .option("--domain <domain>", "Updated domain / category")
+  .option("--bloom <level>", "Updated Bloom taxonomy level (1-5)")
+  .option("--context <context>", "Updated context")
+  .option("--mode <mode>", "Updated symbiosis mode: shadowing | copilot | autonomy | none")
+  .option("--source-link <link>", "Updated source link")
+  .option("--question <question>", "Updated question text")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const updates: {
+        concept?: string;
+        domain?: string;
+        bloom_level?: BloomLevel;
+        context?: string;
+        symbiosis_mode?: SymbiosisMode | null;
+        source_link?: string | null;
+        question?: string | null;
+      } = {};
+      
+      if (opts.concept !== undefined) updates.concept = opts.concept;
+      if (opts.domain !== undefined) updates.domain = opts.domain;
+      if (opts.bloom !== undefined) {
+        const bloom = Number(opts.bloom) as BloomLevel;
+        if (bloom < 1 || bloom > 5) {
+          jsonError("bloom must be between 1 and 5");
+        }
+        updates.bloom_level = bloom;
+      }
+      if (opts.context !== undefined) updates.context = opts.context;
+      if (opts.sourceLink !== undefined) {
+        updates.source_link = opts.sourceLink === "" ? null : opts.sourceLink;
+      }
+      if (opts.question !== undefined) {
+        updates.question = opts.question === "" ? null : opts.question;
+      }
+      if (opts.mode !== undefined) {
+        const validModes = ["shadowing", "copilot", "autonomy", "none"];
+        if (!validModes.includes(opts.mode)) {
+          jsonError(`Invalid mode: ${opts.mode}`);
+        }
+        updates.symbiosis_mode = opts.mode === "none" ? null : (opts.mode as SymbiosisMode);
+      }
+      
+      const token = await updateToken(db, opts.slug, updates);
+      
+      jsonOut({
+        success: true,
+        token: {
+          id: token.id,
+          slug: token.slug,
+          concept: token.concept,
+          domain: token.domain,
+          bloomLevel: token.bloom_level,
+          context: token.context,
+          symbiosisMode: token.symbiosis_mode,
+          sourceLink: token.source_link,
+          question: token.question,
+          createdAt: token.created_at,
+          updatedAt: token.updated_at,
+        }
+      });
+    });
+  });
+
+// ── zam bridge personal-card-remove ────────────────────────────────────────
+
+bridgeCommand
+  .command("personal-card-remove")
+  .description("Remove a personal card (optionally previewing the effects) (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--slug <slug>", "Token slug")
+  .option("--confirm", "Perform the deletion instead of a preview")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const token = await getTokenBySlug(db, opts.slug);
+      if (!token) {
+        jsonError(`Token not found: ${opts.slug}`);
+      }
+      
+      const card = await getCard(db, token.id, userId);
+      if (!card) {
+        jsonError(`Card not found for token ${opts.slug} and user ${userId}`);
+      }
+      
+      if (!opts.confirm) {
+        const impact = await getCardDeletionImpact(db, token.id, userId);
+        jsonOut({
+          success: true,
+          preview: true,
+          requiresConfirmation: true,
+          token: { id: token.id, slug: token.slug },
+          impact
+        });
+        return;
+      }
+      
+      const result = await deleteCardForUser(db, token.id, userId);
+      jsonOut({
+        success: true,
+        deletedCard: {
+          id: result.card.id,
+          tokenId: result.card.token_id,
+          userId: result.card.user_id,
+        },
+        impact: result.impact
+      });
+    });
+  });
+
+// ── zam bridge personal-card-delete ────────────────────────────────────────
+
+bridgeCommand
+  .command("personal-card-delete")
+  .description("Hard-delete a token and all its dependencies (JSON)")
+  .requiredOption("--slug <slug>", "Token slug")
+  .option("--confirm", "Perform the deletion instead of a preview")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const token = await getTokenBySlug(db, opts.slug);
+      if (!token) {
+        jsonError(`Token not found: ${opts.slug}`);
+      }
+      
+      if (!opts.confirm) {
+        const impact = await getTokenDeleteImpact(db, opts.slug);
+        jsonOut({
+          success: true,
+          preview: true,
+          requiresConfirmation: true,
+          token: { id: token.id, slug: token.slug },
+          impact
+        });
+        return;
+      }
+      
+      const result = await deleteToken(db, opts.slug);
+      jsonOut({
+        success: true,
+        deletedToken: {
+          id: result.token.id,
+          slug: result.token.slug,
+        },
+        impact: result.impact
       });
     });
   });

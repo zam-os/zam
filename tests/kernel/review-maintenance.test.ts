@@ -23,6 +23,8 @@ import {
   openDatabase,
   startSession,
   updateToken,
+  listPersonalCards,
+  generateTokenSlug,
 } from "../../src/kernel/index.js";
 
 describe("review maintenance primitives", () => {
@@ -248,5 +250,84 @@ describe("review maintenance primitives", () => {
       userId: "thomas",
     });
     expect(stopped.stopped).toBe(true);
+  });
+
+  it("generates a clean slug and handles collisions", async () => {
+    const baseSlug = await generateTokenSlug(db, "Git", "git branch list");
+    expect(baseSlug).toBe("git-git-branch-list");
+
+    await createToken(db, {
+      slug: baseSlug,
+      concept: "concept 1",
+    });
+
+    const collisionSlug1 = await generateTokenSlug(db, "Git", "git branch list");
+    expect(collisionSlug1).toBe("git-git-branch-list-1");
+
+    await createToken(db, {
+      slug: collisionSlug1,
+      concept: "concept 2",
+    });
+
+    const collisionSlug2 = await generateTokenSlug(db, "Git", "git branch list");
+    expect(collisionSlug2).toBe("git-git-branch-list-2");
+  });
+
+  it("lists personal cards with queries and filters", async () => {
+    const t1 = await createToken(db, {
+      slug: "git-commit",
+      concept: "saves staged changes",
+      domain: "git",
+      bloom_level: 1,
+    });
+    await ensureCard(db, t1.id, "thomas");
+
+    const t2 = await createToken(db, {
+      slug: "git-push",
+      concept: "uploads commits",
+      domain: "git",
+      bloom_level: 2,
+    });
+
+    const t3 = await createToken(db, {
+      slug: "docker-build",
+      concept: "builds images",
+      domain: "docker",
+      bloom_level: 3,
+    });
+    await ensureCard(db, t3.id, "thomas");
+
+    const allCards = await listPersonalCards(db, "thomas");
+    expect(allCards).toHaveLength(3);
+    
+    const slugs = allCards.map(c => c.slug);
+    expect(slugs).toContain("docker-build");
+    expect(slugs).toContain("git-push");
+    expect(slugs).toContain("git-commit");
+
+    const c1 = allCards.find(c => c.slug === "git-commit")!;
+    const c2 = allCards.find(c => c.slug === "git-push")!;
+    const c3 = allCards.find(c => c.slug === "docker-build")!;
+
+    expect(c1.cardId).not.toBeNull();
+    expect(c1.state).toBe("new");
+
+    expect(c2.cardId).toBeNull();
+    expect(c2.state).toBeNull();
+
+    expect(c3.cardId).not.toBeNull();
+    expect(c3.state).toBe("new");
+
+    const gitCards = await listPersonalCards(db, "thomas", { domain: "git" });
+    expect(gitCards).toHaveLength(2);
+    expect(gitCards.map(c => c.slug)).toContain("git-commit");
+    expect(gitCards.map(c => c.slug)).toContain("git-push");
+
+    const searchCards1 = await listPersonalCards(db, "thomas", { query: "staged" });
+    expect(searchCards1).toHaveLength(1);
+    expect(searchCards1[0].slug).toBe("git-commit");
+
+    const searchCards2 = await listPersonalCards(db, "thomas", { query: "git" });
+    expect(searchCards2).toHaveLength(2);
   });
 });

@@ -14,6 +14,7 @@ import {
   PRIVACY_PACKS,
   TRANSLATION_PACKS,
 } from "./i18n.js";
+import { initLearningContentStudio, loadStudioData } from "./learning-content.js";
 
 const ZAM_RELEASES_URL = "https://github.com/zam-os/zam/releases";
 
@@ -262,6 +263,50 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     update_none: "You are on the latest version.",
     update_failed: "Update check failed: {message}",
     release_link_failed: "Could not open releases: {message}",
+    nav_content: "Learning Content",
+    content_title: "Learning Content Studio",
+    btn_new_card: "New Card",
+    lbl_search_placeholder: "Search questions, answers, categories, keys...",
+    lbl_category_filter: "Category",
+    lbl_all_categories: "All Categories",
+    lbl_empty_content: "No learning cards found. Create your first card!",
+    lbl_empty_content_btn: "Create First Card",
+    lbl_question: "Question",
+    lbl_answer: "Answer / Concept",
+    lbl_category: "Category",
+    lbl_source_link: "Source Link",
+    lbl_more_settings: "More Settings",
+    lbl_context: "Context",
+    lbl_bloom_level: "Bloom Level",
+    lbl_symbiosis_mode: "Symbiosis Mode",
+    lbl_slug: "Technical Key (Slug)",
+    lbl_slug_hint: "Automatically generated after creation",
+    btn_save: "Save Card",
+    btn_remove: "Remove Card",
+    btn_delete: "Hard Delete Token",
+    lbl_confirm_remove_title: "Confirm Card Removal",
+    lbl_confirm_remove_desc: "Removing this card will clear your personal FSRS learning state and history for this token. Other users or the global token catalog remain unaffected.",
+    lbl_confirm_delete_title: "Confirm Global Token Deletion",
+    lbl_confirm_delete_desc: "Permanently deleting this token will destroy the knowledge concept, the personal cards of all users, and all review history across the database.",
+    lbl_delete_impact: "This action affects:",
+    lbl_impact_cards: "{count} card(s)",
+    lbl_impact_reviews: "{count} review log(s)",
+    lbl_impact_steps: "{count} session step(s)",
+    lbl_impact_skills: "{count} agent skill(s) updated",
+    lbl_confirm_action: "Confirm",
+    lbl_cancel_action: "Cancel",
+    lbl_card_saved_toast: "Card saved successfully!",
+    lbl_card_removed_toast: "Card removed successfully!",
+    lbl_card_deleted_toast: "Token deleted successfully!",
+    lbl_error_saving: "Failed to save card",
+    lbl_error_loading: "Failed to load learning content",
+    lbl_card_status_new: "New",
+    lbl_card_status_learning: "Learning",
+    lbl_card_status_review: "Review",
+    lbl_card_status_relearning: "Relearning",
+    lbl_card_status_not_started: "Not Started",
+    lbl_card_due: "Due",
+    lbl_card_not_due: "Not Due",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -505,6 +550,50 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     update_none: "Du nutzt die aktuelle Version.",
     update_failed: "Update-Prüfung fehlgeschlagen: {message}",
     release_link_failed: "Releases konnten nicht geöffnet werden: {message}",
+    nav_content: "Lerninhalte",
+    content_title: "Lerninhalt-Studio",
+    btn_new_card: "Neue Karte",
+    lbl_search_placeholder: "Fragen, Antworten, Kategorien, Keys suchen...",
+    lbl_category_filter: "Kategorie",
+    lbl_all_categories: "Alle Kategorien",
+    lbl_empty_content: "Keine Lernkarten gefunden. Erstelle deine erste karte!",
+    lbl_empty_content_btn: "Erste Karte erstellen",
+    lbl_question: "Frage",
+    lbl_answer: "Antwort / Konzept",
+    lbl_category: "Kategorie",
+    lbl_source_link: "Quell-Link",
+    lbl_more_settings: "Mehr Einstellungen",
+    lbl_context: "Kontext",
+    lbl_bloom_level: "Bloom-Level",
+    lbl_symbiosis_mode: "Symbiose-Modus",
+    lbl_slug: "Technischer Key (Slug)",
+    lbl_slug_hint: "Wird nach Erstellung automatisch generiert",
+    btn_save: "Karte speichern",
+    btn_remove: "Karte entfernen",
+    btn_delete: "Token dauerhaft löschen",
+    lbl_confirm_remove_title: "Kartenentfernung bestätigen",
+    lbl_confirm_remove_desc: "Das Entfernen dieser Karte löscht deinen persönlichen FSRS-Lernstatus und -Verlauf für diesen Token. Andere Benutzer oder der globale Token-Katalog bleiben unberührt.",
+    lbl_confirm_delete_title: "Globale Token-Löschung bestätigen",
+    lbl_confirm_delete_desc: "Das dauerhafte Löschen dieses Tokens zerstört das Wissenskonzept, die persönlichen Karten aller Benutzer und den gesamten Bewertungsverlauf in der Datenbank.",
+    lbl_delete_impact: "Diese Aktion betrifft:",
+    lbl_impact_cards: "{count} Karte(n)",
+    lbl_impact_reviews: "{count} Bewertungsprotokoll(e)",
+    lbl_impact_steps: "{count} Sessionschritt(e)",
+    lbl_impact_skills: "{count} Agenten-Skill(s) aktualisiert",
+    lbl_confirm_action: "Bestätigen",
+    lbl_cancel_action: "Abbrechen",
+    lbl_card_saved_toast: "Karte erfolgreich gespeichert!",
+    lbl_card_removed_toast: "Karte erfolgreich entfernt!",
+    lbl_card_deleted_toast: "Token erfolgreich gelöscht!",
+    lbl_error_saving: "Karte konnte nicht gespeichert werden",
+    lbl_error_loading: "Lerninhalte konnten nicht geladen werden",
+    lbl_card_status_new: "Neu",
+    lbl_card_status_learning: "Lernen",
+    lbl_card_status_review: "Wiederholen",
+    lbl_card_status_relearning: "Wiederlernen",
+    lbl_card_status_not_started: "Nicht gestartet",
+    lbl_card_due: "Fällig",
+    lbl_card_not_due: "Nicht fällig",
   },
   // es, fr, pt, zh, ja live in ./i18n.ts; en/de stay here as reference locales.
   ...TRANSLATION_PACKS,
@@ -529,7 +618,7 @@ const BLOOM_LEVEL_NAMES: Record<string, Record<number, string>> = {
 };
 
 // ── STATE MANAGEMENT ──────────────────────────────────────────────────────
-type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view";
+type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view" | "learning-content-view";
 type ThemePreference = "light" | "dark";
 
 let currentLocale = "en";
@@ -835,7 +924,7 @@ const OBSERVER_PRIVACY_REASON_LABELS: Record<string, Record<string, string>> = {
 };
 
 // ── BRIDGE COMMAND RUNNER ────────────────────────────────────────────────
-async function runBridge<T = any>(cmd: string, args: string[] = []): Promise<T> {
+export async function runBridge<T = any>(cmd: string, args: string[] = []): Promise<T> {
   try {
     const raw = await invoke<string>("execute_zam_bridge", { cmd, args });
     return JSON.parse(raw) as T;
@@ -845,11 +934,11 @@ async function runBridge<T = any>(cmd: string, args: string[] = []): Promise<T> 
   }
 }
 
-function t(key: string): string {
+export function t(key: string): string {
   return TRANSLATIONS[currentLocale]?.[key] || TRANSLATIONS["en"]?.[key] || key;
 }
 
-function tf(key: string, values: Record<string, string | number>): string {
+export function tf(key: string, values: Record<string, string | number>): string {
   return Object.entries(values).reduce(
     (text, [name, value]) => text.split(`{${name}}`).join(String(value)),
     t(key),
@@ -994,6 +1083,64 @@ function initializeTranslations() {
   if (addProviderButton) addProviderButton.textContent = t("btn_add_ai_provider");
   document.getElementById("btn-check-updates")!.textContent = t("btn_check_updates");
   document.getElementById("btn-open-releases")!.textContent = t("btn_open_releases");
+  document.getElementById("graph-hint")!.textContent = t("graph_hint");
+
+  // Learning Content Studio translations
+  const navContent = document.getElementById("nav-content");
+  if (navContent) navContent.textContent = t("nav_content");
+  const lblContentKicker = document.getElementById("lbl-content-kicker");
+  if (lblContentKicker) lblContentKicker.textContent = currentLocale === "de" ? "Persönlicher Katalog" : "Personal catalog";
+  const lblContentTitle = document.getElementById("lbl-content-title");
+  if (lblContentTitle) lblContentTitle.textContent = t("content_title");
+  const btnContentNewCard = document.getElementById("btn-content-new-card");
+  if (btnContentNewCard) btnContentNewCard.textContent = t("btn_new_card");
+  const contentSearchInput = document.getElementById("content-search-input") as HTMLInputElement;
+  if (contentSearchInput) contentSearchInput.placeholder = t("lbl_search_placeholder");
+  const categoryFilterLabel = document.getElementById("content-category-filter");
+  if (categoryFilterLabel) {
+    const firstOpt = categoryFilterLabel.querySelector("option");
+    if (firstOpt) firstOpt.textContent = t("lbl_all_categories");
+  }
+  const emptyContentDesc = document.getElementById("lbl-empty-content-desc");
+  if (emptyContentDesc) emptyContentDesc.textContent = currentLocale === "de" ? "Wähle eine Karte aus der Liste aus, um sie zu bearbeiten, oder erstelle eine neue Karte." : "Select a card from the list to edit, or create a new card to start.";
+  const btnCreateFirstCard = document.getElementById("btn-create-first-card");
+  if (btnCreateFirstCard) btnCreateFirstCard.textContent = t("lbl_empty_content_btn");
+  
+  const lblEditorQuestion = document.getElementById("lbl-editor-question");
+  if (lblEditorQuestion) lblEditorQuestion.textContent = t("lbl_question");
+  const lblEditorConcept = document.getElementById("lbl-editor-concept");
+  if (lblEditorConcept) lblEditorConcept.textContent = t("lbl_answer");
+  const lblEditorDomain = document.getElementById("lbl-editor-domain");
+  if (lblEditorDomain) lblEditorDomain.textContent = t("lbl_category");
+  const lblEditorSourceLink = document.getElementById("lbl-editor-source-link");
+  if (lblEditorSourceLink) lblEditorSourceLink.textContent = t("lbl_source_link");
+  const lblEditorAdvanced = document.getElementById("lbl-editor-advanced");
+  if (lblEditorAdvanced) lblEditorAdvanced.textContent = t("lbl_more_settings");
+  const lblEditorContext = document.getElementById("lbl-editor-context");
+  if (lblEditorContext) lblEditorContext.textContent = t("lbl_context");
+  const lblEditorBloom = document.getElementById("lbl-editor-bloom");
+  if (lblEditorBloom) lblEditorBloom.textContent = t("lbl_bloom_level");
+  const lblEditorMode = document.getElementById("lbl-editor-mode");
+  if (lblEditorMode) lblEditorMode.textContent = t("lbl_symbiosis_mode");
+  const lblEditorSlug = document.getElementById("lbl-editor-slug");
+  if (lblEditorSlug) lblEditorSlug.textContent = t("lbl_slug");
+  const btnContentDeleteCard = document.getElementById("btn-content-delete-card");
+  if (btnContentDeleteCard) btnContentDeleteCard.textContent = t("btn_remove");
+  const btnContentCancelEdit = document.getElementById("btn-content-cancel-edit");
+  if (btnContentCancelEdit) btnContentCancelEdit.textContent = t("lbl_cancel_action");
+  const btnContentSaveCard = document.getElementById("btn-content-save-card");
+  if (btnContentSaveCard) btnContentSaveCard.textContent = t("btn_save");
+
+  // Modal Translations
+  const lblModalCancel = document.getElementById("btn-modal-cancel");
+  if (lblModalCancel) lblModalCancel.textContent = t("lbl_cancel_action");
+  const lblModalConfirm = document.getElementById("btn-modal-confirm");
+  if (lblModalConfirm) lblModalConfirm.textContent = t("lbl_confirm_action");
+  const lblAdvancedDeleteTitle = document.getElementById("lbl-advanced-delete-title");
+  if (lblAdvancedDeleteTitle) lblAdvancedDeleteTitle.textContent = currentLocale === "de" ? "Erweiterte Option:" : "Advanced option:";
+  const btnModalHardDelete = document.getElementById("btn-modal-hard-delete");
+  if (btnModalHardDelete) btnModalHardDelete.textContent = t("btn_delete");
+
   document.getElementById("graph-title")!.textContent = t("graph_title");
   document.getElementById("btn-graph-back")!.textContent =
     t("btn_back_to_dashboard");
@@ -2881,6 +3028,7 @@ function setActiveNav(viewId: AppView): void {
   const navByView: Partial<Record<AppView, string>> = {
     "dashboard-view": "nav-dashboard",
     "settings-view": "nav-settings",
+    "learning-content-view": "nav-content",
   };
   for (const button of document.querySelectorAll<HTMLButtonElement>(".nav-btn")) {
     const active = button.id === navByView[viewId];
@@ -2919,6 +3067,9 @@ function switchView(viewId: AppView) {
 
   if (viewId === "settings-view") {
     refreshSettingsData();
+  }
+  if (viewId === "learning-content-view") {
+    loadStudioData();
   }
 }
 
@@ -3988,6 +4139,7 @@ window.addEventListener("DOMContentLoaded", () => {
   applyTheme(loadThemePreference());
   initializeTranslations();
   setupLocaleSwitcher();
+  initLearningContentStudio();
 
   // Load initial dashboard state
   loadDashboard();
@@ -4010,6 +4162,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("nav-dashboard")?.addEventListener("click", () => {
     switchView("dashboard-view");
+  });
+
+  document.getElementById("nav-content")?.addEventListener("click", () => {
+    switchView("learning-content-view");
   });
 
   document.getElementById("nav-settings")?.addEventListener("click", () => {

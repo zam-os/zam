@@ -108,4 +108,72 @@ describe("cli E2E tests", () => {
     );
     expect(updatedBridgePolicy.scope).toBe("off");
   }, E2E_TIMEOUT_MS);
+
+  it("can manage personal cards via bridge commands", () => {
+    runCli(["setup", "--skip-claude-md", "--skip-agents-md"]);
+    runCli(["whoami", "--set", "e2e-test-user"]);
+
+    // 1. Create a card
+    const createRes = JSON.parse(
+      runCli([
+        "bridge",
+        "personal-card-create",
+        "--concept",
+        '"testing bridge concept"',
+        "--domain",
+        "testing",
+        "--question",
+        '"what is testing?"',
+      ])
+    );
+    expect(createRes.success).toBe(true);
+    expect(createRes.token.concept).toBe("testing bridge concept");
+    expect(createRes.token.domain).toBe("testing");
+    expect(createRes.token.slug).toBe("testing-what-is-testing");
+
+    // 2. List cards
+    const listRes = JSON.parse(runCli(["bridge", "personal-card-list"]));
+    expect(listRes.cards).toHaveLength(1);
+    expect(listRes.cards[0].slug).toBe("testing-what-is-testing");
+
+    // 3. Update the card
+    const updateRes = JSON.parse(
+      runCli([
+        "bridge",
+        "personal-card-update",
+        "--slug",
+        "testing-what-is-testing",
+        "--concept",
+        '"updated testing concept"',
+      ])
+    );
+    expect(updateRes.success).toBe(true);
+    expect(updateRes.token.concept).toBe("updated testing concept");
+
+    // 4. Remove card (preview)
+    const removePreviewRes = JSON.parse(
+      runCli(["bridge", "personal-card-remove", "--slug", "testing-what-is-testing"])
+    );
+    expect(removePreviewRes.success).toBe(true);
+    expect(removePreviewRes.preview).toBe(true);
+    expect(removePreviewRes.impact.review_logs).toBeDefined();
+
+    // 5. Remove card (confirm)
+    const removeConfirmRes = JSON.parse(
+      runCli([
+        "bridge",
+        "personal-card-remove",
+        "--slug",
+        "testing-what-is-testing",
+        "--confirm",
+      ])
+    );
+    expect(removeConfirmRes.success).toBe(true);
+    expect(removeConfirmRes.deletedCard).toBeDefined();
+
+    // 6. Verify card is removed but token remains (so it has no cardId)
+    const listRes2 = JSON.parse(runCli(["bridge", "personal-card-list"]));
+    expect(listRes2.cards).toHaveLength(1);
+    expect(listRes2.cards[0].cardId).toBeNull();
+  }, E2E_TIMEOUT_MS);
 });

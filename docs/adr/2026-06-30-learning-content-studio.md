@@ -1,6 +1,6 @@
 # Learning Content Studio
 
-**Status:** Proposed
+**Status:** Accepted
 **Deciders:** Thomas (project owner)
 
 ## Context

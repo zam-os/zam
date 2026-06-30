@@ -154,6 +154,7 @@ export type {
   Token,
   TokenDeleteImpact,
   UpdateTokenInput,
+  PersonalCard,
 } from "./models/token.js";
 // Models
 export {
@@ -166,6 +167,8 @@ export {
   getTokenDeleteImpact,
   listTokens,
   updateToken,
+  listPersonalCards,
+  generateTokenSlug,
 } from "./models/token.js";
 export type {
   AnalysisResult,

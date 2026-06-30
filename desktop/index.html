@@ -26,6 +26,7 @@
         </div>
         <nav class="top-nav" aria-label="Main navigation">
           <button id="nav-dashboard" class="nav-btn active" type="button">Dashboard</button>
+          <button id="nav-content" class="nav-btn" type="button">Learning Content</button>
           <button id="nav-settings" class="nav-btn" type="button">Settings</button>
         </nav>
         <div class="status-area" id="system-status">
@@ -129,6 +130,117 @@
             </div>
             <div id="observer-history-list" class="observer-history-list">
               <p class="observer-history-empty">No observation reports yet.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 5: LEARNING CONTENT STUDIO -->
+      <section id="learning-content-view" class="view">
+        <div class="dashboard-hero frosted">
+          <div>
+            <p class="eyebrow" id="lbl-content-kicker">Personal catalog</p>
+            <h1 id="lbl-content-title">Learning Content Studio</h1>
+            <p id="lbl-content-subtitle" class="settings-subtitle">
+              Manage your personal learning cards, search tokens, and curate active recall prompts.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <button id="btn-content-new-card" class="btn primary-btn btn-sm" type="button">New Card</button>
+          </div>
+        </div>
+
+        <div class="content-studio-layout show-list" id="content-studio-layout">
+          <!-- Left Panel: Card List -->
+          <div class="content-studio-list-panel card frosted">
+            <div class="content-studio-search-bar">
+              <input type="text" id="content-search-input" class="editor-input content-studio-search-input" placeholder="Search questions, answers, categories, keys..." />
+              <select id="content-category-filter" class="editor-select content-studio-filter-select">
+                <option value="all">All Categories</option>
+              </select>
+            </div>
+            <div class="content-studio-card-list" id="content-studio-card-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Right Panel: Editor Form -->
+          <div class="content-studio-editor-panel card frosted" id="content-studio-editor-panel">
+            <div id="editor-empty-state" class="content-studio-empty">
+              <p id="lbl-empty-content-desc">Select a card from the list to edit, or create a new card to start.</p>
+              <button id="btn-create-first-card" class="btn primary-btn btn-sm" type="button">Create First Card</button>
+            </div>
+            
+            <div id="editor-form-container" class="hidden" style="display: flex; flex-direction: column; height: 100%;">
+              <div class="editor-scroll-container">
+                <div class="editor-form-group">
+                  <label for="editor-field-question" id="lbl-editor-question">Question</label>
+                  <textarea id="editor-field-question" class="editor-textarea" placeholder="Active recall question..."></textarea>
+                </div>
+                
+                <div class="editor-form-group">
+                  <label for="editor-field-concept" id="lbl-editor-concept">Answer / Concept</label>
+                  <textarea id="editor-field-concept" class="editor-textarea" placeholder="Concept description or reference answer..."></textarea>
+                </div>
+
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <div class="editor-form-group" style="flex: 1; min-width: 120px;">
+                    <label for="editor-field-domain" id="lbl-editor-domain">Category</label>
+                    <input type="text" id="editor-field-domain" class="editor-input" placeholder="e.g. git" />
+                  </div>
+                  <div class="editor-form-group" style="flex: 1; min-width: 120px;">
+                    <label for="editor-field-source-link" id="lbl-editor-source-link">Source Link</label>
+                    <input type="text" id="editor-field-source-link" class="editor-input" placeholder="e.g. src/utils.ts#L12" />
+                  </div>
+                </div>
+
+                <div class="collapsible-header" id="editor-toggle-advanced">
+                  <span id="editor-toggle-arrow">▶</span> <span id="lbl-editor-advanced">More Settings</span>
+                </div>
+
+                <div class="collapsible-content" id="editor-advanced-content">
+                  <div class="editor-form-group">
+                    <label for="editor-field-context" id="lbl-editor-context">Context</label>
+                    <input type="text" id="editor-field-context" class="editor-input" placeholder="e.g. terminal environment" />
+                  </div>
+                  
+                  <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 10px;">
+                    <div class="editor-form-group" style="flex: 1; min-width: 120px;">
+                      <label for="editor-field-bloom" id="lbl-editor-bloom">Bloom Level</label>
+                      <select id="editor-field-bloom" class="editor-select">
+                        <option value="1">1 - Remember</option>
+                        <option value="2">2 - Understand</option>
+                        <option value="3">3 - Apply</option>
+                        <option value="4">4 - Analyze</option>
+                        <option value="5">5 - Synthesize</option>
+                      </select>
+                    </div>
+                    
+                    <div class="editor-form-group" style="flex: 1; min-width: 120px;">
+                      <label for="editor-field-mode" id="lbl-editor-mode">Symbiosis Mode</label>
+                      <select id="editor-field-mode" class="editor-select">
+                        <option value="none">None</option>
+                        <option value="shadowing">Shadowing</option>
+                        <option value="copilot">Copilot</option>
+                        <option value="autonomy">Autonomy</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="editor-form-group" style="margin-top: 15px;">
+                  <label for="editor-field-slug" id="lbl-editor-slug">Technical Key (Slug)</label>
+                  <input type="text" id="editor-field-slug" class="editor-input" readonly placeholder="Auto-generated slug" />
+                </div>
+              </div>
+
+              <div class="editor-actions-row">
+                <button id="btn-content-delete-card" class="btn danger-btn btn-sm" type="button">Remove Card</button>
+                <div class="editor-actions-right">
+                  <button id="btn-content-cancel-edit" class="btn secondary-btn btn-sm hidden" type="button" style="margin-right: 5px;">Cancel</button>
+                  <button id="btn-content-save-card" class="btn primary-btn btn-sm" type="button">Save Card</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -404,6 +516,31 @@
           </div>
         </div>
       </section>
+      <!-- CONFIRMATION MODALS -->
+      <div id="content-modal-overlay" class="modal-overlay">
+        <div class="modal-box">
+          <div class="modal-header">
+            <h3 id="lbl-modal-title">Confirm Action</h3>
+          </div>
+          <div class="modal-body">
+            <p id="lbl-modal-desc">Are you sure you want to perform this action?</p>
+            <div id="modal-impact-container" class="modal-impact-section hidden">
+              <div class="modal-impact-title" id="lbl-modal-impact-title">Affected data:</div>
+              <ul class="modal-impact-list" id="modal-impact-list-el">
+                <!-- Dynamically populated impact list -->
+              </ul>
+            </div>
+            <div id="modal-delete-choice" class="modal-impact-section hidden" style="border-color: rgba(239, 68, 68, 0.2); background: rgba(239, 68, 68, 0.02);">
+              <p style="font-size: 0.85rem; font-weight: 600; color: var(--clr-again); margin-bottom: 8px;" id="lbl-advanced-delete-title">Advanced option:</p>
+              <button id="btn-modal-hard-delete" class="btn danger-btn btn-sm" type="button">Hard Delete Token Globally</button>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button id="btn-modal-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
+            <button id="btn-modal-confirm" class="btn primary-btn btn-sm" type="button">Confirm</button>
+          </div>
+        </div>
+      </div>
     </main>
   </body>
 </html>

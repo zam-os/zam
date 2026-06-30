@@ -7,6 +7,7 @@
 
 import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
+import type { CardState } from "./card.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -446,4 +447,124 @@ export async function listTokens(
       "SELECT * FROM tokens WHERE deprecated_at IS NULL ORDER BY bloom_level, domain, slug",
     )
     .all()) as Token[];
+}
+
+export interface PersonalCard {
+  tokenId: string;
+  slug: string;
+  concept: string;
+  domain: string;
+  bloomLevel: BloomLevel;
+  context: string;
+  symbiosisMode: SymbiosisMode | null;
+  sourceLink: string | null;
+  question: string | null;
+  createdAt: string;
+  updatedAt: string;
+
+  cardId: string | null;
+  state: CardState | null;
+  dueAt: string | null;
+  stability: number | null;
+  difficulty: number | null;
+  reps: number | null;
+  lapses: number | null;
+  elapsedDays: number | null;
+  scheduledDays: number | null;
+  blocked: number | null;
+}
+
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+export async function generateTokenSlug(
+  db: Database,
+  domain: string,
+  concept: string,
+  question?: string | null,
+): Promise<string> {
+  const baseText = question && question.trim().length > 0 ? question : concept;
+  const cleanDomain = slugify(domain || "");
+  const cleanBase = slugify(baseText);
+
+  let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
+  if (baseSlug.length > 60) {
+    baseSlug = baseSlug.slice(0, 60).replace(/-$/, "");
+  }
+  if (!baseSlug) {
+    baseSlug = "token";
+  }
+
+  let slug = baseSlug;
+  let counter = 1;
+  while (true) {
+    const existing = await db
+      .prepare("SELECT id FROM tokens WHERE slug = ?")
+      .get(slug);
+    if (!existing) {
+      return slug;
+    }
+    const suffix = `-${counter}`;
+    slug = baseSlug.slice(0, 60 - suffix.length).replace(/-$/, "") + suffix;
+    counter++;
+  }
+}
+
+export async function listPersonalCards(
+  db: Database,
+  userId: string,
+  options?: { query?: string; domain?: string },
+): Promise<PersonalCard[]> {
+  let sql = `
+    SELECT 
+      t.id AS tokenId,
+      t.slug,
+      t.concept,
+      t.domain,
+      t.bloom_level AS bloomLevel,
+      t.context,
+      t.symbiosis_mode AS symbiosisMode,
+      t.source_link AS sourceLink,
+      t.question,
+      t.created_at AS createdAt,
+      t.updated_at AS updatedAt,
+      c.id AS cardId,
+      c.state,
+      c.due_at AS dueAt,
+      c.stability,
+      c.difficulty,
+      c.reps,
+      c.lapses,
+      c.elapsed_days AS elapsedDays,
+      c.scheduled_days AS scheduledDays,
+      c.blocked
+    FROM tokens t
+    LEFT JOIN cards c ON c.token_id = t.id AND c.user_id = ?
+    WHERE t.deprecated_at IS NULL
+  `;
+
+  const values: unknown[] = [userId];
+
+  if (options?.domain) {
+    sql += " AND t.domain = ?";
+    values.push(options.domain);
+  }
+
+  if (options?.query) {
+    const terms = options.query.toLowerCase().split(/\s+/).filter(Boolean);
+    for (const term of terms) {
+      sql += ` AND (lower(t.slug) LIKE ? OR lower(t.concept) LIKE ? OR lower(t.domain) LIKE ? OR lower(t.question) LIKE ?)`;
+      const pattern = `%${term}%`;
+      values.push(pattern, pattern, pattern, pattern);
+    }
+  }
+
+  sql += " ORDER BY t.created_at DESC";
+
+  const rows = await db.prepare(sql).all(...values);
+  return rows as PersonalCard[];
 }

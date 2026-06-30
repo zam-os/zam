@@ -58,7 +58,11 @@ describe("skill link inspection", () => {
     withTempWorkspace((cwd) => {
       const destination = codexSkillDir(cwd);
       mkdirSync(join(cwd, ".agents", "skills"), { recursive: true });
-      symlinkSync(join(cwd, "missing-target"), destination, "dir");
+      symlinkSync(
+        join(cwd, "missing-target"),
+        destination,
+        process.platform === "win32" ? "junction" : "dir",
+      );
 
       expect(classifySkillDestination(packageSource(), destination)).toBe(
         "broken",
