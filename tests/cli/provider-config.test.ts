@@ -8,7 +8,7 @@ import {
   removeProviderRecord,
   rolesReferencing,
   upsertProviderRecord,
-} from "../../src/cli/commands/provider.js";
+} from "../../src/cli/providers/config.js";
 
 describe("upsertProviderRecord", () => {
   it("creates a new record from the patch", () => {

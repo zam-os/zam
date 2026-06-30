@@ -97,7 +97,6 @@ import {
   translateQuestionViaLLM,
 } from "../llm/client.js";
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
-import { normalizeShell } from "../terminal-open.js";
 import {
   bindRoleProviders,
   buildProviderListing,
@@ -114,11 +113,12 @@ import {
   withProviderScope,
   writeScopedProviders,
   writeScopedRoles,
-} from "./provider.js";
-import { ensureDefaultUser, resolveUser } from "./resolve-user.js";
-import { parseSetupAgents, wireSkills } from "./setup.js";
+} from "../providers/config.js";
+import { parseSetupAgents, wireSkills } from "../provisioning/index.js";
+import { normalizeShell } from "../terminal-open.js";
+import { ensureDefaultUser, resolveUser } from "../users/identity.js";
+import { backupDatabaseTo } from "../workspaces/backup.js";
 import { withDb as sharedWithDb } from "./shared/db.js";
-import { backupDatabaseTo } from "./workspace.js";
 
 let isServeMode = false;
 

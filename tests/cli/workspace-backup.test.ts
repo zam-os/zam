@@ -3,10 +3,10 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
-  backupDatabaseTo,
   ghRepoCreateArgs,
   gitRemoteArgs,
 } from "../../src/cli/commands/workspace.js";
+import { backupDatabaseTo } from "../../src/cli/workspaces/backup.js";
 import {
   createToken,
   getTokenBySlug,

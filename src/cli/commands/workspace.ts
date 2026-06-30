@@ -7,7 +7,7 @@
  */
 
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 import { confirm, input } from "@inquirer/prompts";
@@ -31,7 +31,8 @@ import {
   writeAgentsMd,
   writeClaudeMd,
   writeCopilotInstructions,
-} from "./setup.js";
+} from "../provisioning/index.js";
+import { backupDatabaseTo } from "../workspaces/backup.js";
 
 /**
  * Execute a shell command inside a specific directory.
@@ -422,23 +423,6 @@ workspaceCommand
       }
     }
   });
-
-/**
- * Consistent single-file backup of the open database into
- * `<targetDir>/zam-backups/`. Uses SQLite `VACUUM INTO`, which writes a clean
- * snapshot even in WAL mode with a live connection. Returns the backup path.
- */
-export async function backupDatabaseTo(
-  db: Database,
-  targetDir: string,
-): Promise<string> {
-  const backupDir = join(targetDir, "zam-backups");
-  mkdirSync(backupDir, { recursive: true });
-  const stamp = new Date().toISOString().replace(/[:.]/g, "-");
-  const dest = join(backupDir, `zam-${stamp}.db`);
-  await db.exec(`VACUUM INTO '${dest.replace(/'/g, "''")}'`);
-  return dest;
-}
 
 workspaceCommand
   .command("data-dir")

@@ -15,7 +15,7 @@ import {
   getTokenBySlug,
   unblockReady,
 } from "../../kernel/index.js";
-import { resolveUser } from "./resolve-user.js";
+import { resolveUser } from "../users/identity.js";
 import { withDb } from "./shared/db.js";
 
 export const cardCommand = new Command("card").description(

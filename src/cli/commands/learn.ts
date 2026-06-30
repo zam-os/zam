@@ -41,7 +41,7 @@ import {
   openTerminalWindow,
   resolveZamInvocation,
 } from "../terminal-open.js";
-import { resolveUser } from "./resolve-user.js";
+import { resolveUser } from "../users/identity.js";
 
 /** Words the learner can type at the answer prompt to end the session. */
 const STOP_WORDS = new Set(["q", ":q", "quit", "stop"]);

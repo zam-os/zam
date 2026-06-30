@@ -4,7 +4,7 @@
 
 import { Command } from "commander";
 import { getDomainCompetence, getUserStats } from "../../kernel/index.js";
-import { resolveUser } from "./resolve-user.js";
+import { resolveUser } from "../users/identity.js";
 import { withDb } from "./shared/db.js";
 
 export const statsCommand = new Command("stats")

@@ -26,7 +26,7 @@ import {
   setSetting,
   upsertConfiguredWorkspace,
 } from "../../kernel/index.js";
-import { parseSetupAgents, wireSkills } from "./setup.js";
+import { parseSetupAgents, wireSkills } from "../provisioning/index.js";
 
 const HOME = homedir();
 
