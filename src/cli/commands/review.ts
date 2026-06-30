@@ -11,7 +11,7 @@ import {
   resolveReviewContext,
 } from "../../kernel/index.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
-import { resolveUser } from "./resolve-user.js";
+import { resolveUser } from "../users/identity.js";
 
 export const reviewCommand = new Command("review")
   .description("Start an interactive review session")

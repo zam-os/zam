@@ -34,7 +34,7 @@ import {
   startSession,
 } from "../../kernel/index.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
-import { resolveUser } from "./resolve-user.js";
+import { resolveUser } from "../users/identity.js";
 import { withDb } from "./shared/db.js";
 
 export const sessionCommand = new Command("session").description(

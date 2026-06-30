@@ -9,9 +9,12 @@ import {
   resolveAllGoalPaths,
   resolveRepoPath,
   setSetting,
+  setActiveWorkspaceId,
+  upsertConfiguredWorkspace,
 } from "../../src/kernel/index.js";
 
 const TEST_DIR = resolve("./temp-test-repos");
+const ORIGINAL_ZAM_CONFIG_PATH = process.env.ZAM_CONFIG_PATH;
 
 describe("Multi-Repo Context Settings", () => {
   let db: Database;
@@ -23,6 +26,7 @@ describe("Multi-Repo Context Settings", () => {
     mkdirSync(join(TEST_DIR, "personal", "goals"), { recursive: true });
     mkdirSync(join(TEST_DIR, "team", "beliefs"), { recursive: true });
     mkdirSync(join(TEST_DIR, "org", "goals"), { recursive: true });
+    process.env.ZAM_CONFIG_PATH = join(TEST_DIR, "config.json");
 
     db = await openDatabase({
       dbPath: ":memory:",
@@ -33,6 +37,11 @@ describe("Multi-Repo Context Settings", () => {
 
   afterAll(async () => {
     await db.close();
+    if (ORIGINAL_ZAM_CONFIG_PATH === undefined) {
+      delete process.env.ZAM_CONFIG_PATH;
+    } else {
+      process.env.ZAM_CONFIG_PATH = ORIGINAL_ZAM_CONFIG_PATH;
+    }
     // Clean up temporary folders
     if (existsSync(TEST_DIR)) {
       rmSync(TEST_DIR, { recursive: true, force: true });
@@ -46,9 +55,14 @@ describe("Multi-Repo Context Settings", () => {
     expect(paths.org).toBeNull();
   });
 
-  it("should fall back to personal.workspace_dir for personal repo", async () => {
+  it("should fall back to the active workspace for personal repo", async () => {
     const personalPath = join(TEST_DIR, "personal");
-    await setSetting(db, "personal.workspace_dir", personalPath);
+    upsertConfiguredWorkspace({
+      id: "personal",
+      kind: "personal",
+      path: personalPath,
+    });
+    setActiveWorkspaceId("personal");
 
     const paths = await getRepoPaths(db);
     expect(paths.personal).toBe(resolve(personalPath));
@@ -56,10 +70,15 @@ describe("Multi-Repo Context Settings", () => {
     expect(paths.org).toBeNull();
   });
 
-  it("should prefer repo.personal over personal.workspace_dir", async () => {
+  it("should prefer repo.personal over the active workspace", async () => {
     const personalPath = join(TEST_DIR, "personal");
     const customPersonalPath = join(TEST_DIR, "custom-personal");
-    await setSetting(db, "personal.workspace_dir", personalPath);
+    upsertConfiguredWorkspace({
+      id: "personal",
+      kind: "personal",
+      path: personalPath,
+    });
+    setActiveWorkspaceId("personal");
     await setSetting(db, "repo.personal", customPersonalPath);
 
     const paths = await getRepoPaths(db);

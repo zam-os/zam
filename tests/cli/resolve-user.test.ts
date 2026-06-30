@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ensureDefaultUser } from "../../src/cli/commands/resolve-user.js";
+import { ensureDefaultUser } from "../../src/cli/users/identity.js";
 import {
   getSetting,
   openDatabase,

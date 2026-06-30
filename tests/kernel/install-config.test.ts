@@ -4,6 +4,8 @@ import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   detectSyncProvider,
+  getActiveWorkspace,
+  getActiveWorkspaceId,
   getConfiguredWorkspaces,
   getInstallMode,
   getMachineAiConfig,
@@ -11,6 +13,7 @@ import {
   removeConfiguredWorkspace,
   saveInstallConfig,
   saveMachineAiConfig,
+  setActiveWorkspaceId,
   setInstallMode,
   upsertConfiguredWorkspace,
 } from "../../src/kernel/index.js";
@@ -140,6 +143,52 @@ describe("install config", () => {
       { id: "team", kind: "team", path: "C:\\team" },
     ]);
     expect(getConfiguredWorkspaces(path)).toEqual(remaining);
+  });
+
+  it("round-trips the active workspace id", () => {
+    const path = tempConfigPath();
+    upsertConfiguredWorkspace(
+      { id: "personal", kind: "personal", path: "/work/personal" },
+      path,
+    );
+    upsertConfiguredWorkspace(
+      { id: "team", kind: "team", path: "/work/team" },
+      path,
+    );
+
+    setActiveWorkspaceId("team", path);
+
+    expect(getActiveWorkspaceId(path)).toBe("team");
+    expect(getActiveWorkspace(path)).toEqual({
+      id: "team",
+      kind: "team",
+      path: "/work/team",
+    });
+
+    setActiveWorkspaceId(undefined, path);
+    expect(getActiveWorkspaceId(path)).toBeUndefined();
+    expect(getActiveWorkspace(path)).toBeUndefined();
+  });
+
+  it("moves the active workspace id when the active workspace is removed", () => {
+    const path = tempConfigPath();
+    upsertConfiguredWorkspace(
+      { id: "family", kind: "family", path: "C:\\family" },
+      path,
+    );
+    upsertConfiguredWorkspace(
+      { id: "team", kind: "team", path: "C:\\team" },
+      path,
+    );
+    setActiveWorkspaceId("family", path);
+
+    const remaining = removeConfiguredWorkspace("family", path);
+
+    expect(remaining).toEqual([
+      { id: "team", kind: "team", path: "C:\\team" },
+    ]);
+    expect(getActiveWorkspaceId(path)).toBe("team");
+    expect(getActiveWorkspace(path)?.path).toBe("C:\\team");
   });
 
   it("detects file-sync providers from a folder path", () => {

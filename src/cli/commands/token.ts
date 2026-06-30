@@ -19,7 +19,7 @@ import {
   listTokens,
   updateToken,
 } from "../../kernel/index.js";
-import { resolveUser } from "./resolve-user.js";
+import { resolveUser } from "../users/identity.js";
 import { jsonOut, withDb } from "./shared/db.js";
 
 export const tokenCommand = new Command("token").description(

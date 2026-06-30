@@ -14,11 +14,13 @@ import { describe, expect, it } from "vitest";
 import {
   activateMachineProviderConfig,
   formatDatabaseInitTarget,
+} from "../../src/cli/commands/setup.js";
+import {
   parseSetupAgents,
   writeAgentsMd,
   wireSkills,
   writeCopilotInstructions,
-} from "../../src/cli/commands/setup.js";
+} from "../../src/cli/provisioning/index.js";
 import {
   getSetting,
   openDatabase,

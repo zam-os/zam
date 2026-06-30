@@ -7,7 +7,7 @@
  */
 
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 import { confirm, input } from "@inquirer/prompts";
@@ -16,7 +16,6 @@ import type { Database } from "../../kernel/index.js";
 import {
   getConfiguredWorkspaces,
   getDatabaseTargetInfo,
-  getSetting,
   hasCommand,
   openDatabase,
   removeConfiguredWorkspace,
@@ -31,7 +30,9 @@ import {
   writeAgentsMd,
   writeClaudeMd,
   writeCopilotInstructions,
-} from "./setup.js";
+} from "../provisioning/index.js";
+import { ensureActiveWorkspace } from "../workspaces/active.js";
+import { backupDatabaseTo } from "../workspaces/backup.js";
 
 /**
  * Execute a shell command inside a specific directory.
@@ -279,7 +280,7 @@ workspaceCommand
 
     try {
       db = await openDatabase();
-      workspaceDir = (await getSetting(db, "personal.workspace_dir")) || "";
+      workspaceDir = (await ensureActiveWorkspace(db)).path;
       await db.close();
     } catch {
       // Fallback if DB doesn't exist
@@ -423,23 +424,6 @@ workspaceCommand
     }
   });
 
-/**
- * Consistent single-file backup of the open database into
- * `<targetDir>/zam-backups/`. Uses SQLite `VACUUM INTO`, which writes a clean
- * snapshot even in WAL mode with a live connection. Returns the backup path.
- */
-export async function backupDatabaseTo(
-  db: Database,
-  targetDir: string,
-): Promise<string> {
-  const backupDir = join(targetDir, "zam-backups");
-  mkdirSync(backupDir, { recursive: true });
-  const stamp = new Date().toISOString().replace(/[:.]/g, "-");
-  const dest = join(backupDir, `zam-${stamp}.db`);
-  await db.exec(`VACUUM INTO '${dest.replace(/'/g, "''")}'`);
-  return dest;
-}
-
 workspaceCommand
   .command("data-dir")
   .description("Print the ZAM data directory (database, credentials, config)")
@@ -472,10 +456,7 @@ workspaceCommand
     let db: Database | undefined;
     try {
       db = await openDatabase();
-      const workspaceDir =
-        opts.dir ||
-        (await getSetting(db, "personal.workspace_dir")) ||
-        join(homedir(), "Documents", "zam");
+      const workspaceDir = opts.dir || (await ensureActiveWorkspace(db)).path;
       const dest = await backupDatabaseTo(db, workspaceDir);
       if (opts.json) {
         console.log(JSON.stringify({ ok: true, path: dest }));

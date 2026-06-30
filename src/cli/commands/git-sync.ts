@@ -10,7 +10,7 @@ import { join } from "node:path";
 import { Command } from "commander";
 import type { Token } from "../../kernel/index.js";
 import { getCard, matchesFilePath } from "../../kernel/index.js";
-import { resolveUser } from "./resolve-user.js";
+import { resolveUser } from "../users/identity.js";
 import { withDb } from "./shared/db.js";
 
 /**

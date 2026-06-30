@@ -338,6 +338,8 @@ export type {
 } from "./system/install-config.js";
 export {
   detectSyncProvider,
+  getActiveWorkspace,
+  getActiveWorkspaceId,
   getConfiguredWorkspaces,
   getInstallChannel,
   getInstallMode,
@@ -347,6 +349,7 @@ export {
   saveConfiguredWorkspaces,
   saveInstallConfig,
   saveMachineAiConfig,
+  setActiveWorkspaceId,
   setInstallChannel,
   setInstallMode,
   upsertConfiguredWorkspace,
