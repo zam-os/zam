@@ -8,7 +8,7 @@
 import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
 import type { CardState } from "./card.js";
-import { ensureCard, getCard } from "./card.js";
+import { ensureCard, getCard, deleteCardForUser } from "./card.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -645,6 +645,143 @@ export async function importCurriculumCards(
         await ensureCard(tx, token.id, userId);
         ensuredCount++;
       }
+    }
+  });
+
+  return { createdCount, ensuredCount };
+}
+
+export interface SplitProposalInput {
+  question: string;
+  concept: string;
+  domain: string;
+  context?: string;
+  bloom_level?: number;
+  symbiosis_mode?: string | null;
+  source_link?: string | null;
+}
+
+/**
+ * Confirm a card split transaction.
+ * Creates proposal cards, links them as prerequisites to the original card,
+ * and either blocks the original card (surfacing proposals) or deletes it.
+ */
+export async function confirmCardSplit(
+  db: Database,
+  userId: string,
+  originalSlug: string,
+  action: "block" | "remove",
+  originalQuestion: string,
+  originalConcept: string,
+  proposals: SplitProposalInput[],
+): Promise<ImportCurriculumResult> {
+  const originalToken = await getTokenBySlug(db, originalSlug);
+  if (!originalToken) {
+    throw new Error(`Original token not found: ${originalSlug}`);
+  }
+
+  let createdCount = 0;
+  let ensuredCount = 0;
+
+  await db.transaction(async (tx) => {
+    // 1. Create or resolve all proposals
+    const proposalTokens: Token[] = [];
+    for (const card of proposals) {
+      const bloom = (card.bloom_level !== undefined ? card.bloom_level : 1) as BloomLevel;
+      if (bloom < 1 || bloom > 5) {
+        throw new Error(`bloom_level must be between 1 and 5, got ${bloom}`);
+      }
+
+      let symbiosisMode: SymbiosisMode | null = null;
+      if (card.symbiosis_mode) {
+        if (!["shadowing", "copilot", "autonomy", "none"].includes(card.symbiosis_mode)) {
+          throw new Error(`Invalid symbiosis_mode: ${card.symbiosis_mode}`);
+        }
+        symbiosisMode = card.symbiosis_mode === "none" ? null : (card.symbiosis_mode as SymbiosisMode);
+      }
+
+      const baseText = card.question && card.question.trim().length > 0 ? card.question : card.concept;
+      const cleanDomain = slugify(card.domain || "");
+      const cleanBase = slugify(baseText);
+      let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
+      if (baseSlug.length > 60) {
+        baseSlug = baseSlug.slice(0, 60).replace(/-$/, "");
+      }
+      if (!baseSlug) {
+        baseSlug = "token";
+      }
+
+      let token = await getTokenBySlug(tx, baseSlug);
+      if (!token) {
+        const finalSlug = await generateTokenSlug(tx, card.domain, card.concept, card.question);
+        token = await createToken(tx, {
+          slug: finalSlug,
+          concept: card.concept,
+          domain: card.domain,
+          bloom_level: bloom,
+          context: card.context || "",
+          symbiosis_mode: symbiosisMode,
+          source_link: card.source_link || originalToken.source_link || null,
+          question: card.question || null,
+        });
+        createdCount++;
+      }
+      proposalTokens.push(token);
+
+      const existingCard = await getCard(tx, token.id, userId);
+      if (!existingCard) {
+        await ensureCard(tx, token.id, userId);
+        ensuredCount++;
+      }
+    }
+
+    // 2. original card handling
+    if (action === "block") {
+      // Update original token fields
+      await tx
+        .prepare(
+          "UPDATE tokens SET question = ?, concept = ?, updated_at = ? WHERE id = ?"
+        )
+        .run(
+          originalQuestion || null,
+          originalConcept,
+          new Date().toISOString(),
+          originalToken.id
+        );
+
+      // Link proposal tokens as prerequisites of original token
+      for (const propToken of proposalTokens) {
+        await tx
+          .prepare(
+            "INSERT OR IGNORE INTO prerequisites (token_id, requires_id) VALUES (?, ?)"
+          )
+          .run(originalToken.id, propToken.id);
+      }
+
+      // Block original card
+      await tx
+        .prepare("UPDATE cards SET blocked = 1 WHERE token_id = ? AND user_id = ?")
+        .run(originalToken.id, userId);
+
+      // Surface all prerequisites
+      for (const propToken of proposalTokens) {
+        const card = await ensureCard(tx, propToken.id, userId);
+        if (card.blocked === 1) {
+          const prereqOfPrereq = (await tx
+            .prepare("SELECT COUNT(*) as n FROM prerequisites WHERE token_id = ?")
+            .get(propToken.id)) as { n: number };
+          if (prereqOfPrereq.n === 0) {
+            const now = new Date().toISOString();
+            await tx
+              .prepare(
+                "UPDATE cards SET blocked = 0, due_at = ?, stability = NULL, difficulty = NULL, reps = 0, lapses = 0, elapsed_days = NULL, scheduled_days = NULL WHERE id = ?"
+              )
+              .run(now, card.id);
+          }
+        }
+      }
+    } else if (action === "remove") {
+      await deleteCardForUser(tx, originalToken.id, userId);
     }
   });
 

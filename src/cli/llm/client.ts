@@ -658,6 +658,84 @@ JSON Array Output:`;
 }
 
 /**
+ * Generate 2 to 4 atomic proposal cards by splitting a broad card.
+ */
+export async function generateSplitProposalsViaLLM(
+  db: Database,
+  token: { question: string | null; concept: string; domain: string; context: string; source_link: string | null }
+): Promise<any[]> {
+  const cfg = await getProviderForRole(db, "recall");
+  const endpoint = await resolveUsableRecallEndpoint(db);
+  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+
+  const systemPrompt = `You are ZAM, a highly precise agentic learning assistant.
+Your task is to analyze a learning card that is too broad or covers multiple ideas, and split it into 2 to 4 atomic, focused proposal cards in ${langName}.
+
+The input card details are:
+- Question: ${token.question || "N/A"}
+- Core Concept: ${token.concept}
+- Domain: ${token.domain}
+- Excerpt Context: ${token.context || "N/A"}
+
+For each split proposal card, you MUST generate:
+1. "question": A clear, concise active-recall question testing a single focused fact or concept. The question must not reveal the answer itself.
+2. "concept": The reference answer or core fact.
+3. "domain": The category of the card (default to "${token.domain}").
+4. "context": The context excerpt from the original card's context or a derivation of it.
+5. "bloom_level": Bloom taxonomy level (1 to 5).
+6. "symbiosis_mode": Symbiosis mode ("shadowing", "copilot", or "autonomy").
+
+Guidelines:
+- Make sure each card is completely atomic (covers exactly one concept).
+- Do not repeat the same concept across cards.
+- Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any conversational filler.`;
+
+  const userPrompt = `Split the broad card details above into 2 to 4 atomic cards.
+
+JSON Array Output:`;
+
+  const res = await fetchWithInteractiveTimeout(
+    `${endpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.2,
+        max_tokens: DEFAULT_LLM_MAX_TOKENS,
+      }),
+      locale: cfg.locale,
+    },
+  );
+
+  const responseText = await readChatContent(res, "LLM card split proposals");
+  
+  const startIdx = responseText.indexOf("[");
+  const endIdx = responseText.lastIndexOf("]");
+  if (startIdx === -1 || endIdx === -1 || startIdx > endIdx) {
+    throw new Error("Invalid LLM response: JSON array brackets not found");
+  }
+  const jsonText = responseText.substring(startIdx, endIdx + 1);
+  const cards = JSON.parse(jsonText);
+  if (!Array.isArray(cards)) {
+    throw new Error("Invalid LLM response: expected a JSON array");
+  }
+
+  for (const card of cards) {
+    card.source_link = token.source_link || null;
+  }
+
+  return cards;
+}
+
+/**
  * Translate a question into the active locale using the local LLM.
  */
 export async function translateQuestionViaLLM(

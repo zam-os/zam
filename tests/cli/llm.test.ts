@@ -11,6 +11,7 @@ import {
   isLlmOnline,
   resolveUsableRecallEndpoint,
   importCurriculumViaLLM,
+  generateSplitProposalsViaLLM,
 } from "../../src/cli/llm/client.js";
 import {
   createToken,
@@ -413,6 +414,78 @@ describe("LLM client utilities (CLI layer)", () => {
         symbiosis_mode: "shadowing",
         context: "revert creates a new commit",
         source_link: "https://example.com"
+      });
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("generateSplitProposalsViaLLM correctly queries LLM and parses proposal objects", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const mockResponseText = JSON.stringify([
+      {
+        question: "What is git add?",
+        concept: "Stages files",
+        domain: "git",
+        bloom_level: 1,
+        symbiosis_mode: "shadowing",
+        context: "add stages files"
+      },
+      {
+        question: "What is git commit?",
+        concept: "Saves staged snapshot",
+        domain: "git",
+        bloom_level: 2,
+        symbiosis_mode: "shadowing",
+        context: "commit saves snapshot"
+      }
+    ]);
+
+    const originalFetch = global.fetch;
+    global.fetch = async () =>
+      new Response(
+        JSON.stringify({
+          choices: [
+            {
+              message: {
+                content: `Response block:\n${mockResponseText}`,
+              },
+            },
+          ],
+        }),
+      );
+
+    try {
+      const proposals = await generateSplitProposalsViaLLM(db, {
+        question: "Explain staging and committing in Git",
+        concept: "Add stages changes; commit saves them",
+        domain: "git",
+        context: "Git workflow involves add and commit",
+        source_link: "https://git-scm.com"
+      });
+
+      expect(proposals).toHaveLength(2);
+      expect(proposals[0]).toMatchObject({
+        question: "What is git add?",
+        concept: "Stages files",
+        domain: "git",
+        bloom_level: 1,
+        source_link: "https://git-scm.com"
+      });
+      expect(proposals[1]).toMatchObject({
+        question: "What is git commit?",
+        concept: "Saves staged snapshot",
+        domain: "git",
+        bloom_level: 2,
+        source_link: "https://git-scm.com"
       });
     } finally {
       global.fetch = originalFetch;

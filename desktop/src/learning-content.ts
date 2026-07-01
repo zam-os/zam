@@ -40,6 +40,25 @@ let importFieldCategory: HTMLInputElement;
 let importProgressContainer: HTMLElement;
 let btnImportModalCancel: HTMLButtonElement;
 let btnImportModalSubmit: HTMLButtonElement;
+let btnSplitCard: HTMLButtonElement;
+let splitModalOverlay: HTMLElement;
+let splitOriginalQuestion: HTMLTextAreaElement;
+let splitOriginalConcept: HTMLTextAreaElement;
+let splitProgressContainer: HTMLElement;
+let splitProposalsSection: HTMLElement;
+let splitProposalsContainer: HTMLElement;
+let btnSplitAddProposal: HTMLButtonElement;
+let btnSplitModalCancel: HTMLButtonElement;
+let btnSplitModalSubmit: HTMLButtonElement;
+
+interface ProposalEntry {
+  question: string;
+  concept: string;
+  domain: string;
+  bloom_level: number;
+  symbiosis_mode: string;
+}
+let currentProposals: ProposalEntry[] = [];
 let listContainer: HTMLElement;
 let searchInput: HTMLInputElement;
 let categoryFilter: HTMLSelectElement;
@@ -130,6 +149,18 @@ export function initLearningContentStudio(): void {
   btnImportModalCancel = document.getElementById("btn-import-modal-cancel") as HTMLButtonElement;
   btnImportModalSubmit = document.getElementById("btn-import-modal-submit") as HTMLButtonElement;
 
+  // Split Modal bindings
+  btnSplitCard = document.getElementById("btn-content-split-card") as HTMLButtonElement;
+  splitModalOverlay = document.getElementById("split-modal-overlay")!;
+  splitOriginalQuestion = document.getElementById("split-original-question") as HTMLTextAreaElement;
+  splitOriginalConcept = document.getElementById("split-original-concept") as HTMLTextAreaElement;
+  splitProgressContainer = document.getElementById("split-progress-container")!;
+  splitProposalsSection = document.getElementById("split-proposals-section")!;
+  splitProposalsContainer = document.getElementById("split-proposals-container")!;
+  btnSplitAddProposal = document.getElementById("btn-split-add-proposal") as HTMLButtonElement;
+  btnSplitModalCancel = document.getElementById("btn-split-modal-cancel") as HTMLButtonElement;
+  btnSplitModalSubmit = document.getElementById("btn-split-modal-submit") as HTMLButtonElement;
+
   // Event Listeners
   searchInput.addEventListener("input", () => refreshCardsList());
   categoryFilter.addEventListener("change", () => refreshCardsList());
@@ -140,6 +171,14 @@ export function initLearningContentStudio(): void {
   btnImportModalCancel.addEventListener("click", () => hideImportModal());
   btnImportModalSubmit.addEventListener("click", () => {
     void submitImport();
+  });
+  btnSplitCard?.addEventListener("click", () => {
+    void showSplitModal();
+  });
+  btnSplitAddProposal.addEventListener("click", () => addSplitProposalEntry());
+  btnSplitModalCancel.addEventListener("click", () => hideSplitModal());
+  btnSplitModalSubmit.addEventListener("click", () => {
+    void submitConfirmSplit();
   });
   btnCancel.addEventListener("click", () => cancelEdit());
   btnSave.addEventListener("click", () => saveCard());
@@ -338,14 +377,17 @@ function updateUIForSelection(): void {
 
     if (isCreatingNew) {
       btnDelete.classList.add("hidden");
+      btnSplitCard?.classList.add("hidden");
       fieldSlug.value = t("lbl_slug_hint");
     } else {
       btnDelete.classList.remove("hidden");
+      btnSplitCard?.classList.remove("hidden");
     }
   } else {
     emptyStateEl.classList.remove("hidden");
     formContainer.classList.add("hidden");
     btnCancel.classList.add("hidden");
+    btnSplitCard?.classList.add("hidden");
   }
 }
 
@@ -635,5 +677,192 @@ async function submitImport(): Promise<void> {
     importFieldText.disabled = false;
     importFieldSource.disabled = false;
     importFieldCategory.disabled = false;
+  }
+}
+
+async function showSplitModal(): Promise<void> {
+  if (!selectedCard) return;
+
+  splitOriginalQuestion.value = selectedCard.question || "";
+  splitOriginalConcept.value = selectedCard.concept;
+  
+  const blockRadio = document.querySelector('input[name="split-original-action"][value="block"]') as HTMLInputElement;
+  if (blockRadio) blockRadio.checked = true;
+
+  currentProposals = [];
+  splitProposalsContainer.innerHTML = "";
+  splitProposalsSection.classList.add("hidden");
+  splitProgressContainer.classList.remove("hidden");
+  btnSplitModalSubmit.disabled = true;
+  btnSplitAddProposal.disabled = true;
+
+  splitModalOverlay.classList.add("active");
+
+  try {
+    const res = await runBridge<{
+      success: boolean;
+      proposals: ProposalEntry[];
+    }>("personal-card-split-proposals", ["--slug", selectedCard.slug]);
+
+    if (res && res.success && Array.isArray(res.proposals)) {
+      currentProposals = res.proposals;
+      renderSplitProposals();
+      splitProposalsSection.classList.remove("hidden");
+      btnSplitModalSubmit.disabled = false;
+      btnSplitAddProposal.disabled = false;
+    } else {
+      throw new Error(t("lbl_error_importing"));
+    }
+  } catch (err: any) {
+    alert(t("lbl_error_importing") + ": " + (err.message || String(err)));
+    hideSplitModal();
+  } finally {
+    splitProgressContainer.classList.add("hidden");
+  }
+}
+
+function hideSplitModal(): void {
+  splitModalOverlay.classList.remove("active");
+}
+
+function renderSplitProposals(): void {
+  splitProposalsContainer.innerHTML = "";
+
+  currentProposals.forEach((prop, index) => {
+    const row = document.createElement("div");
+    row.style.display = "flex";
+    row.style.flexDirection = "column";
+    row.style.gap = "8px";
+    row.style.padding = "12px";
+    row.style.background = "var(--clr-bg-surface)";
+    row.style.border = "1px solid var(--clr-border)";
+    row.style.borderRadius = "6px";
+    row.style.position = "relative";
+
+    row.innerHTML = `
+      <div style="position: absolute; top: 10px; right: 10px;">
+        <button class="btn danger-btn btn-xs btn-remove-proposal" type="button" data-index="${index}" style="padding: 2px 6px; font-size: 0.75rem;">Delete</button>
+      </div>
+      <div style="font-size: 0.8rem; color: var(--clr-text-secondary); font-weight: bold; margin-bottom: 2px;">
+        Proposal #${index + 1}
+      </div>
+      <div class="editor-form-group" style="margin: 0;">
+        <label style="font-size: 0.8rem;">Question</label>
+        <textarea class="editor-textarea prop-question" style="min-height: 40px; font-size: 0.85rem;" data-index="${index}">${prop.question || ""}</textarea>
+      </div>
+      <div class="editor-form-group" style="margin: 0;">
+        <label style="font-size: 0.8rem;">Answer / Concept</label>
+        <textarea class="editor-textarea prop-concept" style="min-height: 40px; font-size: 0.85rem;" data-index="${index}">${prop.concept || ""}</textarea>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <div class="editor-form-group" style="flex: 1; margin: 0;">
+          <label style="font-size: 0.8rem;">Category</label>
+          <input type="text" class="editor-input prop-domain" style="font-size: 0.85rem;" data-index="${index}" value="${prop.domain || ""}" />
+        </div>
+      </div>
+    `;
+
+    const qField = row.querySelector(".prop-question") as HTMLTextAreaElement;
+    qField.addEventListener("input", (e) => {
+      currentProposals[index].question = (e.target as HTMLTextAreaElement).value;
+    });
+
+    const cField = row.querySelector(".prop-concept") as HTMLTextAreaElement;
+    cField.addEventListener("input", (e) => {
+      currentProposals[index].concept = (e.target as HTMLTextAreaElement).value;
+    });
+
+    const dField = row.querySelector(".prop-domain") as HTMLInputElement;
+    dField.addEventListener("input", (e) => {
+      currentProposals[index].domain = (e.target as HTMLInputElement).value;
+    });
+
+    const removeBtn = row.querySelector(".btn-remove-proposal") as HTMLButtonElement;
+    removeBtn.addEventListener("click", () => {
+      removeSplitProposalEntry(index);
+    });
+
+    splitProposalsContainer.appendChild(row);
+  });
+}
+
+function addSplitProposalEntry(): void {
+  currentProposals.push({
+    question: "",
+    concept: "",
+    domain: selectedCard ? selectedCard.domain : "git",
+    bloom_level: 1,
+    symbiosis_mode: "shadowing",
+  });
+  renderSplitProposals();
+}
+
+function removeSplitProposalEntry(index: number): void {
+  currentProposals.splice(index, 1);
+  renderSplitProposals();
+}
+
+async function submitConfirmSplit(): Promise<void> {
+  if (!selectedCard) return;
+
+  const originalQ = splitOriginalQuestion.value.trim();
+  const originalC = splitOriginalConcept.value.trim();
+  const actionEl = document.querySelector('input[name="split-original-action"]:checked') as HTMLInputElement;
+  const action = actionEl ? actionEl.value : "block";
+
+  if (action === "block" && (!originalQ || !originalC)) {
+    alert(t("lbl_question") + " / " + t("lbl_answer") + " context required for original card");
+    return;
+  }
+
+  const validProposals = currentProposals.map(p => ({
+    question: p.question.trim(),
+    concept: p.concept.trim(),
+    domain: p.domain.trim(),
+    bloom_level: p.bloom_level,
+    symbiosis_mode: p.symbiosis_mode,
+  })).filter(p => p.question && p.concept && p.domain);
+
+  if (validProposals.length < 2) {
+    alert("At least 2 complete card proposals are required to split a card.");
+    return;
+  }
+
+  btnSplitModalSubmit.disabled = true;
+  btnSplitModalCancel.disabled = true;
+
+  try {
+    const res = await runBridge<{
+      success: boolean;
+      createdCount: number;
+      ensuredCount: number;
+    }>("personal-card-confirm-split", [
+      "--slug",
+      selectedCard.slug,
+      "--action",
+      action,
+      "--original-question",
+      originalQ,
+      "--original-concept",
+      originalC,
+      "--proposals",
+      JSON.stringify(validProposals),
+    ]);
+
+    if (res && res.success) {
+      hideSplitModal();
+      alert(tf("toast_import_success", {
+        createdCount: res.createdCount,
+        ensuredCount: res.ensuredCount,
+      }));
+      cancelEdit();
+      await loadStudioData();
+    } else {
+      throw new Error(t("lbl_error_importing"));
+    }
+  } catch (err: any) {
+    alert(t("lbl_error_importing") + ": " + (err.message || String(err)));
+    btnSplitModalSubmit.disabled = false;
+    btnSplitModalCancel.disabled = false;
   }
 }

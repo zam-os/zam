@@ -157,6 +157,7 @@ export type {
   PersonalCard,
   CurriculumCardInput,
   ImportCurriculumResult,
+  SplitProposalInput,
 } from "./models/token.js";
 // Models
 export {
@@ -172,6 +173,7 @@ export {
   listPersonalCards,
   generateTokenSlug,
   importCurriculumCards,
+  confirmCardSplit,
 } from "./models/token.js";
 export type {
   AnalysisResult,

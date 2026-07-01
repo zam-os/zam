@@ -54,6 +54,7 @@ import {
   listAgentSkills,
   listPersonalCards,
   importCurriculumCards,
+  confirmCardSplit,
   listProviderApiKeyRefs,
   listTokens,
   monitorLogExists,
@@ -91,6 +92,7 @@ import {
   getCloudModelRecommendation,
   getLlmConfig,
   importCurriculumViaLLM,
+  generateSplitProposalsViaLLM,
   getProviderForRole,
   getProviderRoleStatus,
   isLlmOnline,
@@ -3003,6 +3005,61 @@ bridgeCommand
       );
 
       const result = await importCurriculumCards(db, userId, cards);
+
+      jsonOut({
+        success: true,
+        createdCount: result.createdCount,
+        ensuredCount: result.ensuredCount,
+      });
+    });
+  });
+
+// ── zam bridge personal-card-split-proposals ───────────────────────────────
+
+bridgeCommand
+  .command("personal-card-split-proposals")
+  .description("Generate atomic proposals for splitting a card (JSON)")
+  .requiredOption("--slug <slug>", "Original token slug")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const token = await getTokenBySlug(db, opts.slug);
+      if (!token) {
+        jsonError(`Token not found: ${opts.slug}`);
+      }
+
+      const proposals = await generateSplitProposalsViaLLM(db, token);
+      jsonOut({
+        success: true,
+        proposals,
+      });
+    });
+  });
+
+// ── zam bridge personal-card-confirm-split ─────────────────────────────────
+
+bridgeCommand
+  .command("personal-card-confirm-split")
+  .description("Save confirmed card split and modify original card (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--slug <slug>", "Original token slug")
+  .requiredOption("--action <action>", "Original card action: 'block' or 'remove'")
+  .requiredOption("--original-question <question>", "Rewritten question of the original card")
+  .requiredOption("--original-concept <concept>", "Rewritten concept of the original card")
+  .requiredOption("--proposals <json>", "JSON string representing proposals array")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const proposals = JSON.parse(opts.proposals);
+
+      const result = await confirmCardSplit(
+        db,
+        userId,
+        opts.slug,
+        opts.action as "block" | "remove",
+        opts.originalQuestion,
+        opts.originalConcept,
+        proposals,
+      );
 
       jsonOut({
         success: true,

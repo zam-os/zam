@@ -239,6 +239,7 @@
                 <button id="btn-content-delete-card" class="btn danger-btn btn-sm" type="button">Remove Card</button>
                 <div class="editor-actions-right">
                   <button id="btn-content-cancel-edit" class="btn secondary-btn btn-sm hidden" type="button" style="margin-right: 5px;">Cancel</button>
+                  <button id="btn-content-split-card" class="btn secondary-btn btn-sm hidden" type="button" style="margin-right: 5px;">Split</button>
                   <button id="btn-content-save-card" class="btn primary-btn btn-sm" type="button">Save Card</button>
                 </div>
               </div>
@@ -572,6 +573,60 @@
           <div class="modal-actions">
             <button id="btn-import-modal-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
             <button id="btn-import-modal-submit" class="btn primary-btn btn-sm" type="button">Import</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SPLIT CARD MODAL -->
+      <div id="split-modal-overlay" class="modal-overlay">
+        <div class="modal-box" style="max-width: 750px; display: flex; flex-direction: column; max-height: 85vh;">
+          <div class="modal-header">
+            <h3 id="lbl-split-modal-title">Split Card</h3>
+          </div>
+          <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px;">
+            <div style="background: var(--clr-bg-card); border: 1px solid var(--clr-border); border-radius: 6px; padding: 12px; margin-bottom: 16px;">
+              <h4 style="margin: 0 0 10px 0; color: var(--clr-accent-purple); font-size: 0.95rem;" id="lbl-original-card-title">Original Card (Summarized application question)</h4>
+              <div class="editor-form-group">
+                <label for="split-original-question" id="lbl-split-original-question">Question</label>
+                <textarea id="split-original-question" class="editor-textarea" style="min-height: 50px; font-size: 0.85rem;" placeholder="Summary question..."></textarea>
+              </div>
+              <div class="editor-form-group">
+                <label for="split-original-concept" id="lbl-split-original-concept">Answer / Concept</label>
+                <textarea id="split-original-concept" class="editor-textarea" style="min-height: 50px; font-size: 0.85rem;" placeholder="Summary answer..."></textarea>
+              </div>
+            </div>
+
+            <div class="editor-form-group" style="margin-bottom: 16px;">
+              <label id="lbl-split-action-title">After split completed:</label>
+              <div style="display: flex; gap: 20px; margin-top: 5px;">
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 0.9rem; cursor: pointer;">
+                  <input type="radio" name="split-original-action" value="block" checked style="cursor: pointer;" />
+                  <span id="lbl-action-block">Keep original card and block it (requires new cards first)</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 0.9rem; cursor: pointer;">
+                  <input type="radio" name="split-original-action" value="remove" style="cursor: pointer;" />
+                  <span id="lbl-action-remove">Remove original card</span>
+                </label>
+              </div>
+            </div>
+
+            <div id="split-progress-container" class="hidden" style="margin: 20px 0; text-align: center;">
+              <div class="modal-impact-title" id="lbl-split-progress-status" style="color: var(--clr-accent-purple);">Generating atomic proposals...</div>
+              <p style="font-size: 0.85rem; color: var(--clr-text-secondary);" id="lbl-split-progress-detail">This may take up to a minute depending on your local LLM speed.</p>
+            </div>
+
+            <div id="split-proposals-section" class="hidden">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--clr-border); padding-bottom: 8px;">
+                <h4 style="margin: 0; font-size: 0.95rem;" id="lbl-atomic-proposals-title">Atomic Card Proposals (Minimum 2)</h4>
+                <button id="btn-split-add-proposal" class="btn secondary-btn btn-sm" type="button">+ Add Card</button>
+              </div>
+              <div id="split-proposals-container" style="display: flex; flex-direction: column; gap: 12px;">
+              </div>
+            </div>
+          </div>
+          <div class="modal-actions" style="border-top: 1px solid var(--clr-border); padding-top: 12px; margin-top: 12px;">
+            <button id="btn-split-modal-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
+            <button id="btn-split-modal-submit" class="btn primary-btn btn-sm" type="button">Confirm Split</button>
           </div>
         </div>
       </div>

@@ -318,6 +318,18 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     btn_import_submit: "Import",
     toast_import_success: "Successfully imported {createdCount} new tokens and ensured {ensuredCount} cards!",
     lbl_error_importing: "Failed to import curriculum",
+    btn_split: "Split",
+    lbl_split_modal_title: "Split Card",
+    lbl_original_card_title: "Original Card (Summarized application question)",
+    lbl_split_original_question: "Question",
+    lbl_split_original_concept: "Answer / Concept",
+    lbl_split_action_title: "After split completed:",
+    lbl_action_block: "Keep original card and block it (requires new cards first)",
+    lbl_action_remove: "Remove original card",
+    lbl_split_progress_status: "Generating atomic proposals...",
+    lbl_split_progress_detail: "This may take up to a minute depending on your local LLM speed.",
+    lbl_atomic_proposals_title: "Atomic Card Proposals (Minimum 2)",
+    btn_split_modal_submit: "Confirm Split",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -616,6 +628,18 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     btn_import_submit: "Importieren",
     toast_import_success: "Erfolgreich {createdCount} neue Token importiert und {ensuredCount} Karten sichergestellt!",
     lbl_error_importing: "Lehrplan konnte nicht importiert werden",
+    btn_split: "Aufteilen",
+    lbl_split_modal_title: "Karte aufteilen",
+    lbl_original_card_title: "Originalkarte (Zusammenfassende Anwendungsfrage)",
+    lbl_split_original_question: "Frage",
+    lbl_split_original_concept: "Antwort / Konzept",
+    lbl_split_action_title: "Nach dem Aufteilen:",
+    lbl_action_block: "Originalkarte behalten und blockieren (erfordert zuerst neue Karten)",
+    lbl_action_remove: "Originalkarte entfernen",
+    lbl_split_progress_status: "Atomare Vorschläge werden generiert...",
+    lbl_split_progress_detail: "Dies kann je nach Geschwindigkeit der lokalen KI bis zu einer Minute dauern.",
+    lbl_atomic_proposals_title: "Atomare Kartenvorschläge (Mindestens 2)",
+    btn_split_modal_submit: "Aufteilung bestätigen",
   },
   // es, fr, pt, zh, ja live in ./i18n.ts; en/de stay here as reference locales.
   ...TRANSLATION_PACKS,
@@ -1184,6 +1208,34 @@ function initializeTranslations() {
   if (btnImportModalCancel) btnImportModalCancel.textContent = t("lbl_cancel_action");
   const btnImportModalSubmit = document.getElementById("btn-import-modal-submit");
   if (btnImportModalSubmit) btnImportModalSubmit.textContent = t("btn_import_submit");
+
+  // Split Modal Translations
+  const btnContentSplitCard = document.getElementById("btn-content-split-card");
+  if (btnContentSplitCard) btnContentSplitCard.textContent = t("btn_split");
+  const lblSplitModalTitle = document.getElementById("lbl-split-modal-title");
+  if (lblSplitModalTitle) lblSplitModalTitle.textContent = t("lbl_split_modal_title");
+  const lblOriginalCardTitle = document.getElementById("lbl-original-card-title");
+  if (lblOriginalCardTitle) lblOriginalCardTitle.textContent = t("lbl_original_card_title");
+  const lblSplitOriginalQuestion = document.getElementById("lbl-split-original-question");
+  if (lblSplitOriginalQuestion) lblSplitOriginalQuestion.textContent = t("lbl_split_original_question");
+  const lblSplitOriginalConcept = document.getElementById("lbl-split-original-concept");
+  if (lblSplitOriginalConcept) lblSplitOriginalConcept.textContent = t("lbl_split_original_concept");
+  const lblSplitActionTitle = document.getElementById("lbl-split-action-title");
+  if (lblSplitActionTitle) lblSplitActionTitle.textContent = t("lbl_split_action_title");
+  const lblActionBlock = document.getElementById("lbl-action-block");
+  if (lblActionBlock) lblActionBlock.textContent = t("lbl_action_block");
+  const lblActionRemove = document.getElementById("lbl-action-remove");
+  if (lblActionRemove) lblActionRemove.textContent = t("lbl_action_remove");
+  const lblSplitProgressStatus = document.getElementById("lbl-split-progress-status");
+  if (lblSplitProgressStatus) lblSplitProgressStatus.textContent = t("lbl_split_progress_status");
+  const lblSplitProgressDetail = document.getElementById("lbl-split-progress-detail");
+  if (lblSplitProgressDetail) lblSplitProgressDetail.textContent = t("lbl_split_progress_detail");
+  const lblAtomicProposalsTitle = document.getElementById("lbl-atomic-proposals-title");
+  if (lblAtomicProposalsTitle) lblAtomicProposalsTitle.textContent = t("lbl_atomic_proposals_title");
+  const btnSplitModalCancel = document.getElementById("btn-split-modal-cancel");
+  if (btnSplitModalCancel) btnSplitModalCancel.textContent = t("lbl_cancel_action");
+  const btnSplitModalSubmit = document.getElementById("btn-split-modal-submit");
+  if (btnSplitModalSubmit) btnSplitModalSubmit.textContent = t("btn_split_modal_submit");
 
   document.getElementById("graph-title")!.textContent = t("graph_title");
   document.getElementById("btn-graph-back")!.textContent =

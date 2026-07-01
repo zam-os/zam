@@ -26,6 +26,7 @@ import {
   listPersonalCards,
   generateTokenSlug,
   importCurriculumCards,
+  confirmCardSplit,
 } from "../../src/kernel/index.js";
 
 describe("review maintenance primitives", () => {
@@ -396,5 +397,79 @@ describe("review maintenance primitives", () => {
 
     const listFinal = await listPersonalCards(db, "thomas", { query: "log" });
     expect(listFinal).toHaveLength(0);
+  });
+
+  it("splits card atomically linking prerequisites or removing card", async () => {
+    const token = await createToken(db, {
+      slug: "math-advanced",
+      concept: "Solves integrals and derivatives",
+      domain: "math",
+      bloom_level: 2,
+    });
+    await ensureCard(db, token.id, "thomas");
+
+    const proposals = [
+      {
+        question: "How do you solve integrals?",
+        concept: "Anti-derivative calculation rules",
+        domain: "math",
+        bloom_level: 3,
+      },
+      {
+        question: "How do you solve derivatives?",
+        concept: "Rates of change rules",
+        domain: "math",
+        bloom_level: 2,
+      }
+    ];
+
+    const splitRes = await confirmCardSplit(
+      db,
+      "thomas",
+      "math-advanced",
+      "block",
+      "What is calculus?",
+      "Integrals and derivatives studies",
+      proposals
+    );
+
+    expect(splitRes.createdCount).toBe(2);
+    expect(splitRes.ensuredCount).toBe(2);
+
+    const updatedOriginal = await getTokenBySlug(db, "math-advanced");
+    expect(updatedOriginal?.question).toBe("What is calculus?");
+    expect(updatedOriginal?.concept).toBe("Integrals and derivatives studies");
+
+    const originalCard = await getCard(db, token.id, "thomas");
+    expect(originalCard?.blocked).toBe(1);
+
+    const prop1 = await getTokenBySlug(db, "math-how-do-you-solve-integrals");
+    expect(prop1).toBeDefined();
+    const propCard1 = await getCard(db, prop1!.id, "thomas");
+    expect(propCard1?.blocked).toBe(0);
+
+    const token2 = await createToken(db, {
+      slug: "science-broad",
+      concept: "Covers physics and chemistry",
+      domain: "science",
+      bloom_level: 2,
+    });
+    await ensureCard(db, token2.id, "thomas");
+
+    const splitRes2 = await confirmCardSplit(
+      db,
+      "thomas",
+      "science-broad",
+      "remove",
+      "Rewritten science",
+      "physics chem summary",
+      proposals
+    );
+
+    expect(splitRes2.createdCount).toBe(0);
+    expect(splitRes2.ensuredCount).toBe(0);
+
+    const originalCard2 = await getCard(db, token2.id, "thomas");
+    expect(originalCard2).toBeUndefined();
   });
 });

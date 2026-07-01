@@ -191,5 +191,19 @@ describe("cli E2E tests", () => {
       const output = err.stdout || err.stderr || String(err.message || err);
       expect(output).toContain("LLM");
     }
+
+    // 8. Verify split commands integration structure
+    try {
+      runCli([
+        "bridge",
+        "personal-card-split-proposals",
+        "--slug",
+        "testing-what-is-testing"
+      ]);
+      expect(true).toBe(false);
+    } catch (err: any) {
+      const output = err.stdout || err.stderr || String(err.message || err);
+      expect(output).toContain("LLM");
+    }
   }, E2E_TIMEOUT_MS);
 });
