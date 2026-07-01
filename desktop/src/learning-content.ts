@@ -133,31 +133,71 @@ let btnModalHardDelete: HTMLButtonElement;
 let pendingConfirmCallback: (() => void) | null = null;
 let pendingHardDeleteCallback: (() => void) | null = null;
 
+function escapeHtml(value: string): string {
+  return value.replace(
+    /[&<>"']/g,
+    (character) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      })[character]!,
+  );
+}
+
 export function initLearningContentStudio(): void {
   // Bind DOM elements
   layoutContainer = document.getElementById("content-studio-layout")!;
   listContainer = document.getElementById("content-studio-card-list")!;
-  searchInput = document.getElementById("content-search-input") as HTMLInputElement;
-  categoryFilter = document.getElementById("content-category-filter") as HTMLSelectElement;
+  searchInput = document.getElementById(
+    "content-search-input",
+  ) as HTMLInputElement;
+  categoryFilter = document.getElementById(
+    "content-category-filter",
+  ) as HTMLSelectElement;
   emptyStateEl = document.getElementById("editor-empty-state")!;
   formContainer = document.getElementById("editor-form-container")!;
-  newCardBtn = document.getElementById("btn-content-new-card") as HTMLButtonElement;
-  createFirstCardBtn = document.getElementById("btn-create-first-card") as HTMLButtonElement;
+  newCardBtn = document.getElementById(
+    "btn-content-new-card",
+  ) as HTMLButtonElement;
+  createFirstCardBtn = document.getElementById(
+    "btn-create-first-card",
+  ) as HTMLButtonElement;
 
   // Form Fields
-  fieldQuestion = document.getElementById("editor-field-question") as HTMLTextAreaElement;
-  fieldConcept = document.getElementById("editor-field-concept") as HTMLTextAreaElement;
-  fieldDomain = document.getElementById("editor-field-domain") as HTMLInputElement;
-  fieldSourceLink = document.getElementById("editor-field-source-link") as HTMLInputElement;
-  fieldContext = document.getElementById("editor-field-context") as HTMLInputElement;
-  fieldBloom = document.getElementById("editor-field-bloom") as HTMLSelectElement;
+  fieldQuestion = document.getElementById(
+    "editor-field-question",
+  ) as HTMLTextAreaElement;
+  fieldConcept = document.getElementById(
+    "editor-field-concept",
+  ) as HTMLTextAreaElement;
+  fieldDomain = document.getElementById(
+    "editor-field-domain",
+  ) as HTMLInputElement;
+  fieldSourceLink = document.getElementById(
+    "editor-field-source-link",
+  ) as HTMLInputElement;
+  fieldContext = document.getElementById(
+    "editor-field-context",
+  ) as HTMLInputElement;
+  fieldBloom = document.getElementById(
+    "editor-field-bloom",
+  ) as HTMLSelectElement;
   fieldMode = document.getElementById("editor-field-mode") as HTMLSelectElement;
   fieldSlug = document.getElementById("editor-field-slug") as HTMLInputElement;
 
   // Buttons & Toggles
-  btnSave = document.getElementById("btn-content-save-card") as HTMLButtonElement;
-  btnDelete = document.getElementById("btn-content-delete-card") as HTMLButtonElement;
-  btnCancel = document.getElementById("btn-content-cancel-edit") as HTMLButtonElement;
+  btnSave = document.getElementById(
+    "btn-content-save-card",
+  ) as HTMLButtonElement;
+  btnDelete = document.getElementById(
+    "btn-content-delete-card",
+  ) as HTMLButtonElement;
+  btnCancel = document.getElementById(
+    "btn-content-cancel-edit",
+  ) as HTMLButtonElement;
   toggleAdvanced = document.getElementById("editor-toggle-advanced")!;
   advancedContent = document.getElementById("editor-advanced-content")!;
   toggleArrow = document.getElementById("editor-toggle-arrow")!;
@@ -167,53 +207,117 @@ export function initLearningContentStudio(): void {
   modalTitle = document.getElementById("lbl-modal-title")!;
   modalDesc = document.getElementById("lbl-modal-desc")!;
   modalImpactContainer = document.getElementById("modal-impact-container")!;
-  modalImpactList = document.getElementById("modal-impact-list-el") as HTMLUListElement;
+  modalImpactList = document.getElementById(
+    "modal-impact-list-el",
+  ) as HTMLUListElement;
   modalDeleteChoice = document.getElementById("modal-delete-choice")!;
-  btnModalCancel = document.getElementById("btn-modal-cancel") as HTMLButtonElement;
-  btnModalConfirm = document.getElementById("btn-modal-confirm") as HTMLButtonElement;
-  btnModalHardDelete = document.getElementById("btn-modal-hard-delete") as HTMLButtonElement;
+  btnModalCancel = document.getElementById(
+    "btn-modal-cancel",
+  ) as HTMLButtonElement;
+  btnModalConfirm = document.getElementById(
+    "btn-modal-confirm",
+  ) as HTMLButtonElement;
+  btnModalHardDelete = document.getElementById(
+    "btn-modal-hard-delete",
+  ) as HTMLButtonElement;
 
   // Import Modal bindings
-  importBtn = document.getElementById("btn-content-import") as HTMLButtonElement;
+  importBtn = document.getElementById(
+    "btn-content-import",
+  ) as HTMLButtonElement;
   importModalOverlay = document.getElementById("import-modal-overlay")!;
-  importFieldText = document.getElementById("import-field-text") as HTMLTextAreaElement;
-  importFieldSource = document.getElementById("import-field-source") as HTMLInputElement;
-  importFieldCategory = document.getElementById("import-field-category") as HTMLInputElement;
-  importProgressContainer = document.getElementById("import-progress-container")!;
-  btnImportModalCancel = document.getElementById("btn-import-modal-cancel") as HTMLButtonElement;
-  btnImportModalSubmit = document.getElementById("btn-import-modal-submit") as HTMLButtonElement;
+  importFieldText = document.getElementById(
+    "import-field-text",
+  ) as HTMLTextAreaElement;
+  importFieldSource = document.getElementById(
+    "import-field-source",
+  ) as HTMLInputElement;
+  importFieldCategory = document.getElementById(
+    "import-field-category",
+  ) as HTMLInputElement;
+  importProgressContainer = document.getElementById(
+    "import-progress-container",
+  )!;
+  btnImportModalCancel = document.getElementById(
+    "btn-import-modal-cancel",
+  ) as HTMLButtonElement;
+  btnImportModalSubmit = document.getElementById(
+    "btn-import-modal-submit",
+  ) as HTMLButtonElement;
 
   // Source Import bindings
-  btnImportTabText = document.getElementById("btn-import-tab-text") as HTMLButtonElement;
-  btnImportTabSource = document.getElementById("btn-import-tab-source") as HTMLButtonElement;
+  btnImportTabText = document.getElementById(
+    "btn-import-tab-text",
+  ) as HTMLButtonElement;
+  btnImportTabSource = document.getElementById(
+    "btn-import-tab-source",
+  ) as HTMLButtonElement;
   importViewText = document.getElementById("import-view-text")!;
   importViewSource = document.getElementById("import-view-source")!;
-  importSourceType = document.getElementById("import-source-type") as HTMLSelectElement;
-  importSourceUri = document.getElementById("import-source-uri") as HTMLInputElement;
-  btnImportSourceAnalyze = document.getElementById("btn-import-source-analyze") as HTMLButtonElement;
-  importSourcePreview = document.getElementById("import-source-preview") as HTMLTextAreaElement;
-  importSourceId = document.getElementById("import-source-id") as HTMLInputElement;
+  importSourceType = document.getElementById(
+    "import-source-type",
+  ) as HTMLSelectElement;
+  importSourceUri = document.getElementById(
+    "import-source-uri",
+  ) as HTMLInputElement;
+  btnImportSourceAnalyze = document.getElementById(
+    "btn-import-source-analyze",
+  ) as HTMLButtonElement;
+  importSourcePreview = document.getElementById(
+    "import-source-preview",
+  ) as HTMLTextAreaElement;
+  importSourceId = document.getElementById(
+    "import-source-id",
+  ) as HTMLInputElement;
 
   // Split Modal bindings
-  btnSplitCard = document.getElementById("btn-content-split-card") as HTMLButtonElement;
+  btnSplitCard = document.getElementById(
+    "btn-content-split-card",
+  ) as HTMLButtonElement;
   splitModalOverlay = document.getElementById("split-modal-overlay")!;
-  splitOriginalQuestion = document.getElementById("split-original-question") as HTMLTextAreaElement;
-  splitOriginalConcept = document.getElementById("split-original-concept") as HTMLTextAreaElement;
+  splitOriginalQuestion = document.getElementById(
+    "split-original-question",
+  ) as HTMLTextAreaElement;
+  splitOriginalConcept = document.getElementById(
+    "split-original-concept",
+  ) as HTMLTextAreaElement;
   splitProgressContainer = document.getElementById("split-progress-container")!;
   splitProposalsSection = document.getElementById("split-proposals-section")!;
-  splitProposalsContainer = document.getElementById("split-proposals-container")!;
-  btnSplitAddProposal = document.getElementById("btn-split-add-proposal") as HTMLButtonElement;
-  btnSplitModalCancel = document.getElementById("btn-split-modal-cancel") as HTMLButtonElement;
-  btnSplitModalSubmit = document.getElementById("btn-split-modal-submit") as HTMLButtonElement;
+  splitProposalsContainer = document.getElementById(
+    "split-proposals-container",
+  )!;
+  btnSplitAddProposal = document.getElementById(
+    "btn-split-add-proposal",
+  ) as HTMLButtonElement;
+  btnSplitModalCancel = document.getElementById(
+    "btn-split-modal-cancel",
+  ) as HTMLButtonElement;
+  btnSplitModalSubmit = document.getElementById(
+    "btn-split-modal-submit",
+  ) as HTMLButtonElement;
 
   // Foundations DOM Cache
-  btnFoundationsCard = document.getElementById("btn-content-foundations-card") as HTMLButtonElement;
-  foundationsModalOverlay = document.getElementById("foundations-modal-overlay")!;
-  foundationsProgressContainer = document.getElementById("foundations-progress-container")!;
-  foundationsProposalsSection = document.getElementById("foundations-proposals-section")!;
-  foundationsProposalsContainer = document.getElementById("foundations-proposals-container")!;
-  btnFoundationsModalCancel = document.getElementById("btn-foundations-modal-cancel") as HTMLButtonElement;
-  btnFoundationsModalSubmit = document.getElementById("btn-foundations-modal-submit") as HTMLButtonElement;
+  btnFoundationsCard = document.getElementById(
+    "btn-content-foundations-card",
+  ) as HTMLButtonElement;
+  foundationsModalOverlay = document.getElementById(
+    "foundations-modal-overlay",
+  )!;
+  foundationsProgressContainer = document.getElementById(
+    "foundations-progress-container",
+  )!;
+  foundationsProposalsSection = document.getElementById(
+    "foundations-proposals-section",
+  )!;
+  foundationsProposalsContainer = document.getElementById(
+    "foundations-proposals-container",
+  )!;
+  btnFoundationsModalCancel = document.getElementById(
+    "btn-foundations-modal-cancel",
+  ) as HTMLButtonElement;
+  btnFoundationsModalSubmit = document.getElementById(
+    "btn-foundations-modal-submit",
+  ) as HTMLButtonElement;
 
   // Event Listeners
   searchInput.addEventListener("input", () => refreshCardsList());
@@ -242,7 +346,9 @@ export function initLearningContentStudio(): void {
   btnFoundationsCard?.addEventListener("click", () => {
     void showFoundationsModal();
   });
-  btnFoundationsModalCancel.addEventListener("click", () => hideFoundationsModal());
+  btnFoundationsModalCancel.addEventListener("click", () =>
+    hideFoundationsModal(),
+  );
   btnFoundationsModalSubmit.addEventListener("click", () => {
     void submitConfirmFoundations();
   });
@@ -267,7 +373,13 @@ export function initLearningContentStudio(): void {
   });
 
   // Hotkey listener for forms (Ctrl+Enter to save)
-  const formFields = [fieldQuestion, fieldConcept, fieldDomain, fieldSourceLink, fieldContext];
+  const formFields = [
+    fieldQuestion,
+    fieldConcept,
+    fieldDomain,
+    fieldSourceLink,
+    fieldContext,
+  ];
   for (const field of formFields) {
     field.addEventListener("keydown", (e: Event) => {
       const ke = e as KeyboardEvent;
@@ -284,7 +396,9 @@ export function initLearningContentStudio(): void {
 
 export async function loadStudioData(): Promise<void> {
   try {
-    const listRes = await runBridge<{ cards: PersonalCard[] }>("personal-card-list");
+    const listRes = await runBridge<{ cards: PersonalCard[] }>(
+      "personal-card-list",
+    );
     cardsList = listRes.cards;
 
     // Populated category dropdown options dynamically
@@ -293,7 +407,7 @@ export async function loadStudioData(): Promise<void> {
       if (c.domain) categories.add(c.domain);
     }
     const sortedCategories = Array.from(categories).sort();
-    
+
     // Clear and reset dropdown
     const currentVal = categoryFilter.value;
     categoryFilter.innerHTML = `<option value="all">${t("lbl_all_categories")}</option>`;
@@ -309,7 +423,9 @@ export async function loadStudioData(): Promise<void> {
     updateUIForSelection();
   } catch (err) {
     console.error("Failed to load cards list", err);
-    alert(`${t("lbl_error_loading")}: ${err instanceof Error ? err.message : String(err)}`);
+    alert(
+      `${t("lbl_error_loading")}: ${err instanceof Error ? err.message : String(err)}`,
+    );
   }
 }
 
@@ -356,15 +472,17 @@ function refreshCardsList(): void {
     }
 
     const isDue = card.dueAt && new Date(card.dueAt) <= new Date();
-    const dueLabel = isDue ? `<span class="card-status-badge again" style="font-size: 0.7rem; padding: 1px 4px; background: rgba(239, 68, 68, 0.1); color: #ef4444; margin-left: 5px;">${t("lbl_card_due")}</span>` : "";
+    const dueLabel = isDue
+      ? `<span class="card-status-badge again" style="font-size: 0.7rem; padding: 1px 4px; background: rgba(239, 68, 68, 0.1); color: #ef4444; margin-left: 5px;">${escapeHtml(t("lbl_card_due"))}</span>`
+      : "";
 
     div.innerHTML = `
       <div class="content-list-item-header">
-        <span class="content-list-item-concept">${card.concept || t("lbl_question")}</span>
-        <span class="card-status-badge ${statusClass}">${statusText}</span>
+        <span class="content-list-item-concept">${escapeHtml(card.concept || t("lbl_question"))}</span>
+        <span class="card-status-badge ${escapeHtml(statusClass)}">${escapeHtml(statusText)}</span>
       </div>
       <div class="content-list-item-meta">
-        <span class="content-list-item-domain">${card.domain || "—"}</span>
+        <span class="content-list-item-domain">${escapeHtml(card.domain || "—")}</span>
         <span style="font-size: 0.75rem; color: var(--clr-text-muted);">Bloom ${card.bloomLevel}</span>
         ${dueLabel}
       </div>
@@ -381,7 +499,7 @@ function refreshCardsList(): void {
 function selectCard(card: PersonalCard): void {
   selectedCard = card;
   isCreatingNew = false;
-  
+
   // Reset responsive layout mode (show editor on mobile)
   layoutContainer.classList.remove("show-list");
   layoutContainer.classList.add("show-editor");
@@ -492,26 +610,31 @@ async function saveCard(): Promise<void> {
   try {
     if (isCreatingNew) {
       const args: string[] = [
-        "--concept", concept,
-        "--domain", domain,
-        "--bloom", String(bloom),
-        "--mode", mode,
-        "--context", context,
+        "--concept",
+        concept,
+        "--domain",
+        domain,
+        "--bloom",
+        String(bloom),
+        "--mode",
+        mode,
+        "--context",
+        context,
       ];
       if (question) args.push("--question", question);
       if (sourceLink) args.push("--source-link", sourceLink);
 
-      const res = await runBridge<{ success: boolean; token: { slug: string } }>(
-        "personal-card-create",
-        args
-      );
+      const res = await runBridge<{
+        success: boolean;
+        token: { slug: string };
+      }>("personal-card-create", args);
 
       if (res.success) {
         alert(t("lbl_card_saved_toast"));
         await loadStudioData();
-        
+
         // Find and select the newly created card
-        const newCard = cardsList.find(c => c.slug === res.token.slug);
+        const newCard = cardsList.find((c) => c.slug === res.token.slug);
         if (newCard) {
           selectCard(newCard);
         } else {
@@ -520,24 +643,35 @@ async function saveCard(): Promise<void> {
       }
     } else if (selectedCard) {
       const args: string[] = [
-        "--slug", selectedCard.slug,
-        "--concept", concept,
-        "--domain", domain,
-        "--bloom", String(bloom),
-        "--mode", mode,
-        "--context", context,
-        "--question", question,
-        "--source-link", sourceLink,
+        "--slug",
+        selectedCard.slug,
+        "--concept",
+        concept,
+        "--domain",
+        domain,
+        "--bloom",
+        String(bloom),
+        "--mode",
+        mode,
+        "--context",
+        context,
+        "--question",
+        question,
+        "--source-link",
+        sourceLink,
       ];
 
-      const res = await runBridge<{ success: boolean }>("personal-card-update", args);
+      const res = await runBridge<{ success: boolean }>(
+        "personal-card-update",
+        args,
+      );
       if (res.success) {
         alert(t("lbl_card_saved_toast"));
         const activeSlug = selectedCard.slug;
         await loadStudioData();
 
         // Keep editor open on the updated card
-        const updatedCard = cardsList.find(c => c.slug === activeSlug);
+        const updatedCard = cardsList.find((c) => c.slug === activeSlug);
         if (updatedCard) {
           selectCard(updatedCard);
         } else {
@@ -547,7 +681,9 @@ async function saveCard(): Promise<void> {
     }
   } catch (err) {
     console.error("Failed to save card", err);
-    alert(`${t("lbl_error_saving")}: ${err instanceof Error ? err.message : String(err)}`);
+    alert(
+      `${t("lbl_error_saving")}: ${err instanceof Error ? err.message : String(err)}`,
+    );
   } finally {
     btnSave.disabled = false;
   }
@@ -573,23 +709,26 @@ async function handleDeleteClick(): Promise<void> {
   }
 }
 
-function showRemovalConfirmation(card: PersonalCard, impact: { review_logs: number }): void {
+function showRemovalConfirmation(
+  card: PersonalCard,
+  impact: { review_logs: number },
+): void {
   modalTitle.textContent = t("lbl_confirm_remove_title");
   modalDesc.textContent = t("lbl_confirm_remove_desc");
-  
+
   modalImpactContainer.classList.remove("hidden");
   modalImpactList.innerHTML = `
     <li>• ${tf("lbl_impact_reviews", { count: impact.review_logs })}</li>
   `;
 
   modalDeleteChoice.classList.remove("hidden");
-  
+
   // Set up confirmed callback for local removal
   pendingConfirmCallback = async () => {
     try {
       const delRes = await runBridge<{ success: boolean }>(
         "personal-card-remove",
-        ["--slug", card.slug, "--confirm"]
+        ["--slug", card.slug, "--confirm"],
       );
       if (delRes.success) {
         alert(t("lbl_card_removed_toast"));
@@ -635,11 +774,11 @@ function showGlobalDeleteConfirmation(
     review_logs: number;
     session_steps: number;
     agent_skills: number;
-  }
+  },
 ): void {
   modalTitle.textContent = t("lbl_confirm_delete_title");
   modalDesc.textContent = t("lbl_confirm_delete_desc");
-  
+
   modalImpactContainer.classList.remove("hidden");
   modalImpactList.innerHTML = `
     <li>• ${tf("lbl_impact_cards", { count: impact.cards })}</li>
@@ -654,7 +793,7 @@ function showGlobalDeleteConfirmation(
     try {
       const delRes = await runBridge<{ success: boolean }>(
         "personal-card-delete",
-        ["--slug", card.slug, "--confirm"]
+        ["--slug", card.slug, "--confirm"],
       );
       if (delRes.success) {
         alert(t("lbl_card_deleted_toast"));
@@ -685,7 +824,7 @@ function showImportModal(): void {
   importSourcePreview.value = "";
   importSourceId.value = "";
   switchImportTab("text");
-  
+
   importProgressContainer.classList.add("hidden");
   btnImportModalSubmit.disabled = false;
   btnImportModalCancel.disabled = false;
@@ -719,7 +858,9 @@ async function submitImport(): Promise<void> {
     if (activeImportTab === "text") {
       const text = importFieldText.value.trim();
       if (!text) {
-        alert(t("lbl_question") + " / " + t("lbl_answer") + " context required");
+        alert(
+          t("lbl_question") + " / " + t("lbl_answer") + " context required",
+        );
         return;
       }
 
@@ -737,10 +878,12 @@ async function submitImport(): Promise<void> {
 
       if (res && res.success) {
         hideImportModal();
-        alert(tf("toast_import_success", {
-          createdCount: res.createdCount,
-          ensuredCount: res.ensuredCount,
-        }));
+        alert(
+          tf("toast_import_success", {
+            createdCount: res.createdCount,
+            ensuredCount: res.ensuredCount,
+          }),
+        );
         cancelEdit();
         await loadStudioData();
       } else {
@@ -772,11 +915,15 @@ async function submitImport(): Promise<void> {
         "--preview",
       ]);
 
-      if (!previewRes || !previewRes.success || !Array.isArray(previewRes.proposals)) {
+      if (
+        !previewRes ||
+        !previewRes.success ||
+        !Array.isArray(previewRes.proposals)
+      ) {
         throw new Error(t("lbl_error_importing"));
       }
 
-      const sourceProposals = previewRes.proposals.map(p => ({
+      const sourceProposals = previewRes.proposals.map((p) => ({
         question: p.question,
         concept: p.concept,
         domain: p.domain,
@@ -799,10 +946,12 @@ async function submitImport(): Promise<void> {
 
       if (res && res.success) {
         hideImportModal();
-        alert(tf("toast_import_success", {
-          createdCount: res.createdCount,
-          ensuredCount: res.ensuredCount,
-        }));
+        alert(
+          tf("toast_import_success", {
+            createdCount: res.createdCount,
+            ensuredCount: res.ensuredCount,
+          }),
+        );
         cancelEdit();
         await loadStudioData();
       } else {
@@ -826,8 +975,10 @@ async function showSplitModal(): Promise<void> {
 
   splitOriginalQuestion.value = selectedCard.question || "";
   splitOriginalConcept.value = selectedCard.concept;
-  
-  const blockRadio = document.querySelector('input[name="split-original-action"][value="block"]') as HTMLInputElement;
+
+  const blockRadio = document.querySelector(
+    'input[name="split-original-action"][value="block"]',
+  ) as HTMLInputElement;
   if (blockRadio) blockRadio.checked = true;
 
   currentProposals = [];
@@ -889,23 +1040,25 @@ function renderSplitProposals(): void {
       </div>
       <div class="editor-form-group" style="margin: 0;">
         <label style="font-size: 0.8rem;">Question</label>
-        <textarea class="editor-textarea prop-question" style="min-height: 40px; font-size: 0.85rem;" data-index="${index}">${prop.question || ""}</textarea>
+        <textarea class="editor-textarea prop-question" style="min-height: 40px; font-size: 0.85rem;" data-index="${index}">${escapeHtml(prop.question || "")}</textarea>
       </div>
       <div class="editor-form-group" style="margin: 0;">
         <label style="font-size: 0.8rem;">Answer / Concept</label>
-        <textarea class="editor-textarea prop-concept" style="min-height: 40px; font-size: 0.85rem;" data-index="${index}">${prop.concept || ""}</textarea>
+        <textarea class="editor-textarea prop-concept" style="min-height: 40px; font-size: 0.85rem;" data-index="${index}">${escapeHtml(prop.concept || "")}</textarea>
       </div>
       <div style="display: flex; gap: 8px;">
         <div class="editor-form-group" style="flex: 1; margin: 0;">
           <label style="font-size: 0.8rem;">Category</label>
-          <input type="text" class="editor-input prop-domain" style="font-size: 0.85rem;" data-index="${index}" value="${prop.domain || ""}" />
+          <input type="text" class="editor-input prop-domain" style="font-size: 0.85rem;" data-index="${index}" value="${escapeHtml(prop.domain || "")}" />
         </div>
       </div>
     `;
 
     const qField = row.querySelector(".prop-question") as HTMLTextAreaElement;
     qField.addEventListener("input", (e) => {
-      currentProposals[index].question = (e.target as HTMLTextAreaElement).value;
+      currentProposals[index].question = (
+        e.target as HTMLTextAreaElement
+      ).value;
     });
 
     const cField = row.querySelector(".prop-concept") as HTMLTextAreaElement;
@@ -918,7 +1071,9 @@ function renderSplitProposals(): void {
       currentProposals[index].domain = (e.target as HTMLInputElement).value;
     });
 
-    const removeBtn = row.querySelector(".btn-remove-proposal") as HTMLButtonElement;
+    const removeBtn = row.querySelector(
+      ".btn-remove-proposal",
+    ) as HTMLButtonElement;
     removeBtn.addEventListener("click", () => {
       removeSplitProposalEntry(index);
     });
@@ -948,21 +1103,30 @@ async function submitConfirmSplit(): Promise<void> {
 
   const originalQ = splitOriginalQuestion.value.trim();
   const originalC = splitOriginalConcept.value.trim();
-  const actionEl = document.querySelector('input[name="split-original-action"]:checked') as HTMLInputElement;
+  const actionEl = document.querySelector(
+    'input[name="split-original-action"]:checked',
+  ) as HTMLInputElement;
   const action = actionEl ? actionEl.value : "block";
 
   if (action === "block" && (!originalQ || !originalC)) {
-    alert(t("lbl_question") + " / " + t("lbl_answer") + " context required for original card");
+    alert(
+      t("lbl_question") +
+        " / " +
+        t("lbl_answer") +
+        " context required for original card",
+    );
     return;
   }
 
-  const validProposals = currentProposals.map(p => ({
-    question: p.question.trim(),
-    concept: p.concept.trim(),
-    domain: p.domain.trim(),
-    bloom_level: p.bloom_level,
-    symbiosis_mode: p.symbiosis_mode,
-  })).filter(p => p.question && p.concept && p.domain);
+  const validProposals = currentProposals
+    .map((p) => ({
+      question: p.question.trim(),
+      concept: p.concept.trim(),
+      domain: p.domain.trim(),
+      bloom_level: p.bloom_level,
+      symbiosis_mode: p.symbiosis_mode,
+    }))
+    .filter((p) => p.question && p.concept && p.domain);
 
   if (validProposals.length < 2) {
     alert("At least 2 complete card proposals are required to split a card.");
@@ -992,10 +1156,12 @@ async function submitConfirmSplit(): Promise<void> {
 
     if (res && res.success) {
       hideSplitModal();
-      alert(tf("toast_import_success", {
-        createdCount: res.createdCount,
-        ensuredCount: res.ensuredCount,
-      }));
+      alert(
+        tf("toast_import_success", {
+          createdCount: res.createdCount,
+          ensuredCount: res.ensuredCount,
+        }),
+      );
       cancelEdit();
       await loadStudioData();
     } else {
@@ -1026,7 +1192,7 @@ async function showFoundationsModal(): Promise<void> {
     }>("personal-card-foundations-proposals", ["--slug", selectedCard.slug]);
 
     if (res && res.success && Array.isArray(res.proposals)) {
-      currentFoundations = res.proposals.map(p => ({ ...p, selected: true }));
+      currentFoundations = res.proposals.map((p) => ({ ...p, selected: true }));
       renderFoundationsProposals();
       foundationsProposalsSection.classList.remove("hidden");
       btnFoundationsModalSubmit.disabled = false;
@@ -1059,8 +1225,12 @@ function renderFoundationsProposals(): void {
     row.style.borderRadius = "6px";
     row.style.position = "relative";
 
-    const badgeText = prop.exists ? "Existing card will be linked" : "New card suggestion";
-    const badgeColor = prop.exists ? "var(--clr-accent-purple)" : "var(--clr-accent-teal)";
+    const badgeText = prop.exists
+      ? "Existing card will be linked"
+      : "New card suggestion";
+    const badgeColor = prop.exists
+      ? "var(--clr-accent-purple)"
+      : "var(--clr-accent-teal)";
 
     row.innerHTML = `
       <div style="position: absolute; top: 10px; right: 10px; display: flex; align-items: center; gap: 8px;">
@@ -1077,34 +1247,42 @@ function renderFoundationsProposals(): void {
       </div>
       <div class="editor-form-group" style="margin: 0;">
         <label style="font-size: 0.8rem;">Question</label>
-        <textarea class="editor-textarea prop-question" style="min-height: 40px; font-size: 0.85rem;" data-index="${index}" ${prop.exists ? "readonly" : ""}>${prop.question || ""}</textarea>
+        <textarea class="editor-textarea prop-question" style="min-height: 40px; font-size: 0.85rem;" data-index="${index}" ${prop.exists ? "readonly" : ""}>${escapeHtml(prop.question || "")}</textarea>
       </div>
       <div class="editor-form-group" style="margin: 0;">
         <label style="font-size: 0.8rem;">Answer / Concept</label>
-        <textarea class="editor-textarea prop-concept" style="min-height: 40px; font-size: 0.85rem;" data-index="${index}" ${prop.exists ? "readonly" : ""}>${prop.concept || ""}</textarea>
+        <textarea class="editor-textarea prop-concept" style="min-height: 40px; font-size: 0.85rem;" data-index="${index}" ${prop.exists ? "readonly" : ""}>${escapeHtml(prop.concept || "")}</textarea>
       </div>
       <div style="display: flex; gap: 8px;">
         <div class="editor-form-group" style="flex: 1; margin: 0;">
           <label style="font-size: 0.8rem;">Category</label>
-          <input type="text" class="editor-input prop-domain" style="font-size: 0.85rem;" data-index="${index}" value="${prop.domain || ""}" ${prop.exists ? "readonly" : ""} />
+          <input type="text" class="editor-input prop-domain" style="font-size: 0.85rem;" data-index="${index}" value="${escapeHtml(prop.domain || "")}" ${prop.exists ? "readonly" : ""} />
         </div>
       </div>
     `;
 
-    const selectCheckbox = row.querySelector(".prop-selected") as HTMLInputElement;
+    const selectCheckbox = row.querySelector(
+      ".prop-selected",
+    ) as HTMLInputElement;
     selectCheckbox.addEventListener("change", (e) => {
-      currentFoundations[index].selected = (e.target as HTMLInputElement).checked;
+      currentFoundations[index].selected = (
+        e.target as HTMLInputElement
+      ).checked;
     });
 
     if (!prop.exists) {
       const qField = row.querySelector(".prop-question") as HTMLTextAreaElement;
       qField.addEventListener("input", (e) => {
-        currentFoundations[index].question = (e.target as HTMLTextAreaElement).value;
+        currentFoundations[index].question = (
+          e.target as HTMLTextAreaElement
+        ).value;
       });
 
       const cField = row.querySelector(".prop-concept") as HTMLTextAreaElement;
       cField.addEventListener("input", (e) => {
-        currentFoundations[index].concept = (e.target as HTMLTextAreaElement).value;
+        currentFoundations[index].concept = (
+          e.target as HTMLTextAreaElement
+        ).value;
       });
 
       const dField = row.querySelector(".prop-domain") as HTMLInputElement;
@@ -1121,8 +1299,8 @@ async function submitConfirmFoundations(): Promise<void> {
   if (!selectedCard) return;
 
   const validProposals = currentFoundations
-    .filter(p => p.selected)
-    .map(p => ({
+    .filter((p) => p.selected)
+    .map((p) => ({
       question: p.question.trim(),
       concept: p.concept.trim(),
       domain: p.domain.trim(),
@@ -1131,7 +1309,7 @@ async function submitConfirmFoundations(): Promise<void> {
       exists: p.exists,
       slug: p.slug,
     }))
-    .filter(p => p.question && p.concept && p.domain);
+    .filter((p) => p.question && p.concept && p.domain);
 
   if (validProposals.length === 0) {
     alert("Please select at least one prerequisite proposal card to import.");
@@ -1155,10 +1333,12 @@ async function submitConfirmFoundations(): Promise<void> {
 
     if (res && res.success) {
       hideFoundationsModal();
-      alert(tf("toast_import_success", {
-        createdCount: res.createdCount,
-        ensuredCount: res.linkedCount,
-      }));
+      alert(
+        tf("toast_import_success", {
+          createdCount: res.createdCount,
+          ensuredCount: res.linkedCount,
+        }),
+      );
       cancelEdit();
       await loadStudioData();
     } else {
@@ -1212,7 +1392,7 @@ async function analyzeImportSource(): Promise<void> {
     if (res && res.success) {
       importSourceId.value = res.sourceId;
       importSourcePreview.value = res.content;
-      
+
       if (type === "web") {
         importFieldSource.value = uri;
       } else {

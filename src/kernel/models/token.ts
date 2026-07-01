@@ -8,7 +8,7 @@
 import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
 import type { CardState } from "./card.js";
-import { ensureCard, getCard, deleteCardForUser } from "./card.js";
+import { deleteCardForUser, ensureCard, getCard } from "./card.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -544,7 +544,7 @@ export async function listPersonalCards(
       c.scheduled_days AS scheduledDays,
       c.blocked
     FROM tokens t
-    LEFT JOIN cards c ON c.token_id = t.id AND c.user_id = ?
+    INNER JOIN cards c ON c.token_id = t.id AND c.user_id = ?
     WHERE t.deprecated_at IS NULL
   `;
 
@@ -599,21 +599,33 @@ export async function importCurriculumCards(
 
   await db.transaction(async (tx) => {
     for (const card of cards) {
-      const bloom = (card.bloom_level !== undefined ? card.bloom_level : 1) as BloomLevel;
+      const bloom = (
+        card.bloom_level !== undefined ? card.bloom_level : 1
+      ) as BloomLevel;
       if (bloom < 1 || bloom > 5) {
         throw new Error(`bloom_level must be between 1 and 5, got ${bloom}`);
       }
 
       let symbiosisMode: SymbiosisMode | null = null;
       if (card.symbiosis_mode) {
-        if (!["shadowing", "copilot", "autonomy", "none"].includes(card.symbiosis_mode)) {
+        if (
+          !["shadowing", "copilot", "autonomy", "none"].includes(
+            card.symbiosis_mode,
+          )
+        ) {
           throw new Error(`Invalid symbiosis_mode: ${card.symbiosis_mode}`);
         }
-        symbiosisMode = card.symbiosis_mode === "none" ? null : (card.symbiosis_mode as SymbiosisMode);
+        symbiosisMode =
+          card.symbiosis_mode === "none"
+            ? null
+            : (card.symbiosis_mode as SymbiosisMode);
       }
 
       // Check for exact base slug duplicate
-      const baseText = card.question && card.question.trim().length > 0 ? card.question : card.concept;
+      const baseText =
+        card.question && card.question.trim().length > 0
+          ? card.question
+          : card.concept;
       const cleanDomain = slugify(card.domain || "");
       const cleanBase = slugify(baseText);
       let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
@@ -626,7 +638,12 @@ export async function importCurriculumCards(
 
       let token = await getTokenBySlug(tx, baseSlug);
       if (!token) {
-        const finalSlug = await generateTokenSlug(tx, card.domain, card.concept, card.question);
+        const finalSlug = await generateTokenSlug(
+          tx,
+          card.domain,
+          card.concept,
+          card.question,
+        );
         token = await createToken(tx, {
           slug: finalSlug,
           concept: card.concept,
@@ -675,6 +692,13 @@ export async function confirmCardSplit(
   originalConcept: string,
   proposals: SplitProposalInput[],
 ): Promise<ImportCurriculumResult> {
+  if (action !== "block" && action !== "remove") {
+    throw new Error(`Invalid split action: ${action}`);
+  }
+  if (proposals.length < 2 || proposals.length > 4) {
+    throw new Error("A card split requires between 2 and 4 proposals");
+  }
+
   const originalToken = await getTokenBySlug(db, originalSlug);
   if (!originalToken) {
     throw new Error(`Original token not found: ${originalSlug}`);
@@ -684,23 +708,42 @@ export async function confirmCardSplit(
   let ensuredCount = 0;
 
   await db.transaction(async (tx) => {
+    const originalCard = await getCard(tx, originalToken.id, userId);
+    if (!originalCard) {
+      throw new Error(
+        `Card not found for token ${originalSlug} and user ${userId}`,
+      );
+    }
+
     // 1. Create or resolve all proposals
     const proposalTokens: Token[] = [];
     for (const card of proposals) {
-      const bloom = (card.bloom_level !== undefined ? card.bloom_level : 1) as BloomLevel;
+      const bloom = (
+        card.bloom_level !== undefined ? card.bloom_level : 1
+      ) as BloomLevel;
       if (bloom < 1 || bloom > 5) {
         throw new Error(`bloom_level must be between 1 and 5, got ${bloom}`);
       }
 
       let symbiosisMode: SymbiosisMode | null = null;
       if (card.symbiosis_mode) {
-        if (!["shadowing", "copilot", "autonomy", "none"].includes(card.symbiosis_mode)) {
+        if (
+          !["shadowing", "copilot", "autonomy", "none"].includes(
+            card.symbiosis_mode,
+          )
+        ) {
           throw new Error(`Invalid symbiosis_mode: ${card.symbiosis_mode}`);
         }
-        symbiosisMode = card.symbiosis_mode === "none" ? null : (card.symbiosis_mode as SymbiosisMode);
+        symbiosisMode =
+          card.symbiosis_mode === "none"
+            ? null
+            : (card.symbiosis_mode as SymbiosisMode);
       }
 
-      const baseText = card.question && card.question.trim().length > 0 ? card.question : card.concept;
+      const baseText =
+        card.question && card.question.trim().length > 0
+          ? card.question
+          : card.concept;
       const cleanDomain = slugify(card.domain || "");
       const cleanBase = slugify(baseText);
       let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
@@ -713,7 +756,12 @@ export async function confirmCardSplit(
 
       let token = await getTokenBySlug(tx, baseSlug);
       if (!token) {
-        const finalSlug = await generateTokenSlug(tx, card.domain, card.concept, card.question);
+        const finalSlug = await generateTokenSlug(
+          tx,
+          card.domain,
+          card.concept,
+          card.question,
+        );
         token = await createToken(tx, {
           slug: finalSlug,
           concept: card.concept,
@@ -726,6 +774,14 @@ export async function confirmCardSplit(
         });
         createdCount++;
       }
+      if (token.id === originalToken.id) {
+        throw new Error("A token cannot be a prerequisite of itself");
+      }
+      await assertPrerequisiteDoesNotCreateCycle(
+        tx,
+        originalToken.id,
+        token.id,
+      );
       proposalTokens.push(token);
 
       const existingCard = await getCard(tx, token.id, userId);
@@ -740,27 +796,29 @@ export async function confirmCardSplit(
       // Update original token fields
       await tx
         .prepare(
-          "UPDATE tokens SET question = ?, concept = ?, updated_at = ? WHERE id = ?"
+          "UPDATE tokens SET question = ?, concept = ?, updated_at = ? WHERE id = ?",
         )
         .run(
           originalQuestion || null,
           originalConcept,
           new Date().toISOString(),
-          originalToken.id
+          originalToken.id,
         );
 
       // Link proposal tokens as prerequisites of original token
       for (const propToken of proposalTokens) {
         await tx
           .prepare(
-            "INSERT OR IGNORE INTO prerequisites (token_id, requires_id) VALUES (?, ?)"
+            "INSERT OR IGNORE INTO prerequisites (token_id, requires_id) VALUES (?, ?)",
           )
           .run(originalToken.id, propToken.id);
       }
 
       // Block original card
       await tx
-        .prepare("UPDATE cards SET blocked = 1 WHERE token_id = ? AND user_id = ?")
+        .prepare(
+          "UPDATE cards SET blocked = 1 WHERE token_id = ? AND user_id = ?",
+        )
         .run(originalToken.id, userId);
 
       // Surface all prerequisites
@@ -768,13 +826,15 @@ export async function confirmCardSplit(
         const card = await ensureCard(tx, propToken.id, userId);
         if (card.blocked === 1) {
           const prereqOfPrereq = (await tx
-            .prepare("SELECT COUNT(*) as n FROM prerequisites WHERE token_id = ?")
+            .prepare(
+              "SELECT COUNT(*) as n FROM prerequisites WHERE token_id = ?",
+            )
             .get(propToken.id)) as { n: number };
           if (prereqOfPrereq.n === 0) {
             const now = new Date().toISOString();
             await tx
               .prepare(
-                "UPDATE cards SET blocked = 0, due_at = ?, stability = NULL, difficulty = NULL, reps = 0, lapses = 0, elapsed_days = NULL, scheduled_days = NULL WHERE id = ?"
+                "UPDATE cards SET blocked = 0, due_at = ?, stability = NULL, difficulty = NULL, reps = 0, lapses = 0, elapsed_days = NULL, scheduled_days = NULL WHERE id = ?",
               )
               .run(now, card.id);
           }
@@ -824,6 +884,13 @@ export async function confirmFoundations(
   let linkedCount = 0;
 
   await db.transaction(async (tx) => {
+    const originalCard = await getCard(tx, originalToken.id, userId);
+    if (!originalCard) {
+      throw new Error(
+        `Card not found for token ${originalSlug} and user ${userId}`,
+      );
+    }
+
     for (const card of proposals) {
       let targetTokenId: string;
 
@@ -840,20 +907,32 @@ export async function confirmFoundations(
         }
         linkedCount++;
       } else {
-        const bloom = (card.bloom_level !== undefined ? card.bloom_level : 1) as BloomLevel;
+        const bloom = (
+          card.bloom_level !== undefined ? card.bloom_level : 1
+        ) as BloomLevel;
         if (bloom < 1 || bloom > 5) {
           throw new Error(`bloom_level must be between 1 and 5, got ${bloom}`);
         }
 
         let symbiosisMode: SymbiosisMode | null = null;
         if (card.symbiosis_mode) {
-          if (!["shadowing", "copilot", "autonomy", "none"].includes(card.symbiosis_mode)) {
+          if (
+            !["shadowing", "copilot", "autonomy", "none"].includes(
+              card.symbiosis_mode,
+            )
+          ) {
             throw new Error(`Invalid symbiosis_mode: ${card.symbiosis_mode}`);
           }
-          symbiosisMode = card.symbiosis_mode === "none" ? null : (card.symbiosis_mode as SymbiosisMode);
+          symbiosisMode =
+            card.symbiosis_mode === "none"
+              ? null
+              : (card.symbiosis_mode as SymbiosisMode);
         }
 
-        const baseText = card.question && card.question.trim().length > 0 ? card.question : card.concept;
+        const baseText =
+          card.question && card.question.trim().length > 0
+            ? card.question
+            : card.concept;
         const cleanDomain = slugify(card.domain || "");
         const cleanBase = slugify(baseText);
         let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
@@ -866,7 +945,12 @@ export async function confirmFoundations(
 
         let token = await getTokenBySlug(tx, baseSlug);
         if (!token) {
-          const finalSlug = await generateTokenSlug(tx, card.domain, card.concept, card.question);
+          const finalSlug = await generateTokenSlug(
+            tx,
+            card.domain,
+            card.concept,
+            card.question,
+          );
           token = await createToken(tx, {
             slug: finalSlug,
             concept: card.concept,
@@ -891,28 +975,15 @@ export async function confirmFoundations(
         throw new Error("A token cannot be a prerequisite of itself");
       }
 
-      // SQLite cycle check using recursive CTE
-      const cycleCheck = (await tx
-        .prepare(
-          `WITH RECURSIVE cte(token_id) AS (
-             SELECT token_id FROM prerequisites WHERE requires_id = ?
-             UNION
-             SELECT p.token_id FROM prerequisites p
-             JOIN cte ON p.requires_id = cte.token_id
-           )
-           SELECT COUNT(*) as n FROM cte WHERE token_id = ?`
-        )
-        .get(originalToken.id, targetTokenId)) as { n: number };
-
-      if (cycleCheck && cycleCheck.n > 0) {
-        throw new Error(
-          `Cannot add prerequisite: would create a cycle.`
-        );
-      }
+      await assertPrerequisiteDoesNotCreateCycle(
+        tx,
+        originalToken.id,
+        targetTokenId,
+      );
 
       await tx
         .prepare(
-          "INSERT OR IGNORE INTO prerequisites (token_id, requires_id) VALUES (?, ?)"
+          "INSERT OR IGNORE INTO prerequisites (token_id, requires_id) VALUES (?, ?)",
         )
         .run(originalToken.id, targetTokenId);
     }
@@ -945,8 +1016,18 @@ export async function confirmSourceImport(
   let linkedCount = 0;
 
   await db.transaction(async (tx) => {
+    const source = await tx
+      .prepare("SELECT id FROM sources WHERE id = ?")
+      .get(sourceId);
+    if (!source) {
+      throw new Error(`Source not found: ${sourceId}`);
+    }
+
     for (const card of proposals) {
-      const baseText = card.question && card.question.trim().length > 0 ? card.question : card.concept;
+      const baseText =
+        card.question && card.question.trim().length > 0
+          ? card.question
+          : card.concept;
       const cleanDomain = slugify(card.domain || "");
       const cleanBase = slugify(baseText);
       let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
@@ -959,8 +1040,15 @@ export async function confirmSourceImport(
 
       let token = await getTokenBySlug(tx, baseSlug);
       if (!token) {
-        const finalSlug = await generateTokenSlug(tx, card.domain, card.concept, card.question);
-        const bloom = (card.bloom_level !== undefined ? card.bloom_level : 1) as BloomLevel;
+        const finalSlug = await generateTokenSlug(
+          tx,
+          card.domain,
+          card.concept,
+          card.question,
+        );
+        const bloom = (
+          card.bloom_level !== undefined ? card.bloom_level : 1
+        ) as BloomLevel;
         let symbiosisMode: SymbiosisMode | null = null;
         if (card.symbiosis_mode && card.symbiosis_mode !== "none") {
           symbiosisMode = card.symbiosis_mode as SymbiosisMode;
@@ -987,12 +1075,37 @@ export async function confirmSourceImport(
 
       await tx
         .prepare(
-          `INSERT OR IGNORE INTO token_sources (token_id, source_id, excerpt, page_number)
-           VALUES (?, ?, ?, ?)`
+          `INSERT INTO token_sources (token_id, source_id, excerpt, page_number)
+           VALUES (?, ?, ?, ?)
+           ON CONFLICT(token_id, source_id) DO UPDATE SET
+             excerpt = excluded.excerpt,
+             page_number = excluded.page_number`,
         )
         .run(token.id, sourceId, card.excerpt || "", card.page_number || null);
     }
   });
 
   return { createdCount, linkedCount };
+}
+
+async function assertPrerequisiteDoesNotCreateCycle(
+  db: Database,
+  tokenId: string,
+  prerequisiteId: string,
+): Promise<void> {
+  const cycleCheck = (await db
+    .prepare(
+      `WITH RECURSIVE dependents(token_id) AS (
+         SELECT token_id FROM prerequisites WHERE requires_id = ?
+         UNION
+         SELECT p.token_id FROM prerequisites p
+         JOIN dependents d ON p.requires_id = d.token_id
+       )
+       SELECT COUNT(*) as n FROM dependents WHERE token_id = ?`,
+    )
+    .get(tokenId, prerequisiteId)) as { n: number };
+
+  if (cycleCheck.n > 0) {
+    throw new Error("Cannot add prerequisite: would create a cycle");
+  }
 }

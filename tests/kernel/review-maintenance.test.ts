@@ -4,6 +4,9 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   addPrerequisite,
+  confirmCardSplit,
+  confirmFoundations,
+  confirmSourceImport,
   createAgentSkill,
   createToken,
   type Database,
@@ -11,6 +14,7 @@ import {
   deleteToken,
   ensureCard,
   executeReviewAction,
+  generateTokenSlug,
   getCard,
   getCardDeletionImpact,
   getPrerequisites,
@@ -18,17 +22,13 @@ import {
   getSessionSummary,
   getTokenBySlug,
   getTokenDeleteImpact,
+  importCurriculumCards,
   listAgentSkills,
+  listPersonalCards,
   logStep,
   openDatabase,
   startSession,
   updateToken,
-  listPersonalCards,
-  generateTokenSlug,
-  importCurriculumCards,
-  confirmCardSplit,
-  confirmFoundations,
-  confirmSourceImport,
 } from "../../src/kernel/index.js";
 
 describe("review maintenance primitives", () => {
@@ -265,7 +265,11 @@ describe("review maintenance primitives", () => {
       concept: "concept 1",
     });
 
-    const collisionSlug1 = await generateTokenSlug(db, "Git", "git branch list");
+    const collisionSlug1 = await generateTokenSlug(
+      db,
+      "Git",
+      "git branch list",
+    );
     expect(collisionSlug1).toBe("git-git-branch-list-1");
 
     await createToken(db, {
@@ -273,7 +277,11 @@ describe("review maintenance primitives", () => {
       concept: "concept 2",
     });
 
-    const collisionSlug2 = await generateTokenSlug(db, "Git", "git branch list");
+    const collisionSlug2 = await generateTokenSlug(
+      db,
+      "Git",
+      "git branch list",
+    );
     expect(collisionSlug2).toBe("git-git-branch-list-2");
   });
 
@@ -302,37 +310,36 @@ describe("review maintenance primitives", () => {
     await ensureCard(db, t3.id, "thomas");
 
     const allCards = await listPersonalCards(db, "thomas");
-    expect(allCards).toHaveLength(3);
-    
-    const slugs = allCards.map(c => c.slug);
+    expect(allCards).toHaveLength(2);
+
+    const slugs = allCards.map((c) => c.slug);
     expect(slugs).toContain("docker-build");
-    expect(slugs).toContain("git-push");
+    expect(slugs).not.toContain("git-push");
     expect(slugs).toContain("git-commit");
 
-    const c1 = allCards.find(c => c.slug === "git-commit")!;
-    const c2 = allCards.find(c => c.slug === "git-push")!;
-    const c3 = allCards.find(c => c.slug === "docker-build")!;
+    const c1 = allCards.find((c) => c.slug === "git-commit")!;
+    const c3 = allCards.find((c) => c.slug === "docker-build")!;
 
     expect(c1.cardId).not.toBeNull();
     expect(c1.state).toBe("new");
-
-    expect(c2.cardId).toBeNull();
-    expect(c2.state).toBeNull();
 
     expect(c3.cardId).not.toBeNull();
     expect(c3.state).toBe("new");
 
     const gitCards = await listPersonalCards(db, "thomas", { domain: "git" });
-    expect(gitCards).toHaveLength(2);
-    expect(gitCards.map(c => c.slug)).toContain("git-commit");
-    expect(gitCards.map(c => c.slug)).toContain("git-push");
+    expect(gitCards).toHaveLength(1);
+    expect(gitCards.map((c) => c.slug)).toContain("git-commit");
 
-    const searchCards1 = await listPersonalCards(db, "thomas", { query: "staged" });
+    const searchCards1 = await listPersonalCards(db, "thomas", {
+      query: "staged",
+    });
     expect(searchCards1).toHaveLength(1);
     expect(searchCards1[0].slug).toBe("git-commit");
 
-    const searchCards2 = await listPersonalCards(db, "thomas", { query: "git" });
-    expect(searchCards2).toHaveLength(2);
+    const searchCards2 = await listPersonalCards(db, "thomas", {
+      query: "git",
+    });
+    expect(searchCards2).toHaveLength(1);
   });
 
   it("imports curriculum cards atomically resolving duplicates", async () => {
@@ -342,15 +349,15 @@ describe("review maintenance primitives", () => {
         concept: "Switches branches or restores files",
         domain: "git",
         bloom_level: 2,
-        context: "checkout is used for branch switching"
+        context: "checkout is used for branch switching",
       },
       {
         question: "What is git status?",
         concept: "Shows the working tree status",
         domain: "git",
         bloom_level: 1,
-        context: "status shows modified files"
-      }
+        context: "status shows modified files",
+      },
     ];
 
     const res1 = await importCurriculumCards(db, "thomas", batch1);
@@ -358,8 +365,8 @@ describe("review maintenance primitives", () => {
     expect(res1.ensuredCount).toBe(2);
 
     const list1 = await listPersonalCards(db, "thomas", { domain: "git" });
-    expect(list1.map(c => c.slug)).toContain("git-what-is-git-checkout");
-    expect(list1.map(c => c.slug)).toContain("git-what-is-git-status");
+    expect(list1.map((c) => c.slug)).toContain("git-what-is-git-checkout");
+    expect(list1.map((c) => c.slug)).toContain("git-what-is-git-status");
 
     const batch2 = [
       {
@@ -367,15 +374,15 @@ describe("review maintenance primitives", () => {
         concept: "Switches branches or restores files",
         domain: "git",
         bloom_level: 2,
-        context: "checkout is used for branch switching"
+        context: "checkout is used for branch switching",
       },
       {
         question: "What is git diff?",
         concept: "Shows changes between commits",
         domain: "git",
         bloom_level: 3,
-        context: "diff compares commits"
-      }
+        context: "diff compares commits",
+      },
     ];
 
     const res2 = await importCurriculumCards(db, "thomas", batch2);
@@ -392,10 +399,12 @@ describe("review maintenance primitives", () => {
         concept: "Shows commit history",
         domain: "git",
         bloom_level: 10,
-        context: "log displays commits"
-      }
+        context: "log displays commits",
+      },
     ];
-    await expect(importCurriculumCards(db, "thomas", batchFail)).rejects.toThrow();
+    await expect(
+      importCurriculumCards(db, "thomas", batchFail),
+    ).rejects.toThrow();
 
     const listFinal = await listPersonalCards(db, "thomas", { query: "log" });
     expect(listFinal).toHaveLength(0);
@@ -422,7 +431,7 @@ describe("review maintenance primitives", () => {
         concept: "Rates of change rules",
         domain: "math",
         bloom_level: 2,
-      }
+      },
     ];
 
     const splitRes = await confirmCardSplit(
@@ -432,7 +441,7 @@ describe("review maintenance primitives", () => {
       "block",
       "What is calculus?",
       "Integrals and derivatives studies",
-      proposals
+      proposals,
     );
 
     expect(splitRes.createdCount).toBe(2);
@@ -465,7 +474,7 @@ describe("review maintenance primitives", () => {
       "remove",
       "Rewritten science",
       "physics chem summary",
-      proposals
+      proposals,
     );
 
     expect(splitRes2.createdCount).toBe(0);
@@ -506,28 +515,31 @@ describe("review maintenance primitives", () => {
         domain: "js",
         bloom_level: 2,
         exists: false,
-      }
+      },
     ];
 
     const result = await confirmFoundations(
       db,
       "thomas",
       "js-advanced",
-      proposals
+      proposals,
     );
 
     expect(result.createdCount).toBe(1);
     expect(result.linkedCount).toBe(1);
 
-    const resolvedPrereqToken = await getTokenBySlug(db, "js-what-is-the-event-loop");
+    const resolvedPrereqToken = await getTokenBySlug(
+      db,
+      "js-what-is-the-event-loop",
+    );
     expect(resolvedPrereqToken).toBeDefined();
 
-    const links = await db
+    const links = (await db
       .prepare("SELECT * FROM prerequisites WHERE token_id = ?")
-      .all(token.id) as any[];
-    
+      .all(token.id)) as any[];
+
     expect(links).toHaveLength(2);
-    const requiresIds = links.map(l => l.requires_id);
+    const requiresIds = links.map((l) => l.requires_id);
     expect(requiresIds).toContain(prereqToken.id);
     expect(requiresIds).toContain(resolvedPrereqToken!.id);
 
@@ -539,15 +551,24 @@ describe("review maintenance primitives", () => {
         bloom_level: 3,
         exists: true,
         slug: "js-advanced",
-      }
+      },
     ];
-    await expect(confirmFoundations(db, "thomas", "js-advanced", invalidProposals)).rejects.toThrow();
+    await expect(
+      confirmFoundations(db, "thomas", "js-advanced", invalidProposals),
+    ).rejects.toThrow();
   });
 
   it("imports and maps tokens to a source references with page numbers", async () => {
     await db
-      .prepare("INSERT INTO sources (id, type, uri, content) VALUES (?, ?, ?, ?)")
-      .run("src-1", "file", "C:/textbook.txt", "Excerpts about testing and compilation");
+      .prepare(
+        "INSERT INTO sources (id, type, uri, content) VALUES (?, ?, ?, ?)",
+      )
+      .run(
+        "src-1",
+        "file",
+        "C:/textbook.txt",
+        "Excerpts about testing and compilation",
+      );
 
     const proposals = [
       {
@@ -567,15 +588,10 @@ describe("review maintenance primitives", () => {
         symbiosis_mode: "none",
         excerpt: "compilers produce targets",
         page_number: "45",
-      }
+      },
     ];
 
-    const result = await confirmSourceImport(
-      db,
-      "thomas",
-      "src-1",
-      proposals
-    );
+    const result = await confirmSourceImport(db, "thomas", "src-1", proposals);
 
     expect(result.createdCount).toBe(2);
     expect(result.linkedCount).toBe(0);
@@ -584,7 +600,9 @@ describe("review maintenance primitives", () => {
     expect(token1).toBeDefined();
 
     const mapping = (await db
-      .prepare("SELECT * FROM token_sources WHERE token_id = ? AND source_id = ?")
+      .prepare(
+        "SELECT * FROM token_sources WHERE token_id = ? AND source_id = ?",
+      )
       .get(token1!.id, "src-1")) as any;
 
     expect(mapping).toBeDefined();
