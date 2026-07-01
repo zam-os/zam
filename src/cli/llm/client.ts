@@ -13,7 +13,7 @@
  */
 
 import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import type { Database, SupportedLocale } from "../../kernel/index.js";
 import {
   getMachineAiConfig,
@@ -358,7 +358,7 @@ function assertChatCompletions(cfg: ProviderConfig): void {
   if (cfg.apiFlavor !== "chat-completions") {
     throw new Error(
       `This role is configured for a "${cfg.apiFlavor}" provider, which is not ` +
-        `supported here yet. Use a chat-completions provider for the recall role.`,
+        `supported here yet. Use a chat-completions provider for this role.`,
     );
   }
 }
@@ -578,6 +578,401 @@ Evaluation:`;
   };
 }
 
+export interface GeneratedCardProposal {
+  question: string;
+  concept: string;
+  domain: string;
+  context: string;
+  bloom_level: number;
+  symbiosis_mode: "shadowing" | "copilot" | "autonomy";
+  source_link: string | null;
+}
+
+const MAX_IMPORT_TEXT_CHARS = 200_000;
+const VALID_GENERATED_MODES = new Set(["shadowing", "copilot", "autonomy"]);
+
+function parseGeneratedCardArray(
+  responseText: string,
+  label: string,
+  limits: { min: number; max: number },
+): GeneratedCardProposal[] {
+  const startIdx = responseText.indexOf("[");
+  const endIdx = responseText.lastIndexOf("]");
+  if (startIdx === -1 || endIdx === -1 || startIdx > endIdx) {
+    throw new Error(`Invalid ${label} response: JSON array brackets not found`);
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(responseText.substring(startIdx, endIdx + 1));
+  } catch {
+    throw new Error(`Invalid ${label} response: malformed JSON`);
+  }
+  if (!Array.isArray(parsed)) {
+    throw new Error(`Invalid ${label} response: expected a JSON array`);
+  }
+  if (parsed.length < limits.min || parsed.length > limits.max) {
+    throw new Error(
+      `Invalid ${label} response: expected ${limits.min}-${limits.max} cards, got ${parsed.length}`,
+    );
+  }
+
+  return parsed.map((value, index) => {
+    if (!value || typeof value !== "object" || Array.isArray(value)) {
+      throw new Error(
+        `Invalid ${label} card at index ${index}: expected an object`,
+      );
+    }
+    const card = value as Record<string, unknown>;
+    for (const field of ["question", "concept", "domain", "context"] as const) {
+      if (typeof card[field] !== "string" || card[field].trim().length === 0) {
+        throw new Error(
+          `Invalid ${label} card at index ${index}: ${field} must be a non-empty string`,
+        );
+      }
+    }
+    if (
+      typeof card.bloom_level !== "number" ||
+      !Number.isInteger(card.bloom_level) ||
+      card.bloom_level < 1 ||
+      card.bloom_level > 5
+    ) {
+      throw new Error(
+        `Invalid ${label} card at index ${index}: bloom_level must be an integer from 1 to 5`,
+      );
+    }
+    if (
+      typeof card.symbiosis_mode !== "string" ||
+      !VALID_GENERATED_MODES.has(card.symbiosis_mode)
+    ) {
+      throw new Error(
+        `Invalid ${label} card at index ${index}: invalid symbiosis_mode`,
+      );
+    }
+
+    return {
+      question: card.question as string,
+      concept: card.concept as string,
+      domain: card.domain as string,
+      context: card.context as string,
+      bloom_level: card.bloom_level,
+      symbiosis_mode:
+        card.symbiosis_mode as GeneratedCardProposal["symbiosis_mode"],
+      source_link: null,
+    };
+  });
+}
+
+/**
+ * Parse curriculum text and generate structured flashcard JSON data via LLM.
+ */
+export async function importCurriculumViaLLM(
+  db: Database,
+  text: string,
+  targetCategory: string,
+  sourceUrl?: string | null,
+): Promise<GeneratedCardProposal[]> {
+  if (text.length > MAX_IMPORT_TEXT_CHARS) {
+    throw new Error(
+      `Curriculum text exceeds the ${MAX_IMPORT_TEXT_CHARS.toLocaleString()} character limit`,
+    );
+  }
+  const cfg = await getProviderForRole(db, "text");
+  const endpoint = await resolveUsableTextEndpoint(db);
+  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+
+  const systemPrompt = `You are ZAM, a highly precise agentic curriculum parser.
+Your task is to analyze curriculum objectives, syllabus requirements, or textbook notes, and extract atomic facts, concepts, or skills as structured learning cards in ${langName}.
+
+For each extracted learning card, you MUST generate:
+1. "question": A clear, concise active-recall question testing the concept. The question must not reveal the answer itself.
+2. "concept": The reference answer, core fact, or target conceptual explanation.
+3. "domain": The category of the card. Use "${targetCategory}" as the default, but you may refine it if a specific sub-topic is evident.
+4. "context": The exact sentence or short excerpt from the source text that this card is based on.
+5. "bloom_level": Initial Bloom cognitive level (1 = Remember, 2 = Understand, 3 = Apply, 4 = Analyze, 5 = Synthesize).
+6. "symbiosis_mode": ZAM agent symbiosis level: "shadowing" (reading/monitoring), "copilot" (interactive helper), or "autonomy" (autonomous tasks).
+
+Guidelines:
+- Break complex requirements into multiple separate, atomic cards.
+- Keep questions focused on one fact.
+- Do not repeat the same concept in multiple cards.
+- Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any preamble, headers, or conversational filler.`;
+
+  const userPrompt = `Curriculum Text to Parse:
+${text}
+
+Target Category: ${targetCategory}
+${sourceUrl ? `Source Reference Link: ${sourceUrl}` : ""}
+
+JSON Array Output:`;
+
+  const res = await fetchWithInteractiveTimeout(
+    `${endpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.1,
+        max_tokens: DEFAULT_LLM_MAX_TOKENS,
+      }),
+      locale: cfg.locale,
+    },
+  );
+
+  const responseText = await readChatContent(res, "LLM curriculum import");
+
+  return parseGeneratedCardArray(responseText, "curriculum import", {
+    min: 0,
+    max: 200,
+  }).map((card) => ({ ...card, source_link: sourceUrl || null }));
+}
+
+/**
+ * Generate 2 to 4 atomic proposal cards by splitting a broad card.
+ */
+export async function generateSplitProposalsViaLLM(
+  db: Database,
+  token: {
+    question: string | null;
+    concept: string;
+    domain: string;
+    context: string;
+    source_link: string | null;
+  },
+): Promise<GeneratedCardProposal[]> {
+  const cfg = await getProviderForRole(db, "text");
+  const endpoint = await resolveUsableTextEndpoint(db);
+  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+
+  const systemPrompt = `You are ZAM, a highly precise agentic learning assistant.
+Your task is to analyze a learning card that is too broad or covers multiple ideas, and split it into 2 to 4 atomic, focused proposal cards in ${langName}.
+
+The input card details are:
+- Question: ${token.question || "N/A"}
+- Core Concept: ${token.concept}
+- Domain: ${token.domain}
+- Excerpt Context: ${token.context || "N/A"}
+
+For each split proposal card, you MUST generate:
+1. "question": A clear, concise active-recall question testing a single focused fact or concept. The question must not reveal the answer itself.
+2. "concept": The reference answer or core fact.
+3. "domain": The category of the card (default to "${token.domain}").
+4. "context": The context excerpt from the original card's context or a derivation of it.
+5. "bloom_level": Bloom taxonomy level (1 to 5).
+6. "symbiosis_mode": Symbiosis mode ("shadowing", "copilot", or "autonomy").
+
+Guidelines:
+- Make sure each card is completely atomic (covers exactly one concept).
+- Do not repeat the same concept across cards.
+- Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any conversational filler.`;
+
+  const userPrompt = `Split the broad card details above into 2 to 4 atomic cards.
+
+JSON Array Output:`;
+
+  const res = await fetchWithInteractiveTimeout(
+    `${endpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.2,
+        max_tokens: DEFAULT_LLM_MAX_TOKENS,
+      }),
+      locale: cfg.locale,
+    },
+  );
+
+  const responseText = await readChatContent(res, "LLM card split proposals");
+
+  return parseGeneratedCardArray(responseText, "card split", {
+    min: 2,
+    max: 4,
+  }).map((card) => ({ ...card, source_link: token.source_link || null }));
+}
+
+/**
+ * Generate 2 to 4 prerequisite suggestions for a card.
+ */
+export async function generateFoundationsProposalsViaLLM(
+  db: Database,
+  token: {
+    question: string | null;
+    concept: string;
+    domain: string;
+    context: string;
+    source_link: string | null;
+  },
+): Promise<GeneratedCardProposal[]> {
+  const cfg = await getProviderForRole(db, "text");
+  const endpoint = await resolveUsableTextEndpoint(db);
+  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+
+  const systemPrompt = `You are ZAM, a highly precise agentic learning assistant.
+Your task is to analyze a learning card and propose 2 to 4 atomic, foundational prerequisite concepts (foundations) that a learner must master *before* studying this card, in ${langName}.
+
+The current card details are:
+- Question: ${token.question || "N/A"}
+- Core Concept: ${token.concept}
+- Domain: ${token.domain}
+- Excerpt Context: ${token.context || "N/A"}
+
+For each proposed foundational card, you MUST generate:
+1. "question": A clear, concise active-recall question testing a single foundational fact or prerequisite concept.
+2. "concept": The reference answer or core fact.
+3. "domain": The category of the card (default to "${token.domain}").
+4. "context": The context excerpt explaining where this prerequisite fits in the learning hierarchy.
+5. "bloom_level": Bloom taxonomy level (typically 1 or 2 for foundational facts).
+6. "symbiosis_mode": Symbiosis mode ("shadowing", "copilot", or "autonomy").
+
+Guidelines:
+- Recommend only highly relevant and necessary prerequisites.
+- Keep each proposed card atomic and focused on one concept.
+- Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any conversational filler.`;
+
+  const userPrompt = `Suggest 2 to 4 foundational prerequisite cards for the card above.
+
+JSON Array Output:`;
+
+  const res = await fetchWithInteractiveTimeout(
+    `${endpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.2,
+        max_tokens: DEFAULT_LLM_MAX_TOKENS,
+      }),
+      locale: cfg.locale,
+    },
+  );
+
+  const responseText = await readChatContent(
+    res,
+    "LLM card foundations proposals",
+  );
+
+  return parseGeneratedCardArray(responseText, "foundation proposal", {
+    min: 2,
+    max: 4,
+  }).map((card) => ({ ...card, source_link: token.source_link || null }));
+}
+
+/**
+ * Extract plain text from an image/scan path using LLM vision.
+ */
+export async function extractTextFromScanViaLLM(
+  db: Database,
+  imagePath: string,
+): Promise<string> {
+  const p = await getProviderForRole(db, "vision");
+  if (!p.enabled) {
+    throw new Error(
+      "Vision role is not enabled in settings (llm.vision.enabled)",
+    );
+  }
+
+  if (!existsSync(imagePath)) {
+    throw new Error(`Scan file not found: ${imagePath}`);
+  }
+
+  const stat = statSync(imagePath);
+  if (!stat.isFile()) {
+    throw new Error(`Scan path is not a file: ${imagePath}`);
+  }
+  if (stat.size > 10 * 1024 * 1024) {
+    throw new Error("Scan file exceeds 10MB limit");
+  }
+
+  const ext = imagePath.split(".").pop()?.toLowerCase();
+  const mimeByExtension: Record<string, string> = {
+    jpeg: "image/jpeg",
+    jpg: "image/jpeg",
+    png: "image/png",
+    webp: "image/webp",
+  };
+  const mime = ext ? mimeByExtension[ext] : undefined;
+  if (!mime) {
+    throw new Error("Unsupported scan format; use PNG, JPEG, or WebP");
+  }
+
+  const imageBytes = readFileSync(imagePath);
+  const dataUrl = `data:${mime};base64,${imageBytes.toString("base64")}`;
+
+  const visionEndpoint = await getVisionConfig(db);
+  const langName = LANGUAGE_NAMES[p.locale] || "English";
+
+  const systemPrompt =
+    "You are ZAM's OCR processor. Extract all visible text from the image exactly as written. Output only the extracted text without commentary, formatting, or prefixes.";
+
+  const res = await fetchWithInteractiveTimeout(
+    `${visionEndpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${visionEndpoint.apiKey || DEFAULT_LLM_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: visionEndpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: `Extract all text from this scan in ${langName}:`,
+              },
+              {
+                type: "image_url",
+                image_url: { url: dataUrl },
+              },
+            ],
+          },
+        ],
+        temperature: 0,
+        max_tokens: DEFAULT_LLM_MAX_TOKENS,
+      }),
+      locale: p.locale,
+    },
+  );
+
+  if (!res.ok) {
+    throw new Error(`LLM vision OCR request failed with status ${res.status}`);
+  }
+
+  const responseText = await readChatContent(
+    res,
+    "LLM scan OCR text extraction",
+  );
+  return responseText.trim();
+}
+
 /**
  * Translate a question into the active locale using the local LLM.
  */
@@ -789,6 +1184,25 @@ export async function resolveUsableRecallEndpoint(
     signature,
     expiresAt: Date.now() + RECALL_ENDPOINT_CACHE_MS,
   };
+  return selected.endpoint;
+}
+
+async function resolveUsableTextEndpoint(
+  db: Database,
+): Promise<ProviderConfig> {
+  const cfg = await getProviderForRole(db, "text");
+  if (!cfg.enabled) {
+    throw new Error(
+      "Text LLM integration is disabled in settings (llm.enabled)",
+    );
+  }
+  assertChatCompletions(cfg);
+
+  const chain = await checkProviderChain(cfg);
+  const selected = chain.firstUsable;
+  if (!selected || !isEndpointUsable(selected)) {
+    throw new Error("No text LLM endpoint is online");
+  }
   return selected.endpoint;
 }
 

@@ -148,8 +148,15 @@ export {
 } from "./models/settings.js";
 export type {
   BloomLevel,
+  ConfirmFoundationsResult,
   CreateTokenInput,
+  CurriculumCardInput,
   DeleteTokenResult,
+  FoundationProposalInput,
+  ImportCurriculumResult,
+  PersonalCard,
+  SourceProposalInput,
+  SplitProposalInput,
   SymbiosisMode,
   Token,
   TokenDeleteImpact,
@@ -157,14 +164,21 @@ export type {
 } from "./models/token.js";
 // Models
 export {
+  confirmCardSplit,
+  confirmFoundations,
+  confirmSourceImport,
   createToken,
   deleteToken,
   deprecateToken,
   findTokens,
+  generateTokenSlug,
   getTokenById,
   getTokenBySlug,
   getTokenDeleteImpact,
+  importCurriculumCards,
+  listPersonalCards,
   listTokens,
+  slugify,
   updateToken,
 } from "./models/token.js";
 export type {

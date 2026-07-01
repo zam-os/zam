@@ -4,6 +4,9 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   addPrerequisite,
+  confirmCardSplit,
+  confirmFoundations,
+  confirmSourceImport,
   createAgentSkill,
   createToken,
   type Database,
@@ -11,6 +14,7 @@ import {
   deleteToken,
   ensureCard,
   executeReviewAction,
+  generateTokenSlug,
   getCard,
   getCardDeletionImpact,
   getPrerequisites,
@@ -18,7 +22,9 @@ import {
   getSessionSummary,
   getTokenBySlug,
   getTokenDeleteImpact,
+  importCurriculumCards,
   listAgentSkills,
+  listPersonalCards,
   logStep,
   openDatabase,
   startSession,
@@ -248,5 +254,426 @@ describe("review maintenance primitives", () => {
       userId: "thomas",
     });
     expect(stopped.stopped).toBe(true);
+  });
+
+  it("generates a clean slug and handles collisions", async () => {
+    const baseSlug = await generateTokenSlug(db, "Git", "git branch list");
+    expect(baseSlug).toBe("git-git-branch-list");
+
+    await createToken(db, {
+      slug: baseSlug,
+      concept: "concept 1",
+    });
+
+    const collisionSlug1 = await generateTokenSlug(
+      db,
+      "Git",
+      "git branch list",
+    );
+    expect(collisionSlug1).toBe("git-git-branch-list-1");
+
+    await createToken(db, {
+      slug: collisionSlug1,
+      concept: "concept 2",
+    });
+
+    const collisionSlug2 = await generateTokenSlug(
+      db,
+      "Git",
+      "git branch list",
+    );
+    expect(collisionSlug2).toBe("git-git-branch-list-2");
+  });
+
+  it("lists personal cards with queries and filters", async () => {
+    const t1 = await createToken(db, {
+      slug: "git-commit",
+      concept: "saves staged changes",
+      domain: "git",
+      bloom_level: 1,
+    });
+    await ensureCard(db, t1.id, "thomas");
+
+    const t2 = await createToken(db, {
+      slug: "git-push",
+      concept: "uploads commits",
+      domain: "git",
+      bloom_level: 2,
+    });
+
+    const t3 = await createToken(db, {
+      slug: "docker-build",
+      concept: "builds images",
+      domain: "docker",
+      bloom_level: 3,
+    });
+    await ensureCard(db, t3.id, "thomas");
+
+    const allCards = await listPersonalCards(db, "thomas");
+    expect(allCards).toHaveLength(2);
+
+    const slugs = allCards.map((c) => c.slug);
+    expect(slugs).toContain("docker-build");
+    expect(slugs).not.toContain("git-push");
+    expect(slugs).toContain("git-commit");
+
+    const c1 = allCards.find((c) => c.slug === "git-commit")!;
+    const c3 = allCards.find((c) => c.slug === "docker-build")!;
+
+    expect(c1.cardId).not.toBeNull();
+    expect(c1.state).toBe("new");
+
+    expect(c3.cardId).not.toBeNull();
+    expect(c3.state).toBe("new");
+
+    const gitCards = await listPersonalCards(db, "thomas", { domain: "git" });
+    expect(gitCards).toHaveLength(1);
+    expect(gitCards.map((c) => c.slug)).toContain("git-commit");
+
+    const searchCards1 = await listPersonalCards(db, "thomas", {
+      query: "staged",
+    });
+    expect(searchCards1).toHaveLength(1);
+    expect(searchCards1[0].slug).toBe("git-commit");
+
+    const searchCards2 = await listPersonalCards(db, "thomas", {
+      query: "git",
+    });
+    expect(searchCards2).toHaveLength(1);
+  });
+
+  it("imports curriculum cards atomically resolving duplicates", async () => {
+    const batch1 = [
+      {
+        question: "What is git checkout?",
+        concept: "Switches branches or restores files",
+        domain: "git",
+        bloom_level: 2,
+        context: "checkout is used for branch switching",
+      },
+      {
+        question: "What is git status?",
+        concept: "Shows the working tree status",
+        domain: "git",
+        bloom_level: 1,
+        context: "status shows modified files",
+      },
+    ];
+
+    const res1 = await importCurriculumCards(db, "thomas", batch1);
+    expect(res1.createdCount).toBe(2);
+    expect(res1.ensuredCount).toBe(2);
+
+    const list1 = await listPersonalCards(db, "thomas", { domain: "git" });
+    expect(list1.map((c) => c.slug)).toContain("git-what-is-git-checkout");
+    expect(list1.map((c) => c.slug)).toContain("git-what-is-git-status");
+
+    const batch2 = [
+      {
+        question: "What is git checkout?",
+        concept: "Switches branches or restores files",
+        domain: "git",
+        bloom_level: 2,
+        context: "checkout is used for branch switching",
+      },
+      {
+        question: "What is git diff?",
+        concept: "Shows changes between commits",
+        domain: "git",
+        bloom_level: 3,
+        context: "diff compares commits",
+      },
+    ];
+
+    const res2 = await importCurriculumCards(db, "thomas", batch2);
+    expect(res2.createdCount).toBe(1);
+    expect(res2.ensuredCount).toBe(1);
+
+    const res3 = await importCurriculumCards(db, "user-2", [batch1[0]]);
+    expect(res3.createdCount).toBe(0);
+    expect(res3.ensuredCount).toBe(1);
+
+    const batchFail = [
+      {
+        question: "What is git log?",
+        concept: "Shows commit history",
+        domain: "git",
+        bloom_level: 10,
+        context: "log displays commits",
+      },
+    ];
+    await expect(
+      importCurriculumCards(db, "thomas", batchFail),
+    ).rejects.toThrow();
+
+    const listFinal = await listPersonalCards(db, "thomas", { query: "log" });
+    expect(listFinal).toHaveLength(0);
+  });
+
+  it("splits card atomically linking prerequisites or removing card", async () => {
+    const token = await createToken(db, {
+      slug: "math-advanced",
+      concept: "Solves integrals and derivatives",
+      domain: "math",
+      bloom_level: 2,
+    });
+    await ensureCard(db, token.id, "thomas");
+
+    const proposals = [
+      {
+        question: "How do you solve integrals?",
+        concept: "Anti-derivative calculation rules",
+        domain: "math",
+        bloom_level: 3,
+      },
+      {
+        question: "How do you solve derivatives?",
+        concept: "Rates of change rules",
+        domain: "math",
+        bloom_level: 2,
+      },
+    ];
+
+    const splitRes = await confirmCardSplit(
+      db,
+      "thomas",
+      "math-advanced",
+      "block",
+      "What is calculus?",
+      "Integrals and derivatives studies",
+      proposals,
+    );
+
+    expect(splitRes.createdCount).toBe(2);
+    expect(splitRes.ensuredCount).toBe(2);
+
+    const updatedOriginal = await getTokenBySlug(db, "math-advanced");
+    expect(updatedOriginal?.question).toBe("What is calculus?");
+    expect(updatedOriginal?.concept).toBe("Integrals and derivatives studies");
+
+    const originalCard = await getCard(db, token.id, "thomas");
+    expect(originalCard?.blocked).toBe(1);
+
+    const prop1 = await getTokenBySlug(db, "math-how-do-you-solve-integrals");
+    expect(prop1).toBeDefined();
+    const propCard1 = await getCard(db, prop1!.id, "thomas");
+    expect(propCard1?.blocked).toBe(0);
+
+    const token2 = await createToken(db, {
+      slug: "science-broad",
+      concept: "Covers physics and chemistry",
+      domain: "science",
+      bloom_level: 2,
+    });
+    await ensureCard(db, token2.id, "thomas");
+
+    const splitRes2 = await confirmCardSplit(
+      db,
+      "thomas",
+      "science-broad",
+      "remove",
+      "Rewritten science",
+      "physics chem summary",
+      proposals,
+    );
+
+    expect(splitRes2.createdCount).toBe(0);
+    expect(splitRes2.ensuredCount).toBe(0);
+
+    const originalCard2 = await getCard(db, token2.id, "thomas");
+    expect(originalCard2).toBeUndefined();
+  });
+
+  it("splits without destroying history when a proposal reuses a blocked prerequisite", async () => {
+    const original = await createToken(db, {
+      slug: "calc-advanced",
+      concept: "broad calculus card",
+      domain: "math",
+      bloom_level: 3,
+    });
+    await ensureCard(db, original.id, "thomas");
+
+    // A pre-existing, already-learned card that a split proposal will reuse by
+    // slug. It is blocked with no prerequisites of its own — the exact state
+    // that used to reset FSRS columns to NULL and abort the split.
+    const reused = await createToken(db, {
+      slug: "math-how-do-you-integrate",
+      concept: "anti-derivative rules",
+      domain: "math",
+      bloom_level: 2,
+      question: "How do you integrate",
+    });
+    const reusedCard = await ensureCard(db, reused.id, "thomas");
+    await db
+      .prepare(
+        "UPDATE cards SET blocked = 1, stability = 20.0, difficulty = 5.0, reps = 7, lapses = 2, state = 'review' WHERE id = ?",
+      )
+      .run(reusedCard.id);
+
+    const proposals = [
+      {
+        question: "How do you integrate",
+        concept: "anti-derivative rules",
+        domain: "math",
+        bloom_level: 3,
+      },
+      {
+        question: "How do you differentiate",
+        concept: "rate of change rules",
+        domain: "math",
+        bloom_level: 2,
+      },
+    ];
+
+    const res = await confirmCardSplit(
+      db,
+      "thomas",
+      "calc-advanced",
+      "block",
+      "What is calculus?",
+      "study of change",
+      proposals,
+    );
+    // The reused token is not recreated; only the truly new proposal is.
+    expect(res.createdCount).toBe(1);
+
+    // The original is blocked and rewritten — the split completed.
+    const originalCard = await getCard(db, original.id, "thomas");
+    expect(originalCard?.blocked).toBe(1);
+
+    // The reused prerequisite is surfaced (unblocked) but its FSRS learning
+    // history is fully preserved — nothing was reset.
+    const reusedAfter = await getCard(db, reused.id, "thomas");
+    expect(reusedAfter?.blocked).toBe(0);
+    expect(reusedAfter?.stability).toBe(20.0);
+    expect(reusedAfter?.difficulty).toBe(5.0);
+    expect(reusedAfter?.reps).toBe(7);
+    expect(reusedAfter?.lapses).toBe(2);
+  });
+
+  it("imports foundations atomically, linking existing or creating new prerequisites", async () => {
+    const token = await createToken(db, {
+      slug: "js-advanced",
+      concept: "Advanced JS topics like Event Loop and Closures",
+      domain: "js",
+      bloom_level: 3,
+    });
+    await ensureCard(db, token.id, "thomas");
+
+    const prereqToken = await createToken(db, {
+      slug: "js-closures",
+      concept: "Functions that close over outer variables",
+      domain: "js",
+      bloom_level: 2,
+    });
+
+    const proposals = [
+      {
+        question: "What is a closure?",
+        concept: "Functions that close over outer variables",
+        domain: "js",
+        bloom_level: 2,
+        exists: true,
+        slug: "js-closures",
+      },
+      {
+        question: "What is the Event Loop?",
+        concept: "Checks call stack and queue",
+        domain: "js",
+        bloom_level: 2,
+        exists: false,
+      },
+    ];
+
+    const result = await confirmFoundations(
+      db,
+      "thomas",
+      "js-advanced",
+      proposals,
+    );
+
+    expect(result.createdCount).toBe(1);
+    expect(result.linkedCount).toBe(1);
+
+    const resolvedPrereqToken = await getTokenBySlug(
+      db,
+      "js-what-is-the-event-loop",
+    );
+    expect(resolvedPrereqToken).toBeDefined();
+
+    const links = (await db
+      .prepare("SELECT * FROM prerequisites WHERE token_id = ?")
+      .all(token.id)) as any[];
+
+    expect(links).toHaveLength(2);
+    const requiresIds = links.map((l) => l.requires_id);
+    expect(requiresIds).toContain(prereqToken.id);
+    expect(requiresIds).toContain(resolvedPrereqToken!.id);
+
+    const invalidProposals = [
+      {
+        question: "Advanced JS topics?",
+        concept: "Advanced JS topics like Event Loop and Closures",
+        domain: "js",
+        bloom_level: 3,
+        exists: true,
+        slug: "js-advanced",
+      },
+    ];
+    await expect(
+      confirmFoundations(db, "thomas", "js-advanced", invalidProposals),
+    ).rejects.toThrow();
+  });
+
+  it("imports and maps tokens to a source references with page numbers", async () => {
+    await db
+      .prepare(
+        "INSERT INTO sources (id, type, uri, content) VALUES (?, ?, ?, ?)",
+      )
+      .run(
+        "src-1",
+        "file",
+        "C:/textbook.txt",
+        "Excerpts about testing and compilation",
+      );
+
+    const proposals = [
+      {
+        question: "What is testing?",
+        concept: "Executing code to verify correctness",
+        domain: "cs",
+        bloom_level: 2,
+        symbiosis_mode: "copilot",
+        excerpt: "testing validates implementation",
+        page_number: "42",
+      },
+      {
+        question: "What is compiler compilation?",
+        concept: "Translating source code to machine target code",
+        domain: "cs",
+        bloom_level: 2,
+        symbiosis_mode: "none",
+        excerpt: "compilers produce targets",
+        page_number: "45",
+      },
+    ];
+
+    const result = await confirmSourceImport(db, "thomas", "src-1", proposals);
+
+    expect(result.createdCount).toBe(2);
+    expect(result.linkedCount).toBe(0);
+
+    const token1 = await getTokenBySlug(db, "cs-what-is-testing");
+    expect(token1).toBeDefined();
+
+    const mapping = (await db
+      .prepare(
+        "SELECT * FROM token_sources WHERE token_id = ? AND source_id = ?",
+      )
+      .get(token1!.id, "src-1")) as any;
+
+    expect(mapping).toBeDefined();
+    expect(mapping.excerpt).toBe("testing validates implementation");
+    expect(mapping.page_number).toBe("42");
   });
 });

@@ -8,6 +8,9 @@ import {
   ensureLlmReadyHeadless,
   ensureLocalLlmRunning,
   fetchWithInteractiveTimeout,
+  generateFoundationsProposalsViaLLM,
+  generateSplitProposalsViaLLM,
+  importCurriculumViaLLM,
   isLlmOnline,
   resolveUsableRecallEndpoint,
 } from "../../src/cli/llm/client.js";
@@ -21,7 +24,10 @@ import {
 function withIsolatedMachineConfig<T>(run: () => Promise<T>): Promise<T> {
   const configDir = mkdtempSync(join(tmpdir(), "zam-llm-test-"));
   const configPath = join(configDir, "config.json");
-  writeFileSync(configPath, JSON.stringify({ ai: { providers: {}, roles: {} } }));
+  writeFileSync(
+    configPath,
+    JSON.stringify({ ai: { providers: {}, roles: {} } }),
+  );
   const previousConfigPath = process.env.ZAM_CONFIG_PATH;
   process.env.ZAM_CONFIG_PATH = configPath;
   return run().finally(() => {
@@ -82,57 +88,57 @@ describe("LLM client utilities (CLI layer)", () => {
   });
   it("ensureLlmReadyHeadless does not probe local fallback when cloud primary is online", async () => {
     await withIsolatedMachineConfig(async () => {
-    const db = await openDatabase({
-      dbPath: ":memory:",
-      initialize: true,
-      useConfiguredCloud: false,
-    });
-    await setSetting(db, "llm.enabled", "true");
-    await setSetting(
-      db,
-      "llm.providers",
-      JSON.stringify({
-        mimo: {
-          url: "https://recall.example/v1",
-          model: "mimo-v2.5",
-          apiKey: "sk-mimo",
-        },
-        localFlm: {
-          url: "http://localhost:8000/v1",
-          model: "qwen3.5:4b",
-          local: true,
-        },
-      }),
-    );
-    await setSetting(
-      db,
-      "llm.roles",
-      JSON.stringify({
-        recall: { primary: "mimo", fallback: "localFlm" },
-      }),
-    );
-
-    const originalFetch = global.fetch;
-    const urls: string[] = [];
-    global.fetch = (async (url) => {
-      urls.push(String(url));
-      return new Response(JSON.stringify({ data: [{ id: "mimo-v2.5" }] }));
-    }) as typeof fetch;
-
-    try {
-      const readiness = await ensureLlmReadyHeadless(db);
-      expect(readiness).toMatchObject({
-        usable: true,
-        online: true,
-        model: "mimo-v2.5",
-        local: false,
-        activeTier: "primary",
+      const db = await openDatabase({
+        dbPath: ":memory:",
+        initialize: true,
+        useConfiguredCloud: false,
       });
-      expect(urls.every((url) => !url.includes("localhost:8000"))).toBe(true);
-    } finally {
-      global.fetch = originalFetch;
-      await db.close();
-    }
+      await setSetting(db, "llm.enabled", "true");
+      await setSetting(
+        db,
+        "llm.providers",
+        JSON.stringify({
+          mimo: {
+            url: "https://recall.example/v1",
+            model: "mimo-v2.5",
+            apiKey: "sk-mimo",
+          },
+          localFlm: {
+            url: "http://localhost:8000/v1",
+            model: "qwen3.5:4b",
+            local: true,
+          },
+        }),
+      );
+      await setSetting(
+        db,
+        "llm.roles",
+        JSON.stringify({
+          recall: { primary: "mimo", fallback: "localFlm" },
+        }),
+      );
+
+      const originalFetch = global.fetch;
+      const urls: string[] = [];
+      global.fetch = (async (url) => {
+        urls.push(String(url));
+        return new Response(JSON.stringify({ data: [{ id: "mimo-v2.5" }] }));
+      }) as typeof fetch;
+
+      try {
+        const readiness = await ensureLlmReadyHeadless(db);
+        expect(readiness).toMatchObject({
+          usable: true,
+          online: true,
+          model: "mimo-v2.5",
+          local: false,
+          activeTier: "primary",
+        });
+        expect(urls.every((url) => !url.includes("localhost:8000"))).toBe(true);
+      } finally {
+        global.fetch = originalFetch;
+        await db.close();
+      }
     });
   });
 
@@ -208,54 +214,54 @@ describe("LLM client utilities (CLI layer)", () => {
 
   it("ensureLlmReadyHeadless checks the recall role provider, not legacy llm.*", async () => {
     await withIsolatedMachineConfig(async () => {
-    const db = await openDatabase({
-      dbPath: ":memory:",
-      initialize: true,
-      useConfiguredCloud: false,
-    });
-    await setSetting(db, "llm.enabled", "true");
-    await setSetting(db, "llm.url", "http://legacy-localhost:8000/v1");
-    await setSetting(db, "llm.model", "legacy-model");
-    await setSetting(
-      db,
-      "llm.providers",
-      JSON.stringify({
-        recallCloud: {
-          url: "https://recall.example/v1",
-          model: "role-model",
-          apiKey: "sk-role",
-        },
-      }),
-    );
-    await setSetting(
-      db,
-      "llm.roles",
-      JSON.stringify({ recall: { primary: "recallCloud" } }),
-    );
-
-    const originalFetch = global.fetch;
-    const urls: string[] = [];
-    global.fetch = (async (url) => {
-      urls.push(String(url));
-      return new Response(JSON.stringify({ data: [{ id: "role-model" }] }));
-    }) as typeof fetch;
-
-    try {
-      const readiness = await ensureLlmReadyHeadless(db);
-      expect(readiness).toMatchObject({
-        usable: true,
-        online: true,
-        model: "role-model",
-        availableModels: ["role-model"],
+      const db = await openDatabase({
+        dbPath: ":memory:",
+        initialize: true,
+        useConfiguredCloud: false,
       });
-      expect(urls).toEqual([
-        "https://recall.example/v1/models",
-        "https://recall.example/v1/models",
-      ]);
-    } finally {
-      global.fetch = originalFetch;
-      await db.close();
-    }
+      await setSetting(db, "llm.enabled", "true");
+      await setSetting(db, "llm.url", "http://legacy-localhost:8000/v1");
+      await setSetting(db, "llm.model", "legacy-model");
+      await setSetting(
+        db,
+        "llm.providers",
+        JSON.stringify({
+          recallCloud: {
+            url: "https://recall.example/v1",
+            model: "role-model",
+            apiKey: "sk-role",
+          },
+        }),
+      );
+      await setSetting(
+        db,
+        "llm.roles",
+        JSON.stringify({ recall: { primary: "recallCloud" } }),
+      );
+
+      const originalFetch = global.fetch;
+      const urls: string[] = [];
+      global.fetch = (async (url) => {
+        urls.push(String(url));
+        return new Response(JSON.stringify({ data: [{ id: "role-model" }] }));
+      }) as typeof fetch;
+
+      try {
+        const readiness = await ensureLlmReadyHeadless(db);
+        expect(readiness).toMatchObject({
+          usable: true,
+          online: true,
+          model: "role-model",
+          availableModels: ["role-model"],
+        });
+        expect(urls).toEqual([
+          "https://recall.example/v1/models",
+          "https://recall.example/v1/models",
+        ]);
+      } finally {
+        global.fetch = originalFetch;
+        await db.close();
+      }
     });
   });
 
@@ -355,6 +361,201 @@ describe("LLM client utilities (CLI layer)", () => {
       expect(updated?.question).toBe(
         "How do you securely store Azure DevOps HTTPS credentials on macOS?",
       );
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("importCurriculumViaLLM correctly queries LLM and parses JSON result", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const mockResponseText = JSON.stringify([
+      {
+        question: "What is git revert?",
+        concept: "Creates a new commit that node-undos the changes",
+        domain: "git",
+        bloom_level: 2,
+        symbiosis_mode: "shadowing",
+        context: "revert creates a new commit",
+      },
+    ]);
+
+    const originalFetch = global.fetch;
+    global.fetch = async () =>
+      new Response(
+        JSON.stringify({
+          choices: [
+            {
+              message: {
+                content: `Here is the parsed JSON: \n${mockResponseText}\nHope it helps!`,
+              },
+            },
+          ],
+        }),
+      );
+
+    try {
+      const cards = await importCurriculumViaLLM(
+        db,
+        "Syllabus: revert creates a new commit to undo changes",
+        "git",
+        "https://example.com",
+      );
+
+      expect(cards).toHaveLength(1);
+      expect(cards[0]).toMatchObject({
+        question: "What is git revert?",
+        concept: "Creates a new commit that node-undos the changes",
+        domain: "git",
+        bloom_level: 2,
+        symbiosis_mode: "shadowing",
+        context: "revert creates a new commit",
+        source_link: "https://example.com",
+      });
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("generateSplitProposalsViaLLM correctly queries LLM and parses proposal objects", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const mockResponseText = JSON.stringify([
+      {
+        question: "What is git add?",
+        concept: "Stages files",
+        domain: "git",
+        bloom_level: 1,
+        symbiosis_mode: "shadowing",
+        context: "add stages files",
+      },
+      {
+        question: "What is git commit?",
+        concept: "Saves staged snapshot",
+        domain: "git",
+        bloom_level: 2,
+        symbiosis_mode: "shadowing",
+        context: "commit saves snapshot",
+      },
+    ]);
+
+    const originalFetch = global.fetch;
+    global.fetch = async () =>
+      new Response(
+        JSON.stringify({
+          choices: [
+            {
+              message: {
+                content: `Response block:\n${mockResponseText}`,
+              },
+            },
+          ],
+        }),
+      );
+
+    try {
+      const proposals = await generateSplitProposalsViaLLM(db, {
+        question: "Explain staging and committing in Git",
+        concept: "Add stages changes; commit saves them",
+        domain: "git",
+        context: "Git workflow involves add and commit",
+        source_link: "https://git-scm.com",
+      });
+
+      expect(proposals).toHaveLength(2);
+      expect(proposals[0]).toMatchObject({
+        question: "What is git add?",
+        concept: "Stages files",
+        domain: "git",
+        bloom_level: 1,
+        source_link: "https://git-scm.com",
+      });
+      expect(proposals[1]).toMatchObject({
+        question: "What is git commit?",
+        concept: "Saves staged snapshot",
+        domain: "git",
+        bloom_level: 2,
+        source_link: "https://git-scm.com",
+      });
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("generateFoundationsProposalsViaLLM correctly queries LLM and parses prerequisite proposal objects", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const mockResponseText = JSON.stringify([
+      {
+        question: "What is git init?",
+        concept: "Initializes a git repository",
+        domain: "git",
+        bloom_level: 1,
+        symbiosis_mode: "shadowing",
+        context: "init starts a repo",
+      },
+      {
+        question: "What is a Git working tree?",
+        concept: "The checked-out files of a repository",
+        domain: "git",
+        bloom_level: 1,
+        symbiosis_mode: "shadowing",
+        context: "cloning creates a working tree",
+      },
+    ]);
+
+    const originalFetch = global.fetch;
+    global.fetch = async () =>
+      new Response(
+        JSON.stringify({
+          choices: [
+            {
+              message: {
+                content: `Response block:\n${mockResponseText}`,
+              },
+            },
+          ],
+        }),
+      );
+
+    try {
+      const proposals = await generateFoundationsProposalsViaLLM(db, {
+        question: "Explain cloning and remote setup",
+        concept: "Clone downloads a remote repository",
+        domain: "git",
+        context: "cloning requires a remote url",
+        source_link: "https://git-scm.com",
+      });
+
+      expect(proposals).toHaveLength(2);
+      expect(proposals[0]).toMatchObject({
+        question: "What is git init?",
+        concept: "Initializes a git repository",
+        domain: "git",
+        bloom_level: 1,
+        source_link: "https://git-scm.com",
+      });
     } finally {
       global.fetch = originalFetch;
       await db.close();

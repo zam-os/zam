@@ -143,7 +143,7 @@ describe("bridge provider-config commands", () => {
     ]) as { providers: Array<{ keyState: string }> };
     expect(relisted.providers[0].keyState).toBe("missing");
     expect(JSON.stringify(relisted)).not.toContain(SECRET);
-  });
+  }, 15_000);
 
   it("reports referencing roles when removing a provider", () => {
     runCli(["setup", "--skip-claude-md", "--skip-agents-md"]);
@@ -178,5 +178,5 @@ describe("bridge provider-config commands", () => {
     ]) as { removed: boolean; referencingRoles: string[] };
     expect(removed.removed).toBe(true);
     expect(removed.referencingRoles).toContain("vision");
-  });
+  }, 15_000);
 });

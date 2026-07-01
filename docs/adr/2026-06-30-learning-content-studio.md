@@ -1,6 +1,6 @@
 # Learning Content Studio
 
-**Status:** Proposed
+**Status:** Implemented
 **Deciders:** Thomas (project owner)
 
 ## Context
@@ -212,40 +212,40 @@ indication of which content is sent to which AI model.
   responses; unstructured model output must never be written directly to the
   database.
 
-## Out of scope for the first release
+## Remaining out of scope for 0.6.0
 
 - automatically fetching the LehrplanPLUS web page,
-- image, PDF, scan, or HTML import,
+- extracting text directly from PDF or office-document formats,
 - imports initiated without an explicit user action,
 - automatic prerequisite searches on the open web,
 - collaborative editing of a shared global token catalog,
 - changes to the existing review or FSRS behavior.
 
-## Open decisions
+## Resolved decisions
 
 1. **What does “Delete” mean in Phase 1?**
-   Recommendation: the primary action removes the personal card after an
+   Decision: the primary action removes the personal card after an
    impact preview. A global hard-delete of the token remains a second action
    explicitly marked as advanced.
 
 2. **May Phase 1 update tokens globally in a shared or remote database?**
-   Recommendation: describe Phase 1 as personal and local-first management and
+   Decision: Phase 1 is personal and local-first management and
    do not promise global editing in a multi-user system. True personal
    overrides will require a separate data model later.
 
 3. **How is the technical key (`slug`) created?**
-   Recommendation: derive it automatically from the category and question or
+   Decision: derive it automatically from the category and question or
    answer, limit it to a reasonable length, and append a short stable suffix on
    collision. The key is not editable in the standard form.
 
 4. **Which fields are visible in the standard form?**
-   Recommendation: show question, answer, category, and source directly. Place
+   Decision: show question, answer, category, and source directly. Place
    context, Bloom level, and symbiosis mode under “More settings.” For imported
    cards, the AI supplies the initial Bloom level and symbiosis mode; the user
    can change either value.
 
 5. **What happens to the original card after splitting?**
-   Recommendation: create the new cards as prerequisites, rewrite the original
+   Decision: create the new cards as prerequisites, rewrite the original
    card as an atomic higher-level application question, and block it until the
    foundations have been recalled successfully once. If no meaningful
    higher-level question remains, remove only the personal original card while
@@ -253,7 +253,7 @@ indication of which content is sent to which AI model.
 
 6. **Should curriculum text import create exactly one card per bullet, or
    should it atomize the content immediately?**
-   Recommendation: preserve bullets that are already atomic; import broad
+   Decision: preserve bullets that are already atomic; import broad
    bullets as cards and defer their controlled decomposition to Phase 3. This
    keeps the first AI pipeline small and makes post-import correction easy.
 

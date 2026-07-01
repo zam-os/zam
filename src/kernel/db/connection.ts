@@ -433,4 +433,25 @@ async function runMigrations(db: Database): Promise<void> {
       PRIMARY KEY (session_id, token_id)
     )
   `);
+
+  // M007: create sources and token_sources tables
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS sources (
+      id          TEXT PRIMARY KEY,
+      type        TEXT NOT NULL CHECK (type IN ('file', 'web', 'scan')),
+      uri         TEXT NOT NULL UNIQUE,
+      content     TEXT,
+      created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+    )
+  `);
+
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS token_sources (
+      token_id    TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+      source_id   TEXT NOT NULL REFERENCES sources(id) ON DELETE CASCADE,
+      excerpt     TEXT NOT NULL DEFAULT '',
+      page_number TEXT,
+      PRIMARY KEY (token_id, source_id)
+    )
+  `);
 }

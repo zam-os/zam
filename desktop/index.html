@@ -26,6 +26,7 @@
         </div>
         <nav class="top-nav" aria-label="Main navigation">
           <button id="nav-dashboard" class="nav-btn active" type="button">Dashboard</button>
+          <button id="nav-content" class="nav-btn" type="button">Learning Content</button>
           <button id="nav-settings" class="nav-btn" type="button">Settings</button>
         </nav>
         <div class="status-area" id="system-status">
@@ -129,6 +130,120 @@
             </div>
             <div id="observer-history-list" class="observer-history-list">
               <p class="observer-history-empty">No observation reports yet.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 5: LEARNING CONTENT STUDIO -->
+      <section id="learning-content-view" class="view">
+        <div class="dashboard-hero frosted">
+          <div>
+            <p class="eyebrow" id="lbl-content-kicker">Personal catalog</p>
+            <h1 id="lbl-content-title">Learning Content Studio</h1>
+            <p id="lbl-content-subtitle" class="settings-subtitle">
+              Manage your personal learning cards, search tokens, and curate active recall prompts.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <button id="btn-content-import" class="btn secondary-btn btn-sm" type="button">Import Curriculum</button>
+            <button id="btn-content-new-card" class="btn primary-btn btn-sm" type="button">New Card</button>
+          </div>
+        </div>
+
+        <div class="content-studio-layout show-list" id="content-studio-layout">
+          <!-- Left Panel: Card List -->
+          <div class="content-studio-list-panel card frosted">
+            <div class="content-studio-search-bar">
+              <input type="text" id="content-search-input" class="editor-input content-studio-search-input" placeholder="Search questions, answers, categories, keys..." />
+              <select id="content-category-filter" class="editor-select content-studio-filter-select">
+                <option value="all">All Categories</option>
+              </select>
+            </div>
+            <div class="content-studio-card-list" id="content-studio-card-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Right Panel: Editor Form -->
+          <div class="content-studio-editor-panel card frosted" id="content-studio-editor-panel">
+            <div id="editor-empty-state" class="content-studio-empty">
+              <p id="lbl-empty-content-desc">Select a card from the list to edit, or create a new card to start.</p>
+              <button id="btn-create-first-card" class="btn primary-btn btn-sm" type="button">Create First Card</button>
+            </div>
+            
+            <div id="editor-form-container" class="hidden" style="display: flex; flex-direction: column; height: 100%;">
+              <div class="editor-scroll-container">
+                <div class="editor-form-group">
+                  <label for="editor-field-question" id="lbl-editor-question">Question</label>
+                  <textarea id="editor-field-question" class="editor-textarea" placeholder="Active recall question..."></textarea>
+                </div>
+                
+                <div class="editor-form-group">
+                  <label for="editor-field-concept" id="lbl-editor-concept">Answer / Concept</label>
+                  <textarea id="editor-field-concept" class="editor-textarea" placeholder="Concept description or reference answer..."></textarea>
+                </div>
+
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <div class="editor-form-group" style="flex: 1; min-width: 120px;">
+                    <label for="editor-field-domain" id="lbl-editor-domain">Category</label>
+                    <input type="text" id="editor-field-domain" class="editor-input" placeholder="e.g. git" />
+                  </div>
+                  <div class="editor-form-group" style="flex: 1; min-width: 120px;">
+                    <label for="editor-field-source-link" id="lbl-editor-source-link">Source Link</label>
+                    <input type="text" id="editor-field-source-link" class="editor-input" placeholder="e.g. src/utils.ts#L12" />
+                  </div>
+                </div>
+
+                <div class="collapsible-header" id="editor-toggle-advanced">
+                  <span id="editor-toggle-arrow">▶</span> <span id="lbl-editor-advanced">More Settings</span>
+                </div>
+
+                <div class="collapsible-content" id="editor-advanced-content">
+                  <div class="editor-form-group">
+                    <label for="editor-field-context" id="lbl-editor-context">Context</label>
+                    <input type="text" id="editor-field-context" class="editor-input" placeholder="e.g. terminal environment" />
+                  </div>
+                  
+                  <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 10px;">
+                    <div class="editor-form-group" style="flex: 1; min-width: 120px;">
+                      <label for="editor-field-bloom" id="lbl-editor-bloom">Bloom Level</label>
+                      <select id="editor-field-bloom" class="editor-select">
+                        <option value="1">1 - Remember</option>
+                        <option value="2">2 - Understand</option>
+                        <option value="3">3 - Apply</option>
+                        <option value="4">4 - Analyze</option>
+                        <option value="5">5 - Synthesize</option>
+                      </select>
+                    </div>
+                    
+                    <div class="editor-form-group" style="flex: 1; min-width: 120px;">
+                      <label for="editor-field-mode" id="lbl-editor-mode">Symbiosis Mode</label>
+                      <select id="editor-field-mode" class="editor-select">
+                        <option value="none">None</option>
+                        <option value="shadowing">Shadowing</option>
+                        <option value="copilot">Copilot</option>
+                        <option value="autonomy">Autonomy</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="editor-form-group" style="margin-top: 15px;">
+                  <label for="editor-field-slug" id="lbl-editor-slug">Technical Key (Slug)</label>
+                  <input type="text" id="editor-field-slug" class="editor-input" readonly placeholder="Auto-generated slug" />
+                </div>
+              </div>
+
+              <div class="editor-actions-row">
+                <button id="btn-content-delete-card" class="btn danger-btn btn-sm" type="button">Remove Card</button>
+                <div class="editor-actions-right">
+                  <button id="btn-content-cancel-edit" class="btn secondary-btn btn-sm hidden" type="button" style="margin-right: 5px;">Cancel</button>
+                  <button id="btn-content-foundations-card" class="btn secondary-btn btn-sm hidden" type="button" style="margin-right: 5px;">Foundations</button>
+                  <button id="btn-content-split-card" class="btn secondary-btn btn-sm hidden" type="button" style="margin-right: 5px;">Split</button>
+                  <button id="btn-content-save-card" class="btn primary-btn btn-sm" type="button">Save Card</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -404,6 +519,180 @@
           </div>
         </div>
       </section>
+      <!-- CONFIRMATION MODALS -->
+      <div id="content-modal-overlay" class="modal-overlay">
+        <div class="modal-box">
+          <div class="modal-header">
+            <h3 id="lbl-modal-title">Confirm Action</h3>
+          </div>
+          <div class="modal-body">
+            <p id="lbl-modal-desc">Are you sure you want to perform this action?</p>
+            <div id="modal-impact-container" class="modal-impact-section hidden">
+              <div class="modal-impact-title" id="lbl-modal-impact-title">Affected data:</div>
+              <ul class="modal-impact-list" id="modal-impact-list-el">
+                <!-- Dynamically populated impact list -->
+              </ul>
+            </div>
+            <div id="modal-delete-choice" class="modal-impact-section hidden" style="border-color: rgba(239, 68, 68, 0.2); background: rgba(239, 68, 68, 0.02);">
+              <p style="font-size: 0.85rem; font-weight: 600; color: var(--clr-again); margin-bottom: 8px;" id="lbl-advanced-delete-title">Advanced option:</p>
+              <button id="btn-modal-hard-delete" class="btn danger-btn btn-sm" type="button">Hard Delete Token Globally</button>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button id="btn-modal-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
+            <button id="btn-modal-confirm" class="btn primary-btn btn-sm" type="button">Confirm</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- IMPORT CURRICULUM MODAL -->
+      <div id="import-modal-overlay" class="modal-overlay">
+        <div class="modal-box" style="max-width: 600px;">
+          <div class="modal-header">
+            <h3 id="lbl-import-modal-title">Import Curriculum</h3>
+          </div>
+          <div class="modal-body">
+            <!-- Tabs -->
+            <div style="display: flex; gap: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--clr-border); padding-bottom: 8px;">
+              <button id="btn-import-tab-text" class="btn btn-xs primary-btn" type="button">Direct Text</button>
+              <button id="btn-import-tab-source" class="btn btn-xs secondary-btn" type="button">File / Link / Scan</button>
+            </div>
+
+            <!-- Tab 1: Direct Text -->
+            <div id="import-view-text">
+              <div class="editor-form-group">
+                <label for="import-field-text" id="lbl-import-text">Curriculum Text</label>
+                <textarea id="import-field-text" class="editor-textarea" style="min-height: 180px;" placeholder="Paste curriculum text or syllabus bullets here..."></textarea>
+              </div>
+            </div>
+
+            <!-- Tab 2: File/Link/Scan -->
+            <div id="import-view-source" class="hidden" style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; gap: 8px; align-items: flex-end;">
+                <div class="editor-form-group" style="flex: 1.2; margin: 0;">
+                  <label for="import-source-type" id="lbl-import-source-type">Source Type</label>
+                  <select id="import-source-type" class="editor-input" style="height: 34px;">
+                    <option value="file">Local File (.txt, .md)</option>
+                    <option value="web">Web Link (HTTP / HTTPS)</option>
+                    <option value="scan">OCR Scan (Image file path)</option>
+                  </select>
+                </div>
+                <div class="editor-form-group" style="flex: 3; margin: 0;">
+                  <label for="import-source-uri" id="lbl-import-source-uri">File Path or URL</label>
+                  <input type="text" id="import-source-uri" class="editor-input" style="height: 34px;" placeholder="e.g. C:/notes.md or https://example.com" />
+                </div>
+                <button id="btn-import-source-analyze" class="btn primary-btn btn-sm" type="button" style="height: 34px;">Analyze</button>
+              </div>
+              <div class="editor-form-group" style="margin: 0;">
+                <label id="lbl-source-extracted-preview">Extracted Plain Text Preview</label>
+                <textarea id="import-source-preview" class="editor-textarea" style="min-height: 120px;" readonly placeholder="Extracted plain text will show here after analysis..."></textarea>
+              </div>
+              <div class="editor-form-group" style="margin: 0; display: none;" id="group-source-id">
+                <input type="hidden" id="import-source-id" />
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px;">
+              <div class="editor-form-group" style="flex: 1.2; min-width: 150px; margin: 0;">
+                <label for="import-field-source" id="lbl-import-source">Source URL / Reference</label>
+                <input type="text" id="import-field-source" class="editor-input" placeholder="e.g. https://example.com/syllabus" />
+              </div>
+              <div class="editor-form-group" style="flex: 1; min-width: 120px; margin: 0;">
+                <label for="import-field-category" id="lbl-import-category">Target Category</label>
+                <input type="text" id="import-field-category" class="editor-input" placeholder="e.g. computer-science" />
+              </div>
+            </div>
+
+            <div id="import-progress-container" class="hidden" style="margin-top: 10px;">
+              <div class="modal-impact-title" id="lbl-import-progress-status" style="color: var(--clr-accent-purple);">Generating cards...</div>
+              <p style="font-size: 0.85rem; color: var(--clr-text-secondary);" id="lbl-import-progress-detail">This may take up to a minute depending on your local LLM speed.</p>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button id="btn-import-modal-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
+            <button id="btn-import-modal-submit" class="btn primary-btn btn-sm" type="button">Import</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SPLIT CARD MODAL -->
+      <div id="split-modal-overlay" class="modal-overlay">
+        <div class="modal-box" style="max-width: 750px; display: flex; flex-direction: column; max-height: 85vh;">
+          <div class="modal-header">
+            <h3 id="lbl-split-modal-title">Split Card</h3>
+          </div>
+          <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px;">
+            <div style="background: var(--clr-bg-card); border: 1px solid var(--clr-border); border-radius: 6px; padding: 12px; margin-bottom: 16px;">
+              <h4 style="margin: 0 0 10px 0; color: var(--clr-accent-purple); font-size: 0.95rem;" id="lbl-original-card-title">Original Card (Summarized application question)</h4>
+              <div class="editor-form-group">
+                <label for="split-original-question" id="lbl-split-original-question">Question</label>
+                <textarea id="split-original-question" class="editor-textarea" style="min-height: 50px; font-size: 0.85rem;" placeholder="Summary question..."></textarea>
+              </div>
+              <div class="editor-form-group">
+                <label for="split-original-concept" id="lbl-split-original-concept">Answer / Concept</label>
+                <textarea id="split-original-concept" class="editor-textarea" style="min-height: 50px; font-size: 0.85rem;" placeholder="Summary answer..."></textarea>
+              </div>
+            </div>
+
+            <div class="editor-form-group" style="margin-bottom: 16px;">
+              <label id="lbl-split-action-title">After split completed:</label>
+              <div style="display: flex; gap: 20px; margin-top: 5px;">
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 0.9rem; cursor: pointer;">
+                  <input type="radio" name="split-original-action" value="block" checked style="cursor: pointer;" />
+                  <span id="lbl-action-block">Keep original card and block it (requires new cards first)</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 0.9rem; cursor: pointer;">
+                  <input type="radio" name="split-original-action" value="remove" style="cursor: pointer;" />
+                  <span id="lbl-action-remove">Remove original card</span>
+                </label>
+              </div>
+            </div>
+
+            <div id="split-progress-container" class="hidden" style="margin: 20px 0; text-align: center;">
+              <div class="modal-impact-title" id="lbl-split-progress-status" style="color: var(--clr-accent-purple);">Generating atomic proposals...</div>
+              <p style="font-size: 0.85rem; color: var(--clr-text-secondary);" id="lbl-split-progress-detail">This may take up to a minute depending on your local LLM speed.</p>
+            </div>
+
+            <div id="split-proposals-section" class="hidden">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--clr-border); padding-bottom: 8px;">
+                <h4 style="margin: 0; font-size: 0.95rem;" id="lbl-atomic-proposals-title">Atomic Card Proposals (Minimum 2)</h4>
+                <button id="btn-split-add-proposal" class="btn secondary-btn btn-sm" type="button">+ Add Card</button>
+              </div>
+              <div id="split-proposals-container" style="display: flex; flex-direction: column; gap: 12px;">
+              </div>
+            </div>
+          </div>
+          <div class="modal-actions" style="border-top: 1px solid var(--clr-border); padding-top: 12px; margin-top: 12px;">
+            <button id="btn-split-modal-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
+            <button id="btn-split-modal-submit" class="btn primary-btn btn-sm" type="button">Confirm Split</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- IMPORT FOUNDATIONS MODAL -->
+      <div id="foundations-modal-overlay" class="modal-overlay">
+        <div class="modal-box" style="max-width: 750px; display: flex; flex-direction: column; max-height: 85vh;">
+          <div class="modal-header">
+            <h3 id="lbl-foundations-modal-title">Import Foundations</h3>
+          </div>
+          <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px;">
+            <div id="foundations-progress-container" class="hidden" style="margin: 20px 0; text-align: center;">
+              <div class="modal-impact-title" id="lbl-foundations-progress-status" style="color: var(--clr-accent-purple);">Generating foundational proposals...</div>
+              <p style="font-size: 0.85rem; color: var(--clr-text-secondary);" id="lbl-foundations-progress-detail">This may take up to a minute depending on your local LLM speed.</p>
+            </div>
+
+            <div id="foundations-proposals-section" class="hidden">
+              <h4 style="margin: 0 0 10px 0; font-size: 0.95rem; border-bottom: 1px solid var(--clr-border); padding-bottom: 8px;" id="lbl-foundations-atomic-title">Foundational Card Proposals</h4>
+              <div id="foundations-proposals-container" style="display: flex; flex-direction: column; gap: 12px;">
+              </div>
+            </div>
+          </div>
+          <div class="modal-actions" style="border-top: 1px solid var(--clr-border); padding-top: 12px; margin-top: 12px;">
+            <button id="btn-foundations-modal-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
+            <button id="btn-foundations-modal-submit" class="btn primary-btn btn-sm" type="button">Confirm Import</button>
+          </div>
+        </div>
+      </div>
     </main>
   </body>
 </html>

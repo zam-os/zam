@@ -11,6 +11,7 @@ import { existsSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { Command } from "commander";
+import { ulid } from "ulid";
 import type {
   BloomLevel,
   Database,
@@ -26,15 +27,23 @@ import {
   BUILT_IN_SENSITIVE_MATCHERS,
   buildReviewQueue,
   clearProviderApiKey,
+  confirmCardSplit,
+  confirmFoundations,
+  confirmSourceImport,
   createToken,
   decidePostCapture,
   decidePreCapture,
+  deleteCardForUser,
+  deleteToken,
   discoverSkills,
   endSession,
   ensureCard,
   executeReviewAction,
+  generateConceptFreeCue,
   generatePrompt,
+  generateTokenSlug,
   getAgentSkill,
+  getCard,
   getCardDeletionImpact,
   getConfiguredWorkspaces,
   getDatabaseTargetInfo,
@@ -46,8 +55,10 @@ import {
   getTokenDeleteImpact,
   getTokenNeighborhood,
   hasCommand,
+  importCurriculumCards,
   isObserverPolicyConfigured,
   listAgentSkills,
+  listPersonalCards,
   listProviderApiKeyRefs,
   listTokens,
   monitorLogExists,
@@ -60,12 +71,19 @@ import {
   resolveReviewContext,
   setProviderApiKey,
   setSetting,
+  slugify,
   startSession,
   syncObserverSidecarPolicy,
   uiObservationLogExists,
+  updateToken,
   type WorkspaceConfig,
   type WorkspaceKind,
 } from "../../kernel/index.js";
+import {
+  readImageOCR,
+  readLocalFile,
+  readWebLink,
+} from "../adapters/source-reader.js";
 import {
   AGENT_HARNESSES,
   getHarness,
@@ -80,11 +98,14 @@ import {
   ensureHighQualityQuestion,
   ensureLlmReadyHeadless,
   evaluateAnswerViaLLM,
+  generateFoundationsProposalsViaLLM,
+  generateSplitProposalsViaLLM,
   getAvailableModels,
   getCloudModelRecommendation,
   getLlmConfig,
   getProviderForRole,
   getProviderRoleStatus,
+  importCurriculumViaLLM,
   isLlmOnline,
   type LlmRole,
   translateQuestionViaLLM,
@@ -2723,6 +2744,554 @@ bridgeCommand
         center: mapToken(nb.center),
         prerequisites: nb.prerequisites.map(mapToken),
         dependents: nb.dependents.map(mapToken),
+      });
+    });
+  });
+
+// ── zam bridge personal-card-list ──────────────────────────────────────────
+
+bridgeCommand
+  .command("personal-card-list")
+  .description("List and search personal learning cards (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .option("--query <query>", "Text search query")
+  .option("--domain <domain>", "Filter by category/domain")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const cards = await listPersonalCards(db, userId, {
+        query: opts.query,
+        domain: opts.domain,
+      });
+      jsonOut({ cards });
+    });
+  });
+
+// ── zam bridge personal-card-create ────────────────────────────────────────
+
+bridgeCommand
+  .command("personal-card-create")
+  .description("Atomically create a token and its personal card (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--concept <concept>", "Concept description / answer")
+  .option("--domain <domain>", "Knowledge category / domain", "")
+  .option("--question <question>", "Question prompt for recall")
+  .option("--source-link <link>", "Source file path or reference URL")
+  .option("--bloom <level>", "Bloom taxonomy level (1-5)", "1")
+  .option(
+    "--mode <mode>",
+    "Symbiosis mode: shadowing | copilot | autonomy | none",
+    "none",
+  )
+  .option("--context <context>", "Context description", "")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+
+      const bloom = Number(opts.bloom) as BloomLevel;
+      if (bloom < 1 || bloom > 5) {
+        jsonError("bloom must be between 1 and 5");
+      }
+
+      const mode = opts.mode === "none" ? null : (opts.mode as SymbiosisMode);
+      if (mode && !["shadowing", "copilot", "autonomy"].includes(mode)) {
+        jsonError(`Invalid mode: ${opts.mode}`);
+      }
+
+      const slug = await generateTokenSlug(
+        db,
+        opts.domain,
+        opts.concept,
+        opts.question,
+      );
+
+      let question: string | null = opts.question || null;
+      if (!question) {
+        question = generateConceptFreeCue(bloom, slug, opts.domain);
+      }
+
+      const { token, card } = await db.transaction(async (tx) => {
+        const createdToken = await createToken(tx, {
+          slug,
+          concept: opts.concept,
+          domain: opts.domain,
+          bloom_level: bloom,
+          context: opts.context,
+          symbiosis_mode: mode,
+          source_link: opts.sourceLink || null,
+          question,
+        });
+        const createdCard = await ensureCard(tx, createdToken.id, userId);
+        return { token: createdToken, card: createdCard };
+      });
+
+      jsonOut({
+        success: true,
+        token: {
+          id: token.id,
+          slug: token.slug,
+          concept: token.concept,
+          domain: token.domain,
+          bloomLevel: token.bloom_level,
+          context: token.context,
+          symbiosisMode: token.symbiosis_mode,
+          sourceLink: token.source_link,
+          question: token.question,
+          createdAt: token.created_at,
+          updatedAt: token.updated_at,
+        },
+        card: {
+          id: card.id,
+          tokenId: card.token_id,
+          userId: card.user_id,
+          state: card.state,
+          dueAt: card.due_at,
+          blocked: card.blocked,
+        },
+      });
+    });
+  });
+
+// ── zam bridge personal-card-update ────────────────────────────────────────
+
+bridgeCommand
+  .command("personal-card-update")
+  .description("Update the mutable token fields of a personal card (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--slug <slug>", "Token slug to update")
+  .option("--concept <concept>", "Updated concept text")
+  .option("--domain <domain>", "Updated domain / category")
+  .option("--bloom <level>", "Updated Bloom taxonomy level (1-5)")
+  .option("--context <context>", "Updated context")
+  .option(
+    "--mode <mode>",
+    "Updated symbiosis mode: shadowing | copilot | autonomy | none",
+  )
+  .option("--source-link <link>", "Updated source link")
+  .option("--question <question>", "Updated question text")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const updates: {
+        concept?: string;
+        domain?: string;
+        bloom_level?: BloomLevel;
+        context?: string;
+        symbiosis_mode?: SymbiosisMode | null;
+        source_link?: string | null;
+        question?: string | null;
+      } = {};
+
+      if (opts.concept !== undefined) updates.concept = opts.concept;
+      if (opts.domain !== undefined) updates.domain = opts.domain;
+      if (opts.bloom !== undefined) {
+        const bloom = Number(opts.bloom) as BloomLevel;
+        if (bloom < 1 || bloom > 5) {
+          jsonError("bloom must be between 1 and 5");
+        }
+        updates.bloom_level = bloom;
+      }
+      if (opts.context !== undefined) updates.context = opts.context;
+      if (opts.sourceLink !== undefined) {
+        updates.source_link = opts.sourceLink === "" ? null : opts.sourceLink;
+      }
+      if (opts.question !== undefined) {
+        updates.question = opts.question === "" ? null : opts.question;
+      }
+      if (opts.mode !== undefined) {
+        const validModes = ["shadowing", "copilot", "autonomy", "none"];
+        if (!validModes.includes(opts.mode)) {
+          jsonError(`Invalid mode: ${opts.mode}`);
+        }
+        updates.symbiosis_mode =
+          opts.mode === "none" ? null : (opts.mode as SymbiosisMode);
+      }
+
+      const token = await db.transaction(async (tx) => {
+        const existingToken = await getTokenBySlug(tx, opts.slug);
+        if (!existingToken) {
+          throw new Error(`Token not found: ${opts.slug}`);
+        }
+        const card = await getCard(tx, existingToken.id, userId);
+        if (!card) {
+          throw new Error(
+            `Card not found for token ${opts.slug} and user ${userId}`,
+          );
+        }
+        return updateToken(tx, opts.slug, updates);
+      });
+
+      jsonOut({
+        success: true,
+        token: {
+          id: token.id,
+          slug: token.slug,
+          concept: token.concept,
+          domain: token.domain,
+          bloomLevel: token.bloom_level,
+          context: token.context,
+          symbiosisMode: token.symbiosis_mode,
+          sourceLink: token.source_link,
+          question: token.question,
+          createdAt: token.created_at,
+          updatedAt: token.updated_at,
+        },
+      });
+    });
+  });
+
+// ── zam bridge personal-card-remove ────────────────────────────────────────
+
+bridgeCommand
+  .command("personal-card-remove")
+  .description(
+    "Remove a personal card (optionally previewing the effects) (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--slug <slug>", "Token slug")
+  .option("--confirm", "Perform the deletion instead of a preview")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const token = await getTokenBySlug(db, opts.slug);
+      if (!token) {
+        jsonError(`Token not found: ${opts.slug}`);
+      }
+
+      const card = await getCard(db, token.id, userId);
+      if (!card) {
+        jsonError(`Card not found for token ${opts.slug} and user ${userId}`);
+      }
+
+      if (!opts.confirm) {
+        const impact = await getCardDeletionImpact(db, token.id, userId);
+        jsonOut({
+          success: true,
+          preview: true,
+          requiresConfirmation: true,
+          token: { id: token.id, slug: token.slug },
+          impact,
+        });
+        return;
+      }
+
+      const result = await deleteCardForUser(db, token.id, userId);
+      jsonOut({
+        success: true,
+        deletedCard: {
+          id: result.card.id,
+          tokenId: result.card.token_id,
+          userId: result.card.user_id,
+        },
+        impact: result.impact,
+      });
+    });
+  });
+
+// ── zam bridge personal-card-delete ────────────────────────────────────────
+
+bridgeCommand
+  .command("personal-card-delete")
+  .description("Hard-delete a token and all its dependencies (JSON)")
+  .requiredOption("--slug <slug>", "Token slug")
+  .option("--confirm", "Perform the deletion instead of a preview")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const token = await getTokenBySlug(db, opts.slug);
+      if (!token) {
+        jsonError(`Token not found: ${opts.slug}`);
+      }
+
+      if (!opts.confirm) {
+        const impact = await getTokenDeleteImpact(db, opts.slug);
+        jsonOut({
+          success: true,
+          preview: true,
+          requiresConfirmation: true,
+          token: { id: token.id, slug: token.slug },
+          impact,
+        });
+        return;
+      }
+
+      const result = await deleteToken(db, opts.slug);
+      jsonOut({
+        success: true,
+        deletedToken: {
+          id: result.token.id,
+          slug: result.token.slug,
+        },
+        impact: result.impact,
+      });
+    });
+  });
+
+// ── zam bridge personal-card-import-curriculum ─────────────────────────────
+
+bridgeCommand
+  .command("personal-card-import-curriculum")
+  .description("Parse curriculum text using LLM and import cards (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--text <text>", "Curriculum syllabus/content text")
+  .requiredOption(
+    "--domain <domain>",
+    "Default category/domain for imported cards",
+  )
+  .option("--source <url>", "Provenance source link or URL")
+  .option("--preview", "Return parsed cards without saving them")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+
+      const cards = await importCurriculumViaLLM(
+        db,
+        opts.text,
+        opts.domain,
+        opts.source || null,
+      );
+
+      if (opts.preview) {
+        jsonOut({
+          success: true,
+          proposals: cards,
+        });
+        return;
+      }
+
+      const result = await importCurriculumCards(db, userId, cards);
+
+      jsonOut({
+        success: true,
+        createdCount: result.createdCount,
+        ensuredCount: result.ensuredCount,
+      });
+    });
+  });
+
+// ── zam bridge personal-card-split-proposals ───────────────────────────────
+
+bridgeCommand
+  .command("personal-card-split-proposals")
+  .description("Generate atomic proposals for splitting a card (JSON)")
+  .requiredOption("--slug <slug>", "Original token slug")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const token = await getTokenBySlug(db, opts.slug);
+      if (!token) {
+        jsonError(`Token not found: ${opts.slug}`);
+      }
+
+      const proposals = await generateSplitProposalsViaLLM(db, token);
+      jsonOut({
+        success: true,
+        proposals,
+      });
+    });
+  });
+
+// ── zam bridge personal-card-confirm-split ─────────────────────────────────
+
+bridgeCommand
+  .command("personal-card-confirm-split")
+  .description("Save confirmed card split and modify original card (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--slug <slug>", "Original token slug")
+  .requiredOption(
+    "--action <action>",
+    "Original card action: 'block' or 'remove'",
+  )
+  .requiredOption(
+    "--original-question <question>",
+    "Rewritten question of the original card",
+  )
+  .requiredOption(
+    "--original-concept <concept>",
+    "Rewritten concept of the original card",
+  )
+  .requiredOption(
+    "--proposals <json>",
+    "JSON string representing proposals array",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const proposals = JSON.parse(opts.proposals);
+
+      const result = await confirmCardSplit(
+        db,
+        userId,
+        opts.slug,
+        opts.action as "block" | "remove",
+        opts.originalQuestion,
+        opts.originalConcept,
+        proposals,
+      );
+
+      jsonOut({
+        success: true,
+        createdCount: result.createdCount,
+        ensuredCount: result.ensuredCount,
+      });
+    });
+  });
+
+// ── zam bridge personal-card-foundations-proposals ─────────────────────────
+
+bridgeCommand
+  .command("personal-card-foundations-proposals")
+  .description("Generate prerequisite suggestions for a card (JSON)")
+  .requiredOption("--slug <slug>", "Original token slug")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const token = await getTokenBySlug(db, opts.slug);
+      if (!token) {
+        jsonError(`Token not found: ${opts.slug}`);
+      }
+
+      const proposals = await generateFoundationsProposalsViaLLM(db, token);
+
+      const resolvedProposals = [];
+      for (const prop of proposals) {
+        const baseText =
+          prop.question && prop.question.trim().length > 0
+            ? prop.question
+            : prop.concept;
+        const cleanDomain = slugify(prop.domain || "");
+        const cleanBase = slugify(baseText);
+        let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
+        if (baseSlug.length > 60) {
+          baseSlug = baseSlug.slice(0, 60).replace(/-$/, "");
+        }
+        if (!baseSlug) {
+          baseSlug = "token";
+        }
+
+        const existingToken = await getTokenBySlug(db, baseSlug);
+        if (existingToken) {
+          resolvedProposals.push({
+            ...prop,
+            exists: true,
+            slug: existingToken.slug,
+            question: existingToken.question || prop.question,
+            concept: existingToken.concept,
+            domain: existingToken.domain,
+          });
+        } else {
+          resolvedProposals.push({
+            ...prop,
+            exists: false,
+            slug: null,
+          });
+        }
+      }
+
+      jsonOut({
+        success: true,
+        proposals: resolvedProposals,
+      });
+    });
+  });
+
+// ── zam bridge personal-card-confirm-foundations ───────────────────────────
+
+bridgeCommand
+  .command("personal-card-confirm-foundations")
+  .description("Save confirmed foundational prerequisites (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--slug <slug>", "Original token slug")
+  .requiredOption(
+    "--proposals <json>",
+    "JSON string representing proposals array",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const proposals = JSON.parse(opts.proposals);
+
+      const result = await confirmFoundations(db, userId, opts.slug, proposals);
+
+      jsonOut({
+        success: true,
+        createdCount: result.createdCount,
+        linkedCount: result.linkedCount,
+      });
+    });
+  });
+
+// ── zam bridge personal-source-import ──────────────────────────────────────
+
+bridgeCommand
+  .command("personal-source-import")
+  .description(
+    "Fetch and clean plain text from local file, web link, or vision scan (JSON)",
+  )
+  .requiredOption("--type <file|web|scan>", "Source type")
+  .requiredOption("--uri <uri>", "Source path or URL")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      let content = "";
+      if (opts.type === "file") {
+        content = await readLocalFile(opts.uri);
+      } else if (opts.type === "web") {
+        content = await readWebLink(opts.uri);
+      } else if (opts.type === "scan") {
+        content = await readImageOCR(db, opts.uri);
+      } else {
+        throw new Error(`Invalid source type: ${opts.type}`);
+      }
+
+      const sourceId = ulid();
+      await db
+        .prepare(
+          `INSERT INTO sources (id, type, uri, content)
+           VALUES (?, ?, ?, ?)
+           ON CONFLICT(uri) DO UPDATE SET
+             type = excluded.type,
+             content = excluded.content`,
+        )
+        .run(sourceId, opts.type, opts.uri, content);
+
+      const record = (await db
+        .prepare("SELECT id, content FROM sources WHERE uri = ?")
+        .get(opts.uri)) as { id: string; content: string };
+
+      jsonOut({
+        success: true,
+        sourceId: record.id,
+        content: record.content,
+      });
+    });
+  });
+
+// ── zam bridge personal-source-confirm-import ──────────────────────────────
+
+bridgeCommand
+  .command("personal-source-confirm-import")
+  .description(
+    "Confirm and save cards generated from a source reference (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--sourceId <id>", "Source database ID")
+  .requiredOption(
+    "--proposals <json>",
+    "JSON string representing proposals array",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const proposals = JSON.parse(opts.proposals);
+
+      const result = await confirmSourceImport(
+        db,
+        userId,
+        opts.sourceId,
+        proposals,
+      );
+
+      jsonOut({
+        success: true,
+        createdCount: result.createdCount,
+        ensuredCount: result.linkedCount,
       });
     });
   });
