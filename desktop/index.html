@@ -552,20 +552,57 @@
             <h3 id="lbl-import-modal-title">Import Curriculum</h3>
           </div>
           <div class="modal-body">
-            <div class="editor-form-group">
-              <label for="import-field-text" id="lbl-import-text">Curriculum Text</label>
-              <textarea id="import-field-text" class="editor-textarea" style="min-height: 180px;" placeholder="Paste curriculum text or syllabus bullets here..."></textarea>
+            <!-- Tabs -->
+            <div style="display: flex; gap: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--clr-border); padding-bottom: 8px;">
+              <button id="btn-import-tab-text" class="btn btn-xs primary-btn" type="button">Direct Text</button>
+              <button id="btn-import-tab-source" class="btn btn-xs secondary-btn" type="button">File / Link / Scan</button>
             </div>
-            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-              <div class="editor-form-group" style="flex: 1.2; min-width: 150px;">
+
+            <!-- Tab 1: Direct Text -->
+            <div id="import-view-text">
+              <div class="editor-form-group">
+                <label for="import-field-text" id="lbl-import-text">Curriculum Text</label>
+                <textarea id="import-field-text" class="editor-textarea" style="min-height: 180px;" placeholder="Paste curriculum text or syllabus bullets here..."></textarea>
+              </div>
+            </div>
+
+            <!-- Tab 2: File/Link/Scan -->
+            <div id="import-view-source" class="hidden" style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; gap: 8px; align-items: flex-end;">
+                <div class="editor-form-group" style="flex: 1.2; margin: 0;">
+                  <label for="import-source-type" id="lbl-import-source-type">Source Type</label>
+                  <select id="import-source-type" class="editor-input" style="height: 34px;">
+                    <option value="file">Local File (.txt, .md)</option>
+                    <option value="web">Web Link (HTTP / HTTPS)</option>
+                    <option value="scan">OCR Scan (Image file path)</option>
+                  </select>
+                </div>
+                <div class="editor-form-group" style="flex: 3; margin: 0;">
+                  <label for="import-source-uri" id="lbl-import-source-uri">File Path or URL</label>
+                  <input type="text" id="import-source-uri" class="editor-input" style="height: 34px;" placeholder="e.g. C:/notes.md or https://example.com" />
+                </div>
+                <button id="btn-import-source-analyze" class="btn primary-btn btn-sm" type="button" style="height: 34px;">Analyze</button>
+              </div>
+              <div class="editor-form-group" style="margin: 0;">
+                <label id="lbl-source-extracted-preview">Extracted Plain Text Preview</label>
+                <textarea id="import-source-preview" class="editor-textarea" style="min-height: 120px;" readonly placeholder="Extracted plain text will show here after analysis..."></textarea>
+              </div>
+              <div class="editor-form-group" style="margin: 0; display: none;" id="group-source-id">
+                <input type="hidden" id="import-source-id" />
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px;">
+              <div class="editor-form-group" style="flex: 1.2; min-width: 150px; margin: 0;">
                 <label for="import-field-source" id="lbl-import-source">Source URL / Reference</label>
                 <input type="text" id="import-field-source" class="editor-input" placeholder="e.g. https://example.com/syllabus" />
               </div>
-              <div class="editor-form-group" style="flex: 1; min-width: 120px;">
+              <div class="editor-form-group" style="flex: 1; min-width: 120px; margin: 0;">
                 <label for="import-field-category" id="lbl-import-category">Target Category</label>
                 <input type="text" id="import-field-category" class="editor-input" placeholder="e.g. computer-science" />
               </div>
             </div>
+
             <div id="import-progress-container" class="hidden" style="margin-top: 10px;">
               <div class="modal-impact-title" id="lbl-import-progress-status" style="color: var(--clr-accent-purple);">Generating cards...</div>
               <p style="font-size: 0.85rem; color: var(--clr-text-secondary);" id="lbl-import-progress-detail">This may take up to a minute depending on your local LLM speed.</p>

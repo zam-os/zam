@@ -343,6 +343,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_foundations_progress_detail: "Esto puede tardar hasta un minuto dependiendo de la velocidad de su IA local.",
     lbl_foundations_atomic_title: "Propuestas de tarjetas fundamentales",
     btn_foundations_modal_submit: "Confirmar importación",
+    lbl_import_source_type: "Tipo de origen",
+    lbl_import_source_uri: "Ruta del archivo o URL",
+    btn_import_source_analyze: "Analizar",
+    lbl_source_extracted_preview: "Vista previa del texto extraído",
   },
   fr: {
     ai_status_offline: "IA hors ligne",
@@ -663,6 +667,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_foundations_progress_detail: "Cela peut prendre jusqu'à une minute selon la vitesse de votre IA locale.",
     lbl_foundations_atomic_title: "Propositions de cartes fondamentales",
     btn_foundations_modal_submit: "Confirmer l'importation",
+    lbl_import_source_type: "Type de source",
+    lbl_import_source_uri: "Chemin du fichier ou URL",
+    btn_import_source_analyze: "Analyser",
+    lbl_source_extracted_preview: "Aperçu du texte extrait",
   },
   pt: {
     ai_status_offline: "IA offline",
@@ -983,6 +991,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_foundations_progress_detail: "Isso pode levar até um minuto, dependendo da velocidade do seu IA local.",
     lbl_foundations_atomic_title: "Propostas de cartas fundamentais",
     btn_foundations_modal_submit: "Confirmar importação",
+    lbl_import_source_type: "Tipo de fonte",
+    lbl_import_source_uri: "Caminho do arquivo ou URL",
+    btn_import_source_analyze: "Analisar",
+    lbl_source_extracted_preview: "Visualização do texto extraído",
   },
   zh: {
     ai_status_offline: "AI 已离线",
@@ -1290,6 +1302,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_foundations_progress_detail: "这可能需要长达一分钟，具体取决于您的本地 AI 速度。",
     lbl_foundations_atomic_title: "前置基础卡片建议",
     btn_foundations_modal_submit: "确认导入",
+    lbl_import_source_type: "来源类型",
+    lbl_import_source_uri: "文件路径或网址",
+    btn_import_source_analyze: "分析",
+    lbl_source_extracted_preview: "提取文本预览",
   },
   ja: {
     ai_status_offline: "AI オフライン",
@@ -1609,6 +1625,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_foundations_progress_detail: "ローカルAIの速度によっては、最大1分かかる場合があります。",
     lbl_foundations_atomic_title: "前提知識カードの提案",
     btn_foundations_modal_submit: "インポートの確認",
+    lbl_import_source_type: "ソースタイプ",
+    lbl_import_source_uri: "ファイルパスまたはURL",
+    btn_import_source_analyze: "解析する",
+    lbl_source_extracted_preview: "抽出テキストのプレビュー",
   },
 };
 

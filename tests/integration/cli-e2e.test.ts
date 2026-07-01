@@ -219,5 +219,21 @@ describe("cli E2E tests", () => {
       const output = err.stdout || err.stderr || String(err.message || err);
       expect(output).toContain("LLM");
     }
+
+    // 10. Verify source commands integration structure
+    try {
+      runCli([
+        "bridge",
+        "personal-source-import",
+        "--type",
+        "file",
+        "--uri",
+        "non-existent-path"
+      ]);
+      expect(true).toBe(false);
+    } catch (err: any) {
+      const output = err.stdout || err.stderr || String(err.message || err);
+      expect(output).toContain("not found");
+    }
   }, E2E_TIMEOUT_MS);
 });

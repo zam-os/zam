@@ -28,6 +28,7 @@ import {
   importCurriculumCards,
   confirmCardSplit,
   confirmFoundations,
+  confirmSourceImport,
 } from "../../src/kernel/index.js";
 
 describe("review maintenance primitives", () => {
@@ -541,5 +542,53 @@ describe("review maintenance primitives", () => {
       }
     ];
     await expect(confirmFoundations(db, "thomas", "js-advanced", invalidProposals)).rejects.toThrow();
+  });
+
+  it("imports and maps tokens to a source references with page numbers", async () => {
+    await db
+      .prepare("INSERT INTO sources (id, type, uri, content) VALUES (?, ?, ?, ?)")
+      .run("src-1", "file", "C:/textbook.txt", "Excerpts about testing and compilation");
+
+    const proposals = [
+      {
+        question: "What is testing?",
+        concept: "Executing code to verify correctness",
+        domain: "cs",
+        bloom_level: 2,
+        symbiosis_mode: "copilot",
+        excerpt: "testing validates implementation",
+        page_number: "42",
+      },
+      {
+        question: "What is compiler compilation?",
+        concept: "Translating source code to machine target code",
+        domain: "cs",
+        bloom_level: 2,
+        symbiosis_mode: "none",
+        excerpt: "compilers produce targets",
+        page_number: "45",
+      }
+    ];
+
+    const result = await confirmSourceImport(
+      db,
+      "thomas",
+      "src-1",
+      proposals
+    );
+
+    expect(result.createdCount).toBe(2);
+    expect(result.linkedCount).toBe(0);
+
+    const token1 = await getTokenBySlug(db, "cs-what-is-testing");
+    expect(token1).toBeDefined();
+
+    const mapping = (await db
+      .prepare("SELECT * FROM token_sources WHERE token_id = ? AND source_id = ?")
+      .get(token1!.id, "src-1")) as any;
+
+    expect(mapping).toBeDefined();
+    expect(mapping.excerpt).toBe("testing validates implementation");
+    expect(mapping.page_number).toBe("42");
   });
 });

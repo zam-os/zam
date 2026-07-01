@@ -56,6 +56,7 @@ import {
   importCurriculumCards,
   confirmCardSplit,
   confirmFoundations,
+  confirmSourceImport,
   listProviderApiKeyRefs,
   listTokens,
   monitorLogExists,
@@ -102,6 +103,7 @@ import {
   translateQuestionViaLLM,
 } from "../llm/client.js";
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
+import { readLocalFile, readWebLink, readImageOCR } from "../adapters/source-reader.js";
 import {
   bindRoleProviders,
   buildProviderListing,
@@ -2995,6 +2997,7 @@ bridgeCommand
   .requiredOption("--text <text>", "Curriculum syllabus/content text")
   .requiredOption("--domain <domain>", "Default category/domain for imported cards")
   .option("--source <url>", "Provenance source link or URL")
+  .option("--preview", "Return parsed cards without saving them")
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
@@ -3005,6 +3008,14 @@ bridgeCommand
         opts.domain,
         opts.source || null
       );
+
+      if (opts.preview) {
+        jsonOut({
+          success: true,
+          proposals: cards,
+        });
+        return;
+      }
 
       const result = await importCurriculumCards(db, userId, cards);
 
@@ -3149,6 +3160,75 @@ bridgeCommand
         success: true,
         createdCount: result.createdCount,
         linkedCount: result.linkedCount,
+      });
+    });
+  });
+
+// ── zam bridge personal-source-import ──────────────────────────────────────
+
+bridgeCommand
+  .command("personal-source-import")
+  .description("Fetch and clean plain text from local file, web link, or vision scan (JSON)")
+  .requiredOption("--type <file|web|scan>", "Source type")
+  .requiredOption("--uri <uri>", "Source path or URL")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      let content = "";
+      if (opts.type === "file") {
+        content = await readLocalFile(opts.uri);
+      } else if (opts.type === "web") {
+        content = await readWebLink(opts.uri);
+      } else if (opts.type === "scan") {
+        content = await readImageOCR(db, opts.uri);
+      } else {
+        throw new Error(`Invalid source type: ${opts.type}`);
+      }
+
+      const sourceId = ulid();
+      await db
+        .prepare(
+          `INSERT INTO sources (id, type, uri, content)
+           VALUES (?, ?, ?, ?)
+           ON CONFLICT(uri) DO UPDATE SET content = excluded.content`
+        )
+        .run(sourceId, opts.type, opts.uri, content);
+
+      const record = (await db
+        .prepare("SELECT id, content FROM sources WHERE uri = ?")
+        .get(opts.uri)) as { id: string; content: string };
+
+      jsonOut({
+        success: true,
+        sourceId: record.id,
+        content: record.content,
+      });
+    });
+  });
+
+// ── zam bridge personal-source-confirm-import ──────────────────────────────
+
+bridgeCommand
+  .command("personal-source-confirm-import")
+  .description("Confirm and save cards generated from a source reference (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--sourceId <id>", "Source database ID")
+  .requiredOption("--proposals <json>", "JSON string representing proposals array")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const proposals = JSON.parse(opts.proposals);
+
+      const result = await confirmSourceImport(
+        db,
+        userId,
+        opts.sourceId,
+        proposals,
+      );
+
+      jsonOut({
+        success: true,
+        createdCount: result.createdCount,
+        ensuredCount: result.linkedCount,
       });
     });
   });

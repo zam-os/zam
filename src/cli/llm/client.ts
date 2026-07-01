@@ -13,7 +13,7 @@
  */
 
 import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import type { Database, SupportedLocale } from "../../kernel/index.js";
 import {
   getMachineAiConfig,
@@ -811,6 +811,70 @@ JSON Array Output:`;
   }
 
   return cards;
+}
+
+/**
+ * Extract plain text from an image/scan path using LLM vision.
+ */
+export async function extractTextFromScanViaLLM(
+  db: Database,
+  imagePath: string
+): Promise<string> {
+  const p = await getProviderForRole(db, "vision");
+  if (!p.enabled) {
+    throw new Error("Vision role is not enabled in settings (llm.vision.enabled)");
+  }
+
+  if (!existsSync(imagePath)) {
+    throw new Error(`Scan file not found: ${imagePath}`);
+  }
+
+  const imageBytes = readFileSync(imagePath);
+  const ext = imagePath.split(".").pop()?.toLowerCase();
+  const mime = ext === "jpg" || ext === "jpeg" ? "image/jpeg" : "image/png";
+  const dataUrl = `data:${mime};base64,${imageBytes.toString("base64")}`;
+
+  const visionEndpoint = await getVisionConfig(db);
+  const langName = LANGUAGE_NAMES[p.locale] || "English";
+
+  const systemPrompt = "You are ZAM's OCR processor. Extract all visible text from the image exactly as written. Output only the extracted text without commentary, formatting, or prefixes.";
+
+  const res = await fetchWithInteractiveTimeout(
+    `${visionEndpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${visionEndpoint.apiKey || DEFAULT_LLM_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: visionEndpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          {
+            role: "user",
+            content: [
+              { type: "text", text: `Extract all text from this scan in ${langName}:` },
+              {
+                type: "image_url",
+                image_url: { url: dataUrl }
+              }
+            ]
+          }
+        ],
+        temperature: 0,
+        max_tokens: DEFAULT_LLM_MAX_TOKENS,
+      }),
+      locale: p.locale,
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`LLM vision OCR request failed with status ${res.status}`);
+  }
+
+  const responseText = await readChatContent(res, "LLM scan OCR text extraction");
+  return responseText.trim();
 }
 
 /**

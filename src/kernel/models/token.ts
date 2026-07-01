@@ -920,3 +920,79 @@ export async function confirmFoundations(
 
   return { createdCount, linkedCount };
 }
+
+export interface SourceProposalInput {
+  question: string;
+  concept: string;
+  domain: string;
+  bloom_level: number;
+  symbiosis_mode: string;
+  excerpt: string;
+  page_number?: string | null;
+}
+
+/**
+ * Confirm source import transaction.
+ * Saves tokens, maps them to the source in token_sources, and ensures cards exist for the user.
+ */
+export async function confirmSourceImport(
+  db: Database,
+  userId: string,
+  sourceId: string,
+  proposals: SourceProposalInput[],
+): Promise<ConfirmFoundationsResult> {
+  let createdCount = 0;
+  let linkedCount = 0;
+
+  await db.transaction(async (tx) => {
+    for (const card of proposals) {
+      const baseText = card.question && card.question.trim().length > 0 ? card.question : card.concept;
+      const cleanDomain = slugify(card.domain || "");
+      const cleanBase = slugify(baseText);
+      let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
+      if (baseSlug.length > 60) {
+        baseSlug = baseSlug.slice(0, 60).replace(/-$/, "");
+      }
+      if (!baseSlug) {
+        baseSlug = "token";
+      }
+
+      let token = await getTokenBySlug(tx, baseSlug);
+      if (!token) {
+        const finalSlug = await generateTokenSlug(tx, card.domain, card.concept, card.question);
+        const bloom = (card.bloom_level !== undefined ? card.bloom_level : 1) as BloomLevel;
+        let symbiosisMode: SymbiosisMode | null = null;
+        if (card.symbiosis_mode && card.symbiosis_mode !== "none") {
+          symbiosisMode = card.symbiosis_mode as SymbiosisMode;
+        }
+
+        token = await createToken(tx, {
+          slug: finalSlug,
+          concept: card.concept,
+          domain: card.domain,
+          bloom_level: bloom,
+          context: card.excerpt || "",
+          symbiosis_mode: symbiosisMode,
+          question: card.question || null,
+        });
+        createdCount++;
+      } else {
+        linkedCount++;
+      }
+
+      const existingCard = await getCard(tx, token.id, userId);
+      if (!existingCard) {
+        await ensureCard(tx, token.id, userId);
+      }
+
+      await tx
+        .prepare(
+          `INSERT OR IGNORE INTO token_sources (token_id, source_id, excerpt, page_number)
+           VALUES (?, ?, ?, ?)`
+        )
+        .run(token.id, sourceId, card.excerpt || "", card.page_number || null);
+    }
+  });
+
+  return { createdCount, linkedCount };
+}

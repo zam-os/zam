@@ -103,6 +103,24 @@ CREATE TABLE IF NOT EXISTS session_syntheses (
   PRIMARY KEY (session_id, token_id)
 );
 
+-- Sources: textbook files, web links, or scan paths
+CREATE TABLE IF NOT EXISTS sources (
+  id          TEXT PRIMARY KEY,
+  type        TEXT NOT NULL CHECK (type IN ('file', 'web', 'scan')),
+  uri         TEXT NOT NULL UNIQUE,
+  content     TEXT,
+  created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Token sources: mapping between tokens and their sources
+CREATE TABLE IF NOT EXISTS token_sources (
+  token_id    TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  source_id   TEXT NOT NULL REFERENCES sources(id) ON DELETE CASCADE,
+  excerpt     TEXT NOT NULL DEFAULT '',
+  page_number TEXT,
+  PRIMARY KEY (token_id, source_id)
+);
+
 -- User configuration
 CREATE TABLE IF NOT EXISTS user_config (
   key         TEXT PRIMARY KEY,

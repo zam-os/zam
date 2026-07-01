@@ -336,6 +336,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_foundations_progress_detail: "This may take up to a minute depending on your local LLM speed.",
     lbl_foundations_atomic_title: "Foundational Card Proposals",
     btn_foundations_modal_submit: "Confirm Import",
+    lbl_import_source_type: "Source Type",
+    lbl_import_source_uri: "File Path or URL",
+    btn_import_source_analyze: "Analyze",
+    lbl_source_extracted_preview: "Extracted Plain Text Preview",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -652,6 +656,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_foundations_progress_detail: "Dies kann je nach Geschwindigkeit der lokalen KI bis zu einer Minute dauern.",
     lbl_foundations_atomic_title: "Fundamentale Kartenvorschläge",
     btn_foundations_modal_submit: "Import bestätigen",
+    lbl_import_source_type: "Quelltyp",
+    lbl_import_source_uri: "Dateipfad oder URL",
+    btn_import_source_analyze: "Analysieren",
+    lbl_source_extracted_preview: "Extrahierte Textvorschau",
   },
   // es, fr, pt, zh, ja live in ./i18n.ts; en/de stay here as reference locales.
   ...TRANSLATION_PACKS,
@@ -1264,6 +1272,16 @@ function initializeTranslations() {
   if (btnFoundationsModalCancel) btnFoundationsModalCancel.textContent = t("lbl_cancel_action");
   const btnFoundationsModalSubmit = document.getElementById("btn-foundations-modal-submit");
   if (btnFoundationsModalSubmit) btnFoundationsModalSubmit.textContent = t("btn_foundations_modal_submit");
+
+  // Source Import Translations
+  const lblImportSourceType = document.getElementById("lbl-import-source-type");
+  if (lblImportSourceType) lblImportSourceType.textContent = t("lbl_import_source_type");
+  const lblImportSourceUri = document.getElementById("lbl-import-source-uri");
+  if (lblImportSourceUri) lblImportSourceUri.textContent = t("lbl_import_source_uri");
+  const btnImportSourceAnalyze = document.getElementById("btn-import-source-analyze");
+  if (btnImportSourceAnalyze) btnImportSourceAnalyze.textContent = t("btn_import_source_analyze");
+  const lblSourceExtractedPreview = document.getElementById("lbl-source-extracted-preview");
+  if (lblSourceExtractedPreview) lblSourceExtractedPreview.textContent = t("lbl_source_extracted_preview");
 
   document.getElementById("graph-title")!.textContent = t("graph_title");
   document.getElementById("btn-graph-back")!.textContent =

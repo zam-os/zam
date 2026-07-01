@@ -160,6 +160,7 @@ export type {
   SplitProposalInput,
   FoundationProposalInput,
   ConfirmFoundationsResult,
+  SourceProposalInput,
 } from "./models/token.js";
 // Models
 export {
@@ -177,6 +178,7 @@ export {
   importCurriculumCards,
   confirmCardSplit,
   confirmFoundations,
+  confirmSourceImport,
 } from "./models/token.js";
 export type {
   AnalysisResult,

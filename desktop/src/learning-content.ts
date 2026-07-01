@@ -40,6 +40,20 @@ let importFieldCategory: HTMLInputElement;
 let importProgressContainer: HTMLElement;
 let btnImportModalCancel: HTMLButtonElement;
 let btnImportModalSubmit: HTMLButtonElement;
+
+// Source Import DOM Cache
+let btnImportTabText: HTMLButtonElement;
+let btnImportTabSource: HTMLButtonElement;
+let importViewText: HTMLElement;
+let importViewSource: HTMLElement;
+let importSourceType: HTMLSelectElement;
+let importSourceUri: HTMLInputElement;
+let btnImportSourceAnalyze: HTMLButtonElement;
+let importSourcePreview: HTMLTextAreaElement;
+let importSourceId: HTMLInputElement;
+
+let activeImportTab: "text" | "source" = "text";
+
 let btnSplitCard: HTMLButtonElement;
 let splitModalOverlay: HTMLElement;
 let splitOriginalQuestion: HTMLTextAreaElement;
@@ -169,6 +183,17 @@ export function initLearningContentStudio(): void {
   btnImportModalCancel = document.getElementById("btn-import-modal-cancel") as HTMLButtonElement;
   btnImportModalSubmit = document.getElementById("btn-import-modal-submit") as HTMLButtonElement;
 
+  // Source Import bindings
+  btnImportTabText = document.getElementById("btn-import-tab-text") as HTMLButtonElement;
+  btnImportTabSource = document.getElementById("btn-import-tab-source") as HTMLButtonElement;
+  importViewText = document.getElementById("import-view-text")!;
+  importViewSource = document.getElementById("import-view-source")!;
+  importSourceType = document.getElementById("import-source-type") as HTMLSelectElement;
+  importSourceUri = document.getElementById("import-source-uri") as HTMLInputElement;
+  btnImportSourceAnalyze = document.getElementById("btn-import-source-analyze") as HTMLButtonElement;
+  importSourcePreview = document.getElementById("import-source-preview") as HTMLTextAreaElement;
+  importSourceId = document.getElementById("import-source-id") as HTMLInputElement;
+
   // Split Modal bindings
   btnSplitCard = document.getElementById("btn-content-split-card") as HTMLButtonElement;
   splitModalOverlay = document.getElementById("split-modal-overlay")!;
@@ -200,6 +225,11 @@ export function initLearningContentStudio(): void {
   btnImportModalCancel.addEventListener("click", () => hideImportModal());
   btnImportModalSubmit.addEventListener("click", () => {
     void submitImport();
+  });
+  btnImportTabText.addEventListener("click", () => switchImportTab("text"));
+  btnImportTabSource.addEventListener("click", () => switchImportTab("source"));
+  btnImportSourceAnalyze.addEventListener("click", () => {
+    void analyzeImportSource();
   });
   btnSplitCard?.addEventListener("click", () => {
     void showSplitModal();
@@ -651,6 +681,11 @@ function showImportModal(): void {
   importFieldText.value = "";
   importFieldSource.value = "";
   importFieldCategory.value = "";
+  importSourceUri.value = "";
+  importSourcePreview.value = "";
+  importSourceId.value = "";
+  switchImportTab("text");
+  
   importProgressContainer.classList.add("hidden");
   btnImportModalSubmit.disabled = false;
   btnImportModalCancel.disabled = false;
@@ -665,14 +700,9 @@ function hideImportModal(): void {
 }
 
 async function submitImport(): Promise<void> {
-  const text = importFieldText.value.trim();
   const domain = importFieldCategory.value.trim();
   const source = importFieldSource.value.trim() || null;
 
-  if (!text) {
-    alert(t("lbl_question") + " / " + t("lbl_answer") + " context required");
-    return;
-  }
   if (!domain) {
     alert(t("lbl_category") + " required");
     return;
@@ -686,30 +716,102 @@ async function submitImport(): Promise<void> {
   importFieldCategory.disabled = true;
 
   try {
-    const res = await runBridge<{
-      success: boolean;
-      createdCount: number;
-      ensuredCount: number;
-    }>("personal-card-import-curriculum", [
-      "--text",
-      text,
-      "--domain",
-      domain,
-      ...(source ? ["--source", source] : []),
-    ]);
+    if (activeImportTab === "text") {
+      const text = importFieldText.value.trim();
+      if (!text) {
+        alert(t("lbl_question") + " / " + t("lbl_answer") + " context required");
+        return;
+      }
 
-    if (res && res.success) {
-      hideImportModal();
-      alert(tf("toast_import_success", {
-        createdCount: res.createdCount,
-        ensuredCount: res.ensuredCount,
-      }));
-      await loadStudioData();
+      const res = await runBridge<{
+        success: boolean;
+        createdCount: number;
+        ensuredCount: number;
+      }>("personal-card-import-curriculum", [
+        "--text",
+        text,
+        "--domain",
+        domain,
+        ...(source ? ["--source", source] : []),
+      ]);
+
+      if (res && res.success) {
+        hideImportModal();
+        alert(tf("toast_import_success", {
+          createdCount: res.createdCount,
+          ensuredCount: res.ensuredCount,
+        }));
+        cancelEdit();
+        await loadStudioData();
+      } else {
+        throw new Error(t("lbl_error_importing"));
+      }
     } else {
-      throw new Error(t("lbl_error_importing"));
+      const sourceId = importSourceId.value.trim();
+      const sourceText = importSourcePreview.value.trim();
+      if (!sourceId || !sourceText) {
+        alert("Please analyze a source file, web link, or OCR scan first.");
+        return;
+      }
+
+      const previewRes = await runBridge<{
+        success: boolean;
+        proposals: Array<{
+          question: string;
+          concept: string;
+          domain: string;
+          bloom_level: number;
+          symbiosis_mode: string;
+          context: string;
+        }>;
+      }>("personal-card-import-curriculum", [
+        "--text",
+        sourceText,
+        "--domain",
+        domain,
+        "--preview",
+      ]);
+
+      if (!previewRes || !previewRes.success || !Array.isArray(previewRes.proposals)) {
+        throw new Error(t("lbl_error_importing"));
+      }
+
+      const sourceProposals = previewRes.proposals.map(p => ({
+        question: p.question,
+        concept: p.concept,
+        domain: p.domain,
+        bloom_level: p.bloom_level,
+        symbiosis_mode: p.symbiosis_mode || "none",
+        excerpt: p.context || "",
+        page_number: null,
+      }));
+
+      const res = await runBridge<{
+        success: boolean;
+        createdCount: number;
+        ensuredCount: number;
+      }>("personal-source-confirm-import", [
+        "--sourceId",
+        sourceId,
+        "--proposals",
+        JSON.stringify(sourceProposals),
+      ]);
+
+      if (res && res.success) {
+        hideImportModal();
+        alert(tf("toast_import_success", {
+          createdCount: res.createdCount,
+          ensuredCount: res.ensuredCount,
+        }));
+        cancelEdit();
+        await loadStudioData();
+      } else {
+        throw new Error(t("lbl_error_importing"));
+      }
     }
   } catch (err: any) {
     alert(t("lbl_error_importing") + ": " + (err.message || String(err)));
+  } finally {
     importProgressContainer.classList.add("hidden");
     btnImportModalSubmit.disabled = false;
     btnImportModalCancel.disabled = false;
@@ -1066,5 +1168,64 @@ async function submitConfirmFoundations(): Promise<void> {
     alert(t("lbl_error_importing") + ": " + (err.message || String(err)));
     btnFoundationsModalSubmit.disabled = false;
     btnFoundationsModalCancel.disabled = false;
+  }
+}
+
+function switchImportTab(tab: "text" | "source"): void {
+  activeImportTab = tab;
+  if (tab === "text") {
+    btnImportTabText.classList.add("primary-btn");
+    btnImportTabText.classList.remove("secondary-btn");
+    btnImportTabSource.classList.add("secondary-btn");
+    btnImportTabSource.classList.remove("primary-btn");
+    importViewText.classList.remove("hidden");
+    importViewSource.classList.add("hidden");
+  } else {
+    btnImportTabText.classList.add("secondary-btn");
+    btnImportTabText.classList.remove("primary-btn");
+    btnImportTabSource.classList.add("primary-btn");
+    btnImportTabSource.classList.remove("secondary-btn");
+    importViewText.classList.add("hidden");
+    importViewSource.classList.remove("hidden");
+  }
+}
+
+async function analyzeImportSource(): Promise<void> {
+  const type = importSourceType.value;
+  const uri = importSourceUri.value.trim();
+
+  if (!uri) {
+    alert("Please enter a file path or URL to analyze.");
+    return;
+  }
+
+  btnImportSourceAnalyze.disabled = true;
+  importSourcePreview.value = "Analyzing source content, please wait...";
+
+  try {
+    const res = await runBridge<{
+      success: boolean;
+      sourceId: string;
+      content: string;
+    }>("personal-source-import", ["--type", type, "--uri", uri]);
+
+    if (res && res.success) {
+      importSourceId.value = res.sourceId;
+      importSourcePreview.value = res.content;
+      
+      if (type === "web") {
+        importFieldSource.value = uri;
+      } else {
+        importFieldSource.value = `${type}://${uri}`;
+      }
+    } else {
+      throw new Error("Analysis failed");
+    }
+  } catch (err: any) {
+    alert("Analysis error: " + (err.message || String(err)));
+    importSourcePreview.value = "";
+    importSourceId.value = "";
+  } finally {
+    btnImportSourceAnalyze.disabled = false;
   }
 }
