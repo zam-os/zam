@@ -205,5 +205,19 @@ describe("cli E2E tests", () => {
       const output = err.stdout || err.stderr || String(err.message || err);
       expect(output).toContain("LLM");
     }
+
+    // 9. Verify foundations commands integration structure
+    try {
+      runCli([
+        "bridge",
+        "personal-card-foundations-proposals",
+        "--slug",
+        "testing-what-is-testing"
+      ]);
+      expect(true).toBe(false);
+    } catch (err: any) {
+      const output = err.stdout || err.stderr || String(err.message || err);
+      expect(output).toContain("LLM");
+    }
   }, E2E_TIMEOUT_MS);
 });

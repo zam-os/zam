@@ -12,6 +12,7 @@ import {
   resolveUsableRecallEndpoint,
   importCurriculumViaLLM,
   generateSplitProposalsViaLLM,
+  generateFoundationsProposalsViaLLM,
 } from "../../src/cli/llm/client.js";
 import {
   createToken,
@@ -485,6 +486,63 @@ describe("LLM client utilities (CLI layer)", () => {
         concept: "Saves staged snapshot",
         domain: "git",
         bloom_level: 2,
+        source_link: "https://git-scm.com"
+      });
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("generateFoundationsProposalsViaLLM correctly queries LLM and parses prerequisite proposal objects", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const mockResponseText = JSON.stringify([
+      {
+        question: "What is git init?",
+        concept: "Initializes a git repository",
+        domain: "git",
+        bloom_level: 1,
+        symbiosis_mode: "shadowing",
+        context: "init starts a repo"
+      }
+    ]);
+
+    const originalFetch = global.fetch;
+    global.fetch = async () =>
+      new Response(
+        JSON.stringify({
+          choices: [
+            {
+              message: {
+                content: `Response block:\n${mockResponseText}`,
+              },
+            },
+          ],
+        }),
+      );
+
+    try {
+      const proposals = await generateFoundationsProposalsViaLLM(db, {
+        question: "Explain cloning and remote setup",
+        concept: "Clone downloads a remote repository",
+        domain: "git",
+        context: "cloning requires a remote url",
+        source_link: "https://git-scm.com"
+      });
+
+      expect(proposals).toHaveLength(1);
+      expect(proposals[0]).toMatchObject({
+        question: "What is git init?",
+        concept: "Initializes a git repository",
+        domain: "git",
+        bloom_level: 1,
         source_link: "https://git-scm.com"
       });
     } finally {

@@ -158,6 +158,8 @@ export type {
   CurriculumCardInput,
   ImportCurriculumResult,
   SplitProposalInput,
+  FoundationProposalInput,
+  ConfirmFoundationsResult,
 } from "./models/token.js";
 // Models
 export {
@@ -174,6 +176,7 @@ export {
   generateTokenSlug,
   importCurriculumCards,
   confirmCardSplit,
+  confirmFoundations,
 } from "./models/token.js";
 export type {
   AnalysisResult,

@@ -239,6 +239,7 @@
                 <button id="btn-content-delete-card" class="btn danger-btn btn-sm" type="button">Remove Card</button>
                 <div class="editor-actions-right">
                   <button id="btn-content-cancel-edit" class="btn secondary-btn btn-sm hidden" type="button" style="margin-right: 5px;">Cancel</button>
+                  <button id="btn-content-foundations-card" class="btn secondary-btn btn-sm hidden" type="button" style="margin-right: 5px;">Foundations</button>
                   <button id="btn-content-split-card" class="btn secondary-btn btn-sm hidden" type="button" style="margin-right: 5px;">Split</button>
                   <button id="btn-content-save-card" class="btn primary-btn btn-sm" type="button">Save Card</button>
                 </div>
@@ -627,6 +628,31 @@
           <div class="modal-actions" style="border-top: 1px solid var(--clr-border); padding-top: 12px; margin-top: 12px;">
             <button id="btn-split-modal-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
             <button id="btn-split-modal-submit" class="btn primary-btn btn-sm" type="button">Confirm Split</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- IMPORT FOUNDATIONS MODAL -->
+      <div id="foundations-modal-overlay" class="modal-overlay">
+        <div class="modal-box" style="max-width: 750px; display: flex; flex-direction: column; max-height: 85vh;">
+          <div class="modal-header">
+            <h3 id="lbl-foundations-modal-title">Import Foundations</h3>
+          </div>
+          <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px;">
+            <div id="foundations-progress-container" class="hidden" style="margin: 20px 0; text-align: center;">
+              <div class="modal-impact-title" id="lbl-foundations-progress-status" style="color: var(--clr-accent-purple);">Generating foundational proposals...</div>
+              <p style="font-size: 0.85rem; color: var(--clr-text-secondary);" id="lbl-foundations-progress-detail">This may take up to a minute depending on your local LLM speed.</p>
+            </div>
+
+            <div id="foundations-proposals-section" class="hidden">
+              <h4 style="margin: 0 0 10px 0; font-size: 0.95rem; border-bottom: 1px solid var(--clr-border); padding-bottom: 8px;" id="lbl-foundations-atomic-title">Foundational Card Proposals</h4>
+              <div id="foundations-proposals-container" style="display: flex; flex-direction: column; gap: 12px;">
+              </div>
+            </div>
+          </div>
+          <div class="modal-actions" style="border-top: 1px solid var(--clr-border); padding-top: 12px; margin-top: 12px;">
+            <button id="btn-foundations-modal-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
+            <button id="btn-foundations-modal-submit" class="btn primary-btn btn-sm" type="button">Confirm Import</button>
           </div>
         </div>
       </div>

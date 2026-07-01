@@ -27,6 +27,7 @@ import {
   generateTokenSlug,
   importCurriculumCards,
   confirmCardSplit,
+  confirmFoundations,
 } from "../../src/kernel/index.js";
 
 describe("review maintenance primitives", () => {
@@ -471,5 +472,74 @@ describe("review maintenance primitives", () => {
 
     const originalCard2 = await getCard(db, token2.id, "thomas");
     expect(originalCard2).toBeUndefined();
+  });
+
+  it("imports foundations atomically, linking existing or creating new prerequisites", async () => {
+    const token = await createToken(db, {
+      slug: "js-advanced",
+      concept: "Advanced JS topics like Event Loop and Closures",
+      domain: "js",
+      bloom_level: 3,
+    });
+    await ensureCard(db, token.id, "thomas");
+
+    const prereqToken = await createToken(db, {
+      slug: "js-closures",
+      concept: "Functions that close over outer variables",
+      domain: "js",
+      bloom_level: 2,
+    });
+
+    const proposals = [
+      {
+        question: "What is a closure?",
+        concept: "Functions that close over outer variables",
+        domain: "js",
+        bloom_level: 2,
+        exists: true,
+        slug: "js-closures",
+      },
+      {
+        question: "What is the Event Loop?",
+        concept: "Checks call stack and queue",
+        domain: "js",
+        bloom_level: 2,
+        exists: false,
+      }
+    ];
+
+    const result = await confirmFoundations(
+      db,
+      "thomas",
+      "js-advanced",
+      proposals
+    );
+
+    expect(result.createdCount).toBe(1);
+    expect(result.linkedCount).toBe(1);
+
+    const resolvedPrereqToken = await getTokenBySlug(db, "js-what-is-the-event-loop");
+    expect(resolvedPrereqToken).toBeDefined();
+
+    const links = await db
+      .prepare("SELECT * FROM prerequisites WHERE token_id = ?")
+      .all(token.id) as any[];
+    
+    expect(links).toHaveLength(2);
+    const requiresIds = links.map(l => l.requires_id);
+    expect(requiresIds).toContain(prereqToken.id);
+    expect(requiresIds).toContain(resolvedPrereqToken!.id);
+
+    const invalidProposals = [
+      {
+        question: "Advanced JS topics?",
+        concept: "Advanced JS topics like Event Loop and Closures",
+        domain: "js",
+        bloom_level: 3,
+        exists: true,
+        slug: "js-advanced",
+      }
+    ];
+    await expect(confirmFoundations(db, "thomas", "js-advanced", invalidProposals)).rejects.toThrow();
   });
 });

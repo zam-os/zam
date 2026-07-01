@@ -55,6 +55,7 @@ import {
   listPersonalCards,
   importCurriculumCards,
   confirmCardSplit,
+  confirmFoundations,
   listProviderApiKeyRefs,
   listTokens,
   monitorLogExists,
@@ -93,6 +94,7 @@ import {
   getLlmConfig,
   importCurriculumViaLLM,
   generateSplitProposalsViaLLM,
+  generateFoundationsProposalsViaLLM,
   getProviderForRole,
   getProviderRoleStatus,
   isLlmOnline,
@@ -3065,6 +3067,88 @@ bridgeCommand
         success: true,
         createdCount: result.createdCount,
         ensuredCount: result.ensuredCount,
+      });
+    });
+  });
+
+// ── zam bridge personal-card-foundations-proposals ─────────────────────────
+
+bridgeCommand
+  .command("personal-card-foundations-proposals")
+  .description("Generate prerequisite suggestions for a card (JSON)")
+  .requiredOption("--slug <slug>", "Original token slug")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const token = await getTokenBySlug(db, opts.slug);
+      if (!token) {
+        jsonError(`Token not found: ${opts.slug}`);
+      }
+
+      const proposals = await generateFoundationsProposalsViaLLM(db, token);
+      
+      const resolvedProposals = [];
+      for (const prop of proposals) {
+        const baseText = prop.question && prop.question.trim().length > 0 ? prop.question : prop.concept;
+        const cleanDomain = slugify(prop.domain || "");
+        const cleanBase = slugify(baseText);
+        let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
+        if (baseSlug.length > 60) {
+          baseSlug = baseSlug.slice(0, 60).replace(/-$/, "");
+        }
+        if (!baseSlug) {
+          baseSlug = "token";
+        }
+
+        const existingToken = await getTokenBySlug(db, baseSlug);
+        if (existingToken) {
+          resolvedProposals.push({
+            ...prop,
+            exists: true,
+            slug: existingToken.slug,
+            question: existingToken.question || prop.question,
+            concept: existingToken.concept,
+            domain: existingToken.domain,
+          });
+        } else {
+          resolvedProposals.push({
+            ...prop,
+            exists: false,
+            slug: null,
+          });
+        }
+      }
+
+      jsonOut({
+        success: true,
+        proposals: resolvedProposals,
+      });
+    });
+  });
+
+// ── zam bridge personal-card-confirm-foundations ───────────────────────────
+
+bridgeCommand
+  .command("personal-card-confirm-foundations")
+  .description("Save confirmed foundational prerequisites (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--slug <slug>", "Original token slug")
+  .requiredOption("--proposals <json>", "JSON string representing proposals array")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const proposals = JSON.parse(opts.proposals);
+
+      const result = await confirmFoundations(
+        db,
+        userId,
+        opts.slug,
+        proposals,
+      );
+
+      jsonOut({
+        success: true,
+        createdCount: result.createdCount,
+        linkedCount: result.linkedCount,
       });
     });
   });

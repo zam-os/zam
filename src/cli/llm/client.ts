@@ -736,6 +736,84 @@ JSON Array Output:`;
 }
 
 /**
+ * Generate 2 to 4 prerequisite suggestions for a card.
+ */
+export async function generateFoundationsProposalsViaLLM(
+  db: Database,
+  token: { question: string | null; concept: string; domain: string; context: string; source_link: string | null }
+): Promise<any[]> {
+  const cfg = await getProviderForRole(db, "recall");
+  const endpoint = await resolveUsableRecallEndpoint(db);
+  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+
+  const systemPrompt = `You are ZAM, a highly precise agentic learning assistant.
+Your task is to analyze a learning card and propose 2 to 4 atomic, foundational prerequisite concepts (foundations) that a learner must master *before* studying this card, in ${langName}.
+
+The current card details are:
+- Question: ${token.question || "N/A"}
+- Core Concept: ${token.concept}
+- Domain: ${token.domain}
+- Excerpt Context: ${token.context || "N/A"}
+
+For each proposed foundational card, you MUST generate:
+1. "question": A clear, concise active-recall question testing a single foundational fact or prerequisite concept.
+2. "concept": The reference answer or core fact.
+3. "domain": The category of the card (default to "${token.domain}").
+4. "context": The context excerpt explaining where this prerequisite fits in the learning hierarchy.
+5. "bloom_level": Bloom taxonomy level (typically 1 or 2 for foundational facts).
+6. "symbiosis_mode": Symbiosis mode ("shadowing", "copilot", or "autonomy").
+
+Guidelines:
+- Recommend only highly relevant and necessary prerequisites.
+- Keep each proposed card atomic and focused on one concept.
+- Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any conversational filler.`;
+
+  const userPrompt = `Suggest 2 to 4 foundational prerequisite cards for the card above.
+
+JSON Array Output:`;
+
+  const res = await fetchWithInteractiveTimeout(
+    `${endpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.2,
+        max_tokens: DEFAULT_LLM_MAX_TOKENS,
+      }),
+      locale: cfg.locale,
+    },
+  );
+
+  const responseText = await readChatContent(res, "LLM card foundations proposals");
+  
+  const startIdx = responseText.indexOf("[");
+  const endIdx = responseText.lastIndexOf("]");
+  if (startIdx === -1 || endIdx === -1 || startIdx > endIdx) {
+    throw new Error("Invalid LLM response: JSON array brackets not found");
+  }
+  const jsonText = responseText.substring(startIdx, endIdx + 1);
+  const cards = JSON.parse(jsonText);
+  if (!Array.isArray(cards)) {
+    throw new Error("Invalid LLM response: expected a JSON array");
+  }
+
+  for (const card of cards) {
+    card.source_link = token.source_link || null;
+  }
+
+  return cards;
+}
+
+/**
  * Translate a question into the active locale using the local LLM.
  */
 export async function translateQuestionViaLLM(

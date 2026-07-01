@@ -330,6 +330,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_split_progress_detail: "This may take up to a minute depending on your local LLM speed.",
     lbl_atomic_proposals_title: "Atomic Card Proposals (Minimum 2)",
     btn_split_modal_submit: "Confirm Split",
+    btn_content_foundations_card: "Foundations",
+    lbl_foundations_modal_title: "Import Foundations",
+    lbl_foundations_progress_status: "Generating foundational proposals...",
+    lbl_foundations_progress_detail: "This may take up to a minute depending on your local LLM speed.",
+    lbl_foundations_atomic_title: "Foundational Card Proposals",
+    btn_foundations_modal_submit: "Confirm Import",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -640,6 +646,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_split_progress_detail: "Dies kann je nach Geschwindigkeit der lokalen KI bis zu einer Minute dauern.",
     lbl_atomic_proposals_title: "Atomare Kartenvorschläge (Mindestens 2)",
     btn_split_modal_submit: "Aufteilung bestätigen",
+    btn_content_foundations_card: "Fundamente",
+    lbl_foundations_modal_title: "Fundamente importieren",
+    lbl_foundations_progress_status: "Fundamentvorschläge werden generiert...",
+    lbl_foundations_progress_detail: "Dies kann je nach Geschwindigkeit der lokalen KI bis zu einer Minute dauern.",
+    lbl_foundations_atomic_title: "Fundamentale Kartenvorschläge",
+    btn_foundations_modal_submit: "Import bestätigen",
   },
   // es, fr, pt, zh, ja live in ./i18n.ts; en/de stay here as reference locales.
   ...TRANSLATION_PACKS,
@@ -1236,6 +1248,22 @@ function initializeTranslations() {
   if (btnSplitModalCancel) btnSplitModalCancel.textContent = t("lbl_cancel_action");
   const btnSplitModalSubmit = document.getElementById("btn-split-modal-submit");
   if (btnSplitModalSubmit) btnSplitModalSubmit.textContent = t("btn_split_modal_submit");
+
+  // Foundations Modal Translations
+  const btnContentFoundationsCard = document.getElementById("btn-content-foundations-card");
+  if (btnContentFoundationsCard) btnContentFoundationsCard.textContent = t("btn_content_foundations_card");
+  const lblFoundationsModalTitle = document.getElementById("lbl-foundations-modal-title");
+  if (lblFoundationsModalTitle) lblFoundationsModalTitle.textContent = t("lbl_foundations_modal_title");
+  const lblFoundationsProgressStatus = document.getElementById("lbl-foundations-progress-status");
+  if (lblFoundationsProgressStatus) lblFoundationsProgressStatus.textContent = t("lbl_foundations_progress_status");
+  const lblFoundationsProgressDetail = document.getElementById("lbl-foundations-progress-detail");
+  if (lblFoundationsProgressDetail) lblFoundationsProgressDetail.textContent = t("lbl_foundations_progress_detail");
+  const lblFoundationsAtomicTitle = document.getElementById("lbl-foundations-atomic-title");
+  if (lblFoundationsAtomicTitle) lblFoundationsAtomicTitle.textContent = t("lbl_foundations_atomic_title");
+  const btnFoundationsModalCancel = document.getElementById("btn-foundations-modal-cancel");
+  if (btnFoundationsModalCancel) btnFoundationsModalCancel.textContent = t("lbl_cancel_action");
+  const btnFoundationsModalSubmit = document.getElementById("btn-foundations-modal-submit");
+  if (btnFoundationsModalSubmit) btnFoundationsModalSubmit.textContent = t("btn_foundations_modal_submit");
 
   document.getElementById("graph-title")!.textContent = t("graph_title");
   document.getElementById("btn-graph-back")!.textContent =

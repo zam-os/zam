@@ -51,6 +51,14 @@ let btnSplitAddProposal: HTMLButtonElement;
 let btnSplitModalCancel: HTMLButtonElement;
 let btnSplitModalSubmit: HTMLButtonElement;
 
+let btnFoundationsCard: HTMLButtonElement;
+let foundationsModalOverlay: HTMLElement;
+let foundationsProgressContainer: HTMLElement;
+let foundationsProposalsSection: HTMLElement;
+let foundationsProposalsContainer: HTMLElement;
+let btnFoundationsModalCancel: HTMLButtonElement;
+let btnFoundationsModalSubmit: HTMLButtonElement;
+
 interface ProposalEntry {
   question: string;
   concept: string;
@@ -59,6 +67,18 @@ interface ProposalEntry {
   symbiosis_mode: string;
 }
 let currentProposals: ProposalEntry[] = [];
+
+interface FoundationProposalEntry {
+  question: string;
+  concept: string;
+  domain: string;
+  bloom_level: number;
+  symbiosis_mode: string;
+  exists: boolean;
+  slug: string | null;
+  selected: boolean;
+}
+let currentFoundations: FoundationProposalEntry[] = [];
 let listContainer: HTMLElement;
 let searchInput: HTMLInputElement;
 let categoryFilter: HTMLSelectElement;
@@ -161,6 +181,15 @@ export function initLearningContentStudio(): void {
   btnSplitModalCancel = document.getElementById("btn-split-modal-cancel") as HTMLButtonElement;
   btnSplitModalSubmit = document.getElementById("btn-split-modal-submit") as HTMLButtonElement;
 
+  // Foundations DOM Cache
+  btnFoundationsCard = document.getElementById("btn-content-foundations-card") as HTMLButtonElement;
+  foundationsModalOverlay = document.getElementById("foundations-modal-overlay")!;
+  foundationsProgressContainer = document.getElementById("foundations-progress-container")!;
+  foundationsProposalsSection = document.getElementById("foundations-proposals-section")!;
+  foundationsProposalsContainer = document.getElementById("foundations-proposals-container")!;
+  btnFoundationsModalCancel = document.getElementById("btn-foundations-modal-cancel") as HTMLButtonElement;
+  btnFoundationsModalSubmit = document.getElementById("btn-foundations-modal-submit") as HTMLButtonElement;
+
   // Event Listeners
   searchInput.addEventListener("input", () => refreshCardsList());
   categoryFilter.addEventListener("change", () => refreshCardsList());
@@ -179,6 +208,13 @@ export function initLearningContentStudio(): void {
   btnSplitModalCancel.addEventListener("click", () => hideSplitModal());
   btnSplitModalSubmit.addEventListener("click", () => {
     void submitConfirmSplit();
+  });
+  btnFoundationsCard?.addEventListener("click", () => {
+    void showFoundationsModal();
+  });
+  btnFoundationsModalCancel.addEventListener("click", () => hideFoundationsModal());
+  btnFoundationsModalSubmit.addEventListener("click", () => {
+    void submitConfirmFoundations();
   });
   btnCancel.addEventListener("click", () => cancelEdit());
   btnSave.addEventListener("click", () => saveCard());
@@ -378,16 +414,19 @@ function updateUIForSelection(): void {
     if (isCreatingNew) {
       btnDelete.classList.add("hidden");
       btnSplitCard?.classList.add("hidden");
+      btnFoundationsCard?.classList.add("hidden");
       fieldSlug.value = t("lbl_slug_hint");
     } else {
       btnDelete.classList.remove("hidden");
       btnSplitCard?.classList.remove("hidden");
+      btnFoundationsCard?.classList.remove("hidden");
     }
   } else {
     emptyStateEl.classList.remove("hidden");
     formContainer.classList.add("hidden");
     btnCancel.classList.add("hidden");
     btnSplitCard?.classList.add("hidden");
+    btnFoundationsCard?.classList.add("hidden");
   }
 }
 
@@ -864,5 +903,168 @@ async function submitConfirmSplit(): Promise<void> {
     alert(t("lbl_error_importing") + ": " + (err.message || String(err)));
     btnSplitModalSubmit.disabled = false;
     btnSplitModalCancel.disabled = false;
+  }
+}
+
+async function showFoundationsModal(): Promise<void> {
+  if (!selectedCard) return;
+
+  currentFoundations = [];
+  foundationsProposalsContainer.innerHTML = "";
+  foundationsProposalsSection.classList.add("hidden");
+  foundationsProgressContainer.classList.remove("hidden");
+  btnFoundationsModalSubmit.disabled = true;
+
+  foundationsModalOverlay.classList.add("active");
+
+  try {
+    const res = await runBridge<{
+      success: boolean;
+      proposals: FoundationProposalEntry[];
+    }>("personal-card-foundations-proposals", ["--slug", selectedCard.slug]);
+
+    if (res && res.success && Array.isArray(res.proposals)) {
+      currentFoundations = res.proposals.map(p => ({ ...p, selected: true }));
+      renderFoundationsProposals();
+      foundationsProposalsSection.classList.remove("hidden");
+      btnFoundationsModalSubmit.disabled = false;
+    } else {
+      throw new Error(t("lbl_error_importing"));
+    }
+  } catch (err: any) {
+    alert(t("lbl_error_importing") + ": " + (err.message || String(err)));
+    hideFoundationsModal();
+  } finally {
+    foundationsProgressContainer.classList.add("hidden");
+  }
+}
+
+function hideFoundationsModal(): void {
+  foundationsModalOverlay.classList.remove("active");
+}
+
+function renderFoundationsProposals(): void {
+  foundationsProposalsContainer.innerHTML = "";
+
+  currentFoundations.forEach((prop, index) => {
+    const row = document.createElement("div");
+    row.style.display = "flex";
+    row.style.flexDirection = "column";
+    row.style.gap = "8px";
+    row.style.padding = "12px";
+    row.style.background = "var(--clr-bg-surface)";
+    row.style.border = "1px solid var(--clr-border)";
+    row.style.borderRadius = "6px";
+    row.style.position = "relative";
+
+    const badgeText = prop.exists ? "Existing card will be linked" : "New card suggestion";
+    const badgeColor = prop.exists ? "var(--clr-accent-purple)" : "var(--clr-accent-teal)";
+
+    row.innerHTML = `
+      <div style="position: absolute; top: 10px; right: 10px; display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 0.75rem; font-weight: bold; color: ${badgeColor}; border: 1px solid ${badgeColor}; border-radius: 4px; padding: 2px 6px;">
+          ${badgeText}
+        </span>
+        <label style="display: flex; align-items: center; gap: 4px; font-size: 0.85rem; cursor: pointer;">
+          <input type="checkbox" class="prop-selected" data-index="${index}" ${prop.selected ? "checked" : ""} style="cursor: pointer;" />
+          Include
+        </label>
+      </div>
+      <div style="font-size: 0.8rem; color: var(--clr-text-secondary); font-weight: bold; margin-bottom: 2px;">
+        Foundational Proposal #${index + 1}
+      </div>
+      <div class="editor-form-group" style="margin: 0;">
+        <label style="font-size: 0.8rem;">Question</label>
+        <textarea class="editor-textarea prop-question" style="min-height: 40px; font-size: 0.85rem;" data-index="${index}" ${prop.exists ? "readonly" : ""}>${prop.question || ""}</textarea>
+      </div>
+      <div class="editor-form-group" style="margin: 0;">
+        <label style="font-size: 0.8rem;">Answer / Concept</label>
+        <textarea class="editor-textarea prop-concept" style="min-height: 40px; font-size: 0.85rem;" data-index="${index}" ${prop.exists ? "readonly" : ""}>${prop.concept || ""}</textarea>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <div class="editor-form-group" style="flex: 1; margin: 0;">
+          <label style="font-size: 0.8rem;">Category</label>
+          <input type="text" class="editor-input prop-domain" style="font-size: 0.85rem;" data-index="${index}" value="${prop.domain || ""}" ${prop.exists ? "readonly" : ""} />
+        </div>
+      </div>
+    `;
+
+    const selectCheckbox = row.querySelector(".prop-selected") as HTMLInputElement;
+    selectCheckbox.addEventListener("change", (e) => {
+      currentFoundations[index].selected = (e.target as HTMLInputElement).checked;
+    });
+
+    if (!prop.exists) {
+      const qField = row.querySelector(".prop-question") as HTMLTextAreaElement;
+      qField.addEventListener("input", (e) => {
+        currentFoundations[index].question = (e.target as HTMLTextAreaElement).value;
+      });
+
+      const cField = row.querySelector(".prop-concept") as HTMLTextAreaElement;
+      cField.addEventListener("input", (e) => {
+        currentFoundations[index].concept = (e.target as HTMLTextAreaElement).value;
+      });
+
+      const dField = row.querySelector(".prop-domain") as HTMLInputElement;
+      dField.addEventListener("input", (e) => {
+        currentFoundations[index].domain = (e.target as HTMLInputElement).value;
+      });
+    }
+
+    foundationsProposalsContainer.appendChild(row);
+  });
+}
+
+async function submitConfirmFoundations(): Promise<void> {
+  if (!selectedCard) return;
+
+  const validProposals = currentFoundations
+    .filter(p => p.selected)
+    .map(p => ({
+      question: p.question.trim(),
+      concept: p.concept.trim(),
+      domain: p.domain.trim(),
+      bloom_level: p.bloom_level,
+      symbiosis_mode: p.symbiosis_mode,
+      exists: p.exists,
+      slug: p.slug,
+    }))
+    .filter(p => p.question && p.concept && p.domain);
+
+  if (validProposals.length === 0) {
+    alert("Please select at least one prerequisite proposal card to import.");
+    return;
+  }
+
+  btnFoundationsModalSubmit.disabled = true;
+  btnFoundationsModalCancel.disabled = true;
+
+  try {
+    const res = await runBridge<{
+      success: boolean;
+      createdCount: number;
+      linkedCount: number;
+    }>("personal-card-confirm-foundations", [
+      "--slug",
+      selectedCard.slug,
+      "--proposals",
+      JSON.stringify(validProposals),
+    ]);
+
+    if (res && res.success) {
+      hideFoundationsModal();
+      alert(tf("toast_import_success", {
+        createdCount: res.createdCount,
+        ensuredCount: res.linkedCount,
+      }));
+      cancelEdit();
+      await loadStudioData();
+    } else {
+      throw new Error(t("lbl_error_importing"));
+    }
+  } catch (err: any) {
+    alert(t("lbl_error_importing") + ": " + (err.message || String(err)));
+    btnFoundationsModalSubmit.disabled = false;
+    btnFoundationsModalCancel.disabled = false;
   }
 }
