@@ -821,7 +821,14 @@ export async function confirmCardSplit(
         )
         .run(originalToken.id, userId);
 
-      // Surface all prerequisites
+      // Surface all prerequisites. A freshly created proposal card is already
+      // unblocked and due now, so this only matters when a proposal reuses an
+      // existing token whose card is currently blocked with no prerequisites of
+      // its own. In that case make it reviewable again by clearing the block and
+      // marking it due — but never wipe its FSRS scheduling state. The learning
+      // history is preserved (ADR principle 5), and clearing the FSRS columns to
+      // NULL would in any case violate their NOT NULL constraints and abort the
+      // whole split.
       for (const propToken of proposalTokens) {
         const card = await ensureCard(tx, propToken.id, userId);
         if (card.blocked === 1) {
@@ -833,9 +840,7 @@ export async function confirmCardSplit(
           if (prereqOfPrereq.n === 0) {
             const now = new Date().toISOString();
             await tx
-              .prepare(
-                "UPDATE cards SET blocked = 0, due_at = ?, stability = NULL, difficulty = NULL, reps = 0, lapses = 0, elapsed_days = NULL, scheduled_days = NULL WHERE id = ?",
-              )
+              .prepare("UPDATE cards SET blocked = 0, due_at = ? WHERE id = ?")
               .run(now, card.id);
           }
         }

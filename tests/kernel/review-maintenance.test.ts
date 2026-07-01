@@ -484,6 +484,73 @@ describe("review maintenance primitives", () => {
     expect(originalCard2).toBeUndefined();
   });
 
+  it("splits without destroying history when a proposal reuses a blocked prerequisite", async () => {
+    const original = await createToken(db, {
+      slug: "calc-advanced",
+      concept: "broad calculus card",
+      domain: "math",
+      bloom_level: 3,
+    });
+    await ensureCard(db, original.id, "thomas");
+
+    // A pre-existing, already-learned card that a split proposal will reuse by
+    // slug. It is blocked with no prerequisites of its own — the exact state
+    // that used to reset FSRS columns to NULL and abort the split.
+    const reused = await createToken(db, {
+      slug: "math-how-do-you-integrate",
+      concept: "anti-derivative rules",
+      domain: "math",
+      bloom_level: 2,
+      question: "How do you integrate",
+    });
+    const reusedCard = await ensureCard(db, reused.id, "thomas");
+    await db
+      .prepare(
+        "UPDATE cards SET blocked = 1, stability = 20.0, difficulty = 5.0, reps = 7, lapses = 2, state = 'review' WHERE id = ?",
+      )
+      .run(reusedCard.id);
+
+    const proposals = [
+      {
+        question: "How do you integrate",
+        concept: "anti-derivative rules",
+        domain: "math",
+        bloom_level: 3,
+      },
+      {
+        question: "How do you differentiate",
+        concept: "rate of change rules",
+        domain: "math",
+        bloom_level: 2,
+      },
+    ];
+
+    const res = await confirmCardSplit(
+      db,
+      "thomas",
+      "calc-advanced",
+      "block",
+      "What is calculus?",
+      "study of change",
+      proposals,
+    );
+    // The reused token is not recreated; only the truly new proposal is.
+    expect(res.createdCount).toBe(1);
+
+    // The original is blocked and rewritten — the split completed.
+    const originalCard = await getCard(db, original.id, "thomas");
+    expect(originalCard?.blocked).toBe(1);
+
+    // The reused prerequisite is surfaced (unblocked) but its FSRS learning
+    // history is fully preserved — nothing was reset.
+    const reusedAfter = await getCard(db, reused.id, "thomas");
+    expect(reusedAfter?.blocked).toBe(0);
+    expect(reusedAfter?.stability).toBe(20.0);
+    expect(reusedAfter?.difficulty).toBe(5.0);
+    expect(reusedAfter?.reps).toBe(7);
+    expect(reusedAfter?.lapses).toBe(2);
+  });
+
   it("imports foundations atomically, linking existing or creating new prerequisites", async () => {
     const token = await createToken(db, {
       slug: "js-advanced",
