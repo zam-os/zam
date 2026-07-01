@@ -175,5 +175,21 @@ describe("cli E2E tests", () => {
     const listRes2 = JSON.parse(runCli(["bridge", "personal-card-list"]));
     expect(listRes2.cards).toHaveLength(1);
     expect(listRes2.cards[0].cardId).toBeNull();
+
+    // 7. Verify import-curriculum command integration structure
+    try {
+      runCli([
+        "bridge",
+        "personal-card-import-curriculum",
+        "--text",
+        '"Objective: learn git branch"',
+        "--domain",
+        "git"
+      ]);
+      expect(true).toBe(false);
+    } catch (err: any) {
+      const output = err.stdout || err.stderr || String(err.message || err);
+      expect(output).toContain("LLM");
+    }
   }, E2E_TIMEOUT_MS);
 });

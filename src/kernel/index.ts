@@ -155,6 +155,8 @@ export type {
   TokenDeleteImpact,
   UpdateTokenInput,
   PersonalCard,
+  CurriculumCardInput,
+  ImportCurriculumResult,
 } from "./models/token.js";
 // Models
 export {
@@ -169,6 +171,7 @@ export {
   updateToken,
   listPersonalCards,
   generateTokenSlug,
+  importCurriculumCards,
 } from "./models/token.js";
 export type {
   AnalysisResult,

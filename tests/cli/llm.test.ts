@@ -10,6 +10,7 @@ import {
   fetchWithInteractiveTimeout,
   isLlmOnline,
   resolveUsableRecallEndpoint,
+  importCurriculumViaLLM,
 } from "../../src/cli/llm/client.js";
 import {
   createToken,
@@ -355,6 +356,64 @@ describe("LLM client utilities (CLI layer)", () => {
       expect(updated?.question).toBe(
         "How do you securely store Azure DevOps HTTPS credentials on macOS?",
       );
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("importCurriculumViaLLM correctly queries LLM and parses JSON result", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const mockResponseText = JSON.stringify([
+      {
+        question: "What is git revert?",
+        concept: "Creates a new commit that node-undos the changes",
+        domain: "git",
+        bloom_level: 2,
+        symbiosis_mode: "shadowing",
+        context: "revert creates a new commit"
+      }
+    ]);
+
+    const originalFetch = global.fetch;
+    global.fetch = async () =>
+      new Response(
+        JSON.stringify({
+          choices: [
+            {
+              message: {
+                content: `Here is the parsed JSON: \n${mockResponseText}\nHope it helps!`,
+              },
+            },
+          ],
+        }),
+      );
+
+    try {
+      const cards = await importCurriculumViaLLM(
+        db,
+        "Syllabus: revert creates a new commit to undo changes",
+        "git",
+        "https://example.com"
+      );
+
+      expect(cards).toHaveLength(1);
+      expect(cards[0]).toMatchObject({
+        question: "What is git revert?",
+        concept: "Creates a new commit that node-undos the changes",
+        domain: "git",
+        bloom_level: 2,
+        symbiosis_mode: "shadowing",
+        context: "revert creates a new commit",
+        source_link: "https://example.com"
+      });
     } finally {
       global.fetch = originalFetch;
       await db.close();

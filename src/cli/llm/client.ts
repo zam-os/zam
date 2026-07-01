@@ -579,6 +579,85 @@ Evaluation:`;
 }
 
 /**
+ * Parse curriculum text and generate structured flashcard JSON data via LLM.
+ */
+export async function importCurriculumViaLLM(
+  db: Database,
+  text: string,
+  targetCategory: string,
+  sourceUrl?: string | null,
+): Promise<any[]> {
+  const cfg = await getProviderForRole(db, "recall");
+  const endpoint = await resolveUsableRecallEndpoint(db);
+  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+
+  const systemPrompt = `You are ZAM, a highly precise agentic curriculum parser.
+Your task is to analyze curriculum objectives, syllabus requirements, or textbook notes, and extract atomic facts, concepts, or skills as structured learning cards in ${langName}.
+
+For each extracted learning card, you MUST generate:
+1. "question": A clear, concise active-recall question testing the concept. The question must not reveal the answer itself.
+2. "concept": The reference answer, core fact, or target conceptual explanation.
+3. "domain": The category of the card. Use "${targetCategory}" as the default, but you may refine it if a specific sub-topic is evident.
+4. "context": The exact sentence or short excerpt from the source text that this card is based on.
+5. "bloom_level": Initial Bloom cognitive level (1 = Remember, 2 = Understand, 3 = Apply, 4 = Analyze, 5 = Synthesize).
+6. "symbiosis_mode": ZAM agent symbiosis level: "shadowing" (reading/monitoring), "copilot" (interactive helper), or "autonomy" (autonomous tasks).
+
+Guidelines:
+- Break complex requirements into multiple separate, atomic cards.
+- Keep questions focused on one fact.
+- Do not repeat the same concept in multiple cards.
+- Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any preamble, headers, or conversational filler.`;
+
+  const userPrompt = `Curriculum Text to Parse:
+${text}
+
+Target Category: ${targetCategory}
+${sourceUrl ? `Source Reference Link: ${sourceUrl}` : ""}
+
+JSON Array Output:`;
+
+  const res = await fetchWithInteractiveTimeout(
+    `${endpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.1,
+        max_tokens: DEFAULT_LLM_MAX_TOKENS,
+      }),
+      locale: cfg.locale,
+    },
+  );
+
+  const responseText = await readChatContent(res, "LLM curriculum import");
+  
+  const startIdx = responseText.indexOf("[");
+  const endIdx = responseText.lastIndexOf("]");
+  if (startIdx === -1 || endIdx === -1 || startIdx > endIdx) {
+    throw new Error("Invalid LLM response: JSON array brackets not found");
+  }
+  const jsonText = responseText.substring(startIdx, endIdx + 1);
+  const cards = JSON.parse(jsonText);
+  if (!Array.isArray(cards)) {
+    throw new Error("Invalid LLM response: expected a JSON array");
+  }
+
+  for (const card of cards) {
+    card.source_link = sourceUrl || null;
+  }
+
+  return cards;
+}
+
+/**
  * Translate a question into the active locale using the local LLM.
  */
 export async function translateQuestionViaLLM(

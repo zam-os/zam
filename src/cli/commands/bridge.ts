@@ -53,6 +53,7 @@ import {
   isObserverPolicyConfigured,
   listAgentSkills,
   listPersonalCards,
+  importCurriculumCards,
   listProviderApiKeyRefs,
   listTokens,
   monitorLogExists,
@@ -89,6 +90,7 @@ import {
   getAvailableModels,
   getCloudModelRecommendation,
   getLlmConfig,
+  importCurriculumViaLLM,
   getProviderForRole,
   getProviderRoleStatus,
   isLlmOnline,
@@ -2976,6 +2978,36 @@ bridgeCommand
           slug: result.token.slug,
         },
         impact: result.impact
+      });
+    });
+  });
+
+// ── zam bridge personal-card-import-curriculum ─────────────────────────────
+
+bridgeCommand
+  .command("personal-card-import-curriculum")
+  .description("Parse curriculum text using LLM and import cards (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--text <text>", "Curriculum syllabus/content text")
+  .requiredOption("--domain <domain>", "Default category/domain for imported cards")
+  .option("--source <url>", "Provenance source link or URL")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      
+      const cards = await importCurriculumViaLLM(
+        db,
+        opts.text,
+        opts.domain,
+        opts.source || null
+      );
+
+      const result = await importCurriculumCards(db, userId, cards);
+
+      jsonOut({
+        success: true,
+        createdCount: result.createdCount,
+        ensuredCount: result.ensuredCount,
       });
     });
   });

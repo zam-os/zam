@@ -146,6 +146,7 @@
             </p>
           </div>
           <div style="display: flex; gap: 10px; align-items: center;">
+            <button id="btn-content-import" class="btn secondary-btn btn-sm" type="button">Import Curriculum</button>
             <button id="btn-content-new-card" class="btn primary-btn btn-sm" type="button">New Card</button>
           </div>
         </div>
@@ -538,6 +539,39 @@
           <div class="modal-actions">
             <button id="btn-modal-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
             <button id="btn-modal-confirm" class="btn primary-btn btn-sm" type="button">Confirm</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- IMPORT CURRICULUM MODAL -->
+      <div id="import-modal-overlay" class="modal-overlay">
+        <div class="modal-box" style="max-width: 600px;">
+          <div class="modal-header">
+            <h3 id="lbl-import-modal-title">Import Curriculum</h3>
+          </div>
+          <div class="modal-body">
+            <div class="editor-form-group">
+              <label for="import-field-text" id="lbl-import-text">Curriculum Text</label>
+              <textarea id="import-field-text" class="editor-textarea" style="min-height: 180px;" placeholder="Paste curriculum text or syllabus bullets here..."></textarea>
+            </div>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <div class="editor-form-group" style="flex: 1.2; min-width: 150px;">
+                <label for="import-field-source" id="lbl-import-source">Source URL / Reference</label>
+                <input type="text" id="import-field-source" class="editor-input" placeholder="e.g. https://example.com/syllabus" />
+              </div>
+              <div class="editor-form-group" style="flex: 1; min-width: 120px;">
+                <label for="import-field-category" id="lbl-import-category">Target Category</label>
+                <input type="text" id="import-field-category" class="editor-input" placeholder="e.g. computer-science" />
+              </div>
+            </div>
+            <div id="import-progress-container" class="hidden" style="margin-top: 10px;">
+              <div class="modal-impact-title" id="lbl-import-progress-status" style="color: var(--clr-accent-purple);">Generating cards...</div>
+              <p style="font-size: 0.85rem; color: var(--clr-text-secondary);" id="lbl-import-progress-detail">This may take up to a minute depending on your local LLM speed.</p>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button id="btn-import-modal-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
+            <button id="btn-import-modal-submit" class="btn primary-btn btn-sm" type="button">Import</button>
           </div>
         </div>
       </div>

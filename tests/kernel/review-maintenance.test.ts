@@ -25,6 +25,7 @@ import {
   updateToken,
   listPersonalCards,
   generateTokenSlug,
+  importCurriculumCards,
 } from "../../src/kernel/index.js";
 
 describe("review maintenance primitives", () => {
@@ -329,5 +330,71 @@ describe("review maintenance primitives", () => {
 
     const searchCards2 = await listPersonalCards(db, "thomas", { query: "git" });
     expect(searchCards2).toHaveLength(2);
+  });
+
+  it("imports curriculum cards atomically resolving duplicates", async () => {
+    const batch1 = [
+      {
+        question: "What is git checkout?",
+        concept: "Switches branches or restores files",
+        domain: "git",
+        bloom_level: 2,
+        context: "checkout is used for branch switching"
+      },
+      {
+        question: "What is git status?",
+        concept: "Shows the working tree status",
+        domain: "git",
+        bloom_level: 1,
+        context: "status shows modified files"
+      }
+    ];
+
+    const res1 = await importCurriculumCards(db, "thomas", batch1);
+    expect(res1.createdCount).toBe(2);
+    expect(res1.ensuredCount).toBe(2);
+
+    const list1 = await listPersonalCards(db, "thomas", { domain: "git" });
+    expect(list1.map(c => c.slug)).toContain("git-what-is-git-checkout");
+    expect(list1.map(c => c.slug)).toContain("git-what-is-git-status");
+
+    const batch2 = [
+      {
+        question: "What is git checkout?",
+        concept: "Switches branches or restores files",
+        domain: "git",
+        bloom_level: 2,
+        context: "checkout is used for branch switching"
+      },
+      {
+        question: "What is git diff?",
+        concept: "Shows changes between commits",
+        domain: "git",
+        bloom_level: 3,
+        context: "diff compares commits"
+      }
+    ];
+
+    const res2 = await importCurriculumCards(db, "thomas", batch2);
+    expect(res2.createdCount).toBe(1);
+    expect(res2.ensuredCount).toBe(1);
+
+    const res3 = await importCurriculumCards(db, "user-2", [batch1[0]]);
+    expect(res3.createdCount).toBe(0);
+    expect(res3.ensuredCount).toBe(1);
+
+    const batchFail = [
+      {
+        question: "What is git log?",
+        concept: "Shows commit history",
+        domain: "git",
+        bloom_level: 10,
+        context: "log displays commits"
+      }
+    ];
+    await expect(importCurriculumCards(db, "thomas", batchFail)).rejects.toThrow();
+
+    const listFinal = await listPersonalCards(db, "thomas", { query: "log" });
+    expect(listFinal).toHaveLength(0);
   });
 });

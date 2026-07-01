@@ -307,6 +307,17 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_card_status_not_started: "Not Started",
     lbl_card_due: "Due",
     lbl_card_not_due: "Not Due",
+    btn_import_curriculum: "Import Curriculum",
+    lbl_import_modal_title: "Import Curriculum Standard",
+    lbl_import_text: "Curriculum Text",
+    placeholder_import_text: "Paste curriculum text or syllabus bullets here...",
+    lbl_import_source: "Source URL / Reference",
+    lbl_import_category: "Target Category",
+    lbl_import_progress_status: "Generating cards...",
+    lbl_import_progress_detail: "This may take up to a minute depending on your local LLM speed.",
+    btn_import_submit: "Import",
+    toast_import_success: "Successfully imported {createdCount} new tokens and ensured {ensuredCount} cards!",
+    lbl_error_importing: "Failed to import curriculum",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -594,6 +605,17 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_card_status_not_started: "Nicht gestartet",
     lbl_card_due: "Fällig",
     lbl_card_not_due: "Nicht fällig",
+    btn_import_curriculum: "Lehrplan importieren",
+    lbl_import_modal_title: "Lehrplan-Standard importieren",
+    lbl_import_text: "Lehrplantext",
+    placeholder_import_text: "Lehrplantext oder Lehrplanpunkte hier einfügen...",
+    lbl_import_source: "Quell-URL / Referenz",
+    lbl_import_category: "Zielkategorie",
+    lbl_import_progress_status: "Karten werden generiert...",
+    lbl_import_progress_detail: "Dies kann je nach Geschwindigkeit der lokalen KI bis zu einer Minute dauern.",
+    btn_import_submit: "Importieren",
+    toast_import_success: "Erfolgreich {createdCount} neue Token importiert und {ensuredCount} Karten sichergestellt!",
+    lbl_error_importing: "Lehrplan konnte nicht importiert werden",
   },
   // es, fr, pt, zh, ja live in ./i18n.ts; en/de stay here as reference locales.
   ...TRANSLATION_PACKS,
@@ -1140,6 +1162,28 @@ function initializeTranslations() {
   if (lblAdvancedDeleteTitle) lblAdvancedDeleteTitle.textContent = currentLocale === "de" ? "Erweiterte Option:" : "Advanced option:";
   const btnModalHardDelete = document.getElementById("btn-modal-hard-delete");
   if (btnModalHardDelete) btnModalHardDelete.textContent = t("btn_delete");
+
+  // Import Modal Translations
+  const btnContentImport = document.getElementById("btn-content-import");
+  if (btnContentImport) btnContentImport.textContent = t("btn_import_curriculum");
+  const lblImportModalTitle = document.getElementById("lbl-import-modal-title");
+  if (lblImportModalTitle) lblImportModalTitle.textContent = t("lbl_import_modal_title");
+  const lblImportText = document.getElementById("lbl-import-text");
+  if (lblImportText) lblImportText.textContent = t("lbl_import_text");
+  const importFieldText = document.getElementById("import-field-text") as HTMLTextAreaElement;
+  if (importFieldText) importFieldText.placeholder = t("placeholder_import_text");
+  const lblImportSource = document.getElementById("lbl-import-source");
+  if (lblImportSource) lblImportSource.textContent = t("lbl_import_source");
+  const lblImportCategory = document.getElementById("lbl-import-category");
+  if (lblImportCategory) lblImportCategory.textContent = t("lbl_import_category");
+  const lblImportProgressStatus = document.getElementById("lbl-import-progress-status");
+  if (lblImportProgressStatus) lblImportProgressStatus.textContent = t("lbl_import_progress_status");
+  const lblImportProgressDetail = document.getElementById("lbl-import-progress-detail");
+  if (lblImportProgressDetail) lblImportProgressDetail.textContent = t("lbl_import_progress_detail");
+  const btnImportModalCancel = document.getElementById("btn-import-modal-cancel");
+  if (btnImportModalCancel) btnImportModalCancel.textContent = t("lbl_cancel_action");
+  const btnImportModalSubmit = document.getElementById("btn-import-modal-submit");
+  if (btnImportModalSubmit) btnImportModalSubmit.textContent = t("btn_import_submit");
 
   document.getElementById("graph-title")!.textContent = t("graph_title");
   document.getElementById("btn-graph-back")!.textContent =

@@ -32,6 +32,14 @@ let isAdvancedExpanded = false;
 
 // DOM Cache
 let layoutContainer: HTMLElement;
+let importBtn: HTMLButtonElement;
+let importModalOverlay: HTMLElement;
+let importFieldText: HTMLTextAreaElement;
+let importFieldSource: HTMLInputElement;
+let importFieldCategory: HTMLInputElement;
+let importProgressContainer: HTMLElement;
+let btnImportModalCancel: HTMLButtonElement;
+let btnImportModalSubmit: HTMLButtonElement;
 let listContainer: HTMLElement;
 let searchInput: HTMLInputElement;
 let categoryFilter: HTMLSelectElement;
@@ -112,12 +120,27 @@ export function initLearningContentStudio(): void {
   btnModalConfirm = document.getElementById("btn-modal-confirm") as HTMLButtonElement;
   btnModalHardDelete = document.getElementById("btn-modal-hard-delete") as HTMLButtonElement;
 
+  // Import Modal bindings
+  importBtn = document.getElementById("btn-content-import") as HTMLButtonElement;
+  importModalOverlay = document.getElementById("import-modal-overlay")!;
+  importFieldText = document.getElementById("import-field-text") as HTMLTextAreaElement;
+  importFieldSource = document.getElementById("import-field-source") as HTMLInputElement;
+  importFieldCategory = document.getElementById("import-field-category") as HTMLInputElement;
+  importProgressContainer = document.getElementById("import-progress-container")!;
+  btnImportModalCancel = document.getElementById("btn-import-modal-cancel") as HTMLButtonElement;
+  btnImportModalSubmit = document.getElementById("btn-import-modal-submit") as HTMLButtonElement;
+
   // Event Listeners
   searchInput.addEventListener("input", () => refreshCardsList());
   categoryFilter.addEventListener("change", () => refreshCardsList());
 
   newCardBtn.addEventListener("click", () => startCreateNewCard());
   createFirstCardBtn.addEventListener("click", () => startCreateNewCard());
+  importBtn?.addEventListener("click", () => showImportModal());
+  btnImportModalCancel.addEventListener("click", () => hideImportModal());
+  btnImportModalSubmit.addEventListener("click", () => {
+    void submitImport();
+  });
   btnCancel.addEventListener("click", () => cancelEdit());
   btnSave.addEventListener("click", () => saveCard());
   btnDelete.addEventListener("click", () => handleDeleteClick());
@@ -541,4 +564,76 @@ function hideModal(): void {
   modalOverlay.classList.remove("active");
   pendingConfirmCallback = null;
   pendingHardDeleteCallback = null;
+}
+
+function showImportModal(): void {
+  importFieldText.value = "";
+  importFieldSource.value = "";
+  importFieldCategory.value = "";
+  importProgressContainer.classList.add("hidden");
+  btnImportModalSubmit.disabled = false;
+  btnImportModalCancel.disabled = false;
+  importFieldText.disabled = false;
+  importFieldSource.disabled = false;
+  importFieldCategory.disabled = false;
+  importModalOverlay.classList.add("active");
+}
+
+function hideImportModal(): void {
+  importModalOverlay.classList.remove("active");
+}
+
+async function submitImport(): Promise<void> {
+  const text = importFieldText.value.trim();
+  const domain = importFieldCategory.value.trim();
+  const source = importFieldSource.value.trim() || null;
+
+  if (!text) {
+    alert(t("lbl_question") + " / " + t("lbl_answer") + " context required");
+    return;
+  }
+  if (!domain) {
+    alert(t("lbl_category") + " required");
+    return;
+  }
+
+  importProgressContainer.classList.remove("hidden");
+  btnImportModalSubmit.disabled = true;
+  btnImportModalCancel.disabled = true;
+  importFieldText.disabled = true;
+  importFieldSource.disabled = true;
+  importFieldCategory.disabled = true;
+
+  try {
+    const res = await runBridge<{
+      success: boolean;
+      createdCount: number;
+      ensuredCount: number;
+    }>("personal-card-import-curriculum", [
+      "--text",
+      text,
+      "--domain",
+      domain,
+      ...(source ? ["--source", source] : []),
+    ]);
+
+    if (res && res.success) {
+      hideImportModal();
+      alert(tf("toast_import_success", {
+        createdCount: res.createdCount,
+        ensuredCount: res.ensuredCount,
+      }));
+      await loadStudioData();
+    } else {
+      throw new Error(t("lbl_error_importing"));
+    }
+  } catch (err: any) {
+    alert(t("lbl_error_importing") + ": " + (err.message || String(err)));
+    importProgressContainer.classList.add("hidden");
+    btnImportModalSubmit.disabled = false;
+    btnImportModalCancel.disabled = false;
+    importFieldText.disabled = false;
+    importFieldSource.disabled = false;
+    importFieldCategory.disabled = false;
+  }
 }

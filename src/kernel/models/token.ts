@@ -8,6 +8,7 @@
 import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
 import type { CardState } from "./card.js";
+import { ensureCard, getCard } from "./card.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -567,4 +568,85 @@ export async function listPersonalCards(
 
   const rows = await db.prepare(sql).all(...values);
   return rows as PersonalCard[];
+}
+
+export interface CurriculumCardInput {
+  question: string;
+  concept: string;
+  domain: string;
+  source_link?: string | null;
+  context?: string;
+  bloom_level?: number;
+  symbiosis_mode?: string | null;
+}
+
+export interface ImportCurriculumResult {
+  createdCount: number;
+  ensuredCount: number;
+}
+
+/**
+ * Import curriculum cards in a single transaction.
+ * Reuses existing tokens on slug match and ensures FSRS cards exist.
+ */
+export async function importCurriculumCards(
+  db: Database,
+  userId: string,
+  cards: CurriculumCardInput[],
+): Promise<ImportCurriculumResult> {
+  let createdCount = 0;
+  let ensuredCount = 0;
+
+  await db.transaction(async (tx) => {
+    for (const card of cards) {
+      const bloom = (card.bloom_level !== undefined ? card.bloom_level : 1) as BloomLevel;
+      if (bloom < 1 || bloom > 5) {
+        throw new Error(`bloom_level must be between 1 and 5, got ${bloom}`);
+      }
+
+      let symbiosisMode: SymbiosisMode | null = null;
+      if (card.symbiosis_mode) {
+        if (!["shadowing", "copilot", "autonomy", "none"].includes(card.symbiosis_mode)) {
+          throw new Error(`Invalid symbiosis_mode: ${card.symbiosis_mode}`);
+        }
+        symbiosisMode = card.symbiosis_mode === "none" ? null : (card.symbiosis_mode as SymbiosisMode);
+      }
+
+      // Check for exact base slug duplicate
+      const baseText = card.question && card.question.trim().length > 0 ? card.question : card.concept;
+      const cleanDomain = slugify(card.domain || "");
+      const cleanBase = slugify(baseText);
+      let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
+      if (baseSlug.length > 60) {
+        baseSlug = baseSlug.slice(0, 60).replace(/-$/, "");
+      }
+      if (!baseSlug) {
+        baseSlug = "token";
+      }
+
+      let token = await getTokenBySlug(tx, baseSlug);
+      if (!token) {
+        const finalSlug = await generateTokenSlug(tx, card.domain, card.concept, card.question);
+        token = await createToken(tx, {
+          slug: finalSlug,
+          concept: card.concept,
+          domain: card.domain,
+          bloom_level: bloom,
+          context: card.context || "",
+          symbiosis_mode: symbiosisMode,
+          source_link: card.source_link || null,
+          question: card.question || null,
+        });
+        createdCount++;
+      }
+
+      const existingCard = await getCard(tx, token.id, userId);
+      if (!existingCard) {
+        await ensureCard(tx, token.id, userId);
+        ensuredCount++;
+      }
+    }
+  });
+
+  return { createdCount, ensuredCount };
 }
