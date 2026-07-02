@@ -599,7 +599,7 @@ async function saveCard(): Promise<void> {
   const mode = fieldMode.value;
 
   if (!concept) {
-    alert(t("concept") + " is required.");
+    alert(t("lbl_err_concept_required"));
     fieldConcept.focus();
     return;
   }
@@ -843,7 +843,7 @@ async function submitImport(): Promise<void> {
   const source = importFieldSource.value.trim() || null;
 
   if (!domain) {
-    alert(t("lbl_category") + " required");
+    alert(t("lbl_err_category_required"));
     return;
   }
 
@@ -858,9 +858,7 @@ async function submitImport(): Promise<void> {
     if (activeImportTab === "text") {
       const text = importFieldText.value.trim();
       if (!text) {
-        alert(
-          t("lbl_question") + " / " + t("lbl_answer") + " context required",
-        );
+        alert(t("lbl_err_import_context_required"));
         return;
       }
 
@@ -1109,12 +1107,7 @@ async function submitConfirmSplit(): Promise<void> {
   const action = actionEl ? actionEl.value : "block";
 
   if (action === "block" && (!originalQ || !originalC)) {
-    alert(
-      t("lbl_question") +
-        " / " +
-        t("lbl_answer") +
-        " context required for original card",
-    );
+    alert(t("lbl_err_original_context_required"));
     return;
   }
 

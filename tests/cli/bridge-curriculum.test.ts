@@ -1,8 +1,9 @@
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { openDatabase } from "../../src/kernel/index.js";
 
 describe("bridge curriculum-* commands", () => {
   let tempHome: string;
@@ -200,6 +201,46 @@ describe("bridge curriculum-* commands", () => {
       grade: "9",
       subject: "mathematik",
       track: "wpfg1",
+    });
+  });
+
+  it("reuses cached web curriculum content without fetching it again", async () => {
+    const dbDir = join(tempHome, ".zam");
+    mkdirSync(dbDir, { recursive: true });
+    const db = await openDatabase({
+      dbPath: join(dbDir, "zam.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await db
+      .prepare(
+        "INSERT INTO sources (id, type, uri, content) VALUES (?, 'web', ?, ?)",
+      )
+      .run(
+        "cached-curriculum-source",
+        "http://127.0.0.1/curriculum",
+        "Cached official curriculum",
+      );
+    await db.close();
+
+    const result = runBridge([
+      "personal-source-import",
+      "--type",
+      "web",
+      "--uri",
+      "http://127.0.0.1/curriculum",
+    ]) as {
+      success: boolean;
+      sourceId: string;
+      content: string;
+      cached: boolean;
+    };
+
+    expect(result).toEqual({
+      success: true,
+      sourceId: "cached-curriculum-source",
+      content: "Cached official curriculum",
+      cached: true,
     });
   });
 });

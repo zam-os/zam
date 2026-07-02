@@ -693,16 +693,53 @@ function parseGeneratedCardArray(
 }
 
 /**
- * Fallback size (characters) for the retry attempt after a truncated
- * response. Verified empirically against a 4096-token Ollama default context
- * window with the real system + user prompt overhead: 4,000 characters of
- * curriculum text still left the model generating cards until it ran out of
- * room (finish_reason=length with thousands of completion tokens spent);
- * 3,000 characters reliably finished cleanly (finish_reason=stop). The model
- * tends to keep enumerating atomic cards for as long as it has budget, so
- * this needs real headroom, not just "a bit less than the full text."
+ * Chunk size used after a model reports context-window exhaustion. A 3,000
+ * character chunk leaves enough response headroom for the common 4,096-token
+ * local-model default while still preserving the complete curriculum: every
+ * chunk is processed and the proposals are combined, never just the prefix.
  */
-const CURRICULUM_RETRY_TEXT_CHARS = 3_000;
+const CURRICULUM_CHUNK_TEXT_CHARS = 3_000;
+
+function splitCurriculumText(text: string, maxChars: number): string[] {
+  if (text.length <= maxChars) return [text];
+
+  const chunks: string[] = [];
+  let start = 0;
+  while (start < text.length) {
+    let end = Math.min(start + maxChars, text.length);
+    if (end < text.length) {
+      const minimumBoundary = start + Math.floor(maxChars * 0.6);
+      const sentenceWindow = text.slice(minimumBoundary, end);
+      let sentenceBoundary = -1;
+      for (const match of sentenceWindow.matchAll(/[.!?;:]\s+/g)) {
+        sentenceBoundary = (match.index ?? 0) + match[0].length;
+      }
+      if (sentenceBoundary > 0) {
+        end = minimumBoundary + sentenceBoundary;
+      } else {
+        const whitespaceBoundary = text.lastIndexOf(" ", end);
+        if (whitespaceBoundary >= minimumBoundary) end = whitespaceBoundary + 1;
+      }
+    }
+    chunks.push(text.slice(start, end));
+    start = end;
+  }
+  return chunks;
+}
+
+function deduplicateGeneratedCards(
+  cards: GeneratedCardProposal[],
+): GeneratedCardProposal[] {
+  const seen = new Set<string>();
+  return cards.filter((card) => {
+    const key = `${card.question.trim().toLocaleLowerCase()}\u0000${card.concept
+      .trim()
+      .toLocaleLowerCase()}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
 
 async function requestCurriculumCards(
   endpoint: { url: string; model: string; apiKey?: string },
@@ -781,9 +818,9 @@ JSON Array Output:`;
  * room left to start (a stray "[" and nothing else), sometimes the model
  * spends its whole remaining budget enumerating cards without ever closing
  * the array. Either way `finish_reason=length` means the content is not
- * trustworthy JSON. Retrying once with a shorter excerpt turns that hard
- * failure into cards grounded in part of the source, rather than nothing at
- * all.
+ * trustworthy JSON. Retrying the complete source as bounded chunks turns that
+ * hard failure into a series of safe requests without silently discarding the
+ * latter part of the authoritative curriculum.
  */
 export async function importCurriculumViaLLM(
   db: Database,
@@ -813,29 +850,52 @@ export async function importCurriculumViaLLM(
   } catch (err) {
     if (
       !(err instanceof LlmResponseTruncatedError) ||
-      text.length <= CURRICULUM_RETRY_TEXT_CHARS
+      text.length <= CURRICULUM_CHUNK_TEXT_CHARS
     ) {
       throw err;
     }
-    try {
-      responseText = await requestCurriculumCards(
-        endpoint,
-        cfg.locale,
-        langName,
-        text.slice(0, CURRICULUM_RETRY_TEXT_CHARS),
-        targetCategory,
-        sourceUrl,
-      );
-    } catch (retryErr) {
-      if (retryErr instanceof LlmResponseTruncatedError) {
-        throw new Error(
-          "The curriculum text is too large for the configured model's context window, " +
-            "even after shortening it. Configure a model with a larger context window, " +
-            "or import a smaller excerpt.",
+
+    const chunks = splitCurriculumText(text, CURRICULUM_CHUNK_TEXT_CHARS);
+    const cards: GeneratedCardProposal[] = [];
+    for (const [index, chunk] of chunks.entries()) {
+      let chunkResponse: string;
+      try {
+        chunkResponse = await requestCurriculumCards(
+          endpoint,
+          cfg.locale,
+          langName,
+          chunk,
+          targetCategory,
+          sourceUrl,
         );
+      } catch (chunkError) {
+        if (chunkError instanceof LlmResponseTruncatedError) {
+          throw new Error(
+            `Curriculum chunk ${index + 1} of ${chunks.length} is still too large for ` +
+              "the configured model's context window. Configure a model with a larger " +
+              "context window, or import a smaller source.",
+          );
+        }
+        throw chunkError;
       }
-      throw retryErr;
+      cards.push(
+        ...parseGeneratedCardArray(chunkResponse, "curriculum import", {
+          min: 0,
+          max: 200,
+        }),
+      );
     }
+
+    const deduplicated = deduplicateGeneratedCards(cards);
+    if (deduplicated.length > 200) {
+      throw new Error(
+        `Invalid curriculum import response: expected 0-200 cards, got ${deduplicated.length}`,
+      );
+    }
+    return deduplicated.map((card) => ({
+      ...card,
+      source_link: sourceUrl || null,
+    }));
   }
 
   return parseGeneratedCardArray(responseText, "curriculum import", {

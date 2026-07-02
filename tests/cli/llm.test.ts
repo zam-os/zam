@@ -504,7 +504,7 @@ describe("LLM client utilities (CLI layer)", () => {
 
     try {
       const cards = await importCurriculumViaLLM(db, longText, "git");
-      expect(getChatCallCount()).toBe(2);
+      expect(getChatCallCount()).toBeGreaterThan(2);
       expect(cards).toHaveLength(1);
     } finally {
       global.fetch = originalFetch;
@@ -512,7 +512,7 @@ describe("LLM client utilities (CLI layer)", () => {
     }
   });
 
-  it("importCurriculumViaLLM retries with a shorter excerpt after a context-exhausted response", async () => {
+  it("importCurriculumViaLLM retries with complete bounded chunks after a context-exhausted response", async () => {
     const db = await openDatabase({
       dbPath: ":memory:",
       initialize: true,
@@ -533,7 +533,7 @@ describe("LLM client utilities (CLI layer)", () => {
     ]);
 
     const longText = "Lorem ipsum curriculum text. ".repeat(1000); // ~29,000 chars
-    let retryUserPromptLength = 0;
+    const retriedCurriculumChunks: string[] = [];
 
     const originalFetch = global.fetch;
     const getChatCallCount = mockReadinessAndChatFetch((bodyText, callIndex) => {
@@ -542,7 +542,12 @@ describe("LLM client utilities (CLI layer)", () => {
         return truncatedResponse();
       }
       const body = JSON.parse(bodyText);
-      retryUserPromptLength = body.messages[1].content.length;
+      const userPrompt = body.messages[1].content as string;
+      const prefix = "Curriculum Text to Parse:\n";
+      const curriculumEnd = userPrompt.lastIndexOf("\n\nTarget Category:");
+      retriedCurriculumChunks.push(
+        userPrompt.slice(prefix.length, curriculumEnd),
+      );
       return new Response(
         JSON.stringify({
           choices: [
@@ -555,18 +560,22 @@ describe("LLM client utilities (CLI layer)", () => {
     try {
       const cards = await importCurriculumViaLLM(db, longText, "git");
 
-      expect(getChatCallCount()).toBe(2);
+      expect(getChatCallCount()).toBeGreaterThan(2);
       expect(cards).toHaveLength(1);
       expect(cards[0].question).toBe("What is git revert?");
-      // The retry's prompt must actually be shorter than the original text.
-      expect(retryUserPromptLength).toBeLessThan(longText.length);
+      expect(retriedCurriculumChunks.every((chunk) => chunk.length <= 3_000)).toBe(
+        true,
+      );
+      // Context-window recovery must cover the entire authoritative source,
+      // not silently keep only its first chunk.
+      expect(retriedCurriculumChunks.join("")).toBe(longText);
     } finally {
       global.fetch = originalFetch;
       await db.close();
     }
   });
 
-  it("importCurriculumViaLLM gives up with a clear error when the retry is also context-exhausted", async () => {
+  it("importCurriculumViaLLM gives up with a clear error when a bounded chunk is also context-exhausted", async () => {
     const db = await openDatabase({
       dbPath: ":memory:",
       initialize: true,

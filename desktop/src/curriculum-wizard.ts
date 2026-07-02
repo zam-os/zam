@@ -468,7 +468,9 @@ function renderStepBody(step: WizardStep): void {
     const row = document.createElement("div");
     const isSelected = step.selectedIds.includes(opt.id);
     row.className = "wizard-option-row" + (isSelected ? " selected" : "");
-    const hint = opt.hours ? `<span class="wizard-option-hint">${opt.hours} Std.</span>` : "";
+    const hint = opt.hours
+      ? `<span class="wizard-option-hint">${escapeHtml(tf("wizard_hours", { hours: opt.hours }))}</span>`
+      : "";
     row.innerHTML =
       `<input type="${step.multiSelect ? "checkbox" : "radio"}" ${isSelected ? "checked" : ""} style="pointer-events: none;" />` +
       `<span class="wizard-option-label">${escapeHtml(opt.label)}</span>${hint}`;

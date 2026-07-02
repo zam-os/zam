@@ -3238,8 +3238,26 @@ bridgeCommand
   )
   .requiredOption("--type <file|web|scan>", "Source type")
   .requiredOption("--uri <uri>", "Source path or URL")
+  .option("--refresh", "Re-fetch an already cached web source")
   .action(async (opts) => {
     await withDb(async (db) => {
+      if (opts.type === "web" && !opts.refresh) {
+        const cached = (await db
+          .prepare(
+            "SELECT id, content FROM sources WHERE uri = ? AND type = 'web'",
+          )
+          .get(opts.uri)) as { id: string; content: string | null } | undefined;
+        if (cached?.content) {
+          jsonOut({
+            success: true,
+            sourceId: cached.id,
+            content: cached.content,
+            cached: true,
+          });
+          return;
+        }
+      }
+
       let content = "";
       if (opts.type === "file") {
         content = await readLocalFile(opts.uri);
@@ -3270,6 +3288,7 @@ bridgeCommand
         success: true,
         sourceId: record.id,
         content: record.content,
+        cached: false,
       });
     });
   });

@@ -1,6 +1,6 @@
 # LehrplanPLUS Curriculum Import Wizard
 
-**Status:** Accepted
+**Status:** Partially implemented
 **Date:** 2026-07-02
 **Deciders:** Thomas (project owner)
 **Related:**
@@ -13,8 +13,8 @@
 
 The Learning Content Studio (0.6.0) lets a learner build cards without a
 terminal, and its import pipeline turns curriculum text, files, scans, or web
-links into reviewed cards. But every import path still starts with the learner
-already knowing *what* to import: they must find the right curriculum, copy the
+links into editable learning cards. But every import path still starts with the
+learner already knowing *what* to import: they must find the right curriculum, copy the
 text or paste a URL, and choose a category. The Studio ADR explicitly deferred
 "automatically fetching the LehrplanPLUS web page" out of 0.6.0.
 
@@ -41,7 +41,7 @@ that other curricula (other Bundesländer, other countries) become additional
 - **Bridge pipeline** (JSON-only) — [`src/cli/commands/bridge.ts`](../../src/cli/commands/bridge.ts):
   `personal-source-import` fetches text and upserts a row in `sources`;
   `personal-card-import-curriculum` asks the text AI for atomic card proposals;
-  `personal-source-confirm-import` (`confirmSourceImport`) persists the reviewed
+  `personal-source-confirm-import` (`confirmSourceImport`) persists the generated
   proposals, deduplicating against existing tokens and linking them to the
   source via `token_sources`.
 - **Data model** — `sources (id, type, uri, content)`, the `token_sources`
@@ -53,7 +53,9 @@ that other curricula (other Bundesländer, other countries) become additional
 
 The wizard needs **no new persistence model**: it is a new front door plus a
 provider that resolves a taxonomy selection into source text, which then flows
-through the pipeline above. It does not replace the review-before-save step.
+through the pipeline above. Because the selected official curriculum is the
+authoritative source, generated cards are saved directly and remain easy to
+inspect and edit afterward in the Studio.
 
 ## Product principles (extending the Studio ADR)
 
@@ -145,28 +147,29 @@ handful of topics the learner selects, through the existing safe web adapter.
 ### 4. Reuse the existing import pipeline
 
 `resolveTopic` yields a stable LehrplanPLUS URL, which flows straight into the
-current pipeline — no bypass of review:
+current pipeline without bypassing its validation, deduplication, or provenance:
 
 ```
 wizard selection
   → resolveTopic(topic)  → LehrplanPLUS URL
   → personal-source-import --type web --uri <url>     (SSRF-safe fetch + sources row)
   → personal-card-import-curriculum                   (text AI → atomic proposals)
-  → learner reviews / edits proposals in the Studio
   → personal-source-confirm-import                    (dedup + token_sources link)
+  → learner inspects / edits imported cards in the Studio as needed
 ```
 
-One selected topic = one `sources` row and one review batch. Several selected
-topics run sequentially (or as one grouped review), each retaining its own
-provenance. The `sources.uri` is the canonical LehrplanPLUS URL, so the 0.6.1
-`source_link` fallback links every generated card back to its exact Lernbereich.
+Selected topics are resolved together into an import batch. In Phase 2,
+sibling topics that live on the same subject/track page share one `sources`
+row and page-level provenance. Phase 3 will segment the page and retain exact
+Lernbereich-level provenance; until then, the 0.6.1 `source_link` fallback
+links every generated card to the most specific page LehrplanPLUS exposes.
 
 ### 5. Bridge contract (JSON-only)
 
 New machine-facing commands, all emitting JSON like the rest of `zam bridge`:
 
 - `curriculum-list-providers` → `[{ id, country, region, label }]`
-- `curriculum-list-level --provider <id> --level <schoolType|grade|subject|topics> --selection <json>`
+- `curriculum-list-level --provider <id> --level <schoolType|grade|subject|track|topic> --selection <json>`
   → `[{ id, label }]` (or `[{ id, label, sourceRef }]` for topics)
 - `curriculum-resolve-topics --provider <id> --topics <json>` → `[{ topicId, uri }]`
 
@@ -189,9 +192,9 @@ The resolved URIs are then handed to the existing `personal-source-import` /
 1. **Taxonomy strategy.**
    Decision: **Option C (hybrid)**. A bundled manifest drives navigation
    (school types, grades, subjects, topics); the selected topic's actual
-   content is fetched live through the existing SSRF-safe web adapter at
-   import time. Navigation is instant and testable offline; content is always
-   current.
+   content is fetched live through the existing SSRF-safe web adapter on first
+   import and then reused from the source cache. Navigation is instant and
+   testable offline; an explicit refresh can update cached source content.
 
 2. **Manifest freshness.**
    Decision: the manifest is **not** refreshed by a script or CI job. Bavarian
@@ -216,11 +219,12 @@ The resolved URIs are then handed to the existing `personal-source-import` /
    this volume (a handful of learner-initiated fetches, not a crawl).
 
 4. **Multi-topic import.**
-   Decision: **batch**. Selected topics are resolved and proposed together;
-   the learner reviews one combined batch of generated cards across all
-   selected topics, then confirms in one transaction — consistent with the
-   existing curriculum-text import, which already saves a batch atomically.
-   Each card retains its own topic's provenance regardless of batching.
+   Decision: **batch**. Selected topics are resolved and proposed together,
+   then saved atomically through the existing curriculum import path. The
+   official selected curriculum is authoritative, so the wizard does not add
+   a mandatory proposal-review gate; the learner can inspect and edit every
+   imported card immediately afterward in the Studio. Phase 3 adds exact
+   topic-level provenance to every card regardless of batching.
 
 5. **How much of a topic to send the AI.**
    Decision: **everything specified** for the selected Lernbereich — the full
@@ -260,10 +264,13 @@ The resolved URIs are then handed to the existing `personal-source-import` /
    whitespace-collapsed to one line, so isolating one Lernbereich's text
    requires real, brittle parsing) and better done deliberately in Phase 3,
    which already owns "fetch the selected topic's full specified text."
+   If a configured model cannot fit the complete page in one context window,
+   ZAM processes the complete source in bounded chunks and combines the
+   results; it must never silently keep only a prefix of the curriculum.
 
 ## Scope and delivery plan
 
-This ADR is Accepted; the decisions above are frozen. Implementation proceeds
+This ADR is partially implemented; the decisions above are frozen. Implementation proceeds
 phase by phase, all on this one branch/PR rather than a separate branch per
 phase — a per-phase branch split turned out to be unnecessary overhead for a
 feature this size. Phases remain distinct, reviewable commits.
@@ -278,14 +285,15 @@ feature this size. Phases remain distinct, reviewable commits.
   live content fetch yet — `resolveTopic` returns a URL.
 - **Phase 2 — Desktop wizard.** Done. The six-step UI (`desktop/src/curriculum-wizard.ts`)
   wired to the navigation commands, showing the persisted breadcrumb first,
-  feeding selected URLs into the existing source-import/preview/confirm flow.
+  feeding selected URLs into the existing source-import/generate/confirm flow
+  and making the generated cards available for post-import inspection in the Studio.
   Per Phase 2 scope, a resolved topic's URL still covers its whole
   subject/track curriculum page; the topic step tells the learner this
   (see the topic-scope clarification below) — precise per-topic text
   extraction remains Phase 3.
-- **Phase 3 — Live content + provenance.** Fetch the selected topic's full
-  specified text through the safe web adapter, batch multi-topic proposals
-  into one review, dedup, and link precise provenance.
+- **Phase 3 — Precise content extraction + provenance.** Isolate each selected
+  topic's full specified text from the safely fetched page, batch multi-topic
+  proposals into one atomic import, dedup, and link precise provenance.
 - **Phase 4 (future) — Second provider.** Add another Bundesland or country to
   validate that the abstraction holds.
 - **Phase 5 (future, unscheduled) — Central ZAM Curriculum Service.** A
@@ -318,7 +326,7 @@ feature this size. Phases remain distinct, reviewable commits.
   multi-select topics, empty/loading/error states, seven-locale labels, and the
   Vite/TypeScript build.
 - **Manual smoke test:** DE → Bayern → Realschule → 9 → Mathematik → pick one or
-  two Lernbereiche → review → save → run a learning session; re-run the same
+  two Lernbereiche → import → inspect/edit → run a learning session; re-run the same
   selection to confirm dedup rather than duplication.
 
 ## Out of scope
