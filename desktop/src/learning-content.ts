@@ -893,7 +893,7 @@ async function submitImport(): Promise<void> {
       const sourceId = importSourceId.value.trim();
       const sourceText = importSourcePreview.value.trim();
       if (!sourceId || !sourceText) {
-        alert("Please analyze a source file, web link, or OCR scan first.");
+        alert(t("lbl_err_analyze_source_first"));
         return;
       }
 
@@ -1033,22 +1033,22 @@ function renderSplitProposals(): void {
 
     row.innerHTML = `
       <div style="position: absolute; top: 10px; right: 10px;">
-        <button class="btn danger-btn btn-xs btn-remove-proposal" type="button" data-index="${index}" style="padding: 2px 6px; font-size: 0.75rem;">Delete</button>
+        <button class="btn danger-btn btn-xs btn-remove-proposal" type="button" data-index="${index}" style="padding: 2px 6px; font-size: 0.75rem;">${escapeHtml(t("lbl_delete"))}</button>
       </div>
       <div style="font-size: 0.8rem; color: var(--clr-text-secondary); font-weight: bold; margin-bottom: 2px;">
-        Proposal #${index + 1}
+        ${escapeHtml(tf("lbl_proposal_number", { n: index + 1 }))}
       </div>
       <div class="editor-form-group" style="margin: 0;">
-        <label style="font-size: 0.8rem;">Question</label>
+        <label style="font-size: 0.8rem;">${escapeHtml(t("lbl_question"))}</label>
         <textarea class="editor-textarea prop-question" style="min-height: 40px; font-size: 0.85rem;" data-index="${index}">${escapeHtml(prop.question || "")}</textarea>
       </div>
       <div class="editor-form-group" style="margin: 0;">
-        <label style="font-size: 0.8rem;">Answer / Concept</label>
+        <label style="font-size: 0.8rem;">${escapeHtml(t("lbl_answer"))}</label>
         <textarea class="editor-textarea prop-concept" style="min-height: 40px; font-size: 0.85rem;" data-index="${index}">${escapeHtml(prop.concept || "")}</textarea>
       </div>
       <div style="display: flex; gap: 8px;">
         <div class="editor-form-group" style="flex: 1; margin: 0;">
-          <label style="font-size: 0.8rem;">Category</label>
+          <label style="font-size: 0.8rem;">${escapeHtml(t("lbl_category"))}</label>
           <input type="text" class="editor-input prop-domain" style="font-size: 0.85rem;" data-index="${index}" value="${escapeHtml(prop.domain || "")}" />
         </div>
       </div>
@@ -1129,7 +1129,7 @@ async function submitConfirmSplit(): Promise<void> {
     .filter((p) => p.question && p.concept && p.domain);
 
   if (validProposals.length < 2) {
-    alert("At least 2 complete card proposals are required to split a card.");
+    alert(t("lbl_err_min_split_proposals"));
     return;
   }
 
@@ -1226,8 +1226,8 @@ function renderFoundationsProposals(): void {
     row.style.position = "relative";
 
     const badgeText = prop.exists
-      ? "Existing card will be linked"
-      : "New card suggestion";
+      ? t("lbl_foundation_existing_badge")
+      : t("lbl_foundation_new_badge");
     const badgeColor = prop.exists
       ? "var(--clr-accent-purple)"
       : "var(--clr-accent-teal)";
@@ -1235,27 +1235,27 @@ function renderFoundationsProposals(): void {
     row.innerHTML = `
       <div style="position: absolute; top: 10px; right: 10px; display: flex; align-items: center; gap: 8px;">
         <span style="font-size: 0.75rem; font-weight: bold; color: ${badgeColor}; border: 1px solid ${badgeColor}; border-radius: 4px; padding: 2px 6px;">
-          ${badgeText}
+          ${escapeHtml(badgeText)}
         </span>
         <label style="display: flex; align-items: center; gap: 4px; font-size: 0.85rem; cursor: pointer;">
           <input type="checkbox" class="prop-selected" data-index="${index}" ${prop.selected ? "checked" : ""} style="cursor: pointer;" />
-          Include
+          ${escapeHtml(t("lbl_include"))}
         </label>
       </div>
       <div style="font-size: 0.8rem; color: var(--clr-text-secondary); font-weight: bold; margin-bottom: 2px;">
-        Foundational Proposal #${index + 1}
+        ${escapeHtml(tf("lbl_foundational_proposal_number", { n: index + 1 }))}
       </div>
       <div class="editor-form-group" style="margin: 0;">
-        <label style="font-size: 0.8rem;">Question</label>
+        <label style="font-size: 0.8rem;">${escapeHtml(t("lbl_question"))}</label>
         <textarea class="editor-textarea prop-question" style="min-height: 40px; font-size: 0.85rem;" data-index="${index}" ${prop.exists ? "readonly" : ""}>${escapeHtml(prop.question || "")}</textarea>
       </div>
       <div class="editor-form-group" style="margin: 0;">
-        <label style="font-size: 0.8rem;">Answer / Concept</label>
+        <label style="font-size: 0.8rem;">${escapeHtml(t("lbl_answer"))}</label>
         <textarea class="editor-textarea prop-concept" style="min-height: 40px; font-size: 0.85rem;" data-index="${index}" ${prop.exists ? "readonly" : ""}>${escapeHtml(prop.concept || "")}</textarea>
       </div>
       <div style="display: flex; gap: 8px;">
         <div class="editor-form-group" style="flex: 1; margin: 0;">
-          <label style="font-size: 0.8rem;">Category</label>
+          <label style="font-size: 0.8rem;">${escapeHtml(t("lbl_category"))}</label>
           <input type="text" class="editor-input prop-domain" style="font-size: 0.85rem;" data-index="${index}" value="${escapeHtml(prop.domain || "")}" ${prop.exists ? "readonly" : ""} />
         </div>
       </div>
@@ -1312,7 +1312,7 @@ async function submitConfirmFoundations(): Promise<void> {
     .filter((p) => p.question && p.concept && p.domain);
 
   if (validProposals.length === 0) {
-    alert("Please select at least one prerequisite proposal card to import.");
+    alert(t("lbl_err_select_foundation"));
     return;
   }
 
@@ -1375,12 +1375,12 @@ async function analyzeImportSource(): Promise<void> {
   const uri = importSourceUri.value.trim();
 
   if (!uri) {
-    alert("Please enter a file path or URL to analyze.");
+    alert(t("lbl_err_enter_path_or_url"));
     return;
   }
 
   btnImportSourceAnalyze.disabled = true;
-  importSourcePreview.value = "Analyzing source content, please wait...";
+  importSourcePreview.value = t("lbl_analyzing_source");
 
   try {
     const res = await runBridge<{
@@ -1399,10 +1399,10 @@ async function analyzeImportSource(): Promise<void> {
         importFieldSource.value = `${type}://${uri}`;
       }
     } else {
-      throw new Error("Analysis failed");
+      throw new Error(t("lbl_err_analysis_failed"));
     }
   } catch (err: any) {
-    alert("Analysis error: " + (err.message || String(err)));
+    alert(t("lbl_err_analysis_prefix") + ": " + (err.message || String(err)));
     importSourcePreview.value = "";
     importSourceId.value = "";
   } finally {
