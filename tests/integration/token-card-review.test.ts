@@ -11,6 +11,7 @@ import {
   addPrerequisite,
   buildReviewQueue,
   cascadeBlock,
+  confirmSourceImport,
   createToken,
   type Database,
   ensureCard,
@@ -22,6 +23,7 @@ import {
   getDueCards,
   getPrerequisites,
   getTokenBySlug,
+  listPersonalCards,
   openDatabase,
   unblockReady,
   wouldCreateCycle,
@@ -79,6 +81,34 @@ describe("integration: token → card → review flow", () => {
         "history-token",
         "physics-token",
       ]);
+    });
+  });
+
+  describe("personal card source links", () => {
+    it("returns the linked source URI for source-imported cards", async () => {
+      const sourceId = "source-realschule-math-9";
+      const sourceUri =
+        "https://www.lehrplanplus.bayern.de/fachlehrplan/lernbereich/66110";
+      await db
+        .prepare(
+          "INSERT INTO sources (id, type, uri, content) VALUES (?, 'web', ?, ?)",
+        )
+        .run(sourceId, sourceUri, "Reelle Zahlen");
+
+      await confirmSourceImport(db, "thomas", sourceId, [
+        {
+          question: "Was ist eine Quadratwurzel?",
+          concept: "Die nichtnegative Zahl, deren Quadrat den Radikanden ergibt.",
+          domain: "mathematik",
+          bloom_level: 2,
+          symbiosis_mode: "copilot",
+          excerpt: "Die Definition der Quadratwurzel erläutern.",
+        },
+      ]);
+
+      const cards = await listPersonalCards(db, "thomas");
+      expect(cards).toHaveLength(1);
+      expect(cards[0].sourceLink).toBe(sourceUri);
     });
   });
 

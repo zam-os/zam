@@ -3199,6 +3199,7 @@ function switchView(viewId: AppView) {
   setActiveNav(viewId);
 
   const mainContainer = document.querySelector('main.container');
+  mainContainer?.classList.toggle('content-full', viewId === "learning-content-view");
   if (viewId === "graph-view") {
     mainContainer?.classList.add('graph-full');
     // lazy init three when first shown

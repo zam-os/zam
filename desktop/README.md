@@ -113,7 +113,9 @@ To verify the bundle and package a standalone native binary for your platform:
 # Verify TypeScript & Vite compilation inside desktop/
 npm run build
 
-# Package locally (Windows: .msi/.exe, macOS source build: .dmg/.app, Linux: .deb/.rpm)
+# Package locally. The Tauri build now rebuilds and embeds the current CLI bridge
+# automatically before packaging.
+# Windows: .msi/.exe, macOS source build: .dmg/.app, Linux: .deb/.rpm
 npm run tauri build
 ```
 The compiled release binary will be packaged inside `desktop/src-tauri/target/release/bundle/`!

@@ -372,14 +372,17 @@ export type {
   InstallPlan,
   InstallResult,
   LocalLLMRunner,
+  OllamaDetectionOptions,
 } from "./system/installer.js";
 export {
   hasCommand,
   installFastFlowLM,
   installOllama,
   installOpenCode,
+  isOllamaInstalled,
   planOpenCodeInstall,
   prepareLocalModel,
+  resolveOllamaCommand,
 } from "./system/installer.js";
 export type { SupportedLocale } from "./system/locale.js";
 export { detectSystemLocale, normalizeLocale } from "./system/locale.js";

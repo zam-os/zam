@@ -529,7 +529,17 @@ export async function listPersonalCards(
       t.bloom_level AS bloomLevel,
       t.context,
       t.symbiosis_mode AS symbiosisMode,
-      t.source_link AS sourceLink,
+      COALESCE(
+        t.source_link,
+        (
+          SELECT s.uri
+          FROM token_sources ts
+          INNER JOIN sources s ON s.id = ts.source_id
+          WHERE ts.token_id = t.id
+          ORDER BY s.created_at DESC, s.id DESC
+          LIMIT 1
+        )
+      ) AS sourceLink,
       t.question,
       t.created_at AS createdAt,
       t.updated_at AS updatedAt,

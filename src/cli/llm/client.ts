@@ -696,6 +696,17 @@ Guidelines:
 - Break complex requirements into multiple separate, atomic cards.
 - Keep questions focused on one fact.
 - Do not repeat the same concept in multiple cards.
+- Test the subject matter directly. Never ask what learners "must know", what
+  a curriculum "requires", or merely restate a competency as a question.
+- Stay within the scope of the supplied curriculum. A reference answer may add
+  the definition, formula, or minimal worked example needed to answer a direct
+  subject-matter question, but it must not introduce named methods, terminology,
+  or adjacent topics that the curriculum passage does not mention.
+- Keep every reference answer concise, mathematically/factually correct, and
+  focused on the competency being tested.
+- Set "context" to the exact sentence or bullet that supports that specific
+  card. Never reuse an unrelated passage merely because it comes from the same
+  curriculum section.
 - Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any preamble, headers, or conversational filler.`;
 
   const userPrompt = `Curriculum Text to Parse:

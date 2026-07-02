@@ -57,6 +57,7 @@ import {
   hasCommand,
   importCurriculumCards,
   isObserverPolicyConfigured,
+  isOllamaInstalled,
   listAgentSkills,
   listPersonalCards,
   listProviderApiKeyRefs,
@@ -2383,7 +2384,7 @@ bridgeCommand
     const profile = getSystemProfile();
     const flmInstalled =
       hasCommand("flm") || existsSync("C:\\Program Files\\flm\\flm.exe");
-    const ollamaInstalled = hasCommand("ollama");
+    const ollamaInstalled = isOllamaInstalled();
     const runners = [
       { id: "flm", label: "FastFlowLM", installed: flmInstalled },
       { id: "ollama", label: "Ollama", installed: ollamaInstalled },

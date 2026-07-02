@@ -4,9 +4,9 @@
   "version": "../../package.json",
   "identifier": "com.zam.app",
   "build": {
-    "beforeDevCommand": "npm run dev",
+    "beforeDevCommand": "npm run dev:with-bridge",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "npm run build",
+    "beforeBuildCommand": "npm run build:with-bridge",
     "frontendDist": "../dist"
   },
   "app": {

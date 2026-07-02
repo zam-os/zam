@@ -154,6 +154,12 @@ body {
   overflow: hidden;
 }
 
+.container.content-full {
+  max-width: none;
+  width: 100%;
+  padding-inline: clamp(20px, 3vw, 48px);
+}
+
 /* Slim, unobtrusive scrollbar so any residual overflow doesn't show the chunky
    default Windows bar. */
 .container {
@@ -423,6 +429,10 @@ textarea:focus-visible {
   flex-direction: column;
   opacity: 1;
   transform: translateY(0);
+}
+
+#learning-content-view.view.active {
+  min-height: 0;
 }
 
 #graph-view.view.active {
@@ -1992,6 +2002,7 @@ textarea::placeholder {
   flex-direction: column;
   min-width: 0;
   height: 100%;
+  padding: 20px;
 }
 
 .content-studio-editor-panel {
@@ -2000,6 +2011,7 @@ textarea::placeholder {
   flex-direction: column;
   min-width: 0;
   height: 100%;
+  padding: 20px;
 }
 
 /* Search and filter row */
@@ -2119,6 +2131,9 @@ textarea::placeholder {
 /* Editor Form */
 .editor-scroll-container {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   overflow-y: auto;
   padding-right: 5px;
   margin-bottom: 15px;
@@ -2156,6 +2171,15 @@ textarea::placeholder {
 .editor-textarea {
   min-height: 80px;
   resize: vertical;
+}
+
+.editor-primary-text-group {
+  flex: 1 0 auto;
+}
+
+.editor-primary-text-group .editor-textarea {
+  flex: 1;
+  min-height: clamp(120px, 16vh, 220px);
 }
 
 .editor-actions-row {

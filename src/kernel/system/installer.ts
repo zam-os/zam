@@ -16,6 +16,13 @@ export interface InstallPlan {
   command: string;
 }
 
+export interface OllamaDetectionOptions {
+  platform?: NodeJS.Platform;
+  homeDir?: string;
+  commandAvailable?: (command: string) => boolean;
+  pathExists?: (path: string) => boolean;
+}
+
 /**
  * Check if a command is executable on the system.
  */
@@ -75,18 +82,7 @@ export function installFastFlowLM(): InstallResult {
  * Install Ollama via Homebrew on macOS.
  */
 export function installOllama(): InstallResult {
-  // Check if already installed
-  const isMac = process.platform === "darwin";
-  const isWin = process.platform === "win32";
-  const hasOllama =
-    hasCommand("ollama") ||
-    (isMac && existsSync("/Applications/Ollama.app")) ||
-    (isWin &&
-      existsSync(
-        join(homedir(), "AppData", "Local", "Programs", "Ollama", "ollama.exe"),
-      ));
-
-  if (hasOllama) {
+  if (isOllamaInstalled()) {
     return { success: true, message: "Ollama is already installed." };
   }
 
@@ -145,26 +141,40 @@ export function installOllama(): InstallResult {
   }
 }
 
-function resolveOllamaCommand(): string | undefined {
-  if (hasCommand("ollama")) return "ollama";
+export function resolveOllamaCommand(
+  options: OllamaDetectionOptions = {},
+): string | undefined {
+  const platform = options.platform ?? process.platform;
+  const homeDir = options.homeDir ?? homedir();
+  const commandAvailable = options.commandAvailable ?? hasCommand;
+  const pathExists = options.pathExists ?? existsSync;
+
+  if (commandAvailable("ollama")) return "ollama";
 
   const candidates =
-    process.platform === "win32"
-      ? [
-          join(
-            homedir(),
-            "AppData",
-            "Local",
-            "Programs",
-            "Ollama",
-            "ollama.exe",
-          ),
-        ]
-      : process.platform === "darwin"
-        ? ["/Applications/Ollama.app/Contents/Resources/ollama"]
-        : [];
+    platform === "win32"
+      ? [join(homeDir, "AppData", "Local", "Programs", "Ollama", "ollama.exe")]
+      : platform === "darwin"
+        ? [
+            "/opt/homebrew/bin/ollama",
+            "/usr/local/bin/ollama",
+            "/Applications/Ollama.app/Contents/Resources/ollama",
+          ]
+        : ["/usr/local/bin/ollama", "/usr/bin/ollama"];
 
-  return candidates.find((candidate) => existsSync(candidate));
+  return candidates.find((candidate) => pathExists(candidate));
+}
+
+export function isOllamaInstalled(
+  options: OllamaDetectionOptions = {},
+): boolean {
+  const platform = options.platform ?? process.platform;
+  const pathExists = options.pathExists ?? existsSync;
+
+  return (
+    resolveOllamaCommand(options) !== undefined ||
+    (platform === "darwin" && pathExists("/Applications/Ollama.app"))
+  );
 }
 
 /**

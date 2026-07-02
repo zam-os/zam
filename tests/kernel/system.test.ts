@@ -14,6 +14,8 @@ import {
   getSystemProfile,
   hasCommand,
   injectShellHooks,
+  isOllamaInstalled,
+  resolveOllamaCommand,
 } from "../../src/kernel/index.js";
 
 describe("System Profiling & Tool Detections", () => {
@@ -46,6 +48,42 @@ describe("System Profiling & Tool Detections", () => {
       expect(hasCommand("node")).toBe(true);
       // random command should not exist
       expect(hasCommand("some-random-non-existent-cmd-abc-123")).toBe(false);
+    });
+  });
+
+  describe("Ollama detection", () => {
+    it("finds an Apple Silicon Homebrew install outside the GUI PATH", () => {
+      const options = {
+        platform: "darwin" as const,
+        homeDir: "/Users/test",
+        commandAvailable: () => false,
+        pathExists: (path: string) => path === "/opt/homebrew/bin/ollama",
+      };
+
+      expect(resolveOllamaCommand(options)).toBe("/opt/homebrew/bin/ollama");
+      expect(isOllamaInstalled(options)).toBe(true);
+    });
+
+    it("recognizes the macOS app bundle even without a CLI executable", () => {
+      expect(
+        isOllamaInstalled({
+          platform: "darwin",
+          homeDir: "/Users/test",
+          commandAvailable: () => false,
+          pathExists: (path) => path === "/Applications/Ollama.app",
+        }),
+      ).toBe(true);
+    });
+
+    it("does not report Ollama when neither command nor standard path exists", () => {
+      expect(
+        isOllamaInstalled({
+          platform: "linux",
+          homeDir: "/home/test",
+          commandAvailable: () => false,
+          pathExists: () => false,
+        }),
+      ).toBe(false);
     });
   });
 
