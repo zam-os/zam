@@ -136,6 +136,18 @@ jobs:
         working-directory: desktop
         run: npm ci
 
+      - name: Generate release notes
+        id: notes
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: notes } = await github.rest.repos.generateReleaseNotes({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: '${{ github.ref_name }}',
+            });
+            core.setOutput('body', notes.body);
+
       - name: Build Tauri Desktop Application & Publish Draft Release
         uses: tauri-apps/tauri-action@v0
         env:
@@ -148,7 +160,8 @@ jobs:
         with:
           tagName: ${{ github.ref_name }}
           releaseName: 'ZAM Desktop ${{ github.ref_name }}'
-          releaseBody: 'Install the ZAM Active-Recall Studio package for your platform. The CLI bridge and Node runtime are included.'
+          releaseBody: |
+            ${{ steps.notes.outputs.body }}
           releaseDraft: true
           prerelease: false
           projectPath: './desktop'
