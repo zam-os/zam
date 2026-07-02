@@ -1,7 +1,8 @@
-import { mkdtempSync, mkdirSync, rmSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
+import { ensureActiveWorkspace } from "../../src/cli/workspaces/active.js";
 import {
   getActiveWorkspaceId,
   getConfiguredWorkspaces,
@@ -9,7 +10,6 @@ import {
   openDatabase,
   setSetting,
 } from "../../src/kernel/index.js";
-import { ensureActiveWorkspace } from "../../src/cli/workspaces/active.js";
 
 const tempDirs: string[] = [];
 const ORIGINAL_ZAM_CONFIG_PATH = process.env.ZAM_CONFIG_PATH;

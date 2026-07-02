@@ -26,7 +26,9 @@ CREATE TABLE IF NOT EXISTS tokens (
   created_at    TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at    TEXT NOT NULL DEFAULT (datetime('now')),
   deprecated_at TEXT,
-  question      TEXT
+  question      TEXT,
+  provider      TEXT,
+  topic_id      TEXT
 );
 
 -- Prerequisite dependency graph: "to learn A, first know B"

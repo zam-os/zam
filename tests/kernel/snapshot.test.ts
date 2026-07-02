@@ -3,8 +3,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
-  type Database,
   createToken,
+  type Database,
   ensureCard,
   exportSnapshot,
   importSnapshot,

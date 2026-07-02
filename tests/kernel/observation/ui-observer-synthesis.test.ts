@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Token } from "../../../src/kernel/models/token.js";
-import { buildUiSynthesisCandidates } from "../../../src/kernel/observation/ui-observer-synthesis.js";
 import type { UiObservationReport } from "../../../src/kernel/observation/ui-observer.js";
+import { buildUiSynthesisCandidates } from "../../../src/kernel/observation/ui-observer-synthesis.js";
 
 function token(slug: string): Token {
   return {
@@ -45,7 +45,9 @@ function report(
 
 describe("UI observer synthesis", () => {
   it("builds candidates from observer report candidate tokens", () => {
-    const tokens = new Map([["explorer-create-folder", token("explorer-create-folder")]]);
+    const tokens = new Map([
+      ["explorer-create-folder", token("explorer-create-folder")],
+    ]);
     const { candidates, skippedLowConfidence } = buildUiSynthesisCandidates(
       [report(1)],
       tokens,
@@ -64,7 +66,9 @@ describe("UI observer synthesis", () => {
   });
 
   it("skips low-confidence candidate tokens", () => {
-    const tokens = new Map([["explorer-create-folder", token("explorer-create-folder")]]);
+    const tokens = new Map([
+      ["explorer-create-folder", token("explorer-create-folder")],
+    ]);
     const { candidates, skippedLowConfidence } = buildUiSynthesisCandidates(
       [
         report(1, {

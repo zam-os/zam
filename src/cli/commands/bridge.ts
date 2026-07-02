@@ -81,6 +81,8 @@ import {
   type WorkspaceKind,
 } from "../../kernel/index.js";
 import {
+  cleanHtml,
+  isSafeUrl,
   readImageOCR,
   readLocalFile,
   readWebLink,
@@ -91,6 +93,16 @@ import {
   launchHarness,
   resolveHarnessExecutable,
 } from "../agent-harness.js";
+import {
+  CURRICULUM_PROVIDERS,
+  type CurriculumBreadcrumb,
+  type CurriculumLevel,
+  type CurriculumSelection,
+  getCurriculumProvider,
+  getLastCurriculumSelection,
+  setLastCurriculumSelection,
+  type TopicNode,
+} from "../curriculum/index.js";
 import {
   type ApiFlavor,
   checkVisionReadiness,
@@ -3228,8 +3240,26 @@ bridgeCommand
   )
   .requiredOption("--type <file|web|scan>", "Source type")
   .requiredOption("--uri <uri>", "Source path or URL")
+  .option("--refresh", "Re-fetch an already cached web source")
   .action(async (opts) => {
     await withDb(async (db) => {
+      if (opts.type === "web" && !opts.refresh) {
+        const cached = (await db
+          .prepare(
+            "SELECT id, content FROM sources WHERE uri = ? AND type = 'web'",
+          )
+          .get(opts.uri)) as { id: string; content: string | null } | undefined;
+        if (cached?.content) {
+          jsonOut({
+            success: true,
+            sourceId: cached.id,
+            content: cached.content,
+            cached: true,
+          });
+          return;
+        }
+      }
+
       let content = "";
       if (opts.type === "file") {
         content = await readLocalFile(opts.uri);
@@ -3260,6 +3290,7 @@ bridgeCommand
         success: true,
         sourceId: record.id,
         content: record.content,
+        cached: false,
       });
     });
   });
@@ -3294,6 +3325,282 @@ bridgeCommand
         createdCount: result.createdCount,
         ensuredCount: result.linkedCount,
       });
+    });
+  });
+
+// ── zam bridge curriculum-list-providers ────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-list-providers")
+  .description("List registered curriculum providers (JSON)")
+  .action(() => {
+    jsonOut({
+      success: true,
+      providers: CURRICULUM_PROVIDERS.map((provider) => ({
+        id: provider.id,
+        country: provider.country,
+        countryLabel: provider.countryLabel,
+        region: provider.region,
+        regionLabel: provider.regionLabel,
+        label: provider.label,
+      })),
+    });
+  });
+
+// ── zam bridge curriculum-list-level ────────────────────────────────────────
+
+const CURRICULUM_LEVELS: CurriculumLevel[] = [
+  "schoolType",
+  "grade",
+  "subject",
+  "track",
+  "topic",
+];
+
+bridgeCommand
+  .command("curriculum-list-level")
+  .description("List taxonomy options for the next import-wizard step (JSON)")
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption(
+    "--level <level>",
+    `Level to list: ${CURRICULUM_LEVELS.join("|")}`,
+  )
+  .option("--selection <json>", "JSON selection made so far", "{}")
+  .action((opts) => {
+    const provider = getCurriculumProvider(opts.provider);
+    if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+
+    if (!CURRICULUM_LEVELS.includes(opts.level)) {
+      jsonError(
+        `Invalid --level: ${opts.level}. Use one of ${CURRICULUM_LEVELS.join(", ")}.`,
+      );
+    }
+
+    let selection: CurriculumSelection;
+    try {
+      selection = JSON.parse(opts.selection);
+    } catch {
+      jsonError("Invalid --selection JSON");
+      return;
+    }
+
+    const level = opts.level as CurriculumLevel;
+    if (level === "schoolType") {
+      jsonOut({ success: true, options: provider.listSchoolTypes() });
+      return;
+    }
+
+    if (!selection.schoolType) jsonError("selection.schoolType is required");
+    if (level === "grade") {
+      jsonOut({
+        success: true,
+        options: provider.listGrades(selection.schoolType),
+      });
+      return;
+    }
+
+    if (!selection.grade) jsonError("selection.grade is required");
+    if (level === "subject") {
+      jsonOut({
+        success: true,
+        options: provider.listSubjects(selection.schoolType, selection.grade),
+      });
+      return;
+    }
+
+    if (!selection.subject) jsonError("selection.subject is required");
+    if (level === "track") {
+      jsonOut({
+        success: true,
+        options: provider.listTracks(
+          selection.schoolType,
+          selection.grade,
+          selection.subject,
+        ),
+      });
+      return;
+    }
+
+    jsonOut({ success: true, options: provider.listTopics(selection) });
+  });
+
+// ── zam bridge curriculum-resolve-topics ─────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-resolve-topics")
+  .description("Resolve selected curriculum topics to source URLs (JSON)")
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption("--topics <json>", "JSON array of topic nodes to resolve")
+  .action((opts) => {
+    const provider = getCurriculumProvider(opts.provider);
+    if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+
+    let topics: TopicNode[];
+    try {
+      topics = JSON.parse(opts.topics);
+    } catch {
+      jsonError("Invalid --topics JSON");
+      return;
+    }
+
+    const resolved = topics.map((topic) => provider.resolveTopic(topic));
+    jsonOut({ success: true, resolved });
+  });
+
+async function fetchRawHtml(url: string): Promise<string> {
+  if (!(await isSafeUrl(url))) {
+    throw new Error(`Access denied to unsafe target URL: ${url}`);
+  }
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  try {
+    const res = await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "ZAM-Content-Studio/0.6.1",
+      },
+    });
+    if (!res.ok) {
+      throw new Error(`Web server responded with status ${res.status}`);
+    }
+    const contentType = res.headers.get("content-type") || "";
+    if (
+      !contentType.includes("text/html") &&
+      !contentType.includes("application/xhtml+xml")
+    ) {
+      throw new Error(`Unsupported content type: ${contentType}`);
+    }
+    return await res.text();
+  } catch (err) {
+    if (err instanceof Error && err.name === "AbortError") {
+      throw new Error("Connection request timed out after 10 seconds");
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+// ── zam bridge curriculum-extract-topics ─────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-extract-topics")
+  .description(
+    "Fetch and extract specific texts for selected curriculum topics (JSON)",
+  )
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption("--topics <json>", "JSON array of selected topic nodes")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const provider = getCurriculumProvider(opts.provider);
+      if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+
+      let topics: TopicNode[];
+      try {
+        topics = JSON.parse(opts.topics);
+      } catch {
+        jsonError("Invalid --topics JSON");
+        return;
+      }
+
+      // Group topics by their resolved source URI
+      const topicsByUri = new Map<string, TopicNode[]>();
+      for (const topic of topics) {
+        const resolved = provider.resolveTopic(topic);
+        const list = topicsByUri.get(resolved.uri) || [];
+        list.push(topic);
+        topicsByUri.set(resolved.uri, list);
+      }
+
+      const extracted: Array<{
+        topicId: string;
+        uri: string;
+        sourceId: string;
+        text: string;
+      }> = [];
+
+      for (const [uri, uriTopics] of topicsByUri.entries()) {
+        const rawHtml = await fetchRawHtml(uri);
+
+        let extractedTexts: Record<string, string> = {};
+        if (provider.extractTopics) {
+          const fullTopicIds = uriTopics.map((t) => `${t.sourceRef}#${t.id}`);
+          extractedTexts = provider.extractTopics(rawHtml, fullTopicIds);
+        } else {
+          const cleanText = cleanHtml(rawHtml);
+          for (const t of uriTopics) {
+            extractedTexts[`${t.sourceRef}#${t.id}`] = cleanText;
+          }
+        }
+
+        const pageCleanedText = cleanHtml(rawHtml);
+        const sourceId = ulid();
+        await db
+          .prepare(
+            `INSERT INTO sources (id, type, uri, content)
+             VALUES (?, 'web', ?, ?)
+             ON CONFLICT(uri) DO UPDATE SET
+               type = excluded.type,
+               content = excluded.content`,
+          )
+          .run(sourceId, uri, pageCleanedText);
+
+        const record = (await db
+          .prepare("SELECT id FROM sources WHERE uri = ?")
+          .get(uri)) as { id: string };
+
+        for (const topic of uriTopics) {
+          const resolved = provider.resolveTopic(topic);
+          const text = extractedTexts[resolved.topicId] || "";
+          extracted.push({
+            topicId: resolved.topicId,
+            uri,
+            sourceId: record.id,
+            text,
+          });
+        }
+      }
+
+      jsonOut({ success: true, extracted });
+    });
+  });
+
+// ── zam bridge curriculum-get-last-selection ─────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-get-last-selection")
+  .description("Read the learner's last navigated curriculum path (JSON)")
+  .action(async () => {
+    await withDb(async (db) => {
+      const breadcrumb = await getLastCurriculumSelection(db);
+      jsonOut({ success: true, breadcrumb: breadcrumb ?? null });
+    });
+  });
+
+// ── zam bridge curriculum-set-last-selection ─────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-set-last-selection")
+  .description("Persist the learner's last navigated curriculum path (JSON)")
+  .requiredOption(
+    "--breadcrumb <json>",
+    "JSON breadcrumb: {providerId, schoolType?, grade?, subject?, track?}",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      let breadcrumb: CurriculumBreadcrumb;
+      try {
+        breadcrumb = JSON.parse(opts.breadcrumb);
+      } catch {
+        jsonError("Invalid --breadcrumb JSON");
+        return;
+      }
+      if (!breadcrumb.providerId) {
+        jsonError("breadcrumb.providerId is required");
+        return;
+      }
+      await setLastCurriculumSelection(db, breadcrumb);
+      jsonOut({ success: true });
     });
   });
 

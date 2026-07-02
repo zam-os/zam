@@ -1,8 +1,12 @@
-import { describe, expect, it } from "vitest";
-import { isSafeUrl, cleanHtml, readLocalFile } from "../../src/cli/adapters/source-reader.js";
-import { join } from "node:path";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { join } from "node:path";
+import { describe, expect, it } from "vitest";
+import {
+  cleanHtml,
+  isSafeUrl,
+  readLocalFile,
+} from "../../src/cli/adapters/source-reader.js";
 
 describe("source-reader utilities", () => {
   it("rejects local and loopback URLs for security safety", async () => {
@@ -20,7 +24,8 @@ describe("source-reader utilities", () => {
   });
 
   it("sanitizes HTML into clean plain text", () => {
-    const rawHtml = "<html><head><title>Ignore</title></head><body><h1>Hello</h1><script>console.log('bad')</script><p>World</p></body></html>";
+    const rawHtml =
+      "<html><head><title>Ignore</title></head><body><h1>Hello</h1><script>console.log('bad')</script><p>World</p></body></html>";
     const cleaned = cleanHtml(rawHtml);
     expect(cleaned).toBe("Hello World");
   });

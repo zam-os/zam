@@ -409,7 +409,26 @@ const BLOOM_VERBS = {
 } as const;
 
 interface ChatCompletionResponse {
-  choices?: Array<{ message?: { content?: string } }>;
+  choices?: Array<{
+    message?: { content?: string };
+    finish_reason?: string;
+  }>;
+}
+
+/**
+ * Thrown when a chat completion hits its token/context limit before producing
+ * usable content. Distinguished from a generic empty/malformed response so
+ * callers with a resizable input (e.g. curriculum import) can retry with a
+ * smaller prompt instead of failing outright.
+ */
+export class LlmResponseTruncatedError extends Error {
+  constructor(label: string) {
+    super(
+      `${label}: the model's response was cut off before producing usable output (finish_reason=length). ` +
+        "The prompt likely left no room in the model's context window for a reply.",
+    );
+    this.name = "LlmResponseTruncatedError";
+  }
 }
 
 /** Extract the assistant message content from an OpenAI-compatible response. */
@@ -421,11 +440,21 @@ async function readChatContent(res: Response, label: string): Promise<string> {
     );
   }
   const data = (await res.json()) as ChatCompletionResponse;
-  const content = data.choices?.[0]?.message?.content;
-  if (!content) {
+  const choice = data.choices?.[0];
+  const content = choice?.message?.content;
+  const trimmed = content?.trim() ?? "";
+  // `finish_reason=length` means the completion hit the context window before
+  // the model finished on its own. Observed in practice both as an
+  // immediate near-empty reply (no room to start) and as a long-but-cut-off
+  // reply (started generating an array of cards, ran out of room before
+  // closing it) -- neither is safe to hand to a JSON parser.
+  if (choice?.finish_reason === "length") {
+    throw new LlmResponseTruncatedError(label);
+  }
+  if (!trimmed) {
     throw new Error("Empty response from LLM");
   }
-  return content.trim();
+  return trimmed;
 }
 
 /**
@@ -664,23 +693,62 @@ function parseGeneratedCardArray(
 }
 
 /**
- * Parse curriculum text and generate structured flashcard JSON data via LLM.
+ * Chunk size used after a model reports context-window exhaustion. A 3,000
+ * character chunk leaves enough response headroom for the common 4,096-token
+ * local-model default while still preserving the complete curriculum: every
+ * chunk is processed and the proposals are combined, never just the prefix.
  */
-export async function importCurriculumViaLLM(
-  db: Database,
-  text: string,
-  targetCategory: string,
-  sourceUrl?: string | null,
-): Promise<GeneratedCardProposal[]> {
-  if (text.length > MAX_IMPORT_TEXT_CHARS) {
-    throw new Error(
-      `Curriculum text exceeds the ${MAX_IMPORT_TEXT_CHARS.toLocaleString()} character limit`,
-    );
-  }
-  const cfg = await getProviderForRole(db, "text");
-  const endpoint = await resolveUsableTextEndpoint(db);
-  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+const CURRICULUM_CHUNK_TEXT_CHARS = 3_000;
 
+function splitCurriculumText(text: string, maxChars: number): string[] {
+  if (text.length <= maxChars) return [text];
+
+  const chunks: string[] = [];
+  let start = 0;
+  while (start < text.length) {
+    let end = Math.min(start + maxChars, text.length);
+    if (end < text.length) {
+      const minimumBoundary = start + Math.floor(maxChars * 0.6);
+      const sentenceWindow = text.slice(minimumBoundary, end);
+      let sentenceBoundary = -1;
+      for (const match of sentenceWindow.matchAll(/[.!?;:]\s+/g)) {
+        sentenceBoundary = (match.index ?? 0) + match[0].length;
+      }
+      if (sentenceBoundary > 0) {
+        end = minimumBoundary + sentenceBoundary;
+      } else {
+        const whitespaceBoundary = text.lastIndexOf(" ", end);
+        if (whitespaceBoundary >= minimumBoundary) end = whitespaceBoundary + 1;
+      }
+    }
+    chunks.push(text.slice(start, end));
+    start = end;
+  }
+  return chunks;
+}
+
+function deduplicateGeneratedCards(
+  cards: GeneratedCardProposal[],
+): GeneratedCardProposal[] {
+  const seen = new Set<string>();
+  return cards.filter((card) => {
+    const key = `${card.question.trim().toLocaleLowerCase()}\u0000${card.concept
+      .trim()
+      .toLocaleLowerCase()}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+async function requestCurriculumCards(
+  endpoint: { url: string; model: string; apiKey?: string },
+  locale: SupportedLocale,
+  langName: string,
+  curriculumText: string,
+  targetCategory: string,
+  sourceUrl: string | null | undefined,
+): Promise<string> {
   const systemPrompt = `You are ZAM, a highly precise agentic curriculum parser.
 Your task is to analyze curriculum objectives, syllabus requirements, or textbook notes, and extract atomic facts, concepts, or skills as structured learning cards in ${langName}.
 
@@ -710,7 +778,7 @@ Guidelines:
 - Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any preamble, headers, or conversational filler.`;
 
   const userPrompt = `Curriculum Text to Parse:
-${text}
+${curriculumText}
 
 Target Category: ${targetCategory}
 ${sourceUrl ? `Source Reference Link: ${sourceUrl}` : ""}
@@ -734,11 +802,101 @@ JSON Array Output:`;
         temperature: 0.1,
         max_tokens: DEFAULT_LLM_MAX_TOKENS,
       }),
-      locale: cfg.locale,
+      locale,
     },
   );
 
-  const responseText = await readChatContent(res, "LLM curriculum import");
+  return readChatContent(res, "LLM curriculum import");
+}
+
+/**
+ * Parse curriculum text and generate structured flashcard JSON data via LLM.
+ *
+ * A long curriculum text can exhaust a small local model's context window
+ * before it produces a complete reply (seen in practice with a 4096-token
+ * Ollama default and a ~17,000-character fetched page): sometimes there is no
+ * room left to start (a stray "[" and nothing else), sometimes the model
+ * spends its whole remaining budget enumerating cards without ever closing
+ * the array. Either way `finish_reason=length` means the content is not
+ * trustworthy JSON. Retrying the complete source as bounded chunks turns that
+ * hard failure into a series of safe requests without silently discarding the
+ * latter part of the authoritative curriculum.
+ */
+export async function importCurriculumViaLLM(
+  db: Database,
+  text: string,
+  targetCategory: string,
+  sourceUrl?: string | null,
+): Promise<GeneratedCardProposal[]> {
+  if (text.length > MAX_IMPORT_TEXT_CHARS) {
+    throw new Error(
+      `Curriculum text exceeds the ${MAX_IMPORT_TEXT_CHARS.toLocaleString()} character limit`,
+    );
+  }
+  const cfg = await getProviderForRole(db, "text");
+  const endpoint = await resolveUsableTextEndpoint(db);
+  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+
+  let responseText: string;
+  try {
+    responseText = await requestCurriculumCards(
+      endpoint,
+      cfg.locale,
+      langName,
+      text,
+      targetCategory,
+      sourceUrl,
+    );
+  } catch (err) {
+    if (
+      !(err instanceof LlmResponseTruncatedError) ||
+      text.length <= CURRICULUM_CHUNK_TEXT_CHARS
+    ) {
+      throw err;
+    }
+
+    const chunks = splitCurriculumText(text, CURRICULUM_CHUNK_TEXT_CHARS);
+    const cards: GeneratedCardProposal[] = [];
+    for (const [index, chunk] of chunks.entries()) {
+      let chunkResponse: string;
+      try {
+        chunkResponse = await requestCurriculumCards(
+          endpoint,
+          cfg.locale,
+          langName,
+          chunk,
+          targetCategory,
+          sourceUrl,
+        );
+      } catch (chunkError) {
+        if (chunkError instanceof LlmResponseTruncatedError) {
+          throw new Error(
+            `Curriculum chunk ${index + 1} of ${chunks.length} is still too large for ` +
+              "the configured model's context window. Configure a model with a larger " +
+              "context window, or import a smaller source.",
+          );
+        }
+        throw chunkError;
+      }
+      cards.push(
+        ...parseGeneratedCardArray(chunkResponse, "curriculum import", {
+          min: 0,
+          max: 200,
+        }),
+      );
+    }
+
+    const deduplicated = deduplicateGeneratedCards(cards);
+    if (deduplicated.length > 200) {
+      throw new Error(
+        `Invalid curriculum import response: expected 0-200 cards, got ${deduplicated.length}`,
+      );
+    }
+    return deduplicated.map((card) => ({
+      ...card,
+      source_link: sourceUrl || null,
+    }));
+  }
 
   return parseGeneratedCardArray(responseText, "curriculum import", {
     min: 0,

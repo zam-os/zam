@@ -28,7 +28,10 @@ function makeExecutable(name: string): string {
   tempDirs.push(dir);
   const fileName = process.platform === "win32" ? `${name}.cmd` : name;
   const file = join(dir, fileName);
-  writeFileSync(file, process.platform === "win32" ? "@echo off\r\n" : "#!/bin/sh\n");
+  writeFileSync(
+    file,
+    process.platform === "win32" ? "@echo off\r\n" : "#!/bin/sh\n",
+  );
   if (process.platform !== "win32") chmodSync(file, 0o755);
   return file;
 }
@@ -89,10 +92,7 @@ describe("findExecutable", () => {
   it("finds commands on PATH without invoking a shell command string", () => {
     const executable = makeExecutable("zam-path-probe");
     const originalPath = process.env.PATH;
-    process.env.PATH = [
-      dirname(executable),
-      originalPath,
-    ]
+    process.env.PATH = [dirname(executable), originalPath]
       .filter(Boolean)
       .join(delimiter);
 

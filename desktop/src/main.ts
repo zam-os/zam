@@ -14,6 +14,7 @@ import {
   PRIVACY_PACKS,
   TRANSLATION_PACKS,
 } from "./i18n.js";
+import { initCurriculumWizard } from "./curriculum-wizard.js";
 import { initLearningContentStudio, loadStudioData } from "./learning-content.js";
 
 const ZAM_RELEASES_URL = "https://github.com/zam-os/zam/releases";
@@ -318,6 +319,26 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     btn_import_submit: "Import",
     toast_import_success: "Successfully imported {createdCount} new tokens and ensured {ensuredCount} cards!",
     lbl_error_importing: "Failed to import curriculum",
+    btn_curriculum_wizard: "Curriculum Wizard",
+    lbl_curriculum_wizard_title: "Curriculum Wizard",
+    wizard_step_country: "Country",
+    wizard_step_region: "Region",
+    wizard_step_schoolType: "School Type",
+    wizard_step_grade: "Grade",
+    wizard_step_subject: "Subject",
+    wizard_step_track: "Track",
+    wizard_step_topic: "Topics",
+    wizard_btn_back: "Back",
+    wizard_btn_next: "Next",
+    wizard_no_options: "No options available yet for this selection.",
+    wizard_err_select_option: "Please select an option to continue.",
+    wizard_err_no_topics: "Please select at least one topic.",
+    wizard_topic_scope_note: "Cards are generated from the complete curriculum page for this subject (all of its topics). Precise per-topic import is coming in a future update — for now, topic selection helps you track what to cover next.",
+    wizard_resume_prompt: "Continue where you left off:",
+    wizard_btn_resume: "Continue",
+    wizard_btn_restart: "Start over",
+    lbl_curriculum_wizard_loading: "Loading…",
+    wizard_hours: "{hours} hrs",
     btn_split: "Split",
     lbl_split_modal_title: "Split Card",
     lbl_original_card_title: "Original Card (Summarized application question)",
@@ -340,6 +361,23 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_import_source_uri: "File Path or URL",
     btn_import_source_analyze: "Analyze",
     lbl_source_extracted_preview: "Extracted Plain Text Preview",
+    lbl_delete: "Delete",
+    lbl_proposal_number: "Proposal #{n}",
+    lbl_foundational_proposal_number: "Foundational Proposal #{n}",
+    lbl_foundation_existing_badge: "Existing card will be linked",
+    lbl_foundation_new_badge: "New card suggestion",
+    lbl_include: "Include",
+    lbl_err_analyze_source_first: "Please analyze a source file, web link, or OCR scan first.",
+    lbl_err_min_split_proposals: "At least 2 complete card proposals are required to split a card.",
+    lbl_err_select_foundation: "Please select at least one prerequisite proposal card to import.",
+    lbl_err_enter_path_or_url: "Please enter a file path or URL to analyze.",
+    lbl_analyzing_source: "Analyzing source content, please wait…",
+    lbl_err_analysis_failed: "Analysis failed",
+    lbl_err_analysis_prefix: "Analysis error",
+    lbl_err_concept_required: "Answer / concept is required.",
+    lbl_err_category_required: "Category is required.",
+    lbl_err_import_context_required: "Curriculum text is required.",
+    lbl_err_original_context_required: "Question and answer are required for the original card.",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -638,6 +676,26 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     btn_import_submit: "Importieren",
     toast_import_success: "Erfolgreich {createdCount} neue Token importiert und {ensuredCount} Karten sichergestellt!",
     lbl_error_importing: "Lehrplan konnte nicht importiert werden",
+    btn_curriculum_wizard: "Lehrplan-Assistent",
+    lbl_curriculum_wizard_title: "Lehrplan-Assistent",
+    wizard_step_country: "Land",
+    wizard_step_region: "Bundesland",
+    wizard_step_schoolType: "Schulform",
+    wizard_step_grade: "Jahrgangsstufe",
+    wizard_step_subject: "Fach",
+    wizard_step_track: "Ausprägung",
+    wizard_step_topic: "Themen",
+    wizard_btn_back: "Zurück",
+    wizard_btn_next: "Weiter",
+    wizard_no_options: "Für diese Auswahl sind noch keine Optionen verfügbar.",
+    wizard_err_select_option: "Bitte wähle eine Option, um fortzufahren.",
+    wizard_err_no_topics: "Bitte wähle mindestens ein Thema aus.",
+    wizard_topic_scope_note: "Die Karten werden aus der vollständigen Lehrplanseite dieses Fachs erstellt (alle Themen). Die präzise Auswahl nur der markierten Themen kommt mit einem künftigen Update — bis dahin hilft dir die Auswahl, den Überblick zu behalten, was als Nächstes drankommt.",
+    wizard_resume_prompt: "Dort weitermachen, wo du aufgehört hast:",
+    wizard_btn_resume: "Fortfahren",
+    wizard_btn_restart: "Neu beginnen",
+    lbl_curriculum_wizard_loading: "Lädt…",
+    wizard_hours: "{hours} Std.",
     btn_split: "Aufteilen",
     lbl_split_modal_title: "Karte aufteilen",
     lbl_original_card_title: "Originalkarte (Zusammenfassende Anwendungsfrage)",
@@ -660,6 +718,23 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_import_source_uri: "Dateipfad oder URL",
     btn_import_source_analyze: "Analysieren",
     lbl_source_extracted_preview: "Extrahierte Textvorschau",
+    lbl_delete: "Löschen",
+    lbl_proposal_number: "Vorschlag Nr. {n}",
+    lbl_foundational_proposal_number: "Grundlagen-Vorschlag Nr. {n}",
+    lbl_foundation_existing_badge: "Bestehende Karte wird verknüpft",
+    lbl_foundation_new_badge: "Neuer Kartenvorschlag",
+    lbl_include: "Einschließen",
+    lbl_err_analyze_source_first: "Bitte zuerst eine Quelldatei, einen Weblink oder einen OCR-Scan analysieren.",
+    lbl_err_min_split_proposals: "Für das Aufteilen einer Karte sind mindestens 2 vollständige Kartenvorschläge erforderlich.",
+    lbl_err_select_foundation: "Bitte wähle mindestens eine Grundlagen-Vorschlagskarte zum Importieren aus.",
+    lbl_err_enter_path_or_url: "Bitte gib einen Dateipfad oder eine URL zur Analyse ein.",
+    lbl_analyzing_source: "Quellinhalt wird analysiert, bitte warten…",
+    lbl_err_analysis_failed: "Analyse fehlgeschlagen",
+    lbl_err_analysis_prefix: "Analysefehler",
+    lbl_err_concept_required: "Antwort / Lerninhalt ist erforderlich.",
+    lbl_err_category_required: "Kategorie ist erforderlich.",
+    lbl_err_import_context_required: "Lehrplantext ist erforderlich.",
+    lbl_err_original_context_required: "Frage und Antwort sind für die Originalkarte erforderlich.",
   },
   // es, fr, pt, zh, ja live in ./i18n.ts; en/de stay here as reference locales.
   ...TRANSLATION_PACKS,
@@ -1228,6 +1303,28 @@ function initializeTranslations() {
   if (btnImportModalCancel) btnImportModalCancel.textContent = t("lbl_cancel_action");
   const btnImportModalSubmit = document.getElementById("btn-import-modal-submit");
   if (btnImportModalSubmit) btnImportModalSubmit.textContent = t("btn_import_submit");
+
+  // Curriculum Import Wizard Translations
+  const btnContentCurriculumWizard = document.getElementById("btn-content-curriculum-wizard");
+  if (btnContentCurriculumWizard) btnContentCurriculumWizard.textContent = t("btn_curriculum_wizard");
+  const lblCurriculumWizardTitle = document.getElementById("lbl-curriculum-wizard-title");
+  if (lblCurriculumWizardTitle) lblCurriculumWizardTitle.textContent = t("lbl_curriculum_wizard_title");
+  const btnCurriculumWizardBack = document.getElementById("btn-curriculum-wizard-back");
+  if (btnCurriculumWizardBack) btnCurriculumWizardBack.textContent = t("wizard_btn_back");
+  const btnCurriculumWizardNext = document.getElementById("btn-curriculum-wizard-next");
+  if (btnCurriculumWizardNext) btnCurriculumWizardNext.textContent = t("wizard_btn_next");
+  const btnCurriculumWizardCancel = document.getElementById("btn-curriculum-wizard-cancel");
+  if (btnCurriculumWizardCancel) btnCurriculumWizardCancel.textContent = t("lbl_cancel_action");
+  const btnCurriculumWizardResume = document.getElementById("btn-curriculum-wizard-resume");
+  if (btnCurriculumWizardResume) btnCurriculumWizardResume.textContent = t("wizard_btn_resume");
+  const btnCurriculumWizardRestart = document.getElementById("btn-curriculum-wizard-restart");
+  if (btnCurriculumWizardRestart) btnCurriculumWizardRestart.textContent = t("wizard_btn_restart");
+  const lblCurriculumWizardLoading = document.getElementById("lbl-curriculum-wizard-loading");
+  if (lblCurriculumWizardLoading) lblCurriculumWizardLoading.textContent = t("lbl_curriculum_wizard_loading");
+  const lblCurriculumWizardProgressStatus = document.getElementById("lbl-curriculum-wizard-progress-status");
+  if (lblCurriculumWizardProgressStatus) lblCurriculumWizardProgressStatus.textContent = t("lbl_import_progress_status");
+  const lblCurriculumWizardProgressDetail = document.getElementById("lbl-curriculum-wizard-progress-detail");
+  if (lblCurriculumWizardProgressDetail) lblCurriculumWizardProgressDetail.textContent = t("lbl_import_progress_detail");
 
   // Split Modal Translations
   const btnContentSplitCard = document.getElementById("btn-content-split-card");
@@ -4283,6 +4380,7 @@ window.addEventListener("DOMContentLoaded", () => {
   initializeTranslations();
   setupLocaleSwitcher();
   initLearningContentStudio();
+  initCurriculumWizard();
 
   // Load initial dashboard state
   loadDashboard();

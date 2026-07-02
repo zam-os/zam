@@ -29,6 +29,8 @@ export interface Token {
   created_at: string;
   updated_at: string;
   deprecated_at: string | null;
+  provider: string | null;
+  topic_id: string | null;
 }
 
 export interface CreateTokenInput {
@@ -40,6 +42,8 @@ export interface CreateTokenInput {
   symbiosis_mode?: SymbiosisMode | null;
   source_link?: string | null;
   question?: string | null;
+  provider?: string | null;
+  topic_id?: string | null;
 }
 
 export interface UpdateTokenInput {
@@ -50,6 +54,8 @@ export interface UpdateTokenInput {
   symbiosis_mode?: SymbiosisMode | null;
   source_link?: string | null;
   question?: string | null;
+  provider?: string | null;
+  topic_id?: string | null;
 }
 
 export interface ListTokensOptions {
@@ -97,8 +103,8 @@ export async function createToken(
 
   await db
     .prepare(`
-    INSERT INTO tokens (id, slug, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO tokens (id, slug, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, provider, topic_id, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `)
     .run(
       id,
@@ -110,11 +116,25 @@ export async function createToken(
       input.symbiosis_mode ?? null,
       input.source_link ?? null,
       input.question ?? null,
+      input.provider ?? null,
+      input.topic_id ?? null,
       now,
       now,
     );
 
   return (await getTokenById(db, id)) as Token;
+}
+
+function parseTokenFallback(token: Token | undefined): void {
+  if (token && !token.provider && token.source_link) {
+    if (token.source_link.includes("lehrplanplus.bayern.de")) {
+      token.provider = "lehrplanplus-bayern";
+      const match = token.source_link.match(/#(.*)$/);
+      if (match) {
+        token.topic_id = match[1];
+      }
+    }
+  }
 }
 
 /**
@@ -125,9 +145,11 @@ export async function getTokenBySlug(
   db: Database,
   slug: string,
 ): Promise<Token | undefined> {
-  return (await db.prepare("SELECT * FROM tokens WHERE slug = ?").get(slug)) as
-    | Token
-    | undefined;
+  const token = (await db
+    .prepare("SELECT * FROM tokens WHERE slug = ?")
+    .get(slug)) as Token | undefined;
+  parseTokenFallback(token);
+  return token;
 }
 
 /**
@@ -138,9 +160,11 @@ export async function getTokenById(
   db: Database,
   id: string,
 ): Promise<Token | undefined> {
-  return (await db.prepare("SELECT * FROM tokens WHERE id = ?").get(id)) as
-    | Token
-    | undefined;
+  const token = (await db
+    .prepare("SELECT * FROM tokens WHERE id = ?")
+    .get(id)) as Token | undefined;
+  parseTokenFallback(token);
+  return token;
 }
 
 /**
@@ -201,6 +225,14 @@ export async function updateToken(
   if (updates.question !== undefined) {
     fields.push("question = ?");
     values.push(updates.question);
+  }
+  if (updates.provider !== undefined) {
+    fields.push("provider = ?");
+    values.push(updates.provider);
+  }
+  if (updates.topic_id !== undefined) {
+    fields.push("topic_id = ?");
+    values.push(updates.topic_id);
   }
 
   if (fields.length === 0) {
@@ -436,18 +468,24 @@ export async function listTokens(
   db: Database,
   options?: ListTokensOptions,
 ): Promise<Token[]> {
+  let tokens: Token[];
   if (options?.domain) {
-    return (await db
+    tokens = (await db
       .prepare(
         "SELECT * FROM tokens WHERE domain = ? AND deprecated_at IS NULL ORDER BY bloom_level, slug",
       )
       .all(options.domain)) as Token[];
+  } else {
+    tokens = (await db
+      .prepare(
+        "SELECT * FROM tokens WHERE deprecated_at IS NULL ORDER BY bloom_level, domain, slug",
+      )
+      .all()) as Token[];
   }
-  return (await db
-    .prepare(
-      "SELECT * FROM tokens WHERE deprecated_at IS NULL ORDER BY bloom_level, domain, slug",
-    )
-    .all()) as Token[];
+  for (const token of tokens) {
+    parseTokenFallback(token);
+  }
+  return tokens;
 }
 
 export interface PersonalCard {
@@ -473,6 +511,8 @@ export interface PersonalCard {
   elapsedDays: number | null;
   scheduledDays: number | null;
   blocked: number | null;
+  provider: string | null;
+  topicId: string | null;
 }
 
 export function slugify(text: string): string {
@@ -543,6 +583,8 @@ export async function listPersonalCards(
       t.question,
       t.created_at AS createdAt,
       t.updated_at AS updatedAt,
+      t.provider,
+      t.topic_id AS topicId,
       c.id AS cardId,
       c.state,
       c.due_at AS dueAt,
@@ -576,8 +618,19 @@ export async function listPersonalCards(
 
   sql += " ORDER BY t.created_at DESC";
 
-  const rows = await db.prepare(sql).all(...values);
-  return rows as PersonalCard[];
+  const rows = (await db.prepare(sql).all(...values)) as PersonalCard[];
+  for (const row of rows) {
+    if (!row.provider && row.sourceLink) {
+      if (row.sourceLink.includes("lehrplanplus.bayern.de")) {
+        row.provider = "lehrplanplus-bayern";
+        const match = row.sourceLink.match(/#(.*)$/);
+        if (match) {
+          row.topicId = match[1];
+        }
+      }
+    }
+  }
+  return rows;
 }
 
 export interface CurriculumCardInput {
@@ -588,6 +641,8 @@ export interface CurriculumCardInput {
   context?: string;
   bloom_level?: number;
   symbiosis_mode?: string | null;
+  provider?: string | null;
+  topic_id?: string | null;
 }
 
 export interface ImportCurriculumResult {
@@ -663,8 +718,17 @@ export async function importCurriculumCards(
           symbiosis_mode: symbiosisMode,
           source_link: card.source_link || null,
           question: card.question || null,
+          provider: card.provider || null,
+          topic_id: card.topic_id || null,
         });
         createdCount++;
+      } else {
+        if (!token.provider && card.provider) {
+          await updateToken(tx, token.slug, {
+            provider: card.provider,
+            topic_id: card.topic_id || null,
+          });
+        }
       }
 
       const existingCard = await getCard(tx, token.id, userId);
@@ -1015,6 +1079,9 @@ export interface SourceProposalInput {
   symbiosis_mode: string;
   excerpt: string;
   page_number?: string | null;
+  provider?: string | null;
+  topic_id?: string | null;
+  source_id?: string | null;
 }
 
 /**
@@ -1031,14 +1098,15 @@ export async function confirmSourceImport(
   let linkedCount = 0;
 
   await db.transaction(async (tx) => {
-    const source = await tx
-      .prepare("SELECT id FROM sources WHERE id = ?")
-      .get(sourceId);
-    if (!source) {
-      throw new Error(`Source not found: ${sourceId}`);
-    }
-
     for (const card of proposals) {
+      const cardSourceId = card.source_id || sourceId;
+      const source = await tx
+        .prepare("SELECT id FROM sources WHERE id = ?")
+        .get(cardSourceId);
+      if (!source) {
+        throw new Error(`Source not found: ${cardSourceId}`);
+      }
+
       const baseText =
         card.question && card.question.trim().length > 0
           ? card.question
@@ -1077,10 +1145,18 @@ export async function confirmSourceImport(
           context: card.excerpt || "",
           symbiosis_mode: symbiosisMode,
           question: card.question || null,
+          provider: card.provider || null,
+          topic_id: card.topic_id || null,
         });
         createdCount++;
       } else {
         linkedCount++;
+        if (!token.provider && card.provider) {
+          await updateToken(tx, token.slug, {
+            provider: card.provider,
+            topic_id: card.topic_id || null,
+          });
+        }
       }
 
       const existingCard = await getCard(tx, token.id, userId);
@@ -1096,7 +1172,12 @@ export async function confirmSourceImport(
              excerpt = excluded.excerpt,
              page_number = excluded.page_number`,
         )
-        .run(token.id, sourceId, card.excerpt || "", card.page_number || null);
+        .run(
+          token.id,
+          cardSourceId,
+          card.excerpt || "",
+          card.page_number || null,
+        );
     }
   });
 

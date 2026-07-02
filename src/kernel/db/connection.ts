@@ -454,4 +454,14 @@ async function runMigrations(db: Database): Promise<void> {
       PRIMARY KEY (token_id, source_id)
     )
   `);
+
+  // M008: add provider and topic_id columns to tokens table
+  if (tokenCols.length > 0) {
+    if (!tokenCols.some((c) => c.name === "provider")) {
+      await db.exec(`ALTER TABLE tokens ADD COLUMN provider TEXT`);
+    }
+    if (!tokenCols.some((c) => c.name === "topic_id")) {
+      await db.exec(`ALTER TABLE tokens ADD COLUMN topic_id TEXT`);
+    }
+  }
 }

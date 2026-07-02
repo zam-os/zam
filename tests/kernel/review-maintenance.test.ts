@@ -294,7 +294,7 @@ describe("review maintenance primitives", () => {
     });
     await ensureCard(db, t1.id, "thomas");
 
-    const t2 = await createToken(db, {
+    const _t2 = await createToken(db, {
       slug: "git-push",
       concept: "uploads commits",
       domain: "git",

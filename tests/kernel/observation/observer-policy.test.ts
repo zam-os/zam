@@ -1,18 +1,18 @@
-import { describe, expect, it, beforeEach, afterEach } from "vitest";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { openDatabase } from "../../../src/kernel/db/connection.js";
 import type { Database } from "../../../src/kernel/db/types.js";
 import {
   DEFAULT_OBSERVER_POLICY,
   decidePostCapture,
   decidePreCapture,
-  matchBuiltInSensitive,
-  type ObserverPolicy,
-  OBSERVER_POLICY_VERSION,
-  parseObserverPolicy,
   getDefaultsForSymbiosisMode,
+  matchBuiltInSensitive,
+  OBSERVER_POLICY_VERSION,
+  type ObserverPolicy,
+  parseObserverPolicy,
   resolveActiveSymbiosisMode,
   resolveObserverPolicy,
 } from "../../../src/kernel/observation/policy.js";
@@ -225,7 +225,11 @@ describe("symbiosis mode presets", () => {
         initialize: true,
       });
       // Set the default user setting
-      await db.prepare("INSERT INTO user_config (key, value) VALUES ('user.id', 'test-user')").run();
+      await db
+        .prepare(
+          "INSERT INTO user_config (key, value) VALUES ('user.id', 'test-user')",
+        )
+        .run();
     });
 
     afterEach(async () => {
@@ -237,39 +241,70 @@ describe("symbiosis mode presets", () => {
       }
     });
 
-    async function seedToken(id: string, slug: string, domain: string, mode: string | null) {
-      await db.prepare(`
+    async function seedToken(
+      id: string,
+      slug: string,
+      domain: string,
+      mode: string | null,
+    ) {
+      await db
+        .prepare(`
         INSERT INTO tokens (id, slug, concept, domain, symbiosis_mode)
         VALUES (?, ?, ?, ?, ?)
-      `).run(id, slug, `Concept for ${slug}`, domain, mode);
+      `)
+        .run(id, slug, `Concept for ${slug}`, domain, mode);
     }
 
-    async function seedCard(id: string, tokenId: string, reps: number, stability: number) {
-      await db.prepare(`
+    async function seedCard(
+      id: string,
+      tokenId: string,
+      reps: number,
+      stability: number,
+    ) {
+      await db
+        .prepare(`
         INSERT INTO cards (id, token_id, user_id, reps, stability)
         VALUES (?, ?, 'test-user', ?, ?)
-      `).run(id, tokenId, reps, stability);
+      `)
+        .run(id, tokenId, reps, stability);
     }
 
-    async function seedReviewLog(id: string, cardId: string, tokenId: string, rating: number, reviewedAt: string) {
-      await db.prepare(`
+    async function seedReviewLog(
+      id: string,
+      cardId: string,
+      tokenId: string,
+      rating: number,
+      reviewedAt: string,
+    ) {
+      await db
+        .prepare(`
         INSERT INTO review_logs (id, card_id, token_id, user_id, rating, reviewed_at, scheduled_at)
         VALUES (?, ?, ?, 'test-user', ?, ?, datetime('now'))
-      `).run(id, cardId, tokenId, rating, reviewedAt);
+      `)
+        .run(id, cardId, tokenId, rating, reviewedAt);
     }
 
     async function seedSession(id: string, completedAt: string | null) {
-      await db.prepare(`
+      await db
+        .prepare(`
         INSERT INTO sessions (id, user_id, task, started_at, completed_at)
         VALUES (?, 'test-user', 'Task', datetime('now'), ?)
-      `).run(id, completedAt);
+      `)
+        .run(id, completedAt);
     }
 
-    async function seedSessionStep(id: string, sessionId: string, tokenId: string, createdAt: string) {
-      await db.prepare(`
+    async function seedSessionStep(
+      id: string,
+      sessionId: string,
+      tokenId: string,
+      createdAt: string,
+    ) {
+      await db
+        .prepare(`
         INSERT INTO session_steps (id, session_id, token_id, done_by, created_at)
         VALUES (?, ?, ?, 'user', ?)
-      `).run(id, sessionId, tokenId, createdAt);
+      `)
+        .run(id, sessionId, tokenId, createdAt);
     }
 
     it("resolveActiveSymbiosisMode defaults to shadowing on empty database", async () => {
@@ -341,11 +376,15 @@ describe("symbiosis mode presets", () => {
       await seedSessionStep("step1", "s1", "t1", "2026-06-20T12:00:00Z");
 
       // explicitly set scope to window
-      await db.prepare("INSERT INTO user_config (key, value) VALUES ('observer.scope', 'window')").run();
+      await db
+        .prepare(
+          "INSERT INTO user_config (key, value) VALUES ('observer.scope', 'window')",
+        )
+        .run();
 
       const policy = await resolveObserverPolicy(db);
-      expect(policy.scope).toBe("window");      // overridden by user_config
-      expect(policy.consent).toBe("standing");   // still default preset
+      expect(policy.scope).toBe("window"); // overridden by user_config
+      expect(policy.consent).toBe("standing"); // still default preset
     });
   });
 });

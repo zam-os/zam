@@ -2325,6 +2325,109 @@ textarea::placeholder {
   gap: 10px;
 }
 
+/* Curriculum Import Wizard */
+.wizard-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.wizard-breadcrumb-chip {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--clr-text-secondary);
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+.wizard-resume-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+}
+
+.wizard-resume-banner p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--clr-text-secondary);
+}
+
+.wizard-step-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--clr-text-primary);
+  margin-bottom: 10px;
+}
+
+.wizard-topic-note {
+  font-size: 0.8rem;
+  color: var(--clr-text-secondary);
+  background: var(--bg-card-subtle);
+  border-left: 3px solid var(--clr-accent-purple);
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+}
+
+.wizard-step-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wizard-option-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: var(--bg-field);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.wizard-option-row:hover {
+  border-color: var(--clr-accent-purple);
+}
+
+.wizard-option-row.selected {
+  border-color: var(--clr-accent-purple);
+  background: rgba(139, 92, 246, 0.08);
+}
+
+.wizard-option-row .wizard-option-label {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--clr-text-primary);
+}
+
+.wizard-option-row .wizard-option-hint {
+  font-size: 0.78rem;
+  color: var(--clr-text-secondary);
+}
+
+.wizard-loading,
+.wizard-error {
+  text-align: center;
+  padding: 16px;
+  font-size: 0.85rem;
+}
+
+.wizard-error {
+  color: var(--clr-again);
+}
+
 /* Responsive sequential screens on narrow viewport */
 @media (max-width: 768px) {
   .content-studio-layout {

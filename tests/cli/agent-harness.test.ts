@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
-  type AgentHarness,
   AGENT_HARNESSES,
+  type AgentHarness,
   getHarness,
   launchHarness,
   planHarnessLaunch,

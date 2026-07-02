@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { planOpenCodeInstall } from "../../src/kernel/index.js";
 
-const NONE = { hasNpm: false, hasBrew: false, hasScoop: false, hasChoco: false };
+const NONE = {
+  hasNpm: false,
+  hasBrew: false,
+  hasScoop: false,
+  hasChoco: false,
+};
 
 describe("planOpenCodeInstall", () => {
   it("prefers npm on every platform (correct native arm64 binary)", () => {
@@ -18,9 +23,9 @@ describe("planOpenCodeInstall", () => {
     expect(
       planOpenCodeInstall({ platform: "darwin", ...NONE, hasBrew: true }),
     ).toMatchObject({ method: "homebrew" });
-    expect(
-      planOpenCodeInstall({ platform: "darwin", ...NONE }),
-    ).toMatchObject({ method: "script" });
+    expect(planOpenCodeInstall({ platform: "darwin", ...NONE })).toMatchObject({
+      method: "script",
+    });
   });
 
   it("uses the install script on Linux without npm", () => {
