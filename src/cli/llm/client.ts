@@ -409,7 +409,26 @@ const BLOOM_VERBS = {
 } as const;
 
 interface ChatCompletionResponse {
-  choices?: Array<{ message?: { content?: string } }>;
+  choices?: Array<{
+    message?: { content?: string };
+    finish_reason?: string;
+  }>;
+}
+
+/**
+ * Thrown when a chat completion hits its token/context limit before producing
+ * usable content. Distinguished from a generic empty/malformed response so
+ * callers with a resizable input (e.g. curriculum import) can retry with a
+ * smaller prompt instead of failing outright.
+ */
+export class LlmResponseTruncatedError extends Error {
+  constructor(label: string) {
+    super(
+      `${label}: the model's response was cut off before producing usable output (finish_reason=length). ` +
+        "The prompt likely left no room in the model's context window for a reply.",
+    );
+    this.name = "LlmResponseTruncatedError";
+  }
 }
 
 /** Extract the assistant message content from an OpenAI-compatible response. */
@@ -421,11 +440,21 @@ async function readChatContent(res: Response, label: string): Promise<string> {
     );
   }
   const data = (await res.json()) as ChatCompletionResponse;
-  const content = data.choices?.[0]?.message?.content;
-  if (!content) {
+  const choice = data.choices?.[0];
+  const content = choice?.message?.content;
+  const trimmed = content?.trim() ?? "";
+  // `finish_reason=length` means the completion hit the context window before
+  // the model finished on its own. Observed in practice both as an
+  // immediate near-empty reply (no room to start) and as a long-but-cut-off
+  // reply (started generating an array of cards, ran out of room before
+  // closing it) -- neither is safe to hand to a JSON parser.
+  if (choice?.finish_reason === "length") {
+    throw new LlmResponseTruncatedError(label);
+  }
+  if (!trimmed) {
     throw new Error("Empty response from LLM");
   }
-  return content.trim();
+  return trimmed;
 }
 
 /**
@@ -664,23 +693,25 @@ function parseGeneratedCardArray(
 }
 
 /**
- * Parse curriculum text and generate structured flashcard JSON data via LLM.
+ * Fallback size (characters) for the retry attempt after a truncated
+ * response. Verified empirically against a 4096-token Ollama default context
+ * window with the real system + user prompt overhead: 4,000 characters of
+ * curriculum text still left the model generating cards until it ran out of
+ * room (finish_reason=length with thousands of completion tokens spent);
+ * 3,000 characters reliably finished cleanly (finish_reason=stop). The model
+ * tends to keep enumerating atomic cards for as long as it has budget, so
+ * this needs real headroom, not just "a bit less than the full text."
  */
-export async function importCurriculumViaLLM(
-  db: Database,
-  text: string,
-  targetCategory: string,
-  sourceUrl?: string | null,
-): Promise<GeneratedCardProposal[]> {
-  if (text.length > MAX_IMPORT_TEXT_CHARS) {
-    throw new Error(
-      `Curriculum text exceeds the ${MAX_IMPORT_TEXT_CHARS.toLocaleString()} character limit`,
-    );
-  }
-  const cfg = await getProviderForRole(db, "text");
-  const endpoint = await resolveUsableTextEndpoint(db);
-  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+const CURRICULUM_RETRY_TEXT_CHARS = 3_000;
 
+async function requestCurriculumCards(
+  endpoint: { url: string; model: string; apiKey?: string },
+  locale: SupportedLocale,
+  langName: string,
+  curriculumText: string,
+  targetCategory: string,
+  sourceUrl: string | null | undefined,
+): Promise<string> {
   const systemPrompt = `You are ZAM, a highly precise agentic curriculum parser.
 Your task is to analyze curriculum objectives, syllabus requirements, or textbook notes, and extract atomic facts, concepts, or skills as structured learning cards in ${langName}.
 
@@ -710,7 +741,7 @@ Guidelines:
 - Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any preamble, headers, or conversational filler.`;
 
   const userPrompt = `Curriculum Text to Parse:
-${text}
+${curriculumText}
 
 Target Category: ${targetCategory}
 ${sourceUrl ? `Source Reference Link: ${sourceUrl}` : ""}
@@ -734,11 +765,78 @@ JSON Array Output:`;
         temperature: 0.1,
         max_tokens: DEFAULT_LLM_MAX_TOKENS,
       }),
-      locale: cfg.locale,
+      locale,
     },
   );
 
-  const responseText = await readChatContent(res, "LLM curriculum import");
+  return readChatContent(res, "LLM curriculum import");
+}
+
+/**
+ * Parse curriculum text and generate structured flashcard JSON data via LLM.
+ *
+ * A long curriculum text can exhaust a small local model's context window
+ * before it produces a complete reply (seen in practice with a 4096-token
+ * Ollama default and a ~17,000-character fetched page): sometimes there is no
+ * room left to start (a stray "[" and nothing else), sometimes the model
+ * spends its whole remaining budget enumerating cards without ever closing
+ * the array. Either way `finish_reason=length` means the content is not
+ * trustworthy JSON. Retrying once with a shorter excerpt turns that hard
+ * failure into cards grounded in part of the source, rather than nothing at
+ * all.
+ */
+export async function importCurriculumViaLLM(
+  db: Database,
+  text: string,
+  targetCategory: string,
+  sourceUrl?: string | null,
+): Promise<GeneratedCardProposal[]> {
+  if (text.length > MAX_IMPORT_TEXT_CHARS) {
+    throw new Error(
+      `Curriculum text exceeds the ${MAX_IMPORT_TEXT_CHARS.toLocaleString()} character limit`,
+    );
+  }
+  const cfg = await getProviderForRole(db, "text");
+  const endpoint = await resolveUsableTextEndpoint(db);
+  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+
+  let responseText: string;
+  try {
+    responseText = await requestCurriculumCards(
+      endpoint,
+      cfg.locale,
+      langName,
+      text,
+      targetCategory,
+      sourceUrl,
+    );
+  } catch (err) {
+    if (
+      !(err instanceof LlmResponseTruncatedError) ||
+      text.length <= CURRICULUM_RETRY_TEXT_CHARS
+    ) {
+      throw err;
+    }
+    try {
+      responseText = await requestCurriculumCards(
+        endpoint,
+        cfg.locale,
+        langName,
+        text.slice(0, CURRICULUM_RETRY_TEXT_CHARS),
+        targetCategory,
+        sourceUrl,
+      );
+    } catch (retryErr) {
+      if (retryErr instanceof LlmResponseTruncatedError) {
+        throw new Error(
+          "The curriculum text is too large for the configured model's context window, " +
+            "even after shortening it. Configure a model with a larger context window, " +
+            "or import a smaller excerpt.",
+        );
+      }
+      throw retryErr;
+    }
+  }
 
   return parseGeneratedCardArray(responseText, "curriculum import", {
     min: 0,

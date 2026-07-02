@@ -12,6 +12,7 @@ import {
   generateSplitProposalsViaLLM,
   importCurriculumViaLLM,
   isLlmOnline,
+  LlmResponseTruncatedError,
   resolveUsableRecallEndpoint,
 } from "../../src/cli/llm/client.js";
 import {
@@ -419,6 +420,198 @@ describe("LLM client utilities (CLI layer)", () => {
         context: "revert creates a new commit",
         source_link: "https://example.com",
       });
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  // A readiness probe (isLlmOnline + getAvailableModels) always precedes the
+  // actual chat completion, both hitting GET .../models -- route those apart
+  // from the POST .../chat/completions calls these tests care about.
+  function mockReadinessAndChatFetch(
+    chatHandler: (bodyText: string, callIndex: number) => Response,
+  ): () => number {
+    let chatCallCount = 0;
+    global.fetch = (async (url: string | URL, options?: RequestInit) => {
+      if (String(url).includes("/models")) {
+        return new Response(JSON.stringify({ data: [] }), { status: 200 });
+      }
+      chatCallCount++;
+      return chatHandler((options?.body as string) ?? "", chatCallCount);
+    }) as typeof fetch;
+    return () => chatCallCount;
+  }
+
+  function truncatedResponse(): Response {
+    return new Response(
+      JSON.stringify({
+        choices: [{ message: { content: "[" }, finish_reason: "length" }],
+      }),
+    );
+  }
+
+  it("importCurriculumViaLLM treats a substantial-but-unclosed array as truncated, not malformed JSON", async () => {
+    // Seen in practice: the model spends its whole remaining budget
+    // enumerating cards without ever closing the array. Thousands of
+    // characters of content, but still finish_reason=length -- this must be
+    // detected as a truncation (and retried), not passed to the JSON parser
+    // where it would fail with a confusing "malformed JSON" error instead.
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const longText = "Lorem ipsum curriculum text. ".repeat(1000);
+    const unclosedArray =
+      '[{"question":"a","concept":"b","domain":"d","bloom_level":1,"symbiosis_mode":"shadowing","context":"c"},{"question":"unfinished';
+
+    const originalFetch = global.fetch;
+    const getChatCallCount = mockReadinessAndChatFetch((_body, callIndex) =>
+      callIndex === 1
+        ? new Response(
+            JSON.stringify({
+              choices: [
+                { message: { content: unclosedArray }, finish_reason: "length" },
+              ],
+            }),
+          )
+        : new Response(
+            JSON.stringify({
+              choices: [
+                {
+                  message: {
+                    content: JSON.stringify([
+                      {
+                        question: "What is git revert?",
+                        concept: "Creates a new commit that undoes the changes",
+                        domain: "git",
+                        bloom_level: 2,
+                        symbiosis_mode: "shadowing",
+                        context: "revert creates a new commit",
+                      },
+                    ]),
+                  },
+                  finish_reason: "stop",
+                },
+              ],
+            }),
+          ),
+    );
+
+    try {
+      const cards = await importCurriculumViaLLM(db, longText, "git");
+      expect(getChatCallCount()).toBe(2);
+      expect(cards).toHaveLength(1);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("importCurriculumViaLLM retries with a shorter excerpt after a context-exhausted response", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const mockResponseText = JSON.stringify([
+      {
+        question: "What is git revert?",
+        concept: "Creates a new commit that undoes the changes",
+        domain: "git",
+        bloom_level: 2,
+        symbiosis_mode: "shadowing",
+        context: "revert creates a new commit",
+      },
+    ]);
+
+    const longText = "Lorem ipsum curriculum text. ".repeat(1000); // ~29,000 chars
+    let retryUserPromptLength = 0;
+
+    const originalFetch = global.fetch;
+    const getChatCallCount = mockReadinessAndChatFetch((bodyText, callIndex) => {
+      if (callIndex === 1) {
+        // Simulate a model whose context window left no room for a reply.
+        return truncatedResponse();
+      }
+      const body = JSON.parse(bodyText);
+      retryUserPromptLength = body.messages[1].content.length;
+      return new Response(
+        JSON.stringify({
+          choices: [
+            { message: { content: mockResponseText }, finish_reason: "stop" },
+          ],
+        }),
+      );
+    });
+
+    try {
+      const cards = await importCurriculumViaLLM(db, longText, "git");
+
+      expect(getChatCallCount()).toBe(2);
+      expect(cards).toHaveLength(1);
+      expect(cards[0].question).toBe("What is git revert?");
+      // The retry's prompt must actually be shorter than the original text.
+      expect(retryUserPromptLength).toBeLessThan(longText.length);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("importCurriculumViaLLM gives up with a clear error when the retry is also context-exhausted", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const longText = "Lorem ipsum curriculum text. ".repeat(1000);
+
+    const originalFetch = global.fetch;
+    const getChatCallCount = mockReadinessAndChatFetch(() =>
+      truncatedResponse(),
+    );
+
+    try {
+      await expect(
+        importCurriculumViaLLM(db, longText, "git"),
+      ).rejects.toThrow(/context window/i);
+      expect(getChatCallCount()).toBe(2);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("importCurriculumViaLLM does not retry when the text is already short", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const originalFetch = global.fetch;
+    const getChatCallCount = mockReadinessAndChatFetch(() =>
+      truncatedResponse(),
+    );
+
+    try {
+      await expect(
+        importCurriculumViaLLM(db, "short syllabus text", "git"),
+      ).rejects.toThrow(LlmResponseTruncatedError);
+      expect(getChatCallCount()).toBe(1);
     } finally {
       global.fetch = originalFetch;
       await db.close();
