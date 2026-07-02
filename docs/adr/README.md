@@ -32,3 +32,5 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-06-25b](2026-06-25b-visible-ai-status-in-studio.md) | Visible AI Status in the Studio | Proposed |
 | [2026-06-25c](2026-06-25c-flexible-zam-workspaces-and-skill-wiring.md) | Flexible ZAM Workspaces and Skill Wiring | Proposed |
 | [2026-06-27](2026-06-27-recall-session-llm-pipeline.md) | Recall-Session LLM Pipeline (Prompt Cache & Prefetch) | Proposed |
+| [2026-06-30](2026-06-30-learning-content-studio.md) | Learning Content Studio | Implemented |
+| [2026-07-02](2026-07-02-lehrplanplus-import-wizard.md) | LehrplanPLUS Curriculum Import Wizard | Proposed |
