@@ -202,7 +202,8 @@ The resolved URIs are then handed to the existing `personal-source-import` /
    A brittle scraper breaks silently on markup changes; an agent doing the
    same review adapts to a redesigned page or a moved link the way it adapted
    here. Each manifest carries a `schoolYear` and a `capturedOn` stamp per
-   entry so staleness is always visible.
+   entry so staleness is always visible. This is an **interim** strategy — see
+   Phase 5 below for the intended long-term replacement.
 
 3. **Terms of use & politeness.**
    Decision: cache as aggressively as reasonable. The bundled manifest is
@@ -248,13 +249,15 @@ The resolved URIs are then handed to the existing `personal-source-import` /
 ## Scope and delivery plan
 
 This ADR is Accepted; the decisions above are frozen. Implementation proceeds
-phase by phase, each as its own reviewable PR rather than one large change.
+phase by phase, all on this one branch/PR rather than a separate branch per
+phase — a per-phase branch split turned out to be unnecessary overhead for a
+feature this size. Phases remain distinct, reviewable commits.
 
 - **Phase 0 — Decisions & contracts (this ADR).** Done — see Resolved
   decisions above; the provider interface and the three bridge command shapes
   are frozen.
-- **Phase 1 — Provider registry + navigation (in progress).** The registry,
-  the LehrplanPLUS provider backed by a bundled manifest seeded with real,
+- **Phase 1 — Provider registry + navigation.** Done. The registry, the
+  LehrplanPLUS provider backed by a bundled manifest seeded with real,
   agent-captured LehrplanPLUS data, the `curriculum-list-*` /
   `curriculum-resolve-topics` bridge commands, and breadcrumb persistence. No
   live content fetch yet — `resolveTopic` returns a URL.
@@ -266,6 +269,23 @@ phase by phase, each as its own reviewable PR rather than one large change.
   into one review, dedup, and link precise provenance.
 - **Phase 4 (future) — Second provider.** Add another Bundesland or country to
   validate that the abstraction holds.
+- **Phase 5 (future, unscheduled) — Central ZAM Curriculum Service.** A
+  shared backend service takes over curriculum-data synchronization across
+  ZAM installations: installs sync their taxonomy from that service instead
+  of (or in addition to) an agent-refreshed bundled manifest. Beyond
+  convenience, this insulates learners from upstream churn: if
+  lehrplanplus.bayern.de (or any future provider's site) is restructured and
+  its content becomes hard to locate, only the service's sync job needs to
+  adapt — not every installed copy of ZAM. This is a separate concern from
+  the "no scheduled curriculum sync" item under Out of scope: that item is
+  about not auto-creating a *learner's* cards on a schedule; this is about
+  keeping the *taxonomy data itself* fresh and resilient across installs. No
+  design work has started; it is noted here because the
+  `CurriculumProvider` interface (Decision 1) was deliberately kept
+  data-source-agnostic — `listSchoolTypes`/`listGrades`/…/`resolveTopic`
+  don't care whether their data comes from a bundled manifest or a remote
+  sync cache, so this transition is not expected to require interface
+  changes.
 
 ## Testing strategy
 
@@ -300,6 +320,8 @@ phase by phase, each as its own reviewable PR rather than one large change.
 - Reuses the whole 0.6.0 import pipeline and 0.6.1 provenance fix; the net-new
   surface is navigation, a bundled manifest, and the wizard UI.
 - Adds a maintenance surface — the taxonomy manifest — that will drift from the
-  official site and needs an explicit refresh story.
+  official site and needs an explicit refresh story. A future central ZAM
+  Curriculum Service (Phase 5) is intended to absorb this long-term; until
+  then, agent-driven yearly refresh (Resolved decision 2) is the interim plan.
 - Couples ZAM to an external site's structure and terms of use; mitigated by the
   SSRF-safe fetch, caching, a bundled manifest, and a polite fetch policy.
