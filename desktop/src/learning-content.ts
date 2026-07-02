@@ -133,7 +133,7 @@ let btnModalHardDelete: HTMLButtonElement;
 let pendingConfirmCallback: (() => void) | null = null;
 let pendingHardDeleteCallback: (() => void) | null = null;
 
-function escapeHtml(value: string): string {
+export function escapeHtml(value: string): string {
   return value.replace(
     /[&<>"']/g,
     (character) =>

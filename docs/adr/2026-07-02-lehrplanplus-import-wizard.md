@@ -246,6 +246,21 @@ The resolved URIs are then handed to the existing `personal-source-import` /
    and topic id travel alongside it, so `source_link` resolution and any
    future re-sync can always identify the exact Lernbereich a card came from.
 
+8. **Topic scope during Phase 2.**
+   During Phase 2 implementation it became concrete that a single subject/track
+   page lists *all* of its Lernbereiche together — there is no per-Lernbereich
+   URL to fetch. Sending the whole page to the AI would generate cards for
+   every Lernbereich on that page, not only the ones the learner checked in
+   step 6, which runs against the learner's own stated reason for that step.
+   Decision: for Phase 2, import from the complete subject/track page
+   regardless of which topics were checked, with a clear in-wizard note on the
+   topic step explaining this and that precise per-topic scoping is coming in
+   Phase 3. The alternative — pulling Lernbereich-level text segmentation
+   forward into Phase 2 — was rejected as more fragile (the fetched page is
+   whitespace-collapsed to one line, so isolating one Lernbereich's text
+   requires real, brittle parsing) and better done deliberately in Phase 3,
+   which already owns "fetch the selected topic's full specified text."
+
 ## Scope and delivery plan
 
 This ADR is Accepted; the decisions above are frozen. Implementation proceeds
@@ -261,9 +276,13 @@ feature this size. Phases remain distinct, reviewable commits.
   agent-captured LehrplanPLUS data, the `curriculum-list-*` /
   `curriculum-resolve-topics` bridge commands, and breadcrumb persistence. No
   live content fetch yet — `resolveTopic` returns a URL.
-- **Phase 2 — Desktop wizard.** The six-step UI wired to the navigation
-  commands, showing the persisted breadcrumb first, feeding selected URLs
-  into the existing review/confirm flow.
+- **Phase 2 — Desktop wizard.** Done. The six-step UI (`desktop/src/curriculum-wizard.ts`)
+  wired to the navigation commands, showing the persisted breadcrumb first,
+  feeding selected URLs into the existing source-import/preview/confirm flow.
+  Per Phase 2 scope, a resolved topic's URL still covers its whole
+  subject/track curriculum page; the topic step tells the learner this
+  (see the topic-scope clarification below) — precise per-topic text
+  extraction remains Phase 3.
 - **Phase 3 — Live content + provenance.** Fetch the selected topic's full
   specified text through the safe web adapter, batch multi-topic proposals
   into one review, dedup, and link precise provenance.

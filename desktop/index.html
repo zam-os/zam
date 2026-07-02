@@ -146,6 +146,7 @@
             </p>
           </div>
           <div style="display: flex; gap: 10px; align-items: center;">
+            <button id="btn-content-curriculum-wizard" class="btn secondary-btn btn-sm" type="button">Curriculum Wizard</button>
             <button id="btn-content-import" class="btn secondary-btn btn-sm" type="button">Import Curriculum</button>
             <button id="btn-content-new-card" class="btn primary-btn btn-sm" type="button">New Card</button>
           </div>
@@ -611,6 +612,47 @@
           <div class="modal-actions">
             <button id="btn-import-modal-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
             <button id="btn-import-modal-submit" class="btn primary-btn btn-sm" type="button">Import</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CURRICULUM IMPORT WIZARD MODAL -->
+      <div id="curriculum-wizard-modal-overlay" class="modal-overlay">
+        <div class="modal-box" style="max-width: 620px; display: flex; flex-direction: column; max-height: 85vh;">
+          <div class="modal-header">
+            <h3 id="lbl-curriculum-wizard-title">Curriculum Wizard</h3>
+          </div>
+          <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px;">
+            <div id="curriculum-wizard-breadcrumb" class="wizard-breadcrumb"></div>
+
+            <div id="curriculum-wizard-resume-banner" class="wizard-resume-banner hidden">
+              <p id="lbl-curriculum-wizard-resume-text"></p>
+              <div style="display: flex; gap: 8px;">
+                <button id="btn-curriculum-wizard-resume" class="btn primary-btn btn-xs" type="button">Continue</button>
+                <button id="btn-curriculum-wizard-restart" class="btn secondary-btn btn-xs" type="button">Start over</button>
+              </div>
+            </div>
+
+            <div id="curriculum-wizard-step-label" class="wizard-step-label"></div>
+            <div id="curriculum-wizard-topic-note" class="wizard-topic-note hidden"></div>
+            <div id="curriculum-wizard-step-body" class="wizard-step-body"></div>
+
+            <div id="curriculum-wizard-loading" class="wizard-loading hidden">
+              <p id="lbl-curriculum-wizard-loading">Loading…</p>
+            </div>
+            <div id="curriculum-wizard-error" class="wizard-error hidden"></div>
+
+            <div id="curriculum-wizard-progress-container" class="hidden" style="margin-top: 10px;">
+              <div class="modal-impact-title" id="lbl-curriculum-wizard-progress-status" style="color: var(--clr-accent-purple);">Importing…</div>
+              <p style="font-size: 0.85rem; color: var(--clr-text-secondary);" id="lbl-curriculum-wizard-progress-detail">This may take up to a minute depending on your local LLM speed.</p>
+            </div>
+          </div>
+          <div class="modal-actions" style="justify-content: space-between;">
+            <button id="btn-curriculum-wizard-back" class="btn secondary-btn btn-sm" type="button">Back</button>
+            <div style="display: flex; gap: 10px;">
+              <button id="btn-curriculum-wizard-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
+              <button id="btn-curriculum-wizard-next" class="btn primary-btn btn-sm" type="button">Next</button>
+            </div>
           </div>
         </div>
       </div>
