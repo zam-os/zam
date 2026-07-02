@@ -92,6 +92,16 @@ import {
   resolveHarnessExecutable,
 } from "../agent-harness.js";
 import {
+  CURRICULUM_PROVIDERS,
+  type CurriculumBreadcrumb,
+  type CurriculumLevel,
+  type CurriculumSelection,
+  getCurriculumProvider,
+  getLastCurriculumSelection,
+  setLastCurriculumSelection,
+  type TopicNode,
+} from "../curriculum/index.js";
+import {
   type ApiFlavor,
   checkVisionReadiness,
   DEFAULT_LLM_MODEL,
@@ -3294,6 +3304,164 @@ bridgeCommand
         createdCount: result.createdCount,
         ensuredCount: result.linkedCount,
       });
+    });
+  });
+
+// ── zam bridge curriculum-list-providers ────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-list-providers")
+  .description("List registered curriculum providers (JSON)")
+  .action(() => {
+    jsonOut({
+      success: true,
+      providers: CURRICULUM_PROVIDERS.map((provider) => ({
+        id: provider.id,
+        country: provider.country,
+        countryLabel: provider.countryLabel,
+        region: provider.region,
+        regionLabel: provider.regionLabel,
+        label: provider.label,
+      })),
+    });
+  });
+
+// ── zam bridge curriculum-list-level ────────────────────────────────────────
+
+const CURRICULUM_LEVELS: CurriculumLevel[] = [
+  "schoolType",
+  "grade",
+  "subject",
+  "track",
+  "topic",
+];
+
+bridgeCommand
+  .command("curriculum-list-level")
+  .description("List taxonomy options for the next import-wizard step (JSON)")
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption(
+    "--level <level>",
+    `Level to list: ${CURRICULUM_LEVELS.join("|")}`,
+  )
+  .option("--selection <json>", "JSON selection made so far", "{}")
+  .action((opts) => {
+    const provider = getCurriculumProvider(opts.provider);
+    if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+
+    if (!CURRICULUM_LEVELS.includes(opts.level)) {
+      jsonError(
+        `Invalid --level: ${opts.level}. Use one of ${CURRICULUM_LEVELS.join(", ")}.`,
+      );
+    }
+
+    let selection: CurriculumSelection;
+    try {
+      selection = JSON.parse(opts.selection);
+    } catch {
+      jsonError("Invalid --selection JSON");
+      return;
+    }
+
+    const level = opts.level as CurriculumLevel;
+    if (level === "schoolType") {
+      jsonOut({ success: true, options: provider.listSchoolTypes() });
+      return;
+    }
+
+    if (!selection.schoolType) jsonError("selection.schoolType is required");
+    if (level === "grade") {
+      jsonOut({
+        success: true,
+        options: provider.listGrades(selection.schoolType),
+      });
+      return;
+    }
+
+    if (!selection.grade) jsonError("selection.grade is required");
+    if (level === "subject") {
+      jsonOut({
+        success: true,
+        options: provider.listSubjects(selection.schoolType, selection.grade),
+      });
+      return;
+    }
+
+    if (!selection.subject) jsonError("selection.subject is required");
+    if (level === "track") {
+      jsonOut({
+        success: true,
+        options: provider.listTracks(
+          selection.schoolType,
+          selection.grade,
+          selection.subject,
+        ),
+      });
+      return;
+    }
+
+    jsonOut({ success: true, options: provider.listTopics(selection) });
+  });
+
+// ── zam bridge curriculum-resolve-topics ─────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-resolve-topics")
+  .description("Resolve selected curriculum topics to source URLs (JSON)")
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption("--topics <json>", "JSON array of topic nodes to resolve")
+  .action((opts) => {
+    const provider = getCurriculumProvider(opts.provider);
+    if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+
+    let topics: TopicNode[];
+    try {
+      topics = JSON.parse(opts.topics);
+    } catch {
+      jsonError("Invalid --topics JSON");
+      return;
+    }
+
+    const resolved = topics.map((topic) => provider.resolveTopic(topic));
+    jsonOut({ success: true, resolved });
+  });
+
+// ── zam bridge curriculum-get-last-selection ─────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-get-last-selection")
+  .description("Read the learner's last navigated curriculum path (JSON)")
+  .action(async () => {
+    await withDb(async (db) => {
+      const breadcrumb = await getLastCurriculumSelection(db);
+      jsonOut({ success: true, breadcrumb: breadcrumb ?? null });
+    });
+  });
+
+// ── zam bridge curriculum-set-last-selection ─────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-set-last-selection")
+  .description("Persist the learner's last navigated curriculum path (JSON)")
+  .requiredOption(
+    "--breadcrumb <json>",
+    "JSON breadcrumb: {providerId, schoolType?, grade?, subject?, track?}",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      let breadcrumb: CurriculumBreadcrumb;
+      try {
+        breadcrumb = JSON.parse(opts.breadcrumb);
+      } catch {
+        jsonError("Invalid --breadcrumb JSON");
+        return;
+      }
+      if (!breadcrumb.providerId) {
+        jsonError("breadcrumb.providerId is required");
+        return;
+      }
+      await setLastCurriculumSelection(db, breadcrumb);
+      jsonOut({ success: true });
     });
   });
 

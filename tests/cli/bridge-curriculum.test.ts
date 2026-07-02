@@ -1,0 +1,205 @@
+import { execFileSync } from "node:child_process";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+
+describe("bridge curriculum-* commands", () => {
+  let tempHome: string;
+  let tempCwd: string;
+  let cliPath: string;
+
+  beforeEach(() => {
+    tempHome = mkdtempSync(join(tmpdir(), "zam-bridge-curriculum-home-"));
+    tempCwd = mkdtempSync(join(tmpdir(), "zam-bridge-curriculum-cwd-"));
+    cliPath = join(process.cwd(), "dist", "cli", "index.js");
+  });
+
+  afterEach(() => {
+    for (const dir of [tempHome, tempCwd]) {
+      try {
+        rmSync(dir, { recursive: true, force: true });
+      } catch {
+        // best effort
+      }
+    }
+  });
+
+  function runBridge(args: string[]): unknown {
+    const env = { ...process.env, USERPROFILE: tempHome, HOME: tempHome };
+    const out = execFileSync("node", [cliPath, "bridge", ...args], {
+      env,
+      cwd: tempCwd,
+      encoding: "utf-8",
+    });
+    return JSON.parse(out);
+  }
+
+  it("lists the registered LehrplanPLUS Bayern provider", () => {
+    const result = runBridge(["curriculum-list-providers"]) as {
+      success: boolean;
+      providers: Array<{ id: string; country: string; region: string }>;
+    };
+    expect(result.success).toBe(true);
+    expect(result.providers).toContainEqual({
+      id: "lehrplanplus-bayern",
+      country: "DE",
+      countryLabel: "Deutschland",
+      region: "BY",
+      regionLabel: "Bayern",
+      label: "LehrplanPLUS (Bayern)",
+    });
+  });
+
+  it("walks all six wizard levels down to a concrete Lernbereich", () => {
+    const schoolTypes = runBridge([
+      "curriculum-list-level",
+      "--provider",
+      "lehrplanplus-bayern",
+      "--level",
+      "schoolType",
+    ]) as { success: boolean; options: Array<{ id: string }> };
+    expect(schoolTypes.options.map((o) => o.id)).toContain("realschule");
+
+    const grades = runBridge([
+      "curriculum-list-level",
+      "--provider",
+      "lehrplanplus-bayern",
+      "--level",
+      "grade",
+      "--selection",
+      JSON.stringify({ schoolType: "realschule" }),
+    ]) as { options: Array<{ id: string }> };
+    expect(grades.options.map((o) => o.id)).toContain("9");
+
+    const subjects = runBridge([
+      "curriculum-list-level",
+      "--provider",
+      "lehrplanplus-bayern",
+      "--level",
+      "subject",
+      "--selection",
+      JSON.stringify({ schoolType: "realschule", grade: "9" }),
+    ]) as { options: Array<{ id: string }> };
+    expect(subjects.options.map((o) => o.id)).toContain("mathematik");
+
+    const tracks = runBridge([
+      "curriculum-list-level",
+      "--provider",
+      "lehrplanplus-bayern",
+      "--level",
+      "track",
+      "--selection",
+      JSON.stringify({
+        schoolType: "realschule",
+        grade: "9",
+        subject: "mathematik",
+      }),
+    ]) as { options: Array<{ id: string; label: string }> };
+    expect(tracks.options).toEqual([
+      { id: "wpfg1", label: "Mathematik 9 (I)" },
+      { id: "wpfg2-3", label: "Mathematik 9 (II/III)" },
+    ]);
+
+    const topics = runBridge([
+      "curriculum-list-level",
+      "--provider",
+      "lehrplanplus-bayern",
+      "--level",
+      "topic",
+      "--selection",
+      JSON.stringify({
+        schoolType: "realschule",
+        grade: "9",
+        subject: "mathematik",
+        track: "wpfg1",
+      }),
+    ]) as { options: Array<{ id: string; label: string }> };
+    expect(topics.options).toHaveLength(8);
+    expect(topics.options[0]).toMatchObject({ label: "Reelle Zahlen" });
+  });
+
+  it("resolves selected topics to their LehrplanPLUS source URLs (batch)", () => {
+    const topics = runBridge([
+      "curriculum-list-level",
+      "--provider",
+      "lehrplanplus-bayern",
+      "--level",
+      "topic",
+      "--selection",
+      JSON.stringify({
+        schoolType: "realschule",
+        grade: "9",
+        subject: "deutsch",
+      }),
+    ]) as { options: Array<{ id: string; label: string; sourceRef: string }> };
+
+    const resolved = runBridge([
+      "curriculum-resolve-topics",
+      "--provider",
+      "lehrplanplus-bayern",
+      "--topics",
+      JSON.stringify(topics.options.slice(0, 2)),
+    ]) as {
+      success: boolean;
+      resolved: Array<{ provider: string; topicId: string; uri: string }>;
+    };
+
+    expect(resolved.resolved).toHaveLength(2);
+    expect(resolved.resolved[0].topicId).toBe("realschule|9|deutsch#lb1");
+    expect(resolved.resolved[0].uri).toBe(resolved.resolved[1].uri);
+    expect(resolved.resolved[0].uri).toContain(
+      "/schulart/realschule/jgs/9/fach/deutsch/",
+    );
+  });
+
+  it("rejects an unknown provider", () => {
+    expect(() =>
+      runBridge([
+        "curriculum-list-level",
+        "--provider",
+        "nope",
+        "--level",
+        "schoolType",
+      ]),
+    ).toThrow();
+  });
+
+  it("round-trips the last navigated breadcrumb through the bridge", () => {
+    const before = runBridge(["curriculum-get-last-selection"]) as {
+      success: boolean;
+      breadcrumb: unknown;
+    };
+    expect(before.breadcrumb).toBeNull();
+
+    const setResult = runBridge([
+      "curriculum-set-last-selection",
+      "--breadcrumb",
+      JSON.stringify({
+        providerId: "lehrplanplus-bayern",
+        schoolType: "realschule",
+        grade: "9",
+        subject: "mathematik",
+        track: "wpfg1",
+      }),
+    ]) as { success: boolean };
+    expect(setResult.success).toBe(true);
+
+    const after = runBridge(["curriculum-get-last-selection"]) as {
+      breadcrumb: {
+        providerId: string;
+        schoolType: string;
+        grade: string;
+        subject: string;
+        track: string;
+      };
+    };
+    expect(after.breadcrumb).toEqual({
+      providerId: "lehrplanplus-bayern",
+      schoolType: "realschule",
+      grade: "9",
+      subject: "mathematik",
+      track: "wpfg1",
+    });
+  });
+});
