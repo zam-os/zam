@@ -49,31 +49,37 @@ const WIZARD_KEYS = [
 const REQUIRED_KEYS = [...ISSUE_97_KEYS, ...WIZARD_KEYS];
 
 describe("desktop locale completeness", () => {
-  it.each(["es", "fr", "pt", "zh", "ja"])(
-    "contains the Studio and curriculum-wizard keys in %s",
-    (locale) => {
-      expect(Object.keys(TRANSLATION_PACKS[locale])).toEqual(
-        expect.arrayContaining(REQUIRED_KEYS),
-      );
-    },
-  );
+  it.each([
+    "es",
+    "fr",
+    "pt",
+    "zh",
+    "ja",
+  ])("contains the Studio and curriculum-wizard keys in %s", (locale) => {
+    expect(Object.keys(TRANSLATION_PACKS[locale])).toEqual(
+      expect.arrayContaining(REQUIRED_KEYS),
+    );
+  });
 
-  it.each(["en", "de"])(
-    "contains the Studio and curriculum-wizard keys in reference locale %s",
-    (locale) => {
-      const mainSource = readFileSync(
-        join(process.cwd(), "desktop", "src", "main.ts"),
-        "utf8",
-      );
-      const start = mainSource.indexOf(`  ${locale}: {`);
-      const endMarker = locale === "en" ? "\n  de: {" : "\n  // es, fr";
-      const localeSource = mainSource.slice(start, mainSource.indexOf(endMarker, start));
+  it.each([
+    "en",
+    "de",
+  ])("contains the Studio and curriculum-wizard keys in reference locale %s", (locale) => {
+    const mainSource = readFileSync(
+      join(process.cwd(), "desktop", "src", "main.ts"),
+      "utf8",
+    );
+    const start = mainSource.indexOf(`  ${locale}: {`);
+    const endMarker = locale === "en" ? "\n  de: {" : "\n  // es, fr";
+    const localeSource = mainSource.slice(
+      start,
+      mainSource.indexOf(endMarker, start),
+    );
 
-      for (const key of REQUIRED_KEYS) {
-        expect(localeSource).toContain(`    ${key}:`);
-      }
-    },
-  );
+    for (const key of REQUIRED_KEYS) {
+      expect(localeSource).toContain(`    ${key}:`);
+    }
+  });
 
   it("does not retain the English literals reported in issue #97", () => {
     const studioSource = readFileSync(

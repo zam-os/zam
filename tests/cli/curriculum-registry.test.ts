@@ -27,6 +27,7 @@ describe("curriculum provider registry", () => {
   it("lists regions within a country, naming the serving provider (wizard step 2)", () => {
     expect(listCurriculumRegions("DE")).toEqual([
       { id: "BY", label: "Bayern", providerId: "lehrplanplus-bayern" },
+      { id: "BW", label: "Baden-Württemberg", providerId: "bildungsplan-bw" },
     ]);
     expect(listCurriculumRegions("FR")).toEqual([]);
   });

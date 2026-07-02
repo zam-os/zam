@@ -1,17 +1,17 @@
 import fs from "node:fs";
 import path from "node:path";
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
+import { bildungsplanBwProvider } from "../../src/cli/curriculum/providers/bildungsplan-bw/index.js";
 import { lehrplanplusBayernProvider as provider } from "../../src/cli/curriculum/providers/lehrplanplus-bayern/index.js";
 import { openDatabase } from "../../src/kernel/index.js";
+import { ensureCard } from "../../src/kernel/models/card.ts";
 import {
   createToken,
   getTokenById,
   getTokenBySlug,
-  listPersonalCards,
-  listTokens,
   importCurriculumCards,
+  listPersonalCards,
 } from "../../src/kernel/models/token.ts";
-import { ensureCard } from "../../src/kernel/models/card.ts";
 
 describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
   let deutschHtml: string;
@@ -19,10 +19,21 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
   let englischHtml: string;
 
   beforeAll(() => {
-    const fixturesDir = path.resolve("tests/fixtures/curriculum/lehrplanplus-bayern");
-    deutschHtml = fs.readFileSync(path.join(fixturesDir, "deutsch.html"), "utf-8");
-    mathematikHtml = fs.readFileSync(path.join(fixturesDir, "mathematik-wpfg1.html"), "utf-8");
-    englischHtml = fs.readFileSync(path.join(fixturesDir, "englisch.html"), "utf-8");
+    const fixturesDir = path.resolve(
+      "tests/fixtures/curriculum/lehrplanplus-bayern",
+    );
+    deutschHtml = fs.readFileSync(
+      path.join(fixturesDir, "deutsch.html"),
+      "utf-8",
+    );
+    mathematikHtml = fs.readFileSync(
+      path.join(fixturesDir, "mathematik-wpfg1.html"),
+      "utf-8",
+    );
+    englischHtml = fs.readFileSync(
+      path.join(fixturesDir, "englisch.html"),
+      "utf-8",
+    );
   });
 
   it("extracts specific Lernbereich texts from Deutsch HTML fixture", () => {
@@ -30,7 +41,7 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
       "realschule|9|deutsch#lb1",
       "realschule|9|deutsch#lb2",
     ]);
-    
+
     expect(extracted["realschule|9|deutsch#lb1"]).toBeDefined();
     expect(extracted["realschule|9|deutsch#lb2"]).toBeDefined();
 
@@ -48,7 +59,9 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
 
     // Check content of Lernbereich 2: Lesen – mit Texten und weiteren Medien umgehen
     expect(lb2Content).toContain("Lernbereich 2:");
-    expect(lb2Content).toContain("Lesen – mit Texten und weiteren Medien umgehen");
+    expect(lb2Content).toContain(
+      "Lesen – mit Texten und weiteren Medien umgehen",
+    );
     expect(lb2Content).toContain("Lesetechniken und -strategien anwenden");
     expect(lb2Content).not.toContain("Lernbereich 1:");
   });
@@ -69,11 +82,15 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
     expect(lb1Content).toContain("Lernbereich 1:");
     expect(lb1Content).toContain("Reelle Zahlen");
     expect(lb1Content).not.toContain("Lernbereich 7:");
-    expect(lb1Content).not.toContain("Quadratische Funktionen und quadratische Gleichungen");
+    expect(lb1Content).not.toContain(
+      "Quadratische Funktionen und quadratische Gleichungen",
+    );
 
     // Lernbereich 7: Quadratische Funktionen und quadratische Gleichungen
     expect(lb7Content).toContain("Lernbereich 7:");
-    expect(lb7Content).toContain("Quadratische Funktionen und quadratische Gleichungen");
+    expect(lb7Content).toContain(
+      "Quadratische Funktionen und quadratische Gleichungen",
+    );
     expect(lb7Content).not.toContain("Lernbereich 1:");
   });
 
@@ -112,7 +129,8 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
       domain: "Math",
       provider: "lehrplanplus-bayern",
       topic_id: "realschule|9|mathematik|wpfg1#lb1",
-      source_link: "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/9/fach/mathematik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=wpfg1#realschule|9|mathematik|wpfg1#lb1",
+      source_link:
+        "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/9/fach/mathematik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=wpfg1#realschule|9|mathematik|wpfg1#lb1",
     });
 
     expect(token.provider).toBe("lehrplanplus-bayern");
@@ -128,7 +146,11 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
     expect(byId?.topic_id).toBe("realschule|9|mathematik|wpfg1#lb1");
 
     // Test fallback resolution when columns are empty
-    await db.prepare("UPDATE tokens SET provider = NULL, topic_id = NULL WHERE id = ?").run(token.id);
+    await db
+      .prepare(
+        "UPDATE tokens SET provider = NULL, topic_id = NULL WHERE id = ?",
+      )
+      .run(token.id);
 
     const fallbackSlug = await getTokenBySlug(db, "test-token");
     expect(fallbackSlug?.provider).toBe("lehrplanplus-bayern");
@@ -171,5 +193,49 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
     expect(res2.ensuredCount).toBe(0);
 
     await db.close();
+  });
+
+  describe("Baden-Württemberg (Bildungsplan BW) Provider", () => {
+    let bwMathHtml: string;
+
+    beforeAll(() => {
+      const fixturesDir = path.resolve(
+        "tests/fixtures/curriculum/bildungsplan-bw",
+      );
+      bwMathHtml = fs.readFileSync(
+        path.join(fixturesDir, "mathematik-gym-10.html"),
+        "utf-8",
+      );
+    });
+
+    it("extracts specific topics from Baden-Württemberg math Klasse 10 HTML fixture", () => {
+      const extracted = bildungsplanBwProvider.extractTopics!(bwMathHtml, [
+        "gymnasium|10|mathematik#leitidee-zahl",
+        "gymnasium|10|mathematik#leitidee-raum",
+      ]);
+
+      expect(extracted["gymnasium|10|mathematik#leitidee-zahl"]).toBeDefined();
+      expect(extracted["gymnasium|10|mathematik#leitidee-raum"]).toBeDefined();
+
+      const zahlContent = extracted["gymnasium|10|mathematik#leitidee-zahl"];
+      const raumContent = extracted["gymnasium|10|mathematik#leitidee-raum"];
+
+      expect(zahlContent).toContain("Leitidee Zahl - Variable - Operation");
+      expect(zahlContent).toContain("Potenzfunktionen");
+      expect(zahlContent).not.toContain("Vektoren im dreidimensionalen Raum");
+
+      expect(raumContent).toContain("Leitidee Raum und Form");
+      expect(raumContent).toContain("Vektoren im dreidimensionalen Raum");
+      expect(raumContent).not.toContain("Potenzfunktionen");
+    });
+
+    it("gracefully handles unknown topics", () => {
+      const extracted = bildungsplanBwProvider.extractTopics!(bwMathHtml, [
+        "gymnasium|10|mathematik#nonexistent-topic-id",
+      ]);
+      expect(
+        extracted["gymnasium|10|mathematik#nonexistent-topic-id"],
+      ).toBeUndefined();
+    });
   });
 });

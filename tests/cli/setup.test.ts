@@ -17,8 +17,8 @@ import {
 } from "../../src/cli/commands/setup.js";
 import {
   parseSetupAgents,
-  writeAgentsMd,
   wireSkills,
+  writeAgentsMd,
   writeCopilotInstructions,
 } from "../../src/cli/provisioning/index.js";
 import {
@@ -64,18 +64,18 @@ describe("setup command helpers", () => {
   });
 
   it("never replaces the package skill source with a self-link", () => {
-    const [result] = wireSkills(
-      process.cwd(),
-      parseSetupAgents("codex"),
-      { quiet: true },
-    );
+    const [result] = wireSkills(process.cwd(), parseSetupAgents("codex"), {
+      quiet: true,
+    });
 
     expect(result).toMatchObject({
       action: "skipped",
       reason: "source-directory",
     });
     expect(
-      lstatSync(join(process.cwd(), ".agents", "skills", "zam")).isSymbolicLink(),
+      lstatSync(
+        join(process.cwd(), ".agents", "skills", "zam"),
+      ).isSymbolicLink(),
     ).toBe(false);
   });
 
@@ -170,9 +170,9 @@ describe("setup command helpers", () => {
       expect(
         existsSync(join(cwd, ".agents", "skills", "zam", "SKILL.md")),
       ).toBe(false);
-      expect(
-        existsSync(join(cwd, ".agent", "skills", "zam", "SKILL.md")),
-      ).toBe(false);
+      expect(existsSync(join(cwd, ".agent", "skills", "zam", "SKILL.md"))).toBe(
+        false,
+      );
     } finally {
       rmSync(cwd, { recursive: true, force: true });
     }
@@ -220,9 +220,7 @@ describe("setup command helpers", () => {
         provider: "local",
         location: "C:\\Users\\example\\.zam\\zam.db",
       }),
-    ).toBe(
-      "ZAM database at C:\\Users\\example\\.zam\\zam.db (local SQLite)",
-    );
+    ).toBe("ZAM database at C:\\Users\\example\\.zam\\zam.db (local SQLite)");
   });
 
   it("formats Turso remote database initialization without implying local state", () => {
@@ -232,9 +230,7 @@ describe("setup command helpers", () => {
         provider: "remote",
         location: "libsql://zam-example.turso.io",
       }),
-    ).toBe(
-      "ZAM database via Turso remote at libsql://zam-example.turso.io",
-    );
+    ).toBe("ZAM database via Turso remote at libsql://zam-example.turso.io");
   });
 
   it("activates legacy machine-local provider config without moving it into shared settings", async () => {

@@ -25,7 +25,9 @@ describe("selectWindowsExecutable", () => {
 
   it("matches PATHEXT case-insensitively", () => {
     const results = ["C:\\tools\\foo.CMD"];
-    expect(selectWindowsExecutable(results, pathext)).toBe("C:\\tools\\foo.CMD");
+    expect(selectWindowsExecutable(results, pathext)).toBe(
+      "C:\\tools\\foo.CMD",
+    );
   });
 
   it("falls back to the first result when none match PATHEXT", () => {

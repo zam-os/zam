@@ -98,7 +98,8 @@ describe("integration: token → card → review flow", () => {
       await confirmSourceImport(db, "thomas", sourceId, [
         {
           question: "Was ist eine Quadratwurzel?",
-          concept: "Die nichtnegative Zahl, deren Quadrat den Radikanden ergibt.",
+          concept:
+            "Die nichtnegative Zahl, deren Quadrat den Radikanden ergibt.",
           domain: "mathematik",
           bloom_level: 2,
           symbiosis_mode: "copilot",

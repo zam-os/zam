@@ -139,9 +139,7 @@ describe("install config", () => {
 
     const remaining = removeConfiguredWorkspace("family", path);
 
-    expect(remaining).toEqual([
-      { id: "team", kind: "team", path: "C:\\team" },
-    ]);
+    expect(remaining).toEqual([{ id: "team", kind: "team", path: "C:\\team" }]);
     expect(getConfiguredWorkspaces(path)).toEqual(remaining);
   });
 
@@ -184,18 +182,14 @@ describe("install config", () => {
 
     const remaining = removeConfiguredWorkspace("family", path);
 
-    expect(remaining).toEqual([
-      { id: "team", kind: "team", path: "C:\\team" },
-    ]);
+    expect(remaining).toEqual([{ id: "team", kind: "team", path: "C:\\team" }]);
     expect(getActiveWorkspaceId(path)).toBe("team");
     expect(getActiveWorkspace(path)?.path).toBe("C:\\team");
   });
 
   it("detects file-sync providers from a folder path", () => {
     expect(
-      detectSyncProvider(
-        "/Users/x/Library/CloudStorage/OneDrive-Personal/zam",
-      ),
+      detectSyncProvider("/Users/x/Library/CloudStorage/OneDrive-Personal/zam"),
     ).toBe("OneDrive");
     expect(detectSyncProvider("/Users/x/Dropbox/zam")).toBe("Dropbox");
     expect(

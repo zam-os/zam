@@ -98,13 +98,7 @@ describe("LLM config release acceptance (bridge)", () => {
 
       // 2) Store API key (write-only)
       outputs.push(
-        bridge([
-          "provider-set-key",
-          "--ref",
-          "deepseek-work",
-          "--key",
-          SECRET,
-        ]),
+        bridge(["provider-set-key", "--ref", "deepseek-work", "--key", SECRET]),
       );
 
       // 3) Add local provider (vision candidate)
@@ -130,11 +124,7 @@ describe("LLM config release acceptance (bridge)", () => {
       // 4) List + cloud hint (Studio editor load)
       outputs.push(bridge(["provider-config-list", "--scope", "machine"]));
       outputs.push(
-        bridge([
-          "cloud-model-hint",
-          "--url",
-          "https://api.deepseek.com/v1",
-        ]),
+        bridge(["cloud-model-hint", "--url", "https://api.deepseek.com/v1"]),
       );
 
       // 5) Bind recall to cloud provider
@@ -207,9 +197,7 @@ describe("LLM config release acceptance (bridge)", () => {
       outputs.push(bridge(["provider-status"]));
 
       // 9) Clear key
-      outputs.push(
-        bridge(["provider-clear-key", "--ref", "deepseek-work"]),
-      );
+      outputs.push(bridge(["provider-clear-key", "--ref", "deepseek-work"]));
       outputs.push(bridge(["provider-config-list", "--scope", "machine"]));
 
       allBridgeOutputsContainSecret(outputs);
@@ -240,7 +228,9 @@ describe("LLM config release acceptance (bridge)", () => {
 
       // Keys only in credentials store
       expect(existsSync(credentialsPath)).toBe(true);
-      const credentials = JSON.parse(readFileSync(credentialsPath, "utf-8")) as {
+      const credentials = JSON.parse(
+        readFileSync(credentialsPath, "utf-8"),
+      ) as {
         llmProviders?: Record<string, { apiKey: string }>;
       };
       expect(credentials.llmProviders?.["deepseek-work"]).toBeUndefined();
@@ -296,13 +286,7 @@ describe("LLM config release acceptance (bridge)", () => {
         "qwen3.5:4b",
         "--local",
       ]);
-      bridge([
-        "provider-set-key",
-        "--ref",
-        "local-test",
-        "--key",
-        SECRET,
-      ]);
+      bridge(["provider-set-key", "--ref", "local-test", "--key", SECRET]);
 
       try {
         const result = bridge([

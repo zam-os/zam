@@ -4,16 +4,18 @@ import { applyObserverListChange } from "../../src/cli/commands/observer.js";
 describe("applyObserverListChange", () => {
   it("adds a normalized entry to an empty list", () => {
     expect(applyObserverListChange("", "Calculator", "add")).toBe("calculator");
-    expect(applyObserverListChange(undefined, "Notepad", "add")).toBe("notepad");
+    expect(applyObserverListChange(undefined, "Notepad", "add")).toBe(
+      "notepad",
+    );
   });
 
   it("appends without duplicating (case-insensitive)", () => {
     expect(applyObserverListChange("calculator", "notepad", "add")).toBe(
       "calculator,notepad",
     );
-    expect(applyObserverListChange("calculator,notepad", "Calculator", "add")).toBe(
-      "calculator,notepad",
-    );
+    expect(
+      applyObserverListChange("calculator,notepad", "Calculator", "add"),
+    ).toBe("calculator,notepad");
   });
 
   it("removes an entry", () => {

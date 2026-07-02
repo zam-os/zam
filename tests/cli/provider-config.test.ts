@@ -79,7 +79,10 @@ describe("bindRoleProviders / rolesReferencing", () => {
       recall: { primary: "deepseek", fallback: "mimo" },
       text: { primary: "deepseek" },
     };
-    expect(rolesReferencing(roles, "mimo").sort()).toEqual(["recall", "vision"]);
+    expect(rolesReferencing(roles, "mimo").sort()).toEqual([
+      "recall",
+      "vision",
+    ]);
     expect(rolesReferencing(roles, "deepseek").sort()).toEqual([
       "recall",
       "text",
@@ -148,7 +151,12 @@ describe("buildProviderListing", () => {
 
   it("honors an explicit flavor over URL inference", () => {
     const rows = buildProviderListing(
-      { weird: { url: "https://api.anthropic.com", apiFlavor: "chat-completions" } },
+      {
+        weird: {
+          url: "https://api.anthropic.com",
+          apiFlavor: "chat-completions",
+        },
+      },
       () => false,
     );
     expect(rows[0].apiFlavor).toBe("chat-completions");

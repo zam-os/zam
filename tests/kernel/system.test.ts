@@ -22,7 +22,9 @@ describe("System Profiling & Tool Detections", () => {
   describe("getSystemProfile", () => {
     // Hardware probing shells out (WMI on Windows); cold CI runners can take
     // well over the default 5s — seen at 7s on the windows-11-arm runner.
-    it("returns a valid profile matching OS structure", { timeout: 30_000 }, () => {
+    it("returns a valid profile matching OS structure", {
+      timeout: 30_000,
+    }, () => {
       const profile = getSystemProfile();
       expect(profile).toHaveProperty("os");
       expect(profile).toHaveProperty("arch");

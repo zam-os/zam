@@ -8,8 +8,8 @@ import {
   resolveAllBeliefPaths,
   resolveAllGoalPaths,
   resolveRepoPath,
-  setSetting,
   setActiveWorkspaceId,
+  setSetting,
   upsertConfiguredWorkspace,
 } from "../../src/kernel/index.js";
 

@@ -1,9 +1,11 @@
+import { bildungsplanBwProvider } from "./providers/bildungsplan-bw/index.js";
 import { lehrplanplusBayernProvider } from "./providers/lehrplanplus-bayern/index.js";
 import type { CurriculumProvider, TaxonomyNode } from "./types.js";
 
 /** Registered curriculum providers. Add a new plugin here to extend it. */
 export const CURRICULUM_PROVIDERS: CurriculumProvider[] = [
   lehrplanplusBayernProvider,
+  bildungsplanBwProvider,
 ];
 
 export function getCurriculumProvider(

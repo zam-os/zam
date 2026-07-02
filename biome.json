@@ -27,6 +27,6 @@
     }
   },
   "files": {
-    "includes": ["**", "!**/dist/**", "!**/PoC/**"]
+    "includes": ["**", "!**/dist/**", "!**/PoC/**", "!**/fixtures/**"]
   }
 }

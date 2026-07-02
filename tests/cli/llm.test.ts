@@ -475,7 +475,10 @@ describe("LLM client utilities (CLI layer)", () => {
         ? new Response(
             JSON.stringify({
               choices: [
-                { message: { content: unclosedArray }, finish_reason: "length" },
+                {
+                  message: { content: unclosedArray },
+                  finish_reason: "length",
+                },
               ],
             }),
           )
@@ -536,26 +539,28 @@ describe("LLM client utilities (CLI layer)", () => {
     const retriedCurriculumChunks: string[] = [];
 
     const originalFetch = global.fetch;
-    const getChatCallCount = mockReadinessAndChatFetch((bodyText, callIndex) => {
-      if (callIndex === 1) {
-        // Simulate a model whose context window left no room for a reply.
-        return truncatedResponse();
-      }
-      const body = JSON.parse(bodyText);
-      const userPrompt = body.messages[1].content as string;
-      const prefix = "Curriculum Text to Parse:\n";
-      const curriculumEnd = userPrompt.lastIndexOf("\n\nTarget Category:");
-      retriedCurriculumChunks.push(
-        userPrompt.slice(prefix.length, curriculumEnd),
-      );
-      return new Response(
-        JSON.stringify({
-          choices: [
-            { message: { content: mockResponseText }, finish_reason: "stop" },
-          ],
-        }),
-      );
-    });
+    const getChatCallCount = mockReadinessAndChatFetch(
+      (bodyText, callIndex) => {
+        if (callIndex === 1) {
+          // Simulate a model whose context window left no room for a reply.
+          return truncatedResponse();
+        }
+        const body = JSON.parse(bodyText);
+        const userPrompt = body.messages[1].content as string;
+        const prefix = "Curriculum Text to Parse:\n";
+        const curriculumEnd = userPrompt.lastIndexOf("\n\nTarget Category:");
+        retriedCurriculumChunks.push(
+          userPrompt.slice(prefix.length, curriculumEnd),
+        );
+        return new Response(
+          JSON.stringify({
+            choices: [
+              { message: { content: mockResponseText }, finish_reason: "stop" },
+            ],
+          }),
+        );
+      },
+    );
 
     try {
       const cards = await importCurriculumViaLLM(db, longText, "git");
@@ -563,9 +568,9 @@ describe("LLM client utilities (CLI layer)", () => {
       expect(getChatCallCount()).toBeGreaterThan(2);
       expect(cards).toHaveLength(1);
       expect(cards[0].question).toBe("What is git revert?");
-      expect(retriedCurriculumChunks.every((chunk) => chunk.length <= 3_000)).toBe(
-        true,
-      );
+      expect(
+        retriedCurriculumChunks.every((chunk) => chunk.length <= 3_000),
+      ).toBe(true);
       // Context-window recovery must cover the entire authoritative source,
       // not silently keep only its first chunk.
       expect(retriedCurriculumChunks.join("")).toBe(longText);
@@ -592,9 +597,9 @@ describe("LLM client utilities (CLI layer)", () => {
     );
 
     try {
-      await expect(
-        importCurriculumViaLLM(db, longText, "git"),
-      ).rejects.toThrow(/context window/i);
+      await expect(importCurriculumViaLLM(db, longText, "git")).rejects.toThrow(
+        /context window/i,
+      );
       expect(getChatCallCount()).toBe(2);
     } finally {
       global.fetch = originalFetch;
