@@ -436,8 +436,7 @@ function render(): void {
 
   renderBreadcrumb();
   stepLabelEl.textContent = current.label;
-  topicNoteEl.classList.toggle("hidden", current.key !== "topic");
-  if (current.key === "topic") topicNoteEl.textContent = t("wizard_topic_scope_note");
+  topicNoteEl.classList.add("hidden");
   renderStepBody(current);
 
   btnBack.disabled = false;
@@ -532,27 +531,40 @@ async function finishWizard(topicStep: WizardStep): Promise<void> {
   progressContainer.classList.remove("hidden");
 
   try {
-    const resolveRes = await runBridge<{
+    const extractRes = await runBridge<{
       success: boolean;
-      resolved: Array<{ provider: string; topicId: string; uri: string }>;
-    }>("curriculum-resolve-topics", [
+      extracted: Array<{
+        topicId: string;
+        uri: string;
+        sourceId: string;
+        text: string;
+      }>;
+    }>("curriculum-extract-topics", [
       "--provider",
       selection.providerId!,
       "--topics",
       JSON.stringify(chosenTopics),
     ]);
 
-    const uniqueUris = [...new Set(resolveRes.resolved.map((r) => r.uri))];
-    let createdCount = 0;
-    let ensuredCount = 0;
+    if (!extractRes.success || !Array.isArray(extractRes.extracted) || extractRes.extracted.length === 0) {
+      throw new Error("Failed to extract curriculum topic contents.");
+    }
 
-    for (const uri of uniqueUris) {
-      const importRes = await runBridge<{
-        success: boolean;
-        sourceId: string;
-        content: string;
-      }>("personal-source-import", ["--type", "web", "--uri", uri]);
-      if (!importRes.success || !importRes.content) continue;
+    const sourceId = extractRes.extracted[0].sourceId;
+    let allProposals: Array<{
+      question: string;
+      concept: string;
+      domain: string;
+      bloom_level: number;
+      symbiosis_mode: string;
+      excerpt: string;
+      page_number: string | null;
+      provider: string;
+      topic_id: string;
+    }> = [];
+
+    for (const item of extractRes.extracted) {
+      if (!item.text.trim()) continue;
 
       const previewRes = await runBridge<{
         success: boolean;
@@ -566,14 +578,17 @@ async function finishWizard(topicStep: WizardStep): Promise<void> {
         }>;
       }>("personal-card-import-curriculum", [
         "--text",
-        importRes.content,
+        item.text,
         "--domain",
         subjectLabel,
         "--preview",
       ]);
-      if (!previewRes.success || !Array.isArray(previewRes.proposals)) continue;
 
-      const proposals = previewRes.proposals.map((p) => ({
+      if (!previewRes.success || !Array.isArray(previewRes.proposals)) {
+        continue;
+      }
+
+      const mapped = previewRes.proposals.map((p) => ({
         question: p.question,
         concept: p.concept,
         domain: p.domain,
@@ -581,22 +596,33 @@ async function finishWizard(topicStep: WizardStep): Promise<void> {
         symbiosis_mode: p.symbiosis_mode || "none",
         excerpt: p.context || "",
         page_number: null,
+        provider: selection.providerId!,
+        topic_id: item.topicId,
       }));
 
-      const confirmRes = await runBridge<{
-        success: boolean;
-        createdCount: number;
-        ensuredCount: number;
-      }>("personal-source-confirm-import", [
-        "--sourceId",
-        importRes.sourceId,
-        "--proposals",
-        JSON.stringify(proposals),
-      ]);
-      if (confirmRes.success) {
-        createdCount += confirmRes.createdCount;
-        ensuredCount += confirmRes.ensuredCount;
-      }
+      allProposals = allProposals.concat(mapped);
+    }
+
+    if (allProposals.length === 0) {
+      throw new Error("No cards were generated from the selected topics.");
+    }
+
+    const confirmRes = await runBridge<{
+      success: boolean;
+      createdCount: number;
+      ensuredCount: number;
+    }>("personal-source-confirm-import", [
+      "--sourceId",
+      sourceId,
+      "--proposals",
+      JSON.stringify(allProposals),
+    ]);
+
+    let createdCount = 0;
+    let ensuredCount = 0;
+    if (confirmRes.success) {
+      createdCount = confirmRes.createdCount;
+      ensuredCount = confirmRes.ensuredCount;
     }
 
     hideCurriculumWizard();

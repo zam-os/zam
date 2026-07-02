@@ -81,6 +81,8 @@ import {
   type WorkspaceKind,
 } from "../../kernel/index.js";
 import {
+  cleanHtml,
+  isSafeUrl,
   readImageOCR,
   readLocalFile,
   readWebLink,
@@ -3443,6 +3445,124 @@ bridgeCommand
 
     const resolved = topics.map((topic) => provider.resolveTopic(topic));
     jsonOut({ success: true, resolved });
+  });
+
+async function fetchRawHtml(url: string): Promise<string> {
+  if (!(await isSafeUrl(url))) {
+    throw new Error(`Access denied to unsafe target URL: ${url}`);
+  }
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  try {
+    const res = await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "ZAM-Content-Studio/0.6.1",
+      },
+    });
+    if (!res.ok) {
+      throw new Error(`Web server responded with status ${res.status}`);
+    }
+    const contentType = res.headers.get("content-type") || "";
+    if (
+      !contentType.includes("text/html") &&
+      !contentType.includes("application/xhtml+xml")
+    ) {
+      throw new Error(`Unsupported content type: ${contentType}`);
+    }
+    return await res.text();
+  } catch (err) {
+    if (err instanceof Error && err.name === "AbortError") {
+      throw new Error("Connection request timed out after 10 seconds");
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+// ── zam bridge curriculum-extract-topics ─────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-extract-topics")
+  .description(
+    "Fetch and extract specific texts for selected curriculum topics (JSON)",
+  )
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption("--topics <json>", "JSON array of selected topic nodes")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const provider = getCurriculumProvider(opts.provider);
+      if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+
+      let topics: TopicNode[];
+      try {
+        topics = JSON.parse(opts.topics);
+      } catch {
+        jsonError("Invalid --topics JSON");
+        return;
+      }
+
+      // Group topics by their resolved source URI
+      const topicsByUri = new Map<string, TopicNode[]>();
+      for (const topic of topics) {
+        const resolved = provider.resolveTopic(topic);
+        const list = topicsByUri.get(resolved.uri) || [];
+        list.push(topic);
+        topicsByUri.set(resolved.uri, list);
+      }
+
+      const extracted: Array<{
+        topicId: string;
+        uri: string;
+        sourceId: string;
+        text: string;
+      }> = [];
+
+      for (const [uri, uriTopics] of topicsByUri.entries()) {
+        const rawHtml = await fetchRawHtml(uri);
+
+        let extractedTexts: Record<string, string> = {};
+        if (provider.extractTopics) {
+          const fullTopicIds = uriTopics.map((t) => `${t.sourceRef}#${t.id}`);
+          extractedTexts = provider.extractTopics(rawHtml, fullTopicIds);
+        } else {
+          const cleanText = cleanHtml(rawHtml);
+          for (const t of uriTopics) {
+            extractedTexts[`${t.sourceRef}#${t.id}`] = cleanText;
+          }
+        }
+
+        const pageCleanedText = cleanHtml(rawHtml);
+        const sourceId = ulid();
+        await db
+          .prepare(
+            `INSERT INTO sources (id, type, uri, content)
+             VALUES (?, 'web', ?, ?)
+             ON CONFLICT(uri) DO UPDATE SET
+               type = excluded.type,
+               content = excluded.content`,
+          )
+          .run(sourceId, uri, pageCleanedText);
+
+        const record = (await db
+          .prepare("SELECT id FROM sources WHERE uri = ?")
+          .get(uri)) as { id: string };
+
+        for (const topic of uriTopics) {
+          const resolved = provider.resolveTopic(topic);
+          const text = extractedTexts[resolved.topicId] || "";
+          extracted.push({
+            topicId: resolved.topicId,
+            uri,
+            sourceId: record.id,
+            text,
+          });
+        }
+      }
+
+      jsonOut({ success: true, extracted });
+    });
   });
 
 // ── zam bridge curriculum-get-last-selection ─────────────────────────────────

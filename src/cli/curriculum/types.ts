@@ -64,4 +64,5 @@ export interface CurriculumProvider {
   ): TaxonomyNode[];
   listTopics(selection: CurriculumSelection): TopicNode[];
   resolveTopic(topic: TopicNode): ResolvedSource;
+  extractTopics?(html: string, topicIds: string[]): Record<string, string>;
 }
