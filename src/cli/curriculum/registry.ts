@@ -1,11 +1,37 @@
+import { bildungsplanBremenProvider } from "./providers/bildungsplan-bremen/index.js";
 import { bildungsplanBwProvider } from "./providers/bildungsplan-bw/index.js";
+import { bildungsplanHamburgProvider } from "./providers/bildungsplan-hamburg/index.js";
+import { fachanforderungenShProvider } from "./providers/fachanforderungen-sh/index.js";
+import { kerncurriculumHessenProvider } from "./providers/kerncurriculum-hessen/index.js";
+import { kerncurriculumNiedersachsenProvider } from "./providers/kerncurriculum-niedersachsen/index.js";
+import { kernlehrplanNrwProvider } from "./providers/kernlehrplan-nrw/index.js";
+import { lehrplaeneRpProvider } from "./providers/lehrplaene-rp/index.js";
+import { lehrplanSaarlandProvider } from "./providers/lehrplan-saarland/index.js";
+import { lehrplanSachsenProvider } from "./providers/lehrplan-sachsen/index.js";
+import { lehrplanThueringenProvider } from "./providers/lehrplan-thueringen/index.js";
 import { lehrplanplusBayernProvider } from "./providers/lehrplanplus-bayern/index.js";
+import { rahmenlehrplanBerlinBrandenburgProvider } from "./providers/rahmenlehrplan-berlin-brandenburg/index.js";
+import { rahmenplanMvProvider } from "./providers/rahmenplan-mv/index.js";
+import { rahmenrichtlinienStProvider } from "./providers/rahmenrichtlinien-st/index.js";
 import type { CurriculumProvider, TaxonomyNode } from "./types.js";
 
 /** Registered curriculum providers. Add a new plugin here to extend it. */
 export const CURRICULUM_PROVIDERS: CurriculumProvider[] = [
   lehrplanplusBayernProvider,
   bildungsplanBwProvider,
+  kernlehrplanNrwProvider,
+  kerncurriculumHessenProvider,
+  kerncurriculumNiedersachsenProvider,
+  lehrplanSachsenProvider,
+  rahmenlehrplanBerlinBrandenburgProvider,
+  bildungsplanHamburgProvider,
+  bildungsplanBremenProvider,
+  rahmenplanMvProvider,
+  lehrplaeneRpProvider,
+  lehrplanSaarlandProvider,
+  rahmenrichtlinienStProvider,
+  fachanforderungenShProvider,
+  lehrplanThueringenProvider,
 ];
 
 export function getCurriculumProvider(

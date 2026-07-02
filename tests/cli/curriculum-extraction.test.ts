@@ -2,7 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 import { beforeAll, describe, expect, it } from "vitest";
 import { bildungsplanBwProvider } from "../../src/cli/curriculum/providers/bildungsplan-bw/index.js";
+import { kerncurriculumHessenProvider } from "../../src/cli/curriculum/providers/kerncurriculum-hessen/index.js";
+import { kernlehrplanNrwProvider } from "../../src/cli/curriculum/providers/kernlehrplan-nrw/index.js";
 import { lehrplanplusBayernProvider as provider } from "../../src/cli/curriculum/providers/lehrplanplus-bayern/index.js";
+import { lehrplanSachsenProvider } from "../../src/cli/curriculum/providers/lehrplan-sachsen/index.js";
+import { rahmenlehrplanBerlinBrandenburgProvider } from "../../src/cli/curriculum/providers/rahmenlehrplan-berlin-brandenburg/index.js";
 import { openDatabase } from "../../src/kernel/index.js";
 import { ensureCard } from "../../src/kernel/models/card.ts";
 import {
@@ -236,6 +240,143 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
       expect(
         extracted["gymnasium|10|mathematik#nonexistent-topic-id"],
       ).toBeUndefined();
+    });
+  });
+
+  describe("Nordrhein-Westfalen (Kernlehrplan NRW) Provider", () => {
+    let nrwMathHtml: string;
+
+    beforeAll(() => {
+      const fixturesDir = path.resolve(
+        "tests/fixtures/curriculum/kernlehrplan-nrw",
+      );
+      nrwMathHtml = fs.readFileSync(
+        path.join(fixturesDir, "mathematik-realschule-10.html"),
+        "utf-8",
+      );
+    });
+
+    it("extracts topics from a minimal NRW Realschule Math fixture", () => {
+      const extracted = kernlehrplanNrwProvider.extractTopics!(
+        nrwMathHtml,
+        [
+          "realschule|10|mathematik#arithmetik-algebra",
+          "realschule|10|mathematik#funktionen",
+        ],
+      );
+
+      expect(extracted["realschule|10|mathematik#arithmetik-algebra"]).toBeDefined();
+      expect(extracted["realschule|10|mathematik#funktionen"]).toBeDefined();
+      expect(extracted["realschule|10|mathematik#arithmetik-algebra"]).toContain("Arithmetik und Algebra");
+    });
+
+    it("gracefully handles unknown NRW topics", () => {
+      const extracted = kernlehrplanNrwProvider.extractTopics!(nrwMathHtml, [
+        "realschule|10|mathematik#nonexistent",
+      ]);
+      expect(extracted["realschule|10|mathematik#nonexistent"]).toBeUndefined();
+    });
+  });
+
+  describe("Hessen (Kerncurriculum) Provider", () => {
+    let hessenPhysikHtml: string;
+
+    beforeAll(() => {
+      const fixturesDir = path.resolve(
+        "tests/fixtures/curriculum/kerncurriculum-hessen",
+      );
+      hessenPhysikHtml = fs.readFileSync(
+        path.join(fixturesDir, "sample-gym-9-physik.html"),
+        "utf-8",
+      );
+    });
+
+    it("extracts topics from a minimal Hessen Gymnasium Physik fixture", () => {
+      const extracted = kerncurriculumHessenProvider.extractTopics!(
+        hessenPhysikHtml,
+        [
+          "gymnasium|9|physik#optik",
+          "gymnasium|9|physik#elektromagnetismus",
+        ],
+      );
+
+      expect(extracted["gymnasium|9|physik#optik"]).toBeDefined();
+      expect(extracted["gymnasium|9|physik#optik"]).toContain("Optik");
+    });
+
+    it("gracefully handles unknown Hessen topics", () => {
+      const extracted = kerncurriculumHessenProvider.extractTopics!(hessenPhysikHtml, [
+        "gymnasium|9|physik#nonexistent",
+      ]);
+      expect(extracted["gymnasium|9|physik#nonexistent"]).toBeUndefined();
+    });
+  });
+
+  describe("Sachsen (Lehrplan) Provider", () => {
+    let sachsenBioHtml: string;
+
+    beforeAll(() => {
+      const fixturesDir = path.resolve(
+        "tests/fixtures/curriculum/lehrplan-sachsen",
+      );
+      sachsenBioHtml = fs.readFileSync(
+        path.join(fixturesDir, "sample-gym-9-biologie.html"),
+        "utf-8",
+      );
+    });
+
+    it("extracts topics from a minimal Sachsen Gymnasium Biologie fixture", () => {
+      const extracted = lehrplanSachsenProvider.extractTopics!(
+        sachsenBioHtml,
+        [
+          "gymnasium|9|biologie#genetik",
+          "gymnasium|9|biologie#evolution",
+        ],
+      );
+
+      expect(extracted["gymnasium|9|biologie#genetik"]).toBeDefined();
+      expect(extracted["gymnasium|9|biologie#genetik"]).toContain("Genetik");
+    });
+
+    it("gracefully handles unknown Sachsen topics", () => {
+      const extracted = lehrplanSachsenProvider.extractTopics!(sachsenBioHtml, [
+        "gymnasium|9|biologie#nonexistent",
+      ]);
+      expect(extracted["gymnasium|9|biologie#nonexistent"]).toBeUndefined();
+    });
+  });
+
+  describe("Berlin-Brandenburg (Rahmenlehrplan) Provider", () => {
+    let berlinChemieHtml: string;
+
+    beforeAll(() => {
+      const fixturesDir = path.resolve(
+        "tests/fixtures/curriculum/rahmenlehrplan-berlin-brandenburg",
+      );
+      berlinChemieHtml = fs.readFileSync(
+        path.join(fixturesDir, "sample-gym-9-chemie.html"),
+        "utf-8",
+      );
+    });
+
+    it("extracts topics from a minimal Berlin-Brandenburg Gymnasium Chemie fixture", () => {
+      const extracted = rahmenlehrplanBerlinBrandenburgProvider.extractTopics!(
+        berlinChemieHtml,
+        [
+          "gymnasium|9|chemie#bindungen",
+          "gymnasium|9|chemie#saeuren",
+        ],
+      );
+
+      expect(extracted["gymnasium|9|chemie#bindungen"]).toBeDefined();
+      expect(extracted["gymnasium|9|chemie#bindungen"]).toContain("Bindungen");
+    });
+
+    it("gracefully handles unknown Berlin-Brandenburg topics", () => {
+      const extracted = rahmenlehrplanBerlinBrandenburgProvider.extractTopics!(berlinChemieHtml, [
+        "gymnasium|9|chemie#nonexistent",
+      ]);
+      expect(extracted["gymnasium|9|chemie#nonexistent"]).toBeUndefined();
     });
   });
 });
