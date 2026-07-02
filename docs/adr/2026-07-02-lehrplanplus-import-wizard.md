@@ -1,6 +1,6 @@
 # LehrplanPLUS Curriculum Import Wizard
 
-**Status:** Proposed
+**Status:** Accepted
 **Date:** 2026-07-02
 **Deciders:** Thomas (project owner)
 **Related:**
@@ -184,40 +184,86 @@ The resolved URIs are then handed to the existing `personal-source-import` /
   localized in all seven locales; imported **content stays in its source
   language** (German for Bayern).
 
-## Decisions to resolve (before or during implementation)
+## Resolved decisions
 
-1. **Taxonomy strategy** — confirm A vs. B vs. C (recommendation: C).
-2. **Manifest freshness** — bundled-only with manual updates, a generator
-   script, or a periodic CI refresh? Stamp the manifest with a captured-on date
-   and the LehrplanPLUS revision it reflects.
-3. **Terms of use & politeness** — LehrplanPLUS is public ISB content; confirm
-   reuse terms, keep the existing polite `User-Agent`
-   (`ZAM-Content-Studio/x.y`), throttle requests, and cache fetched pages.
-4. **Multi-topic import** — one transaction per topic vs. one combined batch,
-   and how partial failures surface to the learner.
-5. **How much of a topic to send the AI** — full Lernbereich page vs.
-   Kompetenzerwartungen only, weighed against the text model's token budget.
-6. **"Add topics later"** — persist the learner's navigated path for quick
-   re-entry, or re-navigate from the manifest each time.
-7. **Provenance granularity** — encode `provider` + `topicId` in the
-   `sources.uri` so the `source_link` fallback resolves to the precise topic.
+1. **Taxonomy strategy.**
+   Decision: **Option C (hybrid)**. A bundled manifest drives navigation
+   (school types, grades, subjects, topics); the selected topic's actual
+   content is fetched live through the existing SSRF-safe web adapter at
+   import time. Navigation is instant and testable offline; content is always
+   current.
+
+2. **Manifest freshness.**
+   Decision: the manifest is **not** refreshed by a script or CI job. Bavarian
+   curricula change on a school-year cadence, and refreshing is explicit
+   **agent work**: once per school year, an agent re-navigates
+   lehrplanplus.bayern.de and produces a new manifest **version** containing
+   only what changed (newly published or revised Lernbereiche for that year).
+   A brittle scraper breaks silently on markup changes; an agent doing the
+   same review adapts to a redesigned page or a moved link the way it adapted
+   here. Each manifest carries a `schoolYear` and a `capturedOn` stamp per
+   entry so staleness is always visible.
+
+3. **Terms of use & politeness.**
+   Decision: cache as aggressively as reasonable. The bundled manifest is
+   itself a long-lived cache for the taxonomy (no navigation ever hits the
+   network). Fetched topic content is cached in the existing `sources` table
+   keyed by URL (`ON CONFLICT(uri)`); re-selecting an already-imported topic
+   reuses the cached row instead of refetching. Keep the existing polite,
+   versioned `User-Agent` (`ZAM-Content-Studio/x.y`) and the current
+   timeout/size caps — no additional throttling identified as necessary at
+   this volume (a handful of learner-initiated fetches, not a crawl).
+
+4. **Multi-topic import.**
+   Decision: **batch**. Selected topics are resolved and proposed together;
+   the learner reviews one combined batch of generated cards across all
+   selected topics, then confirms in one transaction — consistent with the
+   existing curriculum-text import, which already saves a batch atomically.
+   Each card retains its own topic's provenance regardless of batching.
+
+5. **How much of a topic to send the AI.**
+   Decision: **everything specified** for the selected Lernbereich — the full
+   official text (introductory description, Kompetenzerwartungen, and
+   grundlegende Wissensbestände/Begriffe alike), not a trimmed subset. Sending
+   a partial excerpt invites the model to fill gaps with plausible-sounding
+   but ungrounded content; sending the complete specified passage removes the
+   need for it to guess. This sharpens product principle 3 (stay grounded in
+   the source).
+
+6. **"Add topics later."**
+   Decision: persist the learner's last navigated path (school type, grade,
+   subject — the breadcrumb) via the existing settings/`user_config` store.
+   Reopening the wizard shows that breadcrumb **first**, offering to jump
+   straight to the topics step at the same level rather than re-navigating
+   all six steps from scratch. Starting a fresh navigation is always still
+   available.
+
+7. **Provenance granularity.**
+   Decision: be as precise as possible. `sources.uri` stores the most specific
+   addressable reference the site exposes for the topic (an anchored/deep
+   link where available, the Lernbereich page otherwise), and the provider id
+   and topic id travel alongside it, so `source_link` resolution and any
+   future re-sync can always identify the exact Lernbereich a card came from.
 
 ## Scope and delivery plan
 
-Implementation does **not** start now; this ADR reaches a PR for review and is
-not yet merged.
+This ADR is Accepted; the decisions above are frozen. Implementation proceeds
+phase by phase, each as its own reviewable PR rather than one large change.
 
-- **Phase 0 — Decisions & contracts (this ADR).** Resolve the questions above;
-  freeze the provider interface and the three bridge command shapes.
-- **Phase 1 — Provider registry + navigation.** Implement the registry, the
-  LehrplanPLUS provider backed by a bundled manifest, and the
-  `curriculum-list-*` / `curriculum-resolve-topics` bridge commands. No live
-  fetch yet — `resolveTopic` returns a URL.
+- **Phase 0 — Decisions & contracts (this ADR).** Done — see Resolved
+  decisions above; the provider interface and the three bridge command shapes
+  are frozen.
+- **Phase 1 — Provider registry + navigation (in progress).** The registry,
+  the LehrplanPLUS provider backed by a bundled manifest seeded with real,
+  agent-captured LehrplanPLUS data, the `curriculum-list-*` /
+  `curriculum-resolve-topics` bridge commands, and breadcrumb persistence. No
+  live content fetch yet — `resolveTopic` returns a URL.
 - **Phase 2 — Desktop wizard.** The six-step UI wired to the navigation
-  commands, feeding selected URLs into the existing review/confirm flow.
-- **Phase 3 — Live content + provenance.** Fetch the selected topic through the
-  safe web adapter, dedup and link provenance, and ship the repeatable
-  "add topics later" flow.
+  commands, showing the persisted breadcrumb first, feeding selected URLs
+  into the existing review/confirm flow.
+- **Phase 3 — Live content + provenance.** Fetch the selected topic's full
+  specified text through the safe web adapter, batch multi-topic proposals
+  into one review, dedup, and link precise provenance.
 - **Phase 4 (future) — Second provider.** Add another Bundesland or country to
   validate that the abstraction holds.
 
