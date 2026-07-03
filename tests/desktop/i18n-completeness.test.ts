@@ -61,10 +61,19 @@ const DATABASE_SETTINGS_KEYS = [
   "database_refresh",
 ] as const;
 
+const QUESTION_WAIT_KEYS = [
+  "lbl_question_wait_warn",
+  "btn_question_use_saved",
+] as const;
+
+const STUDIO_LAYOUT_KEYS = ["content_subtitle"] as const;
+
 const REQUIRED_KEYS = [
   ...ISSUE_97_KEYS,
   ...WIZARD_KEYS,
   ...DATABASE_SETTINGS_KEYS,
+  ...QUESTION_WAIT_KEYS,
+  ...STUDIO_LAYOUT_KEYS,
 ];
 
 describe("desktop locale completeness", () => {
@@ -116,5 +125,16 @@ describe("desktop locale completeness", () => {
     ]) {
       expect(studioSource).not.toContain(literal);
     }
+  });
+
+  it("lets localized editor actions wrap inside narrow panels", () => {
+    const styles = readFileSync(
+      join(process.cwd(), "desktop", "src", "styles.css"),
+      "utf8",
+    );
+    const actionsRule = styles.match(/\.editor-actions-right\s*\{([^}]*)\}/)?.[1];
+
+    expect(actionsRule).toContain("flex-wrap: wrap");
+    expect(actionsRule).toContain("min-width: 0");
   });
 });

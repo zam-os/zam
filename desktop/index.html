@@ -394,6 +394,13 @@
               <p class="question-text" id="question-text">
                 What command initializes a new local Git repository?
               </p>
+              <div id="question-wait-prompt" class="wait-confirm-box hidden">
+                <p id="lbl-question-wait-warn" class="wait-warning-text">⚠ Generating this question is taking longer than expected.</p>
+                <div class="wait-buttons">
+                  <button id="btn-question-wait-keep" class="btn secondary-btn btn-sm">Keep Waiting</button>
+                  <button id="btn-question-use-saved" class="btn danger-btn btn-sm">Use Saved Question</button>
+                </div>
+              </div>
               <div id="translation-loading" class="mini-loader hidden">
                 <span class="dots-pulse"></span>
                 <span class="loader-text" id="lbl-translating">Translating dynamically...</span>

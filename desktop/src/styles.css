@@ -2193,7 +2193,11 @@ textarea::placeholder {
 
 .editor-actions-right {
   display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
   gap: 10px;
+  justify-content: flex-end;
+  min-width: 0;
 }
 
 /* Collapsible sections */

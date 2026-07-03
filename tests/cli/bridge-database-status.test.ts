@@ -31,6 +31,7 @@ describe("bridge database status and profile selection", () => {
       concept: "First concept",
       domain: "test",
       bloom_level: 1,
+      question: "What is the stored first question?",
     });
     const second = await createToken(db, {
       slug: "database-status-second",
@@ -94,5 +95,17 @@ describe("bridge database status and profile selection", () => {
     expect(() =>
       runBridge(["database-select-user", "--user", "missing"]),
     ).toThrow();
+  });
+
+  it("can load a review with the stored question instead of dynamic generation", () => {
+    runBridge(["setting-set", "--key", "llm.enabled", "--value", "true"]);
+
+    expect(
+      runBridge(["get-review", "--no-dynamic-question", "--no-resolve"]),
+    ).toMatchObject({
+      hasReview: true,
+      prompt: { question: "What is the stored first question?" },
+      questionSource: "original",
+    });
   });
 });
