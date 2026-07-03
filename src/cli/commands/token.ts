@@ -9,11 +9,13 @@ import {
   createToken,
   deleteToken,
   deprecateToken,
+  ensureCard,
   findTokens,
   generateConceptFreeCue,
   getCard,
   getDependents,
   getPrerequisites,
+  getSetting,
   getTokenBySlug,
   getTokenDeleteImpact,
   listTokens,
@@ -37,6 +39,11 @@ tokenCommand
   .option("--bloom <level>", "Bloom taxonomy level (1-5)", "1")
   .option("--source-link <link>", "Source file path or reference URL", "")
   .option("--question <question>", "Specific question prompt for recall", "")
+  .option("--user <id>", "Owner of the personal card (default: whoami)")
+  .option(
+    "--no-card",
+    "Register the token only; do not create a personal card",
+  )
   .option("--json", "Output as JSON")
   .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
@@ -65,10 +72,29 @@ tokenCommand
         question,
       });
 
+      // A token with no card never surfaces — not in the deck, not in the
+      // content editor (which lists cards). In the single-user (default)
+      // scenario the learner's card is created alongside the token so it is
+      // immediately visible and reviewable. --no-card opts out for pure
+      // knowledge-graph scaffolding in shared, multi-user libraries.
+      let cardUserId: string | null = null;
+      if (opts.card !== false) {
+        cardUserId = opts.user ?? (await getSetting(db, "user.id"));
+        if (cardUserId) {
+          await ensureCard(db, token.id, cardUserId);
+        }
+      }
+
       if (opts.quiet) return;
 
       if (opts.json) {
-        console.log(JSON.stringify(token, null, 2));
+        console.log(
+          JSON.stringify(
+            { token, card: cardUserId ? { userId: cardUserId } : null },
+            null,
+            2,
+          ),
+        );
       } else {
         console.log(`Registered token: ${token.slug} (${token.id})`);
         console.log(`  Concept:  ${token.concept}`);
@@ -77,6 +103,13 @@ tokenCommand
         console.log(`  Question: ${token.question}`);
         if (token.source_link) {
           console.log(`  Source:   ${token.source_link}`);
+        }
+        if (cardUserId) {
+          console.log(`  Card:     created for ${cardUserId}`);
+        } else if (opts.card === false) {
+          console.log(`  Card:     skipped (--no-card)`);
+        } else {
+          console.log(`  Card:     skipped (no default user set)`);
         }
       }
     });
