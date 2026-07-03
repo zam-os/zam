@@ -660,6 +660,10 @@ bridgeCommand
   .description("Get next review card with prompt (JSON)")
   .option("--user <id>", "User ID (default: whoami)")
   .option("--no-resolve", "Skip resolving the token's source_link into context")
+  .option(
+    "--no-dynamic-question",
+    "Use the stored question without generating a fresh LLM question",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
@@ -688,7 +692,7 @@ bridgeCommand
       let resolvedQuestion = item.question;
       let questionSource: "llm" | "original" = "original";
       let questionModel: string | undefined;
-      if (isLlmEnabled) {
+      if (isLlmEnabled && opts.dynamicQuestion !== false) {
         try {
           const healed = await ensureHighQualityQuestion(db, {
             id: item.tokenId,

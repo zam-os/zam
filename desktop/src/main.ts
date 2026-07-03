@@ -49,6 +49,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_wait_warn: "⚠ Evaluation is taking longer than expected.",
     btn_wait_keep: "Keep Waiting",
     btn_wait_skip: "Skip Offline",
+    lbl_question_wait_warn:
+      "⚠ Generating this question is taking longer than expected.",
+    btn_question_use_saved: "Use Saved Question",
     lbl_ai_feedback_title: "ZAM Feedback",
     lbl_reveal_title: "Reference Answer",
     lbl_rating_instruction: "Rate your active recall honestly:",
@@ -279,6 +282,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     release_link_failed: "Could not open releases: {message}",
     nav_content: "Learning Content",
     content_title: "Learning Content Studio",
+    content_subtitle:
+      "Manage your personal learning cards, search tokens, and curate active recall prompts.",
     btn_new_card: "New Card",
     lbl_search_placeholder: "Search questions, answers, categories, keys...",
     lbl_category_filter: "Category",
@@ -420,6 +425,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_wait_warn: "⚠ Die Bewertung dauert ungewöhnlich lange...",
     btn_wait_keep: "Weiter warten",
     btn_wait_skip: "Offline fortfahren",
+    lbl_question_wait_warn:
+      "⚠ Das Erstellen der Frage dauert ungewöhnlich lange.",
+    btn_question_use_saved: "Gespeicherte Frage verwenden",
     lbl_ai_feedback_title: "ZAM Feedback",
     lbl_reveal_title: "Musterlösung",
     lbl_rating_instruction: "Bewerte deine aktive Erinnerung ehrlich:",
@@ -649,6 +657,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     release_link_failed: "Releases konnten nicht geöffnet werden: {message}",
     nav_content: "Lerninhalte",
     content_title: "Lerninhalt-Studio",
+    content_subtitle:
+      "Verwalte deine persönlichen Lernkarten, durchsuche Tokens und pflege aktive Erinnerungsfragen.",
     btn_new_card: "Neue Karte",
     lbl_search_placeholder: "Fragen, Antworten, Kategorien, Keys suchen...",
     lbl_category_filter: "Kategorie",
@@ -938,6 +948,9 @@ let resolvedContextContent: string | null = null;
 let studySessionActive = false;
 let isWaitingForAi = false;
 let waitTimeoutId: number | null = null;
+let isWaitingForQuestion = false;
+let questionWaitTimeoutId: number | null = null;
+let questionRequestId = 0;
 let evaluationRequestId = 0;
 let revealInProgress = false;
 let ratingSubmitInProgress = false;
@@ -1184,6 +1197,12 @@ function initializeTranslations() {
   document.getElementById("lbl-wait-warn")!.textContent = t("lbl_wait_warn");
   document.getElementById("btn-wait-keep")!.textContent = t("btn_wait_keep");
   document.getElementById("btn-wait-skip")!.textContent = t("btn_wait_skip");
+  document.getElementById("lbl-question-wait-warn")!.textContent =
+    t("lbl_question_wait_warn");
+  document.getElementById("btn-question-wait-keep")!.textContent =
+    t("btn_wait_keep");
+  document.getElementById("btn-question-use-saved")!.textContent =
+    t("btn_question_use_saved");
   document.getElementById("lbl-ai-feedback-title")!.textContent = t("lbl_ai_feedback_title");
   document.getElementById("lbl-reveal-title")!.textContent = t("lbl_reveal_title");
   document.getElementById("lbl-rating-instruction")!.textContent = t("lbl_rating_instruction");
@@ -1280,6 +1299,8 @@ function initializeTranslations() {
   if (lblContentKicker) lblContentKicker.textContent = currentLocale === "de" ? "Persönlicher Katalog" : "Personal catalog";
   const lblContentTitle = document.getElementById("lbl-content-title");
   if (lblContentTitle) lblContentTitle.textContent = t("content_title");
+  const lblContentSubtitle = document.getElementById("lbl-content-subtitle");
+  if (lblContentSubtitle) lblContentSubtitle.textContent = t("content_subtitle");
   const btnContentNewCard = document.getElementById("btn-content-new-card");
   if (btnContentNewCard) btnContentNewCard.textContent = t("btn_new_card");
   const contentSearchInput = document.getElementById("content-search-input") as HTMLInputElement;
@@ -4170,11 +4191,15 @@ function clearDashboardError(): void {
 }
 
 // ── ACTIVE STUDY FLOW ─────────────────────────────────────────────────────
-async function loadNextCard() {
+async function loadNextCard(
+  options: { dynamicQuestion?: boolean } = {},
+) {
+  const requestId = ++questionRequestId;
   try {
     evaluationRequestId++;
     revealInProgress = false;
     finishAiWait();
+    finishQuestionWait();
 
     // Reset study screen elements
     document.getElementById("revealed-box")!.classList.add("hidden");
@@ -4184,8 +4209,7 @@ async function loadNextCard() {
     
     const textarea = document.getElementById("user-answer-input") as HTMLTextAreaElement;
     textarea.value = "";
-    textarea.disabled = false;
-    textarea.focus();
+    textarea.disabled = true;
 
     setModelAttributionBadge("question-model-badge", null);
 
@@ -4197,8 +4221,18 @@ async function loadNextCard() {
     loadingText.textContent = t("lbl_generating_question");
     questionText.appendChild(loadingText);
 
-    // Fetch review
-    const payload = await runBridge<ReviewPayload>("get-review");
+    // Fetch review. Dynamic question generation may need to cold-start a local
+    // model, so offer the learner a choice after 30 seconds instead of leaving
+    // the loading state unexplained.
+    const reviewArgs =
+      options.dynamicQuestion === false ? ["--no-dynamic-question"] : [];
+    if (isLlmEnabled && options.dynamicQuestion !== false) {
+      isWaitingForQuestion = true;
+      startQuestionWaitTimer();
+    }
+    const payload = await runBridge<ReviewPayload>("get-review", reviewArgs);
+    if (requestId !== questionRequestId) return;
+    finishQuestionWait();
     if (!payload.hasReview || !payload.card || !payload.prompt) {
       showCompletionState();
       return;
@@ -4233,7 +4267,11 @@ async function loadNextCard() {
       "question-model-badge",
       questionAttributionLabel(payload.questionSource, payload.questionModel),
     );
+    textarea.disabled = false;
+    textarea.focus();
   } catch (err) {
+    if (requestId !== questionRequestId) return;
+    finishQuestionWait();
     console.error("Failed to load next card:", err);
   }
 }
@@ -4403,6 +4441,29 @@ function renderReveal(
 }
 
 // ── INTERACTIVE TIMEOUT TIMER ────────────────────────────────────────────
+function startQuestionWaitTimer() {
+  clearQuestionWaitTimer();
+
+  questionWaitTimeoutId = window.setTimeout(() => {
+    if (isWaitingForQuestion) {
+      document.getElementById("question-wait-prompt")!.classList.remove("hidden");
+    }
+  }, 30000);
+}
+
+function clearQuestionWaitTimer() {
+  if (questionWaitTimeoutId) {
+    clearTimeout(questionWaitTimeoutId);
+    questionWaitTimeoutId = null;
+  }
+  document.getElementById("question-wait-prompt")!.classList.add("hidden");
+}
+
+function finishQuestionWait() {
+  clearQuestionWaitTimer();
+  isWaitingForQuestion = false;
+}
+
 function startAiWaitTimer() {
   clearAiWaitTimer();
 
@@ -4428,16 +4489,24 @@ function finishAiWait() {
   document.getElementById("npu-loading")!.classList.add("hidden");
 }
 
-function cancelActiveBridgeRequest() {
-  void invoke<boolean>("cancel_zam_bridge").catch((err) => {
+async function cancelActiveBridgeRequest(): Promise<void> {
+  await invoke<boolean>("cancel_zam_bridge").catch((err) => {
     console.warn("Failed to cancel active bridge request:", err);
   });
+}
+
+async function useStoredQuestion(): Promise<void> {
+  if (!isWaitingForQuestion) return;
+  questionRequestId++;
+  finishQuestionWait();
+  await cancelActiveBridgeRequest();
+  await loadNextCard({ dynamicQuestion: false });
 }
 
 function skipAiWaitingAndReveal() {
   if (!revealInProgress) return;
   evaluationRequestId++;
-  cancelActiveBridgeRequest();
+  void cancelActiveBridgeRequest();
   finishAiWait();
   renderReveal("", false, null);
   revealInProgress = false;
@@ -4775,6 +4844,16 @@ window.addEventListener("DOMContentLoaded", () => {
   // Skip Offline Button in Timeout dialog
   document.getElementById("btn-wait-skip")!.addEventListener("click", () => {
     skipAiWaitingAndReveal();
+  });
+
+  // Dynamic-question timeout dialog
+  document.getElementById("btn-question-wait-keep")!.addEventListener("click", () => {
+    document.getElementById("question-wait-prompt")!.classList.add("hidden");
+    startQuestionWaitTimer();
+  });
+
+  document.getElementById("btn-question-use-saved")!.addEventListener("click", () => {
+    void useStoredQuestion();
   });
 
   // Rating Buttons (1-4 clicks)
