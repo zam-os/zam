@@ -342,7 +342,21 @@
 
           <article class="card frosted settings-card">
             <h2 id="lbl-settings-data-title">Data</h2>
+            <div class="settings-row">
+              <span id="lbl-settings-database">Database</span>
+              <code id="database-connection-status">Checking…</code>
+            </div>
+            <p id="database-connection-detail" class="settings-card-help" aria-live="polite"></p>
+            <label class="settings-field" for="database-user-select">
+              <span id="lbl-settings-learning-profile">Learning profile</span>
+              <select id="database-user-select" disabled>
+                <option value="">—</option>
+              </select>
+            </label>
             <div class="settings-actions">
+              <button id="btn-refresh-database-status" class="btn secondary-btn btn-sm" type="button">
+                Refresh status
+              </button>
               <button id="btn-open-data-folder" class="btn secondary-btn btn-sm" type="button">
                 Open data folder
               </button>
