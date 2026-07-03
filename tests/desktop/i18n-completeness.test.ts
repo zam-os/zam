@@ -46,7 +46,26 @@ const WIZARD_KEYS = [
   "wizard_hours",
 ] as const;
 
-const REQUIRED_KEYS = [...ISSUE_97_KEYS, ...WIZARD_KEYS];
+const DATABASE_SETTINGS_KEYS = [
+  "settings_database",
+  "settings_learning_profile",
+  "database_checking",
+  "database_status_local",
+  "database_status_turso",
+  "database_status_error",
+  "database_detail",
+  "database_no_profile",
+  "database_profile_option",
+  "database_profile_switch_confirm",
+  "database_profile_switched",
+  "database_refresh",
+] as const;
+
+const REQUIRED_KEYS = [
+  ...ISSUE_97_KEYS,
+  ...WIZARD_KEYS,
+  ...DATABASE_SETTINGS_KEYS,
+];
 
 describe("desktop locale completeness", () => {
   it.each([

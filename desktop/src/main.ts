@@ -131,6 +131,19 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Register personal, team, family, or community work directories for this machine.",
     settings_appearance_title: "Appearance",
     settings_data_title: "Data",
+    settings_database: "Database",
+    settings_learning_profile: "Learning profile",
+    database_checking: "Checking…",
+    database_status_local: "Local SQLite · connected",
+    database_status_turso: "Turso · connected",
+    database_status_error: "Connection unavailable",
+    database_detail: "{location} · profile {profile} · {count} cards",
+    database_no_profile: "No active profile",
+    database_profile_option: "{profile} — {count} cards",
+    database_profile_switch_confirm:
+      'Switch the active learning profile to "{profile}"?',
+    database_profile_switched: "Active profile: {profile} ({count} cards)",
+    database_refresh: "Refresh status",
     settings_theme: "Theme",
     theme_light: "Light",
     theme_dark: "Dark",
@@ -489,6 +502,19 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Registriere persönliche, Team-, Familien- oder Community-Arbeitsverzeichnisse für diesen Rechner.",
     settings_appearance_title: "Darstellung",
     settings_data_title: "Daten",
+    settings_database: "Datenbank",
+    settings_learning_profile: "Lernprofil",
+    database_checking: "Wird geprüft…",
+    database_status_local: "Lokales SQLite · verbunden",
+    database_status_turso: "Turso · verbunden",
+    database_status_error: "Verbindung nicht verfügbar",
+    database_detail: "{location} · Profil {profile} · {count} Karten",
+    database_no_profile: "Kein aktives Profil",
+    database_profile_option: "{profile} — {count} Karten",
+    database_profile_switch_confirm:
+      'Aktives Lernprofil zu „{profile}“ wechseln?',
+    database_profile_switched: "Aktives Profil: {profile} ({count} Karten)",
+    database_refresh: "Status aktualisieren",
     settings_theme: "Theme",
     theme_light: "Hell",
     theme_dark: "Dunkel",
@@ -789,6 +815,21 @@ interface ProviderStatusResponse {
     text?: ProviderRoleStatus;
   };
 }
+
+interface DatabaseStatusResponse {
+  success: boolean;
+  connected: boolean;
+  target: {
+    kind: "local" | "turso-native" | "turso-remote" | "turso-replica";
+    location: string;
+    syncUrl?: string;
+  };
+  userId: string | null;
+  cardCount: number;
+  users: Array<{ id: string; cardCount: number }>;
+}
+
+let databaseCurrentUserId: string | null = null;
 
 interface ProviderListingRow {
   name: string;
@@ -1199,12 +1240,18 @@ function initializeTranslations() {
     t("settings_appearance_title");
   document.getElementById("lbl-settings-data-title")!.textContent =
     t("settings_data_title");
+  document.getElementById("lbl-settings-database")!.textContent =
+    t("settings_database");
+  document.getElementById("lbl-settings-learning-profile")!.textContent =
+    t("settings_learning_profile");
   document.getElementById("lbl-settings-theme")!.textContent =
     t("settings_theme");
   document.getElementById("theme-light-option")!.textContent = t("theme_light");
   document.getElementById("theme-dark-option")!.textContent = t("theme_dark");
   document.getElementById("btn-open-data-folder")!.textContent = t("btn_open_data_folder");
   document.getElementById("btn-backup-db")!.textContent = t("btn_backup_db");
+  document.getElementById("btn-refresh-database-status")!.textContent =
+    t("database_refresh");
   document.getElementById("btn-choose-workspace")!.textContent =
     t("btn_choose_workspace");
   document.getElementById("btn-open-terminal")!.textContent =
@@ -3276,10 +3323,101 @@ function setActiveNav(viewId: AppView): void {
   }
 }
 
+async function loadDatabaseStatus(): Promise<void> {
+  const status = document.getElementById("database-connection-status");
+  const detail = document.getElementById("database-connection-detail");
+  const select = document.getElementById(
+    "database-user-select",
+  ) as HTMLSelectElement | null;
+  if (!status || !detail || !select) return;
+
+  status.textContent = t("database_checking");
+  detail.textContent = "";
+  select.disabled = true;
+
+  try {
+    const result = await runBridge<DatabaseStatusResponse>("database-status");
+    databaseCurrentUserId = result.userId;
+    status.textContent =
+      result.target.kind === "local"
+        ? t("database_status_local")
+        : t("database_status_turso");
+    detail.textContent = tf("database_detail", {
+      location: result.target.location,
+      profile: result.userId ?? t("database_no_profile"),
+      count: result.cardCount,
+    });
+
+    select.innerHTML = "";
+    if (result.users.length === 0) {
+      const option = document.createElement("option");
+      option.value = "";
+      option.textContent = t("database_no_profile");
+      select.appendChild(option);
+      return;
+    }
+
+    for (const user of result.users) {
+      const option = document.createElement("option");
+      option.value = user.id;
+      option.textContent = tf("database_profile_option", {
+        profile: user.id,
+        count: user.cardCount,
+      });
+      select.appendChild(option);
+    }
+    select.value = result.userId ?? "";
+    select.disabled = false;
+  } catch (err) {
+    databaseCurrentUserId = null;
+    status.textContent = t("database_status_error");
+    detail.textContent = errorMessage(err);
+    select.innerHTML = `<option value="">${t("database_no_profile")}</option>`;
+  }
+}
+
+async function selectDatabaseUser(userId: string): Promise<void> {
+  const select = document.getElementById(
+    "database-user-select",
+  ) as HTMLSelectElement | null;
+  const status = document.getElementById("setup-status");
+  const previousUserId = databaseCurrentUserId;
+  if (!select || !userId || userId === previousUserId) return;
+
+  if (!window.confirm(tf("database_profile_switch_confirm", { profile: userId }))) {
+    select.value = previousUserId ?? "";
+    return;
+  }
+
+  select.disabled = true;
+  try {
+    const result = await runBridge<{
+      success: boolean;
+      userId: string;
+      cardCount: number;
+    }>("database-select-user", ["--user", userId]);
+    desktopUserId = result.userId;
+    databaseCurrentUserId = result.userId;
+    if (status) {
+      status.textContent = tf("database_profile_switched", {
+        profile: result.userId,
+        count: result.cardCount,
+      });
+    }
+    await loadDatabaseStatus();
+    await loadDashboard();
+  } catch (err) {
+    select.value = previousUserId ?? "";
+    select.disabled = false;
+    if (status) status.textContent = errorMessage(err);
+  }
+}
+
 function refreshSettingsData(): void {
   void loadAppVersion();
   void loadWorkspaceList();
   void loadProviderStatus();
+  void loadDatabaseStatus();
   if (aiConfigEditorOpen) void loadProviderConfig();
 }
 
@@ -4425,6 +4563,18 @@ window.addEventListener("DOMContentLoaded", () => {
     const value = (event.target as HTMLSelectElement).value;
     saveThemePreference(value === "dark" ? "dark" : "light");
   });
+
+  document
+    .getElementById("database-user-select")
+    ?.addEventListener("change", (event) => {
+      void selectDatabaseUser((event.target as HTMLSelectElement).value);
+    });
+
+  document
+    .getElementById("btn-refresh-database-status")
+    ?.addEventListener("click", () => {
+      void loadDatabaseStatus();
+    });
 
   // Setup & Data: reveal the data folder, back up the database.
   document

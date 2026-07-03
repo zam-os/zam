@@ -2628,6 +2628,67 @@ bridgeCommand
     });
   });
 
+// ── zam bridge database-status / database-select-user ───────────────────────
+
+interface DatabaseUserSummary {
+  id: string;
+  cardCount: number;
+}
+
+async function readDatabaseUserSummaries(
+  db: Database,
+): Promise<DatabaseUserSummary[]> {
+  return (await db
+    .prepare(
+      `SELECT user_id AS id, COUNT(*) AS cardCount
+       FROM cards
+       GROUP BY user_id
+       ORDER BY user_id`,
+    )
+    .all()) as DatabaseUserSummary[];
+}
+
+bridgeCommand
+  .command("database-status")
+  .description("Show the active database target and learning profiles (JSON)")
+  .action(async () => {
+    const target = getDatabaseTargetInfo();
+    await withDb(async (db) => {
+      const userId = (await getSetting(db, "user.id")) ?? null;
+      const users = await readDatabaseUserSummaries(db);
+      jsonOut({
+        success: true,
+        connected: true,
+        target,
+        userId,
+        cardCount: users.find((user) => user.id === userId)?.cardCount ?? 0,
+        users,
+      });
+    });
+  });
+
+bridgeCommand
+  .command("database-select-user")
+  .description("Select an existing learning profile for this database (JSON)")
+  .requiredOption("--user <id>", "Existing user ID")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = String(opts.user ?? "").trim();
+      const users = await readDatabaseUserSummaries(db);
+      const selected = users.find((user) => user.id === userId);
+      if (!selected) {
+        jsonError(`Learning profile not found: ${userId}`);
+        return;
+      }
+      await setSetting(db, "user.id", userId);
+      jsonOut({
+        success: true,
+        userId,
+        cardCount: selected.cardCount,
+      });
+    });
+  });
+
 // ── zam bridge list-tokens (for graph pickers / entry points) ───────────────
 
 bridgeCommand
