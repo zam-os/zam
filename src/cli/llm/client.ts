@@ -677,7 +677,10 @@ function parseGeneratedCardArray(
         );
       }
     }
-    if (card.title !== undefined && (typeof card.title !== "string" || card.title.trim().length === 0)) {
+    if (
+      card.title !== undefined &&
+      (typeof card.title !== "string" || card.title.trim().length === 0)
+    ) {
       throw new Error(
         `Invalid ${label} card at index ${index}: title must be a non-empty string if provided`,
       );
@@ -2122,17 +2125,16 @@ export async function generateTitleViaLLM(
   const cfg = await getProviderForRole(db, "text"); // or recall? text for generation
   const endpoint = await resolveUsableTextEndpoint(db); // assume exists or use recall
 
-  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
-
   const systemPrompt = `You are an expert at naming knowledge items for a personal knowledge graph.
-Your task: given a knowledge token's concept (the full reference answer), question, domain, and optional context, produce a short, descriptive, human-friendly TITLE in ${langName}.
+Your task: given a knowledge token's concept (the full reference answer), question, domain, and optional context, produce a short, descriptive, human-friendly TITLE.
 
 Strict rules from the project ADR:
 - Concise name for the concept (≤ 80 chars ideal).
 - Thoughtful, memorable name — NOT a definition or the first sentence of the concept.
-- NEVER echo the domain name (e.g. do not say "Axon Ivy Node Drain" if domain is "axon-ivy"; just "Node Drain Protection").
+- NEVER echo the domain name (e.g. do not say "Node Drain" if domain is "axon-ivy"; just "Node Drain Protection").
 - Prefer a name over spoiling the full concept.
 - Support Unicode (umlauts, etc.).
+- Output the title in the same language as the concept/content (e.g., German if the concept is German, English if the concept is English).
 - Output ONLY the raw title text. No preamble, quotes, explanations, or markdown.
 
 Example good titles:
@@ -2150,9 +2152,9 @@ Context: ${input.context || "(none)"}
 Title:`;
 
   // Use recall endpoint as fallback if text not available; many setups share.
-  let url = `${endpoint.url}/chat/completions`;
-  let apiKey = endpoint.apiKey;
-  let model = endpoint.model;
+  const url = `${endpoint.url}/chat/completions`;
+  const apiKey = endpoint.apiKey;
+  const model = endpoint.model;
 
   try {
     const res = await fetchWithInteractiveTimeout(url, {
@@ -2179,12 +2181,63 @@ Title:`;
       model,
       providerName: endpoint.providerName,
     };
-  } catch (e) {
+  } catch (_e) {
     // Fallback to simple
     return {
       text: input.concept.split(/[.;]/)[0].trim().substring(0, 80),
       model: "fallback",
       providerName: "heuristic",
     };
+  }
+}
+
+export async function repairUmlautsViaLLM(
+  db: Database,
+  input: { text: string },
+): Promise<string> {
+  const cfg = await getProviderForRole(db, "text");
+  const endpoint = await resolveUsableTextEndpoint(db);
+
+  const systemPrompt = `You are an expert editor specializing in German language orthography.
+Your task: given a text that may contain legacy ASCII-folded German umlauts (like 'ue' instead of 'ü', 'ae' instead of 'ä', 'oe' instead of 'ö', 'Ue' instead of 'Ü', etc.), repair them back to proper German umlauts (ä, ö, ü, Ä, Ö, Ü, ß) where appropriate.
+
+Strict rules:
+- ONLY change character sequences that are clearly meant to be German umlauts (e.g. change "Ueber" to "Über", "fuer" to "für", "moeglich" to "möglich").
+- DO NOT change words that are correct in their current form (e.g. do NOT change "nahe" to "nähe", do NOT change English words or technical terms, do NOT change names like "Ueda").
+- Output ONLY the repaired text. No preamble, no explanation, no markdown formatting.`;
+
+  const userPrompt = `Text to repair:
+"""
+${input.text}
+"""
+
+Repaired text:`;
+
+  const url = `${endpoint.url}/chat/completions`;
+  const apiKey = endpoint.apiKey;
+  const model = endpoint.model;
+
+  try {
+    const res = await fetchWithInteractiveTimeout(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.1,
+      }),
+      locale: cfg.locale,
+    });
+
+    const text = await readChatContent(res, "umlaut repair");
+    return text.trim();
+  } catch (_e) {
+    return input.text;
   }
 }

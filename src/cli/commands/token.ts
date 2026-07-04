@@ -13,8 +13,8 @@ import {
   ensureCard,
   generateConceptFreeCue,
   getCard,
-  getDisplayTitle,
   getDependents,
+  getDisplayTitle,
   getEmbeddingCoverage,
   getPrerequisites,
   getSetting,
@@ -293,7 +293,9 @@ tokenCommand
         );
       }
       console.log(`\n${tokens.length} token(s) total.`);
-      console.log("(Use --slug <slug> for commands; slugs are technical identifiers)");
+      console.log(
+        "(Use --slug <slug> for commands; slugs are technical identifiers)",
+      );
     });
   });
 
@@ -316,7 +318,10 @@ tokenCommand
     "Updated source file path or reference URL (blank allowed)",
   )
   .option("--question <question>", "Updated question text (blank allowed)")
-  .option("--title <title>", "Updated human-friendly title for graph display (blank allowed)")
+  .option(
+    "--title <title>",
+    "Updated human-friendly title for graph display (blank allowed)",
+  )
   .option("--json", "Output as JSON")
   .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
@@ -581,7 +586,9 @@ tokenCommand
       if (prereqs.length > 0) {
         console.log("Prerequisites:");
         for (const p of prereqs) {
-          console.log(`  - ${p.title || p.slug}: ${p.concept} (bloom ${p.bloom_level})`);
+          console.log(
+            `  - ${p.title || p.slug}: ${p.concept} (bloom ${p.bloom_level})`,
+          );
         }
       } else {
         console.log("No prerequisites.");
@@ -590,7 +597,9 @@ tokenCommand
       if (dependents.length > 0) {
         console.log("\nDependents:");
         for (const d of dependents) {
-          console.log(`  - ${d.title || d.slug}: ${d.concept} (bloom ${d.bloom_level})`);
+          console.log(
+            `  - ${d.title || d.slug}: ${d.concept} (bloom ${d.bloom_level})`,
+          );
         }
       }
     });

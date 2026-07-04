@@ -3519,8 +3519,13 @@ let availableDomains: string[] = [];
 let originalDomainSet: Set<string> = new Set();
 
 function getShortSlug(slug: string): string {
-  if (currentDomain && slug.startsWith(currentDomain + '/')) {
-    return slug.substring(currentDomain.length + 1);
+  if (currentDomain) {
+    const folded = currentDomain.toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    if (folded && slug.startsWith(folded + "-")) {
+      return slug.substring(folded.length + 1);
+    }
   }
   return slug;
 }
@@ -3790,7 +3795,7 @@ function buildGraphScene(nb: any) {
   const depRadius = 1.8;
 
   prereqs.forEach((p: any, i: number) => {
-    if (currentDomain && p.domain !== currentDomain) return; // stay within independent knowledge area
+    if (currentDomain && p.domain !== currentDomain && !p.domain.startsWith(currentDomain + "/")) return; // stay within independent knowledge area
     const angle = (i / Math.max(1, prereqs.length)) * Math.PI * 2;
     const m = makeNode(p, false, true); // isPrereq
     const y = -1.6 - (p.bloomLevel - 1) * 0.06;
@@ -3811,7 +3816,7 @@ function buildGraphScene(nb: any) {
 
   // Dependents (upper)
   depnds.forEach((d: any, i: number) => {
-    if (currentDomain && d.domain !== currentDomain) return; // stay within independent knowledge area
+    if (currentDomain && d.domain !== currentDomain && !d.domain.startsWith(currentDomain + "/")) return; // stay within independent knowledge area
     const angle = (i / Math.max(1, depnds.length)) * Math.PI * 2 + 0.4;
     const m = makeNode(d, false, false); // not prereq
     const y = 1.9 + (d.bloomLevel - 1) * 0.05;

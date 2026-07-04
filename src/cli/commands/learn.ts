@@ -147,7 +147,7 @@ export const learnCommand = new Command("learn")
 
         console.log(`\n${"─".repeat(50)}`);
         console.log(
-          `[${index + 1}/${queue.items.length}] ${formatHeader({ ...item, title: item.title, slug: item.slug })}`,
+          `[${index + 1}/${queue.items.length}] ${formatHeader({ bloomLevel: item.bloomLevel, domain: item.domain })}`,
         );
 
         console.log(`\n  ${prompt.question}`);

@@ -6,8 +6,8 @@
  */
 
 import type { Database } from "../db/types.js";
-import { interleave } from "./interleaver.js";
 import { getDisplayTitle } from "../models/token.js";
+import { interleave } from "./interleaver.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 

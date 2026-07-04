@@ -33,6 +33,7 @@ import {
   prepareSessionSynthesis,
   startSession,
 } from "../../kernel/index.js";
+import { formatHeader } from "../learn-format.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
 import { resolveUser } from "../users/identity.js";
 import { withDb } from "./shared/db.js";
@@ -208,11 +209,9 @@ async function runRepetitionPhase(
     });
 
     const elapsed = Math.round((Date.now() - startTime) / 60000);
-    const display = (item as any).title || item.slug;
     console.log(
-      `[${index + 1}/${queue.items.length}] ${prompt.bloomVerb} (Bloom ${prompt.bloomLevel}) — ${display} (${elapsed}/${maxMinutes} min)`,
+      `[${index + 1}/${queue.items.length}] ${formatHeader({ bloomLevel: item.bloomLevel, domain: item.domain })} (${elapsed}/${maxMinutes} min)`,
     );
-    console.log(`Domain: ${prompt.domain || "(none)"}`);
     console.log(`\n  ${prompt.question}\n`);
 
     const action = await runInteractiveReviewAction({

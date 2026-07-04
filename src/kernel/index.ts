@@ -173,6 +173,8 @@ export {
   deprecateToken,
   findTokens,
   generateTokenSlug,
+  getDisplayTitle,
+  getShortSlug,
   getTokenById,
   getTokenBySlug,
   getTokenDeleteImpact,
@@ -180,8 +182,6 @@ export {
   listPersonalCards,
   listTokens,
   slugify,
-  getShortSlug,
-  getDisplayTitle,
   updateToken,
 } from "./models/token.js";
 export type {

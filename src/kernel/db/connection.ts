@@ -480,6 +480,8 @@ async function runMigrations(db: Database): Promise<void> {
   // M010: add title column to tokens for human-friendly graph display
   // (separate from slug; supports Unicode, no domain prefix, auto-generated)
   if (!tokenCols.some((c) => c.name === "title")) {
-    await db.exec(`ALTER TABLE tokens ADD COLUMN title TEXT NOT NULL DEFAULT ''`);
+    await db.exec(
+      `ALTER TABLE tokens ADD COLUMN title TEXT NOT NULL DEFAULT ''`,
+    );
   }
 }

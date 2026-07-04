@@ -309,9 +309,16 @@ export async function embedQuery(
  */
 export async function findPossibleDuplicates(
   db: Database,
-  candidate: { concept: string; question?: string | null; domain?: string; title?: string | null },
+  candidate: {
+    concept: string;
+    question?: string | null;
+    domain?: string;
+    title?: string | null;
+  },
   embed: typeof embedQuery = embedQuery,
-): Promise<Array<{ slug: string; concept: string; title?: string; similarity: number }>> {
+): Promise<
+  Array<{ slug: string; concept: string; title?: string; similarity: number }>
+> {
   const queryText = embeddingContentForToken({
     concept: candidate.concept,
     question: candidate.question ?? null,
@@ -352,8 +359,12 @@ export async function findPossibleDuplicates(
     vectorTopK: 1000,
   });
 
-  const results: Array<{ slug: string; concept: string; title?: string; similarity: number }> =
-    [];
+  const results: Array<{
+    slug: string;
+    concept: string;
+    title?: string;
+    similarity: number;
+  }> = [];
   for (const hit of hits) {
     if (hit.similarity !== null && hit.similarity >= threshold) {
       results.push({

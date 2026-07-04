@@ -199,7 +199,7 @@ export async function updateToken(
 
   if (updates.title !== undefined) {
     fields.push("title = ?");
-    values.push(updates.title);
+    values.push(updates.title ?? "");
   }
   if (updates.concept !== undefined) {
     fields.push("concept = ?");
@@ -438,10 +438,11 @@ export async function findTokens(
       .all()) as Token[];
 
     for (const token of allTokens) {
-      const words = `${token.slug} ${token.title} ${token.concept} ${token.domain}`
-        .toLowerCase()
-        .split(/[\s,.\-_/\\:;!?()[\]{}]+/)
-        .filter(Boolean);
+      const words =
+        `${token.slug} ${token.title} ${token.concept} ${token.domain}`
+          .toLowerCase()
+          .split(/[\s,.\-_/\\:;!?()[\]{}]+/)
+          .filter(Boolean);
 
       let matchCount = 0;
       for (const term of shortTerms.length > 0 ? shortTerms : searchTokens) {
@@ -496,7 +497,7 @@ export async function listTokens(
       .prepare(
         `SELECT * FROM tokens WHERE (domain = ? OR domain LIKE ?) AND deprecated_at IS NULL ORDER BY bloom_level, slug`,
       )
-      .all(prefix, prefix + '/%')) as Token[];
+      .all(prefix, `${prefix}/%`)) as Token[];
   } else {
     tokens = (await db
       .prepare(
@@ -552,9 +553,18 @@ export function slugify(text: string): string {
 /**
  * Strip domain prefix (using / separator) from slug for display.
  */
-export function getShortSlug(slug: string, domainPrefix?: string | null): string {
-  if (domainPrefix && slug.startsWith(domainPrefix + "/")) {
-    return slug.substring(domainPrefix.length + 1);
+export function getShortSlug(
+  slug: string,
+  domainPrefix?: string | null,
+): string {
+  if (domainPrefix) {
+    const folded = domainPrefix
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    if (folded && slug.startsWith(`${folded}-`)) {
+      return slug.substring(folded.length + 1);
+    }
   }
   return slug;
 }
@@ -567,7 +577,7 @@ export function getDisplayTitle(
   t: { title?: string | null; slug: string },
   activeDomainScope?: string | null,
 ): string {
-  if (t.title && t.title.trim()) return t.title.trim();
+  if (t.title?.trim()) return t.title.trim();
   return getShortSlug(t.slug, activeDomainScope);
 }
 

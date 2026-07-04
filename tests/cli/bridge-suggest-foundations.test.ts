@@ -324,7 +324,7 @@ describe("bridge suggest-foundations subcommand", () => {
     expect(result.semantic).toBe(true);
     expect(result.target).toEqual({ slug: "target-token" });
     expect(result.suggestions).toHaveLength(1);
-    expect(result.suggestions[0].slug).toBe("dedup-token");
+    expect(result.suggestions[0].slug).toBe("foundation-token");
     expect(result.suggestions[0].similarity).toBeCloseTo(0.6, 2);
     expect(result.suggestions[0].already_prerequisite).toBe(false);
     expect(result.suggestions[0].would_create_cycle).toBe(false);
@@ -333,15 +333,15 @@ describe("bridge suggest-foundations subcommand", () => {
 
   it("handles happy path for pre-registration (concept) flow", async () => {
     await startEmbeddingsStub({
-      embeddings: [[1, 0, 0, 0], [1, 0, 0, 0]],
+      embeddings: [[1, 0, 0, 0], [0.6, 0.8, 0, 0]],
     });
 
     await initDb(async (db) => {
       await setSetting(db, "llm.enabled", "true");
       await setSetting(db, "llm.embedding.url", serverUrl);
       await setSetting(db, "llm.embedding.model", "text-embedding-3-small");
-      await setSetting(db, "search.suggest_min_similarity", "0.0");
-      await setSetting(db, "search.dedup_threshold", "1.1");
+      await setSetting(db, "search.suggest_min_similarity", "0.5");
+      await setSetting(db, "search.dedup_threshold", "0.9");
 
       const foundation = await createToken(db, {
         slug: "found-pre",
@@ -352,7 +352,7 @@ describe("bridge suggest-foundations subcommand", () => {
 
       await upsertTokenEmbedding(db, {
         tokenId: foundation.id,
-        embedding: [1, 0, 0, 0],
+        embedding: [0.6, 0.8, 0, 0],
         model: "text-embedding-3-small",
         contentHash: computeContentHash(embeddingContentForToken(foundation)),
       });
@@ -365,7 +365,7 @@ describe("bridge suggest-foundations subcommand", () => {
       if (f) {
         await upsertTokenEmbedding(db, {
           tokenId: f.id,
-          embedding: [1, 0, 0, 0],
+          embedding: [0.6, 0.8, 0, 0],
           model: "text-embedding-3-small",
           contentHash: computeContentHash(embeddingContentForToken(f)),
         });
@@ -384,8 +384,8 @@ describe("bridge suggest-foundations subcommand", () => {
 
     expect(result.semantic).toBe(true);
     expect(result.target).toBeNull();
-    // With title included in query embedding, the test foundation may not match in this vector setup;
-    // the band/similarity logic is covered by the previous test case.
-    expect(result.suggestions).toHaveLength(0);
+    expect(result.suggestions).toHaveLength(1);
+    expect(result.suggestions[0].slug).toBe("found-pre");
+    expect(result.suggestions[0].similarity).toBeCloseTo(0.6, 2);
   });
 });

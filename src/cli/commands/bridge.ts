@@ -47,8 +47,8 @@ import {
   getCard,
   getCardDeletionImpact,
   getConfiguredWorkspaces,
-  getDisplayTitle,
   getDatabaseTargetInfo,
+  getDisplayTitle,
   getDueCards,
   getProviderApiKey,
   getSetting,
@@ -1262,7 +1262,8 @@ bridgeCommand
         const card = await getCard(db, t.id, userId);
         tokens.push({
           slug: t.slug,
-          title: getDisplayTitle(t),
+          title: t.title,
+          display_title: getDisplayTitle(t),
           concept: t.concept,
           domain: t.domain,
           bloom_level: t.bloom_level,
@@ -2988,7 +2989,10 @@ bridgeCommand
     "User ID (default: whoami) — when provided, includes personal card info",
   )
   .option("--domain <domain>", "Filter by exact domain")
-  .option("--domain-prefix <prefix>", "Filter by domain prefix (e.g. docuware-cops) — uses / separator for hierarchy")
+  .option(
+    "--domain-prefix <prefix>",
+    "Filter by domain prefix (e.g. docuware-cops) — uses / separator for hierarchy",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = opts.user
@@ -2997,7 +3001,10 @@ bridgeCommand
       const listOpts: any = {};
       if (opts.domain) listOpts.domain = opts.domain;
       if (opts.domainPrefix) listOpts.domainPrefix = opts.domainPrefix;
-      const tokens = await listTokens(db, Object.keys(listOpts).length ? listOpts : undefined);
+      const tokens = await listTokens(
+        db,
+        Object.keys(listOpts).length ? listOpts : undefined,
+      );
 
       const cardMap = new Map<
         string,
@@ -3038,7 +3045,8 @@ bridgeCommand
         return {
           id: t.id,
           slug: t.slug,
-          title: getDisplayTitle(t),
+          title: t.title,
+          display_title: getDisplayTitle(t),
           concept: t.concept,
           domain: t.domain,
           bloomLevel: t.bloom_level,
@@ -3086,7 +3094,8 @@ bridgeCommand
       const mapToken = (nt: NeighborhoodToken) => ({
         id: nt.id,
         slug: nt.slug,
-        title: getDisplayTitle(nt),
+        title: nt.title,
+        display_title: getDisplayTitle(nt),
         concept: nt.concept,
         domain: nt.domain,
         bloomLevel: nt.bloom_level,
@@ -3196,7 +3205,8 @@ bridgeCommand
         token: {
           id: token.id,
           slug: token.slug,
-          title: getDisplayTitle(token),
+          title: token.title,
+          display_title: getDisplayTitle(token),
           concept: token.concept,
           domain: token.domain,
           bloomLevel: token.bloom_level,
@@ -3296,7 +3306,8 @@ bridgeCommand
         token: {
           id: token.id,
           slug: token.slug,
-          title: getDisplayTitle(token),
+          title: token.title,
+          display_title: getDisplayTitle(token),
           concept: token.concept,
           domain: token.domain,
           bloomLevel: token.bloom_level,
@@ -3340,7 +3351,12 @@ bridgeCommand
           success: true,
           preview: true,
           requiresConfirmation: true,
-          token: { id: token.id, slug: token.slug, title: getDisplayTitle(token) },
+          token: {
+            id: token.id,
+            slug: token.slug,
+            title: token.title,
+            display_title: getDisplayTitle(token),
+          },
           impact,
         });
         return;
@@ -3379,7 +3395,12 @@ bridgeCommand
           success: true,
           preview: true,
           requiresConfirmation: true,
-          token: { id: token.id, slug: token.slug, title: getDisplayTitle(token) },
+          token: {
+            id: token.id,
+            slug: token.slug,
+            title: token.title,
+            display_title: getDisplayTitle(token),
+          },
           impact,
         });
         return;
