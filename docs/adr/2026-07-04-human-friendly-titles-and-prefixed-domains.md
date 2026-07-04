@@ -53,8 +53,14 @@ is **understandability** of the personal/team knowledge structure.
 1. **Introduce a dedicated `title` column on `tokens`** (nullable TEXT,
    idempotent M-series migration):
    - Human-friendly natural language, full Unicode (umlauts, CJK, Arabic).
-   - **Never** includes a domain prefix; soft length target ≤ 80 characters
-     (enforced in generation prompts, ellipsized by renderers).
+   - **Never** includes a domain prefix, and **no domain echo**: the title
+     must not repeat the domain name ("Node Drain Protection", not
+     "Axon Ivy Node Drain Protection" inside `axon-ivy`). Context comes from
+     the domain itself, which every surface may always display — a domain is
+     a *name of an area*, it never spoils an answer. This is a generation
+     rule (curriculum prompt, doctor `titles` task), not a renderer hack.
+   - Soft length target ≤ 80 characters (enforced in generation prompts,
+     ellipsized by renderers).
    - Sources: LLM during curriculum import, user-provided
      (`zam token register --title` / `zam token edit --title`), or absent.
    - Used as the primary label in the 3D graph and other display surfaces.
@@ -96,18 +102,25 @@ is **understandability** of the personal/team knowledge structure.
    single shared helper (used by the graph, lists, and any future surface)
    renders `title ?? shortSlug(slug, activeDomainScope)`. `concept` is never
    used as a label — it is long and a spoiler. Until backfill runs, old
-   tokens simply look like today, no worse.
+   tokens simply look like today, no worse. Because titles carry no domain
+   echo (Decision 1), surfaces that need context show the **domain alongside
+   the title** (badge/color/tooltip) — always allowed, never a spoiler.
 
 6. **Knowledge-base maintenance becomes a first-class command: `zam doctor`.**
    Structural change is handled by schema migrations (M-series); **content**
    change gets its own home. `zam doctor` diagnoses the knowledge base and
    applies LLM-assisted, user-confirmed fixes, organized as tasks:
-   - `titles` — backfill missing/poor titles for existing tokens, with the
-     same quality bar as import-time generation (thoughtful naming, locale
-     aware — not a cheap string transform).
-   - `slugs` — repair legacy umlaut-stripped slugs from before the
-     `slugify()` folding fix (infer the intended characters, consult the
-     stored sources where inference is unsure).
+   - `titles` — backfill missing titles and rework weak ones (domain echoes,
+     question stumps like "RAG What Is", inconsistent casing, concept-prefix
+     copies), with the same quality bar as import-time generation
+     (thoughtful naming, content-appropriate language — not a cheap string
+     transform).
+   - `texts` — repair legacy umlaut folding from before the `slugify()` fix,
+     in slugs **and** in prose fields: existing data contains ASCII-folded
+     umlauts inside `question`/`concept`/`context` too ("Ueber welche
+     Wege…"). Infer the intended characters, consult stored sources where
+     inference is unsure. Repaired prose changes content hashes, so affected
+     tokens re-embed automatically via the staleness mechanism.
    - `duplicates` — surface semantic duplicates (reusing the dedup
      infrastructure) for review and merge/deprecation.
    - `domains` — rename/unify domains (e.g. migrate a team's ad-hoc names
@@ -121,9 +134,15 @@ is **understandability** of the personal/team knowledge structure.
      (`brew doctor`, `flutter doctor`, `npm doctor`) — one memorable entry
      point for every future knowledge-base update a new feature requires.
 
-7. **Language:** titles, questions, and concepts are authored in the user's
-   main learning language (`system.locale`); imports and generation respect
-   it.
+7. **Language:** `system.locale` is the **default** authoring language for
+   titles, questions, and concepts — not a global mandate. Content areas may
+   deliberately use another language: the DocuWare COPS knowledge is
+   authored in English by explicit owner decision (an 8-nationality team
+   reads it), while school content stays German. Generation and the doctor
+   `titles` task must follow the language already established in a token's
+   content/area rather than blindly applying the locale. A first-class
+   work-vs-private *context* concept does not exist in the token model yet —
+   see Open Questions.
 
 8. **Visual metaphors** (box = foundation, cone = higher abilities, small
    sphere = focus) and a side-oriented default camera support readability,
@@ -143,11 +162,16 @@ adjustments:
 3. The display fallback is unified to `title ?? shortSlug` via one shared
    helper — no `concept`-derived labels anywhere.
 4. The planned title backfill ships as `zam doctor` (task `titles`), not as
-   a one-off command; legacy umlaut slugs are the `slugs` doctor task
-   instead of import-time legacy matching.
+   a one-off command; legacy umlaut repair is the `texts` doctor task
+   (slugs AND prose fields) instead of import-time legacy matching.
 5. Bridge/protocol changes are listed explicitly as contract additions:
    `title` field in token payloads (additive), `list-tokens --domain-prefix`
    (slash semantics), `register`/`edit` `--title` flags.
+6. Title generation prompts gain the **no-domain-echo rule**; surfaces show
+   the domain alongside the title where context is needed (badge/tooltip),
+   instead of stripping words out of titles at render time. Existing titles
+   with domain echoes (~23% of the current base, e.g. "Axon Ivy …" inside
+   `axon-ivy`) are reworked by the doctor `titles` task, not by hand.
 
 ## Open questions
 
@@ -162,6 +186,12 @@ adjustments:
 3. **Title collisions in the graph** — two tokens may share a title;
    disambiguation (domain badge/tooltip) is a UI concern to settle during
    graph polish.
+4. **Work vs. private context as a first-class concept.** Language choice
+   (Decision 7), sharing boundaries (multi-learner ADR), and graph filtering
+   all hint at the same missing notion: tokens belong to a *context* (work
+   team, school, private) that today is only implied by domain names. The
+   hierarchical-domain/ontology ADR (Open Question 1) should treat context —
+   and per-context language — as a candidate first-class attribute.
 
 ## Consequences
 
