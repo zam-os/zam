@@ -134,6 +134,10 @@ function cleanHtmlText(html: string): string {
 function normalizeForComparison(str: string): string {
   return str
     .toLowerCase()
+    .replace(/ä/g, "ae")
+    .replace(/ö/g, "oe")
+    .replace(/ü/g, "ue")
+    .replace(/ß/g, "ss")
     .replace(/&[a-z0-9#]+;/gi, "")
     .replace(/[^a-z0-9]/gi, "");
 }
