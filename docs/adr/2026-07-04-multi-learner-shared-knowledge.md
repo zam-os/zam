@@ -1,6 +1,6 @@
 # Multi-Learner Tier: Shared Knowledge, Private Learning State
 
-**Status:** Proposed (draft)
+**Status:** Accepted (2026-07-04)
 **Date:** 2026-07-04
 **Deciders:** Thomas (project owner)
 **Related:**
@@ -123,6 +123,16 @@ per data class:
   coarse aggregates (coverage, due counts) — revocable, learner-initiated.
 - **Roles:** `curator` (write library), `learner` (read library, own state),
   `guardian/coach` (read the aggregates a learner opted to publish).
+- **Identity (owner decision):** the service authenticates via **OIDC with
+  the major providers — Microsoft, Google, Apple** — because that is the
+  family's and team's reality (every member already has Microsoft and
+  Google accounts, Apple partially; the youngest gets a family Google
+  account before she ever uses ZAM). ZAM never stores passwords.
+  **Invites remain the membership flow:** an invitation binds an OIDC
+  identity (verified e-mail) to a circle and role; authentication and
+  authorization stay cleanly separated. Self-hosting consequence: each
+  deployment registers its own OIDC clients (client IDs for
+  Microsoft/Google/Apple) — a documented one-time setup step.
 - **Server store:** starts as `sqld`/libsql — one dialect everywhere, native
   vector search available server-side, satisfying the search ADR's Phase 4.
   If an org outgrows it, the service swaps its internal store to Postgres +
@@ -137,9 +147,11 @@ already has: `user_id` columns.
 
 ## Open questions
 
-1. **Auth mechanism for the service.** Start with invite tokens per circle
-   (simple, self-hosted-friendly); OIDC/SSO only if a company deployment
-   demands it. Lean invite tokens.
+1. ~~**Auth mechanism for the service.**~~ **Resolved (2026-07-04):**
+   OIDC with Microsoft, Google, and Apple as identity providers; invites
+   bind identities to circles and roles (see Decision 3). Plain invite
+   tokens were rejected — the family already lives in these ecosystems,
+   and no-password operation is worth the one-time OIDC client setup.
 2. **Conflict policy for curated knowledge.** Last-write-wins with
    `updated_at` + a curation log is likely sufficient at expected scale;
    verify against the multi-curator case before building merge UI.
@@ -148,15 +160,20 @@ already has: `user_id` columns.
 4. **Aggregate vocabulary.** Which opt-in metrics exist (coverage, streak,
    due-count) and their exact granularity — needs a guardian/coach user story
    before freezing.
-5. **Does the trusted-circle tier need soft privacy?** E.g. client-side
-   filtering of other users' review_logs in UI — cosmetic, since replicas see
-   the file; decide whether to bother or document honestly.
+5. ~~**Does the trusted-circle tier need soft privacy?**~~ **Resolved
+   (2026-07-04):** both — document honestly (in a shared `sqld`, every
+   replica technically sees everything; a family setting) AND ship the
+   cosmetic courtesy: Studio/CLI hide other users' learning state by
+   default, explicitly labeled as a display filter, not a security
+   boundary.
 
 ## Scope and delivery plan
 
 - **Phase 0 — This ADR** proposed for sign-off.
 - **Phase A — Trusted circle on `sqld`** (small): setup docs + connector path
-  for self-hosted `sqld` URLs, multi-user smoke test, honest privacy note.
+  for self-hosted `sqld` URLs, multi-user smoke test, honest privacy note,
+  and the default own-data display filter in Studio/CLI (cosmetic, labeled
+  as such).
 - **Phase B — Sync Service MVP** (library down-sync only): read-only shared
   library, `zam library pull`, embeddings included. Curation still happens on
   the curator's machine.
