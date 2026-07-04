@@ -145,4 +145,50 @@ describe("bridge serve mode JSON-RPC", () => {
     expect(response.id).toBe(43);
     expect(response.error).toContain("JSON must include a non-empty 'context' field");
   });
+
+  it("handles suggest-foundations request via the stdin payload field in serve mode", async () => {
+    const child = spawn("node", [cliPath, "bridge", "serve"], {
+      cwd: tempCwd,
+      env: {
+        ...process.env,
+        USERPROFILE: tempHome,
+        HOME: tempHome,
+      },
+    });
+
+    const outputPromise = new Promise<string>((resolve, reject) => {
+      let buffer = "";
+      child.stdout.on("data", (data) => {
+        buffer += data.toString();
+        if (buffer.includes("\n")) {
+          resolve(buffer);
+        }
+      });
+      child.on("error", reject);
+      setTimeout(() => reject(new Error("Timeout")), 3000);
+    });
+
+    const request = {
+      id: 44,
+      cmd: "suggest-foundations",
+      args: ["--user", "thomas"],
+      stdin: {
+        concept: "Calculating fractions",
+        domain: "math",
+      },
+    };
+
+    child.stdin.write(`${JSON.stringify(request)}\n`);
+
+    const rawResponse = await outputPromise;
+    child.kill();
+
+    const response = JSON.parse(rawResponse.trim());
+    expect(response.id).toBe(44);
+    expect(response.result).toMatchObject({
+      semantic: false,
+      target: null,
+      suggestions: [],
+    });
+  });
 });

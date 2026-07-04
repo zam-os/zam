@@ -36,6 +36,7 @@ import {
   deleteCardForUser,
   deleteToken,
   discoverSkills,
+  embeddingContentForToken,
   endSession,
   ensureCard,
   executeReviewAction,
@@ -75,6 +76,7 @@ import {
   setSetting,
   slugify,
   startSession,
+  suggestFoundations,
   syncObserverSidecarPolicy,
   uiObservationLogExists,
   updateToken,
@@ -1272,6 +1274,166 @@ bridgeCommand
       jsonOut({
         semantic: q !== null,
         tokens,
+      });
+    });
+  });
+
+// ── zam bridge suggest-foundations ────────────────────────────────────────
+
+bridgeCommand
+  .command("suggest-foundations")
+  .description("Propose existing tokens as foundation/prerequisite candidates")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      let raw: string;
+      if (isServeMode) {
+        raw = serveStdinPayload ?? "";
+      } else {
+        const chunks: Buffer[] = [];
+        for await (const chunk of process.stdin) {
+          chunks.push(chunk as Buffer);
+        }
+        raw = Buffer.concat(chunks).toString("utf-8").trim();
+      }
+
+      if (!raw) {
+        jsonError("No input received on stdin. Pipe JSON.");
+      }
+
+      let data: {
+        slug?: string;
+        concept?: string;
+        question?: string;
+        domain?: string;
+        bloom_level?: number;
+        limit?: number;
+      };
+
+      try {
+        data = JSON.parse(raw);
+      } catch {
+        jsonError("Invalid JSON input");
+      }
+
+      let queryText = "";
+      let targetTokenId: string | undefined;
+      let targetBloomLevel: BloomLevel | undefined;
+      let targetJson: { slug: string } | null = null;
+
+      if (data?.slug !== undefined) {
+        if (typeof data.slug !== "string" || data.slug.trim() === "") {
+          jsonError("Invalid slug");
+        }
+        const token = await getTokenBySlug(db, data.slug);
+        if (!token) {
+          jsonError(`Token not found: ${data.slug}`);
+        }
+        queryText = embeddingContentForToken(token);
+        targetTokenId = token.id;
+        targetBloomLevel = token.bloom_level;
+        targetJson = { slug: token.slug };
+      } else {
+        if (
+          !data?.concept ||
+          typeof data.concept !== "string" ||
+          data.concept.trim() === ""
+        ) {
+          jsonError("JSON must include a non-empty 'slug' or 'concept' field");
+        }
+        queryText = embeddingContentForToken({
+          concept: data.concept,
+          question: typeof data.question === "string" ? data.question : null,
+          domain: typeof data.domain === "string" ? data.domain : "",
+        });
+        if (data.bloom_level !== undefined) {
+          if (
+            typeof data.bloom_level !== "number" ||
+            !Number.isInteger(data.bloom_level) ||
+            data.bloom_level < 1 ||
+            data.bloom_level > 5
+          ) {
+            jsonError("bloom_level must be an integer between 1 and 5");
+          }
+          targetBloomLevel = data.bloom_level as BloomLevel;
+        }
+      }
+
+      let limit = data?.limit ?? 5;
+      if (typeof limit !== "number" || limit <= 0 || !Number.isInteger(limit)) {
+        limit = 5;
+      }
+      if (limit > 20) {
+        limit = 20;
+      }
+
+      const _userId = await resolveUser(opts, db, { json: true });
+
+      const q = await embedQuery(db, queryText);
+      if (q === null) {
+        jsonOut({
+          semantic: false,
+          target: targetJson,
+          suggestions: [],
+        });
+        return;
+      }
+
+      try {
+        await ensureTokenEmbeddings(db, {
+          limit: 100,
+          dims: q.vector.length,
+        });
+      } catch {
+        // ignore
+      }
+
+      const thresholdStr = await getSetting(db, "search.dedup_threshold");
+      const parsedThreshold = thresholdStr
+        ? Number.parseFloat(thresholdStr)
+        : Number.NaN;
+      const maxSimilarity =
+        Number.isFinite(parsedThreshold) &&
+        parsedThreshold > 0 &&
+        parsedThreshold <= 1
+          ? parsedThreshold
+          : 0.85;
+
+      const minSimilarityStr = await getSetting(
+        db,
+        "search.suggest_min_similarity",
+      );
+      const parsedMin = minSimilarityStr
+        ? Number.parseFloat(minSimilarityStr)
+        : Number.NaN;
+      const minSimilarity =
+        Number.isFinite(parsedMin) && parsedMin > 0 && parsedMin <= 1
+          ? parsedMin
+          : 0.45;
+
+      const suggestions = await suggestFoundations(db, {
+        queryEmbedding: q.vector,
+        model: q.model,
+        targetTokenId,
+        targetBloomLevel,
+        limit,
+        minSimilarity,
+        maxSimilarity,
+      });
+
+      jsonOut({
+        semantic: true,
+        target: targetJson,
+        suggestions: suggestions.map((s) => ({
+          slug: s.token.slug,
+          concept: s.token.concept,
+          domain: s.token.domain,
+          bloom_level: s.token.bloom_level,
+          similarity: s.similarity,
+          already_prerequisite: s.alreadyPrerequisite,
+          would_create_cycle: s.wouldCreateCycle,
+          bloom_above_target: s.bloomAboveTarget,
+        })),
       });
     });
   });

@@ -9,6 +9,7 @@ import {
   createToken,
   deleteToken,
   deprecateToken,
+  embeddingContentForToken,
   ensureCard,
   generateConceptFreeCue,
   getCard,
@@ -20,6 +21,7 @@ import {
   getTokenDeleteImpact,
   listTokens,
   searchTokensHybrid,
+  suggestFoundations,
   updateToken,
 } from "../../kernel/index.js";
 import {
@@ -138,6 +140,67 @@ tokenCommand
               `  - ${dup.slug} (similarity: ${dup.similarity.toFixed(2)})`,
             );
           }
+        }
+
+        try {
+          const queryText = embeddingContentForToken({
+            concept: opts.concept,
+            question: question ?? null,
+            domain: opts.domain ?? "",
+          });
+          const q = await embedQuery(db, queryText);
+          if (q) {
+            const thresholdStr = await getSetting(db, "search.dedup_threshold");
+            const parsedThreshold = thresholdStr
+              ? Number.parseFloat(thresholdStr)
+              : Number.NaN;
+            const maxSimilarity =
+              Number.isFinite(parsedThreshold) &&
+              parsedThreshold > 0 &&
+              parsedThreshold <= 1
+                ? parsedThreshold
+                : 0.85;
+
+            const minSimilarityStr = await getSetting(
+              db,
+              "search.suggest_min_similarity",
+            );
+            const parsedMin = minSimilarityStr
+              ? Number.parseFloat(minSimilarityStr)
+              : Number.NaN;
+            const minSimilarity =
+              Number.isFinite(parsedMin) && parsedMin > 0 && parsedMin <= 1
+                ? parsedMin
+                : 0.45;
+
+            const suggestions = await suggestFoundations(db, {
+              queryEmbedding: q.vector,
+              model: q.model,
+              targetTokenId: token.id,
+              targetBloomLevel: Number(opts.bloom) as BloomLevel,
+              limit: 3,
+              minSimilarity,
+              maxSimilarity,
+            });
+
+            const filtered = suggestions.filter(
+              (s) => !s.wouldCreateCycle && !s.alreadyPrerequisite,
+            );
+
+            if (filtered.length > 0) {
+              console.log(`\nRelated foundations you already know:`);
+              for (const s of filtered) {
+                console.log(
+                  `  - ${s.token.slug} (similarity: ${s.similarity.toFixed(2)})`,
+                );
+              }
+              console.log(
+                `Link with: zam token prereq add … (see zam token prereq --help)`,
+              );
+            }
+          }
+        } catch {
+          // ignore
         }
       }
     });
