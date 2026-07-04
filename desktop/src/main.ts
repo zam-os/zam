@@ -1164,6 +1164,13 @@ function applyTheme(theme: ThemePreference): void {
   if (graphScene) {
     graphScene.fog = new THREE.Fog(cssColorHex("--bg-deep-space", "#f5f7fb"), 12, 28);
   }
+  if (graphRenderer) {
+    graphRenderer.setClearColor(cssColorHex("--bg-deep-space", "#f5f7fb"), 1);
+  }
+  if (graphScene && currentNeighborhood) {
+    // rebuild 3D materials/labels/lights for the new theme (light view visibility)
+    buildGraphScene(currentNeighborhood);
+  }
 }
 
 function saveThemePreference(theme: ThemePreference): void {
@@ -3494,13 +3501,20 @@ let graphNodeMeshes: Map<string, THREE.Mesh> = new Map();
 let graphIsDragging = false;
 let graphLastX = 0;
 let graphLastY = 0;
-let graphYaw = 0.6;
-let graphPitch = 0.3;
-let graphDist = 7.5;
+let graphYaw = 0.9;
+let graphPitch = 1.1;
+let graphDist = 8.0;
 let currentNeighborhood: any = null;
 let graphUserId: string | null = null;
 let currentDomain: string | null = null;
 let availableDomains: string[] = [];
+
+function getShortSlug(slug: string): string {
+  if (currentDomain && slug.startsWith(currentDomain + '-')) {
+    return slug.substring(currentDomain.length + 1);
+  }
+  return slug;
+}
 
 function disposeGraph() {
   if (graphAnimationId) {
@@ -3534,6 +3548,13 @@ function cssColorHex(variableName: string, fallback: string): number {
   return new THREE.Color(value || fallback).getHex();
 }
 
+function cssColorString(variableName: string, fallback: string): string {
+  const value = getComputedStyle(document.documentElement)
+    .getPropertyValue(variableName)
+    .trim();
+  return value || fallback;
+}
+
 function buildGraphScene(nb: any) {
   if (!graphScene) return;
   // clear previous
@@ -3554,7 +3575,7 @@ function buildGraphScene(nb: any) {
   const prereqList = document.getElementById("prereq-list")!;
   const depList = document.getElementById("dependent-list")!;
 
-  focusSlugEl.textContent = nb.center.slug;
+  focusSlugEl.textContent = nb.center.title || getShortSlug(nb.center.slug);
   focusConceptEl.textContent = nb.center.concept;
   const c = nb.center.card;
   focusMetaEl.textContent = c
@@ -3566,7 +3587,7 @@ function buildGraphScene(nb: any) {
     const pill = document.createElement("button");
     pill.type = "button";
     pill.className = "neighbor-pill";
-    pill.textContent = gt.slug;
+    pill.textContent = gt.title || getShortSlug(gt.slug);
     pill.title = gt.concept;
     pill.addEventListener("click", () => loadGraphFocus(gt.slug));
     container.appendChild(pill);
@@ -3600,6 +3621,18 @@ function buildGraphScene(nb: any) {
   const group = new THREE.Group();
   graphScene.add(group);
 
+  const isDark = document.documentElement.dataset.theme === "dark";
+
+  // Subtle reference grid — gives the 3D viewport visual structure and depth
+  // especially important in light mode and in the empty/sparse state.
+  const gridColor = isDark ? 0x475569 : 0x94a3b8;
+  const grid = new THREE.GridHelper(11, 11, gridColor, gridColor);
+  grid.position.y = -3.1;
+  grid.material.opacity = isDark ? 0.22 : 0.38;
+  grid.material.transparent = true;
+  grid.material.depthWrite = false;
+  graphScene.add(grid);
+
   // simple palette by domain (stable hue per domain string)
   const domainHue = (domain: string) => {
     let h = 0;
@@ -3625,7 +3658,11 @@ function buildGraphScene(nb: any) {
 
     // Redraw text after canvas resize (width/height reset the context)
     context.font = `bold ${fontSize}px Inter, system-ui, sans-serif`;
-    context.fillStyle = isCenter ? "#67e8f9" : "#bae6fd";
+    // Light theme: dark readable labels; dark theme: bright cyan pops
+    const labelColor = isCenter
+      ? cssColorString("--clr-accent-cyan", isDark ? "#67e8f9" : "#0e7490")
+      : (isDark ? "#bae6fd" : "#1e293b");
+    context.fillStyle = labelColor;
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.fillText(displayText, canvas.width / 2, canvas.height / 2);
@@ -3640,65 +3677,109 @@ function buildGraphScene(nb: any) {
     });
     const sprite = new THREE.Sprite(spriteMaterial);
 
-    const scaleFactor = isCenter ? 0.85 : 0.65;
+    const scaleFactor = isCenter ? 0.85 : 0.55;
     sprite.scale.set(
       (canvas.width / 95) * scaleFactor,
       (canvas.height / 95) * scaleFactor,
       1
     );
 
-    // Position label above the sphere
-    sprite.position.y = isCenter ? 0.95 : 0.72;
+    // y position is set by caller based on geometry (sphere / box / cone roof)
+    sprite.position.y = 0;
     return sprite;
   }
 
-  const makeNode = (gt: any, isCenter: boolean) => {
-    const size = 0.35 + (gt.bloomLevel || 1) * 0.12;
-    const geom = new THREE.SphereGeometry(size, 24, 18);
-    let color = new THREE.Color().setHSL(domainHue(gt.domain || "general"), 0.65, 0.6);
+  const makeNode = (gt: any, isCenter: boolean, isPrereq: boolean = false) => {
+    const baseSize = 0.35 + (gt.bloomLevel || 1) * 0.12;
 
-    const card = gt.card;
-    if (card) {
-      if (card.blocked) {
-        color = new THREE.Color(0xe11d48); // red-ish for blocked
-      } else {
-        const mastery = Math.min(1, (card.reps || 0) / 6 + (card.stability || 0) / 30);
-        color = new THREE.Color().setHSL(domainHue(gt.domain || ""), 0.7, 0.45 + mastery * 0.35);
-      }
+    let geom;
+    let labelOffsetY;
+
+    if (isCenter) {
+      // Focus: small sphere (core knowledge)
+      const size = baseSize * 0.85;
+      geom = new THREE.SphereGeometry(size, 24, 18);
+      labelOffsetY = size * 1.15;
+    } else if (isPrereq) {
+      // Basis: Quader (foundation / solid base)
+      const size = baseSize * 1.05;
+      geom = new THREE.BoxGeometry(size, size, size);
+      labelOffsetY = size * 1.25;
+    } else {
+      // Höhere Fähigkeiten: Dach (roof / built on top) – pyramid-like cone
+      const radius = baseSize * 0.85;
+      const height = baseSize * 1.5;
+      geom = new THREE.ConeGeometry(radius, height, 4); // 4-sided for roof feel
+      labelOffsetY = height * 0.75; // above the peak
     }
 
+    let color;
+    if (isCenter) {
+      // Center keeps its special treatment (from card or default)
+      let sat = 0.68;
+      let light = 0.58;
+      if (!isDark) {
+        sat = 0.78;
+        light = 0.52;
+      }
+      color = new THREE.Color().setHSL(domainHue(gt.domain || "general"), sat, light);
+
+      const card = gt.card;
+      if (card) {
+        if (card.blocked) {
+          color = new THREE.Color(0xe11d48);
+        } else {
+          const mastery = Math.min(1, (card.reps || 0) / 6 + (card.stability || 0) / 30);
+          const mLight = isDark ? (0.42 + mastery * 0.38) : (0.48 + mastery * 0.34);
+          color = new THREE.Color().setHSL(domainHue(gt.domain || ""), isDark ? 0.72 : 0.80, mLight);
+        }
+      }
+    } else if (isPrereq) {
+      // BASIS / Voraussetzungen: distinct "foundation" color family (teal-greenish)
+      const h = (0.42 + (domainHue(gt.domain || "") - 0.5) * 0.25 + 1) % 1;
+      color = new THREE.Color().setHSL(h, 0.58, 0.46);
+    } else {
+      // HÖHERE FÄHIGKEITEN / Aufbauwissen: distinct "advanced" color family (blue-violet)
+      const h = (0.68 + (domainHue(gt.domain || "") - 0.5) * 0.25 + 1) % 1;
+      color = new THREE.Color().setHSL(h, 0.68, 0.52);
+    }
+
+    const emissive = isCenter
+      ? (isDark ? 0x222233 : 0x445566)
+      : (isDark ? 0x111111 : 0x333344);
     const mat = new THREE.MeshPhongMaterial({
       color,
-      emissive: isCenter ? 0x222233 : 0x111111,
-      shininess: isCenter ? 30 : 12,
+      emissive,
+      shininess: isCenter ? 28 : 10,
     });
     const mesh = new THREE.Mesh(geom, mat);
     mesh.userData.slug = gt.slug;
     graphNodeMeshes.set(gt.slug, mesh);
 
     // Add visible label (sprite with canvas text)
-    const label = createLabelSprite(gt.slug, isCenter);
+    const label = createLabelSprite(gt.title || getShortSlug(gt.slug), isCenter);
+    label.position.y = labelOffsetY;
     mesh.add(label);
 
     return mesh;
   };
 
   // Center
-  const centerMesh = makeNode(nb.center, true);
+  const centerMesh = makeNode(nb.center, true, false);
   centerMesh.position.set(0, 0, 0);
   group.add(centerMesh);
 
   // Place prerequisites (lower hemisphere / ring)
   const prereqs = nb.prerequisites;
   const depnds = nb.dependents;
-  const prereqRadius = 2.4;
-  const depRadius = 2.1;
+  const prereqRadius = 2.0;
+  const depRadius = 1.8;
 
   prereqs.forEach((p: any, i: number) => {
     if (currentDomain && p.domain !== currentDomain) return; // stay within independent knowledge area
     const angle = (i / Math.max(1, prereqs.length)) * Math.PI * 2;
-    const m = makeNode(p, false);
-    const y = -1.9 - (p.bloomLevel - 1) * 0.08;
+    const m = makeNode(p, false, true); // isPrereq
+    const y = -1.6 - (p.bloomLevel - 1) * 0.06;
     m.position.set(
       Math.cos(angle) * prereqRadius,
       y,
@@ -3706,10 +3787,11 @@ function buildGraphScene(nb: any) {
     );
     group.add(m);
 
-    // edge to center
+    // edge to center (prereq / basis link)
     const points = [m.position.clone(), new THREE.Vector3(0, 0.1, 0)];
     const lineGeom = new THREE.BufferGeometry().setFromPoints(points);
-    const line = new THREE.Line(lineGeom, new THREE.LineBasicMaterial({ color: 0x555566, transparent: true, opacity: 0.55 }));
+    const lineColor = isDark ? 0x4ade80 : 0x16a34a; // green for basis/prereqs
+    const line = new THREE.Line(lineGeom, new THREE.LineBasicMaterial({ color: lineColor, transparent: true, opacity: isDark ? 0.55 : 0.85 }));
     group.add(line);
   });
 
@@ -3717,8 +3799,8 @@ function buildGraphScene(nb: any) {
   depnds.forEach((d: any, i: number) => {
     if (currentDomain && d.domain !== currentDomain) return; // stay within independent knowledge area
     const angle = (i / Math.max(1, depnds.length)) * Math.PI * 2 + 0.4;
-    const m = makeNode(d, false);
-    const y = 1.85 + (d.bloomLevel - 1) * 0.06;
+    const m = makeNode(d, false, false); // not prereq
+    const y = 1.9 + (d.bloomLevel - 1) * 0.05;
     m.position.set(
       Math.cos(angle) * depRadius,
       y,
@@ -3728,14 +3810,17 @@ function buildGraphScene(nb: any) {
 
     const points = [new THREE.Vector3(0, 0.1, 0), m.position.clone()];
     const lineGeom = new THREE.BufferGeometry().setFromPoints(points);
-    const line = new THREE.Line(lineGeom, new THREE.LineBasicMaterial({ color: 0x555566, transparent: true, opacity: 0.55 }));
+    const lineColor = isDark ? 0x60a5fa : 0x1e40af; // blue for higher abilities/dependents
+    const line = new THREE.Line(lineGeom, new THREE.LineBasicMaterial({ color: lineColor, transparent: true, opacity: isDark ? 0.55 : 0.85 }));
     group.add(line);
   });
 
-  // lights
-  const amb = new THREE.AmbientLight(0x666688, 0.6);
+  // lights — tuned for visibility in light theme (brighter/neutral) while keeping dark moody
+  const ambColor = isDark ? 0x666688 : 0x888899;
+  const amb = new THREE.AmbientLight(ambColor, isDark ? 0.65 : 0.92);
   graphScene.add(amb);
-  const p1 = new THREE.PointLight(0xaabbff, 0.9, 50);
+  const pColor = isDark ? 0xaabbff : 0xccddee;
+  const p1 = new THREE.PointLight(pColor, isDark ? 0.95 : 1.2, 50);
   p1.position.set(4, 6, 3);
   graphScene.add(p1);
 }
@@ -3745,9 +3830,9 @@ async function loadGraphFocus(slug: string) {
     const data = await runBridge<any>("get-neighborhood", ["--focus", slug, "--user", graphUserId || ""]);
     buildGraphScene(data);
     // recenter camera nicely
-    graphYaw = 0.7;
-    graphPitch = 0.35;
-    graphDist = 7.2;
+    graphYaw = 0.9;
+    graphPitch = 1.1;
+    graphDist = 7.8;
     updateGraphCamera();
   } catch (e) {
     console.error("Failed to load neighborhood for", slug, e);
@@ -3861,6 +3946,7 @@ async function bootstrapGraphWithDomain() {
       center: {
         id: "x",
         slug: currentDomain ? `no-tokens-in-${currentDomain}` : "no-tokens-yet",
+        title: currentDomain ? `No tokens in ${currentDomain}` : "No tokens yet",
         concept: currentDomain
           ? `No tokens in domain "${currentDomain}" yet`
           : "Register some tokens first (zam token register)",
@@ -3903,7 +3989,7 @@ function populateDomainTokenList(tokens: any[]) {
     const pill = document.createElement("button");
     pill.type = "button";
     pill.className = "neighbor-pill";
-    pill.textContent = t.slug;
+    pill.textContent = t.title || getShortSlug(t.slug);
     pill.title = t.concept || "";
     pill.addEventListener("click", () => loadGraphFocus(t.slug));
     listEl.appendChild(pill);
@@ -3931,6 +4017,7 @@ async function initOrShowGraph() {
     graphRenderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     graphRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     graphRenderer.setSize(container.clientWidth, container.clientHeight);
+    graphRenderer.setClearColor(cssColorHex("--bg-deep-space", "#f5f7fb"), 1);
 
     graphScene = new THREE.Scene();
     graphCamera = new THREE.PerspectiveCamera(
@@ -3943,6 +4030,19 @@ async function initOrShowGraph() {
 
     // initial empty scene with soft fog
     graphScene.fog = new THREE.Fog(cssColorHex("--bg-deep-space", "#f5f7fb"), 12, 28);
+
+    // Add a permanent subtle reference grid so the 3D area always feels like a
+    // 3D viewport (especially useful in light mode and before/without data).
+    const initIsDark = document.documentElement.dataset.theme === "dark";
+    const initGrid = new THREE.GridHelper(11, 11,
+      initIsDark ? 0x475569 : 0x94a3b8,
+      initIsDark ? 0x334155 : 0xcbd5e1
+    );
+    initGrid.position.y = -3.1;
+    initGrid.material.opacity = initIsDark ? 0.22 : 0.38;
+    initGrid.material.transparent = true;
+    initGrid.material.depthWrite = false;
+    graphScene.add(initGrid);
 
     // resize observer
     const ro = new ResizeObserver(() => {
@@ -4020,7 +4120,7 @@ async function initOrShowGraph() {
 
     // double click anywhere resets a bit
     canvas.addEventListener("dblclick", () => {
-      graphYaw = 0.6; graphPitch = 0.3; graphDist = 7.5;
+      graphYaw = 0.9; graphPitch = 1.1; graphDist = 8.0;
       updateGraphCamera();
     });
   }

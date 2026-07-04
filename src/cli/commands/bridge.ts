@@ -1116,6 +1116,7 @@ bridgeCommand
 
       let data: {
         slug: string;
+        title?: string;
         concept: string;
         domain?: string;
         bloom_level?: number;
@@ -1145,6 +1146,7 @@ bridgeCommand
 
       const token = await createToken(db, {
         slug: data?.slug,
+        title: data?.title,
         concept: data?.concept,
         domain: data?.domain,
         bloom_level: (data?.bloom_level ?? 1) as BloomLevel,
@@ -3030,6 +3032,7 @@ bridgeCommand
         return {
           id: t.id,
           slug: t.slug,
+          title: t.title || t.slug,
           concept: t.concept,
           domain: t.domain,
           bloomLevel: t.bloom_level,
@@ -3077,6 +3080,7 @@ bridgeCommand
       const mapToken = (nt: NeighborhoodToken) => ({
         id: nt.id,
         slug: nt.slug,
+        title: nt.title || nt.slug,
         concept: nt.concept,
         domain: nt.domain,
         bloomLevel: nt.bloom_level,
@@ -3167,6 +3171,7 @@ bridgeCommand
       const { token, card } = await db.transaction(async (tx) => {
         const createdToken = await createToken(tx, {
           slug,
+          title: opts.title,
           concept: opts.concept,
           domain: opts.domain,
           bloom_level: bloom,
