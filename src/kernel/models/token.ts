@@ -364,15 +364,14 @@ export async function deleteToken(
       .prepare("SELECT id, token_slugs FROM agent_skills")
       .all()) as Array<{ id: string; token_slugs: string }>;
 
+    const skillUpdateStmt = tx.prepare(
+      "UPDATE agent_skills SET token_slugs = ?, updated_at = ? WHERE id = ?",
+    );
     for (const row of skillRows) {
       const tokenSlugs = JSON.parse(row.token_slugs) as string[];
       const filtered = tokenSlugs.filter((tokenSlug) => tokenSlug !== slug);
       if (filtered.length !== tokenSlugs.length) {
-        await tx
-          .prepare(
-            "UPDATE agent_skills SET token_slugs = ?, updated_at = ? WHERE id = ?",
-          )
-          .run(JSON.stringify(filtered), now, row.id);
+        await skillUpdateStmt.run(JSON.stringify(filtered), now, row.id);
       }
     }
 
@@ -416,11 +415,15 @@ export async function findTokens(
     `SELECT * FROM tokens WHERE deprecated_at IS NULL AND ` +
     `(lower(slug) LIKE ? OR lower(title) LIKE ? OR lower(concept) LIKE ? OR lower(domain) LIKE ?)`;
 
+  const likeStmt = db.prepare(likeSQL);
   for (const term of longTerms) {
     const pattern = `%${term}%`;
-    const rows = (await db
-      .prepare(likeSQL)
-      .all(pattern, pattern, pattern, pattern)) as Token[];
+    const rows = (await likeStmt.all(
+      pattern,
+      pattern,
+      pattern,
+      pattern,
+    )) as Token[];
     for (const row of rows) {
       const entry = scoreMap.get(row.id);
       if (entry) {
@@ -942,12 +945,11 @@ export async function confirmCardSplit(
         );
 
       // Link proposal tokens as prerequisites of original token
+      const insertPrereqStmt = tx.prepare(
+        "INSERT OR IGNORE INTO prerequisites (token_id, requires_id) VALUES (?, ?)",
+      );
       for (const propToken of proposalTokens) {
-        await tx
-          .prepare(
-            "INSERT OR IGNORE INTO prerequisites (token_id, requires_id) VALUES (?, ?)",
-          )
-          .run(originalToken.id, propToken.id);
+        await insertPrereqStmt.run(originalToken.id, propToken.id);
       }
 
       // Block original card
@@ -965,19 +967,21 @@ export async function confirmCardSplit(
       // history is preserved (ADR principle 5), and clearing the FSRS columns to
       // NULL would in any case violate their NOT NULL constraints and abort the
       // whole split.
+      const checkPrereqsStmt = tx.prepare(
+        "SELECT COUNT(*) as n FROM prerequisites WHERE token_id = ?",
+      );
+      const unblockCardStmt = tx.prepare(
+        "UPDATE cards SET blocked = 0, due_at = ? WHERE id = ?",
+      );
       for (const propToken of proposalTokens) {
         const card = await ensureCard(tx, propToken.id, userId);
         if (card.blocked === 1) {
-          const prereqOfPrereq = (await tx
-            .prepare(
-              "SELECT COUNT(*) as n FROM prerequisites WHERE token_id = ?",
-            )
-            .get(propToken.id)) as { n: number };
+          const prereqOfPrereq = (await checkPrereqsStmt.get(propToken.id)) as {
+            n: number;
+          };
           if (prereqOfPrereq.n === 0) {
             const now = new Date().toISOString();
-            await tx
-              .prepare("UPDATE cards SET blocked = 0, due_at = ? WHERE id = ?")
-              .run(now, card.id);
+            await unblockCardStmt.run(now, card.id);
           }
         }
       }
