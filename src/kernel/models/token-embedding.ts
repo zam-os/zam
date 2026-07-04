@@ -59,18 +59,6 @@ export function embeddingContentForToken(
   return `${t.concept}\n${t.question ?? ""}\n${t.domain}`;
 }
 
-/** EmbeddingGemma retrieval-document prompt used for every stored token vector. */
-export function embeddingTextForToken(
-  t: Pick<Token, "concept" | "question" | "domain">,
-): string {
-  return `title: none | text: ${embeddingContentForToken(t)}`;
-}
-
-/** EmbeddingGemma retrieval-query prompt used for search and dedup queries. */
-export function embeddingTextForQuery(text: string): string {
-  return `task: search result | query: ${text}`;
-}
-
 export function computeContentHash(text: string): string {
   return createHash("sha256").update(text, "utf8").digest("hex");
 }
@@ -222,7 +210,7 @@ export async function listTokensNeedingEmbedding(
     } else if (opts?.dims !== undefined && row.emb_dims !== opts.dims) {
       reason = "dimension-changed";
     } else {
-      const computedText = embeddingTextForToken(row);
+      const computedText = embeddingContentForToken(row);
       const hash = computeContentHash(computedText);
       if (row.emb_hash !== hash) {
         reason = "content-changed";
@@ -232,7 +220,7 @@ export async function listTokensNeedingEmbedding(
 
     if (reason) {
       if (!text) {
-        text = embeddingTextForToken(row);
+        text = embeddingContentForToken(row);
       }
       needing.push({ token: row as Token, text, reason });
     }
@@ -274,7 +262,7 @@ export async function getEmbeddingCoverage(
       stale++;
       continue;
     }
-    const hash = computeContentHash(embeddingTextForToken(row));
+    const hash = computeContentHash(embeddingContentForToken(row));
     if (row.emb_hash !== hash) {
       stale++;
     }
@@ -309,9 +297,18 @@ export async function listEmbeddedTokens(
 
   return rows.flatMap((row) => {
     const { embedding, emb_hash, ...token } = row;
-    if (emb_hash !== computeContentHash(embeddingTextForToken(token))) {
+    if (emb_hash !== computeContentHash(embeddingContentForToken(token))) {
       return [];
     }
-    return [{ token: token as Token, embedding: decodeEmbedding(embedding) }];
+    try {
+      return [{ token: token as Token, embedding: decodeEmbedding(embedding) }];
+    } catch (err) {
+      console.warn(
+        `Warning: Corrupted embedding for token ${token.slug} (${token.id}) ignored: ${
+          (err as Error).message
+        }`,
+      );
+      return [];
+    }
   });
 }

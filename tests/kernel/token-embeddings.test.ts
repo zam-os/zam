@@ -9,8 +9,6 @@ import {
   decodeEmbedding,
   deleteToken,
   embeddingContentForToken,
-  embeddingTextForQuery,
-  embeddingTextForToken,
   encodeEmbedding,
   getEmbeddingCoverage,
   getTokenEmbedding,
@@ -24,7 +22,7 @@ import {
 
 const MODEL = "embeddinggemma-300m";
 
-describe("token embeddings", () => {
+describe("token embedding operations", () => {
   let tempDir: string;
   let db: Database;
 
@@ -44,15 +42,15 @@ describe("token embeddings", () => {
   async function makeToken(overrides?: Partial<Token>): Promise<Token> {
     return createToken(db, {
       slug: overrides?.slug ?? "test-token",
-      concept: overrides?.concept ?? "A concept to embed",
+      concept: overrides?.concept ?? "This is a concept describing a topic.",
       domain: overrides?.domain ?? "testing",
       question: overrides?.question ?? "What is the concept?",
     });
   }
 
-  // ── encode/decode round-trip ────────────────────────────────────────────
+  // ── prompt formatting ──────────────────────────────────────────────────────
 
-  it("formats stored documents and queries with distinct retrieval prompts", async () => {
+  it("formats stored documents with the model-agnostic canonical representation", async () => {
     const token = await makeToken({
       concept: "A prompted concept",
       question: "How is it recalled?",
@@ -61,12 +59,6 @@ describe("token embeddings", () => {
 
     expect(embeddingContentForToken(token)).toBe(
       "A prompted concept\nHow is it recalled?\nprompting",
-    );
-    expect(embeddingTextForToken(token)).toBe(
-      "title: none | text: A prompted concept\nHow is it recalled?\nprompting",
-    );
-    expect(embeddingTextForQuery("find prompted concepts")).toBe(
-      "task: search result | query: find prompted concepts",
     );
   });
 
@@ -112,7 +104,7 @@ describe("token embeddings", () => {
     it("stores and retrieves a vector with matching metadata", async () => {
       const token = await makeToken();
       const vec = [0.5, 0.25, -0.75];
-      const text = embeddingTextForToken(token);
+      const text = embeddingContentForToken(token);
       const hash = computeContentHash(text);
 
       await upsertTokenEmbedding(db, {
@@ -171,12 +163,12 @@ describe("token embeddings", () => {
       const entry = needing.find((n) => n.token.id === token.id);
       expect(entry).toBeDefined();
       expect(entry!.reason).toBe("missing");
-      expect(entry!.text).toBe(embeddingTextForToken(token));
+      expect(entry!.text).toBe(embeddingContentForToken(token));
     });
 
     it("classifies an edited token as content-changed", async () => {
       const token = await makeToken({ slug: "content-changed-token" });
-      const originalText = embeddingTextForToken(token);
+      const originalText = embeddingContentForToken(token);
       await upsertTokenEmbedding(db, {
         tokenId: token.id,
         embedding: [1, 2, 3],
@@ -204,7 +196,7 @@ describe("token embeddings", () => {
         tokenId: token.id,
         embedding: [1, 2, 3],
         model: "some-other-model",
-        contentHash: computeContentHash(embeddingTextForToken(token)),
+        contentHash: computeContentHash(embeddingContentForToken(token)),
       });
 
       const needing = await listTokensNeedingEmbedding(db, MODEL);
@@ -219,7 +211,7 @@ describe("token embeddings", () => {
         tokenId: token.id,
         embedding: [1, 2, 3],
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(token)),
+        contentHash: computeContentHash(embeddingContentForToken(token)),
       });
 
       const needing = await listTokensNeedingEmbedding(db, MODEL, { dims: 4 });
@@ -233,7 +225,7 @@ describe("token embeddings", () => {
         tokenId: token.id,
         embedding: [1, 2, 3],
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(token)),
+        contentHash: computeContentHash(embeddingContentForToken(token)),
       });
 
       const needing = await listTokensNeedingEmbedding(db, MODEL);
@@ -270,7 +262,7 @@ describe("token embeddings", () => {
         tokenId: token.id,
         embedding: [1, 2, 3],
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(token)),
+        contentHash: computeContentHash(embeddingContentForToken(token)),
       });
 
       expect(await getTokenEmbedding(db, token.id)).toBeDefined();
@@ -293,7 +285,7 @@ describe("token embeddings", () => {
         tokenId: fresh.id,
         embedding: [1, 2, 3],
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(fresh)),
+        contentHash: computeContentHash(embeddingContentForToken(fresh)),
       });
 
       await makeToken({
@@ -309,7 +301,7 @@ describe("token embeddings", () => {
         tokenId: contentChanged.id,
         embedding: [4, 5, 6],
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(contentChanged)),
+        contentHash: computeContentHash(embeddingContentForToken(contentChanged)),
       });
       await updateToken(db, contentChanged.slug, {
         concept: "Edited concept",
@@ -323,7 +315,7 @@ describe("token embeddings", () => {
         tokenId: modelChanged.id,
         embedding: [7, 8, 9],
         model: "old-model",
-        contentHash: computeContentHash(embeddingTextForToken(modelChanged)),
+        contentHash: computeContentHash(embeddingContentForToken(modelChanged)),
       });
 
       const coverage = await getEmbeddingCoverage(db, MODEL);
@@ -350,7 +342,7 @@ describe("token embeddings", () => {
         tokenId: matching.id,
         embedding: [1, 2, 3],
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(matching)),
+        contentHash: computeContentHash(embeddingContentForToken(matching)),
       });
 
       const other = await makeToken({
@@ -361,7 +353,7 @@ describe("token embeddings", () => {
         tokenId: other.id,
         embedding: [4, 5, 6],
         model: "different-model",
-        contentHash: computeContentHash(embeddingTextForToken(other)),
+        contentHash: computeContentHash(embeddingContentForToken(other)),
       });
 
       const rows = await listEmbeddedTokens(db, MODEL);
@@ -379,7 +371,7 @@ describe("token embeddings", () => {
         tokenId: token.id,
         embedding: [1, 2, 3],
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(token)),
+        contentHash: computeContentHash(embeddingContentForToken(token)),
       });
 
       await db
@@ -401,7 +393,7 @@ describe("token embeddings", () => {
         tokenId: token.id,
         embedding: [1, 2, 3],
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(token)),
+        contentHash: computeContentHash(embeddingContentForToken(token)),
       });
       await updateToken(db, token.slug, { concept: "New meaning" });
 

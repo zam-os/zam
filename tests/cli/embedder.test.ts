@@ -8,6 +8,8 @@ import {
   DEFAULT_EMBEDDING_MODEL,
   embedQuery,
   embedTexts,
+  embeddingTextForQuery,
+  embeddingTextForToken,
   ensureTokenEmbeddings,
   findPossibleDuplicates,
 } from "../../src/cli/llm/embedder.js";
@@ -15,7 +17,7 @@ import {
   computeContentHash,
   createToken,
   type Database,
-  embeddingTextForToken,
+  embeddingContentForToken,
   getTokenEmbedding,
   openDatabase,
   setSetting,
@@ -275,14 +277,16 @@ describe("ensureTokenEmbeddings", () => {
 
       // The wire request carries the configured raw model name...
       expect(stub.requests[0].model).toBe("embeddinggemma");
-      expect(stub.requests[0].input).toEqual([embeddingTextForToken(token)]);
+      expect(stub.requests[0].input).toEqual([
+        embeddingTextForToken(token, "embeddinggemma"),
+      ]);
 
       // ...but the stored row uses the canonical model id.
       const stored = await getTokenEmbedding(db, token.id);
       expect(stored).toBeDefined();
       expect(stored!.model).toBe("embeddinggemma-300m");
 
-      const expectedText = embeddingTextForToken(token);
+      const expectedText = embeddingContentForToken(token);
       expect(stored!.content_hash).toBe(computeContentHash(expectedText));
       expect(stored!.dims).toBe(4);
     } finally {
@@ -569,7 +573,7 @@ describe("findPossibleDuplicates", () => {
       tokenId: t.id,
       embedding: [1, 0, 0, 0],
       model: MODEL,
-      contentHash: computeContentHash(embeddingTextForToken(t)),
+      contentHash: computeContentHash(embeddingContentForToken(t)),
     });
 
     const embedStub = async () => ({
@@ -599,7 +603,7 @@ describe("findPossibleDuplicates", () => {
       tokenId: t.id,
       embedding: [0, 0, 1, 0],
       model: MODEL,
-      contentHash: computeContentHash(embeddingTextForToken(t)),
+      contentHash: computeContentHash(embeddingContentForToken(t)),
     });
 
     const embedStub = async () => ({ vector: [1, 0, 0, 0], model: MODEL });
@@ -624,7 +628,7 @@ describe("findPossibleDuplicates", () => {
       tokenId: t.id,
       embedding: [0.8, 0.6, 0, 0],
       model: MODEL,
-      contentHash: computeContentHash(embeddingTextForToken(t)),
+      contentHash: computeContentHash(embeddingContentForToken(t)),
     });
 
     // Stub query is [1,0,0,0], so similarity against the stored vector is 0.8.
@@ -674,5 +678,34 @@ describe("findPossibleDuplicates", () => {
 describe("DEFAULT_EMBEDDING_MODEL", () => {
   it("is embeddinggemma", () => {
     expect(DEFAULT_EMBEDDING_MODEL).toBe("embeddinggemma");
+  });
+});
+
+describe("prompt formatting", () => {
+  it("formats stored documents and queries with model-specific retrieval prompts", () => {
+    const token = {
+      concept: "A prompted concept",
+      question: "How is it recalled?",
+      domain: "prompting",
+    };
+
+    // Test with Gemma aliases
+    expect(embeddingTextForToken(token, "embeddinggemma")).toBe(
+      "title: none | text: A prompted concept\nHow is it recalled?\nprompting",
+    );
+    expect(embeddingTextForToken(token, "google/embeddinggemma-300m")).toBe(
+      "title: none | text: A prompted concept\nHow is it recalled?\nprompting",
+    );
+    expect(embeddingTextForQuery("find prompted concepts", "embeddinggemma")).toBe(
+      "task: search result | query: find prompted concepts",
+    );
+
+    // Test with non-Gemma model
+    expect(embeddingTextForToken(token, "other-model")).toBe(
+      "A prompted concept\nHow is it recalled?\nprompting",
+    );
+    expect(embeddingTextForQuery("find prompted concepts", "other-model")).toBe(
+      "find prompted concepts",
+    );
   });
 });

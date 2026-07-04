@@ -107,7 +107,7 @@ tokenCommand
         console.log(
           JSON.stringify(
             {
-              token,
+              ...token,
               card: cardUserId ? { userId: cardUserId } : null,
               possible_duplicates: possibleDuplicates,
             },

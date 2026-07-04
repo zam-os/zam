@@ -168,16 +168,27 @@ import { backupDatabaseTo } from "../workspaces/backup.js";
 import { withDb as sharedWithDb } from "./shared/db.js";
 
 let isServeMode = false;
+let serveStdinPayload: string | undefined;
 
 function jsonOut(data: unknown): void {
   console.log(JSON.stringify(data, null, 2));
 }
 
 function jsonError(message: string): never {
-  if (isServeMode) {
-    throw new Error(JSON.stringify({ error: message }));
+  let msg = message;
+  if (message.startsWith('{"error":')) {
+    try {
+      const parsed = JSON.parse(message);
+      msg = parsed.error;
+    } catch {
+      // ignore
+    }
   }
-  console.log(JSON.stringify({ error: message }, null, 2));
+
+  if (isServeMode) {
+    throw new Error(JSON.stringify({ error: msg }));
+  }
+  console.log(JSON.stringify({ error: msg }, null, 2));
   process.exit(1);
 }
 
@@ -1037,12 +1048,16 @@ bridgeCommand
         return;
       }
 
-      // Read token patterns from stdin
-      const chunks: Buffer[] = [];
-      for await (const chunk of process.stdin) {
-        chunks.push(chunk as Buffer);
+      let raw: string;
+      if (isServeMode) {
+        raw = serveStdinPayload ?? "";
+      } else {
+        const chunks: Buffer[] = [];
+        for await (const chunk of process.stdin) {
+          chunks.push(chunk as Buffer);
+        }
+        raw = Buffer.concat(chunks).toString("utf-8").trim();
       }
-      const raw = Buffer.concat(chunks).toString("utf-8").trim();
 
       if (!raw) {
         jsonError("No input received on stdin. Pipe JSON with token patterns.");
@@ -1079,14 +1094,17 @@ bridgeCommand
   .description("Create a token + card from JSON stdin")
   .option("--user <id>", "User ID (default: whoami)")
   .action(async (opts) => {
-    let db: Database | undefined;
-    try {
-      // Read JSON from stdin
-      const chunks: Buffer[] = [];
-      for await (const chunk of process.stdin) {
-        chunks.push(chunk as Buffer);
+    await withDb(async (db) => {
+      let raw: string;
+      if (isServeMode) {
+        raw = serveStdinPayload ?? "";
+      } else {
+        const chunks: Buffer[] = [];
+        for await (const chunk of process.stdin) {
+          chunks.push(chunk as Buffer);
+        }
+        raw = Buffer.concat(chunks).toString("utf-8").trim();
       }
-      const raw = Buffer.concat(chunks).toString("utf-8").trim();
 
       if (!raw) {
         jsonError("No input received on stdin. Pipe JSON with token data.");
@@ -1113,7 +1131,6 @@ bridgeCommand
         jsonError("JSON must include 'slug' and 'concept' fields");
       }
 
-      db = await openDatabase();
       const userId = await resolveUser(opts, db, { json: true });
 
       const possibleDuplicates = await findPossibleDuplicates(db, {
@@ -1160,15 +1177,7 @@ bridgeCommand
         },
         possible_duplicates: possibleDuplicates,
       });
-
-      await db.close();
-    } catch (err) {
-      await db?.close();
-      // If it's already a JSON error exit, let it propagate
-      if ((err as Error).message) {
-        jsonError((err as Error).message);
-      }
-    }
+    });
   });
 
 // ── zam bridge relevant-tokens ────────────────────────────────────────────
@@ -1178,14 +1187,17 @@ bridgeCommand
   .description("Find tokens relevant to a given context")
   .option("--user <id>", "User ID (default: whoami)")
   .action(async (opts) => {
-    let db: Database | undefined;
-    try {
-      // Read JSON from stdin
-      const chunks: Buffer[] = [];
-      for await (const chunk of process.stdin) {
-        chunks.push(chunk as Buffer);
+    await withDb(async (db) => {
+      let raw: string;
+      if (isServeMode) {
+        raw = serveStdinPayload ?? "";
+      } else {
+        const chunks: Buffer[] = [];
+        for await (const chunk of process.stdin) {
+          chunks.push(chunk as Buffer);
+        }
+        raw = Buffer.concat(chunks).toString("utf-8").trim();
       }
-      const raw = Buffer.concat(chunks).toString("utf-8").trim();
 
       if (!raw) {
         jsonError("No input received on stdin. Pipe JSON with context.");
@@ -1206,7 +1218,6 @@ bridgeCommand
         jsonError("JSON must include a non-empty 'context' field");
       }
 
-      db = await openDatabase();
       const userId = await resolveUser(opts, db, { json: true });
 
       // Truncate to 2000 chars before embedding
@@ -1227,6 +1238,9 @@ bridgeCommand
       let limit = data.limit ?? 10;
       if (typeof limit !== "number" || limit <= 0 || !Number.isInteger(limit)) {
         limit = 10;
+      }
+      if (limit > 100) {
+        limit = 100;
       }
 
       const results = await searchTokensHybrid(db, truncatedContext, {
@@ -1259,14 +1273,7 @@ bridgeCommand
         semantic: q !== null,
         tokens,
       });
-
-      await db.close();
-    } catch (err) {
-      await db?.close();
-      if ((err as Error).message) {
-        jsonError((err as Error).message);
-      }
-    }
+    });
   });
 
 // ── zam bridge discover-skills ──────────────────────────────────────────────
@@ -3854,6 +3861,14 @@ bridgeCommand
         const cmd = req.cmd;
         const args = req.args ?? [];
 
+        if (typeof req.stdin === "string") {
+          serveStdinPayload = req.stdin;
+        } else if (typeof req.stdin === "object" && req.stdin !== null) {
+          serveStdinPayload = JSON.stringify(req.stdin);
+        } else {
+          serveStdinPayload = undefined;
+        }
+
         if (!cmd) {
           return JSON.stringify({
             id: requestId,
@@ -3915,6 +3930,8 @@ bridgeCommand
           id: requestId,
           error: `Invalid JSON request: ${(err as Error).message}`,
         });
+      } finally {
+        serveStdinPayload = undefined;
       }
     };
 

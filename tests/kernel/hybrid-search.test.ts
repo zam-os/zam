@@ -8,7 +8,7 @@ import {
   createToken,
   type Database,
   deprecateToken,
-  embeddingTextForToken,
+  embeddingContentForToken,
   openDatabase,
   searchTokensHybrid,
   type Token,
@@ -92,7 +92,7 @@ describe("hybrid search", () => {
         tokenId: t.id,
         embedding: [1, 0, 0, 0],
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(t)),
+        contentHash: computeContentHash(embeddingContentForToken(t)),
       });
 
       // Query "tenant isolation model" has no word overlap, but a high-similarity query vector
@@ -118,7 +118,7 @@ describe("hybrid search", () => {
         tokenId: t.id,
         embedding: [0, 0, 1, 0],
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(t)),
+        contentHash: computeContentHash(embeddingContentForToken(t)),
       });
 
       // Query "SNAT" with orthogonal query vector
@@ -153,38 +153,38 @@ describe("hybrid search", () => {
         tokenId: t1.id,
         embedding: [1, 0, 0],
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(t1)),
+        contentHash: computeContentHash(embeddingContentForToken(t1)),
       });
       await upsertTokenEmbedding(db, {
         tokenId: t2.id,
         embedding: [0, 1, 0],
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(t2)),
+        contentHash: computeContentHash(embeddingContentForToken(t2)),
       });
       await upsertTokenEmbedding(db, {
         tokenId: t3.id,
         embedding: [0, 0, 1],
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(t3)),
+        contentHash: computeContentHash(embeddingContentForToken(t3)),
       });
 
-      // Query has word overlap with t1 and t2 (lexical hit).
-      // Let's stub query embedding so t2 gets the top vector hit, but t1 also has overlap.
-      // t1 should have: lexical hit (rank 1) + vector hit (rank 2 or 3)
-      // t2 should have: lexical hit (rank 2) + vector hit (rank 1)
-      // Let's set query vector: [0.3, 0.9, 0] -> t2 similarity = 0.9, t1 similarity = 0.3
+      // Query has word overlap with t1 (better match, lexical rank 1) and t2 (lexical rank 2).
+      // Let's set query vector to [0, 1, 0] making t2 a perfect vector match (rank 1),
+      // and t1 vector match rank 3 (since t1 similarity = 0, t3 similarity = 0).
       const results = await searchTokensHybrid(db, "Kubernetes Cluster", {
-        queryEmbedding: [0.3, 0.9, 0],
+        queryEmbedding: [0, 1, 0],
         model: MODEL,
         vectorTopK: 2,
       });
 
-      // Both t1 and t2 should be hit by both legs and outrank t3 (which has none)
+      // Both t1 and t2 should be returned.
+      // t2: lexical rank 2 + vector rank 1 -> score = 1/(60+2) + 1/(60+1) ≈ 0.0325
+      // t1: lexical rank 1 + vector rank 3 -> score = 1/(60+1) + 1/(60+3) ≈ 0.0322
+      // Therefore, t2 outranks t1.
       expect(results.length).toBe(2);
-      expect(results[0].lexicalRank).toBeDefined();
-      expect(results[0].vectorRank).toBeDefined();
-      expect(results[1].lexicalRank).toBeDefined();
-      expect(results[1].vectorRank).toBeDefined();
+      expect(results[0].slug).toBe("token-two");
+      expect(results[1].slug).toBe("token-one");
+      expect(results[0].score).toBeGreaterThan(results[1].score);
     });
 
     it("skips rows with dimension mismatch without throwing", async () => {
@@ -196,7 +196,7 @@ describe("hybrid search", () => {
         tokenId: t.id,
         embedding: [1, 0], // 2-dimensional
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(t)),
+        contentHash: computeContentHash(embeddingContentForToken(t)),
       });
 
       // Query vector is 3-dimensional
@@ -235,13 +235,13 @@ describe("hybrid search", () => {
         tokenId: t1.id,
         embedding: [1, 0],
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(t1)),
+        contentHash: computeContentHash(embeddingContentForToken(t1)),
       });
       await upsertTokenEmbedding(db, {
         tokenId: t2.id,
         embedding: [1, 0],
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(t2)),
+        contentHash: computeContentHash(embeddingContentForToken(t2)),
       });
 
       await deprecateToken(db, t2.slug);
@@ -264,7 +264,7 @@ describe("hybrid search", () => {
         tokenId: token.id,
         embedding: [1, 0],
         model: MODEL,
-        contentHash: computeContentHash(embeddingTextForToken(token)),
+        contentHash: computeContentHash(embeddingContentForToken(token)),
       });
       await updateToken(db, token.slug, { concept: "new semantic meaning" });
 
@@ -274,6 +274,44 @@ describe("hybrid search", () => {
       });
 
       expect(results).toEqual([]);
+    });
+
+    it("gracefully ignores a corrupted embedding row and falls back to lexical search", async () => {
+      const token = await makeToken({
+        slug: "corrupt-vector",
+        concept: "corrupt semantic meaning",
+      });
+
+      // Insert raw unaligned/corrupt 3-byte blob directly into the database
+      const malformedBlob = Buffer.from([1, 2, 3]);
+      await db
+        .prepare(
+          `
+        INSERT INTO token_embeddings (token_id, embedding, model, dims, content_hash, embedded_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `,
+        )
+        .run(
+          token.id,
+          malformedBlob,
+          MODEL,
+          4, // claim 4 dims
+          computeContentHash(embeddingContentForToken(token)),
+          new Date().toISOString(),
+        );
+
+      // Search query has word overlap with the token, so it can match lexically
+      const results = await searchTokensHybrid(db, "corrupt semantic meaning", {
+        queryEmbedding: [1, 0, 0, 0],
+        model: MODEL,
+      });
+
+      // Search should succeed, return the token lexically, and carry null similarity
+      expect(results.length).toBe(1);
+      expect(results[0].slug).toBe("corrupt-vector");
+      expect(results[0].lexicalRank).toBe(1);
+      expect(results[0].vectorRank).toBeNull();
+      expect(results[0].similarity).toBeNull();
     });
   });
 });

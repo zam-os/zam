@@ -192,8 +192,6 @@ export {
   computeContentHash,
   decodeEmbedding,
   embeddingContentForToken,
-  embeddingTextForQuery,
-  embeddingTextForToken,
   encodeEmbedding,
   getEmbeddingCoverage,
   getTokenEmbedding,

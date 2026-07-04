@@ -10,11 +10,10 @@
  * here.
  */
 
-import type { Database } from "../../kernel/index.js";
+import type { Database, Token } from "../../kernel/index.js";
 import {
   computeContentHash,
   embeddingContentForToken,
-  embeddingTextForQuery,
   getEmbeddingCoverage,
   getSetting,
   listTokensNeedingEmbedding,
@@ -60,6 +59,22 @@ export function canonicalEmbeddingModelId(model: string): string {
     return CANONICAL_EMBEDDING_MODEL_ID;
   }
   return lowered;
+}
+
+/** Model-specific retrieval prompt used for stored token vectors. */
+export function embeddingTextForToken(
+  t: Pick<Token, "concept" | "question" | "domain">,
+  model: string,
+): string {
+  const isGemma = EMBEDDINGGEMMA_ALIASES.has(model.trim().toLowerCase());
+  const content = embeddingContentForToken(t);
+  return isGemma ? `title: none | text: ${content}` : content;
+}
+
+/** Model-specific retrieval prompt used for search and dedup queries. */
+export function embeddingTextForQuery(text: string, model: string): string {
+  const isGemma = EMBEDDINGGEMMA_ALIASES.has(model.trim().toLowerCase());
+  return isGemma ? `task: search result | query: ${text}` : text;
 }
 
 /**
@@ -216,9 +231,12 @@ export async function ensureTokenEmbeddings(
   try {
     for (let i = 0; i < pending.length; i += EMBED_BATCH_SIZE) {
       const batch = pending.slice(i, i + EMBED_BATCH_SIZE);
+      const formattedTexts = batch.map((item) =>
+        embeddingTextForToken(item.token, endpoint.model),
+      );
       const vectors = await embedTexts(
         { url: endpoint.url, model: endpoint.model, apiKey: endpoint.apiKey },
-        batch.map((item) => item.text),
+        formattedTexts,
       );
       for (const [index, item] of batch.entries()) {
         await upsertTokenEmbedding(db, {
@@ -277,7 +295,7 @@ export async function embedQuery(
   try {
     const [vector] = await embedTexts(
       { url: endpoint.url, model: endpoint.model, apiKey: endpoint.apiKey },
-      [embeddingTextForQuery(text)],
+      [embeddingTextForQuery(text, endpoint.model)],
     );
     return { vector, model: canonicalEmbeddingModelId(endpoint.model) };
   } catch {
@@ -308,10 +326,21 @@ export async function findPossibleDuplicates(
   // Registration-time dedup must cover an upgraded or previously-offline DB,
   // not just the subset that already happened to have vectors. This exhaustive
   // pass is normally a no-op after the first successful semantic operation.
-  await ensureTokenEmbeddings(db, {
-    limit: Number.MAX_SAFE_INTEGER,
+  // We use a bounded top-up strategy to keep registration latency low.
+  const coverage = await getEmbeddingCoverage(db, q.model, {
     dims: q.vector.length,
   });
+  const totalNeeding = coverage.missing + coverage.stale;
+  if (totalNeeding > 0) {
+    await ensureTokenEmbeddings(db, { limit: 100, dims: q.vector.length });
+    if (totalNeeding > 100) {
+      console.warn(
+        `Warning: Duplicate check is incomplete. ${
+          totalNeeding - 100
+        } tokens are still missing embeddings. Run 'zam token reembed' to complete indexing.`,
+      );
+    }
+  }
 
   const thresholdStr = await getSetting(db, "search.dedup_threshold");
   const parsed = thresholdStr ? Number.parseFloat(thresholdStr) : Number.NaN;
