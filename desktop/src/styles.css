@@ -1734,7 +1734,7 @@ textarea::placeholder {
 }
 
 .container.graph-full .graph-container {
-  padding: 4px;
+  padding: 12px 4px 4px 4px;
   min-height: 0;
   flex: 1;
   height: 100%;
@@ -1789,6 +1789,7 @@ textarea::placeholder {
 .container.graph-full .graph-header {
   margin-bottom: 6px;
   padding-bottom: 6px;
+  padding-top: 4px;
 }
 
 .container.graph-full .graph-side {
@@ -1801,13 +1802,22 @@ textarea::placeholder {
   position: relative;
   background: var(--bg-card-subtle);
   border: 1px solid var(--border-soft);
-  border-radius: 16px;
+  border-radius: 8px;
   overflow: hidden;
   display: flex;
   align-items: stretch;
   justify-content: stretch;
   flex: 1;
   min-height: 0;
+}
+
+/* Light mode: give the 3D viewport a bit more definition and "stage" presence
+   so the canvas doesn't disappear into the page background. */
+:root[data-theme="light"] .graph-canvas-wrap {
+  background: #f8fafc;
+  border-color: rgba(15, 23, 42, 0.16);
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
+  border-radius: 8px;
 }
 
 #graph-canvas {
@@ -1884,6 +1894,25 @@ textarea::placeholder {
   border-color: var(--clr-accent-cyan);
 }
 
+/* Distinguish Basis vs. higher abilities in the side lists (light + dark friendly) */
+#prereq-list .neighbor-pill {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+#prereq-list .neighbor-pill:hover {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #16a34a;
+}
+
+#dependent-list .neighbor-pill {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.35);
+}
+#dependent-list .neighbor-pill:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: #1e40af;
+}
+
 .graph-hint {
   margin-top: auto;
   font-size: 10px;
@@ -1917,13 +1946,13 @@ textarea::placeholder {
 .domain-pill:hover {
   background: rgba(103, 232, 249, 0.12);
   border-color: var(--clr-accent-cyan);
-  color: #67e8f9;
+  color: var(--clr-accent-cyan);
 }
 
 .domain-pill.active {
   background: rgba(103, 232, 249, 0.18);
   border-color: var(--clr-accent-cyan);
-  color: #67e8f9;
+  color: var(--clr-accent-cyan);
   font-weight: 600;
 }
 

@@ -626,6 +626,7 @@ Evaluation:`;
 export interface GeneratedCardProposal {
   question: string;
   concept: string;
+  title?: string; // human-friendly display title for knowledge graph (no domain, Unicode ok)
   domain: string;
   context: string;
   bloom_level: number;
@@ -677,6 +678,14 @@ function parseGeneratedCardArray(
       }
     }
     if (
+      card.title !== undefined &&
+      (typeof card.title !== "string" || card.title.trim().length === 0)
+    ) {
+      throw new Error(
+        `Invalid ${label} card at index ${index}: title must be a non-empty string if provided`,
+      );
+    }
+    if (
       typeof card.bloom_level !== "number" ||
       !Number.isInteger(card.bloom_level) ||
       card.bloom_level < 1 ||
@@ -698,6 +707,7 @@ function parseGeneratedCardArray(
     return {
       question: card.question as string,
       concept: card.concept as string,
+      title: card.title ? (card.title as string) : undefined,
       domain: card.domain as string,
       context: card.context as string,
       bloom_level: card.bloom_level,
@@ -771,10 +781,11 @@ Your task is to analyze curriculum objectives, syllabus requirements, or textboo
 For each extracted learning card, you MUST generate:
 1. "question": A clear, concise active-recall question testing the concept. The question must not reveal the answer itself.
 2. "concept": The reference answer, core fact, or target conceptual explanation.
-3. "domain": The category of the card. Use "${targetCategory}" as the default, but you may refine it if a specific sub-topic is evident.
-4. "context": The exact sentence or short excerpt from the source text that this card is based on.
-5. "bloom_level": Initial Bloom cognitive level (1 = Remember, 2 = Understand, 3 = Apply, 4 = Analyze, 5 = Synthesize).
-6. "symbiosis_mode": ZAM agent symbiosis level: "shadowing" (reading/monitoring), "copilot" (interactive helper), or "autonomy" (autonomous tasks).
+3. "title": A short, human-friendly title for the knowledge graph node. Concise name for the concept. No domain prefix. Human-readable, natural language. Support Unicode (umlauts, Chinese, Japanese, Arabic, etc.). Name the core idea as well as possible.
+4. "domain": The category of the card. Use "${targetCategory}" as the default, but you may refine it if a specific sub-topic is evident.
+5. "context": The exact sentence or short excerpt from the source text that this card is based on.
+6. "bloom_level": Initial Bloom cognitive level (1 = Remember, 2 = Understand, 3 = Apply, 4 = Analyze, 5 = Synthesize).
+7. "symbiosis_mode": ZAM agent symbiosis level: "shadowing" (reading/monitoring), "copilot" (interactive helper), or "autonomy" (autonomous tasks).
 
 Guidelines:
 - Break complex requirements into multiple separate, atomic cards.
@@ -2095,4 +2106,144 @@ export async function ensureHighQualityQuestion(
   }
 
   return null;
+}
+
+/**
+ * Generate a high-quality, human-friendly title for a token using LLM.
+ * Follows ADR: thoughtful name (not definition), no domain echo, concise, language-aware.
+ */
+export async function generateTitleViaLLM(
+  db: Database,
+  input: {
+    slug: string;
+    concept: string;
+    domain: string;
+    question?: string | null;
+    context?: string | null;
+  },
+  opts: { timeoutMs?: number } = {},
+): Promise<LlmTextResult> {
+  const cfg = await getProviderForRole(db, "text"); // or recall? text for generation
+  const endpoint = await resolveUsableTextEndpoint(db); // assume exists or use recall
+
+  const systemPrompt = `You are an expert at naming knowledge items for a personal knowledge graph.
+Your task: given a knowledge token's concept (the full reference answer), question, domain, and optional context, produce a short, descriptive, human-friendly TITLE.
+
+Strict rules from the project ADR:
+- Concise name for the concept (≤ 80 chars ideal).
+- Thoughtful, memorable name — NOT a definition or the first sentence of the concept.
+- NEVER echo the domain name (e.g. do not say "Node Drain" if domain is "axon-ivy"; just "Node Drain Protection").
+- Prefer a name over spoiling the full concept.
+- Support Unicode (umlauts, etc.).
+- Output the title in the same language as the concept/content (e.g., German if the concept is German, English if the concept is English).
+- Output ONLY the raw title text. No preamble, quotes, explanations, or markdown.
+
+Example good titles:
+- "RAG Retrieval Quality Evaluation" (for RAG failure modes focused on retrieval)
+- "Pythagorean Theorem Converse Proof"
+- "macOS Applications Directory Layout"
+- "Chronotype Sleep Preference"`;
+
+  const userPrompt = `Domain: ${input.domain}
+Slug: ${input.slug}
+Question: ${input.question || "(none)"}
+Concept: ${input.concept}
+Context: ${input.context || "(none)"}
+
+Title:`;
+
+  // Use recall endpoint as fallback if text not available; many setups share.
+  const url = `${endpoint.url}/chat/completions`;
+  const apiKey = endpoint.apiKey;
+  const model = endpoint.model;
+
+  try {
+    const res = await fetchWithInteractiveTimeout(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.2,
+        max_tokens: 100,
+      }),
+      locale: cfg.locale,
+      timeoutMs: opts.timeoutMs,
+      hardTimeoutMs: opts.timeoutMs,
+    });
+
+    const text = await readChatContent(res, "title generation");
+    return {
+      text: text.trim(),
+      model,
+      providerName: endpoint.providerName,
+    };
+  } catch (_e) {
+    // Fallback to simple
+    return {
+      text: input.concept.split(/[.;]/)[0].trim().substring(0, 80),
+      model: "fallback",
+      providerName: "heuristic",
+    };
+  }
+}
+
+export async function repairUmlautsViaLLM(
+  db: Database,
+  input: { text: string },
+  opts: { timeoutMs?: number } = {},
+): Promise<string> {
+  const cfg = await getProviderForRole(db, "text");
+  const endpoint = await resolveUsableTextEndpoint(db);
+
+  const systemPrompt = `You are an expert editor specializing in German language orthography.
+Your task: given a text that may contain legacy ASCII-folded German umlauts (like 'ue' instead of 'ü', 'ae' instead of 'ä', 'oe' instead of 'ö', 'Ue' instead of 'Ü', etc.), repair them back to proper German umlauts (ä, ö, ü, Ä, Ö, Ü, ß) where appropriate.
+
+Strict rules:
+- ONLY change character sequences that are clearly meant to be German umlauts (e.g. change "Ueber" to "Über", "fuer" to "für", "moeglich" to "möglich").
+- DO NOT change words that are correct in their current form (e.g. do NOT change "nahe" to "nähe", do NOT change English words or technical terms, do NOT change names like "Ueda").
+- Output ONLY the repaired text. No preamble, no explanation, no markdown formatting.`;
+
+  const userPrompt = `Text to repair:
+"""
+${input.text}
+"""
+
+Repaired text:`;
+
+  const url = `${endpoint.url}/chat/completions`;
+  const apiKey = endpoint.apiKey;
+  const model = endpoint.model;
+
+  try {
+    const res = await fetchWithInteractiveTimeout(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.1,
+      }),
+      locale: cfg.locale,
+      timeoutMs: opts.timeoutMs,
+      hardTimeoutMs: opts.timeoutMs,
+    });
+
+    const text = await readChatContent(res, "umlaut repair");
+    return text.trim();
+  } catch (_e) {
+    return input.text;
+  }
 }

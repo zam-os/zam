@@ -23,14 +23,20 @@ function clampBloom(n: number): number {
 
 /**
  * Build the card header, e.g. "Understand (Bloom 2) · web".
+ * If title is provided, includes it for better usability.
  */
 export function formatHeader(input: {
   bloomLevel: number;
   domain: string;
+  title?: string;
+  slug?: string;
 }): string {
   const lvl = clampBloom(input.bloomLevel);
   const parts = [`${BLOOM_VERBS[lvl]} (Bloom ${lvl})`];
-  if (input.domain?.trim()) {
+  const name = input.title || input.slug; // could use getDisplayTitle but keep simple for format
+  if (name) {
+    parts.push(name);
+  } else if (input.domain?.trim()) {
     parts.push(input.domain.trim());
   }
   return parts.join(" · ");
@@ -38,6 +44,7 @@ export function formatHeader(input: {
 
 export interface RevealInput {
   slug: string;
+  title?: string;
   concept: string;
   context?: string | null;
   resolved?: ReviewContext | null;
@@ -49,9 +56,12 @@ export interface RevealInput {
  */
 export function formatReveal(input: RevealInput): string {
   const lines: string[] = [
-    `Token: #${input.slug}`,
+    `Token: ${input.title || input.slug}`,
     `Concept: ${input.concept}`,
   ];
+  if (input.title) {
+    lines.push(`ID: #${input.slug}`);
+  }
 
   if (input.context?.trim()) {
     lines.push("", `Context: ${input.context.trim()}`);

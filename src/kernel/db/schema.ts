@@ -17,6 +17,7 @@ export const SCHEMA = `
 CREATE TABLE IF NOT EXISTS tokens (
   id            TEXT PRIMARY KEY,
   slug          TEXT UNIQUE NOT NULL,
+  title         TEXT NOT NULL DEFAULT '',
   concept       TEXT NOT NULL,
   domain        TEXT NOT NULL DEFAULT '',
   bloom_level   INTEGER NOT NULL DEFAULT 1 CHECK (bloom_level BETWEEN 1 AND 5),
@@ -165,4 +166,6 @@ CREATE INDEX IF NOT EXISTS idx_cards_token_user ON cards(token_id, user_id);
 CREATE INDEX IF NOT EXISTS idx_review_logs_card ON review_logs(card_id);
 CREATE INDEX IF NOT EXISTS idx_review_logs_user ON review_logs(user_id, reviewed_at);
 CREATE INDEX IF NOT EXISTS idx_session_steps_session ON session_steps(session_id);
+CREATE INDEX IF NOT EXISTS idx_tokens_title ON tokens(title);
+CREATE INDEX IF NOT EXISTS idx_tokens_domain ON tokens(domain);
 `;

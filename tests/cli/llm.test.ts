@@ -10,9 +10,11 @@ import {
   fetchWithInteractiveTimeout,
   generateFoundationsProposalsViaLLM,
   generateSplitProposalsViaLLM,
+  generateTitleViaLLM,
   importCurriculumViaLLM,
   isLlmOnline,
   LlmResponseTruncatedError,
+  repairUmlautsViaLLM,
   resolveUsableRecallEndpoint,
 } from "../../src/cli/llm/client.js";
 import {
@@ -306,6 +308,72 @@ describe("LLM client utilities (CLI layer)", () => {
         process.env.ZAM_BRIDGE = originalBridge;
       }
     }
+  });
+
+  it("propagates doctor timeouts to title and umlaut HTTP requests", async () => {
+    await withIsolatedMachineConfig(async () => {
+      const db = await openDatabase({
+        dbPath: ":memory:",
+        initialize: true,
+        useConfiguredCloud: false,
+      });
+      await setSetting(db, "llm.enabled", "true");
+      await setSetting(db, "llm.url", "http://doctor-timeout.test/v1");
+      await setSetting(db, "llm.model", "doctor-model");
+
+      const originalFetch = global.fetch;
+      const originalBridge = process.env.ZAM_BRIDGE;
+      let chatRequests = 0;
+      let abortedRequests = 0;
+      global.fetch = ((url, options) => {
+        if (String(url).endsWith("/models")) {
+          return Promise.resolve(
+            new Response(JSON.stringify({ data: [{ id: "doctor-model" }] })),
+          );
+        }
+        chatRequests++;
+        return new Promise<Response>((_resolve, reject) => {
+          options?.signal?.addEventListener("abort", () => {
+            abortedRequests++;
+            reject(new DOMException("Aborted", "AbortError"));
+          });
+        });
+      }) as typeof fetch;
+      process.env.ZAM_BRIDGE = "true";
+
+      try {
+        const title = await generateTitleViaLLM(
+          db,
+          {
+            slug: "testing-timeout",
+            concept: "A concept whose title request hangs",
+            domain: "testing",
+          },
+          { timeoutMs: 10 },
+        );
+        const repaired = await repairUmlautsViaLLM(
+          db,
+          { text: "Ueber Timeouts" },
+          { timeoutMs: 10 },
+        );
+
+        expect(title).toMatchObject({
+          text: "A concept whose title request hangs",
+          model: "fallback",
+        });
+        expect(repaired).toBe("Ueber Timeouts");
+        expect(chatRequests).toBe(2);
+        expect(abortedRequests).toBe(2);
+      } finally {
+        global.fetch = originalFetch;
+        if (originalBridge === undefined) {
+          delete process.env.ZAM_BRIDGE;
+        } else {
+          process.env.ZAM_BRIDGE = originalBridge;
+        }
+        await db.close();
+      }
+    });
   });
 
   it("ensureHighQualityQuestion dynamically generates and self-heals a missing question when LLM is enabled", async () => {

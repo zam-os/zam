@@ -6,6 +6,7 @@
  */
 
 import type { Database } from "../db/types.js";
+import { getDisplayTitle } from "../models/token.js";
 import { interleave } from "./interleaver.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -21,6 +22,7 @@ export interface ReviewQueueItem {
   cardId: string;
   tokenId: string;
   slug: string;
+  title: string;
   concept: string;
   domain: string;
   bloomLevel: number;
@@ -44,6 +46,7 @@ interface CardRow {
   card_id: string;
   token_id: string;
   slug: string;
+  title: string;
   concept: string;
   domain: string;
   bloom_level: number;
@@ -86,6 +89,7 @@ export async function buildReviewQueue(
          c.id       AS card_id,
          c.token_id AS token_id,
          t.slug     AS slug,
+         t.title    AS title,
          t.concept  AS concept,
          t.domain   AS domain,
          t.bloom_level AS bloom_level,
@@ -111,6 +115,7 @@ export async function buildReviewQueue(
          c.id       AS card_id,
          c.token_id AS token_id,
          t.slug     AS slug,
+         t.title    AS title,
          t.concept  AS concept,
          t.domain   AS domain,
          t.bloom_level AS bloom_level,
@@ -187,6 +192,7 @@ function rowToItem(row: CardRow): ReviewQueueItem {
     cardId: row.card_id,
     tokenId: row.token_id,
     slug: row.slug,
+    title: getDisplayTitle(row),
     concept: row.concept,
     domain: row.domain,
     bloomLevel: row.bloom_level,

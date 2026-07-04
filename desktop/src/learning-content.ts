@@ -3,6 +3,7 @@ import { runBridge, t, tf } from "./main.js";
 export interface PersonalCard {
   tokenId: string;
   slug: string;
+  title: string;
   concept: string;
   domain: string;
   bloomLevel: number;
@@ -104,6 +105,7 @@ let createFirstCardBtn: HTMLButtonElement;
 // Form fields
 let fieldQuestion: HTMLTextAreaElement;
 let fieldConcept: HTMLTextAreaElement;
+let fieldTitle: HTMLInputElement;
 let fieldDomain: HTMLInputElement;
 let fieldSourceLink: HTMLInputElement;
 let fieldContext: HTMLInputElement;
@@ -173,6 +175,9 @@ export function initLearningContentStudio(): void {
   fieldConcept = document.getElementById(
     "editor-field-concept",
   ) as HTMLTextAreaElement;
+  fieldTitle = document.getElementById(
+    "editor-field-title",
+  ) as HTMLInputElement;
   fieldDomain = document.getElementById(
     "editor-field-domain",
   ) as HTMLInputElement;
@@ -376,6 +381,7 @@ export function initLearningContentStudio(): void {
   const formFields = [
     fieldQuestion,
     fieldConcept,
+    fieldTitle,
     fieldDomain,
     fieldSourceLink,
     fieldContext,
@@ -440,11 +446,12 @@ function refreshCardsList(): void {
     }
     // 2. Query Search (Fuzzy over slug, concept, domain, question)
     if (query) {
+      const titleMatch = card.title?.toLowerCase().includes(query);
       const slugMatch = card.slug?.toLowerCase().includes(query);
       const conceptMatch = card.concept?.toLowerCase().includes(query);
       const domainMatch = card.domain?.toLowerCase().includes(query);
       const questionMatch = card.question?.toLowerCase().includes(query);
-      return slugMatch || conceptMatch || domainMatch || questionMatch;
+      return titleMatch || slugMatch || conceptMatch || domainMatch || questionMatch;
     }
     return true;
   });
@@ -507,6 +514,7 @@ function selectCard(card: PersonalCard): void {
   // Populate editor form
   fieldQuestion.value = card.question || "";
   fieldConcept.value = card.concept || "";
+  fieldTitle.value = card.title || "";
   fieldDomain.value = card.domain || "";
   fieldSourceLink.value = card.sourceLink || "";
   fieldContext.value = card.context || "";
@@ -529,6 +537,7 @@ function startCreateNewCard(): void {
   // Clear editor form
   fieldQuestion.value = "";
   fieldConcept.value = "";
+  fieldTitle.value = "";
   fieldDomain.value = "";
   fieldSourceLink.value = "";
   fieldContext.value = "";
@@ -592,6 +601,7 @@ function toggleAdvancedSection(): void {
 async function saveCard(): Promise<void> {
   const question = fieldQuestion.value.trim();
   const concept = fieldConcept.value.trim();
+  const title = fieldTitle.value.trim();
   const domain = fieldDomain.value.trim();
   const sourceLink = fieldSourceLink.value.trim();
   const context = fieldContext.value.trim();
@@ -612,6 +622,8 @@ async function saveCard(): Promise<void> {
       const args: string[] = [
         "--concept",
         concept,
+        "--title",
+        title,
         "--domain",
         domain,
         "--bloom",
@@ -645,6 +657,8 @@ async function saveCard(): Promise<void> {
       const args: string[] = [
         "--slug",
         selectedCard.slug,
+        "--title",
+        title,
         "--concept",
         concept,
         "--domain",

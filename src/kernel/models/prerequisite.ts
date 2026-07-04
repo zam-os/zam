@@ -19,6 +19,7 @@ export interface Prerequisite {
 /** A prerequisite row joined with the token it points to. */
 export interface PrerequisiteWithToken extends Prerequisite {
   slug: string;
+  title: string;
   concept: string;
   domain: string;
   bloom_level: number;
@@ -126,7 +127,7 @@ export async function getPrerequisites(
 ): Promise<PrerequisiteWithToken[]> {
   return (await db
     .prepare(
-      `SELECT p.token_id, p.requires_id, t.slug, t.concept, t.domain, t.bloom_level
+      `SELECT p.token_id, p.requires_id, t.slug, t.title, t.concept, t.domain, t.bloom_level
        FROM prerequisites p
        JOIN tokens t ON t.id = p.requires_id
        WHERE p.token_id = ?`,
@@ -145,7 +146,7 @@ export async function getDependents(
 ): Promise<PrerequisiteWithToken[]> {
   return (await db
     .prepare(
-      `SELECT p.token_id, p.requires_id, t.slug, t.concept, t.domain, t.bloom_level
+      `SELECT p.token_id, p.requires_id, t.slug, t.title, t.concept, t.domain, t.bloom_level
        FROM prerequisites p
        JOIN tokens t ON t.id = p.token_id
        WHERE p.requires_id = ?`,
@@ -159,6 +160,7 @@ export async function getDependents(
 export interface NeighborhoodToken {
   id: string;
   slug: string;
+  title: string;
   concept: string;
   domain: string;
   bloom_level: number;
@@ -230,6 +232,7 @@ export async function getTokenNeighborhood(
     t: {
       id: string;
       slug: string;
+      title?: string;
       concept: string;
       domain: string;
       bloom_level: number;
@@ -238,6 +241,7 @@ export async function getTokenNeighborhood(
   ): NeighborhoodToken => ({
     id: t.id,
     slug: t.slug,
+    title: t.title ?? t.slug,
     concept: t.concept,
     domain: t.domain,
     bloom_level: t.bloom_level,
@@ -261,6 +265,7 @@ export async function getTokenNeighborhood(
       {
         id: p.requires_id,
         slug: p.slug,
+        title: p.title,
         concept: p.concept,
         domain: p.domain,
         bloom_level: p.bloom_level,
@@ -274,6 +279,7 @@ export async function getTokenNeighborhood(
       {
         id: d.token_id,
         slug: d.slug,
+        title: d.title,
         concept: d.concept,
         domain: d.domain,
         bloom_level: d.bloom_level,

@@ -15,6 +15,7 @@ import { ulid } from "ulid";
 import type {
   BloomLevel,
   Database,
+  ListTokensOptions,
   NeighborhoodToken,
   Rating,
   ReviewActionType,
@@ -48,6 +49,7 @@ import {
   getCardDeletionImpact,
   getConfiguredWorkspaces,
   getDatabaseTargetInfo,
+  getDisplayTitle,
   getDueCards,
   getProviderApiKey,
   getSetting,
@@ -1116,6 +1118,7 @@ bridgeCommand
 
       let data: {
         slug: string;
+        title?: string;
         concept: string;
         domain?: string;
         bloom_level?: number;
@@ -1141,10 +1144,12 @@ bridgeCommand
         concept: data?.concept,
         question: data?.question ?? null,
         domain: data?.domain,
+        title: data?.title ?? null,
       });
 
       const token = await createToken(db, {
         slug: data?.slug,
+        title: data?.title,
         concept: data?.concept,
         domain: data?.domain,
         bloom_level: (data?.bloom_level ?? 1) as BloomLevel,
@@ -1258,6 +1263,8 @@ bridgeCommand
         const card = await getCard(db, t.id, userId);
         tokens.push({
           slug: t.slug,
+          title: t.title,
+          display_title: getDisplayTitle(t),
           concept: t.concept,
           domain: t.domain,
           bloom_level: t.bloom_level,
@@ -1308,6 +1315,7 @@ bridgeCommand
         concept?: string;
         question?: string;
         domain?: string;
+        title?: string;
         bloom_level?: number;
         limit?: number;
       };
@@ -1347,6 +1355,7 @@ bridgeCommand
           concept: data.concept,
           question: typeof data.question === "string" ? data.question : null,
           domain: typeof data.domain === "string" ? data.domain : "",
+          title: typeof data.title === "string" ? data.title : null,
         });
         if (data.bloom_level !== undefined) {
           if (
@@ -2980,15 +2989,22 @@ bridgeCommand
     "--user <id>",
     "User ID (default: whoami) — when provided, includes personal card info",
   )
-  .option("--domain <domain>", "Filter by domain")
+  .option("--domain <domain>", "Filter by exact domain")
+  .option(
+    "--domain-prefix <prefix>",
+    "Filter by domain prefix (e.g. docuware-cops) — uses / separator for hierarchy",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = opts.user
         ? await resolveUser(opts, db, { json: true })
         : undefined;
+      const listOpts: ListTokensOptions = {};
+      if (opts.domain) listOpts.domain = opts.domain;
+      if (opts.domainPrefix) listOpts.domainPrefix = opts.domainPrefix;
       const tokens = await listTokens(
         db,
-        opts.domain ? { domain: opts.domain } : undefined,
+        Object.keys(listOpts).length ? listOpts : undefined,
       );
 
       const cardMap = new Map<
@@ -3030,6 +3046,8 @@ bridgeCommand
         return {
           id: t.id,
           slug: t.slug,
+          title: t.title,
+          display_title: getDisplayTitle(t),
           concept: t.concept,
           domain: t.domain,
           bloomLevel: t.bloom_level,
@@ -3077,6 +3095,8 @@ bridgeCommand
       const mapToken = (nt: NeighborhoodToken) => ({
         id: nt.id,
         slug: nt.slug,
+        title: nt.title,
+        display_title: getDisplayTitle(nt),
         concept: nt.concept,
         domain: nt.domain,
         bloomLevel: nt.bloom_level,
@@ -3128,6 +3148,7 @@ bridgeCommand
   .description("Atomically create a token and its personal card (JSON)")
   .option("--user <id>", "User ID (default: whoami)")
   .requiredOption("--concept <concept>", "Concept description / answer")
+  .option("--title <title>", "Human-friendly display title")
   .option("--domain <domain>", "Knowledge category / domain", "")
   .option("--question <question>", "Question prompt for recall")
   .option("--source-link <link>", "Source file path or reference URL")
@@ -3167,6 +3188,7 @@ bridgeCommand
       const { token, card } = await db.transaction(async (tx) => {
         const createdToken = await createToken(tx, {
           slug,
+          title: opts.title,
           concept: opts.concept,
           domain: opts.domain,
           bloom_level: bloom,
@@ -3184,6 +3206,8 @@ bridgeCommand
         token: {
           id: token.id,
           slug: token.slug,
+          title: token.title,
+          display_title: getDisplayTitle(token),
           concept: token.concept,
           domain: token.domain,
           bloomLevel: token.bloom_level,
@@ -3213,6 +3237,7 @@ bridgeCommand
   .description("Update the mutable token fields of a personal card (JSON)")
   .option("--user <id>", "User ID (default: whoami)")
   .requiredOption("--slug <slug>", "Token slug to update")
+  .option("--title <title>", "Updated display title")
   .option("--concept <concept>", "Updated concept text")
   .option("--domain <domain>", "Updated domain / category")
   .option("--bloom <level>", "Updated Bloom taxonomy level (1-5)")
@@ -3227,6 +3252,7 @@ bridgeCommand
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
       const updates: {
+        title?: string;
         concept?: string;
         domain?: string;
         bloom_level?: BloomLevel;
@@ -3236,6 +3262,7 @@ bridgeCommand
         question?: string | null;
       } = {};
 
+      if (opts.title !== undefined) updates.title = opts.title;
       if (opts.concept !== undefined) updates.concept = opts.concept;
       if (opts.domain !== undefined) updates.domain = opts.domain;
       if (opts.bloom !== undefined) {
@@ -3280,6 +3307,8 @@ bridgeCommand
         token: {
           id: token.id,
           slug: token.slug,
+          title: token.title,
+          display_title: getDisplayTitle(token),
           concept: token.concept,
           domain: token.domain,
           bloomLevel: token.bloom_level,
@@ -3323,7 +3352,12 @@ bridgeCommand
           success: true,
           preview: true,
           requiresConfirmation: true,
-          token: { id: token.id, slug: token.slug },
+          token: {
+            id: token.id,
+            slug: token.slug,
+            title: token.title,
+            display_title: getDisplayTitle(token),
+          },
           impact,
         });
         return;
@@ -3362,7 +3396,12 @@ bridgeCommand
           success: true,
           preview: true,
           requiresConfirmation: true,
-          token: { id: token.id, slug: token.slug },
+          token: {
+            id: token.id,
+            slug: token.slug,
+            title: token.title,
+            display_title: getDisplayTitle(token),
+          },
           impact,
         });
         return;
