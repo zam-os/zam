@@ -598,7 +598,7 @@ export const doctorTasks: DoctorTask[] = [
       if (!canRunInteractiveChoices(opts, "domain renames")) return;
 
       const { confirm, input } = await import("@inquirer/prompts");
-      let renamedCount = 0;
+      const changes: Array<{ oldDomain: string; newDomain: string }> = [];
       for (const d of domains) {
         const count = tokens.filter((t) => t.domain === d).length;
         const wantRename = await confirm({
@@ -618,22 +618,26 @@ export const doctorTasks: DoctorTask[] = [
             console.log("  New name matches old name. Skipped.");
             continue;
           }
-
-          const now = new Date().toISOString();
-          const res = await db
-            .prepare(
-              "UPDATE tokens SET domain = ?, updated_at = ? WHERE domain = ?",
-            )
-            .run(trimmed, now, d);
-
-          console.log(
-            `  Renamed "${d}" to "${trimmed}" for ${res.changes} token(s).`,
-          );
-          renamedCount++;
+          changes.push({ oldDomain: d, newDomain: trimmed });
         }
       }
+
+      if (changes.length > 0) {
+        await db.transaction(async (tx) => {
+          const now = new Date().toISOString();
+          const stmt = tx.prepare(
+            "UPDATE tokens SET domain = ?, updated_at = ? WHERE domain = ?",
+          );
+          for (const change of changes) {
+            const res = await stmt.run(change.newDomain, now, change.oldDomain);
+            console.log(
+              `  Renamed "${change.oldDomain}" to "${change.newDomain}" for ${res.changes} token(s).`,
+            );
+          }
+        });
+      }
       console.log(
-        `Domains rename complete. Renamed ${renamedCount} domain(s).`,
+        `Domains rename complete. Renamed ${changes.length} domain(s).`,
       );
     },
   },

@@ -88,10 +88,10 @@ Diese sind **Warnungen**, keine Fehler — Biome `recommended` level erlaubt sie
 
 ### Medium
 
-#### M3 — `findTokens` LIKE-Suche auf 4 Spalten — kein Index auf `title`
+#### M3 — `findTokens` LIKE-Suche auf 4 Spalten — kein Index auf `title` (Behoben ✅)
 
 **Datei:** `src/kernel/models/token.ts`, Zeilen 414-438
-Die `LIKE`-Suche prüft jetzt 4 Spalten (`slug`, `title`, `concept`, `domain`). Bei großen Token-Basen kann das die lexikalische Suche verlangsamen. Ein `CREATE INDEX idx_tokens_title ON tokens(title)` wäre hilfreich.
+- **Status:** Der Index `idx_tokens_title` ist in Schema und Migration M010 vorhanden. Die Performance der lexikalischen Suche wurde zusätzlich dadurch verbessert, dass das prepared Statement aus der Schleife herausgezogen wurde.
 
 #### M4 — `domainPrefix`-Filter hat kein SQL-Index
 
@@ -105,15 +105,13 @@ Bei Theme-Wechsel wird die komplette 3D-Szene neu aufgebaut. Bei großen Graphen
 
 ### Low
 
-#### L1 — `repairUmlautsViaLLM` in `doctor.ts` texts-Task nutzt LLM, aber Fallback fehlt
+#### L1 — `repairUmlautsViaLLM` in `doctor.ts` texts-Task nutzt LLM, aber Fallback fehlt (Behoben ✅)
 
-**Datei:** `src/cli/commands/doctor.ts`, Zeile 272
-Wenn der LLM-Endpoint nicht erreichbar ist, gibt es keinen Fallback für die Umlaut-Reparatur. Der alte heuristic-basierte Ansatz wurde entfernt.
+- **Status:** Behoben. Wenn der LLM-Endpoint fehlschlägt oder das Ergebnis unverändert zurückliefert, greift automatisch das Heuristik-basierte Wörter-Regex-Fallback.
 
-#### L2 — `doctor.ts` domains-Task: `UPDATE tokens SET domain` ohne Transaktion
+#### L2 — `doctor.ts` domains-Task: `UPDATE tokens SET domain` ohne Transaktion (Behoben ✅)
 
-**Datei:** `src/cli/commands/doctor.ts`, Zeile 495
-Die Domain-Umbenennung erfolgt pro Token ohne Transaktion. Bei einem Fehler mitten in der Schleife sind einige Tokens umbenannt, andere nicht.
+- **Status:** Behoben. Die Domain-Eingaben werden nun interaktiv gesammelt und anschließend in einer einzigen Transaktion (`db.transaction()`) atomar via prepared statement angewendet.
 
 ---
 
