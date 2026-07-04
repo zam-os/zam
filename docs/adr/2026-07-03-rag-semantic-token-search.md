@@ -1,6 +1,6 @@
 # RAG / Semantic Token Search on a Self-Hosted, No-License-Cost Store
 
-**Status:** Proposed (draft)
+**Status:** Accepted (2026-07-04)
 **Date:** 2026-07-03
 **Deciders:** Thomas (project owner)
 **Related:**
@@ -40,15 +40,32 @@ RAG; it is not a requirement.
 
 ### Forces at play
 
-- **Current stack is Turso/libSQL** (SQLite-compatible). The kernel speaks SQL
-  via prepared statements and opens the DB through `openDatabase()`.
-- **A local LLM is already configured** (`llm.url = http://localhost:11434/v1`,
-  Ollama). Embeddings can be produced **locally and privately** — essential for
-  company knowledge that must not leave the org, and free.
-- **libSQL has native vector search** — a vector column type and
-  `vector_distance_cos`/ANN (DiskANN) with **no extension**, available in every
-  build including embedded/in-memory, and the server (`sqld`) is open source
-  (MIT). Native vector search therefore requires **no datastore migration**.
+- **The store is SQLite-dialect SQL behind three interchangeable providers**
+  (`openDatabase()` in `src/kernel/db/connection.ts`): the **default local
+  provider is better-sqlite3** (plain SQLite — no libSQL extensions), the
+  optional native `libsql` driver serves Turso sync/embedded replicas (an
+  *optional* dependency that does not build on every platform, e.g. Windows
+  ARM64), and a pure-HTTP Turso provider needs no native bindings at all.
+  Whatever we add must behave identically on **all three**.
+- **libSQL-native vector search (`F32_BLOB`, `vector_distance_cos`, DiskANN)
+  exists only in the libSQL driver/server** — not in the default better-sqlite3
+  path. Relying on it would either exclude the default local install or force
+  the fragile native `libsql` package onto every platform. It remains attractive
+  **server-side** for the company tier (`sqld` is MIT).
+- **The kernel is AI-agnostic by contract** (zero LLM dependencies; all HTTP/LLM
+  code lives in `src/cli/llm/`). Embedding *generation* therefore belongs to the
+  CLI/harness layer; the kernel may only store vectors and compute similarity —
+  which is pure math.
+- **A local LLM runtime is already configured** (Ollama on Thomas's machines;
+  role-based provider resolution via `getProviderForRole` exists for
+  `vision`/`recall`/`text`). Ollama serves OpenAI-compatible `/v1/embeddings`,
+  so embeddings can be produced **locally and privately** — essential for
+  company knowledge that must not leave the org, and free. A significant share
+  of the content is **German** (LehrplanPLUS imports), so the model must be
+  multilingual.
+- **Scale is small where it matters.** The personal tier holds hundreds to a few
+  thousand tokens. Exact brute-force cosine over ≤10k × 768-dim float32 vectors
+  is a few milliseconds in process — ANN indexes buy nothing at this size.
 - The multi-learner tier (a single big company DB, many concurrent learners)
   raises concurrency/scale needs that a local SQLite file does not — the backend
   question is really *"local personal store"* vs *"shared server store,"* and the
@@ -74,61 +91,80 @@ RAG; it is not a requirement.
 
 | Option | License / cost | Self-host | One store? | Migration | Notes |
 |--------|----------------|-----------|-----------|-----------|-------|
-| **A. libSQL native vectors** (current DB) | MIT — free | ✅ `sqld` | ✅ vectors live beside tokens | **Minimal** — add a column + index | DiskANN ANN; works embedded and server-side; no extension. **Recommended for the personal/default tier and the first cut.** |
-| **B. PostgreSQL + pgvector** | PostgreSQL license — free, permissive | ✅ | ✅ | **Large** — SQLite→Postgres dialect + driver rewrite | Mature at multi-user scale; ACID, joins; hybrid via pgvector + BM25 (ParadeDB). **Recommended for the shared company tier if/when it outgrows libSQL server.** |
-| **C. MongoDB Community 8.2 (`$vectorSearch`)** | **SSPL** — free but *source-available, not OSI* | ✅ | ✅ | Large — document model rewrite | Real RAG/hybrid via `mongot`. **SSPL is the sticking point** against "no license costs" in spirit; rejected unless a company mandate requires Mongo. |
-| **D. Dedicated vector DB sidecar** (Qdrant / Milvus / Weaviate) | Apache/OSS — free | ✅ | ❌ second store to sync | Medium + new ops | Excellent recall at 10M+ vectors; overkill at our scale and adds a dual-store consistency problem. |
-| **E. SQLite + `sqlite-vec` extension** | OSS — free | ✅ (embedded) | ✅ | Small | Viable, but libSQL already gives us native vectors without loading an extension, so A dominates. |
+| **A. Portable BLOB embeddings + exact cosine in the kernel** (current DB, any provider) | n/a — no new deps | ✅ | ✅ vectors live beside tokens | **None** — one new table | Embeddings stored as plain float32 BLOBs; similarity is pure TypeScript. Works identically on better-sqlite3, native libsql, and Turso HTTP. Exact (no ANN approximation), ms-fast at ≤10k tokens. **Recommended for the personal/default tier and the first cut.** |
+| **B. libSQL native vectors** (`F32_BLOB` + DiskANN) | MIT — free | ✅ `sqld` | ✅ | Driver swap — the default local path is better-sqlite3, which lacks the vector functions; `libsql` is an optional dep that doesn't build everywhere | No extension *in libSQL builds*, but not available in the default local install. Rejected for the personal tier; **candidate for the company tier server-side** (`sqld` evaluates `vector_distance_cos` regardless of client driver). |
+| **C. PostgreSQL + pgvector** | PostgreSQL license — free, permissive | ✅ | ✅ | **Large** — SQLite→Postgres dialect + driver rewrite | Mature at multi-user scale; ACID, joins; hybrid via pgvector + BM25 (ParadeDB). **Recommended for the shared company tier if/when it outgrows libSQL server.** |
+| **D. MongoDB Community 8.2 (`$vectorSearch`)** | **SSPL** — free but *source-available, not OSI* | ✅ | ✅ | Large — document model rewrite | Real RAG/hybrid via `mongot`. **SSPL is the sticking point** against "no license costs" in spirit; rejected unless a company mandate requires Mongo. |
+| **E. Dedicated vector DB sidecar** (Qdrant / Milvus / Weaviate) | Apache/OSS — free | ✅ | ❌ second store to sync | Medium + new ops | Excellent recall at 10M+ vectors; overkill at our scale and adds a dual-store consistency problem. |
+| **F. SQLite + `sqlite-vec` extension** | OSS — free | ✅ (embedded) | ✅ | Small, but ships a native extension binary per platform | Adds exactly the per-platform native-binding fragility the provider architecture exists to avoid, for ANN speed we don't need at this scale. |
 
-## Decision (proposed)
+## Decision
 
-**1. Add embeddings + native vector search on the existing libSQL store — no
-datastore migration.** Give each token a stored embedding and query it with
-libSQL's native cosine/ANN search. This satisfies self-hosted + no-license-cost +
-RAG with the smallest possible change, and keeps vectors transactionally beside
-the tokens they describe.
+**1. Store embeddings as portable float32 BLOBs beside the tokens and compute
+exact cosine similarity in the kernel — no datastore migration, no new native
+dependencies.** A new `token_embeddings` table (not a column on `tokens`: every
+hot path runs `SELECT * FROM tokens`, and a ~3 KB blob per row would ride along
+on all of them) holds one vector per token plus provenance. Similarity is plain
+TypeScript over decoded `Float32Array`s — exact, dependency-free, and identical
+across all three database providers. Native ANN (libSQL DiskANN server-side, or
+pgvector) is deliberately deferred to the company tier, where index size will
+actually justify it, behind the same search contract (Decision 4).
 
-**2. Generate embeddings locally via Ollama.** A new embedding model (e.g.
-`nomic-embed-text`, 768-dim, or `mxbai-embed-large`, 1024-dim) served by the
-already-configured local endpoint. Private, free, offline-capable. The model id
-and dimension are recorded per stored vector so a later model change is detectable.
+**2. Generate embeddings locally via Ollama, wired as a new `embedding` role in
+the existing provider system.** Default model **`embeddinggemma`** (768-dim,
+multilingual — the token base is part German), overridable like every other
+role. Embedding generation lives in the CLI layer (`src/cli/llm/`), preserving
+the kernel's zero-LLM-dependency contract: the kernel only receives precomputed
+vectors. Private, free, offline-capable. The model id and dimension are recorded
+per stored vector so a later model change is detectable.
 
 **3. Hybrid ranking, not vector-only.** Keep the lexical `findTokens` signal and
-fuse it with vector similarity (e.g. reciprocal-rank fusion). Pure vector search
+fuse it with vector similarity via reciprocal-rank fusion. Pure vector search
 underperforms on acronyms/slugs; pure lexical misses paraphrases. Hybrid wins for
-this content.
+this content. If no embedder is available (LLM disabled, endpoint offline, model
+not pulled), search degrades to lexical-only — never fails.
 
 **4. Put search behind a storage/search abstraction** so the *shared company
-tier* can later be **self-hosted libSQL server (`sqld`)** or **Postgres +
-pgvector** without changing the kernel's search contract. This is the same
-pluggable-backend direction as the multi-learner discussion: personal tier =
-embedded libSQL; company tier = a self-hosted server, both exposing one
-`searchTokens(query)` interface.
+tier* can later be **self-hosted libSQL server (`sqld`, using its native vector
+search server-side)** or **Postgres + pgvector** without changing the kernel's
+search contract. This is the same pluggable-backend direction as the
+multi-learner discussion: personal tier = embedded store with exact in-process
+cosine; company tier = a self-hosted server with a native index, both exposing
+one `searchTokens(query)` interface.
 
 ### What gets embedded
 
 The concatenation of **concept + question + domain** (the human-meaning fields),
-not the slug. Re-embed whenever any of those fields change (the review-flow
-"Edit token" path and the editor's save path).
+not the slug. Staleness is **derived, not maintained**: each stored vector
+records a content hash of exactly that text, so any edit through any path
+(CLI, Studio, bridge, future code) is detected by hash mismatch — no write-path
+hooks in `createToken`/`updateToken`, which are called from many kernel-internal
+flows (curriculum import, card split, foundations, source import).
 
 ### Data model & flow
 
-- **Schema:** add `tokens.embedding` (libSQL vector column) + an ANN index, plus
-  `tokens.embedding_model` and `tokens.embedded_at` for provenance/staleness.
-- **Write path:** `createToken` / `updateToken` compute and store the embedding
-  (best-effort; a token with a null embedding still works via lexical search and
-  is picked up by backfill).
-- **Backfill:** a one-shot `zam token reembed` command embeds all existing
-  tokens (and re-embeds when the model changes).
-- **Query path:** embed the query once → ANN top-K by `vector_distance_cos` →
-  fuse with lexical `findTokens` → return ranked results. `zam token find`, the
-  `/zam` dedup step, and future task-relevance recall all call this one path.
+- **Schema:** new table `token_embeddings(token_id PK/FK ON DELETE CASCADE,
+  embedding BLOB, model TEXT, dims INTEGER, content_hash TEXT, embedded_at
+  TEXT)`. The `tokens` table is untouched.
+- **Write path:** untouched. Tokens are created/edited exactly as today; a token
+  without a fresh embedding is simply picked up by the next top-up.
+- **Top-up (lazy backfill):** before a semantic search — and after bulk imports —
+  the CLI layer asks the kernel for tokens whose embedding is missing, whose
+  content hash no longer matches, or whose model differs; embeds them in bounded
+  batches; stores the vectors. `zam token reembed` runs the same path exhaustively
+  (and `--all` forces a full refresh, e.g. after a model change).
+- **Query path:** embed the query once → exact cosine over the stored vectors →
+  reciprocal-rank fusion with lexical `findTokens` → return ranked results.
+  `zam token find`, the `/zam` dedup step, and task-relevance recall (Phase 3)
+  all call this one path.
 
 ## Open questions
 
-1. **Embedding model & dimension.** Which local model, and accept that changing
-   it later means a full re-embed (dimension is fixed per index). Lean
-   `nomic-embed-text` (small, fast, 768-dim) unless quality testing says otherwise.
+1. ~~**Embedding model & dimension.**~~ **Resolved (2026-07-04):**
+   `embeddinggemma` (768-dim, multilingual) as the default, chosen over
+   `nomic-embed-text` because a large share of the token base is German.
+   Changing the model later means a full re-embed — detected via the stored
+   model id and refreshed by `zam token reembed`.
 2. **Company-tier backend.** When the shared DB outgrows a single libSQL server,
    is the jump to **Postgres + pgvector** (mature, permissive, but a real
    migration) or a scaled **self-hosted libSQL/`sqld`**? Decide when the multi-
@@ -136,41 +172,56 @@ not the slug. Re-embed whenever any of those fields change (the review-flow
 3. **Reject MongoDB purely on SSPL?** Confirm SSPL is disqualifying for us given
    the "no license costs" intent, or keep it as a fallback only under a company
    mandate.
-4. **Fusion weighting & dedup threshold.** What similarity cutoff makes the
-   register step warn "possible duplicate," and how are lexical vs vector ranks
-   weighted.
+4. **Fusion weighting & dedup threshold.** Reciprocal-rank fusion with the
+   standard k=60 and a cosine-similarity dedup warning threshold of 0.85
+   (setting `search.dedup_threshold`) are the starting defaults — tune against
+   the fixture suite during implementation.
 
 ## Scope and delivery plan
 
-- **Phase 0 — This ADR.** Decisions above proposed for sign-off.
-- **Phase 1 — Embeddings pipeline (libSQL).** Vector column + index, an Ollama
-  embedder behind a small interface, embed-on-write/edit, and `zam token reembed`
-  backfill. Lexical search keeps working throughout.
-- **Phase 2 — Hybrid `findTokens`.** Add vector search and fuse with the existing
-  lexical score; route `zam token find` and the `/zam` dedup step through it.
+Implementation plan for Sonnet-class execution:
+[docs/plans/2026-07-04-semantic-token-search.md](../plans/2026-07-04-semantic-token-search.md).
+Phases 1–3 land as phase commits on **one branch/PR**, per the project's
+multi-phase-feature workflow.
+
+- **Phase 0 — This ADR.** Accepted 2026-07-04.
+- **Phase 1 — Embeddings pipeline.** `token_embeddings` table + migration, an
+  Ollama embedder behind the `embedding` role, content-hash staleness with lazy
+  top-up, and `zam token reembed` backfill. Lexical search keeps working
+  throughout.
+- **Phase 2 — Hybrid `findTokens`.** Add exact-cosine vector search and fuse
+  with the existing lexical score; route `zam token find` and the `/zam` dedup
+  step through it; surface `possible_duplicates` in `zam bridge add-token`.
 - **Phase 3 — Relevance recall.** Use the same search to surface "tokens relevant
-  to what you're doing now" during real work (the core ZAM loop).
-- **Phase 4 (future) — Company-tier backend.** Introduce the storage/search
-  abstraction and a second implementation (Postgres + pgvector or self-hosted
-  `sqld`) for the shared multi-learner database.
+  to what you're doing now" during real work (the core ZAM loop), via
+  `zam bridge relevant-tokens`.
+- **Phase 4 (future) — Company-tier backend.** Introduce the second storage/
+  search implementation (self-hosted `sqld` with native vector search, or
+  Postgres + pgvector) for the shared multi-learner database.
 
 ## Testing strategy
 
-- **Kernel:** embed-on-write/edit, backfill idempotence, null-embedding
-  fallback to lexical, and vector-distance ordering against a fixture set with
-  a stubbed embedder (no live model in unit tests).
+- **Kernel:** content-hash staleness detection (missing / edited / model
+  changed), top-up and backfill idempotence, missing-embedding fallback to
+  lexical, and cosine ordering against a fixture set with stubbed vectors (no
+  live model in unit tests; the kernel never talks to an embedder anyway).
 - **Hybrid ranking:** curated query→expected-token fixtures, including a
   paraphrase case that lexical alone fails and vector recovers, and a
   jargon/acronym case that vector alone fails and lexical recovers.
 - **Dedup:** registering a paraphrase of an existing token surfaces it as a
   likely duplicate above the chosen threshold.
-- **Model-change safety:** switching `embedding_model` marks vectors stale and
+- **Model-change safety:** a differing stored model id marks vectors stale and
   `reembed` refreshes them.
+- **BLOB portability:** encode/decode round-trips across providers (Buffer from
+  better-sqlite3, Uint8Array from the remote provider).
 
 ## Out of scope
 
-- Replacing the datastore for the personal/default tier (stays libSQL).
-- Adopting a dedicated vector database (Option D) at current scale.
+- Replacing the datastore or default driver for the personal tier (stays
+  better-sqlite3, with libsql/Turso as configured alternatives).
+- ANN indexes for the personal tier — exact search is faster than index
+  maintenance below ~10k vectors.
+- Adopting a dedicated vector database (Option E) at current scale.
 - Cloud/hosted embedding APIs — embeddings stay local for privacy and cost.
 - The multi-learner permission/assignment model itself (its own ADR); this ADR
   only keeps the backend swappable for it.
@@ -178,19 +229,32 @@ not the slug. Re-embed whenever any of those fields change (the review-flow
 ## Consequences
 
 - Semantic dedup and recall without leaving the current stack, at no license
-  cost, fully self-hosted, with embeddings that never leave the machine/org.
-- Adds an embedding dependency (a local model) and an embed-on-write cost; the
-  null-embedding fallback keeps the system fully functional if the model is
-  absent.
+  cost, fully self-hosted, with embeddings that never leave the machine/org —
+  and with zero new native dependencies, so desktop packaging and platform
+  coverage are unaffected.
+- Adds an embedding dependency (a local model) at the CLI layer only; the
+  kernel remains AI-agnostic. The lexical fallback keeps the system fully
+  functional if the model is absent, so this is a pure capability add.
+- Query-time cost is O(n) exact cosine over all stored vectors — a deliberate
+  trade that stays sub-10 ms up to ~10k tokens; beyond that scale the company
+  tier's native index (Phase 4) takes over behind the same contract.
 - A model or dimension change forces a full re-embed — mitigated by recording
-  `embedding_model`/`embedded_at` and shipping the `reembed` backfill.
+  `model`/`dims`/`embedded_at` per vector and shipping the `reembed` backfill;
+  staleness is self-healing via content hashes rather than write-path hooks.
 - The storage/search abstraction (Decision 4) is the seam through which the
   shared company tier — and a possible future Postgres + pgvector backend —
   plugs in without touching callers.
 
 ## References
 
-- Turso/libSQL native vector search: <https://turso.tech/vector> ·
+- EmbeddingGemma (multilingual on-device embeddings):
+  <https://ai.google.dev/gemma/docs/embeddinggemma> ·
+  <https://ollama.com/library/embeddinggemma>
+- Ollama OpenAI-compatible API (incl. `/v1/embeddings`):
+  <https://docs.ollama.com/api/openai-compatibility>
+- Reciprocal-rank fusion: Cormack, Clarke & Buettcher (2009), *Reciprocal Rank
+  Fusion outperforms Condorcet and individual Rank Learning Methods*
+- Turso/libSQL native vector search (company-tier candidate): <https://turso.tech/vector> ·
   <https://turso.tech/blog/turso-brings-native-vector-search-to-sqlite> ·
   <https://docs.turso.tech/libsql>
 - MongoDB Community search/vector (SSPL): <https://www.mongodb.com/company/blog/product-release-announcements/supercharge-self-managed-apps-search-vector-search-capabilities>
