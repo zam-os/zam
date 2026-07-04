@@ -28,7 +28,13 @@ interface DoctorTask {
   description: string;
   run: (
     db: Database,
-    opts: { fix?: boolean; dryRun?: boolean; yes?: boolean },
+    opts: {
+      fix?: boolean;
+      dryRun?: boolean;
+      yes?: boolean;
+      noLlm?: boolean;
+      timeoutMs?: number;
+    },
   ) => Promise<void>;
 }
 
@@ -106,9 +112,9 @@ const tasks: DoctorTask[] = [
       if (needing.length === 0) return;
 
       const cfg = await getLlmConfig(db);
-      const useLLM = cfg.enabled;
+      const useLLM = cfg.enabled && !opts.noLlm;
       console.log(
-        `Title generation mode: ${useLLM ? "LLM" : "Heuristic fallback"}`,
+        `Title generation mode: ${useLLM ? "LLM" : "Heuristic fallback"}${opts.timeoutMs ? ` (timeout: ${opts.timeoutMs}ms)` : ""}`,
       );
 
       console.log("Generating proposed titles...");
@@ -119,7 +125,11 @@ const tasks: DoctorTask[] = [
         reason: string;
       }> = [];
 
-      for (const item of needing) {
+      for (let i = 0; i < needing.length; i++) {
+        const item = needing[i];
+        process.stdout.write(
+          `\r  [${i + 1}/${needing.length}] ${item.token.slug.slice(0, 40)}...`,
+        );
         let proposed = "";
         if (useLLM) {
           try {
@@ -166,6 +176,7 @@ const tasks: DoctorTask[] = [
           reason: item.reason,
         });
       }
+      process.stdout.write("\n");
 
       if (!opts.fix) {
         console.log("\nProposed changes (Dry run):");
@@ -216,7 +227,7 @@ const tasks: DoctorTask[] = [
     run: async (db, opts) => {
       const tokens = await listTokens(db, {});
       const cfg = await getLlmConfig(db);
-      const useLLM = cfg.enabled;
+      const useLLM = cfg.enabled && !opts.noLlm;
 
       const replacements = [
         [/\bUeber\b/g, "Über"],
@@ -518,12 +529,20 @@ export const doctorCommand = new Command("doctor")
   .option("--fix", "Apply changes (default is dry-run)")
   .option("--dry-run", "Explicit dry run (default)")
   .option("--yes", "Auto-confirm without prompts")
+  .option("--no-llm", "Skip LLM calls, use heuristic fallback only")
+  .option(
+    "--timeout <ms>",
+    "LLM timeout in ms per call (default: 20000)",
+    "20000",
+  )
   .argument("[task]", "Specific task: titles, texts, duplicates, domains")
   .action(async (taskName, opts) => {
     await withDb(async (db) => {
       const fix = !!opts.fix;
       const dryRun = !fix || !!opts.dryRun;
       const yes = !!opts.yes;
+      const noLlm = opts.llm === false;
+      const timeoutMs = parseInt(opts.timeout, 10) || 20000;
 
       if (!taskName) {
         console.log("Available doctor tasks:");
@@ -541,8 +560,8 @@ export const doctorCommand = new Command("doctor")
       }
 
       console.log(
-        `Running doctor task: ${task.name} (fix=${fix}, dryRun=${dryRun})`,
+        `Running doctor task: ${task.name} (fix=${fix}, dryRun=${dryRun}${noLlm ? ", noLlm=true" : ""})`,
       );
-      await task.run(db, { fix, dryRun, yes });
+      await task.run(db, { fix, dryRun, yes, noLlm, timeoutMs });
     });
   });
