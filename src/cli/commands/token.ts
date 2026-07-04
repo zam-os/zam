@@ -14,6 +14,7 @@ import {
   generateConceptFreeCue,
   getCard,
   getDependents,
+  getEmbeddingCoverage,
   getPrerequisites,
   getSetting,
   getTokenBySlug,
@@ -21,6 +22,11 @@ import {
   listTokens,
   updateToken,
 } from "../../kernel/index.js";
+import {
+  canonicalEmbeddingModelId,
+  ensureTokenEmbeddings,
+  resolveUsableEmbeddingEndpoint,
+} from "../llm/embedder.js";
 import { resolveUser } from "../users/identity.js";
 import { jsonOut, withDb } from "./shared/db.js";
 
@@ -40,10 +46,7 @@ tokenCommand
   .option("--source-link <link>", "Source file path or reference URL", "")
   .option("--question <question>", "Specific question prompt for recall", "")
   .option("--user <id>", "Owner of the personal card (default: whoami)")
-  .option(
-    "--no-card",
-    "Register the token only; do not create a personal card",
-  )
+  .option("--no-card", "Register the token only; do not create a personal card")
   .option("--json", "Output as JSON")
   .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
@@ -475,5 +478,80 @@ tokenCommand
           console.log(`  - ${d.slug}: ${d.concept} (bloom ${d.bloom_level})`);
         }
       }
+    });
+  });
+
+// ── zam token reembed ─────────────────────────────────────────────────────
+
+tokenCommand
+  .command("reembed")
+  .description("Backfill or refresh semantic-search embeddings for tokens")
+  .option("--all", "Force re-embed every token, including already-fresh ones")
+  .option("--json", "Output as JSON")
+  .option("--quiet", "Suppress output (exit code only)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const endpoint = await resolveUsableEmbeddingEndpoint(db);
+      const model = endpoint ? canonicalEmbeddingModelId(endpoint.model) : null;
+      const before = model
+        ? await getEmbeddingCoverage(db, model)
+        : { tokens: 0, embedded: 0, missing: 0, stale: 0 };
+
+      let embedded = 0;
+      let reason: string | undefined;
+      // --all runs as a single UNBOUNDED forced pass: force with the default
+      // per-call cap would re-select the same leading batch forever (freshness
+      // is ignored, so nothing ever drops out of the selection), while forcing
+      // only a capped first pass would leave every fresh token beyond the cap
+      // untouched. Unbounded, one forced pass covers the whole token base
+      // (batched per-request internally); follow-up passes run without force
+      // and only mop up genuinely missing/stale rows.
+      let force = Boolean(opts.all);
+      while (true) {
+        const result = await ensureTokenEmbeddings(
+          db,
+          force ? { force: true, limit: Number.MAX_SAFE_INTEGER } : {},
+        );
+        force = false;
+        embedded += result.embedded;
+        if (result.status === "unavailable") {
+          reason = result.reason;
+          break;
+        }
+        if (result.remaining === 0 || result.embedded === 0) break;
+      }
+
+      if (reason !== undefined) {
+        if (opts.quiet) {
+          process.exit(1);
+        }
+        if (opts.json) {
+          jsonOut({ error: reason, embedded });
+        } else {
+          console.error(`Error: ${reason}`);
+          if (embedded > 0) {
+            console.error(
+              `(${embedded} token(s) were embedded before the failure)`,
+            );
+          }
+        }
+        process.exit(1);
+      }
+
+      // model is guaranteed non-null here: reason undefined means at least
+      // one ensureTokenEmbeddings call above resolved a usable endpoint.
+      const after = await getEmbeddingCoverage(db, model as string);
+
+      if (opts.quiet) return;
+
+      const staleBefore = before.missing + before.stale;
+      if (opts.json) {
+        jsonOut({ embedded, model, before, after });
+        return;
+      }
+
+      console.log(
+        `Embedded ${embedded} tokens (${after.tokens} total, ${staleBefore} stale before) with ${model}`,
+      );
     });
   });

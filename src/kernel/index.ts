@@ -182,6 +182,24 @@ export {
   updateToken,
 } from "./models/token.js";
 export type {
+  EmbeddedTokenRow,
+  EmbeddingCoverage,
+  EmbeddingStaleness,
+  TokenEmbedding,
+  TokenNeedingEmbedding,
+} from "./models/token-embedding.js";
+export {
+  computeContentHash,
+  decodeEmbedding,
+  embeddingTextForToken,
+  encodeEmbedding,
+  getEmbeddingCoverage,
+  getTokenEmbedding,
+  listEmbeddedTokens,
+  listTokensNeedingEmbedding,
+  upsertTokenEmbedding,
+} from "./models/token-embedding.js";
+export type {
   AnalysisResult,
   CommandRecord,
   MonitorEvent,

@@ -2179,12 +2179,13 @@ bridgeCommand
   .description("Show secret-safe provider status for LLM roles (JSON)")
   .action(async () => {
     await withDb(async (db) => {
-      const [recall, vision, text] = await Promise.all([
+      const [recall, vision, text, embedding] = await Promise.all([
         getProviderRoleStatus(db, "recall"),
         getProviderRoleStatus(db, "vision"),
         getProviderRoleStatus(db, "text"),
+        getProviderRoleStatus(db, "embedding"),
       ]);
-      jsonOut({ roles: { recall, vision, text } });
+      jsonOut({ roles: { recall, vision, text, embedding } });
     });
   });
 

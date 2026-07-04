@@ -31,7 +31,7 @@ export interface InstallConfig {
   activeWorkspaceId?: string;
 }
 
-export type MachineAiRole = "vision" | "recall" | "text";
+export type MachineAiRole = "vision" | "recall" | "text" | "embedding";
 export type MachineApiFlavor = "chat-completions" | "anthropic-messages";
 
 export interface MachineProviderRecord {
