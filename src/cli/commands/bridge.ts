@@ -130,6 +130,8 @@ import {
   embedQuery,
   ensureTokenEmbeddings,
   findPossibleDuplicates,
+  resolveDedupThreshold,
+  resolveSuggestMinSimilarity,
 } from "../llm/embedder.js";
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
 import {
@@ -1284,7 +1286,7 @@ bridgeCommand
   .command("suggest-foundations")
   .description("Propose existing tokens as foundation/prerequisite candidates")
   .option("--user <id>", "User ID (default: whoami)")
-  .action(async (opts) => {
+  .action(async (_opts) => {
     await withDb(async (db) => {
       let raw: string;
       if (isServeMode) {
@@ -1367,8 +1369,6 @@ bridgeCommand
         limit = 20;
       }
 
-      const _userId = await resolveUser(opts, db, { json: true });
-
       const q = await embedQuery(db, queryText);
       if (q === null) {
         jsonOut({
@@ -1388,28 +1388,8 @@ bridgeCommand
         // ignore
       }
 
-      const thresholdStr = await getSetting(db, "search.dedup_threshold");
-      const parsedThreshold = thresholdStr
-        ? Number.parseFloat(thresholdStr)
-        : Number.NaN;
-      const maxSimilarity =
-        Number.isFinite(parsedThreshold) &&
-        parsedThreshold > 0 &&
-        parsedThreshold <= 1
-          ? parsedThreshold
-          : 0.85;
-
-      const minSimilarityStr = await getSetting(
-        db,
-        "search.suggest_min_similarity",
-      );
-      const parsedMin = minSimilarityStr
-        ? Number.parseFloat(minSimilarityStr)
-        : Number.NaN;
-      const minSimilarity =
-        Number.isFinite(parsedMin) && parsedMin > 0 && parsedMin <= 1
-          ? parsedMin
-          : 0.45;
+      const maxSimilarity = await resolveDedupThreshold(db);
+      const minSimilarity = await resolveSuggestMinSimilarity(db);
 
       const suggestions = await suggestFoundations(db, {
         queryEmbedding: q.vector,

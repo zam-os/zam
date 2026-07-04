@@ -6,7 +6,11 @@
  */
 
 import type { Database } from "../db/types.js";
-import { getPrerequisites, wouldCreateCycle } from "../models/prerequisite.js";
+import {
+  buildAncestorMap,
+  getPrerequisites,
+  wouldCreateCycle,
+} from "../models/prerequisite.js";
 import type { BloomLevel, Token } from "../models/token.js";
 import { listEmbeddedTokens } from "../models/token-embedding.js";
 import { cosineSimilarity } from "./hybrid.js";
@@ -46,7 +50,17 @@ export async function suggestFoundations(
   const limit = opts.limit ?? 5;
   const targetBloomLevel = opts.targetBloomLevel ?? 5;
 
+  if (minSimilarity >= maxSimilarity) {
+    // Invalid band (min should be < max); produce no suggestions rather than
+    // misconfiguring callers.
+    return [];
+  }
+
   const embedded = await listEmbeddedTokens(db, opts.model);
+  if (embedded.length === 0) {
+    return [];
+  }
+
   const queryVec = Float32Array.from(opts.queryEmbedding);
 
   const candidates: Array<{ token: Token; similarity: number }> = [];
@@ -74,11 +88,13 @@ export async function suggestFoundations(
 
   // Pre-fetch prerequisites for alreadyPrerequisite check if target exists
   const prereqIds = new Set<string>();
+  let ancestors: Map<string, Set<string>> | undefined;
   if (opts.targetTokenId) {
     const prereqs = await getPrerequisites(db, opts.targetTokenId);
     for (const p of prereqs) {
       prereqIds.add(p.requires_id);
     }
+    ancestors = await buildAncestorMap(db);
   }
 
   const results: FoundationSuggestion[] = [];
@@ -93,6 +109,7 @@ export async function suggestFoundations(
         db,
         opts.targetTokenId,
         cand.token.id,
+        ancestors,
       );
     }
 

@@ -220,9 +220,9 @@ suggestions (excluding `would_create_cycle` and `already_prerequisite` ones)
 exist, print at most 3:
 
 ```
-Related foundations you already know:
+Related existing tokens as potential foundations:
   - <slug> (similarity: 0.63)
-Link with: zam token prereq add … (see zam token prereq --help)
+Link with: zam token prereq --token <slug> --requires <slug> (see zam token prereq --help)
 ```
 
 No change to `--json` output of `register` in this phase (agents use the
@@ -258,7 +258,7 @@ already produced if that is easy to thread through; otherwise one extra
    echo '{"concept":"<concept>","question":"<question>","domain":"<domain>"}' | zam bridge suggest-foundations
    ```
 
-   Present non-flagged suggestions to the user ("You already know X — link it
+   Present non-flagged suggestions to the user ("Related existing concept X — link it
    as a foundation?"); on approval link via the existing prereq path after
    registering.
 2. **Rating-1 flow** (the skill section about foundations after a failed

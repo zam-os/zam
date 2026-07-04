@@ -182,7 +182,7 @@ After deduplication and before registering a new token, check for existing seman
 ```bash
 echo '{"concept":"<concept>","question":"<question>","domain":"<domain>"}' | zam bridge suggest-foundations
 ```
-Present non-flagged suggestions to the user ("You already know X — link it as a foundation?"); on approval link via the existing prereq path after registering.
+Present non-flagged suggestions to the user ("Related existing concept X — link it as a foundation?"); on approval link via the existing prereq path after registering.
 
 **Register tokens and prerequisites:**
 

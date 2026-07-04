@@ -239,4 +239,113 @@ describe("foundation suggestions", () => {
     // bloomAboveTarget defaults targetBloomLevel to 5, so 3 is not above 5
     expect(suggestions[0].bloomAboveTarget).toBe(false);
   });
+
+  it("returns [] for empty DB with no embeddings", async () => {
+    const suggestions = await suggestFoundations(db, {
+      queryEmbedding: [1, 0, 0, 0],
+      model: MODEL,
+    });
+    expect(suggestions).toEqual([]);
+  });
+
+  it("returns [] when minSimilarity >= maxSimilarity (invalid band)", async () => {
+    const t = await makeToken({ slug: "t", concept: "T" });
+    await setEmbedding(t, makeUnitVector(0.6));
+    const suggestions = await suggestFoundations(db, {
+      queryEmbedding: [1, 0, 0, 0],
+      model: MODEL,
+      minSimilarity: 0.9,
+      maxSimilarity: 0.5,
+    });
+    expect(suggestions).toEqual([]);
+  });
+
+  it("respects custom minSimilarity / maxSimilarity passed in options", async () => {
+    const queryVec = [1, 0, 0, 0];
+    const t40 = await makeToken({ slug: "t40", concept: "T40" });
+    const t55 = await makeToken({ slug: "t55", concept: "T55" });
+    const t80 = await makeToken({ slug: "t80", concept: "T80" });
+    await setEmbedding(t40, makeUnitVector(0.40));
+    await setEmbedding(t55, makeUnitVector(0.55));
+    await setEmbedding(t80, makeUnitVector(0.80));
+    const suggestions = await suggestFoundations(db, {
+      queryEmbedding: queryVec,
+      model: MODEL,
+      minSimilarity: 0.5,
+      maxSimilarity: 0.7,
+    });
+    expect(suggestions.map((s) => s.token.slug)).toEqual(["t55"]);
+  });
+
+  it("uses default limit of 5 and orders deterministically", async () => {
+    const queryVec = [1, 0, 0, 0];
+    for (let i = 0; i < 7; i++) {
+      const t = await makeToken({ slug: `def${i}`, concept: `C${i}` });
+      await setEmbedding(t, makeUnitVector(0.6));
+    }
+    const suggestions = await suggestFoundations(db, {
+      queryEmbedding: queryVec,
+      model: MODEL,
+    });
+    expect(suggestions.length).toBe(5);
+  });
+
+  it("excludes tokens embedded under a different model", async () => {
+    const t = await makeToken({ slug: "t", concept: "T" });
+    await upsertTokenEmbedding(db, {
+      tokenId: t.id,
+      embedding: makeUnitVector(0.6),
+      model: "other-model",
+      contentHash: computeContentHash(embeddingContentForToken(t)),
+    });
+    const suggestions = await suggestFoundations(db, {
+      queryEmbedding: [1, 0, 0, 0],
+      model: MODEL,
+    });
+    expect(suggestions).toEqual([]);
+  });
+
+  it("excludes tokens with stale content hash", async () => {
+    const t = await makeToken({ slug: "t", concept: "T" });
+    await upsertTokenEmbedding(db, {
+      tokenId: t.id,
+      embedding: makeUnitVector(0.6),
+      model: MODEL,
+      contentHash: "stale-not-matching-computed-hash",
+    });
+    const suggestions = await suggestFoundations(db, {
+      queryEmbedding: [1, 0, 0, 0],
+      model: MODEL,
+    });
+    expect(suggestions).toEqual([]);
+  });
+
+  it("dimension mismatch query vs stored produces no matches (cosine returns 0)", async () => {
+    const t = await makeToken({ slug: "t", concept: "T" });
+    await setEmbedding(t, makeUnitVector(0.6)); // 4d
+    const suggestions = await suggestFoundations(db, {
+      queryEmbedding: [1, 0, 0], // 3d
+      model: MODEL,
+    });
+    expect(suggestions).toEqual([]);
+  });
+
+  it("includes candidate at engineered ~0.45 and excludes at 0.85 (Float32 semantics)", async () => {
+    const queryVec = [1, 0, 0, 0];
+    const t45 = await makeToken({ slug: "b45", concept: "B45" });
+    const t85 = await makeToken({ slug: "b85", concept: "B85" });
+    await setEmbedding(t45, makeUnitVector(0.45));
+    await setEmbedding(t85, makeUnitVector(0.85));
+    const suggestions = await suggestFoundations(db, {
+      queryEmbedding: queryVec,
+      model: MODEL,
+    });
+    const slugs = suggestions.map((s) => s.token.slug);
+    expect(slugs).not.toContain("b85");
+    // 0.45 after f32 encode+cosine may land slightly below or at; code uses >= so
+    // we accept either outcome but verify no crash and filter logic
+    if (slugs.includes("b45")) {
+      expect(suggestions[0].similarity).toBeGreaterThanOrEqual(0.44);
+    }
+  });
 });

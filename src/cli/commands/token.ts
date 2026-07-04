@@ -28,6 +28,8 @@ import {
   embedQuery,
   ensureTokenEmbeddings,
   findPossibleDuplicates,
+  resolveDedupThreshold,
+  resolveSuggestMinSimilarity,
 } from "../llm/embedder.js";
 import { resolveUser } from "../users/identity.js";
 import { jsonOut, withDb } from "./shared/db.js";
@@ -150,28 +152,8 @@ tokenCommand
           });
           const q = await embedQuery(db, queryText);
           if (q) {
-            const thresholdStr = await getSetting(db, "search.dedup_threshold");
-            const parsedThreshold = thresholdStr
-              ? Number.parseFloat(thresholdStr)
-              : Number.NaN;
-            const maxSimilarity =
-              Number.isFinite(parsedThreshold) &&
-              parsedThreshold > 0 &&
-              parsedThreshold <= 1
-                ? parsedThreshold
-                : 0.85;
-
-            const minSimilarityStr = await getSetting(
-              db,
-              "search.suggest_min_similarity",
-            );
-            const parsedMin = minSimilarityStr
-              ? Number.parseFloat(minSimilarityStr)
-              : Number.NaN;
-            const minSimilarity =
-              Number.isFinite(parsedMin) && parsedMin > 0 && parsedMin <= 1
-                ? parsedMin
-                : 0.45;
+            const maxSimilarity = await resolveDedupThreshold(db);
+            const minSimilarity = await resolveSuggestMinSimilarity(db);
 
             const suggestions = await suggestFoundations(db, {
               queryEmbedding: q.vector,
@@ -188,14 +170,19 @@ tokenCommand
             );
 
             if (filtered.length > 0) {
-              console.log(`\nRelated foundations you already know:`);
+              console.log(
+                `\nRelated existing tokens as potential foundations:`,
+              );
               for (const s of filtered) {
+                const note = s.bloomAboveTarget
+                  ? " (higher bloom than target)"
+                  : "";
                 console.log(
-                  `  - ${s.token.slug} (similarity: ${s.similarity.toFixed(2)})`,
+                  `  - ${s.token.slug} (similarity: ${s.similarity.toFixed(2)})${note}`,
                 );
               }
               console.log(
-                `Link with: zam token prereq add … (see zam token prereq --help)`,
+                `Link with: zam token prereq --token <slug> --requires <slug> (see zam token prereq --help)`,
               );
             }
           }

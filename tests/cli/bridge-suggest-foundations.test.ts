@@ -165,7 +165,7 @@ describe("bridge suggest-foundations subcommand", () => {
     });
   }
 
-  it("returns semantic: false when embedder is offline", async () => {
+  it("returns semantic: false for offline embedder after resolving a valid token", async () => {
     await initDb(async (db) => {
       await setSetting(db, "llm.enabled", "false");
     });
@@ -306,5 +306,49 @@ describe("bridge suggest-foundations subcommand", () => {
     expect(result.suggestions[0].already_prerequisite).toBe(false);
     expect(result.suggestions[0].would_create_cycle).toBe(false);
     expect(result.suggestions[0].bloom_above_target).toBe(false);
+  });
+
+  it("handles happy path for pre-registration (concept) flow", async () => {
+    await startEmbeddingsStub({
+      embeddings: [[1, 0, 0, 0]],
+    });
+
+    await initDb(async (db) => {
+      await setSetting(db, "llm.enabled", "true");
+      await setSetting(db, "llm.embedding.url", serverUrl);
+      await setSetting(db, "llm.embedding.model", "embeddinggemma");
+      await setSetting(db, "search.suggest_min_similarity", "0.45");
+      await setSetting(db, "search.dedup_threshold", "0.85");
+
+      const foundation = await createToken(db, {
+        slug: "found-pre",
+        concept: "Pre-reg Foundation Concept",
+        domain: "math",
+        bloom_level: 1,
+      });
+
+      await upsertTokenEmbedding(db, {
+        tokenId: foundation.id,
+        embedding: [0.6, 0.8, 0, 0],
+        model: "embeddinggemma-300m",
+        contentHash: computeContentHash(embeddingContentForToken(foundation)),
+      });
+    });
+
+    const stdin = JSON.stringify({
+      concept: "Some new concept description",
+      domain: "math",
+    });
+    const result = await runBridgeWithStdin(
+      ["suggest-foundations", "--user", "thomas"],
+      stdin,
+    );
+
+    expect(result.semantic).toBe(true);
+    expect(result.target).toBeNull();
+    expect(result.suggestions).toHaveLength(1);
+    expect(result.suggestions[0].slug).toBe("found-pre");
+    expect(result.suggestions[0].already_prerequisite).toBe(false);
+    expect(result.suggestions[0].would_create_cycle).toBe(false);
   });
 });

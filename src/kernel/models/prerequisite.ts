@@ -31,7 +31,7 @@ export interface PrerequisiteWithToken extends Prerequisite {
  * Only used for cycle detection; the full graph is loaded once per
  * addPrerequisite call (small N in practice).
  */
-async function buildAncestorMap(
+export async function buildAncestorMap(
   db: Database,
 ): Promise<Map<string, Set<string>>> {
   const rows = (await db
@@ -58,10 +58,11 @@ export async function wouldCreateCycle(
   db: Database,
   tokenId: string,
   requiresId: string,
+  ancestors?: Map<string, Set<string>>,
 ): Promise<boolean> {
   if (tokenId === requiresId) return true;
 
-  const ancestors = await buildAncestorMap(db);
+  const map = ancestors ?? (await buildAncestorMap(db));
   const visited = new Set<string>();
   const queue = [requiresId];
 
@@ -71,7 +72,7 @@ export async function wouldCreateCycle(
     if (visited.has(current)) continue;
     visited.add(current);
 
-    const parents = ancestors.get(current);
+    const parents = map.get(current);
     if (parents) {
       for (const parent of parents) {
         if (!visited.has(parent)) queue.push(parent);
