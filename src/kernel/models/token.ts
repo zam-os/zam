@@ -19,6 +19,7 @@ export type SymbiosisMode = "shadowing" | "copilot" | "autonomy";
 export interface Token {
   id: string;
   slug: string;
+  title: string;
   concept: string;
   domain: string;
   bloom_level: BloomLevel;
@@ -35,6 +36,7 @@ export interface Token {
 
 export interface CreateTokenInput {
   slug: string;
+  title?: string;
   concept: string;
   domain?: string;
   bloom_level?: BloomLevel;
@@ -47,6 +49,7 @@ export interface CreateTokenInput {
 }
 
 export interface UpdateTokenInput {
+  title?: string;
   concept?: string;
   domain?: string;
   bloom_level?: BloomLevel;
@@ -101,14 +104,17 @@ export async function createToken(
     throw new Error(`bloom_level must be between 1 and 5, got ${bloom}`);
   }
 
+  const title = input.title ?? input.concept ?? input.slug;
+
   await db
     .prepare(`
-    INSERT INTO tokens (id, slug, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, provider, topic_id, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO tokens (id, slug, title, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, provider, topic_id, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `)
     .run(
       id,
       input.slug,
+      title,
       input.concept,
       input.domain ?? "",
       bloom,
@@ -186,6 +192,10 @@ export async function updateToken(
   const fields: string[] = [];
   const values: unknown[] = [];
 
+  if (updates.title !== undefined) {
+    fields.push("title = ?");
+    values.push(updates.title);
+  }
   if (updates.concept !== undefined) {
     fields.push("concept = ?");
     values.push(updates.concept);
@@ -399,13 +409,13 @@ export async function findTokens(
   // Per-term SQL LIKE queries for each substantive search token.
   const likeSQL =
     `SELECT * FROM tokens WHERE deprecated_at IS NULL AND ` +
-    `(lower(slug) LIKE ? OR lower(concept) LIKE ? OR lower(domain) LIKE ?)`;
+    `(lower(slug) LIKE ? OR lower(title) LIKE ? OR lower(concept) LIKE ? OR lower(domain) LIKE ?)`;
 
   for (const term of longTerms) {
     const pattern = `%${term}%`;
     const rows = (await db
       .prepare(likeSQL)
-      .all(pattern, pattern, pattern)) as Token[];
+      .all(pattern, pattern, pattern, pattern)) as Token[];
     for (const row of rows) {
       const entry = scoreMap.get(row.id);
       if (entry) {
@@ -423,7 +433,7 @@ export async function findTokens(
       .all()) as Token[];
 
     for (const token of allTokens) {
-      const words = `${token.slug} ${token.concept} ${token.domain}`
+      const words = `${token.slug} ${token.title} ${token.concept} ${token.domain}`
         .toLowerCase()
         .split(/[\s,.\-_/\\:;!?()[\]{}]+/)
         .filter(Boolean);
@@ -518,6 +528,10 @@ export interface PersonalCard {
 export function slugify(text: string): string {
   return text
     .toLowerCase()
+    .replace(/ä/g, "ae")
+    .replace(/ö/g, "oe")
+    .replace(/ü/g, "ue")
+    .replace(/ß/g, "ss")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 }
@@ -636,6 +650,7 @@ export async function listPersonalCards(
 export interface CurriculumCardInput {
   question: string;
   concept: string;
+  title?: string;
   domain: string;
   source_link?: string | null;
   context?: string;
@@ -711,6 +726,7 @@ export async function importCurriculumCards(
         );
         token = await createToken(tx, {
           slug: finalSlug,
+          title: card.title,
           concept: card.concept,
           domain: card.domain,
           bloom_level: bloom,
@@ -1032,6 +1048,7 @@ export async function confirmFoundations(
           );
           token = await createToken(tx, {
             slug: finalSlug,
+            title: (card as any).title,
             concept: card.concept,
             domain: card.domain,
             bloom_level: bloom,
@@ -1139,6 +1156,7 @@ export async function confirmSourceImport(
 
         token = await createToken(tx, {
           slug: finalSlug,
+          title: (card as any).title,
           concept: card.concept,
           domain: card.domain,
           bloom_level: bloom,
