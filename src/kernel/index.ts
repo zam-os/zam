@@ -113,6 +113,7 @@ export type {
 } from "./models/prerequisite.js";
 export {
   addPrerequisite,
+  buildAncestorMap,
   getDependents,
   getPrerequisites,
   getTokenNeighborhood,
@@ -360,6 +361,11 @@ export {
   cosineSimilarity,
   searchTokensHybrid,
 } from "./search/hybrid.js";
+export type {
+  FoundationSuggestion,
+  SuggestFoundationsOptions,
+} from "./search/suggestions.js";
+export { suggestFoundations } from "./search/suggestions.js";
 export {
   distributeGlobalSkills,
   getPackageSkillPath,

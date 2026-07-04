@@ -178,6 +178,12 @@ zam token find --query "<keywords>"
 ```
 Only register genuinely new concepts. Reuse existing slugs where the concept matches. Note that `zam token find` matches paraphrases semantically.
 
+After deduplication and before registering a new token, check for existing semantically related tokens that could be prerequisites ("foundations"):
+```bash
+echo '{"concept":"<concept>","question":"<question>","domain":"<domain>"}' | zam bridge suggest-foundations
+```
+Present non-flagged suggestions to the user ("Related existing concept X — link it as a foundation?"); on approval link via the existing prereq path after registering.
+
 **Register tokens and prerequisites:**
 
 As the frontier model, author both the concept and the recall question. The
@@ -466,6 +472,12 @@ A token should be decomposed when ALL of the following hold:
 
 After a rating of 1, pause. Do not just re-ask the same question or move on.
 Ask yourself: **"What would the user have needed to know to answer this?"**
+
+Always check for existing related foundation tokens first:
+```bash
+echo '{"slug":"<failed-token-slug>"}' | zam bridge suggest-foundations
+```
+Offer existing tokens returned as suggestions to the user first (linking them feeds the existing `confirmFoundations` path with `exists: true` and `slug`). Only generate NEW foundation proposals via the LLM for gaps that the suggestions do not cover.
 
 | Symptom | Missing foundation | Create Bloom 1-2 token for |
 |---------|-------------------|---------------------------|

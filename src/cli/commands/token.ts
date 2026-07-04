@@ -9,6 +9,7 @@ import {
   createToken,
   deleteToken,
   deprecateToken,
+  embeddingContentForToken,
   ensureCard,
   generateConceptFreeCue,
   getCard,
@@ -20,12 +21,15 @@ import {
   getTokenDeleteImpact,
   listTokens,
   searchTokensHybrid,
+  suggestFoundations,
   updateToken,
 } from "../../kernel/index.js";
 import {
   embedQuery,
   ensureTokenEmbeddings,
   findPossibleDuplicates,
+  resolveDedupThreshold,
+  resolveSuggestMinSimilarity,
 } from "../llm/embedder.js";
 import { resolveUser } from "../users/identity.js";
 import { jsonOut, withDb } from "./shared/db.js";
@@ -138,6 +142,52 @@ tokenCommand
               `  - ${dup.slug} (similarity: ${dup.similarity.toFixed(2)})`,
             );
           }
+        }
+
+        try {
+          const queryText = embeddingContentForToken({
+            concept: opts.concept,
+            question: question ?? null,
+            domain: opts.domain ?? "",
+          });
+          const q = await embedQuery(db, queryText);
+          if (q) {
+            const maxSimilarity = await resolveDedupThreshold(db);
+            const minSimilarity = await resolveSuggestMinSimilarity(db);
+
+            const suggestions = await suggestFoundations(db, {
+              queryEmbedding: q.vector,
+              model: q.model,
+              targetTokenId: token.id,
+              targetBloomLevel: Number(opts.bloom) as BloomLevel,
+              limit: 3,
+              minSimilarity,
+              maxSimilarity,
+            });
+
+            const filtered = suggestions.filter(
+              (s) => !s.wouldCreateCycle && !s.alreadyPrerequisite,
+            );
+
+            if (filtered.length > 0) {
+              console.log(
+                `\nRelated existing tokens as potential foundations:`,
+              );
+              for (const s of filtered) {
+                const note = s.bloomAboveTarget
+                  ? " (higher bloom than target)"
+                  : "";
+                console.log(
+                  `  - ${s.token.slug} (similarity: ${s.similarity.toFixed(2)})${note}`,
+                );
+              }
+              console.log(
+                `Link with: zam token prereq --token <slug> --requires <slug> (see zam token prereq --help)`,
+              );
+            }
+          }
+        } catch {
+          // ignore
         }
       }
     });

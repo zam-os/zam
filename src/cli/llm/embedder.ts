@@ -342,12 +342,7 @@ export async function findPossibleDuplicates(
     }
   }
 
-  const thresholdStr = await getSetting(db, "search.dedup_threshold");
-  const parsed = thresholdStr ? Number.parseFloat(thresholdStr) : Number.NaN;
-  // A malformed setting must not silently disable (NaN compares false) or
-  // flood (negative) the dedup warnings — fall back to the default.
-  const threshold =
-    Number.isFinite(parsed) && parsed > 0 && parsed <= 1 ? parsed : 0.85;
+  const threshold = await resolveDedupThreshold(db);
 
   const hits = await searchTokensHybrid(db, queryText, {
     queryEmbedding: q.vector,
@@ -369,4 +364,28 @@ export async function findPossibleDuplicates(
   }
 
   return results;
+}
+
+/**
+ * Resolve the dedup similarity threshold from settings with fallback.
+ * Shared to avoid duplicating the parse + validate + default logic.
+ */
+export async function resolveDedupThreshold(db: Database): Promise<number> {
+  const thresholdStr = await getSetting(db, "search.dedup_threshold");
+  const parsed = thresholdStr ? Number.parseFloat(thresholdStr) : Number.NaN;
+  // A malformed setting must not silently disable (NaN compares false) or
+  // flood (negative) — fall back to the default.
+  return Number.isFinite(parsed) && parsed > 0 && parsed <= 1 ? parsed : 0.85;
+}
+
+/**
+ * Resolve the suggest-foundations min similarity from settings with fallback.
+ * Used for the lower bound of the "foundation band" (distinct from dedup).
+ */
+export async function resolveSuggestMinSimilarity(
+  db: Database,
+): Promise<number> {
+  const minStr = await getSetting(db, "search.suggest_min_similarity");
+  const parsed = minStr ? Number.parseFloat(minStr) : Number.NaN;
+  return Number.isFinite(parsed) && parsed > 0 && parsed <= 1 ? parsed : 0.45;
 }
