@@ -8,6 +8,8 @@ import {
   type Database,
   decodeEmbedding,
   deleteToken,
+  embeddingContentForToken,
+  embeddingTextForQuery,
   embeddingTextForToken,
   encodeEmbedding,
   getEmbeddingCoverage,
@@ -49,6 +51,24 @@ describe("token embeddings", () => {
   }
 
   // ── encode/decode round-trip ────────────────────────────────────────────
+
+  it("formats stored documents and queries with distinct retrieval prompts", async () => {
+    const token = await makeToken({
+      concept: "A prompted concept",
+      question: "How is it recalled?",
+      domain: "prompting",
+    });
+
+    expect(embeddingContentForToken(token)).toBe(
+      "A prompted concept\nHow is it recalled?\nprompting",
+    );
+    expect(embeddingTextForToken(token)).toBe(
+      "title: none | text: A prompted concept\nHow is it recalled?\nprompting",
+    );
+    expect(embeddingTextForQuery("find prompted concepts")).toBe(
+      "task: search result | query: find prompted concepts",
+    );
+  });
 
   describe("encodeEmbedding / decodeEmbedding", () => {
     it("round-trips a vector through encode and decode", () => {
@@ -186,6 +206,20 @@ describe("token embeddings", () => {
       expect(entry!.reason).toBe("model-changed");
     });
 
+    it("classifies a same-model vector with another dimension as dimension-changed", async () => {
+      const token = await makeToken({ slug: "dimension-changed-token" });
+      await upsertTokenEmbedding(db, {
+        tokenId: token.id,
+        embedding: [1, 2, 3],
+        model: MODEL,
+        contentHash: computeContentHash(embeddingTextForToken(token)),
+      });
+
+      const needing = await listTokensNeedingEmbedding(db, MODEL, { dims: 4 });
+      const entry = needing.find((item) => item.token.id === token.id);
+      expect(entry?.reason).toBe("dimension-changed");
+    });
+
     it("does not return a fresh vector unless force is set", async () => {
       const token = await makeToken({ slug: "fresh-token" });
       await upsertTokenEmbedding(db, {
@@ -290,6 +324,10 @@ describe("token embeddings", () => {
       expect(coverage.missing).toBe(1);
       expect(coverage.stale).toBe(2);
       expect(coverage.embedded).toBe(1);
+
+      const dimensionAware = await getEmbeddingCoverage(db, MODEL, { dims: 4 });
+      expect(dimensionAware.stale).toBe(3);
+      expect(dimensionAware.embedded).toBe(0);
     });
   });
 
@@ -345,6 +383,23 @@ describe("token embeddings", () => {
 
       const rows = await listEmbeddedTokens(db, MODEL);
       expect(rows.some((r) => r.token.id === token.id)).toBe(false);
+    });
+
+    it("excludes vectors whose content hash is stale", async () => {
+      const token = await makeToken({
+        slug: "embedded-stale",
+        concept: "Old meaning",
+      });
+      await upsertTokenEmbedding(db, {
+        tokenId: token.id,
+        embedding: [1, 2, 3],
+        model: MODEL,
+        contentHash: computeContentHash(embeddingTextForToken(token)),
+      });
+      await updateToken(db, token.slug, { concept: "New meaning" });
+
+      const rows = await listEmbeddedTokens(db, MODEL);
+      expect(rows.some((row) => row.token.id === token.id)).toBe(false);
     });
   });
 });

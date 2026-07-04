@@ -24,7 +24,8 @@ export interface TokenEmbedding {
 export type EmbeddingStaleness =
   | "missing"
   | "content-changed"
-  | "model-changed";
+  | "model-changed"
+  | "dimension-changed";
 
 export interface TokenNeedingEmbedding {
   token: Token;
@@ -52,10 +53,22 @@ export interface EmbeddedTokenRow {
  * vector derives from exactly this string — never the slug, which is an
  * identifier, not meaning.
  */
-export function embeddingTextForToken(
+export function embeddingContentForToken(
   t: Pick<Token, "concept" | "question" | "domain">,
 ): string {
   return `${t.concept}\n${t.question ?? ""}\n${t.domain}`;
+}
+
+/** EmbeddingGemma retrieval-document prompt used for every stored token vector. */
+export function embeddingTextForToken(
+  t: Pick<Token, "concept" | "question" | "domain">,
+): string {
+  return `title: none | text: ${embeddingContentForToken(t)}`;
+}
+
+/** EmbeddingGemma retrieval-query prompt used for search and dedup queries. */
+export function embeddingTextForQuery(text: string): string {
+  return `task: search result | query: ${text}`;
 }
 
 export function computeContentHash(text: string): string {
@@ -165,6 +178,7 @@ export async function getTokenEmbedding(
 
 interface TokenWithEmbeddingMeta extends Token {
   emb_model: string | null;
+  emb_dims: number | null;
   emb_hash: string | null;
 }
 
@@ -178,11 +192,11 @@ interface TokenWithEmbeddingMeta extends Token {
 export async function listTokensNeedingEmbedding(
   db: Database,
   model: string,
-  opts?: { limit?: number; force?: boolean },
+  opts?: { limit?: number; force?: boolean; dims?: number },
 ): Promise<TokenNeedingEmbedding[]> {
   const rows = (await db
     .prepare(`
-      SELECT t.*, e.model AS emb_model, e.content_hash AS emb_hash
+      SELECT t.*, e.model AS emb_model, e.dims AS emb_dims, e.content_hash AS emb_hash
       FROM tokens t
       LEFT JOIN token_embeddings e ON e.token_id = t.id
       WHERE t.deprecated_at IS NULL
@@ -201,6 +215,8 @@ export async function listTokensNeedingEmbedding(
       reason = "missing";
     } else if (row.emb_model !== model) {
       reason = "model-changed";
+    } else if (opts?.dims !== undefined && row.emb_dims !== opts.dims) {
+      reason = "dimension-changed";
     } else if (row.emb_hash !== hash) {
       reason = "content-changed";
     }
@@ -220,10 +236,11 @@ export async function listTokensNeedingEmbedding(
 export async function getEmbeddingCoverage(
   db: Database,
   model: string,
+  opts?: { dims?: number },
 ): Promise<EmbeddingCoverage> {
   const rows = (await db
     .prepare(`
-      SELECT t.*, e.model AS emb_model, e.content_hash AS emb_hash
+      SELECT t.*, e.model AS emb_model, e.dims AS emb_dims, e.content_hash AS emb_hash
       FROM tokens t
       LEFT JOIN token_embeddings e ON e.token_id = t.id
       WHERE t.deprecated_at IS NULL
@@ -238,6 +255,10 @@ export async function getEmbeddingCoverage(
       continue;
     }
     if (row.emb_model !== model) {
+      stale++;
+      continue;
+    }
+    if (opts?.dims !== undefined && row.emb_dims !== opts.dims) {
       stale++;
       continue;
     }
@@ -257,9 +278,9 @@ export async function getEmbeddingCoverage(
 }
 
 /**
- * All tokens with a fresh-enough vector under `model` to enter the vector
- * search leg. Trusts stored vectors as-is (the lazy top-up handles
- * staleness before search runs) — does not re-hash here.
+ * All tokens with a fresh vector under `model` to enter the vector search leg.
+ * Re-hashes rows here because lazy top-up is intentionally bounded: a stale
+ * row beyond the current batch must never participate with its old meaning.
  */
 export async function listEmbeddedTokens(
   db: Database,
@@ -267,15 +288,18 @@ export async function listEmbeddedTokens(
 ): Promise<EmbeddedTokenRow[]> {
   const rows = (await db
     .prepare(`
-      SELECT t.*, e.embedding AS embedding
+      SELECT t.*, e.embedding AS embedding, e.content_hash AS emb_hash
       FROM token_embeddings e
       JOIN tokens t ON t.id = e.token_id
       WHERE e.model = ? AND t.deprecated_at IS NULL
     `)
-    .all(model)) as Array<Token & { embedding: Uint8Array }>;
+    .all(model)) as Array<Token & { embedding: Uint8Array; emb_hash: string }>;
 
-  return rows.map((row) => {
-    const { embedding, ...token } = row;
-    return { token: token as Token, embedding: decodeEmbedding(embedding) };
+  return rows.flatMap((row) => {
+    const { embedding, emb_hash, ...token } = row;
+    if (emb_hash !== computeContentHash(embeddingTextForToken(token))) {
+      return [];
+    }
+    return [{ token: token as Token, embedding: decodeEmbedding(embedding) }];
   });
 }

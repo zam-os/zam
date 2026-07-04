@@ -116,7 +116,8 @@ multilingual — the token base is part German), overridable like every other
 role. Embedding generation lives in the CLI layer (`src/cli/llm/`), preserving
 the kernel's zero-LLM-dependency contract: the kernel only receives precomputed
 vectors. Private, free, offline-capable. The model id and dimension are recorded
-per stored vector so a later model change is detectable.
+per stored vector; the query vector's dimension is supplied to staleness checks
+so both model and output-dimension changes trigger a re-embed.
 
 The same weights are served per machine by whichever runtime fits the hardware
 (verified 2026-07-04): **Ollama** (`embeddinggemma`) on macOS/generic CPU, and
@@ -147,9 +148,17 @@ one `searchTokens(query)` interface.
 
 ### What gets embedded
 
-The concatenation of **concept + question + domain** (the human-meaning fields),
-not the slug. Staleness is **derived, not maintained**: each stored vector
-records a content hash of exactly that text, so any edit through any path
+Tokens use EmbeddingGemma's retrieval-document input profile:
+`title: none | text: <concept + question + domain>`. Search, relevance, and
+dedup candidates use its paired retrieval-query profile:
+`task: search result | query: <query>`. Dedup is therefore treated as retrieval
+of an existing token document by a candidate query, allowing one stored vector
+per token to serve both Phase 2 and Phase 3. The prompt profile is part of the
+exact text that is hashed, so changing it makes every affected vector stale.
+The slug is not embedded.
+
+Staleness is **derived, not maintained**: each stored vector records a content
+hash of exactly the prompted text, so any edit through any path
 (CLI, Studio, bridge, future code) is detected by hash mismatch — no write-path
 hooks in `createToken`/`updateToken`, which are called from many kernel-internal
 flows (curriculum import, card split, foundations, source import).
@@ -163,9 +172,12 @@ flows (curriculum import, card split, foundations, source import).
   without a fresh embedding is simply picked up by the next top-up.
 - **Top-up (lazy backfill):** before a semantic search — and after bulk imports —
   the CLI layer asks the kernel for tokens whose embedding is missing, whose
-  content hash no longer matches, or whose model differs; embeds them in bounded
-  batches; stores the vectors. `zam token reembed` runs the same path exhaustively
-  (and `--all` forces a full refresh, e.g. after a model change).
+  content hash no longer matches, or whose model/dimension differs; embeds them
+  in bounded batches; stores the vectors. Search independently excludes any
+  content-stale rows beyond the current bounded batch. Registration-time dedup
+  performs an exhaustive first backfill because incomplete coverage would miss
+  duplicates. `zam token reembed` runs the same path exhaustively (and `--all`
+  forces a full refresh, e.g. after a model change).
 - **Query path:** embed the query once → exact cosine over the stored vectors →
   reciprocal-rank fusion with lexical `findTokens` → return ranked results.
   `zam token find`, the `/zam` dedup step, and task-relevance recall (Phase 3)
@@ -176,8 +188,9 @@ flows (curriculum import, card split, foundations, source import).
 1. ~~**Embedding model & dimension.**~~ **Resolved (2026-07-04):**
    `embeddinggemma` (768-dim, multilingual) as the default, chosen over
    `nomic-embed-text` because a large share of the token base is German.
-   Changing the model later means a full re-embed — detected via the stored
-   model id and refreshed by `zam token reembed`.
+   Changing the model or its output dimension later means a full re-embed —
+   detected via the stored model id/dimensions and refreshed by
+   `zam token reembed`.
 2. **Company-tier backend.** When the shared DB outgrows a single libSQL server,
    is the jump to **Postgres + pgvector** (mature, permissive, but a real
    migration) or a scaled **self-hosted libSQL/`sqld`**? Decide when the multi-
@@ -223,8 +236,8 @@ multi-phase-feature workflow.
   jargon/acronym case that vector alone fails and lexical recovers.
 - **Dedup:** registering a paraphrase of an existing token surfaces it as a
   likely duplicate above the chosen threshold.
-- **Model-change safety:** a differing stored model id marks vectors stale and
-  `reembed` refreshes them.
+- **Model/dimension-change safety:** a differing stored model id or vector
+  dimension marks vectors stale and `reembed` refreshes them.
 - **BLOB portability:** encode/decode round-trips across providers (Buffer from
   better-sqlite3, Uint8Array from the remote provider).
 

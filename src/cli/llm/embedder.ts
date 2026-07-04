@@ -13,7 +13,8 @@
 import type { Database } from "../../kernel/index.js";
 import {
   computeContentHash,
-  embeddingTextForToken,
+  embeddingContentForToken,
+  embeddingTextForQuery,
   getEmbeddingCoverage,
   getSetting,
   listTokensNeedingEmbedding,
@@ -75,18 +76,24 @@ export async function resolveUsableEmbeddingEndpoint(
   const cfg = await getProviderForRole(db, "embedding");
   if (!cfg.enabled) return null;
 
-  const online = await isLlmOnline(cfg.url);
-  if (!online) return null;
+  for (const endpoint of [cfg, ...(cfg.fallback ? [cfg.fallback] : [])]) {
+    if (endpoint.apiFlavor !== "chat-completions") continue;
+    const online = await isLlmOnline(endpoint.url);
+    if (!online) continue;
 
-  const availableModels = await getAvailableModels(cfg.url, cfg.apiKey);
-  const modelAvailable =
-    availableModels.length === 0 ||
-    availableModels.some(
-      (candidate) => candidate.toLowerCase() === cfg.model.toLowerCase(),
+    const availableModels = await getAvailableModels(
+      endpoint.url,
+      endpoint.apiKey,
     );
-  if (!modelAvailable) return null;
+    const modelAvailable =
+      availableModels.length === 0 ||
+      availableModels.some(
+        (candidate) => candidate.toLowerCase() === endpoint.model.toLowerCase(),
+      );
+    if (modelAvailable) return endpoint;
+  }
 
-  return cfg;
+  return null;
 }
 
 interface EmbeddingsResponseItem {
@@ -184,7 +191,7 @@ export interface EnsureTokenEmbeddingsResult {
  */
 export async function ensureTokenEmbeddings(
   db: Database,
-  opts?: { limit?: number; force?: boolean },
+  opts?: { limit?: number; force?: boolean; dims?: number },
 ): Promise<EnsureTokenEmbeddingsResult> {
   const endpoint = await resolveUsableEmbeddingEndpoint(db);
   if (!endpoint) {
@@ -196,6 +203,7 @@ export async function ensureTokenEmbeddings(
   const pending = await listTokensNeedingEmbedding(db, model, {
     limit: opts?.limit ?? 64,
     force: opts?.force,
+    dims: opts?.dims,
   });
 
   // The upfront endpoint check cannot rule out mid-flight failures (server
@@ -225,7 +233,7 @@ export async function ensureTokenEmbeddings(
     failure = err instanceof Error ? err.message : String(err);
   }
 
-  const coverage = await getEmbeddingCoverage(db, model);
+  const coverage = await getEmbeddingCoverage(db, model, { dims: opts?.dims });
   const remaining = coverage.missing + coverage.stale;
   if (failure !== undefined) {
     return { status: "unavailable", embedded, remaining, reason: failure };
@@ -238,11 +246,14 @@ async function describeUnavailableReason(db: Database): Promise<string> {
   if (!cfg.enabled) {
     return "embedding role is disabled in settings (llm.enabled)";
   }
-  const online = await isLlmOnline(cfg.url);
-  if (!online) {
-    return `embedding endpoint offline (${cfg.url})`;
+  const endpoints = [cfg, ...(cfg.fallback ? [cfg.fallback] : [])];
+  const online = await Promise.all(
+    endpoints.map((endpoint) => isLlmOnline(endpoint.url)),
+  );
+  if (!online.some(Boolean)) {
+    return `embedding endpoints offline (${endpoints.map((endpoint) => endpoint.url).join(", ")})`;
   }
-  return `model "${cfg.model}" not available — run: ollama pull embeddinggemma`;
+  return `no configured embedding model is available (${endpoints.map((endpoint) => endpoint.model).join(", ")})`;
 }
 
 export interface EmbedQueryResult {
@@ -265,7 +276,7 @@ export async function embedQuery(
   try {
     const [vector] = await embedTexts(
       { url: endpoint.url, model: endpoint.model, apiKey: endpoint.apiKey },
-      [text],
+      [embeddingTextForQuery(text)],
     );
     return { vector, model: canonicalEmbeddingModelId(endpoint.model) };
   } catch {
@@ -282,7 +293,7 @@ export async function findPossibleDuplicates(
   candidate: { concept: string; question?: string | null; domain?: string },
   embed: typeof embedQuery = embedQuery,
 ): Promise<Array<{ slug: string; concept: string; similarity: number }>> {
-  const queryText = embeddingTextForToken({
+  const queryText = embeddingContentForToken({
     concept: candidate.concept,
     question: candidate.question ?? null,
     domain: candidate.domain ?? "",
@@ -293,11 +304,20 @@ export async function findPossibleDuplicates(
     return [];
   }
 
+  // Registration-time dedup must cover an upgraded or previously-offline DB,
+  // not just the subset that already happened to have vectors. This exhaustive
+  // pass is normally a no-op after the first successful semantic operation.
+  await ensureTokenEmbeddings(db, {
+    limit: Number.MAX_SAFE_INTEGER,
+    dims: q.vector.length,
+  });
+
   const thresholdStr = await getSetting(db, "search.dedup_threshold");
   const parsed = thresholdStr ? Number.parseFloat(thresholdStr) : Number.NaN;
   // A malformed setting must not silently disable (NaN compares false) or
   // flood (negative) the dedup warnings — fall back to the default.
-  const threshold = Number.isFinite(parsed) && parsed > 0 ? parsed : 0.85;
+  const threshold =
+    Number.isFinite(parsed) && parsed > 0 && parsed <= 1 ? parsed : 0.85;
 
   const hits = await searchTokensHybrid(db, queryText, {
     queryEmbedding: q.vector,

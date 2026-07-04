@@ -275,6 +275,7 @@ describe("ensureTokenEmbeddings", () => {
 
       // The wire request carries the configured raw model name...
       expect(stub.requests[0].model).toBe("embeddinggemma");
+      expect(stub.requests[0].input).toEqual([embeddingTextForToken(token)]);
 
       // ...but the stored row uses the canonical model id.
       const stored = await getTokenEmbedding(db, token.id);
@@ -312,6 +313,77 @@ describe("ensureTokenEmbeddings", () => {
       expect(stub.requests.length).toBe(1);
     } finally {
       await stub.close();
+    }
+  });
+
+  it("refreshes same-model vectors when the endpoint dimension changes", async () => {
+    const firstStub = await startEmbeddingsStub({
+      availableModels: ["embeddinggemma"],
+      dims: 4,
+    });
+    const secondStub = await startEmbeddingsStub({
+      availableModels: ["embeddinggemma"],
+      dims: 3,
+    });
+    try {
+      await enableEmbeddingRole(firstStub.url, "embeddinggemma");
+      const token = await createToken(db, {
+        slug: "dimension-change",
+        concept: "same model with another output dimension",
+        domain: "testing",
+      });
+
+      const first = await ensureTokenEmbeddings(db, { dims: 4 });
+      expect(first.embedded).toBe(1);
+      expect((await getTokenEmbedding(db, token.id))!.dims).toBe(4);
+
+      await setSetting(db, "llm.embedding.url", secondStub.url);
+      const second = await ensureTokenEmbeddings(db, { dims: 3 });
+      expect(second.embedded).toBe(1);
+      expect(second.remaining).toBe(0);
+      expect((await getTokenEmbedding(db, token.id))!.dims).toBe(3);
+    } finally {
+      await firstStub.close();
+      await secondStub.close();
+    }
+  });
+
+  it("uses the configured fallback when the primary embedding provider is offline", async () => {
+    const fallback = await startEmbeddingsStub({
+      availableModels: ["embeddinggemma"],
+    });
+    try {
+      await setSetting(db, "llm.enabled", "true");
+      await setSetting(
+        db,
+        "llm.providers",
+        JSON.stringify({
+          primary: {
+            url: "http://127.0.0.1:1",
+            model: "embeddinggemma",
+          },
+          fallback: { url: fallback.url, model: "embeddinggemma" },
+        }),
+      );
+      await setSetting(
+        db,
+        "llm.roles",
+        JSON.stringify({
+          embedding: { primary: "primary", fallback: "fallback" },
+        }),
+      );
+      await createToken(db, {
+        slug: "fallback-token",
+        concept: "fallback provider concept",
+        domain: "testing",
+      });
+
+      const result = await ensureTokenEmbeddings(db);
+      expect(result.status).toBe("ok");
+      expect(result.embedded).toBe(1);
+      expect(fallback.requests).toHaveLength(1);
+    } finally {
+      await fallback.close();
     }
   });
 
@@ -421,6 +493,9 @@ describe("embedQuery", () => {
       expect(result).not.toBeNull();
       expect(result!.model).toBe("embeddinggemma-300m");
       expect(result!.vector.length).toBe(5);
+      expect(stub.requests[0].input).toEqual([
+        "task: search result | query: one Ivy instance per tenant",
+      ]);
     } finally {
       await stub.close();
     }
@@ -453,6 +528,36 @@ describe("embedQuery", () => {
 describe("findPossibleDuplicates", () => {
   const MODEL = "embeddinggemma-300m";
 
+  it("backfills an existing unembedded token before checking a candidate", async () => {
+    const stub = await startEmbeddingsStub({
+      availableModels: ["embeddinggemma"],
+    });
+    try {
+      await enableEmbeddingRole(stub.url, "embeddinggemma");
+      const existing = await createToken(db, {
+        slug: "existing-unembedded",
+        concept: "dedicated runtime for each customer",
+        domain: "infra",
+      });
+
+      const duplicates = await findPossibleDuplicates(db, {
+        concept: "one runtime per tenant",
+        domain: "infra",
+      });
+
+      expect(duplicates.map((duplicate) => duplicate.slug)).toContain(
+        existing.slug,
+      );
+      expect(await getTokenEmbedding(db, existing.id)).toBeDefined();
+      expect(stub.requests[0].input[0]).toMatch(
+        /^task: search result \| query:/,
+      );
+      expect(stub.requests[1].input[0]).toMatch(/^title: none \| text:/);
+    } finally {
+      await stub.close();
+    }
+  });
+
   it("returns duplicates above threshold using injectable embed stub", async () => {
     const t = await createToken(db, {
       slug: "dedicated-runtime-dup",
@@ -464,7 +569,7 @@ describe("findPossibleDuplicates", () => {
       tokenId: t.id,
       embedding: [1, 0, 0, 0],
       model: MODEL,
-      contentHash: "hash-dup",
+      contentHash: computeContentHash(embeddingTextForToken(t)),
     });
 
     const embedStub = async () => ({
@@ -494,7 +599,7 @@ describe("findPossibleDuplicates", () => {
       tokenId: t.id,
       embedding: [0, 0, 1, 0],
       model: MODEL,
-      contentHash: "hash-unrelated",
+      contentHash: computeContentHash(embeddingTextForToken(t)),
     });
 
     const embedStub = async () => ({ vector: [1, 0, 0, 0], model: MODEL });
@@ -519,7 +624,7 @@ describe("findPossibleDuplicates", () => {
       tokenId: t.id,
       embedding: [0.8, 0.6, 0, 0],
       model: MODEL,
-      contentHash: "hash-threshold",
+      contentHash: computeContentHash(embeddingTextForToken(t)),
     });
 
     // Stub query is [1,0,0,0], so similarity against the stored vector is 0.8.

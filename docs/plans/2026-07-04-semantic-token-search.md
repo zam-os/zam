@@ -115,7 +115,11 @@ export interface TokenEmbedding {
   embedding: Float32Array;
 }
 
-export type EmbeddingStaleness = "missing" | "content-changed" | "model-changed";
+export type EmbeddingStaleness =
+  | "missing"
+  | "content-changed"
+  | "model-changed"
+  | "dimension-changed";
 
 export interface TokenNeedingEmbedding {
   token: Token;
@@ -127,9 +131,13 @@ export interface TokenNeedingEmbedding {
 
 Functions:
 
-- `embeddingTextForToken(t: Pick<Token, "concept" | "question" | "domain">): string`
-  → `` `${t.concept}\n${t.question ?? ""}\n${t.domain}` ``. This is THE
-  canonical text; every hash and every stored vector derives from it.
+- `embeddingContentForToken(...)` builds
+  `` `${t.concept}\n${t.question ?? ""}\n${t.domain}` ``;
+  `embeddingTextForToken(...)` wraps it as EmbeddingGemma retrieval-document
+  input (`title: none | text: ...`), while `embeddingTextForQuery(...)` uses
+  the paired retrieval-query input (`task: search result | query: ...`). The
+  prompted document text is canonical: every hash and stored vector derives
+  from it, so a prompt-profile change automatically makes rows stale.
 - `computeContentHash(text: string): string` — `node:crypto`
   `createHash("sha256").update(text, "utf8").digest("hex")`.
 - `encodeEmbedding(vec: ArrayLike<number>): Uint8Array` —
@@ -159,22 +167,24 @@ Functions:
   `new Date().toISOString()`.
 - `getTokenEmbedding(db, tokenId): Promise<TokenEmbedding | undefined>` —
   decode the blob on the way out.
-- `listTokensNeedingEmbedding(db, model: string, opts?: { limit?: number; force?: boolean }): Promise<TokenNeedingEmbedding[]>`
+- `listTokensNeedingEmbedding(db, model: string, opts?: { limit?: number; force?: boolean; dims?: number }): Promise<TokenNeedingEmbedding[]>`
   — one query:
   `SELECT t.*, e.model AS emb_model, e.content_hash AS emb_hash FROM tokens t
   LEFT JOIN token_embeddings e ON e.token_id = t.id WHERE t.deprecated_at IS NULL`,
   then in JS: compute `embeddingTextForToken` + hash per row; classify
   `missing` (no row), `model-changed` (`emb_model !== model`),
-  `content-changed` (hash mismatch); `force: true` returns every row (reason
+  `dimension-changed` (expected dims differ), or `content-changed` (hash
+  mismatch); `force: true` returns every row (reason
   `content-changed` if it would otherwise be fresh). Apply `limit` after
   classification.
-- `getEmbeddingCoverage(db, model): Promise<{ tokens: number; embedded: number; missing: number; stale: number }>`
-  — same scan, just counts (`stale` = content or model mismatch).
+- `getEmbeddingCoverage(db, model, { dims? }): Promise<{ tokens: number; embedded: number; missing: number; stale: number }>`
+  — same scan, just counts (`stale` = content, model, or dimension mismatch).
 - `listEmbeddedTokens(db, model: string): Promise<Array<{ token: Token; embedding: Float32Array }>>`
   — `SELECT t.*, e.embedding FROM token_embeddings e JOIN tokens t ON t.id =
   e.token_id WHERE e.model = ? AND t.deprecated_at IS NULL`. Used by the
-  Phase-2 vector leg. Trusts stored vectors (top-up handles staleness);
-  do not re-hash here.
+  Phase-2 vector leg. Re-hashes rows before returning them because bounded
+  top-up may leave additional stale rows for a later pass; old meanings must
+  never enter search.
 
 ### 1.3 CLI embedder: `src/cli/llm/embedder.ts`
 
@@ -209,20 +219,19 @@ system in [client.ts](../../src/cli/llm/client.ts):
     Turso-synced DB would re-embed everything whenever a differently-tagged
     machine (macOS Ollama vs. Ryzen AI flm) runs a search.
   - `resolveUsableEmbeddingEndpoint(db): Promise<ProviderConfig | null>` —
-    `getProviderForRole(db, "embedding")`; return `null` (never throw) when
-    disabled, offline (`isLlmOnline`), or the model is not in
-    `getAvailableModels` (case-insensitive, same check as recall). Do NOT
-    auto-start runners.
+    `getProviderForRole(db, "embedding")`; check primary and configured
+    fallback in order, returning `null` (never throw) when disabled or neither
+    endpoint has an available model. Do NOT auto-start runners.
   - `embedTexts(endpoint: { url: string; model: string; apiKey: string }, texts: string[]): Promise<number[][]>`
     — POST `${url}/embeddings`, headers as in the chat calls, body
     `{ model, input: texts }`; parse `{ data: [{ embedding, index }] }`,
     reorder by `index`, validate every vector is a non-empty array of finite
     numbers and all lengths match. 60 s `AbortController` timeout. Errors match
     the house style (`` `Embedding request failed: ${res.statusText} (${res.status}) - ${body}` ``).
-  - `ensureTokenEmbeddings(db, opts?: { limit?: number; force?: boolean }): Promise<{ status: "ok" | "unavailable"; embedded: number; remaining: number; reason?: string }>`
+  - `ensureTokenEmbeddings(db, opts?: { limit?: number; force?: boolean; dims?: number }): Promise<{ status: "ok" | "unavailable"; embedded: number; remaining: number; reason?: string }>`
     — resolve endpoint (null → `unavailable` with a human-readable `reason`:
-    disabled / offline / `model "embeddinggemma" not available — run: ollama
-    pull embeddinggemma`); `listTokensNeedingEmbedding(db, endpoint.model,
+    disabled / all endpoints offline / no configured model available);
+    `listTokensNeedingEmbedding(db, endpoint.model,
     { limit: opts?.limit ?? 64, force })`; embed in batches of 16 via
     `embedTexts`; `upsertTokenEmbedding` each with the hash of the exact
     `text` that was sent; `remaining` = coverage recount after.
@@ -232,8 +241,9 @@ system in [client.ts](../../src/cli/llm/client.ts):
     partial `embedded` count and the error text as `reason` — Phase 2's
     `token find` relies on this to keep search unbreakable.
   - `embedQuery(db, text: string): Promise<{ vector: number[]; model: string } | null>`
-    — single-text embed; `null` on unavailable **or on any network error**
-    (semantic search must never break search).
+    — apply the retrieval-query prompt, then single-text embed; `null` on
+    unavailable **or on any network error** (semantic search must never break
+    search).
 
 ### 1.4 CLI command: `zam token reembed`
 
@@ -241,8 +251,9 @@ In [token.ts](../../src/cli/commands/token.ts), following the house style of
 the other subcommands (`withDb`, `--json`, `--quiet`):
 
 - Options: `--all` (force re-embed fresh vectors too), `--json`, `--quiet`.
-- Flow *(as implemented)*: coverage before → loop `ensureTokenEmbeddings`
-  until `remaining === 0` or no progress → coverage after → print
+- Flow *(as implemented)*: embed a small dimension probe → dimension-aware
+  coverage before → loop `ensureTokenEmbeddings` until `remaining === 0` or no
+  progress → coverage after → print
   `Embedded N tokens (M total, K stale before) with <model>` (where
   `K = missing + stale`) or the JSON equivalent.
   **`--all` runs as a single unbounded forced pass**
@@ -265,8 +276,9 @@ the other subcommands (`withDb`, `--json`, `--quiet`):
 - upsert → get returns the same vector, model, dims, hash.
 - Staleness matrix: fresh token → `missing`; after
   `updateToken(db, slug, { concept: "…" })` → `content-changed`; stored with
-  another model id → `model-changed`; fresh vector → not returned (and
-  returned with `force: true`).
+  another model id → `model-changed`; same model with different expected dims
+  → `dimension-changed`; fresh vector → not returned (and returned with
+  `force: true`).
 - `deleteToken` cascades the embedding row away.
 - `getEmbeddingCoverage` counts match the matrix.
 
@@ -279,6 +291,7 @@ for the in-process `node:http` server pattern):
   pending tokens and stores correct hashes.
 - Server down → `ensureTokenEmbeddings` returns `unavailable`, DB untouched,
   nothing thrown.
+- Offline primary + healthy configured fallback → fallback embeds successfully.
 - `canonicalEmbeddingModelId`: `embeddinggemma`, `embeddinggemma:300m`,
   `embed-gemma`, `Embed-Gemma:300m`, `google/embeddinggemma-300m` all map to
   `embeddinggemma-300m`; `qwen3-embedding-0.6b` passes through unchanged; the
@@ -337,10 +350,11 @@ Implementation:
 
 In the `find` subcommand ([token.ts](../../src/cli/commands/token.ts)):
 
-1. `await ensureTokenEmbeddings(db, { limit: 32 })` — if `status ===
+1. `const q = await embedQuery(db, opts.query)` so the active model's output
+   dimension is known.
+2. `await ensureTokenEmbeddings(db, { limit: 32, dims: q?.vector.length })` — if `status ===
    "unavailable"` and neither `--json` nor `--quiet`: one line to
    `console.error`: `` `Note: semantic search unavailable (${reason}) — lexical matches only.` ``
-2. `const q = await embedQuery(db, opts.query);`
 3. `searchTokensHybrid(db, opts.query, { queryEmbedding: q?.vector, model: q?.model })`
 4. Table output: keep the existing columns, `Score` shows the fused score with
    `toFixed(3)`, add a `Sim` column (`similarity?.toFixed(2) ?? "-"`).
@@ -360,15 +374,18 @@ In the `find` subcommand ([token.ts](../../src/cli/commands/token.ts)):
   ): Promise<Array<{ slug: string; concept: string; similarity: number }>>
   ```
 
-  Build the query text with `embeddingTextForToken`, embed it, run
-  `searchTokensHybrid`, return hits with `similarity >= threshold`. Threshold:
+  Build the raw candidate content with `embeddingContentForToken`, embed it as
+  a retrieval query, exhaustively top up existing token documents on first use,
+  run `searchTokensHybrid`, and return hits with `similarity >= threshold`.
+  Threshold:
   setting `search.dedup_threshold` (parseFloat, default **0.85**). Returns `[]
   ` when the embedder is unavailable.
 - `zam bridge add-token`: call it before `createToken`; add
   `possible_duplicates` (always present, possibly `[]`) to the success JSON.
-  **Non-blocking** — the token is still created. After creation, best-effort
-  `ensureTokenEmbeddings(db, { limit: 8 })` in a try/catch so the new token's
-  vector lands immediately when the model is up.
+  **Non-blocking** — the token is still created. The dedup helper's exhaustive
+  pre-check makes upgraded/offline-era databases complete before comparison.
+  After creation, best-effort `ensureTokenEmbeddings(db, { limit: 8 })` in a
+  try/catch makes the newly created token search-ready.
 - `zam token register` (human path): after creating, print a warning block
   listing possible duplicates (slug + similarity), non-blocking.
 - [SKILL.md](../../.claude/skills/zam/SKILL.md): update the dedup bullet
@@ -391,10 +408,12 @@ via `upsertTokenEmbedding` (4-dim handcrafted unit vectors are enough):
   the same single-leg rank.
 - Dims mismatch → row skipped, no throw. No `queryEmbedding` → results equal
   `findTokens` order. Deprecated tokens and tokens without embeddings never
-  enter the vector leg.
+  enter the vector leg; content-stale vectors are excluded even when bounded
+  top-up has not reached them yet.
 - `findPossibleDuplicates` (CLI test): injectable `embed` stub → paraphrase
   above threshold appears; below threshold filtered; unavailable embed (`null`)
-  → `[]`.
+  → `[]`; a previously unembedded existing token is backfilled before the
+  candidate is compared.
 
 **Commit:** `feat: hybrid lexical+vector token search with dedup warnings`
 
@@ -409,8 +428,9 @@ New bridge subcommand (JSON in/out, mirror `add-token`'s structure):
 - stdin: `{ "context": string, "limit"?: number }`; `--user <id>` option like
   the other bridge commands (`resolveUser`).
 - Flow: validate `context` non-empty → truncate to 2 000 chars before
-  embedding → `ensureTokenEmbeddings(db, { limit: 32 })` (best-effort) →
-  `embedQuery` → `searchTokensHybrid(db, context, …, { limit: limit ?? 10 })`
+  embedding → `embedQuery` → dimension-aware
+  `ensureTokenEmbeddings(db, { limit: 32, dims })` (best-effort) →
+  `searchTokensHybrid(db, context, …, { limit: limit ?? 10 })`
   → for each hit, `getCard(db, token.id, userId)` → output:
 
   ```json

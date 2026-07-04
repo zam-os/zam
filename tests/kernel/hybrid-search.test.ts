@@ -3,13 +3,16 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
+  computeContentHash,
   cosineSimilarity,
   createToken,
   type Database,
   deprecateToken,
+  embeddingTextForToken,
   openDatabase,
   searchTokensHybrid,
   type Token,
+  updateToken,
   upsertTokenEmbedding,
 } from "../../src/kernel/index.js";
 
@@ -83,7 +86,7 @@ describe("hybrid search", () => {
         tokenId: t.id,
         embedding: [1, 0, 0, 0],
         model: MODEL,
-        contentHash: "hash-t",
+        contentHash: computeContentHash(embeddingTextForToken(t)),
       });
 
       // Query "tenant isolation model" has no word overlap, but a high-similarity query vector
@@ -109,7 +112,7 @@ describe("hybrid search", () => {
         tokenId: t.id,
         embedding: [0, 0, 1, 0],
         model: MODEL,
-        contentHash: "hash-snat",
+        contentHash: computeContentHash(embeddingTextForToken(t)),
       });
 
       // Query "SNAT" with orthogonal query vector
@@ -144,19 +147,19 @@ describe("hybrid search", () => {
         tokenId: t1.id,
         embedding: [1, 0, 0],
         model: MODEL,
-        contentHash: "h1",
+        contentHash: computeContentHash(embeddingTextForToken(t1)),
       });
       await upsertTokenEmbedding(db, {
         tokenId: t2.id,
         embedding: [0, 1, 0],
         model: MODEL,
-        contentHash: "h2",
+        contentHash: computeContentHash(embeddingTextForToken(t2)),
       });
       await upsertTokenEmbedding(db, {
         tokenId: t3.id,
         embedding: [0, 0, 1],
         model: MODEL,
-        contentHash: "h3",
+        contentHash: computeContentHash(embeddingTextForToken(t3)),
       });
 
       // Query has word overlap with t1 and t2 (lexical hit).
@@ -187,7 +190,7 @@ describe("hybrid search", () => {
         tokenId: t.id,
         embedding: [1, 0], // 2-dimensional
         model: MODEL,
-        contentHash: "hash-dim",
+        contentHash: computeContentHash(embeddingTextForToken(t)),
       });
 
       // Query vector is 3-dimensional
@@ -226,13 +229,13 @@ describe("hybrid search", () => {
         tokenId: t1.id,
         embedding: [1, 0],
         model: MODEL,
-        contentHash: "h1",
+        contentHash: computeContentHash(embeddingTextForToken(t1)),
       });
       await upsertTokenEmbedding(db, {
         tokenId: t2.id,
         embedding: [1, 0],
         model: MODEL,
-        contentHash: "h2",
+        contentHash: computeContentHash(embeddingTextForToken(t2)),
       });
 
       await deprecateToken(db, t2.slug);
@@ -244,6 +247,27 @@ describe("hybrid search", () => {
 
       expect(results.length).toBe(1);
       expect(results[0].slug).toBe("active-token");
+    });
+
+    it("excludes a same-model vector whose token content is stale", async () => {
+      const token = await makeToken({
+        slug: "stale-vector",
+        concept: "old semantic meaning",
+      });
+      await upsertTokenEmbedding(db, {
+        tokenId: token.id,
+        embedding: [1, 0],
+        model: MODEL,
+        contentHash: computeContentHash(embeddingTextForToken(token)),
+      });
+      await updateToken(db, token.slug, { concept: "new semantic meaning" });
+
+      const results = await searchTokensHybrid(db, "unrelated wording", {
+        queryEmbedding: [1, 0],
+        model: MODEL,
+      });
+
+      expect(results).toEqual([]);
     });
   });
 });

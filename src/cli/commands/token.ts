@@ -23,11 +23,9 @@ import {
   updateToken,
 } from "../../kernel/index.js";
 import {
-  canonicalEmbeddingModelId,
   embedQuery,
   ensureTokenEmbeddings,
   findPossibleDuplicates,
-  resolveUsableEmbeddingEndpoint,
 } from "../llm/embedder.js";
 import { resolveUser } from "../users/identity.js";
 import { jsonOut, withDb } from "./shared/db.js";
@@ -155,14 +153,17 @@ tokenCommand
   .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
     await withDb(async (db) => {
-      const embRes = await ensureTokenEmbeddings(db, { limit: 32 });
+      const q = await embedQuery(db, opts.query);
+      const embRes = await ensureTokenEmbeddings(db, {
+        limit: 32,
+        dims: q?.vector.length,
+      });
       if (embRes.status === "unavailable" && !opts.json && !opts.quiet) {
         console.error(
           `Note: semantic search unavailable (${embRes.reason}) — lexical matches only.`,
         );
       }
 
-      const q = await embedQuery(db, opts.query);
       const results = await searchTokensHybrid(db, opts.query, {
         queryEmbedding: q?.vector,
         model: q?.model,
@@ -531,10 +532,11 @@ tokenCommand
   .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
     await withDb(async (db) => {
-      const endpoint = await resolveUsableEmbeddingEndpoint(db);
-      const model = endpoint ? canonicalEmbeddingModelId(endpoint.model) : null;
+      const probe = await embedQuery(db, "ZAM embedding dimension probe");
+      const model = probe?.model ?? null;
+      const dims = probe?.vector.length;
       const before = model
-        ? await getEmbeddingCoverage(db, model)
+        ? await getEmbeddingCoverage(db, model, { dims })
         : { tokens: 0, embedded: 0, missing: 0, stale: 0 };
 
       let embedded = 0;
@@ -550,7 +552,9 @@ tokenCommand
       while (true) {
         const result = await ensureTokenEmbeddings(
           db,
-          force ? { force: true, limit: Number.MAX_SAFE_INTEGER } : {},
+          force
+            ? { force: true, limit: Number.MAX_SAFE_INTEGER, dims }
+            : { dims },
         );
         force = false;
         embedded += result.embedded;
@@ -580,7 +584,7 @@ tokenCommand
 
       // model is guaranteed non-null here: reason undefined means at least
       // one ensureTokenEmbeddings call above resolved a usable endpoint.
-      const after = await getEmbeddingCoverage(db, model as string);
+      const after = await getEmbeddingCoverage(db, model as string, { dims });
 
       if (opts.quiet) return;
 

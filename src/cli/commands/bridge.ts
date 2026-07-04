@@ -1212,14 +1212,18 @@ bridgeCommand
       // Truncate to 2000 chars before embedding
       const truncatedContext = data.context.slice(0, 2000);
 
-      // Best effort embedding top-up
+      const q = await embedQuery(db, truncatedContext);
+
+      // Best effort embedding top-up, including same-model dimension changes.
       try {
-        await ensureTokenEmbeddings(db, { limit: 32 });
+        await ensureTokenEmbeddings(db, {
+          limit: 32,
+          dims: q?.vector.length,
+        });
       } catch {
         // ignore
       }
 
-      const q = await embedQuery(db, truncatedContext);
       const limit = data.limit ?? 10;
 
       const results = await searchTokensHybrid(db, truncatedContext, {
