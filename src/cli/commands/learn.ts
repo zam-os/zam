@@ -147,7 +147,7 @@ export const learnCommand = new Command("learn")
 
         console.log(`\n${"─".repeat(50)}`);
         console.log(
-          `[${index + 1}/${queue.items.length}] ${formatHeader(item)}`,
+          `[${index + 1}/${queue.items.length}] ${formatHeader({ ...item, title: item.title, slug: item.slug })}`,
         );
 
         console.log(`\n  ${prompt.question}`);
@@ -216,6 +216,7 @@ export const learnCommand = new Command("learn")
         );
         const reveal = formatReveal({
           slug: item.slug,
+          title: item.title,
           concept: item.concept,
           context: token?.context,
           resolved,

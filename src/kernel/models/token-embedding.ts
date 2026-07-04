@@ -54,9 +54,9 @@ export interface EmbeddedTokenRow {
  * identifier, not meaning.
  */
 export function embeddingContentForToken(
-  t: Pick<Token, "concept" | "question" | "domain">,
+  t: Pick<Token, "concept" | "question" | "domain"> & { title?: string | null },
 ): string {
-  return `${t.concept}\n${t.question ?? ""}\n${t.domain}`;
+  return `${t.concept}\n${t.question ?? ""}\n${t.domain}\n${t.title ?? ""}`;
 }
 
 export function computeContentHash(text: string): string {

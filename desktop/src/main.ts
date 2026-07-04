@@ -293,6 +293,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_question: "Question",
     lbl_answer: "Answer / Concept",
     lbl_category: "Category",
+    lbl_title: "Title (display name)",
     lbl_source_link: "Source Link",
     lbl_more_settings: "More Settings",
     lbl_context: "Context",
@@ -668,6 +669,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_question: "Frage",
     lbl_answer: "Antwort / Konzept",
     lbl_category: "Kategorie",
+    lbl_title: "Titel (Anzeigename)",
     lbl_source_link: "Quell-Link",
     lbl_more_settings: "Mehr Einstellungen",
     lbl_context: "Kontext",
@@ -916,6 +918,7 @@ interface BridgeCard {
   cardId: string;
   tokenId: string;
   slug: string;
+  title?: string;
   concept: string;
   domain: string;
   bloomLevel: number;
@@ -1008,7 +1011,7 @@ interface UiObservationReport {
   actions: Array<{ type: string; target?: string; result?: string }>;
   evidence: Array<{ type: string; ref: string; redacted: boolean }>;
   confidence: number;
-  candidateTokens: Array<{ slug: string; confidence: number; rationale: string }>;
+  candidateTokens: Array<{ slug: string; title?: string; confidence: number; rationale: string }>;
 }
 
 interface ObserverWatchStatus {
@@ -1328,6 +1331,8 @@ function initializeTranslations() {
   if (lblEditorConcept) lblEditorConcept.textContent = t("lbl_answer");
   const lblEditorDomain = document.getElementById("lbl-editor-domain");
   if (lblEditorDomain) lblEditorDomain.textContent = t("lbl_category");
+  const lblEditorTitle = document.getElementById("lbl-editor-title");
+  if (lblEditorTitle) lblEditorTitle.textContent = t("lbl_title");
   const lblEditorSourceLink = document.getElementById("lbl-editor-source-link");
   if (lblEditorSourceLink) lblEditorSourceLink.textContent = t("lbl_source_link");
   const lblEditorAdvanced = document.getElementById("lbl-editor-advanced");
@@ -3318,7 +3323,10 @@ function renderObserverHistory(): void {
       const tokens = document.createElement("div");
       tokens.className = "observer-report-tokens";
       tokens.textContent = report.candidateTokens
-        .map((token) => `${token.slug} (${token.confidence.toFixed(2)})`)
+        .map((token) => {
+          const name = token.title || token.slug;
+          return `${name} (${token.confidence.toFixed(2)})`;
+        })
         .join(", ");
       card.appendChild(tokens);
     }
@@ -3508,12 +3516,18 @@ let currentNeighborhood: any = null;
 let graphUserId: string | null = null;
 let currentDomain: string | null = null;
 let availableDomains: string[] = [];
+let originalDomainSet: Set<string> = new Set();
 
 function getShortSlug(slug: string): string {
-  if (currentDomain && slug.startsWith(currentDomain + '-')) {
+  if (currentDomain && slug.startsWith(currentDomain + '/')) {
     return slug.substring(currentDomain.length + 1);
   }
   return slug;
+}
+
+function getDisplayTitle(t: { title?: string; slug: string }): string {
+  if (t.title && t.title.trim()) return t.title.trim();
+  return getShortSlug(t.slug);
 }
 
 function disposeGraph() {
@@ -3575,7 +3589,7 @@ function buildGraphScene(nb: any) {
   const prereqList = document.getElementById("prereq-list")!;
   const depList = document.getElementById("dependent-list")!;
 
-  focusSlugEl.textContent = nb.center.title || getShortSlug(nb.center.slug);
+  focusSlugEl.textContent = getDisplayTitle(nb.center);
   focusConceptEl.textContent = nb.center.concept;
   const c = nb.center.card;
   focusMetaEl.textContent = c
@@ -3587,7 +3601,7 @@ function buildGraphScene(nb: any) {
     const pill = document.createElement("button");
     pill.type = "button";
     pill.className = "neighbor-pill";
-    pill.textContent = gt.title || getShortSlug(gt.slug);
+    pill.textContent = getDisplayTitle(gt);
     pill.title = gt.concept;
     pill.addEventListener("click", () => loadGraphFocus(gt.slug));
     container.appendChild(pill);
@@ -3595,7 +3609,7 @@ function buildGraphScene(nb: any) {
 
   prereqList.innerHTML = "";
   const visiblePrereqs = currentDomain
-    ? nb.prerequisites.filter((p: any) => p.domain === currentDomain)
+    ? nb.prerequisites.filter((p: any) => p.domain === currentDomain || p.domain.startsWith(currentDomain + '/'))
     : nb.prerequisites;
   visiblePrereqs.forEach((p: any) => makePill(p, prereqList));
   if (visiblePrereqs.length === 0) {
@@ -3607,7 +3621,7 @@ function buildGraphScene(nb: any) {
 
   depList.innerHTML = "";
   const visibleDependents = currentDomain
-    ? nb.dependents.filter((d: any) => d.domain === currentDomain)
+    ? nb.dependents.filter((d: any) => d.domain === currentDomain || d.domain.startsWith(currentDomain + '/'))
     : nb.dependents;
   visibleDependents.forEach((d: any) => makePill(d, depList));
   if (visibleDependents.length === 0) {
@@ -3757,7 +3771,7 @@ function buildGraphScene(nb: any) {
     graphNodeMeshes.set(gt.slug, mesh);
 
     // Add visible label (sprite with canvas text)
-    const label = createLabelSprite(gt.title || getShortSlug(gt.slug), isCenter);
+    const label = createLabelSprite(getDisplayTitle(gt), isCenter);
     label.position.y = labelOffsetY;
     mesh.add(label);
 
@@ -3844,11 +3858,23 @@ async function loadAndRenderDomains() {
   try {
     const resp = await runBridge<any>("list-tokens", ["--user", graphUserId || ""]);
     const tokens = resp.tokens || [];
-    const domSet = new Set<string>();
+    originalDomainSet = new Set<string>();
     tokens.forEach((t: any) => {
-      if (t.domain) domSet.add(t.domain);
+      if (t.domain) originalDomainSet.add(t.domain);
     });
-    availableDomains = Array.from(domSet).sort();
+    // Support prefix-based domains for team/custom content e.g. "docuware-cops/xxx"
+    // Include parent prefixes so user can select e.g. "docuware-cops" to see all under it.
+    const prefixSet = new Set<string>(originalDomainSet);
+    for (const d of originalDomainSet) {
+      if (d.includes('/')) {
+        const parts = d.split('/');
+        for (let i = 1; i < parts.length; i++) {
+          const pref = parts.slice(0, i).join('/');
+          prefixSet.add(pref);
+        }
+      }
+    }
+    availableDomains = Array.from(prefixSet).sort();
     renderDomainSelector();
   } catch (e) {
     console.warn("Could not load domains for selector", e);
@@ -3870,7 +3896,11 @@ function renderDomainSelector() {
   availableDomains.forEach((dom) => {
     const pill = document.createElement("span");
     pill.className = "domain-pill" + (currentDomain === dom ? " active" : "");
-    pill.textContent = dom;
+    const isPrefix = !originalDomainSet.has(dom);
+    pill.textContent = isPrefix ? dom + " ⋯" : dom;
+    if (isPrefix) {
+      pill.title = `Group: all under prefix "${dom}"`;
+    }
     pill.onclick = () => switchToDomain(dom);
     container.appendChild(pill);
   });
@@ -3895,7 +3925,7 @@ async function bootstrapGraphWithDomain() {
     if (currentDomain) {
       // Load only tokens of this domain and pick a good entry point (lowest bloom = base of the area)
       const list = await runBridge<any>("list-tokens", [
-        "--domain", currentDomain,
+        "--domain-prefix", currentDomain,
         "--user", graphUserId || ""
       ]);
       const domTokens: any[] = list.tokens || [];
@@ -3921,7 +3951,7 @@ async function bootstrapGraphWithDomain() {
     // Fallback to general list (respecting domain if set)
     try {
       const args = ["--user", graphUserId || ""];
-      if (currentDomain) args.push("--domain", currentDomain);
+      if (currentDomain) args.push("--domain-prefix", currentDomain);
       const list = await runBridge<any>("list-tokens", args);
       const tokens: any[] = list.tokens || [];
       if (tokens.length > 0) {
@@ -3989,7 +4019,7 @@ function populateDomainTokenList(tokens: any[]) {
     const pill = document.createElement("button");
     pill.type = "button";
     pill.className = "neighbor-pill";
-    pill.textContent = t.title || getShortSlug(t.slug);
+    pill.textContent = getDisplayTitle(t);
     pill.title = t.concept || "";
     pill.addEventListener("click", () => loadGraphFocus(t.slug));
     listEl.appendChild(pill);
@@ -4506,7 +4536,10 @@ function renderReveal(
   // 1. Concept Row
   addRevealRow("concept", activeCard.concept);
 
-  // 2. Token Slug Row
+  // 2. Title Row (human friendly)
+  addRevealRow("title", getDisplayTitle(activeCard));
+
+  // 3. Token Slug Row (technical)
   addRevealRow("token", activeCard.slug, { code: true });
 
   // 3. Context Row (if any)

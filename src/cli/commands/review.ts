@@ -64,8 +64,9 @@ export const reviewCommand = new Command("review")
           sourceLink: item.sourceLink,
         });
 
+        const displayName = (item as any).title || item.slug;
         console.log(
-          `\n[${index + 1}/${queue.items.length}] ${prompt.bloomVerb} (Bloom ${prompt.bloomLevel})`,
+          `\n[${index + 1}/${queue.items.length}] ${prompt.bloomVerb} (Bloom ${prompt.bloomLevel}) — ${displayName}`,
         );
         console.log(`Domain: ${prompt.domain || "(none)"}`);
         if (prompt.sourceLink) {

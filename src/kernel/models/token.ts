@@ -49,7 +49,7 @@ export interface CreateTokenInput {
 }
 
 export interface UpdateTokenInput {
-  title?: string;
+  title?: string | null;
   concept?: string;
   domain?: string;
   bloom_level?: BloomLevel;
@@ -63,6 +63,11 @@ export interface UpdateTokenInput {
 
 export interface ListTokensOptions {
   domain?: string;
+  /**
+   * Filter by domain prefix using `/` as separator (e.g. "docuware-cops").
+   * Matches exact or startsWith(prefix + "/").
+   */
+  domainPrefix?: string;
 }
 
 export interface TokenDeleteImpact {
@@ -104,7 +109,7 @@ export async function createToken(
     throw new Error(`bloom_level must be between 1 and 5, got ${bloom}`);
   }
 
-  const title = input.title ?? input.concept ?? input.slug;
+  const title = input.title ?? "";
 
   await db
     .prepare(`
@@ -485,6 +490,13 @@ export async function listTokens(
         "SELECT * FROM tokens WHERE domain = ? AND deprecated_at IS NULL ORDER BY bloom_level, slug",
       )
       .all(options.domain)) as Token[];
+  } else if (options?.domainPrefix) {
+    const prefix = options.domainPrefix;
+    tokens = (await db
+      .prepare(
+        `SELECT * FROM tokens WHERE (domain = ? OR domain LIKE ?) AND deprecated_at IS NULL ORDER BY bloom_level, slug`,
+      )
+      .all(prefix, prefix + '/%')) as Token[];
   } else {
     tokens = (await db
       .prepare(
@@ -501,6 +513,7 @@ export async function listTokens(
 export interface PersonalCard {
   tokenId: string;
   slug: string;
+  title: string;
   concept: string;
   domain: string;
   bloomLevel: BloomLevel;
@@ -534,6 +547,28 @@ export function slugify(text: string): string {
     .replace(/ß/g, "ss")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
+}
+
+/**
+ * Strip domain prefix (using / separator) from slug for display.
+ */
+export function getShortSlug(slug: string, domainPrefix?: string | null): string {
+  if (domainPrefix && slug.startsWith(domainPrefix + "/")) {
+    return slug.substring(domainPrefix.length + 1);
+  }
+  return slug;
+}
+
+/**
+ * Primary display name for a token: human title if present, else short slug.
+ * Never falls back to concept (which is a spoiler).
+ */
+export function getDisplayTitle(
+  t: { title?: string | null; slug: string },
+  activeDomainScope?: string | null,
+): string {
+  if (t.title && t.title.trim()) return t.title.trim();
+  return getShortSlug(t.slug, activeDomainScope);
 }
 
 export async function generateTokenSlug(
@@ -578,6 +613,7 @@ export async function listPersonalCards(
     SELECT 
       t.id AS tokenId,
       t.slug,
+      t.title,
       t.concept,
       t.domain,
       t.bloom_level AS bloomLevel,

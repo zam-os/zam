@@ -180,6 +180,8 @@ export {
   listPersonalCards,
   listTokens,
   slugify,
+  getShortSlug,
+  getDisplayTitle,
   updateToken,
 } from "./models/token.js";
 export type {

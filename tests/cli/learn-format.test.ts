@@ -29,7 +29,7 @@ describe("zam learn — formatting", () => {
         slug: "test-slug",
         concept: "FSRS stability is the memory half-life in days",
       });
-      expect(out).toContain("Token: #test-slug");
+      expect(out).toContain("Token: test-slug");
       expect(out).toContain(
         "Concept: FSRS stability is the memory half-life in days",
       );
@@ -49,7 +49,7 @@ describe("zam learn — formatting", () => {
         context: "extra context",
         resolved,
       });
-      expect(out).toContain("Token: #test-slug");
+      expect(out).toContain("Token: test-slug");
       expect(out).toContain("Context: extra context");
       expect(out).toContain("Source (local: lib.txt):");
       expect(out).toContain("  │ line A");
@@ -87,7 +87,7 @@ describe("zam learn — formatting", () => {
         context: "   ",
         resolved: null,
       });
-      expect(out).toContain("Token: #test-slug");
+      expect(out).toContain("Token: test-slug");
       expect(out).toContain("Concept: C");
     });
   });

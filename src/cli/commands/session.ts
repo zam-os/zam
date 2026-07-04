@@ -208,8 +208,9 @@ async function runRepetitionPhase(
     });
 
     const elapsed = Math.round((Date.now() - startTime) / 60000);
+    const display = (item as any).title || item.slug;
     console.log(
-      `[${index + 1}/${queue.items.length}] ${prompt.bloomVerb} (Bloom ${prompt.bloomLevel}) — ${elapsed}/${maxMinutes} min`,
+      `[${index + 1}/${queue.items.length}] ${prompt.bloomVerb} (Bloom ${prompt.bloomLevel}) — ${display} (${elapsed}/${maxMinutes} min)`,
     );
     console.log(`Domain: ${prompt.domain || "(none)"}`);
     console.log(`\n  ${prompt.question}\n`);

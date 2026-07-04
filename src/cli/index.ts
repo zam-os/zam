@@ -22,6 +22,7 @@ import { skillCommand } from "./commands/skill.js";
 import { snapshotCommand } from "./commands/snapshot.js";
 import { statsCommand } from "./commands/stats.js";
 import { tokenCommand } from "./commands/token.js";
+import { doctorCommand } from "./commands/doctor.js";
 import { uiCommand } from "./commands/ui.js";
 import { updateCommand } from "./commands/update.js";
 import { whoamiCommand } from "./commands/whoami.js";
@@ -44,6 +45,7 @@ program
 program.addCommand(initCommand);
 program.addCommand(setupCommand);
 program.addCommand(tokenCommand);
+program.addCommand(doctorCommand);
 program.addCommand(cardCommand);
 program.addCommand(sessionCommand);
 program.addCommand(statsCommand);

@@ -2104,3 +2104,87 @@ export async function ensureHighQualityQuestion(
 
   return null;
 }
+
+/**
+ * Generate a high-quality, human-friendly title for a token using LLM.
+ * Follows ADR: thoughtful name (not definition), no domain echo, concise, language-aware.
+ */
+export async function generateTitleViaLLM(
+  db: Database,
+  input: {
+    slug: string;
+    concept: string;
+    domain: string;
+    question?: string | null;
+    context?: string | null;
+  },
+): Promise<LlmTextResult> {
+  const cfg = await getProviderForRole(db, "text"); // or recall? text for generation
+  const endpoint = await resolveUsableTextEndpoint(db); // assume exists or use recall
+
+  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+
+  const systemPrompt = `You are an expert at naming knowledge items for a personal knowledge graph.
+Your task: given a knowledge token's concept (the full reference answer), question, domain, and optional context, produce a short, descriptive, human-friendly TITLE in ${langName}.
+
+Strict rules from the project ADR:
+- Concise name for the concept (≤ 80 chars ideal).
+- Thoughtful, memorable name — NOT a definition or the first sentence of the concept.
+- NEVER echo the domain name (e.g. do not say "Axon Ivy Node Drain" if domain is "axon-ivy"; just "Node Drain Protection").
+- Prefer a name over spoiling the full concept.
+- Support Unicode (umlauts, etc.).
+- Output ONLY the raw title text. No preamble, quotes, explanations, or markdown.
+
+Example good titles:
+- "RAG Retrieval Quality Evaluation" (for RAG failure modes focused on retrieval)
+- "Pythagorean Theorem Converse Proof"
+- "macOS Applications Directory Layout"
+- "Chronotype Sleep Preference"`;
+
+  const userPrompt = `Domain: ${input.domain}
+Slug: ${input.slug}
+Question: ${input.question || "(none)"}
+Concept: ${input.concept}
+Context: ${input.context || "(none)"}
+
+Title:`;
+
+  // Use recall endpoint as fallback if text not available; many setups share.
+  let url = `${endpoint.url}/chat/completions`;
+  let apiKey = endpoint.apiKey;
+  let model = endpoint.model;
+
+  try {
+    const res = await fetchWithInteractiveTimeout(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.2,
+        max_tokens: 100,
+      }),
+      locale: cfg.locale,
+    });
+
+    const text = await readChatContent(res, "title generation");
+    return {
+      text: text.trim(),
+      model,
+      providerName: endpoint.providerName,
+    };
+  } catch (e) {
+    // Fallback to simple
+    return {
+      text: input.concept.split(/[.;]/)[0].trim().substring(0, 80),
+      model: "fallback",
+      providerName: "heuristic",
+    };
+  }
+}
