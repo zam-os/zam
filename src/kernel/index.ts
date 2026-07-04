@@ -360,6 +360,11 @@ export {
   cosineSimilarity,
   searchTokensHybrid,
 } from "./search/hybrid.js";
+export type {
+  FoundationSuggestion,
+  SuggestFoundationsOptions,
+} from "./search/suggestions.js";
+export { suggestFoundations } from "./search/suggestions.js";
 export {
   distributeGlobalSkills,
   getPackageSkillPath,
