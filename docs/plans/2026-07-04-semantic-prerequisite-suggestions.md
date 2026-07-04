@@ -15,7 +15,7 @@ per run**, one commit per phase on this branch
 
 - [x] **Phase 1** — kernel: `suggestFoundations` (start at section 1)
 - [x] **Phase 2** — CLI/bridge: `zam bridge suggest-foundations` + register hint
-- [ ] **Phase 3** — /zam skill integration (all three SKILL.md copies)
+- [x] **Phase 3** — /zam skill integration (all three SKILL.md copies)
 
 ## Goal
 
