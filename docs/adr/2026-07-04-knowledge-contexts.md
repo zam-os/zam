@@ -1,6 +1,6 @@
 # Knowledge Contexts: Work, School, Private
 
-**Status:** Proposed (draft)
+**Status:** Accepted (2026-07-04)
 **Date:** 2026-07-04
 **Deciders:** Thomas (project owner)
 **Related:**
@@ -61,7 +61,7 @@ forward-compatible** with that outcome.
 | Option | Shape | Verdict |
 |--------|-------|---------|
 | **A. Context = top domain level by convention** (`work/…`, `school/…`) | No schema change; reuses the `/` separator | Conflates context with subject taxonomy (`work/mathematik` vs `school/mathematik` duplicates subjects under two roots); no place to attach attributes like language; a rename-only convention — rejected as the primary mechanism, though the ontology ADR may revisit it. |
-| **B. `contexts` table + nullable `tokens.context_id`** | Context as a small first-class entity with attributes (language, sharing default) | Additive, one M-migration; attributes have a home; the sharing boundary becomes a real object; forward-compatible (the ontology ADR can absorb or keep it). **Chosen.** |
+| **B. `contexts` table + token↔context assignment** | Context as a small first-class entity with attributes (language, sharing default) | Additive, one M-migration; attributes have a home; the sharing boundary becomes a real object; forward-compatible. **Chosen — in the n:m variant (owner decision):** a `token_contexts` join table instead of a single FK, so a token can live in several worlds (`git` at work AND privately). |
 | **C. Settings-only mapping** (domain-prefix → language in `settings`) | Zero schema | Solves only the language symptom; invisible to graph filtering and sharing; another implicit convention. Rejected. |
 
 ## Decision (proposed)
@@ -80,9 +80,33 @@ CREATE TABLE IF NOT EXISTS contexts (
 );
 ```
 
-plus nullable `tokens.context_id REFERENCES contexts(id)` (idempotent
-M-series migration; `SELECT *` cost is one small TEXT column). `NULL`
-context = today's behavior everywhere.
+plus an n:m assignment table (idempotent M-series migration; the `tokens`
+table itself is untouched):
+
+```sql
+CREATE TABLE IF NOT EXISTS token_contexts (
+  token_id   TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  context_id TEXT NOT NULL REFERENCES contexts(id) ON DELETE CASCADE,
+  PRIMARY KEY (token_id, context_id)
+);
+```
+
+A token with no context rows behaves exactly like today. **Multiple
+contexts per token are allowed** (owner decision) — the shared-concept
+case (`git` at work and privately) is modeled directly instead of via
+per-context duplicates. Ambiguity is resolved by three fixed rules:
+
+- **Filtering is OR:** a token appears in every context it belongs to.
+- **Language: content wins.** A context's `language` is only the *default
+  for new generation*, and there the **active context** of the operation
+  (`context.default` setting or `--context` flag) decides; existing tokens
+  keep their established content language (titles ADR Decision 7) — doctor
+  tasks never translate on the basis of a context alone.
+- **Sharing is a union, and assignment IS the publish decision:** a token
+  is published to every circle any of its contexts is shared with. Adding
+  a circle-visible context to a token is therefore an explicit act with a
+  visible consequence — surfaces show the sharing badge at assignment
+  time.
 
 **2. Context is orthogonal to domain.** A token's domain stays the subject
 (`mathematik`); its context says whose world it belongs to (`school`).
@@ -111,6 +135,13 @@ doctor proposes context assignments from domain names and content language
 existing 253-token base gets classified without hand-editing. New tokens:
 `--context <name>` flags on register/import wizards, plus an optional
 `context.default` setting for "I'm currently working".
+
+**Owner decision on the doctor interaction model (applies to ALL doctor
+tasks across ADRs, resolving the titles ADR's open question):** plain
+`zam doctor` is a pure diagnosis report and never writes;
+`zam doctor <task> --fix` applies changes with a preview and confirmation;
+`--yes` skips confirmation for agents/scripts; `--json` emits the report
+for bridge consumers.
 
 **7. Bridge/protocol changes are additive:** `context` object in token
 payloads, `list-contexts` command, `--context` filters. No breaking
@@ -144,8 +175,6 @@ changes.
 - Permissions/roles (multi-learner ADR owns them).
 - Domain restructuring or ontology alignment (seed-note ADR).
 - Per-context FSRS parameters or scheduling changes.
-- Multiple contexts per token (a token belongs to at most one; shared
-  concepts can exist per context — dedup will flag true duplicates).
 
 ## Consequences
 
@@ -157,7 +186,9 @@ changes.
   no retrofit.
 - A future ontology decision is not constrained: contexts are data and can
   be migrated by a doctor task if the hierarchy absorbs them.
-- Slight modeling risk: "at most one context per token" may pinch for truly
-  shared concepts (e.g. `git` used at work and privately) — mitigated by
-  dedup-aware duplication per context, and revisitable once real friction
-  appears.
+- The n:m model buys the shared-concept case at the price of potential
+  ambiguity — contained by the three fixed rules (OR filtering,
+  content-language priority with active-context default, union sharing
+  with assignment-time visibility). If union sharing ever surprises in
+  practice, a per-assignment visibility override is the escape hatch —
+  deferred until real friction appears.
