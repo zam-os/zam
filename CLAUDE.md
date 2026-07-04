@@ -53,6 +53,7 @@ Database lives at `~/.zam/zam.db` (SQLite, WAL mode, foreign keys enabled).
 - **`zam bridge` must emit JSON only** (stricter than `--json` flag on other commands).
 - **Token metadata drives behavior**: Bloom levels drive prompt generation; `symbiosis_mode` is load-bearing.
 - **FSRS tests are the source of truth** for scheduling behavior — check `tests/kernel/fsrs.test.ts` when changing scheduling or rating semantics.
+- **Semantic search**: kernel stores embeddings (`token_embeddings`) and ranks (`searchTokensHybrid`); the CLI layer embeds (role `embedding`, `src/cli/llm/embedder.ts`). Never import HTTP/LLM code into the kernel.
 
 ## Commit format
 

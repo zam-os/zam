@@ -16,7 +16,7 @@ branch.
   documentation of what you inherit, including the post-review corrections
   marked *(as implemented)*.
 - [x] **Phase 2** — done (verified: 483 tests, lint, typecheck, build all green).
-- [ ] **Phase 3** — only after Phase 2 is committed.
+- [x] **Phase 3** — done (verified: 487 tests, lint, typecheck, build all green).
 
 ## Goal
 

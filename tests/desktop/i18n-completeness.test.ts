@@ -132,7 +132,9 @@ describe("desktop locale completeness", () => {
       join(process.cwd(), "desktop", "src", "styles.css"),
       "utf8",
     );
-    const actionsRule = styles.match(/\.editor-actions-right\s*\{([^}]*)\}/)?.[1];
+    const actionsRule = styles.match(
+      /\.editor-actions-right\s*\{([^}]*)\}/,
+    )?.[1];
 
     expect(actionsRule).toContain("flex-wrap: wrap");
     expect(actionsRule).toContain("min-width: 0");

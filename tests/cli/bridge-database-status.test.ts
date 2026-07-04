@@ -53,15 +53,11 @@ describe("bridge database status and profile selection", () => {
   });
 
   function runBridge(args: string[]): unknown {
-    const output = execFileSync(
-      "node",
-      [cliPath, "bridge", ...args],
-      {
-        cwd: tempCwd,
-        env: { ...process.env, HOME: tempHome, USERPROFILE: tempHome },
-        encoding: "utf8",
-      },
-    );
+    const output = execFileSync("node", [cliPath, "bridge", ...args], {
+      cwd: tempCwd,
+      env: { ...process.env, HOME: tempHome, USERPROFILE: tempHome },
+      encoding: "utf8",
+    });
     return JSON.parse(output);
   }
 
@@ -81,9 +77,11 @@ describe("bridge database status and profile selection", () => {
   });
 
   it("switches to an existing learning profile", () => {
-    expect(
-      runBridge(["database-select-user", "--user", "thomas"]),
-    ).toEqual({ success: true, userId: "thomas", cardCount: 2 });
+    expect(runBridge(["database-select-user", "--user", "thomas"])).toEqual({
+      success: true,
+      userId: "thomas",
+      cardCount: 2,
+    });
 
     expect(runBridge(["database-status"])).toMatchObject({
       userId: "thomas",

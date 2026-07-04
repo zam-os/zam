@@ -156,7 +156,11 @@ For **review/conceptual** sessions, use `--summary` to avoid spoiling answers:
 ```bash
 zam card due --user <username> --summary
 ```
-For **executable/task** sessions, the full listing is fine since the agent needs to plan.
+For **executable/task** sessions, the full listing is fine since the agent needs to plan. Also query ZAM for tokens relevant to the current task to weave them into the session:
+```bash
+echo '{"context":"<1-2 sentence description of the current task>"}' | zam bridge relevant-tokens --user <username>
+```
+If relevant tokens are returned, weave them into the planning session (e.g. "We will be working on task T; you already know X, which applies here").
 
 Classify session type:
 - **Executable** — real commands, code, or file edits (e.g. "set up Homebrew", "commit this change")

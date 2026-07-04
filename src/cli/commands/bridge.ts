@@ -70,6 +70,7 @@ import {
   readUiObservationLog,
   resolveObserverPolicy,
   resolveReviewContext,
+  searchTokensHybrid,
   setProviderApiKey,
   setSetting,
   slugify,
@@ -124,6 +125,7 @@ import {
   translateQuestionViaLLM,
 } from "../llm/client.js";
 import {
+  embedQuery,
   ensureTokenEmbeddings,
   findPossibleDuplicates,
 } from "../llm/embedder.js";
@@ -1163,6 +1165,97 @@ bridgeCommand
     } catch (err) {
       await db?.close();
       // If it's already a JSON error exit, let it propagate
+      if ((err as Error).message) {
+        jsonError((err as Error).message);
+      }
+    }
+  });
+
+// ── zam bridge relevant-tokens ────────────────────────────────────────────
+
+bridgeCommand
+  .command("relevant-tokens")
+  .description("Find tokens relevant to a given context")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    let db: Database | undefined;
+    try {
+      // Read JSON from stdin
+      const chunks: Buffer[] = [];
+      for await (const chunk of process.stdin) {
+        chunks.push(chunk as Buffer);
+      }
+      const raw = Buffer.concat(chunks).toString("utf-8").trim();
+
+      if (!raw) {
+        jsonError("No input received on stdin. Pipe JSON with context.");
+      }
+
+      let data: {
+        context: string;
+        limit?: number;
+      };
+
+      try {
+        data = JSON.parse(raw);
+      } catch {
+        jsonError("Invalid JSON input");
+      }
+
+      if (!data?.context || data.context.trim() === "") {
+        jsonError("JSON must include a non-empty 'context' field");
+      }
+
+      db = await openDatabase();
+      const userId = await resolveUser(opts, db, { json: true });
+
+      // Truncate to 2000 chars before embedding
+      const truncatedContext = data.context.slice(0, 2000);
+
+      // Best effort embedding top-up
+      try {
+        await ensureTokenEmbeddings(db, { limit: 32 });
+      } catch {
+        // ignore
+      }
+
+      const q = await embedQuery(db, truncatedContext);
+      const limit = data.limit ?? 10;
+
+      const results = await searchTokensHybrid(db, truncatedContext, {
+        queryEmbedding: q?.vector,
+        model: q?.model,
+        limit,
+      });
+
+      const tokens = [];
+      for (const t of results) {
+        const card = await getCard(db, t.id, userId);
+        tokens.push({
+          slug: t.slug,
+          concept: t.concept,
+          domain: t.domain,
+          bloom_level: t.bloom_level,
+          score: t.score,
+          similarity: t.similarity,
+          card: card
+            ? {
+                state: card.state,
+                due_at: card.due_at,
+                blocked: card.blocked,
+              }
+            : null,
+        });
+      }
+
+      jsonOut({
+        semantic: q !== null,
+        tokens,
+      });
+
+      await db.close();
+    } catch (err) {
+      await db?.close();
       if ((err as Error).message) {
         jsonError((err as Error).message);
       }
