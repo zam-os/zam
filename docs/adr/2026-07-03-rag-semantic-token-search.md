@@ -1,6 +1,6 @@
 # RAG / Semantic Token Search on a Self-Hosted, No-License-Cost Store
 
-**Status:** Accepted (2026-07-04)
+**Status:** Partially implemented (Phases 1–3 shipped 2026-07-04; Phase 4 company tier remains future)
 **Date:** 2026-07-03
 **Deciders:** Thomas (project owner)
 **Related:**

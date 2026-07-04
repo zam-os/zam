@@ -15,8 +15,16 @@ branch.
   The Phase-1 sections below now describe **existing code** — treat them as
   documentation of what you inherit, including the post-review corrections
   marked *(as implemented)*.
-- [x] **Phase 2** — done (verified: 483 tests, lint, typecheck, build all green).
-- [x] **Phase 3** — done (verified: 487 tests, lint, typecheck, build all green).
+- [x] **Phase 2** — done, commit `e729d9d` (+ review fixes in `64948ce`).
+- [x] **Phase 3** — done, commit `663162e`, hardened by `891ad30`…`b48ca9e`
+  after a Hermes/Codex review cycle (serve-mode stdin handling, corrupt-BLOB
+  resilience, CLI-owned Gemma prompt templates, bounded dedup backfill,
+  `register --json` compatibility). Final state verified: 500 tests / 55
+  files, lint, typecheck, build all green.
+
+All three phases are merged; Phase 4 (company-tier backend) remains future
+work per the ADR. Note for existing databases embedded before the Gemma
+prompt templates landed: run `zam token reembed --all` once.
 
 ## Goal
 
