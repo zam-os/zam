@@ -323,7 +323,8 @@ export async function findPossibleDuplicates(
   const hits = await searchTokensHybrid(db, queryText, {
     queryEmbedding: q.vector,
     model: q.model,
-    limit: 100,
+    limit: 1000,
+    vectorTopK: 1000,
   });
 
   const results: Array<{ slug: string; concept: string; similarity: number }> =
