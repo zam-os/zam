@@ -110,13 +110,26 @@ across all three database providers. Native ANN (libSQL DiskANN server-side, or
 pgvector) is deliberately deferred to the company tier, where index size will
 actually justify it, behind the same search contract (Decision 4).
 
-**2. Generate embeddings locally via Ollama, wired as a new `embedding` role in
-the existing provider system.** Default model **`embeddinggemma`** (768-dim,
+**2. Generate embeddings locally, wired as a new `embedding` role in the
+existing provider system.** Default model **`embeddinggemma`** (768-dim,
 multilingual — the token base is part German), overridable like every other
 role. Embedding generation lives in the CLI layer (`src/cli/llm/`), preserving
 the kernel's zero-LLM-dependency contract: the kernel only receives precomputed
 vectors. Private, free, offline-capable. The model id and dimension are recorded
 per stored vector so a later model change is detectable.
+
+The same weights are served per machine by whichever runtime fits the hardware
+(verified 2026-07-04): **Ollama** (`embeddinggemma`) on macOS/generic CPU, and
+**FastFlowLM** on Windows Ryzen AI NPUs (`embed-gemma:300m` =
+`google/embeddinggemma-300m`, OpenAI-compatible `/v1/embeddings`, server mode
+alongside an LLM via `flm serve <llm> --embed 1`). Because runtime tags differ
+for identical weights, the stored model id is **canonicalized**
+(`embeddinggemma-300m`) so a Turso-synced DB stays valid across machines.
+**Microsoft Foundry Local is not an option yet:** its catalog carries
+`qwen3-embedding-0.6b` (no EmbeddingGemma) and exposes embeddings only through
+its in-process SDK — the OpenAI-compatible REST server has no `/v1/embeddings`
+route as of 2026-07. Revisit if that route ships; switching models is a normal
+re-embed.
 
 **3. Hybrid ranking, not vector-only.** Keep the lexical `findTokens` signal and
 fuse it with vector similarity via reciprocal-rank fusion. Pure vector search
@@ -252,6 +265,11 @@ multi-phase-feature workflow.
   <https://ollama.com/library/embeddinggemma>
 - Ollama OpenAI-compatible API (incl. `/v1/embeddings`):
   <https://docs.ollama.com/api/openai-compatibility>
+- FastFlowLM EmbeddingGemma on Ryzen AI NPUs:
+  <https://fastflowlm.com/docs/models/embeddinggemma/>
+- Foundry Local embeddings (SDK-only; REST has no `/v1/embeddings` yet):
+  <https://learn.microsoft.com/en-us/azure/foundry-local/how-to/how-to-generate-embeddings>
+  · <https://learn.microsoft.com/en-us/azure/foundry-local/reference/reference-rest>
 - Reciprocal-rank fusion: Cormack, Clarke & Buettcher (2009), *Reciprocal Rank
   Fusion outperforms Condorcet and individual Rank Learning Methods*
 - Turso/libSQL native vector search (company-tier candidate): <https://turso.tech/vector> ·

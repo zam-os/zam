@@ -19,12 +19,33 @@ lexical behavior when no embedding model is available.
    similarity is TypeScript. No libsql-native vector functions, no sqlite-vec.
 2. **Default embedding model: `embeddinggemma`** (768-dim, multilingual) via
    the OpenAI-compatible `/v1/embeddings` endpoint (Ollama serves this).
+   The same weights run on other runtimes under different tags — see the
+   runtime matrix below and the canonical-model-id rule in 1.3.
 3. **Kernel stays AI-agnostic.** All HTTP lives in `src/cli/llm/`. The kernel
    only stores vectors, detects staleness, and ranks — pure functions + SQL.
 4. **Staleness is derived via content hash**, not maintained by write-path
    hooks. `createToken`/`updateToken` are NOT modified.
 5. **One branch, one PR** (`feat/semantic-token-search` off `main`), one commit
    per phase, commit format `feat: <summary>` / `test: <summary>`.
+
+## Runtime matrix — who serves embeddings on which machine
+
+Verified 2026-07-04. Each machine binds the `embedding` role to its local
+runtime via the machine-local provider config (ADR 2026-06-25a); the canonical
+model id (see 1.3) keeps vectors valid across machines sharing one Turso DB.
+
+| Machine | Runtime | Wire model name | URL | Notes |
+|---------|---------|-----------------|-----|-------|
+| macOS / generic CPU | Ollama | `embeddinggemma` | `http://localhost:11434/v1` | `ollama pull embeddinggemma` (~600 MB) |
+| Windows Ryzen AI (NPU) | FastFlowLM ≥ server mode with `--embed` | `embed-gemma` (pull tag `embed-gemma:300m`, weights `google/embeddinggemma-300m` Q4_1) | `http://127.0.0.1:52625/v1` | Runs fully on the NPU. **Constraint:** embeddings work only in server mode loaded *alongside* an LLM — `flm serve <llm-model> --embed 1`; not available in flm CLI mode. ZAM must not try to auto-start this (consistent with the no-autostart rule in 1.3). |
+| Windows (Foundry Local) | **Not usable today** | (catalog has `qwen3-embedding-0.6b`, no EmbeddingGemma) | — | Foundry Local's embeddings are SDK-only (in-process); its OpenAI-compatible REST server exposes `/v1/chat/completions` and `/v1/audio/transcriptions` but **no `/v1/embeddings`** (checked against the REST reference, API "under active development"). Also uses a dynamic port. Revisit when `/v1/embeddings` lands; adopting its `qwen3-embedding-0.6b` (1024-dim) would be a model change → `zam token reembed` handles the full refresh. |
+
+Windows/Ryzen AI settings example:
+
+```bash
+zam settings set llm.embedding.url http://127.0.0.1:52625/v1
+zam settings set llm.embedding.model embed-gemma
+```
 
 ## Ground rules (project conventions that bite here)
 
@@ -156,6 +177,17 @@ system in [client.ts](../../src/cli/llm/client.ts):
   Studio bridge status if present).
 - In `embedder.ts`:
   - `export const DEFAULT_EMBEDDING_MODEL = "embeddinggemma";`
+  - `canonicalEmbeddingModelId(model: string): string` — different runtimes
+    serve the **same weights under different tags** (Ollama `embeddinggemma`,
+    FastFlowLM `embed-gemma` / `embed-gemma:300m`, HF
+    `google/embeddinggemma-300m`). Lowercase the input and map all of those
+    aliases to `"embeddinggemma-300m"`; unknown ids pass through lowercased.
+    **Every kernel call** (`listTokensNeedingEmbedding`, `upsertTokenEmbedding`
+    `model` field, `listEmbeddedTokens`, the `model` in `embedQuery`'s result)
+    uses the canonical id; the configured raw name is used **only on the wire**
+    (`embedTexts` body, `getAvailableModels` check). Without this, a
+    Turso-synced DB would re-embed everything whenever a differently-tagged
+    machine (macOS Ollama vs. Ryzen AI flm) runs a search.
   - `resolveUsableEmbeddingEndpoint(db): Promise<ProviderConfig | null>` —
     `getProviderForRole(db, "embedding")`; return `null` (never throw) when
     disabled, offline (`isLlmOnline`), or the model is not in
@@ -217,6 +249,11 @@ for the in-process `node:http` server pattern):
   pending tokens and stores correct hashes.
 - Server down → `ensureTokenEmbeddings` returns `unavailable`, DB untouched,
   nothing thrown.
+- `canonicalEmbeddingModelId`: `embeddinggemma`, `embeddinggemma:300m`,
+  `embed-gemma`, `Embed-Gemma:300m`, `google/embeddinggemma-300m` all map to
+  `embeddinggemma-300m`; `qwen3-embedding-0.6b` passes through unchanged; the
+  stored `model` column ends up canonical while the stubbed HTTP request body
+  carries the configured raw name.
 
 **Commit:** `feat: token embedding pipeline with content-hash staleness and reembed backfill`
 
@@ -401,7 +438,10 @@ lexical-only path (no embedder in CI) returns valid JSON with
 - Manual smoke (document output in the PR):
   1. `ollama pull embeddinggemma`; ensure `llm.enabled=true` and the Ollama
      URL is configured (`zam settings set llm.embedding.url http://localhost:11434/v1`
-     if the base URL points elsewhere).
+     if the base URL points elsewhere). *Windows/Ryzen AI variant:* start
+     `flm serve <llm-model> --embed 1` and use the two settings from the
+     runtime matrix instead; afterwards verify `token_embeddings.model` says
+     `embeddinggemma-300m` (canonical), not `embed-gemma`.
   2. `zam token reembed` → reports full coverage.
   3. Register `"exactly one dedicated Ivy pod per organization"`, then
      `zam token find --query "one Ivy instance per tenant"` → the token
