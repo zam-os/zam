@@ -626,6 +626,7 @@ Evaluation:`;
 export interface GeneratedCardProposal {
   question: string;
   concept: string;
+  title?: string; // human-friendly display title for knowledge graph (no domain, Unicode ok)
   domain: string;
   context: string;
   bloom_level: number;
@@ -676,6 +677,11 @@ function parseGeneratedCardArray(
         );
       }
     }
+    if (card.title !== undefined && (typeof card.title !== "string" || card.title.trim().length === 0)) {
+      throw new Error(
+        `Invalid ${label} card at index ${index}: title must be a non-empty string if provided`,
+      );
+    }
     if (
       typeof card.bloom_level !== "number" ||
       !Number.isInteger(card.bloom_level) ||
@@ -698,6 +704,7 @@ function parseGeneratedCardArray(
     return {
       question: card.question as string,
       concept: card.concept as string,
+      title: card.title ? (card.title as string) : undefined,
       domain: card.domain as string,
       context: card.context as string,
       bloom_level: card.bloom_level,
@@ -771,10 +778,11 @@ Your task is to analyze curriculum objectives, syllabus requirements, or textboo
 For each extracted learning card, you MUST generate:
 1. "question": A clear, concise active-recall question testing the concept. The question must not reveal the answer itself.
 2. "concept": The reference answer, core fact, or target conceptual explanation.
-3. "domain": The category of the card. Use "${targetCategory}" as the default, but you may refine it if a specific sub-topic is evident.
-4. "context": The exact sentence or short excerpt from the source text that this card is based on.
-5. "bloom_level": Initial Bloom cognitive level (1 = Remember, 2 = Understand, 3 = Apply, 4 = Analyze, 5 = Synthesize).
-6. "symbiosis_mode": ZAM agent symbiosis level: "shadowing" (reading/monitoring), "copilot" (interactive helper), or "autonomy" (autonomous tasks).
+3. "title": A short, human-friendly title for the knowledge graph node. Concise name for the concept. No domain prefix. Human-readable, natural language. Support Unicode (umlauts, Chinese, Japanese, Arabic, etc.). Name the core idea as well as possible.
+4. "domain": The category of the card. Use "${targetCategory}" as the default, but you may refine it if a specific sub-topic is evident.
+5. "context": The exact sentence or short excerpt from the source text that this card is based on.
+6. "bloom_level": Initial Bloom cognitive level (1 = Remember, 2 = Understand, 3 = Apply, 4 = Analyze, 5 = Synthesize).
+7. "symbiosis_mode": ZAM agent symbiosis level: "shadowing" (reading/monitoring), "copilot" (interactive helper), or "autonomy" (autonomous tasks).
 
 Guidelines:
 - Break complex requirements into multiple separate, atomic cards.
