@@ -108,7 +108,11 @@ tokenCommand
       if (opts.json) {
         console.log(
           JSON.stringify(
-            { token, card: cardUserId ? { userId: cardUserId } : null },
+            {
+              token,
+              card: cardUserId ? { userId: cardUserId } : null,
+              possible_duplicates: possibleDuplicates,
+            },
             null,
             2,
           ),

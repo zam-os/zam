@@ -2,7 +2,6 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { findPossibleDuplicates } from "../../src/cli/llm/embedder.js";
 import {
   cosineSimilarity,
   createToken,
@@ -10,14 +9,13 @@ import {
   deprecateToken,
   openDatabase,
   searchTokensHybrid,
-  setSetting,
   type Token,
   upsertTokenEmbedding,
 } from "../../src/kernel/index.js";
 
 const MODEL = "embeddinggemma-300m";
 
-describe("hybrid search & dedup", () => {
+describe("hybrid search", () => {
   let tempDir: string;
   let db: Database;
 
@@ -246,118 +244,6 @@ describe("hybrid search & dedup", () => {
 
       expect(results.length).toBe(1);
       expect(results[0].slug).toBe("active-token");
-    });
-  });
-
-  // ── findPossibleDuplicates ────────────────────────────────────────────────
-
-  describe("findPossibleDuplicates", () => {
-    it("returns duplicates above threshold using injectable embed stub", async () => {
-      const t = await makeToken({
-        slug: "dedicated-runtime-dup",
-        concept: "dedicated runtime for each customer",
-      });
-
-      await upsertTokenEmbedding(db, {
-        tokenId: t.id,
-        embedding: [1, 0, 0, 0],
-        model: MODEL,
-        contentHash: "hash-dup",
-      });
-
-      // Injectable stub returning high similarity query vector
-      const embedStub = async () => {
-        return { vector: [0.99, 0.1, 0, 0], model: MODEL };
-      };
-
-      const dups = await findPossibleDuplicates(
-        db,
-        { concept: "tenant isolation model" },
-        embedStub,
-      );
-
-      expect(dups.length).toBe(1);
-      expect(dups[0].slug).toBe("dedicated-runtime-dup");
-      expect(dups[0].similarity).toBeCloseTo(0.99, 2);
-    });
-
-    it("filters out duplicates below threshold", async () => {
-      const t = await makeToken({
-        slug: "unrelated-token",
-        concept: "unrelated concept description",
-      });
-
-      await upsertTokenEmbedding(db, {
-        tokenId: t.id,
-        embedding: [0, 0, 1, 0],
-        model: MODEL,
-        contentHash: "hash-unrelated",
-      });
-
-      // Injectable stub returning orthogonal vector (similarity 0.0)
-      const embedStub = async () => {
-        return { vector: [1, 0, 0, 0], model: MODEL };
-      };
-
-      const dups = await findPossibleDuplicates(
-        db,
-        { concept: "tenant isolation model" },
-        embedStub,
-      );
-
-      expect(dups.length).toBe(0);
-    });
-
-    it("obeys search.dedup_threshold custom setting", async () => {
-      const t = await makeToken({
-        slug: "threshold-token",
-        concept: "threshold test concept",
-      });
-
-      await upsertTokenEmbedding(db, {
-        tokenId: t.id,
-        embedding: [0.8, 0.6, 0, 0],
-        model: MODEL,
-        contentHash: "hash-threshold",
-      });
-
-      // Stub returns similarity of 0.8
-      const embedStub = async () => {
-        return { vector: [1, 0, 0, 0], model: MODEL };
-      };
-
-      // Set custom threshold of 0.90
-      await setSetting(db, "search.dedup_threshold", "0.90");
-
-      let dups = await findPossibleDuplicates(
-        db,
-        { concept: "test concept" },
-        embedStub,
-      );
-      expect(dups.length).toBe(0); // 0.8 < 0.9
-
-      // Set custom threshold of 0.75
-      await setSetting(db, "search.dedup_threshold", "0.75");
-
-      dups = await findPossibleDuplicates(
-        db,
-        { concept: "test concept" },
-        embedStub,
-      );
-      expect(dups.length).toBe(1); // 0.8 >= 0.75
-      expect(dups[0].slug).toBe("threshold-token");
-    });
-
-    it("returns [] if embedding query fails (returns null)", async () => {
-      const embedStub = async () => null;
-
-      const dups = await findPossibleDuplicates(
-        db,
-        { concept: "tenant isolation model" },
-        embedStub,
-      );
-
-      expect(dups).toEqual([]);
     });
   });
 });

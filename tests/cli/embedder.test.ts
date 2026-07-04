@@ -9,6 +9,7 @@ import {
   embedQuery,
   embedTexts,
   ensureTokenEmbeddings,
+  findPossibleDuplicates,
 } from "../../src/cli/llm/embedder.js";
 import {
   computeContentHash,
@@ -18,6 +19,7 @@ import {
   getTokenEmbedding,
   openDatabase,
   setSetting,
+  upsertTokenEmbedding,
 } from "../../src/kernel/index.js";
 
 // ── In-process OpenAI-compatible embeddings stub ────────────────────────────
@@ -442,6 +444,125 @@ describe("embedQuery", () => {
     } finally {
       await stub.close();
     }
+  });
+});
+
+// Moved from tests/kernel/hybrid-search.test.ts: findPossibleDuplicates is CLI
+// code (src/cli/llm/embedder.ts), so its tests belong in the CLI suite. The
+// injectable embed stub keeps them HTTP-free.
+describe("findPossibleDuplicates", () => {
+  const MODEL = "embeddinggemma-300m";
+
+  it("returns duplicates above threshold using injectable embed stub", async () => {
+    const t = await createToken(db, {
+      slug: "dedicated-runtime-dup",
+      concept: "dedicated runtime for each customer",
+      domain: "testing",
+    });
+
+    await upsertTokenEmbedding(db, {
+      tokenId: t.id,
+      embedding: [1, 0, 0, 0],
+      model: MODEL,
+      contentHash: "hash-dup",
+    });
+
+    const embedStub = async () => ({
+      vector: [0.99, 0.1, 0, 0],
+      model: MODEL,
+    });
+
+    const dups = await findPossibleDuplicates(
+      db,
+      { concept: "tenant isolation model" },
+      embedStub,
+    );
+
+    expect(dups.length).toBe(1);
+    expect(dups[0].slug).toBe("dedicated-runtime-dup");
+    expect(dups[0].similarity).toBeCloseTo(0.99, 2);
+  });
+
+  it("filters out duplicates below threshold", async () => {
+    const t = await createToken(db, {
+      slug: "unrelated-token",
+      concept: "unrelated concept description",
+      domain: "testing",
+    });
+
+    await upsertTokenEmbedding(db, {
+      tokenId: t.id,
+      embedding: [0, 0, 1, 0],
+      model: MODEL,
+      contentHash: "hash-unrelated",
+    });
+
+    const embedStub = async () => ({ vector: [1, 0, 0, 0], model: MODEL });
+
+    const dups = await findPossibleDuplicates(
+      db,
+      { concept: "tenant isolation model" },
+      embedStub,
+    );
+
+    expect(dups.length).toBe(0);
+  });
+
+  it("obeys search.dedup_threshold and survives a malformed value", async () => {
+    const t = await createToken(db, {
+      slug: "threshold-token",
+      concept: "threshold test concept",
+      domain: "testing",
+    });
+
+    await upsertTokenEmbedding(db, {
+      tokenId: t.id,
+      embedding: [0.8, 0.6, 0, 0],
+      model: MODEL,
+      contentHash: "hash-threshold",
+    });
+
+    // Stub query is [1,0,0,0], so similarity against the stored vector is 0.8.
+    const embedStub = async () => ({ vector: [1, 0, 0, 0], model: MODEL });
+
+    await setSetting(db, "search.dedup_threshold", "0.90");
+    let dups = await findPossibleDuplicates(
+      db,
+      { concept: "test concept" },
+      embedStub,
+    );
+    expect(dups.length).toBe(0); // 0.8 < 0.9
+
+    await setSetting(db, "search.dedup_threshold", "0.75");
+    dups = await findPossibleDuplicates(
+      db,
+      { concept: "test concept" },
+      embedStub,
+    );
+    expect(dups.length).toBe(1); // 0.8 >= 0.75
+    expect(dups[0].slug).toBe("threshold-token");
+
+    // Malformed setting falls back to the 0.85 default instead of silently
+    // disabling (NaN) the dedup warnings — 0.8 < 0.85, so no hit.
+    await setSetting(db, "search.dedup_threshold", "not-a-number");
+    dups = await findPossibleDuplicates(
+      db,
+      { concept: "test concept" },
+      embedStub,
+    );
+    expect(dups.length).toBe(0);
+  });
+
+  it("returns [] if embedding query fails (returns null)", async () => {
+    const embedStub = async () => null;
+
+    const dups = await findPossibleDuplicates(
+      db,
+      { concept: "tenant isolation model" },
+      embedStub,
+    );
+
+    expect(dups).toEqual([]);
   });
 });
 

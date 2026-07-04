@@ -294,7 +294,10 @@ export async function findPossibleDuplicates(
   }
 
   const thresholdStr = await getSetting(db, "search.dedup_threshold");
-  const threshold = thresholdStr ? parseFloat(thresholdStr) : 0.85;
+  const parsed = thresholdStr ? Number.parseFloat(thresholdStr) : Number.NaN;
+  // A malformed setting must not silently disable (NaN compares false) or
+  // flood (negative) the dedup warnings — fall back to the default.
+  const threshold = Number.isFinite(parsed) && parsed > 0 ? parsed : 0.85;
 
   const hits = await searchTokensHybrid(db, queryText, {
     queryEmbedding: q.vector,

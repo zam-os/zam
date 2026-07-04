@@ -93,38 +93,18 @@ describe("curriculum provider registry", () => {
     expect(listCurriculumRegions("DE")).toEqual([
       { id: "BY", label: "Bayern", providerId: "lehrplanplus-bayern" },
       { id: "BW", label: "Baden-Württemberg", providerId: "bildungsplan-bw" },
-      {
-        id: "NW",
-        label: "Nordrhein-Westfalen",
-        providerId: "kernlehrplan-nrw",
-      },
+      { id: "NW", label: "Nordrhein-Westfalen", providerId: "kernlehrplan-nrw" },
       { id: "HE", label: "Hessen", providerId: "kerncurriculum-hessen" },
-      {
-        id: "NI",
-        label: "Niedersachsen",
-        providerId: "kerncurriculum-niedersachsen",
-      },
+      { id: "NI", label: "Niedersachsen", providerId: "kerncurriculum-niedersachsen" },
       { id: "SN", label: "Sachsen", providerId: "lehrplan-sachsen" },
-      {
-        id: "BE-BB",
-        label: "Berlin / Brandenburg",
-        providerId: "rahmenlehrplan-berlin-brandenburg",
-      },
+      { id: "BE-BB", label: "Berlin / Brandenburg", providerId: "rahmenlehrplan-berlin-brandenburg" },
       { id: "HH", label: "Hamburg", providerId: "bildungsplan-hamburg" },
       { id: "HB", label: "Bremen", providerId: "bildungsplan-bremen" },
-      {
-        id: "MV",
-        label: "Mecklenburg-Vorpommern",
-        providerId: "rahmenplan-mv",
-      },
+      { id: "MV", label: "Mecklenburg-Vorpommern", providerId: "rahmenplan-mv" },
       { id: "RP", label: "Rheinland-Pfalz", providerId: "lehrplaene-rp" },
       { id: "SL", label: "Saarland", providerId: "lehrplan-saarland" },
       { id: "ST", label: "Sachsen-Anhalt", providerId: "rahmenrichtlinien-st" },
-      {
-        id: "SH",
-        label: "Schleswig-Holstein",
-        providerId: "fachanforderungen-sh",
-      },
+      { id: "SH", label: "Schleswig-Holstein", providerId: "fachanforderungen-sh" },
       { id: "TH", label: "Thüringen", providerId: "lehrplan-thueringen" },
     ]);
     expect(listCurriculumRegions("FR")).toEqual([]);
