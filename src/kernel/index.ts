@@ -113,6 +113,7 @@ export type {
 } from "./models/prerequisite.js";
 export {
   addPrerequisite,
+  buildAncestorMap,
   getDependents,
   getPrerequisites,
   getTokenNeighborhood,
