@@ -1,6 +1,6 @@
 # Hierarchical Domain Ontology and Composite Token Identity
 
-**Status:** Proposed (draft)
+**Status:** Accepted (2026-07-04)
 **Date:** 2026-07-04
 **Deciders:** Thomas (project owner)
 **Related:**
@@ -75,7 +75,7 @@ token's address, what is its identity, and what gives domains meaning?**
 | **D. Globally-unique short slugs** (drop the domain prefix, keep global uniqueness) | slug | Cross-domain collisions (`einfuehrung`, `grundlagen`) come back as counter suffixes — the ugliness returns at scale. Rejected as the end state; acceptable interim while C's uniqueness switch is pending. |
 | **E. Mandatory standard ontology** (Wikidata/Dewey/schema.org as the domain vocabulary) | — | Team and project knowledge has no home in any standard; curriculum content already follows LehrplanPLUS's own taxonomy. Rejected in favor of optional anchors (Decision 4). |
 
-## Decision (proposed)
+## Decision
 
 **1. Identity stays with `token_id` (ULID); `(domain, slug)` becomes the
 composite *address*.** Domains stop being part of what a token *is* and
@@ -97,7 +97,7 @@ constraining them:
 
 ```sql
 CREATE TABLE IF NOT EXISTS domain_meta (
-  path         TEXT PRIMARY KEY,   -- "schule/mathematik/realschule-9"
+  path         TEXT PRIMARY KEY,   -- "mathematik/realschule-9"
   label        TEXT,               -- localized display name, Unicode
   ontology_ref TEXT,               -- optional anchor, e.g. "wikidata:Q11348"
   notes        TEXT
@@ -109,17 +109,29 @@ Hierarchy is implicit in the path (no parent_id to keep consistent);
 domain. The doctor `domains` task maintains both (renames update tokens +
 meta in one transaction).
 
-**4. Ontology anchors are optional and additive.** For general-knowledge
-domains, `ontology_ref` links to a standard concept (Wikidata QID first —
-language-neutral ids, localized labels for free, and the future
-multi-learner tier can match "same concept, different learners" through
-them). Curriculum imports may anchor to their official taxonomy
-(`lehrplanplus:<topic_id>` style). Nothing requires an anchor; nothing
-breaks without one.
+**Path roots are subject areas — never life areas or teams.** `mathematik`,
+`ai`, `axon-ivy` are roots; "school", "work", `docuware-cops` are contexts
+(contexts ADR) and must not appear in paths. The team-scoping example from
+the titles ADR (`docuware-cops/ai`) therefore migrates into a context once
+contexts ship; the `/` mechanics it introduced are unchanged.
+
+**4. The ontology actively guides naming; the schema stays free.**
+Whenever a domain path is created or restructured (imports, token
+registration, doctor `domains`), the LLM-assisted flow **proposes
+standard-aligned path names** — Wikidata labels for general knowledge,
+the official curriculum taxonomy (LehrplanPLUS structure) for school
+content — and records the matching `ontology_ref` anchor (Wikidata QID,
+`lehrplanplus:<topic_id>`) alongside. Users can always override; team and
+project domains simply have no anchor. Anchors stay additive: nothing
+requires one, nothing breaks without one — but the *default pull* is
+toward standard names, which is what makes the graph converge instead of
+sprawl. (Language-neutral anchor ids also give localized labels for free
+and let the future multi-learner tier match "same concept, different
+learners".)
 
 **5. Addressing in CLI/bridge: qualified first, bare tolerated.** The
 canonical written form becomes `domain/path:slug` (e.g.
-`schule/mathematik:bruch-erweitern`; `:` separates path from slug since `/`
+`mathematik/bruchrechnung:erweitern-kuerzen`; `:` separates path from slug since `/`
 belongs to the path). All commands accept: a qualified address, a bare slug
 (resolved iff globally unambiguous, error with candidates otherwise), or a
 ULID. Bridge outputs gain the qualified `address` field additively.
@@ -142,7 +154,9 @@ no absorption.
 
 - **Existing 253+ tokens:** untouched by default. Doctor tasks do the work
   incrementally and with confirmation: `domains` (restructure flat domains
-  into paths, e.g. `axon-ivy` → `docuware-cops/axon-ivy`), `identity`
+  into subject paths, e.g. `rag` → `ai/rag` — team membership like
+  `docuware-cops` moves to the *context* attribute, never into the path),
+  `identity`
   (shorten legacy slugs, updating nothing but the slug since references are
   id-based after Phase A).
 - **Re-embeds:** domain moves change `embeddingContentForToken` output →
@@ -175,6 +189,10 @@ no absorption.
 - **Phase B — path domains + `domain_meta`:** `/`-path support end-to-end
   (list/filter/graph grouping exist since the titles ADR), `domain_meta`
   table, doctor `domains` task, imports emit path domains.
+  **Priority decision:** B including a first doctor-`domains`
+  restructuring pass over the live base runs as early as possible — the
+  graph-legibility pain is the driving complaint. Prerequisite: the doctor
+  scaffolding from the titles ADR exists first.
 - **Phase C — short slugs for new tokens:** title-derived generation,
   qualified addressing accepted everywhere, doctor `identity` task for the
   backlog.
@@ -196,7 +214,7 @@ no absorption.
 ## Consequences
 
 - New tokens immediately get dignified addresses:
-  `schule/mathematik:bruch-erweitern` instead of a 60-char mangled
+  `mathematik/bruchrechnung:erweitern-kuerzen` instead of a 60-char mangled
   question — and the graph gains a real hierarchy to fold.
 - Taxonomy work becomes *safe, routine maintenance* (doctor + id-based
   references) instead of a breaking event — which is what makes the
