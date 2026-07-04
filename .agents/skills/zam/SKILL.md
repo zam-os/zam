@@ -172,7 +172,7 @@ Decompose into a dependency-ordered list of knowledge tokens.
 ```bash
 zam token find --query "<keywords>"
 ```
-Only register genuinely new concepts. Reuse existing slugs where the concept matches.
+Only register genuinely new concepts. Reuse existing slugs where the concept matches. Note that `zam token find` matches paraphrases semantically.
 
 **Register tokens and prerequisites:**
 
@@ -582,7 +582,7 @@ stick → `ge-aufklaerung` reappears — this time with a fighting chance.
 - **Never create more than 10 new tokens in a single session** — if a rating of 1
   reveals massive gaps, prioritize the 3 most urgent foundations and let the rest
   emerge in subsequent sessions
-- **Always dedup before registering** — `zam token find --query "<keywords>"`
+- **Always dedup before registering** — `zam token find --query "<keywords>"`. Note that `zam token find` matches paraphrases semantically, and that `add-token` returns `possible_duplicates` which the agent must surface to the user.
 - **Do not split Bloom 1-2 tokens** — they are already atomic; if the user fails
   them, the fix is re-exposure and practice, not further decomposition
 - A rating of 1 on a Bloom 1 token means the user needs simpler wording or a

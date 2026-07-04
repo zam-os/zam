@@ -13,8 +13,11 @@
 import type { Database } from "../../kernel/index.js";
 import {
   computeContentHash,
+  embeddingTextForToken,
   getEmbeddingCoverage,
+  getSetting,
   listTokensNeedingEmbedding,
+  searchTokensHybrid,
   upsertTokenEmbedding,
 } from "../../kernel/index.js";
 import {
@@ -268,4 +271,48 @@ export async function embedQuery(
   } catch {
     return null;
   }
+}
+
+/**
+ * Identify existing tokens whose concepts/questions/domains are highly similar
+ * to a new candidate token. Returns an empty array when the embedder is unavailable.
+ */
+export async function findPossibleDuplicates(
+  db: Database,
+  candidate: { concept: string; question?: string | null; domain?: string },
+  embed: typeof embedQuery = embedQuery,
+): Promise<Array<{ slug: string; concept: string; similarity: number }>> {
+  const queryText = embeddingTextForToken({
+    concept: candidate.concept,
+    question: candidate.question ?? null,
+    domain: candidate.domain ?? "",
+  });
+
+  const q = await embed(db, queryText);
+  if (!q) {
+    return [];
+  }
+
+  const thresholdStr = await getSetting(db, "search.dedup_threshold");
+  const threshold = thresholdStr ? parseFloat(thresholdStr) : 0.85;
+
+  const hits = await searchTokensHybrid(db, queryText, {
+    queryEmbedding: q.vector,
+    model: q.model,
+    limit: 100,
+  });
+
+  const results: Array<{ slug: string; concept: string; similarity: number }> =
+    [];
+  for (const hit of hits) {
+    if (hit.similarity !== null && hit.similarity >= threshold) {
+      results.push({
+        slug: hit.slug,
+        concept: hit.concept,
+        similarity: hit.similarity,
+      });
+    }
+  }
+
+  return results;
 }

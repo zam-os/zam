@@ -15,7 +15,7 @@ branch.
   The Phase-1 sections below now describe **existing code** — treat them as
   documentation of what you inherit, including the post-review corrections
   marked *(as implemented)*.
-- [ ] **Phase 2** — next up: start at section 2.1.
+- [x] **Phase 2** — done (verified: 483 tests, lint, typecheck, build all green).
 - [ ] **Phase 3** — only after Phase 2 is committed.
 
 ## Goal

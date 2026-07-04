@@ -10,7 +10,6 @@ import {
   deleteToken,
   deprecateToken,
   ensureCard,
-  findTokens,
   generateConceptFreeCue,
   getCard,
   getDependents,
@@ -20,11 +19,14 @@ import {
   getTokenBySlug,
   getTokenDeleteImpact,
   listTokens,
+  searchTokensHybrid,
   updateToken,
 } from "../../kernel/index.js";
 import {
   canonicalEmbeddingModelId,
+  embedQuery,
   ensureTokenEmbeddings,
+  findPossibleDuplicates,
   resolveUsableEmbeddingEndpoint,
 } from "../llm/embedder.js";
 import { resolveUser } from "../users/identity.js";
@@ -66,6 +68,12 @@ tokenCommand
         );
       }
 
+      const possibleDuplicates = await findPossibleDuplicates(db, {
+        concept: opts.concept,
+        question,
+        domain: opts.domain,
+      });
+
       const token = await createToken(db, {
         slug: opts.slug,
         concept: opts.concept,
@@ -86,6 +94,13 @@ tokenCommand
         if (cardUserId) {
           await ensureCard(db, token.id, cardUserId);
         }
+      }
+
+      // Best effort embedding top-up so this token is immediately search-ready.
+      try {
+        await ensureTokenEmbeddings(db, { limit: 8 });
+      } catch {
+        // ignore
       }
 
       if (opts.quiet) return;
@@ -114,6 +129,14 @@ tokenCommand
         } else {
           console.log(`  Card:     skipped (no default user set)`);
         }
+        if (possibleDuplicates.length > 0) {
+          console.log(`\nWARNING: Possible duplicate tokens found:`);
+          for (const dup of possibleDuplicates) {
+            console.log(
+              `  - ${dup.slug} (similarity: ${dup.similarity.toFixed(2)})`,
+            );
+          }
+        }
       }
     });
   });
@@ -128,7 +151,18 @@ tokenCommand
   .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
     await withDb(async (db) => {
-      const results = await findTokens(db, opts.query);
+      const embRes = await ensureTokenEmbeddings(db, { limit: 32 });
+      if (embRes.status === "unavailable" && !opts.json && !opts.quiet) {
+        console.error(
+          `Note: semantic search unavailable (${embRes.reason}) — lexical matches only.`,
+        );
+      }
+
+      const q = await embedQuery(db, opts.query);
+      const results = await searchTokensHybrid(db, opts.query, {
+        queryEmbedding: q?.vector,
+        model: q?.model,
+      });
 
       if (opts.quiet) return;
 
@@ -144,12 +178,14 @@ tokenCommand
 
       console.log(`Found ${results.length} token(s):\n`);
       console.log(
-        "Score  Slug                  Concept                         Domain      Bloom",
+        "Score  Sim  Slug                  Concept                         Domain      Bloom",
       );
-      console.log("─".repeat(90));
+      console.log("─".repeat(95));
       for (const t of results) {
+        const scoreStr = t.score.toFixed(3).padEnd(6);
+        const simStr = (t.similarity?.toFixed(2) ?? "-").padEnd(4);
         console.log(
-          `${String(t.score).padEnd(6)} ${t.slug.padEnd(21)} ${t.concept.slice(0, 31).padEnd(31)} ${(t.domain || "-").padEnd(11)} ${t.bloom_level}`,
+          `${scoreStr} ${simStr} ${t.slug.padEnd(21)} ${t.concept.slice(0, 31).padEnd(31)} ${(t.domain || "-").padEnd(11)} ${t.bloom_level}`,
         );
       }
     });

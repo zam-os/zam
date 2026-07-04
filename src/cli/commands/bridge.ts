@@ -123,6 +123,10 @@ import {
   type LlmRole,
   translateQuestionViaLLM,
 } from "../llm/client.js";
+import {
+  ensureTokenEmbeddings,
+  findPossibleDuplicates,
+} from "../llm/embedder.js";
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
 import {
   bindRoleProviders,
@@ -1110,6 +1114,12 @@ bridgeCommand
       db = await openDatabase();
       const userId = await resolveUser(opts, db, { json: true });
 
+      const possibleDuplicates = await findPossibleDuplicates(db, {
+        concept: data?.concept,
+        question: data?.question ?? null,
+        domain: data?.domain,
+      });
+
       const token = await createToken(db, {
         slug: data?.slug,
         concept: data?.concept,
@@ -1128,6 +1138,13 @@ bridgeCommand
 
       const card = await ensureCard(db, token.id, userId);
 
+      // Best effort embedding top-up so this token is immediately search-ready.
+      try {
+        await ensureTokenEmbeddings(db, { limit: 8 });
+      } catch {
+        // ignore
+      }
+
       jsonOut({
         success: true,
         token,
@@ -1139,6 +1156,7 @@ bridgeCommand
           dueAt: card.due_at,
           blocked: card.blocked,
         },
+        possible_duplicates: possibleDuplicates,
       });
 
       await db.close();

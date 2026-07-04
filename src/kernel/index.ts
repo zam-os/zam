@@ -351,6 +351,15 @@ export type {
   ReviewQueueOptions,
 } from "./scheduler/queue.js";
 export { buildReviewQueue } from "./scheduler/queue.js";
+// Search
+export type {
+  HybridScoredToken,
+  HybridSearchOptions,
+} from "./search/hybrid.js";
+export {
+  cosineSimilarity,
+  searchTokensHybrid,
+} from "./search/hybrid.js";
 export {
   distributeGlobalSkills,
   getPackageSkillPath,
