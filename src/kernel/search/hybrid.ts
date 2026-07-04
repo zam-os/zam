@@ -27,6 +27,7 @@ export interface HybridScoredToken extends Token {
 
 /** Calculates the cosine similarity between two float vectors. Returns 0 if either norm is 0. */
 export function cosineSimilarity(a: Float32Array, b: Float32Array): number {
+  if (a.length !== b.length) return 0;
   let dot = 0;
   let normA = 0;
   let normB = 0;

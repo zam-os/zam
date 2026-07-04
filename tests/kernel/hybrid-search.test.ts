@@ -71,6 +71,12 @@ describe("hybrid search", () => {
       const b = new Float32Array([-1, -2, -3]);
       expect(cosineSimilarity(a, b)).toBeCloseTo(-1.0, 5);
     });
+
+    it("returns 0 for vector length mismatch", () => {
+      const a = new Float32Array([1, 2, 3]);
+      const b = new Float32Array([1, 2]);
+      expect(cosineSimilarity(a, b)).toBe(0);
+    });
   });
 
   // ── hybrid search ─────────────────────────────────────────────────────────

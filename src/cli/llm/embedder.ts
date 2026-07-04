@@ -144,9 +144,10 @@ export async function embedTexts(
   }
 
   const ordered: number[][] = new Array(texts.length);
-  for (const item of items) {
-    const index = item.index;
-    if (typeof index !== "number" || !Number.isInteger(index)) {
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    const index = typeof item.index === "number" ? item.index : i;
+    if (!Number.isInteger(index)) {
       throw new Error("Embedding response item is missing a valid index");
     }
     if (index < 0 || index >= texts.length) {

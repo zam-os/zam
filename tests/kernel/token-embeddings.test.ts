@@ -97,6 +97,13 @@ describe("token embeddings", () => {
       const decoded = decodeEmbedding(encoded);
       expect(decoded[0]).toBe(9);
     });
+
+    it("throws an error if the blob byteLength is not a multiple of 4", () => {
+      const invalid = new Uint8Array([1, 2, 3]);
+      expect(() => decodeEmbedding(invalid)).toThrow(
+        "must be a multiple of 4 bytes",
+      );
+    });
   });
 
   // ── upsert / get ─────────────────────────────────────────────────────────

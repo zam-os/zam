@@ -102,6 +102,11 @@ export function encodeEmbedding(vec: ArrayLike<number>): Uint8Array {
  * explicitly to force an actual copy.
  */
 export function decodeEmbedding(blob: Uint8Array): Float32Array {
+  if (blob.byteLength % 4 !== 0) {
+    throw new Error(
+      "Invalid embedding blob size: must be a multiple of 4 bytes",
+    );
+  }
   if (blob.byteOffset % 4 === 0) {
     return new Float32Array(blob.buffer, blob.byteOffset, blob.byteLength / 4);
   }
@@ -205,10 +210,9 @@ export async function listTokensNeedingEmbedding(
 
   const needing: TokenNeedingEmbedding[] = [];
   for (const row of rows) {
-    const text = embeddingTextForToken(row);
-    const hash = computeContentHash(text);
-
     let reason: EmbeddingStaleness | null = null;
+    let text = "";
+
     if (opts?.force) {
       reason = "content-changed";
     } else if (row.emb_model === null) {
@@ -217,11 +221,19 @@ export async function listTokensNeedingEmbedding(
       reason = "model-changed";
     } else if (opts?.dims !== undefined && row.emb_dims !== opts.dims) {
       reason = "dimension-changed";
-    } else if (row.emb_hash !== hash) {
-      reason = "content-changed";
+    } else {
+      const computedText = embeddingTextForToken(row);
+      const hash = computeContentHash(computedText);
+      if (row.emb_hash !== hash) {
+        reason = "content-changed";
+        text = computedText;
+      }
     }
 
     if (reason) {
+      if (!text) {
+        text = embeddingTextForToken(row);
+      }
       needing.push({ token: row as Token, text, reason });
     }
   }

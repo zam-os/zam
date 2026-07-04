@@ -1224,7 +1224,10 @@ bridgeCommand
         // ignore
       }
 
-      const limit = data.limit ?? 10;
+      let limit = data.limit ?? 10;
+      if (typeof limit !== "number" || limit <= 0 || !Number.isInteger(limit)) {
+        limit = 10;
+      }
 
       const results = await searchTokensHybrid(db, truncatedContext, {
         queryEmbedding: q?.vector,
