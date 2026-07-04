@@ -1,7 +1,8 @@
 # Human-friendly Titles and Prefixed Domains for the Knowledge Graph
 
-**Status:** Proposed (revised 2026-07-04 after concept review — see
-"Post-review deltas" for what changed against the first implementation pass)
+**Status:** Implemented (v0.7.2 — titles, both search legs, `/` scoping,
+display fallback, and `zam doctor` with titles/texts/duplicates/domains;
+the contexts/identity doctor tasks belong to their own ADRs)
 **Date:** 2026-07-04
 **Deciders:** Thomas (project owner)
 **Related:**
