@@ -3,7 +3,20 @@
 Implements [ADR 2026-07-03 — RAG / Semantic Token Search](../adr/2026-07-03-rag-semantic-token-search.md)
 (Accepted). Read the ADR first; this plan turns its decisions into concrete
 steps. It is written to be executed step-by-step without further architectural
-decisions.
+decisions, by **any coding agent/harness** (Claude Code, Codex, Antigravity, …):
+read the repo root `AGENTS.md` for the non-negotiable conventions, implement
+**exactly one unchecked phase per run**, and make one commit per phase on this
+branch.
+
+## Status
+
+- [x] **Phase 1** — done, commit `efab781` on `feat/semantic-token-search`
+  (verified: 469 tests / 52 files, lint, typecheck, build all green).
+  The Phase-1 sections below now describe **existing code** — treat them as
+  documentation of what you inherit, including the post-review corrections
+  marked *(as implemented)*.
+- [ ] **Phase 2** — next up: start at section 2.1.
+- [ ] **Phase 3** — only after Phase 2 is committed.
 
 ## Goal
 
@@ -123,7 +136,10 @@ Functions:
   `const f = Float32Array.from(vec); return new Uint8Array(f.buffer);`
   (fresh buffer, so no aliasing). All supported platforms are little-endian;
   this matches libSQL's F32_BLOB layout for the future company tier.
-- `decodeEmbedding(blob: Uint8Array): Float32Array` — use exactly:
+- `decodeEmbedding(blob: Uint8Array): Float32Array` — *(as implemented; an
+  earlier revision of this snippet used `blob.slice()`, which is broken for
+  `Buffer` inputs: `Buffer.prototype.slice` returns a view, not a copy — a
+  legacy Node API quirk caught by the Phase-1 tests)*:
 
   ```ts
   export function decodeEmbedding(blob: Uint8Array): Float32Array {
@@ -131,7 +147,8 @@ Functions:
       return new Float32Array(blob.buffer, blob.byteOffset, blob.byteLength / 4);
     }
     // better-sqlite3 Buffers are pool-backed and may be unaligned — copy.
-    const copy = blob.slice();
+    // Uint8Array's slice must be borrowed explicitly to force a real copy.
+    const copy = Uint8Array.prototype.slice.call(blob) as Uint8Array;
     return new Float32Array(copy.buffer, 0, copy.byteLength / 4);
   }
   ```
@@ -174,7 +191,10 @@ system in [client.ts](../../src/cli/llm/client.ts):
 - In [src/cli/providers/config.ts](../../src/cli/providers/config.ts): add
   `"embedding"` to `VALID_ROLES`. Grep the repo for other literal role lists
   (`"vision", "recall", "text"`) and extend them too (provider status command,
-  Studio bridge status if present).
+  Studio bridge status if present). *(as implemented, this also required:
+  `MachineAiRole` in `src/kernel/system/install-config.ts` widened with
+  `"embedding"` — a plain config string union, no AI logic — and
+  `bridge provider-status` now reports the `embedding` role.)*
 - In `embedder.ts`:
   - `export const DEFAULT_EMBEDDING_MODEL = "embeddinggemma";`
   - `canonicalEmbeddingModelId(model: string): string` — different runtimes
@@ -199,13 +219,18 @@ system in [client.ts](../../src/cli/llm/client.ts):
     reorder by `index`, validate every vector is a non-empty array of finite
     numbers and all lengths match. 60 s `AbortController` timeout. Errors match
     the house style (`` `Embedding request failed: ${res.statusText} (${res.status}) - ${body}` ``).
-  - `ensureTokenEmbeddings(db, opts?: { limit?: number }): Promise<{ status: "ok" | "unavailable"; embedded: number; remaining: number; reason?: string }>`
+  - `ensureTokenEmbeddings(db, opts?: { limit?: number; force?: boolean }): Promise<{ status: "ok" | "unavailable"; embedded: number; remaining: number; reason?: string }>`
     — resolve endpoint (null → `unavailable` with a human-readable `reason`:
     disabled / offline / `model "embeddinggemma" not available — run: ollama
     pull embeddinggemma`); `listTokensNeedingEmbedding(db, endpoint.model,
-    { limit: opts?.limit ?? 64 })`; embed in batches of 16 via `embedTexts`;
-    `upsertTokenEmbedding` each with the hash of the exact `text` that was
-    sent; `remaining` = coverage recount after.
+    { limit: opts?.limit ?? 64, force })`; embed in batches of 16 via
+    `embedTexts`; `upsertTokenEmbedding` each with the hash of the exact
+    `text` that was sent; `remaining` = coverage recount after.
+    *(as implemented)* **This function never throws.** Mid-flight failures
+    (server dies between the health check and the embed call, model 404s at
+    embed time) are caught and returned as `status: "unavailable"` with the
+    partial `embedded` count and the error text as `reason` — Phase 2's
+    `token find` relies on this to keep search unbreakable.
   - `embedQuery(db, text: string): Promise<{ vector: number[]; model: string } | null>`
     — single-text embed; `null` on unavailable **or on any network error**
     (semantic search must never break search).
@@ -216,13 +241,18 @@ In [token.ts](../../src/cli/commands/token.ts), following the house style of
 the other subcommands (`withDb`, `--json`, `--quiet`):
 
 - Options: `--all` (force re-embed fresh vectors too), `--json`, `--quiet`.
-- Flow: coverage before → loop `ensureTokenEmbeddings` (pass
-  `force` through a widened opts object, no cap: loop until `remaining === 0`
-  or no progress) → coverage after → print
-  `Embedded N tokens (M total, K stale before) with <model>` or the JSON
-  equivalent.
+- Flow *(as implemented)*: coverage before → loop `ensureTokenEmbeddings`
+  until `remaining === 0` or no progress → coverage after → print
+  `Embedded N tokens (M total, K stale before) with <model>` (where
+  `K = missing + stale`) or the JSON equivalent.
+  **`--all` runs as a single unbounded forced pass**
+  (`{ force: true, limit: Number.MAX_SAFE_INTEGER }`, first iteration only):
+  force with a per-call cap either loops forever (forcing every pass
+  re-selects the same leading batch) or skips fresh tokens beyond the cap
+  (forcing only a capped first pass) — unbounded is the only correct shape.
 - If the endpoint is unavailable: exit code 1 with the actionable `reason`
-  (plain text, or `{ "error": … }` under `--json`).
+  (plain text, or `{ "error": …, "embedded": <partial count> }` under
+  `--json`).
 
 ### 1.5 Phase-1 tests
 
