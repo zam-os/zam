@@ -13,9 +13,14 @@ per run**, one commit per phase on this branch
 
 ## Status
 
-- [x] **Phase 1** — kernel: `suggestFoundations` (start at section 1)
-- [x] **Phase 2** — CLI/bridge: `zam bridge suggest-foundations` + register hint
-- [x] **Phase 3** — /zam skill integration (all three SKILL.md copies)
+- [x] **Phase 1** — done, commit `117a8a5` (kernel `suggestFoundations`)
+- [x] **Phase 2** — done, commit `922c0f9` (bridge command + register hint)
+- [x] **Phase 3** — done, commit `b3df6c2` (all three SKILL.md copies)
+
+All phases hardened by a Hermes/Codex review cycle (`0781507`…`41f9df3`:
+correct prereq command hint, shared threshold helpers, single ancestor-map
+build, band validation, boundary/edge tests). Final state verified: 522
+tests / 57 files, lint, typecheck, build green.
 
 ## Goal
 
