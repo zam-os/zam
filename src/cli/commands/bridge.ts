@@ -1390,6 +1390,14 @@ bridgeCommand
 
       const maxSimilarity = await resolveDedupThreshold(db);
       const minSimilarity = await resolveSuggestMinSimilarity(db);
+      if (minSimilarity >= maxSimilarity) {
+        jsonOut({
+          semantic: true,
+          target: targetJson,
+          suggestions: [],
+        });
+        return;
+      }
 
       const suggestions = await suggestFoundations(db, {
         queryEmbedding: q.vector,
