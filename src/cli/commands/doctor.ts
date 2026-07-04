@@ -10,6 +10,7 @@ import {
   deprecateToken,
   listTokens,
   type Token,
+  type UpdateTokenInput,
   updateToken,
 } from "../../kernel/models/token.js";
 import { listEmbeddedTokens } from "../../kernel/models/token-embedding.js";
@@ -326,8 +327,8 @@ const tasks: DoctorTask[] = [
 
       let fixed = 0;
       for (const fix of toFix) {
-        const updates: any = {};
-        updates[fix.field] = fix.new;
+        const updates: UpdateTokenInput = {};
+        (updates as Record<string, unknown>)[fix.field] = fix.new;
         await updateToken(db, fix.token.slug, updates);
         fixed++;
       }

@@ -993,6 +993,7 @@ export interface FoundationProposalInput {
   question: string;
   concept: string;
   domain: string;
+  title?: string;
   context?: string;
   bloom_level?: number;
   symbiosis_mode?: string | null;
@@ -1094,7 +1095,7 @@ export async function confirmFoundations(
           );
           token = await createToken(tx, {
             slug: finalSlug,
-            title: (card as any).title,
+            title: card.title,
             concept: card.concept,
             domain: card.domain,
             bloom_level: bloom,
@@ -1138,6 +1139,7 @@ export interface SourceProposalInput {
   question: string;
   concept: string;
   domain: string;
+  title?: string;
   bloom_level: number;
   symbiosis_mode: string;
   excerpt: string;
@@ -1202,7 +1204,7 @@ export async function confirmSourceImport(
 
         token = await createToken(tx, {
           slug: finalSlug,
-          title: (card as any).title,
+          title: card.title,
           concept: card.concept,
           domain: card.domain,
           bloom_level: bloom,

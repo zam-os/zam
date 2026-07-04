@@ -323,7 +323,7 @@ export async function findPossibleDuplicates(
     concept: candidate.concept,
     question: candidate.question ?? null,
     domain: candidate.domain ?? "",
-    title: (candidate as any).title ?? null,
+    title: candidate.title ?? null,
   });
 
   const q = await embed(db, queryText);

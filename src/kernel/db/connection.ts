@@ -484,4 +484,10 @@ async function runMigrations(db: Database): Promise<void> {
       `ALTER TABLE tokens ADD COLUMN title TEXT NOT NULL DEFAULT ''`,
     );
   }
+
+  // M011: add indexes for title search and domain prefix filtering
+  await db.exec(`CREATE INDEX IF NOT EXISTS idx_tokens_title ON tokens(title)`);
+  await db.exec(
+    `CREATE INDEX IF NOT EXISTS idx_tokens_domain ON tokens(domain)`,
+  );
 }

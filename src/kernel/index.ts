@@ -155,6 +155,7 @@ export type {
   DeleteTokenResult,
   FoundationProposalInput,
   ImportCurriculumResult,
+  ListTokensOptions,
   PersonalCard,
   SourceProposalInput,
   SplitProposalInput,

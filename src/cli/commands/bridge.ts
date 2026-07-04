@@ -15,6 +15,7 @@ import { ulid } from "ulid";
 import type {
   BloomLevel,
   Database,
+  ListTokensOptions,
   NeighborhoodToken,
   Rating,
   ReviewActionType,
@@ -2998,7 +2999,7 @@ bridgeCommand
       const userId = opts.user
         ? await resolveUser(opts, db, { json: true })
         : undefined;
-      const listOpts: any = {};
+      const listOpts: ListTokensOptions = {};
       if (opts.domain) listOpts.domain = opts.domain;
       if (opts.domainPrefix) listOpts.domainPrefix = opts.domainPrefix;
       const tokens = await listTokens(
