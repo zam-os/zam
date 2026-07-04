@@ -5,7 +5,11 @@
 
 import { Command } from "commander";
 import type { Database } from "../../kernel/db/types.js";
-import { getSetting } from "../../kernel/index.js";
+import {
+  getEmbeddingCoverage,
+  getSetting,
+  getShortSlug,
+} from "../../kernel/index.js";
 import {
   deprecateToken,
   listTokens,
@@ -20,22 +24,63 @@ import {
   getLlmConfig,
   repairUmlautsViaLLM,
 } from "../llm/client.js";
-import { resolveDedupThreshold } from "../llm/embedder.js";
+import {
+  canonicalEmbeddingModelId,
+  ensureTokenEmbeddings,
+  resolveDedupThreshold,
+} from "../llm/embedder.js";
 import { withDb } from "./shared/db.js";
 
-interface DoctorTask {
+export interface DoctorOptions {
+  fix?: boolean;
+  dryRun?: boolean;
+  yes?: boolean;
+  noLlm?: boolean;
+  timeoutMs?: number;
+}
+
+export interface DoctorTask {
   name: string;
   description: string;
-  run: (
-    db: Database,
-    opts: {
-      fix?: boolean;
-      dryRun?: boolean;
-      yes?: boolean;
-      noLlm?: boolean;
-      timeoutMs?: number;
-    },
-  ) => Promise<void>;
+  run: (db: Database, opts: DoctorOptions) => Promise<void>;
+}
+
+function shouldApplyFixes(opts: DoctorOptions): boolean {
+  return opts.fix === true && opts.dryRun !== true;
+}
+
+async function confirmDeterministicChanges(
+  opts: DoctorOptions,
+  message: string,
+): Promise<boolean> {
+  if (opts.yes) return true;
+  if (!process.stdin.isTTY || !process.stdout.isTTY) {
+    console.error(
+      "Cannot request confirmation in a non-interactive terminal. Re-run with --yes to apply deterministic fixes.",
+    );
+    return false;
+  }
+  const { confirm } = await import("@inquirer/prompts");
+  return confirm({ message, default: false });
+}
+
+function canRunInteractiveChoices(
+  opts: DoctorOptions,
+  taskName: string,
+): boolean {
+  if (opts.yes) {
+    console.error(
+      `--yes cannot choose how to resolve ${taskName}. Re-run without --yes in an interactive terminal.`,
+    );
+    return false;
+  }
+  if (!process.stdin.isTTY || !process.stdout.isTTY) {
+    console.error(
+      `${taskName} fixes require an interactive terminal because each change needs an explicit choice.`,
+    );
+    return false;
+  }
+  return true;
 }
 
 function getWeakTitleReason(t: Token): string | null {
@@ -92,7 +137,52 @@ function getWeakTitleReason(t: Token): string | null {
   return null;
 }
 
-const tasks: DoctorTask[] = [
+function stripLeadingDomainWords(value: string, domain: string): string {
+  let result = value.trim();
+  for (const word of domain.split(/[-/]/).filter(Boolean)) {
+    const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    result = result.replace(new RegExp(`^${escaped}\\s+`, "i"), "");
+  }
+  return result.trim();
+}
+
+function truncateTitle(value: string): string {
+  const trimmed = value.trim().replace(/^["']+|["']+$/g, "");
+  return trimmed.length <= 80
+    ? trimmed
+    : `${trimmed.substring(0, 77).trimEnd()}...`;
+}
+
+function titleFromSlug(token: Token): string {
+  return getShortSlug(token.slug, token.domain)
+    .split(/[-_]+/)
+    .filter(Boolean)
+    .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
+    .join(" ");
+}
+
+function validatedTitleProposal(token: Token, raw: string): string | null {
+  const candidates = [
+    raw,
+    (token.concept || "").split(/[.;]/)[0] || "",
+    titleFromSlug(token),
+  ];
+
+  for (const candidate of candidates) {
+    const normalized = truncateTitle(
+      stripLeadingDomainWords(candidate, token.domain || ""),
+    );
+    if (
+      normalized.length > 0 &&
+      getWeakTitleReason({ ...token, title: normalized }) === null
+    ) {
+      return normalized;
+    }
+  }
+  return null;
+}
+
+export const doctorTasks: DoctorTask[] = [
   {
     name: "titles",
     description:
@@ -124,49 +214,43 @@ const tasks: DoctorTask[] = [
         newTitle: string;
         reason: string;
       }> = [];
+      let rejected = 0;
 
       for (let i = 0; i < needing.length; i++) {
         const item = needing[i];
         process.stdout.write(
           `\r  [${i + 1}/${needing.length}] ${item.token.slug.slice(0, 40)}...`,
         );
-        let proposed = "";
+        let rawProposal = "";
         if (useLLM) {
           try {
-            const gen = await generateTitleViaLLM(db, {
-              slug: item.token.slug,
-              concept: item.token.concept,
-              domain: item.token.domain,
-              question: item.token.question,
-              context: item.token.context,
-            });
-            proposed = gen.text.trim();
-            const domWords = (item.token.domain || "")
-              .split(/[-/]/)
-              .filter(Boolean);
-            for (const w of domWords) {
-              const re = new RegExp(`^${w}\\s+`, "i");
-              proposed = proposed.replace(re, "");
-            }
-            if (proposed.length > 80) {
-              proposed = `${proposed.substring(0, 77)}...`;
-            }
+            const gen = await generateTitleViaLLM(
+              db,
+              {
+                slug: item.token.slug,
+                concept: item.token.concept,
+                domain: item.token.domain,
+                question: item.token.question,
+                context: item.token.context,
+              },
+              { timeoutMs: opts.timeoutMs },
+            );
+            rawProposal = gen.text;
           } catch (_e) {
-            proposed =
+            rawProposal =
               (item.token.concept || "").split(/[.;]/)[0]?.trim() ||
               item.token.slug.replace(/-/g, " ");
           }
         } else {
-          proposed =
+          rawProposal =
             (item.token.concept || "").split(/[.;]/)[0]?.trim() ||
             item.token.slug.replace(/-/g, " ");
-          const domWords = (item.token.domain || "")
-            .split(/[-/]/)
-            .filter(Boolean);
-          for (const w of domWords) {
-            const re = new RegExp(`^${w}\\s+`, "i");
-            proposed = proposed.replace(re, "");
-          }
+        }
+
+        const proposed = validatedTitleProposal(item.token, rawProposal);
+        if (!proposed) {
+          rejected++;
+          continue;
         }
 
         proposals.push({
@@ -177,8 +261,14 @@ const tasks: DoctorTask[] = [
         });
       }
       process.stdout.write("\n");
+      if (rejected > 0) {
+        console.warn(
+          `Skipped ${rejected} token(s) because no proposal passed title quality validation.`,
+        );
+      }
+      if (proposals.length === 0) return;
 
-      if (!opts.fix) {
+      if (!shouldApplyFixes(opts)) {
         console.log("\nProposed changes (Dry run):");
         for (const prop of proposals) {
           console.log(
@@ -189,22 +279,18 @@ const tasks: DoctorTask[] = [
         return;
       }
 
-      let confirmed = false;
-      if (opts.yes) {
-        confirmed = true;
-      } else {
-        const { confirm } = await import("@inquirer/prompts");
+      if (!opts.yes) {
         console.log("\nProposed changes:");
         for (const prop of proposals) {
           console.log(
             `  ${prop.token.slug}: "${prop.oldTitle}" -> "${prop.newTitle}" (Reason: ${prop.reason})`,
           );
         }
-        confirmed = await confirm({
-          message: `Apply these ${proposals.length} proposed titles?`,
-          default: false,
-        });
       }
+      const confirmed = await confirmDeterministicChanges(
+        opts,
+        `Apply these ${proposals.length} proposed titles?`,
+      );
 
       if (!confirmed) {
         console.log("Cancelled. No titles were updated.");
@@ -281,7 +367,16 @@ const tasks: DoctorTask[] = [
             const hasPossibleUmlautFold = /[aou]e/i.test(f.val);
             if (hasPossibleUmlautFold) {
               try {
-                repaired = await repairUmlautsViaLLM(db, { text: f.val });
+                repaired = await repairUmlautsViaLLM(
+                  db,
+                  { text: f.val },
+                  { timeoutMs: opts.timeoutMs },
+                );
+                if (repaired === f.val) {
+                  for (const [from, to] of replacements) {
+                    repaired = repaired.replace(from, to as string);
+                  }
+                }
               } catch (_e) {
                 for (const [from, to] of replacements) {
                   repaired = repaired.replace(from, to as string);
@@ -303,7 +398,7 @@ const tasks: DoctorTask[] = [
       console.log(`Found ${toFix.length} prose fields with legacy umlauts.`);
       if (toFix.length === 0) return;
 
-      if (!opts.fix) {
+      if (!shouldApplyFixes(opts)) {
         console.log("\nProposed changes (Dry run):");
         for (const fix of toFix) {
           console.log(`  ${fix.token.slug} [${fix.field}]:`);
@@ -314,22 +409,18 @@ const tasks: DoctorTask[] = [
         return;
       }
 
-      let confirmed = false;
-      if (opts.yes) {
-        confirmed = true;
-      } else {
-        const { confirm } = await import("@inquirer/prompts");
+      if (!opts.yes) {
         console.log("\nProposed changes:");
         for (const fix of toFix) {
           console.log(
             `  ${fix.token.slug} [${fix.field}]: "${fix.old}" -> "${fix.new}"`,
           );
         }
-        confirmed = await confirm({
-          message: `Apply these ${toFix.length} prose fixes?`,
-          default: false,
-        });
       }
+      const confirmed = await confirmDeterministicChanges(
+        opts,
+        `Apply these ${toFix.length} prose fixes?`,
+      );
 
       if (!confirmed) {
         console.log("Cancelled. No changes made.");
@@ -352,6 +443,11 @@ const tasks: DoctorTask[] = [
     name: "duplicates",
     description: "List semantic duplicates for review/merge.",
     run: async (db, opts) => {
+      const applyingFixes = shouldApplyFixes(opts);
+      if (applyingFixes && !canRunInteractiveChoices(opts, "duplicate fixes")) {
+        return;
+      }
+
       const modelSetting = await getSetting(db, "llm.embedding.model");
       if (!modelSetting) {
         console.log(
@@ -360,8 +456,43 @@ const tasks: DoctorTask[] = [
         return;
       }
 
-      console.log(`Listing embedded tokens for model "${modelSetting}"...`);
-      const embedded = await listEmbeddedTokens(db, modelSetting);
+      const model = canonicalEmbeddingModelId(modelSetting);
+      if (model !== modelSetting.trim().toLowerCase()) {
+        console.log(
+          `Using canonical embedding model "${model}" for configured alias "${modelSetting}".`,
+        );
+      }
+
+      let coverage = await getEmbeddingCoverage(db, model);
+      const initiallyIncomplete = coverage.missing + coverage.stale;
+      if (initiallyIncomplete > 0) {
+        if (applyingFixes) {
+          console.log(
+            `Embedding coverage is incomplete (${coverage.missing} missing, ${coverage.stale} stale). Attempting backfill...`,
+          );
+          const result = await ensureTokenEmbeddings(db, {
+            limit: coverage.tokens,
+          });
+          coverage = await getEmbeddingCoverage(db, model);
+          const remaining = coverage.missing + coverage.stale;
+          if (remaining > 0) {
+            console.warn(
+              `Warning: Duplicate scan is incomplete: ${remaining} of ${coverage.tokens} active tokens still lack a fresh "${model}" embedding.${result.reason ? ` ${result.reason}` : ""}`,
+            );
+          } else {
+            console.log(
+              `Embedding backfill complete (${result.embedded} updated).`,
+            );
+          }
+        } else {
+          console.warn(
+            `Warning: Duplicate scan is incomplete: ${initiallyIncomplete} of ${coverage.tokens} active tokens lack a fresh "${model}" embedding. Dry-run will not backfill them; run 'zam token reembed' first for a complete scan.`,
+          );
+        }
+      }
+
+      console.log(`Listing embedded tokens for model "${model}"...`);
+      const embedded = await listEmbeddedTokens(db, model);
       const threshold = await resolveDedupThreshold(db);
       console.log(
         `Scanning ${embedded.length} tokens for semantic duplicates (threshold: ${threshold})...`,
@@ -395,7 +526,7 @@ const tasks: DoctorTask[] = [
       console.log(`Found ${duplicates.length} duplicate pairs.`);
       if (duplicates.length === 0) return;
 
-      if (!opts.fix) {
+      if (!applyingFixes) {
         console.log("\nDuplicate pairs found (Dry run):");
         for (const pair of duplicates) {
           console.log(
@@ -403,13 +534,6 @@ const tasks: DoctorTask[] = [
           );
         }
         console.log("\nRun with --fix to resolve duplicates interactively.");
-        return;
-      }
-
-      if (opts.yes) {
-        console.log(
-          "\nRunning with --yes. Skipping interactive duplicate merge (manual review recommended).",
-        );
         return;
       }
 
@@ -462,23 +586,16 @@ const tasks: DoctorTask[] = [
       console.log(`Current domains (${domains.length}):`);
       for (const d of domains) {
         const count = tokens.filter((t) => t.domain === d).length;
-        const status = d.includes("/")
-          ? "(hierarchical)"
-          : "(flat, needs unification)";
+        const status = d.includes("/") ? "(hierarchical)" : "(flat, valid)";
         console.log(`  ${d} — ${count} token(s) ${status}`);
       }
 
-      if (!opts.fix) {
+      if (!shouldApplyFixes(opts)) {
         console.log("\nUse --fix to interactively rename/unify domains.");
         return;
       }
 
-      if (opts.yes) {
-        console.log(
-          "\nRunning with --yes. Skipping interactive domain renaming.",
-        );
-        return;
-      }
+      if (!canRunInteractiveChoices(opts, "domain renames")) return;
 
       const { confirm, input } = await import("@inquirer/prompts");
       let renamedCount = 0;
@@ -522,13 +639,24 @@ const tasks: DoctorTask[] = [
   },
 ];
 
+export function parseDoctorTimeout(value: string): number {
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed <= 0) {
+    throw new Error("--timeout must be a positive integer in milliseconds");
+  }
+  return parsed;
+}
+
 export const doctorCommand = new Command("doctor")
   .description(
     "Diagnose and repair the knowledge base (titles, legacy data, duplicates, domains).",
   )
   .option("--fix", "Apply changes (default is dry-run)")
   .option("--dry-run", "Explicit dry run (default)")
-  .option("--yes", "Auto-confirm without prompts")
+  .option(
+    "--yes",
+    "Auto-confirm deterministic title/text fixes (duplicate/domain choices remain interactive)",
+  )
   .option("--no-llm", "Skip LLM calls, use heuristic fallback only")
   .option(
     "--timeout <ms>",
@@ -542,18 +670,18 @@ export const doctorCommand = new Command("doctor")
       const dryRun = !fix || !!opts.dryRun;
       const yes = !!opts.yes;
       const noLlm = opts.llm === false;
-      const timeoutMs = parseInt(opts.timeout, 10) || 20000;
+      const timeoutMs = parseDoctorTimeout(opts.timeout);
 
       if (!taskName) {
         console.log("Available doctor tasks:");
-        for (const t of tasks) {
+        for (const t of doctorTasks) {
           console.log(`  ${t.name} — ${t.description}`);
         }
         console.log("\nRun with a task name, e.g. `zam doctor titles --fix`");
         return;
       }
 
-      const task = tasks.find((t) => t.name === taskName);
+      const task = doctorTasks.find((t) => t.name === taskName);
       if (!task) {
         console.error(`Unknown task: ${taskName}`);
         process.exit(1);

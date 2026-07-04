@@ -2121,6 +2121,7 @@ export async function generateTitleViaLLM(
     question?: string | null;
     context?: string | null;
   },
+  opts: { timeoutMs?: number } = {},
 ): Promise<LlmTextResult> {
   const cfg = await getProviderForRole(db, "text"); // or recall? text for generation
   const endpoint = await resolveUsableTextEndpoint(db); // assume exists or use recall
@@ -2173,6 +2174,8 @@ Title:`;
         max_tokens: 100,
       }),
       locale: cfg.locale,
+      timeoutMs: opts.timeoutMs,
+      hardTimeoutMs: opts.timeoutMs,
     });
 
     const text = await readChatContent(res, "title generation");
@@ -2194,6 +2197,7 @@ Title:`;
 export async function repairUmlautsViaLLM(
   db: Database,
   input: { text: string },
+  opts: { timeoutMs?: number } = {},
 ): Promise<string> {
   const cfg = await getProviderForRole(db, "text");
   const endpoint = await resolveUsableTextEndpoint(db);
@@ -2233,6 +2237,8 @@ Repaired text:`;
         temperature: 0.1,
       }),
       locale: cfg.locale,
+      timeoutMs: opts.timeoutMs,
+      hardTimeoutMs: opts.timeoutMs,
     });
 
     const text = await readChatContent(res, "umlaut repair");
