@@ -138,7 +138,7 @@ export function getCloudModelRecommendation(
 
 // ── Role-based provider resolution (ADR 2026-06-23) ──────────────────────────
 
-export type LlmRole = "vision" | "recall" | "text";
+export type LlmRole = "vision" | "recall" | "text" | "embedding";
 
 /** A resolved endpoint for one role, with an optional fallback to try next. */
 export interface ProviderConfig {
@@ -337,6 +337,22 @@ async function getLegacyRoleConfig(
       source: "legacy",
       local: isLocalEndpoint(url),
       maxFrames: Number.isNaN(parsed) ? 100 : parsed,
+    };
+  }
+
+  if (role === "embedding") {
+    const url = (await getSetting(db, "llm.embedding.url")) || base.url;
+    return {
+      enabled,
+      url,
+      // Kept as a literal (not imported) to avoid a client.ts <-> embedder.ts
+      // import cycle; must match DEFAULT_EMBEDDING_MODEL in embedder.ts.
+      model: (await getSetting(db, "llm.embedding.model")) || "embeddinggemma",
+      apiKey: (await getSetting(db, "llm.embedding.api_key")) || base.apiKey,
+      apiFlavor: inferApiFlavor(url),
+      locale: base.locale,
+      source: "legacy",
+      local: isLocalEndpoint(url),
     };
   }
 

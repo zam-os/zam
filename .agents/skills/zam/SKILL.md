@@ -156,7 +156,11 @@ For **review/conceptual** sessions, use `--summary` to avoid spoiling answers:
 ```bash
 zam card due --user <username> --summary
 ```
-For **executable/task** sessions, the full listing is fine since the agent needs to plan.
+For **executable/task** sessions, the full listing is fine since the agent needs to plan. Also query ZAM for tokens relevant to the current task to weave them into the session:
+```bash
+echo '{"context":"<1-2 sentence description of the current task>"}' | zam bridge relevant-tokens --user <username>
+```
+If relevant tokens are returned, weave them into the planning session (e.g. "We will be working on task T; you already know X, which applies here").
 
 Classify session type:
 - **Executable** — real commands, code, or file edits (e.g. "set up Homebrew", "commit this change")
@@ -172,7 +176,7 @@ Decompose into a dependency-ordered list of knowledge tokens.
 ```bash
 zam token find --query "<keywords>"
 ```
-Only register genuinely new concepts. Reuse existing slugs where the concept matches.
+Only register genuinely new concepts. Reuse existing slugs where the concept matches. Note that `zam token find` matches paraphrases semantically.
 
 **Register tokens and prerequisites:**
 
@@ -582,7 +586,7 @@ stick → `ge-aufklaerung` reappears — this time with a fighting chance.
 - **Never create more than 10 new tokens in a single session** — if a rating of 1
   reveals massive gaps, prioritize the 3 most urgent foundations and let the rest
   emerge in subsequent sessions
-- **Always dedup before registering** — `zam token find --query "<keywords>"`
+- **Always dedup before registering** — `zam token find --query "<keywords>"`. Note that `zam token find` matches paraphrases semantically, and that `add-token` returns `possible_duplicates` which the agent must surface to the user.
 - **Do not split Bloom 1-2 tokens** — they are already atomic; if the user fails
   them, the fix is re-exposure and practice, not further decomposition
 - A rating of 1 on a Bloom 1 token means the user needs simpler wording or a

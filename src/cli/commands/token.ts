@@ -9,16 +9,24 @@ import {
   createToken,
   deleteToken,
   deprecateToken,
-  findTokens,
+  ensureCard,
   generateConceptFreeCue,
   getCard,
   getDependents,
+  getEmbeddingCoverage,
   getPrerequisites,
+  getSetting,
   getTokenBySlug,
   getTokenDeleteImpact,
   listTokens,
+  searchTokensHybrid,
   updateToken,
 } from "../../kernel/index.js";
+import {
+  embedQuery,
+  ensureTokenEmbeddings,
+  findPossibleDuplicates,
+} from "../llm/embedder.js";
 import { resolveUser } from "../users/identity.js";
 import { jsonOut, withDb } from "./shared/db.js";
 
@@ -37,6 +45,8 @@ tokenCommand
   .option("--bloom <level>", "Bloom taxonomy level (1-5)", "1")
   .option("--source-link <link>", "Source file path or reference URL", "")
   .option("--question <question>", "Specific question prompt for recall", "")
+  .option("--user <id>", "Owner of the personal card (default: whoami)")
+  .option("--no-card", "Register the token only; do not create a personal card")
   .option("--json", "Output as JSON")
   .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
@@ -56,6 +66,12 @@ tokenCommand
         );
       }
 
+      const possibleDuplicates = await findPossibleDuplicates(db, {
+        concept: opts.concept,
+        question,
+        domain: opts.domain,
+      });
+
       const token = await createToken(db, {
         slug: opts.slug,
         concept: opts.concept,
@@ -65,10 +81,40 @@ tokenCommand
         question,
       });
 
+      // A token with no card never surfaces — not in the deck, not in the
+      // content editor (which lists cards). In the single-user (default)
+      // scenario the learner's card is created alongside the token so it is
+      // immediately visible and reviewable. --no-card opts out for pure
+      // knowledge-graph scaffolding in shared, multi-user libraries.
+      let cardUserId: string | null = null;
+      if (opts.card !== false) {
+        cardUserId = opts.user ?? (await getSetting(db, "user.id"));
+        if (cardUserId) {
+          await ensureCard(db, token.id, cardUserId);
+        }
+      }
+
+      // Best effort embedding top-up so this token is immediately search-ready.
+      try {
+        await ensureTokenEmbeddings(db, { limit: 8 });
+      } catch {
+        // ignore
+      }
+
       if (opts.quiet) return;
 
       if (opts.json) {
-        console.log(JSON.stringify(token, null, 2));
+        console.log(
+          JSON.stringify(
+            {
+              ...token,
+              card: cardUserId ? { userId: cardUserId } : null,
+              possible_duplicates: possibleDuplicates,
+            },
+            null,
+            2,
+          ),
+        );
       } else {
         console.log(`Registered token: ${token.slug} (${token.id})`);
         console.log(`  Concept:  ${token.concept}`);
@@ -77,6 +123,21 @@ tokenCommand
         console.log(`  Question: ${token.question}`);
         if (token.source_link) {
           console.log(`  Source:   ${token.source_link}`);
+        }
+        if (cardUserId) {
+          console.log(`  Card:     created for ${cardUserId}`);
+        } else if (opts.card === false) {
+          console.log(`  Card:     skipped (--no-card)`);
+        } else {
+          console.log(`  Card:     skipped (no default user set)`);
+        }
+        if (possibleDuplicates.length > 0) {
+          console.log(`\nWARNING: Possible duplicate tokens found:`);
+          for (const dup of possibleDuplicates) {
+            console.log(
+              `  - ${dup.slug} (similarity: ${dup.similarity.toFixed(2)})`,
+            );
+          }
         }
       }
     });
@@ -92,7 +153,21 @@ tokenCommand
   .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
     await withDb(async (db) => {
-      const results = await findTokens(db, opts.query);
+      const q = await embedQuery(db, opts.query);
+      const embRes = await ensureTokenEmbeddings(db, {
+        limit: 32,
+        dims: q?.vector.length,
+      });
+      if (embRes.status === "unavailable" && !opts.json && !opts.quiet) {
+        console.error(
+          `Note: semantic search unavailable (${embRes.reason}) — lexical matches only.`,
+        );
+      }
+
+      const results = await searchTokensHybrid(db, opts.query, {
+        queryEmbedding: q?.vector,
+        model: q?.model,
+      });
 
       if (opts.quiet) return;
 
@@ -108,12 +183,14 @@ tokenCommand
 
       console.log(`Found ${results.length} token(s):\n`);
       console.log(
-        "Score  Slug                  Concept                         Domain      Bloom",
+        "Score  Sim  Slug                  Concept                         Domain      Bloom",
       );
-      console.log("─".repeat(90));
+      console.log("─".repeat(95));
       for (const t of results) {
+        const scoreStr = t.score.toFixed(3).padEnd(6);
+        const simStr = (t.similarity?.toFixed(2) ?? "-").padEnd(4);
         console.log(
-          `${String(t.score).padEnd(6)} ${t.slug.padEnd(21)} ${t.concept.slice(0, 31).padEnd(31)} ${(t.domain || "-").padEnd(11)} ${t.bloom_level}`,
+          `${scoreStr} ${simStr} ${t.slug.padEnd(21)} ${t.concept.slice(0, 31).padEnd(31)} ${(t.domain || "-").padEnd(11)} ${t.bloom_level}`,
         );
       }
     });
@@ -442,5 +519,83 @@ tokenCommand
           console.log(`  - ${d.slug}: ${d.concept} (bloom ${d.bloom_level})`);
         }
       }
+    });
+  });
+
+// ── zam token reembed ─────────────────────────────────────────────────────
+
+tokenCommand
+  .command("reembed")
+  .description("Backfill or refresh semantic-search embeddings for tokens")
+  .option("--all", "Force re-embed every token, including already-fresh ones")
+  .option("--json", "Output as JSON")
+  .option("--quiet", "Suppress output (exit code only)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const probe = await embedQuery(db, "ZAM embedding dimension probe");
+      const model = probe?.model ?? null;
+      const dims = probe?.vector.length;
+      const before = model
+        ? await getEmbeddingCoverage(db, model, { dims })
+        : { tokens: 0, embedded: 0, missing: 0, stale: 0 };
+
+      let embedded = 0;
+      let reason: string | undefined;
+      // --all runs as a single UNBOUNDED forced pass: force with the default
+      // per-call cap would re-select the same leading batch forever (freshness
+      // is ignored, so nothing ever drops out of the selection), while forcing
+      // only a capped first pass would leave every fresh token beyond the cap
+      // untouched. Unbounded, one forced pass covers the whole token base
+      // (batched per-request internally); follow-up passes run without force
+      // and only mop up genuinely missing/stale rows.
+      let force = Boolean(opts.all);
+      while (true) {
+        const result = await ensureTokenEmbeddings(
+          db,
+          force
+            ? { force: true, limit: Number.MAX_SAFE_INTEGER, dims }
+            : { dims },
+        );
+        force = false;
+        embedded += result.embedded;
+        if (result.status === "unavailable") {
+          reason = result.reason;
+          break;
+        }
+        if (result.remaining === 0 || result.embedded === 0) break;
+      }
+
+      if (reason !== undefined) {
+        if (opts.quiet) {
+          process.exit(1);
+        }
+        if (opts.json) {
+          jsonOut({ error: reason, embedded });
+        } else {
+          console.error(`Error: ${reason}`);
+          if (embedded > 0) {
+            console.error(
+              `(${embedded} token(s) were embedded before the failure)`,
+            );
+          }
+        }
+        process.exit(1);
+      }
+
+      // model is guaranteed non-null here: reason undefined means at least
+      // one ensureTokenEmbeddings call above resolved a usable endpoint.
+      const after = await getEmbeddingCoverage(db, model as string, { dims });
+
+      if (opts.quiet) return;
+
+      const staleBefore = before.missing + before.stale;
+      if (opts.json) {
+        jsonOut({ embedded, model, before, after });
+        return;
+      }
+
+      console.log(
+        `Embedded ${embedded} tokens (${after.tokens} total, ${staleBefore} stale before) with ${model}`,
+      );
     });
   });

@@ -130,6 +130,18 @@ CREATE TABLE IF NOT EXISTS user_config (
   updated_at  TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+-- Token embeddings: one vector per token for semantic search (ADR 2026-07-03).
+-- Not a column on tokens: hot paths do SELECT * FROM tokens and a ~3KB blob
+-- per row would ride along on all of them.
+CREATE TABLE IF NOT EXISTS token_embeddings (
+  token_id     TEXT PRIMARY KEY REFERENCES tokens(id) ON DELETE CASCADE,
+  embedding    BLOB NOT NULL,
+  model        TEXT NOT NULL,
+  dims         INTEGER NOT NULL,
+  content_hash TEXT NOT NULL,
+  embedded_at  TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 -- Agent skills: task recipes the agent learns from user guidance
 CREATE TABLE IF NOT EXISTS agent_skills (
   id          TEXT PRIMARY KEY,

@@ -182,6 +182,24 @@ export {
   updateToken,
 } from "./models/token.js";
 export type {
+  EmbeddedTokenRow,
+  EmbeddingCoverage,
+  EmbeddingStaleness,
+  TokenEmbedding,
+  TokenNeedingEmbedding,
+} from "./models/token-embedding.js";
+export {
+  computeContentHash,
+  decodeEmbedding,
+  embeddingContentForToken,
+  encodeEmbedding,
+  getEmbeddingCoverage,
+  getTokenEmbedding,
+  listEmbeddedTokens,
+  listTokensNeedingEmbedding,
+  upsertTokenEmbedding,
+} from "./models/token-embedding.js";
+export type {
   AnalysisResult,
   CommandRecord,
   MonitorEvent,
@@ -333,6 +351,15 @@ export type {
   ReviewQueueOptions,
 } from "./scheduler/queue.js";
 export { buildReviewQueue } from "./scheduler/queue.js";
+// Search
+export type {
+  HybridScoredToken,
+  HybridSearchOptions,
+} from "./search/hybrid.js";
+export {
+  cosineSimilarity,
+  searchTokensHybrid,
+} from "./search/hybrid.js";
 export {
   distributeGlobalSkills,
   getPackageSkillPath,

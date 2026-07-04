@@ -13,7 +13,7 @@ export const VALID_API_FLAVORS: ApiFlavor[] = [
   "chat-completions",
   "anthropic-messages",
 ];
-export const VALID_ROLES: LlmRole[] = ["vision", "recall", "text"];
+export const VALID_ROLES: LlmRole[] = ["vision", "recall", "text", "embedding"];
 
 export interface ProviderRecord {
   label?: string;

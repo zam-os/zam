@@ -464,4 +464,16 @@ async function runMigrations(db: Database): Promise<void> {
       await db.exec(`ALTER TABLE tokens ADD COLUMN topic_id TEXT`);
     }
   }
+
+  // M009: create token_embeddings table (semantic search, ADR 2026-07-03)
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS token_embeddings (
+      token_id     TEXT PRIMARY KEY REFERENCES tokens(id) ON DELETE CASCADE,
+      embedding    BLOB NOT NULL,
+      model        TEXT NOT NULL,
+      dims         INTEGER NOT NULL,
+      content_hash TEXT NOT NULL,
+      embedded_at  TEXT NOT NULL DEFAULT (datetime('now'))
+    )
+  `);
 }

@@ -4,8 +4,8 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { bildungsplanBwProvider } from "../../src/cli/curriculum/providers/bildungsplan-bw/index.js";
 import { kerncurriculumHessenProvider } from "../../src/cli/curriculum/providers/kerncurriculum-hessen/index.js";
 import { kernlehrplanNrwProvider } from "../../src/cli/curriculum/providers/kernlehrplan-nrw/index.js";
-import { lehrplanplusBayernProvider as provider } from "../../src/cli/curriculum/providers/lehrplanplus-bayern/index.js";
 import { lehrplanSachsenProvider } from "../../src/cli/curriculum/providers/lehrplan-sachsen/index.js";
+import { lehrplanplusBayernProvider as provider } from "../../src/cli/curriculum/providers/lehrplanplus-bayern/index.js";
 import { rahmenlehrplanBerlinBrandenburgProvider } from "../../src/cli/curriculum/providers/rahmenlehrplan-berlin-brandenburg/index.js";
 import { openDatabase } from "../../src/kernel/index.js";
 import { ensureCard } from "../../src/kernel/models/card.ts";
@@ -257,17 +257,18 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
     });
 
     it("extracts topics from a minimal NRW Realschule Math fixture", () => {
-      const extracted = kernlehrplanNrwProvider.extractTopics!(
-        nrwMathHtml,
-        [
-          "realschule|10|mathematik#arithmetik-algebra",
-          "realschule|10|mathematik#funktionen",
-        ],
-      );
+      const extracted = kernlehrplanNrwProvider.extractTopics!(nrwMathHtml, [
+        "realschule|10|mathematik#arithmetik-algebra",
+        "realschule|10|mathematik#funktionen",
+      ]);
 
-      expect(extracted["realschule|10|mathematik#arithmetik-algebra"]).toBeDefined();
+      expect(
+        extracted["realschule|10|mathematik#arithmetik-algebra"],
+      ).toBeDefined();
       expect(extracted["realschule|10|mathematik#funktionen"]).toBeDefined();
-      expect(extracted["realschule|10|mathematik#arithmetik-algebra"]).toContain("Arithmetik und Algebra");
+      expect(
+        extracted["realschule|10|mathematik#arithmetik-algebra"],
+      ).toContain("Arithmetik und Algebra");
     });
 
     it("gracefully handles unknown NRW topics", () => {
@@ -294,10 +295,7 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
     it("extracts topics from a minimal Hessen Gymnasium Physik fixture", () => {
       const extracted = kerncurriculumHessenProvider.extractTopics!(
         hessenPhysikHtml,
-        [
-          "gymnasium|9|physik#optik",
-          "gymnasium|9|physik#elektromagnetismus",
-        ],
+        ["gymnasium|9|physik#optik", "gymnasium|9|physik#elektromagnetismus"],
       );
 
       expect(extracted["gymnasium|9|physik#optik"]).toBeDefined();
@@ -305,9 +303,10 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
     });
 
     it("gracefully handles unknown Hessen topics", () => {
-      const extracted = kerncurriculumHessenProvider.extractTopics!(hessenPhysikHtml, [
-        "gymnasium|9|physik#nonexistent",
-      ]);
+      const extracted = kerncurriculumHessenProvider.extractTopics!(
+        hessenPhysikHtml,
+        ["gymnasium|9|physik#nonexistent"],
+      );
       expect(extracted["gymnasium|9|physik#nonexistent"]).toBeUndefined();
     });
   });
@@ -326,13 +325,10 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
     });
 
     it("extracts topics from a minimal Sachsen Gymnasium Biologie fixture", () => {
-      const extracted = lehrplanSachsenProvider.extractTopics!(
-        sachsenBioHtml,
-        [
-          "gymnasium|9|biologie#genetik",
-          "gymnasium|9|biologie#evolution",
-        ],
-      );
+      const extracted = lehrplanSachsenProvider.extractTopics!(sachsenBioHtml, [
+        "gymnasium|9|biologie#genetik",
+        "gymnasium|9|biologie#evolution",
+      ]);
 
       expect(extracted["gymnasium|9|biologie#genetik"]).toBeDefined();
       expect(extracted["gymnasium|9|biologie#genetik"]).toContain("Genetik");
@@ -362,10 +358,7 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
     it("extracts topics from a minimal Berlin-Brandenburg Gymnasium Chemie fixture", () => {
       const extracted = rahmenlehrplanBerlinBrandenburgProvider.extractTopics!(
         berlinChemieHtml,
-        [
-          "gymnasium|9|chemie#bindungen",
-          "gymnasium|9|chemie#saeuren",
-        ],
+        ["gymnasium|9|chemie#bindungen", "gymnasium|9|chemie#saeuren"],
       );
 
       expect(extracted["gymnasium|9|chemie#bindungen"]).toBeDefined();
@@ -373,9 +366,10 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
     });
 
     it("gracefully handles unknown Berlin-Brandenburg topics", () => {
-      const extracted = rahmenlehrplanBerlinBrandenburgProvider.extractTopics!(berlinChemieHtml, [
-        "gymnasium|9|chemie#nonexistent",
-      ]);
+      const extracted = rahmenlehrplanBerlinBrandenburgProvider.extractTopics!(
+        berlinChemieHtml,
+        ["gymnasium|9|chemie#nonexistent"],
+      );
       expect(extracted["gymnasium|9|chemie#nonexistent"]).toBeUndefined();
     });
   });
