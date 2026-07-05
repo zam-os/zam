@@ -6,6 +6,7 @@ import { agentCommand } from "./commands/agent.js";
 import { bridgeCommand } from "./commands/bridge.js";
 import { cardCommand } from "./commands/card.js";
 import { connectorCommand } from "./commands/connector.js";
+import { doctorCommand } from "./commands/doctor.js";
 import { gitSyncCommand } from "./commands/git-sync.js";
 import { goalCommand } from "./commands/goal.js";
 import { initCommand } from "./commands/init.js";
@@ -44,6 +45,7 @@ program
 program.addCommand(initCommand);
 program.addCommand(setupCommand);
 program.addCommand(tokenCommand);
+program.addCommand(doctorCommand);
 program.addCommand(cardCommand);
 program.addCommand(sessionCommand);
 program.addCommand(statsCommand);

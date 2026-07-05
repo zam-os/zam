@@ -58,7 +58,7 @@ describe("token embedding operations", () => {
     });
 
     expect(embeddingContentForToken(token)).toBe(
-      "A prompted concept\nHow is it recalled?\nprompting",
+      "A prompted concept\nHow is it recalled?\nprompting\n",
     );
   });
 

@@ -63,7 +63,7 @@ export function canonicalEmbeddingModelId(model: string): string {
 
 /** Model-specific retrieval prompt used for stored token vectors. */
 export function embeddingTextForToken(
-  t: Pick<Token, "concept" | "question" | "domain">,
+  t: Pick<Token, "concept" | "question" | "domain"> & { title?: string | null },
   model: string,
 ): string {
   const isGemma = EMBEDDINGGEMMA_ALIASES.has(model.trim().toLowerCase());
@@ -309,13 +309,21 @@ export async function embedQuery(
  */
 export async function findPossibleDuplicates(
   db: Database,
-  candidate: { concept: string; question?: string | null; domain?: string },
+  candidate: {
+    concept: string;
+    question?: string | null;
+    domain?: string;
+    title?: string | null;
+  },
   embed: typeof embedQuery = embedQuery,
-): Promise<Array<{ slug: string; concept: string; similarity: number }>> {
+): Promise<
+  Array<{ slug: string; concept: string; title?: string; similarity: number }>
+> {
   const queryText = embeddingContentForToken({
     concept: candidate.concept,
     question: candidate.question ?? null,
     domain: candidate.domain ?? "",
+    title: candidate.title ?? null,
   });
 
   const q = await embed(db, queryText);
@@ -351,13 +359,18 @@ export async function findPossibleDuplicates(
     vectorTopK: 1000,
   });
 
-  const results: Array<{ slug: string; concept: string; similarity: number }> =
-    [];
+  const results: Array<{
+    slug: string;
+    concept: string;
+    title?: string;
+    similarity: number;
+  }> = [];
   for (const hit of hits) {
     if (hit.similarity !== null && hit.similarity >= threshold) {
       results.push({
         slug: hit.slug,
         concept: hit.concept,
+        title: hit.title,
         similarity: hit.similarity,
       });
     }

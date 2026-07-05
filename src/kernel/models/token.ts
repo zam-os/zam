@@ -19,6 +19,7 @@ export type SymbiosisMode = "shadowing" | "copilot" | "autonomy";
 export interface Token {
   id: string;
   slug: string;
+  title: string;
   concept: string;
   domain: string;
   bloom_level: BloomLevel;
@@ -35,6 +36,7 @@ export interface Token {
 
 export interface CreateTokenInput {
   slug: string;
+  title?: string;
   concept: string;
   domain?: string;
   bloom_level?: BloomLevel;
@@ -47,6 +49,7 @@ export interface CreateTokenInput {
 }
 
 export interface UpdateTokenInput {
+  title?: string | null;
   concept?: string;
   domain?: string;
   bloom_level?: BloomLevel;
@@ -60,6 +63,11 @@ export interface UpdateTokenInput {
 
 export interface ListTokensOptions {
   domain?: string;
+  /**
+   * Filter by domain prefix using `/` as separator (e.g. "docuware-cops").
+   * Matches exact or startsWith(prefix + "/").
+   */
+  domainPrefix?: string;
 }
 
 export interface TokenDeleteImpact {
@@ -101,14 +109,17 @@ export async function createToken(
     throw new Error(`bloom_level must be between 1 and 5, got ${bloom}`);
   }
 
+  const title = input.title ?? "";
+
   await db
     .prepare(`
-    INSERT INTO tokens (id, slug, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, provider, topic_id, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO tokens (id, slug, title, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, provider, topic_id, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `)
     .run(
       id,
       input.slug,
+      title,
       input.concept,
       input.domain ?? "",
       bloom,
@@ -186,6 +197,10 @@ export async function updateToken(
   const fields: string[] = [];
   const values: unknown[] = [];
 
+  if (updates.title !== undefined) {
+    fields.push("title = ?");
+    values.push(updates.title ?? "");
+  }
   if (updates.concept !== undefined) {
     fields.push("concept = ?");
     values.push(updates.concept);
@@ -349,15 +364,14 @@ export async function deleteToken(
       .prepare("SELECT id, token_slugs FROM agent_skills")
       .all()) as Array<{ id: string; token_slugs: string }>;
 
+    const skillUpdateStmt = tx.prepare(
+      "UPDATE agent_skills SET token_slugs = ?, updated_at = ? WHERE id = ?",
+    );
     for (const row of skillRows) {
       const tokenSlugs = JSON.parse(row.token_slugs) as string[];
       const filtered = tokenSlugs.filter((tokenSlug) => tokenSlug !== slug);
       if (filtered.length !== tokenSlugs.length) {
-        await tx
-          .prepare(
-            "UPDATE agent_skills SET token_slugs = ?, updated_at = ? WHERE id = ?",
-          )
-          .run(JSON.stringify(filtered), now, row.id);
+        await skillUpdateStmt.run(JSON.stringify(filtered), now, row.id);
       }
     }
 
@@ -399,13 +413,17 @@ export async function findTokens(
   // Per-term SQL LIKE queries for each substantive search token.
   const likeSQL =
     `SELECT * FROM tokens WHERE deprecated_at IS NULL AND ` +
-    `(lower(slug) LIKE ? OR lower(concept) LIKE ? OR lower(domain) LIKE ?)`;
+    `(lower(slug) LIKE ? OR lower(title) LIKE ? OR lower(concept) LIKE ? OR lower(domain) LIKE ?)`;
 
+  const likeStmt = db.prepare(likeSQL);
   for (const term of longTerms) {
     const pattern = `%${term}%`;
-    const rows = (await db
-      .prepare(likeSQL)
-      .all(pattern, pattern, pattern)) as Token[];
+    const rows = (await likeStmt.all(
+      pattern,
+      pattern,
+      pattern,
+      pattern,
+    )) as Token[];
     for (const row of rows) {
       const entry = scoreMap.get(row.id);
       if (entry) {
@@ -423,10 +441,11 @@ export async function findTokens(
       .all()) as Token[];
 
     for (const token of allTokens) {
-      const words = `${token.slug} ${token.concept} ${token.domain}`
-        .toLowerCase()
-        .split(/[\s,.\-_/\\:;!?()[\]{}]+/)
-        .filter(Boolean);
+      const words =
+        `${token.slug} ${token.title} ${token.concept} ${token.domain}`
+          .toLowerCase()
+          .split(/[\s,.\-_/\\:;!?()[\]{}]+/)
+          .filter(Boolean);
 
       let matchCount = 0;
       for (const term of shortTerms.length > 0 ? shortTerms : searchTokens) {
@@ -475,6 +494,13 @@ export async function listTokens(
         "SELECT * FROM tokens WHERE domain = ? AND deprecated_at IS NULL ORDER BY bloom_level, slug",
       )
       .all(options.domain)) as Token[];
+  } else if (options?.domainPrefix) {
+    const prefix = options.domainPrefix;
+    tokens = (await db
+      .prepare(
+        `SELECT * FROM tokens WHERE (domain = ? OR domain LIKE ?) AND deprecated_at IS NULL ORDER BY bloom_level, slug`,
+      )
+      .all(prefix, `${prefix}/%`)) as Token[];
   } else {
     tokens = (await db
       .prepare(
@@ -491,6 +517,7 @@ export async function listTokens(
 export interface PersonalCard {
   tokenId: string;
   slug: string;
+  title: string;
   concept: string;
   domain: string;
   bloomLevel: BloomLevel;
@@ -518,8 +545,43 @@ export interface PersonalCard {
 export function slugify(text: string): string {
   return text
     .toLowerCase()
+    .replace(/ä/g, "ae")
+    .replace(/ö/g, "oe")
+    .replace(/ü/g, "ue")
+    .replace(/ß/g, "ss")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
+}
+
+/**
+ * Strip domain prefix (using / separator) from slug for display.
+ */
+export function getShortSlug(
+  slug: string,
+  domainPrefix?: string | null,
+): string {
+  if (domainPrefix) {
+    const folded = domainPrefix
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    if (folded && slug.startsWith(`${folded}-`)) {
+      return slug.substring(folded.length + 1);
+    }
+  }
+  return slug;
+}
+
+/**
+ * Primary display name for a token: human title if present, else short slug.
+ * Never falls back to concept (which is a spoiler).
+ */
+export function getDisplayTitle(
+  t: { title?: string | null; slug: string },
+  activeDomainScope?: string | null,
+): string {
+  if (t.title?.trim()) return t.title.trim();
+  return getShortSlug(t.slug, activeDomainScope);
 }
 
 export async function generateTokenSlug(
@@ -564,6 +626,7 @@ export async function listPersonalCards(
     SELECT 
       t.id AS tokenId,
       t.slug,
+      t.title,
       t.concept,
       t.domain,
       t.bloom_level AS bloomLevel,
@@ -636,6 +699,7 @@ export async function listPersonalCards(
 export interface CurriculumCardInput {
   question: string;
   concept: string;
+  title?: string;
   domain: string;
   source_link?: string | null;
   context?: string;
@@ -711,6 +775,7 @@ export async function importCurriculumCards(
         );
         token = await createToken(tx, {
           slug: finalSlug,
+          title: card.title,
           concept: card.concept,
           domain: card.domain,
           bloom_level: bloom,
@@ -880,12 +945,11 @@ export async function confirmCardSplit(
         );
 
       // Link proposal tokens as prerequisites of original token
+      const insertPrereqStmt = tx.prepare(
+        "INSERT OR IGNORE INTO prerequisites (token_id, requires_id) VALUES (?, ?)",
+      );
       for (const propToken of proposalTokens) {
-        await tx
-          .prepare(
-            "INSERT OR IGNORE INTO prerequisites (token_id, requires_id) VALUES (?, ?)",
-          )
-          .run(originalToken.id, propToken.id);
+        await insertPrereqStmt.run(originalToken.id, propToken.id);
       }
 
       // Block original card
@@ -903,19 +967,21 @@ export async function confirmCardSplit(
       // history is preserved (ADR principle 5), and clearing the FSRS columns to
       // NULL would in any case violate their NOT NULL constraints and abort the
       // whole split.
+      const checkPrereqsStmt = tx.prepare(
+        "SELECT COUNT(*) as n FROM prerequisites WHERE token_id = ?",
+      );
+      const unblockCardStmt = tx.prepare(
+        "UPDATE cards SET blocked = 0, due_at = ? WHERE id = ?",
+      );
       for (const propToken of proposalTokens) {
         const card = await ensureCard(tx, propToken.id, userId);
         if (card.blocked === 1) {
-          const prereqOfPrereq = (await tx
-            .prepare(
-              "SELECT COUNT(*) as n FROM prerequisites WHERE token_id = ?",
-            )
-            .get(propToken.id)) as { n: number };
+          const prereqOfPrereq = (await checkPrereqsStmt.get(propToken.id)) as {
+            n: number;
+          };
           if (prereqOfPrereq.n === 0) {
             const now = new Date().toISOString();
-            await tx
-              .prepare("UPDATE cards SET blocked = 0, due_at = ? WHERE id = ?")
-              .run(now, card.id);
+            await unblockCardStmt.run(now, card.id);
           }
         }
       }
@@ -931,6 +997,7 @@ export interface FoundationProposalInput {
   question: string;
   concept: string;
   domain: string;
+  title?: string;
   context?: string;
   bloom_level?: number;
   symbiosis_mode?: string | null;
@@ -1032,6 +1099,7 @@ export async function confirmFoundations(
           );
           token = await createToken(tx, {
             slug: finalSlug,
+            title: card.title,
             concept: card.concept,
             domain: card.domain,
             bloom_level: bloom,
@@ -1075,6 +1143,7 @@ export interface SourceProposalInput {
   question: string;
   concept: string;
   domain: string;
+  title?: string;
   bloom_level: number;
   symbiosis_mode: string;
   excerpt: string;
@@ -1139,6 +1208,7 @@ export async function confirmSourceImport(
 
         token = await createToken(tx, {
           slug: finalSlug,
+          title: card.title,
           concept: card.concept,
           domain: card.domain,
           bloom_level: bloom,

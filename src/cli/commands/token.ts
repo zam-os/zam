@@ -14,6 +14,7 @@ import {
   generateConceptFreeCue,
   getCard,
   getDependents,
+  getDisplayTitle,
   getEmbeddingCoverage,
   getPrerequisites,
   getSetting,
@@ -120,7 +121,11 @@ tokenCommand
           ),
         );
       } else {
-        console.log(`Registered token: ${token.slug} (${token.id})`);
+        console.log(`Registered token: ${token.title || token.slug}`);
+        if (token.slug !== (token.title || token.slug)) {
+          console.log(`  Slug: ${token.slug}`);
+        }
+        console.log(`  ID:   ${token.id}`);
         console.log(`  Concept:  ${token.concept}`);
         console.log(`  Domain:   ${token.domain || "(none)"}`);
         console.log(`  Bloom:    ${token.bloom_level}`);
@@ -138,8 +143,9 @@ tokenCommand
         if (possibleDuplicates.length > 0) {
           console.log(`\nWARNING: Possible duplicate tokens found:`);
           for (const dup of possibleDuplicates) {
+            const name = dup.title || dup.slug;
             console.log(
-              `  - ${dup.slug} (similarity: ${dup.similarity.toFixed(2)})`,
+              `  - ${name} (slug: ${dup.slug}, similarity: ${dup.similarity.toFixed(2)})`,
             );
           }
         }
@@ -149,6 +155,7 @@ tokenCommand
             concept: opts.concept,
             question: question ?? null,
             domain: opts.domain ?? "",
+            title: opts.title ?? null,
           });
           const q = await embedQuery(db, queryText);
           if (q) {
@@ -233,16 +240,18 @@ tokenCommand
 
       console.log(`Found ${results.length} token(s):\n`);
       console.log(
-        "Score  Sim  Slug                  Concept                         Domain      Bloom",
+        "Score  Sim  Title                         Concept                         Domain      Bloom",
       );
       console.log("─".repeat(95));
       for (const t of results) {
         const scoreStr = t.score.toFixed(3).padEnd(6);
         const simStr = (t.similarity?.toFixed(2) ?? "-").padEnd(4);
+        const display = getDisplayTitle(t);
         console.log(
-          `${scoreStr} ${simStr} ${t.slug.padEnd(21)} ${t.concept.slice(0, 31).padEnd(31)} ${(t.domain || "-").padEnd(11)} ${t.bloom_level}`,
+          `${scoreStr} ${simStr} ${display.padEnd(28)} ${t.concept.slice(0, 31).padEnd(31)} ${(t.domain || "-").padEnd(11)} ${t.bloom_level}`,
         );
       }
+      console.log("\n(Use slug for CLI commands -- slugs are technical IDs)");
     });
   });
 
@@ -274,15 +283,19 @@ tokenCommand
       }
 
       console.log(
-        "Slug                  Concept                         Domain      Bloom",
+        "Title                         Concept                         Domain      Bloom",
       );
-      console.log("─".repeat(80));
+      console.log("─".repeat(85));
       for (const t of tokens) {
+        const display = getDisplayTitle(t);
         console.log(
-          `${t.slug.padEnd(21)} ${t.concept.slice(0, 31).padEnd(31)} ${(t.domain || "-").padEnd(11)} ${t.bloom_level}`,
+          `${display.padEnd(28)} ${t.concept.slice(0, 31).padEnd(31)} ${(t.domain || "-").padEnd(11)} ${t.bloom_level}`,
         );
       }
       console.log(`\n${tokens.length} token(s) total.`);
+      console.log(
+        "(Use --slug <slug> for commands; slugs are technical identifiers)",
+      );
     });
   });
 
@@ -305,11 +318,16 @@ tokenCommand
     "Updated source file path or reference URL (blank allowed)",
   )
   .option("--question <question>", "Updated question text (blank allowed)")
+  .option(
+    "--title <title>",
+    "Updated human-friendly title for graph display (blank allowed)",
+  )
   .option("--json", "Output as JSON")
   .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
     await withDb(async (db) => {
       const updates: {
+        title?: string | null;
         concept?: string;
         domain?: string;
         bloom_level?: BloomLevel;
@@ -330,6 +348,9 @@ tokenCommand
       if (opts.question !== undefined) {
         updates.question = opts.question === "" ? null : opts.question;
       }
+      if (opts.title !== undefined) {
+        updates.title = opts.title === "" ? "" : opts.title;
+      }
       if (opts.mode !== undefined) {
         const validModes = ["shadowing", "copilot", "autonomy", "none"];
         if (!validModes.includes(opts.mode)) {
@@ -349,11 +370,15 @@ tokenCommand
         return;
       }
 
-      console.log(`Updated token: ${token.slug}`);
+      console.log(`Updated token: ${token.title || token.slug}`);
+      if (token.slug !== (token.title || token.slug)) {
+        console.log(`  Slug: ${token.slug}`);
+      }
       console.log(`  Concept:  ${token.concept}`);
       console.log(`  Domain:   ${token.domain || "(none)"}`);
       console.log(`  Bloom:    ${token.bloom_level}`);
       console.log(`  Question: ${token.question || "(none)"}`);
+      console.log(`  Title:    ${token.title || "(none)"}`);
       console.log(`  Context:  ${token.context || "(none)"}`);
       console.log(`  Mode:     ${token.symbiosis_mode ?? "none"}`);
       console.log(`  Source:   ${token.source_link || "(none)"}`);
@@ -530,7 +555,11 @@ tokenCommand
         return;
       }
 
-      console.log(`Token: ${token.slug} (${token.id})`);
+      console.log(`Token: ${token.title || token.slug}`);
+      if (token.slug !== (token.title || token.slug)) {
+        console.log(`  Slug:     ${token.slug}`);
+      }
+      console.log(`  ID:       ${token.id}`);
       console.log(`  Concept:  ${token.concept}`);
       console.log(`  Question: ${token.question || "(none)"}`);
       console.log(`  Domain:   ${token.domain || "(none)"}`);
@@ -557,7 +586,9 @@ tokenCommand
       if (prereqs.length > 0) {
         console.log("Prerequisites:");
         for (const p of prereqs) {
-          console.log(`  - ${p.slug}: ${p.concept} (bloom ${p.bloom_level})`);
+          console.log(
+            `  - ${p.title || p.slug}: ${p.concept} (bloom ${p.bloom_level})`,
+          );
         }
       } else {
         console.log("No prerequisites.");
@@ -566,7 +597,9 @@ tokenCommand
       if (dependents.length > 0) {
         console.log("\nDependents:");
         for (const d of dependents) {
-          console.log(`  - ${d.slug}: ${d.concept} (bloom ${d.bloom_level})`);
+          console.log(
+            `  - ${d.title || d.slug}: ${d.concept} (bloom ${d.bloom_level})`,
+          );
         }
       }
     });

@@ -10,6 +10,7 @@ import {
   openDatabase,
   resolveReviewContext,
 } from "../../kernel/index.js";
+import { formatHeader } from "../learn-format.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
 import { resolveUser } from "../users/identity.js";
 
@@ -65,9 +66,8 @@ export const reviewCommand = new Command("review")
         });
 
         console.log(
-          `\n[${index + 1}/${queue.items.length}] ${prompt.bloomVerb} (Bloom ${prompt.bloomLevel})`,
+          `\n[${index + 1}/${queue.items.length}] ${formatHeader({ bloomLevel: item.bloomLevel, domain: item.domain })}`,
         );
-        console.log(`Domain: ${prompt.domain || "(none)"}`);
         if (prompt.sourceLink) {
           console.log(`Source: ${prompt.sourceLink}`);
           if (opts.resolve !== false) {

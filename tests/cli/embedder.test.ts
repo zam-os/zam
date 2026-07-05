@@ -687,14 +687,15 @@ describe("prompt formatting", () => {
       concept: "A prompted concept",
       question: "How is it recalled?",
       domain: "prompting",
+      title: "A prompted concept",
     };
 
     // Test with Gemma aliases
     expect(embeddingTextForToken(token, "embeddinggemma")).toBe(
-      "title: none | text: A prompted concept\nHow is it recalled?\nprompting",
+      "title: none | text: A prompted concept\nHow is it recalled?\nprompting\nA prompted concept",
     );
     expect(embeddingTextForToken(token, "google/embeddinggemma-300m")).toBe(
-      "title: none | text: A prompted concept\nHow is it recalled?\nprompting",
+      "title: none | text: A prompted concept\nHow is it recalled?\nprompting\nA prompted concept",
     );
     expect(embeddingTextForQuery("find prompted concepts", "embeddinggemma")).toBe(
       "task: search result | query: find prompted concepts",
@@ -702,7 +703,7 @@ describe("prompt formatting", () => {
 
     // Test with non-Gemma model
     expect(embeddingTextForToken(token, "other-model")).toBe(
-      "A prompted concept\nHow is it recalled?\nprompting",
+      "A prompted concept\nHow is it recalled?\nprompting\nA prompted concept",
     );
     expect(embeddingTextForQuery("find prompted concepts", "other-model")).toBe(
       "find prompted concepts",
