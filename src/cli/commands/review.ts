@@ -7,7 +7,6 @@ import type { BloomLevel, Database } from "../../kernel/index.js";
 import {
   buildReviewQueue,
   generatePrompt,
-  getActiveWorkspaceContext,
   getKnowledgeContextByName,
   openDatabase,
   resolveReviewContext,
@@ -32,20 +31,21 @@ export const reviewCommand = new Command("review")
       db = await openDatabase();
       const userId = await resolveUser(opts, db);
 
-      const configuredContext =
-        opts.knowledgeContext || getActiveWorkspaceContext();
+      // ADR Decision 4: without an explicit --knowledge-context the queue
+      // stays unscoped (everything, interleaved). The device default drives
+      // generation defaults only, never review eligibility.
       let resolvedContext: string | undefined;
-      if (configuredContext) {
-        const context = await getKnowledgeContextByName(db, configuredContext);
-        if (context) {
-          resolvedContext = context.name;
-        } else if (opts.knowledgeContext) {
-          throw new Error(`Knowledge context not found: ${configuredContext}`);
-        } else {
-          console.warn(
-            `Ignoring stale active knowledge context: ${configuredContext}`,
+      if (opts.knowledgeContext) {
+        const context = await getKnowledgeContextByName(
+          db,
+          opts.knowledgeContext,
+        );
+        if (!context) {
+          throw new Error(
+            `Knowledge context not found: ${opts.knowledgeContext}`,
           );
         }
+        resolvedContext = context.name;
       }
 
       const queue = await buildReviewQueue(db, {

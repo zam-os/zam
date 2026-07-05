@@ -3507,7 +3507,6 @@ async function loadSettingsKnowledgeContext(): Promise<void> {
 
     const activeRes = await runBridge<any>("get-active-knowledge-context");
     const active = (activeRes && activeRes.activeContext) || "";
-    deviceKnowledgeContext = active || null;
     select.value = active;
   } catch (e) {
     console.error("Failed to load settings knowledge contexts", e);
@@ -3584,7 +3583,6 @@ let currentDomain: string | null = null;
 let availableDomains: string[] = [];
 let originalDomainSet: Set<string> = new Set();
 let currentKnowledgeContext: string | null = null;
-let deviceKnowledgeContext: string | null | undefined;
 let availableKnowledgeContexts: any[] = [];
 
 function getShortSlug(slug: string): string {
@@ -3947,9 +3945,6 @@ async function loadAndRenderKnowledgeContexts() {
   try {
     const activeRes = await runBridge<any>("get-active-knowledge-context");
     if (activeRes && activeRes.success) {
-      if (deviceKnowledgeContext === undefined) {
-        deviceKnowledgeContext = activeRes.activeContext;
-      }
       if (currentKnowledgeContext === null) {
         currentKnowledgeContext = activeRes.activeContext;
       }
@@ -3962,14 +3957,6 @@ async function loadAndRenderKnowledgeContexts() {
   } catch (e) {
     console.warn("Could not load knowledge contexts for selector", e);
   }
-}
-
-async function getDeviceKnowledgeContext(): Promise<string | null> {
-  if (deviceKnowledgeContext === undefined) {
-    const activeRes = await runBridge<any>("get-active-knowledge-context");
-    deviceKnowledgeContext = activeRes?.activeContext ?? null;
-  }
-  return deviceKnowledgeContext ?? null;
 }
 
 function renderKnowledgeContextSelector() {
@@ -4514,12 +4501,10 @@ async function loadNextCard(
     // Fetch review. Dynamic question generation may need to cold-start a local
     // model, so offer the learner a choice after 30 seconds instead of leaving
     // the loading state unexplained.
+    // ADR Decision 4: the study queue stays unscoped (everything,
+    // interleaved) — the device default never filters reviews.
     const reviewArgs =
       options.dynamicQuestion === false ? ["--no-dynamic-question"] : [];
-    const activeKnowledgeContext = await getDeviceKnowledgeContext();
-    if (activeKnowledgeContext) {
-      reviewArgs.push("--knowledge-context", activeKnowledgeContext);
-    }
     if (isLlmEnabled && options.dynamicQuestion !== false) {
       isWaitingForQuestion = true;
       startQuestionWaitTimer();
@@ -4935,7 +4920,6 @@ window.addEventListener("DOMContentLoaded", () => {
     void (async () => {
       try {
         await runBridge<any>("set-active-knowledge-context", [value || "none"]);
-        deviceKnowledgeContext = value || null;
       } catch (err) {
         console.error("Failed to update active knowledge context", err);
       }
