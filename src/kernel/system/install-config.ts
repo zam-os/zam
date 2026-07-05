@@ -72,6 +72,7 @@ export interface WorkspaceConfig {
   sourceControl?: WorkspaceSourceControl;
   knowledgeScopes?: string[];
   defaultAgent?: string;
+  activeKnowledgeContext?: string;
 }
 
 function defaultConfigPath(): string {
@@ -252,4 +253,30 @@ export function detectSyncProvider(dir: string): string | null {
     return "iCloud Drive";
   }
   return null;
+}
+
+export function getActiveWorkspaceContext(
+  path = defaultConfigPath(),
+): string | undefined {
+  const activeWorkspace = getActiveWorkspace(path);
+  return activeWorkspace?.activeKnowledgeContext;
+}
+
+export function setActiveWorkspaceContext(
+  contextName: string | undefined,
+  path = defaultConfigPath(),
+): void {
+  const config = loadInstallConfig(path);
+  const activeId = config.activeWorkspaceId;
+  if (activeId && config.workspaces) {
+    const workspace = config.workspaces.find((w) => w.id === activeId);
+    if (workspace) {
+      if (contextName) {
+        workspace.activeKnowledgeContext = contextName;
+      } else {
+        delete workspace.activeKnowledgeContext;
+      }
+      saveInstallConfig(config, path);
+    }
+  }
 }

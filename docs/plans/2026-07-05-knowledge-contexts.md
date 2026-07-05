@@ -11,7 +11,7 @@ unchecked phase; keep one branch and one focused commit per completed phase.
 - [x] **Phase 0 — contracts and worked persona**
 - [x] **Phase 1 — schema and kernel API**
 - [x] **Phase 2 — CLI and bridge contracts**
-- [ ] **Phase 3 — language resolution and context assignment flows**
+- [x] **Phase 3 — language resolution and context assignment flows**
 - [ ] **Phase 4 — `zam doctor contexts` backfill**
 - [ ] **Phase 5 — Studio and Knowledge Graph context selector**
 - [ ] **Phase 6 — integration hardening, docs, and release handoff**

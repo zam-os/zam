@@ -405,6 +405,7 @@ export type {
 export {
   detectSyncProvider,
   getActiveWorkspace,
+  getActiveWorkspaceContext,
   getActiveWorkspaceId,
   getConfiguredWorkspaces,
   getInstallChannel,
@@ -415,6 +416,7 @@ export {
   saveConfiguredWorkspaces,
   saveInstallConfig,
   saveMachineAiConfig,
+  setActiveWorkspaceContext,
   setActiveWorkspaceId,
   setInstallChannel,
   setInstallMode,

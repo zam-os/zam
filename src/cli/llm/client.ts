@@ -16,11 +16,14 @@ import { spawn } from "node:child_process";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import type { Database, SupportedLocale } from "../../kernel/index.js";
 import {
+  getActiveWorkspaceContext,
+  getKnowledgeContextByName,
   getMachineAiConfig,
   getProviderApiKey,
   getSetting,
   getSystemProfile,
   hasCommand,
+  normalizeLocale,
   resolveReviewContext,
   t,
   updateToken,
@@ -854,6 +857,7 @@ export async function importCurriculumViaLLM(
   text: string,
   targetCategory: string,
   sourceUrl?: string | null,
+  options?: { knowledgeContext?: string },
 ): Promise<GeneratedCardProposal[]> {
   if (text.length > MAX_IMPORT_TEXT_CHARS) {
     throw new Error(
@@ -861,14 +865,23 @@ export async function importCurriculumViaLLM(
     );
   }
   const cfg = await getProviderForRole(db, "text");
+  let locale = cfg.locale;
+  const contextName = options?.knowledgeContext || getActiveWorkspaceContext();
+  if (contextName) {
+    const context = await getKnowledgeContextByName(db, contextName);
+    if (context?.language) {
+      locale = normalizeLocale(context.language) as SupportedLocale;
+    }
+  }
+
   const endpoint = await resolveUsableTextEndpoint(db);
-  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+  const langName = LANGUAGE_NAMES[locale] || "English";
 
   let responseText: string;
   try {
     responseText = await requestCurriculumCards(
       endpoint,
-      cfg.locale,
+      locale,
       langName,
       text,
       targetCategory,
@@ -889,7 +902,7 @@ export async function importCurriculumViaLLM(
       try {
         chunkResponse = await requestCurriculumCards(
           endpoint,
-          cfg.locale,
+          locale,
           langName,
           chunk,
           targetCategory,
@@ -2121,9 +2134,18 @@ export async function generateTitleViaLLM(
     question?: string | null;
     context?: string | null;
   },
-  opts: { timeoutMs?: number } = {},
+  opts: { timeoutMs?: number; knowledgeContext?: string } = {},
 ): Promise<LlmTextResult> {
   const cfg = await getProviderForRole(db, "text"); // or recall? text for generation
+  let locale = cfg.locale;
+  const contextName = opts.knowledgeContext || getActiveWorkspaceContext();
+  if (contextName) {
+    const context = await getKnowledgeContextByName(db, contextName);
+    if (context?.language) {
+      locale = normalizeLocale(context.language) as SupportedLocale;
+    }
+  }
+
   const endpoint = await resolveUsableTextEndpoint(db); // assume exists or use recall
 
   const systemPrompt = `You are an expert at naming knowledge items for a personal knowledge graph.
@@ -2173,7 +2195,7 @@ Title:`;
         temperature: 0.2,
         max_tokens: 100,
       }),
-      locale: cfg.locale,
+      locale,
       timeoutMs: opts.timeoutMs,
       hardTimeoutMs: opts.timeoutMs,
     });

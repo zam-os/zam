@@ -3518,15 +3518,28 @@ bridgeCommand
   )
   .option("--source <url>", "Provenance source link or URL")
   .option("--preview", "Return parsed cards without saving them")
+  .option(
+    "--knowledge-context <context>",
+    "Assign imported tokens to a knowledge context (repeatable)",
+    (val, memo: string[]) => {
+      memo.push(val);
+      return memo;
+    },
+    [],
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
+
+      const contextNames = opts.knowledgeContext || [];
+      const firstContext = contextNames[0];
 
       const cards = await importCurriculumViaLLM(
         db,
         opts.text,
         opts.domain,
         opts.source || null,
+        { knowledgeContext: firstContext },
       );
 
       if (opts.preview) {
@@ -3538,6 +3551,31 @@ bridgeCommand
       }
 
       const result = await importCurriculumCards(db, userId, cards);
+
+      for (const card of cards) {
+        const baseText =
+          card.question && card.question.trim().length > 0
+            ? card.question
+            : card.concept;
+        const cleanDomain = slugify(card.domain || "");
+        const cleanBase = slugify(baseText);
+        let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
+        if (baseSlug.length > 60) {
+          baseSlug = baseSlug.slice(0, 60).replace(/-$/, "");
+        }
+        if (!baseSlug) {
+          baseSlug = "token";
+        }
+        const token = await getTokenBySlug(db, baseSlug);
+        if (token) {
+          for (const ctxName of contextNames) {
+            const context = await getKnowledgeContextByName(db, ctxName);
+            if (context) {
+              await assignTokenToContext(db, token.id, context.id);
+            }
+          }
+        }
+      }
 
       jsonOut({
         success: true,

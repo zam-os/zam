@@ -37,6 +37,7 @@ export interface DoctorOptions {
   yes?: boolean;
   noLlm?: boolean;
   timeoutMs?: number;
+  knowledgeContext?: string;
 }
 
 export interface DoctorTask {
@@ -233,7 +234,10 @@ export const doctorTasks: DoctorTask[] = [
                 question: item.token.question,
                 context: item.token.context,
               },
-              { timeoutMs: opts.timeoutMs },
+              {
+                timeoutMs: opts.timeoutMs,
+                knowledgeContext: opts.knowledgeContext,
+              },
             );
             rawProposal = gen.text;
           } catch (_e) {
@@ -667,6 +671,10 @@ export const doctorCommand = new Command("doctor")
     "LLM timeout in ms per call (default: 20000)",
     "20000",
   )
+  .option(
+    "--knowledge-context <context>",
+    "Knowledge context to limit/guide doctor task",
+  )
   .argument("[task]", "Specific task: titles, texts, duplicates, domains")
   .action(async (taskName, opts) => {
     await withDb(async (db) => {
@@ -675,6 +683,7 @@ export const doctorCommand = new Command("doctor")
       const yes = !!opts.yes;
       const noLlm = opts.llm === false;
       const timeoutMs = parseDoctorTimeout(opts.timeout);
+      const knowledgeContext = opts.knowledgeContext;
 
       if (!taskName) {
         console.log("Available doctor tasks:");
@@ -694,6 +703,13 @@ export const doctorCommand = new Command("doctor")
       console.log(
         `Running doctor task: ${task.name} (fix=${fix}, dryRun=${dryRun}${noLlm ? ", noLlm=true" : ""})`,
       );
-      await task.run(db, { fix, dryRun, yes, noLlm, timeoutMs });
+      await task.run(db, {
+        fix,
+        dryRun,
+        yes,
+        noLlm,
+        timeoutMs,
+        knowledgeContext,
+      });
     });
   });

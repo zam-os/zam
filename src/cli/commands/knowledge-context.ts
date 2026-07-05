@@ -7,9 +7,11 @@ import {
   assignTokenToContext,
   createKnowledgeContext,
   deleteKnowledgeContext,
+  getActiveWorkspaceContext,
   getKnowledgeContextByName,
   getTokenBySlug,
   listKnowledgeContexts,
+  setActiveWorkspaceContext,
   unassignTokenFromContext,
 } from "../../kernel/index.js";
 import { jsonOut, withDb } from "./shared/db.js";
@@ -176,4 +178,61 @@ knowledgeContextCommand
         `Unassigned token "${token.slug}" from context "${context.name}"`,
       );
     });
+  });
+
+// ── zam knowledge-context use ────────────────────────────────────────────
+
+knowledgeContextCommand
+  .command("use")
+  .description("Set the active knowledge context default for this device")
+  .argument("[name]", "Context name to use (use without argument to clear)")
+  .option("--json", "Output as JSON")
+  .action(async (name, opts) => {
+    await withDb(async (db) => {
+      if (!name) {
+        setActiveWorkspaceContext(undefined);
+        if (opts.json) {
+          jsonOut({ success: true, activeContext: null });
+          return;
+        }
+        console.log("Cleared active knowledge context default.");
+        return;
+      }
+
+      const context = await getKnowledgeContextByName(db, name);
+      if (!context) {
+        console.error(`Knowledge context not found: ${name}`);
+        process.exit(1);
+      }
+
+      setActiveWorkspaceContext(context.name);
+
+      if (opts.json) {
+        jsonOut({ success: true, activeContext: context.name });
+        return;
+      }
+
+      console.log(`Active knowledge context set to: ${context.name}`);
+    });
+  });
+
+// ── zam knowledge-context show ───────────────────────────────────────────
+
+knowledgeContextCommand
+  .command("show")
+  .description("Show the active knowledge context default for this device")
+  .option("--json", "Output as JSON")
+  .action(async (opts) => {
+    const active = getActiveWorkspaceContext();
+
+    if (opts.json) {
+      jsonOut({ success: true, activeContext: active ?? null });
+      return;
+    }
+
+    if (active) {
+      console.log(`Active knowledge context: ${active}`);
+    } else {
+      console.log("No active knowledge context default set.");
+    }
   });
