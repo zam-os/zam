@@ -15,7 +15,10 @@ This release introduces **Knowledge Contexts** to ZAM. Learners can now segment 
 
 2. **Per-Device Defaults**:
    - Establish machine-local active defaults using `zam kc use <context>`.
-   - The default context resolves localized curriculum-import languages and filters the knowledge graph automatically on startup.
+   - The default context resolves localized curriculum-import languages and
+     preselects the knowledge-graph view filter on startup. It never scopes
+     the review queue — reviews stay cross-context unless an explicit
+     `--knowledge-context` is passed (ADR Decision 4).
 
 3. **Curriculum-Import Wizard Integration**:
    - Choose which knowledge context newly imported cards are assigned to directly inside the desktop Curriculum Import Wizard.
@@ -27,9 +30,11 @@ This release introduces **Knowledge Contexts** to ZAM. Learners can now segment 
    - Composes seamlessly with existing domain-prefix filters.
 
 5. **Doctor contexts backfill task**:
-   - Run `zam doctor` to scan for unassigned tokens.
+   - Run `zam doctor contexts` to scan for unassigned tokens; plain
+     `zam doctor` includes the read-only diagnosis, and `--json` emits the
+     report for machine consumers.
    - Interactive, dry-run, and auto-confirm modes let you safely batch-assign existing knowledge bases into newly established contexts.
 
 ## Verification & Status
 
-All automated Vitest suites (544 tests) are fully verified and passing. Schema migration code is tested and safe for production databases.
+All automated Vitest suites (556 tests across 61 files) are verified and passing; lint, typecheck, root build, and desktop build are green. Schema migration (M012) is idempotent and safe for production databases.
