@@ -3,9 +3,14 @@
  */
 
 import { Command } from "commander";
-import type { BloomLevel, SymbiosisMode } from "../../kernel/index.js";
+import type {
+  BloomLevel,
+  ListTokensOptions,
+  SymbiosisMode,
+} from "../../kernel/index.js";
 import {
   addPrerequisite,
+  assignTokenToContext,
   createToken,
   deleteToken,
   deprecateToken,
@@ -16,6 +21,7 @@ import {
   getDependents,
   getDisplayTitle,
   getEmbeddingCoverage,
+  getKnowledgeContextByName,
   getPrerequisites,
   getSetting,
   getTokenBySlug,
@@ -50,6 +56,15 @@ tokenCommand
   .option("--bloom <level>", "Bloom taxonomy level (1-5)", "1")
   .option("--source-link <link>", "Source file path or reference URL", "")
   .option("--question <question>", "Specific question prompt for recall", "")
+  .option(
+    "--knowledge-context <context>",
+    "Assign token to a knowledge context (repeatable)",
+    (val, memo: string[]) => {
+      memo.push(val);
+      return memo;
+    },
+    [],
+  )
   .option("--user <id>", "Owner of the personal card (default: whoami)")
   .option("--no-card", "Register the token only; do not create a personal card")
   .option("--json", "Output as JSON")
@@ -86,6 +101,17 @@ tokenCommand
         question,
       });
 
+      const assignedContexts = [];
+      for (const ctxName of opts.knowledgeContext || []) {
+        const context = await getKnowledgeContextByName(db, ctxName);
+        if (!context) {
+          console.error(`Knowledge context not found: ${ctxName}`);
+          process.exit(1);
+        }
+        await assignTokenToContext(db, token.id, context.id);
+        assignedContexts.push(context);
+      }
+
       // A token with no card never surfaces — not in the deck, not in the
       // content editor (which lists cards). In the single-user (default)
       // scenario the learner's card is created alongside the token so it is
@@ -115,6 +141,11 @@ tokenCommand
               ...token,
               card: cardUserId ? { userId: cardUserId } : null,
               possible_duplicates: possibleDuplicates,
+              knowledgeContexts: assignedContexts.map((c) => ({
+                name: c.name,
+                label: c.label,
+                language: c.language,
+              })),
             },
             null,
             2,
@@ -130,6 +161,11 @@ tokenCommand
         console.log(`  Domain:   ${token.domain || "(none)"}`);
         console.log(`  Bloom:    ${token.bloom_level}`);
         console.log(`  Question: ${token.question}`);
+        if (assignedContexts.length > 0) {
+          console.log(
+            `  Contexts: ${assignedContexts.map((c) => c.name).join(", ")}`,
+          );
+        }
         if (token.source_link) {
           console.log(`  Source:   ${token.source_link}`);
         }
@@ -261,13 +297,19 @@ tokenCommand
   .command("list")
   .description("List all tokens")
   .option("--domain <domain>", "Filter by domain")
+  .option("--knowledge-context <context>", "Filter by knowledge context")
   .option("--json", "Output as JSON")
   .option("--quiet", "Suppress output (exit code only)")
   .action(async (opts) => {
     await withDb(async (db) => {
+      const filterOpts: ListTokensOptions = {};
+      if (opts.domain) filterOpts.domain = opts.domain;
+      if (opts.knowledgeContext)
+        filterOpts.knowledgeContext = opts.knowledgeContext;
+
       const tokens = await listTokens(
         db,
-        opts.domain ? { domain: opts.domain } : undefined,
+        Object.keys(filterOpts).length ? filterOpts : undefined,
       );
 
       if (opts.quiet) return;

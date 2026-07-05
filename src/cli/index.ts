@@ -10,6 +10,7 @@ import { doctorCommand } from "./commands/doctor.js";
 import { gitSyncCommand } from "./commands/git-sync.js";
 import { goalCommand } from "./commands/goal.js";
 import { initCommand } from "./commands/init.js";
+import { knowledgeContextCommand } from "./commands/knowledge-context.js";
 import { learnCommand } from "./commands/learn.js";
 import { monitorCommand } from "./commands/monitor.js";
 import { observerCommand } from "./commands/observer.js";
@@ -45,6 +46,7 @@ program
 program.addCommand(initCommand);
 program.addCommand(setupCommand);
 program.addCommand(tokenCommand);
+program.addCommand(knowledgeContextCommand);
 program.addCommand(doctorCommand);
 program.addCommand(cardCommand);
 program.addCommand(sessionCommand);

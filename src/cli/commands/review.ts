@@ -20,6 +20,10 @@ export const reviewCommand = new Command("review")
   .option("--max-new <n>", "Maximum new cards", "10")
   .option("--max-reviews <n>", "Maximum review cards", "50")
   .option("--no-resolve", "Skip resolving source_link into inline context")
+  .option(
+    "--knowledge-context <context>",
+    "Filter review queue by knowledge context",
+  )
   .action(async (opts) => {
     let db: Database | undefined;
     try {
@@ -30,6 +34,7 @@ export const reviewCommand = new Command("review")
         userId,
         maxNew: Number(opts.maxNew),
         maxReviews: Number(opts.maxReviews),
+        knowledgeContext: opts.knowledgeContext,
       });
 
       if (queue.items.length === 0) {
