@@ -28,13 +28,17 @@ unchecked phase; keep one branch and one focused commit per completed phase.
   authority, or the learner's active situation.
 - Existing `Token.context: string` is explanatory token text and must not be
   repurposed.
-- Public naming is `knowledgeContexts` in payloads and
-  `--knowledge-context` in CLI options; database names remain `contexts` and
-  `token_contexts`.
+- Public naming is `knowledgeContexts` in payloads, `--knowledge-context` in
+  CLI options, `zam knowledge-context` (alias `zam kc`) as the management
+  command, and `list-knowledge-contexts`-style bridge operation names;
+  database names remain `contexts` and `token_contexts`. The bare word
+  `context` stays reserved for explanatory token text everywhere.
 - Context is a learner-facing facet and sync filter, never an authorization
   boundary. Sharing and portability follow the publishing workspace and
   classified source; therefore the minimal `contexts` table has no `visibility`.
-- Active situation is explicitly selectable with a per-device default.
+- The active knowledge context is explicitly selectable with a per-device
+  default; the assignment-prioritizing "active situation" is a separate,
+  governance-owned concept and stays out of this feature.
 - In the DocuWare working situation, DocuWare assignments are prioritized,
   vocational-school assignments remain eligible, and private assignments are
   excluded by default.
@@ -57,6 +61,10 @@ unchecked phase; keep one branch and one focused commit per completed phase.
   queue pacing belong to learning governance.
 - Source classification storage and inference belong to the governance/sync
   work; Knowledge Contexts only guarantees that context never grants access.
+- Whether `contexts`/`token_contexts` are knowledge-class (shared, curated) or
+  learner-class (private) data in multi-learner sync is open; the multi-learner
+  ADR's data-class table gains that row when it is next updated. Sync Phase D
+  must not ship before this is answered.
 
 ### Phase 0 deliverables
 
@@ -80,20 +88,30 @@ unchecked phase; keep one branch and one focused commit per completed phase.
 - Extend `ListTokensOptions` and `listTokens` in
   `src/kernel/models/token.ts` with a knowledge-context filter using an
   `EXISTS` query so tokens are returned once even with multiple assignments.
+- Extend `ReviewQueueOptions` and `buildReviewQueue` in
+  `src/kernel/scheduler/queue.ts` with an optional knowledge-context scope
+  (ADR Decision 4) restricting due + new card selection to tokens assigned to
+  the given context; without the option, queue behavior is unchanged
+  (everything, interleaved).
 - Re-export the complete public API from `src/kernel/index.ts`.
 - Add `tests/kernel/knowledge-contexts.test.ts` covering CRUD, n:m assignment,
-  OR membership, filtering, deletion cascades, and unchanged behavior for
-  unassigned tokens.
+  OR membership, filtering, queue scoping, deletion cascades, and unchanged
+  behavior for unassigned tokens and unscoped queues.
 - Do not implement source classification, sharing, learning assignments, queue
   policy, LLM calls, or UI in this phase.
 
 ## Phase 2 — CLI and bridge contracts
 
-- Add `zam context list|create|assign|unassign` in a focused CLI command module.
+- Add `zam knowledge-context list|create|assign|unassign` (alias `zam kc`) in a
+  focused CLI command module.
 - Add `--knowledge-context` filtering to `zam token list` and repeatable context
   assignment to token creation/import entry points that already create tokens.
-- Add additive bridge operations for listing contexts and assigning/unassigning
-  tokens; route every bridge response through `jsonOut`/`jsonError`.
+- Add the optional `--knowledge-context` scope to `zam review` (ADR Decision 4);
+  the queue default stays: everything, interleaved.
+- Add additive bridge operations (`list-knowledge-contexts`,
+  `assign-knowledge-context`, `unassign-knowledge-context`) plus
+  `--knowledge-context` filters; route every bridge response through
+  `jsonOut`/`jsonError`.
 - Add `knowledgeContexts` arrays to affected token payloads without changing the
   existing string-valued `Token.context` field.
 - Add CLI/bridge tests for exact JSON, unknown names/ids, duplicate assignment,
@@ -101,9 +119,11 @@ unchecked phase; keep one branch and one focused commit per completed phase.
 
 ## Phase 3 — language resolution and context assignment flows
 
-- Add an explicit active-context command/selector and a machine-local,
-  per-device default in the existing install/workspace configuration rather
-  than synced `user_config`.
+- Add `zam knowledge-context use [name]` (and `show`) to set and inspect the
+  active context. The per-device default lives as a field on the active
+  `WorkspaceConfig` entry in `~/.zam/config.json`
+  (`src/kernel/system/install-config.ts`), stored by context name —
+  machine-local by design, never synced `user_config`.
 - Resolution order: explicit operation option → device default → no active
   context.
 - Apply the selected context's language only as a generation default in
@@ -115,11 +135,17 @@ unchecked phase; keep one branch and one focused commit per completed phase.
 
 ## Phase 4 — `zam doctor contexts` backfill
 
+- Retrofit `src/cli/commands/doctor.ts` to the ADR interaction model first —
+  the owner decision covers the existing titles/texts/duplicates/domains tasks
+  too: plain `zam doctor` prints a read-only diagnosis report across all
+  registered tasks (no LLM calls, no writes), and a new `--json` flag emits
+  that report for bridge consumers.
 - Register a `contexts` doctor task in `src/cli/commands/doctor.ts`.
 - Diagnose unassigned tokens and propose assignments from domains, sources, and
   established content language; do not infer access/publication rights.
 - Keep diagnosis read-only; `--fix` previews and confirms; `--yes` applies only
-  complete deterministic/proposed choices; `--json` stays machine-readable.
+  complete deterministic/proposed choices; `--json` emits the machine-readable
+  report.
 - Keep all optional LLM assistance under `src/cli/llm/` and provide a no-LLM
   path.
 - Add tests for no-write diagnosis, confirmed assignment, ambiguous proposals,
@@ -127,11 +153,17 @@ unchecked phase; keep one branch and one focused commit per completed phase.
 
 ## Phase 5 — Studio and Knowledge Graph context selector
 
-- Add an explicit active-context selector above the domain selector in the
-  Studio and Knowledge Graph.
+- Add a knowledge-context selector above the domain selector in the Studio and
+  Knowledge Graph as a pure view filter: it initializes from the per-device
+  default, but changing it never writes that default back.
 - Show multi-context membership as filtering metadata, never as a sharing or
   confidentiality badge.
-- Persist the chosen device default through the machine-local configuration.
+- Editing the per-device default is a separate explicit control (settings
+  action), persisted through the machine-local `WorkspaceConfig` field from
+  Phase 3.
+- Let the desktop curriculum-import wizard assign knowledge contexts on import
+  (ADR Decision 6 names register/import wizards), prefilled from the device
+  default.
 - Add desktop logic/i18n tests for all supported locales and verify that domain
   filtering composes correctly with context filtering.
 - No multi-learner sync, source classification, reporting, or auditor UI.

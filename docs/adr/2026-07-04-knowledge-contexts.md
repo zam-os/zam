@@ -1,6 +1,7 @@
 # Knowledge Contexts: Work, School, Private
 
-**Status:** Accepted (2026-07-04); Phase 0 refined (2026-07-05)
+**Status:** Accepted (2026-07-04); Phase 0 refined, pre-implementation
+decisions resolved (2026-07-05)
 **Date:** 2026-07-04
 **Deciders:** Thomas (project owner)
 **Related:**
@@ -9,7 +10,7 @@
 [2026-07-04-multi-learner-shared-knowledge.md](2026-07-04-multi-learner-shared-knowledge.md)
 (data classes / sharing circles) ·
 [2026-07-04-hierarchical-domain-ontology-and-token-identity.md](2026-07-04-hierarchical-domain-ontology-and-token-identity.md)
-(seed note — may later subsume this)
+(seed note — decided there: contexts stay orthogonal, never absorbed)
 
 ---
 
@@ -98,7 +99,7 @@ silently.
 
 | Option | Shape | Verdict |
 |--------|-------|---------|
-| **A. Context = top domain level by convention** (`work/…`, `school/…`) | No schema change; reuses the `/` separator | Conflates context with subject taxonomy (`work/mathematik` vs `school/mathematik` duplicates subjects under two roots); no place to attach attributes like language; a rename-only convention — rejected as the primary mechanism, though the ontology ADR may revisit it. |
+| **A. Context = top domain level by convention** (`work/…`, `school/…`) | No schema change; reuses the `/` separator | Conflates context with subject taxonomy (`work/mathematik` vs `school/mathematik` duplicates subjects under two roots); no place to attach attributes like language; a rename-only convention — rejected; the ontology ADR has since ruled out absorbing contexts into domain paths. |
 | **B. `contexts` table + token↔context assignment** | Context as a small first-class facet with attributes such as language | Additive, one M-migration; attributes have a home; graph and sync filtering become explicit without granting access. **Chosen — in the n:m variant (owner decision):** a `token_contexts` join table instead of a single FK, so a token can live in several worlds (`git` at work AND privately). |
 | **C. Settings-only mapping** (domain-prefix → language in `settings`) | Zero schema | Solves only the language symptom; invisible to graph and sync filtering; another implicit convention. Rejected. |
 
@@ -135,7 +136,7 @@ per-context duplicates. Ambiguity is resolved by three fixed rules:
 - **Filtering is OR:** a token appears in every context it belongs to.
 - **Language: content wins.** A context's `language` is only the *default
   for new generation*, and there the **active context** of the operation
-  (a `knowledge-context.default` setting or
+  (the machine-local per-device default or the
   `--knowledge-context` flag) decides; existing tokens
   keep their established content language (titles ADR Decision 7) — doctor
   tasks never translate on the basis of a context alone.
@@ -173,9 +174,12 @@ doctor proposes context assignments from domain names and content language
 (LLM-assisted, confirmed by the user, like every doctor task), so the
 existing 253-token base gets classified without hand-editing. New tokens:
 `--knowledge-context <name>` flags on register/import wizards, plus an optional
-`knowledge-context.default` setting for "I'm currently working". These names
+per-device default stored machine-locally on the active workspace entry in
+`~/.zam/config.json` (never a synced setting) for "I'm currently working".
+These names
 are fixed because `Token.context` and `--context` already mean explanatory token
-text in the stable API.
+text in the stable API; the management command is `zam knowledge-context`
+(alias `zam kc`) for the same reason.
 
 **Owner decision on the doctor interaction model (applies to ALL doctor
 tasks across ADRs, resolving the titles ADR's open question):** plain
@@ -185,7 +189,8 @@ tasks across ADRs, resolving the titles ADR's open question):** plain
 for bridge consumers.
 
 **7. Bridge/protocol changes are additive:** a distinct `knowledgeContexts`
-field in token payloads, `list-contexts` command, and
+field in token payloads, `list-knowledge-contexts` (plus assign/unassign)
+commands, and
 `--knowledge-context` filters. The existing string-valued `Token.context`
 field remains unchanged. No breaking changes.
 
@@ -202,7 +207,8 @@ The DocuWare-apprentice walkthrough fixes the following behavioral boundaries:
 2. **The active knowledge context is explicitly selectable with a per-device
    default.** A company laptop can default to DocuWare without preventing an
    explicit switch at home. A device default is a convenience, not proof of
-   location, ownership, or permission.
+   location, ownership, or permission. View filters (graph, lists) read the
+   default but never write it; changing the default is always an explicit act.
 3. **One learner-token pair has one card and one FSRS history.** If the same
    token occurs in company and vocational-school curricula, that retained
    knowledge can satisfy both learning assignments. Assignment provenance,
@@ -250,6 +256,11 @@ The DocuWare-apprentice walkthrough fixes the following behavioral boundaries:
 3. **Per-context review pacing** — beyond the resolved DocuWare/school/private
    eligibility rule, how should the queue divide time among simultaneously
    eligible assignments? Defer to learning governance.
+4. **Data class of context assignments** — in multi-learner sync, are
+   `contexts`/`token_contexts` shared library data (curator-maintained) or
+   per-learner facets (one learner's "private" is not another's)? The schema
+   is deliberately user-unscoped; the multi-learner ADR's data-class table
+   must answer this before sync Phase D ships.
 
 ## Scope and delivery plan
 
@@ -257,7 +268,8 @@ The DocuWare-apprentice walkthrough fixes the following behavioral boundaries:
   ownership, visibility, active-situation, and public naming contracts are
   resolved above; the implementation plan lives in `docs/plans/`.
 - **Phase A — schema + kernel + CLI filters** (`contexts` and `token_contexts`,
-  list/register/edit support, language resolution in generation paths).
+  list/register/edit support, optional review-queue scope, language resolution
+  in generation paths).
 - **Phase B — doctor task `contexts`** (LLM-assisted backfill of the
   existing base).
 - **Phase C — Studio/graph selector** (context above domain).
