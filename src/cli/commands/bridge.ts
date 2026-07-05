@@ -45,6 +45,7 @@ import {
   generateConceptFreeCue,
   generatePrompt,
   generateTokenSlug,
+  getActiveWorkspaceContext,
   getAgentSkill,
   getCard,
   getCardDeletionImpact,
@@ -77,6 +78,7 @@ import {
   resolveObserverPolicy,
   resolveReviewContext,
   searchTokensHybrid,
+  setActiveWorkspaceContext,
   setProviderApiKey,
   setSetting,
   slugify,
@@ -691,6 +693,7 @@ bridgeCommand
     "--no-dynamic-question",
     "Use the stored question without generating a fresh LLM question",
   )
+  .option("--knowledge-context <context>", "Filter cards by knowledge context")
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
@@ -698,6 +701,7 @@ bridgeCommand
         userId,
         maxReviews: 1,
         maxNew: 1,
+        knowledgeContext: opts.knowledgeContext || undefined,
       });
 
       if (queue.items.length === 0) {
@@ -3178,6 +3182,34 @@ bridgeCommand
 
       const nb = await getTokenNeighborhood(db, token!.id, userId);
 
+      const allTokens = [nb.center, ...nb.prerequisites, ...nb.dependents];
+      const contextMap = new Map<
+        string,
+        Array<{ name: string; label: string | null; language: string | null }>
+      >();
+      if (allTokens.length > 0) {
+        const ids = allTokens.map((t) => t.id);
+        const placeholders = ids.map(() => "?").join(",");
+        const mappings = (await db
+          .prepare(
+            `SELECT tc.token_id, c.name, c.label, c.language
+             FROM token_contexts tc
+             INNER JOIN contexts c ON c.id = tc.context_id
+             WHERE tc.token_id IN (${placeholders})`,
+          )
+          .all(...ids)) as Array<{
+          token_id: string;
+          name: string;
+          label: string | null;
+          language: string | null;
+        }>;
+        for (const m of mappings) {
+          const list = contextMap.get(m.token_id) ?? [];
+          list.push({ name: m.name, label: m.label, language: m.language });
+          contextMap.set(m.token_id, list);
+        }
+      }
+
       const mapToken = (nt: NeighborhoodToken) => ({
         id: nt.id,
         slug: nt.slug,
@@ -3186,6 +3218,7 @@ bridgeCommand
         concept: nt.concept,
         domain: nt.domain,
         bloomLevel: nt.bloom_level,
+        knowledgeContexts: contextMap.get(nt.id) ?? [],
         card: nt.card
           ? {
               state: nt.card.state,
@@ -3812,10 +3845,20 @@ bridgeCommand
     "--proposals <json>",
     "JSON string representing proposals array",
   )
+  .option(
+    "--knowledge-context <context>",
+    "Assign confirmed tokens to a knowledge context (repeatable)",
+    (val, memo: string[]) => {
+      memo.push(val);
+      return memo;
+    },
+    [],
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
       const proposals = JSON.parse(opts.proposals);
+      const contextNames = opts.knowledgeContext || [];
 
       const result = await confirmSourceImport(
         db,
@@ -3823,6 +3866,29 @@ bridgeCommand
         opts.sourceId,
         proposals,
       );
+
+      for (const p of proposals) {
+        const baseText =
+          p.question && p.question.trim().length > 0 ? p.question : p.concept;
+        const cleanDomain = slugify(p.domain || "");
+        const cleanBase = slugify(baseText);
+        let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
+        if (baseSlug.length > 60) {
+          baseSlug = baseSlug.slice(0, 60).replace(/-$/, "");
+        }
+        if (!baseSlug) {
+          baseSlug = "token";
+        }
+        const token = await getTokenBySlug(db, baseSlug);
+        if (token) {
+          for (const ctxName of contextNames) {
+            const context = await getKnowledgeContextByName(db, ctxName);
+            if (context) {
+              await assignTokenToContext(db, token.id, context.id);
+            }
+          }
+        }
+      }
 
       jsonOut({
         success: true,
@@ -4161,6 +4227,39 @@ bridgeCommand
       }
       await unassignTokenFromContext(db, token.id, context.id);
       jsonOut({ success: true, token: token.slug, context: context.name });
+    });
+  });
+
+// ── zam bridge get-active-knowledge-context ───────────────────────────────────
+
+bridgeCommand
+  .command("get-active-knowledge-context")
+  .description("Get the active knowledge context name (JSON)")
+  .action(() => {
+    const active = getActiveWorkspaceContext();
+    jsonOut({ success: true, activeContext: active ?? null });
+  });
+
+// ── zam bridge set-active-knowledge-context ───────────────────────────────────
+
+bridgeCommand
+  .command("set-active-knowledge-context")
+  .description("Set the active knowledge context name (JSON)")
+  .argument("[name]", "Context name to use (use empty/none to clear)")
+  .action(async (name) => {
+    await withDb(async (db) => {
+      if (!name || name === "none" || name === "null" || name === "undefined") {
+        setActiveWorkspaceContext(undefined);
+        jsonOut({ success: true, activeContext: null });
+        return;
+      }
+      const context = await getKnowledgeContextByName(db, name);
+      if (!context) {
+        jsonError(`Knowledge context not found: ${name}`);
+        return;
+      }
+      setActiveWorkspaceContext(context.name);
+      jsonOut({ success: true, activeContext: context.name });
     });
   });
 

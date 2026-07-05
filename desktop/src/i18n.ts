@@ -402,6 +402,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_err_category_required: "La categoría es obligatoria.",
     lbl_err_import_context_required: "El texto del plan de estudios es obligatorio.",
     lbl_err_original_context_required: "La pregunta y la respuesta son obligatorias para la tarjeta original.",
+    settings_context_title: "Contexto de conocimiento",
+    settings_context_help: "Selecciona el contexto de conocimiento predeterminado para este dispositivo.",
+    settings_context_label: "Contexto predeterminado",
+    wizard_context_label: "Asignar tarjetas importadas al contexto:",
   },
   fr: {
     ai_status_offline: "IA hors ligne",
@@ -781,6 +785,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_err_category_required: "La catégorie est obligatoire.",
     lbl_err_import_context_required: "Le texte du programme est obligatoire.",
     lbl_err_original_context_required: "La question et la réponse sont obligatoires pour la carte originale.",
+    settings_context_title: "Contexte de connaissances",
+    settings_context_help: "Sélectionnez le contexte de connaissances par défaut pour cet appareil.",
+    settings_context_label: "Contexte par défaut",
+    wizard_context_label: "Assigner les cartes importées au contexte :",
   },
   pt: {
     ai_status_offline: "IA offline",
@@ -1160,6 +1168,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_err_category_required: "A categoria é obrigatória.",
     lbl_err_import_context_required: "O texto do currículo é obrigatório.",
     lbl_err_original_context_required: "A pergunta e a resposta são obrigatórias para o cartão original.",
+    settings_context_title: "Contexto de conhecimento",
+    settings_context_help: "Selecione o contexto de conhecimento padrão para este dispositivo.",
+    settings_context_label: "Contexto padrão",
+    wizard_context_label: "Atribuir cartões importados ao contexto:",
   },
   zh: {
     ai_status_offline: "AI 已离线",
@@ -1523,6 +1535,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_err_category_required: "类别为必填项。",
     lbl_err_import_context_required: "课程文本为必填项。",
     lbl_err_original_context_required: "原始卡片必须填写问题和答案。",
+    settings_context_title: "知识上下文",
+    settings_context_help: "选择此设备的默认知识上下文。",
+    settings_context_label: "默认上下文",
+    wizard_context_label: "将导入的卡片分配到上下文：",
   },
   ja: {
     ai_status_offline: "AI オフライン",
@@ -1900,6 +1916,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_err_category_required: "カテゴリーは必須です。",
     lbl_err_import_context_required: "カリキュラムのテキストは必須です。",
     lbl_err_original_context_required: "元のカードには質問と回答が必要です。",
+    settings_context_title: "知識コンテキスト",
+    settings_context_help: "このデバイスのデフォルトの知識コンテキストを選択します。",
+    settings_context_label: "デフォルトコンテキスト",
+    wizard_context_label: "インポートされたカードをコンテキストに割り当てる：",
   },
 };
 

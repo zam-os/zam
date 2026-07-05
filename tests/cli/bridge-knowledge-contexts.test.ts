@@ -154,5 +154,70 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
       const listTokensResFinal = runCliJson(["bridge", "list-tokens", "--knowledge-context", "private"]);
       expect(listTokensResFinal.tokens).toHaveLength(0);
     });
+
+    it("composes domain prefix filter and knowledge context filter correctly", () => {
+      runCli(["kc", "create", "--name", "science-ctx", "--label", "Science Context", "--language", "en"]);
+
+      runCli([
+        "token",
+        "register",
+        "--slug",
+        "physics-gravity",
+        "--concept",
+        "Newtonian gravity",
+        "--domain",
+        "physics",
+        "--knowledge-context",
+        "science-ctx",
+      ]);
+
+      runCli([
+        "token",
+        "register",
+        "--slug",
+        "chemistry-bonds",
+        "--concept",
+        "Covalent bonds",
+        "--domain",
+        "chemistry",
+        "--knowledge-context",
+        "science-ctx",
+      ]);
+
+      runCli([
+        "token",
+        "register",
+        "--slug",
+        "physics-relativity",
+        "--concept",
+        "General relativity",
+        "--domain",
+        "physics",
+      ]);
+
+      const resCtx = runCliJson(["bridge", "list-tokens", "--knowledge-context", "science-ctx"]);
+      const slugsCtx = resCtx.tokens.map((t: any) => t.slug);
+      expect(slugsCtx).toContain("physics-gravity");
+      expect(slugsCtx).toContain("chemistry-bonds");
+      expect(slugsCtx).not.toContain("physics-relativity");
+
+      const resDom = runCliJson(["bridge", "list-tokens", "--domain-prefix", "physics"]);
+      const slugsDom = resDom.tokens.map((t: any) => t.slug);
+      expect(slugsDom).toContain("physics-gravity");
+      expect(slugsDom).toContain("physics-relativity");
+      expect(slugsDom).not.toContain("chemistry-bonds");
+
+      const resComposed = runCliJson([
+        "bridge",
+        "list-tokens",
+        "--domain-prefix",
+        "physics",
+        "--knowledge-context",
+        "science-ctx",
+      ]);
+      const slugsComposed = resComposed.tokens.map((t: any) => t.slug);
+      expect(slugsComposed).toHaveLength(1);
+      expect(slugsComposed[0]).toBe("physics-gravity");
+    });
   });
 });

@@ -10,8 +10,8 @@ import {
   getEmbeddingCoverage,
   getSetting,
   getShortSlug,
-  listKnowledgeContexts,
   type KnowledgeContext,
+  listKnowledgeContexts,
 } from "../../kernel/index.js";
 import {
   deprecateToken,
@@ -650,7 +650,8 @@ export const doctorTasks: DoctorTask[] = [
   },
   {
     name: "contexts",
-    description: "Backfill contexts on old/unassigned tokens using heuristic rules.",
+    description:
+      "Backfill contexts on old/unassigned tokens using heuristic rules.",
     run: async (db, opts) => {
       const tokensWithoutContext = (await db
         .prepare(
@@ -663,7 +664,9 @@ export const doctorTasks: DoctorTask[] = [
 
       const contexts = await listKnowledgeContexts(db);
       if (contexts.length === 0) {
-        console.log("No knowledge contexts defined. Run `zam kc create` first.");
+        console.log(
+          "No knowledge contexts defined. Run `zam kc create` first.",
+        );
         return;
       }
 
@@ -693,7 +696,10 @@ export const doctorTasks: DoctorTask[] = [
             } else if (ctxName.includes(domain) || domain.includes(ctxName)) {
               match = true;
               highConfidence = domain.length >= 2;
-            } else if (ctxLabel && (ctxLabel.includes(domain) || domain.includes(ctxLabel))) {
+            } else if (
+              ctxLabel &&
+              (ctxLabel.includes(domain) || domain.includes(ctxLabel))
+            ) {
               match = true;
               highConfidence = domain.length >= 2;
             }
@@ -706,9 +712,15 @@ export const doctorTasks: DoctorTask[] = [
 
           // Rule 3: Word-by-word matches on label words
           if (ctxLabel) {
-            const labelWords = ctxLabel.split(/\s+/).filter((w) => w.length > 3);
+            const labelWords = ctxLabel
+              .split(/\s+/)
+              .filter((w) => w.length > 3);
             for (const word of labelWords) {
-              if (domain.includes(word) || slug.includes(word) || title.includes(word)) {
+              if (
+                domain.includes(word) ||
+                slug.includes(word) ||
+                title.includes(word)
+              ) {
                 match = true;
               }
             }
@@ -748,7 +760,9 @@ export const doctorTasks: DoctorTask[] = [
         for (const prop of proposals) {
           if (prop.highConfidence) {
             await assignTokenToContext(db, prop.token.id, prop.context.id);
-            console.log(`Auto-assigned: "${prop.token.slug}" -> context "${prop.context.name}"`);
+            console.log(
+              `Auto-assigned: "${prop.token.slug}" -> context "${prop.context.name}"`,
+            );
             applied++;
           }
         }
@@ -766,11 +780,15 @@ export const doctorTasks: DoctorTask[] = [
         });
         if (ans) {
           await assignTokenToContext(db, prop.token.id, prop.context.id);
-          console.log(`Assigned "${prop.token.slug}" -> context "${prop.context.name}"`);
+          console.log(
+            `Assigned "${prop.token.slug}" -> context "${prop.context.name}"`,
+          );
           assignedCount++;
         }
       }
-      console.log(`Completed contexts backfill. Assigned ${assignedCount} tokens.`);
+      console.log(
+        `Completed contexts backfill. Assigned ${assignedCount} tokens.`,
+      );
     },
   },
 ];
