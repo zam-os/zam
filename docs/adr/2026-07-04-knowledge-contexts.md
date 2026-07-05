@@ -1,7 +1,6 @@
 # Knowledge Contexts: Work, School, Private
 
-**Status:** Accepted (2026-07-04); Phase 0 refined, pre-implementation
-decisions resolved (2026-07-05)
+**Status:** Implemented (2026-07-05)
 **Date:** 2026-07-04
 **Deciders:** Thomas (project owner)
 **Related:**
