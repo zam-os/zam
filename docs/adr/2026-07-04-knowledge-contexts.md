@@ -15,22 +15,21 @@
 
 ## Context
 
-One learner, several lives. The same knowledge base currently holds DocuWare
-COPS platform knowledge (authored in **English** by explicit decision — an
-8-nationality team should be able to read it), German school curricula for
-the family, and private interests. Today these worlds are distinguishable
-only by *guessing from domain names* (`axon-ivy` is probably work,
-`Deutsch` is probably school).
+One learner, several lives. The same knowledge base currently holds
+team-specific knowledge (authored in **English** due to team requirements),
+vocational-school curricula, and private interests authored in **German**.
+Today these worlds are distinguishable only by *guessing from domain names*
+(`git` is probably work, `sleep` is probably private).
 
 Three recent decisions all tripped over this missing notion:
 
 1. **Language** (titles ADR, Decision 7): `system.locale` had to be demoted
-   from "mandate" to "default" because the COPS area is deliberately
+   from "mandate" to "default" because the team area is deliberately
    English. The *rule* ("this area is English") currently lives nowhere —
    it exists only as owner intent.
 2. **Sharing** (multi-learner ADR): a context is a useful library slice, but it
    is not an authorization boundary. The publishing workspace and classified
-   source determine who may receive content; tagging something `DocuWare` must
+   source determine who may receive content; tagging something `work` must
    never make it shareable by itself.
 3. **Graph overview**: the graph is getting crowded; the coarsest useful
    filter ("show me only work") is not expressible.
@@ -44,20 +43,20 @@ The hierarchical-ontology ADR (seed note) may eventually restructure
 domains entirely; whatever we do here must be **small, additive, and
 forward-compatible** with that outcome.
 
-### Worked persona: a DocuWare apprentice
+### Worked persona: a team apprentice
 
 An apprentice may be all of these at the same time:
 
-- a DocuWare employee working in IT helpdesk or first-/second-level support;
+- a company employee working in IT helpdesk or first-/second-level support;
 - a vocational-school student following an official curriculum provider;
 - a private learner pursuing goals at home;
-- a member of a DocuWare team whose operational goals can create new learning
+- a member of a company team whose operational goals can create new learning
   needs.
 
 The corresponding material need not live in one repository. Personal and
 vocational-school goals may live in `zam-personal`; company goals and curricula
-may live in a DocuWare team workspace; a school could later publish its own
-workspace. Work tasks can also produce knowledge that belongs to the DocuWare
+may live in a company team workspace; a school could later publish its own
+workspace. Work tasks can also produce knowledge that belongs to the company
 world even when no curriculum prescribed it in advance.
 
 This persona exposes several independent questions that **context alone must
@@ -65,13 +64,13 @@ not answer**:
 
 | Dimension | Question it answers |
 |-----------|---------------------|
-| Knowledge context | In whose world is this relevant: DocuWare, vocational school, private? |
+| Knowledge context | In whose world is this relevant: company, vocational school, private? |
 | Curriculum | Which structured body of learning objectives is offered or required? |
 | Learning assignment | Who says this learner should learn which objectives, with what priority or due date? |
 | Goal | What outcome should an individual or organization achieve? A goal may imply learning assignments, but is not itself one. |
 | Workspace/repository | Who owns and versions the goal, curriculum, rules, or process? |
 | Access policy | From which workspace, device, network, or place may material be read or practised? |
-| Active situation | Which learning is appropriate now, for example during DocuWare working time or at home? |
+| Active situation | Which learning is appropriate now, for example during company working time or at home? |
 | Learning state | What has this learner personally reviewed, forgotten, or mastered? |
 
 `Learning assignment` is a Phase 0 working term, not yet a schema decision. It
@@ -82,8 +81,9 @@ silently.
 
 ## Decision drivers
 
-1. **Make existing owner intent explicit** — "COPS is English" and "this
-   knowledge is relevant to vocational school" should be data, not memory.
+1. **Make existing owner intent explicit** — "shared team material is written
+   in English" and "this knowledge is relevant to vocational school" should
+   be data, not memory.
    Sharing policy remains with the publishing workspace/source.
 2. **Orthogonality** — context (whose world) ⊥ domain (which subject).
 3. **Smallest additive change** — no identity changes, no domain
@@ -109,7 +109,7 @@ silently.
 ```sql
 CREATE TABLE IF NOT EXISTS contexts (
   id         TEXT PRIMARY KEY,            -- ULID
-  name       TEXT NOT NULL UNIQUE,        -- "work-docuware", "school", "private"
+  name       TEXT NOT NULL UNIQUE,        -- "work-company", "school", "private"
   label      TEXT,                        -- display name, Unicode
   language   TEXT,                        -- BCP-47 ("en", "de"); NULL = system.locale
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -141,7 +141,7 @@ per-context duplicates. Ambiguity is resolved by three fixed rules:
   tasks never translate on the basis of a context alone.
 - **Context never grants access:** publishing and portability follow the
   classified source and publishing workspace. A public source link denotes
-  public knowledge; a team repository, internal Confluence page, or comparable
+  public knowledge; a team repository, internal wiki page, or comparable
   organization-only source denotes confidential knowledge. If sources disagree
   or classification is absent, sharing fails closed until an authoritative
   public source grounds a portable version.
@@ -152,7 +152,7 @@ Nothing about slugs, identity, or domain names changes.
 
 **3. Language resolution becomes explicit:** generation paths (curriculum
 import, title generation, `zam doctor titles`) use
-`context.language ?? system.locale`. This turns the COPS-is-English rule
+`context.language ?? system.locale`. This turns the team's language rule
 from owner memory into data, and completes titles-ADR Decision 7.
 
 **4. Context is the coarsest filter.** `zam token list --knowledge-context`,
@@ -195,16 +195,16 @@ field remains unchanged. No breaking changes.
 
 ### Phase 0 refinement decisions (2026-07-05)
 
-The DocuWare-apprentice walkthrough fixes the following behavioral boundaries:
+The team-apprentice walkthrough fixes the following behavioral boundaries:
 
 1. **Active situation prioritizes; it does not redefine knowledge.** In the
-   DocuWare working situation, DocuWare learning assignments are prioritized,
+   company working situation, company learning assignments are prioritized,
    vocational-school assignments remain eligible, and private assignments are
    excluded by default. A later policy may reserve a percentage of working time
    for private learning. Time budgets, tracking, reporting, and incentives belong
    to a separate learning-governance ADR.
 2. **The active knowledge context is explicitly selectable with a per-device
-   default.** A company laptop can default to DocuWare without preventing an
+   default.** A company laptop can default to company without preventing an
    explicit switch at home. A device default is a convenience, not proof of
    location, ownership, or permission. View filters (graph, lists) read the
    default but never write it; changing the default is always an explicit act.
@@ -224,7 +224,7 @@ The DocuWare-apprentice walkthrough fixes the following behavioral boundaries:
    reporting is a separate governance concern.
 6. **Knowledge portability follows the classified source, not the device used.**
    Public-resource links ground portable world knowledge. Team repositories,
-   internal Confluence pages, and comparable organization-only resources ground
+   internal wiki pages, and comparable organization-only resources ground
    confidential knowledge. When membership ends, access to those sources and
    their confidential derived knowledge disappears; portable world knowledge
    remains. Exact purge mechanics belong to learning governance and
@@ -252,7 +252,7 @@ The DocuWare-apprentice walkthrough fixes the following behavioral boundaries:
    area has enough active maintainers without exposing private review history?
    Completion attestations, demonstrated work, or learner-approved aggregates
    are candidates for the learning-governance ADR.
-3. **Per-context review pacing** — beyond the resolved DocuWare/school/private
+3. **Per-context review pacing** — beyond the resolved company/school/private
    eligibility rule, how should the queue divide time among simultaneously
    eligible assignments? Defer to learning governance.
 4. **Data class of context assignments** — in multi-learner sync, are

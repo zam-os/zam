@@ -64,12 +64,12 @@ export interface UpdateTokenInput {
 export interface ListTokensOptions {
   domain?: string;
   /**
-   * Filter by domain prefix using `/` as separator (e.g. "docuware-cops").
+   * Filter by domain prefix using `/` as separator (e.g. "company-team").
    * Matches exact or startsWith(prefix + "/").
    */
   domainPrefix?: string;
   /**
-   * Filter by knowledge context name (e.g. "work-docuware").
+   * Filter by knowledge context name (e.g. "work-company").
    */
   knowledgeContext?: string;
 }
@@ -632,7 +632,7 @@ export async function generateTokenSlug(
 export async function listPersonalCards(
   db: Database,
   userId: string,
-  options?: { query?: string; domain?: string },
+  options?: { query?: string; domain?: string; knowledgeContext?: string },
 ): Promise<PersonalCard[]> {
   let sql = `
     SELECT 
@@ -680,6 +680,15 @@ export async function listPersonalCards(
   if (options?.domain) {
     sql += " AND t.domain = ?";
     values.push(options.domain);
+  }
+
+  if (options?.knowledgeContext) {
+    sql += ` AND EXISTS (
+      SELECT 1 FROM token_contexts tc
+      INNER JOIN contexts kc ON kc.id = tc.context_id
+      WHERE tc.token_id = t.id AND kc.name = ?
+    )`;
+    values.push(options.knowledgeContext);
   }
 
   if (options?.query) {

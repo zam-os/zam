@@ -509,4 +509,8 @@ async function runMigrations(db: Database): Promise<void> {
       PRIMARY KEY (token_id, context_id)
     )
   `);
+
+  await db.exec(`
+    CREATE INDEX IF NOT EXISTS idx_token_contexts_context ON token_contexts(context_id)
+  `);
 }

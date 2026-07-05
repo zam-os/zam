@@ -15,6 +15,7 @@ import { ulid } from "ulid";
 import type {
   BloomLevel,
   Database,
+  KnowledgeContext,
   ListTokensOptions,
   NeighborhoodToken,
   Rating,
@@ -114,6 +115,7 @@ import {
   setLastCurriculumSelection,
   type TopicNode,
 } from "../curriculum/index.js";
+import { resolveOperationKnowledgeContexts } from "../knowledge-contexts.js";
 import {
   type ApiFlavor,
   checkVisionReadiness,
@@ -202,6 +204,28 @@ function jsonError(message: string): never {
   }
   console.log(JSON.stringify({ error: msg }, null, 2));
   process.exit(1);
+}
+
+function parseKnowledgeContextNames(value: unknown): string[] {
+  if (value == null) return [];
+  if (
+    !Array.isArray(value) ||
+    value.some((name) => typeof name !== "string" || !name.trim())
+  ) {
+    jsonError("knowledgeContexts must be an array of non-empty context names");
+  }
+  return [...new Set(value.map((name) => name.trim()))];
+}
+
+async function resolveKnowledgeContexts(
+  db: Database,
+  names: string[],
+): Promise<KnowledgeContext[]> {
+  try {
+    return await resolveOperationKnowledgeContexts(db, names);
+  } catch (error) {
+    jsonError((error as Error).message);
+  }
 }
 
 function parseNonNegativeIntegerOption(name: string, value: string): number {
@@ -311,10 +335,17 @@ bridgeCommand
   .description("Check due cards for a user (JSON)")
   .option("--user <id>", "User ID (default: whoami)")
   .option("--domain <domain>", "Filter by knowledge domain")
+  .option("--knowledge-context <context>", "Filter by knowledge context")
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
-      const dueCards = await getDueCards(db, userId, undefined, opts.domain);
+      const dueCards = await getDueCards(
+        db,
+        userId,
+        undefined,
+        opts.domain,
+        opts.knowledgeContext,
+      );
       const domains = [
         ...new Set(dueCards.map((c) => c.domain).filter(Boolean)),
       ].sort();
@@ -322,6 +353,7 @@ bridgeCommand
       jsonOut({
         userId,
         domain: opts.domain ?? null,
+        knowledgeContext: opts.knowledgeContext ?? null,
         dueCount: dueCards.length,
         domains,
         cards: dueCards.map((c) => ({
@@ -767,7 +799,10 @@ bridgeCommand
       }
 
       // Get full queue size for context
-      const fullQueue = await buildReviewQueue(db, { userId });
+      const fullQueue = await buildReviewQueue(db, {
+        userId,
+        knowledgeContext: opts.knowledgeContext || undefined,
+      });
 
       jsonOut({
         userId,
@@ -1157,6 +1192,11 @@ bridgeCommand
         title: data?.title ?? null,
       });
 
+      const ctxNames = parseKnowledgeContextNames(
+        data?.knowledgeContexts ?? data?.knowledge_contexts,
+      );
+      const assignedContexts = await resolveKnowledgeContexts(db, ctxNames);
+
       const token = await createToken(db, {
         slug: data?.slug,
         title: data?.title,
@@ -1174,16 +1214,8 @@ bridgeCommand
         question: data?.question ?? null,
       });
 
-      const assignedContexts = [];
-      const ctxNames =
-        data?.knowledgeContexts ?? data?.knowledge_contexts ?? [];
-      for (const ctxName of ctxNames) {
-        const context = await getKnowledgeContextByName(db, ctxName);
-        if (!context) {
-          jsonError(`Knowledge context not found: ${ctxName}`);
-        }
+      for (const context of assignedContexts) {
         await assignTokenToContext(db, token.id, context.id);
-        assignedContexts.push(context);
       }
 
       const card = await ensureCard(db, token.id, userId);
@@ -3049,7 +3081,7 @@ bridgeCommand
   .option("--domain <domain>", "Filter by exact domain")
   .option(
     "--domain-prefix <prefix>",
-    "Filter by domain prefix (e.g. docuware-cops) — uses / separator for hierarchy",
+    "Filter by domain prefix (e.g. company-team) — uses / separator for hierarchy",
   )
   .option("--knowledge-context <context>", "Filter by knowledge context")
   .action(async (opts) => {
@@ -3249,14 +3281,52 @@ bridgeCommand
   .option("--user <id>", "User ID (default: whoami)")
   .option("--query <query>", "Text search query")
   .option("--domain <domain>", "Filter by category/domain")
+  .option("--knowledge-context <context>", "Filter by knowledge context")
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
       const cards = await listPersonalCards(db, userId, {
         query: opts.query,
         domain: opts.domain,
+        knowledgeContext: opts.knowledgeContext,
       });
-      jsonOut({ cards });
+      const contextMap = new Map<
+        string,
+        Array<{ name: string; label: string | null; language: string | null }>
+      >();
+      if (cards.length > 0) {
+        const tokenIds = cards.map((card) => card.tokenId);
+        const placeholders = tokenIds.map(() => "?").join(",");
+        const mappings = (await db
+          .prepare(
+            `SELECT tc.token_id, c.name, c.label, c.language
+             FROM token_contexts tc
+             INNER JOIN contexts c ON c.id = tc.context_id
+             WHERE tc.token_id IN (${placeholders})
+             ORDER BY c.name`,
+          )
+          .all(...tokenIds)) as Array<{
+          token_id: string;
+          name: string;
+          label: string | null;
+          language: string | null;
+        }>;
+        for (const mapping of mappings) {
+          const contexts = contextMap.get(mapping.token_id) ?? [];
+          contexts.push({
+            name: mapping.name,
+            label: mapping.label,
+            language: mapping.language,
+          });
+          contextMap.set(mapping.token_id, contexts);
+        }
+      }
+      jsonOut({
+        cards: cards.map((card) => ({
+          ...card,
+          knowledgeContexts: contextMap.get(card.tokenId) ?? [],
+        })),
+      });
     });
   });
 
@@ -3278,9 +3348,22 @@ bridgeCommand
     "none",
   )
   .option("--context <context>", "Context description", "")
+  .option(
+    "--knowledge-context <context>",
+    "Assign token to a knowledge context (repeatable)",
+    (val, memo: string[]) => {
+      memo.push(val);
+      return memo;
+    },
+    [],
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
+      const contextNames = parseKnowledgeContextNames(
+        opts.knowledgeContext || [],
+      );
+      const contexts = await resolveKnowledgeContexts(db, contextNames);
 
       const bloom = Number(opts.bloom) as BloomLevel;
       if (bloom < 1 || bloom > 5) {
@@ -3316,6 +3399,9 @@ bridgeCommand
           source_link: opts.sourceLink || null,
           question,
         });
+        for (const context of contexts) {
+          await assignTokenToContext(tx, createdToken.id, context.id);
+        }
         const createdCard = await ensureCard(tx, createdToken.id, userId);
         return { token: createdToken, card: createdCard };
       });
@@ -3336,6 +3422,11 @@ bridgeCommand
           question: token.question,
           createdAt: token.created_at,
           updatedAt: token.updated_at,
+          knowledgeContexts: contexts.map((context) => ({
+            name: context.name,
+            label: context.label,
+            language: context.language,
+          })),
         },
         card: {
           id: card.id,
@@ -3564,8 +3655,11 @@ bridgeCommand
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
 
-      const contextNames = opts.knowledgeContext || [];
-      const firstContext = contextNames[0];
+      const contextNames = parseKnowledgeContextNames(
+        opts.knowledgeContext || [],
+      );
+      const contexts = await resolveKnowledgeContexts(db, contextNames);
+      const firstContext = contexts[0]?.name;
 
       const cards = await importCurriculumViaLLM(
         db,
@@ -3601,11 +3695,8 @@ bridgeCommand
         }
         const token = await getTokenBySlug(db, baseSlug);
         if (token) {
-          for (const ctxName of contextNames) {
-            const context = await getKnowledgeContextByName(db, ctxName);
-            if (context) {
-              await assignTokenToContext(db, token.id, context.id);
-            }
+          for (const context of contexts) {
+            await assignTokenToContext(db, token.id, context.id);
           }
         }
       }
@@ -3858,7 +3949,10 @@ bridgeCommand
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
       const proposals = JSON.parse(opts.proposals);
-      const contextNames = opts.knowledgeContext || [];
+      const contextNames = parseKnowledgeContextNames(
+        opts.knowledgeContext || [],
+      );
+      const contexts = await resolveKnowledgeContexts(db, contextNames);
 
       const result = await confirmSourceImport(
         db,
@@ -3881,11 +3975,8 @@ bridgeCommand
         }
         const token = await getTokenBySlug(db, baseSlug);
         if (token) {
-          for (const ctxName of contextNames) {
-            const context = await getKnowledgeContextByName(db, ctxName);
-            if (context) {
-              await assignTokenToContext(db, token.id, context.id);
-            }
+          for (const context of contexts) {
+            await assignTokenToContext(db, token.id, context.id);
           }
         }
       }
@@ -4235,9 +4326,18 @@ bridgeCommand
 bridgeCommand
   .command("get-active-knowledge-context")
   .description("Get the active knowledge context name (JSON)")
-  .action(() => {
-    const active = getActiveWorkspaceContext();
-    jsonOut({ success: true, activeContext: active ?? null });
+  .action(async () => {
+    await withDb(async (db) => {
+      const configured = getActiveWorkspaceContext();
+      const active = configured
+        ? await getKnowledgeContextByName(db, configured)
+        : undefined;
+      jsonOut({
+        success: true,
+        activeContext: active?.name ?? null,
+        staleContext: configured && !active ? configured : null,
+      });
+    });
   });
 
 // ── zam bridge set-active-knowledge-context ───────────────────────────────────
@@ -4249,7 +4349,9 @@ bridgeCommand
   .action(async (name) => {
     await withDb(async (db) => {
       if (!name || name === "none" || name === "null" || name === "undefined") {
-        setActiveWorkspaceContext(undefined);
+        if (!setActiveWorkspaceContext(undefined)) {
+          jsonError("No active workspace configured");
+        }
         jsonOut({ success: true, activeContext: null });
         return;
       }
@@ -4258,7 +4360,9 @@ bridgeCommand
         jsonError(`Knowledge context not found: ${name}`);
         return;
       }
-      setActiveWorkspaceContext(context.name);
+      if (!setActiveWorkspaceContext(context.name)) {
+        jsonError("No active workspace configured");
+      }
       jsonOut({ success: true, activeContext: context.name });
     });
   });

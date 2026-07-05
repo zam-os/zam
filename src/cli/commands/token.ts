@@ -21,7 +21,6 @@ import {
   getDependents,
   getDisplayTitle,
   getEmbeddingCoverage,
-  getKnowledgeContextByName,
   getPrerequisites,
   getSetting,
   getTokenBySlug,
@@ -31,6 +30,7 @@ import {
   suggestFoundations,
   updateToken,
 } from "../../kernel/index.js";
+import { resolveOperationKnowledgeContexts } from "../knowledge-contexts.js";
 import {
   embedQuery,
   ensureTokenEmbeddings,
@@ -86,6 +86,11 @@ tokenCommand
         );
       }
 
+      const assignedContexts = await resolveOperationKnowledgeContexts(
+        db,
+        opts.knowledgeContext || [],
+      );
+
       const possibleDuplicates = await findPossibleDuplicates(db, {
         concept: opts.concept,
         question,
@@ -101,15 +106,8 @@ tokenCommand
         question,
       });
 
-      const assignedContexts = [];
-      for (const ctxName of opts.knowledgeContext || []) {
-        const context = await getKnowledgeContextByName(db, ctxName);
-        if (!context) {
-          console.error(`Knowledge context not found: ${ctxName}`);
-          process.exit(1);
-        }
+      for (const context of assignedContexts) {
         await assignTokenToContext(db, token.id, context.id);
-        assignedContexts.push(context);
       }
 
       // A token with no card never surfaces — not in the deck, not in the

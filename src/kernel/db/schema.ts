@@ -183,5 +183,5 @@ CREATE INDEX IF NOT EXISTS idx_review_logs_card ON review_logs(card_id);
 CREATE INDEX IF NOT EXISTS idx_review_logs_user ON review_logs(user_id, reviewed_at);
 CREATE INDEX IF NOT EXISTS idx_session_steps_session ON session_steps(session_id);
 CREATE INDEX IF NOT EXISTS idx_tokens_title ON tokens(title);
-CREATE INDEX IF NOT EXISTS idx_tokens_domain ON tokens(domain);
+CREATE INDEX IF NOT EXISTS idx_token_contexts_context ON token_contexts(context_id);
 `;

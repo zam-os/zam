@@ -28,6 +28,22 @@ export interface UpdateKnowledgeContextInput {
   language?: string | null;
 }
 
+function normalizeContextName(name: string): string {
+  const normalized = name.trim();
+  if (!normalized) {
+    throw new Error("Context name cannot be empty");
+  }
+  return normalized;
+}
+
+function normalizeOptionalText(
+  value: string | null | undefined,
+): string | null {
+  if (value == null) return null;
+  const normalized = value.trim();
+  return normalized || null;
+}
+
 /**
  * Create a new knowledge context.
  */
@@ -37,18 +53,12 @@ export async function createKnowledgeContext(
 ): Promise<KnowledgeContext> {
   const id = ulid();
   const now = new Date().toISOString();
-
-  // Validate name is not empty
-  if (!input.name || input.name.trim().length === 0) {
-    throw new Error("Context name cannot be empty");
-  }
+  const name = normalizeContextName(input.name);
 
   // Check for duplicate name
-  const existing = await getKnowledgeContextByName(db, input.name);
+  const existing = await getKnowledgeContextByName(db, name);
   if (existing) {
-    throw new Error(
-      `Knowledge context with name "${input.name}" already exists`,
-    );
+    throw new Error(`Knowledge context with name "${name}" already exists`);
   }
 
   await db
@@ -56,7 +66,13 @@ export async function createKnowledgeContext(
       `INSERT INTO contexts (id, name, label, language, created_at)
        VALUES (?, ?, ?, ?, ?)`,
     )
-    .run(id, input.name, input.label ?? null, input.language ?? null, now);
+    .run(
+      id,
+      name,
+      normalizeOptionalText(input.label),
+      normalizeOptionalText(input.language),
+      now,
+    );
 
   const context = await getKnowledgeContextById(db, id);
   if (!context) {
@@ -74,9 +90,11 @@ export async function getKnowledgeContextByName(
   db: Database,
   name: string,
 ): Promise<KnowledgeContext | undefined> {
+  const normalized = name.trim();
+  if (!normalized) return undefined;
   return (await db
     .prepare("SELECT * FROM contexts WHERE name = ?")
-    .get(name)) as KnowledgeContext | undefined;
+    .get(normalized)) as KnowledgeContext | undefined;
 }
 
 /**
@@ -119,29 +137,25 @@ export async function updateKnowledgeContext(
   const values: unknown[] = [];
 
   if (updates.name !== undefined) {
-    if (!updates.name || updates.name.trim().length === 0) {
-      throw new Error("Context name cannot be empty");
-    }
-    if (updates.name !== context.name) {
-      const existing = await getKnowledgeContextByName(db, updates.name);
+    const name = normalizeContextName(updates.name);
+    if (name !== context.name) {
+      const existing = await getKnowledgeContextByName(db, name);
       if (existing) {
-        throw new Error(
-          `Knowledge context with name "${updates.name}" already exists`,
-        );
+        throw new Error(`Knowledge context with name "${name}" already exists`);
       }
       fields.push("name = ?");
-      values.push(updates.name);
+      values.push(name);
     }
   }
 
   if (updates.label !== undefined) {
     fields.push("label = ?");
-    values.push(updates.label);
+    values.push(normalizeOptionalText(updates.label));
   }
 
   if (updates.language !== undefined) {
     fields.push("language = ?");
-    values.push(updates.language);
+    values.push(normalizeOptionalText(updates.language));
   }
 
   if (fields.length === 0) {

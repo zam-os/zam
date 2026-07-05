@@ -24,6 +24,11 @@ export interface PersonalCard {
   elapsedDays: number | null;
   scheduledDays: number | null;
   blocked: number | null;
+  knowledgeContexts: Array<{
+    name: string;
+    label: string | null;
+    language: string | null;
+  }>;
 }
 
 let cardsList: PersonalCard[] = [];
@@ -96,6 +101,7 @@ interface FoundationProposalEntry {
 let currentFoundations: FoundationProposalEntry[] = [];
 let listContainer: HTMLElement;
 let searchInput: HTMLInputElement;
+let contextFilter: HTMLSelectElement;
 let categoryFilter: HTMLSelectElement;
 let emptyStateEl: HTMLElement;
 let formContainer: HTMLElement;
@@ -156,6 +162,9 @@ export function initLearningContentStudio(): void {
   searchInput = document.getElementById(
     "content-search-input",
   ) as HTMLInputElement;
+  contextFilter = document.getElementById(
+    "content-context-filter",
+  ) as HTMLSelectElement;
   categoryFilter = document.getElementById(
     "content-category-filter",
   ) as HTMLSelectElement;
@@ -326,6 +335,9 @@ export function initLearningContentStudio(): void {
 
   // Event Listeners
   searchInput.addEventListener("input", () => refreshCardsList());
+  contextFilter.addEventListener("change", () => {
+    void loadStudioData();
+  });
   categoryFilter.addEventListener("change", () => refreshCardsList());
 
   newCardBtn.addEventListener("click", () => startCreateNewCard());
@@ -397,13 +409,42 @@ export function initLearningContentStudio(): void {
   }
 
   // Load initial content
-  loadStudioData();
+  void initializeStudioContextFilter();
+}
+
+async function initializeStudioContextFilter(): Promise<void> {
+  try {
+    const list = await runBridge<{
+      contexts: Array<{ name: string; label: string | null }>;
+    }>("list-knowledge-contexts");
+    const active = await runBridge<{ activeContext: string | null }>(
+      "get-active-knowledge-context",
+    );
+
+    contextFilter.innerHTML = `<option value="">${t("lbl_all_contexts")}</option>`;
+    for (const context of list.contexts ?? []) {
+      const option = document.createElement("option");
+      option.value = context.name;
+      option.textContent = context.label
+        ? `${context.label} (${context.name})`
+        : context.name;
+      contextFilter.appendChild(option);
+    }
+    contextFilter.value = active.activeContext ?? "";
+  } catch (error) {
+    console.warn("Failed to load Studio knowledge contexts", error);
+  }
+  await loadStudioData();
 }
 
 export async function loadStudioData(): Promise<void> {
   try {
+    const args = contextFilter?.value
+      ? ["--knowledge-context", contextFilter.value]
+      : [];
     const listRes = await runBridge<{ cards: PersonalCard[] }>(
       "personal-card-list",
+      args,
     );
     cardsList = listRes.cards;
 
@@ -635,6 +676,9 @@ async function saveCard(): Promise<void> {
       ];
       if (question) args.push("--question", question);
       if (sourceLink) args.push("--source-link", sourceLink);
+      if (contextFilter.value) {
+        args.push("--knowledge-context", contextFilter.value);
+      }
 
       const res = await runBridge<{
         success: boolean;

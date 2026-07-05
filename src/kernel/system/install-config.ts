@@ -265,7 +265,7 @@ export function getActiveWorkspaceContext(
 export function setActiveWorkspaceContext(
   contextName: string | undefined,
   path = defaultConfigPath(),
-): void {
+): boolean {
   const config = loadInstallConfig(path);
   const activeId = config.activeWorkspaceId;
   if (activeId && config.workspaces) {
@@ -277,6 +277,8 @@ export function setActiveWorkspaceContext(
         delete workspace.activeKnowledgeContext;
       }
       saveInstallConfig(config, path);
+      return true;
     }
   }
+  return false;
 }

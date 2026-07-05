@@ -1,5 +1,5 @@
-import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
+import { execFileSync, spawnSync } from "node:child_process";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -22,6 +22,21 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
 
     const dataDir = join(tempHome, ".zam");
     mkdirSync(dataDir, { recursive: true });
+    writeFileSync(
+      join(dataDir, "config.json"),
+      JSON.stringify({
+        activeWorkspaceId: "test-workspace",
+        workspaces: [
+          {
+            id: "test-workspace",
+            kind: "personal",
+            path: tempCwd,
+            label: "Test Workspace",
+          },
+        ],
+      }),
+      "utf8",
+    );
 
     // Bootstrap DB with migration
     const db = await openDatabase({
@@ -52,6 +67,15 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
     return JSON.parse(runCli(args, input));
   }
 
+  function runCliResult(args: string[], input?: string) {
+    return spawnSync("node", [cliPath, ...args], {
+      cwd: tempCwd,
+      env: { ...process.env, HOME: tempHome, USERPROFILE: tempHome },
+      input: input ?? "",
+      encoding: "utf8",
+    });
+  }
+
   describe("Plain CLI Commands", () => {
     it("can CRUD and assign contexts using plain CLI commands", () => {
       // 1. Create a context
@@ -59,39 +83,118 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
         "knowledge-context",
         "create",
         "--name",
-        "work-dw",
+        "work-company",
         "--label",
-        "DocuWare Work",
+        "Company Work",
         "--language",
         "en",
       ]);
-      expect(createOut).toContain("Created knowledge context: work-dw");
+      expect(createOut).toContain("Created knowledge context: work-company");
 
       // 2. List contexts
       const listOut = runCli(["kc", "list"]);
-      expect(listOut).toContain("work-dw");
-      expect(listOut).toContain("DocuWare Work (en)");
+      expect(listOut).toContain("work-company");
+      expect(listOut).toContain("Company Work (en)");
 
       // 3. Register a token with a context
       const registerOut = runCli([
         "token",
         "register",
         "--slug",
-        "cops-monitoring",
+        "system-monitoring",
         "--concept",
-        "DW COPS platform monitoring metrics",
+        "System platform monitoring metrics",
         "--knowledge-context",
-        "work-dw",
+        "work-company",
       ]);
-      expect(registerOut).toContain("Registered token: cops-monitoring");
-      expect(registerOut).toContain("Contexts: work-dw");
+      expect(registerOut).toContain("Registered token: system-monitoring");
+      expect(registerOut).toContain("Contexts: work-company");
 
       // 4. List tokens filtered by context
-      const tokenListOut = runCli(["token", "list", "--knowledge-context", "work-dw"]);
-      expect(tokenListOut).toContain("cops-monitoring");
+      const tokenListOut = runCli(["token", "list", "--knowledge-context", "work-company"]);
+      expect(tokenListOut).toContain("system-monitoring");
 
       const tokenListEmpty = runCli(["token", "list", "--knowledge-context", "nonexistent"]);
       expect(tokenListEmpty).toContain("No tokens registered.");
+    });
+
+    it("does not create a token when a requested context is invalid", () => {
+      const result = runCliResult([
+        "token",
+        "register",
+        "--slug",
+        "orphaned-cli-token",
+        "--concept",
+        "Must never be persisted",
+        "--knowledge-context",
+        "missing-context",
+      ]);
+
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toContain(
+        "Knowledge context not found: missing-context",
+      );
+      expect(runCli(["token", "list"])).not.toContain("orphaned-cli-token");
+    });
+
+    it("requires confirmation before deleting a context and clears its active default", () => {
+      runCli(["kc", "create", "--name", "temporary"]);
+      runCli(["kc", "use", "temporary"]);
+
+      const preview = runCli(["kc", "delete", "--name", "temporary"]);
+      expect(preview).toContain("Re-run with --confirm");
+      expect(runCli(["kc", "show"])).toContain(
+        "Active knowledge context: temporary",
+      );
+
+      const removed = runCli([
+        "kc",
+        "delete",
+        "--name",
+        "temporary",
+        "--confirm",
+      ]);
+      expect(removed).toContain("Deleted knowledge context: temporary");
+      expect(runCli(["kc", "show"])).toContain(
+        "No active knowledge context default set.",
+      );
+    });
+
+    it("uses the device default for creation unless an explicit context overrides it", () => {
+      runCli(["kc", "create", "--name", "work"]);
+      runCli(["kc", "create", "--name", "school"]);
+      runCli(["kc", "use", "work"]);
+
+      runCli([
+        "token",
+        "register",
+        "--slug",
+        "implicit-work",
+        "--concept",
+        "Uses the active default",
+      ]);
+      runCli([
+        "token",
+        "register",
+        "--slug",
+        "explicit-school",
+        "--concept",
+        "Overrides the active default",
+        "--knowledge-context",
+        "school",
+      ]);
+
+      expect(runCli(["token", "list", "--knowledge-context", "work"])).toContain(
+        "implicit-work",
+      );
+      const school = runCli([
+        "token",
+        "list",
+        "--knowledge-context",
+        "school",
+      ]);
+      expect(school).toContain("explicit-school");
+      expect(school).not.toContain("implicit-work");
     });
   });
 
@@ -218,6 +321,159 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
       const slugsComposed = resComposed.tokens.map((t: any) => t.slug);
       expect(slugsComposed).toHaveLength(1);
       expect(slugsComposed[0]).toBe("physics-gravity");
+    });
+
+    it("rejects invalid context payloads before creating bridge tokens", () => {
+      for (const knowledgeContexts of [["missing-context"], "school"]) {
+        const result = runCliResult(
+          ["bridge", "add-token"],
+          JSON.stringify({
+            slug: `orphan-${typeof knowledgeContexts}`,
+            concept: "Must never be persisted",
+            knowledgeContexts,
+          }),
+        );
+
+        expect(result.status).not.toBe(0);
+        expect(JSON.parse(result.stdout).error).toEqual(expect.any(String));
+      }
+
+      expect(runCliJson(["bridge", "list-tokens"]).tokens).toHaveLength(0);
+    });
+
+    it("applies the device default to bridge token creation", () => {
+      runCli(["kc", "create", "--name", "work"]);
+      runCli(["kc", "use", "work"]);
+
+      const created = runCliJson(
+        ["bridge", "add-token"],
+        JSON.stringify({
+          slug: "bridge-default",
+          concept: "Uses the active context",
+        }),
+      );
+
+      expect(created.token.knowledgeContexts.map((context: any) => context.name)).toEqual([
+        "work",
+      ]);
+
+      const personal = runCliJson([
+        "bridge",
+        "personal-card-create",
+        "--concept",
+        "Created in the Studio",
+      ]);
+      expect(
+        personal.token.knowledgeContexts.map((context: any) => context.name),
+      ).toEqual(["work"]);
+
+      const studioList = runCliJson([
+        "bridge",
+        "personal-card-list",
+        "--knowledge-context",
+        "work",
+      ]);
+      expect(studioList.cards).toHaveLength(2);
+      expect(
+        studioList.cards.every((card: any) =>
+          card.knowledgeContexts.some((context: any) => context.name === "work"),
+        ),
+      ).toBe(true);
+    });
+
+    it("scopes due cards and review queue size to the selected context", () => {
+      runCli(["kc", "create", "--name", "work"]);
+      runCli(["kc", "create", "--name", "school"]);
+
+      for (const context of ["work", "school"]) {
+        runCliJson(
+          ["bridge", "add-token"],
+          JSON.stringify({
+            slug: `${context}-token`,
+            concept: `${context} concept`,
+            knowledgeContexts: [context],
+          }),
+        );
+      }
+
+      const due = runCliJson([
+        "bridge",
+        "check-due",
+        "--knowledge-context",
+        "work",
+      ]);
+      expect(due.cards.map((card: any) => card.slug)).toEqual(["work-token"]);
+
+      const review = runCliJson([
+        "bridge",
+        "get-review",
+        "--knowledge-context",
+        "work",
+        "--no-resolve",
+        "--no-dynamic-question",
+      ]);
+      expect(review.card.slug).toBe("work-token");
+      expect(review.queueSize).toBe(1);
+    });
+  });
+
+  describe("Doctor JSON reporting", () => {
+    it("runs a complete read-only diagnosis when no task is specified", () => {
+      const report = runCliJson(["doctor", "--json"]);
+
+      expect(report).toMatchObject({ success: true, readOnly: true });
+      expect(report.tasks.map((task: any) => task.name)).toEqual([
+        "titles",
+        "texts",
+        "duplicates",
+        "domains",
+        "contexts",
+      ]);
+      expect(
+        report.tasks.every((task: any) => Array.isArray(task.lines)),
+      ).toBe(true);
+    });
+
+    it("keeps task-specific JSON parseable and rejects interactive JSON fixes", () => {
+      const report = runCliJson(["doctor", "titles", "--json"]);
+      expect(report).toMatchObject({ success: true, task: "titles" });
+
+      const rejected = runCliResult([
+        "doctor",
+        "titles",
+        "--json",
+        "--fix",
+      ]);
+      expect(rejected.status).not.toBe(0);
+      expect(JSON.parse(rejected.stdout)).toMatchObject({
+        success: false,
+        error:
+          "--json --fix requires --yes; interactive prompts are not machine-readable",
+      });
+
+      const missingContext = runCliResult([
+        "doctor",
+        "contexts",
+        "--json",
+        "--knowledge-context",
+        "missing",
+      ]);
+      expect(missingContext.status).not.toBe(0);
+      expect(JSON.parse(missingContext.stdout)).toMatchObject({
+        success: false,
+        task: "contexts",
+        error: "Knowledge context not found: missing",
+      });
+
+      const interactive = runCliResult([
+        "doctor",
+        "duplicates",
+        "--json",
+        "--fix",
+        "--yes",
+      ]);
+      expect(interactive.status).not.toBe(0);
+      expect(JSON.parse(interactive.stdout)).toMatchObject({ success: false });
     });
   });
 });

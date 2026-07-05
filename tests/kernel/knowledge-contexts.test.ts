@@ -18,6 +18,7 @@ import {
   unassignTokenFromContext,
   listContextsForToken,
   buildReviewQueue,
+  getDueCards,
 } from "../../src/kernel/index.js";
 
 describe("Knowledge Contexts (Phase 1)", () => {
@@ -51,13 +52,13 @@ describe("Knowledge Contexts (Phase 1)", () => {
     it("can create, get, update, and delete knowledge contexts", async () => {
       // Create
       const context = await createKnowledgeContext(db, {
-        name: "work-docuware",
-        label: "DocuWare Work",
+        name: "work-company",
+        label: "Company Work",
         language: "en",
       });
       expect(context.id).toBeDefined();
-      expect(context.name).toBe("work-docuware");
-      expect(context.label).toBe("DocuWare Work");
+      expect(context.name).toBe("work-company");
+      expect(context.label).toBe("Company Work");
       expect(context.language).toBe("en");
 
       // Get by ID
@@ -65,7 +66,7 @@ describe("Knowledge Contexts (Phase 1)", () => {
       expect(byId).toEqual(context);
 
       // Get by name
-      const byName = await getKnowledgeContextByName(db, "work-docuware");
+      const byName = await getKnowledgeContextByName(db, "work-company");
       expect(byName).toEqual(context);
 
       // List
@@ -75,10 +76,10 @@ describe("Knowledge Contexts (Phase 1)", () => {
 
       // Update
       const updated = await updateKnowledgeContext(db, context.id, {
-        label: "DW Work",
+        label: "Company Work Update",
         language: "de",
       });
-      expect(updated.label).toBe("DW Work");
+      expect(updated.label).toBe("Company Work Update");
       expect(updated.language).toBe("de");
 
       // Delete
@@ -98,6 +99,31 @@ describe("Knowledge Contexts (Phase 1)", () => {
         createKnowledgeContext(db, { name: "school" }),
       ).rejects.toThrow('Knowledge context with name "school" already exists');
     });
+
+    it("normalizes names and optional text before persistence", async () => {
+      const context = await createKnowledgeContext(db, {
+        name: "  school  ",
+        label: "  School  ",
+        language: "  de  ",
+      });
+
+      expect(context).toMatchObject({
+        name: "school",
+        label: "School",
+        language: "de",
+      });
+      expect(await getKnowledgeContextByName(db, " school ")).toEqual(context);
+      await expect(
+        createKnowledgeContext(db, { name: " school" }),
+      ).rejects.toThrow('Knowledge context with name "school" already exists');
+
+      const cleared = await updateKnowledgeContext(db, context.id, {
+        label: "   ",
+        language: "   ",
+      });
+      expect(cleared.label).toBeNull();
+      expect(cleared.language).toBeNull();
+    });
   });
 
   describe("n:m assignment", () => {
@@ -111,9 +137,9 @@ describe("Knowledge Contexts (Phase 1)", () => {
         domain: "git",
       });
       const t2 = await createToken(db, {
-        slug: "dw-cops",
-        concept: "DocuWare Cloud Operations",
-        domain: "docuware",
+        slug: "company-operations",
+        concept: "Company Cloud Operations",
+        domain: "company",
       });
 
       // Assign t1 to both work and private
@@ -214,6 +240,15 @@ describe("Knowledge Contexts (Phase 1)", () => {
       const schoolQueue = await buildReviewQueue(db, { userId, knowledgeContext: "school" });
       expect(schoolQueue.items).toHaveLength(1);
       expect(schoolQueue.items[0].slug).toBe("school-t2");
+
+      const workDue = await getDueCards(
+        db,
+        userId,
+        undefined,
+        undefined,
+        "work",
+      );
+      expect(workDue.map((card) => card.slug)).toEqual(["work-t1"]);
     });
   });
 

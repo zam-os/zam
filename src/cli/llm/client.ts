@@ -2154,7 +2154,7 @@ Your task: given a knowledge token's concept (the full reference answer), questi
 Strict rules from the project ADR:
 - Concise name for the concept (≤ 80 chars ideal).
 - Thoughtful, memorable name — NOT a definition or the first sentence of the concept.
-- NEVER echo the domain name (e.g. do not say "Node Drain" if domain is "axon-ivy"; just "Node Drain Protection").
+- NEVER echo the domain name (e.g. do not say "Workflow Engine Node Drain" if domain is "workflow-engine"; just "Node Drain Protection").
 - Prefer a name over spoiling the full concept.
 - Support Unicode (umlauts, etc.).
 - Output the title in the same language as the concept/content (e.g., German if the concept is German, English if the concept is English).

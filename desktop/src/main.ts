@@ -288,6 +288,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_search_placeholder: "Search questions, answers, categories, keys...",
     lbl_category_filter: "Category",
     lbl_all_categories: "All Categories",
+    lbl_all_contexts: "All Contexts",
+    lbl_no_context_default: "No context default",
+    lbl_no_context_assignment: "No context assignment",
     lbl_empty_content: "No learning cards found. Create your first card!",
     lbl_empty_content_btn: "Create First Card",
     lbl_question: "Question",
@@ -668,6 +671,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_search_placeholder: "Fragen, Antworten, Kategorien, Keys suchen...",
     lbl_category_filter: "Kategorie",
     lbl_all_categories: "Alle Kategorien",
+    lbl_all_contexts: "Alle Kontexte",
+    lbl_no_context_default: "Kein Kontextstandard",
+    lbl_no_context_assignment: "Keine Kontextzuordnung",
     lbl_empty_content: "Keine Lernkarten gefunden. Erstelle deine erste karte!",
     lbl_empty_content_btn: "Erste Karte erstellen",
     lbl_question: "Frage",
@@ -1317,8 +1323,18 @@ function initializeTranslations() {
   if (settingsContextHelp) settingsContextHelp.textContent = t("settings_context_help");
   const settingsContextLabel = document.getElementById("lbl-settings-context");
   if (settingsContextLabel) settingsContextLabel.textContent = t("settings_context_label");
+  const deviceContextSelect = document.getElementById("device-context-select");
+  if (deviceContextSelect) {
+    const firstOpt = deviceContextSelect.querySelector("option");
+    if (firstOpt) firstOpt.textContent = t("lbl_no_context_default");
+  }
   const wizardContextLabel = document.getElementById("lbl-wizard-context");
   if (wizardContextLabel) wizardContextLabel.textContent = t("wizard_context_label");
+  const wizardContextSelect = document.getElementById("wizard-context-select");
+  if (wizardContextSelect) {
+    const firstOpt = wizardContextSelect.querySelector("option");
+    if (firstOpt) firstOpt.textContent = t("lbl_no_context_assignment");
+  }
 
   // Learning Content Studio translations
   const navContent = document.getElementById("nav-content");
@@ -1337,6 +1353,11 @@ function initializeTranslations() {
   if (categoryFilterLabel) {
     const firstOpt = categoryFilterLabel.querySelector("option");
     if (firstOpt) firstOpt.textContent = t("lbl_all_categories");
+  }
+  const contextFilterLabel = document.getElementById("content-context-filter");
+  if (contextFilterLabel) {
+    const firstOpt = contextFilterLabel.querySelector("option");
+    if (firstOpt) firstOpt.textContent = t("lbl_all_contexts");
   }
   const emptyContentDesc = document.getElementById("lbl-empty-content-desc");
   if (emptyContentDesc) emptyContentDesc.textContent = currentLocale === "de" ? "Wähle eine Karte aus der Liste aus, um sie zu bearbeiten, oder erstelle eine neue Karte." : "Select a card from the list to edit, or create a new card to start.";
@@ -3475,7 +3496,7 @@ async function loadSettingsKnowledgeContext(): Promise<void> {
     const listRes = await runBridge<any>("list-knowledge-contexts");
     const contexts = (listRes && listRes.contexts) || [];
 
-    select.innerHTML = '<option value="">None / Unfiltered</option>';
+    select.innerHTML = `<option value="">${t("lbl_no_context_default")}</option>`;
 
     contexts.forEach((ctx: any) => {
       const opt = document.createElement("option");
@@ -3486,6 +3507,7 @@ async function loadSettingsKnowledgeContext(): Promise<void> {
 
     const activeRes = await runBridge<any>("get-active-knowledge-context");
     const active = (activeRes && activeRes.activeContext) || "";
+    deviceKnowledgeContext = active || null;
     select.value = active;
   } catch (e) {
     console.error("Failed to load settings knowledge contexts", e);
@@ -3562,6 +3584,7 @@ let currentDomain: string | null = null;
 let availableDomains: string[] = [];
 let originalDomainSet: Set<string> = new Set();
 let currentKnowledgeContext: string | null = null;
+let deviceKnowledgeContext: string | null | undefined;
 let availableKnowledgeContexts: any[] = [];
 
 function getShortSlug(slug: string): string {
@@ -3924,6 +3947,9 @@ async function loadAndRenderKnowledgeContexts() {
   try {
     const activeRes = await runBridge<any>("get-active-knowledge-context");
     if (activeRes && activeRes.success) {
+      if (deviceKnowledgeContext === undefined) {
+        deviceKnowledgeContext = activeRes.activeContext;
+      }
       if (currentKnowledgeContext === null) {
         currentKnowledgeContext = activeRes.activeContext;
       }
@@ -3938,6 +3964,14 @@ async function loadAndRenderKnowledgeContexts() {
   }
 }
 
+async function getDeviceKnowledgeContext(): Promise<string | null> {
+  if (deviceKnowledgeContext === undefined) {
+    const activeRes = await runBridge<any>("get-active-knowledge-context");
+    deviceKnowledgeContext = activeRes?.activeContext ?? null;
+  }
+  return deviceKnowledgeContext ?? null;
+}
+
 function renderKnowledgeContextSelector() {
   const container = document.getElementById("graph-context-selector");
   if (!container) return;
@@ -3945,7 +3979,7 @@ function renderKnowledgeContextSelector() {
 
   const allPill = document.createElement("span");
   allPill.className = "context-pill" + (currentKnowledgeContext === null ? " active" : "");
-  allPill.textContent = "All Contexts";
+  allPill.textContent = t("lbl_all_contexts");
   allPill.onclick = () => switchToKnowledgeContext(null);
   container.appendChild(allPill);
 
@@ -3982,8 +4016,8 @@ async function loadAndRenderDomains() {
     tokens.forEach((t: any) => {
       if (t.domain) originalDomainSet.add(t.domain);
     });
-    // Support prefix-based domains for team/custom content e.g. "docuware-cops/xxx"
-    // Include parent prefixes so user can select e.g. "docuware-cops" to see all under it.
+    // Support prefix-based domains for team/custom content e.g. "company-team/xxx"
+    // Include parent prefixes so users can select e.g. "company-team" to see all children.
     const prefixSet = new Set<string>(originalDomainSet);
     for (const d of originalDomainSet) {
       if (d.includes('/')) {
@@ -4275,19 +4309,20 @@ async function initOrShowGraph() {
     });
   }
 
-  // bootstrap / reload with current domain filter (if any)
+  // Resolve the context default before the first graph query so selector and
+  // graph contents start in the same scope.
+  if (availableKnowledgeContexts.length === 0) {
+    await loadAndRenderKnowledgeContexts();
+  }
+
+  // Load domain list for the filter/selector (only once per graph session).
+  if (availableDomains.length === 0) {
+    await loadAndRenderDomains();
+  }
+
+  // bootstrap / reload with current domain and context filters (if any)
   if (!currentNeighborhood) {
     await bootstrapGraphWithDomain();
-  }
-
-  // Load knowledge context list for the filter/selector (only once per graph session)
-  if (availableKnowledgeContexts.length === 0) {
-    loadAndRenderKnowledgeContexts();
-  }
-
-  // Load domain list for the filter/selector (only once per graph session)
-  if (availableDomains.length === 0) {
-    loadAndRenderDomains();
   }
 
   // start render loop (idempotent-ish)
@@ -4481,8 +4516,9 @@ async function loadNextCard(
     // the loading state unexplained.
     const reviewArgs =
       options.dynamicQuestion === false ? ["--no-dynamic-question"] : [];
-    if (currentKnowledgeContext) {
-      reviewArgs.push("--knowledge-context", currentKnowledgeContext);
+    const activeKnowledgeContext = await getDeviceKnowledgeContext();
+    if (activeKnowledgeContext) {
+      reviewArgs.push("--knowledge-context", activeKnowledgeContext);
     }
     if (isLlmEnabled && options.dynamicQuestion !== false) {
       isWaitingForQuestion = true;
@@ -4899,7 +4935,7 @@ window.addEventListener("DOMContentLoaded", () => {
     void (async () => {
       try {
         await runBridge<any>("set-active-knowledge-context", [value || "none"]);
-        currentKnowledgeContext = value || null;
+        deviceKnowledgeContext = value || null;
       } catch (err) {
         console.error("Failed to update active knowledge context", err);
       }

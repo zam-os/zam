@@ -183,6 +183,14 @@ export interface ReviewActionResponse {
 
 // ── Add Token ───────────────────────────────────────────────────────────────
 
+export interface KnowledgeContextPayload {
+  id?: string;
+  name: string;
+  label: string | null;
+  language: string | null;
+  created_at?: string;
+}
+
 export interface AddTokenRequest {
   slug: string;
   concept: string;
@@ -193,6 +201,9 @@ export interface AddTokenRequest {
   source_link?: string | null; // file path / reference URL; stdin payload is snake_case
   prerequisites?: string[]; // slugs of prerequisite tokens
   userId?: string; // if provided, ensures a card is created
+  knowledgeContexts?: string[];
+  /** Compatibility spelling accepted by the stdin bridge command. */
+  knowledge_contexts?: string[];
 }
 
 export interface AddTokenResponse {
@@ -200,6 +211,23 @@ export interface AddTokenResponse {
   slug: string;
   created: boolean;
   cardId?: string;
+}
+
+export interface ListKnowledgeContextsResponse {
+  success: true;
+  contexts: KnowledgeContextPayload[];
+}
+
+export interface KnowledgeContextAssignmentResponse {
+  success: true;
+  token: string;
+  context: string;
+}
+
+export interface ActiveKnowledgeContextResponse {
+  success: true;
+  activeContext: string | null;
+  staleContext?: string | null;
 }
 
 // ── Get Agent Skill ──────────────────────────────────────────────────────────

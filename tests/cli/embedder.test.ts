@@ -493,12 +493,12 @@ describe("embedQuery", () => {
     });
     try {
       await enableEmbeddingRole(stub.url, "embeddinggemma");
-      const result = await embedQuery(db, "one Ivy instance per tenant");
+      const result = await embedQuery(db, "one application instance per tenant");
       expect(result).not.toBeNull();
       expect(result!.model).toBe("embeddinggemma-300m");
       expect(result!.vector.length).toBe(5);
       expect(stub.requests[0].input).toEqual([
-        "task: search result | query: one Ivy instance per tenant",
+        "task: search result | query: one application instance per tenant",
       ]);
     } finally {
       await stub.close();

@@ -2,7 +2,7 @@
 
 This plan follows
 [`2026-07-04-knowledge-contexts.md`](../adr/2026-07-04-knowledge-contexts.md)
-and the worked DocuWare-apprentice persona added during Phase 0. Read
+and the worked team-apprentice persona added during Phase 0. Read
 `AGENTS.md` and `CLAUDE.md` before implementation. Work on exactly the next
 unchecked phase; keep one branch and one focused commit per completed phase.
 
@@ -20,7 +20,7 @@ unchecked phase; keep one branch and one focused commit per completed phase.
 
 ### Already established
 
-- A knowledge context (`DocuWare`, `vocational-school`, `private`) is
+- A knowledge context (`company`, `vocational-school`, `private`) is
   orthogonal to the subject domain.
 - Tokens may belong to multiple knowledge contexts.
 - Cards and FSRS state remain learner-owned and per-user.
@@ -39,7 +39,7 @@ unchecked phase; keep one branch and one focused commit per completed phase.
 - The active knowledge context is explicitly selectable with a per-device
   default; the assignment-prioritizing "active situation" is a separate,
   governance-owned concept and stays out of this feature.
-- In the DocuWare working situation, DocuWare assignments are prioritized,
+- In the company working situation, company assignments are prioritized,
   vocational-school assignments remain eligible, and private assignments are
   excluded by default.
 - One card/FSRS history per learner and token serves all contexts and curricula.

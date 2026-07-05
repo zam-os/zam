@@ -20,6 +20,15 @@ export const knowledgeContextCommand = new Command("knowledge-context")
   .alias("kc")
   .description("Manage knowledge contexts (work, school, private)");
 
+function commandError(message: string, json: boolean): never {
+  if (json) {
+    jsonOut({ success: false, error: message });
+  } else {
+    console.error(message);
+  }
+  process.exit(1);
+}
+
 // ── zam knowledge-context list ───────────────────────────────────────────
 
 knowledgeContextCommand
@@ -57,7 +66,7 @@ knowledgeContextCommand
   .description("Create a new knowledge context")
   .requiredOption(
     "--name <name>",
-    "Unique context identifier (e.g. work-docuware)",
+    "Unique context identifier (e.g. work-company)",
   )
   .option("--label <label>", "Display name")
   .option(
@@ -90,23 +99,58 @@ knowledgeContextCommand
   .command("delete")
   .description("Delete a knowledge context")
   .requiredOption("--name <name>", "Context name")
+  .option(
+    "--confirm",
+    "Confirm removal of the context and its token assignments",
+  )
   .option("--json", "Output as JSON")
   .action(async (opts) => {
     await withDb(async (db) => {
       const context = await getKnowledgeContextByName(db, opts.name);
       if (!context) {
-        console.error(`Knowledge context not found: ${opts.name}`);
-        process.exit(1);
+        commandError(`Knowledge context not found: ${opts.name}`, !!opts.json);
       }
 
-      await deleteKnowledgeContext(db, context.id);
+      const assignmentCount = (
+        (await db
+          .prepare(
+            "SELECT COUNT(*) AS n FROM token_contexts WHERE context_id = ?",
+          )
+          .get(context.id)) as { n: number }
+      ).n;
 
-      if (opts.json) {
-        jsonOut({ success: true, name: opts.name });
+      if (!opts.confirm) {
+        if (opts.json) {
+          jsonOut({
+            success: true,
+            preview: true,
+            requiresConfirmation: true,
+            name: context.name,
+            tokenAssignments: assignmentCount,
+          });
+        } else {
+          console.log(
+            `Deleting "${context.name}" removes ${assignmentCount} token assignment(s). Re-run with --confirm.`,
+          );
+        }
         return;
       }
 
-      console.log(`Deleted knowledge context: ${opts.name}`);
+      await deleteKnowledgeContext(db, context.id);
+      if (getActiveWorkspaceContext() === context.name) {
+        setActiveWorkspaceContext(undefined);
+      }
+
+      if (opts.json) {
+        jsonOut({
+          success: true,
+          name: context.name,
+          tokenAssignmentsRemoved: assignmentCount,
+        });
+        return;
+      }
+
+      console.log(`Deleted knowledge context: ${context.name}`);
     });
   });
 
@@ -122,14 +166,15 @@ knowledgeContextCommand
     await withDb(async (db) => {
       const context = await getKnowledgeContextByName(db, opts.context);
       if (!context) {
-        console.error(`Knowledge context not found: ${opts.context}`);
-        process.exit(1);
+        commandError(
+          `Knowledge context not found: ${opts.context}`,
+          !!opts.json,
+        );
       }
 
       const token = await getTokenBySlug(db, opts.token);
       if (!token) {
-        console.error(`Token not found: ${opts.token}`);
-        process.exit(1);
+        commandError(`Token not found: ${opts.token}`, !!opts.json);
       }
 
       await assignTokenToContext(db, token.id, context.id);
@@ -157,14 +202,15 @@ knowledgeContextCommand
     await withDb(async (db) => {
       const context = await getKnowledgeContextByName(db, opts.context);
       if (!context) {
-        console.error(`Knowledge context not found: ${opts.context}`);
-        process.exit(1);
+        commandError(
+          `Knowledge context not found: ${opts.context}`,
+          !!opts.json,
+        );
       }
 
       const token = await getTokenBySlug(db, opts.token);
       if (!token) {
-        console.error(`Token not found: ${opts.token}`);
-        process.exit(1);
+        commandError(`Token not found: ${opts.token}`, !!opts.json);
       }
 
       await unassignTokenFromContext(db, token.id, context.id);
@@ -190,7 +236,9 @@ knowledgeContextCommand
   .action(async (name, opts) => {
     await withDb(async (db) => {
       if (!name) {
-        setActiveWorkspaceContext(undefined);
+        if (!setActiveWorkspaceContext(undefined)) {
+          commandError("No active workspace configured", !!opts.json);
+        }
         if (opts.json) {
           jsonOut({ success: true, activeContext: null });
           return;
@@ -201,11 +249,12 @@ knowledgeContextCommand
 
       const context = await getKnowledgeContextByName(db, name);
       if (!context) {
-        console.error(`Knowledge context not found: ${name}`);
-        process.exit(1);
+        commandError(`Knowledge context not found: ${name}`, !!opts.json);
       }
 
-      setActiveWorkspaceContext(context.name);
+      if (!setActiveWorkspaceContext(context.name)) {
+        commandError("No active workspace configured", !!opts.json);
+      }
 
       if (opts.json) {
         jsonOut({ success: true, activeContext: context.name });
@@ -223,16 +272,29 @@ knowledgeContextCommand
   .description("Show the active knowledge context default for this device")
   .option("--json", "Output as JSON")
   .action(async (opts) => {
-    const active = getActiveWorkspaceContext();
+    await withDb(async (db) => {
+      const configured = getActiveWorkspaceContext();
+      const active = configured
+        ? await getKnowledgeContextByName(db, configured)
+        : undefined;
 
-    if (opts.json) {
-      jsonOut({ success: true, activeContext: active ?? null });
-      return;
-    }
+      if (opts.json) {
+        jsonOut({
+          success: true,
+          activeContext: active?.name ?? null,
+          staleContext: configured && !active ? configured : null,
+        });
+        return;
+      }
 
-    if (active) {
-      console.log(`Active knowledge context: ${active}`);
-    } else {
-      console.log("No active knowledge context default set.");
-    }
+      if (active) {
+        console.log(`Active knowledge context: ${active.name}`);
+      } else if (configured) {
+        console.warn(
+          `Configured knowledge context no longer exists: ${configured}`,
+        );
+      } else {
+        console.log("No active knowledge context default set.");
+      }
+    });
   });

@@ -29,8 +29,8 @@ Currently, node labels are derived from the technical `slug` field:
   base remains machine-oriented and often unreadable.
 
 This makes the graph hard to understand, especially for curriculum imports
-(Lehrpläne with natural German) and custom/team content (e.g. internal
-DocuWare COPS knowledge).
+(Lehrpläne with natural German) and custom/team content (e.g. internal team
+knowledge).
 
 Tokens already distinguish `slug` (stable technical ID), `concept` (full
 reference answer — intentionally the "spoiler") and `question` (active-recall
@@ -56,7 +56,7 @@ is **understandability** of the personal/team knowledge structure.
    - Human-friendly natural language, full Unicode (umlauts, CJK, Arabic).
    - **Never** includes a domain prefix, and **no domain echo**: the title
      must not repeat the domain name ("Node Drain Protection", not
-     "Axon Ivy Node Drain Protection" inside `axon-ivy`). Context comes from
+     "Workflow Engine Node Drain Protection" inside `workflow-engine`). Context comes from
      the domain itself, which every surface may always display — a domain is
      a *name of an area*, it never spoils an answer. This is a generation
      rule (curriculum prompt, doctor `titles` task), not a renderer hack.
@@ -86,7 +86,7 @@ is **understandability** of the personal/team knowledge structure.
 
 4. **Domain scoping uses `/` as the hierarchy separator** (revised from the
    draft's dash convention):
-   - Example: `docuware-cops/ai`, `docuware-cops/security`; arbitrary depth
+   - Example: `company-team/ai`, `company-team/security`; arbitrary depth
      allowed (`schule/mathematik/realschule-9` is legal).
    - A selected prefix matches `exact` or `startsWith(prefix + "/")` — no
      heuristics, no ambiguity against dash-containing names like
@@ -95,8 +95,8 @@ is **understandability** of the personal/team knowledge structure.
      remain valid unscoped names.
    - `slugify()` folds `/` to `-` when domains are embedded in slugs.
    - Rationale for the revision: with dashes there is no machine-decidable
-     boundary between "prefix" and "word" (`docuware-cops-ai` — is the group
-     `docuware`, `docuware-cops`, or `docuware-cops-ai`?), so every surface
+     boundary between "prefix" and "word" (`company-team-ai` — is the group
+     `company`, `company-team`, or `company-team-ai`?), so every surface
      would need its own guessing rule.
 
 5. **One display-fallback rule everywhere: `title`, else short slug.** A
@@ -137,9 +137,9 @@ is **understandability** of the personal/team knowledge structure.
 
 7. **Language:** `system.locale` is the **default** authoring language for
    titles, questions, and concepts — not a global mandate. Content areas may
-   deliberately use another language: the DocuWare COPS knowledge is
-   authored in English by explicit owner decision (an 8-nationality team
-   reads it), while school content stays German. Generation and the doctor
+   deliberately use another language: shared team knowledge is authored in
+   English so an international team can read it, while school content stays
+   German. Generation and the doctor
    `titles` task must follow the language already established in a token's
    content/area rather than blindly applying the locale. A first-class
    work-vs-private *context* concept does not exist in the token model yet —
@@ -157,8 +157,8 @@ adjustments:
 
 1. `findTokens` gains `title` matching; `embeddingContentForToken` gains the
    title line — including tests, and accepting the one-time full re-embed.
-2. Domain scoping switches from dash examples (`docuware-cops-ai`) to the
-   `/` separator (`docuware-cops/ai`) in filtering logic, selector grouping,
+2. Domain scoping switches from dash examples (`company-team-ai`) to the
+   `/` separator (`company-team/ai`) in filtering logic, selector grouping,
    `--domain-prefix` semantics (`startsWith(prefix + "/")`), and docs.
 3. The display fallback is unified to `title ?? shortSlug` via one shared
    helper — no `concept`-derived labels anywhere.
@@ -171,8 +171,8 @@ adjustments:
 6. Title generation prompts gain the **no-domain-echo rule**; surfaces show
    the domain alongside the title where context is needed (badge/tooltip),
    instead of stripping words out of titles at render time. Existing titles
-   with domain echoes (~23% of the current base, e.g. "Axon Ivy …" inside
-   `axon-ivy`) are reworked by the doctor `titles` task, not by hand.
+   with domain echoes (e.g. "Workflow Engine …" inside `workflow-engine`) are
+   reworked by the doctor `titles` task, not by hand.
 
 ## Open questions
 
@@ -202,7 +202,7 @@ adjustments:
   about topic X at a glance"), including non-Latin content.
 - The displayed name is findable — lexically and semantically — keeping
   search, dedup, and foundation suggestions coherent with what users see.
-- Team/company content is cleanly namespaced (`docuware-cops/…`) with an
+- Team/company content is cleanly namespaced (`company-team/…`) with an
   unambiguous, future-proof separator.
 - Slugs remain perfect technical identifiers; display concerns are isolated
   in `title`.

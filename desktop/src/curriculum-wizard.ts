@@ -148,7 +148,7 @@ async function showCurriculumWizard(): Promise<void> {
         const listRes = await runBridge<any>("list-knowledge-contexts");
         const contexts = (listRes && listRes.contexts) || [];
 
-        wizardCtxSelect.innerHTML = '<option value="">None / Unassigned</option>';
+        wizardCtxSelect.innerHTML = `<option value="">${t("lbl_no_context_assignment")}</option>`;
         contexts.forEach((ctx: any) => {
           const opt = document.createElement("option");
           opt.value = ctx.name;

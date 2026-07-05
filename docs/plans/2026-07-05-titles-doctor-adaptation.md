@@ -64,12 +64,12 @@ Make the system match the final ADR decisions exactly:
 - Bridge:
   - `src/cli/commands/bridge.ts`: update `--domain-prefix` description and any examples (use `/`).
   - `list-tokens` call sites.
-- Docs / help / tests / ADR examples: replace all `docuware-cops-ai` style with `docuware-cops/ai`.
+- Docs / help / tests / ADR examples: replace all `company-team-ai` style with `company-team/ai`.
 - `slugify` behavior when embedding domains into slugs: keep folding `/` → `-` (already intended).
 
 **Note**: existing flat domains and old data stay valid. New scoped domains use `/`.
 
-**Verification**: `--domain-prefix docuware-cops` correctly returns children with `/` ; short slugs strip correctly; no breakage for old `-` data (they remain flat).
+**Verification**: `--domain-prefix company-team` correctly returns children with `/` ; short slugs strip correctly; no breakage for old `-` data (they remain flat).
 
 ### Phase 3: Unified display title helper + ban concept-as-label [x]
 
@@ -112,7 +112,7 @@ Implement inside doctor:
 
 - [x] Task `titles`:
   - Scan for tokens with `title IS NULL OR title = '' OR title = slug` (or suspiciously short).
-  - For weak titles (domain echo like "Axon Ivy …" when domain is `axon-ivy`, concept-prefix copies, question-stumps like "RAG Why", inconsistent casing, overly long).
+  - For weak titles (domain echo like "Workflow Engine …" when domain is `workflow-engine`, concept-prefix copies, question-stumps like "RAG Why", inconsistent casing, overly long).
   - Use LLM (respecting the token's established language from its content) with the strict prompt rules from the ADR:
     - Thoughtful name, ≤ ~80 chars.
     - **No domain echo**.
@@ -124,7 +124,7 @@ Implement inside doctor:
 
 [x] Add the generation prompt rules (no-domain-echo) to any curriculum import paths that create titles (already in LLM prompt).
 
-**Verification**: running `doctor titles --dry-run` on the current base proposes sensible clean titles; applying a few works and search sees them. (tested manually)
+**Verification**: running `doctor titles --dry-run` on a representative existing database proposes sensible clean titles; applying a few works and search sees them. (tested manually)
 
 ### Phase 6: `texts` doctor task (legacy umlaut repair in prose) [x]
 

@@ -7,6 +7,8 @@ import type { BloomLevel, Database } from "../../kernel/index.js";
 import {
   buildReviewQueue,
   generatePrompt,
+  getActiveWorkspaceContext,
+  getKnowledgeContextByName,
   openDatabase,
   resolveReviewContext,
 } from "../../kernel/index.js";
@@ -30,11 +32,27 @@ export const reviewCommand = new Command("review")
       db = await openDatabase();
       const userId = await resolveUser(opts, db);
 
+      const configuredContext =
+        opts.knowledgeContext || getActiveWorkspaceContext();
+      let resolvedContext: string | undefined;
+      if (configuredContext) {
+        const context = await getKnowledgeContextByName(db, configuredContext);
+        if (context) {
+          resolvedContext = context.name;
+        } else if (opts.knowledgeContext) {
+          throw new Error(`Knowledge context not found: ${configuredContext}`);
+        } else {
+          console.warn(
+            `Ignoring stale active knowledge context: ${configuredContext}`,
+          );
+        }
+      }
+
       const queue = await buildReviewQueue(db, {
         userId,
         maxNew: Number(opts.maxNew),
         maxReviews: Number(opts.maxReviews),
-        knowledgeContext: opts.knowledgeContext,
+        knowledgeContext: resolvedContext,
       });
 
       if (queue.items.length === 0) {
@@ -44,6 +62,9 @@ export const reviewCommand = new Command("review")
       }
 
       console.log(`\nReview session: ${queue.items.length} card(s)`);
+      if (resolvedContext) {
+        console.log(`  Context: ${resolvedContext}`);
+      }
       console.log(
         `  New: ${queue.newCount}  Review: ${queue.reviewCount}  Relearn: ${queue.relearnCount}`,
       );
