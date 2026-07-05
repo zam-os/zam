@@ -1,6 +1,6 @@
 # Knowledge Contexts: Work, School, Private
 
-**Status:** Accepted (2026-07-04)
+**Status:** Accepted (2026-07-04); Phase 0 refined (2026-07-05)
 **Date:** 2026-07-04
 **Deciders:** Thomas (project owner)
 **Related:**
@@ -28,10 +28,10 @@ Three recent decisions all tripped over this missing notion:
    from "mandate" to "default" because the COPS area is deliberately
    English. The *rule* ("this area is English") currently lives nowhere —
    it exists only as owner intent.
-2. **Sharing** (multi-learner ADR): knowledge is shared with a *circle* —
-   the COPS team should see COPS tokens, never the kids' school progress or
-   private notes. The natural sharing boundary is exactly this missing
-   concept.
+2. **Sharing** (multi-learner ADR): a context is a useful library slice, but it
+   is not an authorization boundary. The publishing workspace and classified
+   source determine who may receive content; tagging something `DocuWare` must
+   never make it shareable by itself.
 3. **Graph overview**: the graph is getting crowded; the coarsest useful
    filter ("show me only work") is not expressible.
 
@@ -44,15 +44,53 @@ The hierarchical-ontology ADR (seed note) may eventually restructure
 domains entirely; whatever we do here must be **small, additive, and
 forward-compatible** with that outcome.
 
+### Worked persona: a DocuWare apprentice
+
+An apprentice may be all of these at the same time:
+
+- a DocuWare employee working in IT helpdesk or first-/second-level support;
+- a vocational-school student following an official curriculum provider;
+- a private learner pursuing goals at home;
+- a member of a DocuWare team whose operational goals can create new learning
+  needs.
+
+The corresponding material need not live in one repository. Personal and
+vocational-school goals may live in `zam-personal`; company goals and curricula
+may live in a DocuWare team workspace; a school could later publish its own
+workspace. Work tasks can also produce knowledge that belongs to the DocuWare
+world even when no curriculum prescribed it in advance.
+
+This persona exposes several independent questions that **context alone must
+not answer**:
+
+| Dimension | Question it answers |
+|-----------|---------------------|
+| Knowledge context | In whose world is this relevant: DocuWare, vocational school, private? |
+| Curriculum | Which structured body of learning objectives is offered or required? |
+| Learning assignment | Who says this learner should learn which objectives, with what priority or due date? |
+| Goal | What outcome should an individual or organization achieve? A goal may imply learning assignments, but is not itself one. |
+| Workspace/repository | Who owns and versions the goal, curriculum, rules, or process? |
+| Access policy | From which workspace, device, network, or place may material be read or practised? |
+| Active situation | Which learning is appropriate now, for example during DocuWare working time or at home? |
+| Learning state | What has this learner personally reviewed, forgotten, or mastered? |
+
+`Learning assignment` is a Phase 0 working term, not yet a schema decision. It
+can represent a self-chosen commitment, an employer assignment, or a later
+school/teacher assignment while preserving who issued it. The active situation
+may prioritize assignments, but it must not change token identity or ownership
+silently.
+
 ## Decision drivers
 
-1. **Make existing owner intent explicit** — "COPS is English", "school is
-   shared with the family circle" should be data, not memory.
+1. **Make existing owner intent explicit** — "COPS is English" and "this
+   knowledge is relevant to vocational school" should be data, not memory.
+   Sharing policy remains with the publishing workspace/source.
 2. **Orthogonality** — context (whose world) ⊥ domain (which subject).
 3. **Smallest additive change** — no identity changes, no domain
    restructuring, no schema churn ahead of the ontology ADR.
-4. **Sharing-ready** — the multi-learner service needs a boundary object to
-   publish by.
+4. **Sync-ready without becoming access control** — the multi-learner service
+   may filter a library by context, while the publishing workspace and source
+   classification still govern visibility.
 5. **Graceful absence** — tokens without a context behave exactly like
    today; single-context users never need to see the feature.
 
@@ -61,10 +99,10 @@ forward-compatible** with that outcome.
 | Option | Shape | Verdict |
 |--------|-------|---------|
 | **A. Context = top domain level by convention** (`work/…`, `school/…`) | No schema change; reuses the `/` separator | Conflates context with subject taxonomy (`work/mathematik` vs `school/mathematik` duplicates subjects under two roots); no place to attach attributes like language; a rename-only convention — rejected as the primary mechanism, though the ontology ADR may revisit it. |
-| **B. `contexts` table + token↔context assignment** | Context as a small first-class entity with attributes (language, sharing default) | Additive, one M-migration; attributes have a home; the sharing boundary becomes a real object; forward-compatible. **Chosen — in the n:m variant (owner decision):** a `token_contexts` join table instead of a single FK, so a token can live in several worlds (`git` at work AND privately). |
-| **C. Settings-only mapping** (domain-prefix → language in `settings`) | Zero schema | Solves only the language symptom; invisible to graph filtering and sharing; another implicit convention. Rejected. |
+| **B. `contexts` table + token↔context assignment** | Context as a small first-class facet with attributes such as language | Additive, one M-migration; attributes have a home; graph and sync filtering become explicit without granting access. **Chosen — in the n:m variant (owner decision):** a `token_contexts` join table instead of a single FK, so a token can live in several worlds (`git` at work AND privately). |
+| **C. Settings-only mapping** (domain-prefix → language in `settings`) | Zero schema | Solves only the language symptom; invisible to graph and sync filtering; another implicit convention. Rejected. |
 
-## Decision (proposed)
+## Decision
 
 **1. Introduce `contexts` as a small first-class entity.**
 
@@ -74,8 +112,6 @@ CREATE TABLE IF NOT EXISTS contexts (
   name       TEXT NOT NULL UNIQUE,        -- "work-docuware", "school", "private"
   label      TEXT,                        -- display name, Unicode
   language   TEXT,                        -- BCP-47 ("en", "de"); NULL = system.locale
-  visibility TEXT NOT NULL DEFAULT 'private'
-             CHECK (visibility IN ('private', 'circle')),
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 ```
@@ -99,14 +135,16 @@ per-context duplicates. Ambiguity is resolved by three fixed rules:
 - **Filtering is OR:** a token appears in every context it belongs to.
 - **Language: content wins.** A context's `language` is only the *default
   for new generation*, and there the **active context** of the operation
-  (`context.default` setting or `--context` flag) decides; existing tokens
+  (a `knowledge-context.default` setting or
+  `--knowledge-context` flag) decides; existing tokens
   keep their established content language (titles ADR Decision 7) — doctor
   tasks never translate on the basis of a context alone.
-- **Sharing is a union, and assignment IS the publish decision:** a token
-  is published to every circle any of its contexts is shared with. Adding
-  a circle-visible context to a token is therefore an explicit act with a
-  visible consequence — surfaces show the sharing badge at assignment
-  time.
+- **Context never grants access:** publishing and portability follow the
+  classified source and publishing workspace. A public source link denotes
+  public knowledge; a team repository, internal Confluence page, or comparable
+  organization-only source denotes confidential knowledge. If sources disagree
+  or classification is absent, sharing fails closed until an authoritative
+  public source grounds a portable version.
 
 **2. Context is orthogonal to domain.** A token's domain stays the subject
 (`mathematik`); its context says whose world it belongs to (`school`).
@@ -117,24 +155,27 @@ import, title generation, `zam doctor titles`) use
 `context.language ?? system.locale`. This turns the COPS-is-English rule
 from owner memory into data, and completes titles-ADR Decision 7.
 
-**4. Context is the coarsest filter.** `zam token list --context`, bridge
-`list-tokens` context field (additive), graph: context selector above the
-domain selector. The review queue gains an *optional* `--context` scope
-(default remains: everything, interleaved — learning across contexts is a
-feature, not a bug).
+**4. Context is the coarsest filter.** `zam token list --knowledge-context`,
+bridge `list-tokens` knowledge-context field (additive), graph: context selector
+above the domain selector. The review queue gains an *optional*
+`--knowledge-context` scope (default remains: everything, interleaved —
+learning across contexts is a feature, not a bug).
 
-**5. Context is the sharing anchor for the multi-learner tier.** The sync
-service publishes a library *per context* (`visibility: 'circle'` marks
-candidates); private contexts never leave the machine. Details stay in the
-multi-learner ADR — this ADR only provides the boundary object it was
-missing.
+**5. Context is a sync/filter facet, not the sharing anchor.** The sync service
+may publish a workspace's library slice per context, but workspace membership
+and source classification authorize the transfer. Personal and future school
+workspaces can both use a `vocational-school` context without becoming the same
+publisher or gaining access to each other's private material. Detailed access
+and purge mechanics stay in the multi-learner and learning-governance ADRs.
 
 **6. Assignment is maintained by `zam doctor` (task `contexts`).** The
 doctor proposes context assignments from domain names and content language
 (LLM-assisted, confirmed by the user, like every doctor task), so the
 existing 253-token base gets classified without hand-editing. New tokens:
-`--context <name>` flags on register/import wizards, plus an optional
-`context.default` setting for "I'm currently working".
+`--knowledge-context <name>` flags on register/import wizards, plus an optional
+`knowledge-context.default` setting for "I'm currently working". These names
+are fixed because `Token.context` and `--context` already mean explanatory token
+text in the stable API.
 
 **Owner decision on the doctor interaction model (applies to ALL doctor
 tasks across ADRs, resolving the titles ADR's open question):** plain
@@ -143,52 +184,106 @@ tasks across ADRs, resolving the titles ADR's open question):** plain
 `--yes` skips confirmation for agents/scripts; `--json` emits the report
 for bridge consumers.
 
-**7. Bridge/protocol changes are additive:** `context` object in token
-payloads, `list-contexts` command, `--context` filters. No breaking
-changes.
+**7. Bridge/protocol changes are additive:** a distinct `knowledgeContexts`
+field in token payloads, `list-contexts` command, and
+`--knowledge-context` filters. The existing string-valued `Token.context`
+field remains unchanged. No breaking changes.
 
-## Open questions
+### Phase 0 refinement decisions (2026-07-05)
 
-1. **Absorption by the ontology ADR** — if domains become a real hierarchy,
-   contexts could become its roots or stay orthogonal facets. The seed note
-   lists this; `contexts` as a table survives either outcome (worst case:
-   a doctor task migrates assignments into the hierarchy).
-2. **Active-context UX in the Studio** — a visible switcher vs. implicit
-   default; needs a design pass, not an architecture decision.
-3. **Per-context review pacing** — should FSRS queues weight contexts
-   differently (work sprints vs. school terms)? Deliberately out of scope
-   here; revisit with real usage.
+The DocuWare-apprentice walkthrough fixes the following behavioral boundaries:
+
+1. **Active situation prioritizes; it does not redefine knowledge.** In the
+   DocuWare working situation, DocuWare learning assignments are prioritized,
+   vocational-school assignments remain eligible, and private assignments are
+   excluded by default. A later policy may reserve a percentage of working time
+   for private learning. Time budgets, tracking, reporting, and incentives belong
+   to a separate learning-governance ADR.
+2. **The active knowledge context is explicitly selectable with a per-device
+   default.** A company laptop can default to DocuWare without preventing an
+   explicit switch at home. A device default is a convenience, not proof of
+   location, ownership, or permission.
+3. **One learner-token pair has one card and one FSRS history.** If the same
+   token occurs in company and vocational-school curricula, that retained
+   knowledge can satisfy both learning assignments. Assignment provenance,
+   priority, due dates, and completion views remain separate from the card.
+4. **Publisher and assigner are different roles.** A curriculum provider
+   publishes authoritative content; a learner, employer, or later a school or
+   teacher assigns it. Without a school workspace, the learner can self-assign
+   provider content from the personal workspace.
+5. **Team-visible planning describes required coverage, not private recall.** A
+   team may publish which domains or expertise it needs, which members are
+   responsible for building and maintaining them, which knowledge everyone
+   needs, and where redundancy is required to avoid a single expert. Individual
+   review answers, failures, and review logs remain private. Mandatory completion
+   reporting is a separate governance concern.
+6. **Knowledge portability follows the classified source, not the device used.**
+   Public-resource links ground portable world knowledge. Team repositories,
+   internal Confluence pages, and comparable organization-only resources ground
+   confidential knowledge. When membership ends, access to those sources and
+   their confidential derived knowledge disappears; portable world knowledge
+   remains. Exact purge mechanics belong to learning governance and
+   multi-learner sync.
+7. **Declining is not a fifth FSRS rating.** Ratings 1–4 continue to describe
+   recall quality for knowledge the learner still intends to retain. A separate
+   decline action (rendered compactly as `-`) removes an optional item from the
+   queue and records a personal token suppression so suggestion/import
+   automation does not add it again.
+8. **Automation may remove the need to learn.** Agent execution or a script does
+   not prove human retention and therefore never advances FSRS. It can,
+   nevertheless, satisfy the underlying operational need and justify declining
+   an optional learning assignment.
+9. **Obvious mandatory learning does not offer `-`.** It remains an explicit
+   obligation and cannot be silently hidden or reported as complete. Due dates,
+   completion evidence, consequences, auditor access, and compliance reporting
+   belong to the separate learning-governance ADR.
+
+## Deferred questions
+
+1. **Confidential purge boundary** — does membership loss purge cards, review
+   logs, embeddings, session evidence, and local source caches as well as token
+   content? Resolve in learning governance and multi-learner sync.
+2. **Team coverage evidence** — how does a team know that a required expertise
+   area has enough active maintainers without exposing private review history?
+   Completion attestations, demonstrated work, or learner-approved aggregates
+   are candidates for the learning-governance ADR.
+3. **Per-context review pacing** — beyond the resolved DocuWare/school/private
+   eligibility rule, how should the queue divide time among simultaneously
+   eligible assignments? Defer to learning governance.
 
 ## Scope and delivery plan
 
-- **Phase 0 — this ADR** proposed for sign-off.
-- **Phase A — schema + kernel + CLI filters** (contexts table, `context_id`,
+- **Phase 0 — accepted ADR refinement (complete):** worked persona, authority,
+  ownership, visibility, active-situation, and public naming contracts are
+  resolved above; the implementation plan lives in `docs/plans/`.
+- **Phase A — schema + kernel + CLI filters** (`contexts` and `token_contexts`,
   list/register/edit support, language resolution in generation paths).
 - **Phase B — doctor task `contexts`** (LLM-assisted backfill of the
   existing base).
 - **Phase C — Studio/graph selector** (context above domain).
-- **Phase D — sharing anchor** lands with multi-learner Phase B (library
-  publish per context).
+- **Phase D — sync filter** lands with multi-learner Phase B (workspace library
+  slices may be filtered per context; authorization remains source/workspace
+  based).
 
 ## Out of scope
 
 - Permissions/roles (multi-learner ADR owns them).
+- Learning assignment authority, time budgets, mandatory completion, team
+  coverage reporting, audit access, and decline semantics (learning-governance
+  ADR).
 - Domain restructuring or ontology alignment (seed-note ADR).
 - Per-context FSRS parameters or scheduling changes.
 
 ## Consequences
 
-- The three dangling threads — per-area language, sharing boundary, coarse
-  graph filter — get one small, common answer instead of three conventions.
-- One new table + one nullable column; every existing flow is unaffected
+- Per-area language, sync filtering, and coarse graph filtering get one small,
+  common answer without turning context into access control.
+- Two new tables and no new token column; every existing flow is unaffected
   until a context is assigned (strict opt-in).
-- The multi-learner service gains its publish boundary before it is built —
-  no retrofit.
+- The multi-learner service gains a context filter before it is built, while
+  source/workspace authorization remains explicit.
 - A future ontology decision is not constrained: contexts are data and can
   be migrated by a doctor task if the hierarchy absorbs them.
-- The n:m model buys the shared-concept case at the price of potential
-  ambiguity — contained by the three fixed rules (OR filtering,
-  content-language priority with active-context default, union sharing
-  with assignment-time visibility). If union sharing ever surprises in
-  practice, a per-assignment visibility override is the escape hatch —
-  deferred until real friction appears.
+- The n:m model buys the shared-concept case without broadening access:
+  filtering is OR, content language wins over context defaults, and source plus
+  workspace govern visibility and portability.
