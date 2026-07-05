@@ -16,6 +16,7 @@ export interface ReviewQueueOptions {
   maxNew?: number; // default 10
   maxReviews?: number; // default 50
   now?: Date;
+  knowledgeContext?: string;
 }
 
 export interface ReviewQueueItem {
@@ -83,9 +84,7 @@ export async function buildReviewQueue(
   const nowISO = now.toISOString();
 
   // ── Step 1: Fetch due cards (review, relearning, learning — not new) ───
-  const dueRows = (await db
-    .prepare(
-      `SELECT
+  let dueSql = `SELECT
          c.id       AS card_id,
          c.token_id AS token_id,
          t.slug     AS slug,
@@ -103,15 +102,25 @@ export async function buildReviewQueue(
          AND c.blocked = 0
          AND c.due_at <= ?
          AND c.state IN ('review', 'relearning', 'learning')
-         AND t.deprecated_at IS NULL
-       ORDER BY c.due_at ASC`,
-    )
-    .all(options.userId, nowISO)) as CardRow[];
+         AND t.deprecated_at IS NULL`;
+
+  const dueParams: unknown[] = [options.userId, nowISO];
+
+  if (options.knowledgeContext) {
+    dueSql += ` AND EXISTS (
+      SELECT 1 FROM token_contexts tc
+      INNER JOIN contexts ctx ON ctx.id = tc.context_id
+      WHERE tc.token_id = t.id AND ctx.name = ?
+    )`;
+    dueParams.push(options.knowledgeContext);
+  }
+
+  dueSql += ` ORDER BY c.due_at ASC`;
+
+  const dueRows = (await db.prepare(dueSql).all(...dueParams)) as CardRow[];
 
   // ── Step 2: Fetch new cards ────────────────────────────────────────────
-  const newRows = (await db
-    .prepare(
-      `SELECT
+  let newSql = `SELECT
          c.id       AS card_id,
          c.token_id AS token_id,
          t.slug     AS slug,
@@ -128,11 +137,23 @@ export async function buildReviewQueue(
        WHERE c.user_id = ?
          AND c.blocked = 0
          AND c.state = 'new'
-         AND t.deprecated_at IS NULL
-       ORDER BY t.bloom_level ASC, t.slug ASC
-       LIMIT ?`,
-    )
-    .all(options.userId, maxNew)) as CardRow[];
+         AND t.deprecated_at IS NULL`;
+
+  const newParams: unknown[] = [options.userId];
+
+  if (options.knowledgeContext) {
+    newSql += ` AND EXISTS (
+      SELECT 1 FROM token_contexts tc
+      INNER JOIN contexts ctx ON ctx.id = tc.context_id
+      WHERE tc.token_id = t.id AND ctx.name = ?
+    )`;
+    newParams.push(options.knowledgeContext);
+  }
+
+  newSql += ` ORDER BY t.bloom_level ASC, t.slug ASC LIMIT ?`;
+  newParams.push(maxNew);
+
+  const newRows = (await db.prepare(newSql).all(...newParams)) as CardRow[];
 
   // ── Step 3: Sort overdue cards by urgency (most overdue first) ─────────
   const nowMs = now.getTime();

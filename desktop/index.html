@@ -157,6 +157,9 @@
           <div class="content-studio-list-panel card frosted">
             <div class="content-studio-search-bar">
               <input type="text" id="content-search-input" class="editor-input content-studio-search-input" placeholder="Search questions, answers, categories, keys..." />
+              <select id="content-context-filter" class="editor-select content-studio-filter-select">
+                <option value="">All Contexts</option>
+              </select>
               <select id="content-category-filter" class="editor-select content-studio-filter-select">
                 <option value="all">All Categories</option>
               </select>
@@ -335,6 +338,18 @@
           </article>
 
           <article class="card frosted settings-card">
+            <h2 id="lbl-settings-context-title">Knowledge Context</h2>
+            <p id="lbl-settings-context-help" class="settings-card-help">Select the default knowledge context for this device.</p>
+            <label class="settings-field" for="device-context-select">
+              <span id="lbl-settings-context">Default Context</span>
+              <select id="device-context-select">
+                <option value="">None / Unfiltered</option>
+                <!-- JS populated context options -->
+              </select>
+            </label>
+          </article>
+
+          <article class="card frosted settings-card">
             <h2 id="lbl-settings-appearance-title">Appearance</h2>
             <label class="settings-field" for="theme-select">
               <span id="lbl-settings-theme">Theme</span>
@@ -505,6 +520,9 @@
               <span id="graph-title" class="graph-title">Knowledge Graph (3D)</span>
               <span id="graph-focus-label" class="focus-label"></span>
             </div>
+            <div id="graph-context-selector" class="context-selector">
+              <!-- JS populated: "All" + context pills for filtering by knowledge context -->
+            </div>
             <div id="graph-domain-selector" class="domain-selector">
               <!-- JS populated: "All" + domain pills for filtering independent knowledge areas -->
             </div>
@@ -649,6 +667,12 @@
             <h3 id="lbl-curriculum-wizard-title">Curriculum Wizard</h3>
           </div>
           <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px;">
+            <div id="curriculum-wizard-context-section" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-size: 0.9rem;">
+              <span id="lbl-wizard-context">Assign imported cards to context:</span>
+              <select id="wizard-context-select" style="padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-soft); background: var(--bg-card-subtle); color: var(--clr-text-primary);">
+                <option value="">None / Unassigned</option>
+              </select>
+            </div>
             <div id="curriculum-wizard-breadcrumb" class="wizard-breadcrumb"></div>
 
             <div id="curriculum-wizard-resume-banner" class="wizard-resume-banner hidden">

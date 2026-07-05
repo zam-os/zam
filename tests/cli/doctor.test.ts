@@ -6,6 +6,8 @@ import {
 import {
   computeContentHash,
   createToken,
+  createKnowledgeContext,
+  listContextsForToken,
   type Database,
   embeddingContentForToken,
   getEmbeddingCoverage,
@@ -217,6 +219,146 @@ describe("doctor command tasks", () => {
     expect(updated?.title.length).toBeGreaterThan(2);
     expect(updated?.title.length).toBeLessThanOrEqual(80);
     expect(updated?.title).not.toBe(updated?.slug);
+  });
+
+  it("proposes, dry-runs, and auto-confirms contexts backfill using heuristics", async () => {
+    // 1. Setup contexts
+    const ctx1 = await createKnowledgeContext(db, {
+      name: "biology",
+      label: "Molecular Biology",
+    });
+    const ctx2 = await createKnowledgeContext(db, {
+      name: "work-company",
+      label: "Company Work",
+    });
+
+    // 2. Setup tokens without contexts
+    const t1 = await createToken(db, {
+      slug: "biology-mitochondria",
+      concept: "Mitochondria produce ATP",
+      domain: "biology",
+    });
+    const t2 = await createToken(db, {
+      slug: "company-monitoring-logs",
+      concept: "Company service logs",
+      domain: "company", // matches label Company Work
+    });
+    const t3 = await createToken(db, {
+      slug: "unrelated-token",
+      concept: "Random concept",
+      domain: "other", // no match
+    });
+
+    // 3. Dry-run of contexts task
+    await task("contexts").run(db, {
+      fix: true,
+      dryRun: true,
+    });
+    const logStr = logs.join(" ");
+    expect(logStr).toContain("Found 2 proposed context assignments");
+    expect(logStr).toContain("Assign token \"biology-mitochondria\" to context \"biology\" [High Confidence]");
+    expect(logStr).toContain("Assign token \"company-monitoring-logs\" to context \"work-company\" [High Confidence]");
+
+    // Verify dry-run didn't assign them
+    const c1 = await listContextsForToken(db, t1.id);
+    expect(c1).toHaveLength(0);
+
+    // 4. Auto-confirm mode (--fix and --yes)
+    await task("contexts").run(db, {
+      fix: true,
+      dryRun: false,
+      yes: true,
+    });
+
+    // Verify high confidence tokens are now assigned
+    const c1Post = await listContextsForToken(db, t1.id);
+    expect(c1Post).toHaveLength(1);
+    expect(c1Post[0].name).toBe("biology");
+
+    const c2Post = await listContextsForToken(db, t2.id);
+    expect(c2Post).toHaveLength(1);
+    expect(c2Post[0].name).toBe("work-company");
+
+    // Unrelated token remains unassigned
+    const c3Post = await listContextsForToken(db, t3.id);
+    expect(c3Post).toHaveLength(0);
+  });
+
+  it("limits context backfill to an explicitly selected context", async () => {
+    await createKnowledgeContext(db, { name: "biology" });
+    await createKnowledgeContext(db, { name: "work" });
+    const biology = await createToken(db, {
+      slug: "biology-cells",
+      concept: "Cells are biological units",
+      domain: "biology",
+    });
+    const work = await createToken(db, {
+      slug: "work-process",
+      concept: "A team process",
+      domain: "work",
+    });
+
+    await task("contexts").run(db, {
+      fix: true,
+      yes: true,
+      knowledgeContext: "biology",
+    });
+
+    expect((await listContextsForToken(db, biology.id))[0]?.name).toBe(
+      "biology",
+    );
+    expect(await listContextsForToken(db, work.id)).toHaveLength(0);
+  });
+
+  it("uses source references and unambiguous content language as context signals", async () => {
+    await createKnowledgeContext(db, {
+      name: "work-company",
+      language: "en",
+    });
+    await createKnowledgeContext(db, { name: "school", language: "de" });
+    const sourced = await createToken(db, {
+      slug: "monitoring-runbook",
+      concept: "Opaque monitoring reference",
+      domain: "operations",
+      source_link: "https://confluence.example/work-company/runbook",
+    });
+    const german = await createToken(db, {
+      slug: "cell-structure",
+      concept: "Die Zelle ist die grundlegende biologische Einheit.",
+      domain: "biology",
+    });
+
+    await task("contexts").run(db, { fix: true, dryRun: true });
+    expect(logs.join("\n")).toContain(
+      'Assign token "monitoring-runbook" to context "work-company" [High Confidence]',
+    );
+    expect(logs.join("\n")).toContain(
+      'Assign token "cell-structure" to context "school"',
+    );
+
+    await task("contexts").run(db, { fix: true, yes: true });
+    expect((await listContextsForToken(db, sourced.id))[0]?.name).toBe(
+      "work-company",
+    );
+    expect(await listContextsForToken(db, german.id)).toHaveLength(0);
+  });
+
+  it("emits a JSON result when context backfill has nothing to apply", async () => {
+    await createKnowledgeContext(db, { name: "biology" });
+
+    await task("contexts").run(db, {
+      fix: true,
+      yes: true,
+      json: true,
+      knowledgeContext: "biology",
+    });
+
+    expect(JSON.parse(logs.at(-1) ?? "{}")).toMatchObject({
+      success: true,
+      task: "contexts",
+      applied: [],
+      totalApplied: 0,
+    });
   });
 
   it("accepts only positive integer timeouts", () => {

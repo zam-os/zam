@@ -121,6 +121,8 @@ ZAM's relational database schema is designed for absolute integrity. Primary key
 | **session_syntheses**| `session_id`<br>`token_id`<br>`inferred_rating`<br>`confirmed_rating`<br>`evidence`<br>`created_at` | TEXT FK<br>TEXT FK<br>INTEGER<br>INTEGER<br>TEXT (JSON)<br>TEXT | Synthesis audit to ensure offline analysis updates cards exactly once (idempotent key: `(session_id, token_id)`). |
 | **agent_skills** | `id`<br>`slug`<br>`description`<br>`steps`<br>`token_slugs`<br>`created_at`<br>`updated_at` | TEXT (ULID) PK<br>TEXT UNIQUE<br>TEXT<br>TEXT (JSON)<br>TEXT (JSON)<br>TEXT<br>TEXT | Procedural task recipes the AI agent has learned from guiding the user through novel tasks. |
 | **user_config** | `key`<br>`value`<br>`updated_at` | TEXT PK<br>TEXT<br>TEXT | Flat key-value configurations (e.g. `observer.scope`, `llm.model`). |
+| **contexts** | `id`<br>`name`<br>`label`<br>`language`<br>`created_at` | TEXT (ULID) PK<br>TEXT UNIQUE<br>TEXT NULL<br>TEXT NULL<br>TEXT | Defines knowledge contexts (e.g. `work`, `school`, `private`) orthogonal to domains. |
+| **token_contexts** | `token_id`<br>`context_id` | TEXT FK<br>TEXT FK | Maps tokens to knowledge contexts (n:m join table). Composite PK: `(token_id, context_id)`. |
 
 ### 3.3 Token vs. Card Separation
 A **Token** is a shared semantic concept: *"A git commit can be modified with `git commit --amend`."* It belongs to the domain, containing the question, prerequisite links, and source documentation.

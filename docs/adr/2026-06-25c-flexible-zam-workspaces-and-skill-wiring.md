@@ -34,8 +34,8 @@ Introduce a flexible workspace registry.
 
 Each workspace record has:
 
-- `id`, for example `personal`, `team`, `family`, `community-pgr`, or
-  `cops-management`;
+- `id`, for example `personal`, `team`, `family`, `community-council`, or
+  `team-management`;
 - `label`;
 - `kind`: `personal | team | family | community | organization | custom`;
 - `path`;
@@ -52,8 +52,8 @@ workspace contents remain normal files in the selected repositories.
 repositories:
 
 ```powershell
-zam workspace add cops-management --kind team --path C:\src\Cops.Management --source-control azure-devops
-zam workspace setup cops-management --agents copilot,claude
+zam workspace add team-management --kind team --path C:\src\Team.Management --source-control azure-devops
+zam workspace setup team-management --agents copilot,claude
 ```
 
 Skill setup is non-destructive:

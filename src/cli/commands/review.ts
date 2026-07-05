@@ -7,6 +7,7 @@ import type { BloomLevel, Database } from "../../kernel/index.js";
 import {
   buildReviewQueue,
   generatePrompt,
+  getKnowledgeContextByName,
   openDatabase,
   resolveReviewContext,
 } from "../../kernel/index.js";
@@ -20,16 +21,38 @@ export const reviewCommand = new Command("review")
   .option("--max-new <n>", "Maximum new cards", "10")
   .option("--max-reviews <n>", "Maximum review cards", "50")
   .option("--no-resolve", "Skip resolving source_link into inline context")
+  .option(
+    "--knowledge-context <context>",
+    "Filter review queue by knowledge context",
+  )
   .action(async (opts) => {
     let db: Database | undefined;
     try {
       db = await openDatabase();
       const userId = await resolveUser(opts, db);
 
+      // ADR Decision 4: without an explicit --knowledge-context the queue
+      // stays unscoped (everything, interleaved). The device default drives
+      // generation defaults only, never review eligibility.
+      let resolvedContext: string | undefined;
+      if (opts.knowledgeContext) {
+        const context = await getKnowledgeContextByName(
+          db,
+          opts.knowledgeContext,
+        );
+        if (!context) {
+          throw new Error(
+            `Knowledge context not found: ${opts.knowledgeContext}`,
+          );
+        }
+        resolvedContext = context.name;
+      }
+
       const queue = await buildReviewQueue(db, {
         userId,
         maxNew: Number(opts.maxNew),
         maxReviews: Number(opts.maxReviews),
+        knowledgeContext: resolvedContext,
       });
 
       if (queue.items.length === 0) {
@@ -39,6 +62,9 @@ export const reviewCommand = new Command("review")
       }
 
       console.log(`\nReview session: ${queue.items.length} card(s)`);
+      if (resolvedContext) {
+        console.log(`  Context: ${resolvedContext}`);
+      }
       console.log(
         `  New: ${queue.newCount}  Review: ${queue.reviewCount}  Relearn: ${queue.relearnCount}`,
       );

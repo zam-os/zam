@@ -64,6 +64,16 @@ const DATABASE_SETTINGS_KEYS = [
 const QUESTION_WAIT_KEYS = [
   "lbl_question_wait_warn",
   "btn_question_use_saved",
+ ] as const;
+ 
+const KNOWLEDGE_CONTEXT_KEYS = [
+  "settings_context_title",
+  "settings_context_help",
+  "settings_context_label",
+  "wizard_context_label",
+  "lbl_all_contexts",
+  "lbl_no_context_default",
+  "lbl_no_context_assignment",
 ] as const;
 
 const STUDIO_LAYOUT_KEYS = ["content_subtitle"] as const;
@@ -73,6 +83,7 @@ const REQUIRED_KEYS = [
   ...WIZARD_KEYS,
   ...DATABASE_SETTINGS_KEYS,
   ...QUESTION_WAIT_KEYS,
+  ...KNOWLEDGE_CONTEXT_KEYS,
   ...STUDIO_LAYOUT_KEYS,
 ];
 

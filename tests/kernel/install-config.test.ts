@@ -99,7 +99,7 @@ describe("install config", () => {
       {
         id: "team",
         kind: "team",
-        path: "C:\\src\\Cops.Management",
+        path: "C:\\src\\Team.Management",
         sourceControl: "azure-devops",
         knowledgeScopes: ["goals", "concepts"],
       },
@@ -109,9 +109,9 @@ describe("install config", () => {
     upsertConfiguredWorkspace(
       {
         id: "team",
-        label: "Cops Management",
+        label: "Team Management",
         kind: "team",
-        path: "D:\\work\\Cops.Management",
+        path: "D:\\work\\Team.Management",
       },
       path,
     );
@@ -119,9 +119,9 @@ describe("install config", () => {
     expect(getConfiguredWorkspaces(path)).toEqual([
       {
         id: "team",
-        label: "Cops Management",
+        label: "Team Management",
         kind: "team",
-        path: "D:\\work\\Cops.Management",
+        path: "D:\\work\\Team.Management",
       },
     ]);
   });

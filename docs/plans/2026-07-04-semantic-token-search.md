@@ -501,12 +501,12 @@ lexical-only path (no embedder in CI) returns valid JSON with
      runtime matrix instead; afterwards verify `token_embeddings.model` says
      `embeddinggemma-300m` (canonical), not `embed-gemma`.
   2. `zam token reembed` → reports full coverage.
-  3. Register `"exactly one dedicated Ivy pod per organization"`, then
-     `zam token find --query "one Ivy instance per tenant"` → the token
+  3. Register `"exactly one dedicated application pod per organization"`, then
+     `zam token find --query "one application instance per tenant"` → the token
      appears with a `Sim` value.
-  4. `echo '{"slug":"t2","concept":"one Ivy instance per tenant"}' | zam bridge add-token`
+  4. `echo '{"slug":"t2","concept":"one application instance per tenant"}' | zam bridge add-token`
      → response contains the first token in `possible_duplicates`.
-  5. `echo '{"context":"configuring per-tenant Ivy deployments"}' | zam bridge relevant-tokens`
+  5. `echo '{"context":"configuring per-tenant application deployments"}' | zam bridge relevant-tokens`
      → both tokens ranked with similarities and card state.
 - Deleting a token leaves no orphan in `token_embeddings`; editing a token's
   concept makes the next `find`/`reembed` refresh its vector automatically.

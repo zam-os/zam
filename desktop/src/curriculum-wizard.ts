@@ -139,6 +139,28 @@ async function showCurriculumWizard(): Promise<void> {
   showLoading(true);
 
   try {
+    const wizardCtxSelect = document.getElementById("wizard-context-select") as HTMLSelectElement;
+    if (wizardCtxSelect) {
+      try {
+        const activeRes = await runBridge<any>("get-active-knowledge-context");
+        const active = (activeRes && activeRes.activeContext) || "";
+
+        const listRes = await runBridge<any>("list-knowledge-contexts");
+        const contexts = (listRes && listRes.contexts) || [];
+
+        wizardCtxSelect.innerHTML = `<option value="">${t("lbl_no_context_assignment")}</option>`;
+        contexts.forEach((ctx: any) => {
+          const opt = document.createElement("option");
+          opt.value = ctx.name;
+          opt.textContent = ctx.label ? `${ctx.label} (${ctx.name})` : ctx.name;
+          wizardCtxSelect.appendChild(opt);
+        });
+
+        wizardCtxSelect.value = active;
+      } catch (e) {
+        console.warn("Could not prefill wizard contexts", e);
+      }
+    }
     if (providers.length === 0) {
       const res = await runBridge<{
         success: boolean;
@@ -563,8 +585,22 @@ async function finishWizard(topicStep: WizardStep): Promise<void> {
       topic_id: string;
     }> = [];
 
+    const wizardCtxSelect = document.getElementById("wizard-context-select") as HTMLSelectElement;
+    const selectedCtxName = wizardCtxSelect?.value || "";
+
     for (const item of extractRes.extracted) {
       if (!item.text.trim()) continue;
+
+      const importArgs = [
+        "--text",
+        item.text,
+        "--domain",
+        subjectLabel,
+        "--preview",
+      ];
+      if (selectedCtxName) {
+        importArgs.push("--knowledge-context", selectedCtxName);
+      }
 
       const previewRes = await runBridge<{
         success: boolean;
@@ -576,13 +612,7 @@ async function finishWizard(topicStep: WizardStep): Promise<void> {
           symbiosis_mode: string;
           context: string;
         }>;
-      }>("personal-card-import-curriculum", [
-        "--text",
-        item.text,
-        "--domain",
-        subjectLabel,
-        "--preview",
-      ]);
+      }>("personal-card-import-curriculum", importArgs);
 
       if (!previewRes.success || !Array.isArray(previewRes.proposals)) {
         continue;
@@ -607,16 +637,21 @@ async function finishWizard(topicStep: WizardStep): Promise<void> {
       throw new Error("No cards were generated from the selected topics.");
     }
 
-    const confirmRes = await runBridge<{
-      success: boolean;
-      createdCount: number;
-      ensuredCount: number;
-    }>("personal-source-confirm-import", [
+    const confirmArgs = [
       "--sourceId",
       sourceId,
       "--proposals",
       JSON.stringify(allProposals),
-    ]);
+    ];
+    if (selectedCtxName) {
+      confirmArgs.push("--knowledge-context", selectedCtxName);
+    }
+
+    const confirmRes = await runBridge<{
+      success: boolean;
+      createdCount: number;
+      ensuredCount: number;
+    }>("personal-source-confirm-import", confirmArgs);
 
     let createdCount = 0;
     let ensuredCount = 0;

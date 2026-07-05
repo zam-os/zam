@@ -490,4 +490,27 @@ async function runMigrations(db: Database): Promise<void> {
   await db.exec(
     `CREATE INDEX IF NOT EXISTS idx_tokens_domain ON tokens(domain)`,
   );
+
+  // M012: create contexts and token_contexts tables
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS contexts (
+      id         TEXT PRIMARY KEY,
+      name       TEXT NOT NULL UNIQUE,
+      label      TEXT,
+      language   TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    )
+  `);
+
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS token_contexts (
+      token_id   TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+      context_id TEXT NOT NULL REFERENCES contexts(id) ON DELETE CASCADE,
+      PRIMARY KEY (token_id, context_id)
+    )
+  `);
+
+  await db.exec(`
+    CREATE INDEX IF NOT EXISTS idx_token_contexts_context ON token_contexts(context_id)
+  `);
 }

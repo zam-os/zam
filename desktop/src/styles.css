@@ -2475,3 +2475,36 @@ textarea::placeholder {
     display: none !important;
   }
 }
+
+/* Context filter / selector for knowledge contexts */
+.context-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
+
+.context-pill {
+  font-size: 11px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-soft);
+  color: var(--clr-text-secondary);
+  cursor: pointer;
+  transition: all 0.1s ease;
+  white-space: nowrap;
+}
+
+.context-pill:hover {
+  background: rgba(139, 92, 246, 0.12);
+  border-color: var(--clr-accent-purple);
+  color: var(--clr-accent-purple);
+}
+
+.context-pill.active {
+  background: rgba(139, 92, 246, 0.18);
+  border-color: var(--clr-accent-purple);
+  color: var(--clr-accent-purple);
+}

@@ -21,9 +21,9 @@ word-overlap plus a substring bonus. Both `zam token find` and the `/zam`
 That approach cannot see meaning. It misses tokens that say the same thing in
 different words:
 
-- Dedup fails on paraphrases — registering *"one Ivy instance per tenant"* does
-  not match an existing *"exactly one dedicated Ivy pod per organization"*, so a
-  duplicate is created.
+- Dedup fails on paraphrases — registering *"one application instance per
+  tenant"* does not match an existing *"exactly one dedicated application pod
+  per organization"*, so a duplicate is created.
 - Recall ("what do I already know that is relevant to this task?") can only match
   shared keywords, not related concepts.
 
@@ -56,7 +56,7 @@ RAG; it is not a requirement.
   code lives in `src/cli/llm/`). Embedding *generation* therefore belongs to the
   CLI/harness layer; the kernel may only store vectors and compute similarity —
   which is pure math.
-- **A local LLM runtime is already configured** (Ollama on Thomas's machines;
+- **A local LLM runtime is already configured** (Ollama on developer machines;
   role-based provider resolution via `getProviderForRole` exists for
   `vision`/`recall`/`text`). Ollama serves OpenAI-compatible `/v1/embeddings`,
   so embeddings can be produced **locally and privately** — essential for
@@ -82,8 +82,8 @@ RAG; it is not a requirement.
    data egress, no per-call cost.
 5. **Minimal blast radius** — the kernel is SQL today; favor adding a capability
    over replacing the datastore.
-6. **Hybrid search** — short, jargon-heavy tokens (acronyms like SNAT/NFS, slugs
-   like `ivy4`) need lexical matching *and* semantic similarity.
+6. **Hybrid search** — short, jargon-heavy tokens (acronyms like SNAT/NFS,
+   slugs like `svc4`) need lexical matching *and* semantic similarity.
 7. **Multi-user scale later** — the company tier needs concurrency and larger
    indexes; the personal tier does not.
 

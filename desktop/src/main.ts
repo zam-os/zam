@@ -288,6 +288,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_search_placeholder: "Search questions, answers, categories, keys...",
     lbl_category_filter: "Category",
     lbl_all_categories: "All Categories",
+    lbl_all_contexts: "All Contexts",
+    lbl_no_context_default: "No context default",
+    lbl_no_context_assignment: "No context assignment",
     lbl_empty_content: "No learning cards found. Create your first card!",
     lbl_empty_content_btn: "Create First Card",
     lbl_question: "Question",
@@ -397,6 +400,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_err_category_required: "Category is required.",
     lbl_err_import_context_required: "Curriculum text is required.",
     lbl_err_original_context_required: "Question and answer are required for the original card.",
+    settings_context_title: "Knowledge Context",
+    settings_context_help: "Select the default knowledge context for this device.",
+    settings_context_label: "Default Context",
+    wizard_context_label: "Assign imported cards to context:",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -664,6 +671,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_search_placeholder: "Fragen, Antworten, Kategorien, Keys suchen...",
     lbl_category_filter: "Kategorie",
     lbl_all_categories: "Alle Kategorien",
+    lbl_all_contexts: "Alle Kontexte",
+    lbl_no_context_default: "Kein Kontextstandard",
+    lbl_no_context_assignment: "Keine Kontextzuordnung",
     lbl_empty_content: "Keine Lernkarten gefunden. Erstelle deine erste karte!",
     lbl_empty_content_btn: "Erste Karte erstellen",
     lbl_question: "Frage",
@@ -773,6 +783,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_err_category_required: "Kategorie ist erforderlich.",
     lbl_err_import_context_required: "Lehrplantext ist erforderlich.",
     lbl_err_original_context_required: "Frage und Antwort sind für die Originalkarte erforderlich.",
+    settings_context_title: "Wissenskontext",
+    settings_context_help: "Wähle den Standard-Wissenskontext für dieses Gerät.",
+    settings_context_label: "Standard-Kontext",
+    wizard_context_label: "Importierte Karten dem Kontext zuweisen:",
   },
   // es, fr, pt, zh, ja live in ./i18n.ts; en/de stay here as reference locales.
   ...TRANSLATION_PACKS,
@@ -1302,6 +1316,26 @@ function initializeTranslations() {
   document.getElementById("btn-open-releases")!.textContent = t("btn_open_releases");
   document.getElementById("graph-hint")!.textContent = t("graph_hint");
 
+  // Knowledge Context settings and wizard
+  const settingsContextTitle = document.getElementById("lbl-settings-context-title");
+  if (settingsContextTitle) settingsContextTitle.textContent = t("settings_context_title");
+  const settingsContextHelp = document.getElementById("lbl-settings-context-help");
+  if (settingsContextHelp) settingsContextHelp.textContent = t("settings_context_help");
+  const settingsContextLabel = document.getElementById("lbl-settings-context");
+  if (settingsContextLabel) settingsContextLabel.textContent = t("settings_context_label");
+  const deviceContextSelect = document.getElementById("device-context-select");
+  if (deviceContextSelect) {
+    const firstOpt = deviceContextSelect.querySelector("option");
+    if (firstOpt) firstOpt.textContent = t("lbl_no_context_default");
+  }
+  const wizardContextLabel = document.getElementById("lbl-wizard-context");
+  if (wizardContextLabel) wizardContextLabel.textContent = t("wizard_context_label");
+  const wizardContextSelect = document.getElementById("wizard-context-select");
+  if (wizardContextSelect) {
+    const firstOpt = wizardContextSelect.querySelector("option");
+    if (firstOpt) firstOpt.textContent = t("lbl_no_context_assignment");
+  }
+
   // Learning Content Studio translations
   const navContent = document.getElementById("nav-content");
   if (navContent) navContent.textContent = t("nav_content");
@@ -1319,6 +1353,11 @@ function initializeTranslations() {
   if (categoryFilterLabel) {
     const firstOpt = categoryFilterLabel.querySelector("option");
     if (firstOpt) firstOpt.textContent = t("lbl_all_categories");
+  }
+  const contextFilterLabel = document.getElementById("content-context-filter");
+  if (contextFilterLabel) {
+    const firstOpt = contextFilterLabel.querySelector("option");
+    if (firstOpt) firstOpt.textContent = t("lbl_all_contexts");
   }
   const emptyContentDesc = document.getElementById("lbl-empty-content-desc");
   if (emptyContentDesc) emptyContentDesc.textContent = currentLocale === "de" ? "Wähle eine Karte aus der Liste aus, um sie zu bearbeiten, oder erstelle eine neue Karte." : "Select a card from the list to edit, or create a new card to start.";
@@ -3449,11 +3488,37 @@ async function selectDatabaseUser(userId: string): Promise<void> {
   }
 }
 
+async function loadSettingsKnowledgeContext(): Promise<void> {
+  const select = document.getElementById("device-context-select") as HTMLSelectElement;
+  if (!select) return;
+
+  try {
+    const listRes = await runBridge<any>("list-knowledge-contexts");
+    const contexts = (listRes && listRes.contexts) || [];
+
+    select.innerHTML = `<option value="">${t("lbl_no_context_default")}</option>`;
+
+    contexts.forEach((ctx: any) => {
+      const opt = document.createElement("option");
+      opt.value = ctx.name;
+      opt.textContent = ctx.label ? `${ctx.label} (${ctx.name})` : ctx.name;
+      select.appendChild(opt);
+    });
+
+    const activeRes = await runBridge<any>("get-active-knowledge-context");
+    const active = (activeRes && activeRes.activeContext) || "";
+    select.value = active;
+  } catch (e) {
+    console.error("Failed to load settings knowledge contexts", e);
+  }
+}
+
 function refreshSettingsData(): void {
   void loadAppVersion();
   void loadWorkspaceList();
   void loadProviderStatus();
   void loadDatabaseStatus();
+  void loadSettingsKnowledgeContext();
   if (aiConfigEditorOpen) void loadProviderConfig();
 }
 
@@ -3517,6 +3582,8 @@ let graphUserId: string | null = null;
 let currentDomain: string | null = null;
 let availableDomains: string[] = [];
 let originalDomainSet: Set<string> = new Set();
+let currentKnowledgeContext: string | null = null;
+let availableKnowledgeContexts: any[] = [];
 
 function getShortSlug(slug: string): string {
   if (currentDomain) {
@@ -3549,6 +3616,9 @@ function disposeGraph() {
   graphNodeMeshes.clear();
   currentNeighborhood = null;
   currentDomain = null;
+  currentKnowledgeContext = null;
+  availableDomains = [];
+  availableKnowledgeContexts = [];
 }
 
 function updateGraphCamera() {
@@ -3597,9 +3667,11 @@ function buildGraphScene(nb: any) {
   focusSlugEl.textContent = getDisplayTitle(nb.center);
   focusConceptEl.textContent = nb.center.concept;
   const c = nb.center.card;
+  const ctxNames = nb.center.knowledgeContexts ? nb.center.knowledgeContexts.map((cx: any) => cx.name).join(", ") : "";
+  const ctxMeta = ctxNames ? ` · Contexts: ${ctxNames}` : "";
   focusMetaEl.textContent = c
-    ? `Bloom ${nb.center.bloomLevel} · ${c.state} · reps=${c.reps} · stab=${c.stability.toFixed(1)} ${c.blocked ? "· BLOCKED" : ""}`
-    : `Bloom ${nb.center.bloomLevel} · ${t("graph_no_card")}`;
+    ? `Bloom ${nb.center.bloomLevel} · ${c.state} · reps=${c.reps} · stab=${c.stability.toFixed(1)} ${c.blocked ? "· BLOCKED" : ""}${ctxMeta}`
+    : `Bloom ${nb.center.bloomLevel} · ${t("graph_no_card")}${ctxMeta}`;
 
   // helper to make clickable pill
   const makePill = (gt: any, container: HTMLElement) => {
@@ -3613,9 +3685,13 @@ function buildGraphScene(nb: any) {
   };
 
   prereqList.innerHTML = "";
-  const visiblePrereqs = currentDomain
-    ? nb.prerequisites.filter((p: any) => p.domain === currentDomain || p.domain.startsWith(currentDomain + '/'))
-    : nb.prerequisites;
+  let visiblePrereqs = nb.prerequisites;
+  if (currentDomain) {
+    visiblePrereqs = visiblePrereqs.filter((p: any) => p.domain === currentDomain || p.domain.startsWith(currentDomain + '/'));
+  }
+  if (currentKnowledgeContext) {
+    visiblePrereqs = visiblePrereqs.filter((p: any) => p.knowledgeContexts?.some((c: any) => c.name === currentKnowledgeContext));
+  }
   visiblePrereqs.forEach((p: any) => makePill(p, prereqList));
   if (visiblePrereqs.length === 0) {
     const empty = document.createElement("span");
@@ -3625,9 +3701,13 @@ function buildGraphScene(nb: any) {
   }
 
   depList.innerHTML = "";
-  const visibleDependents = currentDomain
-    ? nb.dependents.filter((d: any) => d.domain === currentDomain || d.domain.startsWith(currentDomain + '/'))
-    : nb.dependents;
+  let visibleDependents = nb.dependents;
+  if (currentDomain) {
+    visibleDependents = visibleDependents.filter((d: any) => d.domain === currentDomain || d.domain.startsWith(currentDomain + '/'));
+  }
+  if (currentKnowledgeContext) {
+    visibleDependents = visibleDependents.filter((d: any) => d.knowledgeContexts?.some((c: any) => c.name === currentKnowledgeContext));
+  }
   visibleDependents.forEach((d: any) => makePill(d, depList));
   if (visibleDependents.length === 0) {
     const empty = document.createElement("span");
@@ -3796,6 +3876,7 @@ function buildGraphScene(nb: any) {
 
   prereqs.forEach((p: any, i: number) => {
     if (currentDomain && p.domain !== currentDomain && !p.domain.startsWith(currentDomain + "/")) return; // stay within independent knowledge area
+    if (currentKnowledgeContext && !p.knowledgeContexts?.some((c: any) => c.name === currentKnowledgeContext)) return;
     const angle = (i / Math.max(1, prereqs.length)) * Math.PI * 2;
     const m = makeNode(p, false, true); // isPrereq
     const y = -1.6 - (p.bloomLevel - 1) * 0.06;
@@ -3817,6 +3898,7 @@ function buildGraphScene(nb: any) {
   // Dependents (upper)
   depnds.forEach((d: any, i: number) => {
     if (currentDomain && d.domain !== currentDomain && !d.domain.startsWith(currentDomain + "/")) return; // stay within independent knowledge area
+    if (currentKnowledgeContext && !d.knowledgeContexts?.some((c: any) => c.name === currentKnowledgeContext)) return;
     const angle = (i / Math.max(1, depnds.length)) * Math.PI * 2 + 0.4;
     const m = makeNode(d, false, false); // not prereq
     const y = 1.9 + (d.bloomLevel - 1) * 0.05;
@@ -3858,17 +3940,71 @@ async function loadGraphFocus(slug: string) {
   }
 }
 
+// --- Knowledge Context filter helpers ---
+async function loadAndRenderKnowledgeContexts() {
+  try {
+    const activeRes = await runBridge<any>("get-active-knowledge-context");
+    if (activeRes && activeRes.success) {
+      if (currentKnowledgeContext === null) {
+        currentKnowledgeContext = activeRes.activeContext;
+      }
+    }
+    const listRes = await runBridge<any>("list-knowledge-contexts");
+    if (listRes && listRes.success) {
+      availableKnowledgeContexts = listRes.contexts || [];
+    }
+    renderKnowledgeContextSelector();
+  } catch (e) {
+    console.warn("Could not load knowledge contexts for selector", e);
+  }
+}
+
+function renderKnowledgeContextSelector() {
+  const container = document.getElementById("graph-context-selector");
+  if (!container) return;
+  container.innerHTML = "";
+
+  const allPill = document.createElement("span");
+  allPill.className = "context-pill" + (currentKnowledgeContext === null ? " active" : "");
+  allPill.textContent = t("lbl_all_contexts");
+  allPill.onclick = () => switchToKnowledgeContext(null);
+  container.appendChild(allPill);
+
+  availableKnowledgeContexts.forEach((ctx) => {
+    const pill = document.createElement("span");
+    pill.className = "context-pill" + (currentKnowledgeContext === ctx.name ? " active" : "");
+    pill.textContent = ctx.label ? `${ctx.label} (${ctx.name})` : ctx.name;
+    pill.onclick = () => switchToKnowledgeContext(ctx.name);
+    container.appendChild(pill);
+  });
+}
+
+async function switchToKnowledgeContext(contextName: string | null) {
+  currentKnowledgeContext = contextName;
+  renderKnowledgeContextSelector();
+
+  currentDomain = null;
+  currentNeighborhood = null;
+
+  await loadAndRenderDomains();
+  await bootstrapGraphWithDomain();
+}
+
 // --- Domain filter helpers for browsing independent knowledge areas ---
 async function loadAndRenderDomains() {
   try {
-    const resp = await runBridge<any>("list-tokens", ["--user", graphUserId || ""]);
+    const args = ["--user", graphUserId || ""];
+    if (currentKnowledgeContext) {
+      args.push("--knowledge-context", currentKnowledgeContext);
+    }
+    const resp = await runBridge<any>("list-tokens", args);
     const tokens = resp.tokens || [];
     originalDomainSet = new Set<string>();
     tokens.forEach((t: any) => {
       if (t.domain) originalDomainSet.add(t.domain);
     });
-    // Support prefix-based domains for team/custom content e.g. "docuware-cops/xxx"
-    // Include parent prefixes so user can select e.g. "docuware-cops" to see all under it.
+    // Support prefix-based domains for team/custom content e.g. "company-team/xxx"
+    // Include parent prefixes so users can select e.g. "company-team" to see all children.
     const prefixSet = new Set<string>(originalDomainSet);
     for (const d of originalDomainSet) {
       if (d.includes('/')) {
@@ -3923,16 +4059,15 @@ async function switchToDomain(domain: string | null) {
 }
 
 async function bootstrapGraphWithDomain() {
-  // Similar to the original bootstrap but domain-aware
+  // Similar to the original bootstrap but domain-aware and context-aware
   let startSlug: string | null = null;
 
   try {
-    if (currentDomain) {
-      // Load only tokens of this domain and pick a good entry point (lowest bloom = base of the area)
-      const list = await runBridge<any>("list-tokens", [
-        "--domain-prefix", currentDomain,
-        "--user", graphUserId || ""
-      ]);
+    if (currentDomain || currentKnowledgeContext) {
+      const args = ["--user", graphUserId || ""];
+      if (currentDomain) args.push("--domain-prefix", currentDomain);
+      if (currentKnowledgeContext) args.push("--knowledge-context", currentKnowledgeContext);
+      const list = await runBridge<any>("list-tokens", args);
       const domTokens: any[] = list.tokens || [];
       if (domTokens.length > 0) {
         domTokens.sort((a, b) => (a.bloomLevel || 99) - (b.bloomLevel || 99));
@@ -3957,13 +4092,14 @@ async function bootstrapGraphWithDomain() {
     try {
       const args = ["--user", graphUserId || ""];
       if (currentDomain) args.push("--domain-prefix", currentDomain);
+      if (currentKnowledgeContext) args.push("--knowledge-context", currentKnowledgeContext);
       const list = await runBridge<any>("list-tokens", args);
       const tokens: any[] = list.tokens || [];
       if (tokens.length > 0) {
         const withCard = tokens.find((t: any) => t.card);
         startSlug = (withCard || tokens[0]).slug;
 
-        if (currentDomain) {
+        if (currentDomain || currentKnowledgeContext) {
           populateDomainTokenList(tokens);
         }
       }
@@ -4160,14 +4296,20 @@ async function initOrShowGraph() {
     });
   }
 
-  // bootstrap / reload with current domain filter (if any)
-  if (!currentNeighborhood) {
-    await bootstrapGraphWithDomain();
+  // Resolve the context default before the first graph query so selector and
+  // graph contents start in the same scope.
+  if (availableKnowledgeContexts.length === 0) {
+    await loadAndRenderKnowledgeContexts();
   }
 
-  // Load domain list for the filter/selector (only once per graph session)
+  // Load domain list for the filter/selector (only once per graph session).
   if (availableDomains.length === 0) {
-    loadAndRenderDomains();
+    await loadAndRenderDomains();
+  }
+
+  // bootstrap / reload with current domain and context filters (if any)
+  if (!currentNeighborhood) {
+    await bootstrapGraphWithDomain();
   }
 
   // start render loop (idempotent-ish)
@@ -4359,6 +4501,8 @@ async function loadNextCard(
     // Fetch review. Dynamic question generation may need to cold-start a local
     // model, so offer the learner a choice after 30 seconds instead of leaving
     // the loading state unexplained.
+    // ADR Decision 4: the study queue stays unscoped (everything,
+    // interleaved) — the device default never filters reviews.
     const reviewArgs =
       options.dynamicQuestion === false ? ["--no-dynamic-question"] : [];
     if (isLlmEnabled && options.dynamicQuestion !== false) {
@@ -4769,6 +4913,17 @@ window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("theme-select")?.addEventListener("change", (event) => {
     const value = (event.target as HTMLSelectElement).value;
     saveThemePreference(value === "dark" ? "dark" : "light");
+  });
+
+  document.getElementById("device-context-select")?.addEventListener("change", (event) => {
+    const value = (event.target as HTMLSelectElement).value;
+    void (async () => {
+      try {
+        await runBridge<any>("set-active-knowledge-context", [value || "none"]);
+      } catch (err) {
+        console.error("Failed to update active knowledge context", err);
+      }
+    })();
   });
 
   document
