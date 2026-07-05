@@ -38,6 +38,7 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-04](2026-07-04-human-friendly-titles-and-prefixed-domains.md) | Human-friendly Titles and Prefixed Domains for the Knowledge Graph | Implemented |
 | [2026-07-04](2026-07-04-knowledge-contexts.md) | Knowledge Contexts: Work, School, Private | Implemented |
 | [2026-07-05](../plans/2026-07-05-titles-doctor-adaptation.md) | Human-friendly Titles + `zam doctor` adaptation plan (post Fable 5 review) | In progress |
+| [2026-07-05](2026-07-05-learning-governance.md) | Learning Governance: Assignments, Time, Decline, Coverage, and Audit | Proposed (note only) |
 | [2026-07-06a](2026-07-06a-mcp-agent-transport-and-surfaces.md) | MCP as the Canonical Agent Transport (and the Surface Topology Around It) | Partially implemented |
 | [2026-07-06b](2026-07-06b-checkpointed-review-dialogue.md) | Checkpointed Review Dialogue | Implemented |
 | [2026-07-07](2026-07-07-resilient-self-update-and-dependency-isolation.md) | Resilient Self-Update and Dependency-Failure Isolation | Implemented |
