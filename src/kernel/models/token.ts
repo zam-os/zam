@@ -68,6 +68,10 @@ export interface ListTokensOptions {
    * Matches exact or startsWith(prefix + "/").
    */
   domainPrefix?: string;
+  /**
+   * Filter by knowledge context name (e.g. "work-docuware").
+   */
+  knowledgeContext?: string;
 }
 
 export interface TokenDeleteImpact {
@@ -480,34 +484,42 @@ export async function findTokens(
 }
 
 /**
- * List all tokens, optionally filtered by domain.
- * Results are ordered by bloom_level then slug.
+ * List all tokens, optionally filtered by domain or knowledge context.
+ * Results are ordered by bloom_level then domain then slug (or bloom_level then slug if domain-filtered).
  */
 export async function listTokens(
   db: Database,
   options?: ListTokensOptions,
 ): Promise<Token[]> {
-  let tokens: Token[];
+  const whereClauses: string[] = ["deprecated_at IS NULL"];
+  const params: unknown[] = [];
+
   if (options?.domain) {
-    tokens = (await db
-      .prepare(
-        "SELECT * FROM tokens WHERE domain = ? AND deprecated_at IS NULL ORDER BY bloom_level, slug",
-      )
-      .all(options.domain)) as Token[];
+    whereClauses.push("domain = ?");
+    params.push(options.domain);
   } else if (options?.domainPrefix) {
     const prefix = options.domainPrefix;
-    tokens = (await db
-      .prepare(
-        `SELECT * FROM tokens WHERE (domain = ? OR domain LIKE ?) AND deprecated_at IS NULL ORDER BY bloom_level, slug`,
-      )
-      .all(prefix, `${prefix}/%`)) as Token[];
-  } else {
-    tokens = (await db
-      .prepare(
-        "SELECT * FROM tokens WHERE deprecated_at IS NULL ORDER BY bloom_level, domain, slug",
-      )
-      .all()) as Token[];
+    whereClauses.push("(domain = ? OR domain LIKE ?)");
+    params.push(prefix, `${prefix}/%`);
   }
+
+  if (options?.knowledgeContext) {
+    whereClauses.push(`EXISTS (
+      SELECT 1 FROM token_contexts tc
+      INNER JOIN contexts c ON c.id = tc.context_id
+      WHERE tc.token_id = tokens.id AND c.name = ?
+    )`);
+    params.push(options.knowledgeContext);
+  }
+
+  const orderBy =
+    options?.domain || options?.domainPrefix
+      ? "ORDER BY bloom_level, slug"
+      : "ORDER BY bloom_level, domain, slug";
+
+  const sql = `SELECT * FROM tokens WHERE ${whereClauses.join(" AND ")} ${orderBy}`;
+  const tokens = (await db.prepare(sql).all(...params)) as Token[];
+
   for (const token of tokens) {
     parseTokenFallback(token);
   }

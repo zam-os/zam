@@ -9,7 +9,7 @@ unchecked phase; keep one branch and one focused commit per completed phase.
 ## Status
 
 - [x] **Phase 0 — contracts and worked persona**
-- [ ] **Phase 1 — schema and kernel API**
+- [x] **Phase 1 — schema and kernel API**
 - [ ] **Phase 2 — CLI and bridge contracts**
 - [ ] **Phase 3 — language resolution and context assignment flows**
 - [ ] **Phase 4 — `zam doctor contexts` backfill**

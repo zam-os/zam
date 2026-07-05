@@ -156,6 +156,22 @@ CREATE TABLE IF NOT EXISTS agent_skills (
   updated_at  TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+-- Knowledge contexts: work, school, private
+CREATE TABLE IF NOT EXISTS contexts (
+  id         TEXT PRIMARY KEY,
+  name       TEXT NOT NULL UNIQUE,
+  label      TEXT,
+  language   TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Join table mapping tokens to their knowledge contexts
+CREATE TABLE IF NOT EXISTS token_contexts (
+  token_id   TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  context_id TEXT NOT NULL REFERENCES contexts(id) ON DELETE CASCADE,
+  PRIMARY KEY (token_id, context_id)
+);
+
 -- Performance indexes
 CREATE INDEX IF NOT EXISTS idx_tokens_domain ON tokens(domain);
 CREATE INDEX IF NOT EXISTS idx_tokens_slug ON tokens(slug);

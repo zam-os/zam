@@ -106,6 +106,22 @@ export {
   updateCard,
 } from "./models/card.js";
 export type {
+  CreateKnowledgeContextInput,
+  KnowledgeContext,
+  UpdateKnowledgeContextInput,
+} from "./models/knowledge-context.js";
+export {
+  assignTokenToContext,
+  createKnowledgeContext,
+  deleteKnowledgeContext,
+  getKnowledgeContextById,
+  getKnowledgeContextByName,
+  listContextsForToken,
+  listKnowledgeContexts,
+  unassignTokenFromContext,
+  updateKnowledgeContext,
+} from "./models/knowledge-context.js";
+export type {
   Neighborhood,
   NeighborhoodToken,
   Prerequisite,
