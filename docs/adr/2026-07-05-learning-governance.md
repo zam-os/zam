@@ -51,9 +51,10 @@ that needs deliberate expertise coverage.
    DocuWare situation and still be switched at home. Device defaults are hints,
    not access-control decisions.
 4. **Recall ratings remain 1–4.** Rating 1 means "I intend to know this but did
-   not recall it." Declining an item is a separate action, shown compactly as
-   `-`, and records a personal suppression so optional automation does not
-   repeatedly recreate the same unwanted learning item.
+   not recall it." Declining an optional item is a separate action, shown
+   compactly as `-`, and records a personal token suppression so optional
+   automation does not repeatedly recreate the same unwanted learning item.
+   Obvious mandatory content does not offer `-`.
 5. **Automation can satisfy the operational need without faking retention.** A
    script or agent execution never advances FSRS. It may make an optional
    learning assignment unnecessary and provide a reason to decline it.
@@ -70,11 +71,11 @@ that needs deliberate expertise coverage.
    of maintainers so no domain depends on one person. Team-visible plans show
    required coverage and responsibility, not the learner's private recall
    stream.
-9. **Confidentiality controls portability.** When organization membership ends,
-   confidential knowledge and derived local data become inaccessible and are
-   purged. Useful general-world knowledge acquired while working remains
-   available when it can be separated lawfully and technically from confidential
-   company content.
+9. **Classified sources control portability.** Public-resource links ground
+   portable world knowledge. Team repositories, internal Confluence pages, and
+   comparable organization-only resources ground confidential knowledge. When
+   organization membership ends, access to those sources and their confidential
+   derived data disappears. Useful publicly grounded world knowledge remains.
 
 ## Example policy outcomes
 
@@ -92,27 +93,25 @@ that needs deliberate expertise coverage.
 
 ## Open questions before an ADR can be accepted
 
-1. Does decline suppression apply to a token globally, to one assignment or
-   issuer, or can the learner choose the scope? Mandatory assignments must remain
-   visible even when optional suggestions are suppressed.
-2. Which obligation levels are needed: optional, recommended, required, and
+1. Which obligation levels are needed: optional, recommended, required, and
    regulated/attested — or a smaller set plus policy metadata?
-3. What counts as completion evidence for mandatory content: viewed material,
+2. What counts as completion evidence for mandatory content: viewed material,
    passed quiz, attestation, demonstrated work, or issuer-defined evidence?
-4. Who can see named assignments, completion state, overdue state, and aggregate
+3. Who can see named assignments, completion state, overdue state, and aggregate
    coverage? How long is that evidence retained, and can access be revoked?
-5. How does a team prove sufficient current expertise without exposing private
+4. How does a team prove sufficient current expertise without exposing private
    FSRS history: learner attestation, observed work, assessment, certification,
    or opt-in aggregate?
-6. How are paid learning-time budgets recorded and enforced? Is time tracking
+5. How are paid learning-time budgets recorded and enforced? Is time tracking
    manual, inferred from sessions, imported from another system, or explicitly
    outside ZAM?
-7. Who classifies content as confidential or portable, and what exactly is
-   purged on membership loss: tokens, sources, embeddings, cards, review logs,
-   session evidence, backups, and sync replicas?
-8. When an operational goal implies a learning need, may policy create the
+6. How is source confidentiality stored or inferred, how are mixed/public and
+   confidential sources handled, and what exactly is purged on membership loss:
+   tokens, sources, embeddings, cards, review logs, session evidence, backups,
+   and sync replicas?
+7. When an operational goal implies a learning need, may policy create the
    assignment automatically, or must a learner/manager confirm it first?
-9. Where do governance records live: organization workspace, sync service,
+8. Where do governance records live: organization workspace, sync service,
    learner device, or a deliberately split model by data class?
 
 ## Relationship to current architecture
