@@ -6,9 +6,12 @@
 import { Command } from "commander";
 import type { Database } from "../../kernel/db/types.js";
 import {
+  assignTokenToContext,
   getEmbeddingCoverage,
   getSetting,
   getShortSlug,
+  listKnowledgeContexts,
+  type KnowledgeContext,
 } from "../../kernel/index.js";
 import {
   deprecateToken,
@@ -643,6 +646,131 @@ export const doctorTasks: DoctorTask[] = [
       console.log(
         `Domains rename complete. Renamed ${changes.length} domain(s).`,
       );
+    },
+  },
+  {
+    name: "contexts",
+    description: "Backfill contexts on old/unassigned tokens using heuristic rules.",
+    run: async (db, opts) => {
+      const tokensWithoutContext = (await db
+        .prepare(
+          `SELECT t.* FROM tokens t
+           WHERE NOT EXISTS (
+             SELECT 1 FROM token_contexts tc WHERE tc.token_id = t.id
+           )`,
+        )
+        .all()) as Token[];
+
+      const contexts = await listKnowledgeContexts(db);
+      if (contexts.length === 0) {
+        console.log("No knowledge contexts defined. Run `zam kc create` first.");
+        return;
+      }
+
+      const proposals: Array<{
+        token: Token;
+        context: KnowledgeContext;
+        highConfidence: boolean;
+      }> = [];
+
+      for (const t of tokensWithoutContext) {
+        const domain = (t.domain || "").toLowerCase();
+        const slug = t.slug.toLowerCase();
+        const title = (t.title || "").toLowerCase();
+
+        for (const ctx of contexts) {
+          const ctxName = ctx.name.toLowerCase();
+          const ctxLabel = (ctx.label || "").toLowerCase();
+
+          let match = false;
+          let highConfidence = false;
+
+          // Rule 1: Domain matching context name or label
+          if (domain) {
+            if (domain === ctxName) {
+              match = true;
+              highConfidence = true;
+            } else if (ctxName.includes(domain) || domain.includes(ctxName)) {
+              match = true;
+              highConfidence = domain.length >= 2;
+            } else if (ctxLabel && (ctxLabel.includes(domain) || domain.includes(ctxLabel))) {
+              match = true;
+              highConfidence = domain.length >= 2;
+            }
+          }
+
+          // Rule 2: Substring matches in slug/title
+          if (slug.includes(ctxName) || title.includes(ctxName)) {
+            match = true;
+          }
+
+          // Rule 3: Word-by-word matches on label words
+          if (ctxLabel) {
+            const labelWords = ctxLabel.split(/\s+/).filter((w) => w.length > 3);
+            for (const word of labelWords) {
+              if (domain.includes(word) || slug.includes(word) || title.includes(word)) {
+                match = true;
+              }
+            }
+          }
+
+          if (match) {
+            proposals.push({
+              token: t,
+              context: ctx,
+              highConfidence,
+            });
+          }
+        }
+      }
+
+      console.log(
+        `Found ${proposals.length} proposed context assignments for ${tokensWithoutContext.length} unassigned tokens.`,
+      );
+      if (proposals.length === 0) return;
+
+      const applying = shouldApplyFixes(opts);
+
+      if (!applying) {
+        console.log("\nProposed context assignments (Dry run):");
+        for (const prop of proposals) {
+          const confStr = prop.highConfidence ? " [High Confidence]" : "";
+          console.log(
+            `  - Assign token "${prop.token.slug}" to context "${prop.context.name}"${confStr}`,
+          );
+        }
+        console.log("\nRun with --fix to apply these assignments.");
+        return;
+      }
+
+      if (opts.yes) {
+        let applied = 0;
+        for (const prop of proposals) {
+          if (prop.highConfidence) {
+            await assignTokenToContext(db, prop.token.id, prop.context.id);
+            console.log(`Auto-assigned: "${prop.token.slug}" -> context "${prop.context.name}"`);
+            applied++;
+          }
+        }
+        console.log(`Auto-assigned ${applied} high-confidence contexts.`);
+        return;
+      }
+
+      const { confirm } = await import("@inquirer/prompts");
+      let assignedCount = 0;
+      for (const prop of proposals) {
+        const confStr = prop.highConfidence ? " (high confidence)" : "";
+        const ans = await confirm({
+          message: `Assign token "${prop.token.slug}" to context "${prop.context.name}"${confStr}?`,
+          default: prop.highConfidence,
+        });
+        if (ans) {
+          await assignTokenToContext(db, prop.token.id, prop.context.id);
+          console.log(`Assigned "${prop.token.slug}" -> context "${prop.context.name}"`);
+          assignedCount++;
+        }
+      }
+      console.log(`Completed contexts backfill. Assigned ${assignedCount} tokens.`);
     },
   },
 ];

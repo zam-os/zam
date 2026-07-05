@@ -6,6 +6,8 @@ import {
 import {
   computeContentHash,
   createToken,
+  createKnowledgeContext,
+  listContextsForToken,
   type Database,
   embeddingContentForToken,
   getEmbeddingCoverage,
@@ -217,6 +219,69 @@ describe("doctor command tasks", () => {
     expect(updated?.title.length).toBeGreaterThan(2);
     expect(updated?.title.length).toBeLessThanOrEqual(80);
     expect(updated?.title).not.toBe(updated?.slug);
+  });
+
+  it("proposes, dry-runs, and auto-confirms contexts backfill using heuristics", async () => {
+    // 1. Setup contexts
+    const ctx1 = await createKnowledgeContext(db, {
+      name: "biology",
+      label: "Molecular Biology",
+    });
+    const ctx2 = await createKnowledgeContext(db, {
+      name: "work-dw",
+      label: "DocuWare Work",
+    });
+
+    // 2. Setup tokens without contexts
+    const t1 = await createToken(db, {
+      slug: "biology-mitochondria",
+      concept: "Mitochondria produce ATP",
+      domain: "biology",
+    });
+    const t2 = await createToken(db, {
+      slug: "dw-monitoring-logs",
+      concept: "DW service logs",
+      domain: "dw", // matches label DocuWare Work
+    });
+    const t3 = await createToken(db, {
+      slug: "unrelated-token",
+      concept: "Random concept",
+      domain: "other", // no match
+    });
+
+    // 3. Dry-run of contexts task
+    await task("contexts").run(db, {
+      fix: true,
+      dryRun: true,
+    });
+    const logStr = logs.join(" ");
+    expect(logStr).toContain("Found 2 proposed context assignments");
+    expect(logStr).toContain("Assign token \"biology-mitochondria\" to context \"biology\" [High Confidence]");
+    expect(logStr).toContain("Assign token \"dw-monitoring-logs\" to context \"work-dw\" [High Confidence]");
+
+    // Verify dry-run didn't assign them
+    const c1 = await listContextsForToken(db, t1.id);
+    expect(c1).toHaveLength(0);
+
+    // 4. Auto-confirm mode (--fix and --yes)
+    await task("contexts").run(db, {
+      fix: true,
+      dryRun: false,
+      yes: true,
+    });
+
+    // Verify high confidence tokens are now assigned
+    const c1Post = await listContextsForToken(db, t1.id);
+    expect(c1Post).toHaveLength(1);
+    expect(c1Post[0].name).toBe("biology");
+
+    const c2Post = await listContextsForToken(db, t2.id);
+    expect(c2Post).toHaveLength(1);
+    expect(c2Post[0].name).toBe("work-dw");
+
+    // Unrelated token remains unassigned
+    const c3Post = await listContextsForToken(db, t3.id);
+    expect(c3Post).toHaveLength(0);
   });
 
   it("accepts only positive integer timeouts", () => {
