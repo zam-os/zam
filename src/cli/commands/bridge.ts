@@ -24,11 +24,9 @@ import type {
   TokenPattern,
 } from "../../kernel/index.js";
 import {
-  analyzeObservation,
   appendUiObservationReport,
   assignTokenToContext,
   BUILT_IN_SENSITIVE_MATCHERS,
-  buildReviewQueue,
   clearProviderApiKey,
   confirmCardSplit,
   confirmFoundations,
@@ -39,12 +37,8 @@ import {
   deleteCardForUser,
   deleteToken,
   discoverSkills,
-  embeddingContentForToken,
-  endSession,
   ensureCard,
-  executeReviewAction,
   generateConceptFreeCue,
-  generatePrompt,
   generateTokenSlug,
   getActiveWorkspaceContext,
   getAgentSkill,
@@ -53,7 +47,6 @@ import {
   getConfiguredWorkspaces,
   getDatabaseTargetInfo,
   getDisplayTitle,
-  getDueCards,
   getKnowledgeContextByName,
   getProviderApiKey,
   getSetting,
@@ -63,28 +56,22 @@ import {
   getTokenNeighborhood,
   hasCommand,
   importCurriculumCards,
-  isObserverPolicyConfigured,
   isOllamaInstalled,
   listAgentSkills,
   listKnowledgeContexts,
   listPersonalCards,
   listProviderApiKeyRefs,
   listTokens,
-  monitorLogExists,
-  OBSERVER_POLICY_UNSET_HINT,
   openDatabase,
   pairCommands,
   readMonitorLog,
   readUiObservationLog,
   resolveObserverPolicy,
   resolveReviewContext,
-  searchTokensHybrid,
   setActiveWorkspaceContext,
   setProviderApiKey,
   setSetting,
   slugify,
-  startSession,
-  suggestFoundations,
   syncObserverSidecarPolicy,
   uiObservationLogExists,
   unassignTokenFromContext,
@@ -106,6 +93,19 @@ import {
   resolveHarnessExecutable,
 } from "../agent-harness.js";
 import {
+  addToken as handleAddToken,
+  analyzeMonitor as handleAnalyzeMonitor,
+  checkDue as handleCheckDue,
+  endSession as handleEndSession,
+  findTokens as handleFindTokens,
+  getMonitor as handleGetMonitor,
+  getReview as handleGetReview,
+  reviewAction as handleReviewAction,
+  startSession as handleStartSession,
+  submitReview as handleSubmitReview,
+  suggestFoundations as handleSuggestFoundations,
+} from "../bridge-handlers.js";
+import {
   CURRICULUM_PROVIDERS,
   type CurriculumBreadcrumb,
   type CurriculumLevel,
@@ -121,7 +121,6 @@ import {
   checkVisionReadiness,
   DEFAULT_LLM_MODEL,
   DEFAULT_LLM_URL,
-  ensureHighQualityQuestion,
   ensureLlmReadyHeadless,
   evaluateAnswerViaLLM,
   generateFoundationsProposalsViaLLM,
@@ -136,13 +135,6 @@ import {
   type LlmRole,
   translateQuestionViaLLM,
 } from "../llm/client.js";
-import {
-  embedQuery,
-  ensureTokenEmbeddings,
-  findPossibleDuplicates,
-  resolveDedupThreshold,
-  resolveSuggestMinSimilarity,
-} from "../llm/embedder.js";
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
 import {
   bindRoleProviders,
@@ -256,7 +248,7 @@ interface ReviewTargetRow {
   slug: string;
 }
 
-async function getReviewTarget(
+async function _getReviewTarget(
   db: Database,
   cardId: string,
   userId: string,
@@ -280,7 +272,7 @@ async function getReviewTarget(
   return target!;
 }
 
-function parseTokenUpdates(opts: {
+function _parseTokenUpdates(opts: {
   concept?: string;
   domain?: string;
   bloom?: string;
@@ -338,35 +330,17 @@ bridgeCommand
   .option("--knowledge-context <context>", "Filter by knowledge context")
   .action(async (opts) => {
     await withDb(async (db) => {
-      const userId = await resolveUser(opts, db, { json: true });
-      const dueCards = await getDueCards(
-        db,
-        userId,
-        undefined,
-        opts.domain,
-        opts.knowledgeContext,
-      );
-      const domains = [
-        ...new Set(dueCards.map((c) => c.domain).filter(Boolean)),
-      ].sort();
-
-      jsonOut({
-        userId,
-        domain: opts.domain ?? null,
-        knowledgeContext: opts.knowledgeContext ?? null,
-        dueCount: dueCards.length,
-        domains,
-        cards: dueCards.map((c) => ({
-          cardId: c.id,
-          tokenId: c.token_id,
-          slug: c.slug,
-          concept: c.concept,
-          domain: c.domain,
-          bloomLevel: c.bloom_level,
-          state: c.state,
-          dueAt: c.due_at,
-        })),
-      });
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        const result = await handleCheckDue(db, {
+          user: userId,
+          domain: opts.domain,
+          knowledgeContext: opts.knowledgeContext,
+        });
+        jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
     });
   });
 
@@ -728,92 +702,18 @@ bridgeCommand
   .option("--knowledge-context <context>", "Filter cards by knowledge context")
   .action(async (opts) => {
     await withDb(async (db) => {
-      const userId = await resolveUser(opts, db, { json: true });
-      const queue = await buildReviewQueue(db, {
-        userId,
-        maxReviews: 1,
-        maxNew: 1,
-        knowledgeContext: opts.knowledgeContext || undefined,
-      });
-
-      if (queue.items.length === 0) {
-        jsonOut({
-          userId,
-          hasReview: false,
-          card: null,
-          prompt: null,
-          resolvedContext: null,
-          queueSize: 0,
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        const result = await handleGetReview(db, {
+          user: userId,
+          noResolve: opts.resolve === false,
+          noDynamicQuestion: opts.dynamicQuestion === false,
+          knowledgeContext: opts.knowledgeContext,
         });
-        return;
+        jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
       }
-
-      const item = queue.items[0];
-      const isLlmEnabled = (await getSetting(db, "llm.enabled")) === "true";
-
-      // Dynamically generate a fresh, living active-recall question if LLM is enabled
-      let resolvedQuestion = item.question;
-      let questionSource: "llm" | "original" = "original";
-      let questionModel: string | undefined;
-      if (isLlmEnabled && opts.dynamicQuestion !== false) {
-        try {
-          const healed = await ensureHighQualityQuestion(db, {
-            id: item.tokenId,
-            slug: item.slug,
-            concept: item.concept,
-            domain: item.domain,
-            bloomLevel: item.bloomLevel as BloomLevel,
-            sourceLink: item.sourceLink,
-            question: item.question,
-          });
-          if (healed) {
-            resolvedQuestion = healed.question;
-            questionSource = healed.source;
-            questionModel = healed.model;
-          }
-        } catch {
-          // ignore and proceed
-        }
-      }
-
-      const prompt = generatePrompt({
-        cardId: item.cardId,
-        tokenId: item.tokenId,
-        slug: item.slug,
-        concept: item.concept,
-        domain: item.domain,
-        bloomLevel: item.bloomLevel as BloomLevel,
-        sourceLink: item.sourceLink,
-        question: resolvedQuestion,
-      });
-
-      // Resolve the source_link into ready-to-use context for the AI client.
-      // Defensive: never let a bad/unreachable reference break the review payload.
-      let resolvedContext = null;
-      if (opts.resolve !== false) {
-        try {
-          resolvedContext = await resolveReviewContext(item.sourceLink);
-        } catch {
-          resolvedContext = null;
-        }
-      }
-
-      // Get full queue size for context
-      const fullQueue = await buildReviewQueue(db, {
-        userId,
-        knowledgeContext: opts.knowledgeContext || undefined,
-      });
-
-      jsonOut({
-        userId,
-        hasReview: true,
-        card: item,
-        prompt,
-        questionSource,
-        questionModel: questionModel ?? null,
-        resolvedContext,
-        queueSize: fullQueue.items.length,
-      });
     });
   });
 
@@ -827,25 +727,17 @@ bridgeCommand
   .requiredOption("--rating <n>", "Rating (1-4)")
   .action(async (opts) => {
     await withDb(async (db) => {
-      const userId = await resolveUser(opts, db, { json: true });
-      const rating = Number(opts.rating) as Rating;
-      if (rating < 1 || rating > 4) {
-        jsonError("Rating must be between 1 and 4");
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        const result = await handleSubmitReview(db, {
+          user: userId,
+          cardId: opts.cardId,
+          rating: Number(opts.rating) as Rating,
+        });
+        jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
       }
-
-      const result = await executeReviewAction(db, {
-        action: "rate",
-        cardId: opts.cardId,
-        userId,
-        rating,
-      });
-
-      jsonOut({
-        success: true,
-        rating,
-        evaluation: result.evaluation,
-        blocked: result.blocked ?? null,
-      });
     });
   });
 
@@ -870,80 +762,28 @@ bridgeCommand
   .option("--confirm", "Confirm destructive delete actions")
   .action(async (opts) => {
     await withDb(async (db) => {
-      const userId = await resolveUser(opts, db, { json: true });
-      const action = opts.action as ReviewActionType;
-      const validActions: ReviewActionType[] = [
-        "rate",
-        "skip",
-        "edit-token",
-        "deprecate-token",
-        "delete-token",
-        "delete-card",
-        "stop",
-      ];
-      if (!validActions.includes(action)) {
-        jsonError(`Unsupported action: ${opts.action}`);
-      }
-
-      const target = await getReviewTarget(db, opts.cardId, userId);
-      if (
-        (action === "delete-token" || action === "delete-card") &&
-        !opts.confirm
-      ) {
-        if (action === "delete-token") {
-          jsonOut({
-            success: true,
-            action,
-            preview: true,
-            requiresConfirmation: true,
-            token: { slug: target.slug, tokenId: target.token_id },
-            impact: await getTokenDeleteImpact(db, target.slug),
-          });
-          return;
-        }
-
-        jsonOut({
-          success: true,
-          action,
-          preview: true,
-          requiresConfirmation: true,
-          token: { slug: target.slug, tokenId: target.token_id },
-          impact: await getCardDeletionImpact(db, target.token_id, userId),
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        const result = await handleReviewAction(db, {
+          user: userId,
+          cardId: opts.cardId,
+          action: opts.action as ReviewActionType,
+          rating:
+            opts.rating !== undefined
+              ? (Number(opts.rating) as Rating)
+              : undefined,
+          concept: opts.concept,
+          domain: opts.domain,
+          bloomLevel: opts.bloom !== undefined ? Number(opts.bloom) : undefined,
+          context: opts.context,
+          symbiosisMode: opts.mode,
+          sourceLink: opts.sourceLink,
+          confirm: opts.confirm,
         });
-        return;
+        jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
       }
-
-      const rating =
-        opts.rating !== undefined ? (Number(opts.rating) as Rating) : undefined;
-      if (action === "rate" && (rating == null || rating < 1 || rating > 4)) {
-        jsonError("Rating must be between 1 and 4 for action=rate");
-      }
-
-      const result = await executeReviewAction(db, {
-        action,
-        cardId: opts.cardId,
-        userId,
-        rating,
-        tokenUpdates:
-          action === "edit-token" ? parseTokenUpdates(opts) : undefined,
-      });
-
-      jsonOut({
-        success: true,
-        action,
-        token: {
-          slug: result.token.slug,
-          tokenId: result.token.id,
-        },
-        rating: rating ?? null,
-        evaluation: result.evaluation ?? null,
-        blocked: result.blocked ?? null,
-        updatedToken: result.updatedToken ?? null,
-        deletedToken: result.deletedToken ?? null,
-        deletedCard: result.deletedCard ?? null,
-        skipped: result.skipped ?? false,
-        stopped: result.stopped ?? false,
-      });
     });
   });
 
@@ -989,25 +829,17 @@ bridgeCommand
     }
 
     await withDb(async (db) => {
-      const userId = await resolveUser(opts, db, { json: true });
-      const session = await startSession(db, {
-        user_id: userId,
-        task: opts.task,
-        execution_context: context,
-      });
-      const observerPolicyHint =
-        context === "ui" && !(await isObserverPolicyConfigured(db))
-          ? OBSERVER_POLICY_UNSET_HINT
-          : undefined;
-      jsonOut({
-        id: session.id,
-        userId: session.user_id,
-        task: session.task,
-        executionContext: session.execution_context,
-        startedAt: session.started_at,
-        completedAt: session.completed_at,
-        ...(observerPolicyHint ? { observerPolicyHint } : {}),
-      });
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        const result = await handleStartSession(db, {
+          user: userId,
+          task: opts.task,
+          context,
+        });
+        jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
     });
   });
 
@@ -1017,15 +849,12 @@ bridgeCommand
   .requiredOption("--session <id>", "Session ID")
   .action(async (opts) => {
     await withDb(async (db) => {
-      const session = await endSession(db, opts.session);
-      jsonOut({
-        id: session.id,
-        userId: session.user_id,
-        task: session.task,
-        executionContext: session.execution_context,
-        startedAt: session.started_at,
-        completedAt: session.completed_at,
-      });
+      try {
+        const result = await handleEndSession(db, { session: opts.session });
+        jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
     });
   });
 
@@ -1035,47 +864,14 @@ bridgeCommand
   .command("get-monitor")
   .description("Read monitor log for a session (JSON)")
   .requiredOption("--session <id>", "Session ID")
-  .action((opts) => {
-    if (!monitorLogExists(opts.session)) {
-      jsonOut({
-        sessionId: opts.session,
-        exists: false,
-        commands: [],
-        timeSpan: null,
-      });
-      return;
-    }
-
-    const events = readMonitorLog(opts.session);
-    const commands = pairCommands(events);
-
-    let timeSpan: { start: string; end: string; durationMs: number } | null =
-      null;
-    if (commands.length > 0) {
-      const first = commands[0];
-      const last = commands[commands.length - 1];
-      const endTs = last.endedAt ?? last.startedAt;
-      timeSpan = {
-        start: first.startedAt,
-        end: endTs,
-        durationMs:
-          new Date(endTs).getTime() - new Date(first.startedAt).getTime(),
-      };
-    }
-
-    jsonOut({
-      sessionId: opts.session,
-      exists: true,
-      commands: commands.map((c) => ({
-        seq: c.seq,
-        command: c.command,
-        cwd: c.cwd,
-        startedAt: c.startedAt,
-        endedAt: c.endedAt,
-        durationMs: c.durationMs,
-        exitCode: c.exitCode,
-      })),
-      timeSpan,
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleGetMonitor(db, { session: opts.session });
+        jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
     });
   });
 
@@ -1087,16 +883,6 @@ bridgeCommand
   .requiredOption("--session <id>", "Session ID")
   .action(async (opts) => {
     try {
-      if (!monitorLogExists(opts.session)) {
-        jsonOut({
-          sessionId: opts.session,
-          ratings: [],
-          unmatchedCommands: [],
-          timeSpan: null,
-        });
-        return;
-      }
-
       let raw: string;
       if (isServeMode) {
         raw = serveStdinPayload ?? "";
@@ -1123,13 +909,16 @@ bridgeCommand
         jsonError("JSON must include 'patterns' array");
       }
 
-      const events = readMonitorLog(opts.session);
-      const commands = pairCommands(events);
-      const result = analyzeObservation(commands, data?.patterns);
-
-      jsonOut({
-        sessionId: opts.session,
-        ...result,
+      await withDb(async (db) => {
+        try {
+          const result = await handleAnalyzeMonitor(db, {
+            session: opts.session,
+            patterns: data.patterns,
+          });
+          jsonOut(result);
+        } catch (err) {
+          jsonError((err as Error).message);
+        }
       });
     } catch (err) {
       jsonError((err as Error).message);
@@ -1143,7 +932,7 @@ bridgeCommand
   .description("Create a token + card from JSON stdin")
   .option("--user <id>", "User ID (default: whoami)")
   .action(async (opts) => {
-    await withDb(async (db) => {
+    try {
       let raw: string;
       if (isServeMode) {
         raw = serveStdinPayload ?? "";
@@ -1183,71 +972,31 @@ bridgeCommand
         jsonError("JSON must include 'slug' and 'concept' fields");
       }
 
-      const userId = await resolveUser(opts, db, { json: true });
-
-      const possibleDuplicates = await findPossibleDuplicates(db, {
-        concept: data?.concept,
-        question: data?.question ?? null,
-        domain: data?.domain,
-        title: data?.title ?? null,
+      await withDb(async (db) => {
+        try {
+          const userId = await resolveUser(opts, db, { json: true });
+          const result = await handleAddToken(db, {
+            user: userId,
+            slug: data.slug,
+            title: data.title,
+            concept: data.concept,
+            domain: data.domain,
+            bloomLevel: data.bloom_level,
+            context: data.context,
+            symbiosisMode: data.symbiosis_mode as any,
+            sourceLink: data.source_link,
+            question: data.question,
+            knowledgeContexts: data.knowledgeContexts,
+            knowledge_contexts: data.knowledge_contexts,
+          });
+          jsonOut(result);
+        } catch (err) {
+          jsonError((err as Error).message);
+        }
       });
-
-      const ctxNames = parseKnowledgeContextNames(
-        data?.knowledgeContexts ?? data?.knowledge_contexts,
-      );
-      const assignedContexts = await resolveKnowledgeContexts(db, ctxNames);
-
-      const token = await createToken(db, {
-        slug: data?.slug,
-        title: data?.title,
-        concept: data?.concept,
-        domain: data?.domain,
-        bloom_level: (data?.bloom_level ?? 1) as BloomLevel,
-        context: data?.context,
-        symbiosis_mode: data?.symbiosis_mode as
-          | "shadowing"
-          | "copilot"
-          | "autonomy"
-          | null
-          | undefined,
-        source_link: data?.source_link ?? null,
-        question: data?.question ?? null,
-      });
-
-      for (const context of assignedContexts) {
-        await assignTokenToContext(db, token.id, context.id);
-      }
-
-      const card = await ensureCard(db, token.id, userId);
-
-      // Best effort embedding top-up so this token is immediately search-ready.
-      try {
-        await ensureTokenEmbeddings(db, { limit: 8 });
-      } catch {
-        // ignore
-      }
-
-      jsonOut({
-        success: true,
-        token: {
-          ...token,
-          knowledgeContexts: assignedContexts.map((c) => ({
-            name: c.name,
-            label: c.label,
-            language: c.language,
-          })),
-        },
-        card: {
-          id: card.id,
-          tokenId: card.token_id,
-          userId: card.user_id,
-          state: card.state,
-          dueAt: card.due_at,
-          blocked: card.blocked,
-        },
-        possible_duplicates: possibleDuplicates,
-      });
-    });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
   });
 
 // ── zam bridge relevant-tokens ────────────────────────────────────────────
@@ -1257,7 +1006,7 @@ bridgeCommand
   .description("Find tokens relevant to a given context")
   .option("--user <id>", "User ID (default: whoami)")
   .action(async (opts) => {
-    await withDb(async (db) => {
+    try {
       let raw: string;
       if (isServeMode) {
         raw = serveStdinPayload ?? "";
@@ -1288,92 +1037,22 @@ bridgeCommand
         jsonError("JSON must include a non-empty 'context' field");
       }
 
-      const userId = await resolveUser(opts, db, { json: true });
-
-      // Truncate to 2000 chars before embedding
-      const truncatedContext = data.context.slice(0, 2000);
-
-      const q = await embedQuery(db, truncatedContext);
-
-      // Best effort embedding top-up, including same-model dimension changes.
-      try {
-        await ensureTokenEmbeddings(db, {
-          limit: 32,
-          dims: q?.vector.length,
-        });
-      } catch {
-        // ignore
-      }
-
-      let limit = data.limit ?? 10;
-      if (typeof limit !== "number" || limit <= 0 || !Number.isInteger(limit)) {
-        limit = 10;
-      }
-      if (limit > 100) {
-        limit = 100;
-      }
-
-      const results = await searchTokensHybrid(db, truncatedContext, {
-        queryEmbedding: q?.vector,
-        model: q?.model,
-        limit,
-      });
-
-      const tokens = [];
-      const contextMap = new Map<
-        string,
-        Array<{ name: string; label: string | null; language: string | null }>
-      >();
-      if (results.length > 0) {
-        const ids = results.map((t) => t.id);
-        const placeholders = ids.map(() => "?").join(",");
-        const mappings = (await db
-          .prepare(
-            `SELECT tc.token_id, c.name, c.label, c.language
-             FROM token_contexts tc
-             INNER JOIN contexts c ON c.id = tc.context_id
-             WHERE tc.token_id IN (${placeholders})`,
-          )
-          .all(...ids)) as Array<{
-          token_id: string;
-          name: string;
-          label: string | null;
-          language: string | null;
-        }>;
-        for (const m of mappings) {
-          const list = contextMap.get(m.token_id) ?? [];
-          list.push({ name: m.name, label: m.label, language: m.language });
-          contextMap.set(m.token_id, list);
+      await withDb(async (db) => {
+        try {
+          const userId = await resolveUser(opts, db, { json: true });
+          const result = await handleFindTokens(db, {
+            user: userId,
+            context: data.context,
+            limit: data.limit,
+          });
+          jsonOut(result);
+        } catch (err) {
+          jsonError((err as Error).message);
         }
-      }
-
-      for (const t of results) {
-        const card = await getCard(db, t.id, userId);
-        tokens.push({
-          slug: t.slug,
-          title: t.title,
-          display_title: getDisplayTitle(t),
-          concept: t.concept,
-          domain: t.domain,
-          bloom_level: t.bloom_level,
-          score: t.score,
-          similarity: t.similarity,
-          knowledgeContexts: contextMap.get(t.id) ?? [],
-          card: card
-            ? {
-                state: card.state,
-                due_at: card.due_at,
-                blocked: card.blocked,
-              }
-            : null,
-        });
-      }
-
-      jsonOut({
-        semantic: q !== null,
-        tokens,
       });
-    });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
   });
 
 // ── zam bridge suggest-foundations ────────────────────────────────────────
@@ -1382,8 +1061,8 @@ bridgeCommand
   .command("suggest-foundations")
   .description("Propose existing tokens as foundation/prerequisite candidates")
   .option("--user <id>", "User ID (default: whoami)")
-  .action(async (_opts) => {
-    await withDb(async (db) => {
+  .action(async (opts) => {
+    try {
       let raw: string;
       if (isServeMode) {
         raw = serveStdinPayload ?? "";
@@ -1415,113 +1094,27 @@ bridgeCommand
         jsonError("Invalid JSON input");
       }
 
-      let queryText = "";
-      let targetTokenId: string | undefined;
-      let targetBloomLevel: BloomLevel | undefined;
-      let targetJson: { slug: string } | null = null;
-
-      if (data?.slug !== undefined) {
-        if (typeof data.slug !== "string" || data.slug.trim() === "") {
-          jsonError("Invalid slug");
+      await withDb(async (db) => {
+        try {
+          const userId = await resolveUser(opts, db, { json: true });
+          const result = await handleSuggestFoundations(db, {
+            user: userId,
+            slug: data.slug,
+            concept: data.concept,
+            question: data.question,
+            domain: data.domain,
+            title: data.title,
+            bloom_level: data.bloom_level,
+            limit: data.limit,
+          });
+          jsonOut(result);
+        } catch (err) {
+          jsonError((err as Error).message);
         }
-        const token = await getTokenBySlug(db, data.slug);
-        if (!token) {
-          jsonError(`Token not found: ${data.slug}`);
-        }
-        queryText = embeddingContentForToken(token);
-        targetTokenId = token.id;
-        targetBloomLevel = token.bloom_level;
-        targetJson = { slug: token.slug };
-      } else {
-        if (
-          !data?.concept ||
-          typeof data.concept !== "string" ||
-          data.concept.trim() === ""
-        ) {
-          jsonError("JSON must include a non-empty 'slug' or 'concept' field");
-        }
-        queryText = embeddingContentForToken({
-          concept: data.concept,
-          question: typeof data.question === "string" ? data.question : null,
-          domain: typeof data.domain === "string" ? data.domain : "",
-          title: typeof data.title === "string" ? data.title : null,
-        });
-        if (data.bloom_level !== undefined) {
-          if (
-            typeof data.bloom_level !== "number" ||
-            !Number.isInteger(data.bloom_level) ||
-            data.bloom_level < 1 ||
-            data.bloom_level > 5
-          ) {
-            jsonError("bloom_level must be an integer between 1 and 5");
-          }
-          targetBloomLevel = data.bloom_level as BloomLevel;
-        }
-      }
-
-      let limit = data?.limit ?? 5;
-      if (typeof limit !== "number" || limit <= 0 || !Number.isInteger(limit)) {
-        limit = 5;
-      }
-      if (limit > 20) {
-        limit = 20;
-      }
-
-      const q = await embedQuery(db, queryText);
-      if (q === null) {
-        jsonOut({
-          semantic: false,
-          target: targetJson,
-          suggestions: [],
-        });
-        return;
-      }
-
-      try {
-        await ensureTokenEmbeddings(db, {
-          limit: 100,
-          dims: q.vector.length,
-        });
-      } catch {
-        // ignore
-      }
-
-      const maxSimilarity = await resolveDedupThreshold(db);
-      const minSimilarity = await resolveSuggestMinSimilarity(db);
-      if (minSimilarity >= maxSimilarity) {
-        jsonOut({
-          semantic: true,
-          target: targetJson,
-          suggestions: [],
-        });
-        return;
-      }
-
-      const suggestions = await suggestFoundations(db, {
-        queryEmbedding: q.vector,
-        model: q.model,
-        targetTokenId,
-        targetBloomLevel,
-        limit,
-        minSimilarity,
-        maxSimilarity,
       });
-
-      jsonOut({
-        semantic: true,
-        target: targetJson,
-        suggestions: suggestions.map((s) => ({
-          slug: s.token.slug,
-          concept: s.token.concept,
-          domain: s.token.domain,
-          bloom_level: s.token.bloom_level,
-          similarity: s.similarity,
-          already_prerequisite: s.alreadyPrerequisite,
-          would_create_cycle: s.wouldCreateCycle,
-          bloom_above_target: s.bloomAboveTarget,
-        })),
-      });
-    });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
   });
 
 // ── zam bridge discover-skills ──────────────────────────────────────────────
