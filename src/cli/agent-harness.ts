@@ -12,7 +12,7 @@
  */
 
 import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import {
@@ -166,4 +166,169 @@ export function launchHarness(
   if (!opts.silent) {
     console.log(`Launched ${harness.label} in ${opts.workspace}`);
   }
+}
+
+export interface ConnectResult {
+  path: string;
+  content: string;
+  alreadyConfigured: boolean;
+  hint: string;
+}
+
+export type ConnectHarnessId =
+  | "claude-code"
+  | "antigravity"
+  | "codex"
+  | "opencode";
+
+interface McpJsonConfig {
+  mcpServers?: Record<string, unknown>;
+  [key: string]: unknown;
+}
+
+function parseMcpJsonConfig(path: string, content: string): McpJsonConfig {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(content);
+  } catch (error) {
+    throw new Error(
+      `Cannot update ${path}: existing file is not valid JSON (${error instanceof Error ? error.message : String(error)})`,
+    );
+  }
+
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new Error(`Cannot update ${path}: expected a JSON object`);
+  }
+
+  const config = parsed as McpJsonConfig;
+  if (
+    config.mcpServers !== undefined &&
+    (typeof config.mcpServers !== "object" ||
+      config.mcpServers === null ||
+      Array.isArray(config.mcpServers))
+  ) {
+    throw new Error(`Cannot update ${path}: mcpServers must be a JSON object`);
+  }
+  return config;
+}
+
+/**
+ * Pure helper to build the target path and expected MCP server configuration.
+ */
+export function connectHarnessMcp(
+  harnessId: ConnectHarnessId,
+  opts: {
+    zamPath: string;
+    cwd: string;
+    home: string;
+    readFile?: (path: string) => string;
+  },
+): ConnectResult {
+  const exists = (p: string) => {
+    if (opts.readFile) {
+      try {
+        opts.readFile(p);
+        return true;
+      } catch {
+        return false;
+      }
+    }
+    return existsSync(p);
+  };
+
+  const read = (p: string) => {
+    if (opts.readFile) return opts.readFile(p);
+    return readFileSync(p, "utf-8");
+  };
+
+  let targetPath = "";
+  let content = "";
+  let alreadyConfigured = false;
+  let hint = "";
+
+  if (harnessId === "claude-code") {
+    targetPath = join(opts.cwd, ".mcp.json");
+    hint =
+      "Claude Code will prompt you to approve the 'zam' MCP server on next launch.";
+    let existing: McpJsonConfig = {};
+    if (exists(targetPath)) {
+      existing = parseMcpJsonConfig(targetPath, read(targetPath));
+    }
+    if (!existing.mcpServers) {
+      existing.mcpServers = {};
+    }
+    existing.mcpServers.zam = {
+      command: opts.zamPath,
+      args: ["mcp"],
+    };
+    content = JSON.stringify(existing, null, 2);
+  } else if (harnessId === "antigravity") {
+    targetPath = join(opts.home, ".gemini", "config", "mcp_config.json");
+    hint =
+      "Shared config read by Antigravity CLI and IDE (2.0+); older IDE builds read ~/.gemini/antigravity/mcp_config.json instead. Refresh Installed MCP Servers; the first tool call may still require approval.";
+    let existing: McpJsonConfig = {};
+    if (exists(targetPath)) {
+      existing = parseMcpJsonConfig(targetPath, read(targetPath));
+    }
+    if (!existing.mcpServers) {
+      existing.mcpServers = {};
+    }
+    existing.mcpServers.zam = {
+      command: opts.zamPath,
+      args: ["mcp"],
+    };
+    content = JSON.stringify(existing, null, 2);
+  } else if (harnessId === "opencode") {
+    targetPath = join(opts.home, ".config", "opencode", "opencode.json");
+    hint = "OpenCode will load the enabled 'zam' MCP server on next launch.";
+    let existing: McpJsonConfig = {};
+    if (exists(targetPath)) {
+      existing = parseMcpJsonConfig(targetPath, read(targetPath));
+    }
+    const mcp = existing.mcp;
+    if (
+      mcp !== undefined &&
+      (typeof mcp !== "object" || mcp === null || Array.isArray(mcp))
+    ) {
+      throw new Error(`Cannot update ${targetPath}: mcp must be a JSON object`);
+    }
+    const servers = (mcp ?? {}) as Record<string, unknown>;
+    servers.zam = {
+      type: "local",
+      command: [opts.zamPath, "mcp"],
+      enabled: true,
+    };
+    existing.mcp = servers;
+    content = JSON.stringify(existing, null, 2);
+  } else if (harnessId === "codex") {
+    targetPath = join(opts.home, ".codex", "config.toml");
+    hint =
+      "Codex will prompt for tool execution approvals or respect the TOML approval modes.";
+    let existingStr = "";
+    if (exists(targetPath)) {
+      existingStr = read(targetPath);
+    }
+    if (existingStr.includes("[mcp_servers.zam]")) {
+      alreadyConfigured = true;
+      content = existingStr;
+    } else {
+      const block = `
+[mcp_servers.zam]
+command = ${JSON.stringify(opts.zamPath)}
+args = ["mcp"]
+default_tools_approval_mode = "approve"
+
+[mcp_servers.zam.tools.zam_review_action]
+approval_mode = "prompt"
+`;
+      content = existingStr ? `${existingStr.trimEnd()}\n${block}` : block;
+    }
+  }
+
+  return {
+    path: targetPath,
+    content,
+    alreadyConfigured,
+    hint,
+  };
 }

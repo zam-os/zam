@@ -21,6 +21,7 @@ the kernel; new HTTP goes in the CLI layer.
 - **`zam bridge` emits JSON only** — every output through the existing
   `jsonOut`/`jsonError` helpers in `src/cli/commands/bridge.ts`. No stray
   `console.log`.
+- **MCP transport** (`zam mcp`) is the preferred agent connection method; `zam agent connect <harness>` handles configuration. `zam bridge` remains the fallback.
 - **Database access only through the async `Database` contract**
   (`src/kernel/db/types.ts`): `await db.prepare(...).run/get/all(...)`.
   Never import a concrete driver (better-sqlite3/libsql) outside

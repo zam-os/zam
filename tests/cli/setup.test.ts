@@ -288,16 +288,16 @@ describe("setup command helpers", () => {
     }
   });
 
-  it("ships Codex-specific UI observation and Windows execution guidance", () => {
+  it("ships Codex invocation guidance without obsolete shell workarounds", () => {
     const content = readFileSync(
       join(process.cwd(), ".agents", "skills", "zam", "SKILL.md"),
       "utf8",
     );
 
-    expect(content).toContain("Codex Execution Notes");
-    expect(content).toContain("WindowsPowerShell");
-    expect(content).toContain("zam bridge add-token --user <username>");
-    expect(content).toContain("zam bridge capture-ui");
-    expect(content).toContain("vision-capable subagent");
+    expect(content).toContain("In Codex, invoke this workflow as `$zam`");
+    expect(content).toContain("zam agent connect <harness>");
+    expect(content).toContain("`zam_monitor`");
+    expect(content).not.toContain("Codex Execution Notes");
+    expect(content).not.toContain("WindowsPowerShell");
   });
 });

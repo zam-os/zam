@@ -403,3 +403,88 @@ export interface GetObserverPolicyResponse {
   builtInSensitiveAlwaysRefused: true;
   builtInSensitiveMatchers: string[];
 }
+
+export interface GetReviewsResponse {
+  cards: Array<{
+    cardId: string;
+    tokenId: string;
+    slug: string;
+    concept: string;
+    domain: string;
+    bloomLevel: number;
+    state: string;
+    dueAt: string;
+    bloomVerb?: string;
+    question?: string;
+    sourceLink?: string | null;
+    resolvedContext?: ResolvedReviewContext | null;
+  }>;
+}
+
+export interface SubmitReviewResult {
+  success: boolean;
+  rating: number | null;
+  evaluation?: {
+    nextDueAt: string;
+    stability: number;
+    scheduledDays: number;
+    state: string;
+    reps: number;
+    lapses: number;
+  } | null;
+  blocked?: {
+    blockedSlug: string;
+    prerequisites: Array<{ slug: string; concept: string; bloomLevel: number }>;
+  } | null;
+  stepError?: string;
+  /** True when an agent-completed step was logged without advancing FSRS. */
+  recordedOnly?: boolean;
+}
+
+export interface SessionOpenResponse {
+  session: {
+    id: string;
+    userId: string;
+    task: string;
+    executionContext: string;
+    startedAt: string;
+    completedAt: string | null;
+  };
+  due: {
+    dueCount: number;
+    domains: string[];
+    cards: Array<{
+      cardId: string;
+      tokenId: string;
+      slug: string;
+      concept: string;
+      domain: string;
+      bloomLevel: number;
+      state: string;
+      dueAt: string;
+    }>;
+  };
+  relevant: {
+    semantic: boolean;
+    tokens: Array<{
+      slug: string;
+      title: string | null;
+      display_title: string;
+      concept: string;
+      domain: string;
+      bloom_level: number;
+      score: number;
+      similarity: number;
+      knowledgeContexts: Array<{
+        name: string;
+        label: string | null;
+        language: string | null;
+      }>;
+      card: {
+        state: string;
+        due_at: string;
+        blocked: boolean;
+      } | null;
+    }>;
+  };
+}
