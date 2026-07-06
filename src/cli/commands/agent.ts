@@ -8,8 +8,9 @@
  * up the ZAM skill. (Increment 12, Phase 6.)
  */
 
-import { existsSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { dirname, join } from "node:path";
 import { Command } from "commander";
 import type { Database } from "../../kernel/index.js";
 import {
@@ -20,11 +21,12 @@ import {
 } from "../../kernel/index.js";
 import {
   AGENT_HARNESSES,
+  connectHarnessMcp,
   getHarness,
   launchHarness,
   resolveHarnessExecutable,
 } from "../agent-harness.js";
-import { normalizeShell } from "../terminal-open.js";
+import { findExecutable, normalizeShell } from "../terminal-open.js";
 
 const C = {
   reset: "\x1b[0m",
@@ -179,10 +181,70 @@ const openCmd = new Command("open")
     launchHarness(harness, { executable, workspace, shell });
   });
 
+const connectCmd = new Command("connect")
+  .description("Provision MCP trust configuration for an agent harness")
+  .argument(
+    "<harness>",
+    "Harness to connect: claude-code | antigravity | codex",
+  )
+  .option(
+    "--print",
+    "Print configuration changes instead of writing them to disk",
+  )
+  .action(async (harnessArg, opts: { print?: boolean }) => {
+    const validHarnesses = ["claude-code", "antigravity", "codex"];
+    if (!validHarnesses.includes(harnessArg)) {
+      console.error(
+        `Unsupported harness: ${harnessArg}. Supported: ${validHarnesses.join(", ")}.`,
+      );
+      process.exit(1);
+    }
+
+    let zamPath = findExecutable("zam");
+    if (!zamPath) {
+      console.warn(
+        `${C.yellow}Warning: 'zam' executable was not found on your PATH. Falling back to literal 'zam'.${C.reset}`,
+      );
+      zamPath = "zam";
+    }
+
+    const result = connectHarnessMcp(harnessArg as any, {
+      zamPath,
+      cwd: process.cwd(),
+      home: homedir(),
+    });
+
+    if (opts.print) {
+      console.log(`Path: ${result.path}`);
+      console.log(`Content:\n${result.content}`);
+      return;
+    }
+
+    if (result.alreadyConfigured) {
+      console.log(
+        `${C.green}✓${C.reset} MCP server 'zam' already configured in ${result.path}`,
+      );
+      return;
+    }
+
+    try {
+      mkdirSync(dirname(result.path), { recursive: true });
+      writeFileSync(result.path, result.content, "utf-8");
+      console.log(
+        `${C.green}✓${C.reset} Wrote trust configuration to ${result.path}`,
+      );
+      console.log(`  ${C.dim}${result.hint}${C.reset}`);
+    } catch (err: any) {
+      console.error(`Error writing trust configuration: ${err.message}`);
+      process.exit(1);
+    }
+  });
+
 export const agentCommand = new Command("agent")
   .description("Provision and inspect the agent that drives ZAM sessions")
   .addCommand(installCmd)
   .addCommand(statusCmd)
   .addCommand(openCmd)
   .addCommand(listCmd)
+  .addCommand(connectCmd)
   .action(printStatus);

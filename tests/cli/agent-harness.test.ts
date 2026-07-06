@@ -1,3 +1,5 @@
+import { execFileSync } from "node:child_process";
+import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   AGENT_HARNESSES,
@@ -6,6 +8,7 @@ import {
   launchHarness,
   planHarnessLaunch,
   resolveHarnessExecutable,
+  connectHarnessMcp,
 } from "../../src/cli/agent-harness.js";
 
 afterEach(() => {
@@ -150,5 +153,105 @@ describe("planHarnessLaunch", () => {
       executable: "/Applications/Cursor.app/Contents/MacOS/Cursor",
       args: ["/home/me/work"],
     });
+  });
+});
+
+describe("connectHarnessMcp", () => {
+  const mockFiles: Record<string, string> = {};
+
+  const mockDeps = {
+    zamPath: "/usr/local/bin/zam",
+    cwd: "/work",
+    home: "/home/user",
+    readFile: (p: string) => {
+      if (mockFiles[p] === undefined) throw new Error("ENOENT");
+      return mockFiles[p];
+    },
+  };
+
+  beforeEach(() => {
+    for (const key of Object.keys(mockFiles)) {
+      delete mockFiles[key];
+    }
+  });
+
+  it("claude-code fresh write", () => {
+    const res = connectHarnessMcp("claude-code", mockDeps);
+    expect(res.path).toBe("/work/.mcp.json");
+    expect(JSON.parse(res.content)).toEqual({
+      mcpServers: {
+        zam: {
+          command: "/usr/local/bin/zam",
+          args: ["mcp"],
+        },
+      },
+    });
+    expect(res.alreadyConfigured).toBe(false);
+  });
+
+  it("claude-code merges and preserves other servers", () => {
+    mockFiles["/work/.mcp.json"] = JSON.stringify({
+      mcpServers: {
+        other: {
+          command: "other-server",
+        },
+      },
+    });
+
+    const res = connectHarnessMcp("claude-code", mockDeps);
+    expect(JSON.parse(res.content)).toEqual({
+      mcpServers: {
+        other: {
+          command: "other-server",
+        },
+        zam: {
+          command: "/usr/local/bin/zam",
+          args: ["mcp"],
+        },
+      },
+    });
+  });
+
+  it("antigravity fresh write", () => {
+    const res = connectHarnessMcp("antigravity", mockDeps);
+    expect(res.path).toBe("/home/user/.gemini/config/mcp_config.json");
+    expect(JSON.parse(res.content)).toEqual({
+      mcpServers: {
+        zam: {
+          command: "/usr/local/bin/zam",
+          args: ["mcp"],
+        },
+      },
+    });
+  });
+
+  it("codex appends TOML block when missing", () => {
+    mockFiles["/home/user/.codex/config.toml"] = `# existing Codex config\n[other]\nvalue = 42\n`;
+    const res = connectHarnessMcp("codex", mockDeps);
+    expect(res.path).toBe("/home/user/.codex/config.toml");
+    expect(res.alreadyConfigured).toBe(false);
+    expect(res.content).toContain("[mcp_servers.zam]");
+    expect(res.content).toContain('command = "/usr/local/bin/zam"');
+    expect(res.content).toContain("approval_mode = \"prompt\"");
+    expect(res.content).toContain("[other]");
+  });
+
+  it("codex no-ops and returns alreadyConfigured when present", () => {
+    const existing = `[mcp_servers.zam]\ncommand = "/usr/local/bin/zam"\nargs = ["mcp"]\n`;
+    mockFiles["/home/user/.codex/config.toml"] = existing;
+    const res = connectHarnessMcp("codex", mockDeps);
+    expect(res.alreadyConfigured).toBe(true);
+    expect(res.content).toBe(existing);
+  });
+
+  it("e2e: command connect --print outputs path and content", () => {
+    const cliPath = Symbol.for("cliPath") ? join(process.cwd(), "dist", "cli", "index.js") : "dist/cli/index.js";
+    const output = execFileSync("node", [cliPath, "agent", "connect", "claude-code", "--print"], {
+      encoding: "utf8",
+    });
+    expect(output).toContain("Path:");
+    expect(output).toContain("Content:");
+    expect(output).toContain("mcpServers");
+    expect(output).toContain("zam");
   });
 });

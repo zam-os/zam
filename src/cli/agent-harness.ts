@@ -12,7 +12,7 @@
  */
 
 import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import {
@@ -166,4 +166,113 @@ export function launchHarness(
   if (!opts.silent) {
     console.log(`Launched ${harness.label} in ${opts.workspace}`);
   }
+}
+
+export interface ConnectResult {
+  path: string;
+  content: string;
+  alreadyConfigured: boolean;
+  hint: string;
+}
+
+/**
+ * Pure helper to build the target path and expected content to write to provision MCP trust.
+ */
+export function connectHarnessMcp(
+  harnessId: "claude-code" | "antigravity" | "codex",
+  opts: {
+    zamPath: string;
+    cwd: string;
+    home: string;
+    readFile?: (path: string) => string;
+  },
+): ConnectResult {
+  const exists = (p: string) => {
+    if (opts.readFile) {
+      try {
+        opts.readFile(p);
+        return true;
+      } catch {
+        return false;
+      }
+    }
+    return existsSync(p);
+  };
+
+  const read = (p: string) => {
+    if (opts.readFile) return opts.readFile(p);
+    return readFileSync(p, "utf-8");
+  };
+
+  let targetPath = "";
+  let content = "";
+  let alreadyConfigured = false;
+  let hint = "";
+
+  if (harnessId === "claude-code") {
+    targetPath = join(opts.cwd, ".mcp.json");
+    hint =
+      "Claude Code will prompt you to approve the 'zam' MCP server on next launch.";
+    let existing: any = {};
+    if (exists(targetPath)) {
+      try {
+        existing = JSON.parse(read(targetPath));
+      } catch {}
+    }
+    if (!existing.mcpServers) {
+      existing.mcpServers = {};
+    }
+    existing.mcpServers.zam = {
+      command: opts.zamPath,
+      args: ["mcp"],
+    };
+    content = JSON.stringify(existing, null, 2);
+  } else if (harnessId === "antigravity") {
+    targetPath = join(opts.home, ".gemini", "config", "mcp_config.json");
+    hint =
+      "Antigravity/Gemini will load the 'zam' MCP server automatically at startup.";
+    let existing: any = {};
+    if (exists(targetPath)) {
+      try {
+        existing = JSON.parse(read(targetPath));
+      } catch {}
+    }
+    if (!existing.mcpServers) {
+      existing.mcpServers = {};
+    }
+    existing.mcpServers.zam = {
+      command: opts.zamPath,
+      args: ["mcp"],
+    };
+    content = JSON.stringify(existing, null, 2);
+  } else if (harnessId === "codex") {
+    targetPath = join(opts.home, ".codex", "config.toml");
+    hint =
+      "Codex will prompt for tool execution approvals or respect the TOML approval modes.";
+    let existingStr = "";
+    if (exists(targetPath)) {
+      existingStr = read(targetPath);
+    }
+    if (existingStr.includes("[mcp_servers.zam]")) {
+      alreadyConfigured = true;
+      content = existingStr;
+    } else {
+      const block = `
+[mcp_servers.zam]
+command = ${JSON.stringify(opts.zamPath)}
+args = ["mcp"]
+
+[mcp_servers.zam.tools.zam_review_action]
+approval_mode = "prompt"
+`;
+      content = existingStr ? `${existingStr.trimEnd()}\n${block}` : block;
+    }
+  }
+
+  return {
+    path: targetPath,
+    content,
+    alreadyConfigured,
+    hint,
+  };
 }
