@@ -40,12 +40,17 @@ Database lives at `~/.zam/zam.db` (SQLite, WAL mode, foreign keys enabled).
 3. `recall/evaluator.ts` — runs FSRS-5 scheduling, updates card, appends to `review_logs`
 4. `scheduler/blocker.ts` — prerequisite blocking/unblocking (separate from rating evaluation)
 
-### Bridge protocol
+### Bridge & MCP Protocols
 
-`src/cli/commands/bridge.ts` + `src/bridge/protocol.ts` form the machine-facing JSON API for external AI CLIs. Bridge responses are always JSON, including errors. Treat `protocol.ts` types as the stable contract.
+ZAM supports two transport protocols for external agents:
+1. **MCP (Model Context Protocol)**: Recommended. Preferred for full agent tool integration. Start via `zam mcp` or configure a harness via `zam agent connect <harness>` (supports `claude-code`, `antigravity`, `codex`).
+2. **Bridge CLI**: Machine-facing JSON CLI (`zam bridge <command>`) used as a fallback.
+
+Bridge responses are always JSON, including errors. Treat `protocol.ts` types as the stable contract.
 
 ## Key conventions
 
+- **Agent transport**: MCP transport (`zam mcp`) is the preferred agent connection method; `zam agent connect <harness>` handles configuration. `zam bridge` remains the fallback.
 - **Kernel vs. CLI boundary**: New learning logic goes in the kernel, not in CLI commands.
 - **Token vs. Card distinction**: `zam token register` creates only a token. `zam bridge add-token` also creates a user card. If a concept should appear in a user's queue, ensure a card is created.
 - **IDs are ULIDs** throughout — use `ulid()`, not UUIDs or numeric IDs.

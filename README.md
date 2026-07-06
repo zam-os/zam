@@ -58,8 +58,25 @@ ZAM is split into two concerns:
 
 - **Core** ([`zam-os/zam`](https://github.com/zam-os/zam)) — The AI-agnostic learning kernel, CLI, bridge protocol, and system beliefs. Shared by everyone.
 - **Personal** (fork of [`zam-os/zam-personal`](templates/personal/)) — Your beliefs, your goals, your identity. You fork it, you own it.
-
 Get started: `zam whoami --set <your-id>`
+
+---
+
+## 🤖 Agent & MCP Integration
+
+ZAM integrates directly with your coding agents (such as Claude Code, Codex, or Antigravity) via the **Model Context Protocol (MCP)**. This lets your agent drive ZAM sessions automatically using tool calls.
+
+To connect your agent harness:
+```bash
+# Connect to your agent client (e.g. claude-code, antigravity, or codex)
+zam agent connect claude-code
+```
+This writes the necessary MCP server config. You can also print the config changes:
+```bash
+zam agent connect claude-code --print
+```
+
+Once connected, your agent will use MCP tools (`zam_status`, `zam_get_reviews`, `zam_session_start`, etc.) with the bridge CLI as a fallback.
 
 ---
 
