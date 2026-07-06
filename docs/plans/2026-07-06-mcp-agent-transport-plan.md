@@ -11,6 +11,17 @@ This plan is self-contained: no conversation context is required. File paths are
 load-bearing. When this plan and the code disagree about a detail (option names,
 line numbers), trust the code and keep the plan's *intent*.
 
+## Status
+
+- [x] Phase 0 — dependencies and baseline
+- [x] Phase 1 — transport-neutral handlers
+- [x] Phase 2 — MCP stdio server
+- [x] Phase 3 — bridge batch parity
+- [x] Phase 4 — harness MCP configuration
+- [x] Phase 5 — skill and documentation migration
+- [x] Independent review and corrective pass (2026-07-06)
+- [ ] Final release steps (version, PR, release artifacts)
+
 ---
 
 ## Workflow rules (read first)
@@ -64,7 +75,7 @@ exactly these operations; the Commander actions become thin wrappers
 | `checkDue` | `check-due` (~line 334) | Already returns the full card list (`cards: [{cardId, tokenId, slug, concept, domain, bloomLevel, state, dueAt}]`) — reuse as-is |
 | `getReview` | `get-review` | Single-card question + `resolvedContext` |
 | `getReviewsBatch` | **new**, composes the two above | Card list from `checkDue`; when `includeQuestions: true`, enrich each card via the `get-review` path (`resolve` per card, failures degrade to `resolvedContext: null`). Default `includeQuestions: false` — batch resolution is N file/web reads; make cost opt-in |
-| `submitReview` | `submit` + session-step logging | `executeReviewAction(rate)`; when `sessionId` present, also append the session step (`doneBy` default `"user"`, the submitted rating). Sequential; if the step write fails after the rating succeeded, return the evaluation **plus** a `stepError` field — never pretend atomicity |
+| `submitReview` | `submit` + session-step logging | For `doneBy: "user"`, accept a card ID or a synthesis token ID, ensure the card only after confirmation, run `executeReviewAction(rate)`, and append the rated session step when `sessionId` is present. For `doneBy: "agent"`, require `sessionId` + card ID, reject a rating, and log an unrated step without advancing FSRS. User rating + step are sequential; if the step write fails, return the evaluation **plus** a `stepError` field — never pretend atomicity |
 | `reviewAction` | `review-action` | Keep the existing preview/`requiresConfirmation` flow for destructive actions |
 | `addToken` | `add-token` | Token + card + prerequisites + knowledge contexts |
 | `findTokens` | `relevant-tokens` / token find path | Degrade exactly like the CLI does when no embedder is configured |
@@ -111,19 +122,21 @@ Register exactly these 11 tools (ADR Decision 2), mapped onto Phase-1 handlers:
 
 | Tool | Handler | Annotations |
 |---|---|---|
-| `zam_status` | `checkDue` (+ stats summary) | `readOnlyHint: true` |
-| `zam_session_start` | `startSession` | |
-| `zam_session_end` | `endSession` (incl. `synthesize`) | |
-| `zam_get_reviews` | `getReviewsBatch` | `readOnlyHint: true` |
-| `zam_submit_review` | `submitReview` | `idempotentHint: false` |
+| `zam_status` | `checkDue` + database target + user stats | `readOnlyHint: true` |
+| `zam_session_start` | `startSession` | `destructiveHint: false`, `openWorldHint: false` |
+| `zam_session_end` | `endSession`; optional `synthesize` returns candidates with card/token identifiers for explicit confirmation | `destructiveHint: false`, `openWorldHint: false` |
+| `zam_get_reviews` | `getReviewsBatch` (dynamic LLM self-healing disabled) | `readOnlyHint: true`, `openWorldHint: true` |
+| `zam_submit_review` | `submitReview` | `destructiveHint: false`, `idempotentHint: false`, `openWorldHint: false` |
 | `zam_review_action` | `reviewAction` | `destructiveHint: true` |
-| `zam_add_token` | `addToken` | |
-| `zam_find_tokens` | `findTokens` | `readOnlyHint: true` |
-| `zam_suggest_foundations` | `suggestFoundations` | `readOnlyHint: true` |
-| `zam_link_prereq` | `linkPrereq` | |
+| `zam_add_token` | `addToken` (token + card + contexts + prerequisite edges) | `destructiveHint: false`, `openWorldHint: true` |
+| `zam_find_tokens` | `findTokens` | `readOnlyHint: true`, `openWorldHint: true` |
+| `zam_suggest_foundations` | `suggestFoundations` | `readOnlyHint: true`, `openWorldHint: true` |
+| `zam_link_prereq` | `linkPrereq` | `destructiveHint: false`, `openWorldHint: false` |
 | `zam_monitor` | `getMonitor` / `analyzeMonitor` (via `analyze?: patterns`) | `readOnlyHint: true` |
 
-All tools: `openWorldHint: false` (local DB). `zam_review_action` with
+Purely local tools use `openWorldHint: false`; tools that can read remote sources
+or call configured embedding endpoints use `openWorldHint: true`.
+`zam_review_action` with
 `delete-token`/`delete-card` **must** keep the two-step confirm flow: first call
 without `confirm` returns the preview + `requiresConfirmation: true`; deletion
 only with `confirm: true`. One-time server trust must never silently delete.
@@ -153,7 +166,8 @@ spawn-based smoke test).
 economy.
 
 1. `zam bridge submit`: add `--session <id>` and `--done-by <user|agent>`
-   (default `user`) wired to the Phase-1 `submitReview` handler.
+   (default `user`) wired to the Phase-1 `submitReview` handler. Rating is
+   required for user work and omitted for agent work.
 2. New `zam bridge session-open --user <u> --task "<t>" [--context <c>]` →
    `sessionOpen` composite (stats + due summary + relevant tokens + started
    session) as one JSON response.
@@ -169,27 +183,36 @@ economy.
 
 ## Phase 4 — `zam agent connect <harness>`
 
-**Goal:** ADR Decision 4 — provision MCP trust instead of documenting it.
+**Goal:** ADR Decision 4 — provision MCP configuration and surface the host's
+remaining trust decision.
 
 Extend [src/cli/agent-harness.ts](../../src/cli/agent-harness.ts) and
 [src/cli/commands/agent.ts](../../src/cli/commands/agent.ts):
 
-- `zam agent connect <claude-code|antigravity|codex> [--print]`
+- `zam agent connect <claude-code|antigravity|codex|opencode> [--print]`
 - Resolve the `zam` executable (reuse `findExecutable`; fall back to literal
   `zam` with a warning). Server entry: command = resolved path, args = `["mcp"]`.
 - Per-harness targets (v1 — **verify paths/schemas against current harness docs
   at implementation time**, they churn; keep the writers table-driven):
   - **claude-code:** project `.mcp.json` (cwd), `mcpServers.zam`,
     stdio. JSON parse → merge → stringify (2-space indent). Create if missing.
-  - **antigravity:** `~/.gemini/config/mcp_config.json` (shared IDE+CLI),
-    `mcpServers.zam`. Same merge strategy.
+  - **antigravity:** `~/.gemini/config/mcp_config.json` (shared config read by
+    CLI and IDE 2.0+; older IDE builds read
+    `~/.gemini/antigravity/mcp_config.json`), `mcpServers.zam`. Same merge
+    strategy.
+  - **opencode:** `~/.config/opencode/opencode.json`, `mcp.zam` with
+    `type: "local"`, command array `[zamPath, "mcp"]`, and `enabled: true`.
+    Merge the JSON object and preserve other servers/settings.
   - **codex:** `~/.codex/config.toml`. **Never rewrite the file** (comments
     would be lost): if `[mcp_servers.zam]` already appears, print "already
     configured" and stop; otherwise append a clearly-delimited block —
-    `[mcp_servers.zam]`, `command`, `args`, plus per-tool
-    `approval_mode = "prompt"` overrides for `zam_review_action` under
-    `[mcp_servers.zam.tools.…]` if the installed Codex supports it (keep the
-    block minimal otherwise).
+    `[mcp_servers.zam]`, `command`, `args`,
+    `default_tools_approval_mode = "approve"`, plus a per-tool
+    `approval_mode = "prompt"` override for `zam_review_action` under
+    `[mcp_servers.zam.tools.…]`.
+- Invalid existing JSON is an error. Never replace malformed content with a new
+  object; preserving unrelated configuration includes preserving failure for
+  the user to repair explicitly.
 - Idempotent: re-running updates the JSON entry in place / no-ops the TOML.
 - `--print` renders what *would* be written (path + content) without touching
   disk.
@@ -218,7 +241,8 @@ For **all three flavors** (`.claude/skills/zam/SKILL.md`,
 2. Rewrite the Session Protocol steps to tool calls:
    - unblock + stats greeting → `zam_status`
    - `echo '{…}' | zam bridge relevant-tokens` → `zam_find_tokens`
-   - `check-due > /tmp/zam-review.json` + Read → `zam_get_reviews`
+   - `check-due > /tmp/zam-review.json` + Read → `zam_get_reviews` with
+     `includeQuestions: true` for conceptual review
    - `session start` / `session end` → `zam_session_start` / `zam_session_end`
    - per-card `card update` + `session log` → **one** `zam_submit_review`
      (with `sessionId`)
@@ -242,8 +266,8 @@ For **all three flavors** (`.claude/skills/zam/SKILL.md`,
 7. Update `AGENTS.md` and `CLAUDE.md` (bridge section): mention `zam mcp`,
    `zam agent connect`, and that MCP is the preferred agent transport with the
    bridge CLI as fallback. Add a `README.md` quickstart snippet
-   (`zam agent connect claude-code` → agent session with zero per-command
-   prompts).
+   (`zam agent connect claude-code` → stable MCP tool calls instead of shell
+   command variants; approval behavior remains host-controlled).
 8. Do **not** hand-edit `desktop/src-tauri/resources/**` skill copies — they are
    produced by `npm run desktop:prepare`; run it if the desktop bundle needs
    refreshing.
@@ -276,8 +300,9 @@ file:line for violations, propose minimal fixes.
 
 1. Re-run the verification matrix; fix or file what reviewers missed.
 2. Manual harness smoke: `zam agent connect claude-code` in a scratch project →
-   one trust prompt → `zam_status`/`zam_get_reviews`/`zam_submit_review` run
-   without per-call approvals. `--print` output sanity for antigravity/codex.
+   approve the project server → exercise `zam_status`/`zam_get_reviews`/
+   `zam_submit_review`. Record actual host prompts rather than assuming zero.
+   Check `--print` output for antigravity/codex.
 3. `npm pack` smoke: global-install the tarball, `zam mcp` starts, tools list.
 4. Version bump (`0.8.0` → `0.9.0`, `chore(release)`), merge PR per project
    flow, GitHub release draft with a hand-written "What's new", local macOS

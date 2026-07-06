@@ -12,7 +12,10 @@ import {
   getReviewsForCard,
 } from "../../src/kernel/index.js";
 import {
+  addToken,
+  endSession,
   getReviewsBatch,
+  startSession,
   submitReview,
   linkPrereq,
 } from "../../src/cli/bridge-handlers.js";
@@ -31,7 +34,11 @@ describe("bridge-handlers unit tests", () => {
       useConfiguredCloud: false,
     });
     // Set default user
-    await db.prepare("INSERT OR REPLACE INTO user_config (key, value) VALUES ('user.id', 'thomas')").run();
+    await db
+      .prepare(
+        "INSERT OR REPLACE INTO user_config (key, value) VALUES ('user.id', 'thomas')",
+      )
+      .run();
   });
 
   afterEach(async () => {
@@ -62,7 +69,9 @@ describe("bridge-handlers unit tests", () => {
     const card2 = await ensureCard(db, token2.id, "thomas");
 
     // Force due immediately by setting due_at to past
-    await db.prepare("UPDATE cards SET due_at = '2000-01-01T00:00:00.000Z'").run();
+    await db
+      .prepare("UPDATE cards SET due_at = '2000-01-01T00:00:00.000Z'")
+      .run();
 
     // 1. Without questions
     const res1 = await getReviewsBatch(db, {
@@ -123,6 +132,69 @@ describe("bridge-handlers unit tests", () => {
     expect(res2.stepError).toContain("Session not found");
   });
 
+  it("logs agent-completed steps without advancing FSRS", async () => {
+    const token = await createToken(db, {
+      slug: "agent-step-token",
+      concept: "Agent step",
+      domain: "math",
+      bloom_level: 1,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+    const session = await startSession(db, {
+      user: "thomas",
+      task: "Agent-assisted work",
+    });
+
+    const result = await submitReview(db, {
+      user: "thomas",
+      cardId: card.id,
+      sessionId: session.id,
+      doneBy: "agent",
+    });
+
+    expect(result).toMatchObject({
+      success: true,
+      rating: null,
+      evaluation: null,
+      recordedOnly: true,
+    });
+    expect((await getCard(db, token.id, "thomas"))!.reps).toBe(0);
+    const step = await db
+      .prepare("SELECT * FROM session_steps WHERE session_id = ?")
+      .get(session.id);
+    expect(step.done_by).toBe("agent");
+    expect(step.rating).toBeNull();
+
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: card.id,
+        sessionId: session.id,
+        doneBy: "agent",
+        rating: 4,
+      }),
+    ).rejects.toThrow("must not include a rating");
+  });
+
+  it("creates a card only after a token-based synthesis rating is confirmed", async () => {
+    const token = await createToken(db, {
+      slug: "synthesis-only-token",
+      concept: "Synthesis candidate",
+      domain: "math",
+      bloom_level: 2,
+    });
+    expect(await getCard(db, token.id, "thomas")).toBeUndefined();
+
+    const result = await submitReview(db, {
+      user: "thomas",
+      tokenId: token.id,
+      rating: 3,
+    });
+
+    expect(result.rating).toBe(3);
+    expect((await getCard(db, token.id, "thomas"))!.reps).toBe(1);
+  });
+
   it("linkPrereq adds prereq and blocks user card if blockUser is provided", async () => {
     const token1 = await createToken(db, {
       slug: "token-a",
@@ -160,5 +232,55 @@ describe("bridge-handlers unit tests", () => {
 
     const updatedCard = await getCard(db, token1.id, "thomas");
     expect(updatedCard!.blocked).toBe(1);
+  });
+
+  it("addToken validates and creates prerequisite edges", async () => {
+    await createToken(db, {
+      slug: "foundation",
+      concept: "Foundation",
+      domain: "math",
+      bloom_level: 1,
+    });
+
+    const result = await addToken(db, {
+      user: "thomas",
+      slug: "advanced",
+      concept: "Advanced",
+      domain: "math",
+      bloomLevel: 2,
+      prerequisites: ["foundation", "foundation"],
+    });
+
+    const token = await getTokenBySlug(db, "advanced");
+    expect(result.token.prerequisites).toEqual(["foundation"]);
+    expect(await getPrerequisites(db, token!.id)).toHaveLength(1);
+
+    await expect(
+      addToken(db, {
+        user: "thomas",
+        slug: "invalid-advanced",
+        concept: "Invalid advanced",
+        prerequisites: ["missing-foundation"],
+      }),
+    ).rejects.toThrow("Prerequisite token not found");
+    expect(await getTokenBySlug(db, "invalid-advanced")).toBeUndefined();
+  });
+
+  it("endSession can return synthesis candidates and the final summary", async () => {
+    const session = await startSession(db, {
+      user: "thomas",
+      task: "Practice",
+      context: "shell",
+    });
+
+    const result = await endSession(db, {
+      session: session.id,
+      synthesize: true,
+      patterns: [],
+    });
+
+    expect(result.completedAt).not.toBeNull();
+    expect(result.summary.session.id).toBe(session.id);
+    expect(result.synthesis?.sessionId).toBe(session.id);
   });
 });

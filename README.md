@@ -64,14 +64,14 @@ Get started: `zam whoami --set <your-id>`
 
 ## 🤖 Agent & MCP Integration
 
-ZAM integrates directly with your coding agents (such as Claude Code, Codex, or Antigravity) via the **Model Context Protocol (MCP)**. This lets your agent drive ZAM sessions automatically using tool calls.
+ZAM integrates directly with your coding agents (such as Claude Code, Codex, Antigravity, or OpenCode) via the **Model Context Protocol (MCP)**. This lets your agent drive ZAM sessions automatically using tool calls.
 
 To connect your agent harness:
 ```bash
-# Connect to your agent client (e.g. claude-code, antigravity, or codex)
+# Connect to your agent client (claude-code, antigravity, codex, or opencode)
 zam agent connect claude-code
 ```
-This writes the necessary MCP server config. You can also print the config changes:
+This writes the necessary MCP server config. Your harness may still ask you to approve the server or its tools. You can also print the config changes:
 ```bash
 zam agent connect claude-code --print
 ```

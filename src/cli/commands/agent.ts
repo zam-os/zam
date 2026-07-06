@@ -21,6 +21,8 @@ import {
 } from "../../kernel/index.js";
 import {
   AGENT_HARNESSES,
+  type ConnectHarnessId,
+  type ConnectResult,
   connectHarnessMcp,
   getHarness,
   launchHarness,
@@ -38,6 +40,16 @@ const C = {
 };
 
 const SUPPORTED_AGENTS = ["opencode"];
+const CONNECT_HARNESSES: ConnectHarnessId[] = [
+  "claude-code",
+  "antigravity",
+  "codex",
+  "opencode",
+];
+
+function isConnectHarnessId(value: string): value is ConnectHarnessId {
+  return CONNECT_HARNESSES.includes(value as ConnectHarnessId);
+}
 
 function agentsMdPresent(cwd = process.cwd()): boolean {
   return existsSync(join(cwd, "AGENTS.md"));
@@ -182,20 +194,19 @@ const openCmd = new Command("open")
   });
 
 const connectCmd = new Command("connect")
-  .description("Provision MCP trust configuration for an agent harness")
+  .description("Configure the ZAM MCP server for an agent harness")
   .argument(
     "<harness>",
-    "Harness to connect: claude-code | antigravity | codex",
+    "Harness to connect: claude-code | antigravity | codex | opencode",
   )
   .option(
     "--print",
     "Print configuration changes instead of writing them to disk",
   )
   .action(async (harnessArg, opts: { print?: boolean }) => {
-    const validHarnesses = ["claude-code", "antigravity", "codex"];
-    if (!validHarnesses.includes(harnessArg)) {
+    if (!isConnectHarnessId(harnessArg)) {
       console.error(
-        `Unsupported harness: ${harnessArg}. Supported: ${validHarnesses.join(", ")}.`,
+        `Unsupported harness: ${harnessArg}. Supported: ${CONNECT_HARNESSES.join(", ")}.`,
       );
       process.exit(1);
     }
@@ -208,11 +219,19 @@ const connectCmd = new Command("connect")
       zamPath = "zam";
     }
 
-    const result = connectHarnessMcp(harnessArg as any, {
-      zamPath,
-      cwd: process.cwd(),
-      home: homedir(),
-    });
+    let result: ConnectResult;
+    try {
+      result = connectHarnessMcp(harnessArg, {
+        zamPath,
+        cwd: process.cwd(),
+        home: homedir(),
+      });
+    } catch (error) {
+      console.error(
+        `Error preparing MCP configuration: ${error instanceof Error ? error.message : String(error)}`,
+      );
+      process.exit(1);
+    }
 
     if (opts.print) {
       console.log(`Path: ${result.path}`);
@@ -231,11 +250,13 @@ const connectCmd = new Command("connect")
       mkdirSync(dirname(result.path), { recursive: true });
       writeFileSync(result.path, result.content, "utf-8");
       console.log(
-        `${C.green}✓${C.reset} Wrote trust configuration to ${result.path}`,
+        `${C.green}✓${C.reset} Wrote MCP configuration to ${result.path}`,
       );
       console.log(`  ${C.dim}${result.hint}${C.reset}`);
-    } catch (err: any) {
-      console.error(`Error writing trust configuration: ${err.message}`);
+    } catch (error) {
+      console.error(
+        `Error writing MCP configuration: ${error instanceof Error ? error.message : String(error)}`,
+      );
       process.exit(1);
     }
   });

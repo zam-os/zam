@@ -5,6 +5,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { Command } from "commander";
 import { z } from "zod";
+import type { Database, Rating, ReviewActionType } from "../../kernel/index.js";
 import { getSetting, openDatabase } from "../../kernel/index.js";
 import {
   addToken as handleAddToken,
@@ -31,7 +32,7 @@ const pkg = JSON.parse(readFileSync(pkgPath, "utf-8")) as { version: string };
 /**
  * Creates and configures the McpServer instance with all tools mapped.
  */
-export function createMcpServer(db: any): McpServer {
+export function createMcpServer(db: Database): McpServer {
   const server = new McpServer({
     name: "zam",
     version: pkg.version,
@@ -50,12 +51,22 @@ export function createMcpServer(db: any): McpServer {
     openWorldHint: false,
   };
 
-  function wrapHandler<T>(fn: (params: T) => Promise<any>) {
+  const externalAnnotations = {
+    openWorldHint: true,
+  };
+
+  function wrapHandler<T>(fn: (params: T) => Promise<unknown>) {
     return async (params: T) => {
       try {
         const result = await fn(params);
+        const structuredContent =
+          typeof result === "object" &&
+          result !== null &&
+          !Array.isArray(result)
+            ? (result as Record<string, unknown>)
+            : { result };
         return {
-          structuredContent: result,
+          structuredContent,
           content: [
             {
               type: "text" as const,
@@ -63,8 +74,8 @@ export function createMcpServer(db: any): McpServer {
             },
           ],
         };
-      } catch (err: any) {
-        const errMsg = err?.message || String(err);
+      } catch (error) {
+        const errMsg = error instanceof Error ? error.message : String(error);
         return {
           isError: true,
           content: [
@@ -119,7 +130,10 @@ export function createMcpServer(db: any): McpServer {
           .optional()
           .describe("Execution context"),
       },
-      annotations: commonAnnotations,
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: false,
+      },
     },
     wrapHandler(async (params) => {
       const userId = await getUserId(params.user);
@@ -138,12 +152,35 @@ export function createMcpServer(db: any): McpServer {
       description: "End a learning/work session",
       inputSchema: {
         session: z.string().describe("Session ULID to end"),
+        synthesize: z
+          .boolean()
+          .optional()
+          .describe("Return monitor-based rating candidates before ending"),
+        patterns: z
+          .array(
+            z.object({
+              slug: z.string(),
+              patterns: z.array(z.string()),
+            }),
+          )
+          .optional()
+          .describe("Additional token command patterns for synthesis"),
+        minConfidence: z
+          .enum(["medium", "high"])
+          .optional()
+          .describe("Minimum confidence for synthesis candidates"),
       },
-      annotations: commonAnnotations,
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: false,
+      },
     },
     wrapHandler(async (params) => {
       return await handleEndSession(db, {
         session: params.session,
+        synthesize: params.synthesize,
+        patterns: params.patterns,
+        minConfidence: params.minConfidence,
       });
     }),
   );
@@ -169,12 +206,12 @@ export function createMcpServer(db: any): McpServer {
           .optional()
           .describe("Do not auto-generate missing questions"),
         noDynamicQuestion: z
-          .boolean()
+          .literal(true)
           .optional()
-          .describe("Do not use LLM for dynamic questions"),
+          .describe("Keep review retrieval read-only (always true over MCP)"),
       },
       annotations: {
-        ...commonAnnotations,
+        ...externalAnnotations,
         readOnlyHint: true,
       },
     },
@@ -186,7 +223,7 @@ export function createMcpServer(db: any): McpServer {
         knowledgeContext: params.knowledgeContext,
         includeQuestions: params.includeQuestions,
         noResolve: params.noResolve,
-        noDynamicQuestion: params.noDynamicQuestion,
+        noDynamicQuestion: true,
       });
     }),
   );
@@ -195,13 +232,21 @@ export function createMcpServer(db: any): McpServer {
   server.registerTool(
     "zam_submit_review",
     {
-      description: "Submit an FSRS card review rating",
+      description: "Submit a user rating or log an unrated agent step",
       inputSchema: {
         user: z.string().optional().describe("User ID submitting the review"),
-        cardId: z.string().describe("Card ULID being reviewed"),
+        cardId: z
+          .string()
+          .optional()
+          .describe("Card ULID; required for agent steps"),
+        tokenId: z
+          .string()
+          .optional()
+          .describe("Token ULID for a confirmed synthesis without a card yet"),
         rating: z
           .union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)])
-          .describe("FSRS rating: 1=Again, 2=Hard, 3=Good, 4=Easy"),
+          .optional()
+          .describe("User FSRS rating; omit when doneBy is agent"),
         sessionId: z
           .string()
           .optional()
@@ -213,6 +258,7 @@ export function createMcpServer(db: any): McpServer {
       },
       annotations: {
         ...commonAnnotations,
+        destructiveHint: false,
         idempotentHint: false,
       },
     },
@@ -221,7 +267,8 @@ export function createMcpServer(db: any): McpServer {
       return await handleSubmitReview(db, {
         user: userId,
         cardId: params.cardId,
-        rating: params.rating as any,
+        tokenId: params.tokenId,
+        rating: params.rating as Rating | undefined,
         sessionId: params.sessionId,
         doneBy: params.doneBy,
       });
@@ -293,8 +340,8 @@ export function createMcpServer(db: any): McpServer {
       return await handleReviewAction(db, {
         user: userId,
         cardId: params.cardId,
-        action: params.action as any,
-        rating: params.rating as any,
+        action: params.action as ReviewActionType,
+        rating: params.rating as Rating | undefined,
         concept: params.concept,
         domain: params.domain,
         bloomLevel: params.bloomLevel,
@@ -347,8 +394,15 @@ export function createMcpServer(db: any): McpServer {
           .array(z.string())
           .optional()
           .describe("List of contexts to assign the token to"),
+        prerequisites: z
+          .array(z.string())
+          .optional()
+          .describe("Existing token slugs required by the new token"),
       },
-      annotations: commonAnnotations,
+      annotations: {
+        ...externalAnnotations,
+        destructiveHint: false,
+      },
     },
     wrapHandler(async (params) => {
       const userId = await getUserId(params.user);
@@ -364,6 +418,7 @@ export function createMcpServer(db: any): McpServer {
         sourceLink: params.sourceLink,
         question: params.question,
         knowledgeContexts: params.knowledgeContexts,
+        prerequisites: params.prerequisites,
       });
     }),
   );
@@ -384,7 +439,7 @@ export function createMcpServer(db: any): McpServer {
           .describe("Max number of matches to return"),
       },
       annotations: {
-        ...commonAnnotations,
+        ...externalAnnotations,
         readOnlyHint: true,
       },
     },
@@ -434,7 +489,7 @@ export function createMcpServer(db: any): McpServer {
           .describe("Max number of suggestions"),
       },
       annotations: {
-        ...commonAnnotations,
+        ...externalAnnotations,
         readOnlyHint: true,
       },
     },
@@ -465,7 +520,10 @@ export function createMcpServer(db: any): McpServer {
           .optional()
           .describe("Block card for this user until prereq is learned"),
       },
-      annotations: commonAnnotations,
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: false,
+      },
     },
     wrapHandler(async (params) => {
       return await handleLinkPrereq(db, {

@@ -12,6 +12,7 @@ import {
 } from "../../src/kernel/index.js";
 
 describe("bridge batch commands e2e", () => {
+  const tsxImport = import.meta.resolve("tsx");
   let tempHome: string;
   let tempCwd: string;
   let cliPath: string;
@@ -22,7 +23,7 @@ describe("bridge batch commands e2e", () => {
   beforeEach(async () => {
     tempHome = mkdtempSync(join(tmpdir(), "zam-bridge-batch-home-"));
     tempCwd = mkdtempSync(join(tmpdir(), "zam-bridge-batch-cwd-"));
-    cliPath = join(process.cwd(), "dist", "cli", "index.js");
+    cliPath = join(process.cwd(), "src", "cli", "index.ts");
 
     const dataDir = join(tempHome, ".zam");
     mkdirSync(dataDir, { recursive: true });
@@ -46,7 +47,9 @@ describe("bridge batch commands e2e", () => {
     await setSetting(db, "user.id", "thomas");
 
     // Force due
-    await db.prepare("UPDATE cards SET due_at = '2000-01-01T00:00:00.000Z'").run();
+    await db
+      .prepare("UPDATE cards SET due_at = '2000-01-01T00:00:00.000Z'")
+      .run();
 
     await db.close();
   });
@@ -59,27 +62,43 @@ describe("bridge batch commands e2e", () => {
 
   function runBridge(args: string[], stdin = ""): any {
     try {
-      const output = execFileSync("node", [cliPath, "bridge", ...args], {
-        cwd: tempCwd,
-        env: { ...process.env, HOME: tempHome, USERPROFILE: tempHome },
-        input: stdin,
-        encoding: "utf8",
-      });
+      const output = execFileSync(
+        process.execPath,
+        ["--import", tsxImport, cliPath, "bridge", ...args],
+        {
+          cwd: tempCwd,
+          env: { ...process.env, HOME: tempHome, USERPROFILE: tempHome },
+          input: stdin,
+          encoding: "utf8",
+        },
+      );
       return JSON.parse(output);
     } catch (err: any) {
-      throw new Error(`Command failed with status ${err.status}. Stderr: ${err.stderr}. Stdout: ${err.stdout}`);
+      throw new Error(
+        `Command failed with status ${err.status}. Stderr: ${err.stderr}. Stdout: ${err.stdout}`,
+      );
     }
   }
 
   it("can get reviews batch, open a session, and submit review with session details", async () => {
     // 1. Get reviews batch
-    const reviewsRes = runBridge(["get-reviews", "--include-questions", "--no-resolve"]);
+    const reviewsRes = runBridge([
+      "get-reviews",
+      "--include-questions",
+      "--no-resolve",
+    ]);
     expect(reviewsRes.cards).toHaveLength(1);
     expect(reviewsRes.cards[0].slug).toBe("token-1");
     expect(reviewsRes.cards[0].question).toBe("What is One?");
 
     // 2. Open a session
-    const sessionRes = runBridge(["session-open", "--task", "Study Science", "--context", "shell"]);
+    const sessionRes = runBridge([
+      "session-open",
+      "--task",
+      "Study Science",
+      "--context",
+      "shell",
+    ]);
     expect(sessionRes.session).toBeDefined();
     expect(sessionRes.session.task).toBe("Study Science");
     expect(sessionRes.due.dueCount).toBe(1);
@@ -96,7 +115,7 @@ describe("bridge batch commands e2e", () => {
       "--session",
       sessionId,
       "--done-by",
-      "agent",
+      "user",
     ]);
 
     expect(submitRes.success).toBe(true);
@@ -111,9 +130,11 @@ describe("bridge batch commands e2e", () => {
     expect(updatedCard!.reps).toBe(1);
 
     // Verify the step was logged under the session
-    const step = await db.prepare("SELECT * FROM session_steps WHERE session_id = ?").get(sessionId);
+    const step = await db
+      .prepare("SELECT * FROM session_steps WHERE session_id = ?")
+      .get(sessionId);
     expect(step).toBeDefined();
-    expect(step.done_by).toBe("agent");
+    expect(step.done_by).toBe("user");
     expect(step.rating).toBe(3);
 
     await db.close();

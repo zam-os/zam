@@ -759,7 +759,7 @@ bridgeCommand
   .description("Submit a rating for a card (JSON)")
   .option("--user <id>", "User ID (default: whoami)")
   .requiredOption("--card-id <id>", "Card ID")
-  .requiredOption("--rating <n>", "Rating (1-4)")
+  .option("--rating <n>", "User rating (1-4); omit with --done-by agent")
   .option("--session <id>", "Session ID to associate the review with")
   .option(
     "--done-by <user|agent>",
@@ -773,7 +773,10 @@ bridgeCommand
         const result = await handleSubmitReview(db, {
           user: userId,
           cardId: opts.cardId,
-          rating: Number(opts.rating) as Rating,
+          rating:
+            opts.rating !== undefined
+              ? (Number(opts.rating) as Rating)
+              : undefined,
           sessionId: opts.session,
           doneBy: opts.doneBy as "user" | "agent",
         });
@@ -1033,6 +1036,7 @@ bridgeCommand
         question?: string | null;
         knowledgeContexts?: string[];
         knowledge_contexts?: string[];
+        prerequisites?: string[];
       };
 
       try {
@@ -1048,6 +1052,14 @@ bridgeCommand
       await withDb(async (db) => {
         try {
           const userId = await resolveUser(opts, db, { json: true });
+          const symbiosisMode = data.symbiosis_mode;
+          if (
+            symbiosisMode !== undefined &&
+            symbiosisMode !== null &&
+            !["shadowing", "copilot", "autonomy"].includes(symbiosisMode)
+          ) {
+            jsonError(`Invalid symbiosis_mode: ${symbiosisMode}`);
+          }
           const result = await handleAddToken(db, {
             user: userId,
             slug: data.slug,
@@ -1056,11 +1068,12 @@ bridgeCommand
             domain: data.domain,
             bloomLevel: data.bloom_level,
             context: data.context,
-            symbiosisMode: data.symbiosis_mode as any,
+            symbiosisMode: symbiosisMode as SymbiosisMode | null | undefined,
             sourceLink: data.source_link,
             question: data.question,
             knowledgeContexts: data.knowledgeContexts,
             knowledge_contexts: data.knowledge_contexts,
+            prerequisites: data.prerequisites,
           });
           jsonOut(result);
         } catch (err) {

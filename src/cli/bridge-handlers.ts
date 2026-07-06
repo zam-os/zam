@@ -1,10 +1,14 @@
 import type {
   BloomLevel,
   Database,
+  KnowledgeContext,
   Rating,
   ReviewActionType,
   SymbiosisMode,
+  SynthesisConfidence,
+  Token,
   TokenPattern,
+  UpdateTokenInput,
 } from "../kernel/index.js";
 import {
   addPrerequisite,
@@ -17,12 +21,17 @@ import {
   generateConceptFreeCue,
   generatePrompt,
   getCard,
+  getCardById,
   getCardDeletionImpact,
+  getDatabaseTargetInfo,
   getDisplayTitle,
   getDueCards,
+  getSessionSummary,
   getSetting,
+  getTokenById,
   getTokenBySlug,
   getTokenDeleteImpact,
+  getUserStats,
   isObserverPolicyConfigured,
   endSession as kernelEndSession,
   startSession as kernelStartSession,
@@ -31,6 +40,7 @@ import {
   monitorLogExists,
   OBSERVER_POLICY_UNSET_HINT,
   pairCommands,
+  prepareSessionSynthesis,
   readMonitorLog,
   resolveReviewContext,
   searchTokensHybrid,
@@ -82,7 +92,7 @@ function parseKnowledgeContextNames(value: unknown): string[] {
 async function resolveKnowledgeContexts(
   db: Database,
   names: string[],
-): Promise<any[]> {
+): Promise<KnowledgeContext[]> {
   return await resolveOperationKnowledgeContexts(db, names);
 }
 
@@ -106,7 +116,11 @@ export async function checkDue(db: Database, params: CheckDueParams) {
     ...new Set(dueCards.map((c) => c.domain).filter(Boolean)),
   ].sort();
 
+  const stats = await getUserStats(db, userId);
+
   return {
+    database: getDatabaseTargetInfo(),
+    stats,
     userId,
     domain: params.domain ?? null,
     knowledgeContext: params.knowledgeContext ?? null,
@@ -337,21 +351,72 @@ export async function getReviewsBatch(
 // 4. submitReview
 export interface SubmitReviewParams {
   user?: string;
-  cardId: string;
-  rating: Rating;
+  cardId?: string;
+  tokenId?: string;
+  rating?: Rating;
   sessionId?: string;
   doneBy?: "user" | "agent";
 }
 
 export async function submitReview(db: Database, params: SubmitReviewParams) {
   const userId = await resolveHandlerUser(db, params.user);
-  if (params.rating < 1 || params.rating > 4) {
+  if (
+    params.doneBy !== undefined &&
+    !["user", "agent"].includes(params.doneBy)
+  ) {
+    throw new Error("doneBy must be user or agent");
+  }
+  if (params.doneBy === "agent") {
+    if (params.rating !== undefined) {
+      throw new Error("Agent-completed steps must not include a rating");
+    }
+    if (!params.sessionId) {
+      throw new Error("sessionId is required for an agent-completed step");
+    }
+    if (!params.cardId) {
+      throw new Error("cardId is required for an agent-completed step");
+    }
+    const card = await getCardById(db, params.cardId);
+    if (!card) {
+      throw new Error(`Card not found: ${params.cardId}`);
+    }
+    if (card.user_id !== userId) {
+      throw new Error(
+        `Card ${params.cardId} does not belong to user ${userId}`,
+      );
+    }
+    await logStep(db, {
+      session_id: params.sessionId,
+      token_id: card.token_id,
+      done_by: "agent",
+    });
+    return {
+      success: true,
+      rating: null,
+      evaluation: null,
+      blocked: null,
+      recordedOnly: true,
+    };
+  }
+
+  if (params.rating == null || params.rating < 1 || params.rating > 4) {
     throw new Error("Rating must be between 1 and 4");
+  }
+  let cardId = params.cardId;
+  if (!cardId) {
+    if (!params.tokenId) {
+      throw new Error("cardId or tokenId is required");
+    }
+    const token = await getTokenById(db, params.tokenId);
+    if (!token || token.deprecated_at) {
+      throw new Error(`Active token not found: ${params.tokenId}`);
+    }
+    cardId = (await ensureCard(db, token.id, userId)).id;
   }
 
   const result = await executeReviewAction(db, {
     action: "rate",
-    cardId: params.cardId,
+    cardId,
     userId,
     rating: params.rating,
   });
@@ -362,7 +427,7 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
       await logStep(db, {
         session_id: params.sessionId,
         token_id: result.token.id,
-        done_by: params.doneBy === "agent" ? "agent" : "user",
+        done_by: "user",
         rating: params.rating,
       });
     } catch (err) {
@@ -461,7 +526,7 @@ export async function reviewAction(db: Database, params: ReviewActionParams) {
     throw new Error("Rating must be between 1 and 4 for action=rate");
   }
 
-  let tokenUpdates: any;
+  let tokenUpdates: UpdateTokenInput | undefined;
   if (action === "edit-token") {
     tokenUpdates = {};
     if (params.concept !== undefined) tokenUpdates.concept = params.concept;
@@ -525,10 +590,22 @@ export interface AddTokenParams {
   question?: string | null;
   knowledgeContexts?: string[];
   knowledge_contexts?: string[];
+  prerequisites?: string[];
 }
 
 export async function addToken(db: Database, params: AddTokenParams) {
   const userId = await resolveHandlerUser(db, params.user);
+  if (!params.slug.trim() || !params.concept.trim()) {
+    throw new Error("slug and concept must be non-empty");
+  }
+  if (
+    params.bloomLevel !== undefined &&
+    (!Number.isInteger(params.bloomLevel) ||
+      params.bloomLevel < 1 ||
+      params.bloomLevel > 5)
+  ) {
+    throw new Error("bloomLevel must be an integer between 1 and 5");
+  }
 
   const possibleDuplicates = await findPossibleDuplicates(db, {
     concept: params.concept,
@@ -541,6 +618,19 @@ export async function addToken(db: Database, params: AddTokenParams) {
     params.knowledgeContexts ?? params.knowledge_contexts,
   );
   const assignedContexts = await resolveKnowledgeContexts(db, ctxNames);
+  const prerequisiteSlugs = [
+    ...new Set(
+      (params.prerequisites ?? []).map((slug) => slug.trim()).filter(Boolean),
+    ),
+  ];
+  const prerequisites: Token[] = [];
+  for (const slug of prerequisiteSlugs) {
+    const prerequisite = await getTokenBySlug(db, slug);
+    if (!prerequisite) {
+      throw new Error(`Prerequisite token not found: ${slug}`);
+    }
+    prerequisites.push(prerequisite);
+  }
 
   const token = await createToken(db, {
     slug: params.slug,
@@ -556,6 +646,10 @@ export async function addToken(db: Database, params: AddTokenParams) {
 
   for (const context of assignedContexts) {
     await assignTokenToContext(db, token.id, context.id);
+  }
+
+  for (const prerequisite of prerequisites) {
+    await addPrerequisite(db, token.id, prerequisite.id);
   }
 
   const card = await ensureCard(db, token.id, userId);
@@ -575,6 +669,7 @@ export async function addToken(db: Database, params: AddTokenParams) {
         label: c.label,
         language: c.language,
       })),
+      prerequisites: prerequisites.map((prerequisite) => prerequisite.slug),
     },
     card: {
       id: card.id,
@@ -597,6 +692,9 @@ export interface FindTokensParams {
 
 export async function findTokens(db: Database, params: FindTokensParams) {
   const userId = await resolveHandlerUser(db, params.user);
+  if (!params.context.trim()) {
+    throw new Error("context must be non-empty");
+  }
   const truncatedContext = params.context.slice(0, 2000);
 
   const q = await embedQuery(db, truncatedContext);
@@ -819,6 +917,9 @@ export interface LinkPrereqParams {
 }
 
 export async function linkPrereq(db: Database, params: LinkPrereqParams) {
+  if (!params.token.trim() || !params.requires.trim()) {
+    throw new Error("token and requires must be non-empty slugs");
+  }
   const token = await getTokenBySlug(db, params.token);
   if (!token) {
     throw new Error(`Token not found: ${params.token}`);
@@ -855,6 +956,9 @@ export interface StartSessionParams {
 }
 
 export async function startSession(db: Database, params: StartSessionParams) {
+  if (!params.task.trim()) {
+    throw new Error("task must be non-empty");
+  }
   const context = params.context ?? "shell";
   if (!["shell", "ui", "reallife"].includes(context)) {
     throw new Error("context must be shell, ui, or reallife");
@@ -885,10 +989,34 @@ export async function startSession(db: Database, params: StartSessionParams) {
 
 export interface EndSessionParams {
   session: string;
+  synthesize?: boolean;
+  patterns?: TokenPattern[];
+  minConfidence?: SynthesisConfidence;
 }
 
 export async function endSession(db: Database, params: EndSessionParams) {
+  const synthesisPreview = params.synthesize
+    ? await prepareSessionSynthesis(db, {
+        sessionId: params.session,
+        explicitPatterns: params.patterns,
+        minConfidence: params.minConfidence ?? "medium",
+      })
+    : undefined;
+  const synthesis = synthesisPreview
+    ? {
+        ...synthesisPreview,
+        candidates: await Promise.all(
+          synthesisPreview.candidates.map(async (candidate) => ({
+            ...candidate,
+            cardId:
+              (await getCard(db, candidate.tokenId, synthesisPreview.userId))
+                ?.id ?? null,
+          })),
+        ),
+      }
+    : undefined;
   const session = await kernelEndSession(db, params.session);
+  const summary = await getSessionSummary(db, params.session);
   return {
     id: session.id,
     userId: session.user_id,
@@ -896,6 +1024,8 @@ export async function endSession(db: Database, params: EndSessionParams) {
     executionContext: session.execution_context,
     startedAt: session.started_at,
     completedAt: session.completed_at,
+    summary,
+    ...(synthesis ? { synthesis } : {}),
   };
 }
 

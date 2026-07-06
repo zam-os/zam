@@ -157,6 +157,7 @@ describe("planHarnessLaunch", () => {
 });
 
 describe("connectHarnessMcp", () => {
+  const tsxImport = import.meta.resolve("tsx");
   const mockFiles: Record<string, string> = {};
 
   const mockDeps = {
@@ -225,14 +226,37 @@ describe("connectHarnessMcp", () => {
     });
   });
 
+  it("opencode merges the global JSON config", () => {
+    mockFiles["/home/user/.config/opencode/opencode.json"] = JSON.stringify({
+      theme: "system",
+      mcp: { other: { type: "remote", url: "https://example.test/mcp" } },
+    });
+
+    const res = connectHarnessMcp("opencode", mockDeps);
+    expect(res.path).toBe("/home/user/.config/opencode/opencode.json");
+    expect(JSON.parse(res.content)).toEqual({
+      theme: "system",
+      mcp: {
+        other: { type: "remote", url: "https://example.test/mcp" },
+        zam: {
+          type: "local",
+          command: ["/usr/local/bin/zam", "mcp"],
+          enabled: true,
+        },
+      },
+    });
+  });
+
   it("codex appends TOML block when missing", () => {
-    mockFiles["/home/user/.codex/config.toml"] = `# existing Codex config\n[other]\nvalue = 42\n`;
+    mockFiles["/home/user/.codex/config.toml"] =
+      `# existing Codex config\n[other]\nvalue = 42\n`;
     const res = connectHarnessMcp("codex", mockDeps);
     expect(res.path).toBe("/home/user/.codex/config.toml");
     expect(res.alreadyConfigured).toBe(false);
     expect(res.content).toContain("[mcp_servers.zam]");
     expect(res.content).toContain('command = "/usr/local/bin/zam"');
-    expect(res.content).toContain("approval_mode = \"prompt\"");
+    expect(res.content).toContain('default_tools_approval_mode = "approve"');
+    expect(res.content).toContain('approval_mode = "prompt"');
     expect(res.content).toContain("[other]");
   });
 
@@ -244,11 +268,37 @@ describe("connectHarnessMcp", () => {
     expect(res.content).toBe(existing);
   });
 
+  it("refuses to overwrite malformed JSON configuration", () => {
+    mockFiles["/work/.mcp.json"] = "{ definitely not JSON";
+
+    expect(() => connectHarnessMcp("claude-code", mockDeps)).toThrow(
+      "existing file is not valid JSON",
+    );
+  });
+
+  it("refuses to replace a non-object mcpServers value", () => {
+    mockFiles["/work/.mcp.json"] = JSON.stringify({ mcpServers: [] });
+
+    expect(() => connectHarnessMcp("claude-code", mockDeps)).toThrow(
+      "mcpServers must be a JSON object",
+    );
+  });
+
   it("e2e: command connect --print outputs path and content", () => {
-    const cliPath = Symbol.for("cliPath") ? join(process.cwd(), "dist", "cli", "index.js") : "dist/cli/index.js";
-    const output = execFileSync("node", [cliPath, "agent", "connect", "claude-code", "--print"], {
-      encoding: "utf8",
-    });
+    const cliPath = join(process.cwd(), "src", "cli", "index.ts");
+    const output = execFileSync(
+      process.execPath,
+      [
+        "--import",
+        tsxImport,
+        cliPath,
+        "agent",
+        "connect",
+        "claude-code",
+        "--print",
+      ],
+      { encoding: "utf8" },
+    );
     expect(output).toContain("Path:");
     expect(output).toContain("Content:");
     expect(output).toContain("mcpServers");

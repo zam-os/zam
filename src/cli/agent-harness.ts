@@ -175,11 +175,48 @@ export interface ConnectResult {
   hint: string;
 }
 
+export type ConnectHarnessId =
+  | "claude-code"
+  | "antigravity"
+  | "codex"
+  | "opencode";
+
+interface McpJsonConfig {
+  mcpServers?: Record<string, unknown>;
+  [key: string]: unknown;
+}
+
+function parseMcpJsonConfig(path: string, content: string): McpJsonConfig {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(content);
+  } catch (error) {
+    throw new Error(
+      `Cannot update ${path}: existing file is not valid JSON (${error instanceof Error ? error.message : String(error)})`,
+    );
+  }
+
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new Error(`Cannot update ${path}: expected a JSON object`);
+  }
+
+  const config = parsed as McpJsonConfig;
+  if (
+    config.mcpServers !== undefined &&
+    (typeof config.mcpServers !== "object" ||
+      config.mcpServers === null ||
+      Array.isArray(config.mcpServers))
+  ) {
+    throw new Error(`Cannot update ${path}: mcpServers must be a JSON object`);
+  }
+  return config;
+}
+
 /**
- * Pure helper to build the target path and expected content to write to provision MCP trust.
+ * Pure helper to build the target path and expected MCP server configuration.
  */
 export function connectHarnessMcp(
-  harnessId: "claude-code" | "antigravity" | "codex",
+  harnessId: ConnectHarnessId,
   opts: {
     zamPath: string;
     cwd: string;
@@ -213,11 +250,9 @@ export function connectHarnessMcp(
     targetPath = join(opts.cwd, ".mcp.json");
     hint =
       "Claude Code will prompt you to approve the 'zam' MCP server on next launch.";
-    let existing: any = {};
+    let existing: McpJsonConfig = {};
     if (exists(targetPath)) {
-      try {
-        existing = JSON.parse(read(targetPath));
-      } catch {}
+      existing = parseMcpJsonConfig(targetPath, read(targetPath));
     }
     if (!existing.mcpServers) {
       existing.mcpServers = {};
@@ -230,12 +265,10 @@ export function connectHarnessMcp(
   } else if (harnessId === "antigravity") {
     targetPath = join(opts.home, ".gemini", "config", "mcp_config.json");
     hint =
-      "Antigravity/Gemini will load the 'zam' MCP server automatically at startup.";
-    let existing: any = {};
+      "Shared config read by Antigravity CLI and IDE (2.0+); older IDE builds read ~/.gemini/antigravity/mcp_config.json instead. Refresh Installed MCP Servers; the first tool call may still require approval.";
+    let existing: McpJsonConfig = {};
     if (exists(targetPath)) {
-      try {
-        existing = JSON.parse(read(targetPath));
-      } catch {}
+      existing = parseMcpJsonConfig(targetPath, read(targetPath));
     }
     if (!existing.mcpServers) {
       existing.mcpServers = {};
@@ -244,6 +277,28 @@ export function connectHarnessMcp(
       command: opts.zamPath,
       args: ["mcp"],
     };
+    content = JSON.stringify(existing, null, 2);
+  } else if (harnessId === "opencode") {
+    targetPath = join(opts.home, ".config", "opencode", "opencode.json");
+    hint = "OpenCode will load the enabled 'zam' MCP server on next launch.";
+    let existing: McpJsonConfig = {};
+    if (exists(targetPath)) {
+      existing = parseMcpJsonConfig(targetPath, read(targetPath));
+    }
+    const mcp = existing.mcp;
+    if (
+      mcp !== undefined &&
+      (typeof mcp !== "object" || mcp === null || Array.isArray(mcp))
+    ) {
+      throw new Error(`Cannot update ${targetPath}: mcp must be a JSON object`);
+    }
+    const servers = (mcp ?? {}) as Record<string, unknown>;
+    servers.zam = {
+      type: "local",
+      command: [opts.zamPath, "mcp"],
+      enabled: true,
+    };
+    existing.mcp = servers;
     content = JSON.stringify(existing, null, 2);
   } else if (harnessId === "codex") {
     targetPath = join(opts.home, ".codex", "config.toml");
@@ -261,6 +316,7 @@ export function connectHarnessMcp(
 [mcp_servers.zam]
 command = ${JSON.stringify(opts.zamPath)}
 args = ["mcp"]
+default_tools_approval_mode = "approve"
 
 [mcp_servers.zam.tools.zam_review_action]
 approval_mode = "prompt"

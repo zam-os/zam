@@ -18,7 +18,7 @@ Always prefer the `zam` MCP tools when available. If the server is not configure
 ```bash
 zam agent connect <harness>
 ```
-(Replace `<harness>` with your agent name: `claude-code`, `antigravity`, or `codex`). This registers the `zam` MCP server configuration.
+(Replace `<harness>` with your agent name: `claude-code`, `antigravity`, `codex`, or `opencode`). This registers the `zam` MCP server configuration.
 
 ### Available MCP Tools
 
@@ -34,7 +34,7 @@ zam agent connect <harness>
 | `zam_submit_review` | Submit a card self-rating, advance its FSRS state, and log it to the session steps. |
 | `zam_review_action` | Apply review actions (rate, skip, edit/deprecate/delete tokens or cards) with optional confirmation. |
 | `zam_suggest_foundations` | Suggest existing prerequisite tokens for a newly failed or registered token. |
-| `zam_discover_skills` | Probe the codebase for files containing code symbols and discover matching/relevant skill entries. |
+| `zam_monitor` | Read or analyze shell-monitor evidence for a session. |
 
 ---
 
@@ -88,7 +88,7 @@ The interface is pluggable — future observers replace Level 1 shell calls with
 Call `zam_status` to fetch connection target, current user, stats, and due review queue size. Show stats as a brief friendly greeting.
 
 For **review/conceptual** sessions, query due reviews without resolving:
-Call `zam_get_reviews` (with `noResolve: true` and `noDynamicQuestion: true` to avoid spoiling answers).
+Call `zam_get_reviews` (with `includeQuestions: true`, `noResolve: true`, and `noDynamicQuestion: true`). Keep the returned question hidden until you ask it.
 
 For **executable/task** sessions, also query for tokens relevant to the current task to weave them into the session planning:
 Call `zam_find_tokens` (with the task description context). If relevant tokens are returned, weave them into the planning session (e.g. "We will be working on task T; you already know X, which applies here").
@@ -139,7 +139,7 @@ To observe, tell the user to open a monitored terminal window:
 *(For systems supporting automatic shell terminal spawning, call `zam monitor open --session <id>` or instruct the user to run `zam monitor open --session <id>` in their terminal).*
 
 When the user returns, end the session:
-Call `zam_session_end` with the session ID. The analyzer infers ratings based on command history, error rates, and speed. Confirm or adjust the synthesized ratings, then submit them.
+Call `zam_session_end` with the session ID and `synthesize: true`. The analyzer infers ratings based on command history, error rates, and speed. Confirm or adjust the returned candidates, then submit them using each candidate's `cardId` or `tokenId`.
 
 **For conceptual sessions (verbal probing):**
 
@@ -162,7 +162,7 @@ After the user answers, run the explicit review loop:
 4. **Ask the user to choose the final rating.**
 5. **WAIT for the user to choose.**
 6. **Submit the rating.** Call `zam_submit_review` with the cardId, rating, sessionId, and `doneBy: "user"`.
-*(For cards skipped, or if the agent executed a step, call `zam_submit_review` or `zam_review_action` logging `doneBy: "agent"`, no rating).*
+*(For a skipped card, call `zam_review_action`. If the agent executed the step, call `zam_submit_review` with `doneBy: "agent"`, the session ID, and no rating; this logs evidence without advancing FSRS.)*
 
 #### Leveraging Source Links for AI Agent Context
 When calling `zam_get_reviews` or other review lookups, if a token has a `source_link`, the resolved code/documentation context will be returned. Use it to:
@@ -171,7 +171,7 @@ When calling `zam_get_reviews` or other review lookups, if a token has a `source
 
 ### STEP 5 — End session
 
-Call `zam_session_end` to complete the active learning session and print progress.
+For conceptual sessions, call `zam_session_end` to complete the active learning session and print progress. Executable sessions were already ended after synthesis above.
 
 ---
 
@@ -221,8 +221,7 @@ If the token has a `source_link` (e.g. to LehrplanPLUS or syllabus), consult it 
 ### Registration and wiring:
 For each gap, call:
 1. `zam_add_token` to register the foundation (Bloom 1-2, atomic).
-2. `zam_link_prereq` to wire it as a prerequisite.
-3. `zam_review_action` (action: "block") to block the high-level card.
+2. `zam_link_prereq` with `blockUser` to wire it as a prerequisite and block the high-level card.
 
 ---
 
@@ -265,15 +264,15 @@ If the MCP transport is unavailable, execute the corresponding `zam` bridge CLI 
 
 | Action / Tool | Fallback Command |
 |---|---|
-| Get Status / Stats | `zam stats --user <id>` |
+| Get Status / Stats | `zam bridge check-due --user <id>` |
 | Check Due reviews | `zam bridge check-due --user <id>` |
-| Get Reviews Batch | `zam bridge get-reviews --user <id>` |
+| Get Reviews Batch | `zam bridge get-reviews --user <id> --include-questions --no-resolve --no-dynamic-question` |
 | Get Single Review | `zam bridge get-review --user <id>` |
 | Start Session | `zam bridge start-session --user <id> --task "<task>"` |
 | Session Open | `zam bridge session-open --user <id> --task "<task>"` |
 | End Session | `zam bridge end-session --session <id>` |
 | Find Tokens | `zam bridge relevant-tokens` (via stdin JSON) |
-| Register Token | `zam token register --slug <s> --concept "<c>" --domain <d> --bloom <level> --question "<q>"` |
+| Register Token | `zam bridge add-token --user <id>` (via stdin JSON) |
 | Link Prereq | `zam token prereq --token <child> --requires <parent>` |
 | Submit Review | `zam bridge submit --card-id <id> --rating <r> [--session <id>] [--done-by user\|agent]` |
 | Review Action | `zam bridge review-action --card-id <id> --action <a>` |

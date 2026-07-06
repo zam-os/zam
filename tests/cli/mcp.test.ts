@@ -11,10 +11,12 @@ import {
   ensureCard,
   getCard,
   getPrerequisites,
+  getTokenBySlug,
 } from "../../src/kernel/index.js";
 import { createMcpServer } from "../../src/cli/commands/mcp.js";
 
 describe("MCP stdio server tests", () => {
+  const tsxImport = import.meta.resolve("tsx");
   let tempDir: string;
   let dbPath: string;
   let db: any;
@@ -32,7 +34,11 @@ describe("MCP stdio server tests", () => {
       useConfiguredCloud: false,
     });
     // Set default user
-    await db.prepare("INSERT OR REPLACE INTO user_config (key, value) VALUES ('user.id', 'thomas')").run();
+    await db
+      .prepare(
+        "INSERT OR REPLACE INTO user_config (key, value) VALUES ('user.id', 'thomas')",
+      )
+      .run();
 
     server = createMcpServer(db);
 
@@ -47,7 +53,7 @@ describe("MCP stdio server tests", () => {
       },
       {
         capabilities: {},
-      }
+      },
     );
 
     // Connect transports
@@ -97,16 +103,37 @@ describe("MCP stdio server tests", () => {
       readOnlyHint: true,
     });
 
-    const submitTool = response.tools.find((t) => t.name === "zam_submit_review")!;
+    const submitTool = response.tools.find(
+      (t) => t.name === "zam_submit_review",
+    )!;
     expect((submitTool as any).annotations).toEqual({
       openWorldHint: false,
+      destructiveHint: false,
       idempotentHint: false,
     });
 
-    const actionTool = response.tools.find((t) => t.name === "zam_review_action")!;
+    const actionTool = response.tools.find(
+      (t) => t.name === "zam_review_action",
+    )!;
     expect((actionTool as any).annotations).toEqual({
       openWorldHint: false,
       destructiveHint: true,
+    });
+
+    const reviewsTool = response.tools.find(
+      (t) => t.name === "zam_get_reviews",
+    )!;
+    expect((reviewsTool as any).annotations).toEqual({
+      openWorldHint: true,
+      readOnlyHint: true,
+    });
+
+    const addTokenTool = response.tools.find(
+      (t) => t.name === "zam_add_token",
+    )!;
+    expect((addTokenTool as any).annotations).toEqual({
+      openWorldHint: true,
+      destructiveHint: false,
     });
   });
 
@@ -120,7 +147,9 @@ describe("MCP stdio server tests", () => {
     const card = await ensureCard(db, token.id, "thomas");
 
     // Force due
-    await db.prepare("UPDATE cards SET due_at = '2000-01-01T00:00:00.000Z'").run();
+    await db
+      .prepare("UPDATE cards SET due_at = '2000-01-01T00:00:00.000Z'")
+      .run();
 
     // Call zam_status
     const statusRes = await client.callTool({
@@ -134,6 +163,8 @@ describe("MCP stdio server tests", () => {
     const statusData = JSON.parse(statusRes.content[0].text);
     expect(statusData.dueCount).toBe(1);
     expect(statusData.userId).toBe("thomas");
+    expect(statusData.stats.cardsInDeck).toBe(1);
+    expect(statusData.database.kind).toBeDefined();
 
     // Call zam_submit_review
     const reviewRes = await client.callTool({
@@ -153,6 +184,51 @@ describe("MCP stdio server tests", () => {
     // Verify card was reviewed and scheduled
     const updatedCard = await getCard(db, token.id, "thomas");
     expect(updatedCard!.reps).toBe(1);
+  });
+
+  it("creates prerequisite edges through zam_add_token", async () => {
+    const foundation = await createToken(db, {
+      slug: "mcp-foundation",
+      concept: "Foundation",
+      domain: "science",
+      bloom_level: 1,
+    });
+
+    const response = await client.callTool({
+      name: "zam_add_token",
+      arguments: {
+        user: "thomas",
+        slug: "mcp-advanced",
+        concept: "Advanced",
+        prerequisites: ["mcp-foundation"],
+      },
+    });
+
+    expect(response.isError).toBeUndefined();
+    const advanced = await getTokenBySlug(db, "mcp-advanced");
+    expect(advanced).toBeDefined();
+    const prerequisites = await getPrerequisites(db, advanced!.id);
+    expect(prerequisites.map((edge) => edge.requires_id)).toEqual([
+      foundation.id,
+    ]);
+  });
+
+  it("returns a final summary and synthesis preview from zam_session_end", async () => {
+    const startResponse = await client.callTool({
+      name: "zam_session_start",
+      arguments: { user: "thomas", task: "MCP practice" },
+    });
+    const started = JSON.parse(startResponse.content[0].text);
+
+    const endResponse = await client.callTool({
+      name: "zam_session_end",
+      arguments: { session: started.id, synthesize: true },
+    });
+
+    expect(endResponse.isError).toBeUndefined();
+    const ended = JSON.parse(endResponse.content[0].text);
+    expect(ended.summary.session.id).toBe(started.id);
+    expect(ended.synthesis.sessionId).toBe(started.id);
   });
 
   it("zam_review_action delete-token without confirm returns confirmation preview", async () => {
@@ -179,6 +255,7 @@ describe("MCP stdio server tests", () => {
     expect(data.preview).toBe(true);
     expect(data.requiresConfirmation).toBe(true);
     expect(data.impact).toBeDefined();
+    expect(await getTokenBySlug(db, "mcp-delete-token")).toBeDefined();
   });
 
   it("returns error result with isError: true on handler error", async () => {
@@ -196,11 +273,15 @@ describe("MCP stdio server tests", () => {
   });
 
   it("smoke test: process running command mcp only outputs JSON-RPC frames on stdout", async () => {
-    const cliPath = join(process.cwd(), "dist", "cli", "index.js");
+    const cliPath = join(process.cwd(), "src", "cli", "index.ts");
 
-    const child = spawn("node", [cliPath, "mcp"], {
-      env: { ...process.env, HOME: tempDir, USERPROFILE: tempDir },
-    });
+    const child = spawn(
+      process.execPath,
+      ["--import", tsxImport, cliPath, "mcp"],
+      {
+        env: { ...process.env, HOME: tempDir, USERPROFILE: tempDir },
+      },
+    );
 
     let stdoutData = "";
     let stderrData = "";
@@ -227,8 +308,21 @@ describe("MCP stdio server tests", () => {
 
     child.stdin.write(JSON.stringify(initMsg) + "\n");
 
-    // Wait a bit and kill the child
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise<void>((resolve, reject) => {
+      const timeout = setTimeout(
+        () =>
+          reject(new Error("Timed out waiting for MCP initialize response")),
+        5_000,
+      );
+      child.stdout.once("data", () => {
+        clearTimeout(timeout);
+        resolve();
+      });
+      child.once("error", (error) => {
+        clearTimeout(timeout);
+        reject(error);
+      });
+    });
     child.kill("SIGTERM");
 
     if (!stdoutData.includes("jsonrpc")) {

@@ -423,7 +423,7 @@ export interface GetReviewsResponse {
 
 export interface SubmitReviewResult {
   success: boolean;
-  rating: number;
+  rating: number | null;
   evaluation?: {
     nextDueAt: string;
     stability: number;
@@ -437,6 +437,8 @@ export interface SubmitReviewResult {
     prerequisites: Array<{ slug: string; concept: string; bloomLevel: number }>;
   } | null;
   stepError?: string;
+  /** True when an agent-completed step was logged without advancing FSRS. */
+  recordedOnly?: boolean;
 }
 
 export interface SessionOpenResponse {
