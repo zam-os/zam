@@ -100,7 +100,9 @@ import {
   findTokens as handleFindTokens,
   getMonitor as handleGetMonitor,
   getReview as handleGetReview,
+  getReviewsBatch as handleGetReviewsBatch,
   reviewAction as handleReviewAction,
+  sessionOpen as handleSessionOpen,
   startSession as handleStartSession,
   submitReview as handleSubmitReview,
   suggestFoundations as handleSuggestFoundations,
@@ -717,6 +719,39 @@ bridgeCommand
     });
   });
 
+// ── zam bridge get-reviews ────────────────────────────────────────────────
+
+bridgeCommand
+  .command("get-reviews")
+  .description("Get a batch of due cards (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .option("--domain <domain>", "Filter cards by domain prefix")
+  .option("--knowledge-context <context>", "Filter cards by knowledge context")
+  .option("--include-questions", "Include question content in response")
+  .option("--no-resolve", "Skip resolving the token's source_link into context")
+  .option(
+    "--no-dynamic-question",
+    "Use the stored question without generating a fresh LLM question",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        const result = await handleGetReviewsBatch(db, {
+          user: userId,
+          domain: opts.domain,
+          knowledgeContext: opts.knowledgeContext,
+          includeQuestions: opts.includeQuestions,
+          noResolve: opts.resolve === false,
+          noDynamicQuestion: opts.dynamicQuestion === false,
+        });
+        jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
 // ── zam bridge submit ─────────────────────────────────────────────────────
 
 bridgeCommand
@@ -725,6 +760,12 @@ bridgeCommand
   .option("--user <id>", "User ID (default: whoami)")
   .requiredOption("--card-id <id>", "Card ID")
   .requiredOption("--rating <n>", "Rating (1-4)")
+  .option("--session <id>", "Session ID to associate the review with")
+  .option(
+    "--done-by <user|agent>",
+    "Done by user or agent (default: user)",
+    "user",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
@@ -733,6 +774,8 @@ bridgeCommand
           user: userId,
           cardId: opts.cardId,
           rating: Number(opts.rating) as Rating,
+          sessionId: opts.session,
+          doneBy: opts.doneBy as "user" | "agent",
         });
         jsonOut(result);
       } catch (err) {
@@ -851,6 +894,36 @@ bridgeCommand
     await withDb(async (db) => {
       try {
         const result = await handleEndSession(db, { session: opts.session });
+        jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge session-open ───────────────────────────────────────────────
+
+bridgeCommand
+  .command("session-open")
+  .description(
+    "Start a learning session and return due cards and relevant tokens (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--task <task>", "Task description for the session")
+  .option(
+    "--context <context>",
+    "Execution context: shell | ui | reallife",
+    "shell",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        const result = await handleSessionOpen(db, {
+          user: userId,
+          task: opts.task,
+          context: opts.context,
+        });
         jsonOut(result);
       } catch (err) {
         jsonError((err as Error).message);
