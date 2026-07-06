@@ -1,6 +1,6 @@
 # MCP as the Canonical Agent Transport (and the Surface Topology Around It)
 
-**Status:** Proposed
+**Status:** Partially implemented (action items 1–5 shipped in v0.9.0; 6–7 open)
 **Date:** 2026-07-06
 **Deciders:** Thomas (project owner)
 **Related:**

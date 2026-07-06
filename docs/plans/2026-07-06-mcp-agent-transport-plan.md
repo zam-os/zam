@@ -20,7 +20,7 @@ line numbers), trust the code and keep the plan's *intent*.
 - [x] Phase 4 — harness MCP configuration
 - [x] Phase 5 — skill and documentation migration
 - [x] Independent review and corrective pass (2026-07-06)
-- [ ] Final release steps (version, PR, release artifacts)
+- [x] Final release steps (version, PR, release artifacts) — v0.9.0
 
 ---
 
