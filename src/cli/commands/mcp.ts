@@ -243,10 +243,15 @@ export function createMcpServer(db: Database): McpServer {
           .string()
           .optional()
           .describe("Token ULID for a confirmed synthesis without a card yet"),
-        rating: z
-          .union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)])
+        rating: z.coerce
+          .number()
+          .int()
+          .min(1)
+          .max(4)
           .optional()
-          .describe("User FSRS rating; omit when doneBy is agent"),
+          .describe(
+            "User FSRS rating (1=Again, 2=Hard, 3=Good, 4=Easy); omit when doneBy is agent",
+          ),
         sessionId: z
           .string()
           .optional()
@@ -294,10 +299,15 @@ export function createMcpServer(db: Database): McpServer {
             "stop",
           ])
           .describe("The action type"),
-        rating: z
-          .union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)])
+        rating: z.coerce
+          .number()
+          .int()
+          .min(1)
+          .max(4)
           .optional()
-          .describe("Rating (required for rate)"),
+          .describe(
+            "Rating (1=Again, 2=Hard, 3=Good, 4=Easy; required for rate)",
+          ),
         concept: z
           .string()
           .optional()

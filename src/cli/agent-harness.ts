@@ -30,7 +30,8 @@ export type AgentHarnessId =
   | "opencode"
   | "cursor"
   | "copilot"
-  | "antigravity";
+  | "antigravity"
+  | "goose";
 
 export interface AgentHarness {
   id: AgentHarnessId;
@@ -71,6 +72,7 @@ export const AGENT_HARNESSES: AgentHarness[] = [
     kind: "app",
     command: "antigravity",
   },
+  { id: "goose", label: "goose", kind: "cli", command: "goose" },
 ];
 
 export function getHarness(id: string): AgentHarness | undefined {
@@ -179,7 +181,9 @@ export type ConnectHarnessId =
   | "claude-code"
   | "antigravity"
   | "codex"
-  | "opencode";
+  | "opencode"
+  | "goose"
+  | "copilot";
 
 interface McpJsonConfig {
   mcpServers?: Record<string, unknown>;
@@ -323,6 +327,67 @@ approval_mode = "prompt"
 `;
       content = existingStr ? `${existingStr.trimEnd()}\n${block}` : block;
     }
+  } else if (harnessId === "goose") {
+    targetPath = join(opts.home, ".config", "goose", "config.yaml");
+    hint =
+      "goose will load the 'zam' extension on next session start. Run 'goose configure' to manage extensions.";
+    let existingStr = "";
+    if (exists(targetPath)) {
+      existingStr = read(targetPath);
+    }
+    // Check if already configured
+    if (existingStr.includes("zam:") && existingStr.includes("zam mcp")) {
+      alreadyConfigured = true;
+      content = existingStr;
+    } else {
+      // Build the extension block in YAML
+      const extensionBlock = `
+extensions:
+  zam:
+    name: ZAM
+    cmd: ${opts.zamPath}
+    args:
+      - mcp
+    enabled: true
+    type: stdio
+    timeout: 300
+    description: Symbiotic learning agent with spaced repetition
+`;
+      // If there's existing content, try to merge
+      if (existingStr) {
+        // Check if extensions key exists
+        if (existingStr.includes("extensions:")) {
+          // Append zam under existing extensions
+          content =
+            existingStr.trimEnd() +
+            "\n  zam:\n    name: ZAM\n    cmd: " +
+            opts.zamPath +
+            "\n    args:\n      - mcp\n    enabled: true\n    type: stdio\n    timeout: 300\n    description: Symbiotic learning agent with spaced repetition\n";
+        } else {
+          content = existingStr.trimEnd() + extensionBlock;
+        }
+      } else {
+        content = extensionBlock.trimStart();
+      }
+    }
+  } else if (harnessId === "copilot") {
+    targetPath = join(opts.home, ".copilot", "mcp-config.json");
+    hint =
+      "GitHub Copilot CLI will load the 'zam' MCP server on next session. Use '/mcp show' in Copilot CLI to verify.";
+    let existing: McpJsonConfig = {};
+    if (exists(targetPath)) {
+      existing = parseMcpJsonConfig(targetPath, read(targetPath));
+    }
+    if (!existing.mcpServers) {
+      existing.mcpServers = {};
+    }
+    existing.mcpServers.zam = {
+      type: "local",
+      command: opts.zamPath,
+      args: ["mcp"],
+      tools: ["*"],
+    };
+    content = JSON.stringify(existing, null, 2);
   }
 
   return {
