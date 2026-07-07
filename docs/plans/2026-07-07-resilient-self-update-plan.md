@@ -626,11 +626,12 @@ export default defineConfig([
 npm run build
 node dist/cli/index.js --version                      # expect: 0.9.0
 node dist/cli/index.js --help | grep -c "mcp"          # expect: >= 1
-grep -c "@modelcontextprotocol" dist/cli/app.js        # expect: 0
+grep -c "@modelcontextprotocol" dist/cli/app.js        # expect: 1 (the stub comment only — no code)
+grep -c "McpServer" dist/cli/app.js                    # expect: 0 (no SDK code in the eager bundle)
 grep -c "@modelcontextprotocol" dist/cli/commands/mcp.js  # expect: >= 1
 ```
 
-If `grep` on `dist/cli/app.js` is nonzero, the dynamic import got inlined — re-check the `external: ["./commands/mcp.js"]` entry.
+(The stub's mandated comment itself names the SDK package, so a bare package-name grep on `app.js` hits exactly once. The binding check is the absence of SDK *code*: if `McpServer` appears in `dist/cli/app.js`, the dynamic import got inlined — re-check the `external: ["./commands/mcp.js"]` entry.)
 
 - [ ] **Step 8: Run the full suite (mcp spawn test covers the lazy path)**
 
@@ -847,7 +848,9 @@ Insert between the `npm run build` block and the `zam setup --force` block:
 ```bash
 npm run build
 node dist/cli/index.js update check --latest 99.0.0
-# expect step list to include "Verify the rebuilt CLI launches"
+# expect: update-available report with the legacy "Run: git pull && npm install && npm run build" line
+# (the planUpdate step-list preview renders only in the interactive `zam update` path;
+#  the smoke-test step's presence and order is kernel-tested in tests/kernel/update-check.test.ts)
 node dist/cli/index.js --version   # expect: 0.9.0 (smoke helper's own target works)
 ```
 
@@ -945,4 +948,4 @@ ZAM_BOOTSTRAP_HEALED=1 node dist/cli/index.js --version; echo "exit=$?"
 mv node_modules/commander.hidden node_modules/commander
 ```
 
-- [ ] **Update preview:** `node dist/cli/index.js update check --latest 99.0.0` lists "Verify the rebuilt CLI launches".
+- [ ] **Update plan contract:** the `smoke-test` step's presence, order, and label are kernel-tested (`tests/kernel/update-check.test.ts`); the interactive `zam update` preview prints `planUpdate` labels mechanically. Note: `update check` renders the legacy command string, not the step list — teaching it `planUpdate` parity is a possible follow-up outside this increment.
