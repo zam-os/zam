@@ -147,6 +147,7 @@ export type UpdateStepKind =
   | "git-pull"
   | "npm-install"
   | "npm-build"
+  | "smoke-test"
   | "distribute-skills"
   | "run-command"
   | "self-update";
@@ -174,6 +175,7 @@ export function planUpdate(decision: UpdateDecision): UpdateStep[] {
         { kind: "git-pull", label: "Pull the latest source" },
         { kind: "npm-install", label: "Install dependencies" },
         { kind: "npm-build", label: "Rebuild the CLI" },
+        { kind: "smoke-test", label: "Verify the rebuilt CLI launches" },
         {
           kind: "distribute-skills",
           label: "Refresh skill files (zam setup --force)",

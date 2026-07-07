@@ -1,75 +1,82 @@
-import { readFileSync } from "node:fs";
+/**
+ * CLI entry — a bootstrap that stays loadable even when node_modules or the
+ * build is broken (ADR 2026-07-07). The real program lives in ./app.js; this
+ * bundle depends only on Node builtins. Load failures are classified and, on
+ * a developer checkout, healed automatically (opt out: ZAM_NO_AUTO_HEAL=1).
+ */
+import { spawnSync } from "node:child_process";
+import { existsSync, readFileSync } from "node:fs";
+import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { Command } from "commander";
-import { agentCommand } from "./commands/agent.js";
-import { bridgeCommand } from "./commands/bridge.js";
-import { cardCommand } from "./commands/card.js";
-import { connectorCommand } from "./commands/connector.js";
-import { doctorCommand } from "./commands/doctor.js";
-import { gitSyncCommand } from "./commands/git-sync.js";
-import { goalCommand } from "./commands/goal.js";
-import { initCommand } from "./commands/init.js";
-import { knowledgeContextCommand } from "./commands/knowledge-context.js";
-import { learnCommand } from "./commands/learn.js";
-import { mcpCommand } from "./commands/mcp.js";
-import { monitorCommand } from "./commands/monitor.js";
-import { observerCommand } from "./commands/observer.js";
-import { profileCommand } from "./commands/profile.js";
-import { providerCommand } from "./commands/provider.js";
-import { reviewCommand } from "./commands/review.js";
-import { sessionCommand } from "./commands/session.js";
-import { settingsCommand } from "./commands/settings.js";
-import { setupCommand } from "./commands/setup.js";
-import { skillCommand } from "./commands/skill.js";
-import { snapshotCommand } from "./commands/snapshot.js";
-import { statsCommand } from "./commands/stats.js";
-import { tokenCommand } from "./commands/token.js";
-import { uiCommand } from "./commands/ui.js";
-import { updateCommand } from "./commands/update.js";
-import { whoamiCommand } from "./commands/whoami.js";
-import { workspaceCommand } from "./commands/workspace.js";
+import {
+  classifyLoadError,
+  planRecovery,
+  readInstallChannel,
+} from "./bootstrap/logic.js";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const pkg = JSON.parse(
-  readFileSync(join(__dirname, "..", "..", "package.json"), "utf-8"),
-) as { version: string };
+/** Nearest ancestor holding package.json — the checkout or bundle root. */
+function findRepoRoot(): string | null {
+  let dir = dirname(fileURLToPath(import.meta.url));
+  for (;;) {
+    if (existsSync(join(dir, "package.json"))) return dir;
+    const parent = dirname(dir);
+    if (parent === dir) return null;
+    dir = parent;
+  }
+}
 
-const program = new Command();
+function runHealCommand(cmd: string[], cwd: string): boolean {
+  const res = spawnSync(cmd[0], cmd.slice(1), {
+    cwd,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "pipe"],
+    // npm is npm.cmd on Windows, so child processes need a shell there.
+    shell: process.platform === "win32",
+  });
+  // Heal output belongs on stderr: `zam mcp` must keep stdout protocol-clean.
+  if (res.stdout) process.stderr.write(res.stdout);
+  if (res.stderr) process.stderr.write(res.stderr);
+  return res.status === 0;
+}
 
-program
-  .name("zam")
-  .description(
-    "The Symbiotic Learning Kernel: Elevating Human Intelligence through AI Collaboration.",
-  )
-  .version(pkg.version);
+try {
+  await import("./app.js");
+} catch (err) {
+  const classified = classifyLoadError(err);
+  const repoRoot = findRepoRoot();
+  const plan = planRecovery(classified, {
+    channel: readInstallChannel(
+      // Honor the repo-standard config override, mirroring the kernel's
+      // defaultConfigPath() (install-config.ts) so bootstrap and kernel can
+      // never disagree about the install channel.
+      process.env.ZAM_CONFIG_PATH || join(homedir(), ".zam", "config.json"),
+      (p) => readFileSync(p, "utf-8"),
+    ),
+    repoRoot,
+    hasGit: repoRoot !== null && existsSync(join(repoRoot, ".git")),
+    healedFlag: process.env.ZAM_BOOTSTRAP_HEALED === "1",
+    noAutoHeal: process.env.ZAM_NO_AUTO_HEAL === "1",
+  });
 
-program.addCommand(initCommand);
-program.addCommand(setupCommand);
-program.addCommand(tokenCommand);
-program.addCommand(knowledgeContextCommand);
-program.addCommand(doctorCommand);
-program.addCommand(cardCommand);
-program.addCommand(sessionCommand);
-program.addCommand(statsCommand);
-program.addCommand(reviewCommand);
-program.addCommand(learnCommand);
-program.addCommand(uiCommand);
-program.addCommand(bridgeCommand);
-program.addCommand(mcpCommand);
-program.addCommand(skillCommand);
-program.addCommand(monitorCommand);
-program.addCommand(observerCommand);
-program.addCommand(settingsCommand);
-program.addCommand(whoamiCommand);
-program.addCommand(connectorCommand);
-program.addCommand(providerCommand);
-program.addCommand(snapshotCommand);
-program.addCommand(profileCommand);
-program.addCommand(updateCommand);
-program.addCommand(agentCommand);
-program.addCommand(goalCommand);
-program.addCommand(gitSyncCommand);
-program.addCommand(workspaceCommand);
+  // Ordinary command errors surface through the same import() promise —
+  // never mislabel them as install problems.
+  if (plan.mode === "passthrough") throw err;
 
-await program.parseAsync();
+  process.stderr.write(`${plan.message}\n`);
+
+  if (plan.mode === "auto-heal" && repoRoot) {
+    const healed = plan.commands.every((cmd) => runHealCommand(cmd, repoRoot));
+    if (healed) {
+      const rerun = spawnSync(process.execPath, process.argv.slice(1), {
+        stdio: "inherit",
+        env: { ...process.env, ZAM_BOOTSTRAP_HEALED: "1" },
+      });
+      process.exit(rerun.status ?? 1);
+    }
+    process.stderr.write(
+      "zam: self-heal failed — try `npm ci && npm run build` in the checkout, and check your Node version.\n",
+    );
+  }
+  process.exit(1);
+}

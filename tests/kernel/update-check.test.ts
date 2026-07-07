@@ -114,11 +114,12 @@ describe("planUpdate", () => {
     expect(planUpdate(d)).toEqual([]);
   });
 
-  it("plans pull → install → build → skills for a developer install", () => {
+  it("plans pull → install → build → smoke-test → skills for a developer install", () => {
     expect(planUpdate(upgrade("developer")).map((s) => s.kind)).toEqual([
       "git-pull",
       "npm-install",
       "npm-build",
+      "smoke-test",
       "distribute-skills",
     ]);
   });
