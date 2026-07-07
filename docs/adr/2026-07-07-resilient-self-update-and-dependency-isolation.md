@@ -1,6 +1,6 @@
 # Resilient Self-Update and Dependency-Failure Isolation
 
-**Status:** Accepted (2026-07-07 — Fable 5 review incorporated, open decisions resolved)
+**Status:** Implemented (2026-07-07 — Fable 5 review incorporated, open decisions resolved)
 **Deciders:** Thomas (project owner)
 **Relates to:** [2026-06-13b Approachable Setup and Self-Update](2026-06-13b-approachable-setup-and-self-update.md) · [2026-07-06a MCP as the Canonical Agent Transport](2026-07-06a-mcp-agent-transport-and-surfaces.md)
 

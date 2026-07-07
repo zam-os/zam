@@ -51,6 +51,7 @@ Bridge responses are always JSON, including errors. Treat `protocol.ts` types as
 ## Key conventions
 
 - **Agent transport**: MCP transport (`zam mcp`) is the preferred agent connection method; `zam agent connect <harness>` handles configuration. `zam bridge` remains the fallback.
+- **Optional-surface deps stay lazy**: heavy or optional integrations (the MCP transport in `src/cli/commands/mcp.ts`) must not enter the CLI's eager module graph — register a stub command that `await import()`s the implementation, built as its own dist output. `src/cli/index.ts` is a builtins-only bootstrap that classifies load failures and self-heals developer checkouts (`ZAM_NO_AUTO_HEAL=1` opts out); see ADR 2026-07-07.
 - **Kernel vs. CLI boundary**: New learning logic goes in the kernel, not in CLI commands.
 - **Token vs. Card distinction**: `zam token register` creates only a token. `zam bridge add-token` also creates a user card. If a concept should appear in a user's queue, ensure a card is created.
 - **IDs are ULIDs** throughout — use `ulid()`, not UUIDs or numeric IDs.
