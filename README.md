@@ -1,183 +1,138 @@
 # ZAM (Zusammen) 🤝
 
-**The Symbiotic Learning Kernel: Elevating Human Intelligence through AI Collaboration.**
+**Do real work with your AI — and keep the knowledge instead of losing it.**
 
 > *ZAM is Bavarian for "together".*
 
-ZAM is an open-source framework that creates a deep symbiosis between humans and AI. While conventional AI often renders people passive, ZAM harnesses technological progress to deepen human knowledge, prevent cognitive decline caused by automation, and organically connect communities.
+ZAM turns everyday work with your AI agent into active-recall practice, so growing
+automation doesn't mean growing dependence. You get the task done **and** you get
+sharper — the two stop being a trade-off.
+
+Don't just automate. **Elevate.**
 
 ---
 
-## 🚀 Phase 1: Individual Symbiosis *(Current Focus)*
+## Who ZAM is for
 
-Phase 1 centers on the interaction between a person and their personal agent. The goal: solve tasks efficiently while actively acquiring and retaining valuable knowledge.
-
-> **"Don't just automate — Elevate."**
-
-When the AI takes on tasks, the ZAM Learning Kernel ensures the human stays in control and in the loop:
-
-- **Knowledge Retention** — Through Active Recall and Spaced Repetition, ZAM reminds you of the domain knowledge you need for your work, so that growing automation doesn't mean growing dependence.
-- **Competence Transfer** — While ZAM handles the routine (emails, contact lists, scheduling), your agent simultaneously teaches you concepts from modern project management, volunteer coordination, or whatever domain you're working in.
-- **Time Reinvestment** — The time you gain is not consumed by passivity, but reinvested in learning new, more challenging skills.
-
-### Example: Organizing a Parish Festival
-
-| Step | What ZAM does | What you do |
-|---|---|---|
-| **Planning** | Structures the agenda and timeline | Define the vision and priorities |
-| **Learning** | Teaches you effective PR and volunteer motivation | Engage with the concepts |
-| **Automation** | Drafts invitations, manages documents | Focus on human connection |
+Anyone who works with an AI agent and doesn't want to get rusty as it takes on more —
+whether you're learning the field (say, a *Fachinformatiker* apprentice building durable
+competence), sharpening your craft on the job, or simply keen to keep growing while you
+automate. If you're pairing with Claude, Codex, Copilot & co. anyway, ZAM makes that time
+compound into lasting skill.
 
 ---
 
-## 🌐 Phase 2: The Connected Community *(Outlook)*
+## What ZAM does today
 
-Once your personal agent knows your knowledge level, interests, and growth goals, ZAM expands to the community layer.
-
-### Agent-to-Agent Marketplace
-
-Agents communicate with each other to match community needs and offerings:
-
-1. **Need Broadcasting** — Your agent signals: *"We're looking for a cook and a musician for the parish festival."*
-2. **Growth-Aware Matching** — Other agents scan their people's profiles — not just for availability, but for learning potential:
-   > *"My person wants to practice cooking at scale (learning goal) — the festival is the perfect opportunity for active knowledge application."*
-3. **Accredited Communities** — Matching is prioritized within trusted circles (e.g. your own parish) to foster genuine human encounters.
-
----
-
-## 🛠 Technical Architecture: The Learning Kernel
-
-ZAM is designed as an **AI-agnostic kernel** — a CLI tool that integrates seamlessly into existing workflows:
-
-- **CLI Integration** — Compatible with `Claude Code`, `Codex`, `Copilot CLI`, and `Gemini CLI`.
-- **Modularity** — The system can be forked for region- or culture-specific adaptations (*Social Forking*).
-
-### Two Repositories, One System
-
-ZAM is split into two concerns:
-
-- **Core** ([`zam-os/zam`](https://github.com/zam-os/zam)) — The AI-agnostic learning kernel, CLI, bridge protocol, and system beliefs. Shared by everyone.
-- **Personal** (fork of [`zam-os/zam-personal`](templates/personal/)) — Your beliefs, your goals, your identity. You fork it, you own it.
-Get started: `zam whoami --set <your-id>`
+- **Rides along in your AI agent.** As you work a real task, ZAM breaks it into small
+  knowledge concepts, notices which ones you're due to revisit, and weaves them into
+  the session.
+- **Watches instead of quizzing.** Do a step well on your own and ZAM quietly marks it
+  learned — no interruption. It only asks when it can't tell from your work. The best
+  session is one you barely notice.
+- **Remembers what you're forgetting.** Every concept is scheduled with FSRS-5 spaced
+  repetition over a prerequisite graph, so ZAM resurfaces things right before they'd slip.
+- **Stays on your machine.** One local SQLite database (`~/.zam/zam.db`), shared by the
+  agent and the Desktop Studio. Review works offline; local LLMs (Ollama, FastFlowLM)
+  are supported.
 
 ---
 
-## 🤖 Agent & MCP Integration
+## Two places to use ZAM
 
-ZAM integrates directly with your coding agents (such as Claude Code, Codex, Antigravity, or OpenCode) via the **Model Context Protocol (MCP)**. This lets your agent drive ZAM sessions automatically using tool calls.
+Your **agent app** is the main workbench. **ZAM Desktop Studio** is for setup, content,
+and focused review. They share the same local database, so progress in one shows up in
+the other.
 
-To connect your agent harness:
-```bash
-# Connect to your agent client (claude-code, antigravity, codex, or opencode)
-zam agent connect claude-code
-```
-This writes the necessary MCP server config. Your harness may still ask you to approve the server or its tools. You can also print the config changes:
-```bash
-zam agent connect claude-code --print
-```
+### 1. In your AI agent — *the workbench*
 
-Once connected, your agent will use MCP tools (`zam_status`, `zam_get_reviews`, `zam_session_start`, etc.) with the bridge CLI as a fallback.
+This is where the real learning happens: turning actual tasks into practice, observing
+your work, and guiding you step by step. ZAM connects to the agent apps you already use:
 
----
+| Agent | Connect with |
+|---|---|
+| **Claude** (Code / desktop app) | `zam agent connect claude-code` |
+| **Codex** | `zam agent connect codex` |
+| **Antigravity** | `zam agent connect antigravity` |
+| **OpenCode** | `zam agent connect opencode` |
+| **GitHub Copilot** | `zam agent connect copilot` |
+| **Goose** | `zam agent connect goose` |
 
-## 🧹 Review maintenance
+One command writes the MCP config (your agent may ask you to approve the server). Then
+just type **`/zam`** — or say "let's do this together with ZAM" — and work normally.
 
-Review sessions are not limited to `1`-`4` recall ratings anymore. When a card is wrong, obsolete, or unwanted, the review flow can now:
+### 2. ZAM Desktop Studio — *setup, content & graph*
 
-- edit token fields inline
-- deprecate the token
-- hard-delete the token after an impact preview + confirmation
-- delete only your personal card while keeping the token
+A native app (`zam ui`) for the things a chat window isn't good at:
 
-The same maintenance actions are also available from the CLI:
-
-- `zam token edit --slug <slug> ...`
-- `zam token delete --slug <slug>` for preview, then `--force` to delete
-- `zam card delete --user <id> --token <slug>`
-- `zam bridge review-action ...` for AI clients
-
-Token deletion is global. Card deletion is per-user.
-
----
-
-## 🔄 Keeping ZAM up to date
-
-Check whether a newer release is out, then update — ZAM picks the right mechanism for how this copy was installed:
+- **Easier configuration** — pick your language and local AI model in a settings panel,
+  not a config file.
+- **Import your own material** — paste notes, point ZAM at a source, or walk a structured
+  curriculum; a guided wizard turns any of them into review cards.
+- **Edit your content** — a real editor for concepts, questions, and prerequisites.
+- **See your knowledge graph** — your concepts as a living map of what builds on what.
+- **Review** — run focused active-recall rounds right in the app.
 
 ```bash
-zam update          # apply the latest release (asks first; -y to skip)
-zam update check    # only report whether an update is available
+zam ui            # launch the Studio
+zam ui --build    # one-time: build a native installer (needs Rust)
 ```
 
-What `zam update` does per install channel:
-
-- **Developer** (source checkout, the default for contributors) — pulls the latest source, reinstalls dependencies, rebuilds the CLI, and refreshes the skill files (`zam setup --force`) in the current instance. Restart your agent client (e.g. Claude Code) afterwards to load the refreshed `/zam` skill.
-- **winget / Homebrew** — defers to `winget upgrade` / `brew upgrade`, so a package-managed install is never self-replaced.
-- **Direct download / desktop** — applies a signed in-place update through ZAM Desktop.
-
-`zam update` refuses to touch a developer checkout with uncommitted changes; commit or stash them first, or pass `--force`. See the [“Approachable Setup and Self-Update” ADR](docs/adr/2026-06-13b-approachable-setup-and-self-update.md) for the design.
+> **Review works in both places.** Observation and guided task-work happen inside your agent.
 
 ---
 
-## 🏛 Vision: A Flourishing Future
+## Quickstart
 
-ZAM is a tool for the transition to a world where care and shared growth are the common currency.
-
-- **Resource Stewardship** — Agents help manage community finances (e.g. a 10% solidarity model) and optimize collective purchasing.
-- **Human Proximity** — Technology steps back to enable genuine person-to-person exchange.
-- **Global Scalability** — Supported by institutions like the global church, ZAM aims to become a standard for a just, educated, and caring world community.
-
----
-
-## 🖥 ZAM Desktop Studio
-
-ZAM now includes a cross-platform desktop application inside the [`desktop/`](desktop/) directory. Built with **Tauri v2**, **Vite**, **TypeScript**, and **Vanilla CSS**, it provides a premium dark-mode dashboard and active-recall learning studio that securely shares the same SQLite database as the CLI.
-
-### How to Run on Windows, macOS, or Linux:
-
-1. **Build the CLI Bridge**:
-   Ensure you have compiled the latest CLI code in the repository root:
-   ```bash
-   npm install
-   npm run build
-   ```
-
-2. **Launch the Desktop Application**:
-   Navigate to the `desktop/` directory, install dependencies, and run Tauri:
-   ```bash
-   cd desktop
-   npm install
-   npm run tauri dev
-   ```
-
-This will compile the secure Rust backend, spin up the Vite development server, and open the native desktop window. For detailed settings, key bindings, and local AI (Ollama/FastFlowLM) configurations, see the [Desktop README](desktop/README.md).
-
-### 📦 Automated GitHub Releases & Native Installers
-
-We have integrated a **GitHub Actions CI/CD workflow** that currently compiles and packages native installers for Windows (`.msi`/`.exe`) and Linux (`.deb`/`.rpm`) when a new git tag is pushed. AppImage packaging is temporarily deferred because `linuxdeploy` cannot process the bundled native `libsql` module reliably. macOS builds remain supported from source, but signed/notarized macOS release artifacts are deferred until the Apple signing account is available.
-
-To release a new version (e.g., `v0.1.0`):
+**1. Get ZAM.** Grab an installer from [Releases](https://github.com/zam-os/zam/releases),
+or build from source:
 
 ```bash
-# Tag the current commit
-git tag v0.1.0
-
-# Push the tag to GitHub
-git push origin v0.1.0
+git clone https://github.com/zam-os/zam.git && cd zam
+npm install && npm run build
 ```
 
-This automatically spins up the Windows and Linux compiler environments on GitHub and creates a drafted GitHub Release containing their native redistributables.
+**2. Set up — one guided wizard:**
+
+```bash
+zam init
+```
+
+`zam init` picks a workspace, detects your hardware, offers to install a local AI runner
+(Ollama or FastFlowLM), initializes your database, and wires the `/zam` skill.
+
+**3. Connect your agent:**
+
+```bash
+zam agent connect claude-code   # or codex · antigravity · opencode · copilot · goose
+```
+
+**4. Learn while you work.** Open your agent, start a real task, and type **`/zam`**. It
+checks what's due, plans the concepts behind the task, hands you the work, watches how it
+goes, and updates your schedule.
+
+Prefer a gentler start? Run `zam ui`, import your training material, and do a review round
+in the Studio.
 
 ---
 
-## 📖 Documentation
+## How it works
 
-- [Deutsche Version](README.de.md)
-- [Contributing Guide](CONTRIBUTING.md)
-- [Architecture](docs/ARCHITECTURE.md)
+- **Token** — one atomic concept worth remembering, tagged with a Bloom level (1 remember → 5 create).
+- **Card** — your personal spaced-repetition state for a token (FSRS-5).
+- **Prerequisites** — a graph of what must be understood first; ZAM won't quiz a concept
+  whose foundations you've just forgotten.
+- **Sessions** — every work/learning episode is logged, so ratings come from real evidence.
+
+The learning engine is an **AI-agnostic kernel** with zero LLM dependencies; the agent
+layer just drives it. See [Architecture](docs/ARCHITECTURE.md).
 
 ---
 
-## 📄 License
+## Documentation
 
-Apache 2.0 License — see [LICENSE](LICENSE) for details.
+- [Usage & maintenance](docs/USAGE.md) · [Contributing](CONTRIBUTING.md) · [Architecture](docs/ARCHITECTURE.md)
+
+## License
+
+Apache 2.0 — see [LICENSE](LICENSE).
