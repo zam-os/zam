@@ -191,6 +191,25 @@ function runNpm(args: string[], cwd: string): number {
   return res.status ?? 1;
 }
 
+/** Run the freshly built CLI once to prove its module graph loads. */
+function smokeTestBuild(src: string): { ok: boolean; output: string } {
+  const res = spawnSync(
+    process.execPath,
+    [join(src, "dist", "cli", "index.js"), "--version"],
+    {
+      cwd: src,
+      encoding: "utf8",
+      // The smoke test measures the update's own result — don't let the
+      // bootstrap self-heal paper over a broken install/build (ADR 2026-07-07).
+      env: { ...process.env, ZAM_NO_AUTO_HEAL: "1" },
+    },
+  );
+  return {
+    ok: res.status === 0,
+    output: `${res.stdout ?? ""}${res.stderr ?? ""}`.trim(),
+  };
+}
+
 /** Run a package-manager command (winget/brew) through the shell. */
 function runShell(command: string): boolean {
   const res = spawnSync(command, { stdio: "inherit", shell: true });
@@ -246,6 +265,26 @@ function applyDeveloperUpdate(force: boolean): void {
   if (runNpm(["run", "build"], src) !== 0) {
     console.error(`${C.red}✗${C.reset} Build failed.`);
     process.exit(1);
+  }
+
+  console.log(`${C.dim}→ smoke test (zam --version)${C.reset}`);
+  let smoke = smokeTestBuild(src);
+  if (!smoke.ok) {
+    console.warn(
+      `${C.yellow}⚠${C.reset} The rebuilt CLI failed to launch — retrying with a clean install (${C.cyan}npm ci${C.reset}).`,
+    );
+    const cleanRoomOk =
+      runNpm(["ci"], src) === 0 && runNpm(["run", "build"], src) === 0;
+    if (cleanRoomOk) {
+      smoke = smokeTestBuild(src);
+    }
+    if (!smoke.ok) {
+      console.error(
+        `${C.red}✗${C.reset} The updated CLI still fails to launch:\n${smoke.output}\n` +
+          `Fix it manually in ${src} (try \`npm ci && npm run build\`, and check your Node version), then re-run ${C.cyan}zam update${C.reset}.`,
+      );
+      process.exit(1);
+    }
   }
 
   console.log(`${C.dim}→ zam setup --force${C.reset}`);
