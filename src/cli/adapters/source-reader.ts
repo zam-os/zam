@@ -130,7 +130,7 @@ export async function readWebLink(url: string): Promise<string> {
         redirect: "manual",
         signal: controller.signal,
         headers: {
-          "User-Agent": "ZAM-Content-Studio/0.9.0",
+          "User-Agent": "ZAM-Content-Studio/0.9.1",
         },
       });
 
