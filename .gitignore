@@ -59,6 +59,9 @@ scratch/
 .claude/worktrees/
 .antigravitycli/
 
+# Per-machine Claude Code MCP config (generate with: zam agent connect claude-code)
+.mcp.json
+
 # Tauri / Rust build output
 desktop/src-tauri/target/
 desktop/src-tauri/resources/zam-cli/
