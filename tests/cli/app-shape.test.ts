@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -13,6 +13,17 @@ describe("CLI module-graph shape", () => {
     const app = read("src", "cli", "app.ts");
     expect(app).not.toMatch(/^import .*commands\/mcp\.js/m);
     expect(app).toContain('import("./commands/mcp.js")');
+  });
+
+  it("bootstrap logic modules are import-free (they compile into the bootstrap bundle)", () => {
+    const dir = join(process.cwd(), "src", "cli", "bootstrap");
+    for (const file of readdirSync(dir)) {
+      const source = readFileSync(join(dir, file), "utf-8");
+      expect(
+        source,
+        `${file} must not import anything — one kernel import here would drag better-sqlite3 into the bootstrap bundle and defeat "always loads"`,
+      ).not.toMatch(/^\s*import\s/m);
+    }
   });
 
   it("the bootstrap imports only Node builtins, ./app.js, and bootstrap logic", () => {

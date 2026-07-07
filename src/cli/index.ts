@@ -46,8 +46,12 @@ try {
   const classified = classifyLoadError(err);
   const repoRoot = findRepoRoot();
   const plan = planRecovery(classified, {
-    channel: readInstallChannel(join(homedir(), ".zam", "config.json"), (p) =>
-      readFileSync(p, "utf-8"),
+    channel: readInstallChannel(
+      // Honor the repo-standard config override, mirroring the kernel's
+      // defaultConfigPath() (install-config.ts) so bootstrap and kernel can
+      // never disagree about the install channel.
+      process.env.ZAM_CONFIG_PATH || join(homedir(), ".zam", "config.json"),
+      (p) => readFileSync(p, "utf-8"),
     ),
     repoRoot,
     hasGit: repoRoot !== null && existsSync(join(repoRoot, ".git")),

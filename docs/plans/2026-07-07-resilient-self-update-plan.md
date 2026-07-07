@@ -627,7 +627,7 @@ npm run build
 node dist/cli/index.js --version                      # expect: 0.9.0
 node dist/cli/index.js --help | grep -c "mcp"          # expect: >= 1
 grep -c "@modelcontextprotocol" dist/cli/app.js        # expect: 1 (the stub comment only — no code)
-grep -c "McpServer" dist/cli/app.js                    # expect: 0 (no SDK code in the eager bundle)
+grep -c 'from "@modelcontextprotocol/sdk' dist/cli/app.js   # expect: 0 (no SDK imports in the eager bundle; NB "McpServer" alone false-positives on the stub's runMcpServer)
 grep -c "@modelcontextprotocol" dist/cli/commands/mcp.js  # expect: >= 1
 ```
 
