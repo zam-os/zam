@@ -30,7 +30,8 @@ export type AgentHarnessId =
   | "opencode"
   | "cursor"
   | "copilot"
-  | "antigravity";
+  | "antigravity"
+  | "goose";
 
 export interface AgentHarness {
   id: AgentHarnessId;
@@ -71,6 +72,7 @@ export const AGENT_HARNESSES: AgentHarness[] = [
     kind: "app",
     command: "antigravity",
   },
+  { id: "goose", label: "goose", kind: "cli", command: "goose" },
 ];
 
 export function getHarness(id: string): AgentHarness | undefined {
@@ -179,7 +181,9 @@ export type ConnectHarnessId =
   | "claude-code"
   | "antigravity"
   | "codex"
-  | "opencode";
+  | "opencode"
+  | "goose"
+  | "copilot";
 
 interface McpJsonConfig {
   mcpServers?: Record<string, unknown>;
@@ -323,6 +327,63 @@ approval_mode = "prompt"
 `;
       content = existingStr ? `${existingStr.trimEnd()}\n${block}` : block;
     }
+  } else if (harnessId === "goose") {
+    targetPath = join(opts.home, ".config", "goose", "config.yaml");
+    hint =
+      "goose will load the 'zam' extension on next session start. Run 'goose configure' to manage extensions.";
+    // The `zam` entry, indented for placement directly under the `extensions:` map.
+    const zamExtension = [
+      "  zam:",
+      "    name: ZAM",
+      `    cmd: ${opts.zamPath}`,
+      "    args:",
+      "      - mcp",
+      "    enabled: true",
+      "    type: stdio",
+      "    timeout: 300",
+      "    description: Symbiotic learning agent with spaced repetition",
+    ].join("\n");
+    let existingStr = "";
+    if (exists(targetPath)) {
+      existingStr = read(targetPath);
+    }
+    if (/^\s+zam:\s*$/m.test(existingStr) && existingStr.includes("- mcp")) {
+      // An indented `zam:` extension wired to `zam mcp` is already present.
+      alreadyConfigured = true;
+      content = existingStr;
+    } else if (/^extensions:[ \t]*$/m.test(existingStr)) {
+      // Insert as the first child of the existing `extensions:` map. Appending at
+      // end-of-file is wrong: goose configs carry top-level keys (providers, model,
+      // …) after `extensions:`, so an appended block lands outside the map — or
+      // under a trailing scalar — producing YAML that goose silently drops.
+      content = existingStr.replace(
+        /^extensions:[ \t]*$/m,
+        (line) => `${line}\n${zamExtension}`,
+      );
+    } else if (existingStr.trim()) {
+      // Config exists but has no `extensions:` map yet — add one.
+      content = `${existingStr.trimEnd()}\nextensions:\n${zamExtension}\n`;
+    } else {
+      content = `extensions:\n${zamExtension}\n`;
+    }
+  } else if (harnessId === "copilot") {
+    targetPath = join(opts.home, ".copilot", "mcp-config.json");
+    hint =
+      "GitHub Copilot CLI will load the 'zam' MCP server on next session. Use '/mcp show' in Copilot CLI to verify.";
+    let existing: McpJsonConfig = {};
+    if (exists(targetPath)) {
+      existing = parseMcpJsonConfig(targetPath, read(targetPath));
+    }
+    if (!existing.mcpServers) {
+      existing.mcpServers = {};
+    }
+    existing.mcpServers.zam = {
+      type: "local",
+      command: opts.zamPath,
+      args: ["mcp"],
+      tools: ["*"],
+    };
+    content = JSON.stringify(existing, null, 2);
   }
 
   return {

@@ -45,6 +45,8 @@ const CONNECT_HARNESSES: ConnectHarnessId[] = [
   "antigravity",
   "codex",
   "opencode",
+  "goose",
+  "copilot",
 ];
 
 function isConnectHarnessId(value: string): value is ConnectHarnessId {
@@ -197,7 +199,7 @@ const connectCmd = new Command("connect")
   .description("Configure the ZAM MCP server for an agent harness")
   .argument(
     "<harness>",
-    "Harness to connect: claude-code | antigravity | codex | opencode",
+    "Harness to connect: claude-code | antigravity | codex | opencode | goose | copilot",
   )
   .option(
     "--print",
