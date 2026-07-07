@@ -3,7 +3,6 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { Command } from "commander";
 import { z } from "zod";
 import type { Database, Rating, ReviewActionType } from "../../kernel/index.js";
 import { getSetting, openDatabase } from "../../kernel/index.js";
@@ -582,35 +581,33 @@ export function createMcpServer(db: Database): McpServer {
   return server;
 }
 
-export const mcpCommand = new Command("mcp")
-  .description("Launch the Model Context Protocol (MCP) server over Stdio")
-  .action(async () => {
-    // Rebind console.log to console.error immediately to prevent stdio transport corruption
-    console.log = console.error;
+export async function runMcpServer(): Promise<void> {
+  // Rebind console.log to console.error immediately to prevent stdio transport corruption
+  console.log = console.error;
 
-    const db = await openDatabase();
-    const server = createMcpServer(db);
+  const db = await openDatabase();
+  const server = createMcpServer(db);
 
-    let dbClosed = false;
-    async function cleanup() {
-      if (dbClosed) return;
-      dbClosed = true;
-      try {
-        await server.close();
-      } catch {}
-      try {
-        await db.close();
-      } catch {}
-      process.exit(0);
-    }
+  let dbClosed = false;
+  async function cleanup() {
+    if (dbClosed) return;
+    dbClosed = true;
+    try {
+      await server.close();
+    } catch {}
+    try {
+      await db.close();
+    } catch {}
+    process.exit(0);
+  }
 
-    process.on("SIGINT", cleanup);
-    process.on("SIGTERM", cleanup);
+  process.on("SIGINT", cleanup);
+  process.on("SIGTERM", cleanup);
 
-    const transport = new StdioServerTransport();
-    transport.onclose = () => {
-      cleanup();
-    };
+  const transport = new StdioServerTransport();
+  transport.onclose = () => {
+    cleanup();
+  };
 
-    await server.connect(transport);
-  });
+  await server.connect(transport);
+}
