@@ -268,6 +268,95 @@ describe("connectHarnessMcp", () => {
     expect(res.content).toBe(existing);
   });
 
+  it("goose fresh write creates a valid extensions map", () => {
+    const res = connectHarnessMcp("goose", mockDeps);
+    expect(res.path).toBe("/home/user/.config/goose/config.yaml");
+    expect(res.alreadyConfigured).toBe(false);
+    expect(res.content).toBe(
+      "extensions:\n" +
+        "  zam:\n" +
+        "    name: ZAM\n" +
+        "    cmd: /usr/local/bin/zam\n" +
+        "    args:\n" +
+        "      - mcp\n" +
+        "    enabled: true\n" +
+        "    type: stdio\n" +
+        "    timeout: 300\n" +
+        "    description: Symbiotic learning agent with spaced repetition\n",
+    );
+  });
+
+  it("goose inserts zam inside extensions when top-level keys follow it", () => {
+    // Regression: the merge must nest zam under `extensions:`, not append it at
+    // end-of-file where trailing top-level keys would push it out of the map.
+    mockFiles["/home/user/.config/goose/config.yaml"] =
+      "GOOSE_TELEMETRY_ENABLED: true\n" +
+      "extensions:\n" +
+      "  developer:\n" +
+      "    enabled: true\n" +
+      "    type: platform\n" +
+      "    name: developer\n" +
+      "active_provider: openrouter\n";
+    const res = connectHarnessMcp("goose", mockDeps);
+    expect(res.alreadyConfigured).toBe(false);
+    const lines = res.content.split("\n");
+    // zam is the first child of the extensions map...
+    expect(lines[lines.indexOf("extensions:") + 1]).toBe("  zam:");
+    // ...the sibling extension is preserved...
+    expect(res.content).toContain("  developer:");
+    // ...and the trailing top-level key stays top-level (not swallowed by zam).
+    expect(res.content).toContain("\nactive_provider: openrouter\n");
+  });
+
+  it("goose no-ops when a zam extension already runs zam mcp", () => {
+    const existing =
+      "extensions:\n" +
+      "  zam:\n" +
+      "    name: ZAM\n" +
+      "    cmd: /usr/local/bin/zam\n" +
+      "    args:\n" +
+      "      - mcp\n" +
+      "    enabled: true\n" +
+      "    type: stdio\n";
+    mockFiles["/home/user/.config/goose/config.yaml"] = existing;
+    const res = connectHarnessMcp("goose", mockDeps);
+    expect(res.alreadyConfigured).toBe(true);
+    expect(res.content).toBe(existing);
+  });
+
+  it("goose still installs when only an unrelated providers.zam entry exists", () => {
+    // A `zam:` key under `providers:` (no `- mcp`) must not be mistaken for the
+    // MCP extension being already configured.
+    mockFiles["/home/user/.config/goose/config.yaml"] =
+      "extensions:\n" +
+      "  developer:\n" +
+      "    enabled: true\n" +
+      "providers:\n" +
+      "  zam:\n" +
+      "    enabled: true\n" +
+      "    configured: false\n";
+    const res = connectHarnessMcp("goose", mockDeps);
+    expect(res.alreadyConfigured).toBe(false);
+    const lines = res.content.split("\n");
+    expect(lines[lines.indexOf("extensions:") + 1]).toBe("  zam:");
+  });
+
+  it("copilot fresh write", () => {
+    const res = connectHarnessMcp("copilot", mockDeps);
+    expect(res.path).toBe("/home/user/.copilot/mcp-config.json");
+    expect(res.alreadyConfigured).toBe(false);
+    expect(JSON.parse(res.content)).toEqual({
+      mcpServers: {
+        zam: {
+          type: "local",
+          command: "/usr/local/bin/zam",
+          args: ["mcp"],
+          tools: ["*"],
+        },
+      },
+    });
+  });
+
   it("refuses to overwrite malformed JSON configuration", () => {
     mockFiles["/work/.mcp.json"] = "{ definitely not JSON";
 

@@ -331,44 +331,40 @@ approval_mode = "prompt"
     targetPath = join(opts.home, ".config", "goose", "config.yaml");
     hint =
       "goose will load the 'zam' extension on next session start. Run 'goose configure' to manage extensions.";
+    // The `zam` entry, indented for placement directly under the `extensions:` map.
+    const zamExtension = [
+      "  zam:",
+      "    name: ZAM",
+      `    cmd: ${opts.zamPath}`,
+      "    args:",
+      "      - mcp",
+      "    enabled: true",
+      "    type: stdio",
+      "    timeout: 300",
+      "    description: Symbiotic learning agent with spaced repetition",
+    ].join("\n");
     let existingStr = "";
     if (exists(targetPath)) {
       existingStr = read(targetPath);
     }
-    // Check if already configured
-    if (existingStr.includes("zam:") && existingStr.includes("zam mcp")) {
+    if (/^\s+zam:\s*$/m.test(existingStr) && existingStr.includes("- mcp")) {
+      // An indented `zam:` extension wired to `zam mcp` is already present.
       alreadyConfigured = true;
       content = existingStr;
+    } else if (/^extensions:[ \t]*$/m.test(existingStr)) {
+      // Insert as the first child of the existing `extensions:` map. Appending at
+      // end-of-file is wrong: goose configs carry top-level keys (providers, model,
+      // …) after `extensions:`, so an appended block lands outside the map — or
+      // under a trailing scalar — producing YAML that goose silently drops.
+      content = existingStr.replace(
+        /^extensions:[ \t]*$/m,
+        (line) => `${line}\n${zamExtension}`,
+      );
+    } else if (existingStr.trim()) {
+      // Config exists but has no `extensions:` map yet — add one.
+      content = `${existingStr.trimEnd()}\nextensions:\n${zamExtension}\n`;
     } else {
-      // Build the extension block in YAML
-      const extensionBlock = `
-extensions:
-  zam:
-    name: ZAM
-    cmd: ${opts.zamPath}
-    args:
-      - mcp
-    enabled: true
-    type: stdio
-    timeout: 300
-    description: Symbiotic learning agent with spaced repetition
-`;
-      // If there's existing content, try to merge
-      if (existingStr) {
-        // Check if extensions key exists
-        if (existingStr.includes("extensions:")) {
-          // Append zam under existing extensions
-          content =
-            existingStr.trimEnd() +
-            "\n  zam:\n    name: ZAM\n    cmd: " +
-            opts.zamPath +
-            "\n    args:\n      - mcp\n    enabled: true\n    type: stdio\n    timeout: 300\n    description: Symbiotic learning agent with spaced repetition\n";
-        } else {
-          content = existingStr.trimEnd() + extensionBlock;
-        }
-      } else {
-        content = extensionBlock.trimStart();
-      }
+      content = `extensions:\n${zamExtension}\n`;
     }
   } else if (harnessId === "copilot") {
     targetPath = join(opts.home, ".copilot", "mcp-config.json");
