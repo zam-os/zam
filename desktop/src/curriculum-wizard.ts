@@ -11,9 +11,10 @@
  * page (all of its topics), not just the selected ones -- precise per-topic
  * text extraction is Phase 3. The topic step tells the learner this.
  */
+import { runBridge } from "./bridge-transport.js";
+import { t, tf } from "./i18n.js";
 import { escapeHtml } from "./learning-content.js";
 import { loadStudioData } from "./learning-content.js";
-import { runBridge, t, tf } from "./main.js";
 
 interface TaxonomyOption {
   id: string;

@@ -104,15 +104,18 @@ describe("desktop locale completeness", () => {
     "en",
     "de",
   ])("contains the Studio and curriculum-wizard keys in reference locale %s", (locale) => {
-    const mainSource = readFileSync(
-      join(process.cwd(), "desktop", "src", "main.ts"),
+    // TRANSLATIONS (en/de reference locales) lives in i18n.ts alongside
+    // TRANSLATION_PACKS as of the MCP-Apps Studio panel refactor (previously
+    // it was inline in main.ts).
+    const i18nSource = readFileSync(
+      join(process.cwd(), "desktop", "src", "i18n.ts"),
       "utf8",
     );
-    const start = mainSource.indexOf(`  ${locale}: {`);
+    const start = i18nSource.indexOf(`  ${locale}: {`);
     const endMarker = locale === "en" ? "\n  de: {" : "\n  // es, fr";
-    const localeSource = mainSource.slice(
+    const localeSource = i18nSource.slice(
       start,
-      mainSource.indexOf(endMarker, start),
+      i18nSource.indexOf(endMarker, start),
     );
 
     for (const key of REQUIRED_KEYS) {
