@@ -1,6 +1,11 @@
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  RESOURCE_MIME_TYPE,
+  registerAppResource,
+  registerAppTool,
+} from "@modelcontextprotocol/ext-apps/server";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
@@ -27,6 +32,33 @@ if (!existsSync(pkgPath)) {
   pkgPath = join(__dirname, "..", "..", "..", "package.json");
 }
 const pkg = JSON.parse(readFileSync(pkgPath, "utf-8")) as { version: string };
+
+const STUDIO_RESOURCE_URI = "ui://zam/studio";
+
+/**
+ * Load the bundled Studio panel HTML (built by `vite.config.panel.mts` into
+ * `dist/ui/studio-panel.html`). Falls back to a self-describing placeholder
+ * so `resources/read` never breaks on a checkout without a panel build.
+ */
+function loadStudioPanelHtml(): string {
+  const candidates = [
+    // dist/cli/commands/mcp.js → dist/ui/
+    join(__dirname, "..", "..", "ui", "studio-panel.html"),
+    // src/cli/commands/mcp.ts via tsx → <repo>/dist/ui/
+    join(__dirname, "..", "..", "..", "dist", "ui", "studio-panel.html"),
+  ];
+  for (const candidate of candidates) {
+    if (existsSync(candidate)) {
+      return readFileSync(candidate, "utf-8");
+    }
+  }
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>ZAM Studio</title></head>
+<body><div id="zam-studio-panel">
+<h1>ZAM Studio</h1>
+<p>The panel bundle is missing — run <code>npm run build</code> in the ZAM checkout.</p>
+</div></body></html>`;
+}
 
 /**
  * Creates and configures the McpServer instance with all tools mapped.
@@ -575,6 +607,51 @@ export function createMcpServer(db: Database): McpServer {
       return await handleGetMonitor(db, {
         session: params.session,
       });
+    }),
+  );
+
+  // 12. zam_open_studio — MCP Apps panel (ADR 2026-07-06a item 6). Hosts
+  // that support the Apps extension render the ui:// resource inline; other
+  // hosts see a plain text result and lose nothing.
+  registerAppTool(
+    server,
+    "zam_open_studio",
+    {
+      title: "ZAM Studio",
+      description:
+        "Open the ZAM Studio panel (content editor, knowledge graph, settings) inline",
+      inputSchema: {},
+      annotations: {
+        ...commonAnnotations,
+        readOnlyHint: true,
+      },
+      _meta: {
+        ui: { resourceUri: STUDIO_RESOURCE_URI },
+      },
+    },
+    wrapHandler(async () => {
+      const userId = await getUserId(undefined).catch(() => null);
+      return {
+        studio: "zam",
+        version: pkg.version,
+        user: userId,
+      };
+    }),
+  );
+
+  registerAppResource(
+    server,
+    "zam-studio",
+    STUDIO_RESOURCE_URI,
+    { mimeType: RESOURCE_MIME_TYPE },
+    async () => ({
+      contents: [
+        {
+          uri: STUDIO_RESOURCE_URI,
+          mimeType: RESOURCE_MIME_TYPE,
+          text: loadStudioPanelHtml(),
+        },
+      ],
     }),
   );
 

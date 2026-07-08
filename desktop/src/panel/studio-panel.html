@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZAM Studio</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --accent: #827dbd;
+        --bg: #f5f7fb;
+        --fg: #1c2030;
+        --muted: #6b7280;
+        --card: #ffffff;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #14161f;
+          --fg: #e8eaf2;
+          --muted: #9aa0b0;
+          --card: #1e2230;
+        }
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+      }
+      #zam-studio-panel {
+        padding: 16px;
+      }
+      .zam-header {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .zam-header h1 {
+        font-size: 18px;
+        margin: 0;
+      }
+      .zam-header .version {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .zam-card {
+        background: var(--card);
+        border-radius: 10px;
+        padding: 14px 16px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      }
+      .status-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--muted);
+        margin-right: 6px;
+      }
+      .status-dot.connected {
+        background: #2fbf71;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="zam-studio-panel">
+      <div class="zam-header">
+        <h1>ZAM Studio</h1>
+        <span class="version" id="zam-version"></span>
+      </div>
+      <div class="zam-card">
+        <p>
+          <span class="status-dot" id="zam-status-dot"></span>
+          <span id="zam-status">Connecting to host…</span>
+        </p>
+      </div>
+    </div>
+    <script type="module" src="./panel.ts"></script>
+  </body>
+</html>

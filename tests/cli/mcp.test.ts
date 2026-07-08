@@ -24,10 +24,15 @@ describe("MCP stdio server tests", () => {
   let client: Client;
   let serverTransport: InMemoryTransport;
   let clientTransport: InMemoryTransport;
+  let previousConfigPath: string | undefined;
 
   beforeEach(async () => {
     tempDir = mkdtempSync(join(tmpdir(), "zam-mcp-test-"));
     dbPath = join(tempDir, "test.db");
+    // Isolate from the developer's machine config (~/.zam/config.json) so an
+    // active workspace knowledge context on the host cannot leak into tests.
+    previousConfigPath = process.env.ZAM_CONFIG_PATH;
+    process.env.ZAM_CONFIG_PATH = join(tempDir, "machine-config.json");
     db = await openDatabase({
       dbPath,
       initialize: true,
@@ -64,6 +69,11 @@ describe("MCP stdio server tests", () => {
   });
 
   afterEach(async () => {
+    if (previousConfigPath === undefined) {
+      delete process.env.ZAM_CONFIG_PATH;
+    } else {
+      process.env.ZAM_CONFIG_PATH = previousConfigPath;
+    }
     if (client) {
       await client.close();
     }
@@ -76,9 +86,9 @@ describe("MCP stdio server tests", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all 11 tools with correct annotations", async () => {
+  it("lists all 12 tools with correct annotations", async () => {
     const response = await client.listTools();
-    expect(response.tools).toHaveLength(11);
+    expect(response.tools).toHaveLength(12);
 
     const toolNames = response.tools.map((t) => t.name).sort();
     const expectedNames = [
@@ -93,6 +103,7 @@ describe("MCP stdio server tests", () => {
       "zam_suggest_foundations",
       "zam_link_prereq",
       "zam_monitor",
+      "zam_open_studio",
     ].sort();
     expect(toolNames).toEqual(expectedNames);
 
@@ -256,6 +267,31 @@ describe("MCP stdio server tests", () => {
     expect(data.requiresConfirmation).toBe(true);
     expect(data.impact).toBeDefined();
     expect(await getTokenBySlug(db, "mcp-delete-token")).toBeDefined();
+  });
+
+  it("exposes the studio panel as an MCP Apps resource", async () => {
+    const resources = await client.listResources();
+    const studio = resources.resources.find((r) => r.uri === "ui://zam/studio");
+    expect(studio).toBeDefined();
+
+    const read = await client.readResource({ uri: "ui://zam/studio" });
+    const content = read.contents[0] as { text: string; mimeType: string };
+    expect(content.mimeType).toContain("text/html");
+    expect(content.text).toContain("zam-studio-panel");
+  });
+
+  it("links zam_open_studio to the studio panel resource", async () => {
+    const response = await client.listTools();
+    const tool = response.tools.find((t) => t.name === "zam_open_studio");
+    expect(tool).toBeDefined();
+    const meta = tool?._meta as { ui?: { resourceUri?: string } } | undefined;
+    expect(meta?.ui?.resourceUri).toBe("ui://zam/studio");
+
+    const res = await client.callTool({
+      name: "zam_open_studio",
+      arguments: {},
+    });
+    expect(res.isError).toBeUndefined();
   });
 
   it("returns error result with isError: true on handler error", async () => {

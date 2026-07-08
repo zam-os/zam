@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run build              # Build CLI (dist/cli/index.js) and library (dist/index.js) via tsup
+npm run build              # Build CLI (dist/cli/index.js), library (dist/index.js) via tsup, and the MCP Apps panel (dist/ui/studio-panel.html) via Vite
 npm run dev -- <args>      # Run CLI from source via tsx during development
 npm run test               # Run full Vitest suite
 npm run test -- tests/kernel/fsrs.test.ts  # Run a single test file
