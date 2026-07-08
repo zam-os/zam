@@ -1,7 +1,8 @@
 # Design: Multilingual Windows installer (`setup.exe`)
 
 - **Date:** 2026-07-08
-- **Status:** Accepted — config implemented + config-test; installer build-render verification pending (no local Rust/Tauri toolchain)
+- **Status:** Implemented & verified — config + parity test shipped; installer
+  built locally and rendering observed in en/de/ja (2026-07-08)
 - **Scope:** `desktop/src-tauri/tauri.conf.json`, `tests/desktop/installer-languages.test.ts`
 
 ## Problem
@@ -19,7 +20,8 @@ users). The `zam init` terminal wizard localization is **deferred** (see below).
 
 Configure the Tauri NSIS bundler for ZAM's 7 standard languages, **auto-detecting
 the OS language with no picker** — consistent with how the desktop and CLI
-resolve locale.
+default their locale (both auto-detect; the Studio additionally offers a manual
+switcher, and `zam settings locale` overrides the CLI).
 
 Add to `desktop/src-tauri/tauri.conf.json` under `bundle`:
 
@@ -40,45 +42,54 @@ Add to `desktop/src-tauri/tauri.conf.json` under `bundle`:
 | `de` | `German` |
 | `es` | `Spanish` |
 | `fr` | `French` |
-| `pt` | `Portuguese` *(European; flip to `PortugueseBR` for Brazilian)* |
+| `pt` | `Portuguese` *(European; see Risks for pt-BR / zh-Hant variant behavior)* |
 | `zh` | `SimpChinese` |
 | `ja` | `Japanese` |
 
 All 7 are in Tauri's supported NSIS set (verified against
 `crates/tauri-bundler/src/bundle/windows/nsis/languages`), so both the base NSIS
-strings *and* Tauri's own added strings are translated for each. English is
-listed **first**: NSIS falls back to the first listed language when the OS
-language isn't among the seven.
+strings *and* Tauri's own added strings are translated for each.
 
 ### Behavior
 
-- `displayLanguageSelector: false` → NSIS uses the OS default language, falling
-  back to English. No language dialog — matches the "auto-detect, no picker"
-  choice already made for the CLI. (Flip to `true` for a dropdown; trivial.)
+- `displayLanguageSelector: false` → NSIS picks the installer language at
+  runtime with a three-pass match against the compiled tables (NSIS
+  `Source/exehead/Ui.c`, `set_language()`): exact LANGID → same **primary
+  language** → first-listed. So en-US gets English, de-DE German, pt-BR the
+  European-Portuguese chrome, zh-TW/zh-HK the Simplified-Chinese chrome — and
+  only language families outside the seven (e.g. Italian, Korean, Russian) fall
+  back to the first-listed English. (Flip to `true` for an explicit dropdown;
+  trivial.)
 - Base installer chrome (Next/Back/Cancel, directory page, welcome/finish pages)
   auto-translates per language; no custom language files needed for the 7.
 
 ## Non-goals
 
-- The WiX **`.msi`** artifact stays English (`bundle.windows.wix.language` not
-  configured). `setup.exe` (NSIS) is the target; MSI localization is a separate
-  follow-up if that artifact is distributed.
+- **The WiX `.msi` stays English-only.** Because `bundle.targets` is `"all"`,
+  `release.yml` builds and publishes an `.msi` beside `setup.exe`, and
+  `bundle.windows.wix.language` is unset. Localizing WiX (one `.msi` per
+  language) is a separate follow-up; `setup.exe` is the recommended consumer
+  artifact.
 - macOS/Linux bundles (unaffected by `bundle.windows`).
 - Custom installer graphics or custom strings.
 
 ## Testing & verification
 
 - **Automated (runs in CI `ci.yml` via vitest):**
-  `tests/desktop/installer-languages.test.ts` asserts
-  `bundle.windows.nsis.languages` equals the 7 expected identifiers in order,
-  each is a Tauri-supported NSIS identifier (guards typos), no duplicates,
-  `displayLanguageSelector === false`, and English is first (fallback).
-- **Build/render verification:** the NSIS `setup.exe` is produced by
-  `release.yml` (Windows `tauri-action` build). An invalid identifier fails that
-  build. Full visual confirmation = run the produced `setup.exe` (or a local
-  `tauri build` on a machine with Rust) under a non-English Windows language and
-  confirm the translated chrome. **Not performed in this environment** — it has
-  no Rust/Tauri toolchain.
+  `tests/desktop/installer-languages.test.ts` derives the expected language list
+  from the app's canonical `LOCALES` (`desktop/src/i18n.ts`) through an NSIS
+  mapping typed `Record<Locale, string>` — adding an app locale fails
+  compilation until an installer mapping exists. It further asserts the
+  English-first fallback, no duplicate tables, `displayLanguageSelector ===
+  false`, and that every identifier is in Tauri's shipped NSIS vocabulary — the
+  pipeline's only pre-release spelling check, since PR CI runs vitest but never
+  makensis.
+- **Build/render verification (performed 2026-07-08):** built `setup.exe`
+  locally (Rust/Tauri toolchain; `makensis` compiled all seven language tables),
+  ran the installer, and observed rendering: **English** (auto-detected on an
+  en-US OS), **German** (full wizard flow, native-verified), **Japanese** (CJK).
+  Release builds re-validate the config on every `v*` tag (`release.yml`,
+  Windows `tauri-action` legs).
 
 ## Deferred: `zam init` CLI wizard localization
 
@@ -90,7 +101,11 @@ onboarding needs language parity.
 
 ## Risks
 
-- **pt-PT vs pt-BR** default (flagged above; one-word change).
+- **Regional variants:** NSIS primary-language matching sends pt-BR systems to
+  the European **Portuguese** chrome and zh-TW/zh-HK systems to **SimpChinese**
+  chrome (a Hans/Hant script mismatch). NSIS supports compiling `PortugueseBR`
+  and `TradChinese` **in addition** (not instead) — a cheap follow-up if
+  variant-exact chrome is wanted.
 - Tauri issue [#13041](https://github.com/tauri-apps/tauri/issues/13041): some
   custom component/checkbox strings can show the wrong language in multi-language
-  NSIS builds — cosmetic, upstream; monitor when render-verifying.
+  NSIS builds — cosmetic, upstream; none observed in the en/de/ja verification.
