@@ -1,6 +1,7 @@
 # Kernel Polish and Performance
 
-**Status:** Proposed
+**Status:** Partially implemented (items 1–2 shipped 2026-07-08 for v0.9.3;
+item 5 had already shipped with v0.5.2; items 3, 4, 6, 7 open)
 **Deciders:** Thomas (project owner)
 
 ---
@@ -22,7 +23,7 @@ Replace the per-card loop with a single JOIN query that returns all blocked card
 Collect all unique token slugs from the merged patterns first, then run a single `SELECT * FROM tokens WHERE slug IN (...)` query, and build the pattern map from the result.
 
 ### 3. Question-source provenance (`question_source`)
-- Add `question_source TEXT NOT NULL DEFAULT 'manual'` column to the `tokens` table (migration M007). Valid values: `'manual'`, `'llm'`, `'template'`.
+- Add `question_source TEXT NOT NULL DEFAULT 'manual'` column to the `tokens` table (next free migration slot — M007–M012 have since been taken by other features). Valid values: `'manual'`, `'llm'`, `'template'`.
 - `createToken()` and `updateToken()` accept an optional `question_source`.
 - `ensureHighQualityQuestion()` only overwrites when `question_source !== 'manual'`.
 - `generateQuestionViaLLM()` sets `question_source = 'llm'` when persisting.
@@ -32,6 +33,8 @@ Replace the inner loop with a priority-queue approach: maintain a min-heap of (d
 
 ### 5. Review-context caching
 Add a module-level `Map<string, { context: ReviewContext; expiresAt: number }>` cache with a configurable TTL. `resolveReviewContext()` checks the cache before fetching. Cache is keyed by the normalized `sourceLink`.
+
+*Already shipped with v0.5.2 (`reviewContextCache` in `src/kernel/recall/reference-resolver.ts`, keyed by link + max length).*
 
 ### 6. Goal-engine async migration
 Convert all file operations to their `fs/promises` equivalents (`readFile`, `writeFile`, `readdir`). Update function signatures to return `Promise<...>`. Update callers in `src/cli/commands/goal.ts`.

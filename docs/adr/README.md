@@ -23,7 +23,7 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-06-09](2026-06-09-async-database-providers.md) | Async Database Providers | Implemented |
 | [2026-06-13a](2026-06-13a-automatic-session-synthesis.md) | Automatic Session Synthesis | Implemented |
 | [2026-06-13b](2026-06-13b-approachable-setup-and-self-update.md) | Approachable Setup and Self-Update | Partially implemented |
-| [2026-06-15](2026-06-15-kernel-polish-and-performance.md) | Kernel Polish and Performance | Proposed |
+| [2026-06-15](2026-06-15-kernel-polish-and-performance.md) | Kernel Polish and Performance | Partially implemented |
 | [2026-06-20](2026-06-20-observer-permission-model.md) | Configurable Observer permission model (`ObserverPolicy`) and two-layer consent | Accepted |
 | [2026-06-21](2026-06-21-code-signing-and-trusted-installers.md) | Code Signing and Trusted Installers | Proposed |
 | [2026-06-22](2026-06-22-screen-recording-observer.md) | Screen Recording Observer and Local/Cloud Vision Fallbacks | Proposed |
@@ -36,7 +36,7 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-02](2026-07-02-lehrplanplus-import-wizard.md) | LehrplanPLUS Curriculum Import Wizard | Partially implemented |
 | [2026-07-03](2026-07-03-rag-semantic-token-search.md) | RAG / Semantic Token Search on a Self-Hosted, No-License-Cost Store | Partially implemented |
 | [2026-07-04](2026-07-04-human-friendly-titles-and-prefixed-domains.md) | Human-friendly Titles and Prefixed Domains for the Knowledge Graph | Implemented |
-| [2026-07-04](2026-07-04-knowledge-contexts.md) | Knowledge Contexts: Work, School, Private | Accepted |
+| [2026-07-04](2026-07-04-knowledge-contexts.md) | Knowledge Contexts: Work, School, Private | Implemented |
 | [2026-07-05](../plans/2026-07-05-titles-doctor-adaptation.md) | Human-friendly Titles + `zam doctor` adaptation plan (post Fable 5 review) | In progress |
 | [2026-07-06a](2026-07-06a-mcp-agent-transport-and-surfaces.md) | MCP as the Canonical Agent Transport (and the Surface Topology Around It) | Partially implemented |
 | [2026-07-06b](2026-07-06b-checkpointed-review-dialogue.md) | Checkpointed Review Dialogue | Proposed |
