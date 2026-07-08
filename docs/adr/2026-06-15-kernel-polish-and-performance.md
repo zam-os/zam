@@ -1,7 +1,7 @@
 # Kernel Polish and Performance
 
 **Status:** Implemented (items 1–2 shipped 2026-07-08 with v0.9.3; item 3
-shipped 2026-07-08 for v0.10.0 — revised, see item note; item 5 had already
+shipped 2026-07-08 with v0.9.4 — revised, see item note; item 5 had already
 shipped with v0.5.2; items 4, 6, 7 rejected 2026-07-08 — see item notes)
 **Deciders:** Thomas (project owner)
 
@@ -29,7 +29,7 @@ Collect all unique token slugs from the merged patterns first, then run a single
 - `ensureHighQualityQuestion()` only overwrites when `question_source !== 'manual'`.
 - `generateQuestionViaLLM()` sets `question_source = 'llm'` when persisting.
 
-*Implemented 2026-07-08 for v0.10.0 (migration M013), revised during
+*Implemented 2026-07-08 with v0.9.4 (migration M013), revised during
 implementation: review-time question generation is **ephemeral**.
 `ensureHighQualityQuestion()` never persists generated questions — the
 stored question changes only through deliberate editing surfaces (Studio
