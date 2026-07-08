@@ -9,8 +9,8 @@ Goose).
 
 ## Goal
 
-`zam mcp` serves a `ui://zam/studio` panel that renders inside Claude and
-VS Code Copilot with three views:
+`zam mcp` serves a `ui://zam/studio` panel that renders inside Claude
+(Desktop) and the GitHub Copilot app with three views:
 
 1. **Editor** — the Learning Content Editor (token list/search, question
    curation; where `question_source` provenance pays off).
@@ -47,10 +47,12 @@ conversational; the panel is for curation and administration.
 4. **`zam_open_studio` entry tool** declares
    `_meta.ui.resourceUri: "ui://zam/studio"`; calling it renders the panel
    in the conversation.
-5. **Graph extraction.** The Three.js neighborhood view (main.ts ~3541–3900)
-   moves to a shared module consumed by both `main.ts` and `panel.ts`.
-   Fallback if extraction fights back before Friday: a slim 2D neighborhood
-   rendering on the same `get-neighborhood` data.
+5. **2D graph in the panel (decided 2026-07-08).** The panel gets a new,
+   slim 2D neighborhood rendering (SVG) on the same `get-neighborhood`
+   data, with click-to-recenter (clicking a node reloads its neighborhood).
+   The Tauri desktop Studio keeps its Three.js 3D view; `main.ts` stays
+   untouched in v0.10.0 — no graph extraction. Unifying the desktop on the
+   2D module is a post-demo option.
 6. **Two new bridge handlers** (transport-neutral handler map, same pattern
    as ADR 2026-07-06a item 1): `backup-create` (kernel `exportSnapshot` to
    the workspace backup location) and `update-check` (kernel update-check;
@@ -68,20 +70,21 @@ conversational; the panel is for curation and administration.
   (ext-apps#671) before any view work.
 - **P2 — Transport + Editor (Wed).** `runBridge` injection, panel entry +
   build target, `zam_studio_bridge` allowlist tool, Editor view mounted.
-- **P3 — Knowledge-Graph (Wed–Thu).** Graph module extraction, panel mount.
+- **P3 — Knowledge-Graph (Wed–Thu).** New 2D neighborhood renderer in the
+  panel (SVG, click-to-recenter). No `main.ts` extraction.
 - **P4 — Settings-lite (Thu).** Workspaces, backup-create, update display.
 - **P5 — Polish + demo rehearsal (Thu).** i18n, both hosts end-to-end,
   choose primary demo host, ADR/README status, release 0.10.0.
 
 ## Risks
 
-- **Claude rendering (ext-apps#671).** P1 verifies immediately; VS Code
-  Copilot is the fallback demo host.
-- **main.ts entanglement.** Graph extraction touches a 4.7k-line file;
-  mitigation: extract state + functions wholesale into a module with a
-  narrow init/dispose interface, or fall back to the 2D rendering.
-- **Bundle size.** Three.js inlined into the resource HTML (~150 KB gzip) is
-  acceptable; hosts fetch the resource once.
+- **Claude rendering (ext-apps#671).** P1 verifies immediately; the
+  GitHub Copilot app is the fallback demo host. VS Code Copilot is
+  explicitly **not** a demo target (Thomas, 2026-07-08) — it only served
+  as a generic MCP-Apps host smoke test.
+- **main.ts entanglement / bundle size** — resolved 2026-07-08 by the
+  2D-in-panel decision: no graph extraction, no Three.js in the panel
+  bundle.
 - **Host UX differences** (panel height, persistence across turns). Demo
   rehearsal on Thursday settles the presentation flow.
 
@@ -102,11 +105,35 @@ follow-up):
   MCP tests isolated via `ZAM_CONFIG_PATH`. Full local suite green on
   Windows for the first time.
 
-**Next step before P2:** manual render check — connect the checkout build
-(`node C:\src\github\zam\dist\cli\index.js mcp`) in Claude Desktop /
-GitHub Copilot app / VS Code Copilot, prompt "Open the ZAM Studio", confirm
-the panel card renders (open risk: Claude Desktop rendering from local stdio
-servers, ext-apps#671; fallback: VS Code Copilot or `cloudflared` tunnel).
+**Render check (2026-07-08 late evening, semi-automated via Windows-MCP):**
+
+- Decisions taken: 2D graph **in the panel only** (desktop keeps 3D),
+  **click-to-recenter** interaction — see Decisions 5 / Phases P3 / Risks.
+- **VS Code Copilot (1.128, agent mode, routed to GPT-5.3-Codex):** picked
+  up the checkout server from a freshly written user-level `mcp.json`
+  *without restart*, ran `zam_open_studio` ("Ran ZAM Studio – zam (MCP
+  Server)", completed) and answered "ZAM Studio is open and connected as
+  user `thomas` (version `0.9.4`)". Caveat: that sentence is derivable
+  from the tool result (`{studio, version, user}`), so **inline panel
+  rendering still needs one human glance** at the chat card in VS Code.
+- **Claude Desktop (1.19367):** `mcpServers.zam` → `node dist/cli/index.js
+  mcp` written to `claude_desktop_config.json`. App restart required to
+  load it — not automatable from this session (the session runs inside the
+  app). After next app start, prompt "Open the ZAM Studio" in the Chat
+  tab. ext-apps#671 risk therefore still open on the Claude host.
+- **GitHub Copilot app (restarted 22:34):** config sharing with
+  `~/.copilot/mcp-config.json` is **verified** — logs show "MCP client
+  for zam connected" on both sessions. But on "Open the ZAM Studio" the
+  agent did NOT use the panel tool; it ran a detached shell "Launch the
+  ZAM desktop GUI" (`zam ui --dev` → tauri/vite on :1420) instead.
+  Whether the app renders MCP Apps panels is still unconfirmed — retest
+  with an explicit "call the zam_open_studio tool" prompt. Config
+  backups: session scratchpad.
+- Side effect fixed: Copilot's stray vite blocked port 1420, so the CCD
+  preview of `desktop-vite` now uses `autoPort` + a `PORT` env override
+  in `desktop/vite.config.ts` (tauri keeps 1420 by default). In a plain
+  browser the Studio UI renders but data calls fail ("reading 'invoke'")
+  — no Tauri IPC there; exactly the gap P2's transport injection fills.
 
 **P2 (next session):** `runBridge` transport injection, `zam_studio_bridge`
 allowlist tool, Editor view mounted in the panel — see Phases above.
