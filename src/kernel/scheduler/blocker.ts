@@ -109,6 +109,9 @@ export async function cascadeBlock(
  * If a blocked card has no prerequisites at all, it is unblocked immediately
  * (it was likely blocked in error or its prerequisites were removed).
  *
+ * Unblocking cascades: when unblocking a card satisfies the last unmet
+ * prerequisite of another blocked card, that card unblocks in the same call.
+ *
  * @param db - Database connection
  * @param userId - The user whose blocked cards to check
  * @returns List of cards that were unblocked
@@ -117,42 +120,46 @@ export async function unblockReady(
   db: Database,
   userId: string,
 ): Promise<UnblockResult> {
-  const blockedCards = (await db
-    .prepare(
-      `SELECT c.token_id, t.slug, t.concept
-       FROM cards c
-       JOIN tokens t ON t.id = c.token_id
-       WHERE c.user_id = ? AND c.blocked = 1`,
-    )
-    .all(userId)) as Array<{
-    token_id: string;
-    slug: string;
-    concept: string;
-  }>;
-
   const unblocked: Array<{ slug: string; concept: string }> = [];
 
-  for (const card of blockedCards) {
-    const totalPrereqs = (await db
-      .prepare("SELECT COUNT(*) as n FROM prerequisites WHERE token_id = ?")
-      .get(card.token_id)) as { n: number };
-
-    const metPrereqs = (await db
+  // Fixpoint loop: unblocking a card can satisfy another blocked card's
+  // prerequisite, so repeat until a pass unblocks nothing. Each pass is one
+  // SELECT (correlated prerequisite counts, no per-card round trips) plus
+  // one batched UPDATE; passes are bounded by the prerequisite chain depth,
+  // not the card count.
+  for (;;) {
+    const readyCards = (await db
       .prepare(
-        `SELECT COUNT(*) as n FROM cards c
-         JOIN prerequisites p ON p.requires_id = c.token_id
-         WHERE p.token_id = ? AND c.user_id = ? AND c.reps >= 1 AND c.blocked = 0`,
+        `SELECT c.token_id, t.slug, t.concept
+         FROM cards c
+         JOIN tokens t ON t.id = c.token_id
+         WHERE c.user_id = ? AND c.blocked = 1
+           AND (SELECT COUNT(*) FROM prerequisites p
+                WHERE p.token_id = c.token_id) =
+               (SELECT COUNT(*) FROM prerequisites p
+                JOIN cards pc ON pc.token_id = p.requires_id
+                  AND pc.user_id = c.user_id
+                WHERE p.token_id = c.token_id
+                  AND pc.reps >= 1 AND pc.blocked = 0)`,
       )
-      .get(card.token_id, userId)) as { n: number };
+      .all(userId)) as Array<{
+      token_id: string;
+      slug: string;
+      concept: string;
+    }>;
 
-    if (totalPrereqs.n === 0 || metPrereqs.n === totalPrereqs.n) {
-      const now = new Date().toISOString();
-      await db
-        .prepare(
-          "UPDATE cards SET blocked = 0, due_at = ? WHERE token_id = ? AND user_id = ?",
-        )
-        .run(now, card.token_id, userId);
+    if (readyCards.length === 0) break;
 
+    const now = new Date().toISOString();
+    const placeholders = readyCards.map(() => "?").join(",");
+    await db
+      .prepare(
+        `UPDATE cards SET blocked = 0, due_at = ?
+         WHERE user_id = ? AND token_id IN (${placeholders})`,
+      )
+      .run(now, userId, ...readyCards.map((card) => card.token_id));
+
+    for (const card of readyCards) {
       unblocked.push({ slug: card.slug, concept: card.concept });
     }
   }

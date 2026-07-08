@@ -14,7 +14,7 @@ import { getPrerequisites } from "../models/prerequisite.js";
 import type { Session } from "../models/session.js";
 import { logStep } from "../models/session.js";
 import type { Token } from "../models/token.js";
-import { getTokenBySlug } from "../models/token.js";
+import { getTokenBySlug, getTokensBySlugs } from "../models/token.js";
 import { evaluateRatingWithinTransaction } from "../recall/evaluator.js";
 import { cascadeBlock } from "../scheduler/blocker.js";
 import type { Rating } from "../scheduler/fsrs.js";
@@ -200,10 +200,14 @@ export async function prepareSessionSynthesis(
     input.explicitPatterns ?? [],
   );
 
+  const patternTokens = await getTokensBySlugs(
+    db,
+    patterns.map((pattern) => pattern.slug),
+  );
   const validPatterns: TokenPattern[] = [];
   const tokens = new Map<string, Token>();
   for (const pattern of patterns) {
-    const token = await getTokenBySlug(db, pattern.slug);
+    const token = patternTokens.get(pattern.slug);
     if (!token || token.deprecated_at) continue;
     validPatterns.push(pattern);
     tokens.set(pattern.slug, token);
@@ -218,13 +222,16 @@ export async function prepareSessionSynthesis(
 
   if (session.execution_context === "ui") {
     const reports = readUiObservationLog(input.sessionId);
-    for (const report of reports) {
-      for (const candidate of report.candidateTokens) {
-        if (tokens.has(candidate.slug)) continue;
-        const token = await getTokenBySlug(db, candidate.slug);
-        if (token && !token.deprecated_at) {
-          tokens.set(candidate.slug, token);
-        }
+    const candidateTokens = await getTokensBySlugs(
+      db,
+      reports
+        .flatMap((report) => report.candidateTokens)
+        .map((candidate) => candidate.slug)
+        .filter((slug) => !tokens.has(slug)),
+    );
+    for (const [slug, token] of candidateTokens) {
+      if (!token.deprecated_at) {
+        tokens.set(slug, token);
       }
     }
 

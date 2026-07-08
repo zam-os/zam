@@ -168,6 +168,29 @@ export async function getTokenBySlug(
 }
 
 /**
+ * Look up many tokens by slug in a single query.
+ * Returns a map keyed by slug; slugs without a token are simply absent.
+ */
+export async function getTokensBySlugs(
+  db: Database,
+  slugs: string[],
+): Promise<Map<string, Token>> {
+  const tokens = new Map<string, Token>();
+  const unique = [...new Set(slugs)];
+  if (unique.length === 0) return tokens;
+
+  const placeholders = unique.map(() => "?").join(",");
+  const rows = (await db
+    .prepare(`SELECT * FROM tokens WHERE slug IN (${placeholders})`)
+    .all(...unique)) as Token[];
+  for (const token of rows) {
+    parseTokenFallback(token);
+    tokens.set(token.slug, token);
+  }
+  return tokens;
+}
+
+/**
  * Look up a token by its ULID.
  * Returns undefined if not found.
  */
