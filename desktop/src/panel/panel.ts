@@ -7,6 +7,9 @@
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
+import { setBridgeTransport } from "../bridge-transport.js";
+import { setCurrentLocale } from "../i18n.js";
+import { initLearningContentStudio } from "../learning-content.js";
 
 const statusEl = document.getElementById("zam-status");
 const statusDot = document.getElementById("zam-status-dot");
@@ -34,14 +37,50 @@ app.ontoolresult = (result) => {
   setStatus(`Connected to zam mcp${user}`, true);
 };
 
+// zam_studio_bridge always answers on content[0] as JSON text (see
+// wrapHandler in src/cli/commands/mcp.ts) — structuredContent is NOT used
+// here because wrapHandler re-wraps bare-array results as `{ result }`,
+// which would silently corrupt list-shaped responses.
+async function mcpTransport(cmd: string, args: string[]): Promise<unknown> {
+  const result = await app.callServerTool({
+    name: "zam_studio_bridge",
+    arguments: { cmd, args },
+  });
+  const first = result.content?.[0];
+  const text = first && first.type === "text" ? first.text : undefined;
+
+  if (result.isError) {
+    let message = text ?? "zam_studio_bridge call failed";
+    if (text) {
+      try {
+        const parsed = JSON.parse(text) as { error?: string };
+        if (typeof parsed.error === "string") message = parsed.error;
+      } catch {
+        // Not JSON — keep the raw text assigned above.
+      }
+    }
+    throw new Error(message);
+  }
+
+  return text === undefined ? undefined : JSON.parse(text);
+}
+
 app
   .connect()
   .then(() => {
     setStatus("Connected to host — waiting for data…", true);
+
+    // Transport must be wired before init: initLearningContentStudio()
+    // kicks off its own data load synchronously on return.
+    setBridgeTransport(mcpTransport);
+    if (navigator.language.startsWith("de")) {
+      setCurrentLocale("de");
+    }
+    initLearningContentStudio();
   })
   .catch((error: unknown) => {
     setStatus(
-      `Failed to connect: ${error instanceof Error ? error.message : String(error)}`,
+      `ZAM Studio failed to start: ${error instanceof Error ? error.message : String(error)}`,
       false,
     );
   });
