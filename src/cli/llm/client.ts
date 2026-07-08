@@ -487,6 +487,8 @@ export async function generateQuestionViaLLM(
     bloomLevel: number;
     context?: string;
     sourceLinkContent?: string | null;
+    /** Stored question to vary — same knowledge, fresh phrasing. */
+    existingQuestion?: string | null;
   },
 ): Promise<LlmTextResult> {
   const cfg = await getProviderForRole(db, "recall");
@@ -499,6 +501,12 @@ export async function generateQuestionViaLLM(
 
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
 
+  const existingQuestion = input.existingQuestion?.trim();
+  const variationGuideline = existingQuestion
+    ? `
+5. A canonical question for this token already exists. Generate a fresh VARIATION of it: test the same knowledge, but with different wording or from a different angle, so the learner cannot memorize the exact phrasing. Never repeat the canonical question verbatim.`
+    : "";
+
   const systemPrompt = `You are ZAM, a highly precise agentic skills trainer.
 Your task is to generate a single, clear, conceptual active-recall question (flashcard front) in ${langName} for a knowledge token.
 
@@ -506,13 +514,13 @@ Guidelines:
 1. The question MUST match the Bloom level: ${verb} (Level ${bloom}).
 2. CRITICAL: The question MUST NOT contain or reveal the concept text itself! The concept is the answer (flashcard back) that the learner needs to recall.
 3. Keep the question concise, highly specific, and clear. Avoid generic prompts like "What is the concept of..." if possible, and ask about the core mechanism, function, or purpose of the slug/concept without giving the answer away.
-4. Output ONLY the raw question text in ${langName}. Do not include any preamble, headers, markdown fences, or conversational filler.`;
+4. Output ONLY the raw question text in ${langName}. Do not include any preamble, headers, markdown fences, or conversational filler.${variationGuideline}`;
 
   const userPrompt = `Domain: ${input.domain}
 Slug: ${input.slug}
 Concept to Recall (DO NOT REVEAL IN QUESTION): ${input.concept}
 Context: ${input.context || "(none)"}
-${input.sourceLinkContent ? `Source Reference:\n${input.sourceLinkContent}` : ""}
+${existingQuestion ? `Canonical Question (vary, do not repeat verbatim): ${existingQuestion}\n` : ""}${input.sourceLinkContent ? `Source Reference:\n${input.sourceLinkContent}` : ""}
 
 Active-Recall Question:`;
 
@@ -2060,12 +2068,13 @@ export async function fetchWithInteractiveTimeout(
 /**
  * Resolve the active-recall question to ask for a token.
  *
- * Manual questions are authoritative and returned verbatim. For everything
- * else, when LLM is enabled, a fresh question is generated for THIS review
- * only — it is never persisted; the stored question changes exclusively
- * through deliberate editing surfaces (Studio content editor, token CLI,
- * imports). Falls back to the stored question when generation is off or
- * fails.
+ * When LLM is enabled (and `llm.dynamic_questions` is not disabled), a fresh
+ * question is generated for THIS review only — anchored on the stored
+ * question when one exists, so the learner cannot memorize its exact
+ * phrasing. The result is never persisted; the stored question changes
+ * exclusively through deliberate editing surfaces (Studio content editor,
+ * token CLI, imports). Falls back to the stored question verbatim when
+ * variation is disabled, generation is off, or it fails.
  */
 export async function ensureHighQualityQuestion(
   db: Database,
@@ -2077,21 +2086,15 @@ export async function ensureHighQualityQuestion(
     bloomLevel: number;
     sourceLink?: string | null;
     question?: string | null;
-    questionSource?: string | null;
   },
 ): Promise<QuestionResolution | null> {
-  // A human-authored question is authoritative: never regenerate or
-  // overwrite it (ADR 2026-06-15 item 3).
-  if (token.questionSource === "manual" && token.question?.trim()) {
-    return {
-      question: token.question.trim(),
-      source: "original",
-    };
-  }
-
   const { enabled } = await getLlmConfig(db);
+  // Opt-out for review latency/cost: disabling dynamic questions serves the
+  // stored question verbatim instead of generating a per-review variation.
+  const variationEnabled =
+    (await getSetting(db, "llm.dynamic_questions")) !== "false";
 
-  if (enabled) {
+  if (enabled && variationEnabled) {
     try {
       let sourceLinkContent: string | null = null;
       if (token.sourceLink) {
@@ -2109,6 +2112,7 @@ export async function ensureHighQualityQuestion(
         domain: token.domain,
         bloomLevel: token.bloomLevel,
         sourceLinkContent,
+        existingQuestion: token.question,
       });
 
       if (generated.text.trim().length > 0) {

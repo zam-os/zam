@@ -125,7 +125,6 @@ export const learnCommand = new Command("learn")
               bloomLevel: item.bloomLevel as BloomLevel,
               sourceLink: item.sourceLink,
               question: item.question,
-              questionSource: item.questionSource,
             });
             if (healed) {
               resolvedQuestion = healed.question;

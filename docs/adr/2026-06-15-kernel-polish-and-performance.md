@@ -29,16 +29,19 @@ Collect all unique token slugs from the merged patterns first, then run a single
 - `ensureHighQualityQuestion()` only overwrites when `question_source !== 'manual'`.
 - `generateQuestionViaLLM()` sets `question_source = 'llm'` when persisting.
 
-*Implemented 2026-07-08 for v0.10.0 (migration M013), with one revision
-decided during implementation: review-time question generation is
-**ephemeral**. `ensureHighQualityQuestion()` never persists generated
-questions — the stored question changes only through deliberate editing
-surfaces (Studio content editor, token CLI, imports). Manual questions are
-asked verbatim, without LLM variation. `question_source` is pure provenance
-for curation: `'manual'` for human-authored questions (API question edits
-without a declared source default to it), `'llm'` for agent- and
-curriculum-authored questions (also the column default, so pre-M013 rows and
-old snapshot restores classify as LLM-era), `'template'` reserved.*
+*Implemented 2026-07-08 for v0.10.0 (migration M013), revised during
+implementation: review-time question generation is **ephemeral**.
+`ensureHighQualityQuestion()` never persists generated questions — the
+stored question changes only through deliberate editing surfaces (Studio
+content editor, token CLI, imports). At review time the learner gets a fresh
+variation anchored on the stored question (same knowledge, different
+phrasing, so the wording cannot be memorized); the `llm.dynamic_questions`
+setting (default on) disables this per-review LLM roundtrip and serves the
+stored question verbatim. `question_source` is pure provenance for curation
+— it does not gate behavior: `'manual'` for human-authored questions (API
+question edits without a declared source default to it), `'llm'` for agent-
+and curriculum-authored questions (also the column default, so pre-M013 rows
+and old snapshot restores classify as LLM-era), `'template'` reserved.*
 
 ### 4. `interleave()` performance
 Replace the inner loop with a priority-queue approach: maintain a min-heap of (domain, remaining-count) and pick from the domain with the most remaining items that does not violate `maxConsecutive`. This brings the complexity to O(n log n).

@@ -289,7 +289,7 @@ describe("bridge-handlers unit tests", () => {
     expect(token?.question_source).toBe("llm");
   });
 
-  it("getReviewsBatch asks manual questions verbatim and llm ones with a fresh, unpersisted variation", async () => {
+  it("getReviewsBatch serves fresh question variations and never mutates stored questions", async () => {
     const { setSetting } = await import("../../src/kernel/index.js");
     await setSetting(db, "llm.enabled", "true");
     await setSetting(db, "llm.url", "http://dummy/v1");
@@ -333,7 +333,9 @@ describe("bridge-handlers unit tests", () => {
       const generatedCard = res.cards.find(
         (c: any) => c.slug === generated.slug,
       );
-      expect(manualCard?.question).toBe("What did the human write?");
+      // Both get an ephemeral variation — manual questions too, so the
+      // learner cannot memorize the exact phrasing.
+      expect(manualCard?.question).toBe("Fresh generated question?");
       expect(generatedCard?.question).toBe("Fresh generated question?");
 
       // Reviews never mutate content: both stored questions are untouched.

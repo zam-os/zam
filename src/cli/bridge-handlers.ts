@@ -184,7 +184,6 @@ export async function getReview(db: Database, params: GetReviewParams) {
         bloomLevel: item.bloomLevel as BloomLevel,
         sourceLink: item.sourceLink,
         question: item.question,
-        questionSource: item.questionSource,
       });
       if (healed) {
         resolvedQuestion = healed.question;
@@ -288,7 +287,6 @@ export async function getReviewsBatch(
             bloomLevel: token.bloom_level as BloomLevel,
             sourceLink: token.source_link,
             question: token.question,
-            questionSource: token.question_source,
           });
           if (healed) {
             resolvedQuestion = healed.question;
