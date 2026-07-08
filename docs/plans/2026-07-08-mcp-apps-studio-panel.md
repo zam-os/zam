@@ -85,6 +85,32 @@ conversational; the panel is for curation and administration.
 - **Host UX differences** (panel height, persistence across turns). Demo
   rehearsal on Thursday settles the presentation flow.
 
+## Status (2026-07-08 end of day)
+
+**P1 complete** on branch `feat/mcp-apps-studio-panel` (commits `f92a30e` +
+follow-up):
+
+- `zam mcp` serves `ui://zam/studio` (self-contained HTML, built by
+  `npm run build:panel` → `dist/ui/studio-panel.html`) and registers
+  `zam_open_studio` with `_meta.ui.resourceUri`. Panel completes the
+  `ui/initialize` handshake and shows connection state + version + user.
+- `zam agent connect claude-desktop` preset added (platform-aware
+  `claude_desktop_config.json` path); `copilot` preset targets
+  `~/.copilot/mcp-config.json`, which the GitHub Copilot desktop app is
+  expected to share with Copilot CLI (verify during render test).
+- Windows path-separator bugs in `tests/cli/agent-harness.test.ts` fixed;
+  MCP tests isolated via `ZAM_CONFIG_PATH`. Full local suite green on
+  Windows for the first time.
+
+**Next step before P2:** manual render check — connect the checkout build
+(`node C:\src\github\zam\dist\cli\index.js mcp`) in Claude Desktop /
+GitHub Copilot app / VS Code Copilot, prompt "Open the ZAM Studio", confirm
+the panel card renders (open risk: Claude Desktop rendering from local stdio
+servers, ext-apps#671; fallback: VS Code Copilot or `cloudflared` tunnel).
+
+**P2 (next session):** `runBridge` transport injection, `zam_studio_bridge`
+allowlist tool, Editor view mounted in the panel — see Phases above.
+
 ## Verification
 
 - `tests/cli/mcp.test.ts`: `resources/list` contains `ui://zam/studio`;

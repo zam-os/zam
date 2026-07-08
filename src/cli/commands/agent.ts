@@ -42,6 +42,7 @@ const C = {
 const SUPPORTED_AGENTS = ["opencode"];
 const CONNECT_HARNESSES: ConnectHarnessId[] = [
   "claude-code",
+  "claude-desktop",
   "antigravity",
   "codex",
   "opencode",
@@ -199,7 +200,7 @@ const connectCmd = new Command("connect")
   .description("Configure the ZAM MCP server for an agent harness")
   .argument(
     "<harness>",
-    "Harness to connect: claude-code | antigravity | codex | opencode | goose | copilot",
+    "Harness to connect: claude-code | claude-desktop | antigravity | codex | opencode | goose | copilot",
   )
   .option(
     "--print",

@@ -179,6 +179,7 @@ export interface ConnectResult {
 
 export type ConnectHarnessId =
   | "claude-code"
+  | "claude-desktop"
   | "antigravity"
   | "codex"
   | "opencode"
@@ -226,6 +227,7 @@ export function connectHarnessMcp(
     cwd: string;
     home: string;
     readFile?: (path: string) => string;
+    platform?: NodeJS.Platform;
   },
 ): ConnectResult {
   const exists = (p: string) => {
@@ -250,13 +252,10 @@ export function connectHarnessMcp(
   let alreadyConfigured = false;
   let hint = "";
 
-  if (harnessId === "claude-code") {
-    targetPath = join(opts.cwd, ".mcp.json");
-    hint =
-      "Claude Code will prompt you to approve the 'zam' MCP server on next launch.";
+  const mergeMcpServersJson = (path: string): string => {
     let existing: McpJsonConfig = {};
-    if (exists(targetPath)) {
-      existing = parseMcpJsonConfig(targetPath, read(targetPath));
+    if (exists(path)) {
+      existing = parseMcpJsonConfig(path, read(path));
     }
     if (!existing.mcpServers) {
       existing.mcpServers = {};
@@ -265,7 +264,37 @@ export function connectHarnessMcp(
       command: opts.zamPath,
       args: ["mcp"],
     };
-    content = JSON.stringify(existing, null, 2);
+    return JSON.stringify(existing, null, 2);
+  };
+
+  if (harnessId === "claude-code") {
+    targetPath = join(opts.cwd, ".mcp.json");
+    hint =
+      "Claude Code will prompt you to approve the 'zam' MCP server on next launch.";
+    content = mergeMcpServersJson(targetPath);
+  } else if (harnessId === "claude-desktop") {
+    const platform = opts.platform ?? process.platform;
+    targetPath =
+      platform === "win32"
+        ? join(
+            opts.home,
+            "AppData",
+            "Roaming",
+            "Claude",
+            "claude_desktop_config.json",
+          )
+        : platform === "darwin"
+          ? join(
+              opts.home,
+              "Library",
+              "Application Support",
+              "Claude",
+              "claude_desktop_config.json",
+            )
+          : join(opts.home, ".config", "Claude", "claude_desktop_config.json");
+    hint =
+      "Restart Claude Desktop to load the 'zam' MCP server; MCP Apps panels render inline in the chat.";
+    content = mergeMcpServersJson(targetPath);
   } else if (harnessId === "antigravity") {
     targetPath = join(opts.home, ".gemini", "config", "mcp_config.json");
     hint =
