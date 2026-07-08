@@ -25,6 +25,7 @@ import {
   submitReview as handleSubmitReview,
   suggestFoundations as handleSuggestFoundations,
 } from "../bridge-handlers.js";
+import { executeBridgeCommandJson } from "./bridge.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 let pkgPath = join(__dirname, "..", "..", "package.json");
@@ -34,6 +35,30 @@ if (!existsSync(pkgPath)) {
 const pkg = JSON.parse(readFileSync(pkgPath, "utf-8")) as { version: string };
 
 const STUDIO_RESOURCE_URI = "ui://zam/studio";
+
+/**
+ * Commands the ZAM Studio panel may run through `zam_studio_bridge`. A
+ * closed allowlist: curation and admin reads/writes only. No provider/LLM,
+ * observer, session/review, curriculum, or infrastructure commands — those
+ * stay reachable only via `zam bridge` directly or the other MCP tools.
+ * Membership is checked before any command execution, so an unknown name is
+ * rejected the same way as a real-but-forbidden one.
+ */
+const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
+  "list-tokens",
+  "personal-card-list",
+  "personal-card-create",
+  "personal-card-update",
+  "personal-card-remove",
+  "personal-card-delete",
+  "get-neighborhood",
+  "list-knowledge-contexts",
+  "get-active-knowledge-context",
+  "set-active-knowledge-context",
+  "workspace-list",
+  "workspace-repair-links",
+  "database-status",
+]);
 
 /**
  * Load the bundled Studio panel HTML (built by `vite.config.panel.mts` into
@@ -652,6 +677,44 @@ export function createMcpServer(db: Database): McpServer {
           text: loadStudioPanelHtml(),
         },
       ],
+    }),
+  );
+
+  // 13. zam_studio_bridge — the Studio panel's data channel (ADR 2026-07-06a
+  // item 6 / P2 Decision 3). Runs one allowlisted `zam bridge` subcommand
+  // and returns its JSON result; everything outside the allowlist —
+  // including unknown command names — is rejected before Commander ever
+  // parses it. Registered app-only (visibility: ["app"]) since the panel,
+  // not the chat model, is the intended caller.
+  registerAppTool(
+    server,
+    "zam_studio_bridge",
+    {
+      description:
+        "Data channel for the ZAM Studio panel (MCP-Apps UI): runs an allowlisted `zam bridge` curation/admin command and returns its JSON result. Not intended for direct model use.",
+      inputSchema: {
+        cmd: z.string().describe("Allowlisted `zam bridge` subcommand name"),
+        args: z
+          .array(z.string())
+          .optional()
+          .default([])
+          .describe('Argv-style flag arguments, e.g. ["--focus", "some-slug"]'),
+      },
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: true,
+      },
+      _meta: {
+        ui: { visibility: ["app"] },
+      },
+    },
+    wrapHandler(async (params) => {
+      if (!STUDIO_BRIDGE_ALLOWED_COMMANDS.has(params.cmd)) {
+        throw new Error(
+          `Command not allowed for the Studio panel: ${params.cmd}`,
+        );
+      }
+      return await executeBridgeCommandJson(params.cmd, params.args);
     }),
   );
 
