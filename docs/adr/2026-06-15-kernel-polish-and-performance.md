@@ -1,8 +1,8 @@
 # Kernel Polish and Performance
 
-**Status:** Partially implemented (items 1–2 shipped 2026-07-08 with v0.9.3;
-item 5 had already shipped with v0.5.2; items 4, 6, 7 rejected 2026-07-08 —
-see item notes; item 3 open)
+**Status:** Implemented (items 1–2 shipped 2026-07-08 with v0.9.3; item 3
+shipped 2026-07-08 for v0.10.0 — revised, see item note; item 5 had already
+shipped with v0.5.2; items 4, 6, 7 rejected 2026-07-08 — see item notes)
 **Deciders:** Thomas (project owner)
 
 ---
@@ -28,6 +28,17 @@ Collect all unique token slugs from the merged patterns first, then run a single
 - `createToken()` and `updateToken()` accept an optional `question_source`.
 - `ensureHighQualityQuestion()` only overwrites when `question_source !== 'manual'`.
 - `generateQuestionViaLLM()` sets `question_source = 'llm'` when persisting.
+
+*Implemented 2026-07-08 for v0.10.0 (migration M013), with one revision
+decided during implementation: review-time question generation is
+**ephemeral**. `ensureHighQualityQuestion()` never persists generated
+questions — the stored question changes only through deliberate editing
+surfaces (Studio content editor, token CLI, imports). Manual questions are
+asked verbatim, without LLM variation. `question_source` is pure provenance
+for curation: `'manual'` for human-authored questions (API question edits
+without a declared source default to it), `'llm'` for agent- and
+curriculum-authored questions (also the column default, so pre-M013 rows and
+old snapshot restores classify as LLM-era), `'template'` reserved.*
 
 ### 4. `interleave()` performance
 Replace the inner loop with a priority-queue approach: maintain a min-heap of (domain, remaining-count) and pick from the domain with the most remaining items that does not violate `maxConsecutive`. This brings the complexity to O(n log n).

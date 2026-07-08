@@ -31,6 +31,7 @@ export interface ReviewQueueItem {
   dueAt: string;
   sourceLink: string | null;
   question: string | null;
+  questionSource: string;
 }
 
 export interface ReviewQueue {
@@ -55,6 +56,7 @@ interface CardRow {
   due_at: string;
   source_link: string | null;
   question: string | null;
+  question_source: string;
 }
 
 // ── Functions ────────────────────────────────────────────────────────────────
@@ -95,7 +97,8 @@ export async function buildReviewQueue(
          c.state    AS state,
          c.due_at   AS due_at,
          t.source_link AS source_link,
-         t.question AS question
+         t.question AS question,
+         t.question_source AS question_source
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
@@ -131,7 +134,8 @@ export async function buildReviewQueue(
          c.state    AS state,
          c.due_at   AS due_at,
          t.source_link AS source_link,
-         t.question AS question
+         t.question AS question,
+         t.question_source AS question_source
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
@@ -221,6 +225,7 @@ function rowToItem(row: CardRow): ReviewQueueItem {
     dueAt: row.due_at,
     sourceLink: row.source_link,
     question: row.question,
+    questionSource: row.question_source,
   };
 }
 

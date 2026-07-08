@@ -184,6 +184,7 @@ export async function getReview(db: Database, params: GetReviewParams) {
         bloomLevel: item.bloomLevel as BloomLevel,
         sourceLink: item.sourceLink,
         question: item.question,
+        questionSource: item.questionSource,
       });
       if (healed) {
         resolvedQuestion = healed.question;
@@ -287,6 +288,7 @@ export async function getReviewsBatch(
             bloomLevel: token.bloom_level as BloomLevel,
             sourceLink: token.source_link,
             question: token.question,
+            questionSource: token.question_source,
           });
           if (healed) {
             resolvedQuestion = healed.question;
@@ -642,6 +644,9 @@ export async function addToken(db: Database, params: AddTokenParams) {
     symbiosis_mode: params.symbiosisMode,
     source_link: params.sourceLink ?? null,
     question: params.question ?? null,
+    // Bridge/MCP callers are agents: their questions are LLM-authored and
+    // stay refreshable. Humans author questions via the token CLI instead.
+    question_source: params.question ? "llm" : undefined,
   });
 
   for (const context of assignedContexts) {

@@ -376,7 +376,7 @@ describe("LLM client utilities (CLI layer)", () => {
     });
   });
 
-  it("ensureHighQualityQuestion dynamically generates and self-heals a missing question when LLM is enabled", async () => {
+  it("ensureHighQualityQuestion generates a review-only question without persisting it", async () => {
     const db = await openDatabase({
       dbPath: ":memory:",
       initialize: true,
@@ -425,11 +425,65 @@ describe("LLM client utilities (CLI layer)", () => {
         source: "llm",
       });
 
-      // Verify that it self-healed in the database!
+      // The generated question is ephemeral: the stored token must be
+      // untouched — content changes only through deliberate editing surfaces.
       const updated = await getTokenBySlug(db, slug);
-      expect(updated?.question).toBe(
-        "How do you securely store Azure DevOps HTTPS credentials on macOS?",
+      expect(updated?.question).toBeNull();
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("ensureHighQualityQuestion preserves manual questions without calling the LLM", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const token = await createToken(db, {
+      slug: "manual-question",
+      concept: "A concept with a hand-written question",
+      domain: "testing",
+      question: "What exactly did the human ask?",
+      // createToken defaults to question_source 'manual'
+    });
+
+    const originalFetch = global.fetch;
+    let fetchCalls = 0;
+    global.fetch = (async () => {
+      fetchCalls++;
+      return new Response(
+        JSON.stringify({
+          choices: [{ message: { content: "Generated replacement?" } }],
+        }),
       );
+    }) as typeof fetch;
+
+    try {
+      const resolution = await ensureHighQualityQuestion(db, {
+        id: token.id,
+        slug: token.slug,
+        concept: token.concept,
+        domain: token.domain,
+        bloomLevel: token.bloom_level,
+        sourceLink: token.source_link,
+        question: token.question,
+        questionSource: token.question_source,
+      });
+
+      expect(resolution).toMatchObject({
+        question: "What exactly did the human ask?",
+        source: "original",
+      });
+      expect(fetchCalls).toBe(0);
+
+      const stored = await getTokenBySlug(db, token.slug);
+      expect(stored?.question).toBe("What exactly did the human ask?");
+      expect(stored?.question_source).toBe("manual");
     } finally {
       global.fetch = originalFetch;
       await db.close();

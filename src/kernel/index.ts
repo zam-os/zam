@@ -173,6 +173,7 @@ export type {
   ImportCurriculumResult,
   ListTokensOptions,
   PersonalCard,
+  QuestionSource,
   SourceProposalInput,
   SplitProposalInput,
   SymbiosisMode,

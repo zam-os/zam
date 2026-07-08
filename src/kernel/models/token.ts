@@ -16,6 +16,12 @@ export type BloomLevel = 1 | 2 | 3 | 4 | 5;
 
 export type SymbiosisMode = "shadowing" | "copilot" | "autonomy";
 
+/**
+ * Who authored a token's current recall question. LLM healing only
+ * overwrites questions whose source is not 'manual'.
+ */
+export type QuestionSource = "manual" | "llm" | "template";
+
 export interface Token {
   id: string;
   slug: string;
@@ -27,6 +33,7 @@ export interface Token {
   symbiosis_mode: SymbiosisMode | null;
   source_link: string | null;
   question: string | null;
+  question_source: QuestionSource;
   created_at: string;
   updated_at: string;
   deprecated_at: string | null;
@@ -44,6 +51,7 @@ export interface CreateTokenInput {
   symbiosis_mode?: SymbiosisMode | null;
   source_link?: string | null;
   question?: string | null;
+  question_source?: QuestionSource;
   provider?: string | null;
   topic_id?: string | null;
 }
@@ -57,6 +65,7 @@ export interface UpdateTokenInput {
   symbiosis_mode?: SymbiosisMode | null;
   source_link?: string | null;
   question?: string | null;
+  question_source?: QuestionSource;
   provider?: string | null;
   topic_id?: string | null;
 }
@@ -97,6 +106,16 @@ export interface ScoredToken extends Token {
 
 // ── Functions ────────────────────────────────────────────────────────────────
 
+const VALID_QUESTION_SOURCES: QuestionSource[] = ["manual", "llm", "template"];
+
+function validateQuestionSource(value: QuestionSource): void {
+  if (!VALID_QUESTION_SOURCES.includes(value)) {
+    throw new Error(
+      `Invalid question_source: ${value} (expected one of ${VALID_QUESTION_SOURCES.join(", ")})`,
+    );
+  }
+}
+
 /**
  * Create a new knowledge token.
  * Throws if a token with the same slug already exists.
@@ -114,11 +133,13 @@ export async function createToken(
   }
 
   const title = input.title ?? "";
+  const questionSource = input.question_source ?? "manual";
+  validateQuestionSource(questionSource);
 
   await db
     .prepare(`
-    INSERT INTO tokens (id, slug, title, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, provider, topic_id, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO tokens (id, slug, title, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, question_source, provider, topic_id, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `)
     .run(
       id,
@@ -131,6 +152,7 @@ export async function createToken(
       input.symbiosis_mode ?? null,
       input.source_link ?? null,
       input.question ?? null,
+      questionSource,
       input.provider ?? null,
       input.topic_id ?? null,
       now,
@@ -267,6 +289,17 @@ export async function updateToken(
   if (updates.question !== undefined) {
     fields.push("question = ?");
     values.push(updates.question);
+  }
+  // A question edit without a declared source is a human edit: default to
+  // 'manual' so LLM healing stops overwriting it. Automated writers (the
+  // heal path) must declare question_source explicitly.
+  const questionSource =
+    updates.question_source ??
+    (updates.question !== undefined ? "manual" : undefined);
+  if (questionSource !== undefined) {
+    validateQuestionSource(questionSource);
+    fields.push("question_source = ?");
+    values.push(questionSource);
   }
   if (updates.provider !== undefined) {
     fields.push("provider = ?");
@@ -827,6 +860,9 @@ export async function importCurriculumCards(
           symbiosis_mode: symbiosisMode,
           source_link: card.source_link || null,
           question: card.question || null,
+          // Curriculum cards are LLM-extracted; their questions are LLM
+          // inventions, not human-authored content.
+          question_source: "llm",
           provider: card.provider || null,
           topic_id: card.topic_id || null,
         });

@@ -513,4 +513,18 @@ async function runMigrations(db: Database): Promise<void> {
   await db.exec(`
     CREATE INDEX IF NOT EXISTS idx_token_contexts_context ON token_contexts(context_id)
   `);
+
+  // M013: add question provenance to tokens (ADR 2026-06-15 item 3).
+  // The column default 'llm' doubles as the backfill: pre-provenance rows
+  // (and rows from old snapshots, which INSERT without this column) count
+  // as LLM-era content. Human-authored questions are marked 'manual' by the
+  // API layer (createToken/updateToken) from now on.
+  if (
+    tokenCols.length > 0 &&
+    !tokenCols.some((c) => c.name === "question_source")
+  ) {
+    await db.exec(
+      `ALTER TABLE tokens ADD COLUMN question_source TEXT NOT NULL DEFAULT 'llm'`,
+    );
+  }
 }

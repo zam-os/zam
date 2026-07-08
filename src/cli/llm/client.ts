@@ -26,7 +26,6 @@ import {
   normalizeLocale,
   resolveReviewContext,
   t,
-  updateToken,
 } from "../../kernel/index.js";
 
 /** Single source of truth for connection defaults (easy to bump as models evolve). */
@@ -2059,9 +2058,14 @@ export async function fetchWithInteractiveTimeout(
 }
 
 /**
- * Ensures a token has a high-quality active-recall question.
- * When LLM is enabled, generates a fresh question on the fly, self-heals it into
- * the database, and returns it. Otherwise falls back to the stored question.
+ * Resolve the active-recall question to ask for a token.
+ *
+ * Manual questions are authoritative and returned verbatim. For everything
+ * else, when LLM is enabled, a fresh question is generated for THIS review
+ * only — it is never persisted; the stored question changes exclusively
+ * through deliberate editing surfaces (Studio content editor, token CLI,
+ * imports). Falls back to the stored question when generation is off or
+ * fails.
  */
 export async function ensureHighQualityQuestion(
   db: Database,
@@ -2073,8 +2077,18 @@ export async function ensureHighQualityQuestion(
     bloomLevel: number;
     sourceLink?: string | null;
     question?: string | null;
+    questionSource?: string | null;
   },
 ): Promise<QuestionResolution | null> {
+  // A human-authored question is authoritative: never regenerate or
+  // overwrite it (ADR 2026-06-15 item 3).
+  if (token.questionSource === "manual" && token.question?.trim()) {
+    return {
+      question: token.question.trim(),
+      source: "original",
+    };
+  }
+
   const { enabled } = await getLlmConfig(db);
 
   if (enabled) {
@@ -2098,8 +2112,8 @@ export async function ensureHighQualityQuestion(
       });
 
       if (generated.text.trim().length > 0) {
-        // Persist the latest high-quality question as the offline fallback.
-        await updateToken(db, token.slug, { question: generated.text });
+        // Ephemeral by design: the generated question is used for this
+        // review only and never written back to the token.
         return {
           question: generated.text,
           source: "llm",
