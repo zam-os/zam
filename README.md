@@ -10,6 +10,8 @@ sharper — the two stop being a trade-off.
 
 Don't just automate. **Elevate.**
 
+🌐 **[zam-os.org](https://zam-os.org)** — the project website, in 7 languages.
+
 ---
 
 ## Who ZAM is for
@@ -27,9 +29,9 @@ compound into lasting skill.
 - **Rides along in your AI agent.** As you work a real task, ZAM breaks it into small
   knowledge concepts, notices which ones you're due to revisit, and weaves them into
   the session.
-- **Watches instead of quizzing.** Do a step well on your own and ZAM quietly marks it
-  learned — no interruption. It only asks when it can't tell from your work. The best
-  session is one you barely notice.
+- **Watches you work.** Do a step well on your own and ZAM quietly marks it learned — no
+  interruption. When no real task can show what you know, it asks a focused recall
+  question. Both are active recall.
 - **Remembers what you're forgetting.** Every concept is scheduled with FSRS-5 spaced
   repetition over a prerequisite graph, so ZAM resurfaces things right before they'd slip.
 - **Stays on your machine.** One local SQLite database (`~/.zam/zam.db`), shared by the
@@ -131,6 +133,7 @@ layer just drives it. See [Architecture](docs/ARCHITECTURE.md).
 
 ## Documentation
 
+- 🌐 [zam-os.org](https://zam-os.org) — project website, in 7 languages
 - [Usage & maintenance](docs/USAGE.md) · [Contributing](CONTRIBUTING.md) · [Architecture](docs/ARCHITECTURE.md)
 
 ## License
