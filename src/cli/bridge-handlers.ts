@@ -642,6 +642,9 @@ export async function addToken(db: Database, params: AddTokenParams) {
     symbiosis_mode: params.symbiosisMode,
     source_link: params.sourceLink ?? null,
     question: params.question ?? null,
+    // Bridge/MCP callers are agents: their questions are LLM-authored and
+    // stay refreshable. Humans author questions via the token CLI instead.
+    question_source: params.question ? "llm" : undefined,
   });
 
   for (const context of assignedContexts) {

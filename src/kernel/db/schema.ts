@@ -29,7 +29,12 @@ CREATE TABLE IF NOT EXISTS tokens (
   deprecated_at TEXT,
   question      TEXT,
   provider      TEXT,
-  topic_id      TEXT
+  topic_id      TEXT,
+  -- Who authored the current question ('manual' | 'llm' | 'template');
+  -- validated in code, not via CHECK. Column default is 'llm' so unlabeled
+  -- writes (pre-M013 rows, old snapshot restores) count as LLM-era content;
+  -- createToken() defaults to 'manual' for API callers instead.
+  question_source TEXT NOT NULL DEFAULT 'llm'
 );
 
 -- Prerequisite dependency graph: "to learn A, first know B"

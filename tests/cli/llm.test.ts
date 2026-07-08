@@ -376,7 +376,7 @@ describe("LLM client utilities (CLI layer)", () => {
     });
   });
 
-  it("ensureHighQualityQuestion dynamically generates and self-heals a missing question when LLM is enabled", async () => {
+  it("ensureHighQualityQuestion generates a review-only question without persisting it", async () => {
     const db = await openDatabase({
       dbPath: ":memory:",
       initialize: true,
@@ -425,11 +425,121 @@ describe("LLM client utilities (CLI layer)", () => {
         source: "llm",
       });
 
-      // Verify that it self-healed in the database!
+      // The generated question is ephemeral: the stored token must be
+      // untouched — content changes only through deliberate editing surfaces.
       const updated = await getTokenBySlug(db, slug);
-      expect(updated?.question).toBe(
-        "How do you securely store Azure DevOps HTTPS credentials on macOS?",
+      expect(updated?.question).toBeNull();
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("ensureHighQualityQuestion varies a stored question ephemerally, anchored on its text", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const token = await createToken(db, {
+      slug: "manual-question",
+      concept: "A concept with a hand-written question",
+      domain: "testing",
+      question: "What exactly did the human ask?",
+      // createToken defaults to question_source 'manual'
+    });
+
+    const originalFetch = global.fetch;
+    const requestBodies: string[] = [];
+    global.fetch = (async (_url: unknown, init?: RequestInit) => {
+      if (typeof init?.body === "string") requestBodies.push(init.body);
+      return new Response(
+        JSON.stringify({
+          choices: [{ message: { content: "A varied phrasing of the ask?" } }],
+        }),
       );
+    }) as typeof fetch;
+
+    try {
+      const resolution = await ensureHighQualityQuestion(db, {
+        id: token.id,
+        slug: token.slug,
+        concept: token.concept,
+        domain: token.domain,
+        bloomLevel: token.bloom_level,
+        sourceLink: token.source_link,
+        question: token.question,
+      });
+
+      // The learner gets a fresh variation so the exact phrasing cannot be
+      // memorized — generated from the stored question as anchor.
+      expect(resolution).toMatchObject({
+        question: "A varied phrasing of the ask?",
+        source: "llm",
+      });
+      expect(
+        requestBodies.some((body) =>
+          body.includes("What exactly did the human ask?"),
+        ),
+      ).toBe(true);
+
+      // The stored question and its provenance are untouched.
+      const stored = await getTokenBySlug(db, token.slug);
+      expect(stored?.question).toBe("What exactly did the human ask?");
+      expect(stored?.question_source).toBe("manual");
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("ensureHighQualityQuestion serves the stored question verbatim when dynamic questions are disabled", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+    await setSetting(db, "llm.dynamic_questions", "false");
+
+    const token = await createToken(db, {
+      slug: "no-variation",
+      concept: "A concept reviewed without question variation",
+      domain: "testing",
+      question: "The stored question, asked as-is?",
+    });
+
+    const originalFetch = global.fetch;
+    let fetchCalls = 0;
+    global.fetch = (async () => {
+      fetchCalls++;
+      return new Response(
+        JSON.stringify({
+          choices: [{ message: { content: "Should never be requested" } }],
+        }),
+      );
+    }) as typeof fetch;
+
+    try {
+      const resolution = await ensureHighQualityQuestion(db, {
+        id: token.id,
+        slug: token.slug,
+        concept: token.concept,
+        domain: token.domain,
+        bloomLevel: token.bloom_level,
+        sourceLink: token.source_link,
+        question: token.question,
+      });
+
+      expect(resolution).toMatchObject({
+        question: "The stored question, asked as-is?",
+        source: "original",
+      });
+      expect(fetchCalls).toBe(0);
     } finally {
       global.fetch = originalFetch;
       await db.close();

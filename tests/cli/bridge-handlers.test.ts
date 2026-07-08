@@ -24,10 +24,15 @@ describe("bridge-handlers unit tests", () => {
   let tempDir: string;
   let dbPath: string;
   let db: any;
+  let previousConfigPath: string | undefined;
 
   beforeEach(async () => {
     tempDir = mkdtempSync(join(tmpdir(), "zam-bridge-handlers-test-"));
     dbPath = join(tempDir, "test.db");
+    // Isolate from the developer's machine config (~/.zam/config.json) so an
+    // active workspace knowledge context on the host cannot leak into tests.
+    previousConfigPath = process.env.ZAM_CONFIG_PATH;
+    process.env.ZAM_CONFIG_PATH = join(tempDir, "machine-config.json");
     db = await openDatabase({
       dbPath,
       initialize: true,
@@ -42,6 +47,11 @@ describe("bridge-handlers unit tests", () => {
   });
 
   afterEach(async () => {
+    if (previousConfigPath === undefined) {
+      delete process.env.ZAM_CONFIG_PATH;
+    } else {
+      process.env.ZAM_CONFIG_PATH = previousConfigPath;
+    }
     if (db) {
       await db.close();
     }
@@ -264,6 +274,81 @@ describe("bridge-handlers unit tests", () => {
       }),
     ).rejects.toThrow("Prerequisite token not found");
     expect(await getTokenBySlug(db, "invalid-advanced")).toBeUndefined();
+  });
+
+  it("addToken marks agent-provided questions as llm", async () => {
+    await addToken(db, {
+      user: "thomas",
+      slug: "agent-authored",
+      concept: "A concept whose question the agent wrote",
+      domain: "testing",
+      question: "What did the agent ask?",
+    });
+
+    const token = await getTokenBySlug(db, "agent-authored");
+    expect(token?.question_source).toBe("llm");
+  });
+
+  it("getReviewsBatch serves fresh question variations and never mutates stored questions", async () => {
+    const { setSetting } = await import("../../src/kernel/index.js");
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const manual = await createToken(db, {
+      slug: "manual-question",
+      concept: "Human-authored question",
+      domain: "testing",
+      question: "What did the human write?",
+      // createToken defaults to question_source 'manual'
+    });
+    const generated = await createToken(db, {
+      slug: "generated-question",
+      concept: "LLM-authored question",
+      domain: "testing",
+      question: "Old generated question?",
+      question_source: "llm",
+    });
+    await ensureCard(db, manual.id, "thomas");
+    await ensureCard(db, generated.id, "thomas");
+    await db
+      .prepare("UPDATE cards SET due_at = '2000-01-01T00:00:00.000Z'")
+      .run();
+
+    const originalFetch = global.fetch;
+    global.fetch = (async () =>
+      new Response(
+        JSON.stringify({
+          choices: [{ message: { content: "Fresh generated question?" } }],
+        }),
+      )) as typeof fetch;
+
+    try {
+      const res = await getReviewsBatch(db, {
+        user: "thomas",
+        includeQuestions: true,
+        noResolve: true,
+      });
+
+      const manualCard = res.cards.find((c: any) => c.slug === manual.slug);
+      const generatedCard = res.cards.find(
+        (c: any) => c.slug === generated.slug,
+      );
+      // Both get an ephemeral variation — manual questions too, so the
+      // learner cannot memorize the exact phrasing.
+      expect(manualCard?.question).toBe("Fresh generated question?");
+      expect(generatedCard?.question).toBe("Fresh generated question?");
+
+      // Reviews never mutate content: both stored questions are untouched.
+      const storedManual = await getTokenBySlug(db, manual.slug);
+      expect(storedManual?.question).toBe("What did the human write?");
+      expect(storedManual?.question_source).toBe("manual");
+
+      const storedGenerated = await getTokenBySlug(db, generated.slug);
+      expect(storedGenerated?.question).toBe("Old generated question?");
+      expect(storedGenerated?.question_source).toBe("llm");
+    } finally {
+      global.fetch = originalFetch;
+    }
   });
 
   it("endSession can return synthesis candidates and the final summary", async () => {
