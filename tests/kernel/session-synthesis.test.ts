@@ -39,6 +39,20 @@ function command(
   };
 }
 
+/** Wrap a Database so every prepare() call is counted. */
+function countPrepares(db: Database, counter: { count: number }): Database {
+  return {
+    prepare(sql: string) {
+      counter.count++;
+      return db.prepare(sql);
+    },
+    exec: (sql: string) => db.exec(sql),
+    pragma: (source: string) => db.pragma(source),
+    transaction: <T>(fn: (tx: Database) => Promise<T>) => db.transaction(fn),
+    close: () => db.close(),
+  };
+}
+
 const cleanEvidence = {
   matchedCommands: 2,
   helpSeeking: false,
@@ -139,6 +153,46 @@ describe("automatic session synthesis", () => {
     });
     expect(high.candidates).toHaveLength(1);
     expect(high.candidates[0].confidence).toBe("high");
+  });
+
+  it("issues a constant number of queries regardless of pattern count", async () => {
+    const makeSkillToken = async (i: number) => {
+      const token = await createToken(db, {
+        slug: `pattern-token-${i}`,
+        concept: `pattern command ${i} does something useful`,
+        domain: "testing",
+        bloom_level: 3,
+      });
+      await createAgentSkill(db, {
+        slug: `pattern-skill-${i}`,
+        description: `Skill ${i}`,
+        steps: [`Run \`pattern-command-${i}\``],
+        token_slugs: [token.slug],
+      });
+    };
+
+    for (let i = 0; i < 2; i++) await makeSkillToken(i);
+    const session = await startSession(db, {
+      user_id: "tester",
+      task: "Count queries",
+    });
+
+    const counter = { count: 0 };
+    const counted = countPrepares(db, counter);
+    await prepareSessionSynthesis(counted, {
+      sessionId: session.id,
+      commands: [command(1, "pattern-command-0")],
+    });
+    const queriesForTwoPatterns = counter.count;
+
+    for (let i = 2; i < 8; i++) await makeSkillToken(i);
+    counter.count = 0;
+    await prepareSessionSynthesis(counted, {
+      sessionId: session.id,
+      commands: [command(1, "pattern-command-0")],
+    });
+
+    expect(counter.count).toBe(queriesForTwoPatterns);
   });
 
   it("requires explicit patterns for skills linked to multiple tokens", async () => {
