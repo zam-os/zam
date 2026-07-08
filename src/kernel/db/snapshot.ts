@@ -24,6 +24,11 @@ const MANIFEST_PREFIX = "-- zam-snapshot: ";
 /**
  * Data tables in foreign-key-safe insertion order (parents before children).
  * Deletes for a `force` restore walk this list in reverse.
+ *
+ * Every schema table must appear here unless its content is derived and
+ * recomputable (currently only `token_embeddings`, which is re-embedded on
+ * demand and would bloat the SQL text). The snapshot test suite guards this
+ * classification against the actual schema.
  */
 export const SNAPSHOT_TABLES = [
   "tokens",
@@ -35,6 +40,10 @@ export const SNAPSHOT_TABLES = [
   "session_syntheses",
   "user_config",
   "agent_skills",
+  "sources",
+  "token_sources",
+  "contexts",
+  "token_contexts",
 ] as const;
 
 export interface SnapshotManifest {

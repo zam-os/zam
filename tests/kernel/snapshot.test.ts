@@ -2,7 +2,10 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
+import { SNAPSHOT_TABLES } from "../../src/kernel/db/snapshot.js";
 import {
+  assignTokenToContext,
+  createKnowledgeContext,
   createToken,
   type Database,
   ensureCard,
@@ -12,6 +15,15 @@ import {
   parseSnapshot,
   verifySnapshot,
 } from "../../src/kernel/index.js";
+
+/**
+ * Tables that are deliberately NOT part of snapshots because their content
+ * is derived and recomputable (and would bloat the portable SQL text).
+ * Every other schema table must be listed in SNAPSHOT_TABLES — the guard
+ * test below fails when a new table is added without classifying it here
+ * or there.
+ */
+const DERIVED_TABLES = ["token_embeddings"];
 
 const tempDirs: string[] = [];
 
@@ -140,6 +152,92 @@ describe("database snapshots", () => {
 
   it("rejects input that is not a snapshot", async () => {
     expect(() => parseSnapshot("SELECT 1;")).toThrow(/snapshot/i);
+  });
+
+  it("classifies every schema table as snapshotted or derived", async () => {
+    const db = await freshDb();
+    const rows = (await db
+      .prepare(
+        `SELECT name FROM sqlite_master
+         WHERE type = 'table' AND name NOT LIKE 'sqlite_%'
+         ORDER BY name`,
+      )
+      .all()) as Array<{ name: string }>;
+    await db.close();
+
+    const classified = new Set<string>([...SNAPSHOT_TABLES, ...DERIVED_TABLES]);
+    const unclassified = rows
+      .map((row) => row.name)
+      .filter((name) => !classified.has(name));
+
+    expect(unclassified).toEqual([]);
+  });
+
+  it("round-trips sources and knowledge contexts", async () => {
+    const source = await freshDb();
+    const token = await createToken(source, {
+      slug: "photosynthesis",
+      concept: "Plants convert light into chemical energy",
+      domain: "biology",
+      bloom_level: 2,
+    });
+
+    const context = await createKnowledgeContext(source, {
+      name: "school",
+      label: "Schule",
+      language: "de",
+    });
+    await assignTokenToContext(source, token.id, context.id);
+
+    await source
+      .prepare("INSERT INTO sources (id, type, uri, content) VALUES (?, ?, ?, ?)")
+      .run("src-bio-book", "file", "file:///books/bio.pdf", "chapter text");
+    await source
+      .prepare(
+        `INSERT INTO token_sources (token_id, source_id, excerpt, page_number)
+         VALUES (?, ?, ?, ?)`,
+      )
+      .run(token.id, "src-bio-book", "Light reaction excerpt", "42");
+
+    const snapshot = await exportSnapshot(source);
+    await source.close();
+
+    const manifest = verifySnapshot(snapshot);
+    expect(manifest.tables.sources).toBe(1);
+    expect(manifest.tables.token_sources).toBe(1);
+    expect(manifest.tables.contexts).toBe(1);
+    expect(manifest.tables.token_contexts).toBe(1);
+
+    const target = await freshDb();
+    const result = await importSnapshot(target, snapshot);
+    expect(result.tables.contexts).toBe(1);
+
+    const restoredContext = (await target
+      .prepare("SELECT name, label, language FROM contexts")
+      .get()) as { name: string; label: string; language: string };
+    expect(restoredContext).toMatchObject({
+      name: "school",
+      label: "Schule",
+      language: "de",
+    });
+
+    const assignment = (await target
+      .prepare("SELECT COUNT(*) AS n FROM token_contexts")
+      .get()) as { n: number };
+    expect(assignment.n).toBe(1);
+
+    const restoredSource = (await target
+      .prepare(
+        `SELECT s.uri, ts.excerpt, ts.page_number
+         FROM token_sources ts JOIN sources s ON s.id = ts.source_id`,
+      )
+      .get()) as { uri: string; excerpt: string; page_number: string };
+    expect(restoredSource).toMatchObject({
+      uri: "file:///books/bio.pdf",
+      excerpt: "Light reaction excerpt",
+      page_number: "42",
+    });
+    await target.close();
   });
 
   it("exports and restores an empty database", async () => {
