@@ -20,6 +20,32 @@ function setStatus(text: string, connected: boolean): void {
   if (statusDot) statusDot.classList.toggle("connected", connected);
 }
 
+let toastEl: HTMLDivElement | null = null;
+let toastHideTimer: number | null = null;
+
+/**
+ * Panel-scoped stand-in for window.alert() — see the override below for why
+ * this exists. Fixed to the bottom of the panel, replaces any
+ * currently-shown message (no queue), and auto-hides after ~4s.
+ */
+function showPanelToast(message: string): void {
+  if (!toastEl) {
+    toastEl = document.createElement("div");
+    toastEl.id = "zam-panel-toast";
+    document.body.appendChild(toastEl);
+  }
+  toastEl.textContent = message;
+  toastEl.classList.add("visible");
+
+  if (toastHideTimer !== null) {
+    clearTimeout(toastHideTimer);
+  }
+  toastHideTimer = window.setTimeout(() => {
+    toastEl?.classList.remove("visible");
+    toastHideTimer = null;
+  }, 4000);
+}
+
 interface OpenStudioResult {
   studio?: string;
   version?: string;
@@ -76,6 +102,15 @@ app
     if (navigator.language.startsWith("de")) {
       setCurrentLocale("de");
     }
+
+    // MCP-Apps hosts render this panel in a sandboxed iframe, typically
+    // without `allow-modals` set, so window.alert() silently no-ops instead
+    // of showing anything. learning-content.ts (shared with the Tauri
+    // desktop app, which does grant modal permission) routes every
+    // success/error/validation message through alert(), so redirect it to
+    // an in-panel toast before init can trigger any of those calls.
+    window.alert = (message?: unknown): void => showPanelToast(String(message));
+
     initLearningContentStudio();
   })
   .catch((error: unknown) => {
