@@ -87,9 +87,9 @@ describe("MCP stdio server tests", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all 13 tools with correct annotations", async () => {
+  it("lists all 14 tools with correct annotations", async () => {
     const response = await client.listTools();
-    expect(response.tools).toHaveLength(13);
+    expect(response.tools).toHaveLength(14);
 
     const toolNames = response.tools.map((t) => t.name).sort();
     const expectedNames = [
@@ -105,6 +105,7 @@ describe("MCP stdio server tests", () => {
       "zam_link_prereq",
       "zam_monitor",
       "zam_open_studio",
+      "zam_open_recall",
       "zam_studio_bridge",
     ].sort();
     expect(toolNames).toEqual(expectedNames);
@@ -311,6 +312,48 @@ describe("MCP stdio server tests", () => {
       arguments: {},
     });
     expect(res.isError).toBeUndefined();
+  });
+
+  it("exposes the recall panel as an MCP Apps resource", async () => {
+    const resources = await client.listResources();
+    const recall = resources.resources.find((r) => r.uri === "ui://zam/recall");
+    expect(recall).toBeDefined();
+
+    const read = await client.readResource({ uri: "ui://zam/recall" });
+    const content = read.contents[0] as { text: string; mimeType: string };
+    expect(content.mimeType).toContain("text/html");
+    // The bundled recall panel roots at <div id="zam-recall-panel">. The
+    // no-build placeholder in loadPanelHtml uses a data-panel attribute
+    // instead of this id, so this assertion only passes against a real
+    // dist/ui/recall-panel.html build (CI builds before running tests).
+    expect(content.text).toContain("zam-recall-panel");
+  });
+
+  it("links zam_open_recall to the recall panel resource", async () => {
+    const response = await client.listTools();
+    const tool = response.tools.find((t) => t.name === "zam_open_recall");
+    expect(tool).toBeDefined();
+    const meta = tool?._meta as { ui?: { resourceUri?: string } } | undefined;
+    expect(meta?.ui?.resourceUri).toBe("ui://zam/recall");
+    expect((tool as any).annotations).toEqual({
+      openWorldHint: false,
+      readOnlyHint: true,
+    });
+
+    const res = await client.callTool({
+      name: "zam_open_recall",
+      arguments: {},
+    });
+    expect(res.isError).toBeUndefined();
+    const structured = (res as any).structuredContent as {
+      recall?: string;
+      version?: string;
+      user?: string | null;
+    };
+    expect(structured.recall).toBe("zam");
+    expect(typeof structured.version).toBe("string");
+    // Default user seeded in beforeEach via user_config.
+    expect(structured.user).toBe("thomas");
   });
 
   it("returns error result with isError: true on handler error", async () => {

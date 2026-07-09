@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZAM Recall</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --accent: #827dbd;
+        --bg: #f5f7fb;
+        --fg: #1c2030;
+        --muted: #6b7280;
+        --card: #ffffff;
+        --border: rgba(15, 23, 42, 0.14);
+        --field-bg: #ffffff;
+        --danger: #ef4444;
+        --danger-bg: rgba(239, 68, 68, 0.1);
+        --hover: rgba(130, 125, 189, 0.1);
+        --ok: #2fbf71;
+        --ok-bg: rgba(47, 191, 113, 0.12);
+
+        /* Aliases so any shared markup built against the richer --clr-*
+           palette (desktop/src/styles.css) still resolves here. Defined once;
+           the dark block below only redefines the base tokens and custom
+           properties resolve dynamically, so these follow along. */
+        --clr-text-muted: var(--muted);
+        --clr-text-secondary: var(--muted);
+        --clr-bg-surface: var(--card);
+        --clr-border: var(--border);
+        --clr-accent-purple: var(--accent);
+        --clr-accent-teal: var(--accent);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #14161f;
+          --fg: #e8eaf2;
+          --muted: #9aa0b0;
+          --card: #1e2230;
+          --border: rgba(255, 255, 255, 0.14);
+          --field-bg: #262b3d;
+          --danger: #f87171;
+          --danger-bg: rgba(248, 113, 113, 0.14);
+          --hover: rgba(130, 125, 189, 0.18);
+          --ok: #34d399;
+          --ok-bg: rgba(52, 211, 153, 0.16);
+        }
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+      }
+      #zam-recall-panel {
+        padding: 16px;
+        max-width: 640px;
+        margin: 0 auto;
+      }
+      .zam-header {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .zam-header h1 {
+        font-size: 18px;
+        margin: 0;
+      }
+      .zam-header .version {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .zam-status-line {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin: 0 0 12px;
+      }
+      .status-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--muted);
+        margin-right: 6px;
+      }
+      .status-dot.connected {
+        background: var(--ok);
+      }
+      .zam-card {
+        background: var(--card);
+        border-radius: 10px;
+        padding: 16px 18px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      }
+
+      /* ── Buttons ─────────────────────────────────────────────────────── */
+      .btn {
+        font: inherit;
+        font-weight: 600;
+        font-size: 13px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          background 0.15s ease,
+          border-color 0.15s ease;
+      }
+      .btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+      }
+      .primary-btn {
+        background: var(--accent);
+        color: #ffffff;
+      }
+      .primary-btn:hover:not(:disabled) {
+        filter: brightness(1.08);
+      }
+      .secondary-btn {
+        background: transparent;
+        border-color: var(--border);
+        color: var(--fg);
+      }
+      .secondary-btn:hover:not(:disabled) {
+        background: var(--hover);
+      }
+      .hidden {
+        display: none !important;
+      }
+
+      /* ── Recall card ─────────────────────────────────────────────────── */
+      .recall-counter {
+        font-size: 0.78rem;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+        margin-bottom: 8px;
+      }
+      .recall-badges {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+      .recall-badge {
+        font-size: 0.72rem;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: var(--hover);
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .recall-question {
+        font-size: 1.05rem;
+        line-height: 1.5;
+        margin-bottom: 14px;
+      }
+      .recall-answer {
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 84px;
+        resize: vertical;
+        padding: 9px 11px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--field-bg);
+        color: var(--fg);
+        font: inherit;
+        font-size: 0.9rem;
+        outline: none;
+      }
+      .recall-answer:focus {
+        border-color: var(--accent);
+      }
+      .recall-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+        flex-wrap: wrap;
+      }
+
+      /* ── Reveal + rating ─────────────────────────────────────────────── */
+      .recall-reveal {
+        margin-top: 16px;
+        padding-top: 14px;
+        border-top: 1px solid var(--border);
+      }
+      .recall-reveal-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .recall-concept {
+        font-size: 0.95rem;
+        line-height: 1.55;
+        white-space: pre-wrap;
+      }
+      .recall-hint {
+        margin-top: 12px;
+        font-size: 0.82rem;
+        color: var(--accent);
+        background: var(--hover);
+        border-radius: 8px;
+        padding: 8px 10px;
+      }
+      .recall-rating-label {
+        margin-top: 14px;
+        margin-bottom: 8px;
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+      .recall-ratings {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+      .recall-rating-btn {
+        flex-direction: column;
+        gap: 2px;
+        padding: 9px 6px;
+      }
+      .recall-rating-btn .rating-num {
+        font-size: 0.7rem;
+        opacity: 0.7;
+      }
+      .recall-result {
+        margin-top: 14px;
+        font-size: 0.9rem;
+        color: var(--ok);
+        background: var(--ok-bg);
+        border-radius: 8px;
+        padding: 9px 11px;
+      }
+      .recall-notice {
+        margin-top: 12px;
+        font-size: 0.85rem;
+        color: var(--danger);
+        background: var(--danger-bg);
+        border: 1px solid var(--danger);
+        border-radius: 8px;
+        padding: 9px 11px;
+      }
+
+      /* ── Empty + error states ────────────────────────────────────────── */
+      .recall-empty {
+        text-align: center;
+        padding: 32px 12px;
+      }
+      .recall-empty-emoji {
+        font-size: 2rem;
+      }
+      .recall-empty-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        margin: 8px 0 4px;
+      }
+      .recall-empty-sub {
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="zam-recall-panel">
+      <div class="zam-header">
+        <h1>ZAM Recall</h1>
+        <span class="version" id="zam-version"></span>
+      </div>
+      <p class="zam-status-line">
+        <span class="status-dot" id="zam-status-dot"></span>
+        <span id="zam-status">Connecting to host…</span>
+      </p>
+      <div id="recall-content"></div>
+    </div>
+    <script type="module" src="./recall.ts"></script>
+  </body>
+</html>

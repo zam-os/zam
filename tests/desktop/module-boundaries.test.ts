@@ -72,4 +72,22 @@ describe("desktop module boundaries", () => {
       ).toBe(false);
     }
   });
+
+  it("recall.ts stays Tauri-free and Three-free", () => {
+    const specifiers = importSpecifiers(read("panel/recall.ts"));
+    for (const specifier of specifiers) {
+      expect(
+        specifier.startsWith("@tauri-apps"),
+        `recall.ts must not import Tauri APIs (found "${specifier}")`,
+      ).toBe(false);
+      expect(
+        specifier === "three" || specifier.startsWith("three/"),
+        `recall.ts must not import Three.js (found "${specifier}")`,
+      ).toBe(false);
+      expect(
+        specifier.startsWith("./main") || specifier.startsWith("../main"),
+        `recall.ts must not import main.js (found "${specifier}")`,
+      ).toBe(false);
+    }
+  });
 });

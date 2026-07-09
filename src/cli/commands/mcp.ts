@@ -35,6 +35,7 @@ if (!existsSync(pkgPath)) {
 const pkg = JSON.parse(readFileSync(pkgPath, "utf-8")) as { version: string };
 
 const STUDIO_RESOURCE_URI = "ui://zam/studio";
+const RECALL_RESOURCE_URI = "ui://zam/recall";
 
 /**
  * Commands the ZAM Studio panel may run through `zam_studio_bridge`. A
@@ -61,16 +62,20 @@ const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
 ]);
 
 /**
- * Load the bundled Studio panel HTML (built by `vite.config.panel.mts` into
- * `dist/ui/studio-panel.html`). Falls back to a self-describing placeholder
- * so `resources/read` never breaks on a checkout without a panel build.
+ * Load a bundled MCP Apps panel's HTML (built by `vite.config.panel.mts` into
+ * `dist/ui/<fileName>`). Falls back to a self-describing placeholder so
+ * `resources/read` never breaks on a checkout without a panel build.
+ *
+ * The placeholder tags itself with a `data-panel` attribute rather than a
+ * per-panel root id, so it can never be mistaken for a real build in tests
+ * that assert on a panel's actual marker id (e.g. `zam-recall-panel`).
  */
-function loadStudioPanelHtml(): string {
+function loadPanelHtml(fileName: string, placeholderTitle: string): string {
   const candidates = [
     // dist/cli/commands/mcp.js → dist/ui/
-    join(__dirname, "..", "..", "ui", "studio-panel.html"),
+    join(__dirname, "..", "..", "ui", fileName),
     // src/cli/commands/mcp.ts via tsx → <repo>/dist/ui/
-    join(__dirname, "..", "..", "..", "dist", "ui", "studio-panel.html"),
+    join(__dirname, "..", "..", "..", "dist", "ui", fileName),
   ];
   for (const candidate of candidates) {
     if (existsSync(candidate)) {
@@ -78,9 +83,9 @@ function loadStudioPanelHtml(): string {
     }
   }
   return `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>ZAM Studio</title></head>
-<body><div id="zam-studio-panel">
-<h1>ZAM Studio</h1>
+<html lang="en"><head><meta charset="utf-8"><title>${placeholderTitle}</title></head>
+<body><div id="zam-panel-placeholder" data-panel="${fileName}">
+<h1>${placeholderTitle}</h1>
 <p>The panel bundle is missing — run <code>npm run build</code> in the ZAM checkout.</p>
 </div></body></html>`;
 }
@@ -674,7 +679,66 @@ export function createMcpServer(db: Database): McpServer {
         {
           uri: STUDIO_RESOURCE_URI,
           mimeType: RESOURCE_MIME_TYPE,
-          text: loadStudioPanelHtml(),
+          text: loadPanelHtml("studio-panel.html", "ZAM Studio"),
+        },
+      ],
+    }),
+  );
+
+  // zam_open_recall — the spoiler-free recall card (MCP Apps). The user
+  // answers review questions inside the card; the description below is the
+  // contract that tells ANY harness model how to evaluate a free-text answer
+  // arriving as a `sendMessage` and book the FSRS rating with
+  // zam_submit_review. Read-only from the model's side (it opens a panel).
+  registerAppTool(
+    server,
+    "zam_open_recall",
+    {
+      title: "Open ZAM recall session",
+      description:
+        "Open the ZAM spoiler-free recall card. The card shows due review " +
+        "questions; the user answers inside the card. When a user message " +
+        'arrives matching `ZAM-Antwort zu Karte "<slug>" (cardId <id>): ' +
+        "<answer>`, evaluate the answer against the card's stored concept " +
+        "(fetch via zam_get_reviews if needed), then submit the FSRS rating " +
+        'with zam_submit_review (doneBy: "user", rating 1-4: 1 wrong/blank, ' +
+        "2 partially correct or effortful, 3 correct, 4 correct and " +
+        "effortless) and reply with a one-line verdict naming what matched " +
+        "or was missing.",
+      inputSchema: {
+        user: z.string().optional().describe("User ID"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        readOnlyHint: true,
+      },
+      _meta: {
+        ui: { resourceUri: RECALL_RESOURCE_URI },
+      },
+    },
+    wrapHandler(async ({ user }: { user?: string }) => {
+      // Mirror zam_open_studio: resolve to the signed-in user, but never
+      // fail to open the panel — fall back to null when no default is set.
+      const userId = await getUserId(user).catch(() => null);
+      return {
+        recall: "zam",
+        version: pkg.version,
+        user: userId,
+      };
+    }),
+  );
+
+  registerAppResource(
+    server,
+    "zam-recall",
+    RECALL_RESOURCE_URI,
+    { mimeType: RESOURCE_MIME_TYPE },
+    async () => ({
+      contents: [
+        {
+          uri: RECALL_RESOURCE_URI,
+          mimeType: RESOURCE_MIME_TYPE,
+          text: loadPanelHtml("recall-panel.html", "ZAM Recall"),
         },
       ],
     }),
