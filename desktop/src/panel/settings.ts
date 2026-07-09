@@ -481,9 +481,18 @@ app.ontoolresult = (params) => {
   start();
 };
 
+// A plain file viewer (e.g. an editor preview) renders this HTML without
+// ever answering ui/initialize — connect() then stays pending forever.
+// Degrade honestly instead of showing "Connecting to host…" for good.
+const NO_HOST_NOTICE =
+  "Kein MCP-Apps-Host — diese Karte braucht einen Host mit ui/initialize " +
+  "(z. B. basic-host oder Copilot-Panel).";
+const noHostTimer = setTimeout(() => setStatus(NO_HOST_NOTICE, false), 4000);
+
 app
   .connect()
   .then(() => {
+    clearTimeout(noHostTimer);
     connected = true;
     setStatus("Connected to host — waiting for session…", true);
     // ontoolresult normally fires right after the handshake and triggers the
@@ -492,5 +501,6 @@ app
     window.setTimeout(start, 800);
   })
   .catch((error: unknown) => {
+    clearTimeout(noHostTimer);
     setStatus(`ZAM Settings failed to start: ${errorMessage(error)}`, false);
   });

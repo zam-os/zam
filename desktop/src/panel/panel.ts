@@ -91,9 +91,18 @@ async function mcpTransport(cmd: string, args: string[]): Promise<unknown> {
   return text === undefined ? undefined : JSON.parse(text);
 }
 
+// A plain file viewer (e.g. an editor preview) renders this HTML without
+// ever answering ui/initialize — connect() then stays pending forever.
+// Degrade honestly instead of showing "Connecting to host…" for good.
+const NO_HOST_NOTICE =
+  "Kein MCP-Apps-Host — diese Karte braucht einen Host mit ui/initialize " +
+  "(z. B. basic-host oder Copilot-Panel).";
+const noHostTimer = setTimeout(() => setStatus(NO_HOST_NOTICE, false), 4000);
+
 app
   .connect()
   .then(() => {
+    clearTimeout(noHostTimer);
     setStatus("Connected to host — waiting for data…", true);
 
     // Transport must be wired before init: initLearningContentStudio()
@@ -114,6 +123,7 @@ app
     initLearningContentStudio();
   })
   .catch((error: unknown) => {
+    clearTimeout(noHostTimer);
     setStatus(
       `ZAM Studio failed to start: ${error instanceof Error ? error.message : String(error)}`,
       false,
