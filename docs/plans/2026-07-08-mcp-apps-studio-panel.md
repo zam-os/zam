@@ -134,6 +134,44 @@ follow-up):
   in `desktop/vite.config.ts` (tauri keeps 1420 by default). In a plain
   browser the Studio UI renders but data calls fail ("reading 'invoke'")
   — no Tauri IPC there; exactly the gap P2's transport injection fills.
+- **Claude Code Desktop, Code tab (2026-07-09):** zam server loads via
+  the project `.mcp.json`, `zam_open_studio` executes and returns
+  `{studio, version, user}` correctly — but **no panel card renders**
+  (tool result stays a collapsed text result). The Code tab is an MCP
+  *tool* host, not an MCP-Apps *UI* host.
+- **Chat tab (2026-07-09 evening, after config re-arm):** zam server
+  connects, answers `tools/list` + `resources/list` — but the model
+  never issued a `tools/call` (mcp-server-zam.log ends there). So the
+  Chat-tab failure is at tool-invocation level (enablement/selection),
+  not rendering. GitHub Copilot app: zam connects again, no tool call
+  observed either, no card (Thomas).
+- **ext-apps#671 research (2026-07-09):** open, unfixed bug — Claude
+  Desktop (Windows) and claude.ai do NOT mount the MCP-Apps iframe even
+  when the full protocol exchange succeeds (capability negotiated,
+  resources/read served); users only see the text fallback "[This tool
+  call rendered an interactive widget …]". Applies to mcp-remote
+  proxies too → an HTTP-transport plan B would not help. The same UI
+  renders correctly in the ext-apps repo's **basic-host** reference
+  implementation (clone + `npm install` + `npm start` →
+  localhost:8080). Fallback demo hosts to evaluate: basic-host
+  (guaranteed per #671 reporter) and Goose (listed with documented
+  MCP-Apps support).
+- **basic-host: FULL RENDER SUCCESS (2026-07-09 evening).** ext-apps
+  repo cloned to `C:\src\github\ext-apps`; new `scripts/mcp-http-dev.ts`
+  exposes the zam MCP server via streamable HTTP on :3001 (stateless,
+  fresh server per request, shared db); basic-host (ports 8080/8081,
+  `SERVERS` env) connects and — notably — honors
+  `visibility: ["app"]`: `zam_studio_bridge` is hidden from its tool
+  picker. Calling `zam_open_studio` renders the complete Editor panel:
+  connected header (v0.9.4, signed in as thomas), knowledge-context
+  filter active ("work"), real personal cards listed through
+  `zam_studio_bridge`. The full path is proven end-to-end:
+  iframe → `ui/initialize` → `callServerTool` → HTTP → allowlist →
+  Commander executor → SQLite → panel. Demo strategy: basic-host is the
+  rendering demo (start: `npx tsx scripts/mcp-http-dev.ts` +
+  `SERVERS='["http://localhost:3001/mcp"]' npx tsx serve.ts` in
+  `ext-apps/examples/basic-host`); Claude Desktop demonstrates the
+  conversational tool side until #671 lands.
 
 **P2 complete (2026-07-09, overnight session, commits `b183b95..b9c57f4`):**
 
@@ -161,8 +199,25 @@ follow-up):
   rehearsal: drop the navigator.language switch for consistent English, or
   ship mixed until P5 i18n).
 
-**Next:** P3 (2D neighborhood renderer in the panel) and P4 (Settings-lite
-+ the two new bridge handlers), then P5 rehearsal/release — see Phases.
+**Direction update (2026-07-09, Thomas, pre-render-test):** MCP Apps are
+in-place UI — cards render inline between chat turns (also on mobile,
+where no side pane exists), not as a persistent side panel. Target shape
+therefore: **separate single-purpose apps, no in-panel navigation** — the
+harness leads the flow and surfaces the right card (editor / graph /
+settings) from conversational context. New use case unlocked by in-place
+UI: **spoiler-free recall cards** — active-recall quizzes cannot work in
+a terminal harness (the answer text would be visible in scrollback); an
+MCP-Apps card can hide/reveal the answer and submit ratings through the
+existing `zam_get_reviews`/`zam_submit_review` tools (panels may call any
+server tool via `callServerTool`). This revises "review flow stays
+conversational" for MCP-Apps hosts — post-0.10.0 scope. Consequences for
+phases: P3 graph becomes its own tool + resource (`zam_show_graph` →
+`ui://zam/graph`) instead of a Studio tab; P4 Settings-lite likewise a
+separate card; the P2 Editor panel ships as-is for the Friday demo.
+Confirm the shape after today's render test.
+
+**Next:** P3 (2D neighborhood renderer, own card) and P4 (Settings-lite
+card + the two new bridge handlers), then P5 rehearsal/release.
 
 ## Verification
 
