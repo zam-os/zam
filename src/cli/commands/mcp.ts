@@ -37,6 +37,7 @@ const pkg = JSON.parse(readFileSync(pkgPath, "utf-8")) as { version: string };
 const STUDIO_RESOURCE_URI = "ui://zam/studio";
 const RECALL_RESOURCE_URI = "ui://zam/recall";
 const GRAPH_RESOURCE_URI = "ui://zam/graph";
+const SETTINGS_RESOURCE_URI = "ui://zam/settings";
 
 /**
  * Commands the ZAM Studio panel may run through `zam_studio_bridge`. A
@@ -801,6 +802,58 @@ export function createMcpServer(db: Database): McpServer {
           uri: GRAPH_RESOURCE_URI,
           mimeType: RESOURCE_MIME_TYPE,
           text: loadPanelHtml("graph-panel.html", "ZAM Graph"),
+        },
+      ],
+    }),
+  );
+
+  // zam_open_settings — the Settings-lite card (MCP Apps): workspaces,
+  // knowledge context, database status, backup, and update check. Unlike
+  // recall/graph this card can mutate state (repair links, switch the active
+  // knowledge context, write a backup), so it does NOT get readOnlyHint —
+  // only the shared commonAnnotations apply.
+  registerAppTool(
+    server,
+    "zam_open_settings",
+    {
+      title: "ZAM Settings",
+      description:
+        "Open the ZAM Settings-lite card: workspaces and link health, the " +
+        "active knowledge context, database status, an on-demand backup " +
+        "snapshot, and an update check.",
+      inputSchema: {
+        user: z.string().optional().describe("User ID"),
+      },
+      annotations: {
+        ...commonAnnotations,
+      },
+      _meta: {
+        ui: { resourceUri: SETTINGS_RESOURCE_URI },
+      },
+    },
+    wrapHandler(async ({ user }: { user?: string }) => {
+      // Mirror zam_open_recall/zam_show_graph: resolve to the signed-in user,
+      // but never fail to open the panel — fall back to null when unset.
+      const userId = await getUserId(user).catch(() => null);
+      return {
+        settings: "zam",
+        version: pkg.version,
+        user: userId,
+      };
+    }),
+  );
+
+  registerAppResource(
+    server,
+    "zam-settings",
+    SETTINGS_RESOURCE_URI,
+    { mimeType: RESOURCE_MIME_TYPE },
+    async () => ({
+      contents: [
+        {
+          uri: SETTINGS_RESOURCE_URI,
+          mimeType: RESOURCE_MIME_TYPE,
+          text: loadPanelHtml("settings-panel.html", "ZAM Settings"),
         },
       ],
     }),

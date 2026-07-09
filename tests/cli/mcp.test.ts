@@ -87,9 +87,9 @@ describe("MCP stdio server tests", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all 15 tools with correct annotations", async () => {
+  it("lists all 16 tools with correct annotations", async () => {
     const response = await client.listTools();
-    expect(response.tools).toHaveLength(15);
+    expect(response.tools).toHaveLength(16);
 
     const toolNames = response.tools.map((t) => t.name).sort();
     const expectedNames = [
@@ -107,6 +107,7 @@ describe("MCP stdio server tests", () => {
       "zam_open_studio",
       "zam_open_recall",
       "zam_show_graph",
+      "zam_open_settings",
       "zam_studio_bridge",
     ].sort();
     expect(toolNames).toEqual(expectedNames);
@@ -418,6 +419,51 @@ describe("MCP stdio server tests", () => {
       focus?: string | null;
     };
     expect(focusedStructured.focus).toBe("some-slug");
+  });
+
+  it("exposes the settings panel as an MCP Apps resource", async () => {
+    const resources = await client.listResources();
+    const settings = resources.resources.find(
+      (r) => r.uri === "ui://zam/settings",
+    );
+    expect(settings).toBeDefined();
+
+    const read = await client.readResource({ uri: "ui://zam/settings" });
+    const content = read.contents[0] as { text: string; mimeType: string };
+    expect(content.mimeType).toContain("text/html");
+    // The bundled settings panel roots at <div id="zam-settings-panel">. The
+    // no-build placeholder in loadPanelHtml uses a data-panel attribute
+    // instead of this id, so this assertion only passes against a real
+    // dist/ui/settings-panel.html build (CI builds before running tests).
+    expect(content.text).toContain("zam-settings-panel");
+  });
+
+  it("links zam_open_settings to the settings panel resource", async () => {
+    const response = await client.listTools();
+    const tool = response.tools.find((t) => t.name === "zam_open_settings");
+    expect(tool).toBeDefined();
+    const meta = tool?._meta as { ui?: { resourceUri?: string } } | undefined;
+    expect(meta?.ui?.resourceUri).toBe("ui://zam/settings");
+    // Unlike recall/graph, the Settings card can mutate (repair links, switch
+    // knowledge context, write a backup) — no readOnlyHint.
+    expect((tool as any).annotations).toEqual({
+      openWorldHint: false,
+    });
+
+    const res = await client.callTool({
+      name: "zam_open_settings",
+      arguments: {},
+    });
+    expect(res.isError).toBeUndefined();
+    const structured = (res as any).structuredContent as {
+      settings?: string;
+      version?: string;
+      user?: string | null;
+    };
+    expect(structured.settings).toBe("zam");
+    expect(typeof structured.version).toBe("string");
+    // Default user seeded in beforeEach via user_config.
+    expect(structured.user).toBe("thomas");
   });
 
   it("returns error result with isError: true on handler error", async () => {

@@ -28,7 +28,7 @@
   },
   "scripts": {
     "build": "tsup && npm run build:panel",
-    "build:panel": "vite build --config vite.config.panel.mts && vite build --config vite.config.panel.mts --mode recall && vite build --config vite.config.panel.mts --mode graph",
+    "build:panel": "vite build --config vite.config.panel.mts && vite build --config vite.config.panel.mts --mode recall && vite build --config vite.config.panel.mts --mode graph && vite build --config vite.config.panel.mts --mode settings",
     "prepare": "npm run build",
     "dev": "tsx src/cli/index.ts",
     "test": "vitest run",
