@@ -17,6 +17,22 @@
         --danger: #ef4444;
         --danger-bg: rgba(239, 68, 68, 0.1);
         --hover: rgba(130, 125, 189, 0.1);
+
+        /* Aliases so desktop/src/learning-content.ts (built against the
+           richer --clr-* palette in desktop/src/styles.css for the Tauri
+           app) resolves to real colors here too. This palette only has one
+           "de-emphasized text" tier and one accent color, so text-secondary
+           collapses onto --muted and both accent-purple/teal collapse onto
+           --accent — defined once here (not repeated in the dark-mode block
+           below) since --muted/--card/--border/--accent get redefined there
+           and custom properties resolve dynamically, so the aliases follow
+           along automatically. */
+        --clr-text-muted: var(--muted);
+        --clr-text-secondary: var(--muted);
+        --clr-bg-surface: var(--card);
+        --clr-border: var(--border);
+        --clr-accent-purple: var(--accent);
+        --clr-accent-teal: var(--accent);
       }
       @media (prefers-color-scheme: dark) {
         :root {
