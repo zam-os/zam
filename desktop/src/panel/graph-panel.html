@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZAM Graph</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --accent: #827dbd;
+        --bg: #f5f7fb;
+        --fg: #1c2030;
+        --muted: #6b7280;
+        --card: #ffffff;
+        --border: rgba(15, 23, 42, 0.14);
+        --field-bg: #ffffff;
+        --danger: #ef4444;
+        --danger-bg: rgba(239, 68, 68, 0.1);
+        --hover: rgba(130, 125, 189, 0.1);
+        --ok: #2fbf71;
+        --ok-bg: rgba(47, 191, 113, 0.12);
+
+        /* Relationship-edge colors — mirrors the desktop 3D graph semantics
+           in main.ts buildGraphScene: green = basis/prerequisites (below),
+           blue = higher-order/dependents (above). */
+        --prereq: #16a34a;
+        --prereq-bg: rgba(22, 163, 74, 0.14);
+        --dependent: #1e40af;
+        --dependent-bg: rgba(30, 64, 175, 0.14);
+
+        /* Bloom badge colors — same 5-step scale as desktop/src/styles.css,
+           plus a translucent "-bg" companion per step (same pairing idiom
+           as --danger/--danger-bg above) for node fills. */
+        --bloom-1: hsl(210, 80%, 60%);
+        --bloom-1-bg: hsl(210, 80%, 60%, 0.16);
+        --bloom-2: hsl(145, 75%, 55%);
+        --bloom-2-bg: hsl(145, 75%, 55%, 0.16);
+        --bloom-3: hsl(45, 90%, 55%);
+        --bloom-3-bg: hsl(45, 90%, 55%, 0.16);
+        --bloom-4: hsl(280, 85%, 65%);
+        --bloom-4-bg: hsl(280, 85%, 65%, 0.16);
+        --bloom-5: hsl(340, 85%, 60%);
+        --bloom-5-bg: hsl(340, 85%, 60%, 0.16);
+
+        /* Aliases so any shared markup built against the richer --clr-*
+           palette (desktop/src/styles.css) still resolves here. Defined once;
+           the dark block below only redefines the base tokens and custom
+           properties resolve dynamically, so these follow along. */
+        --clr-text-muted: var(--muted);
+        --clr-text-secondary: var(--muted);
+        --clr-bg-surface: var(--card);
+        --clr-border: var(--border);
+        --clr-accent-purple: var(--accent);
+        --clr-accent-teal: var(--accent);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #14161f;
+          --fg: #e8eaf2;
+          --muted: #9aa0b0;
+          --card: #1e2230;
+          --border: rgba(255, 255, 255, 0.14);
+          --field-bg: #262b3d;
+          --danger: #f87171;
+          --danger-bg: rgba(248, 113, 113, 0.14);
+          --hover: rgba(130, 125, 189, 0.18);
+          --ok: #34d399;
+          --ok-bg: rgba(52, 211, 153, 0.16);
+          --prereq: #4ade80;
+          --prereq-bg: rgba(74, 222, 128, 0.16);
+          --dependent: #60a5fa;
+          --dependent-bg: rgba(96, 165, 250, 0.16);
+        }
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+      }
+      #zam-graph-panel {
+        padding: 16px;
+        max-width: 760px;
+        margin: 0 auto;
+      }
+      .zam-header {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .zam-header h1 {
+        font-size: 18px;
+        margin: 0;
+      }
+      .zam-header .version {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .zam-status-line {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin: 0 0 12px;
+      }
+      .status-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--muted);
+        margin-right: 6px;
+      }
+      .status-dot.connected {
+        background: var(--ok);
+      }
+      .zam-card {
+        background: var(--card);
+        border-radius: 10px;
+        padding: 16px 18px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      }
+
+      /* ── Legend + breadcrumb ─────────────────────────────────────────── */
+      .graph-legend {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        font-size: 0.76rem;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .graph-legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .graph-legend-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+      .graph-legend-dot.prereq {
+        background: var(--prereq);
+      }
+      .graph-legend-dot.dependent {
+        background: var(--dependent);
+      }
+      .graph-breadcrumb {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 5px;
+        min-height: 18px;
+        font-size: 0.78rem;
+        margin-bottom: 10px;
+      }
+      .graph-crumb-sep {
+        color: var(--muted);
+      }
+      .graph-crumb-link {
+        background: none;
+        border: none;
+        padding: 0;
+        font: inherit;
+        font-size: 0.78rem;
+        color: var(--accent);
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      .graph-crumb-link:hover {
+        opacity: 0.8;
+      }
+      .graph-crumb-current {
+        color: var(--fg);
+        font-weight: 600;
+      }
+
+      /* ── Graph canvas ────────────────────────────────────────────────── */
+      .graph-canvas-wrap {
+        width: 100%;
+      }
+      .graph-svg {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .graph-edge {
+        stroke-width: 1.6;
+        opacity: 0.75;
+      }
+      .graph-node-rect {
+        stroke-width: 1.6;
+        transition: filter 0.15s ease;
+      }
+      .graph-node-center .graph-node-rect {
+        stroke-width: 2.5;
+      }
+      /* Only prereq/dependent nodes are clickable (center is already in
+         focus) — target those two kinds directly rather than sniffing the
+         inline cursor style, which is not guaranteed to serialize the same
+         way across browser engines. */
+      .graph-node-prereq:hover .graph-node-rect,
+      .graph-node-dependent:hover .graph-node-rect {
+        filter: brightness(1.1);
+      }
+      .graph-node-label {
+        font-size: 12px;
+        fill: var(--fg);
+        font-family: inherit;
+        pointer-events: none;
+      }
+      .graph-node-center .graph-node-label {
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .graph-node-nocard {
+        opacity: 0.55;
+      }
+      .graph-node-nocard .graph-node-rect {
+        stroke-dasharray: 4 3;
+      }
+      .graph-node-blocked-badge {
+        fill: var(--danger);
+      }
+      .graph-node-blocked-mark {
+        fill: #ffffff;
+        font-size: 9px;
+        font-weight: 700;
+        pointer-events: none;
+      }
+
+      /* ── Empty + error states ────────────────────────────────────────── */
+      .graph-empty {
+        text-align: center;
+        padding: 32px 12px;
+      }
+      .graph-empty-emoji {
+        font-size: 2rem;
+      }
+      .graph-empty-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        margin: 8px 0 4px;
+      }
+      .graph-empty-sub {
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="zam-graph-panel">
+      <div class="zam-header">
+        <h1>ZAM Graph</h1>
+        <span class="version" id="zam-version"></span>
+      </div>
+      <p class="zam-status-line">
+        <span class="status-dot" id="zam-status-dot"></span>
+        <span id="zam-status">Connecting to host…</span>
+      </p>
+      <div class="graph-legend">
+        <span class="graph-legend-item">
+          <span class="graph-legend-dot prereq"></span>Voraussetzungen
+        </span>
+        <span class="graph-legend-item">
+          <span class="graph-legend-dot dependent"></span>Aufbauwissen
+        </span>
+      </div>
+      <div class="graph-breadcrumb" id="graph-breadcrumb"></div>
+      <div id="graph-content"></div>
+    </div>
+    <script type="module" src="./graph.ts"></script>
+  </body>
+</html>

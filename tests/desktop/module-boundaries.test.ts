@@ -90,4 +90,22 @@ describe("desktop module boundaries", () => {
       ).toBe(false);
     }
   });
+
+  it("graph.ts stays Tauri-free and Three-free", () => {
+    const specifiers = importSpecifiers(read("panel/graph.ts"));
+    for (const specifier of specifiers) {
+      expect(
+        specifier.startsWith("@tauri-apps"),
+        `graph.ts must not import Tauri APIs (found "${specifier}")`,
+      ).toBe(false);
+      expect(
+        specifier === "three" || specifier.startsWith("three/"),
+        `graph.ts must not import Three.js (found "${specifier}")`,
+      ).toBe(false);
+      expect(
+        specifier.startsWith("./main") || specifier.startsWith("../main"),
+        `graph.ts must not import main.js (found "${specifier}")`,
+      ).toBe(false);
+    }
+  });
 });

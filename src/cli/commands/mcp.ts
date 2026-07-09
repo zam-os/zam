@@ -36,6 +36,7 @@ const pkg = JSON.parse(readFileSync(pkgPath, "utf-8")) as { version: string };
 
 const STUDIO_RESOURCE_URI = "ui://zam/studio";
 const RECALL_RESOURCE_URI = "ui://zam/recall";
+const GRAPH_RESOURCE_URI = "ui://zam/graph";
 
 /**
  * Commands the ZAM Studio panel may run through `zam_studio_bridge`. A
@@ -739,6 +740,65 @@ export function createMcpServer(db: Database): McpServer {
           uri: RECALL_RESOURCE_URI,
           mimeType: RESOURCE_MIME_TYPE,
           text: loadPanelHtml("recall-panel.html", "ZAM Recall"),
+        },
+      ],
+    }),
+  );
+
+  // zam_show_graph — the 2D knowledge-graph card (MCP Apps). Read-only from
+  // the model's side: it opens a panel that fetches its own data through
+  // zam_studio_bridge (get-neighborhood). `focus` seeds the initial node;
+  // the model usually supplies it from conversation context (e.g. the token
+  // slug just discussed) — the card's empty state covers the omitted case.
+  registerAppTool(
+    server,
+    "zam_show_graph",
+    {
+      title: "Open ZAM knowledge graph",
+      description:
+        "Open the ZAM 2D knowledge-graph card, centered on a token's direct " +
+        "prerequisites and dependents. Pass `focus` (a token slug) when the " +
+        "conversation already names one; otherwise the card shows a hint to " +
+        "supply one.",
+      inputSchema: {
+        focus: z
+          .string()
+          .optional()
+          .describe("Token slug to center the graph on"),
+        user: z.string().optional().describe("User ID"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        readOnlyHint: true,
+      },
+      _meta: {
+        ui: { resourceUri: GRAPH_RESOURCE_URI },
+      },
+    },
+    wrapHandler(async ({ focus, user }: { focus?: string; user?: string }) => {
+      // Mirror zam_open_recall: resolve to the signed-in user, but never
+      // fail to open the panel — fall back to null when no default is set.
+      const userId = await getUserId(user).catch(() => null);
+      return {
+        graph: "zam",
+        focus: focus ?? null,
+        version: pkg.version,
+        user: userId,
+      };
+    }),
+  );
+
+  registerAppResource(
+    server,
+    "zam-graph",
+    GRAPH_RESOURCE_URI,
+    { mimeType: RESOURCE_MIME_TYPE },
+    async () => ({
+      contents: [
+        {
+          uri: GRAPH_RESOURCE_URI,
+          mimeType: RESOURCE_MIME_TYPE,
+          text: loadPanelHtml("graph-panel.html", "ZAM Graph"),
         },
       ],
     }),

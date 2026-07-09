@@ -87,9 +87,9 @@ describe("MCP stdio server tests", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all 14 tools with correct annotations", async () => {
+  it("lists all 15 tools with correct annotations", async () => {
     const response = await client.listTools();
-    expect(response.tools).toHaveLength(14);
+    expect(response.tools).toHaveLength(15);
 
     const toolNames = response.tools.map((t) => t.name).sort();
     const expectedNames = [
@@ -106,6 +106,7 @@ describe("MCP stdio server tests", () => {
       "zam_monitor",
       "zam_open_studio",
       "zam_open_recall",
+      "zam_show_graph",
       "zam_studio_bridge",
     ].sort();
     expect(toolNames).toEqual(expectedNames);
@@ -354,6 +355,69 @@ describe("MCP stdio server tests", () => {
     expect(typeof structured.version).toBe("string");
     // Default user seeded in beforeEach via user_config.
     expect(structured.user).toBe("thomas");
+  });
+
+  it("exposes the graph panel as an MCP Apps resource", async () => {
+    const resources = await client.listResources();
+    const graph = resources.resources.find((r) => r.uri === "ui://zam/graph");
+    expect(graph).toBeDefined();
+
+    const read = await client.readResource({ uri: "ui://zam/graph" });
+    const content = read.contents[0] as { text: string; mimeType: string };
+    expect(content.mimeType).toContain("text/html");
+    // The bundled graph panel roots at <div id="zam-graph-panel">. The
+    // no-build placeholder in loadPanelHtml uses a data-panel attribute
+    // instead of this id, so this assertion only passes against a real
+    // dist/ui/graph-panel.html build (CI builds before running tests).
+    expect(content.text).toContain("zam-graph-panel");
+  });
+
+  it("links zam_show_graph to the graph panel resource", async () => {
+    const response = await client.listTools();
+    const tool = response.tools.find((t) => t.name === "zam_show_graph");
+    expect(tool).toBeDefined();
+    const meta = tool?._meta as { ui?: { resourceUri?: string } } | undefined;
+    expect(meta?.ui?.resourceUri).toBe("ui://zam/graph");
+    expect((tool as any).annotations).toEqual({
+      openWorldHint: false,
+      readOnlyHint: true,
+    });
+
+    // inputSchema accepts optional focus/user — neither is required.
+    const schema = tool?.inputSchema as
+      | { properties?: Record<string, unknown>; required?: string[] }
+      | undefined;
+    expect(schema?.properties).toHaveProperty("focus");
+    expect(schema?.properties).toHaveProperty("user");
+    expect(schema?.required ?? []).not.toContain("focus");
+    expect(schema?.required ?? []).not.toContain("user");
+
+    const res = await client.callTool({
+      name: "zam_show_graph",
+      arguments: {},
+    });
+    expect(res.isError).toBeUndefined();
+    const structured = (res as any).structuredContent as {
+      graph?: string;
+      focus?: string | null;
+      version?: string;
+      user?: string | null;
+    };
+    expect(structured.graph).toBe("zam");
+    expect(structured.focus).toBeNull();
+    expect(typeof structured.version).toBe("string");
+    // Default user seeded in beforeEach via user_config.
+    expect(structured.user).toBe("thomas");
+
+    const focusedRes = await client.callTool({
+      name: "zam_show_graph",
+      arguments: { focus: "some-slug" },
+    });
+    expect(focusedRes.isError).toBeUndefined();
+    const focusedStructured = (focusedRes as any).structuredContent as {
+      focus?: string | null;
+    };
+    expect(focusedStructured.focus).toBe("some-slug");
   });
 
   it("returns error result with isError: true on handler error", async () => {

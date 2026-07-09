@@ -16,6 +16,7 @@ import { viteSingleFile } from "vite-plugin-singlefile";
  */
 const MODE_TO_INPUT: Record<string, string> = {
   recall: "recall-panel.html",
+  graph: "graph-panel.html",
 };
 
 export default defineConfig(({ mode }) => {
