@@ -288,6 +288,15 @@ describe("MCP stdio server tests", () => {
     const content = read.contents[0] as { text: string; mimeType: string };
     expect(content.mimeType).toContain("text/html");
     expect(content.text).toContain("zam-studio-panel");
+    // "zam-studio-panel" alone also appears in loadStudioPanelHtml's
+    // no-build-found placeholder (src/cli/commands/mcp.ts), so it can't
+    // distinguish a real panel build from that fallback. "content-studio" is
+    // a class name from the actual Learning Content Studio markup
+    // (desktop/src/panel/studio-panel.html) that the placeholder never
+    // contains, so this only passes when dist/ui/studio-panel.html was
+    // actually built — which CI guarantees via the build step that runs
+    // before tests (.github/workflows/ci.yml).
+    expect(content.text).toContain("content-studio");
   });
 
   it("links zam_open_studio to the studio panel resource", async () => {
