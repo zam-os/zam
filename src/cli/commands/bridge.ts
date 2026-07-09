@@ -95,6 +95,7 @@ import {
 import {
   addToken as handleAddToken,
   analyzeMonitor as handleAnalyzeMonitor,
+  backupCreate as handleBackupCreate,
   checkDue as handleCheckDue,
   endSession as handleEndSession,
   findTokens as handleFindTokens,
@@ -106,6 +107,7 @@ import {
   startSession as handleStartSession,
   submitReview as handleSubmitReview,
   suggestFoundations as handleSuggestFoundations,
+  updateCheck as handleUpdateCheck,
 } from "../bridge-handlers.js";
 import {
   CURRICULUM_PROVIDERS,
@@ -374,6 +376,50 @@ bridgeCommand
       const path = await backupDatabaseTo(db, workspaceDir);
       jsonOut({ ok: true, path });
     });
+  });
+
+// ── zam bridge backup-create ──────────────────────────────────────────────
+
+bridgeCommand
+  .command("backup-create")
+  .description(
+    "Create a portable SQL snapshot backup (kernel exportSnapshot), distinct from backup-db's VACUUM copy (JSON)",
+  )
+  .option(
+    "--dir <path>",
+    "Target directory (default: workspace dir, else ~/Documents/zam)",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleBackupCreate(db, { dir: opts.dir });
+        jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge update-check ────────────────────────────────────────────────
+
+bridgeCommand
+  .command("update-check")
+  .description("Check whether a newer ZAM release is available (JSON)")
+  .option(
+    "--latest <version>",
+    "Compare against this version instead of fetching (offline/deterministic checks)",
+  )
+  .option("--channel <channel>", "Override the detected install channel")
+  .action(async (opts) => {
+    try {
+      const result = await handleUpdateCheck({
+        latest: opts.latest,
+        channel: opts.channel,
+      });
+      jsonOut(result);
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
   });
 
 // ── zam bridge workspace-info / set-workspace-dir ──────────────────────────

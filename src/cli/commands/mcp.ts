@@ -60,6 +60,8 @@ const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
   "workspace-list",
   "workspace-repair-links",
   "database-status",
+  "backup-create",
+  "update-check",
 ]);
 
 /**
