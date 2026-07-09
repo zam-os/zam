@@ -1,11 +1,16 @@
 /**
  * ZAM spoiler-free Recall card — MCP Apps panel entry.
  *
- * The user answers due review questions inside this card. Two paths:
+ * The user answers due review questions inside this card. Two MUTUALLY
+ * EXCLUSIVE paths — only one of them may ever result in a zam_submit_review
+ * call for a given card, never both:
  *  - "Antwort prüfen": inserts the answer as a user message (app.sendMessage)
  *    so the harness model evaluates it and books the FSRS rating via
- *    zam_submit_review — ZAM keeps zero model config of its own.
- *  - "Aufdecken": reveals the stored concept and lets the user self-rate.
+ *    zam_submit_review — ZAM keeps zero model config of its own. The card
+ *    then reveals the concept read-only (no rating row, no auto-advance
+ *    timer); a "Nächste Karte" button is the only way to move on.
+ *  - "Aufdecken": reveals the stored concept and lets the user self-rate via
+ *    the four rating buttons (callServerTool zam_submit_review directly).
  *
  * Spoiler discipline: the stored `concept` lives only in a JS closure and is
  * written into the DOM for the first time on reveal — never before.
@@ -198,14 +203,12 @@ function renderCard(): void {
   clearContent();
 
   // Once the user commits to a path (check/reveal), lock the inputs so the
-  // same card cannot be double-sent.
+  // same card cannot be double-sent. The two paths are mutually exclusive:
+  // "Antwort prüfen" never shows a rating row (the harness model books the
+  // rating after sendMessage) and "Aufdecken" never triggers a model
+  // booking — so at most one zam_submit_review call ever happens per card.
   let committed = false;
   let rated = false;
-  // Double-booking guard (plan Step 6): after sendMessage the harness model
-  // books the rating, so the answer path must NOT also auto-book. It arms a
-  // grace timer and auto-advances when it elapses — unless the user chooses
-  // to self-rate first, which cancels the timer and books explicitly.
-  let autoAdvanceTimer: number | null = null;
 
   const root = document.createElement("div");
   root.className = "zam-card";
@@ -290,10 +293,6 @@ function renderCard(): void {
   async function submitRating(rating: 1 | 2 | 3 | 4): Promise<void> {
     if (rated) return;
     rated = true;
-    if (autoAdvanceTimer !== null) {
-      window.clearTimeout(autoAdvanceTimer);
-      autoAdvanceTimer = null;
-    }
     const ratingButtons =
       root.querySelectorAll<HTMLButtonElement>(".recall-rating-btn");
     ratingButtons.forEach((b) => {
@@ -324,7 +323,7 @@ function renderCard(): void {
     }
   }
 
-  function showReveal(withAssistantHint: boolean): void {
+  function showReveal(): void {
     const reveal = document.createElement("div");
     reveal.className = "recall-reveal";
 
@@ -337,13 +336,6 @@ function renderCard(): void {
     conceptEl.className = "recall-concept";
     conceptEl.textContent = concept; // first and only time concept hits the DOM
     reveal.appendChild(conceptEl);
-
-    if (withAssistantHint) {
-      const hint = document.createElement("div");
-      hint.className = "recall-hint";
-      hint.textContent = "vom Assistenten bewertet — selbst nachjustieren?";
-      reveal.appendChild(hint);
-    }
 
     const ratingLabel = document.createElement("div");
     ratingLabel.className = "recall-rating-label";
@@ -378,13 +370,55 @@ function renderCard(): void {
     root.appendChild(reveal);
   }
 
+  // Answer path only ("Antwort prüfen"): the harness model evaluates the
+  // free-text answer and books the FSRS rating itself (see the
+  // zam_open_recall tool description), so this card must stay read-only
+  // here — no rating row, no self-rating, no auto-advance timer. A single
+  // "Nächste Karte" button is the only way to move on, and it never calls
+  // zam_submit_review.
+  function showAnsweredReveal(): void {
+    const reveal = document.createElement("div");
+    reveal.className = "recall-reveal";
+
+    const title = document.createElement("div");
+    title.className = "recall-reveal-title";
+    title.textContent = t("lbl_reveal_title");
+    reveal.appendChild(title);
+
+    const conceptEl = document.createElement("div");
+    conceptEl.className = "recall-concept";
+    conceptEl.textContent = concept; // first and only time concept hits the DOM
+    reveal.appendChild(conceptEl);
+
+    const note = document.createElement("div");
+    note.className = "recall-hint";
+    note.textContent = "Bewertung übernimmt der Assistent.";
+    reveal.appendChild(note);
+
+    const nextActions = document.createElement("div");
+    nextActions.className = "recall-actions";
+    const nextBtn = document.createElement("button");
+    nextBtn.className = "btn primary-btn";
+    nextBtn.type = "button";
+    nextBtn.textContent = "Nächste Karte";
+    nextBtn.addEventListener("click", () => {
+      nextBtn.disabled = true; // advance() re-renders synchronously
+      advance();
+    });
+    nextActions.appendChild(nextBtn);
+    reveal.appendChild(nextActions);
+    root.appendChild(reveal);
+  }
+
   checkBtn.addEventListener("click", () => {
     if (committed) return;
     const text = answer.value.trim();
     if (!text) return;
     lockInputs();
     // Insert the answer as a user message in the exact format the
-    // zam_open_recall tool description instructs the model to match.
+    // zam_open_recall tool description instructs the model to match. The
+    // model books the rating via zam_submit_review on its own turn, so this
+    // card renders read-only below and must not also submit a rating.
     void app
       .sendMessage({
         role: "user",
@@ -402,18 +436,14 @@ function renderCard(): void {
           }`,
         );
       });
-    showReveal(true);
+    showAnsweredReveal();
     pushContext(card, "answered");
-    autoAdvanceTimer = window.setTimeout(() => {
-      autoAdvanceTimer = null;
-      if (!rated) advance();
-    }, 10_000);
   });
 
   revealBtn.addEventListener("click", () => {
     if (committed) return;
     lockInputs();
-    showReveal(false); // no model booking on this path — self-rating required
+    showReveal(); // no model booking on this path — self-rating required
     pushContext(card, "revealed");
   });
 

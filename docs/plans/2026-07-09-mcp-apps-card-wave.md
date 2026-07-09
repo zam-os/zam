@@ -217,12 +217,9 @@ Vitest, Biome.
     slug, state: "shown|revealed|answered|rated", remaining } }) }] })`
     (verify exact params from d.ts).
   - Empty queue: friendly "Nichts fällig" state.
-- [ ] **Step 6: Double-booking guard.** When the user sends a text
-  answer (sendMessage) the MODEL books the rating; the card must then
-  treat its own rating row as optional ("vom Assistenten bewertet —
-  selbst nachjustieren?" hint) — implement by disabling auto-advance
-  until either a card rating click OR 10s timeout after sendMessage,
-  whichever first; keep it simple and comment the constraint.
+- [ ] **Step 6: Double-booking guard.** Superseded by final review
+  (2026-07-10): answer path is read-only + model-booked; self-rating
+  only on the reveal path — mutually exclusive, no guard timer.
 - [ ] **Step 7: Build + verify.** `npm run build` (both panels emit:
   `dist/ui/studio-panel.html` AND `dist/ui/recall-panel.html`; check
   vite output sizes, recall should be well under studio since no

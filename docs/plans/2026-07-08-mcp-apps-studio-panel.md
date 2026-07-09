@@ -210,7 +210,21 @@ a terminal harness (the answer text would be visible in scrollback); an
 MCP-Apps card can hide/reveal the answer and submit ratings through the
 existing `zam_get_reviews`/`zam_submit_review` tools (panels may call any
 server tool via `callServerTool`). This revises "review flow stays
-conversational" for MCP-Apps hosts — post-0.10.0 scope. Consequences for
+conversational" for MCP-Apps hosts — post-0.10.0 scope. In-card answer
+mechanism (verified against ext-apps 1.7.4 App API, 2026-07-09):
+free-text answers typed in the card → `app.sendMessage()` inserts a
+user message, the harness LLM evaluates against the stored concept and
+books the rating (keeps "zero model config"); self-rating buttons →
+`app.callServerTool("zam_submit_review", …)` directly, no chat noise
+(the studio-bridge allowlist constrains only `zam_studio_bridge`);
+card state across turns → `app.updateModelContext()` (model-visible
+without triggering a response). Both rating paths proven functionally
+on 2026-07-09 via the show_widget fallback rail (sendPrompt ≙
+sendMessage; free-text answer evaluated and booked by the agent).
+Final-review refinement: the two rating paths are mutually exclusive —
+free-text answers are booked by the harness model only; self-rating
+buttons exist only on the reveal-without-answer path.
+Consequences for
 phases: P3 graph becomes its own tool + resource (`zam_show_graph` →
 `ui://zam/graph`) instead of a Studio tab; P4 Settings-lite likewise a
 separate card; the P2 Editor panel ships as-is for the Friday demo.
