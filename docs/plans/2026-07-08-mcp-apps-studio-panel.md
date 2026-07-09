@@ -230,8 +230,32 @@ phases: P3 graph becomes its own tool + resource (`zam_show_graph` →
 separate card; the P2 Editor panel ships as-is for the Friday demo.
 Confirm the shape after today's render test.
 
-**Next:** P3 (2D neighborhood renderer, own card) and P4 (Settings-lite
-card + the two new bridge handlers), then P5 rehearsal/release.
+**Card wave complete (2026-07-10 early morning):** P3 + P4 shipped as
+separate in-place cards per the direction pivot, plus the recall card —
+see [2026-07-09-mcp-apps-card-wave.md](2026-07-09-mcp-apps-card-wave.md).
+Four apps now: `zam_open_studio` (Editor), `zam_open_recall`
+(spoiler-free recall: in-card free-text answer → model evaluates+books;
+reveal path → self-rating; mutually exclusive per final review),
+`zam_show_graph` (2D SVG neighborhood, click-to-recenter),
+`zam_open_settings` (workspaces/repair, knowledge contexts, database
+status, snapshot backup via new `backup-create`, update display via new
+`update-check`; allowlist now 15 commands, 16 tools total). Final wave
+review (Opus): 0 Critical; fixes applied (rating paths exclusivity,
+stale test comment). All four cards **verified rendering with live
+Turso data** in basic-host (Playwright/headless screenshots; recall
+needs ~10 s for the 91-card batch — remote-DB latency, not a bug).
+Suite green (656+ tests), branch pushed through the fix commits.
+
+**Follow-ups (post-demo ticket):** shared `panel/mcp-shared.ts` helper
+(dedupe the tripled callTool/connect boilerplate), inline recall's six
+i18n strings (~130 kB bundle win), tool-numbering comments in mcp.ts,
+`backupCreate` return-type annotation, offline update-check message
+wording (English/CLI-flavored in a German card), graph SVG interaction
+unit tests, panel locale decision (de hosts get mixed de/en until P5).
+
+**Next:** P5 — rehearsal on the demo hosts (Copilot app panel + Cowork
+tab with all four cards; basic-host as guaranteed fallback), i18n/locale
+decision, README/ADR status, release 0.10.0.
 
 ## Verification
 
