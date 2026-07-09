@@ -135,8 +135,34 @@ follow-up):
   browser the Studio UI renders but data calls fail ("reading 'invoke'")
   — no Tauri IPC there; exactly the gap P2's transport injection fills.
 
-**P2 (next session):** `runBridge` transport injection, `zam_studio_bridge`
-allowlist tool, Editor view mounted in the panel — see Phases above.
+**P2 complete (2026-07-09, overnight session, commits `b183b95..b9c57f4`):**
+
+- `executeBridgeCommandJson` extracted from `bridge serve` (console-capture
+  + promise-queue mutex, serve wire protocol unchanged); `zam_studio_bridge`
+  MCP tool with the hard 13-command allowlist (`_meta.ui.visibility:
+  ["app"]`, destructiveHint; provider/observer/session/curriculum rejected,
+  test-asserted). `backup-create`/`update-check` deferred to P4 as planned.
+- `desktop/src/bridge-transport.ts` (setBridgeTransport/runBridge seam) and
+  i18n extracted out of main.ts; views repointed (import-line-only edits);
+  module-boundary guard tests.
+- Editor mounted in the panel: MCP transport via ext-apps
+  `app.callServerTool` → `zam_studio_bridge`; all 67 bound DOM IDs
+  replicated; non-allowlisted triggers hidden; `window.alert` replaced by
+  an in-panel toast (sandboxed iframes usually lack allow-modals);
+  `--clr-*` variables aliased. Bundle ~525 kB / ~126 kB gzip, Three- and
+  Tauri-free.
+- Whole-branch review (Fable): "ready to merge with fixes", 0 Critical —
+  fixes applied same night. Suite green, lint/tsc clean.
+- Follow-ups for a post-demo ticket: extract + unit-test
+  `parseBridgeToolResult` (panel transport branches), confirm-gate
+  subprocess test through the studio tool, `isServeMode` rename, compact
+  JSON for large tool payloads, panel `App` version hardcode, and the
+  locale decision (de hosts currently get a mixed de/en panel — decide at
+  rehearsal: drop the navigator.language switch for consistent English, or
+  ship mixed until P5 i18n).
+
+**Next:** P3 (2D neighborhood renderer in the panel) and P4 (Settings-lite
++ the two new bridge handlers), then P5 rehearsal/release — see Phases.
 
 ## Verification
 
