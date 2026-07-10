@@ -292,9 +292,15 @@ week's dev tokens are still unlinked — linking
 `static-esm-imports-resolve…` → `esm-eager-vs-lazy-import-graph` live
 via `zam_link_prereq` is a legitimate curation demo moment.
 
-**Next:** P5 — rehearsal (Code tab first: all four cards incl. the
-recall loop with sendMessage evaluation; then Chat tab, Copilot app,
-Cowork), i18n/locale decision, README/ADR status, release 0.10.0.
+**Release handover (2026-07-10):** branch verified end-to-end on
+Windows — full build green (CLI + all four panels), suite 654/656 with
+the two known load flakes passing isolated (37/37), recall flow
+reworked to fully in-card per Thomas's live testing. Thomas cuts the
+0.10.0 release from the Mac Mini (macOS desktop artifact upload), per
+the usual flow: release/x.y.z branch, 7-file version bump, merge commit
++ annotated tag, draft publish. Remaining nice-to-haves live in the
+follow-ups list above; the locale decision (mixed de/en on non-de
+hosts) is accepted for 0.10.0.
 
 ## Verification
 
