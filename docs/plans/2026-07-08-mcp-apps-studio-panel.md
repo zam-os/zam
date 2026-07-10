@@ -253,9 +253,21 @@ i18n strings (~130 kB bundle win), tool-numbering comments in mcp.ts,
 wording (English/CLI-flavored in a German card), graph SVG interaction
 unit tests, panel locale decision (de hosts get mixed de/en until P5).
 
-**Next:** P5 — rehearsal on the demo hosts (Copilot app panel + Cowork
-tab with all four cards; basic-host as guaranteed fallback), i18n/locale
-decision, README/ADR status, release 0.10.0.
+**BREAKTHROUGH (2026-07-10 morning): Claude Code Desktop's Code tab
+RENDERS the cards.** After a broken 1.20186 update and rollback, the
+direct-download build `AnthropicClaude\app-1.19367.0` renders MCP-Apps
+panels inline in Code-tab sessions — verified live with
+`zam_open_settings` (full card, live Turso data, buttons, update check
+green). The MSIX/Store build with the same version number did NOT render
+the day before; the distribution channel apparently ships different
+renderer components. Consequence: the demo can run **in the primary
+work environment itself** (Claude Desktop Code tab); Chat tab / Copilot
+panel / Cowork remain nice-to-verify secondary stages, basic-host stays
+the guaranteed fallback.
+
+**Next:** P5 — rehearsal (Code tab first: all four cards incl. the
+recall loop with sendMessage evaluation; then Chat tab, Copilot app,
+Cowork), i18n/locale decision, README/ADR status, release 0.10.0.
 
 ## Verification
 
