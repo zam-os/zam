@@ -265,6 +265,24 @@ work environment itself** (Claude Desktop Code tab); Chat tab / Copilot
 panel / Cowork remain nice-to-verify secondary stages, basic-host stays
 the guaranteed fallback.
 
+**Code-tab quirk (2026-07-10):** the Code-tab renderer does not deliver
+the tool result (`ontoolresult`/`structuredContent`) to the card — the
+graph card therefore opens in its no-focus state there even when
+`zam_show_graph {focus}` was called (settings/editor/recall are
+unaffected: they work without result payload). In basic-host the same
+card receives the focus and renders the neighborhood correctly
+(verified with `ivy-engine-basics`: 1 prerequisite, 5 dependents, Bloom
+tints, muted card-less nodes). Follow-up options: per-call resource URI
+with the focus baked in (`getToolUiResourceUri` pattern from the spec)
+or accept + demo the graph via basic-host.
+
+**Demo focus recommendation:** the prerequisite graph has 170 edges;
+best hubs are `ivy-engine-basics` (degree 6, COPS-relevant) and
+`agent-tool-calling-contract` (degree 4, fits the MCP narrative). This
+week's dev tokens are still unlinked — linking
+`static-esm-imports-resolve…` → `esm-eager-vs-lazy-import-graph` live
+via `zam_link_prereq` is a legitimate curation demo moment.
+
 **Next:** P5 — rehearsal (Code tab first: all four cards incl. the
 recall loop with sendMessage evaluation; then Chat tab, Copilot app,
 Cowork), i18n/locale decision, README/ADR status, release 0.10.0.
