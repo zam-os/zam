@@ -23,8 +23,12 @@ import {
   planUpdate,
   type UpdateDecision,
 } from "../../kernel/index.js";
+import {
+  currentVersion,
+  fetchLatestVersion,
+  GITHUB_REPO,
+} from "../update/latest-version.js";
 
-const GITHUB_REPO = "zam-os/zam";
 const CHANNELS: InstallChannel[] = [
   "developer",
   "direct",
@@ -42,22 +46,6 @@ const C = {
   yellow: "\x1b[33m",
 };
 
-/** Read this build's version from the nearest package.json. */
-function currentVersion(): string {
-  const here = dirname(fileURLToPath(import.meta.url));
-  for (const up of ["..", "../..", "../../.."]) {
-    try {
-      const pkg = JSON.parse(
-        readFileSync(join(here, up, "package.json"), "utf-8"),
-      ) as { version?: string };
-      if (pkg.version) return pkg.version;
-    } catch {
-      // try the next candidate
-    }
-  }
-  return "0.0.0";
-}
-
 /** Read the version recorded in a specific checkout's package.json. */
 function versionAt(dir: string): string {
   try {
@@ -68,27 +56,6 @@ function versionAt(dir: string): string {
   } catch {
     return "unknown";
   }
-}
-
-async function fetchLatestVersion(repo: string): Promise<string> {
-  const res = await fetch(
-    `https://api.github.com/repos/${repo}/releases/latest`,
-    {
-      headers: {
-        Accept: "application/vnd.github+json",
-        "User-Agent": "zam-cli",
-      },
-    },
-  );
-  if (!res.ok) {
-    throw new Error(
-      `Could not reach the release server (HTTP ${res.status}). ` +
-        "Pass --latest <version> to check offline.",
-    );
-  }
-  const data = (await res.json()) as { tag_name?: string };
-  if (!data.tag_name) throw new Error("No published release found yet.");
-  return data.tag_name;
 }
 
 function render(decision: UpdateDecision): void {

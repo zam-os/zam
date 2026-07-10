@@ -1,24 +1,27 @@
-import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
-  openDatabase,
+  addToken,
+  backupCreate,
+  endSession,
+  getReviewsBatch,
+  linkPrereq,
+  startSession,
+  submitReview,
+  updateCheck,
+} from "../../src/cli/bridge-handlers.js";
+import {
   createToken,
   ensureCard,
   getCard,
-  getTokenBySlug,
   getPrerequisites,
   getReviewsForCard,
+  getTokenBySlug,
+  openDatabase,
+  verifySnapshot,
 } from "../../src/kernel/index.js";
-import {
-  addToken,
-  endSession,
-  getReviewsBatch,
-  startSession,
-  submitReview,
-  linkPrereq,
-} from "../../src/cli/bridge-handlers.js";
 
 describe("bridge-handlers unit tests", () => {
   let tempDir: string;
@@ -367,5 +370,26 @@ describe("bridge-handlers unit tests", () => {
     expect(result.completedAt).not.toBeNull();
     expect(result.summary.session.id).toBe(session.id);
     expect(result.synthesis?.sessionId).toBe(session.id);
+  });
+
+  it("backupCreate writes a verifiable snapshot file", async () => {
+    const dir = mkdtempSync(join(tmpdir(), "zam-snap-"));
+    try {
+      const res = await backupCreate(db, { dir });
+      expect(res.ok).toBe(true);
+      expect(res.path.endsWith(".sql")).toBe(true);
+      const manifest = verifySnapshot(readFileSync(res.path, "utf-8"));
+      expect(manifest.tables).toBeDefined();
+      expect(res.checksum).toBe(manifest.checksum);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it("updateCheck decides deterministically with injected latest", async () => {
+    const res = await updateCheck({ latest: "99.0.0", channel: "developer" });
+    expect(res.updateAvailable).toBe(true);
+    expect(res.latestVersion).toBe("99.0.0");
+    expect(res.channel).toBe("developer");
   });
 });

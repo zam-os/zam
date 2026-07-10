@@ -1,6 +1,11 @@
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  RESOURCE_MIME_TYPE,
+  registerAppResource,
+  registerAppTool,
+} from "@modelcontextprotocol/ext-apps/server";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
@@ -20,6 +25,7 @@ import {
   submitReview as handleSubmitReview,
   suggestFoundations as handleSuggestFoundations,
 } from "../bridge-handlers.js";
+import { executeBridgeCommandJson } from "./bridge.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 let pkgPath = join(__dirname, "..", "..", "package.json");
@@ -27,6 +33,66 @@ if (!existsSync(pkgPath)) {
   pkgPath = join(__dirname, "..", "..", "..", "package.json");
 }
 const pkg = JSON.parse(readFileSync(pkgPath, "utf-8")) as { version: string };
+
+const STUDIO_RESOURCE_URI = "ui://zam/studio";
+const RECALL_RESOURCE_URI = "ui://zam/recall";
+const GRAPH_RESOURCE_URI = "ui://zam/graph";
+const SETTINGS_RESOURCE_URI = "ui://zam/settings";
+
+/**
+ * Commands the ZAM Studio panel may run through `zam_studio_bridge`. A
+ * closed allowlist: curation and admin reads/writes only. No provider/LLM,
+ * observer, session/review, curriculum, or infrastructure commands — those
+ * stay reachable only via `zam bridge` directly or the other MCP tools.
+ * Membership is checked before any command execution, so an unknown name is
+ * rejected the same way as a real-but-forbidden one.
+ */
+const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
+  "list-tokens",
+  "personal-card-list",
+  "personal-card-create",
+  "personal-card-update",
+  "personal-card-remove",
+  "personal-card-delete",
+  "get-neighborhood",
+  "list-knowledge-contexts",
+  "get-active-knowledge-context",
+  "set-active-knowledge-context",
+  "workspace-list",
+  "workspace-repair-links",
+  "database-status",
+  "backup-create",
+  "update-check",
+]);
+
+/**
+ * Load a bundled MCP Apps panel's HTML (built by `vite.config.panel.mts` into
+ * `dist/ui/<fileName>`). Falls back to a self-describing placeholder so
+ * `resources/read` never breaks on a checkout without a panel build.
+ *
+ * The placeholder tags itself with a `data-panel` attribute rather than a
+ * per-panel root id, so it can never be mistaken for a real build in tests
+ * that assert on a panel's actual marker id (e.g. `zam-recall-panel`).
+ */
+function loadPanelHtml(fileName: string, placeholderTitle: string): string {
+  const candidates = [
+    // dist/cli/commands/mcp.js → dist/ui/
+    join(__dirname, "..", "..", "ui", fileName),
+    // src/cli/commands/mcp.ts via tsx → <repo>/dist/ui/
+    join(__dirname, "..", "..", "..", "dist", "ui", fileName),
+  ];
+  for (const candidate of candidates) {
+    if (existsSync(candidate)) {
+      return readFileSync(candidate, "utf-8");
+    }
+  }
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>${placeholderTitle}</title></head>
+<body><div id="zam-panel-placeholder" data-panel="${fileName}">
+<h1>${placeholderTitle}</h1>
+<p>The panel bundle is missing — run <code>npm run build</code> in the ZAM checkout.</p>
+</div></body></html>`;
+}
 
 /**
  * Creates and configures the McpServer instance with all tools mapped.
@@ -575,6 +641,255 @@ export function createMcpServer(db: Database): McpServer {
       return await handleGetMonitor(db, {
         session: params.session,
       });
+    }),
+  );
+
+  // 12. zam_open_studio — MCP Apps panel (ADR 2026-07-06a item 6). Hosts
+  // that support the Apps extension render the ui:// resource inline; other
+  // hosts see a plain text result and lose nothing.
+  registerAppTool(
+    server,
+    "zam_open_studio",
+    {
+      title: "ZAM Studio",
+      description:
+        "Open the ZAM Studio panel (content editor, knowledge graph, settings) inline",
+      inputSchema: {},
+      annotations: {
+        ...commonAnnotations,
+        readOnlyHint: true,
+      },
+      _meta: {
+        ui: { resourceUri: STUDIO_RESOURCE_URI },
+      },
+    },
+    wrapHandler(async () => {
+      const userId = await getUserId(undefined).catch(() => null);
+      return {
+        studio: "zam",
+        version: pkg.version,
+        user: userId,
+      };
+    }),
+  );
+
+  registerAppResource(
+    server,
+    "zam-studio",
+    STUDIO_RESOURCE_URI,
+    { mimeType: RESOURCE_MIME_TYPE },
+    async () => ({
+      contents: [
+        {
+          uri: STUDIO_RESOURCE_URI,
+          mimeType: RESOURCE_MIME_TYPE,
+          text: loadPanelHtml("studio-panel.html", "ZAM Studio"),
+        },
+      ],
+    }),
+  );
+
+  // zam_open_recall — the spoiler-free recall card (MCP Apps). The whole
+  // review flow lives inside the card (type/reveal, compare, self-rate; the
+  // card books ratings via zam_submit_review itself). No chat round-trip:
+  // hosts may render app.sendMessage as a composer draft, which pollutes
+  // the conversation (Thomas, 2026-07-10). Read-only from the model's side.
+  registerAppTool(
+    server,
+    "zam_open_recall",
+    {
+      title: "Open ZAM recall session",
+      description:
+        "Open the ZAM spoiler-free recall card. The user answers due review " +
+        "questions entirely inside the card: type an answer (or reveal " +
+        "directly), compare with the stored concept, and self-rate — the " +
+        "card books ratings itself via zam_submit_review. No chat " +
+        "interaction is required or expected.",
+      inputSchema: {
+        user: z.string().optional().describe("User ID"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        readOnlyHint: true,
+      },
+      _meta: {
+        ui: { resourceUri: RECALL_RESOURCE_URI },
+      },
+    },
+    wrapHandler(async ({ user }: { user?: string }) => {
+      // Mirror zam_open_studio: resolve to the signed-in user, but never
+      // fail to open the panel — fall back to null when no default is set.
+      const userId = await getUserId(user).catch(() => null);
+      return {
+        recall: "zam",
+        version: pkg.version,
+        user: userId,
+      };
+    }),
+  );
+
+  registerAppResource(
+    server,
+    "zam-recall",
+    RECALL_RESOURCE_URI,
+    { mimeType: RESOURCE_MIME_TYPE },
+    async () => ({
+      contents: [
+        {
+          uri: RECALL_RESOURCE_URI,
+          mimeType: RESOURCE_MIME_TYPE,
+          text: loadPanelHtml("recall-panel.html", "ZAM Recall"),
+        },
+      ],
+    }),
+  );
+
+  // zam_show_graph — the 2D knowledge-graph card (MCP Apps). Read-only from
+  // the model's side: it opens a panel that fetches its own data through
+  // zam_studio_bridge (get-neighborhood). `focus` seeds the initial node;
+  // the model usually supplies it from conversation context (e.g. the token
+  // slug just discussed) — the card's empty state covers the omitted case.
+  registerAppTool(
+    server,
+    "zam_show_graph",
+    {
+      title: "Open ZAM knowledge graph",
+      description:
+        "Open the ZAM 2D knowledge-graph card, centered on a token's direct " +
+        "prerequisites and dependents. Pass `focus` (a token slug) when the " +
+        "conversation already names one; otherwise the card shows a hint to " +
+        "supply one.",
+      inputSchema: {
+        focus: z
+          .string()
+          .optional()
+          .describe("Token slug to center the graph on"),
+        user: z.string().optional().describe("User ID"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        readOnlyHint: true,
+      },
+      _meta: {
+        ui: { resourceUri: GRAPH_RESOURCE_URI },
+      },
+    },
+    wrapHandler(async ({ focus, user }: { focus?: string; user?: string }) => {
+      // Mirror zam_open_recall: resolve to the signed-in user, but never
+      // fail to open the panel — fall back to null when no default is set.
+      const userId = await getUserId(user).catch(() => null);
+      return {
+        graph: "zam",
+        focus: focus ?? null,
+        version: pkg.version,
+        user: userId,
+      };
+    }),
+  );
+
+  registerAppResource(
+    server,
+    "zam-graph",
+    GRAPH_RESOURCE_URI,
+    { mimeType: RESOURCE_MIME_TYPE },
+    async () => ({
+      contents: [
+        {
+          uri: GRAPH_RESOURCE_URI,
+          mimeType: RESOURCE_MIME_TYPE,
+          text: loadPanelHtml("graph-panel.html", "ZAM Graph"),
+        },
+      ],
+    }),
+  );
+
+  // zam_open_settings — the Settings-lite card (MCP Apps): workspaces,
+  // knowledge context, database status, backup, and update check. Unlike
+  // recall/graph this card can mutate state (repair links, switch the active
+  // knowledge context, write a backup), so it does NOT get readOnlyHint —
+  // only the shared commonAnnotations apply.
+  registerAppTool(
+    server,
+    "zam_open_settings",
+    {
+      title: "ZAM Settings",
+      description:
+        "Open the ZAM Settings-lite card: workspaces and link health, the " +
+        "active knowledge context, database status, an on-demand backup " +
+        "snapshot, and an update check.",
+      inputSchema: {
+        user: z.string().optional().describe("User ID"),
+      },
+      annotations: {
+        ...commonAnnotations,
+      },
+      _meta: {
+        ui: { resourceUri: SETTINGS_RESOURCE_URI },
+      },
+    },
+    wrapHandler(async ({ user }: { user?: string }) => {
+      // Mirror zam_open_recall/zam_show_graph: resolve to the signed-in user,
+      // but never fail to open the panel — fall back to null when unset.
+      const userId = await getUserId(user).catch(() => null);
+      return {
+        settings: "zam",
+        version: pkg.version,
+        user: userId,
+      };
+    }),
+  );
+
+  registerAppResource(
+    server,
+    "zam-settings",
+    SETTINGS_RESOURCE_URI,
+    { mimeType: RESOURCE_MIME_TYPE },
+    async () => ({
+      contents: [
+        {
+          uri: SETTINGS_RESOURCE_URI,
+          mimeType: RESOURCE_MIME_TYPE,
+          text: loadPanelHtml("settings-panel.html", "ZAM Settings"),
+        },
+      ],
+    }),
+  );
+
+  // 13. zam_studio_bridge — the Studio panel's data channel (ADR 2026-07-06a
+  // item 6 / P2 Decision 3). Runs one allowlisted `zam bridge` subcommand
+  // and returns its JSON result; everything outside the allowlist —
+  // including unknown command names — is rejected before Commander ever
+  // parses it. Registered app-only (visibility: ["app"]) since the panel,
+  // not the chat model, is the intended caller.
+  registerAppTool(
+    server,
+    "zam_studio_bridge",
+    {
+      description:
+        "Data channel for the ZAM Studio panel (MCP-Apps UI): runs an allowlisted `zam bridge` curation/admin command and returns its JSON result. Not intended for direct model use.",
+      inputSchema: {
+        cmd: z.string().describe("Allowlisted `zam bridge` subcommand name"),
+        args: z
+          .array(z.string())
+          .optional()
+          .default([])
+          .describe('Argv-style flag arguments, e.g. ["--focus", "some-slug"]'),
+      },
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: true,
+      },
+      _meta: {
+        ui: { visibility: ["app"] },
+      },
+    },
+    wrapHandler(async (params) => {
+      if (!STUDIO_BRIDGE_ALLOWED_COMMANDS.has(params.cmd)) {
+        throw new Error(
+          `Command not allowed for the Studio panel: ${params.cmd}`,
+        );
+      }
+      return await executeBridgeCommandJson(params.cmd, params.args);
     }),
   );
 

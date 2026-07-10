@@ -95,6 +95,7 @@ import {
 import {
   addToken as handleAddToken,
   analyzeMonitor as handleAnalyzeMonitor,
+  backupCreate as handleBackupCreate,
   checkDue as handleCheckDue,
   endSession as handleEndSession,
   findTokens as handleFindTokens,
@@ -106,6 +107,7 @@ import {
   startSession as handleStartSession,
   submitReview as handleSubmitReview,
   suggestFoundations as handleSuggestFoundations,
+  updateCheck as handleUpdateCheck,
 } from "../bridge-handlers.js";
 import {
   CURRICULUM_PROVIDERS,
@@ -374,6 +376,50 @@ bridgeCommand
       const path = await backupDatabaseTo(db, workspaceDir);
       jsonOut({ ok: true, path });
     });
+  });
+
+// ── zam bridge backup-create ──────────────────────────────────────────────
+
+bridgeCommand
+  .command("backup-create")
+  .description(
+    "Create a portable SQL snapshot backup (kernel exportSnapshot), distinct from backup-db's VACUUM copy (JSON)",
+  )
+  .option(
+    "--dir <path>",
+    "Target directory (default: workspace dir, else ~/Documents/zam)",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleBackupCreate(db, { dir: opts.dir });
+        jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge update-check ────────────────────────────────────────────────
+
+bridgeCommand
+  .command("update-check")
+  .description("Check whether a newer ZAM release is available (JSON)")
+  .option(
+    "--latest <version>",
+    "Compare against this version instead of fetching (offline/deterministic checks)",
+  )
+  .option("--channel <channel>", "Override the detected install channel")
+  .action(async (opts) => {
+    try {
+      const result = await handleUpdateCheck({
+        latest: opts.latest,
+        channel: opts.channel,
+      });
+      jsonOut(result);
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
   });
 
 // ── zam bridge workspace-info / set-workspace-dir ──────────────────────────
@@ -4046,6 +4092,131 @@ bridgeCommand
     });
   });
 
+// ── zam bridge command execution (shared by `serve` and the Studio panel) ──
+
+let commanderConfiguredForJsonExecution = false;
+
+/**
+ * Commander throws instead of calling process.exit() on a parse error (e.g.
+ * a missing required option), so a malformed cmd/args pair degrades to a
+ * JSON error instead of killing the long-lived host process (`bridge serve`
+ * or `zam mcp`). Idempotent — safe to call before every execution.
+ */
+function ensureCommanderThrowsInsteadOfExiting(): void {
+  if (commanderConfiguredForJsonExecution) return;
+  bridgeCommand.exitOverride();
+  for (const sub of bridgeCommand.commands) {
+    sub.exitOverride();
+  }
+  commanderConfiguredForJsonExecution = true;
+}
+
+async function runBridgeCommandOnce(
+  cmd: string,
+  args: string[],
+): Promise<unknown> {
+  ensureCommanderThrowsInsteadOfExiting();
+
+  // Prevent Commander from writing directly to stdout/stderr; collect it
+  // alongside the action's own console output below so a Commander-level
+  // parse error (caught via the exitOverride above) still has a message to
+  // report.
+  let outputBuffer = "";
+  const captureOutput = (str: string) => {
+    outputBuffer += str;
+  };
+  bridgeCommand.configureOutput({
+    writeOut: captureOutput,
+    writeErr: captureOutput,
+  });
+  for (const sub of bridgeCommand.commands) {
+    sub.configureOutput({ writeOut: captureOutput, writeErr: captureOutput });
+  }
+
+  // Save whatever console.log/console.error currently are — NOT a
+  // module-load-time original. `runMcpServer` rebinds console.log to
+  // console.error to protect the stdio transport from stray writes; restoring
+  // a stale pristine reference here would undo that protection for the rest
+  // of the process.
+  const originalLog = console.log;
+  const originalError = console.error;
+  console.log = (...logArgs) => {
+    outputBuffer += `${logArgs
+      .map((a) => (typeof a === "object" ? JSON.stringify(a) : String(a)))
+      .join(" ")}\n`;
+  };
+  console.error = (...logArgs) => {
+    outputBuffer += `${logArgs
+      .map((a) => (typeof a === "object" ? JSON.stringify(a) : String(a)))
+      .join(" ")}\n`;
+  };
+
+  // jsonError() only throws (instead of process.exit) in serve mode. Force
+  // that mode for the duration of this call and restore it afterwards, so a
+  // plain-CLI invocation elsewhere in the same process is unaffected.
+  const wasServeMode = isServeMode;
+  isServeMode = true;
+
+  try {
+    try {
+      await bridgeCommand.parseAsync(["node", "bridge", cmd, ...args]);
+    } catch (err) {
+      let message: string;
+      if (err instanceof Error && err.message.startsWith('{"error":')) {
+        try {
+          message = JSON.parse(err.message).error;
+        } catch {
+          message = err.message;
+        }
+      } else if ((err as { code?: string })?.code?.startsWith("commander.")) {
+        message = outputBuffer.trim() || (err as Error).message;
+      } else {
+        message = (err as Error).message || String(err);
+      }
+      throw new Error(message);
+    }
+  } finally {
+    console.log = originalLog;
+    console.error = originalError;
+    isServeMode = wasServeMode;
+  }
+
+  const trimmed = outputBuffer.trim();
+  try {
+    return JSON.parse(trimmed);
+  } catch {
+    return trimmed;
+  }
+}
+
+// The console.log/console.error swap above is process-global, and the MCP
+// SDK may run tool handlers concurrently — chain calls on a single promise so
+// only one runs at a time. `bridge serve` is already sequential (one NDJSON
+// line at a time), so this changes nothing for it.
+let bridgeExecutionQueue: Promise<unknown> = Promise.resolve();
+
+/**
+ * Run one `zam bridge <cmd> [...args]` subcommand in-process and return its
+ * parsed JSON output, or throw a plain Error on failure. This is the same
+ * re-parse-through-Commander mechanism `bridge serve` has always used
+ * internally; each call opens its own database via the command's own
+ * `withDb()` — callers must not assume any particular db handle is threaded
+ * through.
+ */
+export function executeBridgeCommandJson(
+  cmd: string,
+  args: string[],
+): Promise<unknown> {
+  const run = bridgeExecutionQueue.then(() => runBridgeCommandOnce(cmd, args));
+  // Keep the queue moving regardless of this call's outcome — one caller's
+  // rejection must not block, or itself reject, the next caller in line.
+  bridgeExecutionQueue = run.then(
+    () => undefined,
+    () => undefined,
+  );
+  return run;
+}
+
 // ── zam bridge serve ──────────────────────────────────────────────────────
 
 bridgeCommand
@@ -4082,29 +4253,7 @@ bridgeCommand
       } | HOME=${process.env.HOME ?? ""} | cwd=${process.cwd()}`,
     );
 
-    // Configure exitOverride so commander doesn't process.exit on parsing errors
-    bridgeCommand.exitOverride();
-    for (const cmd of bridgeCommand.commands) {
-      cmd.exitOverride();
-    }
-
-    // Prevent Commander from writing directly to stdout/stderr
-    let outputBuffer = "";
-    const outputOpts = {
-      writeOut: (str: string) => {
-        outputBuffer += str;
-      },
-      writeErr: (str: string) => {
-        outputBuffer += str;
-      },
-    };
-    bridgeCommand.configureOutput(outputOpts);
-    for (const cmd of bridgeCommand.commands) {
-      cmd.configureOutput(outputOpts);
-    }
-
     const processRequest = async (line: string): Promise<string> => {
-      outputBuffer = "";
       let requestId: string | number | null = null;
       try {
         const req = JSON.parse(line);
@@ -4127,55 +4276,15 @@ bridgeCommand
           });
         }
 
-        const originalLog = console.log;
-        const originalError = console.error;
-        console.log = (...logArgs) => {
-          outputBuffer += `${logArgs
-            .map((a) => (typeof a === "object" ? JSON.stringify(a) : String(a)))
-            .join(" ")}\n`;
-        };
-        console.error = (...logArgs) => {
-          outputBuffer += `${logArgs
-            .map((a) => (typeof a === "object" ? JSON.stringify(a) : String(a)))
-            .join(" ")}\n`;
-        };
-
         try {
-          await bridgeCommand.parseAsync(["node", "bridge", cmd, ...args]);
+          const result = await executeBridgeCommandJson(cmd, args);
+          return JSON.stringify({ id: requestId, result });
         } catch (err) {
-          if (err instanceof Error && err.message.startsWith('{"error":')) {
-            try {
-              const parsed = JSON.parse(err.message);
-              return JSON.stringify({ id: requestId, error: parsed.error });
-            } catch {
-              return JSON.stringify({ id: requestId, error: err.message });
-            }
-          }
-          if ((err as { code?: string }).code?.startsWith("commander.")) {
-            return JSON.stringify({
-              id: requestId,
-              error: outputBuffer.trim() || (err as Error).message,
-            });
-          }
           return JSON.stringify({
             id: requestId,
             error: (err as Error).message || String(err),
           });
-        } finally {
-          console.log = originalLog;
-          console.error = originalError;
         }
-
-        // Parse stdout accumulated output
-        let result: unknown;
-        const trimmed = outputBuffer.trim();
-        try {
-          result = JSON.parse(trimmed);
-        } catch {
-          result = trimmed;
-        }
-
-        return JSON.stringify({ id: requestId, result });
       } catch (err) {
         return JSON.stringify({
           id: requestId,
@@ -4193,10 +4302,11 @@ bridgeCommand
       terminal: false,
     });
 
-    // Process requests strictly one at a time. processRequest() relies on a
-    // shared output buffer and temporarily swaps the global console methods, so
-    // overlapping executions would corrupt each other's responses. Chaining on
-    // a single promise serialises them regardless of how fast lines arrive.
+    // Process requests strictly one at a time. Responses must be written to
+    // stdout in the order their requests arrived; executeBridgeCommandJson()
+    // separately mutexes the console-swapping execution itself, but that
+    // only serialises the swap, not response ordering. Chaining on a single
+    // promise here guarantees both, regardless of how fast lines arrive.
     let pending: Promise<void> = Promise.resolve();
     rl.on("line", (line) => {
       if (!line.trim()) return;

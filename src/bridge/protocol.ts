@@ -292,9 +292,16 @@ export interface AnalyzeMonitorResponse {
 export interface GraphToken {
   id: string;
   slug: string;
+  title: string;
+  display_title: string;
   concept: string;
   domain: string;
   bloomLevel: number;
+  knowledgeContexts: Array<{
+    name: string;
+    label: string | null;
+    language: string | null;
+  }>;
   card?: {
     state: string;
     reps: number;

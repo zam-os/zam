@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run build              # Build CLI (dist/cli/index.js) and library (dist/index.js) via tsup
+npm run build              # Build CLI (dist/cli/index.js), library (dist/index.js) via tsup, and the MCP Apps panel (dist/ui/studio-panel.html) via Vite
 npm run dev -- <args>      # Run CLI from source via tsx during development
 npm run test               # Run full Vitest suite
 npm run test -- tests/kernel/fsrs.test.ts  # Run a single test file
@@ -43,7 +43,7 @@ Database lives at `~/.zam/zam.db` (SQLite, WAL mode, foreign keys enabled).
 ### Bridge & MCP Protocols
 
 ZAM supports two transport protocols for external agents:
-1. **MCP (Model Context Protocol)**: Recommended. Preferred for full agent tool integration. Start via `zam mcp` or configure a harness via `zam agent connect <harness>` (supports `claude-code`, `antigravity`, `codex`, `opencode`).
+1. **MCP (Model Context Protocol)**: Recommended. Preferred for full agent tool integration. Start via `zam mcp` or configure a harness via `zam agent connect <harness>` (supports `claude-code`, `claude-desktop`, `antigravity`, `codex`, `opencode`, `goose`, `copilot`).
 2. **Bridge CLI**: Machine-facing JSON CLI (`zam bridge <command>`) used as a fallback.
 
 Bridge responses are always JSON, including errors. Treat `protocol.ts` types as the stable contract.

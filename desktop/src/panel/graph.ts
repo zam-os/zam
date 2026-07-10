@@ -1,0 +1,453 @@
+/**
+ * ZAM 2D Knowledge-Graph card — MCP Apps panel entry.
+ *
+ * Renders the 1-hop neighborhood (prerequisites below, dependents above)
+ * around a focus token as a plain SVG diagram — no Three.js, no libraries.
+ * Clicking a neighbor re-centers the graph on it (click-to-recenter); a
+ * breadcrumb of the last 5 focus slugs enables going back.
+ *
+ * Standalone by design (tests/desktop/module-boundaries.test.ts): no Tauri,
+ * no Three.js, no import from ./panel.ts or ./recall.ts. The result-parsing
+ * helper below is copied from recall.ts (itself copied from panel.ts's
+ * mcpTransport), to keep each panel entry independently bundleable.
+ */
+
+import { App } from "@modelcontextprotocol/ext-apps";
+
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+const VIEW_W = 700;
+const VIEW_H = 500;
+const CENTER_X = VIEW_W / 2;
+const CENTER_Y = 260;
+const PREREQ_RADIUS = 160;
+const DEPENDENT_RADIUS = 145;
+const NODE_HEIGHT = 38;
+const NODE_MIN_WIDTH = 64;
+const NODE_PAD_X = 14;
+const LABEL_MAX_CHARS = 20;
+const HISTORY_LIMIT = 5;
+
+const statusEl = document.getElementById("zam-status");
+const statusDot = document.getElementById("zam-status-dot");
+const versionEl = document.getElementById("zam-version");
+const breadcrumbEl = document.getElementById("graph-breadcrumb");
+const contentEl = document.getElementById("graph-content");
+
+function setStatus(text: string, connected: boolean): void {
+  if (statusEl) statusEl.textContent = text;
+  if (statusDot) statusDot.classList.toggle("connected", connected);
+}
+
+interface OpenGraphResult {
+  graph?: string;
+  focus?: string | null;
+  version?: string;
+  user?: string | null;
+}
+
+interface KnowledgeContextRef {
+  name: string;
+  label: string | null;
+  language: string | null;
+}
+
+interface GraphCard {
+  state: string;
+  reps: number;
+  stability: number;
+  difficulty: number;
+  blocked: boolean;
+  dueAt: string;
+  lastReviewAt: string | null;
+}
+
+interface GraphNode {
+  id: string;
+  slug: string;
+  title: string;
+  display_title: string;
+  concept: string;
+  domain: string;
+  bloomLevel: number;
+  knowledgeContexts: KnowledgeContextRef[];
+  card: GraphCard | null;
+}
+
+interface Neighborhood {
+  focus: string;
+  center: GraphNode;
+  prerequisites: GraphNode[];
+  dependents: GraphNode[];
+}
+
+const app = new App({ name: "ZAM Graph", version: "0.1.0" });
+
+let currentUser: string | null = null;
+let connected = false;
+let started = false;
+let initialFocus: string | null = null;
+/** Last up to HISTORY_LIMIT focus slugs, most-recent last (current focus). */
+let history: string[] = [];
+
+/**
+ * Parse a zam MCP tool result: success answers carry JSON on content[0].text
+ * (never structuredContent — wrapHandler re-wraps arrays as `{ result }`); on
+ * isError, surface the JSON `error` field. Copied from recall.ts.
+ */
+async function callTool(
+  name: string,
+  args: Record<string, unknown>,
+): Promise<unknown> {
+  const result = await app.callServerTool({ name, arguments: args });
+  const first = result.content?.[0];
+  const text = first && first.type === "text" ? first.text : undefined;
+
+  if (result.isError) {
+    let message = text ?? `${name} call failed`;
+    if (text) {
+      try {
+        const parsed = JSON.parse(text) as { error?: string };
+        if (typeof parsed.error === "string") message = parsed.error;
+      } catch {
+        // Not JSON — keep the raw text assigned above.
+      }
+    }
+    throw new Error(message);
+  }
+
+  return text === undefined ? undefined : JSON.parse(text);
+}
+
+/** Sync a compact neighborhood snapshot into the host's model context. */
+function pushContext(nb: Neighborhood): void {
+  void app
+    .updateModelContext({
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify({
+            zamGraph: {
+              focus: nb.focus,
+              prerequisites: nb.prerequisites.length,
+              dependents: nb.dependents.length,
+            },
+          }),
+        },
+      ],
+    })
+    .catch(() => {
+      // Context sync is best-effort; a rejection must not break the card.
+    });
+}
+
+function clearContent(): void {
+  contentEl?.replaceChildren();
+}
+
+function renderMessage(emoji: string, title: string, sub: string): void {
+  if (!contentEl) return;
+  clearContent();
+  const box = document.createElement("div");
+  box.className = "zam-card graph-empty";
+  const emojiEl = document.createElement("div");
+  emojiEl.className = "graph-empty-emoji";
+  emojiEl.textContent = emoji;
+  const titleEl = document.createElement("div");
+  titleEl.className = "graph-empty-title";
+  titleEl.textContent = title;
+  const subEl = document.createElement("div");
+  subEl.className = "graph-empty-sub";
+  subEl.textContent = sub;
+  box.append(emojiEl, titleEl, subEl);
+  contentEl.appendChild(box);
+}
+
+function renderNoFocus(): void {
+  renderMessage(
+    "🧭",
+    "Kein Fokus",
+    "Ruf mich mit einem Fokus-Token auf: zam_show_graph {focus}",
+  );
+}
+
+function renderError(message: string): void {
+  renderMessage("⚠️", "Graph konnte nicht geladen werden", message);
+}
+
+function truncateLabel(text: string, max = LABEL_MAX_CHARS): string {
+  return text.length > max ? `${text.slice(0, max - 1)}…` : text;
+}
+
+function bloomStep(level: number): number {
+  return Math.min(5, Math.max(1, Math.round(level) || 1));
+}
+
+/**
+ * getBBox() only returns real dimensions once the <text> is attached to a
+ * rendered SVG document — callers must append it first. The character-width
+ * fallback guards hosts where getBBox throws or returns zero before layout.
+ */
+function measureTextWidth(text: SVGTextElement): number {
+  try {
+    const box = text.getBBox();
+    if (box.width > 0) return box.width;
+  } catch {
+    // Fall through to the estimate below.
+  }
+  return (text.textContent?.length ?? 0) * 6.4;
+}
+
+type NodeKind = "center" | "prereq" | "dependent";
+
+function createNode(
+  container: SVGGElement,
+  node: GraphNode,
+  x: number,
+  y: number,
+  kind: NodeKind,
+  onSelect: (slug: string) => void,
+): void {
+  const g = document.createElementNS(SVG_NS, "g");
+  g.setAttribute("transform", `translate(${x}, ${y})`);
+  g.setAttribute(
+    "class",
+    `graph-node graph-node-${kind}${node.card ? "" : " graph-node-nocard"}`,
+  );
+
+  const title = document.createElementNS(SVG_NS, "title");
+  title.textContent = node.concept;
+  g.appendChild(title);
+
+  const text = document.createElementNS(SVG_NS, "text");
+  text.setAttribute("text-anchor", "middle");
+  text.setAttribute("dominant-baseline", "middle");
+  text.setAttribute("class", "graph-node-label");
+  text.textContent = truncateLabel(node.display_title || node.slug);
+  g.appendChild(text);
+
+  // Attach before measuring (see measureTextWidth doc comment).
+  container.appendChild(g);
+  const textWidth = measureTextWidth(text);
+
+  const width = Math.max(NODE_MIN_WIDTH, textWidth + NODE_PAD_X * 2);
+  const height = kind === "center" ? NODE_HEIGHT * 1.15 : NODE_HEIGHT;
+  const step = bloomStep(node.bloomLevel);
+
+  const rect = document.createElementNS(SVG_NS, "rect");
+  rect.setAttribute("x", String(-width / 2));
+  rect.setAttribute("y", String(-height / 2));
+  rect.setAttribute("width", String(width));
+  rect.setAttribute("height", String(height));
+  rect.setAttribute("rx", "10");
+  rect.setAttribute("ry", "10");
+  rect.setAttribute("class", "graph-node-rect");
+  rect.style.fill = `var(--bloom-${step}-bg)`;
+  rect.style.stroke = `var(--bloom-${step})`;
+  g.insertBefore(rect, text);
+
+  if (node.card?.blocked) {
+    const badge = document.createElementNS(SVG_NS, "circle");
+    badge.setAttribute("cx", String(width / 2 - 5));
+    badge.setAttribute("cy", String(-height / 2 + 5));
+    badge.setAttribute("r", "6.5");
+    badge.setAttribute("class", "graph-node-blocked-badge");
+    g.appendChild(badge);
+    const mark = document.createElementNS(SVG_NS, "text");
+    mark.setAttribute("x", String(width / 2 - 5));
+    mark.setAttribute("y", String(-height / 2 + 5));
+    mark.setAttribute("text-anchor", "middle");
+    mark.setAttribute("dominant-baseline", "central");
+    mark.setAttribute("class", "graph-node-blocked-mark");
+    mark.textContent = "!";
+    g.appendChild(mark);
+  }
+
+  // The center is already in focus — recentering on itself is a no-op, so
+  // (unlike the sidebar pills in the 3D graph) only neighbors are clickable.
+  if (kind !== "center") {
+    g.style.cursor = "pointer";
+    g.addEventListener("click", () => onSelect(node.slug));
+  }
+}
+
+/** Evenly fan `count` nodes across an arc above (-1) or below (+1) center. */
+function arcPosition(
+  index: number,
+  count: number,
+  radius: number,
+  direction: 1 | -1,
+): { x: number; y: number } {
+  if (count <= 1) {
+    return { x: CENTER_X, y: CENTER_Y + direction * radius };
+  }
+  const spreadDeg = Math.min(170, 60 + count * 14);
+  const spread = (spreadDeg * Math.PI) / 180;
+  const theta = -spread / 2 + (spread / (count - 1)) * index;
+  return {
+    x: CENTER_X + radius * Math.sin(theta),
+    y: CENTER_Y + direction * radius * Math.cos(theta),
+  };
+}
+
+function renderGraph(nb: Neighborhood, onSelect: (slug: string) => void): void {
+  if (!contentEl) return;
+  clearContent();
+
+  const wrap = document.createElement("div");
+  wrap.className = "graph-canvas-wrap";
+  contentEl.appendChild(wrap);
+
+  const svg = document.createElementNS(SVG_NS, "svg") as SVGSVGElement;
+  svg.setAttribute("viewBox", `0 0 ${VIEW_W} ${VIEW_H}`);
+  svg.setAttribute("class", "graph-svg");
+  svg.setAttribute("role", "img");
+  const label = nb.center.display_title || nb.center.slug;
+  svg.setAttribute("aria-label", `Knowledge graph centered on ${label}`);
+  wrap.appendChild(svg);
+
+  const edgesGroup = document.createElementNS(SVG_NS, "g") as SVGGElement;
+  edgesGroup.setAttribute("class", "graph-edges");
+  svg.appendChild(edgesGroup);
+
+  const nodesGroup = document.createElementNS(SVG_NS, "g") as SVGGElement;
+  nodesGroup.setAttribute("class", "graph-nodes");
+  svg.appendChild(nodesGroup);
+
+  function drawEdge(x: number, y: number, colorVar: string): void {
+    const line = document.createElementNS(SVG_NS, "line");
+    line.setAttribute("x1", String(CENTER_X));
+    line.setAttribute("y1", String(CENTER_Y));
+    line.setAttribute("x2", String(x));
+    line.setAttribute("y2", String(y));
+    line.setAttribute("class", "graph-edge");
+    line.style.stroke = colorVar;
+    edgesGroup.appendChild(line);
+  }
+
+  const prereqPositions = nb.prerequisites.map((_, i) =>
+    arcPosition(i, nb.prerequisites.length, PREREQ_RADIUS, 1),
+  );
+  const depPositions = nb.dependents.map((_, i) =>
+    arcPosition(i, nb.dependents.length, DEPENDENT_RADIUS, -1),
+  );
+
+  prereqPositions.forEach(({ x, y }) => {
+    drawEdge(x, y, "var(--prereq)");
+  });
+  depPositions.forEach(({ x, y }) => {
+    drawEdge(x, y, "var(--dependent)");
+  });
+
+  nb.prerequisites.forEach((node, i) => {
+    const { x, y } = prereqPositions[i];
+    createNode(nodesGroup, node, x, y, "prereq", onSelect);
+  });
+  nb.dependents.forEach((node, i) => {
+    const { x, y } = depPositions[i];
+    createNode(nodesGroup, node, x, y, "dependent", onSelect);
+  });
+  // Center drawn last so it renders above any crossing edges.
+  createNode(nodesGroup, nb.center, CENTER_X, CENTER_Y, "center", onSelect);
+}
+
+function renderBreadcrumb(onSelect: (slug: string) => void): void {
+  if (!breadcrumbEl) return;
+  breadcrumbEl.replaceChildren();
+  if (history.length <= 1) return; // nothing to go back to yet
+  history.forEach((slug, i) => {
+    if (i > 0) {
+      const sep = document.createElement("span");
+      sep.className = "graph-crumb-sep";
+      sep.textContent = "›";
+      breadcrumbEl.appendChild(sep);
+    }
+    if (i === history.length - 1) {
+      const current = document.createElement("span");
+      current.className = "graph-crumb-current";
+      current.textContent = slug;
+      breadcrumbEl.appendChild(current);
+    } else {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "graph-crumb-link";
+      btn.textContent = slug;
+      btn.addEventListener("click", () => onSelect(slug));
+      breadcrumbEl.appendChild(btn);
+    }
+  });
+}
+
+function pushHistory(slug: string): void {
+  if (history[history.length - 1] === slug) return;
+  history = [...history, slug].slice(-HISTORY_LIMIT);
+}
+
+async function navigateTo(slug: string): Promise<void> {
+  try {
+    const args = ["--focus", slug];
+    if (currentUser) args.push("--user", currentUser);
+    const data = (await callTool("zam_studio_bridge", {
+      cmd: "get-neighborhood",
+      args,
+    })) as Neighborhood;
+    pushHistory(data.focus);
+    renderBreadcrumb((s) => void navigateTo(s));
+    renderGraph(data, (s) => void navigateTo(s));
+    pushContext(data);
+  } catch (error) {
+    renderError(error instanceof Error ? error.message : String(error));
+  }
+}
+
+function start(): void {
+  if (started || !connected) return;
+  started = true;
+  if (initialFocus) {
+    void navigateTo(initialFocus);
+  } else {
+    renderNoFocus();
+  }
+}
+
+app.ontoolresult = (params) => {
+  const structured = (params.structuredContent ?? {}) as OpenGraphResult;
+  if (versionEl && structured.version) {
+    versionEl.textContent = `v${structured.version}`;
+  }
+  currentUser = structured.user ?? null;
+  initialFocus = structured.focus ?? null;
+  const who = currentUser ? ` — ${currentUser}` : "";
+  setStatus(`Connected to zam mcp${who}`, true);
+  start();
+};
+
+// A plain file viewer (e.g. an editor preview) renders this HTML without
+// ever answering ui/initialize — connect() then stays pending forever.
+// Degrade honestly instead of showing "Connecting to host…" for good.
+const NO_HOST_NOTICE =
+  "Kein MCP-Apps-Host — diese Karte braucht einen Host mit ui/initialize " +
+  "(z. B. basic-host oder Copilot-Panel).";
+const noHostTimer = setTimeout(() => setStatus(NO_HOST_NOTICE, false), 4000);
+
+app
+  .connect()
+  .then(() => {
+    clearTimeout(noHostTimer);
+    connected = true;
+    setStatus("Connected to host — waiting for session…", true);
+    // ontoolresult (which carries the initial focus + signed-in user)
+    // normally fires right after the handshake and triggers the load. If a
+    // host never delivers it, still show the empty state after a short grace
+    // period instead of leaving the card stuck on "waiting for session".
+    window.setTimeout(start, 800);
+  })
+  .catch((error: unknown) => {
+    clearTimeout(noHostTimer);
+    setStatus(
+      `ZAM Graph failed to start: ${
+        error instanceof Error ? error.message : String(error)
+      }`,
+      false,
+    );
+  });

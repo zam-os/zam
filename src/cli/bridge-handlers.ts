@@ -1,6 +1,9 @@
+import { mkdirSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 import type {
   BloomLevel,
   Database,
+  InstallChannel,
   KnowledgeContext,
   Rating,
   ReviewActionType,
@@ -8,6 +11,7 @@ import type {
   SynthesisConfidence,
   Token,
   TokenPattern,
+  UpdateDecision,
   UpdateTokenInput,
 } from "../kernel/index.js";
 import {
@@ -16,8 +20,10 @@ import {
   assignTokenToContext,
   buildReviewQueue,
   createToken,
+  decideUpdate,
   ensureCard,
   executeReviewAction,
+  exportSnapshot,
   generateConceptFreeCue,
   generatePrompt,
   getCard,
@@ -26,6 +32,7 @@ import {
   getDatabaseTargetInfo,
   getDisplayTitle,
   getDueCards,
+  getInstallChannel,
   getSessionSummary,
   getSetting,
   getTokenById,
@@ -45,6 +52,7 @@ import {
   resolveReviewContext,
   searchTokensHybrid,
   updateCard,
+  verifySnapshot,
 } from "../kernel/index.js";
 import { resolveOperationKnowledgeContexts } from "./knowledge-contexts.js";
 import { ensureHighQualityQuestion } from "./llm/client.js";
@@ -55,6 +63,12 @@ import {
   resolveDedupThreshold,
   resolveSuggestMinSimilarity,
 } from "./llm/embedder.js";
+import {
+  currentVersion,
+  fetchLatestVersion,
+  GITHUB_REPO,
+} from "./update/latest-version.js";
+import { ensureActiveWorkspace } from "./workspaces/active.js";
 
 const BLOOM_VERBS: Record<BloomLevel, string> = {
   1: "Remember",
@@ -1140,4 +1154,56 @@ export async function sessionOpen(db: Database, params: SessionOpenParams) {
     },
     relevant: findTokensResult,
   };
+}
+
+// 13. backupCreate
+export interface BackupCreateParams {
+  dir?: string;
+}
+
+/**
+ * Write a portable SQL-text snapshot (kernel exportSnapshot/verifySnapshot) —
+ * not the VACUUM file copy `backup-db`/backupDatabaseTo produces. Used by the
+ * Settings card's "Back up now" button via zam_studio_bridge.
+ */
+export async function backupCreate(db: Database, params: BackupCreateParams) {
+  const targetDir = params.dir || (await ensureActiveWorkspace(db)).path;
+  const snapshot = await exportSnapshot(db);
+  const manifest = verifySnapshot(snapshot);
+  const backupDir = join(targetDir, "zam-backups");
+  mkdirSync(backupDir, { recursive: true });
+  const stamp = manifest.createdAt.replace(/[:.]/g, "-");
+  const path = join(backupDir, `zam-snapshot-${stamp}.sql`);
+  writeFileSync(path, snapshot, "utf-8");
+  return {
+    ok: true as const,
+    path,
+    createdAt: manifest.createdAt,
+    checksum: manifest.checksum,
+    tables: manifest.tables,
+  };
+}
+
+// 14. updateCheck
+export interface UpdateCheckParams {
+  latest?: string;
+  channel?: string;
+}
+
+/**
+ * Decide whether a newer ZAM release is available. `latest`/`channel` let
+ * callers (tests, the Settings card's error path) short-circuit the network
+ * fetch / detected channel for deterministic or offline checks.
+ */
+export async function updateCheck(
+  params: UpdateCheckParams,
+): Promise<UpdateDecision> {
+  const current = currentVersion();
+  const latest = params.latest ?? (await fetchLatestVersion(GITHUB_REPO));
+  const channel = (params.channel as InstallChannel) ?? getInstallChannel();
+  return decideUpdate({
+    currentVersion: current,
+    latestVersion: latest,
+    channel,
+  });
 }

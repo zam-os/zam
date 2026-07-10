@@ -2,18 +2,19 @@ import { spawn } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { createMcpServer } from "../../src/cli/commands/mcp.js";
 import {
-  openDatabase,
   createToken,
   ensureCard,
   getCard,
   getPrerequisites,
   getTokenBySlug,
+  openDatabase,
 } from "../../src/kernel/index.js";
-import { createMcpServer } from "../../src/cli/commands/mcp.js";
 
 describe("MCP stdio server tests", () => {
   const tsxImport = import.meta.resolve("tsx");
@@ -24,10 +25,15 @@ describe("MCP stdio server tests", () => {
   let client: Client;
   let serverTransport: InMemoryTransport;
   let clientTransport: InMemoryTransport;
+  let previousConfigPath: string | undefined;
 
   beforeEach(async () => {
     tempDir = mkdtempSync(join(tmpdir(), "zam-mcp-test-"));
     dbPath = join(tempDir, "test.db");
+    // Isolate from the developer's machine config (~/.zam/config.json) so an
+    // active workspace knowledge context on the host cannot leak into tests.
+    previousConfigPath = process.env.ZAM_CONFIG_PATH;
+    process.env.ZAM_CONFIG_PATH = join(tempDir, "machine-config.json");
     db = await openDatabase({
       dbPath,
       initialize: true,
@@ -64,6 +70,11 @@ describe("MCP stdio server tests", () => {
   });
 
   afterEach(async () => {
+    if (previousConfigPath === undefined) {
+      delete process.env.ZAM_CONFIG_PATH;
+    } else {
+      process.env.ZAM_CONFIG_PATH = previousConfigPath;
+    }
     if (client) {
       await client.close();
     }
@@ -76,9 +87,9 @@ describe("MCP stdio server tests", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all 11 tools with correct annotations", async () => {
+  it("lists all 16 tools with correct annotations", async () => {
     const response = await client.listTools();
-    expect(response.tools).toHaveLength(11);
+    expect(response.tools).toHaveLength(16);
 
     const toolNames = response.tools.map((t) => t.name).sort();
     const expectedNames = [
@@ -93,6 +104,11 @@ describe("MCP stdio server tests", () => {
       "zam_suggest_foundations",
       "zam_link_prereq",
       "zam_monitor",
+      "zam_open_studio",
+      "zam_open_recall",
+      "zam_show_graph",
+      "zam_open_settings",
+      "zam_studio_bridge",
     ].sort();
     expect(toolNames).toEqual(expectedNames);
 
@@ -134,6 +150,14 @@ describe("MCP stdio server tests", () => {
     expect((addTokenTool as any).annotations).toEqual({
       openWorldHint: true,
       destructiveHint: false,
+    });
+
+    const studioBridgeTool = response.tools.find(
+      (t) => t.name === "zam_studio_bridge",
+    )!;
+    expect((studioBridgeTool as any).annotations).toEqual({
+      openWorldHint: false,
+      destructiveHint: true,
     });
   });
 
@@ -258,6 +282,193 @@ describe("MCP stdio server tests", () => {
     expect(await getTokenBySlug(db, "mcp-delete-token")).toBeDefined();
   });
 
+  it("exposes the studio panel as an MCP Apps resource", async () => {
+    const resources = await client.listResources();
+    const studio = resources.resources.find((r) => r.uri === "ui://zam/studio");
+    expect(studio).toBeDefined();
+
+    const read = await client.readResource({ uri: "ui://zam/studio" });
+    const content = read.contents[0] as { text: string; mimeType: string };
+    expect(content.mimeType).toContain("text/html");
+    expect(content.text).toContain("zam-studio-panel");
+    // The bundled studio panel roots at <div id="zam-studio-panel">. The
+    // no-build placeholder in loadPanelHtml (src/cli/commands/mcp.ts) roots
+    // at id="zam-panel-placeholder" with a data-panel="<fileName>" attribute
+    // instead, so the assertion above already rules out the placeholder on
+    // its own. "content-studio" is a class name from the actual Learning
+    // Content Studio markup (desktop/src/panel/studio-panel.html) that the
+    // placeholder never contains either — kept as a second, independent
+    // guard that this is the real editor build, not just a stray root div.
+    // Both assertions only pass once dist/ui/studio-panel.html was actually
+    // built, which CI guarantees via the build step that runs before tests
+    // (.github/workflows/ci.yml).
+    expect(content.text).toContain("content-studio");
+  });
+
+  it("links zam_open_studio to the studio panel resource", async () => {
+    const response = await client.listTools();
+    const tool = response.tools.find((t) => t.name === "zam_open_studio");
+    expect(tool).toBeDefined();
+    const meta = tool?._meta as { ui?: { resourceUri?: string } } | undefined;
+    expect(meta?.ui?.resourceUri).toBe("ui://zam/studio");
+
+    const res = await client.callTool({
+      name: "zam_open_studio",
+      arguments: {},
+    });
+    expect(res.isError).toBeUndefined();
+  });
+
+  it("exposes the recall panel as an MCP Apps resource", async () => {
+    const resources = await client.listResources();
+    const recall = resources.resources.find((r) => r.uri === "ui://zam/recall");
+    expect(recall).toBeDefined();
+
+    const read = await client.readResource({ uri: "ui://zam/recall" });
+    const content = read.contents[0] as { text: string; mimeType: string };
+    expect(content.mimeType).toContain("text/html");
+    // The bundled recall panel roots at <div id="zam-recall-panel">. The
+    // no-build placeholder in loadPanelHtml uses a data-panel attribute
+    // instead of this id, so this assertion only passes against a real
+    // dist/ui/recall-panel.html build (CI builds before running tests).
+    expect(content.text).toContain("zam-recall-panel");
+  });
+
+  it("links zam_open_recall to the recall panel resource", async () => {
+    const response = await client.listTools();
+    const tool = response.tools.find((t) => t.name === "zam_open_recall");
+    expect(tool).toBeDefined();
+    const meta = tool?._meta as { ui?: { resourceUri?: string } } | undefined;
+    expect(meta?.ui?.resourceUri).toBe("ui://zam/recall");
+    expect((tool as any).annotations).toEqual({
+      openWorldHint: false,
+      readOnlyHint: true,
+    });
+
+    const res = await client.callTool({
+      name: "zam_open_recall",
+      arguments: {},
+    });
+    expect(res.isError).toBeUndefined();
+    const structured = (res as any).structuredContent as {
+      recall?: string;
+      version?: string;
+      user?: string | null;
+    };
+    expect(structured.recall).toBe("zam");
+    expect(typeof structured.version).toBe("string");
+    // Default user seeded in beforeEach via user_config.
+    expect(structured.user).toBe("thomas");
+  });
+
+  it("exposes the graph panel as an MCP Apps resource", async () => {
+    const resources = await client.listResources();
+    const graph = resources.resources.find((r) => r.uri === "ui://zam/graph");
+    expect(graph).toBeDefined();
+
+    const read = await client.readResource({ uri: "ui://zam/graph" });
+    const content = read.contents[0] as { text: string; mimeType: string };
+    expect(content.mimeType).toContain("text/html");
+    // The bundled graph panel roots at <div id="zam-graph-panel">. The
+    // no-build placeholder in loadPanelHtml uses a data-panel attribute
+    // instead of this id, so this assertion only passes against a real
+    // dist/ui/graph-panel.html build (CI builds before running tests).
+    expect(content.text).toContain("zam-graph-panel");
+  });
+
+  it("links zam_show_graph to the graph panel resource", async () => {
+    const response = await client.listTools();
+    const tool = response.tools.find((t) => t.name === "zam_show_graph");
+    expect(tool).toBeDefined();
+    const meta = tool?._meta as { ui?: { resourceUri?: string } } | undefined;
+    expect(meta?.ui?.resourceUri).toBe("ui://zam/graph");
+    expect((tool as any).annotations).toEqual({
+      openWorldHint: false,
+      readOnlyHint: true,
+    });
+
+    // inputSchema accepts optional focus/user — neither is required.
+    const schema = tool?.inputSchema as
+      | { properties?: Record<string, unknown>; required?: string[] }
+      | undefined;
+    expect(schema?.properties).toHaveProperty("focus");
+    expect(schema?.properties).toHaveProperty("user");
+    expect(schema?.required ?? []).not.toContain("focus");
+    expect(schema?.required ?? []).not.toContain("user");
+
+    const res = await client.callTool({
+      name: "zam_show_graph",
+      arguments: {},
+    });
+    expect(res.isError).toBeUndefined();
+    const structured = (res as any).structuredContent as {
+      graph?: string;
+      focus?: string | null;
+      version?: string;
+      user?: string | null;
+    };
+    expect(structured.graph).toBe("zam");
+    expect(structured.focus).toBeNull();
+    expect(typeof structured.version).toBe("string");
+    // Default user seeded in beforeEach via user_config.
+    expect(structured.user).toBe("thomas");
+
+    const focusedRes = await client.callTool({
+      name: "zam_show_graph",
+      arguments: { focus: "some-slug" },
+    });
+    expect(focusedRes.isError).toBeUndefined();
+    const focusedStructured = (focusedRes as any).structuredContent as {
+      focus?: string | null;
+    };
+    expect(focusedStructured.focus).toBe("some-slug");
+  });
+
+  it("exposes the settings panel as an MCP Apps resource", async () => {
+    const resources = await client.listResources();
+    const settings = resources.resources.find(
+      (r) => r.uri === "ui://zam/settings",
+    );
+    expect(settings).toBeDefined();
+
+    const read = await client.readResource({ uri: "ui://zam/settings" });
+    const content = read.contents[0] as { text: string; mimeType: string };
+    expect(content.mimeType).toContain("text/html");
+    // The bundled settings panel roots at <div id="zam-settings-panel">. The
+    // no-build placeholder in loadPanelHtml uses a data-panel attribute
+    // instead of this id, so this assertion only passes against a real
+    // dist/ui/settings-panel.html build (CI builds before running tests).
+    expect(content.text).toContain("zam-settings-panel");
+  });
+
+  it("links zam_open_settings to the settings panel resource", async () => {
+    const response = await client.listTools();
+    const tool = response.tools.find((t) => t.name === "zam_open_settings");
+    expect(tool).toBeDefined();
+    const meta = tool?._meta as { ui?: { resourceUri?: string } } | undefined;
+    expect(meta?.ui?.resourceUri).toBe("ui://zam/settings");
+    // Unlike recall/graph, the Settings card can mutate (repair links, switch
+    // knowledge context, write a backup) — no readOnlyHint.
+    expect((tool as any).annotations).toEqual({
+      openWorldHint: false,
+    });
+
+    const res = await client.callTool({
+      name: "zam_open_settings",
+      arguments: {},
+    });
+    expect(res.isError).toBeUndefined();
+    const structured = (res as any).structuredContent as {
+      settings?: string;
+      version?: string;
+      user?: string | null;
+    };
+    expect(structured.settings).toBe("zam");
+    expect(typeof structured.version).toBe("string");
+    // Default user seeded in beforeEach via user_config.
+    expect(structured.user).toBe("thomas");
+  });
+
   it("returns error result with isError: true on handler error", async () => {
     // Call zam_session_end with non-existent session
     const res = await client.callTool({
@@ -336,5 +547,179 @@ describe("MCP stdio server tests", () => {
     expect(parsed.id).toBe(1);
     expect(parsed.result).toBeDefined();
     expect(parsed.result.protocolVersion).toBeDefined();
+  });
+
+  describe("zam_studio_bridge", () => {
+    it("lists zam_studio_bridge as an app-only, destructive tool", async () => {
+      const response = await client.listTools();
+      const tool = response.tools.find((t) => t.name === "zam_studio_bridge");
+      expect(tool).toBeDefined();
+      expect((tool as any).annotations).toEqual({
+        openWorldHint: false,
+        destructiveHint: true,
+      });
+
+      // Marked app-only (not exposed to the chat model) — the Studio panel,
+      // not the model, is the intended caller. See the ext-apps `visibility`
+      // option on McpUiToolMeta.
+      const meta = tool?._meta as
+        | { ui?: { visibility?: string[] } }
+        | undefined;
+      expect(meta?.ui?.visibility).toEqual(["app"]);
+    });
+
+    it("rejects commands outside the allowlist, naming the command", async () => {
+      const rejected = [
+        "provider-status",
+        "start-session",
+        "observe-ui-watch",
+        "serve",
+        "backup-db",
+        "no-such-cmd",
+      ];
+      for (const cmd of rejected) {
+        const res = await client.callTool({
+          name: "zam_studio_bridge",
+          arguments: { cmd, args: [] },
+        });
+        expect(res.isError).toBe(true);
+        const data = JSON.parse(res.content[0].text);
+        expect(data.error).toContain(cmd);
+        expect(data.error).toContain("not allowed for the Studio panel");
+      }
+    });
+
+    // The tests below actually execute an allowed command through
+    // executeBridgeCommandJson, which — like `bridge serve` today — opens
+    // its own database via the default openDatabase() resolution. That
+    // resolution reads ~/.zam/zam.db and ~/.zam/credentials.json through
+    // module-level constants in src/kernel/db/connection.ts and
+    // src/kernel/credentials.ts, computed from os.homedir() the first time
+    // those modules load in this process — which already happened via this
+    // file's top-level imports, using the real developer home directory.
+    // Overriding process.env.HOME/USERPROFILE later, in-process, cannot
+    // change that. So — exactly like tests/integration/bridge-serve-mode.test.ts
+    // does for `bridge serve`, and like this file's own smoke test above —
+    // these tests spawn `zam mcp` as a real child process with HOME/USERPROFILE
+    // pointed at a scratch directory, giving it a fresh module graph that
+    // resolves those paths safely instead of touching real ZAM data.
+    describe("allowed command execution (isolated subprocess)", () => {
+      let studioHomeDir: string;
+      let studioClient: Client;
+
+      beforeEach(async () => {
+        studioHomeDir = mkdtempSync(join(tmpdir(), "zam-studio-bridge-home-"));
+        const cliPath = join(process.cwd(), "src", "cli", "index.ts");
+        const transport = new StdioClientTransport({
+          command: process.execPath,
+          args: ["--import", tsxImport, cliPath, "mcp"],
+          env: {
+            ...process.env,
+            HOME: studioHomeDir,
+            USERPROFILE: studioHomeDir,
+          },
+        });
+        studioClient = new Client(
+          { name: "studio-bridge-test-client", version: "1.0.0" },
+          { capabilities: {} },
+        );
+        await studioClient.connect(transport);
+      });
+
+      afterEach(async () => {
+        await studioClient.close();
+        rmSync(studioHomeDir, { recursive: true, force: true });
+      });
+
+      it("runs database-status end-to-end and returns parsed JSON", async () => {
+        // Omits `args` entirely to exercise the schema's default: [].
+        const res = await studioClient.callTool({
+          name: "zam_studio_bridge",
+          arguments: { cmd: "database-status" },
+        });
+        expect(res.isError).toBeUndefined();
+        const data = JSON.parse(res.content[0].text);
+        expect(data.success).toBe(true);
+        expect(data.connected).toBe(true);
+      }, 15_000);
+
+      it("runs list-knowledge-contexts end-to-end and returns parsed JSON", async () => {
+        const res = await studioClient.callTool({
+          name: "zam_studio_bridge",
+          arguments: { cmd: "list-knowledge-contexts", args: [] },
+        });
+        expect(res.isError).toBeUndefined();
+        const data = JSON.parse(res.content[0].text);
+        expect(data.success).toBe(true);
+        expect(Array.isArray(data.contexts)).toBe(true);
+      }, 15_000);
+
+      it("serializes concurrent calls without corrupting either response", async () => {
+        const [resA, resB] = await Promise.all([
+          studioClient.callTool({
+            name: "zam_studio_bridge",
+            arguments: { cmd: "database-status", args: [] },
+          }),
+          studioClient.callTool({
+            name: "zam_studio_bridge",
+            arguments: { cmd: "list-knowledge-contexts", args: [] },
+          }),
+        ]);
+        expect(resA.isError).toBeUndefined();
+        expect(resB.isError).toBeUndefined();
+        const dataA = JSON.parse(resA.content[0].text);
+        const dataB = JSON.parse(resB.content[0].text);
+        expect(dataA.success).toBe(true);
+        expect(dataA.connected).toBe(true);
+        expect(dataB.success).toBe(true);
+        expect(Array.isArray(dataB.contexts)).toBe(true);
+      }, 15_000);
+
+      it("returns a JSON error instead of crashing when an allowed command gets bad args", async () => {
+        // get-neighborhood requires --focus. Commander must reject this by
+        // throwing (exitOverride), never by calling process.exit and taking
+        // the whole zam mcp server down under the Studio panel.
+        const badRes = await studioClient.callTool({
+          name: "zam_studio_bridge",
+          arguments: { cmd: "get-neighborhood", args: [] },
+        });
+        expect(badRes.isError).toBe(true);
+
+        // The server must still be alive: a subsequent call still succeeds.
+        const okRes = await studioClient.callTool({
+          name: "zam_studio_bridge",
+          arguments: { cmd: "database-status", args: [] },
+        });
+        expect(okRes.isError).toBeUndefined();
+      }, 15_000);
+
+      it("runs update-check end-to-end with an injected --latest (deterministic)", async () => {
+        const res = await studioClient.callTool({
+          name: "zam_studio_bridge",
+          arguments: {
+            cmd: "update-check",
+            args: ["--latest", "0.0.1", "--channel", "developer"],
+          },
+        });
+        expect(res.isError).toBeUndefined();
+        const data = JSON.parse(res.content[0].text);
+        // 0.0.1 is behind any real currentVersion, so no update is due.
+        expect(data.updateAvailable).toBe(false);
+        expect(data.latestVersion).toBe("0.0.1");
+        expect(data.channel).toBe("developer");
+      }, 15_000);
+
+      it("runs backup-create end-to-end and writes a verifiable snapshot", async () => {
+        const res = await studioClient.callTool({
+          name: "zam_studio_bridge",
+          arguments: { cmd: "backup-create", args: [] },
+        });
+        expect(res.isError).toBeUndefined();
+        const data = JSON.parse(res.content[0].text);
+        expect(data.ok).toBe(true);
+        expect(data.path.endsWith(".sql")).toBe(true);
+        expect(data.tables).toBeDefined();
+      }, 15_000);
+    });
   });
 });

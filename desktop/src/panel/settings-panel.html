@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZAM Settings</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --accent: #827dbd;
+        --bg: #f5f7fb;
+        --fg: #1c2030;
+        --muted: #6b7280;
+        --card: #ffffff;
+        --border: rgba(15, 23, 42, 0.14);
+        --field-bg: #ffffff;
+        --danger: #ef4444;
+        --danger-bg: rgba(239, 68, 68, 0.1);
+        --hover: rgba(130, 125, 189, 0.1);
+        --ok: #2fbf71;
+        --ok-bg: rgba(47, 191, 113, 0.12);
+        --warn: #d97706;
+        --warn-bg: rgba(217, 119, 6, 0.14);
+
+        /* Aliases so any shared markup built against the richer --clr-*
+           palette (desktop/src/styles.css) still resolves here. Defined once;
+           the dark block below only redefines the base tokens and custom
+           properties resolve dynamically, so these follow along. */
+        --clr-text-muted: var(--muted);
+        --clr-text-secondary: var(--muted);
+        --clr-bg-surface: var(--card);
+        --clr-border: var(--border);
+        --clr-accent-purple: var(--accent);
+        --clr-accent-teal: var(--accent);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #14161f;
+          --fg: #e8eaf2;
+          --muted: #9aa0b0;
+          --card: #1e2230;
+          --border: rgba(255, 255, 255, 0.14);
+          --field-bg: #262b3d;
+          --danger: #f87171;
+          --danger-bg: rgba(248, 113, 113, 0.14);
+          --hover: rgba(130, 125, 189, 0.18);
+          --ok: #34d399;
+          --ok-bg: rgba(52, 211, 153, 0.16);
+          --warn: #fbbf24;
+          --warn-bg: rgba(251, 191, 36, 0.16);
+        }
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+      }
+      #zam-settings-panel {
+        padding: 16px;
+        max-width: 720px;
+        margin: 0 auto;
+      }
+      .zam-header {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .zam-header h1 {
+        font-size: 18px;
+        margin: 0;
+      }
+      .zam-header .version {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .zam-status-line {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin: 0 0 14px;
+      }
+      .status-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--muted);
+        margin-right: 6px;
+      }
+      .status-dot.connected {
+        background: var(--ok);
+      }
+      .zam-card {
+        background: var(--card);
+        border-radius: 10px;
+        padding: 14px 16px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      }
+
+      /* ── Buttons ─────────────────────────────────────────────────────── */
+      .btn {
+        font: inherit;
+        font-weight: 600;
+        font-size: 13px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          background 0.15s ease,
+          border-color 0.15s ease;
+      }
+      .btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+      }
+      .primary-btn {
+        background: var(--accent);
+        color: #ffffff;
+      }
+      .primary-btn:hover:not(:disabled) {
+        filter: brightness(1.08);
+      }
+      .secondary-btn {
+        background: transparent;
+        border-color: var(--border);
+        color: var(--fg);
+      }
+      .secondary-btn:hover:not(:disabled) {
+        background: var(--hover);
+      }
+      .btn-sm {
+        padding: 5px 11px;
+        font-size: 12px;
+        border-radius: 6px;
+      }
+
+      /* ── Settings sections ───────────────────────────────────────────── */
+      .settings-section {
+        margin-bottom: 14px;
+      }
+      .settings-section-title {
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+        margin: 0 0 10px;
+      }
+      .settings-loading,
+      .settings-empty {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      .settings-hint {
+        margin-top: 8px;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      .settings-status-line {
+        font-size: 0.9rem;
+      }
+      .settings-field-row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .settings-select {
+        min-width: 220px;
+      }
+      .editor-select {
+        padding: 7px 10px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background: var(--field-bg);
+        color: var(--fg);
+        font: inherit;
+        font-size: 0.85rem;
+        outline: none;
+      }
+      .editor-select:focus {
+        border-color: var(--accent);
+      }
+      .settings-error {
+        margin-top: 8px;
+        font-size: 0.85rem;
+        color: var(--danger);
+        background: var(--danger-bg);
+        border: 1px solid var(--danger);
+        border-radius: 8px;
+        padding: 8px 10px;
+      }
+      .settings-backup-result {
+        margin-top: 10px;
+        font-size: 0.85rem;
+        word-break: break-all;
+      }
+      .settings-backup-result.settings-ok {
+        color: var(--ok);
+        background: var(--ok-bg);
+        border-radius: 8px;
+        padding: 8px 10px;
+      }
+      .settings-backup-result.settings-error {
+        color: var(--danger);
+        background: var(--danger-bg);
+        border: 1px solid var(--danger);
+        border-radius: 8px;
+        padding: 8px 10px;
+      }
+
+      /* ── Workspaces table ────────────────────────────────────────────── */
+      .settings-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+      }
+      .settings-table th {
+        text-align: left;
+        color: var(--muted);
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        padding: 0 8px 6px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .settings-table td {
+        padding: 7px 8px 7px 0;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+      }
+      .settings-table tr:last-child td {
+        border-bottom: none;
+      }
+      .settings-row-active td:first-child {
+        font-weight: 600;
+      }
+      .settings-path-cell {
+        color: var(--muted);
+        font-family:
+          ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.78rem;
+        max-width: 260px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .settings-health-badge {
+        font-size: 0.72rem;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .settings-health-healthy {
+        background: var(--ok-bg);
+        color: var(--ok);
+      }
+      .settings-health-needs-repair {
+        background: var(--warn-bg);
+        color: var(--warn);
+      }
+      .settings-health-unmanaged {
+        background: var(--hover);
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="zam-settings-panel">
+      <div class="zam-header">
+        <h1>ZAM Settings</h1>
+        <span class="version" id="zam-version"></span>
+      </div>
+      <p class="zam-status-line">
+        <span class="status-dot" id="zam-status-dot"></span>
+        <span id="zam-status">Connecting to host…</span>
+      </p>
+
+      <section class="zam-card settings-section">
+        <div class="settings-section-title">Workspaces</div>
+        <div id="settings-workspaces"></div>
+      </section>
+
+      <section class="zam-card settings-section">
+        <div class="settings-section-title">Wissenskontext</div>
+        <div id="settings-kc"></div>
+      </section>
+
+      <section class="zam-card settings-section">
+        <div class="settings-section-title">Datenbank</div>
+        <div id="settings-db"></div>
+      </section>
+
+      <section class="zam-card settings-section">
+        <div class="settings-section-title">Backup</div>
+        <div id="settings-backup"></div>
+      </section>
+
+      <section class="zam-card settings-section">
+        <div class="settings-section-title">Update</div>
+        <div id="settings-update"></div>
+      </section>
+    </div>
+    <script type="module" src="./settings.ts"></script>
+  </body>
+</html>

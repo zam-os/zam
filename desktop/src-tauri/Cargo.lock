@@ -5235,7 +5235,7 @@ dependencies = [
 
 [[package]]
 name = "zam-app"
-version = "0.9.4"
+version = "0.10.0"
 dependencies = [
  "serde",
  "serde_json",

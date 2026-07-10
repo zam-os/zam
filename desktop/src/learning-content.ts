@@ -1,4 +1,5 @@
-import { runBridge, t, tf } from "./main.js";
+import { runBridge } from "./bridge-transport.js";
+import { t, tf } from "./i18n.js";
 
 export interface PersonalCard {
   tokenId: string;

@@ -160,13 +160,18 @@ describe("connectHarnessMcp", () => {
   const tsxImport = import.meta.resolve("tsx");
   const mockFiles: Record<string, string> = {};
 
+  // connectHarnessMcp joins paths with the host separator; normalize to
+  // POSIX so the same expectations hold on Windows and Linux.
+  const posix = (p: string) => p.replaceAll("\\", "/");
+
   const mockDeps = {
     zamPath: "/usr/local/bin/zam",
     cwd: "/work",
     home: "/home/user",
     readFile: (p: string) => {
-      if (mockFiles[p] === undefined) throw new Error("ENOENT");
-      return mockFiles[p];
+      const key = posix(p);
+      if (mockFiles[key] === undefined) throw new Error("ENOENT");
+      return mockFiles[key];
     },
   };
 
@@ -178,7 +183,7 @@ describe("connectHarnessMcp", () => {
 
   it("claude-code fresh write", () => {
     const res = connectHarnessMcp("claude-code", mockDeps);
-    expect(res.path).toBe("/work/.mcp.json");
+    expect(posix(res.path)).toBe("/work/.mcp.json");
     expect(JSON.parse(res.content)).toEqual({
       mcpServers: {
         zam: {
@@ -215,7 +220,7 @@ describe("connectHarnessMcp", () => {
 
   it("antigravity fresh write", () => {
     const res = connectHarnessMcp("antigravity", mockDeps);
-    expect(res.path).toBe("/home/user/.gemini/config/mcp_config.json");
+    expect(posix(res.path)).toBe("/home/user/.gemini/config/mcp_config.json");
     expect(JSON.parse(res.content)).toEqual({
       mcpServers: {
         zam: {
@@ -233,7 +238,7 @@ describe("connectHarnessMcp", () => {
     });
 
     const res = connectHarnessMcp("opencode", mockDeps);
-    expect(res.path).toBe("/home/user/.config/opencode/opencode.json");
+    expect(posix(res.path)).toBe("/home/user/.config/opencode/opencode.json");
     expect(JSON.parse(res.content)).toEqual({
       theme: "system",
       mcp: {
@@ -251,7 +256,7 @@ describe("connectHarnessMcp", () => {
     mockFiles["/home/user/.codex/config.toml"] =
       `# existing Codex config\n[other]\nvalue = 42\n`;
     const res = connectHarnessMcp("codex", mockDeps);
-    expect(res.path).toBe("/home/user/.codex/config.toml");
+    expect(posix(res.path)).toBe("/home/user/.codex/config.toml");
     expect(res.alreadyConfigured).toBe(false);
     expect(res.content).toContain("[mcp_servers.zam]");
     expect(res.content).toContain('command = "/usr/local/bin/zam"');
@@ -270,7 +275,7 @@ describe("connectHarnessMcp", () => {
 
   it("goose fresh write creates a valid extensions map", () => {
     const res = connectHarnessMcp("goose", mockDeps);
-    expect(res.path).toBe("/home/user/.config/goose/config.yaml");
+    expect(posix(res.path)).toBe("/home/user/.config/goose/config.yaml");
     expect(res.alreadyConfigured).toBe(false);
     expect(res.content).toBe(
       "extensions:\n" +
@@ -343,7 +348,7 @@ describe("connectHarnessMcp", () => {
 
   it("copilot fresh write", () => {
     const res = connectHarnessMcp("copilot", mockDeps);
-    expect(res.path).toBe("/home/user/.copilot/mcp-config.json");
+    expect(posix(res.path)).toBe("/home/user/.copilot/mcp-config.json");
     expect(res.alreadyConfigured).toBe(false);
     expect(JSON.parse(res.content)).toEqual({
       mcpServers: {
@@ -352,6 +357,47 @@ describe("connectHarnessMcp", () => {
           command: "/usr/local/bin/zam",
           args: ["mcp"],
           tools: ["*"],
+        },
+      },
+    });
+  });
+
+  it("claude-desktop fresh write targets the platform config", () => {
+    const res = connectHarnessMcp("claude-desktop", {
+      ...mockDeps,
+      platform: "win32",
+    });
+    expect(posix(res.path)).toBe(
+      "/home/user/AppData/Roaming/Claude/claude_desktop_config.json",
+    );
+    expect(res.alreadyConfigured).toBe(false);
+    expect(JSON.parse(res.content)).toEqual({
+      mcpServers: {
+        zam: {
+          command: "/usr/local/bin/zam",
+          args: ["mcp"],
+        },
+      },
+    });
+  });
+
+  it("claude-desktop merges on macOS and preserves other servers", () => {
+    mockFiles[
+      "/home/user/Library/Application Support/Claude/claude_desktop_config.json"
+    ] = JSON.stringify({
+      mcpServers: { other: { command: "other-server" } },
+    });
+
+    const res = connectHarnessMcp("claude-desktop", {
+      ...mockDeps,
+      platform: "darwin",
+    });
+    expect(JSON.parse(res.content)).toEqual({
+      mcpServers: {
+        other: { command: "other-server" },
+        zam: {
+          command: "/usr/local/bin/zam",
+          args: ["mcp"],
         },
       },
     });
