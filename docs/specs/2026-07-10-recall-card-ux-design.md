@@ -1,6 +1,6 @@
 # Recall Card UX — Single Adaptive Button, Finish/Summary, Domain Focus
 
-**Status:** Proposed
+**Status:** Accepted — shipped in 0.10.1
 **Date:** 2026-07-10
 **Deciders:** Thomas (project owner)
 **Related:**
