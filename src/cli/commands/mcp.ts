@@ -704,9 +704,14 @@ export function createMcpServer(db: Database): McpServer {
         "questions entirely inside the card: type an answer (or reveal " +
         "directly), compare with the stored concept, and self-rate — the " +
         "card books ratings itself via zam_submit_review. No chat " +
-        "interaction is required or expected.",
+        "interaction is required or expected. Pass an optional domain to " +
+        "scope the session to one topic (e.g. domain: 'rag').",
       inputSchema: {
         user: z.string().optional().describe("User ID"),
+        domain: z
+          .string()
+          .optional()
+          .describe("Domain focus (e.g. 'rag') — scopes the review queue"),
       },
       annotations: {
         ...commonAnnotations,
@@ -716,16 +721,19 @@ export function createMcpServer(db: Database): McpServer {
         ui: { resourceUri: RECALL_RESOURCE_URI },
       },
     },
-    wrapHandler(async ({ user }: { user?: string }) => {
-      // Mirror zam_open_studio: resolve to the signed-in user, but never
-      // fail to open the panel — fall back to null when no default is set.
-      const userId = await getUserId(user).catch(() => null);
-      return {
-        recall: "zam",
-        version: pkg.version,
-        user: userId,
-      };
-    }),
+    wrapHandler(
+      async ({ user, domain }: { user?: string; domain?: string }) => {
+        // Mirror zam_open_studio: resolve to the signed-in user, but never
+        // fail to open the panel — fall back to null when no default is set.
+        const userId = await getUserId(user).catch(() => null);
+        return {
+          recall: "zam",
+          version: pkg.version,
+          user: userId,
+          domain: domain ?? null,
+        };
+      },
+    ),
   );
 
   registerAppResource(

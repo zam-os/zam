@@ -6,11 +6,19 @@
  * hosts may render app.sendMessage as a chat-composer draft the user must
  * send manually; the cryptic contract text pollutes the conversation and
  * every chat turn scrolls the card out of view):
- *  - "Antwort prüfen": locks the typed answer and reveals the stored
- *    concept next to it for honest self-comparison, then self-rating.
- *  - "Aufdecken": reveals the concept directly, then self-rating.
- * Both paths book via the four rating buttons (callServerTool
- * zam_submit_review); the `rated` guard allows at most one call per card.
+ *  - A single adaptive button drives the reveal. With a typed answer it reads
+ *    "Antwort prüfen" and shows the answer next to the stored concept for
+ *    honest self-comparison; empty, it reads "Aufdecken" and reveals the
+ *    concept directly. Both paths end in the same four-rating row.
+ *  - The empty-vs-typed distinction is the "did the learner attempt?" signal
+ *    a later conversational mode (ADR 2026-07-06b) will consume.
+ * The four rating buttons book via callServerTool zam_submit_review; the
+ * `rated` guard allows at most one call per card.
+ *
+ * A "Sitzung beenden" control ends the loop early and shows a local summary
+ * (count + rating spread). The card owns no ZAM session, so finishing has no
+ * server side effect. An optional domain focus (from zam_open_recall) scopes
+ * the queue and is shown as a badge.
  *
  * Spoiler discipline: the stored `concept` lives only in a JS closure and is
  * written into the DOM for the first time on reveal — never before.
@@ -22,7 +30,7 @@
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
-import { setCurrentLocale, t } from "../i18n.js";
+import { setCurrentLocale, t, tf } from "../i18n.js";
 
 const statusEl = document.getElementById("zam-status");
 const statusDot = document.getElementById("zam-status-dot");
@@ -38,6 +46,7 @@ interface OpenRecallResult {
   recall?: string;
   version?: string;
   user?: string | null;
+  domain?: string | null;
 }
 
 interface ReviewCard {
@@ -81,10 +90,19 @@ type CardState = "shown" | "revealed" | "answered" | "rated";
 const app = new App({ name: "ZAM Recall", version: "0.1.0" });
 
 let currentUser: string | null = null;
+let focusDomain: string | null = null;
 let connected = false;
 let started = false;
+let finished = false;
 let cards: ReviewCard[] = [];
 let index = 0;
+
+// Session-local tally for the finish/done summary. Never persisted; the card
+// owns no ZAM session, so this is pure UI state.
+const tally = {
+  done: 0,
+  ratings: { 1: 0, 2: 0, 3: 0, 4: 0 } as Record<number, number>,
+};
 
 /**
  * Parse a zam MCP tool result: success answers carry JSON on content[0].text
@@ -174,21 +192,63 @@ function renderMessage(emoji: string, title: string, sub: string): void {
 }
 
 function renderEmpty(): void {
-  renderMessage("🎉", "Nichts fällig", t("lbl_caught_up"));
-}
-
-function renderDone(): void {
-  renderMessage("✅", "Alle Karten bearbeitet", t("lbl_caught_up"));
+  renderMessage("🎉", t("lbl_recall_empty_title"), t("lbl_caught_up"));
 }
 
 function renderError(message: string): void {
   renderMessage("⚠️", "Karten konnten nicht geladen werden", message);
 }
 
+/**
+ * End state for both natural completion and an early "Sitzung beenden": the
+ * count of what was rated this session plus the rating spread.
+ */
+function renderSummary(): void {
+  if (!contentEl) return;
+  clearContent();
+  const box = document.createElement("div");
+  box.className = "zam-card recall-empty";
+
+  const emojiEl = document.createElement("div");
+  emojiEl.className = "recall-empty-emoji";
+  emojiEl.textContent = "✅";
+  const titleEl = document.createElement("div");
+  titleEl.className = "recall-empty-title";
+  titleEl.textContent = t("lbl_recall_summary_title");
+  const subEl = document.createElement("div");
+  subEl.className = "recall-empty-sub";
+  subEl.textContent = tf("lbl_recall_summary", {
+    done: tally.done,
+    total: cards.length,
+  });
+  box.append(emojiEl, titleEl, subEl);
+
+  if (tally.done > 0) {
+    const spread = document.createElement("div");
+    spread.className = "recall-summary-spread";
+    for (let r = 1; r <= 4; r += 1) {
+      const chip = document.createElement("span");
+      chip.className = "recall-summary-chip";
+      chip.textContent = `${t(`lbl_rate_${r}`)}: ${tally.ratings[r]}`;
+      spread.appendChild(chip);
+    }
+    box.appendChild(spread);
+  }
+  contentEl.appendChild(box);
+}
+
+function finishSession(): void {
+  if (finished) return;
+  finished = true;
+  renderSummary();
+}
+
 function advance(): void {
+  if (finished) return;
   index += 1;
   if (index >= cards.length) {
-    renderDone();
+    finished = true;
+    renderSummary();
   } else {
     renderCard();
   }
@@ -202,22 +262,36 @@ function renderCard(): void {
   const concept = card.concept;
   clearContent();
 
-  // Once the user commits to a path (check/reveal), lock the inputs so the
-  // same card cannot be double-committed. Both paths end in the same
-  // self-rating row; `rated` guards against a second zam_submit_review.
+  // Once the user commits (reveal), lock the inputs so the same card cannot be
+  // double-committed. Both empty/typed paths end in the same self-rating row;
+  // `rated` guards against a second zam_submit_review.
   let committed = false;
   let rated = false;
 
   const root = document.createElement("div");
   root.className = "zam-card";
 
+  const topbar = document.createElement("div");
+  topbar.className = "recall-topbar";
   const counter = document.createElement("div");
   counter.className = "recall-counter";
   counter.textContent = `${index + 1} / ${cards.length}`;
-  root.appendChild(counter);
+  const finishBtn = document.createElement("button");
+  finishBtn.className = "recall-finish-btn";
+  finishBtn.type = "button";
+  finishBtn.textContent = t("btn_recall_finish");
+  finishBtn.addEventListener("click", () => finishSession());
+  topbar.append(counter, finishBtn);
+  root.appendChild(topbar);
 
   const badges = document.createElement("div");
   badges.className = "recall-badges";
+  if (focusDomain) {
+    const focusBadge = document.createElement("span");
+    focusBadge.className = "recall-badge recall-focus-badge";
+    focusBadge.textContent = tf("lbl_recall_focus", { domain: focusDomain });
+    badges.appendChild(focusBadge);
+  }
   if (card.domain) {
     const domainBadge = document.createElement("span");
     domainBadge.className = "recall-badge";
@@ -242,28 +316,26 @@ function renderCard(): void {
   answer.placeholder = "Antwort aus dem Gedächtnis…";
   root.appendChild(answer);
 
+  // One adaptive button: empty → reveal directly; text present → check the
+  // typed answer against the concept. Never disabled (empty is a valid path).
   const actions = document.createElement("div");
   actions.className = "recall-actions";
-  const checkBtn = document.createElement("button");
-  checkBtn.className = "btn primary-btn";
-  checkBtn.type = "button";
-  checkBtn.textContent = "Antwort prüfen";
-  checkBtn.disabled = true;
-  const revealBtn = document.createElement("button");
-  revealBtn.className = "btn secondary-btn";
-  revealBtn.type = "button";
-  revealBtn.textContent = "Aufdecken";
-  actions.append(checkBtn, revealBtn);
+  const actionBtn = document.createElement("button");
+  actionBtn.className = "btn primary-btn";
+  actionBtn.type = "button";
+  actionBtn.textContent = t("btn_recall_reveal");
+  actions.appendChild(actionBtn);
   root.appendChild(actions);
 
   answer.addEventListener("input", () => {
-    checkBtn.disabled = answer.value.trim().length === 0;
+    actionBtn.textContent = answer.value.trim()
+      ? t("btn_recall_check")
+      : t("btn_recall_reveal");
   });
 
   function lockInputs(): void {
     committed = true;
-    checkBtn.disabled = true;
-    revealBtn.disabled = true;
+    actionBtn.disabled = true;
     answer.disabled = true;
   }
 
@@ -304,6 +376,8 @@ function renderCard(): void {
       };
       if (currentUser) args.user = currentUser;
       const res = (await callTool("zam_submit_review", args)) as SubmitResult;
+      tally.done += 1;
+      tally.ratings[rating] = (tally.ratings[rating] ?? 0) + 1;
       pushContext(card, "rated");
       showResult(res);
       // Let the user read the next-due line before moving on.
@@ -321,9 +395,9 @@ function renderCard(): void {
     }
   }
 
-  // With a `userAnswer` (the "Antwort prüfen" path) the typed answer is
-  // shown above the stored concept so the user can compare honestly before
-  // self-rating — everything stays inside the card.
+  // With a `userAnswer` (the check path) the typed answer is shown above the
+  // stored concept so the user can compare honestly before self-rating —
+  // everything stays inside the card.
   function showReveal(userAnswer?: string): void {
     const reveal = document.createElement("div");
     reveal.className = "recall-reveal";
@@ -382,20 +456,17 @@ function renderCard(): void {
     root.appendChild(reveal);
   }
 
-  checkBtn.addEventListener("click", () => {
+  actionBtn.addEventListener("click", () => {
     if (committed) return;
     const text = answer.value.trim();
-    if (!text) return;
     lockInputs();
-    showReveal(text);
-    pushContext(card, "answered");
-  });
-
-  revealBtn.addEventListener("click", () => {
-    if (committed) return;
-    lockInputs();
-    showReveal(); // no model booking on this path — self-rating required
-    pushContext(card, "revealed");
+    if (text) {
+      showReveal(text);
+      pushContext(card, "answered");
+    } else {
+      showReveal();
+      pushContext(card, "revealed");
+    }
   });
 
   contentEl.appendChild(root);
@@ -406,6 +477,7 @@ async function loadReviews(): Promise<void> {
   try {
     const args: Record<string, unknown> = { includeQuestions: true };
     if (currentUser) args.user = currentUser;
+    if (focusDomain) args.domain = focusDomain;
     const data = (await callTool("zam_get_reviews", args)) as {
       cards?: ReviewCard[];
     };
@@ -433,6 +505,7 @@ app.ontoolresult = (params) => {
     versionEl.textContent = `v${structured.version}`;
   }
   currentUser = structured.user ?? null;
+  focusDomain = structured.domain ?? null;
   const who = currentUser ? ` — ${currentUser}` : "";
   setStatus(`Connected to zam mcp${who}`, true);
   start();

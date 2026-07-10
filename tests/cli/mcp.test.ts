@@ -345,6 +345,15 @@ describe("MCP stdio server tests", () => {
       readOnlyHint: true,
     });
 
+    // inputSchema accepts optional domain/user — neither is required.
+    const schema = tool?.inputSchema as
+      | { properties?: Record<string, unknown>; required?: string[] }
+      | undefined;
+    expect(schema?.properties).toHaveProperty("domain");
+    expect(schema?.properties).toHaveProperty("user");
+    expect(schema?.required ?? []).not.toContain("domain");
+    expect(schema?.required ?? []).not.toContain("user");
+
     const res = await client.callTool({
       name: "zam_open_recall",
       arguments: {},
@@ -354,11 +363,24 @@ describe("MCP stdio server tests", () => {
       recall?: string;
       version?: string;
       user?: string | null;
+      domain?: string | null;
     };
     expect(structured.recall).toBe("zam");
     expect(typeof structured.version).toBe("string");
     // Default user seeded in beforeEach via user_config.
     expect(structured.user).toBe("thomas");
+    // No domain focus unless requested.
+    expect(structured.domain).toBeNull();
+
+    const scopedRes = await client.callTool({
+      name: "zam_open_recall",
+      arguments: { domain: "rag" },
+    });
+    expect(scopedRes.isError).toBeUndefined();
+    const scopedStructured = (scopedRes as any).structuredContent as {
+      domain?: string | null;
+    };
+    expect(scopedStructured.domain).toBe("rag");
   });
 
   it("exposes the graph panel as an MCP Apps resource", async () => {
