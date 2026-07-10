@@ -134,11 +134,54 @@
       }
 
       /* ── Recall card ─────────────────────────────────────────────────── */
+      .recall-topbar {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 8px;
+      }
       .recall-counter {
         font-size: 0.78rem;
         color: var(--muted);
         letter-spacing: 0.04em;
         margin-bottom: 8px;
+      }
+      .recall-topbar .recall-counter {
+        margin-bottom: 0;
+      }
+      .recall-finish-btn {
+        font: inherit;
+        font-size: 0.76rem;
+        color: var(--muted);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 2px 6px;
+        border-radius: 6px;
+      }
+      .recall-finish-btn:hover {
+        background: var(--hover);
+        color: var(--accent);
+      }
+      .recall-focus-badge {
+        background: var(--accent);
+        color: #ffffff;
+      }
+      .recall-summary-spread {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 14px;
+      }
+      .recall-summary-chip {
+        font-size: 0.78rem;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: var(--hover);
+        color: var(--accent);
+        font-weight: 600;
       }
       .recall-badges {
         display: flex;
