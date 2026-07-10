@@ -224,6 +224,15 @@ sendMessage; free-text answer evaluated and booked by the agent).
 Final-review refinement: the two rating paths are mutually exclusive —
 free-text answers are booked by the harness model only; self-rating
 buttons exist only on the reveal-without-answer path.
+**UX supersede (Thomas, 2026-07-10, after live Code-tab testing):** the
+sendMessage answer path is REMOVED entirely. Hosts may render
+`ui/message` as a chat-composer draft the user must send manually — the
+cryptic contract text pollutes the conversation and every chat turn
+scrolls the card out of view. The whole review flow now stays in-card:
+"Antwort prüfen" locks the typed answer and reveals it alongside the
+stored concept for honest self-comparison; both paths end in the same
+self-rating row (`callServerTool zam_submit_review`). No chat
+round-trip; `updateModelContext` remains the only model-visible signal.
 Consequences for
 phases: P3 graph becomes its own tool + resource (`zam_show_graph` →
 `ui://zam/graph`) instead of a Studio tab; P4 Settings-lite likewise a

@@ -1,16 +1,16 @@
 /**
  * ZAM spoiler-free Recall card — MCP Apps panel entry.
  *
- * The user answers due review questions inside this card. Two MUTUALLY
- * EXCLUSIVE paths — only one of them may ever result in a zam_submit_review
- * call for a given card, never both:
- *  - "Antwort prüfen": inserts the answer as a user message (app.sendMessage)
- *    so the harness model evaluates it and books the FSRS rating via
- *    zam_submit_review — ZAM keeps zero model config of its own. The card
- *    then reveals the concept read-only (no rating row, no auto-advance
- *    timer); a "Nächste Karte" button is the only way to move on.
- *  - "Aufdecken": reveals the stored concept and lets the user self-rate via
- *    the four rating buttons (callServerTool zam_submit_review directly).
+ * The user answers due review questions inside this card. The whole flow
+ * stays IN-CARD — the card never sends chat messages (Thomas, 2026-07-10:
+ * hosts may render app.sendMessage as a chat-composer draft the user must
+ * send manually; the cryptic contract text pollutes the conversation and
+ * every chat turn scrolls the card out of view):
+ *  - "Antwort prüfen": locks the typed answer and reveals the stored
+ *    concept next to it for honest self-comparison, then self-rating.
+ *  - "Aufdecken": reveals the concept directly, then self-rating.
+ * Both paths book via the four rating buttons (callServerTool
+ * zam_submit_review); the `rated` guard allows at most one call per card.
  *
  * Spoiler discipline: the stored `concept` lives only in a JS closure and is
  * written into the DOM for the first time on reveal — never before.
@@ -203,10 +203,8 @@ function renderCard(): void {
   clearContent();
 
   // Once the user commits to a path (check/reveal), lock the inputs so the
-  // same card cannot be double-sent. The two paths are mutually exclusive:
-  // "Antwort prüfen" never shows a rating row (the harness model books the
-  // rating after sendMessage) and "Aufdecken" never triggers a model
-  // booking — so at most one zam_submit_review call ever happens per card.
+  // same card cannot be double-committed. Both paths end in the same
+  // self-rating row; `rated` guards against a second zam_submit_review.
   let committed = false;
   let rated = false;
 
@@ -323,9 +321,23 @@ function renderCard(): void {
     }
   }
 
-  function showReveal(): void {
+  // With a `userAnswer` (the "Antwort prüfen" path) the typed answer is
+  // shown above the stored concept so the user can compare honestly before
+  // self-rating — everything stays inside the card.
+  function showReveal(userAnswer?: string): void {
     const reveal = document.createElement("div");
     reveal.className = "recall-reveal";
+
+    if (userAnswer !== undefined) {
+      const ownTitle = document.createElement("div");
+      ownTitle.className = "recall-reveal-title";
+      ownTitle.textContent = "Deine Antwort";
+      reveal.appendChild(ownTitle);
+      const own = document.createElement("div");
+      own.className = "recall-own-answer";
+      own.textContent = userAnswer;
+      reveal.appendChild(own);
+    }
 
     const title = document.createElement("div");
     title.className = "recall-reveal-title";
@@ -370,73 +382,12 @@ function renderCard(): void {
     root.appendChild(reveal);
   }
 
-  // Answer path only ("Antwort prüfen"): the harness model evaluates the
-  // free-text answer and books the FSRS rating itself (see the
-  // zam_open_recall tool description), so this card must stay read-only
-  // here — no rating row, no self-rating, no auto-advance timer. A single
-  // "Nächste Karte" button is the only way to move on, and it never calls
-  // zam_submit_review.
-  function showAnsweredReveal(): void {
-    const reveal = document.createElement("div");
-    reveal.className = "recall-reveal";
-
-    const title = document.createElement("div");
-    title.className = "recall-reveal-title";
-    title.textContent = t("lbl_reveal_title");
-    reveal.appendChild(title);
-
-    const conceptEl = document.createElement("div");
-    conceptEl.className = "recall-concept";
-    conceptEl.textContent = concept; // first and only time concept hits the DOM
-    reveal.appendChild(conceptEl);
-
-    const note = document.createElement("div");
-    note.className = "recall-hint";
-    note.textContent = "Bewertung übernimmt der Assistent.";
-    reveal.appendChild(note);
-
-    const nextActions = document.createElement("div");
-    nextActions.className = "recall-actions";
-    const nextBtn = document.createElement("button");
-    nextBtn.className = "btn primary-btn";
-    nextBtn.type = "button";
-    nextBtn.textContent = "Nächste Karte";
-    nextBtn.addEventListener("click", () => {
-      nextBtn.disabled = true; // advance() re-renders synchronously
-      advance();
-    });
-    nextActions.appendChild(nextBtn);
-    reveal.appendChild(nextActions);
-    root.appendChild(reveal);
-  }
-
   checkBtn.addEventListener("click", () => {
     if (committed) return;
     const text = answer.value.trim();
     if (!text) return;
     lockInputs();
-    // Insert the answer as a user message in the exact format the
-    // zam_open_recall tool description instructs the model to match. The
-    // model books the rating via zam_submit_review on its own turn, so this
-    // card renders read-only below and must not also submit a rating.
-    void app
-      .sendMessage({
-        role: "user",
-        content: [
-          {
-            type: "text",
-            text: `ZAM-Antwort zu Karte "${card.slug}" (cardId ${card.cardId}): ${text}`,
-          },
-        ],
-      })
-      .catch((error: unknown) => {
-        showNotice(
-          `Konnte Antwort nicht senden: ${
-            error instanceof Error ? error.message : String(error)
-          }`,
-        );
-      });
-    showAnsweredReveal();
+    showReveal(text);
     pushContext(card, "answered");
   });
 

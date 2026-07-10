@@ -689,26 +689,22 @@ export function createMcpServer(db: Database): McpServer {
     }),
   );
 
-  // zam_open_recall — the spoiler-free recall card (MCP Apps). The user
-  // answers review questions inside the card; the description below is the
-  // contract that tells ANY harness model how to evaluate a free-text answer
-  // arriving as a `sendMessage` and book the FSRS rating with
-  // zam_submit_review. Read-only from the model's side (it opens a panel).
+  // zam_open_recall — the spoiler-free recall card (MCP Apps). The whole
+  // review flow lives inside the card (type/reveal, compare, self-rate; the
+  // card books ratings via zam_submit_review itself). No chat round-trip:
+  // hosts may render app.sendMessage as a composer draft, which pollutes
+  // the conversation (Thomas, 2026-07-10). Read-only from the model's side.
   registerAppTool(
     server,
     "zam_open_recall",
     {
       title: "Open ZAM recall session",
       description:
-        "Open the ZAM spoiler-free recall card. The card shows due review " +
-        "questions; the user answers inside the card. When a user message " +
-        'arrives matching `ZAM-Antwort zu Karte "<slug>" (cardId <id>): ' +
-        "<answer>`, evaluate the answer against the card's stored concept " +
-        "(fetch via zam_get_reviews if needed), then submit the FSRS rating " +
-        'with zam_submit_review (doneBy: "user", rating 1-4: 1 wrong/blank, ' +
-        "2 partially correct or effortful, 3 correct, 4 correct and " +
-        "effortless) and reply with a one-line verdict naming what matched " +
-        "or was missing.",
+        "Open the ZAM spoiler-free recall card. The user answers due review " +
+        "questions entirely inside the card: type an answer (or reveal " +
+        "directly), compare with the stored concept, and self-rate — the " +
+        "card books ratings itself via zam_submit_review. No chat " +
+        "interaction is required or expected.",
       inputSchema: {
         user: z.string().optional().describe("User ID"),
       },

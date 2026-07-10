@@ -217,9 +217,12 @@ Vitest, Biome.
     slug, state: "shown|revealed|answered|rated", remaining } }) }] })`
     (verify exact params from d.ts).
   - Empty queue: friendly "Nichts fällig" state.
-- [ ] **Step 6: Double-booking guard.** Superseded by final review
-  (2026-07-10): answer path is read-only + model-booked; self-rating
-  only on the reveal path — mutually exclusive, no guard timer.
+- [ ] **Step 6: Double-booking guard.** Superseded twice: final review
+  (2026-07-10) made the paths mutually exclusive; Thomas's live-testing
+  UX feedback (2026-07-10) then removed sendMessage entirely — the
+  answer path shows the typed answer next to the concept in-card and
+  ends in the same self-rating row as the reveal path. No chat
+  round-trip, no guard timer.
 - [ ] **Step 7: Build + verify.** `npm run build` (both panels emit:
   `dist/ui/studio-panel.html` AND `dist/ui/recall-panel.html`; check
   vite output sizes, recall should be well under studio since no
