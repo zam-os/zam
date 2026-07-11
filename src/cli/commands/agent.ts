@@ -14,6 +14,7 @@ import { dirname, join } from "node:path";
 import { Command } from "commander";
 import type { Database } from "../../kernel/index.js";
 import {
+  distributeGlobalSkills,
   getSetting,
   hasCommand,
   installOpenCode,
@@ -24,8 +25,10 @@ import {
   type ConnectHarnessId,
   type ConnectResult,
   connectHarnessMcp,
+  detectInstalledConnectHarnesses,
   getHarness,
   launchHarness,
+  resolveAntigravityIdeExecutable,
   resolveHarnessExecutable,
 } from "../agent-harness.js";
 import {
@@ -33,6 +36,10 @@ import {
   installCopilotExtension,
 } from "../copilot-extension.js";
 import { findExecutable, normalizeShell } from "../terminal-open.js";
+import {
+  installVscodeExtension,
+  type VscodeExtensionInstallResult,
+} from "../vscode-extension.js";
 
 const C = {
   reset: "\x1b[0m",
@@ -49,6 +56,7 @@ const CONNECT_HARNESSES: ConnectHarnessId[] = [
   "claude-desktop",
   "antigravity",
   "codex",
+  "vscode",
   "opencode",
   "goose",
   "copilot",
@@ -201,19 +209,40 @@ const openCmd = new Command("open")
   });
 
 const connectCmd = new Command("connect")
-  .description("Configure the ZAM MCP server for an agent harness")
+  .description(
+    "Configure ZAM for detected user agent harnesses, or one explicit harness",
+  )
   .argument(
-    "<harness>",
-    "Harness to connect: claude-code | claude-desktop | antigravity | codex | opencode | goose | copilot",
+    "[harness]",
+    "Optional harness: claude-code | claude-desktop | antigravity | codex | vscode | opencode | goose | copilot",
   )
   .option(
     "--print",
     "Print configuration changes instead of writing them to disk",
   )
-  .action(async (harnessArg, opts: { print?: boolean }) => {
-    if (!isConnectHarnessId(harnessArg)) {
+  .action(async (harnessArg: string | undefined, opts: { print?: boolean }) => {
+    let explicitHarness: ConnectHarnessId | undefined;
+    if (harnessArg) {
+      if (!isConnectHarnessId(harnessArg)) {
+        console.error(
+          `Unsupported harness: ${harnessArg}. Supported: ${CONNECT_HARNESSES.join(", ")}.`,
+        );
+        process.exit(1);
+      } else {
+        explicitHarness = harnessArg;
+      }
+    }
+
+    const home = homedir();
+    const harnesses: ConnectHarnessId[] = explicitHarness
+      ? [explicitHarness]
+      : detectInstalledConnectHarnesses({
+          home,
+          copilotHome: process.env.COPILOT_HOME,
+        });
+    if (harnesses.length === 0) {
       console.error(
-        `Unsupported harness: ${harnessArg}. Supported: ${CONNECT_HARNESSES.join(", ")}.`,
+        "No supported user-scoped agent harness was detected. Install Codex, VS Code, or another supported host, or pass a harness explicitly.",
       );
       process.exit(1);
     }
@@ -226,79 +255,109 @@ const connectCmd = new Command("connect")
       zamPath = "zam";
     }
 
-    let result: ConnectResult;
-    try {
-      result = connectHarnessMcp(harnessArg, {
-        zamPath,
-        cwd: process.cwd(),
-        home: homedir(),
-        copilotHome: process.env.COPILOT_HOME,
-      });
-    } catch (error) {
-      console.error(
-        `Error preparing MCP configuration: ${error instanceof Error ? error.message : String(error)}`,
-      );
-      process.exit(1);
-    }
-
-    let copilotExtension: CopilotExtensionInstallResult | undefined;
-    if (harnessArg === "copilot") {
+    for (const harness of harnesses) {
+      let result: ConnectResult;
       try {
-        copilotExtension = installCopilotExtension({
-          home: homedir(),
+        result = connectHarnessMcp(harness, {
           zamPath,
-          dryRun: Boolean(opts.print),
+          cwd: process.cwd(),
+          home,
+          copilotHome: process.env.COPILOT_HOME,
         });
       } catch (error) {
         console.error(
-          `Error preparing Copilot MCP Apps extension: ${error instanceof Error ? error.message : String(error)}`,
+          `Error preparing ${harness} MCP configuration: ${error instanceof Error ? error.message : String(error)}`,
         );
         process.exit(1);
       }
-    }
 
-    if (opts.print) {
-      console.log(`Path: ${result.path}`);
-      console.log(`Content:\n${result.content}`);
-      if (copilotExtension) {
-        console.log(`Extension: ${copilotExtension.destinationDir}`);
+      let copilotExtension: CopilotExtensionInstallResult | undefined;
+      let vscodeExtension: VscodeExtensionInstallResult | undefined;
+      try {
+        if (harness === "copilot") {
+          copilotExtension = installCopilotExtension({
+            home,
+            zamPath,
+            dryRun: Boolean(opts.print),
+          });
+        } else if (harness === "vscode") {
+          vscodeExtension = installVscodeExtension({
+            home,
+            zamPath,
+            dryRun: Boolean(opts.print),
+          });
+        } else if (harness === "antigravity") {
+          const antigravityPath = resolveAntigravityIdeExecutable();
+          if (antigravityPath) {
+            vscodeExtension = installVscodeExtension({
+              home,
+              zamPath,
+              codePath: antigravityPath,
+              dryRun: Boolean(opts.print),
+            });
+          }
+        }
+      } catch (error) {
+        console.error(
+          `Error preparing ${harness} companion extension: ${error instanceof Error ? error.message : String(error)}`,
+        );
+        process.exit(1);
+      }
+
+      if (opts.print) {
+        if (harnesses.length > 1) console.log(`${C.bold}${harness}${C.reset}`);
+        console.log(`Path: ${result.path}`);
+        console.log(`Content:\n${result.content}`);
+        if (copilotExtension) {
+          console.log(`Extension: ${copilotExtension.destinationDir}`);
+          console.log(
+            `Launch: ${copilotExtension.launch.command} ${copilotExtension.launch.args.join(" ")}`,
+          );
+        }
+        if (vscodeExtension) {
+          console.log(`Extension: ${vscodeExtension.vsixPath}`);
+          console.log(`Launch config: ${vscodeExtension.launchConfigPath}`);
+        }
+        continue;
+      }
+
+      if (result.alreadyConfigured) {
         console.log(
-          `Launch: ${copilotExtension.launch.command} ${copilotExtension.launch.args.join(" ")}`,
+          `${C.green}✓${C.reset} ${harness}: MCP server 'zam' already configured in ${result.path}`,
+        );
+      } else {
+        try {
+          mkdirSync(dirname(result.path), { recursive: true });
+          writeFileSync(result.path, result.content, "utf-8");
+          console.log(
+            `${C.green}✓${C.reset} ${harness}: wrote MCP configuration to ${result.path}`,
+          );
+        } catch (error) {
+          console.error(
+            `Error writing ${harness} MCP configuration: ${error instanceof Error ? error.message : String(error)}`,
+          );
+          process.exit(1);
+        }
+      }
+      if (copilotExtension) {
+        console.log(
+          `${C.green}✓${C.reset} Copilot MCP Apps extension ${copilotExtension.action} at ${copilotExtension.destinationDir}`,
         );
       }
-      return;
-    }
-
-    if (result.alreadyConfigured) {
-      console.log(
-        `${C.green}✓${C.reset} MCP server 'zam' already configured in ${result.path}`,
-      );
-      if (copilotExtension) {
+      if (vscodeExtension) {
         console.log(
-          `${C.green}✓${C.reset} MCP Apps extension ${copilotExtension.action} at ${copilotExtension.destinationDir}`,
+          `${C.green}✓${C.reset} ZAM Companion ${vscodeExtension.action} from ${vscodeExtension.vsixPath}`,
         );
       }
       console.log(`  ${C.dim}${result.hint}${C.reset}`);
-      return;
     }
 
-    try {
-      mkdirSync(dirname(result.path), { recursive: true });
-      writeFileSync(result.path, result.content, "utf-8");
+    if (!opts.print) {
+      const skills = distributeGlobalSkills(home);
+      const installed = skills.filter((result) => result.success).length;
       console.log(
-        `${C.green}✓${C.reset} Wrote MCP configuration to ${result.path}`,
+        `${C.green}✓${C.reset} Refreshed ${installed}/${skills.length} global ZAM skill installations`,
       );
-      if (copilotExtension) {
-        console.log(
-          `${C.green}✓${C.reset} MCP Apps extension ${copilotExtension.action} at ${copilotExtension.destinationDir}`,
-        );
-      }
-      console.log(`  ${C.dim}${result.hint}${C.reset}`);
-    } catch (error) {
-      console.error(
-        `Error writing MCP configuration: ${error instanceof Error ? error.message : String(error)}`,
-      );
-      process.exit(1);
     }
   });
 
