@@ -18,6 +18,7 @@ import {
   openDatabaseWithSync,
   setSetting,
 } from "../../kernel/index.js";
+import { performAgentConnect } from "../agent-connect.js";
 import {
   parseSetupAgents,
   type SetupAgent,
@@ -75,6 +76,49 @@ export async function activateMachineProviderConfig(
   );
 }
 
+/**
+ * First-contact wiring for detected agent harnesses (ADR 2026-07-11): run the
+ * idempotent connect flow as a setup step so a fresh install is usable from
+ * Codex/VS Code/Copilot without a second command. Failures degrade to warnings
+ * — setup must never fail because one host config is broken.
+ */
+function connectDetectedAgentHarnesses(skip: boolean, dryRun: boolean): void {
+  if (skip) return;
+  try {
+    const report = performAgentConnect({ dryRun });
+    if (report.detected.length === 0) {
+      console.log(
+        "  skip  no supported agent harness detected (zam agent connect <harness> configures one explicitly)",
+      );
+      return;
+    }
+    for (const result of report.results) {
+      if (result.error) {
+        console.warn(`  warn  ${result.harness}: ${result.error}`);
+      } else if (dryRun) {
+        console.log(
+          `  plan  ${result.harness}: would ensure MCP config at ${result.path}`,
+        );
+      } else if (result.alreadyConfigured) {
+        console.log(
+          `  skip  ${result.harness}: MCP already configured (${result.path})`,
+        );
+      } else {
+        console.log(
+          `  wire  ${result.harness}: MCP configured (${result.path})`,
+        );
+      }
+    }
+    if (report.skills) {
+      console.log(
+        `  wire  global ZAM skill: ${report.skills.refreshed}/${report.skills.total} locations`,
+      );
+    }
+  } catch (err) {
+    console.warn(`  warn  agent connect: ${(err as Error).message}`);
+  }
+}
+
 export const setupCommand = new Command("setup")
   .description(
     "Link ZAM skill directories into this workspace and initialize the database",
@@ -83,6 +127,11 @@ export const setupCommand = new Command("setup")
   .option("--skip-init", "skip database initialization", false)
   .option("--skip-claude-md", "skip CLAUDE.md generation", false)
   .option("--skip-agents-md", "skip AGENTS.md generation", false)
+  .option(
+    "--skip-agent-connect",
+    "skip wiring detected agent harnesses via MCP",
+    false,
+  )
   .option("--target <path>", "repository/workspace directory to set up")
   .option(
     "--agents <list>",
@@ -99,6 +148,7 @@ export const setupCommand = new Command("setup")
       skipInit: boolean;
       skipClaudeMd: boolean;
       skipAgentsMd: boolean;
+      skipAgentConnect: boolean;
       target?: string;
       agents?: string;
       dryRun: boolean;
@@ -122,6 +172,7 @@ export const setupCommand = new Command("setup")
         dryRun: opts.dryRun,
       });
       await initDatabase(opts.skipInit || opts.dryRun);
+      connectDetectedAgentHarnesses(opts.skipAgentConnect, opts.dryRun);
       if (agents.has("claude")) {
         writeClaudeMd(opts.skipClaudeMd, target, {
           dryRun: opts.dryRun,

@@ -495,3 +495,48 @@ export interface SessionOpenResponse {
     }>;
   };
 }
+
+// ── Agent harness connect (App settings & first-run, ADR 2026-07-11) ────────
+
+export interface AgentHarnessStatusEntry {
+  harness: string;
+  label: string;
+  installed: boolean;
+  configured: boolean;
+  configPath: string;
+  /** Present when the existing host config could not be inspected. */
+  note?: string;
+}
+
+export interface AgentHarnessStatusResponse {
+  success: boolean;
+  zamOnPath: boolean;
+  harnesses: AgentHarnessStatusEntry[];
+}
+
+export interface AgentConnectResultEntry {
+  harness: string;
+  label: string;
+  path: string;
+  alreadyConfigured: boolean;
+  wrote: boolean;
+  hint: string;
+  extension: {
+    kind: "copilot" | "vscode";
+    action: string;
+    location: string;
+    detail: string;
+  } | null;
+  error?: string;
+}
+
+export interface AgentConnectResponse {
+  success: boolean;
+  /** True when `--auto-once` found the first-run marker already set. */
+  skipped?: boolean;
+  error?: string;
+  detected?: string[];
+  zamOnPath?: boolean;
+  results?: AgentConnectResultEntry[];
+  skills?: { refreshed: number; total: number } | null;
+}
