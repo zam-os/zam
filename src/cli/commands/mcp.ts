@@ -25,6 +25,7 @@ import {
   submitReview as handleSubmitReview,
   suggestFoundations as handleSuggestFoundations,
 } from "../bridge-handlers.js";
+import { publishUiIntent } from "../ui-intent.js";
 import { executeBridgeCommandJson } from "./bridge.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -653,7 +654,7 @@ export function createMcpServer(db: Database): McpServer {
     {
       title: "ZAM Studio",
       description:
-        "Open the ZAM Studio panel (content editor, knowledge graph, settings) inline",
+        "Open the legacy all-in-one ZAM Studio panel for standalone onboarding and content curation. Agent harness workflows should use the focused Recall, Graph, and Settings apps instead.",
       inputSchema: {},
       annotations: {
         ...commonAnnotations,
@@ -726,6 +727,7 @@ export function createMcpServer(db: Database): McpServer {
         // Mirror zam_open_studio: resolve to the signed-in user, but never
         // fail to open the panel — fall back to null when no default is set.
         const userId = await getUserId(user).catch(() => null);
+        await publishUiIntent("recall", { user, domain });
         return {
           recall: "zam",
           version: pkg.version,
@@ -786,6 +788,7 @@ export function createMcpServer(db: Database): McpServer {
       // Mirror zam_open_recall: resolve to the signed-in user, but never
       // fail to open the panel — fall back to null when no default is set.
       const userId = await getUserId(user).catch(() => null);
+      await publishUiIntent("graph", { user, focus });
       return {
         graph: "zam",
         focus: focus ?? null,
@@ -839,6 +842,7 @@ export function createMcpServer(db: Database): McpServer {
       // Mirror zam_open_recall/zam_show_graph: resolve to the signed-in user,
       // but never fail to open the panel — fall back to null when unset.
       const userId = await getUserId(user).catch(() => null);
+      await publishUiIntent("settings", { user });
       return {
         settings: "zam",
         version: pkg.version,
