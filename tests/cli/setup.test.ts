@@ -295,8 +295,13 @@ describe("setup command helpers", () => {
     );
 
     expect(content).toContain("In Codex, invoke this workflow as `$zam`");
-    expect(content).toContain("zam agent connect <harness>");
+    expect(content).toContain("zam agent connect\n");
     expect(content).toContain("`zam_monitor`");
+    expect(content).toContain(
+      "## Parameterless invocation — offer choices first",
+    );
+    expect(content).toContain("`zam_open_recall`");
+    expect(content).not.toContain("- **Studio");
     expect(content).not.toContain("Codex Execution Notes");
     expect(content).not.toContain("WindowsPowerShell");
   });
