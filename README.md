@@ -57,11 +57,13 @@ your work, and guiding you step by step. ZAM connects to the agent apps you alre
 | **Codex** | `zam agent connect codex` |
 | **Antigravity** | `zam agent connect antigravity` |
 | **OpenCode** | `zam agent connect opencode` |
-| **GitHub Copilot** | `zam agent connect copilot` |
+| **GitHub Copilot** (CLI / app) | `zam agent connect copilot` |
 | **Goose** | `zam agent connect goose` |
 
-One command writes the MCP config (your agent may ask you to approve the server). Then
-just type **`/zam`** — or say "let's do this together with ZAM" — and work normally.
+One command writes the MCP config (your agent may ask you to approve the server). For
+GitHub Copilot, it also installs user-scoped Studio, Recall, Graph, and Settings canvases;
+restart Copilot or start a new session after connecting. Then just type **`/zam`** — or
+say "let's do this together with ZAM" — and work normally.
 
 ### 2. ZAM Desktop Studio — *setup, content & graph*
 

@@ -302,6 +302,17 @@ the usual flow: release/x.y.z branch, 7-file version bump, merge commit
 follow-ups list above; the locale decision (mixed de/en on non-de
 hosts) is accepted for 0.10.0.
 
+**GitHub Copilot app resolution (2026-07-11, v0.10.2):** Copilot connects
+the ZAM MCP server but does not mount the advertised `ui://` resources when
+the opening tools are called directly. `zam agent connect copilot` now also
+installs a user-scoped Copilot canvas extension that hosts the original four
+MCP Apps through the official `AppBridge`; it does not duplicate their UI or
+enter the repository as a project extension. The installer respects
+`COPILOT_HOME` and records an absolute Node + CLI-entry launch on packaged
+installs, avoiding npm `.cmd` process-launch issues on Windows. The 2D Graph
+also uses explicit/readable titles and clips relationship lines to measured
+node boundaries so they cannot cross labels.
+
 ## Verification
 
 - `tests/cli/mcp.test.ts`: `resources/list` contains `ui://zam/studio`;
