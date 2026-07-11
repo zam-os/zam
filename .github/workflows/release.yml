@@ -166,3 +166,40 @@ jobs:
           prerelease: false
           projectPath: './desktop'
           args: ${{ matrix.args }}
+
+  publish-vscode-extension:
+    name: 'Upload ZAM Companion VSIX'
+    needs: publish-tauri
+    if: ${{ always() && needs.publish-tauri.result != 'cancelled' }}
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build VS Code Companion
+        run: npm run build:vscode-extension
+
+      - name: Guard tag/package version match
+        run: |
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
+            echo "::error::package.json version ($PKG_VERSION) does not match tag ($TAG_VERSION)"
+            exit 1
+          fi
+
+      - name: Upload VSIX to draft release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "$GITHUB_REF_NAME" "dist/vscode-extension/ZAM_Companion_${GITHUB_REF_NAME#v}.vsix" --clobber
