@@ -2508,3 +2508,52 @@ textarea::placeholder {
   border-color: var(--clr-accent-purple);
   color: var(--clr-accent-purple);
 }
+
+/* ── SETTINGS: AGENT HARNESS CONNECTIONS (ADR 2026-07-11) ────────────────── */
+.agent-harness-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.agent-harness-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  background: var(--bg-card-subtle);
+}
+
+.agent-harness-name {
+  font-size: 14px;
+  font-weight: 600;
+  flex: 1;
+  color: var(--clr-text-primary);
+}
+
+.agent-harness-state {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border-soft);
+  color: var(--clr-text-muted);
+  white-space: nowrap;
+}
+
+.agent-harness-state.installed {
+  color: var(--clr-hard);
+  border-color: currentColor;
+}
+
+.agent-harness-state.connected {
+  color: var(--clr-good);
+  border-color: currentColor;
+}
+
+.agent-harness-row .btn {
+  flex: 0 0 auto;
+}

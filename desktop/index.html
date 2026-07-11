@@ -319,6 +319,25 @@
             </div>
           </article>
 
+          <!-- AGENT HARNESS CONNECTIONS (ADR 2026-07-11) -->
+          <article class="card frosted settings-card">
+            <div class="settings-card-header">
+              <div>
+                <h2 id="lbl-settings-agents-title">AI agents</h2>
+                <p id="lbl-settings-agents-help" class="settings-card-help">
+                  Connect installed agent harnesses to ZAM via MCP. Safe to repeat anytime.
+                </p>
+              </div>
+              <button id="btn-agents-connect-all" class="btn primary-btn btn-sm" type="button">
+                Connect all detected
+              </button>
+            </div>
+            <div id="agent-harness-list" class="agent-harness-list">
+              <p id="agent-harness-loading" class="sub-label">Detecting installed harnesses...</p>
+            </div>
+            <p id="agent-connect-result" class="sub-label settings-status-row hidden" aria-live="polite"></p>
+          </article>
+
           <article class="card frosted settings-card">
             <div class="settings-card-header">
               <div>
