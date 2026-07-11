@@ -1,0 +1,206 @@
+/// <reference lib="dom" />
+
+import {
+  AppBridge,
+  PostMessageTransport,
+} from "@modelcontextprotocol/ext-apps/app-bridge";
+import type { CallToolResult, Tool } from "@modelcontextprotocol/sdk/types.js";
+
+declare function acquireVsCodeApi(): {
+  postMessage(message: unknown): void;
+};
+
+interface BootstrapPayload {
+  appHtml: string;
+  title: string;
+  tool: Tool;
+  toolArguments: Record<string, unknown>;
+  toolResult: CallToolResult;
+}
+
+type HostRequestType = "callTool" | "modelContext" | "openLink" | "status";
+
+function requiredElement<T extends Element>(selector: string): T {
+  const element = document.querySelector<T>(selector);
+  if (!element)
+    throw new Error(`ZAM Companion element is missing: ${selector}`);
+  return element;
+}
+
+const vscode = acquireVsCodeApi();
+const frame = requiredElement<HTMLIFrameElement>("#app");
+const status = requiredElement<HTMLElement>("#status");
+const pending = new Map<
+  number,
+  { resolve: (value: unknown) => void; reject: (error: Error) => void }
+>();
+let requestId = 0;
+let activeBridge: AppBridge | undefined;
+let activeBlobUrl: string | undefined;
+
+function request<T>(type: HostRequestType, payload: unknown): Promise<T> {
+  const id = ++requestId;
+  return new Promise<T>((resolve, reject) => {
+    pending.set(id, {
+      resolve: (value) => resolve(value as T),
+      reject,
+    });
+    vscode.postMessage({ type, id, payload });
+  });
+}
+
+function currentTheme(): "dark" | "light" {
+  return document.body.classList.contains("vscode-dark") ||
+    document.body.classList.contains("vscode-high-contrast")
+    ? "dark"
+    : "light";
+}
+
+function hostContext(tool: Tool) {
+  return {
+    toolInfo: { id: `vscode-${tool.name}`, tool },
+    theme: currentTheme(),
+    displayMode: "inline" as const,
+    availableDisplayModes: ["inline" as const],
+    containerDimensions: {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    },
+    locale: navigator.language,
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    userAgent: navigator.userAgent,
+    platform: "desktop" as const,
+    deviceCapabilities: {
+      touch: navigator.maxTouchPoints > 0,
+      hover: matchMedia("(hover: hover)").matches,
+    },
+  };
+}
+
+async function teardownActiveBridge(): Promise<void> {
+  if (activeBridge) {
+    await activeBridge.teardownResource({}).catch(() => {});
+    activeBridge = undefined;
+  }
+  if (activeBlobUrl) {
+    URL.revokeObjectURL(activeBlobUrl);
+    activeBlobUrl = undefined;
+  }
+  frame.removeAttribute("src");
+  document.body.classList.remove("ready");
+}
+
+async function mount(payload: BootstrapPayload): Promise<void> {
+  await teardownActiveBridge();
+  status.textContent = `${payload.title} wird verbunden …`;
+
+  const bridge = new AppBridge(
+    null,
+    { name: "VS Code ZAM Companion", version: "__ZAM_VERSION__" },
+    {
+      openLinks: {},
+      serverTools: {},
+      logging: {},
+      updateModelContext: { text: {}, structuredContent: {} },
+    },
+    { hostContext: hostContext(payload.tool) },
+  );
+  activeBridge = bridge;
+
+  bridge.oncalltool = async (params) =>
+    request<CallToolResult>("callTool", params);
+  bridge.onupdatemodelcontext = async (params) =>
+    request<Record<string, never>>("modelContext", params);
+  bridge.onopenlink = async ({ url }) =>
+    request<Record<string, unknown>>("openLink", { url });
+  bridge.onrequestdisplaymode = async () => ({ mode: "inline" });
+  bridge.onsizechange = () => {
+    frame.style.height = "100%";
+  };
+  bridge.oninitialized = async () => {
+    await bridge.sendToolInput({ arguments: payload.toolArguments });
+    await bridge.sendToolResult(payload.toolResult);
+    document.body.classList.add("ready");
+    void request("status", {
+      phase: "ready",
+      app: payload.tool.name,
+    }).catch(() => {});
+  };
+
+  const targetWindow = frame.contentWindow;
+  if (!targetWindow) throw new Error("ZAM Companion iframe is unavailable");
+  const transport = new PostMessageTransport(targetWindow, targetWindow);
+  await bridge.connect(transport);
+
+  activeBlobUrl = URL.createObjectURL(
+    new Blob([payload.appHtml], { type: "text/html" }),
+  );
+  frame.title = payload.title;
+  frame.src = activeBlobUrl;
+}
+
+window.addEventListener("message", (event: MessageEvent<unknown>) => {
+  const message = event.data;
+  if (!message || typeof message !== "object") return;
+  const value = message as Record<string, unknown>;
+
+  if (value.type === "bootstrap") {
+    void mount(value.payload as BootstrapPayload).catch((error) => {
+      status.textContent = `MCP App konnte nicht gestartet werden: ${
+        error instanceof Error ? error.message : String(error)
+      }`;
+      void request("status", {
+        phase: "error",
+        message: error instanceof Error ? error.message : String(error),
+      }).catch(() => {});
+    });
+    return;
+  }
+
+  if (value.type === "empty") {
+    void teardownActiveBridge();
+    status.textContent =
+      typeof value.message === "string"
+        ? value.message
+        : "ZAM wartet auf eine Auswahl im Agent-Chat.";
+    return;
+  }
+
+  if (value.type === "response" && typeof value.id === "number") {
+    const entry = pending.get(value.id);
+    if (!entry) return;
+    pending.delete(value.id);
+    if (typeof value.error === "string") {
+      entry.reject(new Error(value.error));
+    } else {
+      entry.resolve(value.result);
+    }
+  }
+});
+
+const refreshHostContext = () => {
+  if (!activeBridge) return;
+  activeBridge.setHostContext({
+    theme: currentTheme(),
+    containerDimensions: {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    },
+  });
+};
+window.addEventListener("resize", refreshHostContext);
+const themeObserver = new MutationObserver(refreshHostContext);
+themeObserver.observe(document.body, {
+  attributes: true,
+  attributeFilter: ["class"],
+});
+window.addEventListener(
+  "beforeunload",
+  () => {
+    themeObserver.disconnect();
+    void teardownActiveBridge();
+  },
+  { once: true },
+);
+
+vscode.postMessage({ type: "ready" });

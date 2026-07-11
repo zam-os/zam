@@ -42,3 +42,4 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-06b](2026-07-06b-checkpointed-review-dialogue.md) | Checkpointed Review Dialogue | Proposed |
 | [2026-07-06](../plans/2026-07-06-mcp-agent-transport-plan.md) | MCP agent transport implementation plan (ADR 2026-07-06a, items 1–5) | Implemented |
 | [2026-07-07](2026-07-07-resilient-self-update-and-dependency-isolation.md) | Resilient Self-Update and Dependency-Failure Isolation | Implemented |
+| [2026-07-11](2026-07-11-codex-and-vscode-companion-surfaces.md) | Codex and VS Code Companion Surfaces | Accepted |

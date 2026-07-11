@@ -43,6 +43,21 @@ export interface AgentHarness {
   candidatePaths?: Partial<Record<NodeJS.Platform, string[]>>;
 }
 
+const ANTIGRAVITY_IDE_CANDIDATE_PATHS: Partial<
+  Record<NodeJS.Platform, string[]>
+> = {
+  darwin: [
+    join(
+      homedir(),
+      ".antigravity-ide",
+      "antigravity-ide",
+      "bin",
+      "antigravity-ide",
+    ),
+    "/Applications/Antigravity IDE.app/Contents/Resources/app/bin/antigravity-ide",
+  ],
+};
+
 /**
  * Known harnesses. CLI-first ones (Claude Code, Codex, opencode) launch in a
  * terminal; GUI apps (Cursor, Copilot, Antigravity) launch as a process. The
@@ -71,6 +86,12 @@ export const AGENT_HARNESSES: AgentHarness[] = [
     label: "Antigravity",
     kind: "app",
     command: "antigravity",
+    candidatePaths: {
+      darwin: [
+        ...(ANTIGRAVITY_IDE_CANDIDATE_PATHS.darwin ?? []),
+        "/Applications/Antigravity.app/Contents/MacOS/Antigravity",
+      ],
+    },
   },
   { id: "goose", label: "goose", kind: "cli", command: "goose" },
 ];
@@ -83,6 +104,21 @@ export interface ResolveDeps {
   find?: (command: string) => string | null;
   exists?: (path: string) => boolean;
   platform?: NodeJS.Platform;
+}
+
+/** Resolve only the VS Code-compatible Antigravity IDE CLI. */
+export function resolveAntigravityIdeExecutable(
+  deps: ResolveDeps = {},
+): string | null {
+  const find = deps.find ?? findExecutable;
+  const exists = deps.exists ?? existsSync;
+  const platform = deps.platform ?? process.platform;
+  const found = find("antigravity-ide");
+  if (found) return found;
+  return (
+    ANTIGRAVITY_IDE_CANDIDATE_PATHS[platform]?.find((path) => exists(path)) ??
+    null
+  );
 }
 
 /**
@@ -102,6 +138,15 @@ export function resolveHarnessExecutable(
 
   const found = find(overrideCommand || harness.command);
   if (found) return found;
+
+  if (!overrideCommand && harness.id === "antigravity") {
+    const foundIde = resolveAntigravityIdeExecutable({
+      find,
+      exists,
+      platform,
+    });
+    if (foundIde) return foundIde;
+  }
 
   if (harness.kind === "app") {
     for (const candidate of harness.candidatePaths?.[platform] ?? []) {
@@ -182,9 +227,126 @@ export type ConnectHarnessId =
   | "claude-desktop"
   | "antigravity"
   | "codex"
+  | "vscode"
   | "opencode"
   | "goose"
   | "copilot";
+
+export interface DetectConnectHarnessesOptions {
+  home?: string;
+  platform?: NodeJS.Platform;
+  find?: (command: string) => string | null;
+  exists?: (path: string) => boolean;
+  copilotHome?: string;
+}
+
+/**
+ * Detect user-scoped harness targets for parameterless `zam agent connect`.
+ * Claude Code is deliberately excluded because its existing MCP target is the
+ * current workspace; users can still configure it explicitly.
+ */
+export function detectInstalledConnectHarnesses(
+  options: DetectConnectHarnessesOptions = {},
+): ConnectHarnessId[] {
+  const home = options.home ?? homedir();
+  const platform = options.platform ?? process.platform;
+  const find = options.find ?? findExecutable;
+  const exists = options.exists ?? existsSync;
+  const detected: ConnectHarnessId[] = [];
+
+  const hasCommandOrPath = (command: string, paths: string[] = []) =>
+    Boolean(find(command)) || paths.some((path) => exists(path));
+
+  if (
+    hasCommandOrPath("codex", [
+      join(home, ".codex"),
+      ...(platform === "darwin"
+        ? ["/Applications/Codex.app"]
+        : platform === "win32"
+          ? [join(home, "AppData", "Local", "Programs", "Codex")]
+          : []),
+    ])
+  ) {
+    detected.push("codex");
+  }
+
+  const vscodePaths =
+    platform === "darwin"
+      ? [
+          "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code",
+          join(
+            home,
+            "Applications",
+            "Visual Studio Code.app",
+            "Contents",
+            "Resources",
+            "app",
+            "bin",
+            "code",
+          ),
+        ]
+      : platform === "win32"
+        ? [
+            join(
+              home,
+              "AppData",
+              "Local",
+              "Programs",
+              "Microsoft VS Code",
+              "bin",
+              "code.cmd",
+            ),
+          ]
+        : ["/usr/bin/code", "/usr/local/bin/code", "/snap/bin/code"];
+  if (hasCommandOrPath("code", vscodePaths)) detected.push("vscode");
+
+  const copilotHome = options.copilotHome ?? join(home, ".copilot");
+  if (
+    hasCommandOrPath("copilot", [
+      copilotHome,
+      ...(platform === "darwin" ? ["/Applications/GitHub Copilot.app"] : []),
+    ])
+  ) {
+    detected.push("copilot");
+  }
+
+  if (hasCommandOrPath("opencode", [join(home, ".config", "opencode")])) {
+    detected.push("opencode");
+  }
+  if (hasCommandOrPath("goose", [join(home, ".config", "goose")])) {
+    detected.push("goose");
+  }
+  if (
+    hasCommandOrPath("antigravity", [
+      join(home, ".gemini", "config"),
+      ...(platform === "darwin"
+        ? [
+            join(
+              home,
+              ".antigravity-ide",
+              "antigravity-ide",
+              "bin",
+              "antigravity-ide",
+            ),
+            "/Applications/Antigravity.app",
+            "/Applications/Antigravity IDE.app",
+          ]
+        : []),
+    ]) ||
+    find("antigravity-ide")
+  ) {
+    detected.push("antigravity");
+  }
+  const claudeDesktopPath =
+    platform === "darwin"
+      ? "/Applications/Claude.app"
+      : platform === "win32"
+        ? join(home, "AppData", "Local", "AnthropicClaude")
+        : join(home, ".config", "Claude");
+  if (exists(claudeDesktopPath)) detected.push("claude-desktop");
+
+  return detected;
+}
 
 interface McpJsonConfig {
   mcpServers?: Record<string, unknown>;
@@ -357,6 +519,52 @@ approval_mode = "prompt"
 `;
       content = existingStr ? `${existingStr.trimEnd()}\n${block}` : block;
     }
+  } else if (harnessId === "vscode") {
+    const platform = opts.platform ?? process.platform;
+    targetPath =
+      platform === "win32"
+        ? join(opts.home, "AppData", "Roaming", "Code", "User", "mcp.json")
+        : platform === "darwin"
+          ? join(
+              opts.home,
+              "Library",
+              "Application Support",
+              "Code",
+              "User",
+              "mcp.json",
+            )
+          : join(opts.home, ".config", "Code", "User", "mcp.json");
+    hint =
+      "Reload VS Code after setup. ZAM Companion stays separate from the Codex chat and can be moved to any panel or sidebar.";
+    let existing: McpJsonConfig & { servers?: Record<string, unknown> } = {};
+    if (exists(targetPath)) {
+      existing = parseMcpJsonConfig(targetPath, read(targetPath));
+    }
+    if (
+      existing.servers !== undefined &&
+      (typeof existing.servers !== "object" ||
+        existing.servers === null ||
+        Array.isArray(existing.servers))
+    ) {
+      throw new Error(
+        `Cannot update ${targetPath}: servers must be a JSON object`,
+      );
+    }
+    if (existing.inputs !== undefined && !Array.isArray(existing.inputs)) {
+      throw new Error(`Cannot update ${targetPath}: inputs must be an array`);
+    }
+    if (!existing.servers) existing.servers = {};
+    const expectedServer = { command: opts.zamPath, args: ["mcp"] };
+    const currentServer = existing.servers.zam;
+    alreadyConfigured =
+      Array.isArray(existing.inputs) &&
+      typeof currentServer === "object" &&
+      currentServer !== null &&
+      !Array.isArray(currentServer) &&
+      JSON.stringify(currentServer) === JSON.stringify(expectedServer);
+    existing.servers.zam = expectedServer;
+    if (!existing.inputs) existing.inputs = [];
+    content = JSON.stringify(existing, null, 2);
   } else if (harnessId === "goose") {
     targetPath = join(opts.home, ".config", "goose", "config.yaml");
     hint =
@@ -402,7 +610,7 @@ approval_mode = "prompt"
       "mcp-config.json",
     );
     hint =
-      "Restart GitHub Copilot or start a new session to load the 'zam' MCP server and its Studio, Recall, Graph, and Settings canvases.";
+      "Restart GitHub Copilot or start a new session to load the 'zam' MCP server and its focused Recall, Graph, and Settings canvases.";
     let existing: McpJsonConfig = {};
     if (exists(targetPath)) {
       existing = parseMcpJsonConfig(targetPath, read(targetPath));
