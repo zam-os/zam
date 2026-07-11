@@ -1,6 +1,6 @@
 # Checkpointed Review Dialogue (Question → Answer → Feedback → Open Flow → Rating Check-in)
 
-**Status:** Accepted (revised 2026-07-11; items 1, 2, 5 implemented on `feat/checkpointed-review-dialogue`)
+**Status:** Implemented (revised 2026-07-11; items 3 and 4 dropped in the revision)
 **Date:** 2026-07-06
 **Deciders:** Thomas (project owner)
 **Related:**
