@@ -50,7 +50,12 @@ describe("bridge provider-config commands", () => {
   }
 
   it("stores machine-scope providers and binds roles without exposing API keys", () => {
-    runCli(["setup", "--skip-claude-md", "--skip-agents-md"]);
+    runCli([
+      "setup",
+      "--skip-claude-md",
+      "--skip-agents-md",
+      "--skip-agent-connect",
+    ]);
 
     const upsert = runBridge([
       "provider-config-upsert",
@@ -146,7 +151,12 @@ describe("bridge provider-config commands", () => {
   }, 15_000);
 
   it("reports referencing roles when removing a provider", () => {
-    runCli(["setup", "--skip-claude-md", "--skip-agents-md"]);
+    runCli([
+      "setup",
+      "--skip-claude-md",
+      "--skip-agents-md",
+      "--skip-agent-connect",
+    ]);
     runBridge([
       "provider-config-upsert",
       "--name",
