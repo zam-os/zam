@@ -9,6 +9,7 @@ import {
   planHarnessLaunch,
   resolveHarnessExecutable,
   connectHarnessMcp,
+  detectInstalledConnectHarnesses,
 } from "../../src/cli/agent-harness.js";
 
 afterEach(() => {
@@ -89,6 +90,37 @@ describe("resolveHarnessExecutable", () => {
         exists: () => true,
       }),
     ).toBeNull();
+  });
+});
+
+describe("detectInstalledConnectHarnesses", () => {
+  it("detects user-scoped Codex, VS Code, and Copilot targets", () => {
+    const detected = detectInstalledConnectHarnesses({
+      home: "/home/user",
+      platform: "darwin",
+      find: (command) =>
+        command === "codex" || command === "claude"
+          ? `/usr/local/bin/${command}`
+          : null,
+      exists: (path) =>
+        path ===
+          "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" ||
+        path === "/home/user/.copilot",
+    });
+
+    expect(detected).toEqual(["codex", "vscode", "copilot"]);
+    expect(detected).not.toContain("claude-code");
+  });
+
+  it("returns no targets when no supported user host is installed", () => {
+    expect(
+      detectInstalledConnectHarnesses({
+        home: "/home/user",
+        platform: "linux",
+        find: () => null,
+        exists: () => false,
+      }),
+    ).toEqual([]);
   });
 });
 
@@ -271,6 +303,58 @@ describe("connectHarnessMcp", () => {
     const res = connectHarnessMcp("codex", mockDeps);
     expect(res.alreadyConfigured).toBe(true);
     expect(res.content).toBe(existing);
+  });
+
+  it("vscode merges the user config and preserves servers and inputs", () => {
+    mockFiles["/home/user/Library/Application Support/Code/User/mcp.json"] =
+      JSON.stringify({
+        servers: { other: { command: "other-mcp" } },
+        inputs: [{ id: "token", type: "promptString" }],
+        custom: true,
+      });
+    const res = connectHarnessMcp("vscode", {
+      ...mockDeps,
+      platform: "darwin",
+    });
+
+    expect(posix(res.path)).toBe(
+      "/home/user/Library/Application Support/Code/User/mcp.json",
+    );
+    expect(JSON.parse(res.content)).toEqual({
+      servers: {
+        other: { command: "other-mcp" },
+        zam: { command: "/usr/local/bin/zam", args: ["mcp"] },
+      },
+      inputs: [{ id: "token", type: "promptString" }],
+      custom: true,
+    });
+    expect(res.alreadyConfigured).toBe(false);
+  });
+
+  it("vscode reports an existing complete setup as configured", () => {
+    mockFiles["/home/user/.config/Code/User/mcp.json"] = JSON.stringify({
+      servers: {
+        zam: { command: "/usr/local/bin/zam", args: ["mcp"] },
+      },
+      inputs: [],
+    });
+    const res = connectHarnessMcp("vscode", {
+      ...mockDeps,
+      platform: "linux",
+    });
+    expect(res.alreadyConfigured).toBe(true);
+  });
+
+  it("vscode refuses to replace malformed server configuration", () => {
+    mockFiles["/home/user/.config/Code/User/mcp.json"] = JSON.stringify({
+      servers: [],
+    });
+    expect(() =>
+      connectHarnessMcp("vscode", {
+        ...mockDeps,
+        platform: "linux",
+      }),
+    ).toThrow("servers must be a JSON object");
   });
 
   it("goose fresh write creates a valid extensions map", () => {
