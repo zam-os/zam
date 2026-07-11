@@ -1,8 +1,8 @@
 import {
   existsSync,
   mkdirSync,
-  readFileSync,
   readdirSync,
+  readFileSync,
   rmSync,
   statSync,
   writeFileSync,
@@ -19,6 +19,7 @@ const packageJson = JSON.parse(
   readFileSync(join(repoRoot, "package.json"), "utf8"),
 );
 const version = packageJson.version;
+const vscodeEngine = "^1.100.0";
 const extensionBundle = join(distDir, "extension.cjs");
 const hostBundle = join(distDir, "host.bundle.js");
 const vsixName = `ZAM_Companion_${version}.vsix`;
@@ -55,7 +56,7 @@ const extensionPackage = {
     type: "git",
     url: "https://github.com/zam-os/zam.git",
   },
-  engines: { vscode: "^1.109.0" },
+  engines: { vscode: vscodeEngine },
   categories: ["Other"],
   keywords: ["zam", "learning", "recall", "mcp", "codex"],
   main: "./out/extension.cjs",
@@ -157,7 +158,7 @@ writeFileSync(
     <Categories>Other</Categories>
     <GalleryFlags>Public</GalleryFlags>
     <Properties>
-      <Property Id="Microsoft.VisualStudio.Code.Engine" Value="^1.109.0" />
+      <Property Id="Microsoft.VisualStudio.Code.Engine" Value="${vscodeEngine}" />
       <Property Id="Microsoft.VisualStudio.Services.GitHubFlavoredMarkdown" Value="true" />
       <Property Id="Microsoft.VisualStudio.Services.Content.Pricing" Value="Free" />
     </Properties>

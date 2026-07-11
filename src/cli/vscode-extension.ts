@@ -107,7 +107,7 @@ export function planVscodeExtensionInstall(
   const vsixPath = join(assetsDir, `ZAM_Companion_${version}.vsix`);
   if (!existsSync(vsixPath)) {
     throw new Error(
-      `VS Code Companion asset is missing: ${vsixPath}. Run \`npm run build\` and retry.`,
+      `ZAM Companion VSIX asset is missing: ${vsixPath}. Run \`npm run build\` and retry.`,
     );
   }
   const codePath =

@@ -4,12 +4,13 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   AGENT_HARNESSES,
   type AgentHarness,
+  connectHarnessMcp,
+  detectInstalledConnectHarnesses,
   getHarness,
   launchHarness,
   planHarnessLaunch,
+  resolveAntigravityIdeExecutable,
   resolveHarnessExecutable,
-  connectHarnessMcp,
-  detectInstalledConnectHarnesses,
 } from "../../src/cli/agent-harness.js";
 
 afterEach(() => {
@@ -83,6 +84,54 @@ describe("resolveHarnessExecutable", () => {
     ).toBe("/opt/x/x");
   });
 
+  it("resolves antigravity-ide on PATH for antigravity harness", () => {
+    const antigravity = getHarness("antigravity") as AgentHarness;
+    expect(
+      resolveHarnessExecutable(antigravity, undefined, {
+        find: (c) =>
+          c === "antigravity-ide" ? "/usr/local/bin/antigravity-ide" : null,
+      }),
+    ).toBe("/usr/local/bin/antigravity-ide");
+  });
+
+  it("resolves antigravity candidate paths on macOS", () => {
+    const antigravity = getHarness("antigravity") as AgentHarness;
+    expect(
+      resolveHarnessExecutable(antigravity, undefined, {
+        find: () => null,
+        exists: (p) =>
+          p ===
+          "/Applications/Antigravity IDE.app/Contents/Resources/app/bin/antigravity-ide",
+        platform: "darwin",
+      }),
+    ).toBe(
+      "/Applications/Antigravity IDE.app/Contents/Resources/app/bin/antigravity-ide",
+    );
+  });
+
+  it("resolves only the VS Code-compatible Antigravity IDE for extensions", () => {
+    expect(
+      resolveAntigravityIdeExecutable({
+        find: () => null,
+        exists: (path) =>
+          path ===
+          "/Applications/Antigravity IDE.app/Contents/Resources/app/bin/antigravity-ide",
+        platform: "darwin",
+      }),
+    ).toBe(
+      "/Applications/Antigravity IDE.app/Contents/Resources/app/bin/antigravity-ide",
+    );
+
+    expect(
+      resolveAntigravityIdeExecutable({
+        find: () => null,
+        exists: (path) =>
+          path === "/Applications/Antigravity.app/Contents/MacOS/Antigravity",
+        platform: "darwin",
+      }),
+    ).toBeNull();
+  });
+
   it("does not probe candidate paths for CLI harnesses", () => {
     expect(
       resolveHarnessExecutable(claude, undefined, {
@@ -121,6 +170,18 @@ describe("detectInstalledConnectHarnesses", () => {
         exists: () => false,
       }),
     ).toEqual([]);
+  });
+
+  it("detects Antigravity IDE by its CLI name", () => {
+    expect(
+      detectInstalledConnectHarnesses({
+        home: "/home/user",
+        platform: "linux",
+        find: (command) =>
+          command === "antigravity-ide" ? "/usr/bin/antigravity-ide" : null,
+        exists: () => false,
+      }),
+    ).toEqual(["antigravity"]);
   });
 });
 

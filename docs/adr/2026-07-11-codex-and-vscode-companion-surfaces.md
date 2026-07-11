@@ -62,6 +62,11 @@ For Codex, setup installs the user-level MCP entry and global ZAM skill. For VS
 Code, setup installs the user-level MCP entry and the packaged ZAM Companion
 `.vsix`. Existing unrelated configuration is preserved.
 
+The same VSIX is installed for `zam agent connect antigravity` when the
+VS Code-compatible `antigravity-ide` CLI is detected. Antigravity CLI and
+legacy app installations retain MCP setup without being treated as extension
+hosts.
+
 The parameterless ZAM skill invocation presents choices before acting:
 
 1. continue a session only when the current agent conversation already knows
@@ -93,5 +98,7 @@ onboarding and non-agent experience.
 - Live VS Code test with the official Codex extension and the detached ZAM
   Companion view.
 - A brief GitHub Copilot regression smoke test.
+- A targeted Antigravity IDE 1.107 compatibility smoke for VSIX installation
+  and detached Recall rendering.
 - Claude and Windows end-to-end testing are deferred to a later Windows
   polishing release.

@@ -31,6 +31,8 @@
 - [x] Pass format, lint, typecheck, full tests, and build.
 - [x] Verify Codex Desktop and VS Code with the Codex extension; smoke-test
   Copilot without broadening scope.
+- [x] Verify the shared Companion VSIX in Antigravity IDE 1.107 after the
+  compatibility review.
 - [x] Build and verify the Apple Silicon macOS application package.
 - [ ] Publish npm, `.vsix`, desktop assets, and the 0.10.3 GitHub release using
   the established “What's new” structure.

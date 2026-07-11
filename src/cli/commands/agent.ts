@@ -28,6 +28,7 @@ import {
   detectInstalledConnectHarnesses,
   getHarness,
   launchHarness,
+  resolveAntigravityIdeExecutable,
   resolveHarnessExecutable,
 } from "../agent-harness.js";
 import {
@@ -285,6 +286,16 @@ const connectCmd = new Command("connect")
             zamPath,
             dryRun: Boolean(opts.print),
           });
+        } else if (harness === "antigravity") {
+          const antigravityPath = resolveAntigravityIdeExecutable();
+          if (antigravityPath) {
+            vscodeExtension = installVscodeExtension({
+              home,
+              zamPath,
+              codePath: antigravityPath,
+              dryRun: Boolean(opts.print),
+            });
+          }
         }
       } catch (error) {
         console.error(
@@ -335,7 +346,7 @@ const connectCmd = new Command("connect")
       }
       if (vscodeExtension) {
         console.log(
-          `${C.green}✓${C.reset} VS Code Companion ${vscodeExtension.action} from ${vscodeExtension.vsixPath}`,
+          `${C.green}✓${C.reset} ZAM Companion ${vscodeExtension.action} from ${vscodeExtension.vsixPath}`,
         );
       }
       console.log(`  ${C.dim}${result.hint}${C.reset}`);

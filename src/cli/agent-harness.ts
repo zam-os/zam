@@ -43,6 +43,21 @@ export interface AgentHarness {
   candidatePaths?: Partial<Record<NodeJS.Platform, string[]>>;
 }
 
+const ANTIGRAVITY_IDE_CANDIDATE_PATHS: Partial<
+  Record<NodeJS.Platform, string[]>
+> = {
+  darwin: [
+    join(
+      homedir(),
+      ".antigravity-ide",
+      "antigravity-ide",
+      "bin",
+      "antigravity-ide",
+    ),
+    "/Applications/Antigravity IDE.app/Contents/Resources/app/bin/antigravity-ide",
+  ],
+};
+
 /**
  * Known harnesses. CLI-first ones (Claude Code, Codex, opencode) launch in a
  * terminal; GUI apps (Cursor, Copilot, Antigravity) launch as a process. The
@@ -71,6 +86,12 @@ export const AGENT_HARNESSES: AgentHarness[] = [
     label: "Antigravity",
     kind: "app",
     command: "antigravity",
+    candidatePaths: {
+      darwin: [
+        ...(ANTIGRAVITY_IDE_CANDIDATE_PATHS.darwin ?? []),
+        "/Applications/Antigravity.app/Contents/MacOS/Antigravity",
+      ],
+    },
   },
   { id: "goose", label: "goose", kind: "cli", command: "goose" },
 ];
@@ -83,6 +104,21 @@ export interface ResolveDeps {
   find?: (command: string) => string | null;
   exists?: (path: string) => boolean;
   platform?: NodeJS.Platform;
+}
+
+/** Resolve only the VS Code-compatible Antigravity IDE CLI. */
+export function resolveAntigravityIdeExecutable(
+  deps: ResolveDeps = {},
+): string | null {
+  const find = deps.find ?? findExecutable;
+  const exists = deps.exists ?? existsSync;
+  const platform = deps.platform ?? process.platform;
+  const found = find("antigravity-ide");
+  if (found) return found;
+  return (
+    ANTIGRAVITY_IDE_CANDIDATE_PATHS[platform]?.find((path) => exists(path)) ??
+    null
+  );
 }
 
 /**
@@ -102,6 +138,15 @@ export function resolveHarnessExecutable(
 
   const found = find(overrideCommand || harness.command);
   if (found) return found;
+
+  if (!overrideCommand && harness.id === "antigravity") {
+    const foundIde = resolveAntigravityIdeExecutable({
+      find,
+      exists,
+      platform,
+    });
+    if (foundIde) return foundIde;
+  }
 
   if (harness.kind === "app") {
     for (const candidate of harness.candidatePaths?.[platform] ?? []) {
@@ -274,8 +319,21 @@ export function detectInstalledConnectHarnesses(
   if (
     hasCommandOrPath("antigravity", [
       join(home, ".gemini", "config"),
-      ...(platform === "darwin" ? ["/Applications/Antigravity.app"] : []),
-    ])
+      ...(platform === "darwin"
+        ? [
+            join(
+              home,
+              ".antigravity-ide",
+              "antigravity-ide",
+              "bin",
+              "antigravity-ide",
+            ),
+            "/Applications/Antigravity.app",
+            "/Applications/Antigravity IDE.app",
+          ]
+        : []),
+    ]) ||
+    find("antigravity-ide")
   ) {
     detected.push("antigravity");
   }
