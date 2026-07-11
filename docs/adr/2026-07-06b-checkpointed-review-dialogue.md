@@ -1,13 +1,25 @@
 # Checkpointed Review Dialogue (Question → Answer → Feedback → Open Flow → Rating Check-in)
 
-**Status:** Proposed
+**Status:** Proposed (revised 2026-07-11)
 **Date:** 2026-07-06
 **Deciders:** Thomas (project owner)
 **Related:**
 [2026-07-06a-mcp-agent-transport-and-surfaces.md](2026-07-06a-mcp-agent-transport-and-surfaces.md) (companion) ·
+[2026-07-11-codex-and-vscode-companion-surfaces.md](2026-07-11-codex-and-vscode-companion-surfaces.md) ·
 [2026-06-27-recall-session-llm-pipeline.md](2026-06-27-recall-session-llm-pipeline.md) ·
 [2026-05-30a-standalone-learning-session.md](2026-05-30a-standalone-learning-session.md) ·
 [2026-06-25a-machine-local-llm-role-configuration.md](2026-06-25a-machine-local-llm-role-configuration.md)
+
+> **Revision 2026-07-11** (scope sharpened by the project owner, still Proposed):
+> the dialogue surface is **App-only**. Agent harnesses already have a superior
+> flexible phase — the chat beside the review pane can take follow-up questions,
+> build visualizations, anything the host model offers — and a fixed App cannot
+> replicate that; per [2026-07-11](2026-07-11-codex-and-vscode-companion-surfaces.md)
+> the MCP Recall card likewise keeps follow-ups in the agent chat. In the App the
+> dialogue opens only **after** answer + AI feedback, so the originally proposed
+> assisted-rating cap is obsolete (the pre-answer case cannot arise). Turns are
+> **unbounded**, V1 is **conversation-only** (no graph actions from inside the
+> thread), and `zam learn` stays unchanged.
 
 ---
 
@@ -49,8 +61,7 @@ The forces:
 
 ### 1. Principle: the review loop is a conversation with checkpoints, not a form
 
-Every review surface (harness chat via the skill, Studio, `zam learn`)
-implements exactly three hard checkpoints:
+Every review surface implements exactly three hard checkpoints:
 
 1. **Question shown** — spoiler discipline applies before this point.
 2. **Answer captured** — the learner's attempt is recorded (typed, spoken, or
@@ -58,48 +69,69 @@ implements exactly three hard checkpoints:
 3. **Rating checked in** — the FSRS transaction; closes the card and returns to
    the queue.
 
-Between checkpoints 2 and 3 the flow is **unrestricted**: feedback, follow-up
-questions, tangents, splitting the token into foundations
-(`suggest-foundations` / `add-token` / `prereq` are legitimate interlude
-moves). Only checkpoints touch FSRS state; the interlude may mutate the
-knowledge graph but never scheduling. The rating is the exit gate — "the flow
-can be left by checking in the rating."
+Only checkpoints touch FSRS state. How flexible the stretch between checkpoints
+2 and 3 is depends on the surface: in a harness the host chat makes it fully
+open (feedback, tangents, visualizations, graph moves such as
+`suggest-foundations` / `add-token` / `prereq`); the App gains the bounded
+conversational phase defined in Decision 3. The rating is the exit gate — "the
+flow can be left by checking in the rating."
 
 The contract already supports this: `get_reviews → … → submit_review` is
 stateless and re-entrant (companion ADR
 [2026-07-06a](2026-07-06a-mcp-agent-transport-and-surfaces.md)), so an interlude
 of thirty seconds or twenty minutes lands the same way.
 
-### 2. Checkpoint order carries meaning: assisted answers cap the suggestion
+### 2. The App dialogue is post-feedback only; no assisted flag
 
-Discussion *after* answer capture is feedback and costs nothing. Discussion
-*before* answer capture is help. If the learner opens the dialogue before
-checkpoint 2, the card is marked **assisted** for this review and the *suggested*
-self-rating is capped at **2** (matching the skill rubric: "asked for help →
-1", "looked something up → 3"). The learner still chooses the final rating —
-the cap binds the suggestion, not the choice. The assisted flag is
-session-local UI state; it is not persisted (see Decision 5).
+The App offers the dialogue only **after** checkpoint 2, together with the
+reveal's AI-feedback block. There is deliberately no pre-answer dialogue in the
+App, so "help before answering" cannot happen there and the assisted-rating cap
+sketched in the original proposal is dropped entirely — no flag, no capped
+suggestion, a simpler state machine. In harness sessions the skill rubric
+already covers assisted answers ("asked for help → 1", "looked something up →
+3"); that stays where it is.
 
-### 3. Studio: a card-scoped discussion thread riding the recall pipeline
+### 3. The App: an open-ended, card-scoped conversation after the reveal
 
-After feedback (or any time after checkpoint 2), the Studio offers **"ask a
-follow-up"**: a thread scoped to the current card, each turn calling the
-`recall`-role provider with the cached card prefix (concept, question, learner
-answer, resolved `source_link` context) plus the thread history. The rating bar
-stays visible throughout; checking in the rating closes the thread and advances
-the queue (prefetch of card *N+1* continues underneath, per 2026-06-27).
+**Surface scope:** this Decision applies to the standalone ZAM App
+([desktop/src](../../desktop/src/main.ts)) only — not to harness chat (which
+already has a better version of it natively) and not to the MCP Recall card
+(follow-ups there belong in the agent chat, per
+[2026-07-11](2026-07-11-codex-and-vscode-companion-surfaces.md)).
+
+Behavior:
+
+- With (or after) the AI-feedback block, an input field appears. Each assistant
+  reply is followed by a **new input field** — the thread is **not limited to
+  one follow-up** and has **no turn cap**; it runs as long as the learner needs.
+- The conversation history scrolls upward like a normal chat and can be
+  scrolled back at any time within the card.
+- The **rating buttons move to the edge** of the card so they never sit in the
+  way of the thread; they stay visible throughout. Checking in the rating is
+  always one click away, closes the thread, and advances the queue.
+- Each turn calls the `recall`-role provider with the card prefix (concept,
+  question, learner answer, resolved `source_link` context) plus the thread
+  history. When the [2026-06-27](2026-06-27-recall-session-llm-pipeline.md)
+  prompt-prefix cache and prefetch land, the thread rides them; it does not
+  depend on them.
+- **V1 is conversation-only.** The thread does not offer graph actions
+  (creating foundation tokens, linking prerequisites) from inside the dialogue;
+  graph curation stays in the Studio's existing surfaces and in harness
+  sessions.
 
 Because ZAM calls **its own provider in-process**, this involves no agent
 harness, no host permission prompts, and cost stays within the cheap-first
-provider stance. If no provider is configured/reachable, the affordance is
+provider stance. If no provider is configured/reachable, the input field is
 hidden and the flow degrades to today's one-shot feedback.
 
-### 4. `zam learn` parity
+### 4. Out of scope: harness surfaces and `zam learn`
 
-The terminal console gets a `d` (discuss) action after the reveal, entering the
-same thread loop in-terminal. It reuses the identical bridge plumbing; the
-2026-06-27 open question "CLI parity" is answered *yes* for the dialogue (the
-prefetch pipeline remains optional there).
+Harness sessions need no change — the chat beside the review pane *is* the
+flexible phase, and the skill rubric already carries the checkpoint semantics.
+`zam learn` deliberately stays the simple fixed loop it is today; whether the
+terminal ever gets the same thread is a revisit item, not part of this ADR.
+(This also answers the [2026-06-27](2026-06-27-recall-session-llm-pipeline.md)
+open question "CLI parity" with *no* for the dialogue.)
 
 ### 5. Transcripts are ephemeral
 
@@ -128,8 +160,10 @@ to start a discussion about a knowledge question in the App.
 
 **Full embedded agent chat in the App.** Rejected *for this need*: an agent
 harness brings permission UX, vendor/cost coupling, and a chat stack — all to
-answer follow-up questions about a card. Work-execution chat (T3) stays a
-separately deferred decision in the companion ADR.
+answer follow-up questions about a card. The harness's open-ended flexibility
+(visualizations, arbitrary tool use) cannot be replicated in a fixed App and
+should not be imitated there. Work-execution chat (T3) stays a separately
+deferred decision in the companion ADR.
 
 **Threaded dialogue on the existing recall pipeline.** Chosen: smallest delta
 (the second LLM call already exists; this makes it a loop), zero prompts, cheap
@@ -144,31 +178,29 @@ per turn thanks to the prompt-prefix cache, and it upgrades the App from
 - The App supports the flexible flow that previously required a harness —
   including for the school persona, where a coding harness was never the right
   answer.
-- Harness surfaces need no change: the skill's verbal probing already implements
-  the checkpointed conversation; this ADR just names the invariants it must
-  keep (spoiler discipline before checkpoint 1, assisted semantics before 2,
-  rating as the only FSRS mutation).
+- Harness surfaces and skills need no change at all: the host chat already
+  implements the open phase, and the rubric already carries the assisted
+  semantics. (No skill edits also means no overlap with the 0.10.3 skill work.)
+- Dropping the assisted flag and the turn cap removes two state-machine
+  concerns from the original sketch.
 - The 2026-06-27 investments (long-lived bridge, prompt cache) get a second
   consumer, strengthening the case for that ADR.
 
 **Harder**
-- The desktop state machine grows again: thread state, assisted flag, and their
-  interaction with prefetch/eval-in-flight (`currentCard`, `prefetchedCard`,
-  `evalInFlight` from 2026-06-27, plus `dialogueThread`).
-- `learn.ts` gains an interactive sub-loop in a console that is deliberately
-  simple today.
-- Discussion turns cost tokens; bounded by the cheap `recall` provider, the
-  prefix cache, and a per-thread turn cap (default: 10 turns, then suggest
-  checking in).
+- The desktop state machine still grows: thread state and its interaction with
+  prefetch/eval-in-flight (`currentCard`, `prefetchedCard`, `evalInFlight` from
+  2026-06-27, plus `dialogueThread`).
+- Discussion turns cost tokens, and turns are deliberately **unbounded**; the
+  bound is economic (cheap `recall` role, cached prefix), not a hard cap.
 - Ephemeral means no later analysis of discussions — accepted trade-off
   (Decision 5).
 
 **To revisit**
 - A dedicated `tutor` provider role (Decision 6).
 - Opt-in summary capture for foundation-mining (Decision 5 trigger).
-- Whether the assisted cap should distinguish "clarified the question wording"
-  (cap 3) from "explained the concept" (cap 2) — start simple with a single
-  cap at 2.
+- `zam learn` terminal parity for the thread (Decision 4).
+- Graph actions from inside the thread (V2 candidate; V1 is
+  conversation-only per Decision 3).
 
 ---
 
@@ -177,16 +209,21 @@ per turn thanks to the prompt-prefix cache, and it upgrades the App from
 1. [ ] **Bridge: `discuss-review` request** (handler map from companion ADR
    item 1; exposed on `bridge serve` and as a bridge subcommand): input =
    cardId + thread history + new user turn; output = assistant turn. Reuses the
-   `evaluate-answer` context assembly and the session prompt-prefix cache from
-   [2026-06-27](2026-06-27-recall-session-llm-pipeline.md).
-2. [ ] **Studio thread UI** ([desktop/src](../../desktop/src/main.ts)): "ask a
-   follow-up" after reveal, persistent rating bar, assisted flag when the
-   thread opens pre-answer, thread teardown on check-in/skip/stop.
-3. [ ] **`zam learn` `d` action** ([learn.ts](../../src/cli/commands/learn.ts)):
-   same loop in-terminal; hidden when no `recall` provider resolves.
-4. [ ] **Skill invariants note** (all flavors, with companion item 5): document
-   the three checkpoints and the assisted-rating rule so harness sessions keep
-   the same semantics.
-5. [ ] **Tests**: assisted cap logic, thread teardown on every exit action
+   `evaluate-answer` context assembly; adopts the session prompt-prefix cache
+   from [2026-06-27](2026-06-27-recall-session-llm-pipeline.md) when that
+   lands.
+2. [ ] **App thread UI** ([desktop/src](../../desktop/src/main.ts)): input
+   field appears with the AI feedback; a new input field after every assistant
+   reply (unbounded turns); history scrolls up and stays scrollable; rating
+   buttons relocated to the card edge and persistently visible; thread teardown
+   on check-in/skip/stop; affordance hidden when no `recall` provider
+   resolves.
+3. ~~**`zam learn` `d` action**~~ — dropped in the 2026-07-11 revision
+   (App-only scope; see Decision 4 and the revisit list).
+4. ~~**Skill invariants note**~~ — dropped in the 2026-07-11 revision: harness
+   surfaces already implement the flexible phase natively; no skill change
+   needed.
+5. [ ] **Tests**: dialogue reachable only after the reveal/feedback, multiple
+   consecutive turns work (no cap), thread teardown on every exit action
    (rate/skip/stop), degradation without a provider, no FSRS mutation from
-   interlude operations.
+   thread turns.
