@@ -1459,35 +1459,125 @@ textarea::placeholder {
   white-space: pre-wrap;
 }
 
+/* ── POST-REVEAL DISCUSSION THREAD (ADR 2026-07-06b) ────────────────────── */
+.discussion-box {
+  background: rgba(168, 85, 247, 0.04);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* New turns append at the bottom; older ones scroll away upward and stay
+   reachable by scrolling back (revised ADR 2026-07-06b). */
+.discussion-turns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: min(40vh, 420px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.discussion-turns:empty {
+  display: none;
+}
+
+.discussion-turn {
+  max-width: 85%;
+  border-radius: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--border-soft);
+}
+
+.discussion-turn.user {
+  align-self: flex-end;
+  background: rgba(34, 211, 238, 0.08);
+  border-color: rgba(34, 211, 238, 0.25);
+}
+
+.discussion-turn.assistant {
+  align-self: flex-start;
+  background: var(--bg-card-subtle);
+}
+
+.discussion-turn.pending {
+  opacity: 0.6;
+}
+
+.discussion-turn-text {
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 0;
+}
+
+.discussion-error {
+  font-size: 13px;
+  color: #ef4444;
+  margin: 0;
+}
+
+.discussion-input-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.discussion-input-row textarea {
+  flex: 1;
+  resize: none;
+  min-height: 44px;
+}
+
+#btn-discussion-send {
+  white-space: nowrap;
+}
+
 /* ── SELF-RATING BUTTON BAR ─────────────────────────────────────────────── */
+/* Compact edge bar: sticks to the bottom of the scrolling container so the
+   check-in stays one click away during an open-ended discussion without
+   sitting in the way (revised ADR 2026-07-06b). */
 .rating-bar-container {
   margin-top: 15px;
-  padding-top: 20px;
+  padding: 12px 0 6px;
   border-top: 1px solid var(--border-soft);
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  background: var(--bg-page-wash);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 .rating-instruction {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--clr-text-secondary);
-  margin-bottom: 15px;
+  margin: 0;
+  flex: 1 1 auto;
 }
 
 .rating-buttons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
+  display: flex;
+  gap: 10px;
+  flex: 0 0 auto;
 }
 
 .rating-btn {
   background: var(--bg-card-subtle);
   border: 1px solid var(--border-soft);
   border-radius: 12px;
-  padding: 12px 8px;
+  padding: 8px 14px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
