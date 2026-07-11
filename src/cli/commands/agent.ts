@@ -28,6 +28,10 @@ import {
   launchHarness,
   resolveHarnessExecutable,
 } from "../agent-harness.js";
+import {
+  type CopilotExtensionInstallResult,
+  installCopilotExtension,
+} from "../copilot-extension.js";
 import { findExecutable, normalizeShell } from "../terminal-open.js";
 
 const C = {
@@ -228,6 +232,7 @@ const connectCmd = new Command("connect")
         zamPath,
         cwd: process.cwd(),
         home: homedir(),
+        copilotHome: process.env.COPILOT_HOME,
       });
     } catch (error) {
       console.error(
@@ -236,9 +241,31 @@ const connectCmd = new Command("connect")
       process.exit(1);
     }
 
+    let copilotExtension: CopilotExtensionInstallResult | undefined;
+    if (harnessArg === "copilot") {
+      try {
+        copilotExtension = installCopilotExtension({
+          home: homedir(),
+          zamPath,
+          dryRun: Boolean(opts.print),
+        });
+      } catch (error) {
+        console.error(
+          `Error preparing Copilot MCP Apps extension: ${error instanceof Error ? error.message : String(error)}`,
+        );
+        process.exit(1);
+      }
+    }
+
     if (opts.print) {
       console.log(`Path: ${result.path}`);
       console.log(`Content:\n${result.content}`);
+      if (copilotExtension) {
+        console.log(`Extension: ${copilotExtension.destinationDir}`);
+        console.log(
+          `Launch: ${copilotExtension.launch.command} ${copilotExtension.launch.args.join(" ")}`,
+        );
+      }
       return;
     }
 
@@ -246,6 +273,12 @@ const connectCmd = new Command("connect")
       console.log(
         `${C.green}✓${C.reset} MCP server 'zam' already configured in ${result.path}`,
       );
+      if (copilotExtension) {
+        console.log(
+          `${C.green}✓${C.reset} MCP Apps extension ${copilotExtension.action} at ${copilotExtension.destinationDir}`,
+        );
+      }
+      console.log(`  ${C.dim}${result.hint}${C.reset}`);
       return;
     }
 
@@ -255,6 +288,11 @@ const connectCmd = new Command("connect")
       console.log(
         `${C.green}✓${C.reset} Wrote MCP configuration to ${result.path}`,
       );
+      if (copilotExtension) {
+        console.log(
+          `${C.green}✓${C.reset} MCP Apps extension ${copilotExtension.action} at ${copilotExtension.destinationDir}`,
+        );
+      }
       console.log(`  ${C.dim}${result.hint}${C.reset}`);
     } catch (error) {
       console.error(

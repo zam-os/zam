@@ -4,7 +4,7 @@
  * Renders the 1-hop neighborhood (prerequisites below, dependents above)
  * around a focus token as a plain SVG diagram — no Three.js, no libraries.
  * Clicking a neighbor re-centers the graph on it (click-to-recenter); a
- * breadcrumb of the last 5 focus slugs enables going back.
+ * breadcrumb of the last 5 focus titles enables going back.
  *
  * Standalone by design (tests/desktop/module-boundaries.test.ts): no Tauri,
  * no Three.js, no import from ./panel.ts or ./recall.ts. The result-parsing
@@ -13,6 +13,12 @@
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
+import {
+  type GraphNodeBounds,
+  graphEdgeEndpoints,
+  graphNodeTitle,
+  wrapGraphLabel,
+} from "./graph-layout.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -25,7 +31,10 @@ const DEPENDENT_RADIUS = 145;
 const NODE_HEIGHT = 38;
 const NODE_MIN_WIDTH = 64;
 const NODE_PAD_X = 14;
-const LABEL_MAX_CHARS = 20;
+const NODE_PAD_Y = 8;
+const LABEL_MAX_CHARS_PER_LINE = 20;
+const LABEL_MAX_LINES = 3;
+const LABEL_LINE_HEIGHT = 14;
 const HISTORY_LIMIT = 5;
 
 const statusEl = document.getElementById("zam-status");
@@ -87,8 +96,8 @@ let currentUser: string | null = null;
 let connected = false;
 let started = false;
 let initialFocus: string | null = null;
-/** Last up to HISTORY_LIMIT focus slugs, most-recent last (current focus). */
-let history: string[] = [];
+/** Last up to HISTORY_LIMIT focuses, most-recent last (current focus). */
+let history: Array<{ slug: string; title: string }> = [];
 
 /**
  * Parse a zam MCP tool result: success answers carry JSON on content[0].text
@@ -175,10 +184,6 @@ function renderError(message: string): void {
   renderMessage("⚠️", "Graph konnte nicht geladen werden", message);
 }
 
-function truncateLabel(text: string, max = LABEL_MAX_CHARS): string {
-  return text.length > max ? `${text.slice(0, max - 1)}…` : text;
-}
-
 function bloomStep(level: number): number {
   return Math.min(5, Math.max(1, Math.round(level) || 1));
 }
@@ -188,14 +193,17 @@ function bloomStep(level: number): number {
  * rendered SVG document — callers must append it first. The character-width
  * fallback guards hosts where getBBox throws or returns zero before layout.
  */
-function measureTextWidth(text: SVGTextElement): number {
+function measureTextWidth(
+  text: SVGTextElement,
+  lines: readonly string[],
+): number {
   try {
     const box = text.getBBox();
     if (box.width > 0) return box.width;
   } catch {
     // Fall through to the estimate below.
   }
-  return (text.textContent?.length ?? 0) * 6.4;
+  return Math.max(...lines.map((line) => line.length)) * 6.4;
 }
 
 type NodeKind = "center" | "prereq" | "dependent";
@@ -207,7 +215,7 @@ function createNode(
   y: number,
   kind: NodeKind,
   onSelect: (slug: string) => void,
-): void {
+): GraphNodeBounds {
   const g = document.createElementNS(SVG_NS, "g");
   g.setAttribute("transform", `translate(${x}, ${y})`);
   g.setAttribute(
@@ -221,17 +229,37 @@ function createNode(
 
   const text = document.createElementNS(SVG_NS, "text");
   text.setAttribute("text-anchor", "middle");
-  text.setAttribute("dominant-baseline", "middle");
+  text.setAttribute("dominant-baseline", "central");
   text.setAttribute("class", "graph-node-label");
-  text.textContent = truncateLabel(node.display_title || node.slug);
+  const labelLines = wrapGraphLabel(
+    graphNodeTitle(node),
+    LABEL_MAX_CHARS_PER_LINE,
+    LABEL_MAX_LINES,
+  );
+  labelLines.forEach((line, index) => {
+    const tspan = document.createElementNS(SVG_NS, "tspan");
+    tspan.setAttribute("x", "0");
+    tspan.setAttribute(
+      "dy",
+      String(
+        index === 0
+          ? -((labelLines.length - 1) * LABEL_LINE_HEIGHT) / 2
+          : LABEL_LINE_HEIGHT,
+      ),
+    );
+    tspan.textContent = line;
+    text.appendChild(tspan);
+  });
   g.appendChild(text);
 
   // Attach before measuring (see measureTextWidth doc comment).
   container.appendChild(g);
-  const textWidth = measureTextWidth(text);
+  const textWidth = measureTextWidth(text, labelLines);
 
   const width = Math.max(NODE_MIN_WIDTH, textWidth + NODE_PAD_X * 2);
-  const height = kind === "center" ? NODE_HEIGHT * 1.15 : NODE_HEIGHT;
+  const contentHeight = labelLines.length * LABEL_LINE_HEIGHT + NODE_PAD_Y * 2;
+  const height =
+    Math.max(NODE_HEIGHT, contentHeight) * (kind === "center" ? 1.15 : 1);
   const step = bloomStep(node.bloomLevel);
 
   const rect = document.createElementNS(SVG_NS, "rect");
@@ -269,6 +297,8 @@ function createNode(
     g.style.cursor = "pointer";
     g.addEventListener("click", () => onSelect(node.slug));
   }
+
+  return { x, y, width, height };
 }
 
 /** Evenly fan `count` nodes across an arc above (-1) or below (+1) center. */
@@ -302,7 +332,7 @@ function renderGraph(nb: Neighborhood, onSelect: (slug: string) => void): void {
   svg.setAttribute("viewBox", `0 0 ${VIEW_W} ${VIEW_H}`);
   svg.setAttribute("class", "graph-svg");
   svg.setAttribute("role", "img");
-  const label = nb.center.display_title || nb.center.slug;
+  const label = graphNodeTitle(nb.center);
   svg.setAttribute("aria-label", `Knowledge graph centered on ${label}`);
   wrap.appendChild(svg);
 
@@ -314,17 +344,6 @@ function renderGraph(nb: Neighborhood, onSelect: (slug: string) => void): void {
   nodesGroup.setAttribute("class", "graph-nodes");
   svg.appendChild(nodesGroup);
 
-  function drawEdge(x: number, y: number, colorVar: string): void {
-    const line = document.createElementNS(SVG_NS, "line");
-    line.setAttribute("x1", String(CENTER_X));
-    line.setAttribute("y1", String(CENTER_Y));
-    line.setAttribute("x2", String(x));
-    line.setAttribute("y2", String(y));
-    line.setAttribute("class", "graph-edge");
-    line.style.stroke = colorVar;
-    edgesGroup.appendChild(line);
-  }
-
   const prereqPositions = nb.prerequisites.map((_, i) =>
     arcPosition(i, nb.prerequisites.length, PREREQ_RADIUS, 1),
   );
@@ -332,30 +351,49 @@ function renderGraph(nb: Neighborhood, onSelect: (slug: string) => void): void {
     arcPosition(i, nb.dependents.length, DEPENDENT_RADIUS, -1),
   );
 
-  prereqPositions.forEach(({ x, y }) => {
-    drawEdge(x, y, "var(--prereq)");
-  });
-  depPositions.forEach(({ x, y }) => {
-    drawEdge(x, y, "var(--dependent)");
-  });
-
-  nb.prerequisites.forEach((node, i) => {
+  const prerequisiteNodes = nb.prerequisites.map((node, i) => {
     const { x, y } = prereqPositions[i];
-    createNode(nodesGroup, node, x, y, "prereq", onSelect);
+    return createNode(nodesGroup, node, x, y, "prereq", onSelect);
   });
-  nb.dependents.forEach((node, i) => {
+  const dependentNodes = nb.dependents.map((node, i) => {
     const { x, y } = depPositions[i];
-    createNode(nodesGroup, node, x, y, "dependent", onSelect);
+    return createNode(nodesGroup, node, x, y, "dependent", onSelect);
   });
-  // Center drawn last so it renders above any crossing edges.
-  createNode(nodesGroup, nb.center, CENTER_X, CENTER_Y, "center", onSelect);
+  const centerNode = createNode(
+    nodesGroup,
+    nb.center,
+    CENTER_X,
+    CENTER_Y,
+    "center",
+    onSelect,
+  );
+
+  function drawEdge(target: GraphNodeBounds, colorVar: string): void {
+    const { start, end } = graphEdgeEndpoints(centerNode, target);
+    const line = document.createElementNS(SVG_NS, "line");
+    line.setAttribute("x1", String(start.x));
+    line.setAttribute("y1", String(start.y));
+    line.setAttribute("x2", String(end.x));
+    line.setAttribute("y2", String(end.y));
+    line.setAttribute("class", "graph-edge");
+    line.setAttribute("aria-hidden", "true");
+    line.style.stroke = colorVar;
+    edgesGroup.appendChild(line);
+  }
+
+  prerequisiteNodes.forEach((node) => {
+    drawEdge(node, "var(--prereq)");
+  });
+  dependentNodes.forEach((node) => {
+    drawEdge(node, "var(--dependent)");
+  });
 }
 
 function renderBreadcrumb(onSelect: (slug: string) => void): void {
   if (!breadcrumbEl) return;
   breadcrumbEl.replaceChildren();
   if (history.length <= 1) return; // nothing to go back to yet
-  history.forEach((slug, i) => {
+  history.forEach((entry, i) => {
     if (i > 0) {
       const sep = document.createElement("span");
       sep.className = "graph-crumb-sep";
@@ -365,22 +403,25 @@ function renderBreadcrumb(onSelect: (slug: string) => void): void {
     if (i === history.length - 1) {
       const current = document.createElement("span");
       current.className = "graph-crumb-current";
-      current.textContent = slug;
+      current.textContent = entry.title;
       breadcrumbEl.appendChild(current);
     } else {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "graph-crumb-link";
-      btn.textContent = slug;
-      btn.addEventListener("click", () => onSelect(slug));
+      btn.textContent = entry.title;
+      btn.addEventListener("click", () => onSelect(entry.slug));
       breadcrumbEl.appendChild(btn);
     }
   });
 }
 
-function pushHistory(slug: string): void {
-  if (history[history.length - 1] === slug) return;
-  history = [...history, slug].slice(-HISTORY_LIMIT);
+function pushHistory(slug: string, title: string): void {
+  if (history[history.length - 1]?.slug === slug) {
+    history[history.length - 1] = { slug, title };
+    return;
+  }
+  history = [...history, { slug, title }].slice(-HISTORY_LIMIT);
 }
 
 async function navigateTo(slug: string): Promise<void> {
@@ -391,7 +432,7 @@ async function navigateTo(slug: string): Promise<void> {
       cmd: "get-neighborhood",
       args,
     })) as Neighborhood;
-    pushHistory(data.focus);
+    pushHistory(data.focus, graphNodeTitle(data.center));
     renderBreadcrumb((s) => void navigateTo(s));
     renderGraph(data, (s) => void navigateTo(s));
     pushContext(data);

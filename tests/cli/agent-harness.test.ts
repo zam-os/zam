@@ -362,6 +362,14 @@ describe("connectHarnessMcp", () => {
     });
   });
 
+  it("copilot honors an explicit Copilot home", () => {
+    const res = connectHarnessMcp("copilot", {
+      ...mockDeps,
+      copilotHome: "/custom/copilot",
+    });
+    expect(posix(res.path)).toBe("/custom/copilot/mcp-config.json");
+  });
+
   it("claude-desktop fresh write targets the platform config", () => {
     const res = connectHarnessMcp("claude-desktop", {
       ...mockDeps,

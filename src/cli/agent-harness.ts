@@ -226,6 +226,7 @@ export function connectHarnessMcp(
     zamPath: string;
     cwd: string;
     home: string;
+    copilotHome?: string;
     readFile?: (path: string) => string;
     platform?: NodeJS.Platform;
   },
@@ -396,9 +397,12 @@ approval_mode = "prompt"
       content = `extensions:\n${zamExtension}\n`;
     }
   } else if (harnessId === "copilot") {
-    targetPath = join(opts.home, ".copilot", "mcp-config.json");
+    targetPath = join(
+      opts.copilotHome ?? join(opts.home, ".copilot"),
+      "mcp-config.json",
+    );
     hint =
-      "GitHub Copilot CLI will load the 'zam' MCP server on next session. Use '/mcp show' in Copilot CLI to verify.";
+      "Restart GitHub Copilot or start a new session to load the 'zam' MCP server and its Studio, Recall, Graph, and Settings canvases.";
     let existing: McpJsonConfig = {};
     if (exists(targetPath)) {
       existing = parseMcpJsonConfig(targetPath, read(targetPath));
