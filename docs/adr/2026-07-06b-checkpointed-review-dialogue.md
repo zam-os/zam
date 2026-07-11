@@ -1,6 +1,6 @@
 # Checkpointed Review Dialogue (Question → Answer → Feedback → Open Flow → Rating Check-in)
 
-**Status:** Proposed (revised 2026-07-11)
+**Status:** Accepted (revised 2026-07-11; items 1, 2, 5 implemented on `feat/checkpointed-review-dialogue`)
 **Date:** 2026-07-06
 **Deciders:** Thomas (project owner)
 **Related:**
@@ -206,13 +206,13 @@ per turn thanks to the prompt-prefix cache, and it upgrades the App from
 
 ## Action Items
 
-1. [ ] **Bridge: `discuss-review` request** (handler map from companion ADR
+1. [x] **Bridge: `discuss-review` request** (handler map from companion ADR
    item 1; exposed on `bridge serve` and as a bridge subcommand): input =
    cardId + thread history + new user turn; output = assistant turn. Reuses the
    `evaluate-answer` context assembly; adopts the session prompt-prefix cache
    from [2026-06-27](2026-06-27-recall-session-llm-pipeline.md) when that
    lands.
-2. [ ] **App thread UI** ([desktop/src](../../desktop/src/main.ts)): input
+2. [x] **App thread UI** ([desktop/src](../../desktop/src/main.ts)): input
    field appears with the AI feedback; a new input field after every assistant
    reply (unbounded turns); history scrolls up and stays scrollable; rating
    buttons relocated to the card edge and persistently visible; thread teardown
@@ -223,7 +223,7 @@ per turn thanks to the prompt-prefix cache, and it upgrades the App from
 4. ~~**Skill invariants note**~~ — dropped in the 2026-07-11 revision: harness
    surfaces already implement the flexible phase natively; no skill change
    needed.
-5. [ ] **Tests**: dialogue reachable only after the reveal/feedback, multiple
+5. [x] **Tests**: dialogue reachable only after the reveal/feedback, multiple
    consecutive turns work (no cap), thread teardown on every exit action
    (rate/skip/stop), degradation without a provider, no FSRS mutation from
    thread turns.
