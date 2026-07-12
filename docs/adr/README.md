@@ -28,7 +28,7 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-06-21](2026-06-21-code-signing-and-trusted-installers.md) | Code Signing and Trusted Installers | Proposed |
 | [2026-06-22](2026-06-22-screen-recording-observer.md) | Screen Recording Observer and Local/Cloud Vision Fallbacks | Proposed |
 | [2026-06-23](2026-06-23-pluggable-providers-and-agent-harnesses.md) | Pluggable AI Providers, Agent Harnesses, and Approachable UI Setup | Proposed |
-| [2026-06-25a](2026-06-25a-machine-local-llm-role-configuration.md) | Machine-local LLM Role Configuration | Proposed |
+| [2026-06-25a](2026-06-25a-machine-local-llm-role-configuration.md) | Machine-local LLM Role Configuration | Superseded by 2026-07-12 |
 | [2026-06-25b](2026-06-25b-visible-ai-status-in-studio.md) | Visible AI Status in the Studio | Proposed |
 | [2026-06-25c](2026-06-25c-flexible-zam-workspaces-and-skill-wiring.md) | Flexible ZAM Workspaces and Skill Wiring | Proposed |
 | [2026-06-27](2026-06-27-recall-session-llm-pipeline.md) | Recall-Session LLM Pipeline (Prompt Cache & Prefetch) | Proposed |
@@ -43,4 +43,4 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-06](../plans/2026-07-06-mcp-agent-transport-plan.md) | MCP agent transport implementation plan (ADR 2026-07-06a, items 1–5) | Implemented |
 | [2026-07-07](2026-07-07-resilient-self-update-and-dependency-isolation.md) | Resilient Self-Update and Dependency-Failure Isolation | Implemented |
 | [2026-07-11](2026-07-11-codex-and-vscode-companion-surfaces.md) | Codex and VS Code Companion Surfaces | Accepted |
-| [2026-07-12](2026-07-12-unified-capability-model-registry.md) | Unified Capability-Based Model Registry | Accepted |
+| [2026-07-12](2026-07-12-unified-capability-model-registry.md) | Unified Capability-Based Model Registry | Implemented |

@@ -1,6 +1,7 @@
 # Unified Capability-Based Model Registry
 
-**Status:** Accepted
+**Status:** Implemented (phases 1–3; legacy `ai.roles`/`ai.providers` retained
+one release behind a compatibility shim per migration §5)
 **Date:** 2026-07-12
 **Deciders:** Thomas (project owner)
 **Related:**
@@ -258,6 +259,14 @@ into a single `text` capability flag on one entry.
 
 Phases are sequential; each phase is one commit on a single feature branch per
 repo convention.
+
+**Implementation status (2026-07-12):** Phases 1–3 shipped. The legacy
+role-binding UI is removed and ADR 2026-06-25a is marked superseded. Per
+migration §5, the actual deletion of `ai.roles` / deprecation of `ai.providers`
+and the `getProviderForRole` compatibility shim is deferred one release: the
+shim still resolves un-migrated installs, and the one-time `ai.models` migration
+runs when the Settings model registry is first read (`zam bridge model-list`),
+persisting to `~/.zam/config.json` so subsequent resolution is registry-first.
 
 ---
 

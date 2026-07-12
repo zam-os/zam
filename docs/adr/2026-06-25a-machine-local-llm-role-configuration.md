@@ -1,6 +1,12 @@
 # Machine-local LLM Role Configuration
 
-**Status:** Proposed
+**Status:** Superseded by
+[2026-07-12](2026-07-12-unified-capability-model-registry.md) — the `recall` /
+`vision` / `text` / `embedding` role-binding model is retired in favour of an
+ordered capability registry (`ai.models`). The machine-local storage principle
+(`~/.zam/config.json`, never synced through the DB) is retained. Legacy
+`ai.roles` / `ai.providers` stay one release behind a compatibility shim before
+removal (see the successor ADR's migration §5).
 **Deciders:** Thomas (project owner)
 **Related:**
 [2026-06-23-pluggable-providers-and-agent-harnesses.md](2026-06-23-pluggable-providers-and-agent-harnesses.md) ·
