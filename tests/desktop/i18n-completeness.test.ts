@@ -44,6 +44,18 @@ const WIZARD_KEYS = [
   "wizard_btn_restart",
   "lbl_curriculum_wizard_loading",
   "wizard_hours",
+  "lbl_curriculum_wizard_progress_status",
+  "lbl_curriculum_wizard_progress_detail",
+  "lbl_curriculum_wizard_progress_detail_local",
+  "wizard_import_extracting",
+  "wizard_import_generating",
+  "wizard_import_step",
+  "wizard_import_saving",
+  "wizard_import_saving_count",
+  "wizard_import_saving_topic",
+  "wizard_import_fallback",
+  "wizard_import_partial_success",
+  "wizard_import_timeout",
 ] as const;
 
 const DATABASE_SETTINGS_KEYS = [

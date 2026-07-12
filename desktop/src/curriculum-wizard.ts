@@ -20,7 +20,32 @@ interface TaxonomyOption {
   id: string;
   label: string;
   hours?: number;
+  sourceRef?: string;
 }
+
+interface CurriculumProposal {
+  question: string;
+  concept: string;
+  domain: string;
+  bloom_level: number;
+  symbiosis_mode: string;
+  excerpt: string;
+  page_number: string | null;
+  provider: string;
+  topic_id: string;
+}
+
+interface ImportTotals {
+  createdCount: number;
+  ensuredCount: number;
+  failedTopics: string[];
+}
+
+/** Per-topic LLM preview — local models often need several minutes. */
+const LOCAL_LLM_PREVIEW_TIMEOUT_MS = 180_000;
+const CLOUD_LLM_PREVIEW_TIMEOUT_MS = 90_000;
+const EXTRACT_TIMEOUT_MS = 120_000;
+const CONFIRM_TIMEOUT_MS = 60_000;
 
 interface CurriculumProviderInfo {
   id: string;
@@ -79,6 +104,8 @@ let stepBodyEl: HTMLElement;
 let loadingEl: HTMLElement;
 let errorEl: HTMLElement;
 let progressContainer: HTMLElement;
+let progressStatusEl: HTMLElement;
+let progressDetailEl: HTMLElement;
 let btnBack: HTMLButtonElement;
 let btnNext: HTMLButtonElement;
 let btnCancel: HTMLButtonElement;
@@ -108,6 +135,12 @@ export function initCurriculumWizard(): void {
   errorEl = document.getElementById("curriculum-wizard-error")!;
   progressContainer = document.getElementById(
     "curriculum-wizard-progress-container",
+  )!;
+  progressStatusEl = document.getElementById(
+    "lbl-curriculum-wizard-progress-status",
+  )!;
+  progressDetailEl = document.getElementById(
+    "lbl-curriculum-wizard-progress-detail",
   )!;
   btnBack = document.getElementById(
     "btn-curriculum-wizard-back",
@@ -536,140 +569,415 @@ function describeError(err: unknown): string {
 
 // ── Finish: resolve topics and reuse the existing import pipeline ────────
 
+function setImportProgress(status: string, detail?: string): void {
+  progressStatusEl.textContent = status;
+  if (detail !== undefined) {
+    progressDetailEl.textContent = detail;
+  }
+}
+
+async function isLocalLlm(): Promise<boolean> {
+  try {
+    const settings = await runBridge<{ llm?: { url?: string } }>("get-settings");
+    const url = settings?.llm?.url ?? "";
+    return /localhost|127\.0\.0\.1/i.test(url);
+  } catch {
+    return true;
+  }
+}
+
+async function runBridgeWithTimeout<T>(
+  cmd: string,
+  args: string[],
+  timeoutMs: number,
+): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => {
+      reject(
+        new Error(
+          tf("wizard_import_timeout", {
+            seconds: String(Math.round(timeoutMs / 1000)),
+          }),
+        ),
+      );
+    }, timeoutMs);
+  });
+  try {
+    return await Promise.race([runBridge<T>(cmd, args), timeoutPromise]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
+function mapPreviewProposals(
+  proposals: Array<{
+    question: string;
+    concept: string;
+    domain: string;
+    bloom_level: number;
+    symbiosis_mode: string;
+    context: string;
+  }>,
+  topicId: string,
+): CurriculumProposal[] {
+  return proposals.map((p) => ({
+    question: p.question,
+    concept: p.concept,
+    domain: p.domain,
+    bloom_level: p.bloom_level,
+    symbiosis_mode: p.symbiosis_mode || "none",
+    excerpt: p.context || "",
+    page_number: null,
+    provider: selection.providerId!,
+    topic_id: topicId,
+  }));
+}
+
+function topicLabelFor(topicId: string, topics: TaxonomyOption[]): string {
+  const id = topicId.split("#").pop() ?? topicId;
+  return topics.find((t) => t.id === id)?.label ?? id;
+}
+
+async function previewTopicItem(
+  item: { topicId: string; text: string },
+  subjectLabel: string,
+  selectedCtxName: string,
+  previewTimeoutMs: number,
+): Promise<CurriculumProposal[]> {
+  if (!item.text.trim()) return [];
+
+  const importArgs = [
+    "--text",
+    item.text,
+    "--domain",
+    subjectLabel,
+    "--preview",
+  ];
+  if (selectedCtxName) {
+    importArgs.push("--knowledge-context", selectedCtxName);
+  }
+
+  const previewRes = await runBridgeWithTimeout<{
+    success: boolean;
+    proposals: Array<{
+      question: string;
+      concept: string;
+      domain: string;
+      bloom_level: number;
+      symbiosis_mode: string;
+      context: string;
+    }>;
+  }>("personal-card-import-curriculum", importArgs, previewTimeoutMs);
+
+  if (!previewRes.success || !Array.isArray(previewRes.proposals)) {
+    throw new Error(`No cards were generated for ${item.topicId}.`);
+  }
+
+  return mapPreviewProposals(previewRes.proposals, item.topicId);
+}
+
+async function confirmProposals(
+  sourceId: string,
+  proposals: CurriculumProposal[],
+  selectedCtxName: string,
+): Promise<{ createdCount: number; ensuredCount: number }> {
+  const confirmArgs = [
+    "--sourceId",
+    sourceId,
+    "--proposals",
+    JSON.stringify(proposals),
+  ];
+  if (selectedCtxName) {
+    confirmArgs.push("--knowledge-context", selectedCtxName);
+  }
+
+  const confirmRes = await runBridgeWithTimeout<{
+    success: boolean;
+    createdCount: number;
+    ensuredCount: number;
+  }>("personal-source-confirm-import", confirmArgs, CONFIRM_TIMEOUT_MS);
+
+  if (!confirmRes.success) {
+    throw new Error("Failed to save imported cards.");
+  }
+
+  return {
+    createdCount: confirmRes.createdCount,
+    ensuredCount: confirmRes.ensuredCount,
+  };
+}
+
+async function extractTopics(
+  topics: TaxonomyOption[],
+): Promise<
+  Array<{ topicId: string; uri: string; sourceId: string; text: string }>
+> {
+  const extractRes = await runBridgeWithTimeout<{
+    success: boolean;
+    extracted: Array<{
+      topicId: string;
+      uri: string;
+      sourceId: string;
+      text: string;
+    }>;
+  }>(
+    "curriculum-extract-topics",
+    [
+      "--provider",
+      selection.providerId!,
+      "--topics",
+      JSON.stringify(topics),
+    ],
+    EXTRACT_TIMEOUT_MS,
+  );
+
+  if (
+    !extractRes.success ||
+    !Array.isArray(extractRes.extracted) ||
+    extractRes.extracted.length === 0
+  ) {
+    throw new Error("Failed to extract curriculum topic contents.");
+  }
+
+  return extractRes.extracted;
+}
+
+async function importTopicsBatch(
+  chosenTopics: TaxonomyOption[],
+  subjectLabel: string,
+  selectedCtxName: string,
+  previewTimeoutMs: number,
+): Promise<ImportTotals> {
+  setImportProgress(
+    t("wizard_import_extracting"),
+    tf("wizard_import_step", { current: "1", total: "1" }),
+  );
+
+  const extracted = await extractTopics(chosenTopics);
+  const sourceId = extracted[0].sourceId;
+  const allProposals: CurriculumProposal[] = [];
+
+  for (let i = 0; i < extracted.length; i++) {
+    const item = extracted[i];
+    const label = topicLabelFor(item.topicId, chosenTopics);
+    setImportProgress(
+      tf("wizard_import_generating", { topic: label }),
+      tf("wizard_import_step", {
+        current: String(i + 1),
+        total: String(extracted.length),
+      }),
+    );
+
+    const mapped = await previewTopicItem(
+      item,
+      subjectLabel,
+      selectedCtxName,
+      previewTimeoutMs,
+    );
+    allProposals.push(...mapped);
+  }
+
+  if (allProposals.length === 0) {
+    throw new Error("No cards were generated from the selected topics.");
+  }
+
+  setImportProgress(
+    t("wizard_import_saving"),
+    tf("wizard_import_saving_count", { count: String(allProposals.length) }),
+  );
+
+  const { createdCount, ensuredCount } = await confirmProposals(
+    sourceId,
+    allProposals,
+    selectedCtxName,
+  );
+
+  return { createdCount, ensuredCount, failedTopics: [] };
+}
+
+async function importTopicsSequential(
+  chosenTopics: TaxonomyOption[],
+  subjectLabel: string,
+  selectedCtxName: string,
+  previewTimeoutMs: number,
+): Promise<ImportTotals> {
+  const totals: ImportTotals = {
+    createdCount: 0,
+    ensuredCount: 0,
+    failedTopics: [],
+  };
+
+  for (let i = 0; i < chosenTopics.length; i++) {
+    const topic = chosenTopics[i];
+    setImportProgress(
+      tf("wizard_import_generating", { topic: topic.label }),
+      tf("wizard_import_step", {
+        current: String(i + 1),
+        total: String(chosenTopics.length),
+      }),
+    );
+
+    try {
+      const [item] = await extractTopics([topic]);
+      const proposals = await previewTopicItem(
+        item,
+        subjectLabel,
+        selectedCtxName,
+        previewTimeoutMs,
+      );
+
+      setImportProgress(
+        tf("wizard_import_saving_topic", { topic: topic.label }),
+        tf("wizard_import_step", {
+          current: String(i + 1),
+          total: String(chosenTopics.length),
+        }),
+      );
+
+      const result = await confirmProposals(
+        item.sourceId,
+        proposals,
+        selectedCtxName,
+      );
+      totals.createdCount += result.createdCount;
+      totals.ensuredCount += result.ensuredCount;
+    } catch (err) {
+      totals.failedTopics.push(topic.label);
+      if (chosenTopics.length > 1) {
+        console.warn(
+          `Curriculum wizard: single-topic import failed for ${topic.label}:`,
+          err,
+        );
+      } else {
+        throw err;
+      }
+    }
+  }
+
+  if (
+    totals.createdCount + totals.ensuredCount === 0 &&
+    totals.failedTopics.length > 0
+  ) {
+    throw new Error(
+      `No cards were imported. Failed topics: ${totals.failedTopics.join(", ")}`,
+    );
+  }
+
+  return totals;
+}
+
+function reportImportSuccess(totals: ImportTotals): void {
+  if (totals.failedTopics.length > 0) {
+    alert(
+      tf("wizard_import_partial_success", {
+        createdCount: String(totals.createdCount),
+        ensuredCount: String(totals.ensuredCount),
+        failedCount: String(totals.failedTopics.length),
+      }),
+    );
+    return;
+  }
+
+  alert(
+    tf("toast_import_success", {
+      createdCount: String(totals.createdCount),
+      ensuredCount: String(totals.ensuredCount),
+    }),
+  );
+}
+
 async function finishWizard(topicStep: WizardStep): Promise<void> {
-  const chosenTopics = topicStep.options.filter((o) => topicStep.selectedIds.includes(o.id));
+  const chosenTopics = topicStep.options.filter((o) =>
+    topicStep.selectedIds.includes(o.id),
+  );
   if (chosenTopics.length === 0) {
     showStepError(t("wizard_err_no_topics"));
     return;
   }
 
   const subjectLabel =
-    history.find((s) => s.key === "subject")?.options.find(
-      (o) => o.id === selection.subject,
-    )?.label ?? selection.subject ?? "";
+    history
+      .find((s) => s.key === "subject")
+      ?.options.find((o) => o.id === selection.subject)?.label ??
+    selection.subject ??
+    "";
 
   btnNext.disabled = true;
   btnBack.disabled = true;
   btnCancel.disabled = true;
   progressContainer.classList.remove("hidden");
+  stepBodyEl.classList.add("hidden");
+
+  const wizardCtxSelect = document.getElementById(
+    "wizard-context-select",
+  ) as HTMLSelectElement;
+  const selectedCtxName = wizardCtxSelect?.value || "";
+  let localLlm = true;
+  localLlm = await isLocalLlm();
+  const previewTimeoutMs = localLlm
+    ? LOCAL_LLM_PREVIEW_TIMEOUT_MS
+    : CLOUD_LLM_PREVIEW_TIMEOUT_MS;
 
   try {
-    const extractRes = await runBridge<{
-      success: boolean;
-      extracted: Array<{
-        topicId: string;
-        uri: string;
-        sourceId: string;
-        text: string;
-      }>;
-    }>("curriculum-extract-topics", [
-      "--provider",
-      selection.providerId!,
-      "--topics",
-      JSON.stringify(chosenTopics),
-    ]);
+    let totals: ImportTotals;
 
-    if (!extractRes.success || !Array.isArray(extractRes.extracted) || extractRes.extracted.length === 0) {
-      throw new Error("Failed to extract curriculum topic contents.");
-    }
-
-    const sourceId = extractRes.extracted[0].sourceId;
-    let allProposals: Array<{
-      question: string;
-      concept: string;
-      domain: string;
-      bloom_level: number;
-      symbiosis_mode: string;
-      excerpt: string;
-      page_number: string | null;
-      provider: string;
-      topic_id: string;
-    }> = [];
-
-    const wizardCtxSelect = document.getElementById("wizard-context-select") as HTMLSelectElement;
-    const selectedCtxName = wizardCtxSelect?.value || "";
-
-    for (const item of extractRes.extracted) {
-      if (!item.text.trim()) continue;
-
-      const importArgs = [
-        "--text",
-        item.text,
-        "--domain",
+    if (chosenTopics.length === 1 || localLlm) {
+      // Single topic, or local LLM: one topic at a time (avoids long hangs/timeouts).
+      if (chosenTopics.length > 1) {
+        setImportProgress(
+          t("lbl_curriculum_wizard_progress_status"),
+          t("lbl_curriculum_wizard_progress_detail_local"),
+        );
+      }
+      totals = await importTopicsSequential(
+        chosenTopics,
         subjectLabel,
-        "--preview",
-      ];
-      if (selectedCtxName) {
-        importArgs.push("--knowledge-context", selectedCtxName);
+        selectedCtxName,
+        previewTimeoutMs,
+      );
+    } else {
+      try {
+        totals = await importTopicsBatch(
+          chosenTopics,
+          subjectLabel,
+          selectedCtxName,
+          previewTimeoutMs,
+        );
+      } catch (batchErr) {
+        console.warn(
+          "Curriculum wizard: batch import failed, falling back to single-topic import:",
+          batchErr,
+        );
+        setImportProgress(
+          t("wizard_import_fallback"),
+          t("lbl_curriculum_wizard_progress_detail"),
+        );
+        totals = await importTopicsSequential(
+          chosenTopics,
+          subjectLabel,
+          selectedCtxName,
+          previewTimeoutMs,
+        );
       }
-
-      const previewRes = await runBridge<{
-        success: boolean;
-        proposals: Array<{
-          question: string;
-          concept: string;
-          domain: string;
-          bloom_level: number;
-          symbiosis_mode: string;
-          context: string;
-        }>;
-      }>("personal-card-import-curriculum", importArgs);
-
-      if (!previewRes.success || !Array.isArray(previewRes.proposals)) {
-        continue;
-      }
-
-      const mapped = previewRes.proposals.map((p) => ({
-        question: p.question,
-        concept: p.concept,
-        domain: p.domain,
-        bloom_level: p.bloom_level,
-        symbiosis_mode: p.symbiosis_mode || "none",
-        excerpt: p.context || "",
-        page_number: null,
-        provider: selection.providerId!,
-        topic_id: item.topicId,
-      }));
-
-      allProposals = allProposals.concat(mapped);
-    }
-
-    if (allProposals.length === 0) {
-      throw new Error("No cards were generated from the selected topics.");
-    }
-
-    const confirmArgs = [
-      "--sourceId",
-      sourceId,
-      "--proposals",
-      JSON.stringify(allProposals),
-    ];
-    if (selectedCtxName) {
-      confirmArgs.push("--knowledge-context", selectedCtxName);
-    }
-
-    const confirmRes = await runBridge<{
-      success: boolean;
-      createdCount: number;
-      ensuredCount: number;
-    }>("personal-source-confirm-import", confirmArgs);
-
-    let createdCount = 0;
-    let ensuredCount = 0;
-    if (confirmRes.success) {
-      createdCount = confirmRes.createdCount;
-      ensuredCount = confirmRes.ensuredCount;
     }
 
     hideCurriculumWizard();
-    alert(tf("toast_import_success", { createdCount, ensuredCount }));
+    reportImportSuccess(totals);
     await loadStudioData();
   } catch (err) {
     showStepError(t("lbl_error_importing") + ": " + describeError(err));
   } finally {
+    stepBodyEl.classList.remove("hidden");
     btnNext.disabled = false;
     btnBack.disabled = false;
     btnCancel.disabled = false;
     progressContainer.classList.add("hidden");
+    setImportProgress(
+      t("lbl_curriculum_wizard_progress_status"),
+      localLlm
+        ? t("lbl_curriculum_wizard_progress_detail_local")
+        : t("lbl_curriculum_wizard_progress_detail"),
+    );
   }
 }

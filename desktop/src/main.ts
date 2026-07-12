@@ -693,9 +693,9 @@ function initializeTranslations() {
   const lblCurriculumWizardLoading = document.getElementById("lbl-curriculum-wizard-loading");
   if (lblCurriculumWizardLoading) lblCurriculumWizardLoading.textContent = t("lbl_curriculum_wizard_loading");
   const lblCurriculumWizardProgressStatus = document.getElementById("lbl-curriculum-wizard-progress-status");
-  if (lblCurriculumWizardProgressStatus) lblCurriculumWizardProgressStatus.textContent = t("lbl_import_progress_status");
+  if (lblCurriculumWizardProgressStatus) lblCurriculumWizardProgressStatus.textContent = t("lbl_curriculum_wizard_progress_status");
   const lblCurriculumWizardProgressDetail = document.getElementById("lbl-curriculum-wizard-progress-detail");
-  if (lblCurriculumWizardProgressDetail) lblCurriculumWizardProgressDetail.textContent = t("lbl_import_progress_detail");
+  if (lblCurriculumWizardProgressDetail) lblCurriculumWizardProgressDetail.textContent = t("lbl_curriculum_wizard_progress_detail");
 
   // Split Modal Translations
   const btnContentSplitCard = document.getElementById("btn-content-split-card");
