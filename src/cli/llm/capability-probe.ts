@@ -52,6 +52,8 @@ const VISION_MODEL_HINTS = [
   "moondream",
   "llama-3.2",
   "llama3.2",
+  // Xiaomi MiMo(-VL) is multimodal; the plain "mimo-v*" tag carries no "-vl".
+  "mimo",
 ];
 
 function matchesAny(id: string, hints: string[]): boolean {

@@ -550,7 +550,7 @@ function initializeTranslations() {
       : t("btn_ai_config_open");
   }
   const addProviderButton = document.getElementById("btn-add-ai-provider");
-  if (addProviderButton) addProviderButton.textContent = t("btn_add_ai_provider");
+  if (addProviderButton) addProviderButton.textContent = t("btn_add_model");
   document.getElementById("btn-check-updates")!.textContent = t("btn_check_updates");
   document.getElementById("btn-open-releases")!.textContent = t("btn_open_releases");
   document.getElementById("graph-hint")!.textContent = t("graph_hint");
