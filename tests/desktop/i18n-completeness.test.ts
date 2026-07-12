@@ -84,6 +84,21 @@ const DISCUSSION_KEYS = [
   "discussion_error",
 ] as const;
 
+const AGENT_CONNECT_KEYS = [
+  "settings_agents_title",
+  "settings_agents_help",
+  "btn_agents_connect_all",
+  "btn_agent_connect",
+  "agent_status_loading",
+  "agent_status_not_installed",
+  "agent_status_installed",
+  "agent_status_connected",
+  "agent_connect_running",
+  "agent_connect_done",
+  "agent_connect_none",
+  "agent_connect_error",
+] as const;
+
 const REQUIRED_KEYS = [
   ...ISSUE_97_KEYS,
   ...WIZARD_KEYS,
@@ -92,6 +107,7 @@ const REQUIRED_KEYS = [
   ...KNOWLEDGE_CONTEXT_KEYS,
   ...STUDIO_LAYOUT_KEYS,
   ...DISCUSSION_KEYS,
+  ...AGENT_CONNECT_KEYS,
 ];
 
 describe("desktop locale completeness", () => {

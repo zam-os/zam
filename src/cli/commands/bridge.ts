@@ -42,6 +42,7 @@ import {
   generateConceptFreeCue,
   generateTokenSlug,
   getActiveWorkspaceContext,
+  getAgentConnectAutoDone,
   getAgentSkill,
   getCard,
   getCardDeletionImpact,
@@ -70,6 +71,7 @@ import {
   resolveObserverPolicy,
   resolveReviewContext,
   setActiveWorkspaceContext,
+  setAgentConnectAutoDone,
   setProviderApiKey,
   setSetting,
   slugify,
@@ -87,6 +89,12 @@ import {
   readLocalFile,
   readWebLink,
 } from "../adapters/source-reader.js";
+import {
+  type ConnectHarnessId,
+  inspectConnectHarnesses,
+  isConnectHarnessId,
+  performAgentConnect,
+} from "../agent-connect.js";
 import {
   AGENT_HARNESSES,
   getHarness,
@@ -2849,6 +2857,75 @@ bridgeCommand
         },
       });
     });
+  });
+
+// ── zam bridge agent-harness-status / agent-connect ─────────────────────────
+
+bridgeCommand
+  .command("agent-harness-status")
+  .description(
+    "Detect installed agent harnesses and their ZAM MCP configuration state (JSON)",
+  )
+  .action(() => {
+    const report = inspectConnectHarnesses();
+    jsonOut({
+      success: true,
+      zamOnPath: report.zamOnPath,
+      harnesses: report.harnesses,
+    });
+  });
+
+bridgeCommand
+  .command("agent-connect")
+  .description(
+    "Run the idempotent agent-connect flow for one or all detected harnesses (JSON)",
+  )
+  .option("--harness <id>", "Explicit harness id (default: all detected)")
+  .option(
+    "--auto-once",
+    "First-run mode: skip when the auto-connect marker is already set; " +
+      "set the marker after a run that detected at least one harness",
+  )
+  .action(async (opts: { harness?: string; autoOnce?: boolean }) => {
+    if (opts.harness && !isConnectHarnessId(opts.harness)) {
+      jsonOut({
+        success: false,
+        error: `Unsupported harness: ${opts.harness}`,
+      });
+      return;
+    }
+    const harness = opts.harness as ConnectHarnessId | undefined;
+
+    // Strip the raw config `content` from the wire payload — the App renders
+    // status, not file bodies (use `zam agent connect --print` for those).
+    const run = () => {
+      const report = performAgentConnect({ harness });
+      return {
+        success: report.success,
+        detected: report.detected,
+        zamOnPath: report.zamOnPath,
+        results: report.results.map(({ content: _content, ...rest }) => rest),
+        skills: report.skills,
+      };
+    };
+
+    if (opts.autoOnce) {
+      // Machine-local marker (~/.zam/config.json), NOT a database setting:
+      // the database may be shared across machines via Turso, while harness
+      // installs and their configs are strictly per-machine.
+      if (getAgentConnectAutoDone()) {
+        jsonOut({ success: true, skipped: true });
+        return;
+      }
+      const payload = run();
+      if (payload.detected.length > 0) {
+        setAgentConnectAutoDone(true);
+      }
+      jsonOut(payload);
+      return;
+    }
+
+    jsonOut(run());
   });
 
 // ── zam bridge database-status / database-select-user ───────────────────────

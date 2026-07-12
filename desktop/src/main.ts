@@ -517,6 +517,16 @@ function initializeTranslations() {
     t("settings_system_title");
   document.getElementById("lbl-settings-ai-title")!.textContent =
     t("settings_ai_title");
+  document.getElementById("lbl-settings-agents-title")!.textContent =
+    t("settings_agents_title");
+  document.getElementById("lbl-settings-agents-help")!.textContent =
+    t("settings_agents_help");
+  document.getElementById("btn-agents-connect-all")!.textContent =
+    t("btn_agents_connect_all");
+  const agentHarnessLoading = document.getElementById("agent-harness-loading");
+  if (agentHarnessLoading) {
+    agentHarnessLoading.textContent = t("agent_status_loading");
+  }
   document.getElementById("lbl-settings-workspace-title")!.textContent =
     t("settings_workspace_title");
   document.getElementById("lbl-workspaces-help")!.textContent =
@@ -1211,6 +1221,151 @@ async function loadProviderStatus(): Promise<void> {
     recallEl.textContent = t("provider_unknown");
     visionEl.textContent = t("provider_unknown");
   }
+}
+
+// ── SETTINGS: AGENT HARNESS CONNECTIONS (ADR 2026-07-11) ─────────────────
+interface AgentHarnessStatusEntry {
+  harness: string;
+  label: string;
+  installed: boolean;
+  configured: boolean;
+  configPath: string;
+  note?: string;
+}
+
+interface AgentConnectResultEntry {
+  harness: string;
+  label: string;
+  error?: string;
+}
+
+interface AgentConnectPayload {
+  success: boolean;
+  skipped?: boolean;
+  error?: string;
+  detected?: string[];
+  results?: AgentConnectResultEntry[];
+  skills?: { refreshed: number; total: number } | null;
+}
+
+let agentConnectInProgress = false;
+
+async function loadAgentHarnessStatus(): Promise<void> {
+  const list = document.getElementById("agent-harness-list");
+  if (!list) return;
+  try {
+    const status = await runBridge<{
+      success: boolean;
+      zamOnPath: boolean;
+      harnesses: AgentHarnessStatusEntry[];
+    }>("agent-harness-status");
+    renderAgentHarnessList(status.harnesses);
+  } catch (err) {
+    console.warn("Failed to load agent harness status:", err);
+    list.textContent = "";
+    const note = document.createElement("p");
+    note.className = "sub-label";
+    note.textContent = t("agent_connect_error");
+    list.appendChild(note);
+  }
+}
+
+function renderAgentHarnessList(harnesses: AgentHarnessStatusEntry[]): void {
+  const list = document.getElementById("agent-harness-list");
+  if (!list) return;
+  list.textContent = "";
+  for (const entry of harnesses) {
+    const row = document.createElement("div");
+    row.className = "agent-harness-row";
+
+    const name = document.createElement("span");
+    name.className = "agent-harness-name";
+    name.textContent = entry.label;
+
+    const state = document.createElement("span");
+    state.className = "agent-harness-state";
+    if (entry.configured) {
+      state.classList.add("connected");
+      state.textContent = t("agent_status_connected");
+    } else if (entry.installed) {
+      state.classList.add("installed");
+      state.textContent = t("agent_status_installed");
+    } else {
+      state.textContent = t("agent_status_not_installed");
+    }
+    if (entry.configPath) state.title = entry.configPath;
+
+    row.append(name, state);
+
+    // Connect stays available for already-connected hosts too — it refreshes
+    // the global skill and companion extension idempotently.
+    if (entry.installed || entry.configured) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn secondary-btn btn-sm";
+      btn.textContent = t("btn_agent_connect");
+      btn.addEventListener("click", () => {
+        void connectAgentHarness(entry.harness);
+      });
+      row.appendChild(btn);
+    }
+    list.appendChild(row);
+  }
+}
+
+async function connectAgentHarness(harness?: string): Promise<void> {
+  if (agentConnectInProgress) return;
+  agentConnectInProgress = true;
+  const resultEl = document.getElementById("agent-connect-result");
+  const buttons = document.querySelectorAll<HTMLButtonElement>(
+    "#agent-harness-list button, #btn-agents-connect-all",
+  );
+  for (const button of buttons) button.disabled = true;
+  if (resultEl) {
+    resultEl.classList.remove("hidden");
+    resultEl.textContent = t("agent_connect_running");
+  }
+
+  try {
+    const payload = await runBridge<AgentConnectPayload>(
+      "agent-connect",
+      harness ? ["--harness", harness] : [],
+    );
+    if (resultEl) {
+      if ((payload.detected ?? []).length === 0) {
+        resultEl.textContent = t("agent_connect_none");
+      } else if (payload.success) {
+        const okCount = (payload.results ?? []).filter((r) => !r.error).length;
+        resultEl.textContent = tf("agent_connect_done", { n: okCount });
+      } else {
+        const failed = (payload.results ?? []).filter((r) => r.error);
+        resultEl.textContent = failed.length
+          ? `${t("agent_connect_error")} (${failed.map((r) => r.label).join(", ")})`
+          : t("agent_connect_error");
+        console.warn("agent-connect errors:", failed);
+      }
+    }
+  } catch (err) {
+    console.warn("agent-connect failed:", err);
+    if (resultEl) {
+      resultEl.classList.remove("hidden");
+      resultEl.textContent = t("agent_connect_error");
+    }
+  } finally {
+    agentConnectInProgress = false;
+    for (const button of buttons) button.disabled = false;
+    void loadAgentHarnessStatus();
+  }
+}
+
+/**
+ * First-contact auto-connect (ADR 2026-07-11): fire-and-forget on launch; the
+ * bridge holds the once-marker, so this cannot re-run on every start.
+ */
+function runAgentAutoConnectOnce(): void {
+  void runBridge<AgentConnectPayload>("agent-connect", ["--auto-once"]).catch(
+    (err) => console.warn("agent auto-connect failed:", err),
+  );
 }
 
 function aiConfigStatusEl(): HTMLElement | null {
@@ -2761,6 +2916,7 @@ function refreshSettingsData(): void {
   void loadProviderStatus();
   void loadDatabaseStatus();
   void loadSettingsKnowledgeContext();
+  void loadAgentHarnessStatus();
   if (aiConfigEditorOpen) void loadProviderConfig();
 }
 
@@ -3605,6 +3761,7 @@ async function loadDashboard() {
     initializeTranslations();
     void loadWorkspaceList();
     void loadProviderStatus();
+    runAgentAutoConnectOnce();
 
     // 2. Check due cards count and active domains
     const dueInfo = await runBridge<{ dueCount: number; domains: string[] }>("check-due");
@@ -4272,6 +4429,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("btn-open-settings")?.addEventListener("click", () => {
     switchView("settings-view");
+  });
+
+  document.getElementById("btn-agents-connect-all")?.addEventListener("click", () => {
+    void connectAgentHarness();
   });
 
   document.getElementById("btn-settings-back")?.addEventListener("click", () => {

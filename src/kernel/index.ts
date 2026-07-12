@@ -396,6 +396,7 @@ export { t } from "./system/i18n.js";
 export type {
   InstallConfig,
   InstallMode,
+  MachineAgentConfig,
   MachineAiConfig,
   MachineProviderRecord,
   MachineRoleBinding,
@@ -408,6 +409,7 @@ export {
   getActiveWorkspace,
   getActiveWorkspaceContext,
   getActiveWorkspaceId,
+  getAgentConnectAutoDone,
   getConfiguredWorkspaces,
   getInstallChannel,
   getInstallMode,
@@ -419,6 +421,7 @@ export {
   saveMachineAiConfig,
   setActiveWorkspaceContext,
   setActiveWorkspaceId,
+  setAgentConnectAutoDone,
   setInstallChannel,
   setInstallMode,
   upsertConfiguredWorkspace,
