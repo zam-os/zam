@@ -9,8 +9,8 @@ Audit: `npx tsx scripts/audit-bayern-manifest.ts`
 
 - [x] **Audit-Skript** — zählt OK-Pfade vs. Lücken im Manifest
 - [x] **RS Physik 8–10** — Tracks `wpfg1` / `wpfg2-3`, Lernbereiche + `contentUrls`
-- [ ] **RS übrige Lücken prüfen** — siehe Tabelle „erwartet leer“
-- [ ] **Gymnasium Lücken prüfen** — Wahlpflichtfächer, viele erwartet leer
+- [x] **RS übrige Lücken prüfen** — 37/37 N/A auf LehrplanPLUS (Probe 2026-07-12)
+- [x] **Gymnasium Lücken prüfen** — 159/159 N/A auf LehrplanPLUS (Probe 2026-07-12)
 - [ ] **CI-Gate** (optional) — Audit in Tests einbinden
 
 ## Realschule — Checkliste (178 Pfade gesamt)
@@ -23,10 +23,11 @@ Alle Kernfächer mit Lehrplan auf LehrplanPLUS für die jeweilige Stufe, inkl.:
 - **Physik 7** (einheitlich) + **Physik 8–10** mit `wpfg1` / `wpfg2-3` ← neu
 - Deutsch, Englisch, Biologie (wo angeboten), Chemie 8, …
 
-### Manifest-Lücken — erwartet leer (37)
+### Manifest-Lücken — erwartet leer (37) ✅
 
-Fach steht im Katalog, aber **kein Fachlehrplan** auf LehrplanPLUS für diese
-Jahrgangsstufe (Startseiten-Redirect). Verhalten wie Chemie 5 (bestehender Test).
+Live-Probe (`npx tsx scripts/probe-bayern-gaps.ts realschule`): **0 LIVE, 0 TRACKS,
+37 N/A**. Fach steht im Katalog, aber kein Fachlehrplan auf LehrplanPLUS für diese
+Jahrgangsstufe. Verhalten wie Chemie 5 (bestehender Test).
 
 | Pfad | Grund |
 |------|-------|
@@ -54,21 +55,27 @@ Kein Manifest-Eintrag nötig — Wizard soll leere Themenliste zeigen (ggf. Trac
 Kernfächer inkl. Deutsch, Englisch (mit Fremdsprachen-Tracks), Mathematik,
 Physik/Chemie/Biologie wo unterrichtet, Geographie 5/7/10/11, NTG 5–7, …
 
-### Manifest-Lücken (159) — überwiegend erwartet leer
+### Manifest-Lücken (159) — alle erwartet leer ✅
 
-Wahlpflichtfächer, Seminarfächer (`w-seminar`, `instrumentalensemble`, …),
-`nt_gym` ab Jg. 8, `iu` in Oberstufe, etc. — im Fächerverzeichnis, aber kein
-eigener Fachlehrplan für diese Kombination auf LehrplanPLUS.
-
-**Nächster Schritt:** Stichproben mit alter URL-Form
-`/schulart/gymnasium/jgs/{n}/fach/{fach}/inhalt/fachlehrplaene` — nur echte
-Lücken (Live-Inhalt, kein Manifest) eintragen.
+Live-Probe (`npx tsx scripts/probe-bayern-gaps.ts gymnasium`): **0 LIVE, 0 TRACKS,
+159 N/A**. Wahlpflichtfächer, Seminarfächer, `nt_gym` ab Jg. 8, `iu` in
+Oberstufe usw. — im Fächerverzeichnis, aber kein Fachlehrplan auf LehrplanPLUS.
 
 ## Verifikation
 
 ```bash
 npx tsx scripts/audit-bayern-manifest.ts
+npx tsx scripts/probe-bayern-gaps.ts realschule   # erwartet: 0 live, 37 N/A
+npx tsx scripts/probe-bayern-gaps.ts gymnasium    # erwartet: 0 live, 159 N/A
 npm run test -- tests/cli/curriculum-lehrplanplus-bayern.test.ts
 npm run dev -- bridge curriculum-list-level --provider lehrplanplus-bayern \
   --level track --selection '{"schoolType":"realschule","grade":"9","subject":"physik"}'
 ```
+
+## Fazit
+
+Für **Realschule + Gymnasium Bayern** war nach dem Physik-Fix **keine weitere
+Manifest-Ergänzung nötig**: alle verbleibenden Audit-Lücken sind Fächer ohne
+Lehrplan auf LehrplanPLUS für die jeweilige Jahrgangsstufe. Die 0.10.6-Behauptung
+„vollständig abgedeckt“ galt nicht für Physik 8–10 RS; ansonsten deckt das
+Manifest alle **live vorhandenen** Pfade ab.
