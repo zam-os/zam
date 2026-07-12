@@ -15,6 +15,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
+import { ulid } from "ulid";
 import type { InstallChannel } from "./update-check.js";
 
 export type InstallMode = "developer" | "default";
@@ -56,9 +57,80 @@ export interface MachineRoleBinding {
   fallback?: string;
 }
 
+/**
+ * Model capabilities in the unified registry (ADR 2026-07-12). `text` covers
+ * every chat-completions job (recall coaching, curriculum import, translation);
+ * `image`/`video` are the Observer vision paths; `stt`/`tts` are future audio.
+ */
+export type ModelCapability =
+  | "text"
+  | "embedding"
+  | "image"
+  | "video"
+  | "stt"
+  | "tts";
+
+export const ALL_CAPABILITIES: ModelCapability[] = [
+  "text",
+  "embedding",
+  "image",
+  "video",
+  "stt",
+  "tts",
+];
+
+export type CapabilityFlags = Record<ModelCapability, boolean>;
+
+export function emptyCapabilityFlags(): CapabilityFlags {
+  return {
+    text: false,
+    embedding: false,
+    image: false,
+    video: false,
+    stt: false,
+    tts: false,
+  };
+}
+
+/**
+ * One endpoint in the ordered capability registry. Runtime selection walks the
+ * list by `order` and picks the first entry that is user-enabled and probe-
+ * detected for the requested capability (ADR 2026-07-12).
+ */
+export interface ModelEntry {
+  /** Stable id (ULID) for this config row. */
+  id: string;
+  /** Human label shown in Settings. */
+  label: string;
+  url: string;
+  model: string;
+  local: boolean;
+  apiFlavor: MachineApiFlavor;
+  /** Optional runner hint for local stacks (foundry, ollama, …). */
+  runner?: string;
+  /** Credential ref into ~/.zam/credentials.json — never inline. */
+  apiKeyRef?: string;
+  /** Sort key: lower = higher priority. */
+  order: number;
+  /** User-selected capabilities (may only shrink after the first probe). */
+  capabilities: CapabilityFlags;
+  /** Last successful metadata probe; drives the checkbox ceiling. */
+  detectedCapabilities: CapabilityFlags;
+  /** ISO timestamp of the last probe; undefined until probed. */
+  probedAt?: string;
+}
+
 export interface MachineAiConfig {
+  /** @deprecated Legacy named endpoints; superseded by `models` (ADR 2026-07-12). */
   providers?: Record<string, MachineProviderRecord>;
+  /** @deprecated Legacy role bindings; superseded by `models` (ADR 2026-07-12). */
   roles?: Partial<Record<MachineAiRole, MachineRoleBinding>>;
+  /**
+   * Unified capability-based model registry (ADR 2026-07-12). An ordered list
+   * that supersedes `providers` + `roles`; runtime selection walks it by
+   * `order` and returns the first entry enabled and detected for a capability.
+   */
+  models?: ModelEntry[];
 }
 
 export type WorkspaceKind =
@@ -174,6 +246,149 @@ export function ensureMachineProviderRolesSanitized(
   const roles = { ...ai.roles };
   delete roles.text;
   saveMachineAiConfig({ ...ai, roles }, path);
+}
+
+// ── Unified capability-based model registry (ADR 2026-07-12) ─────────────────
+
+/** Read the ordered model registry from `~/.zam/config.json` (`ai.models`). */
+export function getMachineAiModels(path = defaultConfigPath()): ModelEntry[] {
+  return getMachineAiConfig(path).models ?? [];
+}
+
+/** Persist the ordered model registry, preserving other `ai.*` keys. */
+export function saveMachineAiModels(
+  models: ModelEntry[],
+  path = defaultConfigPath(),
+): void {
+  const ai = getMachineAiConfig(path);
+  saveMachineAiConfig({ ...ai, models }, path);
+}
+
+function isAnthropicUrl(url: string): boolean {
+  try {
+    return new URL(url).hostname.toLowerCase().endsWith("anthropic.com");
+  } catch {
+    return false;
+  }
+}
+
+function isLocalUrl(url: string): boolean {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return (
+      host === "localhost" ||
+      host === "127.0.0.1" ||
+      host === "::1" ||
+      host.endsWith(".local")
+    );
+  } catch {
+    return false;
+  }
+}
+
+const ROLE_TO_CAPABILITY: Record<MachineAiRole, ModelCapability> = {
+  recall: "text",
+  text: "text",
+  vision: "image",
+  embedding: "embedding",
+};
+
+/**
+ * Flatten legacy machine `providers` + `roles` into an ordered capability
+ * registry. Each provider's capabilities are inferred from the roles that
+ * pointed at it (`recall`/`text` → text, `vision` → image, `embedding` →
+ * embedding). Order follows former role priority — primary then fallback across
+ * recall, text, vision, embedding — with any unbound providers appended. Until
+ * a probe runs, legacy bindings are authoritative, so `detectedCapabilities`
+ * mirrors `capabilities` (ADR migration §4). Returns `null` when there is
+ * nothing to migrate.
+ */
+export function migrateMachineRolesToModels(
+  ai: MachineAiConfig,
+): ModelEntry[] | null {
+  const providers = ai.providers ?? {};
+  const providerNames = Object.keys(providers);
+  if (providerNames.length === 0) return null;
+  const roles = ai.roles ?? {};
+
+  const capsByName = new Map<string, CapabilityFlags>();
+  const capsFor = (name: string): CapabilityFlags => {
+    let flags = capsByName.get(name);
+    if (!flags) {
+      flags = emptyCapabilityFlags();
+      capsByName.set(name, flags);
+    }
+    return flags;
+  };
+
+  const priorityRoles: MachineAiRole[] = [
+    "recall",
+    "text",
+    "vision",
+    "embedding",
+  ];
+  for (const role of priorityRoles) {
+    const binding = roles[role];
+    if (!binding) continue;
+    const capability = ROLE_TO_CAPABILITY[role];
+    for (const ref of [binding.primary, binding.fallback]) {
+      if (ref && providers[ref]) capsFor(ref)[capability] = true;
+    }
+  }
+
+  const ordered: string[] = [];
+  const pushName = (name?: string): void => {
+    if (name && providers[name] && !ordered.includes(name)) ordered.push(name);
+  };
+  for (const role of priorityRoles) {
+    pushName(roles[role]?.primary);
+    pushName(roles[role]?.fallback);
+  }
+  for (const name of providerNames) pushName(name);
+
+  return ordered.map((name, index) => {
+    const rec = providers[name];
+    const url = rec.url ?? "";
+    const capabilities = capsByName.get(name) ?? emptyCapabilityFlags();
+    const entry: ModelEntry = {
+      id: ulid(),
+      label: rec.label ?? name,
+      url,
+      model: rec.model ?? "",
+      local: rec.local ?? isLocalUrl(url),
+      apiFlavor:
+        rec.apiFlavor ??
+        (isAnthropicUrl(url) ? "anthropic-messages" : "chat-completions"),
+      order: index,
+      capabilities,
+      detectedCapabilities: { ...capabilities },
+    };
+    if (rec.runner) entry.runner = rec.runner;
+    if (rec.apiKeyRef) entry.apiKeyRef = rec.apiKeyRef;
+    return entry;
+  });
+}
+
+const migratedModelConfigPaths = new Set<string>();
+
+/**
+ * One-time, idempotent migration of legacy machine `providers`/`roles` into the
+ * ordered `ai.models` registry. A no-op once `ai.models` exists or when there is
+ * nothing to migrate. Legacy `providers`/`roles` are preserved for now and only
+ * removed in the ADR's Phase 4 cleanup. Returns the resolved registry.
+ */
+export function ensureMachineAiModelsMigrated(
+  path = defaultConfigPath(),
+): ModelEntry[] {
+  const ai = getMachineAiConfig(path);
+  if (ai.models && ai.models.length > 0) return ai.models;
+  if (migratedModelConfigPaths.has(path)) return ai.models ?? [];
+  migratedModelConfigPaths.add(path);
+
+  const models = migrateMachineRolesToModels(ai);
+  if (!models) return [];
+  saveMachineAiConfig({ ...ai, models }, path);
+  return models;
 }
 
 /**
