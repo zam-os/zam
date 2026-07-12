@@ -41,7 +41,17 @@ export { runBridge, t, tf };
 // bridge-transport.js) reaches the Tauri backend starting with the first call.
 setBridgeTransport(async (cmd, args) => {
   const raw = await invoke<string>("execute_zam_bridge", { cmd, args });
-  return JSON.parse(raw);
+  if (!raw) {
+    return {};
+  }
+  try {
+    return JSON.parse(raw);
+  } catch (err) {
+    const preview = raw.length > 240 ? `${raw.slice(0, 240)}…` : raw;
+    throw new Error(
+      `Invalid bridge JSON for ${cmd}: ${preview} (${(err as Error).message})`,
+    );
+  }
 });
 
 const ZAM_RELEASES_URL = "https://github.com/zam-os/zam/releases";

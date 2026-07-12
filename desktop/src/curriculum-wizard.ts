@@ -464,7 +464,11 @@ async function handleNext(): Promise<void> {
     return;
   }
 
-  await finishWizard(current);
+  try {
+    await finishWizard(current);
+  } catch (err) {
+    showStepError(describeError(err));
+  }
 }
 
 async function persistBreadcrumb(): Promise<void> {
@@ -654,16 +658,16 @@ function mapPreviewProposals(
 }
 
 async function previewTopicItem(
-  item: { topicId: string; text: string },
+  item: { topicId: string; topicSourceId: string; textLength: number },
   subjectLabel: string,
   selectedCtxName: string,
   previewTimeoutMs: number,
 ): Promise<CurriculumProposal[]> {
-  if (!item.text.trim()) return [];
+  if (item.textLength === 0) return [];
 
   const importArgs = [
-    "--text",
-    item.text,
+    "--sourceId",
+    item.topicSourceId,
     "--domain",
     subjectLabel,
     "--preview",
@@ -725,7 +729,13 @@ async function confirmProposals(
 async function extractTopics(
   topics: TaxonomyOption[],
 ): Promise<
-  Array<{ topicId: string; uri: string; sourceId: string; text: string }>
+  Array<{
+    topicId: string;
+    uri: string;
+    sourceId: string;
+    topicSourceId: string;
+    textLength: number;
+  }>
 > {
   const extractRes = await runBridgeWithTimeout<{
     success: boolean;
@@ -733,7 +743,8 @@ async function extractTopics(
       topicId: string;
       uri: string;
       sourceId: string;
-      text: string;
+      topicSourceId: string;
+      textLength: number;
     }>;
   }>(
     "curriculum-extract-topics",
@@ -760,33 +771,41 @@ async function extractTopics(
 async function partitionAlreadyImportedTopics(
   chosenTopics: TaxonomyOption[],
 ): Promise<{ pending: TaxonomyOption[]; skipped: string[] }> {
-  const statusRes = await runBridge<{
-    success: boolean;
-    status: Array<{ shortId: string; alreadyImported: boolean }>;
-  }>("curriculum-import-status", [
-    "--provider",
-    selection.providerId!,
-    "--topics",
-    JSON.stringify(chosenTopics),
-  ]);
+  try {
+    const statusRes = await runBridge<{
+      success: boolean;
+      status: Array<{ shortId: string; alreadyImported: boolean }>;
+    }>("curriculum-import-status", [
+      "--provider",
+      selection.providerId!,
+      "--topics",
+      JSON.stringify(chosenTopics),
+    ]);
 
-  const importedIds = new Set(
-    (statusRes.status ?? [])
-      .filter((entry) => entry.alreadyImported)
-      .map((entry) => entry.shortId),
-  );
+    const importedIds = new Set(
+      (statusRes.status ?? [])
+        .filter((entry) => entry.alreadyImported)
+        .map((entry) => entry.shortId),
+    );
 
-  const pending: TaxonomyOption[] = [];
-  const skipped: string[] = [];
-  for (const topic of chosenTopics) {
-    if (importedIds.has(topic.id)) {
-      skipped.push(topic.label);
-    } else {
-      pending.push(topic);
+    const pending: TaxonomyOption[] = [];
+    const skipped: string[] = [];
+    for (const topic of chosenTopics) {
+      if (importedIds.has(topic.id)) {
+        skipped.push(topic.label);
+      } else {
+        pending.push(topic);
+      }
     }
-  }
 
-  return { pending, skipped };
+    return { pending, skipped };
+  } catch (err) {
+    console.warn(
+      "Curriculum wizard: import-status check failed, importing all topics:",
+      err,
+    );
+    return { pending: chosenTopics, skipped: [] };
+  }
 }
 
 async function importTopicsSequential(
@@ -993,16 +1012,20 @@ async function finishWizard(topicStep: WizardStep): Promise<void> {
       t("lbl_error_importing") + ": " + formatImportError(err, localLlm),
     );
   } finally {
-    stepBodyEl.classList.remove("hidden");
-    btnNext.disabled = false;
-    btnBack.disabled = false;
-    btnCancel.disabled = false;
-    progressContainer.classList.add("hidden");
-    setImportProgress(
-      t("lbl_curriculum_wizard_progress_status"),
-      localLlm
-        ? t("lbl_curriculum_wizard_progress_detail_local")
-        : t("lbl_curriculum_wizard_progress_detail"),
-    );
+    try {
+      stepBodyEl.classList.remove("hidden");
+      btnNext.disabled = false;
+      btnBack.disabled = false;
+      btnCancel.disabled = false;
+      progressContainer.classList.add("hidden");
+      setImportProgress(
+        t("lbl_curriculum_wizard_progress_status"),
+        localLlm
+          ? t("lbl_curriculum_wizard_progress_detail_local")
+          : t("lbl_curriculum_wizard_progress_detail"),
+      );
+    } catch (cleanupErr) {
+      console.warn("Curriculum wizard: cleanup after import failed:", cleanupErr);
+    }
   }
 }

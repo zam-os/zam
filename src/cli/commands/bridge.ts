@@ -3558,7 +3558,11 @@ bridgeCommand
   .command("personal-card-import-curriculum")
   .description("Parse curriculum text using LLM and import cards (JSON)")
   .option("--user <id>", "User ID (default: whoami)")
-  .requiredOption("--text <text>", "Curriculum syllabus/content text")
+  .option("--text <text>", "Curriculum syllabus/content text")
+  .option(
+    "--sourceId <id>",
+    "Read curriculum text from a sources row (avoids large IPC payloads)",
+  )
   .requiredOption(
     "--domain <domain>",
     "Default category/domain for imported cards",
@@ -3578,6 +3582,20 @@ bridgeCommand
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
 
+      let curriculumText = opts.text as string | undefined;
+      if (opts.sourceId) {
+        const row = (await db
+          .prepare("SELECT content FROM sources WHERE id = ?")
+          .get(opts.sourceId)) as { content: string | null } | undefined;
+        if (!row) {
+          jsonError(`Source not found: ${opts.sourceId}`);
+        }
+        curriculumText = row.content ?? "";
+      }
+      if (!curriculumText?.trim()) {
+        jsonError("Curriculum text is required (--text or --sourceId)");
+      }
+
       const contextNames = parseKnowledgeContextNames(
         opts.knowledgeContext || [],
       );
@@ -3586,7 +3604,7 @@ bridgeCommand
 
       const cards = await importCurriculumViaLLM(
         db,
-        opts.text,
+        curriculumText,
         opts.domain,
         opts.source || null,
         { knowledgeContext: firstContext },
@@ -4094,22 +4112,33 @@ bridgeCommand
         shortId: string;
         cardCount: number;
         alreadyImported: boolean;
+        error?: string;
       }> = [];
 
       for (const topic of topics) {
-        const resolved = provider.resolveTopic(topic);
-        const cardCount = await countUserCardsForCurriculumTopic(
-          db,
-          userId,
-          provider.id,
-          resolved.topicId,
-        );
-        status.push({
-          topicId: resolved.topicId,
-          shortId: topic.id,
-          cardCount,
-          alreadyImported: cardCount > 0,
-        });
+        try {
+          const resolved = provider.resolveTopic(topic);
+          const cardCount = await countUserCardsForCurriculumTopic(
+            db,
+            userId,
+            provider.id,
+            resolved.topicId,
+          );
+          status.push({
+            topicId: resolved.topicId,
+            shortId: topic.id,
+            cardCount,
+            alreadyImported: cardCount > 0,
+          });
+        } catch (err) {
+          status.push({
+            topicId: topic.id,
+            shortId: topic.id,
+            cardCount: 0,
+            alreadyImported: false,
+            error: (err as Error).message || String(err),
+          });
+        }
       }
 
       jsonOut({ success: true, status });
@@ -4147,11 +4176,14 @@ bridgeCommand
         topicsByUri.set(resolved.uri, list);
       }
 
+      const CURRICULUM_TOPIC_URI_PREFIX = "zam-curriculum-topic://";
+
       const extracted: Array<{
         topicId: string;
         uri: string;
         sourceId: string;
-        text: string;
+        topicSourceId: string;
+        textLength: number;
       }> = [];
 
       for (const [uri, uriTopics] of topicsByUri.entries()) {
@@ -4187,11 +4219,27 @@ bridgeCommand
         for (const topic of uriTopics) {
           const resolved = provider.resolveTopic(topic);
           const text = extractedTexts[resolved.topicId] || "";
+          const topicUri = `${CURRICULUM_TOPIC_URI_PREFIX}${resolved.topicId}`;
+          const topicSourceId = ulid();
+          await db
+            .prepare(
+              `INSERT INTO sources (id, type, uri, content)
+               VALUES (?, 'web', ?, ?)
+               ON CONFLICT(uri) DO UPDATE SET
+                 content = excluded.content`,
+            )
+            .run(topicSourceId, topicUri, text);
+
+          const topicRecord = (await db
+            .prepare("SELECT id FROM sources WHERE uri = ?")
+            .get(topicUri)) as { id: string };
+
           extracted.push({
             topicId: resolved.topicId,
             uri,
             sourceId: record.id,
-            text,
+            topicSourceId: topicRecord.id,
+            textLength: text.length,
           });
         }
       }
@@ -4556,12 +4604,27 @@ bridgeCommand
     // separately mutexes the console-swapping execution itself, but that
     // only serialises the swap, not response ordering. Chaining on a single
     // promise here guarantees both, regardless of how fast lines arrive.
+    process.on("unhandledRejection", (reason) => {
+      logDiag(`unhandledRejection: ${String(reason)}`);
+    });
+
     let pending: Promise<void> = Promise.resolve();
     rl.on("line", (line) => {
       if (!line.trim()) return;
-      pending = pending.then(async () => {
-        const response = await processRequest(line);
-        process.stdout.write(`${response}\n`);
-      });
+      pending = pending
+        .then(async () => {
+          const response = await processRequest(line);
+          process.stdout.write(`${response}\n`);
+        })
+        .catch((err) => {
+          logDiag(`serve request failed: ${(err as Error).message || err}`);
+          try {
+            process.stdout.write(
+              `${JSON.stringify({ id: null, error: (err as Error).message || String(err) })}\n`,
+            );
+          } catch {
+            // best-effort only
+          }
+        });
     });
   });
