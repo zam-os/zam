@@ -65,6 +65,7 @@ import {
   listPersonalCards,
   listProviderApiKeyRefs,
   listTokens,
+  listUserCardsForCurriculumTopic,
   openDatabase,
   pairCommands,
   readMonitorLog,
@@ -161,6 +162,7 @@ import {
   readScopedRoles,
   removeProviderRecord,
   rolesReferencing,
+  unbindRole,
   upsertProviderRecord,
   VALID_API_FLAVORS,
   VALID_ROLES,
@@ -2430,12 +2432,16 @@ bridgeCommand
     await withProviderScope(machine, async (db) => {
       const providers = await readScopedProviders(db, machine);
       const roles = await readScopedRoles(db, machine);
-      const nextRoles = bindRoleProviders(
+      let nextRoles = bindRoleProviders(
         roles,
         opts.role as LlmRole,
         opts.primary,
         opts.fallback,
       );
+      // Text-role curriculum import inherits recall; one learner-facing binding.
+      if (opts.role === "recall") {
+        nextRoles = unbindRole(nextRoles, "text");
+      }
       await writeScopedRoles(db, machine, nextRoles);
       const binding = nextRoles[opts.role as LlmRole];
       const primary = providers[opts.primary];
@@ -4354,6 +4360,345 @@ bridgeCommand
         proposalCount: proposals.length,
         createdCount: result.createdCount,
         ensuredCount: result.linkedCount,
+      });
+    });
+  });
+
+function proposalBaseSlug(
+  domain: string,
+  question: string,
+  concept: string,
+): string {
+  const baseText = question?.trim() ? question : concept;
+  const cleanDomain = slugify(domain || "");
+  const cleanBase = slugify(baseText);
+  let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
+  if (baseSlug.length > 60) {
+    baseSlug = baseSlug.slice(0, 60).replace(/-$/, "");
+  }
+  return baseSlug || "token";
+}
+
+// ── zam bridge curriculum-list-subtopics ─────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-list-subtopics")
+  .description(
+    "List finer units inside a Lernbereich for chunked import (JSON)",
+  )
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption("--topic <json>", "Single topic node JSON")
+  .action(async (opts) => {
+    const provider = getCurriculumProvider(opts.provider);
+    if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+    if (!provider.extractSubTopics) {
+      jsonOut({ success: true, subTopics: [] });
+      return;
+    }
+
+    let topic: TopicNode;
+    try {
+      topic = JSON.parse(opts.topic);
+    } catch {
+      jsonError("Invalid --topic JSON");
+      return;
+    }
+
+    const resolved = provider.resolveTopic(topic);
+    const rawHtml = await fetchRawHtml(resolved.uri);
+    const subTopics = provider
+      .extractSubTopics(rawHtml, resolved.topicId)
+      .map(({ id, label, textLength }) => ({ id, label, textLength }));
+
+    jsonOut({ success: true, topicId: resolved.topicId, subTopics });
+  });
+
+// ── zam bridge curriculum-preview-topic ──────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-preview-topic")
+  .description(
+    "Preview importable cards for one topic (existing + LLM proposals) (JSON)",
+  )
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption("--topic <json>", "Single topic node JSON")
+  .requiredOption("--domain <domain>", "Subject label for imported card domain")
+  .option("--subTopics <json>", "JSON array of sub-topic ids to include")
+  .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--knowledge-context <context>",
+    "Knowledge context for LLM prompt (repeatable)",
+    (val, memo: string[]) => {
+      memo.push(val);
+      return memo;
+    },
+    [],
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const provider = getCurriculumProvider(opts.provider);
+      if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+
+      let topic: TopicNode;
+      try {
+        topic = JSON.parse(opts.topic);
+      } catch {
+        jsonError("Invalid --topic JSON");
+        return;
+      }
+
+      const resolved = provider.resolveTopic(topic);
+      const extracted = await extractAndStoreCurriculumTopics(db, provider, [
+        topic,
+      ]);
+      const item = extracted[0];
+      if (!item) {
+        jsonError(`No curriculum text extracted for topic "${topic.id}"`);
+      }
+
+      const contextNames = parseKnowledgeContextNames(
+        opts.knowledgeContext || [],
+      );
+      const contexts = await resolveKnowledgeContexts(db, contextNames);
+      const firstContext = contexts[0]?.name;
+
+      let subTopicIds: string[] | undefined;
+      if (opts.subTopics) {
+        try {
+          subTopicIds = JSON.parse(opts.subTopics);
+        } catch {
+          jsonError("Invalid --subTopics JSON");
+          return;
+        }
+      }
+
+      const rawHtml = await fetchRawHtml(item.uri);
+      const chunks: Array<{ subTopicId: string | null; text: string }> = [];
+
+      if (provider.extractSubTopics) {
+        const subTopics = provider.extractSubTopics(rawHtml, resolved.topicId);
+        const selected =
+          subTopicIds && subTopicIds.length > 0
+            ? subTopics.filter((st) => subTopicIds!.includes(st.id))
+            : subTopics;
+
+        if (selected.length > 0) {
+          for (const st of selected) {
+            chunks.push({ subTopicId: st.id, text: st.text });
+          }
+        }
+      }
+
+      if (chunks.length === 0) {
+        const topicRow = (await db
+          .prepare("SELECT content FROM sources WHERE id = ?")
+          .get(item.topicSourceId)) as { content: string | null };
+        chunks.push({
+          subTopicId: null,
+          text: topicRow.content ?? "",
+        });
+      }
+
+      const existingCards = await listUserCardsForCurriculumTopic(
+        db,
+        userId,
+        provider.id,
+        resolved.topicId,
+      );
+      const existingSlugs = new Set(existingCards.map((c) => c.slug));
+
+      const items: Array<{
+        id: string;
+        slug: string | null;
+        question: string;
+        concept: string;
+        domain: string;
+        bloom_level: number;
+        symbiosis_mode: string;
+        excerpt: string;
+        isExisting: boolean;
+        selected: boolean;
+        subTopicId: string | null;
+        proposal?: {
+          question: string;
+          concept: string;
+          domain: string;
+          bloom_level: number;
+          symbiosis_mode: string;
+          excerpt: string;
+          page_number: string | null;
+          provider: string;
+          topic_id: string;
+        };
+      }> = [];
+
+      for (const card of existingCards) {
+        items.push({
+          id: `existing:${card.slug}`,
+          slug: card.slug,
+          question: card.question ?? "",
+          concept: card.concept,
+          domain: card.domain,
+          bloom_level: card.bloomLevel,
+          symbiosis_mode: card.symbiosisMode ?? "none",
+          excerpt: "",
+          isExisting: true,
+          selected: true,
+          subTopicId: card.topicId?.includes("@")
+            ? (card.topicId.split("@").pop() ?? null)
+            : null,
+        });
+      }
+
+      let proposalIndex = 0;
+      for (const chunk of chunks) {
+        if (!chunk.text.trim()) continue;
+
+        const cards = await importCurriculumViaLLM(
+          db,
+          chunk.text,
+          opts.domain,
+          item.uri,
+          { knowledgeContext: firstContext },
+        );
+
+        const scopedTopicId = chunk.subTopicId
+          ? `${resolved.topicId}@${chunk.subTopicId}`
+          : resolved.topicId;
+
+        for (const card of cards) {
+          const slug = proposalBaseSlug(
+            card.domain,
+            card.question,
+            card.concept,
+          );
+          if (existingSlugs.has(slug)) {
+            continue;
+          }
+
+          const proposal = {
+            question: card.question,
+            concept: card.concept,
+            domain: card.domain,
+            bloom_level: card.bloom_level,
+            symbiosis_mode: card.symbiosis_mode || "none",
+            excerpt: card.context || "",
+            page_number: null as string | null,
+            provider: provider.id,
+            topic_id: scopedTopicId,
+          };
+
+          items.push({
+            id: `new:${proposalIndex++}`,
+            slug: null,
+            question: proposal.question,
+            concept: proposal.concept,
+            domain: proposal.domain,
+            bloom_level: proposal.bloom_level,
+            symbiosis_mode: proposal.symbiosis_mode,
+            excerpt: proposal.excerpt,
+            isExisting: false,
+            selected: false,
+            subTopicId: chunk.subTopicId,
+            proposal,
+          });
+        }
+      }
+
+      jsonOut({
+        success: true,
+        topicId: resolved.topicId,
+        sourceId: item.sourceId,
+        items,
+      });
+    });
+  });
+
+// ── zam bridge curriculum-confirm-topic ──────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-confirm-topic")
+  .description(
+    "Create selected new cards and remove deselected existing cards (JSON)",
+  )
+  .requiredOption("--sourceId <id>", "Parent page source database ID")
+  .requiredOption(
+    "--create <json>",
+    "JSON array of SourceProposalInput objects to import",
+  )
+  .requiredOption(
+    "--removeSlugs <json>",
+    "JSON array of token slugs whose user cards should be deleted",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--knowledge-context <context>",
+    "Assign confirmed tokens to a knowledge context (repeatable)",
+    (val, memo: string[]) => {
+      memo.push(val);
+      return memo;
+    },
+    [],
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+
+      let create: Array<{
+        question: string;
+        concept: string;
+        domain: string;
+        bloom_level: number;
+        symbiosis_mode: string;
+        excerpt: string;
+        page_number?: string | null;
+        provider?: string | null;
+        topic_id?: string | null;
+      }>;
+      let removeSlugs: string[];
+      try {
+        create = JSON.parse(opts.create);
+        removeSlugs = JSON.parse(opts.removeSlugs);
+      } catch {
+        jsonError("Invalid --create or --removeSlugs JSON");
+        return;
+      }
+
+      const contextNames = parseKnowledgeContextNames(
+        opts.knowledgeContext || [],
+      );
+      const contexts = await resolveKnowledgeContexts(db, contextNames);
+
+      let createdCount = 0;
+      let ensuredCount = 0;
+      if (create.length > 0) {
+        const result = await confirmSourceImport(
+          db,
+          userId,
+          opts.sourceId,
+          create,
+        );
+        createdCount = result.createdCount;
+        ensuredCount = result.linkedCount;
+        await assignConfirmedProposalContexts(db, create, contexts);
+      }
+
+      let removedCount = 0;
+      for (const slug of removeSlugs) {
+        const token = await getTokenBySlug(db, slug);
+        if (!token) continue;
+        const card = await getCard(db, token.id, userId);
+        if (!card) continue;
+        await deleteCardForUser(db, token.id, userId);
+        removedCount++;
+      }
+
+      jsonOut({
+        success: true,
+        createdCount,
+        ensuredCount,
+        removedCount,
       });
     });
   });

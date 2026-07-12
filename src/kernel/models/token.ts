@@ -792,7 +792,15 @@ export interface ImportCurriculumResult {
 }
 
 /**
- * Count FSRS cards a user already has for a curriculum topic (provider + topic_id).
+ * Match tokens tagged with a Lernbereich or any of its sub-units
+ * (`parentTopicId@kuN`).
+ */
+function curriculumTopicScopeClause(): string {
+  return `(t.topic_id = ? OR t.topic_id LIKE ? || '@%')`;
+}
+
+/**
+ * Count FSRS cards a user already has for a curriculum topic scope.
  */
 export async function countUserCardsForCurriculumTopic(
   db: Database,
@@ -807,10 +815,50 @@ export async function countUserCardsForCurriculumTopic(
        INNER JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
          AND t.provider = ?
-         AND t.topic_id = ?`,
+         AND ${curriculumTopicScopeClause()}`,
     )
-    .get(userId, provider, topicId)) as { count: number } | undefined;
+    .get(userId, provider, topicId, topicId)) as { count: number } | undefined;
   return row?.count ?? 0;
+}
+
+export interface CurriculumTopicCard {
+  slug: string;
+  question: string | null;
+  concept: string;
+  domain: string;
+  bloomLevel: number;
+  symbiosisMode: string | null;
+  topicId: string | null;
+}
+
+/**
+ * List a user's FSRS cards for a curriculum topic scope (Lernbereich + sub-units).
+ */
+export async function listUserCardsForCurriculumTopic(
+  db: Database,
+  userId: string,
+  provider: string,
+  topicId: string,
+): Promise<CurriculumTopicCard[]> {
+  const rows = (await db
+    .prepare(
+      `SELECT
+         t.slug,
+         t.question,
+         t.concept,
+         t.domain,
+         t.bloom_level AS bloomLevel,
+         t.symbiosis_mode AS symbiosisMode,
+         t.topic_id AS topicId
+       FROM cards c
+       INNER JOIN tokens t ON t.id = c.token_id
+       WHERE c.user_id = ?
+         AND t.provider = ?
+         AND ${curriculumTopicScopeClause()}
+       ORDER BY t.slug`,
+    )
+    .all(userId, provider, topicId, topicId)) as CurriculumTopicCard[];
+  return rows;
 }
 
 /**

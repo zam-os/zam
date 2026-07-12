@@ -159,6 +159,23 @@ export function saveMachineAiConfig(
   saveInstallConfig(config, path);
 }
 
+const sanitizedMachineRolePaths = new Set<string>();
+
+/** Drop deprecated per-machine text bindings (text always follows recall). */
+export function ensureMachineProviderRolesSanitized(
+  path = defaultConfigPath(),
+): void {
+  if (sanitizedMachineRolePaths.has(path)) return;
+  sanitizedMachineRolePaths.add(path);
+
+  const ai = getMachineAiConfig(path);
+  if (!ai.roles?.text) return;
+
+  const roles = { ...ai.roles };
+  delete roles.text;
+  saveMachineAiConfig({ ...ai, roles }, path);
+}
+
 /**
  * First-run agent auto-connect marker. Machine-local by design: the database
  * can be shared across machines (Turso), but which harnesses are installed

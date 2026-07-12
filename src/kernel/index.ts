@@ -168,6 +168,7 @@ export type {
   ConfirmFoundationsResult,
   CreateTokenInput,
   CurriculumCardInput,
+  CurriculumTopicCard,
   DeleteTokenResult,
   FoundationProposalInput,
   ImportCurriculumResult,
@@ -200,6 +201,7 @@ export {
   importCurriculumCards,
   listPersonalCards,
   listTokens,
+  listUserCardsForCurriculumTopic,
   slugify,
   updateToken,
 } from "./models/token.js";
@@ -407,6 +409,7 @@ export type {
 } from "./system/install-config.js";
 export {
   detectSyncProvider,
+  ensureMachineProviderRolesSanitized,
   getActiveWorkspace,
   getActiveWorkspaceContext,
   getActiveWorkspaceId,

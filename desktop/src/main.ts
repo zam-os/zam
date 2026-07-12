@@ -1671,6 +1671,12 @@ function renderAiRoleBindings(): void {
     actions.appendChild(applyButton);
 
     row.append(primaryField, fallbackField, actions);
+    if (role === "recall") {
+      const hint = document.createElement("p");
+      hint.className = "ai-provider-meta";
+      hint.textContent = t("ai_role_recall_scope_hint");
+      row.appendChild(hint);
+    }
     container.appendChild(row);
   }
 }

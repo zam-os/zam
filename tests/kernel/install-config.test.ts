@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   detectSyncProvider,
+  ensureMachineProviderRolesSanitized,
   getActiveWorkspace,
   getActiveWorkspaceId,
   getAgentConnectAutoDone,
@@ -81,6 +82,25 @@ describe("install config", () => {
 
     setAgentConnectAutoDone(false, path);
     expect(getAgentConnectAutoDone(path)).toBe(false);
+  });
+
+  it("strips deprecated text bindings from machine-local AI config", () => {
+    const path = tempConfigPath();
+    saveMachineAiConfig(
+      {
+        roles: {
+          recall: { primary: "mimo" },
+          text: { primary: "legacy-text" },
+        },
+      },
+      path,
+    );
+
+    ensureMachineProviderRolesSanitized(path);
+
+    const roles = getMachineAiConfig(path).roles;
+    expect(roles?.recall?.primary).toBe("mimo");
+    expect(roles?.text).toBeUndefined();
   });
 
   it("round-trips machine-local AI config without touching install mode", () => {

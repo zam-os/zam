@@ -2,6 +2,7 @@ import type {
   CurriculumProvider,
   CurriculumSelection,
   ResolvedSource,
+  SubTopicNode,
   TaxonomyNode,
   TopicNode,
 } from "../../types.js";
@@ -16,6 +17,131 @@ function levelKey(
   return track
     ? `${schoolType}|${grade}|${subject}|${track}`
     : `${schoolType}|${grade}|${subject}`;
+}
+
+interface ParsedSection {
+  id: string;
+  level: number;
+  headerText: string;
+  contentHtml: string;
+}
+
+function parseHtmlSections(html: string): ParsedSection[] {
+  const chunks = html.split('<div id="thema_');
+  const sections: ParsedSection[] = [];
+
+  for (let i = 1; i < chunks.length; i++) {
+    const chunk = chunks[i];
+    const quoteIdx = chunk.indexOf('"');
+    if (quoteIdx === -1) continue;
+    const id = chunk.slice(0, quoteIdx);
+
+    const classStart = chunk.indexOf('class="');
+    if (classStart === -1) continue;
+    const classEnd = chunk.indexOf('"', classStart + 7);
+    const classContent = chunk.slice(classStart + 7, classEnd);
+
+    const lvlMatch = classContent.match(/headline_lvl(\d+)/);
+    if (!lvlMatch) continue;
+    const level = parseInt(lvlMatch[1], 10);
+
+    const contentHtml = chunk.slice(classEnd + 1);
+
+    const headerMatch = contentHtml.match(
+      /<a[^>]*class="paragraph_toggle"[^>]*>([\s\S]*?)<\/a>/i,
+    );
+    const headerText = headerMatch ? cleanHtmlText(headerMatch[1]).trim() : "";
+
+    sections.push({
+      id,
+      level,
+      headerText,
+      contentHtml,
+    });
+  }
+
+  return sections;
+}
+
+function resolveTopicLabel(topicId: string): string | null {
+  for (const key of Object.keys(MANIFEST.topics)) {
+    const list = MANIFEST.topics[key];
+    const match = list.find(
+      (t) => t.id === topicId || `${key}#${t.id}` === topicId,
+    );
+    if (match) {
+      return match.label;
+    }
+  }
+  return null;
+}
+
+function findTopicSectionHtml(
+  sections: ParsedSection[],
+  topicId: string,
+): string | null {
+  const label = resolveTopicLabel(topicId);
+  if (!label) return null;
+
+  const normalizedLabel = normalizeForComparison(label);
+  const lvl1Index = sections.findIndex((s) => {
+    if (s.level !== 1) return false;
+    const normalizedHeader = normalizeForComparison(s.headerText);
+    return normalizedHeader.includes(normalizedLabel);
+  });
+
+  if (lvl1Index === -1) return null;
+
+  const collectedSections = [sections[lvl1Index]];
+  for (let i = lvl1Index + 1; i < sections.length; i++) {
+    if (sections[i].level === 1) {
+      break;
+    }
+    collectedSections.push(sections[i]);
+  }
+
+  return collectedSections.map((s) => s.contentHtml).join("\n");
+}
+
+function isExcludedCompetenceItem(liAttrs: string, text: string): boolean {
+  if (/plus_servicematerialien|plus_ueberg_ziele/i.test(liAttrs)) {
+    return true;
+  }
+  const normalized = text
+    .toLowerCase()
+    .replace(/ä/g, "ae")
+    .replace(/ö/g, "oe")
+    .replace(/ü/g, "ue")
+    .replace(/ß/g, "ss")
+    .trim();
+  if (/^\+?\s*servicematerialien/.test(normalized)) return true;
+  if (/^\+?\s*uebergreifende\s+ziele/.test(normalized)) return true;
+  return false;
+}
+
+function extractCompetenceItems(topicHtml: string): string[] {
+  const items: string[] = [];
+  const abschBlocks =
+    topicHtml.match(/<div class="thema_absch">[\s\S]*?<\/div>/gi) ?? [];
+
+  for (const block of abschBlocks) {
+    const liRegex = /<li([^>]*)>([\s\S]*?)<\/li>/gi;
+    let match: RegExpExecArray | null = liRegex.exec(block);
+    while (match !== null) {
+      const text = cleanHtmlText(match[2]).trim();
+      if (text.length > 0 && !isExcludedCompetenceItem(match[1], text)) {
+        items.push(text);
+      }
+      match = liRegex.exec(block);
+    }
+  }
+
+  return items;
+}
+
+function truncateLabel(text: string, maxLen = 72): string {
+  if (text.length <= maxLen) return text;
+  return `${text.slice(0, maxLen - 1).trim()}…`;
 }
 
 export const lehrplanplusBayernProvider: CurriculumProvider = {
@@ -76,91 +202,49 @@ export const lehrplanplusBayernProvider: CurriculumProvider = {
   },
 
   extractTopics(html: string, topicIds: string[]): Record<string, string> {
-    const chunks = html.split('<div id="thema_');
-    const sections: Array<{
-      id: string;
-      level: number;
-      headerText: string;
-      contentHtml: string;
-    }> = [];
-
-    for (let i = 1; i < chunks.length; i++) {
-      const chunk = chunks[i];
-      const quoteIdx = chunk.indexOf('"');
-      if (quoteIdx === -1) continue;
-      const id = chunk.slice(0, quoteIdx);
-
-      const classStart = chunk.indexOf('class="');
-      if (classStart === -1) continue;
-      const classEnd = chunk.indexOf('"', classStart + 7);
-      const classContent = chunk.slice(classStart + 7, classEnd);
-
-      const lvlMatch = classContent.match(/headline_lvl(\d+)/);
-      if (!lvlMatch) continue;
-      const level = parseInt(lvlMatch[1], 10);
-
-      const contentHtml = chunk.slice(classEnd + 1);
-
-      const headerMatch = contentHtml.match(
-        /<a[^>]*class="paragraph_toggle"[^>]*>([\s\S]*?)<\/a>/i,
-      );
-      const headerText = headerMatch
-        ? cleanHtmlText(headerMatch[1]).trim()
-        : "";
-
-      sections.push({
-        id,
-        level,
-        headerText,
-        contentHtml,
-      });
-    }
-
+    const sections = parseHtmlSections(html);
     const results: Record<string, string> = {};
 
     for (const topicId of topicIds) {
-      // Find the topic label in manifest
-      let label = "";
-      for (const key of Object.keys(MANIFEST.topics)) {
-        const list = MANIFEST.topics[key];
-        // topicId can be short like "lb1" or full like "realschule|9|deutsch#lb1"
-        const match = list.find(
-          (t) => t.id === topicId || `${key}#${t.id}` === topicId,
-        );
-        if (match) {
-          label = match.label;
-          break;
-        }
+      const topicHtml = findTopicSectionHtml(sections, topicId);
+      if (topicHtml) {
+        results[topicId] = cleanHtmlText(topicHtml);
       }
-
-      if (!label) {
-        continue;
-      }
-
-      const normalizedLabel = normalizeForComparison(label);
-      const lvl1Index = sections.findIndex((s) => {
-        if (s.level !== 1) return false;
-        const normalizedHeader = normalizeForComparison(s.headerText);
-        return normalizedHeader.includes(normalizedLabel);
-      });
-
-      if (lvl1Index === -1) {
-        continue;
-      }
-
-      const collectedSections = [sections[lvl1Index]];
-      for (let i = lvl1Index + 1; i < sections.length; i++) {
-        if (sections[i].level === 1) {
-          break;
-        }
-        collectedSections.push(sections[i]);
-      }
-
-      const fullHtml = collectedSections.map((s) => s.contentHtml).join("\n");
-      results[topicId] = cleanHtmlText(fullHtml);
     }
 
     return results;
+  },
+
+  extractSubTopics(
+    html: string,
+    topicId: string,
+  ): Array<SubTopicNode & { text: string }> {
+    const sections = parseHtmlSections(html);
+    const topicHtml = findTopicSectionHtml(sections, topicId);
+    if (!topicHtml) return [];
+
+    const header = sections.find((s) => {
+      if (s.level !== 1) return false;
+      const label = resolveTopicLabel(topicId);
+      if (!label) return false;
+      return normalizeForComparison(s.headerText).includes(
+        normalizeForComparison(label),
+      );
+    });
+    const headerText = header?.headerText ?? resolveTopicLabel(topicId) ?? "";
+
+    const competenceItems = extractCompetenceItems(topicHtml);
+    if (competenceItems.length === 0) return [];
+
+    return competenceItems.map((item, index) => {
+      const text = `${headerText}\n\n${item}`;
+      return {
+        id: `ku${index + 1}`,
+        label: truncateLabel(item),
+        textLength: text.length,
+        text,
+      };
+    });
   },
 };
 

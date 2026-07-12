@@ -79,6 +79,14 @@ export function bindRoleProviders(
   return { ...roles, [role]: binding };
 }
 
+/** Remove a role binding so callers can inherit another role (e.g. text → recall). */
+export function unbindRole(roles: RolesMap, role: LlmRole): RolesMap {
+  if (!(role in roles)) return roles;
+  const next = { ...roles };
+  delete next[role];
+  return next;
+}
+
 /** Show a stored key as a recognizable, non-revealing last-4 fingerprint. */
 export function maskSecret(key: string): string {
   return key.length <= 4 ? "••••" : `…${key.slice(-4)}`;

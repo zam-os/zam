@@ -2428,7 +2428,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     workspace_repaired: "Skill link repaired: {label}",
     workspace_repair_failed: "Could not repair skill link: {message}",
     lbl_app_version: "Version",
-    lbl_learning_model: "Learning model",
+    lbl_learning_model: "Text model (learning & curriculum)",
     lbl_observer_model: "Observer model",
     provider_ready: "ready",
     provider_disabled: "disabled",
@@ -2490,7 +2490,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     btn_ai_provider_save: "Save",
     btn_ai_provider_cancel: "Cancel",
     ai_role_bindings_title: "Role bindings",
-    ai_role_recall: "Learning (recall)",
+    ai_role_recall: "Text model (learning & curriculum)",
+    ai_role_recall_scope_hint:
+      "Covers spaced-repetition prompts, curriculum card import, and other text generation.",
     ai_role_vision: "Observer (vision)",
     ai_role_primary: "Primary",
     ai_role_fallback: "Fallback",
@@ -2617,6 +2619,26 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "All {count} selected topic(s) were already imported.",
     wizard_import_skipped_summary:
       "{count} already-imported topic(s) were skipped.",
+    wizard_step_subTopic: "Competence units",
+    wizard_step_cardPreview: "Learning cards",
+    wizard_subtopic_note:
+      "Select competence units from “{topic}” to generate cards from (large areas are split automatically).",
+    wizard_card_preview_note:
+      "Checked cards are kept or created. Uncheck an existing card to remove it from your queue (the shared token stays).",
+    wizard_card_preview_empty: "No cards found for this topic.",
+    wizard_card_existing_badge: "imported",
+    wizard_card_new_badge: "new",
+    wizard_err_no_subtopics: "Select at least one competence unit.",
+    wizard_btn_preview_cards: "Preview cards",
+    wizard_btn_confirm_import: "Save selection",
+    wizard_import_listing_subtopics: "Loading units: {topic}",
+    wizard_import_previewing: "Generating card preview: {topic}",
+    wizard_import_confirm_success:
+      "Saved {createdCount} new and {ensuredCount} existing cards. Removed {removedCount} card(s) from your queue.",
+    wizard_import_text_llm_offline:
+      "The text model is not reachable. Curriculum import uses the same provider as learning.",
+    wizard_import_text_llm_hint:
+      "Open {settingsPath}, ensure the text model shows ready, then try again.",
     btn_split: "Split",
     lbl_split_modal_title: "Split Card",
     lbl_original_card_title: "Original Card (Summarized application question)",
@@ -2858,7 +2880,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     workspace_repaired: "Skill-Link repariert: {label}",
     workspace_repair_failed: "Skill-Link konnte nicht repariert werden: {message}",
     lbl_app_version: "Version",
-    lbl_learning_model: "Lernmodell",
+    lbl_learning_model: "Textmodell (Lernen & Lehrplan)",
     lbl_observer_model: "Observer-Modell",
     provider_ready: "bereit",
     provider_disabled: "deaktiviert",
@@ -2920,7 +2942,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     btn_ai_provider_save: "Speichern",
     btn_ai_provider_cancel: "Abbrechen",
     ai_role_bindings_title: "Rollen-Zuordnung",
-    ai_role_recall: "Lernen (recall)",
+    ai_role_recall: "Textmodell (Lernen & Lehrplan)",
+    ai_role_recall_scope_hint:
+      "Gilt für Lernkarten, Lehrplan-Import und andere Textgenerierung.",
     ai_role_vision: "Observer (vision)",
     ai_role_primary: "Primär",
     ai_role_fallback: "Fallback",
@@ -3048,6 +3072,26 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Alle {count} ausgewählten Themen waren bereits importiert.",
     wizard_import_skipped_summary:
       "{count} bereits importierte(s) Thema/Themen wurden übersprungen.",
+    wizard_step_subTopic: "Kompetenzabschnitte",
+    wizard_step_cardPreview: "Lernkarten",
+    wizard_subtopic_note:
+      "Wähle Kompetenzabschnitte aus „{topic}“ — große Lernbereiche werden automatisch aufgeteilt.",
+    wizard_card_preview_note:
+      "Angehakte Karten werden übernommen oder neu angelegt. Entfernst du das Häkchen bei einer bestehenden Karte, wird nur deine Karte gelöscht (das Token bleibt).",
+    wizard_card_preview_empty: "Keine Karten für dieses Thema gefunden.",
+    wizard_card_existing_badge: "importiert",
+    wizard_card_new_badge: "neu",
+    wizard_err_no_subtopics: "Bitte mindestens einen Kompetenzabschnitt auswählen.",
+    wizard_btn_preview_cards: "Karten vorschauen",
+    wizard_btn_confirm_import: "Auswahl speichern",
+    wizard_import_listing_subtopics: "Lade Abschnitte: {topic}",
+    wizard_import_previewing: "Erzeuge Kartenvorschau: {topic}",
+    wizard_import_confirm_success:
+      "{createdCount} neue und {ensuredCount} bestehende Karten gespeichert. {removedCount} Karte(n) aus deiner Warteschlange entfernt.",
+    wizard_import_text_llm_offline:
+      "Das Textmodell ist nicht erreichbar. Der Lehrplan-Import nutzt dasselbe Modell wie das Lernen.",
+    wizard_import_text_llm_hint:
+      "Öffne {settingsPath} und prüfe, ob das Textmodell bereit ist, dann versuche es erneut.",
     btn_split: "Aufteilen",
     lbl_split_modal_title: "Karte aufteilen",
     lbl_original_card_title: "Originalkarte (Zusammenfassende Anwendungsfrage)",

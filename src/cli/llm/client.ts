@@ -17,6 +17,7 @@ import { existsSync, readFileSync, statSync } from "node:fs";
 import type { DiscussionTurn } from "../../bridge/protocol.js";
 import type { Database, SupportedLocale } from "../../kernel/index.js";
 import {
+  ensureMachineProviderRolesSanitized,
   getActiveWorkspaceContext,
   getKnowledgeContextByName,
   getMachineAiConfig,
@@ -233,6 +234,8 @@ export async function getProviderForRole(
   db: Database,
   role: LlmRole,
 ): Promise<ProviderConfig> {
+  ensureMachineProviderRolesSanitized();
+
   const enabled =
     role === "vision"
       ? (await getSetting(db, "llm.vision.enabled")) === "true"
@@ -289,6 +292,11 @@ export async function getProviderForRole(
           )
         : undefined;
     return { ...primary, fallback };
+  }
+
+  // Curriculum import shares the learner-facing text model with recall.
+  if (role === "text") {
+    return getProviderForRole(db, "recall");
   }
 
   return resolved;
@@ -1517,7 +1525,15 @@ async function resolveUsableTextEndpoint(
   const chain = await checkProviderChain(cfg);
   const selected = chain.firstUsable;
   if (!selected || !isEndpointUsable(selected)) {
-    throw new Error("No text LLM endpoint is online");
+    const primary = chain.primary.endpoint;
+    const reason = !selected
+      ? chain.primary.online
+        ? "configured model is unavailable"
+        : "endpoint is offline"
+      : "endpoint is not usable";
+    throw new Error(
+      `No text LLM endpoint is online (${reason}; role: text; url: ${primary.url}; model: ${primary.model})`,
+    );
   }
   return selected.endpoint;
 }

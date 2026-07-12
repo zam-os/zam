@@ -16,6 +16,7 @@ import {
   getTokenBySlug,
   importCurriculumCards,
   listPersonalCards,
+  listUserCardsForCurriculumTopic,
 } from "../../src/kernel/models/token.ts";
 
 describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
@@ -69,6 +70,43 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
     );
     expect(lb2Content).toContain("Lesetechniken und -strategien anwenden");
     expect(lb2Content).not.toContain("Lernbereich 1:");
+  });
+
+  it("extracts competence sub-units from a Mathematik Lernbereich", () => {
+    const subTopics = provider.extractSubTopics!(
+      mathematikHtml,
+      "realschule|9|mathematik|wpfg1#lb1",
+    );
+
+    expect(subTopics.length).toBeGreaterThanOrEqual(3);
+    expect(subTopics[0].id).toBe("ku1");
+    expect(subTopics[0].label.length).toBeGreaterThan(10);
+    expect(subTopics[0].text).toContain("Quadratwurzel");
+    expect(subTopics[0].textLength).toBeGreaterThan(20);
+    for (const st of subTopics) {
+      expect(st.label).not.toMatch(/servicematerialien/i);
+      expect(st.label).not.toMatch(/übergreifende ziele/i);
+    }
+  });
+
+  it("omits Servicematerialien and Übergreifende Ziele from sub-units", () => {
+    const wpfg23Html = fs.readFileSync(
+      path.join(
+        path.resolve("tests/fixtures/curriculum/lehrplanplus-bayern"),
+        "mathematik-wpfg2-3.html",
+      ),
+      "utf-8",
+    );
+    const subTopics = provider.extractSubTopics!(
+      wpfg23Html,
+      "realschule|9|mathematik|wpfg2-3#lb3",
+    );
+
+    expect(subTopics.length).toBeGreaterThan(0);
+    for (const st of subTopics) {
+      expect(st.label).not.toMatch(/servicematerialien/i);
+      expect(st.label).not.toMatch(/übergreifende ziele/i);
+    }
   });
 
   it("extracts specific Lernbereich texts from Mathematik wpfg1 HTML fixture", () => {
@@ -260,6 +298,43 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
         "realschule|5|mathematik#lb2",
       ),
     ).toBe(0);
+
+    await db.close();
+  });
+
+  it("lists user cards across a Lernbereich and its sub-units", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+
+    const parentTopic = "realschule|5|mathematik#lb1";
+
+    await importCurriculumCards(db, "user-123", [
+      {
+        question: "Parent card",
+        concept: "Parent",
+        domain: "Mathematik",
+        provider: "lehrplanplus-bayern",
+        topic_id: parentTopic,
+      },
+      {
+        question: "Sub-unit card",
+        concept: "Sub",
+        domain: "Mathematik",
+        provider: "lehrplanplus-bayern",
+        topic_id: `${parentTopic}@ku2`,
+      },
+    ]);
+
+    const cards = await listUserCardsForCurriculumTopic(
+      db,
+      "user-123",
+      "lehrplanplus-bayern",
+      parentTopic,
+    );
+    expect(cards).toHaveLength(2);
 
     await db.close();
   });
