@@ -456,6 +456,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     agent_connect_done: "{n} agente(s) conectado(s). Skill global de ZAM actualizado.",
     agent_connect_none: "No se detectó ningún agente compatible. Instala primero Codex, VS Code o Copilot.",
     agent_connect_error: "Error de conexión — consulta la consola para más detalles.",
+    agent_connect_status: "Estado de la conexión",
+    agent_connect_not_run: "Aún no ejecutado",
+    agent_connect_success: "Exitoso",
+    agent_connect_failed: "Fallido",
   },
   fr: {
     ai_status_offline: "IA hors ligne",
@@ -889,6 +893,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     agent_connect_done: "{n} agent(s) connecté(s). Skill ZAM global actualisé.",
     agent_connect_none: "Aucun agent compatible détecté. Installez d'abord Codex, VS Code ou Copilot.",
     agent_connect_error: "Échec de la connexion — voir la console pour les détails.",
+    agent_connect_status: "État de la connexion",
+    agent_connect_not_run: "Pas encore exécuté",
+    agent_connect_success: "Réussi",
+    agent_connect_failed: "Échoué",
   },
   pt: {
     ai_status_offline: "IA offline",
@@ -1322,6 +1330,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     agent_connect_done: "{n} agente(s) conectado(s). Skill global do ZAM atualizado.",
     agent_connect_none: "Nenhum agente compatível detectado. Instale primeiro Codex, VS Code ou Copilot.",
     agent_connect_error: "Falha na conexão — veja o console para detalhes.",
+    agent_connect_status: "Status da conexão",
+    agent_connect_not_run: "Ainda não executado",
+    agent_connect_success: "Bem-sucedido",
+    agent_connect_failed: "Falhou",
   },
   zh: {
     ai_status_offline: "AI 已离线",
@@ -1736,6 +1748,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     agent_connect_done: "已连接 {n} 个代理。全局 ZAM 技能已刷新。",
     agent_connect_none: "未检测到受支持的代理。请先安装 Codex、VS Code 或 Copilot。",
     agent_connect_error: "连接失败——详情请查看控制台。",
+    agent_connect_status: "连接状态",
+    agent_connect_not_run: "尚未运行",
+    agent_connect_success: "成功",
+    agent_connect_failed: "失败",
   },
   ja: {
     ai_status_offline: "AI オフライン",
@@ -2166,6 +2182,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     agent_connect_done: "{n} 件のエージェントを接続しました。グローバルZAMスキルを更新しました。",
     agent_connect_none: "対応エージェントが見つかりません。まずCodex、VS Code、Copilotなどをインストールしてください。",
     agent_connect_error: "接続に失敗しました。詳細はコンソールを確認してください。",
+    agent_connect_status: "接続ステータス",
+    agent_connect_not_run: "未実行",
+    agent_connect_success: "成功",
+    agent_connect_failed: "失敗",
   },
 };
 
@@ -2735,6 +2755,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     agent_connect_done: "Connected {n} harness(es). Global ZAM skill refreshed.",
     agent_connect_none: "No supported harness detected. Install Codex, VS Code, Copilot, or another host first.",
     agent_connect_error: "Connection failed — see console for details.",
+    agent_connect_status: "Connection status",
+    agent_connect_not_run: "Not run yet",
+    agent_connect_success: "Successful",
+    agent_connect_failed: "Failed",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -3229,6 +3253,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     agent_connect_done: "{n} Harness(es) verbunden. Globaler ZAM-Skill aktualisiert.",
     agent_connect_none: "Kein unterstützter Harness gefunden. Installiere zuerst Codex, VS Code, Copilot o. ä.",
     agent_connect_error: "Verbindung fehlgeschlagen — Details in der Konsole.",
+    agent_connect_status: "Verbindungsstatus",
+    agent_connect_not_run: "Noch nicht ausgeführt",
+    agent_connect_success: "Erfolgreich",
+    agent_connect_failed: "Fehlgeschlagen",
   },
   // es, fr, pt, zh, ja packs come from TRANSLATION_PACKS above; en/de stay inline here as the reference locales.
   ...TRANSLATION_PACKS,

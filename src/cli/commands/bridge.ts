@@ -3169,6 +3169,7 @@ bridgeCommand
     jsonOut({
       success: true,
       zamOnPath: report.zamOnPath,
+      connectAutoDone: getAgentConnectAutoDone(),
       harnesses: report.harnesses,
     });
   });

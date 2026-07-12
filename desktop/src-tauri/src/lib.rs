@@ -269,6 +269,12 @@ fn resolve_observer_runtime(app: &tauri::AppHandle) -> Option<ObserverRuntime> {
     None
 }
 
+fn read_package_version(dir: &Path) -> Option<String> {
+    let content = fs::read_to_string(dir.join("package.json")).ok()?;
+    let json: serde_json::Value = serde_json::from_str(&content).ok()?;
+    json.get("version").and_then(|v| v.as_str()).map(|s| s.to_string())
+}
+
 fn resolve_bridge_runtime(app: &tauri::AppHandle) -> Option<BridgeRuntime> {
     // Prefer an explicit developer checkout (ZAM_HOME, ~/.zam/cli_path written
     // by `zam ui`, or a checkout in the working directory) over the bundled
@@ -283,16 +289,85 @@ fn resolve_bridge_runtime(app: &tauri::AppHandle) -> Option<BridgeRuntime> {
             .and_then(Path::parent)
             .map(Path::to_path_buf)
             .unwrap_or_else(|| PathBuf::from("."));
-        return Some(BridgeRuntime {
-            node_path: env::var_os("ZAM_NODE")
-                .map(PathBuf::from)
-                .unwrap_or_else(|| PathBuf::from("node")),
-            cli_path,
-            working_dir,
-        });
+        
+        let app_version = app.package_info().version.to_string();
+        if let Some(dev_version) = read_package_version(&working_dir) {
+            if dev_version == app_version {
+                return Some(BridgeRuntime {
+                    node_path: env::var_os("ZAM_NODE")
+                        .map(PathBuf::from)
+                        .unwrap_or_else(|| PathBuf::from("node")),
+                    cli_path,
+                    working_dir,
+                });
+            } else {
+                diag_log(&format!(
+                    "version mismatch | app={} | dev_checkout={} ({}) -> falling back to bundled runtime",
+                    app_version, dev_version, working_dir.display()
+                ));
+            }
+        } else {
+            diag_log(&format!(
+                "could not read version from dev checkout {} -> falling back to bundled runtime",
+                working_dir.display()
+            ));
+        }
     }
 
     bundled_runtime(app)
+}
+
+#[derive(serde::Serialize)]
+struct BridgeInfo {
+    dev_checkout_path: Option<String>,
+    dev_checkout_version: Option<String>,
+    bundled_version: String,
+    using_dev_checkout: bool,
+    version_mismatch: bool,
+    fallback_to_bundled: bool,
+}
+
+#[tauri::command]
+fn get_bridge_info(app: tauri::AppHandle) -> BridgeInfo {
+    let app_version = app.package_info().version.to_string();
+    let dev_cli = resolve_dev_cli_path();
+    let mut dev_path = None;
+    let mut dev_ver = None;
+    let mut using_dev = false;
+    let mut mismatch = false;
+    let mut fallback = false;
+
+    if let Some(cli_path) = dev_cli {
+        let working_dir = cli_path
+            .parent()
+            .and_then(Path::parent)
+            .and_then(Path::parent)
+            .map(Path::to_path_buf)
+            .unwrap_or_else(|| PathBuf::from("."));
+        dev_path = Some(working_dir.to_string_lossy().to_string());
+        dev_ver = read_package_version(&working_dir);
+        
+        if let Some(ref ver) = dev_ver {
+            if ver == &app_version {
+                using_dev = true;
+            } else {
+                mismatch = true;
+                fallback = true;
+            }
+        } else {
+            mismatch = true;
+            fallback = true;
+        }
+    }
+
+    BridgeInfo {
+        dev_checkout_path: dev_path,
+        dev_checkout_version: dev_ver,
+        bundled_version: app_version,
+        using_dev_checkout: using_dev,
+        version_mismatch: mismatch,
+        fallback_to_bundled: fallback,
+    }
 }
 
 #[tauri::command]
@@ -1334,6 +1409,7 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            get_bridge_info,
             execute_zam_bridge,
             cancel_zam_bridge,
             probe_zam_observer,
@@ -1353,4 +1429,28 @@ pub fn run() {
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs::{self, File};
+    use std::io::Write;
+    use std::env;
+
+    #[test]
+    fn test_read_package_version() {
+        let temp_dir = env::temp_dir().join("zam_test_dir");
+        let _ = fs::create_dir_all(&temp_dir);
+        let pkg_json = temp_dir.join("package.json");
+        
+        let mut file = File::create(&pkg_json).unwrap();
+        file.write_all(b"{\"version\": \"1.2.3\"}").unwrap();
+        
+        let ver = read_package_version(&temp_dir);
+        assert_eq!(ver, Some("1.2.3".to_string()));
+        
+        let _ = fs::remove_file(&pkg_json);
+        let _ = fs::remove_dir(&temp_dir);
+    }
 }

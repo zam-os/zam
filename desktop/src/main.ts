@@ -1127,9 +1127,32 @@ async function loadAppVersion(): Promise<void> {
   const versionEl = document.getElementById("app-version");
   if (!versionEl) return;
   try {
-    versionEl.textContent = `v${await getVersion()}`;
-  } catch {
-    versionEl.textContent = t("version_unknown");
+    const info = await invoke<{
+      dev_checkout_path: string | null;
+      dev_checkout_version: string | null;
+      bundled_version: string;
+      using_dev_checkout: boolean;
+      version_mismatch: boolean;
+      fallback_to_bundled: boolean;
+    }>("get_bridge_info");
+
+    let text = `v${info.bundled_version}`;
+    if (info.using_dev_checkout && info.dev_checkout_path) {
+      text += ` (Checkout: ${info.dev_checkout_path} v${info.dev_checkout_version})`;
+    } else if (info.fallback_to_bundled && info.dev_checkout_path) {
+      text += ` (Fallback: Mismatch checkout ${info.dev_checkout_path} v${info.dev_checkout_version})`;
+      console.warn(
+        `Developer checkout version mismatch: expected ${info.bundled_version}, got ${info.dev_checkout_version}. Fell back to bundled bridge.`,
+      );
+    }
+    versionEl.textContent = text;
+  } catch (err) {
+    console.warn("Failed to get bridge info:", err);
+    try {
+      versionEl.textContent = `v${await getVersion()}`;
+    } catch {
+      versionEl.textContent = t("version_unknown");
+    }
   }
 }
 
@@ -1235,7 +1258,41 @@ interface AgentConnectPayload {
   skills?: { refreshed: number; total: number } | null;
 }
 
-let agentConnectInProgress = false;
+let agentConnectState: "not_run" | "running" | "success" | "failed" = "not_run";
+let agentConnectErrorDetail = "";
+
+function updateAgentConnectResultUI(): void {
+  const resultEl = document.getElementById("agent-connect-result");
+  if (!resultEl) return;
+  resultEl.classList.remove("hidden");
+
+  let statusText = "";
+  switch (agentConnectState) {
+    case "not_run":
+      statusText = `${t("agent_connect_status")}: ${t("agent_connect_not_run")}`;
+      resultEl.className = "sub-label settings-status-row not-run";
+      break;
+    case "running":
+      statusText = `${t("agent_connect_status")}: ${t("agent_connect_running")}`;
+      resultEl.className = "sub-label settings-status-row running";
+      break;
+    case "success":
+      statusText = `${t("agent_connect_status")}: ${t("agent_connect_success")}`;
+      if (agentConnectErrorDetail) {
+        statusText += ` — ${agentConnectErrorDetail}`;
+      }
+      resultEl.className = "sub-label settings-status-row success";
+      break;
+    case "failed":
+      statusText = `${t("agent_connect_status")}: ${t("agent_connect_failed")}`;
+      if (agentConnectErrorDetail) {
+        statusText += ` — ${agentConnectErrorDetail}`;
+      }
+      resultEl.className = "sub-label settings-status-row failed";
+      break;
+  }
+  resultEl.textContent = statusText;
+}
 
 async function loadAgentHarnessStatus(): Promise<void> {
   const list = document.getElementById("agent-harness-list");
@@ -1244,9 +1301,15 @@ async function loadAgentHarnessStatus(): Promise<void> {
     const status = await runBridge<{
       success: boolean;
       zamOnPath: boolean;
+      connectAutoDone: boolean;
       harnesses: AgentHarnessStatusEntry[];
     }>("agent-harness-status");
+    if (status.connectAutoDone && agentConnectState === "not_run") {
+      agentConnectState = "success";
+      agentConnectErrorDetail = "";
+    }
     renderAgentHarnessList(status.harnesses);
+    updateAgentConnectResultUI();
   } catch (err) {
     console.warn("Failed to load agent harness status:", err);
     list.textContent = "";
@@ -1254,6 +1317,10 @@ async function loadAgentHarnessStatus(): Promise<void> {
     note.className = "sub-label";
     note.textContent = t("agent_connect_error");
     list.appendChild(note);
+
+    agentConnectState = "failed";
+    agentConnectErrorDetail = err instanceof Error ? err.message : String(err);
+    updateAgentConnectResultUI();
   }
 }
 
@@ -1301,58 +1368,76 @@ function renderAgentHarnessList(harnesses: AgentHarnessStatusEntry[]): void {
 }
 
 async function connectAgentHarness(harness?: string): Promise<void> {
-  if (agentConnectInProgress) return;
-  agentConnectInProgress = true;
-  const resultEl = document.getElementById("agent-connect-result");
+  if (agentConnectState === "running") return;
+  agentConnectState = "running";
+  agentConnectErrorDetail = "";
   const buttons = document.querySelectorAll<HTMLButtonElement>(
     "#agent-harness-list button, #btn-agents-connect-all",
   );
   for (const button of buttons) button.disabled = true;
-  if (resultEl) {
-    resultEl.classList.remove("hidden");
-    resultEl.textContent = t("agent_connect_running");
-  }
+  updateAgentConnectResultUI();
 
   try {
     const payload = await runBridge<AgentConnectPayload>(
       "agent-connect",
       harness ? ["--harness", harness] : [],
     );
-    if (resultEl) {
-      if ((payload.detected ?? []).length === 0) {
-        resultEl.textContent = t("agent_connect_none");
-      } else if (payload.success) {
-        const okCount = (payload.results ?? []).filter((r) => !r.error).length;
-        resultEl.textContent = tf("agent_connect_done", { n: okCount });
-      } else {
-        const failed = (payload.results ?? []).filter((r) => r.error);
-        resultEl.textContent = failed.length
-          ? `${t("agent_connect_error")} (${failed.map((r) => r.label).join(", ")})`
-          : t("agent_connect_error");
-        console.warn("agent-connect errors:", failed);
-      }
+    if ((payload.detected ?? []).length === 0) {
+      agentConnectState = "success";
+      agentConnectErrorDetail = t("agent_connect_none");
+    } else if (payload.success) {
+      const okCount = (payload.results ?? []).filter((r) => !r.error).length;
+      agentConnectState = "success";
+      agentConnectErrorDetail = tf("agent_connect_done", { n: okCount });
+    } else {
+      const failed = (payload.results ?? []).filter((r) => r.error);
+      agentConnectState = "failed";
+      agentConnectErrorDetail = failed.length
+        ? `${t("agent_connect_error")} (${failed.map((r) => `${r.label}: ${r.error}`).join(", ")})`
+        : t("agent_connect_error");
+      console.warn("agent-connect errors:", failed);
     }
   } catch (err) {
     console.warn("agent-connect failed:", err);
-    if (resultEl) {
-      resultEl.classList.remove("hidden");
-      resultEl.textContent = t("agent_connect_error");
-    }
+    agentConnectState = "failed";
+    agentConnectErrorDetail = err instanceof Error ? err.message : String(err);
   } finally {
-    agentConnectInProgress = false;
     for (const button of buttons) button.disabled = false;
+    updateAgentConnectResultUI();
     void loadAgentHarnessStatus();
   }
 }
 
-/**
- * First-contact auto-connect (ADR 2026-07-11): fire-and-forget on launch; the
- * bridge holds the once-marker, so this cannot re-run on every start.
- */
-function runAgentAutoConnectOnce(): void {
-  void runBridge<AgentConnectPayload>("agent-connect", ["--auto-once"]).catch(
-    (err) => console.warn("agent auto-connect failed:", err),
-  );
+async function runAgentAutoConnectOnce(): Promise<void> {
+  if (agentConnectState === "running") return;
+  agentConnectState = "running";
+  updateAgentConnectResultUI();
+  try {
+    const payload = await runBridge<AgentConnectPayload>("agent-connect", ["--auto-once"]);
+    if (payload.skipped) {
+      agentConnectState = "success";
+      agentConnectErrorDetail = "";
+    } else if ((payload.detected ?? []).length === 0) {
+      agentConnectState = "success";
+      agentConnectErrorDetail = t("agent_connect_none");
+    } else if (payload.success) {
+      const okCount = (payload.results ?? []).filter((r) => !r.error).length;
+      agentConnectState = "success";
+      agentConnectErrorDetail = tf("agent_connect_done", { n: okCount });
+    } else {
+      const failed = (payload.results ?? []).filter((r) => r.error);
+      agentConnectState = "failed";
+      agentConnectErrorDetail = failed.length
+        ? `${t("agent_connect_error")} (${failed.map((r) => `${r.label}: ${r.error}`).join(", ")})`
+        : t("agent_connect_error");
+    }
+  } catch (err) {
+    console.warn("agent auto-connect failed:", err);
+    agentConnectState = "failed";
+    agentConnectErrorDetail = err instanceof Error ? err.message : String(err);
+  } finally {
+    updateAgentConnectResultUI();
+  }
 }
 
 function aiConfigStatusEl(): HTMLElement | null {

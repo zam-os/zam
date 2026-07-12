@@ -115,6 +115,10 @@ const AGENT_CONNECT_KEYS = [
   "agent_connect_done",
   "agent_connect_none",
   "agent_connect_error",
+  "agent_connect_status",
+  "agent_connect_not_run",
+  "agent_connect_success",
+  "agent_connect_failed",
 ] as const;
 
 const REQUIRED_KEYS = [

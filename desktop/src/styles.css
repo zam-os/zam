@@ -951,6 +951,15 @@ textarea:focus-visible {
 .settings-status-row {
   min-height: 20px;
 }
+.settings-status-row.success {
+  color: var(--clr-good);
+}
+.settings-status-row.failed {
+  color: var(--clr-again);
+}
+.settings-status-row.running {
+  color: var(--clr-hard);
+}
 
 .workspace-list {
   display: grid;
