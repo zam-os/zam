@@ -799,6 +799,40 @@ function curriculumTopicScopeClause(): string {
   return `(t.topic_id = ? OR t.topic_id LIKE ? || '@%')`;
 }
 
+/** Whether a token belongs to a curriculum provider + Lernbereich scope. */
+export function tokenMatchesCurriculumTopicScope(
+  token: Pick<Token, "provider" | "topic_id">,
+  provider: string,
+  topicId: string,
+): boolean {
+  if (token.provider !== provider || !token.topic_id) return false;
+  return token.topic_id === topicId || token.topic_id.startsWith(`${topicId}@`);
+}
+
+/**
+ * Delete a user's FSRS card only when the token matches curriculum scope.
+ * Throws when the slug exists but is outside the allowed topic scope.
+ */
+export async function deleteCurriculumCardForUser(
+  db: Database,
+  userId: string,
+  slug: string,
+  provider: string,
+  topicId: string,
+): Promise<boolean> {
+  const token = await getTokenBySlug(db, slug);
+  if (!token) return false;
+  if (!tokenMatchesCurriculumTopicScope(token, provider, topicId)) {
+    throw new Error(
+      `Token "${slug}" is not removable for curriculum topic "${topicId}"`,
+    );
+  }
+  const card = await getCard(db, token.id, userId);
+  if (!card) return false;
+  await deleteCardForUser(db, token.id, userId);
+  return true;
+}
+
 /**
  * Count FSRS cards a user already has for a curriculum topic scope.
  */
@@ -1304,6 +1338,104 @@ export interface SourceProposalInput {
 }
 
 /**
+ * Apply source proposals on an open database handle (caller may wrap in a transaction).
+ */
+export async function applySourceProposals(
+  db: Database,
+  userId: string,
+  sourceId: string,
+  proposals: SourceProposalInput[],
+): Promise<ConfirmFoundationsResult> {
+  let createdCount = 0;
+  let linkedCount = 0;
+
+  for (const card of proposals) {
+    const cardSourceId = card.source_id || sourceId;
+    const source = await db
+      .prepare("SELECT id FROM sources WHERE id = ?")
+      .get(cardSourceId);
+    if (!source) {
+      throw new Error(`Source not found: ${cardSourceId}`);
+    }
+
+    const baseText =
+      card.question && card.question.trim().length > 0
+        ? card.question
+        : card.concept;
+    const cleanDomain = slugify(card.domain || "");
+    const cleanBase = slugify(baseText);
+    let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
+    if (baseSlug.length > 60) {
+      baseSlug = baseSlug.slice(0, 60).replace(/-$/, "");
+    }
+    if (!baseSlug) {
+      baseSlug = "token";
+    }
+
+    let token = await getTokenBySlug(db, baseSlug);
+    if (!token) {
+      const finalSlug = await generateTokenSlug(
+        db,
+        card.domain,
+        card.concept,
+        card.question,
+      );
+      const bloom = (
+        card.bloom_level !== undefined ? card.bloom_level : 1
+      ) as BloomLevel;
+      let symbiosisMode: SymbiosisMode | null = null;
+      if (card.symbiosis_mode && card.symbiosis_mode !== "none") {
+        symbiosisMode = card.symbiosis_mode as SymbiosisMode;
+      }
+
+      token = await createToken(db, {
+        slug: finalSlug,
+        title: card.title,
+        concept: card.concept,
+        domain: card.domain,
+        bloom_level: bloom,
+        context: card.excerpt || "",
+        symbiosis_mode: symbiosisMode,
+        question: card.question || null,
+        provider: card.provider || null,
+        topic_id: card.topic_id || null,
+      });
+      createdCount++;
+    } else {
+      linkedCount++;
+      if (!token.provider && card.provider) {
+        await updateToken(db, token.slug, {
+          provider: card.provider,
+          topic_id: card.topic_id || null,
+        });
+      }
+    }
+
+    const existingCard = await getCard(db, token.id, userId);
+    if (!existingCard) {
+      await ensureCard(db, token.id, userId);
+    }
+
+    await db
+      .prepare(
+        `INSERT INTO token_sources (token_id, source_id, excerpt, page_number)
+         VALUES (?, ?, ?, ?)
+         ON CONFLICT(token_id, source_id) DO UPDATE SET
+           excerpt = excluded.excerpt,
+           page_number = excluded.page_number`,
+      )
+      .run(
+        token.id,
+        cardSourceId,
+        card.excerpt || "",
+        card.page_number || null,
+      );
+  }
+
+  return { createdCount, linkedCount };
+}
+
+/**
  * Confirm source import transaction.
  * Saves tokens, maps them to the source in token_sources, and ensures cards exist for the user.
  */
@@ -1313,95 +1445,11 @@ export async function confirmSourceImport(
   sourceId: string,
   proposals: SourceProposalInput[],
 ): Promise<ConfirmFoundationsResult> {
-  let createdCount = 0;
-  let linkedCount = 0;
-
+  let result: ConfirmFoundationsResult = { createdCount: 0, linkedCount: 0 };
   await db.transaction(async (tx) => {
-    for (const card of proposals) {
-      const cardSourceId = card.source_id || sourceId;
-      const source = await tx
-        .prepare("SELECT id FROM sources WHERE id = ?")
-        .get(cardSourceId);
-      if (!source) {
-        throw new Error(`Source not found: ${cardSourceId}`);
-      }
-
-      const baseText =
-        card.question && card.question.trim().length > 0
-          ? card.question
-          : card.concept;
-      const cleanDomain = slugify(card.domain || "");
-      const cleanBase = slugify(baseText);
-      let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
-      if (baseSlug.length > 60) {
-        baseSlug = baseSlug.slice(0, 60).replace(/-$/, "");
-      }
-      if (!baseSlug) {
-        baseSlug = "token";
-      }
-
-      let token = await getTokenBySlug(tx, baseSlug);
-      if (!token) {
-        const finalSlug = await generateTokenSlug(
-          tx,
-          card.domain,
-          card.concept,
-          card.question,
-        );
-        const bloom = (
-          card.bloom_level !== undefined ? card.bloom_level : 1
-        ) as BloomLevel;
-        let symbiosisMode: SymbiosisMode | null = null;
-        if (card.symbiosis_mode && card.symbiosis_mode !== "none") {
-          symbiosisMode = card.symbiosis_mode as SymbiosisMode;
-        }
-
-        token = await createToken(tx, {
-          slug: finalSlug,
-          title: card.title,
-          concept: card.concept,
-          domain: card.domain,
-          bloom_level: bloom,
-          context: card.excerpt || "",
-          symbiosis_mode: symbiosisMode,
-          question: card.question || null,
-          provider: card.provider || null,
-          topic_id: card.topic_id || null,
-        });
-        createdCount++;
-      } else {
-        linkedCount++;
-        if (!token.provider && card.provider) {
-          await updateToken(tx, token.slug, {
-            provider: card.provider,
-            topic_id: card.topic_id || null,
-          });
-        }
-      }
-
-      const existingCard = await getCard(tx, token.id, userId);
-      if (!existingCard) {
-        await ensureCard(tx, token.id, userId);
-      }
-
-      await tx
-        .prepare(
-          `INSERT INTO token_sources (token_id, source_id, excerpt, page_number)
-           VALUES (?, ?, ?, ?)
-           ON CONFLICT(token_id, source_id) DO UPDATE SET
-             excerpt = excluded.excerpt,
-             page_number = excluded.page_number`,
-        )
-        .run(
-          token.id,
-          cardSourceId,
-          card.excerpt || "",
-          card.page_number || null,
-        );
-    }
+    result = await applySourceProposals(tx, userId, sourceId, proposals);
   });
-
-  return { createdCount, linkedCount };
+  return result;
 }
 
 async function assertPrerequisiteDoesNotCreateCycle(

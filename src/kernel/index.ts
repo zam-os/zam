@@ -184,11 +184,13 @@ export type {
 } from "./models/token.js";
 // Models
 export {
+  applySourceProposals,
   confirmCardSplit,
   confirmFoundations,
   confirmSourceImport,
   countUserCardsForCurriculumTopic,
   createToken,
+  deleteCurriculumCardForUser,
   deleteToken,
   deprecateToken,
   findTokens,
@@ -203,6 +205,7 @@ export {
   listTokens,
   listUserCardsForCurriculumTopic,
   slugify,
+  tokenMatchesCurriculumTopicScope,
   updateToken,
 } from "./models/token.js";
 export type {

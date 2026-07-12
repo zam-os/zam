@@ -21,11 +21,13 @@ import type {
   NeighborhoodToken,
   Rating,
   ReviewActionType,
+  SourceProposalInput,
   SymbiosisMode,
   TokenPattern,
 } from "../../kernel/index.js";
 import {
   appendUiObservationReport,
+  applySourceProposals,
   assignTokenToContext,
   BUILT_IN_SENSITIVE_MATCHERS,
   clearProviderApiKey,
@@ -37,6 +39,7 @@ import {
   decidePostCapture,
   decidePreCapture,
   deleteCardForUser,
+  deleteCurriculumCardForUser,
   deleteToken,
   discoverSkills,
   ensureCard,
@@ -4379,6 +4382,60 @@ function proposalBaseSlug(
   return baseSlug || "token";
 }
 
+interface CurriculumConfirmOperation {
+  sourceId: string;
+  provider: string;
+  topicId: string;
+  create: SourceProposalInput[];
+  removeSlugs: string[];
+}
+
+async function executeCurriculumConfirmOperations(
+  db: Database,
+  userId: string,
+  operations: CurriculumConfirmOperation[],
+  contexts: KnowledgeContext[],
+): Promise<{
+  createdCount: number;
+  ensuredCount: number;
+  removedCount: number;
+}> {
+  let createdCount = 0;
+  let ensuredCount = 0;
+  let removedCount = 0;
+
+  await db.transaction(async (tx) => {
+    for (const op of operations) {
+      if (op.create.length > 0) {
+        const result = await applySourceProposals(
+          tx,
+          userId,
+          op.sourceId,
+          op.create,
+        );
+        createdCount += result.createdCount;
+        ensuredCount += result.linkedCount;
+        await assignConfirmedProposalContexts(tx, op.create, contexts);
+      }
+      for (const slug of op.removeSlugs) {
+        if (
+          await deleteCurriculumCardForUser(
+            tx,
+            userId,
+            slug,
+            op.provider,
+            op.topicId,
+          )
+        ) {
+          removedCount++;
+        }
+      }
+    }
+  });
+
+  return { createdCount, ensuredCount, removedCount };
+}
+
 // ── zam bridge curriculum-list-subtopics ─────────────────────────────────────
 
 bridgeCommand
@@ -4389,28 +4446,32 @@ bridgeCommand
   .requiredOption("--provider <id>", "Curriculum provider id")
   .requiredOption("--topic <json>", "Single topic node JSON")
   .action(async (opts) => {
-    const provider = getCurriculumProvider(opts.provider);
-    if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
-    if (!provider.extractSubTopics) {
-      jsonOut({ success: true, subTopics: [] });
-      return;
-    }
-
-    let topic: TopicNode;
     try {
-      topic = JSON.parse(opts.topic);
-    } catch {
-      jsonError("Invalid --topic JSON");
-      return;
+      const provider = getCurriculumProvider(opts.provider);
+      if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+      if (!provider.extractSubTopics) {
+        jsonOut({ success: true, subTopics: [] });
+        return;
+      }
+
+      let topic: TopicNode;
+      try {
+        topic = JSON.parse(opts.topic);
+      } catch {
+        jsonError("Invalid --topic JSON");
+        return;
+      }
+
+      const resolved = provider.resolveTopic(topic);
+      const rawHtml = await fetchRawHtml(resolved.uri);
+      const subTopics = provider
+        .extractSubTopics(rawHtml, resolved.topicId)
+        .map(({ id, label, textLength }) => ({ id, label, textLength }));
+
+      jsonOut({ success: true, topicId: resolved.topicId, subTopics });
+    } catch (err) {
+      jsonError((err as Error).message || String(err));
     }
-
-    const resolved = provider.resolveTopic(topic);
-    const rawHtml = await fetchRawHtml(resolved.uri);
-    const subTopics = provider
-      .extractSubTopics(rawHtml, resolved.topicId)
-      .map(({ id, label, textLength }) => ({ id, label, textLength }));
-
-    jsonOut({ success: true, topicId: resolved.topicId, subTopics });
   });
 
 // ── zam bridge curriculum-preview-topic ──────────────────────────────────────
@@ -4453,7 +4514,7 @@ bridgeCommand
         topic,
       ]);
       const item = extracted[0];
-      if (!item) {
+      if (!item || item.textLength === 0) {
         jsonError(`No curriculum text extracted for topic "${topic.id}"`);
       }
 
@@ -4520,6 +4581,7 @@ bridgeCommand
         isExisting: boolean;
         selected: boolean;
         subTopicId: string | null;
+        parentTopicId: string;
         proposal?: {
           question: string;
           concept: string;
@@ -4548,6 +4610,7 @@ bridgeCommand
           subTopicId: card.topicId?.includes("@")
             ? (card.topicId.split("@").pop() ?? null)
             : null,
+          parentTopicId: resolved.topicId,
         });
       }
 
@@ -4601,9 +4664,14 @@ bridgeCommand
             isExisting: false,
             selected: false,
             subTopicId: chunk.subTopicId,
+            parentTopicId: resolved.topicId,
             proposal,
           });
         }
+      }
+
+      if (items.length === 0) {
+        jsonError(`No importable cards for topic "${topic.id}"`);
       }
 
       jsonOut({
@@ -4622,6 +4690,8 @@ bridgeCommand
   .description(
     "Create selected new cards and remove deselected existing cards (JSON)",
   )
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption("--topicId <id>", "Resolved curriculum topic id")
   .requiredOption("--sourceId <id>", "Parent page source database ID")
   .requiredOption(
     "--create <json>",
@@ -4644,18 +4714,10 @@ bridgeCommand
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
+      const provider = getCurriculumProvider(opts.provider);
+      if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
 
-      let create: Array<{
-        question: string;
-        concept: string;
-        domain: string;
-        bloom_level: number;
-        symbiosis_mode: string;
-        excerpt: string;
-        page_number?: string | null;
-        provider?: string | null;
-        topic_id?: string | null;
-      }>;
+      let create: SourceProposalInput[];
       let removeSlugs: string[];
       try {
         create = JSON.parse(opts.create);
@@ -4670,36 +4732,91 @@ bridgeCommand
       );
       const contexts = await resolveKnowledgeContexts(db, contextNames);
 
-      let createdCount = 0;
-      let ensuredCount = 0;
-      if (create.length > 0) {
-        const result = await confirmSourceImport(
+      try {
+        const result = await executeCurriculumConfirmOperations(
           db,
           userId,
-          opts.sourceId,
-          create,
+          [
+            {
+              sourceId: opts.sourceId,
+              provider: provider.id,
+              topicId: opts.topicId,
+              create,
+              removeSlugs,
+            },
+          ],
+          contexts,
         );
-        createdCount = result.createdCount;
-        ensuredCount = result.linkedCount;
-        await assignConfirmedProposalContexts(db, create, contexts);
+        jsonOut({ success: true, ...result });
+      } catch (err) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+// ── zam bridge curriculum-confirm-batch ────────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-confirm-batch")
+  .description("Atomically confirm multiple curriculum topic selections (JSON)")
+  .requiredOption(
+    "--operations <json>",
+    "JSON array of {sourceId, provider, topicId, create, removeSlugs}",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--knowledge-context <context>",
+    "Assign confirmed tokens to a knowledge context (repeatable)",
+    (val, memo: string[]) => {
+      memo.push(val);
+      return memo;
+    },
+    [],
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+
+      let operations: CurriculumConfirmOperation[];
+      try {
+        operations = JSON.parse(opts.operations);
+      } catch {
+        jsonError("Invalid --operations JSON");
+        return;
       }
 
-      let removedCount = 0;
-      for (const slug of removeSlugs) {
-        const token = await getTokenBySlug(db, slug);
-        if (!token) continue;
-        const card = await getCard(db, token.id, userId);
-        if (!card) continue;
-        await deleteCardForUser(db, token.id, userId);
-        removedCount++;
+      if (!Array.isArray(operations) || operations.length === 0) {
+        jsonError("--operations must be a non-empty JSON array");
       }
 
-      jsonOut({
-        success: true,
-        createdCount,
-        ensuredCount,
-        removedCount,
-      });
+      for (const op of operations) {
+        if (!op?.sourceId || !op?.provider || !op?.topicId) {
+          jsonError("Each operation requires sourceId, provider, and topicId");
+        }
+        if (!getCurriculumProvider(op.provider)) {
+          jsonError(`Unknown curriculum provider: ${op.provider}`);
+        }
+        if (!Array.isArray(op.create) || !Array.isArray(op.removeSlugs)) {
+          jsonError("Each operation requires create and removeSlugs arrays");
+        }
+      }
+
+      const contextNames = parseKnowledgeContextNames(
+        opts.knowledgeContext || [],
+      );
+      const contexts = await resolveKnowledgeContexts(db, contextNames);
+
+      try {
+        const result = await executeCurriculumConfirmOperations(
+          db,
+          userId,
+          operations,
+          contexts,
+        );
+        jsonOut({ success: true, ...result });
+      } catch (err) {
+        jsonError((err as Error).message || String(err));
+      }
     });
   });
 

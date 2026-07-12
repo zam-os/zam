@@ -78,6 +78,8 @@ interface CardPreviewItem {
   isExisting: boolean;
   selected: boolean;
   subTopicId: string | null;
+  parentTopicId?: string;
+  topicLabel?: string;
   proposal?: {
     question: string;
     concept: string;
@@ -91,6 +93,13 @@ interface CardPreviewItem {
   };
 }
 
+interface PreviewBatchMeta {
+  sourceId: string;
+  provider: string;
+  topicId: string;
+  topicLabel: string;
+}
+
 interface WizardStep {
   key: StepKey;
   label: string;
@@ -100,10 +109,14 @@ interface WizardStep {
   topicOption?: TaxonomyOption;
   previewItems?: CardPreviewItem[];
   previewSourceId?: string;
+  previewTopicId?: string;
+  previewBatches?: PreviewBatchMeta[];
 }
 
 let importTopicQueue: TaxonomyOption[] = [];
 let importTopicIndex = 0;
+/** Bumped on open/cancel so stale bridge completions are ignored. */
+let wizardGeneration = 0;
 
 // DOM cache
 let overlay: HTMLElement;
@@ -177,10 +190,17 @@ export function initCurriculumWizard(): void {
   btnRestart.addEventListener("click", () => void handleRestart());
 }
 
+function isWizardStale(generation: number): boolean {
+  return generation !== wizardGeneration;
+}
+
 async function showCurriculumWizard(): Promise<void> {
+  wizardGeneration += 1;
   history = [];
   chosenCountry = undefined;
   selection = {};
+  importTopicQueue = [];
+  importTopicIndex = 0;
   overlay.classList.add("active");
   resumeBanner.classList.add("hidden");
   hideStepError();
@@ -236,6 +256,9 @@ async function showCurriculumWizard(): Promise<void> {
 }
 
 function hideCurriculumWizard(): void {
+  wizardGeneration += 1;
+  importTopicQueue = [];
+  importTopicIndex = 0;
   overlay.classList.remove("active");
 }
 
@@ -747,16 +770,28 @@ async function startImportFlow(topicStep: WizardStep): Promise<void> {
     return;
   }
 
+  if (chosenTopics.length > 1) {
+    try {
+      await loadMultiTopicCardPreview(chosenTopics);
+    } catch (err) {
+      showStepError(describeError(err));
+    }
+    return;
+  }
+
   importTopicQueue = chosenTopics;
   importTopicIndex = 0;
   await beginNextTopicImport();
 }
 
 async function beginNextTopicImport(): Promise<void> {
+  const generation = wizardGeneration;
   const topic = importTopicQueue[importTopicIndex];
   if (!topic) {
-    hideCurriculumWizard();
-    await loadStudioData();
+    if (!isWizardStale(generation)) {
+      hideCurriculumWizard();
+      await loadStudioData();
+    }
     return;
   }
 
@@ -768,12 +803,7 @@ async function beginNextTopicImport(): Promise<void> {
   stepBodyEl.classList.add("hidden");
   setImportProgress(
     tf("wizard_import_listing_subtopics", { topic: topic.label }),
-    importTopicQueue.length > 1
-      ? tf("wizard_import_step", {
-          current: String(importTopicIndex + 1),
-          total: String(importTopicQueue.length),
-        })
-      : "",
+    "",
   );
 
   try {
@@ -786,6 +816,8 @@ async function beginNextTopicImport(): Promise<void> {
       "--topic",
       JSON.stringify(topicNodeFromOption(topic)),
     ]);
+
+    if (isWizardStale(generation)) return;
 
     const subTopics = subRes.subTopics ?? [];
 
@@ -812,18 +844,135 @@ async function beginNextTopicImport(): Promise<void> {
       selectedIds: subTopics.map((st) => st.id),
       topicOption: topic,
     };
-    await loadCardPreview(syntheticStep, { pushHistory: true });
+    await loadCardPreview(syntheticStep, { pushHistory: true, generation });
   } finally {
-    btnNext.disabled = false;
-    btnBack.disabled = false;
-    showLoading(false);
+    if (!isWizardStale(generation)) {
+      btnNext.disabled = false;
+      btnBack.disabled = false;
+      showLoading(false);
+    }
+  }
+}
+
+async function loadMultiTopicCardPreview(
+  topics: TaxonomyOption[],
+): Promise<void> {
+  const generation = wizardGeneration;
+  const localLlm = await isLocalLlm();
+  const previewTimeoutMs = localLlm
+    ? LOCAL_LLM_PREVIEW_TIMEOUT_MS
+    : CLOUD_LLM_PREVIEW_TIMEOUT_MS;
+
+  btnNext.disabled = true;
+  btnBack.disabled = true;
+  showLoading(true);
+  hideStepError();
+  progressContainer.classList.remove("hidden");
+  stepBodyEl.classList.add("hidden");
+
+  try {
+    await assertTextLlmReady();
+
+    const allItems: CardPreviewItem[] = [];
+    const batches: PreviewBatchMeta[] = [];
+    const ctx = selectedKnowledgeContext();
+
+    for (let i = 0; i < topics.length; i++) {
+      const topic = topics[i]!;
+      if (isWizardStale(generation)) return;
+
+      setImportProgress(
+        tf("wizard_import_previewing", { topic: topic.label }),
+        tf("wizard_import_step", {
+          current: String(i + 1),
+          total: String(topics.length),
+        }),
+      );
+
+      const subRes = await runBridge<{
+        success: boolean;
+        subTopics: TaxonomyOption[];
+      }>("curriculum-list-subtopics", [
+        "--provider",
+        selection.providerId!,
+        "--topic",
+        JSON.stringify(topicNodeFromOption(topic)),
+      ]);
+      if (isWizardStale(generation)) return;
+
+      const subTopicIds = (subRes.subTopics ?? []).map((st) => st.id);
+      const previewArgs = [
+        "--provider",
+        selection.providerId!,
+        "--topic",
+        JSON.stringify(topicNodeFromOption(topic)),
+        "--domain",
+        subjectLabel(),
+      ];
+      if (ctx) previewArgs.push("--knowledge-context", ctx);
+      if (subTopicIds.length > 0) {
+        previewArgs.push("--subTopics", JSON.stringify(subTopicIds));
+      }
+
+      const previewRes = await runBridgeWithTimeout<{
+        success: boolean;
+        topicId: string;
+        sourceId: string;
+        items: CardPreviewItem[];
+      }>("curriculum-preview-topic", previewArgs, previewTimeoutMs);
+
+      if (isWizardStale(generation)) return;
+      if (!previewRes.success || !Array.isArray(previewRes.items)) {
+        throw new Error(`Card preview failed for ${topic.label}.`);
+      }
+
+      batches.push({
+        sourceId: previewRes.sourceId,
+        provider: selection.providerId!,
+        topicId: previewRes.topicId,
+        topicLabel: topic.label,
+      });
+
+      for (const item of previewRes.items) {
+        allItems.push({
+          ...item,
+          parentTopicId: item.parentTopicId ?? previewRes.topicId,
+          topicLabel: topic.label,
+        });
+      }
+    }
+
+    history.push({
+      key: "cardPreview",
+      label: t("wizard_step_cardPreview"),
+      options: [],
+      multiSelect: false,
+      selectedIds: [],
+      previewItems: allItems,
+      previewBatches: batches,
+    });
+
+    progressContainer.classList.add("hidden");
+    stepBodyEl.classList.remove("hidden");
+    render();
+  } catch (err) {
+    if (!isWizardStale(generation)) {
+      throw new Error(formatImportError(err, localLlm));
+    }
+  } finally {
+    if (!isWizardStale(generation)) {
+      btnNext.disabled = false;
+      btnBack.disabled = false;
+      showLoading(false);
+    }
   }
 }
 
 async function loadCardPreview(
   subTopicStep: WizardStep,
-  opts?: { pushHistory?: boolean },
+  opts?: { pushHistory?: boolean; generation?: number },
 ): Promise<void> {
+  const generation = opts?.generation ?? wizardGeneration;
   const topic = subTopicStep.topicOption;
   if (!topic) {
     throw new Error("Missing topic for card preview.");
@@ -868,9 +1017,12 @@ async function loadCardPreview(
 
     const previewRes = await runBridgeWithTimeout<{
       success: boolean;
+      topicId: string;
       sourceId: string;
       items: CardPreviewItem[];
     }>("curriculum-preview-topic", previewArgs, previewTimeoutMs);
+
+    if (isWizardStale(generation)) return;
 
     if (!previewRes.success || !Array.isArray(previewRes.items)) {
       throw new Error(`Card preview failed for ${topic.label}.`);
@@ -889,17 +1041,22 @@ async function loadCardPreview(
       topicOption: topic,
       previewItems: previewRes.items,
       previewSourceId: previewRes.sourceId,
+      previewTopicId: previewRes.topicId,
     });
 
     progressContainer.classList.add("hidden");
     stepBodyEl.classList.remove("hidden");
     render();
   } catch (err) {
-    throw new Error(formatImportError(err, localLlm));
+    if (!isWizardStale(generation)) {
+      throw new Error(formatImportError(err, localLlm));
+    }
   } finally {
-    btnNext.disabled = false;
-    btnBack.disabled = false;
-    showLoading(false);
+    if (!isWizardStale(generation)) {
+      btnNext.disabled = false;
+      btnBack.disabled = false;
+      showLoading(false);
+    }
   }
 }
 
@@ -919,7 +1076,19 @@ function renderCardPreviewBody(step: WizardStep): void {
     return;
   }
 
+  const showTopicHeaders = (step.previewBatches?.length ?? 0) > 1;
+  let lastTopicLabel = "";
+
   for (const item of items) {
+    if (showTopicHeaders && item.topicLabel && item.topicLabel !== lastTopicLabel) {
+      lastTopicLabel = item.topicLabel;
+      const heading = document.createElement("p");
+      heading.className = "wizard-topic-note";
+      heading.style.marginTop = "12px";
+      heading.textContent = item.topicLabel;
+      stepBodyEl.appendChild(heading);
+    }
+
     const row = document.createElement("div");
     row.className =
       "wizard-option-row" + (item.selected ? " selected" : "");
@@ -943,20 +1112,73 @@ function togglePreviewItem(step: WizardStep, itemId: string): void {
   renderStepBody(step);
 }
 
-async function confirmCardPreview(step: WizardStep): Promise<void> {
+function buildConfirmOperations(step: WizardStep): Array<{
+  sourceId: string;
+  provider: string;
+  topicId: string;
+  create: NonNullable<CardPreviewItem["proposal"]>[];
+  removeSlugs: string[];
+}> {
   const items = step.previewItems ?? [];
-  const sourceId = step.previewSourceId;
-  if (!sourceId) {
-    throw new Error("Missing source reference for import.");
+  const metaByTopic = new Map<string, PreviewBatchMeta>();
+
+  for (const batch of step.previewBatches ?? []) {
+    metaByTopic.set(batch.topicId, batch);
+  }
+  if (step.previewTopicId && step.previewSourceId && selection.providerId) {
+    metaByTopic.set(step.previewTopicId, {
+      sourceId: step.previewSourceId,
+      provider: selection.providerId,
+      topicId: step.previewTopicId,
+      topicLabel: step.topicOption?.label ?? step.previewTopicId,
+    });
   }
 
-  const toCreate = items
-    .filter((item) => !item.isExisting && item.selected && item.proposal)
-    .map((item) => item.proposal!);
+  const operations = new Map<
+    string,
+    {
+      sourceId: string;
+      provider: string;
+      topicId: string;
+      create: NonNullable<CardPreviewItem["proposal"]>[];
+      removeSlugs: string[];
+    }
+  >();
 
-  const toRemove = items
-    .filter((item) => item.isExisting && !item.selected && item.slug)
-    .map((item) => item.slug!);
+  for (const item of items) {
+    const topicId = item.parentTopicId;
+    if (!topicId) continue;
+    const meta = metaByTopic.get(topicId);
+    if (!meta) continue;
+
+    let op = operations.get(topicId);
+    if (!op) {
+      op = {
+        sourceId: meta.sourceId,
+        provider: meta.provider,
+        topicId: meta.topicId,
+        create: [],
+        removeSlugs: [],
+      };
+      operations.set(topicId, op);
+    }
+
+    if (!item.isExisting && item.selected && item.proposal) {
+      op.create.push(item.proposal);
+    } else if (item.isExisting && !item.selected && item.slug) {
+      op.removeSlugs.push(item.slug);
+    }
+  }
+
+  return [...operations.values()];
+}
+
+async function confirmCardPreview(step: WizardStep): Promise<void> {
+  const generation = wizardGeneration;
+  const operations = buildConfirmOperations(step);
+  if (operations.length === 0) {
+    throw new Error("Missing topic metadata for import.");
+  }
 
   btnNext.disabled = true;
   btnBack.disabled = true;
@@ -966,39 +1188,52 @@ async function confirmCardPreview(step: WizardStep): Promise<void> {
   setImportProgress(t("wizard_import_saving"));
 
   const ctx = selectedKnowledgeContext();
-  const confirmArgs = [
-    "--sourceId",
-    sourceId,
-    "--create",
-    JSON.stringify(toCreate),
-    "--removeSlugs",
-    JSON.stringify(toRemove),
-  ];
-  if (ctx) {
-    confirmArgs.push("--knowledge-context", ctx);
-  }
+  const confirmArgs: string[] = [];
+  if (ctx) confirmArgs.push("--knowledge-context", ctx);
 
   try {
-    const result = await runBridge<{
+    let result: {
       success: boolean;
       createdCount: number;
       ensuredCount: number;
       removedCount: number;
-    }>("curriculum-confirm-topic", confirmArgs);
+    };
+
+    if (operations.length > 1) {
+      confirmArgs.unshift(
+        "--operations",
+        JSON.stringify(
+          operations.map((op) => ({
+            sourceId: op.sourceId,
+            provider: op.provider,
+            topicId: op.topicId,
+            create: op.create,
+            removeSlugs: op.removeSlugs,
+          })),
+        ),
+      );
+      result = await runBridge("curriculum-confirm-batch", confirmArgs);
+    } else {
+      const op = operations[0]!;
+      confirmArgs.unshift(
+        "--provider",
+        op.provider,
+        "--topicId",
+        op.topicId,
+        "--sourceId",
+        op.sourceId,
+        "--create",
+        JSON.stringify(op.create),
+        "--removeSlugs",
+        JSON.stringify(op.removeSlugs),
+      );
+      result = await runBridge("curriculum-confirm-topic", confirmArgs);
+    }
+
+    if (isWizardStale(generation)) return;
 
     if (!result.success) {
       throw new Error("Failed to save card selection.");
-    }
-
-    importTopicIndex += 1;
-    history.pop();
-    if (history[history.length - 1]?.key === "subTopic") {
-      history.pop();
-    }
-
-    if (importTopicIndex < importTopicQueue.length) {
-      await beginNextTopicImport();
-      return;
     }
 
     setImportProgress(
@@ -1010,12 +1245,16 @@ async function confirmCardPreview(step: WizardStep): Promise<void> {
     );
     await loadStudioData();
     await new Promise((resolve) => setTimeout(resolve, 2500));
-    hideCurriculumWizard();
+    if (!isWizardStale(generation)) {
+      hideCurriculumWizard();
+    }
   } finally {
-    stepBodyEl.classList.remove("hidden");
-    btnNext.disabled = false;
-    btnBack.disabled = false;
-    btnCancel.disabled = false;
-    progressContainer.classList.add("hidden");
+    if (!isWizardStale(generation)) {
+      stepBodyEl.classList.remove("hidden");
+      btnNext.disabled = false;
+      btnBack.disabled = false;
+      btnCancel.disabled = false;
+      progressContainer.classList.add("hidden");
+    }
   }
 }

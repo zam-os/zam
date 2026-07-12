@@ -3,7 +3,12 @@ import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { openDatabase } from "../../src/kernel/index.js";
+import {
+  createToken,
+  ensureCard,
+  getCard,
+  openDatabase,
+} from "../../src/kernel/index.js";
 
 describe("bridge curriculum-* commands", () => {
   let tempHome: string;
@@ -34,6 +39,23 @@ describe("bridge curriculum-* commands", () => {
       encoding: "utf-8",
     });
     return JSON.parse(out);
+  }
+
+  function runBridgeError(args: string[]): { error: string } {
+    const env = { ...process.env, USERPROFILE: tempHome, HOME: tempHome };
+    try {
+      execFileSync("node", [cliPath, "bridge", ...args], {
+        env,
+        cwd: tempCwd,
+        encoding: "utf-8",
+      });
+      throw new Error("expected bridge command to fail");
+    } catch (err) {
+      const fail = err as { stdout?: string; message?: string };
+      const raw = (fail.stdout ?? fail.message ?? "").trim();
+      const jsonStart = raw.indexOf("{");
+      return JSON.parse(jsonStart >= 0 ? raw.slice(jsonStart) : raw);
+    }
   }
 
   it("lists the registered LehrplanPLUS Bayern provider", () => {
@@ -202,6 +224,64 @@ describe("bridge curriculum-* commands", () => {
       subject: "mathematik",
       track: "wpfg1",
     });
+  });
+
+  it("curriculum-list-subtopics returns JSON errors for invalid topics", () => {
+    const result = runBridgeError([
+      "curriculum-list-subtopics",
+      "--provider",
+      "lehrplanplus-bayern",
+      "--topic",
+      '{"id":"x","sourceRef":"bad"}',
+    ]);
+    expect(result.error).toBeTruthy();
+    expect(result.error).not.toMatch(/^file:\/\//);
+  });
+
+  it("curriculum-confirm-topic rejects removals outside curriculum scope", async () => {
+    const dbDir = join(tempHome, ".zam");
+    mkdirSync(dbDir, { recursive: true });
+    const db = await openDatabase({
+      dbPath: join(dbDir, "zam.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    const token = await createToken(db, {
+      slug: "other-scope-card",
+      concept: "Outside curriculum scope",
+      domain: "test",
+      provider: "other-provider",
+      topic_id: "elsewhere|9|topic#lb1",
+    });
+    await ensureCard(db, token.id, "thomas");
+    await db.close();
+
+    const result = runBridgeError([
+      "curriculum-confirm-topic",
+      "--provider",
+      "lehrplanplus-bayern",
+      "--topicId",
+      "realschule|9|deutsch#lb1",
+      "--sourceId",
+      "unused-source",
+      "--create",
+      "[]",
+      "--removeSlugs",
+      JSON.stringify(["other-scope-card"]),
+      "--user",
+      "thomas",
+    ]);
+
+    expect(result.error).toContain("not removable");
+
+    const verifyDb = await openDatabase({
+      dbPath: join(dbDir, "zam.db"),
+      initialize: false,
+      useConfiguredCloud: false,
+    });
+    const card = await getCard(verifyDb, token.id, "thomas");
+    expect(card).not.toBeNull();
+    await verifyDb.close();
   });
 
   it("reuses cached web curriculum content without fetching it again", async () => {
