@@ -795,6 +795,91 @@ textarea:focus-visible {
   margin-top: 0;
 }
 
+/* Unified capability model registry table (ADR 2026-07-12). */
+.ai-model-row {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+}
+
+.ai-model-row-head {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ai-model-label {
+  color: var(--clr-text-primary);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.ai-model-badge {
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  text-transform: uppercase;
+}
+
+.ai-model-badge.local {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.28);
+  color: var(--clr-accent-green, #22c55e);
+}
+
+.ai-model-badge.cloud {
+  background: rgba(14, 165, 233, 0.12);
+  border: 1px solid rgba(14, 165, 233, 0.28);
+  color: var(--clr-accent-cyan);
+}
+
+.ai-model-caps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ai-model-cap {
+  align-items: center;
+  color: var(--clr-text-muted);
+  display: inline-flex;
+  font-size: 12px;
+  gap: 5px;
+}
+
+.ai-model-cap input:disabled + span {
+  opacity: 0.45;
+}
+
+.ai-model-status {
+  color: var(--clr-text-muted);
+  font-size: 12px;
+}
+
+.ai-model-status.warn {
+  color: var(--clr-accent-amber, #f59e0b);
+  font-weight: 700;
+}
+
+.ai-model-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ai-model-icon-btn {
+  min-width: 34px;
+}
+
+.ai-model-actions .btn.danger {
+  color: var(--clr-accent-red, #ef4444);
+}
+
 .provider-kind-switch {
   display: grid;
   gap: 0;

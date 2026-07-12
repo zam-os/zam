@@ -80,8 +80,8 @@ type ThemePreference = "light" | "dark";
 
 let isLlmEnabled = false;
 let aiConfigEditorOpen = false;
-let aiConfigData: ProviderConfigListResponse | null = null;
-let editingProviderName: string | null = null;
+let modelRegistry: ModelRow[] = [];
+let editingModelId: string | null = null;
 let totalDue = 0;
 let cardsReviewedThisSession = 0;
 
@@ -120,49 +120,26 @@ interface DatabaseStatusResponse {
 
 let databaseCurrentUserId: string | null = null;
 
-interface ProviderListingRow {
-  name: string;
-  url?: string;
-  model?: string;
+// Unified capability model registry (ADR 2026-07-12). The Settings model table
+// reads these rows from `zam bridge model-list`.
+type ModelCapability = "text" | "embedding" | "image" | "video" | "stt" | "tts";
+type CapabilityFlags = Record<ModelCapability, boolean>;
+
+interface ModelRow {
+  id: string;
+  label: string;
+  url: string;
+  model: string;
+  local: boolean;
   apiFlavor: string;
-  apiKeyRef?: string;
-  label?: string;
-  local?: boolean;
   runner?: string;
+  order: number;
+  capabilities: CapabilityFlags;
+  detectedCapabilities: CapabilityFlags;
+  probedAt?: string;
+  apiKeyRef?: string;
   keyState: "set" | "missing" | "none";
 }
-
-interface RoleBinding {
-  primary?: string;
-  fallback?: string;
-}
-
-interface ProviderConfigListResponse {
-  scope: "machine" | "shared";
-  providers: ProviderListingRow[];
-  roles: Partial<Record<"recall" | "vision" | "text", RoleBinding>>;
-  orphans: string[];
-}
-
-interface LocalLlmHints {
-  runners: Array<{ id: string; label: string; installed: boolean }>;
-  recommended: string;
-  defaultUrl: string;
-  defaultModel: string;
-}
-
-let cachedLocalLlmHints: LocalLlmHints | null = null;
-
-const FALLBACK_LOCAL_LLM_HINTS: LocalLlmHints = {
-  runners: [
-    { id: "flm", label: "FastFlowLM", installed: false },
-    { id: "ollama", label: "Ollama", installed: false },
-    { id: "foundry-local", label: "Foundry Local", installed: false },
-  ],
-  recommended: "ollama",
-  defaultUrl: "http://localhost:11434/v1",
-  defaultModel: "",
-};
 
 interface WorkspaceConfig {
   id: string;
@@ -1382,325 +1359,246 @@ function aiConfigStatusEl(): HTMLElement | null {
   return document.getElementById("ai-config-status");
 }
 
-function providerDisplayName(provider: Pick<ProviderListingRow, "name" | "label">): string {
-  return provider.label?.trim() || provider.name;
-}
-
-function slugifyProviderId(display: string): string {
-  const normalized = display
-    .trim()
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/ß/g, "ss")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-  return normalized || "provider";
-}
-
-function runnerDisplayName(id?: string): string {
-  if (!id) return "";
-  const labels: Record<string, string> = {
-    flm: t("ai_provider_runner_flm"),
-    ollama: t("ai_provider_runner_ollama"),
-    "foundry-local": t("ai_provider_runner_foundry"),
-  };
-  return labels[id] ?? id;
-}
-
-function runnerOptionLabel(id: string, installed: boolean): string {
-  const base = runnerDisplayName(id);
-  return installed ? base : `${base} (${t("ai_provider_runner_not_installed")})`;
-}
-
-async function fetchLocalLlmHints(): Promise<LocalLlmHints> {
-  if (cachedLocalLlmHints) return cachedLocalLlmHints;
-  cachedLocalLlmHints = await runBridge<LocalLlmHints>("local-llm-hints");
-  return cachedLocalLlmHints;
-}
-
-function isProviderFormLocal(): boolean {
-  const local = document.getElementById(
-    "ai-provider-kind-local",
-  ) as HTMLInputElement | null;
-  return local?.checked ?? true;
-}
-
-function setProviderFormLocal(isLocal: boolean): void {
-  const local = document.getElementById(
-    "ai-provider-kind-local",
-  ) as HTMLInputElement | null;
-  const cloud = document.getElementById(
-    "ai-provider-kind-cloud",
-  ) as HTMLInputElement | null;
-  if (local) local.checked = isLocal;
-  if (cloud) cloud.checked = !isLocal;
-}
-
-function updateProviderEndpointHints(isLocal: boolean): void {
-  const kindHint = document.getElementById("ai-provider-kind-hint");
-  const keyHint = document.getElementById("ai-provider-key-hint");
-  if (kindHint) {
-    kindHint.textContent = isLocal
-      ? t("ai_provider_local_hint")
-      : t("ai_provider_cloud_hint_key");
-  }
-  if (keyHint && !isLocal) {
-    const keyState = keyHint.dataset.keyState as ProviderListingRow["keyState"];
-    keyHint.textContent = `${t("ai_provider_api_key_hint")} · ${providerKeyStateLabel(
-      keyState ?? "none",
-    )}`;
-  }
-}
-
-function createProviderListRow(provider: ProviderListingRow): HTMLElement {
-  const row = document.createElement("div");
-  row.className = "ai-provider-row";
-
-  const main = document.createElement("div");
-  main.className = "ai-provider-main";
-
-  const titleRow = document.createElement("div");
-  titleRow.className = "ai-provider-title-row";
-  const title = document.createElement("span");
-  title.className = "ai-provider-title";
-  title.textContent = providerDisplayName(provider);
-  titleRow.appendChild(title);
-  const badge = document.createElement("span");
-  badge.className = "ai-provider-badge";
-  badge.textContent = provider.local
-    ? t("ai_provider_local_badge")
-    : t("ai_provider_cloud_badge");
-  titleRow.appendChild(badge);
-
-  const endpoint = document.createElement("code");
-  endpoint.textContent =
-    [provider.url, provider.model].filter(Boolean).join(" · ") || provider.name;
-
-  const meta = document.createElement("span");
-  meta.className = "ai-provider-meta";
-  meta.textContent = [provider.apiFlavor, providerKeyStateLabel(provider.keyState)]
-    .concat(
-      provider.local && provider.runner
-        ? [runnerDisplayName(provider.runner)]
-        : [],
-    )
-    .filter(Boolean)
-    .join(" · ");
-
-  main.append(titleRow, endpoint, meta);
-
-  const actions = document.createElement("div");
-  actions.className = "ai-provider-actions";
-
-  const editButton = document.createElement("button");
-  editButton.className = "btn secondary-btn btn-sm";
-  editButton.type = "button";
-  editButton.textContent = t("ai_provider_edit");
-  editButton.addEventListener("click", () => {
-    showProviderForm(provider.name);
-  });
-
-  const removeButton = document.createElement("button");
-  removeButton.className = "btn danger-btn btn-sm";
-  removeButton.type = "button";
-  removeButton.textContent = t("ai_provider_remove");
-  removeButton.addEventListener("click", () => {
-    void removeAiProvider(provider.name);
-  });
-
-  actions.append(editButton, removeButton);
-  row.append(main, actions);
-  return row;
-}
-
-function populateRunnerSelect(
-  select: HTMLSelectElement,
-  hints: LocalLlmHints,
-  selected?: string,
-): void {
-  select.replaceChildren();
-  const auto = document.createElement("option");
-  auto.value = "";
-  auto.textContent = t("ai_provider_runner_auto");
-  auto.selected = !selected;
-  select.appendChild(auto);
-
-  for (const runner of hints.runners) {
-    const option = document.createElement("option");
-    option.value = runner.id;
-    option.textContent = runnerOptionLabel(runner.id, runner.installed);
-    option.selected = runner.id === selected;
-    select.appendChild(option);
-  }
-}
-
-function allocateProviderId(display: string, reserved?: string): string {
-  const base = slugifyProviderId(display);
-  const used = new Set(
-    (aiConfigData?.providers ?? [])
-      .map((provider) => provider.name)
-      .filter((name) => name !== reserved),
-  );
-  if (!used.has(base)) return base;
-  let suffix = 2;
-  while (used.has(`${base}-${suffix}`)) suffix += 1;
-  return `${base}-${suffix}`;
-}
-
-function providerKeyStateLabel(state: ProviderListingRow["keyState"]): string {
-  switch (state) {
-    case "set":
-      return t("ai_provider_key_set");
-    case "missing":
-      return t("ai_provider_key_missing");
+function capabilityLabel(cap: ModelCapability): string {
+  switch (cap) {
+    case "text":
+      return t("model_cap_text");
+    case "embedding":
+      return t("model_cap_embedding");
+    case "image":
+      return t("model_cap_image");
+    case "video":
+      return t("model_cap_video");
+    case "stt":
+      return t("model_cap_stt");
     default:
-      return t("ai_provider_key_none");
+      return t("model_cap_tts");
   }
 }
 
-function buildProviderSelectOptions(
-  selected?: string,
-  includeEmpty = false,
-): HTMLOptionElement[] {
-  const names = (aiConfigData?.providers ?? []).map((provider) => provider.name);
-  const options: HTMLOptionElement[] = [];
-  if (includeEmpty) {
-    const empty = document.createElement("option");
-    empty.value = "";
-    empty.textContent = t("ai_role_none");
-    options.push(empty);
+// Capabilities exposed in the Settings UI today; the data model also carries
+// video/stt/tts for forward-compatibility (ADR 2026-07-12).
+const UI_CAPABILITIES: ModelCapability[] = ["text", "embedding", "image"];
+
+async function loadModelRegistry(): Promise<void> {
+  const status = aiConfigStatusEl();
+  if (status) status.textContent = t("model_loading");
+  try {
+    const response = await runBridge<{ models: ModelRow[] }>("model-list");
+    modelRegistry = response.models ?? [];
+    renderModelTable();
+    if (status) status.textContent = "";
+  } catch (err) {
+    if (status) {
+      status.textContent = tf("model_load_failed", {
+        message: errorMessage(err),
+      });
+    }
   }
-  for (const name of names) {
-    const provider = aiConfigData?.providers.find((entry) => entry.name === name);
-    const option = document.createElement("option");
-    option.value = name;
-    option.textContent = provider ? providerDisplayName(provider) : name;
-    option.selected = name === selected;
-    options.push(option);
-  }
-  return options;
 }
 
-function renderAiProviderList(): void {
+function renderModelTable(): void {
   const list = document.getElementById("ai-provider-list");
+  // The registry order IS the fallback order now; the old role-binding block is
+  // retired (ADR 2026-07-12).
+  const roleContainer = document.getElementById("ai-role-bindings");
+  if (roleContainer) roleContainer.replaceChildren();
   if (!list) return;
   list.replaceChildren();
 
-  const providers = aiConfigData?.providers ?? [];
-  if (providers.length === 0) {
+  if (modelRegistry.length === 0) {
     const empty = document.createElement("p");
     empty.className = "ai-provider-meta";
-    empty.textContent = t("ai_provider_empty");
+    empty.textContent = t("model_empty");
     list.appendChild(empty);
     return;
   }
 
-  const localProviders = providers.filter((provider) => provider.local);
-  const cloudProviders = providers.filter((provider) => !provider.local);
-
-  const appendSection = (
-    titleKey: string,
-    sectionProviders: ProviderListingRow[],
-  ): void => {
-    if (sectionProviders.length === 0) return;
-    const heading = document.createElement("h4");
-    heading.className = "ai-provider-section-title";
-    heading.textContent = t(titleKey);
-    list.appendChild(heading);
-    for (const provider of sectionProviders) {
-      list.appendChild(createProviderListRow(provider));
-    }
-  };
-
-  appendSection("ai_provider_section_local", localProviders);
-  appendSection("ai_provider_section_cloud", cloudProviders);
+  const ordered = [...modelRegistry].sort((a, b) => a.order - b.order);
+  ordered.forEach((row, index) => {
+    list.appendChild(createModelRow(row, index, ordered.length));
+  });
 }
 
-function renderAiRoleBindings(): void {
-  const container = document.getElementById("ai-role-bindings");
-  if (!container || !aiConfigData) return;
-  container.replaceChildren();
+function iconButton(symbol: string, aria: string): HTMLButtonElement {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "btn secondary-btn btn-sm ai-model-icon-btn";
+  button.textContent = symbol;
+  button.setAttribute("aria-label", aria);
+  button.title = aria;
+  return button;
+}
 
-  const heading = document.createElement("h3");
-  heading.textContent = t("ai_role_bindings_title");
-  container.appendChild(heading);
+function textButton(label: string): HTMLButtonElement {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "btn secondary-btn btn-sm";
+  button.textContent = label;
+  return button;
+}
 
-  for (const role of ["recall", "vision"] as const) {
-    const binding = aiConfigData.roles[role];
-    const row = document.createElement("div");
-    row.className = "ai-role-row";
+function createModelRow(
+  row: ModelRow,
+  index: number,
+  total: number,
+): HTMLElement {
+  const el = document.createElement("div");
+  el.className = "ai-model-row";
 
-    const primaryField = document.createElement("label");
-    primaryField.className = "settings-field";
-    const primaryLabel = document.createElement("span");
-    primaryLabel.textContent =
-      role === "recall" ? t("ai_role_recall") : t("ai_role_vision");
-    const primarySelect = document.createElement("select");
-    primarySelect.dataset.role = role;
-    primarySelect.dataset.binding = "primary";
-    primarySelect.append(...buildProviderSelectOptions(binding?.primary));
-    primaryField.append(primaryLabel, primarySelect);
+  const header = document.createElement("div");
+  header.className = "ai-model-row-head";
+  const title = document.createElement("span");
+  title.className = "ai-model-label";
+  title.textContent = row.label;
+  const badge = document.createElement("span");
+  badge.className = row.local ? "ai-model-badge local" : "ai-model-badge cloud";
+  badge.textContent = row.local
+    ? t("model_local_badge")
+    : t("model_cloud_badge");
+  header.append(title, badge);
 
-    const fallbackField = document.createElement("label");
-    fallbackField.className = "settings-field";
-    const fallbackLabel = document.createElement("span");
-    fallbackLabel.textContent = t("ai_role_fallback");
-    const fallbackSelect = document.createElement("select");
-    fallbackSelect.dataset.role = role;
-    fallbackSelect.dataset.binding = "fallback";
-    fallbackSelect.append(
-      ...buildProviderSelectOptions(binding?.fallback, true),
-    );
-    fallbackField.append(fallbackLabel, fallbackSelect);
+  const meta = document.createElement("p");
+  meta.className = "ai-provider-meta";
+  meta.textContent = `${row.model} · ${row.url}`;
 
-    const applyButton = document.createElement("button");
-    applyButton.className = "btn primary-btn btn-sm";
-    applyButton.type = "button";
-    applyButton.textContent = t("btn_ai_role_apply");
-    applyButton.addEventListener("click", () => {
-      void applyRoleBinding(
-        role,
-        primarySelect.value,
-        fallbackSelect.value || undefined,
-      );
+  const caps = document.createElement("div");
+  caps.className = "ai-model-caps";
+  for (const cap of UI_CAPABILITIES) {
+    const label = document.createElement("label");
+    label.className = "ai-model-cap";
+    const box = document.createElement("input");
+    box.type = "checkbox";
+    box.checked = row.capabilities[cap];
+    // The ceiling: only capabilities a probe detected can be enabled.
+    box.disabled = !row.detectedCapabilities[cap];
+    box.addEventListener("change", () => {
+      void toggleCapability(row, cap, box.checked);
     });
+    const text = document.createElement("span");
+    text.textContent = capabilityLabel(cap);
+    label.append(box, text);
+    if (!row.detectedCapabilities[cap]) label.title = t("model_cap_undetected");
+    caps.append(label);
+  }
 
-    const actions = document.createElement("div");
-    actions.className = "ai-role-actions";
-    actions.appendChild(applyButton);
+  const statusChip = document.createElement("span");
+  statusChip.className = "ai-model-status";
+  if (row.keyState === "missing") {
+    statusChip.textContent = t("model_status_key_missing");
+    statusChip.classList.add("warn");
+  } else if (row.probedAt) {
+    statusChip.textContent = t("model_status_probed");
+  } else {
+    statusChip.textContent = t("model_status_unprobed");
+  }
 
-    row.append(primaryField, fallbackField, actions);
-    if (role === "recall") {
-      const hint = document.createElement("p");
-      hint.className = "ai-provider-meta";
-      hint.textContent = t("ai_role_recall_scope_hint");
-      row.appendChild(hint);
+  const actions = document.createElement("div");
+  actions.className = "ai-model-actions";
+  const upButton = iconButton("↑", t("model_btn_up"));
+  upButton.disabled = index === 0;
+  upButton.addEventListener("click", () => void moveModel(row.id, -1));
+  const downButton = iconButton("↓", t("model_btn_down"));
+  downButton.disabled = index === total - 1;
+  downButton.addEventListener("click", () => void moveModel(row.id, 1));
+  const reprobeButton = textButton(t("model_btn_reprobe"));
+  reprobeButton.addEventListener("click", () => void reprobeModel(row.id));
+  const editButton = textButton(t("model_btn_edit"));
+  editButton.addEventListener("click", () => showModelForm(row.id));
+  const removeButton = textButton(t("model_btn_remove"));
+  removeButton.classList.add("danger");
+  removeButton.addEventListener("click", () => void removeModel(row));
+  actions.append(upButton, downButton, reprobeButton, editButton, removeButton);
+
+  el.append(header, meta, caps, statusChip, actions);
+  return el;
+}
+
+async function toggleCapability(
+  row: ModelRow,
+  cap: ModelCapability,
+  checked: boolean,
+): Promise<void> {
+  const status = aiConfigStatusEl();
+  const capabilities = { ...row.capabilities, [cap]: checked };
+  try {
+    await runBridge("model-set-capabilities", [
+      "--id",
+      row.id,
+      "--capabilities",
+      JSON.stringify(capabilities),
+    ]);
+    await loadModelRegistry();
+    await loadProviderStatus();
+  } catch (err) {
+    if (status) {
+      status.textContent = tf("model_save_failed", {
+        message: errorMessage(err),
+      });
     }
-    container.appendChild(row);
+    await loadModelRegistry();
   }
 }
 
-async function loadProviderConfig(): Promise<void> {
+async function moveModel(id: string, delta: number): Promise<void> {
+  const ordered = [...modelRegistry].sort((a, b) => a.order - b.order);
+  const index = ordered.findIndex((m) => m.id === id);
+  const target = index + delta;
+  if (index < 0 || target < 0 || target >= ordered.length) return;
+  const ids = ordered.map((m) => m.id);
+  [ids[index], ids[target]] = [ids[target], ids[index]];
   const status = aiConfigStatusEl();
-  if (status) status.textContent = t("ai_config_loading");
   try {
-    aiConfigData = await runBridge<ProviderConfigListResponse>(
-      "provider-config-list",
-      ["--scope", "machine"],
-    );
-    renderAiProviderList();
-    renderAiRoleBindings();
+    await runBridge("model-reorder", ["--ids", JSON.stringify(ids)]);
+    await loadModelRegistry();
+    await loadProviderStatus();
+  } catch (err) {
+    if (status) {
+      status.textContent = tf("model_save_failed", {
+        message: errorMessage(err),
+      });
+    }
+  }
+}
+
+async function reprobeModel(id: string): Promise<void> {
+  const status = aiConfigStatusEl();
+  if (status) status.textContent = t("model_reprobing");
+  try {
+    await runBridge("model-reprobe", ["--id", id]);
+    await loadModelRegistry();
+    await loadProviderStatus();
     if (status) status.textContent = "";
   } catch (err) {
     if (status) {
-      status.textContent = tf("ai_config_failed", { message: errorMessage(err) });
+      status.textContent = tf("model_save_failed", {
+        message: errorMessage(err),
+      });
+    }
+    await loadModelRegistry();
+  }
+}
+
+async function removeModel(row: ModelRow): Promise<void> {
+  if (!window.confirm(tf("model_remove_confirm", { label: row.label }))) return;
+  const status = aiConfigStatusEl();
+  try {
+    await runBridge("model-remove", ["--id", row.id]);
+    hideModelForm();
+    await loadModelRegistry();
+    await loadProviderStatus();
+    if (status) status.textContent = tf("model_removed", { label: row.label });
+  } catch (err) {
+    if (status) {
+      status.textContent = tf("model_save_failed", {
+        message: errorMessage(err),
+      });
     }
   }
 }
 
-function hideProviderForm(): void {
-  editingProviderName = null;
+function hideModelForm(): void {
+  editingModelId = null;
   const form = document.getElementById("ai-provider-form");
   if (form) {
     form.classList.add("hidden");
@@ -1708,507 +1606,198 @@ function hideProviderForm(): void {
   }
 }
 
-function showProviderForm(name?: string): void {
+function modelFieldLabel(
+  labelText: string,
+  control: HTMLElement,
+): HTMLLabelElement {
+  const field = document.createElement("label");
+  field.className = "settings-field";
+  const span = document.createElement("span");
+  span.textContent = labelText;
+  field.append(span, control);
+  return field;
+}
+
+function showModelForm(id?: string): void {
   const form = document.getElementById("ai-provider-form");
   if (!form) return;
-
-  editingProviderName = name ?? null;
-  const existing = name
-    ? aiConfigData?.providers.find((provider) => provider.name === name)
-    : undefined;
+  editingModelId = id ?? null;
+  const existing = id ? modelRegistry.find((m) => m.id === id) : undefined;
 
   form.classList.remove("hidden");
   form.replaceChildren();
 
   const title = document.createElement("h3");
-  title.textContent = name
-    ? t("ai_provider_form_edit_title")
-    : t("ai_provider_form_add_title");
+  title.textContent = existing
+    ? t("model_form_edit_title")
+    : t("model_form_add_title");
   form.appendChild(title);
 
-  const kindField = document.createElement("div");
-  kindField.className = "settings-field settings-field-stack";
-  const kindLabel = document.createElement("span");
-  kindLabel.textContent = t("ai_provider_kind");
-  const kindSwitch = document.createElement("div");
-  kindSwitch.className = "provider-kind-switch";
-  kindSwitch.setAttribute("role", "radiogroup");
-  kindSwitch.setAttribute("aria-label", t("ai_provider_kind"));
+  const kindWrap = document.createElement("div");
+  kindWrap.className = "provider-kind-switch";
+  kindWrap.setAttribute("role", "radiogroup");
+  const localLabel = document.createElement("label");
+  localLabel.className = "provider-kind-option";
+  const localRadio = document.createElement("input");
+  localRadio.type = "radio";
+  localRadio.name = "ai-model-kind";
+  localRadio.value = "local";
+  localRadio.checked = existing?.local ?? true;
+  const localText = document.createElement("span");
+  localText.textContent = t("model_kind_local");
+  localLabel.append(localRadio, localText);
+  const cloudLabel = document.createElement("label");
+  cloudLabel.className = "provider-kind-option";
+  const cloudRadio = document.createElement("input");
+  cloudRadio.type = "radio";
+  cloudRadio.name = "ai-model-kind";
+  cloudRadio.value = "cloud";
+  cloudRadio.checked = existing ? !existing.local : false;
+  const cloudText = document.createElement("span");
+  cloudText.textContent = t("model_kind_cloud");
+  cloudLabel.append(cloudRadio, cloudText);
+  kindWrap.append(localLabel, cloudLabel);
 
-  const localKindLabel = document.createElement("label");
-  localKindLabel.className = "provider-kind-option";
-  const localKindInput = document.createElement("input");
-  localKindInput.id = "ai-provider-kind-local";
-  localKindInput.type = "radio";
-  localKindInput.name = "ai-provider-kind";
-  localKindInput.value = "local";
-  localKindInput.checked = existing?.local ?? true;
-  const localKindText = document.createElement("span");
-  localKindText.textContent = t("ai_provider_kind_local");
-  localKindLabel.append(localKindInput, localKindText);
+  const labelInput = document.createElement("input");
+  labelInput.type = "text";
+  labelInput.value = existing?.label ?? "";
+  const urlInput = document.createElement("input");
+  urlInput.type = "url";
+  urlInput.value = existing?.url ?? "";
+  const modelInput = document.createElement("input");
+  modelInput.type = "text";
+  modelInput.value = existing?.model ?? "";
+  const keyInput = document.createElement("input");
+  keyInput.type = "password";
+  keyInput.autocomplete = "off";
+  keyInput.placeholder =
+    existing?.keyState === "set" ? t("model_key_set_placeholder") : "";
 
-  const cloudKindLabel = document.createElement("label");
-  cloudKindLabel.className = "provider-kind-option";
-  const cloudKindInput = document.createElement("input");
-  cloudKindInput.id = "ai-provider-kind-cloud";
-  cloudKindInput.type = "radio";
-  cloudKindInput.name = "ai-provider-kind";
-  cloudKindInput.value = "cloud";
-  cloudKindInput.checked = existing ? !existing.local : false;
-  const cloudKindText = document.createElement("span");
-  cloudKindText.textContent = t("ai_provider_kind_cloud");
-  cloudKindLabel.append(cloudKindInput, cloudKindText);
+  const keyField = modelFieldLabel(t("model_field_key"), keyInput);
+  const syncKeyVisibility = (): void => {
+    keyField.classList.toggle("hidden", localRadio.checked);
+  };
+  localRadio.addEventListener("change", syncKeyVisibility);
+  cloudRadio.addEventListener("change", syncKeyVisibility);
+  syncKeyVisibility();
 
-  kindSwitch.append(localKindLabel, cloudKindLabel);
-  const kindHint = document.createElement("p");
-  kindHint.id = "ai-provider-kind-hint";
-  kindHint.className = "ai-provider-hint";
-
-  const runnerField = document.createElement("label");
-  runnerField.id = "ai-provider-runner-field";
-  runnerField.className = "settings-field";
-  const runnerLabel = document.createElement("span");
-  runnerLabel.textContent = t("ai_provider_runner");
-  const runnerSelect = document.createElement("select");
-  runnerSelect.id = "ai-provider-runner";
-  runnerSelect.className = "ai-provider-select";
-  const runnerHint = document.createElement("span");
-  runnerHint.className = "ai-provider-hint";
-  runnerHint.textContent = t("ai_provider_runner_hint");
-  runnerField.append(runnerLabel, runnerSelect, runnerHint);
-
-  kindField.append(kindLabel, kindSwitch, kindHint, runnerField);
+  const capsWrap = document.createElement("div");
+  capsWrap.className = "ai-model-caps";
+  const capBoxes = new Map<ModelCapability, HTMLInputElement>();
+  for (const cap of UI_CAPABILITIES) {
+    const label = document.createElement("label");
+    label.className = "ai-model-cap";
+    const box = document.createElement("input");
+    box.type = "checkbox";
+    box.checked = existing?.capabilities[cap] ?? cap === "text";
+    const text = document.createElement("span");
+    text.textContent = capabilityLabel(cap);
+    label.append(box, text);
+    capsWrap.append(label);
+    capBoxes.set(cap, box);
+  }
+  const capHint = document.createElement("p");
+  capHint.className = "ai-provider-hint";
+  capHint.textContent = t("model_cap_hint");
 
   const grid = document.createElement("div");
   grid.className = "ai-provider-form-grid";
-
-  const displayNameField = document.createElement("label");
-  displayNameField.className = "settings-field";
-  const displayNameLabel = document.createElement("span");
-  displayNameLabel.textContent = t("ai_provider_display_name");
-  const displayNameInput = document.createElement("input");
-  displayNameInput.id = "ai-provider-display-name";
-  displayNameInput.type = "text";
-  displayNameInput.value = existing ? providerDisplayName(existing) : "";
-  displayNameField.append(displayNameLabel, displayNameInput);
-
-  const urlField = document.createElement("label");
-  urlField.className = "settings-field";
-  const urlLabel = document.createElement("span");
-  urlLabel.textContent = t("ai_provider_url");
-  const urlInput = document.createElement("input");
-  urlInput.id = "ai-provider-url";
-  urlInput.type = "url";
-  urlInput.value = existing?.url ?? "";
-  urlField.append(urlLabel, urlInput);
-
-  const modelField = document.createElement("label");
-  modelField.className = "settings-field";
-  const modelLabel = document.createElement("span");
-  modelLabel.textContent = t("ai_provider_model");
-  const modelInput = document.createElement("input");
-  modelInput.id = "ai-provider-model";
-  modelInput.type = "text";
-  modelInput.value = existing?.model ?? "";
-  const modelHint = document.createElement("span");
-  modelHint.id = "ai-provider-model-hint";
-  modelHint.className = "ai-provider-hint hidden";
-  const modelPickerLabel = document.createElement("span");
-  modelPickerLabel.id = "ai-provider-model-picker-label";
-  modelPickerLabel.className = "ai-provider-hint hidden";
-  modelPickerLabel.textContent = t("ai_provider_models_pick");
-  const modelSelect = document.createElement("select");
-  modelSelect.id = "ai-provider-model-select";
-  modelSelect.className = "ai-provider-select hidden";
-  const modelStack = document.createElement("div");
-  modelStack.className = "model-field-stack";
-  modelStack.append(modelInput, modelHint, modelPickerLabel, modelSelect);
-  modelField.append(modelLabel, modelStack);
-
-  const cloudHint = document.createElement("p");
-  cloudHint.id = "ai-provider-cloud-hint";
-  cloudHint.className = "ai-provider-hint";
-
-  const flavorField = document.createElement("label");
-  flavorField.className = "settings-field";
-  const flavorLabel = document.createElement("span");
-  flavorLabel.textContent = t("ai_provider_flavor");
-  const flavorSelect = document.createElement("select");
-  flavorSelect.id = "ai-provider-flavor";
-  for (const flavor of ["chat-completions", "anthropic-messages"]) {
-    const option = document.createElement("option");
-    option.value = flavor;
-    option.textContent = flavor;
-    option.selected = (existing?.apiFlavor ?? "chat-completions") === flavor;
-    flavorSelect.appendChild(option);
-  }
-  flavorField.append(flavorLabel, flavorSelect);
-
-  const keyField = document.createElement("label");
-  keyField.id = "ai-provider-key-field";
-  keyField.className = "settings-field";
-  const keyLabel = document.createElement("span");
-  keyLabel.textContent = t("ai_provider_api_key");
-  const keyInput = document.createElement("input");
-  keyInput.id = "ai-provider-api-key";
-  keyInput.type = "password";
-  keyInput.autocomplete = "off";
-  const keyHint = document.createElement("span");
-  keyHint.id = "ai-provider-key-hint";
-  keyHint.className = "ai-provider-hint";
-  keyHint.dataset.keyState = existing?.keyState ?? "none";
-  keyField.append(keyLabel, keyInput, keyHint);
-
-  grid.append(displayNameField, urlField, modelField, flavorField, keyField);
-  form.append(kindField, grid, cloudHint);
+  grid.append(
+    modelFieldLabel(t("model_field_label"), labelInput),
+    modelFieldLabel(t("model_field_url"), urlInput),
+    modelFieldLabel(t("model_field_model"), modelInput),
+    keyField,
+  );
 
   const actions = document.createElement("div");
   actions.className = "settings-actions";
   const saveButton = document.createElement("button");
-  saveButton.className = "btn primary-btn btn-sm";
   saveButton.type = "button";
-  saveButton.textContent = t("btn_ai_provider_save");
+  saveButton.className = "btn primary-btn btn-sm";
+  saveButton.textContent = t("model_btn_save");
   saveButton.addEventListener("click", () => {
-    void saveProviderForm();
+    const capabilities: Record<string, boolean> = {};
+    for (const [cap, box] of capBoxes) capabilities[cap] = box.checked;
+    void saveModelForm({
+      id: editingModelId ?? undefined,
+      label: labelInput.value.trim(),
+      url: urlInput.value.trim(),
+      model: modelInput.value.trim(),
+      local: localRadio.checked,
+      key: keyInput.value.trim(),
+      existingKeyRef: existing?.apiKeyRef,
+      capabilities,
+    });
   });
   const cancelButton = document.createElement("button");
-  cancelButton.className = "btn secondary-btn btn-sm";
   cancelButton.type = "button";
-  cancelButton.textContent = t("btn_ai_provider_cancel");
-  cancelButton.addEventListener("click", hideProviderForm);
+  cancelButton.className = "btn secondary-btn btn-sm";
+  cancelButton.textContent = t("model_btn_cancel");
+  cancelButton.addEventListener("click", hideModelForm);
   actions.append(saveButton, cancelButton);
-  form.appendChild(actions);
 
-  const syncModelField = (): void => {
-    const isLocal = isProviderFormLocal();
-    modelHint.textContent = isLocal ? t("ai_provider_model_local_hint") : "";
-    modelHint.classList.toggle("hidden", !isLocal);
-    if (!isLocal) {
-      modelSelect.classList.add("hidden");
-      modelPickerLabel.classList.add("hidden");
-    }
-    keyField.classList.toggle("hidden", isLocal);
-    runnerField.classList.toggle("hidden", !isLocal);
-    updateProviderEndpointHints(isLocal);
-    void refreshProviderModels();
-    void refreshCloudModelHint();
-  };
+  form.append(kindWrap, grid, capsWrap, capHint, actions);
+}
 
-  const onKindChange = (): void => {
-    syncModelField();
-    if (isProviderFormLocal()) {
-      void applySuggestedLocalDefaults(urlInput, modelInput, runnerSelect, existing);
-    }
-  };
+interface ModelFormData {
+  id?: string;
+  label: string;
+  url: string;
+  model: string;
+  local: boolean;
+  key: string;
+  existingKeyRef?: string;
+  capabilities: Record<string, boolean>;
+}
 
-  localKindInput.addEventListener("change", onKindChange);
-  cloudKindInput.addEventListener("change", onKindChange);
-  urlInput.addEventListener("change", () => {
-    void refreshProviderModels();
-    void refreshCloudModelHint();
-  });
+async function saveModelForm(data: ModelFormData): Promise<void> {
+  const status = aiConfigStatusEl();
+  if (!data.url || !data.model) {
+    if (status) status.textContent = t("model_missing_fields");
+    return;
+  }
+  const label = data.label || data.model;
 
-  populateRunnerSelect(
-    runnerSelect,
-    cachedLocalLlmHints ?? FALLBACK_LOCAL_LLM_HINTS,
-    existing?.runner,
-  );
-  syncModelField();
-
-  void fetchLocalLlmHints()
-    .then((hints) => {
-      const previous = runnerSelect.value;
-      populateRunnerSelect(runnerSelect, hints, existing?.runner ?? previous);
-      if (!existing) {
-        const hasInstalled = hints.runners.some((runner) => runner.installed);
-        if (hasInstalled) {
-          setProviderFormLocal(true);
-        }
-        void applySuggestedLocalDefaults(urlInput, modelInput, runnerSelect, undefined, hints);
+  let keyRef = data.existingKeyRef;
+  if (!data.local && data.key) {
+    keyRef =
+      keyRef ??
+      `model-key-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+    try {
+      await runBridge("provider-set-key", ["--ref", keyRef, "--key", data.key]);
+    } catch (err) {
+      if (status) {
+        status.textContent = tf("model_save_failed", {
+          message: errorMessage(err),
+        });
       }
-      syncModelField();
-    })
-    .catch(() => {
-      syncModelField();
-    });
-}
-
-async function applySuggestedLocalDefaults(
-  urlInput: HTMLInputElement,
-  modelInput: HTMLInputElement,
-  runnerSelect: HTMLSelectElement,
-  existing?: ProviderListingRow,
-  hints = cachedLocalLlmHints,
-): Promise<void> {
-  if (existing) return;
-  const resolved = hints ?? (await fetchLocalLlmHints());
-  if (!urlInput.value.trim()) urlInput.value = resolved.defaultUrl;
-  if (!modelInput.value.trim()) modelInput.value = resolved.defaultModel;
-  if (!runnerSelect.value) {
-    runnerSelect.value = resolved.recommended;
-    populateRunnerSelect(runnerSelect, resolved, resolved.recommended);
-  }
-}
-
-async function refreshCloudModelHint(): Promise<void> {
-  const hint = document.getElementById("ai-provider-cloud-hint");
-  const urlInput = document.getElementById("ai-provider-url") as HTMLInputElement | null;
-  if (!hint || !urlInput || isProviderFormLocal()) {
-    if (hint) hint.textContent = "";
-    return;
-  }
-  const url = urlInput.value.trim();
-  if (!url) {
-    hint.textContent = "";
-    return;
-  }
-  try {
-    const response = await runBridge<{
-      recommendation: { model: string; flavor: string } | null;
-    }>("cloud-model-hint", ["--url", url]);
-    hint.textContent = response.recommendation
-      ? tf("ai_provider_cloud_hint", { model: response.recommendation.model })
-      : "";
-    const flavorSelect = document.getElementById(
-      "ai-provider-flavor",
-    ) as HTMLSelectElement | null;
-    if (flavorSelect && response.recommendation?.flavor) {
-      flavorSelect.value = response.recommendation.flavor;
-    }
-  } catch {
-    hint.textContent = "";
-  }
-}
-
-function setProviderModelPickerVisible(visible: boolean): void {
-  const modelSelect = document.getElementById(
-    "ai-provider-model-select",
-  ) as HTMLSelectElement | null;
-  const modelPickerLabel = document.getElementById(
-    "ai-provider-model-picker-label",
-  );
-  if (!modelSelect || !modelPickerLabel) return;
-  modelSelect.classList.toggle("hidden", !visible);
-  modelPickerLabel.classList.toggle("hidden", !visible);
-}
-
-async function refreshProviderModels(): Promise<void> {
-  const urlInput = document.getElementById("ai-provider-url") as HTMLInputElement | null;
-  const modelInput = document.getElementById("ai-provider-model") as HTMLInputElement | null;
-  const modelSelect = document.getElementById(
-    "ai-provider-model-select",
-  ) as HTMLSelectElement | null;
-  if (!urlInput || !modelInput || !modelSelect || !isProviderFormLocal()) {
-    setProviderModelPickerVisible(false);
-    return;
-  }
-
-  const url = urlInput.value.trim();
-  modelSelect.replaceChildren();
-  setProviderModelPickerVisible(false);
-  if (!url) return;
-
-  try {
-    const displayInput = document.getElementById(
-      "ai-provider-display-name",
-    ) as HTMLInputElement | null;
-    const providerName =
-      editingProviderName ??
-      (displayInput?.value.trim()
-        ? allocateProviderId(displayInput.value.trim())
-        : undefined);
-    const args = ["--url", url];
-    if (providerName) args.push("--key-ref", providerName);
-    const response = await runBridge<{ models: string[] }>("list-models", args);
-    modelSelect.replaceChildren();
-    if (response.models.length === 0) {
       return;
     }
-
-    setProviderModelPickerVisible(true);
-    for (const model of response.models) {
-      const option = document.createElement("option");
-      option.value = model;
-      option.textContent = model;
-      if (model === modelInput.value.trim()) option.selected = true;
-      modelSelect.appendChild(option);
-    }
-    if (!modelInput.value.trim() && response.models[0]) {
-      modelInput.value = response.models[0];
-      modelSelect.value = response.models[0];
-    }
-    modelSelect.onchange = () => {
-      if (modelSelect.value) {
-        modelInput.value = modelSelect.value;
-      }
-    };
-  } catch {
-    setProviderModelPickerVisible(false);
   }
-}
-
-async function saveProviderForm(): Promise<void> {
-  const status = aiConfigStatusEl();
-  const displayNameInput = document.getElementById(
-    "ai-provider-display-name",
-  ) as HTMLInputElement | null;
-  const urlInput = document.getElementById("ai-provider-url") as HTMLInputElement | null;
-  const modelInput = document.getElementById("ai-provider-model") as HTMLInputElement | null;
-  const flavorSelect = document.getElementById(
-    "ai-provider-flavor",
-  ) as HTMLSelectElement | null;
-  const runnerSelect = document.getElementById(
-    "ai-provider-runner",
-  ) as HTMLSelectElement | null;
-  const keyInput = document.getElementById("ai-provider-api-key") as HTMLInputElement | null;
-  if (
-    !displayNameInput ||
-    !urlInput ||
-    !modelInput ||
-    !flavorSelect ||
-    !runnerSelect
-  ) {
-    return;
-  }
-
-  const isLocal = isProviderFormLocal();
-
-  const displayName = displayNameInput.value.trim();
-  if (!displayName) return;
-
-  const name =
-    editingProviderName ?? allocateProviderId(displayName);
-
-  const model = modelInput.value.trim();
 
   const args = [
-    "--name",
-    name,
-    "--scope",
-    "machine",
     "--label",
-    displayName,
+    label,
     "--url",
-    urlInput.value.trim(),
+    data.url,
     "--model",
-    model,
-    "--flavor",
-    flavorSelect.value,
-    ...(isLocal ? ["--local"] : ["--no-local"]),
+    data.model,
+    "--capabilities",
+    JSON.stringify(data.capabilities),
+    ...(data.local ? ["--local"] : ["--no-local"]),
   ];
-  if (isLocal && runnerSelect.value) {
-    args.push("--runner", runnerSelect.value);
-  }
-  if (!isLocal) {
-    args.push("--key-ref", name);
-  }
+  if (data.id) args.push("--id", data.id);
+  if (!data.local && keyRef) args.push("--key-ref", keyRef);
 
   try {
-    await runBridge("provider-config-upsert", args);
-    if (!isLocal && keyInput?.value.trim()) {
-      await runBridge("provider-set-key", [
-        "--ref",
-        name,
-        "--key",
-        keyInput.value.trim(),
-      ]);
-    }
-    hideProviderForm();
-    await loadProviderConfig();
+    await runBridge("model-upsert", args);
+    hideModelForm();
+    await loadModelRegistry();
     await loadProviderStatus();
-    if (status) status.textContent = tf("ai_provider_saved", { name: displayName });
+    if (status) status.textContent = tf("model_saved", { label });
   } catch (err) {
     if (status) {
-      status.textContent = tf("ai_provider_save_failed", {
-        message: errorMessage(err),
-      });
-    }
-  }
-}
-
-async function removeAiProvider(name: string): Promise<void> {
-  const provider = aiConfigData?.providers.find((entry) => entry.name === name);
-  const label = provider ? providerDisplayName(provider) : name;
-  if (!window.confirm(tf("ai_provider_remove_confirm", { name: label }))) return;
-  const status = aiConfigStatusEl();
-  try {
-    const result = await runBridge<{
-      referencingRoles: Array<"recall" | "vision" | "text">;
-    }>("provider-config-remove", ["--name", name, "--scope", "machine"]);
-    hideProviderForm();
-    await loadProviderConfig();
-    await loadProviderStatus();
-    if (status) {
-      const referenced =
-        result.referencingRoles.length > 0
-          ? ` ${tf("ai_provider_referenced", {
-              roles: result.referencingRoles.join(", "),
-            })}`
-          : "";
-      status.textContent = `${tf("ai_provider_removed", { name: label })}${referenced}`;
-    }
-  } catch (err) {
-    if (status) {
-      status.textContent = tf("ai_provider_save_failed", {
-        message: errorMessage(err),
-      });
-    }
-  }
-}
-
-async function applyRoleBinding(
-  role: "recall" | "vision",
-  primary: string,
-  fallback?: string,
-): Promise<void> {
-  const status = aiConfigStatusEl();
-  if (!primary) return;
-
-  const provider = aiConfigData?.providers.find((entry) => entry.name === primary);
-  if (
-    provider?.apiFlavor === "anthropic-messages" &&
-    role === "recall" &&
-    !window.confirm(t("ai_recall_anthropic_warn"))
-  ) {
-    return;
-  }
-
-  if (role === "vision" && provider && !provider.local) {
-    if (
-      !window.confirm(
-        tf("ai_vision_cloud_confirm", {
-          endpoint: provider.url ?? "cloud",
-        }),
-      )
-    ) {
-      return;
-    }
-    await runBridge("setting-set", [
-      "--key",
-      "llm.vision.enabled",
-      "--value",
-      "true",
-    ]);
-  }
-
-  const args = [
-    "--role",
-    role,
-    "--primary",
-    primary,
-    "--scope",
-    "machine",
-  ];
-  if (fallback) args.push("--fallback", fallback);
-
-  try {
-    await runBridge("provider-config-bind", args);
-    await loadProviderConfig();
-    await loadProviderStatus();
-    if (status) status.textContent = tf("ai_role_bound", { role });
-  } catch (err) {
-    if (status) {
-      status.textContent = tf("ai_role_bind_failed", {
+      status.textContent = tf("model_save_failed", {
         message: errorMessage(err),
       });
     }
@@ -2224,7 +1813,7 @@ function toggleAiConfigEditor(): void {
   button.textContent = aiConfigEditorOpen
     ? t("btn_ai_config_close")
     : t("btn_ai_config_open");
-  if (aiConfigEditorOpen) void loadProviderConfig();
+  if (aiConfigEditorOpen) void loadModelRegistry();
 }
 
 async function checkDesktopUpdates(): Promise<void> {
@@ -2933,7 +2522,7 @@ function refreshSettingsData(): void {
   void loadDatabaseStatus();
   void loadSettingsKnowledgeContext();
   void loadAgentHarnessStatus();
-  if (aiConfigEditorOpen) void loadProviderConfig();
+  if (aiConfigEditorOpen) void loadModelRegistry();
 }
 
 function switchView(viewId: AppView) {
@@ -4545,7 +4134,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("btn-add-ai-provider")?.addEventListener("click", () => {
-    showProviderForm();
+    showModelForm();
   });
 
   document.getElementById("btn-check-updates")?.addEventListener("click", () => {

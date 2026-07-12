@@ -15,12 +15,18 @@
 import { spawn } from "node:child_process";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import type { DiscussionTurn } from "../../bridge/protocol.js";
-import type { Database, SupportedLocale } from "../../kernel/index.js";
+import type {
+  Database,
+  ModelCapability,
+  ModelEntry,
+  SupportedLocale,
+} from "../../kernel/index.js";
 import {
   ensureMachineProviderRolesSanitized,
   getActiveWorkspaceContext,
   getKnowledgeContextByName,
   getMachineAiConfig,
+  getMachineAiModels,
   getProviderApiKey,
   getSetting,
   getSystemProfile,
@@ -219,12 +225,100 @@ function resolveProviderApiKey(rec: ProviderRecord): string {
   return DEFAULT_LLM_API_KEY;
 }
 
+/** Legacy roles collapse onto unified capabilities (ADR 2026-07-12). */
+const ROLE_TO_CAPABILITY: Record<LlmRole, ModelCapability> = {
+  recall: "text",
+  text: "text",
+  vision: "image",
+  embedding: "embedding",
+};
+
+/** Project one registry entry into a resolved {@link ProviderConfig}. */
+function materializeModelEntry(
+  entry: ModelEntry,
+  base: LlmConfig,
+  enabled: boolean,
+  maxFrames: number | undefined,
+): ProviderConfig {
+  const url = entry.url || base.url;
+  const cfg: ProviderConfig = {
+    enabled,
+    url,
+    model: entry.model || base.model,
+    apiKey: entry.apiKeyRef
+      ? (getProviderApiKey(entry.apiKeyRef) ?? DEFAULT_LLM_API_KEY)
+      : DEFAULT_LLM_API_KEY,
+    apiFlavor: entry.apiFlavor || inferApiFlavor(url),
+    locale: base.locale,
+    providerName: entry.id,
+    label: entry.label,
+    source: "machine",
+    local: entry.local,
+  };
+  if (entry.runner) cfg.runner = entry.runner;
+  if (maxFrames !== undefined) cfg.maxFrames = maxFrames;
+  return cfg;
+}
+
+/**
+ * Resolve an endpoint for a capability from the ordered `ai.models` registry
+ * (ADR 2026-07-12). Walks entries by `order`, keeping those the user enabled
+ * AND a probe detected for the capability, and chains them primary → fallback
+ * in list order. Returns `null` when no registry is configured, so callers fall
+ * back to the legacy role resolution.
+ *
+ * Reachability (local endpoint online / cloud key present) stays a call-time
+ * concern handled by the primary→fallback try path, exactly as today — this
+ * resolver only applies the static user-enabled + detected filter so it is
+ * deterministic and testable.
+ */
+export async function resolveCapability(
+  db: Database,
+  capability: ModelCapability,
+): Promise<ProviderConfig | null> {
+  const models = getMachineAiModels();
+  if (models.length === 0) return null;
+
+  const isVisual = capability === "image" || capability === "video";
+  const enabled =
+    (isVisual
+      ? await getSetting(db, "llm.vision.enabled")
+      : await getSetting(db, "llm.enabled")) === "true";
+  const base = await getLlmConfig(db);
+
+  let maxFrames: number | undefined;
+  if (isVisual) {
+    const raw = await getSetting(db, "llm.vision.max_frames");
+    const parsed = raw ? parseInt(raw, 10) : 100;
+    maxFrames = Number.isNaN(parsed) ? 100 : parsed;
+  }
+
+  const eligible = [...models]
+    .sort((a, b) => a.order - b.order)
+    .filter(
+      (entry) =>
+        entry.capabilities[capability] &&
+        entry.detectedCapabilities[capability],
+    );
+  if (eligible.length === 0) return null;
+
+  const configs = eligible.map((entry) =>
+    materializeModelEntry(entry, base, enabled, maxFrames),
+  );
+  for (let i = configs.length - 1; i > 0; i--) {
+    configs[i - 1] = { ...configs[i - 1], fallback: configs[i] };
+  }
+  return configs[0];
+}
+
 /**
  * Resolve the configured provider for a role.
  *
- * New-style config: JSON `llm.providers` (named endpoint records) + `llm.roles`
- * (role → {primary, fallback}). When either is absent, falls back to the legacy
- * `llm.*` / `llm.vision.*` keys, so existing installs behave identically.
+ * Preferred config: the unified `ai.models` registry via {@link resolveCapability}
+ * (roles map to capabilities: recall/text → text, vision → image, embedding →
+ * embedding). When no registry is configured, falls back to the legacy
+ * `llm.providers` + `llm.roles` records and finally the flat `llm.*` /
+ * `llm.vision.*` keys, so existing installs behave identically.
  *
  * Enablement stays on the existing gates — `llm.enabled` for recall/text,
  * `llm.vision.enabled` for vision — so the vision consent/privacy semantics are
@@ -235,6 +329,9 @@ export async function getProviderForRole(
   role: LlmRole,
 ): Promise<ProviderConfig> {
   ensureMachineProviderRolesSanitized();
+
+  const viaRegistry = await resolveCapability(db, ROLE_TO_CAPABILITY[role]);
+  if (viaRegistry) return viaRegistry;
 
   const enabled =
     role === "vision"
