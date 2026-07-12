@@ -30,6 +30,7 @@ import {
   applySourceProposals,
   assignTokenToContext,
   BUILT_IN_SENSITIVE_MATCHERS,
+  type CapabilityFlags,
   clearProviderApiKey,
   confirmCardSplit,
   confirmFoundations,
@@ -42,7 +43,9 @@ import {
   deleteCurriculumCardForUser,
   deleteToken,
   discoverSkills,
+  emptyCapabilityFlags,
   ensureCard,
+  ensureMachineAiModelsMigrated,
   generateConceptFreeCue,
   generateTokenSlug,
   getActiveWorkspaceContext,
@@ -54,6 +57,7 @@ import {
   getDatabaseTargetInfo,
   getDisplayTitle,
   getKnowledgeContextByName,
+  getMachineAiModels,
   getProviderApiKey,
   getSetting,
   getSystemProfile,
@@ -69,12 +73,15 @@ import {
   listProviderApiKeyRefs,
   listTokens,
   listUserCardsForCurriculumTopic,
+  type ModelCapability,
+  type ModelEntry,
   openDatabase,
   pairCommands,
   readMonitorLog,
   readUiObservationLog,
   resolveObserverPolicy,
   resolveReviewContext,
+  saveMachineAiModels,
   setActiveWorkspaceContext,
   setAgentConnectAutoDone,
   setProviderApiKey,
@@ -135,6 +142,10 @@ import {
 } from "../curriculum/index.js";
 import { resolveOperationKnowledgeContexts } from "../knowledge-contexts.js";
 import {
+  probeModelCapabilities,
+  validateModelSave,
+} from "../llm/capability-probe.js";
+import {
   type ApiFlavor,
   checkVisionReadiness,
   DEFAULT_LLM_MODEL,
@@ -150,6 +161,7 @@ import {
   getProviderForRole,
   getProviderRoleStatus,
   importCurriculumViaLLM,
+  inferApiFlavor,
   isLlmOnline,
   type LlmRole,
   translateQuestionViaLLM,
@@ -2502,6 +2514,255 @@ bridgeCommand
       : undefined;
     const models = await getAvailableModels(opts.url, apiKey);
     jsonOut({ models });
+  });
+
+// ── zam bridge model-* (unified capability registry, ADR 2026-07-12) ─────────
+
+/** Secret-safe projection of a registry entry for the Settings UI. */
+function modelRow(entry: ModelEntry): Record<string, unknown> {
+  return {
+    id: entry.id,
+    label: entry.label,
+    url: entry.url,
+    model: entry.model,
+    local: entry.local,
+    apiFlavor: entry.apiFlavor,
+    runner: entry.runner,
+    order: entry.order,
+    capabilities: entry.capabilities,
+    detectedCapabilities: entry.detectedCapabilities,
+    probedAt: entry.probedAt,
+    apiKeyRef: entry.apiKeyRef,
+    keyState: entry.apiKeyRef
+      ? getProviderApiKey(entry.apiKeyRef)
+        ? "set"
+        : "missing"
+      : "none",
+  };
+}
+
+/** Parse a `{cap: true}` JSON object into a full capability flag record. */
+function parseCapabilityFlags(json: string | undefined): CapabilityFlags {
+  const flags = emptyCapabilityFlags();
+  if (!json) return flags;
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(json);
+  } catch {
+    jsonError("Invalid --capabilities JSON");
+  }
+  if (parsed && typeof parsed === "object") {
+    const record = parsed as Record<string, unknown>;
+    for (const key of Object.keys(flags) as ModelCapability[]) {
+      if (record[key] === true) flags[key] = true;
+    }
+  }
+  return flags;
+}
+
+function urlLooksLocal(url: string): boolean {
+  return /localhost|127\.0\.0\.1|\[::1\]|::1/.test(url);
+}
+
+bridgeCommand
+  .command("model-list")
+  .description("List the machine-local capability model registry (JSON)")
+  .action(() => {
+    // Reading the registry is where a freshly upgraded install first migrates
+    // legacy providers/roles into ai.models (one-time, idempotent).
+    ensureMachineAiModelsMigrated();
+    const models = [...getMachineAiModels()].sort((a, b) => a.order - b.order);
+    jsonOut({ models: models.map(modelRow) });
+  });
+
+bridgeCommand
+  .command("model-probe")
+  .description("Detect capabilities of an endpoint via metadata (JSON)")
+  .requiredOption("--url <url>", "Endpoint base URL")
+  .requiredOption("--model <model>", "Model id")
+  .option(
+    "--flavor <flavor>",
+    `Wire protocol: ${VALID_API_FLAVORS.join(" | ")}`,
+  )
+  .option("--key-ref <ref>", "Credential reference for API key")
+  .option("--embedding-dim-probe", "Allow one cheap /v1/embeddings dim probe")
+  .action(async (opts) => {
+    if (opts.flavor && !VALID_API_FLAVORS.includes(opts.flavor)) {
+      jsonError(`Invalid --flavor: ${opts.flavor}.`);
+    }
+    const apiFlavor: ApiFlavor = opts.flavor ?? inferApiFlavor(opts.url);
+    const probe = await probeModelCapabilities(
+      {
+        url: opts.url,
+        model: opts.model,
+        apiFlavor,
+        apiKeyRef: opts.keyRef,
+      },
+      { embeddingDimProbe: opts.embeddingDimProbe === true },
+    );
+    jsonOut({
+      reachable: probe.reachable,
+      catalog: probe.catalog,
+      detected: probe.detected,
+    });
+  });
+
+bridgeCommand
+  .command("model-upsert")
+  .description(
+    "Add or update a registry entry; probes before persisting (JSON)",
+  )
+  .option("--id <id>", "Existing entry id (omit to create)")
+  .option("--label <label>", "Human label")
+  .option("--url <url>", "Endpoint base URL")
+  .option("--model <model>", "Model id")
+  .option(
+    "--flavor <flavor>",
+    `Wire protocol: ${VALID_API_FLAVORS.join(" | ")}`,
+  )
+  .option("--local", "Mark as local endpoint")
+  .option("--no-local", "Mark as cloud/non-local endpoint")
+  .option("--runner <runner>", "Local runner hint")
+  .option("--key-ref <ref>", "Credential reference for API key")
+  .option("--capabilities <json>", "JSON object of user-selected capabilities")
+  .option("--order <n>", "Explicit sort order")
+  .action(async (opts, command) => {
+    if (opts.flavor && !VALID_API_FLAVORS.includes(opts.flavor)) {
+      jsonError(`Invalid --flavor: ${opts.flavor}.`);
+    }
+    const models = getMachineAiModels();
+    const existingIndex = opts.id
+      ? models.findIndex((m) => m.id === opts.id)
+      : -1;
+    if (opts.id && existingIndex < 0) jsonError(`No such model: ${opts.id}`);
+    const prev = existingIndex >= 0 ? models[existingIndex] : undefined;
+
+    const url = opts.url ?? prev?.url ?? "";
+    if (!url) jsonError("--url is required");
+    const model = opts.model ?? prev?.model ?? "";
+    if (!model) jsonError("--model is required");
+    const apiFlavor: ApiFlavor =
+      opts.flavor ?? prev?.apiFlavor ?? inferApiFlavor(url);
+    const local =
+      command.getOptionValueSource("local") === "cli"
+        ? opts.local === true
+        : (prev?.local ?? urlLooksLocal(url));
+    const order =
+      opts.order !== undefined
+        ? Number.parseInt(opts.order, 10)
+        : (prev?.order ?? models.length);
+
+    const candidate: ModelEntry = {
+      id: opts.id ?? ulid(),
+      label: opts.label ?? prev?.label ?? model,
+      url,
+      model,
+      local,
+      apiFlavor,
+      order,
+      capabilities: opts.capabilities
+        ? parseCapabilityFlags(opts.capabilities)
+        : (prev?.capabilities ?? emptyCapabilityFlags()),
+      detectedCapabilities:
+        prev?.detectedCapabilities ?? emptyCapabilityFlags(),
+    };
+    const runner = opts.runner ?? prev?.runner;
+    if (runner) candidate.runner = runner;
+    const apiKeyRef = opts.keyRef ?? prev?.apiKeyRef;
+    if (apiKeyRef) candidate.apiKeyRef = apiKeyRef;
+
+    const probe = await probeModelCapabilities(candidate, {
+      embeddingDimProbe: true,
+    });
+    const validation = validateModelSave(candidate, probe);
+    if (!validation.ok || !validation.entry) {
+      jsonError(validation.error ?? "Model could not be saved.");
+    }
+
+    const next = [...models];
+    if (existingIndex >= 0) next[existingIndex] = validation.entry;
+    else next.push(validation.entry);
+    saveMachineAiModels(next);
+
+    jsonOut({
+      ok: true,
+      model: modelRow(validation.entry),
+      probe: { reachable: probe.reachable, detected: probe.detected },
+    });
+  });
+
+bridgeCommand
+  .command("model-reprobe")
+  .description("Re-run capability detection for an entry; may widen (JSON)")
+  .requiredOption("--id <id>", "Registry entry id")
+  .action(async (opts) => {
+    const models = getMachineAiModels();
+    const index = models.findIndex((m) => m.id === opts.id);
+    if (index < 0) jsonError(`No such model: ${opts.id}`);
+    const entry = models[index];
+
+    const probe = await probeModelCapabilities(entry, {
+      embeddingDimProbe: true,
+    });
+    const validation = validateModelSave(entry, probe);
+    if (!validation.ok || !validation.entry) {
+      jsonError(validation.error ?? "Re-probe failed.");
+    }
+
+    const next = [...models];
+    next[index] = validation.entry;
+    saveMachineAiModels(next);
+    jsonOut({
+      ok: true,
+      model: modelRow(validation.entry),
+      probe: { reachable: probe.reachable, detected: probe.detected },
+    });
+  });
+
+bridgeCommand
+  .command("model-remove")
+  .description("Remove a registry entry (JSON)")
+  .requiredOption("--id <id>", "Registry entry id")
+  .action((opts) => {
+    const models = getMachineAiModels();
+    const next = models.filter((m) => m.id !== opts.id);
+    if (next.length === models.length) jsonError(`No such model: ${opts.id}`);
+    // Keep order contiguous after removal.
+    next
+      .sort((a, b) => a.order - b.order)
+      .forEach((m, i) => {
+        m.order = i;
+      });
+    saveMachineAiModels(next);
+    jsonOut({ ok: true, id: opts.id, models: next.map(modelRow) });
+  });
+
+bridgeCommand
+  .command("model-reorder")
+  .description("Set registry order from an ordered id list (JSON)")
+  .requiredOption("--ids <json>", "JSON array of entry ids in desired order")
+  .action((opts) => {
+    let ids: string[];
+    try {
+      ids = JSON.parse(opts.ids);
+    } catch {
+      jsonError("Invalid --ids JSON");
+      return;
+    }
+    if (!Array.isArray(ids)) jsonError("--ids must be a JSON array");
+    const models = getMachineAiModels();
+    const rank = new Map(ids.map((id, i) => [id, i]));
+    // Ids not listed keep their relative order after the listed ones.
+    const next = [...models].sort((a, b) => {
+      const ra = rank.get(a.id) ?? ids.length + a.order;
+      const rb = rank.get(b.id) ?? ids.length + b.order;
+      return ra - rb;
+    });
+    next.forEach((m, i) => {
+      m.order = i;
+    });
+    saveMachineAiModels(next);
+    jsonOut({ ok: true, models: next.map(modelRow) });
   });
 
 bridgeCommand
