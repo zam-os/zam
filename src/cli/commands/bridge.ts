@@ -4083,6 +4083,122 @@ async function fetchRawHtml(url: string): Promise<string> {
   }
 }
 
+const CURRICULUM_TOPIC_URI_PREFIX = "zam-curriculum-topic://";
+
+interface StoredCurriculumTopic {
+  topicId: string;
+  uri: string;
+  sourceId: string;
+  topicSourceId: string;
+  textLength: number;
+}
+
+async function extractAndStoreCurriculumTopics(
+  db: Database,
+  provider: NonNullable<ReturnType<typeof getCurriculumProvider>>,
+  topics: TopicNode[],
+): Promise<StoredCurriculumTopic[]> {
+  const topicsByUri = new Map<string, TopicNode[]>();
+  for (const topic of topics) {
+    const resolved = provider.resolveTopic(topic);
+    const list = topicsByUri.get(resolved.uri) || [];
+    list.push(topic);
+    topicsByUri.set(resolved.uri, list);
+  }
+
+  const extracted: StoredCurriculumTopic[] = [];
+
+  for (const [uri, uriTopics] of topicsByUri.entries()) {
+    const rawHtml = await fetchRawHtml(uri);
+
+    let extractedTexts: Record<string, string> = {};
+    if (provider.extractTopics) {
+      const fullTopicIds = uriTopics.map((t) => `${t.sourceRef}#${t.id}`);
+      extractedTexts = provider.extractTopics(rawHtml, fullTopicIds);
+    } else {
+      const cleanText = cleanHtml(rawHtml);
+      for (const t of uriTopics) {
+        extractedTexts[`${t.sourceRef}#${t.id}`] = cleanText;
+      }
+    }
+
+    const pageCleanedText = cleanHtml(rawHtml);
+    const sourceId = ulid();
+    await db
+      .prepare(
+        `INSERT INTO sources (id, type, uri, content)
+         VALUES (?, 'web', ?, ?)
+         ON CONFLICT(uri) DO UPDATE SET
+           type = excluded.type,
+           content = excluded.content`,
+      )
+      .run(sourceId, uri, pageCleanedText);
+
+    const record = (await db
+      .prepare("SELECT id FROM sources WHERE uri = ?")
+      .get(uri)) as { id: string };
+
+    for (const topic of uriTopics) {
+      const resolved = provider.resolveTopic(topic);
+      const text = extractedTexts[resolved.topicId] || "";
+      const topicUri = `${CURRICULUM_TOPIC_URI_PREFIX}${resolved.topicId}`;
+      const topicSourceId = ulid();
+      await db
+        .prepare(
+          `INSERT INTO sources (id, type, uri, content)
+           VALUES (?, 'web', ?, ?)
+           ON CONFLICT(uri) DO UPDATE SET
+             content = excluded.content`,
+        )
+        .run(topicSourceId, topicUri, text);
+
+      const topicRecord = (await db
+        .prepare("SELECT id FROM sources WHERE uri = ?")
+        .get(topicUri)) as { id: string };
+
+      extracted.push({
+        topicId: resolved.topicId,
+        uri,
+        sourceId: record.id,
+        topicSourceId: topicRecord.id,
+        textLength: text.length,
+      });
+    }
+  }
+
+  return extracted;
+}
+
+async function assignConfirmedProposalContexts(
+  db: Database,
+  proposals: Array<{
+    question: string;
+    concept: string;
+    domain: string;
+  }>,
+  contexts: KnowledgeContext[],
+): Promise<void> {
+  for (const p of proposals) {
+    const baseText =
+      p.question && p.question.trim().length > 0 ? p.question : p.concept;
+    const cleanDomain = slugify(p.domain || "");
+    const cleanBase = slugify(baseText);
+    let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
+    if (baseSlug.length > 60) {
+      baseSlug = baseSlug.slice(0, 60).replace(/-$/, "");
+    }
+    if (!baseSlug) {
+      baseSlug = "token";
+    }
+    const token = await getTokenBySlug(db, baseSlug);
+    if (token) {
+      for (const context of contexts) {
+        await assignTokenToContext(db, token.id, context.id);
+      }
+    }
+  }
+}
+
 // ── zam bridge curriculum-import-status ──────────────────────────────────────
 
 bridgeCommand
@@ -4145,6 +4261,103 @@ bridgeCommand
     });
   });
 
+// ── zam bridge curriculum-import-topic ───────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-import-topic")
+  .description(
+    "Extract, LLM-preview, and confirm-import one curriculum topic server-side (JSON)",
+  )
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption("--topic <json>", "Single topic node JSON")
+  .requiredOption("--domain <domain>", "Subject label for imported card domain")
+  .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--knowledge-context <context>",
+    "Assign confirmed tokens to a knowledge context (repeatable)",
+    (val, memo: string[]) => {
+      memo.push(val);
+      return memo;
+    },
+    [],
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const provider = getCurriculumProvider(opts.provider);
+      if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+
+      let topic: TopicNode;
+      try {
+        topic = JSON.parse(opts.topic);
+      } catch {
+        jsonError("Invalid --topic JSON");
+        return;
+      }
+
+      const extracted = await extractAndStoreCurriculumTopics(db, provider, [
+        topic,
+      ]);
+      const item = extracted[0];
+      if (!item || item.textLength === 0) {
+        jsonError(`No curriculum text extracted for topic "${topic.id}"`);
+      }
+
+      const contextNames = parseKnowledgeContextNames(
+        opts.knowledgeContext || [],
+      );
+      const contexts = await resolveKnowledgeContexts(db, contextNames);
+      const firstContext = contexts[0]?.name;
+
+      const topicRow = (await db
+        .prepare("SELECT content FROM sources WHERE id = ?")
+        .get(item.topicSourceId)) as { content: string | null };
+      const curriculumText = topicRow.content ?? "";
+
+      const cards = await importCurriculumViaLLM(
+        db,
+        curriculumText,
+        opts.domain,
+        item.uri,
+        { knowledgeContext: firstContext },
+      );
+
+      if (cards.length === 0) {
+        jsonError(`No cards were generated for ${item.topicId}`);
+      }
+
+      const proposals = cards.map((card) => ({
+        question: card.question,
+        concept: card.concept,
+        domain: card.domain,
+        title: card.title,
+        bloom_level: card.bloom_level,
+        symbiosis_mode: card.symbiosis_mode || "none",
+        excerpt: card.context || "",
+        page_number: null,
+        provider: provider.id,
+        topic_id: item.topicId,
+      }));
+
+      const result = await confirmSourceImport(
+        db,
+        userId,
+        item.sourceId,
+        proposals,
+      );
+
+      await assignConfirmedProposalContexts(db, proposals, contexts);
+
+      jsonOut({
+        success: true,
+        topicId: item.topicId,
+        proposalCount: proposals.length,
+        createdCount: result.createdCount,
+        ensuredCount: result.linkedCount,
+      });
+    });
+  });
+
 // ── zam bridge curriculum-extract-topics ─────────────────────────────────────
 
 bridgeCommand
@@ -4167,82 +4380,11 @@ bridgeCommand
         return;
       }
 
-      // Group topics by their resolved source URI
-      const topicsByUri = new Map<string, TopicNode[]>();
-      for (const topic of topics) {
-        const resolved = provider.resolveTopic(topic);
-        const list = topicsByUri.get(resolved.uri) || [];
-        list.push(topic);
-        topicsByUri.set(resolved.uri, list);
-      }
-
-      const CURRICULUM_TOPIC_URI_PREFIX = "zam-curriculum-topic://";
-
-      const extracted: Array<{
-        topicId: string;
-        uri: string;
-        sourceId: string;
-        topicSourceId: string;
-        textLength: number;
-      }> = [];
-
-      for (const [uri, uriTopics] of topicsByUri.entries()) {
-        const rawHtml = await fetchRawHtml(uri);
-
-        let extractedTexts: Record<string, string> = {};
-        if (provider.extractTopics) {
-          const fullTopicIds = uriTopics.map((t) => `${t.sourceRef}#${t.id}`);
-          extractedTexts = provider.extractTopics(rawHtml, fullTopicIds);
-        } else {
-          const cleanText = cleanHtml(rawHtml);
-          for (const t of uriTopics) {
-            extractedTexts[`${t.sourceRef}#${t.id}`] = cleanText;
-          }
-        }
-
-        const pageCleanedText = cleanHtml(rawHtml);
-        const sourceId = ulid();
-        await db
-          .prepare(
-            `INSERT INTO sources (id, type, uri, content)
-             VALUES (?, 'web', ?, ?)
-             ON CONFLICT(uri) DO UPDATE SET
-               type = excluded.type,
-               content = excluded.content`,
-          )
-          .run(sourceId, uri, pageCleanedText);
-
-        const record = (await db
-          .prepare("SELECT id FROM sources WHERE uri = ?")
-          .get(uri)) as { id: string };
-
-        for (const topic of uriTopics) {
-          const resolved = provider.resolveTopic(topic);
-          const text = extractedTexts[resolved.topicId] || "";
-          const topicUri = `${CURRICULUM_TOPIC_URI_PREFIX}${resolved.topicId}`;
-          const topicSourceId = ulid();
-          await db
-            .prepare(
-              `INSERT INTO sources (id, type, uri, content)
-               VALUES (?, 'web', ?, ?)
-               ON CONFLICT(uri) DO UPDATE SET
-                 content = excluded.content`,
-            )
-            .run(topicSourceId, topicUri, text);
-
-          const topicRecord = (await db
-            .prepare("SELECT id FROM sources WHERE uri = ?")
-            .get(topicUri)) as { id: string };
-
-          extracted.push({
-            topicId: resolved.topicId,
-            uri,
-            sourceId: record.id,
-            topicSourceId: topicRecord.id,
-            textLength: text.length,
-          });
-        }
-      }
+      const extracted = await extractAndStoreCurriculumTopics(
+        db,
+        provider,
+        topics,
+      );
 
       jsonOut({ success: true, extracted });
     });
