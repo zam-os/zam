@@ -22,6 +22,7 @@ import {
 describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
   let deutschHtml: string;
   let mathematikHtml: string;
+  let mathematikRs5Html: string;
   let englischHtml: string;
 
   beforeAll(() => {
@@ -34,6 +35,10 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
     );
     mathematikHtml = fs.readFileSync(
       path.join(fixturesDir, "mathematik-wpfg1.html"),
+      "utf-8",
+    );
+    mathematikRs5Html = fs.readFileSync(
+      path.join(fixturesDir, "mathematik-realschule-5.html"),
       "utf-8",
     );
     englischHtml = fs.readFileSync(
@@ -70,6 +75,41 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
     );
     expect(lb2Content).toContain("Lesetechniken und -strategien anwenden");
     expect(lb2Content).not.toContain("Lernbereich 1:");
+  });
+
+  it("extracts Realschule 5 Mathematik Lernbereiche from the Grade-5 fixture", () => {
+    const extracted = provider.extractTopics!(mathematikRs5Html, [
+      "realschule|5|mathematik#lb1",
+      "realschule|5|mathematik#lb2",
+    ]);
+
+    const lb1 = extracted["realschule|5|mathematik#lb1"];
+    const lb2 = extracted["realschule|5|mathematik#lb2"];
+
+    expect(lb1).toBeDefined();
+    expect(lb1).toContain("Natürliche Zahlen");
+    expect(lb1).toContain("100 000");
+    expect(lb1).not.toContain("Ganze Zahlen");
+
+    expect(lb2).toBeDefined();
+    expect(lb2).toContain("Ganze Zahlen");
+    expect(lb2).toContain("Zahlengeraden");
+    expect(lb2).not.toContain("Natürliche Zahlen");
+  });
+
+  it("extracts Kompetenzabschnitte from Realschule 5 Mathematik lb1", () => {
+    const subTopics = provider.extractSubTopics!(
+      mathematikRs5Html,
+      "realschule|5|mathematik#lb1",
+    );
+
+    expect(subTopics).toHaveLength(3);
+    expect(subTopics[0].id).toBe("ku1");
+    expect(subTopics[0].text).toContain("100 000");
+    for (const st of subTopics) {
+      expect(st.label).not.toMatch(/servicematerialien/i);
+      expect(st.label).not.toMatch(/übergreifende ziele/i);
+    }
   });
 
   it("extracts competence sub-units from a Mathematik Lernbereich", () => {

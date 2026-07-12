@@ -12,6 +12,7 @@
  * text extraction is Phase 3. The topic step tells the learner this.
  */
 import { runBridge } from "./bridge-transport.js";
+import { CurriculumWizardSession } from "./curriculum-wizard-session.js";
 import { t, tf } from "./i18n.js";
 import { escapeHtml } from "./learning-content.js";
 import { loadStudioData } from "./learning-content.js";
@@ -115,8 +116,7 @@ interface WizardStep {
 
 let importTopicQueue: TaxonomyOption[] = [];
 let importTopicIndex = 0;
-/** Bumped on open/cancel so stale bridge completions are ignored. */
-let wizardGeneration = 0;
+const wizardSession = new CurriculumWizardSession();
 
 // DOM cache
 let overlay: HTMLElement;
@@ -191,11 +191,11 @@ export function initCurriculumWizard(): void {
 }
 
 function isWizardStale(generation: number): boolean {
-  return generation !== wizardGeneration;
+  return wizardSession.isStale(generation);
 }
 
 async function showCurriculumWizard(): Promise<void> {
-  wizardGeneration += 1;
+  wizardSession.begin();
   history = [];
   chosenCountry = undefined;
   selection = {};
@@ -256,7 +256,7 @@ async function showCurriculumWizard(): Promise<void> {
 }
 
 function hideCurriculumWizard(): void {
-  wizardGeneration += 1;
+  wizardSession.invalidate();
   importTopicQueue = [];
   importTopicIndex = 0;
   overlay.classList.remove("active");
@@ -785,7 +785,7 @@ async function startImportFlow(topicStep: WizardStep): Promise<void> {
 }
 
 async function beginNextTopicImport(): Promise<void> {
-  const generation = wizardGeneration;
+  const generation = wizardSession.snapshot();
   const topic = importTopicQueue[importTopicIndex];
   if (!topic) {
     if (!isWizardStale(generation)) {
@@ -857,7 +857,7 @@ async function beginNextTopicImport(): Promise<void> {
 async function loadMultiTopicCardPreview(
   topics: TaxonomyOption[],
 ): Promise<void> {
-  const generation = wizardGeneration;
+  const generation = wizardSession.snapshot();
   const localLlm = await isLocalLlm();
   const previewTimeoutMs = localLlm
     ? LOCAL_LLM_PREVIEW_TIMEOUT_MS
@@ -972,7 +972,7 @@ async function loadCardPreview(
   subTopicStep: WizardStep,
   opts?: { pushHistory?: boolean; generation?: number },
 ): Promise<void> {
-  const generation = opts?.generation ?? wizardGeneration;
+  const generation = opts?.generation ?? wizardSession.snapshot();
   const topic = subTopicStep.topicOption;
   if (!topic) {
     throw new Error("Missing topic for card preview.");
@@ -1174,7 +1174,7 @@ function buildConfirmOperations(step: WizardStep): Array<{
 }
 
 async function confirmCardPreview(step: WizardStep): Promise<void> {
-  const generation = wizardGeneration;
+  const generation = wizardSession.snapshot();
   const operations = buildConfirmOperations(step);
   if (operations.length === 0) {
     throw new Error("Missing topic metadata for import.");
