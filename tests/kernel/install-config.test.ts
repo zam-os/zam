@@ -6,6 +6,7 @@ import {
   detectSyncProvider,
   getActiveWorkspace,
   getActiveWorkspaceId,
+  getAgentConnectAutoDone,
   getConfiguredWorkspaces,
   getInstallMode,
   getMachineAiConfig,
@@ -14,6 +15,7 @@ import {
   saveInstallConfig,
   saveMachineAiConfig,
   setActiveWorkspaceId,
+  setAgentConnectAutoDone,
   setInstallMode,
   upsertConfiguredWorkspace,
 } from "../../src/kernel/index.js";
@@ -65,6 +67,20 @@ describe("install config", () => {
     const path = tempConfigPath();
     writeFileSync(path, "{ not json", "utf-8");
     expect(getInstallMode(path)).toBe("developer");
+  });
+
+  it("round-trips the machine-local agent auto-connect marker", () => {
+    const path = tempConfigPath();
+    expect(getAgentConnectAutoDone(path)).toBe(false);
+
+    setAgentConnectAutoDone(true, path);
+    expect(getAgentConnectAutoDone(path)).toBe(true);
+    // Lives in the per-machine file, next to mode/ai — never in the database,
+    // which may be shared across machines via Turso.
+    expect(loadInstallConfig(path).agent?.connectAutoDone).toBe(true);
+
+    setAgentConnectAutoDone(false, path);
+    expect(getAgentConnectAutoDone(path)).toBe(false);
   });
 
   it("round-trips machine-local AI config without touching install mode", () => {

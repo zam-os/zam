@@ -25,10 +25,17 @@ export interface InstallConfig {
   channel?: InstallChannel;
   /** Machine-local AI provider choices; never synchronized through the DB. */
   ai?: MachineAiConfig;
+  /** Machine-local agent-connect state; harness installs are per-machine. */
+  agent?: MachineAgentConfig;
   /** Machine-local paths to existing personal/team/community workspaces. */
   workspaces?: WorkspaceConfig[];
   /** Machine-local id of the workspace currently active in this install. */
   activeWorkspaceId?: string;
+}
+
+export interface MachineAgentConfig {
+  /** True once first-run agent auto-connect ran on THIS machine (`--auto-once`). */
+  connectAutoDone?: boolean;
 }
 
 export type MachineAiRole = "vision" | "recall" | "text" | "embedding";
@@ -149,6 +156,28 @@ export function saveMachineAiConfig(
 ): void {
   const config = loadInstallConfig(path);
   config.ai = ai;
+  saveInstallConfig(config, path);
+}
+
+/**
+ * First-run agent auto-connect marker. Machine-local by design: the database
+ * can be shared across machines (Turso), but which harnesses are installed
+ * and configured is a property of this machine, so the marker must not travel.
+ */
+export function getAgentConnectAutoDone(path = defaultConfigPath()): boolean {
+  return loadInstallConfig(path).agent?.connectAutoDone === true;
+}
+
+export function setAgentConnectAutoDone(
+  done: boolean,
+  path = defaultConfigPath(),
+): void {
+  const config = loadInstallConfig(path);
+  if (done) {
+    config.agent = { ...(config.agent ?? {}), connectAutoDone: true };
+  } else if (config.agent) {
+    delete config.agent.connectAutoDone;
+  }
   saveInstallConfig(config, path);
 }
 

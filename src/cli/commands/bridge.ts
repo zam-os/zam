@@ -41,6 +41,7 @@ import {
   generateConceptFreeCue,
   generateTokenSlug,
   getActiveWorkspaceContext,
+  getAgentConnectAutoDone,
   getAgentSkill,
   getCard,
   getCardDeletionImpact,
@@ -69,6 +70,7 @@ import {
   resolveObserverPolicy,
   resolveReviewContext,
   setActiveWorkspaceContext,
+  setAgentConnectAutoDone,
   setProviderApiKey,
   setSetting,
   slugify,
@@ -2788,17 +2790,18 @@ bridgeCommand
     };
 
     if (opts.autoOnce) {
-      await withDb(async (db) => {
-        if ((await getSetting(db, "agent.connect.auto_done")) === "true") {
-          jsonOut({ success: true, skipped: true });
-          return;
-        }
-        const payload = run();
-        if (payload.detected.length > 0) {
-          await setSetting(db, "agent.connect.auto_done", "true");
-        }
-        jsonOut(payload);
-      });
+      // Machine-local marker (~/.zam/config.json), NOT a database setting:
+      // the database may be shared across machines via Turso, while harness
+      // installs and their configs are strictly per-machine.
+      if (getAgentConnectAutoDone()) {
+        jsonOut({ success: true, skipped: true });
+        return;
+      }
+      const payload = run();
+      if (payload.detected.length > 0) {
+        setAgentConnectAutoDone(true);
+      }
+      jsonOut(payload);
       return;
     }
 

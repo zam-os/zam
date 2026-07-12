@@ -1,9 +1,9 @@
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { openDatabase, setSetting } from "../../src/kernel/index.js";
+import { openDatabase } from "../../src/kernel/index.js";
 
 // Command-level contract for the agent-connect bridge surface. Detection
 // consults the real PATH, so these tests only exercise paths that are
@@ -38,7 +38,14 @@ describe("bridge agent-harness-status / agent-connect", () => {
   function runBridge(args: string[]): unknown {
     const output = execFileSync("node", [cliPath, "bridge", ...args], {
       cwd: tempCwd,
-      env: { ...process.env, HOME: tempHome, USERPROFILE: tempHome },
+      env: {
+        ...process.env,
+        HOME: tempHome,
+        USERPROFILE: tempHome,
+        // Pin the machine config into the temp HOME so a ZAM_CONFIG_PATH
+        // from the host environment can never leak in.
+        ZAM_CONFIG_PATH: join(tempHome, ".zam", "config.json"),
+      },
       encoding: "utf8",
     });
     return JSON.parse(output);
@@ -119,15 +126,15 @@ describe("bridge agent-harness-status / agent-connect", () => {
     ).toBe(true);
   });
 
-  it("skips --auto-once when the first-run marker is already set", async () => {
-    // The marker is bridge-internal (not in UI_WRITABLE_SETTINGS), so seed it
-    // directly in the temp database.
-    const db = await openDatabase({
-      dbPath: join(tempHome, ".zam", "zam.db"),
-      useConfiguredCloud: false,
-    });
-    await setSetting(db, "agent.connect.auto_done", "true");
-    await db.close();
+  it("skips --auto-once when the machine-local marker is already set", () => {
+    // The marker lives in ~/.zam/config.json (per-machine), not in the
+    // database — a Turso-shared database must not suppress auto-connect on a
+    // second computer.
+    writeFileSync(
+      join(tempHome, ".zam", "config.json"),
+      `${JSON.stringify({ agent: { connectAutoDone: true } }, null, 2)}\n`,
+      "utf-8",
+    );
 
     const result = runBridge(["agent-connect", "--auto-once"]) as {
       success: boolean;
