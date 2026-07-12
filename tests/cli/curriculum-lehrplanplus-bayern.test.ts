@@ -31,7 +31,7 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
   });
 
   it("returns no grades for an uncurated school type", () => {
-    expect(provider.listGrades("gymnasium")).toEqual([]);
+    expect(provider.listGrades("foerderschule")).toEqual([]);
   });
 
   it("lists the full Realschule subject catalog, including Mathematik", () => {
@@ -213,5 +213,30 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
         sourceRef: "realschule|9|physik",
       }),
     ).toThrow(/no resolvable source URL/i);
+  });
+
+  it("lists Gymnasium grades 5 through 13", () => {
+    expect(provider.listGrades("gymnasium").map((g) => g.id)).toEqual([
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+    ]);
+  });
+
+  it("lists Gymnasium Grade 12 Biologie (grundlegend) topics", () => {
+    const topics = provider.listTopics({
+      schoolType: "gymnasium",
+      grade: "12",
+      subject: "biologie",
+      track: "grundlegend",
+    });
+    expect(topics.length).toBeGreaterThan(0);
+    expect(topics[0].sourceRef).toBe("gymnasium|12|biologie|grundlegend");
   });
 });

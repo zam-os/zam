@@ -612,7 +612,7 @@ Each line: manifest topics + `contentUrls` + HTML fixture + CLI topic check + de
 
 ## Phase L — `lehrplanplus-bayern` (Bayern)
 
-Provider: **LehrplanPLUS (Bayern)** · Region: `BY` · Paths: **178** · Topics today: **138** (78%)
+Provider: **LehrplanPLUS (Bayern)** · Region: `BY` · Paths: **678** · Topics today: **479** (71%)
 
 Each line: manifest topics + `contentUrls` + HTML fixture + CLI topic check + desktop E2E import.
 
@@ -794,6 +794,506 @@ Each line: manifest topics + `contentUrls` + HTML fixture + CLI topic check + de
 - [ ] `realschule|10|textiles-gestalten` — Realschule 10. Kl. · Textiles Gestalten · user `curriculum-bayern-realschule-klasse-10`
 - [x] `realschule|10|werken` — Realschule 10. Kl. · Werken · user `curriculum-bayern-realschule-klasse-10`
 - [ ] `realschule|10|wirtschaft-und-recht` — Realschule 10. Kl. · Wirtschaft und Recht · user `curriculum-bayern-realschule-klasse-10`
+- [ ] `gymnasium|5|biologie` — Gymnasium 5. Kl. · Biologie · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|deutsch` — Gymnasium 5. Kl. · Deutsch · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|englisch` — Gymnasium 5. Kl. · Englisch · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|ethik` — Gymnasium 5. Kl. · Ethik · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|evangelische-religionslehre` — Gymnasium 5. Kl. · Evangelische Religionslehre · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|franzoesisch` — Gymnasium 5. Kl. · Französisch · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|geographie` — Gymnasium 5. Kl. · Geographie · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|informatik` — Gymnasium 5. Kl. · Informatik · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|iu` — Gymnasium 5. Kl. · Islamischer Unterricht · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|ir` — Gymnasium 5. Kl. · Israelitische Religionslehre · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|katholische-religionslehre` — Gymnasium 5. Kl. · Katholische Religionslehre · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|kunst` — Gymnasium 5. Kl. · Kunst · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|latein` — Gymnasium 5. Kl. · Latein · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|mathematik` — Gymnasium 5. Kl. · Mathematik · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|musik` — Gymnasium 5. Kl. · Musik · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|nt_gym` — Gymnasium 5. Kl. · Natur und Technik (Gym) · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|or` — Gymnasium 5. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|sport|basis_sport` — Gymnasium 5. Kl. · Sport · Basissport 5 · user `curriculum-bayern-gymnasium-klasse-5`
+- [x] `gymnasium|5|sport|diff_sport` — Gymnasium 5. Kl. · Sport · Differenzierter Sport · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|geschichte` — Gymnasium 5. Kl. · Geschichte · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|physik` — Gymnasium 5. Kl. · Physik · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|chemie` — Gymnasium 5. Kl. · Chemie · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|chi` — Gymnasium 5. Kl. · Chinesisch · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|griechisch` — Gymnasium 5. Kl. · Griechisch · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|italienisch` — Gymnasium 5. Kl. · Italienisch · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|pug` — Gymnasium 5. Kl. · Politik und Gesellschaft · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|russisch` — Gymnasium 5. Kl. · Russisch · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|spanisch` — Gymnasium 5. Kl. · Spanisch · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|wirtschaft-und-recht` — Gymnasium 5. Kl. · Wirtschaft und Recht · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|wirtschaftsinformatik` — Gymnasium 5. Kl. · Wirtschaftsinformatik · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|berufliche_orientierung` — Gymnasium 5. Kl. · Berufliche Orientierung · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|sozialpraktische-grundbildung` — Gymnasium 5. Kl. · Sozialpraktische Grundbildung · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|biolog-chem-praktikum` — Gymnasium 5. Kl. · Biologisch-chemisches Praktikum · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|pln` — Gymnasium 5. Kl. · Polnisch · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|sozialwissenschaftl-arbeitsfelder` — Gymnasium 5. Kl. · Sozialwissenschaftliche Arbeitsfelder · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|tsh` — Gymnasium 5. Kl. · Tschechisch · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|tr` — Gymnasium 5. Kl. · Türkisch · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|ar` — Gymnasium 5. Kl. · Archäologie · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|instrumentalensemble` — Gymnasium 5. Kl. · Instrumentalensemble · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|ps` — Gymnasium 5. Kl. · Psychologie · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|sug` — Gymnasium 5. Kl. · Sport und Gesellschaft · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|stb` — Gymnasium 5. Kl. · Tanz- und Bewegungskünstetheater · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|tuf` — Gymnasium 5. Kl. · Theater und Film · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|vokalensemble` — Gymnasium 5. Kl. · Vokalensemble · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|w-seminar` — Gymnasium 5. Kl. · Wissenschaftspropädeutisches Seminar · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|5|geol` — Gymnasium 5. Kl. · Geologie · user `curriculum-bayern-gymnasium-klasse-5`
+- [ ] `gymnasium|6|biologie` — Gymnasium 6. Kl. · Biologie · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|deutsch` — Gymnasium 6. Kl. · Deutsch · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|englisch|1-fremdsprache` — Gymnasium 6. Kl. · Englisch · Englisch 6 (1. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|englisch|2-fremdsprache` — Gymnasium 6. Kl. · Englisch · Englisch 6 (2. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|ethik` — Gymnasium 6. Kl. · Ethik · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|evangelische-religionslehre` — Gymnasium 6. Kl. · Evangelische Religionslehre · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|franzoesisch|1-fremdsprache` — Gymnasium 6. Kl. · Französisch · Französisch 6 (1. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|franzoesisch|2-fremdsprache` — Gymnasium 6. Kl. · Französisch · Französisch 6 (2. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|geographie` — Gymnasium 6. Kl. · Geographie · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|informatik` — Gymnasium 6. Kl. · Informatik · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|iu` — Gymnasium 6. Kl. · Islamischer Unterricht · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|ir` — Gymnasium 6. Kl. · Israelitische Religionslehre · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|katholische-religionslehre` — Gymnasium 6. Kl. · Katholische Religionslehre · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|kunst` — Gymnasium 6. Kl. · Kunst · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|latein|1-fremdsprache` — Gymnasium 6. Kl. · Latein · Latein 6 (1. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|latein|2-fremdsprache` — Gymnasium 6. Kl. · Latein · Latein 6 (2. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|mathematik` — Gymnasium 6. Kl. · Mathematik · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|musik` — Gymnasium 6. Kl. · Musik · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|nt_gym` — Gymnasium 6. Kl. · Natur und Technik (Gym) · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|or` — Gymnasium 6. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|sport|basis_sport` — Gymnasium 6. Kl. · Sport · Basissport 6 · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|sport|diff_sport` — Gymnasium 6. Kl. · Sport · Differenzierter Sport · user `curriculum-bayern-gymnasium-klasse-6`
+- [x] `gymnasium|6|geschichte` — Gymnasium 6. Kl. · Geschichte · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|physik` — Gymnasium 6. Kl. · Physik · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|chemie` — Gymnasium 6. Kl. · Chemie · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|chi` — Gymnasium 6. Kl. · Chinesisch · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|griechisch` — Gymnasium 6. Kl. · Griechisch · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|italienisch` — Gymnasium 6. Kl. · Italienisch · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|pug` — Gymnasium 6. Kl. · Politik und Gesellschaft · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|russisch` — Gymnasium 6. Kl. · Russisch · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|spanisch` — Gymnasium 6. Kl. · Spanisch · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|wirtschaft-und-recht` — Gymnasium 6. Kl. · Wirtschaft und Recht · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|wirtschaftsinformatik` — Gymnasium 6. Kl. · Wirtschaftsinformatik · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|berufliche_orientierung` — Gymnasium 6. Kl. · Berufliche Orientierung · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|sozialpraktische-grundbildung` — Gymnasium 6. Kl. · Sozialpraktische Grundbildung · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|biolog-chem-praktikum` — Gymnasium 6. Kl. · Biologisch-chemisches Praktikum · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|pln` — Gymnasium 6. Kl. · Polnisch · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|sozialwissenschaftl-arbeitsfelder` — Gymnasium 6. Kl. · Sozialwissenschaftliche Arbeitsfelder · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|tsh` — Gymnasium 6. Kl. · Tschechisch · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|tr` — Gymnasium 6. Kl. · Türkisch · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|ar` — Gymnasium 6. Kl. · Archäologie · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|instrumentalensemble` — Gymnasium 6. Kl. · Instrumentalensemble · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|ps` — Gymnasium 6. Kl. · Psychologie · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|sug` — Gymnasium 6. Kl. · Sport und Gesellschaft · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|stb` — Gymnasium 6. Kl. · Tanz- und Bewegungskünstetheater · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|tuf` — Gymnasium 6. Kl. · Theater und Film · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|vokalensemble` — Gymnasium 6. Kl. · Vokalensemble · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|w-seminar` — Gymnasium 6. Kl. · Wissenschaftspropädeutisches Seminar · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|6|geol` — Gymnasium 6. Kl. · Geologie · user `curriculum-bayern-gymnasium-klasse-6`
+- [ ] `gymnasium|7|biologie` — Gymnasium 7. Kl. · Biologie · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|deutsch` — Gymnasium 7. Kl. · Deutsch · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|englisch|1-fremdsprache` — Gymnasium 7. Kl. · Englisch · Englisch 7 (1. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|englisch|2-fremdsprache` — Gymnasium 7. Kl. · Englisch · Englisch 7 (2. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|ethik` — Gymnasium 7. Kl. · Ethik · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|evangelische-religionslehre` — Gymnasium 7. Kl. · Evangelische Religionslehre · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|franzoesisch|1-fremdsprache` — Gymnasium 7. Kl. · Französisch · Französisch 7 (1. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|franzoesisch|2-fremdsprache` — Gymnasium 7. Kl. · Französisch · Französisch 7 (2. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|geographie` — Gymnasium 7. Kl. · Geographie · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|informatik` — Gymnasium 7. Kl. · Informatik · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|iu` — Gymnasium 7. Kl. · Islamischer Unterricht · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|ir` — Gymnasium 7. Kl. · Israelitische Religionslehre · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|katholische-religionslehre` — Gymnasium 7. Kl. · Katholische Religionslehre · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|kunst` — Gymnasium 7. Kl. · Kunst · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|latein|1-fremdsprache` — Gymnasium 7. Kl. · Latein · Latein 7 (1. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|latein|2-fremdsprache` — Gymnasium 7. Kl. · Latein · Latein 7 (2. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|mathematik` — Gymnasium 7. Kl. · Mathematik · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|musik` — Gymnasium 7. Kl. · Musik · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|nt_gym` — Gymnasium 7. Kl. · Natur und Technik (Gym) · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|or` — Gymnasium 7. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|sport|basis_sport` — Gymnasium 7. Kl. · Sport · Basissport 7 · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|sport|diff_sport` — Gymnasium 7. Kl. · Sport · Differenzierter Sport · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|7|geschichte` — Gymnasium 7. Kl. · Geschichte · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|physik` — Gymnasium 7. Kl. · Physik · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|chemie` — Gymnasium 7. Kl. · Chemie · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|chi` — Gymnasium 7. Kl. · Chinesisch · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|griechisch` — Gymnasium 7. Kl. · Griechisch · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|italienisch` — Gymnasium 7. Kl. · Italienisch · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|pug` — Gymnasium 7. Kl. · Politik und Gesellschaft · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|russisch` — Gymnasium 7. Kl. · Russisch · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|spanisch` — Gymnasium 7. Kl. · Spanisch · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|wirtschaft-und-recht` — Gymnasium 7. Kl. · Wirtschaft und Recht · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|wirtschaftsinformatik` — Gymnasium 7. Kl. · Wirtschaftsinformatik · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|berufliche_orientierung` — Gymnasium 7. Kl. · Berufliche Orientierung · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|sozialpraktische-grundbildung` — Gymnasium 7. Kl. · Sozialpraktische Grundbildung · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|biolog-chem-praktikum` — Gymnasium 7. Kl. · Biologisch-chemisches Praktikum · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|pln` — Gymnasium 7. Kl. · Polnisch · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|sozialwissenschaftl-arbeitsfelder` — Gymnasium 7. Kl. · Sozialwissenschaftliche Arbeitsfelder · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|tsh` — Gymnasium 7. Kl. · Tschechisch · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|tr` — Gymnasium 7. Kl. · Türkisch · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|ar` — Gymnasium 7. Kl. · Archäologie · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|instrumentalensemble` — Gymnasium 7. Kl. · Instrumentalensemble · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|ps` — Gymnasium 7. Kl. · Psychologie · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|sug` — Gymnasium 7. Kl. · Sport und Gesellschaft · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|stb` — Gymnasium 7. Kl. · Tanz- und Bewegungskünstetheater · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|tuf` — Gymnasium 7. Kl. · Theater und Film · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|vokalensemble` — Gymnasium 7. Kl. · Vokalensemble · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|w-seminar` — Gymnasium 7. Kl. · Wissenschaftspropädeutisches Seminar · user `curriculum-bayern-gymnasium-klasse-7`
+- [ ] `gymnasium|7|geol` — Gymnasium 7. Kl. · Geologie · user `curriculum-bayern-gymnasium-klasse-7`
+- [x] `gymnasium|8|biologie` — Gymnasium 8. Kl. · Biologie · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|deutsch` — Gymnasium 8. Kl. · Deutsch · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|englisch|1-fremdsprache` — Gymnasium 8. Kl. · Englisch · Englisch 8 (1. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|englisch|2-fremdsprache` — Gymnasium 8. Kl. · Englisch · Englisch 8 (2. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|ethik` — Gymnasium 8. Kl. · Ethik · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|evangelische-religionslehre` — Gymnasium 8. Kl. · Evangelische Religionslehre · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|franzoesisch|1fs` — Gymnasium 8. Kl. · Französisch · Französisch 8 (1. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|franzoesisch|2fs` — Gymnasium 8. Kl. · Französisch · Französisch 8 (2. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|franzoesisch|3-fremdsprache` — Gymnasium 8. Kl. · Französisch · Französisch 8 (3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|geographie` — Gymnasium 8. Kl. · Geographie · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|informatik` — Gymnasium 8. Kl. · Informatik · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|iu` — Gymnasium 8. Kl. · Islamischer Unterricht · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|ir` — Gymnasium 8. Kl. · Israelitische Religionslehre · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|katholische-religionslehre` — Gymnasium 8. Kl. · Katholische Religionslehre · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|kunst` — Gymnasium 8. Kl. · Kunst · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|latein|1-fremdsprache` — Gymnasium 8. Kl. · Latein · Latein 8 (1. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|latein|2-fremdsprache` — Gymnasium 8. Kl. · Latein · Latein 8 (2. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|mathematik` — Gymnasium 8. Kl. · Mathematik · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|musik` — Gymnasium 8. Kl. · Musik · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|nt_gym` — Gymnasium 8. Kl. · Natur und Technik (Gym) · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|or` — Gymnasium 8. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|sport|basis_sport` — Gymnasium 8. Kl. · Sport · Basissport 8 · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|sport|diff_sport` — Gymnasium 8. Kl. · Sport · Differenzierter Sport · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|geschichte` — Gymnasium 8. Kl. · Geschichte · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|physik` — Gymnasium 8. Kl. · Physik · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|chemie` — Gymnasium 8. Kl. · Chemie · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|chi` — Gymnasium 8. Kl. · Chinesisch · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|griechisch` — Gymnasium 8. Kl. · Griechisch · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|italienisch` — Gymnasium 8. Kl. · Italienisch · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|pug` — Gymnasium 8. Kl. · Politik und Gesellschaft · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|russisch` — Gymnasium 8. Kl. · Russisch · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|spanisch` — Gymnasium 8. Kl. · Spanisch · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|8|wirtschaft-und-recht` — Gymnasium 8. Kl. · Wirtschaft und Recht · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|wirtschaftsinformatik` — Gymnasium 8. Kl. · Wirtschaftsinformatik · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|berufliche_orientierung` — Gymnasium 8. Kl. · Berufliche Orientierung · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|sozialpraktische-grundbildung` — Gymnasium 8. Kl. · Sozialpraktische Grundbildung · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|biolog-chem-praktikum` — Gymnasium 8. Kl. · Biologisch-chemisches Praktikum · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|pln` — Gymnasium 8. Kl. · Polnisch · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|sozialwissenschaftl-arbeitsfelder` — Gymnasium 8. Kl. · Sozialwissenschaftliche Arbeitsfelder · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|tsh` — Gymnasium 8. Kl. · Tschechisch · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|tr` — Gymnasium 8. Kl. · Türkisch · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|ar` — Gymnasium 8. Kl. · Archäologie · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|instrumentalensemble` — Gymnasium 8. Kl. · Instrumentalensemble · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|ps` — Gymnasium 8. Kl. · Psychologie · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|sug` — Gymnasium 8. Kl. · Sport und Gesellschaft · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|stb` — Gymnasium 8. Kl. · Tanz- und Bewegungskünstetheater · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|tuf` — Gymnasium 8. Kl. · Theater und Film · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|vokalensemble` — Gymnasium 8. Kl. · Vokalensemble · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|w-seminar` — Gymnasium 8. Kl. · Wissenschaftspropädeutisches Seminar · user `curriculum-bayern-gymnasium-klasse-8`
+- [ ] `gymnasium|8|geol` — Gymnasium 8. Kl. · Geologie · user `curriculum-bayern-gymnasium-klasse-8`
+- [x] `gymnasium|9|biologie` — Gymnasium 9. Kl. · Biologie · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|deutsch` — Gymnasium 9. Kl. · Deutsch · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|englisch|1-fremdsprache` — Gymnasium 9. Kl. · Englisch · Englisch 9 (1. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|englisch|2-fremdsprache` — Gymnasium 9. Kl. · Englisch · Englisch 9 (2. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|ethik` — Gymnasium 9. Kl. · Ethik · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|evangelische-religionslehre` — Gymnasium 9. Kl. · Evangelische Religionslehre · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|franzoesisch|1-fremdsprache` — Gymnasium 9. Kl. · Französisch · Französisch 9 (1. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|franzoesisch|2-fremdsprache` — Gymnasium 9. Kl. · Französisch · Französisch 9 (2. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|franzoesisch|3-fremdsprache` — Gymnasium 9. Kl. · Französisch · Französisch 9 (3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-9`
+- [ ] `gymnasium|9|geographie` — Gymnasium 9. Kl. · Geographie · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|informatik` — Gymnasium 9. Kl. · Informatik · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|iu` — Gymnasium 9. Kl. · Islamischer Unterricht · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|ir` — Gymnasium 9. Kl. · Israelitische Religionslehre · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|katholische-religionslehre` — Gymnasium 9. Kl. · Katholische Religionslehre · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|kunst` — Gymnasium 9. Kl. · Kunst · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|latein` — Gymnasium 9. Kl. · Latein · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|mathematik` — Gymnasium 9. Kl. · Mathematik · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|musik` — Gymnasium 9. Kl. · Musik · user `curriculum-bayern-gymnasium-klasse-9`
+- [ ] `gymnasium|9|nt_gym` — Gymnasium 9. Kl. · Natur und Technik (Gym) · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|or` — Gymnasium 9. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|sport|basis_sport` — Gymnasium 9. Kl. · Sport · Basissport 9 · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|sport|diff_sport` — Gymnasium 9. Kl. · Sport · Differenzierter Sport · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|geschichte` — Gymnasium 9. Kl. · Geschichte · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|physik` — Gymnasium 9. Kl. · Physik · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|chemie|ch` — Gymnasium 9. Kl. · Chemie · Chemie 9 (HG, SG, MuG, WWG, SWG) · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|chemie|ch-ntg` — Gymnasium 9. Kl. · Chemie · Chemie 9 (NTG) · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|chi` — Gymnasium 9. Kl. · Chinesisch · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|griechisch` — Gymnasium 9. Kl. · Griechisch · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|italienisch` — Gymnasium 9. Kl. · Italienisch · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|pug` — Gymnasium 9. Kl. · Politik und Gesellschaft · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|russisch` — Gymnasium 9. Kl. · Russisch · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|spanisch` — Gymnasium 9. Kl. · Spanisch · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|wirtschaft-und-recht` — Gymnasium 9. Kl. · Wirtschaft und Recht · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|wirtschaftsinformatik` — Gymnasium 9. Kl. · Wirtschaftsinformatik · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|berufliche_orientierung` — Gymnasium 9. Kl. · Berufliche Orientierung · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|9|sozialpraktische-grundbildung` — Gymnasium 9. Kl. · Sozialpraktische Grundbildung · user `curriculum-bayern-gymnasium-klasse-9`
+- [ ] `gymnasium|9|biolog-chem-praktikum` — Gymnasium 9. Kl. · Biologisch-chemisches Praktikum · user `curriculum-bayern-gymnasium-klasse-9`
+- [ ] `gymnasium|9|pln` — Gymnasium 9. Kl. · Polnisch · user `curriculum-bayern-gymnasium-klasse-9`
+- [ ] `gymnasium|9|sozialwissenschaftl-arbeitsfelder` — Gymnasium 9. Kl. · Sozialwissenschaftliche Arbeitsfelder · user `curriculum-bayern-gymnasium-klasse-9`
+- [ ] `gymnasium|9|tsh` — Gymnasium 9. Kl. · Tschechisch · user `curriculum-bayern-gymnasium-klasse-9`
+- [ ] `gymnasium|9|tr` — Gymnasium 9. Kl. · Türkisch · user `curriculum-bayern-gymnasium-klasse-9`
+- [ ] `gymnasium|9|ar` — Gymnasium 9. Kl. · Archäologie · user `curriculum-bayern-gymnasium-klasse-9`
+- [ ] `gymnasium|9|instrumentalensemble` — Gymnasium 9. Kl. · Instrumentalensemble · user `curriculum-bayern-gymnasium-klasse-9`
+- [ ] `gymnasium|9|ps` — Gymnasium 9. Kl. · Psychologie · user `curriculum-bayern-gymnasium-klasse-9`
+- [ ] `gymnasium|9|sug` — Gymnasium 9. Kl. · Sport und Gesellschaft · user `curriculum-bayern-gymnasium-klasse-9`
+- [ ] `gymnasium|9|stb` — Gymnasium 9. Kl. · Tanz- und Bewegungskünstetheater · user `curriculum-bayern-gymnasium-klasse-9`
+- [ ] `gymnasium|9|tuf` — Gymnasium 9. Kl. · Theater und Film · user `curriculum-bayern-gymnasium-klasse-9`
+- [ ] `gymnasium|9|vokalensemble` — Gymnasium 9. Kl. · Vokalensemble · user `curriculum-bayern-gymnasium-klasse-9`
+- [ ] `gymnasium|9|w-seminar` — Gymnasium 9. Kl. · Wissenschaftspropädeutisches Seminar · user `curriculum-bayern-gymnasium-klasse-9`
+- [ ] `gymnasium|9|geol` — Gymnasium 9. Kl. · Geologie · user `curriculum-bayern-gymnasium-klasse-9`
+- [x] `gymnasium|10|biologie` — Gymnasium 10. Kl. · Biologie · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|deutsch` — Gymnasium 10. Kl. · Deutsch · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|englisch` — Gymnasium 10. Kl. · Englisch · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|ethik` — Gymnasium 10. Kl. · Ethik · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|evangelische-religionslehre` — Gymnasium 10. Kl. · Evangelische Religionslehre · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|franzoesisch|1-2-fremdsprache` — Gymnasium 10. Kl. · Französisch · Französisch 10 (1. und 2. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|franzoesisch|3-fremdsprache` — Gymnasium 10. Kl. · Französisch · Französisch 10 (3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|geographie` — Gymnasium 10. Kl. · Geographie · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|informatik` — Gymnasium 10. Kl. · Informatik · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|iu` — Gymnasium 10. Kl. · Islamischer Unterricht · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|ir` — Gymnasium 10. Kl. · Israelitische Religionslehre · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|katholische-religionslehre` — Gymnasium 10. Kl. · Katholische Religionslehre · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|kunst` — Gymnasium 10. Kl. · Kunst · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|latein` — Gymnasium 10. Kl. · Latein · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|mathematik` — Gymnasium 10. Kl. · Mathematik · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|musik` — Gymnasium 10. Kl. · Musik · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|10|nt_gym` — Gymnasium 10. Kl. · Natur und Technik (Gym) · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|or` — Gymnasium 10. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|sport|basis_sport` — Gymnasium 10. Kl. · Sport · Basissport 10 · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|sport|diff_sport` — Gymnasium 10. Kl. · Sport · Differenzierter Sport · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|geschichte` — Gymnasium 10. Kl. · Geschichte · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|physik` — Gymnasium 10. Kl. · Physik · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|chemie|ch` — Gymnasium 10. Kl. · Chemie · Chemie 10 (HG, SG, MuG, WWG, SWG) · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|chemie|ch-ntg` — Gymnasium 10. Kl. · Chemie · Chemie 10 (NTG) · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|chi` — Gymnasium 10. Kl. · Chinesisch · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|griechisch` — Gymnasium 10. Kl. · Griechisch · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|italienisch` — Gymnasium 10. Kl. · Italienisch · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|pug|einstuendig` — Gymnasium 10. Kl. · Politik und Gesellschaft · Politik und Gesellschaft 10 (HG, SG, NTG, MuG, WWG) · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|pug|zweistuendig` — Gymnasium 10. Kl. · Politik und Gesellschaft · Politik und Gesellschaft 10 (SWG) · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|russisch` — Gymnasium 10. Kl. · Russisch · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|spanisch` — Gymnasium 10. Kl. · Spanisch · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|wirtschaft-und-recht|andere` — Gymnasium 10. Kl. · Wirtschaft und Recht · Wirtschaft und Recht 10 (HG, SG, NTG, MuG, SWG) · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|wirtschaft-und-recht|wwg` — Gymnasium 10. Kl. · Wirtschaft und Recht · Wirtschaft und Recht 10 (WWG) · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|wirtschaftsinformatik` — Gymnasium 10. Kl. · Wirtschaftsinformatik · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|10|berufliche_orientierung` — Gymnasium 10. Kl. · Berufliche Orientierung · user `curriculum-bayern-gymnasium-klasse-10`
+- [x] `gymnasium|10|sozialpraktische-grundbildung` — Gymnasium 10. Kl. · Sozialpraktische Grundbildung · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|10|biolog-chem-praktikum` — Gymnasium 10. Kl. · Biologisch-chemisches Praktikum · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|10|pln` — Gymnasium 10. Kl. · Polnisch · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|10|sozialwissenschaftl-arbeitsfelder` — Gymnasium 10. Kl. · Sozialwissenschaftliche Arbeitsfelder · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|10|tsh` — Gymnasium 10. Kl. · Tschechisch · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|10|tr` — Gymnasium 10. Kl. · Türkisch · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|10|ar` — Gymnasium 10. Kl. · Archäologie · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|10|instrumentalensemble` — Gymnasium 10. Kl. · Instrumentalensemble · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|10|ps` — Gymnasium 10. Kl. · Psychologie · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|10|sug` — Gymnasium 10. Kl. · Sport und Gesellschaft · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|10|stb` — Gymnasium 10. Kl. · Tanz- und Bewegungskünstetheater · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|10|tuf` — Gymnasium 10. Kl. · Theater und Film · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|10|vokalensemble` — Gymnasium 10. Kl. · Vokalensemble · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|10|w-seminar` — Gymnasium 10. Kl. · Wissenschaftspropädeutisches Seminar · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|10|geol` — Gymnasium 10. Kl. · Geologie · user `curriculum-bayern-gymnasium-klasse-10`
+- [ ] `gymnasium|11|biologie` — Gymnasium 11. Kl. · Biologie · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|deutsch` — Gymnasium 11. Kl. · Deutsch · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|englisch` — Gymnasium 11. Kl. · Englisch · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|ethik` — Gymnasium 11. Kl. · Ethik · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|evangelische-religionslehre` — Gymnasium 11. Kl. · Evangelische Religionslehre · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|franzoesisch|1-2-fremdsprache` — Gymnasium 11. Kl. · Französisch · Französisch 11 (1. und 2. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|franzoesisch|3-fremdsprache` — Gymnasium 11. Kl. · Französisch · Französisch 11 (3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|franzoesisch|spaet-fremdsprache` — Gymnasium 11. Kl. · Französisch · Französisch 11 (spät beginnende Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|geographie` — Gymnasium 11. Kl. · Geographie · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|informatik|ntg` — Gymnasium 11. Kl. · Informatik · Informatik 11 (NTG) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|informatik|mug_swg_sg` — Gymnasium 11. Kl. · Informatik · spät beginnende Informatik 11 (HG, SG, MuG, SWG) · user `curriculum-bayern-gymnasium-klasse-11`
+- [ ] `gymnasium|11|iu` — Gymnasium 11. Kl. · Islamischer Unterricht · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|ir` — Gymnasium 11. Kl. · Israelitische Religionslehre · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|katholische-religionslehre` — Gymnasium 11. Kl. · Katholische Religionslehre · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|kunst` — Gymnasium 11. Kl. · Kunst · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|latein` — Gymnasium 11. Kl. · Latein · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|mathematik` — Gymnasium 11. Kl. · Mathematik · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|musik` — Gymnasium 11. Kl. · Musik · user `curriculum-bayern-gymnasium-klasse-11`
+- [ ] `gymnasium|11|nt_gym` — Gymnasium 11. Kl. · Natur und Technik (Gym) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|or` — Gymnasium 11. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|sport|basis_sport` — Gymnasium 11. Kl. · Sport · Basissport 11 · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|sport|diff_sport` — Gymnasium 11. Kl. · Sport · Differenzierter Sport · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|geschichte` — Gymnasium 11. Kl. · Geschichte · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|physik` — Gymnasium 11. Kl. · Physik · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|chemie` — Gymnasium 11. Kl. · Chemie · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|chi|fs3` — Gymnasium 11. Kl. · Chinesisch · Chinesisch 11 (3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|chi|spaet` — Gymnasium 11. Kl. · Chinesisch · Chinesisch 11 (spät beginnende Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|griechisch` — Gymnasium 11. Kl. · Griechisch · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|italienisch|3-fremdsprache` — Gymnasium 11. Kl. · Italienisch · Italienisch 11 (3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|italienisch|spaet-fremdsprache` — Gymnasium 11. Kl. · Italienisch · Italienisch 11 (spät beginnende Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|pug|zweistuendig` — Gymnasium 11. Kl. · Politik und Gesellschaft · Politik und Gesellschaft 11 (HG, SG, NTG, MuG, WWG) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|pug|dreistuendig` — Gymnasium 11. Kl. · Politik und Gesellschaft · Politik und Gesellschaft 11 (SWG) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|russisch|3-fremdsprache` — Gymnasium 11. Kl. · Russisch · Russisch 11 (3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|russisch|spaet-fremdsprache` — Gymnasium 11. Kl. · Russisch · Russisch 11 (spät beginnende Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|spanisch|3-fremdsprache` — Gymnasium 11. Kl. · Spanisch · Spanisch 11 (3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|spanisch|spaet-fremdsprache` — Gymnasium 11. Kl. · Spanisch · Spanisch 11 (spät beginnende Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|wirtschaft-und-recht|andere` — Gymnasium 11. Kl. · Wirtschaft und Recht · Wirtschaft und Recht 11 (HG, SG, NTG, MuG, SWG) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|wirtschaft-und-recht|wwg` — Gymnasium 11. Kl. · Wirtschaft und Recht · Wirtschaft und Recht 11 (WWG) · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|wirtschaftsinformatik` — Gymnasium 11. Kl. · Wirtschaftsinformatik · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|berufliche_orientierung` — Gymnasium 11. Kl. · Berufliche Orientierung · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|sozialpraktische-grundbildung` — Gymnasium 11. Kl. · Sozialpraktische Grundbildung · user `curriculum-bayern-gymnasium-klasse-11`
+- [ ] `gymnasium|11|biolog-chem-praktikum` — Gymnasium 11. Kl. · Biologisch-chemisches Praktikum · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|pln` — Gymnasium 11. Kl. · Polnisch · user `curriculum-bayern-gymnasium-klasse-11`
+- [ ] `gymnasium|11|sozialwissenschaftl-arbeitsfelder` — Gymnasium 11. Kl. · Sozialwissenschaftliche Arbeitsfelder · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|tsh` — Gymnasium 11. Kl. · Tschechisch · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|11|tr` — Gymnasium 11. Kl. · Türkisch · user `curriculum-bayern-gymnasium-klasse-11`
+- [ ] `gymnasium|11|ar` — Gymnasium 11. Kl. · Archäologie · user `curriculum-bayern-gymnasium-klasse-11`
+- [ ] `gymnasium|11|instrumentalensemble` — Gymnasium 11. Kl. · Instrumentalensemble · user `curriculum-bayern-gymnasium-klasse-11`
+- [ ] `gymnasium|11|ps` — Gymnasium 11. Kl. · Psychologie · user `curriculum-bayern-gymnasium-klasse-11`
+- [ ] `gymnasium|11|sug` — Gymnasium 11. Kl. · Sport und Gesellschaft · user `curriculum-bayern-gymnasium-klasse-11`
+- [ ] `gymnasium|11|stb` — Gymnasium 11. Kl. · Tanz- und Bewegungskünstetheater · user `curriculum-bayern-gymnasium-klasse-11`
+- [ ] `gymnasium|11|tuf` — Gymnasium 11. Kl. · Theater und Film · user `curriculum-bayern-gymnasium-klasse-11`
+- [ ] `gymnasium|11|vokalensemble` — Gymnasium 11. Kl. · Vokalensemble · user `curriculum-bayern-gymnasium-klasse-11`
+- [ ] `gymnasium|11|w-seminar` — Gymnasium 11. Kl. · Wissenschaftspropädeutisches Seminar · user `curriculum-bayern-gymnasium-klasse-11`
+- [ ] `gymnasium|11|geol` — Gymnasium 11. Kl. · Geologie · user `curriculum-bayern-gymnasium-klasse-11`
+- [x] `gymnasium|12|biologie|grundlegend` — Gymnasium 12. Kl. · Biologie · Biologie 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|biologie|erhoeht` — Gymnasium 12. Kl. · Biologie · Biologie 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|deutsch|regulaer` — Gymnasium 12. Kl. · Deutsch · Deutsch 12/13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|deutsch|vertieft` — Gymnasium 12. Kl. · Deutsch · Deutsch 12 (Vertiefungskurs) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|englisch|grundlegend` — Gymnasium 12. Kl. · Englisch · Englisch 12/13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|englisch|erhoeht` — Gymnasium 12. Kl. · Englisch · Englisch 12/13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|ethik|grundlegend` — Gymnasium 12. Kl. · Ethik · Ethik 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|ethik|erhoeht` — Gymnasium 12. Kl. · Ethik · Ethik 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|evangelische-religionslehre|grundlegend` — Gymnasium 12. Kl. · Evangelische Religionslehre · Evangelische Religionslehre 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|evangelische-religionslehre|erhoeht` — Gymnasium 12. Kl. · Evangelische Religionslehre · Evangelische Religionslehre 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|franzoesisch|grundlegend-1-2-3` — Gymnasium 12. Kl. · Französisch · Französisch 12/13 (grundlegendes Anforderungsniveau, 1., 2. und 3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|franzoesisch|grundlegend-spaet` — Gymnasium 12. Kl. · Französisch · Französisch 12 (grundlegendes Anforderungsniveau, spät beginnende Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|franzoesisch|erhoeht` — Gymnasium 12. Kl. · Französisch · Französisch 12/13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|geographie|grundlegend` — Gymnasium 12. Kl. · Geographie · Geographie 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|geographie|erhoeht` — Gymnasium 12. Kl. · Geographie · Geographie 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|informatik|grundlegend` — Gymnasium 12. Kl. · Informatik · Informatik 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|informatik|erhoeht` — Gymnasium 12. Kl. · Informatik · Informatik 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|informatik|grundlegend-spaet` — Gymnasium 12. Kl. · Informatik · spät beginnende Informatik 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [ ] `gymnasium|12|iu` — Gymnasium 12. Kl. · Islamischer Unterricht · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|ir|grundlegend` — Gymnasium 12. Kl. · Israelitische Religionslehre · Israelitische Religionslehre 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|ir|erhoeht` — Gymnasium 12. Kl. · Israelitische Religionslehre · Israelitische Religionslehre 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|katholische-religionslehre|grundlegend` — Gymnasium 12. Kl. · Katholische Religionslehre · Katholische Religionslehre 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|katholische-religionslehre|erhoeht` — Gymnasium 12. Kl. · Katholische Religionslehre · Katholische Religionslehre 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|kunst|grundlegend` — Gymnasium 12. Kl. · Kunst · Kunst 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|kunst|erhoeht` — Gymnasium 12. Kl. · Kunst · Kunst 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|latein|grundlegend` — Gymnasium 12. Kl. · Latein · Latein 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|latein|erhoeht` — Gymnasium 12. Kl. · Latein · Latein 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|mathematik|regulaer` — Gymnasium 12. Kl. · Mathematik · Mathematik 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|mathematik|vertieft` — Gymnasium 12. Kl. · Mathematik · Mathematik 12 (Vertiefungskurs) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|musik|grundlegend` — Gymnasium 12. Kl. · Musik · Musik 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|musik|erhoeht` — Gymnasium 12. Kl. · Musik · Musik 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [ ] `gymnasium|12|nt_gym` — Gymnasium 12. Kl. · Natur und Technik (Gym) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|or|grundlegend` — Gymnasium 12. Kl. · Orthodoxe Religionslehre · Orthodoxe Religionslehre 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|or|erhoeht` — Gymnasium 12. Kl. · Orthodoxe Religionslehre · Orthodoxe Religionslehre 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|sport|basissport` — Gymnasium 12. Kl. · Sport · Sport 12/13 · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|sport|sporttheorie` — Gymnasium 12. Kl. · Sport · Sporttheorie 12/13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|geschichte|grundlegend` — Gymnasium 12. Kl. · Geschichte · Geschichte 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|geschichte|erhoeht` — Gymnasium 12. Kl. · Geschichte · Geschichte 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|physik|grundlegend` — Gymnasium 12. Kl. · Physik · Physik 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|physik|grundlegend-bio` — Gymnasium 12. Kl. · Physik · Physik 12 (grundlegendes Anforderungsniveau, Biophysik) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|physik|erhoeht` — Gymnasium 12. Kl. · Physik · Physik 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|chemie|grundlegend` — Gymnasium 12. Kl. · Chemie · Chemie 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|chemie|erhoeht` — Gymnasium 12. Kl. · Chemie · Chemie 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|chi|grundlegend-spaet` — Gymnasium 12. Kl. · Chinesisch · Chinesisch 12 (spät beginnende Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|chi|grundlegend-3` — Gymnasium 12. Kl. · Chinesisch · Chinesisch 12/13 (grundlegendes Anforderungsniveau, 3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|griechisch|grundlegend` — Gymnasium 12. Kl. · Griechisch · Griechisch 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|griechisch|erhoeht` — Gymnasium 12. Kl. · Griechisch · Griechisch 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|italienisch|grundlegend-3` — Gymnasium 12. Kl. · Italienisch · Italienisch 12/13 (grundlegendes Anforderungsniveau, 3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|italienisch|grundlegend-spaet` — Gymnasium 12. Kl. · Italienisch · Italienisch 12 (grundlegendes Anforderungsniveau, spät beginnende Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|italienisch|erhoeht` — Gymnasium 12. Kl. · Italienisch · Italienisch 12/13 (erhöhtes Anforderungsniveau, 3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|pug|grundlegend` — Gymnasium 12. Kl. · Politik und Gesellschaft · Politik und Gesellschaft 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|pug|erhoeht` — Gymnasium 12. Kl. · Politik und Gesellschaft · Politik und Gesellschaft 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|russisch|grundlegend-3` — Gymnasium 12. Kl. · Russisch · Russisch 12/13 (grundlegendes Anforderungsniveau, 3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|russisch|grundlegend-spaet` — Gymnasium 12. Kl. · Russisch · Russisch 12 (grundlegendes Anforderungsniveau, spät beginnende Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|russisch|erhoeht` — Gymnasium 12. Kl. · Russisch · Russisch 12/13 (erhöhtes Anforderungsniveau, 3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|spanisch|grundlegend-3` — Gymnasium 12. Kl. · Spanisch · Spanisch 12/13 (grundlegendes Anforderungsniveau, 3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|spanisch|grundlegend-spaet` — Gymnasium 12. Kl. · Spanisch · Spanisch 12 (grundlegendes Anforderungsniveau, spät beginnende Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|spanisch|erhoeht` — Gymnasium 12. Kl. · Spanisch · Spanisch 12/13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|wirtschaft-und-recht|grundlegend` — Gymnasium 12. Kl. · Wirtschaft und Recht · Wirtschaft und Recht 12 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|wirtschaft-und-recht|erhoeht` — Gymnasium 12. Kl. · Wirtschaft und Recht · Wirtschaft und Recht 12 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|wirtschaftsinformatik` — Gymnasium 12. Kl. · Wirtschaftsinformatik · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|berufliche_orientierung` — Gymnasium 12. Kl. · Berufliche Orientierung · user `curriculum-bayern-gymnasium-klasse-12`
+- [ ] `gymnasium|12|sozialpraktische-grundbildung` — Gymnasium 12. Kl. · Sozialpraktische Grundbildung · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|biolog-chem-praktikum` — Gymnasium 12. Kl. · Biologisch-chemisches Praktikum · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|pln` — Gymnasium 12. Kl. · Polnisch · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|sozialwissenschaftl-arbeitsfelder` — Gymnasium 12. Kl. · Sozialwissenschaftliche Arbeitsfelder · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|tsh` — Gymnasium 12. Kl. · Tschechisch · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|tr` — Gymnasium 12. Kl. · Türkisch · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|ar` — Gymnasium 12. Kl. · Archäologie · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|instrumentalensemble` — Gymnasium 12. Kl. · Instrumentalensemble · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|ps` — Gymnasium 12. Kl. · Psychologie · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|sug` — Gymnasium 12. Kl. · Sport und Gesellschaft · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|stb` — Gymnasium 12. Kl. · Tanz- und Bewegungskünstetheater · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|tuf` — Gymnasium 12. Kl. · Theater und Film · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|vokalensemble` — Gymnasium 12. Kl. · Vokalensemble · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|12|w-seminar` — Gymnasium 12. Kl. · Wissenschaftspropädeutisches Seminar · user `curriculum-bayern-gymnasium-klasse-12`
+- [ ] `gymnasium|12|geol` — Gymnasium 12. Kl. · Geologie · user `curriculum-bayern-gymnasium-klasse-12`
+- [x] `gymnasium|13|biologie|grundlegend` — Gymnasium 13. Kl. · Biologie · Biologie 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|biologie|erhoeht` — Gymnasium 13. Kl. · Biologie · Biologie 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|deutsch` — Gymnasium 13. Kl. · Deutsch · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|englisch|grundlegend` — Gymnasium 13. Kl. · Englisch · Englisch 12/13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|englisch|erhoeht` — Gymnasium 13. Kl. · Englisch · Englisch 12/13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|ethik|grundlegend` — Gymnasium 13. Kl. · Ethik · Ethik 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|ethik|erhoeht` — Gymnasium 13. Kl. · Ethik · Ethik 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|evangelische-religionslehre|grundlegend` — Gymnasium 13. Kl. · Evangelische Religionslehre · Evangelische Religionslehre 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|evangelische-religionslehre|erhoeht` — Gymnasium 13. Kl. · Evangelische Religionslehre · Evangelische Religionslehre 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|franzoesisch|grundlegend-1-2-3` — Gymnasium 13. Kl. · Französisch · Französisch 12/13 (grundlegendes Anforderungsniveau, 1., 2. und 3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|franzoesisch|grundlegend-spaet` — Gymnasium 13. Kl. · Französisch · Französisch 13 (grundlegendes Anforderungsniveau, spät beginnende Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|franzoesisch|erhoeht` — Gymnasium 13. Kl. · Französisch · Französisch 12/13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|geographie|grundlegend` — Gymnasium 13. Kl. · Geographie · Geographie 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|geographie|erhoeht` — Gymnasium 13. Kl. · Geographie · Geographie 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|informatik|grundlegend` — Gymnasium 13. Kl. · Informatik · Informatik 13 und spät beginnende Informatik 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|informatik|erhoeht` — Gymnasium 13. Kl. · Informatik · Informatik 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [ ] `gymnasium|13|iu` — Gymnasium 13. Kl. · Islamischer Unterricht · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|ir|grundlegend` — Gymnasium 13. Kl. · Israelitische Religionslehre · Israelitische Religionslehre 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|ir|erhoeht` — Gymnasium 13. Kl. · Israelitische Religionslehre · Israelitische Religionslehre 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|katholische-religionslehre|grundlegend` — Gymnasium 13. Kl. · Katholische Religionslehre · Katholische Religionslehre 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|katholische-religionslehre|erhoeht` — Gymnasium 13. Kl. · Katholische Religionslehre · Katholische Religionslehre 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|kunst|grundlegend` — Gymnasium 13. Kl. · Kunst · Kunst 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|kunst|erhoeht` — Gymnasium 13. Kl. · Kunst · Kunst 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|latein|grundlegend` — Gymnasium 13. Kl. · Latein · Latein 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|latein|erhoeht` — Gymnasium 13. Kl. · Latein · Latein 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|mathematik` — Gymnasium 13. Kl. · Mathematik · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|musik|grundlegend` — Gymnasium 13. Kl. · Musik · Musik 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|musik|erhoeht` — Gymnasium 13. Kl. · Musik · Musik 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [ ] `gymnasium|13|nt_gym` — Gymnasium 13. Kl. · Natur und Technik (Gym) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|or|grundlegend` — Gymnasium 13. Kl. · Orthodoxe Religionslehre · Orthodoxe Religionslehre 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|or|erhoeht` — Gymnasium 13. Kl. · Orthodoxe Religionslehre · Orthodoxe Religionslehre 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|sport|basissport` — Gymnasium 13. Kl. · Sport · Sport 12/13 · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|sport|sporttheorie` — Gymnasium 13. Kl. · Sport · Sporttheorie 12/13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|geschichte|grundlegend` — Gymnasium 13. Kl. · Geschichte · Geschichte 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|geschichte|erhoeht` — Gymnasium 13. Kl. · Geschichte · Geschichte 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|physik|grundlegend` — Gymnasium 13. Kl. · Physik · Physik 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|physik|grundlegend-astro` — Gymnasium 13. Kl. · Physik · Physik 13 (grundlegendes Anforderungsniveau, Astrophysik) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|physik|erhoeht` — Gymnasium 13. Kl. · Physik · Physik 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|chemie|grundlegend` — Gymnasium 13. Kl. · Chemie · Chemie 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|chemie|erhoeht` — Gymnasium 13. Kl. · Chemie · Chemie 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|chi|grundlegend-3` — Gymnasium 13. Kl. · Chinesisch · Chinesisch 12/13 (grundlegendes Anforderungsniveau, 3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|chi|grundlegend-spaet` — Gymnasium 13. Kl. · Chinesisch · Chinesisch 13 (spät beginnende Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|griechisch|grundlegend` — Gymnasium 13. Kl. · Griechisch · Griechisch 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|griechisch|erhoeht` — Gymnasium 13. Kl. · Griechisch · Griechisch 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|italienisch|grundlegend-3` — Gymnasium 13. Kl. · Italienisch · Italienisch 12/13 (grundlegendes Anforderungsniveau, 3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|italienisch|grundlegend-spaet` — Gymnasium 13. Kl. · Italienisch · Italienisch 13 (grundlegendes Anforderungsniveau, spät beginnende Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|italienisch|erhoeht` — Gymnasium 13. Kl. · Italienisch · Italienisch 12/13 (erhöhtes Anforderungsniveau, 3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|pug|grundlegend` — Gymnasium 13. Kl. · Politik und Gesellschaft · Politik und Gesellschaft 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|pug|erhoeht` — Gymnasium 13. Kl. · Politik und Gesellschaft · Politik und Gesellschaft 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|russisch|grundlegend-3` — Gymnasium 13. Kl. · Russisch · Russisch 12/13 (grundlegendes Anforderungsniveau, 3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|russisch|grundlegend-spaet` — Gymnasium 13. Kl. · Russisch · Russisch 13 (grundlegendes Anforderungsniveau, spät beginnende Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|russisch|erhoeht` — Gymnasium 13. Kl. · Russisch · Russisch 12/13 (erhöhtes Anforderungsniveau, 3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|spanisch|grundlegend-3` — Gymnasium 13. Kl. · Spanisch · Spanisch 12/13 (grundlegendes Anforderungsniveau, 3. Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|spanisch|grundlegend-spaet` — Gymnasium 13. Kl. · Spanisch · Spanisch 13 (grundlegendes Anforderungsniveau, spät beginnende Fremdsprache) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|spanisch|erhoeht` — Gymnasium 13. Kl. · Spanisch · Spanisch 12/13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|wirtschaft-und-recht|grundlegend` — Gymnasium 13. Kl. · Wirtschaft und Recht · Wirtschaft und Recht 13 (grundlegendes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|wirtschaft-und-recht|erhoeht` — Gymnasium 13. Kl. · Wirtschaft und Recht · Wirtschaft und Recht 13 (erhöhtes Anforderungsniveau) · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|wirtschaftsinformatik` — Gymnasium 13. Kl. · Wirtschaftsinformatik · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|berufliche_orientierung` — Gymnasium 13. Kl. · Berufliche Orientierung · user `curriculum-bayern-gymnasium-klasse-13`
+- [ ] `gymnasium|13|sozialpraktische-grundbildung` — Gymnasium 13. Kl. · Sozialpraktische Grundbildung · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|biolog-chem-praktikum` — Gymnasium 13. Kl. · Biologisch-chemisches Praktikum · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|pln` — Gymnasium 13. Kl. · Polnisch · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|sozialwissenschaftl-arbeitsfelder` — Gymnasium 13. Kl. · Sozialwissenschaftliche Arbeitsfelder · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|tsh` — Gymnasium 13. Kl. · Tschechisch · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|tr` — Gymnasium 13. Kl. · Türkisch · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|ar` — Gymnasium 13. Kl. · Archäologie · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|instrumentalensemble` — Gymnasium 13. Kl. · Instrumentalensemble · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|ps` — Gymnasium 13. Kl. · Psychologie · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|sug` — Gymnasium 13. Kl. · Sport und Gesellschaft · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|stb` — Gymnasium 13. Kl. · Tanz- und Bewegungskünstetheater · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|tuf` — Gymnasium 13. Kl. · Theater und Film · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|vokalensemble` — Gymnasium 13. Kl. · Vokalensemble · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|w-seminar` — Gymnasium 13. Kl. · Wissenschaftspropädeutisches Seminar · user `curriculum-bayern-gymnasium-klasse-13`
+- [x] `gymnasium|13|geol` — Gymnasium 13. Kl. · Geologie · user `curriculum-bayern-gymnasium-klasse-13`
 
 ## Phase M — `rahmenlehrplan-berlin-brandenburg` (Berlin / Brandenburg)
 
