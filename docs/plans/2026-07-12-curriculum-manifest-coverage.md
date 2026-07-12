@@ -612,13 +612,13 @@ Each line: manifest topics + `contentUrls` + HTML fixture + CLI topic check + de
 
 ## Phase L — `lehrplanplus-bayern` (Bayern)
 
-Provider: **LehrplanPLUS (Bayern)** · Region: `BY` · Paths: **169** · Topics today: **4** (2%)
+Provider: **LehrplanPLUS (Bayern)** · Region: `BY` · Paths: **178** · Topics today: **138** (78%)
 
 Each line: manifest topics + `contentUrls` + HTML fixture + CLI topic check + desktop E2E import.
 
 - [ ] `realschule|5|bwl-rechnungswesen` — Realschule 5. Kl. · Betriebswirtschaftslehre / Rechnungswesen · user `curriculum-bayern-realschule-klasse-5`
 - [x] `realschule|5|biologie` — Realschule 5. Kl. · Biologie · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|chemie` — Realschule 5. Kl. · Chemie · user `curriculum-bayern-realschule-klasse-5` _(nicht auf LehrplanPLUS)_
+- [ ] `realschule|5|chemie` — Realschule 5. Kl. · Chemie · user `curriculum-bayern-realschule-klasse-5`
 - [x] `realschule|5|deutsch` — Realschule 5. Kl. · Deutsch · user `curriculum-bayern-realschule-klasse-5`
 - [x] `realschule|5|englisch` — Realschule 5. Kl. · Englisch · user `curriculum-bayern-realschule-klasse-5`
 - [ ] `realschule|5|ernaehrung_und_gesundheit` — Realschule 5. Kl. · Ernährung und Gesundheit · user `curriculum-bayern-realschule-klasse-5`
@@ -632,7 +632,7 @@ Each line: manifest topics + `contentUrls` + HTML fixture + CLI topic check + de
 - [x] `realschule|5|ir` — Realschule 5. Kl. · Israelitische Religionslehre · user `curriculum-bayern-realschule-klasse-5`
 - [x] `realschule|5|katholische-religionslehre` — Realschule 5. Kl. · Katholische Religionslehre · user `curriculum-bayern-realschule-klasse-5`
 - [x] `realschule|5|kunst` — Realschule 5. Kl. · Kunst · user `curriculum-bayern-realschule-klasse-5`
-- [x] `realschule|5|mathematik` — Realschule 5. Kl. · Mathematik · user `curriculum-bayern-realschule-klasse-5` _(E2E-Import lb1)_
+- [x] `realschule|5|mathematik` — Realschule 5. Kl. · Mathematik · user `curriculum-bayern-realschule-klasse-5`
 - [x] `realschule|5|musik` — Realschule 5. Kl. · Musik · user `curriculum-bayern-realschule-klasse-5`
 - [x] `realschule|5|or` — Realschule 5. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-realschule-klasse-5`
 - [ ] `realschule|5|physik` — Realschule 5. Kl. · Physik · user `curriculum-bayern-realschule-klasse-5`
@@ -640,150 +640,159 @@ Each line: manifest topics + `contentUrls` + HTML fixture + CLI topic check + de
 - [ ] `realschule|5|soziallehre` — Realschule 5. Kl. · Soziallehre · user `curriculum-bayern-realschule-klasse-5`
 - [ ] `realschule|5|sozialwesen` — Realschule 5. Kl. · Sozialwesen · user `curriculum-bayern-realschule-klasse-5`
 - [ ] `realschule|5|spanisch` — Realschule 5. Kl. · Spanisch · user `curriculum-bayern-realschule-klasse-5`
-- [x] `realschule|5|sport` — Realschule 5. Kl. · Sport · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|sport|basis_sport` — Realschule 5. Kl. · Sport · Basissport 5 · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|sport|diff_sport` — Realschule 5. Kl. · Sport · Differenzierter Sport · user `curriculum-bayern-realschule-klasse-5`
 - [x] `realschule|5|textiles-gestalten` — Realschule 5. Kl. · Textiles Gestalten · user `curriculum-bayern-realschule-klasse-5`
 - [x] `realschule|5|werken` — Realschule 5. Kl. · Werken · user `curriculum-bayern-realschule-klasse-5`
 - [ ] `realschule|5|wirtschaft-und-recht` — Realschule 5. Kl. · Wirtschaft und Recht · user `curriculum-bayern-realschule-klasse-5`
 - [ ] `realschule|6|bwl-rechnungswesen` — Realschule 6. Kl. · Betriebswirtschaftslehre / Rechnungswesen · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|biologie` — Realschule 6. Kl. · Biologie · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|biologie` — Realschule 6. Kl. · Biologie · user `curriculum-bayern-realschule-klasse-6`
 - [ ] `realschule|6|chemie` — Realschule 6. Kl. · Chemie · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|deutsch` — Realschule 6. Kl. · Deutsch · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|englisch` — Realschule 6. Kl. · Englisch · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|deutsch` — Realschule 6. Kl. · Deutsch · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|englisch` — Realschule 6. Kl. · Englisch · user `curriculum-bayern-realschule-klasse-6`
 - [ ] `realschule|6|ernaehrung_und_gesundheit` — Realschule 6. Kl. · Ernährung und Gesundheit · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|ethik` — Realschule 6. Kl. · Ethik · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|evangelische-religionslehre` — Realschule 6. Kl. · Evangelische Religionslehre · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|ethik` — Realschule 6. Kl. · Ethik · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|evangelische-religionslehre` — Realschule 6. Kl. · Evangelische Religionslehre · user `curriculum-bayern-realschule-klasse-6`
 - [ ] `realschule|6|franzoesisch` — Realschule 6. Kl. · Französisch · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|geographie` — Realschule 6. Kl. · Geographie · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|geschichte` — Realschule 6. Kl. · Geschichte · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|it` — Realschule 6. Kl. · Informationstechnologie · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|iu` — Realschule 6. Kl. · Islamischer Unterricht · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|ir` — Realschule 6. Kl. · Israelitische Religionslehre · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|katholische-religionslehre` — Realschule 6. Kl. · Katholische Religionslehre · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|kunst` — Realschule 6. Kl. · Kunst · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|mathematik` — Realschule 6. Kl. · Mathematik · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|musik` — Realschule 6. Kl. · Musik · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|or` — Realschule 6. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|geographie` — Realschule 6. Kl. · Geographie · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|geschichte` — Realschule 6. Kl. · Geschichte · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|it` — Realschule 6. Kl. · Informationstechnologie · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|iu` — Realschule 6. Kl. · Islamischer Unterricht · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|ir` — Realschule 6. Kl. · Israelitische Religionslehre · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|katholische-religionslehre` — Realschule 6. Kl. · Katholische Religionslehre · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|kunst` — Realschule 6. Kl. · Kunst · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|mathematik` — Realschule 6. Kl. · Mathematik · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|musik` — Realschule 6. Kl. · Musik · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|or` — Realschule 6. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-realschule-klasse-6`
 - [ ] `realschule|6|physik` — Realschule 6. Kl. · Physik · user `curriculum-bayern-realschule-klasse-6`
 - [ ] `realschule|6|pug` — Realschule 6. Kl. · Politik und Gesellschaft · user `curriculum-bayern-realschule-klasse-6`
 - [ ] `realschule|6|soziallehre` — Realschule 6. Kl. · Soziallehre · user `curriculum-bayern-realschule-klasse-6`
 - [ ] `realschule|6|sozialwesen` — Realschule 6. Kl. · Sozialwesen · user `curriculum-bayern-realschule-klasse-6`
 - [ ] `realschule|6|spanisch` — Realschule 6. Kl. · Spanisch · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|sport` — Realschule 6. Kl. · Sport · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|textiles-gestalten` — Realschule 6. Kl. · Textiles Gestalten · user `curriculum-bayern-realschule-klasse-6`
-- [ ] `realschule|6|werken` — Realschule 6. Kl. · Werken · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|sport|basis_sport` — Realschule 6. Kl. · Sport · Basissport 6 · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|sport|diff_sport` — Realschule 6. Kl. · Sport · Differenzierter Sport · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|textiles-gestalten` — Realschule 6. Kl. · Textiles Gestalten · user `curriculum-bayern-realschule-klasse-6`
+- [x] `realschule|6|werken` — Realschule 6. Kl. · Werken · user `curriculum-bayern-realschule-klasse-6`
 - [ ] `realschule|6|wirtschaft-und-recht` — Realschule 6. Kl. · Wirtschaft und Recht · user `curriculum-bayern-realschule-klasse-6`
 - [ ] `realschule|7|bwl-rechnungswesen` — Realschule 7. Kl. · Betriebswirtschaftslehre / Rechnungswesen · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|biologie` — Realschule 7. Kl. · Biologie · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|biologie` — Realschule 7. Kl. · Biologie · user `curriculum-bayern-realschule-klasse-7`
 - [ ] `realschule|7|chemie` — Realschule 7. Kl. · Chemie · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|deutsch` — Realschule 7. Kl. · Deutsch · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|englisch` — Realschule 7. Kl. · Englisch · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|deutsch` — Realschule 7. Kl. · Deutsch · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|englisch` — Realschule 7. Kl. · Englisch · user `curriculum-bayern-realschule-klasse-7`
 - [ ] `realschule|7|ernaehrung_und_gesundheit` — Realschule 7. Kl. · Ernährung und Gesundheit · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|ethik` — Realschule 7. Kl. · Ethik · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|evangelische-religionslehre` — Realschule 7. Kl. · Evangelische Religionslehre · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|franzoesisch` — Realschule 7. Kl. · Französisch · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|geographie` — Realschule 7. Kl. · Geographie · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|geschichte` — Realschule 7. Kl. · Geschichte · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|it` — Realschule 7. Kl. · Informationstechnologie · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|iu` — Realschule 7. Kl. · Islamischer Unterricht · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|ir` — Realschule 7. Kl. · Israelitische Religionslehre · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|katholische-religionslehre` — Realschule 7. Kl. · Katholische Religionslehre · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|kunst` — Realschule 7. Kl. · Kunst · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|mathematik` — Realschule 7. Kl. · Mathematik · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|musik` — Realschule 7. Kl. · Musik · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|or` — Realschule 7. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|physik` — Realschule 7. Kl. · Physik · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|ethik` — Realschule 7. Kl. · Ethik · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|evangelische-religionslehre` — Realschule 7. Kl. · Evangelische Religionslehre · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|franzoesisch` — Realschule 7. Kl. · Französisch · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|geographie` — Realschule 7. Kl. · Geographie · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|geschichte` — Realschule 7. Kl. · Geschichte · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|it` — Realschule 7. Kl. · Informationstechnologie · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|iu` — Realschule 7. Kl. · Islamischer Unterricht · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|ir` — Realschule 7. Kl. · Israelitische Religionslehre · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|katholische-religionslehre` — Realschule 7. Kl. · Katholische Religionslehre · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|kunst` — Realschule 7. Kl. · Kunst · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|mathematik|wpfg1` — Realschule 7. Kl. · Mathematik · Mathematik 7 (I) · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|mathematik|wpfg2-3` — Realschule 7. Kl. · Mathematik · Mathematik 7 (II/III) · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|musik` — Realschule 7. Kl. · Musik · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|or` — Realschule 7. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|physik` — Realschule 7. Kl. · Physik · user `curriculum-bayern-realschule-klasse-7`
 - [ ] `realschule|7|pug` — Realschule 7. Kl. · Politik und Gesellschaft · user `curriculum-bayern-realschule-klasse-7`
 - [ ] `realschule|7|soziallehre` — Realschule 7. Kl. · Soziallehre · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|sozialwesen` — Realschule 7. Kl. · Sozialwesen · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|spanisch` — Realschule 7. Kl. · Spanisch · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|sport` — Realschule 7. Kl. · Sport · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|textiles-gestalten` — Realschule 7. Kl. · Textiles Gestalten · user `curriculum-bayern-realschule-klasse-7`
-- [ ] `realschule|7|werken` — Realschule 7. Kl. · Werken · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|sozialwesen` — Realschule 7. Kl. · Sozialwesen · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|spanisch` — Realschule 7. Kl. · Spanisch · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|sport|basis_sport` — Realschule 7. Kl. · Sport · Basissport 7 · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|sport|diff_sport` — Realschule 7. Kl. · Sport · Differenzierter Sport · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|textiles-gestalten` — Realschule 7. Kl. · Textiles Gestalten · user `curriculum-bayern-realschule-klasse-7`
+- [x] `realschule|7|werken` — Realschule 7. Kl. · Werken · user `curriculum-bayern-realschule-klasse-7`
 - [ ] `realschule|7|wirtschaft-und-recht` — Realschule 7. Kl. · Wirtschaft und Recht · user `curriculum-bayern-realschule-klasse-7`
 - [ ] `realschule|8|bwl-rechnungswesen` — Realschule 8. Kl. · Betriebswirtschaftslehre / Rechnungswesen · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|biologie` — Realschule 8. Kl. · Biologie · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|chemie` — Realschule 8. Kl. · Chemie · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|deutsch` — Realschule 8. Kl. · Deutsch · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|englisch` — Realschule 8. Kl. · Englisch · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|ernaehrung_und_gesundheit` — Realschule 8. Kl. · Ernährung und Gesundheit · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|ethik` — Realschule 8. Kl. · Ethik · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|evangelische-religionslehre` — Realschule 8. Kl. · Evangelische Religionslehre · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|franzoesisch` — Realschule 8. Kl. · Französisch · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|geographie` — Realschule 8. Kl. · Geographie · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|geschichte` — Realschule 8. Kl. · Geschichte · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|it` — Realschule 8. Kl. · Informationstechnologie · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|iu` — Realschule 8. Kl. · Islamischer Unterricht · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|ir` — Realschule 8. Kl. · Israelitische Religionslehre · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|katholische-religionslehre` — Realschule 8. Kl. · Katholische Religionslehre · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|kunst` — Realschule 8. Kl. · Kunst · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|mathematik` — Realschule 8. Kl. · Mathematik · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|musik` — Realschule 8. Kl. · Musik · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|or` — Realschule 8. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|biologie` — Realschule 8. Kl. · Biologie · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|chemie` — Realschule 8. Kl. · Chemie · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|deutsch` — Realschule 8. Kl. · Deutsch · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|englisch` — Realschule 8. Kl. · Englisch · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|ernaehrung_und_gesundheit` — Realschule 8. Kl. · Ernährung und Gesundheit · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|ethik` — Realschule 8. Kl. · Ethik · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|evangelische-religionslehre` — Realschule 8. Kl. · Evangelische Religionslehre · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|franzoesisch` — Realschule 8. Kl. · Französisch · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|geographie` — Realschule 8. Kl. · Geographie · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|geschichte` — Realschule 8. Kl. · Geschichte · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|it` — Realschule 8. Kl. · Informationstechnologie · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|iu` — Realschule 8. Kl. · Islamischer Unterricht · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|ir` — Realschule 8. Kl. · Israelitische Religionslehre · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|katholische-religionslehre` — Realschule 8. Kl. · Katholische Religionslehre · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|kunst` — Realschule 8. Kl. · Kunst · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|mathematik|wpfg1` — Realschule 8. Kl. · Mathematik · Mathematik 8 (I) · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|mathematik|wpfg2-3` — Realschule 8. Kl. · Mathematik · Mathematik 8 (II/III) · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|musik` — Realschule 8. Kl. · Musik · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|or` — Realschule 8. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-realschule-klasse-8`
 - [ ] `realschule|8|physik` — Realschule 8. Kl. · Physik · user `curriculum-bayern-realschule-klasse-8`
 - [ ] `realschule|8|pug` — Realschule 8. Kl. · Politik und Gesellschaft · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|soziallehre` — Realschule 8. Kl. · Soziallehre · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|sozialwesen` — Realschule 8. Kl. · Sozialwesen · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|spanisch` — Realschule 8. Kl. · Spanisch · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|sport` — Realschule 8. Kl. · Sport · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|textiles-gestalten` — Realschule 8. Kl. · Textiles Gestalten · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|werken` — Realschule 8. Kl. · Werken · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|8|wirtschaft-und-recht` — Realschule 8. Kl. · Wirtschaft und Recht · user `curriculum-bayern-realschule-klasse-8`
-- [ ] `realschule|9|bwl-rechnungswesen` — Realschule 9. Kl. · Betriebswirtschaftslehre / Rechnungswesen · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|8|soziallehre` — Realschule 8. Kl. · Soziallehre · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|sozialwesen` — Realschule 8. Kl. · Sozialwesen · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|spanisch` — Realschule 8. Kl. · Spanisch · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|sport|basis_sport` — Realschule 8. Kl. · Sport · Basissport 8 · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|sport|diff_sport` — Realschule 8. Kl. · Sport · Differenzierter Sport · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|textiles-gestalten` — Realschule 8. Kl. · Textiles Gestalten · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|werken` — Realschule 8. Kl. · Werken · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|8|wirtschaft-und-recht` — Realschule 8. Kl. · Wirtschaft und Recht · user `curriculum-bayern-realschule-klasse-8`
+- [x] `realschule|9|bwl-rechnungswesen` — Realschule 9. Kl. · Betriebswirtschaftslehre / Rechnungswesen · user `curriculum-bayern-realschule-klasse-9`
 - [ ] `realschule|9|biologie` — Realschule 9. Kl. · Biologie · user `curriculum-bayern-realschule-klasse-9`
 - [ ] `realschule|9|chemie` — Realschule 9. Kl. · Chemie · user `curriculum-bayern-realschule-klasse-9`
 - [x] `realschule|9|deutsch` — Realschule 9. Kl. · Deutsch · user `curriculum-bayern-realschule-klasse-9`
 - [x] `realschule|9|englisch` — Realschule 9. Kl. · Englisch · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|ernaehrung_und_gesundheit` — Realschule 9. Kl. · Ernährung und Gesundheit · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|ethik` — Realschule 9. Kl. · Ethik · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|evangelische-religionslehre` — Realschule 9. Kl. · Evangelische Religionslehre · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|franzoesisch` — Realschule 9. Kl. · Französisch · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|geographie` — Realschule 9. Kl. · Geographie · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|geschichte` — Realschule 9. Kl. · Geschichte · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|it` — Realschule 9. Kl. · Informationstechnologie · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|iu` — Realschule 9. Kl. · Islamischer Unterricht · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|ir` — Realschule 9. Kl. · Israelitische Religionslehre · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|katholische-religionslehre` — Realschule 9. Kl. · Katholische Religionslehre · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|kunst` — Realschule 9. Kl. · Kunst · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|ernaehrung_und_gesundheit` — Realschule 9. Kl. · Ernährung und Gesundheit · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|ethik` — Realschule 9. Kl. · Ethik · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|evangelische-religionslehre` — Realschule 9. Kl. · Evangelische Religionslehre · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|franzoesisch` — Realschule 9. Kl. · Französisch · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|geographie` — Realschule 9. Kl. · Geographie · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|geschichte` — Realschule 9. Kl. · Geschichte · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|it` — Realschule 9. Kl. · Informationstechnologie · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|iu` — Realschule 9. Kl. · Islamischer Unterricht · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|ir` — Realschule 9. Kl. · Israelitische Religionslehre · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|katholische-religionslehre` — Realschule 9. Kl. · Katholische Religionslehre · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|kunst` — Realschule 9. Kl. · Kunst · user `curriculum-bayern-realschule-klasse-9`
 - [x] `realschule|9|mathematik|wpfg1` — Realschule 9. Kl. · Mathematik · Mathematik 9 (I) · user `curriculum-bayern-realschule-klasse-9`
 - [x] `realschule|9|mathematik|wpfg2-3` — Realschule 9. Kl. · Mathematik · Mathematik 9 (II/III) · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|musik` — Realschule 9. Kl. · Musik · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|or` — Realschule 9. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|musik` — Realschule 9. Kl. · Musik · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|or` — Realschule 9. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-realschule-klasse-9`
 - [ ] `realschule|9|physik` — Realschule 9. Kl. · Physik · user `curriculum-bayern-realschule-klasse-9`
 - [ ] `realschule|9|pug` — Realschule 9. Kl. · Politik und Gesellschaft · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|soziallehre` — Realschule 9. Kl. · Soziallehre · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|sozialwesen` — Realschule 9. Kl. · Sozialwesen · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|spanisch` — Realschule 9. Kl. · Spanisch · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|sport` — Realschule 9. Kl. · Sport · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|textiles-gestalten` — Realschule 9. Kl. · Textiles Gestalten · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|9|werken` — Realschule 9. Kl. · Werken · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|soziallehre` — Realschule 9. Kl. · Soziallehre · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|sozialwesen` — Realschule 9. Kl. · Sozialwesen · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|spanisch` — Realschule 9. Kl. · Spanisch · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|sport|basis_sport` — Realschule 9. Kl. · Sport · Basissport 9 · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|sport|diff_sport` — Realschule 9. Kl. · Sport · Differenzierter Sport · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|textiles-gestalten` — Realschule 9. Kl. · Textiles Gestalten · user `curriculum-bayern-realschule-klasse-9`
+- [x] `realschule|9|werken` — Realschule 9. Kl. · Werken · user `curriculum-bayern-realschule-klasse-9`
 - [ ] `realschule|9|wirtschaft-und-recht` — Realschule 9. Kl. · Wirtschaft und Recht · user `curriculum-bayern-realschule-klasse-9`
-- [ ] `realschule|10|bwl-rechnungswesen` — Realschule 10. Kl. · Betriebswirtschaftslehre / Rechnungswesen · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|biologie` — Realschule 10. Kl. · Biologie · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|bwl-rechnungswesen` — Realschule 10. Kl. · Betriebswirtschaftslehre / Rechnungswesen · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|biologie` — Realschule 10. Kl. · Biologie · user `curriculum-bayern-realschule-klasse-10`
 - [ ] `realschule|10|chemie` — Realschule 10. Kl. · Chemie · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|deutsch` — Realschule 10. Kl. · Deutsch · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|englisch` — Realschule 10. Kl. · Englisch · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|ernaehrung_und_gesundheit` — Realschule 10. Kl. · Ernährung und Gesundheit · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|ethik` — Realschule 10. Kl. · Ethik · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|evangelische-religionslehre` — Realschule 10. Kl. · Evangelische Religionslehre · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|franzoesisch` — Realschule 10. Kl. · Französisch · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|deutsch` — Realschule 10. Kl. · Deutsch · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|englisch` — Realschule 10. Kl. · Englisch · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|ernaehrung_und_gesundheit` — Realschule 10. Kl. · Ernährung und Gesundheit · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|ethik` — Realschule 10. Kl. · Ethik · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|evangelische-religionslehre` — Realschule 10. Kl. · Evangelische Religionslehre · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|franzoesisch` — Realschule 10. Kl. · Französisch · user `curriculum-bayern-realschule-klasse-10`
 - [ ] `realschule|10|geographie` — Realschule 10. Kl. · Geographie · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|geschichte` — Realschule 10. Kl. · Geschichte · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|it` — Realschule 10. Kl. · Informationstechnologie · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|iu` — Realschule 10. Kl. · Islamischer Unterricht · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|ir` — Realschule 10. Kl. · Israelitische Religionslehre · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|katholische-religionslehre` — Realschule 10. Kl. · Katholische Religionslehre · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|kunst` — Realschule 10. Kl. · Kunst · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|mathematik` — Realschule 10. Kl. · Mathematik · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|musik` — Realschule 10. Kl. · Musik · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|or` — Realschule 10. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|geschichte` — Realschule 10. Kl. · Geschichte · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|it` — Realschule 10. Kl. · Informationstechnologie · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|iu` — Realschule 10. Kl. · Islamischer Unterricht · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|ir` — Realschule 10. Kl. · Israelitische Religionslehre · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|katholische-religionslehre` — Realschule 10. Kl. · Katholische Religionslehre · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|kunst` — Realschule 10. Kl. · Kunst · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|mathematik|wpfg1` — Realschule 10. Kl. · Mathematik · Mathematik 10 (I) · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|mathematik|wpfg2-3` — Realschule 10. Kl. · Mathematik · Mathematik 10 (II/III) · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|musik` — Realschule 10. Kl. · Musik · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|or` — Realschule 10. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-realschule-klasse-10`
 - [ ] `realschule|10|physik` — Realschule 10. Kl. · Physik · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|pug` — Realschule 10. Kl. · Politik und Gesellschaft · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|soziallehre` — Realschule 10. Kl. · Soziallehre · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|sozialwesen` — Realschule 10. Kl. · Sozialwesen · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|spanisch` — Realschule 10. Kl. · Spanisch · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|sport` — Realschule 10. Kl. · Sport · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|pug` — Realschule 10. Kl. · Politik und Gesellschaft · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|soziallehre` — Realschule 10. Kl. · Soziallehre · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|sozialwesen` — Realschule 10. Kl. · Sozialwesen · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|spanisch` — Realschule 10. Kl. · Spanisch · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|sport|basis_sport` — Realschule 10. Kl. · Sport · Basissport 10 · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|sport|diff_sport` — Realschule 10. Kl. · Sport · Differenzierter Sport · user `curriculum-bayern-realschule-klasse-10`
 - [ ] `realschule|10|textiles-gestalten` — Realschule 10. Kl. · Textiles Gestalten · user `curriculum-bayern-realschule-klasse-10`
-- [ ] `realschule|10|werken` — Realschule 10. Kl. · Werken · user `curriculum-bayern-realschule-klasse-10`
+- [x] `realschule|10|werken` — Realschule 10. Kl. · Werken · user `curriculum-bayern-realschule-klasse-10`
 - [ ] `realschule|10|wirtschaft-und-recht` — Realschule 10. Kl. · Wirtschaft und Recht · user `curriculum-bayern-realschule-klasse-10`
 
 ## Phase M — `rahmenlehrplan-berlin-brandenburg` (Berlin / Brandenburg)
