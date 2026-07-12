@@ -54,6 +54,16 @@ describe("classifyCapabilities", () => {
     expect(d.image).toBe(true);
   });
 
+  it("recognizes Xiaomi MiMo as multimodal even without a -vl tag", () => {
+    const d = classifyCapabilities(
+      { model: "mimo-v2.5", apiFlavor: "chat-completions" },
+      ["mimo-v2.5"],
+      true,
+    );
+    expect(d.text).toBe(true);
+    expect(d.image).toBe(true);
+  });
+
   it("fixes anthropic endpoints to text + image regardless of model", () => {
     const d = classifyCapabilities(
       { model: "claude-haiku-4-5", apiFlavor: "anthropic-messages" },
