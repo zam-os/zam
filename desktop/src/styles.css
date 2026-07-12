@@ -2106,6 +2106,25 @@ textarea::placeholder {
   border-top: 1px solid var(--border-soft);
 }
 
+/* Learner profile filter — default on, hides tokens without a card for the active user */
+.graph-learner-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--clr-text-secondary);
+  margin-top: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.graph-learner-filter input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--clr-accent-cyan);
+  cursor: pointer;
+}
+
 /* Domain filter / selector for independent knowledge areas */
 .domain-selector {
   display: flex;

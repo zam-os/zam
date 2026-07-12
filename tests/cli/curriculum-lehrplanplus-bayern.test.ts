@@ -170,6 +170,28 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     ).toEqual([]);
   });
 
+  it("lists the two Wahlpflichtfächergruppe tracks for Realschule Physik 9", () => {
+    expect(provider.listTracks("realschule", "9", "physik")).toEqual([
+      { id: "wpfg1", label: "Physik 9 (I)" },
+      { id: "wpfg2-3", label: "Physik 9 (II/III)" },
+    ]);
+  });
+
+  it("lists Physik 9 (I)'s three Lernbereiche", () => {
+    const topics = provider.listTopics({
+      schoolType: "realschule",
+      grade: "9",
+      subject: "physik",
+      track: "wpfg1",
+    });
+    expect(topics).toHaveLength(3);
+    expect(topics.map((t) => t.label)).toEqual([
+      "Mechanik von Flüssigkeiten und Gasen",
+      "Wärmelehre",
+      "Elektrizitätslehre",
+    ]);
+  });
+
   it("resolves a topic to its stable LehrplanPLUS source URL", () => {
     const [topic] = provider.listTopics({
       schoolType: "realschule",
@@ -210,9 +232,30 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
       provider.resolveTopic({
         id: "lb1",
         label: "Fake",
-        sourceRef: "realschule|9|physik",
+        sourceRef: "realschule|9|biologie",
       }),
     ).toThrow(/no resolvable source URL/i);
+  });
+
+  it("resolves Physik 9 tracks to their distinct Ausprägung URLs", () => {
+    const [track1Topic] = provider.listTopics({
+      schoolType: "realschule",
+      grade: "9",
+      subject: "physik",
+      track: "wpfg1",
+    });
+    const [track23Topic] = provider.listTopics({
+      schoolType: "realschule",
+      grade: "9",
+      subject: "physik",
+      track: "wpfg2-3",
+    });
+    expect(provider.resolveTopic(track1Topic).uri).toContain(
+      "w_auspraegung=wpfg1",
+    );
+    expect(provider.resolveTopic(track23Topic).uri).toContain(
+      "w_auspraegung=wpfg2-3",
+    );
   });
 
   it("lists Gymnasium grades 5 through 13", () => {
