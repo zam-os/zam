@@ -7,8 +7,12 @@
  */
 
 import { CURRICULUM_PROVIDERS } from "../src/cli/curriculum/registry.js";
+import {
+  curriculumTestUserId,
+  isLegacyCurriculumTestUserId,
+} from "./curriculum-test-user-id.js";
 import { openDatabase } from "../src/kernel/index.js";
-import { ensureCard } from "../src/kernel/models/card.js";
+import { deleteCardForUser, ensureCard } from "../src/kernel/models/card.js";
 import { createToken, getTokenBySlug } from "../src/kernel/models/token.js";
 
 const ANCHOR_SLUG = "curriculum-test-profile-anchor";
@@ -17,12 +21,11 @@ const SKIP_USERS = new Set(["thomas", "test-user-0.6.2"]);
 function collectUserIds(): string[] {
   const ids = new Set<string>();
   for (const provider of CURRICULUM_PROVIDERS) {
-    const region = provider.region.toLowerCase();
     for (const schoolType of provider.listSchoolTypes()) {
       const grades = provider.listGrades(schoolType.id);
       if (grades.length === 0) continue;
       for (const grade of grades) {
-        ids.add(`curriculum-${region}-${schoolType.id}-${grade.id}`);
+        ids.add(curriculumTestUserId(provider, schoolType.id, grade.id));
       }
     }
   }
@@ -43,11 +46,39 @@ async function ensureAnchorToken(db: Awaited<ReturnType<typeof openDatabase>>) {
   });
 }
 
+async function removeLegacyCurriculumUsers(
+  db: Awaited<ReturnType<typeof openDatabase>>,
+  anchorTokenId: string,
+): Promise<string[]> {
+  const rows = (await db
+    .prepare(
+      `SELECT DISTINCT user_id AS userId
+       FROM cards
+       WHERE user_id LIKE 'curriculum-%'`,
+    )
+    .all()) as Array<{ userId: string }>;
+
+  const removed: string[] = [];
+  for (const { userId } of rows) {
+    if (!isLegacyCurriculumTestUserId(userId) || SKIP_USERS.has(userId)) {
+      continue;
+    }
+    try {
+      await deleteCardForUser(db, anchorTokenId, userId);
+      removed.push(userId);
+    } catch {
+      // Anchor card may already be gone; ignore.
+    }
+  }
+  return removed.sort();
+}
+
 async function main(): Promise<void> {
   const userIds = collectUserIds().filter((id) => !SKIP_USERS.has(id));
   const db = await openDatabase();
   try {
     const anchor = await ensureAnchorToken(db);
+    const removedLegacy = await removeLegacyCurriculumUsers(db, anchor.id);
     for (const userId of userIds) {
       await ensureCard(db, anchor.id, userId);
     }
@@ -57,6 +88,7 @@ async function main(): Promise<void> {
           success: true,
           anchorSlug: ANCHOR_SLUG,
           usersProvisioned: userIds.length,
+          legacyUsersRemoved: removedLegacy.length,
           userIds,
         },
         null,

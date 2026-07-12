@@ -5,6 +5,10 @@
 
 import { writeFileSync } from "node:fs";
 import { CURRICULUM_PROVIDERS } from "../src/cli/curriculum/registry.ts";
+import {
+  bundeslandSlug,
+  curriculumTestUserId,
+} from "./curriculum-test-user-id.ts";
 
 const PROVIDER_ORDER = [...CURRICULUM_PROVIDERS].sort((a, b) =>
   a.id.localeCompare(b.id),
@@ -60,12 +64,12 @@ function collectPaths(provider) {
 }
 
 function userId(provider, schoolType, grade) {
-  return `curriculum-${provider.region.toLowerCase()}-${schoolType}-${grade}`;
+  return curriculumTestUserId(provider, schoolType, grade);
 }
 
 let md = `# Curriculum manifest coverage & import completion
 
-Implements the Epic in GitHub issue **#TBD** (curriculum import incomplete for
+Implements the Epic in GitHub issue **#132** (curriculum import incomplete for
 German federal states). Read \`AGENTS.md\` and
 [\`2026-07-02-lehrplanplus-phase-3.md\`](./2026-07-02-lehrplanplus-phase-3.md)
 first. Work on exactly the next unchecked phase; one branch
@@ -96,8 +100,9 @@ md += `
 ## Decisions (frozen)
 
 1. **Scope:** Manifest taxonomy/topics **and** import pipeline Phase 3 (Epic C).
-2. **Test users:** \`curriculum-<region>-<schulform>-<klasse>\` in the shared
-   Turso DB; \`thomas\` and \`test-user-0.6.2\` stay untouched.
+2. **Test users:** \`curriculum-<bundesland>-<schulform>-klasse-<n>\` in the
+   shared Turso DB (readable Bundesland slug, explicit \`klasse\` segment);
+   \`thomas\` and \`test-user-0.6.2\` stay untouched.
 3. **Subjects:** All subjects listed in each provider manifest for the path —
    not a core-subject subset.
 4. **Verification:** End-to-end per path — wizard topic selection **and**
@@ -112,7 +117,7 @@ md += `
 - [x] Provision \`114\` curriculum test users via
   \`npx tsx scripts/provision-curriculum-test-users.ts\` (shared anchor token
   \`curriculum-test-profile-anchor\`, one card each).
-- [ ] Document user ↔ path mapping in issue checklist.
+- [x] Document user ↔ path mapping in issue checklist (GitHub #132).
 - [ ] Add a bridge-level smoke script that asserts \`curriculum-list-level
   --level topic\` returns non-empty options for every manifest path (CI gate
   once manifests are complete).
@@ -125,12 +130,12 @@ md += `
 
 const regions = new Set();
 for (const p of PROVIDER_ORDER) {
-  const region = p.region.toLowerCase();
-  if (regions.has(region)) continue;
-  regions.add(region);
+  const land = bundeslandSlug(p.regionLabel);
+  if (regions.has(land)) continue;
+  regions.add(land);
   const example = collectPaths(p)[0];
   if (example) {
-    md += `| ${p.regionLabel} (\`${p.region}\`) | \`curriculum-${region}-<schulform>-<klasse>\` | \`${userId(p, example.schoolType, example.grade)}\` |\n`;
+    md += `| ${p.regionLabel} | \`curriculum-${land}-<schulform>-klasse-<n>\` | \`${userId(p, example.schoolType, example.grade)}\` |\n`;
   }
 }
 
@@ -139,7 +144,7 @@ md += `
 
 For path \`<provider>|<schoolType>|<grade>|<subject>[|<track>]\`:
 
-1. \`zam bridge database-select-user --user curriculum-<region>-<schulform>-<grade>\`
+1. \`zam bridge database-select-user --user curriculum-<bundesland>-<schulform>-klasse-<n>\`
 2. Desktop → Curriculum import wizard: select Land, Bundesland, Schulform,
    Klasse, Fach [, Ausprägung].
 3. **Topic step must list ≥1 Lernbereich/Thema** (not an empty list).
