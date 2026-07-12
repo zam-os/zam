@@ -341,7 +341,11 @@ export function detectInstalledConnectHarnesses(
     platform === "darwin"
       ? "/Applications/Claude.app"
       : platform === "win32"
-        ? join(home, "AppData", "Local", "AnthropicClaude")
+        ? exists(join(home, "AppData", "Local", "AnthropicClaude"))
+          ? join(home, "AppData", "Local", "AnthropicClaude")
+          : exists(join(home, "AppData", "Local", "Claude"))
+            ? join(home, "AppData", "Local", "Claude")
+            : join(home, "AppData", "Roaming", "Claude")
         : join(home, ".config", "Claude");
   if (exists(claudeDesktopPath)) detected.push("claude-desktop");
 
@@ -423,10 +427,17 @@ export function connectHarnessMcp(
     if (!existing.mcpServers) {
       existing.mcpServers = {};
     }
-    existing.mcpServers.zam = {
-      command: opts.zamPath,
-      args: ["mcp"],
-    };
+    if (opts.zamPath.endsWith(".js")) {
+      existing.mcpServers.zam = {
+        command: process.execPath,
+        args: [opts.zamPath, "mcp"],
+      };
+    } else {
+      existing.mcpServers.zam = {
+        command: opts.zamPath,
+        args: ["mcp"],
+      };
+    }
     return JSON.stringify(existing, null, 2);
   };
 
@@ -469,10 +480,17 @@ export function connectHarnessMcp(
     if (!existing.mcpServers) {
       existing.mcpServers = {};
     }
-    existing.mcpServers.zam = {
-      command: opts.zamPath,
-      args: ["mcp"],
-    };
+    if (opts.zamPath.endsWith(".js")) {
+      existing.mcpServers.zam = {
+        command: process.execPath,
+        args: [opts.zamPath, "mcp"],
+      };
+    } else {
+      existing.mcpServers.zam = {
+        command: opts.zamPath,
+        args: ["mcp"],
+      };
+    }
     content = JSON.stringify(existing, null, 2);
   } else if (harnessId === "opencode") {
     targetPath = join(opts.home, ".config", "opencode", "opencode.json");
@@ -489,9 +507,12 @@ export function connectHarnessMcp(
       throw new Error(`Cannot update ${targetPath}: mcp must be a JSON object`);
     }
     const servers = (mcp ?? {}) as Record<string, unknown>;
+    const cmd = opts.zamPath.endsWith(".js")
+      ? [process.execPath, opts.zamPath, "mcp"]
+      : [opts.zamPath, "mcp"];
     servers.zam = {
       type: "local",
-      command: [opts.zamPath, "mcp"],
+      command: cmd,
       enabled: true,
     };
     existing.mcp = servers;
@@ -508,10 +529,17 @@ export function connectHarnessMcp(
       alreadyConfigured = true;
       content = existingStr;
     } else {
+      const isJs = opts.zamPath.endsWith(".js");
+      const cmdStr = isJs
+        ? JSON.stringify(process.execPath)
+        : JSON.stringify(opts.zamPath);
+      const argsStr = isJs
+        ? `[${JSON.stringify(opts.zamPath)}, "mcp"]`
+        : '["mcp"]';
       const block = `
 [mcp_servers.zam]
-command = ${JSON.stringify(opts.zamPath)}
-args = ["mcp"]
+command = ${cmdStr}
+args = ${argsStr}
 default_tools_approval_mode = "approve"
 
 [mcp_servers.zam.tools.zam_review_action]
@@ -554,7 +582,9 @@ approval_mode = "prompt"
       throw new Error(`Cannot update ${targetPath}: inputs must be an array`);
     }
     if (!existing.servers) existing.servers = {};
-    const expectedServer = { command: opts.zamPath, args: ["mcp"] };
+    const expectedServer = opts.zamPath.endsWith(".js")
+      ? { command: process.execPath, args: [opts.zamPath, "mcp"] }
+      : { command: opts.zamPath, args: ["mcp"] };
     const currentServer = existing.servers.zam;
     alreadyConfigured =
       Array.isArray(existing.inputs) &&
@@ -570,12 +600,16 @@ approval_mode = "prompt"
     hint =
       "goose will load the 'zam' extension on next session start. Run 'goose configure' to manage extensions.";
     // The `zam` entry, indented for placement directly under the `extensions:` map.
+    const isJs = opts.zamPath.endsWith(".js");
+    const cmdStr = isJs ? process.execPath : opts.zamPath;
+    const argsLines = isJs
+      ? ["    args:", `      - ${opts.zamPath}`, "      - mcp"]
+      : ["    args:", "      - mcp"];
     const zamExtension = [
       "  zam:",
       "    name: ZAM",
-      `    cmd: ${opts.zamPath}`,
-      "    args:",
-      "      - mcp",
+      `    cmd: ${cmdStr}`,
+      ...argsLines,
       "    enabled: true",
       "    type: stdio",
       "    timeout: 300",
@@ -618,12 +652,21 @@ approval_mode = "prompt"
     if (!existing.mcpServers) {
       existing.mcpServers = {};
     }
-    existing.mcpServers.zam = {
-      type: "local",
-      command: opts.zamPath,
-      args: ["mcp"],
-      tools: ["*"],
-    };
+    if (opts.zamPath.endsWith(".js")) {
+      existing.mcpServers.zam = {
+        type: "local",
+        command: process.execPath,
+        args: [opts.zamPath, "mcp"],
+        tools: ["*"],
+      };
+    } else {
+      existing.mcpServers.zam = {
+        type: "local",
+        command: opts.zamPath,
+        args: ["mcp"],
+        tools: ["*"],
+      };
+    }
     content = JSON.stringify(existing, null, 2);
   }
 

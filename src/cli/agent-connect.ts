@@ -123,7 +123,16 @@ function resolveDeps(deps: AgentConnectDeps) {
     home,
     cwd,
     copilotHome,
-    findZam: deps.findZam ?? (() => findExecutable("zam")),
+    findZam:
+      deps.findZam ??
+      (() => {
+        const globalZam = findExecutable("zam");
+        if (globalZam) return globalZam;
+        if (process.argv[1] && process.argv[1].endsWith("index.js")) {
+          return process.argv[1];
+        }
+        return null;
+      }),
     detect:
       deps.detect ??
       (() => detectInstalledConnectHarnesses({ home, copilotHome })),
