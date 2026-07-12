@@ -12,6 +12,7 @@
  * text extraction is Phase 3. The topic step tells the learner this.
  */
 import { runBridge } from "./bridge-transport.js";
+import { CurriculumWizardSession } from "./curriculum-wizard-session.js";
 import { t, tf } from "./i18n.js";
 import { escapeHtml } from "./learning-content.js";
 import { loadStudioData } from "./learning-content.js";
@@ -20,7 +21,13 @@ interface TaxonomyOption {
   id: string;
   label: string;
   hours?: number;
+  sourceRef?: string;
 }
+
+/** Per-topic LLM preview — must exceed CLI bridge hard timeout (10 min local). */
+const LOCAL_LLM_PREVIEW_TIMEOUT_MS = 660_000;
+const CLOUD_LLM_PREVIEW_TIMEOUT_MS = 240_000;
+
 
 interface CurriculumProviderInfo {
   id: string;
@@ -46,7 +53,9 @@ type StepKey =
   | "grade"
   | "subject"
   | "track"
-  | "topic";
+  | "topic"
+  | "subTopic"
+  | "cardPreview";
 
 const STEP_SEQUENCE: StepKey[] = [
   "country",
@@ -58,13 +67,56 @@ const STEP_SEQUENCE: StepKey[] = [
   "topic",
 ];
 
+interface CardPreviewItem {
+  id: string;
+  slug: string | null;
+  question: string;
+  concept: string;
+  domain: string;
+  bloom_level: number;
+  symbiosis_mode: string;
+  excerpt: string;
+  isExisting: boolean;
+  selected: boolean;
+  subTopicId: string | null;
+  parentTopicId?: string;
+  topicLabel?: string;
+  proposal?: {
+    question: string;
+    concept: string;
+    domain: string;
+    bloom_level: number;
+    symbiosis_mode: string;
+    excerpt: string;
+    page_number: string | null;
+    provider: string;
+    topic_id: string;
+  };
+}
+
+interface PreviewBatchMeta {
+  sourceId: string;
+  provider: string;
+  topicId: string;
+  topicLabel: string;
+}
+
 interface WizardStep {
   key: StepKey;
   label: string;
   options: TaxonomyOption[];
   multiSelect: boolean;
   selectedIds: string[];
+  topicOption?: TaxonomyOption;
+  previewItems?: CardPreviewItem[];
+  previewSourceId?: string;
+  previewTopicId?: string;
+  previewBatches?: PreviewBatchMeta[];
 }
+
+let importTopicQueue: TaxonomyOption[] = [];
+let importTopicIndex = 0;
+const wizardSession = new CurriculumWizardSession();
 
 // DOM cache
 let overlay: HTMLElement;
@@ -79,6 +131,8 @@ let stepBodyEl: HTMLElement;
 let loadingEl: HTMLElement;
 let errorEl: HTMLElement;
 let progressContainer: HTMLElement;
+let progressStatusEl: HTMLElement;
+let progressDetailEl: HTMLElement;
 let btnBack: HTMLButtonElement;
 let btnNext: HTMLButtonElement;
 let btnCancel: HTMLButtonElement;
@@ -109,6 +163,12 @@ export function initCurriculumWizard(): void {
   progressContainer = document.getElementById(
     "curriculum-wizard-progress-container",
   )!;
+  progressStatusEl = document.getElementById(
+    "lbl-curriculum-wizard-progress-status",
+  )!;
+  progressDetailEl = document.getElementById(
+    "lbl-curriculum-wizard-progress-detail",
+  )!;
   btnBack = document.getElementById(
     "btn-curriculum-wizard-back",
   ) as HTMLButtonElement;
@@ -130,10 +190,17 @@ export function initCurriculumWizard(): void {
   btnRestart.addEventListener("click", () => void handleRestart());
 }
 
+function isWizardStale(generation: number): boolean {
+  return wizardSession.isStale(generation);
+}
+
 async function showCurriculumWizard(): Promise<void> {
+  wizardSession.begin();
   history = [];
   chosenCountry = undefined;
   selection = {};
+  importTopicQueue = [];
+  importTopicIndex = 0;
   overlay.classList.add("active");
   resumeBanner.classList.add("hidden");
   hideStepError();
@@ -189,6 +256,9 @@ async function showCurriculumWizard(): Promise<void> {
 }
 
 function hideCurriculumWizard(): void {
+  wizardSession.invalidate();
+  importTopicQueue = [];
+  importTopicIndex = 0;
   overlay.classList.remove("active");
 }
 
@@ -408,9 +478,33 @@ async function handleNext(): Promise<void> {
   const current = history[history.length - 1];
   if (!current) return;
 
+  if (current.key === "cardPreview") {
+    try {
+      await confirmCardPreview(current);
+    } catch (err) {
+      showStepError(describeError(err));
+    }
+    return;
+  }
+
+  if (current.key === "subTopic") {
+    if (current.selectedIds.length === 0) {
+      showStepError(t("wizard_err_no_subtopics"));
+      return;
+    }
+    try {
+      await loadCardPreview(current);
+    } catch (err) {
+      showStepError(describeError(err));
+    }
+    return;
+  }
+
   if (current.selectedIds.length === 0) {
     showStepError(
-      current.key === "topic" ? t("wizard_err_no_topics") : t("wizard_err_select_option"),
+      current.key === "topic"
+        ? t("wizard_err_no_topics")
+        : t("wizard_err_select_option"),
     );
     return;
   }
@@ -430,7 +524,11 @@ async function handleNext(): Promise<void> {
     return;
   }
 
-  await finishWizard(current);
+  try {
+    await startImportFlow(current);
+  } catch (err) {
+    showStepError(describeError(err));
+  }
 }
 
 async function persistBreadcrumb(): Promise<void> {
@@ -463,7 +561,13 @@ function render(): void {
   renderStepBody(current);
 
   btnBack.disabled = false;
-  btnNext.textContent = current.key === "topic" ? t("btn_import_submit") : t("wizard_btn_next");
+  if (current.key === "cardPreview") {
+    btnNext.textContent = t("wizard_btn_confirm_import");
+  } else if (current.key === "topic") {
+    btnNext.textContent = t("wizard_btn_preview_cards");
+  } else {
+    btnNext.textContent = t("wizard_btn_next");
+  }
 }
 
 function renderBreadcrumb(): void {
@@ -478,6 +582,17 @@ function renderBreadcrumb(): void {
 
 function renderStepBody(step: WizardStep): void {
   stepBodyEl.innerHTML = "";
+  if (step.key === "cardPreview") {
+    renderCardPreviewBody(step);
+    return;
+  }
+  if (step.key === "subTopic" && step.topicOption) {
+    const note = document.createElement("p");
+    note.className = "wizard-topic-note";
+    note.style.marginBottom = "10px";
+    note.textContent = tf("wizard_subtopic_note", { topic: step.topicOption.label });
+    stepBodyEl.appendChild(note);
+  }
   if (step.options.length === 0) {
     const p = document.createElement("p");
     p.className = "wizard-error";
@@ -534,142 +649,612 @@ function describeError(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
 }
 
-// ── Finish: resolve topics and reuse the existing import pipeline ────────
+function isLlmTimeoutError(message: string): boolean {
+  return /timed out|timeout|zeitüberschreitung|time.?out/i.test(message);
+}
 
-async function finishWizard(topicStep: WizardStep): Promise<void> {
-  const chosenTopics = topicStep.options.filter((o) => topicStep.selectedIds.includes(o.id));
+function isTextLlmOfflineError(message: string): boolean {
+  return /No text LLM endpoint is online/i.test(message);
+}
+
+function settingsAiPathLabel(): string {
+  return `${t("nav_settings")} → ${t("settings_ai_title")}`;
+}
+
+function formatImportError(err: unknown, localLlm: boolean): string {
+  const base = describeError(err);
+  if (isTextLlmOfflineError(base)) {
+    return `${t("wizard_import_text_llm_offline")}\n\n${tf("wizard_import_text_llm_hint", {
+      settingsPath: settingsAiPathLabel(),
+    })}`;
+  }
+  if (localLlm && isLlmTimeoutError(base)) {
+    return `${t("wizard_import_llm_timeout_local")}\n\n${tf("wizard_import_cloud_hint", {
+      settingsPath: settingsAiPathLabel(),
+    })}`;
+  }
+  return base;
+}
+
+async function assertTextLlmReady(): Promise<void> {
+  const ensureRes = await runBridgeWithTimeout<{
+    usable: boolean;
+  }>("ensure-llm", ["--timeout", "45000"], 50_000);
+  if (!ensureRes.usable) {
+    throw new Error("No text LLM endpoint is online");
+  }
+
+  const status = await runBridge<{
+    roles: { text: { usable: boolean } };
+  }>("provider-status");
+  if (!status.roles?.text?.usable) {
+    throw new Error("No text LLM endpoint is online");
+  }
+}
+
+// ── Import flow: sub-topics → card preview → confirm ─────────────────────
+
+function setImportProgress(status: string, detail?: string): void {
+  progressStatusEl.textContent = status;
+  if (detail !== undefined) {
+    progressDetailEl.textContent = detail;
+  }
+}
+
+async function isLocalLlm(): Promise<boolean> {
+  try {
+    const settings = await runBridge<{ llm?: { url?: string } }>("get-settings");
+    const url = settings?.llm?.url ?? "";
+    return /localhost|127\.0\.0\.1/i.test(url);
+  } catch {
+    return true;
+  }
+}
+
+async function runBridgeWithTimeout<T>(
+  cmd: string,
+  args: string[],
+  timeoutMs: number,
+): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => {
+      reject(
+        new Error(
+          tf("wizard_import_timeout", {
+            seconds: String(Math.round(timeoutMs / 1000)),
+          }),
+        ),
+      );
+    }, timeoutMs);
+  });
+  try {
+    return await Promise.race([runBridge<T>(cmd, args), timeoutPromise]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
+function subjectLabel(): string {
+  return (
+    history
+      .find((s) => s.key === "subject")
+      ?.options.find((o) => o.id === selection.subject)?.label ??
+    selection.subject ??
+    ""
+  );
+}
+
+function selectedKnowledgeContext(): string {
+  const wizardCtxSelect = document.getElementById(
+    "wizard-context-select",
+  ) as HTMLSelectElement;
+  return wizardCtxSelect?.value || "";
+}
+
+function topicNodeFromOption(topic: TaxonomyOption): TaxonomyOption {
+  return {
+    id: topic.id,
+    label: topic.label,
+    hours: topic.hours,
+    sourceRef: topic.sourceRef,
+  };
+}
+
+async function startImportFlow(topicStep: WizardStep): Promise<void> {
+  const chosenTopics = topicStep.options.filter((o) =>
+    topicStep.selectedIds.includes(o.id),
+  );
   if (chosenTopics.length === 0) {
     showStepError(t("wizard_err_no_topics"));
     return;
   }
 
-  const subjectLabel =
-    history.find((s) => s.key === "subject")?.options.find(
-      (o) => o.id === selection.subject,
-    )?.label ?? selection.subject ?? "";
+  if (chosenTopics.length > 1) {
+    try {
+      await loadMultiTopicCardPreview(chosenTopics);
+    } catch (err) {
+      showStepError(describeError(err));
+    }
+    return;
+  }
+
+  importTopicQueue = chosenTopics;
+  importTopicIndex = 0;
+  await beginNextTopicImport();
+}
+
+async function beginNextTopicImport(): Promise<void> {
+  const generation = wizardSession.snapshot();
+  const topic = importTopicQueue[importTopicIndex];
+  if (!topic) {
+    if (!isWizardStale(generation)) {
+      hideCurriculumWizard();
+      await loadStudioData();
+    }
+    return;
+  }
+
+  btnNext.disabled = true;
+  btnBack.disabled = true;
+  showLoading(true);
+  hideStepError();
+  progressContainer.classList.remove("hidden");
+  stepBodyEl.classList.add("hidden");
+  setImportProgress(
+    tf("wizard_import_listing_subtopics", { topic: topic.label }),
+    "",
+  );
+
+  try {
+    const subRes = await runBridge<{
+      success: boolean;
+      subTopics: TaxonomyOption[];
+    }>("curriculum-list-subtopics", [
+      "--provider",
+      selection.providerId!,
+      "--topic",
+      JSON.stringify(topicNodeFromOption(topic)),
+    ]);
+
+    if (isWizardStale(generation)) return;
+
+    const subTopics = subRes.subTopics ?? [];
+
+    if (subTopics.length > 1) {
+      history.push({
+        key: "subTopic",
+        label: t("wizard_step_subTopic"),
+        options: subTopics,
+        multiSelect: true,
+        selectedIds: subTopics.map((st) => st.id),
+        topicOption: topic,
+      });
+      progressContainer.classList.add("hidden");
+      stepBodyEl.classList.remove("hidden");
+      render();
+      return;
+    }
+
+    const syntheticStep: WizardStep = {
+      key: "subTopic",
+      label: t("wizard_step_subTopic"),
+      options: subTopics,
+      multiSelect: true,
+      selectedIds: subTopics.map((st) => st.id),
+      topicOption: topic,
+    };
+    await loadCardPreview(syntheticStep, { pushHistory: true, generation });
+  } finally {
+    if (!isWizardStale(generation)) {
+      btnNext.disabled = false;
+      btnBack.disabled = false;
+      showLoading(false);
+    }
+  }
+}
+
+async function loadMultiTopicCardPreview(
+  topics: TaxonomyOption[],
+): Promise<void> {
+  const generation = wizardSession.snapshot();
+  const localLlm = await isLocalLlm();
+  const previewTimeoutMs = localLlm
+    ? LOCAL_LLM_PREVIEW_TIMEOUT_MS
+    : CLOUD_LLM_PREVIEW_TIMEOUT_MS;
+
+  btnNext.disabled = true;
+  btnBack.disabled = true;
+  showLoading(true);
+  hideStepError();
+  progressContainer.classList.remove("hidden");
+  stepBodyEl.classList.add("hidden");
+
+  try {
+    await assertTextLlmReady();
+
+    const allItems: CardPreviewItem[] = [];
+    const batches: PreviewBatchMeta[] = [];
+    const ctx = selectedKnowledgeContext();
+
+    for (let i = 0; i < topics.length; i++) {
+      const topic = topics[i]!;
+      if (isWizardStale(generation)) return;
+
+      setImportProgress(
+        tf("wizard_import_previewing", { topic: topic.label }),
+        tf("wizard_import_step", {
+          current: String(i + 1),
+          total: String(topics.length),
+        }),
+      );
+
+      const subRes = await runBridge<{
+        success: boolean;
+        subTopics: TaxonomyOption[];
+      }>("curriculum-list-subtopics", [
+        "--provider",
+        selection.providerId!,
+        "--topic",
+        JSON.stringify(topicNodeFromOption(topic)),
+      ]);
+      if (isWizardStale(generation)) return;
+
+      const subTopicIds = (subRes.subTopics ?? []).map((st) => st.id);
+      const previewArgs = [
+        "--provider",
+        selection.providerId!,
+        "--topic",
+        JSON.stringify(topicNodeFromOption(topic)),
+        "--domain",
+        subjectLabel(),
+      ];
+      if (ctx) previewArgs.push("--knowledge-context", ctx);
+      if (subTopicIds.length > 0) {
+        previewArgs.push("--subTopics", JSON.stringify(subTopicIds));
+      }
+
+      const previewRes = await runBridgeWithTimeout<{
+        success: boolean;
+        topicId: string;
+        sourceId: string;
+        items: CardPreviewItem[];
+      }>("curriculum-preview-topic", previewArgs, previewTimeoutMs);
+
+      if (isWizardStale(generation)) return;
+      if (!previewRes.success || !Array.isArray(previewRes.items)) {
+        throw new Error(`Card preview failed for ${topic.label}.`);
+      }
+
+      batches.push({
+        sourceId: previewRes.sourceId,
+        provider: selection.providerId!,
+        topicId: previewRes.topicId,
+        topicLabel: topic.label,
+      });
+
+      for (const item of previewRes.items) {
+        allItems.push({
+          ...item,
+          parentTopicId: item.parentTopicId ?? previewRes.topicId,
+          topicLabel: topic.label,
+        });
+      }
+    }
+
+    history.push({
+      key: "cardPreview",
+      label: t("wizard_step_cardPreview"),
+      options: [],
+      multiSelect: false,
+      selectedIds: [],
+      previewItems: allItems,
+      previewBatches: batches,
+    });
+
+    progressContainer.classList.add("hidden");
+    stepBodyEl.classList.remove("hidden");
+    render();
+  } catch (err) {
+    if (!isWizardStale(generation)) {
+      throw new Error(formatImportError(err, localLlm));
+    }
+  } finally {
+    if (!isWizardStale(generation)) {
+      btnNext.disabled = false;
+      btnBack.disabled = false;
+      showLoading(false);
+    }
+  }
+}
+
+async function loadCardPreview(
+  subTopicStep: WizardStep,
+  opts?: { pushHistory?: boolean; generation?: number },
+): Promise<void> {
+  const generation = opts?.generation ?? wizardSession.snapshot();
+  const topic = subTopicStep.topicOption;
+  if (!topic) {
+    throw new Error("Missing topic for card preview.");
+  }
+
+  const localLlm = await isLocalLlm();
+  const previewTimeoutMs = localLlm
+    ? LOCAL_LLM_PREVIEW_TIMEOUT_MS
+    : CLOUD_LLM_PREVIEW_TIMEOUT_MS;
+
+  btnNext.disabled = true;
+  btnBack.disabled = true;
+  showLoading(true);
+  hideStepError();
+  progressContainer.classList.remove("hidden");
+  stepBodyEl.classList.add("hidden");
+  setImportProgress(
+    tf("wizard_import_previewing", { topic: topic.label }),
+    localLlm
+      ? t("lbl_curriculum_wizard_progress_detail_local")
+      : t("lbl_curriculum_wizard_progress_detail"),
+  );
+
+  try {
+    await assertTextLlmReady();
+
+    const previewArgs = [
+      "--provider",
+      selection.providerId!,
+      "--topic",
+      JSON.stringify(topicNodeFromOption(topic)),
+      "--domain",
+      subjectLabel(),
+    ];
+    const ctx = selectedKnowledgeContext();
+    if (ctx) {
+      previewArgs.push("--knowledge-context", ctx);
+    }
+    if (subTopicStep.selectedIds.length > 0) {
+      previewArgs.push("--subTopics", JSON.stringify(subTopicStep.selectedIds));
+    }
+
+    const previewRes = await runBridgeWithTimeout<{
+      success: boolean;
+      topicId: string;
+      sourceId: string;
+      items: CardPreviewItem[];
+    }>("curriculum-preview-topic", previewArgs, previewTimeoutMs);
+
+    if (isWizardStale(generation)) return;
+
+    if (!previewRes.success || !Array.isArray(previewRes.items)) {
+      throw new Error(`Card preview failed for ${topic.label}.`);
+    }
+
+    if (opts?.pushHistory && subTopicStep.options.length > 1) {
+      history.push(subTopicStep);
+    }
+
+    history.push({
+      key: "cardPreview",
+      label: t("wizard_step_cardPreview"),
+      options: [],
+      multiSelect: false,
+      selectedIds: [],
+      topicOption: topic,
+      previewItems: previewRes.items,
+      previewSourceId: previewRes.sourceId,
+      previewTopicId: previewRes.topicId,
+    });
+
+    progressContainer.classList.add("hidden");
+    stepBodyEl.classList.remove("hidden");
+    render();
+  } catch (err) {
+    if (!isWizardStale(generation)) {
+      throw new Error(formatImportError(err, localLlm));
+    }
+  } finally {
+    if (!isWizardStale(generation)) {
+      btnNext.disabled = false;
+      btnBack.disabled = false;
+      showLoading(false);
+    }
+  }
+}
+
+function renderCardPreviewBody(step: WizardStep): void {
+  const items = step.previewItems ?? [];
+  const note = document.createElement("p");
+  note.className = "wizard-topic-note";
+  note.style.marginBottom = "10px";
+  note.textContent = t("wizard_card_preview_note");
+  stepBodyEl.appendChild(note);
+
+  if (items.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "wizard-error";
+    empty.textContent = t("wizard_card_preview_empty");
+    stepBodyEl.appendChild(empty);
+    return;
+  }
+
+  const showTopicHeaders = (step.previewBatches?.length ?? 0) > 1;
+  let lastTopicLabel = "";
+
+  for (const item of items) {
+    if (showTopicHeaders && item.topicLabel && item.topicLabel !== lastTopicLabel) {
+      lastTopicLabel = item.topicLabel;
+      const heading = document.createElement("p");
+      heading.className = "wizard-topic-note";
+      heading.style.marginTop = "12px";
+      heading.textContent = item.topicLabel;
+      stepBodyEl.appendChild(heading);
+    }
+
+    const row = document.createElement("div");
+    row.className =
+      "wizard-option-row" + (item.selected ? " selected" : "");
+    const title = item.question.trim() || item.concept;
+    const badge = item.isExisting
+      ? `<span class="wizard-option-hint">${escapeHtml(t("wizard_card_existing_badge"))}</span>`
+      : `<span class="wizard-option-hint">${escapeHtml(t("wizard_card_new_badge"))}</span>`;
+    row.innerHTML =
+      `<input type="checkbox" ${item.selected ? "checked" : ""} style="pointer-events: none;" />` +
+      `<span class="wizard-option-label">${escapeHtml(title)}</span>${badge}`;
+    row.addEventListener("click", () => togglePreviewItem(step, item.id));
+    stepBodyEl.appendChild(row);
+  }
+}
+
+function togglePreviewItem(step: WizardStep, itemId: string): void {
+  const item = step.previewItems?.find((entry) => entry.id === itemId);
+  if (!item) return;
+  item.selected = !item.selected;
+  hideStepError();
+  renderStepBody(step);
+}
+
+function buildConfirmOperations(step: WizardStep): Array<{
+  sourceId: string;
+  provider: string;
+  topicId: string;
+  create: NonNullable<CardPreviewItem["proposal"]>[];
+  removeSlugs: string[];
+}> {
+  const items = step.previewItems ?? [];
+  const metaByTopic = new Map<string, PreviewBatchMeta>();
+
+  for (const batch of step.previewBatches ?? []) {
+    metaByTopic.set(batch.topicId, batch);
+  }
+  if (step.previewTopicId && step.previewSourceId && selection.providerId) {
+    metaByTopic.set(step.previewTopicId, {
+      sourceId: step.previewSourceId,
+      provider: selection.providerId,
+      topicId: step.previewTopicId,
+      topicLabel: step.topicOption?.label ?? step.previewTopicId,
+    });
+  }
+
+  const operations = new Map<
+    string,
+    {
+      sourceId: string;
+      provider: string;
+      topicId: string;
+      create: NonNullable<CardPreviewItem["proposal"]>[];
+      removeSlugs: string[];
+    }
+  >();
+
+  for (const item of items) {
+    const topicId = item.parentTopicId;
+    if (!topicId) continue;
+    const meta = metaByTopic.get(topicId);
+    if (!meta) continue;
+
+    let op = operations.get(topicId);
+    if (!op) {
+      op = {
+        sourceId: meta.sourceId,
+        provider: meta.provider,
+        topicId: meta.topicId,
+        create: [],
+        removeSlugs: [],
+      };
+      operations.set(topicId, op);
+    }
+
+    if (!item.isExisting && item.selected && item.proposal) {
+      op.create.push(item.proposal);
+    } else if (item.isExisting && !item.selected && item.slug) {
+      op.removeSlugs.push(item.slug);
+    }
+  }
+
+  return [...operations.values()];
+}
+
+async function confirmCardPreview(step: WizardStep): Promise<void> {
+  const generation = wizardSession.snapshot();
+  const operations = buildConfirmOperations(step);
+  if (operations.length === 0) {
+    throw new Error("Missing topic metadata for import.");
+  }
 
   btnNext.disabled = true;
   btnBack.disabled = true;
   btnCancel.disabled = true;
   progressContainer.classList.remove("hidden");
+  stepBodyEl.classList.add("hidden");
+  setImportProgress(t("wizard_import_saving"));
+
+  const ctx = selectedKnowledgeContext();
+  const confirmArgs: string[] = [];
+  if (ctx) confirmArgs.push("--knowledge-context", ctx);
 
   try {
-    const extractRes = await runBridge<{
-      success: boolean;
-      extracted: Array<{
-        topicId: string;
-        uri: string;
-        sourceId: string;
-        text: string;
-      }>;
-    }>("curriculum-extract-topics", [
-      "--provider",
-      selection.providerId!,
-      "--topics",
-      JSON.stringify(chosenTopics),
-    ]);
-
-    if (!extractRes.success || !Array.isArray(extractRes.extracted) || extractRes.extracted.length === 0) {
-      throw new Error("Failed to extract curriculum topic contents.");
-    }
-
-    const sourceId = extractRes.extracted[0].sourceId;
-    let allProposals: Array<{
-      question: string;
-      concept: string;
-      domain: string;
-      bloom_level: number;
-      symbiosis_mode: string;
-      excerpt: string;
-      page_number: string | null;
-      provider: string;
-      topic_id: string;
-    }> = [];
-
-    const wizardCtxSelect = document.getElementById("wizard-context-select") as HTMLSelectElement;
-    const selectedCtxName = wizardCtxSelect?.value || "";
-
-    for (const item of extractRes.extracted) {
-      if (!item.text.trim()) continue;
-
-      const importArgs = [
-        "--text",
-        item.text,
-        "--domain",
-        subjectLabel,
-        "--preview",
-      ];
-      if (selectedCtxName) {
-        importArgs.push("--knowledge-context", selectedCtxName);
-      }
-
-      const previewRes = await runBridge<{
-        success: boolean;
-        proposals: Array<{
-          question: string;
-          concept: string;
-          domain: string;
-          bloom_level: number;
-          symbiosis_mode: string;
-          context: string;
-        }>;
-      }>("personal-card-import-curriculum", importArgs);
-
-      if (!previewRes.success || !Array.isArray(previewRes.proposals)) {
-        continue;
-      }
-
-      const mapped = previewRes.proposals.map((p) => ({
-        question: p.question,
-        concept: p.concept,
-        domain: p.domain,
-        bloom_level: p.bloom_level,
-        symbiosis_mode: p.symbiosis_mode || "none",
-        excerpt: p.context || "",
-        page_number: null,
-        provider: selection.providerId!,
-        topic_id: item.topicId,
-      }));
-
-      allProposals = allProposals.concat(mapped);
-    }
-
-    if (allProposals.length === 0) {
-      throw new Error("No cards were generated from the selected topics.");
-    }
-
-    const confirmArgs = [
-      "--sourceId",
-      sourceId,
-      "--proposals",
-      JSON.stringify(allProposals),
-    ];
-    if (selectedCtxName) {
-      confirmArgs.push("--knowledge-context", selectedCtxName);
-    }
-
-    const confirmRes = await runBridge<{
+    let result: {
       success: boolean;
       createdCount: number;
       ensuredCount: number;
-    }>("personal-source-confirm-import", confirmArgs);
+      removedCount: number;
+    };
 
-    let createdCount = 0;
-    let ensuredCount = 0;
-    if (confirmRes.success) {
-      createdCount = confirmRes.createdCount;
-      ensuredCount = confirmRes.ensuredCount;
+    if (operations.length > 1) {
+      confirmArgs.unshift(
+        "--operations",
+        JSON.stringify(
+          operations.map((op) => ({
+            sourceId: op.sourceId,
+            provider: op.provider,
+            topicId: op.topicId,
+            create: op.create,
+            removeSlugs: op.removeSlugs,
+          })),
+        ),
+      );
+      result = await runBridge("curriculum-confirm-batch", confirmArgs);
+    } else {
+      const op = operations[0]!;
+      confirmArgs.unshift(
+        "--provider",
+        op.provider,
+        "--topicId",
+        op.topicId,
+        "--sourceId",
+        op.sourceId,
+        "--create",
+        JSON.stringify(op.create),
+        "--removeSlugs",
+        JSON.stringify(op.removeSlugs),
+      );
+      result = await runBridge("curriculum-confirm-topic", confirmArgs);
     }
 
-    hideCurriculumWizard();
-    alert(tf("toast_import_success", { createdCount, ensuredCount }));
+    if (isWizardStale(generation)) return;
+
+    if (!result.success) {
+      throw new Error("Failed to save card selection.");
+    }
+
+    setImportProgress(
+      tf("wizard_import_confirm_success", {
+        createdCount: String(result.createdCount),
+        ensuredCount: String(result.ensuredCount),
+        removedCount: String(result.removedCount),
+      }),
+    );
     await loadStudioData();
-  } catch (err) {
-    showStepError(t("lbl_error_importing") + ": " + describeError(err));
+    await new Promise((resolve) => setTimeout(resolve, 2500));
+    if (!isWizardStale(generation)) {
+      hideCurriculumWizard();
+    }
   } finally {
-    btnNext.disabled = false;
-    btnBack.disabled = false;
-    btnCancel.disabled = false;
-    progressContainer.classList.add("hidden");
+    if (!isWizardStale(generation)) {
+      stepBodyEl.classList.remove("hidden");
+      btnNext.disabled = false;
+      btnBack.disabled = false;
+      btnCancel.disabled = false;
+      progressContainer.classList.add("hidden");
+    }
   }
 }

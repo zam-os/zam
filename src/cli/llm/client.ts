@@ -17,6 +17,7 @@ import { existsSync, readFileSync, statSync } from "node:fs";
 import type { DiscussionTurn } from "../../bridge/protocol.js";
 import type { Database, SupportedLocale } from "../../kernel/index.js";
 import {
+  ensureMachineProviderRolesSanitized,
   getActiveWorkspaceContext,
   getKnowledgeContextByName,
   getMachineAiConfig,
@@ -34,6 +35,10 @@ export const DEFAULT_LLM_URL = "http://localhost:8000/v1";
 
 /** Default completion budget for open-ended tasks (vision, translation, …). */
 export const DEFAULT_LLM_MAX_TOKENS = 10_000;
+
+/** Bridge hard deadline for curriculum import — large blocks need more time locally. */
+const LOCAL_CURRICULUM_IMPORT_HARD_TIMEOUT_MS = 600_000;
+const CLOUD_CURRICULUM_IMPORT_HARD_TIMEOUT_MS = 180_000;
 
 /** Tight output caps for recall — short questions/evaluations, faster round-trips. */
 export const RECALL_QUESTION_MAX_OUTPUT_TOKENS = 400;
@@ -229,6 +234,8 @@ export async function getProviderForRole(
   db: Database,
   role: LlmRole,
 ): Promise<ProviderConfig> {
+  ensureMachineProviderRolesSanitized();
+
   const enabled =
     role === "vision"
       ? (await getSetting(db, "llm.vision.enabled")) === "true"
@@ -285,6 +292,11 @@ export async function getProviderForRole(
           )
         : undefined;
     return { ...primary, fallback };
+  }
+
+  // Curriculum import shares the learner-facing text model with recall.
+  if (role === "text") {
+    return getProviderForRole(db, "recall");
   }
 
   return resolved;
@@ -912,6 +924,10 @@ ${sourceUrl ? `Source Reference Link: ${sourceUrl}` : ""}
 
 JSON Array Output:`;
 
+  const hardTimeoutMs = isLocalEndpoint(endpoint.url)
+    ? LOCAL_CURRICULUM_IMPORT_HARD_TIMEOUT_MS
+    : CLOUD_CURRICULUM_IMPORT_HARD_TIMEOUT_MS;
+
   const res = await fetchWithInteractiveTimeout(
     `${endpoint.url}/chat/completions`,
     {
@@ -930,6 +946,8 @@ JSON Array Output:`;
         max_tokens: DEFAULT_LLM_MAX_TOKENS,
       }),
       locale,
+      hardTimeoutMs,
+      timeoutMs: hardTimeoutMs,
     },
   );
 
@@ -1507,7 +1525,15 @@ async function resolveUsableTextEndpoint(
   const chain = await checkProviderChain(cfg);
   const selected = chain.firstUsable;
   if (!selected || !isEndpointUsable(selected)) {
-    throw new Error("No text LLM endpoint is online");
+    const primary = chain.primary.endpoint;
+    const reason = !selected
+      ? chain.primary.online
+        ? "configured model is unavailable"
+        : "endpoint is offline"
+      : "endpoint is not usable";
+    throw new Error(
+      `No text LLM endpoint is online (${reason}; role: text; url: ${primary.url}; model: ${primary.model})`,
+    );
   }
   return selected.endpoint;
 }

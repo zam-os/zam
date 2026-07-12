@@ -21,21 +21,25 @@ import type {
   NeighborhoodToken,
   Rating,
   ReviewActionType,
+  SourceProposalInput,
   SymbiosisMode,
   TokenPattern,
 } from "../../kernel/index.js";
 import {
   appendUiObservationReport,
+  applySourceProposals,
   assignTokenToContext,
   BUILT_IN_SENSITIVE_MATCHERS,
   clearProviderApiKey,
   confirmCardSplit,
   confirmFoundations,
   confirmSourceImport,
+  countUserCardsForCurriculumTopic,
   createToken,
   decidePostCapture,
   decidePreCapture,
   deleteCardForUser,
+  deleteCurriculumCardForUser,
   deleteToken,
   discoverSkills,
   ensureCard,
@@ -64,6 +68,7 @@ import {
   listPersonalCards,
   listProviderApiKeyRefs,
   listTokens,
+  listUserCardsForCurriculumTopic,
   openDatabase,
   pairCommands,
   readMonitorLog,
@@ -160,6 +165,7 @@ import {
   readScopedRoles,
   removeProviderRecord,
   rolesReferencing,
+  unbindRole,
   upsertProviderRecord,
   VALID_API_FLAVORS,
   VALID_ROLES,
@@ -2429,12 +2435,16 @@ bridgeCommand
     await withProviderScope(machine, async (db) => {
       const providers = await readScopedProviders(db, machine);
       const roles = await readScopedRoles(db, machine);
-      const nextRoles = bindRoleProviders(
+      let nextRoles = bindRoleProviders(
         roles,
         opts.role as LlmRole,
         opts.primary,
         opts.fallback,
       );
+      // Text-role curriculum import inherits recall; one learner-facing binding.
+      if (opts.role === "recall") {
+        nextRoles = unbindRole(nextRoles, "text");
+      }
       await writeScopedRoles(db, machine, nextRoles);
       const binding = nextRoles[opts.role as LlmRole];
       const primary = providers[opts.primary];
@@ -3557,7 +3567,11 @@ bridgeCommand
   .command("personal-card-import-curriculum")
   .description("Parse curriculum text using LLM and import cards (JSON)")
   .option("--user <id>", "User ID (default: whoami)")
-  .requiredOption("--text <text>", "Curriculum syllabus/content text")
+  .option("--text <text>", "Curriculum syllabus/content text")
+  .option(
+    "--sourceId <id>",
+    "Read curriculum text from a sources row (avoids large IPC payloads)",
+  )
   .requiredOption(
     "--domain <domain>",
     "Default category/domain for imported cards",
@@ -3577,6 +3591,20 @@ bridgeCommand
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
 
+      let curriculumText = opts.text as string | undefined;
+      if (opts.sourceId) {
+        const row = (await db
+          .prepare("SELECT content FROM sources WHERE id = ?")
+          .get(opts.sourceId)) as { content: string | null } | undefined;
+        if (!row) {
+          jsonError(`Source not found: ${opts.sourceId}`);
+        }
+        curriculumText = row.content ?? "";
+      }
+      if (!curriculumText?.trim()) {
+        jsonError("Curriculum text is required (--text or --sourceId)");
+      }
+
       const contextNames = parseKnowledgeContextNames(
         opts.knowledgeContext || [],
       );
@@ -3585,7 +3613,7 @@ bridgeCommand
 
       const cards = await importCurriculumViaLLM(
         db,
-        opts.text,
+        curriculumText,
         opts.domain,
         opts.source || null,
         { knowledgeContext: firstContext },
@@ -4064,6 +4092,734 @@ async function fetchRawHtml(url: string): Promise<string> {
   }
 }
 
+const CURRICULUM_TOPIC_URI_PREFIX = "zam-curriculum-topic://";
+
+interface StoredCurriculumTopic {
+  topicId: string;
+  uri: string;
+  sourceId: string;
+  topicSourceId: string;
+  textLength: number;
+}
+
+async function extractAndStoreCurriculumTopics(
+  db: Database,
+  provider: NonNullable<ReturnType<typeof getCurriculumProvider>>,
+  topics: TopicNode[],
+): Promise<StoredCurriculumTopic[]> {
+  const topicsByUri = new Map<string, TopicNode[]>();
+  for (const topic of topics) {
+    const resolved = provider.resolveTopic(topic);
+    const list = topicsByUri.get(resolved.uri) || [];
+    list.push(topic);
+    topicsByUri.set(resolved.uri, list);
+  }
+
+  const extracted: StoredCurriculumTopic[] = [];
+
+  for (const [uri, uriTopics] of topicsByUri.entries()) {
+    const rawHtml = await fetchRawHtml(uri);
+
+    let extractedTexts: Record<string, string> = {};
+    if (provider.extractTopics) {
+      const fullTopicIds = uriTopics.map((t) => `${t.sourceRef}#${t.id}`);
+      extractedTexts = provider.extractTopics(rawHtml, fullTopicIds);
+    } else {
+      const cleanText = cleanHtml(rawHtml);
+      for (const t of uriTopics) {
+        extractedTexts[`${t.sourceRef}#${t.id}`] = cleanText;
+      }
+    }
+
+    const pageCleanedText = cleanHtml(rawHtml);
+    const sourceId = ulid();
+    await db
+      .prepare(
+        `INSERT INTO sources (id, type, uri, content)
+         VALUES (?, 'web', ?, ?)
+         ON CONFLICT(uri) DO UPDATE SET
+           type = excluded.type,
+           content = excluded.content`,
+      )
+      .run(sourceId, uri, pageCleanedText);
+
+    const record = (await db
+      .prepare("SELECT id FROM sources WHERE uri = ?")
+      .get(uri)) as { id: string };
+
+    for (const topic of uriTopics) {
+      const resolved = provider.resolveTopic(topic);
+      const text = extractedTexts[resolved.topicId] || "";
+      const topicUri = `${CURRICULUM_TOPIC_URI_PREFIX}${resolved.topicId}`;
+      const topicSourceId = ulid();
+      await db
+        .prepare(
+          `INSERT INTO sources (id, type, uri, content)
+           VALUES (?, 'web', ?, ?)
+           ON CONFLICT(uri) DO UPDATE SET
+             content = excluded.content`,
+        )
+        .run(topicSourceId, topicUri, text);
+
+      const topicRecord = (await db
+        .prepare("SELECT id FROM sources WHERE uri = ?")
+        .get(topicUri)) as { id: string };
+
+      extracted.push({
+        topicId: resolved.topicId,
+        uri,
+        sourceId: record.id,
+        topicSourceId: topicRecord.id,
+        textLength: text.length,
+      });
+    }
+  }
+
+  return extracted;
+}
+
+async function assignConfirmedProposalContexts(
+  db: Database,
+  proposals: Array<{
+    question: string;
+    concept: string;
+    domain: string;
+  }>,
+  contexts: KnowledgeContext[],
+): Promise<void> {
+  for (const p of proposals) {
+    const baseText =
+      p.question && p.question.trim().length > 0 ? p.question : p.concept;
+    const cleanDomain = slugify(p.domain || "");
+    const cleanBase = slugify(baseText);
+    let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
+    if (baseSlug.length > 60) {
+      baseSlug = baseSlug.slice(0, 60).replace(/-$/, "");
+    }
+    if (!baseSlug) {
+      baseSlug = "token";
+    }
+    const token = await getTokenBySlug(db, baseSlug);
+    if (token) {
+      for (const context of contexts) {
+        await assignTokenToContext(db, token.id, context.id);
+      }
+    }
+  }
+}
+
+// ── zam bridge curriculum-import-status ──────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-import-status")
+  .description(
+    "Check which selected curriculum topics are already imported for a user (JSON)",
+  )
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption("--topics <json>", "JSON array of selected topic nodes")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const provider = getCurriculumProvider(opts.provider);
+      if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+
+      let topics: TopicNode[];
+      try {
+        topics = JSON.parse(opts.topics);
+      } catch {
+        jsonError("Invalid --topics JSON");
+        return;
+      }
+
+      const status: Array<{
+        topicId: string;
+        shortId: string;
+        cardCount: number;
+        alreadyImported: boolean;
+        error?: string;
+      }> = [];
+
+      for (const topic of topics) {
+        try {
+          const resolved = provider.resolveTopic(topic);
+          const cardCount = await countUserCardsForCurriculumTopic(
+            db,
+            userId,
+            provider.id,
+            resolved.topicId,
+          );
+          status.push({
+            topicId: resolved.topicId,
+            shortId: topic.id,
+            cardCount,
+            alreadyImported: cardCount > 0,
+          });
+        } catch (err) {
+          status.push({
+            topicId: topic.id,
+            shortId: topic.id,
+            cardCount: 0,
+            alreadyImported: false,
+            error: (err as Error).message || String(err),
+          });
+        }
+      }
+
+      jsonOut({ success: true, status });
+    });
+  });
+
+// ── zam bridge curriculum-import-topic ───────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-import-topic")
+  .description(
+    "Extract, LLM-preview, and confirm-import one curriculum topic server-side (JSON)",
+  )
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption("--topic <json>", "Single topic node JSON")
+  .requiredOption("--domain <domain>", "Subject label for imported card domain")
+  .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--knowledge-context <context>",
+    "Assign confirmed tokens to a knowledge context (repeatable)",
+    (val, memo: string[]) => {
+      memo.push(val);
+      return memo;
+    },
+    [],
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const provider = getCurriculumProvider(opts.provider);
+      if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+
+      let topic: TopicNode;
+      try {
+        topic = JSON.parse(opts.topic);
+      } catch {
+        jsonError("Invalid --topic JSON");
+        return;
+      }
+
+      const extracted = await extractAndStoreCurriculumTopics(db, provider, [
+        topic,
+      ]);
+      const item = extracted[0];
+      if (!item || item.textLength === 0) {
+        jsonError(`No curriculum text extracted for topic "${topic.id}"`);
+      }
+
+      const contextNames = parseKnowledgeContextNames(
+        opts.knowledgeContext || [],
+      );
+      const contexts = await resolveKnowledgeContexts(db, contextNames);
+      const firstContext = contexts[0]?.name;
+
+      const topicRow = (await db
+        .prepare("SELECT content FROM sources WHERE id = ?")
+        .get(item.topicSourceId)) as { content: string | null };
+      const curriculumText = topicRow.content ?? "";
+
+      const cards = await importCurriculumViaLLM(
+        db,
+        curriculumText,
+        opts.domain,
+        item.uri,
+        { knowledgeContext: firstContext },
+      );
+
+      if (cards.length === 0) {
+        jsonError(`No cards were generated for ${item.topicId}`);
+      }
+
+      const proposals = cards.map((card) => ({
+        question: card.question,
+        concept: card.concept,
+        domain: card.domain,
+        title: card.title,
+        bloom_level: card.bloom_level,
+        symbiosis_mode: card.symbiosis_mode || "none",
+        excerpt: card.context || "",
+        page_number: null,
+        provider: provider.id,
+        topic_id: item.topicId,
+      }));
+
+      const result = await confirmSourceImport(
+        db,
+        userId,
+        item.sourceId,
+        proposals,
+      );
+
+      await assignConfirmedProposalContexts(db, proposals, contexts);
+
+      jsonOut({
+        success: true,
+        topicId: item.topicId,
+        proposalCount: proposals.length,
+        createdCount: result.createdCount,
+        ensuredCount: result.linkedCount,
+      });
+    });
+  });
+
+function proposalBaseSlug(
+  domain: string,
+  question: string,
+  concept: string,
+): string {
+  const baseText = question?.trim() ? question : concept;
+  const cleanDomain = slugify(domain || "");
+  const cleanBase = slugify(baseText);
+  let baseSlug = cleanDomain ? `${cleanDomain}-${cleanBase}` : cleanBase;
+  if (baseSlug.length > 60) {
+    baseSlug = baseSlug.slice(0, 60).replace(/-$/, "");
+  }
+  return baseSlug || "token";
+}
+
+interface CurriculumConfirmOperation {
+  sourceId: string;
+  provider: string;
+  topicId: string;
+  create: SourceProposalInput[];
+  removeSlugs: string[];
+}
+
+async function executeCurriculumConfirmOperations(
+  db: Database,
+  userId: string,
+  operations: CurriculumConfirmOperation[],
+  contexts: KnowledgeContext[],
+): Promise<{
+  createdCount: number;
+  ensuredCount: number;
+  removedCount: number;
+}> {
+  let createdCount = 0;
+  let ensuredCount = 0;
+  let removedCount = 0;
+
+  await db.transaction(async (tx) => {
+    for (const op of operations) {
+      if (op.create.length > 0) {
+        const result = await applySourceProposals(
+          tx,
+          userId,
+          op.sourceId,
+          op.create,
+        );
+        createdCount += result.createdCount;
+        ensuredCount += result.linkedCount;
+        await assignConfirmedProposalContexts(tx, op.create, contexts);
+      }
+      for (const slug of op.removeSlugs) {
+        if (
+          await deleteCurriculumCardForUser(
+            tx,
+            userId,
+            slug,
+            op.provider,
+            op.topicId,
+          )
+        ) {
+          removedCount++;
+        }
+      }
+    }
+  });
+
+  return { createdCount, ensuredCount, removedCount };
+}
+
+// ── zam bridge curriculum-list-subtopics ─────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-list-subtopics")
+  .description(
+    "List finer units inside a Lernbereich for chunked import (JSON)",
+  )
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption("--topic <json>", "Single topic node JSON")
+  .action(async (opts) => {
+    try {
+      const provider = getCurriculumProvider(opts.provider);
+      if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+      if (!provider.extractSubTopics) {
+        jsonOut({ success: true, subTopics: [] });
+        return;
+      }
+
+      let topic: TopicNode;
+      try {
+        topic = JSON.parse(opts.topic);
+      } catch {
+        jsonError("Invalid --topic JSON");
+        return;
+      }
+
+      const resolved = provider.resolveTopic(topic);
+      const rawHtml = await fetchRawHtml(resolved.uri);
+      const subTopics = provider
+        .extractSubTopics(rawHtml, resolved.topicId)
+        .map(({ id, label, textLength }) => ({ id, label, textLength }));
+
+      jsonOut({ success: true, topicId: resolved.topicId, subTopics });
+    } catch (err) {
+      jsonError((err as Error).message || String(err));
+    }
+  });
+
+// ── zam bridge curriculum-preview-topic ──────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-preview-topic")
+  .description(
+    "Preview importable cards for one topic (existing + LLM proposals) (JSON)",
+  )
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption("--topic <json>", "Single topic node JSON")
+  .requiredOption("--domain <domain>", "Subject label for imported card domain")
+  .option("--subTopics <json>", "JSON array of sub-topic ids to include")
+  .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--knowledge-context <context>",
+    "Knowledge context for LLM prompt (repeatable)",
+    (val, memo: string[]) => {
+      memo.push(val);
+      return memo;
+    },
+    [],
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const provider = getCurriculumProvider(opts.provider);
+      if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+
+      let topic: TopicNode;
+      try {
+        topic = JSON.parse(opts.topic);
+      } catch {
+        jsonError("Invalid --topic JSON");
+        return;
+      }
+
+      const resolved = provider.resolveTopic(topic);
+      const extracted = await extractAndStoreCurriculumTopics(db, provider, [
+        topic,
+      ]);
+      const item = extracted[0];
+      if (!item || item.textLength === 0) {
+        jsonError(`No curriculum text extracted for topic "${topic.id}"`);
+      }
+
+      const contextNames = parseKnowledgeContextNames(
+        opts.knowledgeContext || [],
+      );
+      const contexts = await resolveKnowledgeContexts(db, contextNames);
+      const firstContext = contexts[0]?.name;
+
+      let subTopicIds: string[] | undefined;
+      if (opts.subTopics) {
+        try {
+          subTopicIds = JSON.parse(opts.subTopics);
+        } catch {
+          jsonError("Invalid --subTopics JSON");
+          return;
+        }
+      }
+
+      const rawHtml = await fetchRawHtml(item.uri);
+      const chunks: Array<{ subTopicId: string | null; text: string }> = [];
+
+      if (provider.extractSubTopics) {
+        const subTopics = provider.extractSubTopics(rawHtml, resolved.topicId);
+        const selected =
+          subTopicIds && subTopicIds.length > 0
+            ? subTopics.filter((st) => subTopicIds!.includes(st.id))
+            : subTopics;
+
+        if (selected.length > 0) {
+          for (const st of selected) {
+            chunks.push({ subTopicId: st.id, text: st.text });
+          }
+        }
+      }
+
+      if (chunks.length === 0) {
+        const topicRow = (await db
+          .prepare("SELECT content FROM sources WHERE id = ?")
+          .get(item.topicSourceId)) as { content: string | null };
+        chunks.push({
+          subTopicId: null,
+          text: topicRow.content ?? "",
+        });
+      }
+
+      const existingCards = await listUserCardsForCurriculumTopic(
+        db,
+        userId,
+        provider.id,
+        resolved.topicId,
+      );
+      const existingSlugs = new Set(existingCards.map((c) => c.slug));
+
+      const items: Array<{
+        id: string;
+        slug: string | null;
+        question: string;
+        concept: string;
+        domain: string;
+        bloom_level: number;
+        symbiosis_mode: string;
+        excerpt: string;
+        isExisting: boolean;
+        selected: boolean;
+        subTopicId: string | null;
+        parentTopicId: string;
+        proposal?: {
+          question: string;
+          concept: string;
+          domain: string;
+          bloom_level: number;
+          symbiosis_mode: string;
+          excerpt: string;
+          page_number: string | null;
+          provider: string;
+          topic_id: string;
+        };
+      }> = [];
+
+      for (const card of existingCards) {
+        items.push({
+          id: `existing:${card.slug}`,
+          slug: card.slug,
+          question: card.question ?? "",
+          concept: card.concept,
+          domain: card.domain,
+          bloom_level: card.bloomLevel,
+          symbiosis_mode: card.symbiosisMode ?? "none",
+          excerpt: "",
+          isExisting: true,
+          selected: true,
+          subTopicId: card.topicId?.includes("@")
+            ? (card.topicId.split("@").pop() ?? null)
+            : null,
+          parentTopicId: resolved.topicId,
+        });
+      }
+
+      let proposalIndex = 0;
+      for (const chunk of chunks) {
+        if (!chunk.text.trim()) continue;
+
+        const cards = await importCurriculumViaLLM(
+          db,
+          chunk.text,
+          opts.domain,
+          item.uri,
+          { knowledgeContext: firstContext },
+        );
+
+        const scopedTopicId = chunk.subTopicId
+          ? `${resolved.topicId}@${chunk.subTopicId}`
+          : resolved.topicId;
+
+        for (const card of cards) {
+          const slug = proposalBaseSlug(
+            card.domain,
+            card.question,
+            card.concept,
+          );
+          if (existingSlugs.has(slug)) {
+            continue;
+          }
+
+          const proposal = {
+            question: card.question,
+            concept: card.concept,
+            domain: card.domain,
+            bloom_level: card.bloom_level,
+            symbiosis_mode: card.symbiosis_mode || "none",
+            excerpt: card.context || "",
+            page_number: null as string | null,
+            provider: provider.id,
+            topic_id: scopedTopicId,
+          };
+
+          items.push({
+            id: `new:${proposalIndex++}`,
+            slug: null,
+            question: proposal.question,
+            concept: proposal.concept,
+            domain: proposal.domain,
+            bloom_level: proposal.bloom_level,
+            symbiosis_mode: proposal.symbiosis_mode,
+            excerpt: proposal.excerpt,
+            isExisting: false,
+            selected: false,
+            subTopicId: chunk.subTopicId,
+            parentTopicId: resolved.topicId,
+            proposal,
+          });
+        }
+      }
+
+      if (items.length === 0) {
+        jsonError(`No importable cards for topic "${topic.id}"`);
+      }
+
+      jsonOut({
+        success: true,
+        topicId: resolved.topicId,
+        sourceId: item.sourceId,
+        items,
+      });
+    });
+  });
+
+// ── zam bridge curriculum-confirm-topic ──────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-confirm-topic")
+  .description(
+    "Create selected new cards and remove deselected existing cards (JSON)",
+  )
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption("--topicId <id>", "Resolved curriculum topic id")
+  .requiredOption("--sourceId <id>", "Parent page source database ID")
+  .requiredOption(
+    "--create <json>",
+    "JSON array of SourceProposalInput objects to import",
+  )
+  .requiredOption(
+    "--removeSlugs <json>",
+    "JSON array of token slugs whose user cards should be deleted",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--knowledge-context <context>",
+    "Assign confirmed tokens to a knowledge context (repeatable)",
+    (val, memo: string[]) => {
+      memo.push(val);
+      return memo;
+    },
+    [],
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const provider = getCurriculumProvider(opts.provider);
+      if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+
+      let create: SourceProposalInput[];
+      let removeSlugs: string[];
+      try {
+        create = JSON.parse(opts.create);
+        removeSlugs = JSON.parse(opts.removeSlugs);
+      } catch {
+        jsonError("Invalid --create or --removeSlugs JSON");
+        return;
+      }
+
+      const contextNames = parseKnowledgeContextNames(
+        opts.knowledgeContext || [],
+      );
+      const contexts = await resolveKnowledgeContexts(db, contextNames);
+
+      try {
+        const result = await executeCurriculumConfirmOperations(
+          db,
+          userId,
+          [
+            {
+              sourceId: opts.sourceId,
+              provider: provider.id,
+              topicId: opts.topicId,
+              create,
+              removeSlugs,
+            },
+          ],
+          contexts,
+        );
+        jsonOut({ success: true, ...result });
+      } catch (err) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+// ── zam bridge curriculum-confirm-batch ────────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-confirm-batch")
+  .description("Atomically confirm multiple curriculum topic selections (JSON)")
+  .requiredOption(
+    "--operations <json>",
+    "JSON array of {sourceId, provider, topicId, create, removeSlugs}",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--knowledge-context <context>",
+    "Assign confirmed tokens to a knowledge context (repeatable)",
+    (val, memo: string[]) => {
+      memo.push(val);
+      return memo;
+    },
+    [],
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+
+      let operations: CurriculumConfirmOperation[];
+      try {
+        operations = JSON.parse(opts.operations);
+      } catch {
+        jsonError("Invalid --operations JSON");
+        return;
+      }
+
+      if (!Array.isArray(operations) || operations.length === 0) {
+        jsonError("--operations must be a non-empty JSON array");
+      }
+
+      for (const op of operations) {
+        if (!op?.sourceId || !op?.provider || !op?.topicId) {
+          jsonError("Each operation requires sourceId, provider, and topicId");
+        }
+        if (!getCurriculumProvider(op.provider)) {
+          jsonError(`Unknown curriculum provider: ${op.provider}`);
+        }
+        if (!Array.isArray(op.create) || !Array.isArray(op.removeSlugs)) {
+          jsonError("Each operation requires create and removeSlugs arrays");
+        }
+      }
+
+      const contextNames = parseKnowledgeContextNames(
+        opts.knowledgeContext || [],
+      );
+      const contexts = await resolveKnowledgeContexts(db, contextNames);
+
+      try {
+        const result = await executeCurriculumConfirmOperations(
+          db,
+          userId,
+          operations,
+          contexts,
+        );
+        jsonOut({ success: true, ...result });
+      } catch (err) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
 // ── zam bridge curriculum-extract-topics ─────────────────────────────────────
 
 bridgeCommand
@@ -4086,63 +4842,11 @@ bridgeCommand
         return;
       }
 
-      // Group topics by their resolved source URI
-      const topicsByUri = new Map<string, TopicNode[]>();
-      for (const topic of topics) {
-        const resolved = provider.resolveTopic(topic);
-        const list = topicsByUri.get(resolved.uri) || [];
-        list.push(topic);
-        topicsByUri.set(resolved.uri, list);
-      }
-
-      const extracted: Array<{
-        topicId: string;
-        uri: string;
-        sourceId: string;
-        text: string;
-      }> = [];
-
-      for (const [uri, uriTopics] of topicsByUri.entries()) {
-        const rawHtml = await fetchRawHtml(uri);
-
-        let extractedTexts: Record<string, string> = {};
-        if (provider.extractTopics) {
-          const fullTopicIds = uriTopics.map((t) => `${t.sourceRef}#${t.id}`);
-          extractedTexts = provider.extractTopics(rawHtml, fullTopicIds);
-        } else {
-          const cleanText = cleanHtml(rawHtml);
-          for (const t of uriTopics) {
-            extractedTexts[`${t.sourceRef}#${t.id}`] = cleanText;
-          }
-        }
-
-        const pageCleanedText = cleanHtml(rawHtml);
-        const sourceId = ulid();
-        await db
-          .prepare(
-            `INSERT INTO sources (id, type, uri, content)
-             VALUES (?, 'web', ?, ?)
-             ON CONFLICT(uri) DO UPDATE SET
-               type = excluded.type,
-               content = excluded.content`,
-          )
-          .run(sourceId, uri, pageCleanedText);
-
-        const record = (await db
-          .prepare("SELECT id FROM sources WHERE uri = ?")
-          .get(uri)) as { id: string };
-
-        for (const topic of uriTopics) {
-          const resolved = provider.resolveTopic(topic);
-          const text = extractedTexts[resolved.topicId] || "";
-          extracted.push({
-            topicId: resolved.topicId,
-            uri,
-            sourceId: record.id,
-            text,
-          });
-        }
-      }
+      const extracted = await extractAndStoreCurriculumTopics(
+        db,
+        provider,
+        topics,
+      );
 
       jsonOut({ success: true, extracted });
     });
@@ -4504,12 +5208,27 @@ bridgeCommand
     // separately mutexes the console-swapping execution itself, but that
     // only serialises the swap, not response ordering. Chaining on a single
     // promise here guarantees both, regardless of how fast lines arrive.
+    process.on("unhandledRejection", (reason) => {
+      logDiag(`unhandledRejection: ${String(reason)}`);
+    });
+
     let pending: Promise<void> = Promise.resolve();
     rl.on("line", (line) => {
       if (!line.trim()) return;
-      pending = pending.then(async () => {
-        const response = await processRequest(line);
-        process.stdout.write(`${response}\n`);
-      });
+      pending = pending
+        .then(async () => {
+          const response = await processRequest(line);
+          process.stdout.write(`${response}\n`);
+        })
+        .catch((err) => {
+          logDiag(`serve request failed: ${(err as Error).message || err}`);
+          try {
+            process.stdout.write(
+              `${JSON.stringify({ id: null, error: (err as Error).message || String(err) })}\n`,
+            );
+          } catch {
+            // best-effort only
+          }
+        });
     });
   });

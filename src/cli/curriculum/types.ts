@@ -22,6 +22,11 @@ export interface TopicNode extends TaxonomyNode {
   hours?: number;
 }
 
+/** Finer unit inside a Lernbereich (e.g. a Kompetenzerwartung bullet). */
+export interface SubTopicNode extends TaxonomyNode {
+  textLength: number;
+}
+
 export interface ResolvedSource {
   provider: string;
   topicId: string;
@@ -41,7 +46,8 @@ export type CurriculumLevel =
   | "grade"
   | "subject"
   | "track"
-  | "topic";
+  | "topic"
+  | "subTopic";
 
 export interface CurriculumProvider {
   id: string;
@@ -65,4 +71,12 @@ export interface CurriculumProvider {
   listTopics(selection: CurriculumSelection): TopicNode[];
   resolveTopic(topic: TopicNode): ResolvedSource;
   extractTopics?(html: string, topicIds: string[]): Record<string, string>;
+  /**
+   * Optional finer units inside a Lernbereich. When present, import should
+   * chunk LLM calls per sub-topic instead of feeding the whole topic text.
+   */
+  extractSubTopics?(
+    html: string,
+    topicId: string,
+  ): Array<SubTopicNode & { text: string }>;
 }

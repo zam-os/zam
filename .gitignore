@@ -54,6 +54,10 @@ coverage/
 
 # Scratch & temporary
 scratch/
+agent-tools/
+mcps/
+terminals/
+.worktrees/
 
 # Agent worktrees & external CLI caches (never commit)
 .claude/worktrees/

@@ -133,6 +133,43 @@ describe("getProviderForRole", () => {
     }
   });
 
+  it("always resolves text to the recall provider", async () => {
+    const db = await openDb();
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(
+      db,
+      "llm.providers",
+      JSON.stringify({
+        mimo: {
+          url: "https://api.xiaomi.com/mimo/v1",
+          model: "mimo-v2.5",
+          apiKey: "sk-mimo",
+          label: "Mimo-V2.5",
+        },
+      }),
+    );
+    await setSetting(
+      db,
+      "llm.roles",
+      JSON.stringify({
+        recall: { primary: "mimo" },
+        text: { primary: "deepseek" },
+      }),
+    );
+    try {
+      const recall = await getProviderForRole(db, "recall");
+      const text = await getProviderForRole(db, "text");
+      expect(recall.model).toBe("mimo-v2.5");
+      expect(text).toMatchObject({
+        model: "mimo-v2.5",
+        url: "https://api.xiaomi.com/mimo/v1",
+        apiKey: "sk-mimo",
+      });
+    } finally {
+      await db.close();
+    }
+  });
+
   it("resolves a role to its configured provider + fallback", async () => {
     const db = await openDb();
     await setSetting(db, "llm.enabled", "true");

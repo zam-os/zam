@@ -376,6 +376,31 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_btn_restart: "Empezar de nuevo",
     lbl_curriculum_wizard_loading: "Cargando…",
     wizard_hours: "{hours} h",
+    lbl_curriculum_wizard_progress_status: "Importando…",
+    lbl_curriculum_wizard_progress_detail:
+      "Puede tardar un minuto según la velocidad de la IA.",
+    lbl_curriculum_wizard_progress_detail_local:
+      "La IA local puede tardar varios minutos por tema — el progreso aparece abajo.",
+    wizard_import_extracting: "Extrayendo texto del plan de estudios…",
+    wizard_import_generating: "Generando tarjetas: {topic}",
+    wizard_import_step: "Tema {current} de {total}",
+    wizard_import_saving: "Guardando tarjetas…",
+    wizard_import_saving_count: "{count} tarjetas por guardar",
+    wizard_import_saving_topic: "Guardando tarjetas de {topic}",
+    wizard_import_fallback: "Cambiando a importación tema por tema…",
+    wizard_import_partial_success:
+      "Se importaron {createdCount} nuevas y {ensuredCount} existentes. {failedCount} tema(s) no se pudieron importar.",
+    wizard_import_timeout: "Tiempo agotado tras {seconds}s",
+    wizard_import_llm_timeout_local:
+      "La IA local no respondió a tiempo. Los bloques grandes del plan de estudios pueden superar lo que un modelo local pequeño puede procesar.",
+    wizard_import_cloud_hint:
+      "Consejo: abre {settingsPath}, asigna un proveedor en la nube al rol Texto e inténtalo de nuevo.",
+    wizard_import_checking_status: "Comprobando temas ya importados…",
+    wizard_import_skipping: "Omitiendo {count} tema(s) ya importado(s)…",
+    wizard_import_all_skipped:
+      "Los {count} tema(s) seleccionados ya estaban importados.",
+    wizard_import_skipped_summary:
+      "{count} tema(s) ya importado(s) se omitieron.",
     btn_split: "Dividir",
     lbl_split_modal_title: "Dividir tarjeta",
     lbl_original_card_title: "Tarjeta original (Pregunta de aplicación resumida)",
@@ -784,6 +809,31 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_btn_restart: "Recommencer",
     lbl_curriculum_wizard_loading: "Chargement…",
     wizard_hours: "{hours} h",
+    lbl_curriculum_wizard_progress_status: "Importation…",
+    lbl_curriculum_wizard_progress_detail:
+      "Cela peut prendre une minute selon la vitesse de l'IA.",
+    lbl_curriculum_wizard_progress_detail_local:
+      "L'IA locale peut prendre plusieurs minutes par sujet — la progression s'affiche ci-dessous.",
+    wizard_import_extracting: "Extraction du texte du programme…",
+    wizard_import_generating: "Génération des cartes : {topic}",
+    wizard_import_step: "Sujet {current} sur {total}",
+    wizard_import_saving: "Enregistrement des cartes…",
+    wizard_import_saving_count: "{count} cartes à enregistrer",
+    wizard_import_saving_topic: "Enregistrement des cartes pour {topic}",
+    wizard_import_fallback: "Passage à l'import sujet par sujet…",
+    wizard_import_partial_success:
+      "{createdCount} nouvelles et {ensuredCount} existantes importées. {failedCount} sujet(s) n'ont pas pu être importés.",
+    wizard_import_timeout: "Délai dépassé après {seconds}s",
+    wizard_import_llm_timeout_local:
+      "L'IA locale n'a pas répondu à temps. Les grands blocs de programme peuvent dépasser les capacités d'un petit modèle local.",
+    wizard_import_cloud_hint:
+      "Astuce : ouvrez {settingsPath}, assignez un fournisseur cloud au rôle Texte et réessayez l'import.",
+    wizard_import_checking_status: "Vérification des sujets déjà importés…",
+    wizard_import_skipping: "Ignorer {count} sujet(s) déjà importé(s)…",
+    wizard_import_all_skipped:
+      "Les {count} sujet(s) sélectionnés étaient déjà importés.",
+    wizard_import_skipped_summary:
+      "{count} sujet(s) déjà importé(s) ont été ignorés.",
     btn_split: "Diviser",
     lbl_split_modal_title: "Diviser la carte",
     lbl_original_card_title: "Carte originale (Question d'application résumée)",
@@ -1192,6 +1242,31 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_btn_restart: "Começar de novo",
     lbl_curriculum_wizard_loading: "Carregando…",
     wizard_hours: "{hours} h",
+    lbl_curriculum_wizard_progress_status: "Importando…",
+    lbl_curriculum_wizard_progress_detail:
+      "Puede tardar un minuto según la velocidad de la IA.",
+    lbl_curriculum_wizard_progress_detail_local:
+      "La IA local puede tardar varios minutos por tema — el progreso aparece abajo.",
+    wizard_import_extracting: "Extrayendo texto del plan de estudios…",
+    wizard_import_generating: "Generando tarjetas: {topic}",
+    wizard_import_step: "Tema {current} de {total}",
+    wizard_import_saving: "Guardando tarjetas…",
+    wizard_import_saving_count: "{count} tarjetas por guardar",
+    wizard_import_saving_topic: "Guardando tarjetas de {topic}",
+    wizard_import_fallback: "Cambiando a importación tema por tema…",
+    wizard_import_partial_success:
+      "Se importaron {createdCount} nuevas y {ensuredCount} existentes. {failedCount} tema(s) no se pudieron importar.",
+    wizard_import_timeout: "Tiempo agotado tras {seconds}s",
+    wizard_import_llm_timeout_local:
+      "La IA local no respondió a tiempo. Los bloques grandes del plan de estudios pueden superar lo que un modelo local pequeño puede procesar.",
+    wizard_import_cloud_hint:
+      "Consejo: abre {settingsPath}, asigna un proveedor en la nube al rol Texto e inténtalo de nuevo.",
+    wizard_import_checking_status: "Comprobando temas ya importados…",
+    wizard_import_skipping: "Omitiendo {count} tema(s) ya importado(s)…",
+    wizard_import_all_skipped:
+      "Los {count} tema(s) seleccionados ya estaban importados.",
+    wizard_import_skipped_summary:
+      "{count} tema(s) ya importado(s) se omitieron.",
     btn_split: "Dividir",
     lbl_split_modal_title: "Dividir carta",
     lbl_original_card_title: "Carta original (Pergunta de aplicação resumida)",
@@ -1584,6 +1659,28 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_btn_restart: "重新开始",
     lbl_curriculum_wizard_loading: "加载中…",
     wizard_hours: "{hours} 小时",
+    lbl_curriculum_wizard_progress_status: "正在导入…",
+    lbl_curriculum_wizard_progress_detail: "根据 AI 速度，这可能需要一分钟。",
+    lbl_curriculum_wizard_progress_detail_local:
+      "本地 AI 每个主题可能需要几分钟——下方显示进度。",
+    wizard_import_extracting: "正在提取课程标准文本…",
+    wizard_import_generating: "正在生成卡片：{topic}",
+    wizard_import_step: "第 {current} 个主题，共 {total} 个",
+    wizard_import_saving: "正在保存卡片…",
+    wizard_import_saving_count: "待保存 {count} 张卡片",
+    wizard_import_saving_topic: "正在保存 {topic} 的卡片",
+    wizard_import_fallback: "切换到逐主题导入…",
+    wizard_import_partial_success:
+      "已导入 {createdCount} 张新卡片和 {ensuredCount} 张已有卡片。{failedCount} 个主题未能导入。",
+    wizard_import_timeout: "在 {seconds} 秒后超时",
+    wizard_import_llm_timeout_local:
+      "本地 AI 未及时响应。大型课程标准块可能超出小型本地模型的处理能力。",
+    wizard_import_cloud_hint:
+      "提示：打开{settingsPath}，为文本角色分配云端提供商，然后重试导入。",
+    wizard_import_checking_status: "正在检查已导入的主题…",
+    wizard_import_skipping: "跳过 {count} 个已导入的主题…",
+    wizard_import_all_skipped: "所选的 {count} 个主题均已导入。",
+    wizard_import_skipped_summary: "已跳过 {count} 个已导入的主题。",
     btn_split: "拆分",
     lbl_split_modal_title: "拆分卡片",
     lbl_original_card_title: "原始卡片 (总结性的应用问题)",
@@ -1990,6 +2087,30 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_btn_restart: "最初からやり直す",
     lbl_curriculum_wizard_loading: "読み込み中…",
     wizard_hours: "{hours}時間",
+    lbl_curriculum_wizard_progress_status: "インポート中…",
+    lbl_curriculum_wizard_progress_detail: "AI の速度により 1 分ほどかかる場合があります。",
+    lbl_curriculum_wizard_progress_detail_local:
+      "ローカル AI はトピックごとに数分かかることがあります。進捗は下に表示されます。",
+    wizard_import_extracting: "カリキュラムテキストを取得中…",
+    wizard_import_generating: "カードを生成中: {topic}",
+    wizard_import_step: "トピック {current}/{total}",
+    wizard_import_saving: "カードを保存中…",
+    wizard_import_saving_count: "保存するカード {count} 枚",
+    wizard_import_saving_topic: "{topic} のカードを保存中",
+    wizard_import_fallback: "トピックごとのインポートに切り替え中…",
+    wizard_import_partial_success:
+      "新規 {createdCount} 枚・既存 {ensuredCount} 枚をインポートしました。{failedCount} 件のトピックはインポートできませんでした。",
+    wizard_import_timeout: "{seconds} 秒でタイムアウト",
+    wizard_import_llm_timeout_local:
+      "ローカル AI が時間内に応答しませんでした。大きなカリキュラムブロックは小型ローカルモデルの処理能力を超えることがあります。",
+    wizard_import_cloud_hint:
+      "ヒント：{settingsPath} を開き、テキスト役割にクラウドプロバイダーを割り当てて、もう一度インポートしてください。",
+    wizard_import_checking_status: "インポート済みトピックを確認中…",
+    wizard_import_skipping: "インポート済みの {count} 件のトピックをスキップ中…",
+    wizard_import_all_skipped:
+      "選択した {count} 件のトピックはすべてインポート済みです。",
+    wizard_import_skipped_summary:
+      "インポート済みの {count} 件のトピックをスキップしました。",
     btn_split: "分割",
     lbl_split_modal_title: "カードの分割",
     lbl_original_card_title: "元のカード (要約された応用問題)",
@@ -2307,7 +2428,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     workspace_repaired: "Skill link repaired: {label}",
     workspace_repair_failed: "Could not repair skill link: {message}",
     lbl_app_version: "Version",
-    lbl_learning_model: "Learning model",
+    lbl_learning_model: "Text model (learning & curriculum)",
     lbl_observer_model: "Observer model",
     provider_ready: "ready",
     provider_disabled: "disabled",
@@ -2369,7 +2490,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     btn_ai_provider_save: "Save",
     btn_ai_provider_cancel: "Cancel",
     ai_role_bindings_title: "Role bindings",
-    ai_role_recall: "Learning (recall)",
+    ai_role_recall: "Text model (learning & curriculum)",
+    ai_role_recall_scope_hint:
+      "Covers spaced-repetition prompts, curriculum card import, and other text generation.",
     ai_role_vision: "Observer (vision)",
     ai_role_primary: "Primary",
     ai_role_fallback: "Fallback",
@@ -2471,6 +2594,51 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_btn_restart: "Start over",
     lbl_curriculum_wizard_loading: "Loading…",
     wizard_hours: "{hours} hrs",
+    lbl_curriculum_wizard_progress_status: "Importing…",
+    lbl_curriculum_wizard_progress_detail:
+      "This may take a minute depending on your AI speed.",
+    lbl_curriculum_wizard_progress_detail_local:
+      "Local AI can take several minutes per topic — progress updates below.",
+    wizard_import_extracting: "Extracting curriculum text…",
+    wizard_import_generating: "Generating cards: {topic}",
+    wizard_import_step: "Topic {current} of {total}",
+    wizard_import_saving: "Saving cards…",
+    wizard_import_saving_count: "{count} cards to save",
+    wizard_import_saving_topic: "Saving cards for {topic}",
+    wizard_import_fallback: "Switching to single-topic import…",
+    wizard_import_partial_success:
+      "Imported {createdCount} new and {ensuredCount} existing cards. {failedCount} topic(s) could not be imported.",
+    wizard_import_timeout: "Timed out after {seconds}s",
+    wizard_import_llm_timeout_local:
+      "The local AI did not respond in time. Large curriculum blocks (e.g. 50-hour units) can exceed what a small local model can handle.",
+    wizard_import_cloud_hint:
+      "Tip: Open {settingsPath}, assign a cloud provider to the Text role, and try the import again.",
+    wizard_import_checking_status: "Checking for already-imported topics…",
+    wizard_import_skipping: "Skipping {count} already-imported topic(s)…",
+    wizard_import_all_skipped:
+      "All {count} selected topic(s) were already imported.",
+    wizard_import_skipped_summary:
+      "{count} already-imported topic(s) were skipped.",
+    wizard_step_subTopic: "Competence units",
+    wizard_step_cardPreview: "Learning cards",
+    wizard_subtopic_note:
+      "Select competence units from “{topic}” to generate cards from (large areas are split automatically).",
+    wizard_card_preview_note:
+      "Checked cards are kept or created. Uncheck an existing card to remove it from your queue (the shared token stays).",
+    wizard_card_preview_empty: "No cards found for this topic.",
+    wizard_card_existing_badge: "imported",
+    wizard_card_new_badge: "new",
+    wizard_err_no_subtopics: "Select at least one competence unit.",
+    wizard_btn_preview_cards: "Preview cards",
+    wizard_btn_confirm_import: "Save selection",
+    wizard_import_listing_subtopics: "Loading units: {topic}",
+    wizard_import_previewing: "Generating card preview: {topic}",
+    wizard_import_confirm_success:
+      "Saved {createdCount} new and {ensuredCount} existing cards. Removed {removedCount} card(s) from your queue.",
+    wizard_import_text_llm_offline:
+      "The text model is not reachable. Curriculum import uses the same provider as learning.",
+    wizard_import_text_llm_hint:
+      "Open {settingsPath}, ensure the text model shows ready, then try again.",
     btn_split: "Split",
     lbl_split_modal_title: "Split Card",
     lbl_original_card_title: "Original Card (Summarized application question)",
@@ -2712,7 +2880,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     workspace_repaired: "Skill-Link repariert: {label}",
     workspace_repair_failed: "Skill-Link konnte nicht repariert werden: {message}",
     lbl_app_version: "Version",
-    lbl_learning_model: "Lernmodell",
+    lbl_learning_model: "Textmodell (Lernen & Lehrplan)",
     lbl_observer_model: "Observer-Modell",
     provider_ready: "bereit",
     provider_disabled: "deaktiviert",
@@ -2774,7 +2942,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     btn_ai_provider_save: "Speichern",
     btn_ai_provider_cancel: "Abbrechen",
     ai_role_bindings_title: "Rollen-Zuordnung",
-    ai_role_recall: "Lernen (recall)",
+    ai_role_recall: "Textmodell (Lernen & Lehrplan)",
+    ai_role_recall_scope_hint:
+      "Gilt für Lernkarten, Lehrplan-Import und andere Textgenerierung.",
     ai_role_vision: "Observer (vision)",
     ai_role_primary: "Primär",
     ai_role_fallback: "Fallback",
@@ -2876,6 +3046,52 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_btn_restart: "Neu beginnen",
     lbl_curriculum_wizard_loading: "Lädt…",
     wizard_hours: "{hours} Std.",
+    lbl_curriculum_wizard_progress_status: "Importiere…",
+    lbl_curriculum_wizard_progress_detail:
+      "Das kann je nach KI-Geschwindigkeit eine Minute dauern.",
+    lbl_curriculum_wizard_progress_detail_local:
+      "Lokale KI kann pro Thema mehrere Minuten brauchen — Fortschritt siehe unten.",
+    wizard_import_extracting: "Lehrplantext wird geladen…",
+    wizard_import_generating: "Karten werden erzeugt: {topic}",
+    wizard_import_step: "Thema {current} von {total}",
+    wizard_import_saving: "Karten werden gespeichert…",
+    wizard_import_saving_count: "{count} Karten zum Speichern",
+    wizard_import_saving_topic: "Karten speichern für {topic}",
+    wizard_import_fallback: "Wechsle zu Einzelimport pro Thema…",
+    wizard_import_partial_success:
+      "{createdCount} neue und {ensuredCount} bestehende Karten importiert. {failedCount} Thema/Themen konnten nicht importiert werden.",
+    wizard_import_timeout: "Zeitüberschreitung nach {seconds}s",
+    wizard_import_llm_timeout_local:
+      "Die lokale KI hat nicht rechtzeitig geantwortet. Große Lehrplanblöcke (z. B. 50-Stunden-Lernbereiche) überfordern kleine lokale Modelle leicht.",
+    wizard_import_cloud_hint:
+      "Tipp: Öffne {settingsPath}, weise der Text-Rolle einen Cloud-Anbieter zu und starte den Import erneut.",
+    wizard_import_checking_status: "Prüfe bereits importierte Themen…",
+    wizard_import_skipping:
+      "Überspringe {count} bereits importierte(s) Thema/Themen…",
+    wizard_import_all_skipped:
+      "Alle {count} ausgewählten Themen waren bereits importiert.",
+    wizard_import_skipped_summary:
+      "{count} bereits importierte(s) Thema/Themen wurden übersprungen.",
+    wizard_step_subTopic: "Kompetenzabschnitte",
+    wizard_step_cardPreview: "Lernkarten",
+    wizard_subtopic_note:
+      "Wähle Kompetenzabschnitte aus „{topic}“ — große Lernbereiche werden automatisch aufgeteilt.",
+    wizard_card_preview_note:
+      "Angehakte Karten werden übernommen oder neu angelegt. Entfernst du das Häkchen bei einer bestehenden Karte, wird nur deine Karte gelöscht (das Token bleibt).",
+    wizard_card_preview_empty: "Keine Karten für dieses Thema gefunden.",
+    wizard_card_existing_badge: "importiert",
+    wizard_card_new_badge: "neu",
+    wizard_err_no_subtopics: "Bitte mindestens einen Kompetenzabschnitt auswählen.",
+    wizard_btn_preview_cards: "Karten vorschauen",
+    wizard_btn_confirm_import: "Auswahl speichern",
+    wizard_import_listing_subtopics: "Lade Abschnitte: {topic}",
+    wizard_import_previewing: "Erzeuge Kartenvorschau: {topic}",
+    wizard_import_confirm_success:
+      "{createdCount} neue und {ensuredCount} bestehende Karten gespeichert. {removedCount} Karte(n) aus deiner Warteschlange entfernt.",
+    wizard_import_text_llm_offline:
+      "Das Textmodell ist nicht erreichbar. Der Lehrplan-Import nutzt dasselbe Modell wie das Lernen.",
+    wizard_import_text_llm_hint:
+      "Öffne {settingsPath} und prüfe, ob das Textmodell bereit ist, dann versuche es erneut.",
     btn_split: "Aufteilen",
     lbl_split_modal_title: "Karte aufteilen",
     lbl_original_card_title: "Originalkarte (Zusammenfassende Anwendungsfrage)",

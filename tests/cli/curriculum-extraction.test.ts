@@ -10,16 +10,19 @@ import { rahmenlehrplanBerlinBrandenburgProvider } from "../../src/cli/curriculu
 import { openDatabase } from "../../src/kernel/index.js";
 import { ensureCard } from "../../src/kernel/models/card.ts";
 import {
+  countUserCardsForCurriculumTopic,
   createToken,
   getTokenById,
   getTokenBySlug,
   importCurriculumCards,
   listPersonalCards,
+  listUserCardsForCurriculumTopic,
 } from "../../src/kernel/models/token.ts";
 
 describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
   let deutschHtml: string;
   let mathematikHtml: string;
+  let mathematikRs5Html: string;
   let englischHtml: string;
 
   beforeAll(() => {
@@ -32,6 +35,10 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
     );
     mathematikHtml = fs.readFileSync(
       path.join(fixturesDir, "mathematik-wpfg1.html"),
+      "utf-8",
+    );
+    mathematikRs5Html = fs.readFileSync(
+      path.join(fixturesDir, "mathematik-realschule-5.html"),
       "utf-8",
     );
     englischHtml = fs.readFileSync(
@@ -68,6 +75,78 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
     );
     expect(lb2Content).toContain("Lesetechniken und -strategien anwenden");
     expect(lb2Content).not.toContain("Lernbereich 1:");
+  });
+
+  it("extracts Realschule 5 Mathematik Lernbereiche from the Grade-5 fixture", () => {
+    const extracted = provider.extractTopics!(mathematikRs5Html, [
+      "realschule|5|mathematik#lb1",
+      "realschule|5|mathematik#lb2",
+    ]);
+
+    const lb1 = extracted["realschule|5|mathematik#lb1"];
+    const lb2 = extracted["realschule|5|mathematik#lb2"];
+
+    expect(lb1).toBeDefined();
+    expect(lb1).toContain("Natürliche Zahlen");
+    expect(lb1).toContain("100 000");
+    expect(lb1).not.toContain("Ganze Zahlen");
+
+    expect(lb2).toBeDefined();
+    expect(lb2).toContain("Ganze Zahlen");
+    expect(lb2).toContain("Zahlengeraden");
+    expect(lb2).not.toContain("Natürliche Zahlen");
+  });
+
+  it("extracts Kompetenzabschnitte from Realschule 5 Mathematik lb1", () => {
+    const subTopics = provider.extractSubTopics!(
+      mathematikRs5Html,
+      "realschule|5|mathematik#lb1",
+    );
+
+    expect(subTopics).toHaveLength(3);
+    expect(subTopics[0].id).toBe("ku1");
+    expect(subTopics[0].text).toContain("100 000");
+    for (const st of subTopics) {
+      expect(st.label).not.toMatch(/servicematerialien/i);
+      expect(st.label).not.toMatch(/übergreifende ziele/i);
+    }
+  });
+
+  it("extracts competence sub-units from a Mathematik Lernbereich", () => {
+    const subTopics = provider.extractSubTopics!(
+      mathematikHtml,
+      "realschule|9|mathematik|wpfg1#lb1",
+    );
+
+    expect(subTopics.length).toBeGreaterThanOrEqual(3);
+    expect(subTopics[0].id).toBe("ku1");
+    expect(subTopics[0].label.length).toBeGreaterThan(10);
+    expect(subTopics[0].text).toContain("Quadratwurzel");
+    expect(subTopics[0].textLength).toBeGreaterThan(20);
+    for (const st of subTopics) {
+      expect(st.label).not.toMatch(/servicematerialien/i);
+      expect(st.label).not.toMatch(/übergreifende ziele/i);
+    }
+  });
+
+  it("omits Servicematerialien and Übergreifende Ziele from sub-units", () => {
+    const wpfg23Html = fs.readFileSync(
+      path.join(
+        path.resolve("tests/fixtures/curriculum/lehrplanplus-bayern"),
+        "mathematik-wpfg2-3.html",
+      ),
+      "utf-8",
+    );
+    const subTopics = provider.extractSubTopics!(
+      wpfg23Html,
+      "realschule|9|mathematik|wpfg2-3#lb3",
+    );
+
+    expect(subTopics.length).toBeGreaterThan(0);
+    for (const st of subTopics) {
+      expect(st.label).not.toMatch(/servicematerialien/i);
+      expect(st.label).not.toMatch(/übergreifende ziele/i);
+    }
   });
 
   it("extracts specific Lernbereich texts from Mathematik wpfg1 HTML fixture", () => {
@@ -195,6 +274,107 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
     const res2 = await importCurriculumCards(db, "user-123", cardsInput);
     expect(res2.createdCount).toBe(0);
     expect(res2.ensuredCount).toBe(0);
+
+    await db.close();
+  });
+
+  it("counts user cards per curriculum topic for import-status checks", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+
+    const topicId = "realschule|5|mathematik#lb1";
+    expect(
+      await countUserCardsForCurriculumTopic(
+        db,
+        "user-123",
+        "lehrplanplus-bayern",
+        topicId,
+      ),
+    ).toBe(0);
+
+    await importCurriculumCards(db, "user-123", [
+      {
+        question: "What is a natural number?",
+        concept: "Natural numbers",
+        domain: "Mathematik",
+        provider: "lehrplanplus-bayern",
+        topic_id: topicId,
+      },
+      {
+        question: "What is addition?",
+        concept: "Addition",
+        domain: "Mathematik",
+        provider: "lehrplanplus-bayern",
+        topic_id: topicId,
+      },
+    ]);
+
+    expect(
+      await countUserCardsForCurriculumTopic(
+        db,
+        "user-123",
+        "lehrplanplus-bayern",
+        topicId,
+      ),
+    ).toBe(2);
+
+    expect(
+      await countUserCardsForCurriculumTopic(
+        db,
+        "other-user",
+        "lehrplanplus-bayern",
+        topicId,
+      ),
+    ).toBe(0);
+
+    expect(
+      await countUserCardsForCurriculumTopic(
+        db,
+        "user-123",
+        "lehrplanplus-bayern",
+        "realschule|5|mathematik#lb2",
+      ),
+    ).toBe(0);
+
+    await db.close();
+  });
+
+  it("lists user cards across a Lernbereich and its sub-units", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+
+    const parentTopic = "realschule|5|mathematik#lb1";
+
+    await importCurriculumCards(db, "user-123", [
+      {
+        question: "Parent card",
+        concept: "Parent",
+        domain: "Mathematik",
+        provider: "lehrplanplus-bayern",
+        topic_id: parentTopic,
+      },
+      {
+        question: "Sub-unit card",
+        concept: "Sub",
+        domain: "Mathematik",
+        provider: "lehrplanplus-bayern",
+        topic_id: `${parentTopic}@ku2`,
+      },
+    ]);
+
+    const cards = await listUserCardsForCurriculumTopic(
+      db,
+      "user-123",
+      "lehrplanplus-bayern",
+      parentTopic,
+    );
+    expect(cards).toHaveLength(2);
 
     await db.close();
   });

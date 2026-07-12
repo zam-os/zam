@@ -41,7 +41,17 @@ export { runBridge, t, tf };
 // bridge-transport.js) reaches the Tauri backend starting with the first call.
 setBridgeTransport(async (cmd, args) => {
   const raw = await invoke<string>("execute_zam_bridge", { cmd, args });
-  return JSON.parse(raw);
+  if (!raw) {
+    return {};
+  }
+  try {
+    return JSON.parse(raw);
+  } catch (err) {
+    const preview = raw.length > 240 ? `${raw.slice(0, 240)}…` : raw;
+    throw new Error(
+      `Invalid bridge JSON for ${cmd}: ${preview} (${(err as Error).message})`,
+    );
+  }
 });
 
 const ZAM_RELEASES_URL = "https://github.com/zam-os/zam/releases";
@@ -693,9 +703,9 @@ function initializeTranslations() {
   const lblCurriculumWizardLoading = document.getElementById("lbl-curriculum-wizard-loading");
   if (lblCurriculumWizardLoading) lblCurriculumWizardLoading.textContent = t("lbl_curriculum_wizard_loading");
   const lblCurriculumWizardProgressStatus = document.getElementById("lbl-curriculum-wizard-progress-status");
-  if (lblCurriculumWizardProgressStatus) lblCurriculumWizardProgressStatus.textContent = t("lbl_import_progress_status");
+  if (lblCurriculumWizardProgressStatus) lblCurriculumWizardProgressStatus.textContent = t("lbl_curriculum_wizard_progress_status");
   const lblCurriculumWizardProgressDetail = document.getElementById("lbl-curriculum-wizard-progress-detail");
-  if (lblCurriculumWizardProgressDetail) lblCurriculumWizardProgressDetail.textContent = t("lbl_import_progress_detail");
+  if (lblCurriculumWizardProgressDetail) lblCurriculumWizardProgressDetail.textContent = t("lbl_curriculum_wizard_progress_detail");
 
   // Split Modal Translations
   const btnContentSplitCard = document.getElementById("btn-content-split-card");
@@ -1661,6 +1671,12 @@ function renderAiRoleBindings(): void {
     actions.appendChild(applyButton);
 
     row.append(primaryField, fallbackField, actions);
+    if (role === "recall") {
+      const hint = document.createElement("p");
+      hint.className = "ai-provider-meta";
+      hint.textContent = t("ai_role_recall_scope_hint");
+      row.appendChild(hint);
+    }
     container.appendChild(row);
   }
 }
