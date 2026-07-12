@@ -617,32 +617,32 @@ Provider: **LehrplanPLUS (Bayern)** · Region: `BY` · Paths: **169** · Topics 
 Each line: manifest topics + `contentUrls` + HTML fixture + CLI topic check + desktop E2E import.
 
 - [ ] `realschule|5|bwl-rechnungswesen` — Realschule 5. Kl. · Betriebswirtschaftslehre / Rechnungswesen · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|biologie` — Realschule 5. Kl. · Biologie · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|chemie` — Realschule 5. Kl. · Chemie · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|deutsch` — Realschule 5. Kl. · Deutsch · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|englisch` — Realschule 5. Kl. · Englisch · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|biologie` — Realschule 5. Kl. · Biologie · user `curriculum-bayern-realschule-klasse-5`
+- [ ] `realschule|5|chemie` — Realschule 5. Kl. · Chemie · user `curriculum-bayern-realschule-klasse-5` _(nicht auf LehrplanPLUS)_
+- [x] `realschule|5|deutsch` — Realschule 5. Kl. · Deutsch · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|englisch` — Realschule 5. Kl. · Englisch · user `curriculum-bayern-realschule-klasse-5`
 - [ ] `realschule|5|ernaehrung_und_gesundheit` — Realschule 5. Kl. · Ernährung und Gesundheit · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|ethik` — Realschule 5. Kl. · Ethik · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|evangelische-religionslehre` — Realschule 5. Kl. · Evangelische Religionslehre · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|ethik` — Realschule 5. Kl. · Ethik · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|evangelische-religionslehre` — Realschule 5. Kl. · Evangelische Religionslehre · user `curriculum-bayern-realschule-klasse-5`
 - [ ] `realschule|5|franzoesisch` — Realschule 5. Kl. · Französisch · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|geographie` — Realschule 5. Kl. · Geographie · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|geographie` — Realschule 5. Kl. · Geographie · user `curriculum-bayern-realschule-klasse-5`
 - [ ] `realschule|5|geschichte` — Realschule 5. Kl. · Geschichte · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|it` — Realschule 5. Kl. · Informationstechnologie · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|iu` — Realschule 5. Kl. · Islamischer Unterricht · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|ir` — Realschule 5. Kl. · Israelitische Religionslehre · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|katholische-religionslehre` — Realschule 5. Kl. · Katholische Religionslehre · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|kunst` — Realschule 5. Kl. · Kunst · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|mathematik` — Realschule 5. Kl. · Mathematik · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|musik` — Realschule 5. Kl. · Musik · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|or` — Realschule 5. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|it` — Realschule 5. Kl. · Informationstechnologie · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|iu` — Realschule 5. Kl. · Islamischer Unterricht · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|ir` — Realschule 5. Kl. · Israelitische Religionslehre · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|katholische-religionslehre` — Realschule 5. Kl. · Katholische Religionslehre · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|kunst` — Realschule 5. Kl. · Kunst · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|mathematik` — Realschule 5. Kl. · Mathematik · user `curriculum-bayern-realschule-klasse-5` _(E2E-Import lb1)_
+- [x] `realschule|5|musik` — Realschule 5. Kl. · Musik · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|or` — Realschule 5. Kl. · Orthodoxe Religionslehre · user `curriculum-bayern-realschule-klasse-5`
 - [ ] `realschule|5|physik` — Realschule 5. Kl. · Physik · user `curriculum-bayern-realschule-klasse-5`
 - [ ] `realschule|5|pug` — Realschule 5. Kl. · Politik und Gesellschaft · user `curriculum-bayern-realschule-klasse-5`
 - [ ] `realschule|5|soziallehre` — Realschule 5. Kl. · Soziallehre · user `curriculum-bayern-realschule-klasse-5`
 - [ ] `realschule|5|sozialwesen` — Realschule 5. Kl. · Sozialwesen · user `curriculum-bayern-realschule-klasse-5`
 - [ ] `realschule|5|spanisch` — Realschule 5. Kl. · Spanisch · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|sport` — Realschule 5. Kl. · Sport · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|textiles-gestalten` — Realschule 5. Kl. · Textiles Gestalten · user `curriculum-bayern-realschule-klasse-5`
-- [ ] `realschule|5|werken` — Realschule 5. Kl. · Werken · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|sport` — Realschule 5. Kl. · Sport · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|textiles-gestalten` — Realschule 5. Kl. · Textiles Gestalten · user `curriculum-bayern-realschule-klasse-5`
+- [x] `realschule|5|werken` — Realschule 5. Kl. · Werken · user `curriculum-bayern-realschule-klasse-5`
 - [ ] `realschule|5|wirtschaft-und-recht` — Realschule 5. Kl. · Wirtschaft und Recht · user `curriculum-bayern-realschule-klasse-5`
 - [ ] `realschule|6|bwl-rechnungswesen` — Realschule 6. Kl. · Betriebswirtschaftslehre / Rechnungswesen · user `curriculum-bayern-realschule-klasse-6`
 - [ ] `realschule|6|biologie` — Realschule 6. Kl. · Biologie · user `curriculum-bayern-realschule-klasse-6`

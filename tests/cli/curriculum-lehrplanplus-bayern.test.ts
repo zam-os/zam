@@ -108,6 +108,57 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     expect(topics).toHaveLength(5);
   });
 
+  it("lists Mathematik 5's six Lernbereiche", () => {
+    const topics = provider.listTopics({
+      schoolType: "realschule",
+      grade: "5",
+      subject: "mathematik",
+    });
+    expect(topics).toHaveLength(6);
+    expect(topics[0]).toMatchObject({
+      id: "lb1",
+      label: "Natürliche Zahlen",
+      hours: 50,
+    });
+  });
+
+  it("lists Biologie 5's four Lernbereiche", () => {
+    const topics = provider.listTopics({
+      schoolType: "realschule",
+      grade: "5",
+      subject: "biologie",
+    });
+    expect(topics).toHaveLength(4);
+    expect(topics.map((t) => t.label)).toContain(
+      "Biologie, die Wissenschaft von den Lebewesen",
+    );
+  });
+
+  it("lists Sport 5 tracks and Basissport Lernbereiche", () => {
+    expect(provider.listTracks("realschule", "5", "sport")).toEqual([
+      { id: "basis_sport", label: "Basissport 5" },
+      { id: "diff_sport", label: "Differenzierter Sport" },
+    ]);
+    const topics = provider.listTopics({
+      schoolType: "realschule",
+      grade: "5",
+      subject: "sport",
+      track: "basis_sport",
+    });
+    expect(topics).toHaveLength(4);
+    expect(topics.map((t) => t.label)).toContain("Gesundheit und Fitness");
+  });
+
+  it("returns no topics for grade 5 subjects not offered on LehrplanPLUS", () => {
+    expect(
+      provider.listTopics({
+        schoolType: "realschule",
+        grade: "5",
+        subject: "chemie",
+      }),
+    ).toEqual([]);
+  });
+
   it("returns no topics for an incomplete or uncurated selection", () => {
     expect(provider.listTopics({ schoolType: "realschule" })).toEqual([]);
     expect(
