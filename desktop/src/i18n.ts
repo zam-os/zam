@@ -391,6 +391,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_import_partial_success:
       "Se importaron {createdCount} nuevas y {ensuredCount} existentes. {failedCount} tema(s) no se pudieron importar.",
     wizard_import_timeout: "Tiempo agotado tras {seconds}s",
+    wizard_import_llm_timeout_local:
+      "La IA local no respondió a tiempo. Los bloques grandes del plan de estudios pueden superar lo que un modelo local pequeño puede procesar.",
+    wizard_import_cloud_hint:
+      "Consejo: abre {settingsPath}, asigna un proveedor en la nube al rol Texto e inténtalo de nuevo.",
     btn_split: "Dividir",
     lbl_split_modal_title: "Dividir tarjeta",
     lbl_original_card_title: "Tarjeta original (Pregunta de aplicación resumida)",
@@ -814,6 +818,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_import_partial_success:
       "{createdCount} nouvelles et {ensuredCount} existantes importées. {failedCount} sujet(s) n'ont pas pu être importés.",
     wizard_import_timeout: "Délai dépassé après {seconds}s",
+    wizard_import_llm_timeout_local:
+      "L'IA locale n'a pas répondu à temps. Les grands blocs de programme peuvent dépasser les capacités d'un petit modèle local.",
+    wizard_import_cloud_hint:
+      "Astuce : ouvrez {settingsPath}, assignez un fournisseur cloud au rôle Texte et réessayez l'import.",
     btn_split: "Diviser",
     lbl_split_modal_title: "Diviser la carte",
     lbl_original_card_title: "Carte originale (Question d'application résumée)",
@@ -1237,6 +1245,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_import_partial_success:
       "Se importaron {createdCount} nuevas y {ensuredCount} existentes. {failedCount} tema(s) no se pudieron importar.",
     wizard_import_timeout: "Tiempo agotado tras {seconds}s",
+    wizard_import_llm_timeout_local:
+      "La IA local no respondió a tiempo. Los bloques grandes del plan de estudios pueden superar lo que un modelo local pequeño puede procesar.",
+    wizard_import_cloud_hint:
+      "Consejo: abre {settingsPath}, asigna un proveedor en la nube al rol Texto e inténtalo de nuevo.",
     btn_split: "Dividir",
     lbl_split_modal_title: "Dividir carta",
     lbl_original_card_title: "Carta original (Pergunta de aplicação resumida)",
@@ -1643,6 +1655,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_import_partial_success:
       "已导入 {createdCount} 张新卡片和 {ensuredCount} 张已有卡片。{failedCount} 个主题未能导入。",
     wizard_import_timeout: "在 {seconds} 秒后超时",
+    wizard_import_llm_timeout_local:
+      "本地 AI 未及时响应。大型课程标准块可能超出小型本地模型的处理能力。",
+    wizard_import_cloud_hint:
+      "提示：打开{settingsPath}，为文本角色分配云端提供商，然后重试导入。",
     btn_split: "拆分",
     lbl_split_modal_title: "拆分卡片",
     lbl_original_card_title: "原始卡片 (总结性的应用问题)",
@@ -2063,6 +2079,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_import_partial_success:
       "新規 {createdCount} 枚・既存 {ensuredCount} 枚をインポートしました。{failedCount} 件のトピックはインポートできませんでした。",
     wizard_import_timeout: "{seconds} 秒でタイムアウト",
+    wizard_import_llm_timeout_local:
+      "ローカル AI が時間内に応答しませんでした。大きなカリキュラムブロックは小型ローカルモデルの処理能力を超えることがあります。",
+    wizard_import_cloud_hint:
+      "ヒント：{settingsPath} を開き、テキスト役割にクラウドプロバイダーを割り当てて、もう一度インポートしてください。",
     btn_split: "分割",
     lbl_split_modal_title: "カードの分割",
     lbl_original_card_title: "元のカード (要約された応用問題)",
@@ -2559,6 +2579,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_import_partial_success:
       "Imported {createdCount} new and {ensuredCount} existing cards. {failedCount} topic(s) could not be imported.",
     wizard_import_timeout: "Timed out after {seconds}s",
+    wizard_import_llm_timeout_local:
+      "The local AI did not respond in time. Large curriculum blocks (e.g. 50-hour units) can exceed what a small local model can handle.",
+    wizard_import_cloud_hint:
+      "Tip: Open {settingsPath}, assign a cloud provider to the Text role, and try the import again.",
     btn_split: "Split",
     lbl_split_modal_title: "Split Card",
     lbl_original_card_title: "Original Card (Summarized application question)",
@@ -2979,6 +3003,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_import_partial_success:
       "{createdCount} neue und {ensuredCount} bestehende Karten importiert. {failedCount} Thema/Themen konnten nicht importiert werden.",
     wizard_import_timeout: "Zeitüberschreitung nach {seconds}s",
+    wizard_import_llm_timeout_local:
+      "Die lokale KI hat nicht rechtzeitig geantwortet. Große Lehrplanblöcke (z. B. 50-Stunden-Lernbereiche) überfordern kleine lokale Modelle leicht.",
+    wizard_import_cloud_hint:
+      "Tipp: Öffne {settingsPath}, weise der Text-Rolle einen Cloud-Anbieter zu und starte den Import erneut.",
     btn_split: "Aufteilen",
     lbl_split_modal_title: "Karte aufteilen",
     lbl_original_card_title: "Originalkarte (Zusammenfassende Anwendungsfrage)",

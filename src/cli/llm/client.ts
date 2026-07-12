@@ -35,6 +35,10 @@ export const DEFAULT_LLM_URL = "http://localhost:8000/v1";
 /** Default completion budget for open-ended tasks (vision, translation, …). */
 export const DEFAULT_LLM_MAX_TOKENS = 10_000;
 
+/** Bridge hard deadline for curriculum import — large blocks need more time locally. */
+const LOCAL_CURRICULUM_IMPORT_HARD_TIMEOUT_MS = 600_000;
+const CLOUD_CURRICULUM_IMPORT_HARD_TIMEOUT_MS = 180_000;
+
 /** Tight output caps for recall — short questions/evaluations, faster round-trips. */
 export const RECALL_QUESTION_MAX_OUTPUT_TOKENS = 400;
 export const RECALL_EVALUATION_MAX_OUTPUT_TOKENS = 1200;
@@ -912,6 +916,10 @@ ${sourceUrl ? `Source Reference Link: ${sourceUrl}` : ""}
 
 JSON Array Output:`;
 
+  const hardTimeoutMs = isLocalEndpoint(endpoint.url)
+    ? LOCAL_CURRICULUM_IMPORT_HARD_TIMEOUT_MS
+    : CLOUD_CURRICULUM_IMPORT_HARD_TIMEOUT_MS;
+
   const res = await fetchWithInteractiveTimeout(
     `${endpoint.url}/chat/completions`,
     {
@@ -930,6 +938,8 @@ JSON Array Output:`;
         max_tokens: DEFAULT_LLM_MAX_TOKENS,
       }),
       locale,
+      hardTimeoutMs,
+      timeoutMs: hardTimeoutMs,
     },
   );
 

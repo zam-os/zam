@@ -41,9 +41,9 @@ interface ImportTotals {
   failedTopics: string[];
 }
 
-/** Per-topic LLM preview — local models often need several minutes. */
-const LOCAL_LLM_PREVIEW_TIMEOUT_MS = 180_000;
-const CLOUD_LLM_PREVIEW_TIMEOUT_MS = 90_000;
+/** Per-topic LLM preview — must exceed CLI bridge hard timeout (10 min local). */
+const LOCAL_LLM_PREVIEW_TIMEOUT_MS = 660_000;
+const CLOUD_LLM_PREVIEW_TIMEOUT_MS = 240_000;
 const EXTRACT_TIMEOUT_MS = 120_000;
 const CONFIRM_TIMEOUT_MS = 60_000;
 
@@ -567,6 +567,24 @@ function describeError(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
 }
 
+function isLlmTimeoutError(message: string): boolean {
+  return /timed out|timeout|zeitüberschreitung|time.?out/i.test(message);
+}
+
+function settingsAiPathLabel(): string {
+  return `${t("nav_settings")} → ${t("settings_ai_title")}`;
+}
+
+function formatImportError(err: unknown, localLlm: boolean): string {
+  const base = describeError(err);
+  if (localLlm && isLlmTimeoutError(base)) {
+    return `${t("wizard_import_llm_timeout_local")}\n\n${tf("wizard_import_cloud_hint", {
+      settingsPath: settingsAiPathLabel(),
+    })}`;
+  }
+  return base;
+}
+
 // ── Finish: resolve topics and reuse the existing import pipeline ────────
 
 function setImportProgress(status: string, detail?: string): void {
@@ -801,6 +819,7 @@ async function importTopicsSequential(
   subjectLabel: string,
   selectedCtxName: string,
   previewTimeoutMs: number,
+  localLlm: boolean,
 ): Promise<ImportTotals> {
   const totals: ImportTotals = {
     createdCount: 0,
@@ -850,7 +869,7 @@ async function importTopicsSequential(
           err,
         );
       } else {
-        throw err;
+        throw new Error(formatImportError(err, localLlm));
       }
     }
   }
@@ -859,23 +878,33 @@ async function importTopicsSequential(
     totals.createdCount + totals.ensuredCount === 0 &&
     totals.failedTopics.length > 0
   ) {
+    const failedList = totals.failedTopics.join(", ");
+    const base = `No cards were imported. Failed topics: ${failedList}`;
     throw new Error(
-      `No cards were imported. Failed topics: ${totals.failedTopics.join(", ")}`,
+      localLlm
+        ? `${t("wizard_import_llm_timeout_local")}\n\n${tf("wizard_import_cloud_hint", {
+            settingsPath: settingsAiPathLabel(),
+          })}\n\n(${base})`
+        : base,
     );
   }
 
   return totals;
 }
 
-function reportImportSuccess(totals: ImportTotals): void {
+function reportImportSuccess(totals: ImportTotals, localLlm: boolean): void {
   if (totals.failedTopics.length > 0) {
-    alert(
-      tf("wizard_import_partial_success", {
-        createdCount: String(totals.createdCount),
-        ensuredCount: String(totals.ensuredCount),
-        failedCount: String(totals.failedTopics.length),
-      }),
-    );
+    let message = tf("wizard_import_partial_success", {
+      createdCount: String(totals.createdCount),
+      ensuredCount: String(totals.ensuredCount),
+      failedCount: String(totals.failedTopics.length),
+    });
+    if (localLlm) {
+      message += `\n\n${tf("wizard_import_cloud_hint", {
+        settingsPath: settingsAiPathLabel(),
+      })}`;
+    }
+    alert(message);
     return;
   }
 
@@ -935,6 +964,7 @@ async function finishWizard(topicStep: WizardStep): Promise<void> {
         subjectLabel,
         selectedCtxName,
         previewTimeoutMs,
+        localLlm,
       );
     } else {
       try {
@@ -958,15 +988,18 @@ async function finishWizard(topicStep: WizardStep): Promise<void> {
           subjectLabel,
           selectedCtxName,
           previewTimeoutMs,
+          localLlm,
         );
       }
     }
 
     hideCurriculumWizard();
-    reportImportSuccess(totals);
+    reportImportSuccess(totals, localLlm);
     await loadStudioData();
   } catch (err) {
-    showStepError(t("lbl_error_importing") + ": " + describeError(err));
+    showStepError(
+      t("lbl_error_importing") + ": " + formatImportError(err, localLlm),
+    );
   } finally {
     stepBodyEl.classList.remove("hidden");
     btnNext.disabled = false;
