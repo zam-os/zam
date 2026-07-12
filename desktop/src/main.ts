@@ -749,6 +749,7 @@ function initializeTranslations() {
   document.getElementById("graph-dependents-title")!.textContent =
     t("graph_dependents");
   document.getElementById("graph-hint")!.textContent = t("graph_hint");
+  updateGraphLearnerFilterUi();
 
   // Locale badge — shows the active locale code; full language name on hover.
   const localeBadge = document.getElementById("locale-badge")!;
@@ -2568,6 +2569,10 @@ async function selectDatabaseUser(userId: string): Promise<void> {
     }
     await loadDatabaseStatus();
     await loadDashboard();
+    updateGraphLearnerFilterUi();
+    if (document.getElementById("graph-view")?.classList.contains("active")) {
+      await refreshGraphScope();
+    }
   } catch (err) {
     select.value = previousUserId ?? "";
     select.disabled = false;
@@ -2666,7 +2671,8 @@ let graphYaw = 0.9;
 let graphPitch = 1.1;
 let graphDist = 8.0;
 let currentNeighborhood: any = null;
-let graphUserId: string | null = null;
+/** When true (default), only tokens with a card for the active learner are shown. */
+let graphFilterByLearner = true;
 let currentDomain: string | null = null;
 let availableDomains: string[] = [];
 let originalDomainSet: Set<string> = new Set();
@@ -2688,6 +2694,41 @@ function getShortSlug(slug: string): string {
 function getDisplayTitle(t: { title?: string; slug: string }): string {
   if (t.title && t.title.trim()) return t.title.trim();
   return getShortSlug(t.slug);
+}
+
+function getGraphUserId(): string {
+  return desktopUserId ?? databaseCurrentUserId ?? "default";
+}
+
+function tokenMatchesLearnerFilter(token: { card?: unknown } | null): boolean {
+  if (!graphFilterByLearner) return true;
+  return token?.card != null;
+}
+
+function filterTokensForGraph<T extends { card?: unknown }>(tokens: T[]): T[] {
+  if (!graphFilterByLearner) return tokens;
+  return tokens.filter((token) => token.card != null);
+}
+
+function updateGraphLearnerFilterUi(): void {
+  const label = document.getElementById("graph-filter-by-learner-label");
+  const checkbox = document.getElementById(
+    "graph-filter-by-learner",
+  ) as HTMLInputElement | null;
+  const focusLabel = document.getElementById("graph-focus-label");
+  const profile = getGraphUserId();
+  if (label) label.textContent = tf("graph_filter_by_learner", { profile });
+  if (checkbox) checkbox.checked = graphFilterByLearner;
+  if (focusLabel) {
+    focusLabel.textContent = graphFilterByLearner ? profile : "";
+  }
+}
+
+async function refreshGraphScope(): Promise<void> {
+  currentNeighborhood = null;
+  availableDomains = [];
+  await loadAndRenderDomains();
+  await bootstrapGraphWithDomain();
 }
 
 function disposeGraph() {
@@ -2780,6 +2821,7 @@ function buildGraphScene(nb: any) {
   if (currentKnowledgeContext) {
     visiblePrereqs = visiblePrereqs.filter((p: any) => p.knowledgeContexts?.some((c: any) => c.name === currentKnowledgeContext));
   }
+  visiblePrereqs = visiblePrereqs.filter((p: any) => tokenMatchesLearnerFilter(p));
   visiblePrereqs.forEach((p: any) => makePill(p, prereqList));
   if (visiblePrereqs.length === 0) {
     const empty = document.createElement("span");
@@ -2796,6 +2838,7 @@ function buildGraphScene(nb: any) {
   if (currentKnowledgeContext) {
     visibleDependents = visibleDependents.filter((d: any) => d.knowledgeContexts?.some((c: any) => c.name === currentKnowledgeContext));
   }
+  visibleDependents = visibleDependents.filter((d: any) => tokenMatchesLearnerFilter(d));
   visibleDependents.forEach((d: any) => makePill(d, depList));
   if (visibleDependents.length === 0) {
     const empty = document.createElement("span");
@@ -2965,6 +3008,7 @@ function buildGraphScene(nb: any) {
   prereqs.forEach((p: any, i: number) => {
     if (currentDomain && p.domain !== currentDomain && !p.domain.startsWith(currentDomain + "/")) return; // stay within independent knowledge area
     if (currentKnowledgeContext && !p.knowledgeContexts?.some((c: any) => c.name === currentKnowledgeContext)) return;
+    if (!tokenMatchesLearnerFilter(p)) return;
     const angle = (i / Math.max(1, prereqs.length)) * Math.PI * 2;
     const m = makeNode(p, false, true); // isPrereq
     const y = -1.6 - (p.bloomLevel - 1) * 0.06;
@@ -2987,6 +3031,7 @@ function buildGraphScene(nb: any) {
   depnds.forEach((d: any, i: number) => {
     if (currentDomain && d.domain !== currentDomain && !d.domain.startsWith(currentDomain + "/")) return; // stay within independent knowledge area
     if (currentKnowledgeContext && !d.knowledgeContexts?.some((c: any) => c.name === currentKnowledgeContext)) return;
+    if (!tokenMatchesLearnerFilter(d)) return;
     const angle = (i / Math.max(1, depnds.length)) * Math.PI * 2 + 0.4;
     const m = makeNode(d, false, false); // not prereq
     const y = 1.9 + (d.bloomLevel - 1) * 0.05;
@@ -3016,7 +3061,7 @@ function buildGraphScene(nb: any) {
 
 async function loadGraphFocus(slug: string) {
   try {
-    const data = await runBridge<any>("get-neighborhood", ["--focus", slug, "--user", graphUserId || ""]);
+    const data = await runBridge<any>("get-neighborhood", ["--focus", slug, "--user", getGraphUserId()]);
     buildGraphScene(data);
     // recenter camera nicely
     graphYaw = 0.9;
@@ -3081,12 +3126,12 @@ async function switchToKnowledgeContext(contextName: string | null) {
 // --- Domain filter helpers for browsing independent knowledge areas ---
 async function loadAndRenderDomains() {
   try {
-    const args = ["--user", graphUserId || ""];
+    const args = ["--user", getGraphUserId()];
     if (currentKnowledgeContext) {
       args.push("--knowledge-context", currentKnowledgeContext);
     }
     const resp = await runBridge<any>("list-tokens", args);
-    const tokens = resp.tokens || [];
+    const tokens = filterTokensForGraph(resp.tokens || []);
     originalDomainSet = new Set<string>();
     tokens.forEach((t: any) => {
       if (t.domain) originalDomainSet.add(t.domain);
@@ -3152,11 +3197,11 @@ async function bootstrapGraphWithDomain() {
 
   try {
     if (currentDomain || currentKnowledgeContext) {
-      const args = ["--user", graphUserId || ""];
+      const args = ["--user", getGraphUserId()];
       if (currentDomain) args.push("--domain-prefix", currentDomain);
       if (currentKnowledgeContext) args.push("--knowledge-context", currentKnowledgeContext);
       const list = await runBridge<any>("list-tokens", args);
-      const domTokens: any[] = list.tokens || [];
+      const domTokens: any[] = filterTokensForGraph(list.tokens || []);
       if (domTokens.length > 0) {
         domTokens.sort((a, b) => (a.bloomLevel || 99) - (b.bloomLevel || 99));
         startSlug = domTokens[0].slug;
@@ -3178,11 +3223,11 @@ async function bootstrapGraphWithDomain() {
   if (!startSlug) {
     // Fallback to general list (respecting domain if set)
     try {
-      const args = ["--user", graphUserId || ""];
+      const args = ["--user", getGraphUserId()];
       if (currentDomain) args.push("--domain-prefix", currentDomain);
       if (currentKnowledgeContext) args.push("--knowledge-context", currentKnowledgeContext);
       const list = await runBridge<any>("list-tokens", args);
-      const tokens: any[] = list.tokens || [];
+      const tokens: any[] = filterTokensForGraph(list.tokens || []);
       if (tokens.length > 0) {
         const withCard = tokens.find((t: any) => t.card);
         startSlug = (withCard || tokens[0]).slug;
@@ -3244,7 +3289,7 @@ function populateDomainTokenList(tokens: any[]) {
   const listEl = document.getElementById("domain-full-list")!;
   listEl.innerHTML = "";
 
-  tokens.forEach((t: any) => {
+  filterTokensForGraph(tokens).forEach((t: any) => {
     const pill = document.createElement("button");
     pill.type = "button";
     pill.className = "neighbor-pill";
@@ -3262,15 +3307,7 @@ async function initOrShowGraph() {
   const canvas = document.getElementById("graph-canvas") as HTMLCanvasElement;
   if (!container || !canvas) return;
 
-  // ensure we have a user
-  if (!graphUserId) {
-    try {
-      const due = await runBridge<any>("check-due");
-      graphUserId = due.userId || "default";
-    } catch {
-      graphUserId = "default";
-    }
-  }
+  updateGraphLearnerFilterUi();
 
   if (!graphRenderer) {
     graphRenderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -4329,6 +4366,17 @@ window.addEventListener("DOMContentLoaded", () => {
       loadGraphFocus(currentNeighborhood.center.slug);
     }
   });
+
+  const learnerFilterCheckbox = document.getElementById(
+    "graph-filter-by-learner",
+  ) as HTMLInputElement | null;
+  if (learnerFilterCheckbox) {
+    learnerFilterCheckbox.addEventListener("change", () => {
+      graphFilterByLearner = learnerFilterCheckbox.checked;
+      updateGraphLearnerFilterUi();
+      void refreshGraphScope();
+    });
+  }
 
   // Pause & Exit Session Button
   document.getElementById("btn-pause-session")!.addEventListener("click", () => {
