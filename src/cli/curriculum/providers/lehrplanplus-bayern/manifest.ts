@@ -433,6 +433,16 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
         label: "Mathematik 8 (II/III)",
       },
     ],
+    "realschule|8|physik": [
+      {
+        id: "wpfg1",
+        label: "Physik 8 (I)",
+      },
+      {
+        id: "wpfg2-3",
+        label: "Physik 8 (II/III)",
+      },
+    ],
     "realschule|8|sport": [
       {
         id: "basis_sport",
@@ -453,6 +463,16 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
         label: "Mathematik 9 (II/III)",
       },
     ],
+    "realschule|9|physik": [
+      {
+        id: "wpfg1",
+        label: "Physik 9 (I)",
+      },
+      {
+        id: "wpfg2-3",
+        label: "Physik 9 (II/III)",
+      },
+    ],
     "realschule|9|sport": [
       {
         id: "basis_sport",
@@ -471,6 +491,16 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
       {
         id: "wpfg2-3",
         label: "Mathematik 10 (II/III)",
+      },
+    ],
+    "realschule|10|physik": [
+      {
+        id: "wpfg1",
+        label: "Physik 10 (I)",
+      },
+      {
+        id: "wpfg2-3",
+        label: "Physik 10 (II/III)",
       },
     ],
     "realschule|10|sport": [
@@ -3541,6 +3571,45 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
         hours: 8,
       },
     ],
+    "realschule|8|physik|wpfg1": [
+      {
+        id: "lb1",
+        label: "Mechanik und Energie",
+        hours: 20,
+      },
+      {
+        id: "lb2",
+        label: "Wärmelehre",
+        hours: 15,
+      },
+      {
+        id: "lb3",
+        label: "Elektrizitätslehre",
+        hours: 15,
+      },
+      {
+        id: "lb4",
+        label: "Wahlbereich: Astronomie oder Akustik",
+        hours: 6,
+      },
+    ],
+    "realschule|8|physik|wpfg2-3": [
+      {
+        id: "lb1",
+        label: "Mechanik",
+        hours: 22,
+      },
+      {
+        id: "lb2",
+        label: "Optik",
+        hours: 14,
+      },
+      {
+        id: "lb3",
+        label: "Magnetismus und Elektrizitätslehre",
+        hours: 20,
+      },
+    ],
     "realschule|8|musik": [
       {
         id: "lb1",
@@ -4313,6 +4382,40 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
         hours: 9,
       },
     ],
+    "realschule|9|physik|wpfg1": [
+      {
+        id: "lb1",
+        label: "Mechanik von Flüssigkeiten und Gasen",
+        hours: 18,
+      },
+      {
+        id: "lb2",
+        label: "Wärmelehre",
+        hours: 28,
+      },
+      {
+        id: "lb3",
+        label: "Elektrizitätslehre",
+        hours: 38,
+      },
+    ],
+    "realschule|9|physik|wpfg2-3": [
+      {
+        id: "lb1",
+        label: "Mechanik und Energie",
+        hours: 22,
+      },
+      {
+        id: "lb2",
+        label: "Wärmelehre",
+        hours: 15,
+      },
+      {
+        id: "lb3",
+        label: "Elektrizitätslehre",
+        hours: 19,
+      },
+    ],
     "realschule|9|musik": [
       {
         id: "lb1",
@@ -4982,6 +5085,50 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
         id: "lb5",
         label: "Daten und Zufall",
         hours: 10,
+      },
+    ],
+    "realschule|10|physik|wpfg1": [
+      {
+        id: "lb1",
+        label: "Mechanik",
+        hours: 17,
+      },
+      {
+        id: "lb2",
+        label: "Elektrizitätslehre",
+        hours: 29,
+      },
+      {
+        id: "lb3",
+        label: "Atom- und Kernphysik",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Energieversorgung",
+        hours: 12,
+      },
+    ],
+    "realschule|10|physik|wpfg2-3": [
+      {
+        id: "lb1",
+        label: "Mechanik",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label: "Elektrizitätslehre",
+        hours: 19,
+      },
+      {
+        id: "lb3",
+        label: "Atom- und Kernphysik",
+        hours: 7,
+      },
+      {
+        id: "lb4",
+        label: "Energieversorgung",
+        hours: 12,
       },
     ],
     "realschule|10|musik": [
@@ -13932,6 +14079,10 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/8/fach/mathematik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=wpfg1",
     "realschule|8|mathematik|wpfg2-3":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/8/fach/mathematik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=wpfg2-3",
+    "realschule|8|physik|wpfg1":
+      "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/8/fach/physik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=wpfg1",
+    "realschule|8|physik|wpfg2-3":
+      "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/8/fach/physik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=wpfg2-3",
     "realschule|8|musik":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/8/fach/musik/inhalt/fachlehrplaene",
     "realschule|8|or":
@@ -13984,6 +14135,10 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/9/fach/mathematik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=wpfg1",
     "realschule|9|mathematik|wpfg2-3":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/9/fach/mathematik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=wpfg2-3",
+    "realschule|9|physik|wpfg1":
+      "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/9/fach/physik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=wpfg1",
+    "realschule|9|physik|wpfg2-3":
+      "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/9/fach/physik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=wpfg2-3",
     "realschule|9|musik":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/9/fach/musik/inhalt/fachlehrplaene",
     "realschule|9|or":
@@ -14034,6 +14189,10 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/10/fach/mathematik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=wpfg1",
     "realschule|10|mathematik|wpfg2-3":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/10/fach/mathematik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=wpfg2-3",
+    "realschule|10|physik|wpfg1":
+      "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/10/fach/physik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=wpfg1",
+    "realschule|10|physik|wpfg2-3":
+      "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/10/fach/physik/inhalt/fachlehrplaene?w_schulart=realschule&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=wpfg2-3",
     "realschule|10|musik":
       "https://www.lehrplanplus.bayern.de/schulart/realschule/jgs/10/fach/musik/inhalt/fachlehrplaene",
     "realschule|10|or":
