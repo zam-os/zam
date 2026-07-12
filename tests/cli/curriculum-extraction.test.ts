@@ -10,6 +10,7 @@ import { rahmenlehrplanBerlinBrandenburgProvider } from "../../src/cli/curriculu
 import { openDatabase } from "../../src/kernel/index.js";
 import { ensureCard } from "../../src/kernel/models/card.ts";
 import {
+  countUserCardsForCurriculumTopic,
   createToken,
   getTokenById,
   getTokenBySlug,
@@ -195,6 +196,70 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
     const res2 = await importCurriculumCards(db, "user-123", cardsInput);
     expect(res2.createdCount).toBe(0);
     expect(res2.ensuredCount).toBe(0);
+
+    await db.close();
+  });
+
+  it("counts user cards per curriculum topic for import-status checks", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+
+    const topicId = "realschule|5|mathematik#lb1";
+    expect(
+      await countUserCardsForCurriculumTopic(
+        db,
+        "user-123",
+        "lehrplanplus-bayern",
+        topicId,
+      ),
+    ).toBe(0);
+
+    await importCurriculumCards(db, "user-123", [
+      {
+        question: "What is a natural number?",
+        concept: "Natural numbers",
+        domain: "Mathematik",
+        provider: "lehrplanplus-bayern",
+        topic_id: topicId,
+      },
+      {
+        question: "What is addition?",
+        concept: "Addition",
+        domain: "Mathematik",
+        provider: "lehrplanplus-bayern",
+        topic_id: topicId,
+      },
+    ]);
+
+    expect(
+      await countUserCardsForCurriculumTopic(
+        db,
+        "user-123",
+        "lehrplanplus-bayern",
+        topicId,
+      ),
+    ).toBe(2);
+
+    expect(
+      await countUserCardsForCurriculumTopic(
+        db,
+        "other-user",
+        "lehrplanplus-bayern",
+        topicId,
+      ),
+    ).toBe(0);
+
+    expect(
+      await countUserCardsForCurriculumTopic(
+        db,
+        "user-123",
+        "lehrplanplus-bayern",
+        "realschule|5|mathematik#lb2",
+      ),
+    ).toBe(0);
 
     await db.close();
   });

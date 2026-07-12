@@ -32,6 +32,7 @@ import {
   confirmCardSplit,
   confirmFoundations,
   confirmSourceImport,
+  countUserCardsForCurriculumTopic,
   createToken,
   decidePostCapture,
   decidePreCapture,
@@ -4063,6 +4064,57 @@ async function fetchRawHtml(url: string): Promise<string> {
     clearTimeout(timeoutId);
   }
 }
+
+// ── zam bridge curriculum-import-status ──────────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-import-status")
+  .description(
+    "Check which selected curriculum topics are already imported for a user (JSON)",
+  )
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption("--topics <json>", "JSON array of selected topic nodes")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const provider = getCurriculumProvider(opts.provider);
+      if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+
+      let topics: TopicNode[];
+      try {
+        topics = JSON.parse(opts.topics);
+      } catch {
+        jsonError("Invalid --topics JSON");
+        return;
+      }
+
+      const status: Array<{
+        topicId: string;
+        shortId: string;
+        cardCount: number;
+        alreadyImported: boolean;
+      }> = [];
+
+      for (const topic of topics) {
+        const resolved = provider.resolveTopic(topic);
+        const cardCount = await countUserCardsForCurriculumTopic(
+          db,
+          userId,
+          provider.id,
+          resolved.topicId,
+        );
+        status.push({
+          topicId: resolved.topicId,
+          shortId: topic.id,
+          cardCount,
+          alreadyImported: cardCount > 0,
+        });
+      }
+
+      jsonOut({ success: true, status });
+    });
+  });
 
 // ── zam bridge curriculum-extract-topics ─────────────────────────────────────
 

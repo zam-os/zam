@@ -39,6 +39,7 @@ interface ImportTotals {
   createdCount: number;
   ensuredCount: number;
   failedTopics: string[];
+  skippedTopics: string[];
 }
 
 /** Per-topic LLM preview — must exceed CLI bridge hard timeout (10 min local). */
@@ -652,11 +653,6 @@ function mapPreviewProposals(
   }));
 }
 
-function topicLabelFor(topicId: string, topics: TaxonomyOption[]): string {
-  const id = topicId.split("#").pop() ?? topicId;
-  return topics.find((t) => t.id === id)?.label ?? id;
-}
-
 async function previewTopicItem(
   item: { topicId: string; text: string },
   subjectLabel: string,
@@ -761,57 +757,36 @@ async function extractTopics(
   return extractRes.extracted;
 }
 
-async function importTopicsBatch(
+async function partitionAlreadyImportedTopics(
   chosenTopics: TaxonomyOption[],
-  subjectLabel: string,
-  selectedCtxName: string,
-  previewTimeoutMs: number,
-): Promise<ImportTotals> {
-  setImportProgress(
-    t("wizard_import_extracting"),
-    tf("wizard_import_step", { current: "1", total: "1" }),
+): Promise<{ pending: TaxonomyOption[]; skipped: string[] }> {
+  const statusRes = await runBridge<{
+    success: boolean;
+    status: Array<{ shortId: string; alreadyImported: boolean }>;
+  }>("curriculum-import-status", [
+    "--provider",
+    selection.providerId!,
+    "--topics",
+    JSON.stringify(chosenTopics),
+  ]);
+
+  const importedIds = new Set(
+    (statusRes.status ?? [])
+      .filter((entry) => entry.alreadyImported)
+      .map((entry) => entry.shortId),
   );
 
-  const extracted = await extractTopics(chosenTopics);
-  const sourceId = extracted[0].sourceId;
-  const allProposals: CurriculumProposal[] = [];
-
-  for (let i = 0; i < extracted.length; i++) {
-    const item = extracted[i];
-    const label = topicLabelFor(item.topicId, chosenTopics);
-    setImportProgress(
-      tf("wizard_import_generating", { topic: label }),
-      tf("wizard_import_step", {
-        current: String(i + 1),
-        total: String(extracted.length),
-      }),
-    );
-
-    const mapped = await previewTopicItem(
-      item,
-      subjectLabel,
-      selectedCtxName,
-      previewTimeoutMs,
-    );
-    allProposals.push(...mapped);
+  const pending: TaxonomyOption[] = [];
+  const skipped: string[] = [];
+  for (const topic of chosenTopics) {
+    if (importedIds.has(topic.id)) {
+      skipped.push(topic.label);
+    } else {
+      pending.push(topic);
+    }
   }
 
-  if (allProposals.length === 0) {
-    throw new Error("No cards were generated from the selected topics.");
-  }
-
-  setImportProgress(
-    t("wizard_import_saving"),
-    tf("wizard_import_saving_count", { count: String(allProposals.length) }),
-  );
-
-  const { createdCount, ensuredCount } = await confirmProposals(
-    sourceId,
-    allProposals,
-    selectedCtxName,
-  );
-
-  return { createdCount, ensuredCount, failedTopics: [] };
+  return { pending, skipped };
 }
 
 async function importTopicsSequential(
@@ -825,6 +800,7 @@ async function importTopicsSequential(
     createdCount: 0,
     ensuredCount: 0,
     failedTopics: [],
+    skippedTopics: [],
   };
 
   for (let i = 0; i < chosenTopics.length; i++) {
@@ -893,6 +869,25 @@ async function importTopicsSequential(
 }
 
 function reportImportSuccess(totals: ImportTotals, localLlm: boolean): void {
+  const parts: string[] = [];
+
+  if (totals.createdCount + totals.ensuredCount > 0) {
+    parts.push(
+      tf("toast_import_success", {
+        createdCount: String(totals.createdCount),
+        ensuredCount: String(totals.ensuredCount),
+      }),
+    );
+  }
+
+  if (totals.skippedTopics.length > 0) {
+    parts.push(
+      tf("wizard_import_skipped_summary", {
+        count: String(totals.skippedTopics.length),
+      }),
+    );
+  }
+
   if (totals.failedTopics.length > 0) {
     let message = tf("wizard_import_partial_success", {
       createdCount: String(totals.createdCount),
@@ -904,7 +899,11 @@ function reportImportSuccess(totals: ImportTotals, localLlm: boolean): void {
         settingsPath: settingsAiPathLabel(),
       })}`;
     }
-    alert(message);
+    parts.push(message);
+  }
+
+  if (parts.length > 0) {
+    alert(parts.join("\n\n"));
     return;
   }
 
@@ -949,49 +948,42 @@ async function finishWizard(topicStep: WizardStep): Promise<void> {
     : CLOUD_LLM_PREVIEW_TIMEOUT_MS;
 
   try {
-    let totals: ImportTotals;
+    setImportProgress(t("wizard_import_checking_status"));
 
-    if (chosenTopics.length === 1 || localLlm) {
-      // Single topic, or local LLM: one topic at a time (avoids long hangs/timeouts).
-      if (chosenTopics.length > 1) {
-        setImportProgress(
-          t("lbl_curriculum_wizard_progress_status"),
-          t("lbl_curriculum_wizard_progress_detail_local"),
-        );
-      }
-      totals = await importTopicsSequential(
-        chosenTopics,
-        subjectLabel,
-        selectedCtxName,
-        previewTimeoutMs,
-        localLlm,
+    const { pending, skipped } =
+      await partitionAlreadyImportedTopics(chosenTopics);
+
+    if (skipped.length > 0) {
+      setImportProgress(
+        tf("wizard_import_skipping", { count: String(skipped.length) }),
       );
-    } else {
-      try {
-        totals = await importTopicsBatch(
-          chosenTopics,
-          subjectLabel,
-          selectedCtxName,
-          previewTimeoutMs,
-        );
-      } catch (batchErr) {
-        console.warn(
-          "Curriculum wizard: batch import failed, falling back to single-topic import:",
-          batchErr,
-        );
-        setImportProgress(
-          t("wizard_import_fallback"),
-          t("lbl_curriculum_wizard_progress_detail"),
-        );
-        totals = await importTopicsSequential(
-          chosenTopics,
-          subjectLabel,
-          selectedCtxName,
-          previewTimeoutMs,
-          localLlm,
-        );
-      }
     }
+
+    if (pending.length === 0) {
+      hideCurriculumWizard();
+      alert(
+        tf("wizard_import_all_skipped", { count: String(skipped.length) }),
+      );
+      return;
+    }
+
+    if (pending.length > 1) {
+      setImportProgress(
+        t("lbl_curriculum_wizard_progress_status"),
+        localLlm
+          ? t("lbl_curriculum_wizard_progress_detail_local")
+          : t("lbl_curriculum_wizard_progress_detail"),
+      );
+    }
+
+    const totals = await importTopicsSequential(
+      pending,
+      subjectLabel,
+      selectedCtxName,
+      previewTimeoutMs,
+      localLlm,
+    );
+    totals.skippedTopics = skipped;
 
     hideCurriculumWizard();
     reportImportSuccess(totals, localLlm);

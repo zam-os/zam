@@ -58,6 +58,10 @@ const WIZARD_KEYS = [
   "wizard_import_timeout",
   "wizard_import_llm_timeout_local",
   "wizard_import_cloud_hint",
+  "wizard_import_checking_status",
+  "wizard_import_skipping",
+  "wizard_import_all_skipped",
+  "wizard_import_skipped_summary",
 ] as const;
 
 const DATABASE_SETTINGS_KEYS = [

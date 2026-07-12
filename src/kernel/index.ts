@@ -186,6 +186,7 @@ export {
   confirmCardSplit,
   confirmFoundations,
   confirmSourceImport,
+  countUserCardsForCurriculumTopic,
   createToken,
   deleteToken,
   deprecateToken,

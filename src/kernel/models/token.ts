@@ -792,6 +792,28 @@ export interface ImportCurriculumResult {
 }
 
 /**
+ * Count FSRS cards a user already has for a curriculum topic (provider + topic_id).
+ */
+export async function countUserCardsForCurriculumTopic(
+  db: Database,
+  userId: string,
+  provider: string,
+  topicId: string,
+): Promise<number> {
+  const row = (await db
+    .prepare(
+      `SELECT COUNT(*) AS count
+       FROM cards c
+       INNER JOIN tokens t ON t.id = c.token_id
+       WHERE c.user_id = ?
+         AND t.provider = ?
+         AND t.topic_id = ?`,
+    )
+    .get(userId, provider, topicId)) as { count: number } | undefined;
+  return row?.count ?? 0;
+}
+
+/**
  * Import curriculum cards in a single transaction.
  * Reuses existing tokens on slug match and ensures FSRS cards exist.
  */

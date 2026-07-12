@@ -395,6 +395,12 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "La IA local no respondió a tiempo. Los bloques grandes del plan de estudios pueden superar lo que un modelo local pequeño puede procesar.",
     wizard_import_cloud_hint:
       "Consejo: abre {settingsPath}, asigna un proveedor en la nube al rol Texto e inténtalo de nuevo.",
+    wizard_import_checking_status: "Comprobando temas ya importados…",
+    wizard_import_skipping: "Omitiendo {count} tema(s) ya importado(s)…",
+    wizard_import_all_skipped:
+      "Los {count} tema(s) seleccionados ya estaban importados.",
+    wizard_import_skipped_summary:
+      "{count} tema(s) ya importado(s) se omitieron.",
     btn_split: "Dividir",
     lbl_split_modal_title: "Dividir tarjeta",
     lbl_original_card_title: "Tarjeta original (Pregunta de aplicación resumida)",
@@ -822,6 +828,12 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "L'IA locale n'a pas répondu à temps. Les grands blocs de programme peuvent dépasser les capacités d'un petit modèle local.",
     wizard_import_cloud_hint:
       "Astuce : ouvrez {settingsPath}, assignez un fournisseur cloud au rôle Texte et réessayez l'import.",
+    wizard_import_checking_status: "Vérification des sujets déjà importés…",
+    wizard_import_skipping: "Ignorer {count} sujet(s) déjà importé(s)…",
+    wizard_import_all_skipped:
+      "Les {count} sujet(s) sélectionnés étaient déjà importés.",
+    wizard_import_skipped_summary:
+      "{count} sujet(s) déjà importé(s) ont été ignorés.",
     btn_split: "Diviser",
     lbl_split_modal_title: "Diviser la carte",
     lbl_original_card_title: "Carte originale (Question d'application résumée)",
@@ -1249,6 +1261,12 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "La IA local no respondió a tiempo. Los bloques grandes del plan de estudios pueden superar lo que un modelo local pequeño puede procesar.",
     wizard_import_cloud_hint:
       "Consejo: abre {settingsPath}, asigna un proveedor en la nube al rol Texto e inténtalo de nuevo.",
+    wizard_import_checking_status: "Comprobando temas ya importados…",
+    wizard_import_skipping: "Omitiendo {count} tema(s) ya importado(s)…",
+    wizard_import_all_skipped:
+      "Los {count} tema(s) seleccionados ya estaban importados.",
+    wizard_import_skipped_summary:
+      "{count} tema(s) ya importado(s) se omitieron.",
     btn_split: "Dividir",
     lbl_split_modal_title: "Dividir carta",
     lbl_original_card_title: "Carta original (Pergunta de aplicação resumida)",
@@ -1659,6 +1677,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "本地 AI 未及时响应。大型课程标准块可能超出小型本地模型的处理能力。",
     wizard_import_cloud_hint:
       "提示：打开{settingsPath}，为文本角色分配云端提供商，然后重试导入。",
+    wizard_import_checking_status: "正在检查已导入的主题…",
+    wizard_import_skipping: "跳过 {count} 个已导入的主题…",
+    wizard_import_all_skipped: "所选的 {count} 个主题均已导入。",
+    wizard_import_skipped_summary: "已跳过 {count} 个已导入的主题。",
     btn_split: "拆分",
     lbl_split_modal_title: "拆分卡片",
     lbl_original_card_title: "原始卡片 (总结性的应用问题)",
@@ -2083,6 +2105,12 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "ローカル AI が時間内に応答しませんでした。大きなカリキュラムブロックは小型ローカルモデルの処理能力を超えることがあります。",
     wizard_import_cloud_hint:
       "ヒント：{settingsPath} を開き、テキスト役割にクラウドプロバイダーを割り当てて、もう一度インポートしてください。",
+    wizard_import_checking_status: "インポート済みトピックを確認中…",
+    wizard_import_skipping: "インポート済みの {count} 件のトピックをスキップ中…",
+    wizard_import_all_skipped:
+      "選択した {count} 件のトピックはすべてインポート済みです。",
+    wizard_import_skipped_summary:
+      "インポート済みの {count} 件のトピックをスキップしました。",
     btn_split: "分割",
     lbl_split_modal_title: "カードの分割",
     lbl_original_card_title: "元のカード (要約された応用問題)",
@@ -2583,6 +2611,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "The local AI did not respond in time. Large curriculum blocks (e.g. 50-hour units) can exceed what a small local model can handle.",
     wizard_import_cloud_hint:
       "Tip: Open {settingsPath}, assign a cloud provider to the Text role, and try the import again.",
+    wizard_import_checking_status: "Checking for already-imported topics…",
+    wizard_import_skipping: "Skipping {count} already-imported topic(s)…",
+    wizard_import_all_skipped:
+      "All {count} selected topic(s) were already imported.",
+    wizard_import_skipped_summary:
+      "{count} already-imported topic(s) were skipped.",
     btn_split: "Split",
     lbl_split_modal_title: "Split Card",
     lbl_original_card_title: "Original Card (Summarized application question)",
@@ -3007,6 +3041,13 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Die lokale KI hat nicht rechtzeitig geantwortet. Große Lehrplanblöcke (z. B. 50-Stunden-Lernbereiche) überfordern kleine lokale Modelle leicht.",
     wizard_import_cloud_hint:
       "Tipp: Öffne {settingsPath}, weise der Text-Rolle einen Cloud-Anbieter zu und starte den Import erneut.",
+    wizard_import_checking_status: "Prüfe bereits importierte Themen…",
+    wizard_import_skipping:
+      "Überspringe {count} bereits importierte(s) Thema/Themen…",
+    wizard_import_all_skipped:
+      "Alle {count} ausgewählten Themen waren bereits importiert.",
+    wizard_import_skipped_summary:
+      "{count} bereits importierte(s) Thema/Themen wurden übersprungen.",
     btn_split: "Aufteilen",
     lbl_split_modal_title: "Karte aufteilen",
     lbl_original_card_title: "Originalkarte (Zusammenfassende Anwendungsfrage)",
