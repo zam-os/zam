@@ -19,6 +19,16 @@ import {
   tf,
 } from "./i18n.js";
 import { initCurriculumWizard } from "./curriculum-wizard.js";
+import {
+  beginTurn,
+  buildDiscussReviewArgs,
+  completeTurn,
+  createDiscussionState,
+  type DiscussionCardContext,
+  failTurn,
+  openDiscussion,
+  resetDiscussion,
+} from "./discussion.js";
 import { initLearningContentStudio, loadStudioData } from "./learning-content.js";
 
 // Re-exported so any other importer of "./main.js" keeps working unchanged;
@@ -214,6 +224,9 @@ let questionRequestId = 0;
 let evaluationRequestId = 0;
 let revealInProgress = false;
 let ratingSubmitInProgress = false;
+// Post-reveal discussion thread (ADR 2026-07-06b) — ephemeral, App-only.
+const discussion = createDiscussionState();
+let activeUserAnswer = "";
 let observerWindows: ObserverWindowInfo[] = [];
 let observerReports: UiObservationReport[] = [];
 let observerSequence = 0;
@@ -482,6 +495,14 @@ function initializeTranslations() {
   if (answerInput) {
     answerInput.placeholder = t("placeholder_answer");
   }
+
+  // Post-reveal discussion thread
+  const discussionInput = document.getElementById("discussion-input") as HTMLTextAreaElement | null;
+  if (discussionInput) {
+    discussionInput.placeholder = t("placeholder_discussion");
+  }
+  document.getElementById("btn-discussion-send")!.textContent = t("btn_discussion_send");
+  document.getElementById("discussion-error")!.textContent = t("discussion_error");
 
   // Setup & Data card
   document.getElementById("lbl-settings-kicker")!.textContent =
@@ -3853,6 +3874,7 @@ async function loadNextCard(
   try {
     evaluationRequestId++;
     revealInProgress = false;
+    resetDiscussionUi();
     finishAiWait();
     finishQuestionWait();
 
@@ -3941,7 +3963,8 @@ async function submitAndReveal() {
 
   const textarea = document.getElementById("user-answer-input") as HTMLTextAreaElement;
   const userAnswer = textarea.value.trim();
-  
+  activeUserAnswer = userAnswer;
+
   textarea.disabled = true;
   document.getElementById("answer-capture-box")!.classList.add("hidden");
 
@@ -4096,8 +4119,130 @@ function renderReveal(
     }
   }
 
+  setupDiscussionForReveal(aiFeedbackText, evaluationSuccessful);
+
   // Show revealed box
   document.getElementById("revealed-box")!.classList.remove("hidden");
+}
+
+// ── POST-REVEAL DISCUSSION THREAD (ADR 2026-07-06b) ─────────────────────
+function discussionElements() {
+  return {
+    box: document.getElementById("discussion-box")!,
+    turns: document.getElementById("discussion-turns")!,
+    input: document.getElementById("discussion-input") as HTMLTextAreaElement,
+    send: document.getElementById("btn-discussion-send") as HTMLButtonElement,
+    error: document.getElementById("discussion-error")!,
+  };
+}
+
+/** Teardown on every exit action (rate/skip/pause/next card). */
+function resetDiscussionUi(): void {
+  resetDiscussion(discussion);
+  const els = discussionElements();
+  els.box.classList.add("hidden");
+  els.turns.textContent = "";
+  els.error.classList.add("hidden");
+  els.input.value = "";
+  els.input.disabled = false;
+  els.send.disabled = false;
+}
+
+/**
+ * The dialogue exists only after a successful AI evaluation (post-feedback).
+ * Without a reachable recall provider the affordance stays hidden and the
+ * one-shot flow is unchanged.
+ */
+function setupDiscussionForReveal(
+  aiFeedbackText: string,
+  evaluationSuccessful: boolean,
+): void {
+  resetDiscussionUi();
+  if (!activeCard) return;
+  const card: DiscussionCardContext = {
+    slug: activeCard.slug,
+    concept: activeCard.concept,
+    domain: activeCard.domain,
+    bloomLevel: activeCard.bloomLevel || 1,
+    context: activeCard.context || null,
+    question: activePromptQuestion,
+    userAnswer: activeUserAnswer,
+    sourceContent: resolvedContextContent,
+    sourceLink: activeCard.sourceLink || null,
+    feedback: aiFeedbackText,
+  };
+  if (!openDiscussion(discussion, card, { evaluationSuccessful })) return;
+  discussionElements().box.classList.remove("hidden");
+}
+
+function appendDiscussionTurnEl(
+  role: "user" | "assistant",
+  content: string,
+): HTMLElement {
+  const turnsEl = discussionElements().turns;
+  const turn = document.createElement("div");
+  turn.className = `discussion-turn ${role}`;
+  // textContent only — discussion content must never inject markup into the
+  // webview (same discipline as renderReveal).
+  const text = document.createElement("p");
+  text.className = "discussion-turn-text";
+  text.textContent = content;
+  turn.appendChild(text);
+  turnsEl.appendChild(turn);
+  turn.scrollIntoView({ block: "nearest" });
+  return turn;
+}
+
+async function sendDiscussionTurn(): Promise<void> {
+  const els = discussionElements();
+  const message = els.input.value.trim();
+  const guard = beginTurn(discussion, message);
+  if (guard === null || !discussion.card) return;
+
+  els.error.classList.add("hidden");
+  els.input.value = "";
+  els.input.disabled = true;
+  els.send.disabled = true;
+
+  const userEl = appendDiscussionTurnEl("user", message);
+  const pendingEl = appendDiscussionTurnEl("assistant", "…");
+  pendingEl.classList.add("pending");
+
+  const args = buildDiscussReviewArgs(discussion.card, discussion.turns, message);
+  try {
+    const payload = await runBridge<{
+      success: boolean;
+      reply: string;
+      replyModel?: string | null;
+      error?: string;
+    }>("discuss-review", args);
+    if (guard !== discussion.seq) return; // thread torn down while waiting
+    pendingEl.remove();
+    if (payload.success && payload.reply) {
+      completeTurn(discussion, guard, message, payload.reply);
+      appendDiscussionTurnEl("assistant", payload.reply);
+    } else {
+      failTurn(discussion, guard);
+      userEl.remove();
+      els.input.value = message;
+      els.error.classList.remove("hidden");
+      console.warn("Discussion turn returned error state:", payload.error);
+    }
+  } catch (err) {
+    if (guard !== discussion.seq) return;
+    pendingEl.remove();
+    userEl.remove();
+    failTurn(discussion, guard);
+    els.input.value = message;
+    els.error.classList.remove("hidden");
+    console.warn("Discussion turn failed:", err);
+  } finally {
+    if (guard === discussion.seq) {
+      els.input.disabled = false;
+      els.send.disabled = false;
+      els.input.focus();
+    }
+  }
 }
 
 // ── INTERACTIVE TIMEOUT TIMER ────────────────────────────────────────────
@@ -4176,6 +4321,8 @@ function skipAiWaitingAndReveal() {
 async function submitRating(ratingVal: number) {
   if (!activeCard || ratingSubmitInProgress) return;
   ratingSubmitInProgress = true;
+  // Checking in the rating closes the thread (ADR 2026-07-06b).
+  resetDiscussionUi();
   document.querySelectorAll<HTMLButtonElement>(".rating-btn").forEach((button) => {
     button.disabled = true;
   });
@@ -4499,6 +4646,7 @@ window.addEventListener("DOMContentLoaded", () => {
       if (observerWatchRunning) {
         await stopObserverWatch();
       }
+      resetDiscussionUi();
       await closeUiLearningSession();
       switchView("dashboard-view");
       loadDashboard();
@@ -4541,10 +4689,23 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Post-reveal discussion thread: send button + Enter-to-send
+  document.getElementById("btn-discussion-send")!.addEventListener("click", () => {
+    void sendDiscussionTurn();
+  });
+  document.getElementById("discussion-input")!.addEventListener("keydown", (e) => {
+    const key = e as KeyboardEvent;
+    if (key.key === "Enter" && !key.shiftKey) {
+      key.preventDefault();
+      void sendDiscussionTurn();
+    }
+  });
+
   // Keyboard events
   window.addEventListener("keydown", (e: KeyboardEvent) => {
     // 1. Esc key -> Pause and exit
     if (e.key === "Escape" && studySessionActive) {
+      resetDiscussionUi();
       switchView("dashboard-view");
       loadDashboard();
       return;

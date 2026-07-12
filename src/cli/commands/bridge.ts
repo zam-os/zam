@@ -12,6 +12,7 @@ import { homedir, tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { Command } from "commander";
 import { ulid } from "ulid";
+import type { DiscussionTurn } from "../../bridge/protocol.js";
 import type {
   BloomLevel,
   Database,
@@ -133,6 +134,7 @@ import {
   checkVisionReadiness,
   DEFAULT_LLM_MODEL,
   DEFAULT_LLM_URL,
+  discussReviewViaLLM,
   ensureLlmReadyHeadless,
   evaluateAnswerViaLLM,
   generateFoundationsProposalsViaLLM,
@@ -2694,6 +2696,124 @@ bridgeCommand
           success: false,
           error: (err as Error).message,
           evaluation: "",
+        });
+      }
+    });
+  });
+
+// ── zam bridge discuss-review ─────────────────────────────────────────────
+
+/**
+ * Parse the `--thread` JSON payload into validated discussion turns. Throws
+ * with a caller-friendly message on any shape violation so the command can
+ * return it as a JSON error instead of sending garbage to the provider.
+ */
+function parseDiscussionThread(raw: string | undefined): DiscussionTurn[] {
+  if (!raw) return [];
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    throw new Error("Invalid --thread: not valid JSON");
+  }
+  if (!Array.isArray(parsed)) {
+    throw new Error("Invalid --thread: expected a JSON array of turns");
+  }
+  return parsed.map((turn, index) => {
+    const candidate = turn as { role?: unknown; content?: unknown };
+    if (
+      (candidate?.role !== "user" && candidate?.role !== "assistant") ||
+      typeof candidate?.content !== "string"
+    ) {
+      throw new Error(
+        `Invalid --thread: turn ${index} must be {"role": "user"|"assistant", "content": string}`,
+      );
+    }
+    return { role: candidate.role, content: candidate.content };
+  });
+}
+
+bridgeCommand
+  .command("discuss-review")
+  .description(
+    "Answer one turn of the post-reveal follow-up discussion about a card (JSON)",
+  )
+  .requiredOption("--slug <slug>", "Token slug")
+  .requiredOption("--concept <concept>", "Target concept text")
+  .requiredOption("--domain <domain>", "Token domain")
+  .requiredOption("--bloom-level <level>", "Bloom taxonomy level")
+  .requiredOption("--question <question>", "Question prompt presented")
+  .requiredOption("--user-answer <answer>", "User's typed answer")
+  .requiredOption("--message <text>", "The learner's newest discussion turn")
+  .option("--feedback <text>", "AI feedback already shown for this answer")
+  .option(
+    "--thread <json>",
+    'Prior turns, oldest first, as JSON: [{"role":"user"|"assistant","content":"…"},…]',
+  )
+  .option("--context <context>", "Optional token context details")
+  .option("--source-link <link>", "Optional source link")
+  .option(
+    "--source-content <content>",
+    "Pre-resolved source reference content (skips re-fetch when set)",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const isEnabled = (await getSetting(db, "llm.enabled")) === "true";
+      if (!isEnabled) {
+        jsonOut({
+          success: false,
+          error: "LLM integration is disabled",
+          reply: "",
+        });
+        return;
+      }
+
+      let thread: DiscussionTurn[];
+      try {
+        thread = parseDiscussionThread(opts.thread);
+      } catch (err) {
+        jsonOut({
+          success: false,
+          error: (err as Error).message,
+          reply: "",
+        });
+        return;
+      }
+
+      let resolvedContextContent: string | null = opts.sourceContent ?? null;
+      if (resolvedContextContent == null && opts.sourceLink) {
+        try {
+          const resolved = await resolveReviewContext(opts.sourceLink);
+          resolvedContextContent = resolved?.content ?? null;
+        } catch {
+          // ignore context resolution errors
+        }
+      }
+
+      try {
+        const result = await discussReviewViaLLM(db, {
+          slug: opts.slug,
+          concept: opts.concept,
+          domain: opts.domain,
+          bloomLevel: Number(opts.bloomLevel),
+          context: opts.context,
+          question: opts.question,
+          userAnswer: opts.userAnswer,
+          sourceLinkContent: resolvedContextContent,
+          feedback: opts.feedback ?? null,
+          thread,
+          message: opts.message,
+        });
+        jsonOut({
+          success: true,
+          reply: result.text,
+          replyModel: result.model,
+        });
+      } catch (err) {
+        jsonOut({
+          success: false,
+          error: (err as Error).message,
+          reply: "",
         });
       }
     });

@@ -78,6 +78,12 @@ const KNOWLEDGE_CONTEXT_KEYS = [
 
 const STUDIO_LAYOUT_KEYS = ["content_subtitle"] as const;
 
+const DISCUSSION_KEYS = [
+  "placeholder_discussion",
+  "btn_discussion_send",
+  "discussion_error",
+] as const;
+
 const AGENT_CONNECT_KEYS = [
   "settings_agents_title",
   "settings_agents_help",
@@ -100,6 +106,7 @@ const REQUIRED_KEYS = [
   ...QUESTION_WAIT_KEYS,
   ...KNOWLEDGE_CONTEXT_KEYS,
   ...STUDIO_LAYOUT_KEYS,
+  ...DISCUSSION_KEYS,
   ...AGENT_CONNECT_KEYS,
 ];
 

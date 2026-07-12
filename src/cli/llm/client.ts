@@ -14,6 +14,7 @@
 
 import { spawn } from "node:child_process";
 import { existsSync, readFileSync, statSync } from "node:fs";
+import type { DiscussionTurn } from "../../bridge/protocol.js";
 import type { Database, SupportedLocale } from "../../kernel/index.js";
 import {
   getActiveWorkspaceContext,
@@ -37,6 +38,7 @@ export const DEFAULT_LLM_MAX_TOKENS = 10_000;
 /** Tight output caps for recall — short questions/evaluations, faster round-trips. */
 export const RECALL_QUESTION_MAX_OUTPUT_TOKENS = 400;
 export const RECALL_EVALUATION_MAX_OUTPUT_TOKENS = 1200;
+export const RECALL_DISCUSSION_MAX_OUTPUT_TOKENS = 1200;
 
 const RECALL_ENDPOINT_CACHE_MS = 60_000;
 let cachedRecallEndpoint: {
@@ -626,6 +628,94 @@ Evaluation:`;
   );
 
   const text = await readChatContent(res, "LLM evaluation");
+  return {
+    text,
+    model: endpoint.model,
+    providerName: endpoint.providerName,
+  };
+}
+
+/**
+ * Answer one turn of the post-reveal follow-up discussion about a card
+ * (ADR 2026-07-06b). Stateless by design: the caller resends the full thread
+ * on every call, so the system prompt + card frame + prior feedback form a
+ * stable prefix that provider-side prompt caches can reuse. Only the rating
+ * check-in touches FSRS state — this call never mutates anything.
+ */
+export async function discussReviewViaLLM(
+  db: Database,
+  input: {
+    slug: string;
+    concept: string;
+    domain: string;
+    bloomLevel: number;
+    context?: string;
+    question: string;
+    userAnswer: string;
+    sourceLinkContent?: string | null;
+    /** AI feedback already shown for this answer (becomes the thread's first assistant turn). */
+    feedback?: string | null;
+    /** Prior discussion turns, oldest first. */
+    thread: DiscussionTurn[];
+    /** The learner's newest turn. */
+    message: string;
+  },
+): Promise<LlmTextResult> {
+  const cfg = await getProviderForRole(db, "recall");
+  const endpoint = await resolveUsableRecallEndpoint(db);
+  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+
+  const systemPrompt = `You are ZAM, a warm, precise, and encouraging skills trainer in a follow-up discussion about one flashcard.
+The learner has already answered, the reference answer is revealed, and your evaluation feedback was shown — nothing about this card is a spoiler anymore.
+
+Guidelines:
+1. Answer the learner's follow-up directly and concretely in ${langName}, grounded in the card's target concept, context, and source reference.
+2. Stay scoped to this card and its concept. If the learner drifts to unrelated territory, answer briefly and steer back to the concept.
+3. Keep replies conversational and short (a few sentences) unless the learner explicitly asks for depth. Plain text only — no markdown wrapper, headers, or bullet lists.
+4. The self-rating is the learner's own choice. If asked, explain the FSRS scale (1 forgot, 2 hard, 3 good, 4 easy) but never pressure them toward a specific rating.`;
+
+  const cardFrame = `The card under discussion:
+Domain: ${input.domain}
+Slug: ${input.slug}
+Recall Question: ${input.question}
+Learner's Answer: ${input.userAnswer}
+
+Target Concept (Correct Answer): ${input.concept}
+Target Context: ${input.context || "(none)"}
+${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}` : ""}`;
+
+  const messages: Array<{ role: string; content: string }> = [
+    { role: "system", content: systemPrompt },
+    { role: "user", content: cardFrame },
+  ];
+  const feedback = input.feedback?.trim();
+  if (feedback) {
+    messages.push({ role: "assistant", content: feedback });
+  }
+  for (const turn of input.thread) {
+    messages.push({ role: turn.role, content: turn.content });
+  }
+  messages.push({ role: "user", content: input.message });
+
+  const res = await fetchWithInteractiveTimeout(
+    `${endpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages,
+        temperature: 0.3,
+        max_tokens: RECALL_DISCUSSION_MAX_OUTPUT_TOKENS,
+      }),
+      locale: cfg.locale,
+    },
+  );
+
+  const text = await readChatContent(res, "LLM discussion");
   return {
     text,
     model: endpoint.model,

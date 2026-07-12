@@ -497,6 +497,16 @@
                 </div>
               </div>
 
+              <!-- POST-REVEAL DISCUSSION THREAD (ADR 2026-07-06b) -->
+              <div class="discussion-box hidden" id="discussion-box">
+                <div class="discussion-turns" id="discussion-turns"></div>
+                <p class="discussion-error hidden" id="discussion-error">No reply from the AI. Please try again.</p>
+                <div class="discussion-input-row">
+                  <textarea id="discussion-input" rows="2" placeholder="Ask a follow-up about this card... (Enter to send)"></textarea>
+                  <button id="btn-discussion-send" class="btn secondary-btn">Send</button>
+                </div>
+              </div>
+
               <!-- SELF-RATING ACTION BAR -->
               <div class="rating-bar-container">
                 <p class="rating-instruction" id="lbl-rating-instruction">Rate your active recall honestly:</p>

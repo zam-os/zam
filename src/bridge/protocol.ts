@@ -181,6 +181,21 @@ export interface ReviewActionResponse {
   stopped?: boolean;
 }
 
+// ── Discuss Review (post-reveal follow-up dialogue, ADR 2026-07-06b) ────────
+
+export interface DiscussionTurn {
+  role: "user" | "assistant";
+  content: string;
+}
+
+export interface DiscussReviewResponse {
+  success: boolean;
+  /** Assistant reply to the newest learner turn; empty string on failure. */
+  reply: string;
+  replyModel?: string | null;
+  error?: string;
+}
+
 // ── Add Token ───────────────────────────────────────────────────────────────
 
 export interface KnowledgeContextPayload {
