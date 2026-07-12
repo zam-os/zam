@@ -122,6 +122,35 @@ describe("bridge model-* registry commands", () => {
     expect(readConfig().ai?.models ?? []).toHaveLength(0);
   });
 
+  it("sets capabilities within the detected ceiling without re-probing", async () => {
+    const created = (await runBridge([
+      "model-upsert",
+      "--label",
+      "Gemma",
+      "--url",
+      baseUrl,
+      "--model",
+      "gemma4-it:e4b",
+      "--capabilities",
+      JSON.stringify({ text: true }),
+    ])) as { parsed: { model: { id: string } } };
+    const id = created.parsed.model.id;
+
+    // Enabling an undetected capability (image) is rejected by the ceiling,
+    // while disabling a detected one (text) is honored.
+    const updated = (await runBridge([
+      "model-set-capabilities",
+      "--id",
+      id,
+      "--capabilities",
+      JSON.stringify({ text: false, image: true }),
+    ])) as { parsed: { model: { capabilities: Record<string, boolean> } } };
+    expect(updated.parsed.model.capabilities).toMatchObject({
+      text: false,
+      image: false,
+    });
+  });
+
   it("lists, reorders, and removes registry entries", async () => {
     const a = (await runBridge([
       "model-upsert",

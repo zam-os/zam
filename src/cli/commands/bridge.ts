@@ -2766,6 +2766,33 @@ bridgeCommand
   });
 
 bridgeCommand
+  .command("model-set-capabilities")
+  .description(
+    "Set user-enabled capabilities within the detected ceiling (JSON)",
+  )
+  .requiredOption("--id <id>", "Registry entry id")
+  .requiredOption(
+    "--capabilities <json>",
+    "JSON object of desired capabilities",
+  )
+  .action((opts) => {
+    const models = getMachineAiModels();
+    const index = models.findIndex((m) => m.id === opts.id);
+    if (index < 0) jsonError(`No such model: ${opts.id}`);
+    const requested = parseCapabilityFlags(opts.capabilities);
+    // Enforce the ceiling: a capability can only be enabled if it was detected.
+    const detected = models[index].detectedCapabilities;
+    const capabilities = emptyCapabilityFlags();
+    for (const key of Object.keys(capabilities) as ModelCapability[]) {
+      capabilities[key] = requested[key] && detected[key];
+    }
+    const next = [...models];
+    next[index] = { ...models[index], capabilities };
+    saveMachineAiModels(next);
+    jsonOut({ ok: true, model: modelRow(next[index]) });
+  });
+
+bridgeCommand
   .command("cloud-model-hint")
   .description("Suggest a cloud model for an endpoint URL (JSON)")
   .requiredOption("--url <url>", "Endpoint base URL")
