@@ -427,17 +427,30 @@ export function connectHarnessMcp(
     if (!existing.mcpServers) {
       existing.mcpServers = {};
     }
-    if (opts.zamPath.endsWith(".js")) {
-      existing.mcpServers.zam = {
-        command: process.execPath,
-        args: [opts.zamPath, "mcp"],
-      };
-    } else {
-      existing.mcpServers.zam = {
-        command: opts.zamPath,
-        args: ["mcp"],
-      };
+    const expected = opts.zamPath.endsWith(".js")
+      ? {
+          command: process.execPath,
+          args: [opts.zamPath, "mcp"],
+        }
+      : {
+          command: opts.zamPath,
+          args: ["mcp"],
+        };
+    const current = existing.mcpServers.zam;
+    if (
+      typeof current === "object" &&
+      current !== null &&
+      !Array.isArray(current)
+    ) {
+      const c = current as Record<string, unknown>;
+      if (
+        c.command === expected.command &&
+        JSON.stringify(c.args) === JSON.stringify(expected.args)
+      ) {
+        alreadyConfigured = true;
+      }
     }
+    existing.mcpServers.zam = expected;
     return JSON.stringify(existing, null, 2);
   };
 
@@ -473,25 +486,7 @@ export function connectHarnessMcp(
     targetPath = join(opts.home, ".gemini", "config", "mcp_config.json");
     hint =
       "Shared config read by Antigravity CLI and IDE (2.0+); older IDE builds read ~/.gemini/antigravity/mcp_config.json instead. Refresh Installed MCP Servers; the first tool call may still require approval.";
-    let existing: McpJsonConfig = {};
-    if (exists(targetPath)) {
-      existing = parseMcpJsonConfig(targetPath, read(targetPath));
-    }
-    if (!existing.mcpServers) {
-      existing.mcpServers = {};
-    }
-    if (opts.zamPath.endsWith(".js")) {
-      existing.mcpServers.zam = {
-        command: process.execPath,
-        args: [opts.zamPath, "mcp"],
-      };
-    } else {
-      existing.mcpServers.zam = {
-        command: opts.zamPath,
-        args: ["mcp"],
-      };
-    }
-    content = JSON.stringify(existing, null, 2);
+    content = mergeMcpServersJson(targetPath);
   } else if (harnessId === "opencode") {
     targetPath = join(opts.home, ".config", "opencode", "opencode.json");
     hint = "OpenCode will load the enabled 'zam' MCP server on next launch.";
@@ -510,11 +505,27 @@ export function connectHarnessMcp(
     const cmd = opts.zamPath.endsWith(".js")
       ? [process.execPath, opts.zamPath, "mcp"]
       : [opts.zamPath, "mcp"];
-    servers.zam = {
+    const expected = {
       type: "local",
       command: cmd,
       enabled: true,
     };
+    const current = servers.zam;
+    if (
+      typeof current === "object" &&
+      current !== null &&
+      !Array.isArray(current)
+    ) {
+      const c = current as Record<string, unknown>;
+      if (
+        c.type === expected.type &&
+        c.enabled === expected.enabled &&
+        JSON.stringify(c.command) === JSON.stringify(expected.command)
+      ) {
+        alreadyConfigured = true;
+      }
+    }
+    servers.zam = expected;
     existing.mcp = servers;
     content = JSON.stringify(existing, null, 2);
   } else if (harnessId === "codex") {
@@ -652,21 +663,36 @@ approval_mode = "prompt"
     if (!existing.mcpServers) {
       existing.mcpServers = {};
     }
-    if (opts.zamPath.endsWith(".js")) {
-      existing.mcpServers.zam = {
-        type: "local",
-        command: process.execPath,
-        args: [opts.zamPath, "mcp"],
-        tools: ["*"],
-      };
-    } else {
-      existing.mcpServers.zam = {
-        type: "local",
-        command: opts.zamPath,
-        args: ["mcp"],
-        tools: ["*"],
-      };
+    const expected = opts.zamPath.endsWith(".js")
+      ? {
+          type: "local",
+          command: process.execPath,
+          args: [opts.zamPath, "mcp"],
+          tools: ["*"],
+        }
+      : {
+          type: "local",
+          command: opts.zamPath,
+          args: ["mcp"],
+          tools: ["*"],
+        };
+    const current = existing.mcpServers.zam;
+    if (
+      typeof current === "object" &&
+      current !== null &&
+      !Array.isArray(current)
+    ) {
+      const c = current as Record<string, unknown>;
+      if (
+        c.type === expected.type &&
+        c.command === expected.command &&
+        JSON.stringify(c.args) === JSON.stringify(expected.args) &&
+        JSON.stringify(c.tools) === JSON.stringify(expected.tools)
+      ) {
+        alreadyConfigured = true;
+      }
     }
+    existing.mcpServers.zam = expected;
     content = JSON.stringify(existing, null, 2);
   }
 
