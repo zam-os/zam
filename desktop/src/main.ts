@@ -1909,11 +1909,52 @@ async function checkDesktopUpdates(): Promise<void> {
   if (button) button.disabled = true;
   try {
     const update = await checkForUpdate();
-    if (status) {
-      status.textContent = update
-        ? tf("update_available", { version: update.version })
-        : t("update_none");
+    if (!update) {
+      if (status) status.textContent = t("update_none");
+      return;
     }
+
+    // Linux ships as .deb/.rpm, which the Tauri updater cannot install in
+    // place — it only supports AppImage. Send the user straight to the new
+    // release's assets instead of attempting (and failing) an auto-install.
+    const os = await invoke<string>("current_os");
+    if (os === "linux") {
+      if (status) {
+        status.textContent = tf("update_available_manual", { version: update.version });
+      }
+      await openUrl(`${ZAM_RELEASES_URL}/tag/v${update.version}`);
+      return;
+    }
+
+    // macOS + Windows: download, install, and relaunch into the new version.
+    let total = 0;
+    let downloaded = 0;
+    await update.downloadAndInstall((event) => {
+      switch (event.event) {
+        case "Started":
+          total = event.data.contentLength ?? 0;
+          if (status) {
+            status.textContent = tf("update_downloading", { version: update.version });
+          }
+          break;
+        case "Progress":
+          downloaded += event.data.chunkLength;
+          if (status && total > 0) {
+            const pct = Math.min(100, Math.round((downloaded / total) * 100));
+            status.textContent = tf("update_progress", {
+              version: update.version,
+              pct: String(pct),
+            });
+          }
+          break;
+        case "Finished":
+          if (status) status.textContent = t("update_installing");
+          break;
+      }
+    });
+
+    if (status) status.textContent = t("update_restarting");
+    await invoke("restart_app");
   } catch (err) {
     if (status) {
       status.textContent = tf("update_failed", { message: errorMessage(err) });

@@ -1339,6 +1339,22 @@ fn open_data_folder(app: tauri::AppHandle) -> Result<(), String> {
         .map_err(|e| format!("Failed to open data folder: {e}"))
 }
 
+/// Host OS ("macos" | "windows" | "linux" | …). The Settings update flow uses
+/// this to decide between in-place auto-install (macOS/Windows) and a manual
+/// download link (Linux ships .deb/.rpm, which the Tauri updater cannot
+/// install in place — it only supports AppImage).
+#[tauri::command]
+fn current_os() -> &'static str {
+    std::env::consts::OS
+}
+
+/// Relaunch the app after an updater install has swapped the bundle on disk.
+/// `restart()` re-execs the current binary and never returns.
+#[tauri::command]
+fn restart_app(app: tauri::AppHandle) {
+    app.restart();
+}
+
 #[tauri::command]
 fn open_terminal_in_dir(dir: String) -> Result<(), String> {
     let path = PathBuf::from(dir);
@@ -1425,7 +1441,9 @@ pub fn run() {
             sample_zam_observer_window,
             snapshot_zam_observer_window,
             open_data_folder,
-            open_terminal_in_dir
+            open_terminal_in_dir,
+            current_os,
+            restart_app
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
