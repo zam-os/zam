@@ -2945,6 +2945,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     setup_backup_failed: "Sicherung fehlgeschlagen: {message}",
     setup_backup_failed_generic: "Sicherung fehlgeschlagen.",
     setup_open_folder_failed: "Datenordner konnte nicht geöffnet werden: {message}",
+    lbl_workspace: "Arbeitsbereich",
     btn_choose_workspace: "+ Arbeitsbereich hinzufügen…",
     btn_open_terminal: "Terminal öffnen",
     terminal_opening: "Terminal wird geöffnet...",
