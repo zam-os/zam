@@ -87,6 +87,28 @@ export function resolveVscodeExecutable(
   return candidates.find((candidate) => exists(candidate)) ?? null;
 }
 
+export interface VscodeCliInvocation {
+  command: string;
+  args: string[];
+  shell: boolean;
+}
+
+/**
+ * Windows refuses to spawn .cmd/.bat shims without a shell (Node's
+ * CVE-2024-27980 hardening throws EINVAL), and with a shell the command
+ * line is concatenated, so paths with spaces must be quoted.
+ */
+export function buildVscodeCliInvocation(
+  command: string,
+  args: string[],
+  platform: NodeJS.Platform = process.platform,
+): VscodeCliInvocation {
+  const needsShell = platform === "win32" && /\.(cmd|bat)$/i.test(command);
+  if (!needsShell) return { command, args, shell: false };
+  const quote = (value: string) => `"${value}"`;
+  return { command: quote(command), args: args.map(quote), shell: true };
+}
+
 function packageVersion(): string {
   const parsed = JSON.parse(
     readFileSync(join(packageRoot, "package.json"), "utf8"),
@@ -155,7 +177,11 @@ export function installVscodeExtension(
   const run =
     options.run ??
     ((command: string, args: string[]) => {
-      execFileSync(command, args, { stdio: "pipe" });
+      const invocation = buildVscodeCliInvocation(command, args);
+      execFileSync(invocation.command, invocation.args, {
+        stdio: "pipe",
+        shell: invocation.shell,
+      });
     });
   run(plan.codePath, ["--install-extension", plan.vsixPath, "--force"]);
 

@@ -9,6 +9,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
+  buildVscodeCliInvocation,
   installVscodeExtension,
   planVscodeExtensionInstall,
   resolveVscodeExecutable,
@@ -32,6 +33,61 @@ function fixture() {
   writeFileSync(vsixPath, "fixture");
   return { root, home, assetsDir, vsixPath };
 }
+
+describe("buildVscodeCliInvocation", () => {
+  it("wraps Windows .cmd shims in a shell with quoted command and args", () => {
+    const invocation = buildVscodeCliInvocation(
+      "C:\\Users\\test\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\code.cmd",
+      ["--install-extension", "C:\\assets\\ZAM Companion.vsix", "--force"],
+      "win32",
+    );
+    expect(invocation).toEqual({
+      command:
+        '"C:\\Users\\test\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\code.cmd"',
+      args: [
+        '"--install-extension"',
+        '"C:\\assets\\ZAM Companion.vsix"',
+        '"--force"',
+      ],
+      shell: true,
+    });
+  });
+
+  it("matches .CMD and .bat case-insensitively", () => {
+    expect(
+      buildVscodeCliInvocation("C:\\bin\\code.CMD", [], "win32").shell,
+    ).toBe(true);
+    expect(buildVscodeCliInvocation("C:\\bin\\code.BAT", [], "win32").shell).toBe(
+      true,
+    );
+  });
+
+  it("spawns Windows .exe targets directly without a shell", () => {
+    const invocation = buildVscodeCliInvocation(
+      "C:\\bin\\code.exe",
+      ["--version"],
+      "win32",
+    );
+    expect(invocation).toEqual({
+      command: "C:\\bin\\code.exe",
+      args: ["--version"],
+      shell: false,
+    });
+  });
+
+  it("spawns directly on non-Windows platforms", () => {
+    const invocation = buildVscodeCliInvocation(
+      "/usr/local/bin/code",
+      ["--install-extension", "/tmp/a.vsix"],
+      "linux",
+    );
+    expect(invocation).toEqual({
+      command: "/usr/local/bin/code",
+      args: ["--install-extension", "/tmp/a.vsix"],
+      shell: false,
+    });
+  });
+});
 
 describe("VS Code Companion installation", () => {
   it("resolves the standard macOS CLI when code is not on PATH", () => {
