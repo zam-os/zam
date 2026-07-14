@@ -556,6 +556,33 @@ describe("connectHarnessMcp", () => {
     });
   });
 
+  it("treats an empty stub file as a fresh config", () => {
+    // VS Code auto-creates mcp.json as a single newline on first launch; that
+    // empty stub must be treated as {}, not rejected as invalid JSON.
+    mockFiles["/home/user/.config/Code/User/mcp.json"] = "\n";
+    const res = connectHarnessMcp("vscode", {
+      ...mockDeps,
+      platform: "linux",
+    });
+    expect(JSON.parse(res.content)).toEqual({
+      servers: {
+        zam: { command: "/usr/local/bin/zam", args: ["mcp"] },
+      },
+      inputs: [],
+    });
+    expect(res.alreadyConfigured).toBe(false);
+  });
+
+  it("treats a whitespace-only stub as an empty object", () => {
+    mockFiles["/work/.mcp.json"] = "   \n\t\n";
+    const res = connectHarnessMcp("claude-code", mockDeps);
+    expect(JSON.parse(res.content)).toEqual({
+      mcpServers: {
+        zam: { command: "/usr/local/bin/zam", args: ["mcp"] },
+      },
+    });
+  });
+
   it("refuses to overwrite malformed JSON configuration", () => {
     mockFiles["/work/.mcp.json"] = "{ definitely not JSON";
 
