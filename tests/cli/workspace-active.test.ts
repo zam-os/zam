@@ -8,7 +8,9 @@ import {
   getConfiguredWorkspaces,
   getSetting,
   openDatabase,
+  setActiveWorkspaceId,
   setSetting,
+  upsertConfiguredWorkspace,
 } from "../../src/kernel/index.js";
 
 const tempDirs: string[] = [];
@@ -29,6 +31,43 @@ afterEach(() => {
   for (const dir of tempDirs.splice(0)) {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+describe("active workspace without a database", () => {
+  it("resolves the configured active workspace when db is null", async () => {
+    const root = tempDir();
+    const workspaceDir = join(root, "workspace");
+    mkdirSync(workspaceDir, { recursive: true });
+    process.env.ZAM_CONFIG_PATH = join(root, "config.json");
+    upsertConfiguredWorkspace({
+      id: "w1",
+      kind: "personal",
+      path: workspaceDir,
+    });
+    setActiveWorkspaceId("w1");
+
+    const active = await ensureActiveWorkspace(null);
+
+    expect(active).toMatchObject({ id: "w1", path: workspaceDir });
+    expect(getActiveWorkspaceId()).toBe("w1");
+  });
+
+  it("promotes the first configured workspace when none is active and db is null", async () => {
+    const root = tempDir();
+    const workspaceDir = join(root, "workspace");
+    mkdirSync(workspaceDir, { recursive: true });
+    process.env.ZAM_CONFIG_PATH = join(root, "config.json");
+    upsertConfiguredWorkspace({
+      id: "w1",
+      kind: "personal",
+      path: workspaceDir,
+    });
+
+    const active = await ensureActiveWorkspace(null);
+
+    expect(active).toMatchObject({ id: "w1", path: workspaceDir });
+    expect(getActiveWorkspaceId()).toBe("w1");
+  });
 });
 
 describe("active workspace migration", () => {

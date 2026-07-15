@@ -203,7 +203,10 @@ import {
   removeWorkspaceAndResolveActive,
 } from "../workspaces/active.js";
 import { backupDatabaseTo } from "../workspaces/backup.js";
-import { withDb as sharedWithDb } from "./shared/db.js";
+import {
+  withDb as sharedWithDb,
+  withOptionalDb as sharedWithOptionalDb,
+} from "./shared/db.js";
 
 let isServeMode = false;
 let serveStdinPayload: string | undefined;
@@ -271,6 +274,18 @@ async function withDb(
   fn: (db: Database) => void | Promise<void>,
 ): Promise<void> {
   await sharedWithDb(fn, jsonError);
+}
+
+/**
+ * For commands over machine-local state (workspaces, active knowledge
+ * context): when the database cannot be opened — e.g. the configured cloud
+ * database is unreachable — fn receives `null` and degrades gracefully
+ * instead of failing the whole command (issue #162).
+ */
+async function withOptionalDb(
+  fn: (db: Database | null) => void | Promise<void>,
+): Promise<void> {
+  await sharedWithOptionalDb(fn, jsonError);
 }
 
 interface ReviewTargetRow {
@@ -456,7 +471,7 @@ bridgeCommand
   .command("workspace-info")
   .description("Report the workspace dir, its default, and the data dir (JSON)")
   .action(async () => {
-    await withDb(async (db) => {
+    await withOptionalDb(async (db) => {
       const activeWorkspace = await ensureActiveWorkspace(db);
       jsonOut({
         activeWorkspaceId: activeWorkspace.id,
@@ -522,7 +537,7 @@ bridgeCommand
   .command("workspace-list")
   .description("List configured ZAM workspaces (JSON)")
   .action(async () => {
-    await withDb(async (db) => {
+    await withOptionalDb(async (db) => {
       const activeWorkspace = await ensureActiveWorkspace(db);
       const workspaces = getConfiguredWorkspaces();
       jsonOut({
@@ -609,7 +624,7 @@ bridgeCommand
     if (opts.id && !id) jsonError("A non-empty --id is required");
     const kind = parseBridgeWorkspaceKind(opts.kind);
     const skillLinks = wireSkills(path, parseSetupAgents(), { quiet: true });
-    await withDb(async (db) => {
+    await withOptionalDb(async (db) => {
       const workspace = await activateWorkspacePath(db, path, {
         ...(id ? { id } : {}),
         ...(opts.label ? { label: opts.label } : {}),
@@ -637,7 +652,7 @@ bridgeCommand
     const workspace = getConfiguredWorkspaces().find((item) => item.id === id);
     if (!workspace) jsonError(`Workspace "${id}" is not configured`);
 
-    await withDb(async (db) => {
+    await withOptionalDb(async (db) => {
       const { activeWorkspace, workspaces } =
         await removeWorkspaceAndResolveActive(db, id);
       const skillLinks = provisionConfiguredWorkspaces();
@@ -664,7 +679,7 @@ bridgeCommand
     const dir = resolve(raw);
     if (!existsSync(dir)) jsonError(`Workspace path does not exist: ${dir}`);
     const skillLinks = wireSkills(dir, parseSetupAgents(), { quiet: true });
-    await withDb(async (db) => {
+    await withOptionalDb(async (db) => {
       const workspace = await activateWorkspacePath(db, dir);
       jsonOut({
         ok: true,
@@ -5242,8 +5257,19 @@ bridgeCommand
   .command("get-active-knowledge-context")
   .description("Get the active knowledge context name (JSON)")
   .action(async () => {
-    await withDb(async (db) => {
+    await withOptionalDb(async (db) => {
       const configured = getActiveWorkspaceContext();
+      if (!db) {
+        // The name is machine-local; without a database it is reported
+        // as-is instead of hiding the machine's configuration (issue #162).
+        jsonOut({
+          success: true,
+          activeContext: configured ?? null,
+          staleContext: null,
+          validated: false,
+        });
+        return;
+      }
       const active = configured
         ? await getKnowledgeContextByName(db, configured)
         : undefined;
@@ -5262,12 +5288,21 @@ bridgeCommand
   .description("Set the active knowledge context name (JSON)")
   .argument("[name]", "Context name to use (use empty/none to clear)")
   .action(async (name) => {
-    await withDb(async (db) => {
+    await withOptionalDb(async (db) => {
       if (!name || name === "none" || name === "null" || name === "undefined") {
         if (!setActiveWorkspaceContext(undefined)) {
           jsonError("No active workspace configured");
         }
         jsonOut({ success: true, activeContext: null });
+        return;
+      }
+      if (!db) {
+        // Without a database the name cannot be validated; it is still
+        // stored machine-locally so the choice survives an outage (#162).
+        if (!setActiveWorkspaceContext(name)) {
+          jsonError("No active workspace configured");
+        }
+        jsonOut({ success: true, activeContext: name, validated: false });
         return;
       }
       const context = await getKnowledgeContextByName(db, name);
