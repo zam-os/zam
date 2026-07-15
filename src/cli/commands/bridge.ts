@@ -130,6 +130,7 @@ import {
   suggestFoundations as handleSuggestFoundations,
   updateCheck as handleUpdateCheck,
 } from "../bridge-handlers.js";
+import { installCliShim } from "../cli-install.js";
 import {
   CURRICULUM_PROVIDERS,
   type CurriculumBreadcrumb,
@@ -140,6 +141,7 @@ import {
   setLastCurriculumSelection,
   type TopicNode,
 } from "../curriculum/index.js";
+import { performInstallRepair } from "../install-repair.js";
 import { resolveOperationKnowledgeContexts } from "../knowledge-contexts.js";
 import {
   probeModelCapabilities,
@@ -3129,6 +3131,10 @@ bridgeCommand
       const { enabled, url, model, locale } = await getLlmConfig(db);
       const { workspaceDir, activeWorkspaceId, skillLinks } =
         await ensureDesktopWorkspace(db);
+      // Make `zam` usable from a terminal on machines that only have the
+      // desktop app: link the bundled CLI onto the user's PATH. installCliShim
+      // never throws and never shadows an externally installed `zam`.
+      const cli = installCliShim();
       jsonOut({
         userId,
         locale,
@@ -3136,6 +3142,7 @@ bridgeCommand
         activeWorkspaceId,
         workspaceDir,
         skillLinks,
+        cli,
       });
     });
   });
@@ -3155,6 +3162,31 @@ bridgeCommand
         },
       });
     });
+  });
+
+// ── zam bridge install-repair ────────────────────────────────────────────────
+
+bridgeCommand
+  .command("install-repair")
+  .description(
+    "Verify and repair this machine's ZAM installation: CLI shim + PATH, " +
+      "workspace skill links, agent configs and companion extensions (JSON)",
+  )
+  .option(
+    "--if-version-changed",
+    "Only run when the app version differs from the last repaired one; " +
+      "reports skipped:true otherwise",
+  )
+  .action((opts: { ifVersionChanged?: boolean }) => {
+    try {
+      jsonOut(
+        performInstallRepair({
+          ifVersionChanged: Boolean(opts.ifVersionChanged),
+        }),
+      );
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
   });
 
 // ── zam bridge agent-harness-status / agent-connect ─────────────────────────

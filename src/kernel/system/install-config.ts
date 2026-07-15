@@ -32,6 +32,8 @@ export interface InstallConfig {
   workspaces?: WorkspaceConfig[];
   /** Machine-local id of the workspace currently active in this install. */
   activeWorkspaceId?: string;
+  /** App version that last ran the install verify/repair pass on this machine. */
+  lastRepairedVersion?: string;
 }
 
 export interface MachineAgentConfig {
@@ -410,6 +412,26 @@ export function setAgentConnectAutoDone(
   } else if (config.agent) {
     delete config.agent.connectAutoDone;
   }
+  saveInstallConfig(config, path);
+}
+
+/**
+ * Version stamp of the last install verify/repair pass. Machine-local: shims,
+ * PATH entries, and companion extensions are properties of this machine, so
+ * the marker must not travel through a shared database.
+ */
+export function getLastRepairedVersion(
+  path = defaultConfigPath(),
+): string | undefined {
+  return loadInstallConfig(path).lastRepairedVersion;
+}
+
+export function setLastRepairedVersion(
+  version: string,
+  path = defaultConfigPath(),
+): void {
+  const config = loadInstallConfig(path);
+  config.lastRepairedVersion = version;
   saveInstallConfig(config, path);
 }
 

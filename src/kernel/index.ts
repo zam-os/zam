@@ -426,6 +426,7 @@ export {
   getConfiguredWorkspaces,
   getInstallChannel,
   getInstallMode,
+  getLastRepairedVersion,
   getMachineAiConfig,
   getMachineAiModels,
   loadInstallConfig,
@@ -440,6 +441,7 @@ export {
   setAgentConnectAutoDone,
   setInstallChannel,
   setInstallMode,
+  setLastRepairedVersion,
   upsertConfiguredWorkspace,
 } from "./system/install-config.js";
 export type {
