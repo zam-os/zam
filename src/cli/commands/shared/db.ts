@@ -32,6 +32,31 @@ export async function withDb(
 }
 
 /**
+ * Like `withDb`, but for commands whose data is machine-local (workspaces,
+ * active knowledge context): when the database cannot be opened — e.g. the
+ * configured cloud database is unreachable — fn receives `null` and must
+ * degrade gracefully instead of failing the whole command (issue #162).
+ */
+export async function withOptionalDb(
+  fn: (db: Database | null) => void | Promise<void>,
+  onError: ErrorHandler = defaultErrorHandler,
+): Promise<void> {
+  let db: Database | null = null;
+  try {
+    db = await openDatabase();
+  } catch {
+    db = null;
+  }
+  try {
+    await fn(db);
+  } catch (err) {
+    onError((err as Error).message);
+  } finally {
+    await db?.close();
+  }
+}
+
+/**
  * JSON output helper — used by commands that support --json.
  */
 export function jsonOut(data: unknown): void {

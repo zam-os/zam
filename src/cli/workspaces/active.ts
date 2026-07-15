@@ -53,13 +53,21 @@ function findWorkspaceByPath(dir: string): WorkspaceConfig | undefined {
   );
 }
 
-async function clearLegacyWorkspaceDir(db: Database): Promise<void> {
+async function clearLegacyWorkspaceDir(db: Database | null): Promise<void> {
+  if (!db) return;
   await deleteSetting(db, LEGACY_WORKSPACE_DIR_KEY);
 }
 
+/**
+ * Migrate the legacy `personal.workspace_dir` DB setting into the machine-local
+ * workspace registry. Best-effort: without a database connection (`db` null)
+ * the migration is skipped — machine-local workspace state must stay available
+ * when the cloud database is unreachable (issue #162).
+ */
 export async function migrateLegacyWorkspaceDir(
-  db: Database,
+  db: Database | null,
 ): Promise<WorkspaceConfig | undefined> {
+  if (!db) return undefined;
   const legacyDir = await getSetting(db, LEGACY_WORKSPACE_DIR_KEY);
   if (!legacyDir) return undefined;
 
@@ -89,7 +97,7 @@ export async function migrateLegacyWorkspaceDir(
 }
 
 export async function ensureActiveWorkspace(
-  db: Database,
+  db: Database | null,
 ): Promise<WorkspaceConfig> {
   await migrateLegacyWorkspaceDir(db);
 
@@ -120,7 +128,7 @@ export async function ensureActiveWorkspace(
 }
 
 export async function activateWorkspace(
-  db: Database,
+  db: Database | null,
   workspace: WorkspaceConfig,
 ): Promise<WorkspaceConfig> {
   upsertConfiguredWorkspace(workspace);
@@ -130,7 +138,7 @@ export async function activateWorkspace(
 }
 
 export async function activateWorkspacePath(
-  db: Database,
+  db: Database | null,
   dir: string,
   opts: {
     id?: string;
@@ -157,7 +165,7 @@ export async function activateWorkspacePath(
 }
 
 export async function removeWorkspaceAndResolveActive(
-  db: Database,
+  db: Database | null,
   id: string,
 ): Promise<{
   activeWorkspace: WorkspaceConfig;
