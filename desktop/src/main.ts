@@ -1902,6 +1902,96 @@ function toggleAiConfigEditor(): void {
   if (aiConfigEditorOpen) void loadModelRegistry();
 }
 
+interface InstallRepairReport {
+  version: string;
+  skipped: boolean;
+  cli: {
+    status: "installed" | "refreshed" | "ok" | "external" | "skipped" | "error";
+    shimPath: string;
+    onPath: boolean;
+    needsNewTerminal: boolean;
+    detail?: string;
+  } | null;
+  workspaces: {
+    provisioned: number;
+    missing: number;
+    relinked: number;
+    error?: string;
+  } | null;
+  agents: {
+    success: boolean;
+    detected: string[];
+    connected: number;
+    companion: string | null;
+    errors: string[];
+  } | null;
+}
+
+function installRepairSummary(report: InstallRepairReport): string {
+  const parts: string[] = [];
+
+  const cli = report.cli;
+  if (cli) {
+    if (cli.status === "error") {
+      parts.push(tf("repair_cli_error", { detail: cli.detail ?? "" }));
+    } else if (cli.needsNewTerminal) {
+      parts.push(t("repair_cli_new_terminal"));
+    } else if (cli.status === "installed" || cli.status === "refreshed") {
+      parts.push(t("repair_cli_fixed"));
+    } else {
+      parts.push(t("repair_cli_ok"));
+    }
+  }
+
+  const workspaces = report.workspaces;
+  if (workspaces) {
+    if (workspaces.error) {
+      parts.push(tf("repair_skills_error", { detail: workspaces.error }));
+    } else if (workspaces.relinked > 0) {
+      parts.push(tf("repair_skills_fixed", { n: String(workspaces.relinked) }));
+    } else {
+      parts.push(t("repair_skills_ok"));
+    }
+  }
+
+  const agents = report.agents;
+  if (agents) {
+    if (agents.errors.length > 0) {
+      parts.push(tf("repair_agents_error", { detail: agents.errors.join("; ") }));
+    } else if (agents.companion === "installed" || agents.companion === "updated") {
+      parts.push(t("repair_companion_updated"));
+    } else {
+      parts.push(t("repair_agents_ok"));
+    }
+  }
+
+  return tf("repair_done", { details: parts.join(" · ") });
+}
+
+/** Run the bridge verify/repair pass and return a localized one-line summary. */
+async function repairInstallation(): Promise<string> {
+  try {
+    const report = await runBridge<InstallRepairReport>("install-repair");
+    return installRepairSummary(report);
+  } catch (err) {
+    return tf("repair_failed", { message: errorMessage(err) });
+  }
+}
+
+/**
+ * Post-update (and first-run) self-repair: refresh the CLI shim, workspace
+ * skill links, and the ZAM Companion extensions exactly once per app version.
+ * Fire-and-forget on startup so an auto-update also updates the Companion in
+ * VS Code after the restart.
+ */
+function repairInstallationOnVersionChange(): void {
+  void runBridge<InstallRepairReport>("install-repair", [
+    "--if-version-changed",
+  ]).catch((err) => {
+    console.warn("install-repair on startup failed:", err);
+  });
+}
+
 async function checkDesktopUpdates(): Promise<void> {
   const status = document.getElementById("update-status");
   const button = document.getElementById("btn-check-updates") as HTMLButtonElement | null;
@@ -1910,7 +2000,12 @@ async function checkDesktopUpdates(): Promise<void> {
   try {
     const update = await checkForUpdate();
     if (!update) {
-      if (status) status.textContent = t("update_none");
+      // Already on the latest version: use the click to verify and repair the
+      // rest of the installation (CLI shim + PATH, workspace skill links,
+      // agent configs, ZAM Companion) instead of just saying "up to date".
+      if (status) status.textContent = t("update_none_verifying");
+      const summary = await repairInstallation();
+      if (status) status.textContent = summary;
       return;
     }
 
@@ -4167,6 +4262,7 @@ window.addEventListener("DOMContentLoaded", () => {
   // Load initial dashboard state
   loadDashboard();
   void loadAppVersion();
+  repairInstallationOnVersionChange();
 
   // The manual UI Observer is a developer-only affordance; reveal it only when
   // the dev key is set (see devObserverEnabled).
