@@ -358,6 +358,11 @@ interface McpJsonConfig {
 }
 
 function parseMcpJsonConfig(path: string, content: string): McpJsonConfig {
+  // Editors (e.g. VS Code) auto-create the config as an empty stub — often a
+  // lone newline. Treat a blank file as {} so the connect proceeds instead of
+  // aborting on "Unexpected end of JSON input"; genuine garbage still throws.
+  if (content.trim() === "") return {};
+
   let parsed: unknown;
   try {
     parsed = JSON.parse(content);
