@@ -181,6 +181,28 @@ function loadLibsql(): LibsqlConstructor {
   }
 }
 
+const TRANSIENT_REMOTE_ERROR_PATTERNS = [
+  /status=5\d\d/i,
+  /websocket/i,
+  /stream closed/i,
+  /connection (?:closed|reset|refused)/i,
+  /fetch failed/i,
+  /\b(?:ETIMEDOUT|ENOTFOUND|ECONNREFUSED|ECONNRESET|EAI_AGAIN|EPIPE)\b/,
+];
+
+/**
+ * True for server/network failures that say nothing about the SQL itself —
+ * e.g. Turso's intermittent `Hrana(Api("status=502 ...upstream forward
+ * failed"))` on the websocket path. These justify retrying the connection
+ * over the HTTP provider (issue #163); real SQL errors never match.
+ */
+export function isTransientRemoteDatabaseError(err: unknown): boolean {
+  const message = err instanceof Error ? err.message : "";
+  return TRANSIENT_REMOTE_ERROR_PATTERNS.some((pattern) =>
+    pattern.test(message),
+  );
+}
+
 /**
  * Open (or create) the ZAM database.
  * Uses configured Turso credentials for the default database when present.
@@ -196,14 +218,7 @@ export async function openDatabase(
     options.initialize === true ||
     (!isRemote && !isEmbeddedReplica && !existsSync(dbPath));
 
-  if (provider === "remote") {
-    const url = isRemote ? dbPath : options.syncUrl;
-    if (!url) {
-      throw new Error(
-        "The remote database provider is selected but no Turso URL is " +
-          "configured. Run: zam connector setup turso",
-      );
-    }
+  const openViaHttpProvider = async (url: string): Promise<Database> => {
     const db = openRemoteDatabase({
       url,
       authToken: configuredCloud?.token ?? options.authToken,
@@ -213,6 +228,17 @@ export async function openDatabase(
     }
     await runMigrations(db);
     return db;
+  };
+
+  if (provider === "remote") {
+    const url = isRemote ? dbPath : options.syncUrl;
+    if (!url) {
+      throw new Error(
+        "The remote database provider is selected but no Turso URL is " +
+          "configured. Run: zam connector setup turso",
+      );
+    }
+    return openViaHttpProvider(url);
   }
 
   if (shouldInitialize && !isRemote) {
@@ -282,17 +308,8 @@ export async function openDatabase(
       // remote database we transparently fall back to the HTTP provider, which
       // needs no native bindings. Embedded replicas require the native driver,
       // so those still surface the original error.
-      const fallbackUrl = isRemote ? dbPath : options.syncUrl;
-      if (isRemote && !isEmbeddedReplica && fallbackUrl) {
-        const db = openRemoteDatabase({
-          url: fallbackUrl,
-          authToken: configuredCloud?.token ?? options.authToken,
-        });
-        if (options.initialize) {
-          await db.exec(SCHEMA);
-        }
-        await runMigrations(db);
-        return db;
+      if (isRemote && !isEmbeddedReplica) {
+        return openViaHttpProvider(dbPath);
       }
       throw nativeErr;
     }
@@ -300,31 +317,50 @@ export async function openDatabase(
     driver = openLocalSqlite(dbPath);
   }
 
-  // Enable WAL mode and foreign keys for local SQLite.
-  // Remote Turso databases and embedded replicas manage their own journaling.
-  if (!isRemote && !isEmbeddedReplica) {
-    driver.pragma("journal_mode = WAL");
+  const finishOpen = async (): Promise<Database> => {
+    // Enable WAL mode and foreign keys for local SQLite.
+    // Remote Turso databases and embedded replicas manage their own journaling.
+    if (!isRemote && !isEmbeddedReplica) {
+      driver.pragma("journal_mode = WAL");
+    }
+    driver.pragma("foreign_keys = ON");
+    if (!isRemote) {
+      driver.pragma("busy_timeout = 5000");
+    }
+
+    const db = wrapSyncDatabase(driver);
+
+    // For embedded replicas: sync from cloud FIRST so the local file has the
+    // primary's schema before we try to run migrations or create tables.
+    if (isEmbeddedReplica) {
+      await db.sync?.();
+    }
+
+    if (shouldInitialize) {
+      await db.exec(SCHEMA);
+    }
+
+    await runMigrations(db);
+
+    return db;
+  };
+
+  if (isRemote && !isEmbeddedReplica) {
+    try {
+      return await finishOpen();
+    } catch (err) {
+      // Autorepair (issue #163): the native websocket path can hit transient
+      // Turso failures (e.g. status=502 "upstream forward failed") that the
+      // HTTP path does not share. Retry over the HTTP provider before
+      // surfacing the error.
+      if (isTransientRemoteDatabaseError(err)) {
+        return openViaHttpProvider(dbPath);
+      }
+      throw err;
+    }
   }
-  driver.pragma("foreign_keys = ON");
-  if (!isRemote) {
-    driver.pragma("busy_timeout = 5000");
-  }
 
-  const db = wrapSyncDatabase(driver);
-
-  // For embedded replicas: sync from cloud FIRST so the local file has the
-  // primary's schema before we try to run migrations or create tables.
-  if (isEmbeddedReplica) {
-    await db.sync?.();
-  }
-
-  if (shouldInitialize) {
-    await db.exec(SCHEMA);
-  }
-
-  await runMigrations(db);
-
-  return db;
+  return finishOpen();
 }
 
 function resolveProvider(
