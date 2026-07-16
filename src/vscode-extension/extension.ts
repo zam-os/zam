@@ -8,6 +8,8 @@ import type { CallToolResult, Tool } from "@modelcontextprotocol/sdk/types.js";
 import * as vscode from "vscode";
 import {
   getCompanionSelectedAntigravityModelId,
+  getCompanionSelectedAntigravityEvaluatorId,
+  getCompanionSelectedVscodeEvaluatorId,
   getCompanionSelectedEvaluatorId,
   getCompanionSelectedVscodeModelId,
   setCompanionSelectedAntigravityModelId,
@@ -25,7 +27,7 @@ import {
   assertSamplingRoutableToVscodeLm,
   enrichCallToolResultForVscodeLm,
 } from "./companion-dispatch.js";
-import type { EvaluatorAdapter } from "./companion-evaluator.js";
+import { type EvaluatorAdapter, EvaluatorUnavailableError } from "./companion-evaluator.js";
 import {
   buildOpeningArguments,
   COMPANION_APPS,
@@ -178,8 +180,9 @@ class ZamMcpHost {
             `[zam mcp] ${(Buffer.isBuffer(chunk) ? chunk.toString("utf8") : chunk).trimEnd()}`,
           );
         });
+        const isAntigravity = vscode.env?.appName?.toLowerCase().includes("antigravity") ?? false;
         const client = new Client({
-          name: "vscode-zam-companion",
+          name: isAntigravity ? "antigravity-zam-companion" : "vscode-zam-companion",
           version: "__ZAM_VERSION__",
         });
         await client.connect(transport);
@@ -415,7 +418,41 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
    */
   private async sample(payload: unknown): Promise<unknown> {
     const request = normalizeSamplingRequest(payload);
-    assertSamplingRoutableToVscodeLm(getCompanionSelectedEvaluatorId());
+    const isAntigravity = vscode.env?.appName?.toLowerCase().includes("antigravity") ?? false;
+    const activeEvaluatorId = isAntigravity
+      ? (getCompanionSelectedAntigravityEvaluatorId() ?? getCompanionSelectedEvaluatorId())
+      : (getCompanionSelectedVscodeEvaluatorId() ?? getCompanionSelectedEvaluatorId());
+    assertSamplingRoutableToVscodeLm(activeEvaluatorId);
+
+    const availability = await vscodeLmAdapter.availability();
+    if (!availability.available) {
+      try {
+        const client = await this.mcp.client();
+        const result = (await client.callTool({
+          name: "zam_companion_sample",
+          arguments: { messages: request.messages },
+        })) as CallToolResult;
+
+        if (result.isError) {
+          throw new Error(
+            result.content?.find((item) => item.type === "text" && "text" in item)?.text ??
+              "Fallback LLM sampling failed",
+          );
+        }
+
+        const responseJson = JSON.parse(
+          result.content?.find((item) => item.type === "text" && "text" in item)?.text ?? "{}",
+        );
+        return createSamplingResult(responseJson.model, responseJson.text);
+      } catch (fallbackError) {
+        const errMsg = fallbackError instanceof Error ? fallbackError.message : String(fallbackError);
+        throw new EvaluatorUnavailableError(
+          "vscode-lm",
+          `VS Code language models are unavailable: ${availability.reason}. Fallback ZAM LLM also failed: ${errMsg}`,
+        );
+      }
+    }
+
     const result = await vscodeLmAdapter.evaluateAnswer(request);
     return createSamplingResult(result.model, result.text);
   }

@@ -89,6 +89,10 @@ const KNOWN_NATIVE_HOSTS: Record<
     normalizedId: "vscode-companion",
     label: "VS Code Companion",
   },
+  "antigravity-zam-companion": {
+    normalizedId: "antigravity-companion",
+    label: "Antigravity Companion",
+  },
 };
 
 /**

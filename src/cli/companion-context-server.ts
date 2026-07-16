@@ -255,10 +255,14 @@ async function assembleCompanionContext(
   // section on its own).
   const companionConfig = getMachineCompanionConfig(input.configPath);
   const persistedUserId = companionConfig.selectedUserId;
+  const isAntigravity = input.nativeHost?.normalizedId === "antigravity-companion";
+  const persistedEvaluatorIdRaw = isAntigravity
+    ? (companionConfig.selectedAntigravityEvaluatorId ?? companionConfig.selectedEvaluatorId)
+    : (companionConfig.selectedVscodeEvaluatorId ?? companionConfig.selectedEvaluatorId);
   const persistedEvaluatorId: EvaluatorId | undefined = isEvaluatorId(
-    companionConfig.selectedEvaluatorId,
+    persistedEvaluatorIdRaw,
   )
-    ? companionConfig.selectedEvaluatorId
+    ? persistedEvaluatorIdRaw
     : undefined;
   const collapsedRaw = companionConfig.collapsed ?? {};
 
@@ -413,7 +417,13 @@ export async function writeCompanionContext(
       fallback: undefined,
     });
     if (isPersistableSelection(selection) && selection.value) {
-      update.selectedEvaluatorId = selection.value;
+      const nativeHost = normalizeNativeHostIdentity(options.clientInfo);
+      const isAntigravity = nativeHost?.normalizedId === "antigravity-companion";
+      if (isAntigravity) {
+        update.selectedAntigravityEvaluatorId = selection.value;
+      } else {
+        update.selectedVscodeEvaluatorId = selection.value;
+      }
       reloadRequired = true;
     }
   }

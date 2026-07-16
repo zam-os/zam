@@ -66,8 +66,12 @@ export interface MachineAgentConfig {
 export interface MachineCompanionConfig {
   /** Persisted Companion learner selection — never the shared `user.id`. */
   selectedUserId?: string;
-  /** Persisted Companion evaluator selection. */
+  /** Persisted Companion evaluator selection (generic/fallback). */
   selectedEvaluatorId?: string;
+  /** Persisted explicit VS Code evaluator selection. */
+  selectedVscodeEvaluatorId?: string;
+  /** Persisted explicit Antigravity evaluator selection. */
+  selectedAntigravityEvaluatorId?: string;
   /**
    * Persisted explicit VS Code language-model choice for the `vscode-lm`
    * evaluator adapter (0.11.0 Phase 3) — the model's `vscode.lm` id
@@ -509,8 +513,17 @@ export function getMachineCompanionConfig(
   if (typeof raw.selectedEvaluatorId === "string") {
     result.selectedEvaluatorId = raw.selectedEvaluatorId;
   }
+  if (typeof raw.selectedVscodeEvaluatorId === "string") {
+    result.selectedVscodeEvaluatorId = raw.selectedVscodeEvaluatorId;
+  }
+  if (typeof raw.selectedAntigravityEvaluatorId === "string") {
+    result.selectedAntigravityEvaluatorId = raw.selectedAntigravityEvaluatorId;
+  }
   if (typeof raw.selectedVscodeModelId === "string") {
     result.selectedVscodeModelId = raw.selectedVscodeModelId;
+  }
+  if (typeof raw.selectedAntigravityModelId === "string") {
+    result.selectedAntigravityModelId = raw.selectedAntigravityModelId;
   }
   if (
     raw.collapsed &&
@@ -547,6 +560,10 @@ export function saveMachineCompanionConfig(
 export interface MachineCompanionConfigUpdate {
   selectedUserId?: string;
   selectedEvaluatorId?: string;
+  selectedVscodeEvaluatorId?: string;
+  selectedAntigravityEvaluatorId?: string;
+  selectedVscodeModelId?: string;
+  selectedAntigravityModelId?: string;
   collapsed?: { surface: string; value: boolean };
 }
 
@@ -576,6 +593,34 @@ export function updateMachineCompanionConfig(
       companion.selectedEvaluatorId = update.selectedEvaluatorId;
     } else {
       delete companion.selectedEvaluatorId;
+    }
+  }
+  if ("selectedVscodeEvaluatorId" in update) {
+    if (update.selectedVscodeEvaluatorId) {
+      companion.selectedVscodeEvaluatorId = update.selectedVscodeEvaluatorId;
+    } else {
+      delete companion.selectedVscodeEvaluatorId;
+    }
+  }
+  if ("selectedAntigravityEvaluatorId" in update) {
+    if (update.selectedAntigravityEvaluatorId) {
+      companion.selectedAntigravityEvaluatorId = update.selectedAntigravityEvaluatorId;
+    } else {
+      delete companion.selectedAntigravityEvaluatorId;
+    }
+  }
+  if ("selectedVscodeModelId" in update) {
+    if (update.selectedVscodeModelId) {
+      companion.selectedVscodeModelId = update.selectedVscodeModelId;
+    } else {
+      delete companion.selectedVscodeModelId;
+    }
+  }
+  if ("selectedAntigravityModelId" in update) {
+    if (update.selectedAntigravityModelId) {
+      companion.selectedAntigravityModelId = update.selectedAntigravityModelId;
+    } else {
+      delete companion.selectedAntigravityModelId;
     }
   }
   if (update.collapsed) {
@@ -624,6 +669,44 @@ export function setCompanionSelectedEvaluatorId(
     companion.selectedEvaluatorId = evaluatorId;
   } else {
     delete companion.selectedEvaluatorId;
+  }
+  saveMachineCompanionConfig(companion, path);
+}
+
+export function getCompanionSelectedVscodeEvaluatorId(
+  path = defaultConfigPath(),
+): string | undefined {
+  return getMachineCompanionConfig(path).selectedVscodeEvaluatorId;
+}
+
+export function setCompanionSelectedVscodeEvaluatorId(
+  evaluatorId: string | undefined,
+  path = defaultConfigPath(),
+): void {
+  const companion = getMachineCompanionConfig(path);
+  if (evaluatorId) {
+    companion.selectedVscodeEvaluatorId = evaluatorId;
+  } else {
+    delete companion.selectedVscodeEvaluatorId;
+  }
+  saveMachineCompanionConfig(companion, path);
+}
+
+export function getCompanionSelectedAntigravityEvaluatorId(
+  path = defaultConfigPath(),
+): string | undefined {
+  return getMachineCompanionConfig(path).selectedAntigravityEvaluatorId;
+}
+
+export function setCompanionSelectedAntigravityEvaluatorId(
+  evaluatorId: string | undefined,
+  path = defaultConfigPath(),
+): void {
+  const companion = getMachineCompanionConfig(path);
+  if (evaluatorId) {
+    companion.selectedAntigravityEvaluatorId = evaluatorId;
+  } else {
+    delete companion.selectedAntigravityEvaluatorId;
   }
   saveMachineCompanionConfig(companion, path);
 }
