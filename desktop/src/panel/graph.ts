@@ -463,8 +463,20 @@ function start(): void {
 app.ontoolresult = (params) => {
   const structured = (params.structuredContent ?? {}) as OpenGraphResult;
   panelVersion = structured.version;
+  // Same late-tool-result race as recall.ts: the 800ms fallback below may
+  // have started against the previous user/focus. The tool result's context
+  // is authoritative — restart the session when it names a different one.
+  const previousUser = currentUser;
+  const previousFocus = initialFocus;
   currentUser = structured.user ?? null;
   initialFocus = structured.focus ?? null;
+  if (
+    started &&
+    (previousUser !== currentUser || previousFocus !== initialFocus)
+  ) {
+    started = false;
+    history = [];
+  }
   clearConnectionNotice();
 
   const contextState =

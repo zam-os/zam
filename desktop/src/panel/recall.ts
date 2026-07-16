@@ -787,9 +787,28 @@ function start(): void {
 app.ontoolresult = (params) => {
   const structured = (params.structuredContent ?? {}) as OpenRecallResult;
   panelVersion = structured.version;
+  // A tool result may arrive AFTER the 800ms grace-period fallback below has
+  // already started a session against the previous context (observed live:
+  // an agent-opened Recall for the test profile kept showing the default
+  // learner's queue while the User pill switched — a rating would then pair
+  // the new user with the old user's card id). The authoritative context in
+  // the tool result must win: if a session is running for a different
+  // user/domain, discard it and reload instead of merely relabeling the bar.
+  const previousUser = currentUser;
+  const previousDomain = focusDomain;
   currentUser = structured.user ?? null;
   focusDomain = structured.domain ?? null;
   quickMode = deriveQuickMode(structured.companionContext, structured.quickMode === true);
+  const contextChanged =
+    started && (previousUser !== currentUser || previousDomain !== focusDomain);
+  if (contextChanged) {
+    started = false;
+    finished = false;
+    cards = [];
+    index = 0;
+    tally.done = 0;
+    tally.ratings = { 1: 0, 2: 0, 3: 0, 4: 0 };
+  }
   clearConnectionNotice();
 
   const contextState =
