@@ -174,6 +174,23 @@ Goal: prove the labels and routing match reality before versioning.
   (changes apply to other surfaces on next open/reload, never mid-card) and a
   definition of “session-scoped” (one mounted app instance).
 
+## Deferred review findings (whole-branch review, 2026-07-16)
+
+The Fable 5 whole-branch review confirmed 13 findings; all were fixed in two
+waves except three deliberately deferred:
+
+- **Wire-shape redundancy**: `EvaluatorRoute.selected`/`active` duplicate the
+  top-level `selectedEvaluatorId`/`activeEvaluatorId` and have no production
+  reader — dropping them is a wire-contract simplification best done before
+  any external consumer appears.
+- **`harnessOverride` keyspace**: the override is looked up by MCP clientInfo
+  name (`vscode-zam-companion`), but the tool schema says "harness id" — a
+  future caller passing `vscode-companion` or a ConnectHarnessId silently gets
+  non-Companion treatment. Accept normalized ids or document the exact
+  keyspace before building launch presets.
+- **Adapter model re-enumeration per turn**: real but negligible cost, and
+  caching would risk stale-model dishonesty — intentionally not changed.
+
 ## Post-0.11.0 follow-up — harness integration
 
 Deferred by owner decision on 2026-07-16. Expected benefits: Recall
