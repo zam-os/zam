@@ -101,6 +101,7 @@ declare module "vscode" {
 
   export const env: {
     openExternal(uri: Uri): Promise<boolean>;
+    appName: string;
   };
 
   export const lm: {

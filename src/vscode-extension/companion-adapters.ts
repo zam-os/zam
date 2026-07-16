@@ -83,6 +83,9 @@ export interface VscodeModelSelection {
 const KNOWN_VENDOR_LABELS: Record<string, string> = {
   copilot: "Copilot",
   copilotcli: "Copilot",
+  antigravity: "Antigravity",
+  gemini: "Gemini",
+  google: "Google",
 };
 
 /** "copilot"/"copilotcli" -> "Copilot"; never returns an empty string. */

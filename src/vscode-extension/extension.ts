@@ -7,8 +7,10 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import type { CallToolResult, Tool } from "@modelcontextprotocol/sdk/types.js";
 import * as vscode from "vscode";
 import {
+  getCompanionSelectedAntigravityModelId,
   getCompanionSelectedEvaluatorId,
   getCompanionSelectedVscodeModelId,
+  setCompanionSelectedAntigravityModelId,
   setCompanionSelectedVscodeModelId,
 } from "../kernel/index.js";
 import {
@@ -41,20 +43,47 @@ import {
  * runtime (ADR 2026-07-16 §Decision 6) — are used to talk to VS Code.
  */
 const vscodeLmSurface: VscodeLmSurface = {
-  selectChatModels: (selector) =>
-    vscode.lm.selectChatModels(selector) as unknown as PromiseLike<
+  selectChatModels: (selector) => {
+    if (!vscode.lm) {
+      return Promise.resolve([]);
+    }
+    return vscode.lm.selectChatModels(selector) as unknown as PromiseLike<
       VscodeChatModelLike[]
-    >,
-  chatMessageUser: (content) => vscode.LanguageModelChatMessage.User(content),
-  chatMessageAssistant: (content) =>
-    vscode.LanguageModelChatMessage.Assistant(content),
+    >;
+  },
+  chatMessageUser: (content) => {
+    if (!vscode.LanguageModelChatMessage) {
+      return { role: "user", content };
+    }
+    return vscode.LanguageModelChatMessage.User(content);
+  },
+  chatMessageAssistant: (content) => {
+    if (!vscode.LanguageModelChatMessage) {
+      return { role: "assistant", content };
+    }
+    return vscode.LanguageModelChatMessage.Assistant(content);
+  },
   createCancellationTokenSource: () => new vscode.CancellationTokenSource(),
 };
 
 /** Persists the explicit VS Code model choice machine-locally (Phase 3). */
 const vscodeModelSelection: VscodeModelSelection = {
-  getSelectedModelId: () => getCompanionSelectedVscodeModelId(),
-  setSelectedModelId: (id) => setCompanionSelectedVscodeModelId(id),
+  getSelectedModelId: () => {
+    const isAntigravity =
+      vscode.env?.appName?.toLowerCase().includes("antigravity") ?? false;
+    return isAntigravity
+      ? getCompanionSelectedAntigravityModelId()
+      : getCompanionSelectedVscodeModelId();
+  },
+  setSelectedModelId: (id) => {
+    const isAntigravity =
+      vscode.env?.appName?.toLowerCase().includes("antigravity") ?? false;
+    if (isAntigravity) {
+      setCompanionSelectedAntigravityModelId(id);
+    } else {
+      setCompanionSelectedVscodeModelId(id);
+    }
+  },
 };
 
 const vscodeLmAdapter: EvaluatorAdapter = createVscodeLmAdapter(

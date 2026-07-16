@@ -79,6 +79,11 @@ export interface MachineCompanionConfig {
    * `selectChatModels` on every call.
    */
   selectedVscodeModelId?: string;
+  /**
+   * Persisted explicit Antigravity model choice for the `vscode-lm`
+   * evaluator adapter (0.11.0 Phase 3) — the model's `vscode.lm` id.
+   */
+  selectedAntigravityModelId?: string;
   /** Collapsed state for the shared context bar, keyed by surface name. */
   collapsed?: Record<string, boolean>;
 }
@@ -639,6 +644,26 @@ export function setCompanionSelectedVscodeModelId(
     companion.selectedVscodeModelId = modelId;
   } else {
     delete companion.selectedVscodeModelId;
+  }
+  saveMachineCompanionConfig(companion, path);
+}
+
+/** The persisted explicit Antigravity model choice for the `vscode-lm` adapter. */
+export function getCompanionSelectedAntigravityModelId(
+  path = defaultConfigPath(),
+): string | undefined {
+  return getMachineCompanionConfig(path).selectedAntigravityModelId;
+}
+
+export function setCompanionSelectedAntigravityModelId(
+  modelId: string | undefined,
+  path = defaultConfigPath(),
+): void {
+  const companion = getMachineCompanionConfig(path);
+  if (modelId) {
+    companion.selectedAntigravityModelId = modelId;
+  } else {
+    delete companion.selectedAntigravityModelId;
   }
   saveMachineCompanionConfig(companion, path);
 }
