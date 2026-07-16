@@ -421,10 +421,10 @@
               <span class="badge bloom-badge" id="bloom-badge">Understand (Bloom 2)</span>
               <span class="badge domain-badge" id="domain-badge">git</span>
               <div class="card-manage-wrap">
-                <button id="btn-card-manage" class="card-manage-btn" type="button" aria-haspopup="true" aria-expanded="false">⋯</button>
-                <div id="study-manage-menu" class="card-manage-menu hidden">
-                  <button id="btn-study-manage-edit" class="card-manage-item" type="button">Edit this card</button>
-                  <button id="btn-study-manage-stop" class="card-manage-item danger" type="button">Stop</button>
+                <button id="btn-card-manage" class="card-manage-btn" type="button" aria-haspopup="menu" aria-controls="study-manage-menu" aria-expanded="false">⋯</button>
+                <div id="study-manage-menu" class="card-manage-menu hidden" role="menu">
+                  <button id="btn-study-manage-edit" class="card-manage-item" type="button" role="menuitem">Edit this card</button>
+                  <button id="btn-study-manage-stop" class="card-manage-item danger" type="button" role="menuitem">Stop</button>
                 </div>
               </div>
             </div>
@@ -450,6 +450,18 @@
               <div id="translation-loading" class="mini-loader hidden">
                 <span class="dots-pulse"></span>
                 <span class="loader-text" id="lbl-translating">Translating dynamically...</span>
+              </div>
+            </div>
+
+            <!-- INLINE CARD EDITOR (visible both before and after reveal) -->
+            <div id="study-inline-editor" class="study-inline-editor hidden">
+              <label class="study-edit-label" for="study-edit-question" id="lbl-study-edit-question">Question</label>
+              <textarea id="study-edit-question" class="editor-textarea" rows="2"></textarea>
+              <label class="study-edit-label" for="study-edit-concept" id="lbl-study-edit-concept">Concept</label>
+              <textarea id="study-edit-concept" class="editor-textarea" rows="4"></textarea>
+              <div class="study-inline-editor-actions">
+                <button id="btn-study-edit-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
+                <button id="btn-study-edit-save" class="btn primary-btn btn-sm" type="button">Save</button>
               </div>
             </div>
 
@@ -496,25 +508,17 @@
                 </p>
               </div>
 
+              <!-- POST-REVEAL CARD MANAGEMENT (stays visible with AI feedback) -->
+              <div class="study-edit-controls">
+                <button id="btn-study-edit" class="btn secondary-btn btn-sm" type="button">Edit this card</button>
+                <button id="btn-study-open-editor" class="btn ghost-btn btn-sm" type="button">Open in full editor →</button>
+              </div>
+
               <!-- CORE REFERENCE ANSWER -->
               <div class="answer-box">
                 <h3 class="box-title" id="lbl-reveal-title">Reference Answer</h3>
                 <div class="reveal-content-list" id="reveal-content-list">
                   <!-- Generated dynamically: Token, Concept, Context, Source -->
-                </div>
-                <div class="study-edit-controls">
-                  <button id="btn-study-edit" class="btn secondary-btn btn-sm" type="button">Edit this card</button>
-                  <button id="btn-study-open-editor" class="btn ghost-btn btn-sm" type="button">Open in full editor →</button>
-                </div>
-                <div id="study-inline-editor" class="study-inline-editor hidden">
-                  <label class="study-edit-label" for="study-edit-question" id="lbl-study-edit-question">Question</label>
-                  <textarea id="study-edit-question" class="editor-textarea" rows="2"></textarea>
-                  <label class="study-edit-label" for="study-edit-concept" id="lbl-study-edit-concept">Concept</label>
-                  <textarea id="study-edit-concept" class="editor-textarea" rows="4"></textarea>
-                  <div class="study-inline-editor-actions">
-                    <button id="btn-study-edit-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
-                    <button id="btn-study-edit-save" class="btn primary-btn btn-sm" type="button">Save</button>
-                  </div>
                 </div>
               </div>
 
@@ -652,7 +656,7 @@
 
       <!-- STUDY-VIEW STOP CONFIRM MODAL (ADR 2026-07-16b) -->
       <div id="study-confirm-overlay" class="modal-overlay">
-        <div class="modal-box">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="study-confirm-title" aria-describedby="study-confirm-desc">
           <div class="modal-header">
             <h3 id="study-confirm-title">Stop learning this card?</h3>
           </div>

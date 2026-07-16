@@ -1,10 +1,11 @@
 # In-Recall Card Management: Stop, Fix, and Remove
 
-- **Status:** Proposed (2026-07-16)
+- **Status:** Accepted (2026-07-16); implementation pending merge in PR #170
 - **Target:** ZAM 0.12.0 (proposed)
 - **Date:** 2026-07-16
 - **Decider:** Thomas (project owner)
-- **Review:** Pending Fable 5 review per the ADR-driven workflow.
+- **Review:** Independent Codex review completed 2026-07-16; corrective pass
+  applied on the feature branch.
 
 **Related:**
 [2026-05-31b](2026-05-31b-tauri-active-recall-studio.md) ·
@@ -103,9 +104,10 @@ than the post-reveal controls: the reveal is the intended decision point.
 | **Edit this card (inline)** | `personal-card-update --slug <slug> --question … --concept … …` | Same command the Content Editor uses; persists question and concept edits. |
 | **Open in full editor →** | in-app navigation | `switchView("learning-content-view")` and select this card by slug; pauses the review session. |
 
-Both destructive paths reuse the existing confirmation dialog pattern
-(`showRemovalConfirmation` in `desktop/src/learning-content.ts`, extracted for
-reuse). Surfacing the impact preview before a delete is what makes the
+Both destructive paths follow the existing confirmation dialog pattern from
+`showRemovalConfirmation` in `desktop/src/learning-content.ts`, using a
+study-view-owned dialog so the two surfaces keep independent state. Surfacing
+the impact preview before a delete is what makes the
 "decide with more information" principle concrete: the learner sees how many
 review logs or dependents a removal touches before committing. **Outdated —
 remove it** is permanent by decision (below); the preview is its safeguard.
@@ -114,13 +116,11 @@ remove it** is permanent by decision (below); the preview is its safeguard.
 
 Inline edit is the primary fix path. Selecting **✎ Edit this card** makes the
 question text and reference answer editable in place, with Save / Cancel. Save
-calls `personal-card-update`. Because that command overwrites the token fields it
-receives, the study view must send the card's *full current field set* (title,
-concept, domain, bloom, mode, context, question, source link), not only the two
-edited fields, to avoid clobbering unshown fields with blanks. The study view
-must therefore have those values available — either already present on
-`BridgeCard` or fetched for the active card before opening the inline editor.
-This is the one implementation risk worth calling out for the plan.
+calls `personal-card-update`. That command and the underlying `updateToken` API
+are partial updates: only supplied flags change. The study view therefore sends
+only `--slug`, `--question`, and `--concept`, preserving title, domain, Bloom
+level, mode, context, and source link without copying potentially stale values
+back over them.
 
 After a successful save the learner stays on the card, the reference answer
 refreshes, and they rate `1`–`4` normally.
@@ -158,9 +158,8 @@ Pause & Exit model.
   and rejected as the default for this gesture; it remains available through the
   full editor / CLI if a recoverable path is later wanted.
 - **Two edit paths (inline + full editor)** add a little surface but keep quick
-  fixes fast while preserving access to structural edits. Inline edit inherits the
-  `personal-card-update` full-field-overwrite behavior, which the plan must handle
-  by sending the complete current field set.
+  fixes fast while preserving access to structural edits. Inline edit relies on
+  the partial-update contract and sends only the two editable fields.
 - **The MCP Apps recall panel** (`desktop/src/panel/recall.ts`) gains none of this
   yet. That surface is intentionally out of scope here; mirroring the controls
   there is a candidate follow-up, noted so the omission is a decision rather than
@@ -177,8 +176,9 @@ Pause & Exit model.
   cover.
 - Add desktop-level coverage for the new study-view wiring — that each control
   invokes the correct bridge command with the active card's slug, that the
-  destructive paths require a confirm step, and that inline edit sends the full
-  field set — alongside the existing study-view desktop tests.
+  destructive paths require a confirm step, that inline edit sends only its two
+  editable fields, and that editing/confirmation states suppress rating
+  shortcuts — alongside the existing study-view desktop tests.
 
 ## Open questions
 

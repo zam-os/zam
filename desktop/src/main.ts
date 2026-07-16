@@ -39,6 +39,7 @@ import {
   deleteConfirmCommand,
   deletePreviewCommand,
   editCommand,
+  ratingShortcutForKey,
   removeConfirmCommand,
   removePreviewCommand,
 } from "./study-card-actions.js";
@@ -222,7 +223,8 @@ let questionWaitTimeoutId: number | null = null;
 let questionRequestId = 0;
 let evaluationRequestId = 0;
 let revealInProgress = false;
-let ratingSubmitInProgress = false;
+let reviewActionInProgress = false;
+let cardLoadInProgress = false;
 // Post-reveal discussion thread (ADR 2026-07-06b) — ephemeral, App-only.
 const discussion = createDiscussionState();
 let activeUserAnswer = "";
@@ -2788,6 +2790,11 @@ function switchView(viewId: AppView) {
     if (revealInProgress) cancelActiveBridgeRequest();
     revealInProgress = false;
     finishAiWait();
+    closeManageMenu();
+    closeInlineEditor();
+    if (isStudyConfirmOpen()) hideStudyConfirm();
+    activeCard = null;
+    updateReviewControlState();
   }
   document.querySelectorAll(".view").forEach((el) => el.classList.remove("active"));
   document.getElementById(viewId)?.classList.add("active");
@@ -3765,6 +3772,10 @@ async function loadNextCard(
   options: { dynamicQuestion?: boolean } = {},
 ) {
   const requestId = ++questionRequestId;
+  cardLoadInProgress = true;
+  activeCard = null;
+  activePromptQuestion = "";
+  updateReviewControlState();
   try {
     evaluationRequestId++;
     revealInProgress = false;
@@ -3848,6 +3859,11 @@ async function loadNextCard(
     if (requestId !== questionRequestId) return;
     finishQuestionWait();
     console.error("Failed to load next card:", err);
+  } finally {
+    if (requestId === questionRequestId) {
+      cardLoadInProgress = false;
+      updateReviewControlState();
+    }
   }
 }
 
@@ -4214,30 +4230,104 @@ function skipAiWaitingAndReveal() {
 }
 
 // ── RATING ACTION SUBMIT ─────────────────────────────────────────────────
+const REVIEW_ACTION_CONTROL_IDS = [
+  "btn-card-manage",
+  "btn-study-manage-edit",
+  "btn-study-manage-stop",
+  "btn-study-stop",
+  "btn-study-edit",
+  "btn-study-open-editor",
+  "btn-study-edit-save",
+  "btn-study-edit-cancel",
+  "btn-study-confirm-advanced",
+  "btn-study-confirm-ok",
+  "btn-study-confirm-cancel",
+] as const;
+
+const REVIEW_ACTION_TRIGGER_IDS = [
+  "btn-card-manage",
+  "btn-study-manage-edit",
+  "btn-study-manage-stop",
+  "btn-study-stop",
+  "btn-study-edit",
+  "btn-study-open-editor",
+] as const;
+
+function updateReviewControlState(): void {
+  const disabled = reviewActionInProgress || cardLoadInProgress || !activeCard;
+  const stateBlocked =
+    disabled || isStudyConfirmOpen() || isStudyInlineEditorOpen();
+  document.querySelectorAll<HTMLButtonElement>(".rating-btn").forEach((button) => {
+    button.disabled = stateBlocked;
+  });
+  for (const id of REVIEW_ACTION_CONTROL_IDS) {
+    const button = document.getElementById(id) as HTMLButtonElement | null;
+    if (button) button.disabled = disabled;
+  }
+  for (const id of REVIEW_ACTION_TRIGGER_IDS) {
+    const button = document.getElementById(id) as HTMLButtonElement | null;
+    if (button) button.disabled = stateBlocked;
+  }
+}
+
+function beginReviewAction(): boolean {
+  if (reviewActionInProgress || cardLoadInProgress) return false;
+  reviewActionInProgress = true;
+  updateReviewControlState();
+  return true;
+}
+
+function endReviewAction(): void {
+  reviewActionInProgress = false;
+  updateReviewControlState();
+}
+
+function isStudyConfirmOpen(): boolean {
+  const overlay = document.getElementById("study-confirm-overlay");
+  return overlay?.classList.contains("active") ?? false;
+}
+
+function isStudyInlineEditorOpen(): boolean {
+  const editor = document.getElementById("study-inline-editor");
+  return editor !== null && !editor.classList.contains("hidden");
+}
+
+function focusStudyConfirmPrimary(): void {
+  if (isStudyConfirmOpen()) {
+    document.getElementById("btn-study-confirm-ok")?.focus();
+  }
+}
+
+function showStudyActionError(label: string, err: unknown): void {
+  console.error(label, err);
+  alert(err instanceof Error ? err.message : String(err));
+}
+
 async function submitRating(ratingVal: number) {
-  if (!activeCard || ratingSubmitInProgress) return;
-  ratingSubmitInProgress = true;
+  if (
+    !activeCard ||
+    isStudyConfirmOpen() ||
+    isStudyInlineEditorOpen() ||
+    !beginReviewAction()
+  ) {
+    return;
+  }
+  const cardId = activeCard.cardId;
   // Checking in the rating closes the thread (ADR 2026-07-06b).
   resetDiscussionUi();
-  document.querySelectorAll<HTMLButtonElement>(".rating-btn").forEach((button) => {
-    button.disabled = true;
-  });
 
   try {
     await runBridge("submit", [
-      "--card-id", activeCard.cardId,
+      "--card-id", cardId,
       "--rating", String(ratingVal)
     ]);
     
     // Load next card or finish
-    await loadNextCard();
+    if (studySessionActive) await loadNextCard();
   } catch (err) {
     console.error("Failed to submit rating:", err);
   } finally {
-    ratingSubmitInProgress = false;
-    document.querySelectorAll<HTMLButtonElement>(".rating-btn").forEach((button) => {
-      button.disabled = false;
-    });
+    endReviewAction();
   }
 }
 
@@ -4249,7 +4339,6 @@ type ImpactPreview = {
   agent_skills?: number;
 };
 
-let cardManageInProgress = false;
 let studyConfirmAction: "remove" | "delete" | null = null;
 let studyConfirmSlug: string | null = null;
 
@@ -4272,6 +4361,9 @@ function renderImpactList(el: HTMLElement, impact: ImpactPreview): void {
 
 function hideStudyConfirm(): void {
   document.getElementById("study-confirm-overlay")!.classList.remove("active");
+  studyConfirmAction = null;
+  studyConfirmSlug = null;
+  updateReviewControlState();
 }
 
 function closeManageMenu(): void {
@@ -4286,7 +4378,14 @@ function closeManageMenu(): void {
  * an advanced escalation to the permanent "Outdated — remove it" delete.
  */
 async function openStopModal(): Promise<void> {
-  if (!activeCard || cardManageInProgress) return;
+  if (
+    !activeCard ||
+    isStudyConfirmOpen() ||
+    isStudyInlineEditorOpen() ||
+    !beginReviewAction()
+  ) {
+    return;
+  }
   const slug = activeCard.slug;
   closeManageMenu();
   try {
@@ -4295,6 +4394,7 @@ async function openStopModal(): Promise<void> {
       call.cmd,
       call.args,
     );
+    if (!studySessionActive || activeCard?.slug !== slug) return;
     document.getElementById("study-confirm-title")!.textContent = t(
       "lbl_confirm_remove_title",
     );
@@ -4316,13 +4416,16 @@ async function openStopModal(): Promise<void> {
     studyConfirmSlug = slug;
     document.getElementById("study-confirm-overlay")!.classList.add("active");
   } catch (err) {
-    console.error("Stop preview failed:", err);
+    showStudyActionError("Stop preview failed:", err);
+  } finally {
+    endReviewAction();
+    focusStudyConfirmPrimary();
   }
 }
 
 /** Escalate to the permanent token delete: re-preview with full impact. */
 async function escalateToOutdated(): Promise<void> {
-  if (!studyConfirmSlug) return;
+  if (!studyConfirmSlug || !beginReviewAction()) return;
   const slug = studyConfirmSlug;
   try {
     const call = deletePreviewCommand(slug);
@@ -4345,14 +4448,16 @@ async function escalateToOutdated(): Promise<void> {
       t("study_stop_outdated");
     studyConfirmAction = "delete";
   } catch (err) {
-    console.error("Outdated preview failed:", err);
+    showStudyActionError("Outdated preview failed:", err);
+  } finally {
+    endReviewAction();
+    focusStudyConfirmPrimary();
   }
 }
 
 /** Confirm button: run the selected destructive action, then advance. */
 async function confirmStudyStop(): Promise<void> {
-  if (!studyConfirmSlug || !studyConfirmAction || cardManageInProgress) return;
-  cardManageInProgress = true;
+  if (!studyConfirmSlug || !studyConfirmAction || !beginReviewAction()) return;
   const slug = studyConfirmSlug;
   const action = studyConfirmAction;
   try {
@@ -4362,33 +4467,43 @@ async function confirmStudyStop(): Promise<void> {
         : deleteConfirmCommand(slug);
     await runBridge(call.cmd, call.args);
     hideStudyConfirm();
-    studyConfirmAction = null;
-    studyConfirmSlug = null;
     await loadNextCard();
   } catch (err) {
-    console.error("Stop action failed:", err);
+    showStudyActionError("Stop action failed:", err);
   } finally {
-    cardManageInProgress = false;
+    endReviewAction();
+    focusStudyConfirmPrimary();
   }
 }
 
 // ── inline edit ──
 function openInlineEditor(): void {
-  if (!activeCard) return;
+  if (
+    !activeCard ||
+    reviewActionInProgress ||
+    cardLoadInProgress ||
+    isStudyConfirmOpen()
+  ) {
+    return;
+  }
   closeManageMenu();
   (document.getElementById("study-edit-question") as HTMLTextAreaElement).value =
     activePromptQuestion;
   (document.getElementById("study-edit-concept") as HTMLTextAreaElement).value =
     activeCard.concept;
   document.getElementById("study-inline-editor")!.classList.remove("hidden");
+  updateReviewControlState();
+  (document.getElementById("study-edit-question") as HTMLTextAreaElement).focus();
 }
 
 function closeInlineEditor(): void {
   document.getElementById("study-inline-editor")!.classList.add("hidden");
+  updateReviewControlState();
 }
 
 async function saveInlineEdit(): Promise<void> {
-  if (!activeCard || cardManageInProgress) return;
+  if (!activeCard || reviewActionInProgress || cardLoadInProgress) return;
+  const slug = activeCard.slug;
   const question = (
     document.getElementById("study-edit-question") as HTMLTextAreaElement
   ).value;
@@ -4397,7 +4512,7 @@ async function saveInlineEdit(): Promise<void> {
   ).value;
   let call: { cmd: string; args: string[] };
   try {
-    call = editCommand({ slug: activeCard.slug, question, concept });
+    call = editCommand({ slug, question, concept });
   } catch (err) {
     if (err instanceof StudyEditError) {
       alert(
@@ -4409,9 +4524,10 @@ async function saveInlineEdit(): Promise<void> {
     }
     throw err;
   }
-  cardManageInProgress = true;
+  if (!beginReviewAction()) return;
   try {
     await runBridge(call.cmd, call.args);
+    if (activeCard?.slug !== slug) return;
     // Reflect the edit in place (no full re-render — feedback stays put).
     activeCard.concept = concept.trim();
     activePromptQuestion = question.trim();
@@ -4426,12 +4542,22 @@ async function saveInlineEdit(): Promise<void> {
     console.error("Inline edit failed:", err);
     alert(err instanceof Error ? err.message : String(err));
   } finally {
-    cardManageInProgress = false;
+    endReviewAction();
   }
 }
 
 // ── pre-reveal manage menu ──
 function toggleManageMenu(): void {
+  if (
+    !activeCard ||
+    reviewActionInProgress ||
+    cardLoadInProgress ||
+    isStudyInlineEditorOpen() ||
+    isStudyConfirmOpen()
+  ) {
+    closeManageMenu();
+    return;
+  }
   const menu = document.getElementById("study-manage-menu")!;
   const btn = document.getElementById("btn-card-manage")!;
   const open = menu.classList.toggle("hidden") === false;
@@ -4439,12 +4565,24 @@ function toggleManageMenu(): void {
 }
 
 async function jumpToFullEditor(): Promise<void> {
-  if (!activeCard) return;
+  if (
+    !activeCard ||
+    reviewActionInProgress ||
+    cardLoadInProgress ||
+    isStudyInlineEditorOpen() ||
+    isStudyConfirmOpen()
+  ) {
+    return;
+  }
   const slug = activeCard.slug;
   closeManageMenu();
   switchView("learning-content-view");
   const found = await openCardInEditor(slug);
-  if (!found) console.warn("Card not found in editor:", slug);
+  if (!found) {
+    const message = `Card not found in editor: ${slug}`;
+    console.warn(message);
+    alert(`${t("lbl_error_loading")}: ${message}`);
+  }
 }
 
 // ── SESSION COMPLETION SCREEN ────────────────────────────────────────────
@@ -4858,6 +4996,15 @@ window.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("keydown", (e: KeyboardEvent) => {
     // 1. Esc key -> Pause and exit
     if (e.key === "Escape" && studySessionActive) {
+      if (reviewActionInProgress || cardLoadInProgress) return;
+      if (isStudyConfirmOpen()) {
+        hideStudyConfirm();
+        return;
+      }
+      if (isStudyInlineEditorOpen()) {
+        closeInlineEditor();
+        return;
+      }
       resetDiscussionUi();
       switchView("dashboard-view");
       loadDashboard();
@@ -4865,9 +5012,15 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     // 2. Textarea triggers
-    const isTextAreaFocused = document.activeElement === document.getElementById("user-answer-input");
+    const target = e.target;
+    const isEditableTarget =
+      target instanceof HTMLElement &&
+      (target.matches("input, textarea, select, button") ||
+        target.isContentEditable);
+    const isAnswerFocused =
+      document.activeElement === document.getElementById("user-answer-input");
     
-    if (studySessionActive && isTextAreaFocused) {
+    if (studySessionActive && isAnswerFocused) {
       // Ctrl+Enter or Shift+Enter inside textarea -> Reveal answer
       if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
@@ -4877,16 +5030,17 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     // 3. FSRS Ratings keys (1-4)
-    if (studySessionActive && !isTextAreaFocused) {
+    if (studySessionActive) {
       const revealedBox = document.getElementById("revealed-box")!;
       const isRevealed = !revealedBox.classList.contains("hidden");
-
-      if (isRevealed) {
-        if (e.key === "1") submitRating(1);
-        else if (e.key === "2") submitRating(2);
-        else if (e.key === "3") submitRating(3);
-        else if (e.key === "4") submitRating(4);
-      }
+      const rating = ratingShortcutForKey(e.key, {
+        editableTarget: isEditableTarget,
+        revealed: isRevealed,
+        dialogOpen: isStudyConfirmOpen(),
+        editorOpen: isStudyInlineEditorOpen(),
+        actionInProgress: reviewActionInProgress || cardLoadInProgress,
+      });
+      if (rating !== null) void submitRating(rating);
     }
   });
 });

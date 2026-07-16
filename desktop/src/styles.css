@@ -2777,7 +2777,7 @@ textarea::placeholder {
   border: 1px solid var(--border-card-frosted);
   color: var(--clr-again);
 }
-.stop-btn:hover {
+.stop-btn:hover:not(:disabled) {
   opacity: 1;
   border-color: var(--clr-again);
 }
@@ -2795,9 +2795,14 @@ textarea::placeholder {
 }
 .study-inline-editor {
   margin-top: 12px;
+  margin-bottom: 16px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
 }
 .study-edit-label {
   font-size: 0.8rem;
@@ -2825,7 +2830,7 @@ textarea::placeholder {
   opacity: 0.55;
   color: var(--clr-text-secondary);
 }
-.card-manage-btn:hover {
+.card-manage-btn:hover:not(:disabled) {
   opacity: 1;
 }
 .card-manage-menu {
@@ -2853,9 +2858,17 @@ textarea::placeholder {
   font-size: 0.9rem;
   color: var(--clr-text-primary);
 }
-.card-manage-item:hover {
+.card-manage-item:hover:not(:disabled) {
   background: var(--bg-card-subtle);
 }
 .card-manage-item.danger {
   color: var(--clr-again);
+}
+
+.stop-btn:disabled,
+.ghost-btn:disabled,
+.card-manage-btn:disabled,
+.card-manage-item:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
 }

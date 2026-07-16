@@ -10,6 +10,24 @@
 
 Design source: [docs/adr/2026-07-16b-in-recall-card-management.md](../adr/2026-07-16b-in-recall-card-management.md).
 
+## Status
+
+- [x] **Phase 0 — feature branch and reviewed design**
+- [x] **Phase 1 — pure command builders and unit tests**
+- [x] **Phase 2 — seven-locale i18n coverage**
+- [x] **Phase 3 — study-view markup and styling**
+- [x] **Phase 4 — full-editor navigation entry point**
+- [x] **Phase 5 — stop, edit, remove, and delete wiring**
+- [x] **Phase 6 — end-to-end bridge verification**
+- [x] **Phase 7 — branch pushed and PR #170 opened**
+- [x] **Independent review corrective pass** — make edit controls visible in
+  every intended state, share the rating/card-management action lock, suppress
+  rating shortcuts while editing or confirming, expose action errors, align the
+  ADR, and add regression coverage.
+
+The phase checklist above is authoritative for handoff. The detailed task
+checkboxes below preserve the original execution recipe.
+
 ## Global Constraints
 
 - **No kernel / bridge / MCP changes.** Reuse existing bridge commands only: `personal-card-remove`, `personal-card-delete`, `personal-card-update` (all in `src/cli/commands/bridge.ts`).

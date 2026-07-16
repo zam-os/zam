@@ -5,10 +5,19 @@
  * isolation and its output IS the contract the e2e walkthrough exercises.
  *
  * All three underlying bridge commands (personal-card-remove /-delete /-update)
- * are slug-keyed and implement a preview -> confirm handshake; the confirm step
- * is the same command plus --confirm.
+ * are slug-keyed. The two destructive commands implement a preview -> confirm
+ * handshake; their confirm step is the same command plus --confirm.
  */
 export type BridgeCall = { cmd: string; args: string[] };
+export type StudyRating = 1 | 2 | 3 | 4;
+
+export interface RatingShortcutContext {
+  editableTarget: boolean;
+  revealed: boolean;
+  dialogOpen: boolean;
+  editorOpen: boolean;
+  actionInProgress: boolean;
+}
 
 export interface InlineEdit {
   slug: string;
@@ -57,4 +66,28 @@ export function editCommand(edit: InlineEdit): BridgeCall {
     cmd: "personal-card-update",
     args: ["--slug", edit.slug, "--question", question, "--concept", concept],
   };
+}
+
+/**
+ * Resolve a 1-4 keyboard shortcut only when the study view can safely accept a
+ * rating. Keeping this decision pure makes the destructive/navigation guard
+ * testable without a browser DOM.
+ */
+export function ratingShortcutForKey(
+  key: string,
+  context: RatingShortcutContext,
+): StudyRating | null {
+  if (
+    context.editableTarget ||
+    !context.revealed ||
+    context.dialogOpen ||
+    context.editorOpen ||
+    context.actionInProgress
+  ) {
+    return null;
+  }
+  if (key === "1" || key === "2" || key === "3" || key === "4") {
+    return Number(key) as StudyRating;
+  }
+  return null;
 }

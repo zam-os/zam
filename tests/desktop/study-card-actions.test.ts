@@ -4,6 +4,7 @@ import {
   deleteConfirmCommand,
   deletePreviewCommand,
   editCommand,
+  ratingShortcutForKey,
   removeConfirmCommand,
   removePreviewCommand,
 } from "../../desktop/src/study-card-actions.js";
@@ -69,5 +70,53 @@ describe("study-card-actions", () => {
       expect(err).toBeInstanceOf(StudyEditError);
       expect((err as StudyEditError).reason).toBe("question-required");
     }
+  });
+
+  it.each([
+    ["1", 1],
+    ["2", 2],
+    ["3", 3],
+    ["4", 4],
+  ] as const)("maps the safe %s shortcut to rating %s", (key, rating) => {
+    expect(
+      ratingShortcutForKey(key, {
+        editableTarget: false,
+        revealed: true,
+        dialogOpen: false,
+        editorOpen: false,
+        actionInProgress: false,
+      }),
+    ).toBe(rating);
+  });
+
+  it.each([
+    ["an editable field is focused", { editableTarget: true }],
+    ["the answer is not revealed", { revealed: false }],
+    ["a confirmation dialog is open", { dialogOpen: true }],
+    ["the inline editor is open", { editorOpen: true }],
+    ["another review action is running", { actionInProgress: true }],
+  ] as const)("blocks rating shortcuts when %s", (_label, override) => {
+    expect(
+      ratingShortcutForKey("1", {
+        editableTarget: false,
+        revealed: true,
+        dialogOpen: false,
+        editorOpen: false,
+        actionInProgress: false,
+        ...override,
+      }),
+    ).toBeNull();
+  });
+
+  it("ignores keys outside the rating range", () => {
+    expect(
+      ratingShortcutForKey("5", {
+        editableTarget: false,
+        revealed: true,
+        dialogOpen: false,
+        editorOpen: false,
+        actionInProgress: false,
+      }),
+    ).toBeNull();
   });
 });
