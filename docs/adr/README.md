@@ -44,3 +44,4 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-07](2026-07-07-resilient-self-update-and-dependency-isolation.md) | Resilient Self-Update and Dependency-Failure Isolation | Implemented |
 | [2026-07-11](2026-07-11-codex-and-vscode-companion-surfaces.md) | Codex and VS Code Companion Surfaces | Accepted |
 | [2026-07-12](2026-07-12-unified-capability-model-registry.md) | Unified Capability-Based Model Registry | Implemented |
+| [2026-07-16](2026-07-16-companion-context-and-harness-affinity.md) | Companion Context Bar and Harness Affinity | Proposed |
