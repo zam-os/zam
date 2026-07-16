@@ -2865,6 +2865,7 @@ bridgeCommand
 const UI_WRITABLE_SETTINGS = new Set([
   "llm.enabled",
   "llm.vision.enabled",
+  "recall.quick_mode",
   "system.locale",
 ]);
 
@@ -3174,6 +3175,9 @@ bridgeCommand
           enabled,
           url,
           model,
+        },
+        recall: {
+          quickMode: (await getSetting(db, "recall.quick_mode")) === "true",
         },
       });
     });

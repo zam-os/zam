@@ -19,7 +19,11 @@ export const settingsCommand = new Command("settings").description(
   "Manage user settings",
 );
 
-const BOOLEAN_SETTING_KEYS = new Set(["llm.enabled", "llm.vision.enabled"]);
+const BOOLEAN_SETTING_KEYS = new Set([
+  "llm.enabled",
+  "llm.vision.enabled",
+  "recall.quick_mode",
+]);
 
 export function normalizeSettingValue(key: string, value: string): string {
   if (!BOOLEAN_SETTING_KEYS.has(key)) return value;

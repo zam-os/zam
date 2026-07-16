@@ -332,6 +332,7 @@ describe("MCP stdio server tests", () => {
     // instead of this id, so this assertion only passes against a real
     // dist/ui/recall-panel.html build (CI builds before running tests).
     expect(content.text).toContain("zam-recall-panel");
+    expect(content.text).toContain("recall-smart-feedback");
   });
 
   it("links zam_open_recall to the recall panel resource", async () => {
@@ -364,6 +365,7 @@ describe("MCP stdio server tests", () => {
       version?: string;
       user?: string | null;
       domain?: string | null;
+      quickMode?: boolean;
     };
     expect(structured.recall).toBe("zam");
     expect(typeof structured.version).toBe("string");
@@ -371,6 +373,14 @@ describe("MCP stdio server tests", () => {
     expect(structured.user).toBe("thomas");
     // No domain focus unless requested.
     expect(structured.domain).toBeNull();
+    // Smart Recall is the default when the setting is absent.
+    expect(structured.quickMode).toBe(false);
+
+    await db
+      .prepare(
+        "INSERT OR REPLACE INTO user_config (key, value) VALUES ('recall.quick_mode', 'true')",
+      )
+      .run();
 
     const scopedRes = await client.callTool({
       name: "zam_open_recall",
@@ -379,8 +389,10 @@ describe("MCP stdio server tests", () => {
     expect(scopedRes.isError).toBeUndefined();
     const scopedStructured = (scopedRes as any).structuredContent as {
       domain?: string | null;
+      quickMode?: boolean;
     };
     expect(scopedStructured.domain).toBe("rag");
+    expect(scopedStructured.quickMode).toBe(true);
   });
 
   it("exposes the graph panel as an MCP Apps resource", async () => {
@@ -461,6 +473,9 @@ describe("MCP stdio server tests", () => {
     // instead of this id, so this assertion only passes against a real
     // dist/ui/settings-panel.html build (CI builds before running tests).
     expect(content.text).toContain("zam-settings-panel");
+    expect(content.text).toContain(
+      "Just show questions and answers for speed",
+    );
   });
 
   it("links zam_open_settings to the settings panel resource", async () => {
@@ -674,6 +689,25 @@ describe("MCP stdio server tests", () => {
         const data = JSON.parse(res.content[0].text);
         expect(data.success).toBe(true);
         expect(Array.isArray(data.contexts)).toBe(true);
+      }, 15_000);
+
+      it("reads and writes the opt-in Recall quick-mode setting", async () => {
+        const writeRes = await studioClient.callTool({
+          name: "zam_studio_bridge",
+          arguments: {
+            cmd: "setting-set",
+            args: ["--key", "recall.quick_mode", "--value", "true"],
+          },
+        });
+        expect(writeRes.isError).toBeUndefined();
+
+        const readRes = await studioClient.callTool({
+          name: "zam_studio_bridge",
+          arguments: { cmd: "get-settings", args: [] },
+        });
+        expect(readRes.isError).toBeUndefined();
+        const data = JSON.parse(readRes.content[0].text);
+        expect(data.recall).toEqual({ quickMode: true });
       }, 15_000);
 
       it("serializes concurrent calls without corrupting either response", async () => {

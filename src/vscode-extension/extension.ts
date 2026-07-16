@@ -11,6 +11,8 @@ import {
   COMPANION_APPS,
   type CompanionApp,
   type CompanionAppConfig,
+  createSamplingResult,
+  normalizeSamplingRequest,
   parseCompanionIntent,
   toolUiResourceUri,
 } from "./protocol.js";
@@ -245,6 +247,8 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
       let result: unknown = {};
       if (message.type === "callTool") {
         result = await this.callTool(message.payload);
+      } else if (message.type === "sampling") {
+        result = await this.sample(message.payload);
       } else if (message.type === "openLink") {
         result = await this.openLink(message.payload);
       } else if (message.type === "modelContext") {
@@ -290,6 +294,37 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
     return (await (
       await this.mcp.client()
     ).callTool({ name: value.name, arguments: args })) as CallToolResult;
+  }
+
+  private async sample(payload: unknown): Promise<unknown> {
+    const request = normalizeSamplingRequest(payload);
+    const models = await vscode.lm.selectChatModels({});
+    const model = models[0];
+    if (!model) {
+      throw new Error(
+        "No VS Code language model is available. Sign in to a model provider " +
+          "or enable Recall quick mode in ZAM Settings.",
+      );
+    }
+
+    const messages = request.messages.map((message) =>
+      message.role === "assistant"
+        ? vscode.LanguageModelChatMessage.Assistant(message.text)
+        : vscode.LanguageModelChatMessage.User(message.text),
+    );
+    const response = await model.sendRequest(
+      messages,
+      {
+        justification:
+          "ZAM Recall checks the answer you submitted and answers your follow-up questions.",
+      },
+      vscode.CancellationToken.None,
+    );
+    let text = "";
+    for await (const fragment of response.text) text += fragment;
+    if (!text.trim())
+      throw new Error("The VS Code language model returned no text");
+    return createSamplingResult(model.id, text.trim());
   }
 
   private async openLink(payload: unknown): Promise<Record<string, unknown>> {

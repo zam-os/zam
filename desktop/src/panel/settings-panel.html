@@ -169,6 +169,18 @@
         gap: 10px;
         align-items: center;
       }
+      .settings-checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 0.9rem;
+        cursor: pointer;
+      }
+      .settings-checkbox-row input {
+        width: 17px;
+        height: 17px;
+        accent-color: var(--accent);
+      }
       .settings-select {
         min-width: 220px;
       }
@@ -281,6 +293,11 @@
         <span class="status-dot" id="zam-status-dot"></span>
         <span id="zam-status">Connecting to host…</span>
       </p>
+
+      <section class="zam-card settings-section">
+        <div class="settings-section-title">Recall</div>
+        <div id="settings-recall"></div>
+      </section>
 
       <section class="zam-card settings-section">
         <div class="settings-section-title">Workspaces</div>

@@ -64,6 +64,8 @@ const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
   "database-status",
   "backup-create",
   "update-check",
+  "get-settings",
+  "setting-set",
 ]);
 
 /**
@@ -690,11 +692,9 @@ export function createMcpServer(db: Database): McpServer {
     }),
   );
 
-  // zam_open_recall — the spoiler-free recall card (MCP Apps). The whole
-  // review flow lives inside the card (type/reveal, compare, self-rate; the
-  // card books ratings via zam_submit_review itself). No chat round-trip:
-  // hosts may render app.sendMessage as a composer draft, which pollutes
-  // the conversation (Thomas, 2026-07-10). Read-only from the model's side.
+  // zam_open_recall — the spoiler-free recall card (MCP Apps). Smart mode is
+  // the default and asks the host for sampling/message intelligence. The old
+  // reveal-and-self-rate flow remains available as opt-in quick mode.
   registerAppTool(
     server,
     "zam_open_recall",
@@ -702,10 +702,11 @@ export function createMcpServer(db: Database): McpServer {
       title: "Open ZAM recall session",
       description:
         "Open the ZAM spoiler-free recall card. The user answers due review " +
-        "questions entirely inside the card: type an answer (or reveal " +
-        "directly), compare with the stored concept, and self-rate — the " +
-        "card books ratings itself via zam_submit_review. No chat " +
-        "interaction is required or expected. Pass an optional domain to " +
+        "questions inside the card. By default the card asks the MCP Apps " +
+        "host to evaluate answers and supports grounded follow-up questions; " +
+        "an opt-in Settings switch restores the faster reveal-and-self-rate " +
+        "flow. The card books the user's final rating itself via " +
+        "zam_submit_review. Pass an optional domain to " +
         "scope the session to one topic (e.g. domain: 'rag').",
       inputSchema: {
         user: z.string().optional().describe("User ID"),
@@ -733,6 +734,7 @@ export function createMcpServer(db: Database): McpServer {
           version: pkg.version,
           user: userId,
           domain: domain ?? null,
+          quickMode: (await getSetting(db, "recall.quick_mode")) === "true",
         };
       },
     ),

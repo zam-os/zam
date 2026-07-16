@@ -1,17 +1,11 @@
 /**
  * ZAM spoiler-free Recall card — MCP Apps panel entry.
  *
- * The user answers due review questions inside this card. The whole flow
- * stays IN-CARD — the card never sends chat messages (Thomas, 2026-07-10:
- * hosts may render app.sendMessage as a chat-composer draft the user must
- * send manually; the cryptic contract text pollutes the conversation and
- * every chat turn scrolls the card out of view):
- *  - A single adaptive button drives the reveal. With a typed answer it reads
- *    "Antwort prüfen" and shows the answer next to the stored concept for
- *    honest self-comparison; empty, it reads "Aufdecken" and reveals the
- *    concept directly. Both paths end in the same four-rating row.
- *  - The empty-vs-typed distinction is the "did the learner attempt?" signal
- *    a later conversational mode (ADR 2026-07-06b) will consume.
+ * Smart mode is the default: a typed answer is evaluated through the host's
+ * MCP Apps sampling capability and follow-up questions stay in-card. A host
+ * with message support but no sampling receives the grounded answer in its
+ * conversation instead. The previous reveal-and-self-rate flow remains as
+ * an opt-in quick mode for speed.
  * The four rating buttons book via callServerTool zam_submit_review; the
  * `rated` guard allows at most one call per card.
  *
@@ -31,6 +25,12 @@
 
 import { App } from "@modelcontextprotocol/ext-apps";
 import { setCurrentLocale, t, tf } from "../i18n.js";
+import {
+  buildRecallEvaluationPrompt,
+  buildRecallFollowUpPrompt,
+  parseRecallEvaluation,
+  type RecallEvaluation,
+} from "./recall-evaluation.js";
 
 const statusEl = document.getElementById("zam-status");
 const statusDot = document.getElementById("zam-status-dot");
@@ -42,11 +42,16 @@ function setStatus(text: string, connected: boolean): void {
   if (statusDot) statusDot.classList.toggle("connected", connected);
 }
 
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
 interface OpenRecallResult {
   recall?: string;
   version?: string;
   user?: string | null;
   domain?: string | null;
+  quickMode?: boolean;
 }
 
 interface ReviewCard {
@@ -61,6 +66,7 @@ interface ReviewCard {
   bloomVerb?: string;
   question?: string;
   sourceLink?: string | null;
+  resolvedContext?: { content?: string } | null;
 }
 
 interface SubmitEvaluation {
@@ -85,12 +91,19 @@ interface SubmitResult {
   blocked: BlockedInfo | null;
 }
 
-type CardState = "shown" | "revealed" | "answered" | "rated";
+type CardState =
+  | "shown"
+  | "revealed"
+  | "evaluating"
+  | "answered"
+  | "discussing"
+  | "rated";
 
 const app = new App({ name: "ZAM Recall", version: "0.1.0" });
 
 let currentUser: string | null = null;
 let focusDomain: string | null = null;
+let quickMode = false;
 let connected = false;
 let started = false;
 let finished = false;
@@ -138,7 +151,11 @@ function remaining(): number {
 }
 
 /** Sync a compact card-state snapshot into the host's model context. */
-function pushContext(card: ReviewCard, state: CardState): void {
+function pushContext(
+  card: ReviewCard,
+  state: CardState,
+  details: Record<string, unknown> = {},
+): void {
   void app
     .updateModelContext({
       content: [
@@ -150,6 +167,7 @@ function pushContext(card: ReviewCard, state: CardState): void {
               slug: card.slug,
               state,
               remaining: remaining(),
+              ...details,
             },
           }),
         },
@@ -254,6 +272,39 @@ function advance(): void {
   }
 }
 
+function samplingText(content: unknown): string {
+  const blocks = Array.isArray(content) ? content : [content];
+  return blocks
+    .flatMap((block) => {
+      if (!block || typeof block !== "object") return [];
+      const value = block as { type?: unknown; text?: unknown };
+      return value.type === "text" && typeof value.text === "string"
+        ? [value.text]
+        : [];
+    })
+    .join("\n")
+    .trim();
+}
+
+async function sampleRecall(
+  messages: Array<{ role: "user" | "assistant"; text: string }>,
+  maxTokens = 800,
+): Promise<string> {
+  const result = await app.createSamplingMessage({
+    systemPrompt:
+      "You are the intelligence behind ZAM active recall. Be grounded, " +
+      "concise, pedagogically useful, and never expose chain-of-thought.",
+    messages: messages.map((message) => ({
+      role: message.role,
+      content: { type: "text" as const, text: message.text },
+    })),
+    maxTokens,
+  });
+  const text = samplingText(result.content);
+  if (!text) throw new Error("The host model returned no text");
+  return text;
+}
+
 function renderCard(): void {
   if (!contentEl) return;
   const card = cards[index];
@@ -262,9 +313,8 @@ function renderCard(): void {
   const concept = card.concept;
   clearContent();
 
-  // Once the user commits (reveal), lock the inputs so the same card cannot be
-  // double-committed. Both empty/typed paths end in the same self-rating row;
-  // `rated` guards against a second zam_submit_review.
+  // Once the user commits, lock the answer so the same card cannot be
+  // double-committed. `rated` guards against a second zam_submit_review.
   let committed = false;
   let rated = false;
 
@@ -304,6 +354,10 @@ function renderCard(): void {
     ? `Bloom ${card.bloomLevel} · ${card.bloomVerb}`
     : `Bloom ${card.bloomLevel}`;
   badges.appendChild(bloomBadge);
+  const modeBadge = document.createElement("span");
+  modeBadge.className = "recall-badge";
+  modeBadge.textContent = quickMode ? "Quick mode" : "Smart mode";
+  badges.appendChild(modeBadge);
   root.appendChild(badges);
 
   const question = document.createElement("div");
@@ -316,8 +370,8 @@ function renderCard(): void {
   answer.placeholder = "Antwort aus dem Gedächtnis…";
   root.appendChild(answer);
 
-  // One adaptive button: empty → reveal directly; text present → check the
-  // typed answer against the concept. Never disabled (empty is a valid path).
+  // Empty still reveals directly; a typed answer is either evaluated by the
+  // host (smart mode) or compared locally (quick mode).
   const actions = document.createElement("div");
   actions.className = "recall-actions";
   const actionBtn = document.createElement("button");
@@ -337,6 +391,12 @@ function renderCard(): void {
     committed = true;
     actionBtn.disabled = true;
     answer.disabled = true;
+  }
+
+  function unlockInputs(): void {
+    committed = false;
+    actionBtn.disabled = false;
+    answer.disabled = false;
   }
 
   function showNotice(message: string): void {
@@ -395,6 +455,47 @@ function renderCard(): void {
     }
   }
 
+  function appendRatings(
+    reveal: HTMLElement,
+    suggestedRating?: 1 | 2 | 3 | 4,
+  ): void {
+    const ratingLabel = document.createElement("div");
+    ratingLabel.className = "recall-rating-label";
+    ratingLabel.textContent = suggestedRating
+      ? `${t("lbl_rating_instruction")} · Host suggestion: ${suggestedRating}`
+      : t("lbl_rating_instruction");
+    reveal.appendChild(ratingLabel);
+
+    const ratings = document.createElement("div");
+    ratings.className = "recall-ratings";
+    const labels = [
+      t("lbl_rate_1"),
+      t("lbl_rate_2"),
+      t("lbl_rate_3"),
+      t("lbl_rate_4"),
+    ];
+    for (let r = 1; r <= 4; r += 1) {
+      const rating = r as 1 | 2 | 3 | 4;
+      const ratingBtn = document.createElement("button");
+      ratingBtn.className = "btn secondary-btn recall-rating-btn";
+      if (rating === suggestedRating) {
+        ratingBtn.classList.add("recall-rating-suggested");
+      }
+      ratingBtn.type = "button";
+      const label = document.createElement("span");
+      label.textContent = labels[r - 1];
+      const num = document.createElement("span");
+      num.className = "rating-num";
+      num.textContent = String(r);
+      ratingBtn.append(label, num);
+      ratingBtn.addEventListener("click", () => {
+        void submitRating(rating);
+      });
+      ratings.appendChild(ratingBtn);
+    }
+    reveal.appendChild(ratings);
+  }
+
   // With a `userAnswer` (the check path) the typed answer is shown above the
   // stored concept so the user can compare honestly before self-rating —
   // everything stays inside the card.
@@ -423,49 +524,213 @@ function renderCard(): void {
     conceptEl.textContent = concept; // first and only time concept hits the DOM
     reveal.appendChild(conceptEl);
 
-    const ratingLabel = document.createElement("div");
-    ratingLabel.className = "recall-rating-label";
-    ratingLabel.textContent = t("lbl_rating_instruction");
-    reveal.appendChild(ratingLabel);
-
-    const ratings = document.createElement("div");
-    ratings.className = "recall-ratings";
-    const labels = [
-      t("lbl_rate_1"),
-      t("lbl_rate_2"),
-      t("lbl_rate_3"),
-      t("lbl_rate_4"),
-    ];
-    for (let r = 1; r <= 4; r += 1) {
-      const rating = r as 1 | 2 | 3 | 4;
-      const ratingBtn = document.createElement("button");
-      ratingBtn.className = "btn secondary-btn recall-rating-btn";
-      ratingBtn.type = "button";
-      const label = document.createElement("span");
-      label.textContent = labels[r - 1];
-      const num = document.createElement("span");
-      num.className = "rating-num";
-      num.textContent = String(r);
-      ratingBtn.append(label, num);
-      ratingBtn.addEventListener("click", () => {
-        void submitRating(rating);
-      });
-      ratings.appendChild(ratingBtn);
-    }
-    reveal.appendChild(ratings);
+    appendRatings(reveal);
     root.appendChild(reveal);
+  }
+
+  function appendDiscussion(
+    reveal: HTMLElement,
+    learnerAnswer: string,
+    evaluation: RecallEvaluation,
+  ): void {
+    const discussion = document.createElement("div");
+    discussion.className = "recall-discussion";
+    const title = document.createElement("div");
+    title.className = "recall-reveal-title";
+    title.textContent = "Ask about this feedback";
+    const history = document.createElement("div");
+    history.className = "recall-discussion-history";
+    const followUp = document.createElement("textarea");
+    followUp.className = "recall-answer recall-follow-up";
+    followUp.placeholder = "Ask a follow-up question…";
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "btn secondary-btn";
+    button.textContent = "Ask";
+    const actions = document.createElement("div");
+    actions.className = "recall-actions";
+    actions.appendChild(button);
+    discussion.append(title, history, followUp, actions);
+    reveal.appendChild(discussion);
+
+    const samplingMessages: Array<{
+      role: "user" | "assistant";
+      text: string;
+    }> = [];
+
+    button.addEventListener("click", () => {
+      const question = followUp.value.trim();
+      if (!question) return;
+      button.disabled = true;
+      followUp.disabled = true;
+      const userLine = document.createElement("div");
+      userLine.className = "recall-discussion-user";
+      userLine.textContent = question;
+      history.appendChild(userLine);
+
+      const prompt = buildRecallFollowUpPrompt(
+        {
+          ...card,
+          resolvedContext: card.resolvedContext?.content ?? null,
+        },
+        learnerAnswer,
+        evaluation,
+        question,
+      );
+      if (samplingMessages.length === 0) {
+        samplingMessages.push({ role: "user", text: prompt });
+      } else {
+        samplingMessages.push({ role: "user", text: question });
+      }
+      pushContext(card, "discussing");
+      void sampleRecall(samplingMessages)
+        .then((reply) => {
+          samplingMessages.push({ role: "assistant", text: reply });
+          const assistantLine = document.createElement("div");
+          assistantLine.className = "recall-discussion-assistant";
+          assistantLine.textContent = reply;
+          history.appendChild(assistantLine);
+          followUp.value = "";
+        })
+        .catch((error) =>
+          showNotice(`Follow-up failed: ${errorMessage(error)}`),
+        )
+        .finally(() => {
+          button.disabled = false;
+          followUp.disabled = false;
+        });
+    });
+  }
+
+  function showSmartEvaluation(
+    learnerAnswer: string,
+    evaluation: RecallEvaluation,
+  ): void {
+    const reveal = document.createElement("div");
+    reveal.className = "recall-reveal recall-smart-feedback";
+
+    const ownTitle = document.createElement("div");
+    ownTitle.className = "recall-reveal-title";
+    ownTitle.textContent = "Deine Antwort";
+    const own = document.createElement("div");
+    own.className = "recall-own-answer";
+    own.textContent = learnerAnswer;
+
+    const feedbackTitle = document.createElement("div");
+    feedbackTitle.className = "recall-reveal-title";
+    feedbackTitle.textContent = `Host feedback · ${evaluation.verdict}`;
+    const feedback = document.createElement("div");
+    feedback.className = `recall-feedback recall-feedback-${evaluation.verdict}`;
+    feedback.textContent = evaluation.feedback;
+    reveal.append(ownTitle, own, feedbackTitle, feedback);
+
+    if (evaluation.gaps.length > 0) {
+      const gaps = document.createElement("ul");
+      gaps.className = "recall-gaps";
+      for (const gap of evaluation.gaps) {
+        const item = document.createElement("li");
+        item.textContent = gap;
+        gaps.appendChild(item);
+      }
+      reveal.appendChild(gaps);
+    }
+
+    const referenceTitle = document.createElement("div");
+    referenceTitle.className = "recall-reveal-title";
+    referenceTitle.textContent = t("lbl_reveal_title");
+    const reference = document.createElement("div");
+    reference.className = "recall-concept";
+    // Always reveal ZAM's stored concept, not a model-generated replacement.
+    reference.textContent = concept;
+    reveal.append(referenceTitle, reference);
+
+    if (app.getHostCapabilities()?.sampling) {
+      appendDiscussion(reveal, learnerAnswer, evaluation);
+    }
+    appendRatings(reveal, evaluation.suggestedRating);
+    root.appendChild(reveal);
+  }
+
+  async function sendToHostConversation(learnerAnswer: string): Promise<void> {
+    const questionText = card.question?.trim() || card.slug;
+    await app.updateModelContext({
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify({
+            zamRecall: {
+              cardId: card.cardId,
+              slug: card.slug,
+              question: questionText,
+              learnerAnswer,
+              referenceAnswer: concept,
+              sourceContext: card.resolvedContext?.content ?? null,
+            },
+          }),
+        },
+      ],
+    });
+    const result = await app.sendMessage({
+      role: "user",
+      content: [
+        {
+          type: "text",
+          text:
+            `Please evaluate my ZAM Recall answer to “${questionText}”, ` +
+            "identify misconceptions, and discuss the learning content with me.",
+        },
+      ],
+    });
+    if (result.isError) throw new Error("The host rejected the Recall message");
+  }
+
+  async function evaluateAnswer(learnerAnswer: string): Promise<void> {
+    const capabilities = app.getHostCapabilities();
+    pushContext(card, "evaluating");
+    if (capabilities?.sampling) {
+      const prompt = buildRecallEvaluationPrompt(
+        {
+          ...card,
+          resolvedContext: card.resolvedContext?.content ?? null,
+        },
+        learnerAnswer,
+      );
+      const raw = await sampleRecall([{ role: "user", text: prompt }]);
+      const evaluation = parseRecallEvaluation(raw);
+      showSmartEvaluation(learnerAnswer, evaluation);
+      pushContext(card, "answered");
+      return;
+    }
+    if (capabilities?.message) {
+      await sendToHostConversation(learnerAnswer);
+      showReveal(learnerAnswer);
+      showNotice("Answer sent to the host conversation. Continue there.");
+      pushContext(card, "answered", { learnerAnswer });
+      return;
+    }
+    throw new Error(
+      "This host provides neither sampling nor messages. Enable quick mode " +
+        "in Settings or use a host with model support.",
+    );
   }
 
   actionBtn.addEventListener("click", () => {
     if (committed) return;
     const text = answer.value.trim();
     lockInputs();
-    if (text) {
+    if (!text) {
+      showReveal();
+      pushContext(card, "revealed");
+    } else if (quickMode) {
       showReveal(text);
       pushContext(card, "answered");
     } else {
-      showReveal();
-      pushContext(card, "revealed");
+      actionBtn.textContent = "Checking…";
+      void evaluateAnswer(text).catch((error) => {
+        showNotice(`Answer check failed: ${errorMessage(error)}`);
+        unlockInputs();
+        actionBtn.textContent = t("btn_recall_check");
+      });
     }
   });
 
@@ -506,6 +771,7 @@ app.ontoolresult = (params) => {
   }
   currentUser = structured.user ?? null;
   focusDomain = structured.domain ?? null;
+  quickMode = structured.quickMode === true;
   const who = currentUser ? ` — ${currentUser}` : "";
   setStatus(`Connected to zam mcp${who}`, true);
   start();

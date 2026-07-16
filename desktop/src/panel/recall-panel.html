@@ -282,6 +282,64 @@
         font-size: 0.7rem;
         opacity: 0.7;
       }
+      .recall-rating-suggested {
+        border-color: var(--accent);
+        background: var(--hover);
+      }
+      .recall-feedback {
+        font-size: 0.95rem;
+        line-height: 1.55;
+        white-space: pre-wrap;
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin-bottom: 12px;
+        background: var(--hover);
+      }
+      .recall-feedback-correct {
+        color: var(--ok);
+        background: var(--ok-bg);
+      }
+      .recall-feedback-incorrect {
+        color: var(--danger);
+        background: var(--danger-bg);
+      }
+      .recall-gaps {
+        margin: 0 0 14px;
+        padding-left: 22px;
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.5;
+      }
+      .recall-discussion {
+        margin-top: 16px;
+        padding-top: 14px;
+        border-top: 1px solid var(--border);
+      }
+      .recall-follow-up {
+        min-height: 58px;
+      }
+      .recall-discussion-history {
+        display: grid;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .recall-discussion-user,
+      .recall-discussion-assistant {
+        border-radius: 8px;
+        padding: 8px 10px;
+        font-size: 0.88rem;
+        line-height: 1.45;
+        white-space: pre-wrap;
+      }
+      .recall-discussion-user {
+        justify-self: end;
+        max-width: 88%;
+        background: var(--accent);
+        color: #ffffff;
+      }
+      .recall-discussion-assistant {
+        background: var(--hover);
+      }
       .recall-result {
         margin-top: 14px;
         font-size: 0.9rem;
