@@ -1,3 +1,6 @@
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   type AgentConnectDeps,
@@ -216,7 +219,7 @@ describe("performAgentConnect", () => {
 });
 
 describe("inspectConnectHarnesses", () => {
-  it("reports the seven user-scoped harnesses without touching disk", () => {
+  it("reports the user-scoped harnesses plus Claude Code without touching disk", () => {
     const { deps, calls } = makeDeps({
       detect: () => ["codex", "vscode"] as ConnectHarnessId[],
     });
@@ -228,12 +231,15 @@ describe("inspectConnectHarnesses", () => {
     })) as AgentConnectDeps["connectMcp"];
 
     const report = inspectConnectHarnesses(deps);
-    expect(report.harnesses.map((h) => h.harness)).toEqual(
-      USER_SCOPED_CONNECT_HARNESSES,
-    );
-    expect(report.harnesses.map((h) => h.harness)).not.toContain(
+    // Claude Code is probed too (finding: it was silently excluded from the
+    // inventory, so it was always reported configured:false with no
+    // supporting evidence). It is appended after the seven auto-detectable
+    // harnesses, never added to USER_SCOPED_CONNECT_HARNESSES itself — that
+    // constant still drives auto-detection and stays claude-code-free.
+    expect(report.harnesses.map((h) => h.harness)).toEqual([
+      ...USER_SCOPED_CONNECT_HARNESSES,
       "claude-code",
-    );
+    ]);
 
     const byId = new Map(report.harnesses.map((h) => [h.harness, h]));
     expect(byId.get("codex")).toMatchObject({
@@ -248,7 +254,46 @@ describe("inspectConnectHarnesses", () => {
       installed: false,
       configured: false,
     });
+    // Claude Code is never in `detect()`'s output (workspace-scoped, not
+    // machine-detectable), so "installed" honestly stays false; "configured"
+    // reflects the same connectMcp probe as every other harness — here the
+    // stub returns alreadyConfigured only for "vscode", so false.
+    expect(byId.get("claude-code")).toMatchObject({
+      installed: false,
+      configured: false,
+    });
     expect(calls.writes).toHaveLength(0);
+  });
+
+  it("reports claude-code as configured only when the cwd's .mcp.json already has a matching zam entry", () => {
+    const cwd = mkdtempSync(join(tmpdir(), "zam-claude-code-probe-"));
+    try {
+      const { deps } = makeDeps({ cwd, connectMcp: undefined });
+
+      const before = inspectConnectHarnesses(deps);
+      expect(
+        before.harnesses.find((h) => h.harness === "claude-code")?.configured,
+      ).toBe(false);
+
+      writeFileSync(
+        join(cwd, ".mcp.json"),
+        JSON.stringify({
+          mcpServers: {
+            zam: { command: deps.findZam?.() ?? "zam", args: ["mcp"] },
+          },
+        }),
+        "utf-8",
+      );
+
+      const after = inspectConnectHarnesses(deps);
+      const claudeCode = after.harnesses.find(
+        (h) => h.harness === "claude-code",
+      );
+      expect(claudeCode?.configured).toBe(true);
+      expect(claudeCode?.configPath).toBe(join(cwd, ".mcp.json"));
+    } finally {
+      rmSync(cwd, { recursive: true, force: true });
+    }
   });
 
   it("degrades an unreadable host config to a note instead of failing", () => {

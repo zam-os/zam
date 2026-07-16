@@ -29,21 +29,33 @@ export interface NormalizedSamplingRequest {
   maxTokens?: number;
 }
 
+// `zam_companion_context` (0.11.0 Phase 4) is allowlisted for every proxied
+// app below so the shared context bar (desktop/src/panel/context-bar.ts) can
+// read/write it from inside the VS Code Companion webview, which otherwise
+// only proxies each app's own data tools (see CompanionViewProvider.callTool
+// in extension.ts). Studio has no entry here — the VS Code Companion never
+// opens it through this webview proxy (extension.ts has no `studio` case) —
+// so its reachability there is moot; native MCP-Apps hosts reach it directly
+// through the tool's own `ui: { visibility: ["app"] }` metadata instead.
 export const COMPANION_APPS: Record<CompanionApp, CompanionAppConfig> = {
   recall: {
     title: "ZAM Recall",
     toolName: "zam_open_recall",
-    allowedTools: new Set(["zam_get_reviews", "zam_submit_review"]),
+    allowedTools: new Set([
+      "zam_get_reviews",
+      "zam_submit_review",
+      "zam_companion_context",
+    ]),
   },
   graph: {
     title: "ZAM Graph",
     toolName: "zam_show_graph",
-    allowedTools: new Set(["zam_studio_bridge"]),
+    allowedTools: new Set(["zam_studio_bridge", "zam_companion_context"]),
   },
   settings: {
     title: "ZAM Settings",
     toolName: "zam_open_settings",
-    allowedTools: new Set(["zam_studio_bridge"]),
+    allowedTools: new Set(["zam_studio_bridge", "zam_companion_context"]),
   },
 };
 

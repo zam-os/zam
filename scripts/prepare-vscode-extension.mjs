@@ -67,6 +67,7 @@ const extensionPackage = {
     "onCommand:zam.openRecall",
     "onCommand:zam.showGraph",
     "onCommand:zam.openSettings",
+    "onCommand:zam.chooseRecallModel",
   ],
   contributes: {
     viewsContainers: {
@@ -107,6 +108,12 @@ const extensionPackage = {
         title: "Open Settings",
         category: "ZAM",
         icon: "$(gear)",
+      },
+      {
+        command: "zam.chooseRecallModel",
+        title: "Choose Recall Model",
+        category: "ZAM",
+        icon: "$(list-selection)",
       },
     ],
     menus: {

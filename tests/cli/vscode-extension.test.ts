@@ -1,4 +1,5 @@
 import {
+  existsSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
@@ -156,6 +157,59 @@ describe("VS Code Companion installation", () => {
       command: "/usr/local/bin/zam",
       args: ["mcp"],
     });
+  });
+
+  it("keeps a newer installed Companion instead of downgrading", () => {
+    const { home, assetsDir } = fixture();
+    const calls: string[][] = [];
+    const result = installVscodeExtension({
+      home,
+      assetsDir,
+      version: "0.10.3",
+      zamPath: "/usr/local/bin/zam",
+      codePath: "/usr/local/bin/code",
+      run: (_command, args) => calls.push(args),
+      query: () => "other.extension@1.0.0\nzam-os.zam-companion@0.11.0\n",
+    });
+    expect(result.action).toBe("kept-newer");
+    expect(calls).toEqual([]);
+    expect(existsSync(result.launchConfigPath)).toBe(false);
+  });
+
+  it("still reinstalls same-version and older installed Companions", () => {
+    const { home, assetsDir } = fixture();
+    for (const installed of ["0.10.3", "0.10.2"]) {
+      const calls: string[][] = [];
+      const result = installVscodeExtension({
+        home,
+        assetsDir,
+        version: "0.10.3",
+        zamPath: "/usr/local/bin/zam",
+        codePath: "/usr/local/bin/code",
+        run: (_command, args) => calls.push(args),
+        query: () => `zam-os.zam-companion@${installed}\n`,
+      });
+      expect(result.action).not.toBe("kept-newer");
+      expect(calls).toHaveLength(1);
+    }
+  });
+
+  it("installs anyway when the installed version cannot be determined", () => {
+    const { home, assetsDir } = fixture();
+    const calls: string[][] = [];
+    const result = installVscodeExtension({
+      home,
+      assetsDir,
+      version: "0.10.3",
+      zamPath: "/usr/local/bin/zam",
+      codePath: "/usr/local/bin/code",
+      run: (_command, args) => calls.push(args),
+      query: () => {
+        throw new Error("code CLI unavailable");
+      },
+    });
+    expect(result.action).toBe("installed");
+    expect(calls).toHaveLength(1);
   });
 
   it("does not execute or write during a dry run", () => {

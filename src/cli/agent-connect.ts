@@ -283,8 +283,26 @@ export interface HarnessStatusReport {
 }
 
 /**
- * Read-only detection + configuration probe for the user-scoped harnesses.
- * `connectHarnessMcp` is a pure builder, so probing never writes anything.
+ * Harnesses `inspectConnectHarnesses` reports on: every user-scoped harness
+ * plus Claude Code. Claude Code is deliberately excluded from
+ * `USER_SCOPED_CONNECT_HARNESSES` (which drives auto-detection and stays
+ * claude-code-free per that constant's own doc comment) but its MCP target
+ * — the current working directory's `.mcp.json` — is just as honestly
+ * probeable as any other harness's config file via the same
+ * `connectHarnessMcp` pure builder, so status reporting includes it here
+ * instead of hardcoding it as always-unconfigured (the previous behavior,
+ * which meant a Claude Code session actually connected to `zam` was still
+ * reported as configured-but-unroutable with no supporting evidence).
+ */
+const INSPECTED_HARNESSES: ConnectHarnessId[] = [
+  ...USER_SCOPED_CONNECT_HARNESSES,
+  "claude-code",
+];
+
+/**
+ * Read-only detection + configuration probe for the user-scoped harnesses
+ * plus Claude Code. `connectHarnessMcp` is a pure builder, so probing never
+ * writes anything.
  */
 export function inspectConnectHarnesses(
   deps: AgentConnectDeps = {},
@@ -294,7 +312,7 @@ export function inspectConnectHarnesses(
   const zamPath = foundZam ?? "zam";
   const installed = new Set(d.detect());
 
-  const harnesses = USER_SCOPED_CONNECT_HARNESSES.map((harness) => {
+  const harnesses = INSPECTED_HARNESSES.map((harness) => {
     const status: HarnessStatus = {
       harness,
       label: CONNECT_HARNESS_LABELS[harness],

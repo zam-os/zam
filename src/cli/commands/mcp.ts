@@ -12,6 +12,15 @@ import { z } from "zod";
 import type { Database, Rating, ReviewActionType } from "../../kernel/index.js";
 import { getSetting, openDatabase } from "../../kernel/index.js";
 import {
+  COMPANION_SURFACES,
+  type CompanionContextReadResult,
+  type CompanionSurface,
+  type NativeClientInfo,
+  parseCompanionContextReadRequest,
+  parseCompanionContextWriteRequest,
+} from "../../vscode-extension/companion-context.js";
+import type { EvaluatorRoute } from "../../vscode-extension/companion-evaluator.js";
+import {
   addToken as handleAddToken,
   analyzeMonitor as handleAnalyzeMonitor,
   checkDue as handleCheckDue,
@@ -25,6 +34,11 @@ import {
   submitReview as handleSubmitReview,
   suggestFoundations as handleSuggestFoundations,
 } from "../bridge-handlers.js";
+import {
+  readCompanionContext,
+  resolveOpeningCompanionContext,
+  writeCompanionContext,
+} from "../companion-context-server.js";
 import { publishUiIntent } from "../ui-intent.js";
 import { executeBridgeCommandJson } from "./bridge.js";
 
@@ -98,6 +112,84 @@ function loadPanelHtml(fileName: string, placeholderTitle: string): string {
 }
 
 /**
+ * Minimal, honestly-labeled context used when resolving the real Companion
+ * context fails. The context bar is display-only plumbing layered on top of
+ * an already-working panel — a broken DB read or a corrupt machine-local
+ * config file must never block `zam_open_recall`/`zam_show_graph`/
+ * `zam_open_settings`/`zam_open_studio` from opening, so every open tool
+ * degrades to this instead of returning an error result. `quick-mode` is
+ * the only route offered here because it is the one adapter that never
+ * depends on anything that just failed.
+ */
+function buildFallbackCompanionContext(
+  surface: CompanionSurface,
+  invocationUserId: string | undefined,
+): CompanionContextReadResult {
+  const quickModeRoute: EvaluatorRoute = {
+    id: "quick-mode",
+    displayIdentity: { provider: "Quick mode — no agent" },
+    configured: true,
+    routable: true,
+    selected: true,
+    active: true,
+  };
+  return {
+    surface,
+    nativeHost: undefined,
+    user: {
+      currentId: invocationUserId,
+      persistedId: undefined,
+      source: invocationUserId ? "invocation" : "default",
+    },
+    profiles: [],
+    harnesses: [],
+    evaluators: [quickModeRoute],
+    selectedEvaluatorId: "quick-mode",
+    activeEvaluatorId: "quick-mode",
+    collapsed: false,
+  };
+}
+
+interface OpeningContextOutcome {
+  context: CompanionContextReadResult;
+  degraded: boolean;
+}
+
+/**
+ * Never-fail-to-open wrapper around `resolveOpeningCompanionContext`. Any
+ * rejection — a broken DB connection, a corrupt machine-local config file,
+ * a harness-inspection error — degrades to `buildFallbackCompanionContext`
+ * instead of failing the tool call that opens a panel.
+ */
+async function resolveOpeningCompanionContextSafely(
+  db: Database,
+  surface: CompanionSurface,
+  invocationUserId: string | undefined,
+  clientInfo: NativeClientInfo | undefined,
+  options: { clientSamplingCapable: boolean },
+): Promise<OpeningContextOutcome> {
+  try {
+    const context = await resolveOpeningCompanionContext(
+      db,
+      surface,
+      invocationUserId,
+      clientInfo,
+      options,
+    );
+    return { context, degraded: false };
+  } catch (error) {
+    console.error(
+      `[zam mcp] companion context resolution failed for ${surface}, opening with a fallback context:`,
+      error instanceof Error ? error.message : error,
+    );
+    return {
+      context: buildFallbackCompanionContext(surface, invocationUserId),
+      degraded: true,
+    };
+  }
+}
+
+/**
  * Creates and configures the McpServer instance with all tools mapped.
  */
 export function createMcpServer(db: Database): McpServer {
@@ -113,6 +205,30 @@ export function createMcpServer(db: Database): McpServer {
     throw new Error(
       "No user specified. Set a default with: zam whoami --set <id>",
     );
+  }
+
+  /**
+   * The connecting MCP client's negotiated identity (from the `initialize`
+   * handshake), mapped to the Companion context contract's `NativeClientInfo`
+   * shape. The default when a request carries no explicit `clientInfo`
+   * override (overrides exist for launch presets and tests, ADR "Resolved
+   * questions" §2) — so a caller that simply forgets the field still gets an
+   * honest handshake-derived identity.
+   */
+  function getNativeClientInfo(): NativeClientInfo | undefined {
+    const client = server.server.getClientVersion();
+    return client ? { name: client.name, version: client.version } : undefined;
+  }
+
+  /**
+   * Whether the connecting MCP client advertised `sampling` capability
+   * during the `initialize` handshake — the only genuinely observable
+   * server-side signal for `native-mcp-host` routability (ADR 2026-07-16
+   * §Decision 5, 0.11.0 Phase 3). Never guessed: absent capabilities means
+   * `false`.
+   */
+  function getClientSamplingCapable(): boolean {
+    return Boolean(server.server.getClientCapabilities()?.sampling);
   }
 
   const commonAnnotations = {
@@ -667,11 +783,25 @@ export function createMcpServer(db: Database): McpServer {
       },
     },
     wrapHandler(async () => {
-      const userId = await getUserId(undefined).catch(() => null);
+      // Mirror zam_open_recall/zam_show_graph/zam_open_settings: resolve
+      // invocation (none — the tool takes no `user` argument) > persisted
+      // Companion learner > shared database default, and return the resolved
+      // context for the Studio panel's context bar (0.11.0 Phase 4). Never
+      // fails to open the panel: any resolution failure degrades to a
+      // minimal fallback context instead of rejecting the call.
+      const opening = await resolveOpeningCompanionContextSafely(
+        db,
+        "studio",
+        undefined,
+        getNativeClientInfo(),
+        { clientSamplingCapable: getClientSamplingCapable() },
+      );
       return {
         studio: "zam",
         version: pkg.version,
-        user: userId,
+        user: opening.context.user.currentId ?? null,
+        companionContext: opening.context,
+        ...(opening.degraded ? { companionContextDegraded: true } : {}),
       };
     }),
   );
@@ -725,16 +855,50 @@ export function createMcpServer(db: Database): McpServer {
     },
     wrapHandler(
       async ({ user, domain }: { user?: string; domain?: string }) => {
-        // Mirror zam_open_studio: resolve to the signed-in user, but never
-        // fail to open the panel — fall back to null when no default is set.
-        const userId = await getUserId(user).catch(() => null);
+        // Resolve the same precedence the shared context bar uses (ADR
+        // §Decision 4): an explicit `user` argument, then the persisted
+        // Companion learner, then the shared database default — never a
+        // silent fall-through straight to the database default, which is
+        // exactly the bug this ADR was written to fix. Never fails to open
+        // the panel: any resolution failure degrades to a minimal fallback
+        // context instead of rejecting the call.
+        const opening = await resolveOpeningCompanionContextSafely(
+          db,
+          "recall",
+          user,
+          getNativeClientInfo(),
+          { clientSamplingCapable: getClientSamplingCapable() },
+        );
+        const companionContext = opening.context;
+        const userId = companionContext.user.currentId ?? null;
         await publishUiIntent("recall", { user, domain });
+
+        // The quick-mode setting read is a second, independent DB call not
+        // covered by the wrap above — guard it the same way so a broken DB
+        // connection degrades `quickMode` to its conservative default
+        // (false) instead of failing the whole open call.
+        let quickMode = false;
+        let degraded = opening.degraded;
+        try {
+          quickMode = (await getSetting(db, "recall.quick_mode")) === "true";
+        } catch (error) {
+          degraded = true;
+          console.error(
+            "[zam mcp] recall.quick_mode read failed, opening with quick mode's conservative default (false):",
+            error instanceof Error ? error.message : error,
+          );
+        }
+
         return {
           recall: "zam",
           version: pkg.version,
           user: userId,
           domain: domain ?? null,
-          quickMode: (await getSetting(db, "recall.quick_mode")) === "true",
+          quickMode,
+          // Resolved context for first paint (ADR §Decision 3) — the app
+          // must never briefly render the wrong learner.
+          companionContext,
+          ...(degraded ? { companionContextDegraded: true } : {}),
         };
       },
     ),
@@ -787,15 +951,26 @@ export function createMcpServer(db: Database): McpServer {
       },
     },
     wrapHandler(async ({ focus, user }: { focus?: string; user?: string }) => {
-      // Mirror zam_open_recall: resolve to the signed-in user, but never
-      // fail to open the panel — fall back to null when no default is set.
-      const userId = await getUserId(user).catch(() => null);
+      // Mirror zam_open_recall: resolve invocation > persisted Companion
+      // learner > shared database default, never a bare fall-through. Never
+      // fails to open the panel: any resolution failure degrades to a
+      // minimal fallback context instead of rejecting the call.
+      const opening = await resolveOpeningCompanionContextSafely(
+        db,
+        "graph",
+        user,
+        getNativeClientInfo(),
+        { clientSamplingCapable: getClientSamplingCapable() },
+      );
+      const userId = opening.context.user.currentId ?? null;
       await publishUiIntent("graph", { user, focus });
       return {
         graph: "zam",
         focus: focus ?? null,
         version: pkg.version,
         user: userId,
+        companionContext: opening.context,
+        ...(opening.degraded ? { companionContextDegraded: true } : {}),
       };
     }),
   );
@@ -841,14 +1016,25 @@ export function createMcpServer(db: Database): McpServer {
       },
     },
     wrapHandler(async ({ user }: { user?: string }) => {
-      // Mirror zam_open_recall/zam_show_graph: resolve to the signed-in user,
-      // but never fail to open the panel — fall back to null when unset.
-      const userId = await getUserId(user).catch(() => null);
+      // Mirror zam_open_recall/zam_show_graph: resolve invocation > persisted
+      // Companion learner > shared database default. Never fails to open the
+      // panel: any resolution failure degrades to a minimal fallback context
+      // instead of rejecting the call.
+      const opening = await resolveOpeningCompanionContextSafely(
+        db,
+        "settings",
+        user,
+        getNativeClientInfo(),
+        { clientSamplingCapable: getClientSamplingCapable() },
+      );
+      const userId = opening.context.user.currentId ?? null;
       await publishUiIntent("settings", { user });
       return {
         settings: "zam",
         version: pkg.version,
         user: userId,
+        companionContext: opening.context,
+        ...(opening.degraded ? { companionContextDegraded: true } : {}),
       };
     }),
   );
@@ -904,6 +1090,93 @@ export function createMcpServer(db: Database): McpServer {
         );
       }
       return await executeBridgeCommandJson(params.cmd, params.args);
+    }),
+  );
+
+  // 14. zam_companion_context — the shared Companion context contract (ADR
+  // 2026-07-16 §Decision 3, 0.11.0 Phase 2): current surface, native MCP
+  // client identity, learner profiles and selected learner, configured
+  // harness inventory, evaluator routes, and per-surface collapsed state.
+  // The write action changes only the selected user, evaluator, and/or
+  // collapsed state — never anything else — and persists exclusively to the
+  // machine-local `companion` section of ~/.zam/config.json, never the
+  // Turso-shared database. Registered app-only (visibility: ["app"]), like
+  // zam_studio_bridge above: the Companion host renders the title bar from
+  // this, a chat model has no reason to call it.
+  registerAppTool(
+    server,
+    "zam_companion_context",
+    {
+      description:
+        "App-only read/write context for the shared Companion title bar. " +
+        "`read` returns the current surface, native MCP client identity, " +
+        "learner profiles and selected learner, configured harness " +
+        "inventory, evaluator routes, and collapsed state. `write` changes " +
+        "only the selected user, evaluator, and/or collapsed state for one " +
+        "surface, using the same invocation/manual/persisted/default " +
+        "precedence as zam_open_recall, zam_show_graph, and " +
+        "zam_open_settings. Not intended for direct model use.",
+      inputSchema: {
+        action: z.enum(["read", "write"]).describe("Operation to perform"),
+        surface: z
+          .enum(COMPANION_SURFACES)
+          .describe("Companion surface this request concerns"),
+        clientInfo: z
+          .object({ name: z.string(), version: z.string().optional() })
+          .optional()
+          .describe(
+            "Native MCP client identity override for read (normally taken from the connection handshake)",
+          ),
+        harnessOverride: z
+          .string()
+          .optional()
+          .describe("Explicit harness id overriding clientInfo (read only)"),
+        userId: z
+          .string()
+          .optional()
+          .describe("Manual learner selection to persist (write only)"),
+        evaluatorId: z
+          .string()
+          .optional()
+          .describe("Manual evaluator selection to persist (write only)"),
+        collapsed: z
+          .boolean()
+          .optional()
+          .describe("Collapsed state for this surface (write only)"),
+      },
+      annotations: {
+        ...commonAnnotations,
+      },
+      _meta: {
+        ui: { visibility: ["app"] },
+      },
+    },
+    wrapHandler(async (params) => {
+      if (params.action === "read") {
+        const request = parseCompanionContextReadRequest({
+          surface: params.surface,
+          clientInfo: params.clientInfo ?? getNativeClientInfo(),
+          harnessOverride: params.harnessOverride,
+        });
+        return await readCompanionContext(db, request, {
+          clientSamplingCapable: getClientSamplingCapable(),
+        });
+      }
+      const request = parseCompanionContextWriteRequest({
+        surface: params.surface,
+        userId: params.userId,
+        evaluatorId: params.evaluatorId,
+        collapsed: params.collapsed,
+      });
+      // Thread the same connection identity the read branch uses so the
+      // post-write read matches what a read on this connection would
+      // return — a write from a Companion-identified connection must not
+      // drop back to an anonymous native host and under-report routability
+      // (e.g. `vscode-lm`) right after setting it.
+      return await writeCompanionContext(db, request, {
+        clientInfo: getNativeClientInfo(),
+        clientSamplingCapable: getClientSamplingCapable(),
+      });
     }),
   );
 

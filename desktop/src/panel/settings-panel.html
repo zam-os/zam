@@ -61,36 +61,11 @@
         max-width: 720px;
         margin: 0 auto;
       }
-      .zam-header {
-        display: flex;
-        align-items: baseline;
-        gap: 10px;
-        margin-bottom: 12px;
-      }
-      .zam-header h1 {
-        font-size: 18px;
-        margin: 0;
-      }
-      .zam-header .version {
-        color: var(--muted);
-        font-size: 12px;
-      }
-      .zam-status-line {
-        font-size: 0.85rem;
-        color: var(--muted);
-        margin: 0 0 14px;
-      }
-      .status-dot {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--muted);
-        margin-right: 6px;
-      }
-      .status-dot.connected {
-        background: var(--ok);
-      }
+      /* Shared context-bar CSS is injected once at runtime by
+         desktop/src/panel/context-bar.ts's mountContextBar (item 9, 0.11.0
+         review) instead of being duplicated in every panel's HTML — this
+         file's copy had already drifted (14px margins vs. 12px elsewhere);
+         the single injected version unifies on 12px. */
       .zam-card {
         background: var(--card);
         border-radius: 10px;
@@ -285,14 +260,8 @@
   </head>
   <body>
     <div id="zam-settings-panel">
-      <div class="zam-header">
-        <h1>ZAM Settings</h1>
-        <span class="version" id="zam-version"></span>
-      </div>
-      <p class="zam-status-line">
-        <span class="status-dot" id="zam-status-dot"></span>
-        <span id="zam-status">Connecting to host…</span>
-      </p>
+      <div id="zam-contextbar-root"></div>
+      <div class="zam-connection-notice" id="zam-connection-notice" hidden></div>
 
       <section class="zam-card settings-section">
         <div class="settings-section-title">Recall</div>

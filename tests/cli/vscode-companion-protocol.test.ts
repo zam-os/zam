@@ -68,8 +68,13 @@ describe("VS Code companion protocol", () => {
       }),
     ).toEqual({ user: "thomas", domain: "rag" });
     expect(COMPANION_APPS.recall.allowedTools).toEqual(
-      new Set(["zam_get_reviews", "zam_submit_review"]),
+      new Set(["zam_get_reviews", "zam_submit_review", "zam_companion_context"]),
     );
+    // The shared context bar (0.11.0 Phase 4) needs zam_companion_context
+    // reachable from every proxied app.
+    for (const app of Object.values(COMPANION_APPS)) {
+      expect(app.allowedTools.has("zam_companion_context")).toBe(true);
+    }
     expect(COMPANION_APPS).not.toHaveProperty("studio");
   });
 

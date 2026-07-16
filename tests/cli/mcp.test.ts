@@ -7,6 +7,7 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createMcpServer } from "../../src/cli/commands/mcp.js";
+import type { Database } from "../../src/kernel/index.js";
 import {
   createToken,
   ensureCard,
@@ -87,9 +88,9 @@ describe("MCP stdio server tests", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all 16 tools with correct annotations", async () => {
+  it("lists all 17 tools with correct annotations", async () => {
     const response = await client.listTools();
-    expect(response.tools).toHaveLength(16);
+    expect(response.tools).toHaveLength(17);
 
     const toolNames = response.tools.map((t) => t.name).sort();
     const expectedNames = [
@@ -109,6 +110,7 @@ describe("MCP stdio server tests", () => {
       "zam_show_graph",
       "zam_open_settings",
       "zam_studio_bridge",
+      "zam_companion_context",
     ].sort();
     expect(toolNames).toEqual(expectedNames);
 
@@ -366,6 +368,7 @@ describe("MCP stdio server tests", () => {
       user?: string | null;
       domain?: string | null;
       quickMode?: boolean;
+      companionContext?: { user?: { currentId?: string; source?: string } };
     };
     expect(structured.recall).toBe("zam");
     expect(typeof structured.version).toBe("string");
@@ -375,6 +378,10 @@ describe("MCP stdio server tests", () => {
     expect(structured.domain).toBeNull();
     // Smart Recall is the default when the setting is absent.
     expect(structured.quickMode).toBe(false);
+    // Resolved context for first paint (ADR §Decision 3) — the app must
+    // never briefly render the wrong learner while waiting for a second call.
+    expect(structured.companionContext?.user?.currentId).toBe("thomas");
+    expect(structured.companionContext?.user?.source).toBe("default");
 
     await db
       .prepare(
@@ -393,6 +400,38 @@ describe("MCP stdio server tests", () => {
     };
     expect(scopedStructured.domain).toBe("rag");
     expect(scopedStructured.quickMode).toBe(true);
+  });
+
+  it("reuses the persisted Companion learner for a menu-opened Recall instead of the database default", async () => {
+    // Regression coverage for the ADR's motivating incident: a menu-opened
+    // Recall (no explicit `user` argument) must not silently fall back to
+    // the shared database default once a Companion learner was selected.
+    const writeRes = await client.callTool({
+      name: "zam_companion_context",
+      arguments: {
+        action: "write",
+        surface: "recall",
+        userId: "test-user-0.6.2",
+      },
+    });
+    expect(writeRes.isError).toBeUndefined();
+
+    const openRes = await client.callTool({
+      name: "zam_open_recall",
+      arguments: {},
+    });
+    expect(openRes.isError).toBeUndefined();
+    const structured = (openRes as any).structuredContent as {
+      user?: string | null;
+    };
+    expect(structured.user).toBe("test-user-0.6.2");
+
+    // The shared database default must stay exactly as it was — switching
+    // the Companion learner must never rewrite it.
+    const userRow = await db
+      .prepare("SELECT value FROM user_config WHERE key = 'user.id'")
+      .get();
+    expect((userRow as { value: string }).value).toBe("thomas");
   });
 
   it("exposes the graph panel as an MCP Apps resource", async () => {
@@ -518,6 +557,95 @@ describe("MCP stdio server tests", () => {
     expect(res.isError).toBe(true);
     const data = JSON.parse(res.content[0].text);
     expect(data.error).toContain("Session not found");
+  });
+
+  describe("open-tool resilience (finding: open tools could fail to open)", () => {
+    function makeThrowingDb(): Database {
+      const fail = () => {
+        throw new Error("simulated DB outage");
+      };
+      return {
+        prepare: fail,
+        exec: async () => fail(),
+        pragma: async () => fail(),
+        transaction: async () => fail(),
+        close: async () => {},
+      } as unknown as Database;
+    }
+
+    it("never fails to open recall even when every DB read throws", async () => {
+      const brokenDb = makeThrowingDb();
+      const brokenServer = createMcpServer(brokenDb);
+      const [cTrans, sTrans] = InMemoryTransport.createLinkedPair();
+      const brokenClient = new Client(
+        { name: "test-client-broken-db", version: "1.0.0" },
+        { capabilities: {} },
+      );
+      await Promise.all([
+        brokenClient.connect(cTrans),
+        brokenServer.connect(sTrans),
+      ]);
+
+      try {
+        const res = await brokenClient.callTool({
+          name: "zam_open_recall",
+          arguments: {},
+        });
+        expect(res.isError).toBeUndefined();
+        const structured = (res as any).structuredContent as {
+          recall?: string;
+          user?: string | null;
+          quickMode?: boolean;
+          companionContext?: { evaluators?: unknown[] };
+          companionContextDegraded?: boolean;
+        };
+        // The panel still "opens": a usable, non-error structured result,
+        // not a rejected call.
+        expect(structured.recall).toBe("zam");
+        expect(structured.user).toBeNull();
+        expect(structured.quickMode).toBe(false);
+        expect(structured.companionContext?.evaluators?.length).toBeGreaterThan(
+          0,
+        );
+        // The degradation is observable, never silent.
+        expect(structured.companionContextDegraded).toBe(true);
+      } finally {
+        await brokenClient.close();
+        await brokenServer.close();
+      }
+    });
+
+    it("never fails to open studio, graph, or settings when every DB read throws", async () => {
+      const brokenDb = makeThrowingDb();
+      const brokenServer = createMcpServer(brokenDb);
+      const [cTrans, sTrans] = InMemoryTransport.createLinkedPair();
+      const brokenClient = new Client(
+        { name: "test-client-broken-db-2", version: "1.0.0" },
+        { capabilities: {} },
+      );
+      await Promise.all([
+        brokenClient.connect(cTrans),
+        brokenServer.connect(sTrans),
+      ]);
+
+      try {
+        for (const name of [
+          "zam_open_studio",
+          "zam_show_graph",
+          "zam_open_settings",
+        ]) {
+          const res = await brokenClient.callTool({ name, arguments: {} });
+          expect(res.isError).toBeUndefined();
+          const structured = (res as any).structuredContent as {
+            companionContextDegraded?: boolean;
+          };
+          expect(structured.companionContextDegraded).toBe(true);
+        }
+      } finally {
+        await brokenClient.close();
+        await brokenServer.close();
+      }
+    });
   });
 
   it("smoke test: process running command mcp only outputs JSON-RPC frames on stdout", async () => {
@@ -776,6 +904,106 @@ describe("MCP stdio server tests", () => {
         expect(data.path.endsWith(".sql")).toBe(true);
         expect(data.tables).toBeDefined();
       }, 15_000);
+    });
+  });
+
+  describe("zam_companion_context", () => {
+    it("registers as an app-only tool, not exposed for direct model use", async () => {
+      const response = await client.listTools();
+      const tool = response.tools.find(
+        (t) => t.name === "zam_companion_context",
+      );
+      expect(tool).toBeDefined();
+      const meta = tool?._meta as
+        | { ui?: { visibility?: string[] } }
+        | undefined;
+      expect(meta?.ui?.visibility).toEqual(["app"]);
+    });
+
+    it("reads the default context with no persisted preference", async () => {
+      const res = await client.callTool({
+        name: "zam_companion_context",
+        arguments: { action: "read", surface: "recall" },
+      });
+      expect(res.isError).toBeUndefined();
+      const data = JSON.parse(res.content[0].text);
+      expect(data.surface).toBe("recall");
+      expect(data.user).toEqual({
+        currentId: "thomas",
+        persistedId: undefined,
+        source: "default",
+      });
+      expect(data.collapsed).toBe(false);
+      expect(Array.isArray(data.profiles)).toBe(true);
+      expect(Array.isArray(data.harnesses)).toBe(true);
+      // Phase 2 does not yet broaden model routing — quick mode only.
+      expect(data.activeEvaluatorId).toBe("quick-mode");
+    });
+
+    it("rejects an unknown evaluator id instead of persisting it", async () => {
+      const res = await client.callTool({
+        name: "zam_companion_context",
+        arguments: {
+          action: "write",
+          surface: "recall",
+          evaluatorId: "not-a-real-evaluator",
+        },
+      });
+      expect(res.isError).toBe(true);
+    });
+
+    it("rejects a write request that changes nothing", async () => {
+      const res = await client.callTool({
+        name: "zam_companion_context",
+        arguments: { action: "write", surface: "recall" },
+      });
+      expect(res.isError).toBe(true);
+    });
+
+    it("persists a manual learner selection and reports reloadRequired", async () => {
+      const res = await client.callTool({
+        name: "zam_companion_context",
+        arguments: {
+          action: "write",
+          surface: "recall",
+          userId: "test-user-0.6.2",
+        },
+      });
+      expect(res.isError).toBeUndefined();
+      const data = JSON.parse(res.content[0].text);
+      expect(data.reloadRequired).toBe(true);
+      expect(data.read.user.currentId).toBe("test-user-0.6.2");
+      expect(data.read.user.source).toBe("persisted");
+
+      const reread = await client.callTool({
+        name: "zam_companion_context",
+        arguments: { action: "read", surface: "graph" },
+      });
+      const rereadData = JSON.parse(reread.content[0].text);
+      expect(rereadData.user.currentId).toBe("test-user-0.6.2");
+    });
+
+    it("does not require a reload for a collapsed-only write", async () => {
+      const res = await client.callTool({
+        name: "zam_companion_context",
+        arguments: {
+          action: "write",
+          surface: "settings",
+          collapsed: true,
+        },
+      });
+      expect(res.isError).toBeUndefined();
+      const data = JSON.parse(res.content[0].text);
+      expect(data.reloadRequired).toBe(false);
+      expect(data.read.collapsed).toBe(true);
+
+      // Collapsed state is per-surface: an unrelated surface is unaffected.
+      const otherSurface = await client.callTool({
+        name: "zam_companion_context",
+        arguments: { action: "read", surface: "recall" },
+      });
+      const otherData = JSON.parse(otherSurface.content[0].text);
+      expect(otherData.collapsed).toBe(false);
     });
   });
 });

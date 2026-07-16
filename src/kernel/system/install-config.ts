@@ -12,7 +12,14 @@
  * entry in `workspaces`, while legacy database settings are migrated by the CLI.
  */
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  unlinkSync,
+  writeFileSync,
+} from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { ulid } from "ulid";
@@ -28,6 +35,14 @@ export interface InstallConfig {
   ai?: MachineAiConfig;
   /** Machine-local agent-connect state; harness installs are per-machine. */
   agent?: MachineAgentConfig;
+  /**
+   * Machine-local Companion UI preferences (ADR 2026-07-16 §Decision 4,
+   * 0.11.0 Phase 2): selected learner, selected evaluator, and per-surface
+   * collapsed state. Deliberately never the Turso-shared learning database —
+   * changing the Companion learner must not rewrite the database-wide
+   * `user.id` default used by unrelated CLI or harness sessions.
+   */
+  companion?: MachineCompanionConfig;
   /** Machine-local paths to existing personal/team/community workspaces. */
   workspaces?: WorkspaceConfig[];
   /** Machine-local id of the workspace currently active in this install. */
@@ -39,6 +54,33 @@ export interface InstallConfig {
 export interface MachineAgentConfig {
   /** True once first-run agent auto-connect ran on THIS machine (`--auto-once`). */
   connectAutoDone?: boolean;
+}
+
+/**
+ * Machine-local Companion preferences (0.11.0 Phase 2). `selectedEvaluatorId`
+ * is stored as a plain string, not the `EvaluatorId` union from
+ * `src/vscode-extension/companion-evaluator.ts` — this module is part of the
+ * AI-agnostic kernel, so it never imports harness/evaluator types; the CLI
+ * layer validates the string against `isEvaluatorId` on read.
+ */
+export interface MachineCompanionConfig {
+  /** Persisted Companion learner selection — never the shared `user.id`. */
+  selectedUserId?: string;
+  /** Persisted Companion evaluator selection. */
+  selectedEvaluatorId?: string;
+  /**
+   * Persisted explicit VS Code language-model choice for the `vscode-lm`
+   * evaluator adapter (0.11.0 Phase 3) — the model's `vscode.lm` id
+   * (`LanguageModelChat.id`). Kept separate from `selectedEvaluatorId`
+   * because choosing "vscode-lm" as the evaluator and choosing *which*
+   * VS Code model it uses are two different decisions (ADR 2026-07-16
+   * §Decision 5: "an explicit model choice"). Machine-local only, like the
+   * rest of this section — never inferred by picking the first result of
+   * `selectChatModels` on every call.
+   */
+  selectedVscodeModelId?: string;
+  /** Collapsed state for the shared context bar, keyed by surface name. */
+  collapsed?: Record<string, boolean>;
 }
 
 export type MachineAiRole = "vision" | "recall" | "text" | "embedding";
@@ -170,14 +212,42 @@ export function loadInstallConfig(path = defaultConfigPath()): InstallConfig {
   }
 }
 
-/** Persist the install config, preserving any unrelated keys already on disk. */
+/**
+ * Persist the install config, preserving any unrelated keys already on disk.
+ *
+ * Writes atomically: the JSON is written to a temp file in the same
+ * directory (same volume, so the following rename is a single filesystem
+ * operation) and then renamed over the target — the same handoff pattern
+ * `writeUiIntent` uses for the UI-intent file (`src/cli/ui-intent.ts`). A
+ * reader (or a process crash mid-write) can therefore never observe a
+ * half-written `config.json`; the worst case is losing this one write, never
+ * a torn/truncated file. `renameSync` replaces an existing destination on
+ * both POSIX and Windows (libuv issues `MoveFileExW` with
+ * `MOVEFILE_REPLACE_EXISTING` on Windows), so no unlink-first step is needed
+ * in the common case — the fallback below only matters if some other
+ * process (antivirus/indexer) transiently holds the destination open.
+ */
 export function saveInstallConfig(
   config: InstallConfig,
   path = defaultConfigPath(),
 ): void {
   const dir = dirname(path);
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-  writeFileSync(path, `${JSON.stringify(config, null, 2)}\n`, "utf-8");
+  const tempPath = join(dir, `.config-${process.pid}-${Date.now()}.tmp`);
+  writeFileSync(tempPath, `${JSON.stringify(config, null, 2)}\n`, "utf-8");
+  try {
+    renameSync(tempPath, path);
+  } catch (error) {
+    // Windows fallback: a stale reader transiently holding the destination
+    // open can make an overwrite-rename fail even though replace-on-rename
+    // is the default. Unlink then retry once before giving up.
+    try {
+      unlinkSync(path);
+      renameSync(tempPath, path);
+    } catch {
+      throw error;
+    }
+  }
 }
 
 /**
@@ -413,6 +483,184 @@ export function setAgentConnectAutoDone(
     delete config.agent.connectAutoDone;
   }
   saveInstallConfig(config, path);
+}
+
+/**
+ * Machine-local Companion preferences (0.11.0 Phase 2). Defensively
+ * normalizes whatever is on disk instead of trusting the raw JSON shape: a
+ * hand-edited or partially-written `companion` section (wrong types, a stray
+ * array) must fall back to sensible defaults rather than crash the `zam mcp`
+ * process the Companion depends on for first paint.
+ */
+export function getMachineCompanionConfig(
+  path = defaultConfigPath(),
+): MachineCompanionConfig {
+  const raw = loadInstallConfig(path).companion;
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return {};
+  const result: MachineCompanionConfig = {};
+  if (typeof raw.selectedUserId === "string") {
+    result.selectedUserId = raw.selectedUserId;
+  }
+  if (typeof raw.selectedEvaluatorId === "string") {
+    result.selectedEvaluatorId = raw.selectedEvaluatorId;
+  }
+  if (typeof raw.selectedVscodeModelId === "string") {
+    result.selectedVscodeModelId = raw.selectedVscodeModelId;
+  }
+  if (
+    raw.collapsed &&
+    typeof raw.collapsed === "object" &&
+    !Array.isArray(raw.collapsed)
+  ) {
+    const collapsed: Record<string, boolean> = {};
+    for (const [surface, value] of Object.entries(raw.collapsed)) {
+      if (typeof value === "boolean") collapsed[surface] = value;
+    }
+    result.collapsed = collapsed;
+  }
+  return result;
+}
+
+/** Persist the Companion preferences, preserving other top-level config keys. */
+export function saveMachineCompanionConfig(
+  companion: MachineCompanionConfig,
+  path = defaultConfigPath(),
+): void {
+  const config = loadInstallConfig(path);
+  config.companion = companion;
+  saveInstallConfig(config, path);
+}
+
+/**
+ * One batched Companion preference change. A key is only touched when
+ * present on the update object — `"selectedUserId" in update` (not a plain
+ * truthiness check), so `{ selectedUserId: undefined }` still clears the
+ * field, mirroring `setCompanionSelectedUserId(undefined, ...)`. `collapsed`
+ * merges into the existing per-surface map rather than replacing it, like
+ * `setCompanionCollapsed`.
+ */
+export interface MachineCompanionConfigUpdate {
+  selectedUserId?: string;
+  selectedEvaluatorId?: string;
+  collapsed?: { surface: string; value: boolean };
+}
+
+/**
+ * Apply a batch of Companion preference changes with one load and one save,
+ * instead of calling the individual setters below in sequence (each of which
+ * does its own load-apply-save). A write that touches the learner, the
+ * evaluator, and the collapsed state all at once — e.g.
+ * `writeCompanionContext` — does one read and one write here instead of
+ * three. Fields absent from `update` are left exactly as they were; this is
+ * the same merge behavior as the individual setters, just batched.
+ */
+export function updateMachineCompanionConfig(
+  update: MachineCompanionConfigUpdate,
+  path = defaultConfigPath(),
+): MachineCompanionConfig {
+  const companion = getMachineCompanionConfig(path);
+  if ("selectedUserId" in update) {
+    if (update.selectedUserId) {
+      companion.selectedUserId = update.selectedUserId;
+    } else {
+      delete companion.selectedUserId;
+    }
+  }
+  if ("selectedEvaluatorId" in update) {
+    if (update.selectedEvaluatorId) {
+      companion.selectedEvaluatorId = update.selectedEvaluatorId;
+    } else {
+      delete companion.selectedEvaluatorId;
+    }
+  }
+  if (update.collapsed) {
+    companion.collapsed = {
+      ...(companion.collapsed ?? {}),
+      [update.collapsed.surface]: update.collapsed.value,
+    };
+  }
+  saveMachineCompanionConfig(companion, path);
+  return companion;
+}
+
+/** The persisted Companion learner, independent of the shared `user.id`. */
+export function getCompanionSelectedUserId(
+  path = defaultConfigPath(),
+): string | undefined {
+  return getMachineCompanionConfig(path).selectedUserId;
+}
+
+export function setCompanionSelectedUserId(
+  userId: string | undefined,
+  path = defaultConfigPath(),
+): void {
+  const companion = getMachineCompanionConfig(path);
+  if (userId) {
+    companion.selectedUserId = userId;
+  } else {
+    delete companion.selectedUserId;
+  }
+  saveMachineCompanionConfig(companion, path);
+}
+
+/** The persisted Companion evaluator id (validated against `EvaluatorId` by callers). */
+export function getCompanionSelectedEvaluatorId(
+  path = defaultConfigPath(),
+): string | undefined {
+  return getMachineCompanionConfig(path).selectedEvaluatorId;
+}
+
+export function setCompanionSelectedEvaluatorId(
+  evaluatorId: string | undefined,
+  path = defaultConfigPath(),
+): void {
+  const companion = getMachineCompanionConfig(path);
+  if (evaluatorId) {
+    companion.selectedEvaluatorId = evaluatorId;
+  } else {
+    delete companion.selectedEvaluatorId;
+  }
+  saveMachineCompanionConfig(companion, path);
+}
+
+/** The persisted explicit VS Code model choice for the `vscode-lm` adapter. */
+export function getCompanionSelectedVscodeModelId(
+  path = defaultConfigPath(),
+): string | undefined {
+  return getMachineCompanionConfig(path).selectedVscodeModelId;
+}
+
+export function setCompanionSelectedVscodeModelId(
+  modelId: string | undefined,
+  path = defaultConfigPath(),
+): void {
+  const companion = getMachineCompanionConfig(path);
+  if (modelId) {
+    companion.selectedVscodeModelId = modelId;
+  } else {
+    delete companion.selectedVscodeModelId;
+  }
+  saveMachineCompanionConfig(companion, path);
+}
+
+/** Collapsed state for every surface that has been explicitly set. */
+export function getCompanionCollapsed(
+  path = defaultConfigPath(),
+): Record<string, boolean> {
+  return getMachineCompanionConfig(path).collapsed ?? {};
+}
+
+export function setCompanionCollapsed(
+  surface: string,
+  collapsed: boolean,
+  path = defaultConfigPath(),
+): void {
+  const companion = getMachineCompanionConfig(path);
+  companion.collapsed = {
+    ...(companion.collapsed ?? {}),
+    [surface]: collapsed,
+  };
+  saveMachineCompanionConfig(companion, path);
 }
 
 /**

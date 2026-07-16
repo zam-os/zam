@@ -7,6 +7,24 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import type { CallToolResult, Tool } from "@modelcontextprotocol/sdk/types.js";
 import * as vscode from "vscode";
 import {
+  getCompanionSelectedEvaluatorId,
+  getCompanionSelectedVscodeModelId,
+  setCompanionSelectedVscodeModelId,
+} from "../kernel/index.js";
+import {
+  CHOOSE_RECALL_MODEL_COMMAND_TITLE,
+  createVscodeLmAdapter,
+  runChooseRecallModel,
+  type VscodeChatModelLike,
+  type VscodeLmSurface,
+  type VscodeModelSelection,
+} from "./companion-adapters.js";
+import {
+  assertSamplingRoutableToVscodeLm,
+  enrichCallToolResultForVscodeLm,
+} from "./companion-dispatch.js";
+import type { EvaluatorAdapter } from "./companion-evaluator.js";
+import {
   buildOpeningArguments,
   COMPANION_APPS,
   type CompanionApp,
@@ -16,6 +34,33 @@ import {
   parseCompanionIntent,
   toolUiResourceUri,
 } from "./protocol.js";
+
+/**
+ * Real `vscode.lm` surface for {@link createVscodeLmAdapter}. Only these
+ * methods — never `vscode.CancellationToken.None`, which does not exist at
+ * runtime (ADR 2026-07-16 §Decision 6) — are used to talk to VS Code.
+ */
+const vscodeLmSurface: VscodeLmSurface = {
+  selectChatModels: (selector) =>
+    vscode.lm.selectChatModels(selector) as unknown as PromiseLike<
+      VscodeChatModelLike[]
+    >,
+  chatMessageUser: (content) => vscode.LanguageModelChatMessage.User(content),
+  chatMessageAssistant: (content) =>
+    vscode.LanguageModelChatMessage.Assistant(content),
+  createCancellationTokenSource: () => new vscode.CancellationTokenSource(),
+};
+
+/** Persists the explicit VS Code model choice machine-locally (Phase 3). */
+const vscodeModelSelection: VscodeModelSelection = {
+  getSelectedModelId: () => getCompanionSelectedVscodeModelId(),
+  setSelectedModelId: (id) => setCompanionSelectedVscodeModelId(id),
+};
+
+const vscodeLmAdapter: EvaluatorAdapter = createVscodeLmAdapter(
+  vscodeLmSurface,
+  vscodeModelSelection,
+);
 
 interface LaunchConfig {
   command: string;
@@ -216,6 +261,15 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
     this.setEmpty(`${COMPANION_APPS[kind].title} wird geladen …`);
     try {
       this.prepared = await this.mcp.prepare(kind, input);
+      // Patch the routable vscode-lm route's displayIdentity with the real
+      // provider/model before this ever reaches the webview (finding 2) —
+      // the server-side builder can only emit the generic "VS Code language
+      // models" label since it runs as a Node CLI process, never as the
+      // extension host that can call vscode.lm.
+      await enrichCallToolResultForVscodeLm(
+        this.prepared.toolResult,
+        vscodeLmAdapter,
+      );
       this.sendBootstrap();
       this.output.appendLine(
         `[${new Date().toISOString()}] opened ${kind} via ${this.prepared.resourceUri}`,
@@ -228,6 +282,19 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
       );
       void vscode.window.showErrorMessage(`ZAM Companion: ${message}`);
     }
+  }
+
+  /**
+   * Re-open the currently mounted app with its original arguments so the
+   * webview receives a fresh, re-enriched tool result. Used after
+   * "ZAM: Choose Recall Model": the pick persists immediately, but a mounted
+   * Agent pill kept showing the previous model until the next open (live
+   * 0.11.0 finding) — the pill must never lag behind the model that will
+   * actually evaluate the next answer. No-op when nothing is mounted.
+   */
+  public async refreshCurrentApp(): Promise<void> {
+    if (!this.prepared) return;
+    await this.open(this.prepared.kind, this.prepared.toolArguments);
   }
 
   private async handleMessage(message: HostMessage): Promise<void> {
@@ -291,40 +358,37 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
       !Array.isArray(value.arguments)
         ? (value.arguments as Record<string, unknown>)
         : {};
-    return (await (
+    const result = (await (
       await this.mcp.client()
     ).callTool({ name: value.name, arguments: args })) as CallToolResult;
+    // Every forwarded tool result may carry a companionContext (e.g.
+    // zam_companion_context's read/write result) — enrich its vscode-lm
+    // route the same way an opening tool's result is enriched in open().
+    await enrichCallToolResultForVscodeLm(result, vscodeLmAdapter);
+    return result;
   }
 
+  /**
+   * Route a sampling request through the selected evaluator adapter (ADR
+   * 2026-07-16 §Decision 5, 0.11.0 Phase 3). The Agent pill is the single
+   * source of truth for which evaluator should receive this request
+   * (review finding 1): the Recall panel only ever sends a "sampling"
+   * message when it decided to use smart mode (quick mode skips sampling
+   * entirely — see `desktop/src/panel/recall.ts`), but this still reads the
+   * persisted selection itself rather than trusting the panel alone —
+   * `assertSamplingRoutableToVscodeLm` throws `EvaluatorUnavailableError`
+   * with an honest reason if the selection names quick-mode or a detached
+   * harness instead of `vscode-lm`. If `vscode-lm` itself is unavailable (no
+   * model chosen or discovered, or the persisted choice disappeared),
+   * `evaluateAnswer` throws the same error type. Either way this never
+   * silently falls back to a different route — the caller (`handleMessage`)
+   * turns the error into an honest message surfaced back to the panel.
+   */
   private async sample(payload: unknown): Promise<unknown> {
     const request = normalizeSamplingRequest(payload);
-    const models = await vscode.lm.selectChatModels({});
-    const model = models[0];
-    if (!model) {
-      throw new Error(
-        "No VS Code language model is available. Sign in to a model provider " +
-          "or enable Recall quick mode in ZAM Settings.",
-      );
-    }
-
-    const messages = request.messages.map((message) =>
-      message.role === "assistant"
-        ? vscode.LanguageModelChatMessage.Assistant(message.text)
-        : vscode.LanguageModelChatMessage.User(message.text),
-    );
-    const response = await model.sendRequest(
-      messages,
-      {
-        justification:
-          "ZAM Recall checks the answer you submitted and answers your follow-up questions.",
-      },
-      vscode.CancellationToken.None,
-    );
-    let text = "";
-    for await (const fragment of response.text) text += fragment;
-    if (!text.trim())
-      throw new Error("The VS Code language model returned no text");
-    return createSamplingResult(model.id, text.trim());
+    assertSamplingRoutableToVscodeLm(getCompanionSelectedEvaluatorId());
+    const result = await vscodeLmAdapter.evaluateAnswer(request);
+    return createSamplingResult(result.model, result.text);
   }
 
   private async openLink(payload: unknown): Promise<Record<string, unknown>> {
@@ -464,6 +528,26 @@ export async function activate(
     vscode.commands.registerCommand("zam.openSettings", () =>
       provider.open("settings"),
     ),
+    vscode.commands.registerCommand("zam.chooseRecallModel", async () => {
+      const picked = await runChooseRecallModel(
+        {
+          listModels: () => vscode.lm.selectChatModels({}),
+          showQuickPick: (items) =>
+            vscode.window.showQuickPick(items, {
+              title: CHOOSE_RECALL_MODEL_COMMAND_TITLE,
+              placeHolder:
+                "Select the VS Code language model ZAM Recall should use",
+            }),
+          showInformationMessage: (message) =>
+            void vscode.window.showInformationMessage(message),
+          showWarningMessage: (message) =>
+            void vscode.window.showWarningMessage(message),
+        },
+        vscodeModelSelection,
+      );
+      // A mounted Agent pill must reflect the new choice immediately.
+      if (picked) await provider.refreshCurrentApp();
+    }),
   );
 
   let lastIntentId: string | undefined;

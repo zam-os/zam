@@ -3280,12 +3280,18 @@ bridgeCommand
 
 // ── zam bridge database-status / database-select-user ───────────────────────
 
-interface DatabaseUserSummary {
+export interface DatabaseUserSummary {
   id: string;
   cardCount: number;
 }
 
-async function readDatabaseUserSummaries(
+/**
+ * Learning profiles known to the current database, grouped by user with
+ * their card count. Reused by the `zam_companion_context` MCP tool
+ * (0.11.0 Phase 2) so the Companion learner picker never grows a second,
+ * parallel query alongside `database-status`.
+ */
+export async function readDatabaseUserSummaries(
   db: Database,
 ): Promise<DatabaseUserSummary[]> {
   return (await db

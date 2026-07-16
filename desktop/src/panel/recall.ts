@@ -18,13 +18,27 @@
  * written into the DOM for the first time on reveal — never before.
  *
  * Standalone by design (tests/desktop/module-boundaries.test.ts): no Tauri,
- * no Three.js, no import from ./panel.ts. The result-parsing helper below is
- * copied from panel.ts's mcpTransport rather than shared, to keep each panel
- * entry independently bundleable.
+ * no Three.js, no import from ./panel.ts. The `callTool`/context-bar plumbing
+ * below is shared via ./context-bar.js (item 9, 0.11.0 review) rather than
+ * hand-copied, but every panel entry still bundles independently — that
+ * module has no import of its own beyond the already-shared
+ * `@modelcontextprotocol/ext-apps`.
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
 import { setCurrentLocale, t, tf } from "../i18n.js";
+import {
+  type CompanionContextBarState,
+  type ContextBarHandle,
+  clearConnectionNotice as clearConnectionNoticeShared,
+  createCallTool,
+  createContextReader,
+  createContextWriter,
+  deriveQuickMode,
+  ensureContextBar,
+  fallbackContextBarState,
+  showConnectionNotice as showConnectionNoticeShared,
+} from "./context-bar.js";
 import {
   buildRecallEvaluationPrompt,
   buildRecallFollowUpPrompt,
@@ -32,19 +46,20 @@ import {
   type RecallEvaluation,
 } from "./recall-evaluation.js";
 
-const statusEl = document.getElementById("zam-status");
-const statusDot = document.getElementById("zam-status-dot");
-const versionEl = document.getElementById("zam-version");
+const contextBarRoot = document.getElementById("zam-contextbar-root");
+const noticeEl = document.getElementById("zam-connection-notice");
 const contentEl = document.getElementById("recall-content");
 
-function setStatus(text: string, connected: boolean): void {
-  if (statusEl) statusEl.textContent = text;
-  if (statusDot) statusDot.classList.toggle("connected", connected);
-}
+const showConnectionNotice = (message: string): void =>
+  showConnectionNoticeShared(noticeEl, message);
+const clearConnectionNotice = (): void => clearConnectionNoticeShared(noticeEl);
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
+
+let contextBar: ContextBarHandle | undefined;
+let panelVersion: string | undefined;
 
 interface OpenRecallResult {
   recall?: string;
@@ -52,6 +67,7 @@ interface OpenRecallResult {
   user?: string | null;
   domain?: string | null;
   quickMode?: boolean;
+  companionContext?: CompanionContextBarState;
 }
 
 interface ReviewCard {
@@ -117,33 +133,39 @@ const tally = {
   ratings: { 1: 0, 2: 0, 3: 0, 4: 0 } as Record<number, number>,
 };
 
+const SURFACE = "recall";
+
+const callTool = createCallTool(app);
+const writeCompanionContext = createContextWriter(callTool, SURFACE);
+const readCompanionContext = createContextReader(callTool, SURFACE);
+
 /**
- * Parse a zam MCP tool result: success answers carry JSON on content[0].text
- * (never structuredContent — wrapHandler re-wraps arrays as `{ result }`); on
- * isError, surface the JSON `error` field. Copied from panel.ts.
+ * True while the currently shown card has a typed-but-unsubmitted answer —
+ * the concrete "unsubmitted, local state" case the ADR calls out for the
+ * context bar's discard confirmation (ADR §Decision 4).
  */
-async function callTool(
-  name: string,
-  args: Record<string, unknown>,
-): Promise<unknown> {
-  const result = await app.callServerTool({ name, arguments: args });
-  const first = result.content?.[0];
-  const text = first && first.type === "text" ? first.text : undefined;
+function hasUnsavedRecallState(): boolean {
+  const answer = contentEl?.querySelector<HTMLTextAreaElement>(
+    ".recall-answer:not(:disabled)",
+  );
+  return Boolean(answer && answer.value.trim());
+}
 
-  if (result.isError) {
-    let message = text ?? `${name} call failed`;
-    if (text) {
-      try {
-        const parsed = JSON.parse(text) as { error?: string };
-        if (typeof parsed.error === "string") message = parsed.error;
-      } catch {
-        // Not JSON — keep the raw text assigned above.
-      }
-    }
-    throw new Error(message);
-  }
-
-  return text === undefined ? undefined : JSON.parse(text);
+/**
+ * A user/evaluator context change is a context boundary (ADR §Decision 4):
+ * reset this session's local state and reload against the new context
+ * rather than continue mid-card with a stale learner, mode, or agent.
+ */
+function reloadForContext(newState: CompanionContextBarState): void {
+  currentUser = newState.user.currentId ?? null;
+  quickMode = deriveQuickMode(newState, quickMode);
+  started = false;
+  finished = false;
+  cards = [];
+  index = 0;
+  tally.done = 0;
+  tally.ratings = { 1: 0, 2: 0, 3: 0, 4: 0 };
+  start();
 }
 
 function remaining(): number {
@@ -766,16 +788,72 @@ function start(): void {
 
 app.ontoolresult = (params) => {
   const structured = (params.structuredContent ?? {}) as OpenRecallResult;
-  if (versionEl && structured.version) {
-    versionEl.textContent = `v${structured.version}`;
-  }
+  panelVersion = structured.version;
+  // A tool result may arrive AFTER the 800ms grace-period fallback below has
+  // already started a session against the previous context (observed live:
+  // an agent-opened Recall for the test profile kept showing the default
+  // learner's queue while the User pill switched — a rating would then pair
+  // the new user with the old user's card id). The authoritative context in
+  // the tool result must win: if a session is running for a different
+  // user/domain, discard it and reload instead of merely relabeling the bar.
+  const previousUser = currentUser;
+  const previousDomain = focusDomain;
   currentUser = structured.user ?? null;
   focusDomain = structured.domain ?? null;
-  quickMode = structured.quickMode === true;
-  const who = currentUser ? ` — ${currentUser}` : "";
-  setStatus(`Connected to zam mcp${who}`, true);
+  quickMode = deriveQuickMode(
+    structured.companionContext,
+    structured.quickMode === true,
+  );
+  const contextChanged =
+    started && (previousUser !== currentUser || previousDomain !== focusDomain);
+  if (contextChanged) {
+    started = false;
+    finished = false;
+    cards = [];
+    index = 0;
+    tally.done = 0;
+    tally.ratings = { 1: 0, 2: 0, 3: 0, 4: 0 };
+  }
+  clearConnectionNotice();
+
+  const contextState =
+    structured.companionContext ??
+    fallbackContextBarState(SURFACE, currentUser);
+  contextBar = ensureContextBar(
+    contextBar,
+    contextBarRoot,
+    "ZAM Recall",
+    panelVersion,
+    contextState,
+    {
+      write: writeCompanionContext,
+      read: readCompanionContext,
+      hasUnsavedChanges: hasUnsavedRecallState,
+      onReload: reloadForContext,
+      onError: showConnectionNotice,
+    },
+  );
   start();
 };
+
+// Mount the bar immediately — before any tool result — so the title and an
+// honest "no learner/agent resolved yet" state (fallbackContextBarState) are
+// visible from first paint (review finding 6), not only once a host's
+// ontoolresult (or the 800ms grace-period fallback below) actually fires.
+contextBar = ensureContextBar(
+  contextBar,
+  contextBarRoot,
+  "ZAM Recall",
+  panelVersion,
+  fallbackContextBarState(SURFACE, currentUser),
+  {
+    write: writeCompanionContext,
+    read: readCompanionContext,
+    hasUnsavedChanges: hasUnsavedRecallState,
+    onReload: reloadForContext,
+    onError: showConnectionNotice,
+  },
+);
 
 // A plain file viewer (e.g. an editor preview) renders this HTML without
 // ever answering ui/initialize — connect() then stays pending forever.
@@ -783,14 +861,16 @@ app.ontoolresult = (params) => {
 const NO_HOST_NOTICE =
   "Kein MCP-Apps-Host — diese Karte braucht einen Host mit ui/initialize " +
   "(z. B. basic-host oder Copilot-Panel).";
-const noHostTimer = setTimeout(() => setStatus(NO_HOST_NOTICE, false), 4000);
+const noHostTimer = setTimeout(
+  () => showConnectionNotice(NO_HOST_NOTICE),
+  4000,
+);
 
 app
   .connect()
   .then(() => {
     clearTimeout(noHostTimer);
     connected = true;
-    setStatus("Connected to host — waiting for session…", true);
     if (navigator.language.startsWith("de")) {
       setCurrentLocale("de");
     }
@@ -801,10 +881,5 @@ app
   })
   .catch((error: unknown) => {
     clearTimeout(noHostTimer);
-    setStatus(
-      `ZAM Recall failed to start: ${
-        error instanceof Error ? error.message : String(error)
-      }`,
-      false,
-    );
+    showConnectionNotice(`ZAM Recall failed to start: ${errorMessage(error)}`);
   });

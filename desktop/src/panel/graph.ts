@@ -7,12 +7,26 @@
  * breadcrumb of the last 5 focus titles enables going back.
  *
  * Standalone by design (tests/desktop/module-boundaries.test.ts): no Tauri,
- * no Three.js, no import from ./panel.ts or ./recall.ts. The result-parsing
- * helper below is copied from recall.ts (itself copied from panel.ts's
- * mcpTransport), to keep each panel entry independently bundleable.
+ * no Three.js, no import from ./panel.ts or ./recall.ts. The `callTool`/
+ * context-bar plumbing below is shared via ./context-bar.js (item 9, 0.11.0
+ * review) rather than hand-copied, but this panel entry still bundles
+ * independently — that module has no import of its own beyond the
+ * already-shared `@modelcontextprotocol/ext-apps`.
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
+import { setCurrentLocale } from "../i18n.js";
+import {
+  type CompanionContextBarState,
+  type ContextBarHandle,
+  clearConnectionNotice as clearConnectionNoticeShared,
+  createCallTool,
+  createContextReader,
+  createContextWriter,
+  ensureContextBar,
+  fallbackContextBarState,
+  showConnectionNotice as showConnectionNoticeShared,
+} from "./context-bar.js";
 import {
   type GraphNodeBounds,
   graphEdgeEndpoints,
@@ -37,22 +51,28 @@ const LABEL_MAX_LINES = 3;
 const LABEL_LINE_HEIGHT = 14;
 const HISTORY_LIMIT = 5;
 
-const statusEl = document.getElementById("zam-status");
-const statusDot = document.getElementById("zam-status-dot");
-const versionEl = document.getElementById("zam-version");
+const contextBarRoot = document.getElementById("zam-contextbar-root");
+const noticeEl = document.getElementById("zam-connection-notice");
 const breadcrumbEl = document.getElementById("graph-breadcrumb");
 const contentEl = document.getElementById("graph-content");
 
-function setStatus(text: string, connected: boolean): void {
-  if (statusEl) statusEl.textContent = text;
-  if (statusDot) statusDot.classList.toggle("connected", connected);
+const showConnectionNotice = (message: string): void =>
+  showConnectionNoticeShared(noticeEl, message);
+const clearConnectionNotice = (): void => clearConnectionNoticeShared(noticeEl);
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
 }
+
+let contextBar: ContextBarHandle | undefined;
+let panelVersion: string | undefined;
 
 interface OpenGraphResult {
   graph?: string;
   focus?: string | null;
   version?: string;
   user?: string | null;
+  companionContext?: CompanionContextBarState;
 }
 
 interface KnowledgeContextRef {
@@ -99,33 +119,25 @@ let initialFocus: string | null = null;
 /** Last up to HISTORY_LIMIT focuses, most-recent last (current focus). */
 let history: Array<{ slug: string; title: string }> = [];
 
+const SURFACE = "graph";
+
+const callTool = createCallTool(app);
+const writeCompanionContext = createContextWriter(callTool, SURFACE);
+const readCompanionContext = createContextReader(callTool, SURFACE);
+
 /**
- * Parse a zam MCP tool result: success answers carry JSON on content[0].text
- * (never structuredContent — wrapHandler re-wraps arrays as `{ result }`); on
- * isError, surface the JSON `error` field. Copied from recall.ts.
+ * A user/evaluator context change is a context boundary (ADR §Decision 4):
+ * re-navigate to the current focus under the new context rather than
+ * continue showing a neighborhood scoped to the previous learner.
  */
-async function callTool(
-  name: string,
-  args: Record<string, unknown>,
-): Promise<unknown> {
-  const result = await app.callServerTool({ name, arguments: args });
-  const first = result.content?.[0];
-  const text = first && first.type === "text" ? first.text : undefined;
-
-  if (result.isError) {
-    let message = text ?? `${name} call failed`;
-    if (text) {
-      try {
-        const parsed = JSON.parse(text) as { error?: string };
-        if (typeof parsed.error === "string") message = parsed.error;
-      } catch {
-        // Not JSON — keep the raw text assigned above.
-      }
-    }
-    throw new Error(message);
+function reloadForContext(newState: CompanionContextBarState): void {
+  currentUser = newState.user.currentId ?? null;
+  const focus = history[history.length - 1]?.slug ?? initialFocus;
+  if (focus) {
+    void navigateTo(focus);
+  } else {
+    renderNoFocus();
   }
-
-  return text === undefined ? undefined : JSON.parse(text);
 }
 
 /** Sync a compact neighborhood snapshot into the host's model context. */
@@ -453,15 +465,59 @@ function start(): void {
 
 app.ontoolresult = (params) => {
   const structured = (params.structuredContent ?? {}) as OpenGraphResult;
-  if (versionEl && structured.version) {
-    versionEl.textContent = `v${structured.version}`;
-  }
+  panelVersion = structured.version;
+  // Same late-tool-result race as recall.ts: the 800ms fallback below may
+  // have started against the previous user/focus. The tool result's context
+  // is authoritative — restart the session when it names a different one.
+  const previousUser = currentUser;
+  const previousFocus = initialFocus;
   currentUser = structured.user ?? null;
   initialFocus = structured.focus ?? null;
-  const who = currentUser ? ` — ${currentUser}` : "";
-  setStatus(`Connected to zam mcp${who}`, true);
+  if (
+    started &&
+    (previousUser !== currentUser || previousFocus !== initialFocus)
+  ) {
+    started = false;
+    history = [];
+  }
+  clearConnectionNotice();
+
+  const contextState =
+    structured.companionContext ??
+    fallbackContextBarState(SURFACE, currentUser);
+  contextBar = ensureContextBar(
+    contextBar,
+    contextBarRoot,
+    "ZAM Graph",
+    panelVersion,
+    contextState,
+    {
+      write: writeCompanionContext,
+      read: readCompanionContext,
+      onReload: reloadForContext,
+      onError: showConnectionNotice,
+    },
+  );
   start();
 };
+
+// Mount the bar immediately — before any tool result — so the title and an
+// honest "no learner/agent resolved yet" state (fallbackContextBarState) are
+// visible from first paint (review finding 6), not only once a host's
+// ontoolresult (or the 800ms grace-period fallback below) actually fires.
+contextBar = ensureContextBar(
+  contextBar,
+  contextBarRoot,
+  "ZAM Graph",
+  panelVersion,
+  fallbackContextBarState(SURFACE, currentUser),
+  {
+    write: writeCompanionContext,
+    read: readCompanionContext,
+    onReload: reloadForContext,
+    onError: showConnectionNotice,
+  },
+);
 
 // A plain file viewer (e.g. an editor preview) renders this HTML without
 // ever answering ui/initialize — connect() then stays pending forever.
@@ -469,26 +525,26 @@ app.ontoolresult = (params) => {
 const NO_HOST_NOTICE =
   "Kein MCP-Apps-Host — diese Karte braucht einen Host mit ui/initialize " +
   "(z. B. basic-host oder Copilot-Panel).";
-const noHostTimer = setTimeout(() => setStatus(NO_HOST_NOTICE, false), 4000);
+const noHostTimer = setTimeout(
+  () => showConnectionNotice(NO_HOST_NOTICE),
+  4000,
+);
 
 app
   .connect()
   .then(() => {
     clearTimeout(noHostTimer);
     connected = true;
-    setStatus("Connected to host — waiting for session…", true);
+    if (navigator.language.startsWith("de")) {
+      setCurrentLocale("de");
+    }
     // ontoolresult (which carries the initial focus + signed-in user)
     // normally fires right after the handshake and triggers the load. If a
     // host never delivers it, still show the empty state after a short grace
-    // period instead of leaving the card stuck on "waiting for session".
+    // period instead of leaving the card stuck waiting.
     window.setTimeout(start, 800);
   })
   .catch((error: unknown) => {
     clearTimeout(noHostTimer);
-    setStatus(
-      `ZAM Graph failed to start: ${
-        error instanceof Error ? error.message : String(error)
-      }`,
-      false,
-    );
+    showConnectionNotice(`ZAM Graph failed to start: ${errorMessage(error)}`);
   });

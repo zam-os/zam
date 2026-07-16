@@ -10,16 +10,28 @@
  *
  * Standalone by design (tests/desktop/module-boundaries.test.ts): no Tauri,
  * no Three.js, no import from ./panel.ts, ./recall.ts, or ./graph.ts. The
- * result-parsing helper below is copied from graph.ts (itself copied from
- * panel.ts's mcpTransport), to keep each panel entry independently
- * bundleable.
+ * `callTool`/context-bar plumbing below is shared via ./context-bar.js
+ * (item 9, 0.11.0 review) rather than hand-copied, but this panel entry
+ * still bundles independently — that module has no import of its own beyond
+ * the already-shared `@modelcontextprotocol/ext-apps`.
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
+import { setCurrentLocale } from "../i18n.js";
+import {
+  type CompanionContextBarState,
+  type ContextBarHandle,
+  clearConnectionNotice as clearConnectionNoticeShared,
+  createCallTool,
+  createContextReader,
+  createContextWriter,
+  ensureContextBar,
+  fallbackContextBarState,
+  showConnectionNotice as showConnectionNoticeShared,
+} from "./context-bar.js";
 
-const statusEl = document.getElementById("zam-status");
-const statusDot = document.getElementById("zam-status-dot");
-const versionEl = document.getElementById("zam-version");
+const contextBarRoot = document.getElementById("zam-contextbar-root");
+const noticeEl = document.getElementById("zam-connection-notice");
 const recallEl = document.getElementById("settings-recall");
 const workspacesEl = document.getElementById("settings-workspaces");
 const kcEl = document.getElementById("settings-kc");
@@ -27,15 +39,18 @@ const dbEl = document.getElementById("settings-db");
 const backupEl = document.getElementById("settings-backup");
 const updateEl = document.getElementById("settings-update");
 
-function setStatus(text: string, connected: boolean): void {
-  if (statusEl) statusEl.textContent = text;
-  if (statusDot) statusDot.classList.toggle("connected", connected);
-}
+const showConnectionNotice = (message: string): void =>
+  showConnectionNoticeShared(noticeEl, message);
+const clearConnectionNotice = (): void => clearConnectionNoticeShared(noticeEl);
+
+let contextBar: ContextBarHandle | undefined;
+let panelVersion: string | undefined;
 
 interface OpenSettingsResult {
   settings?: string;
   version?: string;
   user?: string | null;
+  companionContext?: CompanionContextBarState;
 }
 
 interface WorkspaceConfig {
@@ -116,38 +131,29 @@ const app = new App({ name: "ZAM Settings", version: "0.1.0" });
 let connected = false;
 let started = false;
 
-/**
- * Parse a zam MCP tool result: success answers carry JSON on content[0].text
- * (never structuredContent — wrapHandler re-wraps arrays as `{ result }`); on
- * isError, surface the JSON `error` field. Copied from graph.ts.
- */
-async function callTool(
-  name: string,
-  args: Record<string, unknown>,
-): Promise<unknown> {
-  const result = await app.callServerTool({ name, arguments: args });
-  const first = result.content?.[0];
-  const text = first && first.type === "text" ? first.text : undefined;
+const SURFACE = "settings";
 
-  if (result.isError) {
-    let message = text ?? `${name} call failed`;
-    if (text) {
-      try {
-        const parsed = JSON.parse(text) as { error?: string };
-        if (typeof parsed.error === "string") message = parsed.error;
-      } catch {
-        // Not JSON — keep the raw text assigned above.
-      }
-    }
-    throw new Error(message);
-  }
-
-  return text === undefined ? undefined : JSON.parse(text);
-}
+const callTool = createCallTool(app);
+const writeCompanionContext = createContextWriter(callTool, SURFACE);
+const readCompanionContext = createContextReader(callTool, SURFACE);
 
 /** Run one allowlisted `zam bridge` command through zam_studio_bridge. */
 function bridgeCall(cmd: string, args: string[] = []): Promise<unknown> {
   return callTool("zam_studio_bridge", { cmd, args });
+}
+
+/**
+ * Every settings section reads global (not per-learner) state, so a
+ * user/evaluator context change has nothing per-learner to reload here —
+ * unlike Recall/Graph. Still refresh every section for consistency instead
+ * of silently doing nothing on a context boundary (ADR §Decision 4).
+ */
+function reloadForContext(_newState: CompanionContextBarState): void {
+  void loadRecallSettings();
+  void loadWorkspaces();
+  void loadKnowledgeContext();
+  void loadDatabaseStatus();
+  void loadUpdateCheck();
 }
 
 function clearEl(el: HTMLElement | null): void {
@@ -534,14 +540,45 @@ function start(): void {
 
 app.ontoolresult = (params) => {
   const structured = (params.structuredContent ?? {}) as OpenSettingsResult;
-  if (versionEl && structured.version) {
-    versionEl.textContent = `v${structured.version}`;
-  }
+  panelVersion = structured.version;
   const user = structured.user ?? null;
-  const who = user ? ` — ${user}` : "";
-  setStatus(`Connected to zam mcp${who}`, true);
+  clearConnectionNotice();
+
+  const contextState =
+    structured.companionContext ?? fallbackContextBarState(SURFACE, user);
+  contextBar = ensureContextBar(
+    contextBar,
+    contextBarRoot,
+    "ZAM Settings",
+    panelVersion,
+    contextState,
+    {
+      write: writeCompanionContext,
+      read: readCompanionContext,
+      onReload: reloadForContext,
+      onError: showConnectionNotice,
+    },
+  );
   start();
 };
+
+// Mount the bar immediately — before any tool result — so the title and an
+// honest "no learner/agent resolved yet" state (fallbackContextBarState) are
+// visible from first paint (review finding 6), not only once a host's
+// ontoolresult (or the 800ms grace-period fallback below) actually fires.
+contextBar = ensureContextBar(
+  contextBar,
+  contextBarRoot,
+  "ZAM Settings",
+  panelVersion,
+  fallbackContextBarState(SURFACE, null),
+  {
+    write: writeCompanionContext,
+    read: readCompanionContext,
+    onReload: reloadForContext,
+    onError: showConnectionNotice,
+  },
+);
 
 // A plain file viewer (e.g. an editor preview) renders this HTML without
 // ever answering ui/initialize — connect() then stays pending forever.
@@ -549,20 +586,27 @@ app.ontoolresult = (params) => {
 const NO_HOST_NOTICE =
   "Kein MCP-Apps-Host — diese Karte braucht einen Host mit ui/initialize " +
   "(z. B. basic-host oder Copilot-Panel).";
-const noHostTimer = setTimeout(() => setStatus(NO_HOST_NOTICE, false), 4000);
+const noHostTimer = setTimeout(
+  () => showConnectionNotice(NO_HOST_NOTICE),
+  4000,
+);
 
 app
   .connect()
   .then(() => {
     clearTimeout(noHostTimer);
     connected = true;
-    setStatus("Connected to host — waiting for session…", true);
+    if (navigator.language.startsWith("de")) {
+      setCurrentLocale("de");
+    }
     // ontoolresult normally fires right after the handshake and triggers the
     // load. If a host never delivers it, still start after a short grace
-    // period instead of leaving the card stuck on "waiting for session".
+    // period instead of leaving the card stuck waiting.
     window.setTimeout(start, 800);
   })
   .catch((error: unknown) => {
     clearTimeout(noHostTimer);
-    setStatus(`ZAM Settings failed to start: ${errorMessage(error)}`, false);
+    showConnectionNotice(
+      `ZAM Settings failed to start: ${errorMessage(error)}`,
+    );
   });

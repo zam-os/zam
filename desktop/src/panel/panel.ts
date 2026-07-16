@@ -10,15 +10,27 @@ import { App } from "@modelcontextprotocol/ext-apps";
 import { setBridgeTransport } from "../bridge-transport.js";
 import { setCurrentLocale } from "../i18n.js";
 import { initLearningContentStudio } from "../learning-content.js";
+import {
+  type CompanionContextBarState,
+  type ContextBarHandle,
+  clearConnectionNotice as clearConnectionNoticeShared,
+  createCallTool,
+  createContextReader,
+  createContextWriter,
+  ensureContextBar,
+  fallbackContextBarState,
+  showConnectionNotice as showConnectionNoticeShared,
+} from "./context-bar.js";
 
-const statusEl = document.getElementById("zam-status");
-const statusDot = document.getElementById("zam-status-dot");
-const versionEl = document.getElementById("zam-version");
+const contextBarRoot = document.getElementById("zam-contextbar-root");
+const noticeEl = document.getElementById("zam-connection-notice");
 
-function setStatus(text: string, connected: boolean): void {
-  if (statusEl) statusEl.textContent = text;
-  if (statusDot) statusDot.classList.toggle("connected", connected);
-}
+const showConnectionNotice = (message: string): void =>
+  showConnectionNoticeShared(noticeEl, message);
+const clearConnectionNotice = (): void => clearConnectionNoticeShared(noticeEl);
+
+let contextBar: ContextBarHandle | undefined;
+let panelVersion: string | undefined;
 
 let toastEl: HTMLDivElement | null = null;
 let toastHideTimer: number | null = null;
@@ -50,45 +62,88 @@ interface OpenStudioResult {
   studio?: string;
   version?: string;
   user?: string | null;
+  companionContext?: CompanionContextBarState;
 }
 
 const app = new App({ name: "ZAM Studio", version: "0.1.0" });
 
+const SURFACE = "studio";
+
+const callTool = createCallTool(app);
+const writeCompanionContext = createContextWriter(callTool, SURFACE);
+const readCompanionContext = createContextReader(callTool, SURFACE);
+
+/**
+ * True while a card is open for editing in the Learning Content Studio —
+ * the ADR's "unsubmitted local state" case for this surface (ADR
+ * §Decision 4). learning-content.ts owns the form; this only reads its
+ * visibility, which is enough to ask before a context switch discards it.
+ */
+function hasUnsavedStudioState(): boolean {
+  const editor = document.getElementById("editor-form-container");
+  return Boolean(editor && !editor.classList.contains("hidden"));
+}
+
+/**
+ * Nothing rendered by the Learning Content Studio is scoped to a learner —
+ * workspaces, knowledge contexts, and card curation are global, not
+ * per-user FSRS queues — so a user/evaluator context change has no
+ * per-learner data to reload here, unlike Recall/Graph. The context bar's
+ * own `update()` call already refreshes the Agent/User pills.
+ */
+function reloadForContext(_newState: CompanionContextBarState): void {
+  // Intentionally a no-op; see the doc comment above.
+}
+
 app.ontoolresult = (result) => {
   const structured = (result.structuredContent ?? {}) as OpenStudioResult;
-  if (versionEl && structured.version) {
-    versionEl.textContent = `v${structured.version}`;
-  }
-  const user = structured.user ? ` — signed in as ${structured.user}` : "";
-  setStatus(`Connected to zam mcp${user}`, true);
+  panelVersion = structured.version;
+  const user = structured.user ?? null;
+  clearConnectionNotice();
+
+  const contextState =
+    structured.companionContext ?? fallbackContextBarState(SURFACE, user);
+  contextBar = ensureContextBar(
+    contextBar,
+    contextBarRoot,
+    "ZAM Studio",
+    panelVersion,
+    contextState,
+    {
+      write: writeCompanionContext,
+      read: readCompanionContext,
+      hasUnsavedChanges: hasUnsavedStudioState,
+      onReload: reloadForContext,
+      onError: showConnectionNotice,
+    },
+  );
 };
+
+// Mount the bar immediately — before any tool result — so the title and an
+// honest "no learner/agent resolved yet" state (fallbackContextBarState) are
+// visible from first paint (review finding 6), not only once a host's
+// ontoolresult actually fires.
+contextBar = ensureContextBar(
+  contextBar,
+  contextBarRoot,
+  "ZAM Studio",
+  panelVersion,
+  fallbackContextBarState(SURFACE, null),
+  {
+    write: writeCompanionContext,
+    read: readCompanionContext,
+    hasUnsavedChanges: hasUnsavedStudioState,
+    onReload: reloadForContext,
+    onError: showConnectionNotice,
+  },
+);
 
 // zam_studio_bridge always answers on content[0] as JSON text (see
 // wrapHandler in src/cli/commands/mcp.ts) — structuredContent is NOT used
 // here because wrapHandler re-wraps bare-array results as `{ result }`,
 // which would silently corrupt list-shaped responses.
 async function mcpTransport(cmd: string, args: string[]): Promise<unknown> {
-  const result = await app.callServerTool({
-    name: "zam_studio_bridge",
-    arguments: { cmd, args },
-  });
-  const first = result.content?.[0];
-  const text = first && first.type === "text" ? first.text : undefined;
-
-  if (result.isError) {
-    let message = text ?? "zam_studio_bridge call failed";
-    if (text) {
-      try {
-        const parsed = JSON.parse(text) as { error?: string };
-        if (typeof parsed.error === "string") message = parsed.error;
-      } catch {
-        // Not JSON — keep the raw text assigned above.
-      }
-    }
-    throw new Error(message);
-  }
-
-  return text === undefined ? undefined : JSON.parse(text);
+  return callTool("zam_studio_bridge", { cmd, args });
 }
 
 // A plain file viewer (e.g. an editor preview) renders this HTML without
@@ -97,13 +152,15 @@ async function mcpTransport(cmd: string, args: string[]): Promise<unknown> {
 const NO_HOST_NOTICE =
   "Kein MCP-Apps-Host — diese Karte braucht einen Host mit ui/initialize " +
   "(z. B. basic-host oder Copilot-Panel).";
-const noHostTimer = setTimeout(() => setStatus(NO_HOST_NOTICE, false), 4000);
+const noHostTimer = setTimeout(
+  () => showConnectionNotice(NO_HOST_NOTICE),
+  4000,
+);
 
 app
   .connect()
   .then(() => {
     clearTimeout(noHostTimer);
-    setStatus("Connected to host — waiting for data…", true);
 
     // Transport must be wired before init: initLearningContentStudio()
     // kicks off its own data load synchronously on return.
@@ -124,8 +181,7 @@ app
   })
   .catch((error: unknown) => {
     clearTimeout(noHostTimer);
-    setStatus(
+    showConnectionNotice(
       `ZAM Studio failed to start: ${error instanceof Error ? error.message : String(error)}`,
-      false,
     );
   });
