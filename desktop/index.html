@@ -420,6 +420,13 @@
             <div class="tag-row">
               <span class="badge bloom-badge" id="bloom-badge">Understand (Bloom 2)</span>
               <span class="badge domain-badge" id="domain-badge">git</span>
+              <div class="card-manage-wrap">
+                <button id="btn-card-manage" class="card-manage-btn" type="button" aria-haspopup="true" aria-expanded="false">⋯</button>
+                <div id="study-manage-menu" class="card-manage-menu hidden">
+                  <button id="btn-study-manage-edit" class="card-manage-item" type="button">Edit this card</button>
+                  <button id="btn-study-manage-stop" class="card-manage-item danger" type="button">Stop</button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -495,6 +502,20 @@
                 <div class="reveal-content-list" id="reveal-content-list">
                   <!-- Generated dynamically: Token, Concept, Context, Source -->
                 </div>
+                <div class="study-edit-controls">
+                  <button id="btn-study-edit" class="btn secondary-btn btn-sm" type="button">Edit this card</button>
+                  <button id="btn-study-open-editor" class="btn ghost-btn btn-sm" type="button">Open in full editor →</button>
+                </div>
+                <div id="study-inline-editor" class="study-inline-editor hidden">
+                  <label class="study-edit-label" for="study-edit-question" id="lbl-study-edit-question">Question</label>
+                  <textarea id="study-edit-question" class="editor-textarea" rows="2"></textarea>
+                  <label class="study-edit-label" for="study-edit-concept" id="lbl-study-edit-concept">Concept</label>
+                  <textarea id="study-edit-concept" class="editor-textarea" rows="4"></textarea>
+                  <div class="study-inline-editor-actions">
+                    <button id="btn-study-edit-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
+                    <button id="btn-study-edit-save" class="btn primary-btn btn-sm" type="button">Save</button>
+                  </div>
+                </div>
               </div>
 
               <!-- POST-REVEAL DISCUSSION THREAD (ADR 2026-07-06b) -->
@@ -526,6 +547,12 @@
                   <button class="btn rating-btn easy" data-rating="4">
                     <span class="rating-num">4</span>
                     <span class="rating-label" id="lbl-rate-4">Easy</span>
+                  </button>
+                </div>
+                <div class="rating-stop-wrap">
+                  <button id="btn-study-stop" class="btn stop-btn" type="button">
+                    <span class="rating-num">–</span>
+                    <span class="rating-label">Stop</span>
                   </button>
                 </div>
               </div>
@@ -619,6 +646,28 @@
           <div class="modal-actions">
             <button id="btn-modal-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
             <button id="btn-modal-confirm" class="btn primary-btn btn-sm" type="button">Confirm</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STUDY-VIEW STOP CONFIRM MODAL (ADR 2026-07-16b) -->
+      <div id="study-confirm-overlay" class="modal-overlay">
+        <div class="modal-box">
+          <div class="modal-header">
+            <h3 id="study-confirm-title">Stop learning this card?</h3>
+          </div>
+          <div class="modal-body">
+            <p id="study-confirm-desc"></p>
+            <div class="modal-impact-section">
+              <ul class="modal-impact-list" id="study-confirm-impact"></ul>
+            </div>
+            <div id="study-confirm-advanced" class="modal-impact-section hidden" style="border-color: rgba(239, 68, 68, 0.2); background: rgba(239, 68, 68, 0.02);">
+              <button id="btn-study-confirm-advanced" class="btn danger-btn btn-sm" type="button">Outdated — remove it</button>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button id="btn-study-confirm-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
+            <button id="btn-study-confirm-ok" class="btn primary-btn btn-sm" type="button">Not for me</button>
           </div>
         </div>
       </div>

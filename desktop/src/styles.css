@@ -2760,3 +2760,102 @@ textarea::placeholder {
 .agent-harness-row .btn {
   flex: 0 0 auto;
 }
+
+/* ── In-recall card management (ADR 2026-07-16b) ─────────────────────────── */
+.rating-stop-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
+.stop-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  opacity: 0.72;
+  background: transparent;
+  border: 1px solid var(--border-card-frosted);
+  color: var(--clr-again);
+}
+.stop-btn:hover {
+  opacity: 1;
+  border-color: var(--clr-again);
+}
+
+.study-edit-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.ghost-btn {
+  background: transparent;
+  border: none;
+  color: var(--clr-accent-purple);
+}
+.study-inline-editor {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.study-edit-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--clr-text-secondary);
+}
+.study-inline-editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.card-manage-wrap {
+  position: relative;
+  display: inline-flex;
+}
+.card-manage-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.15rem;
+  line-height: 1;
+  padding: 2px 8px;
+  opacity: 0.55;
+  color: var(--clr-text-secondary);
+}
+.card-manage-btn:hover {
+  opacity: 1;
+}
+.card-manage-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 20;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  min-width: 168px;
+  background: var(--bg-card-frosted);
+  border: 1px solid var(--border-card-frosted);
+  border-radius: 10px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+.card-manage-item {
+  text-align: left;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  color: var(--clr-text-primary);
+}
+.card-manage-item:hover {
+  background: var(--bg-card-subtle);
+}
+.card-manage-item.danger {
+  color: var(--clr-again);
+}
