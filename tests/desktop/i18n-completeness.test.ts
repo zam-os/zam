@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { TRANSLATION_PACKS } from "../../desktop/src/i18n.js";
@@ -82,8 +82,8 @@ const DATABASE_SETTINGS_KEYS = [
 const QUESTION_WAIT_KEYS = [
   "lbl_question_wait_warn",
   "btn_question_use_saved",
- ] as const;
- 
+] as const;
+
 const KNOWLEDGE_CONTEXT_KEYS = [
   "settings_context_title",
   "settings_context_help",
@@ -121,6 +121,34 @@ const AGENT_CONNECT_KEYS = [
   "agent_connect_failed",
 ] as const;
 
+// Companion context bar (ADR 2026-07-16, 0.11.0 Phase 4): shared component
+// mounted by recall.ts/graph.ts/settings.ts/panel.ts (desktop/src/panel/
+// context-bar.ts). "Agent"/"User" pill labels, confirm-dialog copy, and the
+// evaluator/learner status strings all route through t()/tf() as of this
+// audit — this group guards them the same way ISSUE_97_KEYS guards the
+// Learning Content Studio strings above.
+const CONTEXTBAR_KEYS = [
+  "lbl_contextbar_agent",
+  "lbl_contextbar_user",
+  "contextbar_user_session_suffix",
+  "contextbar_user_unresolved",
+  "contextbar_user_title_session",
+  "contextbar_user_title_manual",
+  "contextbar_user_title_persisted",
+  "contextbar_user_title_default",
+  "contextbar_agent_unavailable_fmt",
+  "contextbar_quick_mode",
+  "contextbar_select_profile_placeholder",
+  "contextbar_no_learner",
+  "contextbar_evaluator_unavailable_fmt",
+  "contextbar_refresh_title",
+  "contextbar_expand",
+  "contextbar_collapse",
+  "btn_contextbar_discard_switch",
+  "contextbar_confirm_switch_user",
+  "contextbar_confirm_switch_agent",
+] as const;
+
 const REQUIRED_KEYS = [
   ...ISSUE_97_KEYS,
   ...WIZARD_KEYS,
@@ -130,7 +158,60 @@ const REQUIRED_KEYS = [
   ...STUDIO_LAYOUT_KEYS,
   ...DISCUSSION_KEYS,
   ...AGENT_CONNECT_KEYS,
+  ...CONTEXTBAR_KEYS,
 ];
+
+// Keys used somewhere under desktop/src via t()/tf() that predate this
+// audit and are still missing from the es/fr/pt/zh/ja packs (they fall back
+// to English at render time — main.ts's "repair" self-heal notices and one
+// update-check status line). Pre-existing gaps out of scope for the
+// context-bar i18n audit; tracked here explicitly rather than silently
+// passed over, so the exhaustive scan below doesn't mask *new* regressions
+// while still not churning unrelated strings.
+const PRE_EXISTING_FALLBACK_KEYS = new Set([
+  "repair_agents_error",
+  "repair_agents_ok",
+  "repair_cli_error",
+  "repair_cli_fixed",
+  "repair_cli_new_terminal",
+  "repair_cli_ok",
+  "repair_companion_updated",
+  "repair_done",
+  "repair_failed",
+  "repair_skills_error",
+  "repair_skills_fixed",
+  "repair_skills_ok",
+  "update_none_verifying",
+]);
+
+/**
+ * Walk every non-test .ts file under desktop/src and collect the literal
+ * string keys passed to t("...")/tf("...") — the exhaustive counterpart to
+ * the curated REQUIRED_KEYS lists above. Literal-only by construction (a
+ * dynamic `t(someVar)` call can't be extracted statically and isn't used
+ * anywhere in this codebase).
+ */
+function collectUsedKeys(
+  dir: string,
+  keys: Set<string> = new Set(),
+): Set<string> {
+  const keyPattern = /\bt(?:f)?\(\s*"([^"]+)"/g;
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    if (entry.name === "node_modules" || entry.name === "dist") continue;
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      collectUsedKeys(full, keys);
+      continue;
+    }
+    if (!entry.name.endsWith(".ts") || entry.name.endsWith(".test.ts"))
+      continue;
+    const source = readFileSync(full, "utf8");
+    for (const match of source.matchAll(keyPattern)) {
+      keys.add(match[1]);
+    }
+  }
+  return keys;
+}
 
 describe("desktop locale completeness", () => {
   it.each([
@@ -166,6 +247,43 @@ describe("desktop locale completeness", () => {
     for (const key of REQUIRED_KEYS) {
       expect(localeSource).toContain(`    ${key}:`);
     }
+  });
+
+  it.each([
+    "en",
+    "de",
+  ] as const)("reference locale %s has every t()/tf() key used under desktop/src", (locale) => {
+    const i18nSource = readFileSync(
+      join(process.cwd(), "desktop", "src", "i18n.ts"),
+      "utf8",
+    );
+    const start = i18nSource.indexOf(`  ${locale}: {`);
+    const endMarker = locale === "en" ? "\n  de: {" : "\n  // es, fr";
+    const localeSource = i18nSource.slice(
+      start,
+      i18nSource.indexOf(endMarker, start),
+    );
+
+    const usedKeys = collectUsedKeys(join(process.cwd(), "desktop", "src"));
+    const missing = [...usedKeys].filter(
+      (key) => !localeSource.includes(`    ${key}:`),
+    );
+    expect(missing).toEqual([]);
+  });
+
+  it.each([
+    "es",
+    "fr",
+    "pt",
+    "zh",
+    "ja",
+  ] as const)("pack %s has every t()/tf() key used under desktop/src, or the fallback is allowlisted", (locale) => {
+    const pack = TRANSLATION_PACKS[locale];
+    const usedKeys = collectUsedKeys(join(process.cwd(), "desktop", "src"));
+    const missing = [...usedKeys].filter(
+      (key) => !(key in pack) && !PRE_EXISTING_FALLBACK_KEYS.has(key),
+    );
+    expect(missing).toEqual([]);
   });
 
   it("does not retain the English literals reported in issue #97", () => {

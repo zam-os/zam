@@ -35,6 +35,7 @@
  */
 
 import type { App } from "@modelcontextprotocol/ext-apps";
+import { t, tf } from "../i18n.js";
 
 // ── Wire shapes (mirror src/vscode-extension/companion-context.ts) ────────
 
@@ -109,11 +110,8 @@ export function formatAgentLabel(
   identity: CompanionEvaluatorDisplayIdentity,
 ): string {
   const provider = identity.provider.trim();
-  if (!provider) return "Agent";
-  if (
-    !identity.model &&
-    DISHONEST_BARE_PROVIDERS.has(provider.toLowerCase())
-  ) {
+  if (!provider) return t("lbl_contextbar_agent");
+  if (!identity.model && DISHONEST_BARE_PROVIDERS.has(provider.toLowerCase())) {
     return provider;
   }
   return identity.model ? `${provider}: ${identity.model}` : provider;
@@ -123,21 +121,21 @@ export function formatAgentLabel(
 export function userPillValue(user: CompanionUserState): string {
   if (!user.currentId) return "—";
   return user.source === "invocation"
-    ? `${user.currentId} (this session)`
+    ? tf("contextbar_user_session_suffix", { id: user.currentId })
     : user.currentId;
 }
 
 export function userPillTitle(user: CompanionUserState): string {
-  if (!user.currentId) return "No learner resolved yet";
+  if (!user.currentId) return t("contextbar_user_unresolved");
   switch (user.source) {
     case "invocation":
-      return `${user.currentId} — this session only; not saved as your Companion preference`;
+      return tf("contextbar_user_title_session", { id: user.currentId });
     case "manual":
-      return `${user.currentId} — selected in this context bar`;
+      return tf("contextbar_user_title_manual", { id: user.currentId });
     case "persisted":
-      return `${user.currentId} — your saved Companion learner`;
+      return tf("contextbar_user_title_persisted", { id: user.currentId });
     default:
-      return `${user.currentId} — ZAM's default user`;
+      return tf("contextbar_user_title_default", { id: user.currentId });
   }
 }
 
@@ -149,19 +147,24 @@ export function agentPillSummary(state: CompanionContextBarState): {
 } {
   const active = state.evaluators.find((r) => r.id === state.activeEvaluatorId);
   if (active) {
-    return { text: formatAgentLabel(active.displayIdentity), unavailable: false };
+    return {
+      text: formatAgentLabel(active.displayIdentity),
+      unavailable: false,
+    };
   }
   const selected = state.evaluators.find(
     (r) => r.id === state.selectedEvaluatorId,
   );
   if (selected) {
     return {
-      text: `${formatAgentLabel(selected.displayIdentity)} (unavailable)`,
+      text: tf("contextbar_agent_unavailable_fmt", {
+        label: formatAgentLabel(selected.displayIdentity),
+      }),
       unavailable: true,
       title: selected.reason,
     };
   }
-  return { text: "Quick mode — no agent", unavailable: false };
+  return { text: t("contextbar_quick_mode"), unavailable: false };
 }
 
 /**
@@ -206,7 +209,9 @@ export interface OptionModel {
  * user or a brand-new profile with no cards yet) — the bar must never
  * silently drop the learner actually in scope from its own picker.
  */
-export function buildUserOptions(state: CompanionContextBarState): OptionModel[] {
+export function buildUserOptions(
+  state: CompanionContextBarState,
+): OptionModel[] {
   const options: OptionModel[] = state.profiles.map((profile) => ({
     value: profile.id,
     text:
@@ -238,13 +243,18 @@ export function buildUserOptions(state: CompanionContextBarState): OptionModel[]
     // its value differs from this placeholder's empty value.
     options.unshift({
       value: "",
-      text: "– Lernprofil wählen –",
+      text: t("contextbar_select_profile_placeholder"),
       disabled: true,
       selected: true,
     });
   }
   if (options.length === 0) {
-    options.push({ value: "", text: "No learner", disabled: true, selected: true });
+    options.push({
+      value: "",
+      text: t("contextbar_no_learner"),
+      disabled: true,
+      selected: true,
+    });
   }
   return options;
 }
@@ -263,7 +273,9 @@ export function buildEvaluatorOptions(
     const label = formatAgentLabel(route.displayIdentity);
     return {
       value: route.id,
-      text: route.routable ? label : `${label} — unavailable`,
+      text: route.routable
+        ? label
+        : tf("contextbar_evaluator_unavailable_fmt", { label }),
       disabled: !route.routable,
       selected: route.id === selectedValue,
       title: route.reason,
@@ -290,6 +302,14 @@ export interface ContextBarCallbacks {
   onReload(newState: CompanionContextBarState): void;
   /** Reports a failed write inline, next to the affected content. */
   onError?: (message: string) => void;
+  /**
+   * Re-read the current context (a `zam_companion_context` read). When
+   * provided, the bar renders a refresh button: context can change outside
+   * the bar — e.g. "ZAM: Choose Recall Model" persisting a new VS Code model
+   * — and the pills must be able to catch up without reopening the panel
+   * (live 0.11.0 finding).
+   */
+  read?: () => Promise<CompanionContextBarState>;
 }
 
 export interface ContextBarHandle {
@@ -314,7 +334,7 @@ export function fallbackContextBarState(
     evaluators: [
       {
         id: "quick-mode",
-        displayIdentity: { provider: "Quick mode — no agent" },
+        displayIdentity: { provider: t("contextbar_quick_mode") },
         configured: true,
         routable: true,
         selected: true,
@@ -390,6 +410,25 @@ export function createContextWriter(
 }
 
 /**
+ * The read counterpart of {@link createContextWriter}, for the bar's refresh
+ * button. In the Companion the call passes through the extension's tool
+ * proxy, so the returned vscode-lm route arrives re-enriched with the
+ * concrete provider/model.
+ */
+export function createContextReader(
+  callTool: (name: string, args: Record<string, unknown>) => Promise<unknown>,
+  surface: CompanionSurface,
+): () => Promise<CompanionContextBarState> {
+  return async () => {
+    const result = await callTool("zam_companion_context", {
+      action: "read",
+      surface,
+    });
+    return result as CompanionContextBarState;
+  };
+}
+
+/**
  * Connection/startup errors previously lived in the permanent "Connected to
  * zam mcp" status row (removed — ADR 2026-07-16 §Decision 1). This inline
  * notice is the replacement seam: it stays visible next to the content it
@@ -455,6 +494,24 @@ const CONTEXT_BAR_CSS = `
 .zam-contextbar-toggle:hover {
   background: var(--hover);
   color: var(--accent);
+}
+.zam-contextbar-refresh {
+  font: inherit;
+  line-height: 1;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 3px 6px;
+  border-radius: 6px;
+}
+.zam-contextbar-refresh:hover {
+  background: var(--hover);
+  color: var(--accent);
+}
+.zam-contextbar-refresh:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 .zam-contextbar-title {
   font-size: 14px;
@@ -656,9 +713,45 @@ export function mountContextBar(
     return { wrapper, select };
   }
 
-  const agentPill = buildPill("Agent", `zam-agent-select-${state.surface}`);
-  const userPill = buildPill("User", `zam-user-select-${state.surface}`);
+  const agentPill = buildPill(
+    t("lbl_contextbar_agent"),
+    `zam-agent-select-${state.surface}`,
+  );
+  const userPill = buildPill(
+    t("lbl_contextbar_user"),
+    `zam-user-select-${state.surface}`,
+  );
   right.append(agentPill.wrapper, userPill.wrapper);
+
+  // Context can change outside the bar (e.g. "ZAM: Choose Recall Model") —
+  // offer a manual re-read so the pills catch up without reopening the panel.
+  let refreshBtn: HTMLButtonElement | undefined;
+  const read = callbacks.read;
+  if (read) {
+    refreshBtn = document.createElement("button");
+    refreshBtn.type = "button";
+    refreshBtn.className = "zam-contextbar-refresh";
+    refreshBtn.textContent = "↻";
+    refreshBtn.title = t("contextbar_refresh_title");
+    refreshBtn.setAttribute("aria-label", t("contextbar_refresh_title"));
+    refreshBtn.addEventListener("click", () => {
+      if (!refreshBtn || refreshBtn.disabled) return;
+      refreshBtn.disabled = true;
+      void read()
+        .then((next) => {
+          state = next;
+          collapsed = next.collapsed;
+          render();
+        })
+        .catch((error: unknown) => {
+          callbacks.onError?.(errorMessage(error));
+        })
+        .finally(() => {
+          if (refreshBtn) refreshBtn.disabled = false;
+        });
+    });
+    right.append(refreshBtn);
+  }
 
   bar.append(left, right);
 
@@ -674,13 +767,16 @@ export function mountContextBar(
     toggle.setAttribute("aria-expanded", String(!collapsed));
     toggle.setAttribute(
       "aria-label",
-      collapsed ? "Expand context bar" : "Collapse context bar",
+      collapsed ? t("contextbar_expand") : t("contextbar_collapse"),
     );
     titleEl.title = version ? `${title} · v${version} · zam mcp` : title;
 
     applyOptions(agentPill.select, buildEvaluatorOptions(state));
     const agent = agentPillSummary(state);
-    agentPill.select.classList.toggle("zam-pill-unavailable", agent.unavailable);
+    agentPill.select.classList.toggle(
+      "zam-pill-unavailable",
+      agent.unavailable,
+    );
     agentPill.select.title = agent.title ?? agent.text;
 
     applyOptions(userPill.select, buildUserOptions(state));
@@ -708,11 +804,11 @@ export function mountContextBar(
     const discardBtn = document.createElement("button");
     discardBtn.type = "button";
     discardBtn.className = "btn secondary-btn btn-sm";
-    discardBtn.textContent = "Discard & switch";
+    discardBtn.textContent = t("btn_contextbar_discard_switch");
     const cancelBtn = document.createElement("button");
     cancelBtn.type = "button";
     cancelBtn.className = "btn secondary-btn btn-sm";
-    cancelBtn.textContent = "Cancel";
+    cancelBtn.textContent = t("lbl_cancel_action");
     discardBtn.addEventListener("click", () => {
       confirmGate.resolve(true, hideConfirm);
     });
@@ -749,19 +845,19 @@ export function mountContextBar(
     if (!nextId || nextId === state.user.currentId) return;
     void change(
       { userId: nextId },
-      `Switch learner to ${nextId}? Unsubmitted work in this panel will be discarded.`,
+      tf("contextbar_confirm_switch_user", { id: nextId }),
     );
   });
 
   agentPill.select.addEventListener("change", () => {
     const nextId = agentPill.select.value;
-    if (!nextId || nextId === (state.selectedEvaluatorId ?? state.activeEvaluatorId)) {
+    if (
+      !nextId ||
+      nextId === (state.selectedEvaluatorId ?? state.activeEvaluatorId)
+    ) {
       return;
     }
-    void change(
-      { evaluatorId: nextId },
-      `Switch agent? Unsubmitted work in this panel will be discarded.`,
-    );
+    void change({ evaluatorId: nextId }, t("contextbar_confirm_switch_agent"));
   });
 
   toggle.addEventListener("click", () => {

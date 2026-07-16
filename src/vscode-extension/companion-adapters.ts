@@ -73,10 +73,24 @@ export interface VscodeModelSelection {
   setSelectedModelId(id: string): void;
 }
 
-/** "copilot" -> "Copilot"; never returns an empty string. */
+/**
+ * Observed `vscode.lm` vendor ids → clean display labels. Both "copilot" and
+ * "copilotcli" are GitHub Copilot surfaces; raw title-casing rendered the
+ * latter as the awkward "Copilotcli" in the Agent pill (live 0.11.0 test).
+ * Only vendors actually observed get an entry — unknown vendors keep the
+ * title-cased raw id rather than a guessed brand name.
+ */
+const KNOWN_VENDOR_LABELS: Record<string, string> = {
+  copilot: "Copilot",
+  copilotcli: "Copilot",
+};
+
+/** "copilot"/"copilotcli" -> "Copilot"; never returns an empty string. */
 function vendorLabel(vendor: string): string {
   const trimmed = vendor.trim();
   if (!trimmed) return "VS Code language model";
+  const known = KNOWN_VENDOR_LABELS[trimmed.toLowerCase()];
+  if (known) return known;
   return trimmed
     .split(/[\s_-]+/)
     .filter(Boolean)
@@ -302,10 +316,11 @@ export interface ChooseRecallModelSurface {
  * `resolveModel` has reported the persisted choice unavailable (ADR
  * 2026-07-16 §Decision 5: no silent substitution, but a visible way out).
  */
+/** Returns true when the learner picked (and persisted) a model. */
 export async function runChooseRecallModel(
   surface: ChooseRecallModelSurface,
   selection: VscodeModelSelection,
-): Promise<void> {
+): Promise<boolean> {
   let models: VscodeChatModelLike[];
   try {
     models = await surface.listModels();
@@ -315,17 +330,18 @@ export async function runChooseRecallModel(
         error instanceof Error ? error.message : String(error)
       }`,
     );
-    return;
+    return false;
   }
   if (models.length === 0) {
     surface.showWarningMessage(
       "No VS Code language model is available. Sign in to a model provider " +
         "(e.g. GitHub Copilot) and try again.",
     );
-    return;
+    return false;
   }
   const picked = await surface.showQuickPick(buildModelQuickPickItems(models));
-  if (!picked) return; // learner dismissed the QuickPick — leave the choice untouched
+  if (!picked) return false; // learner dismissed the QuickPick — leave the choice untouched
   selection.setSelectedModelId(picked.modelId);
   surface.showInformationMessage(`ZAM Recall will use ${picked.label}.`);
+  return true;
 }

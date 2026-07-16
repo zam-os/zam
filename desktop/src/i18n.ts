@@ -45,8 +45,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_domains: "Dominios activos",
     btn_start_session: "Iniciar sesión de aprendizaje",
     lbl_translating: "Traduciendo dinámicamente...",
-    placeholder_answer: "Escribe aquí tu respuesta conceptual... (Ctrl+Intro para enviar)",
-    placeholder_discussion: "Haz una pregunta sobre esta tarjeta... (Intro para enviar)",
+    placeholder_answer:
+      "Escribe aquí tu respuesta conceptual... (Ctrl+Intro para enviar)",
+    placeholder_discussion:
+      "Haz una pregunta sobre esta tarjeta... (Intro para enviar)",
     btn_discussion_send: "Enviar",
     discussion_error: "Sin respuesta de la IA. Inténtalo de nuevo.",
     btn_reveal_answer: "Enviar y mostrar respuesta",
@@ -90,18 +92,24 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_open_graph: "Mapa de conocimiento (3D)",
     btn_open_settings: "Ajustes",
     observer_title: "Observador de IU",
-    observer_idle: "Carga las ventanas y elige una ventana de aplicación para observar.",
+    observer_idle:
+      "Carga las ventanas y elige una ventana de aplicación para observar.",
     observer_loading: "Cargando ventanas observables...",
     observer_ready: "Seleccionada: {title}",
-    observer_vision_checking: "Comprobando los ajustes de observación por visión...",
-    observer_analyzing: "Capturando una instantánea y consultando al modelo de visión...",
-    observer_done: "Observación guardada. Confianza del último informe: {confidence}",
+    observer_vision_checking:
+      "Comprobando los ajustes de observación por visión...",
+    observer_analyzing:
+      "Capturando una instantánea y consultando al modelo de visión...",
+    observer_done:
+      "Observación guardada. Confianza del último informe: {confidence}",
     observer_canceled: "Observación cancelada.",
     observer_error: "Error del observador: {message}",
     observer_vision_disabled:
       "La observación por visión está desactivada. Actívala con: zam settings set llm.vision.enabled true",
-    observer_vision_offline: "El punto de conexión de visión está fuera de línea: {url}",
-    observer_vision_model_missing: "El modelo de visión no está disponible: {model}",
+    observer_vision_offline:
+      "El punto de conexión de visión está fuera de línea: {url}",
+    observer_vision_model_missing:
+      "El modelo de visión no está disponible: {model}",
     observer_privacy_paused:
       "Pausa de privacidad: el filtro de privacidad bloquea esta ventana ({reason}).",
     observer_privacy_option: "pausa de privacidad",
@@ -118,8 +126,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     observer_loop_start: "Iniciar bucle",
     observer_loop_stop: "Detener bucle",
     observer_loop_idle: "Solo instantáneas manuales.",
-    observer_loop_running: "Bucle del observador en marcha. Una instantánea cada vez.",
-    observer_loop_waiting: "Bucle del observador en marcha. Próxima instantánea en {seconds}s.",
+    observer_loop_running:
+      "Bucle del observador en marcha. Una instantánea cada vez.",
+    observer_loop_waiting:
+      "Bucle del observador en marcha. Próxima instantánea en {seconds}s.",
     observer_loop_stopped: "Bucle del observador detenido.",
     observer_watch_start: "Iniciar vigilancia",
     observer_watch_stop: "Detener vigilancia",
@@ -130,7 +140,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     observer_watch_stopped: "Vigilancia continua detenida.",
     observer_watch_error: "Error de vigilancia: {message}",
     graph_title: "Grafo de conocimiento (3D)",
-    graph_hint: "Arrastra para rotar • Clic en los nodos para enfocar • Desplázate para hacer zoom",
+    graph_hint:
+      "Arrastra para rotar • Clic en los nodos para enfocar • Desplázate para hacer zoom",
     graph_focus: "Enfoque",
     graph_prereqs: "Bases (requisitos previos)",
     graph_dependents: "Capacidades superiores (dependientes)",
@@ -161,7 +172,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     database_no_profile: "Sin perfil activo",
     database_profile_option: "{profile} — {count} tarjetas",
     database_profile_switch_confirm:
-      '¿Cambiar el perfil de aprendizaje activo a «{profile}»?',
+      "¿Cambiar el perfil de aprendizaje activo a «{profile}»?",
     database_profile_switched: "Perfil activo: {profile} ({count} tarjetas)",
     database_refresh: "Actualizar estado",
     settings_theme: "Tema",
@@ -192,18 +203,21 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     workspace_kind_community: "Espacio de trabajo de comunidad",
     workspace_kind_organization: "Espacio de trabajo de organización",
     workspace_kind_custom: "Espacio de trabajo personalizado",
-    workspace_more: "{count} espacio(s) de trabajo más ocultos. Usa la CLI para ver la lista completa.",
+    workspace_more:
+      "{count} espacio(s) de trabajo más ocultos. Usa la CLI para ver la lista completa.",
     workspace_use: "Usar",
     workspace_open: "Terminal",
     workspace_default_suffix: "(predeterminado)",
     workspace_set: "Espacio de trabajo establecido en {path}",
     workspace_added: "Espacio de trabajo añadido: {path}",
-    workspace_pick_failed: "No se pudo establecer el espacio de trabajo: {message}",
+    workspace_pick_failed:
+      "No se pudo establecer el espacio de trabajo: {message}",
     workspace_remove: "Quitar",
     workspace_remove_confirm:
       '¿Quitar "{label}" de ZAM? Los archivos y enlaces de la carpeta permanecerán sin cambios.',
     workspace_removed: "Espacio de trabajo quitado: {label}",
-    workspace_remove_failed: "No se pudo quitar el espacio de trabajo: {message}",
+    workspace_remove_failed:
+      "No se pudo quitar el espacio de trabajo: {message}",
     workspace_link_ok: "Enlace de skill correcto",
     workspace_link_broken: "Enlace de skill roto",
     workspace_link_unmanaged: "Carpeta de skill externa",
@@ -228,7 +242,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_ai_config_close: "Cerrar",
     btn_add_ai_provider: "+ Añadir proveedor",
     ai_config_loading: "Cargando la configuración del proveedor...",
-    ai_config_failed: "No se pudo cargar la configuración del proveedor: {message}",
+    ai_config_failed:
+      "No se pudo cargar la configuración del proveedor: {message}",
     ai_provider_empty: "Aún no hay proveedores configurados.",
     ai_provider_section_local: "Local",
     ai_provider_section_cloud: "Nube",
@@ -269,7 +284,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     ai_provider_runner_foundry: "Foundry Local",
     ai_provider_runner_not_installed: "no detectado",
     ai_provider_api_key: "Clave de API",
-    ai_provider_api_key_hint: "Solo escritura — se guarda localmente, nunca se sincroniza",
+    ai_provider_api_key_hint:
+      "Solo escritura — se guarda localmente, nunca se sincroniza",
     ai_provider_cloud_hint: "Modelo sugerido: {model}",
     ai_provider_models_loading: "Cargando modelos...",
     ai_provider_models_empty: "El punto de conexión no lista modelos",
@@ -296,12 +312,14 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     update_available: "Actualización disponible: {version}",
     update_none: "Tienes la versión más reciente.",
     update_failed: "La búsqueda de actualizaciones falló: {message}",
-    update_available_manual: "Actualización disponible: {version}. Abriendo la página de descarga…",
+    update_available_manual:
+      "Actualización disponible: {version}. Abriendo la página de descarga…",
     update_downloading: "Descargando actualización {version}…",
     update_progress: "Descargando actualización {version}… {pct}%",
     update_installing: "Instalando actualización…",
     update_restarting: "Reiniciando en la nueva versión…",
-    ai_role_recall_scope_hint: "Cubre las preguntas de repetición espaciada, la importación de tarjetas del plan de estudios y otra generación de texto.",
+    ai_role_recall_scope_hint:
+      "Cubre las preguntas de repetición espaciada, la importación de tarjetas del plan de estudios y otra generación de texto.",
     btn_add_model: "+ Añadir modelo",
     lbl_title: "Título (nombre visible)",
     model_btn_cancel: "Cancelar",
@@ -312,7 +330,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_btn_save: "Guardar",
     model_btn_up: "Subir",
     model_cap_embedding: "Embeddings",
-    model_cap_hint: "Solo se pueden activar las capacidades que admite el endpoint tras la comprobación.",
+    model_cap_hint:
+      "Solo se pueden activar las capacidades que admite el endpoint tras la comprobación.",
     model_cap_image: "Visión",
     model_cap_none: "Sin capacidades",
     model_cap_stt: "Voz a texto",
@@ -334,7 +353,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_load_failed: "No se pudieron cargar los modelos: {message}",
     model_loading: "Cargando modelos…",
     model_local_badge: "Local",
-    model_missing_fields: "La URL del endpoint y el ID del modelo son obligatorios.",
+    model_missing_fields:
+      "La URL del endpoint y el ID del modelo son obligatorios.",
     model_remove_confirm: '¿Quitar el modelo "{label}"?',
     model_removed: "Se quitó {label}",
     model_reprobing: "Volviendo a comprobar…",
@@ -348,16 +368,21 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_card_existing_badge: "importada",
     wizard_card_new_badge: "nueva",
     wizard_card_preview_empty: "No se encontraron tarjetas para este tema.",
-    wizard_card_preview_note: "Las tarjetas marcadas se conservan o se crean. Desmarca una tarjeta existente para quitarla de tu cola (el token compartido permanece).",
+    wizard_card_preview_note:
+      "Las tarjetas marcadas se conservan o se crean. Desmarca una tarjeta existente para quitarla de tu cola (el token compartido permanece).",
     wizard_err_no_subtopics: "Selecciona al menos una unidad de competencia.",
-    wizard_import_confirm_success: "Se guardaron {createdCount} tarjetas nuevas y {ensuredCount} existentes. Se quitaron {removedCount} tarjeta(s) de tu cola.",
+    wizard_import_confirm_success:
+      "Se guardaron {createdCount} tarjetas nuevas y {ensuredCount} existentes. Se quitaron {removedCount} tarjeta(s) de tu cola.",
     wizard_import_listing_subtopics: "Cargando unidades: {topic}",
     wizard_import_previewing: "Generando vista previa de tarjetas: {topic}",
-    wizard_import_text_llm_hint: "Abre {settingsPath}, asegúrate de que el modelo de texto aparezca listo y vuelve a intentarlo.",
-    wizard_import_text_llm_offline: "El modelo de texto no está disponible. La importación del plan de estudios usa el mismo proveedor que el aprendizaje.",
+    wizard_import_text_llm_hint:
+      "Abre {settingsPath}, asegúrate de que el modelo de texto aparezca listo y vuelve a intentarlo.",
+    wizard_import_text_llm_offline:
+      "El modelo de texto no está disponible. La importación del plan de estudios usa el mismo proveedor que el aprendizaje.",
     wizard_step_cardPreview: "Tarjetas de aprendizaje",
     wizard_step_subTopic: "Unidades de competencia",
-    wizard_subtopic_note: "Selecciona unidades de competencia de «{topic}» para generar tarjetas (las áreas grandes se dividen automáticamente).",
+    wizard_subtopic_note:
+      "Selecciona unidades de competencia de «{topic}» para generar tarjetas (las áreas grandes se dividen automáticamente).",
     release_link_failed: "No se pudieron abrir las versiones: {message}",
     nav_content: "Contenido",
     content_title: "Estudio de Contenido",
@@ -386,9 +411,11 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_remove: "Eliminar tarjeta",
     btn_delete: "Borrar token global",
     lbl_confirm_remove_title: "Confirmar eliminación",
-    lbl_confirm_remove_desc: "Esto borrará tu estado y registro de FSRS personal. El token global no se verá afectado.",
+    lbl_confirm_remove_desc:
+      "Esto borrará tu estado y registro de FSRS personal. El token global no se verá afectado.",
     lbl_confirm_delete_title: "Confirmar borrado global",
-    lbl_confirm_delete_desc: "Esto borrará permanentemente el concepto y todas las tarjetas de todos los usuarios.",
+    lbl_confirm_delete_desc:
+      "Esto borrará permanentemente el concepto y todas las tarjetas de todos los usuarios.",
     lbl_delete_impact: "Esta acción afecta:",
     lbl_impact_cards: "{count} tarjeta(s)",
     lbl_impact_reviews: "{count} registro(s) de repaso",
@@ -411,13 +438,16 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_import_curriculum: "Importar currículo",
     lbl_import_modal_title: "Importar estándar de currículo",
     lbl_import_text: "Texto del currículo",
-    placeholder_import_text: "Pegue el texto del currículo o viñetas del plan de estudios aquí...",
+    placeholder_import_text:
+      "Pegue el texto del currículo o viñetas del plan de estudios aquí...",
     lbl_import_source: "URL de origen / Referencia",
     lbl_import_category: "Categoría de destino",
     lbl_import_progress_status: "Generando tarjetas...",
-    lbl_import_progress_detail: "Esto puede tardar hasta un minuto dependiendo de la velocidad de su IA local.",
+    lbl_import_progress_detail:
+      "Esto puede tardar hasta un minuto dependiendo de la velocidad de su IA local.",
     btn_import_submit: "Importar",
-    toast_import_success: "¡Se importaron correctamente {createdCount} nuevos tokens y se aseguraron {ensuredCount} tarjetas!",
+    toast_import_success:
+      "¡Se importaron correctamente {createdCount} nuevos tokens y se aseguraron {ensuredCount} tarjetas!",
     lbl_error_importing: "Error al importar el currículo",
     btn_curriculum_wizard: "Asistente de plan de estudios",
     lbl_curriculum_wizard_title: "Asistente de plan de estudios",
@@ -433,7 +463,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_no_options: "Aún no hay opciones disponibles para esta selección.",
     wizard_err_select_option: "Selecciona una opción para continuar.",
     wizard_err_no_topics: "Selecciona al menos un tema.",
-    wizard_topic_scope_note: "Las tarjetas se generan a partir de la página completa del plan de estudios de esta asignatura (todos sus temas). La importación precisa por tema llegará en una futura actualización; por ahora, la selección de temas te ayuda a hacer seguimiento de lo que hay que cubrir a continuación.",
+    wizard_topic_scope_note:
+      "Las tarjetas se generan a partir de la página completa del plan de estudios de esta asignatura (todos sus temas). La importación precisa por tema llegará en una futura actualización; por ahora, la selección de temas te ayuda a hacer seguimiento de lo que hay que cubrir a continuación.",
     wizard_resume_prompt: "Continuar donde lo dejaste:",
     wizard_btn_resume: "Continuar",
     wizard_btn_restart: "Empezar de nuevo",
@@ -466,20 +497,24 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "{count} tema(s) ya importado(s) se omitieron.",
     btn_split: "Dividir",
     lbl_split_modal_title: "Dividir tarjeta",
-    lbl_original_card_title: "Tarjeta original (Pregunta de aplicación resumida)",
+    lbl_original_card_title:
+      "Tarjeta original (Pregunta de aplicación resumida)",
     lbl_split_original_question: "Pregunta",
     lbl_split_original_concept: "Respuesta / Concepto",
     lbl_split_action_title: "Después de completar la división:",
-    lbl_action_block: "Conservar la tarjeta original y bloquearla (requiere nuevas tarjetas primero)",
+    lbl_action_block:
+      "Conservar la tarjeta original y bloquearla (requiere nuevas tarjetas primero)",
     lbl_action_remove: "Eliminar la tarjeta original",
     lbl_split_progress_status: "Generando propuestas atómicas...",
-    lbl_split_progress_detail: "Esto puede tardar hasta un minuto dependiendo de la velocidad de su IA local.",
+    lbl_split_progress_detail:
+      "Esto puede tardar hasta un minuto dependiendo de la velocidad de su IA local.",
     lbl_atomic_proposals_title: "Propuestas de tarjetas atómicas (Mínimo 2)",
     btn_split_modal_submit: "Confirmar división",
     btn_content_foundations_card: "Fundamentos",
     lbl_foundations_modal_title: "Importar fundamentos",
     lbl_foundations_progress_status: "Generando propuestas fundamentales...",
-    lbl_foundations_progress_detail: "Esto puede tardar hasta un minuto dependiendo de la velocidad de su IA local.",
+    lbl_foundations_progress_detail:
+      "Esto puede tardar hasta un minuto dependiendo de la velocidad de su IA local.",
     lbl_foundations_atomic_title: "Propuestas de tarjetas fundamentales",
     btn_foundations_modal_submit: "Confirmar importación",
     lbl_import_source_type: "Tipo de origen",
@@ -492,23 +527,31 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_foundation_existing_badge: "Se vinculará la tarjeta existente",
     lbl_foundation_new_badge: "Sugerencia de nueva tarjeta",
     lbl_include: "Incluir",
-    lbl_err_analyze_source_first: "Primero analiza un archivo de origen, un enlace web o un escaneo OCR.",
-    lbl_err_min_split_proposals: "Se requieren al menos 2 propuestas de tarjeta completas para dividir una tarjeta.",
-    lbl_err_select_foundation: "Selecciona al menos una tarjeta de propuesta de prerrequisito para importar.",
-    lbl_err_enter_path_or_url: "Introduce una ruta de archivo o URL para analizar.",
+    lbl_err_analyze_source_first:
+      "Primero analiza un archivo de origen, un enlace web o un escaneo OCR.",
+    lbl_err_min_split_proposals:
+      "Se requieren al menos 2 propuestas de tarjeta completas para dividir una tarjeta.",
+    lbl_err_select_foundation:
+      "Selecciona al menos una tarjeta de propuesta de prerrequisito para importar.",
+    lbl_err_enter_path_or_url:
+      "Introduce una ruta de archivo o URL para analizar.",
     lbl_analyzing_source: "Analizando el contenido de la fuente, espera…",
     lbl_err_analysis_failed: "Error en el análisis",
     lbl_err_analysis_prefix: "Error de análisis",
     lbl_err_concept_required: "La respuesta o el concepto es obligatorio.",
     lbl_err_category_required: "La categoría es obligatoria.",
-    lbl_err_import_context_required: "El texto del plan de estudios es obligatorio.",
-    lbl_err_original_context_required: "La pregunta y la respuesta son obligatorias para la tarjeta original.",
+    lbl_err_import_context_required:
+      "El texto del plan de estudios es obligatorio.",
+    lbl_err_original_context_required:
+      "La pregunta y la respuesta son obligatorias para la tarjeta original.",
     settings_context_title: "Contexto de conocimiento",
-    settings_context_help: "Selecciona el contexto de conocimiento predeterminado para este dispositivo.",
+    settings_context_help:
+      "Selecciona el contexto de conocimiento predeterminado para este dispositivo.",
     settings_context_label: "Contexto predeterminado",
     wizard_context_label: "Asignar tarjetas importadas al contexto:",
     settings_agents_title: "Agentes de IA",
-    settings_agents_help: "Conecta los agentes instalados con ZAM mediante MCP. Se puede repetir sin riesgo.",
+    settings_agents_help:
+      "Conecta los agentes instalados con ZAM mediante MCP. Se puede repetir sin riesgo.",
     btn_agents_connect_all: "Conectar todos los detectados",
     btn_agent_connect: "Conectar",
     agent_status_loading: "Detectando agentes instalados...",
@@ -516,13 +559,40 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     agent_status_installed: "Instalado",
     agent_status_connected: "Conectado",
     agent_connect_running: "Conectando...",
-    agent_connect_done: "{n} agente(s) conectado(s). Skill global de ZAM actualizado.",
-    agent_connect_none: "No se detectó ningún agente compatible. Instala primero Codex, VS Code o Copilot.",
-    agent_connect_error: "Error de conexión — consulta la consola para más detalles.",
+    agent_connect_done:
+      "{n} agente(s) conectado(s). Skill global de ZAM actualizado.",
+    agent_connect_none:
+      "No se detectó ningún agente compatible. Instala primero Codex, VS Code o Copilot.",
+    agent_connect_error:
+      "Error de conexión — consulta la consola para más detalles.",
     agent_connect_status: "Estado de la conexión",
     agent_connect_not_run: "Aún no ejecutado",
     agent_connect_success: "Exitoso",
     agent_connect_failed: "Fallido",
+    lbl_contextbar_agent: "Agente",
+    lbl_contextbar_user: "Usuario",
+    contextbar_user_session_suffix: "{id} (esta sesión)",
+    contextbar_user_unresolved: "Aún no se ha determinado un alumno",
+    contextbar_user_title_session:
+      "{id} — solo esta sesión; no se guarda como tu preferencia de Companion",
+    contextbar_user_title_manual:
+      "{id} — seleccionado en esta barra de contexto",
+    contextbar_user_title_persisted: "{id} — tu alumno guardado de Companion",
+    contextbar_user_title_default: "{id} — usuario predeterminado de ZAM",
+    contextbar_agent_unavailable_fmt: "{label} (no disponible)",
+    contextbar_quick_mode: "Modo rápido — sin agente",
+    contextbar_select_profile_placeholder:
+      "– Selecciona un perfil de aprendizaje –",
+    contextbar_no_learner: "Sin alumno",
+    contextbar_evaluator_unavailable_fmt: "{label} — no disponible",
+    contextbar_refresh_title: "Actualizar contexto",
+    contextbar_expand: "Expandir barra de contexto",
+    contextbar_collapse: "Contraer barra de contexto",
+    btn_contextbar_discard_switch: "Descartar y cambiar",
+    contextbar_confirm_switch_user:
+      "¿Cambiar el alumno a {id}? El trabajo no enviado en este panel se descartará.",
+    contextbar_confirm_switch_agent:
+      "¿Cambiar de agente? El trabajo no enviado en este panel se descartará.",
   },
   fr: {
     ai_status_offline: "IA hors ligne",
@@ -545,8 +615,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_domains: "Domaines actifs",
     btn_start_session: "Démarrer la session d'apprentissage",
     lbl_translating: "Traduction dynamique...",
-    placeholder_answer: "Saisissez ici votre réponse conceptuelle... (Ctrl+Entrée pour envoyer)",
-    placeholder_discussion: "Posez une question sur cette carte... (Entrée pour envoyer)",
+    placeholder_answer:
+      "Saisissez ici votre réponse conceptuelle... (Ctrl+Entrée pour envoyer)",
+    placeholder_discussion:
+      "Posez une question sur cette carte... (Entrée pour envoyer)",
     btn_discussion_send: "Envoyer",
     discussion_error: "Pas de réponse de l'IA. Veuillez réessayer.",
     btn_reveal_answer: "Envoyer et révéler la réponse",
@@ -590,18 +662,24 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_open_graph: "Carte des connaissances (3D)",
     btn_open_settings: "Paramètres",
     observer_title: "Observateur d'IU",
-    observer_idle: "Chargez les fenêtres et choisissez une fenêtre d'application à observer.",
+    observer_idle:
+      "Chargez les fenêtres et choisissez une fenêtre d'application à observer.",
     observer_loading: "Chargement des fenêtres observables...",
     observer_ready: "Sélectionnée : {title}",
-    observer_vision_checking: "Vérification des paramètres d'observation visuelle...",
-    observer_analyzing: "Capture d'un instantané et interrogation du modèle de vision...",
-    observer_done: "Observation enregistrée. Confiance du dernier rapport : {confidence}",
+    observer_vision_checking:
+      "Vérification des paramètres d'observation visuelle...",
+    observer_analyzing:
+      "Capture d'un instantané et interrogation du modèle de vision...",
+    observer_done:
+      "Observation enregistrée. Confiance du dernier rapport : {confidence}",
     observer_canceled: "Observation annulée.",
     observer_error: "Erreur de l'observateur : {message}",
     observer_vision_disabled:
       "L'observation visuelle est désactivée. Activez-la avec : zam settings set llm.vision.enabled true",
-    observer_vision_offline: "Le point de terminaison de vision est hors ligne : {url}",
-    observer_vision_model_missing: "Le modèle de vision n'est pas disponible : {model}",
+    observer_vision_offline:
+      "Le point de terminaison de vision est hors ligne : {url}",
+    observer_vision_model_missing:
+      "Le modèle de vision n'est pas disponible : {model}",
     observer_privacy_paused:
       "Pause de confidentialité : cette fenêtre est bloquée par le filtre de confidentialité ({reason}).",
     observer_privacy_option: "pause de confidentialité",
@@ -618,8 +696,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     observer_loop_start: "Démarrer la boucle",
     observer_loop_stop: "Arrêter la boucle",
     observer_loop_idle: "Instantanés manuels uniquement.",
-    observer_loop_running: "Boucle de l'observateur en cours. Un instantané à la fois.",
-    observer_loop_waiting: "Boucle de l'observateur en cours. Prochain instantané dans {seconds} s.",
+    observer_loop_running:
+      "Boucle de l'observateur en cours. Un instantané à la fois.",
+    observer_loop_waiting:
+      "Boucle de l'observateur en cours. Prochain instantané dans {seconds} s.",
     observer_loop_stopped: "Boucle de l'observateur arrêtée.",
     observer_watch_start: "Démarrer la surveillance",
     observer_watch_stop: "Arrêter la surveillance",
@@ -630,7 +710,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     observer_watch_stopped: "Surveillance continue arrêtée.",
     observer_watch_error: "Erreur de surveillance : {message}",
     graph_title: "Graphe de connaissances (3D)",
-    graph_hint: "Glissez pour pivoter • Cliquez sur les nœuds pour cibler • Défilez pour zoomer",
+    graph_hint:
+      "Glissez pour pivoter • Cliquez sur les nœuds pour cibler • Défilez pour zoomer",
     graph_focus: "Cible",
     graph_prereqs: "Bases (prérequis)",
     graph_dependents: "Compétences supérieures (dépendantes)",
@@ -661,7 +742,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     database_no_profile: "Aucun profil actif",
     database_profile_option: "{profile} — {count} cartes",
     database_profile_switch_confirm:
-      'Passer au profil d’apprentissage « {profile} » ?',
+      "Passer au profil d’apprentissage « {profile} » ?",
     database_profile_switched: "Profil actif : {profile} ({count} cartes)",
     database_refresh: "Actualiser l’état",
     settings_theme: "Thème",
@@ -675,7 +756,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "Votre base de données se synchronise avec le cloud ({target}) — aucune sauvegarde locale séparée n'est nécessaire.",
     setup_backup_failed: "Échec de la sauvegarde : {message}",
     setup_backup_failed_generic: "Échec de la sauvegarde.",
-    setup_open_folder_failed: "Impossible d'ouvrir le dossier de données : {message}",
+    setup_open_folder_failed:
+      "Impossible d'ouvrir le dossier de données : {message}",
     lbl_workspace: "Espace de travail",
     btn_choose_workspace: "+ Ajouter un espace de travail…",
     btn_open_terminal: "Ouvrir le terminal",
@@ -692,18 +774,21 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     workspace_kind_community: "Espace de travail communautaire",
     workspace_kind_organization: "Espace de travail d'organisation",
     workspace_kind_custom: "Espace de travail personnalisé",
-    workspace_more: "{count} espace(s) de travail masqué(s). Utilisez la CLI pour la liste complète.",
+    workspace_more:
+      "{count} espace(s) de travail masqué(s). Utilisez la CLI pour la liste complète.",
     workspace_use: "Utiliser",
     workspace_open: "Terminal",
     workspace_default_suffix: "(par défaut)",
     workspace_set: "Espace de travail défini sur {path}",
     workspace_added: "Espace de travail ajouté : {path}",
-    workspace_pick_failed: "Impossible de définir l'espace de travail : {message}",
+    workspace_pick_failed:
+      "Impossible de définir l'espace de travail : {message}",
     workspace_remove: "Retirer",
     workspace_remove_confirm:
       "Retirer « {label} » de ZAM ? Les fichiers et liens du dossier resteront inchangés.",
     workspace_removed: "Espace de travail retiré : {label}",
-    workspace_remove_failed: "Impossible de retirer l'espace de travail : {message}",
+    workspace_remove_failed:
+      "Impossible de retirer l'espace de travail : {message}",
     workspace_link_ok: "Lien de skill OK",
     workspace_link_broken: "Lien de skill rompu",
     workspace_link_unmanaged: "Dossier de skill externe",
@@ -712,7 +797,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "Le dossier de « {label} » contient un répertoire skills/zam que ZAM n'a pas créé. La réparation le supprime et le remplace par un lien. Continuer ?",
     workspace_repairing: "Réparation du lien de skill…",
     workspace_repaired: "Lien de skill réparé : {label}",
-    workspace_repair_failed: "Impossible de réparer le lien de skill : {message}",
+    workspace_repair_failed:
+      "Impossible de réparer le lien de skill : {message}",
     lbl_app_version: "Version",
     lbl_learning_model: "Modèle d'apprentissage",
     lbl_observer_model: "Modèle de l'observateur",
@@ -728,7 +814,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_ai_config_close: "Fermer",
     btn_add_ai_provider: "+ Ajouter un fournisseur",
     ai_config_loading: "Chargement de la configuration du fournisseur...",
-    ai_config_failed: "Impossible de charger la configuration du fournisseur : {message}",
+    ai_config_failed:
+      "Impossible de charger la configuration du fournisseur : {message}",
     ai_provider_empty: "Aucun fournisseur configuré pour l'instant.",
     ai_provider_section_local: "Local",
     ai_provider_section_cloud: "Cloud",
@@ -745,7 +832,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     ai_provider_remove_confirm: "Retirer le fournisseur « {name} » ?",
     ai_provider_removed: "Fournisseur « {name} » retiré",
     ai_provider_saved: "Fournisseur « {name} » enregistré",
-    ai_provider_save_failed: "Impossible d'enregistrer le fournisseur : {message}",
+    ai_provider_save_failed:
+      "Impossible d'enregistrer le fournisseur : {message}",
     ai_provider_form_add_title: "Ajouter un fournisseur",
     ai_provider_form_edit_title: "Modifier le fournisseur",
     ai_provider_display_name: "Nom",
@@ -769,7 +857,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     ai_provider_runner_foundry: "Foundry Local",
     ai_provider_runner_not_installed: "non détecté",
     ai_provider_api_key: "Clé d'API",
-    ai_provider_api_key_hint: "En écriture seule — stockée localement, jamais synchronisée",
+    ai_provider_api_key_hint:
+      "En écriture seule — stockée localement, jamais synchronisée",
     ai_provider_cloud_hint: "Modèle suggéré : {model}",
     ai_provider_models_loading: "Chargement des modèles...",
     ai_provider_models_empty: "Aucun modèle listé par le point de terminaison",
@@ -796,12 +885,14 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     update_available: "Mise à jour disponible : {version}",
     update_none: "Vous utilisez la version la plus récente.",
     update_failed: "Échec de la recherche de mises à jour : {message}",
-    update_available_manual: "Mise à jour disponible : {version}. Ouverture de la page de téléchargement…",
+    update_available_manual:
+      "Mise à jour disponible : {version}. Ouverture de la page de téléchargement…",
     update_downloading: "Téléchargement de la mise à jour {version}…",
     update_progress: "Téléchargement de la mise à jour {version}… {pct} %",
     update_installing: "Installation de la mise à jour…",
     update_restarting: "Redémarrage sur la nouvelle version…",
-    ai_role_recall_scope_hint: "Couvre les questions de répétition espacée, l'import de cartes du programme et d'autres générations de texte.",
+    ai_role_recall_scope_hint:
+      "Couvre les questions de répétition espacée, l'import de cartes du programme et d'autres générations de texte.",
     btn_add_model: "+ Ajouter un modèle",
     lbl_title: "Titre (nom affiché)",
     model_btn_cancel: "Annuler",
@@ -812,7 +903,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_btn_save: "Enregistrer",
     model_btn_up: "Monter",
     model_cap_embedding: "Embeddings",
-    model_cap_hint: "Seules les capacités prises en charge par l'endpoint peuvent être activées après vérification.",
+    model_cap_hint:
+      "Seules les capacités prises en charge par l'endpoint peuvent être activées après vérification.",
     model_cap_image: "Vision",
     model_cap_none: "Aucune capacité",
     model_cap_stt: "Parole vers texte",
@@ -834,7 +926,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_load_failed: "Impossible de charger les modèles : {message}",
     model_loading: "Chargement des modèles…",
     model_local_badge: "Local",
-    model_missing_fields: "L'URL de l'endpoint et l'ID du modèle sont obligatoires.",
+    model_missing_fields:
+      "L'URL de l'endpoint et l'ID du modèle sont obligatoires.",
     model_remove_confirm: 'Supprimer le modèle "{label}" ?',
     model_removed: "{label} supprimé",
     model_reprobing: "Revérification…",
@@ -848,16 +941,21 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_card_existing_badge: "importée",
     wizard_card_new_badge: "nouvelle",
     wizard_card_preview_empty: "Aucune carte trouvée pour ce sujet.",
-    wizard_card_preview_note: "Les cartes cochées sont conservées ou créées. Décochez une carte existante pour la retirer de votre file (le token partagé reste).",
+    wizard_card_preview_note:
+      "Les cartes cochées sont conservées ou créées. Décochez une carte existante pour la retirer de votre file (le token partagé reste).",
     wizard_err_no_subtopics: "Sélectionnez au moins une unité de compétence.",
-    wizard_import_confirm_success: "{createdCount} nouvelles cartes et {ensuredCount} existantes enregistrées. {removedCount} carte(s) retirée(s) de votre file.",
+    wizard_import_confirm_success:
+      "{createdCount} nouvelles cartes et {ensuredCount} existantes enregistrées. {removedCount} carte(s) retirée(s) de votre file.",
     wizard_import_listing_subtopics: "Chargement des unités : {topic}",
     wizard_import_previewing: "Génération de l'aperçu des cartes : {topic}",
-    wizard_import_text_llm_hint: "Ouvrez {settingsPath}, vérifiez que le modèle de texte est prêt, puis réessayez.",
-    wizard_import_text_llm_offline: "Le modèle de texte est injoignable. L'import du programme utilise le même fournisseur que l'apprentissage.",
+    wizard_import_text_llm_hint:
+      "Ouvrez {settingsPath}, vérifiez que le modèle de texte est prêt, puis réessayez.",
+    wizard_import_text_llm_offline:
+      "Le modèle de texte est injoignable. L'import du programme utilise le même fournisseur que l'apprentissage.",
     wizard_step_cardPreview: "Cartes d'apprentissage",
     wizard_step_subTopic: "Unités de compétence",
-    wizard_subtopic_note: "Sélectionnez des unités de compétence de « {topic} » pour générer des cartes (les grandes zones sont divisées automatiquement).",
+    wizard_subtopic_note:
+      "Sélectionnez des unités de compétence de « {topic} » pour générer des cartes (les grandes zones sont divisées automatiquement).",
     release_link_failed: "Impossible d'ouvrir les versions : {message}",
     nav_content: "Contenu",
     content_title: "Studio de Contenu",
@@ -886,9 +984,11 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_remove: "Supprimer la carte",
     btn_delete: "Supprimer le token global",
     lbl_confirm_remove_title: "Confirmer la suppression",
-    lbl_confirm_remove_desc: "Cela effacera votre état FSRS personnel. Le token global ne sera pas affecté.",
+    lbl_confirm_remove_desc:
+      "Cela effacera votre état FSRS personnel. Le token global ne sera pas affecté.",
     lbl_confirm_delete_title: "Confirmer la suppression globale",
-    lbl_confirm_delete_desc: "Cela supprimera définitivement le concept et toutes les cartes de tous les utilisateurs.",
+    lbl_confirm_delete_desc:
+      "Cela supprimera définitivement le concept et toutes les cartes de tous les utilisateurs.",
     lbl_delete_impact: "Cette action affecte :",
     lbl_impact_cards: "{count} carte(s)",
     lbl_impact_reviews: "{count} journal(journaux) de révision",
@@ -911,13 +1011,16 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_import_curriculum: "Importer le programme",
     lbl_import_modal_title: "Importer la norme de programme",
     lbl_import_text: "Texte du programme",
-    placeholder_import_text: "Collez le texte du programme ou les puces du syllabus ici...",
+    placeholder_import_text:
+      "Collez le texte du programme ou les puces du syllabus ici...",
     lbl_import_source: "URL source / Référence",
     lbl_import_category: "Catégorie cible",
     lbl_import_progress_status: "Génération de cartes...",
-    lbl_import_progress_detail: "Cela peut prendre jusqu'à une minute selon la vitesse de votre IA locale.",
+    lbl_import_progress_detail:
+      "Cela peut prendre jusqu'à une minute selon la vitesse de votre IA locale.",
     btn_import_submit: "Importer",
-    toast_import_success: "Importation réussie de {createdCount} nouveaux jetons et assurance de {ensuredCount} cartes !",
+    toast_import_success:
+      "Importation réussie de {createdCount} nouveaux jetons et assurance de {ensuredCount} cartes !",
     lbl_error_importing: "Échec de l'importation du programme",
     btn_curriculum_wizard: "Assistant de programme",
     lbl_curriculum_wizard_title: "Assistant de programme",
@@ -930,10 +1033,13 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_step_topic: "Sujets",
     wizard_btn_back: "Retour",
     wizard_btn_next: "Suivant",
-    wizard_no_options: "Aucune option disponible pour le moment pour cette sélection.",
-    wizard_err_select_option: "Veuillez sélectionner une option pour continuer.",
+    wizard_no_options:
+      "Aucune option disponible pour le moment pour cette sélection.",
+    wizard_err_select_option:
+      "Veuillez sélectionner une option pour continuer.",
     wizard_err_no_topics: "Veuillez sélectionner au moins un sujet.",
-    wizard_topic_scope_note: "Les cartes sont générées à partir de la page complète du programme de cette matière (tous ses sujets). L'importation précise par sujet arrivera dans une prochaine mise à jour — pour l'instant, la sélection des sujets vous aide à suivre ce qu'il reste à couvrir.",
+    wizard_topic_scope_note:
+      "Les cartes sont générées à partir de la page complète du programme de cette matière (tous ses sujets). L'importation précise par sujet arrivera dans une prochaine mise à jour — pour l'instant, la sélection des sujets vous aide à suivre ce qu'il reste à couvrir.",
     wizard_resume_prompt: "Continuer là où vous vous étiez arrêté :",
     wizard_btn_resume: "Continuer",
     wizard_btn_restart: "Recommencer",
@@ -970,16 +1076,20 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_split_original_question: "Question",
     lbl_split_original_concept: "Réponse / Concept",
     lbl_split_action_title: "Après la division terminée :",
-    lbl_action_block: "Conserver la carte originale et la bloquer (requiert d'abord les nouvelles cartes)",
+    lbl_action_block:
+      "Conserver la carte originale et la bloquer (requiert d'abord les nouvelles cartes)",
     lbl_action_remove: "Supprimer la carte originale",
     lbl_split_progress_status: "Génération de propositions atomiques...",
-    lbl_split_progress_detail: "Cela peut prendre jusqu'à une minute selon la vitesse de votre IA locale.",
+    lbl_split_progress_detail:
+      "Cela peut prendre jusqu'à une minute selon la vitesse de votre IA locale.",
     lbl_atomic_proposals_title: "Propositions de cartes atomiques (Minimum 2)",
     btn_split_modal_submit: "Confirmer la division",
     btn_content_foundations_card: "Fondations",
     lbl_foundations_modal_title: "Importer des fondations",
-    lbl_foundations_progress_status: "Génération de propositions fondamentales...",
-    lbl_foundations_progress_detail: "Cela peut prendre jusqu'à une minute selon la vitesse de votre IA locale.",
+    lbl_foundations_progress_status:
+      "Génération de propositions fondamentales...",
+    lbl_foundations_progress_detail:
+      "Cela peut prendre jusqu'à une minute selon la vitesse de votre IA locale.",
     lbl_foundations_atomic_title: "Propositions de cartes fondamentales",
     btn_foundations_modal_submit: "Confirmer l'importation",
     lbl_import_source_type: "Type de source",
@@ -992,23 +1102,31 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_foundation_existing_badge: "La carte existante sera liée",
     lbl_foundation_new_badge: "Suggestion de nouvelle carte",
     lbl_include: "Inclure",
-    lbl_err_analyze_source_first: "Veuillez d'abord analyser un fichier source, un lien web ou une numérisation OCR.",
-    lbl_err_min_split_proposals: "Au moins 2 propositions de carte complètes sont nécessaires pour diviser une carte.",
-    lbl_err_select_foundation: "Veuillez sélectionner au moins une carte de proposition de prérequis à importer.",
-    lbl_err_enter_path_or_url: "Veuillez saisir un chemin de fichier ou une URL à analyser.",
-    lbl_analyzing_source: "Analyse du contenu source en cours, veuillez patienter…",
+    lbl_err_analyze_source_first:
+      "Veuillez d'abord analyser un fichier source, un lien web ou une numérisation OCR.",
+    lbl_err_min_split_proposals:
+      "Au moins 2 propositions de carte complètes sont nécessaires pour diviser une carte.",
+    lbl_err_select_foundation:
+      "Veuillez sélectionner au moins une carte de proposition de prérequis à importer.",
+    lbl_err_enter_path_or_url:
+      "Veuillez saisir un chemin de fichier ou une URL à analyser.",
+    lbl_analyzing_source:
+      "Analyse du contenu source en cours, veuillez patienter…",
     lbl_err_analysis_failed: "Échec de l'analyse",
     lbl_err_analysis_prefix: "Erreur d'analyse",
     lbl_err_concept_required: "La réponse ou le concept est obligatoire.",
     lbl_err_category_required: "La catégorie est obligatoire.",
     lbl_err_import_context_required: "Le texte du programme est obligatoire.",
-    lbl_err_original_context_required: "La question et la réponse sont obligatoires pour la carte originale.",
+    lbl_err_original_context_required:
+      "La question et la réponse sont obligatoires pour la carte originale.",
     settings_context_title: "Contexte de connaissances",
-    settings_context_help: "Sélectionnez le contexte de connaissances par défaut pour cet appareil.",
+    settings_context_help:
+      "Sélectionnez le contexte de connaissances par défaut pour cet appareil.",
     settings_context_label: "Contexte par défaut",
     wizard_context_label: "Assigner les cartes importées au contexte :",
     settings_agents_title: "Agents IA",
-    settings_agents_help: "Connectez les agents installés à ZAM via MCP. Répétable sans risque.",
+    settings_agents_help:
+      "Connectez les agents installés à ZAM via MCP. Répétable sans risque.",
     btn_agents_connect_all: "Connecter tous les agents détectés",
     btn_agent_connect: "Connecter",
     agent_status_loading: "Détection des agents installés...",
@@ -1017,12 +1135,39 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     agent_status_connected: "Connecté",
     agent_connect_running: "Connexion...",
     agent_connect_done: "{n} agent(s) connecté(s). Skill ZAM global actualisé.",
-    agent_connect_none: "Aucun agent compatible détecté. Installez d'abord Codex, VS Code ou Copilot.",
-    agent_connect_error: "Échec de la connexion — voir la console pour les détails.",
+    agent_connect_none:
+      "Aucun agent compatible détecté. Installez d'abord Codex, VS Code ou Copilot.",
+    agent_connect_error:
+      "Échec de la connexion — voir la console pour les détails.",
     agent_connect_status: "État de la connexion",
     agent_connect_not_run: "Pas encore exécuté",
     agent_connect_success: "Réussi",
     agent_connect_failed: "Échoué",
+    lbl_contextbar_agent: "Agent",
+    lbl_contextbar_user: "Utilisateur",
+    contextbar_user_session_suffix: "{id} (cette session)",
+    contextbar_user_unresolved: "Aucun apprenant déterminé pour l'instant",
+    contextbar_user_title_session:
+      "{id} — cette session uniquement ; non enregistré comme préférence Companion",
+    contextbar_user_title_manual:
+      "{id} — sélectionné dans cette barre de contexte",
+    contextbar_user_title_persisted:
+      "{id} — votre apprenant Companion enregistré",
+    contextbar_user_title_default: "{id} — utilisateur par défaut de ZAM",
+    contextbar_agent_unavailable_fmt: "{label} (indisponible)",
+    contextbar_quick_mode: "Mode rapide — aucun agent",
+    contextbar_select_profile_placeholder:
+      "– Choisir un profil d'apprentissage –",
+    contextbar_no_learner: "Aucun apprenant",
+    contextbar_evaluator_unavailable_fmt: "{label} — indisponible",
+    contextbar_refresh_title: "Actualiser le contexte",
+    contextbar_expand: "Développer la barre de contexte",
+    contextbar_collapse: "Réduire la barre de contexte",
+    btn_contextbar_discard_switch: "Ignorer et changer",
+    contextbar_confirm_switch_user:
+      "Changer d'apprenant vers {id} ? Le travail non soumis dans ce panneau sera perdu.",
+    contextbar_confirm_switch_agent:
+      "Changer d'agent ? Le travail non soumis dans ce panneau sera perdu.",
   },
   pt: {
     ai_status_offline: "IA offline",
@@ -1045,8 +1190,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_domains: "Domínios ativos",
     btn_start_session: "Iniciar sessão de aprendizado",
     lbl_translating: "Traduzindo dinamicamente...",
-    placeholder_answer: "Digite aqui sua resposta conceitual... (Ctrl+Enter para enviar)",
-    placeholder_discussion: "Faça uma pergunta sobre este cartão... (Enter para enviar)",
+    placeholder_answer:
+      "Digite aqui sua resposta conceitual... (Ctrl+Enter para enviar)",
+    placeholder_discussion:
+      "Faça uma pergunta sobre este cartão... (Enter para enviar)",
     btn_discussion_send: "Enviar",
     discussion_error: "Sem resposta da IA. Tente novamente.",
     btn_reveal_answer: "Enviar e revelar resposta",
@@ -1090,18 +1237,23 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_open_graph: "Mapa de conhecimento (3D)",
     btn_open_settings: "Configurações",
     observer_title: "Observador de IU",
-    observer_idle: "Carregue as janelas e escolha uma janela de aplicativo para observar.",
+    observer_idle:
+      "Carregue as janelas e escolha uma janela de aplicativo para observar.",
     observer_loading: "Carregando janelas observáveis...",
     observer_ready: "Selecionada: {title}",
-    observer_vision_checking: "Verificando as configurações de observação por visão...",
-    observer_analyzing: "Capturando um instantâneo e consultando o modelo de visão...",
-    observer_done: "Observação salva. Confiança do último relatório: {confidence}",
+    observer_vision_checking:
+      "Verificando as configurações de observação por visão...",
+    observer_analyzing:
+      "Capturando um instantâneo e consultando o modelo de visão...",
+    observer_done:
+      "Observação salva. Confiança do último relatório: {confidence}",
     observer_canceled: "Observação cancelada.",
     observer_error: "Erro do observador: {message}",
     observer_vision_disabled:
       "A observação por visão está desativada. Ative-a com: zam settings set llm.vision.enabled true",
     observer_vision_offline: "O endpoint de visão está offline: {url}",
-    observer_vision_model_missing: "O modelo de visão não está disponível: {model}",
+    observer_vision_model_missing:
+      "O modelo de visão não está disponível: {model}",
     observer_privacy_paused:
       "Pausa de privacidade: esta janela está bloqueada pelo filtro de privacidade ({reason}).",
     observer_privacy_option: "pausa de privacidade",
@@ -1118,8 +1270,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     observer_loop_start: "Iniciar laço",
     observer_loop_stop: "Parar laço",
     observer_loop_idle: "Apenas instantâneos manuais.",
-    observer_loop_running: "Laço do observador em execução. Um instantâneo por vez.",
-    observer_loop_waiting: "Laço do observador em execução. Próximo instantâneo em {seconds}s.",
+    observer_loop_running:
+      "Laço do observador em execução. Um instantâneo por vez.",
+    observer_loop_waiting:
+      "Laço do observador em execução. Próximo instantâneo em {seconds}s.",
     observer_loop_stopped: "Laço do observador parado.",
     observer_watch_start: "Iniciar monitoramento",
     observer_watch_stop: "Parar monitoramento",
@@ -1130,7 +1284,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     observer_watch_stopped: "Monitoramento contínuo parado.",
     observer_watch_error: "Erro de monitoramento: {message}",
     graph_title: "Grafo de conhecimento (3D)",
-    graph_hint: "Arraste para girar • Clique nos nós para focar • Role para aplicar zoom",
+    graph_hint:
+      "Arraste para girar • Clique nos nós para focar • Role para aplicar zoom",
     graph_focus: "Foco",
     graph_prereqs: "Bases (pré-requisitos)",
     graph_dependents: "Habilidades superiores (dependentes)",
@@ -1161,7 +1316,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     database_no_profile: "Nenhum perfil ativo",
     database_profile_option: "{profile} — {count} cartões",
     database_profile_switch_confirm:
-      'Mudar o perfil de aprendizagem ativo para “{profile}”?',
+      "Mudar o perfil de aprendizagem ativo para “{profile}”?",
     database_profile_switched: "Perfil ativo: {profile} ({count} cartões)",
     database_refresh: "Atualizar status",
     settings_theme: "Tema",
@@ -1175,7 +1330,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "Seu banco de dados sincroniza com a nuvem ({target}) — nenhum backup local separado é necessário.",
     setup_backup_failed: "Falha no backup: {message}",
     setup_backup_failed_generic: "Falha no backup.",
-    setup_open_folder_failed: "Não foi possível abrir a pasta de dados: {message}",
+    setup_open_folder_failed:
+      "Não foi possível abrir a pasta de dados: {message}",
     lbl_workspace: "Espaço de trabalho",
     btn_choose_workspace: "+ Adicionar espaço de trabalho…",
     btn_open_terminal: "Abrir terminal",
@@ -1192,18 +1348,21 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     workspace_kind_community: "Espaço de trabalho de comunidade",
     workspace_kind_organization: "Espaço de trabalho de organização",
     workspace_kind_custom: "Espaço de trabalho personalizado",
-    workspace_more: "{count} espaço(s) de trabalho oculto(s). Use a CLI para a lista completa.",
+    workspace_more:
+      "{count} espaço(s) de trabalho oculto(s). Use a CLI para a lista completa.",
     workspace_use: "Usar",
     workspace_open: "Terminal",
     workspace_default_suffix: "(padrão)",
     workspace_set: "Espaço de trabalho definido para {path}",
     workspace_added: "Espaço de trabalho adicionado: {path}",
-    workspace_pick_failed: "Não foi possível definir o espaço de trabalho: {message}",
+    workspace_pick_failed:
+      "Não foi possível definir o espaço de trabalho: {message}",
     workspace_remove: "Remover",
     workspace_remove_confirm:
       'Remover "{label}" do ZAM? Os arquivos e links na pasta permanecerão inalterados.',
     workspace_removed: "Espaço de trabalho removido: {label}",
-    workspace_remove_failed: "Não foi possível remover o espaço de trabalho: {message}",
+    workspace_remove_failed:
+      "Não foi possível remover o espaço de trabalho: {message}",
     workspace_link_ok: "Link de skill OK",
     workspace_link_broken: "Link de skill quebrado",
     workspace_link_unmanaged: "Pasta de skill externa",
@@ -1212,7 +1371,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       'A pasta de "{label}" contém um diretório skills/zam que o ZAM não criou. Reparar o exclui e o substitui por um link. Continuar?',
     workspace_repairing: "Reparando link de skill…",
     workspace_repaired: "Link de skill reparado: {label}",
-    workspace_repair_failed: "Não foi possível reparar o link de skill: {message}",
+    workspace_repair_failed:
+      "Não foi possível reparar o link de skill: {message}",
     lbl_app_version: "Versão",
     lbl_learning_model: "Modelo de aprendizado",
     lbl_observer_model: "Modelo do observador",
@@ -1228,7 +1388,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_ai_config_close: "Fechar",
     btn_add_ai_provider: "+ Adicionar provedor",
     ai_config_loading: "Carregando configuração do provedor...",
-    ai_config_failed: "Não foi possível carregar a configuração do provedor: {message}",
+    ai_config_failed:
+      "Não foi possível carregar a configuração do provedor: {message}",
     ai_provider_empty: "Nenhum provedor configurado ainda.",
     ai_provider_section_local: "Local",
     ai_provider_section_cloud: "Nuvem",
@@ -1269,7 +1430,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     ai_provider_runner_foundry: "Foundry Local",
     ai_provider_runner_not_installed: "não detectado",
     ai_provider_api_key: "Chave de API",
-    ai_provider_api_key_hint: "Somente gravação — armazenada localmente, nunca sincronizada",
+    ai_provider_api_key_hint:
+      "Somente gravação — armazenada localmente, nunca sincronizada",
     ai_provider_cloud_hint: "Modelo sugerido: {model}",
     ai_provider_models_loading: "Carregando modelos...",
     ai_provider_models_empty: "O endpoint não lista modelos",
@@ -1296,12 +1458,14 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     update_available: "Atualização disponível: {version}",
     update_none: "Você está na versão mais recente.",
     update_failed: "Falha na verificação de atualizações: {message}",
-    update_available_manual: "Atualização disponível: {version}. Abrindo a página de download…",
+    update_available_manual:
+      "Atualização disponível: {version}. Abrindo a página de download…",
     update_downloading: "Baixando atualização {version}…",
     update_progress: "Baixando atualização {version}… {pct}%",
     update_installing: "Instalando atualização…",
     update_restarting: "Reiniciando na nova versão…",
-    ai_role_recall_scope_hint: "Abrange as perguntas de repetição espaçada, a importação de cartões do currículo e outra geração de texto.",
+    ai_role_recall_scope_hint:
+      "Abrange as perguntas de repetição espaçada, a importação de cartões do currículo e outra geração de texto.",
     btn_add_model: "+ Adicionar modelo",
     lbl_title: "Título (nome de exibição)",
     model_btn_cancel: "Cancelar",
@@ -1312,7 +1476,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_btn_save: "Salvar",
     model_btn_up: "Mover para cima",
     model_cap_embedding: "Embeddings",
-    model_cap_hint: "Só é possível ativar os recursos que o endpoint suporta após a verificação.",
+    model_cap_hint:
+      "Só é possível ativar os recursos que o endpoint suporta após a verificação.",
     model_cap_image: "Visão",
     model_cap_none: "Sem recursos",
     model_cap_stt: "Voz para texto",
@@ -1334,7 +1499,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_load_failed: "Não foi possível carregar os modelos: {message}",
     model_loading: "Carregando modelos…",
     model_local_badge: "Local",
-    model_missing_fields: "A URL do endpoint e o ID do modelo são obrigatórios.",
+    model_missing_fields:
+      "A URL do endpoint e o ID do modelo são obrigatórios.",
     model_remove_confirm: 'Remover o modelo "{label}"?',
     model_removed: "{label} removido",
     model_reprobing: "Verificando novamente…",
@@ -1348,16 +1514,21 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_card_existing_badge: "importado",
     wizard_card_new_badge: "novo",
     wizard_card_preview_empty: "Nenhum cartão encontrado para este tópico.",
-    wizard_card_preview_note: "Os cartões marcados são mantidos ou criados. Desmarque um cartão existente para removê-lo da sua fila (o token compartilhado permanece).",
+    wizard_card_preview_note:
+      "Os cartões marcados são mantidos ou criados. Desmarque um cartão existente para removê-lo da sua fila (o token compartilhado permanece).",
     wizard_err_no_subtopics: "Selecione pelo menos uma unidade de competência.",
-    wizard_import_confirm_success: "Salvos {createdCount} cartões novos e {ensuredCount} existentes. Removido(s) {removedCount} cartão(ões) da sua fila.",
+    wizard_import_confirm_success:
+      "Salvos {createdCount} cartões novos e {ensuredCount} existentes. Removido(s) {removedCount} cartão(ões) da sua fila.",
     wizard_import_listing_subtopics: "Carregando unidades: {topic}",
     wizard_import_previewing: "Gerando pré-visualização de cartões: {topic}",
-    wizard_import_text_llm_hint: "Abra {settingsPath}, verifique se o modelo de texto está pronto e tente novamente.",
-    wizard_import_text_llm_offline: "O modelo de texto está inacessível. A importação do currículo usa o mesmo provedor que o aprendizado.",
+    wizard_import_text_llm_hint:
+      "Abra {settingsPath}, verifique se o modelo de texto está pronto e tente novamente.",
+    wizard_import_text_llm_offline:
+      "O modelo de texto está inacessível. A importação do currículo usa o mesmo provedor que o aprendizado.",
     wizard_step_cardPreview: "Cartões de aprendizado",
     wizard_step_subTopic: "Unidades de competência",
-    wizard_subtopic_note: "Selecione unidades de competência de “{topic}” para gerar cartões (as áreas grandes são divididas automaticamente).",
+    wizard_subtopic_note:
+      "Selecione unidades de competência de “{topic}” para gerar cartões (as áreas grandes são divididas automaticamente).",
     release_link_failed: "Não foi possível abrir as versões: {message}",
     nav_content: "Conteúdo",
     content_title: "Estúdio de Conteúdo",
@@ -1386,9 +1557,11 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_remove: "Remover carta",
     btn_delete: "Excluir token global",
     lbl_confirm_remove_title: "Confirmar remoção",
-    lbl_confirm_remove_desc: "Isso limpará seu estado FSRS pessoal. O token global não será afetado.",
+    lbl_confirm_remove_desc:
+      "Isso limpará seu estado FSRS pessoal. O token global não será afetado.",
     lbl_confirm_delete_title: "Confirmar exclusão global",
-    lbl_confirm_delete_desc: "Isso excluirá permanentemente o conceito e todas as cartas de todos os usuários.",
+    lbl_confirm_delete_desc:
+      "Isso excluirá permanentemente o conceito e todas as cartas de todos os usuários.",
     lbl_delete_impact: "Esta ação afeta:",
     lbl_impact_cards: "{count} carta(s)",
     lbl_impact_reviews: "{count} registro(s) de revisão",
@@ -1411,13 +1584,16 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_import_curriculum: "Importar currículo",
     lbl_import_modal_title: "Importar padrão de currículo",
     lbl_import_text: "Texto do currículo",
-    placeholder_import_text: "Cole o texto do currículo ou tópicos do programa aqui...",
+    placeholder_import_text:
+      "Cole o texto do currículo ou tópicos do programa aqui...",
     lbl_import_source: "URL de origem / Referência",
     lbl_import_category: "Categoria de destino",
     lbl_import_progress_status: "Gerando cartas...",
-    lbl_import_progress_detail: "Isso pode levar até um minuto, dependendo da velocidade do seu IA local.",
+    lbl_import_progress_detail:
+      "Isso pode levar até um minuto, dependendo da velocidade do seu IA local.",
     btn_import_submit: "Importar",
-    toast_import_success: "{createdCount} novos tokens importados com sucesso e {ensuredCount} cartas garantidas!",
+    toast_import_success:
+      "{createdCount} novos tokens importados com sucesso e {ensuredCount} cartas garantidas!",
     lbl_error_importing: "Falha ao importar o currículo",
     btn_curriculum_wizard: "Assistente de currículo",
     lbl_curriculum_wizard_title: "Assistente de currículo",
@@ -1433,7 +1609,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_no_options: "Ainda não há opções disponíveis para esta seleção.",
     wizard_err_select_option: "Selecione uma opção para continuar.",
     wizard_err_no_topics: "Selecione pelo menos um tópico.",
-    wizard_topic_scope_note: "Os cartões são gerados a partir da página completa do currículo desta disciplina (todos os seus tópicos). A importação precisa por tópico chegará em uma atualização futura — por enquanto, a seleção de tópicos ajuda você a acompanhar o que cobrir a seguir.",
+    wizard_topic_scope_note:
+      "Os cartões são gerados a partir da página completa do currículo desta disciplina (todos os seus tópicos). A importação precisa por tópico chegará em uma atualização futura — por enquanto, a seleção de tópicos ajuda você a acompanhar o que cobrir a seguir.",
     wizard_resume_prompt: "Continuar de onde você parou:",
     wizard_btn_resume: "Continuar",
     wizard_btn_restart: "Começar de novo",
@@ -1470,16 +1647,19 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_split_original_question: "Pergunta",
     lbl_split_original_concept: "Resposta / Conceito",
     lbl_split_action_title: "Após a divisão concluída:",
-    lbl_action_block: "Manter a carta original e bloqueá-la (requer novas cartas primeiro)",
+    lbl_action_block:
+      "Manter a carta original e bloqueá-la (requer novas cartas primeiro)",
     lbl_action_remove: "Remover a carta original",
     lbl_split_progress_status: "Gerando propostas atômicas...",
-    lbl_split_progress_detail: "Isso pode levar até um minuto, dependendo da velocidade do seu IA local.",
+    lbl_split_progress_detail:
+      "Isso pode levar até um minuto, dependendo da velocidade do seu IA local.",
     lbl_atomic_proposals_title: "Propostas de cartas atômicas (Mínimo 2)",
     btn_split_modal_submit: "Confirmar divisão",
     btn_content_foundations_card: "Fundamentos",
     lbl_foundations_modal_title: "Importar fundamentos",
     lbl_foundations_progress_status: "Gerando propostas fundamentais...",
-    lbl_foundations_progress_detail: "Isso pode levar até um minuto, dependendo da velocidade do seu IA local.",
+    lbl_foundations_progress_detail:
+      "Isso pode levar até um minuto, dependendo da velocidade do seu IA local.",
     lbl_foundations_atomic_title: "Propostas de cartas fundamentais",
     btn_foundations_modal_submit: "Confirmar importação",
     lbl_import_source_type: "Tipo de fonte",
@@ -1492,23 +1672,30 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_foundation_existing_badge: "O cartão existente será vinculado",
     lbl_foundation_new_badge: "Sugestão de novo cartão",
     lbl_include: "Incluir",
-    lbl_err_analyze_source_first: "Primeiro analise um arquivo de origem, um link da web ou uma digitalização OCR.",
-    lbl_err_min_split_proposals: "São necessárias pelo menos 2 propostas de cartão completas para dividir um cartão.",
-    lbl_err_select_foundation: "Selecione pelo menos um cartão de proposta de pré-requisito para importar.",
-    lbl_err_enter_path_or_url: "Insira um caminho de arquivo ou URL para analisar.",
+    lbl_err_analyze_source_first:
+      "Primeiro analise um arquivo de origem, um link da web ou uma digitalização OCR.",
+    lbl_err_min_split_proposals:
+      "São necessárias pelo menos 2 propostas de cartão completas para dividir um cartão.",
+    lbl_err_select_foundation:
+      "Selecione pelo menos um cartão de proposta de pré-requisito para importar.",
+    lbl_err_enter_path_or_url:
+      "Insira um caminho de arquivo ou URL para analisar.",
     lbl_analyzing_source: "Analisando o conteúdo de origem, aguarde…",
     lbl_err_analysis_failed: "Falha na análise",
     lbl_err_analysis_prefix: "Erro de análise",
     lbl_err_concept_required: "A resposta ou o conceito é obrigatório.",
     lbl_err_category_required: "A categoria é obrigatória.",
     lbl_err_import_context_required: "O texto do currículo é obrigatório.",
-    lbl_err_original_context_required: "A pergunta e a resposta são obrigatórias para o cartão original.",
+    lbl_err_original_context_required:
+      "A pergunta e a resposta são obrigatórias para o cartão original.",
     settings_context_title: "Contexto de conhecimento",
-    settings_context_help: "Selecione o contexto de conhecimento padrão para este dispositivo.",
+    settings_context_help:
+      "Selecione o contexto de conhecimento padrão para este dispositivo.",
     settings_context_label: "Contexto padrão",
     wizard_context_label: "Atribuir cartões importados ao contexto:",
     settings_agents_title: "Agentes de IA",
-    settings_agents_help: "Conecte os agentes instalados ao ZAM via MCP. Pode ser repetido com segurança.",
+    settings_agents_help:
+      "Conecte os agentes instalados ao ZAM via MCP. Pode ser repetido com segurança.",
     btn_agents_connect_all: "Conectar todos os detectados",
     btn_agent_connect: "Conectar",
     agent_status_loading: "Detectando agentes instalados...",
@@ -1516,13 +1703,38 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     agent_status_installed: "Instalado",
     agent_status_connected: "Conectado",
     agent_connect_running: "Conectando...",
-    agent_connect_done: "{n} agente(s) conectado(s). Skill global do ZAM atualizado.",
-    agent_connect_none: "Nenhum agente compatível detectado. Instale primeiro Codex, VS Code ou Copilot.",
+    agent_connect_done:
+      "{n} agente(s) conectado(s). Skill global do ZAM atualizado.",
+    agent_connect_none:
+      "Nenhum agente compatível detectado. Instale primeiro Codex, VS Code ou Copilot.",
     agent_connect_error: "Falha na conexão — veja o console para detalhes.",
     agent_connect_status: "Status da conexão",
     agent_connect_not_run: "Ainda não executado",
     agent_connect_success: "Bem-sucedido",
     agent_connect_failed: "Falhou",
+    lbl_contextbar_agent: "Agente",
+    lbl_contextbar_user: "Usuário",
+    contextbar_user_session_suffix: "{id} (esta sessão)",
+    contextbar_user_unresolved: "Ainda nenhum aluno identificado",
+    contextbar_user_title_session:
+      "{id} — apenas esta sessão; não salvo como sua preferência do Companion",
+    contextbar_user_title_manual: "{id} — selecionado nesta barra de contexto",
+    contextbar_user_title_persisted: "{id} — seu aluno salvo do Companion",
+    contextbar_user_title_default: "{id} — usuário padrão do ZAM",
+    contextbar_agent_unavailable_fmt: "{label} (indisponível)",
+    contextbar_quick_mode: "Modo rápido — sem agente",
+    contextbar_select_profile_placeholder:
+      "– Selecione um perfil de aprendizagem –",
+    contextbar_no_learner: "Sem aluno",
+    contextbar_evaluator_unavailable_fmt: "{label} — indisponível",
+    contextbar_refresh_title: "Atualizar contexto",
+    contextbar_expand: "Expandir barra de contexto",
+    contextbar_collapse: "Recolher barra de contexto",
+    btn_contextbar_discard_switch: "Descartar e trocar",
+    contextbar_confirm_switch_user:
+      "Trocar o aluno para {id}? O trabalho não enviado neste painel será descartado.",
+    contextbar_confirm_switch_agent:
+      "Trocar de agente? O trabalho não enviado neste painel será descartado.",
   },
   zh: {
     ai_status_offline: "AI 已离线",
@@ -1537,7 +1749,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     nav_settings: "设置",
     dashboard_kicker: "今日 ZAM",
     dashboard_title: "有意识地学习。",
-    dashboard_subtitle: "复习到期内容、打开知识图谱，或在设置中配置本地 AI 与工作区。",
+    dashboard_subtitle:
+      "复习到期内容、打开知识图谱，或在设置中配置本地 AI 与工作区。",
     lbl_due_reviews: "待复习",
     lbl_caught_up: "你已全部复习完毕！",
     dashboard_error: "无法加载你的数据",
@@ -1595,7 +1808,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     observer_done: "观察已保存。最新报告置信度：{confidence}",
     observer_canceled: "观察已取消。",
     observer_error: "观察器错误：{message}",
-    observer_vision_disabled: "视觉观察已禁用。使用以下命令启用：zam settings set llm.vision.enabled true",
+    observer_vision_disabled:
+      "视觉观察已禁用。使用以下命令启用：zam settings set llm.vision.enabled true",
     observer_vision_offline: "视觉端点已离线：{url}",
     observer_vision_model_missing: "视觉模型不可用：{model}",
     observer_privacy_paused: "隐私暂停：此窗口被隐私过滤器拦截（{reason}）。",
@@ -1636,7 +1850,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     setup_title: "设置与数据",
     settings_kicker: "本地配置",
     settings_title: "设置",
-    settings_subtitle: "配置这台机器，而不会把相同的选择强加到每个工作区或设备上。",
+    settings_subtitle:
+      "配置这台机器，而不会把相同的选择强加到每个工作区或设备上。",
     settings_back: "返回仪表板",
     settings_system_title: "系统",
     settings_ai_title: "AI 模型",
@@ -1663,7 +1878,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_backup_db: "备份数据库",
     setup_backing_up: "正在备份数据库…",
     setup_backed_up: "已备份到 {path}",
-    setup_remote_no_backup: "你的数据库会同步到云端（{target}）——无需单独的本地备份。",
+    setup_remote_no_backup:
+      "你的数据库会同步到云端（{target}）——无需单独的本地备份。",
     setup_backup_failed: "备份失败：{message}",
     setup_backup_failed_generic: "备份失败。",
     setup_open_folder_failed: "无法打开数据文件夹：{message}",
@@ -1691,7 +1907,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     workspace_added: "已添加工作区：{path}",
     workspace_pick_failed: "无法设置工作区：{message}",
     workspace_remove: "移除",
-    workspace_remove_confirm: "从 ZAM 中移除“{label}”？文件夹中的文件和链接将保持不变。",
+    workspace_remove_confirm:
+      "从 ZAM 中移除“{label}”？文件夹中的文件和链接将保持不变。",
     workspace_removed: "已移除工作区：{label}",
     workspace_remove_failed: "无法移除工作区：{message}",
     workspace_link_ok: "Skill 链接正常",
@@ -1781,13 +1998,15 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     ai_provider_display_name: "名称",
     ai_provider_url: "URL",
     ai_provider_model: "模型",
-    ai_provider_model_local_hint: "输入模型名称。如果端点列出了模型，你可以在下面选择一个。",
+    ai_provider_model_local_hint:
+      "输入模型名称。如果端点列出了模型，你可以在下面选择一个。",
     ai_provider_models_pick: "从端点选取",
     ai_provider_flavor: "API 变体",
     ai_provider_local: "在这台计算机上运行",
     ai_provider_local_hint:
       "本地模型服务器（FastFlowLM、Ollama 等）通常无需 API 密钥。ZAM 可以尝试自动启动服务器。",
-    ai_provider_cloud_hint_key: "云端 API 需要 API 密钥。本地提供方不使用密钥字段。",
+    ai_provider_cloud_hint_key:
+      "云端 API 需要 API 密钥。本地提供方不使用密钥字段。",
     ai_provider_runner: "本地模型服务器",
     ai_provider_runner_hint: "在这台 PC 上提供模型的程序——不是你的编码代理。",
     ai_provider_runner_auto: "自动检测",
@@ -1812,8 +2031,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_ai_role_apply: "应用",
     ai_role_bound: "角色 {role} 已更新",
     ai_role_bind_failed: "无法绑定角色：{message}",
-    ai_recall_anthropic_warn: "Anthropic Messages 提供方尚不支持学习课。仍要绑定吗？",
-    ai_vision_cloud_confirm: "屏幕截图将发送至 {endpoint}。启用视觉观察并绑定此云端提供方吗？",
+    ai_recall_anthropic_warn:
+      "Anthropic Messages 提供方尚不支持学习课。仍要绑定吗？",
+    ai_vision_cloud_confirm:
+      "屏幕截图将发送至 {endpoint}。启用视觉观察并绑定此云端提供方吗？",
     ai_provider_referenced: "仍被以下角色使用：{roles}",
     btn_check_updates: "检查更新",
     btn_open_releases: "发行版",
@@ -1855,9 +2076,11 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_remove: "移除卡片",
     btn_delete: "彻底删除",
     lbl_confirm_remove_title: "确认移除卡片",
-    lbl_confirm_remove_desc: "移除卡片将清除您对此概念的个人学习状态和历史。全局目录不受影响。",
+    lbl_confirm_remove_desc:
+      "移除卡片将清除您对此概念的个人学习状态和历史。全局目录不受影响。",
     lbl_confirm_delete_title: "确认彻底删除",
-    lbl_confirm_delete_desc: "全局彻底删除此概念将从数据库中永久销毁该概念、所有用户的个人卡片以及相关的评估历史。",
+    lbl_confirm_delete_desc:
+      "全局彻底删除此概念将从数据库中永久销毁该概念、所有用户的个人卡片以及相关的评估历史。",
     lbl_delete_impact: "此操作将影响：",
     lbl_impact_cards: "{count} 张卡片",
     lbl_impact_reviews: "{count} 条评估日志",
@@ -1884,9 +2107,11 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_import_source: "来源 URL / 参考",
     lbl_import_category: "目标分类",
     lbl_import_progress_status: "正在生成卡片...",
-    lbl_import_progress_detail: "这可能需要长达一分钟，具体取决于您的本地 AI 速度。",
+    lbl_import_progress_detail:
+      "这可能需要长达一分钟，具体取决于您的本地 AI 速度。",
     btn_import_submit: "导入",
-    toast_import_success: "成功导入 {createdCount} 个新概念并生成 {ensuredCount} 张卡片！",
+    toast_import_success:
+      "成功导入 {createdCount} 个新概念并生成 {ensuredCount} 张卡片！",
     lbl_error_importing: "导入课程大纲失败",
     btn_curriculum_wizard: "课程向导",
     lbl_curriculum_wizard_title: "课程向导",
@@ -1902,7 +2127,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_no_options: "此选择暂无可用选项。",
     wizard_err_select_option: "请选择一个选项以继续。",
     wizard_err_no_topics: "请至少选择一个主题。",
-    wizard_topic_scope_note: "卡片是根据该科目完整的课程大纲页面生成的（包含其所有主题）。精确的按主题导入将在未来的更新中提供——目前，主题选择可帮助你跟踪接下来要学习的内容。",
+    wizard_topic_scope_note:
+      "卡片是根据该科目完整的课程大纲页面生成的（包含其所有主题）。精确的按主题导入将在未来的更新中提供——目前，主题选择可帮助你跟踪接下来要学习的内容。",
     wizard_resume_prompt: "从你上次停下的地方继续：",
     wizard_btn_resume: "继续",
     wizard_btn_restart: "重新开始",
@@ -1932,8 +2158,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_import_skipped_summary: "已跳过 {count} 个已导入的主题。",
     wizard_step_subTopic: "能力单元",
     wizard_step_cardPreview: "学习卡片",
-    wizard_subtopic_note: "从“{topic}”中选择能力单元以生成卡片（大型领域会自动拆分）。",
-    wizard_card_preview_note: "勾选的卡片将被保留或创建。取消勾选现有卡片可将其从队列中移除（共享的知识单元保留）。",
+    wizard_subtopic_note:
+      "从“{topic}”中选择能力单元以生成卡片（大型领域会自动拆分）。",
+    wizard_card_preview_note:
+      "勾选的卡片将被保留或创建。取消勾选现有卡片可将其从队列中移除（共享的知识单元保留）。",
     wizard_card_preview_empty: "未找到此主题的卡片。",
     wizard_card_existing_badge: "已导入",
     wizard_card_new_badge: "新建",
@@ -1942,9 +2170,12 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_btn_confirm_import: "保存选择",
     wizard_import_listing_subtopics: "正在加载单元：{topic}",
     wizard_import_previewing: "正在生成卡片预览：{topic}",
-    wizard_import_confirm_success: "已保存 {createdCount} 张新卡片和 {ensuredCount} 张已有卡片。已从队列中移除 {removedCount} 张卡片。",
-    wizard_import_text_llm_offline: "文本模型不可达。课程导入使用与学习相同的提供方。",
-    wizard_import_text_llm_hint: "打开{settingsPath}，确保文本模型显示就绪，然后重试。",
+    wizard_import_confirm_success:
+      "已保存 {createdCount} 张新卡片和 {ensuredCount} 张已有卡片。已从队列中移除 {removedCount} 张卡片。",
+    wizard_import_text_llm_offline:
+      "文本模型不可达。课程导入使用与学习相同的提供方。",
+    wizard_import_text_llm_hint:
+      "打开{settingsPath}，确保文本模型显示就绪，然后重试。",
     btn_split: "拆分",
     lbl_split_modal_title: "拆分卡片",
     lbl_original_card_title: "原始卡片 (总结性的应用问题)",
@@ -1954,13 +2185,15 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_action_block: "保留原始卡片并将其阻碍 (需要先掌握新卡片)",
     lbl_action_remove: "移除原始卡片",
     lbl_split_progress_status: "正在生成微型知识卡片建议...",
-    lbl_split_progress_detail: "这可能需要长达一分钟，具体取决于您的本地 AI 速度。",
+    lbl_split_progress_detail:
+      "这可能需要长达一分钟，具体取决于您的本地 AI 速度。",
     lbl_atomic_proposals_title: "微型卡片建议 (最少 2 张)",
     btn_split_modal_submit: "确认拆分",
     btn_content_foundations_card: "前置知识",
     lbl_foundations_modal_title: "导入前置基础知识",
     lbl_foundations_progress_status: "正在生成前置知识建议...",
-    lbl_foundations_progress_detail: "这可能需要长达一分钟，具体取决于您的本地 AI 速度。",
+    lbl_foundations_progress_detail:
+      "这可能需要长达一分钟，具体取决于您的本地 AI 速度。",
     lbl_foundations_atomic_title: "前置基础卡片建议",
     btn_foundations_modal_submit: "确认导入",
     lbl_import_source_type: "来源类型",
@@ -1989,7 +2222,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     settings_context_label: "默认上下文",
     wizard_context_label: "将导入的卡片分配到上下文：",
     settings_agents_title: "AI 代理",
-    settings_agents_help: "通过 MCP 将已安装的代理工具连接到 ZAM。可随时安全地重复执行。",
+    settings_agents_help:
+      "通过 MCP 将已安装的代理工具连接到 ZAM。可随时安全地重复执行。",
     btn_agents_connect_all: "连接所有检测到的代理",
     btn_agent_connect: "连接",
     agent_status_loading: "正在检测已安装的代理...",
@@ -1998,12 +2232,35 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     agent_status_connected: "已连接",
     agent_connect_running: "连接中...",
     agent_connect_done: "已连接 {n} 个代理。全局 ZAM 技能已刷新。",
-    agent_connect_none: "未检测到受支持的代理。请先安装 Codex、VS Code 或 Copilot。",
+    agent_connect_none:
+      "未检测到受支持的代理。请先安装 Codex、VS Code 或 Copilot。",
     agent_connect_error: "连接失败——详情请查看控制台。",
     agent_connect_status: "连接状态",
     agent_connect_not_run: "尚未运行",
     agent_connect_success: "成功",
     agent_connect_failed: "失败",
+    lbl_contextbar_agent: "智能体",
+    lbl_contextbar_user: "用户",
+    contextbar_user_session_suffix: "{id}（仅本次会话）",
+    contextbar_user_unresolved: "尚未确定学习者",
+    contextbar_user_title_session:
+      "{id} — 仅本次会话；不会保存为您的 Companion 偏好设置",
+    contextbar_user_title_manual: "{id} — 在此上下文栏中选择",
+    contextbar_user_title_persisted: "{id} — 您保存的 Companion 学习者",
+    contextbar_user_title_default: "{id} — ZAM 的默认用户",
+    contextbar_agent_unavailable_fmt: "{label}（不可用）",
+    contextbar_quick_mode: "快速模式 — 无智能体",
+    contextbar_select_profile_placeholder: "– 请选择学习档案 –",
+    contextbar_no_learner: "无学习者",
+    contextbar_evaluator_unavailable_fmt: "{label} — 不可用",
+    contextbar_refresh_title: "刷新上下文",
+    contextbar_expand: "展开上下文栏",
+    contextbar_collapse: "收起上下文栏",
+    btn_contextbar_discard_switch: "放弃并切换",
+    contextbar_confirm_switch_user:
+      "切换学习者为 {id}？此面板中未提交的内容将被放弃。",
+    contextbar_confirm_switch_agent:
+      "切换智能体？此面板中未提交的内容将被放弃。",
   },
   ja: {
     ai_status_offline: "AI オフライン",
@@ -2064,16 +2321,19 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     rating_good_shortcut: "（ショートカット: 3）",
     rating_easy_shortcut: "（ショートカット: 4）",
     session_completed: "学習セッションが完了しました！",
-    session_completed_sub: "このセッションをやり遂げました！記憶の痕跡が更新されました。",
+    session_completed_sub:
+      "このセッションをやり遂げました！記憶の痕跡が更新されました。",
     btn_back_to_dashboard: "ダッシュボードに戻る",
     btn_open_graph: "ナレッジマップ（3D）",
     btn_open_settings: "設定",
     observer_title: "UI オブザーバー",
-    observer_idle: "ウィンドウを読み込み、観察するアプリケーションウィンドウを 1 つ選択してください。",
+    observer_idle:
+      "ウィンドウを読み込み、観察するアプリケーションウィンドウを 1 つ選択してください。",
     observer_loading: "観察可能なウィンドウを読み込み中...",
     observer_ready: "選択中: {title}",
     observer_vision_checking: "ビジョン観察の設定を確認中...",
-    observer_analyzing: "スナップショットを取得し、ビジョンモデルに問い合わせ中...",
+    observer_analyzing:
+      "スナップショットを取得し、ビジョンモデルに問い合わせ中...",
     observer_done: "観察を保存しました。最新レポートの信頼度: {confidence}",
     observer_canceled: "観察をキャンセルしました。",
     observer_error: "オブザーバーエラー: {message}",
@@ -2097,8 +2357,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     observer_loop_start: "ループを開始",
     observer_loop_stop: "ループを停止",
     observer_loop_idle: "手動スナップショットのみ。",
-    observer_loop_running: "オブザーバーループが実行中です。一度に 1 つのスナップショット。",
-    observer_loop_waiting: "オブザーバーループが実行中です。次のスナップショットは {seconds} 秒後。",
+    observer_loop_running:
+      "オブザーバーループが実行中です。一度に 1 つのスナップショット。",
+    observer_loop_waiting:
+      "オブザーバーループが実行中です。次のスナップショットは {seconds} 秒後。",
     observer_loop_stopped: "オブザーバーループを停止しました。",
     observer_watch_start: "監視を開始",
     observer_watch_stop: "監視を停止",
@@ -2109,7 +2371,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     observer_watch_stopped: "継続的な監視を停止しました。",
     observer_watch_error: "監視エラー: {message}",
     graph_title: "ナレッジグラフ（3D）",
-    graph_hint: "ドラッグで回転 • ノードをクリックでフォーカス • スクロールでズーム",
+    graph_hint:
+      "ドラッグで回転 • ノードをクリックでフォーカス • スクロールでズーム",
     graph_focus: "フォーカス",
     graph_prereqs: "基礎（前提条件）",
     graph_dependents: "上位スキル（依存項目）",
@@ -2171,7 +2434,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     workspace_kind_community: "コミュニティワークスペース",
     workspace_kind_organization: "組織ワークスペース",
     workspace_kind_custom: "カスタムワークスペース",
-    workspace_more: "他に {count} 件のワークスペースが非表示です。完全な一覧は CLI を使用してください。",
+    workspace_more:
+      "他に {count} 件のワークスペースが非表示です。完全な一覧は CLI を使用してください。",
     workspace_use: "使用",
     workspace_open: "ターミナル",
     workspace_default_suffix: "（既定）",
@@ -2223,7 +2487,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_cap_tts: "音声合成",
     model_cap_none: "能力なし",
     model_cap_undetected: "このエンドポイントでは未対応",
-    model_cap_hint: "チェック後、エンドポイントがサポートする能力のみ有効化できます。",
+    model_cap_hint:
+      "チェック後、エンドポイントがサポートする能力のみ有効化できます。",
     model_status_probed: "確認済み",
     model_status_unprobed: "未確認",
     model_status_key_missing: "APIキーがありません",
@@ -2288,7 +2553,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     ai_provider_runner_foundry: "Foundry Local",
     ai_provider_runner_not_installed: "検出されません",
     ai_provider_api_key: "API キー",
-    ai_provider_api_key_hint: "書き込み専用 — ローカルに保存され、同期されません",
+    ai_provider_api_key_hint:
+      "書き込み専用 — ローカルに保存され、同期されません",
     ai_provider_cloud_hint: "推奨モデル: {model}",
     ai_provider_models_loading: "モデルを読み込み中...",
     ai_provider_models_empty: "エンドポイントにモデルがありません",
@@ -2296,7 +2562,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_ai_provider_cancel: "キャンセル",
     ai_role_bindings_title: "ロールの割り当て",
     ai_role_recall: "学習（想起）",
-    ai_role_recall_scope_hint: "間隔反復プロンプト、カリキュラムカードインポート、その他のテキスト生成をカバー。",
+    ai_role_recall_scope_hint:
+      "間隔反復プロンプト、カリキュラムカードインポート、その他のテキスト生成をカバー。",
     ai_role_vision: "オブザーバー（ビジョン）",
     ai_role_primary: "プライマリ",
     ai_role_fallback: "フォールバック",
@@ -2316,7 +2583,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     update_available: "更新が利用可能: {version}",
     update_none: "最新バージョンを使用しています。",
     update_failed: "更新の確認に失敗しました: {message}",
-    update_available_manual: "更新が利用可能: {version}。ダウンロードページを開いています…",
+    update_available_manual:
+      "更新が利用可能: {version}。ダウンロードページを開いています…",
     update_downloading: "更新をダウンロード中 {version}…",
     update_progress: "更新をダウンロード中 {version}… {pct}%",
     update_installing: "更新をインストール中…",
@@ -2333,7 +2601,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_all_contexts: "すべてのコンテキスト",
     lbl_no_context_default: "既定のコンテキストなし",
     lbl_no_context_assignment: "コンテキストを割り当てない",
-    lbl_empty_content: "学習カードが見つかりません。最初のカードを作成しましょう！",
+    lbl_empty_content:
+      "学習カードが見つかりません。最初のカードを作成しましょう！",
     lbl_empty_content_btn: "最初のカードを作成",
     lbl_question: "質問",
     lbl_answer: "回答 / 概念",
@@ -2350,9 +2619,11 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_remove: "カードを削除",
     btn_delete: "トークンを完全削除",
     lbl_confirm_remove_title: "カード削除の確認",
-    lbl_confirm_remove_desc: "このカードを削除すると、このトークンに対する個人の学習状態と履歴がクリアされます。グローバルカタログには影響しません。",
+    lbl_confirm_remove_desc:
+      "このカードを削除すると、このトークンに対する個人の学習状態と履歴がクリアされます。グローバルカタログには影響しません。",
     lbl_confirm_delete_title: "トークン完全削除の確認",
-    lbl_confirm_delete_desc: "このトークンを完全に削除すると、この概念、すべてのユーザーの個人カード、およびデータベース全体の学習履歴が永久に消去されます。",
+    lbl_confirm_delete_desc:
+      "このトークンを完全に削除すると、この概念、すべてのユーザーの個人カード、およびデータベース全体の学習履歴が永久に消去されます。",
     lbl_delete_impact: "このアクションの影響：",
     lbl_impact_cards: "{count} 枚のカード",
     lbl_impact_reviews: "{count} 件の復習ログ",
@@ -2375,13 +2646,16 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_import_curriculum: "カリキュラムインポート",
     lbl_import_modal_title: "カリキュラム標準のインポート",
     lbl_import_text: "カリキュラムテキスト",
-    placeholder_import_text: "カリキュラムのテキストやシラバスの要点をここに貼り付けます...",
+    placeholder_import_text:
+      "カリキュラムのテキストやシラバスの要点をここに貼り付けます...",
     lbl_import_source: "ソースURL / 参照",
     lbl_import_category: "対象カテゴリ",
     lbl_import_progress_status: "カードを生成中...",
-    lbl_import_progress_detail: "ローカルAIの速度によっては、最大1分かかる場合があります。",
+    lbl_import_progress_detail:
+      "ローカルAIの速度によっては、最大1分かかる場合があります。",
     btn_import_submit: "インポート",
-    toast_import_success: "{createdCount} 件の新しいトークンをインポートし、{ensuredCount} 件のカードを生成しました！" ,
+    toast_import_success:
+      "{createdCount} 件の新しいトークンをインポートし、{ensuredCount} 件のカードを生成しました！",
     lbl_error_importing: "カリキュラムのインポートに失敗しました",
     btn_curriculum_wizard: "カリキュラムウィザード",
     lbl_curriculum_wizard_title: "カリキュラムウィザード",
@@ -2397,14 +2671,16 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_no_options: "この選択にはまだ利用可能なオプションがありません。",
     wizard_err_select_option: "続行するにはオプションを選択してください。",
     wizard_err_no_topics: "少なくとも1つのトピックを選択してください。",
-    wizard_topic_scope_note: "カードはこの教科の完全なカリキュラムページ（すべてのトピックを含む）から生成されます。トピックごとの正確なインポートは今後のアップデートで提供される予定です。現時点では、トピックの選択は次に取り組む内容を把握するのに役立ちます。",
+    wizard_topic_scope_note:
+      "カードはこの教科の完全なカリキュラムページ（すべてのトピックを含む）から生成されます。トピックごとの正確なインポートは今後のアップデートで提供される予定です。現時点では、トピックの選択は次に取り組む内容を把握するのに役立ちます。",
     wizard_resume_prompt: "前回の続きから：",
     wizard_btn_resume: "続ける",
     wizard_btn_restart: "最初からやり直す",
     lbl_curriculum_wizard_loading: "読み込み中…",
     wizard_hours: "{hours}時間",
     lbl_curriculum_wizard_progress_status: "インポート中…",
-    lbl_curriculum_wizard_progress_detail: "AI の速度により 1 分ほどかかる場合があります。",
+    lbl_curriculum_wizard_progress_detail:
+      "AI の速度により 1 分ほどかかる場合があります。",
     lbl_curriculum_wizard_progress_detail_local:
       "ローカル AI はトピックごとに数分かかることがあります。進捗は下に表示されます。",
     wizard_import_extracting: "カリキュラムテキストを取得中…",
@@ -2422,15 +2698,18 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_import_cloud_hint:
       "ヒント：{settingsPath} を開き、テキスト役割にクラウドプロバイダーを割り当てて、もう一度インポートしてください。",
     wizard_import_checking_status: "インポート済みトピックを確認中…",
-    wizard_import_skipping: "インポート済みの {count} 件のトピックをスキップ中…",
+    wizard_import_skipping:
+      "インポート済みの {count} 件のトピックをスキップ中…",
     wizard_import_all_skipped:
       "選択した {count} 件のトピックはすべてインポート済みです。",
     wizard_import_skipped_summary:
       "インポート済みの {count} 件のトピックをスキップしました。",
     wizard_step_subTopic: "能力単元",
     wizard_step_cardPreview: "学習カード",
-    wizard_subtopic_note: "「{topic}」からカードを生成する能力単元を選択してください（大きな領域は自動的に分割されます）。",
-    wizard_card_preview_note: "チェックされたカードは保持または作成されます。既存カードのチェックを外すと、キューから削除されます（共有トークンは残ります）。",
+    wizard_subtopic_note:
+      "「{topic}」からカードを生成する能力単元を選択してください（大きな領域は自動的に分割されます）。",
+    wizard_card_preview_note:
+      "チェックされたカードは保持または作成されます。既存カードのチェックを外すと、キューから削除されます（共有トークンは残ります）。",
     wizard_card_preview_empty: "このトピックのカードが見つかりません。",
     wizard_card_existing_badge: "インポート済み",
     wizard_card_new_badge: "新規",
@@ -2439,9 +2718,12 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_btn_confirm_import: "選択を保存",
     wizard_import_listing_subtopics: "単元を読み込み中: {topic}",
     wizard_import_previewing: "カードプレビューを生成中: {topic}",
-    wizard_import_confirm_success: "新規 {createdCount} 枚・既存 {ensuredCount} 枚を保存しました。キューから {removedCount} 枚のカードを削除しました。",
-    wizard_import_text_llm_offline: "テキストモデルに到達できません。カリキュラムインポートは学習と同じプロバイダーを使用します。",
-    wizard_import_text_llm_hint: "{settingsPath} を開き、テキストモデルが準備完了と表示されていることを確認して、もう一度お試しください。",
+    wizard_import_confirm_success:
+      "新規 {createdCount} 枚・既存 {ensuredCount} 枚を保存しました。キューから {removedCount} 枚のカードを削除しました。",
+    wizard_import_text_llm_offline:
+      "テキストモデルに到達できません。カリキュラムインポートは学習と同じプロバイダーを使用します。",
+    wizard_import_text_llm_hint:
+      "{settingsPath} を開き、テキストモデルが準備完了と表示されていることを確認して、もう一度お試しください。",
     btn_split: "分割",
     lbl_split_modal_title: "カードの分割",
     lbl_original_card_title: "元のカード (要約された応用問題)",
@@ -2451,13 +2733,15 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_action_block: "元のカードを保持しブロックする (先に新規カードが必要)",
     lbl_action_remove: "元のカードを削除する",
     lbl_split_progress_status: "アトミックな提案を生成中...",
-    lbl_split_progress_detail: "ローカルAIの速度によっては、最大1分かかる場合があります。",
+    lbl_split_progress_detail:
+      "ローカルAIの速度によっては、最大1分かかる場合があります。",
     lbl_atomic_proposals_title: "アトミックカードの提案 (最低2枚)",
     btn_split_modal_submit: "分割の確認",
     btn_content_foundations_card: "前提知識",
     lbl_foundations_modal_title: "前提知識のインポート",
     lbl_foundations_progress_status: "前提知識の提案を生成中...",
-    lbl_foundations_progress_detail: "ローカルAIの速度によっては、最大1分かかる場合があります。",
+    lbl_foundations_progress_detail:
+      "ローカルAIの速度によっては、最大1分かかる場合があります。",
     lbl_foundations_atomic_title: "前提知識カードの提案",
     btn_foundations_modal_submit: "インポートの確認",
     lbl_import_source_type: "ソースタイプ",
@@ -2470,11 +2754,16 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_foundation_existing_badge: "既存のカードがリンクされます",
     lbl_foundation_new_badge: "新しいカードの提案",
     lbl_include: "含める",
-    lbl_err_analyze_source_first: "まずソースファイル、ウェブリンク、またはOCRスキャンを解析してください。",
-    lbl_err_min_split_proposals: "カードを分割するには、少なくとも2件の完全なカード提案が必要です。",
-    lbl_err_select_foundation: "インポートする前提条件の提案カードを少なくとも1件選択してください。",
-    lbl_err_enter_path_or_url: "解析するファイルパスまたはURLを入力してください。",
-    lbl_analyzing_source: "ソースコンテンツを解析しています。しばらくお待ちください…",
+    lbl_err_analyze_source_first:
+      "まずソースファイル、ウェブリンク、またはOCRスキャンを解析してください。",
+    lbl_err_min_split_proposals:
+      "カードを分割するには、少なくとも2件の完全なカード提案が必要です。",
+    lbl_err_select_foundation:
+      "インポートする前提条件の提案カードを少なくとも1件選択してください。",
+    lbl_err_enter_path_or_url:
+      "解析するファイルパスまたはURLを入力してください。",
+    lbl_analyzing_source:
+      "ソースコンテンツを解析しています。しばらくお待ちください…",
     lbl_err_analysis_failed: "解析に失敗しました",
     lbl_err_analysis_prefix: "解析エラー",
     lbl_err_concept_required: "回答または概念は必須です。",
@@ -2482,11 +2771,13 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_err_import_context_required: "カリキュラムのテキストは必須です。",
     lbl_err_original_context_required: "元のカードには質問と回答が必要です。",
     settings_context_title: "知識コンテキスト",
-    settings_context_help: "このデバイスのデフォルトの知識コンテキストを選択します。",
+    settings_context_help:
+      "このデバイスのデフォルトの知識コンテキストを選択します。",
     settings_context_label: "デフォルトコンテキスト",
     wizard_context_label: "インポートされたカードをコンテキストに割り当てる：",
     settings_agents_title: "AIエージェント",
-    settings_agents_help: "インストール済みのエージェントをMCP経由でZAMに接続します。何度実行しても安全です。",
+    settings_agents_help:
+      "インストール済みのエージェントをMCP経由でZAMに接続します。何度実行しても安全です。",
     btn_agents_connect_all: "検出されたすべてを接続",
     btn_agent_connect: "接続",
     agent_status_loading: "インストール済みエージェントを検出中...",
@@ -2494,13 +2785,38 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     agent_status_installed: "インストール済み",
     agent_status_connected: "接続済み",
     agent_connect_running: "接続中...",
-    agent_connect_done: "{n} 件のエージェントを接続しました。グローバルZAMスキルを更新しました。",
-    agent_connect_none: "対応エージェントが見つかりません。まずCodex、VS Code、Copilotなどをインストールしてください。",
-    agent_connect_error: "接続に失敗しました。詳細はコンソールを確認してください。",
+    agent_connect_done:
+      "{n} 件のエージェントを接続しました。グローバルZAMスキルを更新しました。",
+    agent_connect_none:
+      "対応エージェントが見つかりません。まずCodex、VS Code、Copilotなどをインストールしてください。",
+    agent_connect_error:
+      "接続に失敗しました。詳細はコンソールを確認してください。",
     agent_connect_status: "接続ステータス",
     agent_connect_not_run: "未実行",
     agent_connect_success: "成功",
     agent_connect_failed: "失敗",
+    lbl_contextbar_agent: "エージェント",
+    lbl_contextbar_user: "ユーザー",
+    contextbar_user_session_suffix: "{id}（このセッションのみ）",
+    contextbar_user_unresolved: "学習者はまだ特定されていません",
+    contextbar_user_title_session:
+      "{id} — このセッションのみ。Companion の設定として保存されません",
+    contextbar_user_title_manual: "{id} — このコンテキストバーで選択されました",
+    contextbar_user_title_persisted: "{id} — 保存済みの Companion 学習者",
+    contextbar_user_title_default: "{id} — ZAM の既定ユーザー",
+    contextbar_agent_unavailable_fmt: "{label}（利用不可）",
+    contextbar_quick_mode: "クイックモード — エージェントなし",
+    contextbar_select_profile_placeholder: "– 学習プロフィールを選択 –",
+    contextbar_no_learner: "学習者なし",
+    contextbar_evaluator_unavailable_fmt: "{label} — 利用不可",
+    contextbar_refresh_title: "コンテキストを更新",
+    contextbar_expand: "コンテキストバーを展開",
+    contextbar_collapse: "コンテキストバーを折りたたむ",
+    btn_contextbar_discard_switch: "破棄して切り替え",
+    contextbar_confirm_switch_user:
+      "学習者を {id} に切り替えますか？このパネルの未送信の内容は破棄されます。",
+    contextbar_confirm_switch_agent:
+      "エージェントを切り替えますか？このパネルの未送信の内容は破棄されます。",
   },
 };
 
@@ -2598,8 +2914,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_domains: "Active Domains",
     btn_start_session: "Start Learning Session",
     lbl_translating: "Translating dynamically...",
-    placeholder_answer: "Type your conceptual answer here... (Ctrl+Enter to submit)",
-    placeholder_discussion: "Ask a follow-up about this card... (Enter to send)",
+    placeholder_answer:
+      "Type your conceptual answer here... (Ctrl+Enter to submit)",
+    placeholder_discussion:
+      "Ask a follow-up about this card... (Enter to send)",
     btn_discussion_send: "Send",
     discussion_error: "No reply from the AI. Please try again.",
     btn_reveal_answer: "Submit & Reveal Answer",
@@ -2637,7 +2955,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     rating_good_shortcut: "(Shortcut: 3)",
     rating_easy_shortcut: "(Shortcut: 4)",
     session_completed: "Learning Session Completed!",
-    session_completed_sub: "Great job completing this session! Your memory traces have been updated.",
+    session_completed_sub:
+      "Great job completing this session! Your memory traces have been updated.",
     btn_back_to_dashboard: "Back to Dashboard",
     btn_open_graph: "Knowledge Map (3D)",
     btn_open_settings: "Settings",
@@ -2650,10 +2969,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     observer_done: "Observation saved. Latest report confidence: {confidence}",
     observer_canceled: "Observation canceled.",
     observer_error: "Observer error: {message}",
-    observer_vision_disabled: "Vision observation is disabled. Enable it with: zam settings set llm.vision.enabled true",
+    observer_vision_disabled:
+      "Vision observation is disabled. Enable it with: zam settings set llm.vision.enabled true",
     observer_vision_offline: "Vision endpoint is offline: {url}",
     observer_vision_model_missing: "Vision model is not available: {model}",
-    observer_privacy_paused: "Privacy pause: this window is blocked by the privacy filter ({reason}).",
+    observer_privacy_paused:
+      "Privacy pause: this window is blocked by the privacy filter ({reason}).",
     observer_privacy_option: "privacy pause",
     observer_refresh: "Load Windows",
     observer_analyze: "Snapshot & Analyze",
@@ -2669,7 +2990,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     observer_loop_stop: "Stop Loop",
     observer_loop_idle: "Manual snapshots only.",
     observer_loop_running: "Observer loop running. One snapshot at a time.",
-    observer_loop_waiting: "Observer loop running. Next snapshot in {seconds}s.",
+    observer_loop_waiting:
+      "Observer loop running. Next snapshot in {seconds}s.",
     observer_loop_stopped: "Observer loop stopped.",
     observer_watch_start: "Start Watch",
     observer_watch_stop: "Stop Watch",
@@ -2742,7 +3064,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     workspace_kind_community: "Community workspace",
     workspace_kind_organization: "Organization workspace",
     workspace_kind_custom: "Custom workspace",
-    workspace_more: "{count} more workspace(s) hidden. Use the CLI for the full list.",
+    workspace_more:
+      "{count} more workspace(s) hidden. Use the CLI for the full list.",
     workspace_use: "Use",
     workspace_open: "Terminal",
     workspace_default_suffix: "(default)",
@@ -2889,17 +3212,20 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     update_available: "Update available: {version}",
     update_none: "You are on the latest version.",
     update_failed: "Update check failed: {message}",
-    update_available_manual: "Update available: {version}. Opening the download page…",
+    update_available_manual:
+      "Update available: {version}. Opening the download page…",
     update_downloading: "Downloading update {version}…",
     update_progress: "Downloading update {version}… {pct}%",
     update_installing: "Installing update…",
     update_restarting: "Restarting into the new version…",
-    update_none_verifying: "You are on the latest version. Verifying installation…",
+    update_none_verifying:
+      "You are on the latest version. Verifying installation…",
     repair_done: "Installation checked — {details}",
     repair_failed: "Installation check failed: {message}",
     repair_cli_ok: "CLI: OK",
     repair_cli_fixed: "CLI: repaired",
-    repair_cli_new_terminal: "CLI: installed — open a new terminal to use `zam`",
+    repair_cli_new_terminal:
+      "CLI: installed — open a new terminal to use `zam`",
     repair_cli_error: "CLI: failed ({detail})",
     repair_skills_ok: "workspace skills: OK",
     repair_skills_fixed: "workspace skills: {n} relinked",
@@ -2936,9 +3262,11 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     btn_remove: "Remove Card",
     btn_delete: "Hard Delete Token",
     lbl_confirm_remove_title: "Confirm Card Removal",
-    lbl_confirm_remove_desc: "Removing this card will clear your personal FSRS learning state and history for this token. Other users or the global token catalog remain unaffected.",
+    lbl_confirm_remove_desc:
+      "Removing this card will clear your personal FSRS learning state and history for this token. Other users or the global token catalog remain unaffected.",
     lbl_confirm_delete_title: "Confirm Global Token Deletion",
-    lbl_confirm_delete_desc: "Permanently deleting this token will destroy the knowledge concept, the personal cards of all users, and all review history across the database.",
+    lbl_confirm_delete_desc:
+      "Permanently deleting this token will destroy the knowledge concept, the personal cards of all users, and all review history across the database.",
     lbl_delete_impact: "This action affects:",
     lbl_impact_cards: "{count} card(s)",
     lbl_impact_reviews: "{count} review log(s)",
@@ -2961,13 +3289,16 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     btn_import_curriculum: "Import Curriculum",
     lbl_import_modal_title: "Import Curriculum Standard",
     lbl_import_text: "Curriculum Text",
-    placeholder_import_text: "Paste curriculum text or syllabus bullets here...",
+    placeholder_import_text:
+      "Paste curriculum text or syllabus bullets here...",
     lbl_import_source: "Source URL / Reference",
     lbl_import_category: "Target Category",
     lbl_import_progress_status: "Generating cards...",
-    lbl_import_progress_detail: "This may take up to a minute depending on your local LLM speed.",
+    lbl_import_progress_detail:
+      "This may take up to a minute depending on your local LLM speed.",
     btn_import_submit: "Import",
-    toast_import_success: "Successfully imported {createdCount} new tokens and ensured {ensuredCount} cards!",
+    toast_import_success:
+      "Successfully imported {createdCount} new tokens and ensured {ensuredCount} cards!",
     lbl_error_importing: "Failed to import curriculum",
     btn_curriculum_wizard: "Curriculum Wizard",
     lbl_curriculum_wizard_title: "Curriculum Wizard",
@@ -2983,7 +3314,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_no_options: "No options available yet for this selection.",
     wizard_err_select_option: "Please select an option to continue.",
     wizard_err_no_topics: "Please select at least one topic.",
-    wizard_topic_scope_note: "Cards are generated from the complete curriculum page for this subject (all of its topics). Precise per-topic import is coming in a future update — for now, topic selection helps you track what to cover next.",
+    wizard_topic_scope_note:
+      "Cards are generated from the complete curriculum page for this subject (all of its topics). Precise per-topic import is coming in a future update — for now, topic selection helps you track what to cover next.",
     wizard_resume_prompt: "Continue where you left off:",
     wizard_btn_resume: "Continue",
     wizard_btn_restart: "Start over",
@@ -3040,16 +3372,19 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_split_original_question: "Question",
     lbl_split_original_concept: "Answer / Concept",
     lbl_split_action_title: "After split completed:",
-    lbl_action_block: "Keep original card and block it (requires new cards first)",
+    lbl_action_block:
+      "Keep original card and block it (requires new cards first)",
     lbl_action_remove: "Remove original card",
     lbl_split_progress_status: "Generating atomic proposals...",
-    lbl_split_progress_detail: "This may take up to a minute depending on your local LLM speed.",
+    lbl_split_progress_detail:
+      "This may take up to a minute depending on your local LLM speed.",
     lbl_atomic_proposals_title: "Atomic Card Proposals (Minimum 2)",
     btn_split_modal_submit: "Confirm Split",
     btn_content_foundations_card: "Foundations",
     lbl_foundations_modal_title: "Import Foundations",
     lbl_foundations_progress_status: "Generating foundational proposals...",
-    lbl_foundations_progress_detail: "This may take up to a minute depending on your local LLM speed.",
+    lbl_foundations_progress_detail:
+      "This may take up to a minute depending on your local LLM speed.",
     lbl_foundations_atomic_title: "Foundational Card Proposals",
     btn_foundations_modal_submit: "Confirm Import",
     lbl_import_source_type: "Source Type",
@@ -3062,9 +3397,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_foundation_existing_badge: "Existing card will be linked",
     lbl_foundation_new_badge: "New card suggestion",
     lbl_include: "Include",
-    lbl_err_analyze_source_first: "Please analyze a source file, web link, or OCR scan first.",
-    lbl_err_min_split_proposals: "At least 2 complete card proposals are required to split a card.",
-    lbl_err_select_foundation: "Please select at least one prerequisite proposal card to import.",
+    lbl_err_analyze_source_first:
+      "Please analyze a source file, web link, or OCR scan first.",
+    lbl_err_min_split_proposals:
+      "At least 2 complete card proposals are required to split a card.",
+    lbl_err_select_foundation:
+      "Please select at least one prerequisite proposal card to import.",
     lbl_err_enter_path_or_url: "Please enter a file path or URL to analyze.",
     lbl_analyzing_source: "Analyzing source content, please wait…",
     lbl_err_analysis_failed: "Analysis failed",
@@ -3072,13 +3410,16 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_err_concept_required: "Answer / concept is required.",
     lbl_err_category_required: "Category is required.",
     lbl_err_import_context_required: "Curriculum text is required.",
-    lbl_err_original_context_required: "Question and answer are required for the original card.",
+    lbl_err_original_context_required:
+      "Question and answer are required for the original card.",
     settings_context_title: "Knowledge Context",
-    settings_context_help: "Select the default knowledge context for this device.",
+    settings_context_help:
+      "Select the default knowledge context for this device.",
     settings_context_label: "Default Context",
     wizard_context_label: "Assign imported cards to context:",
     settings_agents_title: "AI agents",
-    settings_agents_help: "Connect installed agent harnesses to ZAM via MCP. Safe to repeat anytime.",
+    settings_agents_help:
+      "Connect installed agent harnesses to ZAM via MCP. Safe to repeat anytime.",
     btn_agents_connect_all: "Connect all detected",
     btn_agent_connect: "Connect",
     agent_status_loading: "Detecting installed harnesses...",
@@ -3086,13 +3427,37 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     agent_status_installed: "Installed",
     agent_status_connected: "Connected",
     agent_connect_running: "Connecting...",
-    agent_connect_done: "Connected {n} harness(es). Global ZAM skill refreshed.",
-    agent_connect_none: "No supported harness detected. Install Codex, VS Code, Copilot, or another host first.",
+    agent_connect_done:
+      "Connected {n} harness(es). Global ZAM skill refreshed.",
+    agent_connect_none:
+      "No supported harness detected. Install Codex, VS Code, Copilot, or another host first.",
     agent_connect_error: "Connection failed — see console for details.",
     agent_connect_status: "Connection status",
     agent_connect_not_run: "Not run yet",
     agent_connect_success: "Successful",
     agent_connect_failed: "Failed",
+    lbl_contextbar_agent: "Agent",
+    lbl_contextbar_user: "User",
+    contextbar_user_session_suffix: "{id} (this session)",
+    contextbar_user_unresolved: "No learner resolved yet",
+    contextbar_user_title_session:
+      "{id} — this session only; not saved as your Companion preference",
+    contextbar_user_title_manual: "{id} — selected in this context bar",
+    contextbar_user_title_persisted: "{id} — your saved Companion learner",
+    contextbar_user_title_default: "{id} — ZAM's default user",
+    contextbar_agent_unavailable_fmt: "{label} (unavailable)",
+    contextbar_quick_mode: "Quick mode — no agent",
+    contextbar_select_profile_placeholder: "– Select a learner profile –",
+    contextbar_no_learner: "No learner",
+    contextbar_evaluator_unavailable_fmt: "{label} — unavailable",
+    contextbar_refresh_title: "Refresh context",
+    contextbar_expand: "Expand context bar",
+    contextbar_collapse: "Collapse context bar",
+    btn_contextbar_discard_switch: "Discard & switch",
+    contextbar_confirm_switch_user:
+      "Switch learner to {id}? Unsubmitted work in this panel will be discarded.",
+    contextbar_confirm_switch_agent:
+      "Switch agent? Unsubmitted work in this panel will be discarded.",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -3115,12 +3480,15 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_domains: "Aktive Wissensbereiche",
     btn_start_session: "Lernsitzung starten",
     lbl_translating: "Übersetze dynamisch...",
-    placeholder_answer: "Schreibe deine konzeptionelle Antwort... (Strg+Eingabe zum Absenden)",
-    placeholder_discussion: "Stelle eine Rückfrage zu dieser Karte... (Enter zum Senden)",
+    placeholder_answer:
+      "Schreibe deine konzeptionelle Antwort... (Strg+Eingabe zum Absenden)",
+    placeholder_discussion:
+      "Stelle eine Rückfrage zu dieser Karte... (Enter zum Senden)",
     btn_discussion_send: "Senden",
     discussion_error: "Keine Antwort von der KI. Bitte erneut versuchen.",
     btn_reveal_answer: "Antwort aufdecken & absenden",
-    lbl_ai_evaluating: "Deine Antwort wird geprüft und Feedback wird erstellt...",
+    lbl_ai_evaluating:
+      "Deine Antwort wird geprüft und Feedback wird erstellt...",
     lbl_ai_working: "(Das kann einen Moment dauern.)",
     lbl_wait_warn: "⚠ Die Bewertung dauert ungewöhnlich lange...",
     btn_wait_keep: "Weiter warten",
@@ -3154,23 +3522,28 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     rating_good_shortcut: "(Shortcut: 3)",
     rating_easy_shortcut: "(Shortcut: 4)",
     session_completed: "Lernsitzung erfolgreich abgeschlossen!",
-    session_completed_sub: "Hervorragende Arbeit! Deine Gedächtnispfade wurden aktualisiert.",
+    session_completed_sub:
+      "Hervorragende Arbeit! Deine Gedächtnispfade wurden aktualisiert.",
     btn_back_to_dashboard: "Zurück zur Übersicht",
     btn_open_graph: "Wissensnetz (3D)",
     btn_open_settings: "Einstellungen",
     observer_title: "UI Observer",
-    observer_idle: "Fenster laden und ein Anwendungsfenster zur Beobachtung auswählen.",
+    observer_idle:
+      "Fenster laden und ein Anwendungsfenster zur Beobachtung auswählen.",
     observer_loading: "Beobachtbare Fenster werden geladen...",
     observer_ready: "Ausgewählt: {title}",
     observer_vision_checking: "Prüfe Vision-Beobachtungseinstellungen...",
     observer_analyzing: "Erzeuge Snapshot und frage das Vision-Modell...",
-    observer_done: "Beobachtung gespeichert. Confidence des letzten Reports: {confidence}",
+    observer_done:
+      "Beobachtung gespeichert. Confidence des letzten Reports: {confidence}",
     observer_canceled: "Beobachtung abgebrochen.",
     observer_error: "Observer-Fehler: {message}",
-    observer_vision_disabled: "Vision-Beobachtung ist deaktiviert. Aktiviere sie mit: zam settings set llm.vision.enabled true",
+    observer_vision_disabled:
+      "Vision-Beobachtung ist deaktiviert. Aktiviere sie mit: zam settings set llm.vision.enabled true",
     observer_vision_offline: "Vision-Endpunkt ist offline: {url}",
     observer_vision_model_missing: "Vision-Modell ist nicht verfügbar: {model}",
-    observer_privacy_paused: "Privacy-Pause: Dieses Fenster wird durch den Privacy-Filter blockiert ({reason}).",
+    observer_privacy_paused:
+      "Privacy-Pause: Dieses Fenster wird durch den Privacy-Filter blockiert ({reason}).",
     observer_privacy_option: "Privacy-Pause",
     observer_refresh: "Fenster laden",
     observer_analyze: "Snapshot analysieren",
@@ -3185,8 +3558,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     observer_loop_start: "Loop starten",
     observer_loop_stop: "Loop stoppen",
     observer_loop_idle: "Nur manuelle Snapshots.",
-    observer_loop_running: "Observer-Loop läuft. Immer nur ein Snapshot gleichzeitig.",
-    observer_loop_waiting: "Observer-Loop läuft. Nächster Snapshot in {seconds}s.",
+    observer_loop_running:
+      "Observer-Loop läuft. Immer nur ein Snapshot gleichzeitig.",
+    observer_loop_waiting:
+      "Observer-Loop läuft. Nächster Snapshot in {seconds}s.",
     observer_loop_stopped: "Observer-Loop gestoppt.",
     observer_watch_start: "Watch starten",
     observer_watch_stop: "Watch stoppen",
@@ -3228,7 +3603,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     database_no_profile: "Kein aktives Profil",
     database_profile_option: "{profile} — {count} Karten",
     database_profile_switch_confirm:
-      'Aktives Lernprofil zu „{profile}“ wechseln?',
+      "Aktives Lernprofil zu „{profile}“ wechseln?",
     database_profile_switched: "Aktives Profil: {profile} ({count} Karten)",
     database_refresh: "Status aktualisieren",
     settings_theme: "Theme",
@@ -3242,7 +3617,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Deine Datenbank synchronisiert in die Cloud ({target}) — kein separates lokales Backup nötig.",
     setup_backup_failed: "Sicherung fehlgeschlagen: {message}",
     setup_backup_failed_generic: "Sicherung fehlgeschlagen.",
-    setup_open_folder_failed: "Datenordner konnte nicht geöffnet werden: {message}",
+    setup_open_folder_failed:
+      "Datenordner konnte nicht geöffnet werden: {message}",
     lbl_workspace: "Arbeitsbereich",
     btn_choose_workspace: "+ Arbeitsbereich hinzufügen…",
     btn_open_terminal: "Terminal öffnen",
@@ -3259,18 +3635,21 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     workspace_kind_community: "Community-Arbeitsbereich",
     workspace_kind_organization: "Organisations-Arbeitsbereich",
     workspace_kind_custom: "Benutzerdefinierter Arbeitsbereich",
-    workspace_more: "{count} weitere Arbeitsbereiche ausgeblendet. Die vollständige Liste ist in der CLI.",
+    workspace_more:
+      "{count} weitere Arbeitsbereiche ausgeblendet. Die vollständige Liste ist in der CLI.",
     workspace_use: "Nutzen",
     workspace_open: "Terminal",
     workspace_default_suffix: "(Standard)",
     workspace_set: "Arbeitsbereich gesetzt: {path}",
     workspace_added: "Arbeitsbereich hinzugefügt: {path}",
-    workspace_pick_failed: "Arbeitsbereich konnte nicht gesetzt werden: {message}",
+    workspace_pick_failed:
+      "Arbeitsbereich konnte nicht gesetzt werden: {message}",
     workspace_remove: "Entfernen",
     workspace_remove_confirm:
       '"{label}" aus ZAM entfernen? Dateien und Verknüpfungen im Ordner bleiben unverändert.',
     workspace_removed: "Arbeitsbereich entfernt: {label}",
-    workspace_remove_failed: "Arbeitsbereich konnte nicht entfernt werden: {message}",
+    workspace_remove_failed:
+      "Arbeitsbereich konnte nicht entfernt werden: {message}",
     workspace_link_ok: "Skill-Link OK",
     workspace_link_broken: "Skill-Link defekt",
     workspace_link_unmanaged: "Fremder Skill-Ordner",
@@ -3279,7 +3658,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       'Im Ordner von "{label}" liegt ein skills/zam-Verzeichnis, das nicht von ZAM stammt. Beim Reparieren wird es gelöscht und durch eine Verknüpfung ersetzt. Fortfahren?',
     workspace_repairing: "Skill-Link wird repariert…",
     workspace_repaired: "Skill-Link repariert: {label}",
-    workspace_repair_failed: "Skill-Link konnte nicht repariert werden: {message}",
+    workspace_repair_failed:
+      "Skill-Link konnte nicht repariert werden: {message}",
     lbl_app_version: "Version",
     lbl_learning_model: "Textmodell (Lernen & Lehrplan)",
     lbl_observer_model: "Observer-Modell",
@@ -3296,7 +3676,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     btn_add_ai_provider: "+ Provider hinzufügen",
     btn_add_model: "+ Modell hinzufügen",
     ai_config_loading: "Provider-Konfiguration wird geladen...",
-    ai_config_failed: "Provider-Konfiguration konnte nicht geladen werden: {message}",
+    ai_config_failed:
+      "Provider-Konfiguration konnte nicht geladen werden: {message}",
     ai_provider_empty: "Noch keine Provider konfiguriert.",
     model_loading: "Modelle werden geladen…",
     model_load_failed: "Modelle konnten nicht geladen werden: {message}",
@@ -3353,7 +3734,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     ai_provider_remove_confirm: 'Provider "{name}" entfernen?',
     ai_provider_removed: 'Provider "{name}" entfernt',
     ai_provider_saved: 'Provider "{name}" gespeichert',
-    ai_provider_save_failed: "Provider konnte nicht gespeichert werden: {message}",
+    ai_provider_save_failed:
+      "Provider konnte nicht gespeichert werden: {message}",
     ai_provider_form_add_title: "Provider hinzufügen",
     ai_provider_form_edit_title: "Provider bearbeiten",
     ai_provider_display_name: "Name",
@@ -3377,7 +3759,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     ai_provider_runner_foundry: "Foundry Local",
     ai_provider_runner_not_installed: "nicht erkannt",
     ai_provider_api_key: "API-Schlüssel",
-    ai_provider_api_key_hint: "Nur Schreiben — lokal gespeichert, nie synchronisiert",
+    ai_provider_api_key_hint:
+      "Nur Schreiben — lokal gespeichert, nie synchronisiert",
     ai_provider_cloud_hint: "Vorgeschlagenes Modell: {model}",
     ai_provider_models_loading: "Modelle werden geladen...",
     ai_provider_models_empty: "Endpunkt listet keine Modelle",
@@ -3406,17 +3789,20 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     update_available: "Update verfügbar: {version}",
     update_none: "Du nutzt die aktuelle Version.",
     update_failed: "Update-Prüfung fehlgeschlagen: {message}",
-    update_available_manual: "Update verfügbar: {version}. Öffne die Download-Seite…",
+    update_available_manual:
+      "Update verfügbar: {version}. Öffne die Download-Seite…",
     update_downloading: "Lade Update {version}…",
     update_progress: "Lade Update {version}… {pct}%",
     update_installing: "Installiere Update…",
     update_restarting: "Starte in die neue Version neu…",
-    update_none_verifying: "Du nutzt die aktuelle Version. Prüfe die Installation…",
+    update_none_verifying:
+      "Du nutzt die aktuelle Version. Prüfe die Installation…",
     repair_done: "Installation geprüft — {details}",
     repair_failed: "Installationsprüfung fehlgeschlagen: {message}",
     repair_cli_ok: "CLI: OK",
     repair_cli_fixed: "CLI: repariert",
-    repair_cli_new_terminal: "CLI: installiert — öffne ein neues Terminal, um `zam` zu nutzen",
+    repair_cli_new_terminal:
+      "CLI: installiert — öffne ein neues Terminal, um `zam` zu nutzen",
     repair_cli_error: "CLI: fehlgeschlagen ({detail})",
     repair_skills_ok: "Workspace-Skills: OK",
     repair_skills_fixed: "Workspace-Skills: {n} neu verknüpft",
@@ -3453,9 +3839,11 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     btn_remove: "Karte entfernen",
     btn_delete: "Token dauerhaft löschen",
     lbl_confirm_remove_title: "Kartenentfernung bestätigen",
-    lbl_confirm_remove_desc: "Das Entfernen dieser Karte löscht deinen persönlichen FSRS-Lernstatus und -Verlauf für diesen Token. Andere Benutzer oder der globale Token-Katalog bleiben unberührt.",
+    lbl_confirm_remove_desc:
+      "Das Entfernen dieser Karte löscht deinen persönlichen FSRS-Lernstatus und -Verlauf für diesen Token. Andere Benutzer oder der globale Token-Katalog bleiben unberührt.",
     lbl_confirm_delete_title: "Globale Token-Löschung bestätigen",
-    lbl_confirm_delete_desc: "Das dauerhafte Löschen dieses Tokens zerstört das Wissenskonzept, die persönlichen Karten aller Benutzer und den gesamten Bewertungsverlauf in der Datenbank.",
+    lbl_confirm_delete_desc:
+      "Das dauerhafte Löschen dieses Tokens zerstört das Wissenskonzept, die persönlichen Karten aller Benutzer und den gesamten Bewertungsverlauf in der Datenbank.",
     lbl_delete_impact: "Diese Aktion betrifft:",
     lbl_impact_cards: "{count} Karte(n)",
     lbl_impact_reviews: "{count} Bewertungsprotokoll(e)",
@@ -3478,13 +3866,16 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     btn_import_curriculum: "Lehrplan importieren",
     lbl_import_modal_title: "Lehrplan-Standard importieren",
     lbl_import_text: "Lehrplantext",
-    placeholder_import_text: "Lehrplantext oder Lehrplanpunkte hier einfügen...",
+    placeholder_import_text:
+      "Lehrplantext oder Lehrplanpunkte hier einfügen...",
     lbl_import_source: "Quell-URL / Referenz",
     lbl_import_category: "Zielkategorie",
     lbl_import_progress_status: "Karten werden generiert...",
-    lbl_import_progress_detail: "Dies kann je nach Geschwindigkeit der lokalen KI bis zu einer Minute dauern.",
+    lbl_import_progress_detail:
+      "Dies kann je nach Geschwindigkeit der lokalen KI bis zu einer Minute dauern.",
     btn_import_submit: "Importieren",
-    toast_import_success: "Erfolgreich {createdCount} neue Token importiert und {ensuredCount} Karten sichergestellt!",
+    toast_import_success:
+      "Erfolgreich {createdCount} neue Token importiert und {ensuredCount} Karten sichergestellt!",
     lbl_error_importing: "Lehrplan konnte nicht importiert werden",
     btn_curriculum_wizard: "Lehrplan-Assistent",
     lbl_curriculum_wizard_title: "Lehrplan-Assistent",
@@ -3500,7 +3891,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_no_options: "Für diese Auswahl sind noch keine Optionen verfügbar.",
     wizard_err_select_option: "Bitte wähle eine Option, um fortzufahren.",
     wizard_err_no_topics: "Bitte wähle mindestens ein Thema aus.",
-    wizard_topic_scope_note: "Die Karten werden aus der vollständigen Lehrplanseite dieses Fachs erstellt (alle Themen). Die präzise Auswahl nur der markierten Themen kommt mit einem künftigen Update — bis dahin hilft dir die Auswahl, den Überblick zu behalten, was als Nächstes drankommt.",
+    wizard_topic_scope_note:
+      "Die Karten werden aus der vollständigen Lehrplanseite dieses Fachs erstellt (alle Themen). Die präzise Auswahl nur der markierten Themen kommt mit einem künftigen Update — bis dahin hilft dir die Auswahl, den Überblick zu behalten, was als Nächstes drankommt.",
     wizard_resume_prompt: "Dort weitermachen, wo du aufgehört hast:",
     wizard_btn_resume: "Fortfahren",
     wizard_btn_restart: "Neu beginnen",
@@ -3541,7 +3933,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_card_preview_empty: "Keine Karten für dieses Thema gefunden.",
     wizard_card_existing_badge: "importiert",
     wizard_card_new_badge: "neu",
-    wizard_err_no_subtopics: "Bitte mindestens einen Kompetenzabschnitt auswählen.",
+    wizard_err_no_subtopics:
+      "Bitte mindestens einen Kompetenzabschnitt auswählen.",
     wizard_btn_preview_cards: "Karten vorschauen",
     wizard_btn_confirm_import: "Auswahl speichern",
     wizard_import_listing_subtopics: "Lade Abschnitte: {topic}",
@@ -3558,16 +3951,19 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_split_original_question: "Frage",
     lbl_split_original_concept: "Antwort / Konzept",
     lbl_split_action_title: "Nach dem Aufteilen:",
-    lbl_action_block: "Originalkarte behalten und blockieren (erfordert zuerst neue Karten)",
+    lbl_action_block:
+      "Originalkarte behalten und blockieren (erfordert zuerst neue Karten)",
     lbl_action_remove: "Originalkarte entfernen",
     lbl_split_progress_status: "Atomare Vorschläge werden generiert...",
-    lbl_split_progress_detail: "Dies kann je nach Geschwindigkeit der lokalen KI bis zu einer Minute dauern.",
+    lbl_split_progress_detail:
+      "Dies kann je nach Geschwindigkeit der lokalen KI bis zu einer Minute dauern.",
     lbl_atomic_proposals_title: "Atomare Kartenvorschläge (Mindestens 2)",
     btn_split_modal_submit: "Aufteilung bestätigen",
     btn_content_foundations_card: "Fundamente",
     lbl_foundations_modal_title: "Fundamente importieren",
     lbl_foundations_progress_status: "Fundamentvorschläge werden generiert...",
-    lbl_foundations_progress_detail: "Dies kann je nach Geschwindigkeit der lokalen KI bis zu einer Minute dauern.",
+    lbl_foundations_progress_detail:
+      "Dies kann je nach Geschwindigkeit der lokalen KI bis zu einer Minute dauern.",
     lbl_foundations_atomic_title: "Fundamentale Kartenvorschläge",
     btn_foundations_modal_submit: "Import bestätigen",
     lbl_import_source_type: "Quelltyp",
@@ -3580,23 +3976,30 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_foundation_existing_badge: "Bestehende Karte wird verknüpft",
     lbl_foundation_new_badge: "Neuer Kartenvorschlag",
     lbl_include: "Einschließen",
-    lbl_err_analyze_source_first: "Bitte zuerst eine Quelldatei, einen Weblink oder einen OCR-Scan analysieren.",
-    lbl_err_min_split_proposals: "Für das Aufteilen einer Karte sind mindestens 2 vollständige Kartenvorschläge erforderlich.",
-    lbl_err_select_foundation: "Bitte wähle mindestens eine Grundlagen-Vorschlagskarte zum Importieren aus.",
-    lbl_err_enter_path_or_url: "Bitte gib einen Dateipfad oder eine URL zur Analyse ein.",
+    lbl_err_analyze_source_first:
+      "Bitte zuerst eine Quelldatei, einen Weblink oder einen OCR-Scan analysieren.",
+    lbl_err_min_split_proposals:
+      "Für das Aufteilen einer Karte sind mindestens 2 vollständige Kartenvorschläge erforderlich.",
+    lbl_err_select_foundation:
+      "Bitte wähle mindestens eine Grundlagen-Vorschlagskarte zum Importieren aus.",
+    lbl_err_enter_path_or_url:
+      "Bitte gib einen Dateipfad oder eine URL zur Analyse ein.",
     lbl_analyzing_source: "Quellinhalt wird analysiert, bitte warten…",
     lbl_err_analysis_failed: "Analyse fehlgeschlagen",
     lbl_err_analysis_prefix: "Analysefehler",
     lbl_err_concept_required: "Antwort / Lerninhalt ist erforderlich.",
     lbl_err_category_required: "Kategorie ist erforderlich.",
     lbl_err_import_context_required: "Lehrplantext ist erforderlich.",
-    lbl_err_original_context_required: "Frage und Antwort sind für die Originalkarte erforderlich.",
+    lbl_err_original_context_required:
+      "Frage und Antwort sind für die Originalkarte erforderlich.",
     settings_context_title: "Wissenskontext",
-    settings_context_help: "Wähle den Standard-Wissenskontext für dieses Gerät.",
+    settings_context_help:
+      "Wähle den Standard-Wissenskontext für dieses Gerät.",
     settings_context_label: "Standard-Kontext",
     wizard_context_label: "Importierte Karten dem Kontext zuweisen:",
     settings_agents_title: "KI-Agenten",
-    settings_agents_help: "Verbinde installierte Agent-Harnesses per MCP mit ZAM. Jederzeit gefahrlos wiederholbar.",
+    settings_agents_help:
+      "Verbinde installierte Agent-Harnesses per MCP mit ZAM. Jederzeit gefahrlos wiederholbar.",
     btn_agents_connect_all: "Alle erkannten verbinden",
     btn_agent_connect: "Verbinden",
     agent_status_loading: "Erkenne installierte Harnesses...",
@@ -3604,13 +4007,38 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     agent_status_installed: "Installiert",
     agent_status_connected: "Verbunden",
     agent_connect_running: "Verbinde...",
-    agent_connect_done: "{n} Harness(es) verbunden. Globaler ZAM-Skill aktualisiert.",
-    agent_connect_none: "Kein unterstützter Harness gefunden. Installiere zuerst Codex, VS Code, Copilot o. ä.",
+    agent_connect_done:
+      "{n} Harness(es) verbunden. Globaler ZAM-Skill aktualisiert.",
+    agent_connect_none:
+      "Kein unterstützter Harness gefunden. Installiere zuerst Codex, VS Code, Copilot o. ä.",
     agent_connect_error: "Verbindung fehlgeschlagen — Details in der Konsole.",
     agent_connect_status: "Verbindungsstatus",
     agent_connect_not_run: "Noch nicht ausgeführt",
     agent_connect_success: "Erfolgreich",
     agent_connect_failed: "Fehlgeschlagen",
+    lbl_contextbar_agent: "Agent",
+    lbl_contextbar_user: "Nutzer",
+    contextbar_user_session_suffix: "{id} (nur diese Sitzung)",
+    contextbar_user_unresolved: "Noch kein Lernprofil ermittelt",
+    contextbar_user_title_session:
+      "{id} — nur diese Sitzung; wird nicht als Companion-Einstellung gespeichert",
+    contextbar_user_title_manual: "{id} — in dieser Kontextleiste ausgewählt",
+    contextbar_user_title_persisted:
+      "{id} — dein gespeichertes Companion-Lernprofil",
+    contextbar_user_title_default: "{id} — ZAMs Standardnutzer",
+    contextbar_agent_unavailable_fmt: "{label} (nicht verfügbar)",
+    contextbar_quick_mode: "Schnellmodus — kein Agent",
+    contextbar_select_profile_placeholder: "– Lernprofil wählen –",
+    contextbar_no_learner: "Kein Lernprofil",
+    contextbar_evaluator_unavailable_fmt: "{label} — nicht verfügbar",
+    contextbar_refresh_title: "Kontext aktualisieren",
+    contextbar_expand: "Kontextleiste ausklappen",
+    contextbar_collapse: "Kontextleiste einklappen",
+    btn_contextbar_discard_switch: "Verwerfen & wechseln",
+    contextbar_confirm_switch_user:
+      "Zu Lernprofil {id} wechseln? Nicht abgeschickte Eingaben in diesem Panel werden verworfen.",
+    contextbar_confirm_switch_agent:
+      "Agent wechseln? Nicht abgeschickte Eingaben in diesem Panel werden verworfen.",
   },
   // es, fr, pt, zh, ja packs come from TRANSLATION_PACKS above; en/de stay inline here as the reference locales.
   ...TRANSLATION_PACKS,
@@ -3630,7 +4058,10 @@ export function t(key: string): string {
   return TRANSLATIONS[currentLocale]?.[key] || TRANSLATIONS["en"]?.[key] || key;
 }
 
-export function tf(key: string, values: Record<string, string | number>): string {
+export function tf(
+  key: string,
+  values: Record<string, string | number>,
+): string {
   return Object.entries(values).reduce(
     (text, [name, value]) => text.split(`{${name}}`).join(String(value)),
     t(key),

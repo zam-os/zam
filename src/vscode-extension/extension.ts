@@ -284,6 +284,19 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
     }
   }
 
+  /**
+   * Re-open the currently mounted app with its original arguments so the
+   * webview receives a fresh, re-enriched tool result. Used after
+   * "ZAM: Choose Recall Model": the pick persists immediately, but a mounted
+   * Agent pill kept showing the previous model until the next open (live
+   * 0.11.0 finding) — the pill must never lag behind the model that will
+   * actually evaluate the next answer. No-op when nothing is mounted.
+   */
+  public async refreshCurrentApp(): Promise<void> {
+    if (!this.prepared) return;
+    await this.open(this.prepared.kind, this.prepared.toolArguments);
+  }
+
   private async handleMessage(message: HostMessage): Promise<void> {
     if (message.type === "ready") {
       this.hostReady = true;
@@ -515,8 +528,8 @@ export async function activate(
     vscode.commands.registerCommand("zam.openSettings", () =>
       provider.open("settings"),
     ),
-    vscode.commands.registerCommand("zam.chooseRecallModel", () =>
-      runChooseRecallModel(
+    vscode.commands.registerCommand("zam.chooseRecallModel", async () => {
+      const picked = await runChooseRecallModel(
         {
           listModels: () => vscode.lm.selectChatModels({}),
           showQuickPick: (items) =>
@@ -531,8 +544,10 @@ export async function activate(
             void vscode.window.showWarningMessage(message),
         },
         vscodeModelSelection,
-      ),
-    ),
+      );
+      // A mounted Agent pill must reflect the new choice immediately.
+      if (picked) await provider.refreshCurrentApp();
+    }),
   );
 
   let lastIntentId: string | undefined;

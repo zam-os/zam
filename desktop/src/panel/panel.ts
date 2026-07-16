@@ -11,10 +11,11 @@ import { setBridgeTransport } from "../bridge-transport.js";
 import { setCurrentLocale } from "../i18n.js";
 import { initLearningContentStudio } from "../learning-content.js";
 import {
-  clearConnectionNotice as clearConnectionNoticeShared,
   type CompanionContextBarState,
   type ContextBarHandle,
+  clearConnectionNotice as clearConnectionNoticeShared,
   createCallTool,
+  createContextReader,
   createContextWriter,
   ensureContextBar,
   fallbackContextBarState,
@@ -70,6 +71,7 @@ const SURFACE = "studio";
 
 const callTool = createCallTool(app);
 const writeCompanionContext = createContextWriter(callTool, SURFACE);
+const readCompanionContext = createContextReader(callTool, SURFACE);
 
 /**
  * True while a card is open for editing in the Learning Content Studio —
@@ -109,6 +111,7 @@ app.ontoolresult = (result) => {
     contextState,
     {
       write: writeCompanionContext,
+      read: readCompanionContext,
       hasUnsavedChanges: hasUnsavedStudioState,
       onReload: reloadForContext,
       onError: showConnectionNotice,
@@ -128,6 +131,7 @@ contextBar = ensureContextBar(
   fallbackContextBarState(SURFACE, null),
   {
     write: writeCompanionContext,
+    read: readCompanionContext,
     hasUnsavedChanges: hasUnsavedStudioState,
     onReload: reloadForContext,
     onError: showConnectionNotice,
@@ -148,7 +152,10 @@ async function mcpTransport(cmd: string, args: string[]): Promise<unknown> {
 const NO_HOST_NOTICE =
   "Kein MCP-Apps-Host — diese Karte braucht einen Host mit ui/initialize " +
   "(z. B. basic-host oder Copilot-Panel).";
-const noHostTimer = setTimeout(() => showConnectionNotice(NO_HOST_NOTICE), 4000);
+const noHostTimer = setTimeout(
+  () => showConnectionNotice(NO_HOST_NOTICE),
+  4000,
+);
 
 app
   .connect()

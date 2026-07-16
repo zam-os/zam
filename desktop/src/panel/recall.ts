@@ -26,18 +26,19 @@
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
+import { setCurrentLocale, t, tf } from "../i18n.js";
 import {
-  clearConnectionNotice as clearConnectionNoticeShared,
   type CompanionContextBarState,
   type ContextBarHandle,
+  clearConnectionNotice as clearConnectionNoticeShared,
   createCallTool,
+  createContextReader,
   createContextWriter,
   deriveQuickMode,
   ensureContextBar,
   fallbackContextBarState,
   showConnectionNotice as showConnectionNoticeShared,
 } from "./context-bar.js";
-import { setCurrentLocale, t, tf } from "../i18n.js";
 import {
   buildRecallEvaluationPrompt,
   buildRecallFollowUpPrompt,
@@ -136,6 +137,7 @@ const SURFACE = "recall";
 
 const callTool = createCallTool(app);
 const writeCompanionContext = createContextWriter(callTool, SURFACE);
+const readCompanionContext = createContextReader(callTool, SURFACE);
 
 /**
  * True while the currently shown card has a typed-but-unsubmitted answer —
@@ -798,7 +800,10 @@ app.ontoolresult = (params) => {
   const previousDomain = focusDomain;
   currentUser = structured.user ?? null;
   focusDomain = structured.domain ?? null;
-  quickMode = deriveQuickMode(structured.companionContext, structured.quickMode === true);
+  quickMode = deriveQuickMode(
+    structured.companionContext,
+    structured.quickMode === true,
+  );
   const contextChanged =
     started && (previousUser !== currentUser || previousDomain !== focusDomain);
   if (contextChanged) {
@@ -812,7 +817,8 @@ app.ontoolresult = (params) => {
   clearConnectionNotice();
 
   const contextState =
-    structured.companionContext ?? fallbackContextBarState(SURFACE, currentUser);
+    structured.companionContext ??
+    fallbackContextBarState(SURFACE, currentUser);
   contextBar = ensureContextBar(
     contextBar,
     contextBarRoot,
@@ -821,6 +827,7 @@ app.ontoolresult = (params) => {
     contextState,
     {
       write: writeCompanionContext,
+      read: readCompanionContext,
       hasUnsavedChanges: hasUnsavedRecallState,
       onReload: reloadForContext,
       onError: showConnectionNotice,
@@ -841,6 +848,7 @@ contextBar = ensureContextBar(
   fallbackContextBarState(SURFACE, currentUser),
   {
     write: writeCompanionContext,
+    read: readCompanionContext,
     hasUnsavedChanges: hasUnsavedRecallState,
     onReload: reloadForContext,
     onError: showConnectionNotice,
@@ -853,7 +861,10 @@ contextBar = ensureContextBar(
 const NO_HOST_NOTICE =
   "Kein MCP-Apps-Host — diese Karte braucht einen Host mit ui/initialize " +
   "(z. B. basic-host oder Copilot-Panel).";
-const noHostTimer = setTimeout(() => showConnectionNotice(NO_HOST_NOTICE), 4000);
+const noHostTimer = setTimeout(
+  () => showConnectionNotice(NO_HOST_NOTICE),
+  4000,
+);
 
 app
   .connect()

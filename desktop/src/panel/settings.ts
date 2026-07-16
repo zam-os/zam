@@ -17,11 +17,13 @@
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
+import { setCurrentLocale } from "../i18n.js";
 import {
-  clearConnectionNotice as clearConnectionNoticeShared,
   type CompanionContextBarState,
   type ContextBarHandle,
+  clearConnectionNotice as clearConnectionNoticeShared,
   createCallTool,
+  createContextReader,
   createContextWriter,
   ensureContextBar,
   fallbackContextBarState,
@@ -133,6 +135,7 @@ const SURFACE = "settings";
 
 const callTool = createCallTool(app);
 const writeCompanionContext = createContextWriter(callTool, SURFACE);
+const readCompanionContext = createContextReader(callTool, SURFACE);
 
 /** Run one allowlisted `zam bridge` command through zam_studio_bridge. */
 function bridgeCall(cmd: string, args: string[] = []): Promise<unknown> {
@@ -551,6 +554,7 @@ app.ontoolresult = (params) => {
     contextState,
     {
       write: writeCompanionContext,
+      read: readCompanionContext,
       onReload: reloadForContext,
       onError: showConnectionNotice,
     },
@@ -570,6 +574,7 @@ contextBar = ensureContextBar(
   fallbackContextBarState(SURFACE, null),
   {
     write: writeCompanionContext,
+    read: readCompanionContext,
     onReload: reloadForContext,
     onError: showConnectionNotice,
   },
@@ -581,13 +586,19 @@ contextBar = ensureContextBar(
 const NO_HOST_NOTICE =
   "Kein MCP-Apps-Host — diese Karte braucht einen Host mit ui/initialize " +
   "(z. B. basic-host oder Copilot-Panel).";
-const noHostTimer = setTimeout(() => showConnectionNotice(NO_HOST_NOTICE), 4000);
+const noHostTimer = setTimeout(
+  () => showConnectionNotice(NO_HOST_NOTICE),
+  4000,
+);
 
 app
   .connect()
   .then(() => {
     clearTimeout(noHostTimer);
     connected = true;
+    if (navigator.language.startsWith("de")) {
+      setCurrentLocale("de");
+    }
     // ontoolresult normally fires right after the handshake and triggers the
     // load. If a host never delivers it, still start after a short grace
     // period instead of leaving the card stuck waiting.
@@ -595,5 +606,7 @@ app
   })
   .catch((error: unknown) => {
     clearTimeout(noHostTimer);
-    showConnectionNotice(`ZAM Settings failed to start: ${errorMessage(error)}`);
+    showConnectionNotice(
+      `ZAM Settings failed to start: ${errorMessage(error)}`,
+    );
   });
