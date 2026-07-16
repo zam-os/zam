@@ -16,7 +16,8 @@ export type VscodeExtensionInstallAction =
   | "installed"
   | "updated"
   | "unchanged"
-  | "planned";
+  | "planned"
+  | "kept-newer";
 
 export interface VscodeExtensionPlan {
   version: string;
@@ -41,6 +42,8 @@ export interface VscodeExtensionOptions {
   find?: (command: string) => string | null;
   exists?: (path: string) => boolean;
   run?: (command: string, args: string[]) => void;
+  /** Like `run`, but returns the command's stdout — used to read the installed extension version. */
+  query?: (command: string, args: string[]) => string;
 }
 
 export function resolveVscodeExecutable(
@@ -154,6 +157,35 @@ export function planVscodeExtensionInstall(
   };
 }
 
+/** `"0.10.10" vs "0.11.0"` → negative when `a` is older. Numeric triples only. */
+function compareVersions(a: string, b: string): number {
+  const parse = (value: string) =>
+    value.split(".").map((part) => Number.parseInt(part, 10) || 0);
+  const [aParts, bParts] = [parse(a), parse(b)];
+  for (let i = 0; i < Math.max(aParts.length, bParts.length); i += 1) {
+    const diff = (aParts[i] ?? 0) - (bParts[i] ?? 0);
+    if (diff !== 0) return diff;
+  }
+  return 0;
+}
+
+/**
+ * The Companion version VS Code currently has installed, or null when absent
+ * or undeterminable (a query failure must never block the install).
+ */
+function installedCompanionVersion(
+  codePath: string,
+  query: (command: string, args: string[]) => string,
+): string | null {
+  try {
+    const output = query(codePath, ["--list-extensions", "--show-versions"]);
+    const match = output.match(/^zam-os\.zam-companion@(\S+)$/im);
+    return match ? match[1] : null;
+  } catch {
+    return null;
+  }
+}
+
 export function installVscodeExtension(
   options: VscodeExtensionOptions,
 ): VscodeExtensionInstallResult {
@@ -183,6 +215,30 @@ export function installVscodeExtension(
         shell: invocation.shell,
       });
     });
+  const query =
+    options.query ??
+    ((command: string, args: string[]) => {
+      const invocation = buildVscodeCliInvocation(command, args);
+      return execFileSync(invocation.command, invocation.args, {
+        stdio: "pipe",
+        shell: invocation.shell,
+        encoding: "utf8",
+      });
+    });
+
+  // Never downgrade: `--install-extension --force` happily replaces a newer
+  // Companion with this package's older VSIX (observed live: an installed
+  // ZAM 0.10.10 app's connect pass clobbered a freshly installed 0.10.11
+  // Companion minutes after installation, leaving a stale extension whose
+  // tool-proxy allowlist no longer matched the current MCP server — every
+  // panel bridge call then failed with MCP error -32603). Same-version
+  // reinstalls stay allowed: during development the version is stable while
+  // content changes, and reinstalling also repairs a corrupted install.
+  const installed = installedCompanionVersion(plan.codePath, query);
+  if (installed && compareVersions(plan.version, installed) < 0) {
+    return { ...plan, action: "kept-newer" };
+  }
+
   run(plan.codePath, ["--install-extension", plan.vsixPath, "--force"]);
 
   if (changed) {
