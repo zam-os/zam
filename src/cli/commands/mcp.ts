@@ -702,11 +702,24 @@ export function createMcpServer(db: Database): McpServer {
       },
     },
     wrapHandler(async () => {
-      const userId = await getUserId(undefined).catch(() => null);
+      // Mirror zam_open_recall/zam_show_graph/zam_open_settings: resolve
+      // invocation (none — the tool takes no `user` argument) > persisted
+      // Companion learner > shared database default, and return the resolved
+      // context for the Studio panel's context bar (0.11.0 Phase 4). Never
+      // throws — companionContext.user.currentId is undefined instead of a
+      // rejected call when no default is set anywhere.
+      const companionContext = await resolveOpeningCompanionContext(
+        db,
+        "studio",
+        undefined,
+        getNativeClientInfo(),
+        { clientSamplingCapable: getClientSamplingCapable() },
+      );
       return {
         studio: "zam",
         version: pkg.version,
-        user: userId,
+        user: companionContext.user.currentId ?? null,
+        companionContext,
       };
     }),
   );

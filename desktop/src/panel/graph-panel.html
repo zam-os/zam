@@ -83,35 +83,123 @@
         max-width: 760px;
         margin: 0 auto;
       }
-      .zam-header {
+      /* ── Shared context bar (desktop/src/panel/context-bar.ts) ─────────── */
+      .zam-contextbar {
         display: flex;
-        align-items: baseline;
+        align-items: center;
+        justify-content: space-between;
         gap: 10px;
+        flex-wrap: wrap;
         margin-bottom: 12px;
+        padding: 6px 10px;
+        border-radius: 10px;
+        background: var(--card);
+        border: 1px solid var(--border);
       }
-      .zam-header h1 {
-        font-size: 18px;
-        margin: 0;
+      .zam-contextbar-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
       }
-      .zam-header .version {
+      .zam-contextbar-toggle {
+        font: inherit;
+        line-height: 1;
+        background: transparent;
+        border: none;
         color: var(--muted);
-        font-size: 12px;
+        cursor: pointer;
+        padding: 3px 6px;
+        border-radius: 6px;
       }
-      .zam-status-line {
+      .zam-contextbar-toggle:hover {
+        background: var(--hover);
+        color: var(--accent);
+      }
+      .zam-contextbar-title {
+        font-size: 14px;
+        font-weight: 700;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .zam-contextbar-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        min-width: 0;
+      }
+      .zam-contextbar.collapsed .zam-contextbar-right {
+        display: none;
+      }
+      .zam-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.72rem;
+        color: var(--muted);
+        max-width: 220px;
+      }
+      .zam-pill-label {
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+      }
+      .zam-pill-select {
+        font: inherit;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--fg);
+        background: var(--hover);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 3px 9px;
+        max-width: 170px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+      }
+      .zam-pill-select:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+      .zam-pill-select.zam-pill-unavailable {
+        color: var(--danger);
+        border-color: var(--danger);
+        background: var(--danger-bg);
+      }
+      .zam-contextbar-confirm {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        font-size: 0.8rem;
+        color: var(--fg);
+        background: var(--hover);
+        border-radius: 8px;
+        padding: 8px 10px;
+        margin-top: 6px;
+      }
+      .zam-connection-notice {
         font-size: 0.85rem;
-        color: var(--muted);
+        color: var(--danger);
+        background: var(--danger-bg);
+        border: 1px solid var(--danger);
+        border-radius: 8px;
+        padding: 9px 11px;
         margin: 0 0 12px;
       }
-      .status-dot {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--muted);
-        margin-right: 6px;
-      }
-      .status-dot.connected {
-        background: var(--ok);
+      @media (max-width: 420px) {
+        .zam-contextbar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .zam-contextbar-right {
+          justify-content: flex-end;
+        }
       }
       .zam-card {
         background: var(--card);
@@ -254,14 +342,8 @@
   </head>
   <body>
     <div id="zam-graph-panel">
-      <div class="zam-header">
-        <h1>ZAM Graph</h1>
-        <span class="version" id="zam-version"></span>
-      </div>
-      <p class="zam-status-line">
-        <span class="status-dot" id="zam-status-dot"></span>
-        <span id="zam-status">Connecting to host…</span>
-      </p>
+      <div id="zam-contextbar-root"></div>
+      <div class="zam-connection-notice" id="zam-connection-notice" hidden></div>
       <div class="graph-legend">
         <span class="graph-legend-item">
           <span class="graph-legend-dot prereq"></span>Voraussetzungen

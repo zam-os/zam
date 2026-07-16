@@ -14,6 +14,12 @@
 
 import { App } from "@modelcontextprotocol/ext-apps";
 import {
+  type CompanionContextBarState,
+  type ContextBarHandle,
+  fallbackContextBarState,
+  mountContextBar,
+} from "./context-bar.js";
+import {
   type GraphNodeBounds,
   graphEdgeEndpoints,
   graphNodeTitle,
@@ -37,22 +43,42 @@ const LABEL_MAX_LINES = 3;
 const LABEL_LINE_HEIGHT = 14;
 const HISTORY_LIMIT = 5;
 
-const statusEl = document.getElementById("zam-status");
-const statusDot = document.getElementById("zam-status-dot");
-const versionEl = document.getElementById("zam-version");
+const contextBarRoot = document.getElementById("zam-contextbar-root");
+const noticeEl = document.getElementById("zam-connection-notice");
 const breadcrumbEl = document.getElementById("graph-breadcrumb");
 const contentEl = document.getElementById("graph-content");
 
-function setStatus(text: string, connected: boolean): void {
-  if (statusEl) statusEl.textContent = text;
-  if (statusDot) statusDot.classList.toggle("connected", connected);
+/**
+ * Connection/startup errors previously lived in the permanent
+ * "Connected to zam mcp" status row (removed — ADR 2026-07-16 §Decision 1).
+ * This inline notice is the replacement seam: it stays visible next to the
+ * content it affects instead of disappearing along with that row.
+ */
+function showConnectionNotice(message: string): void {
+  if (!noticeEl) return;
+  noticeEl.textContent = message;
+  noticeEl.hidden = false;
 }
+
+function clearConnectionNotice(): void {
+  if (!noticeEl) return;
+  noticeEl.hidden = true;
+  noticeEl.textContent = "";
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+let contextBar: ContextBarHandle | undefined;
+let panelVersion: string | undefined;
 
 interface OpenGraphResult {
   graph?: string;
   focus?: string | null;
   version?: string;
   user?: string | null;
+  companionContext?: CompanionContextBarState;
 }
 
 interface KnowledgeContextRef {
@@ -126,6 +152,37 @@ async function callTool(
   }
 
   return text === undefined ? undefined : JSON.parse(text);
+}
+
+const SURFACE = "graph";
+
+/** Write a manual user/evaluator/collapsed choice through the shared contract. */
+async function writeCompanionContext(payload: {
+  userId?: string;
+  evaluatorId?: string;
+  collapsed?: boolean;
+}): Promise<{ read: CompanionContextBarState; reloadRequired: boolean }> {
+  const result = await callTool("zam_companion_context", {
+    action: "write",
+    surface: SURFACE,
+    ...payload,
+  });
+  return result as { read: CompanionContextBarState; reloadRequired: boolean };
+}
+
+/**
+ * A user/evaluator context change is a context boundary (ADR §Decision 4):
+ * re-navigate to the current focus under the new context rather than
+ * continue showing a neighborhood scoped to the previous learner.
+ */
+function reloadForContext(newState: CompanionContextBarState): void {
+  currentUser = newState.user.currentId ?? null;
+  const focus = history[history.length - 1]?.slug ?? initialFocus;
+  if (focus) {
+    void navigateTo(focus);
+  } else {
+    renderNoFocus();
+  }
 }
 
 /** Sync a compact neighborhood snapshot into the host's model context. */
@@ -453,13 +510,28 @@ function start(): void {
 
 app.ontoolresult = (params) => {
   const structured = (params.structuredContent ?? {}) as OpenGraphResult;
-  if (versionEl && structured.version) {
-    versionEl.textContent = `v${structured.version}`;
-  }
+  panelVersion = structured.version;
   currentUser = structured.user ?? null;
   initialFocus = structured.focus ?? null;
-  const who = currentUser ? ` — ${currentUser}` : "";
-  setStatus(`Connected to zam mcp${who}`, true);
+  clearConnectionNotice();
+
+  const contextState =
+    structured.companionContext ?? fallbackContextBarState(SURFACE, currentUser);
+  if (contextBar) {
+    contextBar.update(contextState);
+  } else if (contextBarRoot) {
+    contextBar = mountContextBar(
+      contextBarRoot,
+      "ZAM Graph",
+      panelVersion,
+      contextState,
+      {
+        write: writeCompanionContext,
+        onReload: reloadForContext,
+        onError: showConnectionNotice,
+      },
+    );
+  }
   start();
 };
 
@@ -469,26 +541,20 @@ app.ontoolresult = (params) => {
 const NO_HOST_NOTICE =
   "Kein MCP-Apps-Host — diese Karte braucht einen Host mit ui/initialize " +
   "(z. B. basic-host oder Copilot-Panel).";
-const noHostTimer = setTimeout(() => setStatus(NO_HOST_NOTICE, false), 4000);
+const noHostTimer = setTimeout(() => showConnectionNotice(NO_HOST_NOTICE), 4000);
 
 app
   .connect()
   .then(() => {
     clearTimeout(noHostTimer);
     connected = true;
-    setStatus("Connected to host — waiting for session…", true);
     // ontoolresult (which carries the initial focus + signed-in user)
     // normally fires right after the handshake and triggers the load. If a
     // host never delivers it, still show the empty state after a short grace
-    // period instead of leaving the card stuck on "waiting for session".
+    // period instead of leaving the card stuck waiting.
     window.setTimeout(start, 800);
   })
   .catch((error: unknown) => {
     clearTimeout(noHostTimer);
-    setStatus(
-      `ZAM Graph failed to start: ${
-        error instanceof Error ? error.message : String(error)
-      }`,
-      false,
-    );
+    showConnectionNotice(`ZAM Graph failed to start: ${errorMessage(error)}`);
   });

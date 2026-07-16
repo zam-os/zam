@@ -13,7 +13,7 @@
 - [x] **Phase 1 — context and evaluator contracts** (2026-07-16)
 - [x] **Phase 2 — Companion persistence and context selection** (2026-07-16)
 - [x] **Phase 3 — evaluator routing and sampling repair** (2026-07-16)
-- [ ] **Phase 4 — shared compact MCP App title bar**
+- [x] **Phase 4 — shared compact MCP App title bar** (2026-07-16)
 - [ ] **Phase 5 — multi-harness verification and 0.11.0 release readiness**
 
 ## Working rules
