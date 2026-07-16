@@ -88,6 +88,9 @@ type ModelResolution =
   | { ok: true; model: VscodeChatModelLike }
   | { ok: false; reason: string };
 
+/** The palette title of {@link runChooseRecallModel}'s command registration — kept as one constant so every unavailable-reason string below stays in sync with the actual command name if it's ever renamed. */
+export const CHOOSE_RECALL_MODEL_COMMAND_TITLE = "ZAM: Choose Recall Model";
+
 /**
  * Resolve which VS Code model the adapter should use, honoring a persisted
  * explicit choice and never silently substituting another model once one has
@@ -95,17 +98,25 @@ type ModelResolution =
  * longer among `selectChatModels`'s results, this reports unavailable rather
  * than falling back to whatever VS Code returns first.
  *
- * With no persisted choice yet, the first model VS Code returns is adopted
- * AND persisted as of this call — from then on it is the explicit choice
- * above, not re-derived from registration order on every request. This is
- * what makes Smart Recall work out of the box while keeping the pill's
- * identity stable (the ADR explicitly rejects "keep `selectChatModels({})[0]`"
- * as a *repeated, invisible* default — adopting it once, visibly, and then
- * freezing it is a different and honest behavior).
+ * `persist` controls whether discovering a model with no prior persisted
+ * choice adopts (and freezes) it as of this call, or merely peeks at what
+ * *would* be adopted:
+ * - `persist: true` — used only by `evaluateAnswer`/`followUp` (the first
+ *   real use of the model). This is what makes Smart Recall work out of the
+ *   box while keeping the pill's identity stable (the ADR explicitly rejects
+ *   "keep `selectChatModels({})[0]`" as a *repeated, invisible* default —
+ *   adopting it once, visibly, and then freezing it is a different and
+ *   honest behavior).
+ * - `persist: false` — used by `displayIdentity`/`availability` (review
+ *   finding 2): rendering the Agent pill, or merely probing whether a model
+ *   is available, must never itself adopt/freeze a model as a side effect of
+ *   being asked. `resolveModel`/`peekModel` below are the two thin callers of
+ *   this shared implementation.
  */
-async function resolveModel(
+async function resolveModelImpl(
   vscodeLm: VscodeLmSurface,
   selection: VscodeModelSelection,
+  persist: boolean,
 ): Promise<ModelResolution> {
   let models: VscodeChatModelLike[];
   try {
@@ -127,7 +138,8 @@ async function resolveModel(
       ok: false,
       reason:
         `The previously selected VS Code language model ("${persistedId}") ` +
-        "is no longer available. Choose another model for ZAM Recall.",
+        `is no longer available. Run "${CHOOSE_RECALL_MODEL_COMMAND_TITLE}" ` +
+        "from the Command Palette to pick another.",
     };
   }
 
@@ -136,13 +148,31 @@ async function resolveModel(
       ok: false,
       reason:
         "No VS Code language model is available. Sign in to a model " +
-        "provider (e.g. GitHub Copilot) or use ZAM Recall's quick mode.",
+        "provider (e.g. GitHub Copilot) or use ZAM Recall's quick mode. " +
+        `Once one is available, run "${CHOOSE_RECALL_MODEL_COMMAND_TITLE}" ` +
+        "from the Command Palette to select it.",
     };
   }
 
   const [first] = models;
-  selection.setSelectedModelId(first.id);
+  if (persist) selection.setSelectedModelId(first.id);
   return { ok: true, model: first };
+}
+
+/** Adopts and persists a not-yet-chosen model — only for a real evaluation turn. */
+function resolveModel(
+  vscodeLm: VscodeLmSurface,
+  selection: VscodeModelSelection,
+): Promise<ModelResolution> {
+  return resolveModelImpl(vscodeLm, selection, true);
+}
+
+/** Peeks at the model that would be used, without adopting/persisting it. */
+function peekModel(
+  vscodeLm: VscodeLmSurface,
+  selection: VscodeModelSelection,
+): Promise<ModelResolution> {
+  return resolveModelImpl(vscodeLm, selection, false);
 }
 
 /** The real `vscode-lm` evaluator adapter (ADR §Decision 5, 6). */
@@ -204,7 +234,10 @@ export function createVscodeLmAdapter(
   return {
     id: "vscode-lm",
     async displayIdentity(): Promise<EvaluatorDisplayIdentity> {
-      const resolved = await resolveModel(vscodeLm, selection);
+      // A peek, never a persist (finding 2): rendering the Agent pill (or
+      // probing availability) must not itself adopt/freeze a model as a side
+      // effect — only a real evaluateAnswer/followUp call does that.
+      const resolved = await peekModel(vscodeLm, selection);
       if (!resolved.ok) return { provider: "VS Code language model" };
       return {
         provider: vendorLabel(resolved.model.vendor),
@@ -212,7 +245,7 @@ export function createVscodeLmAdapter(
       };
     },
     async availability(): Promise<EvaluatorAvailability> {
-      const resolved = await resolveModel(vscodeLm, selection);
+      const resolved = await peekModel(vscodeLm, selection);
       return resolved.ok
         ? { available: true }
         : { available: false, reason: resolved.reason };
@@ -222,26 +255,77 @@ export function createVscodeLmAdapter(
   };
 }
 
+// ── Model recovery command (review finding 3) ─────────────────────────────
+//
+// `resolveModel`'s "no longer available"/"none available" reasons point the
+// learner at running `CHOOSE_RECALL_MODEL_COMMAND_TITLE` from the Command
+// Palette. `runChooseRecallModel` below is that command's handler logic,
+// factored out from `extension.ts`'s `vscode.commands.registerCommand` call
+// the same way the rest of this module is: every VS Code call goes through a
+// narrow injected surface so the QuickPick flow is unit-testable with a fake,
+// without a real extension host.
+
+/** One row of the model QuickPick. `detail` shows the raw model id so two same-named models from different providers stay distinguishable. */
+export interface ModelQuickPickItem {
+  label: string;
+  detail: string;
+  modelId: string;
+}
+
+/** "copilot" + "Claude Sonnet 5" -> "Copilot — Claude Sonnet 5". Never returns an empty label. */
+export function buildModelQuickPickItems(
+  models: readonly VscodeChatModelLike[],
+): ModelQuickPickItem[] {
+  return models.map((model) => ({
+    label: `${vendorLabel(model.vendor)} — ${model.name}`,
+    detail: model.id,
+    modelId: model.id,
+  }));
+}
+
+/** The narrow VS Code surface {@link runChooseRecallModel} needs, injected like {@link VscodeLmSurface}. */
+export interface ChooseRecallModelSurface {
+  listModels(): PromiseLike<VscodeChatModelLike[]>;
+  showQuickPick(
+    items: ModelQuickPickItem[],
+  ): PromiseLike<ModelQuickPickItem | undefined>;
+  showInformationMessage(message: string): unknown;
+  showWarningMessage(message: string): unknown;
+}
+
 /**
- * Never invoked for a real answer (see module docstring). Kept alongside
- * `createVscodeLmAdapter` so anything that enumerates the routable adapter
- * set can construct one uniformly; deliberately throws instead of returning
- * empty/placeholder text if that assumption is ever wrong.
+ * Handler for the `zam.chooseRecallModel` command ({@link
+ * CHOOSE_RECALL_MODEL_COMMAND_TITLE} in the Command Palette): list every VS
+ * Code language model, let the learner pick one via QuickPick, and persist
+ * the choice through the same `VscodeModelSelection` the adapter reads —
+ * this is the one recovery path back to a working Agent pill once
+ * `resolveModel` has reported the persisted choice unavailable (ADR
+ * 2026-07-16 §Decision 5: no silent substitution, but a visible way out).
  */
-export function createQuickModeAdapter(): EvaluatorAdapter {
-  function refuse(): Promise<EvaluatorTurnResult> {
-    return Promise.reject(
-      new EvaluatorUnavailableError(
-        "quick-mode",
-        "Quick mode is model-free by design and must never be asked to evaluate an answer.",
-      ),
+export async function runChooseRecallModel(
+  surface: ChooseRecallModelSurface,
+  selection: VscodeModelSelection,
+): Promise<void> {
+  let models: VscodeChatModelLike[];
+  try {
+    models = await surface.listModels();
+  } catch (error) {
+    surface.showWarningMessage(
+      `Could not list VS Code language models: ${
+        error instanceof Error ? error.message : String(error)
+      }`,
     );
+    return;
   }
-  return {
-    id: "quick-mode",
-    displayIdentity: () => ({ provider: "Quick mode — no agent" }),
-    availability: () => ({ available: true }),
-    evaluateAnswer: refuse,
-    followUp: refuse,
-  };
+  if (models.length === 0) {
+    surface.showWarningMessage(
+      "No VS Code language model is available. Sign in to a model provider " +
+        "(e.g. GitHub Copilot) and try again.",
+    );
+    return;
+  }
+  const picked = await surface.showQuickPick(buildModelQuickPickItems(models));
+  if (!picked) return; // learner dismissed the QuickPick — leave the choice untouched
+  selection.setSelectedModelId(picked.modelId);
+  surface.showInformationMessage(`ZAM Recall will use ${picked.label}.`);
 }

@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
-  createQuickModeAdapter,
+  buildModelQuickPickItems,
+  type ChooseRecallModelSurface,
   createVscodeLmAdapter,
+  runChooseRecallModel,
   type VscodeChatModelLike,
   type VscodeLmSurface,
   type VscodeModelSelection,
@@ -128,7 +130,10 @@ describe("companion-adapters — vscode-lm runtime-shaped regression", () => {
 });
 
 describe("companion-adapters — vscode-lm model discovery and selection", () => {
-  it("adopts and persists the first discovered model when nothing is persisted yet", async () => {
+  it("peeks the first discovered model WITHOUT persisting it via availability/displayIdentity", async () => {
+    // Review finding 2: rendering the Agent pill (displayIdentity) or merely
+    // probing (availability) must never itself adopt/freeze a model as a
+    // side effect — only a real evaluateAnswer/followUp call does that.
     const model = fakeModel({ id: "m1", vendor: "copilot", name: "Claude Sonnet 5" });
     const { surface } = fakeSurface([model]);
     const selection = memorySelection();
@@ -139,8 +144,29 @@ describe("companion-adapters — vscode-lm model discovery and selection", () =>
       provider: "Copilot",
       model: "Claude Sonnet 5",
     });
+    expect(selection.getSelectedModelId()).toBeUndefined();
+  });
+
+  it("adopts and persists the first discovered model on the first real evaluateAnswer call", async () => {
+    const model = fakeModel({ id: "m1", vendor: "copilot", name: "Claude Sonnet 5" });
+    const { surface } = fakeSurface([model]);
+    const selection = memorySelection();
+    const adapter = createVscodeLmAdapter(surface, selection);
+
+    expect(selection.getSelectedModelId()).toBeUndefined();
+    const result = await adapter.evaluateAnswer({
+      messages: [{ role: "user", text: "hi" }],
+    });
+    expect(result.model).toBe("m1");
     // The explicit choice is now persisted — not re-derived from
     // registration order on the next call.
+    expect(selection.getSelectedModelId()).toBe("m1");
+
+    // A later probe/render must not re-derive or change it.
+    expect(await adapter.displayIdentity()).toEqual({
+      provider: "Copilot",
+      model: "Claude Sonnet 5",
+    });
     expect(selection.getSelectedModelId()).toBe("m1");
   });
 
@@ -232,20 +258,96 @@ describe("companion-adapters — vscode-lm model discovery and selection", () =>
   });
 });
 
-describe("companion-adapters — quick mode never calls a model", () => {
-  it("is always available but refuses evaluateAnswer/followUp", async () => {
-    const adapter = createQuickModeAdapter();
-    expect(await adapter.availability()).toEqual({ available: true });
-    expect(await adapter.displayIdentity()).toEqual({
-      provider: "Quick mode — no agent",
-    });
+describe("buildModelQuickPickItems", () => {
+  it("labels each item with vendor and name, and carries the raw model id as detail", () => {
+    const items = buildModelQuickPickItems([
+      fakeModel({ id: "m1", vendor: "copilot", name: "Claude Sonnet 5" }),
+      fakeModel({ id: "m2", vendor: "copilot", name: "GPT-5" }),
+    ]);
+    expect(items).toEqual([
+      { label: "Copilot — Claude Sonnet 5", detail: "m1", modelId: "m1" },
+      { label: "Copilot — GPT-5", detail: "m2", modelId: "m2" },
+    ]);
+  });
+});
 
-    await expect(
-      adapter.evaluateAnswer({ messages: [{ role: "user", text: "hi" }] }),
-    ).rejects.toBeInstanceOf(EvaluatorUnavailableError);
-    await expect(
-      adapter.followUp({ messages: [{ role: "user", text: "hi" }] }),
-    ).rejects.toBeInstanceOf(EvaluatorUnavailableError);
+describe("runChooseRecallModel — zam.chooseRecallModel command handler", () => {
+  function fakeChooseSurface(
+    models: VscodeChatModelLike[],
+    picked: { label: string; detail: string; modelId: string } | undefined,
+  ): {
+    surface: ChooseRecallModelSurface;
+    infoMessages: string[];
+    warnMessages: string[];
+  } {
+    const infoMessages: string[] = [];
+    const warnMessages: string[] = [];
+    const surface: ChooseRecallModelSurface = {
+      listModels: async () => models,
+      showQuickPick: async () => picked,
+      showInformationMessage: (message) => {
+        infoMessages.push(message);
+      },
+      showWarningMessage: (message) => {
+        warnMessages.push(message);
+      },
+    };
+    return { surface, infoMessages, warnMessages };
+  }
+
+  it("persists the picked model and confirms it", async () => {
+    const model = fakeModel({ id: "m1", vendor: "copilot", name: "Claude Sonnet 5" });
+    const { surface, infoMessages } = fakeChooseSurface(
+      [model],
+      { label: "Copilot — Claude Sonnet 5", detail: "m1", modelId: "m1" },
+    );
+    const selection = memorySelection();
+
+    await runChooseRecallModel(surface, selection);
+
+    expect(selection.getSelectedModelId()).toBe("m1");
+    expect(infoMessages).toEqual(["ZAM Recall will use Copilot — Claude Sonnet 5."]);
+  });
+
+  it("leaves the persisted choice untouched when the QuickPick is dismissed", async () => {
+    const model = fakeModel({ id: "m1" });
+    const { surface, infoMessages } = fakeChooseSurface([model], undefined);
+    const selection = memorySelection("already-chosen");
+
+    await runChooseRecallModel(surface, selection);
+
+    expect(selection.getSelectedModelId()).toBe("already-chosen");
+    expect(infoMessages).toEqual([]);
+  });
+
+  it("warns instead of showing an empty QuickPick when no model is available", async () => {
+    const { surface, warnMessages } = fakeChooseSurface([], undefined);
+    const selection = memorySelection();
+
+    await runChooseRecallModel(surface, selection);
+
+    expect(selection.getSelectedModelId()).toBeUndefined();
+    expect(warnMessages).toEqual([
+      expect.stringMatching(/no vs code language model/i),
+    ]);
+  });
+
+  it("warns with the error instead of throwing when listing models rejects", async () => {
+    const surface: ChooseRecallModelSurface = {
+      listModels: async () => {
+        throw new Error("not signed in");
+      },
+      showQuickPick: async () => undefined,
+      showInformationMessage: () => {},
+      showWarningMessage: () => {},
+    };
+    const warnings: string[] = [];
+    surface.showWarningMessage = (message) => warnings.push(message);
+    const selection = memorySelection();
+
+    await runChooseRecallModel(surface, selection);
+
+    expect(warnings).toEqual([expect.stringMatching(/not signed in/)]);
   });
 });
 

@@ -18,17 +18,24 @@
  * written into the DOM for the first time on reveal — never before.
  *
  * Standalone by design (tests/desktop/module-boundaries.test.ts): no Tauri,
- * no Three.js, no import from ./panel.ts. The result-parsing helper below is
- * copied from panel.ts's mcpTransport rather than shared, to keep each panel
- * entry independently bundleable.
+ * no Three.js, no import from ./panel.ts. The `callTool`/context-bar plumbing
+ * below is shared via ./context-bar.js (item 9, 0.11.0 review) rather than
+ * hand-copied, but every panel entry still bundles independently — that
+ * module has no import of its own beyond the already-shared
+ * `@modelcontextprotocol/ext-apps`.
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
 import {
+  clearConnectionNotice as clearConnectionNoticeShared,
   type CompanionContextBarState,
   type ContextBarHandle,
+  createCallTool,
+  createContextWriter,
+  deriveQuickMode,
+  ensureContextBar,
   fallbackContextBarState,
-  mountContextBar,
+  showConnectionNotice as showConnectionNoticeShared,
 } from "./context-bar.js";
 import { setCurrentLocale, t, tf } from "../i18n.js";
 import {
@@ -42,23 +49,9 @@ const contextBarRoot = document.getElementById("zam-contextbar-root");
 const noticeEl = document.getElementById("zam-connection-notice");
 const contentEl = document.getElementById("recall-content");
 
-/**
- * Connection/startup errors previously lived in the permanent
- * "Connected to zam mcp" status row (removed — ADR 2026-07-16 §Decision 1).
- * This inline notice is the replacement seam: it stays visible next to the
- * content it affects instead of disappearing along with that row.
- */
-function showConnectionNotice(message: string): void {
-  if (!noticeEl) return;
-  noticeEl.textContent = message;
-  noticeEl.hidden = false;
-}
-
-function clearConnectionNotice(): void {
-  if (!noticeEl) return;
-  noticeEl.hidden = true;
-  noticeEl.textContent = "";
-}
+const showConnectionNotice = (message: string): void =>
+  showConnectionNoticeShared(noticeEl, message);
+const clearConnectionNotice = (): void => clearConnectionNoticeShared(noticeEl);
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
@@ -139,50 +132,10 @@ const tally = {
   ratings: { 1: 0, 2: 0, 3: 0, 4: 0 } as Record<number, number>,
 };
 
-/**
- * Parse a zam MCP tool result: success answers carry JSON on content[0].text
- * (never structuredContent — wrapHandler re-wraps arrays as `{ result }`); on
- * isError, surface the JSON `error` field. Copied from panel.ts.
- */
-async function callTool(
-  name: string,
-  args: Record<string, unknown>,
-): Promise<unknown> {
-  const result = await app.callServerTool({ name, arguments: args });
-  const first = result.content?.[0];
-  const text = first && first.type === "text" ? first.text : undefined;
-
-  if (result.isError) {
-    let message = text ?? `${name} call failed`;
-    if (text) {
-      try {
-        const parsed = JSON.parse(text) as { error?: string };
-        if (typeof parsed.error === "string") message = parsed.error;
-      } catch {
-        // Not JSON — keep the raw text assigned above.
-      }
-    }
-    throw new Error(message);
-  }
-
-  return text === undefined ? undefined : JSON.parse(text);
-}
-
 const SURFACE = "recall";
 
-/** Write a manual user/evaluator/collapsed choice through the shared contract. */
-async function writeCompanionContext(payload: {
-  userId?: string;
-  evaluatorId?: string;
-  collapsed?: boolean;
-}): Promise<{ read: CompanionContextBarState; reloadRequired: boolean }> {
-  const result = await callTool("zam_companion_context", {
-    action: "write",
-    surface: SURFACE,
-    ...payload,
-  });
-  return result as { read: CompanionContextBarState; reloadRequired: boolean };
-}
+const callTool = createCallTool(app);
+const writeCompanionContext = createContextWriter(callTool, SURFACE);
 
 /**
  * True while the currently shown card has a typed-but-unsubmitted answer —
@@ -199,10 +152,11 @@ function hasUnsavedRecallState(): boolean {
 /**
  * A user/evaluator context change is a context boundary (ADR §Decision 4):
  * reset this session's local state and reload against the new context
- * rather than continue mid-card with a stale learner or agent.
+ * rather than continue mid-card with a stale learner, mode, or agent.
  */
 function reloadForContext(newState: CompanionContextBarState): void {
   currentUser = newState.user.currentId ?? null;
+  quickMode = deriveQuickMode(newState, quickMode);
   started = false;
   finished = false;
   cards = [];
@@ -835,29 +789,44 @@ app.ontoolresult = (params) => {
   panelVersion = structured.version;
   currentUser = structured.user ?? null;
   focusDomain = structured.domain ?? null;
-  quickMode = structured.quickMode === true;
+  quickMode = deriveQuickMode(structured.companionContext, structured.quickMode === true);
   clearConnectionNotice();
 
   const contextState =
     structured.companionContext ?? fallbackContextBarState(SURFACE, currentUser);
-  if (contextBar) {
-    contextBar.update(contextState);
-  } else if (contextBarRoot) {
-    contextBar = mountContextBar(
-      contextBarRoot,
-      "ZAM Recall",
-      panelVersion,
-      contextState,
-      {
-        write: writeCompanionContext,
-        hasUnsavedChanges: hasUnsavedRecallState,
-        onReload: reloadForContext,
-        onError: showConnectionNotice,
-      },
-    );
-  }
+  contextBar = ensureContextBar(
+    contextBar,
+    contextBarRoot,
+    "ZAM Recall",
+    panelVersion,
+    contextState,
+    {
+      write: writeCompanionContext,
+      hasUnsavedChanges: hasUnsavedRecallState,
+      onReload: reloadForContext,
+      onError: showConnectionNotice,
+    },
+  );
   start();
 };
+
+// Mount the bar immediately — before any tool result — so the title and an
+// honest "no learner/agent resolved yet" state (fallbackContextBarState) are
+// visible from first paint (review finding 6), not only once a host's
+// ontoolresult (or the 800ms grace-period fallback below) actually fires.
+contextBar = ensureContextBar(
+  contextBar,
+  contextBarRoot,
+  "ZAM Recall",
+  panelVersion,
+  fallbackContextBarState(SURFACE, currentUser),
+  {
+    write: writeCompanionContext,
+    hasUnsavedChanges: hasUnsavedRecallState,
+    onReload: reloadForContext,
+    onError: showConnectionNotice,
+  },
+);
 
 // A plain file viewer (e.g. an editor preview) renders this HTML without
 // ever answering ui/initialize — connect() then stays pending forever.

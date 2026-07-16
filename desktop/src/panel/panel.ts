@@ -11,32 +11,22 @@ import { setBridgeTransport } from "../bridge-transport.js";
 import { setCurrentLocale } from "../i18n.js";
 import { initLearningContentStudio } from "../learning-content.js";
 import {
+  clearConnectionNotice as clearConnectionNoticeShared,
   type CompanionContextBarState,
   type ContextBarHandle,
+  createCallTool,
+  createContextWriter,
+  ensureContextBar,
   fallbackContextBarState,
-  mountContextBar,
+  showConnectionNotice as showConnectionNoticeShared,
 } from "./context-bar.js";
 
 const contextBarRoot = document.getElementById("zam-contextbar-root");
 const noticeEl = document.getElementById("zam-connection-notice");
 
-/**
- * Connection/startup errors previously lived in the permanent
- * "Connected to zam mcp" status row (removed — ADR 2026-07-16 §Decision 1).
- * This inline notice is the replacement seam: it stays visible next to the
- * content it affects instead of disappearing along with that row.
- */
-function showConnectionNotice(message: string): void {
-  if (!noticeEl) return;
-  noticeEl.textContent = message;
-  noticeEl.hidden = false;
-}
-
-function clearConnectionNotice(): void {
-  if (!noticeEl) return;
-  noticeEl.hidden = true;
-  noticeEl.textContent = "";
-}
+const showConnectionNotice = (message: string): void =>
+  showConnectionNoticeShared(noticeEl, message);
+const clearConnectionNotice = (): void => clearConnectionNoticeShared(noticeEl);
 
 let contextBar: ContextBarHandle | undefined;
 let panelVersion: string | undefined;
@@ -78,49 +68,8 @@ const app = new App({ name: "ZAM Studio", version: "0.1.0" });
 
 const SURFACE = "studio";
 
-/**
- * Parse a zam MCP tool result: success answers carry JSON on content[0].text
- * (never structuredContent — wrapHandler re-wraps arrays as `{ result }`); on
- * isError, surface the JSON `error` field. Copied from recall.ts/graph.ts/
- * settings.ts to keep this panel independently bundleable.
- */
-async function callTool(
-  name: string,
-  args: Record<string, unknown>,
-): Promise<unknown> {
-  const result = await app.callServerTool({ name, arguments: args });
-  const first = result.content?.[0];
-  const text = first && first.type === "text" ? first.text : undefined;
-
-  if (result.isError) {
-    let message = text ?? `${name} call failed`;
-    if (text) {
-      try {
-        const parsed = JSON.parse(text) as { error?: string };
-        if (typeof parsed.error === "string") message = parsed.error;
-      } catch {
-        // Not JSON — keep the raw text assigned above.
-      }
-    }
-    throw new Error(message);
-  }
-
-  return text === undefined ? undefined : JSON.parse(text);
-}
-
-/** Write a manual user/evaluator/collapsed choice through the shared contract. */
-async function writeCompanionContext(payload: {
-  userId?: string;
-  evaluatorId?: string;
-  collapsed?: boolean;
-}): Promise<{ read: CompanionContextBarState; reloadRequired: boolean }> {
-  const result = await callTool("zam_companion_context", {
-    action: "write",
-    surface: SURFACE,
-    ...payload,
-  });
-  return result as { read: CompanionContextBarState; reloadRequired: boolean };
-}
+const callTool = createCallTool(app);
+const writeCompanionContext = createContextWriter(callTool, SURFACE);
 
 /**
  * True while a card is open for editing in the Learning Content Studio —
@@ -152,23 +101,38 @@ app.ontoolresult = (result) => {
 
   const contextState =
     structured.companionContext ?? fallbackContextBarState(SURFACE, user);
-  if (contextBar) {
-    contextBar.update(contextState);
-  } else if (contextBarRoot) {
-    contextBar = mountContextBar(
-      contextBarRoot,
-      "ZAM Studio",
-      panelVersion,
-      contextState,
-      {
-        write: writeCompanionContext,
-        hasUnsavedChanges: hasUnsavedStudioState,
-        onReload: reloadForContext,
-        onError: showConnectionNotice,
-      },
-    );
-  }
+  contextBar = ensureContextBar(
+    contextBar,
+    contextBarRoot,
+    "ZAM Studio",
+    panelVersion,
+    contextState,
+    {
+      write: writeCompanionContext,
+      hasUnsavedChanges: hasUnsavedStudioState,
+      onReload: reloadForContext,
+      onError: showConnectionNotice,
+    },
+  );
 };
+
+// Mount the bar immediately — before any tool result — so the title and an
+// honest "no learner/agent resolved yet" state (fallbackContextBarState) are
+// visible from first paint (review finding 6), not only once a host's
+// ontoolresult actually fires.
+contextBar = ensureContextBar(
+  contextBar,
+  contextBarRoot,
+  "ZAM Studio",
+  panelVersion,
+  fallbackContextBarState(SURFACE, null),
+  {
+    write: writeCompanionContext,
+    hasUnsavedChanges: hasUnsavedStudioState,
+    onReload: reloadForContext,
+    onError: showConnectionNotice,
+  },
+);
 
 // zam_studio_bridge always answers on content[0] as JSON text (see
 // wrapHandler in src/cli/commands/mcp.ts) — structuredContent is NOT used

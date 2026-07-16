@@ -109,6 +109,20 @@ declare module "vscode" {
     ): PromiseLike<LanguageModelChat[]>;
   };
 
+  export interface QuickPickItem {
+    label: string;
+    description?: string;
+    detail?: string;
+    picked?: boolean;
+    alwaysShow?: boolean;
+  }
+
+  export interface QuickPickOptions {
+    title?: string;
+    placeHolder?: string;
+    ignoreFocusOut?: boolean;
+  }
+
   export const window: {
     readonly state: WindowState;
     createOutputChannel(
@@ -120,6 +134,18 @@ declare module "vscode" {
       provider: WebviewViewProvider,
     ): Disposable;
     showErrorMessage(message: string): PromiseLike<unknown>;
+    showInformationMessage(
+      message: string,
+      ...items: string[]
+    ): PromiseLike<string | undefined>;
+    showWarningMessage(
+      message: string,
+      ...items: string[]
+    ): PromiseLike<string | undefined>;
+    showQuickPick<T extends QuickPickItem>(
+      items: readonly T[] | PromiseLike<readonly T[]>,
+      options?: QuickPickOptions,
+    ): PromiseLike<T | undefined>;
     onDidChangeWindowState(
       listener: (state: WindowState) => unknown,
     ): Disposable;

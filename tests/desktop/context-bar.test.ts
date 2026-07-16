@@ -6,6 +6,7 @@ import {
   type CompanionContextBarState,
   fallbackContextBarState,
   formatAgentLabel,
+  PendingConfirmGate,
   userPillTitle,
   userPillValue,
 } from "../../desktop/src/panel/context-bar.js";
@@ -161,6 +162,80 @@ describe("buildUserOptions", () => {
     expect(options.find((o) => o.value === "test-user-0.6.2")?.selected).toBe(
       false,
     );
+  });
+
+  it("prepends a disabled, selected placeholder when no learner is resolved yet but profiles exist (finding 4)", () => {
+    // A native <select> with no option marked `selected` implicitly selects
+    // the first one — which would silently claim a learner the bar never
+    // actually resolved. The placeholder keeps the display honest.
+    const state = baseState({
+      user: { source: "default" },
+      profiles: [
+        { id: "thomas", cardCount: 42 },
+        { id: "test-user-0.6.2", cardCount: 3 },
+      ],
+    });
+    const options = buildUserOptions(state);
+    expect(options[0]).toMatchObject({
+      value: "",
+      disabled: true,
+      selected: true,
+    });
+    // Every real profile stays present, unselected, and pickable.
+    expect(options.filter((o) => o.value !== "").every((o) => !o.selected)).toBe(
+      true,
+    );
+    expect(options.map((o) => o.value)).toEqual(["", "thomas", "test-user-0.6.2"]);
+  });
+
+  it("does not add a placeholder when no learner is resolved and no profiles exist either", () => {
+    const state = baseState({ user: { source: "default" }, profiles: [] });
+    const options = buildUserOptions(state);
+    expect(options).toEqual([
+      { value: "", text: "No learner", disabled: true, selected: true },
+    ]);
+  });
+});
+
+describe("PendingConfirmGate — confirm race (finding 5)", () => {
+  it("resolves the first pending confirm with false when a second one supersedes it", async () => {
+    // Mirrors mountContextBar's real call shape: the SAME cleanup callback
+    // (there, `hideConfirm`) is passed on every start()/resolve() call — it
+    // hides whatever inline confirm UI is currently showing, whichever
+    // pill's change triggered it. This test doesn't need two different
+    // callbacks to prove the race is fixed; it needs the first promise to
+    // actually resolve, and the shared cleanup to run for each transition.
+    const gate = new PendingConfirmGate();
+    let hideCount = 0;
+    const hide = () => {
+      hideCount += 1;
+    };
+
+    const first = gate.start(hide);
+    const second = gate.start(hide);
+
+    // The first promise resolves false — the caller can revert its <select>
+    // instead of hanging on a promise nothing would otherwise resolve.
+    await expect(first).resolves.toBe(false);
+    expect(hideCount).toBe(1); // ran once, when the second start() displaced it
+
+    // The second confirm is still open and functional.
+    gate.resolve(true, hide);
+    await expect(second).resolves.toBe(true);
+    expect(hideCount).toBe(2);
+  });
+
+  it("is a no-op to resolve with nothing pending", () => {
+    const gate = new PendingConfirmGate();
+    expect(() => gate.resolve(true)).not.toThrow();
+  });
+
+  it("resolves only once per start() — a second resolve() call is a no-op", async () => {
+    const gate = new PendingConfirmGate();
+    const pending = gate.start();
+    gate.resolve(true);
+    gate.resolve(false); // must not un-resolve or throw
+    await expect(pending).resolves.toBe(true);
   });
 });
 
