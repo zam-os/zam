@@ -547,6 +547,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_err_analysis_failed: "Error en el análisis",
     lbl_err_analysis_prefix: "Error de análisis",
     lbl_err_concept_required: "La respuesta o el concepto es obligatorio.",
+    lbl_err_question_required: "La pregunta es obligatoria.",
     lbl_err_category_required: "La categoría es obligatoria.",
     lbl_err_import_context_required:
       "El texto del plan de estudios es obligatorio.",
@@ -1131,6 +1132,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_err_analysis_failed: "Échec de l'analyse",
     lbl_err_analysis_prefix: "Erreur d'analyse",
     lbl_err_concept_required: "La réponse ou le concept est obligatoire.",
+    lbl_err_question_required: "La question est obligatoire.",
     lbl_err_category_required: "La catégorie est obligatoire.",
     lbl_err_import_context_required: "Le texte du programme est obligatoire.",
     lbl_err_original_context_required:
@@ -1708,6 +1710,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_err_analysis_failed: "Falha na análise",
     lbl_err_analysis_prefix: "Erro de análise",
     lbl_err_concept_required: "A resposta ou o conceito é obrigatório.",
+    lbl_err_question_required: "A pergunta é obrigatória.",
     lbl_err_category_required: "A categoria é obrigatória.",
     lbl_err_import_context_required: "O texto do currículo é obrigatório.",
     lbl_err_original_context_required:
@@ -2246,6 +2249,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_err_analysis_failed: "分析失败",
     lbl_err_analysis_prefix: "分析错误",
     lbl_err_concept_required: "答案或概念为必填项。",
+    lbl_err_question_required: "问题为必填项。",
     lbl_err_category_required: "类别为必填项。",
     lbl_err_import_context_required: "课程文本为必填项。",
     lbl_err_original_context_required: "原始卡片必须填写问题和答案。",
@@ -2807,6 +2811,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_err_analysis_failed: "解析に失敗しました",
     lbl_err_analysis_prefix: "解析エラー",
     lbl_err_concept_required: "回答または概念は必須です。",
+    lbl_err_question_required: "質問は必須です。",
     lbl_err_category_required: "カテゴリーは必須です。",
     lbl_err_import_context_required: "カリキュラムのテキストは必須です。",
     lbl_err_original_context_required: "元のカードには質問と回答が必要です。",
@@ -3456,6 +3461,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_err_analysis_failed: "Analysis failed",
     lbl_err_analysis_prefix: "Analysis error",
     lbl_err_concept_required: "Answer / concept is required.",
+    lbl_err_question_required: "Question is required.",
     lbl_err_category_required: "Category is required.",
     lbl_err_import_context_required: "Curriculum text is required.",
     lbl_err_original_context_required:
@@ -4044,6 +4050,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_err_analysis_failed: "Analyse fehlgeschlagen",
     lbl_err_analysis_prefix: "Analysefehler",
     lbl_err_concept_required: "Antwort / Lerninhalt ist erforderlich.",
+    lbl_err_question_required: "Frage ist erforderlich.",
     lbl_err_category_required: "Kategorie ist erforderlich.",
     lbl_err_import_context_required: "Lehrplantext ist erforderlich.",
     lbl_err_original_context_required:

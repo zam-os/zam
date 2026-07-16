@@ -29,7 +29,19 @@ import {
   openDiscussion,
   resetDiscussion,
 } from "./discussion.js";
-import { initLearningContentStudio, loadStudioData } from "./learning-content.js";
+import {
+  initLearningContentStudio,
+  loadStudioData,
+  openCardInEditor,
+} from "./learning-content.js";
+import {
+  StudyEditError,
+  deleteConfirmCommand,
+  deletePreviewCommand,
+  editCommand,
+  removeConfirmCommand,
+  removePreviewCommand,
+} from "./study-card-actions.js";
 
 // Re-exported so any other importer of "./main.js" keeps working unchanged;
 // learning-content.ts and curriculum-wizard.ts now import these directly
@@ -639,6 +651,25 @@ function initializeTranslations() {
   if (lblAdvancedDeleteTitle) lblAdvancedDeleteTitle.textContent = currentLocale === "de" ? "Erweiterte Option:" : "Advanced option:";
   const btnModalHardDelete = document.getElementById("btn-modal-hard-delete");
   if (btnModalHardDelete) btnModalHardDelete.textContent = t("btn_delete");
+
+  // In-recall card management (ADR 2026-07-16b)
+  const btnStudyStopLbl = document.querySelector("#btn-study-stop .rating-label");
+  if (btnStudyStopLbl) btnStudyStopLbl.textContent = t("study_btn_stop");
+  const setStudyText = (id: string, key: string) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = t(key);
+  };
+  setStudyText("btn-study-edit", "study_btn_edit");
+  setStudyText("btn-study-manage-edit", "study_btn_edit");
+  setStudyText("btn-study-manage-stop", "study_btn_stop");
+  setStudyText("btn-study-open-editor", "study_btn_open_editor");
+  setStudyText("btn-study-edit-save", "study_edit_save");
+  setStudyText("btn-study-edit-cancel", "lbl_cancel_action");
+  setStudyText("lbl-study-edit-question", "study_edit_question");
+  setStudyText("lbl-study-edit-concept", "concept");
+  setStudyText("btn-study-confirm-cancel", "lbl_cancel_action");
+  const manageBtn = document.getElementById("btn-card-manage");
+  if (manageBtn) manageBtn.setAttribute("aria-label", t("study_manage"));
 
   // Import Modal Translations
   const btnContentImport = document.getElementById("btn-content-import");
@@ -3746,6 +3777,8 @@ async function loadNextCard(
     document.getElementById("npu-loading")!.classList.add("hidden");
     document.getElementById("wait-prompt")!.classList.add("hidden");
     document.getElementById("answer-capture-box")!.classList.remove("hidden");
+    document.getElementById("study-inline-editor")?.classList.add("hidden");
+    document.getElementById("study-manage-menu")?.classList.add("hidden");
     
     const textarea = document.getElementById("user-answer-input") as HTMLTextAreaElement;
     textarea.value = "";
@@ -4208,6 +4241,212 @@ async function submitRating(ratingVal: number) {
   }
 }
 
+// ── IN-RECALL CARD MANAGEMENT (ADR 2026-07-16b) ─────────────────────────────
+type ImpactPreview = {
+  review_logs?: number;
+  cards?: number;
+  session_steps?: number;
+  agent_skills?: number;
+};
+
+let cardManageInProgress = false;
+let studyConfirmAction: "remove" | "delete" | null = null;
+let studyConfirmSlug: string | null = null;
+
+function renderImpactList(el: HTMLElement, impact: ImpactPreview): void {
+  el.innerHTML = "";
+  const add = (text: string) => {
+    const li = document.createElement("li");
+    li.textContent = `• ${text}`;
+    el.appendChild(li);
+  };
+  if (impact.cards !== undefined)
+    add(tf("lbl_impact_cards", { count: impact.cards }));
+  if (impact.review_logs !== undefined)
+    add(tf("lbl_impact_reviews", { count: impact.review_logs }));
+  if (impact.session_steps !== undefined)
+    add(tf("lbl_impact_steps", { count: impact.session_steps }));
+  if (impact.agent_skills !== undefined)
+    add(tf("lbl_impact_skills", { count: impact.agent_skills }));
+}
+
+function hideStudyConfirm(): void {
+  document.getElementById("study-confirm-overlay")!.classList.remove("active");
+}
+
+function closeManageMenu(): void {
+  document.getElementById("study-manage-menu")?.classList.add("hidden");
+  document
+    .getElementById("btn-card-manage")
+    ?.setAttribute("aria-expanded", "false");
+}
+
+/**
+ * Open the study confirm modal for the "Not for me" (delete-card) path, with
+ * an advanced escalation to the permanent "Outdated — remove it" delete.
+ */
+async function openStopModal(): Promise<void> {
+  if (!activeCard || cardManageInProgress) return;
+  const slug = activeCard.slug;
+  closeManageMenu();
+  try {
+    const call = removePreviewCommand(slug);
+    const preview = await runBridge<{ impact: ImpactPreview }>(
+      call.cmd,
+      call.args,
+    );
+    document.getElementById("study-confirm-title")!.textContent = t(
+      "lbl_confirm_remove_title",
+    );
+    document.getElementById("study-confirm-desc")!.textContent = t(
+      "lbl_confirm_remove_desc",
+    );
+    renderImpactList(
+      document.getElementById("study-confirm-impact")!,
+      preview.impact,
+    );
+    document
+      .getElementById("study-confirm-advanced")!
+      .classList.remove("hidden");
+    document.getElementById("btn-study-confirm-ok")!.textContent =
+      t("study_stop_not_for_me");
+    document.getElementById("btn-study-confirm-advanced")!.textContent =
+      t("study_stop_outdated");
+    studyConfirmAction = "remove";
+    studyConfirmSlug = slug;
+    document.getElementById("study-confirm-overlay")!.classList.add("active");
+  } catch (err) {
+    console.error("Stop preview failed:", err);
+  }
+}
+
+/** Escalate to the permanent token delete: re-preview with full impact. */
+async function escalateToOutdated(): Promise<void> {
+  if (!studyConfirmSlug) return;
+  const slug = studyConfirmSlug;
+  try {
+    const call = deletePreviewCommand(slug);
+    const preview = await runBridge<{ impact: ImpactPreview }>(
+      call.cmd,
+      call.args,
+    );
+    document.getElementById("study-confirm-title")!.textContent = t(
+      "lbl_confirm_delete_title",
+    );
+    document.getElementById("study-confirm-desc")!.textContent = t(
+      "lbl_confirm_delete_desc",
+    );
+    renderImpactList(
+      document.getElementById("study-confirm-impact")!,
+      preview.impact,
+    );
+    document.getElementById("study-confirm-advanced")!.classList.add("hidden");
+    document.getElementById("btn-study-confirm-ok")!.textContent =
+      t("study_stop_outdated");
+    studyConfirmAction = "delete";
+  } catch (err) {
+    console.error("Outdated preview failed:", err);
+  }
+}
+
+/** Confirm button: run the selected destructive action, then advance. */
+async function confirmStudyStop(): Promise<void> {
+  if (!studyConfirmSlug || !studyConfirmAction || cardManageInProgress) return;
+  cardManageInProgress = true;
+  const slug = studyConfirmSlug;
+  const action = studyConfirmAction;
+  try {
+    const call =
+      action === "remove"
+        ? removeConfirmCommand(slug)
+        : deleteConfirmCommand(slug);
+    await runBridge(call.cmd, call.args);
+    hideStudyConfirm();
+    studyConfirmAction = null;
+    studyConfirmSlug = null;
+    await loadNextCard();
+  } catch (err) {
+    console.error("Stop action failed:", err);
+  } finally {
+    cardManageInProgress = false;
+  }
+}
+
+// ── inline edit ──
+function openInlineEditor(): void {
+  if (!activeCard) return;
+  closeManageMenu();
+  (document.getElementById("study-edit-question") as HTMLTextAreaElement).value =
+    activePromptQuestion;
+  (document.getElementById("study-edit-concept") as HTMLTextAreaElement).value =
+    activeCard.concept;
+  document.getElementById("study-inline-editor")!.classList.remove("hidden");
+}
+
+function closeInlineEditor(): void {
+  document.getElementById("study-inline-editor")!.classList.add("hidden");
+}
+
+async function saveInlineEdit(): Promise<void> {
+  if (!activeCard || cardManageInProgress) return;
+  const question = (
+    document.getElementById("study-edit-question") as HTMLTextAreaElement
+  ).value;
+  const concept = (
+    document.getElementById("study-edit-concept") as HTMLTextAreaElement
+  ).value;
+  let call: { cmd: string; args: string[] };
+  try {
+    call = editCommand({ slug: activeCard.slug, question, concept });
+  } catch (err) {
+    if (err instanceof StudyEditError) {
+      alert(
+        err.reason === "concept-required"
+          ? t("lbl_err_concept_required")
+          : t("lbl_err_question_required"),
+      );
+      return;
+    }
+    throw err;
+  }
+  cardManageInProgress = true;
+  try {
+    await runBridge(call.cmd, call.args);
+    // Reflect the edit in place (no full re-render — feedback stays put).
+    activeCard.concept = concept.trim();
+    activePromptQuestion = question.trim();
+    document.getElementById("question-text")!.textContent = activePromptQuestion;
+    const conceptVal = document
+      .getElementById("reveal-content-list")!
+      .querySelector(".reveal-item .reveal-val");
+    if (conceptVal) conceptVal.textContent = activeCard.concept;
+    closeInlineEditor();
+    alert(t("lbl_card_saved_toast"));
+  } catch (err) {
+    console.error("Inline edit failed:", err);
+    alert(err instanceof Error ? err.message : String(err));
+  } finally {
+    cardManageInProgress = false;
+  }
+}
+
+// ── pre-reveal manage menu ──
+function toggleManageMenu(): void {
+  const menu = document.getElementById("study-manage-menu")!;
+  const btn = document.getElementById("btn-card-manage")!;
+  const open = menu.classList.toggle("hidden") === false;
+  btn.setAttribute("aria-expanded", String(open));
+}
+
+async function jumpToFullEditor(): Promise<void> {
+  if (!activeCard) return;
+  const slug = activeCard.slug;
+  closeManageMenu();
+  switchView("learning-content-view");
+  const found = await openCardInEditor(slug);
+  if (!found) console.warn("Card not found in editor:", slug);
+}
+
 // ── SESSION COMPLETION SCREEN ────────────────────────────────────────────
 function showCompletionState() {
   const studyView = document.getElementById("study-view")!;
@@ -4563,6 +4802,45 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  // In-recall card management (ADR 2026-07-16b)
+  document
+    .getElementById("btn-study-stop")!
+    .addEventListener("click", () => void openStopModal());
+  document
+    .getElementById("btn-study-edit")!
+    .addEventListener("click", () => openInlineEditor());
+  document
+    .getElementById("btn-study-open-editor")!
+    .addEventListener("click", () => void jumpToFullEditor());
+  document
+    .getElementById("btn-study-edit-save")!
+    .addEventListener("click", () => void saveInlineEdit());
+  document
+    .getElementById("btn-study-edit-cancel")!
+    .addEventListener("click", () => closeInlineEditor());
+
+  document.getElementById("btn-card-manage")!.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleManageMenu();
+  });
+  document
+    .getElementById("btn-study-manage-edit")!
+    .addEventListener("click", () => openInlineEditor());
+  document
+    .getElementById("btn-study-manage-stop")!
+    .addEventListener("click", () => void openStopModal());
+  document.addEventListener("click", () => closeManageMenu());
+
+  document
+    .getElementById("btn-study-confirm-advanced")!
+    .addEventListener("click", () => void escalateToOutdated());
+  document
+    .getElementById("btn-study-confirm-ok")!
+    .addEventListener("click", () => void confirmStudyStop());
+  document
+    .getElementById("btn-study-confirm-cancel")!
+    .addEventListener("click", () => hideStudyConfirm());
 
   // Post-reveal discussion thread: send button + Enter-to-send
   document.getElementById("btn-discussion-send")!.addEventListener("click", () => {
