@@ -1,10 +1,11 @@
 # Companion Context Bar and Harness Affinity
 
-- **Status:** Proposed
+- **Status:** Accepted (2026-07-16)
 - **Target:** ZAM 0.11.0
 - **Date:** 2026-07-16
 - **Decider:** Thomas (project owner)
-- **Review:** Fable 5 planned before acceptance
+- **Review:** Fable 5 review completed 2026-07-16; resolutions recorded in
+  “Resolved questions” below. The harness relay is deferred past 0.11.0.
 
 **Related:**
 [2026-07-06a](2026-07-06a-mcp-agent-transport-and-surfaces.md) ·
@@ -31,6 +32,19 @@ Codex, GitHub Copilot, and other configured harnesses. Recall opened from the
 Companion menu has no initiating agent conversation. The 0.10.11 adapter calls
 `vscode.lm.selectChatModels({})` and uses the first result, so the visible
 Companion has no honest affinity with Claude, Codex, or Copilot.
+
+A live inspection of VS Code's native MCP host (its “Configure Model Access”
+and “Show Sampling Requests” consent UI for the `zam` server) confirmed the
+model-pool problem empirically: `vscode.lm` exposes only models contributed by
+installed extensions. On the tested machine that is Copilot's roster —
+GPT‑5.6 Sol/Terra, MAI‑Code‑1‑Flash, and Copilot-served Claude models
+(Fable 5, Opus 4.8, Sonnet 5/4.6, Haiku 4.5). The Claude Code and Codex
+extensions contribute no language-model provider of their own. The distinction
+that matters is therefore **model affinity versus harness affinity**: a Claude
+*model* is reachable through Copilot's roster, but the Claude Code or Codex
+*harness conversation* is not — that still requires a relay into the
+initiating harness's own MCP session. Claude Sonnet 5 and MAI‑Code‑1‑Flash are
+configured for MCP sampling experiments on the test machine.
 
 The current MCP App headers make this ambiguity worse. They spend a second row
 on a green dot and text such as `Connected to zam mcp — thomas`. That was useful
@@ -74,6 +88,10 @@ In its normal state the bar contains, from left to right:
 
 The User pill always shows the learner profile whose cards, queue, and ratings
 are in scope. The Agent pill always shows the actual evaluation target. The
+pill *label* is **Agent** (clearest for a learner); the pill *value* carries
+the honesty by naming the concrete route — “Claude Code”,
+“Copilot: GPT‑5.6 Terra”, “Quick mode — no agent”. “Evaluator” remains the
+internal contract vocabulary in code and wire types. The
 bar may include transient loading treatment, but it never says “Connected to
 zam mcp”. Version information moves to an accessible title/tooltip or an About
 surface instead of consuming a permanent row.
@@ -128,8 +146,13 @@ app must not briefly render the wrong learner while waiting for a second call.
 ### 4. Persist UI affinity locally, not in the shared learning database
 
 Harness availability and UI placement are machine-specific. Persist these
-preferences in ZAM's machine-local configuration (or VS Code global state with
-a migration path), never in the Turso-shared learning database:
+preferences in a `companion` section of ZAM's machine-local
+`~/.zam/config.json` (the existing install-config pattern), never in the
+Turso-shared learning database and never with VS Code global state as the
+owner. The MCP server process must resolve the persisted context for first
+paint, and native MCP App hosts have no extension state at all, so a file the
+`zam` process cannot read is disqualified as the source of truth; the
+extension may cache, nothing more. Persisted there:
 
 - selected Companion evaluator;
 - selected Companion learner profile; and
@@ -146,13 +169,16 @@ Opening arguments have the following precedence:
 4. ZAM's existing default user, for backward compatibility.
 
 An explicit agent invocation is session-scoped unless the user confirms it as
-the new preference in the context bar. A manual drop-down choice is persisted
-and reused on the next Companion-menu launch.
+the new preference in the context bar. “Session-scoped” means scoped to one
+mounted app instance: closing or reopening the surface reverts to the
+persisted preference. A manual drop-down choice is persisted and reused on the
+next Companion-menu launch.
 
 Changing user or evaluator is a context boundary. If the current surface has
 an unsubmitted answer or other local edits, it asks before discarding them,
-then reloads against the new context. A rating always carries the user shown in
-the title bar.
+then reloads against the new context. A context change made in one surface
+applies to other open surfaces on their next open or reload, never mid-card.
+A rating always carries the user shown in the title bar.
 
 ### 5. Route evaluation through explicit adapters
 
@@ -166,7 +192,9 @@ The initial adapter set is:
   initiating harness and that host advertises sampling or `ui/message`;
 - **VS Code Language Model API** — available in the Companion only for models
   actually returned by VS Code, with an explicit model choice and VS Code's
-  consent/quota handling; and
+  consent/quota handling. The pill names the contributing provider and model
+  (today effectively “Copilot: GPT‑5.6 Terra”), never a generic
+  “VS Code”; and
 - **quick mode** — model-free fallback, clearly labelled as such rather than as
   an agent.
 
@@ -175,9 +203,14 @@ evaluators only when a tested adapter can reach that harness. Starting or
 driving a harness CLI process for every answer is not an acceptable adapter.
 
 Harness-initiated detached Companion rendering requires a return path to the
-initiating MCP client if it is to use that client's intelligence. The exact
-relay design is an acceptance gate for this ADR and must be reviewed before
-implementation; see Open Questions.
+initiating MCP client if it is to use that client's intelligence. Owner
+decision (2026-07-16): the relay is **deferred past 0.11.0**. Working
+intelligence comes first via the adapters above; the harness integration —
+which would also bring the conversation into the chat pane and host-rendered
+visualizations for learning content — is the next effort after 0.11.0,
+starting with a time-boxed sampling spike and its own ADR. In 0.11.0, Claude
+Code, Codex, and other detached harnesses appear as configured-but-unroutable
+with a concise reason.
 
 ### 6. Fix sampling without weakening cancellation
 
@@ -259,23 +292,36 @@ Companion surface.
   a different model. The user may deliberately choose another route or quick
   mode.
 
-## Open questions for Fable 5 review
+## Resolved questions (Fable 5 review, 2026-07-16)
 
-1. What is the smallest safe relay from a detached Companion to the initiating
-   MCP client's sampling capability: same-process hosting, authenticated local
-   IPC, or a versioned request/response broker?
-2. Can the initiating MCP client be identified reliably from SDK client info
-   across Codex, Claude Code, Copilot, OpenCode, and Goose, or must launch
-   presets inject an explicit harness ID?
-3. Should the UI label say **Agent**, **Harness**, or **Evaluator**? “Agent” is
-   clearest for learners, while “Evaluator” is technically more accurate for a
-   direct VS Code model.
-4. Should 0.11.0 ship only native-host and VS Code-LM adapters, showing other
-   configured harnesses as unavailable, or is at least one detached harness
-   relay required for the release?
-5. Does context persistence belong solely in `~/.zam/config.json`, or should
-   the VS Code extension own it and expose a synchronized context capability to
-   the iframe?
+1. **Relay design.** Same-process hosting is impossible: the Companion spawns
+   its own `zam mcp` child, a separate MCP session from the harness's. The
+   natural rendezvous point is the harness-side `zam mcp` process, which
+   already lives inside the harness session and can issue
+   `sampling/createMessage` if that client supports it; the Companion would
+   reach it over a short-lived authenticated local IPC hand-off. The detailed
+   design is deferred to a follow-up ADR and only pursued if the follow-up
+   effort's sampling spike proves client sampling support.
+2. **Client identification: both.** Normalize known MCP `clientInfo` names
+   through a small mapping table (the Companion already identifies as
+   `vscode-zam-companion`), allow an explicit harness ID in opening arguments
+   as an override for launch presets and tests, and display the raw
+   `clientInfo` name for unknown clients instead of guessing.
+3. **Label: Agent.** The pill label is “Agent”; the pill value names the
+   concrete route, including “Quick mode — no agent”. “Evaluator” stays the
+   internal contract term.
+4. **Scope: relay deferred past 0.11.0.** 0.11.0 ships native-host, VS Code
+   LM, and quick mode adapters; working intelligence comes first, through
+   Copilot's roster (which includes Claude models). The harness integration is
+   the next effort after 0.11.0 and begins with a time-boxed spike testing
+   whether Claude Code and Codex honor server-initiated sampling. VS Code's
+   native MCP host already demonstrates working sampling consent UI, but its
+   model pool is the same Copilot-contributed set as `vscode.lm`, so it adds
+   no harness affinity.
+5. **Persistence: `~/.zam/config.json`.** Decisive constraint: the `zam` MCP
+   server process must resolve first-paint context and cannot read VS Code
+   global state, and native hosts have no extension at all. The extension may
+   cache; the config file owns the truth.
 
 ## Acceptance criteria
 
@@ -287,6 +333,9 @@ Companion surface.
 - A Companion-menu launch reuses the selected learner rather than silently
   using `user.id`.
 - The active Agent pill matches the adapter/model that processes the answer.
+- The VS Code LM adapter's pill names the contributing provider and model
+  (e.g. “Copilot: Claude Sonnet 5”), never a generic “VS Code” — and never a
+  bare “Claude” that could be mistaken for the Claude Code harness.
 - Configured but unroutable harnesses cannot be selected as if active.
 - Switching learner cannot submit or rate a card for the previous learner.
 - The test profile can complete Recall without changing Thomas's queue.
