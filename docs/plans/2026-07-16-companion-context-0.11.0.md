@@ -10,7 +10,7 @@
 
 - [x] **Phase 0 — architecture preparation:** ADR reviewed with Fable 5 on
   2026-07-16; open questions resolved and recorded in the ADR.
-- [ ] **Phase 1 — context and evaluator contracts**
+- [x] **Phase 1 — context and evaluator contracts** (2026-07-16)
 - [ ] **Phase 2 — Companion persistence and context selection**
 - [ ] **Phase 3 — evaluator routing and sampling repair**
 - [ ] **Phase 4 — shared compact MCP App title bar**
