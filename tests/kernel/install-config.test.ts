@@ -11,6 +11,7 @@ import {
   getCompanionCollapsed,
   getCompanionSelectedEvaluatorId,
   getCompanionSelectedUserId,
+  getCompanionSelectedVscodeModelId,
   getConfiguredWorkspaces,
   getInstallMode,
   getMachineAiConfig,
@@ -23,6 +24,7 @@ import {
   setCompanionCollapsed,
   setCompanionSelectedEvaluatorId,
   setCompanionSelectedUserId,
+  setCompanionSelectedVscodeModelId,
   setInstallMode,
   upsertConfiguredWorkspace,
 } from "../../src/kernel/index.js";
@@ -249,6 +251,27 @@ describe("install config", () => {
     expect(getCompanionSelectedUserId(path)).toBeUndefined();
     // Clearing the learner selection preserves the unrelated evaluator key.
     expect(getCompanionSelectedEvaluatorId(path)).toBe("quick-mode");
+  });
+
+  it("round-trips the persisted explicit VS Code model choice independently of the evaluator id", () => {
+    const path = tempConfigPath();
+    expect(getCompanionSelectedVscodeModelId(path)).toBeUndefined();
+
+    setCompanionSelectedEvaluatorId("vscode-lm", path);
+    setCompanionSelectedVscodeModelId("copilot-claude-sonnet-5", path);
+
+    expect(getCompanionSelectedEvaluatorId(path)).toBe("vscode-lm");
+    expect(getCompanionSelectedVscodeModelId(path)).toBe(
+      "copilot-claude-sonnet-5",
+    );
+    expect(loadInstallConfig(path).companion?.selectedVscodeModelId).toBe(
+      "copilot-claude-sonnet-5",
+    );
+
+    setCompanionSelectedVscodeModelId(undefined, path);
+    expect(getCompanionSelectedVscodeModelId(path)).toBeUndefined();
+    // Clearing the model choice preserves the unrelated evaluator id.
+    expect(getCompanionSelectedEvaluatorId(path)).toBe("vscode-lm");
   });
 
   it("round-trips per-surface Companion collapsed state independently", () => {

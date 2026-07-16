@@ -47,8 +47,19 @@ declare module "vscode" {
     readonly isCancellationRequested: boolean;
   }
 
-  export namespace CancellationToken {
-    const None: CancellationToken;
+  /**
+   * NOTE: `CancellationToken.None` is deliberately NOT declared here. This
+   * `.d.ts` is locally invented (not the real `@types/vscode`), and an
+   * earlier version of it declared `CancellationToken.None` even though the
+   * property is undefined in the tested extension-host runtime — passing it
+   * to `LanguageModelChat.sendRequest` crashed before the request was sent
+   * (ADR 2026-07-16 §Decision 6). Use `new CancellationTokenSource()` and its
+   * `.token` instead, which is the shape actually observed at runtime.
+   */
+  export class CancellationTokenSource {
+    readonly token: CancellationToken;
+    cancel(): void;
+    dispose(): void;
   }
 
   export interface LanguageModelChatMessage {}
@@ -64,6 +75,12 @@ declare module "vscode" {
 
   export interface LanguageModelChat {
     readonly id: string;
+    /** Contributing extension/provider, e.g. "copilot". */
+    readonly vendor: string;
+    /** Model family, e.g. "claude-sonnet-5". */
+    readonly family: string;
+    /** Human-readable model name, e.g. "Claude Sonnet 5". */
+    readonly name: string;
     sendRequest(
       messages: LanguageModelChatMessage[],
       options: { justification?: string },

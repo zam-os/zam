@@ -1,6 +1,6 @@
 /**
- * Companion context server-side orchestration (ADR 2026-07-16 §Decision 3/4,
- * 0.11.0 Phase 2).
+ * Companion context server-side orchestration (ADR 2026-07-16 §Decision 3/4/5,
+ * 0.11.0 Phase 2/3).
  *
  * Wires the pure `zam_companion_context` wire contract
  * (`src/vscode-extension/companion-context.ts`, Phase 1) to real machine-local
@@ -10,10 +10,27 @@
  * `readDatabaseUserSummaries` for learner profiles — so this module adds no
  * parallel discovery logic of its own.
  *
- * Deliberately NOT Phase 3: every evaluator other than `quick-mode` is
- * reported `routable: false` here. Phase 2's goal is "make menu launches
- * deterministic without yet broadening model routing" (0.11.0 plan) — actual
- * adapter routing (native host sampling, `vscode.lm`) is Phase 3's job.
+ * Routability (0.11.0 Phase 3) is truthful and surface-dependent, never
+ * guessed:
+ * - `vscode-lm` is routable only when the requesting native host IS the VS
+ *   Code Companion (`nativeHost.normalizedId === "vscode-companion"`,
+ *   negotiated from the MCP `clientInfo` handshake) — only that surface has
+ *   an adapter (`src/vscode-extension/companion-adapters.ts`) that can reach
+ *   `vscode.lm` at all. This module cannot itself call `vscode.lm` (it runs
+ *   as a Node CLI/MCP-server process, not inside the VS Code extension host)
+ *   — routability here is "an adapter exists for this connection", not "a
+ *   model is live right now"; the live, model-specific check happens inside
+ *   the Companion extension when it actually evaluates an answer.
+ * - `native-mcp-host` is routable only when the connecting MCP client is NOT
+ *   the VS Code Companion AND it advertised `sampling` capability during the
+ *   `initialize` handshake (`ClientCapabilities.sampling`, threaded in via
+ *   `CompanionContextServerOptions.clientSamplingCapable`). The ADR also
+ *   mentions a host advertising `ui/message` as an alternative signal, but
+ *   that capability is negotiated between the MCP App and its rendering host
+ *   over the App Bridge protocol, not visible to this server-side process —
+ *   so it is not claimed here rather than guessed at.
+ * - Every detached harness (Claude Code, Codex, opencode, goose) stays
+ *   configured-but-unroutable: the relay is deferred past 0.11.0.
  *
  * Runs in the CLI/host layer, not the kernel: it holds a `Database` handle
  * and calls harness-detection code, so it must never be imported from
@@ -63,6 +80,15 @@ import { readDatabaseUserSummaries } from "./commands/bridge.js";
 export interface CompanionContextServerOptions {
   /** Machine-local config path override — tests point this at a temp file. */
   configPath?: string;
+  /**
+   * Whether the connecting MCP client advertised `sampling` capability
+   * during the `initialize` handshake (`ClientCapabilities.sampling`). The
+   * only genuinely observable, non-guessed signal this server-side process
+   * has for whether the `native-mcp-host` adapter could reach this
+   * connection (ADR 2026-07-16 §Decision 5). Defaults to `false` — absent
+   * evidence, never routable.
+   */
+  clientSamplingCapable?: boolean;
 }
 
 export interface CompanionContextWriteOutcome {
@@ -92,18 +118,27 @@ function buildHarnessInventory(
 }
 
 /**
- * The evaluator route list for one context read. Only `quick-mode` is
- * routable in Phase 2 (see module docstring); `native-mcp-host` and
- * `vscode-lm` are named but not yet routable, and every configured detached
- * harness (Claude Code, Codex, opencode, goose) is represented honestly as
- * configured-but-unroutable per the ADR.
+ * The evaluator route list for one context read. `quick-mode` is always
+ * routable. `vscode-lm` and `native-mcp-host` are truthful and
+ * surface-dependent (0.11.0 Phase 3, see module docstring) — never both
+ * routable at once, since they are mutually exclusive facts about the same
+ * connection: either the connecting client IS the VS Code Companion, or it
+ * is some other MCP client that may or may not advertise sampling. Every
+ * configured detached harness (Claude Code, Codex, opencode, goose) is
+ * represented honestly as configured-but-unroutable per the ADR — the relay
+ * is deferred past 0.11.0.
  */
 function buildEvaluatorRouteInputs(
   harnessReport: ReturnType<typeof inspectConnectHarnesses>,
+  nativeHost: NativeHostIdentity | undefined,
+  clientSamplingCapable: boolean,
 ): EvaluatorRouteInput[] {
   const detachedStatusById = new Map(
     harnessReport.harnesses.map((harness) => [harness.harness, harness]),
   );
+
+  const isVscodeCompanion = nativeHost?.normalizedId === "vscode-companion";
+  const nativeHostRoutable = !isVscodeCompanion && clientSamplingCapable;
 
   const inputs: EvaluatorRouteInput[] = [
     {
@@ -116,15 +151,21 @@ function buildEvaluatorRouteInputs(
       id: "native-mcp-host",
       displayIdentity: { provider: "Native host" },
       configured: true,
-      routable: false,
-      reason: "Native-host sampling routing lands in 0.11.0 Phase 3",
+      routable: nativeHostRoutable,
+      reason: nativeHostRoutable
+        ? undefined
+        : isVscodeCompanion
+          ? "The VS Code Companion routes through the VS Code language-model adapter, not native host sampling."
+          : "This MCP client did not advertise sampling support when it connected.",
     },
     {
       id: "vscode-lm",
       displayIdentity: { provider: "VS Code language models" },
       configured: true,
-      routable: false,
-      reason: "VS Code language-model routing lands in 0.11.0 Phase 3",
+      routable: isVscodeCompanion,
+      reason: isVscodeCompanion
+        ? undefined
+        : "VS Code language-model routing is only available from the VS Code Companion extension.",
     },
   ];
 
@@ -158,6 +199,7 @@ interface AssembleContextInput {
   nativeHost?: NativeHostIdentity;
   invocationUserId?: string;
   configPath?: string;
+  clientSamplingCapable?: boolean;
 }
 
 /** Shared assembly used by both the read action and the opening tools. */
@@ -184,6 +226,9 @@ async function assembleCompanionContext(
 
   const harnessReport = inspectConnectHarnesses();
   const profiles = await readDatabaseUserSummaries(db);
+  const clientSamplingCapable = input.clientSamplingCapable ?? false;
+  const isVscodeCompanion =
+    input.nativeHost?.normalizedId === "vscode-companion";
 
   const { read } = buildCompanionContext({
     surface: input.surface,
@@ -195,12 +240,21 @@ async function assembleCompanionContext(
     },
     evaluatorSelection: {
       persisted: persistedEvaluatorId,
-      // Phase 2 does not broaden model routing (see module docstring), so the
-      // legacy default is "no evaluator" rather than guessing at one that
-      // cannot yet be activated.
-      fallback: "quick-mode",
+      // No persisted preference yet: default to the one adapter that is
+      // actually routable for this connection (Phase 3) rather than always
+      // naming quick mode — a Companion opened for the first time should
+      // show the Agent pill it will really use, not a conservative
+      // placeholder. This is a *default*, not a fallback-after-failure: it
+      // only applies when nothing has been explicitly selected or persisted
+      // (see `resolveSelection`'s precedence order), so it never overrides
+      // an existing choice.
+      fallback: isVscodeCompanion ? "vscode-lm" : "quick-mode",
     },
-    evaluatorRouteInputs: buildEvaluatorRouteInputs(harnessReport),
+    evaluatorRouteInputs: buildEvaluatorRouteInputs(
+      harnessReport,
+      input.nativeHost,
+      clientSamplingCapable,
+    ),
     profiles,
     harnesses: buildHarnessInventory(harnessReport.harnesses),
     collapsed: toCompanionCollapsedState(collapsedRaw),
@@ -222,6 +276,7 @@ export async function readCompanionContext(
     surface: request.surface,
     nativeHost,
     configPath: options.configPath,
+    clientSamplingCapable: options.clientSamplingCapable,
   });
 }
 
@@ -244,6 +299,7 @@ export async function resolveOpeningCompanionContext(
     nativeHost: normalizeNativeHostIdentity(clientInfo),
     invocationUserId,
     configPath: options.configPath,
+    clientSamplingCapable: options.clientSamplingCapable,
   });
 }
 

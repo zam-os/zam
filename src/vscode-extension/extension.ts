@@ -7,6 +7,17 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import type { CallToolResult, Tool } from "@modelcontextprotocol/sdk/types.js";
 import * as vscode from "vscode";
 import {
+  getCompanionSelectedVscodeModelId,
+  setCompanionSelectedVscodeModelId,
+} from "../kernel/system/install-config.js";
+import {
+  createVscodeLmAdapter,
+  type VscodeChatModelLike,
+  type VscodeLmSurface,
+  type VscodeModelSelection,
+} from "./companion-adapters.js";
+import type { EvaluatorAdapter } from "./companion-evaluator.js";
+import {
   buildOpeningArguments,
   COMPANION_APPS,
   type CompanionApp,
@@ -16,6 +27,33 @@ import {
   parseCompanionIntent,
   toolUiResourceUri,
 } from "./protocol.js";
+
+/**
+ * Real `vscode.lm` surface for {@link createVscodeLmAdapter}. Only these
+ * methods — never `vscode.CancellationToken.None`, which does not exist at
+ * runtime (ADR 2026-07-16 §Decision 6) — are used to talk to VS Code.
+ */
+const vscodeLmSurface: VscodeLmSurface = {
+  selectChatModels: (selector) =>
+    vscode.lm.selectChatModels(selector) as unknown as PromiseLike<
+      VscodeChatModelLike[]
+    >,
+  chatMessageUser: (content) => vscode.LanguageModelChatMessage.User(content),
+  chatMessageAssistant: (content) =>
+    vscode.LanguageModelChatMessage.Assistant(content),
+  createCancellationTokenSource: () => new vscode.CancellationTokenSource(),
+};
+
+/** Persists the explicit VS Code model choice machine-locally (Phase 3). */
+const vscodeModelSelection: VscodeModelSelection = {
+  getSelectedModelId: () => getCompanionSelectedVscodeModelId(),
+  setSelectedModelId: (id) => setCompanionSelectedVscodeModelId(id),
+};
+
+const vscodeLmAdapter: EvaluatorAdapter = createVscodeLmAdapter(
+  vscodeLmSurface,
+  vscodeModelSelection,
+);
 
 interface LaunchConfig {
   command: string;
@@ -296,35 +334,21 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
     ).callTool({ name: value.name, arguments: args })) as CallToolResult;
   }
 
+  /**
+   * Route a sampling request through the selected evaluator adapter (ADR
+   * 2026-07-16 §Decision 5, 0.11.0 Phase 3). The Recall panel only ever sends
+   * a "sampling" message when it decided to use smart mode (quick mode skips
+   * sampling entirely — see `desktop/src/panel/recall.ts`), so the VS Code
+   * Companion's only real adapter, `vscode-lm`, is used unconditionally here.
+   * If it is unavailable (no model chosen or discovered, or the persisted
+   * choice disappeared), this throws `EvaluatorUnavailableError` instead of
+   * silently trying a different model — the caller (`handleMessage`) turns
+   * that into an honest error surfaced back to the panel.
+   */
   private async sample(payload: unknown): Promise<unknown> {
     const request = normalizeSamplingRequest(payload);
-    const models = await vscode.lm.selectChatModels({});
-    const model = models[0];
-    if (!model) {
-      throw new Error(
-        "No VS Code language model is available. Sign in to a model provider " +
-          "or enable Recall quick mode in ZAM Settings.",
-      );
-    }
-
-    const messages = request.messages.map((message) =>
-      message.role === "assistant"
-        ? vscode.LanguageModelChatMessage.Assistant(message.text)
-        : vscode.LanguageModelChatMessage.User(message.text),
-    );
-    const response = await model.sendRequest(
-      messages,
-      {
-        justification:
-          "ZAM Recall checks the answer you submitted and answers your follow-up questions.",
-      },
-      vscode.CancellationToken.None,
-    );
-    let text = "";
-    for await (const fragment of response.text) text += fragment;
-    if (!text.trim())
-      throw new Error("The VS Code language model returned no text");
-    return createSamplingResult(model.id, text.trim());
+    const result = await vscodeLmAdapter.evaluateAnswer(request);
+    return createSamplingResult(result.model, result.text);
   }
 
   private async openLink(payload: unknown): Promise<Record<string, unknown>> {

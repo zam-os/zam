@@ -139,6 +139,17 @@ export function createMcpServer(db: Database): McpServer {
     return client ? { name: client.name, version: client.version } : undefined;
   }
 
+  /**
+   * Whether the connecting MCP client advertised `sampling` capability
+   * during the `initialize` handshake — the only genuinely observable
+   * server-side signal for `native-mcp-host` routability (ADR 2026-07-16
+   * §Decision 5, 0.11.0 Phase 3). Never guessed: absent capabilities means
+   * `false`.
+   */
+  function getClientSamplingCapable(): boolean {
+    return Boolean(server.server.getClientCapabilities()?.sampling);
+  }
+
   const commonAnnotations = {
     openWorldHint: false,
   };
@@ -761,6 +772,7 @@ export function createMcpServer(db: Database): McpServer {
           "recall",
           user,
           getNativeClientInfo(),
+          { clientSamplingCapable: getClientSamplingCapable() },
         );
         const userId = companionContext.user.currentId ?? null;
         await publishUiIntent("recall", { user, domain });
@@ -832,6 +844,7 @@ export function createMcpServer(db: Database): McpServer {
         "graph",
         user,
         getNativeClientInfo(),
+        { clientSamplingCapable: getClientSamplingCapable() },
       );
       const userId = companionContext.user.currentId ?? null;
       await publishUiIntent("graph", { user, focus });
@@ -893,6 +906,7 @@ export function createMcpServer(db: Database): McpServer {
         "settings",
         user,
         getNativeClientInfo(),
+        { clientSamplingCapable: getClientSamplingCapable() },
       );
       const userId = companionContext.user.currentId ?? null;
       await publishUiIntent("settings", { user });
@@ -1024,7 +1038,9 @@ export function createMcpServer(db: Database): McpServer {
           clientInfo: params.clientInfo ?? getNativeClientInfo(),
           harnessOverride: params.harnessOverride,
         });
-        return await readCompanionContext(db, request);
+        return await readCompanionContext(db, request, {
+          clientSamplingCapable: getClientSamplingCapable(),
+        });
       }
       const request = parseCompanionContextWriteRequest({
         surface: params.surface,

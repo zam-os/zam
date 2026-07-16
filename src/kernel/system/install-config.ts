@@ -61,6 +61,17 @@ export interface MachineCompanionConfig {
   selectedUserId?: string;
   /** Persisted Companion evaluator selection. */
   selectedEvaluatorId?: string;
+  /**
+   * Persisted explicit VS Code language-model choice for the `vscode-lm`
+   * evaluator adapter (0.11.0 Phase 3) — the model's `vscode.lm` id
+   * (`LanguageModelChat.id`). Kept separate from `selectedEvaluatorId`
+   * because choosing "vscode-lm" as the evaluator and choosing *which*
+   * VS Code model it uses are two different decisions (ADR 2026-07-16
+   * §Decision 5: "an explicit model choice"). Machine-local only, like the
+   * rest of this section — never inferred by picking the first result of
+   * `selectChatModels` on every call.
+   */
+  selectedVscodeModelId?: string;
   /** Collapsed state for the shared context bar, keyed by surface name. */
   collapsed?: Record<string, boolean>;
 }
@@ -458,6 +469,9 @@ export function getMachineCompanionConfig(
   if (typeof raw.selectedEvaluatorId === "string") {
     result.selectedEvaluatorId = raw.selectedEvaluatorId;
   }
+  if (typeof raw.selectedVscodeModelId === "string") {
+    result.selectedVscodeModelId = raw.selectedVscodeModelId;
+  }
   if (
     raw.collapsed &&
     typeof raw.collapsed === "object" &&
@@ -518,6 +532,26 @@ export function setCompanionSelectedEvaluatorId(
     companion.selectedEvaluatorId = evaluatorId;
   } else {
     delete companion.selectedEvaluatorId;
+  }
+  saveMachineCompanionConfig(companion, path);
+}
+
+/** The persisted explicit VS Code model choice for the `vscode-lm` adapter. */
+export function getCompanionSelectedVscodeModelId(
+  path = defaultConfigPath(),
+): string | undefined {
+  return getMachineCompanionConfig(path).selectedVscodeModelId;
+}
+
+export function setCompanionSelectedVscodeModelId(
+  modelId: string | undefined,
+  path = defaultConfigPath(),
+): void {
+  const companion = getMachineCompanionConfig(path);
+  if (modelId) {
+    companion.selectedVscodeModelId = modelId;
+  } else {
+    delete companion.selectedVscodeModelId;
   }
   saveMachineCompanionConfig(companion, path);
 }

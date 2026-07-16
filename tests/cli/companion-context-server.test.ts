@@ -217,7 +217,7 @@ describe("companion context server", () => {
     expect(profileIds).toEqual(["test-user-0.6.2", "thomas"]);
   });
 
-  it("marks quick-mode as the only routable evaluator in Phase 2", async () => {
+  it("marks quick-mode as the only routable evaluator for an unknown/generic MCP client", async () => {
     const result = await readCompanionContext(
       db,
       { surface: "recall" },
@@ -227,6 +227,85 @@ describe("companion context server", () => {
       .filter((route) => route.routable)
       .map((route) => route.id);
     expect(routable).toEqual(["quick-mode"]);
+    expect(result.activeEvaluatorId).toBe("quick-mode");
+  });
+
+  it("marks vscode-lm routable (and defaults the Agent pill to it) only when the client is the VS Code Companion", async () => {
+    const result = await readCompanionContext(
+      db,
+      { surface: "recall", clientInfo: { name: "vscode-zam-companion" } },
+      { configPath },
+    );
+    const routable = result.evaluators
+      .filter((route) => route.routable)
+      .map((route) => route.id);
+    expect(routable.sort()).toEqual(["quick-mode", "vscode-lm"]);
+    expect(result.activeEvaluatorId).toBe("vscode-lm");
+
+    const nativeHost = result.evaluators.find(
+      (route) => route.id === "native-mcp-host",
+    );
+    expect(nativeHost?.routable).toBe(false);
+    expect(nativeHost?.reason).toMatch(/vs code language-model adapter/i);
+  });
+
+  it("never marks vscode-lm routable for a non-Companion client, even one that advertises sampling", async () => {
+    const result = await readCompanionContext(
+      db,
+      { surface: "recall", clientInfo: { name: "some-other-host" } },
+      { configPath, clientSamplingCapable: true },
+    );
+    const vscodeLm = result.evaluators.find((route) => route.id === "vscode-lm");
+    expect(vscodeLm?.routable).toBe(false);
+    expect(vscodeLm?.reason).toMatch(/vs code companion/i);
+
+    const nativeHost = result.evaluators.find(
+      (route) => route.id === "native-mcp-host",
+    );
+    expect(nativeHost?.routable).toBe(true);
+    expect(nativeHost?.reason).toBeUndefined();
+    expect(result.activeEvaluatorId).toBe("quick-mode");
+  });
+
+  it("marks native-mcp-host unroutable for a non-Companion client that never advertised sampling", async () => {
+    const result = await readCompanionContext(
+      db,
+      { surface: "recall", clientInfo: { name: "some-other-host" } },
+      { configPath },
+    );
+    const nativeHost = result.evaluators.find(
+      (route) => route.id === "native-mcp-host",
+    );
+    expect(nativeHost?.routable).toBe(false);
+    expect(nativeHost?.reason).toMatch(/did not advertise sampling/i);
+  });
+
+  it("never allows both vscode-lm and native-mcp-host to be routable for the same connection", async () => {
+    const asCompanion = await readCompanionContext(
+      db,
+      { surface: "recall", clientInfo: { name: "vscode-zam-companion" } },
+      { configPath, clientSamplingCapable: true },
+    );
+    const routableAsCompanion = asCompanion.evaluators
+      .filter((route) => route.routable)
+      .map((route) => route.id)
+      .sort();
+    expect(routableAsCompanion).toEqual(["quick-mode", "vscode-lm"]);
+  });
+
+  it("keeps an explicitly persisted evaluator selection even once vscode-lm becomes routable", async () => {
+    await writeCompanionContext(
+      db,
+      { surface: "recall", evaluatorId: "quick-mode" },
+      { configPath },
+    );
+
+    const result = await readCompanionContext(
+      db,
+      { surface: "recall", clientInfo: { name: "vscode-zam-companion" } },
+      { configPath },
+    );
+    expect(result.selectedEvaluatorId).toBe("quick-mode");
     expect(result.activeEvaluatorId).toBe("quick-mode");
   });
 });
