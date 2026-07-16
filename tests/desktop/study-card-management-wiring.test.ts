@@ -46,9 +46,26 @@ describe("study-view card-management wiring", () => {
   });
 
   it("routes rating keys through the editable-target safety guard", () => {
-    expect(main).toContain('target.matches("input, textarea, select, button")');
+    // Buttons must not be treated as editable — focus often stays on
+    // #btn-reveal-answer after mouse submit, which would block 1–4 ratings.
+    expect(main).toContain('target.matches("input, textarea, select")');
+    expect(main).not.toContain(
+      'target.matches("input, textarea, select, button")',
+    );
     expect(main).toContain("ratingShortcutForKey(e.key");
     expect(main).toContain("editorOpen: isStudyInlineEditorOpen()");
     expect(main).toContain("dialogOpen: isStudyConfirmOpen()");
+  });
+
+  it("guards stop-confirm advance on an active study session", () => {
+    expect(main).toMatch(
+      /async function confirmStudyStop[\s\S]*?if \(studySessionActive\) await loadNextCard\(\)/,
+    );
+  });
+
+  it("skips the switchView studio reload on the full-editor jump", () => {
+    expect(main).toContain(
+      'switchView("learning-content-view", { skipStudioLoad: true })',
+    );
   });
 });

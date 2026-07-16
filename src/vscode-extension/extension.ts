@@ -413,24 +413,33 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
    * (review finding 1): the Recall panel only ever sends a "sampling"
    * message when it decided to use smart mode (quick mode skips sampling
    * entirely — see `desktop/src/panel/recall.ts`), but this still reads the
-   * persisted selection itself rather than trusting the panel alone —
-   * `assertSamplingRoutableToVscodeLm` throws `EvaluatorUnavailableError`
-   * with an honest reason if the selection names quick-mode or a detached
-   * harness instead of `vscode-lm`. If `vscode-lm` itself is unavailable (no
-   * model chosen or discovered, or the persisted choice disappeared),
-   * `evaluateAnswer` throws the same error type. Either way this never
-   * silently falls back to a different route — the caller (`handleMessage`)
-   * turns the error into an honest message surfaced back to the panel.
+   * persisted selection itself rather than trusting the panel alone.
+   *
+   * Supported sampling routes from this host:
+   * - `zam-text-model` — `zam_companion_sample` via the MCP server (ZAM recall LLM)
+   * - `vscode-lm` — VS Code language-model API
+   *
+   * Defaults when nothing is persisted match `assembleCompanionContext`:
+   * Antigravity → `zam-text-model`, VS Code Companion → `vscode-lm`.
+   * `assertSamplingRoutableToVscodeLm` throws `EvaluatorUnavailableError` if
+   * the selection names quick-mode or a detached harness. Unavailable
+   * `vscode-lm` also throws — this never silently falls back to a different
+   * route. The caller (`handleMessage`) turns errors into honest panel messages.
    */
   private async sample(payload: unknown): Promise<unknown> {
     const request = normalizeSamplingRequest(payload);
     const isAntigravity =
       vscode.env?.appName?.toLowerCase().includes("antigravity") ?? false;
-    const activeEvaluatorId = isAntigravity
+    const persistedEvaluatorId = isAntigravity
       ? (getCompanionSelectedAntigravityEvaluatorId() ??
         getCompanionSelectedEvaluatorId())
       : (getCompanionSelectedVscodeEvaluatorId() ??
         getCompanionSelectedEvaluatorId());
+    // Align with companion-context-server defaults when nothing is persisted,
+    // so Antigravity (no vscode.lm) samples via zam-text-model rather than
+    // attempting an unroutable vscode-lm path.
+    const activeEvaluatorId =
+      persistedEvaluatorId ?? (isAntigravity ? "zam-text-model" : "vscode-lm");
     assertSamplingRoutableToVscodeLm(activeEvaluatorId);
 
     if (activeEvaluatorId === "zam-text-model") {
@@ -442,19 +451,32 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
         })) as CallToolResult;
 
         if (result.isError) {
-          throw new Error(
-            result.content?.find(
-              (item) => item.type === "text" && "text" in item,
-            )?.text ?? "ZAM text model sampling failed",
-          );
+          const errText = result.content?.find(
+            (item): item is { type: "text"; text: string } =>
+              item.type === "text" && "text" in item,
+          )?.text;
+          throw new Error(errText ?? "ZAM text model sampling failed");
         }
 
-        const responseJson = JSON.parse(
-          result.content?.find((item) => item.type === "text" && "text" in item)
-            ?.text ?? "{}",
+        const responseText = result.content?.find(
+          (item): item is { type: "text"; text: string } =>
+            item.type === "text" && "text" in item,
+        )?.text;
+        const responseJson = JSON.parse(responseText ?? "{}") as {
+          model?: string;
+          text?: string;
+        };
+        if (typeof responseJson.text !== "string") {
+          throw new Error("ZAM text model returned no text");
+        }
+        return createSamplingResult(
+          typeof responseJson.model === "string"
+            ? responseJson.model
+            : "zam-text-model",
+          responseJson.text,
         );
-        return createSamplingResult(responseJson.model, responseJson.text);
       } catch (error) {
+        if (error instanceof EvaluatorUnavailableError) throw error;
         const errMsg = error instanceof Error ? error.message : String(error);
         throw new EvaluatorUnavailableError(
           "zam-text-model",
@@ -465,36 +487,10 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
 
     const availability = await vscodeLmAdapter.availability();
     if (!availability.available) {
-      try {
-        const client = await this.mcp.client();
-        const result = (await client.callTool({
-          name: "zam_companion_sample",
-          arguments: { messages: request.messages },
-        })) as CallToolResult;
-
-        if (result.isError) {
-          throw new Error(
-            result.content?.find(
-              (item) => item.type === "text" && "text" in item,
-            )?.text ?? "Fallback LLM sampling failed",
-          );
-        }
-
-        const responseJson = JSON.parse(
-          result.content?.find((item) => item.type === "text" && "text" in item)
-            ?.text ?? "{}",
-        );
-        return createSamplingResult(responseJson.model, responseJson.text);
-      } catch (fallbackError) {
-        const errMsg =
-          fallbackError instanceof Error
-            ? fallbackError.message
-            : String(fallbackError);
-        throw new EvaluatorUnavailableError(
-          "vscode-lm",
-          `VS Code language models are unavailable: ${availability.reason}. Fallback ZAM LLM also failed: ${errMsg}`,
-        );
-      }
+      throw new EvaluatorUnavailableError(
+        "vscode-lm",
+        availability.reason ?? "VS Code language models are unavailable",
+      );
     }
 
     const result = await vscodeLmAdapter.evaluateAnswer(request);

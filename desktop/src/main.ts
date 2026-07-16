@@ -2784,7 +2784,10 @@ function refreshSettingsData(): void {
   if (aiConfigEditorOpen) void loadModelRegistry();
 }
 
-function switchView(viewId: AppView) {
+function switchView(
+  viewId: AppView,
+  options: { skipStudioLoad?: boolean } = {},
+) {
   if (viewId !== "study-view" && studySessionActive) {
     evaluationRequestId++;
     if (revealInProgress) cancelActiveBridgeRequest();
@@ -2814,7 +2817,9 @@ function switchView(viewId: AppView) {
   if (viewId === "settings-view") {
     refreshSettingsData();
   }
-  if (viewId === "learning-content-view") {
+  // openCardInEditor already loads + selects; skip the redundant fire-and-forget
+  // load that would race with that path (ADR 2026-07-16b full-editor jump).
+  if (viewId === "learning-content-view" && !options.skipStudioLoad) {
     loadStudioData();
   }
 }
@@ -4403,7 +4408,7 @@ async function openStopModal(): Promise<void> {
     );
     renderImpactList(
       document.getElementById("study-confirm-impact")!,
-      preview.impact,
+      preview.impact ?? {},
     );
     document
       .getElementById("study-confirm-advanced")!
@@ -4433,6 +4438,15 @@ async function escalateToOutdated(): Promise<void> {
       call.cmd,
       call.args,
     );
+    // User may have cancelled or left the study view while the preview was in
+    // flight — do not revive a closed dialog with a dangling action state.
+    if (
+      !studySessionActive ||
+      !isStudyConfirmOpen() ||
+      studyConfirmSlug !== slug
+    ) {
+      return;
+    }
     document.getElementById("study-confirm-title")!.textContent = t(
       "lbl_confirm_delete_title",
     );
@@ -4441,7 +4455,7 @@ async function escalateToOutdated(): Promise<void> {
     );
     renderImpactList(
       document.getElementById("study-confirm-impact")!,
-      preview.impact,
+      preview.impact ?? {},
     );
     document.getElementById("study-confirm-advanced")!.classList.add("hidden");
     document.getElementById("btn-study-confirm-ok")!.textContent =
@@ -4467,7 +4481,9 @@ async function confirmStudyStop(): Promise<void> {
         : deleteConfirmCommand(slug);
     await runBridge(call.cmd, call.args);
     hideStudyConfirm();
-    await loadNextCard();
+    // Mirror submitRating: nav can leave the study view while the confirm
+    // bridge call is in flight — only advance the queue if we still own it.
+    if (studySessionActive) await loadNextCard();
   } catch (err) {
     showStudyActionError("Stop action failed:", err);
   } finally {
@@ -4502,7 +4518,14 @@ function closeInlineEditor(): void {
 }
 
 async function saveInlineEdit(): Promise<void> {
-  if (!activeCard || reviewActionInProgress || cardLoadInProgress) return;
+  if (
+    !activeCard ||
+    !isStudyInlineEditorOpen() ||
+    reviewActionInProgress ||
+    cardLoadInProgress
+  ) {
+    return;
+  }
   const slug = activeCard.slug;
   const question = (
     document.getElementById("study-edit-question") as HTMLTextAreaElement
@@ -4527,7 +4550,7 @@ async function saveInlineEdit(): Promise<void> {
   if (!beginReviewAction()) return;
   try {
     await runBridge(call.cmd, call.args);
-    if (activeCard?.slug !== slug) return;
+    if (!studySessionActive || activeCard?.slug !== slug) return;
     // Reflect the edit in place (no full re-render — feedback stays put).
     activeCard.concept = concept.trim();
     activePromptQuestion = question.trim();
@@ -4576,7 +4599,8 @@ async function jumpToFullEditor(): Promise<void> {
   }
   const slug = activeCard.slug;
   closeManageMenu();
-  switchView("learning-content-view");
+  // skipStudioLoad: openCardInEditor is the sole loader+select for this jump.
+  switchView("learning-content-view", { skipStudioLoad: true });
   const found = await openCardInEditor(slug);
   if (!found) {
     const message = `Card not found in editor: ${slug}`;
@@ -5013,10 +5037,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // 2. Textarea triggers
     const target = e.target;
+    // Buttons must NOT count as editable: after "Submit & Reveal" the focus
+    // stays on #btn-reveal-answer, and classifying it as editable would block
+    // the primary post-reveal path of pressing 1–4. Dialog/editor guards below
+    // already suppress ratings while stop/edit UI is open.
     const isEditableTarget =
       target instanceof HTMLElement &&
-      (target.matches("input, textarea, select, button") ||
-        target.isContentEditable);
+      (target.matches("input, textarea, select") || target.isContentEditable);
     const isAnswerFocused =
       document.activeElement === document.getElementById("user-answer-input");
     
