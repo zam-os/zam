@@ -14,7 +14,8 @@
 - [x] **Phase 2 — Companion persistence and context selection** (2026-07-16)
 - [x] **Phase 3 — evaluator routing and sampling repair** (2026-07-16)
 - [x] **Phase 4 — shared compact MCP App title bar** (2026-07-16)
-- [ ] **Phase 5 — multi-harness verification and 0.11.0 release readiness**
+- [x] **Phase 5 — multi-harness verification and 0.11.0 release readiness**
+  (2026-07-16; see the live verification record below)
 
 ## Working rules
 
@@ -152,6 +153,29 @@ Goal: prove the labels and routing match reality before versioning.
   checks pass.
 
 **Commit:** `release: prepare 0.11.0`
+
+### Live verification record (2026-07-16, Thomas + Fable 5)
+
+- Server-side checks over real MCP (Claude Code session): persistence
+  round-trip, invocation-vs-persisted precedence, no-fallback on unroutable
+  selection, honest four-state routes, `thomas` queue untouched throughout.
+- VS Code Companion (VSIX from this branch): context bar renders on all
+  surfaces; Agent pill shows the concrete Copilot model; User pill marks
+  session-scoped learners; smart evaluation + follow-up ran through the
+  pill-named model with VS Code's consent dialog; quick mode revealed with no
+  model call; learner/evaluator switches reloaded the session; "ZAM: Choose
+  Recall Model" persisted MAI and the next evaluation used it.
+- Live testing found and fixed: an installed ZAM 0.10.10 force-downgrading
+  the Companion (now version-guarded), a CJS activation crash from a kernel
+  module-scope `createRequire` (now lazy + shimmed + load-smoke-tested), a
+  late-tool-result race leaving a session on the previous learner's queue
+  (now a context boundary), the stale Agent pill after choosing a model (now
+  auto-refreshes, plus a bar refresh button), and the raw "copilotcli" vendor
+  label (now mapped to "Copilot").
+- Empirical relay data for the post-0.11.0 follow-up: Claude Code 2.1.211
+  does not advertise MCP sampling capability; VS Code's native MCP host does,
+  but only over the Copilot-contributed model pool.
+- Not covered live: Codex Desktop native mount (structural tests only).
 
 ## Review checklist for Thomas and Fable 5 (completed 2026-07-16)
 
