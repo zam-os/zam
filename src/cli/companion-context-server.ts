@@ -180,7 +180,9 @@ function buildEvaluatorRouteInputs(
     harnessReport.harnesses.map((harness) => [harness.harness, harness]),
   );
 
-  const isVscodeCompanion = nativeHost?.normalizedId === "vscode-companion";
+  const isVscodeCompanion =
+    nativeHost?.normalizedId === "vscode-companion" ||
+    nativeHost?.normalizedId === "antigravity-companion";
   const nativeHostRoutable = !isVscodeCompanion && clientSamplingCapable;
 
   const inputs: EvaluatorRouteInput[] = [
@@ -209,6 +211,12 @@ function buildEvaluatorRouteInputs(
       reason: isVscodeCompanion
         ? undefined
         : "VS Code language-model routing is only available from the VS Code Companion extension.",
+    },
+    {
+      id: "zam-text-model",
+      displayIdentity: { provider: "ZAM text model" },
+      configured: true,
+      routable: true,
     },
   ];
 
@@ -255,10 +263,13 @@ async function assembleCompanionContext(
   // section on its own).
   const companionConfig = getMachineCompanionConfig(input.configPath);
   const persistedUserId = companionConfig.selectedUserId;
-  const isAntigravity = input.nativeHost?.normalizedId === "antigravity-companion";
+  const isAntigravity =
+    input.nativeHost?.normalizedId === "antigravity-companion";
   const persistedEvaluatorIdRaw = isAntigravity
-    ? (companionConfig.selectedAntigravityEvaluatorId ?? companionConfig.selectedEvaluatorId)
-    : (companionConfig.selectedVscodeEvaluatorId ?? companionConfig.selectedEvaluatorId);
+    ? (companionConfig.selectedAntigravityEvaluatorId ??
+      companionConfig.selectedEvaluatorId)
+    : (companionConfig.selectedVscodeEvaluatorId ??
+      companionConfig.selectedEvaluatorId);
   const persistedEvaluatorId: EvaluatorId | undefined = isEvaluatorId(
     persistedEvaluatorIdRaw,
   )
@@ -418,7 +429,8 @@ export async function writeCompanionContext(
     });
     if (isPersistableSelection(selection) && selection.value) {
       const nativeHost = normalizeNativeHostIdentity(options.clientInfo);
-      const isAntigravity = nativeHost?.normalizedId === "antigravity-companion";
+      const isAntigravity =
+        nativeHost?.normalizedId === "antigravity-companion";
       if (isAntigravity) {
         update.selectedAntigravityEvaluatorId = selection.value;
       } else {

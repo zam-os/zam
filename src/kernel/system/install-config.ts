@@ -604,7 +604,8 @@ export function updateMachineCompanionConfig(
   }
   if ("selectedAntigravityEvaluatorId" in update) {
     if (update.selectedAntigravityEvaluatorId) {
-      companion.selectedAntigravityEvaluatorId = update.selectedAntigravityEvaluatorId;
+      companion.selectedAntigravityEvaluatorId =
+        update.selectedAntigravityEvaluatorId;
     } else {
       delete companion.selectedAntigravityEvaluatorId;
     }

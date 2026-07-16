@@ -269,18 +269,20 @@ export function buildEvaluatorOptions(
   state: CompanionContextBarState,
 ): OptionModel[] {
   const selectedValue = state.selectedEvaluatorId ?? state.activeEvaluatorId;
-  return state.evaluators.map((route) => {
-    const label = formatAgentLabel(route.displayIdentity);
-    return {
-      value: route.id,
-      text: route.routable
-        ? label
-        : tf("contextbar_evaluator_unavailable_fmt", { label }),
-      disabled: !route.routable,
-      selected: route.id === selectedValue,
-      title: route.reason,
-    };
-  });
+  return state.evaluators
+    .filter((route) => route.routable || route.id === selectedValue)
+    .map((route) => {
+      const label = formatAgentLabel(route.displayIdentity);
+      return {
+        value: route.id,
+        text: route.routable
+          ? label
+          : tf("contextbar_evaluator_unavailable_fmt", { label }),
+        disabled: !route.routable,
+        selected: route.id === selectedValue,
+        title: route.reason,
+      };
+    });
 }
 
 // ── DOM mounting ────────────────────────────────────────────────────────
