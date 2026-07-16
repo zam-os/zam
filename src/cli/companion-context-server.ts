@@ -207,10 +207,13 @@ function buildEvaluatorRouteInputs(
       id: "vscode-lm",
       displayIdentity: { provider: "VS Code language models" },
       configured: true,
-      routable: isVscodeCompanion,
-      reason: isVscodeCompanion
-        ? undefined
-        : "VS Code language-model routing is only available from the VS Code Companion extension.",
+      routable: nativeHost?.normalizedId === "vscode-companion",
+      reason:
+        nativeHost?.normalizedId === "vscode-companion"
+          ? undefined
+          : nativeHost?.normalizedId === "antigravity-companion"
+            ? "Antigravity IDE does not support the VS Code language model API (vscode.lm)."
+            : "VS Code language-model routing is only available from the VS Code Companion extension.",
     },
     {
       id: "zam-text-model",
@@ -317,11 +320,13 @@ async function assembleCompanionContext(
   // below).
   const defaultEvaluatorId: EvaluatorId = quickModeSettingIsOn
     ? "quick-mode"
-    : isVscodeCompanion
-      ? "vscode-lm"
-      : clientSamplingCapable
-        ? "native-mcp-host"
-        : "quick-mode";
+    : isAntigravity
+      ? "zam-text-model"
+      : isVscodeCompanion
+        ? "vscode-lm"
+        : clientSamplingCapable
+          ? "native-mcp-host"
+          : "quick-mode";
 
   const { read } = buildCompanionContext({
     surface: input.surface,

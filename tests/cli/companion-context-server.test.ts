@@ -312,6 +312,25 @@ describe("companion context server", () => {
     expect(routableAsCompanion).toEqual(["quick-mode", "vscode-lm", "zam-text-model"]);
   });
 
+  it("defaults the Agent pill to zam-text-model and marks vscode-lm unroutable when the client is the Antigravity Companion", async () => {
+    const result = await readCompanionContext(
+      db,
+      { surface: "recall", clientInfo: { name: "antigravity-zam-companion" } },
+      { configPath },
+    );
+    const routable = result.evaluators
+      .filter((route) => route.routable)
+      .map((route) => route.id);
+    expect(routable.sort()).toEqual(["quick-mode", "zam-text-model"]);
+    expect(result.activeEvaluatorId).toBe("zam-text-model");
+
+    const vscodeLm = result.evaluators.find(
+      (route) => route.id === "vscode-lm",
+    );
+    expect(vscodeLm?.routable).toBe(false);
+    expect(vscodeLm?.reason).toMatch(/antigravity/i);
+  });
+
   it("keeps an explicitly persisted evaluator selection even once vscode-lm becomes routable", async () => {
     await writeCompanionContext(
       db,
