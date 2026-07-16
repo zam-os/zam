@@ -4,7 +4,11 @@ import {
   AppBridge,
   PostMessageTransport,
 } from "@modelcontextprotocol/ext-apps/app-bridge";
-import type { CallToolResult, Tool } from "@modelcontextprotocol/sdk/types.js";
+import type {
+  CallToolResult,
+  CreateMessageResult,
+  Tool,
+} from "@modelcontextprotocol/sdk/types.js";
 
 declare function acquireVsCodeApi(): {
   postMessage(message: unknown): void;
@@ -18,7 +22,12 @@ interface BootstrapPayload {
   toolResult: CallToolResult;
 }
 
-type HostRequestType = "callTool" | "modelContext" | "openLink" | "status";
+type HostRequestType =
+  | "callTool"
+  | "modelContext"
+  | "openLink"
+  | "sampling"
+  | "status";
 
 function requiredElement<T extends Element>(selector: string): T {
   const element = document.querySelector<T>(selector);
@@ -102,6 +111,7 @@ async function mount(payload: BootstrapPayload): Promise<void> {
       serverTools: {},
       logging: {},
       updateModelContext: { text: {}, structuredContent: {} },
+      sampling: {},
     },
     { hostContext: hostContext(payload.tool) },
   );
@@ -111,6 +121,8 @@ async function mount(payload: BootstrapPayload): Promise<void> {
     request<CallToolResult>("callTool", params);
   bridge.onupdatemodelcontext = async (params) =>
     request<Record<string, never>>("modelContext", params);
+  bridge.oncreatesamplingmessage = async (params) =>
+    request<CreateMessageResult>("sampling", params);
   bridge.onopenlink = async ({ url }) =>
     request<Record<string, unknown>>("openLink", { url });
   bridge.onrequestdisplaymode = async () => ({ mode: "inline" });

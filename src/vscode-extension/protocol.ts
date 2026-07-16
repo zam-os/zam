@@ -1,4 +1,7 @@
-import type { Tool } from "@modelcontextprotocol/sdk/types.js";
+import type {
+  CreateMessageResult,
+  Tool,
+} from "@modelcontextprotocol/sdk/types.js";
 
 export type CompanionApp = "recall" | "graph" | "settings";
 
@@ -14,6 +17,16 @@ export interface CompanionAppConfig {
   title: string;
   toolName: string;
   allowedTools: ReadonlySet<string>;
+}
+
+export interface CompanionLanguageModelMessage {
+  role: "user" | "assistant";
+  text: string;
+}
+
+export interface NormalizedSamplingRequest {
+  messages: CompanionLanguageModelMessage[];
+  maxTokens?: number;
 }
 
 export const COMPANION_APPS: Record<CompanionApp, CompanionAppConfig> = {
@@ -36,6 +49,66 @@ export const COMPANION_APPS: Record<CompanionApp, CompanionAppConfig> = {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function samplingContentText(value: unknown): string {
+  const blocks = Array.isArray(value) ? value : [value];
+  return blocks
+    .flatMap((block) =>
+      isRecord(block) && block.type === "text" && typeof block.text === "string"
+        ? [block.text]
+        : [],
+    )
+    .join("\n")
+    .trim();
+}
+
+/** Validate the text-only sampling subset supported by the Companion host. */
+export function normalizeSamplingRequest(
+  value: unknown,
+): NormalizedSamplingRequest {
+  if (!isRecord(value) || !Array.isArray(value.messages)) {
+    throw new Error("Invalid MCP sampling request");
+  }
+  if (Array.isArray(value.tools) && value.tools.length > 0) {
+    throw new Error("ZAM Companion sampling does not support model tools");
+  }
+
+  const messages: CompanionLanguageModelMessage[] = [];
+  if (typeof value.systemPrompt === "string" && value.systemPrompt.trim()) {
+    messages.push({ role: "user", text: value.systemPrompt.trim() });
+  }
+  for (const raw of value.messages) {
+    if (!isRecord(raw) || (raw.role !== "user" && raw.role !== "assistant")) {
+      throw new Error("Invalid MCP sampling message");
+    }
+    const text = samplingContentText(raw.content);
+    if (!text) {
+      throw new Error("ZAM Companion sampling currently requires text content");
+    }
+    messages.push({ role: raw.role, text });
+  }
+  if (messages.length === 0) {
+    throw new Error("MCP sampling request has no messages");
+  }
+
+  const maxTokens =
+    typeof value.maxTokens === "number" && value.maxTokens > 0
+      ? value.maxTokens
+      : undefined;
+  return maxTokens === undefined ? { messages } : { messages, maxTokens };
+}
+
+export function createSamplingResult(
+  model: string,
+  text: string,
+): CreateMessageResult {
+  return {
+    model,
+    role: "assistant",
+    content: { type: "text", text },
+    stopReason: "endTurn",
+  };
 }
 
 export function parseCompanionIntent(

@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   buildOpeningArguments,
   COMPANION_APPS,
+  createSamplingResult,
+  normalizeSamplingRequest,
   parseCompanionIntent,
   toolUiResourceUri,
 } from "../../src/vscode-extension/protocol.js";
@@ -86,5 +88,52 @@ describe("VS Code companion protocol", () => {
         _meta: { "ui/resourceUri": "ui://zam/graph" },
       }),
     ).toBe("ui://zam/graph");
+  });
+
+  it("normalizes MCP sampling text into VS Code model messages", () => {
+    expect(
+      normalizeSamplingRequest({
+        systemPrompt: "Evaluate the learner, do not reveal chain of thought.",
+        messages: [
+          {
+            role: "user",
+            content: [
+              { type: "text", text: "Question and learner answer" },
+              { type: "image", data: "ignored", mimeType: "image/png" },
+            ],
+          },
+          {
+            role: "assistant",
+            content: { type: "text", text: "Prior feedback" },
+          },
+        ],
+        maxTokens: 600,
+      }),
+    ).toEqual({
+      messages: [
+        {
+          role: "user",
+          text: "Evaluate the learner, do not reveal chain of thought.",
+        },
+        { role: "user", text: "Question and learner answer" },
+        { role: "assistant", text: "Prior feedback" },
+      ],
+      maxTokens: 600,
+    });
+  });
+
+  it("rejects unsupported tool sampling and builds a standard result", () => {
+    expect(() =>
+      normalizeSamplingRequest({
+        messages: [{ role: "user", content: { type: "text", text: "hello" } }],
+        tools: [{ name: "unsafe" }],
+      }),
+    ).toThrow(/tool/i);
+    expect(createSamplingResult("copilot-model", "model reply")).toEqual({
+      model: "copilot-model",
+      role: "assistant",
+      content: { type: "text", text: "model reply" },
+      stopReason: "endTurn",
+    });
   });
 });

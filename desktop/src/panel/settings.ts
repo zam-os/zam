@@ -20,6 +20,7 @@ import { App } from "@modelcontextprotocol/ext-apps";
 const statusEl = document.getElementById("zam-status");
 const statusDot = document.getElementById("zam-status-dot");
 const versionEl = document.getElementById("zam-version");
+const recallEl = document.getElementById("settings-recall");
 const workspacesEl = document.getElementById("settings-workspaces");
 const kcEl = document.getElementById("settings-kc");
 const dbEl = document.getElementById("settings-db");
@@ -100,6 +101,10 @@ interface UpdateCheckResult {
   reason: string;
 }
 
+interface SettingsResult {
+  recall?: { quickMode?: boolean };
+}
+
 const LINK_HEALTH_LABEL: Record<WorkspaceLinkHealth["health"], string> = {
   healthy: "verknüpft",
   "needs-repair": "reparaturbedürftig",
@@ -168,6 +173,62 @@ function renderInlineError(el: HTMLElement | null, message: string): void {
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
+}
+
+// ── Recall ─────────────────────────────────────────────────────────────────
+
+async function loadRecallSettings(): Promise<void> {
+  renderLoading(recallEl, "Lade Recall-Einstellungen…");
+  try {
+    const data = (await bridgeCall("get-settings")) as SettingsResult;
+    renderRecallSettings(Boolean(data.recall?.quickMode));
+  } catch (error) {
+    clearEl(recallEl);
+    renderInlineError(recallEl, errorMessage(error));
+  }
+}
+
+function renderRecallSettings(quickMode: boolean): void {
+  if (!recallEl) return;
+  clearEl(recallEl);
+
+  const label = document.createElement("label");
+  label.className = "settings-checkbox-row";
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.checked = quickMode;
+  const text = document.createElement("span");
+  text.textContent = "Just show questions and answers for speed";
+  label.append(checkbox, text);
+
+  const hint = document.createElement("div");
+  hint.className = "settings-hint";
+  hint.textContent =
+    "Disabled by default. When off, Recall asks the connected host to check " +
+    "your answer and supports follow-up questions.";
+  recallEl.append(label, hint);
+
+  checkbox.addEventListener("change", () => {
+    void setRecallQuickMode(checkbox);
+  });
+}
+
+async function setRecallQuickMode(checkbox: HTMLInputElement): Promise<void> {
+  const requested = checkbox.checked;
+  checkbox.disabled = true;
+  try {
+    await bridgeCall("setting-set", [
+      "--key",
+      "recall.quick_mode",
+      "--value",
+      String(requested),
+    ]);
+  } catch (error) {
+    checkbox.checked = !requested;
+    renderInlineError(recallEl, errorMessage(error));
+  } finally {
+    checkbox.disabled = false;
+  }
 }
 
 // ── Workspaces ──────────────────────────────────────────────────────────────
@@ -463,6 +524,7 @@ function start(): void {
   started = true;
   // Each section loads independently — one section's failure (e.g. an
   // offline update check) must never block the others.
+  void loadRecallSettings();
   void loadWorkspaces();
   void loadKnowledgeContext();
   void loadDatabaseStatus();

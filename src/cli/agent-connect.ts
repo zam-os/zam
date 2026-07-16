@@ -128,7 +128,7 @@ function resolveDeps(deps: AgentConnectDeps) {
       (() => {
         const globalZam = findExecutable("zam");
         if (globalZam) return globalZam;
-        if (process.argv[1] && process.argv[1].endsWith("index.js")) {
+        if (process.argv[1]?.endsWith("index.js")) {
           return process.argv[1];
         }
         return null;

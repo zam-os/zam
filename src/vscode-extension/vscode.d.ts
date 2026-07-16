@@ -43,6 +43,34 @@ declare module "vscode" {
     readonly subscriptions: Disposable[];
   }
 
+  export interface CancellationToken {
+    readonly isCancellationRequested: boolean;
+  }
+
+  export namespace CancellationToken {
+    const None: CancellationToken;
+  }
+
+  export interface LanguageModelChatMessage {}
+
+  export const LanguageModelChatMessage: {
+    User(content: string): LanguageModelChatMessage;
+    Assistant(content: string): LanguageModelChatMessage;
+  };
+
+  export interface LanguageModelChatResponse {
+    readonly text: AsyncIterable<string>;
+  }
+
+  export interface LanguageModelChat {
+    readonly id: string;
+    sendRequest(
+      messages: LanguageModelChatMessage[],
+      options: { justification?: string },
+      token: CancellationToken,
+    ): PromiseLike<LanguageModelChatResponse>;
+  }
+
   export const commands: {
     executeCommand<T = unknown>(
       command: string,
@@ -56,6 +84,12 @@ declare module "vscode" {
 
   export const env: {
     openExternal(uri: Uri): Promise<boolean>;
+  };
+
+  export const lm: {
+    selectChatModels(
+      selector?: Record<string, string>,
+    ): PromiseLike<LanguageModelChat[]>;
   };
 
   export const window: {
