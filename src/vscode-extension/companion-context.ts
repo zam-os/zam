@@ -121,6 +121,19 @@ export function normalizeNativeHostIdentity(
   };
 }
 
+// ── Learner profiles (0.11.0 Phase 2) ─────────────────────────────────────
+
+/**
+ * One learning profile the shared database knows about, for the Companion's
+ * learner picker. Mirrors `DatabaseUserSummary` from
+ * `src/cli/commands/bridge.ts` (`database-status`) — Phase 2 reuses that
+ * existing query rather than adding a parallel one.
+ */
+export interface CompanionLearnerProfile {
+  id: string;
+  cardCount: number;
+}
+
 // ── Configured harness inventory ──────────────────────────────────────────
 
 /**
@@ -202,6 +215,8 @@ export interface CompanionContextReadResult {
   surface: CompanionSurface;
   nativeHost?: NativeHostIdentity;
   user: CompanionUserState;
+  /** Every learning profile the shared database knows about (Phase 2). */
+  profiles: CompanionLearnerProfile[];
   harnesses: ConfiguredHarnessInfo[];
   evaluators: EvaluatorRoute[];
   selectedEvaluatorId?: EvaluatorId;
@@ -284,6 +299,8 @@ export interface BuildCompanionContextInput {
   userSelection: SelectionCandidates<string | undefined>;
   evaluatorSelection: SelectionCandidates<EvaluatorId>;
   evaluatorRouteInputs: EvaluatorRouteInput[];
+  /** Optional for backward compatibility with pre-Phase-2 callers/tests; defaults to `[]`. */
+  profiles?: CompanionLearnerProfile[];
   harnesses: ConfiguredHarnessInfo[];
   collapsed?: CompanionCollapsedState;
 }
@@ -346,6 +363,7 @@ export function buildCompanionContext(
         persistedId: input.userSelection.persisted,
         source: userSelection.source,
       },
+      profiles: input.profiles ?? [],
       harnesses: input.harnesses,
       evaluators,
       selectedEvaluatorId: evaluatorSelection.value,

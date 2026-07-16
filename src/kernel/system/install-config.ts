@@ -28,6 +28,14 @@ export interface InstallConfig {
   ai?: MachineAiConfig;
   /** Machine-local agent-connect state; harness installs are per-machine. */
   agent?: MachineAgentConfig;
+  /**
+   * Machine-local Companion UI preferences (ADR 2026-07-16 §Decision 4,
+   * 0.11.0 Phase 2): selected learner, selected evaluator, and per-surface
+   * collapsed state. Deliberately never the Turso-shared learning database —
+   * changing the Companion learner must not rewrite the database-wide
+   * `user.id` default used by unrelated CLI or harness sessions.
+   */
+  companion?: MachineCompanionConfig;
   /** Machine-local paths to existing personal/team/community workspaces. */
   workspaces?: WorkspaceConfig[];
   /** Machine-local id of the workspace currently active in this install. */
@@ -39,6 +47,22 @@ export interface InstallConfig {
 export interface MachineAgentConfig {
   /** True once first-run agent auto-connect ran on THIS machine (`--auto-once`). */
   connectAutoDone?: boolean;
+}
+
+/**
+ * Machine-local Companion preferences (0.11.0 Phase 2). `selectedEvaluatorId`
+ * is stored as a plain string, not the `EvaluatorId` union from
+ * `src/vscode-extension/companion-evaluator.ts` — this module is part of the
+ * AI-agnostic kernel, so it never imports harness/evaluator types; the CLI
+ * layer validates the string against `isEvaluatorId` on read.
+ */
+export interface MachineCompanionConfig {
+  /** Persisted Companion learner selection — never the shared `user.id`. */
+  selectedUserId?: string;
+  /** Persisted Companion evaluator selection. */
+  selectedEvaluatorId?: string;
+  /** Collapsed state for the shared context bar, keyed by surface name. */
+  collapsed?: Record<string, boolean>;
 }
 
 export type MachineAiRole = "vision" | "recall" | "text" | "embedding";
@@ -413,6 +437,109 @@ export function setAgentConnectAutoDone(
     delete config.agent.connectAutoDone;
   }
   saveInstallConfig(config, path);
+}
+
+/**
+ * Machine-local Companion preferences (0.11.0 Phase 2). Defensively
+ * normalizes whatever is on disk instead of trusting the raw JSON shape: a
+ * hand-edited or partially-written `companion` section (wrong types, a stray
+ * array) must fall back to sensible defaults rather than crash the `zam mcp`
+ * process the Companion depends on for first paint.
+ */
+export function getMachineCompanionConfig(
+  path = defaultConfigPath(),
+): MachineCompanionConfig {
+  const raw = loadInstallConfig(path).companion;
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return {};
+  const result: MachineCompanionConfig = {};
+  if (typeof raw.selectedUserId === "string") {
+    result.selectedUserId = raw.selectedUserId;
+  }
+  if (typeof raw.selectedEvaluatorId === "string") {
+    result.selectedEvaluatorId = raw.selectedEvaluatorId;
+  }
+  if (
+    raw.collapsed &&
+    typeof raw.collapsed === "object" &&
+    !Array.isArray(raw.collapsed)
+  ) {
+    const collapsed: Record<string, boolean> = {};
+    for (const [surface, value] of Object.entries(raw.collapsed)) {
+      if (typeof value === "boolean") collapsed[surface] = value;
+    }
+    result.collapsed = collapsed;
+  }
+  return result;
+}
+
+/** Persist the Companion preferences, preserving other top-level config keys. */
+export function saveMachineCompanionConfig(
+  companion: MachineCompanionConfig,
+  path = defaultConfigPath(),
+): void {
+  const config = loadInstallConfig(path);
+  config.companion = companion;
+  saveInstallConfig(config, path);
+}
+
+/** The persisted Companion learner, independent of the shared `user.id`. */
+export function getCompanionSelectedUserId(
+  path = defaultConfigPath(),
+): string | undefined {
+  return getMachineCompanionConfig(path).selectedUserId;
+}
+
+export function setCompanionSelectedUserId(
+  userId: string | undefined,
+  path = defaultConfigPath(),
+): void {
+  const companion = getMachineCompanionConfig(path);
+  if (userId) {
+    companion.selectedUserId = userId;
+  } else {
+    delete companion.selectedUserId;
+  }
+  saveMachineCompanionConfig(companion, path);
+}
+
+/** The persisted Companion evaluator id (validated against `EvaluatorId` by callers). */
+export function getCompanionSelectedEvaluatorId(
+  path = defaultConfigPath(),
+): string | undefined {
+  return getMachineCompanionConfig(path).selectedEvaluatorId;
+}
+
+export function setCompanionSelectedEvaluatorId(
+  evaluatorId: string | undefined,
+  path = defaultConfigPath(),
+): void {
+  const companion = getMachineCompanionConfig(path);
+  if (evaluatorId) {
+    companion.selectedEvaluatorId = evaluatorId;
+  } else {
+    delete companion.selectedEvaluatorId;
+  }
+  saveMachineCompanionConfig(companion, path);
+}
+
+/** Collapsed state for every surface that has been explicitly set. */
+export function getCompanionCollapsed(
+  path = defaultConfigPath(),
+): Record<string, boolean> {
+  return getMachineCompanionConfig(path).collapsed ?? {};
+}
+
+export function setCompanionCollapsed(
+  surface: string,
+  collapsed: boolean,
+  path = defaultConfigPath(),
+): void {
+  const companion = getMachineCompanionConfig(path);
+  companion.collapsed = {
+    ...(companion.collapsed ?? {}),
+    [surface]: collapsed,
+  };
+  saveMachineCompanionConfig(companion, path);
 }
 
 /**

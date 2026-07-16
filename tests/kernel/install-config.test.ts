@@ -8,6 +8,9 @@ import {
   getActiveWorkspace,
   getActiveWorkspaceId,
   getAgentConnectAutoDone,
+  getCompanionCollapsed,
+  getCompanionSelectedEvaluatorId,
+  getCompanionSelectedUserId,
   getConfiguredWorkspaces,
   getInstallMode,
   getMachineAiConfig,
@@ -17,6 +20,9 @@ import {
   saveMachineAiConfig,
   setActiveWorkspaceId,
   setAgentConnectAutoDone,
+  setCompanionCollapsed,
+  setCompanionSelectedEvaluatorId,
+  setCompanionSelectedUserId,
   setInstallMode,
   upsertConfiguredWorkspace,
 } from "../../src/kernel/index.js";
@@ -221,6 +227,83 @@ describe("install config", () => {
     expect(remaining).toEqual([{ id: "team", kind: "team", path: "C:\\team" }]);
     expect(getActiveWorkspaceId(path)).toBe("team");
     expect(getActiveWorkspace(path)?.path).toBe("C:\\team");
+  });
+
+  it("round-trips the persisted Companion learner and evaluator selections", () => {
+    const path = tempConfigPath();
+    expect(getCompanionSelectedUserId(path)).toBeUndefined();
+    expect(getCompanionSelectedEvaluatorId(path)).toBeUndefined();
+
+    setCompanionSelectedUserId("test-user-0.6.2", path);
+    setCompanionSelectedEvaluatorId("quick-mode", path);
+
+    expect(getCompanionSelectedUserId(path)).toBe("test-user-0.6.2");
+    expect(getCompanionSelectedEvaluatorId(path)).toBe("quick-mode");
+    // Lives in the per-machine `companion` section, never a database setting
+    // — changing it must never touch the shared `user.id` default.
+    expect(loadInstallConfig(path).companion?.selectedUserId).toBe(
+      "test-user-0.6.2",
+    );
+
+    setCompanionSelectedUserId(undefined, path);
+    expect(getCompanionSelectedUserId(path)).toBeUndefined();
+    // Clearing the learner selection preserves the unrelated evaluator key.
+    expect(getCompanionSelectedEvaluatorId(path)).toBe("quick-mode");
+  });
+
+  it("round-trips per-surface Companion collapsed state independently", () => {
+    const path = tempConfigPath();
+    expect(getCompanionCollapsed(path)).toEqual({});
+
+    setCompanionCollapsed("recall", true, path);
+    expect(getCompanionCollapsed(path)).toEqual({ recall: true });
+
+    setCompanionCollapsed("graph", false, path);
+    expect(getCompanionCollapsed(path)).toEqual({
+      recall: true,
+      graph: false,
+    });
+  });
+
+  it("preserves unrelated config keys when writing Companion preferences", () => {
+    const path = tempConfigPath();
+    setInstallMode("default", path);
+    setAgentConnectAutoDone(true, path);
+
+    setCompanionSelectedUserId("test-user-0.6.2", path);
+
+    expect(getInstallMode(path)).toBe("default");
+    expect(getAgentConnectAutoDone(path)).toBe(true);
+  });
+
+  it("falls back cleanly instead of crashing on a corrupt config file", () => {
+    const path = tempConfigPath();
+    writeFileSync(path, "{ not json", "utf-8");
+
+    expect(getCompanionSelectedUserId(path)).toBeUndefined();
+    expect(getCompanionSelectedEvaluatorId(path)).toBeUndefined();
+    expect(getCompanionCollapsed(path)).toEqual({});
+
+    // A subsequent write must not propagate the corruption forward.
+    setCompanionSelectedUserId("test-user-0.6.2", path);
+    expect(getCompanionSelectedUserId(path)).toBe("test-user-0.6.2");
+  });
+
+  it("falls back cleanly on a malformed (but valid JSON) companion section", () => {
+    const path = tempConfigPath();
+    writeFileSync(
+      path,
+      JSON.stringify({
+        companion: {
+          selectedUserId: 42, // wrong type
+          collapsed: ["recall"], // array instead of a record
+        },
+      }),
+      "utf-8",
+    );
+
+    expect(getCompanionSelectedUserId(path)).toBeUndefined();
+    expect(getCompanionCollapsed(path)).toEqual({});
   });
 
   it("detects file-sync providers from a folder path", () => {

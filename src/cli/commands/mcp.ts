@@ -12,6 +12,12 @@ import { z } from "zod";
 import type { Database, Rating, ReviewActionType } from "../../kernel/index.js";
 import { getSetting, openDatabase } from "../../kernel/index.js";
 import {
+  COMPANION_SURFACES,
+  type NativeClientInfo,
+  parseCompanionContextReadRequest,
+  parseCompanionContextWriteRequest,
+} from "../../vscode-extension/companion-context.js";
+import {
   addToken as handleAddToken,
   analyzeMonitor as handleAnalyzeMonitor,
   checkDue as handleCheckDue,
@@ -25,6 +31,11 @@ import {
   submitReview as handleSubmitReview,
   suggestFoundations as handleSuggestFoundations,
 } from "../bridge-handlers.js";
+import {
+  readCompanionContext,
+  resolveOpeningCompanionContext,
+  writeCompanionContext,
+} from "../companion-context-server.js";
 import { publishUiIntent } from "../ui-intent.js";
 import { executeBridgeCommandJson } from "./bridge.js";
 
@@ -113,6 +124,19 @@ export function createMcpServer(db: Database): McpServer {
     throw new Error(
       "No user specified. Set a default with: zam whoami --set <id>",
     );
+  }
+
+  /**
+   * The connecting MCP client's negotiated identity (from the `initialize`
+   * handshake), mapped to the Companion context contract's `NativeClientInfo`
+   * shape. The default when a request carries no explicit `clientInfo`
+   * override (overrides exist for launch presets and tests, ADR "Resolved
+   * questions" §2) — so a caller that simply forgets the field still gets an
+   * honest handshake-derived identity.
+   */
+  function getNativeClientInfo(): NativeClientInfo | undefined {
+    const client = server.server.getClientVersion();
+    return client ? { name: client.name, version: client.version } : undefined;
   }
 
   const commonAnnotations = {
@@ -725,9 +749,20 @@ export function createMcpServer(db: Database): McpServer {
     },
     wrapHandler(
       async ({ user, domain }: { user?: string; domain?: string }) => {
-        // Mirror zam_open_studio: resolve to the signed-in user, but never
-        // fail to open the panel — fall back to null when no default is set.
-        const userId = await getUserId(user).catch(() => null);
+        // Resolve the same precedence the shared context bar uses (ADR
+        // §Decision 4): an explicit `user` argument, then the persisted
+        // Companion learner, then the shared database default — never a
+        // silent fall-through straight to the database default, which is
+        // exactly the bug this ADR was written to fix. Never fails to open
+        // the panel: `companionContext.user.currentId` is undefined instead
+        // of thrown when no default is set anywhere.
+        const companionContext = await resolveOpeningCompanionContext(
+          db,
+          "recall",
+          user,
+          getNativeClientInfo(),
+        );
+        const userId = companionContext.user.currentId ?? null;
         await publishUiIntent("recall", { user, domain });
         return {
           recall: "zam",
@@ -735,6 +770,9 @@ export function createMcpServer(db: Database): McpServer {
           user: userId,
           domain: domain ?? null,
           quickMode: (await getSetting(db, "recall.quick_mode")) === "true",
+          // Resolved context for first paint (ADR §Decision 3) — the app
+          // must never briefly render the wrong learner.
+          companionContext,
         };
       },
     ),
@@ -787,15 +825,22 @@ export function createMcpServer(db: Database): McpServer {
       },
     },
     wrapHandler(async ({ focus, user }: { focus?: string; user?: string }) => {
-      // Mirror zam_open_recall: resolve to the signed-in user, but never
-      // fail to open the panel — fall back to null when no default is set.
-      const userId = await getUserId(user).catch(() => null);
+      // Mirror zam_open_recall: resolve invocation > persisted Companion
+      // learner > shared database default, never a bare fall-through.
+      const companionContext = await resolveOpeningCompanionContext(
+        db,
+        "graph",
+        user,
+        getNativeClientInfo(),
+      );
+      const userId = companionContext.user.currentId ?? null;
       await publishUiIntent("graph", { user, focus });
       return {
         graph: "zam",
         focus: focus ?? null,
         version: pkg.version,
         user: userId,
+        companionContext,
       };
     }),
   );
@@ -841,14 +886,21 @@ export function createMcpServer(db: Database): McpServer {
       },
     },
     wrapHandler(async ({ user }: { user?: string }) => {
-      // Mirror zam_open_recall/zam_show_graph: resolve to the signed-in user,
-      // but never fail to open the panel — fall back to null when unset.
-      const userId = await getUserId(user).catch(() => null);
+      // Mirror zam_open_recall/zam_show_graph: resolve invocation > persisted
+      // Companion learner > shared database default.
+      const companionContext = await resolveOpeningCompanionContext(
+        db,
+        "settings",
+        user,
+        getNativeClientInfo(),
+      );
+      const userId = companionContext.user.currentId ?? null;
       await publishUiIntent("settings", { user });
       return {
         settings: "zam",
         version: pkg.version,
         user: userId,
+        companionContext,
       };
     }),
   );
@@ -904,6 +956,83 @@ export function createMcpServer(db: Database): McpServer {
         );
       }
       return await executeBridgeCommandJson(params.cmd, params.args);
+    }),
+  );
+
+  // 14. zam_companion_context — the shared Companion context contract (ADR
+  // 2026-07-16 §Decision 3, 0.11.0 Phase 2): current surface, native MCP
+  // client identity, learner profiles and selected learner, configured
+  // harness inventory, evaluator routes, and per-surface collapsed state.
+  // The write action changes only the selected user, evaluator, and/or
+  // collapsed state — never anything else — and persists exclusively to the
+  // machine-local `companion` section of ~/.zam/config.json, never the
+  // Turso-shared database. Registered app-only (visibility: ["app"]), like
+  // zam_studio_bridge above: the Companion host renders the title bar from
+  // this, a chat model has no reason to call it.
+  registerAppTool(
+    server,
+    "zam_companion_context",
+    {
+      description:
+        "App-only read/write context for the shared Companion title bar. " +
+        "`read` returns the current surface, native MCP client identity, " +
+        "learner profiles and selected learner, configured harness " +
+        "inventory, evaluator routes, and collapsed state. `write` changes " +
+        "only the selected user, evaluator, and/or collapsed state for one " +
+        "surface, using the same invocation/manual/persisted/default " +
+        "precedence as zam_open_recall, zam_show_graph, and " +
+        "zam_open_settings. Not intended for direct model use.",
+      inputSchema: {
+        action: z.enum(["read", "write"]).describe("Operation to perform"),
+        surface: z
+          .enum(COMPANION_SURFACES)
+          .describe("Companion surface this request concerns"),
+        clientInfo: z
+          .object({ name: z.string(), version: z.string().optional() })
+          .optional()
+          .describe(
+            "Native MCP client identity override for read (normally taken from the connection handshake)",
+          ),
+        harnessOverride: z
+          .string()
+          .optional()
+          .describe("Explicit harness id overriding clientInfo (read only)"),
+        userId: z
+          .string()
+          .optional()
+          .describe("Manual learner selection to persist (write only)"),
+        evaluatorId: z
+          .string()
+          .optional()
+          .describe("Manual evaluator selection to persist (write only)"),
+        collapsed: z
+          .boolean()
+          .optional()
+          .describe("Collapsed state for this surface (write only)"),
+      },
+      annotations: {
+        ...commonAnnotations,
+      },
+      _meta: {
+        ui: { visibility: ["app"] },
+      },
+    },
+    wrapHandler(async (params) => {
+      if (params.action === "read") {
+        const request = parseCompanionContextReadRequest({
+          surface: params.surface,
+          clientInfo: params.clientInfo ?? getNativeClientInfo(),
+          harnessOverride: params.harnessOverride,
+        });
+        return await readCompanionContext(db, request);
+      }
+      const request = parseCompanionContextWriteRequest({
+        surface: params.surface,
+        userId: params.userId,
+        evaluatorId: params.evaluatorId,
+        collapsed: params.collapsed,
+      });
+      return await writeCompanionContext(db, request);
     }),
   );
 

@@ -253,6 +253,20 @@ describe("buildCompanionContext", () => {
     expect(result.read.harnesses).toEqual(baseInput.harnesses);
   });
 
+  it("defaults learner profiles to an empty list for pre-Phase-2 callers (backward compatibility)", () => {
+    const result = buildCompanionContext(baseInput);
+    expect(result.read.profiles).toEqual([]);
+  });
+
+  it("passes through learner profiles untouched (0.11.0 Phase 2)", () => {
+    const profiles = [
+      { id: "thomas", cardCount: 121 },
+      { id: "test-user-0.6.2", cardCount: 3 },
+    ];
+    const result = buildCompanionContext({ ...baseInput, profiles });
+    expect(result.read.profiles).toEqual(profiles);
+  });
+
   it("reports the collapsed state for only the current surface", () => {
     const result = buildCompanionContext({
       ...baseInput,
