@@ -10,7 +10,25 @@ import type { Database, SyncDatabase } from "./types.js";
 
 const DEFAULT_DB_DIR = join(homedir(), ".zam");
 const DEFAULT_DB_PATH = join(DEFAULT_DB_DIR, "zam.db");
-const require = createRequire(import.meta.url);
+
+/**
+ * Lazy CommonJS `require` for the optional native drivers. Deliberately NOT a
+ * module-scope `createRequire(import.meta.url)`: this module is re-exported
+ * by the kernel public API, which the VS Code Companion bundles as CJS —
+ * there `import.meta.url` compiles to `undefined` and a module-scope call
+ * crashed the whole extension at activation (0.10.11 live test). Lazy + the
+ * `__filename` guard works in both module systems, and no driver code runs
+ * unless a database is actually opened.
+ */
+let nodeRequire: NodeRequire | undefined;
+function require(id: string): unknown {
+  if (!nodeRequire) {
+    nodeRequire = createRequire(
+      typeof __filename === "string" ? __filename : import.meta.url,
+    );
+  }
+  return nodeRequire(id);
+}
 
 type LibsqlConstructor = new (
   path: string,
