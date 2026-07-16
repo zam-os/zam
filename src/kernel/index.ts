@@ -406,6 +406,7 @@ export type {
   MachineAgentConfig,
   MachineAiConfig,
   MachineCompanionConfig,
+  MachineCompanionConfigUpdate,
   MachineProviderRecord,
   MachineRoleBinding,
   ModelCapability,
@@ -453,6 +454,7 @@ export {
   setInstallChannel,
   setInstallMode,
   setLastRepairedVersion,
+  updateMachineCompanionConfig,
   upsertConfiguredWorkspace,
 } from "./system/install-config.js";
 export type {

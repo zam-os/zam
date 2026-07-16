@@ -12,7 +12,14 @@
  * entry in `workspaces`, while legacy database settings are migrated by the CLI.
  */
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  unlinkSync,
+  writeFileSync,
+} from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { ulid } from "ulid";
@@ -205,14 +212,42 @@ export function loadInstallConfig(path = defaultConfigPath()): InstallConfig {
   }
 }
 
-/** Persist the install config, preserving any unrelated keys already on disk. */
+/**
+ * Persist the install config, preserving any unrelated keys already on disk.
+ *
+ * Writes atomically: the JSON is written to a temp file in the same
+ * directory (same volume, so the following rename is a single filesystem
+ * operation) and then renamed over the target — the same handoff pattern
+ * `writeUiIntent` uses for the UI-intent file (`src/cli/ui-intent.ts`). A
+ * reader (or a process crash mid-write) can therefore never observe a
+ * half-written `config.json`; the worst case is losing this one write, never
+ * a torn/truncated file. `renameSync` replaces an existing destination on
+ * both POSIX and Windows (libuv issues `MoveFileExW` with
+ * `MOVEFILE_REPLACE_EXISTING` on Windows), so no unlink-first step is needed
+ * in the common case — the fallback below only matters if some other
+ * process (antivirus/indexer) transiently holds the destination open.
+ */
 export function saveInstallConfig(
   config: InstallConfig,
   path = defaultConfigPath(),
 ): void {
   const dir = dirname(path);
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-  writeFileSync(path, `${JSON.stringify(config, null, 2)}\n`, "utf-8");
+  const tempPath = join(dir, `.config-${process.pid}-${Date.now()}.tmp`);
+  writeFileSync(tempPath, `${JSON.stringify(config, null, 2)}\n`, "utf-8");
+  try {
+    renameSync(tempPath, path);
+  } catch (error) {
+    // Windows fallback: a stale reader transiently holding the destination
+    // open can make an overwrite-rename fail even though replace-on-rename
+    // is the default. Unlink then retry once before giving up.
+    try {
+      unlinkSync(path);
+      renameSync(tempPath, path);
+    } catch {
+      throw error;
+    }
+  }
 }
 
 /**
@@ -494,6 +529,58 @@ export function saveMachineCompanionConfig(
   const config = loadInstallConfig(path);
   config.companion = companion;
   saveInstallConfig(config, path);
+}
+
+/**
+ * One batched Companion preference change. A key is only touched when
+ * present on the update object — `"selectedUserId" in update` (not a plain
+ * truthiness check), so `{ selectedUserId: undefined }` still clears the
+ * field, mirroring `setCompanionSelectedUserId(undefined, ...)`. `collapsed`
+ * merges into the existing per-surface map rather than replacing it, like
+ * `setCompanionCollapsed`.
+ */
+export interface MachineCompanionConfigUpdate {
+  selectedUserId?: string;
+  selectedEvaluatorId?: string;
+  collapsed?: { surface: string; value: boolean };
+}
+
+/**
+ * Apply a batch of Companion preference changes with one load and one save,
+ * instead of calling the individual setters below in sequence (each of which
+ * does its own load-apply-save). A write that touches the learner, the
+ * evaluator, and the collapsed state all at once — e.g.
+ * `writeCompanionContext` — does one read and one write here instead of
+ * three. Fields absent from `update` are left exactly as they were; this is
+ * the same merge behavior as the individual setters, just batched.
+ */
+export function updateMachineCompanionConfig(
+  update: MachineCompanionConfigUpdate,
+  path = defaultConfigPath(),
+): MachineCompanionConfig {
+  const companion = getMachineCompanionConfig(path);
+  if ("selectedUserId" in update) {
+    if (update.selectedUserId) {
+      companion.selectedUserId = update.selectedUserId;
+    } else {
+      delete companion.selectedUserId;
+    }
+  }
+  if ("selectedEvaluatorId" in update) {
+    if (update.selectedEvaluatorId) {
+      companion.selectedEvaluatorId = update.selectedEvaluatorId;
+    } else {
+      delete companion.selectedEvaluatorId;
+    }
+  }
+  if (update.collapsed) {
+    companion.collapsed = {
+      ...(companion.collapsed ?? {}),
+      [update.collapsed.surface]: update.collapsed.value,
+    };
+  }
+  saveMachineCompanionConfig(companion, path);
+  return companion;
 }
 
 /** The persisted Companion learner, independent of the shared `user.id`. */

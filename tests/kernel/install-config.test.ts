@@ -1,6 +1,12 @@
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { basename, dirname, join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   detectSyncProvider,
@@ -26,6 +32,7 @@ import {
   setCompanionSelectedUserId,
   setCompanionSelectedVscodeModelId,
   setInstallMode,
+  updateMachineCompanionConfig,
   upsertConfiguredWorkspace,
 } from "../../src/kernel/index.js";
 
@@ -327,6 +334,97 @@ describe("install config", () => {
 
     expect(getCompanionSelectedUserId(path)).toBeUndefined();
     expect(getCompanionCollapsed(path)).toEqual({});
+  });
+
+  it("writes atomically via a temp file + rename, leaving no stray temp files behind", () => {
+    const path = tempConfigPath();
+    setInstallMode("default", path);
+    setCompanionSelectedUserId("test-user-0.6.2", path);
+
+    // Only the real config file should remain in the directory — the temp
+    // file used for the atomic write is renamed over the target, never left
+    // behind, regardless of how many saves ran.
+    const entries = readdirSync(dirname(path));
+    expect(entries).toEqual([basename(path)]);
+    const reloaded = JSON.parse(readFileSync(path, "utf-8"));
+    expect(reloaded.mode).toBe("default");
+    expect(reloaded.companion.selectedUserId).toBe("test-user-0.6.2");
+  });
+
+  it("recovers cleanly from a torn config file left by an interrupted write", () => {
+    const path = tempConfigPath();
+    setInstallMode("default", path);
+    setAgentConnectAutoDone(true, path);
+
+    // Simulate a crash mid-write: half a JSON document on disk.
+    writeFileSync(path, '{"mode":"defau', "utf-8");
+    expect(loadInstallConfig(path)).toEqual({});
+
+    // A subsequent setter can only load {} from the torn file (the merge
+    // behavior is unchanged — it is not this atomic-write fix's job to
+    // recover the lost fields), but its own write goes through the same
+    // temp-file + rename path, so it leaves a fully-formed file behind
+    // instead of compounding the corruption.
+    setAgentConnectAutoDone(true, path);
+    expect(getAgentConnectAutoDone(path)).toBe(true);
+    expect(JSON.parse(readFileSync(path, "utf-8"))).toEqual({
+      agent: { connectAutoDone: true },
+    });
+  });
+
+  it("applies a batch of Companion preference changes with one load and one save", () => {
+    const path = tempConfigPath();
+    // An unrelated Companion key already on disk must survive the batch.
+    setCompanionSelectedVscodeModelId("existing-model", path);
+
+    const result = updateMachineCompanionConfig(
+      {
+        selectedUserId: "test-user-0.6.2",
+        selectedEvaluatorId: "quick-mode",
+        collapsed: { surface: "recall", value: true },
+      },
+      path,
+    );
+
+    expect(result).toEqual({
+      selectedUserId: "test-user-0.6.2",
+      selectedEvaluatorId: "quick-mode",
+      selectedVscodeModelId: "existing-model",
+      collapsed: { recall: true },
+    });
+    expect(getCompanionSelectedUserId(path)).toBe("test-user-0.6.2");
+    expect(getCompanionSelectedEvaluatorId(path)).toBe("quick-mode");
+    expect(getCompanionCollapsed(path)).toEqual({ recall: true });
+    expect(getCompanionSelectedVscodeModelId(path)).toBe("existing-model");
+  });
+
+  it("merges a second collapsed surface into the batch update instead of replacing the map", () => {
+    const path = tempConfigPath();
+    updateMachineCompanionConfig(
+      { collapsed: { surface: "recall", value: true } },
+      path,
+    );
+    updateMachineCompanionConfig(
+      { collapsed: { surface: "graph", value: false } },
+      path,
+    );
+
+    expect(getCompanionCollapsed(path)).toEqual({
+      recall: true,
+      graph: false,
+    });
+  });
+
+  it("clears a Companion field via the batch update when it is explicitly present but undefined", () => {
+    const path = tempConfigPath();
+    setCompanionSelectedUserId("test-user-0.6.2", path);
+    setCompanionSelectedEvaluatorId("quick-mode", path);
+
+    updateMachineCompanionConfig({ selectedUserId: undefined }, path);
+
+    expect(getCompanionSelectedUserId(path)).toBeUndefined();
+    // Unrelated key untouched by the clear.
+    expect(getCompanionSelectedEvaluatorId(path)).toBe("quick-mode");
   });
 
   it("detects file-sync providers from a folder path", () => {

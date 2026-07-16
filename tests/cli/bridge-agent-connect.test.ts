@@ -51,7 +51,7 @@ describe("bridge agent-harness-status / agent-connect", () => {
     return JSON.parse(output);
   }
 
-  it("reports the seven user-scoped harnesses with detection state", () => {
+  it("reports the seven user-scoped harnesses plus Claude Code with detection state", () => {
     const result = runBridge(["agent-harness-status"]) as {
       success: boolean;
       zamOnPath: boolean;
@@ -66,16 +66,18 @@ describe("bridge agent-harness-status / agent-connect", () => {
 
     expect(result.success).toBe(true);
     expect(typeof result.zamOnPath).toBe("boolean");
-    expect(result.harnesses).toHaveLength(7);
-    expect(result.harnesses.map((h) => h.harness)).not.toContain(
-      "claude-code",
-    );
+    // Claude Code is probed too (finding: it was silently excluded from the
+    // inventory, always reported unconfigured with no supporting evidence)
+    // — its `.mcp.json` target is the bridge's temp cwd, honestly probed the
+    // same way as every other harness's config file.
+    expect(result.harnesses).toHaveLength(8);
+    expect(result.harnesses.map((h) => h.harness)).toContain("claude-code");
     for (const entry of result.harnesses) {
       expect(typeof entry.label).toBe("string");
       expect(typeof entry.installed).toBe("boolean");
       expect(typeof entry.configured).toBe("boolean");
     }
-    // Nothing is configured for the ZAM MCP server in a fresh temp HOME.
+    // Nothing is configured for the ZAM MCP server in a fresh temp HOME/cwd.
     expect(result.harnesses.every((h) => !h.configured)).toBe(true);
   });
 

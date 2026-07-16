@@ -39,13 +39,10 @@
 
 import {
   type Database,
-  getCompanionCollapsed,
-  getCompanionSelectedEvaluatorId,
-  getCompanionSelectedUserId,
+  getMachineCompanionConfig,
   getSetting,
-  setCompanionCollapsed,
-  setCompanionSelectedEvaluatorId,
-  setCompanionSelectedUserId,
+  type MachineCompanionConfigUpdate,
+  updateMachineCompanionConfig,
 } from "../kernel/index.js";
 import {
   buildCompanionContext,
@@ -73,6 +70,7 @@ import {
 import {
   CONNECT_HARNESS_LABELS,
   type ConnectHarnessId,
+  type HarnessStatusReport,
   inspectConnectHarnesses,
 } from "./agent-connect.js";
 import { readDatabaseUserSummaries } from "./commands/bridge.js";
@@ -89,6 +87,51 @@ export interface CompanionContextServerOptions {
    * evidence, never routable.
    */
   clientSamplingCapable?: boolean;
+  /**
+   * The connecting MCP client's negotiated identity. `readCompanionContext`
+   * and `resolveOpeningCompanionContext` derive this from their own
+   * request/argument instead; `writeCompanionContext` takes it here so its
+   * post-write read is assembled against the *same* connection identity a
+   * read on this connection would use — a write must not silently drop back
+   * to an anonymous/undefined native host and under-report routability
+   * (e.g. `vscode-lm`) right after a Companion-initiated write.
+   */
+  clientInfo?: NativeClientInfo;
+}
+
+// ── Harness-report memoization (0.11.0 perf finding) ───────────────────────
+//
+// `inspectConnectHarnesses` re-probes every configured harness's config file
+// from disk on every call. Every context read/write/open call in one process
+// hits it, so a burst of Companion activity (opening Recall, then Graph, then
+// writing a selection) re-reads the same handful of files repeatedly for
+// data that changes only when the user runs `zam agent connect` again.
+// Memoized for a short TTL — long enough to absorb a burst, short enough
+// that a freshly-run `agent connect` is reflected without a restart.
+
+const HARNESS_REPORT_TTL_MS = 30_000;
+
+let cachedHarnessReport:
+  | { report: HarnessStatusReport; expiresAt: number }
+  | undefined;
+
+function getHarnessReportCached(): HarnessStatusReport {
+  const now = Date.now();
+  if (cachedHarnessReport && cachedHarnessReport.expiresAt > now) {
+    return cachedHarnessReport.report;
+  }
+  const report = inspectConnectHarnesses();
+  cachedHarnessReport = { report, expiresAt: now + HARNESS_REPORT_TTL_MS };
+  return report;
+}
+
+/**
+ * Test-only: clears the memoized harness report so a test's fake FS/PATH
+ * state (or a freshly-written `.mcp.json`) is reflected immediately instead
+ * of waiting out the TTL.
+ */
+export function resetCompanionHarnessReportCache(): void {
+  cachedHarnessReport = undefined;
 }
 
 export interface CompanionContextWriteOutcome {
@@ -207,28 +250,63 @@ async function assembleCompanionContext(
   db: Database,
   input: AssembleContextInput,
 ): Promise<CompanionContextReadResult> {
-  const persistedUserId = getCompanionSelectedUserId(input.configPath);
-  const persistedEvaluatorRaw = getCompanionSelectedEvaluatorId(
-    input.configPath,
-  );
+  // One load of the `companion` config section instead of three separate
+  // getters (each of which used to re-load and re-normalize the whole
+  // section on its own).
+  const companionConfig = getMachineCompanionConfig(input.configPath);
+  const persistedUserId = companionConfig.selectedUserId;
   const persistedEvaluatorId: EvaluatorId | undefined = isEvaluatorId(
-    persistedEvaluatorRaw,
+    companionConfig.selectedEvaluatorId,
   )
-    ? persistedEvaluatorRaw
+    ? companionConfig.selectedEvaluatorId
     : undefined;
-  const collapsedRaw = getCompanionCollapsed(input.configPath);
+  const collapsedRaw = companionConfig.collapsed ?? {};
 
-  // Legacy fallback: the shared database's `user.id`, exactly as every other
-  // MCP tool already resolves it. Never throws — an unset default just
-  // leaves `fallback` undefined, matching `buildCompanionContext`'s
-  // documented backward-compatible behavior.
-  const fallbackUserId = (await getSetting(db, "user.id")) ?? undefined;
-
-  const harnessReport = inspectConnectHarnesses();
-  const profiles = await readDatabaseUserSummaries(db);
+  const harnessReport = getHarnessReportCached();
   const clientSamplingCapable = input.clientSamplingCapable ?? false;
   const isVscodeCompanion =
     input.nativeHost?.normalizedId === "vscode-companion";
+
+  // Three independent reads against the same db handle — run concurrently
+  // rather than serially awaiting each in turn:
+  // - the legacy database default `user.id`, exactly as every other MCP
+  //   tool already resolves it (never throws; an unset default just leaves
+  //   `fallback` undefined, matching `buildCompanionContext`'s documented
+  //   backward-compatible behavior);
+  // - the learner profile list for the picker; and
+  // - the legacy `recall.quick_mode` setting, which seeds (never overrides)
+  //   the default evaluator below.
+  const [fallbackUserIdRaw, profiles, quickModeRaw] = await Promise.all([
+    getSetting(db, "user.id"),
+    readDatabaseUserSummaries(db),
+    getSetting(db, "recall.quick_mode"),
+  ]);
+  const fallbackUserId = fallbackUserIdRaw ?? undefined;
+  const quickModeSettingIsOn = quickModeRaw === "true";
+
+  // No persisted preference yet: default to the one adapter that is
+  // actually routable for this connection (Phase 3) rather than always
+  // naming quick mode — a Companion opened for the first time should show
+  // the Agent pill it will really use, not a conservative placeholder. This
+  // is a *default*, not a fallback-after-failure: it only applies when
+  // nothing has been explicitly selected or persisted (see
+  // `resolveSelection`'s precedence order), so it never overrides an
+  // existing choice.
+  //
+  // The legacy `recall.quick_mode` setting seeds this default to quick mode
+  // regardless of connection when it is "true" — so a machine that opted
+  // into the pre-0.11.0 quick-mode-only behavior sees an Agent pill that
+  // matches what Recall actually does, without that legacy setting ever
+  // overriding an explicit/persisted evaluator choice (it only occupies the
+  // `fallback` slot of the selection precedence, same as `isVscodeCompanion`
+  // below).
+  const defaultEvaluatorId: EvaluatorId = quickModeSettingIsOn
+    ? "quick-mode"
+    : isVscodeCompanion
+      ? "vscode-lm"
+      : clientSamplingCapable
+        ? "native-mcp-host"
+        : "quick-mode";
 
   const { read } = buildCompanionContext({
     surface: input.surface,
@@ -240,15 +318,7 @@ async function assembleCompanionContext(
     },
     evaluatorSelection: {
       persisted: persistedEvaluatorId,
-      // No persisted preference yet: default to the one adapter that is
-      // actually routable for this connection (Phase 3) rather than always
-      // naming quick mode — a Companion opened for the first time should
-      // show the Agent pill it will really use, not a conservative
-      // placeholder. This is a *default*, not a fallback-after-failure: it
-      // only applies when nothing has been explicitly selected or persisted
-      // (see `resolveSelection`'s precedence order), so it never overrides
-      // an existing choice.
-      fallback: isVscodeCompanion ? "vscode-lm" : "quick-mode",
+      fallback: defaultEvaluatorId,
     },
     evaluatorRouteInputs: buildEvaluatorRouteInputs(
       harnessReport,
@@ -319,6 +389,12 @@ export async function writeCompanionContext(
 ): Promise<CompanionContextWriteOutcome> {
   const configPath = options.configPath;
   let reloadRequired = false;
+  // Accumulate every touched field and persist them with one batched
+  // load-apply-save (`updateMachineCompanionConfig`) instead of the
+  // individual setters' one-load-one-save-per-field pattern — a write that
+  // sets userId, evaluatorId, and collapsed all at once now does one read
+  // and one write of `~/.zam/config.json`, not three.
+  const update: MachineCompanionConfigUpdate = {};
 
   if (request.userId !== undefined) {
     const selection = resolveSelection<string | undefined>({
@@ -326,7 +402,7 @@ export async function writeCompanionContext(
       fallback: undefined,
     });
     if (isPersistableSelection(selection) && selection.value) {
-      setCompanionSelectedUserId(selection.value, configPath);
+      update.selectedUserId = selection.value;
       reloadRequired = true;
     }
   }
@@ -337,18 +413,29 @@ export async function writeCompanionContext(
       fallback: undefined,
     });
     if (isPersistableSelection(selection) && selection.value) {
-      setCompanionSelectedEvaluatorId(selection.value, configPath);
+      update.selectedEvaluatorId = selection.value;
       reloadRequired = true;
     }
   }
 
   if (request.collapsed !== undefined) {
-    setCompanionCollapsed(request.surface, request.collapsed, configPath);
+    update.collapsed = { surface: request.surface, value: request.collapsed };
   }
 
+  if (Object.keys(update).length > 0) {
+    updateMachineCompanionConfig(update, configPath);
+  }
+
+  // Assemble the post-write read against the *same* connection identity a
+  // read on this connection would use (finding: the write path must not
+  // drop it) — otherwise a write from a Companion-identified connection
+  // would report `vscode-lm` as unroutable and silently fall back to
+  // `quick-mode` immediately after the write that just set it.
   const read = await assembleCompanionContext(db, {
     surface: request.surface,
+    nativeHost: normalizeNativeHostIdentity(options.clientInfo),
     configPath,
+    clientSamplingCapable: options.clientSamplingCapable,
   });
   return { read, reloadRequired };
 }

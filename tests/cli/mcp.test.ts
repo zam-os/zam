@@ -7,6 +7,7 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createMcpServer } from "../../src/cli/commands/mcp.js";
+import type { Database } from "../../src/kernel/index.js";
 import {
   createToken,
   ensureCard,
@@ -556,6 +557,95 @@ describe("MCP stdio server tests", () => {
     expect(res.isError).toBe(true);
     const data = JSON.parse(res.content[0].text);
     expect(data.error).toContain("Session not found");
+  });
+
+  describe("open-tool resilience (finding: open tools could fail to open)", () => {
+    function makeThrowingDb(): Database {
+      const fail = () => {
+        throw new Error("simulated DB outage");
+      };
+      return {
+        prepare: fail,
+        exec: async () => fail(),
+        pragma: async () => fail(),
+        transaction: async () => fail(),
+        close: async () => {},
+      } as unknown as Database;
+    }
+
+    it("never fails to open recall even when every DB read throws", async () => {
+      const brokenDb = makeThrowingDb();
+      const brokenServer = createMcpServer(brokenDb);
+      const [cTrans, sTrans] = InMemoryTransport.createLinkedPair();
+      const brokenClient = new Client(
+        { name: "test-client-broken-db", version: "1.0.0" },
+        { capabilities: {} },
+      );
+      await Promise.all([
+        brokenClient.connect(cTrans),
+        brokenServer.connect(sTrans),
+      ]);
+
+      try {
+        const res = await brokenClient.callTool({
+          name: "zam_open_recall",
+          arguments: {},
+        });
+        expect(res.isError).toBeUndefined();
+        const structured = (res as any).structuredContent as {
+          recall?: string;
+          user?: string | null;
+          quickMode?: boolean;
+          companionContext?: { evaluators?: unknown[] };
+          companionContextDegraded?: boolean;
+        };
+        // The panel still "opens": a usable, non-error structured result,
+        // not a rejected call.
+        expect(structured.recall).toBe("zam");
+        expect(structured.user).toBeNull();
+        expect(structured.quickMode).toBe(false);
+        expect(structured.companionContext?.evaluators?.length).toBeGreaterThan(
+          0,
+        );
+        // The degradation is observable, never silent.
+        expect(structured.companionContextDegraded).toBe(true);
+      } finally {
+        await brokenClient.close();
+        await brokenServer.close();
+      }
+    });
+
+    it("never fails to open studio, graph, or settings when every DB read throws", async () => {
+      const brokenDb = makeThrowingDb();
+      const brokenServer = createMcpServer(brokenDb);
+      const [cTrans, sTrans] = InMemoryTransport.createLinkedPair();
+      const brokenClient = new Client(
+        { name: "test-client-broken-db-2", version: "1.0.0" },
+        { capabilities: {} },
+      );
+      await Promise.all([
+        brokenClient.connect(cTrans),
+        brokenServer.connect(sTrans),
+      ]);
+
+      try {
+        for (const name of [
+          "zam_open_studio",
+          "zam_show_graph",
+          "zam_open_settings",
+        ]) {
+          const res = await brokenClient.callTool({ name, arguments: {} });
+          expect(res.isError).toBeUndefined();
+          const structured = (res as any).structuredContent as {
+            companionContextDegraded?: boolean;
+          };
+          expect(structured.companionContextDegraded).toBe(true);
+        }
+      } finally {
+        await brokenClient.close();
+        await brokenServer.close();
+      }
+    });
   });
 
   it("smoke test: process running command mcp only outputs JSON-RPC frames on stdout", async () => {

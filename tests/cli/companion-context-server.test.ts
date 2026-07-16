@@ -1,18 +1,30 @@
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   readCompanionContext,
+  resetCompanionHarnessReportCache,
   resolveOpeningCompanionContext,
   writeCompanionContext,
 } from "../../src/cli/companion-context-server.js";
+import type { Database } from "../../src/kernel/index.js";
 import {
+  createToken,
+  ensureCard,
   getCompanionSelectedUserId,
   loadInstallConfig,
+  openDatabase,
 } from "../../src/kernel/index.js";
-import { createToken, ensureCard, openDatabase } from "../../src/kernel/index.js";
-import type { Database } from "../../src/kernel/index.js";
+
+vi.mock("../../src/cli/agent-connect.js", async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import("../../src/cli/agent-connect.js")>();
+  return {
+    ...actual,
+    inspectConnectHarnesses: vi.fn(actual.inspectConnectHarnesses),
+  };
+});
 
 describe("companion context server", () => {
   let tempDir: string;
@@ -32,6 +44,10 @@ describe("companion context server", () => {
         "INSERT OR REPLACE INTO user_config (key, value) VALUES ('user.id', 'thomas')",
       )
       .run();
+    // The harness report is memoized module-wide (0.11.0 perf finding) — reset
+    // it before every test so one test's real-filesystem probe state can
+    // never leak into the next.
+    resetCompanionHarnessReportCache();
   });
 
   afterEach(async () => {
@@ -264,7 +280,10 @@ describe("companion context server", () => {
     );
     expect(nativeHost?.routable).toBe(true);
     expect(nativeHost?.reason).toBeUndefined();
-    expect(result.activeEvaluatorId).toBe("quick-mode");
+    // Finding: the default evaluator must not ignore a sampling-capable
+    // non-Companion host — native-mcp-host is both routable and the default
+    // here, not a conservative quick-mode fallback.
+    expect(result.activeEvaluatorId).toBe("native-mcp-host");
   });
 
   it("marks native-mcp-host unroutable for a non-Companion client that never advertised sampling", async () => {
@@ -307,5 +326,143 @@ describe("companion context server", () => {
     );
     expect(result.selectedEvaluatorId).toBe("quick-mode");
     expect(result.activeEvaluatorId).toBe("quick-mode");
+  });
+
+  describe("default evaluator selection (finding: ignored sampling-capable hosts)", () => {
+    it("defaults to quick-mode for an unknown/generic client with no sampling", async () => {
+      const result = await readCompanionContext(
+        db,
+        { surface: "recall", clientInfo: { name: "some-other-host" } },
+        { configPath },
+      );
+      expect(result.activeEvaluatorId).toBe("quick-mode");
+    });
+
+    it("defaults to vscode-lm when the client is the VS Code Companion", async () => {
+      const result = await readCompanionContext(
+        db,
+        { surface: "recall", clientInfo: { name: "vscode-zam-companion" } },
+        { configPath },
+      );
+      expect(result.activeEvaluatorId).toBe("vscode-lm");
+    });
+
+    it("defaults to native-mcp-host for a sampling-capable non-Companion client", async () => {
+      const result = await readCompanionContext(
+        db,
+        { surface: "recall", clientInfo: { name: "some-other-host" } },
+        { configPath, clientSamplingCapable: true },
+      );
+      expect(result.activeEvaluatorId).toBe("native-mcp-host");
+    });
+
+    it("seeds the default to quick-mode when recall.quick_mode is true, regardless of connection", async () => {
+      await db
+        .prepare(
+          "INSERT OR REPLACE INTO user_config (key, value) VALUES ('recall.quick_mode', 'true')",
+        )
+        .run();
+
+      const asCompanion = await readCompanionContext(
+        db,
+        { surface: "recall", clientInfo: { name: "vscode-zam-companion" } },
+        { configPath },
+      );
+      expect(asCompanion.activeEvaluatorId).toBe("quick-mode");
+
+      const samplingCapable = await readCompanionContext(
+        db,
+        { surface: "recall", clientInfo: { name: "some-other-host" } },
+        { configPath, clientSamplingCapable: true },
+      );
+      expect(samplingCapable.activeEvaluatorId).toBe("quick-mode");
+    });
+
+    it("never lets the recall.quick_mode default override an already-persisted evaluator selection", async () => {
+      await writeCompanionContext(
+        db,
+        { surface: "recall", evaluatorId: "vscode-lm" },
+        { configPath },
+      );
+      await db
+        .prepare(
+          "INSERT OR REPLACE INTO user_config (key, value) VALUES ('recall.quick_mode', 'true')",
+        )
+        .run();
+
+      const result = await readCompanionContext(
+        db,
+        { surface: "recall", clientInfo: { name: "vscode-zam-companion" } },
+        { configPath },
+      );
+      expect(result.selectedEvaluatorId).toBe("vscode-lm");
+      expect(result.activeEvaluatorId).toBe("vscode-lm");
+    });
+  });
+
+  describe("write path connection identity (finding: dropped on write)", () => {
+    it("assembles the post-write read against the same connection identity a read would use", async () => {
+      const written = await writeCompanionContext(
+        db,
+        { surface: "recall", collapsed: true },
+        { configPath, clientInfo: { name: "vscode-zam-companion" } },
+      );
+
+      const routable = written.read.evaluators
+        .filter((route) => route.routable)
+        .map((route) => route.id)
+        .sort();
+      expect(routable).toEqual(["quick-mode", "vscode-lm"]);
+      expect(written.read.activeEvaluatorId).toBe("vscode-lm");
+    });
+
+    it("preserves activeEvaluatorId across a write that also changes the evaluator selection", async () => {
+      const written = await writeCompanionContext(
+        db,
+        { surface: "recall", evaluatorId: "vscode-lm" },
+        { configPath, clientInfo: { name: "vscode-zam-companion" } },
+      );
+      expect(written.read.selectedEvaluatorId).toBe("vscode-lm");
+      expect(written.read.activeEvaluatorId).toBe("vscode-lm");
+
+      // Restart persistence: a fresh read on the same connection identity
+      // agrees with what the write just returned.
+      const reread = await readCompanionContext(
+        db,
+        { surface: "recall", clientInfo: { name: "vscode-zam-companion" } },
+        { configPath },
+      );
+      expect(reread.activeEvaluatorId).toBe("vscode-lm");
+    });
+
+    it("falls back to an anonymous connection identity when the write branch supplies none", async () => {
+      const written = await writeCompanionContext(
+        db,
+        { surface: "recall", collapsed: true },
+        { configPath },
+      );
+      const routable = written.read.evaluators
+        .filter((route) => route.routable)
+        .map((route) => route.id);
+      expect(routable).toEqual(["quick-mode"]);
+    });
+  });
+
+  describe("harness report memoization (finding: repeated config I/O)", () => {
+    it("caches inspectConnectHarnesses within the TTL and recomputes only after a reset", async () => {
+      const agentConnect = await import("../../src/cli/agent-connect.js");
+      const spy = agentConnect.inspectConnectHarnesses as unknown as ReturnType<
+        typeof vi.fn
+      >;
+      spy.mockClear();
+
+      await readCompanionContext(db, { surface: "recall" }, { configPath });
+      await readCompanionContext(db, { surface: "graph" }, { configPath });
+      expect(spy).toHaveBeenCalledTimes(1);
+
+      resetCompanionHarnessReportCache();
+      await readCompanionContext(db, { surface: "recall" }, { configPath });
+      expect(spy).toHaveBeenCalledTimes(2);
+    });
   });
 });
