@@ -2,6 +2,7 @@
 
 ## 2026-07-17
 
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 - **Creation** — [Token and Card Model](token-card-model.md)
 - **Creation** — [Prerequisite Graph and Blocking](prerequisite-blocking.md)
 - **Creation** — [MCP Transport and Surfaces](mcp-surfaces.md)

@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
@@ -7,6 +7,7 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createMcpServer } from "../../src/cli/commands/mcp.js";
+import { upsertArticle } from "../../src/cli/okf/io.js";
 import type { Database } from "../../src/kernel/index.js";
 import {
   createToken,
@@ -88,9 +89,9 @@ describe("MCP stdio server tests", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all 21 tools with correct annotations", async () => {
+  it("lists all 22 tools with correct annotations", async () => {
     const response = await client.listTools();
-    expect(response.tools).toHaveLength(21);
+    expect(response.tools).toHaveLength(22);
 
     const toolNames = response.tools.map((t) => t.name).sort();
     const expectedNames = [
@@ -115,6 +116,7 @@ describe("MCP stdio server tests", () => {
       "zam_okf_catalog",
       "zam_okf_read",
       "zam_okf_upsert",
+      "zam_okf_read_citation",
     ].sort();
     expect(toolNames).toEqual(expectedNames);
 
@@ -1008,6 +1010,109 @@ describe("MCP stdio server tests", () => {
       });
       const otherData = JSON.parse(otherSurface.content[0].text);
       expect(otherData.collapsed).toBe(false);
+    });
+  });
+
+  describe("zam_okf_read_citation and zam_okf_catalog include_log", () => {
+    let repoRoot: string;
+    let bundleDir: string;
+
+    beforeEach(() => {
+      // Shaped like a repo checkout: .git at the root, docs/okf as the
+      // bundle, docs/adr holding a citation target outside the bundle.
+      repoRoot = mkdtempSync(join(tmpdir(), "zam-okf-mcp-"));
+      mkdirSync(join(repoRoot, ".git"));
+      bundleDir = join(repoRoot, "docs", "okf");
+      mkdirSync(bundleDir, { recursive: true });
+      mkdirSync(join(repoRoot, "docs", "adr"), { recursive: true });
+      writeFileSync(
+        join(repoRoot, "docs", "adr", "2026-07-17-x.md"),
+        "# Decision X\n",
+      );
+      upsertArticle(
+        bundleDir,
+        "fsrs-scheduling.md",
+        [
+          "---",
+          "type: concept",
+          "title: FSRS Scheduling",
+          "description: How ZAM schedules reviews.",
+          "tags:",
+          "  - kernel",
+          'resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"',
+          "timestamp: 2026-07-17T00:00:00Z",
+          "---",
+          "",
+          "FSRS-5 drives the queue.",
+          "",
+        ].join("\n"),
+        "2026-07-17",
+      );
+    });
+
+    afterEach(() => {
+      rmSync(repoRoot, { recursive: true, force: true });
+    });
+
+    it("reads a citation target outside the bundle as a repo-relative, forward-slash path", async () => {
+      const res = await client.callTool({
+        name: "zam_okf_read_citation",
+        arguments: {
+          bundle_dir: bundleDir,
+          target: "../adr/2026-07-17-x.md",
+        },
+      });
+      expect(res.isError).toBeUndefined();
+      const data = JSON.parse(res.content[0].text);
+      expect(data.target).toBe("../adr/2026-07-17-x.md");
+      expect(data.path).toBe("docs/adr/2026-07-17-x.md");
+      expect(data.content).toBe("# Decision X\n");
+    });
+
+    it("rejects a traversal target with isError and an invalid citation target message", async () => {
+      const res = await client.callTool({
+        name: "zam_okf_read_citation",
+        arguments: {
+          bundle_dir: bundleDir,
+          target: "../../../outside.md",
+        },
+      });
+      expect(res.isError).toBe(true);
+      const data = JSON.parse(res.content[0].text);
+      expect(data.error).toContain("invalid citation target");
+    });
+
+    it("returns the raw log.md text from zam_okf_catalog when include_log is set", async () => {
+      const res = await client.callTool({
+        name: "zam_okf_catalog",
+        arguments: { bundle_dir: bundleDir, include_log: true },
+      });
+      expect(res.isError).toBeUndefined();
+      const data = JSON.parse(res.content[0].text);
+      expect(data.log).toContain("FSRS Scheduling");
+      expect(data.log).toContain("Creation");
+    });
+
+    it("omits log from zam_okf_catalog when include_log is absent", async () => {
+      const res = await client.callTool({
+        name: "zam_okf_catalog",
+        arguments: { bundle_dir: bundleDir },
+      });
+      expect(res.isError).toBeUndefined();
+      const data = JSON.parse(res.content[0].text);
+      expect(data.log).toBeUndefined();
+    });
+
+    it("returns an empty log string when log.md does not exist yet", async () => {
+      const emptyBundleDir = join(repoRoot, "docs", "empty-okf");
+      mkdirSync(emptyBundleDir, { recursive: true });
+      const res = await client.callTool({
+        name: "zam_okf_catalog",
+        arguments: { bundle_dir: emptyBundleDir, include_log: true },
+      });
+      expect(res.isError).toBeUndefined();
+      const data = JSON.parse(res.content[0].text);
+      expect(data.log).toBe("");
     });
   });
 });

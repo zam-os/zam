@@ -1215,7 +1215,7 @@ export function createMcpServer(db: Database): McpServer {
     ),
   );
 
-  // 19.–21. zam_okf_* — the OKF knowledge-base surface (ADR 2026-07-17).
+  // 19.–22. zam_okf_* — the OKF knowledge-base surface (ADR 2026-07-17).
   // Operates on any OKF bundle directory; docs/okf of the current workspace
   // by default. Upsert is the ONLY sanctioned write path into a bundle.
   const okfBundleDirSchema = z
@@ -1230,21 +1230,39 @@ export function createMcpServer(db: Database): McpServer {
         "List the OKF knowledge-base articles (type, title, description, tags, resource URL) plus conformance problems, if any",
       inputSchema: {
         bundle_dir: okfBundleDirSchema,
+        include_log: z
+          .boolean()
+          .optional()
+          .describe(
+            "Also return the raw log.md text (empty string if missing)",
+          ),
       },
       annotations: {
         ...commonAnnotations,
         readOnlyHint: true,
       },
     },
-    wrapHandler(async (params: { bundle_dir?: string }) => {
-      const { DEFAULT_BUNDLE_DIR, loadBundle } = await import("../okf/io.js");
-      const bundle = loadBundle(params.bundle_dir ?? DEFAULT_BUNDLE_DIR);
-      return {
-        dir: bundle.dir,
-        articles: bundle.catalog,
-        problems: bundle.problems,
-      };
-    }),
+    wrapHandler(
+      async (params: { bundle_dir?: string; include_log?: boolean }) => {
+        const { DEFAULT_BUNDLE_DIR, loadBundle } = await import("../okf/io.js");
+        const bundle = loadBundle(params.bundle_dir ?? DEFAULT_BUNDLE_DIR);
+        let log: string | undefined;
+        if (params.include_log) {
+          const { readFileSync } = await import("node:fs");
+          try {
+            log = readFileSync(join(bundle.dir, "log.md"), "utf8");
+          } catch {
+            log = "";
+          }
+        }
+        return {
+          dir: bundle.dir,
+          articles: bundle.catalog,
+          problems: bundle.problems,
+          ...(params.include_log ? { log } : {}),
+        };
+      },
+    ),
   );
 
   server.registerTool(
@@ -1319,6 +1337,38 @@ export function createMcpServer(db: Database): McpServer {
         return { ok: true, created: result.created, entry: result.entry };
       },
     ),
+  );
+
+  server.registerTool(
+    "zam_okf_read_citation",
+    {
+      description:
+        "Read a citation target referenced by an OKF article (e.g. an ADR): read-only, restricted to .md files that resolve inside the repository root — the target may be outside the bundle but never outside the repo",
+      inputSchema: {
+        bundle_dir: okfBundleDirSchema,
+        target: z
+          .string()
+          .describe(
+            "Path to the citation target relative to bundle_dir, e.g. ../adr/2026-07-17-x.md",
+          ),
+      },
+      annotations: {
+        ...commonAnnotations,
+        readOnlyHint: true,
+      },
+    },
+    wrapHandler(async (params: { bundle_dir?: string; target: string }) => {
+      const { readFileSync } = await import("node:fs");
+      const { relative, sep } = await import("node:path");
+      const { DEFAULT_BUNDLE_DIR, findRepoRoot, resolveCitationPath } =
+        await import("../okf/io.js");
+      const bundleDir = params.bundle_dir ?? DEFAULT_BUNDLE_DIR;
+      const path = resolveCitationPath(bundleDir, params.target);
+      const content = readFileSync(path, "utf8");
+      const root = findRepoRoot(bundleDir);
+      const repoRelativePath = relative(root, path).split(sep).join("/");
+      return { target: params.target, path: repoRelativePath, content };
+    }),
   );
 
   return server;
