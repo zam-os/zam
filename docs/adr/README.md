@@ -48,3 +48,4 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-16](2026-07-16-companion-context-and-harness-affinity.md) | Companion Context Bar and Harness Affinity | Implemented |
 | [2026-07-16b](2026-07-16b-in-recall-card-management.md) | In-Recall Card Management: Stop, Fix, and Remove | Implemented |
 | [2026-07-17](2026-07-17-okf-knowledge-base.md) | OKF Knowledge Base — Living Repo Knowledge as Learning Sources | Implemented |
+| [2026-07-17b](2026-07-17b-okf-visualizer-panel.md) | OKF Visualizer Panel (MCP App) | Implemented |

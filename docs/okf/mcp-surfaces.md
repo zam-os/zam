@@ -7,7 +7,7 @@ tags:
   - agents
   - surfaces
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-07-17T00:00:00Z
+timestamp: 2026-07-17T15:00:00Z
 ---
 
 `zam mcp` starts a stdio **Model Context Protocol** server
@@ -23,21 +23,41 @@ installed harnesses.
 The server exposes ZAM's tool surface (session start/end, queue and
 review actions, token search and registration, prerequisite linking,
 companion context and sampling, and the OKF knowledge-base tools
-`zam_okf_catalog` / `zam_okf_read` / `zam_okf_upsert`). The authoritative
-tool list with annotations is pinned by `tests/cli/mcp.test.ts`.
+`zam_okf_catalog` / `zam_okf_read` / `zam_okf_upsert` /
+`zam_okf_read_citation`). The authoritative tool list with annotations
+is pinned by `tests/cli/mcp.test.ts`.
+
+`zam_okf_catalog` accepts an optional `include_log` flag that adds the
+raw `log.md` text to the result (empty string if the bundle has none
+yet). `zam_okf_read_citation` reads a citation target an article points
+to — an ADR, for example — read-only and restricted to `.md` files that
+resolve inside the repository root; the target may be outside the
+bundle (that's its purpose) but never outside the repo
+(`resolveCitationPath` / `findRepoRoot` in `src/cli/okf/io.ts`).
 
 # MCP Apps panels
 
-Four self-contained HTML panels ship as MCP Apps resources and open
+Five self-contained HTML panels ship as MCP Apps resources and open
 in hosts that support them: `ui://zam/studio`, `ui://zam/recall`,
-`ui://zam/graph`, `ui://zam/settings` (built by `npm run build:panel`,
-served from `dist/ui/`). The VS Code / Antigravity Companion extension
-(`src/vscode-extension/`) hosts the same panels in a webview and routes
-recall evaluation through per-IDE evaluator selections.
+`ui://zam/graph`, `ui://zam/settings`, `ui://zam/okf` (built by
+`npm run build:panel`, served from `dist/ui/`). The VS Code /
+Antigravity Companion extension (`src/vscode-extension/`) hosts the
+same panels in a webview and routes recall evaluation through
+per-IDE evaluator selections.
+
+`zam_okf_visualize` opens the OKF panel on any OKF bundle (default
+`docs/okf` under the server's working directory, like the other
+`zam_okf_*` tools): articles grouped by type with search, a markdown
+reader that expands cited ADRs and other citation targets inline via
+`zam_okf_read_citation`, a link graph (articles as nodes, inter-article
+links as edges, citations as visually distinct nodes), and the
+`log.md` history. The panel always opens — a missing or invalid bundle
+surfaces as `problems` in the panel instead of a tool error.
 
 # Citations
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-07-16 — Companion Context Bar and Harness Affinity](../adr/2026-07-16-companion-context-and-harness-affinity.md)
 - [ADR 2026-07-17 — OKF Knowledge Base](../adr/2026-07-17-okf-knowledge-base.md)
-- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`
+- [ADR 2026-07-17b — OKF Visualizer Panel](../adr/2026-07-17b-okf-visualizer-panel.md)
+- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`

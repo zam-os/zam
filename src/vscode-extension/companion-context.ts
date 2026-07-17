@@ -42,6 +42,7 @@ export const COMPANION_SURFACES = [
   "graph",
   "settings",
   "studio",
+  "okf",
 ] as const;
 
 export type CompanionSurface = (typeof COMPANION_SURFACES)[number];

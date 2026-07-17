@@ -30,7 +30,7 @@
     "build": "tsup && npm run build:panel && npm run build:copilot-extension && npm run build:vscode-extension",
     "build:copilot-extension": "tsup --config tsup.config.copilot-extension.ts && vite build --config vite.config.copilot-extension.mts && node scripts/prepare-copilot-extension.mjs",
     "build:vscode-extension": "tsup --config tsup.config.vscode-extension.ts && vite build --config vite.config.vscode-extension.mts && node scripts/prepare-vscode-extension.mjs",
-    "build:panel": "vite build --config vite.config.panel.mts && vite build --config vite.config.panel.mts --mode recall && vite build --config vite.config.panel.mts --mode graph && vite build --config vite.config.panel.mts --mode settings",
+    "build:panel": "vite build --config vite.config.panel.mts && vite build --config vite.config.panel.mts --mode recall && vite build --config vite.config.panel.mts --mode graph && vite build --config vite.config.panel.mts --mode settings && vite build --config vite.config.panel.mts --mode okf",
     "prepare": "npm run build",
     "dev": "tsx src/cli/index.ts",
     "test": "vitest run",

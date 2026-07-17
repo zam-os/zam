@@ -128,4 +128,25 @@ describe("desktop module boundaries", () => {
       ).toBe(false);
     }
   });
+
+  // OKF visualizer panel (Task 4, docs/plans/2026-07-17-okf-visualizer-panel-plan.md).
+  it("okf.ts stays Tauri-free, Three-free, and does not import ./main, ./panel, or ./recall", () => {
+    const specifiers = importSpecifiers(read("panel/okf.ts"));
+    for (const specifier of specifiers) {
+      expect(
+        specifier.startsWith("@tauri-apps"),
+        `okf.ts must not import Tauri APIs (found "${specifier}")`,
+      ).toBe(false);
+      expect(
+        specifier === "three" || specifier.startsWith("three/"),
+        `okf.ts must not import Three.js (found "${specifier}")`,
+      ).toBe(false);
+      for (const forbidden of ["./main", "../main", "./panel", "./recall"]) {
+        expect(
+          specifier.startsWith(forbidden),
+          `okf.ts must not import ${forbidden}.js (found "${specifier}")`,
+        ).toBe(false);
+      }
+    }
+  });
 });

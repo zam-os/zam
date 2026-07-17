@@ -12,11 +12,12 @@ import {
 import { EvaluatorUnavailableError } from "../../src/vscode-extension/companion-evaluator.js";
 
 describe("companion context surfaces", () => {
-  it("recognizes exactly the four shared-header surfaces", () => {
+  it("recognizes exactly the five shared-header surfaces", () => {
     expect(isCompanionSurface("recall")).toBe(true);
     expect(isCompanionSurface("graph")).toBe(true);
     expect(isCompanionSurface("settings")).toBe(true);
     expect(isCompanionSurface("studio")).toBe(true);
+    expect(isCompanionSurface("okf")).toBe(true);
     expect(isCompanionSurface("unknown")).toBe(false);
     expect(isCompanionSurface(undefined)).toBe(false);
   });

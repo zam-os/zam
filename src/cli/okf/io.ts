@@ -2,8 +2,15 @@
  * Filesystem layer for OKF bundles (ADR 2026-07-17). Everything that
  * touches disk lives here; the contract itself is in bundle.ts.
  */
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join, resolve } from "node:path";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  realpathSync,
+  writeFileSync,
+} from "node:fs";
+import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import {
   appendLog,
   buildCatalog,
@@ -37,6 +44,73 @@ export function resolveArticlePath(dir: string, file: string): string {
     throw new Error(`refusing to address reserved file: ${file}`);
   }
   return join(resolve(dir), file);
+}
+
+/**
+ * Walk up from `startDir` to the nearest ancestor containing a `.git`
+ * directory (the repository root). Falls back to the parent of
+ * `startDir` when no `.git` is found (e.g. installed/vendored bundles
+ * outside a git checkout).
+ */
+export function findRepoRoot(startDir: string): string {
+  let dir = resolve(startDir);
+  for (;;) {
+    if (existsSync(join(dir, ".git"))) return dir;
+    const parent = dirname(dir);
+    if (parent === dir) return resolve(startDir, "..");
+    dir = parent;
+  }
+}
+
+/**
+ * Resolve a citation target relative to a bundle directory. Citations may
+ * point outside the bundle (e.g. an ADR) but never outside the repository
+ * root, must be relative `.md` paths, and are read-only (ADR 2026-07-17
+ * Decision 5).
+ */
+export function resolveCitationPath(bundleDir: string, target: string): string {
+  if (isAbsolute(target)) {
+    throw new Error(
+      `invalid citation target: absolute paths are not allowed (${target})`,
+    );
+  }
+  if (!target.endsWith(".md")) {
+    throw new Error(
+      `invalid citation target: only .md files are readable (${target})`,
+    );
+  }
+  const root = findRepoRoot(bundleDir);
+  const resolved = resolve(bundleDir, target);
+  assertContained(root, resolved, target);
+
+  // Lexical containment can pass while the path actually redirects
+  // outside the repo root through a symlink or (on Windows) a directory
+  // junction. Once the target exists on disk, re-check containment
+  // against the realpath so a reparse point cannot smuggle a read outside
+  // the repository.
+  if (existsSync(resolved)) {
+    assertContained(realpathSync(root), realpathSync(resolved), target);
+  }
+  return resolved;
+}
+
+/**
+ * Segment-aware containment check: `rel` must be `root` itself or a path
+ * strictly beneath it. A bare `rel.startsWith("..")` false-positives on any
+ * real path segment that merely starts with the two characters ".." (e.g. a
+ * directory named `..staging`) without ever escaping `root`.
+ */
+function assertContained(
+  root: string,
+  candidate: string,
+  target: string,
+): void {
+  const rel = relative(root, candidate);
+  if (rel === ".." || rel.startsWith(`..${sep}`) || isAbsolute(rel)) {
+    throw new Error(
+      `invalid citation target: resolves outside the repository root (${target})`,
+    );
+  }
 }
 
 export function loadBundle(dir: string): LoadedBundle {

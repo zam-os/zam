@@ -1,6 +1,13 @@
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  symlinkSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   appendLog,
@@ -12,6 +19,7 @@ import {
 import {
   loadBundle,
   resolveArticlePath,
+  resolveCitationPath,
   upsertArticle,
 } from "../../src/cli/okf/io.js";
 
@@ -175,5 +183,115 @@ describe("okf/io", () => {
     const bundle = loadBundle(dir);
     expect(bundle.problems.join(" ")).toMatch(/bad\.md/);
     expect(bundle.catalog.map((e) => e.file)).toEqual(["good.md"]);
+  });
+});
+
+describe("resolveCitationPath", () => {
+  const makeRepo = () => {
+    const root = mkdtempSync(join(tmpdir(), "zam-okf-cite-"));
+    mkdirSync(join(root, ".git"));
+    mkdirSync(join(root, "docs", "okf"), { recursive: true });
+    mkdirSync(join(root, "docs", "adr"), { recursive: true });
+    writeFileSync(join(root, "docs", "adr", "2026-01-01-x.md"), "# X\n");
+    return root;
+  };
+
+  it("resolves a relative ADR citation inside the repo", () => {
+    const root = makeRepo();
+    const p = resolveCitationPath(join(root, "docs", "okf"), "../adr/2026-01-01-x.md");
+    expect(p).toBe(resolve(root, "docs", "adr", "2026-01-01-x.md"));
+  });
+
+  it("rejects absolute paths", () => {
+    const root = makeRepo();
+    expect(() => resolveCitationPath(join(root, "docs", "okf"), resolve(root, "docs/adr/2026-01-01-x.md")))
+      .toThrow(/invalid citation target/);
+  });
+
+  it("rejects escape from the repo root", () => {
+    const root = makeRepo();
+    expect(() => resolveCitationPath(join(root, "docs", "okf"), "../../../etc/passwd.md"))
+      .toThrow(/invalid citation target/);
+  });
+
+  it("rejects non-markdown targets", () => {
+    const root = makeRepo();
+    expect(() => resolveCitationPath(join(root, "docs", "okf"), "../adr/x.png"))
+      .toThrow(/invalid citation target/);
+  });
+
+  it("falls back to the bundle parent as root when no .git exists", () => {
+    const root = mkdtempSync(join(tmpdir(), "zam-okf-nogit-"));
+    mkdirSync(join(root, "okf"), { recursive: true });
+    writeFileSync(join(root, "sibling.md"), "# S\n");
+    expect(resolveCitationPath(join(root, "okf"), "../sibling.md")).toBe(resolve(root, "sibling.md"));
+    expect(() => resolveCitationPath(join(root, "okf"), "../../outside.md")).toThrow(/invalid citation target/);
+  });
+
+  // Hardening (Task 1 review): the containment check must be segment-aware.
+  // A bare `rel.startsWith("..")` false-positives on any real path segment
+  // that merely starts with the two characters "..", even though it never
+  // escapes the repository root.
+  it("accepts a directory literally named ..staging inside the repo root", () => {
+    const root = makeRepo();
+    mkdirSync(join(root, "..staging"), { recursive: true });
+    writeFileSync(join(root, "..staging", "note.md"), "# staging\n");
+    const p = resolveCitationPath(
+      join(root, "docs", "okf"),
+      "../../..staging/note.md",
+    );
+    expect(p).toBe(resolve(root, "..staging", "note.md"));
+  });
+
+  // Hardening (Task 1 review): symlink/junction defense. Lexical
+  // containment can pass while the path actually redirects outside the
+  // repo root via a reparse point; resolveCitationPath must re-check
+  // containment against the realpath once the target exists on disk.
+  it("rejects a symlink (or, where symlinks are denied, a directory junction) that redirects outside the repo", () => {
+    const root = makeRepo();
+    const outside = mkdtempSync(join(tmpdir(), "zam-okf-outside-"));
+    writeFileSync(join(outside, "secret.md"), "# secret\n");
+
+    let mode: "file-symlink" | "dir-junction" | "skipped" = "skipped";
+    try {
+      symlinkSync(
+        join(outside, "secret.md"),
+        join(root, "docs", "adr", "escape-link.md"),
+        "file",
+      );
+      mode = "file-symlink";
+    } catch {
+      // Windows non-admin denies file symlinks (EPERM) without Developer
+      // Mode. Directory junctions are a reparse point too and do not
+      // require elevated privilege on Windows, so try that next.
+      try {
+        symlinkSync(
+          outside,
+          join(root, "docs", "adr", "escape-junction"),
+          "junction",
+        );
+        mode = "dir-junction";
+      } catch {
+        mode = "skipped";
+      }
+    }
+
+    if (mode === "skipped") {
+      // eslint-disable-next-line no-console
+      console.info(
+        "[resolveCitationPath symlink test] OS denied both file symlinks and directory junctions; skipping the live containment assertion.",
+      );
+      return;
+    }
+    // eslint-disable-next-line no-console
+    console.info(`[resolveCitationPath symlink test] exercised via ${mode}`);
+
+    const target =
+      mode === "file-symlink"
+        ? "../adr/escape-link.md"
+        : "../adr/escape-junction/secret.md";
+    expect(() =>
+      resolveCitationPath(join(root, "docs", "okf"), target),
+    ).toThrow(/invalid citation target/);
   });
 });

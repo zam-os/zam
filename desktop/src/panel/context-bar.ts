@@ -39,7 +39,12 @@ import { t, tf } from "../i18n.js";
 
 // ── Wire shapes (mirror src/vscode-extension/companion-context.ts) ────────
 
-export type CompanionSurface = "recall" | "graph" | "settings" | "studio";
+export type CompanionSurface =
+  | "recall"
+  | "graph"
+  | "settings"
+  | "studio"
+  | "okf";
 
 export type CompanionUserSource =
   | "invocation"
