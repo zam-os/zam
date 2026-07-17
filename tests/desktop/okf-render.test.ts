@@ -205,6 +205,47 @@ describe("renderMarkdown", () => {
       );
     });
   });
+
+  describe("link safety (authority-relative // and \\ targets render inert)", () => {
+    // "//evil.com/x", "\\evil.com\x", and mixed "/\evil.com" have no scheme
+    // token, but a browser still resolves them to an off-origin authority
+    // (backslashes are normalized to forward slashes for http/https), so
+    // they must be rejected the same as an unsafe scheme -- not treated as
+    // a safe scheme-less relative path.
+    it("renders a //host authority-relative target inert -- no off-origin href, keeps the label", () => {
+      const html = renderMarkdown("[x](//evil.com/steal)");
+      expect(hrefValues(html).some((h) => h.startsWith("//"))).toBe(false);
+      expect(html).not.toContain("evil.com");
+      expect(html).toBe("<p><span>x</span></p>");
+    });
+
+    it("renders a \\\\host UNC-style target inert -- no off-origin href, keeps the label", () => {
+      const html = renderMarkdown("[x](\\\\evil.com\\steal)");
+      expect(html).not.toContain("evil.com");
+      expect(html).toBe("<p><span>x</span></p>");
+    });
+
+    it("renders a mixed /\\host target inert (browsers normalize \\ to / for http(s), so this is also off-origin)", () => {
+      const html = renderMarkdown("[x](/\\evil.com)");
+      expect(html).not.toContain("evil.com");
+      expect(html).toBe("<p><span>x</span></p>");
+    });
+
+    it("regression: a non-authority-relative fallback target (single leading dot, no scheme) still renders as a normal link", () => {
+      const html = renderMarkdown("[x](../adr/)");
+      expect(html).toBe('<p><a href="../adr/">x</a></p>');
+    });
+
+    it("regression: mailto and external https links stay navigable with attributes intact", () => {
+      const html = renderMarkdown(
+        "[email me](mailto:a@b.com) and visit [site](https://x.example).",
+      );
+      expect(html).toBe(
+        '<p><a href="mailto:a@b.com">email me</a> and visit ' +
+          '<a href="https://x.example" target="_blank" rel="noopener noreferrer">site</a>.</p>',
+      );
+    });
+  });
 });
 
 describe("groupCatalog", () => {

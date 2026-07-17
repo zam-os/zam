@@ -77,19 +77,27 @@ function classifyLink(target: string): LinkKind {
 const CONTROL_CHARS_RE = /[\x00-\x1F]/g;
 const SCHEME_RE = /^([a-z][a-z0-9+.-]*):/i;
 const SAFE_HREF_SCHEMES = new Set(["http", "https", "mailto"]);
+// Two or more leading slash/backslash characters, in any combination, form
+// an authority-relative target ("//host/x", "\\host\x", "/\host"): browsers
+// resolve these to a *different* origin (and normalize backslashes to
+// forward slashes for http/https, so mixed forms are just as live), even
+// though there is no scheme token for the check above to catch.
+const AUTHORITY_RELATIVE_RE = /^[/\\]{2,}/;
 
 /**
  * Decide whether `target` may be used as a navigating anchor `href`.
  * Returns the sanitized href to use, or `null` if the target must render
  * inert instead (visible label, no executing/navigating href) -- any
  * scheme outside the allowlist, e.g. `javascript:`, `data:`, `vbscript:`,
- * `file:`. A scheme-less target (relative path, `#fragment`) is always
- * safe, since it has no scheme to be hostile.
+ * `file:`; or an authority-relative target (see `AUTHORITY_RELATIVE_RE`).
+ * A scheme-less, non-authority-relative target (relative path, `#fragment`)
+ * is always safe, since it stays on the current origin.
  */
 function safeHref(target: string): string | null {
   const cleaned = target.replace(CONTROL_CHARS_RE, "").trim();
   const scheme = SCHEME_RE.exec(cleaned)?.[1].toLowerCase();
   if (scheme && !SAFE_HREF_SCHEMES.has(scheme)) return null;
+  if (AUTHORITY_RELATIVE_RE.test(cleaned)) return null;
   return cleaned;
 }
 
