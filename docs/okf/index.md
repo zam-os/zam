@@ -1,0 +1,29 @@
+---
+okf_version: "0.1"
+---
+
+# ZAM Knowledge Base
+
+Living reference knowledge for this repository in
+[Open Knowledge Format](https://github.com/GoogleCloudPlatform/knowledge-catalog).
+Current truth only — the *why* behind it lives in [../adr/](../adr/)
+(ADR 2026-07-17). Do not edit by hand: write through the
+`zam_okf_upsert` MCP tool.
+
+## algorithm
+
+- [FSRS-5 Scheduling](fsrs-scheduling.md) — ZAM schedules reviews with a pure-function FSRS-5 implementation; ratings 1-4 update stability and difficulty, and the FSRS test suite is the source of truth for scheduling behavior.
+
+## architecture
+
+- [Kernel and CLI Architecture](kernel-architecture.md) — ZAM is split into an AI-agnostic learning kernel and a thin CLI orchestration layer; all learning logic lives in the kernel, all LLM/HTTP code in the CLI.
+- [MCP Transport and Surfaces](mcp-surfaces.md) — zam mcp is the preferred agent transport - a stdio MCP server exposing ZAM tools and MCP Apps panels; zam agent connect configures supported harnesses.
+
+## data-model
+
+- [Prerequisite Graph and Blocking](prerequisite-blocking.md) — Tokens form a directed prerequisite graph; blocking and unblocking of dependent cards is a separate mechanism from FSRS rating, invoked by callers after a failed review.
+- [Token and Card Model](token-card-model.md) — A token is a shared atomic knowledge concept; a card is one user's FSRS state for it — a concept only appears in a user's queue if a card exists.
+
+## protocol
+
+- [Bridge CLI Protocol](bridge-protocol.md) — zam bridge is the machine-facing JSON fallback transport for agents; responses are always JSON, and the protocol types are the stable contract.
