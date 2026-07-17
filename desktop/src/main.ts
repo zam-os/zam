@@ -3793,8 +3793,8 @@ async function loadNextCard(
     document.getElementById("npu-loading")!.classList.add("hidden");
     document.getElementById("wait-prompt")!.classList.add("hidden");
     document.getElementById("answer-capture-box")!.classList.remove("hidden");
-    document.getElementById("study-inline-editor")?.classList.add("hidden");
-    document.getElementById("study-manage-menu")?.classList.add("hidden");
+    closeInlineEditor();
+    closeManageMenu();
     
     const textarea = document.getElementById("user-answer-input") as HTMLTextAreaElement;
     textarea.value = "";
@@ -4562,8 +4562,7 @@ async function saveInlineEdit(): Promise<void> {
     closeInlineEditor();
     alert(t("lbl_card_saved_toast"));
   } catch (err) {
-    console.error("Inline edit failed:", err);
-    alert(err instanceof Error ? err.message : String(err));
+    showStudyActionError("Inline edit failed:", err);
   } finally {
     endReviewAction();
   }
