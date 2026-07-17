@@ -3,6 +3,7 @@ import {
   mkdtempSync,
   readFileSync,
   rmSync,
+  symlinkSync,
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
@@ -225,5 +226,72 @@ describe("resolveCitationPath", () => {
     writeFileSync(join(root, "sibling.md"), "# S\n");
     expect(resolveCitationPath(join(root, "okf"), "../sibling.md")).toBe(resolve(root, "sibling.md"));
     expect(() => resolveCitationPath(join(root, "okf"), "../../outside.md")).toThrow(/invalid citation target/);
+  });
+
+  // Hardening (Task 1 review): the containment check must be segment-aware.
+  // A bare `rel.startsWith("..")` false-positives on any real path segment
+  // that merely starts with the two characters "..", even though it never
+  // escapes the repository root.
+  it("accepts a directory literally named ..staging inside the repo root", () => {
+    const root = makeRepo();
+    mkdirSync(join(root, "..staging"), { recursive: true });
+    writeFileSync(join(root, "..staging", "note.md"), "# staging\n");
+    const p = resolveCitationPath(
+      join(root, "docs", "okf"),
+      "../../..staging/note.md",
+    );
+    expect(p).toBe(resolve(root, "..staging", "note.md"));
+  });
+
+  // Hardening (Task 1 review): symlink/junction defense. Lexical
+  // containment can pass while the path actually redirects outside the
+  // repo root via a reparse point; resolveCitationPath must re-check
+  // containment against the realpath once the target exists on disk.
+  it("rejects a symlink (or, where symlinks are denied, a directory junction) that redirects outside the repo", () => {
+    const root = makeRepo();
+    const outside = mkdtempSync(join(tmpdir(), "zam-okf-outside-"));
+    writeFileSync(join(outside, "secret.md"), "# secret\n");
+
+    let mode: "file-symlink" | "dir-junction" | "skipped" = "skipped";
+    try {
+      symlinkSync(
+        join(outside, "secret.md"),
+        join(root, "docs", "adr", "escape-link.md"),
+        "file",
+      );
+      mode = "file-symlink";
+    } catch {
+      // Windows non-admin denies file symlinks (EPERM) without Developer
+      // Mode. Directory junctions are a reparse point too and do not
+      // require elevated privilege on Windows, so try that next.
+      try {
+        symlinkSync(
+          outside,
+          join(root, "docs", "adr", "escape-junction"),
+          "junction",
+        );
+        mode = "dir-junction";
+      } catch {
+        mode = "skipped";
+      }
+    }
+
+    if (mode === "skipped") {
+      // eslint-disable-next-line no-console
+      console.info(
+        "[resolveCitationPath symlink test] OS denied both file symlinks and directory junctions; skipping the live containment assertion.",
+      );
+      return;
+    }
+    // eslint-disable-next-line no-console
+    console.info(`[resolveCitationPath symlink test] exercised via ${mode}`);
+
+    const target =
+      mode === "file-symlink"
+        ? "../adr/escape-link.md"
+        : "../adr/escape-junction/secret.md";
+    expect(() =>
+      resolveCitationPath(join(root, "docs", "okf"), target),
+    ).toThrow(/invalid citation target/);
   });
 });

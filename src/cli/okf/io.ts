@@ -7,9 +7,10 @@ import {
   mkdirSync,
   readdirSync,
   readFileSync,
+  realpathSync,
   writeFileSync,
 } from "node:fs";
-import { dirname, isAbsolute, join, relative, resolve } from "node:path";
+import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import {
   appendLog,
   buildCatalog,
@@ -80,13 +81,36 @@ export function resolveCitationPath(bundleDir: string, target: string): string {
   }
   const root = findRepoRoot(bundleDir);
   const resolved = resolve(bundleDir, target);
-  const rel = relative(root, resolved);
-  if (rel.startsWith("..") || isAbsolute(rel)) {
+  assertContained(root, resolved, target);
+
+  // Lexical containment can pass while the path actually redirects
+  // outside the repo root through a symlink or (on Windows) a directory
+  // junction. Once the target exists on disk, re-check containment
+  // against the realpath so a reparse point cannot smuggle a read outside
+  // the repository.
+  if (existsSync(resolved)) {
+    assertContained(realpathSync(root), realpathSync(resolved), target);
+  }
+  return resolved;
+}
+
+/**
+ * Segment-aware containment check: `rel` must be `root` itself or a path
+ * strictly beneath it. A bare `rel.startsWith("..")` false-positives on any
+ * real path segment that merely starts with the two characters ".." (e.g. a
+ * directory named `..staging`) without ever escaping `root`.
+ */
+function assertContained(
+  root: string,
+  candidate: string,
+  target: string,
+): void {
+  const rel = relative(root, candidate);
+  if (rel === ".." || rel.startsWith(`..${sep}`) || isAbsolute(rel)) {
     throw new Error(
       `invalid citation target: resolves outside the repository root (${target})`,
     );
   }
-  return resolved;
 }
 
 export function loadBundle(dir: string): LoadedBundle {
