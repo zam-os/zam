@@ -89,9 +89,9 @@ describe("MCP stdio server tests", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all 22 tools with correct annotations", async () => {
+  it("lists all 23 tools with correct annotations", async () => {
     const response = await client.listTools();
-    expect(response.tools).toHaveLength(22);
+    expect(response.tools).toHaveLength(23);
 
     const toolNames = response.tools.map((t) => t.name).sort();
     const expectedNames = [
@@ -117,6 +117,7 @@ describe("MCP stdio server tests", () => {
       "zam_okf_read",
       "zam_okf_upsert",
       "zam_okf_read_citation",
+      "zam_okf_visualize",
     ].sort();
     expect(toolNames).toEqual(expectedNames);
 
@@ -639,6 +640,7 @@ describe("MCP stdio server tests", () => {
           "zam_open_studio",
           "zam_show_graph",
           "zam_open_settings",
+          "zam_okf_visualize",
         ]) {
           const res = await brokenClient.callTool({ name, arguments: {} });
           expect(res.isError).toBeUndefined();
@@ -1113,6 +1115,129 @@ describe("MCP stdio server tests", () => {
       expect(res.isError).toBeUndefined();
       const data = JSON.parse(res.content[0].text);
       expect(data.log).toBe("");
+    });
+  });
+
+  describe("zam_okf_visualize", () => {
+    let repoRoot: string;
+    let bundleDir: string;
+
+    beforeEach(() => {
+      // Shaped like a repo checkout: .git at the root, docs/okf as the
+      // bundle — same fixture shape as the citation-read tests above.
+      repoRoot = mkdtempSync(join(tmpdir(), "zam-okf-visualize-"));
+      mkdirSync(join(repoRoot, ".git"));
+      bundleDir = join(repoRoot, "docs", "okf");
+      mkdirSync(bundleDir, { recursive: true });
+      upsertArticle(
+        bundleDir,
+        "fsrs-scheduling.md",
+        [
+          "---",
+          "type: concept",
+          "title: FSRS Scheduling",
+          "description: How ZAM schedules reviews.",
+          "tags:",
+          "  - kernel",
+          "---",
+          "",
+          "FSRS-5 drives the queue.",
+          "",
+        ].join("\n"),
+        "2026-07-17",
+      );
+    });
+
+    afterEach(() => {
+      rmSync(repoRoot, { recursive: true, force: true });
+    });
+
+    it("exposes the okf panel as an MCP Apps resource", async () => {
+      const resources = await client.listResources();
+      const okf = resources.resources.find((r) => r.uri === "ui://zam/okf");
+      expect(okf).toBeDefined();
+
+      const read = await client.readResource({ uri: "ui://zam/okf" });
+      const content = read.contents[0] as { text: string; mimeType: string };
+      expect(content.mimeType).toContain("text/html");
+      // The bundled okf panel roots at <div id="zam-okf-panel">. The
+      // no-build placeholder in loadPanelHtml uses a data-panel attribute
+      // instead of this id, so this assertion only passes against a real
+      // dist/ui/okf-panel.html build (CI builds before running tests).
+      expect(content.text).toContain("zam-okf-panel");
+    });
+
+    it("links zam_okf_visualize to the okf panel resource and eagerly returns the bundle catalog/log", async () => {
+      const response = await client.listTools();
+      const tool = response.tools.find((t) => t.name === "zam_okf_visualize");
+      expect(tool).toBeDefined();
+      const meta = tool?._meta as
+        | { ui?: { resourceUri?: string } }
+        | undefined;
+      expect(meta?.ui?.resourceUri).toBe("ui://zam/okf");
+      expect((tool as any).annotations).toEqual({
+        openWorldHint: false,
+        readOnlyHint: true,
+      });
+
+      // inputSchema accepts only an optional bundle_dir.
+      const schema = tool?.inputSchema as
+        | { properties?: Record<string, unknown>; required?: string[] }
+        | undefined;
+      expect(schema?.properties).toHaveProperty("bundle_dir");
+      expect(schema?.required ?? []).not.toContain("bundle_dir");
+
+      const res = await client.callTool({
+        name: "zam_okf_visualize",
+        arguments: { bundle_dir: bundleDir },
+      });
+      expect(res.isError).toBeUndefined();
+      const structured = (res as any).structuredContent as {
+        okf?: string;
+        version?: string;
+        user?: string | null;
+        bundleDir?: string;
+        okfVersion?: string | null;
+        catalog?: Array<{ file: string }>;
+        log?: string;
+        problems?: string[];
+        companionContext?: { surface?: string };
+      };
+      expect(structured.okf).toBe("zam");
+      expect(typeof structured.version).toBe("string");
+      // Default user seeded in beforeEach via user_config.
+      expect(structured.user).toBe("thomas");
+      expect(structured.bundleDir).toBe(bundleDir);
+      // okf_version comes from the bundle's own index.md frontmatter
+      // (renderIndex's default), not the zam package version.
+      expect(structured.okfVersion).toBe("0.1");
+      expect(structured.catalog?.map((e) => e.file)).toEqual([
+        "fsrs-scheduling.md",
+      ]);
+      expect(structured.problems).toEqual([]);
+      // log.md was written by upsertArticle in beforeEach — returned eagerly,
+      // with no separate zam_okf_catalog round-trip required.
+      expect(structured.log).toContain("FSRS Scheduling");
+      expect(structured.companionContext?.surface).toBe("okf");
+    });
+
+    it("returns an empty catalog and problems instead of erroring on a missing bundle directory", async () => {
+      const missingDir = join(repoRoot, "docs", "does-not-exist");
+      const res = await client.callTool({
+        name: "zam_okf_visualize",
+        arguments: { bundle_dir: missingDir },
+      });
+      expect(res.isError).toBeUndefined();
+      const structured = (res as any).structuredContent as {
+        catalog?: unknown[];
+        problems?: string[];
+        okfVersion?: string | null;
+        bundleDir?: string;
+      };
+      expect(structured.catalog).toEqual([]);
+      expect(structured.problems?.length).toBeGreaterThan(0);
+      expect(structured.okfVersion).toBeNull();
+      expect(structured.bundleDir).toBe(missingDir);
     });
   });
 });

@@ -39,6 +39,7 @@ import {
   resolveOpeningCompanionContext,
   writeCompanionContext,
 } from "../companion-context-server.js";
+import type { CatalogEntry } from "../okf/bundle.js";
 import { publishUiIntent } from "../ui-intent.js";
 import { executeBridgeCommandJson } from "./bridge.js";
 
@@ -53,6 +54,7 @@ const STUDIO_RESOURCE_URI = "ui://zam/studio";
 const RECALL_RESOURCE_URI = "ui://zam/recall";
 const GRAPH_RESOURCE_URI = "ui://zam/graph";
 const SETTINGS_RESOURCE_URI = "ui://zam/settings";
+const OKF_RESOURCE_URI = "ui://zam/okf";
 
 /**
  * Commands the ZAM Studio panel may run through `zam_studio_bridge`. A
@@ -1368,6 +1370,116 @@ export function createMcpServer(db: Database): McpServer {
       const root = findRepoRoot(bundleDir);
       const repoRelativePath = relative(root, path).split(sep).join("/");
       return { target: params.target, path: repoRelativePath, content };
+    }),
+  );
+
+  // 23. zam_okf_visualize — the OKF visualizer panel (MCP Apps; ADR
+  // 2026-07-17b). Mirrors zam_show_graph's open-tool pattern, but the
+  // catalog and log.md are loaded eagerly (unlike graph's data, which the
+  // panel always pulls itself via zam_studio_bridge) so the panel paints its
+  // sidebar and log view without a first round-trip; article bodies, the
+  // link graph, and citation reads stay on-demand through the existing
+  // zam_okf_* tools. A missing or invalid bundle is not an error: the result
+  // carries an empty catalog plus `problems` and still opens the panel.
+  registerAppTool(
+    server,
+    "zam_okf_visualize",
+    {
+      title: "Open ZAM OKF visualizer",
+      description:
+        "Open the ZAM OKF knowledge-base visualizer: articles by type with " +
+        "search, a markdown reader with inline-expandable cited ADRs, a " +
+        "link graph, and the log. Pass `bundle_dir` to browse a bundle " +
+        "other than the default (docs/okf under the server cwd).",
+      inputSchema: {
+        bundle_dir: okfBundleDirSchema,
+      },
+      annotations: {
+        ...commonAnnotations,
+        readOnlyHint: true,
+      },
+      _meta: {
+        ui: { resourceUri: OKF_RESOURCE_URI },
+      },
+    },
+    wrapHandler(async ({ bundle_dir }: { bundle_dir?: string }) => {
+      // Mirror zam_open_recall/zam_show_graph/zam_open_settings: never fails
+      // to open the panel — any companion-context resolution failure
+      // degrades to a minimal fallback context instead of rejecting the
+      // call. This tool takes no `user` argument (the bundle is
+      // repo-scoped, not per-learner), so there is no invocation override.
+      const opening = await resolveOpeningCompanionContextSafely(
+        db,
+        "okf",
+        undefined,
+        getNativeClientInfo(),
+        { clientSamplingCapable: getClientSamplingCapable() },
+      );
+      await publishUiIntent("okf", { bundle_dir });
+
+      const { DEFAULT_BUNDLE_DIR, loadBundle } = await import("../okf/io.js");
+      const { resolve } = await import("node:path");
+      const requestedDir = bundle_dir ?? DEFAULT_BUNDLE_DIR;
+      let resolvedBundleDir = resolve(requestedDir);
+      let catalog: CatalogEntry[] = [];
+      let problems: string[] = [];
+      let log = "";
+      let okfVersion: string | null = null;
+      try {
+        const bundle = loadBundle(requestedDir);
+        resolvedBundleDir = bundle.dir;
+        catalog = bundle.catalog;
+        problems = bundle.problems;
+        const { readFileSync } = await import("node:fs");
+        try {
+          log = readFileSync(join(bundle.dir, "log.md"), "utf8");
+        } catch {
+          log = "";
+        }
+        try {
+          const { parseFrontmatter } = await import("../okf/bundle.js");
+          const indexRaw = readFileSync(join(bundle.dir, "index.md"), "utf8");
+          const { fields } = parseFrontmatter(indexRaw);
+          okfVersion =
+            typeof fields.okf_version === "string" ? fields.okf_version : null;
+        } catch {
+          okfVersion = null;
+        }
+      } catch (error) {
+        // Missing/invalid bundle directory (loadBundle throws only when the
+        // directory itself cannot be read) — report it as `problems`, not a
+        // tool error, so the panel still opens and shows the empty state.
+        problems = [error instanceof Error ? error.message : String(error)];
+      }
+
+      return {
+        okf: "zam",
+        version: pkg.version,
+        user: opening.context.user.currentId ?? null,
+        bundleDir: resolvedBundleDir,
+        okfVersion,
+        catalog,
+        problems,
+        log,
+        companionContext: opening.context,
+        ...(opening.degraded ? { companionContextDegraded: true } : {}),
+      };
+    }),
+  );
+
+  registerAppResource(
+    server,
+    "zam-okf",
+    OKF_RESOURCE_URI,
+    { mimeType: RESOURCE_MIME_TYPE },
+    async () => ({
+      contents: [
+        {
+          uri: OKF_RESOURCE_URI,
+          mimeType: RESOURCE_MIME_TYPE,
+          text: loadPanelHtml("okf-panel.html", "ZAM OKF"),
+        },
+      ],
     }),
   );
 

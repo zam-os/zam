@@ -15,22 +15,14 @@
  * callTool/context-bar plumbing is shared via ./context-bar.js (item 9,
  * 0.11.0 review), same as every other panel entry.
  *
- * Two known forward references to later plan tasks, both harmless today:
- *  - `SURFACE` below is cast to `CompanionSurface` even though "okf" isn't
- *    a member yet — Task 5 adds it to both `CompanionSurface`
- *    (context-bar.ts) and `COMPANION_SURFACES`
- *    (src/vscode-extension/companion-context.ts) in the same task that
- *    registers `zam_okf_visualize` and starts supplying a real
- *    `companionContext` shaped with `surface: "okf"`. Until then, a manual
- *    Agent/User pill change on this panel round-trips to a surface the
- *    server doesn't recognize yet and degrades through the context bar's
- *    own `onError` path (an inline notice) instead of crashing — first
- *    paint and `ontoolresult`-driven rendering are unaffected either way.
- *  - `app.ontoolresult` is written against `zam_okf_visualize`'s result
- *    shape (Task 5), which doesn't exist yet, so in practice today only the
- *    800ms fallback (`zam_okf_catalog`, which does exist) ever actually
- *    populates the panel — exactly the "testable-by-build now" framing in
- *    the plan.
+ * `SURFACE` is `"okf"`, a real `CompanionSurface` member (context-bar.ts)
+ * and `COMPANION_SURFACES` entry (src/vscode-extension/companion-context.ts)
+ * since Task 5, which also registers `zam_okf_visualize` — the tool
+ * `app.ontoolresult` below is written against, seeding the panel with the
+ * bundle catalog/log and a real `companionContext` shaped with
+ * `surface: "okf"` on first paint. The 800ms fallback to `zam_okf_catalog`
+ * still runs for hosts that never deliver a tool result to the app (e.g. a
+ * plain resource viewer).
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
@@ -64,8 +56,7 @@ const GRAPH_W = 680;
 const GRAPH_H = 680;
 const NODE_R = 22;
 
-// See the module doc comment above: Task 5 adds "okf" to CompanionSurface.
-const SURFACE = "okf" as CompanionSurface;
+const SURFACE: CompanionSurface = "okf";
 
 const contextBarRoot = document.getElementById("zam-contextbar-root");
 const noticeEl = document.getElementById("zam-connection-notice");
@@ -230,12 +221,11 @@ function renderAll(): void {
 
 function renderHeader(): void {
   if (headerCountEl) headerCountEl.textContent = `${catalog.length} Artikel`;
-  // See the module doc comment: no `zam_okf_*` tool currently returns a
-  // distinct OKF-format `okf_version` (index.md's frontmatter field) —
-  // every seeding path names this field `version` (the panel/app version,
-  // same convention as every other zam_open_*/zam_show_* tool). Displaying
-  // it here is the closest faithful match to the plan's "okf_version in the
-  // header" until/unless a tool exposes the format version distinctly.
+  // zam_okf_visualize now returns a distinct OKF-format `okfVersion` (Task
+  // 5), but this panel doesn't thread it through OpenOkfResult yet — still
+  // showing the panel/app version here, same convention as every other
+  // zam_open_*/zam_show_* card. Wiring the real okf_version through is
+  // follow-up work, not required for the panel to render correctly today.
   if (headerVersionEl) headerVersionEl.textContent = panelVersion ? `v${panelVersion}` : "";
 }
 
