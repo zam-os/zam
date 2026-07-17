@@ -36,6 +36,11 @@ the kernel; new HTTP goes in the CLI layer.
 - **Token vs card**: a token is shared knowledge; a card is per-user FSRS
   state. A concept only appears in a user's queue if a card exists.
 - New kernel API must be re-exported from `src/kernel/index.ts`.
+- **`docs/okf/` is not hand-editable.** It is an OKF knowledge bundle whose
+  articles are learning sources (ADR 2026-07-17): write only through the
+  `zam_okf_upsert` MCP tool, update the covering article in the same PR
+  that changes described behavior, and keep decision rationale in ADRs —
+  articles reference them under `# Citations`.
 
 ## Verification — required before every commit
 

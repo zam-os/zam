@@ -129,7 +129,9 @@ export function validateArticle(
   try {
     parsed = parseFrontmatter(markdown);
   } catch (err) {
-    problems.push(`${file}: ${err instanceof Error ? err.message : String(err)}`);
+    problems.push(
+      `${file}: ${err instanceof Error ? err.message : String(err)}`,
+    );
   }
   if (parsed) {
     if (!scalar(parsed.fields, "type")) {

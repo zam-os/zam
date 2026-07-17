@@ -1286,7 +1286,9 @@ export function createMcpServer(db: Database): McpServer {
         bundle_dir: okfBundleDirSchema,
         file: z
           .string()
-          .describe("Kebab-case article file name ending in .md (permanent ID)"),
+          .describe(
+            "Kebab-case article file name ending in .md (permanent ID)",
+          ),
         markdown: z
           .string()
           .describe(
@@ -1298,7 +1300,11 @@ export function createMcpServer(db: Database): McpServer {
       },
     },
     wrapHandler(
-      async (params: { bundle_dir?: string; file: string; markdown: string }) => {
+      async (params: {
+        bundle_dir?: string;
+        file: string;
+        markdown: string;
+      }) => {
         const { DEFAULT_BUNDLE_DIR, upsertArticle } = await import(
           "../okf/io.js"
         );
