@@ -1,12 +1,12 @@
 # Recall Card UX — Single Adaptive Button, Finish/Summary, Domain Focus
 
-**Status:** Accepted — shipped in 0.10.1
+**Status:** Implemented — shipped in 0.10.1
 **Date:** 2026-07-10
 **Deciders:** Thomas (project owner)
 **Related:**
-[2026-07-09-mcp-apps-card-wave.md](../plans/2026-07-09-mcp-apps-card-wave.md) (built the card) ·
-[2026-07-06b-checkpointed-review-dialogue.md](../adr/2026-07-06b-checkpointed-review-dialogue.md) (the deferred "C") ·
-[2026-06-27-recall-session-llm-pipeline.md](../adr/2026-06-27-recall-session-llm-pipeline.md)
+plan 2026-07-09-mcp-apps-card-wave (built the card; completed and removed — see git history) ·
+[2026-07-06b-checkpointed-review-dialogue.md](2026-07-06b-checkpointed-review-dialogue.md) (the deferred "C") ·
+[2026-06-27-recall-session-llm-pipeline.md](2026-06-27-recall-session-llm-pipeline.md)
 
 ---
 
@@ -153,7 +153,7 @@ via the format helper `tf`, not `t` (plain-string labels use `t`).
 ## Out of scope — captured for C
 
 C = the conversational answer flow (your + your daughter's ask), designed at
-ADR [2026-07-06b](../adr/2026-07-06b-checkpointed-review-dialogue.md) (status
+ADR [2026-07-06b](2026-07-06b-checkpointed-review-dialogue.md) (status
 Proposed). It is deferred to its own spec, but its **defining constraints**,
 agreed 2026-07-10, are recorded here so C starts from them:
 
