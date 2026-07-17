@@ -10,6 +10,18 @@ import {
   renderMarkdown,
 } from "../../desktop/src/panel/okf-render.js";
 
+// Collects every href="..." attribute value from rendered HTML, with ASCII
+// control characters stripped -- mirrors how a browser's URL parser reads
+// an href (control chars are discarded before scheme detection), so a test
+// can assert on what the browser would actually navigate to rather than on
+// the raw markup text.
+function hrefValues(html: string): string[] {
+  return [...html.matchAll(/href="([^"]*)"/g)].map((m) =>
+    // biome-ignore lint/suspicious/noControlCharactersInRegex: mirrors safeHref's own control-char strip so the assertion sees what a browser would parse
+    m[1].replace(/[\x00-\x1F]/g, ""),
+  );
+}
+
 // Real-shaped article body (docs/okf/fsrs-scheduling.md, sans frontmatter) —
 // used to pin extractLinks against genuine OKF prose rather than a synthetic
 // stand-in, per the Task 3 brief.
@@ -112,6 +124,14 @@ describe("renderMarkdown", () => {
     );
   });
 
+  it("keeps an escaped pipe as a literal character in a table cell instead of splitting the column", () => {
+    const html = renderMarkdown("| A | B |\n| --- | --- |\n| x\\|y | 2 |");
+    expect(html).toBe(
+      "<table><thead><tr><th>A</th><th>B</th></tr></thead>" +
+        "<tbody><tr><td>x|y</td><td>2</td></tr></tbody></table>",
+    );
+  });
+
   it("renders a blockquote", () => {
     const html = renderMarkdown("> Quoted line one.\n> Quoted line two.");
     expect(html).toBe(
@@ -142,6 +162,48 @@ describe("renderMarkdown", () => {
     expect(html).toBe(
       '<p>Read the <a href="https://example.com/spec" target="_blank" rel="noopener noreferrer">spec</a>.</p>',
     );
+  });
+
+  describe("link safety (unsafe URI schemes render inert)", () => {
+    it("renders a javascript: link inert -- no executing href, keeps the label", () => {
+      const html = renderMarkdown("[click me](javascript:alert(1))");
+      expect(hrefValues(html).some((h) => /^javascript:/i.test(h))).toBe(false);
+      expect(html).toContain("click me");
+    });
+
+    it("renders a data: URI link inert -- no navigating href, keeps the label", () => {
+      const html = renderMarkdown("[open](data:text/html;base64,PHNjcmlwdD4=)");
+      expect(hrefValues(html).some((h) => /^data:/i.test(h))).toBe(false);
+      expect(html).toContain("open");
+    });
+
+    it("treats the scheme check case-insensitively -- JavaScript: also renders inert", () => {
+      const html = renderMarkdown("[click](JavaScript:alert(1))");
+      expect(hrefValues(html).some((h) => /^javascript:/i.test(h))).toBe(false);
+      expect(html).toContain("click");
+    });
+
+    it("strips an embedded control character before scheme detection, so java<TAB>script: also renders inert", () => {
+      const html = renderMarkdown("[click](java\tscript:alert(1))");
+      expect(hrefValues(html).some((h) => /^javascript:/i.test(h))).toBe(false);
+      expect(html).toContain("click");
+    });
+
+    it("keeps a mailto: link navigable (allowlisted scheme)", () => {
+      const html = renderMarkdown("[email me](mailto:a@b.com)");
+      expect(html).toBe('<p><a href="mailto:a@b.com">email me</a></p>');
+    });
+
+    it("still classifies and renders external, article, and citation links exactly as before", () => {
+      const html = renderMarkdown(
+        "See [spec](https://example.com/spec) and [prereqs](prerequisite-blocking.md) and [adr](../adr/2026-01-01-x.md).",
+      );
+      expect(html).toBe(
+        '<p>See <a href="https://example.com/spec" target="_blank" rel="noopener noreferrer">spec</a>' +
+          ' and <a href="#" data-okf-article="prerequisite-blocking.md">prereqs</a>' +
+          ' and <a href="#" data-okf-citation="../adr/2026-01-01-x.md">adr</a>.</p>',
+      );
+    });
   });
 });
 

@@ -67,6 +67,32 @@ function classifyLink(target: string): LinkKind {
   return "other";
 }
 
+// -- Link href safety ---------------------------------------------------------
+
+// Browsers strip ASCII control characters from a URL before parsing its
+// scheme (e.g. "java\tscript:" parses as "javascript:"), so scheme
+// detection below must run on a control-char-stripped, trimmed copy, or a
+// hostile scheme can hide behind an embedded control character.
+// biome-ignore lint/suspicious/noControlCharactersInRegex: intentionally matches raw control chars 0x00-0x1F -- stripping a scheme's disguise is the point
+const CONTROL_CHARS_RE = /[\x00-\x1F]/g;
+const SCHEME_RE = /^([a-z][a-z0-9+.-]*):/i;
+const SAFE_HREF_SCHEMES = new Set(["http", "https", "mailto"]);
+
+/**
+ * Decide whether `target` may be used as a navigating anchor `href`.
+ * Returns the sanitized href to use, or `null` if the target must render
+ * inert instead (visible label, no executing/navigating href) -- any
+ * scheme outside the allowlist, e.g. `javascript:`, `data:`, `vbscript:`,
+ * `file:`. A scheme-less target (relative path, `#fragment`) is always
+ * safe, since it has no scheme to be hostile.
+ */
+function safeHref(target: string): string | null {
+  const cleaned = target.replace(CONTROL_CHARS_RE, "").trim();
+  const scheme = SCHEME_RE.exec(cleaned)?.[1].toLowerCase();
+  if (scheme && !SAFE_HREF_SCHEMES.has(scheme)) return null;
+  return cleaned;
+}
+
 // -- Markdown rendering -----------------------------------------------------
 
 function renderLink(label: string, target: string): string {
@@ -80,7 +106,11 @@ function renderLink(label: string, target: string): string {
   if (kind === "citation") {
     return `<a href="#" data-okf-citation="${target}">${label}</a>`;
   }
-  return `<a href="${target}">${label}</a>`;
+  const href = safeHref(target);
+  if (href === null) {
+    return `<span>${label}</span>`;
+  }
+  return `<a href="${href}">${label}</a>`;
 }
 
 const LINK_RE = /^\[([^\]]*)\]\(([^)]+)\)/;
@@ -147,7 +177,11 @@ function renderInline(text: string): string {
 
 function splitTableRow(line: string): string[] {
   const trimmed = line.trim().replace(/^\|/, "").replace(/\|$/, "");
-  return trimmed.split("|").map((cell) => cell.trim());
+  // Split on unescaped pipes only (a `\|` inside a cell is a literal pipe,
+  // not a column separator), then unescape it back to `|` in each cell.
+  return trimmed
+    .split(/(?<!\\)\|/)
+    .map((cell) => cell.trim().replace(/\\\|/g, "|"));
 }
 
 function isTableSeparator(line: string): boolean {
@@ -368,6 +402,12 @@ export function extractLinks(body: string): {
 
   const linkRe = /\[[^\]]*\]\(([^)]+)\)/g;
   for (const match of scanned.matchAll(linkRe)) {
+    // This scans raw (unescaped) source, while renderMarkdown's link
+    // rendering scans escaped source -- classification is identical either
+    // way because escaped characters (&<>"') never appear in a
+    // classifyLink pattern, and the panel (Task 4) reads the rendered
+    // attribute back via the DOM, which entity-decodes on parse, so a
+    // value written from either copy round-trips to the same string.
     const target = match[1].trim();
     const kind = classifyLink(target);
     if (kind === "article" && !seenArticles.has(target)) {
@@ -409,7 +449,9 @@ function placeOnCircle(
 ): PositionedNode[] {
   const n = nodes.length;
   return nodes.map((node, index) => {
-    const angle = n === 0 ? 0 : (2 * Math.PI * index) / n - Math.PI / 2;
+    // n is never 0 here: an empty `nodes` makes `.map` skip this callback
+    // entirely, so the division below never sees a zero denominator.
+    const angle = (2 * Math.PI * index) / n - Math.PI / 2;
     return {
       ...node,
       x: centerX + radius * Math.cos(angle),
