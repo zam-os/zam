@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZAM OKF</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --accent: #827dbd;
+        --bg: #f5f7fb;
+        --fg: #1c2030;
+        --muted: #6b7280;
+        --card: #ffffff;
+        --border: rgba(15, 23, 42, 0.14);
+        --field-bg: #ffffff;
+        --danger: #ef4444;
+        --danger-bg: rgba(239, 68, 68, 0.1);
+        --hover: rgba(130, 125, 189, 0.1);
+        --ok: #2fbf71;
+        --ok-bg: rgba(47, 191, 113, 0.12);
+
+        /* OKF article-type palette — dataviz skill's validated 8-hue
+           categorical order, first 4 slots only (the "all-pairs" safe
+           subset for a scatter-like graph view; a 5th+ distinct `type`
+           string folds into --okf-type-other rather than cycling back
+           through the ramp — see okf.ts's typeSlot()). Each slot pairs a
+           foreground with a translucent "-bg" companion, same idiom as
+           --danger/--danger-bg above. */
+        --okf-type-1: #2a78d6;
+        --okf-type-1-bg: rgba(42, 120, 214, 0.16);
+        --okf-type-2: #008300;
+        --okf-type-2-bg: rgba(0, 131, 0, 0.16);
+        --okf-type-3: #e87ba4;
+        --okf-type-3-bg: rgba(232, 123, 164, 0.16);
+        --okf-type-4: #eda100;
+        --okf-type-4-bg: rgba(237, 161, 0, 0.16);
+        --okf-type-other: #6b7280;
+        --okf-type-other-bg: rgba(107, 114, 128, 0.16);
+
+        /* Aliases so any shared markup built against the richer --clr-*
+           palette (desktop/src/styles.css) still resolves here. Defined once;
+           the dark block below only redefines the base tokens and custom
+           properties resolve dynamically, so these follow along. */
+        --clr-text-muted: var(--muted);
+        --clr-text-secondary: var(--muted);
+        --clr-bg-surface: var(--card);
+        --clr-border: var(--border);
+        --clr-accent-purple: var(--accent);
+        --clr-accent-teal: var(--accent);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #14161f;
+          --fg: #e8eaf2;
+          --muted: #9aa0b0;
+          --card: #1e2230;
+          --border: rgba(255, 255, 255, 0.14);
+          --field-bg: #262b3d;
+          --danger: #f87171;
+          --danger-bg: rgba(248, 113, 113, 0.14);
+          --hover: rgba(130, 125, 189, 0.18);
+          --ok: #34d399;
+          --ok-bg: rgba(52, 211, 153, 0.16);
+
+          --okf-type-1: #3987e5;
+          --okf-type-1-bg: rgba(57, 135, 229, 0.18);
+          --okf-type-2: #008300;
+          --okf-type-2-bg: rgba(0, 131, 0, 0.18);
+          --okf-type-3: #d55181;
+          --okf-type-3-bg: rgba(213, 81, 129, 0.18);
+          --okf-type-4: #c98500;
+          --okf-type-4-bg: rgba(201, 133, 0, 0.18);
+          --okf-type-other: #9aa0b0;
+          --okf-type-other-bg: rgba(154, 160, 176, 0.18);
+        }
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+      }
+      #zam-okf-panel {
+        padding: 16px;
+        max-width: 1080px;
+        margin: 0 auto;
+      }
+      /* Shared context-bar CSS is injected once at runtime by
+         desktop/src/panel/context-bar.ts's mountContextBar (item 9, 0.11.0
+         review) instead of being duplicated in every panel's HTML. */
+      .zam-card {
+        background: var(--card);
+        border-radius: 10px;
+        padding: 14px 16px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      }
+
+      /* ── Header: article count, okf_version, view toggle ────────────── */
+      .okf-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+      .okf-header-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+      .okf-article-count {
+        font-weight: 600;
+        color: var(--fg);
+      }
+      .okf-version {
+        font-variant-numeric: tabular-nums;
+      }
+      .okf-view-toggle {
+        display: inline-flex;
+        gap: 2px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 3px;
+      }
+      .okf-view-btn {
+        font: inherit;
+        font-size: 0.78rem;
+        font-weight: 600;
+        padding: 5px 13px;
+        border-radius: 999px;
+        border: none;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+      }
+      .okf-view-btn.active {
+        background: var(--accent);
+        color: #ffffff;
+      }
+      .okf-view-btn:hover:not(.active) {
+        background: var(--hover);
+        color: var(--accent);
+      }
+
+      /* ── Sidebar: search + type-grouped catalog list ────────────────── */
+      .okf-layout {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+      }
+      .okf-sidebar {
+        width: 260px;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .okf-search-input {
+        width: 100%;
+        box-sizing: border-box;
+        font: inherit;
+        font-size: 0.85rem;
+        padding: 7px 10px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--field-bg);
+        color: var(--fg);
+      }
+      .okf-search-input:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+      .okf-catalog-groups {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-height: 72vh;
+        overflow-y: auto;
+      }
+      .okf-catalog-group-title {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: 0 0 4px 2px;
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+      }
+      .okf-type-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+      }
+      .okf-catalog-item {
+        display: block;
+        width: 100%;
+        text-align: left;
+        font: inherit;
+        font-size: 0.82rem;
+        padding: 6px 8px;
+        border-radius: 7px;
+        border: none;
+        background: transparent;
+        color: var(--fg);
+        cursor: pointer;
+      }
+      .okf-catalog-item:hover {
+        background: var(--hover);
+      }
+      .okf-catalog-item.active {
+        background: var(--hover);
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .okf-catalog-empty {
+        color: var(--muted);
+        font-size: 0.82rem;
+        padding: 8px 2px;
+      }
+
+      /* ── Content pane (reader / graph / log) ────────────────────────── */
+      .okf-content {
+        flex: 1;
+        min-width: 0;
+      }
+      .okf-meta-strip {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+      .okf-type-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        font-size: 0.68rem;
+        padding: 3px 9px;
+        border-radius: 999px;
+      }
+      .okf-tag {
+        background: var(--hover);
+        border-radius: 999px;
+        padding: 2px 9px;
+        font-size: 0.72rem;
+      }
+      .okf-resource-link {
+        color: var(--accent);
+        text-decoration: underline;
+      }
+
+      /* Typography for renderMarkdown's plain semantic HTML — shared by the
+         reader body, the log view, and inline citation content. */
+      .okf-article-body,
+      .okf-log-body {
+        font-size: 0.92rem;
+        line-height: 1.55;
+      }
+      .okf-article-body :is(h1, h2, h3, h4, h5, h6),
+      .okf-log-body :is(h1, h2, h3, h4, h5, h6) {
+        line-height: 1.3;
+        margin: 1.1em 0 0.4em;
+      }
+      .okf-article-body :is(h1, h2, h3, h4, h5, h6):first-child,
+      .okf-log-body :is(h1, h2, h3, h4, h5, h6):first-child {
+        margin-top: 0;
+      }
+      .okf-article-body h1,
+      .okf-log-body h1 {
+        font-size: 1.35rem;
+      }
+      .okf-article-body h2,
+      .okf-log-body h2 {
+        font-size: 1.15rem;
+      }
+      .okf-article-body :is(h3, h4, h5, h6),
+      .okf-log-body :is(h3, h4, h5, h6) {
+        font-size: 1rem;
+      }
+      .okf-article-body p,
+      .okf-log-body p {
+        margin: 0.6em 0;
+      }
+      .okf-article-body code,
+      .okf-log-body code {
+        font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+        font-size: 0.86em;
+        background: var(--hover);
+        border-radius: 4px;
+        padding: 0.12em 0.35em;
+      }
+      .okf-article-body pre,
+      .okf-log-body pre {
+        background: var(--hover);
+        border-radius: 8px;
+        padding: 10px 12px;
+        overflow-x: auto;
+      }
+      .okf-article-body pre code,
+      .okf-log-body pre code {
+        background: none;
+        padding: 0;
+      }
+      .okf-article-body :is(ul, ol),
+      .okf-log-body :is(ul, ol) {
+        margin: 0.5em 0;
+        padding-left: 1.4em;
+      }
+      .okf-article-body li,
+      .okf-log-body li {
+        margin: 0.2em 0;
+      }
+      .okf-article-body blockquote,
+      .okf-log-body blockquote {
+        margin: 0.7em 0;
+        padding: 4px 12px;
+        border-left: 3px solid var(--border);
+        color: var(--muted);
+      }
+      .okf-article-body table,
+      .okf-log-body table {
+        border-collapse: collapse;
+        margin: 0.7em 0;
+        font-size: 0.86rem;
+        max-width: 100%;
+        display: block;
+        overflow-x: auto;
+      }
+      .okf-article-body :is(th, td),
+      .okf-log-body :is(th, td) {
+        border: 1px solid var(--border);
+        padding: 5px 9px;
+        text-align: left;
+      }
+      .okf-article-body th,
+      .okf-log-body th {
+        background: var(--hover);
+      }
+      .okf-article-body a,
+      .okf-log-body a {
+        color: var(--accent);
+      }
+
+      /* ── Inline citation preview (data-okf-citation click target) ───── */
+      .okf-citation-inline {
+        margin: 4px 0 14px;
+        padding: 10px 12px;
+        border-left: 3px solid var(--accent);
+        background: var(--hover);
+        border-radius: 0 8px 8px 0;
+        font-size: 0.86rem;
+      }
+      .okf-citation-badge {
+        display: inline-block;
+        font-weight: 700;
+        font-size: 0.63rem;
+        letter-spacing: 0.04em;
+        padding: 2px 7px;
+        border-radius: 5px;
+        background: var(--accent);
+        color: #ffffff;
+        margin-right: 8px;
+        vertical-align: middle;
+      }
+      .okf-citation-open {
+        margin-left: 4px;
+        font: inherit;
+        font-size: 0.76rem;
+        color: var(--accent);
+        text-decoration: underline;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+      }
+      .okf-citation-error {
+        color: var(--danger);
+        background: var(--danger-bg);
+        border: 1px solid var(--danger);
+        border-radius: 6px;
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        margin: 4px 0 14px;
+      }
+      .okf-citation-view-back {
+        font: inherit;
+        font-size: 0.78rem;
+        color: var(--accent);
+        text-decoration: underline;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        margin-bottom: 10px;
+        display: inline-block;
+      }
+
+      /* ── Graph view ──────────────────────────────────────────────────── */
+      .okf-graph-legend {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        font-size: 0.76rem;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .okf-graph-legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .okf-graph-legend-mark {
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+      }
+      .okf-graph-legend-mark.article {
+        border-radius: 3px;
+        background: var(--accent);
+      }
+      .okf-graph-legend-mark.citation {
+        border-radius: 50%;
+        background: var(--card);
+        border: 1.6px dashed var(--accent);
+      }
+      .okf-graph-svg {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .okf-graph-edge {
+        stroke: var(--border);
+        stroke-width: 1.4;
+        opacity: 0.8;
+        pointer-events: none;
+      }
+      .okf-graph-node-label {
+        font-size: 11px;
+        fill: var(--fg);
+        font-family: inherit;
+        pointer-events: none;
+      }
+      .okf-graph-node-article rect {
+        stroke-width: 1.6;
+        transition: filter 0.15s ease;
+      }
+      .okf-graph-node-article:hover rect {
+        filter: brightness(1.12);
+      }
+      .okf-graph-node-citation circle {
+        fill: var(--card);
+        stroke: var(--accent);
+        stroke-width: 1.6;
+        stroke-dasharray: 3 2.5;
+      }
+
+      /* ── Empty / error states ────────────────────────────────────────── */
+      .okf-empty {
+        text-align: center;
+        padding: 32px 12px;
+      }
+      .okf-empty-emoji {
+        font-size: 2rem;
+      }
+      .okf-empty-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        margin: 8px 0 4px;
+      }
+      .okf-empty-sub {
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      @media (max-width: 720px) {
+        .okf-layout {
+          flex-direction: column;
+        }
+        .okf-sidebar {
+          width: 100%;
+        }
+        .okf-catalog-groups {
+          max-height: 40vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="zam-okf-panel">
+      <div id="zam-contextbar-root"></div>
+      <div class="zam-connection-notice" id="zam-connection-notice" hidden></div>
+      <div class="okf-header">
+        <div class="okf-header-info">
+          <span class="okf-article-count" id="okf-article-count"></span>
+          <span class="okf-version" id="okf-version"></span>
+        </div>
+        <div class="okf-view-toggle" id="okf-view-toggle">
+          <button type="button" class="okf-view-btn" data-view="reader">
+            Artikel
+          </button>
+          <button type="button" class="okf-view-btn" data-view="graph">
+            Graph
+          </button>
+          <button type="button" class="okf-view-btn" data-view="log">Log</button>
+        </div>
+      </div>
+      <div class="okf-layout">
+        <aside class="okf-sidebar">
+          <input
+            type="search"
+            id="okf-search"
+            class="okf-search-input"
+            placeholder="Artikel durchsuchen..."
+          />
+          <div class="okf-catalog-groups" id="okf-catalog-groups"></div>
+        </aside>
+        <main class="okf-content" id="okf-content"></main>
+      </div>
+    </div>
+    <script type="module" src="./okf.ts"></script>
+  </body>
+</html>
