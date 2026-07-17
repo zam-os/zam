@@ -40,8 +40,9 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-05](../plans/2026-07-05-titles-doctor-adaptation.md) | Human-friendly Titles + `zam doctor` adaptation plan (post Fable 5 review) | In progress |
 | [2026-07-06a](2026-07-06a-mcp-agent-transport-and-surfaces.md) | MCP as the Canonical Agent Transport (and the Surface Topology Around It) | Partially implemented |
 | [2026-07-06b](2026-07-06b-checkpointed-review-dialogue.md) | Checkpointed Review Dialogue | Implemented |
-| [2026-07-06](../plans/2026-07-06-mcp-agent-transport-plan.md) | MCP agent transport implementation plan (ADR 2026-07-06a, items 1–5) | Implemented |
 | [2026-07-07](2026-07-07-resilient-self-update-and-dependency-isolation.md) | Resilient Self-Update and Dependency-Failure Isolation | Implemented |
+| [2026-07-08](2026-07-08-multilingual-windows-installer.md) | Multilingual Windows Installer | Implemented |
+| [2026-07-10](2026-07-10-recall-card-ux.md) | Recall Card UX — Adaptive Button, Finish/Summary, Domain Focus | Implemented |
 | [2026-07-11](2026-07-11-codex-and-vscode-companion-surfaces.md) | Codex and VS Code Companion Surfaces | Accepted |
 | [2026-07-12](2026-07-12-unified-capability-model-registry.md) | Unified Capability-Based Model Registry | Implemented |
 | [2026-07-16](2026-07-16-companion-context-and-harness-affinity.md) | Companion Context Bar and Harness Affinity | Proposed |
