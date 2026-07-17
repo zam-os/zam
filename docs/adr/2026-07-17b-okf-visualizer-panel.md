@@ -1,6 +1,6 @@
 # OKF Visualizer Panel (MCP App)
 
-**Status:** Accepted
+**Status:** Implemented
 **Date:** 2026-07-17
 **Deciders:** Thomas (project owner), designed with Fable 5
 **Related:**

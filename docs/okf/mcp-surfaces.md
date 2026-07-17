@@ -7,7 +7,7 @@ tags:
   - agents
   - surfaces
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-07-17T00:00:00Z
+timestamp: 2026-07-17T15:00:00Z
 ---
 
 `zam mcp` starts a stdio **Model Context Protocol** server
@@ -37,12 +37,22 @@ bundle (that's its purpose) but never outside the repo
 
 # MCP Apps panels
 
-Four self-contained HTML panels ship as MCP Apps resources and open
+Five self-contained HTML panels ship as MCP Apps resources and open
 in hosts that support them: `ui://zam/studio`, `ui://zam/recall`,
-`ui://zam/graph`, `ui://zam/settings` (built by `npm run build:panel`,
-served from `dist/ui/`). The VS Code / Antigravity Companion extension
-(`src/vscode-extension/`) hosts the same panels in a webview and routes
-recall evaluation through per-IDE evaluator selections.
+`ui://zam/graph`, `ui://zam/settings`, `ui://zam/okf` (built by
+`npm run build:panel`, served from `dist/ui/`). The VS Code /
+Antigravity Companion extension (`src/vscode-extension/`) hosts the
+same panels in a webview and routes recall evaluation through
+per-IDE evaluator selections.
+
+`zam_okf_visualize` opens the OKF panel on any OKF bundle (default
+`docs/okf` under the server's working directory, like the other
+`zam_okf_*` tools): articles grouped by type with search, a markdown
+reader that expands cited ADRs and other citation targets inline via
+`zam_okf_read_citation`, a link graph (articles as nodes, inter-article
+links as edges, citations as visually distinct nodes), and the
+`log.md` history. The panel always opens — a missing or invalid bundle
+surfaces as `problems` in the panel instead of a tool error.
 
 # Citations
 
