@@ -1,0 +1,179 @@
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import {
+  appendLog,
+  buildCatalog,
+  parseFrontmatter,
+  renderIndex,
+  validateArticle,
+} from "../../src/cli/okf/bundle.js";
+import {
+  loadBundle,
+  resolveArticlePath,
+  upsertArticle,
+} from "../../src/cli/okf/io.js";
+
+const article = (over: Partial<Record<string, string>> = {}) =>
+  [
+    "---",
+    `type: ${over.type ?? "concept"}`,
+    `title: ${over.title ?? "FSRS Scheduling"}`,
+    `description: ${over.description ?? "How ZAM schedules reviews."}`,
+    "tags:",
+    "  - kernel",
+    "  - fsrs",
+    'resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"',
+    "timestamp: 2026-07-17T00:00:00Z",
+    "---",
+    "",
+    over.body ?? "FSRS-5 drives the queue.",
+    "",
+  ].join("\n");
+
+describe("okf/bundle parseFrontmatter", () => {
+  it("parses scalars, quoted scalars, and block lists", () => {
+    const parsed = parseFrontmatter(article());
+    expect(parsed.fields.type).toBe("concept");
+    expect(parsed.fields.tags).toEqual(["kernel", "fsrs"]);
+    expect(parsed.fields.resource).toBe(
+      "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md",
+    );
+    expect(parsed.body).toContain("FSRS-5 drives the queue.");
+  });
+
+  it("rejects a missing opening fence", () => {
+    expect(() => parseFrontmatter("type: concept\n---\n")).toThrow(
+      /must start with a --- fence/,
+    );
+  });
+
+  it("rejects an unterminated fence", () => {
+    expect(() => parseFrontmatter("---\ntype: concept\n")).toThrow(
+      /missing closing/,
+    );
+  });
+
+  it("rejects list items without a key, with a line number", () => {
+    expect(() =>
+      parseFrontmatter("---\n  - stray\n---\nbody"),
+    ).toThrow(/line 2: list item without a key/);
+  });
+
+  it("rejects lines outside the subset", () => {
+    expect(() =>
+      parseFrontmatter("---\nnested:\n  child: 1\n---\nbody"),
+    ).toThrow(/line 3/);
+  });
+});
+
+describe("okf/bundle validateArticle", () => {
+  it("accepts a conforming article", () => {
+    expect(validateArticle("fsrs-scheduling.md", article())).toEqual({
+      ok: true,
+      problems: [],
+    });
+  });
+
+  it("requires type, description, and a body", () => {
+    const md = "---\ntitle: X\n---\n\n";
+    const { ok, problems } = validateArticle("x.md", md);
+    expect(ok).toBe(false);
+    expect(problems.join(" ")).toMatch(/"type" is required/);
+    expect(problems.join(" ")).toMatch(/"description" is required/);
+    expect(problems.join(" ")).toMatch(/body is empty/);
+  });
+
+  it("rejects reserved and non-kebab file names", () => {
+    expect(validateArticle("index.md", article()).ok).toBe(false);
+    expect(
+      validateArticle("Not_Kebab.md", article()).problems.join(" "),
+    ).toMatch(/kebab-case/);
+  });
+});
+
+describe("okf/bundle index and log rendering", () => {
+  it("groups the index by type and pins okf_version frontmatter", () => {
+    const catalog = buildCatalog([
+      { file: "b.md", markdown: article({ type: "protocol", title: "B" }) },
+      { file: "a.md", markdown: article({ title: "A" }) },
+    ]);
+    const index = renderIndex(catalog);
+    expect(index.startsWith('---\nokf_version: "0.1"\n---')).toBe(true);
+    expect(index).toContain("## concept");
+    expect(index).toContain("## protocol");
+    expect(index).toContain("- [A](a.md) — How ZAM schedules reviews.");
+    expect(index.indexOf("## concept")).toBeLessThan(
+      index.indexOf("## protocol"),
+    );
+  });
+
+  it("appends log entries newest-day-first and merges same-day entries", () => {
+    const first = appendLog("", "2026-07-17", "**Creation** — [A](a.md)");
+    const sameDay = appendLog(first, "2026-07-17", "**Update** — [A](a.md)");
+    const nextDay = appendLog(sameDay, "2026-07-18", "**Creation** — [B](b.md)");
+    expect(nextDay.indexOf("## 2026-07-18")).toBeLessThan(
+      nextDay.indexOf("## 2026-07-17"),
+    );
+    const seventeenth = nextDay.slice(nextDay.indexOf("## 2026-07-17"));
+    expect(seventeenth.indexOf("**Update**")).toBeLessThan(
+      seventeenth.indexOf("**Creation**"),
+    );
+  });
+});
+
+describe("okf/io", () => {
+  let dir: string;
+  beforeEach(() => {
+    dir = mkdtempSync(join(tmpdir(), "zam-okf-"));
+  });
+  afterEach(() => {
+    rmSync(dir, { recursive: true, force: true });
+  });
+
+  it("refuses path escapes and reserved targets", () => {
+    expect(() => resolveArticlePath(dir, "../evil.md")).toThrow(/invalid/);
+    expect(() => resolveArticlePath(dir, "sub/evil.md")).toThrow(/invalid/);
+    expect(() => resolveArticlePath(dir, "log.md")).toThrow(/reserved/);
+  });
+
+  it("upsert writes the article, regenerates index.md, appends log.md", () => {
+    const res = upsertArticle(dir, "fsrs-scheduling.md", article(), "2026-07-17");
+    expect(res.validation.ok).toBe(true);
+    expect(res.created).toBe(true);
+    expect(res.entry?.title).toBe("FSRS Scheduling");
+    expect(readFileSync(join(dir, "index.md"), "utf8")).toContain(
+      "[FSRS Scheduling](fsrs-scheduling.md)",
+    );
+    expect(readFileSync(join(dir, "log.md"), "utf8")).toContain(
+      "**Creation** — [FSRS Scheduling](fsrs-scheduling.md)",
+    );
+
+    const again = upsertArticle(
+      dir,
+      "fsrs-scheduling.md",
+      article({ description: "Updated." }),
+      "2026-07-18",
+    );
+    expect(again.created).toBe(false);
+    const log = readFileSync(join(dir, "log.md"), "utf8");
+    expect(log.indexOf("## 2026-07-18")).toBeLessThan(
+      log.indexOf("## 2026-07-17"),
+    );
+  });
+
+  it("upsert refuses invalid articles without touching the bundle", () => {
+    const res = upsertArticle(dir, "broken.md", "---\ntitle: X\n---\n\n");
+    expect(res.validation.ok).toBe(false);
+    expect(loadBundle(dir).articles).toEqual([]);
+  });
+
+  it("loadBundle reports problems but keeps parseable entries in the catalog", () => {
+    upsertArticle(dir, "good.md", article({ title: "Good" }), "2026-07-17");
+    writeFileSync(join(dir, "bad.md"), "no frontmatter at all\n");
+    const bundle = loadBundle(dir);
+    expect(bundle.problems.join(" ")).toMatch(/bad\.md/);
+    expect(bundle.catalog.map((e) => e.file)).toEqual(["good.md"]);
+  });
+});
