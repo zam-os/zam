@@ -1,6 +1,12 @@
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   appendLog,
@@ -12,6 +18,7 @@ import {
 import {
   loadBundle,
   resolveArticlePath,
+  resolveCitationPath,
   upsertArticle,
 } from "../../src/cli/okf/io.js";
 
@@ -175,5 +182,48 @@ describe("okf/io", () => {
     const bundle = loadBundle(dir);
     expect(bundle.problems.join(" ")).toMatch(/bad\.md/);
     expect(bundle.catalog.map((e) => e.file)).toEqual(["good.md"]);
+  });
+});
+
+describe("resolveCitationPath", () => {
+  const makeRepo = () => {
+    const root = mkdtempSync(join(tmpdir(), "zam-okf-cite-"));
+    mkdirSync(join(root, ".git"));
+    mkdirSync(join(root, "docs", "okf"), { recursive: true });
+    mkdirSync(join(root, "docs", "adr"), { recursive: true });
+    writeFileSync(join(root, "docs", "adr", "2026-01-01-x.md"), "# X\n");
+    return root;
+  };
+
+  it("resolves a relative ADR citation inside the repo", () => {
+    const root = makeRepo();
+    const p = resolveCitationPath(join(root, "docs", "okf"), "../adr/2026-01-01-x.md");
+    expect(p).toBe(resolve(root, "docs", "adr", "2026-01-01-x.md"));
+  });
+
+  it("rejects absolute paths", () => {
+    const root = makeRepo();
+    expect(() => resolveCitationPath(join(root, "docs", "okf"), resolve(root, "docs/adr/2026-01-01-x.md")))
+      .toThrow(/invalid citation target/);
+  });
+
+  it("rejects escape from the repo root", () => {
+    const root = makeRepo();
+    expect(() => resolveCitationPath(join(root, "docs", "okf"), "../../../etc/passwd.md"))
+      .toThrow(/invalid citation target/);
+  });
+
+  it("rejects non-markdown targets", () => {
+    const root = makeRepo();
+    expect(() => resolveCitationPath(join(root, "docs", "okf"), "../adr/x.png"))
+      .toThrow(/invalid citation target/);
+  });
+
+  it("falls back to the bundle parent as root when no .git exists", () => {
+    const root = mkdtempSync(join(tmpdir(), "zam-okf-nogit-"));
+    mkdirSync(join(root, "okf"), { recursive: true });
+    writeFileSync(join(root, "sibling.md"), "# S\n");
+    expect(resolveCitationPath(join(root, "okf"), "../sibling.md")).toBe(resolve(root, "sibling.md"));
+    expect(() => resolveCitationPath(join(root, "okf"), "../../outside.md")).toThrow(/invalid citation target/);
   });
 });
