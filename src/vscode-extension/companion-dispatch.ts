@@ -90,7 +90,12 @@ export function unroutableVscodeLmReason(selectedEvaluatorId: string): string {
 export function assertSamplingRoutableToVscodeLm(
   selectedEvaluatorId: string | undefined,
 ): void {
-  if (!selectedEvaluatorId || selectedEvaluatorId === "vscode-lm") return;
+  if (
+    !selectedEvaluatorId ||
+    selectedEvaluatorId === "vscode-lm" ||
+    selectedEvaluatorId === "zam-text-model"
+  )
+    return;
   throw new EvaluatorUnavailableError(
     selectedEvaluatorId,
     unroutableVscodeLmReason(selectedEvaluatorId),

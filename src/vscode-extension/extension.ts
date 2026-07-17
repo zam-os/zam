@@ -7,8 +7,12 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import type { CallToolResult, Tool } from "@modelcontextprotocol/sdk/types.js";
 import * as vscode from "vscode";
 import {
+  getCompanionSelectedAntigravityEvaluatorId,
+  getCompanionSelectedAntigravityModelId,
   getCompanionSelectedEvaluatorId,
+  getCompanionSelectedVscodeEvaluatorId,
   getCompanionSelectedVscodeModelId,
+  setCompanionSelectedAntigravityModelId,
   setCompanionSelectedVscodeModelId,
 } from "../kernel/index.js";
 import {
@@ -23,7 +27,10 @@ import {
   assertSamplingRoutableToVscodeLm,
   enrichCallToolResultForVscodeLm,
 } from "./companion-dispatch.js";
-import type { EvaluatorAdapter } from "./companion-evaluator.js";
+import {
+  type EvaluatorAdapter,
+  EvaluatorUnavailableError,
+} from "./companion-evaluator.js";
 import {
   buildOpeningArguments,
   COMPANION_APPS,
@@ -41,20 +48,47 @@ import {
  * runtime (ADR 2026-07-16 §Decision 6) — are used to talk to VS Code.
  */
 const vscodeLmSurface: VscodeLmSurface = {
-  selectChatModels: (selector) =>
-    vscode.lm.selectChatModels(selector) as unknown as PromiseLike<
+  selectChatModels: (selector) => {
+    if (!vscode.lm) {
+      return Promise.resolve([]);
+    }
+    return vscode.lm.selectChatModels(selector) as unknown as PromiseLike<
       VscodeChatModelLike[]
-    >,
-  chatMessageUser: (content) => vscode.LanguageModelChatMessage.User(content),
-  chatMessageAssistant: (content) =>
-    vscode.LanguageModelChatMessage.Assistant(content),
+    >;
+  },
+  chatMessageUser: (content) => {
+    if (!vscode.LanguageModelChatMessage) {
+      return { role: "user", content };
+    }
+    return vscode.LanguageModelChatMessage.User(content);
+  },
+  chatMessageAssistant: (content) => {
+    if (!vscode.LanguageModelChatMessage) {
+      return { role: "assistant", content };
+    }
+    return vscode.LanguageModelChatMessage.Assistant(content);
+  },
   createCancellationTokenSource: () => new vscode.CancellationTokenSource(),
 };
 
 /** Persists the explicit VS Code model choice machine-locally (Phase 3). */
 const vscodeModelSelection: VscodeModelSelection = {
-  getSelectedModelId: () => getCompanionSelectedVscodeModelId(),
-  setSelectedModelId: (id) => setCompanionSelectedVscodeModelId(id),
+  getSelectedModelId: () => {
+    const isAntigravity =
+      vscode.env?.appName?.toLowerCase().includes("antigravity") ?? false;
+    return isAntigravity
+      ? getCompanionSelectedAntigravityModelId()
+      : getCompanionSelectedVscodeModelId();
+  },
+  setSelectedModelId: (id) => {
+    const isAntigravity =
+      vscode.env?.appName?.toLowerCase().includes("antigravity") ?? false;
+    if (isAntigravity) {
+      setCompanionSelectedAntigravityModelId(id);
+    } else {
+      setCompanionSelectedVscodeModelId(id);
+    }
+  },
 };
 
 const vscodeLmAdapter: EvaluatorAdapter = createVscodeLmAdapter(
@@ -149,8 +183,12 @@ class ZamMcpHost {
             `[zam mcp] ${(Buffer.isBuffer(chunk) ? chunk.toString("utf8") : chunk).trimEnd()}`,
           );
         });
+        const isAntigravity =
+          vscode.env?.appName?.toLowerCase().includes("antigravity") ?? false;
         const client = new Client({
-          name: "vscode-zam-companion",
+          name: isAntigravity
+            ? "antigravity-zam-companion"
+            : "vscode-zam-companion",
           version: "__ZAM_VERSION__",
         });
         await client.connect(transport);
@@ -375,18 +413,86 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
    * (review finding 1): the Recall panel only ever sends a "sampling"
    * message when it decided to use smart mode (quick mode skips sampling
    * entirely — see `desktop/src/panel/recall.ts`), but this still reads the
-   * persisted selection itself rather than trusting the panel alone —
-   * `assertSamplingRoutableToVscodeLm` throws `EvaluatorUnavailableError`
-   * with an honest reason if the selection names quick-mode or a detached
-   * harness instead of `vscode-lm`. If `vscode-lm` itself is unavailable (no
-   * model chosen or discovered, or the persisted choice disappeared),
-   * `evaluateAnswer` throws the same error type. Either way this never
-   * silently falls back to a different route — the caller (`handleMessage`)
-   * turns the error into an honest message surfaced back to the panel.
+   * persisted selection itself rather than trusting the panel alone.
+   *
+   * Supported sampling routes from this host:
+   * - `zam-text-model` — `zam_companion_sample` via the MCP server (ZAM recall LLM)
+   * - `vscode-lm` — VS Code language-model API
+   *
+   * Defaults when nothing is persisted match `assembleCompanionContext`:
+   * Antigravity → `zam-text-model`, VS Code Companion → `vscode-lm`.
+   * `assertSamplingRoutableToVscodeLm` throws `EvaluatorUnavailableError` if
+   * the selection names quick-mode or a detached harness. Unavailable
+   * `vscode-lm` also throws — this never silently falls back to a different
+   * route. The caller (`handleMessage`) turns errors into honest panel messages.
    */
   private async sample(payload: unknown): Promise<unknown> {
     const request = normalizeSamplingRequest(payload);
-    assertSamplingRoutableToVscodeLm(getCompanionSelectedEvaluatorId());
+    const isAntigravity =
+      vscode.env?.appName?.toLowerCase().includes("antigravity") ?? false;
+    const persistedEvaluatorId = isAntigravity
+      ? (getCompanionSelectedAntigravityEvaluatorId() ??
+        getCompanionSelectedEvaluatorId())
+      : (getCompanionSelectedVscodeEvaluatorId() ??
+        getCompanionSelectedEvaluatorId());
+    // Align with companion-context-server defaults when nothing is persisted,
+    // so Antigravity (no vscode.lm) samples via zam-text-model rather than
+    // attempting an unroutable vscode-lm path.
+    const activeEvaluatorId =
+      persistedEvaluatorId ?? (isAntigravity ? "zam-text-model" : "vscode-lm");
+    assertSamplingRoutableToVscodeLm(activeEvaluatorId);
+
+    if (activeEvaluatorId === "zam-text-model") {
+      try {
+        const client = await this.mcp.client();
+        const result = (await client.callTool({
+          name: "zam_companion_sample",
+          arguments: { messages: request.messages },
+        })) as CallToolResult;
+
+        if (result.isError) {
+          const errText = result.content?.find(
+            (item): item is { type: "text"; text: string } =>
+              item.type === "text" && "text" in item,
+          )?.text;
+          throw new Error(errText ?? "ZAM text model sampling failed");
+        }
+
+        const responseText = result.content?.find(
+          (item): item is { type: "text"; text: string } =>
+            item.type === "text" && "text" in item,
+        )?.text;
+        const responseJson = JSON.parse(responseText ?? "{}") as {
+          model?: string;
+          text?: string;
+        };
+        if (typeof responseJson.text !== "string") {
+          throw new Error("ZAM text model returned no text");
+        }
+        return createSamplingResult(
+          typeof responseJson.model === "string"
+            ? responseJson.model
+            : "zam-text-model",
+          responseJson.text,
+        );
+      } catch (error) {
+        if (error instanceof EvaluatorUnavailableError) throw error;
+        const errMsg = error instanceof Error ? error.message : String(error);
+        throw new EvaluatorUnavailableError(
+          "zam-text-model",
+          `ZAM text model sampling failed: ${errMsg}`,
+        );
+      }
+    }
+
+    const availability = await vscodeLmAdapter.availability();
+    if (!availability.available) {
+      throw new EvaluatorUnavailableError(
+        "vscode-lm",
+        availability.reason ?? "VS Code language models are unavailable",
+      );
+    }
+
     const result = await vscodeLmAdapter.evaluateAnswer(request);
     return createSamplingResult(result.model, result.text);
   }

@@ -180,7 +180,9 @@ function buildEvaluatorRouteInputs(
     harnessReport.harnesses.map((harness) => [harness.harness, harness]),
   );
 
-  const isVscodeCompanion = nativeHost?.normalizedId === "vscode-companion";
+  const isVscodeCompanion =
+    nativeHost?.normalizedId === "vscode-companion" ||
+    nativeHost?.normalizedId === "antigravity-companion";
   const nativeHostRoutable = !isVscodeCompanion && clientSamplingCapable;
 
   const inputs: EvaluatorRouteInput[] = [
@@ -205,10 +207,19 @@ function buildEvaluatorRouteInputs(
       id: "vscode-lm",
       displayIdentity: { provider: "VS Code language models" },
       configured: true,
-      routable: isVscodeCompanion,
-      reason: isVscodeCompanion
-        ? undefined
-        : "VS Code language-model routing is only available from the VS Code Companion extension.",
+      routable: nativeHost?.normalizedId === "vscode-companion",
+      reason:
+        nativeHost?.normalizedId === "vscode-companion"
+          ? undefined
+          : nativeHost?.normalizedId === "antigravity-companion"
+            ? "Antigravity IDE does not support the VS Code language model API (vscode.lm)."
+            : "VS Code language-model routing is only available from the VS Code Companion extension.",
+    },
+    {
+      id: "zam-text-model",
+      displayIdentity: { provider: "ZAM text model" },
+      configured: true,
+      routable: true,
     },
   ];
 
@@ -255,10 +266,17 @@ async function assembleCompanionContext(
   // section on its own).
   const companionConfig = getMachineCompanionConfig(input.configPath);
   const persistedUserId = companionConfig.selectedUserId;
+  const isAntigravity =
+    input.nativeHost?.normalizedId === "antigravity-companion";
+  const persistedEvaluatorIdRaw = isAntigravity
+    ? (companionConfig.selectedAntigravityEvaluatorId ??
+      companionConfig.selectedEvaluatorId)
+    : (companionConfig.selectedVscodeEvaluatorId ??
+      companionConfig.selectedEvaluatorId);
   const persistedEvaluatorId: EvaluatorId | undefined = isEvaluatorId(
-    companionConfig.selectedEvaluatorId,
+    persistedEvaluatorIdRaw,
   )
-    ? companionConfig.selectedEvaluatorId
+    ? persistedEvaluatorIdRaw
     : undefined;
   const collapsedRaw = companionConfig.collapsed ?? {};
 
@@ -302,11 +320,13 @@ async function assembleCompanionContext(
   // below).
   const defaultEvaluatorId: EvaluatorId = quickModeSettingIsOn
     ? "quick-mode"
-    : isVscodeCompanion
-      ? "vscode-lm"
-      : clientSamplingCapable
-        ? "native-mcp-host"
-        : "quick-mode";
+    : isAntigravity
+      ? "zam-text-model"
+      : isVscodeCompanion
+        ? "vscode-lm"
+        : clientSamplingCapable
+          ? "native-mcp-host"
+          : "quick-mode";
 
   const { read } = buildCompanionContext({
     surface: input.surface,
@@ -413,7 +433,14 @@ export async function writeCompanionContext(
       fallback: undefined,
     });
     if (isPersistableSelection(selection) && selection.value) {
-      update.selectedEvaluatorId = selection.value;
+      const nativeHost = normalizeNativeHostIdentity(options.clientInfo);
+      const isAntigravity =
+        nativeHost?.normalizedId === "antigravity-companion";
+      if (isAntigravity) {
+        update.selectedAntigravityEvaluatorId = selection.value;
+      } else {
+        update.selectedVscodeEvaluatorId = selection.value;
+      }
       reloadRequired = true;
     }
   }

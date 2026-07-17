@@ -263,10 +263,16 @@ describe("buildModelQuickPickItems", () => {
     const items = buildModelQuickPickItems([
       fakeModel({ id: "m1", vendor: "copilot", name: "Claude Sonnet 5" }),
       fakeModel({ id: "m2", vendor: "copilot", name: "GPT-5" }),
+      fakeModel({ id: "m3", vendor: "antigravity", name: "Gemini 3.5 Flash" }),
+      fakeModel({ id: "m4", vendor: "gemini", name: "Gemini 3.5 Pro" }),
+      fakeModel({ id: "m5", vendor: "google", name: "Gemini 1.5 Pro" }),
     ]);
     expect(items).toEqual([
       { label: "Copilot — Claude Sonnet 5", detail: "m1", modelId: "m1" },
       { label: "Copilot — GPT-5", detail: "m2", modelId: "m2" },
+      { label: "Antigravity — Gemini 3.5 Flash", detail: "m3", modelId: "m3" },
+      { label: "Gemini — Gemini 3.5 Pro", detail: "m4", modelId: "m4" },
+      { label: "Google — Gemini 1.5 Pro", detail: "m5", modelId: "m5" },
     ]);
   });
 });

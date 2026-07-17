@@ -1180,6 +1180,41 @@ export function createMcpServer(db: Database): McpServer {
     }),
   );
 
+  // 18. zam_companion_sample
+  server.registerTool(
+    "zam_companion_sample",
+    {
+      description:
+        "Perform LLM sampling via the server's configured LLM (fallback for companion when vscode-lm is empty)",
+      inputSchema: {
+        messages: z.array(
+          z.object({
+            role: z.enum(["user", "assistant"]),
+            text: z.string(),
+          }),
+        ),
+      },
+      annotations: {
+        ...commonAnnotations,
+      },
+      _meta: {
+        ui: { visibility: ["app"] },
+      },
+    },
+    wrapHandler(
+      async (params: {
+        messages: Array<{ role: "user" | "assistant"; text: string }>;
+      }) => {
+        const { sampleViaLocalLLM } = await import("../llm/client.js");
+        const messages = params.messages.map((m) => ({
+          role: m.role,
+          content: m.text,
+        }));
+        return await sampleViaLocalLLM(db, messages);
+      },
+    ),
+  );
+
   return server;
 }
 

@@ -242,7 +242,7 @@ describe("companion context server", () => {
     const routable = result.evaluators
       .filter((route) => route.routable)
       .map((route) => route.id);
-    expect(routable).toEqual(["quick-mode"]);
+    expect(routable.sort()).toEqual(["quick-mode", "zam-text-model"]);
     expect(result.activeEvaluatorId).toBe("quick-mode");
   });
 
@@ -255,7 +255,7 @@ describe("companion context server", () => {
     const routable = result.evaluators
       .filter((route) => route.routable)
       .map((route) => route.id);
-    expect(routable.sort()).toEqual(["quick-mode", "vscode-lm"]);
+    expect(routable.sort()).toEqual(["quick-mode", "vscode-lm", "zam-text-model"]);
     expect(result.activeEvaluatorId).toBe("vscode-lm");
 
     const nativeHost = result.evaluators.find(
@@ -309,7 +309,26 @@ describe("companion context server", () => {
       .filter((route) => route.routable)
       .map((route) => route.id)
       .sort();
-    expect(routableAsCompanion).toEqual(["quick-mode", "vscode-lm"]);
+    expect(routableAsCompanion).toEqual(["quick-mode", "vscode-lm", "zam-text-model"]);
+  });
+
+  it("defaults the Agent pill to zam-text-model and marks vscode-lm unroutable when the client is the Antigravity Companion", async () => {
+    const result = await readCompanionContext(
+      db,
+      { surface: "recall", clientInfo: { name: "antigravity-zam-companion" } },
+      { configPath },
+    );
+    const routable = result.evaluators
+      .filter((route) => route.routable)
+      .map((route) => route.id);
+    expect(routable.sort()).toEqual(["quick-mode", "zam-text-model"]);
+    expect(result.activeEvaluatorId).toBe("zam-text-model");
+
+    const vscodeLm = result.evaluators.find(
+      (route) => route.id === "vscode-lm",
+    );
+    expect(vscodeLm?.routable).toBe(false);
+    expect(vscodeLm?.reason).toMatch(/antigravity/i);
   });
 
   it("keeps an explicitly persisted evaluator selection even once vscode-lm becomes routable", async () => {
@@ -412,7 +431,7 @@ describe("companion context server", () => {
         .filter((route) => route.routable)
         .map((route) => route.id)
         .sort();
-      expect(routable).toEqual(["quick-mode", "vscode-lm"]);
+      expect(routable).toEqual(["quick-mode", "vscode-lm", "zam-text-model"]);
       expect(written.read.activeEvaluatorId).toBe("vscode-lm");
     });
 
@@ -444,7 +463,7 @@ describe("companion context server", () => {
       const routable = written.read.evaluators
         .filter((route) => route.routable)
         .map((route) => route.id);
-      expect(routable).toEqual(["quick-mode"]);
+      expect(routable.sort()).toEqual(["quick-mode", "zam-text-model"]);
     });
   });
 

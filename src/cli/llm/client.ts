@@ -1608,6 +1608,39 @@ export async function resolveUsableRecallEndpoint(
   return selected.endpoint;
 }
 
+export async function sampleViaLocalLLM(
+  db: Database,
+  messages: Array<{ role: string; content: string }>,
+): Promise<LlmTextResult> {
+  const cfg = await getProviderForRole(db, "recall");
+  const endpoint = await resolveUsableRecallEndpoint(db);
+
+  const res = await fetchWithInteractiveTimeout(
+    `${endpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages,
+        temperature: 0.3,
+        max_tokens: RECALL_DISCUSSION_MAX_OUTPUT_TOKENS,
+      }),
+      locale: cfg.locale,
+    },
+  );
+
+  const text = await readChatContent(res, "LLM sampling");
+  return {
+    text,
+    model: endpoint.model,
+    providerName: endpoint.providerName,
+  };
+}
+
 async function resolveUsableTextEndpoint(
   db: Database,
 ): Promise<ProviderConfig> {

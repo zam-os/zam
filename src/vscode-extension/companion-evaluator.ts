@@ -31,6 +31,7 @@ import type { NormalizedSamplingRequest } from "./protocol.js";
 export const ROUTABLE_EVALUATOR_IDS = [
   "native-mcp-host",
   "vscode-lm",
+  "zam-text-model",
   "quick-mode",
 ] as const;
 

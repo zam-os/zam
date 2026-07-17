@@ -1,0 +1,122 @@
+import { describe, expect, it } from "vitest";
+import {
+  StudyEditError,
+  deleteConfirmCommand,
+  deletePreviewCommand,
+  editCommand,
+  ratingShortcutForKey,
+  removeConfirmCommand,
+  removePreviewCommand,
+} from "../../desktop/src/study-card-actions.js";
+
+describe("study-card-actions", () => {
+  it("builds the remove (delete-card) preview and confirm calls", () => {
+    expect(removePreviewCommand("git-init")).toEqual({
+      cmd: "personal-card-remove",
+      args: ["--slug", "git-init"],
+    });
+    expect(removeConfirmCommand("git-init")).toEqual({
+      cmd: "personal-card-remove",
+      args: ["--slug", "git-init", "--confirm"],
+    });
+  });
+
+  it("builds the outdated (delete-token) preview and confirm calls", () => {
+    expect(deletePreviewCommand("git-init")).toEqual({
+      cmd: "personal-card-delete",
+      args: ["--slug", "git-init"],
+    });
+    expect(deleteConfirmCommand("git-init")).toEqual({
+      cmd: "personal-card-delete",
+      args: ["--slug", "git-init", "--confirm"],
+    });
+  });
+
+  it("builds a partial edit call with only slug, question and concept, trimmed", () => {
+    expect(
+      editCommand({
+        slug: "git-init",
+        question: "  What inits? ",
+        concept: " git init ",
+      }),
+    ).toEqual({
+      cmd: "personal-card-update",
+      args: [
+        "--slug",
+        "git-init",
+        "--question",
+        "What inits?",
+        "--concept",
+        "git init",
+      ],
+    });
+  });
+
+  it("rejects an empty concept", () => {
+    try {
+      editCommand({ slug: "s", question: "q", concept: "   " });
+      throw new Error("should have thrown");
+    } catch (err) {
+      expect(err).toBeInstanceOf(StudyEditError);
+      expect((err as StudyEditError).reason).toBe("concept-required");
+    }
+  });
+
+  it("rejects an empty question", () => {
+    try {
+      editCommand({ slug: "s", question: "  ", concept: "c" });
+      throw new Error("should have thrown");
+    } catch (err) {
+      expect(err).toBeInstanceOf(StudyEditError);
+      expect((err as StudyEditError).reason).toBe("question-required");
+    }
+  });
+
+  it.each([
+    ["1", 1],
+    ["2", 2],
+    ["3", 3],
+    ["4", 4],
+  ] as const)("maps the safe %s shortcut to rating %s", (key, rating) => {
+    expect(
+      ratingShortcutForKey(key, {
+        editableTarget: false,
+        revealed: true,
+        dialogOpen: false,
+        editorOpen: false,
+        actionInProgress: false,
+      }),
+    ).toBe(rating);
+  });
+
+  it.each([
+    ["an editable field is focused", { editableTarget: true }],
+    ["the answer is not revealed", { revealed: false }],
+    ["a confirmation dialog is open", { dialogOpen: true }],
+    ["the inline editor is open", { editorOpen: true }],
+    ["another review action is running", { actionInProgress: true }],
+  ] as const)("blocks rating shortcuts when %s", (_label, override) => {
+    expect(
+      ratingShortcutForKey("1", {
+        editableTarget: false,
+        revealed: true,
+        dialogOpen: false,
+        editorOpen: false,
+        actionInProgress: false,
+        ...override,
+      }),
+    ).toBeNull();
+  });
+
+  it("ignores keys outside the rating range", () => {
+    expect(
+      ratingShortcutForKey("5", {
+        editableTarget: false,
+        revealed: true,
+        dialogOpen: false,
+        editorOpen: false,
+        actionInProgress: false,
+      }),
+    ).toBeNull();
+  });
+});

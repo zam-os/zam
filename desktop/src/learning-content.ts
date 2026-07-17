@@ -568,6 +568,20 @@ function selectCard(card: PersonalCard): void {
   refreshCardsList(); // Update selected highlight
 }
 
+/**
+ * Focus the editor on a specific card by slug — the "Open in full editor"
+ * jump from the study view (ADR 2026-07-16b). Reloads the card list so a card
+ * edited elsewhere is present, then selects it. Returns false if the slug is
+ * not among the learner's cards.
+ */
+export async function openCardInEditor(slug: string): Promise<boolean> {
+  await loadStudioData();
+  const card = cardsList.find((c) => c.slug === slug);
+  if (!card) return false;
+  selectCard(card);
+  return true;
+}
+
 function startCreateNewCard(): void {
   selectedCard = null;
   isCreatingNew = true;

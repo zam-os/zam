@@ -15,6 +15,9 @@ import {
   getActiveWorkspaceId,
   getAgentConnectAutoDone,
   getCompanionCollapsed,
+  getCompanionSelectedAntigravityModelId,
+  getCompanionSelectedAntigravityEvaluatorId,
+  getCompanionSelectedVscodeEvaluatorId,
   getCompanionSelectedEvaluatorId,
   getCompanionSelectedUserId,
   getCompanionSelectedVscodeModelId,
@@ -28,6 +31,9 @@ import {
   setActiveWorkspaceId,
   setAgentConnectAutoDone,
   setCompanionCollapsed,
+  setCompanionSelectedAntigravityModelId,
+  setCompanionSelectedAntigravityEvaluatorId,
+  setCompanionSelectedVscodeEvaluatorId,
   setCompanionSelectedEvaluatorId,
   setCompanionSelectedUserId,
   setCompanionSelectedVscodeModelId,
@@ -279,6 +285,37 @@ describe("install config", () => {
     expect(getCompanionSelectedVscodeModelId(path)).toBeUndefined();
     // Clearing the model choice preserves the unrelated evaluator id.
     expect(getCompanionSelectedEvaluatorId(path)).toBe("vscode-lm");
+  });
+
+  it("round-trips the persisted explicit Antigravity model choice independently", () => {
+    const path = tempConfigPath();
+    expect(getCompanionSelectedAntigravityModelId(path)).toBeUndefined();
+
+    setCompanionSelectedAntigravityModelId("google:gemini-3.5-flash", path);
+
+    expect(getCompanionSelectedAntigravityModelId(path)).toBe("google:gemini-3.5-flash");
+    expect(loadInstallConfig(path).companion?.selectedAntigravityModelId).toBe("google:gemini-3.5-flash");
+
+    setCompanionSelectedAntigravityModelId(undefined, path);
+    expect(getCompanionSelectedAntigravityModelId(path)).toBeUndefined();
+  });
+
+  it("round-trips the separate VS Code and Antigravity evaluator selections independently", () => {
+    const path = tempConfigPath();
+    expect(getCompanionSelectedVscodeEvaluatorId(path)).toBeUndefined();
+    expect(getCompanionSelectedAntigravityEvaluatorId(path)).toBeUndefined();
+
+    setCompanionSelectedVscodeEvaluatorId("vscode-lm", path);
+    setCompanionSelectedAntigravityEvaluatorId("quick-mode", path);
+
+    expect(getCompanionSelectedVscodeEvaluatorId(path)).toBe("vscode-lm");
+    expect(getCompanionSelectedAntigravityEvaluatorId(path)).toBe("quick-mode");
+    expect(loadInstallConfig(path).companion?.selectedVscodeEvaluatorId).toBe("vscode-lm");
+    expect(loadInstallConfig(path).companion?.selectedAntigravityEvaluatorId).toBe("quick-mode");
+
+    setCompanionSelectedVscodeEvaluatorId(undefined, path);
+    expect(getCompanionSelectedVscodeEvaluatorId(path)).toBeUndefined();
+    expect(getCompanionSelectedAntigravityEvaluatorId(path)).toBe("quick-mode");
   });
 
   it("round-trips per-surface Companion collapsed state independently", () => {
