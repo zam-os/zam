@@ -198,7 +198,7 @@ export function renderIndex(
     "(ADR 2026-07-17). Do not edit by hand: write through the",
     "`zam_okf_upsert` MCP tool.",
     "",
-    ...sections,
+    sections.join("\n\n"),
     "",
   ].join("\n");
 }
