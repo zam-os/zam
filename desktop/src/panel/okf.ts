@@ -81,6 +81,11 @@ type ViewMode = "reader" | "graph" | "log";
 
 interface OpenOkfResult {
   bundleDir?: string | null;
+  /** The OKF bundle-format version (index.md's `okf_version` frontmatter),
+   * not the zam app/package version — see `zam_okf_visualize`'s `okfVersion`
+   * field (src/cli/commands/mcp.ts). `null` when the bundle failed to load
+   * or index.md has no `okf_version`. */
+  okfVersion?: string | null;
   catalog?: CatalogEntry[];
   log?: string;
   version?: string;
@@ -108,6 +113,12 @@ let connected = false;
 let started = false;
 let catalogLoaded = false;
 let bundleDir: string | null = null;
+/** Bundle-format version shown in the `#okf-version` header element —
+ * distinct from `panelVersion` (the zam app/package version, still shown in
+ * the context-bar title). Null/unset until a tool result with `okfVersion`
+ * arrives; the 800ms zam_okf_catalog fallback never sets it, since that tool
+ * doesn't return it. */
+let bundleOkfVersion: string | null = null;
 let catalog: CatalogEntry[] = [];
 /** First-seen `type` order across the full (unfiltered) catalog, fixed once
  * per catalog load — the categorical-color assignment must never reshuffle
@@ -221,12 +232,22 @@ function renderAll(): void {
 
 function renderHeader(): void {
   if (headerCountEl) headerCountEl.textContent = `${catalog.length} Artikel`;
-  // zam_okf_visualize now returns a distinct OKF-format `okfVersion` (Task
-  // 5), but this panel doesn't thread it through OpenOkfResult yet — still
-  // showing the panel/app version here, same convention as every other
-  // zam_open_*/zam_show_* card. Wiring the real okf_version through is
-  // follow-up work, not required for the panel to render correctly today.
-  if (headerVersionEl) headerVersionEl.textContent = panelVersion ? `v${panelVersion}` : "";
+  // #okf-version shows the OKF BUNDLE's format version (index.md's
+  // `okf_version`), not the zam app/package version — that's still shown
+  // separately in the context-bar title (see ensureContextBar/panelVersion).
+  // Unknown (bundle failed to load, no `okf_version` field, or the 800ms
+  // zam_okf_catalog fallback ran because no host ever fired ontoolresult)
+  // degrades to hiding the element rather than falling back to the app
+  // version, which would mislabel it.
+  if (headerVersionEl) {
+    if (bundleOkfVersion) {
+      headerVersionEl.hidden = false;
+      headerVersionEl.textContent = `OKF v${bundleOkfVersion}`;
+    } else {
+      headerVersionEl.hidden = true;
+      headerVersionEl.textContent = "";
+    }
+  }
 }
 
 function updateViewToggleActiveState(): void {
@@ -802,6 +823,7 @@ app.ontoolresult = (params) => {
   const previousBundleDir = bundleDir;
   currentUser = structured.user ?? null;
   if (structured.bundleDir !== undefined) bundleDir = structured.bundleDir;
+  if (structured.okfVersion !== undefined) bundleOkfVersion = structured.okfVersion;
   if (structured.catalog) {
     setCatalog(structured.catalog);
     catalogLoaded = true;
