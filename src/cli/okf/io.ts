@@ -2,17 +2,17 @@
  * Filesystem layer for OKF bundles (ADR 2026-07-17). Everything that
  * touches disk lives here; the contract itself is in bundle.ts.
  */
-import { readFileSync, readdirSync, writeFileSync, mkdirSync } from "node:fs";
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import {
-  type CatalogEntry,
-  type ValidationResult,
+  appendLog,
   buildCatalog,
+  type CatalogEntry,
   isReservedFile,
   renderIndex,
   toCatalogEntry,
+  type ValidationResult,
   validateArticle,
-  appendLog,
 } from "./bundle.js";
 
 export interface LoadedBundle {
