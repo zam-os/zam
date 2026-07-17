@@ -1215,6 +1215,106 @@ export function createMcpServer(db: Database): McpServer {
     ),
   );
 
+  // 19.–21. zam_okf_* — the OKF knowledge-base surface (ADR 2026-07-17).
+  // Operates on any OKF bundle directory; docs/okf of the current workspace
+  // by default. Upsert is the ONLY sanctioned write path into a bundle.
+  const okfBundleDirSchema = z
+    .string()
+    .optional()
+    .describe("Bundle directory (default docs/okf under the server cwd)");
+
+  server.registerTool(
+    "zam_okf_catalog",
+    {
+      description:
+        "List the OKF knowledge-base articles (type, title, description, tags, resource URL) plus conformance problems, if any",
+      inputSchema: {
+        bundle_dir: okfBundleDirSchema,
+      },
+      annotations: {
+        ...commonAnnotations,
+        readOnlyHint: true,
+      },
+    },
+    wrapHandler(async (params: { bundle_dir?: string }) => {
+      const { DEFAULT_BUNDLE_DIR, loadBundle } = await import("../okf/io.js");
+      const bundle = loadBundle(params.bundle_dir ?? DEFAULT_BUNDLE_DIR);
+      return {
+        dir: bundle.dir,
+        articles: bundle.catalog,
+        problems: bundle.problems,
+      };
+    }),
+  );
+
+  server.registerTool(
+    "zam_okf_read",
+    {
+      description:
+        "Read one OKF knowledge-base article: raw markdown plus parsed frontmatter",
+      inputSchema: {
+        bundle_dir: okfBundleDirSchema,
+        file: z.string().describe("Article file name, e.g. fsrs-scheduling.md"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        readOnlyHint: true,
+      },
+    },
+    wrapHandler(async (params: { bundle_dir?: string; file: string }) => {
+      const { readFileSync } = await import("node:fs");
+      const { DEFAULT_BUNDLE_DIR, resolveArticlePath } = await import(
+        "../okf/io.js"
+      );
+      const { parseFrontmatter } = await import("../okf/bundle.js");
+      const path = resolveArticlePath(
+        params.bundle_dir ?? DEFAULT_BUNDLE_DIR,
+        params.file,
+      );
+      const markdown = readFileSync(path, "utf8");
+      const { fields } = parseFrontmatter(markdown);
+      return { file: params.file, frontmatter: fields, markdown };
+    }),
+  );
+
+  server.registerTool(
+    "zam_okf_upsert",
+    {
+      description:
+        "Create or update an OKF knowledge-base article through the validated write path: checks the frontmatter contract, regenerates index.md, and appends the log.md entry. Never edit bundle files directly.",
+      inputSchema: {
+        bundle_dir: okfBundleDirSchema,
+        file: z
+          .string()
+          .describe("Kebab-case article file name ending in .md (permanent ID)"),
+        markdown: z
+          .string()
+          .describe(
+            "Full article: --- frontmatter (type, title, description, tags, resource, timestamp) then the body",
+          ),
+      },
+      annotations: {
+        ...commonAnnotations,
+      },
+    },
+    wrapHandler(
+      async (params: { bundle_dir?: string; file: string; markdown: string }) => {
+        const { DEFAULT_BUNDLE_DIR, upsertArticle } = await import(
+          "../okf/io.js"
+        );
+        const result = upsertArticle(
+          params.bundle_dir ?? DEFAULT_BUNDLE_DIR,
+          params.file,
+          params.markdown,
+        );
+        if (!result.validation.ok) {
+          return { ok: false, problems: result.validation.problems };
+        }
+        return { ok: true, created: result.created, entry: result.entry };
+      },
+    ),
+  );
+
   return server;
 }
 
