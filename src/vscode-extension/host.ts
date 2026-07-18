@@ -24,6 +24,7 @@ interface BootstrapPayload {
 
 type HostRequestType =
   | "callTool"
+  | "chatMessage"
   | "modelContext"
   | "openLink"
   | "sampling"
@@ -112,6 +113,11 @@ async function mount(payload: BootstrapPayload): Promise<void> {
       logging: {},
       updateModelContext: { text: {}, structuredContent: {} },
       sampling: {},
+      // ui/message: apps hand a user message to "the chat". The extension
+      // side routes it into VS Code's Chat view (workbench.action.chat.open)
+      // and reports isError when no chat can take it — the app then falls
+      // back to its copyable-text path.
+      message: { text: {} },
     },
     { hostContext: hostContext(payload.tool) },
   );
@@ -119,6 +125,8 @@ async function mount(payload: BootstrapPayload): Promise<void> {
 
   bridge.oncalltool = async (params) =>
     request<CallToolResult>("callTool", params);
+  bridge.onmessage = async (params) =>
+    request<{ isError?: boolean }>("chatMessage", params);
   bridge.onupdatemodelcontext = async (params) =>
     request<Record<string, never>>("modelContext", params);
   bridge.oncreatesamplingmessage = async (params) =>

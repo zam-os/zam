@@ -1479,6 +1479,70 @@ export function createMcpServer(db: Database): McpServer {
     ),
   );
 
+  // zam_okf_focus / zam_okf_focused — the "currently focused article"
+  // bridge between the OKF panel and whatever chat the user is in. The
+  // panel records which article its reader shows (app-only write, like
+  // zam_studio_bridge); any harness connected to `zam mcp` — Claude Code,
+  // Copilot, Codex — resolves "import this okf" / "the currently focused
+  // article" through the read side. Machine-local snapshot under ~/.zam,
+  // never the shared database (src/cli/okf-focus.ts).
+  registerAppTool(
+    server,
+    "zam_okf_focus",
+    {
+      description:
+        "App-only: record which OKF article the visualizer panel currently shows, so chat agents can resolve 'the currently focused article'. Not intended for direct model use.",
+      inputSchema: {
+        file: z
+          .string()
+          .describe("Article file name inside the bundle (kebab-case .md)"),
+        bundle_dir: z
+          .string()
+          .optional()
+          .describe("Absolute bundle directory the panel is browsing"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: false,
+        idempotentHint: true,
+      },
+      _meta: {
+        ui: { visibility: ["app"] },
+      },
+    },
+    wrapHandler(async (params: { file: string; bundle_dir?: string }) => {
+      const { writeOkfFocus } = await import("../okf-focus.js");
+      const focus = await writeOkfFocus(params.file, params.bundle_dir);
+      return { recorded: { file: focus.file, updatedAt: focus.updatedAt } };
+    }),
+  );
+
+  server.registerTool(
+    "zam_okf_focused",
+    {
+      description:
+        "The OKF article currently focused in the user's visualizer panel — resolve requests like 'import this okf', 'import the currently focused article', or 'the open article'. Returns {focused: {file, bundle_dir?, updatedAt} | null}; check updatedAt and confirm the article by name with the user if it looks stale. To import, read the article (zam_okf_read) and follow the zam_okf_import contract.",
+      inputSchema: {},
+      annotations: {
+        ...commonAnnotations,
+        readOnlyHint: true,
+      },
+    },
+    wrapHandler(async () => {
+      const { readOkfFocus } = await import("../okf-focus.js");
+      const focus = await readOkfFocus();
+      return {
+        focused: focus
+          ? {
+              file: focus.file,
+              ...(focus.bundleDir ? { bundle_dir: focus.bundleDir } : {}),
+              updatedAt: focus.updatedAt,
+            }
+          : null,
+      };
+    }),
+  );
+
   server.registerTool(
     "zam_okf_read_citation",
     {

@@ -368,6 +368,8 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
         result = await this.sample(message.payload);
       } else if (message.type === "openLink") {
         result = await this.openLink(message.payload);
+      } else if (message.type === "chatMessage") {
+        result = await this.forwardChatMessage(message.payload);
       } else if (message.type === "modelContext") {
         result = {};
       } else if (message.type === "status") {
@@ -386,6 +388,50 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
         id,
         error: errorMessage(error),
       });
+    }
+  }
+
+  /**
+   * ui/message from a panel: hand the text to VS Code's Chat view via
+   * `workbench.action.chat.open`, which opens the chat and submits the
+   * query. Returns `{isError: true}` instead of throwing when no chat can
+   * take the message — per the MCP Apps contract, the app then falls back
+   * to its own affordance (the OKF panel shows the instruction as
+   * copyable text).
+   */
+  private async forwardChatMessage(
+    payload: unknown,
+  ): Promise<{ isError?: boolean }> {
+    const content =
+      payload && typeof payload === "object"
+        ? (payload as { content?: unknown }).content
+        : undefined;
+    const blocks = Array.isArray(content) ? content : [];
+    const text = blocks
+      .flatMap((block) =>
+        block &&
+        typeof block === "object" &&
+        (block as { type?: unknown }).type === "text" &&
+        typeof (block as { text?: unknown }).text === "string"
+          ? [(block as { text: string }).text]
+          : [],
+      )
+      .join("\n")
+      .trim();
+    if (!text) return { isError: true };
+    try {
+      await vscode.commands.executeCommand("workbench.action.chat.open", {
+        query: text,
+      });
+      this.output.appendLine(
+        `[${new Date().toISOString()}] forwarded ui/message to the chat view (${text.length} chars)`,
+      );
+      return {};
+    } catch (error) {
+      this.output.appendLine(
+        `[${new Date().toISOString()}] ui/message could not reach a chat: ${errorMessage(error)}`,
+      );
+      return { isError: true };
     }
   }
 

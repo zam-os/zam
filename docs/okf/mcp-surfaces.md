@@ -24,8 +24,9 @@ The server exposes ZAM's tool surface (session start/end, queue and
 review actions, token search and registration, prerequisite linking,
 companion context and sampling, and the OKF knowledge-base tools
 `zam_okf_catalog` / `zam_okf_read` / `zam_okf_upsert` /
-`zam_okf_read_citation` / `zam_okf_import`). The authoritative tool list
-with annotations is pinned by `tests/cli/mcp.test.ts`.
+`zam_okf_read_citation` / `zam_okf_import` / `zam_okf_focused`). The
+authoritative tool list with annotations is pinned by
+`tests/cli/mcp.test.ts`.
 
 The `zam_okf_*` tools resolve their default bundle directory as
 `docs/okf` under the MCP client's workspace root (MCP `roots/list`),
@@ -70,11 +71,20 @@ and other citation targets inline via `zam_okf_read_citation`, a link
 graph (articles as nodes, inter-article links as edges, citations as
 visually distinct nodes), and the `log.md` history. The panel always
 opens — a missing or invalid bundle surfaces as `problems` in the panel
-instead of a tool error. The article reader's "import as learning
-content" action posts the decomposition request into the host
-conversation (MCP Apps `sendMessage`) — the agent does the thinking,
-then records via `zam_okf_import`; hosts without a conversation surface
-get the instruction as copyable text instead.
+instead of a tool error.
+
+The reader's "import as learning content" action hands the
+decomposition request to a chat in host order of capability: hosts
+advertising the MCP Apps `message` capability get it via `ui/message`
+(the VS Code Companion routes this into the editor's Chat view through
+`workbench.action.chat.open`); hosts without one show the instruction
+as copyable text with a copy button. Independently, the reader records
+its focused article machine-locally (`zam_okf_focus`, app-only, written
+to `~/.zam/okf-focus.json`), so a request like "import this okf" or
+"import the currently focused article" typed into ANY connected harness
+— Claude Code, Copilot, Codex — resolves through the model-visible
+`zam_okf_focused` tool. The agent does the thinking either way, then
+records via `zam_okf_import`.
 
 The knowledge-graph card (`zam_show_graph`, `ui://zam/graph`) centers
 on a focus token's direct prerequisites and dependents. Opened without
@@ -94,4 +104,6 @@ available directly.
 - [ADR 2026-07-17 — OKF Knowledge Base](../adr/2026-07-17-okf-knowledge-base.md)
 - [ADR 2026-07-17b — OKF Visualizer Panel](../adr/2026-07-17b-okf-visualizer-panel.md)
 - [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
-- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/bridge-handlers.ts` (importOkfTokens)
+- [ADR 2026-07-18b — Learning Graph Scope Selectors and the Repo Scope](../adr/2026-07-18b-graph-repo-scope.md)
+- [ADR 2026-07-18c — OKF Import Handoff](../adr/2026-07-18c-okf-import-handoff.md)
+- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf-focus.ts`, `src/cli/bridge-handlers.ts` (importOkfTokens)

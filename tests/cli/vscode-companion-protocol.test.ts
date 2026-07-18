@@ -96,6 +96,9 @@ describe("VS Code companion protocol", () => {
       }),
     ).toEqual({ bundle_dir: "C:/src/dw/Cops.AI/docs/okf" });
     expect(COMPANION_APPS.okf.toolName).toBe("zam_okf_visualize");
+    // The reader records its focused article so chat agents can resolve
+    // "import this okf" — the write tool must be reachable from the panel.
+    expect(COMPANION_APPS.okf.allowedTools.has("zam_okf_focus")).toBe(true);
   });
 
   // Regression guard for the 0.13.0 gap: `zam_okf_visualize` published a UI
