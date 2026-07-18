@@ -59,7 +59,10 @@ function unquote(raw: string): string {
  * of silently dropped fields.
  */
 export function parseFrontmatter(markdown: string): ParsedArticle {
-  const lines = markdown.split("\n");
+  // Windows checkouts (git autocrlf) deliver CRLF files; a trailing \r
+  // would defeat every $-anchored pattern below, so normalize up front.
+  // The body is rebuilt from these lines, so it comes out LF-normalized.
+  const lines = markdown.split(/\r\n|\n/);
   if (lines[0]?.trim() !== "---") {
     throw new Error("frontmatter: file must start with a --- fence");
   }

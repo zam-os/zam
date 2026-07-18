@@ -54,6 +54,23 @@ describe("okf/bundle parseFrontmatter", () => {
     expect(parsed.body).toContain("FSRS-5 drives the queue.");
   });
 
+  it("parses CRLF line endings (Windows checkouts with autocrlf)", () => {
+    const parsed = parseFrontmatter(article().replace(/\n/g, "\r\n"));
+    expect(parsed.fields.type).toBe("concept");
+    expect(parsed.fields.tags).toEqual(["kernel", "fsrs"]);
+    expect(parsed.body).toContain("FSRS-5 drives the queue.");
+    expect(parsed.body).not.toContain("\r");
+  });
+
+  it("validates a CRLF article as conformant", () => {
+    const result = validateArticle(
+      "fsrs-scheduling.md",
+      article().replace(/\n/g, "\r\n"),
+    );
+    expect(result.ok).toBe(true);
+    expect(result.problems).toEqual([]);
+  });
+
   it("rejects a missing opening fence", () => {
     expect(() => parseFrontmatter("type: concept\n---\n")).toThrow(
       /must start with a --- fence/,
