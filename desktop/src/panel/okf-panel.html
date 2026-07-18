@@ -571,6 +571,31 @@
         font-size: 11px;
         resize: vertical;
       }
+      .okf-import-fallback-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .okf-import-copy-btn {
+        border: 1px solid var(--border);
+        background: var(--card);
+        color: var(--fg);
+        border-radius: 6px;
+        padding: 3px 10px;
+        font: inherit;
+        font-size: 12px;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .okf-import-copy-btn:hover:not(:disabled) {
+        background: var(--hover, rgba(130, 125, 189, 0.1));
+      }
+      .okf-import-copy-btn:disabled {
+        cursor: default;
+        opacity: 0.85;
+      }
       .okf-empty-emoji {
         font-size: 2rem;
       }

@@ -536,6 +536,39 @@ function importInstruction(file: string): string {
   );
 }
 
+/**
+ * Copy the fallback instruction to the clipboard. Webviews differ in what
+ * they allow: try the async clipboard API first, fall back to the
+ * selection-based path (`document.execCommand("copy")`) — deprecated but
+ * still the reliable route in webviews without clipboard-write permission.
+ * The button itself reports success/failure so the user never guesses.
+ */
+async function copyInstruction(
+  copyable: HTMLTextAreaElement,
+  button: HTMLButtonElement,
+): Promise<void> {
+  let copied = false;
+  try {
+    await navigator.clipboard.writeText(copyable.value);
+    copied = true;
+  } catch {
+    copyable.focus();
+    copyable.select();
+    try {
+      copied = document.execCommand("copy");
+    } catch {
+      copied = false;
+    }
+  }
+  const original = "📋 Kopieren";
+  button.textContent = copied ? "✓ Kopiert" : "⚠️ Kopieren fehlgeschlagen";
+  button.disabled = true;
+  window.setTimeout(() => {
+    button.textContent = original;
+    button.disabled = false;
+  }, 2000);
+}
+
 function buildImportAction(file: string): HTMLElement {
   const wrap = document.createElement("div");
   wrap.className = "okf-import-action";
@@ -572,7 +605,17 @@ function buildImportAction(file: string): HTMLElement {
         copyable.className = "okf-import-fallback";
         copyable.value = importInstruction(file);
         copyable.addEventListener("focus", () => copyable.select());
-        hint.append(note, copyable);
+        const copyBtn = document.createElement("button");
+        copyBtn.type = "button";
+        copyBtn.className = "okf-import-copy-btn";
+        copyBtn.textContent = "📋 Kopieren";
+        copyBtn.addEventListener("click", () => {
+          void copyInstruction(copyable, copyBtn);
+        });
+        const noteRow = document.createElement("div");
+        noteRow.className = "okf-import-fallback-row";
+        noteRow.append(note, copyBtn);
+        hint.append(noteRow, copyable);
       } finally {
         btn.disabled = false;
       }
