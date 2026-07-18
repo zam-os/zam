@@ -266,6 +266,7 @@ export function describeServerVersionDrift(
   extensionVersion: string,
   serverVersion: string | undefined,
 ): ServerVersionDrift | null {
+  if (serverVersion === undefined) return null;
   const ext = semverCore(extensionVersion);
   const srv = semverCore(serverVersion);
   if (!ext || !srv) return null;
