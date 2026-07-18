@@ -3424,6 +3424,12 @@ bridgeCommand
     "Filter by domain prefix (e.g. company-team) — uses / separator for hierarchy",
   )
   .option("--knowledge-context <context>", "Filter by knowledge context")
+  .option(
+    "--source-link-base <base>",
+    "Filter by source-link base (exact or '<base>#<anchor>', as written by OKF imports); repeatable",
+    (value: string, previous: string[]) => [...previous, value],
+    [] as string[],
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = opts.user
@@ -3434,6 +3440,8 @@ bridgeCommand
       if (opts.domainPrefix) listOpts.domainPrefix = opts.domainPrefix;
       if (opts.knowledgeContext)
         listOpts.knowledgeContext = opts.knowledgeContext;
+      if (opts.sourceLinkBase.length)
+        listOpts.sourceLinkBases = opts.sourceLinkBase;
 
       const tokens = await listTokens(
         db,

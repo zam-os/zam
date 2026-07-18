@@ -494,6 +494,22 @@ describe("MCP stdio server tests", () => {
     // Default user seeded in beforeEach via user_config.
     expect(structured.user).toBe("thomas");
 
+    // Repo scope for the card's no-focus bootstrap: without client roots the
+    // server falls back to docs/okf under its cwd — this checkout's own OKF
+    // bundle, so the scope must name the repo and carry one source-link base
+    // per article (resource URL, else resolved article path).
+    const repoScope = (structured as any).repoScope as {
+      label: string;
+      bases: string[];
+    };
+    expect(typeof repoScope?.label).toBe("string");
+    expect(repoScope.label.length).toBeGreaterThan(0);
+    expect(Array.isArray(repoScope.bases)).toBe(true);
+    expect(repoScope.bases.length).toBeGreaterThan(0);
+    for (const base of repoScope.bases) {
+      expect(typeof base).toBe("string");
+    }
+
     const focusedRes = await client.callTool({
       name: "zam_show_graph",
       arguments: { focus: "some-slug" },

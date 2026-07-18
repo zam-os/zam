@@ -87,6 +87,13 @@ export interface ListTokensOptions {
    * Filter by knowledge context name (e.g. "work-company").
    */
   knowledgeContext?: string;
+  /**
+   * Filter by source-link base(s): tokens whose `source_link` is one of the
+   * bases exactly or `<base>#<anchor>` (the anchored form OKF imports
+   * write). Same matching rule as `getTokensBySourceLinkBase`, OR-ed over
+   * all bases. An empty array matches nothing.
+   */
+  sourceLinkBases?: string[];
 }
 
 export interface TokenDeleteImpact {
@@ -637,6 +644,17 @@ export async function listTokens(
       WHERE tc.token_id = tokens.id AND c.name = ?
     )`);
     params.push(options.knowledgeContext);
+  }
+
+  if (options?.sourceLinkBases) {
+    const clauses = options.sourceLinkBases.map(
+      () => `(source_link = ? OR source_link LIKE ? || '#%' ESCAPE '\\')`,
+    );
+    // An explicit empty list means "nothing matches", not "no filter".
+    whereClauses.push(clauses.length ? `(${clauses.join(" OR ")})` : "0 = 1");
+    for (const base of options.sourceLinkBases) {
+      params.push(base, escapeLike(base));
+    }
   }
 
   const orderBy =
