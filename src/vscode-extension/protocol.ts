@@ -3,7 +3,7 @@ import type {
   Tool,
 } from "@modelcontextprotocol/sdk/types.js";
 
-export type CompanionApp = "recall" | "graph" | "settings";
+export type CompanionApp = "recall" | "graph" | "settings" | "okf";
 
 export interface CompanionIntent {
   version: 1;
@@ -51,6 +51,16 @@ export const COMPANION_APPS: Record<CompanionApp, CompanionAppConfig> = {
     title: "ZAM Graph",
     toolName: "zam_show_graph",
     allowedTools: new Set(["zam_studio_bridge", "zam_companion_context"]),
+  },
+  okf: {
+    title: "ZAM Knowledge Base",
+    toolName: "zam_okf_visualize",
+    allowedTools: new Set([
+      "zam_okf_catalog",
+      "zam_okf_read",
+      "zam_okf_read_citation",
+      "zam_companion_context",
+    ]),
   },
   settings: {
     title: "ZAM Settings",
@@ -165,12 +175,16 @@ export function buildOpeningArguments(
   app: CompanionApp,
   input: Record<string, string>,
 ): Record<string, string> {
+  // `okf` deliberately omits `user`: `zam_okf_visualize` is repo-scoped and
+  // its input schema has no user parameter (unlike the learner-scoped apps).
   const allowed =
     app === "recall"
       ? ["user", "domain"]
       : app === "graph"
         ? ["user", "focus"]
-        : ["user"];
+        : app === "okf"
+          ? ["bundle_dir"]
+          : ["user"];
   return Object.fromEntries(
     allowed.flatMap((key) =>
       typeof input[key] === "string" ? [[key, input[key]]] : [],

@@ -104,6 +104,12 @@ declare module "vscode" {
     appName: string;
   };
 
+  export const workspace: {
+    readonly workspaceFolders:
+      | readonly { readonly uri: { readonly fsPath: string } }[]
+      | undefined;
+  };
+
   export const lm: {
     selectChatModels(
       selector?: Record<string, string>,

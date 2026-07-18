@@ -48,7 +48,7 @@ const extensionPackage = {
   name: "zam-companion",
   displayName: "ZAM Companion",
   description:
-    "Persistent Recall, Graph, and Settings surfaces for ZAM agent workflows.",
+    "Persistent Recall, Knowledge Base, Graph, and Settings surfaces for ZAM agent workflows.",
   version,
   publisher: "zam-os",
   license: "Apache-2.0",
@@ -66,6 +66,7 @@ const extensionPackage = {
     "onView:zam.companion",
     "onCommand:zam.openRecall",
     "onCommand:zam.showGraph",
+    "onCommand:zam.showOkf",
     "onCommand:zam.openSettings",
     "onCommand:zam.chooseRecallModel",
   ],
@@ -99,9 +100,15 @@ const extensionPackage = {
       },
       {
         command: "zam.showGraph",
-        title: "Open Knowledge Graph",
+        title: "Open Learning Graph",
         category: "ZAM",
         icon: "$(type-hierarchy)",
+      },
+      {
+        command: "zam.showOkf",
+        title: "Open Knowledge Base",
+        category: "ZAM",
+        icon: "$(library)",
       },
       {
         command: "zam.openSettings",
@@ -117,6 +124,11 @@ const extensionPackage = {
       },
     ],
     menus: {
+      // Slot @2 toggles between the two knowledge surfaces: the Knowledge
+      // Base (OKF) is the default; while it is open, the slot flips to the
+      // Learning Graph. `zam.companionApp` is set by CompanionViewProvider
+      // .open in src/vscode-extension/extension.ts. Both commands remain
+      // always available via the command palette.
       "view/title": [
         {
           command: "zam.openRecall",
@@ -124,8 +136,13 @@ const extensionPackage = {
           group: "navigation@1",
         },
         {
+          command: "zam.showOkf",
+          when: "view == zam.companion && zam.companionApp != 'okf'",
+          group: "navigation@2",
+        },
+        {
           command: "zam.showGraph",
-          when: "view == zam.companion",
+          when: "view == zam.companion && zam.companionApp == 'okf'",
           group: "navigation@2",
         },
         {
@@ -145,7 +162,7 @@ writeFileSync(
 );
 writeFileSync(
   join(extensionDir, "README.md"),
-  `# ZAM Companion\n\nThis extension keeps ZAM Recall, Graph, and Settings in a movable VS Code view that does not scroll away with agent chat.\n\nInstall and configure it with:\n\n\`\`\`sh\nzam agent connect vscode\n\`\`\`\n\nThe extension hosts the existing MCP App resources from your local \`zam mcp\` server. It contains no second learning engine or database.\n`,
+  `# ZAM Companion\n\nThis extension keeps ZAM Recall, Knowledge Base (OKF), Learning Graph, and Settings in a movable VS Code view that does not scroll away with agent chat.\n\nInstall and configure it with:\n\n\`\`\`sh\nzam agent connect vscode\n\`\`\`\n\nThe extension hosts the existing MCP App resources from your local \`zam mcp\` server. It contains no second learning engine or database.\n`,
   "utf8",
 );
 writeFileSync(

@@ -440,13 +440,36 @@
       .okf-graph-svg {
         width: 100%;
         height: auto;
+        /* Fit within the panel viewport instead of forcing a vertical
+           scroll; preserveAspectRatio centers the drawing when the cap
+           binds. */
+        max-height: 74vh;
         display: block;
       }
       .okf-graph-edge {
+        fill: none;
         stroke: var(--border);
         stroke-width: 1.4;
-        opacity: 0.8;
+        opacity: 0.55;
         pointer-events: none;
+        transition:
+          opacity 0.15s ease,
+          stroke 0.15s ease;
+      }
+      .okf-graph-edge.okf-edge-hot {
+        stroke: var(--accent);
+        stroke-width: 2;
+        opacity: 1;
+      }
+      .okf-graph-edge.okf-edge-dim {
+        opacity: 0.1;
+      }
+      .okf-graph-node-article,
+      .okf-graph-node-citation {
+        transition: opacity 0.15s ease;
+      }
+      .okf-node-dim {
+        opacity: 0.25;
       }
       .okf-graph-node-label {
         font-size: 11px;
@@ -472,6 +495,40 @@
       .okf-empty {
         text-align: center;
         padding: 32px 12px;
+      }
+      .okf-bundle-selector {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 14px;
+      }
+      .okf-bundle-input {
+        width: min(420px, 70%);
+        padding: 6px 10px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        background: var(--card);
+        color: var(--fg);
+        font-family: var(--mono, monospace);
+        font-size: 12px;
+      }
+      .okf-bundle-open {
+        padding: 6px 14px;
+        border: none;
+        border-radius: 6px;
+        background: var(--accent);
+        color: #fff;
+        cursor: pointer;
+      }
+      .okf-bundle-open:disabled {
+        opacity: 0.6;
+        cursor: default;
+      }
+      .okf-bundle-error {
+        margin-top: 10px;
+        color: var(--danger, #c4432b);
+        font-size: 12px;
+        min-height: 1em;
       }
       .okf-empty-emoji {
         font-size: 2rem;

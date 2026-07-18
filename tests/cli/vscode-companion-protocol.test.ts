@@ -1,4 +1,11 @@
+import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import {
+  type UiIntentApp,
+  writeUiIntent,
+} from "../../src/cli/ui-intent.js";
 import {
   buildOpeningArguments,
   COMPANION_APPS,
@@ -76,6 +83,40 @@ describe("VS Code companion protocol", () => {
       expect(app.allowedTools.has("zam_companion_context")).toBe(true);
     }
     expect(COMPANION_APPS).not.toHaveProperty("studio");
+  });
+
+  it("proxies the OKF knowledge-base panel with repo-scoped arguments", () => {
+    // `zam_okf_visualize` has no `user` parameter — forwarding one would
+    // violate the tool's input schema (0.13.0 live finding).
+    expect(
+      buildOpeningArguments("okf", {
+        user: "thomas",
+        bundle_dir: "C:/src/dw/Cops.AI/docs/okf",
+        focus: "ignore-me",
+      }),
+    ).toEqual({ bundle_dir: "C:/src/dw/Cops.AI/docs/okf" });
+    expect(COMPANION_APPS.okf.toolName).toBe("zam_okf_visualize");
+  });
+
+  // Regression guard for the 0.13.0 gap: `zam_okf_visualize` published a UI
+  // intent the extension's parser rejected, because `CompanionApp` lagged
+  // behind `UiIntentApp`. Every intent the server can publish must be one
+  // the Companion can consume — tested through the real producer.
+  it("consumes every intent the ui-intent producer can publish", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "zam-ui-intent-"));
+    try {
+      const apps: UiIntentApp[] = ["recall", "graph", "settings", "okf"];
+      for (const app of apps) {
+        const path = join(dir, `${app}.json`);
+        await writeUiIntent(app, { bundle_dir: "docs/okf" }, { path });
+        const parsed = parseCompanionIntent(
+          JSON.parse(await readFile(path, "utf8")),
+        );
+        expect(parsed?.app).toBe(app);
+      }
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
   });
 
   it("accepts current and legacy MCP Apps resource metadata", () => {

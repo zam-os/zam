@@ -49,11 +49,12 @@ import {
   groupCatalog,
   layoutGraph,
   renderMarkdown,
+  stripFrontmatter,
 } from "./okf-render.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
-const GRAPH_W = 680;
-const GRAPH_H = 680;
+const GRAPH_W = 960;
+const GRAPH_H = 620;
 const NODE_R = 22;
 
 const SURFACE: CompanionSurface = "okf";
@@ -339,6 +340,10 @@ function renderSidebar(): void {
 
 function renderContent(): void {
   if (!contentEl) return;
+  if (catalogLoaded && catalog.length === 0) {
+    renderBundleSelector(contentEl);
+    return;
+  }
   if (viewMode === "graph") {
     void renderGraphView();
     return;
@@ -348,6 +353,108 @@ function renderContent(): void {
     return;
   }
   renderReaderBody(contentEl);
+}
+
+// ── Bundle folder selector ────────────────────────────────────────────────
+
+/**
+ * Re-target the panel at a different bundle directory via
+ * `zam_okf_catalog` (the tool the 800ms fallback already uses), resetting
+ * all per-bundle state. Returns an error message, or null on success.
+ */
+async function retargetBundle(dir: string): Promise<string | null> {
+  try {
+    const result = (await callTool("zam_okf_catalog", {
+      bundle_dir: dir,
+      include_log: true,
+    })) as {
+      dir: string;
+      articles: CatalogEntry[];
+      problems: string[];
+      log?: string;
+    };
+    bundleDir = result.dir;
+    // The catalog tool does not report the bundle's okf_version -- hide the
+    // stale one rather than showing the previous bundle's.
+    bundleOkfVersion = null;
+    setCatalog(result.articles);
+    logText = result.log ?? "";
+    catalogLoaded = true;
+    bodyCache.clear();
+    readErrors.clear();
+    openCitations.clear();
+    currentFile = null;
+    citationView = null;
+    return null;
+  } catch (error) {
+    return errorMessage(error);
+  }
+}
+
+/**
+ * Shown when the resolved bundle has no articles -- typically because the
+ * server's cwd default (`docs/okf`) does not point at the workspace the
+ * user means. A sandboxed webview cannot open a native folder picker for a
+ * filesystem *path*, so this is a path input with inline validation via
+ * the same MCP tool that loads the catalog.
+ */
+function renderBundleSelector(container: HTMLElement): void {
+  container.replaceChildren();
+  const box = document.createElement("div");
+  box.className = "zam-card okf-empty";
+
+  const icon = document.createElement("div");
+  icon.className = "okf-empty-emoji";
+  icon.textContent = "📂";
+  const title = document.createElement("div");
+  title.className = "okf-empty-title";
+  title.textContent = "Wissensbasis nicht gefunden";
+  const sub = document.createElement("div");
+  sub.className = "okf-empty-sub";
+  sub.textContent = bundleDir
+    ? `Unter "${bundleDir}" liegen keine Artikel. Gib den Pfad zum docs/okf-Ordner eines Repos an:`
+    : "Gib den Pfad zum docs/okf-Ordner eines Repos an:";
+
+  const form = document.createElement("div");
+  form.className = "okf-bundle-selector";
+  const input = document.createElement("input");
+  input.type = "text";
+  input.className = "okf-bundle-input";
+  input.placeholder = "C:\\pfad\\zum\\repo\\docs\\okf";
+  input.value = bundleDir ?? "";
+  const open = document.createElement("button");
+  open.type = "button";
+  open.className = "okf-bundle-open";
+  open.textContent = "Öffnen";
+  const errorEl = document.createElement("div");
+  errorEl.className = "okf-bundle-error";
+
+  const submit = async (): Promise<void> => {
+    const dir = input.value.trim();
+    if (!dir) return;
+    open.disabled = true;
+    errorEl.textContent = "";
+    const error = await retargetBundle(dir);
+    open.disabled = false;
+    if (error) {
+      errorEl.textContent = error;
+      return;
+    }
+    if (catalog.length === 0) {
+      errorEl.textContent =
+        "Der Ordner ist ein gültiges Bundle, enthält aber keine Artikel.";
+      return;
+    }
+    renderAll();
+  };
+  open.addEventListener("click", () => void submit());
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") void submit();
+  });
+
+  form.append(input, open);
+  box.append(icon, title, sub, form, errorEl);
+  container.appendChild(box);
 }
 
 // ── Reader ───────────────────────────────────────────────────────────────
@@ -391,7 +498,9 @@ function buildMetaStrip(entry: CatalogEntry | undefined): HTMLElement {
   }
   if (entry?.timestamp) {
     const ts = document.createElement("span");
-    ts.textContent = entry.timestamp;
+    // Frontmatter timestamps may carry a T00:00:00Z time part -- the strip
+    // shows the date only.
+    ts.textContent = entry.timestamp.slice(0, 10);
     strip.appendChild(ts);
   }
   if (entry?.resource) {
@@ -437,7 +546,9 @@ function renderReaderBody(container: HTMLElement): void {
   container.appendChild(buildMetaStrip(catalog.find((e) => e.file === currentFile)));
   const bodyEl = document.createElement("div");
   bodyEl.className = "okf-article-body zam-card";
-  bodyEl.innerHTML = renderMarkdown(body);
+  // The meta strip above renders the frontmatter; rendering the raw fence
+  // too showed it as one garbled paragraph at the top of every article.
+  bodyEl.innerHTML = renderMarkdown(stripFrontmatter(body));
   attachContentClickDelegation(bodyEl);
   decorateCitationLinks(bodyEl, new Set());
   container.appendChild(bodyEl);
@@ -469,7 +580,7 @@ function renderCitationFullView(container: HTMLElement, view: CitationView): voi
 
   const bodyEl = document.createElement("div");
   bodyEl.className = "okf-article-body zam-card";
-  bodyEl.innerHTML = renderMarkdown(view.content);
+  bodyEl.innerHTML = renderMarkdown(stripFrontmatter(view.content));
   attachContentClickDelegation(bodyEl);
   decorateCitationLinks(bodyEl, new Set());
   container.appendChild(bodyEl);
@@ -588,7 +699,7 @@ function buildCitationBox(
   });
   const contentBodyEl = document.createElement("div");
   contentBodyEl.className = "okf-article-body";
-  contentBodyEl.innerHTML = renderMarkdown(state.content ?? "");
+  contentBodyEl.innerHTML = renderMarkdown(stripFrontmatter(state.content ?? ""));
   attachContentClickDelegation(contentBodyEl);
   decorateCitationLinks(contentBodyEl, new Set([...ancestors, target]));
   box.append(badge, pathEl, openBtn, contentBodyEl);
@@ -627,7 +738,13 @@ function buildFullGraph(): { nodes: GraphNode[]; edges: GraphEdge[] } {
     nodes.push(node);
   };
   for (const entry of catalog) {
-    addNode({ id: entry.file, kind: "article", type: entry.type, file: entry.file });
+    addNode({
+      id: entry.file,
+      kind: "article",
+      type: entry.type,
+      file: entry.file,
+      label: entry.title,
+    });
   }
   for (const entry of catalog) {
     const body = bodyCache.get(entry.file);
@@ -639,38 +756,67 @@ function buildFullGraph(): { nodes: GraphNode[]; edges: GraphEdge[] } {
         kind: "article",
         type: byFile.get(target)?.type,
         file: target,
+        label: byFile.get(target)?.title,
       });
       edges.push({ from: entry.file, to: target });
     }
     for (const target of citations) {
-      addNode({ id: target, kind: "citation", file: target });
+      addNode({
+        id: target,
+        kind: "citation",
+        file: target,
+        label: citationLabel(target),
+      });
       edges.push({ from: entry.file, to: target });
     }
   }
   return { nodes, edges };
 }
 
-function truncateLabel(text: string, max = 16): string {
+/**
+ * A citation target like "../adr/2026-07-17b-okf-visualizer-panel.md" used
+ * to label as a clipped "../adr/2026-07-…" -- six of those are
+ * indistinguishable. The basename's tail is the distinctive part (dated ADR
+ * file names share their prefix), so keep the tail.
+ */
+function citationLabel(target: string): string {
+  return target.split("/").pop()?.replace(/\.md$/, "") ?? target;
+}
+
+function truncateLabel(text: string, keep: "head" | "tail", max = 26): string {
   const base = text.replace(/\.md$/, "");
-  return base.length > max ? `${base.slice(0, max - 1)}…` : base;
+  if (base.length <= max) return base;
+  return keep === "head"
+    ? `${base.slice(0, max - 1)}…`
+    : `…${base.slice(-(max - 1))}`;
 }
 
 function buildGraphNodeEl(node: PositionedNode): SVGGElement {
   const g = document.createElementNS(SVG_NS, "g") as SVGGElement;
   g.setAttribute("transform", `translate(${node.x}, ${node.y})`);
   g.setAttribute("class", `okf-graph-node-${node.kind}`);
+  g.setAttribute("data-node-id", node.id);
 
   const title = document.createElementNS(SVG_NS, "title");
   title.textContent = node.file ?? node.id;
   g.appendChild(title);
 
+  const labelText =
+    node.kind === "article"
+      ? truncateLabel(node.label ?? node.file ?? node.id, "head")
+      : truncateLabel(node.label ?? node.file ?? node.id, "tail");
+
   if (node.kind === "article") {
+    // Pill sized to its label (11px font ≈ 6.2px/char) so titles sit inside
+    // the shape instead of overflowing a fixed-width box.
+    const pillW = Math.min(Math.max(labelText.length * 6.2 + 20, 64), 200);
+    const pillH = 26;
     const rect = document.createElementNS(SVG_NS, "rect");
-    rect.setAttribute("x", String(-NODE_R));
-    rect.setAttribute("y", String(-NODE_R * 0.6));
-    rect.setAttribute("width", String(NODE_R * 2));
-    rect.setAttribute("height", String(NODE_R * 1.2));
-    rect.setAttribute("rx", "8");
+    rect.setAttribute("x", String(-pillW / 2));
+    rect.setAttribute("y", String(-pillH / 2));
+    rect.setAttribute("width", String(pillW));
+    rect.setAttribute("height", String(pillH));
+    rect.setAttribute("rx", String(pillH / 2));
     rect.style.fill = typeColorVar(node.type ?? "", "-bg");
     rect.style.stroke = typeColorVar(node.type ?? "");
     g.appendChild(rect);
@@ -681,16 +827,25 @@ function buildGraphNodeEl(node: PositionedNode): SVGGElement {
     });
   } else {
     const circle = document.createElementNS(SVG_NS, "circle");
-    circle.setAttribute("r", String(NODE_R * 0.55));
+    circle.setAttribute("r", String(NODE_R * 0.45));
     g.appendChild(circle);
   }
 
   const label = document.createElementNS(SVG_NS, "text");
   label.setAttribute("class", "okf-graph-node-label");
-  label.setAttribute("text-anchor", "middle");
   label.setAttribute("dominant-baseline", "central");
-  label.setAttribute("y", node.kind === "article" ? "0" : String(NODE_R * 0.55 + 11));
-  label.textContent = truncateLabel(node.file ?? node.id);
+  if (node.kind === "article") {
+    label.setAttribute("text-anchor", "middle");
+    label.setAttribute("y", "0");
+  } else {
+    // Citations sit on the outer ring: grow their labels inward (toward the
+    // center) so text never runs past the viewBox edge.
+    const onRightHalf = node.x > GRAPH_W / 2;
+    label.setAttribute("text-anchor", onRightHalf ? "end" : "start");
+    label.setAttribute("x", onRightHalf ? "-14" : "14");
+    label.setAttribute("y", "0");
+  }
+  label.textContent = labelText;
   g.appendChild(label);
 
   return g;
@@ -749,20 +904,56 @@ async function renderGraphView(): Promise<void> {
     const from = byId.get(edge.from);
     const to = byId.get(edge.to);
     if (!from || !to) continue;
-    const line = document.createElementNS(SVG_NS, "line");
-    line.setAttribute("x1", String(from.x));
-    line.setAttribute("y1", String(from.y));
-    line.setAttribute("x2", String(to.x));
-    line.setAttribute("y2", String(to.y));
-    line.setAttribute("class", "okf-graph-edge");
-    line.setAttribute("aria-hidden", "true");
-    edgesGroup.appendChild(line);
+    // Quadratic curve with the control point pulled toward the canvas
+    // center: edges bow gently inward instead of slicing straight across.
+    const midX = (from.x + to.x) / 2;
+    const midY = (from.y + to.y) / 2;
+    const ctrlX = midX + (GRAPH_W / 2 - midX) * 0.22;
+    const ctrlY = midY + (GRAPH_H / 2 - midY) * 0.22;
+    const path = document.createElementNS(SVG_NS, "path");
+    path.setAttribute(
+      "d",
+      `M ${from.x} ${from.y} Q ${ctrlX} ${ctrlY} ${to.x} ${to.y}`,
+    );
+    path.setAttribute("class", "okf-graph-edge");
+    path.setAttribute("data-from", edge.from);
+    path.setAttribute("data-to", edge.to);
+    path.setAttribute("aria-hidden", "true");
+    edgesGroup.appendChild(path);
   }
 
   const nodesGroup = document.createElementNS(SVG_NS, "g") as SVGGElement;
   svg.appendChild(nodesGroup);
+
+  // Hovering a node lights up its edges and neighbors and dims the rest;
+  // hover-out restores the neutral state.
+  const emphasize = (id: string | null): void => {
+    const neighbors = new Set<string>();
+    for (const el of Array.from(edgesGroup.children)) {
+      const from = el.getAttribute("data-from");
+      const to = el.getAttribute("data-to");
+      const hot = id !== null && (from === id || to === id);
+      el.setAttribute(
+        "class",
+        `okf-graph-edge${hot ? " okf-edge-hot" : id !== null ? " okf-edge-dim" : ""}`,
+      );
+      if (hot) {
+        if (from) neighbors.add(from);
+        if (to) neighbors.add(to);
+      }
+    }
+    for (const el of Array.from(nodesGroup.children)) {
+      const nodeId = el.getAttribute("data-node-id");
+      const dim =
+        id !== null && nodeId !== id && !neighbors.has(nodeId ?? "");
+      el.classList.toggle("okf-node-dim", dim);
+    }
+  };
   for (const node of positioned) {
-    nodesGroup.appendChild(buildGraphNodeEl(node));
+    const el = buildGraphNodeEl(node);
+    el.addEventListener("mouseenter", () => emphasize(node.id));
+    el.addEventListener("mouseleave", () => emphasize(null));
+    nodesGroup.appendChild(el);
   }
 
   contentEl.appendChild(wrap);
