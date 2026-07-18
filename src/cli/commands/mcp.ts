@@ -28,6 +28,7 @@ import {
   findTokens as handleFindTokens,
   getMonitor as handleGetMonitor,
   getReviewsBatch as handleGetReviewsBatch,
+  importOkfTokens as handleImportOkfTokens,
   linkPrereq as handleLinkPrereq,
   reviewAction as handleReviewAction,
   startSession as handleStartSession,
@@ -1337,6 +1338,99 @@ export function createMcpServer(db: Database): McpServer {
           return { ok: false, problems: result.validation.problems };
         }
         return { ok: true, created: result.created, entry: result.entry };
+      },
+    ),
+  );
+
+  server.registerTool(
+    "zam_okf_import",
+    {
+      description:
+        "Record YOUR finished decomposition of one OKF article as learning tokens + cards (ADR 2026-07-18). " +
+        "Decomposition is your job, not this tool's — before calling: (1) read the FULL article (zam_okf_read); " +
+        "(2) extract the concepts a practitioner must produce FROM MEMORY — recall-speed knowledge only; facts one " +
+        "would look up stay in the article; (3) one atomic concept per token, with a JUDGED bloom level and a JUDGED " +
+        "domain per token (reuse existing domains where they fit); (4) arrange a prerequisite DAG from foundational " +
+        "to dependent (in-import slugs and existing tokens both allowed); (5) check for existing tokens first " +
+        "(zam_find_tokens) and link them as prerequisites instead of duplicating. Multiple tokens are the expected " +
+        "outcome for real articles. On RE-import classify each token via mode: 'new' adds, 'update' refreshes " +
+        "content and KEEPS learning state, 'replace' means the concept changed — content refreshed and learning " +
+        "state RESET to the beginning. Previously imported tokens you do not confirm are moved to maintenance " +
+        "(kept, unscheduled) — never deleted. The write is atomic; every token gets a card for the importing user.",
+      inputSchema: {
+        user: z.string().optional().describe("User ID to create cards for"),
+        bundle_dir: okfBundleDirSchema,
+        file: z
+          .string()
+          .describe("Article file name inside the bundle (kebab-case .md)"),
+        tokens: z
+          .array(
+            z.object({
+              slug: z.string().describe("Unique kebab-case token slug"),
+              title: z.string().optional().describe("Display title"),
+              concept: z
+                .string()
+                .describe("The memorable concept, stated precisely"),
+              bloomLevel: z
+                .number()
+                .int()
+                .min(1)
+                .max(5)
+                .optional()
+                .describe("Judged Bloom level (1-5)"),
+              domain: z
+                .string()
+                .optional()
+                .describe("Judged domain (reuse existing domains)"),
+              anchor: z
+                .string()
+                .optional()
+                .describe(
+                  "Heading anchor in the article; appended to the source link",
+                ),
+              prerequisites: z
+                .array(z.string())
+                .optional()
+                .describe(
+                  "Slugs this token requires — in-import or existing tokens",
+                ),
+              knowledgeContexts: z
+                .array(z.string())
+                .optional()
+                .describe("Knowledge contexts to assign"),
+              question: z
+                .string()
+                .nullable()
+                .optional()
+                .describe("Optional pre-defined review question"),
+              mode: z
+                .enum(["new", "update", "replace"])
+                .optional()
+                .describe(
+                  "Re-import classification: new (default) | update (keep learning state) | replace (concept changed, reset learning state)",
+                ),
+            }),
+          )
+          .min(1)
+          .describe("Your finished decomposition"),
+      },
+      annotations: {
+        ...commonAnnotations,
+      },
+    },
+    wrapHandler(
+      async (params: {
+        user?: string;
+        bundle_dir?: string;
+        file: string;
+        tokens: Parameters<typeof handleImportOkfTokens>[1]["tokens"];
+      }) => {
+        return await handleImportOkfTokens(db, {
+          user: await getUserId(params.user),
+          bundleDir: params.bundle_dir,
+          file: params.file,
+          tokens: params.tokens,
+        });
       },
     ),
   );
