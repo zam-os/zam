@@ -391,6 +391,20 @@ describe("stripFrontmatter", () => {
     const source = "---\r\ntype: reference\r\n---\r\n\r\n# Title\r\nBody.";
     expect(stripFrontmatter(source)).toBe("\n# Title\nBody.");
   });
+
+  it("strips a leading UTF-8 BOM before the fence check", () => {
+    const source = "﻿---\r\ntype: reference\r\n---\r\n\r\nBody.";
+    expect(stripFrontmatter(source)).toBe("\nBody.");
+  });
+});
+
+describe("extractLinks with CRLF sources", () => {
+  it("still ignores links inside CRLF fenced code blocks", () => {
+    const body =
+      "See [real](workload-resource-rights.md).\r\n\r\n```\r\n[fake](inside-fence.md)\r\n```\r\n";
+    const { articles } = extractLinks(body);
+    expect(articles).toEqual(["workload-resource-rights.md"]);
+  });
 });
 
 describe("renderMarkdown with CRLF sources", () => {

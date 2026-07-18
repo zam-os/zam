@@ -59,10 +59,11 @@ function unquote(raw: string): string {
  * of silently dropped fields.
  */
 export function parseFrontmatter(markdown: string): ParsedArticle {
-  // Windows checkouts (git autocrlf) deliver CRLF files; a trailing \r
-  // would defeat every $-anchored pattern below, so normalize up front.
-  // The body is rebuilt from these lines, so it comes out LF-normalized.
-  const lines = markdown.split(/\r\n|\n/);
+  // Windows checkouts (git autocrlf) deliver CRLF files and Windows editors
+  // sometimes prepend a UTF-8 BOM; either would defeat the fence check and
+  // every $-anchored pattern below, so normalize up front. The body is
+  // rebuilt from these lines, so it comes out LF-normalized.
+  const lines = markdown.replace(/^﻿/, "").split(/\r\n|\n/);
   if (lines[0]?.trim() !== "---") {
     throw new Error("frontmatter: file must start with a --- fence");
   }
@@ -219,7 +220,9 @@ export function appendLog(
 ): string {
   const header = `## ${date}`;
   const entry = `- ${line}`;
-  const trimmed = existing.trim();
+  // A hand-edited or Windows-checkout log may arrive with CRLF endings;
+  // normalize so the rebuilt log is uniformly LF instead of mixed.
+  const trimmed = existing.replace(/^﻿/, "").replace(/\r\n/g, "\n").trim();
   if (trimmed === "") {
     return `# Log\n\n${header}\n\n${entry}\n`;
   }
