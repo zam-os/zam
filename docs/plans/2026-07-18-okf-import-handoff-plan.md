@@ -21,6 +21,7 @@ fallback exactly as-is.
 focused okf" to work from Claude Code, Copilot, AND Codex, the focus must
 live where every harness already looks: the zam MCP server. Mirrors the
 ui-intent pattern:
+
 - `src/cli/okf-focus.ts`: `writeOkfFocus(file, bundleDir)` /
   `readOkfFocus()` on `~/.zam/okf-focus.json` (atomic rename write,
   `ZAM_OKF_FOCUS_PATH` env override for tests, `{version, file, bundleDir,
@@ -39,18 +40,38 @@ ui-intent pattern:
 
 ## Checklist
 
-- [ ] 1. `src/cli/okf-focus.ts` + unit test (write/read round-trip, env override, malformed file → null)
-- [ ] 2. mcp.ts: `zam_okf_focus` (app-only) + `zam_okf_focused` (read-only) tools; mcp.test.ts: count 24→26, annotations, write→read round-trip (env-isolated path)
-- [ ] 3. protocol.ts + copilot APP_CONFIG: allow `zam_okf_focus` for the okf app; contract test update
-- [ ] 4. okf.ts: record focus on article open (fire-and-forget, never breaks the reader)
-- [ ] 5. host.ts: `message` capability + onmessage → "chatMessage" proxy request
-- [ ] 6. extension.ts: chatMessage handler → workbench.action.chat.open; `{isError:true}` on failure
-- [ ] 7. okf skill triplet: focused-article import phrase
-- [ ] 8. Docs: mcp-surfaces.md (tool surface + panel handoff paragraph) via zam_okf_upsert
-- [ ] 9. Build + lint + full tests vs 3-4-failure environmental baseline
-- [ ] 10. E2E: isolated VS Code — open panel, select article, `zam_okf_focused` returns it; button click → chat.open path or graceful fallback; screenshot
-- [ ] 11. Final check vs plan; PR
+- [x] 1. `src/cli/okf-focus.ts` + unit test (write/read round-trip, env override, malformed file → null)
+- [x] 2. mcp.ts: `zam_okf_focus` (app-only) + `zam_okf_focused` (read-only) tools; mcp.test.ts: count 24→26, annotations, write→read round-trip (env-isolated path)
+- [x] 3. protocol.ts + copilot APP_CONFIG: allow `zam_okf_focus` for the okf app; contract test update
+- [x] 4. okf.ts: record focus on article open (fire-and-forget, never breaks the reader)
+- [x] 5. host.ts: `message` capability + onmessage → "chatMessage" proxy request
+- [x] 6. extension.ts: chatMessage handler → workbench.action.chat.open; `{isError:true}` on failure
+- [x] 7. okf skill triplet: focused-article import phrase
+- [x] 8. Docs: mcp-surfaces.md (tool surface + panel handoff paragraph) via zam_okf_upsert
+- [x] 9. Build + lint + full tests vs 3-4-failure environmental baseline
+- [x] 10. E2E: isolated VS Code — open panel, select article, `zam_okf_focused` returns it; button click → chat.open path or graceful fallback; screenshot
+- [x] 11. Final check vs plan; PR
 
 ## Final check record
 
-(fill in before PR)
+- okf-focus module: 5 unit tests (round-trip, supersede, name validation,
+  malformed→null, env override). Tools: mcp.test.ts pins 26 tools, app-only
+  visibility on the write side, readOnly on the read side, write→read
+  round-trip on an env-isolated path, path-separator rejection.
+- Allowlists: COMPANION_APPS.okf + Copilot APP_CONFIG.okf gained
+  zam_okf_focus; contract test asserts the panel can reach it.
+- Skill triplet: .claude/.agent synced; .agents (Codex) variant re-applied
+  by hand after a blind copy briefly clobbered its intentional $okf wording.
+- Full suite: 1122 passed, 3 failures = known environmental baseline.
+- E2E: automation aborted mid-run (real window kept taking focus — clicks
+  were landing in Thomas's session; stopped immediately). Verification
+  completed manually by Thomas in the isolated instance: import button
+  "jumped to the chat properly" (host message capability → chat.open), and
+  his article click wrote ~/.zam/okf-focus.json ({file:
+  prerequisite-blocking.md, bundleDir: c:\src\github\zam\docs\okf}) through
+  panel → proxy allowlist → dev server. His follow-up import created 5
+  tokens with cards from that article — the whole loop ran live.
+- "Skills were adapted": investigated — ~/.agents/skills/zam/SKILL.md is
+  byte-identical to the packaged 0.14.0 Codex variant; no hand edits, no
+  action needed.
+- Launch config restored to the global install after the e2e.
