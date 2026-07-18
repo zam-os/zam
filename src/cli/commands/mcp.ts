@@ -1224,7 +1224,34 @@ export function createMcpServer(db: Database): McpServer {
   const okfBundleDirSchema = z
     .string()
     .optional()
-    .describe("Bundle directory (default docs/okf under the server cwd)");
+    .describe(
+      "Bundle directory (default: docs/okf under the client's workspace root, falling back to the server cwd)",
+    );
+
+  /**
+   * Default bundle dir for the okf tools: docs/okf under the MCP client's
+   * workspace root (roots/list) — NOT the server cwd, which for a
+   * host-spawned server is often the editor's installation directory
+   * (live 0.13.0 finding: "...\\Microsoft VS Code\\docs\\okf").
+   */
+  async function resolveOkfBundleDir(explicit?: string): Promise<string> {
+    const { DEFAULT_BUNDLE_DIR, resolveBundleDirFromRoots } = await import(
+      "../okf/io.js"
+    );
+    if (explicit) return explicit;
+    try {
+      if (server.server.getClientCapabilities()?.roots) {
+        const { roots } = await server.server.listRoots();
+        return resolveBundleDirFromRoots(
+          (roots ?? []).map((root) => root.uri),
+          DEFAULT_BUNDLE_DIR,
+        );
+      }
+    } catch {
+      // Client advertised roots but the request failed: cwd fallback.
+    }
+    return DEFAULT_BUNDLE_DIR;
+  }
 
   server.registerTool(
     "zam_okf_catalog",
@@ -1247,8 +1274,8 @@ export function createMcpServer(db: Database): McpServer {
     },
     wrapHandler(
       async (params: { bundle_dir?: string; include_log?: boolean }) => {
-        const { DEFAULT_BUNDLE_DIR, loadBundle } = await import("../okf/io.js");
-        const bundle = loadBundle(params.bundle_dir ?? DEFAULT_BUNDLE_DIR);
+        const { loadBundle } = await import("../okf/io.js");
+        const bundle = loadBundle(await resolveOkfBundleDir(params.bundle_dir));
         let log: string | undefined;
         if (params.include_log) {
           const { readFileSync } = await import("node:fs");
@@ -1284,12 +1311,10 @@ export function createMcpServer(db: Database): McpServer {
     },
     wrapHandler(async (params: { bundle_dir?: string; file: string }) => {
       const { readFileSync } = await import("node:fs");
-      const { DEFAULT_BUNDLE_DIR, resolveArticlePath } = await import(
-        "../okf/io.js"
-      );
+      const { resolveArticlePath } = await import("../okf/io.js");
       const { parseFrontmatter } = await import("../okf/bundle.js");
       const path = resolveArticlePath(
-        params.bundle_dir ?? DEFAULT_BUNDLE_DIR,
+        await resolveOkfBundleDir(params.bundle_dir),
         params.file,
       );
       const markdown = readFileSync(path, "utf8");
@@ -1326,11 +1351,9 @@ export function createMcpServer(db: Database): McpServer {
         file: string;
         markdown: string;
       }) => {
-        const { DEFAULT_BUNDLE_DIR, upsertArticle } = await import(
-          "../okf/io.js"
-        );
+        const { upsertArticle } = await import("../okf/io.js");
         const result = upsertArticle(
-          params.bundle_dir ?? DEFAULT_BUNDLE_DIR,
+          await resolveOkfBundleDir(params.bundle_dir),
           params.file,
           params.markdown,
         );
@@ -1427,7 +1450,7 @@ export function createMcpServer(db: Database): McpServer {
       }) => {
         return await handleImportOkfTokens(db, {
           user: await getUserId(params.user),
-          bundleDir: params.bundle_dir,
+          bundleDir: await resolveOkfBundleDir(params.bundle_dir),
           file: params.file,
           tokens: params.tokens,
         });
@@ -1456,9 +1479,10 @@ export function createMcpServer(db: Database): McpServer {
     wrapHandler(async (params: { bundle_dir?: string; target: string }) => {
       const { readFileSync } = await import("node:fs");
       const { relative, sep } = await import("node:path");
-      const { DEFAULT_BUNDLE_DIR, findRepoRoot, resolveCitationPath } =
-        await import("../okf/io.js");
-      const bundleDir = params.bundle_dir ?? DEFAULT_BUNDLE_DIR;
+      const { findRepoRoot, resolveCitationPath } = await import(
+        "../okf/io.js"
+      );
+      const bundleDir = await resolveOkfBundleDir(params.bundle_dir);
       const path = resolveCitationPath(bundleDir, params.target);
       const content = readFileSync(path, "utf8");
       const root = findRepoRoot(bundleDir);
@@ -1509,9 +1533,9 @@ export function createMcpServer(db: Database): McpServer {
         getNativeClientInfo(),
         { clientSamplingCapable: getClientSamplingCapable() },
       );
-      const { DEFAULT_BUNDLE_DIR, loadBundle } = await import("../okf/io.js");
+      const { loadBundle } = await import("../okf/io.js");
       const { resolve } = await import("node:path");
-      const requestedDir = bundle_dir ?? DEFAULT_BUNDLE_DIR;
+      const requestedDir = await resolveOkfBundleDir(bundle_dir);
       let resolvedBundleDir = resolve(requestedDir);
       // Publish the RESOLVED absolute dir, not the raw argument: the VS Code
       // Companion's own zam server runs with a different cwd, so a relative

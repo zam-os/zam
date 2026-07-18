@@ -172,11 +172,16 @@ class ZamMcpHost {
     if (!this.connectionPromise) {
       this.connectionPromise = (async () => {
         const launch = await readLaunchConfig(this.launchConfigPath);
+        // Spawn with the workspace as cwd: the extension host's own cwd is
+        // the editor's installation directory, so cwd-relative defaults in
+        // the server (e.g. the okf tools' docs/okf) would point nowhere.
+        const workspace = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
         const transport = new StdioClientTransport({
           command: launch.command,
           args: launch.args,
           env: childEnvironment(),
           stderr: "pipe",
+          ...(workspace ? { cwd: workspace } : {}),
         });
         transport.stderr?.on("data", (chunk: Buffer | string) => {
           this.output.appendLine(
