@@ -142,6 +142,14 @@ let scopeKind: ScopeKind = "all";
 let scopeDomain: string | null = null;
 /** Tokens of the current scope (before the domain filter); null = not loaded. */
 let scopeTokens: GraphNode[] | null = null;
+/**
+ * Bumped whenever the session restarts (late tool result with a different
+ * user/focus/repoScope, or a context-bar change). In-flight navigations and
+ * scope loads from an older generation discard their results instead of
+ * landing in the restarted session — without this, the 800ms fallback
+ * bootstrap races the real tool result and leaves a stale breadcrumb entry.
+ */
+let navGeneration = 0;
 
 const SURFACE = "graph";
 
@@ -158,6 +166,7 @@ const readCompanionContext = createContextReader(callTool, SURFACE);
 function reloadForContext(newState: CompanionContextBarState): void {
   currentUser = newState.user.currentId ?? null;
   scopeTokens = null;
+  navGeneration++;
   const focus = history[history.length - 1]?.slug ?? initialFocus;
   if (focus) {
     void navigateTo(focus);
@@ -352,12 +361,15 @@ function renderScopeBar(): void {
 
 /** Load the current scope's tokens and render the bar. False on failure. */
 async function loadScope(): Promise<boolean> {
+  const generation = navGeneration;
   try {
-    scopeTokens = await listScopeTokens(scopeKind);
+    const tokens = await listScopeTokens(scopeKind);
+    if (generation !== navGeneration) return false; // superseded meanwhile
+    scopeTokens = tokens;
     renderScopeBar();
     return true;
   } catch {
-    scopeTokens = null;
+    if (generation === navGeneration) scopeTokens = null;
     return false;
   }
 }
@@ -647,6 +659,7 @@ function pushHistory(slug: string, title: string): void {
 }
 
 async function navigateTo(slug: string): Promise<void> {
+  const generation = navGeneration;
   try {
     const args = ["--focus", slug];
     if (currentUser) args.push("--user", currentUser);
@@ -654,6 +667,7 @@ async function navigateTo(slug: string): Promise<void> {
       cmd: "get-neighborhood",
       args,
     })) as Neighborhood;
+    if (generation !== navGeneration) return; // session restarted meanwhile
     pushHistory(data.focus, graphNodeTitle(data.center));
     renderBreadcrumb((s) => void navigateTo(s));
     renderGraph(data, (s) => void navigateTo(s));
@@ -699,6 +713,7 @@ app.ontoolresult = (params) => {
     started = false;
     history = [];
     scopeTokens = null;
+    navGeneration++;
   }
   clearConnectionNotice();
 

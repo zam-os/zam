@@ -36,17 +36,33 @@ Goal: the MCP-Apps graph panel, opened without a focus, must never dead-end in
 
 ## Checklist
 
-- [ ] 1. Kernel: `sourceLinkBases` filter in `listTokens` (src/kernel/models/token.ts) + kernel test
-- [ ] 2. Bridge: repeatable `--source-link-base` on `list-tokens` (src/cli/commands/bridge.ts) + CLI test
-- [ ] 3. `collectSourceLinkBases(dir)` in src/cli/okf/io.ts (resource ?? resolved path) + test in okf-bundle.test.ts
-- [ ] 4. `zam_show_graph`: add `repoScope` to result (src/cli/commands/mcp.ts), update tool description; mcp.test.ts coverage
-- [ ] 5. Pure helpers `desktop/src/panel/graph-scope.ts` (domain options w/ prefixes, domain filter, default-focus pick) + tests/desktop/graph-scope.test.ts
-- [ ] 6. Panel wiring in graph.ts (scope state, bridge list-tokens call, selector bar render, bootstrap-without-focus) + CSS/containers in graph-panel.html
-- [ ] 7. Docs: update docs/okf/mcp-surfaces.md if it describes the graph tool's no-focus behavior (via zam_okf_upsert only)
-- [ ] 8. Build + lint + full test run, compare against 4-failure environmental baseline
-- [ ] 9. E2E in real host: point Companion at dev dist (backup launch config), isolated VS Code, "Open Learning Graph" without focus → screenshot shows selectors + auto-focused graph; restore launch config
-- [ ] 10. Final check: re-read this plan, verify nothing slipped; PR
+- [x] 1. Kernel: `sourceLinkBases` filter in `listTokens` (src/kernel/models/token.ts) + kernel test
+- [x] 2. Bridge: repeatable `--source-link-base` on `list-tokens` (src/cli/commands/bridge.ts) + CLI test
+- [x] 3. `collectSourceLinkBases(dir)` in src/cli/okf/io.ts (resource ?? resolved path) + test in okf-bundle.test.ts
+- [x] 4. `zam_show_graph`: add `repoScope` to result (src/cli/commands/mcp.ts), update tool description; mcp.test.ts coverage
+- [x] 5. Pure helpers `desktop/src/panel/graph-scope.ts` (domain options w/ prefixes, domain filter, default-focus pick) + tests/desktop/graph-scope.test.ts
+- [x] 6. Panel wiring in graph.ts (scope state, bridge list-tokens call, selector bar render, bootstrap-without-focus) + CSS/containers in graph-panel.html
+- [x] 7. Docs: update docs/okf/mcp-surfaces.md if it describes the graph tool's no-focus behavior (via zam_okf_upsert only)
+- [x] 8. Build + lint + full test run, compare against 4-failure environmental baseline
+- [x] 9. E2E in real host: point Companion at dev dist (backup launch config), isolated VS Code, "Open Learning Graph" without focus → screenshot shows selectors + auto-focused graph; restore launch config
+- [x] 10. Final check: re-read this plan, verify nothing slipped; PR
 
 ## Final check record
 
-(fill in before PR)
+- Kernel filter: exact/anchored match, LIKE-escape, empty-list-matches-nothing,
+  composes with domainPrefix — tests/kernel/token-source-link-filter.test.ts (4).
+- Bridge flag repeatable via collector; spawned-CLI test (2) against dist.
+- collectSourceLinkBases: resource-else-path rule + missing-dir throw (okf-bundle, 26 total).
+- zam_show_graph repoScope asserted in tests/cli/mcp.test.ts (label + non-empty bases,
+  this checkout's own bundle via cwd fallback); tool description updated.
+- Panel: scope pills (repo/all) + domain pills (prefix groups) + token list +
+  no-focus bootstrap; navGeneration guard added after E2E surfaced a
+  fallback-vs-tool-result race (stale breadcrumb). Legend removed on request.
+- mcp-surfaces.md: workspace-roots default paragraph (was stale) + graph-card
+  scope paragraph, written via zam_okf_upsert.
+- Full suite: 4 failures = exactly the known environmental baseline
+  (agent-harness, cli-install, mcp stdio smoke, ui-intent live-bleed).
+- E2E evidence: e2e-graph-scope-1/2.png — repo pill "zam" active, 4 imported
+  tokens listed, auto-focus on lowest-bloom-with-card, prerequisite DAG
+  rendered; real DB (mcp-surfaces import: 3 new + 1 update, 4 cards).
+- Launch config restored to global zam 0.14.0 after E2E.

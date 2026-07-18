@@ -165,32 +165,7 @@
         font-size: 0.76rem;
       }
 
-      /* ── Legend + breadcrumb ─────────────────────────────────────────── */
-      .graph-legend {
-        display: flex;
-        gap: 14px;
-        flex-wrap: wrap;
-        font-size: 0.76rem;
-        color: var(--muted);
-        margin-bottom: 8px;
-      }
-      .graph-legend-item {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-      }
-      .graph-legend-dot {
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-        display: inline-block;
-      }
-      .graph-legend-dot.prereq {
-        background: var(--prereq);
-      }
-      .graph-legend-dot.dependent {
-        background: var(--dependent);
-      }
+      /* ── Breadcrumb ──────────────────────────────────────────────────── */
       .graph-breadcrumb {
         display: flex;
         flex-wrap: wrap;
@@ -301,14 +276,6 @@
     <div id="zam-graph-panel">
       <div id="zam-contextbar-root"></div>
       <div class="zam-connection-notice" id="zam-connection-notice" hidden></div>
-      <div class="graph-legend">
-        <span class="graph-legend-item">
-          <span class="graph-legend-dot prereq"></span>Voraussetzungen
-        </span>
-        <span class="graph-legend-item">
-          <span class="graph-legend-dot dependent"></span>Aufbauwissen
-        </span>
-      </div>
       <div class="graph-scope" id="graph-scope"></div>
       <div class="graph-breadcrumb" id="graph-breadcrumb"></div>
       <div id="graph-content"></div>
