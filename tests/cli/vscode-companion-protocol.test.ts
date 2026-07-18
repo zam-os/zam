@@ -10,6 +10,7 @@ import {
   buildOpeningArguments,
   COMPANION_APPS,
   createSamplingResult,
+  describeServerVersionDrift,
   normalizeSamplingRequest,
   parseCompanionIntent,
   toolUiResourceUri,
@@ -184,5 +185,47 @@ describe("VS Code companion protocol", () => {
       content: { type: "text", text: "model reply" },
       stopReason: "endTurn",
     });
+  });
+});
+
+describe("describeServerVersionDrift", () => {
+  it("returns null when the versions match", () => {
+    expect(describeServerVersionDrift("0.15.1", "0.15.1")).toBeNull();
+  });
+
+  it("ignores prerelease/build suffixes when comparing the core", () => {
+    expect(describeServerVersionDrift("0.15.1", "0.15.1-rc.1")).toBeNull();
+  });
+
+  it("flags a stale CLI (server older) with an npm fix command", () => {
+    const drift = describeServerVersionDrift("0.15.1", "0.15.0");
+    expect(drift?.kind).toBe("server-older");
+    expect(drift?.updateCommand).toBe("npm install -g zam-core@0.15.1");
+    expect(drift?.message).toContain("0.15.1");
+    expect(drift?.message).toContain("0.15.0");
+    expect(drift?.message).toContain("npm install -g zam-core@0.15.1");
+  });
+
+  it("orders by minor and major, not just patch", () => {
+    expect(describeServerVersionDrift("0.16.0", "0.15.9")?.kind).toBe(
+      "server-older",
+    );
+    expect(describeServerVersionDrift("1.0.0", "0.99.99")?.kind).toBe(
+      "server-older",
+    );
+  });
+
+  it("flags an outdated extension (server newer) without a CLI command", () => {
+    const drift = describeServerVersionDrift("0.15.0", "0.15.1");
+    expect(drift?.kind).toBe("server-newer");
+    expect(drift?.updateCommand).toBeUndefined();
+    expect(drift?.message).toContain("Update the ZAM Companion extension");
+  });
+
+  it("declines to warn when either version is unreadable", () => {
+    // Dev/source builds carry the unreplaced placeholder.
+    expect(describeServerVersionDrift("__ZAM_VERSION__", "0.15.0")).toBeNull();
+    expect(describeServerVersionDrift("0.15.1", undefined)).toBeNull();
+    expect(describeServerVersionDrift("0.15.1", "not-a-version")).toBeNull();
   });
 });
