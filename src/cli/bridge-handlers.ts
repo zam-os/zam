@@ -19,6 +19,7 @@ import {
   analyzeObservation,
   assignTokenToContext,
   buildReviewQueue,
+  clearTokenMaintenance,
   createToken,
   decideUpdate,
   ensureCard,
@@ -38,6 +39,7 @@ import {
   getTokenById,
   getTokenBySlug,
   getTokenDeleteImpact,
+  getTokensBySourceLinkBase,
   getUserStats,
   isObserverPolicyConfigured,
   endSession as kernelEndSession,
@@ -49,9 +51,12 @@ import {
   pairCommands,
   prepareSessionSynthesis,
   readMonitorLog,
+  resetCardsForToken,
   resolveReviewContext,
   searchTokensHybrid,
+  setTokenMaintenance,
   updateCard,
+  updateToken,
   verifySnapshot,
 } from "../kernel/index.js";
 import { resolveOperationKnowledgeContexts } from "./knowledge-contexts.js";
@@ -697,6 +702,232 @@ export async function addToken(db: Database, params: AddTokenParams) {
       blocked: card.blocked,
     },
     possible_duplicates: possibleDuplicates,
+  };
+}
+
+// 6b. importOkfTokens (ADR 2026-07-18)
+
+export interface ImportOkfTokenInput {
+  slug: string;
+  title?: string;
+  concept: string;
+  bloomLevel?: number;
+  domain?: string;
+  /** Heading anchor within the article; appended to the source link. */
+  anchor?: string;
+  /** In-import slugs and/or existing token slugs. */
+  prerequisites?: string[];
+  knowledgeContexts?: string[];
+  question?: string | null;
+  /** Re-import classification (ADR 2026-07-18 Decision 4). Default "new". */
+  mode?: "new" | "update" | "replace";
+}
+
+export interface ImportOkfParams {
+  user?: string;
+  bundleDir?: string;
+  file: string;
+  tokens: ImportOkfTokenInput[];
+}
+
+/**
+ * Record an agent's finished decomposition of one OKF article as learning
+ * tokens (ADR 2026-07-18). The agent judges; this handler only validates
+ * and writes — atomically. Per token `mode`:
+ * - "new" (default): create; an existing slug is an instructive error.
+ * - "update": refresh content, keep every user's learning state.
+ * - "replace": concept changed — refresh content and reset all cards to
+ *   the beginning.
+ * Tokens previously imported from this article but absent from the call
+ * are moved to maintenance (kept, unscheduled, awaiting repair).
+ */
+export async function importOkfTokens(db: Database, params: ImportOkfParams) {
+  const userId = await resolveHandlerUser(db, params.user);
+  if (!params.file?.trim()) throw new Error("file must be non-empty");
+  if (!Array.isArray(params.tokens) || params.tokens.length === 0) {
+    throw new Error("tokens must be a non-empty array");
+  }
+  const seen = new Set<string>();
+  for (const input of params.tokens) {
+    const slug = input.slug?.trim();
+    if (!slug || !input.concept?.trim()) {
+      throw new Error("every token needs a non-empty slug and concept");
+    }
+    if (seen.has(slug)) throw new Error(`duplicate token slug: ${slug}`);
+    seen.add(slug);
+    if (
+      input.bloomLevel !== undefined &&
+      (!Number.isInteger(input.bloomLevel) ||
+        input.bloomLevel < 1 ||
+        input.bloomLevel > 5)
+    ) {
+      throw new Error(`bloomLevel must be 1-5 (token: ${slug})`);
+    }
+  }
+
+  // Resolve the article and its canonical source link. The frontmatter
+  // `resource` URL is the durable anchor tokens carry as source_link; a
+  // bundle without one falls back to the resolved article path.
+  const { DEFAULT_BUNDLE_DIR, resolveArticlePath } = await import(
+    "./okf/io.js"
+  );
+  const { parseFrontmatter } = await import("./okf/bundle.js");
+  const { readFileSync } = await import("node:fs");
+  const bundleDir = params.bundleDir ?? DEFAULT_BUNDLE_DIR;
+  const articlePath = resolveArticlePath(bundleDir, params.file);
+  let markdown: string;
+  try {
+    markdown = readFileSync(articlePath, "utf8");
+  } catch {
+    throw new Error(`Article not found: ${articlePath}`);
+  }
+  let resource: string | undefined;
+  try {
+    const { fields } = parseFrontmatter(markdown);
+    resource =
+      typeof fields.resource === "string" ? fields.resource : undefined;
+  } catch {
+    resource = undefined;
+  }
+  const sourceBase = resource ?? articlePath;
+  const sourceLinkFor = (anchor?: string): string =>
+    anchor?.trim() ? `${sourceBase}#${anchor.trim()}` : sourceBase;
+
+  const created: string[] = [];
+  const updated: string[] = [];
+  const replaced: string[] = [];
+  const maintenance: string[] = [];
+  let cardsEnsured = 0;
+
+  await db.transaction(async (tx) => {
+    const inImport = new Map<string, Token>();
+
+    for (const input of params.tokens) {
+      const mode = input.mode ?? "new";
+      const existing = await getTokenBySlug(tx, input.slug);
+
+      if (mode === "new") {
+        if (existing) {
+          throw new Error(
+            `Token '${input.slug}' already exists. Use mode "update" to refresh it ` +
+              `(keeps learning state), "replace" if the concept changed ` +
+              `(resets learning state), or choose a different slug.`,
+          );
+        }
+        const token = await createToken(tx, {
+          slug: input.slug,
+          title: input.title,
+          concept: input.concept,
+          domain: input.domain,
+          bloom_level: (input.bloomLevel ?? 1) as BloomLevel,
+          source_link: sourceLinkFor(input.anchor),
+          question: input.question ?? null,
+          question_source: input.question ? "llm" : undefined,
+        });
+        inImport.set(input.slug, token);
+        created.push(input.slug);
+      } else {
+        if (!existing) {
+          throw new Error(
+            `Token '${input.slug}' does not exist — mode "${mode}" requires an existing token.`,
+          );
+        }
+        const updates: UpdateTokenInput = {
+          concept: input.concept,
+          source_link: sourceLinkFor(input.anchor),
+        };
+        if (input.title !== undefined) updates.title = input.title;
+        if (input.domain !== undefined) updates.domain = input.domain;
+        if (input.bloomLevel !== undefined) {
+          updates.bloom_level = input.bloomLevel as BloomLevel;
+        }
+        if (input.question !== undefined) {
+          updates.question = input.question;
+          updates.question_source = input.question ? "llm" : undefined;
+        }
+        const token = await updateToken(tx, input.slug, updates);
+        // An explicit update/replace re-confirms the source binding.
+        if (existing.maintenance_at) {
+          await clearTokenMaintenance(tx, input.slug);
+        }
+        if (mode === "replace") {
+          await resetCardsForToken(tx, token.id);
+          replaced.push(input.slug);
+        } else {
+          updated.push(input.slug);
+        }
+        inImport.set(input.slug, token);
+      }
+
+      const ctxNames = parseKnowledgeContextNames(input.knowledgeContexts);
+      const assigned = await resolveKnowledgeContexts(tx, ctxNames);
+      const token = inImport.get(input.slug);
+      if (token) {
+        for (const context of assigned) {
+          await assignTokenToContext(tx, token.id, context.id);
+        }
+      }
+    }
+
+    // Prerequisites in a second pass, so forward references within the
+    // import resolve. In-import slugs win; otherwise existing tokens.
+    for (const input of params.tokens) {
+      const token = inImport.get(input.slug);
+      if (!token) continue;
+      const prereqSlugs = [
+        ...new Set(
+          (input.prerequisites ?? []).map((s) => s.trim()).filter(Boolean),
+        ),
+      ];
+      for (const prereqSlug of prereqSlugs) {
+        const target =
+          inImport.get(prereqSlug) ?? (await getTokenBySlug(tx, prereqSlug));
+        if (!target) {
+          throw new Error(
+            `Prerequisite token not found: ${prereqSlug} (for '${input.slug}')`,
+          );
+        }
+        await addPrerequisite(tx, token.id, target.id);
+      }
+    }
+
+    // Import means "I want to learn this": a card per token for the user.
+    for (const token of inImport.values()) {
+      await ensureCard(tx, token.id, userId);
+      cardsEnsured++;
+    }
+
+    // Tokens previously bound to this article that the new decomposition
+    // did not confirm: maintenance, never deletion (learning history is
+    // preserved for manual repair or doctor auto-heal).
+    const prior = await getTokensBySourceLinkBase(tx, sourceBase);
+    for (const token of prior) {
+      if (!inImport.has(token.slug)) {
+        await setTokenMaintenance(
+          tx,
+          token.slug,
+          `absent from re-import of ${params.file}`,
+        );
+        maintenance.push(token.slug);
+      }
+    }
+  });
+
+  try {
+    await ensureTokenEmbeddings(db, { limit: 16 });
+  } catch {
+    // best-effort, mirrors addToken
+  }
+
+  return {
+    success: true,
+    user: userId,
+    article: { file: params.file, source_link: sourceBase },
+    created,
+    updated,
+    replaced,
+    maintenance,
+    cards: cardsEnsured,
   };
 }
 

@@ -123,12 +123,14 @@ import {
   getMonitor as handleGetMonitor,
   getReview as handleGetReview,
   getReviewsBatch as handleGetReviewsBatch,
+  importOkfTokens as handleImportOkfTokens,
   reviewAction as handleReviewAction,
   sessionOpen as handleSessionOpen,
   startSession as handleStartSession,
   submitReview as handleSubmitReview,
   suggestFoundations as handleSuggestFoundations,
   updateCheck as handleUpdateCheck,
+  type ImportOkfTokenInput,
 } from "../bridge-handlers.js";
 import { installCliShim } from "../cli-install.js";
 import {
@@ -1165,6 +1167,66 @@ bridgeCommand
             knowledgeContexts: data.knowledgeContexts,
             knowledge_contexts: data.knowledge_contexts,
             prerequisites: data.prerequisites,
+          });
+          jsonOut(result);
+        } catch (err) {
+          jsonError((err as Error).message);
+        }
+      });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
+// ── zam bridge okf-import ─────────────────────────────────────────────────
+
+bridgeCommand
+  .command("okf-import")
+  .description(
+    "Record an agent's decomposition of an OKF article as learning tokens (JSON stdin, ADR 2026-07-18)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    try {
+      let raw: string;
+      if (isServeMode) {
+        raw = serveStdinPayload ?? "";
+      } else {
+        const chunks: Buffer[] = [];
+        for await (const chunk of process.stdin) {
+          chunks.push(chunk as Buffer);
+        }
+        raw = Buffer.concat(chunks).toString("utf-8").trim();
+      }
+
+      if (!raw) {
+        jsonError(
+          "No input received on stdin. Pipe JSON: { file, bundle_dir?, tokens: [...] }",
+        );
+      }
+
+      let data: {
+        file: string;
+        bundle_dir?: string;
+        tokens: ImportOkfTokenInput[];
+      };
+      try {
+        data = JSON.parse(raw);
+      } catch {
+        jsonError("Invalid JSON input");
+      }
+      if (!data?.file || !Array.isArray(data?.tokens)) {
+        jsonError("JSON must include 'file' and a 'tokens' array");
+      }
+
+      await withDb(async (db) => {
+        try {
+          const userId = await resolveUser(opts, db, { json: true });
+          const result = await handleImportOkfTokens(db, {
+            user: userId,
+            bundleDir: data.bundle_dir,
+            file: data.file,
+            tokens: data.tokens,
           });
           jsonOut(result);
         } catch (err) {

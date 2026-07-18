@@ -34,7 +34,13 @@ CREATE TABLE IF NOT EXISTS tokens (
   -- validated in code, not via CHECK. Column default is 'llm' so unlabeled
   -- writes (pre-M013 rows, old snapshot restores) count as LLM-era content;
   -- createToken() defaults to 'manual' for API callers instead.
-  question_source TEXT NOT NULL DEFAULT 'llm'
+  question_source TEXT NOT NULL DEFAULT 'llm',
+  -- Maintenance state (ADR 2026-07-18): when set, the token's binding to
+  -- its source is unclear (e.g. stale source_link after an article split,
+  -- or an ambiguous re-import). Cards of a token in maintenance are
+  -- excluded from scheduling until repaired; learning state is preserved.
+  maintenance_at     TEXT,
+  maintenance_reason TEXT
 );
 
 -- Prerequisite dependency graph: "to learn A, first know B"

@@ -518,6 +518,71 @@ function buildMetaStrip(entry: CatalogEntry | undefined): HTMLElement {
   return strip;
 }
 
+/**
+ * The agent-facing decomposition request (ADR 2026-07-18 Decision 5). The
+ * jump from knowledge to learning goes THROUGH the conversation: the agent
+ * must understand the article before anything is recorded — the panel
+ * never calls zam_okf_import itself.
+ */
+function importInstruction(file: string): string {
+  const dir = bundleDir ? ` (bundle: ${bundleDir})` : "";
+  return (
+    `Import the OKF article "${file}"${dir} as learning content: read the ` +
+    "full article with zam_okf_read, extract the concepts I must be able " +
+    "to produce from memory (look-up facts stay in the article), judge a " +
+    "Bloom level and a domain per concept, arrange them in prerequisite " +
+    "order, check for existing tokens with zam_find_tokens, then record " +
+    "your decomposition with zam_okf_import."
+  );
+}
+
+function buildImportAction(file: string): HTMLElement {
+  const wrap = document.createElement("div");
+  wrap.className = "okf-import-action";
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "okf-import-btn";
+  btn.textContent = "Als Lerninhalt importieren";
+  const hint = document.createElement("div");
+  hint.className = "okf-import-hint";
+
+  btn.addEventListener("click", () => {
+    void (async () => {
+      btn.disabled = true;
+      hint.replaceChildren();
+      try {
+        const result = await app.sendMessage({
+          role: "user",
+          content: [{ type: "text", text: importInstruction(file) }],
+        });
+        if (result.isError) {
+          throw new Error("host rejected the message");
+        }
+        hint.textContent =
+          "An den Agenten übergeben — die Zerlegung läuft im Chat.";
+      } catch {
+        // Hosts without a conversation surface (e.g. the Companion
+        // sidebar) reject sendMessage: show the instruction to hand to
+        // the agent manually instead.
+        const note = document.createElement("div");
+        note.textContent =
+          "Dieser Host hat keinen Chat — gib deinem Agenten diese Anweisung:";
+        const copyable = document.createElement("textarea");
+        copyable.readOnly = true;
+        copyable.className = "okf-import-fallback";
+        copyable.value = importInstruction(file);
+        copyable.addEventListener("focus", () => copyable.select());
+        hint.append(note, copyable);
+      } finally {
+        btn.disabled = false;
+      }
+    })();
+  });
+
+  wrap.append(btn, hint);
+  return wrap;
+}
+
 function renderReaderBody(container: HTMLElement): void {
   if (citationView) {
     renderCitationFullView(container, citationView);
@@ -544,6 +609,7 @@ function renderReaderBody(container: HTMLElement): void {
   }
   container.replaceChildren();
   container.appendChild(buildMetaStrip(catalog.find((e) => e.file === currentFile)));
+  container.appendChild(buildImportAction(currentFile));
   const bodyEl = document.createElement("div");
   bodyEl.className = "okf-article-body zam-card";
   // The meta strip above renders the frontmatter; rendering the raw fence

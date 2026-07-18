@@ -581,4 +581,15 @@ async function runMigrations(db: Database): Promise<void> {
       `ALTER TABLE tokens ADD COLUMN question_source TEXT NOT NULL DEFAULT 'llm'`,
     );
   }
+
+  // M014: token maintenance state (ADR 2026-07-18). NULL = healthy; a
+  // timestamp marks the token as needing repair (stale source binding,
+  // ambiguous re-import) — its cards leave the review queue until cleared.
+  if (
+    tokenCols.length > 0 &&
+    !tokenCols.some((c) => c.name === "maintenance_at")
+  ) {
+    await db.exec(`ALTER TABLE tokens ADD COLUMN maintenance_at TEXT`);
+    await db.exec(`ALTER TABLE tokens ADD COLUMN maintenance_reason TEXT`);
+  }
 }

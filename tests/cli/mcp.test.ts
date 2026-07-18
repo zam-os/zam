@@ -89,9 +89,9 @@ describe("MCP stdio server tests", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all 23 tools with correct annotations", async () => {
+  it("lists all 24 tools with correct annotations", async () => {
     const response = await client.listTools();
-    expect(response.tools).toHaveLength(23);
+    expect(response.tools).toHaveLength(24);
 
     const toolNames = response.tools.map((t) => t.name).sort();
     const expectedNames = [
@@ -118,6 +118,7 @@ describe("MCP stdio server tests", () => {
       "zam_okf_upsert",
       "zam_okf_read_citation",
       "zam_okf_visualize",
+      "zam_okf_import",
     ].sort();
     expect(toolNames).toEqual(expectedNames);
 
