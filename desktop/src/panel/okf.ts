@@ -464,6 +464,14 @@ async function openArticle(file: string): Promise<void> {
   citationView = null;
   readErrors.delete(file);
   renderAll();
+  // Record the focused article machine-locally (zam_okf_focus) so a chat
+  // agent can resolve "import this okf" without the panel needing a
+  // conversation surface. Fire-and-forget: hosts that do not allow the
+  // tool, or a failed write, must never break the reader.
+  void callTool("zam_okf_focus", {
+    file,
+    ...(bundleDir ? { bundle_dir: bundleDir } : {}),
+  }).catch(() => {});
   if (!bodyCache.has(file)) {
     try {
       const result = (await callTool("zam_okf_read", {

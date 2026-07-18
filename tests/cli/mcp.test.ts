@@ -89,9 +89,9 @@ describe("MCP stdio server tests", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all 24 tools with correct annotations", async () => {
+  it("lists all 26 tools with correct annotations", async () => {
     const response = await client.listTools();
-    expect(response.tools).toHaveLength(24);
+    expect(response.tools).toHaveLength(26);
 
     const toolNames = response.tools.map((t) => t.name).sort();
     const expectedNames = [
@@ -119,6 +119,8 @@ describe("MCP stdio server tests", () => {
       "zam_okf_read_citation",
       "zam_okf_visualize",
       "zam_okf_import",
+      "zam_okf_focus",
+      "zam_okf_focused",
     ].sort();
     expect(toolNames).toEqual(expectedNames);
 
@@ -1132,6 +1134,70 @@ describe("MCP stdio server tests", () => {
       expect(res.isError).toBeUndefined();
       const data = JSON.parse(res.content[0].text);
       expect(data.log).toBe("");
+    });
+  });
+
+  describe("zam_okf_focus / zam_okf_focused", () => {
+    let previousFocusPath: string | undefined;
+
+    beforeEach(() => {
+      previousFocusPath = process.env.ZAM_OKF_FOCUS_PATH;
+      process.env.ZAM_OKF_FOCUS_PATH = join(tempDir, "okf-focus.json");
+    });
+
+    afterEach(() => {
+      if (previousFocusPath === undefined) {
+        delete process.env.ZAM_OKF_FOCUS_PATH;
+      } else {
+        process.env.ZAM_OKF_FOCUS_PATH = previousFocusPath;
+      }
+    });
+
+    it("marks the write side app-only and the read side read-only", async () => {
+      const response = await client.listTools();
+      const focus = response.tools.find((t) => t.name === "zam_okf_focus");
+      const focusMeta = focus?._meta as
+        | { ui?: { visibility?: string[] } }
+        | undefined;
+      expect(focusMeta?.ui?.visibility).toEqual(["app"]);
+
+      const focused = response.tools.find((t) => t.name === "zam_okf_focused");
+      expect((focused as any).annotations).toEqual({
+        openWorldHint: false,
+        readOnlyHint: true,
+      });
+    });
+
+    it("round-trips the focused article and reports null before any focus", async () => {
+      const before = await client.callTool({
+        name: "zam_okf_focused",
+        arguments: {},
+      });
+      expect(before.isError).toBeUndefined();
+      expect(JSON.parse((before as any).content[0].text).focused).toBeNull();
+
+      const write = await client.callTool({
+        name: "zam_okf_focus",
+        arguments: { file: "mcp-surfaces.md", bundle_dir: "C:/repo/docs/okf" },
+      });
+      expect(write.isError).toBeUndefined();
+
+      const after = await client.callTool({
+        name: "zam_okf_focused",
+        arguments: {},
+      });
+      const focused = JSON.parse((after as any).content[0].text).focused;
+      expect(focused.file).toBe("mcp-surfaces.md");
+      expect(focused.bundle_dir).toBe("C:/repo/docs/okf");
+      expect(typeof focused.updatedAt).toBe("string");
+    });
+
+    it("rejects article names with path separators", async () => {
+      const res = await client.callTool({
+        name: "zam_okf_focus",
+        arguments: { file: "../evil.md" },
+      });
+      expect(res.isError).toBe(true);
     });
   });
 

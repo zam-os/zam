@@ -38,6 +38,7 @@ const APP_CONFIG = {
       "zam_okf_catalog",
       "zam_okf_read",
       "zam_okf_read_citation",
+      "zam_okf_focus",
     ]),
   },
   settings: {

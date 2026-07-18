@@ -65,7 +65,13 @@ not the chat — is the durable source a learner returns to.
 When the user wants to LEARN an article ("import this as learning
 content", the visualizer's import button, or any request that ends in
 `zam_okf_import`), **you do the decomposition** — it is a judgment task,
-never mechanical:
+never mechanical.
+
+"Import this okf" / "the currently focused article" / "the open
+article": resolve which article is meant via `zam_okf_focused` — the
+visualizer panel records what its reader shows. Name the resolved
+article in your reply (and double-check with the user if `updatedAt`
+looks stale) before decomposing. Then:
 
 1. Read the FULL article (`zam_okf_read`) before proposing anything.
 2. Extract the concepts a practitioner must produce **from memory** —
