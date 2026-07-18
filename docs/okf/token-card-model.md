@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-07-17T00:00:00Z
+timestamp: 2026-07-18
 ---
 
 The central distinction in ZAM's domain model:
@@ -24,6 +24,21 @@ how much of the skill the human should own versus delegate to AI. Token
 metadata is load-bearing: Bloom levels drive prompt generation
 (`src/kernel/recall/prompter.ts`, template-based, not LLM), and
 `symbiosis_mode` drives coaching behavior.
+
+Tokens imported from OKF articles carry an **anchored source link**:
+`<article resource>#<anchor>` (or the bare resource URL without an
+anchor). The base identifies the article, the anchor the heading the
+concept came from. This makes "the tokens anchored in this bundle" a
+queryable set — `listTokens({ sourceLinkBases })`, exposed as
+`zam bridge list-tokens --source-link-base` — which the learning graph's
+repo scope is built on.
+
+A token can be in **maintenance**: `maintenance_at`/`maintenance_reason`
+mark a token whose source binding needs repair (a stale source link, or
+a re-import that did not confirm it). A maintenance token is kept — never
+deleted — with its learning state preserved, but its cards leave the
+review queue and due list until the binding is repaired and maintenance
+cleared.
 
 A **card** is one user's FSRS scheduling state for a token: stability,
 difficulty, due date, state, and block status (see
@@ -49,4 +64,6 @@ layer, stored by the kernel).
 - [ADR 2026-03-26 — Personal Workflow Foundations](../adr/2026-03-26-personal-workflow-foundations.md)
 - [ADR 2026-07-04 — Knowledge Contexts](../adr/2026-07-04-knowledge-contexts.md)
 - [ADR 2026-07-03 — RAG Semantic Token Search](../adr/2026-07-03-rag-semantic-token-search.md)
+- [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
+- [ADR 2026-07-18b — Learning Graph Scope Selectors and the Repo Scope](../adr/2026-07-18b-graph-repo-scope.md)
 - Code: `src/kernel/models/token.ts`, `src/kernel/recall/prompter.ts`

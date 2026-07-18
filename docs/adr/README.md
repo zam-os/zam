@@ -50,3 +50,5 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-17](2026-07-17-okf-knowledge-base.md) | OKF Knowledge Base — Living Repo Knowledge as Learning Sources | Implemented |
 | [2026-07-17b](2026-07-17b-okf-visualizer-panel.md) | OKF Visualizer Panel (MCP App) | Implemented |
 | [2026-07-18](2026-07-18-okf-learning-import.md) | Knowledge-to-Learning Import (OKF Articles → Learning Tokens) | Implemented |
+| [2026-07-18b](2026-07-18b-graph-repo-scope.md) | Learning Graph Scope Selectors and the Repo Scope | Implemented |
+| [2026-07-18c](2026-07-18c-okf-import-handoff.md) | OKF Import Handoff — Chat Delivery and the Focused-Article State | Implemented |
