@@ -8,6 +8,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   appendLog,
@@ -19,6 +20,7 @@ import {
 import {
   loadBundle,
   resolveArticlePath,
+  resolveBundleDirFromRoots,
   resolveCitationPath,
   upsertArticle,
 } from "../../src/cli/okf/io.js";
@@ -293,5 +295,50 @@ describe("resolveCitationPath", () => {
     expect(() =>
       resolveCitationPath(join(root, "docs", "okf"), target),
     ).toThrow(/invalid citation target/);
+  });
+});
+
+describe("okf/io resolveBundleDirFromRoots", () => {
+  let tempDir: string;
+
+  beforeEach(() => {
+    tempDir = mkdtempSync(join(tmpdir(), "zam-okf-roots-"));
+  });
+
+  afterEach(() => {
+    rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  it("picks the first root that contains a docs/okf bundle", () => {
+    const withBundle = join(tempDir, "repo-b");
+    mkdirSync(join(withBundle, "docs", "okf"), { recursive: true });
+    const withoutBundle = join(tempDir, "repo-a");
+    mkdirSync(withoutBundle, { recursive: true });
+
+    const dir = resolveBundleDirFromRoots(
+      [pathToFileURL(withoutBundle).href, pathToFileURL(withBundle).href],
+      "docs/okf",
+    );
+    expect(dir).toBe(join(withBundle, "docs", "okf"));
+  });
+
+  it("prefers the first workspace root over the cwd fallback even without a bundle", () => {
+    const workspace = join(tempDir, "workspace");
+    mkdirSync(workspace, { recursive: true });
+    const dir = resolveBundleDirFromRoots(
+      [pathToFileURL(workspace).href],
+      "docs/okf",
+    );
+    // A missing-bundle error should name the workspace, never the server
+    // process's application-path cwd (live 0.13.0 finding:
+    // "...\Microsoft VS Code\docs\okf").
+    expect(dir).toBe(join(workspace, "docs", "okf"));
+  });
+
+  it("falls back to the cwd default with no usable roots", () => {
+    expect(resolveBundleDirFromRoots([], "docs/okf")).toBe("docs/okf");
+    expect(
+      resolveBundleDirFromRoots(["https://not-a-file.example"], "docs/okf"),
+    ).toBe("docs/okf");
   });
 });

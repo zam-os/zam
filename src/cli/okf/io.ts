@@ -11,6 +11,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   appendLog,
   buildCatalog,
@@ -30,6 +31,32 @@ export interface LoadedBundle {
 }
 
 export const DEFAULT_BUNDLE_DIR = "docs/okf";
+
+/**
+ * Resolve the default bundle directory from MCP client roots (the host's
+ * workspace folders). An MCP server is often spawned with an unrelated
+ * cwd — e.g. the editor's installation directory — so "docs/okf under the
+ * cwd" points nowhere; the workspace the user actually has open is what
+ * "the repo's bundle" means. Picks the first root that contains a
+ * `docs/okf` directory; if none does, the first root still wins over the
+ * cwd (so error messages name the workspace, not the application path);
+ * with no usable roots, falls back to `fallback` (cwd-relative).
+ */
+export function resolveBundleDirFromRoots(
+  rootUris: string[],
+  fallback: string,
+): string {
+  const dirs: string[] = [];
+  for (const uri of rootUris) {
+    if (!uri?.startsWith("file:")) continue;
+    try {
+      dirs.push(join(fileURLToPath(uri), DEFAULT_BUNDLE_DIR));
+    } catch {
+      // malformed root URI: skip
+    }
+  }
+  return dirs.find((dir) => existsSync(dir)) ?? dirs[0] ?? fallback;
+}
 
 /**
  * Resolve an article file name inside the bundle. Names are plain kebab
