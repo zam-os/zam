@@ -54,6 +54,29 @@ describe("okf/bundle parseFrontmatter", () => {
     expect(parsed.body).toContain("FSRS-5 drives the queue.");
   });
 
+  it("parses CRLF line endings (Windows checkouts with autocrlf)", () => {
+    const parsed = parseFrontmatter(article().replace(/\n/g, "\r\n"));
+    expect(parsed.fields.type).toBe("concept");
+    expect(parsed.fields.tags).toEqual(["kernel", "fsrs"]);
+    expect(parsed.body).toContain("FSRS-5 drives the queue.");
+    expect(parsed.body).not.toContain("\r");
+  });
+
+  it("validates a CRLF article as conformant", () => {
+    const result = validateArticle(
+      "fsrs-scheduling.md",
+      article().replace(/\n/g, "\r\n"),
+    );
+    expect(result.ok).toBe(true);
+    expect(result.problems).toEqual([]);
+  });
+
+  it("strips a leading UTF-8 BOM (Windows editors) before the fence check", () => {
+    const parsed = parseFrontmatter(`﻿${article().replace(/\n/g, "\r\n")}`);
+    expect(parsed.fields.type).toBe("concept");
+    expect(parsed.body).toContain("FSRS-5 drives the queue.");
+  });
+
   it("rejects a missing opening fence", () => {
     expect(() => parseFrontmatter("type: concept\n---\n")).toThrow(
       /must start with a --- fence/,
@@ -131,6 +154,14 @@ describe("okf/bundle index and log rendering", () => {
     expect(seventeenth.indexOf("**Update**")).toBeLessThan(
       seventeenth.indexOf("**Creation**"),
     );
+  });
+
+  it("merges into a CRLF log and emits LF-normalized output", () => {
+    const crlfLog = "# Log\r\n\r\n## 2026-07-18\r\n\r\n- old entry\r\n";
+    const next = appendLog(crlfLog, "2026-07-18", "new entry");
+    expect(next).not.toContain("\r");
+    const day = next.slice(next.indexOf("## 2026-07-18"));
+    expect(day.indexOf("new entry")).toBeLessThan(day.indexOf("old entry"));
   });
 });
 

@@ -386,6 +386,33 @@ describe("stripFrontmatter", () => {
     const source = "---\ntype: reference\nno closing fence";
     expect(stripFrontmatter(source)).toBe(source);
   });
+
+  it("strips CRLF frontmatter and normalizes the body (Windows checkouts)", () => {
+    const source = "---\r\ntype: reference\r\n---\r\n\r\n# Title\r\nBody.";
+    expect(stripFrontmatter(source)).toBe("\n# Title\nBody.");
+  });
+
+  it("strips a leading UTF-8 BOM before the fence check", () => {
+    const source = "﻿---\r\ntype: reference\r\n---\r\n\r\nBody.";
+    expect(stripFrontmatter(source)).toBe("\nBody.");
+  });
+});
+
+describe("extractLinks with CRLF sources", () => {
+  it("still ignores links inside CRLF fenced code blocks", () => {
+    const body =
+      "See [real](workload-resource-rights.md).\r\n\r\n```\r\n[fake](inside-fence.md)\r\n```\r\n";
+    const { articles } = extractLinks(body);
+    expect(articles).toEqual(["workload-resource-rights.md"]);
+  });
+});
+
+describe("renderMarkdown with CRLF sources", () => {
+  it("renders headings and lists despite trailing carriage returns", () => {
+    const html = renderMarkdown("# Title\r\n\r\n- item one\r\n- item two\r\n");
+    expect(html).toContain("<h1>Title</h1>");
+    expect(html).toContain("<li>item one</li>");
+  });
 });
 
 describe("layoutGraph", () => {

@@ -113,7 +113,10 @@ function safeHref(target: string): string | null {
  * unterminated fence is not frontmatter; the source is returned unchanged.
  */
 export function stripFrontmatter(source: string): string {
-  const lines = source.split("\n");
+  // CRLF sources (Windows checkouts) are normalized by the split + join, so
+  // downstream renderMarkdown gets LF regardless of the checkout; a UTF-8
+  // BOM (Windows editors) would defeat the fence check, so drop it too.
+  const lines = source.replace(/^﻿/, "").split(/\r\n|\n/);
   if (lines[0]?.trim() !== "---") return source;
   for (let i = 1; i < lines.length; i++) {
     if (lines[i].trim() === "---") return lines.slice(i + 1).join("\n");
@@ -285,7 +288,9 @@ function isBlockStart(line: string): boolean {
  * classified per the panel's link contract (see classifyLink above).
  */
 export function renderMarkdown(source: string): string {
-  const lines = escapeHtml(source).split("\n");
+  // Split on CRLF too: a trailing \r would defeat the $-anchored heading,
+  // fence, and list patterns below on Windows-checkout content.
+  const lines = escapeHtml(source).split(/\r\n|\n/);
   const blocks: string[] = [];
   let i = 0;
 
@@ -435,7 +440,7 @@ export function filterCatalog(
 function stripFencedCodeBlocks(text: string): string {
   const out: string[] = [];
   let inFence = false;
-  for (const line of text.split("\n")) {
+  for (const line of text.split(/\r\n|\n/)) {
     if (/^```/.test(line.trim())) {
       inFence = !inFence;
       continue;
