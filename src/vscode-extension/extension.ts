@@ -37,10 +37,19 @@ import {
   type CompanionApp,
   type CompanionAppConfig,
   createSamplingResult,
+  describeServerVersionDrift,
   normalizeSamplingRequest,
   parseCompanionIntent,
   toolUiResourceUri,
 } from "./protocol.js";
+
+/**
+ * This extension's own version, replaced at VSIX-package time by
+ * scripts/prepare-vscode-extension.mjs (same token as the MCP client name
+ * below). It stays the literal placeholder in dev/source runs, where
+ * describeServerVersionDrift then declines to warn.
+ */
+const EXTENSION_VERSION = "__ZAM_VERSION__";
 
 /**
  * Real `vscode.lm` surface for {@link createVscodeLmAdapter}. Only these
@@ -159,11 +168,41 @@ class ZamMcpHost {
   private connectionPromise:
     | Promise<{ client: Client; transport: StdioClientTransport }>
     | undefined;
+  private versionDriftWarned = false;
 
   public constructor(
     private readonly launchConfigPath: string,
     private readonly output: vscode.OutputChannel,
   ) {}
+
+  /**
+   * Compare the version the freshly-connected `zam mcp` server reports against
+   * this extension's own version and, on drift, surface one actionable notice.
+   * The VSIX and the global `zam-core` CLI update independently, so a stale CLI
+   * behind a newer UI otherwise fails silently (see describeServerVersionDrift).
+   * Fire-and-forget and one-shot per host: never blocks or fails the connection.
+   */
+  private warnOnVersionDrift(client: Client): void {
+    if (this.versionDriftWarned) return;
+    const drift = describeServerVersionDrift(
+      EXTENSION_VERSION,
+      client.getServerVersion()?.version,
+    );
+    if (!drift) return;
+    this.versionDriftWarned = true;
+    this.output.appendLine(`[zam] version drift: ${drift.message}`);
+    void (async () => {
+      const copy = "Copy fix command";
+      const actions = drift.updateCommand ? [copy] : [];
+      const choice = await vscode.window.showWarningMessage(
+        `ZAM Companion: ${drift.message}`,
+        ...actions,
+      );
+      if (choice === copy && drift.updateCommand) {
+        await vscode.env.clipboard.writeText(drift.updateCommand);
+      }
+    })();
+  }
 
   private async connect(): Promise<{
     client: Client;
@@ -194,9 +233,10 @@ class ZamMcpHost {
           name: isAntigravity
             ? "antigravity-zam-companion"
             : "vscode-zam-companion",
-          version: "__ZAM_VERSION__",
+          version: EXTENSION_VERSION,
         });
         await client.connect(transport);
+        this.warnOnVersionDrift(client);
         return { client, transport };
       })().catch((error) => {
         this.connectionPromise = undefined;

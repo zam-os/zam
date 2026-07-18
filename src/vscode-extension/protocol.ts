@@ -208,3 +208,90 @@ export function toolUiResourceUri(tool: Tool): string | undefined {
       ? legacy
       : undefined;
 }
+
+// ── Companion / CLI version-drift guard ────────────────────────────────────
+
+/**
+ * The Companion VSIX (this extension) and the `zam mcp` server it spawns (the
+ * global `zam-core` CLI) ship as independent artifacts, so a user can update
+ * one and silently leave the other behind. That is exactly how the 0.15.0
+ * CRLF-parse bug kept breaking the OKF panel after the VSIX had already been
+ * updated to 0.15.1: the Companion kept launching the stale global server, and
+ * nothing said so. This guard turns that silent drift into a loud, actionable
+ * notice at connect time.
+ */
+export interface ServerVersionDrift {
+  /** `server-older` is the dangerous case: a stale CLI behind a newer UI. */
+  kind: "server-older" | "server-newer";
+  extensionVersion: string;
+  serverVersion: string;
+  /** Ready-to-show sentence naming both versions and how to reconcile them. */
+  message: string;
+  /** The npm command that fixes a `server-older` drift; absent otherwise (the
+   *  fix for `server-newer` is to update the extension, not run a command). */
+  updateCommand?: string;
+}
+
+/**
+ * Numeric `major.minor.patch` core of a semver, ignoring any prerelease/build
+ * suffix. Returns null for anything without that core (e.g. an unreplaced
+ * `__ZAM_VERSION__` in a dev build) so the guard degrades to "no opinion"
+ * rather than raising a false alarm.
+ */
+function semverCore(
+  version: string | undefined,
+): [number, number, number] | null {
+  if (typeof version !== "string") return null;
+  const match = /^(\d+)\.(\d+)\.(\d+)/.exec(version.trim());
+  return match ? [Number(match[1]), Number(match[2]), Number(match[3])] : null;
+}
+
+function compareSemverCore(
+  a: [number, number, number],
+  b: [number, number, number],
+): number {
+  for (let i = 0; i < 3; i += 1) {
+    if (a[i] !== b[i]) return a[i] < b[i] ? -1 : 1;
+  }
+  return 0;
+}
+
+/**
+ * Compare the Companion extension's own version with the version the spawned
+ * `zam mcp` server reports. Returns a drift descriptor when they differ, or
+ * null when they match or either version is unreadable (never block or warn on
+ * a version we cannot parse).
+ */
+export function describeServerVersionDrift(
+  extensionVersion: string,
+  serverVersion: string | undefined,
+): ServerVersionDrift | null {
+  const ext = semverCore(extensionVersion);
+  const srv = semverCore(serverVersion);
+  if (!ext || !srv) return null;
+  const cmp = compareSemverCore(srv, ext);
+  if (cmp === 0) return null;
+  if (cmp < 0) {
+    const updateCommand = `npm install -g zam-core@${extensionVersion}`;
+    return {
+      kind: "server-older",
+      extensionVersion,
+      serverVersion,
+      updateCommand,
+      message:
+        `ZAM Companion is ${extensionVersion} but its "zam mcp" CLI is ` +
+        `${serverVersion}. The panels run against the CLI, so features can ` +
+        `silently misbehave until it matches — update it with ` +
+        `\`${updateCommand}\`, then reload the window.`,
+    };
+  }
+  return {
+    kind: "server-newer",
+    extensionVersion,
+    serverVersion,
+    message:
+      `ZAM Companion is ${extensionVersion} but its "zam mcp" CLI is already ` +
+      `${serverVersion}. Update the ZAM Companion extension to ${serverVersion} ` +
+      `and reload the window so the UI matches the CLI.`,
+  };
+}

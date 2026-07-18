@@ -102,6 +102,7 @@ declare module "vscode" {
   export const env: {
     openExternal(uri: Uri): Promise<boolean>;
     appName: string;
+    clipboard: { writeText(value: string): Promise<void> };
   };
 
   export const workspace: {
