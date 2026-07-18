@@ -62,3 +62,30 @@ prerequisite blocking, the bridge protocol, or MCP surfaces.
 When creating ZAM tokens about this repo (e.g. via `zam_add_token`), set
 the token's `source_link` to the article's `resource` URL. The article —
 not the chat — is the durable source a learner returns to.
+
+## Importing an article as learning content (ADR 2026-07-18)
+
+When the user wants to LEARN an article ("import this as learning
+content", the visualizer's import button, or any request that ends in
+`zam_okf_import`), **you do the decomposition** — it is a judgment task,
+never mechanical:
+
+1. Read the FULL article (`zam_okf_read`) before proposing anything.
+2. Extract the concepts a practitioner must produce **from memory** —
+   recall-speed knowledge. Facts one would reasonably look up stay in the
+   article; do not tokenize structure (headings are not concepts).
+3. One atomic concept per token; judge a Bloom level (1–5) and a domain
+   per token, reusing existing domains where they fit.
+4. Arrange a prerequisite DAG from foundational to dependent.
+5. Check existing tokens first (`zam_find_tokens`); link them as
+   prerequisites instead of duplicating them.
+6. Record once, atomically, with `zam_okf_import` — every token gets a
+   card for the importing user, and each token's `source_link` anchors
+   back into the article. Multiple tokens are the expected outcome for a
+   real article; a single token usually means under-decomposition.
+
+Re-import after the article changed: classify each token — `new` (add),
+`update` (content refreshed, learning state kept), `replace` (the concept
+changed, learning state resets to the beginning). Previously imported
+tokens you do not confirm move to maintenance (kept, unscheduled,
+awaiting repair) — never deleted.

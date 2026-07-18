@@ -7,7 +7,7 @@ tags:
   - agents
   - surfaces
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-07-17T15:00:00Z
+timestamp: 2026-07-18
 ---
 
 `zam mcp` starts a stdio **Model Context Protocol** server
@@ -24,8 +24,8 @@ The server exposes ZAM's tool surface (session start/end, queue and
 review actions, token search and registration, prerequisite linking,
 companion context and sampling, and the OKF knowledge-base tools
 `zam_okf_catalog` / `zam_okf_read` / `zam_okf_upsert` /
-`zam_okf_read_citation`). The authoritative tool list with annotations
-is pinned by `tests/cli/mcp.test.ts`.
+`zam_okf_read_citation` / `zam_okf_import`). The authoritative tool list
+with annotations is pinned by `tests/cli/mcp.test.ts`.
 
 `zam_okf_catalog` accepts an optional `include_log` flag that adds the
 raw `log.md` text to the result (empty string if the bundle has none
@@ -34,6 +34,17 @@ to — an ADR, for example — read-only and restricted to `.md` files that
 resolve inside the repository root; the target may be outside the
 bundle (that's its purpose) but never outside the repo
 (`resolveCitationPath` / `findRepoRoot` in `src/cli/okf/io.ts`).
+
+`zam_okf_import` records an agent's finished decomposition of one
+article as learning tokens plus cards for the importing user, in one
+transaction. The agent judges (concepts worth remembering, Bloom level
+and domain per token, prerequisite order); the tool only validates and
+writes. Re-imports are classified per token: `new` adds, `update`
+refreshes content and keeps learning state, `replace` refreshes content
+and resets learning state to the beginning; previously imported tokens
+absent from a re-import move to token maintenance (kept, excluded from
+scheduling) instead of being deleted. Also available as
+`zam bridge okf-import`.
 
 # MCP Apps panels
 
@@ -52,7 +63,12 @@ reader that expands cited ADRs and other citation targets inline via
 `zam_okf_read_citation`, a link graph (articles as nodes, inter-article
 links as edges, citations as visually distinct nodes), and the
 `log.md` history. The panel always opens — a missing or invalid bundle
-surfaces as `problems` in the panel instead of a tool error.
+surfaces as `problems` in the panel instead of a tool error. The
+article reader's "import as learning content" action posts the
+decomposition request into the host conversation (MCP Apps
+`sendMessage`) — the agent does the thinking, then records via
+`zam_okf_import`; hosts without a conversation surface get the
+instruction as copyable text instead.
 
 # Citations
 
@@ -60,4 +76,5 @@ surfaces as `problems` in the panel instead of a tool error.
 - [ADR 2026-07-16 — Companion Context Bar and Harness Affinity](../adr/2026-07-16-companion-context-and-harness-affinity.md)
 - [ADR 2026-07-17 — OKF Knowledge Base](../adr/2026-07-17-okf-knowledge-base.md)
 - [ADR 2026-07-17b — OKF Visualizer Panel](../adr/2026-07-17b-okf-visualizer-panel.md)
-- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`
+- [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
+- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/bridge-handlers.ts` (importOkfTokens)

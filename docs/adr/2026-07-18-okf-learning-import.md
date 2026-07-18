@@ -1,6 +1,6 @@
 # Knowledge-to-Learning Import (OKF Articles → Learning Tokens)
 
-**Status:** Proposed
+**Status:** Implemented
 **Date:** 2026-07-18
 **Deciders:** Thomas (project owner), designed with Fable 5
 **Related:**
