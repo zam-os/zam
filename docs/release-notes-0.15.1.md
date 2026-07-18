@@ -24,5 +24,18 @@ and graph.
 
 ## Notes
 
-Rebuild/update the Companion to pick up the panel-side fixes — the OKF
-panel ships inside the app bundle.
+**Update the `zam-core` CLI, not just the Companion.** The catalog-blocking
+bug is in the OKF frontmatter *parser*, which runs inside the `zam mcp`
+server — i.e. the global `zam-core` CLI, a separate artifact from the
+Companion VSIX. Updating the extension alone leaves a stale CLI parsing
+CRLF bundles, so the OKF panel stays empty. Update the CLI with:
+
+```sh
+npm install -g zam-core@0.15.1
+```
+
+then reload the VS Code window so the Companion respawns `zam mcp`. The
+panel also carries fixes (frontmatter strip and renderer ship in the app
+bundle), so update the Companion too — but the CLI is the one that
+unblocks the catalog. 0.15.2 adds a launch-time guard that warns when the
+two versions drift, so this can't fail silently again.
