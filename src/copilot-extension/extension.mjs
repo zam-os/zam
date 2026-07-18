@@ -31,6 +31,15 @@ const APP_CONFIG = {
     toolName: "zam_show_graph",
     allowedTools: new Set(["zam_studio_bridge"]),
   },
+  okf: {
+    title: "ZAM Knowledge Base",
+    toolName: "zam_okf_visualize",
+    allowedTools: new Set([
+      "zam_okf_catalog",
+      "zam_okf_read",
+      "zam_okf_read_citation",
+    ]),
+  },
   settings: {
     title: "ZAM Settings",
     toolName: "zam_open_settings",
@@ -79,6 +88,11 @@ function compactObject(value) {
 }
 
 function buildToolArguments(kind, input) {
+  // `okf` takes no `user`: `zam_okf_visualize` is repo-scoped and its input
+  // schema only knows `bundle_dir`.
+  if (kind === "okf") {
+    return compactObject({ bundle_dir: input?.bundle_dir });
+  }
   const common = { user: input?.user };
   if (kind === "recall") {
     return compactObject({ ...common, domain: input?.domain });
@@ -489,6 +503,26 @@ await joinSession({
       },
       actions: [connectionStatusAction()],
       open: (context) => openApp("graph", context),
+      onClose: closeApp,
+    }),
+    createCanvas({
+      id: "zam-knowledge",
+      displayName: "ZAM Knowledge Base",
+      description:
+        "Open the ZAM OKF knowledge-base visualizer MCP App in a hosted Copilot canvas.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          bundle_dir: {
+            type: "string",
+            description:
+              "Bundle directory (default docs/okf under the zam server cwd).",
+          },
+        },
+        additionalProperties: false,
+      },
+      actions: [connectionStatusAction()],
+      open: (context) => openApp("okf", context),
       onClose: closeApp,
     }),
     createCanvas({

@@ -1415,12 +1415,15 @@ export function createMcpServer(db: Database): McpServer {
         getNativeClientInfo(),
         { clientSamplingCapable: getClientSamplingCapable() },
       );
-      await publishUiIntent("okf", { bundle_dir });
-
       const { DEFAULT_BUNDLE_DIR, loadBundle } = await import("../okf/io.js");
       const { resolve } = await import("node:path");
       const requestedDir = bundle_dir ?? DEFAULT_BUNDLE_DIR;
       let resolvedBundleDir = resolve(requestedDir);
+      // Publish the RESOLVED absolute dir, not the raw argument: the VS Code
+      // Companion's own zam server runs with a different cwd, so a relative
+      // (or defaulted) dir would resolve to a different bundle over there
+      // (0.13.0 live finding: the Companion opened an empty bundle).
+      await publishUiIntent("okf", { bundle_dir: resolvedBundleDir });
       let catalog: CatalogEntry[] = [];
       let problems: string[] = [];
       let log = "";

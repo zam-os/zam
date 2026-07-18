@@ -309,6 +309,13 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
         vscodeLmAdapter,
       );
       this.sendBootstrap();
+      // Drives the title-bar Knowledge-Base/Learning-Graph toggle: the menu
+      // `when` clauses in scripts/prepare-vscode-extension.mjs read this key.
+      void vscode.commands.executeCommand(
+        "setContext",
+        "zam.companionApp",
+        kind,
+      );
       this.output.appendLine(
         `[${new Date().toISOString()}] opened ${kind} via ${this.prepared.resourceUri}`,
       );
@@ -631,6 +638,17 @@ export async function activate(
     vscode.commands.registerCommand("zam.showGraph", () =>
       provider.open("graph"),
     ),
+    vscode.commands.registerCommand("zam.showOkf", () => {
+      // The Companion's zam server does not run with the workspace as cwd,
+      // so the tool's "docs/okf under the server cwd" default is meaningless
+      // here — point it at the workspace's bundle explicitly. A workspace
+      // without docs/okf gets the panel's problem state, which says so.
+      const workspace = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+      return provider.open(
+        "okf",
+        workspace ? { bundle_dir: join(workspace, "docs", "okf") } : {},
+      );
+    }),
     vscode.commands.registerCommand("zam.openSettings", () =>
       provider.open("settings"),
     ),
