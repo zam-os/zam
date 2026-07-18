@@ -124,13 +124,13 @@ import {
   getReview as handleGetReview,
   getReviewsBatch as handleGetReviewsBatch,
   importOkfTokens as handleImportOkfTokens,
-  type ImportOkfTokenInput,
   reviewAction as handleReviewAction,
   sessionOpen as handleSessionOpen,
   startSession as handleStartSession,
   submitReview as handleSubmitReview,
   suggestFoundations as handleSuggestFoundations,
   updateCheck as handleUpdateCheck,
+  type ImportOkfTokenInput,
 } from "../bridge-handlers.js";
 import { installCliShim } from "../cli-install.js";
 import {
