@@ -39,6 +39,12 @@ export interface Token {
   deprecated_at: string | null;
   provider: string | null;
   topic_id: string | null;
+  /** Maintenance state (ADR 2026-07-18): set when the token's source
+   * binding is unclear (stale source_link, ambiguous re-import). Cards of
+   * a token in maintenance leave the review queue; learning state is
+   * preserved. NULL = healthy. */
+  maintenance_at: string | null;
+  maintenance_reason: string | null;
 }
 
 export interface CreateTokenInput {
@@ -349,6 +355,48 @@ export async function deprecateToken(
     )
     .run(now, now, slug);
 
+  return (await getTokenBySlug(db, slug)) as Token;
+}
+
+/**
+ * Put a token into maintenance (ADR 2026-07-18): its source binding needs
+ * repair — manually or via doctor auto-heal — and its cards leave the
+ * review queue until cleared. Learning state is preserved. Idempotent:
+ * re-entering maintenance refreshes the timestamp and reason.
+ */
+export async function setTokenMaintenance(
+  db: Database,
+  slug: string,
+  reason: string,
+): Promise<Token> {
+  const token = await getTokenBySlug(db, slug);
+  if (!token) {
+    throw new Error(`Token not found: ${slug}`);
+  }
+  const now = new Date().toISOString();
+  await db
+    .prepare(
+      "UPDATE tokens SET maintenance_at = ?, maintenance_reason = ?, updated_at = ? WHERE slug = ?",
+    )
+    .run(now, reason, now, slug);
+  return (await getTokenBySlug(db, slug)) as Token;
+}
+
+/** Clear a token's maintenance state — its cards re-enter scheduling. */
+export async function clearTokenMaintenance(
+  db: Database,
+  slug: string,
+): Promise<Token> {
+  const token = await getTokenBySlug(db, slug);
+  if (!token) {
+    throw new Error(`Token not found: ${slug}`);
+  }
+  const now = new Date().toISOString();
+  await db
+    .prepare(
+      "UPDATE tokens SET maintenance_at = NULL, maintenance_reason = NULL, updated_at = ? WHERE slug = ?",
+    )
+    .run(now, slug);
   return (await getTokenBySlug(db, slug)) as Token;
 }
 

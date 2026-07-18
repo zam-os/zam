@@ -103,6 +103,7 @@ export {
   getCardById,
   getCardDeletionImpact,
   getDueCards,
+  resetCardsForToken,
   updateCard,
 } from "./models/card.js";
 export type {
@@ -185,6 +186,7 @@ export type {
 // Models
 export {
   applySourceProposals,
+  clearTokenMaintenance,
   confirmCardSplit,
   confirmFoundations,
   confirmSourceImport,
@@ -204,6 +206,7 @@ export {
   listPersonalCards,
   listTokens,
   listUserCardsForCurriculumTopic,
+  setTokenMaintenance,
   slugify,
   tokenMatchesCurriculumTopicScope,
   updateToken,

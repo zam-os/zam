@@ -202,6 +202,39 @@ export async function updateCard(
 /**
  * Preview the review-log rows that will be removed when deleting a user's card.
  */
+/**
+ * Reset the learning state of every user's card for a token back to the
+ * beginning (ADR 2026-07-18): when a concept changed on re-import, the old
+ * knowledge is irrelevant and must be learned fresh. Values mirror a
+ * brand-new card's schema defaults. `blocked` is left untouched — it is
+ * derived from prerequisites, not from learning progress.
+ *
+ * Returns the number of cards reset.
+ */
+export async function resetCardsForToken(
+  db: Database,
+  tokenId: string,
+  now?: string,
+): Promise<number> {
+  const ts = now ?? new Date().toISOString();
+  const result = await db
+    .prepare(
+      `UPDATE cards SET
+         stability = 0.0,
+         difficulty = 0.5,
+         elapsed_days = 0.0,
+         scheduled_days = 0.0,
+         reps = 0,
+         lapses = 0,
+         state = 'new',
+         due_at = ?,
+         last_review_at = NULL
+       WHERE token_id = ?`,
+    )
+    .run(ts, tokenId);
+  return result.changes;
+}
+
 export async function getCardDeletionImpact(
   db: Database,
   tokenId: string,
@@ -262,7 +295,8 @@ export async function getDueCards(
   let sql = `SELECT c.*, t.slug, t.concept, t.domain, t.bloom_level
     FROM cards c
     JOIN tokens t ON t.id = c.token_id
-    WHERE c.user_id = ? AND c.blocked = 0 AND c.due_at <= ?`;
+    WHERE c.user_id = ? AND c.blocked = 0 AND c.due_at <= ?
+      AND t.maintenance_at IS NULL`;
   const params: unknown[] = [userId, cutoff];
 
   if (domain) {
