@@ -8,6 +8,7 @@ import {
   groupCatalog,
   layoutGraph,
   renderMarkdown,
+  stripFrontmatter,
 } from "../../desktop/src/panel/okf-render.js";
 
 // Collects every href="..." attribute value from rendered HTML, with ASCII
@@ -129,6 +130,24 @@ describe("renderMarkdown", () => {
     expect(html).toBe(
       "<table><thead><tr><th>A</th><th>B</th></tr></thead>" +
         "<tbody><tr><td>x|y</td><td>2</td></tr></tbody></table>",
+    );
+  });
+
+  it("keeps a wrapped list item's continuation lines inside its <li>", () => {
+    const source = [
+      "- **JSON only.** Every bridge response is JSON — all",
+      "  output goes through the helpers.",
+      "- Second item.",
+    ].join("\n");
+    expect(renderMarkdown(source)).toBe(
+      "<ul><li><strong>JSON only.</strong> Every bridge response is JSON — all output goes through the helpers.</li>" +
+        "<li>Second item.</li></ul>",
+    );
+  });
+
+  it("renders a thematic break instead of a literal dash paragraph", () => {
+    expect(renderMarkdown("above\n\n---\n\nbelow")).toBe(
+      "<p>above</p>\n<hr>\n<p>below</p>",
     );
   });
 
@@ -340,6 +359,35 @@ describe("extractLinks", () => {
   });
 });
 
+describe("stripFrontmatter", () => {
+  it("drops a leading frontmatter fence so the reader never renders it", () => {
+    const source = [
+      "---",
+      "type: reference",
+      "title: cops Output Contract",
+      "tags:",
+      "  - cli",
+      "---",
+      "",
+      "# cops Output Contract",
+      "Body text.",
+    ].join("\n");
+    expect(stripFrontmatter(source)).toBe(
+      "\n# cops Output Contract\nBody text.",
+    );
+  });
+
+  it("returns a source without frontmatter unchanged", () => {
+    const source = "# Title\n\nBody.";
+    expect(stripFrontmatter(source)).toBe(source);
+  });
+
+  it("treats an unterminated fence as content, not frontmatter", () => {
+    const source = "---\ntype: reference\nno closing fence";
+    expect(stripFrontmatter(source)).toBe(source);
+  });
+});
+
 describe("layoutGraph", () => {
   const nodes: GraphNode[] = [
     { id: "b.md", kind: "article", type: "guide", file: "b.md" },
@@ -353,25 +401,51 @@ describe("layoutGraph", () => {
   ];
   const edges: GraphEdge[] = [{ from: "a.md", to: "../adr/x.md" }];
 
-  it("orders articles by (type, file) and places citations further out", () => {
-    const positioned = layoutGraph(nodes, edges, 200, 200);
+  it("orders articles by (type, file) and places citations on the outer ring", () => {
+    const width = 960;
+    const height = 620;
+    const positioned = layoutGraph(nodes, edges, width, height);
     const articles = positioned.filter((n) => n.kind === "article");
     const citations = positioned.filter((n) => n.kind === "citation");
 
     expect(articles.map((n) => n.id)).toEqual(["a.md", "c.md", "b.md"]);
     expect(citations.map((n) => n.id)).toEqual(["../adr/x.md"]);
 
-    const centerX = 100;
-    const centerY = 100;
-    const distance = (n: { x: number; y: number }) =>
-      Math.hypot(n.x - centerX, n.y - centerY);
-
-    const articleRadius = distance(articles[0]);
-    for (const node of articles) {
-      expect(distance(node)).toBeCloseTo(articleRadius, 5);
+    // Aspect-normalized radial distance: citations sit on a strictly
+    // larger ellipse than every article, whatever the canvas aspect.
+    const radial = (n: { x: number; y: number }) =>
+      Math.hypot((n.x - width / 2) / width, (n.y - height / 2) / height);
+    for (const article of articles) {
+      expect(radial(citations[0])).toBeGreaterThan(radial(article));
     }
-    const citationRadius = distance(citations[0]);
-    expect(citationRadius).toBeGreaterThan(articleRadius);
+  });
+
+  it("keeps every node inside the label margins", () => {
+    const width = 960;
+    const height = 620;
+    for (const node of layoutGraph(nodes, edges, width, height)) {
+      expect(node.x).toBeGreaterThanOrEqual(width * 0.1);
+      expect(node.x).toBeLessThanOrEqual(width * 0.9);
+      expect(node.y).toBeGreaterThanOrEqual(height * 0.05);
+      expect(node.y).toBeLessThanOrEqual(height * 0.95);
+    }
+  });
+
+  it("places a citation next to its citing article, not at an alphabetical slot", () => {
+    const width = 960;
+    const height = 620;
+    const positioned = layoutGraph(nodes, edges, width, height);
+    const citer = positioned.find((n) => n.id === "a.md");
+    const citation = positioned.find((n) => n.id === "../adr/x.md");
+    if (!citer || !citation) throw new Error("nodes missing from layout");
+
+    // Same direction from the center: the angle between the citing
+    // article's and the citation's position vectors is small.
+    const angleOf = (n: { x: number; y: number }) =>
+      Math.atan2((n.y - height / 2) / height, (n.x - width / 2) / width);
+    const diff = Math.abs(angleOf(citer) - angleOf(citation));
+    const wrapped = Math.min(diff, 2 * Math.PI - diff);
+    expect(wrapped).toBeLessThan(0.4);
   });
 
   it("is deterministic across repeated calls with fresh input arrays", () => {

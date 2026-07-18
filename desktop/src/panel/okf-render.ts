@@ -30,6 +30,8 @@ export interface GraphNode {
   type?: string;
   /** Sort/identity key -- catalog file for articles, link target for citations. */
   file?: string;
+  /** Display label -- catalog title for articles, basename for citations. */
+  label?: string;
 }
 
 export interface GraphEdge {
@@ -101,6 +103,24 @@ function safeHref(target: string): string | null {
   return cleaned;
 }
 
+// -- Frontmatter ------------------------------------------------------------
+
+/**
+ * Drop a leading OKF frontmatter fence (`---` ... `---`) from an article
+ * source before markdown rendering. The reader shows that metadata as its
+ * meta strip (type badge, tags, timestamp, resource link) -- rendering the
+ * raw fence too produced one garbled paragraph above every article. An
+ * unterminated fence is not frontmatter; the source is returned unchanged.
+ */
+export function stripFrontmatter(source: string): string {
+  const lines = source.split("\n");
+  if (lines[0]?.trim() !== "---") return source;
+  for (let i = 1; i < lines.length; i++) {
+    if (lines[i].trim() === "---") return lines.slice(i + 1).join("\n");
+  }
+  return source;
+}
+
 // -- Markdown rendering -----------------------------------------------------
 
 function renderLink(label: string, target: string): string {
@@ -122,6 +142,36 @@ function renderLink(label: string, target: string): string {
 }
 
 const LINK_RE = /^\[([^\]]*)\]\(([^)]+)\)/;
+
+/**
+ * Gather one list's items starting at `start`, where each item may continue
+ * over subsequent indented lines (standard markdown hanging indent). Without
+ * this, a wrapped list item's continuation line fell out of the list as a
+ * bare paragraph, splitting the sentence in the reader (0.13.0 live
+ * finding).
+ */
+function collectListItems(
+  lines: string[],
+  start: number,
+  markerRe: RegExp,
+): { texts: string[]; nextIndex: number } {
+  const texts: string[] = [];
+  let i = start;
+  while (i < lines.length && markerRe.test(lines[i])) {
+    let item = lines[i].replace(markerRe, "");
+    i++;
+    while (
+      i < lines.length &&
+      /^\s+\S/.test(lines[i]) &&
+      !markerRe.test(lines[i])
+    ) {
+      item += ` ${lines[i].trim()}`;
+      i++;
+    }
+    texts.push(item);
+  }
+  return { texts, nextIndex: i };
+}
 
 /**
  * Render inline constructs (code, links, bold, italic) within one line of
@@ -284,6 +334,14 @@ export function renderMarkdown(source: string): string {
       continue;
     }
 
+    // Thematic break -- must run before the list/paragraph fallbacks so a
+    // bare `---` never renders as literal dashes in a paragraph.
+    if (/^([-_*])\1{2,}$/.test(line.trim())) {
+      blocks.push("<hr>");
+      i++;
+      continue;
+    }
+
     if (
       line.includes("|") &&
       i + 1 < lines.length &&
@@ -305,25 +363,19 @@ export function renderMarkdown(source: string): string {
     }
 
     if (/^[-*]\s+/.test(line)) {
-      const items: string[] = [];
-      while (i < lines.length && /^[-*]\s+/.test(lines[i])) {
-        items.push(lines[i].replace(/^[-*]\s+/, ""));
-        i++;
-      }
+      const items = collectListItems(lines, i, /^[-*]\s+/);
+      i = items.nextIndex;
       blocks.push(
-        `<ul>${items.map((item) => `<li>${renderInline(item)}</li>`).join("")}</ul>`,
+        `<ul>${items.texts.map((item) => `<li>${renderInline(item)}</li>`).join("")}</ul>`,
       );
       continue;
     }
 
     if (/^\d+\.\s+/.test(line)) {
-      const items: string[] = [];
-      while (i < lines.length && /^\d+\.\s+/.test(lines[i])) {
-        items.push(lines[i].replace(/^\d+\.\s+/, ""));
-        i++;
-      }
+      const items = collectListItems(lines, i, /^\d+\.\s+/);
+      i = items.nextIndex;
       blocks.push(
-        `<ol>${items.map((item) => `<li>${renderInline(item)}</li>`).join("")}</ol>`,
+        `<ol>${items.texts.map((item) => `<li>${renderInline(item)}</li>`).join("")}</ol>`,
       );
       continue;
     }
@@ -431,8 +483,14 @@ export function extractLinks(body: string): {
 
 // -- Graph layout -------------------------------------------------------------
 
-const ARTICLE_RADIUS_FRACTION = 0.32;
-const CITATION_RADIUS_FRACTION = 0.46;
+/** Inner (article) ring size relative to the outer (citation) ring. */
+const ARTICLE_RING_FRACTION = 0.55;
+/** Horizontal margin kept free for node labels, as a fraction of width. */
+const MARGIN_X_FRACTION = 0.13;
+/** Vertical margin kept free for node labels, as a fraction of height. */
+const MARGIN_Y_FRACTION = 0.09;
+/** Minimum angular gap between citation nodes (radians) so labels stay apart. */
+const MIN_CITATION_SEPARATION = 0.34;
 
 function sortKey(node: GraphNode): string {
   return node.file ?? node.id;
@@ -445,64 +503,89 @@ function sortArticles(nodes: GraphNode[]): GraphNode[] {
   });
 }
 
-function sortCitations(nodes: GraphNode[]): GraphNode[] {
-  return [...nodes].sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
-}
-
-function placeOnCircle(
-  nodes: GraphNode[],
-  radius: number,
-  centerX: number,
-  centerY: number,
-): PositionedNode[] {
-  const n = nodes.length;
-  return nodes.map((node, index) => {
-    // n is never 0 here: an empty `nodes` makes `.map` skip this callback
-    // entirely, so the division below never sees a zero denominator.
-    const angle = (2 * Math.PI * index) / n - Math.PI / 2;
-    return {
-      ...node,
-      x: centerX + radius * Math.cos(angle),
-      y: centerY + radius * Math.sin(angle),
-    };
-  });
-}
-
 /**
- * Deterministic circle layout: article nodes on an inner ring ordered by
- * (type, file), citation nodes on an outer ring (arc) ordered by their link
- * target. Pure function of its inputs -- no randomness, no mutation of the
- * input arrays -- so identical input always yields identical coordinates.
+ * Deterministic two-ring ellipse layout. Articles sit on an inner ellipse
+ * ordered by (type, file) -- same-type articles are angular neighbors, so
+ * types read as clusters. Each citation sits on an outer ellipse at the
+ * circular mean of the angles of the articles that cite it (with a minimum
+ * angular separation between citations), so citation nodes appear next to
+ * their citers instead of at an alphabetical slot across the canvas --
+ * markedly fewer edge crossings. Ellipses (not circles) use a wide canvas
+ * fully, and the margins reserve space so labels never clip at the viewBox.
  *
- * `edges` isn't used for node placement (this is a radial layout, not
- * force-directed); it's accepted here so the panel can pass the same pair
- * of arrays it already has on hand for drawing the connecting lines.
+ * Pure function of its inputs -- no randomness, no input mutation -- so
+ * identical input always yields identical coordinates.
  */
 export function layoutGraph(
   nodes: GraphNode[],
-  _edges: GraphEdge[],
+  edges: GraphEdge[],
   width: number,
   height: number,
 ): PositionedNode[] {
   const centerX = width / 2;
   const centerY = height / 2;
-  const minDim = Math.min(width, height);
+  const rxOuter = width / 2 - width * MARGIN_X_FRACTION;
+  const ryOuter = height / 2 - height * MARGIN_Y_FRACTION;
+  const rxInner = rxOuter * ARTICLE_RING_FRACTION;
+  const ryInner = ryOuter * ARTICLE_RING_FRACTION;
 
   const articles = sortArticles(nodes.filter((n) => n.kind === "article"));
-  const citations = sortCitations(nodes.filter((n) => n.kind === "citation"));
+  const citations = [...nodes.filter((n) => n.kind === "citation")];
 
-  return [
-    ...placeOnCircle(
-      articles,
-      minDim * ARTICLE_RADIUS_FRACTION,
-      centerX,
-      centerY,
-    ),
-    ...placeOnCircle(
-      citations,
-      minDim * CITATION_RADIUS_FRACTION,
-      centerX,
-      centerY,
-    ),
-  ];
+  const articleAngle = new Map<string, number>();
+  const positionedArticles = articles.map((node, index) => {
+    const angle = (2 * Math.PI * index) / articles.length - Math.PI / 2;
+    articleAngle.set(node.id, angle);
+    return {
+      ...node,
+      x: centerX + rxInner * Math.cos(angle),
+      y: centerY + ryInner * Math.sin(angle),
+    };
+  });
+
+  const desired = citations.map((node, index) => {
+    const citerAngles = edges
+      .filter((edge) => edge.to === node.id)
+      .map((edge) => articleAngle.get(edge.from))
+      .filter((angle): angle is number => angle !== undefined);
+    if (citerAngles.length === 0) {
+      // Unreachable from buildFullGraph (citation nodes exist because an
+      // article links them), but a hand-built graph stays well-defined.
+      return {
+        node,
+        angle: (2 * Math.PI * index) / citations.length - Math.PI / 2,
+      };
+    }
+    const sumSin = citerAngles.reduce((sum, a) => sum + Math.sin(a), 0);
+    const sumCos = citerAngles.reduce((sum, a) => sum + Math.cos(a), 0);
+    return { node, angle: Math.atan2(sumSin, sumCos) };
+  });
+  desired.sort(
+    (a, b) =>
+      a.angle - b.angle || sortKey(a.node).localeCompare(sortKey(b.node)),
+  );
+  for (let i = 1; i < desired.length; i++) {
+    const minAngle = desired[i - 1].angle + MIN_CITATION_SEPARATION;
+    if (desired[i].angle < minAngle) desired[i].angle = minAngle;
+  }
+  // If the separation pass pushed the fan past a full turn, proximity is
+  // hopeless anyway -- fall back to an even spread instead of overlapping
+  // the first nodes.
+  if (
+    desired.length > 1 &&
+    desired[desired.length - 1].angle - desired[0].angle >
+      2 * Math.PI - MIN_CITATION_SEPARATION
+  ) {
+    for (let i = 0; i < desired.length; i++) {
+      desired[i].angle = (2 * Math.PI * i) / desired.length - Math.PI / 2;
+    }
+  }
+
+  const positionedCitations = desired.map(({ node, angle }) => ({
+    ...node,
+    x: centerX + rxOuter * Math.cos(angle),
+    y: centerY + ryOuter * Math.sin(angle),
+  }));
+
+  return [...positionedArticles, ...positionedCitations];
 }
