@@ -18,6 +18,7 @@ import {
   validateArticle,
 } from "../../src/cli/okf/bundle.js";
 import {
+  collectSourceLinkBases,
   loadBundle,
   resolveArticlePath,
   resolveBundleDirFromRoots,
@@ -177,6 +178,37 @@ describe("okf/io", () => {
     const res = upsertArticle(dir, "broken.md", "---\ntitle: X\n---\n\n");
     expect(res.validation.ok).toBe(false);
     expect(loadBundle(dir).articles).toEqual([]);
+  });
+
+  it("collectSourceLinkBases prefers the resource URL, falls back to the article path", () => {
+    upsertArticle(dir, "with-resource.md", article(), "2026-07-17");
+    const noResource = [
+      "---",
+      "type: concept",
+      "title: No Resource",
+      "description: Article without a resource URL.",
+      "tags:",
+      "  - kernel",
+      "timestamp: 2026-07-17T00:00:00Z",
+      "---",
+      "",
+      "Body.",
+      "",
+    ].join("\n");
+    upsertArticle(dir, "no-resource.md", noResource, "2026-07-17");
+
+    const bases = collectSourceLinkBases(dir);
+    expect(bases).toContain(
+      "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md",
+    );
+    expect(bases).toContain(resolveArticlePath(dir, "no-resource.md"));
+    expect(bases).toHaveLength(2);
+  });
+
+  it("collectSourceLinkBases throws on a missing bundle directory", () => {
+    expect(() => collectSourceLinkBases(join(dir, "nope"))).toThrow(
+      /not found/,
+    );
   });
 
   it("loadBundle reports problems but keeps parseable entries in the catalog", () => {

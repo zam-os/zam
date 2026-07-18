@@ -59,6 +59,21 @@ export function resolveBundleDirFromRoots(
 }
 
 /**
+ * Collect the source-link bases of every article in a bundle: the
+ * frontmatter `resource` URL when present, else the resolved article path —
+ * the exact base rule `importOkfTokens` uses when writing tokens'
+ * `source_link` (`<base>` or `<base>#<anchor>`). This is what "tokens
+ * related to this repo's knowledge base" means to the learning graph.
+ * Throws when the bundle directory does not exist (same as `loadBundle`).
+ */
+export function collectSourceLinkBases(dir: string): string[] {
+  const bundle = loadBundle(dir);
+  return bundle.catalog.map(
+    (entry) => entry.resource ?? resolveArticlePath(dir, entry.file),
+  );
+}
+
+/**
  * Resolve an article file name inside the bundle. Names are plain kebab
  * basenames (v1 bundles are flat) — anything with a path separator or a
  * reserved name is rejected before it can escape the bundle directory.

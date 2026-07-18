@@ -27,6 +27,13 @@ companion context and sampling, and the OKF knowledge-base tools
 `zam_okf_read_citation` / `zam_okf_import`). The authoritative tool list
 with annotations is pinned by `tests/cli/mcp.test.ts`.
 
+The `zam_okf_*` tools resolve their default bundle directory as
+`docs/okf` under the MCP client's workspace root (MCP `roots/list`),
+falling back to the server's working directory — a host-spawned server
+often runs from the editor's installation directory, so the workspace
+the user has open is what "the repo's bundle" means. An explicit
+`bundle_dir` always wins.
+
 `zam_okf_catalog` accepts an optional `include_log` flag that adds the
 raw `log.md` text to the result (empty string if the bundle has none
 yet). `zam_okf_read_citation` reads a citation target an article points
@@ -57,18 +64,28 @@ same panels in a webview and routes recall evaluation through
 per-IDE evaluator selections.
 
 `zam_okf_visualize` opens the OKF panel on any OKF bundle (default
-`docs/okf` under the server's working directory, like the other
-`zam_okf_*` tools): articles grouped by type with search, a markdown
-reader that expands cited ADRs and other citation targets inline via
-`zam_okf_read_citation`, a link graph (articles as nodes, inter-article
-links as edges, citations as visually distinct nodes), and the
-`log.md` history. The panel always opens — a missing or invalid bundle
-surfaces as `problems` in the panel instead of a tool error. The
-article reader's "import as learning content" action posts the
-decomposition request into the host conversation (MCP Apps
-`sendMessage`) — the agent does the thinking, then records via
-`zam_okf_import`; hosts without a conversation surface get the
-instruction as copyable text instead.
+resolved like the other `zam_okf_*` tools — see above): articles
+grouped by type with search, a markdown reader that expands cited ADRs
+and other citation targets inline via `zam_okf_read_citation`, a link
+graph (articles as nodes, inter-article links as edges, citations as
+visually distinct nodes), and the `log.md` history. The panel always
+opens — a missing or invalid bundle surfaces as `problems` in the panel
+instead of a tool error. The article reader's "import as learning
+content" action posts the decomposition request into the host
+conversation (MCP Apps `sendMessage`) — the agent does the thinking,
+then records via `zam_okf_import`; hosts without a conversation surface
+get the instruction as copyable text instead.
+
+The knowledge-graph card (`zam_show_graph`, `ui://zam/graph`) centers
+on a focus token's direct prerequisites and dependents. Opened without
+a focus it does not dead-end: it shows scope selectors (desktop-app
+style — scope pills, domains with `/`-prefix groups, and a clickable
+token list) and defaults to the tokens anchored in the workspace's OKF
+bundle — the articles' source-link bases, resolved like the okf tools —
+falling back to all tokens when the workspace has no imported
+knowledge. The scoped listing runs through
+`zam bridge list-tokens --source-link-base` (repeatable), which is also
+available directly.
 
 # Citations
 

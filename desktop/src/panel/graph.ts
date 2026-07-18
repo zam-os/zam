@@ -33,6 +33,11 @@ import {
   graphNodeTitle,
   wrapGraphLabel,
 } from "./graph-layout.js";
+import {
+  buildDomainOptions,
+  filterByDomain,
+  pickDefaultFocus,
+} from "./graph-scope.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -53,6 +58,7 @@ const HISTORY_LIMIT = 5;
 
 const contextBarRoot = document.getElementById("zam-contextbar-root");
 const noticeEl = document.getElementById("zam-connection-notice");
+const scopeEl = document.getElementById("graph-scope");
 const breadcrumbEl = document.getElementById("graph-breadcrumb");
 const contentEl = document.getElementById("graph-content");
 
@@ -73,6 +79,16 @@ interface OpenGraphResult {
   version?: string;
   user?: string | null;
   companionContext?: CompanionContextBarState;
+  repoScope?: RepoScope;
+}
+
+/**
+ * Tokens anchored in the current workspace's OKF bundle (source-link bases,
+ * one per article) — computed server-side by zam_show_graph from MCP roots.
+ */
+interface RepoScope {
+  label: string;
+  bases: string[];
 }
 
 interface KnowledgeContextRef {
@@ -119,6 +135,22 @@ let initialFocus: string | null = null;
 /** Last up to HISTORY_LIMIT focuses, most-recent last (current focus). */
 let history: Array<{ slug: string; title: string }> = [];
 
+// ── Scope selectors (desktop-app style; ADR: default = current repo) ──────
+let repoScope: RepoScope | null = null;
+type ScopeKind = "repo" | "all";
+let scopeKind: ScopeKind = "all";
+let scopeDomain: string | null = null;
+/** Tokens of the current scope (before the domain filter); null = not loaded. */
+let scopeTokens: GraphNode[] | null = null;
+/**
+ * Bumped whenever the session restarts (late tool result with a different
+ * user/focus/repoScope, or a context-bar change). In-flight navigations and
+ * scope loads from an older generation discard their results instead of
+ * landing in the restarted session — without this, the 800ms fallback
+ * bootstrap races the real tool result and leaves a stale breadcrumb entry.
+ */
+let navGeneration = 0;
+
 const SURFACE = "graph";
 
 const callTool = createCallTool(app);
@@ -128,15 +160,19 @@ const readCompanionContext = createContextReader(callTool, SURFACE);
 /**
  * A user/evaluator context change is a context boundary (ADR §Decision 4):
  * re-navigate to the current focus under the new context rather than
- * continue showing a neighborhood scoped to the previous learner.
+ * continue showing a neighborhood scoped to the previous learner. Scope
+ * tokens carry the learner's card state, so they reload too.
  */
 function reloadForContext(newState: CompanionContextBarState): void {
   currentUser = newState.user.currentId ?? null;
+  scopeTokens = null;
+  navGeneration++;
   const focus = history[history.length - 1]?.slug ?? initialFocus;
   if (focus) {
     void navigateTo(focus);
+    void loadScope();
   } else {
-    renderNoFocus();
+    void bootstrapWithoutFocus();
   }
 }
 
@@ -194,6 +230,192 @@ function renderNoFocus(): void {
 
 function renderError(message: string): void {
   renderMessage("⚠️", "Graph konnte nicht geladen werden", message);
+}
+
+function renderEmptyScope(): void {
+  renderMessage(
+    "🌱",
+    "Keine Tokens in diesem Umfang",
+    "Importiere einen Artikel aus der Wissensbasis (zam_okf_import) oder lege Tokens an (zam_add_token).",
+  );
+}
+
+// ── Scope selectors ────────────────────────────────────────────────────────
+
+async function listScopeTokens(kind: ScopeKind): Promise<GraphNode[]> {
+  const args: string[] = [];
+  if (currentUser) args.push("--user", currentUser);
+  if (kind === "repo" && repoScope) {
+    for (const base of repoScope.bases) {
+      args.push("--source-link-base", base);
+    }
+  }
+  const data = (await callTool("zam_studio_bridge", {
+    cmd: "list-tokens",
+    args,
+  })) as { tokens?: GraphNode[] };
+  return data.tokens ?? [];
+}
+
+function scopedTokens(): GraphNode[] {
+  return filterByDomain(scopeTokens ?? [], scopeDomain);
+}
+
+function scopePill(
+  text: string,
+  className: string,
+  active: boolean,
+  title: string,
+  onClick: () => void,
+): HTMLButtonElement {
+  const pill = document.createElement("button");
+  pill.type = "button";
+  pill.className = className + (active ? " active" : "");
+  pill.textContent = text;
+  pill.title = title;
+  pill.addEventListener("click", onClick);
+  return pill;
+}
+
+function renderScopeBar(): void {
+  if (!scopeEl) return;
+  scopeEl.replaceChildren();
+  if (scopeTokens === null) return; // scope not loaded (yet)
+
+  const scopeRow = document.createElement("div");
+  scopeRow.className = "graph-scope-row";
+  if (repoScope) {
+    scopeRow.appendChild(
+      scopePill(
+        `📚 ${repoScope.label}`,
+        "scope-pill",
+        scopeKind === "repo",
+        "Tokens aus der Wissensbasis (docs/okf) dieses Repos",
+        () => void switchScope("repo"),
+      ),
+    );
+  }
+  scopeRow.appendChild(
+    scopePill("Alle", "scope-pill", scopeKind === "all", "Alle Tokens", () =>
+      void switchScope("all"),
+    ),
+  );
+  const count = document.createElement("span");
+  count.className = "graph-scope-count";
+  const visible = scopedTokens();
+  count.textContent = `${visible.length} Token${visible.length === 1 ? "" : "s"}`;
+  scopeRow.appendChild(count);
+  scopeEl.appendChild(scopeRow);
+
+  const options = buildDomainOptions(scopeTokens);
+  if (options.length > 1) {
+    const domainRow = document.createElement("div");
+    domainRow.className = "graph-scope-row graph-domain-row";
+    domainRow.appendChild(
+      scopePill(
+        "Alle Bereiche",
+        "domain-pill",
+        scopeDomain === null,
+        "Alle Wissensbereiche",
+        () => switchDomain(null),
+      ),
+    );
+    for (const option of options) {
+      domainRow.appendChild(
+        scopePill(
+          option.isGroup ? `${option.value} ⋯` : option.value,
+          "domain-pill",
+          scopeDomain === option.value,
+          option.isGroup
+            ? `Gruppe: alles unter "${option.value}"`
+            : `Bereich ${option.value}`,
+          () => switchDomain(option.value),
+        ),
+      );
+    }
+    scopeEl.appendChild(domainRow);
+  }
+
+  const currentSlug = history[history.length - 1]?.slug;
+  const list = document.createElement("div");
+  list.className = "graph-token-list";
+  for (const token of visible) {
+    list.appendChild(
+      scopePill(
+        graphNodeTitle(token),
+        `token-pill${token.card ? "" : " token-pill-nocard"}`,
+        token.slug === currentSlug,
+        token.concept,
+        () => void navigateTo(token.slug),
+      ),
+    );
+  }
+  if (visible.length === 0) {
+    const empty = document.createElement("span");
+    empty.className = "graph-scope-empty";
+    empty.textContent = "Keine Tokens in diesem Umfang.";
+    list.appendChild(empty);
+  }
+  scopeEl.appendChild(list);
+}
+
+/** Load the current scope's tokens and render the bar. False on failure. */
+async function loadScope(): Promise<boolean> {
+  const generation = navGeneration;
+  try {
+    const tokens = await listScopeTokens(scopeKind);
+    if (generation !== navGeneration) return false; // superseded meanwhile
+    scopeTokens = tokens;
+    renderScopeBar();
+    return true;
+  } catch {
+    if (generation === navGeneration) scopeTokens = null;
+    return false;
+  }
+}
+
+function focusScopeDefault(): void {
+  const pick = pickDefaultFocus(scopedTokens());
+  if (pick) {
+    void navigateTo(pick.slug);
+  } else {
+    renderEmptyScope();
+  }
+}
+
+async function switchScope(kind: ScopeKind): Promise<void> {
+  scopeKind = kind;
+  scopeDomain = null;
+  if (await loadScope()) focusScopeDefault();
+}
+
+function switchDomain(domain: string | null): void {
+  scopeDomain = domain;
+  renderScopeBar();
+  focusScopeDefault();
+}
+
+/**
+ * No focus supplied: instead of a dead "Kein Fokus" hint, load the default
+ * scope — the current repo's OKF-anchored tokens when the workspace has a
+ * bundle with imported tokens, else all tokens — and open on its foundation
+ * (lowest Bloom level, preferring tokens the learner has a card for).
+ */
+async function bootstrapWithoutFocus(): Promise<void> {
+  scopeKind = repoScope ? "repo" : "all";
+  scopeDomain = null;
+  if (!(await loadScope())) {
+    renderNoFocus(); // data channel unavailable: keep the old hint
+    return;
+  }
+  if (scopeKind === "repo" && (scopeTokens?.length ?? 0) === 0) {
+    scopeKind = "all";
+    if (!(await loadScope())) {
+      renderNoFocus();
+      return;
+    }
+  }
+  focusScopeDefault();
 }
 
 function bloomStep(level: number): number {
@@ -437,6 +659,7 @@ function pushHistory(slug: string, title: string): void {
 }
 
 async function navigateTo(slug: string): Promise<void> {
+  const generation = navGeneration;
   try {
     const args = ["--focus", slug];
     if (currentUser) args.push("--user", currentUser);
@@ -444,9 +667,11 @@ async function navigateTo(slug: string): Promise<void> {
       cmd: "get-neighborhood",
       args,
     })) as Neighborhood;
+    if (generation !== navGeneration) return; // session restarted meanwhile
     pushHistory(data.focus, graphNodeTitle(data.center));
     renderBreadcrumb((s) => void navigateTo(s));
     renderGraph(data, (s) => void navigateTo(s));
+    renderScopeBar(); // refresh the token list's current-focus highlight
     pushContext(data);
   } catch (error) {
     renderError(error instanceof Error ? error.message : String(error));
@@ -458,8 +683,12 @@ function start(): void {
   started = true;
   if (initialFocus) {
     void navigateTo(initialFocus);
+    // The selector bar is a browsing enhancement here — load it in the
+    // background and ignore failures; the focused graph already renders.
+    scopeKind = repoScope ? "repo" : "all";
+    void loadScope();
   } else {
-    renderNoFocus();
+    void bootstrapWithoutFocus();
   }
 }
 
@@ -471,14 +700,20 @@ app.ontoolresult = (params) => {
   // is authoritative — restart the session when it names a different one.
   const previousUser = currentUser;
   const previousFocus = initialFocus;
+  const previousRepoLabel = repoScope?.label ?? null;
   currentUser = structured.user ?? null;
   initialFocus = structured.focus ?? null;
+  repoScope = structured.repoScope ?? null;
   if (
     started &&
-    (previousUser !== currentUser || previousFocus !== initialFocus)
+    (previousUser !== currentUser ||
+      previousFocus !== initialFocus ||
+      (repoScope?.label ?? null) !== previousRepoLabel)
   ) {
     started = false;
     history = [];
+    scopeTokens = null;
+    navGeneration++;
   }
   clearConnectionNotice();
 

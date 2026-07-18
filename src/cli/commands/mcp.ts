@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   RESOURCE_MIME_TYPE,
@@ -936,8 +936,9 @@ export function createMcpServer(db: Database): McpServer {
       description:
         "Open the ZAM 2D knowledge-graph card, centered on a token's direct " +
         "prerequisites and dependents. Pass `focus` (a token slug) when the " +
-        "conversation already names one; otherwise the card shows a hint to " +
-        "supply one.",
+        "conversation already names one; without it the card offers scope " +
+        "selectors and defaults to tokens anchored in the current repo's " +
+        "OKF knowledge base.",
       inputSchema: {
         focus: z
           .string()
@@ -966,6 +967,25 @@ export function createMcpServer(db: Database): McpServer {
         { clientSamplingCapable: getClientSamplingCapable() },
       );
       const userId = opening.context.user.currentId ?? null;
+
+      // Repo scope for the card's selectors (no-focus bootstrap): the
+      // source-link bases of the workspace's OKF bundle, resolved the same
+      // way as the okf tools (MCP roots, else cwd). Best-effort — a missing
+      // bundle or a roots failure must never block opening the panel.
+      let repoScope: { label: string; bases: string[] } | undefined;
+      try {
+        const { collectSourceLinkBases, findRepoRoot } = await import(
+          "../okf/io.js"
+        );
+        const bundleDir = await resolveOkfBundleDir();
+        const bases = collectSourceLinkBases(bundleDir);
+        if (bases.length > 0) {
+          repoScope = { label: basename(findRepoRoot(bundleDir)), bases };
+        }
+      } catch {
+        // No bundle in this workspace — the card just offers "Alle".
+      }
+
       await publishUiIntent("graph", { user, focus });
       return {
         graph: "zam",
@@ -973,6 +993,7 @@ export function createMcpServer(db: Database): McpServer {
         version: pkg.version,
         user: userId,
         companionContext: opening.context,
+        ...(repoScope ? { repoScope } : {}),
         ...(opening.degraded ? { companionContextDegraded: true } : {}),
       };
     }),
