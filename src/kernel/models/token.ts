@@ -359,6 +359,29 @@ export async function deprecateToken(
 }
 
 /**
+ * All non-deprecated tokens whose source_link is `base` or `base#<anchor>`
+ * — i.e. the tokens previously imported from one OKF article (ADR
+ * 2026-07-18). `base` is matched literally, not as a pattern.
+ */
+export async function getTokensBySourceLinkBase(
+  db: Database,
+  base: string,
+): Promise<Token[]> {
+  return (await db
+    .prepare(
+      `SELECT * FROM tokens
+       WHERE (source_link = ? OR source_link LIKE ? || '#%' ESCAPE '\\')
+         AND deprecated_at IS NULL`,
+    )
+    .all(base, escapeLike(base))) as Token[];
+}
+
+/** Escape LIKE wildcards so a literal base cannot over-match. */
+function escapeLike(value: string): string {
+  return value.replace(/[\\%_]/g, (ch) => `\\${ch}`);
+}
+
+/**
  * Put a token into maintenance (ADR 2026-07-18): its source binding needs
  * repair — manually or via doctor auto-heal — and its cards leave the
  * review queue until cleared. Learning state is preserved. Idempotent:
