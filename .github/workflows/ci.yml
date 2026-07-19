@@ -143,15 +143,28 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build and test
-        run: |
-          npm run typecheck
-          npm run build
-          npm test
-          cargo test --manifest-path observer/Cargo.toml --target aarch64-pc-windows-msvc
-          cargo build --manifest-path observer/Cargo.toml --release --target aarch64-pc-windows-msvc
+      # One command per step: in a multi-line pwsh `run` block only the LAST
+      # command's exit code decides the step result, so a red `npm test` used
+      # to ship green as long as the cargo build after it passed (issue #190).
+      - name: Type-check project
+        run: npm run typecheck
 
+      - name: Build project
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
+
+      - name: Test native ARM64 observer
+        run: cargo test --manifest-path observer/Cargo.toml --target aarch64-pc-windows-msvc
+
+      - name: Build native ARM64 observer
+        run: cargo build --manifest-path observer/Cargo.toml --release --target aarch64-pc-windows-msvc
+
+      # bash, not pwsh: `-e` makes any failing CLI call fail the step, so the
+      # three-command smoke sequence cannot mask an early failure either.
       - name: Smoke-test local database
+        shell: bash
         run: |
           node dist/cli/index.js setup --skip-claude-md --skip-agents-md
           node dist/cli/index.js whoami --set ci

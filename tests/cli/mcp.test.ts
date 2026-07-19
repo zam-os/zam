@@ -86,7 +86,14 @@ describe("MCP stdio server tests", () => {
     if (db) {
       await db.close();
     }
-    rmSync(tempDir, { recursive: true, force: true });
+    // Windows can hold file locks for a beat after the server/DB close —
+    // retry instead of failing the whole suite on cleanup (issue #190).
+    rmSync(tempDir, {
+      recursive: true,
+      force: true,
+      maxRetries: 8,
+      retryDelay: 100,
+    });
   });
 
   it("lists all 26 tools with correct annotations", async () => {

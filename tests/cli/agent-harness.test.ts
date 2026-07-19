@@ -151,10 +151,16 @@ describe("detectInstalledConnectHarnesses", () => {
         command === "codex" || command === "claude"
           ? `/usr/local/bin/${command}`
           : null,
-      exists: (path) =>
-        path ===
-          "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" ||
-        path === "/home/user/.copilot",
+      // The source builds candidate paths with path.join, which uses
+      // backslashes on Windows — normalize before comparing (issue #159).
+      exists: (path) => {
+        const key = path.replaceAll("\\", "/");
+        return (
+          key ===
+            "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" ||
+          key === "/home/user/.copilot"
+        );
+      },
     });
 
     expect(detected).toEqual(["codex", "vscode", "copilot"]);

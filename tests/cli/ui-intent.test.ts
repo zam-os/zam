@@ -59,10 +59,18 @@ describe("VS Code UI intent", () => {
   });
 
   it("keeps UI publication best-effort for hosts without the companion", async () => {
+    // Sentinel: a path beneath a regular *file* cannot be created on any
+    // platform. The previous POSIX sentinel (/dev/null/…) is a perfectly
+    // creatable directory name on Windows and left stray C:\dev droppings
+    // on every test run (issue #190).
+    const home = tempHome();
+    const blocker = join(home, "blocker-file");
+    writeFileSync(blocker, "", "utf8");
+
     const intent = await publishUiIntent(
       "graph",
       { focus: "zam-mcp-server-architecture" },
-      { path: "/dev/null/not-a-directory/ui-intent.json" },
+      { path: join(blocker, "not-a-directory", "ui-intent.json") },
     );
 
     expect(intent).toBeUndefined();
