@@ -40,8 +40,8 @@ export interface LehrplanPlusBayernManifest {
 
 export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
   schoolYear: "2026/2027",
-  capturedOn: "2026-07-12",
-  sourceRevision: "LehrplanPLUS Realschule – Oktober 2023",
+  capturedOn: "2026-07-19",
+  sourceRevision: "LehrplanPLUS Bayern – including WS/FOS/BOS (2026-07-19)",
 
   schoolTypes: [
     {
@@ -81,6 +81,9 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
   grades: {
     realschule: ["5", "6", "7", "8", "9", "10"],
     gymnasium: ["5", "6", "7", "8", "9", "10", "11", "12", "13"],
+    wirtschaftsschule: ["5", "6", "7", "8", "9", "10", "11"],
+    fos: ["10", "11", "12", "13"],
+    bos: ["10", "12", "13"],
   },
 
   subjects: {
@@ -378,6 +381,490 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
       {
         id: "geol",
         label: "Geologie",
+      },
+    ],
+    wirtschaftsschule: [
+      {
+        id: "bsk",
+        label: "Betriebswirtschaftliche Steuerung und Kontrolle",
+      },
+      {
+        id: "deutsch",
+        label: "Deutsch",
+      },
+      {
+        id: "digitales-leben-und-arbeiten",
+        label: "Digitale Bildung",
+      },
+      {
+        id: "e-commerce",
+        label: "E-Commerce",
+      },
+      {
+        id: "englisch",
+        label: "Englisch",
+      },
+      {
+        id: "ethik",
+        label: "Ethik",
+      },
+      {
+        id: "evangelische-religionslehre",
+        label: "Evangelische Religionslehre",
+      },
+      {
+        id: "fit_for_finance",
+        label: "Fit for Finance",
+      },
+      {
+        id: "gamification",
+        label: "Gamification",
+      },
+      {
+        id: "gesundheit",
+        label: "Gesundheit",
+      },
+      {
+        id: "gpug-ws",
+        label: "Geschichte/Politik und Gesellschaft (WS)",
+      },
+      {
+        id: "informationsverarbeitung",
+        label: "Informationsverarbeitung",
+      },
+      {
+        id: "katholische-religionslehre",
+        label: "Katholische Religionslehre",
+      },
+      {
+        id: "life_skills",
+        label: "Life Skills",
+      },
+      {
+        id: "mathematik",
+        label: "Mathematik",
+      },
+      {
+        id: "mensch-und-umwelt",
+        label: "Mensch und Umwelt",
+      },
+      {
+        id: "musischaesthetischebildung",
+        label: "Musisch-ästhetische Bildung",
+      },
+      {
+        id: "mut",
+        label: "Mensch, Umwelt, Technik",
+      },
+      {
+        id: "oeb",
+        label: "Ökonomische Bildung",
+      },
+      {
+        id: "oebdb",
+        label: "Ökonomische Bildung und Digitale Bildung",
+      },
+      {
+        id: "oeg",
+        label: "Ökonomische Grundlagen",
+      },
+      {
+        id: "pug",
+        label: "Politik und Gesellschaft",
+      },
+      {
+        id: "robotik",
+        label: "Robotik",
+      },
+      {
+        id: "sport",
+        label: "Sport",
+      },
+      {
+        id: "tourismus",
+        label: "Tourismus",
+      },
+      {
+        id: "uebungsunternehmen",
+        label: "Übungsunternehmen",
+      },
+      {
+        id: "umweltoekonomie",
+        label: "Umweltökonomie",
+      },
+      {
+        id: "umwelttechnik",
+        label: "Umwelttechnik",
+      },
+      {
+        id: "wirtschaft_aktuell",
+        label: "Wirtschaft Aktuell",
+      },
+      {
+        id: "wirtschaftsgeografie",
+        label: "Wirtschaftsgeographie",
+      },
+    ],
+    fos: [
+      {
+        id: "betriebswirtschaftslehre",
+        label: "Betriebswirtschaftslehre",
+      },
+      {
+        id: "biologie",
+        label: "Biologie",
+      },
+      {
+        id: "biotechnologie",
+        label: "Biotechnologie",
+      },
+      {
+        id: "bwl-rechnungswesen",
+        label: "Betriebswirtschaftslehre / Rechnungswesen",
+      },
+      {
+        id: "chemie",
+        label: "Chemie",
+      },
+      {
+        id: "deutsch",
+        label: "Deutsch",
+      },
+      {
+        id: "ebc",
+        label: "English Book Club",
+      },
+      {
+        id: "englisch",
+        label: "Englisch",
+      },
+      {
+        id: "ethik",
+        label: "Ethik",
+      },
+      {
+        id: "evangelische-religionslehre",
+        label: "Evangelische Religionslehre",
+      },
+      {
+        id: "experimentelles_gestalten",
+        label: "Experimentelles Gestalten",
+      },
+      {
+        id: "fpa",
+        label: "Fachpraktische Ausbildung",
+      },
+      {
+        id: "franzoesisch",
+        label: "Französisch",
+      },
+      {
+        id: "geschichte",
+        label: "Geschichte",
+      },
+      {
+        id: "gestaltung",
+        label: "Gestaltung",
+      },
+      {
+        id: "gpug-fosbos",
+        label: "Geschichte/Politik und Gesellschaft (FOS/BOS)",
+      },
+      {
+        id: "gw",
+        label: "Gesundheitswissenschaften",
+      },
+      {
+        id: "gwr",
+        label: "Gesundheitswirtschaft und Recht",
+      },
+      {
+        id: "ibv",
+        label:
+          "Internationale Betriebswirtschaftslehre und Volkswirtschaftslehre",
+      },
+      {
+        id: "informatik",
+        label: "Informatik",
+      },
+      {
+        id: "internationale_politik",
+        label: "Internationale Politik",
+      },
+      {
+        id: "isb",
+        label: "International Business Studies",
+      },
+      {
+        id: "italienisch",
+        label: "Italienisch",
+      },
+      {
+        id: "katholische-religionslehre",
+        label: "Katholische Religionslehre",
+      },
+      {
+        id: "ki",
+        label: "Kommunikation und Interaktion",
+      },
+      {
+        id: "kuenstliche_intelligenz_informatik_u_technologie",
+        label: "Künstliche Intelligenz, Informatik und Technologie",
+      },
+      {
+        id: "kuenstliche_intelligenz_u_wirtschaftsinformatik",
+        label: "Künstliche Intelligenz und Wirtschaftsinformatik",
+      },
+      {
+        id: "kunst",
+        label: "Kunst",
+      },
+      {
+        id: "latein",
+        label: "Latein",
+      },
+      {
+        id: "mathematik",
+        label: "Mathematik",
+      },
+      {
+        id: "medien",
+        label: "Medien",
+      },
+      {
+        id: "musik",
+        label: "Musik",
+      },
+      {
+        id: "nt-bo",
+        label: "Naturwissenschaften",
+      },
+      {
+        id: "paedagigik-psychologie",
+        label: "Pädagogik/Psychologie",
+      },
+      {
+        id: "physik",
+        label: "Physik",
+      },
+      {
+        id: "pug",
+        label: "Politik und Gesellschaft",
+      },
+      {
+        id: "rechtslehre",
+        label: "Rechtslehre",
+      },
+      {
+        id: "russisch",
+        label: "Russisch",
+      },
+      {
+        id: "sg",
+        label: "Spektrum der Gesundheit",
+      },
+      {
+        id: "sozialwirtschaft-und-recht",
+        label: "Sozialwirtschaft und Recht",
+      },
+      {
+        id: "soziologie",
+        label: "Soziologie",
+      },
+      {
+        id: "spanisch",
+        label: "Spanisch",
+      },
+      {
+        id: "sport",
+        label: "Sport",
+      },
+      {
+        id: "studier-und-arbeitstechniken",
+        label: "Studier- und Arbeitstechniken",
+      },
+      {
+        id: "technologie",
+        label: "Technologie",
+      },
+      {
+        id: "volkswirtschaftslehre",
+        label: "Volkswirtschaftslehre",
+      },
+      {
+        id: "wirtschaft_aktuell",
+        label: "Wirtschaft Aktuell",
+      },
+      {
+        id: "wirtschaft-und-recht",
+        label: "Wirtschaft und Recht",
+      },
+    ],
+    bos: [
+      {
+        id: "betriebswirtschaftslehre",
+        label: "Betriebswirtschaftslehre",
+      },
+      {
+        id: "biologie",
+        label: "Biologie",
+      },
+      {
+        id: "biotechnologie",
+        label: "Biotechnologie",
+      },
+      {
+        id: "bwl-rechnungswesen",
+        label: "Betriebswirtschaftslehre / Rechnungswesen",
+      },
+      {
+        id: "chemie",
+        label: "Chemie",
+      },
+      {
+        id: "deutsch",
+        label: "Deutsch",
+      },
+      {
+        id: "ebc",
+        label: "English Book Club",
+      },
+      {
+        id: "englisch",
+        label: "Englisch",
+      },
+      {
+        id: "ethik",
+        label: "Ethik",
+      },
+      {
+        id: "evangelische-religionslehre",
+        label: "Evangelische Religionslehre",
+      },
+      {
+        id: "franzoesisch",
+        label: "Französisch",
+      },
+      {
+        id: "gpug-fosbos",
+        label: "Geschichte/Politik und Gesellschaft (FOS/BOS)",
+      },
+      {
+        id: "gw",
+        label: "Gesundheitswissenschaften",
+      },
+      {
+        id: "gwr",
+        label: "Gesundheitswirtschaft und Recht",
+      },
+      {
+        id: "ibv",
+        label:
+          "Internationale Betriebswirtschaftslehre und Volkswirtschaftslehre",
+      },
+      {
+        id: "informatik",
+        label: "Informatik",
+      },
+      {
+        id: "internationale_politik",
+        label: "Internationale Politik",
+      },
+      {
+        id: "isb",
+        label: "International Business Studies",
+      },
+      {
+        id: "italienisch",
+        label: "Italienisch",
+      },
+      {
+        id: "katholische-religionslehre",
+        label: "Katholische Religionslehre",
+      },
+      {
+        id: "ki",
+        label: "Kommunikation und Interaktion",
+      },
+      {
+        id: "kuenstliche_intelligenz_informatik_u_technologie",
+        label: "Künstliche Intelligenz, Informatik und Technologie",
+      },
+      {
+        id: "kuenstliche_intelligenz_u_wirtschaftsinformatik",
+        label: "Künstliche Intelligenz und Wirtschaftsinformatik",
+      },
+      {
+        id: "kunst",
+        label: "Kunst",
+      },
+      {
+        id: "latein",
+        label: "Latein",
+      },
+      {
+        id: "mathematik",
+        label: "Mathematik",
+      },
+      {
+        id: "musik",
+        label: "Musik",
+      },
+      {
+        id: "nt-bo",
+        label: "Naturwissenschaften",
+      },
+      {
+        id: "paedagigik-psychologie",
+        label: "Pädagogik/Psychologie",
+      },
+      {
+        id: "physik",
+        label: "Physik",
+      },
+      {
+        id: "pug",
+        label: "Politik und Gesellschaft",
+      },
+      {
+        id: "russisch",
+        label: "Russisch",
+      },
+      {
+        id: "sg",
+        label: "Spektrum der Gesundheit",
+      },
+      {
+        id: "sozialwirtschaft-und-recht",
+        label: "Sozialwirtschaft und Recht",
+      },
+      {
+        id: "soziologie",
+        label: "Soziologie",
+      },
+      {
+        id: "spanisch",
+        label: "Spanisch",
+      },
+      {
+        id: "studier-und-arbeitstechniken",
+        label: "Studier- und Arbeitstechniken",
+      },
+      {
+        id: "technologie",
+        label: "Technologie",
+      },
+      {
+        id: "volkswirtschaftslehre",
+        label: "Volkswirtschaftslehre",
+      },
+      {
+        id: "wirtschaft_aktuell",
+        label: "Wirtschaft Aktuell",
+      },
+      {
+        id: "wirtschaft-und-recht",
+        label: "Wirtschaft und Recht",
       },
     ],
   },
@@ -1405,6 +1892,1469 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
       {
         id: "erhoeht",
         label: "Wirtschaft und Recht 13 (erhöhtes Anforderungsniveau)",
+      },
+    ],
+    "bos|10|biologie": [
+      {
+        id: "abu",
+        label: "Biologie Vorklasse (ABU)",
+      },
+      {
+        id: "s-gh",
+        label: "Biologie Vorklasse (S, GH)",
+      },
+    ],
+    "bos|10|deutsch": [
+      {
+        id: "vorklasse",
+        label: "Deutsch Vorklasse",
+      },
+      {
+        id: "vorklasse_gueltig_ab_26_27",
+        label: "Deutsch Vorklasse, gültig ab SJ 2026/27",
+      },
+      {
+        id: "vorkurs",
+        label: "Deutsch Vorkurs",
+      },
+      {
+        id: "vorkurs_guelitg_ab_26_27",
+        label: "Deutsch Vorkurs, gültig ab SJ 2026/27",
+      },
+    ],
+    "bos|10|englisch": [
+      {
+        id: "vorklasse",
+        label: "Englisch Vorklasse",
+      },
+      {
+        id: "vorkurs",
+        label: "Englisch Vorkurs",
+      },
+    ],
+    "bos|10|gw": [
+      {
+        id: "aktuell",
+        label: "Gesundheitswissenschaften Vorklasse (GH)",
+      },
+      {
+        id: "aktuell_gueltig_ab_26_27",
+        label: "Gesundheitswissenschaften Vorklasse (GH), gültig ab SJ 2026/27",
+      },
+    ],
+    "bos|10|ibv": [
+      {
+        id: "ibv",
+        label:
+          "Internationale Betriebswirtschaftslehre und Volkswirtschaftslehre Vorklasse (IW)",
+      },
+      {
+        id: "ibv_gueltig_ab_26_27",
+        label:
+          "Internationale Betriebswirtschaftslehre und Volkswirtschaftslehre Vorklasse (IW), gültig ab SJ 2026/27",
+      },
+    ],
+    "bos|10|mathematik": [
+      {
+        id: "vorklasse",
+        label: "Mathematik Vorklasse",
+      },
+      {
+        id: "vorkurs",
+        label: "Mathematik Vorkurs",
+      },
+    ],
+    "bos|12|biologie": [
+      {
+        id: "abu",
+        label: "Biologie 12 (ABU)",
+      },
+      {
+        id: "g",
+        label: "Biologie 12 (GH)",
+      },
+      {
+        id: "s",
+        label: "Biologie 12 (S)",
+      },
+      {
+        id: "wahl-t-w-iw",
+        label:
+          "Aspekte der Biologie 12 oder 13 (erweiterndes Wahlpflichtfach T, W, IW)",
+      },
+    ],
+    "bos|12|chemie": [
+      {
+        id: "abu",
+        label: "Chemie 12 (ABU)",
+      },
+      {
+        id: "gh",
+        label: "Chemie 12 (GH)",
+      },
+      {
+        id: "t",
+        label: "Chemie 12 (T)",
+      },
+    ],
+    "bos|12|franzoesisch": [
+      {
+        id: "franzoesisch_ahr",
+        label: "Französisch 12 (AHR)",
+      },
+      {
+        id: "franzoesisch_aufbaukurs",
+        label: "Französisch Aufbaukurs 12 (Pflichtfach IW)",
+      },
+      {
+        id: "franzoesisch_fortgefuehrt",
+        label:
+          "Französisch fortgeführt 12 und 13 (erweiterndes Wahlpflichtfach)",
+      },
+      {
+        id: "franzoesisch_grundkurs",
+        label: "Französisch Grundkurs 12 (Pflichtfach IW)",
+      },
+    ],
+    "bos|12|gw": [
+      {
+        id: "aktuell",
+        label: "Gesundheitswissenschaften 12 (GH)",
+      },
+    ],
+    "bos|12|ibv": [
+      {
+        id: "ibv",
+        label:
+          "Internationale Betriebswirtschaftslehre und Volkswirtschaftslehre 12 (IW)",
+      },
+    ],
+    "bos|12|informatik": [
+      {
+        id: "abu-s-w-gh",
+        label:
+          "Informatik 12 (Profilfach W, vertiefendes Wahlpflichtfach IW, erweiterndes Wahlpflichtfach S, ABU, GH)",
+      },
+      {
+        id: "wahl-t-iw",
+        label: "Informatik 12 (vertiefendes Wahlpflichtfach T)",
+      },
+    ],
+    "bos|12|isb": [
+      {
+        id: "pflicht-iw",
+        label: "International Business Studies 12 (Pflichtfach IW)",
+      },
+      {
+        id: "wahl-abu-t-w-s-gh",
+        label:
+          "International Business Studies 12 oder 13 (erweiterndes Wahlpflichtfach ABU, T, W, S, GH)",
+      },
+    ],
+    "bos|12|kuenstliche_intelligenz_informatik_u_technologie": [
+      {
+        id: "abu",
+        label: "Künstliche Intelligenz, Informatik und Technologie 12",
+      },
+      {
+        id: "t",
+        label: "Künstliche Intelligenz, Informatik und Technologie 12",
+      },
+    ],
+    "bos|12|mathematik": [
+      {
+        id: "abu-s-w-gh-iw",
+        label: "Mathematik 12 (ABU, S, W, GH, IW)",
+      },
+      {
+        id: "t",
+        label: "Mathematik 12 (T)",
+      },
+      {
+        id: "Wahl-abu-s-w-gh-iw",
+        label: "Mathematik Additum 12 (ABU, S, W, GH, IW)",
+      },
+      {
+        id: "wahl-t",
+        label: "Mathematik Additum 12 (T)",
+      },
+    ],
+    "bos|12|paedagigik-psychologie": [
+      {
+        id: "s",
+        label: "Pädagogik/Psychologie 12 (S)",
+      },
+    ],
+    "bos|12|physik": [
+      {
+        id: "abu",
+        label: "Physik 12 (ABU)",
+      },
+      {
+        id: "s-w-gh-iw",
+        label:
+          "Aspekte der Physik 12 (erweiterndes Wahlplichtfach S,W, GH, IW)",
+      },
+      {
+        id: "t",
+        label: "Physik 12 (T)",
+      },
+    ],
+    "bos|12|soziologie": [
+      {
+        id: "s",
+        label: "Soziologie 12 (Pflichtfach S)",
+      },
+      {
+        id: "wahl-abu-t-w-iw-gh",
+        label:
+          "Soziologie 12 oder 13 (erweiterndes Wahlpflichtfach ABU, T, W, IW, GH)",
+      },
+    ],
+    "bos|12|spanisch": [
+      {
+        id: "spanisch_ahr",
+        label: "Spanisch 12 (AHR)",
+      },
+      {
+        id: "spanisch_aufbaukurs",
+        label: "Spanisch Aufbaukurs 12 (Pflichtfach IW)",
+      },
+      {
+        id: "spanisch_fortgefuehrt",
+        label: "Spanisch fortgeführt 12 und 13 (erweiterndes Wahlpflichtfach)",
+      },
+      {
+        id: "spanisch_grundkurs",
+        label: "Spanisch Grundkurs 12 (Pflichtfach IW)",
+      },
+    ],
+    "bos|12|technologie": [
+      {
+        id: "abu",
+        label: "Technologie 12 (ABU)",
+      },
+      {
+        id: "t",
+        label: "Technologie 12 (T)",
+      },
+    ],
+    "bos|13|biologie": [
+      {
+        id: "abu",
+        label: "Biologie 13 (ABU)",
+      },
+      {
+        id: "g",
+        label: "Biologie 13 (GH)",
+      },
+      {
+        id: "s",
+        label: "Biologie 13 (S)",
+      },
+      {
+        id: "wahl-t-w-iw",
+        label:
+          "Aspekte der Biologie 12 oder 13 (erweiterndes Wahlpflichtfach T, W, IW)",
+      },
+    ],
+    "bos|13|chemie": [
+      {
+        id: "abu",
+        label: "Chemie 13 (ABU)",
+      },
+      {
+        id: "t",
+        label: "Chemie 13 (T)",
+      },
+    ],
+    "bos|13|franzoesisch": [
+      {
+        id: "franzoesisch_ahr",
+        label: "Französisch 13 (AHR)",
+      },
+      {
+        id: "franzoesisch_aufbaukurs",
+        label: "Französisch Aufbaukurs 13 (Pflichtfach IW)",
+      },
+      {
+        id: "franzoesisch_fortgefuehrt",
+        label:
+          "Französisch fortgeführt 12 und 13 (erweiterndes Wahlpflichtfach)",
+      },
+      {
+        id: "franzoesisch_grundkurs",
+        label: "Französisch Grundkurs 13 (Pflichtfach IW)",
+      },
+    ],
+    "bos|13|gw": [
+      {
+        id: "aktuell",
+        label: "Gesundheitswissenschaften 13 (GH)",
+      },
+    ],
+    "bos|13|ibv": [
+      {
+        id: "ibv",
+        label:
+          "Internationale Betriebswirtschaftslehre und Volkswirtschaftslehre 13 (IW)",
+      },
+    ],
+    "bos|13|informatik": [
+      {
+        id: "wahl-abu-s-w-gh",
+        label:
+          "Informatik 13 (vertiefendes Wahlpflichtfach IW, erweiterndes Wahlpflichtfach S, ABU, W, GH)",
+      },
+      {
+        id: "wahl-t-iw",
+        label: "Informatik 13 (vertiefendes Wahlpflichtfach T)",
+      },
+    ],
+    "bos|13|kuenstliche_intelligenz_informatik_u_technologie": [
+      {
+        id: "abu",
+        label: "Künstliche Intelligenz, Informatik und Technologie 13",
+      },
+      {
+        id: "t",
+        label: "Künstliche Intelligenz, Informatik und Technologie 13",
+      },
+    ],
+    "bos|13|mathematik": [
+      {
+        id: "abu-s-w-gh-iw",
+        label: "Mathematik 13 (ABU, S, W, GH, IW)",
+      },
+      {
+        id: "t",
+        label: "Mathematik 13 (T)",
+      },
+      {
+        id: "wahl-abu-s-w-t",
+        label: "Mathematik Additum 13",
+      },
+    ],
+    "bos|13|paedagigik-psychologie": [
+      {
+        id: "s",
+        label: "Pädagogik/Psychologie 13 (S)",
+      },
+    ],
+    "bos|13|physik": [
+      {
+        id: "s-w-gh-iw",
+        label:
+          "Aspekte der Physik 13 (erweiterndes Wahlplichtfach S,W, GH, IW)",
+      },
+      {
+        id: "t",
+        label: "Physik 13 (T)",
+      },
+      {
+        id: "wahl-abu",
+        label: "Physik Additum 13 (ABU)",
+      },
+    ],
+    "bos|13|spanisch": [
+      {
+        id: "spanisch_ahr",
+        label: "Spanisch 13 (AHR)",
+      },
+      {
+        id: "spanisch_aufbaukurs",
+        label: "Spanisch Aufbaukurs 13 (Pflichtfach IW)",
+      },
+      {
+        id: "spanisch_fortgefuehrt",
+        label: "Spanisch fortgeführt 12 und 13 (erweiterndes Wahlpflichtfach)",
+      },
+      {
+        id: "spanisch_grundkurs",
+        label: "Spanisch Grundkurs 13 (Pflichtfach IW)",
+      },
+    ],
+    "bos|13|technologie": [
+      {
+        id: "abu",
+        label: "Technologie 13 (ABU)",
+      },
+      {
+        id: "t",
+        label: "Technologie 13 (T)",
+      },
+    ],
+    "fos|10|biologie": [
+      {
+        id: "abu",
+        label: "Biologie Vorklasse (ABU)",
+      },
+      {
+        id: "s-gh",
+        label: "Biologie Vorklasse (S, GH)",
+      },
+    ],
+    "fos|10|deutsch": [
+      {
+        id: "vorklasse",
+        label: "Deutsch Vorklasse",
+      },
+      {
+        id: "vorklasse_gueltig_ab_26_27",
+        label: "Deutsch Vorklasse, gültig ab SJ 2026/27",
+      },
+      {
+        id: "vorkurs",
+        label: "Deutsch Vorkurs",
+      },
+      {
+        id: "vorkurs_guelitg_ab_26_27",
+        label: "Deutsch Vorkurs, gültig ab SJ 2026/27",
+      },
+    ],
+    "fos|10|englisch": [
+      {
+        id: "vorklasse",
+        label: "Englisch Vorklasse",
+      },
+      {
+        id: "vorkurs",
+        label: "Englisch Vorkurs",
+      },
+    ],
+    "fos|10|gw": [
+      {
+        id: "aktuell",
+        label: "Gesundheitswissenschaften Vorklasse (GH)",
+      },
+      {
+        id: "aktuell_gueltig_ab_26_27",
+        label: "Gesundheitswissenschaften Vorklasse (GH), gültig ab SJ 2026/27",
+      },
+    ],
+    "fos|10|ibv": [
+      {
+        id: "ibv",
+        label:
+          "Internationale Betriebswirtschaftslehre und Volkswirtschaftslehre Vorklasse (IW)",
+      },
+      {
+        id: "ibv_gueltig_ab_26_27",
+        label:
+          "Internationale Betriebswirtschaftslehre und Volkswirtschaftslehre Vorklasse (IW), gültig ab SJ 2026/27",
+      },
+    ],
+    "fos|10|mathematik": [
+      {
+        id: "vorklasse",
+        label: "Mathematik Vorklasse",
+      },
+      {
+        id: "vorkurs",
+        label: "Mathematik Vorkurs",
+      },
+    ],
+    "fos|11|chemie": [
+      {
+        id: "abu",
+        label: "Chemie 11 (ABU)",
+      },
+      {
+        id: "gh",
+        label: "Chemie 11 (GH)",
+      },
+      {
+        id: "s",
+        label: "Chemie 11 (S)",
+      },
+      {
+        id: "t",
+        label: "Chemie 11 (T)",
+      },
+    ],
+    "fos|11|deutsch": [
+      {
+        id: "gueltig_ab_26_27",
+        label: "Deutsch 11, gültig ab SJ 2026/27",
+      },
+      {
+        id: "gueltig_bis_26_27",
+        label: "Deutsch 11",
+      },
+    ],
+    "fos|11|fpa": [
+      {
+        id: "abu-taetigkeit",
+        label:
+          "Agrarwirtschaft, Bio- und Umwelttechnologie – fachpraktische Tätigkeit und Anleitung",
+      },
+      {
+        id: "abu-vertiefung",
+        label:
+          "Agrarwirtschaft, Bio- und Umwelttechnologie – fachpraktische Vertiefung",
+      },
+      {
+        id: "g-taetigkeit",
+        label: "Gestaltung – fachpraktische Tätigkeit und Anleitung",
+      },
+      {
+        id: "g-vertiefung",
+        label: "Gestaltung – fachpraktische Vertiefung",
+      },
+      {
+        id: "gesundheit-taetigkeit",
+        label: "Gesundheit – fachpraktische Tätigkeit und Anleitung",
+      },
+      {
+        id: "gesundheit-vertiefung",
+        label: "Gesundheit – fachpraktische Vertiefung",
+      },
+      {
+        id: "internat-wirtschaft-vertiefung",
+        label: "Internationale Wirtschaft – fachpraktische Vertiefung",
+      },
+      {
+        id: "iw-taetigkeit",
+        label:
+          "Internationale Wirtschaft – fachpraktische Tätigkeit und Anleitung",
+      },
+      {
+        id: "s-taetigkeit",
+        label: "Sozialwesen – fachpraktische Tätigkeit und Anleitung",
+      },
+      {
+        id: "s-vertiefung",
+        label: "Sozialwesen – fachpraktische Vertiefung",
+      },
+      {
+        id: "t-taetigkeit",
+        label: "Technik – fachpraktische Tätigkeit und Anleitung",
+      },
+      {
+        id: "t-vertiefung",
+        label: "Technik – fachpraktische Vertiefung",
+      },
+      {
+        id: "w-taetigkeit",
+        label:
+          "Wirtschaft und Verwaltung – fachpraktische Tätigkeit und Anleitung",
+      },
+      {
+        id: "w-vertiefung",
+        label: "Wirtschaft und Verwaltung – fachpraktische Vertiefung",
+      },
+    ],
+    "fos|11|franzoesisch": [
+      {
+        id: "franzoesisch_aufbaukurs",
+        label: "Französisch Aufbaukurs 11/12 (Pflichtfach IW)",
+      },
+      {
+        id: "franzoesisch_grundkurs",
+        label: "Französisch Grundkurs 11/12 (Pflichtfach IW)",
+      },
+    ],
+    "fos|11|gestaltung": [
+      {
+        id: "praxis",
+        label: "Gestaltung – Praxis 11",
+      },
+      {
+        id: "theorie",
+        label: "Gestaltung – Theorie 11",
+      },
+    ],
+    "fos|11|gw": [
+      {
+        id: "aktuell",
+        label: "Gesundheitswissenschaften 11 (GH)",
+      },
+      {
+        id: "aktuell_gueltig_ab_26_27",
+        label: "Gesundheitswissenschaften 11 (GH), gültig ab SJ 2026/27",
+      },
+    ],
+    "fos|11|ibv": [
+      {
+        id: "ibv",
+        label:
+          "Internationale Betriebswirtschaftslehre und Volkswirtschaftslehre 11 (IW)",
+      },
+      {
+        id: "ibv_gueltig_ab_26_27",
+        label:
+          "Internationale Betriebswirtschaftslehre und Volkswirtschaftslehre 11 (IW), gültig ab SJ 2026/27",
+      },
+    ],
+    "fos|11|mathematik": [
+      {
+        id: "abu-g-s-w-gh-iw",
+        label: "Mathematik 11 (ABU, G, S, W, GH, IW)",
+      },
+      {
+        id: "abu-g-s-w-gh-iw_gueltig_ab_26_27",
+        label: "Mathematik 11 (ABU, G, S, W, GH, IW), gültig ab SJ 2026/27",
+      },
+      {
+        id: "t",
+        label: "Mathematik 11 (T)",
+      },
+      {
+        id: "t_gueltig_ab_26_27",
+        label: "Mathematik 11 (T), gültig ab SJ 2026/27",
+      },
+    ],
+    "fos|11|paedagigik-psychologie": [
+      {
+        id: "s",
+        label: "Pädagogik/Psychologie 11 (S)",
+      },
+      {
+        id: "s_gueltig_ab_26_27",
+        label: "Pädagogik/Psychologie 11 (S), gültig ab SJ 2026/27",
+      },
+    ],
+    "fos|11|physik": [
+      {
+        id: "abu",
+        label: "Physik 11 (ABU)",
+      },
+      {
+        id: "t",
+        label: "Physik 11 (T)",
+      },
+      {
+        id: "t_gueltig_ab_26_27",
+        label: "Physik 11 (T), gültig ab SJ 2026/27",
+      },
+    ],
+    "fos|11|rechtslehre": [
+      {
+        id: "iw",
+        label: "Rechtslehre 11 (IW)",
+      },
+      {
+        id: "w",
+        label: "Rechtslehre 11 (W)",
+      },
+    ],
+    "fos|11|spanisch": [
+      {
+        id: "spanisch_aufbaukurs",
+        label: "Spanisch Aufbaukurs 11/12 (Pflichtfach IW)",
+      },
+      {
+        id: "spanisch_grundkurs",
+        label: "Spanisch Grundkurs 11/12 (Pflichtfach IW)",
+      },
+    ],
+    "fos|12|biologie": [
+      {
+        id: "abu",
+        label: "Biologie 12 (ABU)",
+      },
+      {
+        id: "g",
+        label: "Biologie 12 (GH)",
+      },
+      {
+        id: "s",
+        label: "Biologie 12 (S)",
+      },
+      {
+        id: "wahl-g-t-w-iw",
+        label:
+          "Aspekte der Biologie 12 oder 13 (erweiterndes Wahlpflichtfach G, T, W, IW)",
+      },
+    ],
+    "fos|12|chemie": [
+      {
+        id: "abu",
+        label: "Chemie 12 (ABU)",
+      },
+      {
+        id: "gh",
+        label: "Chemie 12 (GH)",
+      },
+      {
+        id: "t",
+        label: "Chemie 12 (T)",
+      },
+    ],
+    "fos|12|deutsch": [
+      {
+        id: "gueltig_bis_26_27",
+        label: "Deutsch 12",
+      },
+    ],
+    "fos|12|franzoesisch": [
+      {
+        id: "franzoesisch_ahr",
+        label: "Französisch 12 (AHR)",
+      },
+      {
+        id: "franzoesisch_aufbaukurs",
+        label: "Französisch Aufbaukurs 11/12 (Pflichtfach IW)",
+      },
+      {
+        id: "franzoesisch_fortgefuehrt",
+        label:
+          "Französisch fortgeführt 12 und 13 (erweiterndes Wahlpflichtfach)",
+      },
+      {
+        id: "franzoesisch_grundkurs",
+        label: "Französisch Grundkurs 11/12 (Pflichtfach IW)",
+      },
+    ],
+    "fos|12|gestaltung": [
+      {
+        id: "praxis",
+        label: "Gestaltung – Praxis 12",
+      },
+      {
+        id: "theorie",
+        label: "Gestaltung – Theorie 12",
+      },
+    ],
+    "fos|12|gw": [
+      {
+        id: "aktuell",
+        label: "Gesundheitswissenschaften 12 (GH)",
+      },
+    ],
+    "fos|12|ibv": [
+      {
+        id: "ibv",
+        label:
+          "Internationale Betriebswirtschaftslehre und Volkswirtschaftslehre 12 (IW)",
+      },
+    ],
+    "fos|12|informatik": [
+      {
+        id: "w-s-abu-g-gh",
+        label:
+          "Informatik 12 (Profilfach W, vertiefendes Wahlpflichtfach IW, erweiterndes Wahlpflichtfach S, ABU, G, GH)",
+      },
+      {
+        id: "wahl-t-iw",
+        label: "Informatik 12 (vertiefendes Wahlpflichtfach T)",
+      },
+    ],
+    "fos|12|isb": [
+      {
+        id: "pflicht-iw",
+        label: "International Business Studies 12 (Pflichtfach IW)",
+      },
+      {
+        id: "wahl-abu-g-t-w-s-gh",
+        label:
+          "International Business Studies 12 oder 13 (erweiterndes Wahlpflichtfach ABU, G, T, W, S, GH)",
+      },
+    ],
+    "fos|12|kuenstliche_intelligenz_informatik_u_technologie": [
+      {
+        id: "abu",
+        label: "Künstliche Intelligenz, Informatik und Technologie 12",
+      },
+      {
+        id: "t",
+        label: "Künstliche Intelligenz, Informatik und Technologie 12",
+      },
+    ],
+    "fos|12|mathematik": [
+      {
+        id: "abu-g-s-w-gh-iw",
+        label: "Mathematik 12 (ABU, G, S, W, GH, IW)",
+      },
+      {
+        id: "t",
+        label: "Mathematik 12 (T)",
+      },
+      {
+        id: "Wahl-abu-g-s-w-gh-iw",
+        label: "Mathematik Additum 12 (ABU, G, S, W, GH, IW)",
+      },
+      {
+        id: "wahl-t",
+        label: "Mathematik Additum 12 (T)",
+      },
+    ],
+    "fos|12|nt-bo": [
+      {
+        id: "g",
+        label: "Naturwissenschaften 12 (G)",
+      },
+      {
+        id: "w-iw",
+        label: "Naturwissenschaften 12 (W, IW)",
+      },
+    ],
+    "fos|12|paedagigik-psychologie": [
+      {
+        id: "s",
+        label: "Pädagogik/Psychologie 12 (S)",
+      },
+    ],
+    "fos|12|physik": [
+      {
+        id: "abu",
+        label: "Physik 12 (ABU)",
+      },
+      {
+        id: "t",
+        label: "Physik 12 (T)",
+      },
+    ],
+    "fos|12|soziologie": [
+      {
+        id: "abu-g-t-w-iw-gh",
+        label:
+          "Soziologie 12 oder 13 (erweiterndes Wahlpflichtfach ABU, G, T, W, IW, GH)",
+      },
+      {
+        id: "s",
+        label: "Soziologie 12 (Pflichtfach S)",
+      },
+    ],
+    "fos|12|spanisch": [
+      {
+        id: "spanisch_ahr",
+        label: "Spanisch 12 (AHR)",
+      },
+      {
+        id: "spanisch_aufbaukurs",
+        label: "Spanisch Aufbaukurs 11/12 (Pflichtfach IW)",
+      },
+      {
+        id: "spanisch_fortgefuehrt",
+        label: "Spanisch fortgeführt 12 und 13 (erweiterndes Wahlpflichtfach)",
+      },
+      {
+        id: "spanisch_grundkurs",
+        label: "Spanisch Grundkurs 11/12 (Pflichtfach IW)",
+      },
+    ],
+    "fos|12|technologie": [
+      {
+        id: "abu",
+        label: "Technologie 12 (ABU)",
+      },
+      {
+        id: "t",
+        label: "Technologie 12 (T)",
+      },
+    ],
+    "fos|13|biologie": [
+      {
+        id: "abu",
+        label: "Biologie 13 (ABU)",
+      },
+      {
+        id: "g",
+        label: "Biologie 13 (GH)",
+      },
+      {
+        id: "s",
+        label: "Biologie 13 (S)",
+      },
+      {
+        id: "wahl-g-t-w-iw",
+        label:
+          "Aspekte der Biologie 12 oder 13 (erweiterndes Wahlpflichtfach G, T, W, IW)",
+      },
+    ],
+    "fos|13|chemie": [
+      {
+        id: "abu",
+        label: "Chemie 13 (ABU)",
+      },
+      {
+        id: "t",
+        label: "Chemie 13 (T)",
+      },
+    ],
+    "fos|13|deutsch": [
+      {
+        id: "gueltig_bis_26_27",
+        label: "Deutsch 13",
+      },
+    ],
+    "fos|13|franzoesisch": [
+      {
+        id: "franzoesisch_ahr",
+        label: "Französisch 13 (AHR)",
+      },
+      {
+        id: "franzoesisch_aufbaukurs",
+        label: "Französisch Aufbaukurs 13 (Pflichtfach IW)",
+      },
+      {
+        id: "franzoesisch_fortgefuehrt",
+        label:
+          "Französisch fortgeführt 12 und 13 (erweiterndes Wahlpflichtfach)",
+      },
+      {
+        id: "franzoesisch_grundkurs",
+        label: "Französisch Grundkurs 13 (Pflichtfach IW)",
+      },
+    ],
+    "fos|13|gw": [
+      {
+        id: "aktuell",
+        label: "Gesundheitswissenschaften 13 (GH)",
+      },
+    ],
+    "fos|13|ibv": [
+      {
+        id: "ibv",
+        label:
+          "Internationale Betriebswirtschaftslehre und Volkswirtschaftslehre 13 (IW)",
+      },
+    ],
+    "fos|13|informatik": [
+      {
+        id: "w-s-abu-g-gh",
+        label:
+          "Informatik 13 (vertiefendes Wahlpflichtfach IW, erweiterndes Wahlpflichtfach S, ABU, G, W, GH)",
+      },
+      {
+        id: "wahl-t-iw",
+        label: "Informatik 13 (vertiefendes Wahlpflichtfach T)",
+      },
+    ],
+    "fos|13|kuenstliche_intelligenz_informatik_u_technologie": [
+      {
+        id: "abu",
+        label: "Künstliche Intelligenz, Informatik und Technologie 13",
+      },
+      {
+        id: "t",
+        label: "Künstliche Intelligenz, Informatik und Technologie 13",
+      },
+    ],
+    "fos|13|mathematik": [
+      {
+        id: "abu-g-s-w-gh-iw",
+        label: "Mathematik 13 (ABU, G, S, W, GH, IW)",
+      },
+      {
+        id: "t",
+        label: "Mathematik 13 (T)",
+      },
+      {
+        id: "wahl-abu-g-s-w-t",
+        label: "Mathematik Additum 13",
+      },
+    ],
+    "fos|13|nt-bo": [
+      {
+        id: "g",
+        label: "Naturwissenschaften 13 (G)",
+      },
+      {
+        id: "w-iw",
+        label: "Naturwissenschaften 13 (W, IW)",
+      },
+    ],
+    "fos|13|paedagigik-psychologie": [
+      {
+        id: "s",
+        label: "Pädagogik/Psychologie 13 (S)",
+      },
+    ],
+    "fos|13|physik": [
+      {
+        id: "t",
+        label: "Physik 13 (T)",
+      },
+      {
+        id: "wahl-abu",
+        label: "Physik Additum 13 (ABU)",
+      },
+    ],
+    "fos|13|spanisch": [
+      {
+        id: "spanisch_ahr",
+        label: "Spanisch 13 (AHR)",
+      },
+      {
+        id: "spanisch_aufbaukurs",
+        label: "Spanisch Aufbaukurs 13 (Pflichtfach IW)",
+      },
+      {
+        id: "spanisch_fortgefuehrt",
+        label: "Spanisch fortgeführt 12 und 13 (erweiterndes Wahlpflichtfach)",
+      },
+      {
+        id: "spanisch_grundkurs",
+        label: "Spanisch Grundkurs 13 (Pflichtfach IW)",
+      },
+    ],
+    "fos|13|technologie": [
+      {
+        id: "abu",
+        label: "Technologie 13 (ABU)",
+      },
+      {
+        id: "t",
+        label: "Technologie 13 (T)",
+      },
+    ],
+    "wirtschaftsschule|10|bsk": [
+      {
+        id: "dreistufig",
+        label:
+          "Betriebswirtschaftliche Steuerung und Kontrolle 10 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label:
+          "Betriebswirtschaftliche Steuerung und Kontrolle 10 (vierstufige Wirtschaftsschule)",
+      },
+      {
+        id: "zweistufig",
+        label:
+          "Betriebswirtschaftliche Steuerung und Kontrolle 10 (zweistufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|10|deutsch": [
+      {
+        id: "dreistufig_gueltig_ab_2627",
+        label:
+          "Deutsch 10 (dreistufige Wirtschaftsschule) - gültig ab SJ 2026/27",
+      },
+      {
+        id: "vierstufig",
+        label: "Deutsch 10 (vierstufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig_gueltig_ab_2627",
+        label:
+          "Deutsch 10 (vierstufige Wirtschaftsschule) - gültig ab SJ 2026/27",
+      },
+      {
+        id: "zweistufig_gueltig_ab_2526",
+        label: "Deutsch 10 (zweistufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|10|englisch": [
+      {
+        id: "dreistufig",
+        label: "Englisch 10 (dreistufig Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Englisch 10 (vierstufige Wirtschaftsschule)",
+      },
+      {
+        id: "zweistufig_gueltig_ab_2526",
+        label:
+          "Englisch 10 (zweistufige Wirtschaftsschule) - gültig ab SJ 2025/26",
+      },
+    ],
+    "wirtschaftsschule|10|ethik": [
+      {
+        id: "dreistufig",
+        label: "Ethik 10 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Ethik 10 (vierstufige Wirtschaftsschule)",
+      },
+      {
+        id: "zweistufig",
+        label: "Ethik 10 (zweistufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|10|evangelische-religionslehre": [
+      {
+        id: "dreistufig",
+        label: "Evangelische Religionslehre 10 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Evangelische Religionslehre 10 (vierstufige Wirtschaftsschule)",
+      },
+      {
+        id: "zweistufig",
+        label: "Evangelische Religionslehre 10 (zweistufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|10|gpug-ws": [
+      {
+        id: "dreistufig",
+        label:
+          "Geschichte/Politik und Gesellschaft 10 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label:
+          "Geschichte/Politik und Gesellschaft 10 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|10|katholische-religionslehre": [
+      {
+        id: "dreistufig",
+        label: "Katholische Religionslehre 10 (dreistufig Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Katholische Religionslehre 10 (vierstufige Wirtschaftsschule)",
+      },
+      {
+        id: "zweistufig",
+        label: "Katholische Religionslehre 10 (zweistufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|10|mathematik": [
+      {
+        id: "dreistufig",
+        label: "Mathematik 10 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Mathematik 10 (vierstufige Wirtschaftsschule)",
+      },
+      {
+        id: "zweistufig",
+        label: "Mathematik 10 (zweistufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|10|sport": [
+      {
+        id: "diffsport",
+        label:
+          "Differenzierter Sport (vier- und dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "dreistufig",
+        label: "Basissport 10 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Basissport 10 (vierstufige Wirtschaftsschule)",
+      },
+      {
+        id: "zweistufig",
+        label: "Basissport 10/11 (zweistufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|10|uebungsunternehmen": [
+      {
+        id: "drei_vierstufig",
+        label:
+          "Übungsunternehmen 9/10 (drei- und vierstufige Wirtschaftsschule)",
+      },
+      {
+        id: "zweistufig",
+        label: "Übungsunternehmen 10/11 (zweistufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|10|wirtschaftsgeografie": [
+      {
+        id: "dreistufig",
+        label: "Wirtschaftsgeographie 10 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Wirtschaftsgeographie 10 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|11|deutsch": [
+      {
+        id: "zweistufig_gueltig_ab_2627",
+        label:
+          "Deutsch 11 (zweistufige Wirtschaftsschule) - gültig ab SJ 2026/27",
+      },
+    ],
+    "wirtschaftsschule|11|uebungsunternehmen": [
+      {
+        id: "zweistufig",
+        label: "Übungsunternehmen 10/11 (zweistufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|7|mathematik": [
+      {
+        id: "vierstufig",
+        label: "Mathematik 7 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|7|sport": [
+      {
+        id: "diffsport",
+        label:
+          "Differenzierter Sport (vier- und dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Basissport 7 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|8|bsk": [
+      {
+        id: "dreistufig",
+        label:
+          "Betriebswirtschaftliche Steuerung und Kontrolle 8 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label:
+          "Betriebswirtschaftliche Steuerung und Kontrolle 8 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|8|deutsch": [
+      {
+        id: "dreistufig_gueltig_ab_2425",
+        label: "Deutsch 8 (dreistufige Wirtschaftsschule) - gültig ab 2024/25",
+      },
+      {
+        id: "vierstufig_gueltig_ab_2425",
+        label: "Deutsch 8 (vierstufige Wirtschaftsschule) - gültig ab 2024/25",
+      },
+    ],
+    "wirtschaftsschule|8|englisch": [
+      {
+        id: "dreistufig",
+        label: "Englisch 8 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Englisch 8 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|8|ethik": [
+      {
+        id: "dreistufig",
+        label: "Ethik 8 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Ethik 8 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|8|evangelische-religionslehre": [
+      {
+        id: "dreistufig",
+        label: "Evangelische Religionslehre 8 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Evangelische Religionslehre 8 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|8|gpug-ws": [
+      {
+        id: "dreistufig",
+        label:
+          "Geschichte/Politik und Gesellschaft 8 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label:
+          "Geschichte/Politik und Gesellschaft 8 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|8|informationsverarbeitung": [
+      {
+        id: "dreistufig",
+        label: "Informationsverarbeitung 8 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Informationsverarbeitung 8 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|8|katholische-religionslehre": [
+      {
+        id: "dreistufig",
+        label: "Katholische Religionslehre 8 (dreistufig Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Katholische Religionslehre 8 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|8|mathematik": [
+      {
+        id: "dreistufig",
+        label: "Mathematik 8 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Mathematik 8 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|8|mensch-und-umwelt": [
+      {
+        id: "dreistufig",
+        label: "Mensch und Umwelt 8 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Mensch und Umwelt 8 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|8|musischaesthetischebildung": [
+      {
+        id: "dreistufig",
+        label: "Musisch-ästhetische Bildung 8 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Musisch-ästhetische Bildung 8 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|8|mut": [
+      {
+        id: "dreistufig",
+        label: "Mensch, Umwelt, Technik 8 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Mensch, Umwelt, Technik 7/8 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|8|oebdb": [
+      {
+        id: "dreistufig",
+        label:
+          "Ökonomische Bildung und Digitale Bildung 8 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label:
+          "Ökonomische Bildung und Digitale Bildung 7/8 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|8|sport": [
+      {
+        id: "diffsport",
+        label:
+          "Differenzierter Sport (vier- und dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "dreistufig",
+        label: "Basissport 8 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Basissport 8 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|9|bsk": [
+      {
+        id: "dreistufig",
+        label:
+          "Betriebswirtschaftliche Steuerung und Kontrolle 9 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label:
+          "Betriebswirtschaftliche Steuerung und Kontrolle 9 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|9|deutsch": [
+      {
+        id: "%20dreistufig",
+        label: "Deutsch 9 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Deutsch 9 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|9|englisch": [
+      {
+        id: "dreistufig",
+        label: "Englisch 9 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Englisch 9 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|9|ethik": [
+      {
+        id: "dreistufig",
+        label: "Ethik 9 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Ethik 9 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|9|evangelische-religionslehre": [
+      {
+        id: "dreistufig",
+        label: "Evangelische Religionslehre 9 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Evangelische Religionslehre 9 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|9|gpug-ws": [
+      {
+        id: "dreistufig",
+        label:
+          "Geschichte/Politik und Gesellschaft 9 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label:
+          "Geschichte/Politik und Gesellschaft 9 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|9|katholische-religionslehre": [
+      {
+        id: "dreistufig",
+        label: "Katholische Religionslehre 9 (dreistufig Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Katholische Religionslehre 9 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|9|mathematik": [
+      {
+        id: "dreistufig",
+        label: "Mathematik 9 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Mathematik 9 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|9|sport": [
+      {
+        id: "diffsport",
+        label:
+          "Differenzierter Sport (vier- und dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "dreistufig",
+        label: "Basissport 9 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Basissport 9 (vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|9|uebungsunternehmen": [
+      {
+        id: "drei_vierstufig",
+        label:
+          "Übungsunternehmen 9/10 (drei- und vierstufige Wirtschaftsschule)",
+      },
+    ],
+    "wirtschaftsschule|9|wirtschaft_aktuell": [
+      {
+        id: "dreistufig",
+        label: "Wirtschaft Aktuell 9 (dreistufige Wirtschaftsschule)",
+      },
+      {
+        id: "vierstufig",
+        label: "Wirtschaft Aktuell 9 (vierstufige Wirtschaftsschule)",
       },
     ],
   },
@@ -13920,6 +15870,13730 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
         label: "WSem12/13",
       },
     ],
+    "bos|10|betriebswirtschaftslehre": [
+      {
+        id: "lb1",
+        label:
+          "Sich im Unternehmen orientieren, Kennzahlen berechnen und betriebliche Zielsetzungen abgrenzen",
+        hours: 28,
+      },
+      {
+        id: "lb2",
+        label: "Typische Aufgaben im Personalbereich planen und organisieren",
+        hours: 16,
+      },
+      {
+        id: "lb3",
+        label: "Mithilfe des externen Rechnungswesens Bilanz und GuV erläutern",
+        hours: 30,
+      },
+      {
+        id: "lb4",
+        label:
+          "Mithilfe der Vollkostenrechnung Angebotspreise und Maschinenkosten ermitteln",
+        hours: 30,
+      },
+      {
+        id: "lb5",
+        label: "Ein Unternehmen erkunden",
+        hours: 20,
+      },
+    ],
+    "bos|10|biologie|abu": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Formenvielfalt des Lebens",
+      },
+      {
+        id: "lb3",
+        label: "Mikroorganismen und Viren",
+      },
+      {
+        id: "lb4",
+        label: "Humanbiologie",
+      },
+      {
+        id: "lb5",
+        label: "Menschliche Sexualität",
+      },
+    ],
+    "bos|10|biologie|s-gh": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Organisationsstufen des Lebens",
+      },
+      {
+        id: "lb3",
+        label: "Weitergabe genetischer Information",
+      },
+      {
+        id: "lb4",
+        label: "Systematik der Lebewesen",
+      },
+      {
+        id: "lb5",
+        label: "Gesunde Lebensführung",
+      },
+      {
+        id: "lb6",
+        label: "Stammesgeschichtliche Entwicklung des Menschen",
+      },
+    ],
+    "bos|10|bwl-rechnungswesen": [
+      {
+        id: "lb1",
+        label:
+          "Sich im Unternehmen orientieren und betriebliche Zielsetzungen überprüfen",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label: "Material beschaffen sowie Fertigungsverfahren festlegen",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label:
+          "Personalbedarf planen, Personal beschaffen, einsetzen und beurteilen",
+        hours: 20,
+      },
+      {
+        id: "lb4",
+        label:
+          "Mithilfe der Geschäftsbuchführung das Gesamtergebnis einer Unternehmung ermitteln",
+        hours: 35,
+      },
+      {
+        id: "lb5",
+        label:
+          "Mithilfe der Vollkostenrechnung Angebotspreise und das Betriebsergebnis ermitteln",
+        hours: 28,
+      },
+      {
+        id: "lb6",
+        label: "Ein Unternehmensplanspiel durchführen",
+        hours: 11,
+      },
+    ],
+    "bos|10|chemie": [
+      {
+        id: "lb1",
+        label: "Wie Chemiker denken und arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Reinstoffe und Stoffgemische",
+      },
+      {
+        id: "lb3",
+        label: "Atombau und Periodensystem",
+      },
+      {
+        id: "lb4",
+        label: "Formeln und Reaktionsgleichungen",
+      },
+      {
+        id: "lb5",
+        label: "Chemische Bindungen",
+      },
+      {
+        id: "lb6",
+        label: "Energetik",
+      },
+    ],
+    "bos|10|deutsch|vorklasse": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "bos|10|deutsch|vorklasse_gueltig_ab_26_27": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "bos|10|deutsch|vorkurs": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "bos|10|deutsch|vorkurs_guelitg_ab_26_27": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "bos|10|englisch|vorklasse": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|10|englisch|vorkurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|10|ethik": [
+      {
+        id: "lb1",
+        label: "Einführung in die Grundbegriffe der Ethik",
+      },
+      {
+        id: "lb2",
+        label: "Verantwortung und Gewissen",
+      },
+      {
+        id: "lb3",
+        label: "Angewandte Ethik",
+      },
+    ],
+    "bos|10|evangelische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Bibel im Dialog",
+      },
+      {
+        id: "lb2",
+        label: "Glaube in der Welt",
+      },
+      {
+        id: "lb3",
+        label: "Im Netz",
+      },
+      {
+        id: "lb4",
+        label: "Lebenszeiten",
+      },
+    ],
+    "bos|10|gpug-fosbos": [
+      {
+        id: "lb1",
+        label: "Methodenkompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Teilhabe: Gestaltung der eigenen Lebenswirklichkeit (optional)",
+        hours: 28,
+      },
+      {
+        id: "lb3",
+        label:
+          "Freiheitlich demokratische Rechte und Werte als Fundament der Lebenswirklichkeit in Deutschland (optional)",
+        hours: 28,
+      },
+      {
+        id: "lb4",
+        label:
+          "Weimarer Republik: Lebenswirklichkeiten in der ersten deutschen Demokratie (optional)",
+        hours: 28,
+      },
+      {
+        id: "lb5",
+        label: "Lebenswirklichkeiten im Nationalsozialismus (optional)",
+        hours: 28,
+      },
+    ],
+    "bos|10|gw|aktuell": [
+      {
+        id: "lb1",
+        label: "Wissenschaftlich arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Gesundheit multifaktoriell begreifen (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Sich im Gesundheitswesen orientieren (optional)",
+      },
+      {
+        id: "lb4",
+        label:
+          "Die Komplexität des menschlichen Organismus darstellen (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Geschichte der Medizin und Pflege (optional)",
+      },
+    ],
+    "bos|10|gw|aktuell_gueltig_ab_26_27": [
+      {
+        id: "lb1",
+        label: "Wissenschaftlich arbeiten",
+      },
+      {
+        id: "lb2",
+        label:
+          "Aufbau und Funktion des menschlichen Körpers sowie Auswirkungen von Krankheitsbildern erfassen (optional)",
+      },
+      {
+        id: "lb3",
+        label:
+          "Strukturen und Herausforderungen des Gesundheitswesens kennenlernen (optional)",
+      },
+      {
+        id: "lb4",
+        label:
+          "Sich auf das Praktikum im Gesundheitswesen vorbereiten (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Berufliche Erfahrungen einbringen (optional)",
+      },
+    ],
+    "bos|10|ibv|ibv": [
+      {
+        id: "lb1",
+        label: "Ein Unternehmen international ausrichten",
+        hours: 15,
+      },
+      {
+        id: "lb2",
+        label:
+          "Mithilfe der Vollkostenrechnung Angebotspreise und das Betriebsergebnis ermitteln",
+        hours: 28,
+      },
+      {
+        id: "lb3",
+        label:
+          "Mithilfe der Geschäftsbuchführung das Gesamtergebnis einer Unternehmung ermitteln",
+        hours: 33,
+      },
+      {
+        id: "lb4",
+        label:
+          "Grundprobleme einer Volkswirtschaft identifizieren und wirtschaftliche Prozesse mikroökonomisch analysieren und beurteilen",
+        hours: 21,
+      },
+      {
+        id: "lb5",
+        label:
+          "Ziele der Wirtschaftspolitik bestimmen und das Inlandsprodukt als Wohlstandsindikator analysieren",
+        hours: 16,
+      },
+      {
+        id: "lb6",
+        label:
+          "Ein Unternehmensplanspiel für ein internationales Unternehmen durchführen (optional)",
+        hours: 11,
+      },
+      {
+        id: "lb7",
+        label:
+          "Eine Fallstudie für ein internationales Unternehmen durchführen (optional)",
+        hours: 11,
+      },
+    ],
+    "bos|10|ibv|ibv_gueltig_ab_26_27": [
+      {
+        id: "lb1",
+        label:
+          "Unternehmerisch denken, sich im Unternehmen orientieren und Ziele formulieren",
+        hours: 30,
+      },
+      {
+        id: "lb2",
+        label:
+          "Den Erfolg betrieblichen Handelns mithilfe der Teilkostenrechnung analysieren",
+        hours: 30,
+      },
+      {
+        id: "lb3",
+        label:
+          "Ziele und Verhaltensweisen von Wirtschaftsakteuren erklären und deren Zusammenwirken bei der Preisbildung im vollkommenen Markt analysieren",
+        hours: 32,
+      },
+      {
+        id: "lb4",
+        label:
+          "Konsumentscheidungen aus verhaltensökonomischer Perspektive verstehen und optimieren",
+        hours: 20,
+      },
+    ],
+    "bos|10|katholische-religionslehre": [
+      {
+        id: "lb1",
+        label:
+          "Freiheit und Menschenwürde – Identität als Aufgabe christlicher Lebensgestaltung",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label:
+          "Gewissen und Verantwortung – Menschen in Entscheidungssituationen",
+        hours: 10,
+      },
+      {
+        id: "lb3",
+        label: "Gott und Mensch – Jesus Christus in Tradition und Gegenwart",
+        hours: 10,
+      },
+      {
+        id: "lb4",
+        label: "Symbole und Sakramente – Ausdruck einer tieferen Wirklichkeit",
+        hours: 10,
+      },
+    ],
+    "bos|10|kuenstliche_intelligenz_informatik_u_technologie": [
+      {
+        id: "lb1",
+        label: "Physik-Basis",
+      },
+      {
+        id: "lb2",
+        label: "Kräfte und ihre Wirkungen (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Wärmezustand und Wärmeausdehnung fester Körper (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Elektrotechnik-Grundlagen (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Chemische Eigenschaften von Stoffen (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Atomaufbau und chemische Bindungen (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Informationstechnik-Grundlagen (optional)",
+      },
+      {
+        id: "lb8",
+        label: "Arbeiten und Lernen mit KI − unplugged (optional)",
+      },
+    ],
+    "bos|10|mathematik|vorklasse": [
+      {
+        id: "lb1",
+        label: "Aussagenlogik, Mengenlehre mit Zahlenmengen, Rechenregeln",
+        hours: 50,
+      },
+      {
+        id: "lb2",
+        label: "Gleichungen und lineare Ungleichungen",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Lineare und quadratische Funktionen",
+        hours: 60,
+      },
+      {
+        id: "lb4",
+        label: "Lineare Gleichungssysteme",
+        hours: 20,
+      },
+      {
+        id: "lb5",
+        label: "Dreieckslehre",
+        hours: 13,
+      },
+      {
+        id: "lb6",
+        label: "Berechnungen von Längen, Flächeninhalten und Volumina",
+        hours: 25,
+      },
+      {
+        id: "lb7",
+        label: "Daten und Zufall, Wahrscheinlichkeit",
+        hours: 18,
+      },
+      {
+        id: "lb8",
+        label: "Exponentialfunktion und Logarithmus",
+        hours: 18,
+      },
+    ],
+    "bos|10|mathematik|vorkurs": [
+      {
+        id: "lb1",
+        label: "Rechenregeln",
+        hours: 16,
+      },
+      {
+        id: "lb2",
+        label: "Gleichungen",
+        hours: 10,
+      },
+      {
+        id: "lb3",
+        label: "Lineare und quadratische Funktionen",
+        hours: 30,
+      },
+    ],
+    "bos|10|nt-bo": [
+      {
+        id: "lb1",
+        label: "Physik-Basis",
+      },
+      {
+        id: "lb2",
+        label: "Kräfte und ihre Wirkungen (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Wärmezustand und Wärmeausdehnung fester Körper (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Elektrotechnik-Grundlagen (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Chemische Eigenschaften von Stoffen (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Atomaufbau und chemische Bindungen (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Informationstechnik-Grundlagen (optional)",
+      },
+    ],
+    "bos|10|paedagigik-psychologie": [
+      {
+        id: "lb1",
+        label: "Selbstmanagementstrategien effektiv nutzen",
+      },
+      {
+        id: "lb2",
+        label:
+          "Ressourcenorientiert arbeiten in sozialpädagogischen Handlungsfeldern",
+      },
+      {
+        id: "lb3",
+        label: "Emotional belastende Situationen bewältigen",
+      },
+      {
+        id: "lb4",
+        label: "Wertschätzend und konfliktlösend kommunizieren",
+      },
+    ],
+    "bos|10|physik": [
+      {
+        id: "lb1",
+        label: "Grundlagen der Mechanik I",
+        hours: 28,
+      },
+      {
+        id: "lb2",
+        label: "Grundlagen der Mechanik II",
+        hours: 28,
+      },
+      {
+        id: "lb3",
+        label: "Grundlagen der Elektrizitätslehre",
+        hours: 28,
+      },
+      {
+        id: "lb4",
+        label: "Grundlagen der Wärmelehre",
+        hours: 28,
+      },
+      {
+        id: "lb5",
+        label: "Grundlagen der Optik",
+        hours: 28,
+      },
+    ],
+    "bos|10|technologie": [
+      {
+        id: "lb1",
+        label: "Physik-Basis",
+      },
+      {
+        id: "lb2",
+        label: "Kräfte und ihre Wirkungen (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Wärmezustand und Wärmeausdehnung fester Körper (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Elektrotechnik-Grundlagen (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Chemische Eigenschaften von Stoffen (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Atomaufbau und chemische Bindungen (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Informationstechnik-Grundlagen (optional)",
+      },
+    ],
+    "bos|12|betriebswirtschaftslehre": [
+      {
+        id: "lb1",
+        label:
+          "Sich im Unternehmen orientieren und betriebliche Zielsetzungen analysieren",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label: "Material beschaffen",
+        hours: 18,
+      },
+      {
+        id: "lb3",
+        label:
+          "Jahresabschlussarbeiten durchführen und das Gesamtergebnis eines Unternehmens ermitteln",
+        hours: 42,
+      },
+      {
+        id: "lb4",
+        label:
+          "Mithilfe der Vollkostenrechnung Angebotspreise ermitteln, Maschinenkosten berechnen und Abweichungen analysieren",
+        hours: 24,
+      },
+      {
+        id: "lb5",
+        label:
+          "Entscheidungen mithilfe der Teilkostenrechnung vorbereiten und begründet treffen",
+        hours: 26,
+      },
+      {
+        id: "lb6",
+        label:
+          "Finanzierungs- und Investitionsvorgänge analysieren, liquide Mittel beschaffen und Investitionen tätigen",
+        hours: 24,
+      },
+      {
+        id: "lb7",
+        label:
+          "Personal sach- und personenorientiert führen und zukunftsorientiert entwickeln",
+        hours: 24,
+      },
+    ],
+    "bos|12|biologie|abu": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Grundlagen der Evolution",
+        hours: 5,
+      },
+      {
+        id: "lb3",
+        label: "Ökologie",
+        hours: 32,
+      },
+      {
+        id: "lb4",
+        label: "Cytologie",
+        hours: 10,
+      },
+      {
+        id: "lb5",
+        label: "Genetik",
+        hours: 50,
+      },
+      {
+        id: "lb6",
+        label: "Mikrobiologie",
+        hours: 9,
+      },
+      {
+        id: "lb7",
+        label: "Immunologie",
+        hours: 10,
+      },
+      {
+        id: "lb8",
+        label: "Physiologie",
+        hours: 52,
+      },
+    ],
+    "bos|12|biologie|g": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Zellbiologische Grundlagen",
+        hours: 9,
+      },
+      {
+        id: "lb3",
+        label: "Genetik",
+        hours: 27,
+      },
+      {
+        id: "lb4",
+        label: "Stoffwechsel",
+        hours: 23,
+      },
+      {
+        id: "lb5",
+        label: "Evolution",
+        hours: 25,
+      },
+    ],
+    "bos|12|biologie|s": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Zellbiologische Grundlagen",
+        hours: 14,
+      },
+      {
+        id: "lb3",
+        label: "Genetik des Menschen",
+        hours: 28,
+      },
+      {
+        id: "lb4",
+        label: "Der Mensch als Evolutionsfaktor",
+        hours: 14,
+      },
+    ],
+    "bos|12|biologie|wahl-t-w-iw": [
+      {
+        id: "lb1",
+        label: "Biologie des Alltags (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Bionik (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Evolution (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Genetik/Gentechnik (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Immunologie (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Sinnesphysiologie (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Stoffkreisläufe und Bioökonomie (optional)",
+      },
+    ],
+    "bos|12|biotechnologie": [
+      {
+        id: "lb1",
+        label: "Grundlagen naturwissenschaftlichen Experimentierens",
+      },
+      {
+        id: "lb2",
+        label: "Mikrobiologische Nachweismethoden (optional)",
+      },
+      {
+        id: "lb3",
+        label:
+          "Biotechnologie der Nahrungs- und Genussmittelproduktion (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Pflanzenproduktion und Energiegewinnung (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Nanobiotechnologie (optional)",
+      },
+    ],
+    "bos|12|bwl-rechnungswesen": [
+      {
+        id: "lb1",
+        label:
+          "Sich im Unternehmen orientieren und betriebliche Zielsetzungen überprüfen",
+        hours: 4,
+      },
+      {
+        id: "lb2",
+        label: "Material beschaffen sowie Fertigungsverfahren festlegen",
+        hours: 10,
+      },
+      {
+        id: "lb3",
+        label: "Personal beschaffen und einsetzen",
+        hours: 10,
+      },
+      {
+        id: "lb4",
+        label:
+          "Mithilfe der Vollkostenrechnung Angebotspreise und das Betriebsergebnis ermitteln",
+        hours: 24,
+      },
+      {
+        id: "lb5",
+        label:
+          "Entscheidungen mithilfe der Teilkostenrechnung vorbereiten und begründet treffen",
+        hours: 28,
+      },
+      {
+        id: "lb6",
+        label: "Marketingprozesse planen und steuern",
+        hours: 20,
+      },
+      {
+        id: "lb7",
+        label:
+          "Jahresabschlussarbeiten durchführen und das Gesamtergebnis einer Unternehmung ermitteln",
+        hours: 48,
+      },
+      {
+        id: "lb8",
+        label:
+          "Finanzierungs- und Investitionsvorgänge analysieren, liquide Mittel beschaffen und Investitionen tätigen",
+        hours: 24,
+      },
+    ],
+    "bos|12|chemie|abu": [
+      {
+        id: "lb1",
+        label: "Wie Chemiker denken und arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Aufbau des Periodensystems",
+        hours: 6,
+      },
+      {
+        id: "lb3",
+        label: "Salze und Ionenbindung",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Molekulare Stoffe und Elektronenpaarbindung",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Säure-Base-Reaktionen",
+        hours: 16,
+      },
+      {
+        id: "lb6",
+        label:
+          "Funktionelle Gruppen und Reaktionsmechanismen der organischen Chemie",
+        hours: 18,
+      },
+      {
+        id: "lb7",
+        label: "Reaktionsgeschwindigkeit und chemisches Gleichgewicht",
+        hours: 16,
+      },
+    ],
+    "bos|12|chemie|gh": [
+      {
+        id: "lb1",
+        label: "Wie Chemiker denken und arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Aufbau des Periodensystems",
+        hours: 6,
+      },
+      {
+        id: "lb3",
+        label: "Salze und Ionenbindung",
+        hours: 12,
+      },
+      {
+        id: "lb4",
+        label: "Molekulare Stoffe und Elektronenpaarbindung",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Säure-Base-Reaktionen",
+        hours: 12,
+      },
+      {
+        id: "lb6",
+        label: "Grundlagen der organischen Chemie",
+        hours: 12,
+      },
+    ],
+    "bos|12|chemie|t": [
+      {
+        id: "lb1",
+        label: "Wie Chemiker denken und arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Aufbau des Periodensystems",
+        hours: 6,
+      },
+      {
+        id: "lb3",
+        label: "Salze und Ionenbindung",
+        hours: 12,
+      },
+      {
+        id: "lb4",
+        label: "Molekulare Stoffe und Elektronenpaarbindung",
+        hours: 12,
+      },
+      {
+        id: "lb5",
+        label: "Säure-Base-Reaktionen",
+        hours: 14,
+      },
+      {
+        id: "lb6",
+        label:
+          "Funktionelle Gruppen und Reaktionsmechanismen der organischen Chemie",
+        hours: 12,
+      },
+    ],
+    "bos|12|ebc": [
+      {
+        id: "lb1",
+        label: "Reading, Understanding and Interpreting Literature – a Toolbox",
+      },
+      {
+        id: "lb2",
+        label: "Topics and Issues",
+      },
+    ],
+    "bos|12|englisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|12|ethik": [
+      {
+        id: "lb1",
+        label: "Moral und Ethik",
+      },
+      {
+        id: "lb2",
+        label: "Angewandte Ethik",
+      },
+      {
+        id: "lb3",
+        label: "Glück und Sinnerfüllung",
+      },
+    ],
+    "bos|12|evangelische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Gott in Beziehung",
+      },
+      {
+        id: "lb2",
+        label: "Mensch, du bist wer",
+      },
+      {
+        id: "lb3",
+        label: "Lebenswert",
+      },
+      {
+        id: "lb4",
+        label: "Global gerecht",
+      },
+      {
+        id: "lb5",
+        label: "Religion vielfältig",
+      },
+    ],
+    "bos|12|franzoesisch|franzoesisch_ahr": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|12|franzoesisch|franzoesisch_aufbaukurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|12|franzoesisch|franzoesisch_fortgefuehrt": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|12|franzoesisch|franzoesisch_grundkurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|12|gpug-fosbos": [
+      {
+        id: "lb1",
+        label: "Methodenkompetenzen",
+      },
+      {
+        id: "lb2",
+        label:
+          "Historische und aktuelle Lebenswirklichkeiten: Stehen wir am Beginn einer neuen Epoche?",
+        hours: 6,
+      },
+      {
+        id: "lb3",
+        label:
+          "Einflüsse auf die Lebenswirklichkeit: Ideen und Ideologien des kurzen 20. Jahrhunderts im globalen Wettstreit",
+        hours: 13,
+      },
+      {
+        id: "lb4",
+        label:
+          "Historische Lebenswirklichkeiten in Deutschland: Deutsche Geschichte seit dem Ende des Zweiten Weltkriegs",
+        hours: 18,
+      },
+      {
+        id: "lb5",
+        label:
+          "Die Auseinandersetzung mit historischen Lebenswirklichkeiten: Der Umgang mit Diktaturen in Deutschland",
+        hours: 13,
+      },
+      {
+        id: "lb6",
+        label: "Gesellschaftliche Lebenswirklichkeiten des Einzelnen",
+        hours: 10,
+      },
+      {
+        id: "lb7",
+        label: "Einflussfaktoren auf die Lebenswirklichkeit",
+      },
+      {
+        id: "lb8",
+        label:
+          "Aktuelle internationale Herausforderungen und deren Einfluss auf die Lebenswirklichkeiten in Staat und Gesellschaft",
+        hours: 16,
+      },
+    ],
+    "bos|12|gwr": [
+      {
+        id: "lb1",
+        label: "Ein Unternehmen im Gesundheitswesen strategisch ausrichten",
+        hours: 19,
+      },
+      {
+        id: "lb2",
+        label:
+          "Liquide Mittel für ein Unternehmen im Gesundheitswesen beschaffen",
+        hours: 19,
+      },
+      {
+        id: "lb3",
+        label: "Den Erfolg eines Unternehmens im Gesundheitswesen analysieren",
+        hours: 19,
+      },
+      {
+        id: "lb4",
+        label:
+          "Für ein Unternehmen im Gesundheitswesen Personal einsetzen und führen",
+        hours: 19,
+      },
+      {
+        id: "lb5",
+        label: "Dienstleistungen des Gesundheitswesens vermarkten",
+        hours: 19,
+      },
+      {
+        id: "lb6",
+        label: "Familien in besonderen Lebensumständen beraten",
+        hours: 12,
+      },
+      {
+        id: "lb7",
+        label: "Als Marktteilnehmer agieren",
+        hours: 26,
+      },
+    ],
+    "bos|12|gw|aktuell": [
+      {
+        id: "lb1",
+        label: "Wissenschaftlich arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Gesundheit multifaktoriell begreifen",
+      },
+      {
+        id: "lb3",
+        label: "Sich im Gesundheitswesen orientieren",
+      },
+      {
+        id: "lb4",
+        label: "Infektionen vorbeugen",
+      },
+      {
+        id: "lb5",
+        label: "Sich gesundheitsbewusst ernähren",
+      },
+      {
+        id: "lb6",
+        label: "Bewegung fördern",
+      },
+      {
+        id: "lb7",
+        label:
+          "Herz‑Kreislauf‑Erkrankungen vorbeugen und deren Konsequenzen erfassen",
+      },
+    ],
+    "bos|12|ibv|ibv": [
+      {
+        id: "lb1",
+        label: "Ein Unternehmen international ausrichten",
+        hours: 8,
+      },
+      {
+        id: "lb2",
+        label:
+          "Mithilfe der Vollkostenrechnung Angebotspreise und das Betriebsergebnis ermitteln",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label:
+          "Entscheidungen mithilfe der Teilkostenrechnung vorbereiten und begründet treffen",
+        hours: 22,
+      },
+      {
+        id: "lb4",
+        label: "Jahresabschlussarbeiten durchführen",
+        hours: 43,
+      },
+      {
+        id: "lb5",
+        label:
+          "Finanzierungs- und Investitionsvorgänge analysieren, liquide Mittel beschaffen und Investitionen tätigen",
+        hours: 24,
+      },
+      {
+        id: "lb6",
+        label:
+          "Wirtschaftliche Prozesse mikroökonomisch analysieren und beurteilen",
+        hours: 19,
+      },
+      {
+        id: "lb7",
+        label: "Ziele der Wirtschaftspolitik analysieren",
+        hours: 32,
+      },
+    ],
+    "bos|12|informatik|abu-s-w-gh": [
+      {
+        id: "lb1",
+        label: "Entwicklung relationaler Datenbanken",
+        hours: 16,
+      },
+      {
+        id: "lb2",
+        label: "Implementierung und Nutzung relationaler Datenbanken",
+        hours: 16,
+      },
+      {
+        id: "lb3",
+        label: "Datenmanagement in relationalen Datenbanken (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb4",
+        label: "Gesellschaft und Informatik (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb5",
+        label: "Technische Grundlagen (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb6",
+        label: "Netzwerke realisieren (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb7",
+        label: "Visualisierung von Daten (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb8",
+        label: "Grundlagen der Softwareentwicklung (optional)",
+        hours: 24,
+      },
+      {
+        id: "lb9",
+        label: "Prozedurale Programmierung (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb10",
+        label: "Objektorientierte Programmierung (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb11",
+        label: "Gestaltung von IT-Anwendungen (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb12",
+        label: "Modellbildung und Simulation (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb13",
+        label: "Objektorientierte Analyse (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb14",
+        label: "ERP-Systeme – Finanzbuchhaltung (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb15",
+        label: "ERP-Systeme - Material- und Produktionswirtschaft (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb16",
+        label: "IT-Projekt (optional)",
+        hours: 24,
+      },
+    ],
+    "bos|12|informatik|wahl-t-iw": [
+      {
+        id: "lb1",
+        label: "Grundlagen der Softwareentwicklung",
+        hours: 24,
+      },
+      {
+        id: "lb2",
+        label: "Entwicklung relationaler Datenbanken (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb3",
+        label:
+          "Implementierung und Nutzung relationaler Datenbanken (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb4",
+        label: "Datenmanagement in relationalen Datenbanken (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb5",
+        label: "Gesellschaft und Informatik (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb6",
+        label: "Technische Grundlagen (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb7",
+        label: "Netzwerke realisieren (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb8",
+        label: "Visualisierung von Daten (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb9",
+        label: "Prozedurale Programmierung (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb10",
+        label: "Objektorientierte Programmierung (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb11",
+        label: "Gestaltung von IT-Anwendungen (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb12",
+        label: "ERP-Systeme – Finanzbuchhaltung (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb13",
+        label: "ERP-Systeme – Material- und Produktionswirtschaft (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb14",
+        label: "IT-Projekt (optional)",
+        hours: 24,
+      },
+    ],
+    "bos|12|internationale_politik": [
+      {
+        id: "lb1",
+        label:
+          "Akteure, Strukturen und Theorien in der internationalen Politik",
+        hours: 12,
+      },
+      {
+        id: "lb2",
+        label:
+          "Handlungsfelder und Herausforderungen in der internationalen Politik",
+        hours: 22,
+      },
+      {
+        id: "lb3",
+        label: "Kontroversen in der und über die internationale Politik",
+        hours: 22,
+      },
+    ],
+    "bos|12|isb|pflicht-iw": [
+      {
+        id: "lb1",
+        label: "Sich auf dem internationalen Arbeitsmarkt erfolgreich bewerben",
+        hours: 16,
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Teams führen und Personal entwickeln",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Ein neues Produkt auf einem internationalen Markt einführen",
+        hours: 20,
+      },
+    ],
+    "bos|12|isb|wahl-abu-t-w-s-gh": [
+      {
+        id: "lb1",
+        label: "Sich auf dem internationalen Arbeitsmarkt erfolgreich bewerben",
+        hours: 16,
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Teams führen und Personal entwickeln",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Ein neues Produkt auf einem internationalen Markt einführen",
+        hours: 20,
+      },
+    ],
+    "bos|12|italienisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|12|katholische-religionslehre": [
+      {
+        id: "lb1",
+        label:
+          "Religion und Vernunft – Perspektiven für Menschenbild und Weltdeutung",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label:
+          "Lesen und handeln – die Botschaft der Bibel für die Gesellschaft",
+        hours: 10,
+      },
+      {
+        id: "lb3",
+        label: "Erfahrbar und nah – dem dreieinen Gott begegnen",
+        hours: 10,
+      },
+    ],
+    "bos|12|ki": [
+      {
+        id: "lb1",
+        label:
+          "Die eigene Wahrnehmung als Voraussetzung für erfolgreiche Kommunikation analysieren und reflektieren",
+      },
+      {
+        id: "lb2",
+        label: "Kranken Menschen angemessen begegnen",
+      },
+      {
+        id: "lb3",
+        label:
+          "Mit Klienten unter Beachtung des Alters und der Lebensphase kommunizieren",
+      },
+      {
+        id: "lb4",
+        label: "Im multiprofessionellen Team im Gesundheitswesen arbeiten",
+      },
+      {
+        id: "lb5",
+        label: "Konflikte im Team bewältigen",
+      },
+      {
+        id: "lb6",
+        label: "Mit Krisen und Trauer umgehen",
+      },
+    ],
+    "bos|12|kuenstliche_intelligenz_informatik_u_technologie|abu": [
+      {
+        id: "lb1",
+        label: "Künstliche Intelligenz und digitale Anwendungen",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label: "Grundlagen nachhaltiger Pflanzenproduktion (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb3",
+        label: "Zukunftsfähige Düngung (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb4",
+        label:
+          "Nutztierhaltung im Spannungsfeld von Ökonomie, Umweltschutz und Tierwohl (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb5",
+        label:
+          "Nutztierfütterung – leistungsorientiert und nachhaltig (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb6",
+        label: "Moderne Werkstoffe (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb7",
+        label: "Allgemeine Energietechnik (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb8",
+        label: "Erneuerbare Energien (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb9",
+        label: "Umwelttechnik (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb10",
+        label: "Enzyme – Biokatalysatoren in Industrie und Haushalt (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb11",
+        label:
+          "Lebensmittelchemie und -technologie am Beispiel der Produktion eines Lebensmittels (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb12",
+        label: "Lebensmittelkonservierung (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb13",
+        label: "Medizinische und pharmakologische Verfahren (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb14",
+        label: "Bioinformatik – Simulationen (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb15",
+        label: "Kompetenzorientierte Projektarbeit",
+        hours: 16,
+      },
+    ],
+    "bos|12|kuenstliche_intelligenz_informatik_u_technologie|t": [
+      {
+        id: "lb1",
+        label: "Informatik – Grundlagen der Programmierung",
+        hours: 12,
+      },
+      {
+        id: "lb2",
+        label: "Künstliche Intelligenz (KI)",
+      },
+      {
+        id: "lb3",
+        label: "Thermodynamik",
+      },
+      {
+        id: "lb4",
+        label: "Energie",
+      },
+      {
+        id: "lb5",
+        label: "Technische Mechanik (optional)",
+        hours: 12,
+      },
+      {
+        id: "lb6",
+        label: "Umwelttechnik (optional)",
+        hours: 12,
+      },
+      {
+        id: "lb7",
+        label: "Elektrotechnik – elektronische Bauelemente (optional)",
+        hours: 12,
+      },
+      {
+        id: "lb8",
+        label: "Moderne Werkstoffe (optional)",
+        hours: 12,
+      },
+      {
+        id: "lb9",
+        label: "Kompetenzorientierte Projektarbeit",
+        hours: 16,
+      },
+    ],
+    "bos|12|kuenstliche_intelligenz_u_wirtschaftsinformatik": [
+      {
+        id: "lb1",
+        label: "Systeme der Künstlichen Intelligenz untersuchen",
+        hours: 24,
+      },
+      {
+        id: "lb2",
+        label: "Informatiksysteme entwickeln",
+        hours: 32,
+      },
+    ],
+    "bos|12|kunst": [
+      {
+        id: "lb1",
+        label: "Zeichnen und Malen (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Druck und Experiment (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Skulptur und Objekt (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Film und Inszenierung (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Foto und Inszenierung (optional)",
+      },
+    ],
+    "bos|12|latein": [
+      {
+        id: "lb1",
+        label: "Texte",
+      },
+      {
+        id: "lb2",
+        label: "Sprachliche Basis",
+      },
+      {
+        id: "lb3",
+        label: "Kultur",
+      },
+      {
+        id: "lb4",
+        label: "Methodik",
+      },
+    ],
+    "bos|12|mathematik|Wahl-abu-s-w-gh-iw": [
+      {
+        id: "lb1",
+        label: "Trigonometrie und trigonometrische Funktionen (verpflichtend)",
+        hours: 14,
+      },
+      {
+        id: "lb2",
+        label: "Lineare Gleichungssysteme (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb3",
+        label: "Vektorrechnung (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Folgen und Reihen (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Gebrochen-rationale Funktionen (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb6",
+        label: "Statistik (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Näherungsverfahren (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb8",
+        label: "Freies Projekt (optional)",
+        hours: 14,
+      },
+    ],
+    "bos|12|mathematik|abu-s-w-gh-iw": [
+      {
+        id: "lb1",
+        label: "Ganzrationale Funktionen",
+        hours: 25,
+      },
+      {
+        id: "lb2",
+        label: "Differenzialrechnung bei ganzrationalen Funktionen",
+        hours: 40,
+      },
+      {
+        id: "lb3",
+        label: "Exponentialfunktion und Logarithmus",
+        hours: 15,
+      },
+      {
+        id: "lb4",
+        label:
+          "Kurvendiskussion von Funktionen, die aus Verknüpfung von Exponentialfunktionen mit linearen und quadratischen Funktionen hervorgehen",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Integralrechnung",
+        hours: 10,
+      },
+      {
+        id: "lb6",
+        label: "Zufallsexperiment und Ereignis",
+        hours: 5,
+      },
+      {
+        id: "lb7",
+        label: "Relative Häufigkeit und Wahrscheinlichkeit",
+        hours: 8,
+      },
+      {
+        id: "lb8",
+        label: "Grundlagen der Kombinatorik",
+        hours: 4,
+      },
+      {
+        id: "lb9",
+        label: "Bernoulli-Ketten",
+        hours: 4,
+      },
+      {
+        id: "lb10",
+        label: "Zufallsgröße und Wahrscheinlichkeitsverteilung",
+        hours: 10,
+      },
+      {
+        id: "lb11",
+        label: "Testen von Hypothesen",
+        hours: 5,
+      },
+    ],
+    "bos|12|mathematik|t": [
+      {
+        id: "lb1",
+        label: "Ganzrationale Funktionen",
+        hours: 25,
+      },
+      {
+        id: "lb2",
+        label: "Differenzialrechnung bei ganzrationalen Funktionen",
+        hours: 44,
+      },
+      {
+        id: "lb3",
+        label: "Exponentialfunktion und Logarithmus",
+        hours: 13,
+      },
+      {
+        id: "lb4",
+        label:
+          "Kurvendiskussion von Funktionen, die aus Verknüpfung/Verkettung von Exponentialfunktionen mit linearen und quadratischen Funktionen hervorgehen",
+        hours: 12,
+      },
+      {
+        id: "lb5",
+        label: "Integralrechnung",
+        hours: 8,
+      },
+      {
+        id: "lb6",
+        label:
+          "Vektoren im IR 2 und IR 3 , lineare Unabhängigkeit und lineare Gleichungssysteme",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Produkte von Vektoren",
+        hours: 9,
+      },
+      {
+        id: "lb8",
+        label: "Geraden und Ebenen im Raum – Geometrische Anwendungen im IR 3",
+        hours: 15,
+      },
+    ],
+    "bos|12|mathematik|wahl-t": [
+      {
+        id: "lb1",
+        label: "Abschnittsweise definierte Funktionen",
+        hours: 6,
+      },
+      {
+        id: "lb2",
+        label: "Trigonometrische Funktionen",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Gebrochen-rationale Funktionen",
+        hours: 30,
+      },
+    ],
+    "bos|12|musik": [
+      {
+        id: "lb1",
+        label: "Sprechen – Singen – Musizieren",
+      },
+      {
+        id: "lb2",
+        label: "Musik – Mensch – Zeit",
+      },
+    ],
+    "bos|12|nt-bo": [
+      {
+        id: "lb1",
+        label: "Physikalische Grundlagen",
+      },
+      {
+        id: "lb2",
+        label: "Chemische Grundlagen",
+      },
+      {
+        id: "lb3",
+        label: "Werkstoffe und Werkstoffeigenschaften (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Allgemeine Energietechnik (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Erneuerbare Energien (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Umwelttechnik (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Elektrotechnik-Anwendung (optional)",
+      },
+      {
+        id: "lb8",
+        label: "Systeme und Prozesse (optional)",
+      },
+      {
+        id: "lb9",
+        label: "Komplexe technische Systeme (optional)",
+      },
+    ],
+    "bos|12|paedagigik-psychologie|s": [
+      {
+        id: "lb1",
+        label:
+          "Wesenzüge wissenschaftlicher Pädagogik und Psychologie begreifen",
+      },
+      {
+        id: "lb2",
+        label:
+          "Grundlagen des Erlebens, Verhaltens und Handelns analysieren, verstehen und anwenden",
+      },
+      {
+        id: "lb3",
+        label:
+          "Erziehungs- und Bildungsprozesse individuumsbezogen und verantwortlich gestalten",
+      },
+      {
+        id: "lb4",
+        label:
+          "Lernen als multidimensionalen und steuerbaren Prozess verstehen",
+      },
+      {
+        id: "lb5",
+        label:
+          "Entwicklung als lebensumfassenden, multifaktoriell beeinflussten Prozess begreifen und pädagogisch gestalten",
+      },
+      {
+        id: "lb6",
+        label:
+          "Persönlichkeit und Identität beschreiben, erklären und reflektieren",
+      },
+      {
+        id: "lb7",
+        label:
+          "Aufgaben und Arbeitsfelder Sozialer Arbeit professionell einordnen",
+      },
+      {
+        id: "lb8",
+        label:
+          "In sozialen Beziehungen empathisch und zielführend kommunizieren und interagieren",
+      },
+    ],
+    "bos|12|physik|abu": [
+      {
+        id: "lb1",
+        label: "Geradlinige Bewegung",
+        hours: 20,
+      },
+      {
+        id: "lb2",
+        label: "Dynamik, Newton'sche Gesetze",
+        hours: 10,
+      },
+      {
+        id: "lb3",
+        label: "Kreisbewegung",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Energie, Arbeit und Leistung",
+        hours: 12,
+      },
+    ],
+    "bos|12|physik|s-w-gh-iw": [
+      {
+        id: "lb1",
+        label: "Grundlagen der Elektrizitätslehre",
+        hours: 28,
+      },
+      {
+        id: "lb2",
+        label: "Grundlagen der Optik",
+        hours: 28,
+      },
+    ],
+    "bos|12|physik|t": [
+      {
+        id: "lb1",
+        label: "Beschreibung von Bewegungen",
+        hours: 18,
+      },
+      {
+        id: "lb2",
+        label: "Dynamik, Newton'sche Gesetze",
+        hours: 17,
+      },
+      {
+        id: "lb3",
+        label: "Energie und Arbeit",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Kreisbewegung",
+        hours: 17,
+      },
+      {
+        id: "lb5",
+        label: "Mechanische Schwingungen und Wellen",
+        hours: 46,
+      },
+      {
+        id: "lb6",
+        label: "Klassische Felder",
+        hours: 34,
+      },
+      {
+        id: "lb7",
+        label: "Elektromagnetische Induktion",
+        hours: 22,
+      },
+    ],
+    "bos|12|russisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|12|sg": [
+      {
+        id: "lb1",
+        label: "Vom Kinderwunsch bis zur Geburt (optional)",
+      },
+      {
+        id: "lb2",
+        label:
+          "Humanmedizinische Vertiefung I: Dermatologie und Zahnheilkunde (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Pflegewissenschaften (optional)",
+      },
+      {
+        id: "lb4",
+        label:
+          "Humanmedizinische Vertiefung II: Pharmakologie, Notfallmedizin und Pathologie (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Alternative und komplementäre Heilverfahren (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Umwelt und Gesundheit (optional)",
+      },
+    ],
+    "bos|12|sozialwirtschaft-und-recht": [
+      {
+        id: "lb1",
+        label: "Ein soziales Unternehmen strategisch ausrichten",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label: "Liquide Mittel für ein soziales Unternehmen beschaffen",
+        hours: 17,
+      },
+      {
+        id: "lb3",
+        label: "Den Erfolg eines sozialen Unternehmens analysieren",
+        hours: 17,
+      },
+      {
+        id: "lb4",
+        label:
+          "Für ein soziales Unternehmen Personal führen und Arbeitsverträge beenden",
+        hours: 18,
+      },
+      {
+        id: "lb5",
+        label: "Soziale Dienstleistungen vermarkten",
+        hours: 12,
+      },
+      {
+        id: "lb6",
+        label: "Familien in besonderen Lebensumständen beraten",
+        hours: 10,
+      },
+    ],
+    "bos|12|soziologie|s": [
+      {
+        id: "lb1",
+        label: "Individuum in der Gesellschaft",
+      },
+      {
+        id: "lb2",
+        label: "Handeln in sozialen Gruppen",
+      },
+      {
+        id: "lb3",
+        label: "Heterogenität in der Gesellschaft",
+      },
+      {
+        id: "lb4",
+        label: "Wandel der Gesellschaft",
+      },
+    ],
+    "bos|12|soziologie|wahl-abu-t-w-iw-gh": [
+      {
+        id: "lb1",
+        label: "Individuum in der Gesellschaft",
+      },
+      {
+        id: "lb2",
+        label: "Handeln in sozialen Gruppen",
+      },
+      {
+        id: "lb3",
+        label: "Heterogenität in der Gesellschaft",
+      },
+      {
+        id: "lb4",
+        label: "Wandel der Gesellschaft",
+      },
+    ],
+    "bos|12|spanisch|spanisch_ahr": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|12|spanisch|spanisch_aufbaukurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|12|spanisch|spanisch_fortgefuehrt": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|12|spanisch|spanisch_grundkurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|12|studier-und-arbeitstechniken": [
+      {
+        id: "lb1",
+        label: "Arbeits- und Lernprozesse optimieren",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label: "Quellen zur wissenschaftlichen Arbeit nutzen",
+        hours: 26,
+      },
+      {
+        id: "lb3",
+        label: "Ergebnisse präsentieren",
+        hours: 20,
+      },
+    ],
+    "bos|12|technologie|abu": [
+      {
+        id: "lb1",
+        label: "Industrielle Biotechnologie",
+      },
+      {
+        id: "lb2",
+        label: "Pflanzenproduktion-Grundlagen",
+      },
+      {
+        id: "lb3",
+        label: "Tierproduktion-Grundlagen",
+      },
+      {
+        id: "lb4",
+        label: "Werkstoffe und Werkstoffeigenschaften (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Allgemeine Energietechnik (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Erneuerbare Energien (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Lebensmittelchemie und -technologie der Milch (optional)",
+      },
+      {
+        id: "lb8",
+        label: "Umwelttechnik (optional)",
+      },
+      {
+        id: "lb9",
+        label: "Komplexe technische Systeme (optional)",
+      },
+    ],
+    "bos|12|technologie|t": [
+      {
+        id: "lb1",
+        label: "Thermodynamik-Grundlagen",
+      },
+      {
+        id: "lb2",
+        label: "Technische Mechanik",
+      },
+      {
+        id: "lb3",
+        label: "Metallische Werkstoffe",
+      },
+      {
+        id: "lb4",
+        label: "Allgemeine Energietechnik (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Erneuerbare Energien (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Umwelttechnik (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Elektronische Bauelemente (optional)",
+      },
+      {
+        id: "lb8",
+        label: "Systeme und Prozesse (optional)",
+      },
+      {
+        id: "lb9",
+        label: "Modellbildung-Grundlagen (optional)",
+      },
+      {
+        id: "lb10",
+        label: "Verbrennungsmotoren (optional)",
+      },
+      {
+        id: "lb11",
+        label: "Komplexe technische Systeme (optional)",
+      },
+    ],
+    "bos|12|volkswirtschaftslehre": [
+      {
+        id: "lb1",
+        label:
+          "Grundlagen ökonomischen Denkens und Handelns analysieren und beurteilen",
+        hours: 4,
+      },
+      {
+        id: "lb2",
+        label:
+          "Die Preisbildung bei vollkommenem Wettbewerb analysieren und beurteilen",
+        hours: 12,
+      },
+      {
+        id: "lb3",
+        label:
+          "Die Preisbildung bei unvollkommenem Wettbewerb analysieren und beurteilen",
+        hours: 18,
+      },
+      {
+        id: "lb4",
+        label:
+          "Das Wirtschaftswachstum als volkswirtschaftliche Größe beurteilen",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label:
+          "Die Einkommens- und Vermögenspolitik als Steuerungsinstrument analysieren und beurteilen",
+        hours: 10,
+      },
+      {
+        id: "lb6",
+        label: "Geldpolitische Instrumente und Maßnahmen beurteilen",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Internationale Verflechtungen analysieren und beurteilen",
+        hours: 12,
+      },
+    ],
+    "bos|12|wirtschaft-und-recht": [
+      {
+        id: "lb1",
+        label: "Als Unternehmer Kaufverträge schließen",
+        hours: 14,
+      },
+      {
+        id: "lb2",
+        label: "Arbeitsverträge schließen und Personal führen",
+        hours: 14,
+      },
+      {
+        id: "lb3",
+        label: "Als Staatsbürger agieren",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Als Marktteilnehmer agieren",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Sich selbständig machen",
+        hours: 14,
+      },
+      {
+        id: "lb6",
+        label: "Den Preis für ein Produkt kalkulieren",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Den Produktionsprozess steuern",
+        hours: 14,
+      },
+      {
+        id: "lb8",
+        label: "Ein Marketingkonzept gestalten",
+        hours: 14,
+      },
+    ],
+    "bos|12|wirtschaft_aktuell": [
+      {
+        id: "lb1",
+        label: "Ausgewählte Aspekte der Internationalisierung (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb2",
+        label: "Angewandte Entwicklungspolitik (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb3",
+        label:
+          "Betriebswirtschaftlich Planen, Entscheiden und Kontrollieren (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Gesellschaft im Wandel (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Wirtschaft im Wandel (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb6",
+        label: "Märkte im Wandel (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Innovation und Existenzgründung (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb8",
+        label: "Standortentscheidungen treffen (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb9",
+        label: "Zukunftsorientiertes Personalmanagement (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb10",
+        label: "Qualitätsmanagement im Betrieb (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb11",
+        label: "Stakeholder-Konzept (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb12",
+        label: "Finanzmanagement (optional)",
+        hours: 14,
+      },
+    ],
+    "bos|13|betriebswirtschaftslehre": [
+      {
+        id: "lb1",
+        label:
+          "Den Jahresabschluss analysieren und Finanzierungs- und Investitionsentscheidungen treffen",
+        hours: 40,
+      },
+      {
+        id: "lb2",
+        label: "Marketingprozesse planen und steuern",
+        hours: 25,
+      },
+      {
+        id: "lb3",
+        label:
+          "Den Faktoreinsatz optimieren, Kosteneinflussgrößen unterscheiden und bei Änderung der Beschäftigung die optimale Anpassungsform in der Produktion ermitteln",
+        hours: 40,
+      },
+      {
+        id: "lb4",
+        label: "Mithilfe des Controllings ein Unternehmen strategisch steuern",
+        hours: 35,
+      },
+    ],
+    "bos|13|biologie|abu": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Informations- und Steuerungssysteme",
+        hours: 50,
+      },
+      {
+        id: "lb3",
+        label: "Evolution",
+        hours: 30,
+      },
+      {
+        id: "lb4",
+        label: "Angewandte Genetik",
+        hours: 30,
+      },
+      {
+        id: "lb5",
+        label: "Angewandte Ökologie",
+        hours: 30,
+      },
+    ],
+    "bos|13|biologie|g": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Informations- und Steuerungssysteme",
+        hours: 52,
+      },
+      {
+        id: "lb3",
+        label: "Ökologie",
+        hours: 32,
+      },
+    ],
+    "bos|13|biologie|s": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Mechanismen und Belege der Evolution",
+        hours: 16,
+      },
+      {
+        id: "lb3",
+        label: "Neuro- und Muskelphysiologie",
+        hours: 26,
+      },
+      {
+        id: "lb4",
+        label: "Immunologie",
+        hours: 14,
+      },
+    ],
+    "bos|13|biologie|wahl-t-w-iw": [
+      {
+        id: "lb1",
+        label: "Biologie des Alltags (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Bionik (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Evolution (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Genetik/Gentechnik (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Immunologie (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Sinnesphysiologie (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Stoffkreisläufe und Bioökonomie (optional)",
+      },
+    ],
+    "bos|13|biotechnologie": [
+      {
+        id: "lb1",
+        label: "Grundlagen der Mikroskopier- und Präparationstechniken",
+      },
+      {
+        id: "lb2",
+        label: "Medizinische und pharmakologische Verfahren (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Gentechnik (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Bioinformatik (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Aktuelle Entwicklungen in der Biotechnologie (optional)",
+      },
+    ],
+    "bos|13|bwl-rechnungswesen": [
+      {
+        id: "lb1",
+        label:
+          "Den Jahresabschluss analysieren und weitere Formen der Finanzierung nutzen",
+        hours: 40,
+      },
+      {
+        id: "lb2",
+        label:
+          "Mithilfe des Controllings das Unternehmen operativ und strategisch steuern",
+        hours: 40,
+      },
+      {
+        id: "lb3",
+        label:
+          "Den Faktoreinsatz optimieren, Kosteneinflussgrößen unterscheiden und bei Änderung der Beschäftigung die optimale Anpassungsform ermitteln",
+        hours: 40,
+      },
+      {
+        id: "lb4",
+        label:
+          "Personal sach- und personenorientiert führen und zukunftsorientiert entwickeln",
+        hours: 20,
+      },
+    ],
+    "bos|13|chemie|abu": [
+      {
+        id: "lb1",
+        label: "Wie Chemiker denken und arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Biomoleküle und Tenside",
+        hours: 42,
+      },
+      {
+        id: "lb3",
+        label: "Polymere",
+        hours: 20,
+      },
+      {
+        id: "lb4",
+        label: "Stoffe mit delokalisierten Elektronensystemen",
+        hours: 22,
+      },
+    ],
+    "bos|13|chemie|t": [
+      {
+        id: "lb1",
+        label: "Wie Chemiker denken und arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Biomoleküle",
+        hours: 24,
+      },
+      {
+        id: "lb3",
+        label: "Polymere",
+        hours: 12,
+      },
+      {
+        id: "lb4",
+        label: "Stoffe mit delokalisierten Elektronensystemen",
+        hours: 20,
+      },
+    ],
+    "bos|13|ebc": [
+      {
+        id: "lb1",
+        label: "Reading, Understanding and Interpreting Literature – a Toolbox",
+      },
+      {
+        id: "lb2",
+        label: "Topics and Issues",
+      },
+    ],
+    "bos|13|englisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|13|ethik": [
+      {
+        id: "lb1",
+        label: "Freiheit und Determination",
+      },
+      {
+        id: "lb2",
+        label: "Recht und Gerechtigkeit",
+      },
+      {
+        id: "lb3",
+        label: "Glaube und Religion",
+      },
+    ],
+    "bos|13|evangelische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Fragender Glaube",
+      },
+      {
+        id: "lb2",
+        label: "Bedacht entschieden",
+      },
+      {
+        id: "lb3",
+        label: "Zukunftswerkstatt",
+      },
+    ],
+    "bos|13|franzoesisch|franzoesisch_ahr": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|13|franzoesisch|franzoesisch_aufbaukurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|13|franzoesisch|franzoesisch_fortgefuehrt": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|13|franzoesisch|franzoesisch_grundkurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|13|gpug-fosbos": [
+      {
+        id: "lb1",
+        label: "Methodenkompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Lebenswirklichkeiten in einer historischen Epoche",
+      },
+      {
+        id: "lb3",
+        label: "Lebenswirklichkeiten in der gegenwärtigen Welt",
+      },
+    ],
+    "bos|13|gwr": [
+      {
+        id: "lb1",
+        label: "Ein Unternehmen im Gesundheitswesen strategisch ausrichten",
+        hours: 19,
+      },
+      {
+        id: "lb2",
+        label:
+          "Liquide Mittel für ein Unternehmen im Gesundheitswesen beschaffen",
+        hours: 19,
+      },
+      {
+        id: "lb3",
+        label: "Den Erfolg eines Unternehmens im Gesundheitswesen analysieren",
+        hours: 19,
+      },
+      {
+        id: "lb4",
+        label:
+          "Für ein Unternehmen im Gesundheitswesen Personal einsetzen und führen",
+        hours: 19,
+      },
+      {
+        id: "lb5",
+        label: "Dienstleistungen des Gesundheitswesens vermarkten",
+        hours: 19,
+      },
+      {
+        id: "lb6",
+        label: "Familien in besonderen Lebensumständen beraten",
+        hours: 12,
+      },
+      {
+        id: "lb7",
+        label: "Als Marktteilnehmer agieren",
+        hours: 26,
+      },
+    ],
+    "bos|13|gw|aktuell": [
+      {
+        id: "lb1",
+        label: "Wissenschaftlich arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Die eigenständige Lebensführung von Senioren unterstützen",
+      },
+      {
+        id: "lb3",
+        label:
+          "Sucht und Depression als gesellschaftliche Herausforderung erfassen",
+      },
+      {
+        id: "lb4",
+        label: "Onkologische Erkrankungen in ihrer Komplexität begreifen",
+      },
+      {
+        id: "lb5",
+        label: "Entwicklungen im Gesundheitswesen kritisch verfolgen",
+      },
+    ],
+    "bos|13|ibv|ibv": [
+      {
+        id: "lb1",
+        label:
+          "Den Jahresabschluss analysieren und Verfahren der dynamischen Investitionsrechnung nutzen",
+        hours: 32,
+      },
+      {
+        id: "lb2",
+        label:
+          "Mithilfe der flexiblen Plankostenrechnung Abweichungen analysieren und die optimale Anpassungsform bei Änderung der Beschäftigung ermitteln",
+        hours: 48,
+      },
+      {
+        id: "lb3",
+        label:
+          "Volkswirtschaftliche Modelle als Grundlage für die Angebotsentscheidung nutzen",
+        hours: 25,
+      },
+      {
+        id: "lb4",
+        label: "Wirtschaftspolitische Instrumente und Maßnahmen beurteilen",
+        hours: 35,
+      },
+    ],
+    "bos|13|informatik|wahl-abu-s-w-gh": [
+      {
+        id: "lb1",
+        label: "Datenmanagement in relationalen Datenbanken (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb2",
+        label: "Gesellschaft und Informatik (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb3",
+        label: "Technische Grundlagen (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb4",
+        label: "Netzwerke realisieren (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb5",
+        label: "Visualisierung von Daten (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb6",
+        label: "Grundlagen der Softwareentwicklung (optional)",
+        hours: 24,
+      },
+      {
+        id: "lb7",
+        label: "Prozedurale Programmierung (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb8",
+        label: "Objektorientierte Programmierung (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb9",
+        label: "Gestaltung von IT-Anwendungen (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb10",
+        label: "Modellbildung und Simulation (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb11",
+        label: "Objektorientierte Analyse (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb12",
+        label: "ERP-Systeme – Finanzbuchhaltung (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb13",
+        label: "ERP-Systeme – Material- und Produktionswirtschaft (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb14",
+        label: "IT-Projekt (optional)",
+        hours: 24,
+      },
+    ],
+    "bos|13|informatik|wahl-t-iw": [
+      {
+        id: "lb1",
+        label: "Modellbildung und Simulation",
+        hours: 16,
+      },
+      {
+        id: "lb2",
+        label: "Objektorientierte Analyse",
+        hours: 8,
+      },
+      {
+        id: "lb3",
+        label: "Entwicklung relationaler Datenbanken (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb4",
+        label:
+          "Implementierung und Nutzung relationaler Datenbanken (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb5",
+        label: "Datenmanagement in relationalen Datenbanken (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb6",
+        label: "Gesellschaft und Informatik (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb7",
+        label: "Technische Grundlagen (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb8",
+        label: "Netzwerke realisieren (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb9",
+        label: "Visualisierung von Daten (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb10",
+        label: "Prozedurale Programmierung (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb11",
+        label: "Objektorientierte Programmierung (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb12",
+        label: "Gestaltung von IT-Anwendungen (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb13",
+        label: "ERP-Systeme – Finanzbuchhaltung (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb14",
+        label: "ERP-Systeme – Material-und Produktionswirtschaft (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb15",
+        label: "IT-Projekt (optional)",
+        hours: 24,
+      },
+    ],
+    "bos|13|internationale_politik": [
+      {
+        id: "lb1",
+        label:
+          "Akteure, Strukturen und Theorien in der internationalen Politik",
+        hours: 12,
+      },
+      {
+        id: "lb2",
+        label:
+          "Handlungsfelder und Herausforderungen in der internationalen Politik",
+        hours: 22,
+      },
+      {
+        id: "lb3",
+        label: "Kontroversen in der und über die internationale Politik",
+        hours: 22,
+      },
+    ],
+    "bos|13|isb": [
+      {
+        id: "lb1",
+        label: "Sich auf dem internationalen Arbeitsmarkt erfolgreich bewerben",
+        hours: 16,
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Teams führen und Personal entwickeln",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Ein neues Produkt auf einem internationalen Markt einführen",
+        hours: 20,
+      },
+    ],
+    "bos|13|italienisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|13|katholische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Gestiftet und gelebt – die Sendung der Kirche",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label: "Fragen und Antworten – der Mensch und die Sinnsuche",
+        hours: 10,
+      },
+      {
+        id: "lb3",
+        label:
+          "Gemeinschaft und Gerechtigkeit – christliche Perspektiven für die Gesellschaft",
+        hours: 10,
+      },
+    ],
+    "bos|13|ki": [
+      {
+        id: "lb1",
+        label: "Andere in Arbeitsfeldern des Gesundheitswesens anleiten",
+      },
+      {
+        id: "lb2",
+        label: "Sich mit Vorurteilen auseinandersetzen",
+      },
+      {
+        id: "lb3",
+        label:
+          "Interkulturalität im Berufsalltag des Gesundheitswesens als Bereicherung wahrnehmen",
+      },
+    ],
+    "bos|13|kuenstliche_intelligenz_informatik_u_technologie|abu": [
+      {
+        id: "lb1",
+        label: "Künstliche Intelligenz und digitale Anwendungen",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label: "Anbau von nachwachsenden Rohstoffen (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb3",
+        label: "Fertilität und Reproduktion beim Nutztier (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb4",
+        label: "Bio- und Gentechnologie in der Pflanzenzüchtung (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb5",
+        label: "Bio- und Gentechnologie in der Tierzüchtung (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb6",
+        label: "Ernährung zwischen Mangel und Überfluss (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb7",
+        label:
+          "Lebensmittelchemie und -technologie am Beispiel der Produktion eines Lebensmittels (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb8",
+        label: "Energetische Nutzung von Biorohstoffen (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb9",
+        label: "Moderne Kunststofftechnologien (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb10",
+        label:
+          "Entwicklung, Herstellung und Funktionsweisen von Arzneimitteln (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb11",
+        label: "Gendiagnostische Methoden und Gentherapie (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb12",
+        label:
+          "Bioinformatik – Sequenzvergleiche und -identifikation (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb13",
+        label: "Farbstoffe und Färbemethoden (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb14",
+        label: "Vertiefende kompetenzorientierte Projektarbeit",
+        hours: 16,
+      },
+    ],
+    "bos|13|kuenstliche_intelligenz_informatik_u_technologie|t": [
+      {
+        id: "lb1",
+        label: "Lernen über KI − vertieft",
+        hours: 16,
+      },
+      {
+        id: "lb2",
+        label: "Netzwerktechnik (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb3",
+        label: "Mechatronik (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb4",
+        label: "Regelungstechnik (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb5",
+        label: "Elektrotechnik – Wechselstromtechnik (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb6",
+        label: "Bautechnik und Gestaltung (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb7",
+        label: "Festigkeitslehre (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb8",
+        label: "Fachwerke (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb9",
+        label: "Modellbildung (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb10",
+        label: "Vertiefende kompetenzorientierte Projektarbeit",
+        hours: 20,
+      },
+    ],
+    "bos|13|kunst": [
+      {
+        id: "lb1",
+        label: "Zeichnen und Malen (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Druck und Experiment (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Skulptur und Objekt (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Film und Inszenierung (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Foto und Inszenierung (optional)",
+      },
+    ],
+    "bos|13|latein": [
+      {
+        id: "lb1",
+        label: "Texte und ihr kultureller Kontext",
+      },
+      {
+        id: "lb2",
+        label: "Sprachliche Basis",
+      },
+      {
+        id: "lb3",
+        label: "Methodik",
+      },
+    ],
+    "bos|13|mathematik|abu-s-w-gh-iw": [
+      {
+        id: "lb1",
+        label: "Grundlegende Eigenschaften der gebrochen-rationalen Funktionen",
+        hours: 14,
+      },
+      {
+        id: "lb2",
+        label: "Kurvendiskussion der gebrochen-rationalen Funktionen",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Grundlegende Eigenschaften der ln-Funktion",
+        hours: 20,
+      },
+      {
+        id: "lb4",
+        label:
+          "Kurvendiskussion von Funktionen, die aus Verkettung und/oder Verknüpfungen von Exponentialfunktionen bzw. Logarithmusfunktionen mit rationalen Funktionen hervorgehen",
+        hours: 30,
+      },
+      {
+        id: "lb5",
+        label:
+          "Vektoren im IR 2 und IR 3 , lineare Unabhängigkeit und lineare Gleichungssysteme",
+        hours: 20,
+      },
+      {
+        id: "lb6",
+        label: "Produkte von Vektoren",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Geraden und Ebenen im Raum – Geometrische Anwendungen im IR 3",
+        hours: 22,
+      },
+    ],
+    "bos|13|mathematik|t": [
+      {
+        id: "lb1",
+        label: "Umkehrfunktionen",
+        hours: 20,
+      },
+      {
+        id: "lb2",
+        label: "Vertiefung des Integralbegriffs",
+        hours: 8,
+      },
+      {
+        id: "lb3",
+        label: "Integralrechnung, Integrationsverfahren",
+        hours: 20,
+      },
+      {
+        id: "lb4",
+        label: "Anwendung der Differenzial- und Integralrechnung",
+        hours: 16,
+      },
+      {
+        id: "lb5",
+        label: "Gewöhnliche Differenzialgleichungen",
+        hours: 20,
+      },
+      {
+        id: "lb6",
+        label: "Zufallsexperiment und Ereignis",
+        hours: 8,
+      },
+      {
+        id: "lb7",
+        label: "Relative Häufigkeit und Wahrscheinlichkeit",
+        hours: 14,
+      },
+      {
+        id: "lb8",
+        label: "Grundlagen der Kombinatorik",
+        hours: 6,
+      },
+      {
+        id: "lb9",
+        label: "Bernoulli-Ketten",
+        hours: 6,
+      },
+      {
+        id: "lb10",
+        label: "Zufallsgröße und Wahrscheinlichkeitsverteilung",
+        hours: 14,
+      },
+      {
+        id: "lb11",
+        label: "Testen von Hypothesen",
+        hours: 8,
+      },
+    ],
+    "bos|13|mathematik|wahl-abu-s-w-t": [
+      {
+        id: "lb1",
+        label: "Komplexe Zahlen (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb2",
+        label: "Beweisverfahren (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb3",
+        label: "Beurteilende Statistik (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Matrizen und Determinanten (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Sphärische Geometrie (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb6",
+        label: "Taylorpolynome (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Boole'sche Algebra (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb8",
+        label: "Kurvenparametrisierung (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb9",
+        label: "Freies Projekt (optional)",
+        hours: 14,
+      },
+    ],
+    "bos|13|musik": [
+      {
+        id: "lb1",
+        label: "Sprechen – Singen – Musizieren",
+      },
+      {
+        id: "lb2",
+        label: "Musik – Mensch – Zeit",
+      },
+    ],
+    "bos|13|nt-bo": [
+      {
+        id: "lb1",
+        label: "Werkstoffanwendung (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Energieträger (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Festigkeitslehre (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Bautechnik und Gestaltung (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Modellbildung-Grundlagen (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Modellbildung-Anwendung (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Regelungstechnik (optional)",
+      },
+      {
+        id: "lb8",
+        label: "Mechatronik (optional)",
+      },
+      {
+        id: "lb9",
+        label: "Komplexe technische Systeme (optional)",
+      },
+    ],
+    "bos|13|paedagigik-psychologie|s": [
+      {
+        id: "lb1",
+        label:
+          "Wissenschaftliche Grundlagen der pädagogisch-psychologischen Forschung reflektiert anwenden",
+      },
+      {
+        id: "lb2",
+        label:
+          "Beeinträchtigten Menschen angemessen begegnen und sie unterstützen",
+      },
+      {
+        id: "lb3",
+        label:
+          "Sich mit der klinischen Psychologie kritisch und wissenschaftlich fundiert auseinandersetzen",
+      },
+      {
+        id: "lb4",
+        label:
+          "Organisationen als Systeme von Menschen und Kontexten auf verschiedenen Ebenen begreifen und mitgestalten",
+      },
+      {
+        id: "lb5",
+        label:
+          "Theorien und Konzepte auf einer Metaebene lernbereichsübergreifend kritisch reflektieren und anwenden",
+      },
+    ],
+    "bos|13|physik|s-w-gh-iw": [
+      {
+        id: "lb1",
+        label: "Grundlagen der Mechanik I",
+        hours: 28,
+      },
+      {
+        id: "lb2",
+        label: "Grundlagen der Mechanik II",
+        hours: 28,
+      },
+      {
+        id: "lb3",
+        label: "Grundlagen der Wärmelehre",
+        hours: 28,
+      },
+    ],
+    "bos|13|physik|t": [
+      {
+        id: "lb1",
+        label: "Geladene Teilchen in elektrischen und magnetischen Feldern",
+        hours: 20,
+      },
+      {
+        id: "lb2",
+        label: "Elektromagnetische Schwingungen und Wellen",
+        hours: 40,
+      },
+      {
+        id: "lb3",
+        label: "Quanten- und Atomphysik",
+        hours: 55,
+      },
+      {
+        id: "lb4",
+        label: "Kernphysik",
+        hours: 25,
+      },
+    ],
+    "bos|13|physik|wahl-abu": [
+      {
+        id: "lb1",
+        label: "Mechanische Schwingungen",
+        hours: 20,
+      },
+      {
+        id: "lb2",
+        label: "Wellen",
+        hours: 16,
+      },
+      {
+        id: "lb3",
+        label: "Kernphysik",
+        hours: 20,
+      },
+    ],
+    "bos|13|russisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|13|sg": [
+      {
+        id: "lb1",
+        label: "Vom Kinderwunsch bis zur Geburt (optional)",
+      },
+      {
+        id: "lb2",
+        label:
+          "Humanmedizinische Vertiefung I: Dermatologie und Zahnheilkunde (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Pflegewissenschaften (optional)",
+      },
+      {
+        id: "lb4",
+        label:
+          "Humanmedizinische Vertiefung II: Pharmakologie, Notfallmedizin und Pathologie (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Alternative und komplementäre Heilverfahren (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Umwelt und Gesundheit (optional)",
+      },
+    ],
+    "bos|13|sozialwirtschaft-und-recht": [
+      {
+        id: "lb1",
+        label: "Junge Menschen in besonderen Lebensumständen beraten",
+        hours: 30,
+      },
+      {
+        id: "lb2",
+        label: "Als Staatsbürger agieren",
+        hours: 27,
+      },
+      {
+        id: "lb3",
+        label: "Als Marktteilnehmer agieren",
+        hours: 27,
+      },
+    ],
+    "bos|13|soziologie": [
+      {
+        id: "lb1",
+        label: "Individuum in der Gesellschaft",
+      },
+      {
+        id: "lb2",
+        label: "Handeln in sozialen Gruppen",
+      },
+      {
+        id: "lb3",
+        label: "Heterogenität in der Gesellschaft",
+      },
+      {
+        id: "lb4",
+        label: "Wandel der Gesellschaft",
+      },
+    ],
+    "bos|13|spanisch|spanisch_ahr": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|13|spanisch|spanisch_aufbaukurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|13|spanisch|spanisch_fortgefuehrt": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|13|spanisch|spanisch_grundkurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "bos|13|technologie|abu": [
+      {
+        id: "lb1",
+        label: "Anbau und Verwertung von Energiepflanzen (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Fertilität und Reproduktion beim Nutztier (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Bio- und Gentechnologie in der Pflanzenzüchtung (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Bio- und Gentechnologie in der Tierzüchtung (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Ernährung zwischen Mangel und Überfluss (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Lebensmittelkonservierung (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Lebensmittelchemie und -technologie des Getreides (optional)",
+      },
+      {
+        id: "lb8",
+        label: "Komplexe technische Systeme (optional)",
+      },
+    ],
+    "bos|13|technologie|t": [
+      {
+        id: "lb1",
+        label: "Nichtmetallische Werkstoffe (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Netzwerktechnik (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Festigkeitslehre (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Fachwerke (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Bautechnik und Gestaltung (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Modellbildung-Anwendung (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Regelungstechnik (optional)",
+      },
+      {
+        id: "lb8",
+        label: "Mechatronik (optional)",
+      },
+      {
+        id: "lb9",
+        label: "Nachrichtentechnik (optional)",
+      },
+      {
+        id: "lb10",
+        label: "Komplexe technische Systeme (optional)",
+      },
+    ],
+    "bos|13|volkswirtschaftslehre": [
+      {
+        id: "lb1",
+        label:
+          "Wirtschaftspolitische Konzeptionen und fiskalpolitische Maßnahmen beurteilen",
+        hours: 12,
+      },
+      {
+        id: "lb2",
+        label:
+          "Beschäftigungs- und arbeitsmarktpolitische Maßnahmen analysieren und beurteilen",
+        hours: 18,
+      },
+      {
+        id: "lb3",
+        label: "Strukturpolitische Maßnahmen beurteilen",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Wettbewerbspolitische Maßnahmen beurteilen",
+        hours: 12,
+      },
+      {
+        id: "lb5",
+        label: "Umweltpolitische Maßnahmen beurteilen",
+        hours: 14,
+      },
+      {
+        id: "lb6",
+        label:
+          "Entwicklungspolitische Problemstellungen analysieren und beurteilen",
+        hours: 14,
+      },
+    ],
+    "bos|13|wirtschaft-und-recht": [
+      {
+        id: "lb1",
+        label: "Als Unternehmer Kaufverträge schließen",
+        hours: 14,
+      },
+      {
+        id: "lb2",
+        label: "Arbeitsverträge schließen und Personal führen",
+        hours: 14,
+      },
+      {
+        id: "lb3",
+        label: "Als Staatsbürger agieren",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Als Marktteilnehmer agieren",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Sich selbständig machen",
+        hours: 14,
+      },
+      {
+        id: "lb6",
+        label: "Den Preis für ein Produkt kalkulieren",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Den Produktionsprozess steuern",
+        hours: 14,
+      },
+      {
+        id: "lb8",
+        label: "Ein Marketingkonzept gestalten",
+        hours: 14,
+      },
+    ],
+    "bos|13|wirtschaft_aktuell": [
+      {
+        id: "lb1",
+        label: "Ausgewählte Aspekte der Internationalisierung (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb2",
+        label: "Angewandte Entwicklungspolitik (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb3",
+        label:
+          "Betriebswirtschaftlich Planen, Entscheiden und Kontrollieren (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Gesellschaft im Wandel (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Wirtschaft im Wandel (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb6",
+        label: "Märkte im Wandel (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Innovation und Existenzgründung (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb8",
+        label: "Standortentscheidungen treffen (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb9",
+        label: "Zukunftsorientiertes Personalmanagement (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb10",
+        label: "Qualitätsmanagement im Betrieb (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb11",
+        label: "Stakeholder-Konzept (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb12",
+        label: "Finanzmanagement (optional)",
+        hours: 14,
+      },
+    ],
+    "fos|10|betriebswirtschaftslehre": [
+      {
+        id: "lb1",
+        label:
+          "Sich im Unternehmen orientieren, Kennzahlen berechnen und betriebliche Zielsetzungen abgrenzen",
+        hours: 28,
+      },
+      {
+        id: "lb2",
+        label: "Typische Aufgaben im Personalbereich planen und organisieren",
+        hours: 16,
+      },
+      {
+        id: "lb3",
+        label: "Mithilfe des externen Rechnungswesens Bilanz und GuV erläutern",
+        hours: 30,
+      },
+      {
+        id: "lb4",
+        label:
+          "Mithilfe der Vollkostenrechnung Angebotspreise und Maschinenkosten ermitteln",
+        hours: 30,
+      },
+      {
+        id: "lb5",
+        label: "Ein Unternehmen erkunden",
+        hours: 20,
+      },
+    ],
+    "fos|10|biologie|abu": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Formenvielfalt des Lebens",
+      },
+      {
+        id: "lb3",
+        label: "Mikroorganismen und Viren",
+      },
+      {
+        id: "lb4",
+        label: "Humanbiologie",
+      },
+      {
+        id: "lb5",
+        label: "Menschliche Sexualität",
+      },
+    ],
+    "fos|10|biologie|s-gh": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Organisationsstufen des Lebens",
+      },
+      {
+        id: "lb3",
+        label: "Weitergabe genetischer Information",
+      },
+      {
+        id: "lb4",
+        label: "Systematik der Lebewesen",
+      },
+      {
+        id: "lb5",
+        label: "Gesunde Lebensführung",
+      },
+      {
+        id: "lb6",
+        label: "Stammesgeschichtliche Entwicklung des Menschen",
+      },
+    ],
+    "fos|10|bwl-rechnungswesen": [
+      {
+        id: "lb1",
+        label:
+          "Sich im Unternehmen orientieren und betriebliche Zielsetzungen überprüfen",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label: "Material beschaffen sowie Fertigungsverfahren festlegen",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label:
+          "Personalbedarf planen, Personal beschaffen, einsetzen und beurteilen",
+        hours: 20,
+      },
+      {
+        id: "lb4",
+        label:
+          "Mithilfe der Geschäftsbuchführung das Gesamtergebnis einer Unternehmung ermitteln",
+        hours: 35,
+      },
+      {
+        id: "lb5",
+        label:
+          "Mithilfe der Vollkostenrechnung Angebotspreise und das Betriebsergebnis ermitteln",
+        hours: 28,
+      },
+      {
+        id: "lb6",
+        label: "Ein Unternehmensplanspiel durchführen",
+        hours: 11,
+      },
+    ],
+    "fos|10|chemie": [
+      {
+        id: "lb1",
+        label: "Wie Chemiker denken und arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Reinstoffe und Stoffgemische",
+      },
+      {
+        id: "lb3",
+        label: "Atombau und Periodensystem",
+      },
+      {
+        id: "lb4",
+        label: "Formeln und Reaktionsgleichungen",
+      },
+      {
+        id: "lb5",
+        label: "Chemische Bindungen",
+      },
+      {
+        id: "lb6",
+        label: "Energetik",
+      },
+    ],
+    "fos|10|deutsch|vorklasse": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "fos|10|deutsch|vorklasse_gueltig_ab_26_27": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "fos|10|deutsch|vorkurs": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "fos|10|deutsch|vorkurs_guelitg_ab_26_27": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "fos|10|englisch|vorklasse": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|10|englisch|vorkurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|10|ethik": [
+      {
+        id: "lb1",
+        label: "Einführung in die Grundbegriffe der Ethik",
+      },
+      {
+        id: "lb2",
+        label: "Verantwortung und Gewissen",
+      },
+      {
+        id: "lb3",
+        label: "Angewandte Ethik",
+      },
+    ],
+    "fos|10|evangelische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Bibel im Dialog",
+      },
+      {
+        id: "lb2",
+        label: "Glaube in der Welt",
+      },
+      {
+        id: "lb3",
+        label: "Im Netz",
+      },
+      {
+        id: "lb4",
+        label: "Lebenszeiten",
+      },
+    ],
+    "fos|10|gpug-fosbos": [
+      {
+        id: "lb1",
+        label: "Methodenkompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Teilhabe: Gestaltung der eigenen Lebenswirklichkeit (optional)",
+        hours: 28,
+      },
+      {
+        id: "lb3",
+        label:
+          "Freiheitlich demokratische Rechte und Werte als Fundament der Lebenswirklichkeit in Deutschland (optional)",
+        hours: 28,
+      },
+      {
+        id: "lb4",
+        label:
+          "Weimarer Republik: Lebenswirklichkeiten in der ersten deutschen Demokratie (optional)",
+        hours: 28,
+      },
+      {
+        id: "lb5",
+        label: "Lebenswirklichkeiten im Nationalsozialismus (optional)",
+        hours: 28,
+      },
+    ],
+    "fos|10|gw|aktuell": [
+      {
+        id: "lb1",
+        label: "Wissenschaftlich arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Gesundheit multifaktoriell begreifen (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Sich im Gesundheitswesen orientieren (optional)",
+      },
+      {
+        id: "lb4",
+        label:
+          "Die Komplexität des menschlichen Organismus darstellen (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Geschichte der Medizin und Pflege (optional)",
+      },
+    ],
+    "fos|10|gw|aktuell_gueltig_ab_26_27": [
+      {
+        id: "lb1",
+        label: "Wissenschaftlich arbeiten",
+      },
+      {
+        id: "lb2",
+        label:
+          "Aufbau und Funktion des menschlichen Körpers sowie Auswirkungen von Krankheitsbildern erfassen (optional)",
+      },
+      {
+        id: "lb3",
+        label:
+          "Strukturen und Herausforderungen des Gesundheitswesens kennenlernen (optional)",
+      },
+      {
+        id: "lb4",
+        label:
+          "Sich auf das Praktikum im Gesundheitswesen vorbereiten (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Berufliche Erfahrungen einbringen (optional)",
+      },
+    ],
+    "fos|10|ibv|ibv": [
+      {
+        id: "lb1",
+        label: "Ein Unternehmen international ausrichten",
+        hours: 15,
+      },
+      {
+        id: "lb2",
+        label:
+          "Mithilfe der Vollkostenrechnung Angebotspreise und das Betriebsergebnis ermitteln",
+        hours: 28,
+      },
+      {
+        id: "lb3",
+        label:
+          "Mithilfe der Geschäftsbuchführung das Gesamtergebnis einer Unternehmung ermitteln",
+        hours: 33,
+      },
+      {
+        id: "lb4",
+        label:
+          "Grundprobleme einer Volkswirtschaft identifizieren und wirtschaftliche Prozesse mikroökonomisch analysieren und beurteilen",
+        hours: 21,
+      },
+      {
+        id: "lb5",
+        label:
+          "Ziele der Wirtschaftspolitik bestimmen und das Inlandsprodukt als Wohlstandsindikator analysieren",
+        hours: 16,
+      },
+      {
+        id: "lb6",
+        label:
+          "Ein Unternehmensplanspiel für ein internationales Unternehmen durchführen (optional)",
+        hours: 11,
+      },
+      {
+        id: "lb7",
+        label:
+          "Eine Fallstudie für ein internationales Unternehmen durchführen (optional)",
+        hours: 11,
+      },
+    ],
+    "fos|10|ibv|ibv_gueltig_ab_26_27": [
+      {
+        id: "lb1",
+        label:
+          "Unternehmerisch denken, sich im Unternehmen orientieren und Ziele formulieren",
+        hours: 30,
+      },
+      {
+        id: "lb2",
+        label:
+          "Den Erfolg betrieblichen Handelns mithilfe der Teilkostenrechnung analysieren",
+        hours: 30,
+      },
+      {
+        id: "lb3",
+        label:
+          "Ziele und Verhaltensweisen von Wirtschaftsakteuren erklären und deren Zusammenwirken bei der Preisbildung im vollkommenen Markt analysieren",
+        hours: 32,
+      },
+      {
+        id: "lb4",
+        label:
+          "Konsumentscheidungen aus verhaltensökonomischer Perspektive verstehen und optimieren",
+        hours: 20,
+      },
+    ],
+    "fos|10|katholische-religionslehre": [
+      {
+        id: "lb1",
+        label:
+          "Freiheit und Menschenwürde – Identität als Aufgabe christlicher Lebensgestaltung",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label:
+          "Gewissen und Verantwortung – Menschen in Entscheidungssituationen",
+        hours: 10,
+      },
+      {
+        id: "lb3",
+        label:
+          "Konfessionen und Religionen – das Miteinander in einer pluralen Welt",
+        hours: 10,
+      },
+      {
+        id: "lb4",
+        label: "Symbole und Sakramente – Ausdruck einer tieferen Wirklichkeit",
+        hours: 10,
+      },
+    ],
+    "fos|10|kuenstliche_intelligenz_informatik_u_technologie": [
+      {
+        id: "lb1",
+        label: "Physik-Basis",
+      },
+      {
+        id: "lb2",
+        label: "Kräfte und ihre Wirkungen (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Wärmezustand und Wärmeausdehnung fester Körper (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Elektrotechnik-Grundlagen (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Chemische Eigenschaften von Stoffen (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Atomaufbau und chemische Bindungen (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Informationstechnik-Grundlagen (optional)",
+      },
+      {
+        id: "lb8",
+        label: "Arbeiten und Lernen mit KI − unplugged (optional)",
+      },
+    ],
+    "fos|10|mathematik|vorklasse": [
+      {
+        id: "lb1",
+        label: "Aussagenlogik, Mengenlehre mit Zahlenmengen, Rechenregeln",
+        hours: 50,
+      },
+      {
+        id: "lb2",
+        label: "Gleichungen und lineare Ungleichungen",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Lineare und quadratische Funktionen",
+        hours: 60,
+      },
+      {
+        id: "lb4",
+        label: "Lineare Gleichungssysteme",
+        hours: 20,
+      },
+      {
+        id: "lb5",
+        label: "Dreieckslehre",
+        hours: 13,
+      },
+      {
+        id: "lb6",
+        label: "Berechnungen von Längen, Flächeninhalten und Volumina",
+        hours: 25,
+      },
+      {
+        id: "lb7",
+        label: "Daten und Zufall, Wahrscheinlichkeit",
+        hours: 18,
+      },
+      {
+        id: "lb8",
+        label: "Exponentialfunktion und Logarithmus",
+        hours: 18,
+      },
+    ],
+    "fos|10|mathematik|vorkurs": [
+      {
+        id: "lb1",
+        label: "Rechenregeln",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label: "Lineare und quadratische Funktionen",
+        hours: 18,
+      },
+    ],
+    "fos|10|nt-bo": [
+      {
+        id: "lb1",
+        label: "Physik-Basis",
+      },
+      {
+        id: "lb2",
+        label: "Kräfte und ihre Wirkungen (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Wärmezustand und Wärmeausdehnung fester Körper (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Elektrotechnik-Grundlagen (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Chemische Eigenschaften von Stoffen (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Atomaufbau und chemische Bindungen (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Informationstechnik-Grundlagen (optional)",
+      },
+    ],
+    "fos|10|paedagigik-psychologie": [
+      {
+        id: "lb1",
+        label: "Selbstmanagementstrategien effektiv nutzen",
+      },
+      {
+        id: "lb2",
+        label:
+          "Ressourcenorientiert arbeiten in sozialpädagogischen Handlungsfeldern",
+      },
+      {
+        id: "lb3",
+        label: "Emotional belastende Situationen bewältigen",
+      },
+      {
+        id: "lb4",
+        label: "Wertschätzend und konfliktlösend kommunizieren",
+      },
+    ],
+    "fos|10|physik": [
+      {
+        id: "lb1",
+        label: "Grundlagen der Mechanik I",
+        hours: 28,
+      },
+      {
+        id: "lb2",
+        label: "Grundlagen der Mechanik II",
+        hours: 28,
+      },
+      {
+        id: "lb3",
+        label: "Grundlagen der Elektrizitätslehre",
+        hours: 28,
+      },
+      {
+        id: "lb4",
+        label: "Grundlagen der Wärmelehre",
+        hours: 28,
+      },
+      {
+        id: "lb5",
+        label: "Grundlagen der Optik",
+        hours: 28,
+      },
+    ],
+    "fos|10|technologie": [
+      {
+        id: "lb1",
+        label: "Physik-Basis",
+      },
+      {
+        id: "lb2",
+        label: "Kräfte und ihre Wirkungen (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Wärmezustand und Wärmeausdehnung fester Körper (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Elektrotechnik-Grundlagen (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Chemische Eigenschaften von Stoffen (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Atomaufbau und chemische Bindungen (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Informationstechnik-Grundlagen (optional)",
+      },
+    ],
+    "fos|11|betriebswirtschaftslehre": [
+      {
+        id: "lb1",
+        label:
+          "Sich im Unternehmen orientieren und betriebliche Zielsetzungen analysieren",
+        hours: 12,
+      },
+      {
+        id: "lb2",
+        label: "Material beschaffen",
+        hours: 22,
+      },
+      {
+        id: "lb3",
+        label:
+          "Mithilfe des externen Rechnungswesens Bilanz und GuV analysieren",
+        hours: 22,
+      },
+      {
+        id: "lb4",
+        label:
+          "Mithilfe der Vollkostenrechnung Angebotspreise ermitteln, Maschinenkosten berechnen und Abweichungen analysieren",
+        hours: 28,
+      },
+    ],
+    "fos|11|biologie": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Grundlagen der Evolution",
+        hours: 6,
+      },
+      {
+        id: "lb3",
+        label: "Cytologie",
+        hours: 12,
+      },
+      {
+        id: "lb4",
+        label: "Mikrobiologie",
+        hours: 10,
+      },
+      {
+        id: "lb5",
+        label: "Biomoleküle als Energieträger und Strukturelemente",
+        hours: 6,
+      },
+      {
+        id: "lb6",
+        label: "Grundlagen der Cytogenetik",
+        hours: 10,
+      },
+      {
+        id: "lb7",
+        label: "Immunologie",
+        hours: 12,
+      },
+      {
+        id: "lb8",
+        label: "Biologisches Praktikum",
+        hours: 28,
+      },
+    ],
+    "fos|11|bwl-rechnungswesen": [
+      {
+        id: "lb1",
+        label:
+          "Sich im Unternehmen orientieren und betriebliche Zielsetzungen überprüfen",
+        hours: 8,
+      },
+      {
+        id: "lb2",
+        label: "Material beschaffen sowie Fertigungsverfahren festlegen",
+        hours: 18,
+      },
+      {
+        id: "lb3",
+        label: "Personal beschaffen und einsetzen",
+        hours: 16,
+      },
+      {
+        id: "lb4",
+        label:
+          "Mithilfe der Geschäftsbuchführung das Gesamtergebnis einer Unternehmung ermitteln",
+        hours: 20,
+      },
+      {
+        id: "lb5",
+        label:
+          "Mithilfe der Vollkostenrechnung Angebotspreise und das Betriebsergebnis ermitteln",
+        hours: 28,
+      },
+    ],
+    "fos|11|chemie|abu": [
+      {
+        id: "lb1",
+        label: "Wie Chemiker denken und arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Aufbau des Periodensystems",
+        hours: 6,
+      },
+      {
+        id: "lb3",
+        label: "Salze und Ionenbindung",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Molekulare Stoffe und Elektronenpaarbindung",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Stöchiometrie",
+        hours: 6,
+      },
+      {
+        id: "lb6",
+        label: "Säure-Base-Reaktionen",
+        hours: 16,
+      },
+      {
+        id: "lb7",
+        label: "Chemisches Praktikum",
+      },
+    ],
+    "fos|11|chemie|gh": [
+      {
+        id: "lb1",
+        label: "Wie Chemiker denken und arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Aufbau des Periodensystems",
+        hours: 6,
+      },
+      {
+        id: "lb3",
+        label: "Salze und Ionenbindung",
+        hours: 12,
+      },
+      {
+        id: "lb4",
+        label: "Molekulare Stoffe und Elektronenpaarbindung",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Säure-Base-Reaktionen",
+        hours: 12,
+      },
+      {
+        id: "lb6",
+        label: "Biomoleküle",
+        hours: 12,
+      },
+    ],
+    "fos|11|chemie|s": [
+      {
+        id: "lb1",
+        label: "Wie Chemiker denken und arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Aufbau des Periodensystems",
+        hours: 6,
+      },
+      {
+        id: "lb3",
+        label: "Salze und Ionenbindung",
+        hours: 12,
+      },
+      {
+        id: "lb4",
+        label: "Molekulare Stoffe und Elektronenpaarbindung",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Säure-Base-Reaktionen",
+        hours: 12,
+      },
+      {
+        id: "lb6",
+        label: "Biomoleküle",
+        hours: 12,
+      },
+    ],
+    "fos|11|chemie|t": [
+      {
+        id: "lb1",
+        label: "Wie Chemiker denken und arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Aufbau des Periodensystems",
+        hours: 6,
+      },
+      {
+        id: "lb3",
+        label: "Salze und Ionenbindung",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Molekulare Stoffe und Elektronenpaarbindung",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Stöchiometrie",
+        hours: 6,
+      },
+      {
+        id: "lb6",
+        label: "Säure-Base-Reaktionen",
+        hours: 16,
+      },
+      {
+        id: "lb7",
+        label: "Chemisches Praktikum",
+      },
+    ],
+    "fos|11|deutsch|gueltig_ab_26_27": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "fos|11|deutsch|gueltig_bis_26_27": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "fos|11|englisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|11|fpa|abu-taetigkeit": [
+      {
+        id: "lb1",
+        label: "Sich über die Praktikumsstelle informieren",
+      },
+      {
+        id: "lb2",
+        label:
+          "Organisationsstrukturen erfassen und sich in Ausbildung und Beruf orientieren",
+      },
+      {
+        id: "lb3",
+        label:
+          "In der Praktikumsstelle bei Produktion und Dienstleistungen mitwirken",
+      },
+      {
+        id: "lb4",
+        label: "Praktikumserfahrungen reflektieren",
+      },
+    ],
+    "fos|11|fpa|abu-vertiefung": [
+      {
+        id: "lb1",
+        label: "Bodenentstehung und Bodenbestandteile (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Bodenaufbau und Bodengefüge (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Bodenfruchtbarkeit und Bodenbewertung (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Bodenschutz und Bodenschäden (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Nährstoffe und Ernährungskonzepte (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Verdauungsapparat und Ernährungstherapien (optional)",
+      },
+    ],
+    "fos|11|fpa|g-taetigkeit": [
+      {
+        id: "lb1",
+        label: "Materialbasiertes Gestalten",
+      },
+      {
+        id: "lb2",
+        label: "Visuelle Gestaltung",
+      },
+      {
+        id: "lb3",
+        label: "Betriebliche Strukturen",
+      },
+      {
+        id: "lb4",
+        label: "Kommunikation und Interaktion",
+      },
+      {
+        id: "lb5",
+        label: "Präsentation und Reflexion",
+      },
+    ],
+    "fos|11|fpa|g-vertiefung": [
+      {
+        id: "lb1",
+        label: "Technische Kommunikation",
+      },
+      {
+        id: "lb2",
+        label: "Raumdarstellung",
+      },
+    ],
+    "fos|11|fpa|gesundheit-taetigkeit": [
+      {
+        id: "lb1",
+        label: "Sich über die Praktikumsstelle informieren",
+      },
+      {
+        id: "lb2",
+        label: "In der Praktikumsstelle mitwirken",
+      },
+      {
+        id: "lb3",
+        label: "Praktikumserfahrungen reflektieren und aufarbeiten",
+      },
+    ],
+    "fos|11|fpa|gesundheit-vertiefung": [
+      {
+        id: "lb1",
+        label: "Cytologie",
+      },
+    ],
+    "fos|11|fpa|internat-wirtschaft-vertiefung": [
+      {
+        id: "lb1",
+        label:
+          "Betriebliche Aufgaben mithilfe eines Tabellenkalkulationsprogramms lösen",
+        hours: 18,
+      },
+      {
+        id: "lb2",
+        label: "Betriebliche Aufgaben anwendungsorientiert lösen",
+        hours: 10,
+      },
+    ],
+    "fos|11|fpa|iw-taetigkeit": [
+      {
+        id: "lb1",
+        label: "Sich über die Praktikumsstelle informieren",
+      },
+      {
+        id: "lb2",
+        label:
+          "Organisationsstrukturen erfassen und sich in Ausbildung und Beruf orientieren",
+      },
+      {
+        id: "lb3",
+        label: "Informations‑ und Kommunikationsprozesse gestalten",
+      },
+      {
+        id: "lb4",
+        label:
+          "Werteströme und Wertschöpfungsprozesse dokumentieren, auswerten und steuern",
+      },
+      {
+        id: "lb5",
+        label: "Marketingprozesse planen und durchführen",
+      },
+      {
+        id: "lb6",
+        label: "Unternehmensprozesse planen, steuern und kontrollieren",
+      },
+    ],
+    "fos|11|fpa|s-taetigkeit": [
+      {
+        id: "lb1",
+        label: "Sich über die Praktikumsstelle informieren",
+      },
+      {
+        id: "lb2",
+        label: "In der Praktikumsstelle mitwirken",
+      },
+      {
+        id: "lb3",
+        label: "Praktikumserfahrungen reflektieren und aufarbeiten",
+      },
+    ],
+    "fos|11|fpa|s-vertiefung": [
+      {
+        id: "lb1",
+        label: "Musik im Kontext Sozialer Arbeit (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Kunst im Kontext Sozialer Arbeit (optional)",
+      },
+      {
+        id: "lb3",
+        label:
+          "Methoden und Prinzipien Sozialer und pädagogischer Arbeit (optional)",
+      },
+    ],
+    "fos|11|fpa|t-taetigkeit": [
+      {
+        id: "lb1",
+        label: "Sich über die Praktikumsstelle informieren",
+      },
+      {
+        id: "lb2",
+        label: "Elektrische Systeme analysieren und ihre Funktionen testen",
+      },
+      {
+        id: "lb3",
+        label: "Elektrische Anlagen planen und erstellen",
+      },
+      {
+        id: "lb4",
+        label: "Werkstücke konventionell fertigen",
+      },
+      {
+        id: "lb5",
+        label:
+          "Fertigungsprozesse mit numerisch gesteuerten Werkzeugmaschinen simulieren oder durchführen",
+      },
+      {
+        id: "lb6",
+        label: "Verbindungen durch Fügetechniken herstellen",
+      },
+      {
+        id: "lb7",
+        label:
+          "Bautechnische Gestaltungen und Konstruktionen untersuchen und planen",
+      },
+      {
+        id: "lb8",
+        label:
+          "Steuerungstechnische Systeme installieren und in Betrieb nehmen",
+      },
+    ],
+    "fos|11|fpa|t-vertiefung": [
+      {
+        id: "lb1",
+        label: "Technische Zeichnungen manuell und rechnergestützt erstellen",
+      },
+    ],
+    "fos|11|fpa|w-taetigkeit": [
+      {
+        id: "lb1",
+        label: "Sich über die Praktikumsstelle informieren",
+      },
+      {
+        id: "lb2",
+        label:
+          "Organisationsstrukturen erfassen und sich in Ausbildung und Beruf orientieren",
+      },
+      {
+        id: "lb3",
+        label: "Informations‑ und Kommunikationsprozesse gestalten",
+      },
+      {
+        id: "lb4",
+        label:
+          "Werteströme und Wertschöpfungsprozesse dokumentieren, auswerten und steuern",
+      },
+      {
+        id: "lb5",
+        label: "Marketingprozesse planen und durchführen",
+      },
+      {
+        id: "lb6",
+        label: "Unternehmensprozesse planen, steuern und kontrollieren",
+      },
+    ],
+    "fos|11|fpa|w-vertiefung": [
+      {
+        id: "lb1",
+        label:
+          "Betriebliche Aufgaben mithilfe eines Tabellenkalkulationsprogramms lösen",
+        hours: 18,
+      },
+      {
+        id: "lb2",
+        label: "Betriebliche Aufgaben anwendungsorientiert lösen",
+        hours: 10,
+      },
+    ],
+    "fos|11|franzoesisch|franzoesisch_aufbaukurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|11|franzoesisch|franzoesisch_grundkurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|11|geschichte": [
+      {
+        id: "lb1",
+        label: "Methodenkompetenzen",
+      },
+      {
+        id: "lb2",
+        label:
+          "Historische und aktuelle Lebenswirklichkeiten: Stehen wir am Beginn einer neuen Epoche?",
+        hours: 8,
+      },
+      {
+        id: "lb3",
+        label:
+          "Einflüsse auf die Lebenswirklichkeit: Ideen und Ideologien des kurzen 20. Jahrhunderts im globalen Wettstreit",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label:
+          "Historische Lebenswirklichkeiten in Deutschland: Deutsche Geschichte seit dem Ende des Zweiten Weltkriegs",
+        hours: 20,
+      },
+      {
+        id: "lb5",
+        label:
+          "Die Auseinandersetzung mit historischen Lebenswirklichkeiten: Der Umgang mit Diktaturen in Deutschland",
+        hours: 14,
+      },
+    ],
+    "fos|11|gestaltung|praxis": [
+      {
+        id: "lb1",
+        label: "Zeichnung",
+      },
+      {
+        id: "lb2",
+        label: "Malerei",
+      },
+      {
+        id: "lb3",
+        label: "Objekt",
+      },
+      {
+        id: "lb4",
+        label: "Konzept",
+      },
+    ],
+    "fos|11|gestaltung|theorie": [
+      {
+        id: "lb1",
+        label: "Werkanalyse",
+      },
+      {
+        id: "lb2",
+        label: "Kunstgeschichte",
+      },
+      {
+        id: "lb3",
+        label: "Gestaltungstechniken",
+      },
+      {
+        id: "lb4",
+        label: "Visuelle Kommunikation",
+      },
+    ],
+    "fos|11|gw|aktuell": [
+      {
+        id: "lb1",
+        label: "Wissenschaftlich arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Gesundheit multifaktoriell begreifen",
+      },
+      {
+        id: "lb3",
+        label: "Sich im Gesundheitswesen orientieren",
+      },
+      {
+        id: "lb4",
+        label: "Infektionen vorbeugen",
+      },
+    ],
+    "fos|11|gw|aktuell_gueltig_ab_26_27": [
+      {
+        id: "lb1",
+        label: "Wissenschaftlich arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Infektionskrankheiten und Resistenzentwicklungen vorbeugen",
+      },
+      {
+        id: "lb3",
+        label: "Bewegung fördern und mit Verletzungen umgehen",
+      },
+    ],
+    "fos|11|ibv|ibv": [
+      {
+        id: "lb1",
+        label: "Ein Unternehmen international ausrichten",
+        hours: 19,
+      },
+      {
+        id: "lb2",
+        label:
+          "Mithilfe der Vollkostenrechnung Angebotspreise und das Betriebsergebnis ermitteln",
+        hours: 27,
+      },
+      {
+        id: "lb3",
+        label:
+          "Wirtschaftliche Prozesse mikroökonomisch analysieren und beurteilen",
+        hours: 25,
+      },
+      {
+        id: "lb4",
+        label:
+          "Ziele der Wirtschaftspolitik bestimmen und das Inlandsprodukt als Wohlstandsindikator analysieren",
+        hours: 19,
+      },
+    ],
+    "fos|11|ibv|ibv_gueltig_ab_26_27": [
+      {
+        id: "lb1",
+        label: "Establishing a business and managing it sustainably",
+        hours: 17,
+      },
+      {
+        id: "lb2",
+        label:
+          "Den Erfolg betrieblichen Handelns mithilfe der Teilkostenrechnung analysieren und zukünftige Erfolgspotenziale durch Investitionen sichern",
+        hours: 26,
+      },
+      {
+        id: "lb3",
+        label:
+          "Mikroökonomische Prozesse am Modell des vollkommenen Markts analysieren und beurteilen",
+        hours: 29,
+      },
+      {
+        id: "lb4",
+        label:
+          "Understanding and optimising decisions from a behavioural economics perspective",
+        hours: 12,
+      },
+    ],
+    "fos|11|ki": [
+      {
+        id: "lb1",
+        label:
+          "Die eigene Wahrnehmung als Voraussetzung für erfolgreiche Kommunikation analysieren und reflektieren",
+      },
+      {
+        id: "lb2",
+        label: "Kranken Menschen angemessen begegnen",
+      },
+      {
+        id: "lb3",
+        label:
+          "Mit Klienten unter Beachtung des Alters und der Lebensphase kommunizieren",
+      },
+    ],
+    "fos|11|kuenstliche_intelligenz_informatik_u_technologie": [
+      {
+        id: "lb1",
+        label: "Arbeiten und Lernen mit KI",
+        hours: 12,
+      },
+      {
+        id: "lb2",
+        label: "Tabellenkalkulation",
+        hours: 8,
+      },
+      {
+        id: "lb3",
+        label: "Maschinenbau (optional)",
+        hours: 12,
+      },
+      {
+        id: "lb4",
+        label: "Elektrotechnik – Gleichstromtechnik (optional)",
+        hours: 12,
+      },
+      {
+        id: "lb5",
+        label: "Bautechnik (optional)",
+        hours: 12,
+      },
+      {
+        id: "lb6",
+        label: "Informations- und Kommunikationstechnik (optional)",
+        hours: 12,
+      },
+      {
+        id: "lb7",
+        label: "Einfache kompetenzorientierte Projektarbeit",
+        hours: 12,
+      },
+    ],
+    "fos|11|mathematik|abu-g-s-w-gh-iw": [
+      {
+        id: "lb1",
+        label: "Ganzrationale Funktionen",
+        hours: 32,
+      },
+      {
+        id: "lb2",
+        label: "Differenzialrechnung bei ganzrationalen Funktionen",
+        hours: 24,
+      },
+      {
+        id: "lb3",
+        label: "Zufallsexperiment und Ereignis",
+        hours: 8,
+      },
+      {
+        id: "lb4",
+        label: "Relative Häufigkeit und Wahrscheinlichkeit",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Grundlagen der Kombinatorik",
+        hours: 6,
+      },
+    ],
+    "fos|11|mathematik|abu-g-s-w-gh-iw_gueltig_ab_26_27": [
+      {
+        id: "lb1",
+        label: "Ganzrationale Funktionen: lineare und quadratische Funktionen",
+        hours: 16,
+      },
+      {
+        id: "lb2",
+        label: "Ganzrationale Funktionen allgemein",
+        hours: 16,
+      },
+      {
+        id: "lb3",
+        label:
+          "Grundlagen der Differenzialrechnung bei ganzrationalen Funktionen",
+        hours: 24,
+      },
+      {
+        id: "lb4",
+        label: "Grundlagen der Wahrscheinlichkeitsrechnung",
+        hours: 10,
+      },
+      {
+        id: "lb5",
+        label: "Bedingte Wahrscheinlichkeit und stochastische Unabhängigkeit",
+        hours: 12,
+      },
+      {
+        id: "lb6",
+        label: "Kombinatorik",
+        hours: 6,
+      },
+    ],
+    "fos|11|mathematik|t": [
+      {
+        id: "lb1",
+        label: "Ganzrationale Funktionen",
+        hours: 32,
+      },
+      {
+        id: "lb2",
+        label: "Differenzialrechnung bei ganzrationalen Funktionen",
+        hours: 24,
+      },
+      {
+        id: "lb3",
+        label:
+          "Vektoren im IR 2 und IR 3 , lineare Unabhängigkeit und lineare Gleichungssysteme",
+        hours: 20,
+      },
+      {
+        id: "lb4",
+        label: "Produkte von Vektoren",
+        hours: 8,
+      },
+    ],
+    "fos|11|mathematik|t_gueltig_ab_26_27": [
+      {
+        id: "lb1",
+        label: "Ganzrationale Funktionen: lineare und quadratische Funktionen",
+        hours: 14,
+      },
+      {
+        id: "lb2",
+        label: "Ganzrationale Funktionen allgemein",
+        hours: 14,
+      },
+      {
+        id: "lb3",
+        label:
+          "Grundlagen der Differenzialrechnung bei ganzrationalen Funktionen",
+        hours: 24,
+      },
+      {
+        id: "lb4",
+        label:
+          "Vektoren im zwei- und dreidimensionalen Anschauungsraum und lineare Gleichungssysteme",
+        hours: 20,
+      },
+      {
+        id: "lb5",
+        label: "Produkte von Vektoren",
+        hours: 12,
+      },
+    ],
+    "fos|11|medien": [
+      {
+        id: "lb1",
+        label:
+          "Fotografie im medientheoretischen und kunsthistorischen Kontext",
+        hours: 12,
+      },
+      {
+        id: "lb2",
+        label: "Fotografische Techniken",
+        hours: 12,
+      },
+      {
+        id: "lb3",
+        label: "Fotografische Bildideen",
+        hours: 22,
+      },
+      {
+        id: "lb4",
+        label: "Editieren, Bearbeiten und Präsentieren",
+        hours: 10,
+      },
+    ],
+    "fos|11|paedagigik-psychologie|s": [
+      {
+        id: "lb1",
+        label:
+          "Wesenzüge wissenschaftlicher Pädagogik und Psychologie begreifen",
+      },
+      {
+        id: "lb2",
+        label:
+          "Grundlagen des Erlebens, Verhaltens und Handelns analysieren, verstehen und anwenden",
+      },
+      {
+        id: "lb3",
+        label:
+          "Erziehungs- und Bildungsprozesse individuumsbezogen und verantwortlich gestalten",
+      },
+      {
+        id: "lb4",
+        label:
+          "Lernen als multidimensionalen und steuerbaren Prozess verstehen",
+      },
+    ],
+    "fos|11|paedagigik-psychologie|s_gueltig_ab_26_27": [
+      {
+        id: "lb1",
+        label:
+          "Wesenszüge wissenschaftlicher Pädagogik und Psychologie begreifen",
+      },
+      {
+        id: "lb2",
+        label:
+          "Grundlagen des Erlebens und Verhaltens analysieren, verstehen und anwenden",
+      },
+      {
+        id: "lb3",
+        label:
+          "Erziehungsprozesse individuumsbezogen und kompetenzorientiert gestalten",
+      },
+      {
+        id: "lb4",
+        label:
+          "Lernen als multidimensionalen und steuerbaren Prozess verstehen",
+      },
+    ],
+    "fos|11|physik|abu": [
+      {
+        id: "lb1",
+        label: "Geradlinige Bewegung",
+        hours: 20,
+      },
+      {
+        id: "lb2",
+        label: "Dynamik, Newton'sche Gesetze",
+        hours: 10,
+      },
+      {
+        id: "lb3",
+        label: "Kreisbewegung",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Energie, Arbeit und Leistung",
+        hours: 12,
+      },
+    ],
+    "fos|11|physik|t": [
+      {
+        id: "lb1",
+        label: "Beschreibung von Bewegungen",
+        hours: 20,
+      },
+      {
+        id: "lb2",
+        label: "Dynamik, Newton'sche Gesetze",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Energie und Arbeit",
+        hours: 16,
+      },
+      {
+        id: "lb4",
+        label: "Physikalisches Praktikum",
+        hours: 28,
+      },
+    ],
+    "fos|11|physik|t_gueltig_ab_26_27": [
+      {
+        id: "lb1",
+        label: "Beschreibung von Bewegungen",
+        hours: 20,
+      },
+      {
+        id: "lb2",
+        label: "Dynamik, Newton'sche Gesetze",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Energie und Arbeit",
+        hours: 16,
+      },
+      {
+        id: "lb4",
+        label: "Experimentelles Arbeiten",
+        hours: 28,
+      },
+    ],
+    "fos|11|rechtslehre|iw": [
+      {
+        id: "lb1",
+        label:
+          "Kaufverträge mit inländischen und ausländischen Partnern abschließen und erfüllen",
+        hours: 22,
+      },
+      {
+        id: "lb2",
+        label:
+          "Im nationalen und internationalen kaufmännischen Geschäftsverkehr agieren",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Arbeitsverhältnisse rechtlich gestalten",
+        hours: 14,
+      },
+    ],
+    "fos|11|rechtslehre|w": [
+      {
+        id: "lb1",
+        label: "Kaufverträge abschließen und erfüllen",
+        hours: 22,
+      },
+      {
+        id: "lb2",
+        label: "Im kaufmännischen Geschäftsverkehr agieren",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Arbeitsverhältnisse rechtlich gestalten",
+        hours: 14,
+      },
+    ],
+    "fos|11|sozialwirtschaft-und-recht": [
+      {
+        id: "lb1",
+        label: "Ein soziales Unternehmen strategisch ausrichten",
+        hours: 20,
+      },
+      {
+        id: "lb2",
+        label: "Liquide Mittel für ein soziales Unternehmen beschaffen",
+        hours: 22,
+      },
+      {
+        id: "lb3",
+        label: "Den Erfolg eines sozialen Unternehmens analysieren",
+        hours: 22,
+      },
+    ],
+    "fos|11|spanisch|spanisch_aufbaukurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|11|spanisch|spanisch_grundkurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|11|technologie": [
+      {
+        id: "lb1",
+        label: "Technologische Grundlagen",
+      },
+      {
+        id: "lb2",
+        label: "Informatik",
+      },
+      {
+        id: "lb3",
+        label: "Maschinenbau (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Elektrotechnik (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Bautechnik (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Informations- und Kommunikationstechnik (optional)",
+      },
+    ],
+    "fos|11|volkswirtschaftslehre": [
+      {
+        id: "lb1",
+        label:
+          "Grundlagen ökonomischen Denkens und Handelns analysieren und beurteilen",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label:
+          "Die Preisbildung bei vollkommenem Wettbewerb analysieren und beurteilen",
+        hours: 18,
+      },
+      {
+        id: "lb3",
+        label:
+          "Die Preisbildung bei unvollkommenem Wettbewerb analysieren und beurteilen",
+        hours: 28,
+      },
+    ],
+    "fos|12|betriebswirtschaftslehre": [
+      {
+        id: "lb1",
+        label:
+          "Jahresabschlussarbeiten durchführen und das Gesamtergebnis eines Unternehmens ermitteln",
+        hours: 44,
+      },
+      {
+        id: "lb2",
+        label:
+          "Entscheidungen mithilfe der Teilkostenrechnung vorbereiten und begründet treffen",
+        hours: 32,
+      },
+      {
+        id: "lb3",
+        label:
+          "Finanzierungs- und Investitionsvorgänge analysieren, liquide Mittel beschaffen und Investitionen tätigen",
+        hours: 32,
+      },
+      {
+        id: "lb4",
+        label:
+          "Personal sach- und personenorientiert führen und zukunftsorientiert entwickeln",
+        hours: 32,
+      },
+    ],
+    "fos|12|biologie|abu": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Ökologie",
+        hours: 35,
+      },
+      {
+        id: "lb3",
+        label: "Genetik",
+        hours: 50,
+      },
+      {
+        id: "lb4",
+        label: "Physiologie",
+        hours: 55,
+      },
+    ],
+    "fos|12|biologie|g": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Genetik",
+        hours: 30,
+      },
+      {
+        id: "lb3",
+        label: "Stoffwechsel",
+        hours: 26,
+      },
+      {
+        id: "lb4",
+        label: "Evolution",
+        hours: 28,
+      },
+    ],
+    "fos|12|biologie|s": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Zellbiologische Grundlagen",
+        hours: 14,
+      },
+      {
+        id: "lb3",
+        label: "Genetik des Menschen",
+        hours: 28,
+      },
+      {
+        id: "lb4",
+        label: "Der Mensch als Evolutionsfaktor",
+        hours: 14,
+      },
+    ],
+    "fos|12|biologie|wahl-g-t-w-iw": [
+      {
+        id: "lb1",
+        label: "Biologie des Alltags (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Bionik (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Evolution (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Genetik/Gentechnik (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Immunologie (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Sinnesphysiologie (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Stoffkreisläufe und Bioökonomie (optional)",
+      },
+    ],
+    "fos|12|biotechnologie": [
+      {
+        id: "lb1",
+        label: "Grundlagen naturwissenschaftlichen Experimentierens",
+      },
+      {
+        id: "lb2",
+        label: "Mikrobiologische Nachweismethoden (optional)",
+      },
+      {
+        id: "lb3",
+        label:
+          "Biotechnologie der Nahrungs- und Genussmittelproduktion (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Pflanzenproduktion und Energiegewinnung (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Nanobiotechnologie (optional)",
+      },
+    ],
+    "fos|12|bwl-rechnungswesen": [
+      {
+        id: "lb1",
+        label:
+          "Entscheidungen mithilfe der Teilkostenrechnung vorbereiten und begründet treffen",
+        hours: 32,
+      },
+      {
+        id: "lb2",
+        label: "Marketingprozesse planen und steuern",
+        hours: 25,
+      },
+      {
+        id: "lb3",
+        label: "Jahresabschlussarbeiten durchführen",
+        hours: 50,
+      },
+      {
+        id: "lb4",
+        label:
+          "Finanzierungs- und Investitionsvorgänge analysieren, liquide Mittel beschaffen und Investitionen tätigen",
+        hours: 33,
+      },
+    ],
+    "fos|12|chemie|abu": [
+      {
+        id: "lb1",
+        label: "Wie Chemiker denken und arbeiten",
+      },
+      {
+        id: "lb2",
+        label:
+          "Funktionelle Gruppen und Reaktionsmechanismen der organischen Chemie",
+        hours: 30,
+      },
+      {
+        id: "lb3",
+        label: "Reaktionsgeschwindigkeit und chemisches Gleichgewicht",
+        hours: 24,
+      },
+      {
+        id: "lb4",
+        label: "Redoxreaktionen und Elektrochemie",
+        hours: 30,
+      },
+    ],
+    "fos|12|chemie|gh": [
+      {
+        id: "lb1",
+        label: "Wie Chemiker denken und arbeiten",
+      },
+      {
+        id: "lb2",
+        label:
+          "Funktionelle Gruppen und Reaktionsmechanismen der organischen Chemie",
+        hours: 30,
+      },
+      {
+        id: "lb3",
+        label: "Redoxreaktionen im physiologischen Kontext",
+        hours: 26,
+      },
+    ],
+    "fos|12|chemie|t": [
+      {
+        id: "lb1",
+        label: "Wie Chemiker denken und arbeiten",
+      },
+      {
+        id: "lb2",
+        label:
+          "Funktionelle Gruppen und Reaktionsmechanismen der organischen Chemie",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Reaktionsgeschwindigkeit und chemisches Gleichgewicht",
+        hours: 16,
+      },
+      {
+        id: "lb4",
+        label: "Redoxreaktionen und Elektrochemie",
+        hours: 20,
+      },
+    ],
+    "fos|12|deutsch|gueltig_bis_26_27": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "fos|12|ebc": [
+      {
+        id: "lb1",
+        label: "Reading, Understanding and Interpreting Literature – a Toolbox",
+      },
+      {
+        id: "lb2",
+        label: "Topics and Issues",
+      },
+    ],
+    "fos|12|englisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|12|ethik": [
+      {
+        id: "lb1",
+        label: "Moral und Ethik",
+      },
+      {
+        id: "lb2",
+        label: "Angewandte Ethik",
+      },
+      {
+        id: "lb3",
+        label: "Glück und Sinnerfüllung",
+      },
+    ],
+    "fos|12|evangelische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Gott in Beziehung",
+      },
+      {
+        id: "lb2",
+        label: "Mensch, du bist wer",
+      },
+      {
+        id: "lb3",
+        label: "Lebenswert",
+      },
+      {
+        id: "lb4",
+        label: "Global gerecht",
+      },
+      {
+        id: "lb5",
+        label: "Religion vielfältig",
+      },
+    ],
+    "fos|12|experimentelles_gestalten": [
+      {
+        id: "lb1",
+        label: "Malerei und Grafik (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Plastik und Objekt (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Gestalten im Raum (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Visuelle Medien (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Aktionskunst (optional)",
+      },
+    ],
+    "fos|12|franzoesisch|franzoesisch_ahr": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|12|franzoesisch|franzoesisch_aufbaukurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|12|franzoesisch|franzoesisch_fortgefuehrt": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|12|franzoesisch|franzoesisch_grundkurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|12|gestaltung|praxis": [
+      {
+        id: "lb1",
+        label: "Zeichnung und Malerei",
+      },
+      {
+        id: "lb2",
+        label: "Grafikdesign",
+      },
+      {
+        id: "lb3",
+        label: "Objekt",
+      },
+      {
+        id: "lb4",
+        label: "Konzept",
+      },
+    ],
+    "fos|12|gestaltung|theorie": [
+      {
+        id: "lb1",
+        label: "Werkanalyse",
+      },
+      {
+        id: "lb2",
+        label: "Kunstgeschichte",
+      },
+      {
+        id: "lb3",
+        label: "Gestaltungstechniken",
+      },
+      {
+        id: "lb4",
+        label: "Visuelle Kommunikation",
+      },
+      {
+        id: "lb5",
+        label: "Produktdesign",
+      },
+    ],
+    "fos|12|gwr": [
+      {
+        id: "lb1",
+        label: "Ein Unternehmen im Gesundheitswesen strategisch ausrichten",
+        hours: 19,
+      },
+      {
+        id: "lb2",
+        label:
+          "Liquide Mittel für ein Unternehmen im Gesundheitswesen beschaffen",
+        hours: 19,
+      },
+      {
+        id: "lb3",
+        label: "Den Erfolg eines Unternehmens im Gesundheitswesen analysieren",
+        hours: 19,
+      },
+      {
+        id: "lb4",
+        label:
+          "Für ein Unternehmen im Gesundheitswesen Personal einsetzen und führen",
+        hours: 19,
+      },
+      {
+        id: "lb5",
+        label: "Dienstleistungen des Gesundheitswesens vermarkten",
+        hours: 19,
+      },
+      {
+        id: "lb6",
+        label: "Familien in besonderen Lebensumständen beraten",
+        hours: 12,
+      },
+      {
+        id: "lb7",
+        label: "Als Marktteilnehmer agieren",
+        hours: 26,
+      },
+    ],
+    "fos|12|gw|aktuell": [
+      {
+        id: "lb1",
+        label: "Wissenschaftlich arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Sich gesundheitsbewusst ernähren",
+      },
+      {
+        id: "lb3",
+        label: "Bewegung fördern",
+      },
+      {
+        id: "lb4",
+        label:
+          "Herz‑Kreislauf‑Erkrankungen vorbeugen und deren Konsequenzen erfassen",
+      },
+    ],
+    "fos|12|ibv|ibv": [
+      {
+        id: "lb1",
+        label: "Jahresabschlussarbeiten durchführen",
+        hours: 52,
+      },
+      {
+        id: "lb2",
+        label:
+          "Finanzierungs- und Investitionsvorgänge analysieren, liquide Mittel beschaffen und Investitionen tätigen",
+        hours: 30,
+      },
+      {
+        id: "lb3",
+        label:
+          "Entscheidungen mithilfe der Teilkostenrechnung vorbereiten und begründet treffen",
+        hours: 32,
+      },
+      {
+        id: "lb4",
+        label: "Weitere Ziele der Wirtschaftspolitik analysieren",
+        hours: 26,
+      },
+    ],
+    "fos|12|informatik|w-s-abu-g-gh": [
+      {
+        id: "lb1",
+        label: "Entwicklung relationaler Datenbanken",
+        hours: 16,
+      },
+      {
+        id: "lb2",
+        label: "Implementierung und Nutzung relationaler Datenbanken",
+        hours: 16,
+      },
+      {
+        id: "lb3",
+        label: "Datenmanagement in relationalen Datenbanken (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb4",
+        label: "Gesellschaft und Informatik (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb5",
+        label: "Technische Grundlagen (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb6",
+        label: "Netzwerke realisieren (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb7",
+        label: "Visualisierung von Daten (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb8",
+        label: "Grundlagen der Softwareentwicklung (optional)",
+        hours: 24,
+      },
+      {
+        id: "lb9",
+        label: "Prozedurale Programmierung (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb10",
+        label: "Objektorientierte Programmierung (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb11",
+        label: "Gestaltung von IT-Anwendungen (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb12",
+        label: "Modellbildung und Simulation (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb13",
+        label: "Objektorientierte Analyse (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb14",
+        label: "ERP-Systeme - Finanzbuchhaltung (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb15",
+        label: "ERP-Systeme - Material- und Produktionswirtschaft (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb16",
+        label: "IT-Projekt (optional)",
+        hours: 24,
+      },
+    ],
+    "fos|12|informatik|wahl-t-iw": [
+      {
+        id: "lb1",
+        label: "Grundlagen der Softwareentwicklung",
+        hours: 24,
+      },
+      {
+        id: "lb2",
+        label: "Entwicklung relationaler Datenbanken (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb3",
+        label:
+          "Implementierung und Nutzung relationaler Datenbanken (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb4",
+        label: "Datenmanagement in relationalen Datenbanken (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb5",
+        label: "Gesellschaft und Informatik (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb6",
+        label: "Technische Grundlagen (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb7",
+        label: "Netzwerke realisieren (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb8",
+        label: "Visualisierung von Daten (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb9",
+        label: "Prozedurale Programmierung (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb10",
+        label: "Objektorientierte Programmierung (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb11",
+        label: "Gestaltung von IT-Anwendungen (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb12",
+        label: "ERP-Systeme – Finanzbuchhaltung (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb13",
+        label: "ERP-Systeme – Material-und Produktionswirtschaft (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb14",
+        label: "IT-Projekt (optional)",
+        hours: 24,
+      },
+    ],
+    "fos|12|internationale_politik": [
+      {
+        id: "lb1",
+        label:
+          "Akteure, Strukturen und Theorien in der internationalen Politik",
+        hours: 12,
+      },
+      {
+        id: "lb2",
+        label:
+          "Handlungsfelder und Herausforderungen in der internationalen Politik",
+        hours: 22,
+      },
+      {
+        id: "lb3",
+        label: "Kontroversen in der und über die internationale Politik",
+        hours: 22,
+      },
+    ],
+    "fos|12|isb|pflicht-iw": [
+      {
+        id: "lb1",
+        label: "Sich auf dem internationalen Arbeitsmarkt erfolgreich bewerben",
+        hours: 16,
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Teams führen und Personal entwickeln",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Ein neues Produkt auf einem internationalen Markt einführen",
+        hours: 20,
+      },
+    ],
+    "fos|12|isb|wahl-abu-g-t-w-s-gh": [
+      {
+        id: "lb1",
+        label: "Sich auf dem internationalen Arbeitsmarkt erfolgreich bewerben",
+        hours: 16,
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Teams führen und Personal entwickeln",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Ein neues Produkt auf einem internationalen Markt einführen",
+        hours: 20,
+      },
+    ],
+    "fos|12|italienisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|12|katholische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Religion und Vernunft – Herausforderung der Weltdeutung",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label: "Lesen und verstehen – Deutungshorizonte biblischer Texte",
+        hours: 10,
+      },
+      {
+        id: "lb3",
+        label: "Geschaffen und erlöst – das christliche Menschenbild",
+        hours: 10,
+      },
+      {
+        id: "lb4",
+        label: "Erfahrbar und nah – dem dreieinen Gott begegnen",
+        hours: 10,
+      },
+      {
+        id: "lb5",
+        label:
+          "Gerechtigkeit und Verantwortung – die Botschaft der Propheten für heute",
+        hours: 10,
+      },
+    ],
+    "fos|12|ki": [
+      {
+        id: "lb1",
+        label: "Im multiprofessionellen Team im Gesundheitswesen arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Konflikte im Team bewältigen",
+      },
+      {
+        id: "lb3",
+        label: "Mit Krisen und Trauer umgehen",
+      },
+    ],
+    "fos|12|kuenstliche_intelligenz_informatik_u_technologie|abu": [
+      {
+        id: "lb1",
+        label: "Künstliche Intelligenz und digitale Anwendungen",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label: "Grundlagen nachhaltiger Pflanzenproduktion (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb3",
+        label: "Zukunftsfähige Düngung (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb4",
+        label:
+          "Nutztierhaltung im Spannungsfeld von Ökonomie, Umweltschutz und Tierwohl (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb5",
+        label:
+          "Nutztierfütterung – leistungsorientiert und nachhaltig (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb6",
+        label: "Moderne Werkstoffe (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb7",
+        label: "Allgemeine Energietechnik (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb8",
+        label: "Erneuerbare Energien (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb9",
+        label: "Umwelttechnik (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb10",
+        label: "Enzyme – Biokatalysatoren in Industrie und Haushalt (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb11",
+        label:
+          "Lebensmittelchemie und -technologie am Beispiel der Produktion eines Lebensmittels (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb12",
+        label: "Lebensmittelkonservierung (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb13",
+        label: "Medizinische und pharmakologische Verfahren (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb14",
+        label: "Bioinformatik – Simulationen (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb15",
+        label: "Kompetenzorientierte Projektarbeit",
+        hours: 16,
+      },
+    ],
+    "fos|12|kuenstliche_intelligenz_informatik_u_technologie|t": [
+      {
+        id: "lb1",
+        label: "Informatik – Grundlagen der Programmierung",
+        hours: 12,
+      },
+      {
+        id: "lb2",
+        label: "Lernen über KI – Grundlagen",
+        hours: 16,
+      },
+      {
+        id: "lb3",
+        label: "Thermodynamik",
+      },
+      {
+        id: "lb4",
+        label: "Energie",
+      },
+      {
+        id: "lb5",
+        label: "Technische Mechanik (optional)",
+        hours: 12,
+      },
+      {
+        id: "lb6",
+        label: "Umwelttechnik (optional)",
+        hours: 12,
+      },
+      {
+        id: "lb7",
+        label: "Elektrotechnik – elektronische Bauelemente (optional)",
+        hours: 12,
+      },
+      {
+        id: "lb8",
+        label: "Moderne Werkstoffe (optional)",
+        hours: 12,
+      },
+      {
+        id: "lb9",
+        label: "Kompetenzorientierte Projektarbeit",
+        hours: 16,
+      },
+    ],
+    "fos|12|kuenstliche_intelligenz_u_wirtschaftsinformatik": [
+      {
+        id: "lb1",
+        label: "Systeme der Künstlichen Intelligenz untersuchen",
+        hours: 24,
+      },
+      {
+        id: "lb2",
+        label: "Informatiksysteme entwickeln",
+        hours: 32,
+      },
+    ],
+    "fos|12|kunst": [
+      {
+        id: "lb1",
+        label: "Zeichnen und Malen (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Druck und Experiment (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Skulptur und Objekt (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Film und Inszenierung (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Foto und Inszenierung (optional)",
+      },
+    ],
+    "fos|12|latein": [
+      {
+        id: "lb1",
+        label: "Texte",
+      },
+      {
+        id: "lb2",
+        label: "Sprachliche Basis",
+      },
+      {
+        id: "lb3",
+        label: "Kultur",
+      },
+      {
+        id: "lb4",
+        label: "Methodik",
+      },
+    ],
+    "fos|12|mathematik|Wahl-abu-g-s-w-gh-iw": [
+      {
+        id: "lb1",
+        label: "Trigonometrie und trigonometrische Funktionen (verpflichtend)",
+        hours: 14,
+      },
+      {
+        id: "lb2",
+        label: "Lineare Gleichungssysteme (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb3",
+        label: "Vektorrechnung (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Folgen und Reihen (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Gebrochen-rationale Funktionen (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb6",
+        label: "Statistik (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Näherungsverfahren (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb8",
+        label: "Freies Projekt (optional)",
+        hours: 14,
+      },
+    ],
+    "fos|12|mathematik|abu-g-s-w-gh-iw": [
+      {
+        id: "lb1",
+        label: "Differenzialrechnung bei ganzrationalen Funktionen",
+        hours: 30,
+      },
+      {
+        id: "lb2",
+        label: "Exponentialfunktion und Logarithmus",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label:
+          "Kurvendiskussion von Funktionen, die aus Verknüpfung von Exponentialfunktionen mit linearen und quadratischen Funktionen hervorgehen",
+        hours: 20,
+      },
+      {
+        id: "lb4",
+        label: "Integralrechnung",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Bernoulli-Ketten",
+        hours: 6,
+      },
+      {
+        id: "lb6",
+        label: "Zufallsgröße und Wahrscheinlichkeitsverteilung",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Testen von Hypothesen",
+        hours: 8,
+      },
+    ],
+    "fos|12|mathematik|t": [
+      {
+        id: "lb1",
+        label: "Differenzialrechnung bei ganzrationalen Funktionen",
+        hours: 36,
+      },
+      {
+        id: "lb2",
+        label: "Exponentialfunktion und Logarithmus",
+        hours: 18,
+      },
+      {
+        id: "lb3",
+        label:
+          "Kurvendiskussion von Funktionen, die aus Verknüpfung/Verkettung von Exponentialfunktionen mit linearen und quadratischen Funktionen hervorgehen",
+        hours: 18,
+      },
+      {
+        id: "lb4",
+        label: "Integralrechnung",
+        hours: 12,
+      },
+      {
+        id: "lb5",
+        label: "Produkte von Vektoren",
+        hours: 6,
+      },
+      {
+        id: "lb6",
+        label: "Geraden und Ebenen im Raum – Geometrische Anwendungen im IR 3",
+        hours: 22,
+      },
+    ],
+    "fos|12|mathematik|wahl-t": [
+      {
+        id: "lb1",
+        label: "Abschnittsweise definierte Funktionen",
+        hours: 6,
+      },
+      {
+        id: "lb2",
+        label: "Trigonometrische Funktionen",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Gebrochen-rationale Funktionen",
+        hours: 30,
+      },
+    ],
+    "fos|12|medien": [
+      {
+        id: "lb1",
+        label: "Visuelle Zeichen und Schrift",
+        hours: 12,
+      },
+      {
+        id: "lb2",
+        label: "Layoutgestaltung – Kombination von Schrift, Zeichen und Bild",
+        hours: 12,
+      },
+      {
+        id: "lb3",
+        label: "Digitale interaktive Medien",
+        hours: 12,
+      },
+      {
+        id: "lb4",
+        label: "Medienprojekt",
+        hours: 20,
+      },
+    ],
+    "fos|12|musik": [
+      {
+        id: "lb1",
+        label: "Sprechen – Singen – Musizieren",
+      },
+      {
+        id: "lb2",
+        label: "Musik – Mensch – Zeit",
+      },
+    ],
+    "fos|12|nt-bo|g": [
+      {
+        id: "lb1",
+        label: "Physikalische Grundlagen",
+      },
+      {
+        id: "lb2",
+        label: "Chemische Grundlagen",
+      },
+      {
+        id: "lb3",
+        label: "Werkstoffe und Werkstoffeigenschaften (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Allgemeine Energietechnik (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Erneuerbare Energien (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Umwelttechnik (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Technische Mechanik (optional)",
+      },
+      {
+        id: "lb8",
+        label: "Systeme und Prozesse (optional)",
+      },
+      {
+        id: "lb9",
+        label: "Komplexe technische Systeme (optional)",
+      },
+    ],
+    "fos|12|nt-bo|w-iw": [
+      {
+        id: "lb1",
+        label: "Physikalische Grundlagen",
+      },
+      {
+        id: "lb2",
+        label: "Chemische Grundlagen",
+      },
+      {
+        id: "lb3",
+        label: "Werkstoffe und Werkstoffeigenschaften (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Allgemeine Energietechnik (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Erneuerbare Energien (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Umwelttechnik (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Elektrotechnik-Anwendung (optional)",
+      },
+      {
+        id: "lb8",
+        label: "Systeme und Prozesse (optional)",
+      },
+      {
+        id: "lb9",
+        label: "Komplexe technische Systeme (optional)",
+      },
+    ],
+    "fos|12|paedagigik-psychologie|s": [
+      {
+        id: "lb1",
+        label:
+          "Entwicklung als lebensumfassenden, multifaktoriell beeinflussten Prozess begreifen und pädagogisch gestalten",
+      },
+      {
+        id: "lb2",
+        label:
+          "Persönlichkeit und Identität beschreiben, erklären und reflektieren",
+      },
+      {
+        id: "lb3",
+        label:
+          "Aufgaben und Arbeitsfelder Sozialer Arbeit professionell einordnen",
+      },
+      {
+        id: "lb4",
+        label:
+          "In sozialen Beziehungen empathisch und zielführend kommunizieren und interagieren",
+      },
+    ],
+    "fos|12|physik|abu": [
+      {
+        id: "lb1",
+        label: "Wärme als Energieform",
+        hours: 40,
+      },
+      {
+        id: "lb2",
+        label: "Dynamik von Flüssigkeiten und Gasen",
+        hours: 16,
+      },
+    ],
+    "fos|12|physik|t": [
+      {
+        id: "lb1",
+        label: "Kreisbewegung",
+        hours: 20,
+      },
+      {
+        id: "lb2",
+        label: "Mechanische Schwingungen und Wellen",
+        hours: 55,
+      },
+      {
+        id: "lb3",
+        label: "Klassische Felder",
+        hours: 40,
+      },
+      {
+        id: "lb4",
+        label: "Elektromagnetische Induktion",
+        hours: 25,
+      },
+    ],
+    "fos|12|pug": [
+      {
+        id: "lb1",
+        label: "Methodenkompetenzen",
+      },
+      {
+        id: "lb2",
+        label:
+          "Aktuelle Lebenswirklichkeiten im politischen System der Bundesrepublik Deutschland im Vergleich mit anderen Staaten",
+        hours: 16,
+      },
+      {
+        id: "lb3",
+        label: "Gesellschaftliche Lebenswirklichkeiten des Einzelnen",
+        hours: 16,
+      },
+      {
+        id: "lb4",
+        label: "Einflussfaktoren auf die Lebenswirklichkeit",
+        hours: 8,
+      },
+      {
+        id: "lb5",
+        label:
+          "Aktuelle internationale Herausforderungen und deren Einfluss auf die Lebenswirklichkeiten in Staat und Gesellschaft",
+        hours: 16,
+      },
+    ],
+    "fos|12|russisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|12|sg": [
+      {
+        id: "lb1",
+        label: "Vom Kinderwunsch bis zur Geburt (optional)",
+      },
+      {
+        id: "lb2",
+        label:
+          "Humanmedizinische Vertiefung I: Dermatologie und Zahnheilkunde (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Pflegewissenschaften (optional)",
+      },
+      {
+        id: "lb4",
+        label:
+          "Humanmedizinische Vertiefung II: Pharmakologie, Notfallmedizin und Pathologie (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Alternative und komplementäre Heilverfahren (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Umwelt und Gesundheit (optional)",
+      },
+    ],
+    "fos|12|sozialwirtschaft-und-recht": [
+      {
+        id: "lb1",
+        label: "Für ein soziales Unternehmen Kaufverträge abschließen",
+        hours: 25,
+      },
+      {
+        id: "lb2",
+        label:
+          "Für ein soziales Unternehmen Personal einstellen, führen und Arbeitsverträge beenden",
+        hours: 29,
+      },
+      {
+        id: "lb3",
+        label: "Soziale Dienstleistungen vermarkten",
+        hours: 20,
+      },
+      {
+        id: "lb4",
+        label: "Familien in besonderen Lebensumständen beraten",
+        hours: 10,
+      },
+    ],
+    "fos|12|soziologie|abu-g-t-w-iw-gh": [
+      {
+        id: "lb1",
+        label: "Individuum in der Gesellschaft",
+      },
+      {
+        id: "lb2",
+        label: "Handeln in sozialen Gruppen",
+      },
+      {
+        id: "lb3",
+        label: "Heterogenität in der Gesellschaft",
+      },
+      {
+        id: "lb4",
+        label: "Wandel der Gesellschaft",
+      },
+    ],
+    "fos|12|soziologie|s": [
+      {
+        id: "lb1",
+        label: "Individuum in der Gesellschaft",
+      },
+      {
+        id: "lb2",
+        label: "Handeln in sozialen Gruppen",
+      },
+      {
+        id: "lb3",
+        label: "Heterogenität in der Gesellschaft",
+      },
+      {
+        id: "lb4",
+        label: "Wandel der Gesellschaft",
+      },
+    ],
+    "fos|12|spanisch|spanisch_ahr": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|12|spanisch|spanisch_aufbaukurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|12|spanisch|spanisch_fortgefuehrt": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|12|spanisch|spanisch_grundkurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|12|sport": [
+      {
+        id: "lb1",
+        label: "Gesundheit und Fitness",
+      },
+      {
+        id: "lb2",
+        label: "Fairness/Kooperation/Selbstkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Freizeit und Umwelt",
+      },
+      {
+        id: "lb4",
+        label: "Sportliche Handlungsfelder",
+      },
+    ],
+    "fos|12|studier-und-arbeitstechniken": [
+      {
+        id: "lb1",
+        label: "Arbeits- und Lernprozesse optimieren",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label: "Quellen zur wissenschaftlichen Arbeit nutzen",
+        hours: 26,
+      },
+      {
+        id: "lb3",
+        label: "Ergebnisse präsentieren",
+        hours: 20,
+      },
+    ],
+    "fos|12|technologie|abu": [
+      {
+        id: "lb1",
+        label: "Industrielle Biotechnologie",
+      },
+      {
+        id: "lb2",
+        label: "Pflanzenproduktion-Grundlagen",
+      },
+      {
+        id: "lb3",
+        label: "Tierproduktion-Grundlagen",
+      },
+      {
+        id: "lb4",
+        label: "Werkstoffe und Werkstoffeigenschaften (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Allgemeine Energietechnik (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Erneuerbare Energien (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Lebensmittelchemie und -technologie der Milch (optional)",
+      },
+      {
+        id: "lb8",
+        label: "Umwelttechnik (optional)",
+      },
+      {
+        id: "lb9",
+        label: "Komplexe technische Systeme (optional)",
+      },
+    ],
+    "fos|12|technologie|t": [
+      {
+        id: "lb1",
+        label: "Thermodynamik-Grundlagen",
+      },
+      {
+        id: "lb2",
+        label: "Technische Mechanik",
+      },
+      {
+        id: "lb3",
+        label: "Metallische Werkstoffe",
+      },
+      {
+        id: "lb4",
+        label: "Allgemeine Energietechnik (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Erneuerbare Energien (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Umwelttechnik (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Elektronische Bauelemente (optional)",
+      },
+      {
+        id: "lb8",
+        label: "Systeme und Prozesse (optional)",
+      },
+      {
+        id: "lb9",
+        label: "Modellbildung-Grundlagen (optional)",
+      },
+      {
+        id: "lb10",
+        label: "Verbrennungsmotoren (optional)",
+      },
+      {
+        id: "lb11",
+        label: "Komplexe technische Systeme (optional)",
+      },
+    ],
+    "fos|12|volkswirtschaftslehre": [
+      {
+        id: "lb1",
+        label:
+          "Das Wirtschaftswachstum als volkswirtschaftliche Größe beurteilen",
+        hours: 22,
+      },
+      {
+        id: "lb2",
+        label:
+          "Die Einkommens- und Vermögenspolitik als Steuerungsinstrument analysieren und beurteilen",
+        hours: 16,
+      },
+      {
+        id: "lb3",
+        label: "Geldpolitische Instrumente und Maßnahmen beurteilen",
+        hours: 24,
+      },
+      {
+        id: "lb4",
+        label: "Internationale Verflechtungen analysieren und beurteilen",
+        hours: 22,
+      },
+    ],
+    "fos|12|wirtschaft-und-recht": [
+      {
+        id: "lb1",
+        label: "Als Unternehmer Kaufverträge schließen",
+        hours: 14,
+      },
+      {
+        id: "lb2",
+        label: "Arbeitsverträge schließen und Personal führen",
+        hours: 14,
+      },
+      {
+        id: "lb3",
+        label: "Als Staatsbürger agieren",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Als Marktteilnehmer agieren",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Sich selbständig machen",
+        hours: 14,
+      },
+      {
+        id: "lb6",
+        label: "Den Preis für ein Produkt kalkulieren",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Den Produktionsprozess steuern",
+        hours: 14,
+      },
+      {
+        id: "lb8",
+        label: "Ein Marktingkonzept gestalten",
+        hours: 14,
+      },
+    ],
+    "fos|12|wirtschaft_aktuell": [
+      {
+        id: "lb1",
+        label: "Ausgewählte Aspekte der Internationalisierung (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb2",
+        label: "Angewandte Entwicklungspolitik (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb3",
+        label:
+          "Betriebswirtschaftlich Planen, Entscheiden und Kontrollieren (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Gesellschaft im Wandel (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Wirtschaft im Wandel (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb6",
+        label: "Märkte im Wandel (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Innovation und Existenzgründung (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb8",
+        label: "Standortentscheidungen treffen (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb9",
+        label: "Zukunftsorientiertes Personalmanagement (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb10",
+        label: "Qualitätsmanagement im Betrieb (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb11",
+        label: "Stakeholder-Konzept (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb12",
+        label: "Finanzmanagement (optional)",
+        hours: 14,
+      },
+    ],
+    "fos|13|betriebswirtschaftslehre": [
+      {
+        id: "lb1",
+        label:
+          "Den Jahresabschluss analysieren und Finanzierungs- und Investitionsentscheidungen treffen",
+        hours: 40,
+      },
+      {
+        id: "lb2",
+        label: "Marketingprozesse planen und steuern",
+        hours: 25,
+      },
+      {
+        id: "lb3",
+        label:
+          "Den Faktoreinsatz optimieren, Kosteneinflussgrößen unterscheiden und bei Änderung der Beschäftigung die optimale Anpassungsform in der Produktion ermitteln",
+        hours: 40,
+      },
+      {
+        id: "lb4",
+        label: "Mithilfe des Controllings ein Unternehmen strategisch steuern",
+        hours: 35,
+      },
+    ],
+    "fos|13|biologie|abu": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Informations- und Steuerungssysteme",
+        hours: 50,
+      },
+      {
+        id: "lb3",
+        label: "Evolution",
+        hours: 30,
+      },
+      {
+        id: "lb4",
+        label: "Angewandte Genetik",
+        hours: 30,
+      },
+      {
+        id: "lb5",
+        label: "Angewandte Ökologie",
+        hours: 30,
+      },
+    ],
+    "fos|13|biologie|g": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Informations- und Steuerungssysteme",
+        hours: 52,
+      },
+      {
+        id: "lb3",
+        label: "Ökologie",
+        hours: 32,
+      },
+    ],
+    "fos|13|biologie|s": [
+      {
+        id: "lb1",
+        label: "Naturwissenschaftliche Denk- und Arbeitsweisen",
+      },
+      {
+        id: "lb2",
+        label: "Mechanismen und Belege der Evolution",
+        hours: 16,
+      },
+      {
+        id: "lb3",
+        label: "Neuro- und Muskelphysiologie",
+        hours: 26,
+      },
+      {
+        id: "lb4",
+        label: "Immunologie",
+        hours: 14,
+      },
+    ],
+    "fos|13|biologie|wahl-g-t-w-iw": [
+      {
+        id: "lb1",
+        label: "Biologie des Alltags (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Bionik (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Evolution (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Genetik/Gentechnik (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Immunologie (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Sinnesphysiologie (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Stoffkreisläufe und Bioökonomie (optional)",
+      },
+    ],
+    "fos|13|biotechnologie": [
+      {
+        id: "lb1",
+        label: "Grundlagen der Mikroskopier- und Präparationstechniken",
+      },
+      {
+        id: "lb2",
+        label: "Medizinische und pharmakologische Verfahren (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Gentechnik (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Bioinformatik (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Aktuelle Entwicklungen in der Biotechnologie (optional)",
+      },
+    ],
+    "fos|13|bwl-rechnungswesen": [
+      {
+        id: "lb1",
+        label:
+          "Den Jahresabschluss analysieren und weitere Formen der Finanzierung nutzen",
+        hours: 40,
+      },
+      {
+        id: "lb2",
+        label:
+          "Mithilfe des Controllings das Unternehmen operativ und strategisch steuern",
+        hours: 40,
+      },
+      {
+        id: "lb3",
+        label:
+          "Den Faktoreinsatz optimieren, Kosteneinflussgrößen unterscheiden und bei Änderung der Beschäftigung die optimale Anpassungsform ermitteln",
+        hours: 40,
+      },
+      {
+        id: "lb4",
+        label:
+          "Personal sach- und personenorientiert führen und zukunftsorientiert entwickeln",
+        hours: 20,
+      },
+    ],
+    "fos|13|chemie|abu": [
+      {
+        id: "lb1",
+        label: "Wie Chemiker denken und arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Biomoleküle und Tenside",
+        hours: 42,
+      },
+      {
+        id: "lb3",
+        label: "Polymere",
+        hours: 20,
+      },
+      {
+        id: "lb4",
+        label: "Stoffe mit delokalisierten Elektronensystemen",
+        hours: 22,
+      },
+    ],
+    "fos|13|chemie|t": [
+      {
+        id: "lb1",
+        label: "Wie Chemiker denken und arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Biomoleküle",
+        hours: 24,
+      },
+      {
+        id: "lb3",
+        label: "Polymere",
+        hours: 12,
+      },
+      {
+        id: "lb4",
+        label: "Stoffe mit delokalisierten Elektronensystemen",
+        hours: 20,
+      },
+    ],
+    "fos|13|deutsch|gueltig_bis_26_27": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "fos|13|ebc": [
+      {
+        id: "lb1",
+        label: "Reading, Understanding and Interpreting Literature – a Toolbox",
+      },
+      {
+        id: "lb2",
+        label: "Topics and Issues",
+      },
+    ],
+    "fos|13|englisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|13|ethik": [
+      {
+        id: "lb1",
+        label: "Freiheit und Determination",
+      },
+      {
+        id: "lb2",
+        label: "Recht und Gerechtigkeit",
+      },
+      {
+        id: "lb3",
+        label: "Glaube und Religion",
+      },
+    ],
+    "fos|13|evangelische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Fragender Glaube",
+      },
+      {
+        id: "lb2",
+        label: "Bedacht entschieden",
+      },
+      {
+        id: "lb3",
+        label: "Zukunftswerkstatt",
+      },
+    ],
+    "fos|13|experimentelles_gestalten": [
+      {
+        id: "lb1",
+        label: "Malerei und Grafik (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Plastik und Objekt (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Gestalten im Raum (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Visuelle Medien (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Aktionskunst (optional)",
+      },
+    ],
+    "fos|13|franzoesisch|franzoesisch_ahr": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|13|franzoesisch|franzoesisch_aufbaukurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|13|franzoesisch|franzoesisch_fortgefuehrt": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|13|franzoesisch|franzoesisch_grundkurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|13|gestaltung": [
+      {
+        id: "lb1",
+        label: "Grafik und Malerei",
+      },
+      {
+        id: "lb2",
+        label: "Plastik, Objekt, Architektur",
+      },
+      {
+        id: "lb3",
+        label: "Konzept",
+      },
+      {
+        id: "lb4",
+        label: "Werkanalyse und Kunstgeschichte",
+      },
+    ],
+    "fos|13|gpug-fosbos": [
+      {
+        id: "lb1",
+        label: "Methodenkompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Lebenswirklichkeiten in einer historischen Epoche",
+      },
+      {
+        id: "lb3",
+        label: "Lebenswirklichkeiten in der gegenwärtigen Welt",
+      },
+    ],
+    "fos|13|gwr": [
+      {
+        id: "lb1",
+        label: "Ein Unternehmen im Gesundheitswesen strategisch ausrichten",
+        hours: 19,
+      },
+      {
+        id: "lb2",
+        label:
+          "Liquide Mittel für ein Unternehmen im Gesundheitswesen beschaffen",
+        hours: 19,
+      },
+      {
+        id: "lb3",
+        label: "Den Erfolg eines Unternehmens im Gesundheitswesen analysieren",
+        hours: 19,
+      },
+      {
+        id: "lb4",
+        label:
+          "Für ein Unternehmen im Gesundheitswesen Personal einsetzen und führen",
+        hours: 19,
+      },
+      {
+        id: "lb5",
+        label: "Dienstleistungen des Gesundheitswesens vermarkten",
+        hours: 19,
+      },
+      {
+        id: "lb6",
+        label: "Familien in besonderen Lebensumständen beraten",
+        hours: 12,
+      },
+      {
+        id: "lb7",
+        label: "Als Marktteilnehmer agieren",
+        hours: 26,
+      },
+    ],
+    "fos|13|gw|aktuell": [
+      {
+        id: "lb1",
+        label: "Wissenschaftlich arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Die eigenständige Lebensführung von Senioren unterstützen",
+      },
+      {
+        id: "lb3",
+        label:
+          "Sucht und Depression als gesellschaftliche Herausforderung erfassen",
+      },
+      {
+        id: "lb4",
+        label: "Onkologische Erkrankungen in ihrer Komplexität begreifen",
+      },
+      {
+        id: "lb5",
+        label: "Entwicklungen im Gesundheitswesen kritisch verfolgen",
+      },
+    ],
+    "fos|13|ibv|ibv": [
+      {
+        id: "lb1",
+        label:
+          "Den Jahresabschluss analysieren und Verfahren der dynamischen Investitionsrechnung nutzen",
+        hours: 32,
+      },
+      {
+        id: "lb2",
+        label:
+          "Mithilfe der flexiblen Plankostenrechnung Abweichungen analysieren und die optimale Anpassungsform bei Änderung der Beschäftigung ermitteln",
+        hours: 48,
+      },
+      {
+        id: "lb3",
+        label:
+          "Volkswirtschaftliche Modelle als Grundlage für die Angebotsentscheidung nutzen",
+        hours: 25,
+      },
+      {
+        id: "lb4",
+        label: "Wirtschaftspolitische Instrumente und Maßnahmen beurteilen",
+        hours: 35,
+      },
+    ],
+    "fos|13|informatik|w-s-abu-g-gh": [
+      {
+        id: "lb1",
+        label: "Datenmanagement in relationalen Datenbanken (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb2",
+        label: "Gesellschaft und Informatik (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb3",
+        label: "Technische Grundlagen (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb4",
+        label: "Netzwerke realisieren (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb5",
+        label: "Visualisierung von Daten (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb6",
+        label: "Grundlagen der Softwareentwicklung (optional)",
+        hours: 24,
+      },
+      {
+        id: "lb7",
+        label: "Prozedurale Programmierung (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb8",
+        label: "Objektorientierte Programmierung (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb9",
+        label: "Gestaltung von IT-Anwendungen (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb10",
+        label: "Modellbildung und Simulation (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb11",
+        label: "Objektorientierte Analyse (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb12",
+        label: "ERP-Systeme – Finanzbuchhaltung (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb13",
+        label: "ERP-Systeme – Material-und Produktionswirtschaft (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb14",
+        label: "IT-Projekt (optional)",
+        hours: 24,
+      },
+    ],
+    "fos|13|informatik|wahl-t-iw": [
+      {
+        id: "lb1",
+        label: "Modellbildung und Simulation",
+        hours: 16,
+      },
+      {
+        id: "lb2",
+        label: "Objektorientierte Analyse",
+        hours: 8,
+      },
+      {
+        id: "lb3",
+        label: "Entwicklung relationaler Datenbanken (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb4",
+        label:
+          "Implementierung und Nutzung relationaler Datenbanken (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb5",
+        label: "Datenmanagement in relationalen Datenbanken (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb6",
+        label: "Gesellschaft und Informatik (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb7",
+        label: "Technische Grundlagen (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb8",
+        label: "Netzwerke realisieren (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb9",
+        label: "Visualisierung von Daten (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb10",
+        label: "Prozedurale Programmierung (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb11",
+        label: "Objektorientierte Programmierung (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb12",
+        label: "Gestaltung von IT-Anwendungen (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb13",
+        label: "ERP-Systeme – Finanzbuchhaltung (optional)",
+        hours: 8,
+      },
+      {
+        id: "lb14",
+        label: "ERP-Systeme – Material-und Produktionswirtschaft (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb15",
+        label: "IT-Projekt (optional)",
+        hours: 24,
+      },
+    ],
+    "fos|13|internationale_politik": [
+      {
+        id: "lb1",
+        label:
+          "Akteure, Strukturen und Theorien in der internationalen Politik",
+        hours: 12,
+      },
+      {
+        id: "lb2",
+        label:
+          "Handlungsfelder und Herausforderungen in der internationalen Politik",
+        hours: 22,
+      },
+      {
+        id: "lb3",
+        label: "Kontroversen in der und über die internationale Politik",
+        hours: 22,
+      },
+    ],
+    "fos|13|isb": [
+      {
+        id: "lb1",
+        label: "Sich auf dem internationalen Arbeitsmarkt erfolgreich bewerben",
+        hours: 16,
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Teams führen und Personal entwickeln",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Ein neues Produkt auf einem internationalen Markt einführen",
+        hours: 20,
+      },
+    ],
+    "fos|13|italienisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|13|katholische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Gestiftet und gelebt – die Sendung der Kirche",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label: "Fragen und Antworten – der Mensch und die Sinnsuche",
+        hours: 10,
+      },
+      {
+        id: "lb3",
+        label:
+          "Gemeinschaft und Gerechtigkeit – christliche Perspektiven für die Gesellschaft",
+        hours: 10,
+      },
+    ],
+    "fos|13|ki": [
+      {
+        id: "lb1",
+        label: "Andere in Arbeitsfeldern des Gesundheitswesens anleiten",
+      },
+      {
+        id: "lb2",
+        label: "Sich mit Vorurteilen auseinandersetzen",
+      },
+      {
+        id: "lb3",
+        label:
+          "Interkulturalität im Berufsalltag des Gesundheitswesens als Bereicherung wahrnehmen",
+      },
+    ],
+    "fos|13|kuenstliche_intelligenz_informatik_u_technologie|abu": [
+      {
+        id: "lb1",
+        label: "Künstliche Intelligenz und digitale Anwendungen",
+        hours: 10,
+      },
+      {
+        id: "lb2",
+        label: "Anbau von nachwachsenden Rohstoffen (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb3",
+        label: "Fertilität und Reproduktion beim Nutztier (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb4",
+        label: "Bio- und Gentechnologie in der Pflanzenzüchtung (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb5",
+        label: "Bio- und Gentechnologie in der Tierzüchtung (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb6",
+        label: "Ernährung zwischen Mangel und Überfluss (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb7",
+        label:
+          "Lebensmittelchemie und -technologie am Beispiel der Produktion eines Lebensmittels (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb8",
+        label: "Energetische Nutzung von Biorohstoffen (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb9",
+        label: "Moderne Kunststofftechnologien (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb10",
+        label:
+          "Entwicklung, Herstellung und Funktionsweisen von Arzneimitteln (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb11",
+        label: "Gendiagnostische Methoden und Gentherapie (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb12",
+        label:
+          "Bioinformatik – Sequenzvergleiche und -identifikation (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb13",
+        label: "Farbstoffe und Färbemethoden (optional)",
+        hours: 10,
+      },
+      {
+        id: "lb14",
+        label: "Vertiefende kompetenzorientierte Projektarbeit",
+        hours: 16,
+      },
+    ],
+    "fos|13|kuenstliche_intelligenz_informatik_u_technologie|t": [
+      {
+        id: "lb1",
+        label: "Lernen über KI − vertieft",
+        hours: 16,
+      },
+      {
+        id: "lb2",
+        label: "Netzwerktechnik (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb3",
+        label: "Mechatronik (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb4",
+        label: "Regelungstechnik (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb5",
+        label: "Elektrotechnik – Wechselstromtechnik (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb6",
+        label: "Bautechnik und Gestaltung (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb7",
+        label: "Festigkeitslehre (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb8",
+        label: "Fachwerke (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb9",
+        label: "Modellbildung (optional)",
+        hours: 16,
+      },
+      {
+        id: "lb10",
+        label: "Vertiefende kompetenzorientierte Projektarbeit",
+        hours: 20,
+      },
+    ],
+    "fos|13|kunst": [
+      {
+        id: "lb1",
+        label: "Zeichnen und Malen (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Druck und Experiment (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Skulptur und Objekt (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Film und Inszenierung (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Foto und Inszenierung (optional)",
+      },
+    ],
+    "fos|13|latein": [
+      {
+        id: "lb1",
+        label: "Texte und ihr kultureller Kontext",
+      },
+      {
+        id: "lb2",
+        label: "Sprachliche Basis",
+      },
+      {
+        id: "lb3",
+        label: "Methodik",
+      },
+    ],
+    "fos|13|mathematik|abu-g-s-w-gh-iw": [
+      {
+        id: "lb1",
+        label: "Grundlegende Eigenschaften der gebrochen-rationalen Funktionen",
+        hours: 14,
+      },
+      {
+        id: "lb2",
+        label: "Kurvendiskussion der gebrochen-rationalen Funktionen",
+        hours: 20,
+      },
+      {
+        id: "lb3",
+        label: "Grundlegende Eigenschaften der ln-Funktion",
+        hours: 20,
+      },
+      {
+        id: "lb4",
+        label:
+          "Kurvendiskussion von Funktionen, die aus Verkettung und/oder Verknüpfungen von Exponentialfunktionen bzw. Logarithmusfunktionen mit rationalen Funktionen hervorgehen",
+        hours: 30,
+      },
+      {
+        id: "lb5",
+        label:
+          "Vektoren im IR 2 und IR 3 , lineare Unabhängigkeit und lineare Gleichungssysteme",
+        hours: 20,
+      },
+      {
+        id: "lb6",
+        label: "Produkte von Vektoren",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Geraden und Ebenen im Raum – Geometrische Anwendungen im IR 3",
+        hours: 22,
+      },
+    ],
+    "fos|13|mathematik|t": [
+      {
+        id: "lb1",
+        label: "Umkehrfunktionen",
+        hours: 20,
+      },
+      {
+        id: "lb2",
+        label: "Vertiefung des Integralbegriffs",
+        hours: 8,
+      },
+      {
+        id: "lb3",
+        label: "Integralrechnung, Integrationsverfahren",
+        hours: 20,
+      },
+      {
+        id: "lb4",
+        label: "Anwendung der Differenzial- und Integralrechnung",
+        hours: 16,
+      },
+      {
+        id: "lb5",
+        label: "Gewöhnliche Differenzialgleichungen",
+        hours: 20,
+      },
+      {
+        id: "lb6",
+        label: "Zufallsexperiment und Ereignis",
+        hours: 8,
+      },
+      {
+        id: "lb7",
+        label: "Relative Häufigkeit und Wahrscheinlichkeit",
+        hours: 14,
+      },
+      {
+        id: "lb8",
+        label: "Grundlagen der Kombinatorik",
+        hours: 6,
+      },
+      {
+        id: "lb9",
+        label: "Bernoulli-Ketten",
+        hours: 6,
+      },
+      {
+        id: "lb10",
+        label: "Zufallsgröße und Wahrscheinlichkeitsverteilung",
+        hours: 14,
+      },
+      {
+        id: "lb11",
+        label: "Testen von Hypothesen",
+        hours: 8,
+      },
+    ],
+    "fos|13|mathematik|wahl-abu-g-s-w-t": [
+      {
+        id: "lb1",
+        label: "Komplexe Zahlen (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb2",
+        label: "Beweisverfahren (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb3",
+        label: "Beurteilende Statistik (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Matrizen und Determinanten (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Sphärische Geometrie (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb6",
+        label: "Taylorpolynome (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Boole'sche Algebra (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb8",
+        label: "Kurvenparametrisierung (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb9",
+        label: "Freies Projekt (optional)",
+        hours: 14,
+      },
+    ],
+    "fos|13|medien": [
+      {
+        id: "lb1",
+        label: "Filmische Gestaltungsmittel",
+        hours: 21,
+      },
+      {
+        id: "lb2",
+        label:
+          "Bewegtbilder in filmhistorischen und medientheoretischen Kontexten",
+        hours: 21,
+      },
+      {
+        id: "lb3",
+        label: "Gestalten von Bewegtbildern",
+        hours: 42,
+      },
+    ],
+    "fos|13|musik": [
+      {
+        id: "lb1",
+        label: "Sprechen – Singen – Musizieren",
+      },
+      {
+        id: "lb2",
+        label: "Musik – Mensch – Zeit",
+      },
+    ],
+    "fos|13|nt-bo|g": [
+      {
+        id: "lb1",
+        label: "Werkstoffanwendung (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Energieträger (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Festigkeitslehre (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Fachwerke (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Bautechnik und Gestaltung (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Modellbildung-Grundlagen (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Modellbildung-Anwendung (optional)",
+      },
+      {
+        id: "lb8",
+        label: "Elektrotechnik-Anwendung (optional)",
+      },
+      {
+        id: "lb9",
+        label: "Komplexe technische Systeme (optional)",
+      },
+    ],
+    "fos|13|nt-bo|w-iw": [
+      {
+        id: "lb1",
+        label: "Werkstoffanwendung (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Energieträger (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Festigkeitslehre (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Bautechnik und Gestaltung (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Modellbildung-Grundlagen (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Modellbildung-Anwendung (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Regelungstechnik (optional)",
+      },
+      {
+        id: "lb8",
+        label: "Mechatronik (optional)",
+      },
+      {
+        id: "lb9",
+        label: "Komplexe technische Systeme (optional)",
+      },
+    ],
+    "fos|13|paedagigik-psychologie|s": [
+      {
+        id: "lb1",
+        label:
+          "Wissenschaftliche Grundlagen der pädagogisch-psychologischen Forschung reflektiert anwenden",
+      },
+      {
+        id: "lb2",
+        label:
+          "Beeinträchtigten Menschen angemessen begegnen und sie unterstützen",
+      },
+      {
+        id: "lb3",
+        label:
+          "Sich mit der klinischen Psychologie kritisch und wissenschaftlich fundiert auseinandersetzen",
+      },
+      {
+        id: "lb4",
+        label:
+          "Organisationen als Systeme von Menschen und Kontexten auf verschiedenen Ebenen begreifen und mitgestalten",
+      },
+      {
+        id: "lb5",
+        label:
+          "Theorien und Konzepte auf einer Metaebene lernbereichsübergreifend kritisch reflektieren und anwenden",
+      },
+    ],
+    "fos|13|physik|t": [
+      {
+        id: "lb1",
+        label: "Geladene Teilchen in elektrischen und magnetischen Feldern",
+        hours: 20,
+      },
+      {
+        id: "lb2",
+        label: "Elektromagnetische Schwingungen und Wellen",
+        hours: 40,
+      },
+      {
+        id: "lb3",
+        label: "Quanten- und Atomphysik",
+        hours: 55,
+      },
+      {
+        id: "lb4",
+        label: "Kernphysik",
+        hours: 25,
+      },
+    ],
+    "fos|13|physik|wahl-abu": [
+      {
+        id: "lb1",
+        label: "Mechanische Schwingungen",
+        hours: 20,
+      },
+      {
+        id: "lb2",
+        label: "Wellen",
+        hours: 16,
+      },
+      {
+        id: "lb3",
+        label: "Kernphysik",
+        hours: 20,
+      },
+    ],
+    "fos|13|russisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|13|sg": [
+      {
+        id: "lb1",
+        label: "Vom Kinderwunsch bis zur Geburt (optional)",
+      },
+      {
+        id: "lb2",
+        label:
+          "Humanmedizinische Vertiefung I: Dermatologie und Zahnheilkunde (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Pflegewissenschaften (optional)",
+      },
+      {
+        id: "lb4",
+        label:
+          "Humanmedizinische Vertiefung II: Pharmakologie, Notfallmedizin und Pathologie (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Alternative und komplementäre Heilverfahren (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Umwelt und Gesundheit (optional)",
+      },
+    ],
+    "fos|13|sozialwirtschaft-und-recht": [
+      {
+        id: "lb1",
+        label: "Junge Menschen in besonderen Lebensumständen beraten",
+        hours: 30,
+      },
+      {
+        id: "lb2",
+        label: "Als Staatsbürger agieren",
+        hours: 27,
+      },
+      {
+        id: "lb3",
+        label: "Als Marktteilnehmer agieren",
+        hours: 27,
+      },
+    ],
+    "fos|13|soziologie": [
+      {
+        id: "lb1",
+        label: "Individuum in der Gesellschaft",
+      },
+      {
+        id: "lb2",
+        label: "Handeln in sozialen Gruppen",
+      },
+      {
+        id: "lb3",
+        label: "Heterogenität in der Gesellschaft",
+      },
+      {
+        id: "lb4",
+        label: "Wandel der Gesellschaft",
+      },
+    ],
+    "fos|13|spanisch|spanisch_ahr": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|13|spanisch|spanisch_aufbaukurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|13|spanisch|spanisch_fortgefuehrt": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|13|spanisch|spanisch_grundkurs": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb3",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb4",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "fos|13|technologie|abu": [
+      {
+        id: "lb1",
+        label: "Anbau und Verwertung von Energiepflanzen (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Fertilität und Reproduktion beim Nutztier (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Bio- und Gentechnologie in der Pflanzenzüchtung (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Bio- und Gentechnologie in der Tierzüchtung (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Ernährung zwischen Mangel und Überfluss (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Lebensmittelkonservierung (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Lebensmittelchemie und -technologie des Getreides (optional)",
+      },
+      {
+        id: "lb8",
+        label: "Komplexe technische Systeme (optional)",
+      },
+    ],
+    "fos|13|technologie|t": [
+      {
+        id: "lb1",
+        label: "Nichtmetallische Werkstoffe (optional)",
+      },
+      {
+        id: "lb2",
+        label: "Netzwerktechnik (optional)",
+      },
+      {
+        id: "lb3",
+        label: "Festigkeitslehre (optional)",
+      },
+      {
+        id: "lb4",
+        label: "Fachwerke (optional)",
+      },
+      {
+        id: "lb5",
+        label: "Bautechnik und Gestaltung (optional)",
+      },
+      {
+        id: "lb6",
+        label: "Modellbildung-Anwendung (optional)",
+      },
+      {
+        id: "lb7",
+        label: "Regelungstechnik (optional)",
+      },
+      {
+        id: "lb8",
+        label: "Mechatronik (optional)",
+      },
+      {
+        id: "lb9",
+        label: "Nachrichtentechnik (optional)",
+      },
+      {
+        id: "lb10",
+        label: "Komplexe technische Systeme (optional)",
+      },
+    ],
+    "fos|13|volkswirtschaftslehre": [
+      {
+        id: "lb1",
+        label:
+          "Wirtschaftspolitische Konzeptionen und fiskalpolitische Maßnahmen beurteilen",
+        hours: 12,
+      },
+      {
+        id: "lb2",
+        label:
+          "Beschäftigungs- und arbeitsmarktpolitische Maßnahmen analysieren und beurteilen",
+        hours: 18,
+      },
+      {
+        id: "lb3",
+        label: "Strukturpolitische Maßnahmen beurteilen",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Wettbewerbspolitische Maßnahmen beurteilen",
+        hours: 12,
+      },
+      {
+        id: "lb5",
+        label: "Umweltpolitische Maßnahmen beurteilen",
+        hours: 14,
+      },
+      {
+        id: "lb6",
+        label:
+          "Entwicklungspolitische Problemstellungen analysieren und beurteilen",
+        hours: 14,
+      },
+    ],
+    "fos|13|wirtschaft-und-recht": [
+      {
+        id: "lb1",
+        label: "Als Unternehmer Kaufverträge schließen",
+        hours: 14,
+      },
+      {
+        id: "lb2",
+        label: "Arbeitsverträge schließen und Personal führen",
+        hours: 14,
+      },
+      {
+        id: "lb3",
+        label: "Als Staatsbürger agieren",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Als Marktteilnehmer agieren",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Sich selbständig machen",
+        hours: 14,
+      },
+      {
+        id: "lb6",
+        label: "Den Preis für ein Produkt kalkulieren",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Den Produktionsprozess steuern",
+        hours: 14,
+      },
+      {
+        id: "lb8",
+        label: "Ein Marktingkonzept gestalten",
+        hours: 14,
+      },
+    ],
+    "fos|13|wirtschaft_aktuell": [
+      {
+        id: "lb1",
+        label: "Ausgewählte Aspekte der Internationalisierung (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb2",
+        label: "Angewandte Entwicklungspolitik (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb3",
+        label:
+          "Betriebswirtschaftlich Planen, Entscheiden und Kontrollieren (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb4",
+        label: "Gesellschaft im Wandel (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb5",
+        label: "Wirtschaft im Wandel (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb6",
+        label: "Märkte im Wandel (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb7",
+        label: "Innovation und Existenzgründung (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb8",
+        label: "Standortentscheidungen treffen (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb9",
+        label: "Zukunftsorientiertes Personalmanagement (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb10",
+        label: "Qualitätsmanagement im Betrieb (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb11",
+        label: "Stakeholder-Konzept (optional)",
+        hours: 14,
+      },
+      {
+        id: "lb12",
+        label: "Finanzmanagement (optional)",
+        hours: 14,
+      },
+    ],
+    "wirtschaftsschule|10|bsk|dreistufig": [
+      {
+        id: "lb1",
+        label: "Fit fürs Leben sein",
+      },
+      {
+        id: "lb2",
+        label: "Wettbewerbsfähig bleiben",
+      },
+    ],
+    "wirtschaftsschule|10|bsk|vierstufig": [
+      {
+        id: "lb1",
+        label: "Fit fürs Leben sein",
+      },
+      {
+        id: "lb2",
+        label: "Wettbewerbsfähig bleiben",
+      },
+    ],
+    "wirtschaftsschule|10|bsk|zweistufig": [
+      {
+        id: "lb1",
+        label: "Kaufverträge abschließen",
+      },
+      {
+        id: "lb2",
+        label: "Berufsorientierung",
+      },
+      {
+        id: "lb3",
+        label:
+          "In einem kleinen, regional tätigen Unternehmen erfolgreich agieren",
+      },
+      {
+        id: "lb4",
+        label: "Die Beschaffung neuer Waren organisieren",
+      },
+    ],
+    "wirtschaftsschule|10|deutsch|dreistufig_gueltig_ab_2627": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "wirtschaftsschule|10|deutsch|vierstufig": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "wirtschaftsschule|10|deutsch|vierstufig_gueltig_ab_2627": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "wirtschaftsschule|10|deutsch|zweistufig_gueltig_ab_2526": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "wirtschaftsschule|10|e-commerce": [
+      {
+        id: "lb1",
+        label:
+          "Ein Bewusstsein für die Beeinflussung durch Online-Marketing entwickeln",
+      },
+      {
+        id: "lb2",
+        label: "Im privaten Kontext online einkaufen",
+      },
+      {
+        id: "lb3",
+        label: "Im privaten Kontext online verkaufen",
+      },
+      {
+        id: "lb4",
+        label: "Erste berufliche Erfahrungen im E-Commerce sammeln",
+      },
+      {
+        id: "lb5",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|10|englisch|dreistufig": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "wirtschaftsschule|10|englisch|vierstufig": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "wirtschaftsschule|10|englisch|zweistufig_gueltig_ab_2526": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "wirtschaftsschule|10|ethik|dreistufig": [
+      {
+        id: "lb1",
+        label: "Erwachsen sein als Frau und Mann",
+      },
+      {
+        id: "lb2",
+        label: "Gewissen und Verantwortung",
+      },
+      {
+        id: "lb3",
+        label:
+          "Angewandte Ethik: Medizinethik oder Medienethik (einer der beiden Lernbereiche ist zu wählen)",
+      },
+    ],
+    "wirtschaftsschule|10|ethik|vierstufig": [
+      {
+        id: "lb1",
+        label: "Erwachsen sein als Frau und Mann",
+      },
+      {
+        id: "lb2",
+        label: "Gewissen und Verantwortung",
+      },
+      {
+        id: "lb3",
+        label: "Angewandte Ethik: Medizinethik oder Medienethik",
+      },
+    ],
+    "wirtschaftsschule|10|ethik|zweistufig": [
+      {
+        id: "lb1",
+        label: "Erwachsen sein als Frau und Mann",
+      },
+      {
+        id: "lb2",
+        label: "Angewandte Ethik: Medizinethik",
+      },
+    ],
+    "wirtschaftsschule|10|evangelische-religionslehre|dreistufig": [
+      {
+        id: "lb1",
+        label: "Religiöse und nicht-religiöse Sinnangebote",
+      },
+      {
+        id: "lb2",
+        label: "Die Frage nach Gott",
+      },
+      {
+        id: "lb3",
+        label: "Kirche in der Welt",
+      },
+      {
+        id: "lb4",
+        label: "Verantwortung übernehmen",
+      },
+    ],
+    "wirtschaftsschule|10|evangelische-religionslehre|vierstufig": [
+      {
+        id: "lb1",
+        label: "Religiöse und nicht-religiöse Sinnangebote",
+      },
+      {
+        id: "lb2",
+        label: "Die Frage nach Gott",
+      },
+      {
+        id: "lb3",
+        label: "Kirche in der Welt",
+      },
+      {
+        id: "lb4",
+        label: "Verantwortung übernehmen",
+      },
+    ],
+    "wirtschaftsschule|10|evangelische-religionslehre|zweistufig": [
+      {
+        id: "lb1",
+        label: "Religiöse und nicht-religiöse Sinnangebote",
+      },
+      {
+        id: "lb2",
+        label: "Kirche in der Welt",
+      },
+    ],
+    "wirtschaftsschule|10|fit_for_finance": [
+      {
+        id: "lb1",
+        label: "Geld verdienen und versteuern",
+      },
+      {
+        id: "lb2",
+        label: "Bewusstsein für Schulden entwickeln",
+      },
+      {
+        id: "lb3",
+        label: "Geld sparen und anlegen",
+      },
+      {
+        id: "lb4",
+        label: "Absichern und vorsorgen",
+      },
+      {
+        id: "lb5",
+        label: "Eine Wohnung mieten",
+      },
+      {
+        id: "lb6",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|10|gamification": [
+      {
+        id: "lb1",
+        label: "Gesellschaftsspiele entschlüsseln",
+      },
+      {
+        id: "lb2",
+        label: "Digitale Spiele untersuchen und bewerten",
+      },
+      {
+        id: "lb3",
+        label: "Mit Lernspielen motivieren und fördern",
+      },
+      {
+        id: "lb4",
+        label: "Gamification identifizieren und nutzen",
+      },
+      {
+        id: "lb5",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|10|gesundheit": [
+      {
+        id: "lb1",
+        label: "Gesundheitsbewusst leben",
+      },
+      {
+        id: "lb2",
+        label: "Medizinische Zusammenhänge erkennen",
+      },
+      {
+        id: "lb3",
+        label: "Im Gesundheitssystem orientieren",
+      },
+      {
+        id: "lb4",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|10|gpug-ws|dreistufig": [
+      {
+        id: "lb1",
+        label:
+          "Rekurs: Alltagsleben und Demokratisierungsprozess im Nachkriegsdeutschland",
+      },
+      {
+        id: "lb2",
+        label:
+          "Nationale Entwicklungen: Deutschland von der Teilung über die Wiedervereinigung bis zur Gegenwart",
+      },
+      {
+        id: "lb3",
+        label: "Internationale Entwicklungen (nach 1945) bis heute",
+      },
+      {
+        id: "lb4",
+        label:
+          "Methodenkompetenzen (in die Lernbereiche 1 bis 3 zu integrieren)",
+      },
+    ],
+    "wirtschaftsschule|10|gpug-ws|vierstufig": [
+      {
+        id: "lb1",
+        label:
+          "Rekurs: Alltagsleben und Demokratisierungsprozess im Nachkriegsdeutschland",
+      },
+      {
+        id: "lb2",
+        label:
+          "Nationale Entwicklungen: Deutschland von der Teilung über die Wiedervereinigung bis zur Gegenwart",
+      },
+      {
+        id: "lb3",
+        label: "Internationale Entwicklungen (nach 1945) bis heute",
+      },
+      {
+        id: "lb4",
+        label:
+          "Methodenkompetenzen (in die Lernbereiche 1 bis 3 zu integrieren)",
+      },
+    ],
+    "wirtschaftsschule|10|informationsverarbeitung": [
+      {
+        id: "lb1",
+        label: "Sachgemäß und rationell mit dem Computer umgehen",
+      },
+      {
+        id: "lb2",
+        label:
+          "Moderne Kommunikationsmöglichkeiten zur Berufsorientierung nutzen",
+      },
+      {
+        id: "lb3",
+        label:
+          "Standardsoftware nutzen, um betriebliche Aufgaben zu bewältigen",
+      },
+    ],
+    "wirtschaftsschule|10|katholische-religionslehre|dreistufig": [
+      {
+        id: "lb1",
+        label: "Grenzen erkennen – auf der Suche nach dem rechten Maß",
+      },
+      {
+        id: "lb2",
+        label: "„Wo ist nun dein Gott?“ – Anfragen und Erfahrungen",
+      },
+      {
+        id: "lb3",
+        label: "Jesus Christus – Fragen und Bekenntnis",
+      },
+      {
+        id: "lb4",
+        label: "Kirche in der Welt – Christsein heute",
+      },
+    ],
+    "wirtschaftsschule|10|katholische-religionslehre|vierstufig": [
+      {
+        id: "lb1",
+        label: "Grenzen erkennen – auf der Suche nach dem rechten Maß",
+      },
+      {
+        id: "lb2",
+        label: "„Wo ist nun dein Gott?“ – Anfragen und Erfahrungen",
+      },
+      {
+        id: "lb3",
+        label: "Jesus Christus – Fragen und Bekenntnis",
+      },
+      {
+        id: "lb4",
+        label: "Kirche in der Welt – Christsein heute",
+      },
+    ],
+    "wirtschaftsschule|10|katholische-religionslehre|zweistufig": [
+      {
+        id: "lb1",
+        label: "Grenzen erkennen – auf der Suche nach dem rechten Maß",
+      },
+      {
+        id: "lb2",
+        label: "„Wo ist nun dein Gott?“ – Anfragen und Erfahrungen",
+      },
+    ],
+    "wirtschaftsschule|10|life_skills": [
+      {
+        id: "lb1",
+        label: "Umgang mit Emotionen",
+      },
+      {
+        id: "lb2",
+        label: "Gelingende Kommunikation",
+      },
+      {
+        id: "lb3",
+        label: "Motivation und Zielsetzung",
+      },
+      {
+        id: "lb4",
+        label: "Selbstorganisation und Selbstfürsorge",
+      },
+      {
+        id: "lb5",
+        label: "Entdecke Deine beruflichen Möglichkeiten",
+      },
+    ],
+    "wirtschaftsschule|10|mathematik|dreistufig": [
+      {
+        id: "lb1",
+        label: "Finanzmathematik (2)",
+      },
+      {
+        id: "lb2",
+        label: "Raumgeometrie (2)",
+      },
+      {
+        id: "lb3",
+        label: "Trigonometrie (2)",
+      },
+      {
+        id: "lb4",
+        label: "Lineare und quadratische Funktionen",
+      },
+      {
+        id: "lb5",
+        label: "Zusammengesetzte Zufallsexperimente",
+      },
+    ],
+    "wirtschaftsschule|10|mathematik|vierstufig": [
+      {
+        id: "lb1",
+        label: "Finanzmathematik (2)",
+      },
+      {
+        id: "lb2",
+        label: "Raumgeometrie (2)",
+      },
+      {
+        id: "lb3",
+        label: "Trigonometrie (2)",
+      },
+      {
+        id: "lb4",
+        label: "Lineare und quadratische Funktionen",
+      },
+      {
+        id: "lb5",
+        label: "Zusammengesetzte Zufallsexperimente",
+      },
+    ],
+    "wirtschaftsschule|10|mathematik|zweistufig": [
+      {
+        id: "lb1",
+        label: "Funktionaler Zusammenhang (1)",
+      },
+      {
+        id: "lb2",
+        label: "Lineare Gleichungssysteme",
+      },
+      {
+        id: "lb3",
+        label: "Quadratische Gleichungen",
+      },
+      {
+        id: "lb4",
+        label: "Funktionaler Zusammenhang (2)",
+      },
+      {
+        id: "lb5",
+        label: "Strahlensätze",
+      },
+      {
+        id: "lb6",
+        label: "Trigonometrie (1)",
+      },
+      {
+        id: "lb7",
+        label: "Raum und Form (1)",
+      },
+    ],
+    "wirtschaftsschule|10|oebdb": [
+      {
+        id: "lb1",
+        label: "Pflichtlernbereich: Grundlegende digitale Kompetenzen anwenden",
+      },
+      {
+        id: "lb2",
+        label: "Pflichtlernbereich: Im privaten Kontext einkaufen",
+      },
+      {
+        id: "lb3",
+        label: "Pflichtlernbereich: Im unternehmerischen Kontext einkaufen",
+      },
+      {
+        id: "lb4",
+        label: "Pflichtlernbereich: Im privaten Kontext verkaufen",
+      },
+      {
+        id: "lb5",
+        label: "Pflichtlernbereich: Im unternehmerischen Kontext verkaufen",
+      },
+      {
+        id: "lb6",
+        label: "Pflichtlernbereich: Wertströme und Werte beurteilen",
+      },
+      {
+        id: "lb7",
+        label: "Pflichtlernbereich: Künstliche Intelligenz nutzen",
+      },
+      {
+        id: "lb8",
+        label: "Pflichtlernbereich: Sich in der Berufswelt orientieren",
+      },
+      {
+        id: "lb9",
+        label: "Wahllernbereich: Informationen im Internet",
+      },
+      {
+        id: "lb10",
+        label: "Wahllernbereich: Eigene Spuren im Netz",
+      },
+      {
+        id: "lb11",
+        label: "Wahllernbereich: Selbstdarstellung im Netz",
+      },
+      {
+        id: "lb12",
+        label: "Wahllernbereich: Cybermobbing",
+      },
+      {
+        id: "lb13",
+        label: "Wahllernbereich: Digitale Medien erstellen",
+      },
+      {
+        id: "lb14",
+        label: "Wahllernbereich: Extended Reality nutzen",
+      },
+      {
+        id: "lb15",
+        label: "Wahllernbereich: Lebensmittel wertschätzen",
+      },
+      {
+        id: "lb16",
+        label: "Wahllernbereich: Zukunftsvisionen entwickeln",
+      },
+      {
+        id: "lb17",
+        label: "Wahllernbereich: Eine unternehmerische Idee entwickel",
+      },
+      {
+        id: "lb18",
+        label: "Wahllernbereich: Beeinflussung durch Werbung erkennen",
+      },
+      {
+        id: "lb19",
+        label: "Wahllernbereich: Einen Secondhand-Laden betreiben",
+      },
+      {
+        id: "lb20",
+        label: "Wahllernbereich: Sich ehrenamtlich engagieren",
+      },
+      {
+        id: "lb21",
+        label: "Wahllernbereich: Eine Veranstaltung durchführen",
+      },
+      {
+        id: "lb22",
+        label: "Wahllernbereich: Eigene Talente entdecken",
+      },
+    ],
+    "wirtschaftsschule|10|pug": [
+      {
+        id: "lb1",
+        label: "Lebenswelt und Mitgestaltung",
+      },
+      {
+        id: "lb2",
+        label: "Zusammenleben in der Gesellschaft",
+      },
+      {
+        id: "lb3",
+        label: "Politische Strukturen der Bundesrepublik Deutschland",
+      },
+      {
+        id: "lb4",
+        label: "Herausforderungen der internationalen Politik",
+      },
+      {
+        id: "lb5",
+        label:
+          "Methodenkompetenzen (in die Lernbereiche 1 bis 4 zu integrieren)",
+      },
+    ],
+    "wirtschaftsschule|10|robotik": [
+      {
+        id: "lb1",
+        label: "Roboter im Einsatz erleben",
+      },
+      {
+        id: "lb2",
+        label: "Die Mechanik eines Roboters konstruieren",
+      },
+      {
+        id: "lb3",
+        label: "Die Elektronik eines Roboters installieren",
+      },
+      {
+        id: "lb4",
+        label: "Einen Roboter blockorientiert programmieren",
+      },
+      {
+        id: "lb5",
+        label: "Einen Roboter warten",
+      },
+      {
+        id: "lb6",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|10|sport|diffsport": [
+      {
+        id: "lb1",
+        label: "Badminton",
+      },
+      {
+        id: "lb2",
+        label: "Basketball",
+      },
+      {
+        id: "lb3",
+        label: "Bewegungskünste",
+      },
+      {
+        id: "lb4",
+        label: "Eishockey",
+      },
+      {
+        id: "lb5",
+        label: "Eiskunstlauf/Eistanz",
+      },
+      {
+        id: "lb6",
+        label: "Eisschnelllauf",
+      },
+      {
+        id: "lb7",
+        label: "Fußball",
+      },
+      {
+        id: "lb8",
+        label: "Gerätturnen",
+      },
+      {
+        id: "lb9",
+        label: "Gesundheitsorientierte Fitness",
+      },
+      {
+        id: "lb10",
+        label: "Golf",
+      },
+      {
+        id: "lb11",
+        label: "Handball",
+      },
+      {
+        id: "lb12",
+        label: "Hockey",
+      },
+      {
+        id: "lb13",
+        label: "Judo",
+      },
+      {
+        id: "lb14",
+        label: "Kanu",
+      },
+      {
+        id: "lb15",
+        label: "Leichtathletik",
+      },
+      {
+        id: "lb16",
+        label: "Radsport",
+      },
+      {
+        id: "lb17",
+        label: "Rettungsschwimmen",
+      },
+      {
+        id: "lb18",
+        label: "Rhythmische Sportgymnastik",
+      },
+      {
+        id: "lb19",
+        label: "Ringen",
+      },
+      {
+        id: "lb20",
+        label: "Rodeln",
+      },
+      {
+        id: "lb21",
+        label: "Rudern",
+      },
+      {
+        id: "lb22",
+        label: "Schwimmen",
+      },
+      {
+        id: "lb23",
+        label: "Segeln",
+      },
+      {
+        id: "lb24",
+        label: "Selbstverteidigung",
+      },
+      {
+        id: "lb25",
+        label: "Ski Alpin",
+      },
+      {
+        id: "lb26",
+        label: "Skilanglauf",
+      },
+      {
+        id: "lb27",
+        label: "Snowboard",
+      },
+      {
+        id: "lb28",
+        label: "Sportklettern",
+      },
+      {
+        id: "lb29",
+        label: "Tanz",
+      },
+      {
+        id: "lb30",
+        label: "Tennis",
+      },
+      {
+        id: "lb31",
+        label: "Tischtennis",
+      },
+      {
+        id: "lb32",
+        label: "Triathlon",
+      },
+      {
+        id: "lb33",
+        label: "Volleyball",
+      },
+    ],
+    "wirtschaftsschule|10|sport|dreistufig": [
+      {
+        id: "lb1",
+        label: "Gesundheit und Fitness",
+      },
+      {
+        id: "lb2",
+        label: "Fairness/Kooperation/Selbstkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Freizeit und Umwelt",
+      },
+      {
+        id: "lb4",
+        label: "Sportliche Handlungsfelder",
+      },
+    ],
+    "wirtschaftsschule|10|sport|vierstufig": [
+      {
+        id: "lb1",
+        label: "Gesundheit und Fitness",
+      },
+      {
+        id: "lb2",
+        label: "Fairness/Kooperation/Selbstkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Freizeit und Umwelt",
+      },
+      {
+        id: "lb4",
+        label: "Sportliche Handlungsfelder",
+      },
+    ],
+    "wirtschaftsschule|10|sport|zweistufig": [
+      {
+        id: "lb1",
+        label: "Gesundheit und Fitness",
+      },
+      {
+        id: "lb2",
+        label: "Fairness/Kooperation/Selbstkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Freizeit und Umwelt",
+      },
+      {
+        id: "lb4",
+        label: "Sportliche Handlungsfelder",
+      },
+    ],
+    "wirtschaftsschule|10|tourismus": [
+      {
+        id: "lb1",
+        label: "Tourismus entdecken",
+      },
+      {
+        id: "lb2",
+        label: "Regionalen Tourismus untersuchen",
+      },
+      {
+        id: "lb3",
+        label: "Tourismus in der Region erleben",
+      },
+      {
+        id: "lb4",
+        label: "Reisen planen",
+      },
+      {
+        id: "lb5",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|10|uebungsunternehmen|drei_vierstufig": [
+      {
+        id: "lb1",
+        label: "Kennenlernen des Unternehmens",
+      },
+      {
+        id: "lb2",
+        label: "Einkauf",
+      },
+      {
+        id: "lb3",
+        label: "Verkauf",
+      },
+      {
+        id: "lb4",
+        label: "Personal",
+      },
+      {
+        id: "lb5",
+        label: "Marketing",
+      },
+      {
+        id: "lb6",
+        label: "Controlling",
+      },
+      {
+        id: "lb7",
+        label: "Finanzen",
+      },
+    ],
+    "wirtschaftsschule|10|uebungsunternehmen|zweistufig": [
+      {
+        id: "lb1",
+        label: "Kennenlernen des Unternehmens",
+      },
+      {
+        id: "lb2",
+        label: "Einkauf",
+      },
+      {
+        id: "lb3",
+        label: "Verkauf",
+      },
+      {
+        id: "lb4",
+        label: "Personal",
+      },
+      {
+        id: "lb5",
+        label: "Marketing",
+      },
+      {
+        id: "lb6",
+        label: "Controlling",
+      },
+      {
+        id: "lb7",
+        label: "Finanzen",
+      },
+    ],
+    "wirtschaftsschule|10|umweltoekonomie": [
+      {
+        id: "lb1",
+        label: "Energieversorgung gestalten",
+      },
+      {
+        id: "lb2",
+        label: "Mobilität managen",
+      },
+      {
+        id: "lb3",
+        label: "Umweltökonomisch konsumieren",
+      },
+      {
+        id: "lb4",
+        label: "Betriebliche Umweltökonomie untersuchen",
+      },
+      {
+        id: "lb5",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|10|umwelttechnik": [
+      {
+        id: "lb1",
+        label: "Energie einsparen",
+      },
+      {
+        id: "lb2",
+        label: "Abfall vermeiden",
+      },
+      {
+        id: "lb3",
+        label: "Lärm messen und Schutzmaßnahmen ergreifen",
+      },
+      {
+        id: "lb4",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|10|wirtschaftsgeografie|dreistufig": [
+      {
+        id: "lb1",
+        label: "Den Heimatraum mitgestalten",
+      },
+      {
+        id: "lb2",
+        label: "Einen Unternehmensstandort in der Region wählen",
+      },
+      {
+        id: "lb3",
+        label:
+          "Verantwortungsbewusste Konsumentscheidungen im Bereich Non-Food-Artikel treffen",
+      },
+      {
+        id: "lb4",
+        label: "Neue Beschaffungsmärkte im Ausland erschließen",
+      },
+      {
+        id: "lb5",
+        label: "Bei Naturkatastrophen aktiv helfen",
+      },
+      {
+        id: "lb6",
+        label: "Ein touristisches Produkt entwickeln",
+      },
+    ],
+    "wirtschaftsschule|10|wirtschaftsgeografie|vierstufig": [
+      {
+        id: "lb1",
+        label: "Einen Unternehmensstandort in der Region wählen",
+      },
+      {
+        id: "lb2",
+        label: "Neue Beschaffungsmärkte im Ausland erschließen",
+      },
+      {
+        id: "lb3",
+        label: "Ein Vertriebsnetz international aufbauen",
+      },
+      {
+        id: "lb4",
+        label: "Auf eine Krise reagieren",
+      },
+      {
+        id: "lb5",
+        label: "Ein touristisches Produkt entwickeln",
+      },
+      {
+        id: "lb6",
+        label: "International leben",
+      },
+    ],
+    "wirtschaftsschule|11|bsk": [
+      {
+        id: "lb1",
+        label:
+          "Das Sortiment optimieren und den Absatz neuer Waren organisieren",
+      },
+      {
+        id: "lb2",
+        label: "Fit fürs Leben sein",
+      },
+      {
+        id: "lb3",
+        label: "Wettbewerbsfähig bleiben",
+      },
+      {
+        id: "lb4",
+        label: "Eine Veranstaltung zum Erfolg führen",
+      },
+    ],
+    "wirtschaftsschule|11|deutsch|zweistufig_gueltig_ab_2627": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "wirtschaftsschule|11|e-commerce": [
+      {
+        id: "lb1",
+        label:
+          "Ein Bewusstsein für die Beeinflussung durch Online-Marketing entwickeln",
+      },
+      {
+        id: "lb2",
+        label: "Im privaten Kontext online einkaufen",
+      },
+      {
+        id: "lb3",
+        label: "Im privaten Kontext online verkaufen",
+      },
+      {
+        id: "lb4",
+        label: "Erste berufliche Erfahrungen im E-Commerce sammeln",
+      },
+      {
+        id: "lb5",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|11|englisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "wirtschaftsschule|11|ethik": [
+      {
+        id: "lb1",
+        label: "Gewissen und Verantwortung",
+      },
+      {
+        id: "lb2",
+        label: "Angewandte Ethik: Medienethik",
+      },
+    ],
+    "wirtschaftsschule|11|evangelische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Die Frage nach Gott",
+      },
+      {
+        id: "lb2",
+        label: "Verantwortung übernehmen",
+      },
+    ],
+    "wirtschaftsschule|11|fit_for_finance": [
+      {
+        id: "lb1",
+        label: "Geld verdienen und versteuern",
+      },
+      {
+        id: "lb2",
+        label: "Bewusstsein für Schulden entwickeln",
+      },
+      {
+        id: "lb3",
+        label: "Geld sparen und anlegen",
+      },
+      {
+        id: "lb4",
+        label: "Absichern und vorsorgen",
+      },
+      {
+        id: "lb5",
+        label: "Eine Wohnung mieten",
+      },
+      {
+        id: "lb6",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|11|gamification": [
+      {
+        id: "lb1",
+        label: "Gesellschaftsspiele entschlüsseln",
+      },
+      {
+        id: "lb2",
+        label: "Digitale Spiele untersuchen und bewerten",
+      },
+      {
+        id: "lb3",
+        label: "Mit Lernspielen motivieren und fördern",
+      },
+      {
+        id: "lb4",
+        label: "Gamification identifizieren und nutzen",
+      },
+      {
+        id: "lb5",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|11|gesundheit": [
+      {
+        id: "lb1",
+        label: "Gesundheitsbewusst leben",
+      },
+      {
+        id: "lb2",
+        label: "Medizinische Zusammenhänge erkennen",
+      },
+      {
+        id: "lb3",
+        label: "Im Gesundheitssystem orientieren",
+      },
+      {
+        id: "lb4",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|11|informationsverarbeitung": [
+      {
+        id: "lb1",
+        label:
+          "Standardsoftware einsetzen, um in einem Unternehmen erfolgreich zu agieren",
+      },
+      {
+        id: "lb2",
+        label:
+          "Standardsoftware einsetzen, um eine Veranstaltung zum Erfolg zu führen",
+      },
+    ],
+    "wirtschaftsschule|11|katholische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Jesus Christus – Fragen und Bekenntnis",
+      },
+      {
+        id: "lb2",
+        label: "Kirche in der Welt – Christsein heute",
+      },
+    ],
+    "wirtschaftsschule|11|life_skills": [
+      {
+        id: "lb1",
+        label: "Umgang mit Emotionen",
+      },
+      {
+        id: "lb2",
+        label: "Gelingende Kommunikation",
+      },
+      {
+        id: "lb3",
+        label: "Motivation und Zielsetzung",
+      },
+      {
+        id: "lb4",
+        label: "Selbstorganisation und Selbstfürsorge",
+      },
+      {
+        id: "lb5",
+        label: "Entdecke Deine beruflichen Möglichkeiten",
+      },
+    ],
+    "wirtschaftsschule|11|mathematik": [
+      {
+        id: "lb1",
+        label: "Finanzmathematik",
+      },
+      {
+        id: "lb2",
+        label: "Raumgeometrie",
+      },
+      {
+        id: "lb3",
+        label: "Trigonometrie",
+      },
+      {
+        id: "lb4",
+        label: "Lineare und quadratische Funktionen",
+      },
+      {
+        id: "lb5",
+        label: "Zusammengesetzte Zufallsexperimente",
+      },
+    ],
+    "wirtschaftsschule|11|oebdb": [
+      {
+        id: "lb1",
+        label: "Pflichtlernbereich: Grundlegende digitale Kompetenzen anwenden",
+      },
+      {
+        id: "lb2",
+        label: "Pflichtlernbereich: Im privaten Kontext einkaufen",
+      },
+      {
+        id: "lb3",
+        label: "Pflichtlernbereich: Im unternehmerischen Kontext einkaufen",
+      },
+      {
+        id: "lb4",
+        label: "Pflichtlernbereich: Im privaten Kontext verkaufen",
+      },
+      {
+        id: "lb5",
+        label: "Pflichtlernbereich: Im unternehmerischen Kontext verkaufen",
+      },
+      {
+        id: "lb6",
+        label: "Pflichtlernbereich: Wertströme und Werte beurteilen",
+      },
+      {
+        id: "lb7",
+        label: "Pflichtlernbereich: Künstliche Intelligenz nutzen",
+      },
+      {
+        id: "lb8",
+        label: "Pflichtlernbereich: Sich in der Berufswelt orientieren",
+      },
+      {
+        id: "lb9",
+        label: "Wahllernbereich: Informationen im Internet",
+      },
+      {
+        id: "lb10",
+        label: "Wahllernbereich: Eigene Spuren im Netz",
+      },
+      {
+        id: "lb11",
+        label: "Wahllernbereich: Selbstdarstellung im Netz",
+      },
+      {
+        id: "lb12",
+        label: "Wahllernbereich: Cybermobbing",
+      },
+      {
+        id: "lb13",
+        label: "Wahllernbereich: Digitale Medien erstellen",
+      },
+      {
+        id: "lb14",
+        label: "Wahllernbereich: Extended Reality nutzen",
+      },
+      {
+        id: "lb15",
+        label: "Wahllernbereich: Lebensmittel wertschätzen",
+      },
+      {
+        id: "lb16",
+        label: "Wahllernbereich: Zukunftsvisionen entwickeln",
+      },
+      {
+        id: "lb17",
+        label: "Wahllernbereich: Eine unternehmerische Idee entwickel",
+      },
+      {
+        id: "lb18",
+        label: "Wahllernbereich: Beeinflussung durch Werbung erkennen",
+      },
+      {
+        id: "lb19",
+        label: "Wahllernbereich: Einen Secondhand-Laden betreiben",
+      },
+      {
+        id: "lb20",
+        label: "Wahllernbereich: Sich ehrenamtlich engagieren",
+      },
+      {
+        id: "lb21",
+        label: "Wahllernbereich: Eine Veranstaltung durchführen",
+      },
+      {
+        id: "lb22",
+        label: "Wahllernbereich: Eigene Talente entdecken",
+      },
+    ],
+    "wirtschaftsschule|11|robotik": [
+      {
+        id: "lb1",
+        label: "Roboter im Einsatz erleben",
+      },
+      {
+        id: "lb2",
+        label: "Die Mechanik eines Roboters konstruieren",
+      },
+      {
+        id: "lb3",
+        label: "Die Elektronik eines Roboters installieren",
+      },
+      {
+        id: "lb4",
+        label: "Einen Roboter blockorientiert programmieren",
+      },
+      {
+        id: "lb5",
+        label: "Einen Roboter warten",
+      },
+      {
+        id: "lb6",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|11|sport": [
+      {
+        id: "lb1",
+        label: "Gesundheit und Fitness",
+      },
+      {
+        id: "lb2",
+        label: "Fairness/Kooperation/Selbstkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Freizeit und Umwelt",
+      },
+      {
+        id: "lb4",
+        label: "Sportliche Handlungsfelder",
+      },
+    ],
+    "wirtschaftsschule|11|tourismus": [
+      {
+        id: "lb1",
+        label: "Tourismus entdecken",
+      },
+      {
+        id: "lb2",
+        label: "Regionalen Tourismus untersuchen",
+      },
+      {
+        id: "lb3",
+        label: "Tourismus in der Region erleben",
+      },
+      {
+        id: "lb4",
+        label: "Reisen planen",
+      },
+      {
+        id: "lb5",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|11|uebungsunternehmen|zweistufig": [
+      {
+        id: "lb1",
+        label: "Kennenlernen des Unternehmens",
+      },
+      {
+        id: "lb2",
+        label: "Einkauf",
+      },
+      {
+        id: "lb3",
+        label: "Verkauf",
+      },
+      {
+        id: "lb4",
+        label: "Personal",
+      },
+      {
+        id: "lb5",
+        label: "Marketing",
+      },
+      {
+        id: "lb6",
+        label: "Controlling",
+      },
+      {
+        id: "lb7",
+        label: "Finanzen",
+      },
+    ],
+    "wirtschaftsschule|11|umweltoekonomie": [
+      {
+        id: "lb1",
+        label: "Energieversorgung gestalten",
+      },
+      {
+        id: "lb2",
+        label: "Mobilität managen",
+      },
+      {
+        id: "lb3",
+        label: "Umweltökonomisch konsumieren",
+      },
+      {
+        id: "lb4",
+        label: "Betriebliche Umweltökonomie untersuchen",
+      },
+      {
+        id: "lb5",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|11|umwelttechnik": [
+      {
+        id: "lb1",
+        label: "Energie einsparen",
+      },
+      {
+        id: "lb2",
+        label: "Abfall vermeiden",
+      },
+      {
+        id: "lb3",
+        label: "Lärm messen und Schutzmaßnahmen ergreifen",
+      },
+      {
+        id: "lb4",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|11|wirtschaft_aktuell": [
+      {
+        id: "lb1",
+        label: "Leben und Arbeiten in Deutschland",
+      },
+      {
+        id: "lb2",
+        label: "Der demographische Wandel – Herausforderung für die Wirtschaft",
+      },
+      {
+        id: "lb3",
+        label: "Grundlagen des Wirtschaftens",
+      },
+      {
+        id: "lb4",
+        label: "Märkte im Wandel",
+      },
+      {
+        id: "lb5",
+        label: "Wandel in der Arbeitswelt",
+      },
+      {
+        id: "lb6",
+        label:
+          "Verbraucherschutz und verantwortungsbewusstes Verbraucherverhalten",
+      },
+      {
+        id: "lb7",
+        label: "Wirtschaftspolitik in einer globalisierten Welt",
+      },
+      {
+        id: "lb8",
+        label: "Wirtschaftliche Zusammenarbeit in der Europäischen Union",
+      },
+      {
+        id: "lb9",
+        label: "Die Weltwirtschaft gestalten",
+      },
+    ],
+    "wirtschaftsschule|5|deutsch": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "wirtschaftsschule|5|digitales-leben-und-arbeiten": [
+      {
+        id: "lb1",
+        label: "Die digitale Bildungsinfrastruktur nutzen",
+      },
+      {
+        id: "lb2",
+        label: "Digitale Medien nutzen",
+      },
+      {
+        id: "lb3",
+        label: "Digitale Medien erstellen",
+      },
+      {
+        id: "lb4",
+        label: "Nutzung digitaler Medien kritisch hinterfragen",
+      },
+      {
+        id: "lb5",
+        label: "Cybermobbing",
+      },
+    ],
+    "wirtschaftsschule|5|englisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "wirtschaftsschule|5|ethik": [
+      {
+        id: "lb1",
+        label: "Meine Wirklichkeit und ich",
+      },
+      {
+        id: "lb2",
+        label: "Leben in der Familie",
+      },
+      {
+        id: "lb3",
+        label: "Spielen",
+      },
+      {
+        id: "lb4",
+        label: "Feste und Riten in Religion und Brauchtum",
+      },
+    ],
+    "wirtschaftsschule|5|evangelische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Die Bibel – Buch des Lebens",
+      },
+      {
+        id: "lb2",
+        label: "Erfahrungen mit Gott als Begleiter auf dem Lebensweg",
+      },
+      {
+        id: "lb3",
+        label: "Glaube wird sichtbar und hinterlässt Spuren",
+      },
+      {
+        id: "lb4",
+        label: "Schöpfung - Unsere Welt und unser Leben als Geschenk Gottes?",
+      },
+    ],
+    "wirtschaftsschule|5|gpug-ws": [
+      {
+        id: "lb1",
+        label: "Politische Mitwirkungsmöglichkeiten",
+      },
+      {
+        id: "lb2",
+        label: "Gesellschaftliches Miteinander",
+      },
+      {
+        id: "lb3",
+        label: "Der Mensch in der Welt von gestern, heute und morgen",
+      },
+      {
+        id: "lb4",
+        label: "Menschen in vorgeschichtlicher Zeit",
+      },
+      {
+        id: "lb5",
+        label: "Gesellschaftliche Herausforderungen",
+      },
+      {
+        id: "lb6",
+        label: "Methodenkompetenz",
+      },
+    ],
+    "wirtschaftsschule|5|katholische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Auf Gott vertrauen – einen neuen Anfang wagen",
+      },
+      {
+        id: "lb2",
+        label: "„Umsorge mich mit deiner Liebe“ – beten und meditieren",
+      },
+      {
+        id: "lb3",
+        label: "Erfahrungen mit Gott – Die Heilige Schrift",
+      },
+      {
+        id: "lb4",
+        label:
+          '„In jenen Tagen trat einer auf" – Jesus im Blickwinkel seiner Zeit und Umwelt',
+      },
+      {
+        id: "lb5",
+        label: "Leben in der Pfarrgemeinde – Eingebundensein in die Kirche",
+      },
+    ],
+    "wirtschaftsschule|5|mathematik": [
+      {
+        id: "lb1",
+        label: "Natürliche Zahlen",
+      },
+      {
+        id: "lb2",
+        label: "Rechnen mit natürlichen Zahlen",
+      },
+      {
+        id: "lb3",
+        label: "Geometrische Grundvorstellungen",
+      },
+      {
+        id: "lb4",
+        label: "Geometrische Figuren",
+      },
+      {
+        id: "lb5",
+        label: "Ganze Zahlen",
+      },
+      {
+        id: "lb6",
+        label: "Größen im Alltag",
+      },
+      {
+        id: "lb7",
+        label: "Auswertung von Daten",
+      },
+    ],
+    "wirtschaftsschule|5|musischaesthetischebildung": [
+      {
+        id: "lb1",
+        label: "Kunst: Bilder und Objekte kreativ adaptieren",
+      },
+      {
+        id: "lb2",
+        label: "Kunst: Bilder gestalten",
+      },
+      {
+        id: "lb3",
+        label: "Kunst: Kunst bewusst wahrnehmen",
+      },
+      {
+        id: "lb4",
+        label: "Kunst: Die Handschrift als Kunst",
+      },
+      {
+        id: "lb5",
+        label:
+          "Musik: Lieder aus verschiedenen Regionen Deutschlands singen, rhythmisch begleiten und durch Bewegung darstellen",
+      },
+      {
+        id: "lb6",
+        label:
+          "Musik: Zeitreise durch die verschiedenen Epochen der Musikgeschichte",
+      },
+      {
+        id: "lb7",
+        label: "Musik: Grundlagen der Musik",
+      },
+      {
+        id: "lb8",
+        label:
+          "Kunst und Musik: Zeitreise durch die verschiedenen Epochen der Musikgeschichte verknüpft mit Aspekten der Kunst",
+      },
+    ],
+    "wirtschaftsschule|5|mut": [
+      {
+        id: "lb1",
+        label: "Sich in der Natur bewegen",
+      },
+      {
+        id: "lb2",
+        label: "Die Landwirtschaft erleben",
+      },
+      {
+        id: "lb3",
+        label: "Im Haushalt Aufgaben übernehmen",
+      },
+      {
+        id: "lb4",
+        label: "Sich selbst wertschätzen",
+      },
+      {
+        id: "lb5",
+        label: "Den schulischen Alltag bewältigen",
+      },
+      {
+        id: "lb6",
+        label: "Naturwissenschaften im Alltag erleben",
+      },
+      {
+        id: "lb7",
+        label: "Lifehacks nutzen",
+      },
+    ],
+    "wirtschaftsschule|5|oeb": [
+      {
+        id: "lb1",
+        label: "Als Klasse im Team erfolgreich arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Den eigenen Schulalltag organisieren",
+      },
+      {
+        id: "lb3",
+        label: "Ökonomie spielerisch und praxisnah entdecken",
+      },
+      {
+        id: "lb4",
+        label: "Mit Taschengeld verantwortungsbewusst umgehen",
+      },
+      {
+        id: "lb5",
+        label: "Die Welt der Werbung erkunden",
+      },
+    ],
+    "wirtschaftsschule|5|sport": [
+      {
+        id: "lb1",
+        label: "Gesundheit und Fitness",
+      },
+      {
+        id: "lb2",
+        label: "Firness/Kooperation/Selbstkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Freizeit und Umwelt",
+      },
+      {
+        id: "lb4",
+        label: "Sportliche Handlungsfelder",
+      },
+    ],
+    "wirtschaftsschule|6|deutsch": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "wirtschaftsschule|6|digitales-leben-und-arbeiten": [
+      {
+        id: "lb1",
+        label:
+          "Vorhandene Dokumente mit einem Textverarbeitungsprogramm gestalten",
+      },
+      {
+        id: "lb2",
+        label: "Eine Präsentation erstellen",
+      },
+      {
+        id: "lb3",
+        label: "Informationen im Internet finden",
+      },
+      {
+        id: "lb4",
+        label: "Mobile digitale Endgeräte auswählen",
+      },
+      {
+        id: "lb5",
+        label:
+          "Dokumente mithilfe von Tabellen in einem Textverarbeitungsprogramm gestalten",
+      },
+      {
+        id: "lb6",
+        label: "An einer Videokonferenz teilnehmen",
+      },
+    ],
+    "wirtschaftsschule|6|englisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Text und Medienkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "wirtschaftsschule|6|ethik": [
+      {
+        id: "lb1",
+        label: "Das Fremde verstehen und damit richtig umgehen",
+      },
+      {
+        id: "lb2",
+        label: "Elektronische Medien im eigenen Leben",
+      },
+      {
+        id: "lb3",
+        label: "Was ich mag und was mir gut tut",
+      },
+    ],
+    "wirtschaftsschule|6|evangelische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Orientierung im Zusammenleben",
+      },
+      {
+        id: "lb2",
+        label: "Zeit und Umwelt Jesu",
+      },
+      {
+        id: "lb3",
+        label: "Leben und Botschaft Jesu",
+      },
+      {
+        id: "lb4",
+        label: "Feste und Bräuche",
+      },
+      {
+        id: "lb5",
+        label: "Wer bin ich?",
+      },
+    ],
+    "wirtschaftsschule|6|gpug-ws": [
+      {
+        id: "lb1",
+        label: "Der Mensch in der Welt von gestern, heute und morgen",
+      },
+      {
+        id: "lb2",
+        label: "Menschen in vorgeschichtlicher Zeit",
+      },
+      {
+        id: "lb3",
+        label: "Ägypten als Beispiel einer frühen Hochkultur",
+      },
+      {
+        id: "lb4",
+        label: "Athen in der Antike",
+      },
+      {
+        id: "lb5",
+        label: "Römische Antike",
+      },
+      {
+        id: "lb6",
+        label: "Der Wandel von der Antike zum Mittelalter",
+      },
+      {
+        id: "lb7",
+        label: "Methodenkompetenz",
+      },
+    ],
+    "wirtschaftsschule|6|katholische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Jesus von Nazareth – wer war er wirklich?",
+      },
+      {
+        id: "lb2",
+        label: "Menschen fragen nach Gott – auf der Suche nach Antworten",
+      },
+      {
+        id: "lb3",
+        label: "Ein Buch wie kein anderes: die Bibel",
+      },
+      {
+        id: "lb4",
+        label: "Von Gott erwählt: König David",
+      },
+      {
+        id: "lb5",
+        label: "Neu sehen und verstehen: die verändernde Kraft des Hl. Geistes",
+      },
+      {
+        id: "lb6",
+        label: "Alles hat seine Zeit: Zeit haben für sich und andere",
+      },
+    ],
+    "wirtschaftsschule|6|mathematik": [
+      {
+        id: "lb1",
+        label: "Natürliche Zahlen",
+      },
+      {
+        id: "lb2",
+        label: "Ganze Zahlen",
+      },
+      {
+        id: "lb3",
+        label: "Bruchzahlen Q",
+      },
+      {
+        id: "lb4",
+        label: "Geometrische Grundvorstellungen",
+      },
+      {
+        id: "lb5",
+        label: "Figuren- und Raumgeometrie",
+      },
+      {
+        id: "lb6",
+        label: "Geometrische Abbildungen",
+      },
+      {
+        id: "lb7",
+        label: "Proportionale Größen",
+      },
+      {
+        id: "lb8",
+        label: "Terme",
+      },
+      {
+        id: "lb9",
+        label: "Daten und Zufall",
+      },
+    ],
+    "wirtschaftsschule|6|musischaesthetischebildung": [
+      {
+        id: "lb1",
+        label: "Kunst: Bilder gestalten",
+      },
+      {
+        id: "lb2",
+        label: "Kunst: Kunst bewusst wahrnehmen",
+      },
+      {
+        id: "lb3",
+        label: "Kunst: Schrift gestalten",
+      },
+      {
+        id: "lb4",
+        label: "Musik: Lieder aus aller Welt singen und rhythmisch begleiten",
+      },
+      {
+        id: "lb5",
+        label: "Musik: Musik bewusst hören",
+      },
+      {
+        id: "lb6",
+        label: "Musik: Klanggeschichten erfinden und präsentieren",
+      },
+    ],
+    "wirtschaftsschule|6|mut": [
+      {
+        id: "lb1",
+        label: "Von der Natur lernen",
+      },
+      {
+        id: "lb2",
+        label: "Sich gesundheitsbewusst ernähren",
+      },
+      {
+        id: "lb3",
+        label: "Wasser verantwortungsbewusst nutzen",
+      },
+    ],
+    "wirtschaftsschule|6|oeb": [
+      {
+        id: "lb1",
+        label: "Einen schulischen Ausflug organisieren",
+      },
+      {
+        id: "lb2",
+        label: "Bewusst einkaufen",
+      },
+      {
+        id: "lb3",
+        label: "Freizeit sinnvoll gestalten",
+      },
+      {
+        id: "lb4",
+        label: "Verkaufserfolge erzielen",
+      },
+      {
+        id: "lb5",
+        label: "Ein nachhaltiges Projekt umsetzen",
+      },
+      {
+        id: "lb6",
+        label: "Sich als Teil der Wirtschaftseinheit Familie verstehen",
+      },
+      {
+        id: "lb7",
+        label: "Persönlichkeit stärken",
+      },
+      {
+        id: "lb8",
+        label: "Wertvorstellungen entwickeln",
+      },
+    ],
+    "wirtschaftsschule|6|sport": [
+      {
+        id: "lb1",
+        label: "Gesundheit und Fitness",
+      },
+      {
+        id: "lb2",
+        label: "Fairness/Kooperation/Selbstkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Freizeit und Umwelt",
+      },
+      {
+        id: "lb4",
+        label: "Sportliche Handlungsfelder",
+      },
+    ],
+    "wirtschaftsschule|7|bsk": [
+      {
+        id: "lb1",
+        label: "Ein Unternehmen in der Region erkunden",
+      },
+      {
+        id: "lb2",
+        label: "Als privater Endverbraucher wirtschaftlich handeln",
+      },
+    ],
+    "wirtschaftsschule|7|deutsch": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "wirtschaftsschule|7|englisch": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "wirtschaftsschule|7|ethik": [
+      {
+        id: "lb1",
+        label: "Ich und die Gleichaltrigen",
+      },
+      {
+        id: "lb2",
+        label: "Sich für andere einsetzen",
+      },
+      {
+        id: "lb3",
+        label: "Den Wert der Natur erkennen",
+      },
+      {
+        id: "lb4",
+        label: "Mensch und Natur in den Religionen",
+      },
+    ],
+    "wirtschaftsschule|7|evangelische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Bereicherung durch Verschiedenheit",
+      },
+      {
+        id: "lb2",
+        label: "Paulus überwindet Grenzen",
+      },
+      {
+        id: "lb3",
+        label: "Frühe Kirche im Wandel",
+      },
+      {
+        id: "lb4",
+        label: "Ich werde erwachsen",
+      },
+      {
+        id: "lb5",
+        label: "Islam",
+      },
+    ],
+    "wirtschaftsschule|7|gpug-ws": [
+      {
+        id: "lb1",
+        label: "Rekurs – Leben in Frühgeschichte und Antike",
+      },
+      {
+        id: "lb2",
+        label: "Werte und Normen im Mittelalter und heute",
+      },
+      {
+        id: "lb3",
+        label:
+          "Wandel in Gesellschaft und Staatenwelt vom Mittelalter zur Frühen Neuzeit",
+      },
+      {
+        id: "lb4",
+        label: "Religiöse Konflikte und Umbrüche im konfessionellen Zeitalter",
+      },
+      {
+        id: "lb5",
+        label: "Streben nach unumschränkter Herrschaft im Absolutismus",
+      },
+      {
+        id: "lb6",
+        label:
+          "Methodenkompetenzen (in die Lernbereiche 1 bis 5 zu integrieren)",
+      },
+    ],
+    "wirtschaftsschule|7|informationsverarbeitung": [
+      {
+        id: "lb1",
+        label: "Sachgemäß und rationell mit dem Computer umgehen",
+      },
+      {
+        id: "lb2",
+        label: "Soziale Netzwerke verantwortungsbewusst nutzen",
+      },
+      {
+        id: "lb3",
+        label:
+          "Informationen suchen, bewerten, verarbeiten und präsentieren, um ein Unternehmen in der Region zu erkunden",
+      },
+      {
+        id: "lb4",
+        label:
+          "Kalkulationen mit einem Tabellenkalkulationsprogramm durchführen, um als privater Endverbraucher wirtschaftlich zu handeln",
+      },
+      {
+        id: "lb5",
+        label: "Digitale Werbeträger gestalten und bewerten",
+      },
+      {
+        id: "lb6",
+        label: "Kaufverträge im Internet abschließen",
+      },
+    ],
+    "wirtschaftsschule|7|katholische-religionslehre": [
+      {
+        id: "lb1",
+        label: "Auf dem Weg – Gott suchen und finden",
+      },
+      {
+        id: "lb2",
+        label: "Biblische Weisungen – Orientierung für ein gelingendes Leben",
+      },
+      {
+        id: "lb3",
+        label:
+          "„Bei euch aber soll es anders sein!“ – Jesu Botschaft vom Reich Gottes",
+      },
+      {
+        id: "lb4",
+        label: "„Dass alle eins seien“ – Verbindendes führt zusammen!",
+      },
+      {
+        id: "lb5",
+        label: "Islam – Hingabe an Gott",
+      },
+    ],
+    "wirtschaftsschule|7|mathematik|vierstufig": [
+      {
+        id: "lb1",
+        label: "Prozentrechnung",
+      },
+      {
+        id: "lb2",
+        label: "Terme und lineare Gleichungen",
+      },
+      {
+        id: "lb3",
+        label: "Geometrische Grundvorstellung",
+      },
+      {
+        id: "lb4",
+        label: "Raum und Form (1)",
+      },
+      {
+        id: "lb5",
+        label: "Daten und Zufall (1)",
+      },
+    ],
+    "wirtschaftsschule|7|mensch-und-umwelt": [
+      {
+        id: "lb1",
+        label: "An einem Bildschirmarbeitsplatz ergonomisch arbeiten",
+      },
+      {
+        id: "lb2",
+        label: "Mobiltelefone verantwortungsbewusst nutzen",
+      },
+      {
+        id: "lb3",
+        label: "Mobilität effizient gestalten",
+      },
+    ],
+    "wirtschaftsschule|7|musischaesthetischebildung": [
+      {
+        id: "lb1",
+        label: "Kunst",
+      },
+      {
+        id: "lb2",
+        label: "Musik",
+      },
+    ],
+    "wirtschaftsschule|7|mut": [
+      {
+        id: "lb1",
+        label: "Erste Hilfe leisten",
+      },
+      {
+        id: "lb2",
+        label: "Ergonomisch arbeiten",
+      },
+      {
+        id: "lb3",
+        label: "Gesund kochen",
+      },
+      {
+        id: "lb4",
+        label: "Sexualität verantwortungsbewusst leben",
+      },
+      {
+        id: "lb5",
+        label: "Mit dem Smartphone sinnvoll umgehen",
+      },
+      {
+        id: "lb6",
+        label: "Mobilität im Alltag",
+      },
+      {
+        id: "lb7",
+        label: "Lifehacks nutzen",
+      },
+      {
+        id: "lb8",
+        label: "Eine Wetterstation betreiben",
+      },
+      {
+        id: "lb9",
+        label: "Eine nachhaltige Exkursion durchführen",
+      },
+      {
+        id: "lb10",
+        label: "Ein Repaircafé betreiben",
+      },
+      {
+        id: "lb11",
+        label: "Wald nutzen und schützen",
+      },
+      {
+        id: "lb12",
+        label: "Nachhaltig leben",
+      },
+      {
+        id: "lb13",
+        label: "Astronomie",
+      },
+      {
+        id: "lb14",
+        label: "3D-Drucker nutzen",
+      },
+      {
+        id: "lb15",
+        label: "Flugobjekte bauen und einsetzen",
+      },
+      {
+        id: "lb16",
+        label: "Programmieren",
+      },
+      {
+        id: "lb17",
+        label: "Einfache Roboter bauen und programmieren",
+      },
+      {
+        id: "lb18",
+        label: "Prinzipien der Bionik anwenden",
+      },
+      {
+        id: "lb19",
+        label: "Elektrische Energie erzeugen und nutzen",
+      },
+      {
+        id: "lb20",
+        label: "Prinzipien der Mechanik anwenden",
+      },
+    ],
+    "wirtschaftsschule|7|oebdb": [
+      {
+        id: "lb1",
+        label: "Pflichtlernbereich: Grundlegende digitale Kompetenzen anwenden",
+      },
+      {
+        id: "lb2",
+        label: "Pflichtlernbereich: Im privaten Kontext einkaufen",
+      },
+      {
+        id: "lb3",
+        label: "Pflichtlernbereich: Im unternehmerischen Kontext einkaufen",
+      },
+      {
+        id: "lb4",
+        label: "Pflichtlernbereich: Im privaten Kontext verkaufen",
+      },
+      {
+        id: "lb5",
+        label: "Pflichtlernbereich: Im unternehmerischen Kontext verkaufen",
+      },
+      {
+        id: "lb6",
+        label: "Pflichtlernbereich: Wertströme und Werte beurteilen",
+      },
+      {
+        id: "lb7",
+        label: "Pflichtlernbereich: Künstliche Intelligenz nutzen",
+      },
+      {
+        id: "lb8",
+        label: "Pflichtlernbereich: Sich in der Berufswelt orientieren",
+      },
+      {
+        id: "lb9",
+        label: "Wahllernbereich: Informationen im Internet",
+      },
+      {
+        id: "lb10",
+        label: "Wahllernbereich: Eigene Spuren im Netz",
+      },
+      {
+        id: "lb11",
+        label: "Wahllernbereich: Selbstdarstellung im Netz",
+      },
+      {
+        id: "lb12",
+        label: "Wahllernbereich: Cybermobbing",
+      },
+      {
+        id: "lb13",
+        label: "Wahllernbereich: Digitale Medien erstellen",
+      },
+      {
+        id: "lb14",
+        label: "Wahllernbereich: Extended Reality nutzen",
+      },
+      {
+        id: "lb15",
+        label: "Wahllernbereich: Lebensmittel wertschätzen",
+      },
+      {
+        id: "lb16",
+        label: "Wahllernbereich: Zukunftsvisionen entwickeln",
+      },
+      {
+        id: "lb17",
+        label: "Wahllernbereich: Eine unternehmerische Idee entwickeln",
+      },
+      {
+        id: "lb18",
+        label: "Wahllernbereich: Beeinflussung durch Werbung erkennen",
+      },
+      {
+        id: "lb19",
+        label: "Wahllernbereich: Einen Secondhand-Laden betreiben",
+      },
+      {
+        id: "lb20",
+        label: "Wahllernbereich: Sich ehrenamtlich engagieren",
+      },
+      {
+        id: "lb21",
+        label: "Wahllernbereich: Eine Veranstaltung durchführen",
+      },
+      {
+        id: "lb22",
+        label: "Wahllernbereich: Eigene Talente entdecken",
+      },
+    ],
+    "wirtschaftsschule|7|sport|diffsport": [
+      {
+        id: "lb1",
+        label: "Badminton",
+      },
+      {
+        id: "lb2",
+        label: "Basketball",
+      },
+      {
+        id: "lb3",
+        label: "Bewegungskünste",
+      },
+      {
+        id: "lb4",
+        label: "Eishockey",
+      },
+      {
+        id: "lb5",
+        label: "Eiskunstlauf/Eistanz",
+      },
+      {
+        id: "lb6",
+        label: "Eisschnelllauf",
+      },
+      {
+        id: "lb7",
+        label: "Fußball",
+      },
+      {
+        id: "lb8",
+        label: "Gerätturnen",
+      },
+      {
+        id: "lb9",
+        label: "Gesundheitsorientierte Fitness",
+      },
+      {
+        id: "lb10",
+        label: "Golf",
+      },
+      {
+        id: "lb11",
+        label: "Handball",
+      },
+      {
+        id: "lb12",
+        label: "Hockey",
+      },
+      {
+        id: "lb13",
+        label: "Judo",
+      },
+      {
+        id: "lb14",
+        label: "Kanu",
+      },
+      {
+        id: "lb15",
+        label: "Leichtathletik",
+      },
+      {
+        id: "lb16",
+        label: "Radsport",
+      },
+      {
+        id: "lb17",
+        label: "Rettungsschwimmen",
+      },
+      {
+        id: "lb18",
+        label: "Rhythmische Sportgymnastik",
+      },
+      {
+        id: "lb19",
+        label: "Ringen",
+      },
+      {
+        id: "lb20",
+        label: "Rodeln",
+      },
+      {
+        id: "lb21",
+        label: "Rudern",
+      },
+      {
+        id: "lb22",
+        label: "Schwimmen",
+      },
+      {
+        id: "lb23",
+        label: "Segeln",
+      },
+      {
+        id: "lb24",
+        label: "Selbstverteidigung",
+      },
+      {
+        id: "lb25",
+        label: "Ski Alpin",
+      },
+      {
+        id: "lb26",
+        label: "Skilanglauf",
+      },
+      {
+        id: "lb27",
+        label: "Snowboard",
+      },
+      {
+        id: "lb28",
+        label: "Sportklettern",
+      },
+      {
+        id: "lb29",
+        label: "Tanz",
+      },
+      {
+        id: "lb30",
+        label: "Tennis",
+      },
+      {
+        id: "lb31",
+        label: "Tischtennis",
+      },
+      {
+        id: "lb32",
+        label: "Triathlon",
+      },
+      {
+        id: "lb33",
+        label: "Volleyball",
+      },
+    ],
+    "wirtschaftsschule|7|sport|vierstufig": [
+      {
+        id: "lb1",
+        label: "Gesundheit und Fitness",
+      },
+      {
+        id: "lb2",
+        label: "Fairness/Kooperation/Selbstkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Freizeit und Umwelt",
+      },
+      {
+        id: "lb4",
+        label: "Sportliche Handlungsfelder",
+      },
+    ],
+    "wirtschaftsschule|8|bsk|dreistufig": [
+      {
+        id: "lb1",
+        label: "Kaufverträge abschließen",
+      },
+      {
+        id: "lb2",
+        label: "Sich einen Einblick in die Arbeitswelt verschaffen",
+      },
+      {
+        id: "lb3",
+        label: "Eine Veranstaltung zum Erfolg führen",
+      },
+      {
+        id: "lb4",
+        label:
+          "In einem kleinen, regional tätigen Unternehmen erfolgreich agieren",
+      },
+    ],
+    "wirtschaftsschule|8|bsk|vierstufig": [
+      {
+        id: "lb1",
+        label: "Sich einen Einblick in die Arbeitswelt verschaffen",
+      },
+      {
+        id: "lb2",
+        label:
+          "In einem kleinen, regional tätigen Unternehmen erfolgreich agieren",
+      },
+      {
+        id: "lb3",
+        label: "Eine Veranstaltung zum Erfolg führen",
+      },
+    ],
+    "wirtschaftsschule|8|deutsch|dreistufig_gueltig_ab_2425": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "wirtschaftsschule|8|deutsch|vierstufig_gueltig_ab_2425": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "wirtschaftsschule|8|englisch|dreistufig": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "wirtschaftsschule|8|englisch|vierstufig": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "wirtschaftsschule|8|ethik|dreistufig": [
+      {
+        id: "lb1",
+        label: "Das eigene Leben gestalten und einen Sinn finden",
+      },
+      {
+        id: "lb2",
+        label: "Glück",
+      },
+      {
+        id: "lb3",
+        label: "Ethik in der virtuellen Welt",
+      },
+      {
+        id: "lb4",
+        label: "Mit Konsumgütern verantwortungsbewusst umgehen",
+      },
+    ],
+    "wirtschaftsschule|8|ethik|vierstufig": [
+      {
+        id: "lb1",
+        label: "Das eigene Leben gestalten und einen Sinn finden",
+      },
+      {
+        id: "lb2",
+        label: "Glück",
+      },
+      {
+        id: "lb3",
+        label: "Ethik in der virtuellen Welt",
+      },
+      {
+        id: "lb4",
+        label: "Mit Konsumgütern verantwortungsbewusst umgehen",
+      },
+    ],
+    "wirtschaftsschule|8|evangelische-religionslehre|dreistufig": [
+      {
+        id: "lb1",
+        label: "Martin Luther und die Reformation",
+      },
+      {
+        id: "lb2",
+        label: "Ökumene – Einheit in der Vielfalt",
+      },
+      {
+        id: "lb3",
+        label: "Propheten und die Frage nach Recht und Gerechtigkeit",
+      },
+      {
+        id: "lb4",
+        label: "Diakonie – praktizierte Nächstenliebe",
+      },
+      {
+        id: "lb5",
+        label: "Buddhismus – eine fernöstliche Religion",
+      },
+    ],
+    "wirtschaftsschule|8|evangelische-religionslehre|vierstufig": [
+      {
+        id: "lb1",
+        label: "Martin Luther und die Reformation",
+      },
+      {
+        id: "lb2",
+        label: "Ökumene – Einheit in der Vielfalt",
+      },
+      {
+        id: "lb3",
+        label: "Propheten und die Frage nach Recht und Gerechtigkeit",
+      },
+      {
+        id: "lb4",
+        label: "Diakonie – praktizierte Nächstenliebe",
+      },
+      {
+        id: "lb5",
+        label: "Buddhismus – eine fernöstliche Religion",
+      },
+    ],
+    "wirtschaftsschule|8|gpug-ws|dreistufig": [
+      {
+        id: "lb1",
+        label:
+          "Rekurs: Die Entwicklung der politischen Mitbestimmungsmöglichkeiten vom Absolutismus bis hin zur Aufklärung als Grundlage für unsere moderne Demokratie",
+      },
+      {
+        id: "lb2",
+        label: "Die Anfänge einer Demokratiebewegung in Deutschland",
+      },
+      {
+        id: "lb3",
+        label: "Wandel der Arbeits- und Lebenswelt",
+      },
+      {
+        id: "lb4",
+        label: "Verfassung, Sozialpolitik und Alltag im Deutschen Kaiserreich",
+      },
+      {
+        id: "lb5",
+        label: "Methodenkompetenz (in die Lernbereiche 1 bis 4 zu integrieren)",
+      },
+    ],
+    "wirtschaftsschule|8|gpug-ws|vierstufig": [
+      {
+        id: "lb1",
+        label:
+          "Rekurs: Die Entwicklung der politischen Mitbestimmungsmöglichkeiten vom Absolutismus bis hin zur Aufklärung als Grundlage für unsere moderne Demokratie",
+      },
+      {
+        id: "lb2",
+        label: "Die Anfänge einer Demokratiebewegung in Deutschland",
+      },
+      {
+        id: "lb3",
+        label: "Wandel der Arbeits- und Lebenswelt",
+      },
+      {
+        id: "lb4",
+        label: "Verfassung, Sozialpolitik und Alltag im Deutschen Kaiserreich",
+      },
+      {
+        id: "lb5",
+        label: "Methodenkompetenz (in die Lernbereiche 1 bis 4 zu integrieren)",
+      },
+    ],
+    "wirtschaftsschule|8|informationsverarbeitung|dreistufig": [
+      {
+        id: "lb1",
+        label: "Sachgemäß und rationell mit dem Computer umgehen",
+      },
+      {
+        id: "lb2",
+        label: "Soziale Netzwerke verantwortungsbewusst nutzen",
+      },
+      {
+        id: "lb3",
+        label:
+          "Standardsoftware einsetzen, um eine Veranstaltung zum Erfolg zu führen",
+      },
+    ],
+    "wirtschaftsschule|8|informationsverarbeitung|vierstufig": [
+      {
+        id: "lb1",
+        label:
+          "Moderne Kommunikationsmöglichkeiten nutzen, um sich einen Einblick in die Arbeitswelt zu verschaffen",
+      },
+      {
+        id: "lb2",
+        label:
+          "Standardsoftware einsetzen, um eine Veranstaltung zum Erfolg zu führen",
+      },
+      {
+        id: "lb3",
+        label:
+          "Standardsoftware einsetzen, um in einem Unternehmen erfolgreich zu agieren",
+      },
+    ],
+    "wirtschaftsschule|8|katholische-religionslehre|dreistufig": [
+      {
+        id: "lb1",
+        label:
+          "„Wenn er mich doch küsste ...“ – Sexualität als Ausdruck personaler Liebe",
+      },
+      {
+        id: "lb2",
+        label: "Unfassbar und geheimnisvoll? – Von Gott in Bildern sprechen",
+      },
+      {
+        id: "lb3",
+        label:
+          "„Ich lege meine Worte in deinen Mund“ – Prophetinnen und Propheten",
+      },
+      {
+        id: "lb4",
+        label: "Jesus Christus – das Sakrament Gottes",
+      },
+      {
+        id: "lb5",
+        label:
+          "Hinduismus und Buddhismus – aus dem Rad der Wiedergeburten ausbrechen",
+      },
+    ],
+    "wirtschaftsschule|8|katholische-religionslehre|vierstufig": [
+      {
+        id: "lb1",
+        label:
+          "„Wenn er mich doch küsste ...“ – Sexualität als Ausdruck personaler Liebe",
+      },
+      {
+        id: "lb2",
+        label: "Unfassbar und geheimnisvoll? – Von Gott in Bildern sprechen",
+      },
+      {
+        id: "lb3",
+        label:
+          "„Ich lege meine Worte in deinen Mund“ – Prophetinnen und Propheten",
+      },
+      {
+        id: "lb4",
+        label: "Jesus Christus – das Sakrament Gottes",
+      },
+      {
+        id: "lb5",
+        label:
+          "Hinduismus und Buddhismus – aus dem Rad der Wiedergeburten ausbrechen",
+      },
+    ],
+    "wirtschaftsschule|8|mathematik|dreistufig": [
+      {
+        id: "lb1",
+        label: "Finanzmathematik (1)",
+      },
+      {
+        id: "lb2",
+        label: "Potenzen und Wurzeln",
+      },
+      {
+        id: "lb3",
+        label: "Pythagoras",
+      },
+      {
+        id: "lb4",
+        label: "Raum und Form (2)",
+      },
+      {
+        id: "lb5",
+        label: "Funktionaler Zusammenhang (1)",
+      },
+      {
+        id: "lb6",
+        label: "Lineare Gleichungssysteme",
+      },
+      {
+        id: "lb7",
+        label: "Daten und Zufall (2)",
+      },
+    ],
+    "wirtschaftsschule|8|mathematik|vierstufig": [
+      {
+        id: "lb1",
+        label: "Finanzmathematik (1)",
+      },
+      {
+        id: "lb2",
+        label: "Potenzen und Wurzeln",
+      },
+      {
+        id: "lb3",
+        label: "Pythagoras",
+      },
+      {
+        id: "lb4",
+        label: "Raum und Form (2)",
+      },
+      {
+        id: "lb5",
+        label: "Funktionaler Zusammenhang (1)",
+      },
+      {
+        id: "lb6",
+        label: "Lineare Gleichungssysteme",
+      },
+      {
+        id: "lb7",
+        label: "Daten und Zufall (2)",
+      },
+    ],
+    "wirtschaftsschule|8|mensch-und-umwelt|dreistufig": [
+      {
+        id: "lb1",
+        label: "Elektrische Haushaltsgeräte effizient nutzen",
+      },
+      {
+        id: "lb2",
+        label: "Wald als wichtigen Lebensraum schützen",
+      },
+      {
+        id: "lb3",
+        label: "Sexualität verantwortungsbewusst leben",
+      },
+    ],
+    "wirtschaftsschule|8|mensch-und-umwelt|vierstufig": [
+      {
+        id: "lb1",
+        label: "Elektrische Haushaltsgeräte effizient nutzen",
+      },
+      {
+        id: "lb2",
+        label: "Wald als wichtigen Lebensraum schützen",
+      },
+      {
+        id: "lb3",
+        label: "Sexualität verantwortungsbewusst leben",
+      },
+    ],
+    "wirtschaftsschule|8|musischaesthetischebildung|dreistufig": [
+      {
+        id: "lb1",
+        label: "Kunst",
+      },
+      {
+        id: "lb2",
+        label: "Musik",
+      },
+    ],
+    "wirtschaftsschule|8|musischaesthetischebildung|vierstufig": [
+      {
+        id: "lb1",
+        label: "Kunst",
+      },
+      {
+        id: "lb2",
+        label: "Musik",
+      },
+    ],
+    "wirtschaftsschule|8|mut|dreistufig": [
+      {
+        id: "lb1",
+        label: "Erste Hilfe leisten",
+      },
+      {
+        id: "lb2",
+        label: "Ergonomisch arbeiten",
+      },
+      {
+        id: "lb3",
+        label: "Gesund kochen",
+      },
+      {
+        id: "lb4",
+        label: "Sexualität verantwortungsbewusst leben",
+      },
+      {
+        id: "lb5",
+        label: "Mit dem Smartphone sinnvoll umgehen",
+      },
+      {
+        id: "lb6",
+        label: "Mobilität im Alltag",
+      },
+      {
+        id: "lb7",
+        label: "Lifehacks nutzen",
+      },
+      {
+        id: "lb8",
+        label: "Eine Wetterstation betreiben",
+      },
+      {
+        id: "lb9",
+        label: "Eine nachhaltige Exkursion durchführen",
+      },
+      {
+        id: "lb10",
+        label: "Ein Repaircafé betreiben",
+      },
+      {
+        id: "lb11",
+        label: "Wald nutzen und schützen",
+      },
+      {
+        id: "lb12",
+        label: "Nachhaltig leben",
+      },
+      {
+        id: "lb13",
+        label: "Astronomie",
+      },
+      {
+        id: "lb14",
+        label: "3D-Drucker nutzen",
+      },
+      {
+        id: "lb15",
+        label: "Flugobjekte bauen und einsetzen",
+      },
+      {
+        id: "lb16",
+        label: "Programmieren",
+      },
+      {
+        id: "lb17",
+        label: "Einfache Roboter bauen und programmieren",
+      },
+      {
+        id: "lb18",
+        label: "Prinzipien der Bionik anwenden",
+      },
+      {
+        id: "lb19",
+        label: "Elektrische Energie erzeugen und nutzen",
+      },
+      {
+        id: "lb20",
+        label: "Prinzipien der Mechanik anwenden",
+      },
+    ],
+    "wirtschaftsschule|8|mut|vierstufig": [
+      {
+        id: "lb1",
+        label: "Erste Hilfe leisten",
+      },
+      {
+        id: "lb2",
+        label: "Ergonomisch arbeiten",
+      },
+      {
+        id: "lb3",
+        label: "Gesund kochen",
+      },
+      {
+        id: "lb4",
+        label: "Sexualität verantwortungsbewusst leben",
+      },
+      {
+        id: "lb5",
+        label: "Mit dem Smartphone sinnvoll umgehen",
+      },
+      {
+        id: "lb6",
+        label: "Mobilität im Alltag",
+      },
+      {
+        id: "lb7",
+        label: "Lifehacks nutzen",
+      },
+      {
+        id: "lb8",
+        label: "Eine Wetterstation betreiben",
+      },
+      {
+        id: "lb9",
+        label: "Eine nachhaltige Exkursion durchführen",
+      },
+      {
+        id: "lb10",
+        label: "Ein Repaircafé betreiben",
+      },
+      {
+        id: "lb11",
+        label: "Wald nutzen und schützen",
+      },
+      {
+        id: "lb12",
+        label: "Nachhaltig leben",
+      },
+      {
+        id: "lb13",
+        label: "Astronomie",
+      },
+      {
+        id: "lb14",
+        label: "3D-Drucker nutzen",
+      },
+      {
+        id: "lb15",
+        label: "Flugobjekte bauen und einsetzen",
+      },
+      {
+        id: "lb16",
+        label: "Programmieren",
+      },
+      {
+        id: "lb17",
+        label: "Einfache Roboter bauen und programmieren",
+      },
+      {
+        id: "lb18",
+        label: "Prinzipien der Bionik anwenden",
+      },
+      {
+        id: "lb19",
+        label: "Elektrische Energie erzeugen und nutzen",
+      },
+      {
+        id: "lb20",
+        label: "Prinzipien der Mechanik anwenden",
+      },
+    ],
+    "wirtschaftsschule|8|oebdb|dreistufig": [
+      {
+        id: "lb1",
+        label: "Pflichtlernbereich: Grundlegende digitale Kompetenzen anwenden",
+      },
+      {
+        id: "lb2",
+        label: "Pflichtlernbereich: Im privaten Kontext einkaufen",
+      },
+      {
+        id: "lb3",
+        label: "Pflichtlernbereich: Im unternehmerischen Kontext einkaufen",
+      },
+      {
+        id: "lb4",
+        label: "Pflichtlernbereich: Im privaten Kontext verkaufen",
+      },
+      {
+        id: "lb5",
+        label: "Pflichtlernbereich: Im unternehmerischen Kontext verkaufen",
+      },
+      {
+        id: "lb6",
+        label: "Pflichtlernbereich: Wertströme und Werte beurteilen",
+      },
+      {
+        id: "lb7",
+        label: "Pflichtlernbereich: Künstliche Intelligenz nutzen",
+      },
+      {
+        id: "lb8",
+        label: "Pflichtlernbereich: Sich in der Berufswelt orientieren",
+      },
+      {
+        id: "lb9",
+        label: "Wahllernbereich: Informationen im Internet",
+      },
+      {
+        id: "lb10",
+        label: "Wahllernbereich: Eigene Spuren im Netz",
+      },
+      {
+        id: "lb11",
+        label: "Wahllernbereich: Selbstdarstellung im Netz",
+      },
+      {
+        id: "lb12",
+        label: "Wahllernbereich: Cybermobbing",
+      },
+      {
+        id: "lb13",
+        label: "Wahllernbereich: Digitale Medien erstellen",
+      },
+      {
+        id: "lb14",
+        label: "Wahllernbereich: Extended Reality nutzen",
+      },
+      {
+        id: "lb15",
+        label: "Wahllernbereich: Lebensmittel wertschätzen",
+      },
+      {
+        id: "lb16",
+        label: "Wahllernbereich: Zukunftsvisionen entwickeln",
+      },
+      {
+        id: "lb17",
+        label: "Wahllernbereich: Eine unternehmerische Idee entwickeln",
+      },
+      {
+        id: "lb18",
+        label: "Wahllernbereich: Beeinflussung durch Werbung erkennen",
+      },
+      {
+        id: "lb19",
+        label: "Wahllernbereich: Einen Secondhand-Laden betreiben",
+      },
+      {
+        id: "lb20",
+        label: "Wahllernbereich: Sich ehrenamtlich engagieren",
+      },
+      {
+        id: "lb21",
+        label: "Wahllernbereich: Eine Veranstaltung durchführen",
+      },
+      {
+        id: "lb22",
+        label: "Wahllernbereich: Eigene Talente entdecken",
+      },
+    ],
+    "wirtschaftsschule|8|oebdb|vierstufig": [
+      {
+        id: "lb1",
+        label: "Pflichtlernbereich: Grundlegende digitale Kompetenzen anwenden",
+      },
+      {
+        id: "lb2",
+        label: "Pflichtlernbereich: Im privaten Kontext einkaufen",
+      },
+      {
+        id: "lb3",
+        label: "Pflichtlernbereich: Im unternehmerischen Kontext einkaufen",
+      },
+      {
+        id: "lb4",
+        label: "Pflichtlernbereich: Im privaten Kontext verkaufen",
+      },
+      {
+        id: "lb5",
+        label: "Pflichtlernbereich: Im unternehmerischen Kontext verkaufen",
+      },
+      {
+        id: "lb6",
+        label: "Pflichtlernbereich: Wertströme und Werte beurteilen",
+      },
+      {
+        id: "lb7",
+        label: "Pflichtlernbereich: Künstliche Intelligenz nutzen",
+      },
+      {
+        id: "lb8",
+        label: "Pflichtlernbereich: Sich in der Berufswelt orientieren",
+      },
+      {
+        id: "lb9",
+        label: "Wahllernbereich: Informationen im Internet",
+      },
+      {
+        id: "lb10",
+        label: "Wahllernbereich: Eigene Spuren im Netz",
+      },
+      {
+        id: "lb11",
+        label: "Wahllernbereich: Selbstdarstellung im Netz",
+      },
+      {
+        id: "lb12",
+        label: "Wahllernbereich: Cybermobbing",
+      },
+      {
+        id: "lb13",
+        label: "Wahllernbereich: Digitale Medien erstellen",
+      },
+      {
+        id: "lb14",
+        label: "Wahllernbereich: Extended Reality nutzen",
+      },
+      {
+        id: "lb15",
+        label: "Wahllernbereich: Lebensmittel wertschätzen",
+      },
+      {
+        id: "lb16",
+        label: "Wahllernbereich: Zukunftsvisionen entwickeln",
+      },
+      {
+        id: "lb17",
+        label: "Wahllernbereich: Eine unternehmerische Idee entwickeln",
+      },
+      {
+        id: "lb18",
+        label: "Wahllernbereich: Beeinflussung durch Werbung erkennen",
+      },
+      {
+        id: "lb19",
+        label: "Wahllernbereich: Einen Secondhand-Laden betreiben",
+      },
+      {
+        id: "lb20",
+        label: "Wahllernbereich: Sich ehrenamtlich engagieren",
+      },
+      {
+        id: "lb21",
+        label: "Wahllernbereich: Eine Veranstaltung durchführen",
+      },
+      {
+        id: "lb22",
+        label: "Wahllernbereich: Eigene Talente entdecken",
+      },
+    ],
+    "wirtschaftsschule|8|sport|diffsport": [
+      {
+        id: "lb1",
+        label: "Badminton",
+      },
+      {
+        id: "lb2",
+        label: "Basketball",
+      },
+      {
+        id: "lb3",
+        label: "Bewegungskünste",
+      },
+      {
+        id: "lb4",
+        label: "Eishockey",
+      },
+      {
+        id: "lb5",
+        label: "Eiskunstlauf/Eistanz",
+      },
+      {
+        id: "lb6",
+        label: "Eisschnelllauf",
+      },
+      {
+        id: "lb7",
+        label: "Fußball",
+      },
+      {
+        id: "lb8",
+        label: "Gerätturnen",
+      },
+      {
+        id: "lb9",
+        label: "Gesundheitsorientierte Fitness",
+      },
+      {
+        id: "lb10",
+        label: "Golf",
+      },
+      {
+        id: "lb11",
+        label: "Handball",
+      },
+      {
+        id: "lb12",
+        label: "Hockey",
+      },
+      {
+        id: "lb13",
+        label: "Judo",
+      },
+      {
+        id: "lb14",
+        label: "Kanu",
+      },
+      {
+        id: "lb15",
+        label: "Leichtathletik",
+      },
+      {
+        id: "lb16",
+        label: "Radsport",
+      },
+      {
+        id: "lb17",
+        label: "Rettungsschwimmen",
+      },
+      {
+        id: "lb18",
+        label: "Rhythmische Sportgymnastik",
+      },
+      {
+        id: "lb19",
+        label: "Ringen",
+      },
+      {
+        id: "lb20",
+        label: "Rodeln",
+      },
+      {
+        id: "lb21",
+        label: "Rudern",
+      },
+      {
+        id: "lb22",
+        label: "Schwimmen",
+      },
+      {
+        id: "lb23",
+        label: "Segeln",
+      },
+      {
+        id: "lb24",
+        label: "Selbstverteidigung",
+      },
+      {
+        id: "lb25",
+        label: "Ski Alpin",
+      },
+      {
+        id: "lb26",
+        label: "Skilanglauf",
+      },
+      {
+        id: "lb27",
+        label: "Snowboard",
+      },
+      {
+        id: "lb28",
+        label: "Sportklettern",
+      },
+      {
+        id: "lb29",
+        label: "Tanz",
+      },
+      {
+        id: "lb30",
+        label: "Tennis",
+      },
+      {
+        id: "lb31",
+        label: "Tischtennis",
+      },
+      {
+        id: "lb32",
+        label: "Triathlon",
+      },
+      {
+        id: "lb33",
+        label: "Volleyball",
+      },
+    ],
+    "wirtschaftsschule|8|sport|dreistufig": [
+      {
+        id: "lb1",
+        label: "Gesundheit und Fitness",
+      },
+      {
+        id: "lb2",
+        label: "Fairness/Kooperation/Selbstkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Freizeit und Umwelt",
+      },
+      {
+        id: "lb4",
+        label: "Sportliche Handlungsfelder",
+      },
+    ],
+    "wirtschaftsschule|8|sport|vierstufig": [
+      {
+        id: "lb1",
+        label: "Gesundheit und Fitness",
+      },
+      {
+        id: "lb2",
+        label: "Fairness/Kooperation/Selbstkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Freizeit und Umwelt",
+      },
+      {
+        id: "lb4",
+        label: "Sportliche Handlungsfelder",
+      },
+    ],
+    "wirtschaftsschule|9|bsk|dreistufig": [
+      {
+        id: "lb1",
+        label: "Berufsorientierung",
+      },
+      {
+        id: "lb2",
+        label:
+          "Das Sortiment optimieren sowie Beschaffung und Absatz neuer Waren organisieren",
+      },
+    ],
+    "wirtschaftsschule|9|bsk|vierstufig": [
+      {
+        id: "lb1",
+        label: "Berufsorientierung",
+      },
+      {
+        id: "lb2",
+        label:
+          "Das Sortiment optimieren sowie Beschaffung und Absatz neuer Waren organisieren",
+      },
+    ],
+    "wirtschaftsschule|9|deutsch|%20dreistufig": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "wirtschaftsschule|9|deutsch|vierstufig": [
+      {
+        id: "lb1",
+        label: "Sprechen und Zuhören",
+      },
+      {
+        id: "lb2",
+        label: "Lesen – mit Texten und weiteren Medien umgehen",
+      },
+      {
+        id: "lb3",
+        label: "Schreiben",
+      },
+      {
+        id: "lb4",
+        label: "Sprachgebrauch und Sprache untersuchen und reflektieren",
+      },
+    ],
+    "wirtschaftsschule|9|e-commerce": [
+      {
+        id: "lb1",
+        label:
+          "Ein Bewusstsein für die Beeinflussung durch Online-Marketing entwickeln",
+      },
+      {
+        id: "lb2",
+        label: "Im privaten Kontext online einkaufen",
+      },
+      {
+        id: "lb3",
+        label: "Im privaten Kontext online verkaufen",
+      },
+      {
+        id: "lb4",
+        label: "Erste berufliche Erfahrungen im E-Commerce sammeln",
+      },
+      {
+        id: "lb5",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|9|englisch|dreistufig": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "wirtschaftsschule|9|englisch|vierstufig": [
+      {
+        id: "lb1",
+        label: "Kommunikative Kompetenzen",
+      },
+      {
+        id: "lb2",
+        label: "Text- und Medienkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Methodische Kompetenzen",
+      },
+      {
+        id: "lb4",
+        label: "Interkulturelle Kompetenzen",
+      },
+      {
+        id: "lb5",
+        label: "Themengebiete",
+      },
+    ],
+    "wirtschaftsschule|9|ethik|dreistufig": [
+      {
+        id: "lb1",
+        label: "Liebe und Partnerschaft",
+      },
+      {
+        id: "lb2",
+        label: "Arbeit und Leistung in Schule und Beruf",
+      },
+      {
+        id: "lb3",
+        label: "Sich für den Frieden einsetzen",
+      },
+      {
+        id: "lb4",
+        label: "Religionen und Weltgeschehen",
+      },
+    ],
+    "wirtschaftsschule|9|ethik|vierstufig": [
+      {
+        id: "lb1",
+        label: "Liebe und Partnerschaft",
+      },
+      {
+        id: "lb2",
+        label: "Arbeit und Leistung in Schule und Beruf",
+      },
+      {
+        id: "lb3",
+        label: "Sich für den Frieden einsetzen",
+      },
+      {
+        id: "lb4",
+        label: "Religionen und Weltgeschehen",
+      },
+    ],
+    "wirtschaftsschule|9|evangelische-religionslehre|dreistufig": [
+      {
+        id: "lb1",
+        label: "Arbeit und Freizeit",
+      },
+      {
+        id: "lb2",
+        label: "Judentum",
+      },
+      {
+        id: "lb3",
+        label: "Tod und Auferstehung",
+      },
+      {
+        id: "lb4",
+        label: "Gelebter christlicher Glaube",
+      },
+      {
+        id: "lb5",
+        label: "Liebe, Partnerschaft und Sexualität",
+      },
+    ],
+    "wirtschaftsschule|9|evangelische-religionslehre|vierstufig": [
+      {
+        id: "lb1",
+        label: "Arbeit und Freizeit",
+      },
+      {
+        id: "lb2",
+        label: "Judentum",
+      },
+      {
+        id: "lb3",
+        label: "Tod und Auferstehung",
+      },
+      {
+        id: "lb4",
+        label: "Gelebter christlicher Glaube",
+      },
+      {
+        id: "lb5",
+        label: "Liebe, Partnerschaft und Sexualität",
+      },
+    ],
+    "wirtschaftsschule|9|fit_for_finance": [
+      {
+        id: "lb1",
+        label: "Geld verdienen und versteuern",
+      },
+      {
+        id: "lb2",
+        label: "Bewusstsein für Schulden entwickeln",
+      },
+      {
+        id: "lb3",
+        label: "Geld sparen und anlegen",
+      },
+      {
+        id: "lb4",
+        label: "Absichern und vorsorgen",
+      },
+      {
+        id: "lb5",
+        label: "Eine Wohnung mieten",
+      },
+      {
+        id: "lb6",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|9|gamification": [
+      {
+        id: "lb1",
+        label: "Gesellschaftsspiele entschlüsseln",
+      },
+      {
+        id: "lb2",
+        label: "Digitale Spiele untersuchen und bewerten",
+      },
+      {
+        id: "lb3",
+        label: "Mit Lernspielen motivieren und fördern",
+      },
+      {
+        id: "lb4",
+        label: "Gamification identifizieren und nutzen",
+      },
+      {
+        id: "lb5",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|9|gesundheit": [
+      {
+        id: "lb1",
+        label: "Gesundheitsbewusst leben",
+      },
+      {
+        id: "lb2",
+        label: "Medizinische Zusammenhänge erkennen",
+      },
+      {
+        id: "lb3",
+        label: "Im Gesundheitssystem orientieren",
+      },
+      {
+        id: "lb4",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|9|gpug-ws|dreistufig": [
+      {
+        id: "lb1",
+        label: "Rekurs: Industrialisierung und Ökologie",
+      },
+      {
+        id: "lb2",
+        label: "Globale Herausforderungen: Imperialismus und die Folgen",
+      },
+      {
+        id: "lb3",
+        label:
+          "Internationaler Konflikt zu Beginn des 20. Jahrhunderts: Der Erste Weltkrieg",
+      },
+      {
+        id: "lb4",
+        label:
+          "Die erste deutsche Demokratie – Leben zur Zeit der Weimarer Republik",
+      },
+      {
+        id: "lb5",
+        label:
+          "Leben zur Zeit der nationalsozialistischen Diktatur in Deutschland",
+      },
+      {
+        id: "lb6",
+        label:
+          "Rückblick und Ausblick: Staatsformen im 20. Jahrhundert in Deutschland",
+      },
+      {
+        id: "lb7",
+        label:
+          "Methodenkompetenzen (in die Lernbereiche 1 bis 6 zu integrieren)",
+      },
+    ],
+    "wirtschaftsschule|9|gpug-ws|vierstufig": [
+      {
+        id: "lb1",
+        label: "Rekurs: Industrialisierung und Ökologie",
+      },
+      {
+        id: "lb2",
+        label: "Globale Herausforderungen: Imperialismus und die Folgen",
+      },
+      {
+        id: "lb3",
+        label:
+          "Internationaler Konflikt zu Beginn des 20. Jahrhunderts: Der Erste Weltkrieg",
+      },
+      {
+        id: "lb4",
+        label:
+          "Die erste deutsche Demokratie – Leben zur Zeit der Weimarer Republik",
+      },
+      {
+        id: "lb5",
+        label:
+          "Leben zur Zeit der nationalsozialistischen Diktatur in Deutschland",
+      },
+      {
+        id: "lb6",
+        label:
+          "Rückblick und Ausblick: Staatsformen im 20. Jahrhundert in Deutschland",
+      },
+      {
+        id: "lb7",
+        label:
+          "Methodenkompetenzen (in die Lernbereiche 1 bis 6 zu integrieren)",
+      },
+    ],
+    "wirtschaftsschule|9|informationsverarbeitung": [
+      {
+        id: "lb1",
+        label:
+          "Moderne Kommunikationsmöglichkeiten zur Berufsorientierung nutzen",
+      },
+      {
+        id: "lb2",
+        label:
+          "Standardsoftware einsetzen, um in einem Unternehmen erfolgreich zu agieren",
+      },
+    ],
+    "wirtschaftsschule|9|katholische-religionslehre|dreistufig": [
+      {
+        id: "lb1",
+        label: "Verantwortlich handeln – Gewissen, Schuld und Versöhnung",
+      },
+      {
+        id: "lb2",
+        label: "Warum es uns gibt – Antworten des Schöpfungsglaubens",
+      },
+      {
+        id: "lb3",
+        label: "Jesus Christus – „Der Erstgeborene von den Toten“",
+      },
+      {
+        id: "lb4",
+        label: "Kirche in der Zeit – Licht und Schatten",
+      },
+      {
+        id: "lb5",
+        label:
+          "Sinn und Sehnsucht – Orientierung in der Vielfalt religiöser und weltanschaulicher Angebote",
+      },
+    ],
+    "wirtschaftsschule|9|katholische-religionslehre|vierstufig": [
+      {
+        id: "lb1",
+        label: "Verantwortlich handeln – Gewissen, Schuld und Versöhnung",
+      },
+      {
+        id: "lb2",
+        label: "Warum es uns gibt – Antworten des Schöpfungsglaubens",
+      },
+      {
+        id: "lb3",
+        label: "Jesus Christus – „Der Erstgeborene von den Toten“",
+      },
+      {
+        id: "lb4",
+        label: "Kirche in der Zeit – Licht und Schatten",
+      },
+      {
+        id: "lb5",
+        label:
+          "Sinn und Sehnsucht – Orientierung in der Vielfalt religiöser und weltanschaulicher Angebote",
+      },
+    ],
+    "wirtschaftsschule|9|life_skills": [
+      {
+        id: "lb1",
+        label: "Umgang mit Emotionen",
+      },
+      {
+        id: "lb2",
+        label: "Gelingende Kommunikation",
+      },
+      {
+        id: "lb3",
+        label: "Motivation und Zielsetzung",
+      },
+      {
+        id: "lb4",
+        label: "Selbstorganisation und Selbstfürsorge",
+      },
+      {
+        id: "lb5",
+        label: "Entdecke Deine beruflichen Möglichkeiten",
+      },
+    ],
+    "wirtschaftsschule|9|mathematik|dreistufig": [
+      {
+        id: "lb1",
+        label: "Wachstum und Zerfall",
+      },
+      {
+        id: "lb2",
+        label: "Strahlensätze",
+      },
+      {
+        id: "lb3",
+        label: "Trigonometrie (1)",
+      },
+      {
+        id: "lb4",
+        label: "Raum und Form (3)",
+      },
+      {
+        id: "lb5",
+        label: "Quadratische Gleichungen",
+      },
+      {
+        id: "lb6",
+        label: "Funktionaler Zusammenhang (2)",
+      },
+    ],
+    "wirtschaftsschule|9|mathematik|vierstufig": [
+      {
+        id: "lb1",
+        label: "Wachstum und Zerfall",
+      },
+      {
+        id: "lb2",
+        label: "Strahlensätze",
+      },
+      {
+        id: "lb3",
+        label: "Trigonometrie (1)",
+      },
+      {
+        id: "lb4",
+        label: "Raum und Form (3)",
+      },
+      {
+        id: "lb5",
+        label: "Quadratische Gleichungen",
+      },
+      {
+        id: "lb6",
+        label: "Funktionaler Zusammenhang (2)",
+      },
+    ],
+    "wirtschaftsschule|9|robotik": [
+      {
+        id: "lb1",
+        label: "Roboter im Einsatz erleben",
+      },
+      {
+        id: "lb2",
+        label: "Die Mechanik eines Roboters konstruieren",
+      },
+      {
+        id: "lb3",
+        label: "Die Elektronik eines Roboters installieren",
+      },
+      {
+        id: "lb4",
+        label: "Einen Roboter blockorientiert programmieren",
+      },
+      {
+        id: "lb5",
+        label: "Einen Roboter warten",
+      },
+      {
+        id: "lb6",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|9|sport|diffsport": [
+      {
+        id: "lb1",
+        label: "Badminton",
+      },
+      {
+        id: "lb2",
+        label: "Basketball",
+      },
+      {
+        id: "lb3",
+        label: "Bewegungskünste",
+      },
+      {
+        id: "lb4",
+        label: "Eishockey",
+      },
+      {
+        id: "lb5",
+        label: "Eiskunstlauf/Eistanz",
+      },
+      {
+        id: "lb6",
+        label: "Eisschnelllauf",
+      },
+      {
+        id: "lb7",
+        label: "Fußball",
+      },
+      {
+        id: "lb8",
+        label: "Gerätturnen",
+      },
+      {
+        id: "lb9",
+        label: "Gesundheitsorientierte Fitness",
+      },
+      {
+        id: "lb10",
+        label: "Golf",
+      },
+      {
+        id: "lb11",
+        label: "Handball",
+      },
+      {
+        id: "lb12",
+        label: "Hockey",
+      },
+      {
+        id: "lb13",
+        label: "Judo",
+      },
+      {
+        id: "lb14",
+        label: "Kanu",
+      },
+      {
+        id: "lb15",
+        label: "Leichtathletik",
+      },
+      {
+        id: "lb16",
+        label: "Radsport",
+      },
+      {
+        id: "lb17",
+        label: "Rettungsschwimmen",
+      },
+      {
+        id: "lb18",
+        label: "Rhythmische Sportgymnastik",
+      },
+      {
+        id: "lb19",
+        label: "Ringen",
+      },
+      {
+        id: "lb20",
+        label: "Rodeln",
+      },
+      {
+        id: "lb21",
+        label: "Rudern",
+      },
+      {
+        id: "lb22",
+        label: "Schwimmen",
+      },
+      {
+        id: "lb23",
+        label: "Segeln",
+      },
+      {
+        id: "lb24",
+        label: "Selbstverteidigung",
+      },
+      {
+        id: "lb25",
+        label: "Ski Alpin",
+      },
+      {
+        id: "lb26",
+        label: "Skilanglauf",
+      },
+      {
+        id: "lb27",
+        label: "Snowboard",
+      },
+      {
+        id: "lb28",
+        label: "Sportklettern",
+      },
+      {
+        id: "lb29",
+        label: "Tanz",
+      },
+      {
+        id: "lb30",
+        label: "Tennis",
+      },
+      {
+        id: "lb31",
+        label: "Tischtennis",
+      },
+      {
+        id: "lb32",
+        label: "Triathlon",
+      },
+      {
+        id: "lb33",
+        label: "Volleyball",
+      },
+    ],
+    "wirtschaftsschule|9|sport|dreistufig": [
+      {
+        id: "lb1",
+        label: "Gesundheit und Fitness",
+      },
+      {
+        id: "lb2",
+        label: "Fairness/Kooperation/Selbstkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Freizeit und Umwelt",
+      },
+      {
+        id: "lb4",
+        label: "Sportliche Handlungsfelder",
+      },
+    ],
+    "wirtschaftsschule|9|sport|vierstufig": [
+      {
+        id: "lb1",
+        label: "Gesundheit und Fitness",
+      },
+      {
+        id: "lb2",
+        label: "Fairness/Kooperation/Selbstkompetenz",
+      },
+      {
+        id: "lb3",
+        label: "Freizeit und Umwelt",
+      },
+      {
+        id: "lb4",
+        label: "Sportliche Handlungsfelder",
+      },
+    ],
+    "wirtschaftsschule|9|tourismus": [
+      {
+        id: "lb1",
+        label: "Tourismus entdecken",
+      },
+      {
+        id: "lb2",
+        label: "Regionalen Tourismus untersuchen",
+      },
+      {
+        id: "lb3",
+        label: "Tourismus in der Region erleben",
+      },
+      {
+        id: "lb4",
+        label: "Reisen planen",
+      },
+      {
+        id: "lb5",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|9|uebungsunternehmen|drei_vierstufig": [
+      {
+        id: "lb1",
+        label: "Kennenlernen des Unternehmens",
+      },
+      {
+        id: "lb2",
+        label: "Einkauf",
+      },
+      {
+        id: "lb3",
+        label: "Verkauf",
+      },
+      {
+        id: "lb4",
+        label: "Personal",
+      },
+      {
+        id: "lb5",
+        label: "Marketing",
+      },
+      {
+        id: "lb6",
+        label: "Controlling",
+      },
+      {
+        id: "lb7",
+        label: "Finanzen",
+      },
+    ],
+    "wirtschaftsschule|9|umweltoekonomie": [
+      {
+        id: "lb1",
+        label: "Energieversorgung gestalten",
+      },
+      {
+        id: "lb2",
+        label: "Mobilität managen",
+      },
+      {
+        id: "lb3",
+        label: "Umweltökonomisch konsumieren",
+      },
+      {
+        id: "lb4",
+        label: "Betriebliche Umweltökonomie untersuchen",
+      },
+      {
+        id: "lb5",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|9|umwelttechnik": [
+      {
+        id: "lb1",
+        label: "Energie einsparen",
+      },
+      {
+        id: "lb2",
+        label: "Abfall vermeiden",
+      },
+      {
+        id: "lb3",
+        label: "Lärm messen und Schutzmaßnahmen ergreifen",
+      },
+      {
+        id: "lb4",
+        label: "Berufliche Möglichkeiten entdecken",
+      },
+    ],
+    "wirtschaftsschule|9|wirtschaft_aktuell|dreistufig": [
+      {
+        id: "lb1",
+        label: "Leben und Arbeiten in Deutschland",
+      },
+      {
+        id: "lb2",
+        label: "Der demographische Wandel – Herausforderung für die Wirtschaft",
+      },
+      {
+        id: "lb3",
+        label: "Grundlagen des Wirtschaftens",
+      },
+      {
+        id: "lb4",
+        label: "Märkte im Wandel",
+      },
+      {
+        id: "lb5",
+        label: "Wandel in der Arbeitswelt",
+      },
+      {
+        id: "lb6",
+        label:
+          "Verbraucherschutz und verantwortungsbewusstes Verbraucherverhalten",
+      },
+      {
+        id: "lb7",
+        label: "Wirtschaftspolitik in einer globalisierten Welt",
+      },
+      {
+        id: "lb8",
+        label: "Wirtschaftliche Zusammenarbeit in der Europäischen Union",
+      },
+      {
+        id: "lb9",
+        label: "Die Weltwirtschaft gestalten",
+      },
+    ],
+    "wirtschaftsschule|9|wirtschaft_aktuell|vierstufig": [
+      {
+        id: "lb1",
+        label: "Leben und Arbeiten in Deutschland",
+      },
+      {
+        id: "lb2",
+        label: "Der demographische Wandel – Herausforderung für die Wirtschaft",
+      },
+      {
+        id: "lb3",
+        label: "Grundlagen des Wirtschaftens",
+      },
+      {
+        id: "lb4",
+        label: "Märkte im Wandel",
+      },
+      {
+        id: "lb5",
+        label: "Wandel in der Arbeitswelt",
+      },
+      {
+        id: "lb6",
+        label:
+          "Verbraucherschutz und verantwortungsbewusstes Verbraucherverhalten",
+      },
+      {
+        id: "lb7",
+        label: "Wirtschaftspolitik in einer globalisierten Welt",
+      },
+      {
+        id: "lb8",
+        label: "Wirtschaftliche Zusammenarbeit in der Europäischen Union",
+      },
+      {
+        id: "lb9",
+        label: "Die Weltwirtschaft gestalten",
+      },
+    ],
+    "wirtschaftsschule|9|wirtschaftsgeografie": [
+      {
+        id: "lb1",
+        label: "Eine Gruppenreise in der Region planen",
+      },
+      {
+        id: "lb2",
+        label: "Einen Ausbildungsort auswählen und erreichen",
+      },
+      {
+        id: "lb3",
+        label: "Verantwortungsbewusste Konsumentscheidungen treffen",
+      },
+      {
+        id: "lb4",
+        label: "Den Heimatraum mitgestalten",
+      },
+      {
+        id: "lb5",
+        label: "Bei Naturkatastrophen aktiv helfen",
+      },
+    ],
   },
 
   contentUrls: {
@@ -14893,5 +30567,1021 @@ export const LEHRPLANPLUS_BAYERN_MANIFEST: LehrplanPlusBayernManifest = {
       "https://www.lehrplanplus.bayern.de/schulart/gymnasium/jgs/13/fach/wirtschaftsinformatik/inhalt/fachlehrplaene",
     "gymnasium|13|w-seminar":
       "https://www.lehrplanplus.bayern.de/schulart/gymnasium/jgs/13/fach/w-seminar/inhalt/fachlehrplaene",
+    "bos|10|betriebswirtschaftslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/betriebswirtschaftslehre/inhalt/fachlehrplaene",
+    "bos|10|biologie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/biologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=abu",
+    "bos|10|biologie|s-gh":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/biologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=s-gh",
+    "bos|10|bwl-rechnungswesen":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/bwl-rechnungswesen/inhalt/fachlehrplaene",
+    "bos|10|chemie":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/chemie/inhalt/fachlehrplaene",
+    "bos|10|deutsch|vorklasse":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/deutsch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vorklasse",
+    "bos|10|deutsch|vorklasse_gueltig_ab_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/deutsch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vorklasse_gueltig_ab_26_27",
+    "bos|10|deutsch|vorkurs":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/deutsch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vorkurs",
+    "bos|10|deutsch|vorkurs_guelitg_ab_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/deutsch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vorkurs_guelitg_ab_26_27",
+    "bos|10|englisch|vorklasse":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/englisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=englisch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vorklasse",
+    "bos|10|englisch|vorkurs":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/englisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=englisch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vorkurs",
+    "bos|10|ethik":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/ethik/inhalt/fachlehrplaene",
+    "bos|10|evangelische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/evangelische-religionslehre/inhalt/fachlehrplaene",
+    "bos|10|gpug-fosbos":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/gpug-fosbos/inhalt/fachlehrplaene",
+    "bos|10|gw|aktuell":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/gw/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=gw&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=aktuell",
+    "bos|10|gw|aktuell_gueltig_ab_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/gw/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=gw&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=aktuell_gueltig_ab_26_27",
+    "bos|10|ibv|ibv":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/ibv/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=ibv&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=ibv",
+    "bos|10|ibv|ibv_gueltig_ab_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/ibv/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=ibv&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=ibv_gueltig_ab_26_27",
+    "bos|10|katholische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/katholische-religionslehre/inhalt/fachlehrplaene",
+    "bos|10|kuenstliche_intelligenz_informatik_u_technologie":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/kuenstliche_intelligenz_informatik_u_technologie/inhalt/fachlehrplaene",
+    "bos|10|mathematik|vorklasse":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/mathematik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vorklasse",
+    "bos|10|mathematik|vorkurs":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/mathematik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vorkurs",
+    "bos|10|nt-bo":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/nt-bo/inhalt/fachlehrplaene",
+    "bos|10|paedagigik-psychologie":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/paedagigik-psychologie/inhalt/fachlehrplaene",
+    "bos|10|physik":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/physik/inhalt/fachlehrplaene",
+    "bos|10|technologie":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/10/fach/technologie/inhalt/fachlehrplaene",
+    "bos|12|betriebswirtschaftslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/betriebswirtschaftslehre/inhalt/fachlehrplaene",
+    "bos|12|biologie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/biologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=abu",
+    "bos|12|biologie|g":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/biologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=g",
+    "bos|12|biologie|s":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/biologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=s",
+    "bos|12|biologie|wahl-t-w-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/biologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=wahl-t-w-iw",
+    "bos|12|biotechnologie":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/biotechnologie/inhalt/fachlehrplaene",
+    "bos|12|bwl-rechnungswesen":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/bwl-rechnungswesen/inhalt/fachlehrplaene",
+    "bos|12|chemie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/chemie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=chemie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=abu",
+    "bos|12|chemie|gh":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/chemie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=chemie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=gh",
+    "bos|12|chemie|t":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/chemie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=chemie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=t",
+    "bos|12|ebc":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/ebc/inhalt/fachlehrplaene",
+    "bos|12|englisch":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/englisch/inhalt/fachlehrplaene",
+    "bos|12|ethik":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/ethik/inhalt/fachlehrplaene",
+    "bos|12|evangelische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/evangelische-religionslehre/inhalt/fachlehrplaene",
+    "bos|12|franzoesisch|franzoesisch_ahr":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=franzoesisch_ahr",
+    "bos|12|franzoesisch|franzoesisch_aufbaukurs":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=franzoesisch_aufbaukurs",
+    "bos|12|franzoesisch|franzoesisch_fortgefuehrt":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=franzoesisch_fortgefuehrt",
+    "bos|12|franzoesisch|franzoesisch_grundkurs":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=franzoesisch_grundkurs",
+    "bos|12|gpug-fosbos":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/gpug-fosbos/inhalt/fachlehrplaene",
+    "bos|12|gwr":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/gwr/inhalt/fachlehrplaene",
+    "bos|12|gw|aktuell":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/gw/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=gw&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=aktuell",
+    "bos|12|ibv|ibv":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/ibv/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=ibv&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=ibv",
+    "bos|12|informatik|abu-s-w-gh":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/informatik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=informatik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=abu-s-w-gh",
+    "bos|12|informatik|wahl-t-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/informatik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=informatik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=wahl-t-iw",
+    "bos|12|internationale_politik":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/internationale_politik/inhalt/fachlehrplaene",
+    "bos|12|isb|pflicht-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/isb/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=isb&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=pflicht-iw",
+    "bos|12|isb|wahl-abu-t-w-s-gh":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/isb/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=isb&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=wahl-abu-t-w-s-gh",
+    "bos|12|italienisch":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/italienisch/inhalt/fachlehrplaene",
+    "bos|12|katholische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/katholische-religionslehre/inhalt/fachlehrplaene",
+    "bos|12|ki":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/ki/inhalt/fachlehrplaene",
+    "bos|12|kuenstliche_intelligenz_informatik_u_technologie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/kuenstliche_intelligenz_informatik_u_technologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=kuenstliche_intelligenz_informatik_u_technologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=abu",
+    "bos|12|kuenstliche_intelligenz_informatik_u_technologie|t":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/kuenstliche_intelligenz_informatik_u_technologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=kuenstliche_intelligenz_informatik_u_technologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=t",
+    "bos|12|kuenstliche_intelligenz_u_wirtschaftsinformatik":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/kuenstliche_intelligenz_u_wirtschaftsinformatik/inhalt/fachlehrplaene",
+    "bos|12|kunst":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/kunst/inhalt/fachlehrplaene",
+    "bos|12|latein":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/latein/inhalt/fachlehrplaene",
+    "bos|12|mathematik|Wahl-abu-s-w-gh-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/mathematik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=Wahl-abu-s-w-gh-iw",
+    "bos|12|mathematik|abu-s-w-gh-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/mathematik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=abu-s-w-gh-iw",
+    "bos|12|mathematik|t":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/mathematik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=t",
+    "bos|12|mathematik|wahl-t":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/mathematik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=wahl-t",
+    "bos|12|musik":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/musik/inhalt/fachlehrplaene",
+    "bos|12|nt-bo":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/nt-bo/inhalt/fachlehrplaene",
+    "bos|12|paedagigik-psychologie|s":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/paedagigik-psychologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=paedagigik-psychologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=s",
+    "bos|12|physik|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/physik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=abu",
+    "bos|12|physik|s-w-gh-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/physik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=s-w-gh-iw",
+    "bos|12|physik|t":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/physik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=t",
+    "bos|12|russisch":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/russisch/inhalt/fachlehrplaene",
+    "bos|12|sg":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/sg/inhalt/fachlehrplaene",
+    "bos|12|sozialwirtschaft-und-recht":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/sozialwirtschaft-und-recht/inhalt/fachlehrplaene",
+    "bos|12|soziologie|s":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/soziologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=soziologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=s",
+    "bos|12|soziologie|wahl-abu-t-w-iw-gh":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/soziologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=soziologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=wahl-abu-t-w-iw-gh",
+    "bos|12|spanisch|spanisch_ahr":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/spanisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=spanisch_ahr",
+    "bos|12|spanisch|spanisch_aufbaukurs":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/spanisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=spanisch_aufbaukurs",
+    "bos|12|spanisch|spanisch_fortgefuehrt":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/spanisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=spanisch_fortgefuehrt",
+    "bos|12|spanisch|spanisch_grundkurs":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/spanisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=spanisch_grundkurs",
+    "bos|12|studier-und-arbeitstechniken":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/studier-und-arbeitstechniken/inhalt/fachlehrplaene",
+    "bos|12|technologie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/technologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=technologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=abu",
+    "bos|12|technologie|t":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/technologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=technologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=t",
+    "bos|12|volkswirtschaftslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/volkswirtschaftslehre/inhalt/fachlehrplaene",
+    "bos|12|wirtschaft-und-recht":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/wirtschaft-und-recht/inhalt/fachlehrplaene",
+    "bos|12|wirtschaft_aktuell":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/12/fach/wirtschaft_aktuell/inhalt/fachlehrplaene",
+    "bos|13|betriebswirtschaftslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/betriebswirtschaftslehre/inhalt/fachlehrplaene",
+    "bos|13|biologie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/biologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=abu",
+    "bos|13|biologie|g":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/biologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=g",
+    "bos|13|biologie|s":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/biologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=s",
+    "bos|13|biologie|wahl-t-w-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/biologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=wahl-t-w-iw",
+    "bos|13|biotechnologie":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/biotechnologie/inhalt/fachlehrplaene",
+    "bos|13|bwl-rechnungswesen":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/bwl-rechnungswesen/inhalt/fachlehrplaene",
+    "bos|13|chemie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/chemie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=chemie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=abu",
+    "bos|13|chemie|t":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/chemie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=chemie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=t",
+    "bos|13|ebc":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/ebc/inhalt/fachlehrplaene",
+    "bos|13|englisch":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/englisch/inhalt/fachlehrplaene",
+    "bos|13|ethik":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/ethik/inhalt/fachlehrplaene",
+    "bos|13|evangelische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/evangelische-religionslehre/inhalt/fachlehrplaene",
+    "bos|13|franzoesisch|franzoesisch_ahr":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=franzoesisch_ahr",
+    "bos|13|franzoesisch|franzoesisch_aufbaukurs":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=franzoesisch_aufbaukurs",
+    "bos|13|franzoesisch|franzoesisch_fortgefuehrt":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=franzoesisch_fortgefuehrt",
+    "bos|13|franzoesisch|franzoesisch_grundkurs":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=franzoesisch_grundkurs",
+    "bos|13|gpug-fosbos":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/gpug-fosbos/inhalt/fachlehrplaene",
+    "bos|13|gwr":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/gwr/inhalt/fachlehrplaene",
+    "bos|13|gw|aktuell":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/gw/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=gw&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=aktuell",
+    "bos|13|ibv|ibv":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/ibv/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=ibv&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=ibv",
+    "bos|13|informatik|wahl-abu-s-w-gh":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/informatik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=informatik&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=wahl-abu-s-w-gh",
+    "bos|13|informatik|wahl-t-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/informatik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=informatik&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=wahl-t-iw",
+    "bos|13|internationale_politik":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/internationale_politik/inhalt/fachlehrplaene",
+    "bos|13|isb":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/isb/inhalt/fachlehrplaene",
+    "bos|13|italienisch":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/italienisch/inhalt/fachlehrplaene",
+    "bos|13|katholische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/katholische-religionslehre/inhalt/fachlehrplaene",
+    "bos|13|ki":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/ki/inhalt/fachlehrplaene",
+    "bos|13|kuenstliche_intelligenz_informatik_u_technologie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/kuenstliche_intelligenz_informatik_u_technologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=kuenstliche_intelligenz_informatik_u_technologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=abu",
+    "bos|13|kuenstliche_intelligenz_informatik_u_technologie|t":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/kuenstliche_intelligenz_informatik_u_technologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=kuenstliche_intelligenz_informatik_u_technologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=t",
+    "bos|13|kunst":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/kunst/inhalt/fachlehrplaene",
+    "bos|13|latein":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/latein/inhalt/fachlehrplaene",
+    "bos|13|mathematik|abu-s-w-gh-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/mathematik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=abu-s-w-gh-iw",
+    "bos|13|mathematik|t":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/mathematik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=t",
+    "bos|13|mathematik|wahl-abu-s-w-t":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/mathematik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=wahl-abu-s-w-t",
+    "bos|13|musik":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/musik/inhalt/fachlehrplaene",
+    "bos|13|nt-bo":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/nt-bo/inhalt/fachlehrplaene",
+    "bos|13|paedagigik-psychologie|s":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/paedagigik-psychologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=paedagigik-psychologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=s",
+    "bos|13|physik|s-w-gh-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/physik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=s-w-gh-iw",
+    "bos|13|physik|t":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/physik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=t",
+    "bos|13|physik|wahl-abu":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/physik/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=wahl-abu",
+    "bos|13|russisch":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/russisch/inhalt/fachlehrplaene",
+    "bos|13|sg":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/sg/inhalt/fachlehrplaene",
+    "bos|13|sozialwirtschaft-und-recht":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/sozialwirtschaft-und-recht/inhalt/fachlehrplaene",
+    "bos|13|soziologie":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/soziologie/inhalt/fachlehrplaene",
+    "bos|13|spanisch|spanisch_ahr":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/spanisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=spanisch_ahr",
+    "bos|13|spanisch|spanisch_aufbaukurs":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/spanisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=spanisch_aufbaukurs",
+    "bos|13|spanisch|spanisch_fortgefuehrt":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/spanisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=spanisch_fortgefuehrt",
+    "bos|13|spanisch|spanisch_grundkurs":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/spanisch/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=spanisch_grundkurs",
+    "bos|13|technologie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/technologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=technologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=abu",
+    "bos|13|technologie|t":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/technologie/inhalt/fachlehrplaene?w_schulart=bos&wt_1=schulart&w_fach=technologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=t",
+    "bos|13|volkswirtschaftslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/volkswirtschaftslehre/inhalt/fachlehrplaene",
+    "bos|13|wirtschaft-und-recht":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/wirtschaft-und-recht/inhalt/fachlehrplaene",
+    "bos|13|wirtschaft_aktuell":
+      "https://www.lehrplanplus.bayern.de/schulart/bos/jgs/13/fach/wirtschaft_aktuell/inhalt/fachlehrplaene",
+    "fos|10|betriebswirtschaftslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/betriebswirtschaftslehre/inhalt/fachlehrplaene",
+    "fos|10|biologie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/biologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=abu",
+    "fos|10|biologie|s-gh":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/biologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=s-gh",
+    "fos|10|bwl-rechnungswesen":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/bwl-rechnungswesen/inhalt/fachlehrplaene",
+    "fos|10|chemie":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/chemie/inhalt/fachlehrplaene",
+    "fos|10|deutsch|vorklasse":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/deutsch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vorklasse",
+    "fos|10|deutsch|vorklasse_gueltig_ab_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/deutsch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vorklasse_gueltig_ab_26_27",
+    "fos|10|deutsch|vorkurs":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/deutsch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vorkurs",
+    "fos|10|deutsch|vorkurs_guelitg_ab_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/deutsch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vorkurs_guelitg_ab_26_27",
+    "fos|10|englisch|vorklasse":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/englisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=englisch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vorklasse",
+    "fos|10|englisch|vorkurs":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/englisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=englisch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vorkurs",
+    "fos|10|ethik":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/ethik/inhalt/fachlehrplaene",
+    "fos|10|evangelische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/evangelische-religionslehre/inhalt/fachlehrplaene",
+    "fos|10|gpug-fosbos":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/gpug-fosbos/inhalt/fachlehrplaene",
+    "fos|10|gw|aktuell":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/gw/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=gw&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=aktuell",
+    "fos|10|gw|aktuell_gueltig_ab_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/gw/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=gw&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=aktuell_gueltig_ab_26_27",
+    "fos|10|ibv|ibv":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/ibv/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=ibv&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=ibv",
+    "fos|10|ibv|ibv_gueltig_ab_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/ibv/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=ibv&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=ibv_gueltig_ab_26_27",
+    "fos|10|katholische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/katholische-religionslehre/inhalt/fachlehrplaene",
+    "fos|10|kuenstliche_intelligenz_informatik_u_technologie":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/kuenstliche_intelligenz_informatik_u_technologie/inhalt/fachlehrplaene",
+    "fos|10|mathematik|vorklasse":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/mathematik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vorklasse",
+    "fos|10|mathematik|vorkurs":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/mathematik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vorkurs",
+    "fos|10|nt-bo":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/nt-bo/inhalt/fachlehrplaene",
+    "fos|10|paedagigik-psychologie":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/paedagigik-psychologie/inhalt/fachlehrplaene",
+    "fos|10|physik":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/physik/inhalt/fachlehrplaene",
+    "fos|10|technologie":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/10/fach/technologie/inhalt/fachlehrplaene",
+    "fos|11|betriebswirtschaftslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/betriebswirtschaftslehre/inhalt/fachlehrplaene",
+    "fos|11|biologie":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/biologie/inhalt/fachlehrplaene",
+    "fos|11|bwl-rechnungswesen":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/bwl-rechnungswesen/inhalt/fachlehrplaene",
+    "fos|11|chemie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/chemie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=chemie&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=abu",
+    "fos|11|chemie|gh":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/chemie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=chemie&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=gh",
+    "fos|11|chemie|s":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/chemie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=chemie&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=s",
+    "fos|11|chemie|t":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/chemie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=chemie&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=t",
+    "fos|11|deutsch|gueltig_ab_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/deutsch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=gueltig_ab_26_27",
+    "fos|11|deutsch|gueltig_bis_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/deutsch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=gueltig_bis_26_27",
+    "fos|11|englisch":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/englisch/inhalt/fachlehrplaene",
+    "fos|11|fpa|abu-taetigkeit":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/fpa/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=fpa&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=abu-taetigkeit",
+    "fos|11|fpa|abu-vertiefung":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/fpa/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=fpa&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=abu-vertiefung",
+    "fos|11|fpa|g-taetigkeit":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/fpa/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=fpa&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=g-taetigkeit",
+    "fos|11|fpa|g-vertiefung":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/fpa/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=fpa&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=g-vertiefung",
+    "fos|11|fpa|gesundheit-taetigkeit":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/fpa/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=fpa&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=gesundheit-taetigkeit",
+    "fos|11|fpa|gesundheit-vertiefung":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/fpa/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=fpa&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=gesundheit-vertiefung",
+    "fos|11|fpa|internat-wirtschaft-vertiefung":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/fpa/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=fpa&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=internat-wirtschaft-vertiefung",
+    "fos|11|fpa|iw-taetigkeit":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/fpa/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=fpa&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=iw-taetigkeit",
+    "fos|11|fpa|s-taetigkeit":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/fpa/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=fpa&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=s-taetigkeit",
+    "fos|11|fpa|s-vertiefung":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/fpa/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=fpa&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=s-vertiefung",
+    "fos|11|fpa|t-taetigkeit":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/fpa/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=fpa&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=t-taetigkeit",
+    "fos|11|fpa|t-vertiefung":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/fpa/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=fpa&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=t-vertiefung",
+    "fos|11|fpa|w-taetigkeit":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/fpa/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=fpa&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=w-taetigkeit",
+    "fos|11|fpa|w-vertiefung":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/fpa/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=fpa&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=w-vertiefung",
+    "fos|11|franzoesisch|franzoesisch_aufbaukurs":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=franzoesisch_aufbaukurs",
+    "fos|11|franzoesisch|franzoesisch_grundkurs":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=franzoesisch_grundkurs",
+    "fos|11|geschichte":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/geschichte/inhalt/fachlehrplaene",
+    "fos|11|gestaltung|praxis":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/gestaltung/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=gestaltung&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=praxis",
+    "fos|11|gestaltung|theorie":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/gestaltung/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=gestaltung&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=theorie",
+    "fos|11|gw|aktuell":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/gw/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=gw&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=aktuell",
+    "fos|11|gw|aktuell_gueltig_ab_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/gw/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=gw&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=aktuell_gueltig_ab_26_27",
+    "fos|11|ibv|ibv":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/ibv/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=ibv&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=ibv",
+    "fos|11|ibv|ibv_gueltig_ab_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/ibv/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=ibv&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=ibv_gueltig_ab_26_27",
+    "fos|11|ki":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/ki/inhalt/fachlehrplaene",
+    "fos|11|kuenstliche_intelligenz_informatik_u_technologie":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/kuenstliche_intelligenz_informatik_u_technologie/inhalt/fachlehrplaene",
+    "fos|11|mathematik|abu-g-s-w-gh-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/mathematik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=abu-g-s-w-gh-iw",
+    "fos|11|mathematik|abu-g-s-w-gh-iw_gueltig_ab_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/mathematik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=abu-g-s-w-gh-iw_gueltig_ab_26_27",
+    "fos|11|mathematik|t":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/mathematik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=t",
+    "fos|11|mathematik|t_gueltig_ab_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/mathematik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=t_gueltig_ab_26_27",
+    "fos|11|medien":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/medien/inhalt/fachlehrplaene",
+    "fos|11|paedagigik-psychologie|s":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/paedagigik-psychologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=paedagigik-psychologie&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=s",
+    "fos|11|paedagigik-psychologie|s_gueltig_ab_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/paedagigik-psychologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=paedagigik-psychologie&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=s_gueltig_ab_26_27",
+    "fos|11|physik|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/physik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=abu",
+    "fos|11|physik|t":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/physik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=t",
+    "fos|11|physik|t_gueltig_ab_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/physik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=t_gueltig_ab_26_27",
+    "fos|11|rechtslehre|iw":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/rechtslehre/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=rechtslehre&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=iw",
+    "fos|11|rechtslehre|w":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/rechtslehre/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=rechtslehre&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=w",
+    "fos|11|sozialwirtschaft-und-recht":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/sozialwirtschaft-und-recht/inhalt/fachlehrplaene",
+    "fos|11|spanisch|spanisch_aufbaukurs":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/spanisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=spanisch_aufbaukurs",
+    "fos|11|spanisch|spanisch_grundkurs":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/spanisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=spanisch_grundkurs",
+    "fos|11|technologie":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/technologie/inhalt/fachlehrplaene",
+    "fos|11|volkswirtschaftslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/11/fach/volkswirtschaftslehre/inhalt/fachlehrplaene",
+    "fos|12|betriebswirtschaftslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/betriebswirtschaftslehre/inhalt/fachlehrplaene",
+    "fos|12|biologie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/biologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=abu",
+    "fos|12|biologie|g":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/biologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=g",
+    "fos|12|biologie|s":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/biologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=s",
+    "fos|12|biologie|wahl-g-t-w-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/biologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=wahl-g-t-w-iw",
+    "fos|12|biotechnologie":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/biotechnologie/inhalt/fachlehrplaene",
+    "fos|12|bwl-rechnungswesen":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/bwl-rechnungswesen/inhalt/fachlehrplaene",
+    "fos|12|chemie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/chemie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=chemie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=abu",
+    "fos|12|chemie|gh":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/chemie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=chemie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=gh",
+    "fos|12|chemie|t":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/chemie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=chemie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=t",
+    "fos|12|deutsch|gueltig_bis_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/deutsch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=gueltig_bis_26_27",
+    "fos|12|ebc":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/ebc/inhalt/fachlehrplaene",
+    "fos|12|englisch":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/englisch/inhalt/fachlehrplaene",
+    "fos|12|ethik":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/ethik/inhalt/fachlehrplaene",
+    "fos|12|evangelische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/evangelische-religionslehre/inhalt/fachlehrplaene",
+    "fos|12|experimentelles_gestalten":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/experimentelles_gestalten/inhalt/fachlehrplaene",
+    "fos|12|franzoesisch|franzoesisch_ahr":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=franzoesisch_ahr",
+    "fos|12|franzoesisch|franzoesisch_aufbaukurs":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=franzoesisch_aufbaukurs",
+    "fos|12|franzoesisch|franzoesisch_fortgefuehrt":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=franzoesisch_fortgefuehrt",
+    "fos|12|franzoesisch|franzoesisch_grundkurs":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=franzoesisch_grundkurs",
+    "fos|12|gestaltung|praxis":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/gestaltung/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=gestaltung&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=praxis",
+    "fos|12|gestaltung|theorie":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/gestaltung/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=gestaltung&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=theorie",
+    "fos|12|gwr":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/gwr/inhalt/fachlehrplaene",
+    "fos|12|gw|aktuell":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/gw/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=gw&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=aktuell",
+    "fos|12|ibv|ibv":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/ibv/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=ibv&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=ibv",
+    "fos|12|informatik|w-s-abu-g-gh":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/informatik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=informatik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=w-s-abu-g-gh",
+    "fos|12|informatik|wahl-t-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/informatik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=informatik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=wahl-t-iw",
+    "fos|12|internationale_politik":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/internationale_politik/inhalt/fachlehrplaene",
+    "fos|12|isb|pflicht-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/isb/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=isb&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=pflicht-iw",
+    "fos|12|isb|wahl-abu-g-t-w-s-gh":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/isb/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=isb&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=wahl-abu-g-t-w-s-gh",
+    "fos|12|italienisch":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/italienisch/inhalt/fachlehrplaene",
+    "fos|12|katholische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/katholische-religionslehre/inhalt/fachlehrplaene",
+    "fos|12|ki":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/ki/inhalt/fachlehrplaene",
+    "fos|12|kuenstliche_intelligenz_informatik_u_technologie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/kuenstliche_intelligenz_informatik_u_technologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=kuenstliche_intelligenz_informatik_u_technologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=abu",
+    "fos|12|kuenstliche_intelligenz_informatik_u_technologie|t":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/kuenstliche_intelligenz_informatik_u_technologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=kuenstliche_intelligenz_informatik_u_technologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=t",
+    "fos|12|kuenstliche_intelligenz_u_wirtschaftsinformatik":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/kuenstliche_intelligenz_u_wirtschaftsinformatik/inhalt/fachlehrplaene",
+    "fos|12|kunst":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/kunst/inhalt/fachlehrplaene",
+    "fos|12|latein":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/latein/inhalt/fachlehrplaene",
+    "fos|12|mathematik|Wahl-abu-g-s-w-gh-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/mathematik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=Wahl-abu-g-s-w-gh-iw",
+    "fos|12|mathematik|abu-g-s-w-gh-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/mathematik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=abu-g-s-w-gh-iw",
+    "fos|12|mathematik|t":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/mathematik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=t",
+    "fos|12|mathematik|wahl-t":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/mathematik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=wahl-t",
+    "fos|12|medien":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/medien/inhalt/fachlehrplaene",
+    "fos|12|musik":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/musik/inhalt/fachlehrplaene",
+    "fos|12|nt-bo|g":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/nt-bo/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=nt-bo&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=g",
+    "fos|12|nt-bo|w-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/nt-bo/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=nt-bo&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=w-iw",
+    "fos|12|paedagigik-psychologie|s":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/paedagigik-psychologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=paedagigik-psychologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=s",
+    "fos|12|physik|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/physik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=abu",
+    "fos|12|physik|t":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/physik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=t",
+    "fos|12|pug":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/pug/inhalt/fachlehrplaene",
+    "fos|12|russisch":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/russisch/inhalt/fachlehrplaene",
+    "fos|12|sg":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/sg/inhalt/fachlehrplaene",
+    "fos|12|sozialwirtschaft-und-recht":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/sozialwirtschaft-und-recht/inhalt/fachlehrplaene",
+    "fos|12|soziologie|abu-g-t-w-iw-gh":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/soziologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=soziologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=abu-g-t-w-iw-gh",
+    "fos|12|soziologie|s":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/soziologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=soziologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=s",
+    "fos|12|spanisch|spanisch_ahr":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/spanisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=spanisch_ahr",
+    "fos|12|spanisch|spanisch_aufbaukurs":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/spanisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=spanisch_aufbaukurs",
+    "fos|12|spanisch|spanisch_fortgefuehrt":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/spanisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=spanisch_fortgefuehrt",
+    "fos|12|spanisch|spanisch_grundkurs":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/spanisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=spanisch_grundkurs",
+    "fos|12|sport":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/sport/inhalt/fachlehrplaene",
+    "fos|12|studier-und-arbeitstechniken":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/studier-und-arbeitstechniken/inhalt/fachlehrplaene",
+    "fos|12|technologie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/technologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=technologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=abu",
+    "fos|12|technologie|t":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/technologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=technologie&wt_2=fach&w_jgs=12&wt_3=jgs&w_auspraegung=t",
+    "fos|12|volkswirtschaftslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/volkswirtschaftslehre/inhalt/fachlehrplaene",
+    "fos|12|wirtschaft-und-recht":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/wirtschaft-und-recht/inhalt/fachlehrplaene",
+    "fos|12|wirtschaft_aktuell":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/12/fach/wirtschaft_aktuell/inhalt/fachlehrplaene",
+    "fos|13|betriebswirtschaftslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/betriebswirtschaftslehre/inhalt/fachlehrplaene",
+    "fos|13|biologie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/biologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=abu",
+    "fos|13|biologie|g":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/biologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=g",
+    "fos|13|biologie|s":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/biologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=s",
+    "fos|13|biologie|wahl-g-t-w-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/biologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=biologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=wahl-g-t-w-iw",
+    "fos|13|biotechnologie":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/biotechnologie/inhalt/fachlehrplaene",
+    "fos|13|bwl-rechnungswesen":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/bwl-rechnungswesen/inhalt/fachlehrplaene",
+    "fos|13|chemie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/chemie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=chemie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=abu",
+    "fos|13|chemie|t":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/chemie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=chemie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=t",
+    "fos|13|deutsch|gueltig_bis_26_27":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/deutsch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=gueltig_bis_26_27",
+    "fos|13|ebc":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/ebc/inhalt/fachlehrplaene",
+    "fos|13|englisch":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/englisch/inhalt/fachlehrplaene",
+    "fos|13|ethik":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/ethik/inhalt/fachlehrplaene",
+    "fos|13|evangelische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/evangelische-religionslehre/inhalt/fachlehrplaene",
+    "fos|13|experimentelles_gestalten":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/experimentelles_gestalten/inhalt/fachlehrplaene",
+    "fos|13|franzoesisch|franzoesisch_ahr":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=franzoesisch_ahr",
+    "fos|13|franzoesisch|franzoesisch_aufbaukurs":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=franzoesisch_aufbaukurs",
+    "fos|13|franzoesisch|franzoesisch_fortgefuehrt":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=franzoesisch_fortgefuehrt",
+    "fos|13|franzoesisch|franzoesisch_grundkurs":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/franzoesisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=franzoesisch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=franzoesisch_grundkurs",
+    "fos|13|gestaltung":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/gestaltung/inhalt/fachlehrplaene",
+    "fos|13|gpug-fosbos":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/gpug-fosbos/inhalt/fachlehrplaene",
+    "fos|13|gwr":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/gwr/inhalt/fachlehrplaene",
+    "fos|13|gw|aktuell":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/gw/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=gw&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=aktuell",
+    "fos|13|ibv|ibv":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/ibv/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=ibv&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=ibv",
+    "fos|13|informatik|w-s-abu-g-gh":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/informatik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=informatik&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=w-s-abu-g-gh",
+    "fos|13|informatik|wahl-t-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/informatik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=informatik&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=wahl-t-iw",
+    "fos|13|internationale_politik":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/internationale_politik/inhalt/fachlehrplaene",
+    "fos|13|isb":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/isb/inhalt/fachlehrplaene",
+    "fos|13|italienisch":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/italienisch/inhalt/fachlehrplaene",
+    "fos|13|katholische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/katholische-religionslehre/inhalt/fachlehrplaene",
+    "fos|13|ki":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/ki/inhalt/fachlehrplaene",
+    "fos|13|kuenstliche_intelligenz_informatik_u_technologie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/kuenstliche_intelligenz_informatik_u_technologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=kuenstliche_intelligenz_informatik_u_technologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=abu",
+    "fos|13|kuenstliche_intelligenz_informatik_u_technologie|t":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/kuenstliche_intelligenz_informatik_u_technologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=kuenstliche_intelligenz_informatik_u_technologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=t",
+    "fos|13|kunst":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/kunst/inhalt/fachlehrplaene",
+    "fos|13|latein":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/latein/inhalt/fachlehrplaene",
+    "fos|13|mathematik|abu-g-s-w-gh-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/mathematik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=abu-g-s-w-gh-iw",
+    "fos|13|mathematik|t":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/mathematik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=t",
+    "fos|13|mathematik|wahl-abu-g-s-w-t":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/mathematik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=wahl-abu-g-s-w-t",
+    "fos|13|medien":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/medien/inhalt/fachlehrplaene",
+    "fos|13|musik":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/musik/inhalt/fachlehrplaene",
+    "fos|13|nt-bo|g":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/nt-bo/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=nt-bo&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=g",
+    "fos|13|nt-bo|w-iw":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/nt-bo/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=nt-bo&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=w-iw",
+    "fos|13|paedagigik-psychologie|s":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/paedagigik-psychologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=paedagigik-psychologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=s",
+    "fos|13|physik|t":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/physik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=t",
+    "fos|13|physik|wahl-abu":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/physik/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=physik&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=wahl-abu",
+    "fos|13|russisch":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/russisch/inhalt/fachlehrplaene",
+    "fos|13|sg":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/sg/inhalt/fachlehrplaene",
+    "fos|13|sozialwirtschaft-und-recht":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/sozialwirtschaft-und-recht/inhalt/fachlehrplaene",
+    "fos|13|soziologie":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/soziologie/inhalt/fachlehrplaene",
+    "fos|13|spanisch|spanisch_ahr":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/spanisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=spanisch_ahr",
+    "fos|13|spanisch|spanisch_aufbaukurs":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/spanisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=spanisch_aufbaukurs",
+    "fos|13|spanisch|spanisch_fortgefuehrt":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/spanisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=spanisch_fortgefuehrt",
+    "fos|13|spanisch|spanisch_grundkurs":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/spanisch/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=spanisch&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=spanisch_grundkurs",
+    "fos|13|technologie|abu":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/technologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=technologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=abu",
+    "fos|13|technologie|t":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/technologie/inhalt/fachlehrplaene?w_schulart=fos&wt_1=schulart&w_fach=technologie&wt_2=fach&w_jgs=13&wt_3=jgs&w_auspraegung=t",
+    "fos|13|volkswirtschaftslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/volkswirtschaftslehre/inhalt/fachlehrplaene",
+    "fos|13|wirtschaft-und-recht":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/wirtschaft-und-recht/inhalt/fachlehrplaene",
+    "fos|13|wirtschaft_aktuell":
+      "https://www.lehrplanplus.bayern.de/schulart/fos/jgs/13/fach/wirtschaft_aktuell/inhalt/fachlehrplaene",
+    "wirtschaftsschule|10|bsk|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/bsk/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=bsk&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|10|bsk|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/bsk/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=bsk&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|10|bsk|zweistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/bsk/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=bsk&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=zweistufig",
+    "wirtschaftsschule|10|deutsch|dreistufig_gueltig_ab_2627":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/deutsch/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=dreistufig_gueltig_ab_2627",
+    "wirtschaftsschule|10|deutsch|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/deutsch/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|10|deutsch|vierstufig_gueltig_ab_2627":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/deutsch/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vierstufig_gueltig_ab_2627",
+    "wirtschaftsschule|10|deutsch|zweistufig_gueltig_ab_2526":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/deutsch/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=zweistufig_gueltig_ab_2526",
+    "wirtschaftsschule|10|e-commerce":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/e-commerce/inhalt/fachlehrplaene",
+    "wirtschaftsschule|10|englisch|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/englisch/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=englisch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|10|englisch|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/englisch/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=englisch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|10|englisch|zweistufig_gueltig_ab_2526":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/englisch/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=englisch&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=zweistufig_gueltig_ab_2526",
+    "wirtschaftsschule|10|ethik|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/ethik/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=ethik&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|10|ethik|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/ethik/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=ethik&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|10|ethik|zweistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/ethik/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=ethik&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=zweistufig",
+    "wirtschaftsschule|10|evangelische-religionslehre|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/evangelische-religionslehre/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=evangelische-religionslehre&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|10|evangelische-religionslehre|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/evangelische-religionslehre/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=evangelische-religionslehre&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|10|evangelische-religionslehre|zweistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/evangelische-religionslehre/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=evangelische-religionslehre&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=zweistufig",
+    "wirtschaftsschule|10|fit_for_finance":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/fit_for_finance/inhalt/fachlehrplaene",
+    "wirtschaftsschule|10|gamification":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/gamification/inhalt/fachlehrplaene",
+    "wirtschaftsschule|10|gesundheit":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/gesundheit/inhalt/fachlehrplaene",
+    "wirtschaftsschule|10|gpug-ws|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/gpug-ws/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=gpug-ws&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|10|gpug-ws|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/gpug-ws/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=gpug-ws&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|10|informationsverarbeitung":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/informationsverarbeitung/inhalt/fachlehrplaene",
+    "wirtschaftsschule|10|katholische-religionslehre|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/katholische-religionslehre/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=katholische-religionslehre&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|10|katholische-religionslehre|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/katholische-religionslehre/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=katholische-religionslehre&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|10|katholische-religionslehre|zweistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/katholische-religionslehre/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=katholische-religionslehre&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=zweistufig",
+    "wirtschaftsschule|10|life_skills":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/life_skills/inhalt/fachlehrplaene",
+    "wirtschaftsschule|10|mathematik|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/mathematik/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|10|mathematik|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/mathematik/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|10|mathematik|zweistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/mathematik/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=zweistufig",
+    "wirtschaftsschule|10|oebdb":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/oebdb/inhalt/fachlehrplaene",
+    "wirtschaftsschule|10|pug":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/pug/inhalt/fachlehrplaene",
+    "wirtschaftsschule|10|robotik":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/robotik/inhalt/fachlehrplaene",
+    "wirtschaftsschule|10|sport|diffsport":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/sport/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=sport&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=diffsport",
+    "wirtschaftsschule|10|sport|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/sport/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=sport&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|10|sport|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/sport/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=sport&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|10|sport|zweistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/sport/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=sport&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=zweistufig",
+    "wirtschaftsschule|10|tourismus":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/tourismus/inhalt/fachlehrplaene",
+    "wirtschaftsschule|10|uebungsunternehmen|drei_vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/uebungsunternehmen/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=uebungsunternehmen&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=drei_vierstufig",
+    "wirtschaftsschule|10|uebungsunternehmen|zweistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/uebungsunternehmen/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=uebungsunternehmen&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=zweistufig",
+    "wirtschaftsschule|10|umweltoekonomie":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/umweltoekonomie/inhalt/fachlehrplaene",
+    "wirtschaftsschule|10|umwelttechnik":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/umwelttechnik/inhalt/fachlehrplaene",
+    "wirtschaftsschule|10|wirtschaftsgeografie|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/wirtschaftsgeografie/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=wirtschaftsgeografie&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|10|wirtschaftsgeografie|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/10/fach/wirtschaftsgeografie/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=wirtschaftsgeografie&wt_2=fach&w_jgs=10&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|11|bsk":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/bsk/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|deutsch|zweistufig_gueltig_ab_2627":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/deutsch/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=zweistufig_gueltig_ab_2627",
+    "wirtschaftsschule|11|e-commerce":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/e-commerce/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|englisch":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/englisch/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|ethik":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/ethik/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|evangelische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/evangelische-religionslehre/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|fit_for_finance":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/fit_for_finance/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|gamification":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/gamification/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|gesundheit":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/gesundheit/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|informationsverarbeitung":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/informationsverarbeitung/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|katholische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/katholische-religionslehre/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|life_skills":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/life_skills/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|mathematik":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/mathematik/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|oebdb":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/oebdb/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|robotik":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/robotik/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|sport":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/sport/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|tourismus":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/tourismus/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|uebungsunternehmen|zweistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/uebungsunternehmen/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=uebungsunternehmen&wt_2=fach&w_jgs=11&wt_3=jgs&w_auspraegung=zweistufig",
+    "wirtschaftsschule|11|umweltoekonomie":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/umweltoekonomie/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|umwelttechnik":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/umwelttechnik/inhalt/fachlehrplaene",
+    "wirtschaftsschule|11|wirtschaft_aktuell":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/11/fach/wirtschaft_aktuell/inhalt/fachlehrplaene",
+    "wirtschaftsschule|5|deutsch":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/5/fach/deutsch/inhalt/fachlehrplaene",
+    "wirtschaftsschule|5|digitales-leben-und-arbeiten":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/5/fach/digitales-leben-und-arbeiten/inhalt/fachlehrplaene",
+    "wirtschaftsschule|5|englisch":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/5/fach/englisch/inhalt/fachlehrplaene",
+    "wirtschaftsschule|5|ethik":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/5/fach/ethik/inhalt/fachlehrplaene",
+    "wirtschaftsschule|5|evangelische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/5/fach/evangelische-religionslehre/inhalt/fachlehrplaene",
+    "wirtschaftsschule|5|gpug-ws":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/5/fach/gpug-ws/inhalt/fachlehrplaene",
+    "wirtschaftsschule|5|katholische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/5/fach/katholische-religionslehre/inhalt/fachlehrplaene",
+    "wirtschaftsschule|5|mathematik":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/5/fach/mathematik/inhalt/fachlehrplaene",
+    "wirtschaftsschule|5|musischaesthetischebildung":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/5/fach/musischaesthetischebildung/inhalt/fachlehrplaene",
+    "wirtschaftsschule|5|mut":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/5/fach/mut/inhalt/fachlehrplaene",
+    "wirtschaftsschule|5|oeb":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/5/fach/oeb/inhalt/fachlehrplaene",
+    "wirtschaftsschule|5|sport":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/5/fach/sport/inhalt/fachlehrplaene",
+    "wirtschaftsschule|6|deutsch":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/6/fach/deutsch/inhalt/fachlehrplaene",
+    "wirtschaftsschule|6|digitales-leben-und-arbeiten":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/6/fach/digitales-leben-und-arbeiten/inhalt/fachlehrplaene",
+    "wirtschaftsschule|6|englisch":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/6/fach/englisch/inhalt/fachlehrplaene",
+    "wirtschaftsschule|6|ethik":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/6/fach/ethik/inhalt/fachlehrplaene",
+    "wirtschaftsschule|6|evangelische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/6/fach/evangelische-religionslehre/inhalt/fachlehrplaene",
+    "wirtschaftsschule|6|gpug-ws":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/6/fach/gpug-ws/inhalt/fachlehrplaene",
+    "wirtschaftsschule|6|katholische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/6/fach/katholische-religionslehre/inhalt/fachlehrplaene",
+    "wirtschaftsschule|6|mathematik":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/6/fach/mathematik/inhalt/fachlehrplaene",
+    "wirtschaftsschule|6|musischaesthetischebildung":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/6/fach/musischaesthetischebildung/inhalt/fachlehrplaene",
+    "wirtschaftsschule|6|mut":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/6/fach/mut/inhalt/fachlehrplaene",
+    "wirtschaftsschule|6|oeb":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/6/fach/oeb/inhalt/fachlehrplaene",
+    "wirtschaftsschule|6|sport":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/6/fach/sport/inhalt/fachlehrplaene",
+    "wirtschaftsschule|7|bsk":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/7/fach/bsk/inhalt/fachlehrplaene",
+    "wirtschaftsschule|7|deutsch":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/7/fach/deutsch/inhalt/fachlehrplaene",
+    "wirtschaftsschule|7|englisch":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/7/fach/englisch/inhalt/fachlehrplaene",
+    "wirtschaftsschule|7|ethik":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/7/fach/ethik/inhalt/fachlehrplaene",
+    "wirtschaftsschule|7|evangelische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/7/fach/evangelische-religionslehre/inhalt/fachlehrplaene",
+    "wirtschaftsschule|7|gpug-ws":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/7/fach/gpug-ws/inhalt/fachlehrplaene",
+    "wirtschaftsschule|7|informationsverarbeitung":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/7/fach/informationsverarbeitung/inhalt/fachlehrplaene",
+    "wirtschaftsschule|7|katholische-religionslehre":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/7/fach/katholische-religionslehre/inhalt/fachlehrplaene",
+    "wirtschaftsschule|7|mathematik|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/7/fach/mathematik/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=7&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|7|mensch-und-umwelt":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/7/fach/mensch-und-umwelt/inhalt/fachlehrplaene",
+    "wirtschaftsschule|7|musischaesthetischebildung":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/7/fach/musischaesthetischebildung/inhalt/fachlehrplaene",
+    "wirtschaftsschule|7|mut":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/7/fach/mut/inhalt/fachlehrplaene",
+    "wirtschaftsschule|7|oebdb":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/7/fach/oebdb/inhalt/fachlehrplaene",
+    "wirtschaftsschule|7|sport|diffsport":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/7/fach/sport/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=sport&wt_2=fach&w_jgs=7&wt_3=jgs&w_auspraegung=diffsport",
+    "wirtschaftsschule|7|sport|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/7/fach/sport/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=sport&wt_2=fach&w_jgs=7&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|8|bsk|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/bsk/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=bsk&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|8|bsk|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/bsk/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=bsk&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|8|deutsch|dreistufig_gueltig_ab_2425":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/deutsch/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=dreistufig_gueltig_ab_2425",
+    "wirtschaftsschule|8|deutsch|vierstufig_gueltig_ab_2425":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/deutsch/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=vierstufig_gueltig_ab_2425",
+    "wirtschaftsschule|8|englisch|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/englisch/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=englisch&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|8|englisch|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/englisch/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=englisch&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|8|ethik|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/ethik/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=ethik&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|8|ethik|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/ethik/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=ethik&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|8|evangelische-religionslehre|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/evangelische-religionslehre/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=evangelische-religionslehre&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|8|evangelische-religionslehre|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/evangelische-religionslehre/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=evangelische-religionslehre&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|8|gpug-ws|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/gpug-ws/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=gpug-ws&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|8|gpug-ws|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/gpug-ws/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=gpug-ws&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|8|informationsverarbeitung|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/informationsverarbeitung/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=informationsverarbeitung&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|8|informationsverarbeitung|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/informationsverarbeitung/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=informationsverarbeitung&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|8|katholische-religionslehre|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/katholische-religionslehre/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=katholische-religionslehre&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|8|katholische-religionslehre|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/katholische-religionslehre/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=katholische-religionslehre&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|8|mathematik|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/mathematik/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|8|mathematik|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/mathematik/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|8|mensch-und-umwelt|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/mensch-und-umwelt/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=mensch-und-umwelt&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|8|mensch-und-umwelt|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/mensch-und-umwelt/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=mensch-und-umwelt&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|8|musischaesthetischebildung|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/musischaesthetischebildung/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=musischaesthetischebildung&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|8|musischaesthetischebildung|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/musischaesthetischebildung/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=musischaesthetischebildung&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|8|mut|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/mut/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=mut&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|8|mut|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/mut/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=mut&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|8|oebdb|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/oebdb/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=oebdb&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|8|oebdb|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/oebdb/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=oebdb&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|8|sport|diffsport":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/sport/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=sport&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=diffsport",
+    "wirtschaftsschule|8|sport|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/sport/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=sport&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|8|sport|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/8/fach/sport/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=sport&wt_2=fach&w_jgs=8&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|9|bsk|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/bsk/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=bsk&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|9|bsk|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/bsk/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=bsk&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|9|deutsch|%20dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/deutsch/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=%20dreistufig",
+    "wirtschaftsschule|9|deutsch|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/deutsch/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=deutsch&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|9|e-commerce":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/e-commerce/inhalt/fachlehrplaene",
+    "wirtschaftsschule|9|englisch|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/englisch/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=englisch&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|9|englisch|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/englisch/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=englisch&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|9|ethik|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/ethik/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=ethik&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|9|ethik|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/ethik/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=ethik&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|9|evangelische-religionslehre|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/evangelische-religionslehre/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=evangelische-religionslehre&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|9|evangelische-religionslehre|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/evangelische-religionslehre/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=evangelische-religionslehre&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|9|fit_for_finance":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/fit_for_finance/inhalt/fachlehrplaene",
+    "wirtschaftsschule|9|gamification":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/gamification/inhalt/fachlehrplaene",
+    "wirtschaftsschule|9|gesundheit":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/gesundheit/inhalt/fachlehrplaene",
+    "wirtschaftsschule|9|gpug-ws|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/gpug-ws/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=gpug-ws&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|9|gpug-ws|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/gpug-ws/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=gpug-ws&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|9|informationsverarbeitung":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/informationsverarbeitung/inhalt/fachlehrplaene",
+    "wirtschaftsschule|9|katholische-religionslehre|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/katholische-religionslehre/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=katholische-religionslehre&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|9|katholische-religionslehre|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/katholische-religionslehre/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=katholische-religionslehre&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|9|life_skills":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/life_skills/inhalt/fachlehrplaene",
+    "wirtschaftsschule|9|mathematik|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/mathematik/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|9|mathematik|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/mathematik/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=mathematik&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|9|robotik":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/robotik/inhalt/fachlehrplaene",
+    "wirtschaftsschule|9|sport|diffsport":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/sport/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=sport&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=diffsport",
+    "wirtschaftsschule|9|sport|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/sport/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=sport&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|9|sport|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/sport/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=sport&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|9|tourismus":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/tourismus/inhalt/fachlehrplaene",
+    "wirtschaftsschule|9|uebungsunternehmen|drei_vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/uebungsunternehmen/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=uebungsunternehmen&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=drei_vierstufig",
+    "wirtschaftsschule|9|umweltoekonomie":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/umweltoekonomie/inhalt/fachlehrplaene",
+    "wirtschaftsschule|9|umwelttechnik":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/umwelttechnik/inhalt/fachlehrplaene",
+    "wirtschaftsschule|9|wirtschaft_aktuell|dreistufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/wirtschaft_aktuell/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=wirtschaft_aktuell&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=dreistufig",
+    "wirtschaftsschule|9|wirtschaft_aktuell|vierstufig":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/wirtschaft_aktuell/inhalt/fachlehrplaene?w_schulart=wirtschaftsschule&wt_1=schulart&w_fach=wirtschaft_aktuell&wt_2=fach&w_jgs=9&wt_3=jgs&w_auspraegung=vierstufig",
+    "wirtschaftsschule|9|wirtschaftsgeografie":
+      "https://www.lehrplanplus.bayern.de/schulart/wirtschaftsschule/jgs/9/fach/wirtschaftsgeografie/inhalt/fachlehrplaene",
   },
 };

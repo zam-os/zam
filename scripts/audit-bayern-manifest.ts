@@ -1,8 +1,15 @@
 import { LEHRPLANPLUS_BAYERN_MANIFEST as M } from "../src/cli/curriculum/providers/lehrplanplus-bayern/manifest.ts";
 
+type SchoolTypeId =
+  | "realschule"
+  | "gymnasium"
+  | "wirtschaftsschule"
+  | "fos"
+  | "bos";
+
 type Gap = { key: string; issue: "no_topics" | "no_url" };
 
-function auditSchoolType(schoolType: "realschule" | "gymnasium"): {
+function auditSchoolType(schoolType: SchoolTypeId): {
   ok: string[];
   gaps: Gap[];
 } {
@@ -38,11 +45,35 @@ function auditSchoolType(schoolType: "realschule" | "gymnasium"): {
   return { ok, gaps };
 }
 
-for (const schoolType of ["realschule", "gymnasium"] as const) {
+const schoolTypes: SchoolTypeId[] = [
+  "realschule",
+  "gymnasium",
+  "wirtschaftsschule",
+  "fos",
+  "bos",
+];
+
+let totalOk = 0;
+let totalGaps = 0;
+
+for (const schoolType of schoolTypes) {
   const { ok, gaps } = auditSchoolType(schoolType);
+  totalOk += ok.length;
+  totalGaps += gaps.length;
   console.log(`\n=== ${schoolType} ===`);
   console.log(`OK: ${ok.length}  gaps: ${gaps.length}`);
-  for (const g of gaps) {
-    console.log(`  ${g.key} (${g.issue})`);
+  // Only print gaps when few; otherwise summarize
+  if (gaps.length <= 80) {
+    for (const g of gaps) {
+      console.log(`  ${g.key} (${g.issue})`);
+    }
+  } else {
+    console.log(`  (first 40 of ${gaps.length})`);
+    for (const g of gaps.slice(0, 40)) {
+      console.log(`  ${g.key} (${g.issue})`);
+    }
   }
 }
+
+console.log(`\n=== total ===`);
+console.log(`OK: ${totalOk}  gaps: ${totalGaps}`);

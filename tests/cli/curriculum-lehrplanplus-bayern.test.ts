@@ -282,4 +282,143 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     expect(topics.length).toBeGreaterThan(0);
     expect(topics[0].sourceRef).toBe("gymnasium|12|biologie|grundlegend");
   });
+
+  // --- Wirtschaftsschule / FOS / BOS (captured 2026-07-19) ---
+
+  it("lists Wirtschaftsschule grades 5 through 11", () => {
+    expect(provider.listGrades("wirtschaftsschule").map((g) => g.id)).toEqual([
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+    ]);
+  });
+
+  it("lists Fachoberschule grades 10 through 13", () => {
+    expect(provider.listGrades("fos").map((g) => g.id)).toEqual([
+      "10",
+      "11",
+      "12",
+      "13",
+    ]);
+  });
+
+  it("lists Berufsoberschule grades 10, 12, and 13", () => {
+    expect(provider.listGrades("bos").map((g) => g.id)).toEqual([
+      "10",
+      "12",
+      "13",
+    ]);
+  });
+
+  it("lists Wirtschaftsschule subject catalog including BSK and Mathematik", () => {
+    const subjects = provider.listSubjects("wirtschaftsschule", "10");
+    expect(subjects.length).toBeGreaterThanOrEqual(25);
+    expect(subjects).toContainEqual({
+      id: "bsk",
+      label: "Betriebswirtschaftliche Steuerung und Kontrolle",
+    });
+    expect(subjects).toContainEqual({ id: "mathematik", label: "Mathematik" });
+  });
+
+  it("lists the three form tracks for Wirtschaftsschule Mathematik 10", () => {
+    const tracks = provider.listTracks("wirtschaftsschule", "10", "mathematik");
+    expect(tracks.map((t) => t.id).sort()).toEqual([
+      "dreistufig",
+      "vierstufig",
+      "zweistufig",
+    ]);
+  });
+
+  it("lists Lernbereiche for Wirtschaftsschule Mathematik 10 (zweistufig)", () => {
+    const topics = provider.listTopics({
+      schoolType: "wirtschaftsschule",
+      grade: "10",
+      subject: "mathematik",
+      track: "zweistufig",
+    });
+    expect(topics.length).toBeGreaterThanOrEqual(5);
+    expect(topics.map((t) => t.label)).toContain("Lineare Gleichungssysteme");
+    expect(topics[0].sourceRef).toBe(
+      "wirtschaftsschule|10|mathematik|zweistufig",
+    );
+  });
+
+  it("resolves a Wirtschaftsschule topic to its Ausprägung URL", () => {
+    const [topic] = provider.listTopics({
+      schoolType: "wirtschaftsschule",
+      grade: "10",
+      subject: "mathematik",
+      track: "zweistufig",
+    });
+    const resolved = provider.resolveTopic(topic);
+    expect(resolved.provider).toBe("lehrplanplus-bayern");
+    expect(resolved.uri).toContain("wirtschaftsschule");
+    expect(resolved.uri).toContain("w_auspraegung=zweistufig");
+  });
+
+  it("lists FOS Mathematik 12 Ausbildungsrichtungs tracks", () => {
+    const tracks = provider.listTracks("fos", "12", "mathematik");
+    expect(tracks.map((t) => t.id)).toEqual(
+      expect.arrayContaining(["t", "abu-g-s-w-gh-iw"]),
+    );
+  });
+
+  it("lists FOS Mathematik 12 (T) Lernbereiche", () => {
+    const topics = provider.listTopics({
+      schoolType: "fos",
+      grade: "12",
+      subject: "mathematik",
+      track: "t",
+    });
+    expect(topics.length).toBeGreaterThanOrEqual(4);
+    expect(topics.map((t) => t.label).join(" ")).toMatch(/Differenzial|Funktion/i);
+  });
+
+  it("lists FOS Deutsch 12 via gueltig_bis_26_27 track for SJ 2026/27", () => {
+    const tracks = provider.listTracks("fos", "12", "deutsch");
+    expect(tracks.map((t) => t.id)).toContain("gueltig_bis_26_27");
+    const topics = provider.listTopics({
+      schoolType: "fos",
+      grade: "12",
+      subject: "deutsch",
+      track: "gueltig_bis_26_27",
+    });
+    expect(topics.map((t) => t.label)).toEqual(
+      expect.arrayContaining([
+        "Sprechen und Zuhören",
+        "Schreiben",
+      ]),
+    );
+  });
+
+  it("lists BOS Mathematik 12 tracks and Technik Lernbereiche", () => {
+    const tracks = provider.listTracks("bos", "12", "mathematik");
+    expect(tracks.map((t) => t.id)).toEqual(
+      expect.arrayContaining(["t", "abu-s-w-gh-iw"]),
+    );
+    const topics = provider.listTopics({
+      schoolType: "bos",
+      grade: "12",
+      subject: "mathematik",
+      track: "t",
+    });
+    expect(topics.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it("returns no topics for BOS Deutsch 12 (only future gueltig_ab_27_28 on site)", () => {
+    // Live LehrplanPLUS only lists the 2027/28 curriculum for BOS Deutsch 12;
+    // school year 2026/27 correctly has an empty topic list.
+    expect(
+      provider.listTopics({
+        schoolType: "bos",
+        grade: "12",
+        subject: "deutsch",
+      }),
+    ).toEqual([]);
+    expect(provider.listTracks("bos", "12", "deutsch")).toEqual([]);
+  });
 });
