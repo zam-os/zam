@@ -77,8 +77,10 @@ looks stale) before decomposing. Then:
 2. Extract the concepts a practitioner must produce **from memory** —
    recall-speed knowledge. Facts one would reasonably look up stay in the
    article; do not tokenize structure (headings are not concepts).
-3. One atomic concept per token; judge a Bloom level (1–5) and a domain
-   per token, reusing existing domains where they fit.
+3. One atomic concept per token; judge a Bloom level (1–5), a domain
+   (reuse existing domains where they fit), and a concise display
+   `title` per token — titles label the token's node in the Learning
+   Graph; an untitled token shows its de-kebabed slug there.
 4. Arrange a prerequisite DAG from foundational to dependent.
 5. Check existing tokens first (`zam_find_tokens`); link them as
    prerequisites instead of duplicating them.
