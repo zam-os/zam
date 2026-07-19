@@ -1,5 +1,6 @@
 import { runBridge } from "./bridge-transport.js";
 import { t, tf } from "./i18n.js";
+import { buildDomainOptions, domainMatches } from "./panel/graph-scope.js";
 
 export interface PersonalCard {
   tokenId: string;
@@ -449,23 +450,23 @@ export async function loadStudioData(): Promise<void> {
     );
     cardsList = listRes.cards;
 
-    // Populated category dropdown options dynamically
-    const categories = new Set<string>();
-    for (const c of cardsList) {
-      if (c.domain) categories.add(c.domain);
-    }
-    const sortedCategories = Array.from(categories).sort();
+    const categoryOptions = buildDomainOptions(cardsList);
 
     // Clear and reset dropdown
     const currentVal = categoryFilter.value;
     categoryFilter.innerHTML = `<option value="all">${t("lbl_all_categories")}</option>`;
-    for (const cat of sortedCategories) {
+    for (const category of categoryOptions) {
       const opt = document.createElement("option");
-      opt.value = cat;
-      opt.textContent = cat;
+      opt.value = category.value;
+      opt.textContent = category.value.split("/").join(" › ");
+      opt.dataset.categoryGroup = String(category.isGroup);
       categoryFilter.appendChild(opt);
     }
-    categoryFilter.value = currentVal || "all";
+    categoryFilter.value = categoryOptions.some(
+      (category) => category.value === currentVal,
+    )
+      ? currentVal
+      : "all";
 
     refreshCardsList();
     updateUIForSelection();
@@ -483,7 +484,7 @@ function refreshCardsList(): void {
 
   const filtered = cardsList.filter((card) => {
     // 1. Category Filter
-    if (filterCat !== "all" && card.domain !== filterCat) {
+    if (filterCat !== "all" && !domainMatches(card.domain, filterCat)) {
       return false;
     }
     // 2. Query Search (Fuzzy over slug, concept, domain, question)
@@ -493,7 +494,9 @@ function refreshCardsList(): void {
       const conceptMatch = card.concept?.toLowerCase().includes(query);
       const domainMatch = card.domain?.toLowerCase().includes(query);
       const questionMatch = card.question?.toLowerCase().includes(query);
-      return titleMatch || slugMatch || conceptMatch || domainMatch || questionMatch;
+      return (
+        titleMatch || slugMatch || conceptMatch || domainMatch || questionMatch
+      );
     }
     return true;
   });

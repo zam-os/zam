@@ -133,6 +133,7 @@ import {
   type ImportOkfTokenInput,
 } from "../bridge-handlers.js";
 import { installCliShim } from "../cli-install.js";
+import { mapWithConcurrency } from "../curriculum/concurrency.js";
 import {
   CURRICULUM_PROVIDERS,
   type CurriculumBreadcrumb,
@@ -5030,25 +5031,35 @@ bridgeCommand
         });
       }
 
+      const generationChunks = chunks.filter((chunk) => chunk.text.trim());
+      const textProvider = await getProviderForRole(db, "text");
+      const generatedChunks = await mapWithConcurrency(
+        generationChunks,
+        textProvider.local ? 1 : 3,
+        async (chunk) => ({
+          chunk,
+          cards: await importCurriculumViaLLM(
+            db,
+            chunk.text,
+            opts.domain,
+            item.uri,
+            { knowledgeContext: firstContext },
+          ),
+        }),
+      );
+
       let proposalIndex = 0;
-      for (const chunk of chunks) {
-        if (!chunk.text.trim()) continue;
-
-        const cards = await importCurriculumViaLLM(
-          db,
-          chunk.text,
-          opts.domain,
-          item.uri,
-          { knowledgeContext: firstContext },
-        );
-
+      for (const { chunk, cards } of generatedChunks) {
         const scopedTopicId = chunk.subTopicId
           ? `${resolved.topicId}@${chunk.subTopicId}`
           : resolved.topicId;
 
         for (const card of cards) {
+          const targetDomain =
+            (typeof opts.domain === "string" ? opts.domain.trim() : "") ||
+            card.domain;
           const slug = proposalBaseSlug(
-            card.domain,
+            targetDomain.split("/")[0] || targetDomain,
             card.question,
             card.concept,
           );
@@ -5059,7 +5070,7 @@ bridgeCommand
           const proposal = {
             question: card.question,
             concept: card.concept,
-            domain: card.domain,
+            domain: targetDomain,
             bloom_level: card.bloom_level,
             symbiosis_mode: card.symbiosis_mode || "none",
             excerpt: card.context || "",
@@ -5078,7 +5089,7 @@ bridgeCommand
             symbiosis_mode: proposal.symbiosis_mode,
             excerpt: proposal.excerpt,
             isExisting: false,
-            selected: false,
+            selected: true,
             subTopicId: chunk.subTopicId,
             parentTopicId: resolved.topicId,
             proposal,
