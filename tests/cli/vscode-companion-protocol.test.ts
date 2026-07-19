@@ -6,6 +6,7 @@ import {
   type UiIntentApp,
   writeUiIntent,
 } from "../../src/cli/ui-intent.js";
+import { createLatestTaskQueue } from "../../src/vscode-extension/latest-task-queue.js";
 import {
   buildOpeningArguments,
   COMPANION_APPS,
@@ -100,6 +101,40 @@ describe("VS Code companion protocol", () => {
     // The reader records its focused article so chat agents can resolve
     // "import this okf" — the write tool must be reachable from the panel.
     expect(COMPANION_APPS.okf.allowedTools.has("zam_okf_focus")).toBe(true);
+  });
+
+  it("serializes overlapping app mounts so the latest request wins", async () => {
+    let markRecallStarted: () => void = () => {};
+    let releaseRecall: () => void = () => {};
+    const recallStarted = new Promise<void>((resolve) => {
+      markRecallStarted = resolve;
+    });
+    const recallGate = new Promise<void>((resolve) => {
+      releaseRecall = resolve;
+    });
+    const events: string[] = [];
+    const render = createLatestTaskQueue(async (app: "recall" | "okf") => {
+      events.push(`${app}:start`);
+      if (app === "recall") {
+        markRecallStarted();
+        await recallGate;
+      }
+      events.push(`${app}:mounted`);
+    });
+
+    const recall = render("recall");
+    await recallStarted;
+    const okf = render("okf");
+    releaseRecall();
+    await Promise.all([recall, okf]);
+
+    expect(events).toEqual([
+      "recall:start",
+      "recall:mounted",
+      "okf:start",
+      "okf:mounted",
+    ]);
+    expect(events.at(-1)).toBe("okf:mounted");
   });
 
   // Regression guard for the 0.13.0 gap: `zam_okf_visualize` published a UI

@@ -7,6 +7,7 @@ import {
   type Database,
   evaluateRating,
   getCard,
+  getPrerequisites,
   getTokenBySlug,
   openDatabase,
 } from "../../src/kernel/index.js";
@@ -152,6 +153,35 @@ describe("importOkfTokens (ADR 2026-07-18)", () => {
     expect(cardAfter?.state).not.toBe("new");
   });
 
+  it("update reconciles the prerequisite set and can clear it", async () => {
+    await importSample([
+      { slug: "first-concept", concept: "Foundation." },
+      {
+        slug: "second-concept",
+        concept: "Initially dependent.",
+        prerequisites: ["first-concept"],
+      },
+    ]);
+
+    await importSample([
+      {
+        slug: "first-concept",
+        concept: "Foundation refreshed.",
+        mode: "update",
+      },
+      {
+        slug: "second-concept",
+        concept: "Now independent.",
+        mode: "update",
+        prerequisites: [],
+      },
+    ]);
+
+    const second = await getTokenBySlug(db, "second-concept");
+    if (!second) throw new Error("token missing");
+    expect(await getPrerequisites(db, second.id)).toEqual([]);
+  });
+
   it("replace refreshes content and resets learning state to the beginning", async () => {
     await importSample([{ slug: "first-concept", concept: "Old meaning." }]);
     const token = await getTokenBySlug(db, "first-concept");
@@ -239,7 +269,13 @@ describe("importOkfTokens (ADR 2026-07-18)", () => {
     ).rejects.toThrow(/cycle/i);
     // Rolled back: alpha's concept unchanged.
     const alpha = await getTokenBySlug(db, "alpha");
+    const beta = await getTokenBySlug(db, "beta");
+    if (!alpha || !beta) throw new Error("tokens missing");
     expect(alpha?.concept).toBe("A.");
+    expect(await getPrerequisites(db, alpha.id)).toEqual([]);
+    expect(
+      (await getPrerequisites(db, beta.id)).map((edge) => edge.requires_id),
+    ).toEqual([alpha.id]);
   });
 
   it("rejects an unknown article and an empty token list", async () => {

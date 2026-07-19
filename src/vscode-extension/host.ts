@@ -9,6 +9,7 @@ import type {
   CreateMessageResult,
   Tool,
 } from "@modelcontextprotocol/sdk/types.js";
+import { createLatestTaskQueue } from "./latest-task-queue.js";
 
 declare function acquireVsCodeApi(): {
   postMessage(message: unknown): void;
@@ -159,30 +160,46 @@ async function mount(payload: BootstrapPayload): Promise<void> {
   frame.src = activeBlobUrl;
 }
 
+type RenderRequest =
+  | { type: "bootstrap"; payload: BootstrapPayload }
+  | { type: "empty"; message: string };
+
+const renderLatest = createLatestTaskQueue<RenderRequest>(async (render) => {
+  if (render.type === "bootstrap") {
+    await mount(render.payload);
+    return;
+  }
+  await teardownActiveBridge();
+  status.textContent = render.message;
+});
+
+function reportRenderError(error: unknown): void {
+  const message = error instanceof Error ? error.message : String(error);
+  status.textContent = `MCP App konnte nicht gestartet werden: ${message}`;
+  void request("status", { phase: "error", message }).catch(() => {});
+}
+
 window.addEventListener("message", (event: MessageEvent<unknown>) => {
   const message = event.data;
   if (!message || typeof message !== "object") return;
   const value = message as Record<string, unknown>;
 
   if (value.type === "bootstrap") {
-    void mount(value.payload as BootstrapPayload).catch((error) => {
-      status.textContent = `MCP App konnte nicht gestartet werden: ${
-        error instanceof Error ? error.message : String(error)
-      }`;
-      void request("status", {
-        phase: "error",
-        message: error instanceof Error ? error.message : String(error),
-      }).catch(() => {});
-    });
+    void renderLatest({
+      type: "bootstrap",
+      payload: value.payload as BootstrapPayload,
+    }).catch(reportRenderError);
     return;
   }
 
   if (value.type === "empty") {
-    void teardownActiveBridge();
-    status.textContent =
-      typeof value.message === "string"
-        ? value.message
-        : "ZAM wartet auf eine Auswahl im Agent-Chat.";
+    void renderLatest({
+      type: "empty",
+      message:
+        typeof value.message === "string"
+          ? value.message
+          : "ZAM wartet auf eine Auswahl im Agent-Chat.",
+    }).catch(reportRenderError);
     return;
   }
 

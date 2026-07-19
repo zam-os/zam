@@ -117,6 +117,21 @@ export async function addPrerequisite(
 }
 
 /**
+ * Remove one prerequisite edge. Idempotent when the edge does not exist.
+ * Callers that reconcile several edges should wrap the full change in one
+ * Database transaction so a later validation failure restores the old graph.
+ */
+export async function removePrerequisite(
+  db: Database,
+  tokenId: string,
+  requiresId: string,
+): Promise<void> {
+  await db
+    .prepare("DELETE FROM prerequisites WHERE token_id = ? AND requires_id = ?")
+    .run(tokenId, requiresId);
+}
+
+/**
  * Get the direct prerequisites of a token — "what does token X require?"
  *
  * Returns prerequisite rows joined with the required token's details.
