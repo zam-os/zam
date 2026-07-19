@@ -74,3 +74,6 @@ observer/target/
 
 # agent orchestration scratch
 .superpowers/
+
+# Curriculum capture intermediates (re-run scripts/capture-*.ts)
+scripts/.cache/
