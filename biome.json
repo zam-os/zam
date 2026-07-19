@@ -27,6 +27,8 @@
     }
   },
   "files": {
-    "includes": ["**", "!**/dist/**", "!**/PoC/**", "!**/fixtures/**"]
+    "includes": ["**", "!**/dist/**", "!**/PoC/**", "!**/fixtures/**"],
+    "maxSize": 3145728
   }
 }
+

@@ -30,8 +30,8 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     ]);
   });
 
-  it("returns no grades for an uncurated school type", () => {
-    expect(provider.listGrades("foerderschule")).toEqual([]);
+  it("returns no grades for an unknown school type", () => {
+    expect(provider.listGrades("does-not-exist")).toEqual([]);
   });
 
   it("lists the full Realschule subject catalog, including Mathematik", () => {
@@ -420,5 +420,124 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
       }),
     ).toEqual([]);
     expect(provider.listTracks("bos", "12", "deutsch")).toEqual([]);
+  });
+
+  // --- Grundschule / Mittelschule / Förderschule (captured 2026-07-19) ---
+
+  it("lists Grundschule grades 2 through 4", () => {
+    expect(provider.listGrades("grundschule").map((g) => g.id)).toEqual([
+      "2",
+      "3",
+      "4",
+    ]);
+  });
+
+  it("lists Mittelschule grades 5 through 10", () => {
+    expect(provider.listGrades("mittelschule").map((g) => g.id)).toEqual([
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+    ]);
+  });
+
+  it("lists Förderschule grades 2 through 12", () => {
+    expect(provider.listGrades("foerderschule").map((g) => g.id)).toEqual([
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+    ]);
+  });
+
+  it("lists Grundschule Deutsch 2 Lernbereiche without a track", () => {
+    const topics = provider.listTopics({
+      schoolType: "grundschule",
+      grade: "2",
+      subject: "deutsch",
+    });
+    expect(topics.map((t) => t.label)).toEqual([
+      "Sprechen und Zuhören",
+      "Lesen – mit Texten und weiteren Medien umgehen",
+      "Schreiben",
+      "Sprachgebrauch und Sprache untersuchen und reflektieren",
+    ]);
+  });
+
+  it("lists Grundschule Englisch 3 einstündig/zweistündig tracks", () => {
+    const tracks = provider.listTracks("grundschule", "3", "englisch");
+    expect(tracks.map((t) => t.id).sort()).toEqual([
+      "einstündig",
+      "zweistuendig",
+    ]);
+    const topics = provider.listTopics({
+      schoolType: "grundschule",
+      grade: "3",
+      subject: "englisch",
+      track: "einstündig",
+    });
+    expect(topics.length).toBeGreaterThan(0);
+  });
+
+  it("lists Mittelschule Mathematik 8 Regelklasse and M-Zug tracks", () => {
+    const tracks = provider.listTracks("mittelschule", "8", "mathematik");
+    expect(tracks.map((t) => t.id).sort()).toEqual([
+      "mittlere-reife-klasse",
+      "regelklasse",
+    ]);
+    const topics = provider.listTopics({
+      schoolType: "mittelschule",
+      grade: "8",
+      subject: "mathematik",
+      track: "regelklasse",
+    });
+    expect(topics.length).toBeGreaterThan(0);
+  });
+
+  it("lists Förderschule Mathematik 7 Förderschwerpunkt tracks including Lernen", () => {
+    const tracks = provider.listTracks("foerderschule", "7", "mathematik");
+    expect(tracks.map((t) => t.id)).toEqual(
+      expect.arrayContaining([
+        "lernen",
+        "sehen",
+        "hoeren",
+        "geistige-entwicklung",
+      ]),
+    );
+  });
+
+  it("lists Förderschule Mathematik 7 (Lernen) Lernbereiche", () => {
+    const topics = provider.listTopics({
+      schoolType: "foerderschule",
+      grade: "7",
+      subject: "mathematik",
+      track: "lernen",
+    });
+    expect(topics.length).toBeGreaterThanOrEqual(4);
+    expect(topics.map((t) => t.label)).toEqual(
+      expect.arrayContaining(["Zahlen und Operationen", "Raum und Form"]),
+    );
+  });
+
+  it("resolves a Förderschule topic to a Förderschwerpunkt URL", () => {
+    const [topic] = provider.listTopics({
+      schoolType: "foerderschule",
+      grade: "7",
+      subject: "mathematik",
+      track: "lernen",
+    });
+    const resolved = provider.resolveTopic(topic);
+    expect(resolved.provider).toBe("lehrplanplus-bayern");
+    expect(resolved.uri).toContain("foerderschule");
+    expect(resolved.uri).toContain("w_foerderschwerpunkt=lernen");
   });
 });

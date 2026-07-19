@@ -1,6 +1,9 @@
 import { LEHRPLANPLUS_BAYERN_MANIFEST as M } from "../src/cli/curriculum/providers/lehrplanplus-bayern/manifest.ts";
 
 type SchoolTypeId =
+  | "grundschule"
+  | "mittelschule"
+  | "foerderschule"
   | "realschule"
   | "gymnasium"
   | "wirtschaftsschule"
@@ -73,6 +76,19 @@ function extractTopics(html: string): Array<{ label: string; hours?: number }> {
 
 /** Common Ausprägung ids to try when the base page is empty. */
 const TRACK_CANDIDATES_BY_SCHOOL: Record<string, readonly string[]> = {
+  grundschule: ["einst", "zweistuendig"],
+  mittelschule: ["regelklasse", "mittlere-reife-klasse", "m-zug", "regel"],
+  foerderschule: [
+    "regelklasse",
+    "mittlere-reife-klasse",
+    "lernen",
+    "geistige-entwicklung",
+    "sehen",
+    "hoeren",
+    "koerperliche-motorische-entwicklung",
+    "sprache",
+    "emotionale-soziale-entwicklung",
+  ],
   realschule: ["wpfg1", "wpfg2-3", "basis_sport", "diff_sport"],
   gymnasium: ["grundlegend", "erhoeht", "basissport", "sporttheorie"],
   wirtschaftsschule: [

@@ -1,6 +1,9 @@
 import { LEHRPLANPLUS_BAYERN_MANIFEST as M } from "../src/cli/curriculum/providers/lehrplanplus-bayern/manifest.ts";
 
 type SchoolTypeId =
+  | "grundschule"
+  | "mittelschule"
+  | "foerderschule"
   | "realschule"
   | "gymnasium"
   | "wirtschaftsschule"
@@ -46,6 +49,9 @@ function auditSchoolType(schoolType: SchoolTypeId): {
 }
 
 const schoolTypes: SchoolTypeId[] = [
+  "grundschule",
+  "mittelschule",
+  "foerderschule",
   "realschule",
   "gymnasium",
   "wirtschaftsschule",
