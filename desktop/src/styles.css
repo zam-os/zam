@@ -2621,6 +2621,16 @@ textarea::placeholder {
   gap: 6px;
 }
 
+.wizard-card-selection-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+  color: var(--clr-text-secondary);
+  font-size: 0.8rem;
+}
+
 .wizard-option-row {
   display: flex;
   align-items: center;

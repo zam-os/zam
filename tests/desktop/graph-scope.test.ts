@@ -41,6 +41,19 @@ describe("graph-scope buildDomainOptions", () => {
     ]);
   });
 
+  it("makes subject and grade selectable for curriculum categories", () => {
+    const options = buildDomainOptions([
+      { domain: "Mathematik/9/Kreis" },
+      { domain: "Mathematik/9/Geometrie" },
+    ]);
+    expect(options).toEqual([
+      { value: "Mathematik", isGroup: true },
+      { value: "Mathematik/9", isGroup: true },
+      { value: "Mathematik/9/Geometrie", isGroup: false },
+      { value: "Mathematik/9/Kreis", isGroup: false },
+    ]);
+  });
+
   it("does not mark a prefix as group when a token carries it verbatim", () => {
     const options = buildDomainOptions([
       { domain: "company-team" },

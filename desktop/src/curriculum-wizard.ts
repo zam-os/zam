@@ -12,10 +12,15 @@
  * text extraction is Phase 3. The topic step tells the learner this.
  */
 import { runBridge } from "./bridge-transport.js";
-import { CurriculumWizardSession } from "./curriculum-wizard-session.js";
+import {
+  areAllCurriculumPreviewItemsSelected,
+  buildCurriculumCategoryPath,
+  CurriculumWizardSession,
+  resetCurriculumWizardTransientUi,
+  setCurriculumPreviewSelection,
+} from "./curriculum-wizard-session.js";
 import { t, tf } from "./i18n.js";
-import { escapeHtml } from "./learning-content.js";
-import { loadStudioData } from "./learning-content.js";
+import { escapeHtml, loadStudioData } from "./learning-content.js";
 
 interface TaxonomyOption {
   id: string;
@@ -28,7 +33,6 @@ interface TaxonomyOption {
 /** Per-topic LLM preview — must exceed CLI bridge hard timeout (10 min local). */
 const LOCAL_LLM_PREVIEW_TIMEOUT_MS = 660_000;
 const CLOUD_LLM_PREVIEW_TIMEOUT_MS = 240_000;
-
 
 interface CurriculumProviderInfo {
   id: string;
@@ -118,6 +122,9 @@ interface WizardStep {
 let importTopicQueue: TaxonomyOption[] = [];
 let importTopicIndex = 0;
 const wizardSession = new CurriculumWizardSession();
+let importProgressTimer: ReturnType<typeof setInterval> | undefined;
+let importProgressBaseDetail = "";
+let importProgressStartedAt = 0;
 
 // DOM cache
 let overlay: HTMLElement;
@@ -143,7 +150,13 @@ let btnOpen: HTMLButtonElement;
 let providers: CurriculumProviderInfo[] = [];
 let history: WizardStep[] = [];
 let chosenCountry: string | undefined;
-let selection: { providerId?: string; schoolType?: string; grade?: string; subject?: string; track?: string } = {};
+let selection: {
+  providerId?: string;
+  schoolType?: string;
+  grade?: string;
+  subject?: string;
+  track?: string;
+} = {};
 
 export function initCurriculumWizard(): void {
   overlay = document.getElementById("curriculum-wizard-modal-overlay")!;
@@ -197,6 +210,7 @@ function isWizardStale(generation: number): boolean {
 
 async function showCurriculumWizard(): Promise<void> {
   wizardSession.begin();
+  resetTransientUi();
   history = [];
   chosenCountry = undefined;
   selection = {};
@@ -208,7 +222,9 @@ async function showCurriculumWizard(): Promise<void> {
   showLoading(true);
 
   try {
-    const wizardCtxSelect = document.getElementById("wizard-context-select") as HTMLSelectElement;
+    const wizardCtxSelect = document.getElementById(
+      "wizard-context-select",
+    ) as HTMLSelectElement;
     if (wizardCtxSelect) {
       try {
         const activeRes = await runBridge<any>("get-active-knowledge-context");
@@ -243,7 +259,10 @@ async function showCurriculumWizard(): Promise<void> {
       breadcrumb: CurriculumBreadcrumb | null;
     }>("curriculum-get-last-selection");
 
-    if (lastRes.breadcrumb && providers.some((p) => p.id === lastRes.breadcrumb!.providerId)) {
+    if (
+      lastRes.breadcrumb &&
+      providers.some((p) => p.id === lastRes.breadcrumb!.providerId)
+    ) {
       await showResumeOffer(lastRes.breadcrumb);
     } else {
       await advanceToNextStep();
@@ -258,6 +277,7 @@ async function showCurriculumWizard(): Promise<void> {
 
 function hideCurriculumWizard(): void {
   wizardSession.invalidate();
+  resetTransientUi();
   importTopicQueue = [];
   importTopicIndex = 0;
   overlay.classList.remove("active");
@@ -265,15 +285,19 @@ function hideCurriculumWizard(): void {
 
 // ── Resume banner ────────────────────────────────────────────────────────
 
-async function showResumeOffer(breadcrumb: CurriculumBreadcrumb): Promise<void> {
+async function showResumeOffer(
+  breadcrumb: CurriculumBreadcrumb,
+): Promise<void> {
   const provider = providers.find((p) => p.id === breadcrumb.providerId)!;
   const labels: string[] = [provider.countryLabel, provider.regionLabel];
 
   chosenCountry = provider.country;
   const preview: { key: StepKey; id: string }[] = [];
-  if (breadcrumb.schoolType) preview.push({ key: "schoolType", id: breadcrumb.schoolType });
+  if (breadcrumb.schoolType)
+    preview.push({ key: "schoolType", id: breadcrumb.schoolType });
   if (breadcrumb.grade) preview.push({ key: "grade", id: breadcrumb.grade });
-  if (breadcrumb.subject) preview.push({ key: "subject", id: breadcrumb.subject });
+  if (breadcrumb.subject)
+    preview.push({ key: "subject", id: breadcrumb.subject });
   if (breadcrumb.track) preview.push({ key: "track", id: breadcrumb.track });
 
   let sel: typeof selection = { providerId: provider.id };
@@ -369,7 +393,8 @@ async function pushConfirmedStep(key: StepKey, id: string): Promise<void> {
 function countryOptions(): TaxonomyOption[] {
   const seen = new Map<string, TaxonomyOption>();
   for (const p of providers) {
-    if (!seen.has(p.country)) seen.set(p.country, { id: p.country, label: p.countryLabel });
+    if (!seen.has(p.country))
+      seen.set(p.country, { id: p.country, label: p.countryLabel });
   }
   return [...seen.values()];
 }
@@ -413,7 +438,9 @@ function applySelectionValue(key: StepKey, id: string): void {
     return;
   }
   if (key === "region") {
-    const provider = providers.find((p) => p.country === chosenCountry && p.region === id);
+    const provider = providers.find(
+      (p) => p.country === chosenCountry && p.region === id,
+    );
     selection.providerId = provider?.id;
     return;
   }
@@ -440,7 +467,8 @@ async function advanceToNextStep(): Promise<void> {
       key = nextKeyAfter(key);
       continue;
     }
-    const preselect = key !== "topic" && options.length === 1 ? [options[0].id] : [];
+    const preselect =
+      key !== "topic" && options.length === 1 ? [options[0].id] : [];
     if (preselect.length) applySelectionValue(key, preselect[0]);
     history.push({
       key,
@@ -580,7 +608,9 @@ function renderBreadcrumb(): void {
   breadcrumbEl.innerHTML = history
     .filter((step) => step.key !== "topic" && step.selectedIds.length > 0)
     .map((step) => {
-      const label = step.options.find((o) => o.id === step.selectedIds[0])?.label ?? step.selectedIds[0];
+      const label =
+        step.options.find((o) => o.id === step.selectedIds[0])?.label ??
+        step.selectedIds[0];
       return `<span class="wizard-breadcrumb-chip">${escapeHtml(label)}</span>`;
     })
     .join("");
@@ -596,7 +626,9 @@ function renderStepBody(step: WizardStep): void {
     const note = document.createElement("p");
     note.className = "wizard-topic-note";
     note.style.marginBottom = "10px";
-    note.textContent = tf("wizard_subtopic_note", { topic: step.topicOption.label });
+    note.textContent = tf("wizard_subtopic_note", {
+      topic: step.topicOption.label,
+    });
     stepBodyEl.appendChild(note);
   }
   if (step.options.length === 0) {
@@ -673,14 +705,20 @@ function settingsAiPathLabel(): string {
 function formatImportError(err: unknown, localLlm: boolean): string {
   const base = describeError(err);
   if (isTextLlmOfflineError(base)) {
-    return `${t("wizard_import_text_llm_offline")}\n\n${tf("wizard_import_text_llm_hint", {
-      settingsPath: settingsAiPathLabel(),
-    })}`;
+    return `${t("wizard_import_text_llm_offline")}\n\n${tf(
+      "wizard_import_text_llm_hint",
+      {
+        settingsPath: settingsAiPathLabel(),
+      },
+    )}`;
   }
   if (localLlm && isLlmTimeoutError(base)) {
-    return `${t("wizard_import_llm_timeout_local")}\n\n${tf("wizard_import_cloud_hint", {
-      settingsPath: settingsAiPathLabel(),
-    })}`;
+    return `${t("wizard_import_llm_timeout_local")}\n\n${tf(
+      "wizard_import_cloud_hint",
+      {
+        settingsPath: settingsAiPathLabel(),
+      },
+    )}`;
   }
   return base;
 }
@@ -706,13 +744,76 @@ async function assertTextLlmReady(): Promise<void> {
 function setImportProgress(status: string, detail?: string): void {
   progressStatusEl.textContent = status;
   if (detail !== undefined) {
-    progressDetailEl.textContent = detail;
+    importProgressBaseDetail = detail;
   }
+  renderImportProgressDetail();
+}
+
+function renderImportProgressDetail(): void {
+  if (!importProgressStartedAt) {
+    progressDetailEl.textContent = importProgressBaseDetail;
+    return;
+  }
+
+  const elapsedSeconds = Math.max(
+    0,
+    Math.floor((Date.now() - importProgressStartedAt) / 1000),
+  );
+  const minutes = Math.floor(elapsedSeconds / 60);
+  const seconds = elapsedSeconds % 60;
+  const elapsed = minutes
+    ? `${minutes}m ${String(seconds).padStart(2, "0")}s`
+    : `${seconds}s`;
+  const elapsedLabel = tf("wizard_import_elapsed", { elapsed });
+  progressDetailEl.textContent = importProgressBaseDetail
+    ? `${importProgressBaseDetail} · ${elapsedLabel}`
+    : elapsedLabel;
+}
+
+function startImportProgressTimer(): () => void {
+  stopImportProgressTimer();
+  importProgressStartedAt = Date.now();
+  renderImportProgressDetail();
+  const timer = setInterval(renderImportProgressDetail, 1_000);
+  importProgressTimer = timer;
+
+  return () => {
+    if (importProgressTimer !== timer) return;
+    clearInterval(timer);
+    importProgressTimer = undefined;
+    importProgressStartedAt = 0;
+  };
+}
+
+function stopImportProgressTimer(): void {
+  if (importProgressTimer) clearInterval(importProgressTimer);
+  importProgressTimer = undefined;
+  importProgressStartedAt = 0;
+}
+
+function resetTransientUi(): void {
+  stopImportProgressTimer();
+  importProgressBaseDetail = t("lbl_curriculum_wizard_progress_detail");
+  resetCurriculumWizardTransientUi({
+    buttons: [btnNext, btnBack, btnCancel],
+    progressContainer,
+    stepBody: stepBodyEl,
+  });
+  breadcrumbEl.innerHTML = "";
+  stepLabelEl.textContent = t("wizard_step_country");
+  topicNoteEl.classList.add("hidden");
+  btnNext.textContent = t("wizard_btn_next");
+  setImportProgress(
+    t("lbl_curriculum_wizard_progress_status"),
+    importProgressBaseDetail,
+  );
 }
 
 async function isLocalLlm(): Promise<boolean> {
   try {
-    const settings = await runBridge<{ llm?: { url?: string } }>("get-settings");
+    const settings = await runBridge<{ llm?: { url?: string } }>(
+      "get-settings",
+    );
     const url = settings?.llm?.url ?? "";
     return /localhost|127\.0\.0\.1/i.test(url);
   } catch {
@@ -752,6 +853,26 @@ function subjectLabel(): string {
     selection.subject ??
     ""
   );
+}
+
+function selectedStepLabel(
+  key: StepKey,
+  selectedId: string | undefined,
+): string {
+  if (!selectedId) return "";
+  return (
+    history
+      .find((step) => step.key === key)
+      ?.options.find((option) => option.id === selectedId)?.label ?? selectedId
+  );
+}
+
+function curriculumCategory(topic: TaxonomyOption): string {
+  return buildCurriculumCategoryPath({
+    subject: subjectLabel(),
+    grade: selectedStepLabel("grade", selection.grade),
+    topic: topic.label,
+  });
 }
 
 function selectedKnowledgeContext(): string {
@@ -814,6 +935,7 @@ async function beginNextTopicImport(): Promise<void> {
     tf("wizard_import_listing_subtopics", { topic: topic.label }),
     "",
   );
+  const stopProgressTimer = startImportProgressTimer();
 
   try {
     const subRes = await runBridge<{
@@ -855,6 +977,7 @@ async function beginNextTopicImport(): Promise<void> {
     };
     await loadCardPreview(syntheticStep, { pushHistory: true, generation });
   } finally {
+    stopProgressTimer();
     if (!isWizardStale(generation)) {
       btnNext.disabled = false;
       btnBack.disabled = false;
@@ -878,6 +1001,14 @@ async function loadMultiTopicCardPreview(
   hideStepError();
   progressContainer.classList.remove("hidden");
   stepBodyEl.classList.add("hidden");
+  setImportProgress(
+    tf("wizard_import_previewing", { topic: topics[0]?.label ?? "" }),
+    tf("wizard_import_step", {
+      current: "1",
+      total: String(topics.length),
+    }),
+  );
+  const stopProgressTimer = startImportProgressTimer();
 
   try {
     await assertTextLlmReady();
@@ -916,7 +1047,7 @@ async function loadMultiTopicCardPreview(
         "--topic",
         JSON.stringify(topicNodeFromOption(topic)),
         "--domain",
-        subjectLabel(),
+        curriculumCategory(topic),
       ];
       if (ctx) previewArgs.push("--knowledge-context", ctx);
       if (subTopicIds.length > 0) {
@@ -934,6 +1065,8 @@ async function loadMultiTopicCardPreview(
       if (!previewRes.success || !Array.isArray(previewRes.items)) {
         throw new Error(`Card preview failed for ${topic.label}.`);
       }
+
+      setCurriculumPreviewSelection(previewRes.items, true);
 
       batches.push({
         sourceId: previewRes.sourceId,
@@ -969,6 +1102,7 @@ async function loadMultiTopicCardPreview(
       throw new Error(formatImportError(err, localLlm));
     }
   } finally {
+    stopProgressTimer();
     if (!isWizardStale(generation)) {
       btnNext.disabled = false;
       btnBack.disabled = false;
@@ -1000,10 +1134,9 @@ async function loadCardPreview(
   stepBodyEl.classList.add("hidden");
   setImportProgress(
     tf("wizard_import_previewing", { topic: topic.label }),
-    localLlm
-      ? t("lbl_curriculum_wizard_progress_detail_local")
-      : t("lbl_curriculum_wizard_progress_detail"),
+    t("lbl_curriculum_wizard_progress_detail"),
   );
+  const stopProgressTimer = startImportProgressTimer();
 
   try {
     await assertTextLlmReady();
@@ -1014,7 +1147,7 @@ async function loadCardPreview(
       "--topic",
       JSON.stringify(topicNodeFromOption(topic)),
       "--domain",
-      subjectLabel(),
+      curriculumCategory(topic),
     ];
     const ctx = selectedKnowledgeContext();
     if (ctx) {
@@ -1036,6 +1169,8 @@ async function loadCardPreview(
     if (!previewRes.success || !Array.isArray(previewRes.items)) {
       throw new Error(`Card preview failed for ${topic.label}.`);
     }
+
+    setCurriculumPreviewSelection(previewRes.items, true);
 
     if (opts?.pushHistory && subTopicStep.options.length > 1) {
       history.push(subTopicStep);
@@ -1061,6 +1196,7 @@ async function loadCardPreview(
       throw new Error(formatImportError(err, localLlm));
     }
   } finally {
+    stopProgressTimer();
     if (!isWizardStale(generation)) {
       btnNext.disabled = false;
       btnBack.disabled = false;
@@ -1085,11 +1221,38 @@ function renderCardPreviewBody(step: WizardStep): void {
     return;
   }
 
+  const selectionActions = document.createElement("div");
+  selectionActions.className = "wizard-card-selection-actions";
+  const selectionCount = document.createElement("span");
+  const selectedCount = items.filter((item) => item.selected).length;
+  selectionCount.textContent = tf("wizard_card_selection_count", {
+    selected: String(selectedCount),
+    total: String(items.length),
+  });
+  const toggleAllButton = document.createElement("button");
+  toggleAllButton.type = "button";
+  toggleAllButton.className = "btn secondary-btn btn-xs";
+  const allSelected = areAllCurriculumPreviewItemsSelected(items);
+  toggleAllButton.textContent = allSelected
+    ? t("wizard_btn_deselect_all_cards")
+    : t("wizard_btn_select_all_cards");
+  toggleAllButton.addEventListener("click", () => {
+    setCurriculumPreviewSelection(items, !allSelected);
+    hideStepError();
+    renderStepBody(step);
+  });
+  selectionActions.append(selectionCount, toggleAllButton);
+  stepBodyEl.appendChild(selectionActions);
+
   const showTopicHeaders = (step.previewBatches?.length ?? 0) > 1;
   let lastTopicLabel = "";
 
   for (const item of items) {
-    if (showTopicHeaders && item.topicLabel && item.topicLabel !== lastTopicLabel) {
+    if (
+      showTopicHeaders &&
+      item.topicLabel &&
+      item.topicLabel !== lastTopicLabel
+    ) {
       lastTopicLabel = item.topicLabel;
       const heading = document.createElement("p");
       heading.className = "wizard-topic-note";
@@ -1099,8 +1262,7 @@ function renderCardPreviewBody(step: WizardStep): void {
     }
 
     const row = document.createElement("div");
-    row.className =
-      "wizard-option-row" + (item.selected ? " selected" : "");
+    row.className = "wizard-option-row" + (item.selected ? " selected" : "");
     const title = item.question.trim() || item.concept;
     const badge = item.isExisting
       ? `<span class="wizard-option-hint">${escapeHtml(t("wizard_card_existing_badge"))}</span>`
@@ -1194,7 +1356,14 @@ async function confirmCardPreview(step: WizardStep): Promise<void> {
   btnCancel.disabled = true;
   progressContainer.classList.remove("hidden");
   stepBodyEl.classList.add("hidden");
-  setImportProgress(t("wizard_import_saving"));
+  const selectedCount = (step.previewItems ?? []).filter(
+    (item) => item.selected,
+  ).length;
+  setImportProgress(
+    t("wizard_import_saving"),
+    tf("wizard_import_saving_count", { count: String(selectedCount) }),
+  );
+  const stopProgressTimer = startImportProgressTimer();
 
   const ctx = selectedKnowledgeContext();
   const confirmArgs: string[] = [];
@@ -1251,6 +1420,7 @@ async function confirmCardPreview(step: WizardStep): Promise<void> {
         ensuredCount: String(result.ensuredCount),
         removedCount: String(result.removedCount),
       }),
+      "",
     );
     await loadStudioData();
     await new Promise((resolve) => setTimeout(resolve, 2500));
@@ -1258,6 +1428,7 @@ async function confirmCardPreview(step: WizardStep): Promise<void> {
       hideCurriculumWizard();
     }
   } finally {
+    stopProgressTimer();
     if (!isWizardStale(generation)) {
       stepBodyEl.classList.remove("hidden");
       btnNext.disabled = false;

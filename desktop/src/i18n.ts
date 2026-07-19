@@ -365,6 +365,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_status_unprobed: "Sin comprobar",
     wizard_btn_confirm_import: "Guardar selección",
     wizard_btn_preview_cards: "Vista previa de tarjetas",
+    wizard_btn_select_all_cards: "Seleccionar todas",
+    wizard_btn_deselect_all_cards: "Deseleccionar todas",
+    wizard_card_selection_count: "{selected} de {total} seleccionadas",
     wizard_card_existing_badge: "importada",
     wizard_card_new_badge: "nueva",
     wizard_card_preview_empty: "No se encontraron tarjetas para este tema.",
@@ -375,6 +378,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "Se guardaron {createdCount} tarjetas nuevas y {ensuredCount} existentes. Se quitaron {removedCount} tarjeta(s) de tu cola.",
     wizard_import_listing_subtopics: "Cargando unidades: {topic}",
     wizard_import_previewing: "Generando vista previa de tarjetas: {topic}",
+    wizard_import_elapsed: "Transcurrido: {elapsed}",
     wizard_import_text_llm_hint:
       "Abre {settingsPath}, asegúrate de que el modelo de texto aparezca listo y vuelve a intentarlo.",
     wizard_import_text_llm_offline:
@@ -480,9 +484,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_hours: "{hours} h",
     lbl_curriculum_wizard_progress_status: "Importando…",
     lbl_curriculum_wizard_progress_detail:
-      "Puede tardar un minuto según la velocidad de la IA.",
+      "La generación de tarjetas puede tardar varios minutos por tema; el progreso se actualiza continuamente abajo.",
     lbl_curriculum_wizard_progress_detail_local:
-      "La IA local puede tardar varios minutos por tema — el progreso aparece abajo.",
+      "La generación de tarjetas puede tardar varios minutos por tema; el progreso se actualiza continuamente abajo.",
     wizard_import_extracting: "Extrayendo texto del plan de estudios…",
     wizard_import_generating: "Generando tarjetas: {topic}",
     wizard_import_step: "Tema {current} de {total}",
@@ -947,6 +951,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_status_unprobed: "Pas encore vérifié",
     wizard_btn_confirm_import: "Enregistrer la sélection",
     wizard_btn_preview_cards: "Aperçu des cartes",
+    wizard_btn_select_all_cards: "Tout sélectionner",
+    wizard_btn_deselect_all_cards: "Tout désélectionner",
+    wizard_card_selection_count: "{selected} sur {total} sélectionnées",
     wizard_card_existing_badge: "importée",
     wizard_card_new_badge: "nouvelle",
     wizard_card_preview_empty: "Aucune carte trouvée pour ce sujet.",
@@ -957,6 +964,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "{createdCount} nouvelles cartes et {ensuredCount} existantes enregistrées. {removedCount} carte(s) retirée(s) de votre file.",
     wizard_import_listing_subtopics: "Chargement des unités : {topic}",
     wizard_import_previewing: "Génération de l'aperçu des cartes : {topic}",
+    wizard_import_elapsed: "Temps écoulé : {elapsed}",
     wizard_import_text_llm_hint:
       "Ouvrez {settingsPath}, vérifiez que le modèle de texte est prêt, puis réessayez.",
     wizard_import_text_llm_offline:
@@ -1064,9 +1072,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_hours: "{hours} h",
     lbl_curriculum_wizard_progress_status: "Importation…",
     lbl_curriculum_wizard_progress_detail:
-      "Cela peut prendre une minute selon la vitesse de l'IA.",
+      "La génération des cartes peut prendre plusieurs minutes par sujet — la progression est actualisée en continu ci-dessous.",
     lbl_curriculum_wizard_progress_detail_local:
-      "L'IA locale peut prendre plusieurs minutes par sujet — la progression s'affiche ci-dessous.",
+      "La génération des cartes peut prendre plusieurs minutes par sujet — la progression est actualisée en continu ci-dessous.",
     wizard_import_extracting: "Extraction du texte du programme…",
     wizard_import_generating: "Génération des cartes : {topic}",
     wizard_import_step: "Sujet {current} sur {total}",
@@ -1529,6 +1537,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_status_unprobed: "Ainda não verificado",
     wizard_btn_confirm_import: "Salvar seleção",
     wizard_btn_preview_cards: "Pré-visualizar cartões",
+    wizard_btn_select_all_cards: "Selecionar tudo",
+    wizard_btn_deselect_all_cards: "Desmarcar tudo",
+    wizard_card_selection_count: "{selected} de {total} selecionados",
     wizard_card_existing_badge: "importado",
     wizard_card_new_badge: "novo",
     wizard_card_preview_empty: "Nenhum cartão encontrado para este tópico.",
@@ -1539,6 +1550,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "Salvos {createdCount} cartões novos e {ensuredCount} existentes. Removido(s) {removedCount} cartão(ões) da sua fila.",
     wizard_import_listing_subtopics: "Carregando unidades: {topic}",
     wizard_import_previewing: "Gerando pré-visualização de cartões: {topic}",
+    wizard_import_elapsed: "Decorrido: {elapsed}",
     wizard_import_text_llm_hint:
       "Abra {settingsPath}, verifique se o modelo de texto está pronto e tente novamente.",
     wizard_import_text_llm_offline:
@@ -1644,9 +1656,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_hours: "{hours} h",
     lbl_curriculum_wizard_progress_status: "Importando…",
     lbl_curriculum_wizard_progress_detail:
-      "Puede tardar un minuto según la velocidad de la IA.",
+      "A geração de cartões pode levar vários minutos por tópico — o progresso é atualizado continuamente abaixo.",
     lbl_curriculum_wizard_progress_detail_local:
-      "La IA local puede tardar varios minutos por tema — el progreso aparece abajo.",
+      "A geração de cartões pode levar vários minutos por tópico — o progresso é atualizado continuamente abaixo.",
     wizard_import_extracting: "Extrayendo texto del plan de estudios…",
     wizard_import_generating: "Generando tarjetas: {topic}",
     wizard_import_step: "Tema {current} de {total}",
@@ -2170,9 +2182,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_curriculum_wizard_loading: "加载中…",
     wizard_hours: "{hours} 小时",
     lbl_curriculum_wizard_progress_status: "正在导入…",
-    lbl_curriculum_wizard_progress_detail: "根据 AI 速度，这可能需要一分钟。",
+    lbl_curriculum_wizard_progress_detail:
+      "每个主题的卡片生成可能需要几分钟——下方会持续更新进度。",
     lbl_curriculum_wizard_progress_detail_local:
-      "本地 AI 每个主题可能需要几分钟——下方显示进度。",
+      "每个主题的卡片生成可能需要几分钟——下方会持续更新进度。",
     wizard_import_extracting: "正在提取课程标准文本…",
     wizard_import_generating: "正在生成卡片：{topic}",
     wizard_import_step: "第 {current} 个主题，共 {total} 个",
@@ -2203,8 +2216,12 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_err_no_subtopics: "请至少选择一个能力单元。",
     wizard_btn_preview_cards: "预览卡片",
     wizard_btn_confirm_import: "保存选择",
+    wizard_btn_select_all_cards: "全选",
+    wizard_btn_deselect_all_cards: "全部取消选择",
+    wizard_card_selection_count: "已选择 {selected}/{total}",
     wizard_import_listing_subtopics: "正在加载单元：{topic}",
     wizard_import_previewing: "正在生成卡片预览：{topic}",
+    wizard_import_elapsed: "已用时：{elapsed}",
     wizard_import_confirm_success:
       "已保存 {createdCount} 张新卡片和 {ensuredCount} 张已有卡片。已从队列中移除 {removedCount} 张卡片。",
     wizard_import_text_llm_offline:
@@ -2724,9 +2741,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_hours: "{hours}時間",
     lbl_curriculum_wizard_progress_status: "インポート中…",
     lbl_curriculum_wizard_progress_detail:
-      "AI の速度により 1 分ほどかかる場合があります。",
+      "カード生成にはトピックごとに数分かかることがあります。進捗は下に継続的に表示されます。",
     lbl_curriculum_wizard_progress_detail_local:
-      "ローカル AI はトピックごとに数分かかることがあります。進捗は下に表示されます。",
+      "カード生成にはトピックごとに数分かかることがあります。進捗は下に継続的に表示されます。",
     wizard_import_extracting: "カリキュラムテキストを取得中…",
     wizard_import_generating: "カードを生成中: {topic}",
     wizard_import_step: "トピック {current}/{total}",
@@ -2760,8 +2777,12 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_err_no_subtopics: "少なくとも1つの能力単元を選択してください。",
     wizard_btn_preview_cards: "カードをプレビュー",
     wizard_btn_confirm_import: "選択を保存",
+    wizard_btn_select_all_cards: "すべて選択",
+    wizard_btn_deselect_all_cards: "すべて選択解除",
+    wizard_card_selection_count: "{total} 枚中 {selected} 枚を選択",
     wizard_import_listing_subtopics: "単元を読み込み中: {topic}",
     wizard_import_previewing: "カードプレビューを生成中: {topic}",
+    wizard_import_elapsed: "経過時間: {elapsed}",
     wizard_import_confirm_success:
       "新規 {createdCount} 枚・既存 {ensuredCount} 枚を保存しました。キューから {removedCount} 枚のカードを削除しました。",
     wizard_import_text_llm_offline:
@@ -3378,9 +3399,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_hours: "{hours} hrs",
     lbl_curriculum_wizard_progress_status: "Importing…",
     lbl_curriculum_wizard_progress_detail:
-      "This may take a minute depending on your AI speed.",
+      "Card generation can take several minutes per topic — progress updates continuously below.",
     lbl_curriculum_wizard_progress_detail_local:
-      "Local AI can take several minutes per topic — progress updates below.",
+      "Card generation can take several minutes per topic — progress updates continuously below.",
     wizard_import_extracting: "Extracting curriculum text…",
     wizard_import_generating: "Generating cards: {topic}",
     wizard_import_step: "Topic {current} of {total}",
@@ -3413,8 +3434,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_err_no_subtopics: "Select at least one competence unit.",
     wizard_btn_preview_cards: "Preview cards",
     wizard_btn_confirm_import: "Save selection",
+    wizard_btn_select_all_cards: "Select all",
+    wizard_btn_deselect_all_cards: "Deselect all",
+    wizard_card_selection_count: "{selected} of {total} selected",
     wizard_import_listing_subtopics: "Loading units: {topic}",
     wizard_import_previewing: "Generating card preview: {topic}",
+    wizard_import_elapsed: "Elapsed: {elapsed}",
     wizard_import_confirm_success:
       "Saved {createdCount} new and {ensuredCount} existing cards. Removed {removedCount} card(s) from your queue.",
     wizard_import_text_llm_offline:
@@ -3966,9 +3991,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_hours: "{hours} Std.",
     lbl_curriculum_wizard_progress_status: "Importiere…",
     lbl_curriculum_wizard_progress_detail:
-      "Das kann je nach KI-Geschwindigkeit eine Minute dauern.",
+      "Die Kartenerzeugung kann pro Thema mehrere Minuten dauern — der Fortschritt wird unten laufend aktualisiert.",
     lbl_curriculum_wizard_progress_detail_local:
-      "Lokale KI kann pro Thema mehrere Minuten brauchen — Fortschritt siehe unten.",
+      "Die Kartenerzeugung kann pro Thema mehrere Minuten dauern — der Fortschritt wird unten laufend aktualisiert.",
     wizard_import_extracting: "Lehrplantext wird geladen…",
     wizard_import_generating: "Karten werden erzeugt: {topic}",
     wizard_import_step: "Thema {current} von {total}",
@@ -4003,8 +4028,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Bitte mindestens einen Kompetenzabschnitt auswählen.",
     wizard_btn_preview_cards: "Karten vorschauen",
     wizard_btn_confirm_import: "Auswahl speichern",
+    wizard_btn_select_all_cards: "Alle auswählen",
+    wizard_btn_deselect_all_cards: "Alle abwählen",
+    wizard_card_selection_count: "{selected} von {total} ausgewählt",
     wizard_import_listing_subtopics: "Lade Abschnitte: {topic}",
     wizard_import_previewing: "Erzeuge Kartenvorschau: {topic}",
+    wizard_import_elapsed: "Vergangen: {elapsed}",
     wizard_import_confirm_success:
       "{createdCount} neue und {ensuredCount} bestehende Karten gespeichert. {removedCount} Karte(n) aus deiner Warteschlange entfernt.",
     wizard_import_text_llm_offline:

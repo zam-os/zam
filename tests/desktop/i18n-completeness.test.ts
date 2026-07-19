@@ -62,6 +62,10 @@ const WIZARD_KEYS = [
   "wizard_import_skipping",
   "wizard_import_all_skipped",
   "wizard_import_skipped_summary",
+  "wizard_btn_select_all_cards",
+  "wizard_btn_deselect_all_cards",
+  "wizard_card_selection_count",
+  "wizard_import_elapsed",
 ] as const;
 
 const DATABASE_SETTINGS_KEYS = [
