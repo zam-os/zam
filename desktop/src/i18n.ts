@@ -3361,6 +3361,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_step_grade: "Grade",
     wizard_step_subject: "Subject",
     wizard_step_track: "Track",
+    wizard_track_note:
+      "This subject comes in several variants — for example depending on your school's branch, elective group, or course level. Pick the one that matches your class; if you are unsure, your timetable or your teacher can tell you which applies.",
     wizard_step_topic: "Topics",
     wizard_btn_back: "Back",
     wizard_btn_next: "Next",
@@ -3947,6 +3949,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_step_grade: "Jahrgangsstufe",
     wizard_step_subject: "Fach",
     wizard_step_track: "Ausprägung",
+    wizard_track_note:
+      "Dieses Fach gibt es in mehreren Varianten – zum Beispiel je nach Zweig, Wahlpflichtfächergruppe oder Niveau. Wähle die Variante, die zu deiner Klasse passt. Wenn du unsicher bist, hilft ein Blick in deinen Stundenplan oder du fragst deine Lehrkraft.",
     wizard_step_topic: "Themen",
     wizard_btn_back: "Zurück",
     wizard_btn_next: "Weiter",

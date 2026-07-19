@@ -20,6 +20,7 @@ import { loadStudioData } from "./learning-content.js";
 interface TaxonomyOption {
   id: string;
   label: string;
+  description?: string;
   hours?: number;
   sourceRef?: string;
 }
@@ -557,7 +558,12 @@ function render(): void {
 
   renderBreadcrumb();
   stepLabelEl.textContent = current.label;
-  topicNoteEl.classList.add("hidden");
+  if (current.key === "track") {
+    topicNoteEl.textContent = t("wizard_track_note");
+    topicNoteEl.classList.remove("hidden");
+  } else {
+    topicNoteEl.classList.add("hidden");
+  }
   renderStepBody(current);
 
   btnBack.disabled = false;
@@ -608,9 +614,12 @@ function renderStepBody(step: WizardStep): void {
     const hint = opt.hours
       ? `<span class="wizard-option-hint">${escapeHtml(tf("wizard_hours", { hours: opt.hours }))}</span>`
       : "";
+    const description = opt.description
+      ? `<span class="wizard-option-desc">${escapeHtml(opt.description)}</span>`
+      : "";
     row.innerHTML =
       `<input type="${step.multiSelect ? "checkbox" : "radio"}" ${isSelected ? "checked" : ""} style="pointer-events: none;" />` +
-      `<span class="wizard-option-label">${escapeHtml(opt.label)}</span>${hint}`;
+      `<span class="wizard-option-text"><span class="wizard-option-label">${escapeHtml(opt.label)}</span>${description}</span>${hint}`;
     row.addEventListener("click", () => selectOption(step, opt.id));
     stepBodyEl.appendChild(row);
   }

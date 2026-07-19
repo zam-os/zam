@@ -1,3 +1,4 @@
+import { withImportableContentOnly } from "./content-filter.js";
 import { bildungsplanBremenProvider } from "./providers/bildungsplan-bremen/index.js";
 import { bildungsplanBwProvider } from "./providers/bildungsplan-bw/index.js";
 import { bildungsplanHamburgProvider } from "./providers/bildungsplan-hamburg/index.js";
@@ -15,7 +16,13 @@ import { rahmenplanMvProvider } from "./providers/rahmenplan-mv/index.js";
 import { rahmenrichtlinienStProvider } from "./providers/rahmenrichtlinien-st/index.js";
 import type { CurriculumProvider, TaxonomyNode } from "./types.js";
 
-/** Registered curriculum providers. Add a new plugin here to extend it. */
+/**
+ * Registered curriculum providers. Add a new plugin here to extend it.
+ *
+ * Every provider is wrapped in `withImportableContentOnly`, so consumers
+ * (bridge, wizard) never see school types, grades, subjects, or tracks that
+ * cannot reach an importable topic.
+ */
 export const CURRICULUM_PROVIDERS: CurriculumProvider[] = [
   lehrplanplusBayernProvider,
   bildungsplanBwProvider,
@@ -32,7 +39,7 @@ export const CURRICULUM_PROVIDERS: CurriculumProvider[] = [
   rahmenrichtlinienStProvider,
   fachanforderungenShProvider,
   lehrplanThueringenProvider,
-];
+].map(withImportableContentOnly);
 
 export function getCurriculumProvider(
   id: string,

@@ -42,9 +42,20 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
   });
 
   it("lists the two Wahlpflichtfächergruppe tracks for Realschule Mathematik 9", () => {
-    expect(provider.listTracks("realschule", "9", "mathematik")).toEqual([
-      { id: "wpfg1", label: "Mathematik 9 (I)" },
-      { id: "wpfg2-3", label: "Mathematik 9 (II/III)" },
+    const tracks = provider.listTracks("realschule", "9", "mathematik");
+    expect(tracks).toEqual([
+      {
+        id: "wpfg1",
+        label: "Mathematik 9 (I)",
+        description: expect.stringContaining("Wahlpflichtfächergruppe I"),
+      },
+      {
+        id: "wpfg2-3",
+        label: "Mathematik 9 (II/III)",
+        description: expect.stringContaining(
+          "Wahlpflichtfächergruppen II und III",
+        ),
+      },
     ]);
   });
 
@@ -136,8 +147,16 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
 
   it("lists Sport 5 tracks and Basissport Lernbereiche", () => {
     expect(provider.listTracks("realschule", "5", "sport")).toEqual([
-      { id: "basis_sport", label: "Basissport 5" },
-      { id: "diff_sport", label: "Differenzierter Sport" },
+      {
+        id: "basis_sport",
+        label: "Basissport 5",
+        description: expect.stringContaining("Basissport"),
+      },
+      {
+        id: "diff_sport",
+        label: "Differenzierter Sport",
+        description: expect.stringContaining("Wahlsport"),
+      },
     ]);
     const topics = provider.listTopics({
       schoolType: "realschule",
@@ -172,8 +191,18 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
 
   it("lists the two Wahlpflichtfächergruppe tracks for Realschule Physik 9", () => {
     expect(provider.listTracks("realschule", "9", "physik")).toEqual([
-      { id: "wpfg1", label: "Physik 9 (I)" },
-      { id: "wpfg2-3", label: "Physik 9 (II/III)" },
+      {
+        id: "wpfg1",
+        label: "Physik 9 (I)",
+        description: expect.stringContaining("Wahlpflichtfächergruppe I"),
+      },
+      {
+        id: "wpfg2-3",
+        label: "Physik 9 (II/III)",
+        description: expect.stringContaining(
+          "Wahlpflichtfächergruppen II und III",
+        ),
+      },
     ]);
   });
 
@@ -539,5 +568,59 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     expect(resolved.provider).toBe("lehrplanplus-bayern");
     expect(resolved.uri).toContain("foerderschule");
     expect(resolved.uri).toContain("w_foerderschwerpunkt=lernen");
+  });
+});
+
+describe("LehrplanPLUS Bayern provider — Ausprägung descriptions", () => {
+  it("explains FOS Ausbildungsrichtung codes, including shared labels", () => {
+    const tracks = provider.listTracks("fos", "12", "mathematik");
+    const technik = tracks.find((track) => track.id === "t");
+    expect(technik?.description).toContain("Technik (T)");
+    const all = tracks.find((track) => track.id === "abu-g-s-w-gh-iw");
+    expect(all?.description).toContain("Ausbildungsrichtungen");
+    expect(all?.description).toContain("Internationale Wirtschaft (IW)");
+  });
+
+  it("explains Gymnasium Oberstufe Anforderungsniveaus", () => {
+    const tracks = provider.listTracks("gymnasium", "12", "biologie");
+    const erhoeht = tracks.find((track) => track.id === "erhoeht");
+    const grundlegend = tracks.find((track) => track.id === "grundlegend");
+    expect(erhoeht?.description).toMatch(/vertieftes Niveau/);
+    expect(grundlegend?.description).toMatch(/Standardniveau/);
+  });
+
+  it("explains Wirtschaftsschule forms by their entry grade", () => {
+    const tracks = provider.listTracks(
+      "wirtschaftsschule",
+      "10",
+      "mathematik",
+    );
+    expect(
+      tracks.find((track) => track.id === "vierstufig")?.description,
+    ).toContain("Jahrgangsstufe 7");
+    expect(
+      tracks.find((track) => track.id === "dreistufig")?.description,
+    ).toContain("Jahrgangsstufe 8");
+    expect(
+      tracks.find((track) => track.id === "zweistufig")?.description,
+    ).toContain("Jahrgangsstufe 10");
+  });
+
+  it("explains Mittelschule Regelklasse and Mittlere-Reife-Zug", () => {
+    const tracks = provider.listTracks("mittelschule", "8", "mathematik");
+    expect(
+      tracks.find((track) => track.id === "regelklasse")?.description,
+    ).toContain("Regelklasse");
+    expect(
+      tracks.find((track) => track.id === "mittlere-reife-klasse")?.description,
+    ).toContain("Mittlere-Reife-Zug");
+  });
+
+  it("leaves self-explanatory Förderschwerpunkt tracks undescribed", () => {
+    const tracks = provider.listTracks("foerderschule", "7", "mathematik");
+    expect(tracks.length).toBeGreaterThan(0);
+    expect(tracks.every((track) => track.description === undefined)).toBe(
+      true,
+    );
   });
 });
