@@ -86,7 +86,14 @@ describe("MCP stdio server tests", () => {
     if (db) {
       await db.close();
     }
-    rmSync(tempDir, { recursive: true, force: true });
+    // Windows can hold file locks for a beat after the server/DB close —
+    // retry instead of failing the whole suite on cleanup (issue #190).
+    rmSync(tempDir, {
+      recursive: true,
+      force: true,
+      maxRetries: 8,
+      retryDelay: 100,
+    });
   });
 
   it("lists all 26 tools with correct annotations", async () => {
@@ -727,6 +734,23 @@ describe("MCP stdio server tests", () => {
       });
     });
     child.kill("SIGTERM");
+    // Wait for the child to actually die: it holds its database inside
+    // tempDir, and on Windows an unawaited kill lets afterEach's rmSync
+    // race the file locks of the exiting process (issue #190).
+    await new Promise<void>((resolve) => {
+      if (child.exitCode !== null || child.signalCode !== null) {
+        resolve();
+        return;
+      }
+      const fallback = setTimeout(() => {
+        child.kill("SIGKILL");
+        resolve();
+      }, 5_000);
+      child.once("exit", () => {
+        clearTimeout(fallback);
+        resolve();
+      });
+    });
 
     if (!stdoutData.includes("jsonrpc")) {
       console.error("Child stderr was:", stderrData);

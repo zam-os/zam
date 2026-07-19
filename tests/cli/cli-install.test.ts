@@ -173,7 +173,11 @@ describe("installCliShim", () => {
     expect(readFileSync(report.shimPath, "utf8")).toBe(
       unixShimContent(nodePath, cliPath),
     );
-    expect(statSync(report.shimPath).mode & 0o111).not.toBe(0);
+    if (process.platform !== "win32") {
+      // POSIX execute bits do not exist on Windows (chmod is a no-op and
+      // stat reports no x-bits), so the mode assertion only runs elsewhere.
+      expect(statSync(report.shimPath).mode & 0o111).not.toBe(0);
+    }
     const profile = join(home, ".zprofile");
     expect(readFileSync(profile, "utf8")).toContain(".zam/bin");
     expect(report.pathUpdated).toBe(true);
