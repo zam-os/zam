@@ -20,7 +20,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const CACHE_DIR = join(__dirname, ".cache");
 const BASE = "https://www.lehrplanplus.bayern.de";
 const USER_AGENT =
-  "ZAM-curriculum-capture/0.15.5 (+https://github.com/zam-os/zam)";
+  "ZAM-curriculum-capture/0.15.6 (+https://github.com/zam-os/zam)";
 const DELAY_MS = 120;
 const SCHOOL_YEAR = "2026/2027";
 const CAPTURED_ON = new Date().toISOString().slice(0, 10);
