@@ -7,7 +7,7 @@ tags:
   - agents
   - surfaces
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-07-18
+timestamp: 2026-07-19T08:50:00Z
 ---
 
 `zam mcp` starts a stdio **Model Context Protocol** server
@@ -49,10 +49,14 @@ transaction. The agent judges (concepts worth remembering, Bloom level
 and domain per token, prerequisite order); the tool only validates and
 writes. Re-imports are classified per token: `new` adds, `update`
 refreshes content and keeps learning state, `replace` refreshes content
-and resets learning state to the beginning; previously imported tokens
-absent from a re-import move to token maintenance (kept, excluded from
-scheduling) instead of being deleted. Also available as
-`zam bridge okf-import`.
+and resets learning state to the beginning. For every confirmed token,
+the submitted prerequisite list is the complete desired set: re-import
+adds new edges and removes obsolete ones, including clearing the set
+with an empty or omitted list. Cycle validation and all edge changes are
+part of the same transaction, so a rejected graph restores the previous
+content and DAG. Previously imported tokens absent from a re-import move
+to token maintenance (kept, excluded from scheduling) instead of being
+deleted. Also available as `zam bridge okf-import`.
 
 # MCP Apps panels
 
@@ -62,7 +66,11 @@ in hosts that support them: `ui://zam/studio`, `ui://zam/recall`,
 `npm run build:panel`, served from `dist/ui/`). The VS Code /
 Antigravity Companion extension (`src/vscode-extension/`) hosts the
 same panels in a webview and routes recall evaluation through
-per-IDE evaluator selections.
+per-IDE evaluator selections. Replacement requests in that shared
+webview are serialized and coalesced by recency: a mount already in
+flight may finish, then the latest requested panel mounts last and owns
+the final iframe. This makes rapid toolbar or command switches
+deterministic.
 
 `zam_okf_visualize` opens the OKF panel on any OKF bundle (default
 resolved like the other `zam_okf_*` tools — see above): articles
@@ -106,4 +114,4 @@ available directly.
 - [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
 - [ADR 2026-07-18b — Learning Graph Scope Selectors and the Repo Scope](../adr/2026-07-18b-graph-repo-scope.md)
 - [ADR 2026-07-18c — OKF Import Handoff](../adr/2026-07-18c-okf-import-handoff.md)
-- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf-focus.ts`, `src/cli/bridge-handlers.ts` (importOkfTokens)
+- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf-focus.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/host.ts`, `src/vscode-extension/latest-task-queue.ts`

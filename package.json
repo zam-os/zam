@@ -1,6 +1,6 @@
 {
   "name": "zam-core",
-  "version": "0.15.2",
+  "version": "0.15.3",
   "description": "The Symbiotic Learning Kernel: Elevating Human Intelligence through AI Collaboration.",
   "type": "module",
   "engines": {
@@ -33,6 +33,7 @@
     "build:panel": "vite build --config vite.config.panel.mts && vite build --config vite.config.panel.mts --mode recall && vite build --config vite.config.panel.mts --mode graph && vite build --config vite.config.panel.mts --mode settings && vite build --config vite.config.panel.mts --mode okf",
     "prepare": "npm run build",
     "dev": "tsx src/cli/index.ts",
+    "pretest": "npm run build",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",

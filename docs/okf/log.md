@@ -1,5 +1,11 @@
 # Log
 
+## 2026-07-19
+
+- **Update** — [Prerequisite Graph and Blocking](prerequisite-blocking.md)
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+
 ## 2026-07-18
 
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)

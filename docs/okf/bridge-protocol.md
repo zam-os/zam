@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-07-17T00:00:00Z
+timestamp: 2026-07-19T08:50:00Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -20,9 +20,13 @@ drive.
 The hard contract:
 
 - **JSON only.** Every bridge response is JSON, including errors — all
-  output goes through the `jsonOut`/`jsonError` helpers in
-  `src/cli/commands/bridge.ts`; a stray `console.log` is a bug. (This is
-  stricter than the `--json` flag other commands offer.)
+  action output goes through the `jsonOut`/`jsonError` helpers in
+  `src/cli/commands/bridge.ts`; a stray `console.log` is a bug. Commander
+  errors that occur before an action runs, such as an unknown flag or a
+  missing required option, are intercepted by `src/cli/app.ts` and emitted
+  through the same `{"error":"..."}` stdout envelope with a non-zero exit
+  status and no plain-text stderr. (This is stricter than the `--json` flag
+  other commands offer.)
 - **`src/bridge/protocol.ts` types are the stable contract.** Agents and
   the desktop panels program against these shapes; breaking them breaks
   external callers.
@@ -39,4 +43,4 @@ execute.
 # Citations
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
-- Code: `src/cli/commands/bridge.ts`, `src/bridge/protocol.ts`
+- Code: `src/cli/app.ts`, `src/cli/commands/bridge.ts`, `src/bridge/protocol.ts`

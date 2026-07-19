@@ -7,7 +7,7 @@ tags:
   - scheduling
   - prerequisites
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/prerequisite-blocking.md"
-timestamp: 2026-07-17T00:00:00Z
+timestamp: 2026-07-19T08:50:00Z
 ---
 
 Tokens are connected by a **directed prerequisite graph** (table
@@ -33,10 +33,20 @@ review queue; unblocking re-admits them.
 Prerequisite edges can be suggested semantically: the kernel ranks
 candidate foundations from stored embeddings (`suggestFoundations`), and
 agents link them explicitly (`zam_link_prereq` over MCP, or
-`zam bridge`'s prerequisite commands).
+`zam bridge`'s prerequisite commands). Kernel callers add and remove
+individual edges through `addPrerequisite()` and `removePrerequisite()`.
+Operations that reconcile several edges perform those calls inside one
+database transaction.
+
+An OKF learning re-import treats each confirmed token's submitted
+prerequisite list as its complete desired direct-neighbor set. It removes
+obsolete edges before adding declared edges inside the import transaction.
+If an addition would create a cycle, the transaction restores the prior
+content and graph rather than leaving a partial reconciliation.
 
 # Citations
 
 - [ADR 2026-03-27 — Stabilization and Workflow Integrity](../adr/2026-03-27-stabilization-and-workflow-integrity.md)
 - [ADR 2026-07-03 — RAG Semantic Token Search](../adr/2026-07-03-rag-semantic-token-search.md)
-- Code: `src/kernel/scheduler/blocker.ts`, `src/kernel/scheduler/queue.ts`
+- [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
+- Code: `src/kernel/models/prerequisite.ts`, `src/kernel/scheduler/blocker.ts`, `src/kernel/scheduler/queue.ts`, `src/cli/bridge-handlers.ts`

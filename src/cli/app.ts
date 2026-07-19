@@ -81,4 +81,35 @@ program.addCommand(goalCommand);
 program.addCommand(gitSyncCommand);
 program.addCommand(workspaceCommand);
 
-await program.parseAsync();
+const isBridgeInvocation = process.argv[2] === "bridge";
+let bridgeParseOutput = "";
+if (isBridgeInvocation) {
+  const captureBridgeParseOutput = (value: string): void => {
+    bridgeParseOutput += value;
+  };
+  bridgeCommand.exitOverride();
+  bridgeCommand.configureOutput({ writeErr: captureBridgeParseOutput });
+  for (const command of bridgeCommand.commands) {
+    command.exitOverride();
+    command.configureOutput({ writeErr: captureBridgeParseOutput });
+  }
+}
+
+try {
+  await program.parseAsync();
+} catch (error) {
+  const commanderCode = (error as { code?: string })?.code;
+  if (isBridgeInvocation && commanderCode === "commander.helpDisplayed") {
+    // Commander implements --help by throwing after it writes the requested
+    // help text. It is successful control flow, not a bridge failure.
+  } else if (isBridgeInvocation && commanderCode?.startsWith("commander.")) {
+    const message = (
+      bridgeParseOutput.trim() ||
+      (error instanceof Error ? error.message : String(error))
+    ).replace(/^error:\s*/i, "");
+    process.stdout.write(`${JSON.stringify({ error: message }, null, 2)}\n`);
+    process.exitCode = 1;
+  } else {
+    throw error;
+  }
+}

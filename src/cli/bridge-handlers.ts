@@ -34,6 +34,7 @@ import {
   getDisplayTitle,
   getDueCards,
   getInstallChannel,
+  getPrerequisites,
   getSessionSummary,
   getSetting,
   getTokenById,
@@ -51,6 +52,7 @@ import {
   pairCommands,
   prepareSessionSynthesis,
   readMonitorLog,
+  removePrerequisite,
   resetCardsForToken,
   resolveReviewContext,
   searchTokensHybrid,
@@ -879,6 +881,13 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
           (input.prerequisites ?? []).map((s) => s.trim()).filter(Boolean),
         ),
       ];
+      const desiredPrerequisites = new Set(prereqSlugs);
+      const existingPrerequisites = await getPrerequisites(tx, token.id);
+      for (const existing of existingPrerequisites) {
+        if (!desiredPrerequisites.has(existing.slug)) {
+          await removePrerequisite(tx, token.id, existing.requires_id);
+        }
+      }
       for (const prereqSlug of prereqSlugs) {
         const target =
           inImport.get(prereqSlug) ?? (await getTokenBySlug(tx, prereqSlug));

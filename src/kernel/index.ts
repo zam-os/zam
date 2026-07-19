@@ -134,6 +134,7 @@ export {
   getDependents,
   getPrerequisites,
   getTokenNeighborhood,
+  removePrerequisite,
   wouldCreateCycle,
 } from "./models/prerequisite.js";
 export type { CreateReviewInput, ReviewLog } from "./models/review.js";
