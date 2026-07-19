@@ -1393,8 +1393,9 @@ export function createMcpServer(db: Database): McpServer {
         "Record YOUR finished decomposition of one OKF article as learning tokens + cards (ADR 2026-07-18). " +
         "Decomposition is your job, not this tool's — before calling: (1) read the FULL article (zam_okf_read); " +
         "(2) extract the concepts a practitioner must produce FROM MEMORY — recall-speed knowledge only; facts one " +
-        "would look up stay in the article; (3) one atomic concept per token, with a JUDGED bloom level and a JUDGED " +
-        "domain per token (reuse existing domains where they fit); (4) arrange a prerequisite DAG from foundational " +
+        "would look up stay in the article; (3) one atomic concept per token, with a JUDGED bloom level, a JUDGED " +
+        "domain (reuse existing domains where they fit), and a concise JUDGED display title per token — titles " +
+        "label the token's node in the Learning Graph; (4) arrange a prerequisite DAG from foundational " +
         "to dependent (in-import slugs and existing tokens both allowed); (5) check for existing tokens first " +
         "(zam_find_tokens) and link them as prerequisites instead of duplicating. Multiple tokens are the expected " +
         "outcome for real articles. On RE-import classify each token via mode: 'new' adds, 'update' refreshes " +
@@ -1411,7 +1412,12 @@ export function createMcpServer(db: Database): McpServer {
           .array(
             z.object({
               slug: z.string().describe("Unique kebab-case token slug"),
-              title: z.string().optional().describe("Display title"),
+              title: z
+                .string()
+                .optional()
+                .describe(
+                  "Concise display title — labels this token's node in the Learning Graph; omitted, the de-kebabed slug shows instead",
+                ),
               concept: z
                 .string()
                 .describe("The memorable concept, stated precisely"),
