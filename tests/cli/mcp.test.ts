@@ -734,6 +734,23 @@ describe("MCP stdio server tests", () => {
       });
     });
     child.kill("SIGTERM");
+    // Wait for the child to actually die: it holds its database inside
+    // tempDir, and on Windows an unawaited kill lets afterEach's rmSync
+    // race the file locks of the exiting process (issue #190).
+    await new Promise<void>((resolve) => {
+      if (child.exitCode !== null || child.signalCode !== null) {
+        resolve();
+        return;
+      }
+      const fallback = setTimeout(() => {
+        child.kill("SIGKILL");
+        resolve();
+      }, 5_000);
+      child.once("exit", () => {
+        clearTimeout(fallback);
+        resolve();
+      });
+    });
 
     if (!stdoutData.includes("jsonrpc")) {
       console.error("Child stderr was:", stderrData);
