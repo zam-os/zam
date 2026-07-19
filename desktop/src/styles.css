@@ -2648,6 +2648,20 @@ textarea::placeholder {
   color: var(--clr-text-primary);
 }
 
+.wizard-option-row .wizard-option-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wizard-option-row .wizard-option-desc {
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--clr-text-secondary);
+}
+
 .wizard-option-row .wizard-option-hint {
   font-size: 0.78rem;
   color: var(--clr-text-secondary);

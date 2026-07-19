@@ -7,6 +7,7 @@ import type {
   TopicNode,
 } from "../../types.js";
 import { LEHRPLANPLUS_BAYERN_MANIFEST as MANIFEST } from "./manifest.js";
+import { describeBayernTrack } from "./track-descriptions.js";
 
 function levelKey(
   schoolType: string,
@@ -172,7 +173,12 @@ export const lehrplanplusBayernProvider: CurriculumProvider = {
     grade: string,
     subject: string,
   ): TaxonomyNode[] {
-    return MANIFEST.tracks[levelKey(schoolType, grade, subject)] ?? [];
+    return (MANIFEST.tracks[levelKey(schoolType, grade, subject)] ?? []).map(
+      (track) => {
+        const description = describeBayernTrack(schoolType, track);
+        return description ? { ...track, description } : { ...track };
+      },
+    );
   },
 
   listTopics(selection: CurriculumSelection): TopicNode[] {

@@ -169,6 +169,9 @@ const REQUIRED_KEYS = [
 // passed over, so the exhaustive scan below doesn't mask *new* regressions
 // while still not churning unrelated strings.
 const PRE_EXISTING_FALLBACK_KEYS = new Set([
+  // 0.15.6 track-step explainer — en/de shipped; es/fr/pt/zh/ja await
+  // native pack review before translation (see i18n pack backlog).
+  "wizard_track_note",
   "repair_agents_error",
   "repair_agents_ok",
   "repair_cli_error",

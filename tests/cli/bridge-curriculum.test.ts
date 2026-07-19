@@ -120,8 +120,18 @@ describe("bridge curriculum-* commands", () => {
       }),
     ]) as { options: Array<{ id: string; label: string }> };
     expect(tracks.options).toEqual([
-      { id: "wpfg1", label: "Mathematik 9 (I)" },
-      { id: "wpfg2-3", label: "Mathematik 9 (II/III)" },
+      {
+        id: "wpfg1",
+        label: "Mathematik 9 (I)",
+        description: expect.stringContaining("Wahlpflichtfächergruppe I"),
+      },
+      {
+        id: "wpfg2-3",
+        label: "Mathematik 9 (II/III)",
+        description: expect.stringContaining(
+          "Wahlpflichtfächergruppen II und III",
+        ),
+      },
     ]);
 
     const topics = runBridge([

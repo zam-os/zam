@@ -13,6 +13,13 @@
 export interface TaxonomyNode {
   id: string;
   label: string;
+  /**
+   * Optional learner-facing explanation of what picking this option means
+   * (e.g. which Wahlpflichtfächergruppe a Realschule track belongs to).
+   * Plain data in the curriculum's own language, rendered by the wizard
+   * beneath the label.
+   */
+  description?: string;
 }
 
 export interface TopicNode extends TaxonomyNode {
