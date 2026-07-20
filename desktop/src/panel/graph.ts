@@ -15,7 +15,7 @@
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
-import { setCurrentLocale } from "../i18n.js";
+import { setCurrentLocale, t, tf } from "../i18n.js";
 import {
   type CompanionContextBarState,
   type ContextBarHandle,
@@ -221,22 +221,20 @@ function renderMessage(emoji: string, title: string, sub: string): void {
 }
 
 function renderNoFocus(): void {
-  renderMessage(
-    "🧭",
-    "Kein Fokus",
-    "Ruf mich mit einem Fokus-Token auf: zam_show_graph {focus}",
-  );
+  // t(), not tf(): the "{focus}" here is the tool-call syntax shown to the
+  // user, not an interpolation slot.
+  renderMessage("🧭", t("graph_no_focus_title"), t("graph_no_focus_sub"));
 }
 
 function renderError(message: string): void {
-  renderMessage("⚠️", "Graph konnte nicht geladen werden", message);
+  renderMessage("⚠️", t("graph_load_failed"), message);
 }
 
 function renderEmptyScope(): void {
   renderMessage(
     "🌱",
-    "Keine Tokens in diesem Umfang",
-    "Importiere einen Artikel aus der Wissensbasis (zam_okf_import) oder lege Tokens an (zam_add_token).",
+    t("graph_scope_empty_title"),
+    t("graph_scope_empty_sub"),
   );
 }
 
@@ -290,20 +288,27 @@ function renderScopeBar(): void {
         `📚 ${repoScope.label}`,
         "scope-pill",
         scopeKind === "repo",
-        "Tokens aus der Wissensbasis (docs/okf) dieses Repos",
+        t("graph_scope_repo_pill_title"),
         () => void switchScope("repo"),
       ),
     );
   }
   scopeRow.appendChild(
-    scopePill("Alle", "scope-pill", scopeKind === "all", "Alle Tokens", () =>
-      void switchScope("all"),
+    scopePill(
+      t("graph_scope_all"),
+      "scope-pill",
+      scopeKind === "all",
+      t("graph_scope_all_title"),
+      () => void switchScope("all"),
     ),
   );
   const count = document.createElement("span");
   count.className = "graph-scope-count";
   const visible = scopedTokens();
-  count.textContent = `${visible.length} Token${visible.length === 1 ? "" : "s"}`;
+  count.textContent = tf(
+    visible.length === 1 ? "graph_token_count_one" : "graph_token_count_many",
+    { count: visible.length },
+  );
   scopeRow.appendChild(count);
   scopeEl.appendChild(scopeRow);
 
@@ -313,10 +318,10 @@ function renderScopeBar(): void {
     domainRow.className = "graph-scope-row graph-domain-row";
     domainRow.appendChild(
       scopePill(
-        "Alle Bereiche",
+        t("graph_domain_all"),
         "domain-pill",
         scopeDomain === null,
-        "Alle Wissensbereiche",
+        t("graph_domain_all_title"),
         () => switchDomain(null),
       ),
     );
@@ -327,8 +332,8 @@ function renderScopeBar(): void {
           "domain-pill",
           scopeDomain === option.value,
           option.isGroup
-            ? `Gruppe: alles unter "${option.value}"`
-            : `Bereich ${option.value}`,
+            ? tf("graph_domain_group_title", { value: option.value })
+            : tf("graph_domain_pill_title", { value: option.value }),
           () => switchDomain(option.value),
         ),
       );
@@ -353,7 +358,7 @@ function renderScopeBar(): void {
   if (visible.length === 0) {
     const empty = document.createElement("span");
     empty.className = "graph-scope-empty";
-    empty.textContent = "Keine Tokens in diesem Umfang.";
+    empty.textContent = t("graph_scope_empty_list");
     list.appendChild(empty);
   }
   scopeEl.appendChild(list);
@@ -567,7 +572,7 @@ function renderGraph(nb: Neighborhood, onSelect: (slug: string) => void): void {
   svg.setAttribute("class", "graph-svg");
   svg.setAttribute("role", "img");
   const label = graphNodeTitle(nb.center);
-  svg.setAttribute("aria-label", `Knowledge graph centered on ${label}`);
+  svg.setAttribute("aria-label", tf("graph_aria_centered", { label }));
   wrap.appendChild(svg);
 
   const edgesGroup = document.createElementNS(SVG_NS, "g") as SVGGElement;
