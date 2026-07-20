@@ -40,7 +40,8 @@ the paths that already have topics.
   catalog **945** paths (GS, HS, RS, GeS, Gym, GyO); Lehrplannavigator PDFs
 - [x] **Phase H / #142 — `lehrplaene-rp` (Rheinland-Pfalz)** — complete catalog
   **990** paths (GS, HS, RS, RS+, Gym, IGS, GyO/MSS, Förderschule); Bildungsserver PDFs
-- [ ] **Phase I / #143 — `lehrplan-saarland` (Saarland)**
+- [x] **Phase I / #143 — `lehrplan-saarland` (Saarland)** — complete catalog
+  **362** paths (GS, GemS, Gym, GyO, Förderschule); Bildungsserver SharedDocs PDFs
 - [ ] **Phase J / #144 — `lehrplan-sachsen` (Sachsen)**
 - [ ] **Phase K / #145 — `lehrplan-thueringen` (Thüringen)**
 - [x] **Phase L / #146 — `lehrplanplus-bayern` (Bayern)**
@@ -283,19 +284,21 @@ portal section), Handreichungen and obsolete „gültig bis“ versions out of s
 
 ## Phase I / #143 — `lehrplan-saarland` (Saarland)
 
-Provider: **Lehrplan (Saarland)** · catalog: `seed` · current
-inventory: **40 paths / 8 with topics**
+Provider: **Lehrplan (Saarland)** · catalog: `complete` ·
+**362** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from
+https://www.saarland.de/mbk/DE/portale/bildungsserver/schulen-und-bildungswege/lehrplaene.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule, Gemeinschaftsschule, Gymnasium Sek I, Gymnasiale
+Oberstufe, Förderschule. Content URLs are SharedDocs PDF downloads. Berufliche
+Schulen, ESS, Schengen-Lyzeum, Handreichungen and bilingual annexes out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #143 with final counts, capture date and evidence.
+- [x] Capture official school types and subject Lehrpläne from Bildungsserver.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF download URLs for every leaf.
+- [x] Offline fixture (Mathematik Gemeinschaftsschule) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase J / #144 — `lehrplan-sachsen` (Sachsen)
 
