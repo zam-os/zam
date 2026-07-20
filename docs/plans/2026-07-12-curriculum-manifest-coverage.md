@@ -30,7 +30,8 @@ the paths that already have topics.
   catalog **537** paths (GS, SEK1, Gymnasium, GMSO); HTML portal URLs
 - [x] **Phase C / #137 — `bildungsplan-hamburg` (Hamburg)** — complete catalog
   **439** paths (GS, STS 5–11, Gym Sek I, Studienstufe); PDF Rahmenpläne
-- [ ] **Phase D / #138 — `fachanforderungen-sh` (Schleswig-Holstein)**
+- [x] **Phase D / #138 — `fachanforderungen-sh` (Schleswig-Holstein)** —
+  complete catalog **421** paths (GS, GemS, Gym Sek I, GyO); IQSH PDFs
 - [ ] **Phase E / #139 — `kerncurriculum-hessen` (Hessen)**
 - [ ] **Phase F / #140 — `kerncurriculum-niedersachsen` (Niedersachsen)**
 - [ ] **Phase G / #141 — `kernlehrplan-nrw` (Nordrhein-Westfalen)**
@@ -190,19 +191,21 @@ and Förderschwerpunkt geistige Entwicklung are out of scope.
 
 ## Phase D / #138 — `fachanforderungen-sh` (Schleswig-Holstein)
 
-Provider: **Fachanforderungen (Schleswig-Holstein)** · catalog: `seed` · current
-inventory: **40 paths / 8 with topics**
+Provider: **Fachanforderungen (Schleswig-Holstein)** · catalog: `complete` ·
+**421** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from https://fachportal.lernnetz.de/sh/fachanforderungen.html.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule (1–4), Gemeinschaftsschule (5–10), Gymnasium Sek I
+(5–10), Gymnasiale Oberstufe (11–13). Bio/Chemie/Physik use current 2026
+Fachanforderungen PDFs; other subjects use the portal’s downloadable Lehrplan
+PDFs. Anhörungsfassungen and superseded editions out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #138 with final counts, capture date and evidence.
+- [x] Capture official school types, grades and subject PDFs from IQSH portal.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF content URLs for every leaf.
+- [x] Offline fixture (Mathematik Sek I) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase E / #139 — `kerncurriculum-hessen` (Hessen)
 
