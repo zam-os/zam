@@ -38,7 +38,8 @@ the paths that already have topics.
   complete catalog **785** paths (GS, HS, RS, ObS, Gym, IGS, GyO); CuVo PDFs
 - [x] **Phase G / #141 — `kernlehrplan-nrw` (Nordrhein-Westfalen)** — complete
   catalog **945** paths (GS, HS, RS, GeS, Gym, GyO); Lehrplannavigator PDFs
-- [ ] **Phase H / #142 — `lehrplaene-rp` (Rheinland-Pfalz)**
+- [x] **Phase H / #142 — `lehrplaene-rp` (Rheinland-Pfalz)** — complete catalog
+  **990** paths (GS, HS, RS, RS+, Gym, IGS, GyO/MSS, Förderschule); Bildungsserver PDFs
 - [ ] **Phase I / #143 — `lehrplan-saarland` (Saarland)**
 - [ ] **Phase J / #144 — `lehrplan-sachsen` (Sachsen)**
 - [ ] **Phase K / #145 — `lehrplan-thueringen` (Thüringen)**
@@ -264,19 +265,21 @@ and Weiterbildungskolleg out of scope.
 
 ## Phase H / #142 — `lehrplaene-rp` (Rheinland-Pfalz)
 
-Provider: **Lehrpläne (Rheinland-Pfalz)** · catalog: `seed` · current
-inventory: **40 paths / 8 with topics**
+Provider: **Lehrpläne (Rheinland-Pfalz)** · catalog: `complete` ·
+**990** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from https://bildung.rlp.de/lehrplaene/.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule, Hauptschule, Realschule, Realschule plus, Gymnasium
+Sek I, Integrierte Gesamtschule, Gymnasiale Oberstufe (MSS), Förderschule.
+Content URLs are official `tx_rlpbase_download` PDF endpoints. BBS (separate
+portal section), Handreichungen and obsolete „gültig bis“ versions out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #142 with final counts, capture date and evidence.
+- [x] Capture official school types and subject Lehrpläne from Bildungsserver.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF download URLs for every leaf.
+- [x] Offline fixture (Mathematik Realschule plus) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase I / #143 — `lehrplan-saarland` (Saarland)
 
