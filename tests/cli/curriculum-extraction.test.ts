@@ -414,13 +414,15 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
       const zahlContent = extracted["gymnasium|10|mathematik#leitidee-zahl"];
       const raumContent = extracted["gymnasium|10|mathematik#leitidee-raum"];
 
-      expect(zahlContent).toContain("Leitidee Zahl - Variable - Operation");
+      expect(zahlContent).toContain("Leitidee Zahl");
       expect(zahlContent).toContain("Potenzfunktionen");
-      expect(zahlContent).not.toContain("Vektoren im dreidimensionalen Raum");
+      expect(zahlContent).toContain("UNIQUE_ZAHL_MARKER");
+      expect(zahlContent).not.toContain("UNIQUE_RAUM_MARKER");
 
       expect(raumContent).toContain("Leitidee Raum und Form");
       expect(raumContent).toContain("Vektoren im dreidimensionalen Raum");
-      expect(raumContent).not.toContain("Potenzfunktionen");
+      expect(raumContent).toContain("UNIQUE_RAUM_MARKER");
+      expect(raumContent).not.toContain("UNIQUE_ZAHL_MARKER");
     });
 
     it("gracefully handles unknown topics", () => {

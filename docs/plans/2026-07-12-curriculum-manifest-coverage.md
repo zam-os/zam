@@ -26,7 +26,8 @@ the paths that already have topics.
 - [x] **Phase A / #135 — `bildungsplan-bremen` (Bremen)** — complete catalog
   **352** paths (Primar, Oberschule, Gymnasium Sek I, GyO); PDF content URLs;
   `pdftotext` import path
-- [ ] **Phase B / #136 — `bildungsplan-bw` (Baden-Württemberg)**
+- [x] **Phase B / #136 — `bildungsplan-bw` (Baden-Württemberg)** — complete
+  catalog **537** paths (GS, SEK1, Gymnasium, GMSO); HTML portal URLs
 - [ ] **Phase C / #137 — `bildungsplan-hamburg` (Hamburg)**
 - [ ] **Phase D / #138 — `fachanforderungen-sh` (Schleswig-Holstein)**
 - [ ] **Phase E / #139 — `kerncurriculum-hessen` (Hessen)**
@@ -152,19 +153,21 @@ KMK Rahmenlehrpläne and "in Bearbeitung" berufsbildend drafts are out of scope.
 
 ## Phase B / #136 — `bildungsplan-bw` (Baden-Württemberg)
 
-Provider: **Bildungsplan (Baden-Württemberg)** · catalog: `seed` · current
-inventory: **20 paths / 5 with topics**
+Provider: **Bildungsplan (Baden-Württemberg)** · catalog: `complete` ·
+**537** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from https://www.bildungsplaene-bw.de/.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule (1–4), Gemeinsamer Bildungsplan Sek I (5–10),
+Gymnasium (5–12), Oberstufe an Gemeinschaftsschulen (11–13). Content URLs are
+subject pages on the official HTML portal. V2 rewrites, berufliche Schulen and
+SBBZ archives are out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #136 with final counts, capture date and evidence.
+- [x] Capture official school types, grades and subjects (portal listing).
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact content URLs for every leaf.
+- [x] Offline fixture (Mathematik Gym 9/10 Leitideen) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase C / #137 — `bildungsplan-hamburg` (Hamburg)
 
