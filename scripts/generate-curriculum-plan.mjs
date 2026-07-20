@@ -4,13 +4,14 @@
  */
 
 import { writeFileSync } from "node:fs";
-import { CURRICULUM_PROVIDERS } from "../src/cli/curriculum/registry.ts";
+import { RAW_CURRICULUM_PROVIDERS } from "../src/cli/curriculum/registry.ts";
 import {
   bundeslandSlug,
   curriculumTestUserId,
 } from "./curriculum-test-user-id.ts";
 
-const PROVIDER_ORDER = [...CURRICULUM_PROVIDERS].sort((a, b) =>
+// Full catalog (not content-filtered) so the plan lists every intended path.
+const PROVIDER_ORDER = [...RAW_CURRICULUM_PROVIDERS].sort((a, b) =>
   a.id.localeCompare(b.id),
 );
 

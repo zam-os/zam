@@ -16,7 +16,7 @@ empty topic lists for most combinations (e.g. Bayern Realschule 9 Biologie).
 
 ## Status
 
-- [ ] **Phase 0 — test infrastructure** (users, verification protocol)
+- [x] **Phase 0 — test infrastructure** (users, verification protocol)
 - [ ] **Phase Import — import pipeline (Phase 3 handoff)** — topic extraction,
   `topic_id` persistence, atomic multi-topic import
 - [ ] **Phase A — `bildungsplan-bremen` (Bremen)**
@@ -56,9 +56,16 @@ empty topic lists for most combinations (e.g. Bayern Realschule 9 Biologie).
   `npx tsx scripts/provision-curriculum-test-users.ts` (shared anchor token
   `curriculum-test-profile-anchor`, one card each).
 - [x] Document user ↔ path mapping in issue checklist (GitHub #132).
-- [ ] Add a bridge-level smoke script that asserts `curriculum-list-level
+- [x] Add a bridge-level smoke script that asserts `curriculum-list-level
   --level topic` returns non-empty options for every manifest path (CI gate
-  once manifests are complete).
+  once manifests are complete):
+  - Library: `src/cli/curriculum/topic-coverage.ts` (raw-catalog walk)
+  - CLI: `npx tsx scripts/curriculum-topic-coverage-smoke.ts`
+    (`npm run curriculum:topic-coverage`)
+  - Raw providers: `RAW_CURRICULUM_PROVIDERS` / `getRawCurriculumProvider`
+  - Use `--report-only` while coverage is incomplete; drop it (default
+    `--min-coverage 1`) as the hard CI gate when Phases A–O are done.
+  - Tests: `tests/cli/curriculum-topic-coverage.test.ts`
 
 ### Test user registry
 
