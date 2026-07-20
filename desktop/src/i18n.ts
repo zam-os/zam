@@ -470,11 +470,22 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_step_subject: "Asignatura",
     wizard_step_track: "Modalidad",
     wizard_step_topic: "Temas",
+    wizard_step_sourceAlternative: "Fuente curricular alternativa",
     wizard_btn_back: "Atrás",
     wizard_btn_next: "Siguiente",
     wizard_no_options: "Aún no hay opciones disponibles para esta selección.",
     wizard_err_select_option: "Selecciona una opción para continuar.",
     wizard_err_no_topics: "Selecciona al menos un tema.",
+    wizard_err_select_alternative: "Selecciona un currículo alternativo.",
+    wizard_content_missing_badge: "falta una fuente detallada",
+    wizard_content_missing:
+      "ZAM aún no dispone de una fuente curricular verificada y suficientemente detallada para «{topic}» en {region}.",
+    wizard_alternative_prompt:
+      "Hay contenido verificado sobre este tema en {count} fuente(s) curricular(es) de otros estados. ¿Quieres usar una?",
+    wizard_no_verified_alternatives:
+      "Aún no se ha verificado un currículo alternativo suficientemente detallado. La carencia podrá revisarse cuando haya nuevos datos oficiales.",
+    wizard_btn_use_alternative: "Usar alternativa",
+    wizard_open_alternative_source: "Abrir fuente oficial detallada ↗",
     wizard_topic_scope_note:
       "Solo se importan los temas seleccionados. El texto del plan se extrae por tema (o por subunidad cuando el proveedor lo permite) y cada tarjeta conserva el proveedor y el identificador del tema.",
     wizard_resume_prompt: "Continuar donde lo dejaste:",
@@ -621,7 +632,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     okf_bundle_not_found_title: "Base de conocimiento no encontrada",
     okf_bundle_empty_at_dir:
       'No hay artículos en "{dir}". Indica la ruta a la carpeta docs/okf de un repositorio:',
-    okf_bundle_prompt: "Indica la ruta a la carpeta docs/okf de un repositorio:",
+    okf_bundle_prompt:
+      "Indica la ruta a la carpeta docs/okf de un repositorio:",
     okf_bundle_path_placeholder: "C:\\ruta\\al\\repo\\docs\\okf",
     okf_bundle_open: "Abrir",
     okf_bundle_valid_but_empty:
@@ -1121,6 +1133,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_step_subject: "Matière",
     wizard_step_track: "Filière",
     wizard_step_topic: "Sujets",
+    wizard_step_sourceAlternative: "Source de programme alternative",
     wizard_btn_back: "Retour",
     wizard_btn_next: "Suivant",
     wizard_no_options:
@@ -1128,6 +1141,17 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_err_select_option:
       "Veuillez sélectionner une option pour continuer.",
     wizard_err_no_topics: "Veuillez sélectionner au moins un sujet.",
+    wizard_err_select_alternative:
+      "Veuillez sélectionner un programme alternatif.",
+    wizard_content_missing_badge: "source détaillée manquante",
+    wizard_content_missing:
+      "ZAM ne dispose pas encore d’une source de programme suffisamment détaillée et vérifiée pour « {topic} » en {region}.",
+    wizard_alternative_prompt:
+      "Un contenu vérifié sur ce sujet existe dans {count} source(s) de programme d’autres Länder. Voulez-vous en utiliser une ?",
+    wizard_no_verified_alternatives:
+      "Aucun programme alternatif suffisamment détaillé n’est encore vérifié. Cette lacune pourra être réexaminée lorsque de nouvelles données officielles seront disponibles.",
+    wizard_btn_use_alternative: "Utiliser l’alternative",
+    wizard_open_alternative_source: "Ouvrir la source officielle détaillée ↗",
     wizard_topic_scope_note:
       "Seuls les sujets sélectionnés sont importés. Le texte du programme est extrait par sujet (ou sous-unité lorsque le fournisseur le permet) et chaque carte conserve le fournisseur et l'identifiant du sujet.",
     wizard_resume_prompt: "Continuer là où vous vous étiez arrêté :",
@@ -1774,11 +1798,22 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_step_subject: "Disciplina",
     wizard_step_track: "Modalidade",
     wizard_step_topic: "Tópicos",
+    wizard_step_sourceAlternative: "Fonte curricular alternativa",
     wizard_btn_back: "Voltar",
     wizard_btn_next: "Avançar",
     wizard_no_options: "Ainda não há opções disponíveis para esta seleção.",
     wizard_err_select_option: "Selecione uma opção para continuar.",
     wizard_err_no_topics: "Selecione pelo menos um tópico.",
+    wizard_err_select_alternative: "Selecione um currículo alternativo.",
+    wizard_content_missing_badge: "fonte detalhada ausente",
+    wizard_content_missing:
+      "O ZAM ainda não dispõe de uma fonte curricular verificada e suficientemente detalhada para “{topic}” em {region}.",
+    wizard_alternative_prompt:
+      "Há conteúdo verificado sobre este tema em {count} fonte(s) curricular(es) de outros estados. Deseja usar uma?",
+    wizard_no_verified_alternatives:
+      "Ainda não há um currículo alternativo suficientemente detalhado verificado. Esta lacuna poderá ser revista quando houver novos dados oficiais.",
+    wizard_btn_use_alternative: "Usar alternativa",
+    wizard_open_alternative_source: "Abrir fonte oficial detalhada ↗",
     wizard_topic_scope_note:
       "Somente os tópicos selecionados são importados. O texto do currículo é extraído por tópico (ou subunidade quando o provedor permite) e cada cartão mantém o provedor e o identificador do tópico.",
     wizard_resume_prompt: "Continuar de onde você parou:",
@@ -1921,8 +1956,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     okf_bundle_not_found_title: "Base de conhecimento não encontrada",
     okf_bundle_empty_at_dir:
       'Nenhum artigo em "{dir}". Informe o caminho da pasta docs/okf de um repositório:',
-    okf_bundle_prompt:
-      "Informe o caminho da pasta docs/okf de um repositório:",
+    okf_bundle_prompt: "Informe o caminho da pasta docs/okf de um repositório:",
     okf_bundle_path_placeholder: "C:\\caminho\\para\\o\\repo\\docs\\okf",
     okf_bundle_open: "Abrir",
     okf_bundle_valid_but_empty:
@@ -2367,11 +2401,22 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_step_subject: "科目",
     wizard_step_track: "分组",
     wizard_step_topic: "主题",
+    wizard_step_sourceAlternative: "其他课程来源",
     wizard_btn_back: "上一步",
     wizard_btn_next: "下一步",
     wizard_no_options: "此选择暂无可用选项。",
     wizard_err_select_option: "请选择一个选项以继续。",
     wizard_err_no_topics: "请至少选择一个主题。",
+    wizard_err_select_alternative: "请选择一个其他地区的课程。",
+    wizard_content_missing_badge: "缺少详细来源",
+    wizard_content_missing:
+      "ZAM 尚未获得适用于{region}“{topic}”的、经过验证且足够详细的课程来源。",
+    wizard_alternative_prompt:
+      "其他州的 {count} 个课程来源提供了已验证的相关学习内容。是否使用其中一个？",
+    wizard_no_verified_alternatives:
+      "目前尚无经过验证且足够详细的其他州课程。官方数据更新后可以重新检查此缺口。",
+    wizard_btn_use_alternative: "使用其他课程",
+    wizard_open_alternative_source: "打开官方详细来源 ↗",
     wizard_topic_scope_note:
       "仅导入所选主题。课程文本按主题提取（若提供方支持，也可按子单元），每张卡片保留提供方与主题标识。",
     wizard_resume_prompt: "从你上次停下的地方继续：",
@@ -2984,11 +3029,22 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_step_subject: "教科",
     wizard_step_track: "コース",
     wizard_step_topic: "トピック",
+    wizard_step_sourceAlternative: "代替カリキュラム情報源",
     wizard_btn_back: "戻る",
     wizard_btn_next: "次へ",
     wizard_no_options: "この選択にはまだ利用可能なオプションがありません。",
     wizard_err_select_option: "続行するにはオプションを選択してください。",
     wizard_err_no_topics: "少なくとも1つのトピックを選択してください。",
+    wizard_err_select_alternative: "代替となるカリキュラムを選択してください。",
+    wizard_content_missing_badge: "詳しい情報源なし",
+    wizard_content_missing:
+      "ZAM では、{region}の「{topic}」について十分に詳しく検証済みのカリキュラム情報源をまだ利用できません。",
+    wizard_alternative_prompt:
+      "このトピックには、他州のカリキュラム情報源が {count} 件確認されています。いずれかを使用しますか？",
+    wizard_no_verified_alternatives:
+      "十分に詳しい代替カリキュラムはまだ確認されていません。新しい公式データが公開された後に再確認できます。",
+    wizard_btn_use_alternative: "代替を使用",
+    wizard_open_alternative_source: "公式の詳細情報源を開く ↗",
     wizard_topic_scope_note:
       "選択したトピックだけがインポートされます。カリキュラム本文はトピック単位（対応していればサブユニット単位）で抽出し、各カードに提供元とトピックIDが残ります。",
     wizard_resume_prompt: "前回の続きから：",
@@ -3185,8 +3241,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     okf_legend_citation: "引用（ADR）",
     okf_graph_aria: "OKF ナレッジグラフ",
     okf_log_empty_title: "ログがありません",
-    okf_log_empty_sub:
-      "このナレッジベースにはまだ log.md が書かれていません。",
+    okf_log_empty_sub: "このナレッジベースにはまだ log.md が書かれていません。",
     graph_no_focus_title: "フォーカスなし",
     graph_no_focus_sub:
       "フォーカストークンを付けて呼び出してください：zam_show_graph {focus}",
@@ -3708,11 +3763,22 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_track_note:
       "This subject comes in several variants — for example depending on your school's branch, elective group, or course level. Pick the one that matches your class; if you are unsure, your timetable or your teacher can tell you which applies.",
     wizard_step_topic: "Topics",
+    wizard_step_sourceAlternative: "Alternative curriculum source",
     wizard_btn_back: "Back",
     wizard_btn_next: "Next",
     wizard_no_options: "No options available yet for this selection.",
     wizard_err_select_option: "Please select an option to continue.",
     wizard_err_no_topics: "Please select at least one topic.",
+    wizard_err_select_alternative: "Please select an alternative curriculum.",
+    wizard_content_missing_badge: "detailed source missing",
+    wizard_content_missing:
+      "ZAM does not yet have a sufficiently detailed, verified curriculum source for “{topic}” in {region}.",
+    wizard_alternative_prompt:
+      "Verified learning content for this topic is available from {count} other state curriculum source(s). Would you like to use one?",
+    wizard_no_verified_alternatives:
+      "No sufficiently detailed alternative state curriculum is verified yet. This gap can be revisited when new official data becomes available.",
+    wizard_btn_use_alternative: "Use alternative",
+    wizard_open_alternative_source: "Open official detailed source ↗",
     wizard_topic_scope_note:
       "Only the topics you select are imported. Curriculum text is extracted per topic (or per sub-unit when the provider supports it), and each card keeps the provider and topic id.",
     wizard_resume_prompt: "Continue where you left off:",
@@ -3891,7 +3957,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     okf_import_no_chat:
       "This host has no chat — give your agent this instruction:",
     okf_reader_empty_title: "No article selected",
-    okf_reader_empty_sub: "Pick an article from the knowledge base on the left.",
+    okf_reader_empty_sub:
+      "Pick an article from the knowledge base on the left.",
     okf_article_load_failed: "Could not load the article",
     okf_loading: "Loading...",
     okf_back_to_article: "← Back to the article",
@@ -4363,11 +4430,23 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_track_note:
       "Dieses Fach gibt es in mehreren Varianten – zum Beispiel je nach Zweig, Wahlpflichtfächergruppe oder Niveau. Wähle die Variante, die zu deiner Klasse passt. Wenn du unsicher bist, hilft ein Blick in deinen Stundenplan oder du fragst deine Lehrkraft.",
     wizard_step_topic: "Themen",
+    wizard_step_sourceAlternative: "Alternative Lehrplanquelle",
     wizard_btn_back: "Zurück",
     wizard_btn_next: "Weiter",
     wizard_no_options: "Für diese Auswahl sind noch keine Optionen verfügbar.",
     wizard_err_select_option: "Bitte wähle eine Option, um fortzufahren.",
     wizard_err_no_topics: "Bitte wähle mindestens ein Thema aus.",
+    wizard_err_select_alternative:
+      "Bitte wähle einen alternativen Lehrplan aus.",
+    wizard_content_missing_badge: "Detailquelle fehlt",
+    wizard_content_missing:
+      "Für „{topic}“ liegt ZAM für {region} noch keine ausreichend detaillierte, verifizierte Lehrplanquelle vor.",
+    wizard_alternative_prompt:
+      "Verifizierte Lerninhalte zu diesem Thema sind auch in Lehrplänen anderer Bundesländer verfügbar ({count}). Möchtest du einen davon verwenden?",
+    wizard_no_verified_alternatives:
+      "Derzeit ist kein ausreichend ausführlicher Lehrplan eines anderen Bundeslands verifiziert. Diese Lücke kann mit neuen offiziellen Daten später erneut geprüft werden.",
+    wizard_btn_use_alternative: "Alternative verwenden",
+    wizard_open_alternative_source: "Offizielle Detailquelle öffnen ↗",
     wizard_topic_scope_note:
       "Es werden nur die ausgewählten Themen importiert. Der Lehrplantext wird pro Thema extrahiert (oder pro Untereinheit, wenn der Provider das unterstützt), und jede Karte behält Provider und Themen-ID.",
     wizard_resume_prompt: "Dort weitermachen, wo du aufgehört hast:",

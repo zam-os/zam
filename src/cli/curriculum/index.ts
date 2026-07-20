@@ -4,6 +4,16 @@ export {
   setLastCurriculumSelection,
 } from "./breadcrumb.js";
 export {
+  assessCurriculumText,
+  type CurriculumReadinessReason,
+  type CurriculumTextReadiness,
+  curriculumTopicContentStatus,
+  MIN_CURRICULUM_TOPIC_CHARS,
+  MIN_CURRICULUM_TOPIC_SENTENCES,
+  MIN_CURRICULUM_TOPIC_WORDS,
+  withCurriculumContentStatus,
+} from "./content-readiness.js";
+export {
   cleanHtmlText,
   extractTopicsByHeadingStrict,
   type HeadingSection,
@@ -21,6 +31,10 @@ export {
   listCurriculumRegions,
   RAW_CURRICULUM_PROVIDERS,
 } from "./registry.js";
+export {
+  type CurriculumTopicAlternative,
+  findCurriculumTopicAlternatives,
+} from "./topic-alternatives.js";
 export {
   auditAllProviders,
   auditPath,
@@ -42,6 +56,7 @@ export type {
   CurriculumLevel,
   CurriculumProvider,
   CurriculumSelection,
+  CurriculumTopicContentStatus,
   ResolvedSource,
   TaxonomyNode,
   TopicNode,

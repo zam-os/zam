@@ -53,6 +53,10 @@ the paths that already have topics.
   **440** paths (GS, OS, regS, Gym, GyO, FöS Lernen, FöS geistige Entw.); Bildungsserver PDFs
 - [x] **Phase O / #149 — `rahmenrichtlinien-st` (Sachsen-Anhalt)** — complete catalog
   **547** paths (GS, Sekundarschule, Gym, GemS); Bildungsserver LSA Fachlehrplan PDFs
+- [x] **Phase Readiness — importable topic evidence and alternatives** — assess
+  extracted topic content independently from catalog/URL coverage, mark
+  unverified topic leaves as missing, and offer only verified providers as
+  cross-state alternatives (Bayern first)
 
 ## Frozen scope and evidence rules
 
@@ -101,8 +105,10 @@ the paths that already have topics.
 - [x] Offline multi-section fixtures + regression tests for partial selection,
   sibling isolation on a shared source, and non-matching documents.
 - [x] Wizard copy describes selected-topic extraction (`wizard_topic_scope_note`).
-- [ ] Per-provider: replace seed landing-page `contentUrls` with the actual
-  curriculum content document (HTML/PDF) during Phases A–O.
+- [x] Per-provider: verify that the actual HTML/PDF source yields enough
+  coherent selected-topic content for card generation; a label, placeholder,
+  table-of-contents hit, or truncated fragment counts as missing. Expose this
+  readiness on each topic leaf and offer verified cross-state alternatives.
 - [ ] Per-provider: swap synthetic fixtures for live-captured source documents
   when each catalog is completed (Phases A–O; PDF path where required).
 

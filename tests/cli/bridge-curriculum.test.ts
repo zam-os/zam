@@ -186,6 +186,66 @@ describe("bridge curriculum-* commands", () => {
     );
   });
 
+  it("marks an unverified Bremen topic missing and offers Bayern", () => {
+    const selection = {
+      schoolType: "oberschule",
+      grade: "7",
+      subject: "mathematik",
+    };
+    const topics = runBridge([
+      "curriculum-list-level",
+      "--provider",
+      "bildungsplan-bremen",
+      "--level",
+      "topic",
+      "--selection",
+      JSON.stringify(selection),
+    ]) as {
+      options: Array<{
+        id: string;
+        label: string;
+        sourceRef: string;
+        contentStatus: string;
+      }>;
+    };
+    const topic = topics.options.find(
+      (candidate) => candidate.id === "arithmetik-algebra",
+    )!;
+    expect(topic.contentStatus).toBe("missing");
+
+    const readiness = runBridge([
+      "curriculum-topic-readiness",
+      "--provider",
+      "bildungsplan-bremen",
+      "--topic",
+      JSON.stringify(topic),
+      "--selection",
+      JSON.stringify(selection),
+    ]) as {
+      status: string;
+      reason: string;
+      alternatives: Array<{
+        providerId: string;
+        regionLabel: string;
+        sourceUris: string[];
+      }>;
+    };
+
+    expect(readiness).toMatchObject({
+      status: "missing",
+      reason: "unverified_source",
+    });
+    expect(readiness.alternatives).toEqual([
+      expect.objectContaining({
+        providerId: "lehrplanplus-bayern",
+        regionLabel: "Bayern",
+        sourceUris: expect.arrayContaining([
+          expect.stringContaining("https://www.lehrplanplus.bayern.de/"),
+        ]),
+      }),
+    ]);
+  });
+
   it("rejects an unknown provider", () => {
     expect(() =>
       runBridge([
