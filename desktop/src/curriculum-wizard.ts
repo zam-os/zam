@@ -1,15 +1,13 @@
 /**
- * Curriculum Import Wizard (ADR 2026-07-02-lehrplanplus-import-wizard, Phase 2).
+ * Curriculum Import Wizard (ADR 2026-07-02-lehrplanplus-import-wizard).
  *
  * Walks the registered curriculum providers' taxonomy level by level
  * (country -> region -> school type -> grade -> subject -> optional track ->
- * topics) via the `curriculum-*` bridge commands from Phase 1, then feeds the
- * resolved source URL(s) into the existing source-import pipeline
- * (personal-source-import -> personal-card-import-curriculum -> personal-source-confirm-import).
- *
- * Per Phase 2 scope, a resolved URL covers a whole subject/track curriculum
- * page (all of its topics), not just the selected ones -- precise per-topic
- * text extraction is Phase 3. The topic step tells the learner this.
+ * topics) via the `curriculum-*` bridge commands, then extracts selected
+ * topics (provider `extractTopics` / `extractSubTopics`) and feeds them into
+ * the source-import pipeline
+ * (personal-source-import -> personal-card-import-curriculum ->
+ * personal-source-confirm-import). Cards store `provider` + `topic_id`.
  */
 import { runBridge } from "./bridge-transport.js";
 import {

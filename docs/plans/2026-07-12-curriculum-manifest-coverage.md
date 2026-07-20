@@ -17,7 +17,7 @@ empty topic lists for most combinations (e.g. Bayern Realschule 9 Biologie).
 ## Status
 
 - [x] **Phase 0 — test infrastructure** (users, verification protocol)
-- [ ] **Phase Import — import pipeline (Phase 3 handoff)** — topic extraction,
+- [x] **Phase Import — import pipeline (Phase 3 handoff)** — topic extraction,
   `topic_id` persistence, atomic multi-topic import
 - [ ] **Phase A — `bildungsplan-bremen` (Bremen)**
 - [ ] **Phase B — `bildungsplan-bw` (Baden-Württemberg)**
@@ -109,14 +109,21 @@ npx tsx src/cli/index.ts bridge curriculum-list-level \
 
 ## Phase Import — import pipeline (Phase 3 handoff)
 
-From [`2026-07-02-lehrplanplus-phase-3.md`](./2026-07-02-lehrplanplus-phase-3.md):
+Pipeline landed in `51f09ff` (Bayern) and subsequent provider seeds; fixtures and
+regression coverage completed for all 15 registered providers.
 
-- [ ] Saved HTML fixtures per provider (never hit live sites in tests).
-- [ ] Provider-owned `extractTopics(html, topicIds)` returning per-topic text.
-- [ ] Persist `provider` + `topic_id` on imported cards (migration + fallback).
-- [ ] Atomic multi-topic import with dedup; failure rolls back entire batch.
-- [ ] Remove Phase-2 whole-page notice in wizard when extraction is precise.
-- [ ] Regression tests: partial selection, sibling pages, re-import, all locales.
+- [x] Saved HTML fixtures per provider (never hit live sites in tests) —
+  `tests/fixtures/curriculum/<provider-id>/`.
+- [x] Provider-owned `extractTopics(html, topicIds)` returning per-topic text
+  (all 15 providers; Bayern also has `extractSubTopics`).
+- [x] Persist `provider` + `topic_id` on imported cards (migration M008 +
+  `source_link` fallback in `getToken*`).
+- [x] Atomic multi-topic import with dedup; failure rolls back entire batch
+  (`importCurriculumCards`).
+- [x] Remove Phase-2 whole-page notice in wizard when extraction is precise
+  (`wizard_topic_scope_note` now describes selected-topic extraction).
+- [x] Regression tests: partial selection, sibling pages, re-import, locales
+  (`tests/cli/curriculum-extraction.test.ts`, kernel import tests).
 
 ---
 
