@@ -511,33 +511,43 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
   });
 
   describe("Sachsen (Lehrplan) Provider", () => {
-    let sachsenBioHtml: string;
+    let sachsenMathHtml: string;
 
     beforeAll(() => {
       const fixturesDir = path.resolve(
         "tests/fixtures/curriculum/lehrplan-sachsen",
       );
-      sachsenBioHtml = fs.readFileSync(
-        path.join(fixturesDir, "sample-gym-9-biologie.html"),
+      sachsenMathHtml = fs.readFileSync(
+        path.join(fixturesDir, "mathematik-oberschule.html"),
         "utf-8",
       );
     });
 
-    it("extracts topics from a minimal Sachsen Gymnasium Biologie fixture", () => {
-      const extracted = lehrplanSachsenProvider.extractTopics!(sachsenBioHtml, [
-        "gymnasium|9|biologie#genetik",
-        "gymnasium|9|biologie#evolution",
-      ]);
+    it("extracts topics from a minimal Sachsen Oberschule Mathematik fixture", () => {
+      const extracted = lehrplanSachsenProvider.extractTopics!(
+        sachsenMathHtml,
+        [
+          "oberschule|7|mathematik#arithmetik-algebra",
+          "oberschule|7|mathematik#funktionen",
+        ],
+      );
 
-      expect(extracted["gymnasium|9|biologie#genetik"]).toBeDefined();
-      expect(extracted["gymnasium|9|biologie#genetik"]).toContain("Genetik");
+      expect(
+        extracted["oberschule|7|mathematik#arithmetik-algebra"],
+      ).toBeDefined();
+      expect(
+        extracted["oberschule|7|mathematik#arithmetik-algebra"],
+      ).toContain("Arithmetik und Algebra");
     });
 
     it("gracefully handles unknown Sachsen topics", () => {
-      const extracted = lehrplanSachsenProvider.extractTopics!(sachsenBioHtml, [
-        "gymnasium|9|biologie#nonexistent",
-      ]);
-      expect(extracted["gymnasium|9|biologie#nonexistent"]).toBeUndefined();
+      const extracted = lehrplanSachsenProvider.extractTopics!(
+        sachsenMathHtml,
+        ["oberschule|7|mathematik#nonexistent"],
+      );
+      expect(
+        extracted["oberschule|7|mathematik#nonexistent"],
+      ).toBeUndefined();
     });
   });
 

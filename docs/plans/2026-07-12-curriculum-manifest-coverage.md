@@ -42,7 +42,8 @@ the paths that already have topics.
   **990** paths (GS, HS, RS, RS+, Gym, IGS, GyO/MSS, Förderschule); Bildungsserver PDFs
 - [x] **Phase I / #143 — `lehrplan-saarland` (Saarland)** — complete catalog
   **362** paths (GS, GemS, Gym, GyO, Förderschule); Bildungsserver SharedDocs PDFs
-- [ ] **Phase J / #144 — `lehrplan-sachsen` (Sachsen)**
+- [x] **Phase J / #144 — `lehrplan-sachsen` (Sachsen)** — complete catalog
+  **713** paths (GS, Oberschule, Gym, FöS Lernen, FöS geistige Entw.); lplandb HTML
 - [ ] **Phase K / #145 — `lehrplan-thueringen` (Thüringen)**
 - [x] **Phase L / #146 — `lehrplanplus-bayern` (Bayern)**
 - [ ] **Phase M / #147 — `rahmenlehrplan-berlin-brandenburg` (Berlin / Brandenburg)**
@@ -302,19 +303,21 @@ Schulen, ESS, Schengen-Lyzeum, Handreichungen and bilingual annexes out of scope
 
 ## Phase J / #144 — `lehrplan-sachsen` (Sachsen)
 
-Provider: **Lehrplan (Sachsen)** · catalog: `seed` · current
-inventory: **40 paths / 9 with topics**
+Provider: **Lehrplan (Sachsen)** · catalog: `complete` ·
+**713** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from https://www.schulportal.sachsen.de/lplandb/.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule, Oberschule, Gymnasium (5–12), Förderschule Lernen,
+Förderschule geistige Entwicklung. Content URLs are stable public pages
+`/lplandb/lehrplan/<id>`. Berufliche Schulen, AbiBac/bilingual special tracks
+and umbrella rows out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #144 with final counts, capture date and evidence.
+- [x] Capture official school types and subject Lehrpläne from lplandb.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact Lehrplan content URLs for every leaf.
+- [x] Offline fixture (Mathematik Oberschule) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase K / #145 — `lehrplan-thueringen` (Thüringen)
 
