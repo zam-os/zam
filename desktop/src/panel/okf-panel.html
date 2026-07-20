@@ -632,8 +632,11 @@
           <span class="okf-version" id="okf-version"></span>
         </div>
         <div class="okf-view-toggle" id="okf-view-toggle">
+          <!-- Static labels here are the English fallback; okf.ts's
+               applyStaticLocale() localizes them at module load and again
+               once the host handshake resolves the locale. -->
           <button type="button" class="okf-view-btn" data-view="reader">
-            Artikel
+            Articles
           </button>
           <button type="button" class="okf-view-btn" data-view="graph">
             Graph
@@ -647,7 +650,7 @@
             type="search"
             id="okf-search"
             class="okf-search-input"
-            placeholder="Artikel durchsuchen..."
+            placeholder="Search articles..."
           />
           <div class="okf-catalog-groups" id="okf-catalog-groups"></div>
         </aside>

@@ -153,6 +153,73 @@ const CONTEXTBAR_KEYS = [
   "contextbar_confirm_switch_agent",
 ] as const;
 
+// OKF visualizer panel + 2D graph panel chrome (issue #191): okf.ts shipped
+// 0.13.0–0.16.0 with every user-facing string hard-coded in German and
+// graph.ts kept a few stragglers; both route through t()/tf() now. This
+// group guards them across all packs the same way CONTEXTBAR_KEYS guards
+// the shared bar. (The agent-facing importInstruction() text is deliberately
+// English for the model and stays out of the i18n layer.)
+const OKF_PANEL_KEYS = [
+  "okf_view_reader",
+  "okf_view_graph",
+  "okf_view_log",
+  "okf_search_placeholder",
+  "okf_article_count_one",
+  "okf_article_count_many",
+  "okf_load_failed_title",
+  "okf_no_matches",
+  "okf_no_articles",
+  "okf_untyped_group",
+  "okf_bundle_not_found_title",
+  "okf_bundle_empty_at_dir",
+  "okf_bundle_prompt",
+  "okf_bundle_path_placeholder",
+  "okf_bundle_open",
+  "okf_bundle_valid_but_empty",
+  "okf_resource_link",
+  "okf_copy",
+  "okf_copied",
+  "okf_copy_failed",
+  "okf_import_button",
+  "okf_import_handed_off",
+  "okf_import_no_chat",
+  "okf_reader_empty_title",
+  "okf_reader_empty_sub",
+  "okf_article_load_failed",
+  "okf_loading",
+  "okf_back_to_article",
+  "okf_citation_loading",
+  "okf_citation_unavailable",
+  "okf_citation_open_full",
+  "okf_graph_loading",
+  "okf_graph_empty_title",
+  "okf_graph_empty_sub",
+  "okf_legend_article",
+  "okf_legend_citation",
+  "okf_graph_aria",
+  "okf_log_empty_title",
+  "okf_log_empty_sub",
+] as const;
+
+const GRAPH_PANEL_KEYS = [
+  "graph_no_focus_title",
+  "graph_no_focus_sub",
+  "graph_load_failed",
+  "graph_scope_empty_title",
+  "graph_scope_empty_sub",
+  "graph_scope_repo_pill_title",
+  "graph_scope_all",
+  "graph_scope_all_title",
+  "graph_token_count_one",
+  "graph_token_count_many",
+  "graph_domain_all",
+  "graph_domain_all_title",
+  "graph_domain_group_title",
+  "graph_domain_pill_title",
+  "graph_scope_empty_list",
+  "graph_aria_centered",
+] as const;
+
 const REQUIRED_KEYS = [
   ...ISSUE_97_KEYS,
   ...WIZARD_KEYS,
@@ -163,6 +230,8 @@ const REQUIRED_KEYS = [
   ...DISCUSSION_KEYS,
   ...AGENT_CONNECT_KEYS,
   ...CONTEXTBAR_KEYS,
+  ...OKF_PANEL_KEYS,
+  ...GRAPH_PANEL_KEYS,
 ];
 
 // Keys used somewhere under desktop/src via t()/tf() that predate this
@@ -308,6 +377,34 @@ describe("desktop locale completeness", () => {
       "Analysis error:",
     ]) {
       expect(studioSource).not.toContain(literal);
+    }
+  });
+
+  // Issue #191: the OKF panel shipped with every user-facing string
+  // hard-coded in German; graph.ts kept a few stragglers. The shared
+  // NO_HOST_NOTICE / "failed to start" strings are identical across all
+  // panel entries (including the keyed ones) and deliberately not covered.
+  it("does not retain the hard-coded German literals reported in issue #191", () => {
+    const panelDir = join(process.cwd(), "desktop", "src", "panel");
+    const okfSource = readFileSync(join(panelDir, "okf.ts"), "utf8");
+    for (const literal of [
+      "Als Lerninhalt importieren",
+      "Dieser Host hat keinen Chat",
+      "Kopieren fehlgeschlagen",
+      "Kein Artikel ausgewählt",
+      "Artikel konnte nicht geladen werden",
+      "Wissensbasis nicht gefunden",
+      "Der Ordner ist ein gültiges Bundle",
+    ]) {
+      expect(okfSource).not.toContain(literal);
+    }
+    const graphSource = readFileSync(join(panelDir, "graph.ts"), "utf8");
+    for (const literal of [
+      "Keine Tokens in diesem Umfang",
+      "Graph konnte nicht geladen werden",
+      "Alle Wissensbereiche",
+    ]) {
+      expect(graphSource).not.toContain(literal);
     }
   });
 

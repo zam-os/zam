@@ -26,7 +26,7 @@
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
-import { setCurrentLocale } from "../i18n.js";
+import { setCurrentLocale, t, tf } from "../i18n.js";
 import {
   type CompanionContextBarState,
   type CompanionSurface,
@@ -232,7 +232,12 @@ function renderAll(): void {
 }
 
 function renderHeader(): void {
-  if (headerCountEl) headerCountEl.textContent = `${catalog.length} Artikel`;
+  if (headerCountEl) {
+    headerCountEl.textContent = tf(
+      catalog.length === 1 ? "okf_article_count_one" : "okf_article_count_many",
+      { count: catalog.length },
+    );
+  }
   // #okf-version shows the OKF BUNDLE's format version (index.md's
   // `okf_version`), not the zam app/package version — that's still shown
   // separately in the context-bar title (see ensureContextBar/panelVersion).
@@ -288,12 +293,7 @@ function renderEmptyInto(
 function renderTopLevelError(message: string): void {
   catalogGroupsEl?.replaceChildren();
   if (contentEl) {
-    renderEmptyInto(
-      contentEl,
-      "⚠️",
-      "Wissensbasis konnte nicht geladen werden",
-      message,
-    );
+    renderEmptyInto(contentEl, "⚠️", t("okf_load_failed_title"), message);
   }
 }
 
@@ -304,7 +304,7 @@ function renderSidebar(): void {
   if (filtered.length === 0) {
     const empty = document.createElement("div");
     empty.className = "okf-catalog-empty";
-    empty.textContent = searchQuery ? "Keine Treffer." : "Keine Artikel.";
+    empty.textContent = searchQuery ? t("okf_no_matches") : t("okf_no_articles");
     catalogGroupsEl.appendChild(empty);
     return;
   }
@@ -316,7 +316,7 @@ function renderSidebar(): void {
     dot.className = "okf-type-dot";
     dot.style.background = typeColorVar(type);
     const label = document.createElement("span");
-    label.textContent = type || "(ohne Typ)";
+    label.textContent = type || t("okf_untyped_group");
     titleEl.append(dot, label);
     groupEl.appendChild(titleEl);
     for (const entry of entries) {
@@ -408,24 +408,24 @@ function renderBundleSelector(container: HTMLElement): void {
   icon.textContent = "📂";
   const title = document.createElement("div");
   title.className = "okf-empty-title";
-  title.textContent = "Wissensbasis nicht gefunden";
+  title.textContent = t("okf_bundle_not_found_title");
   const sub = document.createElement("div");
   sub.className = "okf-empty-sub";
   sub.textContent = bundleDir
-    ? `Unter "${bundleDir}" liegen keine Artikel. Gib den Pfad zum docs/okf-Ordner eines Repos an:`
-    : "Gib den Pfad zum docs/okf-Ordner eines Repos an:";
+    ? tf("okf_bundle_empty_at_dir", { dir: bundleDir })
+    : t("okf_bundle_prompt");
 
   const form = document.createElement("div");
   form.className = "okf-bundle-selector";
   const input = document.createElement("input");
   input.type = "text";
   input.className = "okf-bundle-input";
-  input.placeholder = "C:\\pfad\\zum\\repo\\docs\\okf";
+  input.placeholder = t("okf_bundle_path_placeholder");
   input.value = bundleDir ?? "";
   const open = document.createElement("button");
   open.type = "button";
   open.className = "okf-bundle-open";
-  open.textContent = "Öffnen";
+  open.textContent = t("okf_bundle_open");
   const errorEl = document.createElement("div");
   errorEl.className = "okf-bundle-error";
 
@@ -441,8 +441,7 @@ function renderBundleSelector(container: HTMLElement): void {
       return;
     }
     if (catalog.length === 0) {
-      errorEl.textContent =
-        "Der Ordner ist ein gültiges Bundle, enthält aber keine Artikel.";
+      errorEl.textContent = t("okf_bundle_valid_but_empty");
       return;
     }
     renderAll();
@@ -519,7 +518,7 @@ function buildMetaStrip(entry: CatalogEntry | undefined): HTMLElement {
       link.href = href;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
-      link.textContent = "Quelle ↗";
+      link.textContent = t("okf_resource_link");
       strip.appendChild(link);
     }
   }
@@ -568,8 +567,8 @@ async function copyInstruction(
       copied = false;
     }
   }
-  const original = "📋 Kopieren";
-  button.textContent = copied ? "✓ Kopiert" : "⚠️ Kopieren fehlgeschlagen";
+  const original = t("okf_copy");
+  button.textContent = copied ? t("okf_copied") : t("okf_copy_failed");
   button.disabled = true;
   window.setTimeout(() => {
     button.textContent = original;
@@ -583,7 +582,7 @@ function buildImportAction(file: string): HTMLElement {
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = "okf-import-btn";
-  btn.textContent = "Als Lerninhalt importieren";
+  btn.textContent = t("okf_import_button");
   const hint = document.createElement("div");
   hint.className = "okf-import-hint";
 
@@ -599,15 +598,13 @@ function buildImportAction(file: string): HTMLElement {
         if (result.isError) {
           throw new Error("host rejected the message");
         }
-        hint.textContent =
-          "An den Agenten übergeben — die Zerlegung läuft im Chat.";
+        hint.textContent = t("okf_import_handed_off");
       } catch {
         // Hosts without a conversation surface (e.g. the Companion
         // sidebar) reject sendMessage: show the instruction to hand to
         // the agent manually instead.
         const note = document.createElement("div");
-        note.textContent =
-          "Dieser Host hat keinen Chat — gib deinem Agenten diese Anweisung:";
+        note.textContent = t("okf_import_no_chat");
         const copyable = document.createElement("textarea");
         copyable.readOnly = true;
         copyable.className = "okf-import-fallback";
@@ -616,7 +613,7 @@ function buildImportAction(file: string): HTMLElement {
         const copyBtn = document.createElement("button");
         copyBtn.type = "button";
         copyBtn.className = "okf-import-copy-btn";
-        copyBtn.textContent = "📋 Kopieren";
+        copyBtn.textContent = t("okf_copy");
         copyBtn.addEventListener("click", () => {
           void copyInstruction(copyable, copyBtn);
         });
@@ -643,19 +640,19 @@ function renderReaderBody(container: HTMLElement): void {
     renderEmptyInto(
       container,
       "📚",
-      "Kein Artikel ausgewählt",
-      "Wähle links einen Artikel aus der Wissensbasis.",
+      t("okf_reader_empty_title"),
+      t("okf_reader_empty_sub"),
     );
     return;
   }
   const error = readErrors.get(currentFile);
   if (error) {
-    renderEmptyInto(container, "⚠️", "Artikel konnte nicht geladen werden", error);
+    renderEmptyInto(container, "⚠️", t("okf_article_load_failed"), error);
     return;
   }
   const body = bodyCache.get(currentFile);
   if (body === undefined) {
-    renderEmptyInto(container, "⏳", "Lädt...", currentFile);
+    renderEmptyInto(container, "⏳", t("okf_loading"), currentFile);
     return;
   }
   container.replaceChildren();
@@ -676,7 +673,7 @@ function renderCitationFullView(container: HTMLElement, view: CitationView): voi
   const back = document.createElement("button");
   back.type = "button";
   back.className = "okf-citation-view-back";
-  back.textContent = "← Zurück zum Artikel";
+  back.textContent = t("okf_back_to_article");
   back.addEventListener("click", () => {
     citationView = null;
     renderAll();
@@ -786,12 +783,14 @@ function buildCitationBox(
   const box = document.createElement("div");
   if (state.status === "loading") {
     box.className = "okf-citation-inline";
-    box.textContent = "Lädt Zitat...";
+    box.textContent = t("okf_citation_loading");
     return box;
   }
   if (state.status === "error") {
     box.className = "okf-citation-error";
-    box.textContent = `Zitat nicht erreichbar: ${state.error ?? target}`;
+    box.textContent = tf("okf_citation_unavailable", {
+      message: state.error ?? target,
+    });
     return box;
   }
 
@@ -804,7 +803,7 @@ function buildCitationBox(
   const openBtn = document.createElement("button");
   openBtn.type = "button";
   openBtn.className = "okf-citation-open";
-  openBtn.textContent = "Vollständig öffnen ↗";
+  openBtn.textContent = t("okf_citation_open_full");
   openBtn.addEventListener("click", (event) => {
     event.preventDefault();
     citationView = {
@@ -973,7 +972,7 @@ async function renderGraphView(): Promise<void> {
   contentEl.replaceChildren();
   const loading = document.createElement("div");
   loading.className = "okf-empty";
-  loading.textContent = "Lädt Graph...";
+  loading.textContent = t("okf_graph_loading");
   contentEl.appendChild(loading);
 
   await ensureAllBodiesLoaded();
@@ -985,22 +984,26 @@ async function renderGraphView(): Promise<void> {
     renderEmptyInto(
       contentEl,
       "🕸️",
-      "Kein Graph verfügbar",
-      "Diese Wissensbasis enthält noch keine Artikel.",
+      t("okf_graph_empty_title"),
+      t("okf_graph_empty_sub"),
     );
     return;
   }
 
   const legend = document.createElement("div");
   legend.className = "okf-graph-legend";
-  const articleLegend = document.createElement("span");
-  articleLegend.className = "okf-graph-legend-item";
-  articleLegend.innerHTML = '<span class="okf-graph-legend-mark article"></span>Artikel';
-  const citationLegend = document.createElement("span");
-  citationLegend.className = "okf-graph-legend-item";
-  citationLegend.innerHTML =
-    '<span class="okf-graph-legend-mark citation"></span>Zitat (ADR)';
-  legend.append(articleLegend, citationLegend);
+  const legendItem = (markClass: string, label: string): HTMLElement => {
+    const item = document.createElement("span");
+    item.className = "okf-graph-legend-item";
+    const mark = document.createElement("span");
+    mark.className = `okf-graph-legend-mark ${markClass}`;
+    item.append(mark, label);
+    return item;
+  };
+  legend.append(
+    legendItem("article", t("okf_legend_article")),
+    legendItem("citation", t("okf_legend_citation")),
+  );
   contentEl.appendChild(legend);
 
   const positioned = layoutGraph(nodes, edges, GRAPH_W, GRAPH_H);
@@ -1012,7 +1015,7 @@ async function renderGraphView(): Promise<void> {
   svg.setAttribute("viewBox", `0 0 ${GRAPH_W} ${GRAPH_H}`);
   svg.setAttribute("class", "okf-graph-svg");
   svg.setAttribute("role", "img");
-  svg.setAttribute("aria-label", "OKF Wissensgraph");
+  svg.setAttribute("aria-label", t("okf_graph_aria"));
   wrap.appendChild(svg);
 
   const edgesGroup = document.createElementNS(SVG_NS, "g") as SVGGElement;
@@ -1084,8 +1087,8 @@ function renderLogView(container: HTMLElement): void {
     renderEmptyInto(
       container,
       "📜",
-      "Kein Log vorhanden",
-      "Für diese Wissensbasis wurde noch kein log.md geschrieben.",
+      t("okf_log_empty_title"),
+      t("okf_log_empty_sub"),
     );
     return;
   }
@@ -1102,6 +1105,26 @@ function renderLogView(container: HTMLElement): void {
 
 // ── Static event wiring ──────────────────────────────────────────────────
 
+const VIEW_LABEL_KEYS: Record<ViewMode, string> = {
+  reader: "okf_view_reader",
+  graph: "okf_view_graph",
+  log: "okf_view_log",
+};
+
+/**
+ * Localize the chrome that lives statically in okf-panel.html (view-toggle
+ * labels, search placeholder). Called once at module load (English default)
+ * and again after connect() resolves the locale, since that markup is never
+ * re-rendered by renderAll().
+ */
+function applyStaticLocale(): void {
+  for (const btn of viewButtons()) {
+    const mode = btn.dataset.view as ViewMode | undefined;
+    if (mode) btn.textContent = t(VIEW_LABEL_KEYS[mode]);
+  }
+  if (searchInputEl) searchInputEl.placeholder = t("okf_search_placeholder");
+}
+
 for (const btn of viewButtons()) {
   btn.addEventListener("click", () => {
     const mode = btn.dataset.view as ViewMode | undefined;
@@ -1111,6 +1134,7 @@ for (const btn of viewButtons()) {
   });
 }
 updateViewToggleActiveState();
+applyStaticLocale();
 
 searchInputEl?.addEventListener("input", () => {
   searchQuery = searchInputEl.value;
@@ -1198,6 +1222,7 @@ app
     connected = true;
     if (navigator.language.startsWith("de")) {
       setCurrentLocale("de");
+      applyStaticLocale();
     }
     // ontoolresult (which carries the initial bundle/catalog/log and the
     // signed-in user) normally fires right after the handshake and triggers
