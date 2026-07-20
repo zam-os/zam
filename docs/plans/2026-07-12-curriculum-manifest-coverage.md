@@ -36,7 +36,8 @@ the paths that already have topics.
   **457** paths (Primar, HS, RS, Gym Sek I, KCGO); school-type-specific PDFs
 - [x] **Phase F / #140 — `kerncurriculum-niedersachsen` (Niedersachsen)** —
   complete catalog **785** paths (GS, HS, RS, ObS, Gym, IGS, GyO); CuVo PDFs
-- [ ] **Phase G / #141 — `kernlehrplan-nrw` (Nordrhein-Westfalen)**
+- [x] **Phase G / #141 — `kernlehrplan-nrw` (Nordrhein-Westfalen)** — complete
+  catalog **945** paths (GS, HS, RS, GeS, Gym, GyO); Lehrplannavigator PDFs
 - [ ] **Phase H / #142 — `lehrplaene-rp` (Rheinland-Pfalz)**
 - [ ] **Phase I / #143 — `lehrplan-saarland` (Saarland)**
 - [ ] **Phase J / #144 — `lehrplan-sachsen` (Sachsen)**
@@ -246,19 +247,20 @@ bag rows are out of scope.
 
 ## Phase G / #141 — `kernlehrplan-nrw` (Nordrhein-Westfalen)
 
-Provider: **Kernlehrplan (Nordrhein-Westfalen)** · catalog: `seed` · current
-inventory: **40 paths / 10 with topics**
+Provider: **Kernlehrplan (Nordrhein-Westfalen)** · catalog: `complete` ·
+**945** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from https://lehrplannavigator.nrw.de/.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule, Hauptschule, Realschule, Gesamtschule, Gymnasium
+Sek I, Gymnasiale Oberstufe. Content URLs are Kernlehrplan PDFs. Archive pages
+and Weiterbildungskolleg out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #141 with final counts, capture date and evidence.
+- [x] Capture official school types and subject KLPs from Lehrplannavigator.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF content URLs for every leaf.
+- [x] Offline fixture (Mathematik Realschule) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase H / #142 — `lehrplaene-rp` (Rheinland-Pfalz)
 

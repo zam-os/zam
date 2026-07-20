@@ -119,7 +119,7 @@ describe("extractTopicsByHeadingStrict", () => {
 });
 
 describe("provider extractTopics strict contract (seed + complete)", () => {
-  it("NRW seed provider isolates two sibling topics from one fixture", () => {
+  it("NRW complete provider isolates two sibling topics from one fixture", () => {
     const html = fs.readFileSync(
       path.resolve(
         "tests/fixtures/curriculum/kernlehrplan-nrw/mathematik-realschule-10.html",
@@ -140,7 +140,7 @@ describe("provider extractTopics strict contract (seed + complete)", () => {
     expect(f).not.toContain("Zahlen, Termen");
   });
 
-  it("NRW seed provider hard-omits topics against a non-matching document", () => {
+  it("NRW complete provider hard-omits topics against a non-matching document", () => {
     const extracted = kernlehrplanNrwProvider.extractTopics!(NON_MATCHING_HTML, [
       "realschule|10|mathematik#arithmetik-algebra",
     ]);
