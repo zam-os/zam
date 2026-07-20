@@ -11,17 +11,13 @@
  */
 
 import type {
+  CurriculumCatalogPath,
   CurriculumProvider,
   CurriculumSelection,
   TopicNode,
 } from "./types.js";
 
-export interface CurriculumPath {
-  schoolType: string;
-  grade: string;
-  subject: string;
-  track?: string;
-}
+export type CurriculumPath = CurriculumCatalogPath;
 
 export type PathCoverageIssue =
   | "no_topics"
@@ -46,7 +42,11 @@ export interface ProviderCoverageReport {
   total: number;
   covered: number;
   gaps: number;
-  /** covered / total, or 1 when total is 0 */
+  catalogStatus: "seed" | "complete";
+  /** Complete taxonomy and at least one verified path. */
+  catalogComplete: boolean;
+  catalogIssue?: "catalog_seed" | "empty_catalog";
+  /** covered / total, or 0 when total is 0 */
   coverageRatio: number;
 }
 
@@ -55,6 +55,8 @@ export interface CoverageSummary {
   total: number;
   covered: number;
   gaps: number;
+  catalogComplete: boolean;
+  incompleteCatalogProviders: string[];
   coverageRatio: number;
 }
 
@@ -77,6 +79,10 @@ export function selectionFromPath(path: CurriculumPath): CurriculumSelection {
 export function collectCatalogPaths(
   provider: CurriculumProvider,
 ): CurriculumPath[] {
+  if (provider.listCatalogPaths) {
+    return provider.listCatalogPaths().map((path) => ({ ...path }));
+  }
+
   const paths: CurriculumPath[] = [];
   for (const schoolType of provider.listSchoolTypes()) {
     for (const grade of provider.listGrades(schoolType.id)) {
@@ -160,6 +166,12 @@ export function auditProviderCoverage(
   );
   const covered = pathResults.filter((p) => p.ok).length;
   const total = pathResults.length;
+  const catalogIssue =
+    total === 0
+      ? "empty_catalog"
+      : provider.catalogStatus === "complete"
+        ? undefined
+        : "catalog_seed";
   return {
     providerId: provider.id,
     region: provider.region,
@@ -168,7 +180,10 @@ export function auditProviderCoverage(
     total,
     covered,
     gaps: total - covered,
-    coverageRatio: total === 0 ? 1 : covered / total,
+    catalogStatus: provider.catalogStatus,
+    catalogComplete: catalogIssue === undefined,
+    ...(catalogIssue ? { catalogIssue } : {}),
+    coverageRatio: total === 0 ? 0 : covered / total,
   };
 }
 
@@ -178,12 +193,17 @@ export function auditAllProviders(
   const reports = providers.map(auditProviderCoverage);
   const total = reports.reduce((sum, r) => sum + r.total, 0);
   const covered = reports.reduce((sum, r) => sum + r.covered, 0);
+  const incompleteCatalogProviders = reports
+    .filter((report) => !report.catalogComplete)
+    .map((report) => report.providerId);
   return {
     providers: reports,
     total,
     covered,
     gaps: total - covered,
-    coverageRatio: total === 0 ? 1 : covered / total,
+    catalogComplete: incompleteCatalogProviders.length === 0,
+    incompleteCatalogProviders,
+    coverageRatio: total === 0 ? 0 : covered / total,
   };
 }
 
@@ -198,8 +218,11 @@ export function formatCoverageHuman(summary: CoverageSummary): string {
   ];
   for (const report of summary.providers) {
     const pct = (report.coverageRatio * 100).toFixed(1);
+    const catalog = report.catalogComplete
+      ? "catalog=complete"
+      : `catalog=${report.catalogIssue}`;
     lines.push(
-      `${report.providerId} (${report.regionLabel}): ${report.covered}/${report.total} (${pct}%)  gaps=${report.gaps}`,
+      `${report.providerId} (${report.regionLabel}): ${report.covered}/${report.total} (${pct}%)  gaps=${report.gaps}  ${catalog}`,
     );
     if (report.gaps > 0 && report.gaps <= 20) {
       for (const key of gapKeys(report)) {
@@ -218,5 +241,10 @@ export function formatCoverageHuman(summary: CoverageSummary): string {
   lines.push(
     `TOTAL: ${summary.covered}/${summary.total} (${pct}%)  gaps=${summary.gaps}`,
   );
+  if (!summary.catalogComplete) {
+    lines.push(
+      `INCOMPLETE CATALOGS: ${summary.incompleteCatalogProviders.join(", ")}`,
+    );
+  }
   return lines.join("\n");
 }

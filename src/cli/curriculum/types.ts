@@ -48,6 +48,22 @@ export interface CurriculumSelection {
   track?: string;
 }
 
+/**
+ * One verified navigable leaf in a provider's official catalog.
+ *
+ * Complete providers expose these paths independently from their topic
+ * payload so coverage tooling can distinguish a missing topic from a subject
+ * that is not offered for the selected grade.
+ */
+export interface CurriculumCatalogPath {
+  schoolType: string;
+  grade: string;
+  subject: string;
+  track?: string;
+}
+
+export type CurriculumCatalogStatus = "seed" | "complete";
+
 export type CurriculumLevel =
   | "schoolType"
   | "grade"
@@ -65,6 +81,8 @@ export interface CurriculumProvider {
   region: string;
   regionLabel: string;
   label: string;
+  /** Whether the bundled taxonomy covers every official subject and track. */
+  catalogStatus: CurriculumCatalogStatus;
 
   listSchoolTypes(): TaxonomyNode[];
   listGrades(schoolType: string): TaxonomyNode[];
@@ -76,6 +94,8 @@ export interface CurriculumProvider {
     subject: string,
   ): TaxonomyNode[];
   listTopics(selection: CurriculumSelection): TopicNode[];
+  /** Explicit verified leaves for coverage audits. */
+  listCatalogPaths?(): CurriculumCatalogPath[];
   resolveTopic(topic: TopicNode): ResolvedSource;
   extractTopics?(html: string, topicIds: string[]): Record<string, string>;
   /**

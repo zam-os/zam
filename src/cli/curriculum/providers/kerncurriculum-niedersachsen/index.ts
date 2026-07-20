@@ -8,6 +8,7 @@ export const kerncurriculumNiedersachsenProvider: CurriculumProvider = {
   region: "NI",
   regionLabel: "Niedersachsen",
   label: "Kerncurriculum (Niedersachsen)",
+  catalogStatus: "seed",
 
   listSchoolTypes() {
     return MANIFEST.schoolTypes;

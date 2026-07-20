@@ -23,6 +23,7 @@ const stubProvider: CurriculumProvider = {
   region: "XX",
   regionLabel: "Testland",
   label: "Stub Coverage",
+  catalogStatus: "complete",
 
   listSchoolTypes: () => [
     { id: "os", label: "Oberschule" },
@@ -136,6 +137,22 @@ describe("curriculum topic coverage audit", () => {
     ]);
   });
 
+  it("collectCatalogPaths prefers an explicit verified catalog", () => {
+    const explicit: CurriculumProvider = {
+      ...stubProvider,
+      listCatalogPaths: () => [
+        {
+          schoolType: "os",
+          grade: "7",
+          subject: "mathematik",
+        },
+      ],
+    };
+    expect(collectCatalogPaths(explicit).map(pathKey)).toEqual([
+      "os|7|mathematik",
+    ]);
+  });
+
   it("auditPath marks empty topics and successful resolves", () => {
     const ok = auditPath(stubProvider, {
       schoolType: "os",
@@ -159,12 +176,30 @@ describe("curriculum topic coverage audit", () => {
     expect(report.total).toBe(5);
     expect(report.covered).toBe(2);
     expect(report.gaps).toBe(3);
+    expect(report.catalogComplete).toBe(true);
     expect(report.coverageRatio).toBeCloseTo(0.4);
     expect(gapKeys(report).sort()).toEqual([
       "gy|7|mathematik",
       "os|7|physik",
       "os|8|tracked|b",
     ]);
+  });
+
+  it("marks seed and empty catalogs as incomplete", () => {
+    const seedReport = auditProviderCoverage({
+      ...stubProvider,
+      catalogStatus: "seed",
+    });
+    expect(seedReport.catalogComplete).toBe(false);
+    expect(seedReport.catalogIssue).toBe("catalog_seed");
+
+    const emptyReport = auditProviderCoverage({
+      ...stubProvider,
+      listCatalogPaths: () => [],
+    });
+    expect(emptyReport.catalogComplete).toBe(false);
+    expect(emptyReport.catalogIssue).toBe("empty_catalog");
+    expect(emptyReport.coverageRatio).toBe(0);
   });
 
   it("formatCoverageHuman includes totals", () => {
@@ -182,20 +217,27 @@ describe("curriculum topic coverage audit", () => {
     expect(ids).toContain("bildungsplan-bremen");
   });
 
-  it("live raw providers: audit is deterministic and Bayern has substantial coverage", () => {
+  it("live raw providers: Bayern is complete while the other catalogs remain seeds", () => {
     const summary = auditAllProviders(RAW_CURRICULUM_PROVIDERS);
     expect(summary.total).toBeGreaterThan(500);
     // Seed + partial captures: overall not yet 100%, but progress is real.
     expect(summary.covered).toBeGreaterThan(100);
     expect(summary.coverageRatio).toBeGreaterThan(0);
     expect(summary.coverageRatio).toBeLessThanOrEqual(1);
+    expect(summary.catalogComplete).toBe(false);
+    expect(summary.incompleteCatalogProviders).not.toContain(
+      "lehrplanplus-bayern",
+    );
 
     const bayern = summary.providers.find(
       (p) => p.providerId === "lehrplanplus-bayern",
     );
     expect(bayern).toBeDefined();
-    expect(bayern!.covered).toBeGreaterThan(1000);
-    expect(bayern!.coverageRatio).toBeGreaterThan(0.5);
+    expect(bayern!.total).toBe(2095);
+    expect(bayern!.covered).toBe(2095);
+    expect(bayern!.gaps).toBe(0);
+    expect(bayern!.catalogComplete).toBe(true);
+    expect(bayern!.coverageRatio).toBe(1);
   });
 
   it("auditPath flags resolve_failed when listTopics returns a topic without URL", () => {

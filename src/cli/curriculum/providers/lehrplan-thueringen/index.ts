@@ -8,6 +8,7 @@ export const lehrplanThueringenProvider: CurriculumProvider = {
   region: "TH",
   regionLabel: "Thüringen",
   label: "Lehrplan (Thüringen)",
+  catalogStatus: "seed",
 
   listSchoolTypes() {
     return MANIFEST.schoolTypes;

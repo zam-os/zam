@@ -8,6 +8,7 @@ export const fachanforderungenShProvider: CurriculumProvider = {
   region: "SH",
   regionLabel: "Schleswig-Holstein",
   label: "Fachanforderungen (Schleswig-Holstein)",
+  catalogStatus: "seed",
 
   listSchoolTypes() {
     return MANIFEST.schoolTypes;

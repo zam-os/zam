@@ -8,6 +8,7 @@ export const bildungsplanBwProvider: CurriculumProvider = {
   region: "BW",
   regionLabel: "Baden-Württemberg",
   label: "Bildungsplan (Baden-Württemberg)",
+  catalogStatus: "seed",
 
   listSchoolTypes() {
     return MANIFEST.schoolTypes;

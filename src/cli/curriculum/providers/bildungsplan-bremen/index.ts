@@ -8,6 +8,7 @@ export const bildungsplanBremenProvider: CurriculumProvider = {
   region: "HB",
   regionLabel: "Bremen",
   label: "Bildungsplan (Bremen)",
+  catalogStatus: "seed",
 
   listSchoolTypes() {
     return MANIFEST.schoolTypes;

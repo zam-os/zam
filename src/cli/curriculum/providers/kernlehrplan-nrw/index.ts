@@ -8,6 +8,7 @@ export const kernlehrplanNrwProvider: CurriculumProvider = {
   region: "NW",
   regionLabel: "Nordrhein-Westfalen",
   label: "Kernlehrplan (Nordrhein-Westfalen)",
+  catalogStatus: "seed",
 
   listSchoolTypes() {
     return MANIFEST.schoolTypes;

@@ -14,8 +14,8 @@
  *   npx tsx scripts/curriculum-topic-coverage-smoke.ts --min-coverage 0.5
  *
  * Exit codes:
- *   0 — coverage meets the bar (full coverage by default, or --min-coverage)
- *   1 — gaps remain (or unknown --provider)
+ *   0 — verified catalogs meet the bar (full coverage by default)
+ *   1 — topic gaps or incomplete/empty catalogs remain (or unknown provider)
  *   2 — invalid CLI flags
  *
  * CI gate once manifests are complete: drop --report-only and require exit 0
@@ -83,7 +83,9 @@ function parseArgs(argv: string[]): CliOptions {
       const raw = argv[++i];
       const value = Number(raw);
       if (!Number.isFinite(value) || value < 0) {
-        console.error(`--max-gap-list must be a non-negative number (got ${raw})`);
+        console.error(
+          `--max-gap-list must be a non-negative number (got ${raw})`,
+        );
         process.exit(2);
       }
       maxGapList = Math.floor(value);
@@ -119,7 +121,7 @@ Options:
   --provider <id>       Limit to one provider (repeatable)
   --json                Emit machine-readable JSON
   --report-only         Always exit 0 (progress report while coverage is incomplete)
-  --min-coverage <0-1>  Exit 0 when overall ratio ≥ value (default: 1 = zero gaps)
+  --min-coverage <0-1>  Required topic ratio; catalogs must also be complete
   --max-gap-list <n>    Cap gap keys in JSON output (default: 50)
   -h, --help            Show this help
 `);
@@ -143,10 +145,12 @@ function selectProviders(ids: string[] | null) {
 
 function toJsonPayload(summary: CoverageSummary, maxGapList: number) {
   return {
-    success: summary.gaps === 0,
+    success: summary.gaps === 0 && summary.catalogComplete,
     total: summary.total,
     covered: summary.covered,
     gaps: summary.gaps,
+    catalogComplete: summary.catalogComplete,
+    incompleteCatalogProviders: summary.incompleteCatalogProviders,
     coverageRatio: summary.coverageRatio,
     providers: summary.providers.map((report) => {
       const gapPaths = report.paths
@@ -163,6 +167,9 @@ function toJsonPayload(summary: CoverageSummary, maxGapList: number) {
         total: report.total,
         covered: report.covered,
         gaps: report.gaps,
+        catalogStatus: report.catalogStatus,
+        catalogComplete: report.catalogComplete,
+        catalogIssue: report.catalogIssue,
         coverageRatio: report.coverageRatio,
         gapSample: gapPaths.slice(0, maxGapList),
         gapSampleTruncated: gapPaths.length > maxGapList,
@@ -177,7 +184,9 @@ function main(): void {
   const summary = auditAllProviders(providers);
 
   if (opts.json) {
-    console.log(JSON.stringify(toJsonPayload(summary, opts.maxGapList), null, 2));
+    console.log(
+      JSON.stringify(toJsonPayload(summary, opts.maxGapList), null, 2),
+    );
   } else {
     console.log(formatCoverageHuman(summary));
   }
@@ -186,13 +195,23 @@ function main(): void {
     process.exit(0);
   }
 
-  if (summary.coverageRatio + Number.EPSILON < opts.minCoverage) {
+  if (
+    !summary.catalogComplete ||
+    summary.coverageRatio + Number.EPSILON < opts.minCoverage
+  ) {
     if (!opts.json) {
-      console.error(
-        `\nFAIL: coverage ${(summary.coverageRatio * 100).toFixed(1)}% ` +
-          `< required ${(opts.minCoverage * 100).toFixed(1)}% ` +
-          `(${summary.gaps} gap path(s)).`,
-      );
+      if (!summary.catalogComplete) {
+        console.error(
+          `\nFAIL: incomplete official catalogs: ${summary.incompleteCatalogProviders.join(", ")}.`,
+        );
+      }
+      if (summary.coverageRatio + Number.EPSILON < opts.minCoverage) {
+        console.error(
+          `\nFAIL: coverage ${(summary.coverageRatio * 100).toFixed(1)}% ` +
+            `< required ${(opts.minCoverage * 100).toFixed(1)}% ` +
+            `(${summary.gaps} gap path(s)).`,
+        );
+      }
     }
     process.exit(1);
   }

@@ -22,6 +22,7 @@ const stubProvider: CurriculumProvider = {
   region: "XX",
   regionLabel: "Teststaat",
   label: "Stub",
+  catalogStatus: "complete",
 
   listSchoolTypes: () => [
     { id: "full", label: "Full" },
@@ -57,9 +58,7 @@ const stubProvider: CurriculumProvider = {
       selection.grade === "1" &&
       (selection.subject === "direct" ||
         (selection.subject === "tracked" && selection.track === "alive"));
-    return reachable
-      ? [{ id: "t1", label: "Topic", sourceRef: "ref" }]
-      : [];
+    return reachable ? [{ id: "t1", label: "Topic", sourceRef: "ref" }] : [];
   },
   resolveTopic: (topic: TopicNode) => ({
     provider: "stub",
@@ -79,9 +78,9 @@ describe("withImportableContentOnly", () => {
   });
 
   it("hides tracks without topics but keeps topic-bearing siblings", () => {
-    expect(filtered.listTracks("full", "1", "tracked").map((t) => t.id)).toEqual(
-      ["alive"],
-    );
+    expect(
+      filtered.listTracks("full", "1", "tracked").map((t) => t.id),
+    ).toEqual(["alive"]);
   });
 
   it("hides grades and school types whose options are all empty", () => {
@@ -96,7 +95,13 @@ describe("withImportableContentOnly", () => {
       description: "kept as-is",
     });
     expect(filtered.id).toBe("stub");
-    expect(filtered.listTopics({ schoolType: "full", grade: "1", subject: "direct" })).toHaveLength(1);
+    expect(
+      filtered.listTopics({
+        schoolType: "full",
+        grade: "1",
+        subject: "direct",
+      }),
+    ).toHaveLength(1);
   });
 });
 

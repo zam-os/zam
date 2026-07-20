@@ -28,6 +28,8 @@ export {
   selectionFromPath,
 } from "./topic-coverage.js";
 export type {
+  CurriculumCatalogPath,
+  CurriculumCatalogStatus,
   CurriculumLevel,
   CurriculumProvider,
   CurriculumSelection,
