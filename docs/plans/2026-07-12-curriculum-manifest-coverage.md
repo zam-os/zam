@@ -49,7 +49,8 @@ the paths that already have topics.
 - [x] **Phase L / #146 — `lehrplanplus-bayern` (Bayern)**
 - [x] **Phase M / #147 — `rahmenlehrplan-berlin-brandenburg` (Berlin / Brandenburg)** —
   complete catalog **516** paths (GS, ISS/Oberschule, Gym Sek I); RLP Online Teil C
-- [ ] **Phase N / #148 — `rahmenplan-mv` (Mecklenburg-Vorpommern)**
+- [x] **Phase N / #148 — `rahmenplan-mv` (Mecklenburg-Vorpommern)** — complete catalog
+  **440** paths (GS, OS, regS, Gym, GyO, FöS Lernen, FöS geistige Entw.); Bildungsserver PDFs
 - [ ] **Phase O / #149 — `rahmenrichtlinien-st` (Sachsen-Anhalt)**
 
 ## Frozen scope and evidence rules
@@ -372,19 +373,23 @@ Oberstufe (separate portal section) out of scope.
 
 ## Phase N / #148 — `rahmenplan-mv` (Mecklenburg-Vorpommern)
 
-Provider: **Rahmenplan (Mecklenburg-Vorpommern)** · catalog: `seed` · current
-inventory: **40 paths / 8 with topics**
+Provider: **Rahmenplan (Mecklenburg-Vorpommern)** · catalog: `complete` ·
+**440** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from
+https://www.bildung-mv.de/unterricht/rahmenplaene/rahmenplaene-fuer-die-allgemein-bildenden-faecher/.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule, Orientierungsstufe, Regionale Schule, Gymnasium
+Sek I, Gymnasiale Oberstufe, Förderschule Lernen, Förderschule geistige
+Entwicklung. Content URLs are official PDF Rahmenpläne. Berufliche
+Bildungsgänge/FOS/Fachgymnasium out of scope; aufwachsende Fassungen preferred
+over auslaufende where both exist.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #148 with final counts, capture date and evidence.
+- [x] Capture official school types and subject Rahmenpläne from Bildungsserver.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF content URLs for every leaf.
+- [x] Offline fixture (Mathematik Regionale Schule) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase O / #149 — `rahmenrichtlinien-st` (Sachsen-Anhalt)
 
