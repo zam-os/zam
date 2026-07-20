@@ -414,13 +414,15 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
       const zahlContent = extracted["gymnasium|10|mathematik#leitidee-zahl"];
       const raumContent = extracted["gymnasium|10|mathematik#leitidee-raum"];
 
-      expect(zahlContent).toContain("Leitidee Zahl - Variable - Operation");
+      expect(zahlContent).toContain("Leitidee Zahl");
       expect(zahlContent).toContain("Potenzfunktionen");
-      expect(zahlContent).not.toContain("Vektoren im dreidimensionalen Raum");
+      expect(zahlContent).toContain("UNIQUE_ZAHL_MARKER");
+      expect(zahlContent).not.toContain("UNIQUE_RAUM_MARKER");
 
       expect(raumContent).toContain("Leitidee Raum und Form");
       expect(raumContent).toContain("Vektoren im dreidimensionalen Raum");
-      expect(raumContent).not.toContain("Potenzfunktionen");
+      expect(raumContent).toContain("UNIQUE_RAUM_MARKER");
+      expect(raumContent).not.toContain("UNIQUE_ZAHL_MARKER");
     });
 
     it("gracefully handles unknown topics", () => {
@@ -470,97 +472,123 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
   });
 
   describe("Hessen (Kerncurriculum) Provider", () => {
-    let hessenPhysikHtml: string;
+    let hessenMathHtml: string;
 
     beforeAll(() => {
       const fixturesDir = path.resolve(
         "tests/fixtures/curriculum/kerncurriculum-hessen",
       );
-      hessenPhysikHtml = fs.readFileSync(
-        path.join(fixturesDir, "sample-gym-9-physik.html"),
+      hessenMathHtml = fs.readFileSync(
+        path.join(fixturesDir, "mathematik-gym.html"),
         "utf-8",
       );
     });
 
-    it("extracts topics from a minimal Hessen Gymnasium Physik fixture", () => {
+    it("extracts topics from a Hessen Gymnasium Mathematik fixture", () => {
       const extracted = kerncurriculumHessenProvider.extractTopics!(
-        hessenPhysikHtml,
-        ["gymnasium|9|physik#optik", "gymnasium|9|physik#elektromagnetismus"],
+        hessenMathHtml,
+        [
+          "gymnasium|9|mathematik#zahlen-operationen",
+          "gymnasium|9|mathematik#raum-form",
+        ],
       );
 
-      expect(extracted["gymnasium|9|physik#optik"]).toBeDefined();
-      expect(extracted["gymnasium|9|physik#optik"]).toContain("Optik");
+      expect(extracted["gymnasium|9|mathematik#zahlen-operationen"]).toContain(
+        "Zahlen und Operationen",
+      );
+      expect(extracted["gymnasium|9|mathematik#raum-form"]).toContain(
+        "Raum und Form",
+      );
     });
 
     it("gracefully handles unknown Hessen topics", () => {
       const extracted = kerncurriculumHessenProvider.extractTopics!(
-        hessenPhysikHtml,
-        ["gymnasium|9|physik#nonexistent"],
+        hessenMathHtml,
+        ["gymnasium|9|mathematik#nonexistent"],
       );
-      expect(extracted["gymnasium|9|physik#nonexistent"]).toBeUndefined();
+      expect(extracted["gymnasium|9|mathematik#nonexistent"]).toBeUndefined();
     });
   });
 
   describe("Sachsen (Lehrplan) Provider", () => {
-    let sachsenBioHtml: string;
+    let sachsenMathHtml: string;
 
     beforeAll(() => {
       const fixturesDir = path.resolve(
         "tests/fixtures/curriculum/lehrplan-sachsen",
       );
-      sachsenBioHtml = fs.readFileSync(
-        path.join(fixturesDir, "sample-gym-9-biologie.html"),
+      sachsenMathHtml = fs.readFileSync(
+        path.join(fixturesDir, "mathematik-oberschule.html"),
         "utf-8",
       );
     });
 
-    it("extracts topics from a minimal Sachsen Gymnasium Biologie fixture", () => {
-      const extracted = lehrplanSachsenProvider.extractTopics!(sachsenBioHtml, [
-        "gymnasium|9|biologie#genetik",
-        "gymnasium|9|biologie#evolution",
-      ]);
+    it("extracts topics from a minimal Sachsen Oberschule Mathematik fixture", () => {
+      const extracted = lehrplanSachsenProvider.extractTopics!(
+        sachsenMathHtml,
+        [
+          "oberschule|7|mathematik#arithmetik-algebra",
+          "oberschule|7|mathematik#funktionen",
+        ],
+      );
 
-      expect(extracted["gymnasium|9|biologie#genetik"]).toBeDefined();
-      expect(extracted["gymnasium|9|biologie#genetik"]).toContain("Genetik");
+      expect(
+        extracted["oberschule|7|mathematik#arithmetik-algebra"],
+      ).toBeDefined();
+      expect(
+        extracted["oberschule|7|mathematik#arithmetik-algebra"],
+      ).toContain("Arithmetik und Algebra");
     });
 
     it("gracefully handles unknown Sachsen topics", () => {
-      const extracted = lehrplanSachsenProvider.extractTopics!(sachsenBioHtml, [
-        "gymnasium|9|biologie#nonexistent",
-      ]);
-      expect(extracted["gymnasium|9|biologie#nonexistent"]).toBeUndefined();
+      const extracted = lehrplanSachsenProvider.extractTopics!(
+        sachsenMathHtml,
+        ["oberschule|7|mathematik#nonexistent"],
+      );
+      expect(
+        extracted["oberschule|7|mathematik#nonexistent"],
+      ).toBeUndefined();
     });
   });
 
   describe("Berlin-Brandenburg (Rahmenlehrplan) Provider", () => {
-    let berlinChemieHtml: string;
+    let berlinMathHtml: string;
 
     beforeAll(() => {
       const fixturesDir = path.resolve(
         "tests/fixtures/curriculum/rahmenlehrplan-berlin-brandenburg",
       );
-      berlinChemieHtml = fs.readFileSync(
-        path.join(fixturesDir, "sample-gym-9-chemie.html"),
+      berlinMathHtml = fs.readFileSync(
+        path.join(fixturesDir, "mathematik-gymnasium.html"),
         "utf-8",
       );
     });
 
-    it("extracts topics from a minimal Berlin-Brandenburg Gymnasium Chemie fixture", () => {
+    it("extracts topics from a minimal Berlin-Brandenburg Gymnasium Mathematik fixture", () => {
       const extracted = rahmenlehrplanBerlinBrandenburgProvider.extractTopics!(
-        berlinChemieHtml,
-        ["gymnasium|9|chemie#bindungen", "gymnasium|9|chemie#saeuren"],
+        berlinMathHtml,
+        [
+          "gymnasium|9|mathematik#arithmetik-algebra",
+          "gymnasium|9|mathematik#funktionen",
+        ],
       );
 
-      expect(extracted["gymnasium|9|chemie#bindungen"]).toBeDefined();
-      expect(extracted["gymnasium|9|chemie#bindungen"]).toContain("Bindungen");
+      expect(
+        extracted["gymnasium|9|mathematik#arithmetik-algebra"],
+      ).toBeDefined();
+      expect(
+        extracted["gymnasium|9|mathematik#arithmetik-algebra"],
+      ).toContain("Arithmetik und Algebra");
     });
 
     it("gracefully handles unknown Berlin-Brandenburg topics", () => {
       const extracted = rahmenlehrplanBerlinBrandenburgProvider.extractTopics!(
-        berlinChemieHtml,
-        ["gymnasium|9|chemie#nonexistent"],
+        berlinMathHtml,
+        ["gymnasium|9|mathematik#nonexistent"],
       );
-      expect(extracted["gymnasium|9|chemie#nonexistent"]).toBeUndefined();
+      expect(
+        extracted["gymnasium|9|mathematik#nonexistent"],
+      ).toBeUndefined();
     });
   });
 
@@ -573,82 +601,82 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
       name: "Niedersachsen",
       provider: kerncurriculumNiedersachsenProvider,
       fixtureDir: "kerncurriculum-niedersachsen",
-      fixtureFile: "sample-rs-9-physik.html",
-      topicId: "realschule|9|physik#mechanik",
-      expectLabel: "Mechanik",
-      siblingId: "realschule|9|physik#nonexistent",
+      fixtureFile: "mathematik-oberschule.html",
+      topicId: "oberschule|7|mathematik#zahlen-operationen",
+      expectLabel: "Zahlen und Operationen",
+      siblingId: "oberschule|7|mathematik#nonexistent",
     },
     {
       name: "Hamburg",
       provider: bildungsplanHamburgProvider,
       fixtureDir: "bildungsplan-hamburg",
-      fixtureFile: "sample-sts-9-physik.html",
-      topicId: "stadtteilschule|9|physik#mechanik",
-      expectLabel: "Mechanik",
-      siblingId: "stadtteilschule|9|physik#nonexistent",
+      fixtureFile: "mathematik-sts.html",
+      topicId: "stadtteilschule|7|mathematik#zahlen-operationen",
+      expectLabel: "Zahlen und Operationen",
+      siblingId: "stadtteilschule|7|mathematik#nonexistent",
     },
     {
       name: "Bremen",
       provider: bildungsplanBremenProvider,
       fixtureDir: "bildungsplan-bremen",
-      fixtureFile: "sample-os-9-informatik.html",
-      topicId: "oberschule|9|informatik#algorithmen",
-      expectLabel: "Algorithmen",
-      siblingId: "oberschule|9|informatik#nonexistent",
+      fixtureFile: "mathematik-oberschule-5-10.html",
+      topicId: "oberschule|5|mathematik#arithmetik-algebra",
+      expectLabel: "Arithmetik / Algebra",
+      siblingId: "oberschule|5|mathematik#nonexistent",
     },
     {
       name: "Mecklenburg-Vorpommern",
       provider: rahmenplanMvProvider,
       fixtureDir: "rahmenplan-mv",
-      fixtureFile: "sample-rs-9-physik.html",
-      topicId: "regionale-schule|9|physik#mechanik",
-      expectLabel: "Mechanik",
-      siblingId: "regionale-schule|9|physik#nonexistent",
+      fixtureFile: "mathematik-regionale-schule.html",
+      topicId: "regionale-schule|7|mathematik#arithmetik-algebra",
+      expectLabel: "Arithmetik und Algebra",
+      siblingId: "regionale-schule|7|mathematik#nonexistent",
     },
     {
       name: "Rheinland-Pfalz",
       provider: lehrplaeneRpProvider,
       fixtureDir: "lehrplaene-rp",
-      fixtureFile: "sample-rsp-9-physik.html",
-      topicId: "realschule-plus|9|physik#mechanik",
-      expectLabel: "Mechanik",
-      siblingId: "realschule-plus|9|physik#nonexistent",
+      fixtureFile: "mathematik-realschule-plus.html",
+      topicId: "realschule-plus|7|mathematik#arithmetik-algebra",
+      expectLabel: "Arithmetik und Algebra",
+      siblingId: "realschule-plus|7|mathematik#nonexistent",
     },
     {
       name: "Saarland",
       provider: lehrplanSaarlandProvider,
       fixtureDir: "lehrplan-saarland",
-      fixtureFile: "sample-gs-9-physik.html",
-      topicId: "gemeinschaftsschule|9|physik#mechanik",
-      expectLabel: "Mechanik",
-      siblingId: "gemeinschaftsschule|9|physik#nonexistent",
+      fixtureFile: "mathematik-gemeinschaftsschule.html",
+      topicId: "gemeinschaftsschule|7|mathematik#arithmetik-algebra",
+      expectLabel: "Arithmetik und Algebra",
+      siblingId: "gemeinschaftsschule|7|mathematik#nonexistent",
     },
     {
       name: "Sachsen-Anhalt",
       provider: rahmenrichtlinienStProvider,
       fixtureDir: "rahmenrichtlinien-st",
-      fixtureFile: "sample-sek-9-physik.html",
-      topicId: "sekundarschule|9|physik#mechanik",
-      expectLabel: "Mechanik",
-      siblingId: "sekundarschule|9|physik#nonexistent",
+      fixtureFile: "mathematik-sekundarschule.html",
+      topicId: "sekundarschule|7|mathematik#arithmetik-algebra",
+      expectLabel: "Arithmetik und Algebra",
+      siblingId: "sekundarschule|7|mathematik#nonexistent",
     },
     {
       name: "Schleswig-Holstein",
       provider: fachanforderungenShProvider,
       fixtureDir: "fachanforderungen-sh",
-      fixtureFile: "sample-gs-9-physik.html",
-      topicId: "gemeinschaftsschule|9|physik#mechanik",
-      expectLabel: "Mechanik",
-      siblingId: "gemeinschaftsschule|9|physik#nonexistent",
+      fixtureFile: "mathematik-sek1.html",
+      topicId: "gemeinschaftsschule|7|mathematik#zahlen-operationen",
+      expectLabel: "Zahlen und Operationen",
+      siblingId: "gemeinschaftsschule|7|mathematik#nonexistent",
     },
     {
       name: "Thüringen",
       provider: lehrplanThueringenProvider,
       fixtureDir: "lehrplan-thueringen",
-      fixtureFile: "sample-rs-9-physik.html",
-      topicId: "regelschule|9|physik#mechanik",
-      expectLabel: "Mechanik",
-      siblingId: "regelschule|9|physik#nonexistent",
+      fixtureFile: "mathematik-regelschule.html",
+      topicId: "regelschule|7|mathematik#arithmetik-algebra",
+      expectLabel: "Arithmetik und Algebra",
+      siblingId: "regelschule|7|mathematik#nonexistent",
     },
   ])(
     "$name seed-provider extractTopics",

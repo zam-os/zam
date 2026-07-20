@@ -1,4 +1,5 @@
 import { withImportableContentOnly } from "./content-filter.js";
+import { withCurriculumContentStatus } from "./content-readiness.js";
 import { bildungsplanBremenProvider } from "./providers/bildungsplan-bremen/index.js";
 import { bildungsplanBwProvider } from "./providers/bildungsplan-bw/index.js";
 import { bildungsplanHamburgProvider } from "./providers/bildungsplan-hamburg/index.js";
@@ -52,7 +53,9 @@ export const RAW_CURRICULUM_PROVIDERS: CurriculumProvider[] = [
  * cannot reach an importable topic.
  */
 export const CURRICULUM_PROVIDERS: CurriculumProvider[] =
-  RAW_CURRICULUM_PROVIDERS.map(withImportableContentOnly);
+  RAW_CURRICULUM_PROVIDERS.map(withCurriculumContentStatus).map(
+    withImportableContentOnly,
+  );
 
 export function getCurriculumProvider(
   id: string,

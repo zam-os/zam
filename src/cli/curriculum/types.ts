@@ -27,7 +27,15 @@ export interface TopicNode extends TaxonomyNode {
   sourceRef: string;
   /** Approximate teaching hours, when the curriculum specifies them. */
   hours?: number;
+  /**
+   * Whether this leaf has been verified against coherent, sufficiently
+   * detailed official source text. Catalog presence alone is not evidence
+   * that the topic can produce useful learning cards.
+   */
+  contentStatus?: CurriculumTopicContentStatus;
 }
+
+export type CurriculumTopicContentStatus = "verified" | "missing";
 
 /** Finer unit inside a Lernbereich (e.g. a Kompetenzerwartung bullet). */
 export interface SubTopicNode extends TaxonomyNode {

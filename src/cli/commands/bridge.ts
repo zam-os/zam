@@ -135,15 +135,26 @@ import {
 import { installCliShim } from "../cli-install.js";
 import { mapWithConcurrency } from "../curriculum/concurrency.js";
 import {
+  assessCurriculumText,
   CURRICULUM_PROVIDERS,
   type CurriculumBreadcrumb,
   type CurriculumLevel,
+  type CurriculumReadinessReason,
   type CurriculumSelection,
+  type CurriculumTextReadiness,
+  type CurriculumTopicAlternative,
+  curriculumTopicContentStatus,
+  findCurriculumTopicAlternatives,
   getCurriculumProvider,
   getLastCurriculumSelection,
   setLastCurriculumSelection,
   type TopicNode,
 } from "../curriculum/index.js";
+import {
+  extractPdfText,
+  isPdfUrl,
+  plainTextToExtractableHtml,
+} from "../curriculum/pdf-text.js";
 import { performInstallRepair } from "../install-repair.js";
 import { resolveOperationKnowledgeContexts } from "../knowledge-contexts.js";
 import {
@@ -4475,12 +4486,16 @@ bridgeCommand
     jsonOut({ success: true, resolved });
   });
 
+/**
+ * Fetch a curriculum source document as extractable HTML.
+ * PDF official sources (e.g. Bremen Bildungspläne) are converted via pdftotext.
+ */
 async function fetchRawHtml(url: string): Promise<string> {
   if (!(await isSafeUrl(url))) {
     throw new Error(`Access denied to unsafe target URL: ${url}`);
   }
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  const timeoutId = setTimeout(() => controller.abort(), 20000);
   try {
     const res = await fetch(url, {
       signal: controller.signal,
@@ -4492,16 +4507,22 @@ async function fetchRawHtml(url: string): Promise<string> {
       throw new Error(`Web server responded with status ${res.status}`);
     }
     const contentType = res.headers.get("content-type") || "";
+    if (isPdfUrl(url, contentType)) {
+      const bytes = new Uint8Array(await res.arrayBuffer());
+      const text = extractPdfText(bytes);
+      return plainTextToExtractableHtml(text);
+    }
     if (
       !contentType.includes("text/html") &&
-      !contentType.includes("application/xhtml+xml")
+      !contentType.includes("application/xhtml+xml") &&
+      !contentType.includes("text/plain")
     ) {
       throw new Error(`Unsupported content type: ${contentType}`);
     }
     return await res.text();
   } catch (err) {
     if (err instanceof Error && err.name === "AbortError") {
-      throw new Error("Connection request timed out after 10 seconds");
+      throw new Error("Connection request timed out after 20 seconds");
     }
     throw err;
   } finally {
@@ -4510,6 +4531,128 @@ async function fetchRawHtml(url: string): Promise<string> {
 }
 
 const CURRICULUM_TOPIC_URI_PREFIX = "zam-curriculum-topic://";
+
+function topicAlternatives(
+  providerId: string,
+  selection: CurriculumSelection,
+  topic: TopicNode,
+): CurriculumTopicAlternative[] {
+  return findCurriculumTopicAlternatives(
+    CURRICULUM_PROVIDERS,
+    providerId,
+    selection,
+    topic,
+  );
+}
+
+function assertVerifiedCurriculumTopic(
+  provider: NonNullable<ReturnType<typeof getCurriculumProvider>>,
+  topic: TopicNode,
+): void {
+  if (curriculumTopicContentStatus(provider, topic) !== "verified") {
+    throw new Error(
+      `Curriculum topic "${topic.id}" is marked missing because its official source has not been verified as sufficiently detailed.`,
+    );
+  }
+}
+
+function extractTopicTextFromRaw(
+  provider: NonNullable<ReturnType<typeof getCurriculumProvider>>,
+  topic: TopicNode,
+  rawHtml: string,
+): {
+  resolvedTopicId: string;
+  text: string;
+  readiness: CurriculumTextReadiness;
+} {
+  if (!provider.extractTopics) {
+    throw new Error(
+      `Curriculum provider "${provider.id}" does not implement extractTopics; ` +
+        `whole-page fallback is not allowed for selected-topic import.`,
+    );
+  }
+  const resolved = provider.resolveTopic(topic);
+  const text = (
+    provider.extractTopics(rawHtml, [resolved.topicId])[resolved.topicId] ?? ""
+  ).trim();
+  return {
+    resolvedTopicId: resolved.topicId,
+    text,
+    readiness: assessCurriculumText(text),
+  };
+}
+
+function insufficientCurriculumTextError(
+  topicId: string,
+  readiness: CurriculumTextReadiness,
+): Error {
+  return new Error(
+    `Curriculum topic "${topicId}" is missing sufficiently detailed content ` +
+      `(${readiness.reason}; ${readiness.textLength} characters, ` +
+      `${readiness.wordCount} words, ${readiness.sentenceCount} sentences).`,
+  );
+}
+
+// ── zam bridge curriculum-topic-readiness ───────────────────────────────────
+
+bridgeCommand
+  .command("curriculum-topic-readiness")
+  .description(
+    "Check whether one topic has enough coherent source text and list verified alternatives (JSON)",
+  )
+  .requiredOption("--provider <id>", "Curriculum provider id")
+  .requiredOption("--topic <json>", "Single topic node JSON")
+  .requiredOption("--selection <json>", "Current curriculum selection JSON")
+  .action(async (opts) => {
+    try {
+      const provider = getCurriculumProvider(opts.provider);
+      if (!provider) jsonError(`Unknown curriculum provider: ${opts.provider}`);
+
+      let topic: TopicNode;
+      let selection: CurriculumSelection;
+      try {
+        topic = JSON.parse(opts.topic);
+        selection = JSON.parse(opts.selection);
+      } catch {
+        jsonError("Invalid --topic or --selection JSON");
+        return;
+      }
+
+      const alternatives = topicAlternatives(provider.id, selection, topic);
+      if (curriculumTopicContentStatus(provider, topic) !== "verified") {
+        jsonOut({
+          success: true,
+          status: "missing",
+          reason: "unverified_source" satisfies CurriculumReadinessReason,
+          textLength: 0,
+          wordCount: 0,
+          sentenceCount: 0,
+          alternatives,
+        });
+        return;
+      }
+
+      try {
+        const resolved = provider.resolveTopic(topic);
+        const rawHtml = await fetchRawHtml(resolved.uri);
+        const { readiness } = extractTopicTextFromRaw(provider, topic, rawHtml);
+        jsonOut({ success: true, ...readiness, alternatives });
+      } catch (err) {
+        jsonOut({
+          success: true,
+          status: "missing",
+          reason: "source_error" satisfies CurriculumReadinessReason,
+          textLength: 0,
+          wordCount: 0,
+          sentenceCount: 0,
+          detail: err instanceof Error ? err.message : String(err),
+          alternatives,
+        });
+      }
+    } catch (err) {
+      jsonError((err as Error).message || String(err));
+    }
+  });
 
 interface StoredCurriculumTopic {
   topicId: string;
@@ -4526,6 +4669,7 @@ async function extractAndStoreCurriculumTopics(
 ): Promise<StoredCurriculumTopic[]> {
   const topicsByUri = new Map<string, TopicNode[]>();
   for (const topic of topics) {
+    assertVerifiedCurriculumTopic(provider, topic);
     const resolved = provider.resolveTopic(topic);
     const list = topicsByUri.get(resolved.uri) || [];
     list.push(topic);
@@ -4537,14 +4681,34 @@ async function extractAndStoreCurriculumTopics(
   for (const [uri, uriTopics] of topicsByUri.entries()) {
     const rawHtml = await fetchRawHtml(uri);
 
-    let extractedTexts: Record<string, string> = {};
-    if (provider.extractTopics) {
-      const fullTopicIds = uriTopics.map((t) => `${t.sourceRef}#${t.id}`);
-      extractedTexts = provider.extractTopics(rawHtml, fullTopicIds);
-    } else {
-      const cleanText = cleanHtml(rawHtml);
-      for (const t of uriTopics) {
-        extractedTexts[`${t.sourceRef}#${t.id}`] = cleanText;
+    if (!provider.extractTopics) {
+      throw new Error(
+        `Curriculum provider "${provider.id}" does not implement extractTopics; ` +
+          `whole-page fallback is not allowed for selected-topic import.`,
+      );
+    }
+
+    const fullTopicIds = uriTopics.map((t) => `${t.sourceRef}#${t.id}`);
+    const extractedTexts = provider.extractTopics(rawHtml, fullTopicIds);
+
+    // Strict selected-topic contract: every selected topic must yield its own
+    // section text. Missing matches must not fall back to page body or labels.
+    const missing = fullTopicIds.filter(
+      (id) => !(extractedTexts[id] && extractedTexts[id].trim().length > 0),
+    );
+    if (missing.length > 0) {
+      throw new Error(
+        `No curriculum text extracted for topic(s): ${missing.join(", ")}. ` +
+          `The source document must contain a matching section for each selected topic.`,
+      );
+    }
+
+    for (const fullTopicId of fullTopicIds) {
+      const readiness = assessCurriculumText(
+        extractedTexts[fullTopicId].trim(),
+      );
+      if (readiness.status !== "verified") {
+        throw insufficientCurriculumTextError(fullTopicId, readiness);
       }
     }
 
@@ -4566,7 +4730,7 @@ async function extractAndStoreCurriculumTopics(
 
     for (const topic of uriTopics) {
       const resolved = provider.resolveTopic(topic);
-      const text = extractedTexts[resolved.topicId] || "";
+      const text = extractedTexts[resolved.topicId].trim();
       const topicUri = `${CURRICULUM_TOPIC_URI_PREFIX}${resolved.topicId}`;
       const topicSourceId = ulid();
       await db
@@ -4879,8 +5043,13 @@ bridgeCommand
         return;
       }
 
+      assertVerifiedCurriculumTopic(provider, topic);
       const resolved = provider.resolveTopic(topic);
       const rawHtml = await fetchRawHtml(resolved.uri);
+      const { readiness } = extractTopicTextFromRaw(provider, topic, rawHtml);
+      if (readiness.status !== "verified") {
+        throw insufficientCurriculumTextError(resolved.topicId, readiness);
+      }
       const subTopics = provider
         .extractSubTopics(rawHtml, resolved.topicId)
         .map(({ id, label, textLength }) => ({ id, label, textLength }));

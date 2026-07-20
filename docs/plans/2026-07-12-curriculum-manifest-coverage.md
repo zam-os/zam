@@ -20,23 +20,43 @@ the paths that already have topics.
 
 - [x] **Phase 0 / #133 — coverage infrastructure** — explicit catalog paths,
   seed/complete status, empty-catalog failure, report-only progress mode
-- [ ] **Phase Import / #134 — strict selected-topic extraction** — real source
-  fixtures, no landing-page fallback, provider/topic provenance, atomic batch
-- [ ] **Phase A / #135 — `bildungsplan-bremen` (Bremen)**
-- [ ] **Phase B / #136 — `bildungsplan-bw` (Baden-Württemberg)**
-- [ ] **Phase C / #137 — `bildungsplan-hamburg` (Hamburg)**
-- [ ] **Phase D / #138 — `fachanforderungen-sh` (Schleswig-Holstein)**
-- [ ] **Phase E / #139 — `kerncurriculum-hessen` (Hessen)**
-- [ ] **Phase F / #140 — `kerncurriculum-niedersachsen` (Niedersachsen)**
-- [ ] **Phase G / #141 — `kernlehrplan-nrw` (Nordrhein-Westfalen)**
-- [ ] **Phase H / #142 — `lehrplaene-rp` (Rheinland-Pfalz)**
-- [ ] **Phase I / #143 — `lehrplan-saarland` (Saarland)**
-- [ ] **Phase J / #144 — `lehrplan-sachsen` (Sachsen)**
-- [ ] **Phase K / #145 — `lehrplan-thueringen` (Thüringen)**
+- [x] **Phase Import / #134 — strict selected-topic extraction** — no
+  landing-page/label fallback, hard-fail on missing section, sibling isolation
+  tests; per-provider real content URLs + live fixtures remain in Phases A–O
+- [x] **Phase A / #135 — `bildungsplan-bremen` (Bremen)** — complete catalog
+  **352** paths (Primar, Oberschule, Gymnasium Sek I, GyO); PDF content URLs;
+  `pdftotext` import path
+- [x] **Phase B / #136 — `bildungsplan-bw` (Baden-Württemberg)** — complete
+  catalog **537** paths (GS, SEK1, Gymnasium, GMSO); HTML portal URLs
+- [x] **Phase C / #137 — `bildungsplan-hamburg` (Hamburg)** — complete catalog
+  **439** paths (GS, STS 5–11, Gym Sek I, Studienstufe); PDF Rahmenpläne
+- [x] **Phase D / #138 — `fachanforderungen-sh` (Schleswig-Holstein)** —
+  complete catalog **421** paths (GS, GemS, Gym Sek I, GyO); IQSH PDFs
+- [x] **Phase E / #139 — `kerncurriculum-hessen` (Hessen)** — complete catalog
+  **457** paths (Primar, HS, RS, Gym Sek I, KCGO); school-type-specific PDFs
+- [x] **Phase F / #140 — `kerncurriculum-niedersachsen` (Niedersachsen)** —
+  complete catalog **785** paths (GS, HS, RS, ObS, Gym, IGS, GyO); CuVo PDFs
+- [x] **Phase G / #141 — `kernlehrplan-nrw` (Nordrhein-Westfalen)** — complete
+  catalog **945** paths (GS, HS, RS, GeS, Gym, GyO); Lehrplannavigator PDFs
+- [x] **Phase H / #142 — `lehrplaene-rp` (Rheinland-Pfalz)** — complete catalog
+  **990** paths (GS, HS, RS, RS+, Gym, IGS, GyO/MSS, Förderschule); Bildungsserver PDFs
+- [x] **Phase I / #143 — `lehrplan-saarland` (Saarland)** — complete catalog
+  **362** paths (GS, GemS, Gym, GyO, Förderschule); Bildungsserver SharedDocs PDFs
+- [x] **Phase J / #144 — `lehrplan-sachsen` (Sachsen)** — complete catalog
+  **713** paths (GS, Oberschule, Gym, FöS Lernen, FöS geistige Entw.); lplandb HTML
+- [x] **Phase K / #145 — `lehrplan-thueringen` (Thüringen)** — complete catalog
+  **448** paths (GS, Regelschule, Gym, GemS); Schulportal PDF resources
 - [x] **Phase L / #146 — `lehrplanplus-bayern` (Bayern)**
-- [ ] **Phase M / #147 — `rahmenlehrplan-berlin-brandenburg` (Berlin / Brandenburg)**
-- [ ] **Phase N / #148 — `rahmenplan-mv` (Mecklenburg-Vorpommern)**
-- [ ] **Phase O / #149 — `rahmenrichtlinien-st` (Sachsen-Anhalt)**
+- [x] **Phase M / #147 — `rahmenlehrplan-berlin-brandenburg` (Berlin / Brandenburg)** —
+  complete catalog **516** paths (GS, ISS/Oberschule, Gym Sek I); RLP Online Teil C
+- [x] **Phase N / #148 — `rahmenplan-mv` (Mecklenburg-Vorpommern)** — complete catalog
+  **440** paths (GS, OS, regS, Gym, GyO, FöS Lernen, FöS geistige Entw.); Bildungsserver PDFs
+- [x] **Phase O / #149 — `rahmenrichtlinien-st` (Sachsen-Anhalt)** — complete catalog
+  **547** paths (GS, Sekundarschule, Gym, GemS); Bildungsserver LSA Fachlehrplan PDFs
+- [x] **Phase Readiness — importable topic evidence and alternatives** — assess
+  extracted topic content independently from catalog/URL coverage, mark
+  unverified topic leaves as missing, and offer only verified providers as
+  cross-state alternatives (Bayern first)
 
 ## Frozen scope and evidence rules
 
@@ -77,18 +97,20 @@ the paths that already have topics.
 
 - [x] Persist `provider` + `topic_id` and retain source-link fallback.
 - [x] Confirm multi-topic card operations atomically.
-- [ ] Replace synthetic label-only fixtures with saved representative source
-  documents for every provider/source pattern.
-- [ ] Remove the seed-provider fallback that returns the first unrelated HTML
-  section or only the manifest label when a selected topic is absent.
-- [ ] Resolve each manifest path to the actual content page/document rather
-  than a provider-wide landing page.
-- [ ] Test partial selection and two real sibling topics sharing one source;
-  unselected sibling content must never ground generated cards.
-- [ ] Test a valid topic ID against a non-matching document and require a hard
-  extraction failure.
-- [ ] Keep the precise-topic wizard notice only after every registered runtime
-  provider satisfies these checks.
+- [x] Shared strict heading extractor (`heading-extract.ts`); seed providers
+  no longer fall back to the first unrelated HTML section or the bare
+  manifest label when a selected topic is absent.
+- [x] Bridge `extractAndStoreCurriculumTopics` hard-fails when any selected
+  topic has no matched section text (no whole-page fallback).
+- [x] Offline multi-section fixtures + regression tests for partial selection,
+  sibling isolation on a shared source, and non-matching documents.
+- [x] Wizard copy describes selected-topic extraction (`wizard_topic_scope_note`).
+- [x] Per-provider: verify that the actual HTML/PDF source yields enough
+  coherent selected-topic content for card generation; a label, placeholder,
+  table-of-contents hit, or truncated fragment counts as missing. Expose this
+  readiness on each topic leaf and offer verified cross-state alternatives.
+- [ ] Per-provider: swap synthetic fixtures for live-captured source documents
+  when each catalog is completed (Phases A–O; PDF path where required).
 
 ## Test user registry
 
@@ -129,179 +151,202 @@ acceptance criteria as final totals.
 
 ## Phase A / #135 — `bildungsplan-bremen` (Bremen)
 
-Provider: **Bildungsplan (Bremen)** · catalog: `seed` · current
-inventory: **40 paths / 9 with topics**
+Provider: **Bildungsplan (Bremen)** · catalog: `complete` · **352** paths
+(100% topic/source coverage) · school year **2025/2026** · captured
+**2026-07-20** from LIS Bremen.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Primarstufe (1–4), Oberschule (5–10), Gymnasium Sek I (5–10),
+Gymnasiale Oberstufe (11–13). Content URLs are the published PDF Bildungspläne
+(`lis.bremen.de/sixcms/media.php/13/…`), not the landing page. Dual vocational
+KMK Rahmenlehrpläne and "in Bearbeitung" berufsbildend drafts are out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #135 with final counts, capture date and evidence.
+- [x] Capture all official school types, grades, subjects (portal listing).
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF content URLs for every leaf.
+- [x] Offline fixtures (Mathematik, Deutsch Oberschule) + strict extractTopics.
+- [x] PDF text path via system `pdftotext` (bridge converts PDF → extractable HTML).
+- [x] Complete-catalog + 100% topic/source audit (`npm run curriculum:topic-coverage -- --provider bildungsplan-bremen`).
+- [ ] Desktop E2E per school type × grade (manual smoke with test users).
+- [x] Regenerate via `npx tsx scripts/capture-bremen-bildungsplan.ts`.
 
 ## Phase B / #136 — `bildungsplan-bw` (Baden-Württemberg)
 
-Provider: **Bildungsplan (Baden-Württemberg)** · catalog: `seed` · current
-inventory: **20 paths / 5 with topics**
+Provider: **Bildungsplan (Baden-Württemberg)** · catalog: `complete` ·
+**537** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from https://www.bildungsplaene-bw.de/.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule (1–4), Gemeinsamer Bildungsplan Sek I (5–10),
+Gymnasium (5–12), Oberstufe an Gemeinschaftsschulen (11–13). Content URLs are
+subject pages on the official HTML portal. V2 rewrites, berufliche Schulen and
+SBBZ archives are out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #136 with final counts, capture date and evidence.
+- [x] Capture official school types, grades and subjects (portal listing).
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact content URLs for every leaf.
+- [x] Offline fixture (Mathematik Gym 9/10 Leitideen) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase C / #137 — `bildungsplan-hamburg` (Hamburg)
 
-Provider: **Bildungsplan (Hamburg)** · catalog: `seed` · current
-inventory: **40 paths / 8 with topics**
+Provider: **Bildungsplan (Hamburg)** · catalog: `complete` · **439** paths
+(100% topic/source) · school year **2025/2026** · captured **2026-07-20**
+from https://www.hamburg.de/bildungsplaene.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule (1–4), Stadtteilschule (5–11), Gymnasium Sek I
+(5–10), Studienstufe (11–13). Content URLs are Rahmenplan PDFs on
+dokumente.hamburg.de. Cross-cutting Rahmenvorgaben (Sprachbildung, Teil C)
+and Förderschwerpunkt geistige Entwicklung are out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #137 with final counts, capture date and evidence.
+- [x] Capture official school types, grades and subject Rahmenpläne.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF content URLs for every leaf.
+- [x] Offline fixture (Mathematik STS) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase D / #138 — `fachanforderungen-sh` (Schleswig-Holstein)
 
-Provider: **Fachanforderungen (Schleswig-Holstein)** · catalog: `seed` · current
-inventory: **40 paths / 8 with topics**
+Provider: **Fachanforderungen (Schleswig-Holstein)** · catalog: `complete` ·
+**421** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from https://fachportal.lernnetz.de/sh/fachanforderungen.html.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule (1–4), Gemeinschaftsschule (5–10), Gymnasium Sek I
+(5–10), Gymnasiale Oberstufe (11–13). Bio/Chemie/Physik use current 2026
+Fachanforderungen PDFs; other subjects use the portal’s downloadable Lehrplan
+PDFs. Anhörungsfassungen and superseded editions out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #138 with final counts, capture date and evidence.
+- [x] Capture official school types, grades and subject PDFs from IQSH portal.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF content URLs for every leaf.
+- [x] Offline fixture (Mathematik Sek I) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase E / #139 — `kerncurriculum-hessen` (Hessen)
 
-Provider: **Kerncurriculum (Hessen)** · catalog: `seed` · current
-inventory: **40 paths / 9 with topics**
+Provider: **Kerncurriculum (Hessen)** · catalog: `complete` · **457** paths
+(100% topic/source) · school year **2025/2026** · captured **2026-07-20**
+from https://kultus.hessen.de/.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Primarstufe (1–4), Hauptschule (5–9), Realschule (5–10),
+Gymnasium Sek I (5–10), Gymnasiale Oberstufe KCGO (11–13). Content URLs are
+school-type-specific Kerncurriculum PDFs. Leitfäden out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #139 with final counts, capture date and evidence.
+- [x] Capture official school types, grades and subject KC PDFs.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF content URLs for every leaf.
+- [x] Offline fixture (Mathematik Gym) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase F / #140 — `kerncurriculum-niedersachsen` (Niedersachsen)
 
-Provider: **Kerncurriculum (Niedersachsen)** · catalog: `seed` · current
-inventory: **40 paths / 8 with topics**
+Provider: **Kerncurriculum (Niedersachsen)** · catalog: `complete` · **785**
+paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from https://cuvo.nibis.de/cuvo.php.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule, Hauptschule, Realschule, Oberschule, Gymnasium
+Sek I, Integrierte Gesamtschule, Gymnasiale Oberstufe. Content URLs are CuVo
+download endpoints (`p=download&upload=`). Förderschule and multi-subject
+bag rows are out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #140 with final counts, capture date and evidence.
+- [x] Capture official Kerncurriculum documents from CuVo.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF download URLs for every leaf.
+- [x] Offline fixture (Mathematik Oberschule) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase G / #141 — `kernlehrplan-nrw` (Nordrhein-Westfalen)
 
-Provider: **Kernlehrplan (Nordrhein-Westfalen)** · catalog: `seed` · current
-inventory: **40 paths / 10 with topics**
+Provider: **Kernlehrplan (Nordrhein-Westfalen)** · catalog: `complete` ·
+**945** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from https://lehrplannavigator.nrw.de/.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule, Hauptschule, Realschule, Gesamtschule, Gymnasium
+Sek I, Gymnasiale Oberstufe. Content URLs are Kernlehrplan PDFs. Archive pages
+and Weiterbildungskolleg out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #141 with final counts, capture date and evidence.
+- [x] Capture official school types and subject KLPs from Lehrplannavigator.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF content URLs for every leaf.
+- [x] Offline fixture (Mathematik Realschule) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase H / #142 — `lehrplaene-rp` (Rheinland-Pfalz)
 
-Provider: **Lehrpläne (Rheinland-Pfalz)** · catalog: `seed` · current
-inventory: **40 paths / 8 with topics**
+Provider: **Lehrpläne (Rheinland-Pfalz)** · catalog: `complete` ·
+**990** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from https://bildung.rlp.de/lehrplaene/.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule, Hauptschule, Realschule, Realschule plus, Gymnasium
+Sek I, Integrierte Gesamtschule, Gymnasiale Oberstufe (MSS), Förderschule.
+Content URLs are official `tx_rlpbase_download` PDF endpoints. BBS (separate
+portal section), Handreichungen and obsolete „gültig bis“ versions out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #142 with final counts, capture date and evidence.
+- [x] Capture official school types and subject Lehrpläne from Bildungsserver.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF download URLs for every leaf.
+- [x] Offline fixture (Mathematik Realschule plus) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase I / #143 — `lehrplan-saarland` (Saarland)
 
-Provider: **Lehrplan (Saarland)** · catalog: `seed` · current
-inventory: **40 paths / 8 with topics**
+Provider: **Lehrplan (Saarland)** · catalog: `complete` ·
+**362** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from
+https://www.saarland.de/mbk/DE/portale/bildungsserver/schulen-und-bildungswege/lehrplaene.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule, Gemeinschaftsschule, Gymnasium Sek I, Gymnasiale
+Oberstufe, Förderschule. Content URLs are SharedDocs PDF downloads. Berufliche
+Schulen, ESS, Schengen-Lyzeum, Handreichungen and bilingual annexes out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #143 with final counts, capture date and evidence.
+- [x] Capture official school types and subject Lehrpläne from Bildungsserver.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF download URLs for every leaf.
+- [x] Offline fixture (Mathematik Gemeinschaftsschule) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase J / #144 — `lehrplan-sachsen` (Sachsen)
 
-Provider: **Lehrplan (Sachsen)** · catalog: `seed` · current
-inventory: **40 paths / 9 with topics**
+Provider: **Lehrplan (Sachsen)** · catalog: `complete` ·
+**713** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from https://www.schulportal.sachsen.de/lplandb/.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule, Oberschule, Gymnasium (5–12), Förderschule Lernen,
+Förderschule geistige Entwicklung. Content URLs are stable public pages
+`/lplandb/lehrplan/<id>`. Berufliche Schulen, AbiBac/bilingual special tracks
+and umbrella rows out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #144 with final counts, capture date and evidence.
+- [x] Capture official school types and subject Lehrpläne from lplandb.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact Lehrplan content URLs for every leaf.
+- [x] Offline fixture (Mathematik Oberschule) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase K / #145 — `lehrplan-thueringen` (Thüringen)
 
-Provider: **Lehrplan (Thüringen)** · catalog: `seed` · current
-inventory: **40 paths / 8 with topics**
+Provider: **Lehrplan (Thüringen)** · catalog: `complete` ·
+**448** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from https://www.schulportal-thueringen.de/lehrplaene.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule, Regelschule, Gymnasium, Thüringer Gemeinschaftsschule
+(TGS-specific final plans only; GemS otherwise follows RS/GY curricula on the
+portal). Content URLs are official PDF downloads under
+`/tip/resources/medien/…`. Berufsbildende Schulen, Entwurfsfassungen and
+bilingual language variants out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #145 with final counts, capture date and evidence.
+- [x] Capture official school types and subject Lehrpläne from Schulportal.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF content URLs for every leaf.
+- [x] Offline fixture (Mathematik Regelschule) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase L / #146 — `lehrplanplus-bayern` (Bayern)
 
@@ -315,51 +360,63 @@ inventory: **2095 paths / 2095 with topics**
 
 ## Phase M / #147 — `rahmenlehrplan-berlin-brandenburg` (Berlin / Brandenburg)
 
-Provider: **Rahmenlehrplan (Berlin-Brandenburg)** · catalog: `seed` · current
-inventory: **40 paths / 9 with topics**
+Provider: **Rahmenlehrplan (Berlin-Brandenburg)** · catalog: `complete` ·
+**516** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from
+https://bildungsserver.berlin-brandenburg.de/rlp-online/c-faecher.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule (1–6), Integrierte Sekundarschule / Oberschule
+(7–10), Gymnasium Sek I (5–10). Content URLs prefer official Teil C PDFs
+(`fileadmin/…/amtliche_Fassung/`). The common RLP 1–10 is school-form-agnostic
+(Niveaus A–H); catalog grades map onto the three school types. Gymnasiale
+Oberstufe (separate portal section) out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #147 with final counts, capture date and evidence.
+- [x] Capture official Teil C subjects from RLP Online.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF/HTML content URLs for every leaf.
+- [x] Offline fixture (Mathematik Gymnasium) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase N / #148 — `rahmenplan-mv` (Mecklenburg-Vorpommern)
 
-Provider: **Rahmenplan (Mecklenburg-Vorpommern)** · catalog: `seed` · current
-inventory: **40 paths / 8 with topics**
+Provider: **Rahmenplan (Mecklenburg-Vorpommern)** · catalog: `complete` ·
+**440** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from
+https://www.bildung-mv.de/unterricht/rahmenplaene/rahmenplaene-fuer-die-allgemein-bildenden-faecher/.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule, Orientierungsstufe, Regionale Schule, Gymnasium
+Sek I, Gymnasiale Oberstufe, Förderschule Lernen, Förderschule geistige
+Entwicklung. Content URLs are official PDF Rahmenpläne. Berufliche
+Bildungsgänge/FOS/Fachgymnasium out of scope; aufwachsende Fassungen preferred
+over auslaufende where both exist.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #148 with final counts, capture date and evidence.
+- [x] Capture official school types and subject Rahmenpläne from Bildungsserver.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF content URLs for every leaf.
+- [x] Offline fixture (Mathematik Regionale Schule) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase O / #149 — `rahmenrichtlinien-st` (Sachsen-Anhalt)
 
-Provider: **Rahmenrichtlinien (Sachsen-Anhalt)** · catalog: `seed` · current
-inventory: **40 paths / 8 with topics**
+Provider: **Rahmenrichtlinien (Sachsen-Anhalt)** · catalog: `complete` ·
+**547** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from
+https://lisa.sachsen-anhalt.de/schulqualitaet/lehrplaene-rahmenrichtlinien
+(via school-type Lehrplan hubs on https://www.bildung-lsa.de/).
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule, Sekundarschule, Gymnasium, Gemeinschaftsschule
+(GemS reuses Sekundarschule Fachlehrpläne for core subjects). Content URLs
+are official Fachlehrplan PDFs under `/files/…`. Berufliche Bildung and
+supplementary LISA publications out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #149 with final counts, capture date and evidence.
+- [x] Capture official school types and Fachlehrpläne from LSA/LISA.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF content URLs for every leaf.
+- [x] Offline fixture (Mathematik Sekundarschule) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Acceptance — Epic #132 complete
 

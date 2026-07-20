@@ -10,6 +10,7 @@
  * personal-source-confirm-import). Cards store `provider` + `topic_id`.
  */
 import { runBridge } from "./bridge-transport.js";
+import { openUrl } from "@tauri-apps/plugin-opener";
 import {
   areAllCurriculumPreviewItemsSelected,
   buildCurriculumCategoryPath,
@@ -26,6 +27,9 @@ interface TaxonomyOption {
   description?: string;
   hours?: number;
   sourceRef?: string;
+  contentStatus?: "verified" | "missing";
+  providerId?: string;
+  sourceUris?: string[];
 }
 
 /** Per-topic LLM preview — must exceed CLI bridge hard timeout (10 min local). */
@@ -57,6 +61,7 @@ type StepKey =
   | "subject"
   | "track"
   | "topic"
+  | "sourceAlternative"
   | "subTopic"
   | "cardPreview";
 
@@ -115,6 +120,26 @@ interface WizardStep {
   previewSourceId?: string;
   previewTopicId?: string;
   previewBatches?: PreviewBatchMeta[];
+  missingContent?: {
+    regionLabel: string;
+    topicLabel: string;
+  };
+}
+
+interface TopicReadinessResult {
+  success: boolean;
+  status: "verified" | "missing";
+  reason: string;
+  textLength: number;
+  wordCount: number;
+  sentenceCount: number;
+  alternatives: Array<{
+    providerId: string;
+    region: string;
+    regionLabel: string;
+    topicLabels: string[];
+    sourceUris: string[];
+  }>;
 }
 
 let importTopicQueue: TaxonomyOption[] = [];
@@ -514,6 +539,19 @@ async function handleNext(): Promise<void> {
     return;
   }
 
+  if (current.key === "sourceAlternative") {
+    if (current.selectedIds.length === 0) {
+      showStepError(t("wizard_err_select_alternative"));
+      return;
+    }
+    try {
+      await switchToAlternativeProvider(current.selectedIds[0]);
+    } catch (err) {
+      showStepError(describeError(err));
+    }
+    return;
+  }
+
   if (current.key === "subTopic") {
     if (current.selectedIds.length === 0) {
       showStepError(t("wizard_err_no_subtopics"));
@@ -595,16 +633,25 @@ function render(): void {
   btnBack.disabled = false;
   if (current.key === "cardPreview") {
     btnNext.textContent = t("wizard_btn_confirm_import");
+  } else if (current.key === "sourceAlternative") {
+    btnNext.textContent = t("wizard_btn_use_alternative");
   } else if (current.key === "topic") {
     btnNext.textContent = t("wizard_btn_preview_cards");
   } else {
     btnNext.textContent = t("wizard_btn_next");
   }
+  btnNext.disabled =
+    current.key === "sourceAlternative" && current.options.length === 0;
 }
 
 function renderBreadcrumb(): void {
   breadcrumbEl.innerHTML = history
-    .filter((step) => step.key !== "topic" && step.selectedIds.length > 0)
+    .filter(
+      (step) =>
+        step.key !== "topic" &&
+        step.key !== "sourceAlternative" &&
+        step.selectedIds.length > 0,
+    )
     .map((step) => {
       const label =
         step.options.find((o) => o.id === step.selectedIds[0])?.label ??
@@ -629,11 +676,33 @@ function renderStepBody(step: WizardStep): void {
     });
     stepBodyEl.appendChild(note);
   }
+  if (step.key === "sourceAlternative" && step.missingContent) {
+    const missing = document.createElement("p");
+    missing.className = "wizard-topic-note";
+    missing.textContent = tf("wizard_content_missing", {
+      topic: step.missingContent.topicLabel,
+      region: step.missingContent.regionLabel,
+    });
+    stepBodyEl.appendChild(missing);
+
+    const prompt = document.createElement("p");
+    prompt.className = "wizard-topic-note";
+    prompt.style.marginTop = "10px";
+    prompt.textContent =
+      step.options.length > 0
+        ? tf("wizard_alternative_prompt", {
+            count: String(step.options.length),
+          })
+        : t("wizard_no_verified_alternatives");
+    stepBodyEl.appendChild(prompt);
+  }
   if (step.options.length === 0) {
-    const p = document.createElement("p");
-    p.className = "wizard-error";
-    p.textContent = t("wizard_no_options");
-    stepBodyEl.appendChild(p);
+    if (step.key !== "sourceAlternative") {
+      const p = document.createElement("p");
+      p.className = "wizard-error";
+      p.textContent = t("wizard_no_options");
+      stepBodyEl.appendChild(p);
+    }
     return;
   }
 
@@ -641,8 +710,13 @@ function renderStepBody(step: WizardStep): void {
     const row = document.createElement("div");
     const isSelected = step.selectedIds.includes(opt.id);
     row.className = "wizard-option-row" + (isSelected ? " selected" : "");
-    const hint = opt.hours
-      ? `<span class="wizard-option-hint">${escapeHtml(tf("wizard_hours", { hours: opt.hours }))}</span>`
+    const hints: string[] = [];
+    if (opt.hours) hints.push(tf("wizard_hours", { hours: opt.hours }));
+    if (step.key === "topic" && opt.contentStatus === "missing") {
+      hints.push(t("wizard_content_missing_badge"));
+    }
+    const hint = hints.length
+      ? `<span class="wizard-option-hint">${escapeHtml(hints.join(" · "))}</span>`
       : "";
     const description = opt.description
       ? `<span class="wizard-option-desc">${escapeHtml(opt.description)}</span>`
@@ -652,6 +726,19 @@ function renderStepBody(step: WizardStep): void {
       `<span class="wizard-option-text"><span class="wizard-option-label">${escapeHtml(opt.label)}</span>${description}</span>${hint}`;
     row.addEventListener("click", () => selectOption(step, opt.id));
     stepBodyEl.appendChild(row);
+
+    if (step.key === "sourceAlternative" && opt.sourceUris?.[0]) {
+      const sourceButton = document.createElement("button");
+      sourceButton.type = "button";
+      sourceButton.className = "btn secondary-btn btn-xs";
+      sourceButton.style.margin = "4px 0 8px 34px";
+      sourceButton.textContent = t("wizard_open_alternative_source");
+      sourceButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        void openUrl(opt.sourceUris![0]);
+      });
+      stepBodyEl.appendChild(sourceButton);
+    }
   }
 }
 
@@ -886,7 +973,76 @@ function topicNodeFromOption(topic: TaxonomyOption): TaxonomyOption {
     label: topic.label,
     hours: topic.hours,
     sourceRef: topic.sourceRef,
+    contentStatus: topic.contentStatus,
   };
+}
+
+function bridgeCurriculumSelection(): Record<string, string> {
+  const result: Record<string, string> = {};
+  if (selection.schoolType) result.schoolType = selection.schoolType;
+  if (selection.grade) result.grade = selection.grade;
+  if (selection.subject) result.subject = selection.subject;
+  if (selection.track) result.track = selection.track;
+  return result;
+}
+
+async function checkTopicReadiness(
+  topic: TaxonomyOption,
+): Promise<TopicReadinessResult> {
+  return runBridge<TopicReadinessResult>("curriculum-topic-readiness", [
+    "--provider",
+    selection.providerId!,
+    "--topic",
+    JSON.stringify(topicNodeFromOption(topic)),
+    "--selection",
+    JSON.stringify(bridgeCurriculumSelection()),
+  ]);
+}
+
+function showMissingContentAlternatives(
+  topic: TaxonomyOption,
+  result: TopicReadinessResult,
+): void {
+  const currentProvider = providers.find(
+    (provider) => provider.id === selection.providerId,
+  );
+  history.push({
+    key: "sourceAlternative",
+    label: t("wizard_step_sourceAlternative"),
+    options: result.alternatives.map((alternative) => ({
+      id: alternative.providerId,
+      providerId: alternative.providerId,
+      label: alternative.regionLabel,
+      description: alternative.topicLabels.join(", "),
+      sourceUris: alternative.sourceUris,
+    })),
+    multiSelect: false,
+    selectedIds: [],
+    missingContent: {
+      regionLabel: currentProvider?.regionLabel ?? "",
+      topicLabel: topic.label,
+    },
+  });
+  render();
+}
+
+async function switchToAlternativeProvider(providerId: string): Promise<void> {
+  const provider = providers.find((candidate) => candidate.id === providerId);
+  if (!provider) throw new Error(`Unknown curriculum provider: ${providerId}`);
+
+  showLoading(true);
+  hideStepError();
+  try {
+    history = [];
+    chosenCountry = provider.country;
+    selection = { providerId: provider.id };
+    await pushConfirmedStep("country", provider.country);
+    await pushConfirmedStep("region", provider.region);
+    await advanceToNextStep();
+    render();
+  } finally {
+    showLoading(false);
+  }
 }
 
 async function startImportFlow(topicStep: WizardStep): Promise<void> {
@@ -896,6 +1052,27 @@ async function startImportFlow(topicStep: WizardStep): Promise<void> {
   if (chosenTopics.length === 0) {
     showStepError(t("wizard_err_no_topics"));
     return;
+  }
+
+  btnNext.disabled = true;
+  btnBack.disabled = true;
+  showLoading(true);
+  hideStepError();
+  try {
+    for (const topic of chosenTopics) {
+      const readiness = await checkTopicReadiness(topic);
+      if (readiness.status !== "verified") {
+        showLoading(false);
+        showMissingContentAlternatives(topic, readiness);
+        return;
+      }
+    }
+  } finally {
+    const current = history[history.length - 1];
+    btnNext.disabled =
+      current?.key === "sourceAlternative" && current.options.length === 0;
+    btnBack.disabled = false;
+    showLoading(false);
   }
 
   if (chosenTopics.length > 1) {
