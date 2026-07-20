@@ -4537,15 +4537,26 @@ async function extractAndStoreCurriculumTopics(
   for (const [uri, uriTopics] of topicsByUri.entries()) {
     const rawHtml = await fetchRawHtml(uri);
 
-    let extractedTexts: Record<string, string> = {};
-    if (provider.extractTopics) {
-      const fullTopicIds = uriTopics.map((t) => `${t.sourceRef}#${t.id}`);
-      extractedTexts = provider.extractTopics(rawHtml, fullTopicIds);
-    } else {
-      const cleanText = cleanHtml(rawHtml);
-      for (const t of uriTopics) {
-        extractedTexts[`${t.sourceRef}#${t.id}`] = cleanText;
-      }
+    if (!provider.extractTopics) {
+      throw new Error(
+        `Curriculum provider "${provider.id}" does not implement extractTopics; ` +
+          `whole-page fallback is not allowed for selected-topic import.`,
+      );
+    }
+
+    const fullTopicIds = uriTopics.map((t) => `${t.sourceRef}#${t.id}`);
+    const extractedTexts = provider.extractTopics(rawHtml, fullTopicIds);
+
+    // Strict selected-topic contract: every selected topic must yield its own
+    // section text. Missing matches must not fall back to page body or labels.
+    const missing = fullTopicIds.filter(
+      (id) => !(extractedTexts[id] && extractedTexts[id].trim().length > 0),
+    );
+    if (missing.length > 0) {
+      throw new Error(
+        `No curriculum text extracted for topic(s): ${missing.join(", ")}. ` +
+          `The source document must contain a matching section for each selected topic.`,
+      );
     }
 
     const pageCleanedText = cleanHtml(rawHtml);
@@ -4566,7 +4577,7 @@ async function extractAndStoreCurriculumTopics(
 
     for (const topic of uriTopics) {
       const resolved = provider.resolveTopic(topic);
-      const text = extractedTexts[resolved.topicId] || "";
+      const text = extractedTexts[resolved.topicId].trim();
       const topicUri = `${CURRICULUM_TOPIC_URI_PREFIX}${resolved.topicId}`;
       const topicSourceId = ulid();
       await db

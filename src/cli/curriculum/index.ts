@@ -4,6 +4,15 @@ export {
   setLastCurriculumSelection,
 } from "./breadcrumb.js";
 export {
+  cleanHtmlText,
+  extractTopicsByHeadingStrict,
+  type HeadingSection,
+  labelFromManifestTopics,
+  normalizeForComparison,
+  parseHeadingSections,
+  type TopicLabelResolver,
+} from "./heading-extract.js";
+export {
   CURRICULUM_PROVIDERS,
   type CurriculumRegionOption,
   getCurriculumProvider,

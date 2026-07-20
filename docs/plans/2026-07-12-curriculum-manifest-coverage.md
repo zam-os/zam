@@ -20,8 +20,9 @@ the paths that already have topics.
 
 - [x] **Phase 0 / #133 — coverage infrastructure** — explicit catalog paths,
   seed/complete status, empty-catalog failure, report-only progress mode
-- [ ] **Phase Import / #134 — strict selected-topic extraction** — real source
-  fixtures, no landing-page fallback, provider/topic provenance, atomic batch
+- [x] **Phase Import / #134 — strict selected-topic extraction** — no
+  landing-page/label fallback, hard-fail on missing section, sibling isolation
+  tests; per-provider real content URLs + live fixtures remain in Phases A–O
 - [ ] **Phase A / #135 — `bildungsplan-bremen` (Bremen)**
 - [ ] **Phase B / #136 — `bildungsplan-bw` (Baden-Württemberg)**
 - [ ] **Phase C / #137 — `bildungsplan-hamburg` (Hamburg)**
@@ -77,18 +78,18 @@ the paths that already have topics.
 
 - [x] Persist `provider` + `topic_id` and retain source-link fallback.
 - [x] Confirm multi-topic card operations atomically.
-- [ ] Replace synthetic label-only fixtures with saved representative source
-  documents for every provider/source pattern.
-- [ ] Remove the seed-provider fallback that returns the first unrelated HTML
-  section or only the manifest label when a selected topic is absent.
-- [ ] Resolve each manifest path to the actual content page/document rather
-  than a provider-wide landing page.
-- [ ] Test partial selection and two real sibling topics sharing one source;
-  unselected sibling content must never ground generated cards.
-- [ ] Test a valid topic ID against a non-matching document and require a hard
-  extraction failure.
-- [ ] Keep the precise-topic wizard notice only after every registered runtime
-  provider satisfies these checks.
+- [x] Shared strict heading extractor (`heading-extract.ts`); seed providers
+  no longer fall back to the first unrelated HTML section or the bare
+  manifest label when a selected topic is absent.
+- [x] Bridge `extractAndStoreCurriculumTopics` hard-fails when any selected
+  topic has no matched section text (no whole-page fallback).
+- [x] Offline multi-section fixtures + regression tests for partial selection,
+  sibling isolation on a shared source, and non-matching documents.
+- [x] Wizard copy describes selected-topic extraction (`wizard_topic_scope_note`).
+- [ ] Per-provider: replace seed landing-page `contentUrls` with the actual
+  curriculum content document (HTML/PDF) during Phases A–O.
+- [ ] Per-provider: swap synthetic fixtures for live-captured source documents
+  when each catalog is completed (Phases A–O; PDF path where required).
 
 ## Test user registry
 
