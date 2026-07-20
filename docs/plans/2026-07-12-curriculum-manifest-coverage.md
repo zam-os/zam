@@ -32,7 +32,8 @@ the paths that already have topics.
   **439** paths (GS, STS 5–11, Gym Sek I, Studienstufe); PDF Rahmenpläne
 - [x] **Phase D / #138 — `fachanforderungen-sh` (Schleswig-Holstein)** —
   complete catalog **421** paths (GS, GemS, Gym Sek I, GyO); IQSH PDFs
-- [ ] **Phase E / #139 — `kerncurriculum-hessen` (Hessen)**
+- [x] **Phase E / #139 — `kerncurriculum-hessen` (Hessen)** — complete catalog
+  **457** paths (Primar, HS, RS, Gym Sek I, KCGO); school-type-specific PDFs
 - [ ] **Phase F / #140 — `kerncurriculum-niedersachsen` (Niedersachsen)**
 - [ ] **Phase G / #141 — `kernlehrplan-nrw` (Nordrhein-Westfalen)**
 - [ ] **Phase H / #142 — `lehrplaene-rp` (Rheinland-Pfalz)**
@@ -209,19 +210,20 @@ PDFs. Anhörungsfassungen and superseded editions out of scope.
 
 ## Phase E / #139 — `kerncurriculum-hessen` (Hessen)
 
-Provider: **Kerncurriculum (Hessen)** · catalog: `seed` · current
-inventory: **40 paths / 9 with topics**
+Provider: **Kerncurriculum (Hessen)** · catalog: `complete` · **457** paths
+(100% topic/source) · school year **2025/2026** · captured **2026-07-20**
+from https://kultus.hessen.de/.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Primarstufe (1–4), Hauptschule (5–9), Realschule (5–10),
+Gymnasium Sek I (5–10), Gymnasiale Oberstufe KCGO (11–13). Content URLs are
+school-type-specific Kerncurriculum PDFs. Leitfäden out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #139 with final counts, capture date and evidence.
+- [x] Capture official school types, grades and subject KC PDFs.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF content URLs for every leaf.
+- [x] Offline fixture (Mathematik Gym) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase F / #140 — `kerncurriculum-niedersachsen` (Niedersachsen)
 

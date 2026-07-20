@@ -472,34 +472,41 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
   });
 
   describe("Hessen (Kerncurriculum) Provider", () => {
-    let hessenPhysikHtml: string;
+    let hessenMathHtml: string;
 
     beforeAll(() => {
       const fixturesDir = path.resolve(
         "tests/fixtures/curriculum/kerncurriculum-hessen",
       );
-      hessenPhysikHtml = fs.readFileSync(
-        path.join(fixturesDir, "sample-gym-9-physik.html"),
+      hessenMathHtml = fs.readFileSync(
+        path.join(fixturesDir, "mathematik-gym.html"),
         "utf-8",
       );
     });
 
-    it("extracts topics from a minimal Hessen Gymnasium Physik fixture", () => {
+    it("extracts topics from a Hessen Gymnasium Mathematik fixture", () => {
       const extracted = kerncurriculumHessenProvider.extractTopics!(
-        hessenPhysikHtml,
-        ["gymnasium|9|physik#optik", "gymnasium|9|physik#elektromagnetismus"],
+        hessenMathHtml,
+        [
+          "gymnasium|9|mathematik#zahlen-operationen",
+          "gymnasium|9|mathematik#raum-form",
+        ],
       );
 
-      expect(extracted["gymnasium|9|physik#optik"]).toBeDefined();
-      expect(extracted["gymnasium|9|physik#optik"]).toContain("Optik");
+      expect(extracted["gymnasium|9|mathematik#zahlen-operationen"]).toContain(
+        "Zahlen und Operationen",
+      );
+      expect(extracted["gymnasium|9|mathematik#raum-form"]).toContain(
+        "Raum und Form",
+      );
     });
 
     it("gracefully handles unknown Hessen topics", () => {
       const extracted = kerncurriculumHessenProvider.extractTopics!(
-        hessenPhysikHtml,
-        ["gymnasium|9|physik#nonexistent"],
+        hessenMathHtml,
+        ["gymnasium|9|mathematik#nonexistent"],
       );
-      expect(extracted["gymnasium|9|physik#nonexistent"]).toBeUndefined();
+      expect(extracted["gymnasium|9|mathematik#nonexistent"]).toBeUndefined();
     });
   });
 
