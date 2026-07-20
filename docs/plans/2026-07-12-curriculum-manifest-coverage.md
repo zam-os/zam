@@ -28,7 +28,8 @@ the paths that already have topics.
   `pdftotext` import path
 - [x] **Phase B / #136 — `bildungsplan-bw` (Baden-Württemberg)** — complete
   catalog **537** paths (GS, SEK1, Gymnasium, GMSO); HTML portal URLs
-- [ ] **Phase C / #137 — `bildungsplan-hamburg` (Hamburg)**
+- [x] **Phase C / #137 — `bildungsplan-hamburg` (Hamburg)** — complete catalog
+  **439** paths (GS, STS 5–11, Gym Sek I, Studienstufe); PDF Rahmenpläne
 - [ ] **Phase D / #138 — `fachanforderungen-sh` (Schleswig-Holstein)**
 - [ ] **Phase E / #139 — `kerncurriculum-hessen` (Hessen)**
 - [ ] **Phase F / #140 — `kerncurriculum-niedersachsen` (Niedersachsen)**
@@ -171,19 +172,21 @@ SBBZ archives are out of scope.
 
 ## Phase C / #137 — `bildungsplan-hamburg` (Hamburg)
 
-Provider: **Bildungsplan (Hamburg)** · catalog: `seed` · current
-inventory: **40 paths / 8 with topics**
+Provider: **Bildungsplan (Hamburg)** · catalog: `complete` · **439** paths
+(100% topic/source) · school year **2025/2026** · captured **2026-07-20**
+from https://www.hamburg.de/bildungsplaene.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule (1–4), Stadtteilschule (5–11), Gymnasium Sek I
+(5–10), Studienstufe (11–13). Content URLs are Rahmenplan PDFs on
+dokumente.hamburg.de. Cross-cutting Rahmenvorgaben (Sprachbildung, Teil C)
+and Förderschwerpunkt geistige Entwicklung are out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #137 with final counts, capture date and evidence.
+- [x] Capture official school types, grades and subject Rahmenpläne.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF content URLs for every leaf.
+- [x] Offline fixture (Mathematik STS) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Phase D / #138 — `fachanforderungen-sh` (Schleswig-Holstein)
 

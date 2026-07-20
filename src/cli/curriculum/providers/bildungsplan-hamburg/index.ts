@@ -2,8 +2,24 @@ import {
   extractTopicsByHeadingStrict,
   labelFromManifestTopics,
 } from "../../heading-extract.js";
-import type { CurriculumProvider } from "../../types.js";
+import type {
+  CurriculumCatalogPath,
+  CurriculumProvider,
+  CurriculumSelection,
+  TopicNode,
+} from "../../types.js";
 import { BILDUNGSPLAN_HAMBURG_MANIFEST as MANIFEST } from "./manifest.js";
+
+function levelKey(
+  schoolType: string,
+  grade: string,
+  subject: string,
+  track?: string,
+): string {
+  return track
+    ? `${schoolType}|${grade}|${subject}|${track}`
+    : `${schoolType}|${grade}|${subject}`;
+}
 
 export const bildungsplanHamburgProvider: CurriculumProvider = {
   id: "bildungsplan-hamburg",
@@ -12,7 +28,7 @@ export const bildungsplanHamburgProvider: CurriculumProvider = {
   region: "HH",
   regionLabel: "Hamburg",
   label: "Bildungsplan (Hamburg)",
-  catalogStatus: "seed",
+  catalogStatus: "complete",
 
   listSchoolTypes() {
     return MANIFEST.schoolTypes;
@@ -25,24 +41,33 @@ export const bildungsplanHamburgProvider: CurriculumProvider = {
     }));
   },
 
-  listSubjects(schoolType, _grade) {
-    return MANIFEST.subjects[schoolType] || [];
+  listSubjects(schoolType, grade) {
+    const offered = new Set(
+      MANIFEST.catalogPaths
+        .filter((p) => p.schoolType === schoolType && p.grade === grade)
+        .map((p) => p.subject),
+    );
+    return (MANIFEST.subjects[schoolType] || []).filter((s) =>
+      offered.has(s.id),
+    );
   },
 
   listTracks(schoolType, grade, subject) {
-    const key = `${schoolType}|${grade}|${subject}`;
-    return MANIFEST.tracks[key] || [];
+    return MANIFEST.tracks[levelKey(schoolType, grade, subject)] || [];
   },
 
-  listTopics(selection) {
-    const key = selection.track
-      ? `${selection.schoolType}|${selection.grade}|${selection.subject}|${selection.track}`
-      : `${selection.schoolType}|${selection.grade}|${selection.subject}`;
-    const list = MANIFEST.topics[key] || [];
-    return list.map((t) => ({
+  listTopics(selection: CurriculumSelection): TopicNode[] {
+    const { schoolType, grade, subject, track } = selection;
+    if (!schoolType || !grade || !subject) return [];
+    const key = levelKey(schoolType, grade, subject, track);
+    return (MANIFEST.topics[key] || []).map((t) => ({
       ...t,
       sourceRef: key,
     }));
+  },
+
+  listCatalogPaths(): CurriculumCatalogPath[] {
+    return MANIFEST.catalogPaths.map((p) => ({ ...p }));
   },
 
   resolveTopic(topic) {
@@ -60,6 +85,8 @@ export const bildungsplanHamburgProvider: CurriculumProvider = {
   },
 
   extractTopics(html, topicIds) {
+    // Official sources are Rahmenplan PDFs converted to extractable HTML
+    // via pdftotext in the bridge.
     return extractTopicsByHeadingStrict(html, topicIds, (topicId) =>
       labelFromManifestTopics(MANIFEST.topics, topicId),
     );
