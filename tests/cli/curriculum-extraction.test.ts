@@ -552,34 +552,43 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
   });
 
   describe("Berlin-Brandenburg (Rahmenlehrplan) Provider", () => {
-    let berlinChemieHtml: string;
+    let berlinMathHtml: string;
 
     beforeAll(() => {
       const fixturesDir = path.resolve(
         "tests/fixtures/curriculum/rahmenlehrplan-berlin-brandenburg",
       );
-      berlinChemieHtml = fs.readFileSync(
-        path.join(fixturesDir, "sample-gym-9-chemie.html"),
+      berlinMathHtml = fs.readFileSync(
+        path.join(fixturesDir, "mathematik-gymnasium.html"),
         "utf-8",
       );
     });
 
-    it("extracts topics from a minimal Berlin-Brandenburg Gymnasium Chemie fixture", () => {
+    it("extracts topics from a minimal Berlin-Brandenburg Gymnasium Mathematik fixture", () => {
       const extracted = rahmenlehrplanBerlinBrandenburgProvider.extractTopics!(
-        berlinChemieHtml,
-        ["gymnasium|9|chemie#bindungen", "gymnasium|9|chemie#saeuren"],
+        berlinMathHtml,
+        [
+          "gymnasium|9|mathematik#arithmetik-algebra",
+          "gymnasium|9|mathematik#funktionen",
+        ],
       );
 
-      expect(extracted["gymnasium|9|chemie#bindungen"]).toBeDefined();
-      expect(extracted["gymnasium|9|chemie#bindungen"]).toContain("Bindungen");
+      expect(
+        extracted["gymnasium|9|mathematik#arithmetik-algebra"],
+      ).toBeDefined();
+      expect(
+        extracted["gymnasium|9|mathematik#arithmetik-algebra"],
+      ).toContain("Arithmetik und Algebra");
     });
 
     it("gracefully handles unknown Berlin-Brandenburg topics", () => {
       const extracted = rahmenlehrplanBerlinBrandenburgProvider.extractTopics!(
-        berlinChemieHtml,
-        ["gymnasium|9|chemie#nonexistent"],
+        berlinMathHtml,
+        ["gymnasium|9|mathematik#nonexistent"],
       );
-      expect(extracted["gymnasium|9|chemie#nonexistent"]).toBeUndefined();
+      expect(
+        extracted["gymnasium|9|mathematik#nonexistent"],
+      ).toBeUndefined();
     });
   });
 
