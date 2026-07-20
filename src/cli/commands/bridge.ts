@@ -144,6 +144,11 @@ import {
   setLastCurriculumSelection,
   type TopicNode,
 } from "../curriculum/index.js";
+import {
+  extractPdfText,
+  isPdfUrl,
+  plainTextToExtractableHtml,
+} from "../curriculum/pdf-text.js";
 import { performInstallRepair } from "../install-repair.js";
 import { resolveOperationKnowledgeContexts } from "../knowledge-contexts.js";
 import {
@@ -4475,12 +4480,16 @@ bridgeCommand
     jsonOut({ success: true, resolved });
   });
 
+/**
+ * Fetch a curriculum source document as extractable HTML.
+ * PDF official sources (e.g. Bremen Bildungspläne) are converted via pdftotext.
+ */
 async function fetchRawHtml(url: string): Promise<string> {
   if (!(await isSafeUrl(url))) {
     throw new Error(`Access denied to unsafe target URL: ${url}`);
   }
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  const timeoutId = setTimeout(() => controller.abort(), 20000);
   try {
     const res = await fetch(url, {
       signal: controller.signal,
@@ -4492,16 +4501,22 @@ async function fetchRawHtml(url: string): Promise<string> {
       throw new Error(`Web server responded with status ${res.status}`);
     }
     const contentType = res.headers.get("content-type") || "";
+    if (isPdfUrl(url, contentType)) {
+      const bytes = new Uint8Array(await res.arrayBuffer());
+      const text = extractPdfText(bytes);
+      return plainTextToExtractableHtml(text);
+    }
     if (
       !contentType.includes("text/html") &&
-      !contentType.includes("application/xhtml+xml")
+      !contentType.includes("application/xhtml+xml") &&
+      !contentType.includes("text/plain")
     ) {
       throw new Error(`Unsupported content type: ${contentType}`);
     }
     return await res.text();
   } catch (err) {
     if (err instanceof Error && err.name === "AbortError") {
-      throw new Error("Connection request timed out after 10 seconds");
+      throw new Error("Connection request timed out after 20 seconds");
     }
     throw err;
   } finally {

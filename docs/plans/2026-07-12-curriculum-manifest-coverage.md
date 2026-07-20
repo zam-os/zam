@@ -23,7 +23,9 @@ the paths that already have topics.
 - [x] **Phase Import / #134 — strict selected-topic extraction** — no
   landing-page/label fallback, hard-fail on missing section, sibling isolation
   tests; per-provider real content URLs + live fixtures remain in Phases A–O
-- [ ] **Phase A / #135 — `bildungsplan-bremen` (Bremen)**
+- [x] **Phase A / #135 — `bildungsplan-bremen` (Bremen)** — complete catalog
+  **352** paths (Primar, Oberschule, Gymnasium Sek I, GyO); PDF content URLs;
+  `pdftotext` import path
 - [ ] **Phase B / #136 — `bildungsplan-bw` (Baden-Württemberg)**
 - [ ] **Phase C / #137 — `bildungsplan-hamburg` (Hamburg)**
 - [ ] **Phase D / #138 — `fachanforderungen-sh` (Schleswig-Holstein)**
@@ -130,19 +132,23 @@ acceptance criteria as final totals.
 
 ## Phase A / #135 — `bildungsplan-bremen` (Bremen)
 
-Provider: **Bildungsplan (Bremen)** · catalog: `seed` · current
-inventory: **40 paths / 9 with topics**
+Provider: **Bildungsplan (Bremen)** · catalog: `complete` · **352** paths
+(100% topic/source coverage) · school year **2025/2026** · captured
+**2026-07-20** from LIS Bremen.
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Primarstufe (1–4), Oberschule (5–10), Gymnasium Sek I (5–10),
+Gymnasiale Oberstufe (11–13). Content URLs are the published PDF Bildungspläne
+(`lis.bremen.de/sixcms/media.php/13/…`), not the landing page. Dual vocational
+KMK Rahmenlehrpläne and "in Bearbeitung" berufsbildend drafts are out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #135 with final counts, capture date and evidence.
+- [x] Capture all official school types, grades, subjects (portal listing).
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF content URLs for every leaf.
+- [x] Offline fixtures (Mathematik, Deutsch Oberschule) + strict extractTopics.
+- [x] PDF text path via system `pdftotext` (bridge converts PDF → extractable HTML).
+- [x] Complete-catalog + 100% topic/source audit (`npm run curriculum:topic-coverage -- --provider bildungsplan-bremen`).
+- [ ] Desktop E2E per school type × grade (manual smoke with test users).
+- [x] Regenerate via `npx tsx scripts/capture-bremen-bildungsplan.ts`.
 
 ## Phase B / #136 — `bildungsplan-bw` (Baden-Württemberg)
 
