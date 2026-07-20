@@ -217,17 +217,14 @@ describe("curriculum topic coverage audit", () => {
     expect(ids).toContain("bildungsplan-bremen");
   });
 
-  it("live raw providers: Bayern is complete while the other catalogs remain seeds", () => {
+  it("live raw providers: all German Bundesländer catalogs are complete", () => {
     const summary = auditAllProviders(RAW_CURRICULUM_PROVIDERS);
-    expect(summary.total).toBeGreaterThan(500);
-    // Seed + partial captures: overall not yet 100%, but progress is real.
-    expect(summary.covered).toBeGreaterThan(100);
-    expect(summary.coverageRatio).toBeGreaterThan(0);
-    expect(summary.coverageRatio).toBeLessThanOrEqual(1);
-    expect(summary.catalogComplete).toBe(false);
-    expect(summary.incompleteCatalogProviders).not.toContain(
-      "lehrplanplus-bayern",
-    );
+    expect(summary.total).toBeGreaterThan(5000);
+    expect(summary.covered).toBe(summary.total);
+    expect(summary.gaps).toBe(0);
+    expect(summary.coverageRatio).toBe(1);
+    expect(summary.catalogComplete).toBe(true);
+    expect(summary.incompleteCatalogProviders).toEqual([]);
 
     const bayern = summary.providers.find(
       (p) => p.providerId === "lehrplanplus-bayern",
@@ -238,6 +235,15 @@ describe("curriculum topic coverage audit", () => {
     expect(bayern!.gaps).toBe(0);
     expect(bayern!.catalogComplete).toBe(true);
     expect(bayern!.coverageRatio).toBe(1);
+
+    // Epic #132 Phase O: last remaining seed provider is complete.
+    const st = summary.providers.find(
+      (p) => p.providerId === "rahmenrichtlinien-st",
+    );
+    expect(st).toBeDefined();
+    expect(st!.catalogComplete).toBe(true);
+    expect(st!.gaps).toBe(0);
+    expect(st!.coverageRatio).toBe(1);
   });
 
   it("auditPath flags resolve_failed when listTopics returns a topic without URL", () => {

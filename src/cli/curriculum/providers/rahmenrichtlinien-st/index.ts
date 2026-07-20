@@ -2,8 +2,24 @@ import {
   extractTopicsByHeadingStrict,
   labelFromManifestTopics,
 } from "../../heading-extract.js";
-import type { CurriculumProvider } from "../../types.js";
+import type {
+  CurriculumCatalogPath,
+  CurriculumProvider,
+  CurriculumSelection,
+  TopicNode,
+} from "../../types.js";
 import { RAHMENRICHTLINIEN_ST_MANIFEST as MANIFEST } from "./manifest.js";
+
+function levelKey(
+  schoolType: string,
+  grade: string,
+  subject: string,
+  track?: string,
+): string {
+  return track
+    ? `${schoolType}|${grade}|${subject}|${track}`
+    : `${schoolType}|${grade}|${subject}`;
+}
 
 export const rahmenrichtlinienStProvider: CurriculumProvider = {
   id: "rahmenrichtlinien-st",
@@ -12,7 +28,7 @@ export const rahmenrichtlinienStProvider: CurriculumProvider = {
   region: "ST",
   regionLabel: "Sachsen-Anhalt",
   label: "Rahmenrichtlinien (Sachsen-Anhalt)",
-  catalogStatus: "seed",
+  catalogStatus: "complete",
 
   listSchoolTypes() {
     return MANIFEST.schoolTypes;
@@ -25,24 +41,33 @@ export const rahmenrichtlinienStProvider: CurriculumProvider = {
     }));
   },
 
-  listSubjects(schoolType, _grade) {
-    return MANIFEST.subjects[schoolType] || [];
+  listSubjects(schoolType, grade) {
+    const offered = new Set(
+      MANIFEST.catalogPaths
+        .filter((p) => p.schoolType === schoolType && p.grade === grade)
+        .map((p) => p.subject),
+    );
+    return (MANIFEST.subjects[schoolType] || []).filter((s) =>
+      offered.has(s.id),
+    );
   },
 
   listTracks(schoolType, grade, subject) {
-    const key = `${schoolType}|${grade}|${subject}`;
-    return MANIFEST.tracks[key] || [];
+    return MANIFEST.tracks[levelKey(schoolType, grade, subject)] || [];
   },
 
-  listTopics(selection) {
-    const key = selection.track
-      ? `${selection.schoolType}|${selection.grade}|${selection.subject}|${selection.track}`
-      : `${selection.schoolType}|${selection.grade}|${selection.subject}`;
-    const list = MANIFEST.topics[key] || [];
-    return list.map((t) => ({
+  listTopics(selection: CurriculumSelection): TopicNode[] {
+    const { schoolType, grade, subject, track } = selection;
+    if (!schoolType || !grade || !subject) return [];
+    const key = levelKey(schoolType, grade, subject, track);
+    return (MANIFEST.topics[key] || []).map((t) => ({
       ...t,
       sourceRef: key,
     }));
+  },
+
+  listCatalogPaths(): CurriculumCatalogPath[] {
+    return MANIFEST.catalogPaths.map((p) => ({ ...p }));
   },
 
   resolveTopic(topic) {

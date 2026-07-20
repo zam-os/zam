@@ -51,7 +51,8 @@ the paths that already have topics.
   complete catalog **516** paths (GS, ISS/Oberschule, Gym Sek I); RLP Online Teil C
 - [x] **Phase N / #148 — `rahmenplan-mv` (Mecklenburg-Vorpommern)** — complete catalog
   **440** paths (GS, OS, regS, Gym, GyO, FöS Lernen, FöS geistige Entw.); Bildungsserver PDFs
-- [ ] **Phase O / #149 — `rahmenrichtlinien-st` (Sachsen-Anhalt)**
+- [x] **Phase O / #149 — `rahmenrichtlinien-st` (Sachsen-Anhalt)** — complete catalog
+  **547** paths (GS, Sekundarschule, Gym, GemS); Bildungsserver LSA Fachlehrplan PDFs
 
 ## Frozen scope and evidence rules
 
@@ -393,19 +394,23 @@ over auslaufende where both exist.
 
 ## Phase O / #149 — `rahmenrichtlinien-st` (Sachsen-Anhalt)
 
-Provider: **Rahmenrichtlinien (Sachsen-Anhalt)** · catalog: `seed` · current
-inventory: **40 paths / 8 with topics**
+Provider: **Rahmenrichtlinien (Sachsen-Anhalt)** · catalog: `complete` ·
+**547** paths (100% topic/source) · school year **2025/2026** · captured
+**2026-07-20** from
+https://lisa.sachsen-anhalt.de/schulqualitaet/lehrplaene-rahmenrichtlinien
+(via school-type Lehrplan hubs on https://www.bildung-lsa.de/).
 
-Target path count: **TBD after complete official taxonomy capture**.
-The current manifest is a non-exhaustive MINT seed.
+School types: Grundschule, Sekundarschule, Gymnasium, Gemeinschaftsschule
+(GemS reuses Sekundarschule Fachlehrpläne for core subjects). Content URLs
+are official Fachlehrplan PDFs under `/files/…`. Berufliche Bildung and
+supplementary LISA publications out of scope.
 
-- [ ] Capture all official school types, grades, subjects and tracks.
-- [ ] Add explicit grade-scoped catalog leaves and set `catalogStatus=complete`.
-- [ ] Populate topics and exact content URLs for every captured leaf.
-- [ ] Add real offline source fixtures and strict selected-topic extraction.
-- [ ] Reach complete-catalog + 100% topic/source audit.
-- [ ] Complete desktop E2E per captured school type × grade.
-- [ ] Update #149 with final counts, capture date and evidence.
+- [x] Capture official school types and Fachlehrpläne from LSA/LISA.
+- [x] Explicit grade-scoped `catalogPaths` + `catalogStatus=complete`.
+- [x] Topics + exact PDF content URLs for every leaf.
+- [x] Offline fixture (Mathematik Sekundarschule) + strict extractTopics.
+- [x] Complete-catalog + 100% topic/source audit.
+- [ ] Desktop E2E per school type × grade (manual smoke).
 
 ## Acceptance — Epic #132 complete
 
