@@ -41,6 +41,26 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
     expect(subjects).toContainEqual({ id: "deutsch", label: "Deutsch" });
   });
 
+  it("exposes exactly the 2095 live-captured catalog paths", () => {
+    const paths = provider.listCatalogPaths?.() ?? [];
+    expect(paths).toHaveLength(2095);
+    expect(paths).toContainEqual({
+      schoolType: "realschule",
+      grade: "5",
+      subject: "mathematik",
+    });
+    expect(paths).not.toContainEqual({
+      schoolType: "fos",
+      grade: "10",
+      subject: "informatik",
+    });
+    expect(paths).not.toContainEqual({
+      schoolType: "fos",
+      grade: "11",
+      subject: "informatik",
+    });
+  });
+
   it("lists the two Wahlpflichtfächergruppe tracks for Realschule Mathematik 9", () => {
     const tracks = provider.listTracks("realschule", "9", "mathematik");
     expect(tracks).toEqual([
@@ -404,7 +424,9 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
       track: "t",
     });
     expect(topics.length).toBeGreaterThanOrEqual(4);
-    expect(topics.map((t) => t.label).join(" ")).toMatch(/Differenzial|Funktion/i);
+    expect(topics.map((t) => t.label).join(" ")).toMatch(
+      /Differenzial|Funktion/i,
+    );
   });
 
   it("lists FOS Deutsch 12 via gueltig_bis_26_27 track for SJ 2026/27", () => {
@@ -417,10 +439,7 @@ describe("LehrplanPLUS Bayern provider — navigation (real, agent-captured data
       track: "gueltig_bis_26_27",
     });
     expect(topics.map((t) => t.label)).toEqual(
-      expect.arrayContaining([
-        "Sprechen und Zuhören",
-        "Schreiben",
-      ]),
+      expect.arrayContaining(["Sprechen und Zuhören", "Schreiben"]),
     );
   });
 
@@ -590,11 +609,7 @@ describe("LehrplanPLUS Bayern provider — Ausprägung descriptions", () => {
   });
 
   it("explains Wirtschaftsschule forms by their entry grade", () => {
-    const tracks = provider.listTracks(
-      "wirtschaftsschule",
-      "10",
-      "mathematik",
-    );
+    const tracks = provider.listTracks("wirtschaftsschule", "10", "mathematik");
     expect(
       tracks.find((track) => track.id === "vierstufig")?.description,
     ).toContain("Jahrgangsstufe 7");
@@ -619,8 +634,6 @@ describe("LehrplanPLUS Bayern provider — Ausprägung descriptions", () => {
   it("leaves self-explanatory Förderschwerpunkt tracks undescribed", () => {
     const tracks = provider.listTracks("foerderschule", "7", "mathematik");
     expect(tracks.length).toBeGreaterThan(0);
-    expect(tracks.every((track) => track.description === undefined)).toBe(
-      true,
-    );
+    expect(tracks.every((track) => track.description === undefined)).toBe(true);
   });
 });

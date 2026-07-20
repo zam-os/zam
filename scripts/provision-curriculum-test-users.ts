@@ -6,7 +6,7 @@
  * Usage: npx tsx scripts/provision-curriculum-test-users.ts
  */
 
-import { CURRICULUM_PROVIDERS } from "../src/cli/curriculum/registry.js";
+import { RAW_CURRICULUM_PROVIDERS } from "../src/cli/curriculum/registry.js";
 import {
   curriculumTestUserId,
   isLegacyCurriculumTestUserId,
@@ -20,7 +20,9 @@ const SKIP_USERS = new Set(["thomas", "test-user-0.6.2"]);
 
 function collectUserIds(): string[] {
   const ids = new Set<string>();
-  for (const provider of CURRICULUM_PROVIDERS) {
+  // Raw catalog: one test user per school type × grade, even when topics
+  // for that path are still missing (Epic #132 coverage work).
+  for (const provider of RAW_CURRICULUM_PROVIDERS) {
     for (const schoolType of provider.listSchoolTypes()) {
       const grades = provider.listGrades(schoolType.id);
       if (grades.length === 0) continue;

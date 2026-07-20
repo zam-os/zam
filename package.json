@@ -40,6 +40,7 @@
     "lint": "biome check src/",
     "format": "biome format --write src/",
     "desktop:prepare": "node scripts/prepare-desktop-bridge.mjs",
+    "curriculum:topic-coverage": "tsx scripts/curriculum-topic-coverage-smoke.ts",
     "observer:check": "cargo check --manifest-path observer/Cargo.toml",
     "observer:test": "cargo test --manifest-path observer/Cargo.toml",
     "observer:build": "cargo build --manifest-path observer/Cargo.toml --release",

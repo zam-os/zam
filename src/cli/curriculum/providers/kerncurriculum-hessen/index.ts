@@ -8,6 +8,7 @@ export const kerncurriculumHessenProvider: CurriculumProvider = {
   region: "HE",
   regionLabel: "Hessen",
   label: "Kerncurriculum (Hessen)",
+  catalogStatus: "seed",
 
   listSchoolTypes() {
     return MANIFEST.schoolTypes;

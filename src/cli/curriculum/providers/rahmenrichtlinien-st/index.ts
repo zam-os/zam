@@ -8,6 +8,7 @@ export const rahmenrichtlinienStProvider: CurriculumProvider = {
   region: "ST",
   regionLabel: "Sachsen-Anhalt",
   label: "Rahmenrichtlinien (Sachsen-Anhalt)",
+  catalogStatus: "seed",
 
   listSchoolTypes() {
     return MANIFEST.schoolTypes;

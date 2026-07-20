@@ -1,4 +1,5 @@
 import type {
+  CurriculumCatalogPath,
   CurriculumProvider,
   CurriculumSelection,
   ResolvedSource,
@@ -145,6 +146,33 @@ function truncateLabel(text: string, maxLen = 72): string {
   return `${text.slice(0, maxLen - 1).trim()}…`;
 }
 
+function listCapturedCatalogPaths(): CurriculumCatalogPath[] {
+  const keys = new Set<string>([
+    ...Object.keys(MANIFEST.topics),
+    ...Object.keys(MANIFEST.contentUrls),
+  ]);
+  for (const [base, tracks] of Object.entries(MANIFEST.tracks)) {
+    for (const track of tracks) {
+      keys.add(`${base}|${track.id}`);
+    }
+  }
+
+  return [...keys]
+    .sort((a, b) => a.localeCompare(b, "de", { numeric: true }))
+    .map((key) => {
+      const [schoolType, grade, subject, track, ...rest] = key.split("|");
+      if (!schoolType || !grade || !subject || rest.length > 0) {
+        throw new Error(`Invalid LehrplanPLUS catalog path: ${key}`);
+      }
+      return {
+        schoolType,
+        grade,
+        subject,
+        ...(track ? { track } : {}),
+      };
+    });
+}
+
 export const lehrplanplusBayernProvider: CurriculumProvider = {
   id: "lehrplanplus-bayern",
   country: "DE",
@@ -152,6 +180,7 @@ export const lehrplanplusBayernProvider: CurriculumProvider = {
   region: "BY",
   regionLabel: "Bayern",
   label: "LehrplanPLUS (Bayern)",
+  catalogStatus: "complete",
 
   listSchoolTypes(): TaxonomyNode[] {
     return MANIFEST.schoolTypes;
@@ -189,6 +218,10 @@ export const lehrplanplusBayernProvider: CurriculumProvider = {
       ...topic,
       sourceRef: key,
     }));
+  },
+
+  listCatalogPaths(): CurriculumCatalogPath[] {
+    return listCapturedCatalogPaths();
   },
 
   resolveTopic(topic: TopicNode): ResolvedSource {

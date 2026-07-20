@@ -1,59 +1,71 @@
 /**
- * Generates docs/plans/2026-07-12-curriculum-manifest-coverage.md
- * Run: node scripts/generate-curriculum-plan.mjs
+ * Generates docs/plans/2026-07-12-curriculum-manifest-coverage.md.
+ *
+ * The generated plan deliberately does not turn today's MINT seed manifests
+ * into a final path checklist. Exact path counts only become acceptance data
+ * after a provider's complete official taxonomy has been captured.
+ *
+ * Run: node --import tsx/esm scripts/generate-curriculum-plan.mjs
  */
 
 import { writeFileSync } from "node:fs";
-import { CURRICULUM_PROVIDERS } from "../src/cli/curriculum/registry.ts";
+import { RAW_CURRICULUM_PROVIDERS } from "../src/cli/curriculum/registry.ts";
 import {
   bundeslandSlug,
   curriculumTestUserId,
 } from "./curriculum-test-user-id.ts";
 
-const PROVIDER_ORDER = [...CURRICULUM_PROVIDERS].sort((a, b) =>
+const ISSUE_BY_PROVIDER = {
+  "bildungsplan-bremen": 135,
+  "bildungsplan-bw": 136,
+  "bildungsplan-hamburg": 137,
+  "fachanforderungen-sh": 138,
+  "kerncurriculum-hessen": 139,
+  "kerncurriculum-niedersachsen": 140,
+  "kernlehrplan-nrw": 141,
+  "lehrplaene-rp": 142,
+  "lehrplan-saarland": 143,
+  "lehrplan-sachsen": 144,
+  "lehrplan-thueringen": 145,
+  "lehrplanplus-bayern": 146,
+  "rahmenlehrplan-berlin-brandenburg": 147,
+  "rahmenplan-mv": 148,
+  "rahmenrichtlinien-st": 149,
+};
+
+const PROVIDER_ORDER = [...RAW_CURRICULUM_PROVIDERS].sort((a, b) =>
   a.id.localeCompare(b.id),
 );
 
-function pathKey(schoolType, grade, subject, track) {
-  return track
-    ? `${schoolType}|${grade}|${subject}|${track}`
-    : `${schoolType}|${grade}|${subject}`;
+function pathKey(path) {
+  return path.track
+    ? `${path.schoolType}|${path.grade}|${path.subject}|${path.track}`
+    : `${path.schoolType}|${path.grade}|${path.subject}`;
 }
 
 function collectPaths(provider) {
+  if (provider.listCatalogPaths) {
+    return provider.listCatalogPaths();
+  }
+
   const paths = [];
   for (const schoolType of provider.listSchoolTypes()) {
-    const grades = provider.listGrades(schoolType.id);
-    if (grades.length === 0) continue;
-    for (const grade of grades) {
-      const subjects = provider.listSubjects(schoolType.id, grade.id);
-      for (const subject of subjects) {
-        const tracks = provider.listTracks(
-          schoolType.id,
-          grade.id,
-          subject.id,
-        );
+    for (const grade of provider.listGrades(schoolType.id)) {
+      for (const subject of provider.listSubjects(schoolType.id, grade.id)) {
+        const tracks = provider.listTracks(schoolType.id, grade.id, subject.id);
         if (tracks.length === 0) {
           paths.push({
             schoolType: schoolType.id,
-            schoolTypeLabel: schoolType.label,
             grade: grade.id,
             subject: subject.id,
-            subjectLabel: subject.label,
-            track: undefined,
-            key: pathKey(schoolType.id, grade.id, subject.id),
           });
         } else {
           for (const track of tracks) {
             paths.push({
               schoolType: schoolType.id,
-              schoolTypeLabel: schoolType.label,
               grade: grade.id,
               subject: subject.id,
-              subjectLabel: subject.label,
               track: track.id,
-              trackLabel: track.label,
-              key: pathKey(schoolType.id, grade.id, subject.id, track.id),
             });
           }
         }
@@ -63,167 +75,199 @@ function collectPaths(provider) {
   return paths;
 }
 
+function pathHasTopics(provider, path) {
+  return (
+    provider.listTopics({
+      schoolType: path.schoolType,
+      grade: path.grade,
+      subject: path.subject,
+      track: path.track,
+    }).length > 0
+  );
+}
+
 function userId(provider, schoolType, grade) {
   return curriculumTestUserId(provider, schoolType, grade);
 }
 
 let md = `# Curriculum manifest coverage & import completion
 
-Implements the Epic in GitHub issue **#132** (curriculum import incomplete for
-German federal states). Read \`AGENTS.md\` and
-[\`2026-07-02-lehrplanplus-phase-3.md\`](./2026-07-02-lehrplanplus-phase-3.md)
-first. Work on exactly the next unchecked phase; one branch
-(\`feat/curriculum-manifest-coverage\`), one focused commit per completed phase.
+Implements GitHub Epic **#132**. Read \`AGENTS.md\` first and work on exactly
+the next unchecked phase. Multi-phase work stays on one branch and uses one
+focused commit per completed phase.
 
 ## Goal
 
-Every navigable curriculum path (Land → Bundesland → Schulform → Klasse → Fach
-[→ Ausprägung] → Themen/Lernbereiche) must offer selectable topics **and**
-support end-to-end import of at least one selected topic into the learner's
-queue. Today manifests are intentionally partial starter sets; the wizard shows
-empty topic lists for most combinations (e.g. Bayern Realschule 9 Biologie).
+Capture **everything the official curriculum portal actually offers** for all
+15 providers: every school type, grade, subject, optional track, topic and
+importable source. The previous non-Bavarian manifests are five-subject MINT
+seeds; their current 20/40-path counts are inventory snapshots, not targets.
+
+A provider is complete only when its official taxonomy is captured independently
+from its topic payload. Do not infer offered subjects as the Cartesian product
+of a school-wide subject union and every grade. Do not infer completeness from
+the paths that already have topics.
 
 ## Status
 
-- [ ] **Phase 0 — test infrastructure** (users, verification protocol)
-- [ ] **Phase Import — import pipeline (Phase 3 handoff)** — topic extraction,
-  \`topic_id\` persistence, atomic multi-topic import
+- [x] **Phase 0 / #133 — coverage infrastructure** — explicit catalog paths,
+  seed/complete status, empty-catalog failure, report-only progress mode
+- [ ] **Phase Import / #134 — strict selected-topic extraction** — real source
+  fixtures, no landing-page fallback, provider/topic provenance, atomic batch
 `;
 
 for (let i = 0; i < PROVIDER_ORDER.length; i++) {
-  const p = PROVIDER_ORDER[i];
+  const provider = PROVIDER_ORDER[i];
   const letter = String.fromCharCode(65 + i);
-  md += `- [ ] **Phase ${letter} — \`${p.id}\` (${p.regionLabel})**\n`;
+  const issue = ISSUE_BY_PROVIDER[provider.id];
+  const mark = provider.catalogStatus === "complete" ? "x" : " ";
+  md += `- [${mark}] **Phase ${letter} / #${issue} — \`${provider.id}\` (${provider.regionLabel})**\n`;
 }
 
 md += `
-## Decisions (frozen)
+## Frozen scope and evidence rules
 
-1. **Scope:** Manifest taxonomy/topics **and** import pipeline Phase 3 (Epic C).
-2. **Test users:** \`curriculum-<bundesland>-<schulform>-klasse-<n>\` in the
-   shared Turso DB (readable Bundesland slug, explicit \`klasse\` segment);
-   \`thomas\` and \`test-user-0.6.2\` stay untouched.
-3. **Subjects:** All subjects listed in each provider manifest for the path —
-   not a core-subject subset.
-4. **Verification:** End-to-end per path — wizard topic selection **and**
-   import of one topic into cards (see protocol below).
-5. **Provider order:** Alphabetical by provider id (15 phases A–O).
-6. **Manifest refresh:** Agent-navigated against live official sites once per
-   school year (per ADR 2026-07-02); HTML fixtures for tests — no live-site
-   dependency in CI.
+1. **All subjects, not MINT only.** Capture the complete official taxonomy for
+   the active school year, including languages, humanities, arts, religion,
+   vocational subjects and special-education branches where offered.
+2. **Grade-scoped paths.** The source of truth is an explicit
+   \`schoolType|grade|subject[|track]\` catalog. School-wide subject unions are
+   display metadata only and must not create fictitious grade combinations.
+3. **Two independent completeness dimensions.** \`catalogStatus=complete\`
+   means the official taxonomy is exhaustive; topic coverage means every
+   captured leaf has non-empty topics and a resolvable source.
+4. **Official sources only.** Record school year and capture date. Never invent
+   a path that the official portal does not offer.
+5. **Strict extraction.** Resolve to the actual curriculum content, not a
+   generic landing page. A selected topic that cannot be found must fail rather
+   than fall back to unrelated page text or only its manifest label.
+6. **Offline regression evidence.** Store representative real source fixtures;
+   CI never fetches live ministry sites. If the official source is PDF, add a
+   supported provider extraction path before marking it complete.
+7. **E2E evidence.** For every captured school type × grade, navigate the
+   desktop wizard and import one available topic with its dedicated test user.
+8. **Profiles protected.** \`thomas\` and \`test-user-0.6.2\` stay untouched.
 
-## Phase 0 — test infrastructure
+## Phase 0 / #133 — coverage infrastructure
 
-- [x] Provision \`114\` curriculum test users via
-  \`npx tsx scripts/provision-curriculum-test-users.ts\` (shared anchor token
-  \`curriculum-test-profile-anchor\`, one card each).
-- [x] Document user ↔ path mapping in issue checklist (GitHub #132).
-- [ ] Add a bridge-level smoke script that asserts \`curriculum-list-level
-  --level topic\` returns non-empty options for every manifest path (CI gate
-  once manifests are complete).
+- [x] Separate raw provider catalogs from the runtime content-filtered registry.
+- [x] Add provider \`catalogStatus\` (\`seed\` or \`complete\`).
+- [x] Let complete providers expose explicit verified catalog leaves.
+- [x] Treat seed and empty catalogs as incomplete even if every known seed path
+  has topics.
+- [x] Keep \`--report-only\` for progress; the final CI gate requires complete
+  catalogs and 100% topic/source coverage.
+- [x] Bayern reference baseline: **2095/2095** live-captured paths for school
+  year 2026/27; no subject×grade cross-product gaps.
 
-### Test user registry
+## Phase Import / #134 — strict selected-topic extraction
+
+- [x] Persist \`provider\` + \`topic_id\` and retain source-link fallback.
+- [x] Confirm multi-topic card operations atomically.
+- [ ] Replace synthetic label-only fixtures with saved representative source
+  documents for every provider/source pattern.
+- [ ] Remove the seed-provider fallback that returns the first unrelated HTML
+  section or only the manifest label when a selected topic is absent.
+- [ ] Resolve each manifest path to the actual content page/document rather
+  than a provider-wide landing page.
+- [ ] Test partial selection and two real sibling topics sharing one source;
+  unselected sibling content must never ground generated cards.
+- [ ] Test a valid topic ID against a non-matching document and require a hard
+  extraction failure.
+- [ ] Keep the precise-topic wizard notice only after every registered runtime
+  provider satisfies these checks.
+
+## Test user registry
 
 | Region | User ID pattern | Example |
 |--------|-----------------|---------|
 `;
 
 const regions = new Set();
-for (const p of PROVIDER_ORDER) {
-  const land = bundeslandSlug(p.regionLabel);
+for (const provider of PROVIDER_ORDER) {
+  const land = bundeslandSlug(provider.regionLabel);
   if (regions.has(land)) continue;
   regions.add(land);
-  const example = collectPaths(p)[0];
-  if (example) {
-    md += `| ${p.regionLabel} | \`curriculum-${land}-<schulform>-klasse-<n>\` | \`${userId(p, example.schoolType, example.grade)}\` |\n`;
+  const firstPath = collectPaths(provider)[0];
+  if (firstPath) {
+    md += `| ${provider.regionLabel} | \`curriculum-${land}-<schulform>-klasse-<n>\` | \`${userId(provider, firstPath.schoolType, firstPath.grade)}\` |\n`;
   }
 }
 
 md += `
-## End-to-end verification protocol (every path)
+## Provider-phase protocol
 
-For path \`<provider>|<schoolType>|<grade>|<subject>[|<track>]\`:
+For every incomplete provider phase below:
 
-1. \`zam bridge database-select-user --user curriculum-<bundesland>-<schulform>-klasse-<n>\`
-2. Desktop → Curriculum import wizard: select Land, Bundesland, Schulform,
-   Klasse, Fach [, Ausprägung].
-3. **Topic step must list ≥1 Lernbereich/Thema** (not an empty list).
-4. Select **one** topic → run import → confirm ≥1 card lands in the user's queue.
-5. Card metadata must reference \`provider\` and \`topic_id\` once Phase B is done.
-6. Record \`capturedOn\` in the manifest when refreshing from the live site.
+1. Navigate the official portal and capture all school types, grades, offered
+   subjects and tracks for the active school year.
+2. Store the grade-scoped catalog independently from topics; set
+   \`catalogStatus\` to \`complete\` only after this exhaustive pass.
+3. Populate topics and exact content URLs for every captured leaf.
+4. Add real offline fixtures and strict provider-owned extraction.
+5. Regenerate this plan so the final verified path count replaces **TBD**.
+6. Run the provider audit at 100%, bridge checks, and desktop E2E per school
+   type × grade; record evidence and final counts in the linked issue.
 
-CLI pre-check (before desktop):
-
-\`\`\`bash
-npx tsx src/cli/index.ts bridge curriculum-list-level \\
-  --provider <id> --level topic \\
-  --selection '{"schoolType":"...","grade":"...","subject":"...","track":"..."}'
-\`\`\`
-
-## Phase Import — import pipeline (Phase 3 handoff)
-
-From [\`2026-07-02-lehrplanplus-phase-3.md\`](./2026-07-02-lehrplanplus-phase-3.md):
-
-- [ ] Saved HTML fixtures per provider (never hit live sites in tests).
-- [ ] Provider-owned \`extractTopics(html, topicIds)\` returning per-topic text.
-- [ ] Persist \`provider\` + \`topic_id\` on imported cards (migration + fallback).
-- [ ] Atomic multi-topic import with dedup; failure rolls back entire batch.
-- [ ] Remove Phase-2 whole-page notice in wizard when extraction is precise.
-- [ ] Regression tests: partial selection, sibling pages, re-import, all locales.
-
----
+Current seed counts below are diagnostic only. They must not be copied into
+acceptance criteria as final totals.
 
 `;
 
 for (let i = 0; i < PROVIDER_ORDER.length; i++) {
-  const p = PROVIDER_ORDER[i];
+  const provider = PROVIDER_ORDER[i];
   const letter = String.fromCharCode(65 + i);
-  const paths = collectPaths(p);
-  const withTopics = paths.filter((path) => p.listTopics({
-    schoolType: path.schoolType,
-    grade: path.grade,
-    subject: path.subject,
-    track: path.track,
-  }).length > 0);
+  const issue = ISSUE_BY_PROVIDER[provider.id];
+  const paths = collectPaths(provider);
+  const covered = paths.filter((path) => pathHasTopics(provider, path)).length;
 
-  md += `## Phase ${letter} — \`${p.id}\` (${p.regionLabel})
+  md += `## Phase ${letter} / #${issue} — \`${provider.id}\` (${provider.regionLabel})
 
-Provider: **${p.label}** · Region: \`${p.region}\` · Paths: **${paths.length}** · Topics today: **${withTopics.length}** (${paths.length ? Math.round((withTopics.length / paths.length) * 100) : 0}%)
-
-Each line: manifest topics + \`contentUrls\` + HTML fixture + CLI topic check + desktop E2E import.
+Provider: **${provider.label}** · catalog: \`${provider.catalogStatus}\` · current
+inventory: **${paths.length} paths / ${covered} with topics**
 
 `;
 
-  for (const path of paths) {
-    const hasTopics = p.listTopics({
-      schoolType: path.schoolType,
-      grade: path.grade,
-      subject: path.subject,
-      track: path.track,
-    }).length > 0;
-    const mark = hasTopics ? "x" : " ";
-    const trackPart = path.track ? ` · ${path.trackLabel ?? path.track}` : "";
-    const testUser = userId(p, path.schoolType, path.grade);
-    md += `- [${mark}] \`${path.key}\` — ${path.schoolTypeLabel} ${path.grade}. Kl. · ${path.subjectLabel}${trackPart} · user \`${testUser}\`\n`;
+  if (provider.catalogStatus === "complete") {
+    md += `- [x] Complete official taxonomy captured for the active school year.
+- [x] Explicit grade-scoped catalog contains ${paths.length} verified leaves.
+- [x] Every catalog leaf has topics and an exact content URL (${covered}/${paths.length}).
+- [x] Provider issue records capture and verification evidence.
+
+`;
+    continue;
   }
-  md += "\n";
+
+  md += `Target path count: **TBD after complete official taxonomy capture**.
+The current manifest is a non-exhaustive MINT seed.
+
+- [ ] Capture all official school types, grades, subjects and tracks.
+- [ ] Add explicit grade-scoped catalog leaves and set \`catalogStatus=complete\`.
+- [ ] Populate topics and exact content URLs for every captured leaf.
+- [ ] Add real offline source fixtures and strict selected-topic extraction.
+- [ ] Reach complete-catalog + 100% topic/source audit.
+- [ ] Complete desktop E2E per captured school type × grade.
+- [ ] Update #${issue} with final counts, capture date and evidence.
+
+`;
 }
 
-md += `## Acceptance (Epic complete)
+md += `## Acceptance — Epic #132 complete
 
-- Every checkbox above is checked.
-- Phase B import pipeline acceptance from Phase 3 plan is met.
-- \`npm run format && npm run lint && npm run typecheck && npm run test && npm run build\` green.
-- No regression for \`thomas\` / \`test-user-0.6.2\` profiles.
+- Every provider reports \`catalogStatus=complete\` and a non-empty explicit
+  official catalog for the same active school year.
+- Every captured leaf has non-empty topics, an exact importable source and
+  strict selected-topic extraction; the global smoke exits 0 without
+  \`--report-only\`.
+- All provider issues contain final (not seed) path counts and E2E evidence.
+- Phase Import acceptance is complete for every runtime provider.
+- \`npm run format && npm run lint && npm run typecheck && npm run test && npm run build\` is green.
+- No regression for \`thomas\` / \`test-user-0.6.2\`.
 `;
 
-const outPath = new URL(
-  "../docs/plans/2026-07-12-curriculum-manifest-coverage.md",
-  import.meta.url,
+writeFileSync(
+  "docs/plans/2026-07-12-curriculum-manifest-coverage.md",
+  md,
+  "utf8",
 );
-const totalPaths = PROVIDER_ORDER.reduce(
-  (sum, provider) => sum + collectPaths(provider).length,
-  0,
-);
-writeFileSync(outPath, md, "utf8");
-console.log(`Wrote ${outPath.pathname} (${totalPaths} total paths)`);
+console.log("Wrote docs/plans/2026-07-12-curriculum-manifest-coverage.md");

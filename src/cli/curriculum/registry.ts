@@ -17,13 +17,15 @@ import { rahmenrichtlinienStProvider } from "./providers/rahmenrichtlinien-st/in
 import type { CurriculumProvider, TaxonomyNode } from "./types.js";
 
 /**
- * Registered curriculum providers. Add a new plugin here to extend it.
+ * Raw (unfiltered) curriculum plugins — full catalog as published in each
+ * provider manifest, including school-type × grade × subject combinations
+ * that still lack importable topics.
  *
- * Every provider is wrapped in `withImportableContentOnly`, so consumers
- * (bridge, wizard) never see school types, grades, subjects, or tracks that
- * cannot reach an importable topic.
+ * Use this for coverage audits (Epic #132 Phase 0) and tooling that must see
+ * the complete taxonomy. Runtime consumers (bridge, wizard) use
+ * `CURRICULUM_PROVIDERS` instead.
  */
-export const CURRICULUM_PROVIDERS: CurriculumProvider[] = [
+export const RAW_CURRICULUM_PROVIDERS: CurriculumProvider[] = [
   lehrplanplusBayernProvider,
   bildungsplanBwProvider,
   kernlehrplanNrwProvider,
@@ -39,12 +41,30 @@ export const CURRICULUM_PROVIDERS: CurriculumProvider[] = [
   rahmenrichtlinienStProvider,
   fachanforderungenShProvider,
   lehrplanThueringenProvider,
-].map(withImportableContentOnly);
+];
+
+/**
+ * Registered curriculum providers. Add a new plugin to
+ * `RAW_CURRICULUM_PROVIDERS` above.
+ *
+ * Every provider is wrapped in `withImportableContentOnly`, so consumers
+ * (bridge, wizard) never see school types, grades, subjects, or tracks that
+ * cannot reach an importable topic.
+ */
+export const CURRICULUM_PROVIDERS: CurriculumProvider[] =
+  RAW_CURRICULUM_PROVIDERS.map(withImportableContentOnly);
 
 export function getCurriculumProvider(
   id: string,
 ): CurriculumProvider | undefined {
   return CURRICULUM_PROVIDERS.find((provider) => provider.id === id);
+}
+
+/** Raw provider by id (full catalog, including empty topic paths). */
+export function getRawCurriculumProvider(
+  id: string,
+): CurriculumProvider | undefined {
+  return RAW_CURRICULUM_PROVIDERS.find((provider) => provider.id === id);
 }
 
 export interface CurriculumRegionOption extends TaxonomyNode {

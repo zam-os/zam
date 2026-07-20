@@ -8,6 +8,7 @@ export const rahmenplanMvProvider: CurriculumProvider = {
   region: "MV",
   regionLabel: "Mecklenburg-Vorpommern",
   label: "Rahmenplan (Mecklenburg-Vorpommern)",
+  catalogStatus: "seed",
 
   listSchoolTypes() {
     return MANIFEST.schoolTypes;

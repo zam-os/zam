@@ -476,7 +476,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_err_select_option: "Selecciona una opción para continuar.",
     wizard_err_no_topics: "Selecciona al menos un tema.",
     wizard_topic_scope_note:
-      "Las tarjetas se generan a partir de la página completa del plan de estudios de esta asignatura (todos sus temas). La importación precisa por tema llegará en una futura actualización; por ahora, la selección de temas te ayuda a hacer seguimiento de lo que hay que cubrir a continuación.",
+      "Solo se importan los temas seleccionados. El texto del plan se extrae por tema (o por subunidad cuando el proveedor lo permite) y cada tarjeta conserva el proveedor y el identificador del tema.",
     wizard_resume_prompt: "Continuar donde lo dejaste:",
     wizard_btn_resume: "Continuar",
     wizard_btn_restart: "Empezar de nuevo",
@@ -1129,7 +1129,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "Veuillez sélectionner une option pour continuer.",
     wizard_err_no_topics: "Veuillez sélectionner au moins un sujet.",
     wizard_topic_scope_note:
-      "Les cartes sont générées à partir de la page complète du programme de cette matière (tous ses sujets). L'importation précise par sujet arrivera dans une prochaine mise à jour — pour l'instant, la sélection des sujets vous aide à suivre ce qu'il reste à couvrir.",
+      "Seuls les sujets sélectionnés sont importés. Le texte du programme est extrait par sujet (ou sous-unité lorsque le fournisseur le permet) et chaque carte conserve le fournisseur et l'identifiant du sujet.",
     wizard_resume_prompt: "Continuer là où vous vous étiez arrêté :",
     wizard_btn_resume: "Continuer",
     wizard_btn_restart: "Recommencer",
@@ -1780,7 +1780,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_err_select_option: "Selecione uma opção para continuar.",
     wizard_err_no_topics: "Selecione pelo menos um tópico.",
     wizard_topic_scope_note:
-      "Os cartões são gerados a partir da página completa do currículo desta disciplina (todos os seus tópicos). A importação precisa por tópico chegará em uma atualização futura — por enquanto, a seleção de tópicos ajuda você a acompanhar o que cobrir a seguir.",
+      "Somente os tópicos selecionados são importados. O texto do currículo é extraído por tópico (ou subunidade quando o provedor permite) e cada cartão mantém o provedor e o identificador do tópico.",
     wizard_resume_prompt: "Continuar de onde você parou:",
     wizard_btn_resume: "Continuar",
     wizard_btn_restart: "Começar de novo",
@@ -2373,7 +2373,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_err_select_option: "请选择一个选项以继续。",
     wizard_err_no_topics: "请至少选择一个主题。",
     wizard_topic_scope_note:
-      "卡片是根据该科目完整的课程大纲页面生成的（包含其所有主题）。精确的按主题导入将在未来的更新中提供——目前，主题选择可帮助你跟踪接下来要学习的内容。",
+      "仅导入所选主题。课程文本按主题提取（若提供方支持，也可按子单元），每张卡片保留提供方与主题标识。",
     wizard_resume_prompt: "从你上次停下的地方继续：",
     wizard_btn_resume: "继续",
     wizard_btn_restart: "重新开始",
@@ -2990,7 +2990,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     wizard_err_select_option: "続行するにはオプションを選択してください。",
     wizard_err_no_topics: "少なくとも1つのトピックを選択してください。",
     wizard_topic_scope_note:
-      "カードはこの教科の完全なカリキュラムページ（すべてのトピックを含む）から生成されます。トピックごとの正確なインポートは今後のアップデートで提供される予定です。現時点では、トピックの選択は次に取り組む内容を把握するのに役立ちます。",
+      "選択したトピックだけがインポートされます。カリキュラム本文はトピック単位（対応していればサブユニット単位）で抽出し、各カードに提供元とトピックIDが残ります。",
     wizard_resume_prompt: "前回の続きから：",
     wizard_btn_resume: "続ける",
     wizard_btn_restart: "最初からやり直す",
@@ -3714,7 +3714,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_err_select_option: "Please select an option to continue.",
     wizard_err_no_topics: "Please select at least one topic.",
     wizard_topic_scope_note:
-      "Cards are generated from the complete curriculum page for this subject (all of its topics). Precise per-topic import is coming in a future update — for now, topic selection helps you track what to cover next.",
+      "Only the topics you select are imported. Curriculum text is extracted per topic (or per sub-unit when the provider supports it), and each card keeps the provider and topic id.",
     wizard_resume_prompt: "Continue where you left off:",
     wizard_btn_resume: "Continue",
     wizard_btn_restart: "Start over",
@@ -4369,7 +4369,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_err_select_option: "Bitte wähle eine Option, um fortzufahren.",
     wizard_err_no_topics: "Bitte wähle mindestens ein Thema aus.",
     wizard_topic_scope_note:
-      "Die Karten werden aus der vollständigen Lehrplanseite dieses Fachs erstellt (alle Themen). Die präzise Auswahl nur der markierten Themen kommt mit einem künftigen Update — bis dahin hilft dir die Auswahl, den Überblick zu behalten, was als Nächstes drankommt.",
+      "Es werden nur die ausgewählten Themen importiert. Der Lehrplantext wird pro Thema extrahiert (oder pro Untereinheit, wenn der Provider das unterstützt), und jede Karte behält Provider und Themen-ID.",
     wizard_resume_prompt: "Dort weitermachen, wo du aufgehört hast:",
     wizard_btn_resume: "Fortfahren",
     wizard_btn_restart: "Neu beginnen",

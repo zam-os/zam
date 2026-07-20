@@ -1,12 +1,22 @@
 import fs from "node:fs";
 import path from "node:path";
 import { beforeAll, describe, expect, it } from "vitest";
+import { bildungsplanBremenProvider } from "../../src/cli/curriculum/providers/bildungsplan-bremen/index.js";
 import { bildungsplanBwProvider } from "../../src/cli/curriculum/providers/bildungsplan-bw/index.js";
+import { bildungsplanHamburgProvider } from "../../src/cli/curriculum/providers/bildungsplan-hamburg/index.js";
+import { fachanforderungenShProvider } from "../../src/cli/curriculum/providers/fachanforderungen-sh/index.js";
 import { kerncurriculumHessenProvider } from "../../src/cli/curriculum/providers/kerncurriculum-hessen/index.js";
+import { kerncurriculumNiedersachsenProvider } from "../../src/cli/curriculum/providers/kerncurriculum-niedersachsen/index.js";
 import { kernlehrplanNrwProvider } from "../../src/cli/curriculum/providers/kernlehrplan-nrw/index.js";
+import { lehrplaeneRpProvider } from "../../src/cli/curriculum/providers/lehrplaene-rp/index.js";
+import { lehrplanSaarlandProvider } from "../../src/cli/curriculum/providers/lehrplan-saarland/index.js";
 import { lehrplanSachsenProvider } from "../../src/cli/curriculum/providers/lehrplan-sachsen/index.js";
+import { lehrplanThueringenProvider } from "../../src/cli/curriculum/providers/lehrplan-thueringen/index.js";
 import { lehrplanplusBayernProvider as provider } from "../../src/cli/curriculum/providers/lehrplanplus-bayern/index.js";
 import { rahmenlehrplanBerlinBrandenburgProvider } from "../../src/cli/curriculum/providers/rahmenlehrplan-berlin-brandenburg/index.js";
+import { rahmenplanMvProvider } from "../../src/cli/curriculum/providers/rahmenplan-mv/index.js";
+import { rahmenrichtlinienStProvider } from "../../src/cli/curriculum/providers/rahmenrichtlinien-st/index.js";
+import type { CurriculumProvider } from "../../src/cli/curriculum/types.js";
 import { openDatabase } from "../../src/kernel/index.js";
 import { ensureCard } from "../../src/kernel/models/card.ts";
 import {
@@ -553,4 +563,134 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
       expect(extracted["gymnasium|9|chemie#nonexistent"]).toBeUndefined();
     });
   });
+
+  /**
+   * Seed-manifest providers: minimal HTML fixtures keep extractTopics offline
+   * and prove heading-based section isolation for every remaining Bundesland.
+   */
+  describe.each([
+    {
+      name: "Niedersachsen",
+      provider: kerncurriculumNiedersachsenProvider,
+      fixtureDir: "kerncurriculum-niedersachsen",
+      fixtureFile: "sample-rs-9-physik.html",
+      topicId: "realschule|9|physik#mechanik",
+      expectLabel: "Mechanik",
+      siblingId: "realschule|9|physik#nonexistent",
+    },
+    {
+      name: "Hamburg",
+      provider: bildungsplanHamburgProvider,
+      fixtureDir: "bildungsplan-hamburg",
+      fixtureFile: "sample-sts-9-physik.html",
+      topicId: "stadtteilschule|9|physik#mechanik",
+      expectLabel: "Mechanik",
+      siblingId: "stadtteilschule|9|physik#nonexistent",
+    },
+    {
+      name: "Bremen",
+      provider: bildungsplanBremenProvider,
+      fixtureDir: "bildungsplan-bremen",
+      fixtureFile: "sample-os-9-informatik.html",
+      topicId: "oberschule|9|informatik#algorithmen",
+      expectLabel: "Algorithmen",
+      siblingId: "oberschule|9|informatik#nonexistent",
+    },
+    {
+      name: "Mecklenburg-Vorpommern",
+      provider: rahmenplanMvProvider,
+      fixtureDir: "rahmenplan-mv",
+      fixtureFile: "sample-rs-9-physik.html",
+      topicId: "regionale-schule|9|physik#mechanik",
+      expectLabel: "Mechanik",
+      siblingId: "regionale-schule|9|physik#nonexistent",
+    },
+    {
+      name: "Rheinland-Pfalz",
+      provider: lehrplaeneRpProvider,
+      fixtureDir: "lehrplaene-rp",
+      fixtureFile: "sample-rsp-9-physik.html",
+      topicId: "realschule-plus|9|physik#mechanik",
+      expectLabel: "Mechanik",
+      siblingId: "realschule-plus|9|physik#nonexistent",
+    },
+    {
+      name: "Saarland",
+      provider: lehrplanSaarlandProvider,
+      fixtureDir: "lehrplan-saarland",
+      fixtureFile: "sample-gs-9-physik.html",
+      topicId: "gemeinschaftsschule|9|physik#mechanik",
+      expectLabel: "Mechanik",
+      siblingId: "gemeinschaftsschule|9|physik#nonexistent",
+    },
+    {
+      name: "Sachsen-Anhalt",
+      provider: rahmenrichtlinienStProvider,
+      fixtureDir: "rahmenrichtlinien-st",
+      fixtureFile: "sample-sek-9-physik.html",
+      topicId: "sekundarschule|9|physik#mechanik",
+      expectLabel: "Mechanik",
+      siblingId: "sekundarschule|9|physik#nonexistent",
+    },
+    {
+      name: "Schleswig-Holstein",
+      provider: fachanforderungenShProvider,
+      fixtureDir: "fachanforderungen-sh",
+      fixtureFile: "sample-gs-9-physik.html",
+      topicId: "gemeinschaftsschule|9|physik#mechanik",
+      expectLabel: "Mechanik",
+      siblingId: "gemeinschaftsschule|9|physik#nonexistent",
+    },
+    {
+      name: "Thüringen",
+      provider: lehrplanThueringenProvider,
+      fixtureDir: "lehrplan-thueringen",
+      fixtureFile: "sample-rs-9-physik.html",
+      topicId: "regelschule|9|physik#mechanik",
+      expectLabel: "Mechanik",
+      siblingId: "regelschule|9|physik#nonexistent",
+    },
+  ])(
+    "$name seed-provider extractTopics",
+    ({
+      provider: seedProvider,
+      fixtureDir,
+      fixtureFile,
+      topicId,
+      expectLabel,
+      siblingId,
+    }: {
+      name: string;
+      provider: CurriculumProvider;
+      fixtureDir: string;
+      fixtureFile: string;
+      topicId: string;
+      expectLabel: string;
+      siblingId: string;
+    }) => {
+      let html: string;
+
+      beforeAll(() => {
+        html = fs.readFileSync(
+          path.join(
+            path.resolve("tests/fixtures/curriculum", fixtureDir),
+            fixtureFile,
+          ),
+          "utf-8",
+        );
+      });
+
+      it("extracts the seeded topic from the offline HTML fixture", () => {
+        expect(seedProvider.extractTopics).toBeTypeOf("function");
+        const extracted = seedProvider.extractTopics!(html, [topicId]);
+        expect(extracted[topicId]).toBeDefined();
+        expect(extracted[topicId]).toContain(expectLabel);
+      });
+
+      it("does not invent text for unknown topic ids", () => {
+        const extracted = seedProvider.extractTopics!(html, [siblingId]);
+        expect(extracted[siblingId]).toBeUndefined();
+      });
+    },
+  );
 });

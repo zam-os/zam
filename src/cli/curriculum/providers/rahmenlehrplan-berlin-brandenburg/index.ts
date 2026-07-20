@@ -8,6 +8,7 @@ export const rahmenlehrplanBerlinBrandenburgProvider: CurriculumProvider = {
   region: "BE-BB",
   regionLabel: "Berlin / Brandenburg",
   label: "Rahmenlehrplan (Berlin-Brandenburg)",
+  catalogStatus: "seed",
 
   listSchoolTypes() {
     return MANIFEST.schoolTypes;

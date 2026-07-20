@@ -8,6 +8,7 @@ export const lehrplaeneRpProvider: CurriculumProvider = {
   region: "RP",
   regionLabel: "Rheinland-Pfalz",
   label: "Lehrpläne (Rheinland-Pfalz)",
+  catalogStatus: "seed",
 
   listSchoolTypes() {
     return MANIFEST.schoolTypes;
