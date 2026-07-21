@@ -21,6 +21,24 @@ QR code shown on the desktop** (FR-0). This pairing flow assumes the server
 database — "configuration/sync only work with a server DB" is an accepted
 trade-off (Thomas, 2026-07-21).
 
+### Field-test users (2026)
+
+Two paired devices, two different learners:
+
+- **Primary learner: a ninth-grade Realschule student (Bavaria) on the
+  Pixel 6** — preparing the 2026/27 school year with the goal of a real
+  grade improvement. Previous success with an active-recall tool shows the
+  method fits; the app's job is to make it effortless and daily.
+- The project owner on a **Pixel 9** (also Android 17; the hardware floor
+  stays defined by the Pixel 6).
+
+Consequences: German-first UX; curriculum content comes from the desktop's
+existing LehrplanPLUS import (`lehrplanplus-bayern` — Realschule grade 9 is
+fully cataloged, including Mathematik and Physik) and reaches the phone via
+sync; pairing must bind a device to **one learner** (FR-0). Success metric
+stays the real one — due cards actually reviewed and school results — not
+in-app streaks (no-gamification stance, FR-5).
+
 ## Platform baseline
 
 - **minSdkVersion 37 / targetSdkVersion 37** (Android 17 "Cinnamon Bun",
@@ -72,8 +90,14 @@ trade-off (Thomas, 2026-07-21).
   prefer database-scoped tokens; re-pairing replaces stored credentials;
   a revoked/expired token leads to a re-pair prompt, never to silent data
   loss.
+- Pairing binds the device to **one learner**: the payload carries the
+  learner's user id, chosen (or created) in the desktop pairing surface.
+  Preferred setup for family use: **one server database per learner**, so a
+  teenager's learning data stays their own — the QR flow is identical
+  either way, the desktop just pairs from the selected learner's database.
+  The Phase-0 spike heuristic ("most cards wins") is retired by this.
 - Multiple paired devices are supported; each device is its own replica of
-  the same server database.
+  its learner's server database.
 
 ### FR-1 Active-recall sessions
 
@@ -102,8 +126,10 @@ Ordered by leverage:
 3. **Quick capture**: share or paste free text/URL → token draft the user
    confirms. Optional LLM decomposition into multiple tokens is opt-in and
    off by default.
-4. **Curriculum catalogs** (Epic #132 providers): later phase, reusing the
-   curriculum manifest/import machinery — not v1.
+4. **Curriculum catalogs** (Epic #132 providers): the field-test content
+   path is the **desktop** curriculum import (`lehrplanplus-bayern`,
+   Realschule grade 9) synced to the phone — available from Phase 1 on.
+   Running catalog imports *on the phone* stays a later phase, not v1.
 
 ### FR-3 Voice mode ("Sprache soll verwendbar sein")
 
