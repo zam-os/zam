@@ -17,7 +17,7 @@
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
-import { setCurrentLocale } from "../i18n.js";
+import { setCurrentLocale, t } from "../i18n.js";
 import {
   type CompanionContextBarState,
   type ContextBarHandle,
@@ -38,6 +38,35 @@ const kcEl = document.getElementById("settings-kc");
 const dbEl = document.getElementById("settings-db");
 const backupEl = document.getElementById("settings-backup");
 const updateEl = document.getElementById("settings-update");
+
+function setSectionTitle(id: string, label: string): void {
+  const title = document.getElementById(id);
+  if (title) title.textContent = label;
+}
+
+/** Localize the section titles rendered statically by settings-panel.html. */
+function applyStaticLocale(): void {
+  setSectionTitle(
+    "settings-section-recall-title",
+    t("settings_section_recall"),
+  );
+  setSectionTitle(
+    "settings-section-workspaces-title",
+    t("settings_workspace_title"),
+  );
+  setSectionTitle("settings-section-kc-title", t("settings_context_title"));
+  setSectionTitle("settings-section-db-title", t("settings_database"));
+  setSectionTitle(
+    "settings-section-backup-title",
+    t("settings_section_backup"),
+  );
+  setSectionTitle(
+    "settings-section-update-title",
+    t("settings_section_update"),
+  );
+}
+
+applyStaticLocale();
 
 const showConnectionNotice = (message: string): void =>
   showConnectionNoticeShared(noticeEl, message);
@@ -598,6 +627,7 @@ app
     connected = true;
     if (navigator.language.startsWith("de")) {
       setCurrentLocale("de");
+      applyStaticLocale();
     }
     // ontoolresult normally fires right after the handshake and triggers the
     // load. If a host never delivers it, still start after a short grace
