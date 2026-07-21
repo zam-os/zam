@@ -92,7 +92,7 @@ Prerequisites: "to understand A, you must first know B." Register edges via `zam
 
 ## Two Modes of Knowledge Assessment
 
-**Observation (primary)**: Agent watches the user do the task. If done correctly without help or hesitation → silently rate all touched tokens as 4. No interruption, no questions. Like a driving examiner in the back seat.
+**Observation (primary)**: Agent watches the user do the task. If done correctly without help or hesitation → silently rate all touched tokens as 4. No interruption, no questions. Like a driving examiner in the back seat. But if you supplied the knowledge *this session* — looked it up, taught it, or handed over the exact steps — that is an assisted first run, not mastery: log a modest establishing rating (a 3, not a 4); real recall is tested when the card next falls due.
 
 **Verbal probing (secondary)**: Used when observation is insufficient — conceptual sessions with no executable output, or when a token hasn't been exercised in a long time and a practice task isn't appropriate.
 
@@ -102,11 +102,11 @@ Always prefer observation over probing. Talking interrupts flow. The best ZAM se
 
 ## Observation Levels
 
-- **Level 1 — Shell** (current): Agent reads shell command history and output to infer success/failure
-- **Level 2 — Screen** (future): Agent observes full screen, guides UI interaction, auto-rates based on what it sees
+- **Level 1 — Shell** (available): Agent reads shell command history and output to infer success/failure.
+- **Level 2 — Screen** (available): Agent observes the screen for GUI/desktop/portal tasks. ZAM ships a capture path — `zam bridge capture-ui` returns a screenshot (base64 PNG) governed by the `ObserverPolicy`; in a multimodal agent harness you may instead use the harness's own screen/browser view (computer-use / browser-use). See *UI / screen tasks* in STEP 4.
 - **Level 3 — Real life** (future): Voice + visual overlay on device (phone, AR). The agent is an overlay; the user lives in their world.
 
-The interface is pluggable — future observers replace Level 1 shell calls with their own primitives. Today: always Level 1.
+Pick the lowest level that captures the task honestly — shell for command-line work, screen for GUI/portal work. Regardless of level, prefer an **objective outcome signal** (an API status, a file/DB state before→after) over pixels when one exists: it is the most reliable evidence that the task actually succeeded.
 
 ---
 
@@ -169,6 +169,15 @@ To observe, tell the user to open a monitored terminal window:
 
 When the user returns, end the session:
 Call `zam_session_end` with the session ID and `synthesize: true`. The analyzer infers ratings based on command history, error rates, and speed. Confirm or adjust the returned candidates, then submit them using each candidate's `cardId` or `tokenId`.
+
+**For UI / screen tasks (observation mode):**
+
+When the real work happens in a browser or desktop app — a cloud portal, a GUI — rather than the shell, start the session with `--context ui` (`zam_session_start` `context: "ui"`); the response carries an `observerPolicyHint` describing the capture rules in force. Observe the screen one of two ways:
+
+- **ZAM capture** — `zam bridge capture-ui --session <id> [--process-name <app> | --hwnd <id>]` returns a screenshot (base64 PNG) plus a `captureMethod`. It is gated by the `ObserverPolicy` (inspect it with `zam bridge get-observer-policy`): if scope is `off`, the target is denylisted, or a sensitive window (password manager, banking, auth/UAC dialog) is frontmost, it returns a typed **`denied`** response instead of pixels — treat that as "cannot observe here", never as a failed task. The built-in sensitive denylist always wins over any user allowlist.
+- **Harness-native** — in a multimodal agent harness, use the harness's own screen or browser capability (computer-use / browser-use) to watch the user act. Same read-only intent: perceive, never drive.
+
+There is no shell monitor here, so rate manually: judge from what you saw (reaching the right surface and completing the action correctly is a pass), verify any objective outcome signal that exists, then `zam_submit_review` (`doneBy: "user"`) and `zam_session_end` without `synthesize`.
 
 **For conceptual sessions (verbal probing):**
 
