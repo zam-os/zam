@@ -57,7 +57,9 @@ trade-off (Thomas, 2026-07-21).
 - The desktop Studio gets a "pair mobile device" surface that renders a QR
   code from the machine-local credentials (`~/.zam/credentials.json`): a
   versioned `zam-pair` JSON payload carrying the libsql/Turso database URL,
-  an auth token, and optional bootstrap settings (locale, profile).
+  an auth token, the desktop's machine-local **LLM role configuration**
+  (provider URL + key — one scan also configures recall quality), and
+  optional bootstrap settings (locale, profile).
 - First run on Android: scan the code (camera permission), validate the
   payload version, store credentials in app-private storage backed by the
   Android Keystore, run the initial sync, land in the due queue. No manual
@@ -65,10 +67,11 @@ trade-off (Thomas, 2026-07-21).
 - Pairing **requires the server database**: a desktop without Turso/sqld
   configured cannot pair and must say so clearly. Local-only phone setups
   are out of scope by requirement.
-- Security: the QR encodes a live token — render it only on explicit user
-  action with a shoulder-surfing note; prefer database-scoped tokens;
-  re-pairing replaces stored credentials; a revoked/expired token leads to
-  a re-pair prompt, never to silent data loss.
+- Security: the QR encodes live secrets (DB token, LLM provider key) —
+  render it only on explicit user action with a shoulder-surfing note;
+  prefer database-scoped tokens; re-pairing replaces stored credentials;
+  a revoked/expired token leads to a re-pair prompt, never to silent data
+  loss.
 - Multiple paired devices are supported; each device is its own replica of
   the same server database.
 
@@ -122,9 +125,11 @@ Interpreted as **voice operation** of recall sessions (i18n is FR-6):
 
 ### FR-4 Sync (server database, offline-capable)
 
-- The server database (Turso cloud or self-hosted `sqld` — the pairing
-  payload is host-agnostic) is the configuration and sync backbone. Per
+- The server database is the configuration and sync backbone. Per
   requirement it is acceptable that the app does not work without one.
+  The field test runs on **Turso Cloud (free tier)**; the pairing payload
+  stays host-agnostic so a later move to self-hosted `sqld` needs only a
+  re-pair.
 - On the device, the database is an embedded replica (kernel provider
   model, ADR 2026-06-09): after the initial sync every feature — including
   full review sessions — works offline, and writes sync back when online.
@@ -168,9 +173,9 @@ No streaks, no gamification.
 - **Distribution (field test)**: sideload / internal track; Play-Store
   polish, signing story, and store listing are explicitly later.
 
-## Architecture direction (to be confirmed by Phase 0 spike + ADR)
+## Architecture (decided 2026-07-21; Phase 0 spike validates)
 
-**Option A — Tauri 2 Android shell (recommended).** Same stack family as
+**Option A — Tauri 2 Android shell (chosen).** Same stack family as
 the desktop Studio (ADR 2026-05-31b): Vite/TS frontend, Rust shell. The
 kernel runs **in the WebView** — it is dependency-free TypeScript against
 the async `Database` contract (`src/kernel/db/types.ts`), so Android needs
@@ -188,15 +193,15 @@ crate behind a Tauri command. Voice via a small Tauri mobile plugin
 
 **Option B — React Native/Expo + op-sqlite (libsql build).** Embedded
 replica support out of the box; kernel runs in Hermes. Cost: a second
-frontend stack and full UI rewrite.
+frontend stack and full UI rewrite. Kept as the Phase 0 fallback.
 
 **Option C — Capacitor.** Fastest WebView reuse, weakest background/voice
-and sync story. Fallback only.
+and sync story. Not pursued.
 
 **Option D — native Kotlin.** Rejected: duplicates kernel logic.
 
-Repo layout recommendation: `mobile/` folder in this repository, mirroring
-`desktop/` (own package.json, own CI job). Final call in Phase 0.
+Repo layout (decided): `mobile/` folder in this repository, mirroring
+`desktop/` (own package.json, own CI job).
 
 ## Non-goals (v1)
 
@@ -211,9 +216,9 @@ server database, per FR-0).
 
 - [ ] **Phase 0 — stack spike + ADR**: Tauri 2 Android walking skeleton on
   the Pixel 6 — embedded-replica sync of a test server database plus a new
-  kernel DB provider listing the due queue. Confirms Option A (or falls
-  back to B) **and** the replica path the whole app depends on; record the
-  ADR.
+  kernel DB provider listing the due queue. Validates the decided Option A
+  and the replica path the whole app depends on (fallback to B only on
+  hard blockers); record the ADR.
 - [ ] **Phase 1 — QR pairing, read-only companion**: desktop "pair mobile
   device" surface (QR from machine-local credentials) + Android scanner,
   Keystore-backed credential storage, initial sync, due-queue and status
@@ -232,18 +237,20 @@ server database, per FR-0).
   online LLM question/evaluation wiring, performance-budget and battery
   validation on the Pixel 6, sideload build channel.
 
-## Open decisions
+## Decisions (Thomas, 2026-07-21)
 
-1. **Stack**: confirm Option A after the Phase 0 spike (fallback B).
-2. **Repo layout**: `mobile/` in-repo (recommended) vs. separate repo.
-3. **Server-DB hosting for the field test**: Turso cloud (free tier) vs.
-   self-hosted `sqld` — cost stance applies; the pairing payload is
-   host-agnostic either way. *(The former "sync scope" question is
-   resolved 2026-07-21: configuration and sync assume the server DB.)*
-4. **LLM roles on the phone**: the phone is its own "machine" under the
-   machine-local role model (ADR 2026-06-25a) — which provider(s) should
-   it use, and is offline/self-rated mode acceptable as the default?
-5. **Android `applicationId`** (desktop uses `com.zam.app`).
+1. **Stack**: Tauri 2 Android (Option A). The Phase 0 spike stays as the
+   validation gate; Expo/op-sqlite (Option B) only on hard blockers.
+2. **Repo layout**: `mobile/` in this repository, mirroring `desktop/`.
+3. **Server DB (field test)**: Turso Cloud free tier. Pairing payload
+   stays host-agnostic; self-hosted `sqld` remains a later option.
+4. **LLM roles**: paired along in the QR payload (desktop's machine-local
+   role configuration, ADR 2026-06-25a — the phone stores its own copy).
+   Online sessions get the Studio-grade LLM pipeline; offline sessions
+   fall back to template prompts + self-rating.
+5. **Android `applicationId`**: default `org.zamos.zam` (zam-os.org is
+   owned; hyphens are invalid in application IDs — desktop's `com.zam.app`
+   stays as is). Cheap to change any time before a store publication.
 
 ## References
 
