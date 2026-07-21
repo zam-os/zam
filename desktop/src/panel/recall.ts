@@ -236,7 +236,7 @@ function renderEmpty(): void {
 }
 
 function renderError(message: string): void {
-  renderMessage("⚠️", "Karten konnten nicht geladen werden", message);
+  renderMessage("⚠️", t("recall_load_failed_title"), message);
 }
 
 /**
@@ -378,7 +378,9 @@ function renderCard(): void {
   badges.appendChild(bloomBadge);
   const modeBadge = document.createElement("span");
   modeBadge.className = "recall-badge";
-  modeBadge.textContent = quickMode ? "Quick mode" : "Smart mode";
+  modeBadge.textContent = quickMode
+    ? t("recall_badge_quick")
+    : t("recall_badge_smart");
   badges.appendChild(modeBadge);
   root.appendChild(badges);
 
@@ -389,7 +391,7 @@ function renderCard(): void {
 
   const answer = document.createElement("textarea");
   answer.className = "recall-answer";
-  answer.placeholder = "Antwort aus dem Gedächtnis…";
+  answer.placeholder = t("placeholder_recall_answer");
   root.appendChild(answer);
 
   // Empty still reveals directly; a typed answer is either evaluated by the
@@ -435,10 +437,10 @@ function renderCard(): void {
     const result = document.createElement("div");
     result.className = "recall-result";
     const due = formatDue(res.evaluation.nextDueAt);
-    result.textContent = `→ wieder fällig ${due}`;
+    result.textContent = tf("recall_next_due", { due });
     root.appendChild(result);
     if (res.blocked) {
-      showNotice(`Blockiert: ${res.blocked.blockedSlug}`);
+      showNotice(tf("recall_blocked_notice", { slug: res.blocked.blockedSlug }));
     }
   }
 
@@ -470,9 +472,9 @@ function renderCard(): void {
         b.disabled = false;
       });
       showNotice(
-        `Bewertung fehlgeschlagen: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
+        tf("recall_rating_failed", {
+          message: error instanceof Error ? error.message : String(error),
+        }),
       );
     }
   }
@@ -484,7 +486,9 @@ function renderCard(): void {
     const ratingLabel = document.createElement("div");
     ratingLabel.className = "recall-rating-label";
     ratingLabel.textContent = suggestedRating
-      ? `${t("lbl_rating_instruction")} · Host suggestion: ${suggestedRating}`
+      ? `${t("lbl_rating_instruction")} · ${tf("recall_host_suggestion", {
+          rating: suggestedRating,
+        })}`
       : t("lbl_rating_instruction");
     reveal.appendChild(ratingLabel);
 
@@ -528,7 +532,7 @@ function renderCard(): void {
     if (userAnswer !== undefined) {
       const ownTitle = document.createElement("div");
       ownTitle.className = "recall-reveal-title";
-      ownTitle.textContent = "Deine Antwort";
+      ownTitle.textContent = t("recall_your_answer_title");
       reveal.appendChild(ownTitle);
       const own = document.createElement("div");
       own.className = "recall-own-answer";
@@ -559,16 +563,16 @@ function renderCard(): void {
     discussion.className = "recall-discussion";
     const title = document.createElement("div");
     title.className = "recall-reveal-title";
-    title.textContent = "Ask about this feedback";
+    title.textContent = t("recall_discussion_title");
     const history = document.createElement("div");
     history.className = "recall-discussion-history";
     const followUp = document.createElement("textarea");
     followUp.className = "recall-answer recall-follow-up";
-    followUp.placeholder = "Ask a follow-up question…";
+    followUp.placeholder = t("placeholder_recall_follow_up");
     const button = document.createElement("button");
     button.type = "button";
     button.className = "btn secondary-btn";
-    button.textContent = "Ask";
+    button.textContent = t("btn_recall_ask");
     const actions = document.createElement("div");
     actions.className = "recall-actions";
     actions.appendChild(button);
@@ -615,7 +619,9 @@ function renderCard(): void {
           followUp.value = "";
         })
         .catch((error) =>
-          showNotice(`Follow-up failed: ${errorMessage(error)}`),
+          showNotice(
+            tf("recall_follow_up_failed", { message: errorMessage(error) }),
+          ),
         )
         .finally(() => {
           button.disabled = false;
@@ -633,14 +639,16 @@ function renderCard(): void {
 
     const ownTitle = document.createElement("div");
     ownTitle.className = "recall-reveal-title";
-    ownTitle.textContent = "Deine Antwort";
+    ownTitle.textContent = t("recall_your_answer_title");
     const own = document.createElement("div");
     own.className = "recall-own-answer";
     own.textContent = learnerAnswer;
 
     const feedbackTitle = document.createElement("div");
     feedbackTitle.className = "recall-reveal-title";
-    feedbackTitle.textContent = `Host feedback · ${evaluation.verdict}`;
+    feedbackTitle.textContent = tf("recall_host_feedback_title", {
+      verdict: evaluation.verdict,
+    });
     const feedback = document.createElement("div");
     feedback.className = `recall-feedback recall-feedback-${evaluation.verdict}`;
     feedback.textContent = evaluation.feedback;
@@ -726,7 +734,7 @@ function renderCard(): void {
     if (capabilities?.message) {
       await sendToHostConversation(learnerAnswer);
       showReveal(learnerAnswer);
-      showNotice("Answer sent to the host conversation. Continue there.");
+      showNotice(t("recall_sent_to_host"));
       pushContext(card, "answered", { learnerAnswer });
       return;
     }
@@ -747,9 +755,9 @@ function renderCard(): void {
       showReveal(text);
       pushContext(card, "answered");
     } else {
-      actionBtn.textContent = "Checking…";
+      actionBtn.textContent = t("btn_recall_checking");
       void evaluateAnswer(text).catch((error) => {
-        showNotice(`Answer check failed: ${errorMessage(error)}`);
+        showNotice(tf("recall_check_failed", { message: errorMessage(error) }));
         unlockInputs();
         actionBtn.textContent = t("btn_recall_check");
       });

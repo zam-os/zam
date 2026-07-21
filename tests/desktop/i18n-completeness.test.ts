@@ -220,6 +220,15 @@ const GRAPH_PANEL_KEYS = [
   "graph_aria_centered",
 ] as const;
 
+const SETTINGS_PANEL_KEYS = [
+  "settings_section_recall",
+  "settings_workspace_title",
+  "settings_context_title",
+  "settings_database",
+  "settings_section_backup",
+  "settings_section_update",
+] as const;
+
 const REQUIRED_KEYS = [
   ...ISSUE_97_KEYS,
   ...WIZARD_KEYS,
@@ -232,6 +241,7 @@ const REQUIRED_KEYS = [
   ...CONTEXTBAR_KEYS,
   ...OKF_PANEL_KEYS,
   ...GRAPH_PANEL_KEYS,
+  ...SETTINGS_PANEL_KEYS,
 ];
 
 // Keys used somewhere under desktop/src via t()/tf() that predate this
@@ -405,6 +415,21 @@ describe("desktop locale completeness", () => {
       "Alle Wissensbereiche",
     ]) {
       expect(graphSource).not.toContain(literal);
+    }
+  });
+
+  it("routes static settings section titles through the i18n layer", () => {
+    const panelDir = join(process.cwd(), "desktop", "src", "panel");
+    const settingsHtml = readFileSync(
+      join(panelDir, "settings-panel.html"),
+      "utf8",
+    );
+    expect(settingsHtml).not.toContain(">Wissenskontext<");
+    expect(settingsHtml).not.toContain(">Datenbank<");
+
+    const settingsSource = readFileSync(join(panelDir, "settings.ts"), "utf8");
+    for (const key of SETTINGS_PANEL_KEYS) {
+      expect(settingsSource).toContain(`t("${key}")`);
     }
   });
 
