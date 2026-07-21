@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>ZAM Mobile</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        background: Canvas;
+        color: CanvasText;
+        padding: 16px;
+        padding-left: calc(16px + env(safe-area-inset-left));
+        padding-right: calc(16px + env(safe-area-inset-right));
+        padding-bottom: calc(16px + env(safe-area-inset-bottom));
+      }
+      h1 {
+        font-size: 1.3rem;
+        margin: 0 0 2px;
+      }
+      .subtitle {
+        margin: 0 0 16px;
+        opacity: 0.7;
+        font-size: 0.85rem;
+      }
+      form {
+        display: grid;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      input {
+        font: inherit;
+        padding: 10px;
+        border: 1px solid color-mix(in srgb, CanvasText 25%, transparent);
+        border-radius: 8px;
+        background: transparent;
+        color: inherit;
+      }
+      .buttons {
+        display: flex;
+        gap: 8px;
+      }
+      button {
+        font: inherit;
+        padding: 10px 14px;
+        border: 1px solid color-mix(in srgb, CanvasText 25%, transparent);
+        border-radius: 8px;
+        background: transparent;
+        color: inherit;
+      }
+      button[type="submit"] {
+        font-weight: 600;
+      }
+      #status {
+        min-height: 1.2em;
+        font-size: 0.9rem;
+        opacity: 0.85;
+      }
+      #status.error {
+        color: #d33;
+        opacity: 1;
+      }
+      #summary {
+        font-size: 0.9rem;
+        margin: 12px 0;
+        opacity: 0.85;
+      }
+      ol#queue {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 8px;
+      }
+      #queue li {
+        border: 1px solid color-mix(in srgb, CanvasText 18%, transparent);
+        border-radius: 10px;
+        padding: 10px 12px;
+      }
+      #queue .title {
+        font-weight: 600;
+      }
+      #queue .meta {
+        font-size: 0.8rem;
+        opacity: 0.7;
+        margin-top: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>ZAM Mobile</h1>
+      <p class="subtitle">Phase-0-Spike: Kernel-Review-Queue über libsql</p>
+      <form id="connect-form">
+        <input
+          id="sync-url"
+          type="url"
+          placeholder="libsql://…  (Server-Datenbank)"
+          autocomplete="off"
+        />
+        <input
+          id="auth-token"
+          type="password"
+          placeholder="Auth-Token"
+          autocomplete="off"
+        />
+        <div class="buttons">
+          <button type="submit">Replica verbinden</button>
+          <button type="button" id="open-local">Nur lokal öffnen</button>
+          <button type="button" id="resync" hidden>Neu syncen</button>
+        </div>
+      </form>
+      <p id="status"></p>
+      <section id="summary"></section>
+      <ol id="queue"></ol>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "identifier": "default",
+  "description": "Phase-0 spike surface: core IPC only",
+  "windows": ["main"],
+  "permissions": ["core:default"]
+}
