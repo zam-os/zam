@@ -25,12 +25,13 @@ trade-off (Thomas, 2026-07-21).
 
 Two paired devices, two different learners:
 
-- **Primary learner: a ninth-grade Realschule student (Bavaria) on the
-  Pixel 6** — preparing the 2026/27 school year with the goal of a real
-  grade improvement. Previous success with an active-recall tool shows the
-  method fits; the app's job is to make it effortless and daily.
-- The project owner on a **Pixel 9** (also Android 17; the hardware floor
-  stays defined by the Pixel 6).
+- **Primary learner: a ninth-grade Realschule student (Bavaria)** — planned
+  for the Pixel 6 if its optional compatibility run passes, otherwise on a
+  Pixel 9 — preparing the 2026/27 school year with the goal of a real grade
+  improvement. Previous success with an active-recall tool shows the method
+  fits; the app's job is to make it effortless and daily.
+- The project owner on a **Pixel 9** (Android 17), the validated reference
+  device and current minimum requirement.
 
 Consequences: German-first UX; curriculum content comes from the desktop's
 existing LehrplanPLUS import (`lehrplanplus-bayern` — Realschule grade 9 is
@@ -42,23 +43,20 @@ in-app streaks (no-gamification stance, FR-5).
 ## Platform baseline
 
 - **minSdkVersion 37 / targetSdkVersion 37** (Android 17 "Cinnamon Bun",
-  API level 37). Rationale: the requirement is "the version currently
-  available for the Google Pixel 6" — Android 17 reached stable on
-  2026-06-16 and rolled out to Pixel 6 and newer; the July 2026 Pixel update
-  (build `CP2A.260705.006`) covers Pixel 6. No legacy compat paths, no
-  support-library workarounds. Revisit only if additional, older devices
-  join the field test.
-- **Minimum hardware = reference device: Google Pixel 6.** Tensor GS101,
-  8 GB RAM, 128 GB UFS 3.1, 6.4" 1080×2400 OLED (90 Hz), 4614 mAh,
-  BT 5.2, NFC, USB-C, under-display fingerprint, no headphone jack (voice
-  sessions assume speaker or Bluetooth headset). Pixel's on-device speech
-  services provide offline German/English recognition — speech features
-  must not assume anything better than this device.
-- Pixel 6 security support is scheduled to end around 2026-10; Android 17
-  is expected to be its final major OS. The API-37 floor therefore stays
-  valid for the field-test device.
+  API level 37). The Pixel 9 reference device runs Android 17; the optional
+  Pixel 6 compatibility target is on the same API level. No legacy compat
+  paths or support-library workarounds are required.
+- **Validated minimum hardware = reference device: Google Pixel 9.** The
+  complete Phase-0 sync/offline scenario passed on this device. A Pixel 6
+  compatibility run is optional: if it passes, the minimum can be lowered
+  to the Pixel 6; if not, Pixel 9 remains the requirement. Until then,
+  performance and speech behavior must not assume hardware newer than the
+  Pixel 9.
+- Pixel 6 security support is scheduled to end around 2026-10. A successful
+  compatibility run would therefore broaden the field test without changing
+  the API-37 baseline.
 
-### Performance budgets (measured on Pixel 6)
+### Performance budgets (measured on the validated minimum device)
 
 - Cold start → first due card visible: **≤ 2 s**
 - Rate card → next prompt rendered: **≤ 150 ms** (LLM work must never block
@@ -242,13 +240,14 @@ server database, per FR-0).
 
 ## Status
 
-- [ ] **Phase 0 — stack spike + ADR**: Tauri 2 Android walking skeleton on
-  the Pixel 6 — offline-writable sync of a test server database plus a new
+- [x] **Phase 0 — stack spike + ADR**: Tauri 2 Android walking skeleton on
+  the Pixel 9 — offline-writable sync of a test server database plus a new
   kernel DB provider listing the due queue. Validates the decided Option A
   and the sync path the whole app depends on (fallback to B only on hard
   blockers); record the ADR. Pixel 9 / Android 17 validation passed on
   2026-07-21 (queue render, offline ULID write, reconnect push/pull, 273 ms
-  cold start); the checkbox stays open until the Pixel 6 hardware-floor run.
+  cold start). A Pixel 6 run may lower the hardware requirement but no longer
+  blocks the phase.
 - [ ] **Phase 1 — QR pairing, read-only companion**: desktop "pair mobile
   device" surface (QR from machine-local credentials) + Android scanner,
   Keystore-backed credential storage, initial sync, due-queue and status
@@ -265,7 +264,8 @@ server database, per FR-0).
   and re-pair UX. FR-4 complete.
 - [ ] **Phase 6 — field-test polish**: due notification, de/en i18n pass,
   online LLM question/evaluation wiring, performance-budget and battery
-  validation on the Pixel 6, sideload build channel.
+  validation on the Pixel 9 (and Pixel 6 if compatible), sideload build
+  channel.
 
 ## Decisions (Thomas, 2026-07-21)
 
@@ -281,6 +281,9 @@ server database, per FR-0).
 5. **Android `applicationId`**: default `org.zamos.zam` (zam-os.org is
    owned; hyphens are invalid in application IDs — desktop's `com.zam.app`
    stays as is). Cheap to change any time before a store publication.
+6. **Hardware baseline**: Pixel 9 is the validated minimum. Pixel 6 testing
+   is optional; a pass lowers the minimum, while a failure leaves Pixel 9 as
+   the requirement (Thomas, 2026-07-21).
 
 ## References
 

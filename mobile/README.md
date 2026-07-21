@@ -10,8 +10,8 @@ database.
 What the spike proves (Phase 0 checklist):
 
 - [x] Kernel-in-WebView: `buildReviewQueue` renders the due queue on an
-  Android 17 device without kernel changes (Pixel 9 development device;
-  Pixel 6 remains the hardware-floor gate).
+  Android 17 device without kernel changes (Pixel 9 validated minimum;
+  Pixel 6 compatibility is optional).
 - [x] Synced database: `db_open` with a `libsql://` URL + token syncs a
   test server database onto the device; "Neu syncen" pushes local and pulls
   remote changes.

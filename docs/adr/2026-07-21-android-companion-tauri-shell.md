@@ -1,7 +1,7 @@
 # Android Companion: Tauri 2 Shell with Kernel-in-WebView
 
-**Status:** Accepted stack decision (Thomas, 2026-07-21); validated on the
-Pixel 9 development device, with the Pixel 6 hardware-floor gate still open
+**Status:** Accepted — stack and Phase-0 sync path validated on the Pixel 9
+(Thomas, 2026-07-21); Pixel 6 compatibility is optional
 **Deciders:** Thomas (project owner)
 **Related:**
 [2026-05-31b-tauri-active-recall-studio.md](2026-05-31b-tauri-active-recall-studio.md) ·
@@ -14,10 +14,11 @@ Pixel 9 development device, with the Pixel 6 hardware-floor gate still open
 
 The Android companion app (plan: `docs/plans/2026-07-21-android-companion-app.md`)
 must run active-recall sessions from the same learning state as CLI and
-desktop, offline-capable, on a Pixel 6 (Android 17 / API 37 floor). The
-desktop Studio reaches the kernel through a bundled Node-CLI bridge
-sidecar — that path does not exist on Android, so the mobile shell needs
-its own way to run kernel logic and reach the database.
+desktop, offline-capable, on the Pixel 9 Android 17 / API 37 reference
+device. A Pixel 6 run may later lower the hardware minimum. The desktop
+Studio reaches the kernel through a bundled Node-CLI bridge sidecar — that
+path does not exist on Android, so the mobile shell needs its own way to run
+kernel logic and reach the database.
 
 ## Decisions
 
@@ -61,14 +62,15 @@ its own way to run kernel logic and reach the database.
   Kotlin API availability remain API 37; only the native library's minimum
   ABI is lower.
 
-## Open validation (Phase 0 gate)
+## Validation
 
 - [x] Synced-database build, queue render, offline write, and push/pull on
   the Pixel 9 (`aarch64-linux-android`, Android 17 / API 37).
 - [x] `tauri android dev` toolchain end-to-end on the Pixel 9 (SDK/Build
   Tools 37 + NDK r29).
-- [ ] Kernel bundle/startup and the same sync scenario on the Pixel 6
-  hardware floor.
+
+Optional follow-up: repeat kernel startup and the sync scenario on the Pixel
+6. A pass lowers the supported hardware minimum; it does not gate Phase 0.
 
 ## Evidence
 

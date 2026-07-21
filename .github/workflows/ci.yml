@@ -109,7 +109,9 @@ jobs:
         with:
           node-version: lts/*
           cache: 'npm'
-          cache-dependency-path: mobile/package-lock.json
+          cache-dependency-path: |
+            package-lock.json
+            mobile/package-lock.json
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -118,6 +120,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - name: Install root dependencies
+        run: npm ci
 
       - name: Install mobile dependencies
         working-directory: mobile
