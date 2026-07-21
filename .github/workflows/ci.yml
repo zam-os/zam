@@ -115,6 +115,14 @@ jobs:
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android
+
+      - name: Setup Android NDK
+        id: setup-ndk
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r29
 
       - name: Install system dependencies
         run: |
@@ -135,6 +143,17 @@ jobs:
       - name: Test mobile Tauri backend
         working-directory: mobile/src-tauri
         run: cargo test --locked
+
+      - name: Check Android Tauri backend
+        working-directory: mobile/src-tauri
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+        run: |
+          NDK_BIN="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin"
+          export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER="$NDK_BIN/aarch64-linux-android35-clang"
+          export CC_aarch64_linux_android="$NDK_BIN/aarch64-linux-android35-clang"
+          export AR_aarch64_linux_android="$NDK_BIN/llvm-ar"
+          cargo check --locked --target aarch64-linux-android
 
   windows-x64-observer:
     runs-on: windows-latest

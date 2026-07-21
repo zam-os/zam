@@ -40,6 +40,22 @@ fn err(error: impl std::fmt::Display) -> String {
     error.to_string()
 }
 
+async fn configure_connection(connection: &libsql::Connection, synced: bool) -> Result<(), String> {
+    connection
+        .execute_batch("PRAGMA foreign_keys = ON; PRAGMA busy_timeout = 5000;")
+        .await
+        .map_err(err)?;
+
+    if !synced {
+        connection
+            .execute_batch("PRAGMA journal_mode = WAL;")
+            .await
+            .map_err(err)?;
+    }
+
+    Ok(())
+}
+
 fn database_mode(
     sync_url: Option<String>,
     auth_token: Option<String>,
@@ -127,7 +143,7 @@ pub async fn db_open(
             let builder = builder.connector(
                 hyper_rustls::HttpsConnectorBuilder::new()
                     .with_webpki_roots()
-                    .https_or_http()
+                    .https_only()
                     .enable_http1()
                     .build(),
             );
@@ -151,6 +167,7 @@ pub async fn db_open(
         }
     };
     let connection = database.connect().map_err(err)?;
+    configure_connection(&connection, synced).await?;
 
     *state.0.lock().await = Some(OpenDatabase {
         database,
@@ -241,7 +258,7 @@ pub async fn db_close(state: State<'_, DbState>) -> Result<(), String> {
 
 #[cfg(test)]
 mod tests {
-    use super::{database_mode, DatabaseMode};
+    use super::{configure_connection, database_mode, DatabaseMode};
 
     #[test]
     fn accepts_local_mode_when_both_sync_fields_are_absent() {
@@ -268,5 +285,26 @@ mod tests {
         assert!(database_mode(Some("libsql://example".to_string()), None).is_err());
         assert!(database_mode(None, Some("secret".to_string())).is_err());
         assert!(database_mode(Some("  ".to_string()), Some("secret".to_string())).is_err());
+    }
+
+    #[test]
+    fn configures_required_connection_pragmas() {
+        tauri::async_runtime::block_on(async {
+            let database = libsql::Builder::new_local(":memory:")
+                .build()
+                .await
+                .unwrap();
+            let connection = database.connect().unwrap();
+
+            configure_connection(&connection, true).await.unwrap();
+
+            let mut foreign_keys = connection.query("PRAGMA foreign_keys", ()).await.unwrap();
+            let foreign_keys = foreign_keys.next().await.unwrap().unwrap();
+            assert_eq!(foreign_keys.get::<i64>(0).unwrap(), 1);
+
+            let mut busy_timeout = connection.query("PRAGMA busy_timeout", ()).await.unwrap();
+            let busy_timeout = busy_timeout.next().await.unwrap().unwrap();
+            assert_eq!(busy_timeout.get::<i64>(0).unwrap(), 5000);
+        });
     }
 }
