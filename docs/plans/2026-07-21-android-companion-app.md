@@ -8,13 +8,18 @@ exactly the next unchecked phase. Multi-phase work stays on one branch
 
 Run **active-recall sessions away from the desk** — including fully by voice —
 against the **same learning state** the CLI/desktop use, and **import learning
-content** on the phone. Offline-first: a review session must work with no
-network, no account, and no LLM configured.
+content** on the phone. Offline-capable: after setup, a review session must
+work with no network and no LLM configured.
 
 The app is a *companion surface*, not a second product: all scheduling,
 rating, and blocking behavior comes from the existing TypeScript kernel
 (`src/kernel/`). `tests/kernel/fsrs.test.ts` remains the source of truth for
 scheduling semantics.
+
+Setup is deliberately effortless: the phone is **configured by scanning a
+QR code shown on the desktop** (FR-0). This pairing flow assumes the server
+database — "configuration/sync only work with a server DB" is an accepted
+trade-off (Thomas, 2026-07-21).
 
 ## Platform baseline
 
@@ -47,6 +52,26 @@ scheduling semantics.
 
 ## Functional requirements
 
+### FR-0 Pairing & configuration via desktop QR code
+
+- The desktop Studio gets a "pair mobile device" surface that renders a QR
+  code from the machine-local credentials (`~/.zam/credentials.json`): a
+  versioned `zam-pair` JSON payload carrying the libsql/Turso database URL,
+  an auth token, and optional bootstrap settings (locale, profile).
+- First run on Android: scan the code (camera permission), validate the
+  payload version, store credentials in app-private storage backed by the
+  Android Keystore, run the initial sync, land in the due queue. No manual
+  configuration required; manual URL/token entry exists only as a fallback.
+- Pairing **requires the server database**: a desktop without Turso/sqld
+  configured cannot pair and must say so clearly. Local-only phone setups
+  are out of scope by requirement.
+- Security: the QR encodes a live token — render it only on explicit user
+  action with a shoulder-surfing note; prefer database-scoped tokens;
+  re-pairing replaces stored credentials; a revoked/expired token leads to
+  a re-pair prompt, never to silent data loss.
+- Multiple paired devices are supported; each device is its own replica of
+  the same server database.
+
 ### FR-1 Active-recall sessions
 
 - Queue built by the kernel scheduler (due + new cards, domain
@@ -64,9 +89,9 @@ scheduling semantics.
 
 Ordered by leverage:
 
-1. **Adopt an existing library**: open a copied `zam.db` via the system
-   file picker (SAF). The SQLite file is the exchange format; schema
-   migrations run through the kernel exactly as on desktop.
+1. **Adopt an existing library**: happens through QR pairing + server-DB
+   sync (FR-0/FR-4) — after pairing, the full library is on the phone.
+   Direct `zam.db` file adoption is not a v1 path (see non-goals).
 2. **Additive import**: bridge-token JSON per the stable `protocol.ts`
    contract — via file picker and via Android share sheet (receive
    JSON/text shared from other apps). Importing a concept creates token
@@ -95,18 +120,22 @@ Interpreted as **voice operation** of recall sessions (i18n is FR-6):
   phone; only the transcript reaches an LLM, and only when the user
   configured one.
 
-### FR-4 Sync (offline-first)
+### FR-4 Sync (server database, offline-capable)
 
-- Local SQLite database is the working copy; every feature works offline.
-- Opt-in Turso sync reusing the kernel provider model (ADR 2026-06-09:
-  `local` / `native` / `remote`): embedded replica preferred; the remote
-  Hrana v3 provider is the online-only stopgap. Credentials live in
-  app-private machine-local storage, never in the shared database (same
-  rule as `~/.zam/credentials.json`).
+- The server database (Turso cloud or self-hosted `sqld` — the pairing
+  payload is host-agnostic) is the configuration and sync backbone. Per
+  requirement it is acceptable that the app does not work without one.
+- On the device, the database is an embedded replica (kernel provider
+  model, ADR 2026-06-09): after the initial sync every feature — including
+  full review sessions — works offline, and writes sync back when online.
+  The remote Hrana v3 provider is the online-only stopgap if the replica
+  path is delayed on Android.
+- Credentials live in app-private machine-local storage (Keystore-backed),
+  never in the shared database (same rule as `~/.zam/credentials.json`).
 - `review_logs` is append-only (ULIDs) and merges trivially. Card-state
   conflicts (reviews on two devices while offline) are resolved by
   recomputing card state from the log, or documented last-write-wins —
-  decided in the sync phase and recorded in the ADR.
+  decided in the sync-hardening phase and recorded in the ADR.
 
 ### FR-5 Due reminder
 
@@ -123,10 +152,13 @@ No streaks, no gamification.
 
 ## Non-functional requirements
 
-- **Offline-first, no account.** Network, Turso, and LLM are all opt-in.
+- **Offline after pairing.** Initial configuration requires the server
+  database (accepted trade-off); afterwards reviews work without network.
+  No third-party account beyond the user's own Turso/sqld endpoint; LLM
+  stays opt-in.
 - **Privacy**: no telemetry; speech on-device (FR-3); LLM calls only to
-  user-configured providers. Default configuration makes zero network
-  requests.
+  user-configured providers. The only network peer in the default setup
+  is the paired server database.
 - **Cost**: zero recurring cost by default; LLM roles follow the
   cost-first provider stance (cheap prepaid endpoints).
 - **Kernel single-source**: scheduling/rating/blocking logic must be the
@@ -171,15 +203,21 @@ Repo layout recommendation: `mobile/` folder in this repository, mirroring
 iOS (stack choice keeps the door open) · Wear OS · tablet/large-screen
 layouts · home-screen widget · on-device embeddings/semantic search ·
 OKF authoring (opening `source_link` articles read-only is fine) ·
-observer/monitoring features · Play Store publication.
+observer/monitoring features · Play Store publication · local-only setups
+and direct `zam.db` file adoption (configuration and sync assume the
+server database, per FR-0).
 
 ## Status
 
 - [ ] **Phase 0 — stack spike + ADR**: Tauri 2 Android walking skeleton on
-  the Pixel 6 — open a `zam.db` through a new kernel DB provider, list the
-  due queue. Confirms Option A (or falls back to B); record the ADR.
-- [ ] **Phase 1 — read-only companion**: adopt `zam.db` via file picker,
-  browse due queue and card/status view.
+  the Pixel 6 — embedded-replica sync of a test server database plus a new
+  kernel DB provider listing the due queue. Confirms Option A (or falls
+  back to B) **and** the replica path the whole app depends on; record the
+  ADR.
+- [ ] **Phase 1 — QR pairing, read-only companion**: desktop "pair mobile
+  device" surface (QR from machine-local credentials) + Android scanner,
+  Keystore-backed credential storage, initial sync, due-queue and status
+  view. FR-0 complete.
 - [ ] **Phase 2 — recall sessions**: full offline review loop (template
   prompts, typed answers, rate 1–4, blocker, `review_logs`, resume,
   summary). FR-1 complete.
@@ -187,8 +225,9 @@ observer/monitoring features · Play Store publication.
   quick-capture token drafts. FR-2 items 2–3.
 - [ ] **Phase 4 — voice mode**: TTS prompts, on-device STT answers, voice
   ratings, hands-free loop, audio-focus handling. FR-3 complete.
-- [ ] **Phase 5 — sync**: Turso embedded replica (or remote fallback),
-  conflict policy, credential UI. FR-4 complete.
+- [ ] **Phase 5 — sync hardening**: write-back robustness, conflict policy
+  (log-recompute vs. last-write-wins) recorded in the ADR, token rotation
+  and re-pair UX. FR-4 complete.
 - [ ] **Phase 6 — field-test polish**: due notification, de/en i18n pass,
   online LLM question/evaluation wiring, performance-budget and battery
   validation on the Pixel 6, sideload build channel.
@@ -197,9 +236,10 @@ observer/monitoring features · Play Store publication.
 
 1. **Stack**: confirm Option A after the Phase 0 spike (fallback B).
 2. **Repo layout**: `mobile/` in-repo (recommended) vs. separate repo.
-3. **Sync scope for the field test**: is `zam.db` adoption (FR-2.1) enough
-   to start, with Turso deferred to Phase 5 — or is live sync required
-   before daily use?
+3. **Server-DB hosting for the field test**: Turso cloud (free tier) vs.
+   self-hosted `sqld` — cost stance applies; the pairing payload is
+   host-agnostic either way. *(The former "sync scope" question is
+   resolved 2026-07-21: configuration and sync assume the server DB.)*
 4. **LLM roles on the phone**: the phone is its own "machine" under the
    machine-local role model (ADR 2026-06-25a) — which provider(s) should
    it use, and is offline/self-rated mode acceptable as the default?
