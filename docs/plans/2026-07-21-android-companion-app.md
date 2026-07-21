@@ -96,8 +96,8 @@ in-app streaks (no-gamification stance, FR-5).
   teenager's learning data stays their own — the QR flow is identical
   either way, the desktop just pairs from the selected learner's database.
   The Phase-0 spike heuristic ("most cards wins") is retired by this.
-- Multiple paired devices are supported; each device is its own replica of
-  its learner's server database.
+- Multiple paired devices are supported; each device is its own synced local
+  copy of its learner's server database.
 
 ### FR-1 Active-recall sessions
 
@@ -156,11 +156,13 @@ Interpreted as **voice operation** of recall sessions (i18n is FR-6):
   The field test runs on **Turso Cloud (free tier)**; the pairing payload
   stays host-agnostic so a later move to self-hosted `sqld` needs only a
   re-pair.
-- On the device, the database is an embedded replica (kernel provider
-  model, ADR 2026-06-09): after the initial sync every feature — including
-  full review sessions — works offline, and writes sync back when online.
-  The remote Hrana v3 provider is the online-only stopgap if the replica
-  path is delayed on Android.
+- On the device, the database is libsql's offline-writable synced database
+  (kernel provider model, ADR 2026-06-09): after the initial sync every
+  feature — including full review sessions — works offline, and local WAL
+  frames sync back when online. `new_remote_replica` is explicitly not this
+  path because it delegates writes to the remote primary. The remote Hrana
+  v3 provider remains the online-only stopgap if offline sync is delayed on
+  Android.
 - Credentials live in app-private machine-local storage (Keystore-backed),
   never in the shared database (same rule as `~/.zam/credentials.json`).
 - `review_logs` is append-only (ULIDs) and merges trivially. Card-state
@@ -206,9 +208,9 @@ the desktop Studio (ADR 2026-05-31b): Vite/TS frontend, Rust shell. The
 kernel runs **in the WebView** — it is dependency-free TypeScript against
 the async `Database` contract (`src/kernel/db/types.ts`), so Android needs
 one new provider backed by on-device SQLite (Tauri SQL plugin or a thin
-Rust command layer). Turso embedded-replica sync via the Rust `libsql`
-crate behind a Tauri command. Voice via a small Tauri mobile plugin
-(Kotlin: `SpeechRecognizer` / `TextToSpeech`).
+Rust command layer). Turso offline-writable sync via the Rust `libsql`
+crate's `new_synced_database` behind a Tauri command. Voice via a small
+Tauri mobile plugin (Kotlin: `SpeechRecognizer` / `TextToSpeech`).
 
 - Pro: single kernel source; stack continuity (desktop Tauri, Rust
   competence exists via `observer/`); recall-panel UI patterns reusable.
@@ -241,10 +243,12 @@ server database, per FR-0).
 ## Status
 
 - [ ] **Phase 0 — stack spike + ADR**: Tauri 2 Android walking skeleton on
-  the Pixel 6 — embedded-replica sync of a test server database plus a new
+  the Pixel 6 — offline-writable sync of a test server database plus a new
   kernel DB provider listing the due queue. Validates the decided Option A
-  and the replica path the whole app depends on (fallback to B only on
-  hard blockers); record the ADR.
+  and the sync path the whole app depends on (fallback to B only on hard
+  blockers); record the ADR. Pixel 9 / Android 17 validation passed on
+  2026-07-21 (queue render, offline ULID write, reconnect push/pull, 273 ms
+  cold start); the checkbox stays open until the Pixel 6 hardware-floor run.
 - [ ] **Phase 1 — QR pairing, read-only companion**: desktop "pair mobile
   device" surface (QR from machine-local credentials) + Android scanner,
   Keystore-backed credential storage, initial sync, due-queue and status

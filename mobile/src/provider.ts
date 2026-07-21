@@ -4,7 +4,7 @@
  *
  * The WebView never links a database library: every call crosses the IPC
  * boundary into the Rust shell, which owns one libsql connection (local
- * file or embedded replica of the server database).
+ * file or offline-writable synced copy of the server database).
  *
  * Wire encoding, mirrored by src-tauri/src/db.rs and the test stub in
  * tests/helpers/tauri-invoke-stub.ts:

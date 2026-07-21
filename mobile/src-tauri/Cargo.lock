@@ -5429,6 +5429,7 @@ name = "zam-mobile"
 version = "0.0.1"
 dependencies = [
  "base64 0.22.1",
+ "hyper-rustls",
  "libsql",
  "serde",
  "serde_json",

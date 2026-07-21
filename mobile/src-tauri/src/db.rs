@@ -1,9 +1,9 @@
 //! libsql-backed database commands.
 //!
-//! The Rust shell owns the database — a plain local file or an embedded
-//! replica of the server database — and the WebView reaches it through
-//! these commands. The wire encoding (blobs as `{"$blob": base64}`,
-//! everything else as JSON primitives) is documented in
+//! The Rust shell owns the database — a plain local file or an
+//! offline-writable synced copy of the server database — and the WebView
+//! reaches it through these commands. The wire encoding (blobs as
+//! `{"$blob": base64}`, everything else as JSON primitives) is documented in
 //! `mobile/src/provider.ts` and mirrored by the test stub in
 //! `tests/helpers/tauri-invoke-stub.ts`; the three must stay in sync.
 
@@ -20,7 +20,13 @@ pub struct DbState(Mutex<Option<OpenDatabase>>);
 struct OpenDatabase {
     database: libsql::Database,
     connection: libsql::Connection,
-    replica: bool,
+    synced: bool,
+}
+
+#[derive(Debug, PartialEq)]
+enum DatabaseMode {
+    Local,
+    Synced { url: String, auth_token: String },
 }
 
 #[derive(Serialize)]
@@ -32,6 +38,24 @@ pub struct ExecuteResult {
 
 fn err(error: impl std::fmt::Display) -> String {
     error.to_string()
+}
+
+fn database_mode(
+    sync_url: Option<String>,
+    auth_token: Option<String>,
+) -> Result<DatabaseMode, String> {
+    let url = sync_url
+        .map(|value| value.trim().to_owned())
+        .filter(|value| !value.is_empty());
+    let token = auth_token
+        .map(|value| value.trim().to_owned())
+        .filter(|value| !value.is_empty());
+
+    match (url, token) {
+        (None, None) => Ok(DatabaseMode::Local),
+        (Some(url), Some(auth_token)) => Ok(DatabaseMode::Synced { url, auth_token }),
+        _ => Err("sync URL and auth token must be provided together".to_string()),
+    }
 }
 
 fn to_libsql(value: &Json, index: usize) -> Result<libsql::Value, String> {
@@ -48,10 +72,7 @@ fn to_libsql(value: &Json, index: usize) -> Result<libsql::Value, String> {
             }
         }
         Json::Object(map) => match map.get("$blob").and_then(Json::as_str) {
-            Some(encoded) => BASE64
-                .decode(encoded)
-                .map(libsql::Value::Blob)
-                .map_err(err),
+            Some(encoded) => BASE64.decode(encoded).map(libsql::Value::Blob).map_err(err),
             None => Err(format!(
                 "parameter {}: objects cannot be bound to SQLite",
                 index + 1
@@ -83,8 +104,8 @@ fn convert_params(params: &[Json]) -> Result<Vec<libsql::Value>, String> {
 }
 
 /// Open (or reopen) the database at the app-data directory. With both
-/// `sync_url` and `auth_token` present this becomes an embedded replica of
-/// the server database; otherwise it is a plain local file.
+/// `sync_url` and `auth_token` present this becomes an offline-writable
+/// synced database; otherwise it is a separate plain local file.
 #[tauri::command]
 pub async fn db_open(
     app: AppHandle,
@@ -94,30 +115,47 @@ pub async fn db_open(
 ) -> Result<String, String> {
     let dir = app.path().app_data_dir().map_err(err)?;
     std::fs::create_dir_all(&dir).map_err(err)?;
-    let path = dir.join("zam.db");
+    let (path, database, synced) = match database_mode(sync_url, auth_token)? {
+        DatabaseMode::Synced { url, auth_token } => {
+            // Keep development-only local databases separate: libsql sync
+            // metadata is tied to the database file and cannot safely reuse
+            // an arbitrary local SQLite file.
+            let path = dir.join("zam-sync.db");
+            let needs_bootstrap = !path.exists();
+            let builder = libsql::Builder::new_synced_database(path.clone(), url, auth_token);
+            #[cfg(target_os = "android")]
+            let builder = builder.connector(
+                hyper_rustls::HttpsConnectorBuilder::new()
+                    .with_webpki_roots()
+                    .https_or_http()
+                    .enable_http1()
+                    .build(),
+            );
+            let database = builder.build().await.map_err(err)?;
 
-    let (database, replica) = match (sync_url, auth_token) {
-        (Some(url), Some(token)) if !url.is_empty() => (
-            libsql::Builder::new_remote_replica(path.clone(), url, token)
+            // The initial bootstrap may replace the database file, so it must
+            // happen before creating the first connection. Existing synced
+            // databases open locally first and remain usable without network.
+            if needs_bootstrap {
+                database.sync().await.map_err(err)?;
+            }
+            (path, database, true)
+        }
+        DatabaseMode::Local => {
+            let path = dir.join("zam-local.db");
+            let database = libsql::Builder::new_local(path.clone())
                 .build()
                 .await
-                .map_err(err)?,
-            true,
-        ),
-        _ => (
-            libsql::Builder::new_local(path.clone())
-                .build()
-                .await
-                .map_err(err)?,
-            false,
-        ),
+                .map_err(err)?;
+            (path, database, false)
+        }
     };
     let connection = database.connect().map_err(err)?;
 
     *state.0.lock().await = Some(OpenDatabase {
         database,
         connection,
-        replica,
+        synced,
     });
     Ok(path.to_string_lossy().into_owned())
 }
@@ -176,22 +214,19 @@ pub async fn db_execute(
 }
 
 #[tauri::command]
-pub async fn db_execute_batch(
-    state: State<'_, DbState>,
-    sql: String,
-) -> Result<(), String> {
+pub async fn db_execute_batch(state: State<'_, DbState>, sql: String) -> Result<(), String> {
     let guard = state.0.lock().await;
     let open = guard.as_ref().ok_or("database is not open")?;
     open.connection.execute_batch(&sql).await.map_err(err)?;
     Ok(())
 }
 
-/// Pull changes from the server database (embedded replicas only).
+/// Push local changes and pull remote changes (synced databases only).
 #[tauri::command]
 pub async fn db_sync(state: State<'_, DbState>) -> Result<(), String> {
     let guard = state.0.lock().await;
     let open = guard.as_ref().ok_or("database is not open")?;
-    if !open.replica {
+    if !open.synced {
         return Err("database is local-only; nothing to sync".to_string());
     }
     open.database.sync().await.map_err(err)?;
@@ -202,4 +237,36 @@ pub async fn db_sync(state: State<'_, DbState>) -> Result<(), String> {
 pub async fn db_close(state: State<'_, DbState>) -> Result<(), String> {
     *state.0.lock().await = None;
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{database_mode, DatabaseMode};
+
+    #[test]
+    fn accepts_local_mode_when_both_sync_fields_are_absent() {
+        assert_eq!(database_mode(None, None).unwrap(), DatabaseMode::Local);
+    }
+
+    #[test]
+    fn trims_and_accepts_complete_sync_credentials() {
+        assert_eq!(
+            database_mode(
+                Some("  libsql://example.turso.io  ".to_string()),
+                Some("  secret  ".to_string()),
+            )
+            .unwrap(),
+            DatabaseMode::Synced {
+                url: "libsql://example.turso.io".to_string(),
+                auth_token: "secret".to_string(),
+            },
+        );
+    }
+
+    #[test]
+    fn rejects_partial_sync_credentials() {
+        assert!(database_mode(Some("libsql://example".to_string()), None).is_err());
+        assert!(database_mode(None, Some("secret".to_string())).is_err());
+        assert!(database_mode(Some("  ".to_string()), Some("secret".to_string())).is_err());
+    }
 }

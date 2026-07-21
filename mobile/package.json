@@ -8,7 +8,9 @@
     "build": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "android:dev": "tauri android dev --config src-tauri/tauri.native-api35.conf.json",
+    "android:build": "tauri android build --config src-tauri/tauri.native-api35.conf.json"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",

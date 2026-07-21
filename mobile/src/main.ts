@@ -1,14 +1,16 @@
 /**
- * Phase-0 spike UI: open the database (local file or embedded replica of
- * the server database), then build and render the review queue with the
+ * Phase-0 spike UI: open the database (local file or offline-writable synced
+ * copy of the server database), then build and render the review queue with the
  * unmodified kernel scheduler running inside the WebView.
  */
 
 import { invoke } from "@tauri-apps/api/core";
+import { ulid } from "ulid";
 import {
   buildReviewQueue,
   type ReviewQueue,
 } from "../../src/kernel/scheduler/queue.js";
+import { SCHEMA } from "../../src/kernel/db/schema.js";
 import { createTauriDatabase } from "./provider.js";
 
 const db = createTauriDatabase((command, args) => invoke(command, args));
@@ -26,6 +28,7 @@ const urlInput = element<HTMLInputElement>("sync-url");
 const tokenInput = element<HTMLInputElement>("auth-token");
 const localButton = element<HTMLButtonElement>("open-local");
 const resyncButton = element<HTMLButtonElement>("resync");
+const writeProbeButton = element<HTMLButtonElement>("write-probe");
 const statusLine = element<HTMLParagraphElement>("status");
 const summary = element<HTMLElement>("summary");
 const queueList = element<HTMLOListElement>("queue");
@@ -35,7 +38,7 @@ const queueList = element<HTMLOListElement>("queue");
 urlInput.value = localStorage.getItem("zam.syncUrl") ?? "";
 tokenInput.value = localStorage.getItem("zam.authToken") ?? "";
 
-let replicaMode = false;
+let syncMode = false;
 
 function setStatus(text: string, isError = false): void {
   statusLine.textContent = text;
@@ -92,27 +95,46 @@ async function refresh(): Promise<void> {
   render(queue);
 }
 
-async function open(replica: boolean): Promise<void> {
+async function open(synced: boolean): Promise<void> {
   try {
     setStatus("Öffne Datenbank…");
-    const syncUrl = replica ? urlInput.value.trim() : undefined;
-    const authToken = replica ? tokenInput.value.trim() : undefined;
-    if (replica && (!syncUrl || !authToken)) {
+    const syncUrl = synced ? urlInput.value.trim() : undefined;
+    const authToken = synced ? tokenInput.value.trim() : undefined;
+    if (synced && (!syncUrl || !authToken)) {
       setStatus("Server-URL und Auth-Token angeben.", true);
       return;
     }
-    if (replica && syncUrl && authToken) {
+    if (synced && syncUrl && authToken) {
       localStorage.setItem("zam.syncUrl", syncUrl);
       localStorage.setItem("zam.authToken", authToken);
     }
     await invoke("db_open", { syncUrl, authToken });
-    replicaMode = replica;
-    resyncButton.hidden = !replica;
-    if (replica) {
-      setStatus("Synchronisiere Replica…");
-      await db.sync?.();
+    if (!synced) {
+      // A fresh development database has no server bootstrap. Initialize it
+      // from the kernel's canonical schema before the first queue query.
+      await db.exec(SCHEMA);
+    }
+    syncMode = synced;
+    resyncButton.hidden = !synced;
+    writeProbeButton.hidden = !synced;
+    let syncError: string | undefined;
+    if (synced) {
+      setStatus("Synchronisiere Datenbank…");
+      try {
+        await db.sync?.();
+      } catch (error) {
+        // An existing synced database stays useful offline. The initial
+        // bootstrap still fails in db_open before we reach this branch.
+        syncError = error instanceof Error ? error.message : String(error);
+      }
     }
     await refresh();
+    if (syncError) {
+      setStatus(
+        `Offline geöffnet — Synchronisierung fehlgeschlagen: ${syncError}`,
+        true,
+      );
+    }
   } catch (error) {
     setStatus(error instanceof Error ? error.message : String(error), true);
   }
@@ -128,11 +150,11 @@ localButton.addEventListener("click", () => {
 });
 
 resyncButton.addEventListener("click", async () => {
-  if (!replicaMode) {
+  if (!syncMode) {
     return;
   }
   try {
-    setStatus("Synchronisiere Replica…");
+    setStatus("Synchronisiere Datenbank…");
     await db.sync?.();
     await refresh();
   } catch (error) {
@@ -140,4 +162,23 @@ resyncButton.addEventListener("click", async () => {
   }
 });
 
-setStatus("Bereit — Replica verbinden oder lokal öffnen.");
+writeProbeButton.addEventListener("click", async () => {
+  if (!syncMode) {
+    return;
+  }
+  try {
+    const id = ulid();
+    await db.exec(`CREATE TABLE IF NOT EXISTS mobile_phase0_probe (
+      id TEXT PRIMARY KEY,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    )`);
+    await db.prepare("INSERT INTO mobile_phase0_probe (id) VALUES (?)").run(id);
+    setStatus(
+      `Lokaler Schreibtest gespeichert (${id}). Online gehen und „Neu syncen“ wählen.`,
+    );
+  } catch (error) {
+    setStatus(error instanceof Error ? error.message : String(error), true);
+  }
+});
+
+setStatus("Bereit — Sync-Datenbank verbinden oder lokal öffnen.");
