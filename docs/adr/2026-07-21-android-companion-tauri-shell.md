@@ -90,6 +90,24 @@ kernel logic and reach the database.
   not-yet-installed voices. An explicitly started microphone/media-playback
   foreground service, partial wake lock, and audio-focus listener support the
   screen-off loop and transient interruption recovery.
+- **Sync conflicts resolve last-write-wins for the field test.** libsql's
+  synced database merges WAL frames at the SQLite level, so on a card-row
+  conflict the last device to sync wins; `review_logs` is append-only (ULIDs)
+  and merges without loss. Each field-test learner uses a single device
+  (cards are per-user rows), so same-card conflicts do not arise in practice.
+  Deterministic log-recompute — rebuilding card FSRS state by replaying the
+  merged `review_logs` — is the recorded correctness upgrade for
+  multi-device-per-user and is intentionally **not** implemented now; the
+  kernel has no replay path yet, and adding one must match incremental
+  scheduling exactly (guarded by the FSRS tests). Chosen by Thomas on
+  2026-07-22 over building log-recompute in this phase.
+- **Write-back is resilient without masking dead credentials**
+  (`mobile/src/sync.ts`): `syncWithRetry` retries only transient failures with
+  capped exponential backoff, while an authentication failure (expired or
+  rotated token) is classified and surfaced immediately. The companion then
+  routes the learner to re-pairing (`promptRepair`) instead of silently
+  retrying a token the server already rejected — the token-rotation path for
+  FR-4.
 
 ## Validation
 
@@ -131,6 +149,7 @@ Optional follow-up: repeat kernel startup and the sync scenario on the Pixel
 - `mobile/src/import.ts`
 - `mobile/src/review-session.ts`
 - `mobile/src/voice.ts`
+- `mobile/src/sync.ts`
 - `mobile/src-tauri/gen/android/app/src/main/AndroidManifest.xml`
 - `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/SecurePairingPlugin.kt`
 - `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/VoicePlugin.kt`
@@ -140,6 +159,7 @@ Optional follow-up: repeat kernel startup and the sync scenario on the Pixel
 - `tests/mobile/import-wiring.test.ts`
 - `tests/mobile/review-session.test.ts`
 - `tests/mobile/voice.test.ts`
+- `tests/mobile/sync.test.ts`
 - `tests/mobile/voice-wiring.test.ts`
 - `tests/helpers/tauri-invoke-stub.ts`
 - Pixel 9 field check, 2026-07-21: API-37 APK installed; the unmodified

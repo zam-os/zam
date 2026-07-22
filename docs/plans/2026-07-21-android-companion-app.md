@@ -288,7 +288,15 @@ server database, per FR-0).
   installing that data.
 - [ ] **Phase 5 — sync hardening**: write-back robustness, conflict policy
   (log-recompute vs. last-write-wins) recorded in the ADR, token rotation
-  and re-pair UX. FR-4 complete.
+  and re-pair UX. FR-4 complete. Implementation present: the conflict policy
+  is decided (last-write-wins for the field test; log-recompute recorded as
+  the future upgrade — Thomas, 2026-07-22) and documented in the ADR;
+  `mobile/src/sync.ts` retries only transient sync failures with capped
+  backoff and classifies an expired/rotated token as an auth failure, which
+  routes the learner to re-pairing (`promptRepair`) instead of retrying dead
+  credentials; covered by `tests/mobile/sync.test.ts`. Pixel 9 completion
+  remains open: exercise an expired-token sync end-to-end and confirm the
+  re-pair prompt on the device.
 - [ ] **Phase 6 — field-test polish**: due notification, de/en i18n pass,
   online LLM question/evaluation wiring, performance-budget and battery
   validation on the Pixel 9 (and Pixel 6 if compatible), sideload build

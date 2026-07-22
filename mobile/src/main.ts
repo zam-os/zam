@@ -1,4 +1,4 @@
-/** Phase-2 Android companion: pairing plus offline active-recall sessions. */
+/** Android companion: pairing, offline recall/import/voice, and resilient sync. */
 
 import { invoke } from "@tauri-apps/api/core";
 import {
@@ -29,6 +29,7 @@ import {
   MobileReviewSession,
   type MobileReviewSummary,
 } from "./review-session.js";
+import { SyncError, syncWithRetry } from "./sync.js";
 import {
   HandsFreeReviewController,
   resolveVoiceLocale,
@@ -522,6 +523,29 @@ async function restoreReviewSession(userId: string): Promise<void> {
   }
 }
 
+/** Sync the paired replica with bounded retry, reporting each retry attempt. */
+async function synchronize(report?: (message: string) => void): Promise<void> {
+  await syncWithRetry(
+    async () => {
+      await db.sync?.();
+    },
+    {
+      onRetry: ({ attempt, error }) =>
+        report?.(
+          `Synchronisierung wiederholt (Versuch ${attempt}): ${error.message}`,
+        ),
+    },
+  );
+}
+
+/** Route an expired/rotated token to re-pairing without discarding the session. */
+function promptRepair(reason: string): void {
+  connection.textContent = "Offline";
+  connection.classList.add("offline");
+  showPairing(Boolean(currentPairing));
+  setPairingStatus(reason, true);
+}
+
 async function connect(
   payload: ZamPairPayloadV1,
   requireInitialSync: boolean,
@@ -533,12 +557,19 @@ async function connect(
     authToken: payload.database.token,
   });
 
-  let syncError: string | undefined;
+  let syncError: SyncError | undefined;
   try {
     setStatus("Synchronisiere…");
-    await db.sync?.();
+    await synchronize(
+      requireInitialSync
+        ? (message) => setPairingStatus(message, true)
+        : (message) => setStatus(message, true),
+    );
   } catch (error) {
-    syncError = errorMessage(error);
+    syncError =
+      error instanceof SyncError
+        ? error
+        : new SyncError("transient", errorMessage(error));
     if (requireInitialSync) throw error;
   }
 
@@ -555,9 +586,13 @@ async function connect(
   openPendingImport();
   connection.textContent = syncError ? "Offline" : "Synchronisiert";
   connection.classList.toggle("offline", Boolean(syncError));
-  if (syncError) {
+  if (syncError?.kind === "auth") {
+    promptRepair(
+      `Zugangsdaten abgelaufen — bitte neu koppeln (${syncError.message}).`,
+    );
+  } else if (syncError) {
     setStatus(
-      `Offline geöffnet. Sync fehlgeschlagen; bei abgelaufenen Zugangsdaten bitte neu koppeln: ${syncError}`,
+      `Offline geöffnet. Synchronisierung fehlgeschlagen — später erneut synchronisieren: ${syncError.message}`,
       true,
     );
   }
@@ -829,14 +864,20 @@ resyncButton.addEventListener("click", async () => {
   resyncButton.disabled = true;
   try {
     setStatus("Synchronisiere…");
-    await db.sync?.();
+    await synchronize((message) => setStatus(message, true));
     await refresh(currentPairing.learner.userId);
     connection.textContent = "Synchronisiert";
     connection.classList.remove("offline");
   } catch (error) {
-    connection.textContent = "Offline";
-    connection.classList.add("offline");
-    setStatus(`Sync fehlgeschlagen: ${errorMessage(error)}`, true);
+    if (error instanceof SyncError && error.kind === "auth") {
+      promptRepair(
+        `Zugangsdaten abgelaufen — bitte neu koppeln (${error.message}).`,
+      );
+    } else {
+      connection.textContent = "Offline";
+      connection.classList.add("offline");
+      setStatus(`Sync fehlgeschlagen: ${errorMessage(error)}`, true);
+    }
   } finally {
     resyncButton.disabled = false;
   }
