@@ -1,0 +1,12 @@
+{
+  "identifier": "mobile-pairing",
+  "description": "Android camera access for QR pairing",
+  "windows": ["main"],
+  "platforms": ["android"],
+  "permissions": [
+    "barcode-scanner:allow-scan",
+    "barcode-scanner:allow-check-permissions",
+    "barcode-scanner:allow-request-permissions",
+    "barcode-scanner:allow-open-app-settings"
+  ]
+}

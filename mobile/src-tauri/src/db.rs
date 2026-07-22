@@ -74,6 +74,17 @@ fn database_mode(
     }
 }
 
+fn synced_database_filename(url: &str) -> String {
+    // Stable FNV-1a keeps replicas for different server databases separate
+    // without putting hostnames or other credential-adjacent data on disk.
+    let mut hash = 0xcbf29ce484222325_u64;
+    for byte in url.as_bytes() {
+        hash ^= u64::from(*byte);
+        hash = hash.wrapping_mul(0x100000001b3);
+    }
+    format!("zam-sync-{hash:016x}.db")
+}
+
 fn to_libsql(value: &Json, index: usize) -> Result<libsql::Value, String> {
     match value {
         Json::Null => Ok(libsql::Value::Null),
@@ -136,7 +147,7 @@ pub async fn db_open(
             // Keep development-only local databases separate: libsql sync
             // metadata is tied to the database file and cannot safely reuse
             // an arbitrary local SQLite file.
-            let path = dir.join("zam-sync.db");
+            let path = dir.join(synced_database_filename(&url));
             let needs_bootstrap = !path.exists();
             let builder = libsql::Builder::new_synced_database(path.clone(), url, auth_token);
             #[cfg(target_os = "android")]
@@ -258,7 +269,7 @@ pub async fn db_close(state: State<'_, DbState>) -> Result<(), String> {
 
 #[cfg(test)]
 mod tests {
-    use super::{configure_connection, database_mode, DatabaseMode};
+    use super::{configure_connection, database_mode, synced_database_filename, DatabaseMode};
 
     #[test]
     fn accepts_local_mode_when_both_sync_fields_are_absent() {
@@ -306,5 +317,14 @@ mod tests {
             let busy_timeout = busy_timeout.next().await.unwrap().unwrap();
             assert_eq!(busy_timeout.get::<i64>(0).unwrap(), 5000);
         });
+    }
+
+    #[test]
+    fn keeps_server_replicas_separate_without_leaking_the_hostname() {
+        let first = synced_database_filename("libsql://first.example");
+        let second = synced_database_filename("libsql://second.example");
+        assert_ne!(first, second);
+        assert!(first.starts_with("zam-sync-"));
+        assert!(!first.contains("example"));
     }
 }

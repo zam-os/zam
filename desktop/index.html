@@ -405,11 +405,51 @@
             </div>
           </article>
 
+          <article class="card frosted settings-card">
+            <div class="settings-card-header">
+              <div>
+                <h2 id="lbl-settings-mobile-title">Mobile companion</h2>
+                <p id="lbl-settings-mobile-help" class="settings-card-help">
+                  Pair an Android device with this server database and one learner.
+                </p>
+              </div>
+              <button id="btn-pair-mobile" class="btn primary-btn btn-sm" type="button">
+                Pair mobile device
+              </button>
+            </div>
+          </article>
+
           <div class="settings-status-row">
             <p id="setup-status" class="sub-label" aria-live="polite"></p>
           </div>
         </div>
       </section>
+
+      <div id="mobile-pairing-overlay" class="modal-overlay">
+        <div class="modal-box pairing-modal" role="dialog" aria-modal="true" aria-labelledby="lbl-pairing-title">
+          <div class="modal-header">
+            <h3 id="lbl-pairing-title">Pair mobile device</h3>
+          </div>
+          <div class="modal-body">
+            <p id="lbl-pairing-description"></p>
+            <label class="settings-field" for="pairing-user-select">
+              <span id="lbl-pairing-user">Learner</span>
+              <select id="pairing-user-select"></select>
+            </label>
+            <input id="pairing-new-user" class="settings-input hidden" type="text" maxlength="128" autocomplete="off" />
+            <p id="lbl-pairing-shoulder-note" class="pairing-warning"></p>
+            <p id="pairing-status" class="sub-label" aria-live="polite"></p>
+            <div id="pairing-qr-panel" class="pairing-qr-panel hidden">
+              <img id="pairing-qr-image" width="360" height="360" alt="" />
+              <p id="pairing-summary" class="sub-label"></p>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button id="btn-pairing-close" class="btn secondary-btn btn-sm" type="button">Close</button>
+            <button id="btn-pairing-generate" class="btn primary-btn btn-sm" type="button">Show QR code</button>
+          </div>
+        </div>
+      </div>
 
       <!-- VIEW 3: STUDY SESSION CARD -->
       <section id="study-view" class="view">

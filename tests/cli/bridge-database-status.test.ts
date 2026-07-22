@@ -95,6 +95,12 @@ describe("bridge database status and profile selection", () => {
     ).toThrow();
   });
 
+  it("rejects mobile pairing from a local-only database", () => {
+    expect(() =>
+      runBridge(["mobile-pairing-payload", "--user", "test-user"]),
+    ).toThrow();
+  });
+
   it("can load a review with the stored question instead of dynamic generation", () => {
     runBridge(["setting-set", "--key", "llm.enabled", "--value", "true"]);
 

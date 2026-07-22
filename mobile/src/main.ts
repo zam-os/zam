@@ -1,63 +1,96 @@
-/**
- * Phase-0 spike UI: open the database (local file or offline-writable synced
- * copy of the server database), then build and render the review queue with the
- * unmodified kernel scheduler running inside the WebView.
- */
+/** Phase-1 Android companion: QR pairing, encrypted credentials, and due queue. */
 
 import { invoke } from "@tauri-apps/api/core";
-import { ulid } from "ulid";
+import {
+  checkPermissions,
+  Format,
+  openAppSettings,
+  requestPermissions,
+  scan,
+} from "@tauri-apps/plugin-barcode-scanner";
+import {
+  parseZamPairPayload,
+  serializeZamPairPayload,
+  type ZamPairPayloadV1,
+  ZAM_PAIR_TYPE,
+  ZAM_PAIR_VERSION,
+} from "../../src/bridge/mobile-pairing.js";
 import {
   buildReviewQueue,
   type ReviewQueue,
 } from "../../src/kernel/scheduler/queue.js";
-import { SCHEMA } from "../../src/kernel/db/schema.js";
 import { createTauriDatabase } from "./provider.js";
 
 const db = createTauriDatabase((command, args) => invoke(command, args));
 
 function element<T extends HTMLElement>(id: string): T {
   const node = document.getElementById(id);
-  if (!node) {
-    throw new Error(`missing element #${id}`);
-  }
+  if (!node) throw new Error(`missing element #${id}`);
   return node as T;
 }
 
-const form = element<HTMLFormElement>("connect-form");
-const urlInput = element<HTMLInputElement>("sync-url");
-const tokenInput = element<HTMLInputElement>("auth-token");
-const localButton = element<HTMLButtonElement>("open-local");
-const resyncButton = element<HTMLButtonElement>("resync");
-const writeProbeButton = element<HTMLButtonElement>("write-probe");
+const pairingView = element<HTMLElement>("pairing-view");
+const appView = element<HTMLElement>("app-view");
+const scanButton = element<HTMLButtonElement>("scan-pairing-code");
+const cameraSettingsButton = element<HTMLButtonElement>("camera-settings");
+const cancelPairingButton = element<HTMLButtonElement>("cancel-pairing");
+const manualForm = element<HTMLFormElement>("manual-pairing-form");
+const manualUrl = element<HTMLInputElement>("manual-sync-url");
+const manualToken = element<HTMLInputElement>("manual-auth-token");
+const manualUser = element<HTMLInputElement>("manual-user-id");
+const pairingStatus = element<HTMLParagraphElement>("pairing-status");
+const learner = element<HTMLElement>("learner");
+const connection = element<HTMLElement>("connection");
 const statusLine = element<HTMLParagraphElement>("status");
 const summary = element<HTMLElement>("summary");
 const queueList = element<HTMLOListElement>("queue");
+const resyncButton = element<HTMLButtonElement>("resync");
+const repairButton = element<HTMLButtonElement>("repair");
 
-// Spike shortcut: credentials sit unencrypted in localStorage — use test
-// databases only. Phase 1 replaces this with QR pairing + Keystore storage.
-urlInput.value = localStorage.getItem("zam.syncUrl") ?? "";
-tokenInput.value = localStorage.getItem("zam.authToken") ?? "";
+let currentPairing: ZamPairPayloadV1 | null = null;
 
-let syncMode = false;
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+function setPairingStatus(text: string, isError = false): void {
+  pairingStatus.textContent = text;
+  pairingStatus.classList.toggle("error", isError);
+}
 
 function setStatus(text: string, isError = false): void {
   statusLine.textContent = text;
   statusLine.classList.toggle("error", isError);
 }
 
+function showPairing(canCancel: boolean): void {
+  pairingView.hidden = false;
+  appView.hidden = true;
+  cancelPairingButton.hidden = !canCancel;
+  cameraSettingsButton.hidden = true;
+  setPairingStatus(
+    canCancel
+      ? "Neue Kopplung scannen oder die bestehende Ansicht beibehalten."
+      : "QR-Code aus ZAM Desktop scannen.",
+  );
+}
+
+function showApp(payload: ZamPairPayloadV1): void {
+  pairingView.hidden = true;
+  appView.hidden = false;
+  learner.textContent = payload.learner.userId;
+}
+
 function formatDue(dueAt: string): string {
   const due = new Date(`${dueAt.replace(" ", "T")}Z`);
-  if (Number.isNaN(due.getTime())) {
-    return dueAt;
-  }
-  return due.toLocaleString();
+  return Number.isNaN(due.getTime()) ? dueAt : due.toLocaleString();
 }
 
 function render(queue: ReviewQueue): void {
   summary.textContent =
     `${queue.items.length} Karten in der Queue — ` +
     `${queue.reviewCount} fällig, ${queue.newCount} neu, ` +
-    `${queue.relearnCount} relearning · Domänen: ` +
+    `${queue.relearnCount} erneut lernen · Domänen: ` +
     (queue.totalDomains.join(", ") || "–");
   queueList.replaceChildren();
   for (const item of queue.items) {
@@ -75,110 +108,167 @@ function render(queue: ReviewQueue): void {
   }
 }
 
-async function refresh(): Promise<void> {
-  // Spike shortcut: sessions belong to the most active user in the synced
-  // database; real user resolution arrives with pairing in Phase 1.
+async function refresh(userId: string): Promise<void> {
   const user = (await db
-    .prepare(
-      `SELECT user_id, COUNT(*) AS card_count FROM cards
-       GROUP BY user_id ORDER BY card_count DESC LIMIT 1`,
-    )
-    .get()) as { user_id: string; card_count: number } | undefined;
-  if (!user) {
-    setStatus("Datenbank geöffnet — sie enthält noch keine Karten.");
+    .prepare("SELECT COUNT(*) AS card_count FROM cards WHERE user_id = ?")
+    .get(userId)) as { card_count: number } | undefined;
+  const cardCount = Number(user?.card_count ?? 0);
+  if (cardCount === 0) {
+    setStatus(`Gekoppelt mit ${userId} — noch keine Karten für diesen Lernenden.`);
     summary.textContent = "";
     queueList.replaceChildren();
     return;
   }
-  const queue = await buildReviewQueue(db, { userId: user.user_id });
-  setStatus(`Queue für ${user.user_id} (${user.card_count} Karten).`);
+  const queue = await buildReviewQueue(db, { userId });
+  setStatus(`Queue für ${userId} (${cardCount} Karten).`);
   render(queue);
 }
 
-async function open(synced: boolean): Promise<void> {
+async function connect(
+  payload: ZamPairPayloadV1,
+  requireInitialSync: boolean,
+): Promise<void> {
+  setStatus("Öffne lokale Server-Replik…");
+  await invoke("db_close");
+  await invoke("db_open", {
+    syncUrl: payload.database.url,
+    authToken: payload.database.token,
+  });
+
+  let syncError: string | undefined;
   try {
-    setStatus("Öffne Datenbank…");
-    const syncUrl = synced ? urlInput.value.trim() : undefined;
-    const authToken = synced ? tokenInput.value.trim() : undefined;
-    if (synced && (!syncUrl || !authToken)) {
-      setStatus("Server-URL und Auth-Token angeben.", true);
-      return;
-    }
-    if (synced && syncUrl && authToken) {
-      localStorage.setItem("zam.syncUrl", syncUrl);
-      localStorage.setItem("zam.authToken", authToken);
-    }
-    await invoke("db_open", { syncUrl, authToken });
-    if (!synced) {
-      // A fresh development database has no server bootstrap. Initialize it
-      // from the kernel's canonical schema before the first queue query.
-      await db.exec(SCHEMA);
-    }
-    syncMode = synced;
-    resyncButton.hidden = !synced;
-    writeProbeButton.hidden = !synced;
-    let syncError: string | undefined;
-    if (synced) {
-      setStatus("Synchronisiere Datenbank…");
-      try {
-        await db.sync?.();
-      } catch (error) {
-        // An existing synced database stays useful offline. The initial
-        // bootstrap still fails in db_open before we reach this branch.
-        syncError = error instanceof Error ? error.message : String(error);
-      }
-    }
-    await refresh();
-    if (syncError) {
-      setStatus(
-        `Offline geöffnet — Synchronisierung fehlgeschlagen: ${syncError}`,
-        true,
-      );
-    }
+    setStatus("Synchronisiere…");
+    await db.sync?.();
   } catch (error) {
-    setStatus(error instanceof Error ? error.message : String(error), true);
+    syncError = errorMessage(error);
+    if (requireInitialSync) throw error;
+  }
+
+  await refresh(payload.learner.userId);
+  if (requireInitialSync) {
+    await invoke("pairing_save", {
+      payload: serializeZamPairPayload(payload),
+    });
+  }
+  currentPairing = payload;
+  showApp(payload);
+  connection.textContent = syncError ? "Offline" : "Synchronisiert";
+  connection.classList.toggle("offline", Boolean(syncError));
+  if (syncError) {
+    setStatus(
+      `Offline geöffnet. Sync fehlgeschlagen; bei abgelaufenen Zugangsdaten bitte neu koppeln: ${syncError}`,
+      true,
+    );
   }
 }
 
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  void open(true);
+async function applyPairing(input: string | unknown): Promise<void> {
+  const payload = parseZamPairPayload(input);
+  const previousPairing = currentPairing;
+  setPairingStatus("Kopplung wird geprüft und initial synchronisiert…");
+  scanButton.disabled = true;
+  try {
+    await connect(payload, true);
+  } catch (error) {
+    if (previousPairing) {
+      try {
+        await connect(previousPairing, false);
+      } catch {
+        // Keep the re-pair screen usable even if the previous replica is unavailable.
+      }
+    }
+    showPairing(Boolean(previousPairing));
+    setPairingStatus(`Kopplung fehlgeschlagen: ${errorMessage(error)}`, true);
+  } finally {
+    scanButton.disabled = false;
+  }
+}
+
+scanButton.addEventListener("click", async () => {
+  try {
+    let permission = await checkPermissions();
+    if (permission !== "granted") permission = await requestPermissions();
+    if (permission !== "granted") {
+      cameraSettingsButton.hidden = false;
+      setPairingStatus(
+        "Kamerazugriff wurde nicht erlaubt. Berechtigung in den App-Einstellungen freigeben.",
+        true,
+      );
+      return;
+    }
+    setPairingStatus("Kamera geöffnet — QR-Code vollständig ins Bild halten.");
+    const result = await scan({
+      cameraDirection: "back",
+      formats: [Format.QRCode],
+    });
+    await applyPairing(result.content);
+  } catch (error) {
+    setPairingStatus(`Scan fehlgeschlagen: ${errorMessage(error)}`, true);
+  }
 });
 
-localButton.addEventListener("click", () => {
-  void open(false);
+cameraSettingsButton.addEventListener("click", () => void openAppSettings());
+
+manualForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  void applyPairing({
+    type: ZAM_PAIR_TYPE,
+    version: ZAM_PAIR_VERSION,
+    createdAt: new Date().toISOString(),
+    database: {
+      url: manualUrl.value.trim(),
+      token: manualToken.value.trim(),
+    },
+    learner: { userId: manualUser.value.trim() },
+    settings: { locale: navigator.language.split("-")[0] || "de" },
+  });
 });
+
+cancelPairingButton.addEventListener("click", () => {
+  if (currentPairing) showApp(currentPairing);
+});
+
+repairButton.addEventListener("click", () => showPairing(true));
 
 resyncButton.addEventListener("click", async () => {
-  if (!syncMode) {
-    return;
-  }
+  if (!currentPairing) return;
+  resyncButton.disabled = true;
   try {
-    setStatus("Synchronisiere Datenbank…");
+    setStatus("Synchronisiere…");
     await db.sync?.();
-    await refresh();
+    await refresh(currentPairing.learner.userId);
+    connection.textContent = "Synchronisiert";
+    connection.classList.remove("offline");
   } catch (error) {
-    setStatus(error instanceof Error ? error.message : String(error), true);
+    connection.textContent = "Offline";
+    connection.classList.add("offline");
+    setStatus(`Sync fehlgeschlagen: ${errorMessage(error)}`, true);
+  } finally {
+    resyncButton.disabled = false;
   }
 });
 
-writeProbeButton.addEventListener("click", async () => {
-  if (!syncMode) {
-    return;
-  }
+async function start(): Promise<void> {
+  // Remove the Phase-0 test shortcut if an upgraded installation still has it.
+  localStorage.removeItem("zam.syncUrl");
+  localStorage.removeItem("zam.authToken");
   try {
-    const id = ulid();
-    await db.exec(`CREATE TABLE IF NOT EXISTS mobile_phase0_probe (
-      id TEXT PRIMARY KEY,
-      created_at TEXT NOT NULL DEFAULT (datetime('now'))
-    )`);
-    await db.prepare("INSERT INTO mobile_phase0_probe (id) VALUES (?)").run(id);
-    setStatus(
-      `Lokaler Schreibtest gespeichert (${id}). Online gehen und „Neu syncen“ wählen.`,
-    );
+    const stored = await invoke<string | null>("pairing_load");
+    if (!stored) {
+      showPairing(false);
+      return;
+    }
+    const payload = parseZamPairPayload(stored);
+    currentPairing = payload;
+    showApp(payload);
+    await connect(payload, false);
   } catch (error) {
-    setStatus(error instanceof Error ? error.message : String(error), true);
+    showPairing(false);
+    setPairingStatus(
+      `Gespeicherte Kopplung konnte nicht geöffnet werden: ${errorMessage(error)}`,
+      true,
+    );
   }
-});
+}
 
-setStatus("Bereit — Sync-Datenbank verbinden oder lokal öffnen.");
+void start();

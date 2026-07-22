@@ -248,10 +248,12 @@ server database, per FR-0).
   2026-07-21 (queue render, offline ULID write, reconnect push/pull, 273 ms
   cold start). A Pixel 6 run may lower the hardware requirement but no longer
   blocks the phase.
-- [ ] **Phase 1 — QR pairing, read-only companion**: desktop "pair mobile
+- [x] **Phase 1 — QR pairing, read-only companion**: desktop "pair mobile
   device" surface (QR from machine-local credentials) + Android scanner,
   Keystore-backed credential storage, initial sync, due-queue and status
-  view. FR-0 complete.
+  view. FR-0 complete. Pixel 9 / Android 17 validation passed on 2026-07-21
+  (final APK install/start, native camera scanner, Keystore save/load/clear,
+  QR contract and local replica queue path).
 - [ ] **Phase 2 — recall sessions**: full offline review loop (template
   prompts, typed answers, rate 1–4, blocker, `review_logs`, resume,
   summary). FR-1 complete.
