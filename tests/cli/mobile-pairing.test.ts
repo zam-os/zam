@@ -48,4 +48,25 @@ describe("mobile pairing payload projection", () => {
     expect(payload.llm).toBeUndefined();
     expect(payload.settings).toEqual({ locale: "de" });
   });
+
+  it("pairs a keyless local recall provider without an API key", () => {
+    const payload = createMobilePairingPayload({
+      databaseUrl: "libsql://learner.example.turso.io",
+      databaseToken: "database-secret",
+      userId: "student-9",
+      recallProvider: {
+        ...recallProvider,
+        url: "http://127.0.0.1:8000/v1",
+        model: "field-test-local",
+        apiKey: "",
+        local: true,
+      },
+    });
+
+    expect(payload.llm?.recall).toMatchObject({
+      model: "field-test-local",
+      local: true,
+    });
+    expect(payload.llm?.recall.apiKey).toBeUndefined();
+  });
 });

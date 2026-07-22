@@ -74,7 +74,8 @@ in-app streaks (no-gamification stance, FR-5).
   code from the machine-local credentials (`~/.zam/credentials.json`): a
   versioned `zam-pair` JSON payload carrying the libsql/Turso database URL,
   an auth token, the desktop's machine-local **LLM role configuration**
-  (provider URL + key — one scan also configures recall quality), and
+  (provider URL plus a key when the selected provider requires one — one scan
+  also configures recall quality), and
   optional bootstrap settings (locale, profile).
 - First run on Android: scan the code (camera permission), validate the
   payload version, store credentials in app-private storage backed by the
@@ -83,11 +84,15 @@ in-app streaks (no-gamification stance, FR-5).
 - Pairing **requires the server database**: a desktop without Turso/sqld
   configured cannot pair and must say so clearly. Local-only phone setups
   are out of scope by requirement.
-- Security: the QR encodes live secrets (DB token, LLM provider key) —
-  render it only on explicit user action with a shoulder-surfing note;
-  prefer database-scoped tokens; re-pairing replaces stored credentials;
-  a revoked/expired token leads to a re-pair prompt, never to silent data
-  loss.
+- Security: the QR encodes a live, long-lived DB token and, for a keyed cloud
+  provider, its LLM API key in clear text. Render it only on explicit user
+  action with a shoulder-surfing note. Hiding it after five minutes limits
+  screen exposure but does not expire an already captured payload or its
+  credentials. This is accepted for the owner-present, two-device field test;
+  prefer database-scoped tokens, and later replace the direct-secret transfer
+  with short-lived/scoped tokens or a server-mediated pairing handshake.
+  Re-pairing replaces stored credentials; a revoked/expired token leads to a
+  re-pair prompt, never to silent data loss.
 - Pairing binds the device to **one learner**: the payload carries the
   learner's user id, chosen (or created) in the desktop pairing surface.
   Preferred setup for family use: **one server database per learner**, so a
@@ -191,7 +196,8 @@ No streaks, no gamification.
   user-configured providers. The only network peer in the default setup
   is the paired server database.
 - **Cost**: zero recurring cost by default; LLM roles follow the
-  cost-first provider stance (cheap prepaid endpoints).
+  cost-first provider stance. The field test uses a keyless local recall
+  provider on the phone and no cloud fallback.
 - **Kernel single-source**: scheduling/rating/blocking logic must be the
   kernel TypeScript — a re-implementation (Kotlin/Rust) of FSRS is out.
 - **Accessibility**: TalkBack-usable review flow, dynamic font scaling —
@@ -253,7 +259,9 @@ server database, per FR-0).
   Keystore-backed credential storage, initial sync, due-queue and status
   view. FR-0 complete. Pixel 9 / Android 17 validation passed on 2026-07-21
   (final APK install/start, native camera scanner, Keystore save/load/clear,
-  QR contract and local replica queue path).
+  QR contract and local replica queue path). The built universal debug APK's
+  merged manifest was additionally verified with `aapt2 dump permissions` on
+  2026-07-22 and declares `android.permission.CAMERA`.
 - [ ] **Phase 2 — recall sessions**: full offline review loop (template
   prompts, typed answers, rate 1–4, blocker, `review_logs`, resume,
   summary). FR-1 complete.
@@ -278,8 +286,12 @@ server database, per FR-0).
    stays host-agnostic; self-hosted `sqld` remains a later option.
 4. **LLM roles**: paired along in the QR payload (desktop's machine-local
    role configuration, ADR 2026-06-25a — the phone stores its own copy).
-   Online sessions get the Studio-grade LLM pipeline; offline sessions
-   fall back to template prompts + self-rating.
+   The field test selects a keyless phone-local recall provider
+   (`local: true`) without a cloud fallback, so no LLM API key travels in the
+   QR. It evaluates answers only; the displayed kernel template question stays
+   unchanged to avoid generation latency. The exact runtime/model is selected
+   and benchmarked on the 12-GB Pixel 9 in Phase 6. Offline or without the
+   local runtime, sessions fall back to template prompts + self-rating.
 5. **Android `applicationId`**: default `org.zamos.zam` (zam-os.org is
    owned; hyphens are invalid in application IDs — desktop's `com.zam.app`
    stays as is). Cheap to change any time before a store publication.

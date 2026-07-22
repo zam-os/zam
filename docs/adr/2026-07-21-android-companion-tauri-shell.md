@@ -61,6 +61,20 @@ kernel logic and reach the database.
   override when compiling the Rust shared library. APK manifest and Java/
   Kotlin API availability remain API 37; only the native library's minimum
   ABI is lower.
+- **The secret-bearing QR is an accepted field-test tradeoff.** It contains a
+  long-lived database token and, when a cloud recall provider is paired, may
+  also contain that provider's API key in clear text. The desktop hides the QR
+  after five minutes, but this is display hygiene rather than a payload TTL or
+  credential expiry. For the owner-present, two-device field test this is
+  accepted; a later production pairing design should use short-lived/scoped
+  database tokens or a server-mediated handshake.
+- **Field-test recall is local and keyless on the phone.** The paired endpoint
+  is marked `local: true`, has no API key and no cloud fallback, and is used for
+  answer evaluation only. Questions remain the kernel's unchanged template
+  prompts so local-model startup and inference do not delay the next card. The
+  exact on-device runtime and model are selected by the Phase-6 Pixel 9 (12 GB)
+  benchmark; a loopback URL in the paired config refers to the phone, not to a
+  provider running on the desktop.
 
 ## Validation
 
@@ -68,6 +82,10 @@ kernel logic and reach the database.
   the Pixel 9 (`aarch64-linux-android`, Android 17 / API 37).
 - [x] `tauri android dev` toolchain end-to-end on the Pixel 9 (SDK/Build
   Tools 37 + NDK r29).
+- [x] The Phase-1 universal debug APK declares
+  `android.permission.CAMERA`; verified from the built artifact with
+  `aapt2 dump permissions` on 2026-07-22. The native scanner permission flow
+  was also exercised on the Pixel 9.
 
 Optional follow-up: repeat kernel startup and the sync scenario on the Pixel
 6. A pass lowers the supported hardware minimum; it does not gate Phase 0.
@@ -76,6 +94,7 @@ Optional follow-up: repeat kernel startup and the sync scenario on the Pixel
 
 - `mobile/src/provider.ts`
 - `mobile/src-tauri/src/db.rs`
+- `mobile/src-tauri/capabilities/mobile.json`
 - `mobile/src/main.ts`
 - `tests/mobile/tauri-provider.test.ts`
 - `tests/helpers/tauri-invoke-stub.ts`
