@@ -31,7 +31,7 @@
       }
       form { display: grid; gap: 9px; }
       label { display: grid; gap: 5px; font-size: 0.85rem; }
-      input, textarea, button {
+      input, textarea, select, button {
         font: inherit;
         padding: 11px 14px;
         border: 1px solid color-mix(in srgb, CanvasText 25%, transparent);
@@ -82,6 +82,9 @@
       }
       .ratings { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
       .ratings button { font-weight: 600; }
+      .capture-actions { display: grid; gap: 9px; margin-bottom: 14px; }
+      #import-status { min-height: 1.3em; font-size: 0.88rem; }
+      #import-draft-form { margin-top: 14px; }
       #review-status { min-height: 1.3em; font-size: 0.88rem; }
       [hidden] { display: none !important; }
     </style>
@@ -135,10 +138,107 @@
         </div>
         <section id="dashboard-view">
           <section id="summary"></section>
-          <button id="start-review" class="primary" type="button">
-            Wiederholung starten
-          </button>
+          <div class="capture-actions">
+            <button id="start-review" class="primary" type="button">
+              Wiederholung starten
+            </button>
+            <button id="open-import" type="button">Lerninhalt hinzufügen</button>
+          </div>
           <ol id="queue"></ol>
+        </section>
+
+        <section id="import-view" hidden>
+          <div class="card">
+            <h2>Lerninhalt hinzufügen</h2>
+            <p>
+              Bridge-JSON auswählen oder Text bzw. URL einfügen. Vor dem
+              Speichern wird immer ein bearbeitbarer Entwurf gezeigt.
+            </p>
+            <label>
+              Bridge-JSON-Datei
+              <input
+                id="import-file"
+                type="file"
+                accept="application/json,text/json,text/plain,.json"
+              />
+            </label>
+            <label>
+              Text, URL oder Bridge-JSON
+              <textarea
+                id="import-input"
+                placeholder="Text/URL einfügen oder JSON-Datei auswählen …"
+              ></textarea>
+            </label>
+            <div class="buttons">
+              <button id="prepare-import" class="primary" type="button">
+                Entwurf erstellen
+              </button>
+              <button id="cancel-import" type="button">Abbrechen</button>
+            </div>
+            <p id="import-status" aria-live="polite"></p>
+
+            <form id="import-draft-form" hidden>
+              <h2>Entwurf bestätigen</h2>
+              <label>
+                Slug
+                <input id="import-slug" type="text" required />
+              </label>
+              <label>
+                Titel
+                <input id="import-title" type="text" />
+              </label>
+              <label>
+                Lerninhalt
+                <textarea id="import-concept" required></textarea>
+              </label>
+              <label>
+                Domäne
+                <input id="import-domain" type="text" />
+              </label>
+              <label>
+                Bloom-Stufe
+                <select id="import-bloom">
+                  <option value="1">1 · Erinnern</option>
+                  <option value="2">2 · Verstehen</option>
+                  <option value="3">3 · Anwenden</option>
+                  <option value="4">4 · Analysieren</option>
+                  <option value="5">5 · Erschaffen</option>
+                </select>
+              </label>
+              <label>
+                Frage (optional)
+                <textarea id="import-question"></textarea>
+              </label>
+              <label>
+                Kontext/Notiz (optional)
+                <textarea id="import-context"></textarea>
+              </label>
+              <label>
+                Quelle (optional)
+                <input id="import-source-link" type="text" />
+              </label>
+              <label>
+                Voraussetzungen (Slugs, kommagetrennt)
+                <input id="import-prerequisites" type="text" />
+              </label>
+              <label>
+                Wissenskontexte (Namen, kommagetrennt)
+                <input id="import-knowledge-contexts" type="text" />
+              </label>
+              <label>
+                Symbiosemodus
+                <select id="import-symbiosis-mode">
+                  <option value="">Keiner</option>
+                  <option value="shadowing">Shadowing</option>
+                  <option value="copilot">Copilot</option>
+                  <option value="autonomy">Autonomy</option>
+                </select>
+              </label>
+              <button id="confirm-import" class="primary" type="submit">
+                Token und Karte speichern
+              </button>
+            </form>
+          </div>
         </section>
 
         <section id="review-view" hidden>

@@ -24,6 +24,14 @@ struct LoadPayload {
 }
 
 #[cfg(target_os = "android")]
+#[derive(Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct SharedImportPayload {
+    content: String,
+    mime_type: Option<String>,
+}
+
+#[cfg(target_os = "android")]
 pub fn init<R: Runtime>() -> TauriPlugin<R> {
     Builder::new("secure-pairing")
         .setup(|app, api| {
@@ -67,6 +75,17 @@ pub fn pairing_clear<R: Runtime>(app: AppHandle<R>) -> Result<(), String> {
         .map_err(|error| error.to_string())
 }
 
+#[cfg(target_os = "android")]
+#[tauri::command]
+pub fn shared_import_take<R: Runtime>(
+    app: AppHandle<R>,
+) -> Result<Option<SharedImportPayload>, String> {
+    app.state::<SecurePairing<R>>()
+        .0
+        .run_mobile_plugin::<Option<SharedImportPayload>>("takeShared", ())
+        .map_err(|error| error.to_string())
+}
+
 #[cfg(not(target_os = "android"))]
 #[tauri::command]
 pub fn pairing_save(_payload: String) -> Result<(), String> {
@@ -83,4 +102,10 @@ pub fn pairing_load() -> Result<Option<String>, String> {
 #[tauri::command]
 pub fn pairing_clear() -> Result<(), String> {
     Ok(())
+}
+
+#[cfg(not(target_os = "android"))]
+#[tauri::command]
+pub fn shared_import_take() -> Result<Option<serde_json::Value>, String> {
+    Ok(None)
 }

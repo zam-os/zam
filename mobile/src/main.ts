@@ -11,18 +11,23 @@ import {
 import {
   parseZamPairPayload,
   serializeZamPairPayload,
-  type ZamPairPayloadV1,
   ZAM_PAIR_TYPE,
   ZAM_PAIR_VERSION,
+  type ZamPairPayloadV1,
 } from "../../src/bridge/mobile-pairing.js";
 import {
   buildReviewQueue,
   type ReviewQueue,
 } from "../../src/kernel/scheduler/queue.js";
+import {
+  confirmMobileImport,
+  type MobileTokenDraft,
+  parseMobileImport,
+} from "./import.js";
 import { createTauriDatabase } from "./provider.js";
 import {
-  type MobileReviewSummary,
   MobileReviewSession,
+  type MobileReviewSummary,
 } from "./review-session.js";
 
 const db = createTauriDatabase((command, args) => invoke(command, args));
@@ -51,6 +56,28 @@ const dashboardView = element<HTMLElement>("dashboard-view");
 const summary = element<HTMLElement>("summary");
 const queueList = element<HTMLOListElement>("queue");
 const startReviewButton = element<HTMLButtonElement>("start-review");
+const openImportButton = element<HTMLButtonElement>("open-import");
+const importView = element<HTMLElement>("import-view");
+const importFile = element<HTMLInputElement>("import-file");
+const importInput = element<HTMLTextAreaElement>("import-input");
+const prepareImportButton = element<HTMLButtonElement>("prepare-import");
+const cancelImportButton = element<HTMLButtonElement>("cancel-import");
+const importStatus = element<HTMLParagraphElement>("import-status");
+const importDraftForm = element<HTMLFormElement>("import-draft-form");
+const importSlug = element<HTMLInputElement>("import-slug");
+const importTitle = element<HTMLInputElement>("import-title");
+const importConcept = element<HTMLTextAreaElement>("import-concept");
+const importDomain = element<HTMLInputElement>("import-domain");
+const importBloom = element<HTMLSelectElement>("import-bloom");
+const importQuestion = element<HTMLTextAreaElement>("import-question");
+const importContext = element<HTMLTextAreaElement>("import-context");
+const importSourceLink = element<HTMLInputElement>("import-source-link");
+const importPrerequisites = element<HTMLInputElement>("import-prerequisites");
+const importKnowledgeContexts = element<HTMLInputElement>(
+  "import-knowledge-contexts",
+);
+const importSymbiosisMode = element<HTMLSelectElement>("import-symbiosis-mode");
+const confirmImportButton = element<HTMLButtonElement>("confirm-import");
 const reviewView = element<HTMLElement>("review-view");
 const reviewProgress = element<HTMLElement>("review-progress");
 const reviewMeta = element<HTMLElement>("review-meta");
@@ -72,6 +99,14 @@ const resyncButton = element<HTMLButtonElement>("resync");
 const repairButton = element<HTMLButtonElement>("repair");
 
 let currentPairing: ZamPairPayloadV1 | null = null;
+let currentImportDraft: MobileTokenDraft | null = null;
+let takingSharedImport = false;
+const PENDING_IMPORT_STORAGE_KEY = "zam.mobile-pending-import.v1";
+
+interface SharedImportPayload {
+  content: string;
+  mimeType?: string | null;
+}
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
@@ -107,6 +142,7 @@ function showApp(payload: ZamPairPayloadV1): void {
 
 function showDashboard(): void {
   dashboardView.hidden = false;
+  importView.hidden = true;
   reviewView.hidden = true;
   sessionSummaryView.hidden = true;
   repairButton.disabled = false;
@@ -114,6 +150,7 @@ function showDashboard(): void {
 
 function showReview(): void {
   dashboardView.hidden = true;
+  importView.hidden = true;
   reviewView.hidden = false;
   sessionSummaryView.hidden = true;
   repairButton.disabled = true;
@@ -121,9 +158,140 @@ function showReview(): void {
 
 function showSessionSummary(): void {
   dashboardView.hidden = true;
+  importView.hidden = true;
   reviewView.hidden = true;
   sessionSummaryView.hidden = false;
   repairButton.disabled = false;
+}
+
+function showImport(): void {
+  dashboardView.hidden = true;
+  importView.hidden = false;
+  reviewView.hidden = true;
+  sessionSummaryView.hidden = true;
+  repairButton.disabled = false;
+}
+
+function setImportStatus(text: string, isError = false): void {
+  importStatus.textContent = text;
+  importStatus.classList.toggle("error", isError);
+}
+
+function commaList(value: string): string[] | undefined {
+  const entries = [
+    ...new Set(
+      value
+        .split(",")
+        .map((entry) => entry.trim())
+        .filter(Boolean),
+    ),
+  ];
+  return entries.length ? entries : undefined;
+}
+
+function renderImportDraft(draft: MobileTokenDraft, message?: string): void {
+  currentImportDraft = draft;
+  importSlug.value = draft.slug;
+  importTitle.value = draft.title ?? "";
+  importConcept.value = draft.concept;
+  importDomain.value = draft.domain;
+  importBloom.value = String(draft.bloomLevel);
+  importQuestion.value = draft.question ?? "";
+  importContext.value = draft.context ?? "";
+  importSourceLink.value = draft.source_link ?? "";
+  importPrerequisites.value = draft.prerequisites?.join(", ") ?? "";
+  importKnowledgeContexts.value = draft.knowledgeContexts?.join(", ") ?? "";
+  importSymbiosisMode.value = draft.symbiosisMode ?? "";
+  importDraftForm.hidden = false;
+  setImportStatus(
+    message ??
+      (draft.origin === "bridge-json"
+        ? "Bridge-JSON geprüft. Ziel-Lernenden und Felder vor dem Speichern kontrollieren."
+        : "Schnellnotiz vorbereitet. Lerninhalt vor dem Speichern vervollständigen."),
+  );
+  showImport();
+  importConcept.focus();
+}
+
+function prepareImportText(text: string, message?: string): void {
+  importInput.value = text;
+  try {
+    renderImportDraft(parseMobileImport(text), message);
+  } catch (error) {
+    currentImportDraft = null;
+    importDraftForm.hidden = true;
+    showImport();
+    setImportStatus(errorMessage(error), true);
+    importInput.focus();
+  }
+}
+
+function draftFromForm(): MobileTokenDraft {
+  if (!currentImportDraft) throw new Error("Zuerst einen Entwurf erstellen");
+  return {
+    origin: currentImportDraft.origin,
+    slug: importSlug.value.trim(),
+    title: importTitle.value.trim() || undefined,
+    concept: importConcept.value.trim(),
+    domain: importDomain.value.trim(),
+    bloomLevel: Number(importBloom.value),
+    question: importQuestion.value.trim() || null,
+    context: importContext.value.trim() || undefined,
+    source_link: importSourceLink.value.trim() || null,
+    prerequisites: commaList(importPrerequisites.value),
+    knowledgeContexts: commaList(importKnowledgeContexts.value),
+    symbiosisMode:
+      (importSymbiosisMode.value as MobileTokenDraft["symbiosisMode"]) ||
+      undefined,
+  };
+}
+
+function resetImport(): void {
+  currentImportDraft = null;
+  importFile.value = "";
+  importInput.value = "";
+  importDraftForm.reset();
+  importDraftForm.hidden = true;
+  setImportStatus("");
+}
+
+function queueSharedImport(payload: SharedImportPayload): void {
+  localStorage.setItem(PENDING_IMPORT_STORAGE_KEY, payload.content);
+  if (reviewSession.active) {
+    setReviewStatus("Geteilter Lerninhalt wartet bis zum Ende der Sitzung.");
+  }
+}
+
+function openPendingImport(): boolean {
+  if (reviewSession.active) return false;
+  const pending = localStorage.getItem(PENDING_IMPORT_STORAGE_KEY);
+  if (!pending) return false;
+  localStorage.removeItem(PENDING_IMPORT_STORAGE_KEY);
+  prepareImportText(pending, "Geteilten Inhalt als Entwurf übernommen.");
+  return true;
+}
+
+async function takeSharedImport(): Promise<void> {
+  if (takingSharedImport) return;
+  takingSharedImport = true;
+  try {
+    const payload = await invoke<SharedImportPayload | null>(
+      "shared_import_take",
+    );
+    if (!payload?.content) return;
+    queueSharedImport(payload);
+    if (currentPairing) openPendingImport();
+  } catch (error) {
+    if (currentPairing && !reviewSession.active) {
+      showImport();
+      setImportStatus(
+        `Geteilter Inhalt konnte nicht gelesen werden: ${errorMessage(error)}`,
+        true,
+      );
+    }
+  } finally {
+    takingSharedImport = false;
+  }
 }
 
 function parseDate(value: string): Date {
@@ -277,6 +445,8 @@ async function connect(
   currentPairing = payload;
   showApp(payload);
   await restoreReviewSession(payload.learner.userId);
+  await takeSharedImport();
+  openPendingImport();
   connection.textContent = syncError ? "Offline" : "Synchronisiert";
   connection.classList.toggle("offline", Boolean(syncError));
   if (syncError) {
@@ -354,6 +524,58 @@ cancelPairingButton.addEventListener("click", () => {
 });
 
 repairButton.addEventListener("click", () => showPairing(true));
+
+openImportButton.addEventListener("click", () => {
+  resetImport();
+  showImport();
+  importInput.focus();
+});
+
+importFile.addEventListener("change", async () => {
+  const file = importFile.files?.[0];
+  if (!file) return;
+  try {
+    const content = await file.text();
+    prepareImportText(content, `Datei „${file.name}“ als Entwurf geladen.`);
+  } catch (error) {
+    setImportStatus(
+      `Datei konnte nicht gelesen werden: ${errorMessage(error)}`,
+      true,
+    );
+  }
+});
+
+prepareImportButton.addEventListener("click", () => {
+  prepareImportText(importInput.value);
+});
+
+cancelImportButton.addEventListener("click", () => {
+  resetImport();
+  showDashboard();
+});
+
+importDraftForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!currentPairing) return;
+  confirmImportButton.disabled = true;
+  try {
+    const result = await confirmMobileImport(
+      db,
+      currentPairing.learner.userId,
+      draftFromForm(),
+    );
+    resetImport();
+    await refresh(currentPairing.learner.userId);
+    showDashboard();
+    setStatus(
+      `„${result.token.title || result.token.slug}“ gespeichert und der Queue hinzugefügt.`,
+    );
+  } catch (error) {
+    setImportStatus(`Import fehlgeschlagen: ${errorMessage(error)}`, true);
+  } finally {
+    confirmImportButton.disabled = false;
+  }
+});
 
 startReviewButton.addEventListener("click", async () => {
   if (!currentPairing) return;
@@ -438,6 +660,7 @@ backToQueueButton.addEventListener("click", async () => {
   try {
     await refresh(currentPairing.learner.userId);
     showDashboard();
+    openPendingImport();
   } catch (error) {
     setStatus(
       `Queue konnte nicht geladen werden: ${errorMessage(error)}`,
@@ -488,5 +711,14 @@ async function start(): Promise<void> {
     );
   }
 }
+
+window.addEventListener("focus", () => {
+  window.setTimeout(() => void takeSharedImport(), 150);
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    window.setTimeout(() => void takeSharedImport(), 150);
+  }
+});
 
 void start();

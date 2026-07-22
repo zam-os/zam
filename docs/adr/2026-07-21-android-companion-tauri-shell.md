@@ -75,6 +75,13 @@ kernel logic and reach the database.
   exact on-device runtime and model are selected by the Phase-6 Pixel 9 (12 GB)
   benchmark; a loopback URL in the paired config refers to the phone, not to a
   provider running on the desktop.
+- **Android imports use the bridge-token contract without a Node sidecar.**
+  The WebView normalizes `AddTokenRequest` JSON and quick-capture text, shows
+  an editable confirmation draft, then uses kernel APIs to atomically create
+  the token, paired learner's card, prerequisite edges and existing context
+  assignments. A browser file input opens Android's document picker; the
+  existing native plugin captures bounded `text/*` and `application/json`
+  `ACTION_SEND` payloads for the same draft path.
 
 ## Validation
 
@@ -92,6 +99,11 @@ kernel logic and reach the database.
   committed while Wi-Fi and mobile data were disabled, then reached the Turso
   test database through a manual sync after connectivity returned
   (2026-07-22).
+- [x] Phase-3 import on the Pixel 9: confirmed quick capture from a text share,
+  confirmed bridge-token JSON through the Android document picker, and
+  editable bridge-token draft from an `application/json` stream share. Both
+  confirmed cards appeared locally, then in the Turso test database after a
+  manual sync with the expected question provenance (2026-07-22).
 
 Optional follow-up: repeat kernel startup and the sync scenario on the Pixel
 6. A pass lowers the supported hardware minimum; it does not gate Phase 0.
@@ -102,8 +114,13 @@ Optional follow-up: repeat kernel startup and the sync scenario on the Pixel
 - `mobile/src-tauri/src/db.rs`
 - `mobile/src-tauri/capabilities/mobile.json`
 - `mobile/src/main.ts`
+- `mobile/src/import.ts`
 - `mobile/src/review-session.ts`
+- `mobile/src-tauri/gen/android/app/src/main/AndroidManifest.xml`
+- `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/SecurePairingPlugin.kt`
 - `tests/mobile/tauri-provider.test.ts`
+- `tests/mobile/import.test.ts`
+- `tests/mobile/import-wiring.test.ts`
 - `tests/mobile/review-session.test.ts`
 - `tests/helpers/tauri-invoke-stub.ts`
 - Pixel 9 field check, 2026-07-21: API-37 APK installed; the unmodified

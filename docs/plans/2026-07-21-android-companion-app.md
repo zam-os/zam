@@ -269,8 +269,13 @@ server database, per FR-0).
   reveal + rating 3 committed to the local replica with Wi-Fi and mobile data
   disabled; after reconnect, manual sync delivered the FSRS update, linked
   `review_logs`/`session_steps`, and completed session to the Turso test DB.
-- [ ] **Phase 3 — import**: bridge-JSON via file picker + share sheet;
-  quick-capture token drafts. FR-2 items 2–3.
+- [x] **Phase 3 — import**: bridge-JSON via file picker + share sheet;
+  quick-capture token drafts. FR-2 items 2–3. Pixel 9 / Android 17
+  validation passed on 2026-07-22: a text share produced a confirmed
+  quick-capture token/card; the system document picker loaded and confirmed a
+  bridge-token JSON file; an `application/json` stream share restored the
+  same editable draft. Manual sync delivered both confirmed cards to the
+  paired Turso test database with `manual`/`llm` question provenance intact.
 - [ ] **Phase 4 — voice mode**: TTS prompts, on-device STT answers, voice
   ratings, hands-free loop, audio-focus handling. FR-3 complete.
 - [ ] **Phase 5 — sync hardening**: write-back robustness, conflict policy

@@ -20,7 +20,8 @@ pub fn run() {
             db::db_close,
             secure_store::pairing_save,
             secure_store::pairing_load,
-            secure_store::pairing_clear
+            secure_store::pairing_clear,
+            secure_store::shared_import_take
         ])
         .run(tauri::generate_context!())
         .expect("error while running the ZAM mobile shell");
