@@ -1,0 +1,168 @@
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import {
+  MOBILE_REVIEW_STORAGE_KEY,
+  MobileReviewSession,
+  type ReviewSessionStorage,
+} from "../../mobile/src/review-session.js";
+import {
+  addPrerequisite,
+  createToken,
+  type Database,
+  ensureCard,
+  executeReviewAction,
+  getCard,
+  openDatabase,
+} from "../../src/kernel/index.js";
+
+class MemoryStorage implements ReviewSessionStorage {
+  readonly values = new Map<string, string>();
+
+  getItem(key: string): string | null {
+    return this.values.get(key) ?? null;
+  }
+
+  setItem(key: string, value: string): void {
+    this.values.set(key, value);
+  }
+
+  removeItem(key: string): void {
+    this.values.delete(key);
+  }
+}
+
+describe("mobile review session", () => {
+  let db: Database;
+  let tempDir: string;
+
+  beforeEach(async () => {
+    tempDir = mkdtempSync(join(tmpdir(), "zam-mobile-review-"));
+    db = await openDatabase({
+      dbPath: join(tempDir, "review.db"),
+      initialize: true,
+    });
+  });
+
+  afterEach(async () => {
+    await db.close();
+    rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  it("restores the current answer, rates through FSRS, blocks, and summarizes", async () => {
+    const prerequisite = await createToken(db, {
+      slug: "prerequisite",
+      concept: "A required foundation",
+      domain: "test",
+      bloom_level: 1,
+    });
+    const target = await createToken(db, {
+      slug: "a-target",
+      concept: "A concept with a prerequisite",
+      domain: "test",
+      bloom_level: 1,
+      question: "Was ist das Zielkonzept?",
+    });
+    const other = await createToken(db, {
+      slug: "z-other",
+      concept: "A second concept",
+      domain: "test",
+      bloom_level: 2,
+    });
+    await addPrerequisite(db, target.id, prerequisite.id);
+    await ensureCard(db, target.id, "student-9");
+    await ensureCard(db, other.id, "student-9");
+
+    const storage = new MemoryStorage();
+    let now = 1_000;
+    const first = new MobileReviewSession(db, storage, () => now);
+    expect(await first.start("student-9")).toBe(true);
+    expect(first.currentItem?.tokenId).toBe(target.id);
+    first.updateDraftAnswer("Meine Antwort");
+    first.reveal();
+
+    now = 2_250;
+    const restored = new MobileReviewSession(db, storage, () => now);
+    expect(await restored.restore("student-9")).toEqual({ kind: "active" });
+    expect(restored.draftAnswer).toBe("Meine Antwort");
+    expect(restored.revealed).toBe(true);
+
+    const again = await restored.rate(1);
+    expect(again.blockedPrerequisites).toEqual([prerequisite.slug]);
+    expect(restored.currentItem?.tokenId).toBe(other.id);
+    expect((await getCard(db, target.id, "student-9"))?.blocked).toBe(1);
+
+    restored.updateDraftAnswer("Zweite Antwort");
+    restored.reveal();
+    now = 3_000;
+    const done = await restored.rate(3);
+
+    expect(done.summary).toMatchObject({
+      completedCount: 2,
+      totalCount: 2,
+      againCount: 1,
+      stopped: false,
+    });
+    expect(done.summary?.nextDueAt).not.toBeNull();
+    expect(storage.getItem(MOBILE_REVIEW_STORAGE_KEY)).toBeNull();
+    expect(
+      await db
+        .prepare(
+          "SELECT rating, session_id, response_time_ms FROM review_logs ORDER BY rowid",
+        )
+        .all(),
+    ).toEqual([
+      {
+        rating: 1,
+        session_id: done.summary?.sessionId,
+        response_time_ms: 1_250,
+      },
+      {
+        rating: 3,
+        session_id: done.summary?.sessionId,
+        response_time_ms: 750,
+      },
+    ]);
+    expect(
+      await db.prepare("SELECT COUNT(*) AS count FROM session_steps").get(),
+    ).toEqual({ count: 2 });
+    expect(
+      await db
+        .prepare("SELECT completed_at FROM sessions WHERE id = ?")
+        .get(done.summary?.sessionId),
+    ).toMatchObject({ completed_at: expect.any(String) });
+  });
+
+  it("reconciles a stale snapshot after a rating committed before persistence", async () => {
+    const token = await createToken(db, {
+      slug: "resume-after-commit",
+      concept: "Session steps make resume idempotent",
+      domain: "test",
+      bloom_level: 1,
+    });
+    const card = await ensureCard(db, token.id, "student-9");
+    const storage = new MemoryStorage();
+    const session = new MobileReviewSession(db, storage, () => 1_000);
+    await session.start("student-9");
+
+    const persisted = JSON.parse(
+      storage.getItem(MOBILE_REVIEW_STORAGE_KEY) ?? "{}",
+    ) as { sessionId: string };
+    await executeReviewAction(db, {
+      action: "rate",
+      cardId: card.id,
+      userId: "student-9",
+      rating: 4,
+      sessionId: persisted.sessionId,
+    });
+
+    const restored = new MobileReviewSession(db, storage, () => 2_000);
+    const result = await restored.restore("student-9");
+    expect(result).toMatchObject({
+      kind: "completed",
+      summary: { completedCount: 1, totalCount: 1, stopped: false },
+    });
+    expect(storage.getItem(MOBILE_REVIEW_STORAGE_KEY)).toBeNull();
+  });
+});

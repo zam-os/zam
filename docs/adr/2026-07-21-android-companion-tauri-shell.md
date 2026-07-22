@@ -86,6 +86,12 @@ kernel logic and reach the database.
   `android.permission.CAMERA`; verified from the built artifact with
   `aapt2 dump permissions` on 2026-07-22. The native scanner permission flow
   was also exercised on the Pixel 9.
+- [x] Phase-2 recall loop on the Pixel 9: template/manual question, typed
+  answer, reveal, rating 3, FSRS update, review log, session step and summary.
+  A forced process stop restored the same card and draft answer. The rating
+  committed while Wi-Fi and mobile data were disabled, then reached the Turso
+  test database through a manual sync after connectivity returned
+  (2026-07-22).
 
 Optional follow-up: repeat kernel startup and the sync scenario on the Pixel
 6. A pass lowers the supported hardware minimum; it does not gate Phase 0.
@@ -96,7 +102,9 @@ Optional follow-up: repeat kernel startup and the sync scenario on the Pixel
 - `mobile/src-tauri/src/db.rs`
 - `mobile/src-tauri/capabilities/mobile.json`
 - `mobile/src/main.ts`
+- `mobile/src/review-session.ts`
 - `tests/mobile/tauri-provider.test.ts`
+- `tests/mobile/review-session.test.ts`
 - `tests/helpers/tauri-invoke-stub.ts`
 - Pixel 9 field check, 2026-07-21: API-37 APK installed; the unmodified
   kernel rendered one synced due-queue item; with no active default network,

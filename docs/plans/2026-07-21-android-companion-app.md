@@ -262,9 +262,13 @@ server database, per FR-0).
   QR contract and local replica queue path). The built universal debug APK's
   merged manifest was additionally verified with `aapt2 dump permissions` on
   2026-07-22 and declares `android.permission.CAMERA`.
-- [ ] **Phase 2 — recall sessions**: full offline review loop (template
+- [x] **Phase 2 — recall sessions**: full offline review loop (template
   prompts, typed answers, rate 1–4, blocker, `review_logs`, resume,
-  summary). FR-1 complete.
+  summary). FR-1 complete. Pixel 9 / Android 17 validation passed on
+  2026-07-22: a forced process stop restored the current card and typed draft;
+  reveal + rating 3 committed to the local replica with Wi-Fi and mobile data
+  disabled; after reconnect, manual sync delivered the FSRS update, linked
+  `review_logs`/`session_steps`, and completed session to the Turso test DB.
 - [ ] **Phase 3 — import**: bridge-JSON via file picker + share sheet;
   quick-capture token drafts. FR-2 items 2–3.
 - [ ] **Phase 4 — voice mode**: TTS prompts, on-device STT answers, voice

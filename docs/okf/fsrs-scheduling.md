@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-07-17T00:00:00Z
+timestamp: 2026-07-22T04:24:00Z
 ---
 
 ZAM's spaced repetition uses **FSRS-5** (Free Spaced Repetition Scheduler,
@@ -22,9 +22,16 @@ elapsed/scheduled days, repetition and lapse counts, a **state** of
 `evaluateRating()` in `src/kernel/recall/evaluator.ts` applies a rating: it
 runs FSRS scheduling, updates the card, and appends an immutable entry to
 `review_logs`. Rating is deliberately separate from prerequisite blocking —
-`evaluateRating()` never blocks or unblocks anything; callers decide
-whether to invoke the blocker after a rating of `1` (see
+`evaluateRating()` never blocks or unblocks anything (see
 [prerequisite-blocking.md](prerequisite-blocking.md)).
+
+Interactive surfaces normally call `executeReviewAction()` in
+`src/kernel/recall/actions.ts`. Its `rate` action owns one database
+transaction around FSRS evaluation, an optional rating-1 prerequisite cascade,
+and optional session auditing. When a `sessionId` is supplied, the review-log
+row references that session and a matching user `session_steps` row is written
+with the rating. A failure in any of those writes rolls back the card update,
+review log, blocking changes, and session step together.
 
 # Review queue
 
@@ -35,14 +42,22 @@ monopolize a session) and inserts new cards at every 5th position.
 # Examples
 
 ```ts
-import { evaluateRating } from "zam-core";
-// rating: 1 | 2 | 3 | 4 — updates FSRS state and appends to review_logs
-await evaluateRating(db, { cardId, tokenId, userId, rating: 3 });
+import { executeReviewAction } from "zam-core";
+
+await executeReviewAction(db, {
+  action: "rate",
+  cardId,
+  userId,
+  rating: 3,
+  sessionId,
+  responseTimeMs: 1250,
+});
 ```
 
 # Citations
 
 - [ADR 2026-05-30a — Standalone Learning Session](../adr/2026-05-30a-standalone-learning-session.md)
+- [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
 - Tests as source of truth for scheduling semantics: `tests/kernel/fsrs.test.ts`
-- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/evaluator.ts`
+- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`
 - Algorithm reference: <https://github.com/open-spaced-repetition/fsrs4anki/wiki/The-Algorithm>
