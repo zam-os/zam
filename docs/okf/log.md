@@ -2,6 +2,7 @@
 
 ## 2026-07-22
 
+- **Update** — [FSRS-5 Scheduling](fsrs-scheduling.md)
 - **Update** — [Token and Card Model](token-card-model.md)
 - **Update** — [Bridge CLI Protocol](bridge-protocol.md)
 - **Update** — [Prerequisite Graph and Blocking](prerequisite-blocking.md)

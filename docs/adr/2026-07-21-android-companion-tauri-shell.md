@@ -82,6 +82,14 @@ kernel logic and reach the database.
   assignments. A browser file input opens Android's document picker; the
   existing native plugin captures bounded `text/*` and `application/json`
   `ACTION_SEND` payloads for the same draft path.
+- **Voice review is native speech around the shared review controller.**
+  Android TTS speaks the unchanged kernel prompt and expected answer;
+  `createOnDeviceSpeechRecognizer` returns only a transcript to the WebView.
+  German/English rating words map to ratings 1–4, which still enter the same
+  kernel review-session path as taps. Synthesis rejects network-required or
+  not-yet-installed voices. An explicitly started microphone/media-playback
+  foreground service, partial wake lock, and audio-focus listener support the
+  screen-off loop and transient interruption recovery.
 
 ## Validation
 
@@ -104,6 +112,12 @@ kernel logic and reach the database.
   editable bridge-token draft from an `application/json` stream share. Both
   confirmed cards appeared locally, then in the Turso test database after a
   manual sync with the expected question provenance (2026-07-22).
+- [ ] Phase-4 end-to-end voice loop on the Pixel 9. The API-37 APK, microphone
+  permission, foreground-service declaration, start/stop lifecycle and
+  offline-voice enforcement are verified. The first device run correctly
+  stopped on Android TTS error `ERROR_NOT_INSTALLED_YET`; the app now exposes
+  Android's local voice-data installer. Repeat prompt → transcript → spoken
+  rating after the German voice data is installed (2026-07-22).
 
 Optional follow-up: repeat kernel startup and the sync scenario on the Pixel
 6. A pass lowers the supported hardware minimum; it does not gate Phase 0.
@@ -116,12 +130,17 @@ Optional follow-up: repeat kernel startup and the sync scenario on the Pixel
 - `mobile/src/main.ts`
 - `mobile/src/import.ts`
 - `mobile/src/review-session.ts`
+- `mobile/src/voice.ts`
 - `mobile/src-tauri/gen/android/app/src/main/AndroidManifest.xml`
 - `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/SecurePairingPlugin.kt`
+- `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/VoicePlugin.kt`
+- `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/VoiceSessionService.kt`
 - `tests/mobile/tauri-provider.test.ts`
 - `tests/mobile/import.test.ts`
 - `tests/mobile/import-wiring.test.ts`
 - `tests/mobile/review-session.test.ts`
+- `tests/mobile/voice.test.ts`
+- `tests/mobile/voice-wiring.test.ts`
 - `tests/helpers/tauri-invoke-stub.ts`
 - Pixel 9 field check, 2026-07-21: API-37 APK installed; the unmodified
   kernel rendered one synced due-queue item; with no active default network,

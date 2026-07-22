@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-07-22T04:24:00Z
+timestamp: 2026-07-22T05:35:00Z
 ---
 
 ZAM's spaced repetition uses **FSRS-5** (Free Spaced Repetition Scheduler,
@@ -39,6 +39,22 @@ review log, blocking changes, and session step together.
 plus new cards: it interleaves cards by domain (so one topic doesn't
 monopolize a session) and inserts new cards at every 5th position.
 
+# Android voice review
+
+The Android companion can operate the same review session hands-free. Its
+controller speaks the existing template question, captures an answer with
+Android's on-device speech recognizer, speaks the expected answer, and maps
+German or English rating words to ratings 1–4. The transcript is persisted as
+the current session draft; the selected rating still enters the shared kernel
+through the same review-session controller and `executeReviewAction()`.
+Tap-to-reveal and tap ratings remain available.
+
+Speech audio stays on the device. Recognition uses the on-device recognizer,
+and synthesis selects only installed voices that do not require a network
+connection. A microphone/media-playback foreground service, partial wake lock,
+and audio-focus handling keep an explicitly started voice session usable with
+the screen off and pause it across transient focus loss.
+
 # Examples
 
 ```ts
@@ -59,5 +75,5 @@ await executeReviewAction(db, {
 - [ADR 2026-05-30a — Standalone Learning Session](../adr/2026-05-30a-standalone-learning-session.md)
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
 - Tests as source of truth for scheduling semantics: `tests/kernel/fsrs.test.ts`
-- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`
+- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `mobile/src/voice.ts`, `mobile/src/review-session.ts`, `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/VoicePlugin.kt`
 - Algorithm reference: <https://github.com/open-spaced-repetition/fsrs4anki/wiki/The-Algorithm>

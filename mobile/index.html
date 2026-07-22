@@ -85,6 +85,8 @@
       .capture-actions { display: grid; gap: 9px; margin-bottom: 14px; }
       #import-status { min-height: 1.3em; font-size: 0.88rem; }
       #import-draft-form { margin-top: 14px; }
+      .voice-controls { margin: 12px 0 4px; }
+      #toggle-voice[aria-pressed="true"] { font-weight: 650; }
       #review-status { min-height: 1.3em; font-size: 0.88rem; }
       [hidden] { display: none !important; }
     </style>
@@ -245,6 +247,18 @@
           <div class="card">
             <div id="review-progress"></div>
             <div id="review-meta"></div>
+            <div class="voice-controls">
+              <button
+                id="toggle-voice"
+                type="button"
+                aria-pressed="false"
+              >
+                Sprachmodus starten
+              </button>
+              <button id="install-voice-data" type="button" hidden>
+                Lokale Sprachdaten installieren
+              </button>
+            </div>
             <h2 id="review-question"></h2>
             <label>
               Deine Antwort

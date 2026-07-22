@@ -277,7 +277,15 @@ server database, per FR-0).
   same editable draft. Manual sync delivered both confirmed cards to the
   paired Turso test database with `manual`/`llm` question provenance intact.
 - [ ] **Phase 4 — voice mode**: TTS prompts, on-device STT answers, voice
-  ratings, hands-free loop, audio-focus handling. FR-3 complete.
+  ratings, hands-free loop, audio-focus handling. FR-3 complete. Implementation
+  and the API-37 APK build are present: only installed offline TTS voices and
+  `createOnDeviceSpeechRecognizer` are accepted; German/English voice ratings
+  feed the existing kernel review session; a microphone/media-playback
+  foreground service plus wake lock and audio focus support screen-off use.
+  Pixel 9 completion remains open because the first run found German TTS data
+  missing (`ERROR_NOT_INSTALLED_YET`). The app now links to Android's local
+  voice-data installer; repeat the full prompt → answer → rating loop after
+  installing that data.
 - [ ] **Phase 5 — sync hardening**: write-back robustness, conflict policy
   (log-recompute vs. last-write-wins) recorded in the ADR, token rotation
   and re-pair UX. FR-4 complete.

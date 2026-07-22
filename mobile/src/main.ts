@@ -29,6 +29,12 @@ import {
   MobileReviewSession,
   type MobileReviewSummary,
 } from "./review-session.js";
+import {
+  HandsFreeReviewController,
+  resolveVoiceLocale,
+  type VoiceLocale,
+  type VoicePort,
+} from "./voice.js";
 
 const db = createTauriDatabase((command, args) => invoke(command, args));
 const reviewSession = new MobileReviewSession(db, localStorage);
@@ -81,6 +87,8 @@ const confirmImportButton = element<HTMLButtonElement>("confirm-import");
 const reviewView = element<HTMLElement>("review-view");
 const reviewProgress = element<HTMLElement>("review-progress");
 const reviewMeta = element<HTMLElement>("review-meta");
+const toggleVoiceButton = element<HTMLButtonElement>("toggle-voice");
+const installVoiceDataButton = element<HTMLButtonElement>("install-voice-data");
 const reviewQuestion = element<HTMLElement>("review-question");
 const reviewAnswer = element<HTMLTextAreaElement>("review-answer");
 const revealAnswerButton = element<HTMLButtonElement>("reveal-answer");
@@ -107,6 +115,68 @@ interface SharedImportPayload {
   content: string;
   mimeType?: string | null;
 }
+
+interface VoicePermissionState {
+  microphone?: string;
+}
+
+interface VoiceRecognitionResult {
+  transcript: string;
+}
+
+const voicePort: VoicePort = {
+  async start(locale: VoiceLocale): Promise<void> {
+    let permission = await invoke<VoicePermissionState>(
+      "voice_check_permissions",
+    );
+    if (permission.microphone !== "granted") {
+      permission = await invoke<VoicePermissionState>(
+        "voice_request_permissions",
+      );
+    }
+    if (permission.microphone !== "granted") {
+      throw new Error(
+        "Mikrofonzugriff wurde nicht erlaubt. Berechtigung in den App-Einstellungen freigeben.",
+      );
+    }
+    await invoke("voice_start", { locale });
+  },
+  async stop(): Promise<void> {
+    await invoke("voice_stop");
+  },
+  async speak(text: string, locale: VoiceLocale): Promise<void> {
+    await invoke("voice_speak", { text, locale });
+  },
+  async listen(locale: VoiceLocale): Promise<string> {
+    const result = await invoke<VoiceRecognitionResult>("voice_listen", {
+      locale,
+    });
+    return result.transcript;
+  },
+};
+
+const voiceController = new HandsFreeReviewController(voicePort, {
+  currentCard: () => {
+    const prompt = reviewSession.currentPrompt;
+    if (!prompt) return null;
+    return {
+      question: prompt.question,
+      expectedAnswer: prompt.concept,
+      revealed: reviewSession.revealed,
+      draftAnswer: reviewSession.draftAnswer,
+    };
+  },
+  captureAnswer: (transcript) => {
+    reviewSession.updateDraftAnswer(transcript);
+    reviewAnswer.value = transcript;
+  },
+  revealAnswer: () => {
+    reviewSession.reveal();
+    renderCurrentReview("Antwort erkannt. Erwartete Antwort wird vorgelesen.");
+  },
+  rate: (rating) => rateCurrentReview(rating),
+  setStatus: (message, isError) => setReviewStatus(message, isError),
+});
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
@@ -347,6 +417,41 @@ function setReviewStatus(text: string, isError = false): void {
   reviewStatus.classList.toggle("error", isError);
 }
 
+function updateVoiceButton(): void {
+  toggleVoiceButton.textContent = voiceController.active
+    ? "Sprachmodus pausieren"
+    : "Sprachmodus starten";
+  toggleVoiceButton.setAttribute(
+    "aria-pressed",
+    voiceController.active ? "true" : "false",
+  );
+}
+
+async function pauseVoiceMode(): Promise<void> {
+  if (!voiceController.active) return;
+  await voiceController.pause();
+  updateVoiceButton();
+}
+
+function startVoiceMode(): void {
+  const locale = resolveVoiceLocale(
+    currentPairing?.settings?.locale ?? navigator.language,
+  );
+  installVoiceDataButton.hidden = true;
+  updateVoiceButton();
+  void voiceController
+    .start(locale)
+    .catch((error) => {
+      const message = errorMessage(error);
+      installVoiceDataButton.hidden = !/(TTS|Sprachdaten|TTS-Stimme)/i.test(
+        message,
+      );
+      setReviewStatus(`Sprachmodus pausiert: ${message}`, true);
+    })
+    .finally(updateVoiceButton);
+  updateVoiceButton();
+}
+
 function renderCurrentReview(message = ""): void {
   const item = reviewSession.currentItem;
   const prompt = reviewSession.currentPrompt;
@@ -368,8 +473,9 @@ function renderCurrentReview(message = ""): void {
   for (const button of ratingButtons) {
     button.disabled = !reviewSession.revealed;
   }
+  updateVoiceButton();
   setReviewStatus(message);
-  if (!reviewSession.revealed) reviewAnswer.focus();
+  if (!reviewSession.revealed && !voiceController.active) reviewAnswer.focus();
 }
 
 function renderSessionSummary(result: MobileReviewSummary): void {
@@ -577,6 +683,31 @@ importDraftForm.addEventListener("submit", async (event) => {
   }
 });
 
+async function rateCurrentReview(rating: 1 | 2 | 3 | 4): Promise<boolean> {
+  for (const candidate of ratingButtons) candidate.disabled = true;
+  stopReviewButton.disabled = true;
+  try {
+    const result = await reviewSession.rate(rating);
+    if (result.summary) {
+      renderSessionSummary(result.summary);
+      return false;
+    }
+    const blocking = result.blockedPrerequisites.length
+      ? ` Voraussetzungen eingeplant: ${result.blockedPrerequisites.join(", ")}.`
+      : "";
+    renderCurrentReview(
+      `Gespeichert · nächste Fälligkeit ${formatDateTime(result.nextDueAt)}.${blocking}`,
+    );
+    return true;
+  } catch (error) {
+    renderCurrentReview(`Bewertung fehlgeschlagen: ${errorMessage(error)}`);
+    reviewStatus.classList.add("error");
+    return false;
+  } finally {
+    stopReviewButton.disabled = false;
+  }
+}
+
 startReviewButton.addEventListener("click", async () => {
   if (!currentPairing) return;
   startReviewButton.disabled = true;
@@ -598,11 +729,50 @@ startReviewButton.addEventListener("click", async () => {
 });
 
 reviewAnswer.addEventListener("input", () => {
+  if (voiceController.active) void pauseVoiceMode();
   reviewSession.updateDraftAnswer(reviewAnswer.value);
   setReviewStatus("");
 });
 
-revealAnswerButton.addEventListener("click", () => {
+toggleVoiceButton.addEventListener("click", async () => {
+  toggleVoiceButton.disabled = true;
+  try {
+    if (voiceController.active) {
+      await pauseVoiceMode();
+      setReviewStatus("Sprachmodus pausiert. Tippen bleibt verfügbar.");
+    } else {
+      startVoiceMode();
+    }
+  } catch (error) {
+    setReviewStatus(
+      `Sprachmodus konnte nicht pausiert werden: ${errorMessage(error)}`,
+      true,
+    );
+  } finally {
+    toggleVoiceButton.disabled = false;
+    updateVoiceButton();
+  }
+});
+
+installVoiceDataButton.addEventListener("click", async () => {
+  installVoiceDataButton.disabled = true;
+  try {
+    await invoke("voice_install_data");
+    setReviewStatus(
+      "Android-Sprachdaten geöffnet. Deutsch oder Englisch lokal herunterladen und danach den Sprachmodus erneut starten.",
+    );
+  } catch (error) {
+    setReviewStatus(
+      `Sprachdaten konnten nicht geöffnet werden: ${errorMessage(error)}`,
+      true,
+    );
+  } finally {
+    installVoiceDataButton.disabled = false;
+  }
+});
+
+revealAnswerButton.addEventListener("click", async () => {
+  await pauseVoiceMode().catch(() => undefined);
   try {
     reviewSession.updateDraftAnswer(reviewAnswer.value);
     reviewSession.reveal();
@@ -617,32 +787,15 @@ for (const button of ratingButtons) {
   button.addEventListener("click", async () => {
     const rating = Number(button.dataset.rating) as 1 | 2 | 3 | 4;
     if (rating < 1 || rating > 4) return;
-    for (const candidate of ratingButtons) candidate.disabled = true;
-    stopReviewButton.disabled = true;
-    try {
-      const result = await reviewSession.rate(rating);
-      if (result.summary) {
-        renderSessionSummary(result.summary);
-        return;
-      }
-      const blocking = result.blockedPrerequisites.length
-        ? ` Voraussetzungen eingeplant: ${result.blockedPrerequisites.join(", ")}.`
-        : "";
-      renderCurrentReview(
-        `Gespeichert · nächste Fälligkeit ${formatDateTime(result.nextDueAt)}.${blocking}`,
-      );
-    } catch (error) {
-      renderCurrentReview(`Bewertung fehlgeschlagen: ${errorMessage(error)}`);
-      reviewStatus.classList.add("error");
-    } finally {
-      stopReviewButton.disabled = false;
-    }
+    await pauseVoiceMode().catch(() => undefined);
+    await rateCurrentReview(rating);
   });
 }
 
 stopReviewButton.addEventListener("click", async () => {
   stopReviewButton.disabled = true;
   try {
+    await pauseVoiceMode();
     renderSessionSummary(await reviewSession.finish());
   } catch (error) {
     setReviewStatus(

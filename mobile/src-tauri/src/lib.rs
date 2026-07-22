@@ -1,5 +1,6 @@
 mod db;
 mod secure_store;
+mod voice;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -8,6 +9,8 @@ pub fn run() {
     let builder = builder.plugin(tauri_plugin_barcode_scanner::init());
     #[cfg(target_os = "android")]
     let builder = builder.plugin(secure_store::init());
+    #[cfg(target_os = "android")]
+    let builder = builder.plugin(voice::init());
 
     builder
         .manage(db::DbState::default())
@@ -21,7 +24,14 @@ pub fn run() {
             secure_store::pairing_save,
             secure_store::pairing_load,
             secure_store::pairing_clear,
-            secure_store::shared_import_take
+            secure_store::shared_import_take,
+            voice::voice_check_permissions,
+            voice::voice_request_permissions,
+            voice::voice_start,
+            voice::voice_stop,
+            voice::voice_speak,
+            voice::voice_listen,
+            voice::voice_install_data
         ])
         .run(tauri::generate_context!())
         .expect("error while running the ZAM mobile shell");
