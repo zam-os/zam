@@ -147,6 +147,17 @@
             <button id="open-import" type="button">Lerninhalt hinzufügen</button>
           </div>
           <ol id="queue"></ol>
+          <div class="card reminder-card">
+            <label class="reminder-toggle">
+              <input id="reminder-enabled" type="checkbox" />
+              Tägliche Erinnerung an fällige Karten
+            </label>
+            <label class="reminder-time">
+              Uhrzeit
+              <input id="reminder-time" type="time" />
+            </label>
+            <p id="reminder-status" aria-live="polite"></p>
+          </div>
         </section>
 
         <section id="import-view" hidden>

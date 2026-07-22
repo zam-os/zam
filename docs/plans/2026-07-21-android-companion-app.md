@@ -300,7 +300,14 @@ server database, per FR-0).
 - [ ] **Phase 6 — field-test polish**: due notification, de/en i18n pass,
   online LLM question/evaluation wiring, performance-budget and battery
   validation on the Pixel 9 (and Pixel 6 if compatible), sideload build
-  channel.
+  channel. Due notification (FR-5) implemented and build-validated: a
+  configurable daily WorkManager job (`ReminderPlugin`/`DueReminderWorker`,
+  `mobile/src/reminder.ts`) posts one notification with the last stored due
+  count, suppressed at zero, POST_NOTIFICATIONS-gated, no gamification; the
+  `aarch64` debug APK assembles with the merged permission. Pixel 9 completion
+  remains open: grant notifications, set the time a minute ahead, and confirm
+  one reminder fires with the correct count. Remaining Phase-6 items (i18n
+  pass, online LLM wiring, performance/battery, sideload channel) are untouched.
 
 ## Decisions (Thomas, 2026-07-21)
 

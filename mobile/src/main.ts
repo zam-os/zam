@@ -26,6 +26,14 @@ import {
 } from "./import.js";
 import { createTauriDatabase } from "./provider.js";
 import {
+  formatTimeInput,
+  millisUntilNext,
+  parseReminderConfig,
+  parseTimeInput,
+  REMINDER_STORAGE_KEY,
+  type ReminderConfig,
+} from "./reminder.js";
+import {
   MobileReviewSession,
   type MobileReviewSummary,
 } from "./review-session.js";
@@ -106,8 +114,14 @@ const sessionSummaryText = element<HTMLElement>("session-summary-text");
 const backToQueueButton = element<HTMLButtonElement>("back-to-queue");
 const resyncButton = element<HTMLButtonElement>("resync");
 const repairButton = element<HTMLButtonElement>("repair");
+const reminderEnabled = element<HTMLInputElement>("reminder-enabled");
+const reminderTime = element<HTMLInputElement>("reminder-time");
+const reminderStatus = element<HTMLParagraphElement>("reminder-status");
 
 let currentPairing: ZamPairPayloadV1 | null = null;
+let reminderConfig: ReminderConfig = parseReminderConfig(
+  localStorage.getItem(REMINDER_STORAGE_KEY),
+);
 let currentImportDraft: MobileTokenDraft | null = null;
 let takingSharedImport = false;
 const PENDING_IMPORT_STORAGE_KEY = "zam.mobile-pending-import.v1";
@@ -503,6 +517,7 @@ async function refresh(userId: string): Promise<void> {
     summary.textContent = "";
     queueList.replaceChildren();
     startReviewButton.disabled = true;
+    await updateReminderDue(0);
     return;
   }
   const queue = await buildReviewQueue(db, { userId });
@@ -510,6 +525,7 @@ async function refresh(userId: string): Promise<void> {
     `Queue für ${userId} (${cardCount} ${cardCount === 1 ? "Karte" : "Karten"}).`,
   );
   renderQueue(queue);
+  await updateReminderDue(queue.reviewCount + queue.relearnCount);
 }
 
 async function restoreReviewSession(userId: string): Promise<void> {
@@ -914,5 +930,90 @@ document.addEventListener("visibilitychange", () => {
     window.setTimeout(() => void takeSharedImport(), 150);
   }
 });
+
+function setReminderStatus(text: string, isError = false): void {
+  reminderStatus.textContent = text;
+  reminderStatus.classList.toggle("error", isError);
+}
+
+function renderReminderControls(): void {
+  reminderEnabled.checked = reminderConfig.enabled;
+  reminderTime.value = formatTimeInput(reminderConfig);
+}
+
+/** Best-effort: hand the latest due count to the native reminder store. */
+async function updateReminderDue(dueCount: number): Promise<void> {
+  try {
+    await invoke("reminder_update_due", { count: Math.max(0, dueCount) });
+  } catch {
+    // The daily reminder is best-effort and must never break the queue view.
+  }
+}
+
+/** Persist config and (re)schedule or cancel the daily WorkManager reminder. */
+async function applyReminder(requestPermission: boolean): Promise<void> {
+  localStorage.setItem(REMINDER_STORAGE_KEY, JSON.stringify(reminderConfig));
+  try {
+    let denied = false;
+    if (reminderConfig.enabled && requestPermission) {
+      const permission = await invoke<{ notifications?: string }>(
+        "reminder_request_permissions",
+      );
+      denied = Boolean(
+        permission?.notifications && permission.notifications !== "granted",
+      );
+    }
+    await invoke("reminder_schedule", {
+      enabled: reminderConfig.enabled,
+      initialDelayMs: millisUntilNext(
+        reminderConfig.hour,
+        reminderConfig.minute,
+      ),
+    });
+    if (!reminderConfig.enabled) {
+      setReminderStatus("Erinnerung aus.");
+    } else if (denied) {
+      setReminderStatus(
+        "Benachrichtigungen sind nicht erlaubt — in den Android-Einstellungen freigeben.",
+        true,
+      );
+    } else {
+      setReminderStatus(
+        `Erinnerung aktiv — täglich um ${formatTimeInput(reminderConfig)} Uhr.`,
+      );
+    }
+  } catch (error) {
+    setReminderStatus(
+      `Erinnerung konnte nicht gesetzt werden: ${errorMessage(error)}`,
+      true,
+    );
+  }
+}
+
+reminderEnabled.addEventListener("change", () => {
+  reminderConfig = { ...reminderConfig, enabled: reminderEnabled.checked };
+  void applyReminder(true);
+});
+
+reminderTime.addEventListener("change", () => {
+  const parsed = parseTimeInput(reminderTime.value);
+  if (!parsed) {
+    setReminderStatus("Ungültige Uhrzeit.", true);
+    renderReminderControls();
+    return;
+  }
+  reminderConfig = {
+    ...reminderConfig,
+    hour: parsed.hour,
+    minute: parsed.minute,
+  };
+  void applyReminder(false);
+});
+
+renderReminderControls();
+if (reminderConfig.enabled) {
+  // Re-arm the schedule from stored config on launch without a permission prompt.
+  void applyReminder(false);
+}
 
 void start();

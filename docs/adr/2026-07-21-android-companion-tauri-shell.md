@@ -108,6 +108,16 @@ kernel logic and reach the database.
   routes the learner to re-pairing (`promptRepair`) instead of silently
   retrying a token the server already rejected — the token-rotation path for
   FR-4.
+- **Daily due reminder uses WorkManager with a last-known count** (FR-5).
+  A configurable time (default 17:00, stored machine-locally) schedules a
+  `PeriodicWorkRequest`; the WebView computes the initial delay to the next
+  local occurrence (`mobile/src/reminder.ts`, unit-tested). `DueReminderWorker`
+  reads the due count the app last wrote to SharedPreferences on each queue
+  refresh and posts one notification — suppressed when the count is zero or
+  notifications are off, so the reminder never nags. The count is therefore as
+  fresh as the last app open: a deliberate simplicity tradeoff that avoids a
+  background database read; a future upgrade can recompute it headlessly. No
+  streaks or gamification.
 
 ## Validation
 
@@ -150,6 +160,9 @@ Optional follow-up: repeat kernel startup and the sync scenario on the Pixel
 - `mobile/src/review-session.ts`
 - `mobile/src/voice.ts`
 - `mobile/src/sync.ts`
+- `mobile/src/reminder.ts`
+- `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/ReminderPlugin.kt`
+- `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/DueReminderWorker.kt`
 - `mobile/src-tauri/gen/android/app/src/main/AndroidManifest.xml`
 - `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/SecurePairingPlugin.kt`
 - `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/VoicePlugin.kt`

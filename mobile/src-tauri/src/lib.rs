@@ -1,4 +1,5 @@
 mod db;
+mod reminder;
 mod secure_store;
 mod voice;
 
@@ -11,6 +12,8 @@ pub fn run() {
     let builder = builder.plugin(secure_store::init());
     #[cfg(target_os = "android")]
     let builder = builder.plugin(voice::init());
+    #[cfg(target_os = "android")]
+    let builder = builder.plugin(reminder::init());
 
     builder
         .manage(db::DbState::default())
@@ -31,7 +34,11 @@ pub fn run() {
             voice::voice_stop,
             voice::voice_speak,
             voice::voice_listen,
-            voice::voice_install_data
+            voice::voice_install_data,
+            reminder::reminder_check_permissions,
+            reminder::reminder_request_permissions,
+            reminder::reminder_schedule,
+            reminder::reminder_update_due
         ])
         .run(tauri::generate_context!())
         .expect("error while running the ZAM mobile shell");
