@@ -20,6 +20,14 @@ import {
   type ReviewQueue,
 } from "../../src/kernel/scheduler/queue.js";
 import {
+  applyStaticTranslations,
+  cardWord,
+  resolveLocale,
+  setLocale,
+  t,
+  tf,
+} from "./i18n.js";
+import {
   confirmMobileImport,
   type MobileTokenDraft,
   parseMobileImport,
@@ -153,9 +161,7 @@ const voicePort: VoicePort = {
       );
     }
     if (permission.microphone !== "granted") {
-      throw new Error(
-        "Mikrofonzugriff wurde nicht erlaubt. Berechtigung in den App-Einstellungen freigeben.",
-      );
+      throw new Error(t("mic_denied"));
     }
     await invoke("voice_start", { locale });
   },
@@ -190,7 +196,7 @@ const voiceController = new HandsFreeReviewController(voicePort, {
   },
   revealAnswer: () => {
     reviewSession.reveal();
-    renderCurrentReview("Antwort erkannt. Erwartete Antwort wird vorgelesen.");
+    renderCurrentReview(t("voice_answer_recognized"));
   },
   rate: (rating) => rateCurrentReview(rating),
   setStatus: (message, isError) => setReviewStatus(message, isError),
@@ -198,6 +204,12 @@ const voiceController = new HandsFreeReviewController(voicePort, {
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
+}
+
+/** Switch the UI locale (from the paired settings, else the device) and repaint. */
+function applyLocale(source: string | null | undefined): void {
+  setLocale(resolveLocale(source));
+  applyStaticTranslations();
 }
 
 function setPairingStatus(text: string, isError = false): void {
@@ -215,14 +227,11 @@ function showPairing(canCancel: boolean): void {
   appView.hidden = true;
   cancelPairingButton.hidden = !canCancel;
   cameraSettingsButton.hidden = true;
-  setPairingStatus(
-    canCancel
-      ? "Neue Kopplung scannen oder die bestehende Ansicht beibehalten."
-      : "QR-Code aus ZAM Desktop scannen.",
-  );
+  setPairingStatus(t(canCancel ? "pairing_hint_keep" : "pairing_hint_scan"));
 }
 
 function showApp(payload: ZamPairPayloadV1): void {
+  applyLocale(payload.settings?.locale ?? navigator.language);
   pairingView.hidden = true;
   appView.hidden = false;
   learner.textContent = payload.learner.userId;
@@ -307,9 +316,11 @@ function renderImportDraft(draft: MobileTokenDraft, message?: string): void {
   importDraftForm.hidden = false;
   setImportStatus(
     message ??
-      (draft.origin === "bridge-json"
-        ? "Bridge-JSON geprüft. Ziel-Lernenden und Felder vor dem Speichern kontrollieren."
-        : "Schnellnotiz vorbereitet. Lerninhalt vor dem Speichern vervollständigen."),
+      t(
+        draft.origin === "bridge-json"
+          ? "import_bridge_checked"
+          : "import_quick_prepared",
+      ),
   );
   showImport();
   importConcept.focus();
@@ -329,7 +340,7 @@ function prepareImportText(text: string, message?: string): void {
 }
 
 function draftFromForm(): MobileTokenDraft {
-  if (!currentImportDraft) throw new Error("Zuerst einen Entwurf erstellen");
+  if (!currentImportDraft) throw new Error(t("draft_first"));
   return {
     origin: currentImportDraft.origin,
     slug: importSlug.value.trim(),
@@ -360,7 +371,7 @@ function resetImport(): void {
 function queueSharedImport(payload: SharedImportPayload): void {
   localStorage.setItem(PENDING_IMPORT_STORAGE_KEY, payload.content);
   if (reviewSession.active) {
-    setReviewStatus("Geteilter Lerninhalt wartet bis zum Ende der Sitzung.");
+    setReviewStatus(t("shared_waits"));
   }
 }
 
@@ -369,7 +380,7 @@ function openPendingImport(): boolean {
   const pending = localStorage.getItem(PENDING_IMPORT_STORAGE_KEY);
   if (!pending) return false;
   localStorage.removeItem(PENDING_IMPORT_STORAGE_KEY);
-  prepareImportText(pending, "Geteilten Inhalt als Entwurf übernommen.");
+  prepareImportText(pending, t("shared_as_draft"));
   return true;
 }
 
@@ -387,7 +398,7 @@ async function takeSharedImport(): Promise<void> {
     if (currentPairing && !reviewSession.active) {
       showImport();
       setImportStatus(
-        `Geteilter Inhalt konnte nicht gelesen werden: ${errorMessage(error)}`,
+        tf("shared_read_failed", { error: errorMessage(error) }),
         true,
       );
     }
@@ -421,12 +432,14 @@ function externalSourceUrl(value: string | null | undefined): string | null {
 }
 
 function renderQueue(queue: ReviewQueue): void {
-  const cards = queue.items.length === 1 ? "Karte" : "Karten";
-  summary.textContent =
-    `${queue.items.length} ${cards} in der Queue — ` +
-    `${queue.reviewCount} fällig, ${queue.newCount} neu, ` +
-    `${queue.relearnCount} erneut lernen · Domänen: ` +
-    (queue.totalDomains.join(", ") || "–");
+  summary.textContent = tf("queue_summary", {
+    count: queue.items.length,
+    cards: cardWord(queue.items.length),
+    due: queue.reviewCount,
+    new: queue.newCount,
+    relearn: queue.relearnCount,
+    domains: queue.totalDomains.join(", ") || "–",
+  });
   queueList.replaceChildren();
   for (const item of queue.items) {
     const entry = document.createElement("li");
@@ -435,9 +448,12 @@ function renderQueue(queue: ReviewQueue): void {
     title.textContent = item.title;
     const meta = document.createElement("div");
     meta.className = "meta";
-    meta.textContent =
-      `${item.domain} · Bloom ${item.bloomLevel} · ${item.state} · ` +
-      `fällig ${formatDateTime(item.dueAt)}`;
+    meta.textContent = tf("queue_item_meta", {
+      domain: item.domain,
+      bloom: item.bloomLevel,
+      state: item.state,
+      due: formatDateTime(item.dueAt),
+    });
     entry.append(title, meta);
     queueList.append(entry);
   }
@@ -450,9 +466,9 @@ function setReviewStatus(text: string, isError = false): void {
 }
 
 function updateVoiceButton(): void {
-  toggleVoiceButton.textContent = voiceController.active
-    ? "Sprachmodus pausieren"
-    : "Sprachmodus starten";
+  toggleVoiceButton.textContent = t(
+    voiceController.active ? "voice_pause" : "voice_start",
+  );
   toggleVoiceButton.setAttribute(
     "aria-pressed",
     voiceController.active ? "true" : "false",
@@ -478,7 +494,7 @@ function startVoiceMode(): void {
       installVoiceDataButton.hidden = !/(TTS|Sprachdaten|TTS-Stimme)/i.test(
         message,
       );
-      setReviewStatus(`Sprachmodus pausiert: ${message}`, true);
+      setReviewStatus(tf("voice_paused_msg", { message }), true);
     })
     .finally(updateVoiceButton);
   updateVoiceButton();
@@ -491,8 +507,15 @@ function renderCurrentReview(message = ""): void {
 
   showReview();
   const progress = reviewSession.progress;
-  reviewProgress.textContent = `Karte ${progress.current} von ${progress.total}`;
-  reviewMeta.textContent = `${item.title} · ${item.domain || "Ohne Domäne"} · Bloom ${item.bloomLevel}`;
+  reviewProgress.textContent = tf("review_progress", {
+    current: progress.current,
+    total: progress.total,
+  });
+  reviewMeta.textContent = tf("review_meta", {
+    title: item.title,
+    domain: item.domain || t("no_domain"),
+    bloom: item.bloomLevel,
+  });
   reviewQuestion.textContent = prompt.question;
   reviewAnswer.value = reviewSession.draftAnswer;
   reviewAnswer.disabled = reviewSession.revealed;
@@ -511,14 +534,16 @@ function renderCurrentReview(message = ""): void {
 }
 
 function renderSessionSummary(result: MobileReviewSummary): void {
-  const completion = result.stopped ? "Sitzung beendet" : "Sitzung geschafft";
-  const cards = result.totalCount === 1 ? "Karte" : "Karten";
-  const nextDue = result.nextDueAt
-    ? formatDateTime(result.nextDueAt)
-    : "keine weitere Karte geplant";
-  sessionSummaryText.textContent =
-    `${completion}: ${result.completedCount} von ${result.totalCount} ${cards}, ` +
-    `${result.againCount}× „Nochmal“. Nächste Fälligkeit: ${nextDue}.`;
+  sessionSummaryText.textContent = tf("summary_text", {
+    completion: t(result.stopped ? "session_ended" : "session_done"),
+    done: result.completedCount,
+    total: result.totalCount,
+    cards: cardWord(result.totalCount),
+    again: result.againCount,
+    next: result.nextDueAt
+      ? formatDateTime(result.nextDueAt)
+      : t("no_more_cards"),
+  });
   showSessionSummary();
 }
 
@@ -528,9 +553,7 @@ async function refresh(userId: string): Promise<void> {
     .get(userId)) as { card_count: number } | undefined;
   const cardCount = Number(user?.card_count ?? 0);
   if (cardCount === 0) {
-    setStatus(
-      `Gekoppelt mit ${userId} — noch keine Karten für diesen Lernenden.`,
-    );
+    setStatus(tf("paired_no_cards", { user: userId }));
     summary.textContent = "";
     queueList.replaceChildren();
     startReviewButton.disabled = true;
@@ -539,7 +562,11 @@ async function refresh(userId: string): Promise<void> {
   }
   const queue = await buildReviewQueue(db, { userId });
   setStatus(
-    `Queue für ${userId} (${cardCount} ${cardCount === 1 ? "Karte" : "Karten"}).`,
+    tf("queue_for", {
+      user: userId,
+      count: cardCount,
+      cards: cardWord(cardCount),
+    }),
   );
   renderQueue(queue);
   await updateReminderDue(queue.reviewCount + queue.relearnCount);
@@ -548,7 +575,7 @@ async function refresh(userId: string): Promise<void> {
 async function restoreReviewSession(userId: string): Promise<void> {
   const restored = await reviewSession.restore(userId);
   if (restored.kind === "active") {
-    renderCurrentReview("Unterbrochene Sitzung fortgesetzt.");
+    renderCurrentReview(t("session_resumed"));
   } else if (restored.kind === "completed") {
     renderSessionSummary(restored.summary);
   } else {
@@ -564,16 +591,14 @@ async function synchronize(report?: (message: string) => void): Promise<void> {
     },
     {
       onRetry: ({ attempt, error }) =>
-        report?.(
-          `Synchronisierung wiederholt (Versuch ${attempt}): ${error.message}`,
-        ),
+        report?.(tf("sync_retry", { attempt, error: error.message })),
     },
   );
 }
 
 /** Route an expired/rotated token to re-pairing without discarding the session. */
 function promptRepair(reason: string): void {
-  connection.textContent = "Offline";
+  connection.textContent = t("offline");
   connection.classList.add("offline");
   showPairing(Boolean(currentPairing));
   setPairingStatus(reason, true);
@@ -583,7 +608,7 @@ async function connect(
   payload: ZamPairPayloadV1,
   requireInitialSync: boolean,
 ): Promise<void> {
-  setStatus("Öffne lokale Server-Replik…");
+  setStatus(t("opening_replica"));
   await invoke("db_close");
   await invoke("db_open", {
     syncUrl: payload.database.url,
@@ -592,7 +617,7 @@ async function connect(
 
   let syncError: SyncError | undefined;
   try {
-    setStatus("Synchronisiere…");
+    setStatus(t("syncing"));
     await synchronize(
       requireInitialSync
         ? (message) => setPairingStatus(message, true)
@@ -617,24 +642,19 @@ async function connect(
   await restoreReviewSession(payload.learner.userId);
   await takeSharedImport();
   openPendingImport();
-  connection.textContent = syncError ? "Offline" : "Synchronisiert";
+  connection.textContent = syncError ? t("offline") : t("synced");
   connection.classList.toggle("offline", Boolean(syncError));
   if (syncError?.kind === "auth") {
-    promptRepair(
-      `Zugangsdaten abgelaufen — bitte neu koppeln (${syncError.message}).`,
-    );
+    promptRepair(tf("token_expired_repair", { message: syncError.message }));
   } else if (syncError) {
-    setStatus(
-      `Offline geöffnet. Synchronisierung fehlgeschlagen — später erneut synchronisieren: ${syncError.message}`,
-      true,
-    );
+    setStatus(tf("offline_sync_failed", { error: syncError.message }), true);
   }
 }
 
 async function applyPairing(input: string | unknown): Promise<void> {
   const payload = parseZamPairPayload(input);
   const previousPairing = currentPairing;
-  setPairingStatus("Kopplung wird geprüft und initial synchronisiert…");
+  setPairingStatus(t("pairing_checking"));
   scanButton.disabled = true;
   try {
     await connect(payload, true);
@@ -647,7 +667,10 @@ async function applyPairing(input: string | unknown): Promise<void> {
       }
     }
     showPairing(Boolean(previousPairing));
-    setPairingStatus(`Kopplung fehlgeschlagen: ${errorMessage(error)}`, true);
+    setPairingStatus(
+      tf("pairing_failed", { error: errorMessage(error) }),
+      true,
+    );
   } finally {
     scanButton.disabled = false;
   }
@@ -659,20 +682,17 @@ scanButton.addEventListener("click", async () => {
     if (permission !== "granted") permission = await requestPermissions();
     if (permission !== "granted") {
       cameraSettingsButton.hidden = false;
-      setPairingStatus(
-        "Kamerazugriff wurde nicht erlaubt. Berechtigung in den App-Einstellungen freigeben.",
-        true,
-      );
+      setPairingStatus(t("camera_denied"), true);
       return;
     }
-    setPairingStatus("Kamera geöffnet — QR-Code vollständig ins Bild halten.");
+    setPairingStatus(t("camera_open"));
     const result = await scan({
       cameraDirection: "back",
       formats: [Format.QRCode],
     });
     await applyPairing(result.content);
   } catch (error) {
-    setPairingStatus(`Scan fehlgeschlagen: ${errorMessage(error)}`, true);
+    setPairingStatus(tf("scan_failed", { error: errorMessage(error) }), true);
   }
 });
 
@@ -713,10 +733,10 @@ importFile.addEventListener("change", async () => {
   if (!file) return;
   try {
     const content = await file.text();
-    prepareImportText(content, `Datei „${file.name}“ als Entwurf geladen.`);
+    prepareImportText(content, tf("file_loaded", { name: file.name }));
   } catch (error) {
     setImportStatus(
-      `Datei konnte nicht gelesen werden: ${errorMessage(error)}`,
+      tf("file_read_failed", { error: errorMessage(error) }),
       true,
     );
   }
@@ -745,10 +765,10 @@ importDraftForm.addEventListener("submit", async (event) => {
     await refresh(currentPairing.learner.userId);
     showDashboard();
     setStatus(
-      `„${result.token.title || result.token.slug}“ gespeichert und der Queue hinzugefügt.`,
+      tf("token_saved", { title: result.token.title || result.token.slug }),
     );
   } catch (error) {
-    setImportStatus(`Import fehlgeschlagen: ${errorMessage(error)}`, true);
+    setImportStatus(tf("import_failed", { error: errorMessage(error) }), true);
   } finally {
     confirmImportButton.disabled = false;
   }
@@ -764,14 +784,19 @@ async function rateCurrentReview(rating: 1 | 2 | 3 | 4): Promise<boolean> {
       return false;
     }
     const blocking = result.blockedPrerequisites.length
-      ? ` Voraussetzungen eingeplant: ${result.blockedPrerequisites.join(", ")}.`
+      ? tf("prereqs_scheduled", {
+          slugs: result.blockedPrerequisites.join(", "),
+        })
       : "";
     renderCurrentReview(
-      `Gespeichert · nächste Fälligkeit ${formatDateTime(result.nextDueAt)}.${blocking}`,
+      tf("saved_next_due", {
+        next: formatDateTime(result.nextDueAt),
+        blocking,
+      }),
     );
     return true;
   } catch (error) {
-    renderCurrentReview(`Bewertung fehlgeschlagen: ${errorMessage(error)}`);
+    renderCurrentReview(tf("rating_failed", { error: errorMessage(error) }));
     reviewStatus.classList.add("error");
     return false;
   } finally {
@@ -785,16 +810,13 @@ startReviewButton.addEventListener("click", async () => {
   try {
     const started = await reviewSession.start(currentPairing.learner.userId);
     if (!started) {
-      setStatus("Aktuell sind keine Karten zur Wiederholung fällig.");
+      setStatus(t("no_due_cards"));
       await refresh(currentPairing.learner.userId);
       return;
     }
     renderCurrentReview();
   } catch (error) {
-    setStatus(
-      `Sitzung konnte nicht gestartet werden: ${errorMessage(error)}`,
-      true,
-    );
+    setStatus(tf("session_start_failed", { error: errorMessage(error) }), true);
     startReviewButton.disabled = false;
   }
 });
@@ -810,13 +832,13 @@ toggleVoiceButton.addEventListener("click", async () => {
   try {
     if (voiceController.active) {
       await pauseVoiceMode();
-      setReviewStatus("Sprachmodus pausiert. Tippen bleibt verfügbar.");
+      setReviewStatus(t("voice_paused_typing"));
     } else {
       startVoiceMode();
     }
   } catch (error) {
     setReviewStatus(
-      `Sprachmodus konnte nicht pausiert werden: ${errorMessage(error)}`,
+      tf("voice_pause_failed", { error: errorMessage(error) }),
       true,
     );
   } finally {
@@ -829,12 +851,10 @@ installVoiceDataButton.addEventListener("click", async () => {
   installVoiceDataButton.disabled = true;
   try {
     await invoke("voice_install_data");
-    setReviewStatus(
-      "Android-Sprachdaten geöffnet. Deutsch oder Englisch lokal herunterladen und danach den Sprachmodus erneut starten.",
-    );
+    setReviewStatus(t("voice_data_opened"));
   } catch (error) {
     setReviewStatus(
-      `Sprachdaten konnten nicht geöffnet werden: ${errorMessage(error)}`,
+      tf("voice_data_failed", { error: errorMessage(error) }),
       true,
     );
   } finally {
@@ -847,9 +867,9 @@ revealAnswerButton.addEventListener("click", async () => {
   try {
     reviewSession.updateDraftAnswer(reviewAnswer.value);
     reviewSession.reveal();
-    renderCurrentReview("Antwort vergleichen und ehrlich bewerten.");
+    renderCurrentReview(t("compare_and_rate"));
   } catch {
-    setReviewStatus("Bitte zuerst eine eigene Antwort eingeben.", true);
+    setReviewStatus(t("answer_required"), true);
     reviewAnswer.focus();
   }
 });
@@ -870,7 +890,7 @@ stopReviewButton.addEventListener("click", async () => {
     renderSessionSummary(await reviewSession.finish());
   } catch (error) {
     setReviewStatus(
-      `Sitzung konnte nicht beendet werden: ${errorMessage(error)}`,
+      tf("session_end_failed", { error: errorMessage(error) }),
       true,
     );
   } finally {
@@ -886,10 +906,7 @@ backToQueueButton.addEventListener("click", async () => {
     showDashboard();
     openPendingImport();
   } catch (error) {
-    setStatus(
-      `Queue konnte nicht geladen werden: ${errorMessage(error)}`,
-      true,
-    );
+    setStatus(tf("queue_load_failed", { error: errorMessage(error) }), true);
   } finally {
     backToQueueButton.disabled = false;
   }
@@ -899,20 +916,18 @@ resyncButton.addEventListener("click", async () => {
   if (!currentPairing) return;
   resyncButton.disabled = true;
   try {
-    setStatus("Synchronisiere…");
+    setStatus(t("syncing"));
     await synchronize((message) => setStatus(message, true));
     await refresh(currentPairing.learner.userId);
-    connection.textContent = "Synchronisiert";
+    connection.textContent = t("synced");
     connection.classList.remove("offline");
   } catch (error) {
     if (error instanceof SyncError && error.kind === "auth") {
-      promptRepair(
-        `Zugangsdaten abgelaufen — bitte neu koppeln (${error.message}).`,
-      );
+      promptRepair(tf("token_expired_repair", { message: error.message }));
     } else {
-      connection.textContent = "Offline";
+      connection.textContent = t("offline");
       connection.classList.add("offline");
-      setStatus(`Sync fehlgeschlagen: ${errorMessage(error)}`, true);
+      setStatus(tf("sync_failed", { error: errorMessage(error) }), true);
     }
   } finally {
     resyncButton.disabled = false;
@@ -936,7 +951,7 @@ async function start(): Promise<void> {
   } catch (error) {
     showPairing(false);
     setPairingStatus(
-      `Gespeicherte Kopplung konnte nicht geöffnet werden: ${errorMessage(error)}`,
+      tf("stored_pairing_failed", { error: errorMessage(error) }),
       true,
     );
   }
@@ -991,20 +1006,17 @@ async function applyReminder(requestPermission: boolean): Promise<void> {
       ),
     });
     if (!reminderConfig.enabled) {
-      setReminderStatus("Erinnerung aus.");
+      setReminderStatus(t("reminder_off"));
     } else if (denied) {
-      setReminderStatus(
-        "Benachrichtigungen sind nicht erlaubt — in den Android-Einstellungen freigeben.",
-        true,
-      );
+      setReminderStatus(t("reminder_denied"), true);
     } else {
       setReminderStatus(
-        `Erinnerung aktiv — täglich um ${formatTimeInput(reminderConfig)} Uhr.`,
+        tf("reminder_active", { time: formatTimeInput(reminderConfig) }),
       );
     }
   } catch (error) {
     setReminderStatus(
-      `Erinnerung konnte nicht gesetzt werden: ${errorMessage(error)}`,
+      tf("reminder_set_failed", { error: errorMessage(error) }),
       true,
     );
   }
@@ -1018,7 +1030,7 @@ reminderEnabled.addEventListener("change", () => {
 reminderTime.addEventListener("change", () => {
   const parsed = parseTimeInput(reminderTime.value);
   if (!parsed) {
-    setReminderStatus("Ungültige Uhrzeit.", true);
+    setReminderStatus(t("invalid_time"), true);
     renderReminderControls();
     return;
   }
@@ -1030,6 +1042,9 @@ reminderTime.addEventListener("change", () => {
   void applyReminder(false);
 });
 
+// Localise the static chrome from the device locale; showApp re-applies the
+// paired learner's locale once a pairing is loaded.
+applyLocale(navigator.language);
 renderReminderControls();
 if (reminderConfig.enabled) {
   // Re-arm the schedule from stored config on launch without a permission prompt.

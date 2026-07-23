@@ -309,9 +309,14 @@ server database, per FR-0).
   one reminder fires with the correct count. The companion UI was aligned to
   the desktop ZAM visual language (gradient wash, frosted cards, purple→cyan
   primary, FSRS rating colours, light/dark) and settings (reminder + re-pair)
-  moved behind a gear icon in a dedicated settings view. Remaining Phase-6
-  items (i18n
-  pass, online LLM wiring, performance/battery, sideload channel) are untouched.
+  moved behind a gear icon in a dedicated settings view. The de/en i18n pass
+  is done: `mobile/src/i18n.ts` holds a complete de/en reference pair (parity
+  asserted in `tests/mobile/i18n.test.ts`), static chrome is localised through
+  `data-i18n` attributes and dynamic strings through `t()`/`tf()`; the locale
+  comes from the paired `settings.locale`, else `navigator.language`. Native
+  plugin (voice/reminder Kotlin) strings remain German-only for now. Remaining
+  Phase-6 items (online LLM wiring, performance/battery, sideload channel) are
+  untouched.
 
 ## Decisions (Thomas, 2026-07-21)
 

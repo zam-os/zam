@@ -439,27 +439,29 @@
           <span class="brand-mark">ZAM</span>
         </div>
         <div class="card">
-          <p class="eyebrow">Kopplung</p>
-          <h2>Mit ZAM Desktop koppeln</h2>
-          <p class="muted">
+          <p class="eyebrow" data-i18n="pairing_kicker">Kopplung</p>
+          <h2 data-i18n="pairing_title">Mit ZAM Desktop koppeln</h2>
+          <p class="muted" data-i18n="pairing_desc">
             In ZAM Desktop unter Einstellungen → Mobile Begleit-App einen
             QR-Code anzeigen.
           </p>
-          <button id="scan-pairing-code" class="primary" type="button">
+          <button id="scan-pairing-code" class="primary" type="button" data-i18n="scan_qr">
             QR-Code scannen
           </button>
-          <button id="camera-settings" type="button" hidden>
+          <button id="camera-settings" type="button" hidden data-i18n="open_app_settings">
             App-Einstellungen öffnen
           </button>
           <p id="pairing-status" class="status-line" aria-live="polite"></p>
-          <button id="cancel-pairing" type="button" hidden>Abbrechen</button>
+          <button id="cancel-pairing" type="button" hidden data-i18n="cancel">
+            Abbrechen
+          </button>
 
           <div class="divider"></div>
           <details>
-            <summary>Manuelle Eingabe</summary>
+            <summary data-i18n="manual_entry">Manuelle Eingabe</summary>
             <form id="manual-pairing-form">
               <label>
-                Server-Datenbank
+                <span data-i18n="server_db">Server-Datenbank</span>
                 <input
                   id="manual-sync-url"
                   type="url"
@@ -469,7 +471,7 @@
                 />
               </label>
               <label>
-                Datenbank-Token
+                <span data-i18n="db_token">Datenbank-Token</span>
                 <input
                   id="manual-auth-token"
                   type="password"
@@ -478,7 +480,7 @@
                 />
               </label>
               <label>
-                Lernenden-ID
+                <span data-i18n="learner_id">Lernenden-ID</span>
                 <input
                   id="manual-user-id"
                   type="text"
@@ -487,7 +489,9 @@
                   required
                 />
               </label>
-              <button class="primary" type="submit">Manuell koppeln</button>
+              <button class="primary" type="submit" data-i18n="pair_manually">
+                Manuell koppeln
+              </button>
             </form>
           </details>
         </div>
@@ -503,6 +507,7 @@
               type="button"
               title="Jetzt synchronisieren"
               aria-label="Jetzt synchronisieren"
+              data-i18n-aria="resync_aria"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M23 4v6h-6" />
@@ -516,6 +521,7 @@
               type="button"
               title="Einstellungen"
               aria-label="Einstellungen"
+              data-i18n-aria="settings_aria"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="12" cy="12" r="3" />
@@ -527,7 +533,7 @@
 
         <div class="statusbar">
           <span class="chip"
-            ><span class="chip-key">Lernender</span
+            ><span class="chip-key" data-i18n="learner_label">Lernender</span
             ><strong id="learner">—</strong></span
           >
           <span class="chip connection" id="connection">—</span>
@@ -537,24 +543,26 @@
         <section id="dashboard-view">
           <p id="summary" class="summary"></p>
           <div class="capture-actions">
-            <button id="start-review" class="primary" type="button">
+            <button id="start-review" class="primary" type="button" data-i18n="start_review">
               Wiederholung starten
             </button>
-            <button id="open-import" type="button">Lerninhalt hinzufügen</button>
+            <button id="open-import" type="button" data-i18n="add_content">
+              Lerninhalt hinzufügen
+            </button>
           </div>
           <ol id="queue"></ol>
         </section>
 
         <section id="import-view" hidden>
           <div class="card">
-            <p class="eyebrow">Import</p>
-            <h2>Lerninhalt hinzufügen</h2>
-            <p class="muted">
+            <p class="eyebrow" data-i18n="import_kicker">Import</p>
+            <h2 data-i18n="add_content">Lerninhalt hinzufügen</h2>
+            <p class="muted" data-i18n="import_desc">
               Bridge-JSON auswählen oder Text bzw. URL einfügen. Vor dem
               Speichern wird immer ein bearbeitbarer Entwurf gezeigt.
             </p>
             <label>
-              Bridge-JSON-Datei
+              <span data-i18n="import_file_label">Bridge-JSON-Datei</span>
               <input
                 id="import-file"
                 type="file"
@@ -562,79 +570,86 @@
               />
             </label>
             <label>
-              Text, URL oder Bridge-JSON
+              <span data-i18n="import_text_label">Text, URL oder Bridge-JSON</span>
               <textarea
                 id="import-input"
                 placeholder="Text/URL einfügen oder JSON-Datei auswählen …"
+                data-i18n-placeholder="import_text_ph"
               ></textarea>
             </label>
             <div class="buttons">
-              <button id="prepare-import" class="primary" type="button">
+              <button id="prepare-import" class="primary" type="button" data-i18n="create_draft">
                 Entwurf erstellen
               </button>
-              <button id="cancel-import" type="button">Abbrechen</button>
+              <button id="cancel-import" type="button" data-i18n="cancel">
+                Abbrechen
+              </button>
             </div>
             <p id="import-status" class="status-line" aria-live="polite"></p>
 
             <form id="import-draft-form" hidden>
               <div class="divider"></div>
-              <h2>Entwurf bestätigen</h2>
+              <h2 data-i18n="confirm_draft">Entwurf bestätigen</h2>
               <label>
-                Slug
+                <span data-i18n="slug">Slug</span>
                 <input id="import-slug" type="text" required />
               </label>
               <label>
-                Titel
+                <span data-i18n="title">Titel</span>
                 <input id="import-title" type="text" />
               </label>
               <label>
-                Lerninhalt
+                <span data-i18n="content">Lerninhalt</span>
                 <textarea id="import-concept" required></textarea>
               </label>
               <label>
-                Domäne
+                <span data-i18n="domain">Domäne</span>
                 <input id="import-domain" type="text" />
               </label>
               <label>
-                Bloom-Stufe
+                <span data-i18n="bloom_level">Bloom-Stufe</span>
                 <select id="import-bloom">
-                  <option value="1">1 · Erinnern</option>
-                  <option value="2">2 · Verstehen</option>
-                  <option value="3">3 · Anwenden</option>
-                  <option value="4">4 · Analysieren</option>
-                  <option value="5">5 · Erschaffen</option>
+                  <option value="1" data-i18n="bloom_1">1 · Erinnern</option>
+                  <option value="2" data-i18n="bloom_2">2 · Verstehen</option>
+                  <option value="3" data-i18n="bloom_3">3 · Anwenden</option>
+                  <option value="4" data-i18n="bloom_4">4 · Analysieren</option>
+                  <option value="5" data-i18n="bloom_5">5 · Erschaffen</option>
                 </select>
               </label>
               <label>
-                Frage (optional)
+                <span data-i18n="question_opt">Frage (optional)</span>
                 <textarea id="import-question"></textarea>
               </label>
               <label>
-                Kontext/Notiz (optional)
+                <span data-i18n="context_opt">Kontext/Notiz (optional)</span>
                 <textarea id="import-context"></textarea>
               </label>
               <label>
-                Quelle (optional)
+                <span data-i18n="source_opt">Quelle (optional)</span>
                 <input id="import-source-link" type="text" />
               </label>
               <label>
-                Voraussetzungen (Slugs, kommagetrennt)
+                <span data-i18n="prereqs_label"
+                  >Voraussetzungen (Slugs, kommagetrennt)</span
+                >
                 <input id="import-prerequisites" type="text" />
               </label>
               <label>
-                Wissenskontexte (Namen, kommagetrennt)
+                <span data-i18n="knowledge_contexts_label"
+                  >Wissenskontexte (Namen, kommagetrennt)</span
+                >
                 <input id="import-knowledge-contexts" type="text" />
               </label>
               <label>
-                Symbiosemodus
+                <span data-i18n="symbiosis_mode">Symbiosemodus</span>
                 <select id="import-symbiosis-mode">
-                  <option value="">Keiner</option>
+                  <option value="" data-i18n="symbiosis_none">Keiner</option>
                   <option value="shadowing">Shadowing</option>
                   <option value="copilot">Copilot</option>
                   <option value="autonomy">Autonomy</option>
                 </select>
               </label>
-              <button id="confirm-import" class="primary" type="submit">
+              <button id="confirm-import" class="primary" type="submit" data-i18n="save_token">
                 Token und Karte speichern
               </button>
             </form>
@@ -646,53 +661,56 @@
             <div id="review-progress"></div>
             <div id="review-meta"></div>
             <div class="voice-controls">
-              <button id="toggle-voice" type="button" aria-pressed="false">
+              <button id="toggle-voice" type="button" aria-pressed="false" data-i18n="voice_start">
                 Sprachmodus starten
               </button>
-              <button id="install-voice-data" type="button" hidden>
+              <button id="install-voice-data" type="button" hidden data-i18n="install_voice_data">
                 Lokale Sprachdaten installieren
               </button>
             </div>
             <h2 id="review-question"></h2>
             <label>
-              Deine Antwort
+              <span data-i18n="your_answer">Deine Antwort</span>
               <textarea
                 id="review-answer"
                 autocomplete="off"
                 placeholder="Antwort aus dem Gedächtnis formulieren …"
+                data-i18n-placeholder="answer_ph"
               ></textarea>
             </label>
-            <button id="reveal-answer" class="primary" type="button">
+            <button id="reveal-answer" class="primary" type="button" data-i18n="reveal_answer">
               Antwort aufdecken
             </button>
 
             <div id="revealed-answer" hidden>
               <div class="divider"></div>
-              <p class="eyebrow">Erwartete Antwort</p>
+              <p class="eyebrow" data-i18n="expected_answer_kicker">Erwartete Antwort</p>
               <p id="expected-answer"></p>
-              <a id="review-source" target="_blank" rel="noreferrer" hidden>
+              <a id="review-source" target="_blank" rel="noreferrer" hidden data-i18n="open_source">
                 Quelle öffnen
               </a>
-              <p class="muted">Wie gut konntest du dich erinnern?</p>
+              <p class="muted" data-i18n="how_well">Wie gut konntest du dich erinnern?</p>
               <div class="ratings">
-                <button type="button" data-rating="1">Nochmal</button>
-                <button type="button" data-rating="2">Schwer</button>
-                <button type="button" data-rating="3">Gut</button>
-                <button type="button" data-rating="4">Leicht</button>
+                <button type="button" data-rating="1" data-i18n="rating_again">Nochmal</button>
+                <button type="button" data-rating="2" data-i18n="rating_hard">Schwer</button>
+                <button type="button" data-rating="3" data-i18n="rating_good">Gut</button>
+                <button type="button" data-rating="4" data-i18n="rating_easy">Leicht</button>
               </div>
             </div>
             <p id="review-status" class="status-line" aria-live="polite"></p>
             <div class="divider"></div>
-            <button id="stop-review" type="button">Sitzung beenden</button>
+            <button id="stop-review" type="button" data-i18n="stop_session">
+              Sitzung beenden
+            </button>
           </div>
         </section>
 
         <section id="session-summary-view" hidden>
           <div class="card">
-            <p class="eyebrow">Fertig</p>
-            <h2>Sitzungsübersicht</h2>
+            <p class="eyebrow" data-i18n="summary_kicker">Fertig</p>
+            <h2 data-i18n="summary_title">Sitzungsübersicht</h2>
             <p id="session-summary-text"></p>
-            <button id="back-to-queue" class="primary" type="button">
+            <button id="back-to-queue" class="primary" type="button" data-i18n="to_queue">
               Zur Queue
             </button>
           </div>
@@ -700,27 +718,29 @@
 
         <section id="settings-view" hidden>
           <div class="card">
-            <p class="eyebrow">Einstellungen</p>
-            <h2>Erinnerung</h2>
+            <p class="eyebrow" data-i18n="settings_kicker">Einstellungen</p>
+            <h2 data-i18n="reminder_heading">Erinnerung</h2>
             <label class="switch-row">
               <input id="reminder-enabled" type="checkbox" />
-              <span>Tägliche Erinnerung an fällige Karten</span>
+              <span data-i18n="reminder_toggle"
+                >Tägliche Erinnerung an fällige Karten</span
+              >
             </label>
             <label class="field-row">
-              Uhrzeit
+              <span data-i18n="reminder_time_label">Uhrzeit</span>
               <input id="reminder-time" type="time" />
             </label>
             <p id="reminder-status" class="status-line" aria-live="polite"></p>
 
             <div class="divider"></div>
-            <h2>Gerät</h2>
-            <p class="muted">
+            <h2 data-i18n="device_heading">Gerät</h2>
+            <p class="muted" data-i18n="device_desc">
               Mit einer anderen Server-Datenbank oder einem anderen Lernenden
               koppeln.
             </p>
-            <button id="repair" type="button">Neu koppeln</button>
+            <button id="repair" type="button" data-i18n="repair">Neu koppeln</button>
             <div class="divider"></div>
-            <button id="close-settings" class="primary" type="button">
+            <button id="close-settings" class="primary" type="button" data-i18n="done">
               Fertig
             </button>
           </div>
