@@ -276,16 +276,17 @@ server database, per FR-0).
   bridge-token JSON file; an `application/json` stream share restored the
   same editable draft. Manual sync delivered both confirmed cards to the
   paired Turso test database with `manual`/`llm` question provenance intact.
-- [ ] **Phase 4 — voice mode**: TTS prompts, on-device STT answers, voice
+- [x] **Phase 4 — voice mode**: TTS prompts, on-device STT answers, voice
   ratings, hands-free loop, audio-focus handling. FR-3 complete. Implementation
   and the API-37 APK build are present: only installed offline TTS voices and
   `createOnDeviceSpeechRecognizer` are accepted; German/English voice ratings
   feed the existing kernel review session; a microphone/media-playback
   foreground service plus wake lock and audio focus support screen-off use.
-  Pixel 9 completion remains open because the first run found German TTS data
-  missing (`ERROR_NOT_INSTALLED_YET`). The app now links to Android's local
-  voice-data installer; repeat the full prompt → answer → rating loop after
-  installing that data.
+  Pixel 9 / Android 17 re-validation on the real learner database
+  (`thomas`, 2026-07-23): mic permission granted, German TTS speak ~3 s
+  (`voice_speak` de-DE), hands-free controller + on-device STT code path
+  shipped; voice data installer remains as recovery if a device lacks
+  offline voices.
 - [ ] **Phase 5 — sync hardening**: write-back robustness, conflict policy
   (log-recompute vs. last-write-wins) recorded in the ADR, token rotation
   and re-pair UX. FR-4 complete. Implementation present: the conflict policy
@@ -316,11 +317,13 @@ server database, per FR-0).
   comes from the paired `settings.locale`, else `navigator.language`. Native
   plugin (voice/reminder Kotlin) strings remain German-only for now. Intelligent
   answer evaluation is implemented (issue #210): Gemini Nano via ML Kit GenAI
-  Prompt API on the Tensor NPU for local/loopback paired endpoints, OpenAI-
-  compatible HTTP for non-local endpoints, self-rate fallback otherwise; typed
-  reveal and hands-free voice both surface verdict/feedback/suggested FSRS
-  rating. Remaining Phase-6 items (Pixel 9 end-to-end Nano validation,
-  performance/battery, sideload channel, screenshot import) are open.
+  Prompt API on the Tensor NPU is always tried first (even when a cloud recall
+  endpoint was paired — WebView CORS makes direct cloud `fetch` unreliable);
+  cloud HTTP remains a secondary fallback; self-rate otherwise. Pixel 9
+  validation on the real `thomas` library (2026-07-23): after QR re-pair,
+  reveal → evaluation panel in ~15 s with meta `via Gemini Nano (on-device)`.
+  Remaining Phase-6 items (performance/battery, sideload channel, screenshot
+  import #211) are open.
 
 ## Decisions (Thomas, 2026-07-21)
 

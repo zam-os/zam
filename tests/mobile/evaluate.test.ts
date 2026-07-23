@@ -3,6 +3,7 @@ import {
   type EvaluationPorts,
   evaluateMobileAnswer,
   evaluationSpeech,
+  isCloudHttpEndpoint,
   resolveEvaluationBackend,
 } from "../../mobile/src/evaluate.js";
 import type { ZamPairLlmEndpoint } from "../../src/bridge/mobile-pairing.js";
@@ -49,27 +50,19 @@ const goodJson = JSON.stringify({
 });
 
 describe("resolveEvaluationBackend", () => {
-  it("defaults to on-device when no endpoint or disabled", () => {
+  it("prefers on-device for every paired configuration", () => {
     expect(resolveEvaluationBackend(null)).toBe("on-device");
     expect(
       resolveEvaluationBackend({ ...localEndpoint(), enabled: false }),
     ).toBe("on-device");
-  });
-
-  it("uses on-device for local or loopback endpoints", () => {
     expect(resolveEvaluationBackend(localEndpoint())).toBe("on-device");
-    expect(
-      resolveEvaluationBackend(
-        localEndpoint({
-          local: false,
-          url: "http://localhost:8080/v1",
-        }),
-      ),
-    ).toBe("on-device");
+    expect(resolveEvaluationBackend(cloudEndpoint())).toBe("on-device");
   });
 
-  it("uses HTTP for non-local remote endpoints", () => {
-    expect(resolveEvaluationBackend(cloudEndpoint())).toBe("http");
+  it("detects usable cloud HTTP endpoints", () => {
+    expect(isCloudHttpEndpoint(cloudEndpoint())).toBe(true);
+    expect(isCloudHttpEndpoint(localEndpoint())).toBe(false);
+    expect(isCloudHttpEndpoint(null)).toBe(false);
   });
 });
 
@@ -90,7 +83,7 @@ describe("evaluateMobileAnswer", () => {
     expect(ports.generateOnDevice).not.toHaveBeenCalled();
   });
 
-  it("evaluates via on-device Gemini Nano for local endpoints", async () => {
+  it("evaluates via on-device Gemini Nano first", async () => {
     const ports: EvaluationPorts = {
       checkOnDeviceStatus: vi.fn(),
       generateOnDevice: vi.fn(async () => ({
@@ -113,11 +106,34 @@ describe("evaluateMobileAnswer", () => {
     expect(prompt).toContain("Kraft ist Masse mal Beschleunigung");
   });
 
-  it("evaluates via HTTP for cloud endpoints", async () => {
+  it("prefers on-device even when a cloud endpoint is paired", async () => {
     const fetchText = vi.fn(async () => goodJson);
     const ports: EvaluationPorts = {
       checkOnDeviceStatus: vi.fn(),
-      generateOnDevice: vi.fn(),
+      generateOnDevice: vi.fn(async () => ({
+        text: goodJson,
+        backend: "gemini-nano",
+      })),
+      fetchText,
+    };
+    const result = await evaluateMobileAnswer({
+      card,
+      learnerAnswer: "F equals m a",
+      endpoint: cloudEndpoint(),
+      ports,
+    });
+    expect(result?.backend).toBe("on-device");
+    expect(ports.generateOnDevice).toHaveBeenCalledOnce();
+    expect(fetchText).not.toHaveBeenCalled();
+  });
+
+  it("falls back to HTTP when on-device fails and a cloud endpoint is paired", async () => {
+    const fetchText = vi.fn(async () => goodJson);
+    const ports: EvaluationPorts = {
+      checkOnDeviceStatus: vi.fn(),
+      generateOnDevice: vi.fn(async () => {
+        throw new Error("Gemini Nano is unavailable on this device");
+      }),
       fetchText,
     };
     const result = await evaluateMobileAnswer({
@@ -128,7 +144,6 @@ describe("evaluateMobileAnswer", () => {
     });
     expect(result?.backend).toBe("http");
     expect(result?.modelLabel).toBe("Cloud recall");
-    expect(ports.generateOnDevice).not.toHaveBeenCalled();
     expect(fetchText).toHaveBeenCalledOnce();
     const [url, init] = fetchText.mock.calls[0];
     expect(url).toBe("https://api.example.com/v1/chat/completions");

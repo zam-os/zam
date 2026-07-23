@@ -1,9 +1,9 @@
 /**
  * Intelligent answer evaluation for the Android companion.
  *
- * Prefer on-device Gemini Nano (AICore → Tensor NPU) for local paired
- * endpoints. Non-local paired endpoints use OpenAI-compatible HTTP.
- * When neither path is usable the caller falls back to self-rating.
+ * Always prefer on-device Gemini Nano (AICore → Tensor NPU). Non-local paired
+ * endpoints are a secondary HTTP fallback. When neither path is usable the
+ * caller falls back to self-rating.
  */
 
 import {
@@ -43,7 +43,7 @@ export interface EvaluationPorts {
 export interface EvaluateAnswerInput {
   card: RecallEvaluationCard;
   learnerAnswer: string;
-  /** Paired recall endpoint; when absent, evaluation is skipped. */
+  /** Paired recall endpoint; used as optional cloud fallback. */
   endpoint?: ZamPairLlmEndpoint | null;
   ports: EvaluationPorts;
 }
@@ -62,16 +62,32 @@ function isLoopbackUrl(url: string): boolean {
   }
 }
 
-/** Decide which backend should run for a paired recall endpoint. */
+/** Whether the paired endpoint is a usable non-loopback HTTP cloud target. */
+export function isCloudHttpEndpoint(
+  endpoint: ZamPairLlmEndpoint | null | undefined,
+): boolean {
+  return Boolean(
+    endpoint?.enabled &&
+      !endpoint.local &&
+      !isLoopbackUrl(endpoint.url) &&
+      endpoint.apiFlavor === "chat-completions",
+  );
+}
+
+/**
+ * Preferred backend label for UI/tests.
+ * On-device is always preferred; cloud HTTP only when no Nano path is intended.
+ */
 export function resolveEvaluationBackend(
   endpoint: ZamPairLlmEndpoint | null | undefined,
 ): EvaluationBackend {
-  // No paired endpoint: still try on-device Gemini Nano (Pixel Tensor NPU).
-  // Field-test phones stay keyless; self-rate remains the soft fallback.
-  if (!endpoint?.enabled) return "on-device";
-  // Field-test local endpoints (and desktop loopback URLs) mean "on this phone".
-  if (endpoint.local || isLoopbackUrl(endpoint.url)) return "on-device";
-  return "http";
+  // Mobile field-test stance: NPU first. Cloud is fallback only.
+  if (!endpoint?.enabled || endpoint.local || isLoopbackUrl(endpoint.url)) {
+    return "on-device";
+  }
+  // Cloud-configured: still report on-device as primary; evaluateMobileAnswer
+  // tries Nano first and only then HTTP.
+  return "on-device";
 }
 
 async function defaultFetchText(
@@ -125,8 +141,9 @@ async function generateViaHttp(
 }
 
 /**
- * Evaluate a learner answer. Returns null when no evaluation backend is
- * configured or both paths fail — callers must fall back to self-rating.
+ * Evaluate a learner answer. Tries on-device Nano first, then optional cloud
+ * HTTP. Returns null only for blank answers — callers fall back to self-rate
+ * when this throws.
  */
 export async function evaluateMobileAnswer(
   input: EvaluateAnswerInput,
@@ -134,56 +151,42 @@ export async function evaluateMobileAnswer(
   const answer = input.learnerAnswer.trim();
   if (!answer) return null;
 
-  const backend = resolveEvaluationBackend(input.endpoint);
   const prompt = buildRecallEvaluationPrompt(input.card, answer);
+  const errors: string[] = [];
 
-  if (backend === "on-device") {
+  try {
+    const generated = await input.ports.generateOnDevice(prompt);
+    return {
+      evaluation: parseRecallEvaluation(generated.text),
+      backend: "on-device",
+      modelLabel: "Gemini Nano (on-device)",
+    };
+  } catch (error) {
+    errors.push(
+      `on-device: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+
+  if (isCloudHttpEndpoint(input.endpoint) && input.endpoint) {
     try {
-      const generated = await input.ports.generateOnDevice(prompt);
+      const text = await generateViaHttp(
+        input.endpoint,
+        prompt,
+        input.ports.fetchText,
+      );
       return {
-        evaluation: parseRecallEvaluation(generated.text),
-        backend: "on-device",
-        modelLabel: "Gemini Nano (on-device)",
+        evaluation: parseRecallEvaluation(text),
+        backend: "http",
+        modelLabel: input.endpoint.label || input.endpoint.model,
       };
-    } catch (onDeviceError) {
-      // Optional cloud fallback only when the paired endpoint is a real remote.
-      if (
-        input.endpoint?.enabled &&
-        !input.endpoint.local &&
-        !isLoopbackUrl(input.endpoint.url)
-      ) {
-        try {
-          const text = await generateViaHttp(
-            input.endpoint,
-            prompt,
-            input.ports.fetchText,
-          );
-          return {
-            evaluation: parseRecallEvaluation(text),
-            backend: "http",
-            modelLabel: input.endpoint.label || input.endpoint.model,
-          };
-        } catch {
-          // Prefer the on-device error message for the primary path.
-        }
-      }
-      throw onDeviceError instanceof Error
-        ? onDeviceError
-        : new Error(String(onDeviceError));
+    } catch (error) {
+      errors.push(
+        `http: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 
-  if (backend === "none" || !input.endpoint?.enabled) return null;
-  const text = await generateViaHttp(
-    input.endpoint,
-    prompt,
-    input.ports.fetchText,
-  );
-  return {
-    evaluation: parseRecallEvaluation(text),
-    backend: "http",
-    modelLabel: input.endpoint.label || input.endpoint.model,
-  };
+  throw new Error(errors.join("; ") || "no evaluation backend available");
 }
 
 export function ratingLabel(

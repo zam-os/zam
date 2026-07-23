@@ -78,12 +78,14 @@ kernel logic and reach the database.
   (AICore → Tensor NPU on Pixel 9; issue #210). The WebView builds the same
   structured evaluation prompt as the desktop Studio
   (`desktop/src/panel/recall-evaluation.ts`); a Kotlin plugin
-  (`OnDeviceLlmPlugin`) runs inference and returns text only. Local or
-  loopback paired endpoints take this path. Explicit non-local paired
-  endpoints may use OpenAI-compatible HTTP. When Nano is unavailable or
-  generation fails, the session falls back to self-rating and never blocks
-  the card. Spoken voice review speaks the feedback before collecting a
-  rating word.
+  (`OnDeviceLlmPlugin`) runs inference and returns text only. **On-device is
+  always tried first**, including when the QR paired a cloud recall provider
+  (field test: Mimo). Direct browser `fetch` to cloud endpoints from the
+  Android WebView is unreliable (CORS / network isolation); cloud HTTP is
+  therefore only a secondary fallback. When Nano is unavailable or generation
+  fails, the session falls back to self-rating and never blocks the card.
+  Output tokens are capped at 256 (Nano Prompt API limit). Spoken voice
+  review speaks the feedback before collecting a rating word.
 - **Android imports use the bridge-token contract without a Node sidecar.**
   The WebView normalizes `AddTokenRequest` JSON and quick-capture text, shows
   an editable confirmation draft, then uses kernel APIs to atomically create
