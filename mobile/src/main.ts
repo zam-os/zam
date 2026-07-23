@@ -596,6 +596,7 @@ async function runSmartEvaluation(): Promise<MobileEvaluationResult | null> {
       endpoint: currentPairing?.llm?.recall ?? null,
       ports: evaluationPorts,
     });
+    if (isStaleEvaluation(item.cardId)) return null;
     if (result) {
       showEvaluationUi(result);
       setReviewStatus(
@@ -608,6 +609,7 @@ async function runSmartEvaluation(): Promise<MobileEvaluationResult | null> {
     setReviewStatus(t("compare_and_rate"));
     return null;
   } catch (error) {
+    if (isStaleEvaluation(item.cardId)) return null;
     clearEvaluationUi();
     setReviewStatus(
       tf("evaluation_failed_self_rate", { error: errorMessage(error) }),
@@ -615,6 +617,17 @@ async function runSmartEvaluation(): Promise<MobileEvaluationResult | null> {
     );
     return null;
   }
+}
+
+/**
+ * The learner can rate and move on while an evaluation is still running
+ * (Nano generation, or even a first-use model download); a result for a card
+ * that is no longer the revealed current card must not repaint the UI.
+ */
+function isStaleEvaluation(cardId: string): boolean {
+  return (
+    reviewSession.currentItem?.cardId !== cardId || !reviewSession.revealed
+  );
 }
 
 function updateVoiceButton(): void {
