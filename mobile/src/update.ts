@@ -49,12 +49,16 @@ export function isNewerVersion(remote: string, current: string): boolean {
 }
 
 /**
- * Monotonic Android versionCode from a semver: major*10000 + minor*100 + patch.
- * 0.16.1 → 1601; 1.2.3 → 10203.
+ * Monotonic Android versionCode from a semver, using Tauri's derivation for
+ * the installed APK (major*1000000 + minor*1000 + patch — see AndroidConfig
+ * `version_code` in tauri-utils). The manifest and the installed
+ * BuildConfig.VERSION_CODE must share this scheme, or the
+ * `versionCode > current` update check never fires.
+ * 0.16.1 → 16001; 1.2.3 → 1002003.
  */
 export function versionCodeFromSemver(version: string): number {
   const [major = 0, minor = 0, patch = 0] = parseSemver(version);
-  return major * 10_000 + minor * 100 + patch;
+  return major * 1_000_000 + minor * 1_000 + patch;
 }
 
 export function buildMobileLatestManifest(input: {

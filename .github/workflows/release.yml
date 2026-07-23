@@ -332,10 +332,13 @@ jobs:
           APK="ZAM_Mobile_${VERSION}_aarch64.apk"
           cp "$SRC" "$APK"
           APK_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/${APK}"
-          # major*10000 + minor*100 + patch (0.16.1 → 1601)
+          # Tauri derives the installed APK's versionCode as
+          # major*1000000 + minor*1000 + patch (0.16.1 → 16001); the manifest
+          # must use the same scheme or the in-app update check never fires.
+          # Mirrors versionCodeFromSemver in mobile/src/update.ts.
           VERSION_CODE="$(node -e "
             const [a,b,c]=('${VERSION}'.replace(/^v/,'').split('.').map(Number));
-            console.log((a||0)*10000+(b||0)*100+(c||0));
+            console.log((a||0)*1000000+(b||0)*1000+(c||0));
           ")"
           node -e "
             const fs=require('fs');

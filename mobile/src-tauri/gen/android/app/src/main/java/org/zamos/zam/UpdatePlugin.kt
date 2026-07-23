@@ -33,8 +33,9 @@ class UpdateInstallArgs {
 /**
  * Sideload update path for field-test APKs published on GitHub Releases.
  *
- * Manifest shape (mobile-latest.json):
- * { "version": "0.16.2", "versionCode": 1602, "url": "https://.../ZAM_Mobile_....apk" }
+ * Manifest shape (mobile-latest.json) — versionCode uses Tauri's APK scheme
+ * (major*1000000 + minor*1000 + patch), matching BuildConfig.VERSION_CODE:
+ * { "version": "0.16.2", "versionCode": 16002, "url": "https://.../ZAM_Mobile_....apk" }
  */
 @TauriPlugin
 class UpdatePlugin(private val activity: Activity) : Plugin(activity) {

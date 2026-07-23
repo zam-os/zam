@@ -20,9 +20,10 @@ describe("parseSemver / isNewerVersion", () => {
 });
 
 describe("versionCodeFromSemver", () => {
-  it("encodes a monotonic code for Android", () => {
-    expect(versionCodeFromSemver("0.16.1")).toBe(1601);
-    expect(versionCodeFromSemver("v1.2.3")).toBe(10203);
+  it("matches Tauri's versionCode derivation for the installed APK", () => {
+    expect(versionCodeFromSemver("0.16.1")).toBe(16001);
+    expect(versionCodeFromSemver("0.17.0")).toBe(17000);
+    expect(versionCodeFromSemver("v1.2.3")).toBe(1002003);
   });
 });
 
@@ -37,7 +38,7 @@ describe("buildMobileLatestManifest", () => {
       }),
     ).toEqual({
       version: "0.16.2",
-      versionCode: 1602,
+      versionCode: 16002,
       url: "https://github.com/zam-os/zam/releases/download/v0.16.2/ZAM_Mobile_0.16.2_aarch64.apk",
       notes: "sideload channel",
     });
