@@ -47,7 +47,15 @@ jobs:
       # Package zam-core → Settings → Trusted publishing → GitHub Actions
       #   org/user: zam-os, repo: zam, workflow: release.yml, action: npm publish
       - name: Publish to npm
-        run: npm publish --provenance --access public
+        # Idempotent so a moved/re-pushed tag (e.g. a failed platform job fixed
+        # post-tag) does not fail the rerun on an already-published version.
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if npm view "zam-core@${VERSION}" version >/dev/null 2>&1; then
+            echo "zam-core@${VERSION} is already on npm; skipping publish."
+            exit 0
+          fi
+          npm publish --provenance --access public
 
   publish-tauri:
     permissions:
@@ -263,12 +271,19 @@ jobs:
 
       - name: Install Android SDK packages
         run: |
-          sdkmanager --install \
-            "platforms;android-37" \
-            "build-tools;37.0.0" \
-            "ndk;29.0.14206865" \
-            "platform-tools"
+          set -euo pipefail
+          # The runner's preinstalled cmdline-tools can predate API 37, and its
+          # sdkmanager then fails with "Failed to find package 'platforms;android-37'"
+          # (v0.17.0 first-run failure). Update cmdline-tools and use the new binary.
           yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager --install "cmdline-tools;latest"
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          "$SDKMANAGER" --install "ndk;29.0.14206865" "platform-tools"
+          # Platform and build-tools are Gradle-auto-provisionable once licenses
+          # are accepted, so a lagging repo listing must not fail the release.
+          "$SDKMANAGER" --install "platforms;android-37" "build-tools;37.0.0" \
+            || echo "::warning::API-37 platform/build-tools not preinstalled; Gradle will auto-provision"
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -322,8 +337,11 @@ jobs:
         run: |
           set -euo pipefail
           VERSION="${PKG_VERSION}"
-          # Prefer universal release APK; fall back to aarch64-only output paths.
-          SRC="$(find mobile/src-tauri/gen/android/app/build/outputs/apk -type f -name '*.apk' | head -n 1)"
+          # Prefer release-signed outputs; fall back to any APK the build produced.
+          SRC="$(find mobile/src-tauri/gen/android/app/build/outputs/apk -type f -name '*.apk' -path '*release*' | head -n 1)"
+          if [ -z "$SRC" ]; then
+            SRC="$(find mobile/src-tauri/gen/android/app/build/outputs/apk -type f -name '*.apk' | head -n 1)"
+          fi
           if [ -z "$SRC" ]; then
             echo "::error::No APK produced by android:build"
             find mobile/src-tauri/gen/android/app/build/outputs -type f | head -50
