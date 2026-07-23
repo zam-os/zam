@@ -59,9 +59,13 @@ pub fn reminder_check_permissions<R: Runtime>(
 pub async fn reminder_request_permissions<R: Runtime>(
     app: AppHandle<R>,
 ) -> Result<ReminderPermissionState, String> {
+    // Same empty-body NPE as voice: always send a non-null request payload.
     app.state::<Reminder<R>>()
         .0
-        .run_mobile_plugin_async("requestPermissions", ())
+        .run_mobile_plugin_async(
+            "requestPermissions",
+            serde_json::json!({ "permissions": ["notifications"] }),
+        )
         .await
         .map_err(|error| error.to_string())
 }

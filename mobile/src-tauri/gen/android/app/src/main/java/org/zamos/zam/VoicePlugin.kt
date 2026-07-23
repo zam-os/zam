@@ -4,12 +4,15 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.AudioFocusRequest
 import android.media.AudioManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
@@ -17,10 +20,12 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import app.tauri.PermissionState
 import app.tauri.annotation.Command
 import app.tauri.annotation.InvokeArg
 import app.tauri.annotation.Permission
+import app.tauri.annotation.PermissionCallback
 import app.tauri.annotation.TauriPlugin
 import app.tauri.plugin.Invoke
 import app.tauri.plugin.JSObject
@@ -301,9 +306,26 @@ class VoicePlugin(private val activity: Activity) : Plugin(activity) {
     invoke?.reject(recognitionError(error))
   }
 
+  private fun hasRecordAudioPermission(): Boolean =
+    ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) ==
+      PackageManager.PERMISSION_GRANTED
+
+  private fun microphoneStatePayload(): JSObject {
+    val state =
+      if (hasRecordAudioPermission() || getPermissionState("microphone") == PermissionState.GRANTED) {
+        "granted"
+      } else {
+        getPermissionState("microphone")?.toString() ?: "prompt"
+      }
+    val result = JSObject()
+    result.put("microphone", state)
+    return result
+  }
+
   private fun recognitionError(error: Int): String = when (error) {
     SpeechRecognizer.ERROR_AUDIO -> "Mikrofonfehler"
-    SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> "Mikrofonberechtigung fehlt"
+    SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS ->
+      "Mikrofonberechtigung fehlt — bitte in den App-Einstellungen erlauben"
     SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED -> "Sprache wird lokal nicht unterstützt"
     SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE -> "Lokales Sprachmodell ist nicht heruntergeladen"
     SpeechRecognizer.ERROR_NETWORK,
@@ -369,11 +391,54 @@ class VoicePlugin(private val activity: Activity) : Plugin(activity) {
     activity.stopService(Intent(activity, VoiceSessionService::class.java))
   }
 
+  /** Prefer the platform PackageManager state over Tauri's cached alias map. */
+  @Command
+  override fun checkPermissions(invoke: Invoke) {
+    invoke.resolve(microphoneStatePayload())
+  }
+
+  /**
+   * Override so an empty/null invoke body cannot NPE Tauri's default parser
+   * (seen on Pixel when the Rust side passed `()`).
+   */
+  @Command
+  override fun requestPermissions(invoke: Invoke) {
+    activity.runOnUiThread {
+      if (hasRecordAudioPermission()) {
+        invoke.resolve(microphoneStatePayload())
+        return@runOnUiThread
+      }
+      requestPermissionForAlias("microphone", invoke, "microphonePermissionCallback")
+    }
+  }
+
+  @PermissionCallback
+  private fun microphonePermissionCallback(invoke: Invoke) {
+    invoke.resolve(microphoneStatePayload())
+  }
+
+  @Command
+  fun openAppSettings(invoke: Invoke) {
+    activity.runOnUiThread {
+      try {
+        val intent = Intent(
+          Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+          Uri.fromParts("package", activity.packageName, null),
+        )
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        activity.startActivity(intent)
+        invoke.resolve()
+      } catch (error: Exception) {
+        invoke.reject(error.message ?: "App-Einstellungen konnten nicht geöffnet werden")
+      }
+    }
+  }
+
   @Command
   fun start(invoke: Invoke) {
     val args = invoke.parseArgs(VoiceLocaleArgs::class.java)
     activity.runOnUiThread {
-      if (getPermissionState("microphone") != PermissionState.GRANTED) {
+      if (!hasRecordAudioPermission()) {
         invoke.reject("Mikrofonberechtigung fehlt")
         return@runOnUiThread
       }

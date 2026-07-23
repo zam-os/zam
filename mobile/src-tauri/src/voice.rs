@@ -65,9 +65,14 @@ pub fn voice_check_permissions<R: Runtime>(
 pub async fn voice_request_permissions<R: Runtime>(
     app: AppHandle<R>,
 ) -> Result<VoicePermissionState, String> {
+    // Tauri's Android Plugin.requestPermissions NPE's on a null invoke body.
+    // Pass an explicit alias list (or at least `{}`) so parseArgs succeeds.
     app.state::<Voice<R>>()
         .0
-        .run_mobile_plugin_async("requestPermissions", ())
+        .run_mobile_plugin_async(
+            "requestPermissions",
+            serde_json::json!({ "permissions": ["microphone"] }),
+        )
         .await
         .map_err(|error| error.to_string())
 }
@@ -144,6 +149,16 @@ pub fn voice_install_data<R: Runtime>(app: AppHandle<R>) -> Result<(), String> {
         .map_err(|error| error.to_string())
 }
 
+#[cfg(target_os = "android")]
+#[tauri::command]
+pub fn voice_open_app_settings<R: Runtime>(app: AppHandle<R>) -> Result<(), String> {
+    app.state::<Voice<R>>()
+        .0
+        .run_mobile_plugin::<serde_json::Value>("openAppSettings", ())
+        .map(|_| ())
+        .map_err(|error| error.to_string())
+}
+
 #[cfg(not(target_os = "android"))]
 #[tauri::command]
 pub fn voice_check_permissions() -> serde_json::Value {
@@ -183,5 +198,11 @@ pub fn voice_listen(_locale: String) -> Result<serde_json::Value, String> {
 #[cfg(not(target_os = "android"))]
 #[tauri::command]
 pub fn voice_install_data() -> Result<(), String> {
+    Err("voice mode is only available on Android".to_string())
+}
+
+#[cfg(not(target_os = "android"))]
+#[tauri::command]
+pub fn voice_open_app_settings() -> Result<(), String> {
     Err("voice mode is only available on Android".to_string())
 }

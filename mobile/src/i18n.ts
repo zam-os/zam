@@ -132,7 +132,7 @@ const DE: Messages = {
     "Android-Sprachdaten geöffnet. Deutsch oder Englisch lokal herunterladen und danach den Sprachmodus erneut starten.",
   voice_data_failed: "Sprachdaten konnten nicht geöffnet werden: {error}",
   mic_denied:
-    "Mikrofonzugriff wurde nicht erlaubt. Berechtigung in den App-Einstellungen freigeben.",
+    "Mikrofonzugriff fehlt. Bitte in den App-Einstellungen „Mikrofon“ erlauben und Sprachmodus erneut starten.",
   compare_and_rate: "Antwort vergleichen und ehrlich bewerten.",
   evaluating_answer: "Antwort wird beurteilt …",
   evaluation_kicker: "Einschätzung",
@@ -285,7 +285,7 @@ const EN: Messages = {
     "Android voice data opened. Download German or English locally, then start voice mode again.",
   voice_data_failed: "Could not open voice data: {error}",
   mic_denied:
-    "Microphone access was not granted. Allow the permission in the app settings.",
+    "Microphone access is missing. Allow “Microphone” in the app settings, then start voice mode again.",
   compare_and_rate: "Compare and rate yourself honestly.",
   evaluating_answer: "Evaluating your answer …",
   evaluation_kicker: "Assessment",

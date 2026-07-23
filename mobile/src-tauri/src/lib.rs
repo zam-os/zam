@@ -38,6 +38,7 @@ pub fn run() {
             voice::voice_speak,
             voice::voice_listen,
             voice::voice_install_data,
+            voice::voice_open_app_settings,
             reminder::reminder_check_permissions,
             reminder::reminder_request_permissions,
             reminder::reminder_schedule,

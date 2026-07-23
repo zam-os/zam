@@ -175,19 +175,36 @@ interface VoiceRecognitionResult {
   transcript: string;
 }
 
-const voicePort: VoicePort = {
-  async start(locale: VoiceLocale): Promise<void> {
-    let permission = await invoke<VoicePermissionState>(
-      "voice_check_permissions",
-    );
-    if (permission.microphone !== "granted") {
+async function ensureMicrophonePermission(): Promise<void> {
+  let permission = await invoke<VoicePermissionState>(
+    "voice_check_permissions",
+  );
+  if (permission.microphone !== "granted") {
+    try {
       permission = await invoke<VoicePermissionState>(
         "voice_request_permissions",
       );
+    } catch (error) {
+      throw new Error(
+        `${t("mic_denied")} (${error instanceof Error ? error.message : String(error)})`,
+      );
     }
-    if (permission.microphone !== "granted") {
-      throw new Error(t("mic_denied"));
+  }
+  if (permission.microphone !== "granted") {
+    // Show the same recovery affordance as the camera-denied path.
+    installVoiceDataButton.hidden = true;
+    try {
+      await invoke("voice_open_app_settings");
+    } catch {
+      // Settings open is best-effort; the status line still explains the fix.
     }
+    throw new Error(t("mic_denied"));
+  }
+}
+
+const voicePort: VoicePort = {
+  async start(locale: VoiceLocale): Promise<void> {
+    await ensureMicrophonePermission();
     await invoke("voice_start", { locale });
   },
   async stop(): Promise<void> {
