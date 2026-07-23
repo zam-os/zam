@@ -128,7 +128,9 @@ Ordered by leverage:
    **and** card (queue-visible), mirroring `zam bridge add-token`.
 3. **Quick capture**: share or paste free text/URL → token draft the user
    confirms. Optional LLM decomposition into multiple tokens is opt-in and
-   off by default.
+   off by default. Photographing/importing an image (textbook, worksheet,
+   screenshot) is an **online-only** extension of this path through the cloud
+   `vision` role — decompose into confirmable token drafts; see Phase 7.
 4. **Curriculum catalogs** (Epic #132 providers): the field-test content
    path is the **desktop** curriculum import (`lehrplanplus-bayern`,
    Realschule grade 9) synced to the phone — available from Phase 1 on.
@@ -326,8 +328,61 @@ server database, per FR-0).
   release APK, uploads `ZAM_Mobile_<ver>_aarch64.apk` + `mobile-latest.json`
   to the GitHub draft release, and the companion checks that manifest on
   launch / Settings → App-Update (native download + system package installer).
-  Remaining Phase-6 items (performance/battery, screenshot import #211) are
-  open.
+  Remaining Phase-6 items (performance/battery validation on the Pixel 9) are
+  open; camera/screenshot import (#211) is split out as **Phase 7** below.
+- [ ] **Phase 7 — camera/screenshot import (cloud VL)**: photograph or pick a
+  textbook/worksheet/screenshot on the phone → a cloud vision-language model OCRs
+  and decomposes it into **multiple** bridge-token drafts → the learner confirms
+  each through the existing draft UX → token+card, synced. Completes FR-2 item 3
+  for the image modality (#211). **Online-only by design: import is unavailable
+  offline** — no queue, no on-device VL (on-device VL stays a non-goal); a
+  missing cloud vision role, no connectivity, or a failed call is rejected
+  honestly, never silently attempted (Thomas, 2026-07-23). Decided approach
+  (Thomas, 2026-07-23): in-app camera+gallery capture (pure-web `<input
+  capture>` with WebView canvas-downscale — no manifest/Kotlin change); the
+  machine-local **`vision` role** (already used by the observer,
+  `src/cli/llm/vision.ts`) is carried in the QR pairing payload; the cloud call
+  runs through a **native Rust command** (bypasses the documented
+  WebView-CORS unreliability); one image yields **several** drafts confirmed via
+  a "draft i of N" stepper. Build steps:
+  1. Contract — add optional `llm.vision` (`ZamPairLlmEndpoint`) to
+     `ZamPairPayloadV1` (`src/bridge/mobile-pairing.ts`), reusing
+     `parseLlmEndpoint`; keep the 2000-byte QR-budget assertion (backward
+     compatible with vision-less payloads).
+  2. Desktop — the `mobile-pairing-payload` bridge command packs `llm.vision`
+     when the machine-local vision role is enabled and a usable cloud endpoint
+     (`!local`, non-loopback); on budget overflow, drop `fallback` sub-chains
+     first, else omit vision with a clear note (never silent truncation). Recall
+     stays on-device untouched.
+  3. Native transport — `mobile/src-tauri/src/vision.rs` (`reqwest`) exposes a
+     thin `vision_request({ url, apiKey, apiFlavor, body })` returning the raw
+     response text; Android-gated, desktop stub errors; registered in `lib.rs`.
+     INTERNET permission is already declared.
+  4. Capture + decomposition (WebView) — `mobile/src/image-import.ts` acquires
+     and downscales the image (≤1568 px long edge, JPEG ≈0.7, post-downscale
+     byte ceiling); `mobile/src/vl-import.ts` builds the `chat-completions`
+     multimodal request (OCR-and-decompose → strict JSON array), parses it
+     fence-tolerantly, and normalizes each entry through the existing
+     `normalizeBridgeDraft`. `anthropic-messages` vision is rejected honestly for
+     now (fast-follow — the shape already exists in `vision.ts` to port).
+  5. Confirm UX + origin — a testable multi-draft controller drives a
+     "draft i of N" stepper over the existing confirm form (Save & next / Skip);
+     add `image-vl` to `MobileImportOrigin` (`mobile/src/import.ts`), treated
+     like `bridge-json` for `question_source: "llm"`, stamping the token
+     `provider` with the vision model. New de/en i18n strings (parity asserted by
+     `tests/mobile/i18n.test.ts`).
+  Error handling: a text-only model → the existing "set a multimodal model" hint;
+  non-JSON/empty output → honest parse-failure, stay on the import view;
+  network/timeout → honest message + retry. Tests (vitest + tauri-invoke-stub):
+  payload accepts/validates `llm.vision` and respects the byte budget; `vl-import`
+  prompt/parse + per-entry normalization + anthropic-reject + endpoint gating;
+  downscale bounds; `confirmMobileImport` image-vl → `question_source:"llm"`;
+  multi-draft controller advance/skip; desktop bridge includes/omits vision
+  correctly. The native `vision_request` path is validated on-device (native HTTP
+  is impractical to unit-test). Pixel 9 / Android 17 validation criteria:
+  photograph a Realschule grade-9 worksheet → several drafts appear → confirm
+  two, skip one → a manual sync delivers the new cards to the paired Turso DB
+  with `llm` question provenance.
 
 ## Decisions (Thomas, 2026-07-21)
 
