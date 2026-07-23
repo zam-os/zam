@@ -146,4 +146,25 @@ describe("mobile additive import and quick capture", () => {
     );
     expect(await getTokenBySlug(db, "rollback-import")).toBeUndefined();
   });
+
+  it("imports image-vl drafts with llm question provenance and vision: provider", async () => {
+    const draft = {
+      origin: "image-vl" as const,
+      slug: "photo-token",
+      title: "From photo",
+      concept: "Captured concept",
+      domain: "physik",
+      bloomLevel: 2,
+      question: "What was on the worksheet?",
+      provider: "vision:gpt-4o",
+    };
+
+    const result = await confirmMobileImport(db, "student-9", draft);
+    expect(result.token).toMatchObject({
+      slug: "photo-token",
+      question_source: "llm",
+      provider: "vision:gpt-4o",
+    });
+    expect(await getCard(db, result.token.id, "student-9")).toBeDefined();
+  });
 });

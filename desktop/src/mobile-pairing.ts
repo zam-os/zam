@@ -180,6 +180,10 @@ export function initMobilePairing(onProfileCreated: () => void): void {
   };
 
   openButton.addEventListener("click", () => {
+    if (openButton.disabled) {
+      setStatus(t("pairing_server_required"), true);
+      return;
+    }
     overlay.classList.add("active");
     void loadProfiles();
   });

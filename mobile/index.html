@@ -588,8 +588,9 @@
             <p class="eyebrow" data-i18n="import_kicker">Import</p>
             <h2 data-i18n="add_content">Lerninhalt hinzufügen</h2>
             <p class="muted" data-i18n="import_desc">
-              Bridge-JSON auswählen oder Text bzw. URL einfügen. Vor dem
-              Speichern wird immer ein bearbeitbarer Entwurf gezeigt.
+              Bridge-JSON, Text/URL oder Foto/Screenshot. Vor dem Speichern
+              wird immer ein bearbeitbarer Entwurf gezeigt. Bildimport braucht
+              Cloud-Vision in der Bibliothek und Internet.
             </p>
             <label>
               <span data-i18n="import_file_label">Bridge-JSON-Datei</span>
@@ -607,9 +608,24 @@
                 data-i18n-placeholder="import_text_ph"
               ></textarea>
             </label>
+            <label>
+              <span data-i18n="import_image_label">Foto oder Screenshot</span>
+              <input
+                id="import-image"
+                type="file"
+                accept="image/*"
+                capture="environment"
+              />
+              <span class="muted" data-i18n="import_image_hint"
+                >Kamera oder Galerie — Online, Cloud-Vision</span
+              >
+            </label>
             <div class="buttons">
               <button id="prepare-import" class="primary" type="button" data-i18n="create_draft">
                 Entwurf erstellen
+              </button>
+              <button id="decompose-image" type="button" data-i18n="import_image_decompose">
+                Bild zerlegen
               </button>
               <button id="cancel-import" type="button" data-i18n="cancel">
                 Abbrechen
@@ -619,6 +635,7 @@
 
             <form id="import-draft-form" hidden>
               <div class="divider"></div>
+              <p id="import-draft-progress" class="muted" hidden></p>
               <h2 data-i18n="confirm_draft">Entwurf bestätigen</h2>
               <label>
                 <span data-i18n="slug">Slug</span>
@@ -679,9 +696,14 @@
                   <option value="autonomy">Autonomy</option>
                 </select>
               </label>
-              <button id="confirm-import" class="primary" type="submit" data-i18n="save_token">
-                Token und Karte speichern
-              </button>
+              <div class="buttons">
+                <button id="confirm-import" class="primary" type="submit" data-i18n="save_token">
+                  Token und Karte speichern
+                </button>
+                <button id="skip-import-draft" type="button" hidden data-i18n="import_skip_draft">
+                  Überspringen
+                </button>
+              </div>
             </form>
           </div>
         </section>

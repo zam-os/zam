@@ -1,10 +1,10 @@
 //! libsql-backed database commands.
 //!
-//! The Rust shell owns the database — a plain local file or an
-//! offline-writable synced copy of the server database — and the WebView
-//! reaches it through these commands. The wire encoding (blobs as
-//! `{"$blob": base64}`, everything else as JSON primitives) is documented in
-//! `mobile/src/provider.ts` and mirrored by the test stub in
+//! The Rust shell owns the database — a plain local file (dev only) or an
+//! **online-only remote** connection to the server primary (ADR 2026-07-23) —
+//! and the WebView reaches it through these commands. The wire encoding
+//! (blobs as `{"$blob": base64}`, everything else as JSON primitives) is
+//! documented in `mobile/src/provider.ts` and mirrored by the test stub in
 //! `tests/helpers/tauri-invoke-stub.ts`; the three must stay in sync.
 
 use base64::engine::general_purpose::STANDARD as BASE64;
@@ -18,15 +18,18 @@ use tokio::sync::Mutex;
 pub struct DbState(Mutex<Option<OpenDatabase>>);
 
 struct OpenDatabase {
+    /// Kept alive so the remote/local client outlives `connection`.
+    #[allow(dead_code)]
     database: libsql::Database,
     connection: libsql::Connection,
-    synced: bool,
+    /// True when the connection is online-only against a remote primary.
+    remote: bool,
 }
 
 #[derive(Debug, PartialEq)]
 enum DatabaseMode {
     Local,
-    Synced { url: String, auth_token: String },
+    Remote { url: String, auth_token: String },
 }
 
 #[derive(Serialize)]
@@ -40,18 +43,22 @@ fn err(error: impl std::fmt::Display) -> String {
     error.to_string()
 }
 
-async fn configure_connection(connection: &libsql::Connection, synced: bool) -> Result<(), String> {
+async fn configure_connection(connection: &libsql::Connection, remote: bool) -> Result<(), String> {
+    // Remote libsql/Hrana primaries reject many local PRAGMAs with
+    // "unsupported statement" — skip configuration there (ADR 2026-07-23).
+    if remote {
+        // Marker for on-device verification: remote path skips PRAGMAs entirely.
+        return Ok(());
+    }
+
     connection
         .execute_batch("PRAGMA foreign_keys = ON; PRAGMA busy_timeout = 5000;")
         .await
         .map_err(err)?;
-
-    if !synced {
-        connection
-            .execute_batch("PRAGMA journal_mode = WAL;")
-            .await
-            .map_err(err)?;
-    }
+    connection
+        .execute_batch("PRAGMA journal_mode = WAL;")
+        .await
+        .map_err(err)?;
 
     Ok(())
 }
@@ -69,20 +76,9 @@ fn database_mode(
 
     match (url, token) {
         (None, None) => Ok(DatabaseMode::Local),
-        (Some(url), Some(auth_token)) => Ok(DatabaseMode::Synced { url, auth_token }),
-        _ => Err("sync URL and auth token must be provided together".to_string()),
+        (Some(url), Some(auth_token)) => Ok(DatabaseMode::Remote { url, auth_token }),
+        _ => Err("database URL and auth token must be provided together".to_string()),
     }
-}
-
-fn synced_database_filename(url: &str) -> String {
-    // Stable FNV-1a keeps replicas for different server databases separate
-    // without putting hostnames or other credential-adjacent data on disk.
-    let mut hash = 0xcbf29ce484222325_u64;
-    for byte in url.as_bytes() {
-        hash ^= u64::from(*byte);
-        hash = hash.wrapping_mul(0x100000001b3);
-    }
-    format!("zam-sync-{hash:016x}.db")
 }
 
 fn to_libsql(value: &Json, index: usize) -> Result<libsql::Value, String> {
@@ -130,9 +126,11 @@ fn convert_params(params: &[Json]) -> Result<Vec<libsql::Value>, String> {
         .collect()
 }
 
-/// Open (or reopen) the database at the app-data directory. With both
-/// `sync_url` and `auth_token` present this becomes an offline-writable
-/// synced database; otherwise it is a separate plain local file.
+/// Open (or reopen) the database.
+///
+/// With both `sync_url` and `auth_token` present this opens an **online-only
+/// remote** connection to the server primary (ADR 2026-07-23). Without
+/// credentials it opens a plain local file for development only.
 #[tauri::command]
 pub async fn db_open(
     app: AppHandle,
@@ -142,31 +140,40 @@ pub async fn db_open(
 ) -> Result<String, String> {
     let dir = app.path().app_data_dir().map_err(err)?;
     std::fs::create_dir_all(&dir).map_err(err)?;
-    let (path, database, synced) = match database_mode(sync_url, auth_token)? {
-        DatabaseMode::Synced { url, auth_token } => {
-            // Keep development-only local databases separate: libsql sync
-            // metadata is tied to the database file and cannot safely reuse
-            // an arbitrary local SQLite file.
-            let path = dir.join(synced_database_filename(&url));
-            let needs_bootstrap = !path.exists();
-            let builder = libsql::Builder::new_synced_database(path.clone(), url, auth_token);
+    let (location, database, remote) = match database_mode(sync_url, auth_token)? {
+        DatabaseMode::Remote { url, auth_token } => {
+            // libsql remote HTTP expects an https:// (or http://) base; keep
+            // libsql:// as-is for display but normalize the wire URL.
+            let wire_url = if url.starts_with("libsql://") {
+                format!("https://{}", url.trim_start_matches("libsql://"))
+            } else {
+                url.clone()
+            };
+            // Android: use packaged WebPKI roots (native CA store is empty to
+            // the Rust TLS stack — default connector fails with "no valid
+            // native root CA certificates"). Same pattern as the former
+            // synced-database path.
+            let builder = libsql::Builder::new_remote(wire_url.clone(), auth_token);
             #[cfg(target_os = "android")]
             let builder = builder.connector(
                 hyper_rustls::HttpsConnectorBuilder::new()
                     .with_webpki_roots()
-                    .https_only()
+                    .https_or_http()
                     .enable_http1()
                     .build(),
             );
             let database = builder.build().await.map_err(err)?;
-
-            // The initial bootstrap may replace the database file, so it must
-            // happen before creating the first connection. Existing synced
-            // databases open locally first and remain usable without network.
-            if needs_bootstrap {
-                database.sync().await.map_err(err)?;
-            }
-            (path, database, true)
+            // Connectivity check before handing the connection to the app.
+            let probe = database.connect().map_err(err)?;
+            probe
+                .query("SELECT 1", ())
+                .await
+                .map_err(|e| {
+                    format!(
+                        "cannot reach server database (online required) at {wire_url}: {e}"
+                    )
+                })?;
+            (format!("remote:{url}"), database, true)
         }
         DatabaseMode::Local => {
             let path = dir.join("zam-local.db");
@@ -174,18 +181,18 @@ pub async fn db_open(
                 .build()
                 .await
                 .map_err(err)?;
-            (path, database, false)
+            (path.to_string_lossy().into_owned(), database, false)
         }
     };
     let connection = database.connect().map_err(err)?;
-    configure_connection(&connection, synced).await?;
+    configure_connection(&connection, remote).await?;
 
     *state.0.lock().await = Some(OpenDatabase {
         database,
         connection,
-        synced,
+        remote,
     });
-    Ok(path.to_string_lossy().into_owned())
+    Ok(location)
 }
 
 #[tauri::command]
@@ -249,15 +256,21 @@ pub async fn db_execute_batch(state: State<'_, DbState>, sql: String) -> Result<
     Ok(())
 }
 
-/// Push local changes and pull remote changes (synced databases only).
+/// Connectivity check for online-only remotes (no local replica to push/pull).
+///
+/// Kept as `db_sync` so the TypeScript `Database.sync()` contract stays stable;
+/// on remote mode this only verifies the primary is reachable.
 #[tauri::command]
 pub async fn db_sync(state: State<'_, DbState>) -> Result<(), String> {
     let guard = state.0.lock().await;
     let open = guard.as_ref().ok_or("database is not open")?;
-    if !open.synced {
+    if !open.remote {
         return Err("database is local-only; nothing to sync".to_string());
     }
-    open.database.sync().await.map_err(err)?;
+    open.connection
+        .query("SELECT 1", ())
+        .await
+        .map_err(|e| format!("server database unreachable: {e}"))?;
     Ok(())
 }
 
@@ -269,7 +282,7 @@ pub async fn db_close(state: State<'_, DbState>) -> Result<(), String> {
 
 #[cfg(test)]
 mod tests {
-    use super::{configure_connection, database_mode, synced_database_filename, DatabaseMode};
+    use super::{configure_connection, database_mode, DatabaseMode};
 
     #[test]
     fn accepts_local_mode_when_both_sync_fields_are_absent() {
@@ -277,14 +290,14 @@ mod tests {
     }
 
     #[test]
-    fn trims_and_accepts_complete_sync_credentials() {
+    fn trims_and_accepts_complete_remote_credentials() {
         assert_eq!(
             database_mode(
                 Some("  libsql://example.turso.io  ".to_string()),
                 Some("  secret  ".to_string()),
             )
             .unwrap(),
-            DatabaseMode::Synced {
+            DatabaseMode::Remote {
                 url: "libsql://example.turso.io".to_string(),
                 auth_token: "secret".to_string(),
             },
@@ -292,14 +305,14 @@ mod tests {
     }
 
     #[test]
-    fn rejects_partial_sync_credentials() {
+    fn rejects_partial_remote_credentials() {
         assert!(database_mode(Some("libsql://example".to_string()), None).is_err());
         assert!(database_mode(None, Some("secret".to_string())).is_err());
         assert!(database_mode(Some("  ".to_string()), Some("secret".to_string())).is_err());
     }
 
     #[test]
-    fn configures_required_connection_pragmas() {
+    fn configures_required_connection_pragmas_on_local() {
         tauri::async_runtime::block_on(async {
             let database = libsql::Builder::new_local(":memory:")
                 .build()
@@ -307,7 +320,7 @@ mod tests {
                 .unwrap();
             let connection = database.connect().unwrap();
 
-            configure_connection(&connection, true).await.unwrap();
+            configure_connection(&connection, false).await.unwrap();
 
             let mut foreign_keys = connection.query("PRAGMA foreign_keys", ()).await.unwrap();
             let foreign_keys = foreign_keys.next().await.unwrap().unwrap();
@@ -320,11 +333,16 @@ mod tests {
     }
 
     #[test]
-    fn keeps_server_replicas_separate_without_leaking_the_hostname() {
-        let first = synced_database_filename("libsql://first.example");
-        let second = synced_database_filename("libsql://second.example");
-        assert_ne!(first, second);
-        assert!(first.starts_with("zam-sync-"));
-        assert!(!first.contains("example"));
+    fn skips_pragmas_for_remote_connections() {
+        tauri::async_runtime::block_on(async {
+            let database = libsql::Builder::new_local(":memory:")
+                .build()
+                .await
+                .unwrap();
+            let connection = database.connect().unwrap();
+
+            // Must not error; remote Hrana rejects these PRAGMAs.
+            configure_connection(&connection, true).await.unwrap();
+        });
     }
 }

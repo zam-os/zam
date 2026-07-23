@@ -20,6 +20,7 @@ import {
 } from "./i18n.js";
 import { initCurriculumWizard } from "./curriculum-wizard.js";
 import { initMobilePairing } from "./mobile-pairing.js";
+import { initServerDbWizard } from "./server-db.js";
 import {
   beginTurn,
   buildDiscussReviewArgs,
@@ -4659,6 +4660,7 @@ window.addEventListener("DOMContentLoaded", () => {
   setupLocaleSwitcher();
   initLearningContentStudio();
   initCurriculumWizard();
+  initServerDbWizard(() => void loadDatabaseStatus());
   initMobilePairing(() => void loadDatabaseStatus());
 
   // Load initial dashboard state

@@ -81,6 +81,21 @@ const DATABASE_SETTINGS_KEYS = [
   "database_profile_switch_confirm",
   "database_profile_switched",
   "database_refresh",
+  "server_db_title",
+  "server_db_help",
+  "server_db_url",
+  "server_db_token",
+  "server_db_url_ph",
+  "server_db_token_ph",
+  "server_db_connect",
+  "server_db_checking",
+  "server_db_local_only",
+  "server_db_active",
+  "server_db_connecting",
+  "server_db_connected",
+  "server_db_fields_required",
+  "server_db_error",
+  "server_db_pair_blocked",
 ] as const;
 
 const QUESTION_WAIT_KEYS = [

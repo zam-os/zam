@@ -35,11 +35,16 @@ import {
   t,
   tf,
 } from "./i18n.js";
+import { downscaleImageFile } from "./image-import.js";
 import {
   confirmMobileImport,
   type MobileTokenDraft,
   parseMobileImport,
 } from "./import.js";
+import {
+  createMultiDraftController,
+  type MultiDraftController,
+} from "./multi-draft.js";
 import { createTauriDatabase } from "./provider.js";
 import {
   formatTimeInput,
@@ -58,6 +63,11 @@ import {
   DEFAULT_MOBILE_UPDATE_MANIFEST,
   type MobileUpdateInfo,
 } from "./update.js";
+import {
+  resolveMobileVisionEndpoint,
+  visionImportUnavailableReason,
+} from "./vision-config.js";
+import { decomposeImageViaVision } from "./vl-import.js";
 import {
   HandsFreeReviewController,
   resolveVoiceLocale,
@@ -95,10 +105,15 @@ const openImportButton = element<HTMLButtonElement>("open-import");
 const importView = element<HTMLElement>("import-view");
 const importFile = element<HTMLInputElement>("import-file");
 const importInput = element<HTMLTextAreaElement>("import-input");
+const importImage = element<HTMLInputElement>("import-image");
 const prepareImportButton = element<HTMLButtonElement>("prepare-import");
+const decomposeImageButton = element<HTMLButtonElement>("decompose-image");
 const cancelImportButton = element<HTMLButtonElement>("cancel-import");
 const importStatus = element<HTMLParagraphElement>("import-status");
 const importDraftForm = element<HTMLFormElement>("import-draft-form");
+const importDraftProgress = element<HTMLParagraphElement>(
+  "import-draft-progress",
+);
 const importSlug = element<HTMLInputElement>("import-slug");
 const importTitle = element<HTMLInputElement>("import-title");
 const importConcept = element<HTMLTextAreaElement>("import-concept");
@@ -113,6 +128,7 @@ const importKnowledgeContexts = element<HTMLInputElement>(
 );
 const importSymbiosisMode = element<HTMLSelectElement>("import-symbiosis-mode");
 const confirmImportButton = element<HTMLButtonElement>("confirm-import");
+const skipImportDraftButton = element<HTMLButtonElement>("skip-import-draft");
 const reviewView = element<HTMLElement>("review-view");
 const reviewProgress = element<HTMLElement>("review-progress");
 const reviewMeta = element<HTMLElement>("review-meta");
@@ -154,6 +170,7 @@ let reminderConfig: ReminderConfig = parseReminderConfig(
   localStorage.getItem(REMINDER_STORAGE_KEY),
 );
 let currentImportDraft: MobileTokenDraft | null = null;
+let multiDraftController: MultiDraftController<MobileTokenDraft> | null = null;
 let takingSharedImport = false;
 let pendingUpdate: MobileUpdateInfo | null = null;
 let currentEvaluation: MobileEvaluationResult | null = null;
@@ -359,6 +376,25 @@ function commaList(value: string): string[] | undefined {
   return entries.length ? entries : undefined;
 }
 
+function updateMultiDraftChrome(): void {
+  if (!multiDraftController || multiDraftController.isDone()) {
+    importDraftProgress.hidden = true;
+    importDraftProgress.textContent = "";
+    skipImportDraftButton.hidden = true;
+    confirmImportButton.textContent = t("save_token");
+    return;
+  }
+  const { current, total } = multiDraftController.progress();
+  importDraftProgress.hidden = false;
+  importDraftProgress.textContent = tf("import_draft_progress", {
+    current,
+    total,
+  });
+  skipImportDraftButton.hidden = false;
+  confirmImportButton.textContent =
+    total > 1 ? t("import_save_next") : t("save_token");
+}
+
 function renderImportDraft(draft: MobileTokenDraft, message?: string): void {
   currentImportDraft = draft;
   importSlug.value = draft.slug;
@@ -373,16 +409,26 @@ function renderImportDraft(draft: MobileTokenDraft, message?: string): void {
   importKnowledgeContexts.value = draft.knowledgeContexts?.join(", ") ?? "";
   importSymbiosisMode.value = draft.symbiosisMode ?? "";
   importDraftForm.hidden = false;
+  updateMultiDraftChrome();
   setImportStatus(
     message ??
       t(
         draft.origin === "bridge-json"
           ? "import_bridge_checked"
-          : "import_quick_prepared",
+          : draft.origin === "image-vl"
+            ? "import_bridge_checked"
+            : "import_quick_prepared",
       ),
   );
   showImport();
   importConcept.focus();
+}
+
+function startMultiDraftImport(drafts: MobileTokenDraft[]): void {
+  multiDraftController = createMultiDraftController(drafts);
+  const first = multiDraftController.current();
+  if (!first) return;
+  renderImportDraft(first);
 }
 
 function prepareImportText(text: string, message?: string): void {
@@ -415,16 +461,77 @@ function draftFromForm(): MobileTokenDraft {
     symbiosisMode:
       (importSymbiosisMode.value as MobileTokenDraft["symbiosisMode"]) ||
       undefined,
+    provider: currentImportDraft.provider ?? undefined,
   };
 }
 
 function resetImport(): void {
   currentImportDraft = null;
+  multiDraftController = null;
   importFile.value = "";
   importInput.value = "";
+  importImage.value = "";
   importDraftForm.reset();
   importDraftForm.hidden = true;
+  importDraftProgress.hidden = true;
+  importDraftProgress.textContent = "";
+  skipImportDraftButton.hidden = true;
+  confirmImportButton.textContent = t("save_token");
   setImportStatus("");
+}
+
+async function runImageDecompose(): Promise<void> {
+  const file = importImage.files?.[0];
+  if (!file) {
+    setImportStatus(t("import_image_hint"), true);
+    return;
+  }
+  if (!currentPairing) return;
+
+  decomposeImageButton.disabled = true;
+  prepareImportButton.disabled = true;
+  setImportStatus(t("import_image_working"));
+  try {
+    const unavailable = await visionImportUnavailableReason(db);
+    const endpoint = await resolveMobileVisionEndpoint(db);
+    if (!endpoint) {
+      setImportStatus(
+        tf("import_image_unavailable", {
+          error: unavailable ?? "cloud vision not configured",
+        }),
+        true,
+      );
+      return;
+    }
+
+    const image = await downscaleImageFile(file);
+    const drafts = await decomposeImageViaVision({
+      endpoint,
+      imageDataUrl: image.dataUrl,
+      locale: getLocale(),
+      request: async ({ url, headers, body, timeoutMs }) => {
+        const result = await invoke<string>("vision_request", {
+          url,
+          headers,
+          body,
+          timeoutMs,
+        });
+        return result;
+      },
+    });
+    startMultiDraftImport(drafts);
+  } catch (error) {
+    multiDraftController = null;
+    currentImportDraft = null;
+    importDraftForm.hidden = true;
+    setImportStatus(
+      tf("import_image_failed", { error: errorMessage(error) }),
+      true,
+    );
+  } finally {
+    decomposeImageButton.disabled = false;
+    prepareImportButton.disabled = false;
+  }
 }
 
 function queueSharedImport(payload: SharedImportPayload): void {
@@ -750,7 +857,10 @@ async function restoreReviewSession(userId: string): Promise<void> {
   }
 }
 
-/** Sync the paired replica with bounded retry, reporting each retry attempt. */
+/**
+ * Online-only reachability check (ADR 2026-07-23). There is no local replica
+ * to push/pull; `db.sync` verifies the remote primary answers.
+ */
 async function synchronize(report?: (message: string) => void): Promise<void> {
   await syncWithRetry(
     async () => {
@@ -775,7 +885,7 @@ async function connect(
   payload: ZamPairPayloadV1,
   requireInitialSync: boolean,
 ): Promise<void> {
-  setStatus(t("opening_replica"));
+  setStatus(t("opening_server_db"));
   await invoke("db_close");
   await invoke("db_open", {
     syncUrl: payload.database.url,
@@ -898,6 +1008,7 @@ openImportButton.addEventListener("click", () => {
 importFile.addEventListener("change", async () => {
   const file = importFile.files?.[0];
   if (!file) return;
+  multiDraftController = null;
   try {
     const content = await file.text();
     prepareImportText(content, tf("file_loaded", { name: file.name }));
@@ -909,8 +1020,19 @@ importFile.addEventListener("change", async () => {
   }
 });
 
+importImage.addEventListener("change", () => {
+  if (importImage.files?.[0]) {
+    setImportStatus(tf("file_loaded", { name: importImage.files[0].name }));
+  }
+});
+
 prepareImportButton.addEventListener("click", () => {
+  multiDraftController = null;
   prepareImportText(importInput.value);
+});
+
+decomposeImageButton.addEventListener("click", () => {
+  void runImageDecompose();
 });
 
 cancelImportButton.addEventListener("click", () => {
@@ -918,16 +1040,56 @@ cancelImportButton.addEventListener("click", () => {
   showDashboard();
 });
 
+skipImportDraftButton.addEventListener("click", () => {
+  if (!multiDraftController || !currentPairing) return;
+  const hasMore = multiDraftController.skip();
+  if (!hasMore) {
+    const { saved, skipped } = multiDraftController.state();
+    const userId = currentPairing.learner.userId;
+    resetImport();
+    void refresh(userId).then(() => {
+      showDashboard();
+      setStatus(tf("import_batch_done", { saved, skipped }));
+    });
+    return;
+  }
+  const next = multiDraftController.current();
+  if (next) renderImportDraft(next);
+});
+
 importDraftForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!currentPairing) return;
   confirmImportButton.disabled = true;
+  skipImportDraftButton.disabled = true;
   try {
+    const draft = draftFromForm();
     const result = await confirmMobileImport(
       db,
       currentPairing.learner.userId,
-      draftFromForm(),
+      draft,
     );
+
+    if (multiDraftController) {
+      const hasMore = multiDraftController.saveAndNext();
+      if (hasMore) {
+        const next = multiDraftController.current();
+        if (next) renderImportDraft(next);
+        setImportStatus(
+          tf("token_saved", {
+            title: result.token.title || result.token.slug,
+          }),
+        );
+        return;
+      }
+      const { saved, skipped } = multiDraftController.state();
+      resetImport();
+      await refresh(currentPairing.learner.userId);
+      showDashboard();
+      setStatus(tf("import_batch_done", { saved, skipped }));
+      return;
+    }
+
     resetImport();
     await refresh(currentPairing.learner.userId);
     showDashboard();
@@ -938,6 +1100,7 @@ importDraftForm.addEventListener("submit", async (event) => {
     setImportStatus(tf("import_failed", { error: errorMessage(error) }), true);
   } finally {
     confirmImportButton.disabled = false;
+    skipImportDraftButton.disabled = false;
   }
 });
 

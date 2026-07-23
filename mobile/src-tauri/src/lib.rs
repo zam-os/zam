@@ -3,6 +3,7 @@ mod on_device_llm;
 mod reminder;
 mod secure_store;
 mod update;
+mod vision;
 mod voice;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -51,7 +52,8 @@ pub fn run() {
             on_device_llm::on_device_llm_generate,
             update::update_get_version,
             update::update_check,
-            update::update_install
+            update::update_install,
+            vision::vision_request
         ])
         .run(tauri::generate_context!())
         .expect("error while running the ZAM mobile shell");
