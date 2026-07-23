@@ -47,7 +47,15 @@ jobs:
       # Package zam-core → Settings → Trusted publishing → GitHub Actions
       #   org/user: zam-os, repo: zam, workflow: release.yml, action: npm publish
       - name: Publish to npm
-        run: npm publish --provenance --access public
+        # Idempotent so a moved/re-pushed tag (e.g. a failed platform job fixed
+        # post-tag) does not fail the rerun on an already-published version.
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if npm view "zam-core@${VERSION}" version >/dev/null 2>&1; then
+            echo "zam-core@${VERSION} is already on npm; skipping publish."
+            exit 0
+          fi
+          npm publish --provenance --access public
 
   publish-tauri:
     permissions:
