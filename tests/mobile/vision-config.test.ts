@@ -78,6 +78,14 @@ describe("mobile vision config from DB settings", () => {
     expect(await resolveMobileVisionEndpoint(db)).toBeNull();
   });
 
+  it("rejects non-HTTPS cloud endpoints (the API key would leak on the wire)", async () => {
+    await setSetting(db, "llm.vision.enabled", "true");
+    await setSetting(db, "llm.vision.url", "http://vision.example.com/v1");
+    await setSetting(db, "llm.vision.model", "gpt-4o");
+    expect(await resolveMobileVisionEndpoint(db)).toBeNull();
+    expect(await visionImportUnavailableReason(db)).toMatch(/https/i);
+  });
+
   it("stamps provider as vision:<model>", () => {
     expect(visionProviderStamp("gpt-4o")).toBe("vision:gpt-4o");
     expect(visionProviderStamp("  ")).toBe("vision:unknown");

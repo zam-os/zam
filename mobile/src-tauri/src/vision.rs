@@ -26,8 +26,9 @@ pub async fn vision_request(
         return Err("vision request url must not be empty".to_string());
     }
     let parsed = url::Url::parse(url).map_err(|e| format!("invalid vision url: {e}"))?;
-    if parsed.scheme() != "https" && parsed.scheme() != "http" {
-        return Err("vision request url must be http or https".to_string());
+    // HTTPS only: the request carries the cloud API key; plain http would leak it.
+    if parsed.scheme() != "https" {
+        return Err("vision request url must use https".to_string());
     }
     if body.len() > MAX_BODY_BYTES {
         return Err(format!(

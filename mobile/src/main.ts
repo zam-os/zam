@@ -1071,7 +1071,6 @@ importDraftForm.addEventListener("submit", async (event) => {
     );
 
     if (multiDraftController) {
-      multiDraftController.replaceCurrent(draft);
       const hasMore = multiDraftController.saveAndNext();
       if (hasMore) {
         const next = multiDraftController.current();

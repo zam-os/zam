@@ -76,8 +76,9 @@ export async function resolveMobileVisionEndpoint(
 
   if (!url || !model) return null;
   try {
-    const parsed = new URL(url);
-    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+    // HTTPS only: the phone sends the cloud API key on this request, so a
+    // plain-http endpoint would leak it on the wire. Cloud vision is https.
+    if (new URL(url).protocol !== "https:") {
       return null;
     }
   } catch {
@@ -120,6 +121,9 @@ export async function visionImportUnavailableReason(
   }
   if (isLocalEndpoint(url)) {
     return "Vision endpoint is local/loopback and cannot be reached from the phone.";
+  }
+  if (!/^https:\/\//i.test(url)) {
+    return "Vision endpoint must use HTTPS (llm.vision.url).";
   }
   const model =
     (await getSetting(db, "llm.vision.model"))?.trim() ||
