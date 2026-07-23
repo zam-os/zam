@@ -80,6 +80,12 @@ android {
     buildFeatures {
         buildConfig = true
     }
+    lint {
+        // AGP 9.2.1's bundled lint crashes analyzing Kotlin build scripts
+        // (findFirCompiledSymbol FIR bug) during lintVital on release builds.
+        // Quality gates run in CI (Biome/tsc/cargo/Vitest) and on-device.
+        checkReleaseBuilds = false
+    }
 }
 
 rust {
