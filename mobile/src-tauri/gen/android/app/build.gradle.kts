@@ -53,7 +53,10 @@ android {
             }
         }
         getByName("release") {
-            isMinifyEnabled = true
+            // Alpha ships unminified: Tauri's Kotlin plugin IPC parses
+            // @InvokeArg classes reflectively and no R8 keep rules exist yet;
+            // a first-ever minified build risks silent runtime breakage.
+            isMinifyEnabled = false
             val releaseSigning = signingConfigs.getByName("release")
             signingConfig = if (releaseSigning.storeFile != null) {
                 releaseSigning
