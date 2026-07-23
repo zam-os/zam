@@ -312,7 +312,7 @@ mod tests {
     }
 
     #[test]
-    fn configures_required_connection_pragmas() {
+    fn configures_required_connection_pragmas_on_local() {
         tauri::async_runtime::block_on(async {
             let database = libsql::Builder::new_local(":memory:")
                 .build()
@@ -320,7 +320,7 @@ mod tests {
                 .unwrap();
             let connection = database.connect().unwrap();
 
-            configure_connection(&connection, true).await.unwrap();
+            configure_connection(&connection, false).await.unwrap();
 
             let mut foreign_keys = connection.query("PRAGMA foreign_keys", ()).await.unwrap();
             let foreign_keys = foreign_keys.next().await.unwrap().unwrap();
@@ -329,6 +329,20 @@ mod tests {
             let mut busy_timeout = connection.query("PRAGMA busy_timeout", ()).await.unwrap();
             let busy_timeout = busy_timeout.next().await.unwrap().unwrap();
             assert_eq!(busy_timeout.get::<i64>(0).unwrap(), 5000);
+        });
+    }
+
+    #[test]
+    fn skips_pragmas_for_remote_connections() {
+        tauri::async_runtime::block_on(async {
+            let database = libsql::Builder::new_local(":memory:")
+                .build()
+                .await
+                .unwrap();
+            let connection = database.connect().unwrap();
+
+            // Must not error; remote Hrana rejects these PRAGMAs.
+            configure_connection(&connection, true).await.unwrap();
         });
     }
 }
