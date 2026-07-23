@@ -19,12 +19,14 @@ import {
 
 export const MAX_MOBILE_IMPORT_BYTES = 256_000;
 
-export type MobileImportOrigin = "bridge-json" | "quick-capture";
+export type MobileImportOrigin = "bridge-json" | "quick-capture" | "image-vl";
 
 export interface MobileTokenDraft extends AddTokenRequest {
   origin: MobileImportOrigin;
   title?: string;
   question?: string | null;
+  /** Curriculum / import provenance (e.g. `vision:gpt-4o`). */
+  provider?: string | null;
 }
 
 export interface MobileImportResult {
@@ -60,8 +62,10 @@ function stringArray(value: unknown, field: string): string[] | undefined {
   return [...new Set(value.map((entry) => entry.trim()))];
 }
 
-function normalizeBridgeDraft(
+/** Normalize a bridge-token-shaped object into a mobile draft. */
+export function normalizeBridgeDraft(
   value: Record<string, unknown>,
+  origin: MobileImportOrigin = "bridge-json",
 ): MobileTokenDraft {
   const slug = optionalString(value.slug, "slug");
   const concept = optionalString(value.concept, "concept");
@@ -71,7 +75,11 @@ function normalizeBridgeDraft(
     );
   }
 
-  const bloomValue = value.bloomLevel ?? value.bloom_level ?? 1;
+  const bloomRaw = value.bloomLevel ?? value.bloom_level ?? 1;
+  const bloomValue =
+    typeof bloomRaw === "string" && /^\d+$/.test(bloomRaw.trim())
+      ? Number(bloomRaw.trim())
+      : bloomRaw;
   if (
     typeof bloomValue !== "number" ||
     !Number.isInteger(bloomValue) ||
@@ -90,8 +98,10 @@ function normalizeBridgeDraft(
     throw new Error("symbiosisMode must be shadowing, copilot, or autonomy");
   }
 
+  const provider = optionalString(value.provider, "provider");
+
   return {
-    origin: "bridge-json",
+    origin,
     slug,
     title: optionalString(value.title, "title") ?? undefined,
     concept,
@@ -106,7 +116,12 @@ function normalizeBridgeDraft(
       value.knowledgeContexts ?? value.knowledge_contexts,
       "knowledgeContexts",
     ),
+    ...(provider ? { provider } : {}),
   };
+}
+
+function isLlmOrigin(origin: MobileImportOrigin): boolean {
+  return origin === "bridge-json" || origin === "image-vl";
 }
 
 function exactWebUrl(text: string): string | null {
@@ -167,7 +182,13 @@ export async function confirmMobileImport(
   if (!userId.trim()) throw new Error("A paired learner is required");
   const normalized = normalizeBridgeDraft(
     draft as unknown as Record<string, unknown>,
+    draft.origin,
   );
+  // Preserve caller-set provenance (e.g. vision:<model>) when the draft body
+  // did not carry a provider field through normalize.
+  if (draft.provider && !normalized.provider) {
+    normalized.provider = draft.provider;
+  }
 
   return db.transaction(async (tx) => {
     const prerequisiteTokens = [];
@@ -195,9 +216,8 @@ export async function confirmMobileImport(
       source_link: normalized.source_link,
       question: normalized.question,
       question_source:
-        normalized.question && draft.origin === "bridge-json"
-          ? "llm"
-          : "manual",
+        normalized.question && isLlmOrigin(draft.origin) ? "llm" : "manual",
+      provider: normalized.provider ?? null,
     });
 
     for (const context of contexts) {
