@@ -119,7 +119,7 @@ async function generateViaHttp(
       model: endpoint.model,
       messages: [{ role: "user", content: prompt }],
       temperature: 0.2,
-      max_tokens: 512,
+      max_tokens: 256,
     }),
   });
 }

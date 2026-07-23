@@ -90,7 +90,8 @@ pub async fn on_device_llm_generate<R: Runtime>(
             "generate",
             GeneratePayload {
                 prompt: trimmed,
-                max_output_tokens: max_output_tokens.unwrap_or(512).clamp(64, 1024),
+                // Gemini Nano Prompt API accepts at most 256 output tokens.
+                max_output_tokens: max_output_tokens.unwrap_or(256).clamp(1, 256),
                 temperature: temperature.unwrap_or(0.2).clamp(0.0, 1.0),
             },
         )

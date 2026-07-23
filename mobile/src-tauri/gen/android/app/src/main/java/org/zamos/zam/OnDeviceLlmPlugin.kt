@@ -76,7 +76,8 @@ class OnDeviceLlmPlugin(private val activity: Activity) : Plugin(activity) {
     scope.launch {
       try {
         ensureModelReady()
-        val maxTokens = args.maxOutputTokens.coerceIn(64, 1024)
+        // Gemini Nano Prompt API rejects values outside 1..256.
+        val maxTokens = args.maxOutputTokens.coerceIn(1, 256)
         val temperature = args.temperature.coerceIn(0f, 1f)
         val request = generateContentRequest(TextPart(prompt)) {
           this.temperature = temperature

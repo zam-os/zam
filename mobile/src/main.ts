@@ -156,7 +156,8 @@ const evaluationPorts = {
   generateOnDevice: async (prompt: string) =>
     invoke<OnDeviceLlmGenerateResult>("on_device_llm_generate", {
       prompt,
-      maxOutputTokens: 512,
+      // Gemini Nano Prompt API caps output tokens at 256.
+      maxOutputTokens: 256,
       temperature: 0.2,
     }),
 };
