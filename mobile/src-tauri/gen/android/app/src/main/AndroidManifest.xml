@@ -15,6 +15,8 @@
         <intent>
             <action android:name="android.intent.action.TTS_SERVICE" />
         </intent>
+        <!-- AICore hosts Gemini Nano for on-device evaluation (ML Kit GenAI). -->
+        <package android:name="com.google.android.aicore" />
     </queries>
 
     <!-- AndroidTV support -->

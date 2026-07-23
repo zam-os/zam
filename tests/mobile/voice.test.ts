@@ -79,6 +79,56 @@ describe("Android hands-free voice review", () => {
     expect(controller.active).toBe(false);
   });
 
+  it("speaks smart evaluation feedback when evaluateAnswer is provided", async () => {
+    const spoken: string[] = [];
+    const heard = ["F ist m mal a", "gut"];
+    const card: VoiceReviewCard = {
+      question: "Newton 2?",
+      expectedAnswer: "F = m a",
+      revealed: false,
+      draftAnswer: "",
+    };
+    const controller = new HandsFreeReviewController(
+      {
+        async start() {},
+        async stop() {},
+        async speak(text) {
+          spoken.push(text);
+        },
+        async listen() {
+          return heard.shift() ?? "";
+        },
+      },
+      {
+        currentCard: () => card,
+        captureAnswer(transcript) {
+          card.draftAnswer = transcript;
+        },
+        revealAnswer() {
+          card.revealed = true;
+        },
+        async evaluateAnswer() {
+          return {
+            speech: "Genau. Vorgeschlagene Bewertung: Gut.",
+            suggestedRating: 3,
+          };
+        },
+        async rate(rating) {
+          expect(rating).toBe(3);
+          return false;
+        },
+        setStatus() {},
+      },
+    );
+
+    await controller.start("de-DE");
+
+    expect(spoken).toContain("Genau. Vorgeschlagene Bewertung: Gut.");
+    expect(spoken.some((text) => text.includes(card.expectedAnswer))).toBe(
+      false,
+    );
+  });
+
   it("keeps tap fallback available by retrying only an unrecognized voice rating", async () => {
     const spoken: string[] = [];
     const heard = ["my answer", "perhaps", "easy"];

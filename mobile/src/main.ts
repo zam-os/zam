@@ -20,8 +20,16 @@ import {
   type ReviewQueue,
 } from "../../src/kernel/scheduler/queue.js";
 import {
+  evaluateMobileAnswer,
+  evaluationSpeech,
+  type MobileEvaluationResult,
+  type OnDeviceLlmGenerateResult,
+  type OnDeviceLlmStatus,
+} from "./evaluate.js";
+import {
   applyStaticTranslations,
   cardWord,
+  getLocale,
   resolveLocale,
   setLocale,
   t,
@@ -112,6 +120,10 @@ const revealAnswerButton = element<HTMLButtonElement>("reveal-answer");
 const revealedAnswer = element<HTMLElement>("revealed-answer");
 const expectedAnswer = element<HTMLElement>("expected-answer");
 const reviewSource = element<HTMLAnchorElement>("review-source");
+const evaluationPanel = element<HTMLElement>("evaluation-panel");
+const evaluationVerdict = element<HTMLElement>("evaluation-verdict");
+const evaluationFeedback = element<HTMLElement>("evaluation-feedback");
+const evaluationMeta = element<HTMLElement>("evaluation-meta");
 const ratingButtons = Array.from(
   document.querySelectorAll<HTMLButtonElement>("[data-rating]"),
 );
@@ -135,7 +147,19 @@ let reminderConfig: ReminderConfig = parseReminderConfig(
 );
 let currentImportDraft: MobileTokenDraft | null = null;
 let takingSharedImport = false;
+let currentEvaluation: MobileEvaluationResult | null = null;
 const PENDING_IMPORT_STORAGE_KEY = "zam.mobile-pending-import.v1";
+
+const evaluationPorts = {
+  checkOnDeviceStatus: () =>
+    invoke<OnDeviceLlmStatus>("on_device_llm_check_status"),
+  generateOnDevice: async (prompt: string) =>
+    invoke<OnDeviceLlmGenerateResult>("on_device_llm_generate", {
+      prompt,
+      maxOutputTokens: 512,
+      temperature: 0.2,
+    }),
+};
 
 interface SharedImportPayload {
   content: string;
@@ -197,6 +221,14 @@ const voiceController = new HandsFreeReviewController(voicePort, {
   revealAnswer: () => {
     reviewSession.reveal();
     renderCurrentReview(t("voice_answer_recognized"));
+  },
+  evaluateAnswer: async () => {
+    const result = await runSmartEvaluation();
+    if (!result) return null;
+    return {
+      speech: evaluationSpeech(result.evaluation, getLocale()),
+      suggestedRating: result.evaluation.suggestedRating,
+    };
   },
   rate: (rating) => rateCurrentReview(rating),
   setStatus: (message, isError) => setReviewStatus(message, isError),
@@ -465,6 +497,99 @@ function setReviewStatus(text: string, isError = false): void {
   reviewStatus.classList.toggle("error", isError);
 }
 
+function clearEvaluationUi(): void {
+  currentEvaluation = null;
+  evaluationPanel.hidden = true;
+  evaluationVerdict.textContent = "";
+  evaluationFeedback.textContent = "";
+  evaluationMeta.textContent = "";
+  for (const button of ratingButtons) button.classList.remove("suggested");
+}
+
+function ratingI18nKey(rating: 1 | 2 | 3 | 4): string {
+  return (
+    {
+      1: "rating_again",
+      2: "rating_hard",
+      3: "rating_good",
+      4: "rating_easy",
+    } as const
+  )[rating];
+}
+
+function verdictI18nKey(verdict: "correct" | "partial" | "incorrect"): string {
+  return (
+    {
+      correct: "evaluation_verdict_correct",
+      partial: "evaluation_verdict_partial",
+      incorrect: "evaluation_verdict_incorrect",
+    } as const
+  )[verdict];
+}
+
+function showEvaluationUi(result: MobileEvaluationResult): void {
+  currentEvaluation = result;
+  evaluationPanel.hidden = false;
+  evaluationVerdict.textContent = t(verdictI18nKey(result.evaluation.verdict));
+  evaluationFeedback.textContent = result.evaluation.feedback;
+  evaluationMeta.textContent = [
+    tf("evaluation_suggested", {
+      rating: t(ratingI18nKey(result.evaluation.suggestedRating)),
+    }),
+    tf("evaluation_backend", { model: result.modelLabel }),
+  ].join(" · ");
+  for (const button of ratingButtons) {
+    const rating = Number(button.dataset.rating);
+    button.classList.toggle(
+      "suggested",
+      rating === result.evaluation.suggestedRating,
+    );
+  }
+}
+
+/** Run intelligent evaluation for the current draft answer; null = self-rate. */
+async function runSmartEvaluation(): Promise<MobileEvaluationResult | null> {
+  const item = reviewSession.currentItem;
+  const prompt = reviewSession.currentPrompt;
+  const answer = reviewSession.draftAnswer.trim();
+  if (!item || !prompt || !answer) return null;
+
+  setReviewStatus(t("evaluating_answer"));
+  try {
+    const result = await evaluateMobileAnswer({
+      card: {
+        slug: item.slug,
+        question: prompt.question,
+        concept: prompt.concept,
+        bloomLevel: item.bloomLevel,
+        // Mobile queue items do not carry resolved source context yet.
+        resolvedContext: null,
+      },
+      learnerAnswer: answer,
+      endpoint: currentPairing?.llm?.recall ?? null,
+      ports: evaluationPorts,
+    });
+    if (result) {
+      showEvaluationUi(result);
+      setReviewStatus(
+        tf("evaluation_suggested", {
+          rating: t(ratingI18nKey(result.evaluation.suggestedRating)),
+        }),
+      );
+      return result;
+    }
+    setReviewStatus(t("compare_and_rate"));
+    return null;
+  } catch (error) {
+    clearEvaluationUi();
+    setReviewStatus(
+      tf("evaluation_failed_self_rate", { error: errorMessage(error) }),
+      true,
+    );
+    return null;
+  }
+}
+
 function updateVoiceButton(): void {
   toggleVoiceButton.textContent = t(
     voiceController.active ? "voice_pause" : "voice_start",
@@ -525,6 +650,8 @@ function renderCurrentReview(message = ""): void {
   const sourceUrl = externalSourceUrl(prompt.sourceLink);
   reviewSource.hidden = !sourceUrl;
   if (sourceUrl) reviewSource.href = sourceUrl;
+  if (!reviewSession.revealed) clearEvaluationUi();
+  else if (currentEvaluation) showEvaluationUi(currentEvaluation);
   for (const button of ratingButtons) {
     button.disabled = !reviewSession.revealed;
   }
@@ -779,6 +906,7 @@ async function rateCurrentReview(rating: 1 | 2 | 3 | 4): Promise<boolean> {
   stopReviewButton.disabled = true;
   try {
     const result = await reviewSession.rate(rating);
+    clearEvaluationUi();
     if (result.summary) {
       renderSessionSummary(result.summary);
       return false;
@@ -867,10 +995,15 @@ revealAnswerButton.addEventListener("click", async () => {
   try {
     reviewSession.updateDraftAnswer(reviewAnswer.value);
     reviewSession.reveal();
-    renderCurrentReview(t("compare_and_rate"));
+    clearEvaluationUi();
+    renderCurrentReview(t("evaluating_answer"));
+    revealAnswerButton.disabled = true;
+    await runSmartEvaluation();
   } catch {
     setReviewStatus(t("answer_required"), true);
     reviewAnswer.focus();
+  } finally {
+    revealAnswerButton.disabled = false;
   }
 });
 

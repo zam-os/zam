@@ -71,10 +71,19 @@ kernel logic and reach the database.
 - **Field-test recall is local and keyless on the phone.** The paired endpoint
   is marked `local: true`, has no API key and no cloud fallback, and is used for
   answer evaluation only. Questions remain the kernel's unchanged template
-  prompts so local-model startup and inference do not delay the next card. The
-  exact on-device runtime and model are selected by the Phase-6 Pixel 9 (12 GB)
-  benchmark; a loopback URL in the paired config refers to the phone, not to a
-  provider running on the desktop.
+  prompts so local-model startup and inference do not delay the next card. A
+  loopback URL in the paired config refers to the phone, not to a provider
+  running on the desktop.
+- **On-device evaluation uses Gemini Nano via ML Kit GenAI Prompt API**
+  (AICore → Tensor NPU on Pixel 9; issue #210). The WebView builds the same
+  structured evaluation prompt as the desktop Studio
+  (`desktop/src/panel/recall-evaluation.ts`); a Kotlin plugin
+  (`OnDeviceLlmPlugin`) runs inference and returns text only. Local or
+  loopback paired endpoints take this path. Explicit non-local paired
+  endpoints may use OpenAI-compatible HTTP. When Nano is unavailable or
+  generation fails, the session falls back to self-rating and never blocks
+  the card. Spoken voice review speaks the feedback before collecting a
+  rating word.
 - **Android imports use the bridge-token contract without a Node sidecar.**
   The WebView normalizes `AddTokenRequest` JSON and quick-capture text, shows
   an editable confirmation draft, then uses kernel APIs to atomically create

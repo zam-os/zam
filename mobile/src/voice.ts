@@ -18,10 +18,22 @@ export interface VoiceReviewCard {
   draftAnswer: string;
 }
 
+/** Optional smart-evaluation result for the current answer. */
+export interface VoiceEvaluationSpeech {
+  /** Full TTS block (feedback + suggested rating + rating prompt). */
+  speech: string;
+  suggestedRating: Rating;
+}
+
 export interface VoiceReviewAdapter {
   currentCard(): VoiceReviewCard | null;
   captureAnswer(transcript: string): void;
   revealAnswer(): void;
+  /**
+   * Optional intelligent evaluation after reveal. Return null to fall back
+   * to reading the expected answer and self-rating.
+   */
+  evaluateAnswer?(): Promise<VoiceEvaluationSpeech | null>;
   rate(rating: Rating): Promise<boolean>;
   setStatus(message: string, isError?: boolean): void;
 }
@@ -29,6 +41,7 @@ export interface VoiceReviewAdapter {
 interface VoiceCopy {
   speakingQuestion: string;
   listeningAnswer: string;
+  evaluating: string;
   answerPrefix: string;
   expectedPrefix: string;
   ratingPrompt: string;
@@ -40,6 +53,7 @@ const COPY: Record<VoiceLocale, VoiceCopy> = {
   "de-DE": {
     speakingQuestion: "Frage wird vorgelesen …",
     listeningAnswer: "Ich höre deine Antwort …",
+    evaluating: "Antwort wird beurteilt …",
     answerPrefix: "Deine Antwort lautet:",
     expectedPrefix: "Die erwartete Antwort lautet:",
     ratingPrompt: "Bewerte dich mit Nochmal, Schwer, Gut oder Leicht.",
@@ -50,6 +64,7 @@ const COPY: Record<VoiceLocale, VoiceCopy> = {
   "en-US": {
     speakingQuestion: "Reading the question …",
     listeningAnswer: "Listening for your answer …",
+    evaluating: "Evaluating your answer …",
     answerPrefix: "Your answer is:",
     expectedPrefix: "The expected answer is:",
     ratingPrompt: "Rate yourself with Again, Hard, Good, or Easy.",
@@ -161,7 +176,22 @@ export class HandsFreeReviewController {
           if (!card) break;
         }
 
-        await this.port.speak(answerComparisonSpeech(card, locale), locale);
+        let smart: VoiceEvaluationSpeech | null = null;
+        if (this.adapter.evaluateAnswer) {
+          this.adapter.setStatus(COPY[locale].evaluating);
+          try {
+            smart = await this.adapter.evaluateAnswer();
+          } catch {
+            smart = null;
+          }
+          if (!this.isCurrent(generation)) break;
+        }
+
+        if (smart) {
+          await this.port.speak(smart.speech, locale);
+        } else {
+          await this.port.speak(answerComparisonSpeech(card, locale), locale);
+        }
         if (!this.isCurrent(generation)) break;
 
         let rating: Rating | null = null;

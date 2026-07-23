@@ -348,6 +348,31 @@
         color: var(--cyan);
         font-size: 0.85rem;
       }
+      #evaluation-panel {
+        margin: 12px 0;
+        padding: 12px 13px;
+        border-radius: 12px;
+        border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+        background: color-mix(in srgb, var(--accent) 8%, var(--card-soft));
+      }
+      #evaluation-panel[hidden] {
+        display: none;
+      }
+      #evaluation-verdict {
+        font-weight: 700;
+        font-size: 0.95rem;
+        margin: 4px 0 6px;
+      }
+      #evaluation-feedback {
+        white-space: pre-wrap;
+        line-height: 1.45;
+        margin: 0 0 8px;
+      }
+      #evaluation-meta {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin: 0;
+      }
       .ratings {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -377,6 +402,11 @@
         color: var(--easy);
         border-color: color-mix(in srgb, var(--easy) 55%, transparent);
         background: color-mix(in srgb, var(--easy) 12%, transparent);
+      }
+      .ratings button.suggested {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
       }
       .voice-controls {
         display: flex;
@@ -689,6 +719,12 @@
               <a id="review-source" target="_blank" rel="noreferrer" hidden data-i18n="open_source">
                 Quelle öffnen
               </a>
+              <div id="evaluation-panel" hidden>
+                <p class="eyebrow" data-i18n="evaluation_kicker">Einschätzung</p>
+                <p id="evaluation-verdict"></p>
+                <p id="evaluation-feedback"></p>
+                <p id="evaluation-meta" class="muted"></p>
+              </div>
               <p class="muted" data-i18n="how_well">Wie gut konntest du dich erinnern?</p>
               <div class="ratings">
                 <button type="button" data-rating="1" data-i18n="rating_again">Nochmal</button>

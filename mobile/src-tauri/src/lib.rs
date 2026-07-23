@@ -1,4 +1,5 @@
 mod db;
+mod on_device_llm;
 mod reminder;
 mod secure_store;
 mod voice;
@@ -14,6 +15,8 @@ pub fn run() {
     let builder = builder.plugin(voice::init());
     #[cfg(target_os = "android")]
     let builder = builder.plugin(reminder::init());
+    #[cfg(target_os = "android")]
+    let builder = builder.plugin(on_device_llm::init());
 
     builder
         .manage(db::DbState::default())
@@ -38,7 +41,10 @@ pub fn run() {
             reminder::reminder_check_permissions,
             reminder::reminder_request_permissions,
             reminder::reminder_schedule,
-            reminder::reminder_update_due
+            reminder::reminder_update_due,
+            on_device_llm::on_device_llm_check_status,
+            on_device_llm::on_device_llm_ensure_ready,
+            on_device_llm::on_device_llm_generate
         ])
         .run(tauri::generate_context!())
         .expect("error while running the ZAM mobile shell");

@@ -314,9 +314,13 @@ server database, per FR-0).
   asserted in `tests/mobile/i18n.test.ts`), static chrome is localised through
   `data-i18n` attributes and dynamic strings through `t()`/`tf()`; the locale
   comes from the paired `settings.locale`, else `navigator.language`. Native
-  plugin (voice/reminder Kotlin) strings remain German-only for now. Remaining
-  Phase-6 items (online LLM wiring, performance/battery, sideload channel) are
-  untouched.
+  plugin (voice/reminder Kotlin) strings remain German-only for now. Intelligent
+  answer evaluation is implemented (issue #210): Gemini Nano via ML Kit GenAI
+  Prompt API on the Tensor NPU for local/loopback paired endpoints, OpenAI-
+  compatible HTTP for non-local endpoints, self-rate fallback otherwise; typed
+  reveal and hands-free voice both surface verdict/feedback/suggested FSRS
+  rating. Remaining Phase-6 items (Pixel 9 end-to-end Nano validation,
+  performance/battery, sideload channel, screenshot import) are open.
 
 ## Decisions (Thomas, 2026-07-21)
 

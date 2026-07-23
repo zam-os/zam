@@ -134,6 +134,15 @@ const DE: Messages = {
   mic_denied:
     "Mikrofonzugriff wurde nicht erlaubt. Berechtigung in den App-Einstellungen freigeben.",
   compare_and_rate: "Antwort vergleichen und ehrlich bewerten.",
+  evaluating_answer: "Antwort wird beurteilt …",
+  evaluation_kicker: "Einschätzung",
+  evaluation_suggested: "Vorschlag: {rating}",
+  evaluation_backend: "via {model}",
+  evaluation_failed_self_rate:
+    "Automatische Beurteilung nicht möglich ({error}). Bitte selbst bewerten.",
+  evaluation_verdict_correct: "Richtig",
+  evaluation_verdict_partial: "Teilweise",
+  evaluation_verdict_incorrect: "Nicht getroffen",
   answer_required: "Bitte zuerst eine eigene Antwort eingeben.",
   saved_next_due: "Gespeichert · nächste Fälligkeit {next}.{blocking}",
   prereqs_scheduled: " Voraussetzungen eingeplant: {slugs}.",
@@ -278,6 +287,15 @@ const EN: Messages = {
   mic_denied:
     "Microphone access was not granted. Allow the permission in the app settings.",
   compare_and_rate: "Compare and rate yourself honestly.",
+  evaluating_answer: "Evaluating your answer …",
+  evaluation_kicker: "Assessment",
+  evaluation_suggested: "Suggested: {rating}",
+  evaluation_backend: "via {model}",
+  evaluation_failed_self_rate:
+    "Automatic evaluation unavailable ({error}). Please rate yourself.",
+  evaluation_verdict_correct: "Correct",
+  evaluation_verdict_partial: "Partial",
+  evaluation_verdict_incorrect: "Missed",
   answer_required: "Please enter your own answer first.",
   saved_next_due: "Saved · next due {next}.{blocking}",
   prereqs_scheduled: " Prerequisites scheduled: {slugs}.",

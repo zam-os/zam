@@ -73,6 +73,11 @@ avoid shoulder surfing and prefer a database-scoped token.
 
 ## Current boundary
 
-Phase 1 is read-only: it shows the learner's due queue and sync state. Reviews,
-ratings, `review_logs`, interruption-safe sessions, and summaries arrive in
-Phase 2.
+The companion supports pairing, offline review (typed + voice), import, sync
+hardening, daily reminders, and de/en UI. Intelligent answer evaluation uses
+**Gemini Nano** (ML Kit GenAI → AICore → Tensor NPU) on supported devices;
+non-local paired HTTP endpoints are optional; self-rate is the soft fallback.
+
+Device validation still required on the Pixel 9 for the full voice loop (local
+TTS data) and Nano evaluation end-to-end. Screenshot import is not in this
+build.
