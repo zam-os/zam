@@ -1,0 +1,25 @@
+{
+  "name": "zam-mobile",
+  "private": true,
+  "version": "0.17.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "android:dev": "tauri android dev --config src-tauri/tauri.native-api35.conf.json",
+    "android:build": "tauri android build --config src-tauri/tauri.native-api35.conf.json"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-barcode-scanner": "^2.4.5"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "@types/node": "^25.5.0",
+    "typescript": "~5.6.2",
+    "vite": "^6.4.3"
+  }
+}

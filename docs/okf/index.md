@@ -21,7 +21,7 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 
 ## data-model
 
-- [Prerequisite Graph and Blocking](prerequisite-blocking.md) — Tokens form a directed prerequisite graph; blocking and unblocking of dependent cards is a separate mechanism from FSRS rating, invoked by callers after a failed review.
+- [Prerequisite Graph and Blocking](prerequisite-blocking.md) — Tokens form a directed prerequisite graph; blocking and unblocking of dependent cards is separate from FSRS math and coordinated atomically by the review-action kernel API.
 - [Token and Card Model](token-card-model.md) — A token is a shared atomic knowledge concept; a card is one user's FSRS state for it — a concept only appears in a user's queue if a card exists.
 
 ## protocol

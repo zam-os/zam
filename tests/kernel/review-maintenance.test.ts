@@ -222,6 +222,67 @@ describe("review maintenance primitives", () => {
     expect(result.blocked?.prerequisites[0]?.slug).toBe(prerequisite.slug);
   });
 
+  it("records a session-linked rating and review step atomically", async () => {
+    const token = await createToken(db, {
+      slug: "mobile-session-rating",
+      concept: "A mobile rating belongs to its resumable review session",
+      domain: "zam",
+      bloom_level: 2,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+    const session = await startSession(db, {
+      user_id: "thomas",
+      task: "Android active recall",
+      execution_context: "ui",
+    });
+
+    const result = await executeReviewAction(db, {
+      action: "rate",
+      cardId: card.id,
+      userId: "thomas",
+      rating: 3,
+      sessionId: session.id,
+      responseTimeMs: 1_250,
+    });
+
+    expect(result.sessionStep).toMatchObject({
+      session_id: session.id,
+      token_id: token.id,
+      rating: 3,
+    });
+    expect((await getSessionSummary(db, session.id)).steps).toHaveLength(1);
+    expect(
+      await db
+        .prepare(
+          "SELECT session_id, response_time_ms FROM review_logs WHERE card_id = ?",
+        )
+        .get(card.id),
+    ).toEqual({ session_id: session.id, response_time_ms: 1_250 });
+  });
+
+  it("rolls back a rating when its session step cannot be recorded", async () => {
+    const token = await createToken(db, {
+      slug: "mobile-session-rollback",
+      concept: "The card and session audit trail commit together",
+      domain: "zam",
+      bloom_level: 2,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+
+    await expect(
+      executeReviewAction(db, {
+        action: "rate",
+        cardId: card.id,
+        userId: "thomas",
+        rating: 3,
+        sessionId: "missing-session",
+      }),
+    ).rejects.toThrow("Session not found: missing-session");
+
+    expect((await getCard(db, token.id, "thomas"))?.reps).toBe(0);
+    expect(await getReviewsForCard(db, card.id)).toHaveLength(0);
+  });
+
   it("edits and short-circuits review actions without mutating scheduling unexpectedly", async () => {
     const token = await createToken(db, {
       slug: "macos-brew-cask",

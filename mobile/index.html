@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>ZAM Mobile</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        --wash: radial-gradient(
+            circle at 12% -12%,
+            rgba(91, 95, 239, 0.15),
+            transparent 34%
+          ),
+          radial-gradient(circle at 92% 8%, rgba(8, 145, 178, 0.13), transparent 32%),
+          linear-gradient(180deg, #fbfcff 0%, #f2f6fb 100%);
+        --card: rgba(255, 255, 255, 0.82);
+        --card-soft: rgba(248, 250, 252, 0.7);
+        --field: rgba(255, 255, 255, 0.85);
+        --border: rgba(15, 23, 42, 0.1);
+        --border-strong: rgba(15, 23, 42, 0.16);
+        --shadow: 0 18px 44px rgba(15, 23, 42, 0.1);
+        --text: #111827;
+        --text-2: #334155;
+        --muted: #64748b;
+        --accent: hsl(246, 83%, 60%);
+        --cyan: hsl(190, 84%, 34%);
+        --glow: linear-gradient(135deg, hsl(246, 83%, 60%), hsl(190, 84%, 40%));
+        --again: hsl(355, 80%, 55%);
+        --hard: hsl(35, 92%, 45%);
+        --good: hsl(145, 70%, 38%);
+        --easy: hsl(195, 85%, 42%);
+        --warn: #b45309;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --wash: radial-gradient(
+              circle at 10% -10%,
+              rgba(139, 92, 246, 0.16),
+              transparent 38%
+            ),
+            radial-gradient(circle at 94% 8%, rgba(6, 182, 212, 0.1), transparent 34%),
+            linear-gradient(180deg, #080a12 0%, #090f14 100%);
+          --card: rgba(20, 25, 37, 0.66);
+          --card-soft: rgba(255, 255, 255, 0.04);
+          --field: rgba(0, 0, 0, 0.24);
+          --border: rgba(255, 255, 255, 0.09);
+          --border-strong: rgba(255, 255, 255, 0.16);
+          --shadow: 0 20px 48px rgba(0, 0, 0, 0.44);
+          --text: #f1f5f9;
+          --text-2: #cbd5e1;
+          --muted: #94a3b8;
+          --accent: hsl(265, 90%, 72%);
+          --cyan: hsl(190, 95%, 60%);
+          --glow: linear-gradient(135deg, hsl(265, 90%, 66%), hsl(190, 95%, 52%));
+          --again: hsl(355, 85%, 68%);
+          --hard: hsl(35, 95%, 62%);
+          --good: hsl(145, 72%, 58%);
+          --easy: hsl(195, 90%, 62%);
+          --warn: #fbbf24;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: var(--font);
+        color: var(--text);
+        background: var(--wash) fixed;
+        min-height: 100dvh;
+        padding: 14px;
+        padding-top: calc(14px + env(safe-area-inset-top));
+        padding-left: calc(14px + env(safe-area-inset-left));
+        padding-right: calc(14px + env(safe-area-inset-right));
+        padding-bottom: calc(20px + env(safe-area-inset-bottom));
+        -webkit-font-smoothing: antialiased;
+      }
+      main {
+        max-width: 560px;
+        margin: 0 auto;
+      }
+      h1 {
+        font-size: 1.35rem;
+        letter-spacing: -0.01em;
+        margin: 0 0 2px;
+      }
+      h2 {
+        font-size: 1.05rem;
+        letter-spacing: -0.01em;
+        margin: 0 0 8px;
+      }
+      p {
+        margin: 0 0 10px;
+      }
+      .eyebrow {
+        color: var(--cyan);
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+        margin: 0 0 6px;
+      }
+      .subtitle,
+      .muted {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      /* Header */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+      .brand-mark {
+        font-weight: 800;
+        font-size: 1.15rem;
+        letter-spacing: 0.02em;
+        background: var(--glow);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .topbar-actions {
+        display: flex;
+        gap: 8px;
+      }
+      .icon-btn {
+        width: 42px;
+        height: 42px;
+        min-height: 42px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: var(--card);
+        color: var(--text-2);
+        box-shadow: var(--shadow);
+      }
+      .icon-btn:active {
+        transform: scale(0.96);
+      }
+      .icon-btn svg {
+        width: 21px;
+        height: 21px;
+      }
+      /* Status */
+      .statusbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: var(--card-soft);
+        border: 1px solid var(--border);
+        font-size: 0.82rem;
+        color: var(--text-2);
+      }
+      .chip .chip-key {
+        color: var(--muted);
+      }
+      .chip.connection::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--good);
+      }
+      .chip.connection.offline {
+        color: var(--warn);
+      }
+      .chip.connection.offline::before {
+        background: var(--warn);
+      }
+      .status-line {
+        min-height: 1.2em;
+        font-size: 0.86rem;
+        color: var(--muted);
+      }
+      .status-line.error,
+      .error {
+        color: var(--warn);
+      }
+      /* Cards */
+      .card {
+        background: var(--card);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+        padding: 16px;
+        margin-bottom: 14px;
+      }
+      .summary {
+        color: var(--muted);
+        font-size: 0.86rem;
+        margin: 4px 2px 12px;
+      }
+      /* Forms */
+      form {
+        display: grid;
+        gap: 11px;
+      }
+      label {
+        display: grid;
+        gap: 5px;
+        font-size: 0.82rem;
+        color: var(--text-2);
+      }
+      input,
+      textarea,
+      select,
+      button {
+        font: inherit;
+      }
+      input,
+      textarea,
+      select {
+        padding: 11px 13px;
+        border: 1px solid var(--border-strong);
+        border-radius: 11px;
+        background: var(--field);
+        color: var(--text);
+      }
+      input:focus,
+      textarea:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+      }
+      textarea {
+        width: 100%;
+        min-height: 108px;
+        resize: vertical;
+        line-height: 1.45;
+      }
+      /* Buttons */
+      button {
+        min-height: 46px;
+        padding: 12px 18px;
+        border-radius: 12px;
+        border: 1px solid var(--border-strong);
+        background: var(--card-soft);
+        color: var(--text);
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.12s ease, box-shadow 0.2s ease;
+      }
+      button:active:not(:disabled) {
+        transform: translateY(1px);
+      }
+      button.primary {
+        width: 100%;
+        border: none;
+        color: #fff;
+        background: var(--glow);
+        box-shadow: 0 10px 24px color-mix(in srgb, var(--accent) 32%, transparent);
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .buttons button {
+        flex: 1;
+        min-width: 130px;
+      }
+      .capture-actions {
+        display: grid;
+        gap: 9px;
+        margin-bottom: 14px;
+      }
+      /* Queue */
+      ol#queue {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 9px;
+      }
+      #queue li {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        padding: 12px 14px;
+        border-left: 3px solid var(--accent);
+      }
+      #queue .title {
+        font-weight: 650;
+        letter-spacing: -0.01em;
+      }
+      #queue .meta {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+      /* Review */
+      #review-progress {
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+      #review-meta {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      #review-question {
+        font-size: 1.35rem;
+        line-height: 1.35;
+        letter-spacing: -0.01em;
+        margin: 16px 0;
+      }
+      #revealed-answer {
+        margin-top: 14px;
+      }
+      #expected-answer {
+        white-space: pre-wrap;
+        line-height: 1.5;
+        padding: 13px;
+        border-radius: 12px;
+        background: var(--card-soft);
+        border: 1px solid var(--border);
+      }
+      #review-source {
+        display: inline-block;
+        margin: 8px 0;
+        color: var(--cyan);
+        font-size: 0.85rem;
+      }
+      #evaluation-panel {
+        margin: 12px 0;
+        padding: 12px 13px;
+        border-radius: 12px;
+        border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+        background: color-mix(in srgb, var(--accent) 8%, var(--card-soft));
+      }
+      #evaluation-panel[hidden] {
+        display: none;
+      }
+      #evaluation-verdict {
+        font-weight: 700;
+        font-size: 0.95rem;
+        margin: 4px 0 6px;
+      }
+      #evaluation-feedback {
+        white-space: pre-wrap;
+        line-height: 1.45;
+        margin: 0 0 8px;
+      }
+      #evaluation-meta {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin: 0;
+      }
+      .ratings {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 9px;
+        margin-top: 6px;
+      }
+      .ratings button {
+        border-width: 1.5px;
+        font-weight: 650;
+      }
+      .ratings button[data-rating="1"] {
+        color: var(--again);
+        border-color: color-mix(in srgb, var(--again) 55%, transparent);
+        background: color-mix(in srgb, var(--again) 12%, transparent);
+      }
+      .ratings button[data-rating="2"] {
+        color: var(--hard);
+        border-color: color-mix(in srgb, var(--hard) 55%, transparent);
+        background: color-mix(in srgb, var(--hard) 12%, transparent);
+      }
+      .ratings button[data-rating="3"] {
+        color: var(--good);
+        border-color: color-mix(in srgb, var(--good) 55%, transparent);
+        background: color-mix(in srgb, var(--good) 12%, transparent);
+      }
+      .ratings button[data-rating="4"] {
+        color: var(--easy);
+        border-color: color-mix(in srgb, var(--easy) 55%, transparent);
+        background: color-mix(in srgb, var(--easy) 12%, transparent);
+      }
+      .ratings button.suggested {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+      }
+      .voice-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 12px 0 4px;
+      }
+      .voice-controls button {
+        flex: 1;
+        min-width: 150px;
+      }
+      #toggle-voice[aria-pressed="true"] {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      /* Settings */
+      .switch-row {
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.92rem;
+        color: var(--text);
+        margin-bottom: 12px;
+      }
+      .switch-row input {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--accent);
+      }
+      .field-row {
+        grid-template-columns: 1fr auto;
+        align-items: center;
+      }
+      .field-row input {
+        width: auto;
+      }
+      .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 16px 0;
+      }
+      details summary {
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--text-2);
+        font-size: 0.9rem;
+      }
+      details[open] summary {
+        margin-bottom: 10px;
+      }
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section id="pairing-view" hidden>
+        <div class="topbar">
+          <span class="brand-mark">ZAM</span>
+        </div>
+        <div class="card">
+          <p class="eyebrow" data-i18n="pairing_kicker">Kopplung</p>
+          <h2 data-i18n="pairing_title">Mit ZAM Desktop koppeln</h2>
+          <p class="muted" data-i18n="pairing_desc">
+            In ZAM Desktop unter Einstellungen → Mobile Begleit-App einen
+            QR-Code anzeigen.
+          </p>
+          <button id="scan-pairing-code" class="primary" type="button" data-i18n="scan_qr">
+            QR-Code scannen
+          </button>
+          <button id="camera-settings" type="button" hidden data-i18n="open_app_settings">
+            App-Einstellungen öffnen
+          </button>
+          <p id="pairing-status" class="status-line" aria-live="polite"></p>
+          <button id="cancel-pairing" type="button" hidden data-i18n="cancel">
+            Abbrechen
+          </button>
+
+          <div class="divider"></div>
+          <details>
+            <summary data-i18n="manual_entry">Manuelle Eingabe</summary>
+            <form id="manual-pairing-form">
+              <label>
+                <span data-i18n="server_db">Server-Datenbank</span>
+                <input
+                  id="manual-sync-url"
+                  type="url"
+                  placeholder="libsql://…"
+                  autocomplete="off"
+                  required
+                />
+              </label>
+              <label>
+                <span data-i18n="db_token">Datenbank-Token</span>
+                <input
+                  id="manual-auth-token"
+                  type="password"
+                  autocomplete="off"
+                  required
+                />
+              </label>
+              <label>
+                <span data-i18n="learner_id">Lernenden-ID</span>
+                <input
+                  id="manual-user-id"
+                  type="text"
+                  maxlength="128"
+                  autocomplete="off"
+                  required
+                />
+              </label>
+              <button class="primary" type="submit" data-i18n="pair_manually">
+                Manuell koppeln
+              </button>
+            </form>
+          </details>
+        </div>
+      </section>
+
+      <section id="app-view" hidden>
+        <header class="topbar">
+          <span class="brand-mark">ZAM</span>
+          <div class="topbar-actions">
+            <button
+              id="resync"
+              class="icon-btn"
+              type="button"
+              title="Jetzt synchronisieren"
+              aria-label="Jetzt synchronisieren"
+              data-i18n-aria="resync_aria"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M23 4v6h-6" />
+                <path d="M1 20v-6h6" />
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+              </svg>
+            </button>
+            <button
+              id="open-settings"
+              class="icon-btn"
+              type="button"
+              title="Einstellungen"
+              aria-label="Einstellungen"
+              data-i18n-aria="settings_aria"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <div class="statusbar">
+          <span class="chip"
+            ><span class="chip-key" data-i18n="learner_label">Lernender</span
+            ><strong id="learner">—</strong></span
+          >
+          <span class="chip connection" id="connection">—</span>
+        </div>
+        <p id="status" class="status-line" aria-live="polite"></p>
+
+        <section id="dashboard-view">
+          <p id="summary" class="summary"></p>
+          <div class="capture-actions">
+            <button id="start-review" class="primary" type="button" data-i18n="start_review">
+              Wiederholung starten
+            </button>
+            <button id="open-import" type="button" data-i18n="add_content">
+              Lerninhalt hinzufügen
+            </button>
+          </div>
+          <ol id="queue"></ol>
+        </section>
+
+        <section id="import-view" hidden>
+          <div class="card">
+            <p class="eyebrow" data-i18n="import_kicker">Import</p>
+            <h2 data-i18n="add_content">Lerninhalt hinzufügen</h2>
+            <p class="muted" data-i18n="import_desc">
+              Bridge-JSON auswählen oder Text bzw. URL einfügen. Vor dem
+              Speichern wird immer ein bearbeitbarer Entwurf gezeigt.
+            </p>
+            <label>
+              <span data-i18n="import_file_label">Bridge-JSON-Datei</span>
+              <input
+                id="import-file"
+                type="file"
+                accept="application/json,text/json,text/plain,.json"
+              />
+            </label>
+            <label>
+              <span data-i18n="import_text_label">Text, URL oder Bridge-JSON</span>
+              <textarea
+                id="import-input"
+                placeholder="Text/URL einfügen oder JSON-Datei auswählen …"
+                data-i18n-placeholder="import_text_ph"
+              ></textarea>
+            </label>
+            <div class="buttons">
+              <button id="prepare-import" class="primary" type="button" data-i18n="create_draft">
+                Entwurf erstellen
+              </button>
+              <button id="cancel-import" type="button" data-i18n="cancel">
+                Abbrechen
+              </button>
+            </div>
+            <p id="import-status" class="status-line" aria-live="polite"></p>
+
+            <form id="import-draft-form" hidden>
+              <div class="divider"></div>
+              <h2 data-i18n="confirm_draft">Entwurf bestätigen</h2>
+              <label>
+                <span data-i18n="slug">Slug</span>
+                <input id="import-slug" type="text" required />
+              </label>
+              <label>
+                <span data-i18n="title">Titel</span>
+                <input id="import-title" type="text" />
+              </label>
+              <label>
+                <span data-i18n="content">Lerninhalt</span>
+                <textarea id="import-concept" required></textarea>
+              </label>
+              <label>
+                <span data-i18n="domain">Domäne</span>
+                <input id="import-domain" type="text" />
+              </label>
+              <label>
+                <span data-i18n="bloom_level">Bloom-Stufe</span>
+                <select id="import-bloom">
+                  <option value="1" data-i18n="bloom_1">1 · Erinnern</option>
+                  <option value="2" data-i18n="bloom_2">2 · Verstehen</option>
+                  <option value="3" data-i18n="bloom_3">3 · Anwenden</option>
+                  <option value="4" data-i18n="bloom_4">4 · Analysieren</option>
+                  <option value="5" data-i18n="bloom_5">5 · Erschaffen</option>
+                </select>
+              </label>
+              <label>
+                <span data-i18n="question_opt">Frage (optional)</span>
+                <textarea id="import-question"></textarea>
+              </label>
+              <label>
+                <span data-i18n="context_opt">Kontext/Notiz (optional)</span>
+                <textarea id="import-context"></textarea>
+              </label>
+              <label>
+                <span data-i18n="source_opt">Quelle (optional)</span>
+                <input id="import-source-link" type="text" />
+              </label>
+              <label>
+                <span data-i18n="prereqs_label"
+                  >Voraussetzungen (Slugs, kommagetrennt)</span
+                >
+                <input id="import-prerequisites" type="text" />
+              </label>
+              <label>
+                <span data-i18n="knowledge_contexts_label"
+                  >Wissenskontexte (Namen, kommagetrennt)</span
+                >
+                <input id="import-knowledge-contexts" type="text" />
+              </label>
+              <label>
+                <span data-i18n="symbiosis_mode">Symbiosemodus</span>
+                <select id="import-symbiosis-mode">
+                  <option value="" data-i18n="symbiosis_none">Keiner</option>
+                  <option value="shadowing">Shadowing</option>
+                  <option value="copilot">Copilot</option>
+                  <option value="autonomy">Autonomy</option>
+                </select>
+              </label>
+              <button id="confirm-import" class="primary" type="submit" data-i18n="save_token">
+                Token und Karte speichern
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <section id="review-view" hidden>
+          <div class="card">
+            <div id="review-progress"></div>
+            <div id="review-meta"></div>
+            <div class="voice-controls">
+              <button id="toggle-voice" type="button" aria-pressed="false" data-i18n="voice_start">
+                Sprachmodus starten
+              </button>
+              <button id="install-voice-data" type="button" hidden data-i18n="install_voice_data">
+                Lokale Sprachdaten installieren
+              </button>
+            </div>
+            <h2 id="review-question"></h2>
+            <label>
+              <span data-i18n="your_answer">Deine Antwort</span>
+              <textarea
+                id="review-answer"
+                autocomplete="off"
+                placeholder="Antwort aus dem Gedächtnis formulieren …"
+                data-i18n-placeholder="answer_ph"
+              ></textarea>
+            </label>
+            <button id="reveal-answer" class="primary" type="button" data-i18n="reveal_answer">
+              Antwort aufdecken
+            </button>
+
+            <div id="revealed-answer" hidden>
+              <div class="divider"></div>
+              <p class="eyebrow" data-i18n="expected_answer_kicker">Erwartete Antwort</p>
+              <p id="expected-answer"></p>
+              <a id="review-source" target="_blank" rel="noreferrer" hidden data-i18n="open_source">
+                Quelle öffnen
+              </a>
+              <div id="evaluation-panel" hidden>
+                <p class="eyebrow" data-i18n="evaluation_kicker">Einschätzung</p>
+                <p id="evaluation-verdict"></p>
+                <p id="evaluation-feedback"></p>
+                <p id="evaluation-meta" class="muted"></p>
+              </div>
+              <p class="muted" data-i18n="how_well">Wie gut konntest du dich erinnern?</p>
+              <div class="ratings">
+                <button type="button" data-rating="1" data-i18n="rating_again">Nochmal</button>
+                <button type="button" data-rating="2" data-i18n="rating_hard">Schwer</button>
+                <button type="button" data-rating="3" data-i18n="rating_good">Gut</button>
+                <button type="button" data-rating="4" data-i18n="rating_easy">Leicht</button>
+              </div>
+            </div>
+            <p id="review-status" class="status-line" aria-live="polite"></p>
+            <div class="divider"></div>
+            <button id="stop-review" type="button" data-i18n="stop_session">
+              Sitzung beenden
+            </button>
+          </div>
+        </section>
+
+        <section id="session-summary-view" hidden>
+          <div class="card">
+            <p class="eyebrow" data-i18n="summary_kicker">Fertig</p>
+            <h2 data-i18n="summary_title">Sitzungsübersicht</h2>
+            <p id="session-summary-text"></p>
+            <button id="back-to-queue" class="primary" type="button" data-i18n="to_queue">
+              Zur Queue
+            </button>
+          </div>
+        </section>
+
+        <section id="settings-view" hidden>
+          <div class="card">
+            <p class="eyebrow" data-i18n="settings_kicker">Einstellungen</p>
+            <h2 data-i18n="reminder_heading">Erinnerung</h2>
+            <label class="switch-row">
+              <input id="reminder-enabled" type="checkbox" />
+              <span data-i18n="reminder_toggle"
+                >Tägliche Erinnerung an fällige Karten</span
+              >
+            </label>
+            <label class="field-row">
+              <span data-i18n="reminder_time_label">Uhrzeit</span>
+              <input id="reminder-time" type="time" />
+            </label>
+            <p id="reminder-status" class="status-line" aria-live="polite"></p>
+
+            <div class="divider"></div>
+            <h2 data-i18n="update_heading">App-Update</h2>
+            <p id="update-version" class="muted"></p>
+            <p id="update-status" class="status-line" aria-live="polite"></p>
+            <div class="voice-controls">
+              <button id="check-update" type="button" data-i18n="update_check">
+                Nach Update suchen
+              </button>
+              <button id="install-update" class="primary" type="button" hidden data-i18n="update_install">
+                Update installieren
+              </button>
+            </div>
+
+            <div class="divider"></div>
+            <h2 data-i18n="device_heading">Gerät</h2>
+            <p class="muted" data-i18n="device_desc">
+              Mit einer anderen Server-Datenbank oder einem anderen Lernenden
+              koppeln.
+            </p>
+            <button id="repair" type="button" data-i18n="repair">Neu koppeln</button>
+            <div class="divider"></div>
+            <button id="close-settings" class="primary" type="button" data-i18n="done">
+              Fertig
+            </button>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

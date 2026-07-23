@@ -2,6 +2,8 @@ import type { Database } from "../db/types.js";
 import type { DeleteCardResult } from "../models/card.js";
 import { deleteCardForUser, getCardById } from "../models/card.js";
 import { getPrerequisites } from "../models/prerequisite.js";
+import type { SessionStep } from "../models/session.js";
+import { logStep } from "../models/session.js";
 import type {
   DeleteTokenResult,
   Token,
@@ -33,6 +35,8 @@ export interface ExecuteReviewActionInput {
   userId: string;
   action: ReviewActionType;
   rating?: Rating;
+  sessionId?: string;
+  responseTimeMs?: number;
   tokenUpdates?: UpdateTokenInput;
 }
 
@@ -41,6 +45,7 @@ export interface ReviewActionResult {
   token: Token;
   evaluation?: EvaluateResult;
   blocked?: CascadeBlockResult;
+  sessionStep?: SessionStep;
   updatedToken?: Token;
   deletedToken?: DeleteTokenResult;
   deletedCard?: DeleteCardResult;
@@ -69,6 +74,25 @@ async function getReviewTarget(
   return { cardId: card.id, token };
 }
 
+async function assertActiveSessionForUser(
+  db: Database,
+  sessionId: string,
+  userId: string,
+): Promise<void> {
+  const session = (await db
+    .prepare("SELECT user_id, completed_at FROM sessions WHERE id = ?")
+    .get(sessionId)) as
+    | { user_id: string; completed_at: string | null }
+    | undefined;
+  if (!session) throw new Error(`Session not found: ${sessionId}`);
+  if (session.user_id !== userId) {
+    throw new Error(`Session ${sessionId} does not belong to user ${userId}`);
+  }
+  if (session.completed_at) {
+    throw new Error(`Session already completed: ${sessionId}`);
+  }
+}
+
 export async function executeReviewAction(
   db: Database,
   input: ExecuteReviewActionInput,
@@ -81,12 +105,17 @@ export async function executeReviewAction(
 
     return db.transaction(async (tx) => {
       const target = await getReviewTarget(tx, input.cardId, input.userId);
+      if (input.sessionId) {
+        await assertActiveSessionForUser(tx, input.sessionId, input.userId);
+      }
 
       const evaluation = await evaluateRatingWithinTransaction(tx, {
         cardId: target.cardId,
         tokenId: target.token.id,
         userId: input.userId,
         rating,
+        sessionId: input.sessionId,
+        responseTimeMs: input.responseTimeMs,
       });
 
       let blocked: CascadeBlockResult | undefined;
@@ -97,11 +126,21 @@ export async function executeReviewAction(
         }
       }
 
+      const sessionStep = input.sessionId
+        ? await logStep(tx, {
+            session_id: input.sessionId,
+            token_id: target.token.id,
+            done_by: "user",
+            rating,
+          })
+        : undefined;
+
       return {
         action: input.action,
         token: target.token,
         evaluation,
         blocked,
+        sessionStep,
       };
     });
   }

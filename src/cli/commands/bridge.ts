@@ -12,6 +12,7 @@ import { homedir, tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { Command } from "commander";
 import { ulid } from "ulid";
+import { serializeZamPairPayload } from "../../bridge/mobile-pairing.js";
 import type { DiscussionTurn } from "../../bridge/protocol.js";
 import type {
   BloomLevel,
@@ -64,6 +65,7 @@ import {
   getTokenBySlug,
   getTokenDeleteImpact,
   getTokenNeighborhood,
+  getTursoCredentials,
   hasCommand,
   importCurriculumCards,
   isOllamaInstalled,
@@ -183,6 +185,7 @@ import {
   translateQuestionViaLLM,
 } from "../llm/client.js";
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
+import { createMobilePairingPayload } from "../mobile-pairing.js";
 import {
   bindRoleProviders,
   buildProviderListing,
@@ -3419,6 +3422,66 @@ bridgeCommand
     });
   });
 
+bridgeCommand
+  .command("mobile-pairing-payload")
+  .description(
+    "Create a versioned mobile pairing payload from machine-local secrets (JSON)",
+  )
+  .requiredOption("--user <id>", "Learner ID to bind to the mobile device")
+  .option("--create-user", "Create and select a learner without cards")
+  .action(async (opts) => {
+    const target = getDatabaseTargetInfo();
+    if (target.kind === "local") {
+      jsonError("Mobile pairing requires a configured server database.");
+    }
+    const credentials = getTursoCredentials();
+    if (!credentials) {
+      jsonError("Mobile pairing requires complete Turso/sqld credentials.");
+    }
+
+    await withDb(async (db) => {
+      const userId = String(opts.user ?? "").trim();
+      const hasControlCharacters = [...userId].some((character) => {
+        const code = character.charCodeAt(0);
+        return code <= 31 || code === 127;
+      });
+      if (!userId || userId.length > 128 || hasControlCharacters) {
+        jsonError(
+          "Learner ID must be 1-128 characters without control characters.",
+        );
+      }
+
+      const users = await readDatabaseUserSummaries(db);
+      const activeUserId = await getSetting(db, "user.id");
+      const exists =
+        activeUserId === userId || users.some((user) => user.id === userId);
+      if (!exists && opts.createUser !== true) {
+        jsonError(
+          `Learning profile not found: ${userId}. Use --create-user to create it.`,
+        );
+      }
+      if (!exists) {
+        await setSetting(db, "user.id", userId);
+      }
+
+      const recallProvider = await getProviderForRole(db, "recall");
+      const payload = createMobilePairingPayload({
+        databaseUrl: credentials.url,
+        databaseToken: credentials.token,
+        userId,
+        recallProvider,
+      });
+      jsonOut({
+        success: true,
+        payload: serializeZamPairPayload(payload),
+        userId,
+        cardCount: users.find((user) => user.id === userId)?.cardCount ?? 0,
+        createdUser: !exists,
+        hasLlm: Boolean(payload.llm?.recall.enabled),
+      });
+    });
+  });
+
 // ── zam bridge list-tokens (for graph pickers / entry points) ───────────────
 
 bridgeCommand
@@ -4500,7 +4563,7 @@ async function fetchRawHtml(url: string): Promise<string> {
     const res = await fetch(url, {
       signal: controller.signal,
       headers: {
-        "User-Agent": "ZAM-Content-Studio/0.6.3",
+        "User-Agent": "ZAM-Content-Studio/0.17.0",
       },
     });
     if (!res.ok) {

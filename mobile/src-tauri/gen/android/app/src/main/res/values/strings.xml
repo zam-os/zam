@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">"ZAM Mobile"</string>
+    <string name="main_activity_title">"ZAM Mobile"</string>
+    <string name="voice_notification_channel">"Sprachsitzung"</string>
+    <string name="voice_notification_title">"ZAM Sprachmodus aktiv"</string>
+    <string name="voice_notification_text">"Antworte und bewerte Karten per Sprache. Zum Pausieren öffnen."</string>
+</resources>

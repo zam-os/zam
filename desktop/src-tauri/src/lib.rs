@@ -1,4 +1,5 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
+use qrcode::{render::svg, QrCode};
 use std::env;
 use std::fs;
 use std::io::{BufRead, BufReader, Write};
@@ -272,7 +273,9 @@ fn resolve_observer_runtime(app: &tauri::AppHandle) -> Option<ObserverRuntime> {
 fn read_package_version(dir: &Path) -> Option<String> {
     let content = fs::read_to_string(dir.join("package.json")).ok()?;
     let json: serde_json::Value = serde_json::from_str(&content).ok()?;
-    json.get("version").and_then(|v| v.as_str()).map(|s| s.to_string())
+    json.get("version")
+        .and_then(|v| v.as_str())
+        .map(|s| s.to_string())
 }
 
 fn resolve_bridge_runtime(app: &tauri::AppHandle) -> Option<BridgeRuntime> {
@@ -289,7 +292,7 @@ fn resolve_bridge_runtime(app: &tauri::AppHandle) -> Option<BridgeRuntime> {
             .and_then(Path::parent)
             .map(Path::to_path_buf)
             .unwrap_or_else(|| PathBuf::from("."));
-        
+
         let app_version = app.package_info().version.to_string();
         if let Some(dev_version) = read_package_version(&working_dir) {
             if dev_version == app_version {
@@ -346,7 +349,7 @@ fn get_bridge_info(app: tauri::AppHandle) -> BridgeInfo {
             .unwrap_or_else(|| PathBuf::from("."));
         dev_path = Some(working_dir.to_string_lossy().to_string());
         dev_ver = read_package_version(&working_dir);
-        
+
         if let Some(ref ver) = dev_ver {
             if ver == &app_version {
                 using_dev = true;
@@ -1331,9 +1334,8 @@ fn open_data_folder(app: tauri::AppHandle) -> Result<(), String> {
     let dir = home_dir()
         .ok_or_else(|| "Could not resolve home directory".to_string())?
         .join(".zam");
-    fs::create_dir_all(&dir).map_err(|e| {
-        format!("Failed to create data directory {}: {e}", dir.display())
-    })?;
+    fs::create_dir_all(&dir)
+        .map_err(|e| format!("Failed to create data directory {}: {e}", dir.display()))?;
     app.opener()
         .open_path(dir.to_string_lossy().to_string(), None::<&str>)
         .map_err(|e| format!("Failed to open data folder: {e}"))
@@ -1355,6 +1357,26 @@ fn restart_app(app: tauri::AppHandle) {
     app.restart();
 }
 
+fn pairing_qr_svg(payload: &str) -> Result<String, String> {
+    if payload.is_empty() || payload.len() > 2_000 {
+        return Err("Pairing payload must be between 1 and 2000 bytes".to_string());
+    }
+    let code = QrCode::new(payload.as_bytes()).map_err(|error| error.to_string())?;
+    Ok(code
+        .render::<svg::Color>()
+        .min_dimensions(360, 360)
+        .quiet_zone(true)
+        .dark_color(svg::Color("#111827"))
+        .light_color(svg::Color("#ffffff"))
+        .build())
+}
+
+/// Render a pairing QR locally. The live secrets never leave this process.
+#[tauri::command]
+fn render_pairing_qr(payload: String) -> Result<String, String> {
+    pairing_qr_svg(&payload)
+}
+
 #[tauri::command]
 fn open_terminal_in_dir(dir: String) -> Result<(), String> {
     let path = PathBuf::from(dir);
@@ -1362,7 +1384,10 @@ fn open_terminal_in_dir(dir: String) -> Result<(), String> {
         return Err(format!("Workspace path does not exist: {}", path.display()));
     }
     if !path.is_dir() {
-        return Err(format!("Workspace path is not a directory: {}", path.display()));
+        return Err(format!(
+            "Workspace path is not a directory: {}",
+            path.display()
+        ));
     }
 
     #[cfg(target_os = "windows")]
@@ -1390,13 +1415,21 @@ fn open_terminal_in_dir(dir: String) -> Result<(), String> {
 
     #[cfg(all(unix, not(target_os = "macos")))]
     {
-        let candidates = ["x-terminal-emulator", "gnome-terminal", "konsole", "xfce4-terminal"];
+        let candidates = [
+            "x-terminal-emulator",
+            "gnome-terminal",
+            "konsole",
+            "xfce4-terminal",
+        ];
         for candidate in candidates {
             if Command::new(candidate).current_dir(&path).spawn().is_ok() {
                 return Ok(());
             }
         }
-        Err(format!("No supported terminal emulator found for {}", path.display()))
+        Err(format!(
+            "No supported terminal emulator found for {}",
+            path.display()
+        ))
     }
 }
 
@@ -1443,7 +1476,8 @@ pub fn run() {
             open_data_folder,
             open_terminal_in_dir,
             current_os,
-            restart_app
+            restart_app,
+            render_pairing_qr
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -1452,23 +1486,32 @@ pub fn run() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::env;
     use std::fs::{self, File};
     use std::io::Write;
-    use std::env;
 
     #[test]
     fn test_read_package_version() {
         let temp_dir = env::temp_dir().join("zam_test_dir");
         let _ = fs::create_dir_all(&temp_dir);
         let pkg_json = temp_dir.join("package.json");
-        
+
         let mut file = File::create(&pkg_json).unwrap();
         file.write_all(b"{\"version\": \"1.2.3\"}").unwrap();
-        
+
         let ver = read_package_version(&temp_dir);
         assert_eq!(ver, Some("1.2.3".to_string()));
-        
+
         let _ = fs::remove_file(&pkg_json);
         let _ = fs::remove_dir(&temp_dir);
+    }
+
+    #[test]
+    fn renders_pairing_payload_as_local_svg() {
+        let payload = r#"{"type":"zam-pair","version":1}"#;
+        let svg = pairing_qr_svg(payload).unwrap();
+        assert!(svg.starts_with("<?xml"));
+        assert!(svg.contains("<svg"));
+        assert!(!svg.contains(payload));
     }
 }

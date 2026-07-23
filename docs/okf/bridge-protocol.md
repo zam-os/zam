@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-07-19T08:50:00Z
+timestamp: 2026-07-22T04:45:00Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -27,9 +27,9 @@ The hard contract:
   through the same `{"error":"..."}` stdout envelope with a non-zero exit
   status and no plain-text stderr. (This is stricter than the `--json` flag
   other commands offer.)
-- **`src/bridge/protocol.ts` types are the stable contract.** Agents and
-  the desktop panels program against these shapes; breaking them breaks
-  external callers.
+- **`src/bridge/protocol.ts` types are the stable contract.** Agents,
+  desktop panels, and the Android companion's additive import program
+  against these shapes; breaking them breaks external callers.
 
 Representative commands: `next` (pull the next queue card), `submit`
 (apply a rating), `add-token` (register a token *and* create the calling
@@ -40,7 +40,17 @@ handshake: without `--confirm` they return an impact preview (affected
 cards, review logs, session steps, agent skills); with `--confirm` they
 execute.
 
+The Android companion accepts one `AddTokenRequest`-shaped bridge-token
+object from a selected JSON file or an Android share intent. It also accepts
+the CLI's snake-case compatibility spellings, always shows an editable
+confirmation draft, ignores a payload-supplied user in favor of the paired
+learner, then atomically creates the token, that learner's card, requested
+prerequisite edges, and existing knowledge-context assignments. Plain shared
+or pasted text and URLs use the same confirmation path as quick-capture
+drafts.
+
 # Citations
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
-- Code: `src/cli/app.ts`, `src/cli/commands/bridge.ts`, `src/bridge/protocol.ts`
+- [Android companion plan](../plans/2026-07-21-android-companion-app.md)
+- Code: `src/cli/app.ts`, `src/cli/commands/bridge.ts`, `src/bridge/protocol.ts`, `mobile/src/import.ts`

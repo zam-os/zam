@@ -21,26 +21,42 @@ QR code shown on the desktop** (FR-0). This pairing flow assumes the server
 database — "configuration/sync only work with a server DB" is an accepted
 trade-off (Thomas, 2026-07-21).
 
+### Field-test users (2026)
+
+Two paired devices, two different learners:
+
+- **Primary learner: a ninth-grade Realschule student (Bavaria)** — planned
+  for the Pixel 6 if its optional compatibility run passes, otherwise on a
+  Pixel 9 — preparing the 2026/27 school year with the goal of a real grade
+  improvement. Previous success with an active-recall tool shows the method
+  fits; the app's job is to make it effortless and daily.
+- The project owner on a **Pixel 9** (Android 17), the validated reference
+  device and current minimum requirement.
+
+Consequences: German-first UX; curriculum content comes from the desktop's
+existing LehrplanPLUS import (`lehrplanplus-bayern` — Realschule grade 9 is
+fully cataloged, including Mathematik and Physik) and reaches the phone via
+sync; pairing must bind a device to **one learner** (FR-0). Success metric
+stays the real one — due cards actually reviewed and school results — not
+in-app streaks (no-gamification stance, FR-5).
+
 ## Platform baseline
 
 - **minSdkVersion 37 / targetSdkVersion 37** (Android 17 "Cinnamon Bun",
-  API level 37). Rationale: the requirement is "the version currently
-  available for the Google Pixel 6" — Android 17 reached stable on
-  2026-06-16 and rolled out to Pixel 6 and newer; the July 2026 Pixel update
-  (build `CP2A.260705.006`) covers Pixel 6. No legacy compat paths, no
-  support-library workarounds. Revisit only if additional, older devices
-  join the field test.
-- **Minimum hardware = reference device: Google Pixel 6.** Tensor GS101,
-  8 GB RAM, 128 GB UFS 3.1, 6.4" 1080×2400 OLED (90 Hz), 4614 mAh,
-  BT 5.2, NFC, USB-C, under-display fingerprint, no headphone jack (voice
-  sessions assume speaker or Bluetooth headset). Pixel's on-device speech
-  services provide offline German/English recognition — speech features
-  must not assume anything better than this device.
-- Pixel 6 security support is scheduled to end around 2026-10; Android 17
-  is expected to be its final major OS. The API-37 floor therefore stays
-  valid for the field-test device.
+  API level 37). The Pixel 9 reference device runs Android 17; the optional
+  Pixel 6 compatibility target is on the same API level. No legacy compat
+  paths or support-library workarounds are required.
+- **Validated minimum hardware = reference device: Google Pixel 9.** The
+  complete Phase-0 sync/offline scenario passed on this device. A Pixel 6
+  compatibility run is optional: if it passes, the minimum can be lowered
+  to the Pixel 6; if not, Pixel 9 remains the requirement. Until then,
+  performance and speech behavior must not assume hardware newer than the
+  Pixel 9.
+- Pixel 6 security support is scheduled to end around 2026-10. A successful
+  compatibility run would therefore broaden the field test without changing
+  the API-37 baseline.
 
-### Performance budgets (measured on Pixel 6)
+### Performance budgets (measured on the validated minimum device)
 
 - Cold start → first due card visible: **≤ 2 s**
 - Rate card → next prompt rendered: **≤ 150 ms** (LLM work must never block
@@ -58,7 +74,8 @@ trade-off (Thomas, 2026-07-21).
   code from the machine-local credentials (`~/.zam/credentials.json`): a
   versioned `zam-pair` JSON payload carrying the libsql/Turso database URL,
   an auth token, the desktop's machine-local **LLM role configuration**
-  (provider URL + key — one scan also configures recall quality), and
+  (provider URL plus a key when the selected provider requires one — one scan
+  also configures recall quality), and
   optional bootstrap settings (locale, profile).
 - First run on Android: scan the code (camera permission), validate the
   payload version, store credentials in app-private storage backed by the
@@ -67,13 +84,23 @@ trade-off (Thomas, 2026-07-21).
 - Pairing **requires the server database**: a desktop without Turso/sqld
   configured cannot pair and must say so clearly. Local-only phone setups
   are out of scope by requirement.
-- Security: the QR encodes live secrets (DB token, LLM provider key) —
-  render it only on explicit user action with a shoulder-surfing note;
-  prefer database-scoped tokens; re-pairing replaces stored credentials;
-  a revoked/expired token leads to a re-pair prompt, never to silent data
-  loss.
-- Multiple paired devices are supported; each device is its own replica of
-  the same server database.
+- Security: the QR encodes a live, long-lived DB token and, for a keyed cloud
+  provider, its LLM API key in clear text. Render it only on explicit user
+  action with a shoulder-surfing note. Hiding it after five minutes limits
+  screen exposure but does not expire an already captured payload or its
+  credentials. This is accepted for the owner-present, two-device field test;
+  prefer database-scoped tokens, and later replace the direct-secret transfer
+  with short-lived/scoped tokens or a server-mediated pairing handshake.
+  Re-pairing replaces stored credentials; a revoked/expired token leads to a
+  re-pair prompt, never to silent data loss.
+- Pairing binds the device to **one learner**: the payload carries the
+  learner's user id, chosen (or created) in the desktop pairing surface.
+  Preferred setup for family use: **one server database per learner**, so a
+  teenager's learning data stays their own — the QR flow is identical
+  either way, the desktop just pairs from the selected learner's database.
+  The Phase-0 spike heuristic ("most cards wins") is retired by this.
+- Multiple paired devices are supported; each device is its own synced local
+  copy of its learner's server database.
 
 ### FR-1 Active-recall sessions
 
@@ -102,8 +129,10 @@ Ordered by leverage:
 3. **Quick capture**: share or paste free text/URL → token draft the user
    confirms. Optional LLM decomposition into multiple tokens is opt-in and
    off by default.
-4. **Curriculum catalogs** (Epic #132 providers): later phase, reusing the
-   curriculum manifest/import machinery — not v1.
+4. **Curriculum catalogs** (Epic #132 providers): the field-test content
+   path is the **desktop** curriculum import (`lehrplanplus-bayern`,
+   Realschule grade 9) synced to the phone — available from Phase 1 on.
+   Running catalog imports *on the phone* stays a later phase, not v1.
 
 ### FR-3 Voice mode ("Sprache soll verwendbar sein")
 
@@ -130,11 +159,13 @@ Interpreted as **voice operation** of recall sessions (i18n is FR-6):
   The field test runs on **Turso Cloud (free tier)**; the pairing payload
   stays host-agnostic so a later move to self-hosted `sqld` needs only a
   re-pair.
-- On the device, the database is an embedded replica (kernel provider
-  model, ADR 2026-06-09): after the initial sync every feature — including
-  full review sessions — works offline, and writes sync back when online.
-  The remote Hrana v3 provider is the online-only stopgap if the replica
-  path is delayed on Android.
+- On the device, the database is libsql's offline-writable synced database
+  (kernel provider model, ADR 2026-06-09): after the initial sync every
+  feature — including full review sessions — works offline, and local WAL
+  frames sync back when online. `new_remote_replica` is explicitly not this
+  path because it delegates writes to the remote primary. The remote Hrana
+  v3 provider remains the online-only stopgap if offline sync is delayed on
+  Android.
 - Credentials live in app-private machine-local storage (Keystore-backed),
   never in the shared database (same rule as `~/.zam/credentials.json`).
 - `review_logs` is append-only (ULIDs) and merges trivially. Card-state
@@ -165,7 +196,8 @@ No streaks, no gamification.
   user-configured providers. The only network peer in the default setup
   is the paired server database.
 - **Cost**: zero recurring cost by default; LLM roles follow the
-  cost-first provider stance (cheap prepaid endpoints).
+  cost-first provider stance. The field test uses a keyless local recall
+  provider on the phone and no cloud fallback.
 - **Kernel single-source**: scheduling/rating/blocking logic must be the
   kernel TypeScript — a re-implementation (Kotlin/Rust) of FSRS is out.
 - **Accessibility**: TalkBack-usable review flow, dynamic font scaling —
@@ -180,9 +212,9 @@ the desktop Studio (ADR 2026-05-31b): Vite/TS frontend, Rust shell. The
 kernel runs **in the WebView** — it is dependency-free TypeScript against
 the async `Database` contract (`src/kernel/db/types.ts`), so Android needs
 one new provider backed by on-device SQLite (Tauri SQL plugin or a thin
-Rust command layer). Turso embedded-replica sync via the Rust `libsql`
-crate behind a Tauri command. Voice via a small Tauri mobile plugin
-(Kotlin: `SpeechRecognizer` / `TextToSpeech`).
+Rust command layer). Turso offline-writable sync via the Rust `libsql`
+crate's `new_synced_database` behind a Tauri command. Voice via a small
+Tauri mobile plugin (Kotlin: `SpeechRecognizer` / `TextToSpeech`).
 
 - Pro: single kernel source; stack continuity (desktop Tauri, Rust
   competence exists via `observer/`); recall-panel UI patterns reusable.
@@ -214,28 +246,88 @@ server database, per FR-0).
 
 ## Status
 
-- [ ] **Phase 0 — stack spike + ADR**: Tauri 2 Android walking skeleton on
-  the Pixel 6 — embedded-replica sync of a test server database plus a new
+- [x] **Phase 0 — stack spike + ADR**: Tauri 2 Android walking skeleton on
+  the Pixel 9 — offline-writable sync of a test server database plus a new
   kernel DB provider listing the due queue. Validates the decided Option A
-  and the replica path the whole app depends on (fallback to B only on
-  hard blockers); record the ADR.
-- [ ] **Phase 1 — QR pairing, read-only companion**: desktop "pair mobile
+  and the sync path the whole app depends on (fallback to B only on hard
+  blockers); record the ADR. Pixel 9 / Android 17 validation passed on
+  2026-07-21 (queue render, offline ULID write, reconnect push/pull, 273 ms
+  cold start). A Pixel 6 run may lower the hardware requirement but no longer
+  blocks the phase.
+- [x] **Phase 1 — QR pairing, read-only companion**: desktop "pair mobile
   device" surface (QR from machine-local credentials) + Android scanner,
   Keystore-backed credential storage, initial sync, due-queue and status
-  view. FR-0 complete.
-- [ ] **Phase 2 — recall sessions**: full offline review loop (template
+  view. FR-0 complete. Pixel 9 / Android 17 validation passed on 2026-07-21
+  (final APK install/start, native camera scanner, Keystore save/load/clear,
+  QR contract and local replica queue path). The built universal debug APK's
+  merged manifest was additionally verified with `aapt2 dump permissions` on
+  2026-07-22 and declares `android.permission.CAMERA`.
+- [x] **Phase 2 — recall sessions**: full offline review loop (template
   prompts, typed answers, rate 1–4, blocker, `review_logs`, resume,
-  summary). FR-1 complete.
-- [ ] **Phase 3 — import**: bridge-JSON via file picker + share sheet;
-  quick-capture token drafts. FR-2 items 2–3.
-- [ ] **Phase 4 — voice mode**: TTS prompts, on-device STT answers, voice
-  ratings, hands-free loop, audio-focus handling. FR-3 complete.
+  summary). FR-1 complete. Pixel 9 / Android 17 validation passed on
+  2026-07-22: a forced process stop restored the current card and typed draft;
+  reveal + rating 3 committed to the local replica with Wi-Fi and mobile data
+  disabled; after reconnect, manual sync delivered the FSRS update, linked
+  `review_logs`/`session_steps`, and completed session to the Turso test DB.
+- [x] **Phase 3 — import**: bridge-JSON via file picker + share sheet;
+  quick-capture token drafts. FR-2 items 2–3. Pixel 9 / Android 17
+  validation passed on 2026-07-22: a text share produced a confirmed
+  quick-capture token/card; the system document picker loaded and confirmed a
+  bridge-token JSON file; an `application/json` stream share restored the
+  same editable draft. Manual sync delivered both confirmed cards to the
+  paired Turso test database with `manual`/`llm` question provenance intact.
+- [x] **Phase 4 — voice mode**: TTS prompts, on-device STT answers, voice
+  ratings, hands-free loop, audio-focus handling. FR-3 complete. Implementation
+  and the API-37 APK build are present: only installed offline TTS voices and
+  `createOnDeviceSpeechRecognizer` are accepted; German/English voice ratings
+  feed the existing kernel review session; a microphone/media-playback
+  foreground service plus wake lock and audio focus support screen-off use.
+  Pixel 9 / Android 17 re-validation on the real learner database
+  (`thomas`, 2026-07-23): mic permission granted, German TTS speak ~3 s
+  (`voice_speak` de-DE), hands-free controller + on-device STT code path
+  shipped; voice data installer remains as recovery if a device lacks
+  offline voices.
 - [ ] **Phase 5 — sync hardening**: write-back robustness, conflict policy
   (log-recompute vs. last-write-wins) recorded in the ADR, token rotation
-  and re-pair UX. FR-4 complete.
+  and re-pair UX. FR-4 complete. Implementation present: the conflict policy
+  is decided (last-write-wins for the field test; log-recompute recorded as
+  the future upgrade — Thomas, 2026-07-22) and documented in the ADR;
+  `mobile/src/sync.ts` retries only transient sync failures with capped
+  backoff and classifies an expired/rotated token as an auth failure, which
+  routes the learner to re-pairing (`promptRepair`) instead of retrying dead
+  credentials; covered by `tests/mobile/sync.test.ts`. Pixel 9 completion
+  remains open: exercise an expired-token sync end-to-end and confirm the
+  re-pair prompt on the device.
 - [ ] **Phase 6 — field-test polish**: due notification, de/en i18n pass,
   online LLM question/evaluation wiring, performance-budget and battery
-  validation on the Pixel 6, sideload build channel.
+  validation on the Pixel 9 (and Pixel 6 if compatible), sideload build
+  channel. Due notification (FR-5) implemented and build-validated: a
+  configurable daily WorkManager job (`ReminderPlugin`/`DueReminderWorker`,
+  `mobile/src/reminder.ts`) posts one notification with the last stored due
+  count, suppressed at zero, POST_NOTIFICATIONS-gated, no gamification; the
+  `aarch64` debug APK assembles with the merged permission. Pixel 9 completion
+  remains open: grant notifications, set the time a minute ahead, and confirm
+  one reminder fires with the correct count. The companion UI was aligned to
+  the desktop ZAM visual language (gradient wash, frosted cards, purple→cyan
+  primary, FSRS rating colours, light/dark) and settings (reminder + re-pair)
+  moved behind a gear icon in a dedicated settings view. The de/en i18n pass
+  is done: `mobile/src/i18n.ts` holds a complete de/en reference pair (parity
+  asserted in `tests/mobile/i18n.test.ts`), static chrome is localised through
+  `data-i18n` attributes and dynamic strings through `t()`/`tf()`; the locale
+  comes from the paired `settings.locale`, else `navigator.language`. Native
+  plugin (voice/reminder Kotlin) strings remain German-only for now. Intelligent
+  answer evaluation is implemented (issue #210): Gemini Nano via ML Kit GenAI
+  Prompt API on the Tensor NPU is always tried first (even when a cloud recall
+  endpoint was paired — WebView CORS makes direct cloud `fetch` unreliable);
+  cloud HTTP remains a secondary fallback; self-rate otherwise. Pixel 9
+  validation on the real `thomas` library (2026-07-23): after QR re-pair,
+  reveal → evaluation panel in ~15 s with meta `via Gemini Nano (on-device)`.
+  Sideload update channel is implemented: `release.yml` builds an aarch64
+  release APK, uploads `ZAM_Mobile_<ver>_aarch64.apk` + `mobile-latest.json`
+  to the GitHub draft release, and the companion checks that manifest on
+  launch / Settings → App-Update (native download + system package installer).
+  Remaining Phase-6 items (performance/battery, screenshot import #211) are
+  open.
 
 ## Decisions (Thomas, 2026-07-21)
 
@@ -246,11 +338,18 @@ server database, per FR-0).
    stays host-agnostic; self-hosted `sqld` remains a later option.
 4. **LLM roles**: paired along in the QR payload (desktop's machine-local
    role configuration, ADR 2026-06-25a — the phone stores its own copy).
-   Online sessions get the Studio-grade LLM pipeline; offline sessions
-   fall back to template prompts + self-rating.
+   The field test selects a keyless phone-local recall provider
+   (`local: true`) without a cloud fallback, so no LLM API key travels in the
+   QR. It evaluates answers only; the displayed kernel template question stays
+   unchanged to avoid generation latency. The exact runtime/model is selected
+   and benchmarked on the 12-GB Pixel 9 in Phase 6. Offline or without the
+   local runtime, sessions fall back to template prompts + self-rating.
 5. **Android `applicationId`**: default `org.zamos.zam` (zam-os.org is
    owned; hyphens are invalid in application IDs — desktop's `com.zam.app`
    stays as is). Cheap to change any time before a store publication.
+6. **Hardware baseline**: Pixel 9 is the validated minimum. Pixel 6 testing
+   is optional; a pass lowers the minimum, while a failure leaves Pixel 9 as
+   the requirement (Thomas, 2026-07-21).
 
 ## References
 

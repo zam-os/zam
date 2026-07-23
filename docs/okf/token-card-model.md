@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-07-18
+timestamp: 2026-07-22T04:45:00Z
 ---
 
 The central distinction in ZAM's domain model:
@@ -48,10 +48,13 @@ difficulty, due date, state, and block status (see
 The practical consequence: **a concept only appears in a user's review
 queue if a card exists for that user.** `zam token register` creates only
 the shared token; `zam bridge add-token` creates the token *and* the
-calling user's card. Removing a card (`personal-card-remove`) clears that
-user's learning state and history but leaves the shared token untouched;
-deleting a token (`personal-card-delete`) removes the concept for
-everyone.
+calling user's card. The Android additive-import and quick-capture flow
+preserves the same invariant: after explicit confirmation it atomically
+creates the token and the paired learner's card, together with requested
+prerequisite and knowledge-context links. Removing a card
+(`personal-card-remove`) clears that user's learning state and history but
+leaves the shared token untouched; deleting a token
+(`personal-card-delete`) removes the concept for everyone.
 
 Supporting tables: `prerequisites` (directed dependency edges between
 tokens), `review_logs` (immutable audit trail of review events),
@@ -66,4 +69,5 @@ layer, stored by the kernel).
 - [ADR 2026-07-03 — RAG Semantic Token Search](../adr/2026-07-03-rag-semantic-token-search.md)
 - [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
 - [ADR 2026-07-18b — Learning Graph Scope Selectors and the Repo Scope](../adr/2026-07-18b-graph-repo-scope.md)
-- Code: `src/kernel/models/token.ts`, `src/kernel/recall/prompter.ts`
+- [Android companion plan](../plans/2026-07-21-android-companion-app.md)
+- Code: `src/kernel/models/token.ts`, `src/kernel/recall/prompter.ts`, `mobile/src/import.ts`

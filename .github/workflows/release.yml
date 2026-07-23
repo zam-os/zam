@@ -232,3 +232,122 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload "$GITHUB_REF_NAME" "dist/vscode-extension/ZAM_Companion_${GITHUB_REF_NAME#v}.vsix" --clobber
+
+  # Field-test Android companion: signed APK + mobile-latest.json for in-app
+  # sideload updates (Tauri's updater plugin does not support Android).
+  publish-android:
+    name: 'Upload ZAM Mobile APK'
+    needs: publish-tauri
+    if: ${{ always() && needs.publish-tauri.result != 'cancelled' }}
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: |
+          sdkmanager --install \
+            "platforms;android-37" \
+            "build-tools;37.0.0" \
+            "ndk;29.0.14206865" \
+            "platform-tools"
+          yes | sdkmanager --licenses >/dev/null || true
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android
+
+      - name: Guard tag/package version match
+        run: |
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
+            echo "::error::package.json version ($PKG_VERSION) does not match tag ($TAG_VERSION)"
+            exit 1
+          fi
+          echo "PKG_VERSION=$PKG_VERSION" >> "$GITHUB_ENV"
+
+      - name: Install root + mobile dependencies
+        run: |
+          npm ci
+          npm ci --prefix mobile
+
+      - name: Decode Android release keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
+            echo "::warning::ANDROID_KEYSTORE_BASE64 secret missing — release APK will use the debug keystore (field-test only)."
+            exit 0
+          fi
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/zam-android.jks"
+          echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/zam-android.jks" >> "$GITHUB_ENV"
+          echo "ANDROID_KEYSTORE_PASSWORD=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> "$GITHUB_ENV"
+          echo "ANDROID_KEY_ALIAS=${{ secrets.ANDROID_KEY_ALIAS }}" >> "$GITHUB_ENV"
+          echo "ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }}" >> "$GITHUB_ENV"
+
+      - name: Build Android release APK (aarch64)
+        working-directory: mobile
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
+          ANDROID_SDK_ROOT: ${{ env.ANDROID_HOME }}
+          NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/29.0.14206865
+          ANDROID_KEYSTORE_PATH: ${{ env.ANDROID_KEYSTORE_PATH }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ env.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ env.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ env.ANDROID_KEY_PASSWORD }}
+        run: npm run android:build -- --target aarch64
+
+      - name: Package APK + mobile-latest.json and upload
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          VERSION="${PKG_VERSION}"
+          # Prefer universal release APK; fall back to aarch64-only output paths.
+          SRC="$(find mobile/src-tauri/gen/android/app/build/outputs/apk -type f -name '*.apk' | head -n 1)"
+          if [ -z "$SRC" ]; then
+            echo "::error::No APK produced by android:build"
+            find mobile/src-tauri/gen/android/app/build/outputs -type f | head -50
+            exit 1
+          fi
+          APK="ZAM_Mobile_${VERSION}_aarch64.apk"
+          cp "$SRC" "$APK"
+          APK_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/${APK}"
+          # Tauri derives the installed APK's versionCode as
+          # major*1000000 + minor*1000 + patch (0.16.1 → 16001); the manifest
+          # must use the same scheme or the in-app update check never fires.
+          # Mirrors versionCodeFromSemver in mobile/src/update.ts.
+          VERSION_CODE="$(node -e "
+            const [a,b,c]=('${VERSION}'.replace(/^v/,'').split('.').map(Number));
+            console.log((a||0)*1000000+(b||0)*1000+(c||0));
+          ")"
+          node -e "
+            const fs=require('fs');
+            fs.writeFileSync('mobile-latest.json', JSON.stringify({
+              version: '${VERSION}',
+              versionCode: ${VERSION_CODE},
+              url: '${APK_URL}',
+              notes: 'ZAM Mobile ${VERSION} (aarch64 sideload)',
+            }, null, 2) + '\n');
+          "
+          gh release upload "$GITHUB_REF_NAME" "$APK" mobile-latest.json --clobber
+          echo "Uploaded $APK and mobile-latest.json (versionCode=$VERSION_CODE)"
