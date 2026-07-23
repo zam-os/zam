@@ -44,18 +44,21 @@ fn err(error: impl std::fmt::Display) -> String {
 }
 
 async fn configure_connection(connection: &libsql::Connection, remote: bool) -> Result<(), String> {
+    // Remote libsql/Hrana primaries reject many local PRAGMAs with
+    // "unsupported statement" — skip configuration there (ADR 2026-07-23).
+    if remote {
+        // Marker for on-device verification: remote path skips PRAGMAs entirely.
+        return Ok(());
+    }
+
     connection
         .execute_batch("PRAGMA foreign_keys = ON; PRAGMA busy_timeout = 5000;")
         .await
         .map_err(err)?;
-
-    // Remote primaries do not accept local journal_mode switches.
-    if !remote {
-        connection
-            .execute_batch("PRAGMA journal_mode = WAL;")
-            .await
-            .map_err(err)?;
-    }
+    connection
+        .execute_batch("PRAGMA journal_mode = WAL;")
+        .await
+        .map_err(err)?;
 
     Ok(())
 }
@@ -139,12 +142,23 @@ pub async fn db_open(
     std::fs::create_dir_all(&dir).map_err(err)?;
     let (location, database, remote) = match database_mode(sync_url, auth_token)? {
         DatabaseMode::Remote { url, auth_token } => {
-            let builder = libsql::Builder::new_remote(url.clone(), auth_token);
+            // libsql remote HTTP expects an https:// (or http://) base; keep
+            // libsql:// as-is for display but normalize the wire URL.
+            let wire_url = if url.starts_with("libsql://") {
+                format!("https://{}", url.trim_start_matches("libsql://"))
+            } else {
+                url.clone()
+            };
+            // Android: use packaged WebPKI roots (native CA store is empty to
+            // the Rust TLS stack — default connector fails with "no valid
+            // native root CA certificates"). Same pattern as the former
+            // synced-database path.
+            let builder = libsql::Builder::new_remote(wire_url.clone(), auth_token);
             #[cfg(target_os = "android")]
             let builder = builder.connector(
                 hyper_rustls::HttpsConnectorBuilder::new()
                     .with_webpki_roots()
-                    .https_only()
+                    .https_or_http()
                     .enable_http1()
                     .build(),
             );
@@ -154,7 +168,11 @@ pub async fn db_open(
             probe
                 .query("SELECT 1", ())
                 .await
-                .map_err(|e| format!("cannot reach server database (online required): {e}"))?;
+                .map_err(|e| {
+                    format!(
+                        "cannot reach server database (online required) at {wire_url}: {e}"
+                    )
+                })?;
             (format!("remote:{url}"), database, true)
         }
         DatabaseMode::Local => {
