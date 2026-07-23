@@ -306,7 +306,11 @@ server database, per FR-0).
   count, suppressed at zero, POST_NOTIFICATIONS-gated, no gamification; the
   `aarch64` debug APK assembles with the merged permission. Pixel 9 completion
   remains open: grant notifications, set the time a minute ahead, and confirm
-  one reminder fires with the correct count. Remaining Phase-6 items (i18n
+  one reminder fires with the correct count. The companion UI was aligned to
+  the desktop ZAM visual language (gradient wash, frosted cards, purple→cyan
+  primary, FSRS rating colours, light/dark) and settings (reminder + re-pair)
+  moved behind a gear icon in a dedicated settings view. Remaining Phase-6
+  items (i18n
   pass, online LLM wiring, performance/battery, sideload channel) are untouched.
 
 ## Decisions (Thomas, 2026-07-21)

@@ -117,6 +117,9 @@ const repairButton = element<HTMLButtonElement>("repair");
 const reminderEnabled = element<HTMLInputElement>("reminder-enabled");
 const reminderTime = element<HTMLInputElement>("reminder-time");
 const reminderStatus = element<HTMLParagraphElement>("reminder-status");
+const settingsView = element<HTMLElement>("settings-view");
+const openSettingsButton = element<HTMLButtonElement>("open-settings");
+const closeSettingsButton = element<HTMLButtonElement>("close-settings");
 
 let currentPairing: ZamPairPayloadV1 | null = null;
 let reminderConfig: ReminderConfig = parseReminderConfig(
@@ -230,7 +233,8 @@ function showDashboard(): void {
   importView.hidden = true;
   reviewView.hidden = true;
   sessionSummaryView.hidden = true;
-  repairButton.disabled = false;
+  settingsView.hidden = true;
+  openSettingsButton.disabled = false;
 }
 
 function showReview(): void {
@@ -238,7 +242,9 @@ function showReview(): void {
   importView.hidden = true;
   reviewView.hidden = false;
   sessionSummaryView.hidden = true;
-  repairButton.disabled = true;
+  settingsView.hidden = true;
+  // No jumping to settings mid-review; the gear returns after the session.
+  openSettingsButton.disabled = true;
 }
 
 function showSessionSummary(): void {
@@ -246,7 +252,8 @@ function showSessionSummary(): void {
   importView.hidden = true;
   reviewView.hidden = true;
   sessionSummaryView.hidden = false;
-  repairButton.disabled = false;
+  settingsView.hidden = true;
+  openSettingsButton.disabled = false;
 }
 
 function showImport(): void {
@@ -254,7 +261,17 @@ function showImport(): void {
   importView.hidden = false;
   reviewView.hidden = true;
   sessionSummaryView.hidden = true;
-  repairButton.disabled = false;
+  settingsView.hidden = true;
+  openSettingsButton.disabled = false;
+}
+
+function showSettings(): void {
+  dashboardView.hidden = true;
+  importView.hidden = true;
+  reviewView.hidden = true;
+  sessionSummaryView.hidden = true;
+  settingsView.hidden = false;
+  renderReminderControls();
 }
 
 function setImportStatus(text: string, isError = false): void {
@@ -681,6 +698,9 @@ cancelPairingButton.addEventListener("click", () => {
 });
 
 repairButton.addEventListener("click", () => showPairing(true));
+
+openSettingsButton.addEventListener("click", () => showSettings());
+closeSettingsButton.addEventListener("click", () => showDashboard());
 
 openImportButton.addEventListener("click", () => {
   resetImport();
