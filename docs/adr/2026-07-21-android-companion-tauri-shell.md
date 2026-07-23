@@ -74,6 +74,18 @@ kernel logic and reach the database.
   prompts so local-model startup and inference do not delay the next card. A
   loopback URL in the paired config refers to the phone, not to a provider
   running on the desktop.
+- **Field-test distribution is GitHub Releases sideload with in-app update.**
+  Tauri's updater plugin does not support Android, so each tag release builds
+  an aarch64 APK (`publish-android` in `release.yml`), uploads
+  `ZAM_Mobile_<version>_aarch64.apk` and a static `mobile-latest.json`
+  (`version`, `versionCode`, `url`). The companion reads
+  `…/releases/latest/download/mobile-latest.json`, downloads the APK into
+  app cache, and launches the system package installer
+  (`REQUEST_INSTALL_PACKAGES`). Release signing uses optional GitHub secrets
+  (`ANDROID_KEYSTORE_*`); without them the job falls back to the debug
+  keystore (acceptable only for owner-present field test). First install is
+  still a one-time sideload; later versions update in place when signed with
+  the same key.
 - **On-device evaluation uses Gemini Nano via ML Kit GenAI Prompt API**
   (AICore → Tensor NPU on Pixel 9; issue #210). The WebView builds the same
   structured evaluation prompt as the desktop Studio

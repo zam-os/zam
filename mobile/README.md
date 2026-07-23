@@ -74,10 +74,20 @@ avoid shoulder surfing and prefer a database-scoped token.
 ## Current boundary
 
 The companion supports pairing, offline review (typed + voice), import, sync
-hardening, daily reminders, and de/en UI. Intelligent answer evaluation uses
-**Gemini Nano** (ML Kit GenAI → AICore → Tensor NPU) on supported devices;
-non-local paired HTTP endpoints are optional; self-rate is the soft fallback.
+hardening, daily reminders, de/en UI, on-device evaluation (Gemini Nano), and a
+**GitHub Releases sideload update channel**.
 
-Device validation still required on the Pixel 9 for the full voice loop (local
-TTS data) and Nano evaluation end-to-end. Screenshot import is not in this
-build.
+### Distribution / updates
+
+1. **First install**: download `ZAM_Mobile_<version>_aarch64.apk` from the
+   GitHub Release (or `adb install` a local build).
+2. **Later updates**: Settings → App-Update, or automatic quiet check on
+   launch. The app fetches
+   `https://github.com/zam-os/zam/releases/latest/download/mobile-latest.json`,
+   downloads the APK, and opens the system installer.
+3. **CI**: tag `v*` runs `publish-android` in `.github/workflows/release.yml`.
+   Optional secrets for a stable field-test keystore:
+   `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`,
+   `ANDROID_KEY_PASSWORD`. Same key is required for in-place updates.
+
+Screenshot import is not in this build.

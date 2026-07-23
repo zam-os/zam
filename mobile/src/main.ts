@@ -55,6 +55,10 @@ import {
 } from "./review-session.js";
 import { SyncError, syncWithRetry } from "./sync.js";
 import {
+  DEFAULT_MOBILE_UPDATE_MANIFEST,
+  type MobileUpdateInfo,
+} from "./update.js";
+import {
   HandsFreeReviewController,
   resolveVoiceLocale,
   type VoiceLocale,
@@ -140,6 +144,10 @@ const reminderStatus = element<HTMLParagraphElement>("reminder-status");
 const settingsView = element<HTMLElement>("settings-view");
 const openSettingsButton = element<HTMLButtonElement>("open-settings");
 const closeSettingsButton = element<HTMLButtonElement>("close-settings");
+const updateVersion = element<HTMLElement>("update-version");
+const updateStatus = element<HTMLParagraphElement>("update-status");
+const checkUpdateButton = element<HTMLButtonElement>("check-update");
+const installUpdateButton = element<HTMLButtonElement>("install-update");
 
 let currentPairing: ZamPairPayloadV1 | null = null;
 let reminderConfig: ReminderConfig = parseReminderConfig(
@@ -147,6 +155,7 @@ let reminderConfig: ReminderConfig = parseReminderConfig(
 );
 let currentImportDraft: MobileTokenDraft | null = null;
 let takingSharedImport = false;
+let pendingUpdate: MobileUpdateInfo | null = null;
 let currentEvaluation: MobileEvaluationResult | null = null;
 const PENDING_IMPORT_STORAGE_KEY = "zam.mobile-pending-import.v1";
 
@@ -1193,10 +1202,82 @@ reminderTime.addEventListener("change", () => {
   void applyReminder(false);
 });
 
+function setUpdateStatus(text: string, isError = false): void {
+  updateStatus.textContent = text;
+  updateStatus.classList.toggle("error", isError);
+}
+
+async function refreshInstalledVersion(): Promise<void> {
+  try {
+    const info = await invoke<{ versionName: string; versionCode: number }>(
+      "update_get_version",
+    );
+    updateVersion.textContent = tf("update_current", {
+      version: info.versionName,
+    });
+  } catch {
+    updateVersion.textContent = "";
+  }
+}
+
+async function checkForAppUpdate(quiet = false): Promise<void> {
+  checkUpdateButton.disabled = true;
+  installUpdateButton.hidden = true;
+  pendingUpdate = null;
+  if (!quiet) setUpdateStatus(t("update_checking"));
+  try {
+    const info = await invoke<MobileUpdateInfo>("update_check", {
+      manifestUrl: DEFAULT_MOBILE_UPDATE_MANIFEST,
+    });
+    updateVersion.textContent = tf("update_current", {
+      version: info.currentVersionName,
+    });
+    if (info.updateAvailable) {
+      pendingUpdate = info;
+      installUpdateButton.hidden = false;
+      setUpdateStatus(tf("update_available", { version: info.version }));
+    } else if (!quiet) {
+      setUpdateStatus(
+        tf("update_current_ok", { version: info.currentVersionName }),
+      );
+    }
+  } catch (error) {
+    if (!quiet) {
+      setUpdateStatus(
+        tf("update_failed", { error: errorMessage(error) }),
+        true,
+      );
+    }
+  } finally {
+    checkUpdateButton.disabled = false;
+  }
+}
+
+checkUpdateButton.addEventListener("click", () => {
+  void checkForAppUpdate(false);
+});
+
+installUpdateButton.addEventListener("click", async () => {
+  if (!pendingUpdate?.url) return;
+  installUpdateButton.disabled = true;
+  setUpdateStatus(t("update_downloading"));
+  try {
+    await invoke("update_install", { url: pendingUpdate.url });
+    setUpdateStatus(t("update_install_started"));
+  } catch (error) {
+    setUpdateStatus(tf("update_failed", { error: errorMessage(error) }), true);
+  } finally {
+    installUpdateButton.disabled = false;
+  }
+});
+
 // Localise the static chrome from the device locale; showApp re-applies the
 // paired learner's locale once a pairing is loaded.
 applyLocale(navigator.language);
 renderReminderControls();
+void refreshInstalledVersion();
+// Quiet background check — surfaces install button only when an update exists.
+void checkForAppUpdate(true);
 if (reminderConfig.enabled) {
   // Re-arm the schedule from stored config on launch without a permission prompt.
   void applyReminder(false);

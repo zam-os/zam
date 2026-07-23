@@ -322,8 +322,12 @@ server database, per FR-0).
   cloud HTTP remains a secondary fallback; self-rate otherwise. Pixel 9
   validation on the real `thomas` library (2026-07-23): after QR re-pair,
   reveal → evaluation panel in ~15 s with meta `via Gemini Nano (on-device)`.
-  Remaining Phase-6 items (performance/battery, sideload channel, screenshot
-  import #211) are open.
+  Sideload update channel is implemented: `release.yml` builds an aarch64
+  release APK, uploads `ZAM_Mobile_<ver>_aarch64.apk` + `mobile-latest.json`
+  to the GitHub draft release, and the companion checks that manifest on
+  launch / Settings → App-Update (native download + system package installer).
+  Remaining Phase-6 items (performance/battery, screenshot import #211) are
+  open.
 
 ## Decisions (Thomas, 2026-07-21)
 

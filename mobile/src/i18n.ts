@@ -176,6 +176,17 @@ const DE: Messages = {
     "Benachrichtigungen sind nicht erlaubt — in den Android-Einstellungen freigeben.",
   reminder_set_failed: "Erinnerung konnte nicht gesetzt werden: {error}",
   invalid_time: "Ungültige Uhrzeit.",
+  update_heading: "App-Update",
+  update_check: "Nach Update suchen",
+  update_install: "Update installieren",
+  update_current: "Installierte Version: {version}",
+  update_available: "Update verfügbar: {version}",
+  update_current_ok: "Du hast die neueste Version ({version}).",
+  update_checking: "Suche nach Update …",
+  update_downloading: "Lade Update herunter …",
+  update_failed: "Update fehlgeschlagen: {error}",
+  update_install_started:
+    "System-Installer geöffnet. Nach der Installation ZAM neu starten.",
 };
 
 const EN: Messages = {
@@ -326,6 +337,17 @@ const EN: Messages = {
     "Notifications are not allowed — enable them in the Android settings.",
   reminder_set_failed: "Could not set the reminder: {error}",
   invalid_time: "Invalid time.",
+  update_heading: "App update",
+  update_check: "Check for update",
+  update_install: "Install update",
+  update_current: "Installed version: {version}",
+  update_available: "Update available: {version}",
+  update_current_ok: "You are on the latest version ({version}).",
+  update_checking: "Checking for updates …",
+  update_downloading: "Downloading update …",
+  update_failed: "Update failed: {error}",
+  update_install_started:
+    "System installer opened. Relaunch ZAM after installation.",
 };
 
 const MESSAGES: Record<Locale, Messages> = { de: DE, en: EN };

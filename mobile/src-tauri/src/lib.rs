@@ -2,6 +2,7 @@ mod db;
 mod on_device_llm;
 mod reminder;
 mod secure_store;
+mod update;
 mod voice;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -17,6 +18,8 @@ pub fn run() {
     let builder = builder.plugin(reminder::init());
     #[cfg(target_os = "android")]
     let builder = builder.plugin(on_device_llm::init());
+    #[cfg(target_os = "android")]
+    let builder = builder.plugin(update::init());
 
     builder
         .manage(db::DbState::default())
@@ -45,7 +48,10 @@ pub fn run() {
             reminder::reminder_update_due,
             on_device_llm::on_device_llm_check_status,
             on_device_llm::on_device_llm_ensure_ready,
-            on_device_llm::on_device_llm_generate
+            on_device_llm::on_device_llm_generate,
+            update::update_get_version,
+            update::update_check,
+            update::update_install
         ])
         .run(tauri::generate_context!())
         .expect("error while running the ZAM mobile shell");
