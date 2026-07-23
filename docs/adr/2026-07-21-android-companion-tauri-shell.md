@@ -1,12 +1,17 @@
 # Android Companion: Tauri 2 Shell with Kernel-in-WebView
 
-**Status:** Accepted — stack and Phase-0 sync path validated on the Pixel 9
-(Thomas, 2026-07-21); Pixel 6 compatibility is optional
+**Status:** Accepted — stack and Phase-0 path validated on the Pixel 9
+(Thomas, 2026-07-21); Pixel 6 compatibility is optional. **Product goal of
+offline-writable synced replica superseded by
+[2026-07-23](2026-07-23-online-only-server-db-and-mobile-gating.md)** (online-only
+server DB; remote primary writes). Shell stack (Tauri 2, kernel-in-WebView,
+IPC provider) remains.
 **Deciders:** Thomas (project owner)
 **Related:**
 [2026-05-31b-tauri-active-recall-studio.md](2026-05-31b-tauri-active-recall-studio.md) ·
 [2026-06-09-async-database-providers.md](2026-06-09-async-database-providers.md) ·
-[2026-06-25a-machine-local-llm-role-configuration.md](2026-06-25a-machine-local-llm-role-configuration.md)
+[2026-06-25a-machine-local-llm-role-configuration.md](2026-06-25a-machine-local-llm-role-configuration.md) ·
+[2026-07-23-online-only-server-db-and-mobile-gating.md](2026-07-23-online-only-server-db-and-mobile-gating.md)
 
 ---
 

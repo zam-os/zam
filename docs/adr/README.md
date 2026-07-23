@@ -52,3 +52,5 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-18](2026-07-18-okf-learning-import.md) | Knowledge-to-Learning Import (OKF Articles → Learning Tokens) | Implemented |
 | [2026-07-18b](2026-07-18b-graph-repo-scope.md) | Learning Graph Scope Selectors and the Repo Scope | Implemented |
 | [2026-07-18c](2026-07-18c-okf-import-handoff.md) | OKF Import Handoff — Chat Delivery and the Focused-Article State | Implemented |
+| [2026-07-21](2026-07-21-android-companion-tauri-shell.md) | Android Companion: Tauri 2 Shell with Kernel-in-WebView | Accepted — offline-sync product goal superseded by 2026-07-23 |
+| [2026-07-23](2026-07-23-online-only-server-db-and-mobile-gating.md) | Online-Only Server Database, Mobile Gating, and Cloud Config in the DB | Accepted |

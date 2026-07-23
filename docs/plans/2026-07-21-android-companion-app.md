@@ -8,18 +8,22 @@ exactly the next unchecked phase. Multi-phase work stays on one branch
 
 Run **active-recall sessions away from the desk** — including fully by voice —
 against the **same learning state** the CLI/desktop use, and **import learning
-content** on the phone. Offline-capable: after setup, a review session must
-work with no network and no LLM configured.
+content** on the phone. **Online-only against a server database** (ADR
+2026-07-23): the phone does not keep an offline-writable replica; without
+network, durable writes are unavailable and the app says so honestly. Local
+LLM/NPU evaluation remains optional and on-device.
 
 The app is a *companion surface*, not a second product: all scheduling,
 rating, and blocking behavior comes from the existing TypeScript kernel
 (`src/kernel/`). `tests/kernel/fsrs.test.ts` remains the source of truth for
 scheduling semantics.
 
-Setup is deliberately effortless: the phone is **configured by scanning a
-QR code shown on the desktop** (FR-0). This pairing flow assumes the server
-database — "configuration/sync only work with a server DB" is an accepted
-trade-off (Thomas, 2026-07-21).
+Setup: desktop **local SQLite is for fast single-machine setup only** and
+**does not offer QR pairing**. Mobile is unlocked after a **server DB
+(Turso/sqld) is attached** via a dedicated wizard (separate issue), then the
+phone is **configured by scanning a QR** from that server-DB desktop (FR-0).
+Cloud model config lives in the server DB; machine-local models stay on the
+desktop (ADR 2026-07-23).
 
 ### Field-test users (2026)
 
@@ -70,34 +74,28 @@ in-app streaks (no-gamification stance, FR-5).
 
 ### FR-0 Pairing & configuration via desktop QR code
 
-- The desktop Studio gets a "pair mobile device" surface that renders a QR
-  code from the machine-local credentials (`~/.zam/credentials.json`): a
-  versioned `zam-pair` JSON payload carrying the libsql/Turso database URL,
-  an auth token, the desktop's machine-local **LLM role configuration**
-  (provider URL plus a key when the selected provider requires one — one scan
-  also configures recall quality), and
-  optional bootstrap settings (locale, profile).
+- **Prerequisite:** a server database is attached on the desktop (Turso Cloud
+  free tier for the field test, or compatible `sqld`). Attachment is done
+  through a **DB create/connect wizard** (tracked in a separate issue) — not
+  from a local-only install. While the desktop uses only a local `zam.db`,
+  the "pair mobile" surface is **hidden/disabled** with a clear CTA to run
+  the wizard first (ADR 2026-07-23).
+- When a server DB is present, Studio shows "pair mobile device" and renders
+  a QR from server credentials: a versioned `zam-pair` JSON payload with
+  libsql/Turso URL, auth token, learner user id, and optional bootstrap
+  settings (locale). **Cloud LLM/vision config is not packed into the QR** —
+  it is read from the server DB once the phone is online. On-device recall
+  evaluation (e.g. Nano) does not need keys in the QR.
 - First run on Android: scan the code (camera permission), validate the
-  payload version, store credentials in app-private storage backed by the
-  Android Keystore, run the initial sync, land in the due queue. No manual
-  configuration required; manual URL/token entry exists only as a fallback.
-- Pairing **requires the server database**: a desktop without Turso/sqld
-  configured cannot pair and must say so clearly. Local-only phone setups
-  are out of scope by requirement.
-- Security: the QR encodes a live, long-lived DB token and, for a keyed cloud
-  provider, its LLM API key in clear text. Render it only on explicit user
-  action with a shoulder-surfing note. Hiding it after five minutes limits
-  screen exposure but does not expire an already captured payload or its
-  credentials. This is accepted for the owner-present, two-device field test;
-  prefer database-scoped tokens, and later replace the direct-secret transfer
-  with short-lived/scoped tokens or a server-mediated pairing handshake.
-  Re-pairing replaces stored credentials; a revoked/expired token leads to a
-  re-pair prompt, never to silent data loss.
-- Pairing binds the device to **one learner**: the payload carries the
-  learner's user id, chosen (or created) in the desktop pairing surface.
-  Preferred setup for family use: **one server database per learner**, so a
-  teenager's learning data stays their own — the QR flow is identical
-  either way, the desktop just pairs from the selected learner's database.
+  payload version, store credentials in Keystore-backed storage, open the
+  **online** server DB, land in the due queue. Manual URL/token entry remains
+  a fallback.
+- Security: the QR encodes a live DB token. Render only on explicit action
+  with a shoulder-surfing note. Prefer database-scoped tokens long-term.
+  Re-pairing replaces stored credentials; revoked/expired tokens force
+  re-pair, never silent data loss.
+- Pairing binds the device to **one learner**. Preferred family setup: **one
+  server database per learner**.
   The Phase-0 spike heuristic ("most cards wins") is retired by this.
 - Multiple paired devices are supported; each device is its own synced local
   copy of its learner's server database.
@@ -154,26 +152,20 @@ Interpreted as **voice operation** of recall sessions (i18n is FR-6):
   phone; only the transcript reaches an LLM, and only when the user
   configured one.
 
-### FR-4 Sync (server database, offline-capable)
+### FR-4 Server database (online-only; ADR 2026-07-23)
 
-- The server database is the configuration and sync backbone. Per
-  requirement it is acceptable that the app does not work without one.
-  The field test runs on **Turso Cloud (free tier)**; the pairing payload
-  stays host-agnostic so a later move to self-hosted `sqld` needs only a
-  re-pair.
-- On the device, the database is libsql's offline-writable synced database
-  (kernel provider model, ADR 2026-06-09): after the initial sync every
-  feature — including full review sessions — works offline, and local WAL
-  frames sync back when online. `new_remote_replica` is explicitly not this
-  path because it delegates writes to the remote primary. The remote Hrana
-  v3 provider remains the online-only stopgap if offline sync is delayed on
-  Android.
-- Credentials live in app-private machine-local storage (Keystore-backed),
-  never in the shared database (same rule as `~/.zam/credentials.json`).
-- `review_logs` is append-only (ULIDs) and merges trivially. Card-state
-  conflicts (reviews on two devices while offline) are resolved by
-  recomputing card state from the log, or documented last-write-wins —
-  decided in the sync-hardening phase and recorded in the ADR.
+- The server database is the **shared learning state and cloud-config
+  backbone**. The companion **requires** network access to it for durable
+  reads/writes. Offline-capable local replicas are **out of scope**.
+- Field test: **Turso Cloud (free tier)**; pairing payload stays host-agnostic
+  so self-hosted `sqld` is a re-pair later.
+- On the device, open the remote primary (Hrana/libsql remote — no
+  offline-writable `new_synced_database` product path). Every rating,
+  import, and settings read goes to the server while online; without
+  network, show an honest unavailable state.
+- Credentials live in app-private Keystore-backed storage on the phone.
+- Multi-device: last successful online write wins for card rows;
+  `review_logs` remain append-only (ULIDs). No offline conflict design.
 
 ### FR-5 Due reminder
 
@@ -190,13 +182,13 @@ No streaks, no gamification.
 
 ## Non-functional requirements
 
-- **Offline after pairing.** Initial configuration requires the server
-  database (accepted trade-off); afterwards reviews work without network.
-  No third-party account beyond the user's own Turso/sqld endpoint; LLM
-  stays opt-in.
+- **Online against the server DB after pairing** (ADR 2026-07-23). Local
+  desktop SQLite remains the fastest single-machine setup; multi-device and
+  mobile require the Turso/sqld wizard first. No third-party account beyond
+  the user's own Turso/sqld endpoint; LLM stays opt-in.
 - **Privacy**: no telemetry; speech on-device (FR-3); LLM calls only to
-  user-configured providers. The only network peer in the default setup
-  is the paired server database.
+  user-configured providers. Network peers: the paired server database and
+  any user-configured cloud model endpoints.
 - **Cost**: zero recurring cost by default; LLM roles follow the
   cost-first provider stance. The field test uses a keyless local recall
   provider on the phone and no cloud fallback.
@@ -330,59 +322,46 @@ server database, per FR-0).
   launch / Settings → App-Update (native download + system package installer).
   Remaining Phase-6 items (performance/battery validation on the Pixel 9) are
   open; camera/screenshot import (#211) is split out as **Phase 7** below.
-- [ ] **Phase 7 — camera/screenshot import (cloud VL)**: photograph or pick a
+- [x] **Phase 7 — camera/screenshot import (cloud VL)**: photograph or pick a
   textbook/worksheet/screenshot on the phone → a cloud vision-language model OCRs
   and decomposes it into **multiple** bridge-token drafts → the learner confirms
   each through the existing draft UX → token+card, synced. Completes FR-2 item 3
   for the image modality (#211). **Online-only by design: import is unavailable
   offline** — no queue, no on-device VL (on-device VL stays a non-goal); a
-  missing cloud vision role, no connectivity, or a failed call is rejected
+  missing cloud vision config, no connectivity, or a failed call is rejected
   honestly, never silently attempted (Thomas, 2026-07-23). Decided approach
-  (Thomas, 2026-07-23): in-app camera+gallery capture (pure-web `<input
-  capture>` with WebView canvas-downscale — no manifest/Kotlin change); the
-  machine-local **`vision` role** (already used by the observer,
-  `src/cli/llm/vision.ts`) is carried in the QR pairing payload; the cloud call
-  runs through a **native Rust command** (bypasses the documented
-  WebView-CORS unreliability); one image yields **several** drafts confirmed via
-  a "draft i of N" stepper. Build steps:
-  1. Contract — add optional `llm.vision` (`ZamPairLlmEndpoint`) to
-     `ZamPairPayloadV1` (`src/bridge/mobile-pairing.ts`), reusing
-     `parseLlmEndpoint`; keep the 2000-byte QR-budget assertion (backward
-     compatible with vision-less payloads).
-  2. Desktop — the `mobile-pairing-payload` bridge command packs `llm.vision`
-     when the machine-local vision role is enabled and a usable cloud endpoint
-     (`!local`, non-loopback); on budget overflow, drop `fallback` sub-chains
-     first, else omit vision with a clear note (never silent truncation). Recall
-     stays on-device untouched.
-  3. Native transport — `mobile/src-tauri/src/vision.rs` (`reqwest`) exposes a
-     thin `vision_request({ url, apiKey, apiFlavor, body })` returning the raw
-     response text; Android-gated, desktop stub errors; registered in `lib.rs`.
-     INTERNET permission is already declared.
-  4. Capture + decomposition (WebView) — `mobile/src/image-import.ts` acquires
+  (Thomas, 2026-07-23 + revise): in-app camera+gallery capture (pure-web
+  `<input capture>` with WebView canvas-downscale — no manifest/Kotlin change;
+  share-sheet `image/*` deferred); **vision settings come from the synced
+  learner DB** (`llm.vision.*` / `llm.*` via kernel `getSetting`) — pairing QR
+  stays DB-only for this path (no vision block in the QR); field-test provider
+  is **OpenAI-compatible chat-completions** only; the cloud call runs through a
+  **native Rust command** (`reqwest`, bypasses WebView-CORS); one image yields
+  **several** drafts confirmed via a "draft i of N" stepper; token `provider`
+  is stamped `vision:<model>`. Implemented:
+  1. Config (mobile) — `mobile/src/vision-config.ts` reads
+     `llm.vision.enabled|url|model|api_key` (fallback `llm.url|model|api_key`)
+     from the local synced DB; usable only when enabled, non-loopback, and
+     cloud-reachable. Missing/disabled/local → honest reject. No pairing-contract
+     change.
+  2. Native transport — `mobile/src-tauri/src/vision.rs` (`reqwest`) exposes a
+     thin `vision_request({ url, headers, body, timeoutMs? })` returning the
+     raw response body text; Android implements, other targets stub-error;
+     registered in `lib.rs`. INTERNET permission is already declared.
+  3. Capture + decomposition (WebView) — `mobile/src/image-import.ts` acquires
      and downscales the image (≤1568 px long edge, JPEG ≈0.7, post-downscale
      byte ceiling); `mobile/src/vl-import.ts` builds the `chat-completions`
      multimodal request (OCR-and-decompose → strict JSON array), parses it
-     fence-tolerantly, and normalizes each entry through the existing
-     `normalizeBridgeDraft`. `anthropic-messages` vision is rejected honestly for
-     now (fast-follow — the shape already exists in `vision.ts` to port).
-  5. Confirm UX + origin — a testable multi-draft controller drives a
-     "draft i of N" stepper over the existing confirm form (Save & next / Skip);
-     add `image-vl` to `MobileImportOrigin` (`mobile/src/import.ts`), treated
-     like `bridge-json` for `question_source: "llm"`, stamping the token
-     `provider` with the vision model. New de/en i18n strings (parity asserted by
-     `tests/mobile/i18n.test.ts`).
-  Error handling: a text-only model → the existing "set a multimodal model" hint;
-  non-JSON/empty output → honest parse-failure, stay on the import view;
-  network/timeout → honest message + retry. Tests (vitest + tauri-invoke-stub):
-  payload accepts/validates `llm.vision` and respects the byte budget; `vl-import`
-  prompt/parse + per-entry normalization + anthropic-reject + endpoint gating;
-  downscale bounds; `confirmMobileImport` image-vl → `question_source:"llm"`;
-  multi-draft controller advance/skip; desktop bridge includes/omits vision
-  correctly. The native `vision_request` path is validated on-device (native HTTP
-  is impractical to unit-test). Pixel 9 / Android 17 validation criteria:
-  photograph a Realschule grade-9 worksheet → several drafts appear → confirm
-  two, skip one → a manual sync delivers the new cards to the paired Turso DB
-  with `llm` question provenance.
+     fence-tolerantly, and normalizes each entry through
+     `normalizeBridgeDraft` with origin `image-vl`.
+  4. Confirm UX + origin — multi-draft controller drives a "draft i of N"
+     stepper (Save & next / Skip); `image-vl` origin → `question_source: "llm"`
+     and `provider: "vision:<model>"`; de/en i18n parity asserted.
+  Unit tests cover config gating, parse/normalize, downscale bounds, confirm
+  provenance, and multi-draft advance/skip. **Pixel 9 validation still open:**
+  with `llm.vision.*` set on the paired Turso DB, photograph a Realschule
+  grade-9 worksheet → several drafts → confirm two, skip one → sync delivers
+  cards with `llm` question provenance and `vision:<model>` provider.
 
 ## Decisions (Thomas, 2026-07-21)
 
@@ -391,14 +370,10 @@ server database, per FR-0).
 2. **Repo layout**: `mobile/` in this repository, mirroring `desktop/`.
 3. **Server DB (field test)**: Turso Cloud free tier. Pairing payload
    stays host-agnostic; self-hosted `sqld` remains a later option.
-4. **LLM roles**: paired along in the QR payload (desktop's machine-local
-   role configuration, ADR 2026-06-25a — the phone stores its own copy).
-   The field test selects a keyless phone-local recall provider
-   (`local: true`) without a cloud fallback, so no LLM API key travels in the
-   QR. It evaluates answers only; the displayed kernel template question stays
-   unchanged to avoid generation latency. The exact runtime/model is selected
-   and benchmarked on the 12-GB Pixel 9 in Phase 6. Offline or without the
-   local runtime, sessions fall back to template prompts + self-rating.
+4. **LLM roles**: originally paired in the QR; **revised 2026-07-23** —
+   cloud model config lives in the server DB; local models stay
+   machine-local; phone on-device evaluation (Nano) needs no cloud key in
+   the QR. Template prompts + self-rating remain the no-model fallback.
 5. **Android `applicationId`**: default `org.zamos.zam` (zam-os.org is
    owned; hyphens are invalid in application IDs — desktop's `com.zam.app`
    stays as is). Cheap to change any time before a store publication.
@@ -406,11 +381,28 @@ server database, per FR-0).
    is optional; a pass lowers the minimum, while a failure leaves Pixel 9 as
    the requirement (Thomas, 2026-07-21).
 
+## Decisions (Thomas, 2026-07-23) — ADR 2026-07-23
+
+7. **Online-only companion DB**: abandon offline-writable synced replica as
+   a product goal; phone uses the remote primary while online
+   (`libsql::Builder::new_remote` in `mobile/src-tauri/src/db.rs`).
+8. **No QR on local-only desktop**: pair surface requires server DB;
+   local `zam.db` is single-machine fast path only.
+9. **Turso create/connect wizard** ([#218](https://github.com/zam-os/zam/issues/218)):
+   Studio **Server database** form + `zam bridge server-db-connect` store and
+   verify credentials; pair button stays disabled until a non-local target is
+   active. Full create-DB / local→Turso migration UX remains on #218.
+10. **Cloud model config in server DB**; **local models + their order slot
+    machine-local** only.
+
 ## References
 
 - ADR 2026-05-31a locale-aware active recall · ADR 2026-05-31b Tauri
   active-recall studio · ADR 2026-06-09 async database providers ·
-  ADR 2026-06-25a machine-local LLM role configuration · ADR 2026-06-27
-  recall-session LLM pipeline · ADR 2026-07-02 LehrplanPLUS import wizard
+  ADR 2026-06-25a machine-local LLM role configuration · ADR 2026-07-12
+  unified capability model registry · ADR 2026-07-21 Android companion
+  shell · **ADR 2026-07-23 online-only server DB and mobile gating** ·
+  ADR 2026-06-27 recall-session LLM pipeline · ADR 2026-07-02 LehrplanPLUS
+  import wizard
 - Android 17 / API 37: developer.android.com/about/versions/17 ·
   apilevels.com

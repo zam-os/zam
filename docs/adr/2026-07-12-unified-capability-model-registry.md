@@ -307,9 +307,11 @@ persisting to `~/.zam/config.json` so subsequent resolution is registry-first.
 
 ## Open questions
 
-1. **Shared catalog:** should Turso replicate a read-only provider catalog (no
-   keys) while keeping `ai.models` local-only, or is machine-local sufficient
-   for the foreseeable future?
+1. **Shared catalog:** ~~should Turso replicate a read-only provider catalog…~~
+   **Resolved (ADR 2026-07-23):** cloud model configuration lives in the
+   **server database**; local models and their preference slot stay
+   machine-local. Online-only companion access makes shared cloud config
+   practical without offline-replica complexity.
 2. **Video probe:** defer until a concrete observer video path ships, or add
    stub detection now?
 3. **Embedding dim probe:** mandatory on every embedding-capable save, or only
