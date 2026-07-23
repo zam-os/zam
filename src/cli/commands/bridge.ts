@@ -78,6 +78,7 @@ import {
   type ModelCapability,
   type ModelEntry,
   openDatabase,
+  openDatabaseWithSync,
   pairCommands,
   readMonitorLog,
   readUiObservationLog,
@@ -88,6 +89,7 @@ import {
   setAgentConnectAutoDone,
   setProviderApiKey,
   setSetting,
+  setTursoCredentials,
   slugify,
   syncObserverSidecarPolicy,
   uiObservationLogExists,
@@ -3398,6 +3400,74 @@ bridgeCommand
         users,
       });
     });
+  });
+
+/**
+ * Attach a Turso/sqld server database (issue #218 wizard / Studio form).
+ * Stores credentials machine-locally and verifies connectivity before success.
+ * Mobile pairing is only available once this (or CLI connector setup) succeeds.
+ */
+bridgeCommand
+  .command("server-db-connect")
+  .description(
+    "Store and verify Turso/sqld credentials for the server database (JSON)",
+  )
+  .requiredOption("--url <url>", "libsql/https database URL")
+  .requiredOption("--token <token>", "Auth token")
+  .option("--mode <mode>", "Access mode: remote | native")
+  .action(async (opts) => {
+    const url = String(opts.url ?? "").trim();
+    const token = String(opts.token ?? "").trim();
+    if (!url || !token) {
+      jsonError("Both --url and --token are required.");
+    }
+    try {
+      // eslint-disable-next-line no-new -- validate absolute URL
+      new URL(url.replace(/^libsql:/i, "https:"));
+    } catch {
+      jsonError("url must be an absolute libsql or https URL");
+    }
+
+    let mode: "remote" | "native" | undefined;
+    if (opts.mode !== undefined) {
+      const raw = String(opts.mode).trim().toLowerCase();
+      if (raw !== "remote" && raw !== "native") {
+        jsonError("mode must be remote or native");
+      }
+      mode = raw;
+    }
+
+    setTursoCredentials(url, token, undefined, mode);
+
+    let db: Awaited<ReturnType<typeof openDatabaseWithSync>> | undefined;
+    try {
+      db = await openDatabaseWithSync({ initialize: true });
+      await db.prepare("SELECT 1").get();
+      const target = getDatabaseTargetInfo();
+      if (target.kind === "local") {
+        jsonError(
+          "Credentials were stored but the active target is still local. Check URL/token.",
+        );
+      }
+      const userId = (await getSetting(db, "user.id")) ?? null;
+      const users = await readDatabaseUserSummaries(db);
+      jsonOut({
+        success: true,
+        connected: true,
+        target,
+        userId,
+        cardCount: users.find((user) => user.id === userId)?.cardCount ?? 0,
+        users,
+      });
+    } catch (error) {
+      jsonError(
+        error instanceof Error
+          ? error.message
+          : `Server database connection failed: ${String(error)}`,
+      );
+    } finally {
+      await db?.close().catch(() => undefined);
+    }
   });
 
 bridgeCommand

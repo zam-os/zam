@@ -408,9 +408,50 @@
           <article class="card frosted settings-card">
             <div class="settings-card-header">
               <div>
+                <h2 id="lbl-settings-server-db-title">Server database</h2>
+                <p id="lbl-settings-server-db-help" class="settings-card-help">
+                  Connect Turso/sqld to unlock multi-device and mobile pairing.
+                  Local SQLite stays available for single-machine use.
+                </p>
+              </div>
+            </div>
+            <div id="server-db-form" class="settings-stack">
+              <label class="settings-field" for="server-db-url">
+                <span id="lbl-server-db-url">Database URL</span>
+                <input
+                  id="server-db-url"
+                  class="settings-input"
+                  type="url"
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+              </label>
+              <label class="settings-field" for="server-db-token">
+                <span id="lbl-server-db-token">Auth token</span>
+                <input
+                  id="server-db-token"
+                  class="settings-input"
+                  type="password"
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+              </label>
+              <div class="settings-card-actions">
+                <button id="btn-server-db-connect" class="btn primary-btn btn-sm" type="button">
+                  Connect server database
+                </button>
+              </div>
+              <p id="server-db-status" class="sub-label" aria-live="polite"></p>
+            </div>
+          </article>
+
+          <article class="card frosted settings-card">
+            <div class="settings-card-header">
+              <div>
                 <h2 id="lbl-settings-mobile-title">Mobile companion</h2>
                 <p id="lbl-settings-mobile-help" class="settings-card-help">
                   Pair an Android device with this server database and one learner.
+                  Requires a connected server database first.
                 </p>
               </div>
               <button id="btn-pair-mobile" class="btn primary-btn btn-sm" type="button">
