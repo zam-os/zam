@@ -97,6 +97,64 @@ jobs:
         working-directory: desktop/src-tauri
         run: cargo check --locked
 
+  mobile:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: lts/*
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            mobile/package-lock.json
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android
+
+      - name: Setup Android NDK
+        id: setup-ndk
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r29
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install mobile dependencies
+        working-directory: mobile
+        run: npm ci
+
+      - name: Build mobile frontend
+        working-directory: mobile
+        run: npm run build
+
+      - name: Test mobile Tauri backend
+        working-directory: mobile/src-tauri
+        run: cargo test --locked
+
+      - name: Check Android Tauri backend
+        working-directory: mobile/src-tauri
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+        run: |
+          NDK_BIN="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin"
+          export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER="$NDK_BIN/aarch64-linux-android35-clang"
+          export CC_aarch64_linux_android="$NDK_BIN/aarch64-linux-android35-clang"
+          export AR_aarch64_linux_android="$NDK_BIN/llvm-ar"
+          cargo check --locked --target aarch64-linux-android
+
   windows-x64-observer:
     runs-on: windows-latest
 

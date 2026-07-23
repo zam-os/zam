@@ -1,0 +1,6 @@
+{
+  "identifier": "default",
+  "description": "Phase-1 mobile companion core IPC",
+  "windows": ["main"],
+  "permissions": ["core:default"]
+}

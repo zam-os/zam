@@ -2509,6 +2509,35 @@ textarea::placeholder {
   gap: 16px;
 }
 
+.pairing-modal {
+  max-width: 520px;
+}
+
+.pairing-warning {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  border-radius: 8px;
+  color: var(--clr-text-primary);
+  margin: 0;
+  padding: 10px 12px;
+}
+
+.pairing-qr-panel {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pairing-qr-panel img {
+  background: #ffffff;
+  border-radius: 12px;
+  height: min(360px, 68vw);
+  max-width: 100%;
+  padding: 10px;
+  width: min(360px, 68vw);
+}
+
 @keyframes modalScale {
   from { transform: scale(0.9); opacity: 0; }
   to { transform: scale(1); opacity: 1; }

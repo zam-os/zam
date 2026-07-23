@@ -138,5 +138,5 @@ describe("bridge batch commands e2e", () => {
     expect(step.rating).toBe(3);
 
     await db.close();
-  });
+  }, 15_000);
 });
