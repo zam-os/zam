@@ -180,6 +180,8 @@ interface AgentHarnessListEntry {
   detected: boolean;
   /** True when this harness can back a `transport: "agent"` model. */
   outboundText?: boolean;
+  /** True when the outbound adapter accepts local image files (vision/OCR). */
+  outboundImage?: boolean;
 }
 
 interface WorkspaceConfig {
@@ -2021,10 +2023,10 @@ async function showModelForm(id?: string): Promise<void> {
     keyField.classList.toggle("hidden", isAgent || isLocal);
     harnessField.classList.toggle("hidden", !isAgent);
     agentHint.classList.toggle("hidden", !isAgent);
-    // Agent: text always; image only for multimodal harnesses (Antigravity).
+    // Agent: text always; image when the selected harness adapter is multimodal.
     // Embedding is never agent-backed.
-    const harnessId = harnessSelect.value;
-    const agentImageOk = isAgent && harnessId === "antigravity";
+    const harnessMeta = harnesses.find((h) => h.id === harnessSelect.value);
+    const agentImageOk = isAgent && harnessMeta?.outboundImage === true;
     for (const cap of UI_CAPABILITIES) {
       const label = capsWrap.querySelector(
         `label[data-cap="${cap}"]`,

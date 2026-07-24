@@ -12,6 +12,7 @@
 
 import { spawn } from "node:child_process";
 import { tmpdir } from "node:os";
+import { dirname } from "node:path";
 import {
   type AgentHarnessId,
   getHarness,
@@ -143,10 +144,28 @@ function defaultResolveExecutable(): string | null {
   return harness ? resolveHarnessExecutable(harness) : null;
 }
 
+/**
+ * Build the stdin user payload: optional image path list so multimodal models
+ * (Haiku included) can read workspace files via `--add-dir`.
+ */
+export function buildClaudeUserPayload(req: AgentGenerateRequest): string {
+  const images = req.imagePaths?.filter(Boolean) ?? [];
+  if (images.length === 0) return req.user;
+  return [
+    req.user.trim(),
+    "",
+    "Image files to inspect (read these local files; they are available in the workspace):",
+    ...images.map((p) => `- ${p}`),
+  ].join("\n");
+}
+
 export class ClaudeCodeAdapter implements AgentTextAdapter {
   readonly harness: AgentHarnessId = HARNESS;
-  /** Claude Code headless path is text-only today (no image stdin). */
-  readonly modalities = { text: true as const, image: false as const };
+  /**
+   * Claude models (incl. Haiku) accept image input. Headless path exposes files
+   * via `--add-dir` + absolute paths in the user prompt (no separate -i flag).
+   */
+  readonly modalities = { text: true as const, image: true as const };
 
   constructor(
     private readonly resolveExecutable: () =>
@@ -176,6 +195,8 @@ export class ClaudeCodeAdapter implements AgentTextAdapter {
     const system = req.jsonSchemaHint
       ? `${req.system}\n\n${req.jsonSchemaHint}`
       : req.system;
+    const images = req.imagePaths?.filter(Boolean) ?? [];
+    const addDirs = [...new Set(images.map((p) => dirname(p)).filter(Boolean))];
     const args = [
       "-p",
       "--output-format",
@@ -184,17 +205,21 @@ export class ClaudeCodeAdapter implements AgentTextAdapter {
       system,
       "--strict-mcp-config",
     ];
+    for (const dir of addDirs) {
+      args.push("--add-dir", dir);
+    }
     const timeoutMs = req.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+    // Prefer image parent as cwd when OCR'ing; otherwise neutral tmpdir.
+    const cwd = images.length > 0 && addDirs[0] ? addDirs[0] : tmpdir();
 
     let result: HeadlessRunResult;
     try {
       result = await this.run({
         command: bin,
         args,
-        stdin: req.user,
+        stdin: buildClaudeUserPayload(req),
         timeoutMs,
-        // Neutral cwd: never let the nested session read the ZAM checkout.
-        cwd: tmpdir(),
+        cwd,
       });
     } catch (err) {
       throw new AgentError(

@@ -13,6 +13,7 @@
 import type { AgentHarnessId } from "../agent-harness.js";
 import { AntigravityAdapter } from "./antigravity.js";
 import { ClaudeCodeAdapter } from "./claude-code.js";
+import { CodexAdapter } from "./codex.js";
 
 /** Modalities an adapter can serve (static; probe still gates readiness). */
 export interface AgentModalities {
@@ -100,6 +101,8 @@ const AGENT_TEXT_ADAPTERS: Record<string, () => AgentTextAdapter> = {
   "claude-code": () => new ClaudeCodeAdapter(),
   /** Antigravity CLI (`agy`), not the IDE app — multimodal (text + image). */
   antigravity: () => new AntigravityAdapter(),
+  /** OpenAI Codex CLI — `codex exec --json`, multimodal via `-i`. */
+  codex: () => new CodexAdapter(),
 };
 
 /** Harness ids that can back a `transport: "agent"` model entry today. */

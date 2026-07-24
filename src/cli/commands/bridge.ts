@@ -800,7 +800,7 @@ bridgeCommand
     await withDb(async (db) => {
       const configuredDefault = (await getSetting(db, "agent.default")) || null;
       // Lazy: keep the optional agent-llm surface out of the eager graph.
-      const { listAgentTextHarnessIds } = await import(
+      const { getAgentAdapter, listAgentTextHarnessIds } = await import(
         "../agent-llm/adapter.js"
       );
       const outboundTextIds = new Set(listAgentTextHarnessIds());
@@ -808,6 +808,10 @@ bridgeCommand
         AGENT_HARNESSES.map(async (h) => {
           const override =
             (await getSetting(db, `agent.${h.id}.command`)) || undefined;
+          const adapter = outboundTextIds.has(h.id)
+            ? getAgentAdapter(h.id)
+            : null;
+          const modalities = adapter?.modalities ?? { text: true };
           return {
             id: h.id,
             label: h.label,
@@ -815,6 +819,8 @@ bridgeCommand
             detected: resolveHarnessExecutable(h, override) !== null,
             /** True when this harness can back a `transport: "agent"` model. */
             outboundText: outboundTextIds.has(h.id),
+            /** True when the outbound adapter accepts local image files. */
+            outboundImage: modalities.image === true,
           };
         }),
       );

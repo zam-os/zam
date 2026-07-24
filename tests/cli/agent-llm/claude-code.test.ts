@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { AgentError } from "../../../src/cli/agent-llm/adapter.js";
 import {
+  buildClaudeUserPayload,
   ClaudeCodeAdapter,
   type HeadlessRunner,
   type HeadlessRunResult,
@@ -128,6 +129,51 @@ describe("ClaudeCodeAdapter", () => {
 
     const idx = seen.indexOf("--system-prompt");
     expect(seen[idx + 1]).toBe("SYS\n\nHINT");
+  });
+
+  it("declares multimodal modalities", () => {
+    expect(
+      new ClaudeCodeAdapter(() => BIN, fixedRunner({})).modalities,
+    ).toEqual({
+      text: true,
+      image: true,
+    });
+  });
+
+  it("lists image paths in the user payload and passes --add-dir", async () => {
+    expect(
+      buildClaudeUserPayload({
+        system: "OCR",
+        user: "Extract",
+        imagePaths: ["/data/a.png"],
+      }),
+    ).toContain("/data/a.png");
+
+    let seen: string[] = [];
+    let stdin = "";
+    const adapter = new ClaudeCodeAdapter(
+      () => BIN,
+      async (input) => {
+        seen = input.args;
+        stdin = input.stdin;
+        return {
+          code: 0,
+          stdout: successEnvelope("text"),
+          stderr: "",
+          timedOut: false,
+        };
+      },
+    );
+
+    await adapter.generate({
+      system: "OCR",
+      user: "Extract",
+      imagePaths: ["/data/scans/inv.png"],
+    });
+
+    expect(seen).toContain("--add-dir");
+    expect(seen).toContain("/data/scans");
+    expect(stdin).toContain("/data/scans/inv.png");
   });
 
   it("throws an AgentError naming the harness when the CLI is missing", async () => {
