@@ -14,10 +14,13 @@ export const DEFAULT_AGENT_MODELS: Readonly<Record<string, string>> = {
   /** Codex: small/fast GPT-5.4 mini (verified in local models_cache). */
   codex: "gpt-5.4-mini",
   /**
-   * Antigravity CLI display name for the lowest Flash tier (verified with
-   * `agy --model "Gemini 3.6 Flash (Low)" -p …`).
+   * Antigravity CLI: cheapest Gemini 3.5 Flash tier that `agy models` exposes
+   * today (`gemini-3.5-flash-low` / display "Gemini 3.5 Flash (Low)").
+   * Prefer this over 3.6 Flash for cost; Flash-Lite is not yet listed by
+   * `agy models` (API id `gemini-3.5-flash-lite` may land later).
+   * Verified: `agy --model "Gemini 3.5 Flash (Low)" -p …`.
    */
-  antigravity: "Gemini 3.6 Flash (Low)",
+  antigravity: "Gemini 3.5 Flash (Low)",
   /**
    * Reserved for a future GitHub Copilot text adapter (user preference).
    * Not registered in getAgentAdapter yet.

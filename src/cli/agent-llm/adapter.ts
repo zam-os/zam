@@ -40,7 +40,7 @@ export interface AgentGenerateRequest {
    */
   imagePaths?: string[];
   /**
-   * Optional harness model id (e.g. `Gemini 3.6 Flash (Low)` for `agy --model`).
+   * Optional harness model id (e.g. `Gemini 3.5 Flash (Low)` for `agy --model`).
    * When omitted the harness default applies.
    */
   model?: string;

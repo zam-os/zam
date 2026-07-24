@@ -126,13 +126,13 @@ describe("AntigravityAdapter", () => {
       system: "OCR",
       user: "Extract",
       imagePaths: ["/data/scans/inv.png"],
-      model: "Gemini 3.6 Flash (Low)",
+      model: "Gemini 3.5 Flash (Low)",
     });
 
     expect(seen).toContain("--add-dir");
     expect(seen).toContain("/data/scans");
     expect(seen).toContain("--model");
-    expect(seen).toContain("Gemini 3.6 Flash (Low)");
+    expect(seen).toContain("Gemini 3.5 Flash (Low)");
     expect(cwd).toBe("/data/scans");
   });
 
