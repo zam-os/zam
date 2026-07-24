@@ -45,7 +45,7 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-10](2026-07-10-recall-card-ux.md) | Recall Card UX — Adaptive Button, Finish/Summary, Domain Focus | Implemented |
 | [2026-07-11](2026-07-11-codex-and-vscode-companion-surfaces.md) | Codex and VS Code Companion Surfaces | Accepted |
 | [2026-07-12](2026-07-12-unified-capability-model-registry.md) | Unified Capability-Based Model Registry | Implemented |
-| [2026-07-12](2026-07-12-agent-backed-ai-provider.md) | Agent-Backed AI Provider (Third Path Beside Local and Cloud) | Proposed |
+| [2026-07-12a](2026-07-12a-agent-backed-ai-provider.md) | Agent-Backed AI Provider (Third Path Beside Local and Cloud) | Accepted |
 | [2026-07-16](2026-07-16-companion-context-and-harness-affinity.md) | Companion Context Bar and Harness Affinity | Implemented |
 | [2026-07-16b](2026-07-16b-in-recall-card-management.md) | In-Recall Card Management: Stop, Fix, and Remove | Implemented |
 | [2026-07-17](2026-07-17-okf-knowledge-base.md) | OKF Knowledge Base — Living Repo Knowledge as Learning Sources | Implemented |
