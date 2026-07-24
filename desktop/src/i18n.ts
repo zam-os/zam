@@ -4518,6 +4518,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Free monthly quota — the cheapest real start, already wired into ZAM.",
     onboarding_agent_copilot_consequence:
       "GitHub account required, quota-limited, not open source.",
+    onboarding_agent_hermes_strength:
+      "Open source and MCP-native; reachable from chat apps (Telegram, Signal, WhatsApp, …) — review cards away from your desk.",
+    onboarding_agent_hermes_consequence:
+      "Heaviest setup of the four: runs its own gateway daemon, which you start and manage yourself.",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -5381,6 +5385,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Kostenloses Monatskontingent – der günstigste echte Start, bereits mit ZAM verdrahtet.",
     onboarding_agent_copilot_consequence:
       "GitHub-Konto erforderlich, Kontingent begrenzt, nicht Open Source.",
+    onboarding_agent_hermes_strength:
+      "Open Source und MCP-nativ; erreichbar aus Chat-Apps (Telegram, Signal, WhatsApp, …) – wiederhole Karten fernab vom Schreibtisch.",
+    onboarding_agent_hermes_consequence:
+      "Aufwendigste Einrichtung der vier: betreibt einen eigenen Gateway-Dienst, den du selbst startest und verwaltest.",
   },
   // es, fr, pt, zh, ja packs come from TRANSLATION_PACKS above; en/de stay inline here as the reference locales.
   ...TRANSLATION_PACKS,

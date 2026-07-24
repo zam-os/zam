@@ -11,6 +11,7 @@
  * block connecting the rest.
  */
 
+import { execFileSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname } from "node:path";
@@ -36,6 +37,7 @@ export const CONNECT_HARNESSES: ConnectHarnessId[] = [
   "opencode",
   "goose",
   "copilot",
+  "hermes",
 ];
 
 /**
@@ -51,6 +53,7 @@ export const USER_SCOPED_CONNECT_HARNESSES: ConnectHarnessId[] = [
   "opencode",
   "goose",
   "copilot",
+  "hermes",
 ];
 
 export const CONNECT_HARNESS_LABELS: Record<ConnectHarnessId, string> = {
@@ -62,6 +65,7 @@ export const CONNECT_HARNESS_LABELS: Record<ConnectHarnessId, string> = {
   opencode: "OpenCode",
   goose: "Goose",
   copilot: "GitHub Copilot",
+  hermes: "Hermes Agent",
 };
 
 export function isConnectHarnessId(value: string): value is ConnectHarnessId {
@@ -336,4 +340,87 @@ export function inspectConnectHarnesses(
   });
 
   return { zamOnPath: Boolean(foundZam), harnesses };
+}
+
+// ── Hermes gateway inspection (ADR 2026-07-24 §6, plan Phase 5) ──────────────
+
+export interface HermesGatewayInspection {
+  installed: boolean;
+  /**
+   * true/false when `hermes gateway status` gave a usable answer; null when
+   * Hermes is absent or the status command could not be interpreted — an
+   * honest "unknown", never a guess.
+   */
+  gatewayRunning: boolean | null;
+  detail: string;
+}
+
+export interface HermesGatewayDeps {
+  find?: (command: string) => string | null;
+  /** Run `hermes gateway status`; injectable so tests never spawn anything. */
+  execStatus?: (hermesPath: string) => { ok: boolean; output: string };
+}
+
+/**
+ * Read-only gateway probe: the documented `hermes gateway status` command is
+ * the only signal Hermes exposes (no pid/port contract). ZAM reports what it
+ * sees and never starts the daemon — reviews-from-chat only work once the
+ * user runs `hermes gateway` themselves.
+ */
+export function inspectHermesGateway(
+  deps: HermesGatewayDeps = {},
+): HermesGatewayInspection {
+  const find = deps.find ?? findExecutable;
+  const hermesPath = find("hermes");
+  if (!hermesPath) {
+    return {
+      installed: false,
+      gatewayRunning: null,
+      detail: "Hermes is not installed (no `hermes` on PATH).",
+    };
+  }
+
+  const execStatus =
+    deps.execStatus ??
+    ((path: string) => {
+      try {
+        const output = execFileSync(path, ["gateway", "status"], {
+          stdio: "pipe",
+          encoding: "utf-8",
+          timeout: 8_000,
+        });
+        return { ok: true, output };
+      } catch (error) {
+        return {
+          ok: false,
+          output: error instanceof Error ? error.message : String(error),
+        };
+      }
+    });
+
+  const status = execStatus(hermesPath);
+  const lowered = status.output.toLowerCase();
+  if (!status.ok) {
+    // A daemon-style status command exits non-zero when stopped; only an
+    // unrecognized subcommand means we genuinely cannot tell.
+    const unsupported =
+      lowered.includes("unknown command") || lowered.includes("usage:");
+    return {
+      installed: true,
+      gatewayRunning: unsupported ? null : false,
+      detail: unsupported
+        ? "Could not query the gateway (`hermes gateway status` unavailable in this Hermes version)."
+        : "Gateway is not running — start it yourself with `hermes gateway`.",
+    };
+  }
+
+  const running =
+    /\brunning\b/.test(lowered) && !/not running|stopped|offline/.test(lowered);
+  return {
+    installed: true,
+    gatewayRunning: running,
+    detail: running
+      ? "Gateway is running."
+      : "Gateway is not running — start it yourself with `hermes gateway`.",
+  };
 }

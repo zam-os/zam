@@ -7,11 +7,12 @@ import {
 import { AGENT_OFFERS } from "../../src/cli/agent-offers.js";
 
 describe("agent offers (ADR 2026-07-24 §6)", () => {
-  it("offers the three already-wired harnesses (Hermes joins in Phase 5)", () => {
+  it("offers all four harnesses of the ADR's agent page", () => {
     expect(AGENT_OFFERS.map((offer) => offer.id)).toEqual([
       "goose",
       "opencode",
       "copilot",
+      "hermes",
     ]);
   });
 

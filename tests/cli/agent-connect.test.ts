@@ -7,6 +7,7 @@ import {
   CONNECT_HARNESS_LABELS,
   type ConnectHarnessId,
   inspectConnectHarnesses,
+  inspectHermesGateway,
   isConnectHarnessId,
   performAgentConnect,
   USER_SCOPED_CONNECT_HARNESSES,
@@ -322,7 +323,63 @@ describe("isConnectHarnessId", () => {
   it("accepts the supported ids and rejects the rest", () => {
     expect(isConnectHarnessId("codex")).toBe(true);
     expect(isConnectHarnessId("claude-code")).toBe(true);
+    expect(isConnectHarnessId("hermes")).toBe(true);
     expect(isConnectHarnessId("cursor")).toBe(false);
     expect(isConnectHarnessId("bogus")).toBe(false);
+  });
+});
+
+describe("inspectHermesGateway (plan Phase 5)", () => {
+  it("reports not-installed without probing anything", () => {
+    let probed = false;
+    const result = inspectHermesGateway({
+      find: () => null,
+      execStatus: () => {
+        probed = true;
+        return { ok: true, output: "running" };
+      },
+    });
+    expect(result).toEqual({
+      installed: false,
+      gatewayRunning: null,
+      detail: "Hermes is not installed (no `hermes` on PATH).",
+    });
+    expect(probed).toBe(false);
+  });
+
+  it("reports a running gateway from the status command", () => {
+    const result = inspectHermesGateway({
+      find: () => "/usr/bin/hermes",
+      execStatus: () => ({ ok: true, output: "Gateway: running (3 channels)" }),
+    });
+    expect(result.installed).toBe(true);
+    expect(result.gatewayRunning).toBe(true);
+  });
+
+  it("reports a stopped gateway honestly, without starting it", () => {
+    for (const status of [
+      { ok: true, output: "Gateway: not running" },
+      { ok: false, output: "exit 1: gateway stopped" },
+    ]) {
+      const result = inspectHermesGateway({
+        find: () => "/usr/bin/hermes",
+        execStatus: () => status,
+      });
+      expect(result.installed).toBe(true);
+      expect(result.gatewayRunning).toBe(false);
+      expect(result.detail).toContain("hermes gateway");
+    }
+  });
+
+  it("reports unknown when the status subcommand is unsupported", () => {
+    const result = inspectHermesGateway({
+      find: () => "/usr/bin/hermes",
+      execStatus: () => ({
+        ok: false,
+        output: "Unknown command: gateway\nUsage: hermes <command>",
+      }),
+    });
+    expect(result.installed).toBe(true);
+    expect(result.gatewayRunning).toBeNull();
   });
 });

@@ -45,7 +45,7 @@ Non-negotiables from the ADR:
   optional, surfaced from the model page and the semantic-search entry point.
 - [x] **Phase 4 — Agent page: detect existing / offer ready harnesses** — reuse
   `inspectConnectHarnesses`; Goose / OpenCode / Copilot descriptors.
-- [ ] **Phase 5 — Hermes harness adapter** — net-new `hermes` connect target
+- [x] **Phase 5 — Hermes harness adapter** — net-new `hermes` connect target
   (`~/.hermes/config.yaml`, daemon detection).
 - [ ] **Phase 6 — Workspace create/repair** — additive repair, missing-workspace
   state in Studio, shared with `zam init`.
@@ -219,17 +219,22 @@ descriptor table. `npm run test` + `npm run lint`.
 
 Net-new; the only one of the four not already wired. Blocks nothing else.
 
-- [ ] Add `hermes` to `CONNECT_HARNESSES` / `CONNECT_HARNESS_LABELS`
+- [x] Add `hermes` to `CONNECT_HARNESSES` / `CONNECT_HARNESS_LABELS`
   (`src/cli/agent-connect.ts`) and the harness-adapter layer
   (`src/cli/agent-harness.ts`).
-- [ ] Config writer for **`~/.hermes/config.yaml`** (YAML — new for ZAM, which
-  writes JSON/TOML today); register the ZAM MCP server the way `hermes mcp add`
-  expects. Idempotent; failures degrade to a warning like every other harness.
-- [ ] Gateway-daemon detection (no repo precedent): detect an installed Hermes and
-  a running gateway; surface honest status. Do not start the daemon for the user.
-- [ ] Add the Hermes row to the Phase 4 descriptor table with its consequence
+- [x] Config writer for **`~/.hermes/config.yaml`**; register the ZAM MCP server
+  the way `hermes mcp add` expects (top-level `mcp_servers:` map, verified
+  against the Hermes docs 2026-07-24). Idempotent; failures degrade to a warning
+  like every other harness. *(The goose writer already set ZAM's string-merge
+  YAML precedent; the hermes writer follows it — no YAML dependency added.)*
+- [x] Gateway-daemon detection (no repo precedent): detect an installed Hermes and
+  a running gateway via the documented `hermes gateway status`; surface honest
+  status (running / stopped / unknown when the subcommand is unsupported). ZAM
+  never starts the daemon. Surfaced on the `agent-harness-status` hermes row.
+- [x] Add the Hermes row to the Phase 4 descriptor table with its consequence
   (heaviest setup, runs a gateway daemon) and chat-surface strength.
-- [ ] `zam agent connect hermes` works from the CLI with the same writer.
+- [x] `zam agent connect hermes` works from the CLI with the same writer
+  (dry-run via the existing `--print` flag).
 
 **Verification:** `zam agent connect hermes --dry-run` reports the intended
 `~/.hermes/config.yaml` change; a real connect writes valid YAML that Hermes reads

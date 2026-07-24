@@ -55,4 +55,11 @@ export const AGENT_OFFERS: readonly AgentOfferDescriptor[] = [
     consequenceKey: "onboarding_agent_copilot_consequence",
     installUrl: "https://github.com/github/copilot-cli",
   },
+  {
+    id: "hermes",
+    label: CONNECT_HARNESS_LABELS.hermes,
+    strengthKey: "onboarding_agent_hermes_strength",
+    consequenceKey: "onboarding_agent_hermes_consequence",
+    installUrl: "https://hermes-agent.nousresearch.com/",
+  },
 ];

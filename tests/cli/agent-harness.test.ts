@@ -189,6 +189,27 @@ describe("detectInstalledConnectHarnesses", () => {
       }),
     ).toEqual(["antigravity"]);
   });
+
+  it("detects Hermes by its CLI name or its ~/.hermes directory", () => {
+    expect(
+      detectInstalledConnectHarnesses({
+        home: "/home/user",
+        platform: "linux",
+        find: (command) => (command === "hermes" ? "/usr/bin/hermes" : null),
+        exists: () => false,
+      }),
+    ).toEqual(["hermes"]);
+
+    expect(
+      detectInstalledConnectHarnesses({
+        home: "/home/user",
+        platform: "linux",
+        find: () => null,
+        exists: (path) =>
+          path.replaceAll("\\", "/") === "/home/user/.hermes",
+      }),
+    ).toEqual(["hermes"]);
+  });
 });
 
 describe("planHarnessLaunch", () => {
@@ -495,6 +516,88 @@ describe("connectHarnessMcp", () => {
     expect(res.alreadyConfigured).toBe(false);
     const lines = res.content.split("\n");
     expect(lines[lines.indexOf("extensions:") + 1]).toBe("  zam:");
+  });
+
+  it("hermes fresh write creates a valid mcp_servers map", () => {
+    const res = connectHarnessMcp("hermes", mockDeps);
+    expect(posix(res.path)).toBe("/home/user/.hermes/config.yaml");
+    expect(res.alreadyConfigured).toBe(false);
+    expect(res.content).toBe(
+      "mcp_servers:\n" +
+        "  zam:\n" +
+        "    command: /usr/local/bin/zam\n" +
+        "    args:\n" +
+        "      - mcp\n",
+    );
+    expect(res.hint).toContain("hermes gateway");
+  });
+
+  it("hermes inserts zam inside mcp_servers when top-level keys follow it", () => {
+    // Same reasoning as the goose writer: appending at end-of-file would land
+    // outside the map when other top-level keys (gateway, model, …) follow.
+    mockFiles["/home/user/.hermes/config.yaml"] =
+      "model: hermes-4\n" +
+      "mcp_servers:\n" +
+      "  github:\n" +
+      "    command: npx\n" +
+      "    args:\n" +
+      '      - "-y"\n' +
+      '      - "@modelcontextprotocol/server-github"\n' +
+      "gateway:\n" +
+      "  channels:\n" +
+      "    - telegram\n";
+    const res = connectHarnessMcp("hermes", mockDeps);
+    expect(res.alreadyConfigured).toBe(false);
+    const lines = res.content.split("\n");
+    // zam is the first child of the mcp_servers map...
+    expect(lines[lines.indexOf("mcp_servers:") + 1]).toBe("  zam:");
+    // ...the sibling server is preserved...
+    expect(res.content).toContain("  github:");
+    // ...and the trailing top-level keys stay top-level.
+    expect(res.content).toContain("\ngateway:\n");
+    expect(res.content).toContain("model: hermes-4");
+  });
+
+  it("hermes adds an mcp_servers map to a config that lacks one", () => {
+    mockFiles["/home/user/.hermes/config.yaml"] = "model: hermes-4\n";
+    const res = connectHarnessMcp("hermes", mockDeps);
+    expect(res.alreadyConfigured).toBe(false);
+    expect(res.content).toBe(
+      "model: hermes-4\n" +
+        "mcp_servers:\n" +
+        "  zam:\n" +
+        "    command: /usr/local/bin/zam\n" +
+        "    args:\n" +
+        "      - mcp\n",
+    );
+  });
+
+  it("hermes no-ops when a zam server already runs zam mcp", () => {
+    const existing =
+      "mcp_servers:\n" +
+      "  zam:\n" +
+      "    command: /usr/local/bin/zam\n" +
+      "    args:\n" +
+      "      - mcp\n";
+    mockFiles["/home/user/.hermes/config.yaml"] = existing;
+    const res = connectHarnessMcp("hermes", mockDeps);
+    expect(res.alreadyConfigured).toBe(true);
+    expect(res.content).toBe(existing);
+  });
+
+  it("hermes wraps a .js zam path in the node executable", () => {
+    const res = connectHarnessMcp("hermes", {
+      ...mockDeps,
+      zamPath: "/opt/zam/dist/cli/index.js",
+    });
+    expect(res.content).toBe(
+      "mcp_servers:\n" +
+        "  zam:\n" +
+        `    command: ${process.execPath}\n` +
+        "    args:\n" +
+        "      - /opt/zam/dist/cli/index.js\n" +
+        "      - mcp\n",
+    );
   });
 
   it("copilot fresh write", () => {

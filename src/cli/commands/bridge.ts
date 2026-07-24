@@ -115,6 +115,7 @@ import {
 import {
   type ConnectHarnessId,
   inspectConnectHarnesses,
+  inspectHermesGateway,
   isConnectHarnessId,
   performAgentConnect,
 } from "../agent-connect.js";
@@ -3461,11 +3462,21 @@ bridgeCommand
   )
   .action(() => {
     const report = inspectConnectHarnesses();
+    // Hermes is the one harness with a runtime component (plan Phase 5): its
+    // messaging gateway must be running for chat-surface reviews. Probe it
+    // only when Hermes is installed, and surface the honest state on the row.
+    const hermesRow = report.harnesses.find((h) => h.harness === "hermes");
+    let hermesGateway: ReturnType<typeof inspectHermesGateway> | undefined;
+    if (hermesRow?.installed) {
+      hermesGateway = inspectHermesGateway();
+      hermesRow.note = hermesRow.note ?? hermesGateway.detail;
+    }
     jsonOut({
       success: true,
       zamOnPath: report.zamOnPath,
       connectAutoDone: getAgentConnectAutoDone(),
       harnesses: report.harnesses,
+      ...(hermesGateway ? { hermesGateway } : {}),
     });
   });
 
