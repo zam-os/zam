@@ -25,6 +25,7 @@ import {
   getInstallMode,
   getMachineAiConfig,
   getOnboardingDone,
+  getOnboardingPersona,
   loadInstallConfig,
   removeConfiguredWorkspace,
   saveInstallConfig,
@@ -40,6 +41,7 @@ import {
   setCompanionSelectedVscodeModelId,
   setInstallMode,
   setOnboardingDone,
+  setOnboardingPersona,
   updateMachineCompanionConfig,
   upsertConfiguredWorkspace,
 } from "../../src/kernel/index.js";
@@ -128,6 +130,43 @@ describe("install config", () => {
     setOnboardingDone(false, path);
     expect(getAgentConnectAutoDone(path)).toBe(true);
     expect(getOnboardingDone(path)).toBe(false);
+  });
+
+  it("defaults the onboarding persona to the free learner", () => {
+    // ADR 2026-07-24 open question 4, resolved in the plan: skipping the
+    // persona page yields "private".
+    expect(getOnboardingPersona(tempConfigPath())).toBe("private");
+  });
+
+  it("round-trips the machine-local onboarding persona", () => {
+    const path = tempConfigPath();
+    setOnboardingPersona("school", path);
+    expect(getOnboardingPersona(path)).toBe("school");
+    expect(loadInstallConfig(path).onboarding?.persona).toBe("school");
+
+    setOnboardingPersona(undefined, path);
+    expect(getOnboardingPersona(path)).toBe("private");
+  });
+
+  it("falls back to the default persona for an unknown on-disk value", () => {
+    const path = tempConfigPath();
+    saveInstallConfig(
+      { onboarding: { persona: "astronaut" } } as never,
+      path,
+    );
+    expect(getOnboardingPersona(path)).toBe("private");
+  });
+
+  it("keeps the persona and the done marker independent", () => {
+    const path = tempConfigPath();
+    setOnboardingPersona("work", path);
+    setOnboardingDone(true, path);
+    setOnboardingDone(false, path);
+    expect(getOnboardingPersona(path)).toBe("work");
+    setOnboardingPersona(undefined, path);
+    setOnboardingDone(true, path);
+    expect(getOnboardingDone(path)).toBe(true);
+    expect(getOnboardingPersona(path)).toBe("private");
   });
 
   it("strips deprecated text bindings from machine-local AI config", () => {

@@ -20,7 +20,11 @@ import {
 } from "./i18n.js";
 import { initCurriculumWizard } from "./curriculum-wizard.js";
 import { initMobilePairing } from "./mobile-pairing.js";
-import { initOnboarding, type OnboardingController } from "./onboarding.js";
+import {
+  initOnboarding,
+  type OnboardingController,
+  type OnboardingPersona,
+} from "./onboarding.js";
 import { initServerDbWizard } from "./server-db.js";
 import {
   beginTurn,
@@ -2794,6 +2798,12 @@ function refreshSettingsData(): void {
 // gate and from the Settings "Run setup again" action.
 let onboardingController: OnboardingController | null = null;
 
+// Persona page data (Phase 1), filled from desktop-bootstrap before the flow
+// can open — the kernel's descriptor list plus the persisted (or default
+// "private") selection. Read live via getStepContext on each start().
+let onboardingPersonas: OnboardingPersona[] = [];
+let onboardingPersonaId = "private";
+
 function showOnboarding(): void {
   if (!onboardingController) return;
   switchView("onboarding-view");
@@ -3674,12 +3684,16 @@ async function loadDashboard() {
       activeWorkspaceId?: string;
       workspaceDir?: string;
       onboardingDone?: boolean;
+      onboardingPersona?: string;
+      onboardingPersonas?: OnboardingPersona[];
     }>("desktop-bootstrap");
     desktopUserId = settings.userId;
     setCurrentLocale(settings.locale || "en");
     isLlmEnabled = settings.llm?.enabled || false;
     activeWorkspaceId = settings.activeWorkspaceId ?? activeWorkspaceId;
     activeWorkspaceDir = settings.workspaceDir ?? activeWorkspaceDir;
+    onboardingPersonas = settings.onboardingPersonas ?? onboardingPersonas;
+    onboardingPersonaId = settings.onboardingPersona ?? onboardingPersonaId;
 
     initializeTranslations();
 
@@ -4685,6 +4699,10 @@ window.addEventListener("DOMContentLoaded", () => {
   initServerDbWizard(() => void loadDatabaseStatus());
   initMobilePairing(() => void loadDatabaseStatus());
   onboardingController = initOnboarding({
+    getStepContext: () => ({
+      personas: onboardingPersonas,
+      selectedPersonaId: onboardingPersonaId,
+    }),
     onLeave: (reason) => {
       switchView("dashboard-view");
       // After completion the machine is onboarded, so a reload is safe and

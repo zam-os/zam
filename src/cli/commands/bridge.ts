@@ -60,6 +60,7 @@ import {
   getKnowledgeContextByName,
   getMachineAiModels,
   getOnboardingDone,
+  getOnboardingPersona,
   getProviderApiKey,
   getSetting,
   getSystemProfile,
@@ -70,6 +71,7 @@ import {
   hasCommand,
   importCurriculumCards,
   isOllamaInstalled,
+  isPersonaId,
   listAgentSkills,
   listKnowledgeContexts,
   listPersonalCards,
@@ -80,15 +82,18 @@ import {
   type ModelEntry,
   openDatabase,
   openDatabaseWithSync,
+  PERSONA_DESCRIPTORS,
   pairCommands,
   readMonitorLog,
   readUiObservationLog,
   resolveObserverPolicy,
   resolveReviewContext,
   saveMachineAiModels,
+  seedPersonaKnowledgeContext,
   setActiveWorkspaceContext,
   setAgentConnectAutoDone,
   setOnboardingDone,
+  setOnboardingPersona,
   setProviderApiKey,
   setSetting,
   setTursoCredentials,
@@ -3243,6 +3248,13 @@ bridgeCommand
         // First-run gate (ADR 2026-07-24): the desktop routes to the guided
         // onboarding flow instead of the dashboard while this is false.
         onboardingDone: getOnboardingDone(),
+        // Persona page data (Phase 1): the descriptor list keeps the desktop
+        // free of persona control-flow — a fifth persona is a kernel row plus
+        // copy, not a wizard change. `onboardingPersona` preselects the card
+        // on re-entry ("Run setup again") and already carries the "private"
+        // default when nothing was chosen.
+        onboardingPersona: getOnboardingPersona(),
+        onboardingPersonas: PERSONA_DESCRIPTORS,
       });
     });
   });
@@ -3262,6 +3274,48 @@ bridgeCommand
     } catch (err) {
       jsonError((err as Error).message);
     }
+  });
+
+// ── zam bridge onboarding-persona ─────────────────────────────────────────────
+
+bridgeCommand
+  .command("onboarding-persona")
+  .description(
+    "Select the first-run start persona (JSON). Persists it machine-local and " +
+      "seeds the matching knowledge context if absent (ADR 2026-07-24 §2).",
+  )
+  .argument("<persona>", "persona id: school | study | work | private")
+  .option(
+    "--context-label <label>",
+    "localized human label for a newly seeded knowledge context",
+  )
+  .action(async (persona: string, opts: { contextLabel?: string }) => {
+    if (!isPersonaId(persona)) {
+      jsonError(
+        `Unknown persona: ${persona}. Use school, study, work or private.`,
+      );
+    }
+    setOnboardingPersona(persona);
+    // The context seed is the persona's only data-model side effect. The
+    // persona itself is machine-local state, so an unreachable database
+    // degrades to "persisted, not seeded" instead of failing the selection
+    // (issue #162 precedent); re-running onboarding seeds it later.
+    await withOptionalDb(async (db) => {
+      if (!db) {
+        jsonOut({ persona, knowledgeContext: null, seeded: false });
+        return;
+      }
+      const result = await seedPersonaKnowledgeContext(
+        db,
+        persona,
+        opts.contextLabel,
+      );
+      jsonOut({
+        persona,
+        knowledgeContext: result.context.name,
+        seeded: result.created,
+      });
+    });
   });
 
 bridgeCommand

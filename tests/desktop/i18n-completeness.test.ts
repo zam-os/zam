@@ -2,6 +2,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { TRANSLATION_PACKS } from "../../desktop/src/i18n.js";
+import { PERSONA_DESCRIPTORS } from "../../src/kernel/index.js";
 
 const ISSUE_97_KEYS = [
   "lbl_delete",
@@ -299,6 +300,9 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "onboarding_finish_later",
   "onboarding_finish",
   "onboarding_next",
+  "onboarding_persona_title",
+  "onboarding_persona_body",
+  "onboarding_persona_hint",
 ]);
 
 /**
@@ -386,6 +390,38 @@ describe("desktop locale completeness", () => {
       (key) => !localeSource.includes(`    ${key}:`),
     );
     expect(missing).toEqual([]);
+  });
+
+  // The persona step resolves its card copy through descriptor fields
+  // (t(persona.labelKey)), which the literal-only scan below cannot see —
+  // so the kernel descriptor list is checked against the reference locales
+  // explicitly. Step kickers are dynamic too (t(step.titleKey)).
+  it.each([
+    "en",
+    "de",
+  ] as const)("reference locale %s has every persona-descriptor key", (locale) => {
+    const i18nSource = readFileSync(
+      join(process.cwd(), "desktop", "src", "i18n.ts"),
+      "utf8",
+    );
+    const start = i18nSource.indexOf(`  ${locale}: {`);
+    const endMarker = locale === "en" ? "\n  de: {" : "\n  // es, fr";
+    const localeSource = i18nSource.slice(
+      start,
+      i18nSource.indexOf(endMarker, start),
+    );
+
+    const keys = [
+      "onboarding_persona_kicker",
+      ...PERSONA_DESCRIPTORS.flatMap((persona) => [
+        persona.labelKey,
+        persona.descriptionKey,
+        persona.contextLabelKey,
+      ]),
+    ];
+    for (const key of keys) {
+      expect(localeSource).toContain(`    ${key}:`);
+    }
   });
 
   it.each([

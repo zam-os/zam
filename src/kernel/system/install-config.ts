@@ -23,6 +23,11 @@ import {
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { ulid } from "ulid";
+import {
+  DEFAULT_PERSONA_ID,
+  isPersonaId,
+  type PersonaId,
+} from "../models/persona.js";
 import type { InstallChannel } from "./update-check.js";
 
 export type InstallMode = "developer" | "default";
@@ -67,6 +72,12 @@ export interface MachineAgentConfig {
 export interface MachineOnboardingConfig {
   /** True once the first-run flow reached its final page on THIS machine. */
   done?: boolean;
+  /**
+   * Chosen start persona (ADR 2026-07-24 §2). Machine-local like the rest of
+   * this section; when unset or invalid, readers fall back to the "free
+   * learner" default (`private`).
+   */
+  persona?: PersonaId;
 }
 
 /**
@@ -527,6 +538,30 @@ export function setOnboardingDone(
     config.onboarding = { ...(config.onboarding ?? {}), done: true };
   } else if (config.onboarding) {
     delete config.onboarding.done;
+  }
+  saveInstallConfig(config, path);
+}
+
+/**
+ * The start persona chosen during first-run onboarding (ADR 2026-07-24 §2).
+ * Defaults to `private` ("free learner") when never chosen — the plan's
+ * resolution of ADR open question 4 — and when the on-disk value is not a
+ * known persona (hand-edited config), so callers always get a valid id.
+ */
+export function getOnboardingPersona(path = defaultConfigPath()): PersonaId {
+  const raw = loadInstallConfig(path).onboarding?.persona;
+  return typeof raw === "string" && isPersonaId(raw) ? raw : DEFAULT_PERSONA_ID;
+}
+
+export function setOnboardingPersona(
+  persona: PersonaId | undefined,
+  path = defaultConfigPath(),
+): void {
+  const config = loadInstallConfig(path);
+  if (persona) {
+    config.onboarding = { ...(config.onboarding ?? {}), persona };
+  } else if (config.onboarding) {
+    delete config.onboarding.persona;
   }
   saveInstallConfig(config, path);
 }

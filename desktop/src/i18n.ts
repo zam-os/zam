@@ -4418,6 +4418,29 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_done_title: "That's the essentials.",
     onboarding_done_body:
       "You can revisit this setup any time from Settings → “Run setup again”. Head to your dashboard to start learning.",
+    // Persona page (ADR 2026-07-24 §2, Phase 1).
+    onboarding_persona_kicker: "Who are you learning as?",
+    onboarding_persona_title: "Pick your starting point.",
+    onboarding_persona_body:
+      "Your life situation decides where your first learning content comes from — a school curriculum, your own sources, your projects, or a goal you set yourself.",
+    onboarding_persona_hint:
+      "This only picks sensible defaults. Every import path stays available to you later, whatever you choose here.",
+    onboarding_persona_school_label: "Pupil",
+    onboarding_persona_school_why:
+      "Fixed syllabus and exams — start from your state curriculum.",
+    onboarding_persona_school_context: "School",
+    onboarding_persona_study_label: "Student or apprentice",
+    onboarding_persona_study_why:
+      "Lecture notes, textbooks, specs — import the sources in front of you.",
+    onboarding_persona_study_context: "Studies",
+    onboarding_persona_work_label: "Employee or freelancer",
+    onboarding_persona_work_why:
+      "Knowledge from the projects you work on, kept from decaying.",
+    onboarding_persona_work_context: "Work",
+    onboarding_persona_private_label: "Free learner or retiree",
+    onboarding_persona_private_why:
+      "Self-chosen interests, no syllabus — start from a goal you define.",
+    onboarding_persona_private_context: "Personal",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -5179,6 +5202,29 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_done_title: "Das war das Wichtigste.",
     onboarding_done_body:
       "Du kannst diese Einrichtung jederzeit über Einstellungen → „Einrichtung erneut starten“ öffnen. Geh zu deinem Dashboard und leg los.",
+    // Persona page (ADR 2026-07-24 §2, Phase 1).
+    onboarding_persona_kicker: "Als wer lernst du?",
+    onboarding_persona_title: "Wähle deinen Startpunkt.",
+    onboarding_persona_body:
+      "Deine Lebenssituation entscheidet, woher dein erster Lernstoff kommt – aus einem Lehrplan, deinen eigenen Quellen, deinen Projekten oder einem selbst gesetzten Ziel.",
+    onboarding_persona_hint:
+      "Das legt nur sinnvolle Voreinstellungen fest. Alle Import-Wege bleiben dir später offen, egal was du hier wählst.",
+    onboarding_persona_school_label: "Schüler:in",
+    onboarding_persona_school_why:
+      "Fester Lehrplan und Prüfungen – starte mit deinem Landeslehrplan.",
+    onboarding_persona_school_context: "Schule",
+    onboarding_persona_study_label: "Studium oder Ausbildung",
+    onboarding_persona_study_why:
+      "Skripte, Lehrbücher, Unterlagen – importiere die Quellen, die vor dir liegen.",
+    onboarding_persona_study_context: "Studium",
+    onboarding_persona_work_label: "Beruf oder Freiberuf",
+    onboarding_persona_work_why:
+      "Wissen aus deinen Projekten, das nicht verblassen darf.",
+    onboarding_persona_work_context: "Arbeit",
+    onboarding_persona_private_label: "Frei lernend oder im Ruhestand",
+    onboarding_persona_private_why:
+      "Selbstgewählte Interessen, kein Lehrplan – starte mit einem Ziel, das du dir setzt.",
+    onboarding_persona_private_context: "Privat",
   },
   // es, fr, pt, zh, ja packs come from TRANSLATION_PACKS above; en/de stay inline here as the reference locales.
   ...TRANSLATION_PACKS,

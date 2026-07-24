@@ -37,7 +37,7 @@ Non-negotiables from the ADR:
 
 - [x] **Phase 0 — Onboarding shell & first-run gate** — page container, machine-local
   `onboardingDone` flag, Settings re-entry, en/de copy scaffold.
-- [ ] **Phase 1 — Persona selection + knowledge-context seed** — data-driven personas,
+- [x] **Phase 1 — Persona selection + knowledge-context seed** — data-driven personas,
   seeded context, machine-local persistence.
 - [ ] **Phase 2 — OpenRouter connect (privacy-enforced)** — guided model page,
   `mimo-v2.5` registration, `deny`/`zdr` injected on every OpenRouter request.
@@ -109,18 +109,18 @@ dashboard; "Run setup again" re-enters. `read_page` confirms step chrome and ref
 
 ## Phase 1 — Persona selection + knowledge-context seed
 
-- [ ] Persona model as **data, not a switch**: a descriptor list
+- [x] Persona model as **data, not a switch**: a descriptor list
   (`id`, label key, description key, `knowledgeContextSlug`, `defaultImportPath`)
   in the kernel so a fifth persona is a row, not control-flow. Four rows:
   `school` (pupil), `study` (student/apprentice), `work` (employee/freelancer),
   `private` (retiree/free learner).
-- [ ] Page 2 UI: one card per persona with its one-line *why*, default =
+- [x] Page 2 UI: one card per persona with its one-line *why*, default =
   `private` when skipped.
-- [ ] Persist the chosen persona machine-local (`install-config.ts`).
-- [ ] **Seed a matching knowledge context** (ADR 2026-07-04,
+- [x] Persist the chosen persona machine-local (`install-config.ts`).
+- [x] **Seed a matching knowledge context** (ADR 2026-07-04,
   `src/kernel/models/knowledge-context.ts`) if absent — the persona's only lasting
   data-model side effect. Idempotent: never duplicate an existing context.
-- [ ] en/de copy for the four personas.
+- [x] en/de copy for the four personas.
 
 **Verification:** selecting each persona seeds exactly one context (inspect via
 `zam knowledge-context list` or the kernel); re-running does not duplicate;

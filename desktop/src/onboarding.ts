@@ -26,6 +26,35 @@ export interface OnboardingStep {
   skippable: boolean;
   /** Render the step's body into `container` (cleared before each call). */
   render(container: HTMLElement): void;
+  /**
+   * Commit the step's choice before advancing via "Next". Best-effort like
+   * completion: a failure is logged and the flow still advances, never
+   * trapping the user. "Skip" deliberately bypasses this hook — skipping a
+   * page must leave no side effect (ADR 2026-07-24 §7).
+   */
+  onNext?(): Promise<void> | void;
+}
+
+/**
+ * Start-persona card data (ADR 2026-07-24 §2), as served by desktop-bootstrap
+ * from the kernel's `PERSONA_DESCRIPTORS`. Mirrored here as a structural type
+ * because the desktop never imports kernel modules — it meets the kernel only
+ * through the bridge JSON.
+ */
+export interface OnboardingPersona {
+  id: string;
+  labelKey: string;
+  descriptionKey: string;
+  contextLabelKey: string;
+  knowledgeContextSlug: string;
+  defaultImportPath: string;
+}
+
+export interface OnboardingStepContext {
+  /** Persona cards to offer; empty until desktop-bootstrap has answered. */
+  personas: OnboardingPersona[];
+  /** Persisted (or default "private") persona to preselect. */
+  selectedPersonaId: string;
 }
 
 export interface OnboardingController {
@@ -42,14 +71,30 @@ interface OnboardingDeps {
    * reloading, or it would bounce straight back into the flow.
    */
   onLeave(reason: "completed" | "later"): void;
+  /** Live step data (personas, persisted selection), read at start() time. */
+  getStepContext(): OnboardingStepContext;
 }
 
 /**
- * The ordered step list. Phase 0 = [welcome, done]; later phases splice their
- * pages in between. Kept as a builder (not a module constant) so a step can
- * read live state at construction time in later phases.
+ * Persona persisted through the bridge in THIS session. main.ts refreshes its
+ * bootstrap copy only when a dashboard reload runs (after "completed"), so
+ * this memo keeps re-entry via "Finish later" → "Run setup again" preselecting
+ * what was actually saved.
  */
-export function buildOnboardingSteps(): OnboardingStep[] {
+let lastPersistedPersonaId: string | null = null;
+
+/**
+ * The ordered step list. Later phases splice their pages in between welcome
+ * and done. Kept as a builder (not a module constant) so each step reads live
+ * state — locale, bootstrap data, prior choices — at construction time.
+ */
+export function buildOnboardingSteps(
+  ctx: OnboardingStepContext,
+): OnboardingStep[] {
+  // Selection survives Back/forward re-renders within one run of the flow;
+  // each start() re-reads the persisted value (or the in-session memo).
+  let selectedPersonaId = lastPersistedPersonaId ?? ctx.selectedPersonaId;
+
   return [
     {
       id: "welcome",
@@ -64,6 +109,55 @@ export function buildOnboardingSteps(): OnboardingStep[] {
       },
     },
     {
+      id: "persona",
+      titleKey: "onboarding_persona_kicker",
+      skippable: false,
+      render(container) {
+        container.append(
+          heading(t("onboarding_persona_title")),
+          paragraph(t("onboarding_persona_body")),
+        );
+        const group = document.createElement("div");
+        group.className = "onboarding-persona-grid";
+        group.setAttribute("role", "radiogroup");
+        group.setAttribute("aria-label", t("onboarding_persona_title"));
+        for (const persona of ctx.personas) {
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = "onboarding-persona-card";
+          card.dataset.personaId = persona.id;
+          card.setAttribute("role", "radio");
+          const label = document.createElement("span");
+          label.className = "onboarding-persona-label";
+          label.textContent = t(persona.labelKey);
+          const why = document.createElement("span");
+          why.className = "onboarding-persona-why";
+          why.textContent = t(persona.descriptionKey);
+          card.append(label, why);
+          card.addEventListener("click", () => {
+            selectedPersonaId = persona.id;
+            markPersonaSelection(group, selectedPersonaId);
+          });
+          group.append(card);
+        }
+        markPersonaSelection(group, selectedPersonaId);
+        container.append(group, paragraph(t("onboarding_persona_hint")));
+      },
+      async onNext() {
+        const persona = ctx.personas.find((p) => p.id === selectedPersonaId);
+        if (!persona) return;
+        // Persist the choice machine-local and seed its knowledge context
+        // (the persona's only data-model side effect). The label travels from
+        // here because only the desktop knows the user's locale.
+        await runBridge("onboarding-persona", [
+          persona.id,
+          "--context-label",
+          t(persona.contextLabelKey),
+        ]);
+        lastPersistedPersonaId = persona.id;
+      },
+    },
+    {
       id: "done",
       titleKey: "onboarding_done_kicker",
       skippable: false,
@@ -75,6 +169,16 @@ export function buildOnboardingSteps(): OnboardingStep[] {
       },
     },
   ];
+}
+
+function markPersonaSelection(group: HTMLElement, selectedId: string): void {
+  for (const card of group.querySelectorAll<HTMLButtonElement>(
+    ".onboarding-persona-card",
+  )) {
+    const selected = card.dataset.personaId === selectedId;
+    card.classList.toggle("selected", selected);
+    card.setAttribute("aria-checked", String(selected));
+  }
 }
 
 function heading(text: string): HTMLElement {
@@ -150,6 +254,27 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
     render();
   }
 
+  /**
+   * "Next" on a non-final step: commit the step's choice first, then move on.
+   * Committing is best-effort — a bridge failure is logged and the flow still
+   * advances (the same never-trap rule as complete()); "Skip" goes straight
+   * to goTo() and deliberately never runs onNext.
+   */
+  async function advance(): Promise<void> {
+    const step = steps[index];
+    if (step?.onNext) {
+      nextBtn.disabled = true;
+      try {
+        await step.onNext();
+      } catch (err) {
+        console.error(`onboarding step "${step.id}" commit failed`, err);
+      } finally {
+        nextBtn.disabled = false;
+      }
+    }
+    goTo(index + 1);
+  }
+
   async function complete(): Promise<void> {
     if (leaving) return;
     leaving = true;
@@ -173,7 +298,7 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
     if (index === steps.length - 1) {
       void complete();
     } else {
-      goTo(index + 1);
+      void advance();
     }
   });
   finishLaterBtn.addEventListener("click", () => {
@@ -184,7 +309,7 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
 
   return {
     start(): void {
-      steps = buildOnboardingSteps();
+      steps = buildOnboardingSteps(deps.getStepContext());
       index = 0;
       render();
     },
