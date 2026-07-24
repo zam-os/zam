@@ -161,33 +161,31 @@ This is #218's counterpart for models: a guided connect flow, not a raw
 "label / URL / model / key" form (`showModelForm`), which currently presumes the
 user already knows a base URL and a model id.
 
-**OpenRouter is the first supported provider** because it is the only one that
-lets a first-time user satisfy all three of ZAM's onboarding constraints at once:
+**OpenRouter is the first supported provider** because it lets a first-time user
+satisfy both of ZAM's onboarding constraints at once, with **no free tier to
+explain (decided 2026-07-24):**
 
-1. **Privacy-safe start.** OpenRouter exposes account-level privacy settings
+1. **Privacy-safe by default.** OpenRouter exposes account-level privacy settings
    (separate for paid and free models) *and* per-request enforcement via the
    `provider` object: `data_collection: "deny"` restricts routing to endpoints
    that do not store prompts, and `zdr: true` restricts to zero-data-retention
-   endpoints. ZAM can therefore make "my data is not trained on and not kept" a
-   **checkbox we actually enforce on every request**, not a promise about someone
-   else's dashboard.
-2. **Free start.** `:free` model variants allow a zero-payment trial for users who
-   do not care about (1) — the two are a deliberate either/or, see below and
-   Consequences.
-3. **Bounded cost.** Prepaid credits plus a per-key spend cap (`limit` +
-   `limit_reset`) let a user cap themselves at ~€1/day, so a bad model choice
-   cannot produce a surprise bill.
+   endpoints. ZAM sends **both on every request** and makes "my data is not trained
+   on and not kept" a guarantee we enforce, not a promise about someone else's
+   dashboard.
+2. **Bounded cost from a tiny prepaid start.** Prepaid credits plus a per-key spend
+   cap (`limit` + `limit_reset`) let a user cap themselves at ~€1/day, so a bad
+   model choice cannot produce a surprise bill.
 
-**Privacy is the default; free is an opt-in with a warning (decided 2026-07-24).**
-Because "safe start" and "free start" are mutually exclusive at the routing layer
-(`data_collection: "deny"` + `zdr: true` routes around exactly the `:free`
-endpoints, which log in exchange for being free), the page does **not** present
-them as equal choices. It starts with **privacy enforcement on** and
-`xiaomi/mimo-v2.5` selected. Free models appear only as a **secondary, de-emphasised
-option** carrying an explicit warning — "your inputs are stored and may be used for
-training" — never pre-selected. This matches the target audience (a minor learner,
-a retiree) for whom the privacy default must be the one that requires no
-understanding of routing to be safe.
+**No free-model option in onboarding (decided 2026-07-24).** The earlier plan to
+also offer `:free` variants is dropped. It fought the privacy default at the
+routing layer — `data_collection: "deny"` + `zdr: true` route around exactly the
+`:free` endpoints, since those log in exchange for being free — and forced the page
+to explain a free/private either-or that most of the target audience should never
+have to reason about. Instead the story is one sentence: **start with €1 prepaid;
+your data stays private.** €1 is deliberately small, and with `xiaomi/mimo-v2.5`
+(below) it should comfortably cover a first week of real use — enough to decide
+whether to top up further. There is no zero-payment path, and that is the point: it
+removes a whole branch of explanation and a data-retention footgun.
 
 **Default start model: `xiaomi/mimo-v2.5`** — multimodal (text, image, audio,
 video input) at $0.14 / $0.28 per million tokens (verified 2026-07-24), i.e. one
@@ -196,10 +194,11 @@ third of the price of `mimo-v2.5-pro`, which is text-only. It is registered
 through the existing unified capability registry (ADR 2026-07-12) as a cloud
 entry with `text` + `image` capabilities — no new storage concept.
 
-Flow: choose OpenRouter → explain the three options above → user creates the
-account and key **on openrouter.ai themselves** (ZAM deep-links to the key page
-and the privacy settings page; ZAM never creates accounts or keys) → paste key →
-probe (`capability-probe.ts`) → register `xiaomi/mimo-v2.5` → green AI status.
+Flow: choose OpenRouter → explain the two points above → user creates the account,
+**adds ~€1 prepaid**, and creates the key **on openrouter.ai themselves** (ZAM
+deep-links to the key page, the credits page, and the privacy settings page; ZAM
+never creates accounts, adds credit, or creates keys) → paste key → probe
+(`capability-probe.ts`) → register `xiaomi/mimo-v2.5` → green AI status.
 
 The provider list is **extensible**; OpenRouter is first, not exclusive.
 
@@ -214,6 +213,43 @@ first-class second card — recommended in copy where the profile found capable 
 Apple-Silicon hardware, but not auto-selected. The machine-local vs. DB storage
 split of ADR 2026-07-23 §4 is unchanged.
 
+### 5a. The embedding role is separate, optional, and standardized on `embeddinggemma-300m`
+
+OpenRouter serves no embeddings (`/v1/embeddings` → 404, verified), so the
+`embedding` role cannot ride on the chat key. It stays **off the blocking
+onboarding path**: semantic token search (ADR 2026-07-03) degrades cleanly to
+lexical search without it, so first run never forces a second provider. Embeddings
+are offered as an *enhancement* — "make search understand meaning, not just words" —
+that a user can enable now or later.
+
+**One canonical embedding model, two interchangeable sources (decided 2026-07-24).**
+ZAM already fixes `embeddinggemma-300m` as its canonical embedding model
+(`DEFAULT_EMBEDDING_MODEL`). That model is available **both** as a local Ollama tag
+**and** as a cheap cloud endpoint, and because it is the *same weights* either way,
+the stored vectors are compatible — a learner can switch source without
+re-embedding the corpus. The two sources:
+
+- **Local — Ollama `embeddinggemma` (desktop default when enabled).** The
+  strongest-privacy option: embeddings run over the learner's actual study text,
+  and computing them locally means that text never leaves the machine — consistent
+  with the privacy-default of §5. Small (300M), fine on CPU + modest RAM, no second
+  account or key. Cost: a one-time local runtime install (the same reason it is an
+  enhancement, not the first-run default).
+- **Cloud — DeepInfra `google/embeddinggemma-300m` (no-install desktop option, and
+  the mobile path).** OpenAI-compatible (`/v1/openai/embeddings`), **$0.002 / 1M
+  input tokens** (verified 2026-07-24) — for a personal learning corpus this is
+  fractions of a cent, effectively free within DeepInfra's ~$1 signup credit.
+  Requires a second account/key and DeepInfra's data policy is not the enforced
+  `deny`/`zdr` that OpenRouter gives, so it is offered with that stated. This is the
+  answer for users who refuse a local runtime, and — per ADR 2026-07-23's
+  online-only mobile — the **only** embedding path the phone can use, since a
+  paired phone has no Ollama.
+
+Recommendation encoded in the wizard: **desktop → Ollama when the user wants
+semantic search; mobile / no-install → DeepInfra.** Both register through the same
+capability registry `embedding` slot; neither is part of the required first-run
+sequence.
+
 ### 6. Agent harness page: four offers, or "use what you already have"
 
 **If harnesses are already installed** (`inspectConnectHarnesses` already detects
@@ -227,9 +263,18 @@ runs idempotently. No installation is proposed to someone who already has one.
 | Option | Strength | Consequence to state |
 |---|---|---|
 | **Goose** | Open source, simple config, already a supported harness | Desktop/CLI, needs its own model config |
-| **OpenCode** | Open source, terminal-native, already supported | Terminal-centric; steeper for non-developers |
+| **OpenCode** | Open source, terminal-native; **OpenCode Zen** offers a promotional free model tier, so the agent can run at no cost; already supported | Terminal-centric; steeper for non-developers. Zen free models are **time-limited and feedback-collecting** (your prompts help improve the model), with soft/undocumented caps and reduced context on some — billing details required at sign-up |
 | **GitHub Copilot** | Free monthly quota — cheapest real start; already supported | Account required; quota-limited; not open source |
 | **Hermes Agent** (NousResearch) | Open source, MCP-native, reachable from chat surfaces (Telegram/Signal/…), which fits reviews away from the desk | **Net-new harness for ZAM** (built in this release); runs a gateway daemon; heaviest setup |
+
+The two "free" strengths here (Copilot quota, OpenCode Zen) are on the **agent
+axis, not the model axis** — they fund running the `/zam` conversation, not ZAM's
+own AI roles (page 3), which stay OpenRouter + €1 prepaid with enforced privacy. The
+caveat: a harness running a free promotional model routes the learner's study
+content through *that* model's data policy, which ZAM cannot enforce `deny`/`zdr`
+on. So the page notes that "free agent" and "private" are, again, a trade — but this
+time it is the user's harness choice, outside ZAM's enforced pipeline, and stated as
+such rather than silently inherited.
 
 - The page is **data-driven and extensible** — a fifth harness is a table row plus
   an adapter, not a redesign.
@@ -273,21 +318,20 @@ Any skipped page leaves the app **usable and honest**:
 
 **Harder / follow-on work**
 
-- **OpenRouter has no `/v1/embeddings` endpoint** (verified: 404). A cloud-only
-  install therefore cannot fill the `embedding` role, and semantic token search
-  (ADR 2026-07-03) degrades to lexical search. Cloud-only users need either a
-  local embedder or a second provider for that role — this must be stated in the
-  wizard, not discovered later.
-- **Free models and the privacy guarantee are mutually exclusive in practice.**
-  `:free` endpoints are exactly the ones that log; `data_collection: "deny"` +
-  `zdr: true` will route around them. The page must present this as an explicit
-  either/or ("free" *or* "private"), never imply both.
-- **Free-tier throughput is thin.** With under $10 of credits purchased,
-  `:free` models are capped at ~20 requests/minute and **50 requests/day**
-  globally per account. A page-by-page goal import (§3) can exhaust that in one
-  sitting. The free path is a taste test, not a working configuration.
-- The spend cap is set **in the OpenRouter dashboard**, not by ZAM. The wizard can
-  only instruct and link; it cannot enforce €1/day on the user's behalf.
+- **The embedding role needs a second decision** (§5a): OpenRouter has no
+  embeddings endpoint (verified: 404), so semantic search rides on either a local
+  Ollama `embeddinggemma` or DeepInfra's cloud `embeddinggemma-300m`, both the same
+  canonical model. This is resolved, not open, but it means embeddings are a second,
+  optional setup the wizard must present honestly rather than a free byproduct of
+  the chat key.
+- **The €1 prepaid start and the spend cap are set in the OpenRouter dashboard**,
+  not by ZAM. The wizard can only instruct and deep-link; it cannot add credit or
+  enforce a €1/day cap on the user's behalf (nor should it — that is money movement,
+  which stays the user's own action).
+- **No zero-payment on-ramp.** Dropping the free tier means every new user must add
+  ~€1 of prepaid credit before the AI paths work. That is a real, if small, hurdle
+  for the "just let me try it" visitor — accepted deliberately in exchange for a
+  one-sentence privacy story and no data-retention footgun.
 - Two front-ends (`zam init` and the Studio wizard) must not drift — shared steps
   belong in the kernel/provisioning layer with the CLI and the wizard as thin
   callers.
@@ -307,9 +351,13 @@ Any skipped page leaves the app **usable and honest**:
 
 ## Resolved (2026-07-24)
 
-- **Free vs. private start (§5).** Privacy enforcement is the default; free models
-  are a de-emphasised opt-in with an explicit logging/training warning, never
-  pre-selected.
+- **No free tier; €1 prepaid minimum (§5).** The free-model option is dropped
+  entirely to keep the story one sentence — "start with €1 prepaid; your data stays
+  private" — with `data_collection: "deny"` + `zdr: true` enforced on every request.
+- **Embedding role (§5a).** Canonical model `embeddinggemma-300m`, served by local
+  Ollama on desktop (privacy-first, optional enhancement) or DeepInfra's cloud
+  `embeddinggemma-300m` ($0.002/1M) for no-install desktop and for mobile; same
+  weights, compatible vectors, off the required first-run path.
 - **Retiree persona content path (§2, §3).** Goal-driven import — the retiree has
   no external syllabus, so the LLM-generated `Lernziel` decomposition is their hero
   path, not curriculum or a pre-existing source.
@@ -337,14 +385,17 @@ Any skipped page leaves the app **usable and honest**:
    Settings entry point, en/de copy.
 2. Persona model as data + knowledge-context seeding.
 3. Cloud LLM connect wizard with the OpenRouter provider descriptor
-   (privacy toggle → `provider.data_collection`/`zdr`, `xiaomi/mimo-v2.5`
-   registration, capability probe, embedding-gap warning).
-4. Workspace create/repair (additive) + missing-workspace state in Studio.
-5. Agent page: reuse `inspectConnectHarnesses` for the "existing agent" branch;
+   (`provider.data_collection: "deny"` + `zdr: true` on every request,
+   €1-prepaid deep-links, `xiaomi/mimo-v2.5` registration, capability probe).
+4. Embedding enhancement (§5a): Ollama `embeddinggemma` and DeepInfra
+   `google/embeddinggemma-300m` descriptors for the same `embedding` slot; both
+   optional, surfaced from the model page and from the semantic-search entry point.
+5. Workspace create/repair (additive) + missing-workspace state in Studio.
+6. Agent page: reuse `inspectConnectHarnesses` for the "existing agent" branch;
    descriptor table for the four offers.
-6. Goal-driven import reusing the curriculum wizard shell.
-7. Hermes harness adapter (`~/.hermes/config.yaml`).
-8. Landing-page and README rewrite around the desktop first start.
+7. Goal-driven import reusing the curriculum wizard shell.
+8. Hermes harness adapter (`~/.hermes/config.yaml`).
+9. Landing-page and README rewrite around the desktop first start.
 
 ---
 
@@ -352,7 +403,11 @@ Any skipped page leaves the app **usable and honest**:
 
 - Issue [#218](https://github.com/zam-os/zam/issues/218) — server-DB create/connect wizard
 - OpenRouter models API (`xiaomi/mimo-v2.5` modalities and pricing, verified 2026-07-24)
-- OpenRouter provider routing (`data_collection`, `zdr`) and API key limits
-  (`limit`, `limit_reset`; free-tier 20 rpm / 50 rpd below $10 credits)
+- OpenRouter provider routing (`data_collection`, `zdr`) and per-key spend cap
+  (`limit`, `limit_reset`)
+- DeepInfra `google/embeddinggemma-300m` — OpenAI-compatible `/v1/openai/embeddings`,
+  $0.002/1M input tokens, ~$1 signup credit (verified 2026-07-24)
 - Hermes Agent (NousResearch) — `~/.hermes/config.yaml`, `hermes mcp add`, gateway daemon
+- OpenCode Zen — promotional (time-limited, feedback-collecting) free models, billing
+  required at sign-up, undocumented soft caps (verified 2026-07-24)
 - Thomas' onboarding notes, 2026-07-24
