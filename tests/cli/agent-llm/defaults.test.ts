@@ -11,6 +11,7 @@ describe("defaultAgentModel", () => {
     expect(defaultAgentModel("claude-code")).toBe("haiku");
     expect(defaultAgentModel("copilot")).toBe("gpt-5-mini");
     expect(defaultAgentModel("antigravity")).toBe("Gemini 3.6 Flash (Low)");
+    expect(defaultAgentModel("grok")).toBe("grok-4.5");
   });
 
   it("returns undefined for unknown harnesses", () => {

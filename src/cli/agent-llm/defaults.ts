@@ -23,6 +23,8 @@ export const DEFAULT_AGENT_MODELS: Readonly<Record<string, string>> = {
    * Not registered in getAgentAdapter yet.
    */
   copilot: "gpt-5-mini",
+  /** Grok Build: currently the only / default model on SuperGrok. */
+  grok: "grok-4.5",
 };
 
 /**

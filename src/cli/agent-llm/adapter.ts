@@ -14,6 +14,7 @@ import type { AgentHarnessId } from "../agent-harness.js";
 import { AntigravityAdapter } from "./antigravity.js";
 import { ClaudeCodeAdapter } from "./claude-code.js";
 import { CodexAdapter } from "./codex.js";
+import { GrokAdapter } from "./grok.js";
 
 /** Modalities an adapter can serve (static; probe still gates readiness). */
 export interface AgentModalities {
@@ -103,6 +104,8 @@ const AGENT_TEXT_ADAPTERS: Record<string, () => AgentTextAdapter> = {
   antigravity: () => new AntigravityAdapter(),
   /** OpenAI Codex CLI — `codex exec --json`, multimodal via `-i`. */
   codex: () => new CodexAdapter(),
+  /** xAI Grok Build CLI — `grok -p`, multimodal via `--prompt-json`. */
+  grok: () => new GrokAdapter(),
 };
 
 /** Harness ids that can back a `transport: "agent"` model entry today. */
