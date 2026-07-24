@@ -195,6 +195,20 @@ export interface ModelEntry {
   detectedCapabilities: CapabilityFlags;
   /** ISO timestamp of the last probe; undefined until probed. */
   probedAt?: string;
+  /**
+   * How ZAM reaches this model (ADR 2026-07-12a). Absent/"http" is the direct
+   * HTTP path (local or cloud). "agent" delegates generation through a connected
+   * agent harness named by {@link agentHarness}; `url`/`apiFlavor` are then
+   * ignored. Pure config — the kernel never acts on it; the CLI's agent-llm
+   * layer interprets it.
+   */
+  transport?: "http" | "agent";
+  /**
+   * Harness id (e.g. "claude-code") that backs an `agent`-transport entry.
+   * Matches an `AgentHarnessId` in the CLI layer; stored as a plain string so
+   * the kernel stays harness-agnostic.
+   */
+  agentHarness?: string;
 }
 
 export interface MachineAiConfig {
