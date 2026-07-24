@@ -37,13 +37,23 @@ for their time **once**, then shipping the result to every learner, is far more
 efficient than asking every device to regenerate the same material with a large
 model on every import.
 
+There is a second, practical cost: **time**. Device-side generation of learning
+cards (curriculum text → many atomic proposals via local, cloud, or agent
+LLMs) is **slow** today — often minutes of wait while the model decomposes a
+topic, and longer still for agent-backed harnesses (process start + framing).
+Learners and teachers experience that wait on every import of the *same*
+official topic. A central library turns "generate cards" into "attach me to
+already-published tokens," which is a database operation and should feel
+**near-instant**.
+
 ZAM already has **device-side** paths that *can* mint content (LehrplanPLUS
 wizard + text/agent AI, Learning Content Studio, OKF → token import). Those
 paths remain useful for:
 
 - bootstrap and personal notes;
 - material that will never be shared;
-- experimentation and field tests.
+- experimentation and field tests;
+- filling gaps until the shared library covers a topic.
 
 They must not become the **default story** for school curricula that thousands
 of learners should share.
@@ -87,7 +97,9 @@ The preferred pipeline for curriculum cards is:
 4. **Every learner** receives the reviewed tokens and only creates **personal
    cards** (FSRS state) against them.
 
-Step 2 is the expensive step. It must not be re-run for every learner.
+Step 2 is the expensive step for **quality**. Steps 1–3 together are the
+expensive steps for **latency and compute**. Neither must be re-run for every
+learner.
 
 ### 3. Device-side AI remains for personal work, not for canonical curricula
 
@@ -115,8 +127,16 @@ at it — not because the content was duplicated per learner.
 LehrplanPLUS-style wizards remain valid to **discover** topics and attach
 `source_link`s. When a shared library already holds reviewed cards for a
 topic, ZAM should prefer **subscribing / cloning cards** over regenerating
-proposals. Exact APIs and UX for that library are out of scope for this ADR;
+proposals — both for quality and so import completes in **seconds, not
+minutes**. Exact APIs and UX for that library are out of scope for this ADR;
 the principle is binding for future design.
+
+### 6. Generation cost is amortized at publish time, not at learn time
+
+If AI assists drafting, that run happens on the **publisher** side (teacher
+tooling, editorial pipeline, or a one-time batch job), not on the critical
+path of every learner's "Import curriculum" click. Learner import of covered
+topics is library attach + card creation, not LLM generation.
 
 ---
 
@@ -127,6 +147,8 @@ the principle is binding for future design.
 - Teacher effort scales: one review cycle benefits every class and year.
 - Content quality rises without every learner needing a strong LLM or expert
   judgment.
+- **Import latency drops**: covered topics attach from the library instead of
+  waiting on multi-minute LLM/agent card generation on the device.
 - Device AI stays light (and agent defaults stay cheap) for personal practice.
 - Aligns with multi-learner / shared-database work: content is the thing to
   share; FSRS state is not.
@@ -136,7 +158,8 @@ the principle is binding for future design.
 - Requires publishing, review, and distribution infrastructure that does not
   fully exist yet (central Lehrplan DB / school workspace content packs).
 - Until that library is populated, device-side import remains the practical
-  path — field tests will still generate drafts locally.
+  path — field tests will still generate drafts locally **and still wait on
+  generation** for uncovered topics.
 - Editorial process (who may publish, versioning, conflict) needs a later ADR
   once the library surface is designed.
 - Risk of over-centralization: personal and experimental content must remain
@@ -154,8 +177,8 @@ the principle is binding for future design.
 ## Alternatives considered
 
 - **Always generate on device with the strongest available model.** Burns
-  quota, produces uneven quality, and re-pays the same cost for every learner.
-  Rejected as the *default* for shared curricula.
+  quota, produces uneven quality, re-pays the same cost for every learner, and
+  keeps import **slow**. Rejected as the *default* for shared curricula.
 - **No human review — trust LLM output.** Too unreliable for school-facing
   material; contradicts the product goal of trustworthy active recall.
 - **Fold this into the ontology ADR.** Confuses graph structure with content
@@ -171,3 +194,4 @@ the principle is binding for future design.
 | Date | State | Note |
 |------|-------|------|
 | 2026-07-25 | Accepted | Product principle: learning content is curated shared value; teacher review once, serve many. Distinct from deferred domain ontology. |
+| 2026-07-25 | Accepted (amended) | Co-equal motivation: central library removes multi-minute device-side generation from learner import — quality *and* speed. |
