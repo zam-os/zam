@@ -18,9 +18,13 @@ import {
   t,
   tf,
 } from "./i18n.js";
-import { initCurriculumWizard } from "./curriculum-wizard.js";
+import {
+  initCurriculumWizard,
+  setCurriculumWizardModelSetup,
+} from "./curriculum-wizard.js";
 import { initMobilePairing } from "./mobile-pairing.js";
 import {
+  deriveOnboardingChecklist,
   initOnboarding,
   type OnboardingAgentOffer,
   type OnboardingCloudProvider,
@@ -458,6 +462,13 @@ function initializeTranslations() {
     t("dashboard_subtitle");
   document.getElementById("lbl-due-reviews")!.textContent = t("lbl_due_reviews");
   document.getElementById("lbl-domains")!.textContent = t("lbl_domains");
+  document.getElementById("lbl-onboarding-checklist-title")!.textContent =
+    t("onboarding_checklist_title");
+  document.getElementById("lbl-onboarding-checklist-note")!.textContent =
+    t("onboarding_checklist_note");
+  // Checklist rows resolve their copy at render time — rebuild them so a
+  // locale switch never leaves stale-language rows (no-op before bootstrap).
+  renderOnboardingChecklist();
   document.getElementById("btn-start-session")!.textContent = t("btn_start_session");
   document.getElementById("btn-open-graph")!.textContent = t("btn_open_graph");
   document.getElementById("btn-open-settings")!.textContent =
@@ -2882,6 +2893,19 @@ let onboardingWorkspaceStructure: OnboardingWorkspaceStructure = {
   missing: [],
   complete: false,
 };
+// Dashboard checklist state (Phase 9). Deck size comes from check-due's
+// stats; the agent probe answers asynchronously. Both stay null until known
+// so the checklist never claims a gap it has not positively established.
+let deckCardCount: number | null = null;
+let agentHarnessConfigured: boolean | null = null;
+// True once desktop-bootstrap has answered — before that the module vars
+// above are placeholders and the checklist must not render from them.
+let dashboardSignalsLoaded = false;
+// "Finish later" disarms the first-run auto-show for the rest of this app
+// session, so the dashboard reload that refreshes the checklist does not
+// bounce the user straight back into the flow (the machine-local gate stays
+// armed for the next start).
+let onboardingDeferredThisSession = false;
 
 function showOnboarding(): void {
   if (!onboardingController) return;
@@ -2894,6 +2918,66 @@ function showOnboardingAt(stepId: string): void {
   if (!onboardingController) return;
   switchView("onboarding-view");
   onboardingController.startAt(stepId);
+}
+
+/**
+ * Dashboard onboarding checklist (ADR 2026-07-24 §7, plan Phase 9): the
+ * remaining setup steps as actionable rows, each reopening the flow at the
+ * page that resolves it. Hidden entirely when nothing remains. Renders from
+ * already-established signals only — see deriveOnboardingChecklist.
+ */
+function renderOnboardingChecklist(): void {
+  const container = document.getElementById("onboarding-checklist");
+  const itemsEl = document.getElementById("onboarding-checklist-items");
+  if (!container || !itemsEl || !dashboardSignalsLoaded) return;
+
+  const items = deriveOnboardingChecklist({
+    aiConnected: isLlmEnabled,
+    agentConfigured: agentHarnessConfigured,
+    workspaceStructure: onboardingWorkspaceStructure,
+    cardsInDeck: deckCardCount,
+  });
+
+  container.classList.toggle("hidden", items.length === 0);
+  itemsEl.replaceChildren();
+  for (const item of items) {
+    const row = document.createElement("button");
+    row.type = "button";
+    row.className = "onboarding-checklist-item";
+    row.dataset.checklistId = item.id;
+
+    const title = document.createElement("span");
+    title.className = "onboarding-checklist-item-title";
+    title.textContent = t(item.titleKey);
+
+    const note = document.createElement("span");
+    note.className = "onboarding-checklist-item-note";
+    note.textContent = t(item.noteKey);
+
+    row.append(title, note);
+    row.addEventListener("click", () => showOnboardingAt(item.step));
+    itemsEl.appendChild(row);
+  }
+}
+
+/**
+ * The one checklist signal bootstrap does not carry: whether any known
+ * harness already has ZAM's MCP entry. Probed asynchronously off the
+ * dashboard's critical path; a failed probe keeps the signal unknown, which
+ * deliberately shows no agent row rather than a possibly-wrong one.
+ */
+async function refreshAgentChecklistSignal(): Promise<void> {
+  try {
+    const res = await runBridge<{
+      harnesses?: Array<{ configured?: boolean }>;
+    }>("agent-harness-status");
+    agentHarnessConfigured = (res.harnesses ?? []).some(
+      (harness) => harness.configured === true,
+    );
+  } catch {
+    agentHarnessConfigured = null;
+  }
+  renderOnboardingChecklist();
 }
 
 function switchView(
@@ -3793,13 +3877,16 @@ async function loadDashboard() {
     onboardingAgentOffers = settings.agentOffers ?? onboardingAgentOffers;
     onboardingWorkspaceStructure =
       settings.workspaceStructure ?? onboardingWorkspaceStructure;
+    dashboardSignalsLoaded = true;
 
     initializeTranslations();
 
     // First-run gate (ADR 2026-07-24): a machine that has not completed the
     // guided flow lands there instead of the empty dashboard. The rest of
-    // loadDashboard still runs so the dashboard is ready behind "finish later".
-    if (settings.onboardingDone === false) {
+    // loadDashboard still runs so the dashboard is ready behind "finish
+    // later" — which disarms this auto-show for the session (Phase 9), so
+    // the reload that refreshes the checklist stays on the dashboard.
+    if (settings.onboardingDone === false && !onboardingDeferredThisSession) {
       showOnboarding();
     }
     void loadWorkspaceList();
@@ -3807,8 +3894,13 @@ async function loadDashboard() {
     runAgentAutoConnectOnce();
 
     // 2. Check due cards count and active domains
-    const dueInfo = await runBridge<{ dueCount: number; domains: string[] }>("check-due");
+    const dueInfo = await runBridge<{
+      dueCount: number;
+      domains: string[];
+      stats?: { cardsInDeck?: number };
+    }>("check-due");
     totalDue = dueInfo.dueCount;
+    deckCardCount = dueInfo.stats?.cardsInDeck ?? null;
 
     const dueCountEl = document.getElementById("due-count")!;
     dueCountEl.textContent = String(totalDue);
@@ -3820,10 +3912,20 @@ async function loadDashboard() {
       caughtUpEl.classList.add("hidden");
       startBtn.disabled = false;
     } else {
-      caughtUpEl.textContent = t("lbl_caught_up");
+      // An empty deck is not "caught up" — say so and point at the checklist
+      // below, which carries the import paths (ADR 2026-07-24 §7: no import →
+      // the dashboard shows the paths rather than an empty state).
+      caughtUpEl.textContent =
+        deckCardCount === 0 ? t("dashboard_empty_no_cards") : t("lbl_caught_up");
       caughtUpEl.classList.remove("hidden");
       startBtn.disabled = true;
     }
+
+    // Remaining-setup checklist (plan Phase 9): render synchronously from
+    // what bootstrap and check-due established, then refresh once the async
+    // agent probe answers.
+    renderOnboardingChecklist();
+    void refreshAgentChecklistSignal();
 
     // Load active domains as badges
     const domainsContainer = document.getElementById("dashboard-domains")!;
@@ -4795,6 +4897,9 @@ window.addEventListener("DOMContentLoaded", () => {
   setupLocaleSwitcher();
   initLearningContentStudio();
   initCurriculumWizard();
+  // Text-LLM-offline in the wizard links back to the onboarding model page
+  // instead of dead-ending in an error (ADR 2026-07-24 §7, plan Phase 9).
+  setCurriculumWizardModelSetup(() => showOnboardingAt("model"));
   initServerDbWizard(() => void loadDatabaseStatus());
   initMobilePairing(() => void loadDatabaseStatus());
   // Goal-driven import stays reachable outside first run (plan Phase 8):
@@ -4827,10 +4932,12 @@ window.addEventListener("DOMContentLoaded", () => {
     },
     onLeave: (reason) => {
       switchView("dashboard-view");
-      // After completion the machine is onboarded, so a reload is safe and
-      // refreshes AI/workspace status; after "finish later" the gate is still
-      // armed, so we show the already-loaded dashboard without reloading.
-      if (reason === "completed") void loadDashboard();
+      // Reload on BOTH paths so the checklist and status badges reflect what
+      // happened inside the flow (Phase 9). "Finish later" first disarms the
+      // session's auto-show gate — the machine-local first-run gate stays
+      // armed for the next start, but this reload must not bounce back.
+      if (reason === "later") onboardingDeferredThisSession = true;
+      void loadDashboard();
     },
   });
 

@@ -4591,6 +4591,26 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "No syllabus? Define a Lernziel on the next page and let ZAM propose the learning path.",
     onboarding_content_goal_action: "Define a goal",
     btn_content_goal_import: "Goal Import",
+    // Dashboard checklist & degraded-mode link-backs (ADR 2026-07-24 §7,
+    // Phase 9).
+    onboarding_checklist_title: "Finish setting up ZAM",
+    onboarding_checklist_note:
+      "Everything below already works — these steps unlock the rest.",
+    onboarding_checklist_model_title: "Connect an AI model",
+    onboarding_checklist_model_note:
+      "Reviews and hand-written cards work without one; AI imports, generated questions and the goal path are waiting on a model.",
+    onboarding_checklist_agent_title: "Connect an agent",
+    onboarding_checklist_agent_note:
+      "The Studio works fully without one — but /zam inside an agent (Claude Code, Copilot, …) stays off until a harness is connected.",
+    onboarding_checklist_workspace_title: "Repair your workspace",
+    onboarding_checklist_workspace_note:
+      "Your working directory is missing parts of its fresh-setup structure (beliefs/, goals/, skills/). Repair recreates only what is missing.",
+    onboarding_checklist_content_title: "Import your first learning content",
+    onboarding_checklist_content_note:
+      "Your deck is empty. Pick an import path — curriculum, your own sources, a project, or a goal.",
+    dashboard_empty_no_cards:
+      "No cards yet — the setup checklist has the import paths.",
+    wizard_connect_model_link: "Connect an AI model",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -5527,6 +5547,26 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Kein Lehrplan? Definiere auf der nächsten Seite ein Lernziel und lass ZAM den Lernweg vorschlagen.",
     onboarding_content_goal_action: "Ziel definieren",
     btn_content_goal_import: "Ziel-Import",
+    // Dashboard checklist & degraded-mode link-backs (ADR 2026-07-24 §7,
+    // Phase 9).
+    onboarding_checklist_title: "Richte ZAM fertig ein",
+    onboarding_checklist_note:
+      "Alles Übrige funktioniert bereits – diese Schritte schalten den Rest frei.",
+    onboarding_checklist_model_title: "KI-Modell verbinden",
+    onboarding_checklist_model_note:
+      "Wiederholungen und selbst geschriebene Karten funktionieren ohne; KI-Importe, generierte Fragen und der Ziel-Weg warten auf ein Modell.",
+    onboarding_checklist_agent_title: "Agenten verbinden",
+    onboarding_checklist_agent_note:
+      "Das Studio funktioniert ohne vollständig – aber /zam in einem Agenten (Claude Code, Copilot, …) bleibt aus, bis ein Agent verbunden ist.",
+    onboarding_checklist_workspace_title: "Arbeitsbereich reparieren",
+    onboarding_checklist_workspace_note:
+      "In deinem Arbeitsverzeichnis fehlen Teile der Grundstruktur (beliefs/, goals/, skills/). Die Reparatur legt nur das Fehlende neu an.",
+    onboarding_checklist_content_title: "Ersten Lernstoff importieren",
+    onboarding_checklist_content_note:
+      "Dein Stapel ist leer. Wähle einen Import-Weg – Lehrplan, eigene Quellen, ein Projekt oder ein Ziel.",
+    dashboard_empty_no_cards:
+      "Noch keine Karten – die Einrichtungsliste führt zu den Import-Wegen.",
+    wizard_connect_model_link: "KI-Modell verbinden",
   },
   // es, fr, pt, zh, ja packs come from TRANSLATION_PACKS above; en/de stay inline here as the reference locales.
   ...TRANSLATION_PACKS,

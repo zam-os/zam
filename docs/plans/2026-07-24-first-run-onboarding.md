@@ -53,7 +53,7 @@ Non-negotiables from the ADR:
   curriculum wizard shell.
 - [x] **Phase 8 — Persona content routing** — page 6 wires each persona to its
   default import path; all paths reachable for all personas.
-- [ ] **Phase 9 — Degraded-mode surfacing** — dashboard onboarding checklist,
+- [x] **Phase 9 — Degraded-mode surfacing** — dashboard onboarding checklist,
   AI-gated entry points link back to their page.
 - [ ] **Phase 10 — Landing page & README rewrite** — desktop-first start; move the
   command-line narrative below the fold.
@@ -324,18 +324,40 @@ opening Learning Content exposes all paths. `read_page` confirms the routing.
 
 Make "finish later" and skipped pages first-class, never dead ends.
 
-- [ ] Dashboard **onboarding checklist**: when steps remain (no model, no agent,
+- [x] Dashboard **onboarding checklist**: when steps remain (no model, no agent,
   no content, workspace missing), the dashboard shows them as actionable items
-  instead of an empty 0-due state.
-- [ ] AI-gated entry points (curriculum wizard, goal import, Observer, semantic
+  instead of an empty 0-due state. *(Descriptor table + pure derivation in
+  onboarding.ts; every signal already existed on the wire — bootstrap
+  `llm.enabled`/`workspaceStructure`, `check-due` `stats.cardsInDeck`,
+  `agent-harness-status` `configured` — no new bridge command. Rows reopen the
+  flow via `startAt`; unknown probes show no row rather than a wrong one. An
+  empty deck also replaces "You're all caught up!" with an honest pointer.
+  "Finish later" now reloads the dashboard behind a session-scoped deferral
+  flag, so the checklist reflects what happened inside the flow without
+  bouncing back into it.)*
+- [x] AI-gated entry points (curriculum wizard, goal import, Observer, semantic
   search) show *what* is missing and link to the relevant page — audit for any
   that currently throw at point of use and convert them to a link-back.
-- [ ] No agent → Studio-only works; `/zam` in a harness does not — stated, not
-  silent.
+  *(Audit result: the curriculum wizard was the one point-of-use dead end —
+  its text-LLM-offline error now carries a "Connect an AI model" link that
+  closes the overlay and opens the flow's model page. Goal import has linked
+  back since Phase 7. The Observer never throws — it states the exact vision
+  gap (disabled / offline / model missing) in its status line, and vision is
+  a separate consent gate outside page 3 by design. Semantic search degrades
+  to lexical ranking inside the kernel and has no failing desktop entry
+  point; study-view dynamic questions fall back to template prompts, the
+  designed non-AI core path.)*
+- [x] No agent → Studio-only works; `/zam` in a harness does not — stated, not
+  silent. *(Stated verbatim on the checklist's agent row, complementing the
+  agent page's per-harness consequence copy from Phase 4.)*
 
 **Verification:** with each capability missing in turn, the app is usable and the
 dashboard/entry points guide the user back to the right page; no unhandled errors
-in `read_console_messages`. `npm run test` + `npm run lint`.
+in `read_console_messages`. `npm run test` + `npm run lint`. *(Preview-verified
+with a mocked bridge: fully degraded install shows all four rows in order and
+row-click lands on the right flow page; gate-armed + deferred reload stays on
+the dashboard; all-done hides the card entirely; single-gap German case renders
+only its row; wizard error link-back walked end-to-end.)*
 
 ## Phase 10 — Landing page & README rewrite
 

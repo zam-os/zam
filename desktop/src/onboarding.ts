@@ -142,11 +142,12 @@ export interface OnboardingController {
 
 interface OnboardingDeps {
   /**
-   * Return to the dashboard. `reason` lets the caller reload only when it is
-   * safe: after "completed" the machine is marked onboarded (a dashboard reload
-   * will not re-trigger the first-run gate); after "later" the gate is still
-   * armed, so the caller must show the already-rendered dashboard without
-   * reloading, or it would bounce straight back into the flow.
+   * Return to the dashboard. `reason` tells the caller why: "completed" marks
+   * the machine onboarded, "later" defers with the first-run gate still
+   * armed. Since plan Phase 9 the caller reloads the dashboard in BOTH cases
+   * (so the onboarding checklist reflects what happened inside the flow) and
+   * must therefore disarm its auto-show gate for the session on "later", or
+   * the reload would bounce straight back into the flow.
    */
   onLeave(reason: "completed" | "later"): void;
   /** Live step data (personas, persisted selection), read at start() time. */
@@ -247,6 +248,94 @@ export function orderContentPaths(
     preferred,
     ...CONTENT_PATHS.filter((path) => path.id !== defaultId),
   ];
+}
+
+// ── Dashboard onboarding checklist (ADR 2026-07-24 §7, plan Phase 9) ────────
+
+/**
+ * One remaining-setup row the dashboard can show. Every row links back to the
+ * onboarding page that resolves it — the checklist is the flow's "finish
+ * later" made first-class, never a nag it cannot act on.
+ */
+export interface OnboardingChecklistDescriptor {
+  id: "model" | "agent" | "workspace" | "content";
+  /** Flow step id the row reopens via startAt(). */
+  step: string;
+  titleKey: string;
+  noteKey: string;
+}
+
+/**
+ * The full descriptor table, in dashboard display order. The notes carry the
+ * honest consequence of each gap (ADR §7: degraded modes are explicit) — the
+ * agent row is where "no agent → Studio-only works, `/zam` does not" is
+ * stated rather than left silent.
+ */
+export const ONBOARDING_CHECKLIST_ITEMS: readonly OnboardingChecklistDescriptor[] =
+  [
+    {
+      id: "model",
+      step: "model",
+      titleKey: "onboarding_checklist_model_title",
+      noteKey: "onboarding_checklist_model_note",
+    },
+    {
+      id: "agent",
+      step: "agent",
+      titleKey: "onboarding_checklist_agent_title",
+      noteKey: "onboarding_checklist_agent_note",
+    },
+    {
+      id: "workspace",
+      step: "workspace",
+      titleKey: "onboarding_checklist_workspace_title",
+      noteKey: "onboarding_checklist_workspace_note",
+    },
+    {
+      id: "content",
+      step: "content",
+      titleKey: "onboarding_checklist_content_title",
+      noteKey: "onboarding_checklist_content_note",
+    },
+  ];
+
+/** Live signals the dashboard already has (bootstrap + check-due + probe). */
+export interface OnboardingChecklistState {
+  /** A text LLM is enabled (bootstrap `llm.enabled`). */
+  aiConnected: boolean;
+  /**
+   * Some known harness carries ZAM's MCP entry (`agent-harness-status`);
+   * null while the probe has not answered — unknown never shows the row.
+   */
+  agentConfigured: boolean | null;
+  /** Active workspace's fresh-setup structure, from bootstrap. */
+  workspaceStructure: OnboardingWorkspaceStructure | null;
+  /** Total cards in the user's deck (`check-due` stats); null while unknown. */
+  cardsInDeck: number | null;
+}
+
+/**
+ * The rows that still apply — an empty result hides the checklist entirely.
+ * Unknown signals (null) are treated as "no row": the checklist only ever
+ * claims what the probes have positively established.
+ */
+export function deriveOnboardingChecklist(
+  state: OnboardingChecklistState,
+): readonly OnboardingChecklistDescriptor[] {
+  return ONBOARDING_CHECKLIST_ITEMS.filter((item) => {
+    switch (item.id) {
+      case "model":
+        return !state.aiConnected;
+      case "agent":
+        return state.agentConfigured === false;
+      case "workspace":
+        return state.workspaceStructure !== null
+          ? !state.workspaceStructure.complete
+          : false;
+      case "content":
+        return state.cardsInDeck === 0;
+    }
+  });
 }
 
 export function buildOnboardingSteps(

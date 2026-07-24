@@ -3,7 +3,10 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { TRANSLATION_PACKS } from "../../desktop/src/i18n.js";
 import { AGENT_OFFERS } from "../../src/cli/agent-offers.js";
-import { CONTENT_PATHS } from "../../desktop/src/onboarding.js";
+import {
+  CONTENT_PATHS,
+  ONBOARDING_CHECKLIST_ITEMS,
+} from "../../desktop/src/onboarding.js";
 import { PERSONA_DESCRIPTORS } from "../../src/kernel/index.js";
 
 const ISSUE_97_KEYS = [
@@ -388,6 +391,10 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "onboarding_content_body",
   "onboarding_content_recommended",
   "btn_content_goal_import",
+  "onboarding_checklist_title",
+  "onboarding_checklist_note",
+  "dashboard_empty_no_cards",
+  "wizard_connect_model_link",
 ]);
 
 /**
@@ -519,6 +526,10 @@ describe("desktop locale completeness", () => {
         path.labelKey,
         path.bodyKey,
         path.actionLabelKey,
+      ]),
+      ...ONBOARDING_CHECKLIST_ITEMS.flatMap((item) => [
+        item.titleKey,
+        item.noteKey,
       ]),
     ];
     for (const key of keys) {

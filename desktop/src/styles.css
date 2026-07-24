@@ -3252,3 +3252,64 @@ textarea::placeholder {
   font-weight: 600;
   cursor: pointer;
 }
+
+/* Dashboard onboarding checklist (ADR 2026-07-24 §7, plan Phase 9) */
+.onboarding-checklist {
+  margin-bottom: 24px;
+}
+
+.onboarding-checklist .sub-label {
+  margin-top: 4px;
+}
+
+.onboarding-checklist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.onboarding-checklist-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 10px 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  background: var(--bg-field);
+  color: var(--clr-text-primary);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.onboarding-checklist-item:hover {
+  border-color: var(--clr-accent-cyan);
+}
+
+.onboarding-checklist-item-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.onboarding-checklist-item-title::after {
+  content: " →";
+  color: var(--clr-accent-cyan);
+}
+
+.onboarding-checklist-item-note {
+  font-size: 12.5px;
+  color: var(--clr-text-secondary);
+}
+
+/* Text-LLM-offline link-back inside the curriculum wizard error (Phase 9) */
+.wizard-error .wizard-error-model-link {
+  display: block;
+  margin: 12px auto 0;
+}
+
+.wizard-error span {
+  white-space: pre-line;
+}
