@@ -10,7 +10,6 @@
  * 5. Sets up the local database and configuration.
  */
 
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 import { confirm, input, password, select } from "@inquirer/prompts";
@@ -32,7 +31,11 @@ import {
 } from "../../kernel/index.js";
 import { connectCloudProvider } from "../llm/cloud-connect.js";
 import { OPENROUTER_PROVIDER } from "../llm/cloud-providers.js";
-import { parseSetupAgents, wireSkills } from "../provisioning/index.js";
+import {
+  ensureWorkspaceStructure,
+  parseSetupAgents,
+  wireSkills,
+} from "../provisioning/index.js";
 
 const HOME = homedir();
 
@@ -43,43 +46,9 @@ function printLine(char = "═", len = 60, color = "\x1b[36m") {
   console.log(`${color}${char.repeat(len)}\x1b[0m`);
 }
 
-/**
- * Bootstrap the default "Local Sandbox" workspace structure.
- */
-function bootstrapSandboxWorkspace(workspaceDir: string) {
-  mkdirSync(join(workspaceDir, "beliefs"), { recursive: true });
-  mkdirSync(join(workspaceDir, "goals"), { recursive: true });
-  mkdirSync(join(workspaceDir, "skills"), { recursive: true });
-
-  const worldviewFile = join(workspaceDir, "beliefs", "worldview.md");
-  if (!existsSync(worldviewFile)) {
-    writeFileSync(
-      worldviewFile,
-      `# Personal Worldview
-
-Here, I declare the core concepts and principles I want to master.
-
-- **Conceptual Autonomy**: I value deep conceptual understanding over copy-pasting rote procedures.
-- **Continuous Retention**: I use spaced repetition to prevent my professional skills from decaying.
-`,
-      "utf8",
-    );
-  }
-
-  const goalsFile = join(workspaceDir, "goals", "goals.md");
-  if (!existsSync(goalsFile)) {
-    writeFileSync(
-      goalsFile,
-      `# Personal Goals
-
-- **[ ] Learn Spaced Repetition Core Concepts**
-  - #fsrs-stability
-  - #fsrs-difficulty
-`,
-      "utf8",
-    );
-  }
-}
+// The fresh-setup structure lives in the provisioning layer
+// (`ensureWorkspaceStructure`, plan Phase 6) so this wizard, the desktop
+// onboarding page, and the Studio repair action share one additive writer.
 
 export const initCommand = new Command("init")
   .description("Launch the guided interactive onboarding wizard")
@@ -105,7 +74,7 @@ export const initCommand = new Command("init")
     );
 
     try {
-      bootstrapSandboxWorkspace(workspacePath);
+      ensureWorkspaceStructure(workspacePath);
       wireSkills(workspacePath, parseSetupAgents());
       upsertConfiguredWorkspace({
         id: "personal",

@@ -349,6 +349,17 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "onboarding_agent_offers_caveat",
   "onboarding_agent_install",
   "onboarding_agent_check_again",
+  "onboarding_workspace_title",
+  "onboarding_workspace_body",
+  "onboarding_workspace_complete",
+  "onboarding_workspace_incomplete",
+  "onboarding_workspace_repair",
+  "onboarding_workspace_repairing",
+  "onboarding_workspace_repaired",
+  "onboarding_workspace_error",
+  "workspace_structure_missing",
+  "workspace_structure_incomplete",
+  "workspace_repair_structure",
 ]);
 
 /**
@@ -463,6 +474,7 @@ describe("desktop locale completeness", () => {
       "onboarding_persona_kicker",
       "onboarding_model_kicker",
       "onboarding_agent_kicker",
+      "onboarding_workspace_kicker",
       "onboarding_done_kicker",
       ...PERSONA_DESCRIPTORS.flatMap((persona) => [
         persona.labelKey,

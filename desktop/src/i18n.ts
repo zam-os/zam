@@ -4522,6 +4522,22 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Open source and MCP-native; reachable from chat apps (Telegram, Signal, WhatsApp, …) — review cards away from your desk.",
     onboarding_agent_hermes_consequence:
       "Heaviest setup of the four: runs its own gateway daemon, which you start and manage yourself.",
+    // Workspace page (ADR 2026-07-24 §4, Phase 6).
+    onboarding_workspace_kicker: "Your workspace",
+    onboarding_workspace_title: "A plain folder, never precious.",
+    onboarding_workspace_body:
+      "Your workspace holds beliefs, goals, and skills as plain files — this is where ZAM and your agent work. Your learning database lives in ~/.zam, outside this folder: deleting the folder never loses your cards. Source control is optional and can come later.",
+    onboarding_workspace_complete: "Everything is in place.",
+    onboarding_workspace_incomplete:
+      "{count} missing piece(s) — create them with one click; nothing existing is touched.",
+    onboarding_workspace_repair: "Create / repair",
+    onboarding_workspace_repairing: "Repairing…",
+    onboarding_workspace_repaired:
+      "Workspace complete — nothing of yours was touched.",
+    onboarding_workspace_error: "Repair failed: {message}",
+    workspace_structure_missing: "folder missing",
+    workspace_structure_incomplete: "incomplete",
+    workspace_repair_structure: "Repair workspace",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -5389,6 +5405,22 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Open Source und MCP-nativ; erreichbar aus Chat-Apps (Telegram, Signal, WhatsApp, …) – wiederhole Karten fernab vom Schreibtisch.",
     onboarding_agent_hermes_consequence:
       "Aufwendigste Einrichtung der vier: betreibt einen eigenen Gateway-Dienst, den du selbst startest und verwaltest.",
+    // Workspace page (ADR 2026-07-24 §4, Phase 6).
+    onboarding_workspace_kicker: "Dein Arbeitsbereich",
+    onboarding_workspace_title: "Ein einfacher Ordner, nichts Kostbares.",
+    onboarding_workspace_body:
+      "Dein Arbeitsbereich enthält Überzeugungen, Ziele und Skills als einfache Dateien – hier arbeiten ZAM und dein Agent. Deine Lerndatenbank liegt in ~/.zam, außerhalb dieses Ordners: Den Ordner zu löschen kostet dich nie deine Karten. Versionsverwaltung ist optional und kann später kommen.",
+    onboarding_workspace_complete: "Alles ist an seinem Platz.",
+    onboarding_workspace_incomplete:
+      "{count} fehlende Teile – mit einem Klick anlegen; Bestehendes bleibt unangetastet.",
+    onboarding_workspace_repair: "Anlegen / reparieren",
+    onboarding_workspace_repairing: "Wird repariert …",
+    onboarding_workspace_repaired:
+      "Arbeitsbereich vollständig – nichts von dir wurde angetastet.",
+    onboarding_workspace_error: "Reparatur fehlgeschlagen: {message}",
+    workspace_structure_missing: "Ordner fehlt",
+    workspace_structure_incomplete: "unvollständig",
+    workspace_repair_structure: "Arbeitsbereich reparieren",
   },
   // es, fr, pt, zh, ja packs come from TRANSLATION_PACKS above; en/de stay inline here as the reference locales.
   ...TRANSLATION_PACKS,

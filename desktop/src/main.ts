@@ -27,6 +27,7 @@ import {
   type OnboardingController,
   type OnboardingEmbeddingStatus,
   type OnboardingPersona,
+  type OnboardingWorkspaceStructure,
 } from "./onboarding.js";
 import { initServerDbWizard } from "./server-db.js";
 import {
@@ -189,6 +190,7 @@ interface WorkspaceListResponse {
   defaultWorkspaceDir: string;
   dataDir: string;
   linkHealth?: Record<string, WorkspaceLinkHealth>;
+  structure?: Record<string, OnboardingWorkspaceStructure>;
 }
 
 interface BridgeCard {
@@ -997,6 +999,19 @@ function renderWorkspaceList(info: WorkspaceListResponse): void {
             : t("workspace_link_broken");
       titleRow.appendChild(linkBadge);
     }
+    // Missing-workspace state (ADR 2026-07-24 §4): a registered path whose
+    // directory vanished — or lost parts of the fresh-setup structure — shows
+    // a repairable badge here instead of failing at the point of use.
+    const structure = info.structure?.[workspace.id];
+    const structureBroken = structure ? !structure.complete : false;
+    if (structureBroken) {
+      const structureBadge = document.createElement("span");
+      structureBadge.className = "workspace-badge workspace-link-badge warn";
+      structureBadge.textContent = structure?.dirExists
+        ? t("workspace_structure_incomplete")
+        : t("workspace_structure_missing");
+      titleRow.appendChild(structureBadge);
+    }
 
     const path = document.createElement("code");
     path.textContent = workspace.path;
@@ -1010,7 +1025,18 @@ function renderWorkspaceList(info: WorkspaceListResponse): void {
     const actions = document.createElement("div");
     actions.className = "workspace-actions";
 
-    if (health === "needs-repair" || health === "unmanaged") {
+    if (structureBroken) {
+      // Structure repair recreates the directory and missing pieces additively
+      // (and force-relinks skills), so it supersedes the link-only repair.
+      const repairButton = document.createElement("button");
+      repairButton.className = "btn warn-btn btn-sm";
+      repairButton.type = "button";
+      repairButton.textContent = t("workspace_repair_structure");
+      repairButton.addEventListener("click", () => {
+        void repairWorkspaceStructure(workspace);
+      });
+      actions.appendChild(repairButton);
+    } else if (health === "needs-repair" || health === "unmanaged") {
       const repairButton = document.createElement("button");
       repairButton.className = "btn warn-btn btn-sm";
       repairButton.type = "button";
@@ -1110,6 +1136,32 @@ async function removeWorkspace(workspace: WorkspaceConfig): Promise<void> {
   } catch (err) {
     if (status) {
       status.textContent = tf("workspace_remove_failed", {
+        message: errorMessage(err),
+      });
+    }
+  }
+}
+
+/**
+ * Structure repair (ADR 2026-07-24 §4): recreate a vanished directory and the
+ * missing fresh-setup pieces additively, re-link skills. Never overwrites a
+ * user-authored file, so no confirmation is needed.
+ */
+async function repairWorkspaceStructure(
+  workspace: WorkspaceConfig,
+): Promise<void> {
+  const label = workspace.label || workspace.id;
+  const status = document.getElementById("setup-status");
+  if (status) status.textContent = t("workspace_repairing");
+  try {
+    await runBridge("workspace-repair", ["--id", workspace.id]);
+    await loadWorkspaceList();
+    if (status) {
+      status.textContent = tf("workspace_repaired", { label });
+    }
+  } catch (err) {
+    if (status) {
+      status.textContent = tf("workspace_repair_failed", {
         message: errorMessage(err),
       });
     }
@@ -2821,6 +2873,12 @@ let onboardingEmbedding: OnboardingEmbeddingStatus = {
 // Agent offers for the no-harness branch (Phase 4); detection itself is
 // probed live by the agent page, not carried in bootstrap.
 let onboardingAgentOffers: OnboardingAgentOffer[] = [];
+// Active-workspace structure for the workspace page (Phase 6).
+let onboardingWorkspaceStructure: OnboardingWorkspaceStructure = {
+  dirExists: false,
+  missing: [],
+  complete: false,
+};
 
 function showOnboarding(): void {
   if (!onboardingController) return;
@@ -3708,6 +3766,7 @@ async function loadDashboard() {
       localAiCapable?: boolean;
       embedding?: OnboardingEmbeddingStatus;
       agentOffers?: OnboardingAgentOffer[];
+      workspaceStructure?: OnboardingWorkspaceStructure;
     }>("desktop-bootstrap");
     desktopUserId = settings.userId;
     setCurrentLocale(settings.locale || "en");
@@ -3722,6 +3781,8 @@ async function loadDashboard() {
       settings.localAiCapable ?? onboardingLocalAiCapable;
     onboardingEmbedding = settings.embedding ?? onboardingEmbedding;
     onboardingAgentOffers = settings.agentOffers ?? onboardingAgentOffers;
+    onboardingWorkspaceStructure =
+      settings.workspaceStructure ?? onboardingWorkspaceStructure;
 
     initializeTranslations();
 
@@ -4735,6 +4796,9 @@ window.addEventListener("DOMContentLoaded", () => {
       aiConnected: isLlmEnabled,
       embedding: onboardingEmbedding,
       agentOffers: onboardingAgentOffers,
+      workspaceDir: activeWorkspaceDir ?? "",
+      activeWorkspaceId: activeWorkspaceId ?? "",
+      workspaceStructure: onboardingWorkspaceStructure,
     }),
     openExternal: (url) => void openUrl(url),
     onLeave: (reason) => {

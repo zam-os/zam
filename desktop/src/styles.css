@@ -3189,3 +3189,15 @@ textarea::placeholder {
   font-size: 13px;
   color: var(--clr-text-muted);
 }
+
+/* Workspace page (ADR 2026-07-24 §4, Phase 6) */
+.onboarding-workspace-path {
+  display: block;
+  padding: 8px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: var(--bg-field);
+  color: var(--clr-text-secondary);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}

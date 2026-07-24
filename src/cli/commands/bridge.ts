@@ -7,7 +7,13 @@
 
 import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
-import { existsSync, readdirSync, readFileSync, rmSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+} from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { Command } from "commander";
@@ -222,7 +228,9 @@ import {
   writeScopedRoles,
 } from "../providers/config.js";
 import {
+  ensureWorkspaceStructure,
   inspectSkillLinks,
+  inspectWorkspaceStructure,
   parseSetupAgents,
   type SkillLinkHealth,
   type SkillLinkState,
@@ -584,7 +592,59 @@ bridgeCommand
         defaultWorkspaceDir: defaultWorkspaceDir(),
         dataDir: join(homedir(), ".zam"),
         linkHealth: buildWorkspaceLinkHealth(workspaces),
+        // Structure health (plan Phase 6) — reported for EVERY workspace,
+        // including those whose directory is gone: a registered path that
+        // vanished must surface as a repairable state in the Studio instead
+        // of being silently omitted (ADR 2026-07-24 §4).
+        structure: Object.fromEntries(
+          workspaces.map((workspace) => [
+            workspace.id,
+            inspectWorkspaceStructure(workspace.path),
+          ]),
+        ),
       });
+    });
+  });
+
+// ── zam bridge workspace-repair ──────────────────────────────────────────────
+
+bridgeCommand
+  .command("workspace-repair")
+  .description(
+    "Create or repair a configured workspace additively (JSON): recreate the " +
+      "directory and fresh-setup structure that is missing, re-link skills; " +
+      "never overwrite or delete a user-authored file (ADR 2026-07-24 §4).",
+  )
+  .requiredOption("--id <id>", "Workspace id")
+  .action((opts: { id: string }) => {
+    const id = String(opts.id ?? "").trim();
+    if (!id) jsonError("A non-empty --id is required");
+    const workspace = getConfiguredWorkspaces().find((item) => item.id === id);
+    if (!workspace) jsonError(`Workspace "${id}" is not configured`);
+
+    // Unlike workspace-repair-links, a missing directory is not an error —
+    // recreating regenerable infrastructure is exactly this command's job.
+    mkdirSync(workspace.path, { recursive: true });
+    const report = ensureWorkspaceStructure(workspace.path);
+    const agents = parseSetupAgents();
+    const skillLinks = wireSkills(workspace.path, agents, {
+      force: true,
+      quiet: true,
+    });
+    const links = inspectSkillLinks(workspace.path, agents);
+    jsonOut({
+      ok: true,
+      workspace,
+      created: report.created,
+      preserved: report.preserved,
+      skillLinks,
+      structure: inspectWorkspaceStructure(workspace.path),
+      linkHealth: {
+        health: summarizeSkillLinkHealth(links),
+        states: Object.fromEntries(
+          links.map((link) => [link.agents.join("+"), link.state]),
+        ),
+      },
     });
   });
 
@@ -3278,6 +3338,9 @@ bridgeCommand
         // no-harness branch. Harness *detection* is deliberately not here —
         // the page probes it live via agent-harness-status when it opens.
         agentOffers: AGENT_OFFERS,
+        // Workspace page state (Phase 6): the active workspace's fresh-setup
+        // structure, so the page can offer create/repair honestly.
+        workspaceStructure: inspectWorkspaceStructure(workspaceDir),
       });
     });
   });

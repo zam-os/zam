@@ -47,7 +47,7 @@ Non-negotiables from the ADR:
   `inspectConnectHarnesses`; Goose / OpenCode / Copilot descriptors.
 - [x] **Phase 5 — Hermes harness adapter** — net-new `hermes` connect target
   (`~/.hermes/config.yaml`, daemon detection).
-- [ ] **Phase 6 — Workspace create/repair** — additive repair, missing-workspace
+- [x] **Phase 6 — Workspace create/repair** — additive repair, missing-workspace
   state in Studio, shared with `zam init`.
 - [ ] **Phase 7 — Goal-driven import** — `Lernziel` as an import path reusing the
   curriculum wizard shell.
@@ -246,18 +246,20 @@ Hermes, status is an honest "not installed". Unit test for the YAML writer.
 
 The default personal directory is regenerable infrastructure, not precious.
 
-- [ ] A **"create or repair the personal workspace"** step for the configured path
+- [x] A **"create or repair the personal workspace"** step for the configured path
   producing the fresh-setup structure (`beliefs/`, `goals/`, `skills/`, seed files,
-  wired skill links) — reuse `bootstrapSandboxWorkspace` + `wireSkills` from
-  `init.ts`. Extract to the provisioning layer so the wizard and `zam init` call
-  the same code.
-- [ ] **Additive only:** create what is missing, re-link skills; never overwrite or
+  wired skill links) — extracted to the provisioning layer
+  (`src/cli/provisioning/workspace-structure.ts`); `zam init`, the onboarding
+  workspace page, and the new `workspace-repair` bridge command call the same
+  code.
+- [x] **Additive only:** create what is missing, re-link skills; never overwrite or
   delete a user-authored file. "Fresh setup" on an existing directory means
-  *complete*, not *reset*.
-- [ ] **Missing-workspace state in Studio:** when a workspace is registered
-  (`~/.zam/config.json`) but its directory is gone, `renderWorkspaceList`
-  (`desktop/src/main.ts`) shows a repair action instead of failing at point of use.
-- [ ] Reassure in copy that the DB (`~/.zam/zam.db`) is outside the workspace —
+  *complete*, not *reset*. (Unit-tested: idempotent, user-edited seeds preserved.)
+- [x] **Missing-workspace state in Studio:** `workspace-list` now reports
+  structure health for EVERY workspace — including those whose directory is gone
+  (previously omitted) — and `renderWorkspaceList` shows a "folder missing" /
+  "incomplete" badge with a repair action instead of failing at point of use.
+- [x] Reassure in copy that the DB (`~/.zam/zam.db`) is outside the workspace —
   deleting the directory never loses cards. Source control stays out of first run.
 
 **Verification:** delete the workspace directory → Studio shows the missing state →

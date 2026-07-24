@@ -11,6 +11,13 @@ import {
 import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+export {
+  ensureWorkspaceStructure,
+  inspectWorkspaceStructure,
+  type WorkspaceStructureReport,
+  type WorkspaceStructureStatus,
+} from "./workspace-structure.js";
+
 // The bundled CLI resolves from dist/cli/index.js; source tests resolve from
 // src/cli/provisioning/index.ts. Select the first candidate containing package.json.
 const packageRoot =

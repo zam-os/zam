@@ -98,6 +98,13 @@ export interface OnboardingAgentHarness {
   configured: boolean;
 }
 
+/** Fresh-setup structure state of a workspace (plan Phase 6). */
+export interface OnboardingWorkspaceStructure {
+  dirExists: boolean;
+  missing: string[];
+  complete: boolean;
+}
+
 export interface OnboardingStepContext {
   /** Persona cards to offer; empty until desktop-bootstrap has answered. */
   personas: OnboardingPersona[];
@@ -113,6 +120,11 @@ export interface OnboardingStepContext {
   embedding: OnboardingEmbeddingStatus;
   /** Harness offers for the agent page's no-agent branch. */
   agentOffers: OnboardingAgentOffer[];
+  /** Active workspace path + id, from desktop-bootstrap. */
+  workspaceDir: string;
+  activeWorkspaceId: string;
+  /** Fresh-setup structure state of the active workspace. */
+  workspaceStructure: OnboardingWorkspaceStructure;
 }
 
 /** Ollama download page, opened externally when the runtime is missing. */
@@ -168,6 +180,8 @@ export function buildOnboardingSteps(
   // Same memo for the embedding enhancement: updated from each
   // embedding-enable response so re-renders stay truthful.
   let embeddingStatus = ctx.embedding;
+  // Workspace structure memo, refreshed from each workspace-repair response.
+  let workspaceStructure = ctx.workspaceStructure;
   // Agent page detection state, probed lazily on first render (detection
   // reads real config files, so it does not ride desktop-bootstrap) and kept
   // across Back/forward re-renders. `report: null` + `error: null` = probing.
@@ -286,6 +300,75 @@ export function buildOnboardingSteps(
         root.className = "onboarding-agent";
         container.append(root);
         renderAgentArea(root, ctx.agentOffers, actions, agentState);
+      },
+    },
+    {
+      id: "workspace",
+      titleKey: "onboarding_workspace_kicker",
+      // Not skippable (ADR page table): the page only confirms or repairs a
+      // plain folder — there is nothing costly to opt out of.
+      skippable: false,
+      render(container) {
+        container.append(
+          heading(t("onboarding_workspace_title")),
+          paragraph(t("onboarding_workspace_body")),
+        );
+        const path = document.createElement("code");
+        path.className = "onboarding-workspace-path";
+        path.textContent = ctx.workspaceDir;
+        container.append(path);
+
+        const controls = document.createElement("div");
+        controls.className = "onboarding-model-links";
+        const repairBtn = document.createElement("button");
+        repairBtn.type = "button";
+        repairBtn.className = "btn secondary-btn btn-sm";
+        repairBtn.textContent = t("onboarding_workspace_repair");
+        controls.append(repairBtn);
+
+        const status = document.createElement("p");
+        status.className = "onboarding-model-status";
+        status.setAttribute("aria-live", "polite");
+
+        function reflect(): void {
+          const complete = workspaceStructure.complete;
+          repairBtn.classList.toggle("hidden", complete);
+          status.classList.toggle("ok", complete);
+          status.textContent = complete
+            ? t("onboarding_workspace_complete")
+            : t("onboarding_workspace_incomplete").replace(
+                "{count}",
+                String(workspaceStructure.missing.length),
+              );
+        }
+        reflect();
+
+        repairBtn.addEventListener("click", () => {
+          void (async () => {
+            repairBtn.disabled = true;
+            status.classList.remove("ok");
+            status.textContent = t("onboarding_workspace_repairing");
+            try {
+              const result = await runBridge<{
+                structure?: OnboardingWorkspaceStructure;
+              }>("workspace-repair", ["--id", ctx.activeWorkspaceId]);
+              if (result.structure) workspaceStructure = result.structure;
+              reflect();
+              if (workspaceStructure.complete) {
+                status.textContent = t("onboarding_workspace_repaired");
+              }
+            } catch (err) {
+              status.textContent = t("onboarding_workspace_error").replace(
+                "{message}",
+                bridgeErrorMessage(err),
+              );
+            } finally {
+              repairBtn.disabled = false;
+            }
+          })();
+        });
+
+        container.append(controls, status);
       },
     },
     {
