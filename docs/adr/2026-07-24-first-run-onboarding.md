@@ -172,7 +172,7 @@ explain (decided 2026-07-24):**
    endpoints. ZAM sends **both on every request** and makes "my data is not trained
    on and not kept" a guarantee we enforce, not a promise about someone else's
    dashboard.
-2. **Bounded cost from a tiny prepaid start.** Prepaid credits plus a per-key spend
+2. **Bounded cost from a small prepaid start.** Prepaid credits plus a per-key spend
    cap (`limit` + `limit_reset`) let a user cap themselves at ~€1/day, so a bad
    model choice cannot produce a surprise bill.
 
@@ -181,11 +181,13 @@ also offer `:free` variants is dropped. It fought the privacy default at the
 routing layer — `data_collection: "deny"` + `zdr: true` route around exactly the
 `:free` endpoints, since those log in exchange for being free — and forced the page
 to explain a free/private either-or that most of the target audience should never
-have to reason about. Instead the story is one sentence: **start with €1 prepaid;
-your data stays private.** €1 is deliberately small, and with `xiaomi/mimo-v2.5`
-(below) it should comfortably cover a first week of real use — enough to decide
-whether to top up further. There is no zero-payment path, and that is the point: it
-removes a whole branch of explanation and a data-retention footgun.
+have to reason about. Instead the story is one sentence: **start with $5 prepaid;
+your data stays private.** $5 is OpenRouter's real minimum credit purchase per
+transaction (terms, verified 2026-07-24; a 5.5% / $0.80-minimum purchase fee
+applies on top), and with `xiaomi/mimo-v2.5` (below) it comfortably covers weeks
+of real use — more than enough to decide whether to top up further. There is no
+zero-payment path, and that is the point: it removes a whole branch of
+explanation and a data-retention footgun.
 
 **Default start model: `xiaomi/mimo-v2.5`** — multimodal (text, image, audio,
 video input) at $0.14 / $0.28 per million tokens (verified 2026-07-24), i.e. one
@@ -195,7 +197,7 @@ through the existing unified capability registry (ADR 2026-07-12) as a cloud
 entry with `text` + `image` capabilities — no new storage concept.
 
 Flow: choose OpenRouter → explain the two points above → user creates the account,
-**adds ~€1 prepaid**, and creates the key **on openrouter.ai themselves** (ZAM
+**adds the $5 minimum prepaid credit**, and creates the key **on openrouter.ai themselves** (ZAM
 deep-links to the key page, the credits page, and the privacy settings page; ZAM
 never creates accounts, adds credit, or creates keys) → paste key → probe
 (`capability-probe.ts`) → register `xiaomi/mimo-v2.5` → green AI status.
@@ -267,7 +269,7 @@ runs idempotently. No installation is proposed to someone who already has one.
 
 The two "free" strengths here (Copilot quota, OpenCode Zen) are on the **agent
 axis, not the model axis** — they fund running the `/zam` conversation, not ZAM's
-own AI roles (page 3), which stay OpenRouter + €1 prepaid with enforced privacy. The
+own AI roles (page 3), which stay OpenRouter + $5 prepaid with enforced privacy. The
 caveat: a harness running a free promotional model routes the learner's study
 content through *that* model's data policy, which ZAM cannot enforce `deny`/`zdr`
 on. So the page notes that "free agent" and "private" are, again, a trade — but this
@@ -322,14 +324,14 @@ Any skipped page leaves the app **usable and honest**:
   (mobile). Embeddings stay optional and degrade to lexical search, so this never
   blocks first run — but the "semantic search" feature is gated on a local install
   the cloud-chat user would not otherwise need.
-- **The €1 prepaid start and the spend cap are set in the OpenRouter dashboard**,
+- **The $5 prepaid start and the spend cap are set in the OpenRouter dashboard**,
   not by ZAM. The wizard can only instruct and deep-link; it cannot add credit or
   enforce a €1/day cap on the user's behalf (nor should it — that is money movement,
   which stays the user's own action).
 - **No zero-payment on-ramp.** Dropping the free tier means every new user must add
-  ~€1 of prepaid credit before the AI paths work. That is a real, if small, hurdle
-  for the "just let me try it" visitor — accepted deliberately in exchange for a
-  one-sentence privacy story and no data-retention footgun.
+  $5 (~€5) of prepaid credit before the AI paths work. That is a real, if small,
+  hurdle for the "just let me try it" visitor — accepted deliberately in exchange
+  for a one-sentence privacy story and no data-retention footgun.
 - Two front-ends (`zam init` and the Studio wizard) must not drift — shared steps
   belong in the kernel/provisioning layer with the CLI and the wizard as thin
   callers.
@@ -349,9 +351,13 @@ Any skipped page leaves the app **usable and honest**:
 
 ## Resolved (2026-07-24)
 
-- **No free tier; €1 prepaid minimum (§5).** The free-model option is dropped
-  entirely to keep the story one sentence — "start with €1 prepaid; your data stays
+- **No free tier; prepaid minimum (§5).** The free-model option is dropped
+  entirely to keep the story one sentence — "start with $5 prepaid; your data stays
   private" — with `data_collection: "deny"` + `zdr: true` enforced on every request.
+- **Minimum top-up is $5, not €1 (former open question 6).** OpenRouter's terms
+  set a $5 minimum credit purchase per transaction (verified 2026-07-24), plus a
+  5.5% / $0.80-minimum purchase fee. All copy states $5; the "€1" working figure
+  was wrong.
 - **Embedding role (§5a).** Local-only, canonical `embeddinggemma-300m`: Ollama on
   desktop, on-device runtime on mobile. No cloud embedding provider (DeepInfra
   option dropped). Optional enhancement, off the required first-run path; same
@@ -379,9 +385,6 @@ Any skipped page leaves the app **usable and honest**:
    Mobile? The Android shell is a Tauri 2 kernel-in-WebView (ADR 2026-07-21) with no
    Ollama; the concrete inference path is unverified and its own follow-on. Until it
    ships, mobile semantic search simply stays on lexical fallback.
-6. **OpenRouter minimum top-up.** The "~€1 prepaid" story assumes OpenRouter's
-   minimum credit purchase is that low; the docs did not state a figure. Verify
-   against OpenRouter's credits page before the copy commits to "€1".
 
 ---
 
@@ -392,7 +395,7 @@ Any skipped page leaves the app **usable and honest**:
 2. Persona model as data + knowledge-context seeding.
 3. Cloud LLM connect wizard with the OpenRouter provider descriptor
    (`provider.data_collection: "deny"` + `zdr: true` on every request,
-   €1-prepaid deep-links, `xiaomi/mimo-v2.5` registration, capability probe).
+   $5-prepaid deep-links, `xiaomi/mimo-v2.5` registration, capability probe).
 4. Embedding enhancement (§5a): local `embeddinggemma` for the `embedding` slot —
    Ollama on desktop, on-device runtime on mobile; optional, surfaced from the model
    page and the semantic-search entry point. No cloud embedder.

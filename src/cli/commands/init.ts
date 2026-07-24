@@ -4,7 +4,8 @@
  * Bootstraps a fresh ZAM installation:
  * 1. Initializes a zero-dependency "Local Sandbox" workspace.
  * 2. Runs hardware profiling to detect NPUs/CPUs.
- * 3. Installs and configures the hardware-optimized local LLM runtime (flm or Ollama).
+ * 3. Connects an AI model — OpenRouter cloud (default, privacy enforced per
+ *    request) or the hardware-optimized local runtime (flm or Ollama).
  * 4. Automatically distributes global agent skill files and hooks.
  * 5. Sets up the local database and configuration.
  */
@@ -12,7 +13,7 @@
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
-import { confirm, input } from "@inquirer/prompts";
+import { confirm, input, password, select } from "@inquirer/prompts";
 import { Command } from "commander";
 import {
   deleteSetting,
@@ -29,6 +30,8 @@ import {
   setSetting,
   upsertConfiguredWorkspace,
 } from "../../kernel/index.js";
+import { connectCloudProvider } from "../llm/cloud-connect.js";
+import { OPENROUTER_PROVIDER } from "../llm/cloud-providers.js";
 import { parseSetupAgents, wireSkills } from "../provisioning/index.js";
 
 const HOME = homedir();
@@ -147,41 +150,95 @@ export const initCommand = new Command("init")
       `\n  \x1b[1mRecommendation:\x1b[0m ZAM suggests installing \x1b[32m${runnerLabel}\x1b[0m with \x1b[36m${profile.recommendedModel}\x1b[0m.`,
     );
 
-    // ── STEP 3: Local LLM Runner Installation ───────────────────────────────
-    console.log("\n\x1b[1m[3/5] Setting up Local LLM Runner\x1b[0m");
-    const proceedInstall = await confirm({
-      message: `Would you like ZAM to install and configure ${runnerLabel} automatically?`,
-      default: true,
+    // ── STEP 3: AI model — cloud (default) or local runner ──────────────────
+    // Same offer as onboarding page 3 (ADR 2026-07-24 §5): OpenRouter first,
+    // the local runtime as the equal-billing second choice, skip stays honest.
+    console.log("\n\x1b[1m[3/5] Connecting an AI model\x1b[0m");
+    const aiChoice = await select({
+      message: "How should ZAM connect its AI?",
+      choices: [
+        {
+          name: `${OPENROUTER_PROVIDER.label} cloud — ${OPENROUTER_PROVIDER.defaultModel} (recommended)`,
+          value: "cloud",
+          description: `Privacy enforced on every request; $${OPENROUTER_PROVIDER.minTopUpUsd} prepaid minimum, no subscription.`,
+        },
+        {
+          name: `Local runner — ${runnerLabel} with ${profile.recommendedModel}`,
+          value: "local",
+          description: "Everything stays on this machine; larger download.",
+        },
+        { name: "Skip for now", value: "skip" },
+      ],
+      default: "cloud",
     });
 
     let llmReady = false;
-    if (proceedInstall) {
-      let result: ReturnType<typeof installFastFlowLM> | undefined;
-      if (profile.recommendedRunner === "fastflowlm") {
-        result = installFastFlowLM();
-      } else {
-        result = installOllama();
-      }
-
-      if (result.success) {
-        console.log(`\x1b[32m✓ ${result.message}\x1b[0m`);
-        const modelResult = prepareLocalModel(
-          profile.recommendedRunner,
-          profile.recommendedModel,
+    let cloudKey = "";
+    if (aiChoice === "cloud") {
+      console.log(
+        `\n  \x1b[1mTwo things to know about ${OPENROUTER_PROVIDER.label}:\x1b[0m`,
+      );
+      console.log(
+        "  1. Privacy is enforced per request: ZAM forbids storing your data and\n" +
+          '     training on it (data_collection: "deny", zdr: true) on every call.',
+      );
+      console.log(
+        `  2. Cost is bounded: $${OPENROUTER_PROVIDER.minTopUpUsd} prepaid credit is the minimum top-up and\n` +
+          "     covers weeks of regular learning. No subscription.",
+      );
+      console.log(
+        `\n  Create the account, credit, and key yourself (ZAM never does):\n` +
+          `    Key:     \x1b[36m${OPENROUTER_PROVIDER.keysUrl}\x1b[0m\n` +
+          `    Credit:  \x1b[36m${OPENROUTER_PROVIDER.creditsUrl}\x1b[0m\n` +
+          `    Privacy: \x1b[36m${OPENROUTER_PROVIDER.privacyUrl}\x1b[0m`,
+      );
+      cloudKey = (
+        await password({
+          message: `Paste your ${OPENROUTER_PROVIDER.label} API key (Enter to skip):`,
+          mask: "*",
+        })
+      ).trim();
+      if (!cloudKey) {
+        console.log(
+          "\x1b[33m⚠ No key pasted — continuing without a cloud model.\x1b[0m",
         );
-        if (modelResult.success) {
-          console.log(`\x1b[32m✓ ${modelResult.message}\x1b[0m`);
-          llmReady = true;
+      }
+    } else if (aiChoice === "local") {
+      const proceedInstall = await confirm({
+        message: `Would you like ZAM to install and configure ${runnerLabel} automatically?`,
+        default: true,
+      });
+
+      if (proceedInstall) {
+        let result: ReturnType<typeof installFastFlowLM> | undefined;
+        if (profile.recommendedRunner === "fastflowlm") {
+          result = installFastFlowLM();
+        } else {
+          result = installOllama();
+        }
+
+        if (result.success) {
+          console.log(`\x1b[32m✓ ${result.message}\x1b[0m`);
+          const modelResult = prepareLocalModel(
+            profile.recommendedRunner,
+            profile.recommendedModel,
+          );
+          if (modelResult.success) {
+            console.log(`\x1b[32m✓ ${modelResult.message}\x1b[0m`);
+            llmReady = true;
+          } else {
+            console.warn(
+              `\x1b[33m⚠ Model setup incomplete: ${modelResult.message}\x1b[0m`,
+            );
+          }
         } else {
           console.warn(
-            `\x1b[33m⚠ Model setup incomplete: ${modelResult.message}\x1b[0m`,
+            `\x1b[33m⚠ Installation failed: ${result.message}\x1b[0m`,
+          );
+          console.log(
+            "You can install it manually or continue with offline templates.",
           );
         }
-      } else {
-        console.warn(`\x1b[33m⚠ Installation failed: ${result.message}\x1b[0m`);
-        console.log(
-          "You can install it manually or continue with offline templates.",
-        );
       }
     }
 
@@ -202,6 +259,29 @@ export const initCommand = new Command("init")
         `\x1b[32m✓ Detected and set system language to: ${detectedLocale}\x1b[0m`,
       );
 
+      // Cloud connect shares the exact implementation behind the desktop
+      // wizard's model page (cloud-connect.ts), so the two fronts cannot
+      // drift: verify key → store under the credential ref → register the
+      // default model in the capability registry → enable the text LLM.
+      let cloudConnected = false;
+      if (cloudKey) {
+        const result = await connectCloudProvider(
+          db,
+          OPENROUTER_PROVIDER.id,
+          cloudKey,
+        );
+        if (result.ok && result.entry) {
+          cloudConnected = true;
+          console.log(
+            `\x1b[32m✓ Connected ${OPENROUTER_PROVIDER.label} — ${result.entry.model} registered; privacy preferences enforced on every request.\x1b[0m`,
+          );
+        } else {
+          console.warn(
+            `\x1b[33m⚠ Cloud connect failed: ${result.error}\x1b[0m`,
+          );
+        }
+      }
+
       if (llmReady) {
         await setSetting(db, "llm.enabled", "true");
         if (profile.recommendedRunner === "fastflowlm") {
@@ -213,7 +293,7 @@ export const initCommand = new Command("init")
         console.log(
           "\x1b[32m✓ Configured LLM runner settings in database.\x1b[0m",
         );
-      } else {
+      } else if (!cloudConnected) {
         await setSetting(db, "llm.enabled", "false");
       }
       await db.close();

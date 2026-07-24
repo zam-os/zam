@@ -22,7 +22,7 @@ steps so the two front-ends never drift.
 Non-negotiables from the ADR:
 
 - **One cloud, local embeddings.** Chat/vision = OpenRouter (`xiaomi/mimo-v2.5`,
-  ~€1 prepaid, `data_collection: "deny"` + `zdr: true` on every request). No
+  $5 prepaid minimum, `data_collection: "deny"` + `zdr: true` on every request). No
   free tier. Embeddings = local `embeddinggemma-300m` only (Ollama on desktop),
   optional and off the critical path.
 - **Multi-device stays out of first run.** Server DB / mobile pairing (#218,
@@ -39,7 +39,7 @@ Non-negotiables from the ADR:
   `onboardingDone` flag, Settings re-entry, en/de copy scaffold.
 - [x] **Phase 1 — Persona selection + knowledge-context seed** — data-driven personas,
   seeded context, machine-local persistence.
-- [ ] **Phase 2 — OpenRouter connect (privacy-enforced)** — guided model page,
+- [x] **Phase 2 — OpenRouter connect (privacy-enforced)** — guided model page,
   `mimo-v2.5` registration, `deny`/`zdr` injected on every OpenRouter request.
 - [ ] **Phase 3 — Local embedding enhancement** — Ollama `embeddinggemma` descriptor,
   optional, surfaced from the model page and the semantic-search entry point.
@@ -130,28 +130,29 @@ skipping yields `private`. Unit test for the seeding idempotency. `npm run test`
 
 The model page — #218's counterpart for models. Guided, not a raw URL/model form.
 
-- [ ] **Provider descriptor** for OpenRouter: base URL, the deep-links (key page,
+- [x] **Provider descriptor** for OpenRouter: base URL, the deep-links (key page,
   credits page, privacy settings), the default model `xiaomi/mimo-v2.5`, and the
   fixed capability set (`text` + `image`).
-- [ ] Page 3 UI: explain the two-point story (privacy-by-default, €1 prepaid
+- [x] Page 3 UI: explain the two-point story (privacy-by-default, $5 prepaid
   bounded cost); **OpenRouter + `mimo-v2.5` is the default card**, local runtimes
   (Ollama/FastFlowLM) the equal-billing second card (recommended in copy only when
   the hardware profile finds capable NPU/Apple-Silicon). ZAM never creates
   accounts, adds credit, or creates keys — deep-link out; user pastes the key.
-- [ ] Register the pasted key + `mimo-v2.5` as a cloud `ModelEntry` and run the
+- [x] Register the pasted key + `mimo-v2.5` as a cloud `ModelEntry` and run the
   capability probe (`src/cli/llm/capability-probe.ts`); green AI status on success.
-- [ ] **Enforce privacy on every OpenRouter request.** In the chat-completions
+- [x] **Enforce privacy on every OpenRouter request.** In the chat-completions
   body builder (`src/cli/llm/client.ts`, the `body: JSON.stringify({...})` sites),
   when the endpoint host is `openrouter.ai` (detection already exists near
   `client.ts:130`), inject `provider: { data_collection: "deny", zdr: true }`.
   Prefer a URL-conditional injection over a schema change to `ModelEntry`; if a
   per-model preference is unavoidable, add one optional field, do not reshape the
-  registry.
-- [ ] `zam init` parity: the CLI model step offers the same OpenRouter path with
+  registry. *(Done centrally in `fetchWithInteractiveTimeout` so present and
+  future call sites cannot forget it.)*
+- [x] `zam init` parity: the CLI model step offers the same OpenRouter path with
   the same enforced request preferences.
-- [ ] **Open item to resolve in this phase:** confirm OpenRouter's real minimum
-  top-up against the credits page before the copy commits to "€1" (ADR open
-  question 6). If it is higher, state the true figure.
+- [x] **Open item resolved:** OpenRouter's minimum credit purchase is **$5 per
+  transaction** (terms, verified 2026-07-24; 5.5% / $0.80-minimum purchase fee on
+  top), not €1 — ADR open question 6 closed, all copy states $5.
 
 **Verification:** register a key (use a throwaway/scratch key or a mocked probe);
 `read_network_requests` on a recall/generation call shows the request body carries

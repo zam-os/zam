@@ -303,6 +303,25 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "onboarding_persona_title",
   "onboarding_persona_body",
   "onboarding_persona_hint",
+  "onboarding_model_title",
+  "onboarding_model_body",
+  "onboarding_model_cloud_badge",
+  "onboarding_model_cloud_privacy",
+  "onboarding_model_cloud_cost",
+  "onboarding_model_cloud_how",
+  "onboarding_model_link_key",
+  "onboarding_model_link_credits",
+  "onboarding_model_link_privacy",
+  "onboarding_model_key_placeholder",
+  "onboarding_model_connect",
+  "onboarding_model_connecting",
+  "onboarding_model_connected",
+  "onboarding_model_error",
+  "onboarding_model_key_missing",
+  "onboarding_model_already",
+  "onboarding_model_local_title",
+  "onboarding_model_local_capable",
+  "onboarding_model_local_body",
 ]);
 
 /**
@@ -412,7 +431,11 @@ describe("desktop locale completeness", () => {
     );
 
     const keys = [
+      // Step kickers resolve dynamically via t(step.titleKey).
+      "onboarding_welcome_kicker",
       "onboarding_persona_kicker",
+      "onboarding_model_kicker",
+      "onboarding_done_kicker",
       ...PERSONA_DESCRIPTORS.flatMap((persona) => [
         persona.labelKey,
         persona.descriptionKey,

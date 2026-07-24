@@ -3043,3 +3043,85 @@ textarea::placeholder {
   font-size: 13px;
   line-height: 1.5;
 }
+
+/* Model page cards (ADR 2026-07-24 §5, Phase 2) */
+.onboarding-model-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 18px;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+}
+
+.onboarding-model-cloud {
+  border-color: var(--clr-accent-cyan);
+}
+
+.onboarding-model-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.onboarding-model-card-title {
+  color: var(--clr-text-primary);
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.onboarding-model-badge {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(8, 145, 178, 0.12);
+  color: var(--clr-accent-cyan);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.onboarding-model-line {
+  color: var(--clr-text-secondary);
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.onboarding-model-capable {
+  color: var(--clr-accent-cyan);
+  font-weight: 600;
+}
+
+.onboarding-model-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.onboarding-model-form {
+  display: flex;
+  gap: 8px;
+}
+
+.onboarding-model-key {
+  flex: 1;
+  min-width: 0;
+  padding: 9px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: var(--bg-field);
+  color: var(--clr-text-primary);
+  font-size: 14px;
+}
+
+.onboarding-model-status {
+  min-height: 1.2em;
+  color: var(--clr-text-muted);
+  font-size: 13px;
+  margin: 0;
+}
+
+.onboarding-model-status.ok {
+  color: var(--clr-accent-cyan);
+  font-weight: 600;
+}

@@ -50,11 +50,33 @@ export interface OnboardingPersona {
   defaultImportPath: string;
 }
 
+/**
+ * Cloud provider card data (ADR 2026-07-24 §5), served by desktop-bootstrap
+ * from the CLI's `CLOUD_PROVIDERS` descriptor list — same structural-type
+ * pattern as {@link OnboardingPersona}.
+ */
+export interface OnboardingCloudProvider {
+  id: string;
+  label: string;
+  baseUrl: string;
+  defaultModel: string;
+  keysUrl: string;
+  creditsUrl: string;
+  privacyUrl: string;
+  minTopUpUsd: number;
+}
+
 export interface OnboardingStepContext {
   /** Persona cards to offer; empty until desktop-bootstrap has answered. */
   personas: OnboardingPersona[];
   /** Persisted (or default "private") persona to preselect. */
   selectedPersonaId: string;
+  /** Cloud provider cards for the model page (OpenRouter first). */
+  cloudProviders: OnboardingCloudProvider[];
+  /** Copy-only hint: capable NPU / Apple-Silicon hardware was detected. */
+  localAiCapable: boolean;
+  /** Whether a text LLM is already enabled on this machine (re-entry). */
+  aiConnected: boolean;
 }
 
 export interface OnboardingController {
@@ -73,6 +95,12 @@ interface OnboardingDeps {
   onLeave(reason: "completed" | "later"): void;
   /** Live step data (personas, persisted selection), read at start() time. */
   getStepContext(): OnboardingStepContext;
+  /**
+   * Open a URL in the system browser. Provided by main.ts (Tauri opener) so
+   * this module stays framework-free; the deep links must never navigate the
+   * app WebView away from the flow.
+   */
+  openExternal(url: string): void;
 }
 
 /**
@@ -90,10 +118,14 @@ let lastPersistedPersonaId: string | null = null;
  */
 export function buildOnboardingSteps(
   ctx: OnboardingStepContext,
+  actions: { openExternal(url: string): void },
 ): OnboardingStep[] {
   // Selection survives Back/forward re-renders within one run of the flow;
   // each start() re-reads the persisted value (or the in-session memo).
   let selectedPersonaId = lastPersistedPersonaId ?? ctx.selectedPersonaId;
+  // Flips after a successful cloud connect so Back/forward re-renders keep
+  // showing the connected state without re-reading bootstrap.
+  let aiConnected = ctx.aiConnected;
 
   return [
     {
@@ -158,6 +190,30 @@ export function buildOnboardingSteps(
       },
     },
     {
+      id: "model",
+      titleKey: "onboarding_model_kicker",
+      // Degraded mode is explicit and honest (ADR §7): without a model,
+      // manual authoring and reviews still work; AI entry points link back.
+      skippable: true,
+      render(container) {
+        container.append(
+          heading(t("onboarding_model_title")),
+          paragraph(t("onboarding_model_body")),
+        );
+        for (const provider of ctx.cloudProviders) {
+          container.append(
+            renderCloudProviderCard(provider, actions, {
+              connected: aiConnected,
+              onConnected: () => {
+                aiConnected = true;
+              },
+            }),
+          );
+        }
+        container.append(renderLocalAiCard(ctx.localAiCapable));
+      },
+    },
+    {
       id: "done",
       titleKey: "onboarding_done_kicker",
       skippable: false,
@@ -169,6 +225,161 @@ export function buildOnboardingSteps(
       },
     },
   ];
+}
+
+/**
+ * The guided cloud card: the two-point story (privacy enforced per request,
+ * bounded prepaid cost), the three deep links, and the paste-key → connect
+ * flow. ZAM never creates accounts, adds credit, or creates keys — the user
+ * does all three on the provider's site (ADR 2026-07-24 §5).
+ */
+function renderCloudProviderCard(
+  provider: OnboardingCloudProvider,
+  actions: { openExternal(url: string): void },
+  state: { connected: boolean; onConnected(): void },
+): HTMLElement {
+  const card = document.createElement("section");
+  card.className = "onboarding-model-card onboarding-model-cloud";
+  card.dataset.providerId = provider.id;
+
+  const head = document.createElement("div");
+  head.className = "onboarding-model-card-head";
+  const title = document.createElement("h2");
+  title.className = "onboarding-model-card-title";
+  title.textContent = provider.label;
+  const badge = document.createElement("span");
+  badge.className = "onboarding-model-badge";
+  badge.textContent = t("onboarding_model_cloud_badge");
+  head.append(title, badge);
+
+  const amount = `$${provider.minTopUpUsd}`;
+  const privacy = cardLine(t("onboarding_model_cloud_privacy"));
+  const cost = cardLine(
+    t("onboarding_model_cloud_cost").replace("{amount}", amount),
+  );
+  const how = cardLine(
+    t("onboarding_model_cloud_how").replace("{amount}", amount),
+  );
+
+  const links = document.createElement("div");
+  links.className = "onboarding-model-links";
+  for (const [key, url] of [
+    ["onboarding_model_link_key", provider.keysUrl],
+    ["onboarding_model_link_credits", provider.creditsUrl],
+    ["onboarding_model_link_privacy", provider.privacyUrl],
+  ] as const) {
+    const link = document.createElement("button");
+    link.type = "button";
+    link.className = "btn secondary-btn btn-sm";
+    link.textContent = t(key);
+    link.addEventListener("click", () => actions.openExternal(url));
+    links.append(link);
+  }
+
+  const form = document.createElement("div");
+  form.className = "onboarding-model-form";
+  const input = document.createElement("input");
+  input.type = "password";
+  input.id = `onboarding-key-${provider.id}`;
+  input.className = "onboarding-model-key";
+  input.placeholder = t("onboarding_model_key_placeholder");
+  input.autocomplete = "off";
+  const connectBtn = document.createElement("button");
+  connectBtn.type = "button";
+  connectBtn.className = "btn primary-btn";
+  connectBtn.textContent = t("onboarding_model_connect");
+  form.append(input, connectBtn);
+
+  const status = document.createElement("p");
+  status.className = "onboarding-model-status";
+  status.setAttribute("aria-live", "polite");
+  if (state.connected) {
+    status.textContent = t("onboarding_model_already");
+    status.classList.add("ok");
+  }
+
+  connectBtn.addEventListener("click", () => {
+    void (async () => {
+      const key = input.value.trim();
+      if (!key) {
+        status.textContent = t("onboarding_model_key_missing");
+        status.classList.remove("ok");
+        return;
+      }
+      connectBtn.disabled = true;
+      input.disabled = true;
+      status.classList.remove("ok");
+      status.textContent = t("onboarding_model_connecting").replace(
+        "{model}",
+        provider.defaultModel,
+      );
+      try {
+        const result = await runBridge<{ model?: { model?: string } }>(
+          "cloud-connect",
+          ["--provider", provider.id, "--key", key],
+        );
+        status.textContent = t("onboarding_model_connected").replace(
+          "{model}",
+          result.model?.model ?? provider.defaultModel,
+        );
+        status.classList.add("ok");
+        input.value = "";
+        state.onConnected();
+      } catch (err) {
+        status.textContent = t("onboarding_model_error").replace(
+          "{message}",
+          bridgeErrorMessage(err),
+        );
+      } finally {
+        connectBtn.disabled = false;
+        input.disabled = false;
+      }
+    })();
+  });
+
+  card.append(head, privacy, cost, how, links, form, status);
+  return card;
+}
+
+/**
+ * The equal-billing local card (ADR §5): fully visible, recommended in copy
+ * when the hardware profile found a capable NPU / Apple Silicon, never
+ * auto-selected. Setup itself lives in Settings → AI models; Phase 3 adds the
+ * embedding enhancement on top.
+ */
+function renderLocalAiCard(capable: boolean): HTMLElement {
+  const card = document.createElement("section");
+  card.className = "onboarding-model-card onboarding-model-local";
+  const title = document.createElement("h2");
+  title.className = "onboarding-model-card-title";
+  title.textContent = t("onboarding_model_local_title");
+  card.append(title);
+  if (capable) {
+    const capableLine = cardLine(t("onboarding_model_local_capable"));
+    capableLine.classList.add("onboarding-model-capable");
+    card.append(capableLine);
+  }
+  card.append(cardLine(t("onboarding_model_local_body")));
+  return card;
+}
+
+function cardLine(text: string): HTMLElement {
+  const el = document.createElement("p");
+  el.className = "onboarding-model-line";
+  el.textContent = text;
+  return el;
+}
+
+/** Unwrap the bridge's `{"error": …}` JSON when present; never echoes keys. */
+function bridgeErrorMessage(err: unknown): string {
+  const raw = err instanceof Error ? err.message : String(err);
+  try {
+    const parsed = JSON.parse(raw) as { error?: string };
+    if (parsed && typeof parsed.error === "string") return parsed.error;
+  } catch {
+    // not JSON — use the raw message
+  }
+  return raw;
 }
 
 function markPersonaSelection(group: HTMLElement, selectedId: string): void {
@@ -309,7 +520,9 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
 
   return {
     start(): void {
-      steps = buildOnboardingSteps(deps.getStepContext());
+      steps = buildOnboardingSteps(deps.getStepContext(), {
+        openExternal: deps.openExternal,
+      });
       index = 0;
       render();
     },

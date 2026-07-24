@@ -22,6 +22,7 @@ import { initCurriculumWizard } from "./curriculum-wizard.js";
 import { initMobilePairing } from "./mobile-pairing.js";
 import {
   initOnboarding,
+  type OnboardingCloudProvider,
   type OnboardingController,
   type OnboardingPersona,
 } from "./onboarding.js";
@@ -2803,6 +2804,10 @@ let onboardingController: OnboardingController | null = null;
 // "private") selection. Read live via getStepContext on each start().
 let onboardingPersonas: OnboardingPersona[] = [];
 let onboardingPersonaId = "private";
+// Model page data (Phase 2): cloud provider descriptors and the copy-only
+// local-hardware hint, also from desktop-bootstrap.
+let onboardingCloudProviders: OnboardingCloudProvider[] = [];
+let onboardingLocalAiCapable = false;
 
 function showOnboarding(): void {
   if (!onboardingController) return;
@@ -3686,6 +3691,8 @@ async function loadDashboard() {
       onboardingDone?: boolean;
       onboardingPersona?: string;
       onboardingPersonas?: OnboardingPersona[];
+      cloudProviders?: OnboardingCloudProvider[];
+      localAiCapable?: boolean;
     }>("desktop-bootstrap");
     desktopUserId = settings.userId;
     setCurrentLocale(settings.locale || "en");
@@ -3694,6 +3701,10 @@ async function loadDashboard() {
     activeWorkspaceDir = settings.workspaceDir ?? activeWorkspaceDir;
     onboardingPersonas = settings.onboardingPersonas ?? onboardingPersonas;
     onboardingPersonaId = settings.onboardingPersona ?? onboardingPersonaId;
+    onboardingCloudProviders =
+      settings.cloudProviders ?? onboardingCloudProviders;
+    onboardingLocalAiCapable =
+      settings.localAiCapable ?? onboardingLocalAiCapable;
 
     initializeTranslations();
 
@@ -4702,7 +4713,11 @@ window.addEventListener("DOMContentLoaded", () => {
     getStepContext: () => ({
       personas: onboardingPersonas,
       selectedPersonaId: onboardingPersonaId,
+      cloudProviders: onboardingCloudProviders,
+      localAiCapable: onboardingLocalAiCapable,
+      aiConnected: isLlmEnabled,
     }),
+    openExternal: (url) => void openUrl(url),
     onLeave: (reason) => {
       switchView("dashboard-view");
       // After completion the machine is onboarded, so a reload is safe and

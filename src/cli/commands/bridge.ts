@@ -193,6 +193,8 @@ import {
   type LlmRole,
   translateQuestionViaLLM,
 } from "../llm/client.js";
+import { connectCloudProvider } from "../llm/cloud-connect.js";
+import { CLOUD_PROVIDERS } from "../llm/cloud-providers.js";
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
 import { createMobilePairingPayload } from "../mobile-pairing.js";
 import {
@@ -3237,6 +3239,7 @@ bridgeCommand
       // desktop app: link the bundled CLI onto the user's PATH. installCliShim
       // never throws and never shadows an externally installed `zam`.
       const cli = installCliShim();
+      const profile = getSystemProfile();
       jsonOut({
         userId,
         locale,
@@ -3255,6 +3258,12 @@ bridgeCommand
         // default when nothing was chosen.
         onboardingPersona: getOnboardingPersona(),
         onboardingPersonas: PERSONA_DESCRIPTORS,
+        // Model page data (Phase 2): cloud provider descriptors plus the
+        // hardware hint that decides whether the local card carries the
+        // "recommended for your hardware" line (copy only — never
+        // auto-selected, ADR 2026-07-24 §5).
+        cloudProviders: CLOUD_PROVIDERS,
+        localAiCapable: profile.hasRyzenNPU || profile.hasAppleSilicon,
       });
     });
   });
@@ -3314,6 +3323,31 @@ bridgeCommand
         persona,
         knowledgeContext: result.context.name,
         seeded: result.created,
+      });
+    });
+  });
+
+// ── zam bridge cloud-connect ──────────────────────────────────────────────────
+
+bridgeCommand
+  .command("cloud-connect")
+  .description(
+    "Connect a cloud LLM provider (JSON): verify the key, store it, register " +
+      "the default model in the capability registry, enable the text LLM " +
+      "(ADR 2026-07-24 §5).",
+  )
+  .requiredOption("--key <key>", "API key created by the user on the provider")
+  .option("--provider <id>", "Cloud provider id", "openrouter")
+  .action(async (opts: { key: string; provider: string }) => {
+    await withDb(async (db) => {
+      const result = await connectCloudProvider(db, opts.provider, opts.key);
+      if (!result.ok || !result.entry) {
+        jsonError(result.error ?? "Cloud connect failed.");
+      }
+      jsonOut({
+        ok: true,
+        created: result.created === true,
+        model: modelRow(result.entry),
       });
     });
   });

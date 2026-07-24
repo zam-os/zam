@@ -35,6 +35,7 @@ import {
   resolveReviewContext,
   t,
 } from "../../kernel/index.js";
+import { OPENROUTER_PROVIDER } from "./cloud-providers.js";
 
 /** Single source of truth for connection defaults (easy to bump as models evolve). */
 export const DEFAULT_LLM_URL = "http://localhost:8000/v1";
@@ -128,7 +129,12 @@ export function getCloudModelRecommendation(
 ): CloudModelRecommendation | null {
   const lowercase = url.toLowerCase();
   if (lowercase.includes("openrouter.ai")) {
-    return { model: "openrouter/free", flavor: "chat-completions" };
+    // No `:free` variants: they route around the enforced `data_collection:
+    // "deny"` + `zdr: true` preferences (ADR 2026-07-24 §5).
+    return {
+      model: OPENROUTER_PROVIDER.defaultModel,
+      flavor: "chat-completions",
+    };
   }
   if (lowercase.includes("openai.com") || lowercase.includes("api.openai")) {
     return { model: "gpt-5-mini", flavor: "chat-completions" };
@@ -183,6 +189,62 @@ export function inferApiFlavor(url: string): ApiFlavor {
       : "chat-completions";
   } catch {
     return "chat-completions";
+  }
+}
+
+// ── OpenRouter privacy enforcement (ADR 2026-07-24 §5) ──────────────────────
+
+/**
+ * Provider routing preferences sent on EVERY OpenRouter chat-completions
+ * request: `data_collection: "deny"` restricts routing to endpoints that do
+ * not store prompts, `zdr: true` to zero-data-retention endpoints. "My data is
+ * not trained on and not kept" is a guarantee ZAM enforces per request, not a
+ * promise about the user's OpenRouter dashboard settings.
+ */
+export const OPENROUTER_ROUTING_PREFERENCES = Object.freeze({
+  data_collection: "deny" as const,
+  zdr: true as const,
+});
+
+export function isOpenRouterUrl(url: string): boolean {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return host === "openrouter.ai" || host.endsWith(".openrouter.ai");
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Inject the routing preferences into a serialized chat-completions body when
+ * (and only when) the request targets openrouter.ai. Applied centrally in
+ * {@link fetchWithInteractiveTimeout} so no call site — present or future —
+ * can forget the enforcement. The preferences are merged last, so they win
+ * over any `provider` object a caller might have set.
+ */
+export function enforceOpenRouterPrivacy(
+  url: string,
+  body: BodyInit | null | undefined,
+): BodyInit | null | undefined {
+  if (typeof body !== "string" || !isOpenRouterUrl(url)) return body;
+  try {
+    if (!new URL(url).pathname.endsWith("/chat/completions")) return body;
+    const payload = JSON.parse(body) as Record<string, unknown>;
+    if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+      return body;
+    }
+    const provider =
+      payload.provider && typeof payload.provider === "object"
+        ? (payload.provider as Record<string, unknown>)
+        : {};
+    return JSON.stringify({
+      ...payload,
+      provider: { ...provider, ...OPENROUTER_ROUTING_PREFERENCES },
+    });
+  } catch {
+    // A body this function cannot parse would not be a valid request either;
+    // pass it through untouched rather than corrupting it.
+    return body;
   }
 }
 
@@ -2247,6 +2309,7 @@ export async function fetchWithInteractiveTimeout(
   const controller = new AbortController();
   const fetchPromise = fetch(url, {
     ...fetchOptions,
+    body: enforceOpenRouterPrivacy(url, fetchOptions.body),
     signal: controller.signal,
   });
 

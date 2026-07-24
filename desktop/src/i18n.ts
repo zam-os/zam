@@ -4441,6 +4441,34 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_persona_private_why:
       "Self-chosen interests, no syllabus — start from a goal you define.",
     onboarding_persona_private_context: "Personal",
+    // Model page (ADR 2026-07-24 §5, Phase 2).
+    onboarding_model_kicker: "Connect an AI model",
+    onboarding_model_title: "Give ZAM its AI.",
+    onboarding_model_body:
+      "ZAM uses an AI model to generate questions, evaluate your answers, and import learning content. Without one, manual cards and reviews still work — you can set this up later.",
+    onboarding_model_cloud_badge: "Recommended",
+    onboarding_model_cloud_privacy:
+      "Private by enforcement: every request forbids storing your data and training on it (data_collection: deny, zero data retention).",
+    onboarding_model_cloud_cost:
+      "Bounded cost: {amount} prepaid credit is the minimum top-up and covers weeks of regular learning — no subscription, no surprise bills.",
+    onboarding_model_cloud_how:
+      "Create an account, add {amount} credit, create an API key, and paste it below. ZAM never creates accounts, adds credit, or creates keys for you.",
+    onboarding_model_link_key: "Create API key",
+    onboarding_model_link_credits: "Add credit",
+    onboarding_model_link_privacy: "Privacy settings",
+    onboarding_model_key_placeholder: "Paste your API key (sk-or-…)",
+    onboarding_model_connect: "Connect",
+    onboarding_model_connecting: "Verifying key and registering {model}…",
+    onboarding_model_connected: "Connected — {model} is ready.",
+    onboarding_model_error: "Connection failed: {message}",
+    onboarding_model_key_missing: "Paste the API key first.",
+    onboarding_model_already:
+      "An AI model is already connected on this machine — skip this page or paste a new key to update it.",
+    onboarding_model_local_title: "Local AI on your device",
+    onboarding_model_local_capable:
+      "Good fit: this machine has capable AI hardware (NPU or Apple Silicon).",
+    onboarding_model_local_body:
+      "Prefer everything on your own machine? Run a local model with Ollama or FastFlowLM — no account, no cloud. Set it up under Settings → AI models, now or any time later.",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -5225,6 +5253,35 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_persona_private_why:
       "Selbstgewählte Interessen, kein Lehrplan – starte mit einem Ziel, das du dir setzt.",
     onboarding_persona_private_context: "Privat",
+    // Model page (ADR 2026-07-24 §5, Phase 2).
+    onboarding_model_kicker: "KI-Modell verbinden",
+    onboarding_model_title: "Gib ZAM seine KI.",
+    onboarding_model_body:
+      "ZAM nutzt ein KI-Modell, um Fragen zu generieren, deine Antworten zu bewerten und Lerninhalte zu importieren. Auch ohne Modell funktionieren manuelle Karten und Reviews – du kannst das später einrichten.",
+    onboarding_model_cloud_badge: "Empfohlen",
+    onboarding_model_cloud_privacy:
+      "Privat per Durchsetzung: Jede Anfrage verbietet das Speichern deiner Daten und das Trainieren damit (data_collection: deny, Zero Data Retention).",
+    onboarding_model_cloud_cost:
+      "Begrenzte Kosten: {amount} Prepaid-Guthaben ist die Mindestaufladung und reicht für Wochen regelmäßigen Lernens – kein Abo, keine Kostenfallen.",
+    onboarding_model_cloud_how:
+      "Erstelle ein Konto, lade {amount} Guthaben auf, erstelle einen API-Schlüssel und füge ihn unten ein. ZAM erstellt niemals Konten, lädt Guthaben auf oder erzeugt Schlüssel für dich.",
+    onboarding_model_link_key: "API-Schlüssel erstellen",
+    onboarding_model_link_credits: "Guthaben aufladen",
+    onboarding_model_link_privacy: "Datenschutz-Einstellungen",
+    onboarding_model_key_placeholder: "API-Schlüssel einfügen (sk-or-…)",
+    onboarding_model_connect: "Verbinden",
+    onboarding_model_connecting:
+      "Schlüssel wird geprüft, {model} wird registriert …",
+    onboarding_model_connected: "Verbunden – {model} ist bereit.",
+    onboarding_model_error: "Verbindung fehlgeschlagen: {message}",
+    onboarding_model_key_missing: "Bitte zuerst den API-Schlüssel einfügen.",
+    onboarding_model_already:
+      "Auf diesem Gerät ist bereits ein KI-Modell verbunden – überspringe diese Seite oder füge einen neuen Schlüssel ein.",
+    onboarding_model_local_title: "Lokale KI auf deinem Gerät",
+    onboarding_model_local_capable:
+      "Gute Voraussetzungen: Dieses Gerät hat leistungsfähige KI-Hardware (NPU oder Apple Silicon).",
+    onboarding_model_local_body:
+      "Lieber alles auf dem eigenen Rechner? Betreibe ein lokales Modell mit Ollama oder FastFlowLM – ohne Konto, ohne Cloud. Einrichtung unter Einstellungen → KI-Modelle, jetzt oder später.",
   },
   // es, fr, pt, zh, ja packs come from TRANSLATION_PACKS above; en/de stay inline here as the reference locales.
   ...TRANSLATION_PACKS,
