@@ -322,6 +322,16 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "onboarding_model_local_title",
   "onboarding_model_local_capable",
   "onboarding_model_local_body",
+  "onboarding_embedding_title",
+  "onboarding_embedding_body",
+  "onboarding_embedding_on",
+  "onboarding_embedding_ready_hint",
+  "onboarding_embedding_need_ollama",
+  "onboarding_embedding_not_running",
+  "onboarding_embedding_enable",
+  "onboarding_embedding_get_ollama",
+  "onboarding_embedding_working",
+  "onboarding_embedding_error",
 ]);
 
 /**

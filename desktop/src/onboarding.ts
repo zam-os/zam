@@ -66,6 +66,18 @@ export interface OnboardingCloudProvider {
   minTopUpUsd: number;
 }
 
+/**
+ * Local semantic-search enhancement state (ADR 2026-07-24 §5a), as reported
+ * by `embedding-status` / desktop-bootstrap.
+ */
+export interface OnboardingEmbeddingStatus {
+  ollamaInstalled: boolean;
+  serverOnline: boolean;
+  modelPresent: boolean;
+  registered: boolean;
+  usable: boolean;
+}
+
 export interface OnboardingStepContext {
   /** Persona cards to offer; empty until desktop-bootstrap has answered. */
   personas: OnboardingPersona[];
@@ -77,7 +89,12 @@ export interface OnboardingStepContext {
   localAiCapable: boolean;
   /** Whether a text LLM is already enabled on this machine (re-entry). */
   aiConnected: boolean;
+  /** Local embedding enhancement state for the semantic-search block. */
+  embedding: OnboardingEmbeddingStatus;
 }
+
+/** Ollama download page, opened externally when the runtime is missing. */
+const OLLAMA_DOWNLOAD_URL = "https://ollama.com/download";
 
 export interface OnboardingController {
   /** Reset to the first step, render, and reveal the flow. */
@@ -126,6 +143,9 @@ export function buildOnboardingSteps(
   // Flips after a successful cloud connect so Back/forward re-renders keep
   // showing the connected state without re-reading bootstrap.
   let aiConnected = ctx.aiConnected;
+  // Same memo for the embedding enhancement: updated from each
+  // embedding-enable response so re-renders stay truthful.
+  let embeddingStatus = ctx.embedding;
 
   return [
     {
@@ -210,7 +230,15 @@ export function buildOnboardingSteps(
             }),
           );
         }
-        container.append(renderLocalAiCard(ctx.localAiCapable));
+        container.append(
+          renderLocalAiCard(ctx.localAiCapable),
+          renderEmbeddingBlock(actions, {
+            get: () => embeddingStatus,
+            set: (status) => {
+              embeddingStatus = status;
+            },
+          }),
+        );
       },
     },
     {
@@ -368,6 +396,100 @@ function cardLine(text: string): HTMLElement {
   el.className = "onboarding-model-line";
   el.textContent = text;
   return el;
+}
+
+/**
+ * The subtle semantic-search enhancement block (ADR 2026-07-24 §5a): local
+ * EmbeddingGemma via Ollama, optional and never blocking. The hint line stays
+ * honest about what a click does — a small model pull when Ollama is already
+ * running, an install-Ollama-first message otherwise; ZAM never installs the
+ * runtime itself from here.
+ */
+function renderEmbeddingBlock(
+  actions: { openExternal(url: string): void },
+  state: {
+    get(): OnboardingEmbeddingStatus;
+    set(status: OnboardingEmbeddingStatus): void;
+  },
+): HTMLElement {
+  const block = document.createElement("section");
+  block.className = "onboarding-embedding";
+  const title = document.createElement("h3");
+  title.className = "onboarding-embedding-title";
+  title.textContent = t("onboarding_embedding_title");
+  block.append(title, cardLine(t("onboarding_embedding_body")));
+
+  const controls = document.createElement("div");
+  controls.className = "onboarding-model-links";
+  const enableBtn = document.createElement("button");
+  enableBtn.type = "button";
+  enableBtn.className = "btn secondary-btn btn-sm";
+  enableBtn.textContent = t("onboarding_embedding_enable");
+  const ollamaBtn = document.createElement("button");
+  ollamaBtn.type = "button";
+  ollamaBtn.className = "btn ghost-btn btn-sm";
+  ollamaBtn.textContent = t("onboarding_embedding_get_ollama");
+  ollamaBtn.addEventListener("click", () =>
+    actions.openExternal(OLLAMA_DOWNLOAD_URL),
+  );
+  controls.append(enableBtn, ollamaBtn);
+
+  const status = document.createElement("p");
+  status.className = "onboarding-model-status";
+  status.setAttribute("aria-live", "polite");
+
+  function reflect(): void {
+    const s = state.get();
+    ollamaBtn.classList.toggle("hidden", s.ollamaInstalled);
+    enableBtn.classList.toggle("hidden", s.usable);
+    status.classList.toggle("ok", s.usable);
+    if (s.usable) {
+      status.textContent = t("onboarding_embedding_on");
+    } else if (!s.ollamaInstalled) {
+      status.textContent = t("onboarding_embedding_need_ollama");
+    } else if (!s.serverOnline) {
+      status.textContent = t("onboarding_embedding_not_running");
+    } else {
+      status.textContent = t("onboarding_embedding_ready_hint");
+    }
+  }
+  reflect();
+
+  enableBtn.addEventListener("click", () => {
+    void (async () => {
+      enableBtn.disabled = true;
+      status.classList.remove("ok");
+      status.textContent = t("onboarding_embedding_working");
+      try {
+        const result = await runBridge<{
+          ok: boolean;
+          error?: string;
+          status?: OnboardingEmbeddingStatus;
+        }>("embedding-enable");
+        if (result.status) state.set(result.status);
+        if (!result.ok) {
+          reflect();
+          status.classList.remove("ok");
+          status.textContent = t("onboarding_embedding_error").replace(
+            "{message}",
+            result.error ?? "unknown",
+          );
+          return;
+        }
+        reflect();
+      } catch (err) {
+        status.textContent = t("onboarding_embedding_error").replace(
+          "{message}",
+          bridgeErrorMessage(err),
+        );
+      } finally {
+        enableBtn.disabled = false;
+      }
+    })();
+  });
+
+  block.append(controls, status);
+  return block;
 }
 
 /** Unwrap the bridge's `{"error": …}` JSON when present; never echoes keys. */

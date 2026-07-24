@@ -41,7 +41,7 @@ Non-negotiables from the ADR:
   seeded context, machine-local persistence.
 - [x] **Phase 2 — OpenRouter connect (privacy-enforced)** — guided model page,
   `mimo-v2.5` registration, `deny`/`zdr` injected on every OpenRouter request.
-- [ ] **Phase 3 — Local embedding enhancement** — Ollama `embeddinggemma` descriptor,
+- [x] **Phase 3 — Local embedding enhancement** — Ollama `embeddinggemma` descriptor,
   optional, surfaced from the model page and the semantic-search entry point.
 - [ ] **Phase 4 — Agent page: detect existing / offer ready harnesses** — reuse
   `inspectConnectHarnesses`; Goose / OpenCode / Copilot descriptors.
@@ -165,19 +165,25 @@ builder asserting the preferences are present iff host is `openrouter.ai`.
 
 Optional, off the critical path — semantic search degrades to lexical without it.
 
-- [ ] Ollama `embeddinggemma` descriptor for the capability-registry `embedding`
+- [x] Ollama `embeddinggemma` descriptor for the capability-registry `embedding`
   slot (local `ModelEntry`, `runner: "ollama"`), reusing the canonical model id
   from `src/cli/llm/embedder.ts` (`DEFAULT_EMBEDDING_MODEL`).
-- [ ] Surface enabling it from two places: a subtle control on the model page
+- [x] Surface enabling it from two places: a subtle control on the model page
   ("make search understand meaning, not just words") and the semantic-search
   entry point when no embedder is configured. Never block first run on it.
-- [ ] If the user chose the **local** chat model in Phase 2, note the runtime is
+  *(Entry points: `zam token search`'s lexical-fallback note now carries the
+  enable hint, and `zam_find_tokens`/`relevant-tokens` responses gain a
+  `semanticNote` when ranking fell back to lexical — the Studio search box is
+  a client-side word filter and deliberately makes no semantic claim.)*
+- [x] If the user chose the **local** chat model in Phase 2, note the runtime is
   already present and enabling embeddings is just a model pull; if they chose
   cloud chat, this is the one place a local runtime is installed — framed as an
-  enhancement.
-- [ ] Honest empty state: semantic search UI states it is on lexical fallback and
+  enhancement. *(Keyed off detected Ollama state rather than the chat choice,
+  so the hint stays truthful either way; ZAM never installs Ollama from this
+  flow — missing runtime gets an honest message plus the download link.)*
+- [x] Honest empty state: semantic search UI states it is on lexical fallback and
   links here, rather than silently returning worse results.
-- [ ] **Mobile is out of scope here** — the on-device runtime path (LiteRT/
+- [x] **Mobile is out of scope here** — the on-device runtime path (LiteRT/
   MediaPipe) is ADR open question 5, its own follow-on; desktop only in this plan.
 
 **Verification:** with Ollama + `embeddinggemma` available, enabling fills the

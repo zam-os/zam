@@ -4469,6 +4469,22 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Good fit: this machine has capable AI hardware (NPU or Apple Silicon).",
     onboarding_model_local_body:
       "Prefer everything on your own machine? Run a local model with Ollama or FastFlowLM — no account, no cloud. Set it up under Settings → AI models, now or any time later.",
+    // Semantic-search enhancement (ADR 2026-07-24 §5a, Phase 3).
+    onboarding_embedding_title: "Semantic search (optional)",
+    onboarding_embedding_body:
+      "Make search understand meaning, not just words. Computed on this device with EmbeddingGemma — your study text never leaves it. Without it, search simply matches words.",
+    onboarding_embedding_on: "Semantic search is on.",
+    onboarding_embedding_ready_hint:
+      "Ollama is already running on this machine — enabling just downloads one small model.",
+    onboarding_embedding_need_ollama:
+      "Install Ollama first — ZAM installs nothing automatically.",
+    onboarding_embedding_not_running:
+      "Ollama is installed but not running. Start it, then enable.",
+    onboarding_embedding_enable: "Enable",
+    onboarding_embedding_get_ollama: "Get Ollama",
+    onboarding_embedding_working:
+      "Downloading and registering EmbeddingGemma…",
+    onboarding_embedding_error: "Enabling failed: {message}",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -5282,6 +5298,22 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Gute Voraussetzungen: Dieses Gerät hat leistungsfähige KI-Hardware (NPU oder Apple Silicon).",
     onboarding_model_local_body:
       "Lieber alles auf dem eigenen Rechner? Betreibe ein lokales Modell mit Ollama oder FastFlowLM – ohne Konto, ohne Cloud. Einrichtung unter Einstellungen → KI-Modelle, jetzt oder später.",
+    // Semantic-search enhancement (ADR 2026-07-24 §5a, Phase 3).
+    onboarding_embedding_title: "Semantische Suche (optional)",
+    onboarding_embedding_body:
+      "Lass die Suche Bedeutung verstehen, nicht nur Wörter. Berechnet auf diesem Gerät mit EmbeddingGemma – dein Lerntext verlässt es nie. Ohne sie vergleicht die Suche einfach Wörter.",
+    onboarding_embedding_on: "Semantische Suche ist aktiv.",
+    onboarding_embedding_ready_hint:
+      "Ollama läuft bereits auf diesem Gerät – zum Aktivieren wird nur ein kleines Modell geladen.",
+    onboarding_embedding_need_ollama:
+      "Installiere zuerst Ollama – ZAM installiert nichts automatisch.",
+    onboarding_embedding_not_running:
+      "Ollama ist installiert, läuft aber nicht. Starte es und aktiviere dann.",
+    onboarding_embedding_enable: "Aktivieren",
+    onboarding_embedding_get_ollama: "Ollama laden",
+    onboarding_embedding_working:
+      "EmbeddingGemma wird geladen und registriert …",
+    onboarding_embedding_error: "Aktivierung fehlgeschlagen: {message}",
   },
   // es, fr, pt, zh, ja packs come from TRANSLATION_PACKS above; en/de stay inline here as the reference locales.
   ...TRANSLATION_PACKS,

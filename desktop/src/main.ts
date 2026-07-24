@@ -24,6 +24,7 @@ import {
   initOnboarding,
   type OnboardingCloudProvider,
   type OnboardingController,
+  type OnboardingEmbeddingStatus,
   type OnboardingPersona,
 } from "./onboarding.js";
 import { initServerDbWizard } from "./server-db.js";
@@ -2808,6 +2809,14 @@ let onboardingPersonaId = "private";
 // local-hardware hint, also from desktop-bootstrap.
 let onboardingCloudProviders: OnboardingCloudProvider[] = [];
 let onboardingLocalAiCapable = false;
+// Embedding enhancement state (Phase 3); all-false until bootstrap answers.
+let onboardingEmbedding: OnboardingEmbeddingStatus = {
+  ollamaInstalled: false,
+  serverOnline: false,
+  modelPresent: false,
+  registered: false,
+  usable: false,
+};
 
 function showOnboarding(): void {
   if (!onboardingController) return;
@@ -3693,6 +3702,7 @@ async function loadDashboard() {
       onboardingPersonas?: OnboardingPersona[];
       cloudProviders?: OnboardingCloudProvider[];
       localAiCapable?: boolean;
+      embedding?: OnboardingEmbeddingStatus;
     }>("desktop-bootstrap");
     desktopUserId = settings.userId;
     setCurrentLocale(settings.locale || "en");
@@ -3705,6 +3715,7 @@ async function loadDashboard() {
       settings.cloudProviders ?? onboardingCloudProviders;
     onboardingLocalAiCapable =
       settings.localAiCapable ?? onboardingLocalAiCapable;
+    onboardingEmbedding = settings.embedding ?? onboardingEmbedding;
 
     initializeTranslations();
 
@@ -4716,6 +4727,7 @@ window.addEventListener("DOMContentLoaded", () => {
       cloudProviders: onboardingCloudProviders,
       localAiCapable: onboardingLocalAiCapable,
       aiConnected: isLlmEnabled,
+      embedding: onboardingEmbedding,
     }),
     openExternal: (url) => void openUrl(url),
     onLeave: (reason) => {

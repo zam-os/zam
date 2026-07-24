@@ -47,6 +47,7 @@ const CANONICAL_EMBEDDING_MODEL_ID = "embeddinggemma-300m";
 const EMBEDDINGGEMMA_ALIASES = new Set([
   "embeddinggemma",
   "embeddinggemma:300m",
+  "embeddinggemma:latest",
   "embeddinggemma-300m",
   "embed-gemma",
   "embed-gemma:300m",

@@ -195,6 +195,10 @@ import {
 } from "../llm/client.js";
 import { connectCloudProvider } from "../llm/cloud-connect.js";
 import { CLOUD_PROVIDERS } from "../llm/cloud-providers.js";
+import {
+  enableLocalEmbedding,
+  getLocalEmbeddingStatus,
+} from "../llm/local-embedding.js";
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
 import { createMobilePairingPayload } from "../mobile-pairing.js";
 import {
@@ -3264,6 +3268,10 @@ bridgeCommand
         // auto-selected, ADR 2026-07-24 §5).
         cloudProviders: CLOUD_PROVIDERS,
         localAiCapable: profile.hasRyzenNPU || profile.hasAppleSilicon,
+        // Embedding enhancement state (Phase 3): drives the model page's
+        // semantic-search block and keeps its copy honest about what a click
+        // will actually do (pull only vs. install-Ollama-first).
+        embedding: await getLocalEmbeddingStatus(db),
       });
     });
   });
@@ -3348,6 +3356,48 @@ bridgeCommand
         ok: true,
         created: result.created === true,
         model: modelRow(result.entry),
+      });
+    });
+  });
+
+// ── zam bridge embedding-status / embedding-enable ───────────────────────────
+
+bridgeCommand
+  .command("embedding-status")
+  .description(
+    "Report the local semantic-search enhancement state (JSON): Ollama " +
+      "install/server, EmbeddingGemma presence, registry entry, usability " +
+      "(ADR 2026-07-24 §5a).",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      jsonOut(await getLocalEmbeddingStatus(db));
+    });
+  });
+
+bridgeCommand
+  .command("embedding-enable")
+  .description(
+    "Enable local semantic search (JSON): pull EmbeddingGemma into a running " +
+      "Ollama if missing and register it for the embedding role. Never " +
+      "installs Ollama itself (ADR 2026-07-24 §5a).",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      const result = await enableLocalEmbedding(db);
+      if (!result.ok) {
+        jsonOut({
+          ok: false,
+          error: result.error,
+          needsOllama: result.needsOllama === true,
+          status: result.status,
+        });
+        return;
+      }
+      jsonOut({
+        ok: true,
+        pulled: result.pulled === true,
+        status: result.status,
       });
     });
   });
