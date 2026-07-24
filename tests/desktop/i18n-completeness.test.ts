@@ -283,6 +283,22 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "repair_skills_fixed",
   "repair_skills_ok",
   "update_none_verifying",
+  // First-run onboarding (ADR 2026-07-24) — en/de shipped per the plan's
+  // "German-first, leave further locale packs to native review" rule;
+  // es/fr/pt/zh/ja await the same pack backlog. Later onboarding phases
+  // append their en/de-only keys to this block.
+  "btn_run_onboarding",
+  "onboarding_welcome_title",
+  "onboarding_welcome_body",
+  "onboarding_welcome_hint",
+  "onboarding_done_title",
+  "onboarding_done_body",
+  "onboarding_progress",
+  "onboarding_back",
+  "onboarding_skip",
+  "onboarding_finish_later",
+  "onboarding_finish",
+  "onboarding_next",
 ]);
 
 /**

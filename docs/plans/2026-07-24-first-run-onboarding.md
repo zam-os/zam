@@ -35,7 +35,7 @@ Non-negotiables from the ADR:
 
 ## Status
 
-- [ ] **Phase 0 — Onboarding shell & first-run gate** — page container, machine-local
+- [x] **Phase 0 — Onboarding shell & first-run gate** — page container, machine-local
   `onboardingDone` flag, Settings re-entry, en/de copy scaffold.
 - [ ] **Phase 1 — Persona selection + knowledge-context seed** — data-driven personas,
   seeded context, machine-local persistence.
@@ -83,22 +83,22 @@ Non-negotiables from the ADR:
 
 Foundation: a page container and the flag that decides whether first-run shows.
 
-- [ ] Add a machine-local `onboardingDone` flag to `InstallConfig`
+- [x] Add a machine-local `onboardingDone` flag to `InstallConfig`
   (`src/kernel/system/install-config.ts`) with get/set helpers, mirroring
   `getAgentConnectAutoDone` / `setAgentConnectAutoDone`.
-- [ ] Desktop: on startup, when `onboardingDone` is false **and** the app is not
+- [x] Desktop: on startup, when `onboardingDone` is false **and** the app is not
   mid-review, route to a new `onboarding-view` (`desktop/index.html` +
   `desktop/src/main.ts`) instead of the dashboard. A fourth view alongside
   Dashboard / Learning content / Settings.
-- [ ] Page container: numbered steps, **Back / Skip / Next**, a progress
+- [x] Page container: numbered steps, **Back / Skip / Next**, a progress
   indicator, and a persistent **"Finish later"** that sets no flag but returns to
   the dashboard with the remaining steps visible (Phase 9). Completing the last
   page sets `onboardingDone = true`.
-- [ ] Settings entry point: a **"Run setup again"** action in the Settings view
+- [x] Settings entry point: a **"Run setup again"** action in the Settings view
   that re-opens the flow without clearing existing state (idempotent; never
   destructive).
-- [ ] en/de copy scaffold for page chrome (title, Back/Skip/Next, finish).
-- [ ] `zam init` parity: no behavior change yet, but factor its step sequence so
+- [x] en/de copy scaffold for page chrome (title, Back/Skip/Next, finish).
+- [x] `zam init` parity: no behavior change yet, but factor its step sequence so
   later phases can share it (extract a `provisioning/onboarding-steps.ts` seam if
   helpful).
 
