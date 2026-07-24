@@ -799,6 +799,11 @@ bridgeCommand
   .action(async () => {
     await withDb(async (db) => {
       const configuredDefault = (await getSetting(db, "agent.default")) || null;
+      // Lazy: keep the optional agent-llm surface out of the eager graph.
+      const { listAgentTextHarnessIds } = await import(
+        "../agent-llm/adapter.js"
+      );
+      const outboundTextIds = new Set(listAgentTextHarnessIds());
       const harnesses = await Promise.all(
         AGENT_HARNESSES.map(async (h) => {
           const override =
@@ -808,6 +813,8 @@ bridgeCommand
             label: h.label,
             kind: h.kind,
             detected: resolveHarnessExecutable(h, override) !== null,
+            /** True when this harness can back a `transport: "agent"` model. */
+            outboundText: outboundTextIds.has(h.id),
           };
         }),
       );
@@ -2711,6 +2718,9 @@ function modelRow(entry: ModelEntry): Record<string, unknown> {
         ? "set"
         : "missing"
       : "none",
+    // Agent transport fields (ADR 2026-07-12a). Absent/"http" for HTTP rows.
+    transport: entry.transport ?? "http",
+    agentHarness: entry.agentHarness,
   };
 }
 
@@ -2799,6 +2809,14 @@ bridgeCommand
   .option("--key-ref <ref>", "Credential reference for API key")
   .option("--capabilities <json>", "JSON object of user-selected capabilities")
   .option("--order <n>", "Explicit sort order")
+  .option(
+    "--transport <transport>",
+    'How ZAM reaches the model: "http" (default) or "agent" (ADR 2026-07-12a)',
+  )
+  .option(
+    "--agent-harness <id>",
+    'Harness id for transport "agent" (e.g. claude-code)',
+  )
   .action(async (opts, command) => {
     if (opts.flavor && !VALID_API_FLAVORS.includes(opts.flavor)) {
       jsonError(`Invalid --flavor: ${opts.flavor}.`);
@@ -2810,6 +2828,79 @@ bridgeCommand
     if (opts.id && existingIndex < 0) jsonError(`No such model: ${opts.id}`);
     const prev = existingIndex >= 0 ? models[existingIndex] : undefined;
 
+    const transportRaw = (opts.transport ??
+      prev?.transport ??
+      "http") as string;
+    if (transportRaw !== "http" && transportRaw !== "agent") {
+      jsonError(`Invalid --transport: ${transportRaw}. Use http or agent.`);
+    }
+    const transport = transportRaw as "http" | "agent";
+    const order =
+      opts.order !== undefined
+        ? Number.parseInt(opts.order, 10)
+        : (prev?.order ?? models.length);
+
+    // ── Agent transport (ADR 2026-07-12a): no HTTP endpoint to probe ────────
+    if (transport === "agent") {
+      const agentHarness = (opts.agentHarness ??
+        prev?.agentHarness ??
+        "") as string;
+      if (!agentHarness) {
+        jsonError("--agent-harness is required when --transport is agent");
+      }
+      const { getAgentAdapter } = await import("../agent-llm/adapter.js");
+      const adapter = getAgentAdapter(agentHarness);
+      if (!adapter) {
+        jsonError(
+          `No agent-text adapter for harness "${agentHarness}". ` +
+            "Supported today: claude-code.",
+        );
+      }
+      const harnessMeta = getHarness(agentHarness);
+      const probe = await adapter.probe();
+      const now = new Date().toISOString();
+      const detected = emptyCapabilityFlags();
+      // Agent adapters are text-only today (curriculum + recall).
+      detected.text = probe.available;
+      const requested = opts.capabilities
+        ? parseCapabilityFlags(opts.capabilities)
+        : (prev?.capabilities ?? { ...emptyCapabilityFlags(), text: true });
+      // User intent is text for an agent entry; resolveCapability still requires
+      // both capabilities and detectedCapabilities, so an offline harness is
+      // skipped until a successful re-probe. Non-text caps are never offered.
+      const capabilities = emptyCapabilityFlags();
+      capabilities.text = requested.text !== false;
+      const entry: ModelEntry = {
+        id: opts.id ?? ulid(),
+        label: opts.label ?? prev?.label ?? harnessMeta?.label ?? agentHarness,
+        url: "",
+        model: `agent:${agentHarness}`,
+        local: false,
+        apiFlavor: "chat-completions",
+        order,
+        capabilities,
+        detectedCapabilities: detected,
+        probedAt: now,
+        transport: "agent",
+        agentHarness,
+      };
+      const next = [...models];
+      if (existingIndex >= 0) next[existingIndex] = entry;
+      else next.push(entry);
+      saveMachineAiModels(next);
+      jsonOut({
+        ok: true,
+        model: modelRow(entry),
+        probe: {
+          reachable: probe.available,
+          detected,
+          detail: probe.detail,
+        },
+      });
+      return;
+    }
+
+    // ── HTTP transport (local / cloud) ──────────────────────────────────────
     const url = opts.url ?? prev?.url ?? "";
     if (!url) jsonError("--url is required");
     const model = opts.model ?? prev?.model ?? "";
@@ -2820,10 +2911,6 @@ bridgeCommand
       command.getOptionValueSource("local") === "cli"
         ? opts.local === true
         : (prev?.local ?? urlLooksLocal(url));
-    const order =
-      opts.order !== undefined
-        ? Number.parseInt(opts.order, 10)
-        : (prev?.order ?? models.length);
 
     const candidate: ModelEntry = {
       id: opts.id ?? ulid(),
@@ -2843,6 +2930,8 @@ bridgeCommand
     if (runner) candidate.runner = runner;
     const apiKeyRef = opts.keyRef ?? prev?.apiKeyRef;
     if (apiKeyRef) candidate.apiKeyRef = apiKeyRef;
+    // Clearing agent fields when re-saving as HTTP keeps the row coherent.
+    // (transport/agentHarness omitted = HTTP default.)
 
     const probe = await probeModelCapabilities(candidate, {
       embeddingDimProbe: true,
@@ -2873,6 +2962,43 @@ bridgeCommand
     const index = models.findIndex((m) => m.id === opts.id);
     if (index < 0) jsonError(`No such model: ${opts.id}`);
     const entry = models[index];
+
+    // Agent transport: probe the harness CLI, not an HTTP endpoint.
+    if (entry.transport === "agent") {
+      if (!entry.agentHarness) {
+        jsonError("Agent model is missing agentHarness.");
+      }
+      const { getAgentAdapter } = await import("../agent-llm/adapter.js");
+      const adapter = getAgentAdapter(entry.agentHarness);
+      if (!adapter) {
+        jsonError(`No agent-text adapter for harness "${entry.agentHarness}".`);
+      }
+      const probe = await adapter.probe();
+      const detected = emptyCapabilityFlags();
+      detected.text = probe.available;
+      // Preserve user intent for text; detection alone gates runtime selection.
+      const capabilities = emptyCapabilityFlags();
+      capabilities.text = entry.capabilities.text === true;
+      const updated: ModelEntry = {
+        ...entry,
+        capabilities,
+        detectedCapabilities: detected,
+        probedAt: new Date().toISOString(),
+      };
+      const next = [...models];
+      next[index] = updated;
+      saveMachineAiModels(next);
+      jsonOut({
+        ok: true,
+        model: modelRow(updated),
+        probe: {
+          reachable: probe.available,
+          detected,
+          detail: probe.detail,
+        },
+      });
+      return;
+    }
 
     const probe = await probeModelCapabilities(entry, {
       embeddingDimProbe: true,

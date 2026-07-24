@@ -256,6 +256,73 @@
         background: var(--hover);
         color: var(--muted);
       }
+      .settings-ai-row {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 12px;
+        margin-bottom: 8px;
+      }
+      .settings-ai-row-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 4px;
+      }
+      .settings-ai-label {
+        font-weight: 700;
+      }
+      .settings-ai-badge {
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 800;
+        padding: 2px 8px;
+        text-transform: uppercase;
+      }
+      .settings-ai-badge.local {
+        background: rgba(34, 197, 94, 0.12);
+        color: #22c55e;
+      }
+      .settings-ai-badge.cloud {
+        background: rgba(14, 165, 233, 0.12);
+        color: #0ea5e9;
+      }
+      .settings-ai-badge.agent {
+        background: rgba(168, 85, 247, 0.12);
+        color: #a855f7;
+      }
+      .settings-ai-meta {
+        color: var(--muted);
+        font-size: 12px;
+        margin: 0 0 8px;
+      }
+      .settings-ai-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .settings-ai-form {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px;
+        margin-top: 10px;
+        display: grid;
+        gap: 8px;
+      }
+      .settings-ai-form.hidden {
+        display: none;
+      }
+      .settings-ai-kind {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .settings-ai-kind label {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 13px;
+      }
     </style>
   </head>
   <body>
@@ -268,6 +335,13 @@
           Recall
         </div>
         <div id="settings-recall"></div>
+      </section>
+
+      <section class="zam-card settings-section">
+        <div class="settings-section-title" id="settings-section-ai-title">
+          AI models
+        </div>
+        <div id="settings-ai"></div>
       </section>
 
       <section class="zam-card settings-section">

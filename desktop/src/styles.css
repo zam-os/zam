@@ -838,6 +838,12 @@ textarea:focus-visible {
   color: var(--clr-accent-cyan);
 }
 
+.ai-model-badge.agent {
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.28);
+  color: #a855f7;
+}
+
 .ai-model-caps {
   display: flex;
   flex-wrap: wrap;

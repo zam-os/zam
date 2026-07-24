@@ -68,15 +68,25 @@ export class AgentError extends Error {
 }
 
 /**
+ * Harnesses that currently ship an outbound-text adapter. The Settings UI only
+ * offers these as Agent models; additional ids land here as adapters land
+ * (Codex, Antigravity CLI, Grok, … — ADR 2026-07-12a).
+ */
+const AGENT_TEXT_ADAPTERS: Record<string, () => AgentTextAdapter> = {
+  "claude-code": () => new ClaudeCodeAdapter(),
+};
+
+/** Harness ids that can back a `transport: "agent"` model entry today. */
+export function listAgentTextHarnessIds(): string[] {
+  return Object.keys(AGENT_TEXT_ADAPTERS);
+}
+
+/**
  * Resolve the adapter for a harness id (as stored in `ModelEntry.agentHarness`),
  * or `null` when no outbound-text adapter exists for it yet. Constructed lazily
  * to keep this optional surface out of the eager module graph.
  */
 export function getAgentAdapter(harness: string): AgentTextAdapter | null {
-  switch (harness) {
-    case "claude-code":
-      return new ClaudeCodeAdapter();
-    default:
-      return null;
-  }
+  const factory = AGENT_TEXT_ADAPTERS[harness];
+  return factory ? factory() : null;
 }

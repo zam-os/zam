@@ -250,9 +250,14 @@ import and the full recall loop**:
    is flattened into one transcript prompt).
 5. Contract tests with mocked harness responses; **no live `claude` in CI**.
 
+Settings UI for adding an Agent model (desktop + MCP settings panel) lands in
+this PR as a follow-up commit: third kind in the model form, `model-upsert
+--transport agent --agent-harness <id>`, harness list filtered to adapters that
+exist today (Claude Code).
+
 Deferred to later PRs: remaining `text`-role callers (card split, foundation
-proposals, Content Studio helpers), the Codex/Antigravity/Grok adapters, Settings
-UI for adding an Agent model, and the auto-install bootstrap.
+proposals, Content Studio helpers), the Codex/Antigravity/Grok adapters, and
+the auto-install bootstrap.
 
 ---
 

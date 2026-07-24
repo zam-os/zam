@@ -167,6 +167,19 @@ interface ModelRow {
   probedAt?: string;
   apiKeyRef?: string;
   keyState: "set" | "missing" | "none";
+  /** ADR 2026-07-12a — "http" (default) or "agent". */
+  transport?: "http" | "agent";
+  /** Harness id when transport is "agent" (e.g. "claude-code"). */
+  agentHarness?: string;
+}
+
+interface AgentHarnessListEntry {
+  id: string;
+  label: string;
+  kind: string;
+  detected: boolean;
+  /** True when this harness can back a `transport: "agent"` model. */
+  outboundText?: boolean;
 }
 
 interface WorkspaceConfig {
@@ -1635,6 +1648,10 @@ function textButton(label: string): HTMLButtonElement {
   return button;
 }
 
+function isAgentModel(row: ModelRow): boolean {
+  return row.transport === "agent";
+}
+
 function createModelRow(
   row: ModelRow,
   index: number,
@@ -1642,6 +1659,7 @@ function createModelRow(
 ): HTMLElement {
   const el = document.createElement("div");
   el.className = "ai-model-row";
+  const agent = isAgentModel(row);
 
   const header = document.createElement("div");
   header.className = "ai-model-row-head";
@@ -1649,19 +1667,32 @@ function createModelRow(
   title.className = "ai-model-label";
   title.textContent = row.label;
   const badge = document.createElement("span");
-  badge.className = row.local ? "ai-model-badge local" : "ai-model-badge cloud";
-  badge.textContent = row.local
-    ? t("model_local_badge")
-    : t("model_cloud_badge");
+  if (agent) {
+    badge.className = "ai-model-badge agent";
+    badge.textContent = t("model_agent_badge");
+  } else {
+    badge.className = row.local
+      ? "ai-model-badge local"
+      : "ai-model-badge cloud";
+    badge.textContent = row.local
+      ? t("model_local_badge")
+      : t("model_cloud_badge");
+  }
   header.append(title, badge);
 
   const meta = document.createElement("p");
   meta.className = "ai-provider-meta";
-  meta.textContent = `${row.model} · ${row.url}`;
+  meta.textContent = agent
+    ? tf("model_agent_meta", {
+        harness: row.agentHarness || row.model || "—",
+      })
+    : `${row.model} · ${row.url}`;
 
   const caps = document.createElement("div");
   caps.className = "ai-model-caps";
   for (const cap of UI_CAPABILITIES) {
+    // Agent entries are text-only (curriculum + recall); hide other caps.
+    if (agent && cap !== "text") continue;
     const label = document.createElement("label");
     label.className = "ai-model-cap";
     const box = document.createElement("input");
@@ -1675,13 +1706,26 @@ function createModelRow(
     const text = document.createElement("span");
     text.textContent = capabilityLabel(cap);
     label.append(box, text);
-    if (!row.detectedCapabilities[cap]) label.title = t("model_cap_undetected");
+    if (!row.detectedCapabilities[cap]) {
+      label.title = agent
+        ? t("model_agent_cap_undetected")
+        : t("model_cap_undetected");
+    }
     caps.append(label);
   }
 
   const statusChip = document.createElement("span");
   statusChip.className = "ai-model-status";
-  if (row.keyState === "missing") {
+  if (agent) {
+    if (row.detectedCapabilities.text) {
+      statusChip.textContent = t("model_agent_status_ready");
+    } else if (row.probedAt) {
+      statusChip.textContent = t("model_agent_status_offline");
+      statusChip.classList.add("warn");
+    } else {
+      statusChip.textContent = t("model_status_unprobed");
+    }
+  } else if (row.keyState === "missing") {
     statusChip.textContent = t("model_status_key_missing");
     statusChip.classList.add("warn");
   } else if (row.probedAt) {
@@ -1701,7 +1745,7 @@ function createModelRow(
   const reprobeButton = textButton(t("model_btn_reprobe"));
   reprobeButton.addEventListener("click", () => void reprobeModel(row.id));
   const editButton = textButton(t("model_btn_edit"));
-  editButton.addEventListener("click", () => showModelForm(row.id));
+  editButton.addEventListener("click", () => void showModelForm(row.id));
   const removeButton = textButton(t("model_btn_remove"));
   removeButton.classList.add("danger");
   removeButton.addEventListener("click", () => void removeModel(row));
@@ -1815,11 +1859,40 @@ function modelFieldLabel(
   return field;
 }
 
-function showModelForm(id?: string): void {
+type ModelFormKind = "local" | "cloud" | "agent";
+
+function existingModelKind(existing: ModelRow | undefined): ModelFormKind {
+  if (!existing) return "local";
+  if (isAgentModel(existing)) return "agent";
+  return existing.local ? "local" : "cloud";
+}
+
+async function loadOutboundAgentHarnesses(): Promise<AgentHarnessListEntry[]> {
+  try {
+    const res = await runBridge<{ harnesses: AgentHarnessListEntry[] }>(
+      "agent-list",
+    );
+    return (res.harnesses ?? []).filter((h) => h.outboundText);
+  } catch {
+    // Fallback when agent-list fails: still offer the shipped adapter.
+    return [
+      {
+        id: "claude-code",
+        label: "Claude Code",
+        kind: "cli",
+        detected: false,
+        outboundText: true,
+      },
+    ];
+  }
+}
+
+async function showModelForm(id?: string): Promise<void> {
   const form = document.getElementById("ai-provider-form");
   if (!form) return;
   editingModelId = id ?? null;
   const existing = id ? modelRegistry.find((m) => m.id === id) : undefined;
+  const initialKind = existingModelKind(existing);
 
   form.classList.remove("hidden");
   form.replaceChildren();
@@ -1833,27 +1906,27 @@ function showModelForm(id?: string): void {
   const kindWrap = document.createElement("div");
   kindWrap.className = "provider-kind-switch";
   kindWrap.setAttribute("role", "radiogroup");
-  const localLabel = document.createElement("label");
-  localLabel.className = "provider-kind-option";
-  const localRadio = document.createElement("input");
-  localRadio.type = "radio";
-  localRadio.name = "ai-model-kind";
-  localRadio.value = "local";
-  localRadio.checked = existing?.local ?? true;
-  const localText = document.createElement("span");
-  localText.textContent = t("model_kind_local");
-  localLabel.append(localRadio, localText);
-  const cloudLabel = document.createElement("label");
-  cloudLabel.className = "provider-kind-option";
-  const cloudRadio = document.createElement("input");
-  cloudRadio.type = "radio";
-  cloudRadio.name = "ai-model-kind";
-  cloudRadio.value = "cloud";
-  cloudRadio.checked = existing ? !existing.local : false;
-  const cloudText = document.createElement("span");
-  cloudText.textContent = t("model_kind_cloud");
-  cloudLabel.append(cloudRadio, cloudText);
-  kindWrap.append(localLabel, cloudLabel);
+
+  const radios = new Map<ModelFormKind, HTMLInputElement>();
+  for (const kind of ["local", "cloud", "agent"] as ModelFormKind[]) {
+    const label = document.createElement("label");
+    label.className = "provider-kind-option";
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "ai-model-kind";
+    radio.value = kind;
+    radio.checked = initialKind === kind;
+    const text = document.createElement("span");
+    text.textContent =
+      kind === "local"
+        ? t("model_kind_local")
+        : kind === "cloud"
+          ? t("model_kind_cloud")
+          : t("model_kind_agent");
+    label.append(radio, text);
+    kindWrap.append(label);
+    radios.set(kind, radio);
+  }
 
   const labelInput = document.createElement("input");
   labelInput.type = "text";
@@ -1870,13 +1943,41 @@ function showModelForm(id?: string): void {
   keyInput.placeholder =
     existing?.keyState === "set" ? t("model_key_set_placeholder") : "";
 
+  const harnessSelect = document.createElement("select");
+  harnessSelect.className = "settings-select";
+  const harnesses = await loadOutboundAgentHarnesses();
+  for (const h of harnesses) {
+    const opt = document.createElement("option");
+    opt.value = h.id;
+    const mark = h.detected ? "" : ` (${t("model_agent_harness_missing")})`;
+    opt.textContent = `${h.label}${mark}`;
+    harnessSelect.appendChild(opt);
+  }
+  if (existing?.agentHarness) {
+    harnessSelect.value = existing.agentHarness;
+  } else {
+    const preferred = harnesses.find((h) => h.detected) ?? harnesses[0];
+    if (preferred) harnessSelect.value = preferred.id;
+  }
+  if (harnesses.length === 0) {
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.textContent = t("model_agent_harness_none");
+    harnessSelect.appendChild(opt);
+  }
+
+  const labelField = modelFieldLabel(t("model_field_label"), labelInput);
+  const urlField = modelFieldLabel(t("model_field_url"), urlInput);
+  const modelField = modelFieldLabel(t("model_field_model"), modelInput);
   const keyField = modelFieldLabel(t("model_field_key"), keyInput);
-  const syncKeyVisibility = (): void => {
-    keyField.classList.toggle("hidden", localRadio.checked);
-  };
-  localRadio.addEventListener("change", syncKeyVisibility);
-  cloudRadio.addEventListener("change", syncKeyVisibility);
-  syncKeyVisibility();
+  const harnessField = modelFieldLabel(
+    t("model_field_harness"),
+    harnessSelect,
+  );
+
+  const agentHint = document.createElement("p");
+  agentHint.className = "ai-provider-hint";
+  agentHint.textContent = t("model_agent_hint");
 
   const capsWrap = document.createElement("div");
   capsWrap.className = "ai-model-caps";
@@ -1884,6 +1985,7 @@ function showModelForm(id?: string): void {
   for (const cap of UI_CAPABILITIES) {
     const label = document.createElement("label");
     label.className = "ai-model-cap";
+    label.dataset.cap = cap;
     const box = document.createElement("input");
     box.type = "checkbox";
     box.checked = existing?.capabilities[cap] ?? cap === "text";
@@ -1899,12 +2001,60 @@ function showModelForm(id?: string): void {
 
   const grid = document.createElement("div");
   grid.className = "ai-provider-form-grid";
-  grid.append(
-    modelFieldLabel(t("model_field_label"), labelInput),
-    modelFieldLabel(t("model_field_url"), urlInput),
-    modelFieldLabel(t("model_field_model"), modelInput),
-    keyField,
-  );
+  grid.append(labelField, urlField, modelField, keyField, harnessField);
+
+  const selectedKind = (): ModelFormKind => {
+    for (const [kind, radio] of radios) {
+      if (radio.checked) return kind;
+    }
+    return "local";
+  };
+
+  const syncKindVisibility = (): void => {
+    const kind = selectedKind();
+    const isAgent = kind === "agent";
+    const isLocal = kind === "local";
+    urlField.classList.toggle("hidden", isAgent);
+    modelField.classList.toggle("hidden", isAgent);
+    keyField.classList.toggle("hidden", isAgent || isLocal);
+    harnessField.classList.toggle("hidden", !isAgent);
+    agentHint.classList.toggle("hidden", !isAgent);
+    // Agent is text-only; hide embedding/vision checkboxes.
+    for (const cap of UI_CAPABILITIES) {
+      const label = capsWrap.querySelector(
+        `label[data-cap="${cap}"]`,
+      ) as HTMLLabelElement | null;
+      if (!label) continue;
+      if (isAgent) {
+        label.classList.toggle("hidden", cap !== "text");
+        const box = capBoxes.get(cap);
+        if (box && cap === "text") box.checked = true;
+      } else {
+        label.classList.remove("hidden");
+      }
+    }
+    capHint.textContent = isAgent
+      ? t("model_agent_cap_hint")
+      : t("model_cap_hint");
+    // Default label from harness when adding a new agent model.
+    if (isAgent && !editingModelId && !labelInput.value.trim()) {
+      const selected = harnesses.find((h) => h.id === harnessSelect.value);
+      if (selected) labelInput.placeholder = selected.label;
+    }
+  };
+
+  for (const radio of radios.values()) {
+    radio.addEventListener("change", syncKindVisibility);
+  }
+  harnessSelect.addEventListener("change", () => {
+    if (!editingModelId && selectedKind() === "agent") {
+      const selected = harnesses.find((h) => h.id === harnessSelect.value);
+      if (selected && !labelInput.value.trim()) {
+        labelInput.placeholder = selected.label;
+      }
+    }
+  });
+  syncKindVisibility();
 
   const actions = document.createElement("div");
   actions.className = "settings-actions";
@@ -1913,14 +2063,18 @@ function showModelForm(id?: string): void {
   saveButton.className = "btn primary-btn btn-sm";
   saveButton.textContent = t("model_btn_save");
   saveButton.addEventListener("click", () => {
+    const kind = selectedKind();
     const capabilities: Record<string, boolean> = {};
-    for (const [cap, box] of capBoxes) capabilities[cap] = box.checked;
+    for (const [cap, box] of capBoxes) {
+      capabilities[cap] = kind === "agent" ? cap === "text" : box.checked;
+    }
     void saveModelForm({
       id: editingModelId ?? undefined,
+      kind,
       label: labelInput.value.trim(),
       url: urlInput.value.trim(),
       model: modelInput.value.trim(),
-      local: localRadio.checked,
+      agentHarness: harnessSelect.value,
       key: keyInput.value.trim(),
       existingKeyRef: existing?.apiKeyRef,
       capabilities,
@@ -1933,15 +2087,16 @@ function showModelForm(id?: string): void {
   cancelButton.addEventListener("click", hideModelForm);
   actions.append(saveButton, cancelButton);
 
-  form.append(kindWrap, grid, capsWrap, capHint, actions);
+  form.append(kindWrap, grid, agentHint, capsWrap, capHint, actions);
 }
 
 interface ModelFormData {
   id?: string;
+  kind: ModelFormKind;
   label: string;
   url: string;
   model: string;
-  local: boolean;
+  agentHarness?: string;
   key: string;
   existingKeyRef?: string;
   capabilities: Record<string, boolean>;
@@ -1949,14 +2104,51 @@ interface ModelFormData {
 
 async function saveModelForm(data: ModelFormData): Promise<void> {
   const status = aiConfigStatusEl();
+
+  if (data.kind === "agent") {
+    if (!data.agentHarness) {
+      if (status) status.textContent = t("model_agent_missing_harness");
+      return;
+    }
+    const harnesses = await loadOutboundAgentHarnesses();
+    const harnessMeta = harnesses.find((h) => h.id === data.agentHarness);
+    const label = data.label || harnessMeta?.label || data.agentHarness;
+    const args = [
+      "--transport",
+      "agent",
+      "--agent-harness",
+      data.agentHarness,
+      "--label",
+      label,
+      "--capabilities",
+      JSON.stringify({ text: true }),
+    ];
+    if (data.id) args.push("--id", data.id);
+    try {
+      await runBridge("model-upsert", args);
+      hideModelForm();
+      await loadModelRegistry();
+      await loadProviderStatus();
+      if (status) status.textContent = tf("model_saved", { label });
+    } catch (err) {
+      if (status) {
+        status.textContent = tf("model_save_failed", {
+          message: errorMessage(err),
+        });
+      }
+    }
+    return;
+  }
+
   if (!data.url || !data.model) {
     if (status) status.textContent = t("model_missing_fields");
     return;
   }
   const label = data.label || data.model;
+  const isLocal = data.kind === "local";
 
   let keyRef = data.existingKeyRef;
-  if (!data.local && data.key) {
+  if (!isLocal && data.key) {
     keyRef =
       keyRef ??
       `model-key-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -1973,6 +2165,8 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
   }
 
   const args = [
+    "--transport",
+    "http",
     "--label",
     label,
     "--url",
@@ -1981,10 +2175,10 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
     data.model,
     "--capabilities",
     JSON.stringify(data.capabilities),
-    ...(data.local ? ["--local"] : ["--no-local"]),
+    ...(isLocal ? ["--local"] : ["--no-local"]),
   ];
   if (data.id) args.push("--id", data.id);
-  if (!data.local && keyRef) args.push("--key-ref", keyRef);
+  if (!isLocal && keyRef) args.push("--key-ref", keyRef);
 
   try {
     await runBridge("model-upsert", args);
@@ -5079,7 +5273,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("btn-add-ai-provider")?.addEventListener("click", () => {
-    showModelForm();
+    void showModelForm();
   });
 
   document.getElementById("btn-check-updates")?.addEventListener("click", () => {

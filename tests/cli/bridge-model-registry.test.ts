@@ -43,7 +43,9 @@ describe("bridge model-* registry commands", () => {
       res.writeHead(404);
       res.end();
     });
-    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    await new Promise<void>((resolve) =>
+      server.listen(0, "127.0.0.1", resolve),
+    );
     const address = server.address();
     if (address && typeof address === "object") {
       baseUrl = `http://127.0.0.1:${address.port}/v1`;
@@ -196,6 +198,77 @@ describe("bridge model-* registry commands", () => {
     expect(removed.parsed.ok).toBe(true);
     expect(removed.parsed.models.map((m) => m.id)).toEqual([idA]);
     expect(removed.parsed.models[0].order).toBe(0);
+  });
+
+  it("upserts an agent-transport model without an HTTP endpoint", async () => {
+    // ADR 2026-07-12a: agent entries have no URL; the harness is the "endpoint".
+    // Probe availability depends on whether `claude` is on PATH in this env —
+    // the registry always persists the row either way.
+    const res = (await runBridge([
+      "model-upsert",
+      "--transport",
+      "agent",
+      "--agent-harness",
+      "claude-code",
+      "--label",
+      "Claude Code",
+      "--capabilities",
+      JSON.stringify({ text: true }),
+    ])) as {
+      parsed: {
+        ok?: boolean;
+        error?: string;
+        model?: {
+          id: string;
+          transport: string;
+          agentHarness: string;
+          label: string;
+          capabilities: Record<string, boolean>;
+          model: string;
+        };
+      };
+    };
+
+    expect(res.parsed.error).toBeUndefined();
+    expect(res.parsed.ok).toBe(true);
+    expect(res.parsed.model).toMatchObject({
+      transport: "agent",
+      agentHarness: "claude-code",
+      label: "Claude Code",
+      model: "agent:claude-code",
+      capabilities: expect.objectContaining({ text: true }),
+    });
+
+    const listed = (await runBridge(["model-list"])) as {
+      parsed: {
+        models: Array<{
+          id: string;
+          transport: string;
+          agentHarness?: string;
+        }>;
+      };
+    };
+    expect(listed.parsed.models.some((m) => m.transport === "agent")).toBe(
+      true,
+    );
+    expect(readConfig().ai?.models?.[0]).toMatchObject({
+      transport: "agent",
+      agentHarness: "claude-code",
+    });
+  });
+
+  it("rejects agent upsert for a harness without an outbound adapter", async () => {
+    const res = (await runBridge([
+      "model-upsert",
+      "--transport",
+      "agent",
+      "--agent-harness",
+      "opencode",
+      "--label",
+      "opencode",
+    ])) as { parsed: { error?: string } };
+    expect(res.parsed.error).toMatch(/no agent-text adapter/i);
+    expect(readConfig().ai?.models ?? []).toHaveLength(0);
   });
 
   it("migrates legacy providers/roles into ai.models on first model-list", async () => {
