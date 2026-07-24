@@ -133,6 +133,11 @@ const OLLAMA_DOWNLOAD_URL = "https://ollama.com/download";
 export interface OnboardingController {
   /** Reset to the first step, render, and reveal the flow. */
   start(): void;
+  /**
+   * Open the flow directly at a step (e.g. Learning Content's "Goal import"
+   * jumps to the goal page). Falls back to the first step for unknown ids.
+   */
+  startAt(stepId: string): void;
 }
 
 interface OnboardingDeps {
@@ -152,6 +157,12 @@ interface OnboardingDeps {
    * app WebView away from the flow.
    */
   openExternal(url: string): void;
+  /**
+   * Trigger an existing Studio import entry point — both are document-level
+   * modal overlays, so they open on top of the flow (plan Phase 8: wire the
+   * existing entry points, never reimplement them).
+   */
+  openContentEntry(entry: "curriculum" | "free-import"): void;
 }
 
 /**
@@ -171,6 +182,71 @@ let lastPersistedPersonaId: string | null = null;
 export interface OnboardingStepActions {
   openExternal(url: string): void;
   goToStep(id: string): void;
+  /** Trigger an existing Studio import entry point (modal overlays). */
+  openContentEntry(entry: "curriculum" | "free-import"): void;
+}
+
+// ── Content paths (ADR 2026-07-24 §2, plan Phase 8) ─────────────────────────
+
+/**
+ * The import paths offered on the content page — one row per
+ * `PersonaDescriptor.defaultImportPath` value. The persona selects which row
+ * leads (a default, never a lock); every row stays visible and reachable, and
+ * the actions wire the EXISTING entry points (curriculum wizard overlay,
+ * Studio import modal, the goal and agent pages) instead of reimplementing
+ * them.
+ */
+export interface ContentPathDescriptor {
+  id: string;
+  labelKey: string;
+  bodyKey: string;
+  actionLabelKey: string;
+  action:
+    | { kind: "entry"; entry: "curriculum" | "free-import" }
+    | { kind: "step"; step: string };
+}
+
+export const CONTENT_PATHS: readonly ContentPathDescriptor[] = [
+  {
+    id: "curriculum",
+    labelKey: "onboarding_content_curriculum_label",
+    bodyKey: "onboarding_content_curriculum_body",
+    actionLabelKey: "onboarding_content_curriculum_action",
+    action: { kind: "entry", entry: "curriculum" },
+  },
+  {
+    id: "free-import",
+    labelKey: "onboarding_content_free_label",
+    bodyKey: "onboarding_content_free_body",
+    actionLabelKey: "onboarding_content_free_action",
+    action: { kind: "entry", entry: "free-import" },
+  },
+  {
+    id: "okf-import",
+    labelKey: "onboarding_content_okf_label",
+    bodyKey: "onboarding_content_okf_body",
+    actionLabelKey: "onboarding_content_okf_action",
+    action: { kind: "step", step: "agent" },
+  },
+  {
+    id: "goal-import",
+    labelKey: "onboarding_content_goal_label",
+    bodyKey: "onboarding_content_goal_body",
+    actionLabelKey: "onboarding_content_goal_action",
+    action: { kind: "step", step: "goal" },
+  },
+];
+
+/** The persona's default path first, the rest in canonical order. */
+export function orderContentPaths(
+  defaultId: string,
+): readonly ContentPathDescriptor[] {
+  const preferred = CONTENT_PATHS.find((path) => path.id === defaultId);
+  if (!preferred) return CONTENT_PATHS;
+  return [
+    preferred,
+    ...CONTENT_PATHS.filter((path) => path.id !== defaultId),
+  ];
 }
 
 export function buildOnboardingSteps(
@@ -387,6 +463,62 @@ export function buildOnboardingSteps(
         });
 
         container.append(controls, status);
+      },
+    },
+    {
+      id: "content",
+      titleKey: "onboarding_content_kicker",
+      // Skippable (ADR page table): the dashboard shows the import paths
+      // instead of an empty state when nothing was imported (Phase 9).
+      skippable: true,
+      render(container) {
+        container.append(
+          heading(t("onboarding_content_title")),
+          paragraph(t("onboarding_content_body")),
+        );
+        // The default follows the persona chosen on page 2 — read live from
+        // this flow's selection so changing the persona re-routes this page.
+        const persona = ctx.personas.find((p) => p.id === selectedPersonaId);
+        const defaultPath = persona?.defaultImportPath ?? "goal-import";
+        const list = document.createElement("div");
+        list.className = "onboarding-goal-level";
+        for (const path of orderContentPaths(defaultPath)) {
+          const card = document.createElement("div");
+          card.className = "onboarding-goal-topic onboarding-content-path";
+          card.dataset.pathId = path.id;
+          const head = document.createElement("div");
+          head.className = "onboarding-model-card-head";
+          const label = document.createElement("p");
+          label.className = "onboarding-agent-offer-label";
+          label.textContent = t(path.labelKey);
+          head.append(label);
+          if (path.id === defaultPath) {
+            const badge = document.createElement("span");
+            badge.className = "onboarding-model-badge";
+            badge.textContent = t("onboarding_content_recommended");
+            head.append(badge);
+          }
+          const body = document.createElement("p");
+          body.className = "onboarding-model-line";
+          body.textContent = t(path.bodyKey);
+          const actionBtn = document.createElement("button");
+          actionBtn.type = "button";
+          actionBtn.className =
+            path.id === defaultPath
+              ? "btn primary-btn btn-sm"
+              : "btn secondary-btn btn-sm";
+          actionBtn.textContent = t(path.actionLabelKey);
+          actionBtn.addEventListener("click", () => {
+            if (path.action.kind === "entry") {
+              actions.openContentEntry(path.action.entry);
+            } else {
+              actions.goToStep(path.action.step);
+            }
+          });
+          card.append(head, body, actionBtn);
+          list.append(card);
+        }
+        container.append(list);
       },
     },
     {
@@ -1388,19 +1520,30 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
     deps.onLeave("later");
   });
 
+  function rebuild(): void {
+    steps = buildOnboardingSteps(deps.getStepContext(), {
+      openExternal: deps.openExternal,
+      openContentEntry: deps.openContentEntry,
+      // Degraded modes link back instead of erroring (ADR §7): e.g. the
+      // goal page sends the user to the model page when no text LLM is
+      // connected. Reads `steps` live, so it works for any built flow.
+      goToStep: (id) => {
+        const target = steps.findIndex((step) => step.id === id);
+        if (target >= 0) goTo(target);
+      },
+    });
+  }
+
   return {
     start(): void {
-      steps = buildOnboardingSteps(deps.getStepContext(), {
-        openExternal: deps.openExternal,
-        // Degraded modes link back instead of erroring (ADR §7): e.g. the
-        // goal page sends the user to the model page when no text LLM is
-        // connected. Reads `steps` live, so it works for any built flow.
-        goToStep: (id) => {
-          const target = steps.findIndex((step) => step.id === id);
-          if (target >= 0) goTo(target);
-        },
-      });
+      rebuild();
       index = 0;
+      render();
+    },
+    startAt(stepId: string): void {
+      rebuild();
+      const target = steps.findIndex((step) => step.id === stepId);
+      index = Math.max(0, target);
       render();
     },
   };

@@ -712,6 +712,9 @@ function initializeTranslations() {
   // Curriculum Import Wizard Translations
   const btnContentCurriculumWizard = document.getElementById("btn-content-curriculum-wizard");
   if (btnContentCurriculumWizard) btnContentCurriculumWizard.textContent = t("btn_curriculum_wizard");
+  // Goal import entry (plan Phase 8): reopens the onboarding goal page.
+  const btnContentGoalImport = document.getElementById("btn-content-goal-import");
+  if (btnContentGoalImport) btnContentGoalImport.textContent = t("btn_content_goal_import");
   const lblCurriculumWizardTitle = document.getElementById("lbl-curriculum-wizard-title");
   if (lblCurriculumWizardTitle) lblCurriculumWizardTitle.textContent = t("lbl_curriculum_wizard_title");
   const btnCurriculumWizardBack = document.getElementById("btn-curriculum-wizard-back");
@@ -2886,6 +2889,13 @@ function showOnboarding(): void {
   onboardingController.start();
 }
 
+/** Open the flow directly at one page (e.g. Learning Content → goal import). */
+function showOnboardingAt(stepId: string): void {
+  if (!onboardingController) return;
+  switchView("onboarding-view");
+  onboardingController.startAt(stepId);
+}
+
 function switchView(
   viewId: AppView,
   options: { skipStudioLoad?: boolean } = {},
@@ -4787,6 +4797,11 @@ window.addEventListener("DOMContentLoaded", () => {
   initCurriculumWizard();
   initServerDbWizard(() => void loadDatabaseStatus());
   initMobilePairing(() => void loadDatabaseStatus());
+  // Goal-driven import stays reachable outside first run (plan Phase 8):
+  // Learning Content's "Goal import" reopens the flow at the goal page.
+  document
+    .getElementById("btn-content-goal-import")
+    ?.addEventListener("click", () => showOnboardingAt("goal"));
   onboardingController = initOnboarding({
     getStepContext: () => ({
       personas: onboardingPersonas,
@@ -4801,6 +4816,15 @@ window.addEventListener("DOMContentLoaded", () => {
       workspaceStructure: onboardingWorkspaceStructure,
     }),
     openExternal: (url) => void openUrl(url),
+    // Both entry points are document-level modal overlays initialized at
+    // startup, so triggering their buttons opens them on top of the flow.
+    openContentEntry: (entry) => {
+      const id =
+        entry === "curriculum"
+          ? "btn-content-curriculum-wizard"
+          : "btn-content-import";
+      document.getElementById(id)?.click();
+    },
     onLeave: (reason) => {
       switchView("dashboard-view");
       // After completion the machine is onboarded, so a reload is safe and

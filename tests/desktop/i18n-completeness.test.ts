@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { TRANSLATION_PACKS } from "../../desktop/src/i18n.js";
 import { AGENT_OFFERS } from "../../src/cli/agent-offers.js";
+import { CONTENT_PATHS } from "../../desktop/src/onboarding.js";
 import { PERSONA_DESCRIPTORS } from "../../src/kernel/index.js";
 
 const ISSUE_97_KEYS = [
@@ -383,6 +384,10 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "onboarding_goal_importing",
   "onboarding_goal_imported",
   "onboarding_goal_error",
+  "onboarding_content_title",
+  "onboarding_content_body",
+  "onboarding_content_recommended",
+  "btn_content_goal_import",
 ]);
 
 /**
@@ -498,6 +503,7 @@ describe("desktop locale completeness", () => {
       "onboarding_model_kicker",
       "onboarding_agent_kicker",
       "onboarding_workspace_kicker",
+      "onboarding_content_kicker",
       "onboarding_goal_kicker",
       "onboarding_done_kicker",
       ...PERSONA_DESCRIPTORS.flatMap((persona) => [
@@ -508,6 +514,11 @@ describe("desktop locale completeness", () => {
       ...AGENT_OFFERS.flatMap((offer) => [
         offer.strengthKey,
         offer.consequenceKey,
+      ]),
+      ...CONTENT_PATHS.flatMap((path) => [
+        path.labelKey,
+        path.bodyKey,
+        path.actionLabelKey,
       ]),
     ];
     for (const key of keys) {

@@ -4568,6 +4568,29 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_goal_imported:
       "Done — {count} cards imported, each citing {file}.",
     onboarding_goal_error: "Goal import failed: {message}",
+    // Content page (ADR 2026-07-24 §2, Phase 8).
+    onboarding_content_kicker: "Your first learning content",
+    onboarding_content_title: "Where should your first cards come from?",
+    onboarding_content_body:
+      "Your persona picks a sensible starting point — nothing is locked. Every path below stays available later under Learning Content.",
+    onboarding_content_recommended: "Recommended for you",
+    onboarding_content_curriculum_label: "School curriculum",
+    onboarding_content_curriculum_body:
+      "Walk your state curriculum (LehrplanPLUS) level by level and import verified topics as cards.",
+    onboarding_content_curriculum_action: "Open the curriculum wizard",
+    onboarding_content_free_label: "Your own sources",
+    onboarding_content_free_body:
+      "Import a web page, a file, or pasted text — lecture notes, a textbook chapter, a spec.",
+    onboarding_content_free_action: "Open import",
+    onboarding_content_okf_label: "From your project",
+    onboarding_content_okf_body:
+      "Let your agent distill durable knowledge from a real project or repo (OKF import) — this path runs through /zam in your connected agent.",
+    onboarding_content_okf_action: "Check your agent connection",
+    onboarding_content_goal_label: "From a goal",
+    onboarding_content_goal_body:
+      "No syllabus? Define a Lernziel on the next page and let ZAM propose the learning path.",
+    onboarding_content_goal_action: "Define a goal",
+    btn_content_goal_import: "Goal Import",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -5481,6 +5504,29 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_goal_imported:
       "Fertig – {count} Karten importiert, jede mit Verweis auf {file}.",
     onboarding_goal_error: "Ziel-Import fehlgeschlagen: {message}",
+    // Content page (ADR 2026-07-24 §2, Phase 8).
+    onboarding_content_kicker: "Dein erster Lernstoff",
+    onboarding_content_title: "Woher sollen deine ersten Karten kommen?",
+    onboarding_content_body:
+      "Deine Rolle wählt einen sinnvollen Startpunkt – nichts ist festgelegt. Jeder Weg unten bleibt später unter Lerninhalte verfügbar.",
+    onboarding_content_recommended: "Für dich empfohlen",
+    onboarding_content_curriculum_label: "Schul-Lehrplan",
+    onboarding_content_curriculum_body:
+      "Geh deinen Landeslehrplan (LehrplanPLUS) Ebene für Ebene durch und importiere geprüfte Themen als Karten.",
+    onboarding_content_curriculum_action: "Lehrplan-Assistent öffnen",
+    onboarding_content_free_label: "Deine eigenen Quellen",
+    onboarding_content_free_body:
+      "Importiere eine Webseite, eine Datei oder eingefügten Text – Skripte, ein Lehrbuchkapitel, eine Spezifikation.",
+    onboarding_content_free_action: "Import öffnen",
+    onboarding_content_okf_label: "Aus deinem Projekt",
+    onboarding_content_okf_body:
+      "Lass deinen Agenten dauerhaftes Wissen aus einem echten Projekt oder Repo destillieren (OKF-Import) – dieser Weg läuft über /zam in deinem verbundenen Agenten.",
+    onboarding_content_okf_action: "Agenten-Verbindung prüfen",
+    onboarding_content_goal_label: "Aus einem Ziel",
+    onboarding_content_goal_body:
+      "Kein Lehrplan? Definiere auf der nächsten Seite ein Lernziel und lass ZAM den Lernweg vorschlagen.",
+    onboarding_content_goal_action: "Ziel definieren",
+    btn_content_goal_import: "Ziel-Import",
   },
   // es, fr, pt, zh, ja packs come from TRANSLATION_PACKS above; en/de stay inline here as the reference locales.
   ...TRANSLATION_PACKS,

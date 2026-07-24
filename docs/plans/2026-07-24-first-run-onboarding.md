@@ -51,7 +51,7 @@ Non-negotiables from the ADR:
   state in Studio, shared with `zam init`.
 - [x] **Phase 7 — Goal-driven import** — `Lernziel` as an import path reusing the
   curriculum wizard shell.
-- [ ] **Phase 8 — Persona content routing** — page 6 wires each persona to its
+- [x] **Phase 8 — Persona content routing** — page 6 wires each persona to its
   default import path; all paths reachable for all personas.
 - [ ] **Phase 9 — Degraded-mode surfacing** — dashboard onboarding checklist,
   AI-gated entry points link back to their page.
@@ -300,15 +300,21 @@ without an LLM, the path shows the connect-model CTA. `npm run test`.
 
 Page 6 ("your first learning content") routes by persona but locks nothing.
 
-- [ ] Route each persona to its default path: `school` → LehrplanPLUS curriculum
+- [x] Route each persona to its default path: `school` → LehrplanPLUS curriculum
   wizard (ADR 2026-07-02); `study` → free URL/file import; `work` → import from an
   existing project/repo (OKF import, ADR 2026-07-18); `private` → goal-driven
-  import (Phase 7).
-- [ ] **Every path stays reachable for every persona** from Learning Content — the
-  persona picks a default, not a lock.
-- [ ] Wire the existing import entry points (`btn-content-import`,
+  import (Phase 7). *(Content page reads the live persona selection; the
+  persona's default renders first with a "recommended" badge — a default,
+  never a lock. The OKF card routes to the agent page, honestly stating the
+  path runs through `/zam` in the connected agent.)*
+- [x] **Every path stays reachable for every persona** from Learning Content — the
+  persona picks a default, not a lock. *(New "Goal import" button in Learning
+  Content reopens the flow at the goal page via `startAt`; curriculum wizard
+  and source import were already there.)*
+- [x] Wire the existing import entry points (`btn-content-import`,
   `btn-content-curriculum-wizard`, the goal path) into the page rather than
-  reimplementing them.
+  reimplementing them — both existing entries are document-level modal
+  overlays, so they open on top of the flow.
 
 **Verification:** each persona lands on its default path; switching persona or
 opening Learning Content exposes all paths. `read_page` confirms the routing.
