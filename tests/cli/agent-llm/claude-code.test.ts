@@ -90,7 +90,11 @@ describe("ClaudeCodeAdapter", () => {
       },
     );
 
-    const { text } = await adapter.generate({ system: "SYS", user: "USER" });
+    const { text } = await adapter.generate({
+      system: "SYS",
+      user: "USER",
+      model: "haiku",
+    });
 
     expect(text).toBe("[]");
     expect(calls[0].command).toBe(BIN);
@@ -101,6 +105,8 @@ describe("ClaudeCodeAdapter", () => {
       "--system-prompt",
       "SYS",
       "--strict-mcp-config",
+      "--model",
+      "haiku",
     ]);
     // The (potentially large) user content goes on stdin, not argv.
     expect(calls[0].stdin).toBe("USER");

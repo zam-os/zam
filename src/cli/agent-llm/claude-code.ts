@@ -205,6 +205,9 @@ export class ClaudeCodeAdapter implements AgentTextAdapter {
       system,
       "--strict-mcp-config",
     ];
+    if (req.model) {
+      args.push("--model", req.model);
+    }
     for (const dir of addDirs) {
       args.push("--add-dir", dir);
     }

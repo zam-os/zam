@@ -803,6 +803,7 @@ bridgeCommand
       const { getAgentAdapter, listAgentTextHarnessIds } = await import(
         "../agent-llm/adapter.js"
       );
+      const { defaultAgentModel } = await import("../agent-llm/defaults.js");
       const outboundTextIds = new Set(listAgentTextHarnessIds());
       const harnesses = await Promise.all(
         AGENT_HARNESSES.map(async (h) => {
@@ -821,6 +822,8 @@ bridgeCommand
             outboundText: outboundTextIds.has(h.id),
             /** True when the outbound adapter accepts local image files. */
             outboundImage: modalities.image === true,
+            /** Recommended cheap default model id for this harness. */
+            defaultModel: defaultAgentModel(h.id) ?? null,
           };
         }),
       );
@@ -2865,6 +2868,12 @@ bridgeCommand
         );
       }
       const harnessMeta = getHarness(agentHarness);
+      const { resolveAgentModelId } = await import("../agent-llm/defaults.js");
+      const modelId = resolveAgentModelId(
+        agentHarness,
+        opts.model as string | undefined,
+        prev?.model,
+      );
       const probe = await adapter.probe();
       const now = new Date().toISOString();
       const modalities = adapter.modalities ?? { text: true };
@@ -2891,7 +2900,8 @@ bridgeCommand
         id: opts.id ?? ulid(),
         label: opts.label ?? prev?.label ?? harnessMeta?.label ?? agentHarness,
         url: "",
-        model: `agent:${agentHarness}`,
+        // Real harness model id (e.g. haiku, gpt-5.4-mini) — not a placeholder.
+        model: modelId,
         local: false,
         apiFlavor: "chat-completions",
         order,

@@ -1138,15 +1138,18 @@ async function requestAgentCompletion(
       `Harness "${endpoint.agentHarness}" does not support image input.`,
     );
   }
+  const { defaultAgentModel } = await import("../agent-llm/defaults.js");
+  // Prefer the registry model; fall back to the harness's cheap default when
+  // the entry still has a placeholder `agent:<harness>` from early builds.
+  const model =
+    endpoint.model && !endpoint.model.startsWith("agent:")
+      ? endpoint.model
+      : defaultAgentModel(endpoint.agentHarness);
   const { text } = await adapter.generate({
     system: messages.system,
     user: messages.user,
     imagePaths: messages.imagePaths,
-    // Only forward a non-agent model label (agy accepts display names).
-    model:
-      endpoint.model && !endpoint.model.startsWith("agent:")
-        ? endpoint.model
-        : undefined,
+    model,
   });
   return text;
 }

@@ -235,7 +235,8 @@ describe("bridge model-* registry commands", () => {
       transport: "agent",
       agentHarness: "claude-code",
       label: "Claude Code",
-      model: "agent:claude-code",
+      // Cheap default for Claude Code (Haiku class).
+      model: "haiku",
       capabilities: expect.objectContaining({ text: true }),
     });
 

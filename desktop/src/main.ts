@@ -182,6 +182,8 @@ interface AgentHarnessListEntry {
   outboundText?: boolean;
   /** True when the outbound adapter accepts local image files (vision/OCR). */
   outboundImage?: boolean;
+  /** Recommended cheap default model id for this harness. */
+  defaultModel?: string | null;
 }
 
 interface WorkspaceConfig {
@@ -1685,8 +1687,11 @@ function createModelRow(
   const meta = document.createElement("p");
   meta.className = "ai-provider-meta";
   meta.textContent = agent
-    ? tf("model_agent_meta", {
-        harness: row.agentHarness || row.model || "—",
+    ? tf("model_agent_meta_with_model", {
+        harness: row.agentHarness || "—",
+        model: row.model?.startsWith("agent:")
+          ? "—"
+          : row.model || "—",
       })
     : `${row.model} · ${row.url}`;
 
@@ -1940,7 +1945,10 @@ async function showModelForm(id?: string): Promise<void> {
   urlInput.value = existing?.url ?? "";
   const modelInput = document.createElement("input");
   modelInput.type = "text";
-  modelInput.value = existing?.model ?? "";
+  modelInput.value =
+    existing?.model && !existing.model.startsWith("agent:")
+      ? existing.model
+      : "";
   const keyInput = document.createElement("input");
   keyInput.type = "password";
   keyInput.autocomplete = "off";
@@ -2014,12 +2022,25 @@ async function showModelForm(id?: string): Promise<void> {
     return "local";
   };
 
+  const syncAgentModelDefault = (force: boolean): void => {
+    const selected = harnesses.find((h) => h.id === harnessSelect.value);
+    const def = selected?.defaultModel ?? "";
+    modelInput.placeholder = def
+      ? tf("model_agent_model_placeholder", { model: def })
+      : t("model_field_model");
+    // Prefill when adding, or when the user clears the field / switches harness.
+    if (force || !modelInput.value.trim()) {
+      if (def) modelInput.value = def;
+    }
+  };
+
   const syncKindVisibility = (): void => {
     const kind = selectedKind();
     const isAgent = kind === "agent";
     const isLocal = kind === "local";
     urlField.classList.toggle("hidden", isAgent);
-    modelField.classList.toggle("hidden", isAgent);
+    // Model id stays visible for agent — it's the harness model to call.
+    modelField.classList.toggle("hidden", false);
     keyField.classList.toggle("hidden", isAgent || isLocal);
     harnessField.classList.toggle("hidden", !isAgent);
     agentHint.classList.toggle("hidden", !isAgent);
@@ -2049,10 +2070,13 @@ async function showModelForm(id?: string): Promise<void> {
         ? t("model_agent_cap_hint_multimodal")
         : t("model_agent_cap_hint")
       : t("model_cap_hint");
-    // Default label from harness when adding a new agent model.
-    if (isAgent && !editingModelId && !labelInput.value.trim()) {
+    // Default label / model from harness when adding a new agent model.
+    if (isAgent) {
       const selected = harnesses.find((h) => h.id === harnessSelect.value);
-      if (selected) labelInput.placeholder = selected.label;
+      if (selected && !editingModelId && !labelInput.value.trim()) {
+        labelInput.placeholder = selected.label;
+      }
+      syncAgentModelDefault(!editingModelId);
     }
   };
 
@@ -2060,14 +2084,23 @@ async function showModelForm(id?: string): Promise<void> {
     radio.addEventListener("change", syncKindVisibility);
   }
   harnessSelect.addEventListener("change", () => {
-    if (!editingModelId && selectedKind() === "agent") {
+    if (selectedKind() === "agent") {
       const selected = harnesses.find((h) => h.id === harnessSelect.value);
-      if (selected && !labelInput.value.trim()) {
+      if (selected && !editingModelId && !labelInput.value.trim()) {
         labelInput.placeholder = selected.label;
       }
+      // Switching harness always offers the new cheap default.
+      syncAgentModelDefault(true);
     }
     syncKindVisibility();
   });
+  // Initial agent default when opening "add" form already on agent, or after
+  // selecting agent radio — applied inside syncKindVisibility.
+  if (!editingModelId && existingModelKind(existing) === "agent") {
+    syncAgentModelDefault(true);
+  } else if (!editingModelId && !existing) {
+    // Default kind is local; model field will be filled when Agent is chosen.
+  }
   syncKindVisibility();
 
   const actions = document.createElement("div");
@@ -2146,6 +2179,9 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
         image: data.capabilities.image === true,
       }),
     ];
+    if (data.model) {
+      args.push("--model", data.model);
+    }
     if (data.id) args.push("--id", data.id);
     try {
       await runBridge("model-upsert", args);

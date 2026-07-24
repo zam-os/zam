@@ -93,13 +93,19 @@ describe("CodexAdapter", () => {
       },
     );
 
-    const { text } = await adapter.generate({ system: "SYS", user: "USER" });
+    const { text } = await adapter.generate({
+      system: "SYS",
+      user: "USER",
+      model: "gpt-5.4-mini",
+    });
     expect(text).toBe("hello from codex");
     expect(calls[0].command).toBe(BIN);
     expect(calls[0].args[0]).toBe("exec");
     expect(calls[0].args).toContain("--json");
     expect(calls[0].args).toContain("--ephemeral");
     expect(calls[0].args).toContain("read-only");
+    expect(calls[0].args).toContain("-m");
+    expect(calls[0].args).toContain("gpt-5.4-mini");
     expect(calls[0].args.at(-1)).toContain("SYS");
     expect(calls[0].args.at(-1)).toContain("USER");
   });

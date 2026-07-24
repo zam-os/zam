@@ -17,7 +17,7 @@
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
-import { setCurrentLocale, t } from "../i18n.js";
+import { setCurrentLocale, t, tf } from "../i18n.js";
 import {
   type CompanionContextBarState,
   type ContextBarHandle,
@@ -288,6 +288,8 @@ interface SettingsAgentHarness {
   label: string;
   detected: boolean;
   outboundText?: boolean;
+  outboundImage?: boolean;
+  defaultModel?: string | null;
 }
 
 async function loadAiModels(): Promise<void> {
@@ -371,7 +373,10 @@ function renderAiModelRow(row: SettingsModelRow): HTMLElement {
   meta.className = "settings-ai-meta";
   meta.textContent =
     row.transport === "agent"
-      ? `${t("model_agent_badge")}: ${row.agentHarness ?? row.model}`
+      ? tf("model_agent_meta_with_model", {
+          harness: row.agentHarness ?? "—",
+          model: row.model && !row.model.startsWith("agent:") ? row.model : "—",
+        })
       : `${row.model} · ${row.url}`;
 
   const actions = document.createElement("div");
@@ -483,6 +488,19 @@ async function showAgentModelForm(): Promise<void> {
     harnesses.find((h) => h.id === harnessSelect.value)?.label ?? "";
   labelInput.placeholder = preferredLabel || t("model_field_label");
 
+  const modelInput = document.createElement("input");
+  modelInput.type = "text";
+  const applyDefaultModel = (): void => {
+    const h = harnesses.find((x) => x.id === harnessSelect.value);
+    const def = h?.defaultModel ?? "";
+    modelInput.placeholder = def
+      ? tf("model_agent_model_placeholder", { model: def })
+      : t("model_field_model");
+    if (def) modelInput.value = def;
+  };
+  applyDefaultModel();
+  harnessSelect.addEventListener("change", applyDefaultModel);
+
   const actions = document.createElement("div");
   actions.className = "settings-ai-actions";
   const save = document.createElement("button");
@@ -498,18 +516,23 @@ async function showAgentModelForm(): Promise<void> {
     formHost.replaceChildren();
   });
   save.addEventListener("click", () => {
-    void saveAgentModel(harnessSelect, labelInput, save);
+    void saveAgentModel(harnessSelect, labelInput, modelInput, save);
   });
   actions.append(save, cancel);
 
   const harnessLabel = document.createElement("label");
   harnessLabel.className = "settings-hint";
   harnessLabel.textContent = t("model_field_harness");
+  const modelLabel = document.createElement("label");
+  modelLabel.className = "settings-hint";
+  modelLabel.textContent = t("model_field_model");
   formHost.append(
     title,
     kindNote,
     harnessLabel,
     harnessSelect,
+    modelLabel,
+    modelInput,
     labelInput,
     actions,
   );
@@ -518,6 +541,7 @@ async function showAgentModelForm(): Promise<void> {
 async function saveAgentModel(
   harnessSelect: HTMLSelectElement,
   labelInput: HTMLInputElement,
+  modelInput: HTMLInputElement,
   saveButton: HTMLButtonElement,
 ): Promise<void> {
   const harness = harnessSelect.value;
@@ -530,8 +554,9 @@ async function saveAgentModel(
     labelInput.value.trim() ||
     harnessSelect.selectedOptions[0]?.textContent?.replace(/\s*\(.*\)$/, "") ||
     harness;
+  const model = modelInput.value.trim();
   try {
-    await bridgeCall("model-upsert", [
+    const args = [
       "--transport",
       "agent",
       "--agent-harness",
@@ -539,8 +564,10 @@ async function saveAgentModel(
       "--label",
       label,
       "--capabilities",
-      JSON.stringify({ text: true }),
-    ]);
+      JSON.stringify({ text: true, image: true }),
+    ];
+    if (model) args.push("--model", model);
+    await bridgeCall("model-upsert", args);
     await loadAiModels();
   } catch (error) {
     saveButton.disabled = false;

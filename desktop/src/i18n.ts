@@ -399,6 +399,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_agent_hint:
       "Usa el harness de agente conectado (suscripción / OAuth). No hace falta clave API ni URL.",
     model_agent_meta: "Vía {harness}",
+    model_agent_meta_with_model: "Vía {harness} · {model}",
+    model_agent_model_placeholder: "Predeterminado: {model}",
     model_agent_missing_harness: "Elige un harness de agente.",
     model_agent_status_offline: "Harness no detectado",
     model_agent_status_ready: "Harness listo",
@@ -1152,6 +1154,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_agent_hint:
       "Utilise le harness agent connecté (abonnement / OAuth). Pas de clé API ni d'URL.",
     model_agent_meta: "Via {harness}",
+    model_agent_meta_with_model: "Via {harness} · {model}",
+    model_agent_model_placeholder: "Par défaut : {model}",
     model_agent_missing_harness: "Choisissez un harness agent.",
     model_agent_status_offline: "Harness non détecté",
     model_agent_status_ready: "Harness prêt",
@@ -1905,6 +1909,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_agent_hint:
       "Usa o harness de agente conectado (assinatura / OAuth). Sem chave de API ou URL.",
     model_agent_meta: "Via {harness}",
+    model_agent_meta_with_model: "Via {harness} · {model}",
+    model_agent_model_placeholder: "Padrão: {model}",
     model_agent_missing_harness: "Escolha um harness de agente.",
     model_agent_status_offline: "Harness não detectado",
     model_agent_status_ready: "Harness pronto",
@@ -2538,6 +2544,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_agent_status_ready: "Harness 就绪",
     model_agent_status_offline: "未检测到 Harness",
     model_agent_meta: "通过 {harness}",
+    model_agent_meta_with_model: "通过 {harness} · {model}",
+    model_agent_model_placeholder: "默认：{model}",
     model_agent_cap_undetected: "未检测到 Harness — 安装后请重新检查",
     model_agent_cap_hint: "代理模型使用 Harness 自带的模型与订阅。仅文本。",
     model_agent_cap_hint_multimodal:
@@ -3245,6 +3253,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_agent_status_ready: "Harness 準備完了",
     model_agent_status_offline: "Harness 未検出",
     model_agent_meta: "{harness} 経由",
+    model_agent_meta_with_model: "{harness} 経由 · {model}",
+    model_agent_model_placeholder: "デフォルト: {model}",
     model_agent_cap_undetected: "Harness 未検出 — インストール後に再確認",
     model_agent_cap_hint:
       "エージェントモデルは Harness のモデルとサブスクリプションを使います。テキストのみ。",
@@ -4051,6 +4061,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_agent_status_ready: "Harness ready",
     model_agent_status_offline: "Harness not detected",
     model_agent_meta: "Via {harness}",
+    model_agent_meta_with_model: "Via {harness} · {model}",
+    model_agent_model_placeholder: "Default: {model}",
     model_agent_cap_undetected: "Harness not detected — re-check after install",
     model_agent_cap_hint:
       "Agent models use the harness's own model and subscription. Text only.",
@@ -5016,6 +5028,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_agent_status_ready: "Harness bereit",
     model_agent_status_offline: "Harness nicht erkannt",
     model_agent_meta: "Über {harness}",
+    model_agent_meta_with_model: "Über {harness} · {model}",
+    model_agent_model_placeholder: "Standard: {model}",
     model_agent_cap_undetected:
       "Harness nicht erkannt — nach Installation neu prüfen",
     model_agent_cap_hint:
