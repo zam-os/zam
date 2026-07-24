@@ -213,42 +213,40 @@ first-class second card — recommended in copy where the profile found capable 
 Apple-Silicon hardware, but not auto-selected. The machine-local vs. DB storage
 split of ADR 2026-07-23 §4 is unchanged.
 
-### 5a. The embedding role is separate, optional, and standardized on `embeddinggemma-300m`
+### 5a. Embeddings are local-only, optional, and standardized on `embeddinggemma-300m`
 
-OpenRouter serves no embeddings (`/v1/embeddings` → 404, verified), so the
-`embedding` role cannot ride on the chat key. It stays **off the blocking
-onboarding path**: semantic token search (ADR 2026-07-03) degrades cleanly to
-lexical search without it, so first run never forces a second provider. Embeddings
-are offered as an *enhancement* — "make search understand meaning, not just words" —
-that a user can enable now or later.
+OpenRouter serves no embeddings (`/v1/embeddings` → 404, verified), and rather than
+drag in a second cloud provider and a second data-policy to explain, **embeddings
+are local-only (decided 2026-07-24).** The `embedding` role never rides on a cloud
+key. It stays **off the blocking onboarding path**: semantic token search (ADR
+2026-07-03) degrades cleanly to lexical search without it, so first run never forces
+a local install. Embeddings are offered as an *enhancement* — "make search
+understand meaning, not just words" — that a user enables now or later.
 
-**One canonical embedding model, two interchangeable sources (decided 2026-07-24).**
-ZAM already fixes `embeddinggemma-300m` as its canonical embedding model
-(`DEFAULT_EMBEDDING_MODEL`). That model is available **both** as a local Ollama tag
-**and** as a cheap cloud endpoint, and because it is the *same weights* either way,
-the stored vectors are compatible — a learner can switch source without
-re-embedding the corpus. The two sources:
+**One canonical model, computed on-device (decided 2026-07-24).** ZAM already fixes
+`embeddinggemma-300m` as its canonical embedding model (`DEFAULT_EMBEDDING_MODEL`).
+It is Google's purpose-built on-device embedder: ~300M params, small enough for CPU
++ modest RAM. Keeping it local is also the **strongest privacy stance** — embeddings
+run over the learner's actual study text, and computing them on the device means
+that text never leaves it, with no provider policy to reason about at all.
 
-- **Local — Ollama `embeddinggemma` (desktop default when enabled).** The
-  strongest-privacy option: embeddings run over the learner's actual study text,
-  and computing them locally means that text never leaves the machine — consistent
-  with the privacy-default of §5. Small (300M), fine on CPU + modest RAM, no second
-  account or key. Cost: a one-time local runtime install (the same reason it is an
-  enhancement, not the first-run default).
-- **Cloud — DeepInfra `google/embeddinggemma-300m` (no-install desktop option, and
-  the mobile path).** OpenAI-compatible (`/v1/openai/embeddings`), **$0.002 / 1M
-  input tokens** (verified 2026-07-24) — for a personal learning corpus this is
-  fractions of a cent, effectively free within DeepInfra's ~$1 signup credit.
-  Requires a second account/key and DeepInfra's data policy is not the enforced
-  `deny`/`zdr` that OpenRouter gives, so it is offered with that stated. This is the
-  answer for users who refuse a local runtime, and — per ADR 2026-07-23's
-  online-only mobile — the **only** embedding path the phone can use, since a
-  paired phone has no Ollama.
+- **Desktop — Ollama `embeddinggemma`.** Any reasonable PC runs it fine on CPU. If
+  the user already chose the *local* chat model on page 3 (Ollama, the second card),
+  the runtime is present and enabling embeddings is just pulling one small model. If
+  they chose cloud chat (OpenRouter), enabling embeddings is the one place they
+  install a local runtime — worth it for private semantic search, hence
+  enhancement, not forced.
+- **Mobile — on-device `embeddinggemma-300m`.** Per ADR 2026-07-23 the phone is
+  online-only for the *database*, but embeddings are compute, not data: the same
+  small model runs **on the phone**, not through Ollama (which is not an Android
+  path) but through an on-device runtime (LiteRT / MediaPipe / equivalent — the
+  exact path is an open question, see below). Same weights as the desktop, so
+  vectors are compatible across a paired desk and phone with no re-embedding.
 
-Recommendation encoded in the wizard: **desktop → Ollama when the user wants
-semantic search; mobile / no-install → DeepInfra.** Both register through the same
-capability registry `embedding` slot; neither is part of the required first-run
-sequence.
+Both register through the same capability-registry `embedding` slot; neither is part
+of the required first-run sequence. **No cloud embedding provider is offered** —
+this deliberately drops the earlier DeepInfra option to keep the model story to a
+single sentence: *chat is OpenRouter, embeddings are on your own device.*
 
 ### 6. Agent harness page: four offers, or "use what you already have"
 
@@ -318,12 +316,12 @@ Any skipped page leaves the app **usable and honest**:
 
 **Harder / follow-on work**
 
-- **The embedding role needs a second decision** (§5a): OpenRouter has no
-  embeddings endpoint (verified: 404), so semantic search rides on either a local
-  Ollama `embeddinggemma` or DeepInfra's cloud `embeddinggemma-300m`, both the same
-  canonical model. This is resolved, not open, but it means embeddings are a second,
-  optional setup the wizard must present honestly rather than a free byproduct of
-  the chat key.
+- **Semantic search needs a local runtime** (§5a): OpenRouter has no embeddings
+  endpoint (verified: 404) and no cloud embedder is offered, so a user who wants
+  meaning-aware search installs Ollama (desktop) or relies on the on-device path
+  (mobile). Embeddings stay optional and degrade to lexical search, so this never
+  blocks first run — but the "semantic search" feature is gated on a local install
+  the cloud-chat user would not otherwise need.
 - **The €1 prepaid start and the spend cap are set in the OpenRouter dashboard**,
   not by ZAM. The wizard can only instruct and deep-link; it cannot add credit or
   enforce a €1/day cap on the user's behalf (nor should it — that is money movement,
@@ -354,10 +352,10 @@ Any skipped page leaves the app **usable and honest**:
 - **No free tier; €1 prepaid minimum (§5).** The free-model option is dropped
   entirely to keep the story one sentence — "start with €1 prepaid; your data stays
   private" — with `data_collection: "deny"` + `zdr: true` enforced on every request.
-- **Embedding role (§5a).** Canonical model `embeddinggemma-300m`, served by local
-  Ollama on desktop (privacy-first, optional enhancement) or DeepInfra's cloud
-  `embeddinggemma-300m` ($0.002/1M) for no-install desktop and for mobile; same
-  weights, compatible vectors, off the required first-run path.
+- **Embedding role (§5a).** Local-only, canonical `embeddinggemma-300m`: Ollama on
+  desktop, on-device runtime on mobile. No cloud embedding provider (DeepInfra
+  option dropped). Optional enhancement, off the required first-run path; same
+  weights everywhere, so vectors are compatible across desk and phone.
 - **Retiree persona content path (§2, §3).** Goal-driven import — the retiree has
   no external syllabus, so the LLM-generated `Lernziel` decomposition is their hero
   path, not curriculum or a pre-existing source.
@@ -376,6 +374,14 @@ Any skipped page leaves the app **usable and honest**:
 3. **Goal-import depth.** How many pages deep does a goal decompose before the
    wizard stops proposing, and who decides — fixed depth, user-driven, or LLM?
 4. **Default when the user skips the persona page.** Assumed "free learner".
+5. **Mobile on-device embedding runtime (§5a).** `embeddinggemma-300m` runs
+   on-device on Android, but *through what* — LiteRT, MediaPipe, ONNX Runtime
+   Mobile? The Android shell is a Tauri 2 kernel-in-WebView (ADR 2026-07-21) with no
+   Ollama; the concrete inference path is unverified and its own follow-on. Until it
+   ships, mobile semantic search simply stays on lexical fallback.
+6. **OpenRouter minimum top-up.** The "~€1 prepaid" story assumes OpenRouter's
+   minimum credit purchase is that low; the docs did not state a figure. Verify
+   against OpenRouter's credits page before the copy commits to "€1".
 
 ---
 
@@ -387,9 +393,9 @@ Any skipped page leaves the app **usable and honest**:
 3. Cloud LLM connect wizard with the OpenRouter provider descriptor
    (`provider.data_collection: "deny"` + `zdr: true` on every request,
    €1-prepaid deep-links, `xiaomi/mimo-v2.5` registration, capability probe).
-4. Embedding enhancement (§5a): Ollama `embeddinggemma` and DeepInfra
-   `google/embeddinggemma-300m` descriptors for the same `embedding` slot; both
-   optional, surfaced from the model page and from the semantic-search entry point.
+4. Embedding enhancement (§5a): local `embeddinggemma` for the `embedding` slot —
+   Ollama on desktop, on-device runtime on mobile; optional, surfaced from the model
+   page and the semantic-search entry point. No cloud embedder.
 5. Workspace create/repair (additive) + missing-workspace state in Studio.
 6. Agent page: reuse `inspectConnectHarnesses` for the "existing agent" branch;
    descriptor table for the four offers.
@@ -405,8 +411,8 @@ Any skipped page leaves the app **usable and honest**:
 - OpenRouter models API (`xiaomi/mimo-v2.5` modalities and pricing, verified 2026-07-24)
 - OpenRouter provider routing (`data_collection`, `zdr`) and per-key spend cap
   (`limit`, `limit_reset`)
-- DeepInfra `google/embeddinggemma-300m` — OpenAI-compatible `/v1/openai/embeddings`,
-  $0.002/1M input tokens, ~$1 signup credit (verified 2026-07-24)
+- EmbeddingGemma (`embeddinggemma-300m`) — Google's on-device embedder; local via
+  Ollama (desktop) and on-device runtimes (LiteRT / MediaPipe) on mobile
 - Hermes Agent (NousResearch) — `~/.hermes/config.yaml`, `hermes mcp add`, gateway daemon
 - OpenCode Zen — promotional (time-limited, feedback-collecting) free models, billing
   required at sign-up, undocumented soft caps (verified 2026-07-24)
