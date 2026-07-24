@@ -17,6 +17,7 @@ vi.mock("../../../src/cli/agent-llm/adapter.js", async (importActual) => {
 import { getAgentAdapter } from "../../../src/cli/agent-llm/adapter.js";
 import {
   discussReviewViaLLM,
+  ensureLlmReadyHeadless,
   evaluateAnswerViaLLM,
   generateQuestionViaLLM,
   sampleViaLocalLLM,
@@ -162,5 +163,19 @@ describe("recall via the agent transport", () => {
     await expect(
       sampleViaLocalLLM(db, [{ role: "user", content: "hi" }]),
     ).rejects.toThrow(/agent transport/i);
+  });
+
+  it("reports the agent as the ready recall model (no HTTP fall-through)", async () => {
+    // Regression: readiness previously did isLlmOnline("") on the agent's empty
+    // url, treated it as offline, and fell through to the next model (Ollama).
+    vi.mocked(getAgentAdapter).mockReturnValue(
+      fakeAdapter(async () => ({ text: "" })),
+    );
+    const db = await seedDb();
+
+    const ready = await ensureLlmReadyHeadless(db, { timeoutMs: 1000 });
+
+    expect(ready.usable).toBe(true);
+    expect(ready.model).toContain("claude");
   });
 });

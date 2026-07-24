@@ -1134,6 +1134,19 @@ async function requestAgentCompletion(
   return text;
 }
 
+/**
+ * Readiness probe for an agent-transport endpoint (ADR 2026-07-12a): the harness
+ * has no URL to health-check, so "ready" means its executable is present. Cheap
+ * — never runs a real generation.
+ */
+async function isAgentEndpointReady(agentHarness?: string): Promise<boolean> {
+  if (!agentHarness) return false;
+  const { getAgentAdapter } = await import("../agent-llm/adapter.js");
+  const adapter = getAgentAdapter(agentHarness);
+  if (!adapter) return false;
+  return (await adapter.probe()).available;
+}
+
 async function requestCurriculumCards(
   endpoint: {
     url: string;
@@ -2006,6 +2019,27 @@ async function prepareRecallChain(
   });
 
   if (!cfg.enabled) return fail("disabled");
+  // Agent transport (ADR 2026-07-12a): the harness has no URL to health-check,
+  // so readiness = executable present. Report it directly instead of walking the
+  // HTTP online-chain (which would treat the empty url as offline and fall
+  // through to the next model — the recall "jumped to Ollama" bug).
+  if (cfg.transport === "agent") {
+    const model = cfg.agentHarness
+      ? `agent:${cfg.agentHarness}`
+      : cfg.model || "agent";
+    const ready = await isAgentEndpointReady(cfg.agentHarness);
+    if (!ready) return fail("offline", { model });
+    return {
+      usable: true,
+      online: true,
+      model,
+      availableModels: [],
+      providerName: cfg.providerName,
+      label: cfg.label,
+      local: false,
+      activeTier: "primary",
+    };
+  }
   if (cfg.apiFlavor !== "chat-completions") return fail("unsupported-provider");
 
   const chain = providerChain(cfg);
