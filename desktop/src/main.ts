@@ -22,6 +22,7 @@ import { initCurriculumWizard } from "./curriculum-wizard.js";
 import { initMobilePairing } from "./mobile-pairing.js";
 import {
   initOnboarding,
+  type OnboardingAgentOffer,
   type OnboardingCloudProvider,
   type OnboardingController,
   type OnboardingEmbeddingStatus,
@@ -2817,6 +2818,9 @@ let onboardingEmbedding: OnboardingEmbeddingStatus = {
   registered: false,
   usable: false,
 };
+// Agent offers for the no-harness branch (Phase 4); detection itself is
+// probed live by the agent page, not carried in bootstrap.
+let onboardingAgentOffers: OnboardingAgentOffer[] = [];
 
 function showOnboarding(): void {
   if (!onboardingController) return;
@@ -3703,6 +3707,7 @@ async function loadDashboard() {
       cloudProviders?: OnboardingCloudProvider[];
       localAiCapable?: boolean;
       embedding?: OnboardingEmbeddingStatus;
+      agentOffers?: OnboardingAgentOffer[];
     }>("desktop-bootstrap");
     desktopUserId = settings.userId;
     setCurrentLocale(settings.locale || "en");
@@ -3716,6 +3721,7 @@ async function loadDashboard() {
     onboardingLocalAiCapable =
       settings.localAiCapable ?? onboardingLocalAiCapable;
     onboardingEmbedding = settings.embedding ?? onboardingEmbedding;
+    onboardingAgentOffers = settings.agentOffers ?? onboardingAgentOffers;
 
     initializeTranslations();
 
@@ -4728,6 +4734,7 @@ window.addEventListener("DOMContentLoaded", () => {
       localAiCapable: onboardingLocalAiCapable,
       aiConnected: isLlmEnabled,
       embedding: onboardingEmbedding,
+      agentOffers: onboardingAgentOffers,
     }),
     openExternal: (url) => void openUrl(url),
     onLeave: (reason) => {

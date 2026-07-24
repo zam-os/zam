@@ -43,7 +43,7 @@ Non-negotiables from the ADR:
   `mimo-v2.5` registration, `deny`/`zdr` injected on every OpenRouter request.
 - [x] **Phase 3 — Local embedding enhancement** — Ollama `embeddinggemma` descriptor,
   optional, surfaced from the model page and the semantic-search entry point.
-- [ ] **Phase 4 — Agent page: detect existing / offer ready harnesses** — reuse
+- [x] **Phase 4 — Agent page: detect existing / offer ready harnesses** — reuse
   `inspectConnectHarnesses`; Goose / OpenCode / Copilot descriptors.
 - [ ] **Phase 5 — Hermes harness adapter** — net-new `hermes` connect target
   (`~/.hermes/config.yaml`, daemon detection).
@@ -192,21 +192,23 @@ search still works (lexical) and surfaces the fallback notice. `npm run test`.
 
 ## Phase 4 — Agent page: detect existing / offer ready harnesses
 
-- [ ] **Existing-agent branch:** reuse `inspectConnectHarnesses`
+- [x] **Existing-agent branch:** reuse `inspectConnectHarnesses`
   (`src/cli/agent-connect.ts`) to detect installed harnesses (Claude Code/Desktop,
   Antigravity, VS Code, OpenCode, Goose, Copilot). If any are present, the page
   collapses to "Use your existing agent" with the detected list and runs the
-  idempotent connect — no install proposed.
-- [ ] **Offer branch (none installed):** a **data-driven descriptor table** (row =
+  idempotent connect — no install proposed. *(Detection is probed live via
+  `agent-harness-status` when the page opens, then re-probed after connect so
+  the list reflects reality.)*
+- [x] **Offer branch (none installed):** a **data-driven descriptor table** (row =
   label, strength, consequence, install link, connect target). Ship the three
   already-wired harnesses first: **Goose**, **OpenCode**, **GitHub Copilot** —
   each with its strengths *and* consequences stated plainly (incl. that Copilot's
   free quota and OpenCode Zen's promotional free models are **agent-axis**, run the
   learner's content through that model's own data policy, which ZAM cannot enforce
-  `deny`/`zdr` on).
-- [ ] ZAM **never silently installs** a harness — link to the vendor instructions,
-  verify afterwards.
-- [ ] Page is skippable: Studio-only usage works without any agent; `/zam` in a
+  `deny`/`zdr` on). *(`src/cli/agent-offers.ts`, served via desktop-bootstrap.)*
+- [x] ZAM **never silently installs** a harness — link to the vendor instructions,
+  verify afterwards ("Check again" re-detects).
+- [x] Page is skippable: Studio-only usage works without any agent; `/zam` in a
   harness does not (state this).
 
 **Verification:** on a machine with a detected harness, the page shows the collapse

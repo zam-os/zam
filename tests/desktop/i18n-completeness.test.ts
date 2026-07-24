@@ -2,6 +2,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { TRANSLATION_PACKS } from "../../desktop/src/i18n.js";
+import { AGENT_OFFERS } from "../../src/cli/agent-offers.js";
 import { PERSONA_DESCRIPTORS } from "../../src/kernel/index.js";
 
 const ISSUE_97_KEYS = [
@@ -332,6 +333,22 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "onboarding_embedding_get_ollama",
   "onboarding_embedding_working",
   "onboarding_embedding_error",
+  "onboarding_agent_title",
+  "onboarding_agent_body",
+  "onboarding_agent_detecting",
+  "onboarding_agent_detect_failed",
+  "onboarding_agent_existing_title",
+  "onboarding_agent_existing_body",
+  "onboarding_agent_connected_badge",
+  "onboarding_agent_not_connected_badge",
+  "onboarding_agent_connect",
+  "onboarding_agent_connecting",
+  "onboarding_agent_connect_done",
+  "onboarding_agent_connect_failed",
+  "onboarding_agent_offers_title",
+  "onboarding_agent_offers_caveat",
+  "onboarding_agent_install",
+  "onboarding_agent_check_again",
 ]);
 
 /**
@@ -445,11 +462,16 @@ describe("desktop locale completeness", () => {
       "onboarding_welcome_kicker",
       "onboarding_persona_kicker",
       "onboarding_model_kicker",
+      "onboarding_agent_kicker",
       "onboarding_done_kicker",
       ...PERSONA_DESCRIPTORS.flatMap((persona) => [
         persona.labelKey,
         persona.descriptionKey,
         persona.contextLabelKey,
+      ]),
+      ...AGENT_OFFERS.flatMap((offer) => [
+        offer.strengthKey,
+        offer.consequenceKey,
       ]),
     ];
     for (const key of keys) {

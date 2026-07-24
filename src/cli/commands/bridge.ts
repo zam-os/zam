@@ -124,6 +124,7 @@ import {
   launchHarness,
   resolveHarnessExecutable,
 } from "../agent-harness.js";
+import { AGENT_OFFERS } from "../agent-offers.js";
 import {
   addToken as handleAddToken,
   analyzeMonitor as handleAnalyzeMonitor,
@@ -3272,6 +3273,10 @@ bridgeCommand
         // semantic-search block and keeps its copy honest about what a click
         // will actually do (pull only vs. install-Ollama-first).
         embedding: await getLocalEmbeddingStatus(db),
+        // Agent page offers (Phase 4): the descriptor table behind the
+        // no-harness branch. Harness *detection* is deliberately not here —
+        // the page probes it live via agent-harness-status when it opens.
+        agentOffers: AGENT_OFFERS,
       });
     });
   });

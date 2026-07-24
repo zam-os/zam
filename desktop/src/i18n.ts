@@ -4485,6 +4485,39 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_embedding_working:
       "Downloading and registering EmbeddingGemma…",
     onboarding_embedding_error: "Enabling failed: {message}",
+    // Agent page (ADR 2026-07-24 §6, Phase 4).
+    onboarding_agent_kicker: "Connect an agent",
+    onboarding_agent_title: "Bring ZAM into your agent.",
+    onboarding_agent_body:
+      "Working sessions and the /zam conversation live in an AI agent. Without one, the Studio still works fully — /zam inside an agent does not. You can skip this and connect later.",
+    onboarding_agent_detecting: "Detecting installed agents…",
+    onboarding_agent_detect_failed: "Detection failed: {message}",
+    onboarding_agent_existing_title: "Use your existing agent",
+    onboarding_agent_existing_body:
+      "ZAM found these on this machine. Connecting only adds ZAM's entry to their configuration and is safe to repeat.",
+    onboarding_agent_connected_badge: "connected",
+    onboarding_agent_not_connected_badge: "not connected yet",
+    onboarding_agent_connect: "Connect ZAM",
+    onboarding_agent_connecting: "Connecting…",
+    onboarding_agent_connect_done: "Done — ZAM is connected to your agents.",
+    onboarding_agent_connect_failed: "Connecting failed: {message}",
+    onboarding_agent_offers_title: "No agent yet? Three good starting points",
+    onboarding_agent_offers_caveat:
+      "One honest trade-off: a free agent plan runs your study content through that vendor's own model and data policy — ZAM's privacy enforcement from the model page does not reach inside another agent.",
+    onboarding_agent_install: "Install instructions",
+    onboarding_agent_check_again: "Check again",
+    onboarding_agent_goose_strength:
+      "Open source with a simple setup — desktop app and CLI.",
+    onboarding_agent_goose_consequence:
+      "Brings no model of its own: you point it at one, for example your page-3 model.",
+    onboarding_agent_opencode_strength:
+      "Open source and terminal-native; OpenCode Zen's promotional tier can run the agent for free.",
+    onboarding_agent_opencode_consequence:
+      "Terminal-centric — steeper if you don't live in a shell. Zen's free models are time-limited and feedback-collecting (your prompts help improve them); billing details required at sign-up.",
+    onboarding_agent_copilot_strength:
+      "Free monthly quota — the cheapest real start, already wired into ZAM.",
+    onboarding_agent_copilot_consequence:
+      "GitHub account required, quota-limited, not open source.",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -5314,6 +5347,40 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_embedding_working:
       "EmbeddingGemma wird geladen und registriert …",
     onboarding_embedding_error: "Aktivierung fehlgeschlagen: {message}",
+    // Agent page (ADR 2026-07-24 §6, Phase 4).
+    onboarding_agent_kicker: "Agent verbinden",
+    onboarding_agent_title: "Hol ZAM in deinen Agenten.",
+    onboarding_agent_body:
+      "Arbeitssitzungen und das /zam-Gespräch finden in einem KI-Agenten statt. Ohne Agenten funktioniert das Studio vollständig – /zam in einem Agenten nicht. Du kannst das überspringen und später verbinden.",
+    onboarding_agent_detecting: "Installierte Agenten werden erkannt …",
+    onboarding_agent_detect_failed: "Erkennung fehlgeschlagen: {message}",
+    onboarding_agent_existing_title: "Nutze deinen vorhandenen Agenten",
+    onboarding_agent_existing_body:
+      "ZAM hat diese auf deinem Gerät gefunden. Das Verbinden ergänzt nur ZAMs Eintrag in ihrer Konfiguration und lässt sich gefahrlos wiederholen.",
+    onboarding_agent_connected_badge: "verbunden",
+    onboarding_agent_not_connected_badge: "noch nicht verbunden",
+    onboarding_agent_connect: "ZAM verbinden",
+    onboarding_agent_connecting: "Wird verbunden …",
+    onboarding_agent_connect_done:
+      "Fertig – ZAM ist mit deinen Agenten verbunden.",
+    onboarding_agent_connect_failed: "Verbinden fehlgeschlagen: {message}",
+    onboarding_agent_offers_title: "Noch kein Agent? Drei gute Startpunkte",
+    onboarding_agent_offers_caveat:
+      "Ein ehrlicher Kompromiss: Ein kostenloser Agenten-Tarif schickt deinen Lernstoff durch das Modell und die Datenrichtlinie dieses Anbieters – ZAMs Datenschutz-Durchsetzung von der Modell-Seite reicht nicht in fremde Agenten hinein.",
+    onboarding_agent_install: "Installationsanleitung",
+    onboarding_agent_check_again: "Erneut prüfen",
+    onboarding_agent_goose_strength:
+      "Open Source mit einfacher Einrichtung – Desktop-App und CLI.",
+    onboarding_agent_goose_consequence:
+      "Bringt kein eigenes Modell mit: Du verweist es auf eines, zum Beispiel dein Modell von Seite 3.",
+    onboarding_agent_opencode_strength:
+      "Open Source und Terminal-nativ; mit OpenCode Zens Aktions-Tarif läuft der Agent kostenlos.",
+    onboarding_agent_opencode_consequence:
+      "Terminal-zentriert – steiler, wenn du nicht in der Shell lebst. Zens Gratis-Modelle sind zeitlich begrenzt und sammeln Feedback (deine Prompts verbessern sie); Zahlungsdaten bei der Anmeldung erforderlich.",
+    onboarding_agent_copilot_strength:
+      "Kostenloses Monatskontingent – der günstigste echte Start, bereits mit ZAM verdrahtet.",
+    onboarding_agent_copilot_consequence:
+      "GitHub-Konto erforderlich, Kontingent begrenzt, nicht Open Source.",
   },
   // es, fr, pt, zh, ja packs come from TRANSLATION_PACKS above; en/de stay inline here as the reference locales.
   ...TRANSLATION_PACKS,

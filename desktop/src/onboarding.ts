@@ -78,6 +78,26 @@ export interface OnboardingEmbeddingStatus {
   usable: boolean;
 }
 
+/**
+ * Agent-harness offer row (ADR 2026-07-24 §6), served by desktop-bootstrap
+ * from the CLI's `AGENT_OFFERS` descriptor table.
+ */
+export interface OnboardingAgentOffer {
+  id: string;
+  label: string;
+  strengthKey: string;
+  consequenceKey: string;
+  installUrl: string;
+}
+
+/** One row of the live `agent-harness-status` probe. */
+export interface OnboardingAgentHarness {
+  harness: string;
+  label: string;
+  installed: boolean;
+  configured: boolean;
+}
+
 export interface OnboardingStepContext {
   /** Persona cards to offer; empty until desktop-bootstrap has answered. */
   personas: OnboardingPersona[];
@@ -91,6 +111,8 @@ export interface OnboardingStepContext {
   aiConnected: boolean;
   /** Local embedding enhancement state for the semantic-search block. */
   embedding: OnboardingEmbeddingStatus;
+  /** Harness offers for the agent page's no-agent branch. */
+  agentOffers: OnboardingAgentOffer[];
 }
 
 /** Ollama download page, opened externally when the runtime is missing. */
@@ -146,6 +168,14 @@ export function buildOnboardingSteps(
   // Same memo for the embedding enhancement: updated from each
   // embedding-enable response so re-renders stay truthful.
   let embeddingStatus = ctx.embedding;
+  // Agent page detection state, probed lazily on first render (detection
+  // reads real config files, so it does not ride desktop-bootstrap) and kept
+  // across Back/forward re-renders. `report: null` + `error: null` = probing.
+  const agentState: {
+    report: { zamOnPath: boolean; harnesses: OnboardingAgentHarness[] } | null;
+    error: string | null;
+    notice: { text: string; ok: boolean } | null;
+  } = { report: null, error: null, notice: null };
 
   return [
     {
@@ -239,6 +269,23 @@ export function buildOnboardingSteps(
             },
           }),
         );
+      },
+    },
+    {
+      id: "agent",
+      titleKey: "onboarding_agent_kicker",
+      // Skippable and honest about the consequence: Studio-only usage works
+      // without an agent; `/zam` inside a harness does not (ADR §7).
+      skippable: true,
+      render(container) {
+        container.append(
+          heading(t("onboarding_agent_title")),
+          paragraph(t("onboarding_agent_body")),
+        );
+        const root = document.createElement("div");
+        root.className = "onboarding-agent";
+        container.append(root);
+        renderAgentArea(root, ctx.agentOffers, actions, agentState);
       },
     },
     {
@@ -490,6 +537,183 @@ function renderEmbeddingBlock(
 
   block.append(controls, status);
   return block;
+}
+
+type AgentDetectionState = {
+  report: { zamOnPath: boolean; harnesses: OnboardingAgentHarness[] } | null;
+  error: string | null;
+  /** Connect outcome, kept in state so a re-render does not erase it. */
+  notice: { text: string; ok: boolean } | null;
+};
+
+/**
+ * The agent page's live area (ADR 2026-07-24 §6). Probes installed harnesses
+ * on first render, then branches: detected agents collapse to "use your
+ * existing agent" with the idempotent connect; none detected shows the
+ * data-driven offer table with each option's strength AND consequence, plus
+ * the agent-axis privacy caveat. ZAM never installs a harness — install
+ * links open the vendor's own instructions and "Check again" re-detects.
+ */
+function renderAgentArea(
+  root: HTMLElement,
+  offers: OnboardingAgentOffer[],
+  actions: { openExternal(url: string): void },
+  state: AgentDetectionState,
+): void {
+  root.replaceChildren();
+
+  if (!state.report && !state.error) {
+    root.append(paragraph(t("onboarding_agent_detecting")));
+    void (async () => {
+      try {
+        state.report = await runBridge("agent-harness-status");
+      } catch (err) {
+        state.error = bridgeErrorMessage(err);
+      }
+      renderAgentArea(root, offers, actions, state);
+    })();
+    return;
+  }
+
+  const checkAgain = document.createElement("button");
+  checkAgain.type = "button";
+  checkAgain.className = "btn ghost-btn btn-sm";
+  checkAgain.textContent = t("onboarding_agent_check_again");
+  checkAgain.addEventListener("click", () => {
+    state.report = null;
+    state.error = null;
+    state.notice = null;
+    renderAgentArea(root, offers, actions, state);
+  });
+
+  if (state.error) {
+    const status = document.createElement("p");
+    status.className = "onboarding-model-status";
+    status.textContent = t("onboarding_agent_detect_failed").replace(
+      "{message}",
+      state.error,
+    );
+    root.append(status, checkAgain);
+    return;
+  }
+
+  const installed = (state.report?.harnesses ?? []).filter((h) => h.installed);
+  if (installed.length > 0) {
+    root.append(renderExistingAgents(installed, state, () => {
+      renderAgentArea(root, offers, actions, state);
+    }));
+    return;
+  }
+
+  const card = document.createElement("section");
+  card.className = "onboarding-model-card";
+  const title = document.createElement("h2");
+  title.className = "onboarding-model-card-title";
+  title.textContent = t("onboarding_agent_offers_title");
+  card.append(title);
+  for (const offer of offers) {
+    const row = document.createElement("div");
+    row.className = "onboarding-agent-offer";
+    const name = document.createElement("p");
+    name.className = "onboarding-agent-offer-label";
+    name.textContent = offer.label;
+    const strength = cardLine(t(offer.strengthKey));
+    const consequence = cardLine(t(offer.consequenceKey));
+    consequence.classList.add("onboarding-agent-consequence");
+    const install = document.createElement("button");
+    install.type = "button";
+    install.className = "btn secondary-btn btn-sm";
+    install.textContent = t("onboarding_agent_install");
+    install.addEventListener("click", () =>
+      actions.openExternal(offer.installUrl),
+    );
+    row.append(name, strength, consequence, install);
+    card.append(row);
+  }
+  const caveat = cardLine(t("onboarding_agent_offers_caveat"));
+  caveat.classList.add("onboarding-agent-consequence");
+  card.append(caveat, checkAgain);
+  root.append(card);
+}
+
+/** The collapsed existing-agent branch: detected list + idempotent connect. */
+function renderExistingAgents(
+  installed: OnboardingAgentHarness[],
+  state: AgentDetectionState,
+  rerender: () => void,
+): HTMLElement {
+  const card = document.createElement("section");
+  card.className = "onboarding-model-card";
+  const title = document.createElement("h2");
+  title.className = "onboarding-model-card-title";
+  title.textContent = t("onboarding_agent_existing_title");
+  card.append(title, cardLine(t("onboarding_agent_existing_body")));
+
+  const list = document.createElement("ul");
+  list.className = "onboarding-agent-list";
+  for (const harness of installed) {
+    const item = document.createElement("li");
+    item.className = "onboarding-agent-row";
+    item.dataset.harness = harness.harness;
+    const badge = harness.configured
+      ? t("onboarding_agent_connected_badge")
+      : t("onboarding_agent_not_connected_badge");
+    item.textContent = `${harness.label} — ${badge}`;
+    item.classList.toggle("connected", harness.configured);
+    list.append(item);
+  }
+  card.append(list);
+
+  const connectBtn = document.createElement("button");
+  connectBtn.type = "button";
+  connectBtn.className = "btn primary-btn";
+  connectBtn.textContent = t("onboarding_agent_connect");
+  const status = document.createElement("p");
+  status.className = "onboarding-model-status";
+  status.setAttribute("aria-live", "polite");
+  if (state.notice) {
+    status.textContent = state.notice.text;
+    status.classList.toggle("ok", state.notice.ok);
+  }
+
+  connectBtn.addEventListener("click", () => {
+    void (async () => {
+      connectBtn.disabled = true;
+      status.classList.remove("ok");
+      status.textContent = t("onboarding_agent_connecting");
+      try {
+        const result = await runBridge<{
+          success: boolean;
+          results?: Array<{ error?: string }>;
+        }>("agent-connect");
+        // Re-probe so the list reflects reality, not our expectation; the
+        // outcome notice rides state because rerender rebuilds this card.
+        state.report = await runBridge("agent-harness-status");
+        if (result.success) {
+          state.notice = { text: t("onboarding_agent_connect_done"), ok: true };
+        } else {
+          const firstError = result.results?.find((r) => r.error)?.error;
+          state.notice = {
+            text: t("onboarding_agent_connect_failed").replace(
+              "{message}",
+              firstError ?? "unknown",
+            ),
+            ok: false,
+          };
+        }
+        rerender();
+      } catch (err) {
+        connectBtn.disabled = false;
+        status.textContent = t("onboarding_agent_connect_failed").replace(
+          "{message}",
+          bridgeErrorMessage(err),
+        );
+      }
+    })();
+  });
+
+  card.append(connectBtn, status);
+  return card;
 }
 
 /** Unwrap the bridge's `{"error": …}` JSON when present; never echoes keys. */

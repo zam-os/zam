@@ -3142,3 +3142,50 @@ textarea::placeholder {
   font-weight: 700;
   margin: 0;
 }
+
+/* Agent page (ADR 2026-07-24 §6, Phase 4) */
+.onboarding-agent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.onboarding-agent-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+}
+
+.onboarding-agent-row {
+  color: var(--clr-text-secondary);
+  font-size: 14px;
+}
+
+.onboarding-agent-row.connected {
+  color: var(--clr-accent-cyan);
+  font-weight: 600;
+}
+
+.onboarding-agent-offer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border-soft);
+}
+
+.onboarding-agent-offer-label {
+  color: var(--clr-text-primary);
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.onboarding-agent-consequence {
+  font-size: 13px;
+  color: var(--clr-text-muted);
+}
