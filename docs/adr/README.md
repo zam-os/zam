@@ -54,3 +54,4 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-18c](2026-07-18c-okf-import-handoff.md) | OKF Import Handoff — Chat Delivery and the Focused-Article State | Implemented |
 | [2026-07-21](2026-07-21-android-companion-tauri-shell.md) | Android Companion: Tauri 2 Shell with Kernel-in-WebView | Accepted — offline-sync product goal superseded by 2026-07-23 |
 | [2026-07-23](2026-07-23-online-only-server-db-and-mobile-gating.md) | Online-Only Server Database, Mobile Gating, and Cloud Config in the DB | Accepted |
+| [2026-07-24](2026-07-24-first-run-onboarding.md) | First-Run Onboarding: Personas, Goal-Driven Import, Cloud LLM Connect, and Agent Choice | Proposed |
