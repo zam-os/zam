@@ -123,6 +123,19 @@ export {
   updateKnowledgeContext,
 } from "./models/knowledge-context.js";
 export type {
+  PersonaContextSeedResult,
+  PersonaDescriptor,
+  PersonaId,
+  PersonaImportPath,
+} from "./models/persona.js";
+export {
+  DEFAULT_PERSONA_ID,
+  getPersonaDescriptor,
+  isPersonaId,
+  PERSONA_DESCRIPTORS,
+  seedPersonaKnowledgeContext,
+} from "./models/persona.js";
+export type {
   Neighborhood,
   NeighborhoodToken,
   Prerequisite,
@@ -412,6 +425,7 @@ export type {
   MachineAiConfig,
   MachineCompanionConfig,
   MachineCompanionConfigUpdate,
+  MachineOnboardingConfig,
   MachineProviderRecord,
   MachineRoleBinding,
   ModelCapability,
@@ -444,6 +458,8 @@ export {
   getMachineAiConfig,
   getMachineAiModels,
   getMachineCompanionConfig,
+  getOnboardingDone,
+  getOnboardingPersona,
   loadInstallConfig,
   migrateMachineRolesToModels,
   removeConfiguredWorkspace,
@@ -465,6 +481,8 @@ export {
   setInstallChannel,
   setInstallMode,
   setLastRepairedVersion,
+  setOnboardingDone,
+  setOnboardingPersona,
   updateMachineCompanionConfig,
   upsertConfiguredWorkspace,
 } from "./system/install-config.js";

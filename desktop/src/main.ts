@@ -18,8 +18,21 @@ import {
   t,
   tf,
 } from "./i18n.js";
-import { initCurriculumWizard } from "./curriculum-wizard.js";
+import {
+  initCurriculumWizard,
+  setCurriculumWizardModelSetup,
+} from "./curriculum-wizard.js";
 import { initMobilePairing } from "./mobile-pairing.js";
+import {
+  deriveOnboardingChecklist,
+  initOnboarding,
+  type OnboardingAgentOffer,
+  type OnboardingCloudProvider,
+  type OnboardingController,
+  type OnboardingEmbeddingStatus,
+  type OnboardingPersona,
+  type OnboardingWorkspaceStructure,
+} from "./onboarding.js";
 import { initServerDbWizard } from "./server-db.js";
 import {
   beginTurn,
@@ -90,7 +103,7 @@ const BLOOM_LEVEL_NAMES: Record<string, Record<number, string>> = {
 };
 
 // ── STATE MANAGEMENT ──────────────────────────────────────────────────────
-type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view" | "learning-content-view";
+type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view" | "learning-content-view" | "onboarding-view";
 type ThemePreference = "light" | "dark";
 
 let isLlmEnabled = false;
@@ -181,6 +194,7 @@ interface WorkspaceListResponse {
   defaultWorkspaceDir: string;
   dataDir: string;
   linkHealth?: Record<string, WorkspaceLinkHealth>;
+  structure?: Record<string, OnboardingWorkspaceStructure>;
 }
 
 interface BridgeCard {
@@ -448,6 +462,13 @@ function initializeTranslations() {
     t("dashboard_subtitle");
   document.getElementById("lbl-due-reviews")!.textContent = t("lbl_due_reviews");
   document.getElementById("lbl-domains")!.textContent = t("lbl_domains");
+  document.getElementById("lbl-onboarding-checklist-title")!.textContent =
+    t("onboarding_checklist_title");
+  document.getElementById("lbl-onboarding-checklist-note")!.textContent =
+    t("onboarding_checklist_note");
+  // Checklist rows resolve their copy at render time — rebuild them so a
+  // locale switch never leaves stale-language rows (no-op before bootstrap).
+  renderOnboardingChecklist();
   document.getElementById("btn-start-session")!.textContent = t("btn_start_session");
   document.getElementById("btn-open-graph")!.textContent = t("btn_open_graph");
   document.getElementById("btn-open-settings")!.textContent =
@@ -569,6 +590,8 @@ function initializeTranslations() {
   if (addProviderButton) addProviderButton.textContent = t("btn_add_model");
   document.getElementById("btn-check-updates")!.textContent = t("btn_check_updates");
   document.getElementById("btn-open-releases")!.textContent = t("btn_open_releases");
+  document.getElementById("btn-run-onboarding")!.textContent =
+    t("btn_run_onboarding");
   document.getElementById("graph-hint")!.textContent = t("graph_hint");
 
   // Knowledge Context settings and wizard
@@ -700,6 +723,9 @@ function initializeTranslations() {
   // Curriculum Import Wizard Translations
   const btnContentCurriculumWizard = document.getElementById("btn-content-curriculum-wizard");
   if (btnContentCurriculumWizard) btnContentCurriculumWizard.textContent = t("btn_curriculum_wizard");
+  // Goal import entry (plan Phase 8): reopens the onboarding goal page.
+  const btnContentGoalImport = document.getElementById("btn-content-goal-import");
+  if (btnContentGoalImport) btnContentGoalImport.textContent = t("btn_content_goal_import");
   const lblCurriculumWizardTitle = document.getElementById("lbl-curriculum-wizard-title");
   if (lblCurriculumWizardTitle) lblCurriculumWizardTitle.textContent = t("lbl_curriculum_wizard_title");
   const btnCurriculumWizardBack = document.getElementById("btn-curriculum-wizard-back");
@@ -987,6 +1013,19 @@ function renderWorkspaceList(info: WorkspaceListResponse): void {
             : t("workspace_link_broken");
       titleRow.appendChild(linkBadge);
     }
+    // Missing-workspace state (ADR 2026-07-24 §4): a registered path whose
+    // directory vanished — or lost parts of the fresh-setup structure — shows
+    // a repairable badge here instead of failing at the point of use.
+    const structure = info.structure?.[workspace.id];
+    const structureBroken = structure ? !structure.complete : false;
+    if (structureBroken) {
+      const structureBadge = document.createElement("span");
+      structureBadge.className = "workspace-badge workspace-link-badge warn";
+      structureBadge.textContent = structure?.dirExists
+        ? t("workspace_structure_incomplete")
+        : t("workspace_structure_missing");
+      titleRow.appendChild(structureBadge);
+    }
 
     const path = document.createElement("code");
     path.textContent = workspace.path;
@@ -1000,7 +1039,18 @@ function renderWorkspaceList(info: WorkspaceListResponse): void {
     const actions = document.createElement("div");
     actions.className = "workspace-actions";
 
-    if (health === "needs-repair" || health === "unmanaged") {
+    if (structureBroken) {
+      // Structure repair recreates the directory and missing pieces additively
+      // (and force-relinks skills), so it supersedes the link-only repair.
+      const repairButton = document.createElement("button");
+      repairButton.className = "btn warn-btn btn-sm";
+      repairButton.type = "button";
+      repairButton.textContent = t("workspace_repair_structure");
+      repairButton.addEventListener("click", () => {
+        void repairWorkspaceStructure(workspace);
+      });
+      actions.appendChild(repairButton);
+    } else if (health === "needs-repair" || health === "unmanaged") {
       const repairButton = document.createElement("button");
       repairButton.className = "btn warn-btn btn-sm";
       repairButton.type = "button";
@@ -1100,6 +1150,32 @@ async function removeWorkspace(workspace: WorkspaceConfig): Promise<void> {
   } catch (err) {
     if (status) {
       status.textContent = tf("workspace_remove_failed", {
+        message: errorMessage(err),
+      });
+    }
+  }
+}
+
+/**
+ * Structure repair (ADR 2026-07-24 §4): recreate a vanished directory and the
+ * missing fresh-setup pieces additively, re-link skills. Never overwrites a
+ * user-authored file, so no confirmation is needed.
+ */
+async function repairWorkspaceStructure(
+  workspace: WorkspaceConfig,
+): Promise<void> {
+  const label = workspace.label || workspace.id;
+  const status = document.getElementById("setup-status");
+  if (status) status.textContent = t("workspace_repairing");
+  try {
+    await runBridge("workspace-repair", ["--id", workspace.id]);
+    await loadWorkspaceList();
+    if (status) {
+      status.textContent = tf("workspace_repaired", { label });
+    }
+  } catch (err) {
+    if (status) {
+      status.textContent = tf("workspace_repair_failed", {
         message: errorMessage(err),
       });
     }
@@ -2786,6 +2862,124 @@ function refreshSettingsData(): void {
   if (aiConfigEditorOpen) void loadModelRegistry();
 }
 
+// First-run onboarding controller (ADR 2026-07-24). Created once in
+// DOMContentLoaded; `showOnboarding` reveals the flow both on the first-run
+// gate and from the Settings "Run setup again" action.
+let onboardingController: OnboardingController | null = null;
+
+// Persona page data (Phase 1), filled from desktop-bootstrap before the flow
+// can open — the kernel's descriptor list plus the persisted (or default
+// "private") selection. Read live via getStepContext on each start().
+let onboardingPersonas: OnboardingPersona[] = [];
+let onboardingPersonaId = "private";
+// Model page data (Phase 2): cloud provider descriptors and the copy-only
+// local-hardware hint, also from desktop-bootstrap.
+let onboardingCloudProviders: OnboardingCloudProvider[] = [];
+let onboardingLocalAiCapable = false;
+// Embedding enhancement state (Phase 3); all-false until bootstrap answers.
+let onboardingEmbedding: OnboardingEmbeddingStatus = {
+  ollamaInstalled: false,
+  serverOnline: false,
+  modelPresent: false,
+  registered: false,
+  usable: false,
+};
+// Agent offers for the no-harness branch (Phase 4); detection itself is
+// probed live by the agent page, not carried in bootstrap.
+let onboardingAgentOffers: OnboardingAgentOffer[] = [];
+// Active-workspace structure for the workspace page (Phase 6).
+let onboardingWorkspaceStructure: OnboardingWorkspaceStructure = {
+  dirExists: false,
+  missing: [],
+  complete: false,
+};
+// Dashboard checklist state (Phase 9). Deck size comes from check-due's
+// stats; the agent probe answers asynchronously. Both stay null until known
+// so the checklist never claims a gap it has not positively established.
+let deckCardCount: number | null = null;
+let agentHarnessConfigured: boolean | null = null;
+// True once desktop-bootstrap has answered — before that the module vars
+// above are placeholders and the checklist must not render from them.
+let dashboardSignalsLoaded = false;
+// "Finish later" disarms the first-run auto-show for the rest of this app
+// session, so the dashboard reload that refreshes the checklist does not
+// bounce the user straight back into the flow (the machine-local gate stays
+// armed for the next start).
+let onboardingDeferredThisSession = false;
+
+function showOnboarding(): void {
+  if (!onboardingController) return;
+  switchView("onboarding-view");
+  onboardingController.start();
+}
+
+/** Open the flow directly at one page (e.g. Learning Content → goal import). */
+function showOnboardingAt(stepId: string): void {
+  if (!onboardingController) return;
+  switchView("onboarding-view");
+  onboardingController.startAt(stepId);
+}
+
+/**
+ * Dashboard onboarding checklist (ADR 2026-07-24 §7, plan Phase 9): the
+ * remaining setup steps as actionable rows, each reopening the flow at the
+ * page that resolves it. Hidden entirely when nothing remains. Renders from
+ * already-established signals only — see deriveOnboardingChecklist.
+ */
+function renderOnboardingChecklist(): void {
+  const container = document.getElementById("onboarding-checklist");
+  const itemsEl = document.getElementById("onboarding-checklist-items");
+  if (!container || !itemsEl || !dashboardSignalsLoaded) return;
+
+  const items = deriveOnboardingChecklist({
+    aiConnected: isLlmEnabled,
+    agentConfigured: agentHarnessConfigured,
+    workspaceStructure: onboardingWorkspaceStructure,
+    cardsInDeck: deckCardCount,
+  });
+
+  container.classList.toggle("hidden", items.length === 0);
+  itemsEl.replaceChildren();
+  for (const item of items) {
+    const row = document.createElement("button");
+    row.type = "button";
+    row.className = "onboarding-checklist-item";
+    row.dataset.checklistId = item.id;
+
+    const title = document.createElement("span");
+    title.className = "onboarding-checklist-item-title";
+    title.textContent = t(item.titleKey);
+
+    const note = document.createElement("span");
+    note.className = "onboarding-checklist-item-note";
+    note.textContent = t(item.noteKey);
+
+    row.append(title, note);
+    row.addEventListener("click", () => showOnboardingAt(item.step));
+    itemsEl.appendChild(row);
+  }
+}
+
+/**
+ * The one checklist signal bootstrap does not carry: whether any known
+ * harness already has ZAM's MCP entry. Probed asynchronously off the
+ * dashboard's critical path; a failed probe keeps the signal unknown, which
+ * deliberately shows no agent row rather than a possibly-wrong one.
+ */
+async function refreshAgentChecklistSignal(): Promise<void> {
+  try {
+    const res = await runBridge<{
+      harnesses?: Array<{ configured?: boolean }>;
+    }>("agent-harness-status");
+    agentHarnessConfigured = (res.harnesses ?? []).some(
+      (harness) => harness.configured === true,
+    );
+  } catch {
+    agentHarnessConfigured = null;
+  }
+  renderOnboardingChecklist();
+}
+
 function switchView(
   viewId: AppView,
   options: { skipStudioLoad?: boolean } = {},
@@ -3659,21 +3853,54 @@ async function loadDashboard() {
       llm: { enabled: boolean };
       activeWorkspaceId?: string;
       workspaceDir?: string;
+      onboardingDone?: boolean;
+      onboardingPersona?: string;
+      onboardingPersonas?: OnboardingPersona[];
+      cloudProviders?: OnboardingCloudProvider[];
+      localAiCapable?: boolean;
+      embedding?: OnboardingEmbeddingStatus;
+      agentOffers?: OnboardingAgentOffer[];
+      workspaceStructure?: OnboardingWorkspaceStructure;
     }>("desktop-bootstrap");
     desktopUserId = settings.userId;
     setCurrentLocale(settings.locale || "en");
     isLlmEnabled = settings.llm?.enabled || false;
     activeWorkspaceId = settings.activeWorkspaceId ?? activeWorkspaceId;
     activeWorkspaceDir = settings.workspaceDir ?? activeWorkspaceDir;
-    
+    onboardingPersonas = settings.onboardingPersonas ?? onboardingPersonas;
+    onboardingPersonaId = settings.onboardingPersona ?? onboardingPersonaId;
+    onboardingCloudProviders =
+      settings.cloudProviders ?? onboardingCloudProviders;
+    onboardingLocalAiCapable =
+      settings.localAiCapable ?? onboardingLocalAiCapable;
+    onboardingEmbedding = settings.embedding ?? onboardingEmbedding;
+    onboardingAgentOffers = settings.agentOffers ?? onboardingAgentOffers;
+    onboardingWorkspaceStructure =
+      settings.workspaceStructure ?? onboardingWorkspaceStructure;
+    dashboardSignalsLoaded = true;
+
     initializeTranslations();
+
+    // First-run gate (ADR 2026-07-24): a machine that has not completed the
+    // guided flow lands there instead of the empty dashboard. The rest of
+    // loadDashboard still runs so the dashboard is ready behind "finish
+    // later" — which disarms this auto-show for the session (Phase 9), so
+    // the reload that refreshes the checklist stays on the dashboard.
+    if (settings.onboardingDone === false && !onboardingDeferredThisSession) {
+      showOnboarding();
+    }
     void loadWorkspaceList();
     void loadProviderStatus();
     runAgentAutoConnectOnce();
 
     // 2. Check due cards count and active domains
-    const dueInfo = await runBridge<{ dueCount: number; domains: string[] }>("check-due");
+    const dueInfo = await runBridge<{
+      dueCount: number;
+      domains: string[];
+      stats?: { cardsInDeck?: number };
+    }>("check-due");
     totalDue = dueInfo.dueCount;
+    deckCardCount = dueInfo.stats?.cardsInDeck ?? null;
 
     const dueCountEl = document.getElementById("due-count")!;
     dueCountEl.textContent = String(totalDue);
@@ -3685,10 +3912,20 @@ async function loadDashboard() {
       caughtUpEl.classList.add("hidden");
       startBtn.disabled = false;
     } else {
-      caughtUpEl.textContent = t("lbl_caught_up");
+      // An empty deck is not "caught up" — say so and point at the checklist
+      // below, which carries the import paths (ADR 2026-07-24 §7: no import →
+      // the dashboard shows the paths rather than an empty state).
+      caughtUpEl.textContent =
+        deckCardCount === 0 ? t("dashboard_empty_no_cards") : t("lbl_caught_up");
       caughtUpEl.classList.remove("hidden");
       startBtn.disabled = true;
     }
+
+    // Remaining-setup checklist (plan Phase 9): render synchronously from
+    // what bootstrap and check-due established, then refresh once the async
+    // agent probe answers.
+    renderOnboardingChecklist();
+    void refreshAgentChecklistSignal();
 
     // Load active domains as badges
     const domainsContainer = document.getElementById("dashboard-domains")!;
@@ -4660,8 +4897,49 @@ window.addEventListener("DOMContentLoaded", () => {
   setupLocaleSwitcher();
   initLearningContentStudio();
   initCurriculumWizard();
+  // Text-LLM-offline in the wizard links back to the onboarding model page
+  // instead of dead-ending in an error (ADR 2026-07-24 §7, plan Phase 9).
+  setCurriculumWizardModelSetup(() => showOnboardingAt("model"));
   initServerDbWizard(() => void loadDatabaseStatus());
   initMobilePairing(() => void loadDatabaseStatus());
+  // Goal-driven import stays reachable outside first run (plan Phase 8):
+  // Learning Content's "Goal import" reopens the flow at the goal page.
+  document
+    .getElementById("btn-content-goal-import")
+    ?.addEventListener("click", () => showOnboardingAt("goal"));
+  onboardingController = initOnboarding({
+    getStepContext: () => ({
+      personas: onboardingPersonas,
+      selectedPersonaId: onboardingPersonaId,
+      cloudProviders: onboardingCloudProviders,
+      localAiCapable: onboardingLocalAiCapable,
+      aiConnected: isLlmEnabled,
+      embedding: onboardingEmbedding,
+      agentOffers: onboardingAgentOffers,
+      workspaceDir: activeWorkspaceDir ?? "",
+      activeWorkspaceId: activeWorkspaceId ?? "",
+      workspaceStructure: onboardingWorkspaceStructure,
+    }),
+    openExternal: (url) => void openUrl(url),
+    // Both entry points are document-level modal overlays initialized at
+    // startup, so triggering their buttons opens them on top of the flow.
+    openContentEntry: (entry) => {
+      const id =
+        entry === "curriculum"
+          ? "btn-content-curriculum-wizard"
+          : "btn-content-import";
+      document.getElementById(id)?.click();
+    },
+    onLeave: (reason) => {
+      switchView("dashboard-view");
+      // Reload on BOTH paths so the checklist and status badges reflect what
+      // happened inside the flow (Phase 9). "Finish later" first disarms the
+      // session's auto-show gate — the machine-local first-run gate stays
+      // armed for the next start, but this reload must not bounce back.
+      if (reason === "later") onboardingDeferredThisSession = true;
+      void loadDashboard();
+    },
+  });
 
   // Load initial dashboard state
   loadDashboard();
@@ -4705,6 +4983,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("btn-settings-back")?.addEventListener("click", () => {
     switchView("dashboard-view");
+  });
+
+  document.getElementById("btn-run-onboarding")?.addEventListener("click", () => {
+    showOnboarding();
   });
 
   document.getElementById("theme-select")?.addEventListener("change", (event) => {

@@ -57,6 +57,14 @@
           </div>
         </div>
 
+        <div id="onboarding-checklist" class="card frosted onboarding-checklist hidden">
+          <h2 id="lbl-onboarding-checklist-title">Finish setting up ZAM</h2>
+          <p id="lbl-onboarding-checklist-note" class="sub-label">
+            Everything below already works — these steps unlock the rest.
+          </p>
+          <div id="onboarding-checklist-items" class="onboarding-checklist-items"></div>
+        </div>
+
         <div class="dashboard-grid">
           <div class="card stat-card frosted">
             <h2 id="lbl-due-reviews">Due Reviews</h2>
@@ -135,6 +143,38 @@
         </div>
       </section>
 
+      <!-- FIRST-RUN ONBOARDING (ADR 2026-07-24) -->
+      <section id="onboarding-view" class="view">
+        <div class="onboarding-shell frosted">
+          <div class="onboarding-head">
+            <p class="eyebrow" id="onboarding-kicker">Welcome to ZAM</p>
+            <p class="onboarding-progress" id="onboarding-progress">Step 1 of 2</p>
+            <div
+              class="onboarding-progress-track"
+              role="progressbar"
+              aria-valuemin="1"
+              aria-valuenow="1"
+              aria-valuemax="2"
+              id="onboarding-progress-track"
+            >
+              <div class="onboarding-progress-fill" id="onboarding-progress-fill"></div>
+            </div>
+          </div>
+          <div class="onboarding-body" id="onboarding-step-body">
+            <!-- Step content is rendered by desktop/src/onboarding.ts -->
+          </div>
+          <div class="onboarding-actions">
+            <button id="onboarding-back" class="btn secondary-btn" type="button">Back</button>
+            <span class="onboarding-actions-spacer"></span>
+            <button id="onboarding-finish-later" class="btn ghost-btn" type="button">
+              Finish later
+            </button>
+            <button id="onboarding-skip" class="btn secondary-btn" type="button">Skip</button>
+            <button id="onboarding-next" class="btn primary-btn" type="button">Next</button>
+          </div>
+        </div>
+      </section>
+
       <!-- VIEW 5: LEARNING CONTENT STUDIO -->
       <section id="learning-content-view" class="view">
         <div class="dashboard-hero frosted">
@@ -147,6 +187,7 @@
           </div>
           <div style="display: flex; gap: 10px; align-items: center;">
             <button id="btn-content-curriculum-wizard" class="btn secondary-btn btn-sm" type="button">Curriculum Wizard</button>
+            <button id="btn-content-goal-import" class="btn secondary-btn btn-sm" type="button">Goal Import</button>
             <button id="btn-content-import" class="btn secondary-btn btn-sm" type="button">Import Curriculum</button>
             <button id="btn-content-new-card" class="btn primary-btn btn-sm" type="button">New Card</button>
           </div>
@@ -284,6 +325,9 @@
               </button>
               <button id="btn-open-releases" class="btn secondary-btn btn-sm" type="button">
                 Releases
+              </button>
+              <button id="btn-run-onboarding" class="btn secondary-btn btn-sm" type="button">
+                Run setup again
               </button>
             </div>
             <p id="update-status" class="sub-label" aria-live="polite"></p>

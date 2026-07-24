@@ -1032,6 +1032,17 @@ export async function findTokens(db: Database, params: FindTokensParams) {
 
   return {
     semantic: q !== null,
+    // Lexical fallback is stated, never silent (ADR 2026-07-24 §7): agents
+    // and surfaces reading this response can tell the user how to get
+    // meaning-aware ranking back.
+    ...(q === null
+      ? {
+          semanticNote:
+            "Semantic ranking is off — these are lexical matches only. " +
+            "Enable local semantic search (Ollama + embeddinggemma) from the " +
+            "desktop setup or via `zam bridge embedding-enable`.",
+        }
+      : {}),
     tokens,
   };
 }

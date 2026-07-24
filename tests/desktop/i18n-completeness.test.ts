@@ -2,6 +2,12 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { TRANSLATION_PACKS } from "../../desktop/src/i18n.js";
+import { AGENT_OFFERS } from "../../src/cli/agent-offers.js";
+import {
+  CONTENT_PATHS,
+  ONBOARDING_CHECKLIST_ITEMS,
+} from "../../desktop/src/onboarding.js";
+import { PERSONA_DESCRIPTORS } from "../../src/kernel/index.js";
 
 const ISSUE_97_KEYS = [
   "lbl_delete",
@@ -283,6 +289,112 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "repair_skills_fixed",
   "repair_skills_ok",
   "update_none_verifying",
+  // First-run onboarding (ADR 2026-07-24) — en/de shipped per the plan's
+  // "German-first, leave further locale packs to native review" rule;
+  // es/fr/pt/zh/ja await the same pack backlog. Later onboarding phases
+  // append their en/de-only keys to this block.
+  "btn_run_onboarding",
+  "onboarding_welcome_title",
+  "onboarding_welcome_body",
+  "onboarding_welcome_hint",
+  "onboarding_done_title",
+  "onboarding_done_body",
+  "onboarding_progress",
+  "onboarding_back",
+  "onboarding_skip",
+  "onboarding_finish_later",
+  "onboarding_finish",
+  "onboarding_next",
+  "onboarding_persona_title",
+  "onboarding_persona_body",
+  "onboarding_persona_hint",
+  "onboarding_model_title",
+  "onboarding_model_body",
+  "onboarding_model_cloud_badge",
+  "onboarding_model_cloud_privacy",
+  "onboarding_model_cloud_cost",
+  "onboarding_model_cloud_how",
+  "onboarding_model_link_key",
+  "onboarding_model_link_credits",
+  "onboarding_model_link_privacy",
+  "onboarding_model_key_placeholder",
+  "onboarding_model_connect",
+  "onboarding_model_connecting",
+  "onboarding_model_connected",
+  "onboarding_model_error",
+  "onboarding_model_key_missing",
+  "onboarding_model_already",
+  "onboarding_model_local_title",
+  "onboarding_model_local_capable",
+  "onboarding_model_local_body",
+  "onboarding_embedding_title",
+  "onboarding_embedding_body",
+  "onboarding_embedding_on",
+  "onboarding_embedding_ready_hint",
+  "onboarding_embedding_need_ollama",
+  "onboarding_embedding_not_running",
+  "onboarding_embedding_enable",
+  "onboarding_embedding_get_ollama",
+  "onboarding_embedding_working",
+  "onboarding_embedding_error",
+  "onboarding_agent_title",
+  "onboarding_agent_body",
+  "onboarding_agent_detecting",
+  "onboarding_agent_detect_failed",
+  "onboarding_agent_existing_title",
+  "onboarding_agent_existing_body",
+  "onboarding_agent_connected_badge",
+  "onboarding_agent_not_connected_badge",
+  "onboarding_agent_connect",
+  "onboarding_agent_connecting",
+  "onboarding_agent_connect_done",
+  "onboarding_agent_connect_failed",
+  "onboarding_agent_offers_title",
+  "onboarding_agent_offers_caveat",
+  "onboarding_agent_install",
+  "onboarding_agent_check_again",
+  "onboarding_workspace_title",
+  "onboarding_workspace_body",
+  "onboarding_workspace_complete",
+  "onboarding_workspace_incomplete",
+  "onboarding_workspace_repair",
+  "onboarding_workspace_repairing",
+  "onboarding_workspace_repaired",
+  "onboarding_workspace_error",
+  "workspace_structure_missing",
+  "workspace_structure_incomplete",
+  "workspace_repair_structure",
+  "onboarding_goal_title",
+  "onboarding_goal_body",
+  "onboarding_goal_title_placeholder",
+  "onboarding_goal_why_placeholder",
+  "onboarding_goal_suggest",
+  "onboarding_goal_title_missing",
+  "onboarding_goal_checking_llm",
+  "onboarding_goal_llm_missing",
+  "onboarding_goal_to_model_page",
+  "onboarding_goal_generating",
+  "onboarding_goal_level_hint",
+  "onboarding_goal_deeper",
+  "onboarding_goal_up",
+  "onboarding_goal_import_topics",
+  "onboarding_goal_no_selection",
+  "onboarding_goal_writing_file",
+  "onboarding_goal_generating_cards",
+  "onboarding_goal_cards_hint",
+  "onboarding_goal_back_to_topics",
+  "onboarding_goal_import_cards",
+  "onboarding_goal_importing",
+  "onboarding_goal_imported",
+  "onboarding_goal_error",
+  "onboarding_content_title",
+  "onboarding_content_body",
+  "onboarding_content_recommended",
+  "btn_content_goal_import",
+  "onboarding_checklist_title",
+  "onboarding_checklist_note",
+  "dashboard_empty_no_cards",
+  "wizard_connect_model_link",
 ]);
 
 /**
@@ -370,6 +482,59 @@ describe("desktop locale completeness", () => {
       (key) => !localeSource.includes(`    ${key}:`),
     );
     expect(missing).toEqual([]);
+  });
+
+  // The persona step resolves its card copy through descriptor fields
+  // (t(persona.labelKey)), which the literal-only scan below cannot see —
+  // so the kernel descriptor list is checked against the reference locales
+  // explicitly. Step kickers are dynamic too (t(step.titleKey)).
+  it.each([
+    "en",
+    "de",
+  ] as const)("reference locale %s has every persona-descriptor key", (locale) => {
+    const i18nSource = readFileSync(
+      join(process.cwd(), "desktop", "src", "i18n.ts"),
+      "utf8",
+    );
+    const start = i18nSource.indexOf(`  ${locale}: {`);
+    const endMarker = locale === "en" ? "\n  de: {" : "\n  // es, fr";
+    const localeSource = i18nSource.slice(
+      start,
+      i18nSource.indexOf(endMarker, start),
+    );
+
+    const keys = [
+      // Step kickers resolve dynamically via t(step.titleKey).
+      "onboarding_welcome_kicker",
+      "onboarding_persona_kicker",
+      "onboarding_model_kicker",
+      "onboarding_agent_kicker",
+      "onboarding_workspace_kicker",
+      "onboarding_content_kicker",
+      "onboarding_goal_kicker",
+      "onboarding_done_kicker",
+      ...PERSONA_DESCRIPTORS.flatMap((persona) => [
+        persona.labelKey,
+        persona.descriptionKey,
+        persona.contextLabelKey,
+      ]),
+      ...AGENT_OFFERS.flatMap((offer) => [
+        offer.strengthKey,
+        offer.consequenceKey,
+      ]),
+      ...CONTENT_PATHS.flatMap((path) => [
+        path.labelKey,
+        path.bodyKey,
+        path.actionLabelKey,
+      ]),
+      ...ONBOARDING_CHECKLIST_ITEMS.flatMap((item) => [
+        item.titleKey,
+        item.noteKey,
+      ]),
+    ];
+    for (const key of keys) {
+      expect(localeSource).toContain(`    ${key}:`);
+    }
   });
 
   it.each([

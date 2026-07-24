@@ -4400,6 +4400,217 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     settings_section_recall: "Recall",
     settings_section_backup: "Backup",
     settings_section_update: "Update",
+    // First-run onboarding (ADR 2026-07-24, Phase 0).
+    btn_run_onboarding: "Run setup again",
+    onboarding_progress: "Step {step} of {total}",
+    onboarding_back: "Back",
+    onboarding_skip: "Skip",
+    onboarding_next: "Next",
+    onboarding_finish: "Finish",
+    onboarding_finish_later: "Finish later",
+    onboarding_welcome_kicker: "Welcome to ZAM",
+    onboarding_welcome_title: "Learn deliberately — and keep it.",
+    onboarding_welcome_body:
+      "ZAM turns what you study into active-recall cards and schedules them with spaced repetition, so your knowledge sticks instead of fading. A few quick steps set it up to work fully.",
+    onboarding_welcome_hint:
+      "You can leave at any time with “Finish later” and pick up where you left off.",
+    onboarding_done_kicker: "You're set up",
+    onboarding_done_title: "That's the essentials.",
+    onboarding_done_body:
+      "You can revisit this setup any time from Settings → “Run setup again”. Head to your dashboard to start learning.",
+    // Persona page (ADR 2026-07-24 §2, Phase 1).
+    onboarding_persona_kicker: "Who are you learning as?",
+    onboarding_persona_title: "Pick your starting point.",
+    onboarding_persona_body:
+      "Your life situation decides where your first learning content comes from — a school curriculum, your own sources, your projects, or a goal you set yourself.",
+    onboarding_persona_hint:
+      "This only picks sensible defaults. Every import path stays available to you later, whatever you choose here.",
+    onboarding_persona_school_label: "Pupil",
+    onboarding_persona_school_why:
+      "Fixed syllabus and exams — start from your state curriculum.",
+    onboarding_persona_school_context: "School",
+    onboarding_persona_study_label: "Student or apprentice",
+    onboarding_persona_study_why:
+      "Lecture notes, textbooks, specs — import the sources in front of you.",
+    onboarding_persona_study_context: "Studies",
+    onboarding_persona_work_label: "Employee or freelancer",
+    onboarding_persona_work_why:
+      "Knowledge from the projects you work on, kept from decaying.",
+    onboarding_persona_work_context: "Work",
+    onboarding_persona_private_label: "Free learner or retiree",
+    onboarding_persona_private_why:
+      "Self-chosen interests, no syllabus — start from a goal you define.",
+    onboarding_persona_private_context: "Personal",
+    // Model page (ADR 2026-07-24 §5, Phase 2).
+    onboarding_model_kicker: "Connect an AI model",
+    onboarding_model_title: "Give ZAM its AI.",
+    onboarding_model_body:
+      "ZAM uses an AI model to generate questions, evaluate your answers, and import learning content. Without one, manual cards and reviews still work — you can set this up later.",
+    onboarding_model_cloud_badge: "Recommended",
+    onboarding_model_cloud_privacy:
+      "Private by enforcement: every request forbids storing your data and training on it (data_collection: deny, zero data retention).",
+    onboarding_model_cloud_cost:
+      "Bounded cost: {amount} prepaid credit is the minimum top-up and covers weeks of regular learning — no subscription, no surprise bills.",
+    onboarding_model_cloud_how:
+      "Create an account, add {amount} credit, create an API key, and paste it below. ZAM never creates accounts, adds credit, or creates keys for you.",
+    onboarding_model_link_key: "Create API key",
+    onboarding_model_link_credits: "Add credit",
+    onboarding_model_link_privacy: "Privacy settings",
+    onboarding_model_key_placeholder: "Paste your API key (sk-or-…)",
+    onboarding_model_connect: "Connect",
+    onboarding_model_connecting: "Verifying key and registering {model}…",
+    onboarding_model_connected: "Connected — {model} is ready.",
+    onboarding_model_error: "Connection failed: {message}",
+    onboarding_model_key_missing: "Paste the API key first.",
+    onboarding_model_already:
+      "An AI model is already connected on this machine — skip this page or paste a new key to update it.",
+    onboarding_model_local_title: "Local AI on your device",
+    onboarding_model_local_capable:
+      "Good fit: this machine has capable AI hardware (NPU or Apple Silicon).",
+    onboarding_model_local_body:
+      "Prefer everything on your own machine? Run a local model with Ollama or FastFlowLM — no account, no cloud. Set it up under Settings → AI models, now or any time later.",
+    // Semantic-search enhancement (ADR 2026-07-24 §5a, Phase 3).
+    onboarding_embedding_title: "Semantic search (optional)",
+    onboarding_embedding_body:
+      "Make search understand meaning, not just words. Computed on this device with EmbeddingGemma — your study text never leaves it. Without it, search simply matches words.",
+    onboarding_embedding_on: "Semantic search is on.",
+    onboarding_embedding_ready_hint:
+      "Ollama is already running on this machine — enabling just downloads one small model.",
+    onboarding_embedding_need_ollama:
+      "Install Ollama first — ZAM installs nothing automatically.",
+    onboarding_embedding_not_running:
+      "Ollama is installed but not running. Start it, then enable.",
+    onboarding_embedding_enable: "Enable",
+    onboarding_embedding_get_ollama: "Get Ollama",
+    onboarding_embedding_working:
+      "Downloading and registering EmbeddingGemma…",
+    onboarding_embedding_error: "Enabling failed: {message}",
+    // Agent page (ADR 2026-07-24 §6, Phase 4).
+    onboarding_agent_kicker: "Connect an agent",
+    onboarding_agent_title: "Bring ZAM into your agent.",
+    onboarding_agent_body:
+      "Working sessions and the /zam conversation live in an AI agent. Without one, the Studio still works fully — /zam inside an agent does not. You can skip this and connect later.",
+    onboarding_agent_detecting: "Detecting installed agents…",
+    onboarding_agent_detect_failed: "Detection failed: {message}",
+    onboarding_agent_existing_title: "Use your existing agent",
+    onboarding_agent_existing_body:
+      "ZAM found these on this machine. Connecting only adds ZAM's entry to their configuration and is safe to repeat.",
+    onboarding_agent_connected_badge: "connected",
+    onboarding_agent_not_connected_badge: "not connected yet",
+    onboarding_agent_connect: "Connect ZAM",
+    onboarding_agent_connecting: "Connecting…",
+    onboarding_agent_connect_done: "Done — ZAM is connected to your agents.",
+    onboarding_agent_connect_failed: "Connecting failed: {message}",
+    onboarding_agent_offers_title: "No agent yet? Three good starting points",
+    onboarding_agent_offers_caveat:
+      "One honest trade-off: a free agent plan runs your study content through that vendor's own model and data policy — ZAM's privacy enforcement from the model page does not reach inside another agent.",
+    onboarding_agent_install: "Install instructions",
+    onboarding_agent_check_again: "Check again",
+    onboarding_agent_goose_strength:
+      "Open source with a simple setup — desktop app and CLI.",
+    onboarding_agent_goose_consequence:
+      "Brings no model of its own: you point it at one, for example your page-3 model.",
+    onboarding_agent_opencode_strength:
+      "Open source and terminal-native; OpenCode Zen's promotional tier can run the agent for free.",
+    onboarding_agent_opencode_consequence:
+      "Terminal-centric — steeper if you don't live in a shell. Zen's free models are time-limited and feedback-collecting (your prompts help improve them); billing details required at sign-up.",
+    onboarding_agent_copilot_strength:
+      "Free monthly quota — the cheapest real start, already wired into ZAM.",
+    onboarding_agent_copilot_consequence:
+      "GitHub account required, quota-limited, not open source.",
+    onboarding_agent_hermes_strength:
+      "Open source and MCP-native; reachable from chat apps (Telegram, Signal, WhatsApp, …) — review cards away from your desk.",
+    onboarding_agent_hermes_consequence:
+      "Heaviest setup of the four: runs its own gateway daemon, which you start and manage yourself.",
+    // Workspace page (ADR 2026-07-24 §4, Phase 6).
+    onboarding_workspace_kicker: "Your workspace",
+    onboarding_workspace_title: "A plain folder, never precious.",
+    onboarding_workspace_body:
+      "Your workspace holds beliefs, goals, and skills as plain files — this is where ZAM and your agent work. Your learning database lives in ~/.zam, outside this folder: deleting the folder never loses your cards. Source control is optional and can come later.",
+    onboarding_workspace_complete: "Everything is in place.",
+    onboarding_workspace_incomplete:
+      "{count} missing piece(s) — create them with one click; nothing existing is touched.",
+    onboarding_workspace_repair: "Create / repair",
+    onboarding_workspace_repairing: "Repairing…",
+    onboarding_workspace_repaired:
+      "Workspace complete — nothing of yours was touched.",
+    onboarding_workspace_error: "Repair failed: {message}",
+    workspace_structure_missing: "folder missing",
+    workspace_structure_incomplete: "incomplete",
+    workspace_repair_structure: "Repair workspace",
+    // Goal page (ADR 2026-07-24 §3, Phase 7).
+    onboarding_goal_kicker: "Your first goal",
+    onboarding_goal_title: "Name a goal — ZAM builds the path.",
+    onboarding_goal_body:
+      "A goal (Lernziel) is something you want to master, in your own words. ZAM proposes a breakdown one level at a time — you confirm, drill deeper, or stop — and only the cards you approve are imported, each citing your goal file.",
+    onboarding_goal_title_placeholder: "What do you want to master?",
+    onboarding_goal_why_placeholder: "Why does it matter to you? (optional)",
+    onboarding_goal_suggest: "Suggest a breakdown",
+    onboarding_goal_title_missing: "Name the goal first.",
+    onboarding_goal_checking_llm: "Checking your AI model…",
+    onboarding_goal_llm_missing:
+      "Goal breakdown needs an AI model. Connect one on the model page, then come back.",
+    onboarding_goal_to_model_page: "Go to the model page",
+    onboarding_goal_generating: "Proposing the next level…",
+    onboarding_goal_level_hint:
+      "Keep what fits, drill into a topic for more detail, or import the selection as cards.",
+    onboarding_goal_deeper: "↳ Go deeper",
+    onboarding_goal_up: "↑ Up one level",
+    onboarding_goal_import_topics: "Turn selection into cards",
+    onboarding_goal_no_selection: "Select at least one item first.",
+    onboarding_goal_writing_file: "Writing your goal file…",
+    onboarding_goal_generating_cards: "Drafting card proposals…",
+    onboarding_goal_cards_hint:
+      "These cards were drafted from your confirmed breakdown. Uncheck anything you don't want — nothing is saved until you import.",
+    onboarding_goal_back_to_topics: "↑ Back to topics",
+    onboarding_goal_import_cards: "Import selected cards",
+    onboarding_goal_importing: "Importing…",
+    onboarding_goal_imported:
+      "Done — {count} cards imported, each citing {file}.",
+    onboarding_goal_error: "Goal import failed: {message}",
+    // Content page (ADR 2026-07-24 §2, Phase 8).
+    onboarding_content_kicker: "Your first learning content",
+    onboarding_content_title: "Where should your first cards come from?",
+    onboarding_content_body:
+      "Your persona picks a sensible starting point — nothing is locked. Every path below stays available later under Learning Content.",
+    onboarding_content_recommended: "Recommended for you",
+    onboarding_content_curriculum_label: "School curriculum",
+    onboarding_content_curriculum_body:
+      "Walk your state curriculum (LehrplanPLUS) level by level and import verified topics as cards.",
+    onboarding_content_curriculum_action: "Open the curriculum wizard",
+    onboarding_content_free_label: "Your own sources",
+    onboarding_content_free_body:
+      "Import a web page, a file, or pasted text — lecture notes, a textbook chapter, a spec.",
+    onboarding_content_free_action: "Open import",
+    onboarding_content_okf_label: "From your project",
+    onboarding_content_okf_body:
+      "Let your agent distill durable knowledge from a real project or repo (OKF import) — this path runs through /zam in your connected agent.",
+    onboarding_content_okf_action: "Check your agent connection",
+    onboarding_content_goal_label: "From a goal",
+    onboarding_content_goal_body:
+      "No syllabus? Define a Lernziel on the next page and let ZAM propose the learning path.",
+    onboarding_content_goal_action: "Define a goal",
+    btn_content_goal_import: "Goal Import",
+    // Dashboard checklist & degraded-mode link-backs (ADR 2026-07-24 §7,
+    // Phase 9).
+    onboarding_checklist_title: "Finish setting up ZAM",
+    onboarding_checklist_note:
+      "Everything below already works — these steps unlock the rest.",
+    onboarding_checklist_model_title: "Connect an AI model",
+    onboarding_checklist_model_note:
+      "Reviews and hand-written cards work without one; AI imports, generated questions and the goal path are waiting on a model.",
+    onboarding_checklist_agent_title: "Connect an agent",
+    onboarding_checklist_agent_note:
+      "The Studio works fully without one — but /zam inside an agent (Claude Code, Copilot, …) stays off until a harness is connected.",
+    onboarding_checklist_workspace_title: "Repair your workspace",
+    onboarding_checklist_workspace_note:
+      "Your working directory is missing parts of its fresh-setup structure (beliefs/, goals/, skills/). Repair recreates only what is missing.",
+    onboarding_checklist_content_title: "Import your first learning content",
+    onboarding_checklist_content_note:
+      "Your deck is empty. Pick an import path — curriculum, your own sources, a project, or a goal.",
+    dashboard_empty_no_cards:
+      "No cards yet — the setup checklist has the import paths.",
+    wizard_connect_model_link: "Connect an AI model",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -5143,6 +5354,219 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     settings_section_recall: "Recall",
     settings_section_backup: "Backup",
     settings_section_update: "Update",
+    // First-run onboarding (ADR 2026-07-24, Phase 0).
+    btn_run_onboarding: "Einrichtung erneut starten",
+    onboarding_progress: "Schritt {step} von {total}",
+    onboarding_back: "Zurück",
+    onboarding_skip: "Überspringen",
+    onboarding_next: "Weiter",
+    onboarding_finish: "Fertig",
+    onboarding_finish_later: "Später fortsetzen",
+    onboarding_welcome_kicker: "Willkommen bei ZAM",
+    onboarding_welcome_title: "Bewusst lernen – und behalten.",
+    onboarding_welcome_body:
+      "ZAM verwandelt deinen Lernstoff in Active-Recall-Karten und plant sie mit Spaced Repetition, damit dein Wissen bleibt statt zu verblassen. Ein paar kurze Schritte richten alles vollständig ein.",
+    onboarding_welcome_hint:
+      "Du kannst jederzeit mit „Später fortsetzen“ aussteigen und dort weitermachen, wo du aufgehört hast.",
+    onboarding_done_kicker: "Alles eingerichtet",
+    onboarding_done_title: "Das war das Wichtigste.",
+    onboarding_done_body:
+      "Du kannst diese Einrichtung jederzeit über Einstellungen → „Einrichtung erneut starten“ öffnen. Geh zu deinem Dashboard und leg los.",
+    // Persona page (ADR 2026-07-24 §2, Phase 1).
+    onboarding_persona_kicker: "Als wer lernst du?",
+    onboarding_persona_title: "Wähle deinen Startpunkt.",
+    onboarding_persona_body:
+      "Deine Lebenssituation entscheidet, woher dein erster Lernstoff kommt – aus einem Lehrplan, deinen eigenen Quellen, deinen Projekten oder einem selbst gesetzten Ziel.",
+    onboarding_persona_hint:
+      "Das legt nur sinnvolle Voreinstellungen fest. Alle Import-Wege bleiben dir später offen, egal was du hier wählst.",
+    onboarding_persona_school_label: "Schüler:in",
+    onboarding_persona_school_why:
+      "Fester Lehrplan und Prüfungen – starte mit deinem Landeslehrplan.",
+    onboarding_persona_school_context: "Schule",
+    onboarding_persona_study_label: "Studium oder Ausbildung",
+    onboarding_persona_study_why:
+      "Skripte, Lehrbücher, Unterlagen – importiere die Quellen, die vor dir liegen.",
+    onboarding_persona_study_context: "Studium",
+    onboarding_persona_work_label: "Beruf oder Freiberuf",
+    onboarding_persona_work_why:
+      "Wissen aus deinen Projekten, das nicht verblassen darf.",
+    onboarding_persona_work_context: "Arbeit",
+    onboarding_persona_private_label: "Frei lernend oder im Ruhestand",
+    onboarding_persona_private_why:
+      "Selbstgewählte Interessen, kein Lehrplan – starte mit einem Ziel, das du dir setzt.",
+    onboarding_persona_private_context: "Privat",
+    // Model page (ADR 2026-07-24 §5, Phase 2).
+    onboarding_model_kicker: "KI-Modell verbinden",
+    onboarding_model_title: "Gib ZAM seine KI.",
+    onboarding_model_body:
+      "ZAM nutzt ein KI-Modell, um Fragen zu generieren, deine Antworten zu bewerten und Lerninhalte zu importieren. Auch ohne Modell funktionieren manuelle Karten und Reviews – du kannst das später einrichten.",
+    onboarding_model_cloud_badge: "Empfohlen",
+    onboarding_model_cloud_privacy:
+      "Privat per Durchsetzung: Jede Anfrage verbietet das Speichern deiner Daten und das Trainieren damit (data_collection: deny, Zero Data Retention).",
+    onboarding_model_cloud_cost:
+      "Begrenzte Kosten: {amount} Prepaid-Guthaben ist die Mindestaufladung und reicht für Wochen regelmäßigen Lernens – kein Abo, keine Kostenfallen.",
+    onboarding_model_cloud_how:
+      "Erstelle ein Konto, lade {amount} Guthaben auf, erstelle einen API-Schlüssel und füge ihn unten ein. ZAM erstellt niemals Konten, lädt Guthaben auf oder erzeugt Schlüssel für dich.",
+    onboarding_model_link_key: "API-Schlüssel erstellen",
+    onboarding_model_link_credits: "Guthaben aufladen",
+    onboarding_model_link_privacy: "Datenschutz-Einstellungen",
+    onboarding_model_key_placeholder: "API-Schlüssel einfügen (sk-or-…)",
+    onboarding_model_connect: "Verbinden",
+    onboarding_model_connecting:
+      "Schlüssel wird geprüft, {model} wird registriert …",
+    onboarding_model_connected: "Verbunden – {model} ist bereit.",
+    onboarding_model_error: "Verbindung fehlgeschlagen: {message}",
+    onboarding_model_key_missing: "Bitte zuerst den API-Schlüssel einfügen.",
+    onboarding_model_already:
+      "Auf diesem Gerät ist bereits ein KI-Modell verbunden – überspringe diese Seite oder füge einen neuen Schlüssel ein.",
+    onboarding_model_local_title: "Lokale KI auf deinem Gerät",
+    onboarding_model_local_capable:
+      "Gute Voraussetzungen: Dieses Gerät hat leistungsfähige KI-Hardware (NPU oder Apple Silicon).",
+    onboarding_model_local_body:
+      "Lieber alles auf dem eigenen Rechner? Betreibe ein lokales Modell mit Ollama oder FastFlowLM – ohne Konto, ohne Cloud. Einrichtung unter Einstellungen → KI-Modelle, jetzt oder später.",
+    // Semantic-search enhancement (ADR 2026-07-24 §5a, Phase 3).
+    onboarding_embedding_title: "Semantische Suche (optional)",
+    onboarding_embedding_body:
+      "Lass die Suche Bedeutung verstehen, nicht nur Wörter. Berechnet auf diesem Gerät mit EmbeddingGemma – dein Lerntext verlässt es nie. Ohne sie vergleicht die Suche einfach Wörter.",
+    onboarding_embedding_on: "Semantische Suche ist aktiv.",
+    onboarding_embedding_ready_hint:
+      "Ollama läuft bereits auf diesem Gerät – zum Aktivieren wird nur ein kleines Modell geladen.",
+    onboarding_embedding_need_ollama:
+      "Installiere zuerst Ollama – ZAM installiert nichts automatisch.",
+    onboarding_embedding_not_running:
+      "Ollama ist installiert, läuft aber nicht. Starte es und aktiviere dann.",
+    onboarding_embedding_enable: "Aktivieren",
+    onboarding_embedding_get_ollama: "Ollama laden",
+    onboarding_embedding_working:
+      "EmbeddingGemma wird geladen und registriert …",
+    onboarding_embedding_error: "Aktivierung fehlgeschlagen: {message}",
+    // Agent page (ADR 2026-07-24 §6, Phase 4).
+    onboarding_agent_kicker: "Agent verbinden",
+    onboarding_agent_title: "Hol ZAM in deinen Agenten.",
+    onboarding_agent_body:
+      "Arbeitssitzungen und das /zam-Gespräch finden in einem KI-Agenten statt. Ohne Agenten funktioniert das Studio vollständig – /zam in einem Agenten nicht. Du kannst das überspringen und später verbinden.",
+    onboarding_agent_detecting: "Installierte Agenten werden erkannt …",
+    onboarding_agent_detect_failed: "Erkennung fehlgeschlagen: {message}",
+    onboarding_agent_existing_title: "Nutze deinen vorhandenen Agenten",
+    onboarding_agent_existing_body:
+      "ZAM hat diese auf deinem Gerät gefunden. Das Verbinden ergänzt nur ZAMs Eintrag in ihrer Konfiguration und lässt sich gefahrlos wiederholen.",
+    onboarding_agent_connected_badge: "verbunden",
+    onboarding_agent_not_connected_badge: "noch nicht verbunden",
+    onboarding_agent_connect: "ZAM verbinden",
+    onboarding_agent_connecting: "Wird verbunden …",
+    onboarding_agent_connect_done:
+      "Fertig – ZAM ist mit deinen Agenten verbunden.",
+    onboarding_agent_connect_failed: "Verbinden fehlgeschlagen: {message}",
+    onboarding_agent_offers_title: "Noch kein Agent? Drei gute Startpunkte",
+    onboarding_agent_offers_caveat:
+      "Ein ehrlicher Kompromiss: Ein kostenloser Agenten-Tarif schickt deinen Lernstoff durch das Modell und die Datenrichtlinie dieses Anbieters – ZAMs Datenschutz-Durchsetzung von der Modell-Seite reicht nicht in fremde Agenten hinein.",
+    onboarding_agent_install: "Installationsanleitung",
+    onboarding_agent_check_again: "Erneut prüfen",
+    onboarding_agent_goose_strength:
+      "Open Source mit einfacher Einrichtung – Desktop-App und CLI.",
+    onboarding_agent_goose_consequence:
+      "Bringt kein eigenes Modell mit: Du verweist es auf eines, zum Beispiel dein Modell von Seite 3.",
+    onboarding_agent_opencode_strength:
+      "Open Source und Terminal-nativ; mit OpenCode Zens Aktions-Tarif läuft der Agent kostenlos.",
+    onboarding_agent_opencode_consequence:
+      "Terminal-zentriert – steiler, wenn du nicht in der Shell lebst. Zens Gratis-Modelle sind zeitlich begrenzt und sammeln Feedback (deine Prompts verbessern sie); Zahlungsdaten bei der Anmeldung erforderlich.",
+    onboarding_agent_copilot_strength:
+      "Kostenloses Monatskontingent – der günstigste echte Start, bereits mit ZAM verdrahtet.",
+    onboarding_agent_copilot_consequence:
+      "GitHub-Konto erforderlich, Kontingent begrenzt, nicht Open Source.",
+    onboarding_agent_hermes_strength:
+      "Open Source und MCP-nativ; erreichbar aus Chat-Apps (Telegram, Signal, WhatsApp, …) – wiederhole Karten fernab vom Schreibtisch.",
+    onboarding_agent_hermes_consequence:
+      "Aufwendigste Einrichtung der vier: betreibt einen eigenen Gateway-Dienst, den du selbst startest und verwaltest.",
+    // Workspace page (ADR 2026-07-24 §4, Phase 6).
+    onboarding_workspace_kicker: "Dein Arbeitsbereich",
+    onboarding_workspace_title: "Ein einfacher Ordner, nichts Kostbares.",
+    onboarding_workspace_body:
+      "Dein Arbeitsbereich enthält Überzeugungen, Ziele und Skills als einfache Dateien – hier arbeiten ZAM und dein Agent. Deine Lerndatenbank liegt in ~/.zam, außerhalb dieses Ordners: Den Ordner zu löschen kostet dich nie deine Karten. Versionsverwaltung ist optional und kann später kommen.",
+    onboarding_workspace_complete: "Alles ist an seinem Platz.",
+    onboarding_workspace_incomplete:
+      "{count} fehlende Teile – mit einem Klick anlegen; Bestehendes bleibt unangetastet.",
+    onboarding_workspace_repair: "Anlegen / reparieren",
+    onboarding_workspace_repairing: "Wird repariert …",
+    onboarding_workspace_repaired:
+      "Arbeitsbereich vollständig – nichts von dir wurde angetastet.",
+    onboarding_workspace_error: "Reparatur fehlgeschlagen: {message}",
+    workspace_structure_missing: "Ordner fehlt",
+    workspace_structure_incomplete: "unvollständig",
+    workspace_repair_structure: "Arbeitsbereich reparieren",
+    // Goal page (ADR 2026-07-24 §3, Phase 7).
+    onboarding_goal_kicker: "Dein erstes Ziel",
+    onboarding_goal_title: "Nenn ein Ziel – ZAM baut den Weg.",
+    onboarding_goal_body:
+      "Ein Lernziel ist etwas, das du meistern willst – in deinen eigenen Worten. ZAM schlägt die Aufschlüsselung Ebene für Ebene vor: Du bestätigst, gehst tiefer oder stoppst – und nur die Karten, die du freigibst, werden importiert, jede mit Verweis auf deine Ziel-Datei.",
+    onboarding_goal_title_placeholder: "Was willst du meistern?",
+    onboarding_goal_why_placeholder: "Warum ist es dir wichtig? (optional)",
+    onboarding_goal_suggest: "Aufschlüsselung vorschlagen",
+    onboarding_goal_title_missing: "Benenne zuerst das Ziel.",
+    onboarding_goal_checking_llm: "Dein KI-Modell wird geprüft …",
+    onboarding_goal_llm_missing:
+      "Die Ziel-Aufschlüsselung braucht ein KI-Modell. Verbinde eines auf der Modell-Seite und komm dann zurück.",
+    onboarding_goal_to_model_page: "Zur Modell-Seite",
+    onboarding_goal_generating: "Nächste Ebene wird vorgeschlagen …",
+    onboarding_goal_level_hint:
+      "Behalte, was passt, geh bei einem Thema tiefer – oder importiere die Auswahl als Karten.",
+    onboarding_goal_deeper: "↳ Tiefer",
+    onboarding_goal_up: "↑ Eine Ebene hoch",
+    onboarding_goal_import_topics: "Auswahl in Karten verwandeln",
+    onboarding_goal_no_selection: "Wähle zuerst mindestens einen Eintrag.",
+    onboarding_goal_writing_file: "Deine Ziel-Datei wird geschrieben …",
+    onboarding_goal_generating_cards: "Kartenvorschläge werden entworfen …",
+    onboarding_goal_cards_hint:
+      "Diese Karten wurden aus deiner bestätigten Aufschlüsselung entworfen. Wähle ab, was du nicht willst – gespeichert wird erst beim Import.",
+    onboarding_goal_back_to_topics: "↑ Zurück zu den Themen",
+    onboarding_goal_import_cards: "Ausgewählte Karten importieren",
+    onboarding_goal_importing: "Wird importiert …",
+    onboarding_goal_imported:
+      "Fertig – {count} Karten importiert, jede mit Verweis auf {file}.",
+    onboarding_goal_error: "Ziel-Import fehlgeschlagen: {message}",
+    // Content page (ADR 2026-07-24 §2, Phase 8).
+    onboarding_content_kicker: "Dein erster Lernstoff",
+    onboarding_content_title: "Woher sollen deine ersten Karten kommen?",
+    onboarding_content_body:
+      "Deine Rolle wählt einen sinnvollen Startpunkt – nichts ist festgelegt. Jeder Weg unten bleibt später unter Lerninhalte verfügbar.",
+    onboarding_content_recommended: "Für dich empfohlen",
+    onboarding_content_curriculum_label: "Schul-Lehrplan",
+    onboarding_content_curriculum_body:
+      "Geh deinen Landeslehrplan (LehrplanPLUS) Ebene für Ebene durch und importiere geprüfte Themen als Karten.",
+    onboarding_content_curriculum_action: "Lehrplan-Assistent öffnen",
+    onboarding_content_free_label: "Deine eigenen Quellen",
+    onboarding_content_free_body:
+      "Importiere eine Webseite, eine Datei oder eingefügten Text – Skripte, ein Lehrbuchkapitel, eine Spezifikation.",
+    onboarding_content_free_action: "Import öffnen",
+    onboarding_content_okf_label: "Aus deinem Projekt",
+    onboarding_content_okf_body:
+      "Lass deinen Agenten dauerhaftes Wissen aus einem echten Projekt oder Repo destillieren (OKF-Import) – dieser Weg läuft über /zam in deinem verbundenen Agenten.",
+    onboarding_content_okf_action: "Agenten-Verbindung prüfen",
+    onboarding_content_goal_label: "Aus einem Ziel",
+    onboarding_content_goal_body:
+      "Kein Lehrplan? Definiere auf der nächsten Seite ein Lernziel und lass ZAM den Lernweg vorschlagen.",
+    onboarding_content_goal_action: "Ziel definieren",
+    btn_content_goal_import: "Ziel-Import",
+    // Dashboard checklist & degraded-mode link-backs (ADR 2026-07-24 §7,
+    // Phase 9).
+    onboarding_checklist_title: "Richte ZAM fertig ein",
+    onboarding_checklist_note:
+      "Alles Übrige funktioniert bereits – diese Schritte schalten den Rest frei.",
+    onboarding_checklist_model_title: "KI-Modell verbinden",
+    onboarding_checklist_model_note:
+      "Wiederholungen und selbst geschriebene Karten funktionieren ohne; KI-Importe, generierte Fragen und der Ziel-Weg warten auf ein Modell.",
+    onboarding_checklist_agent_title: "Agenten verbinden",
+    onboarding_checklist_agent_note:
+      "Das Studio funktioniert ohne vollständig – aber /zam in einem Agenten (Claude Code, Copilot, …) bleibt aus, bis ein Agent verbunden ist.",
+    onboarding_checklist_workspace_title: "Arbeitsbereich reparieren",
+    onboarding_checklist_workspace_note:
+      "In deinem Arbeitsverzeichnis fehlen Teile der Grundstruktur (beliefs/, goals/, skills/). Die Reparatur legt nur das Fehlende neu an.",
+    onboarding_checklist_content_title: "Ersten Lernstoff importieren",
+    onboarding_checklist_content_note:
+      "Dein Stapel ist leer. Wähle einen Import-Weg – Lehrplan, eigene Quellen, ein Projekt oder ein Ziel.",
+    dashboard_empty_no_cards:
+      "Noch keine Karten – die Einrichtungsliste führt zu den Import-Wegen.",
+    wizard_connect_model_link: "KI-Modell verbinden",
   },
   // es, fr, pt, zh, ja packs come from TRANSLATION_PACKS above; en/de stay inline here as the reference locales.
   ...TRANSLATION_PACKS,

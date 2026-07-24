@@ -251,7 +251,8 @@ tokenCommand
       });
       if (embRes.status === "unavailable" && !opts.json && !opts.quiet) {
         console.error(
-          `Note: semantic search unavailable (${embRes.reason}) — lexical matches only.`,
+          `Note: semantic search unavailable (${embRes.reason}) — lexical matches only.\n` +
+            "Enable it with `zam bridge embedding-enable` (local Ollama + embeddinggemma), or from the desktop setup.",
         );
       }
 

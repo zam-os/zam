@@ -7,7 +7,13 @@
 
 import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
-import { existsSync, readdirSync, readFileSync, rmSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+} from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { Command } from "commander";
@@ -37,6 +43,7 @@ import {
   confirmFoundations,
   confirmSourceImport,
   countUserCardsForCurriculumTopic,
+  createGoal,
   createToken,
   decidePostCapture,
   decidePreCapture,
@@ -59,6 +66,8 @@ import {
   getDisplayTitle,
   getKnowledgeContextByName,
   getMachineAiModels,
+  getOnboardingDone,
+  getOnboardingPersona,
   getProviderApiKey,
   getSetting,
   getSystemProfile,
@@ -69,6 +78,7 @@ import {
   hasCommand,
   importCurriculumCards,
   isOllamaInstalled,
+  isPersonaId,
   listAgentSkills,
   listKnowledgeContexts,
   listPersonalCards,
@@ -79,14 +89,18 @@ import {
   type ModelEntry,
   openDatabase,
   openDatabaseWithSync,
+  PERSONA_DESCRIPTORS,
   pairCommands,
   readMonitorLog,
   readUiObservationLog,
   resolveObserverPolicy,
   resolveReviewContext,
   saveMachineAiModels,
+  seedPersonaKnowledgeContext,
   setActiveWorkspaceContext,
   setAgentConnectAutoDone,
+  setOnboardingDone,
+  setOnboardingPersona,
   setProviderApiKey,
   setSetting,
   setTursoCredentials,
@@ -108,6 +122,7 @@ import {
 import {
   type ConnectHarnessId,
   inspectConnectHarnesses,
+  inspectHermesGateway,
   isConnectHarnessId,
   performAgentConnect,
 } from "../agent-connect.js";
@@ -117,6 +132,7 @@ import {
   launchHarness,
   resolveHarnessExecutable,
 } from "../agent-harness.js";
+import { AGENT_OFFERS } from "../agent-offers.js";
 import {
   addToken as handleAddToken,
   analyzeMonitor as handleAnalyzeMonitor,
@@ -174,6 +190,7 @@ import {
   ensureLlmReadyHeadless,
   evaluateAnswerViaLLM,
   generateFoundationsProposalsViaLLM,
+  generateGoalDecompositionViaLLM,
   generateSplitProposalsViaLLM,
   getAvailableModels,
   getCloudModelRecommendation,
@@ -186,6 +203,12 @@ import {
   type LlmRole,
   translateQuestionViaLLM,
 } from "../llm/client.js";
+import { connectCloudProvider } from "../llm/cloud-connect.js";
+import { CLOUD_PROVIDERS } from "../llm/cloud-providers.js";
+import {
+  enableLocalEmbedding,
+  getLocalEmbeddingStatus,
+} from "../llm/local-embedding.js";
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
 import { createMobilePairingPayload } from "../mobile-pairing.js";
 import {
@@ -207,7 +230,9 @@ import {
   writeScopedRoles,
 } from "../providers/config.js";
 import {
+  ensureWorkspaceStructure,
   inspectSkillLinks,
+  inspectWorkspaceStructure,
   parseSetupAgents,
   type SkillLinkHealth,
   type SkillLinkState,
@@ -569,7 +594,59 @@ bridgeCommand
         defaultWorkspaceDir: defaultWorkspaceDir(),
         dataDir: join(homedir(), ".zam"),
         linkHealth: buildWorkspaceLinkHealth(workspaces),
+        // Structure health (plan Phase 6) — reported for EVERY workspace,
+        // including those whose directory is gone: a registered path that
+        // vanished must surface as a repairable state in the Studio instead
+        // of being silently omitted (ADR 2026-07-24 §4).
+        structure: Object.fromEntries(
+          workspaces.map((workspace) => [
+            workspace.id,
+            inspectWorkspaceStructure(workspace.path),
+          ]),
+        ),
       });
+    });
+  });
+
+// ── zam bridge workspace-repair ──────────────────────────────────────────────
+
+bridgeCommand
+  .command("workspace-repair")
+  .description(
+    "Create or repair a configured workspace additively (JSON): recreate the " +
+      "directory and fresh-setup structure that is missing, re-link skills; " +
+      "never overwrite or delete a user-authored file (ADR 2026-07-24 §4).",
+  )
+  .requiredOption("--id <id>", "Workspace id")
+  .action((opts: { id: string }) => {
+    const id = String(opts.id ?? "").trim();
+    if (!id) jsonError("A non-empty --id is required");
+    const workspace = getConfiguredWorkspaces().find((item) => item.id === id);
+    if (!workspace) jsonError(`Workspace "${id}" is not configured`);
+
+    // Unlike workspace-repair-links, a missing directory is not an error —
+    // recreating regenerable infrastructure is exactly this command's job.
+    mkdirSync(workspace.path, { recursive: true });
+    const report = ensureWorkspaceStructure(workspace.path);
+    const agents = parseSetupAgents();
+    const skillLinks = wireSkills(workspace.path, agents, {
+      force: true,
+      quiet: true,
+    });
+    const links = inspectSkillLinks(workspace.path, agents);
+    jsonOut({
+      ok: true,
+      workspace,
+      created: report.created,
+      preserved: report.preserved,
+      skillLinks,
+      structure: inspectWorkspaceStructure(workspace.path),
+      linkHealth: {
+        health: summarizeSkillLinkHealth(links),
+        states: Object.fromEntries(
+          links.map((link) => [link.agents.join("+"), link.state]),
+        ),
+      },
     });
   });
 
@@ -3230,6 +3307,7 @@ bridgeCommand
       // desktop app: link the bundled CLI onto the user's PATH. installCliShim
       // never throws and never shadows an externally installed `zam`.
       const cli = installCliShim();
+      const profile = getSystemProfile();
       jsonOut({
         userId,
         locale,
@@ -3238,6 +3316,305 @@ bridgeCommand
         workspaceDir,
         skillLinks,
         cli,
+        // First-run gate (ADR 2026-07-24): the desktop routes to the guided
+        // onboarding flow instead of the dashboard while this is false.
+        onboardingDone: getOnboardingDone(),
+        // Persona page data (Phase 1): the descriptor list keeps the desktop
+        // free of persona control-flow — a fifth persona is a kernel row plus
+        // copy, not a wizard change. `onboardingPersona` preselects the card
+        // on re-entry ("Run setup again") and already carries the "private"
+        // default when nothing was chosen.
+        onboardingPersona: getOnboardingPersona(),
+        onboardingPersonas: PERSONA_DESCRIPTORS,
+        // Model page data (Phase 2): cloud provider descriptors plus the
+        // hardware hint that decides whether the local card carries the
+        // "recommended for your hardware" line (copy only — never
+        // auto-selected, ADR 2026-07-24 §5).
+        cloudProviders: CLOUD_PROVIDERS,
+        localAiCapable: profile.hasRyzenNPU || profile.hasAppleSilicon,
+        // Embedding enhancement state (Phase 3): drives the model page's
+        // semantic-search block and keeps its copy honest about what a click
+        // will actually do (pull only vs. install-Ollama-first).
+        embedding: await getLocalEmbeddingStatus(db),
+        // Agent page offers (Phase 4): the descriptor table behind the
+        // no-harness branch. Harness *detection* is deliberately not here —
+        // the page probes it live via agent-harness-status when it opens.
+        agentOffers: AGENT_OFFERS,
+        // Workspace page state (Phase 6): the active workspace's fresh-setup
+        // structure, so the page can offer create/repair honestly.
+        workspaceStructure: inspectWorkspaceStructure(workspaceDir),
+      });
+    });
+  });
+
+// ── zam bridge onboarding-complete ───────────────────────────────────────────
+
+bridgeCommand
+  .command("onboarding-complete")
+  .description(
+    "Mark this machine's first-run onboarding as complete (JSON). Machine-local; " +
+      "never written to the shared database (ADR 2026-07-24).",
+  )
+  .action(() => {
+    try {
+      setOnboardingDone(true);
+      jsonOut({ onboardingDone: true });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
+// ── zam bridge onboarding-persona ─────────────────────────────────────────────
+
+bridgeCommand
+  .command("onboarding-persona")
+  .description(
+    "Select the first-run start persona (JSON). Persists it machine-local and " +
+      "seeds the matching knowledge context if absent (ADR 2026-07-24 §2).",
+  )
+  .argument("<persona>", "persona id: school | study | work | private")
+  .option(
+    "--context-label <label>",
+    "localized human label for a newly seeded knowledge context",
+  )
+  .action(async (persona: string, opts: { contextLabel?: string }) => {
+    if (!isPersonaId(persona)) {
+      jsonError(
+        `Unknown persona: ${persona}. Use school, study, work or private.`,
+      );
+    }
+    setOnboardingPersona(persona);
+    // The context seed is the persona's only data-model side effect. The
+    // persona itself is machine-local state, so an unreachable database
+    // degrades to "persisted, not seeded" instead of failing the selection
+    // (issue #162 precedent); re-running onboarding seeds it later.
+    await withOptionalDb(async (db) => {
+      if (!db) {
+        jsonOut({ persona, knowledgeContext: null, seeded: false });
+        return;
+      }
+      const result = await seedPersonaKnowledgeContext(
+        db,
+        persona,
+        opts.contextLabel,
+      );
+      jsonOut({
+        persona,
+        knowledgeContext: result.context.name,
+        seeded: result.created,
+      });
+    });
+  });
+
+// ── zam bridge cloud-connect ──────────────────────────────────────────────────
+
+bridgeCommand
+  .command("cloud-connect")
+  .description(
+    "Connect a cloud LLM provider (JSON): verify the key, store it, register " +
+      "the default model in the capability registry, enable the text LLM " +
+      "(ADR 2026-07-24 §5).",
+  )
+  .requiredOption("--key <key>", "API key created by the user on the provider")
+  .option("--provider <id>", "Cloud provider id", "openrouter")
+  .action(async (opts: { key: string; provider: string }) => {
+    await withDb(async (db) => {
+      const result = await connectCloudProvider(db, opts.provider, opts.key);
+      if (!result.ok || !result.entry) {
+        jsonError(result.error ?? "Cloud connect failed.");
+      }
+      jsonOut({
+        ok: true,
+        created: result.created === true,
+        model: modelRow(result.entry),
+      });
+    });
+  });
+
+// ── zam bridge goal-decompose / goal-create ──────────────────────────────────
+
+bridgeCommand
+  .command("goal-decompose")
+  .description(
+    "Propose the next decomposition level of a learning goal via the text " +
+      "LLM (JSON). One level at a time, user-confirmed — never bulk " +
+      "generation (ADR 2026-07-24 §3).",
+  )
+  .requiredOption("--title <title>", "Goal title")
+  .option("--description <text>", "Why the goal matters to the learner", "")
+  .option(
+    "--path <json>",
+    "JSON array of already-confirmed sub-topic labels (drill-down path)",
+    "[]",
+  )
+  .action(
+    async (opts: { title: string; description: string; path: string }) => {
+      await withDb(async (db) => {
+        let path: string[] = [];
+        try {
+          const parsed = JSON.parse(opts.path);
+          if (Array.isArray(parsed)) {
+            path = parsed.filter(
+              (item): item is string => typeof item === "string",
+            );
+          }
+        } catch {
+          jsonError("Invalid --path JSON");
+        }
+        try {
+          const options = await generateGoalDecompositionViaLLM(db, {
+            title: opts.title,
+            description: opts.description ?? "",
+            path,
+          });
+          jsonOut({
+            success: true,
+            options: options.map((option) => ({
+              id: slugify(option.label) || "topic",
+              ...option,
+            })),
+          });
+        } catch (err) {
+          jsonOut({ success: false, error: (err as Error).message });
+        }
+      });
+    },
+  );
+
+bridgeCommand
+  .command("goal-create")
+  .description(
+    "Create a goal markdown file (Lernziel) in the goals directory, with the " +
+      "user-confirmed breakdown recorded in its body (JSON). The file is the " +
+      "source_link every imported card cites (ADR 2026-07-24 §3).",
+  )
+  .requiredOption("--title <title>", "Goal title")
+  .option("--description <text>", "Why the goal matters to the learner", "")
+  .option(
+    "--path <json>",
+    "JSON array of confirmed drill-down labels above the outline",
+    "[]",
+  )
+  .option(
+    "--outline <json>",
+    "JSON array of {label, description} — the confirmed breakdown",
+    "[]",
+  )
+  .action(
+    async (opts: {
+      title: string;
+      description: string;
+      path: string;
+      outline: string;
+    }) => {
+      await withDb(async (db) => {
+        let path: string[] = [];
+        let outline: Array<{ label: string; description: string }> = [];
+        try {
+          const parsedPath = JSON.parse(opts.path);
+          if (Array.isArray(parsedPath)) {
+            path = parsedPath.filter(
+              (item): item is string => typeof item === "string",
+            );
+          }
+          const parsedOutline = JSON.parse(opts.outline);
+          if (Array.isArray(parsedOutline)) {
+            outline = parsedOutline.filter(
+              (item): item is { label: string; description: string } =>
+                Boolean(item) &&
+                typeof item === "object" &&
+                typeof item.label === "string" &&
+                typeof item.description === "string",
+            );
+          }
+        } catch {
+          jsonError("Invalid --path or --outline JSON");
+        }
+
+        // Same resolution as `zam goal`: the explicit setting wins, else the
+        // active workspace's goals/ directory (regenerable infrastructure).
+        const configuredDir = await getSetting(db, "personal.goals_dir");
+        const activeWorkspace = await ensureActiveWorkspace(db);
+        const goalsDir = configuredDir
+          ? resolve(configuredDir)
+          : join(activeWorkspace.path, "goals");
+        mkdirSync(goalsDir, { recursive: true });
+
+        const base = slugify(opts.title) || "goal";
+        let slug = base;
+        for (let n = 2; existsSync(join(goalsDir, `${slug}.md`)); n++) {
+          slug = `${base}-${n}`;
+        }
+
+        const breakdown =
+          outline.length > 0
+            ? [
+                "",
+                "### Breakdown",
+                ...(path.length > 0 ? [`Path: ${path.join(" → ")}`, ""] : []),
+                ...outline.map(
+                  (item) => `- **${item.label}** — ${item.description}`,
+                ),
+              ].join("\n")
+            : "";
+
+        try {
+          const goal = createGoal(goalsDir, {
+            slug,
+            title: opts.title,
+            description: `${opts.description ?? ""}${breakdown}`.trim(),
+          });
+          jsonOut({
+            success: true,
+            slug: goal.slug,
+            title: goal.title,
+            filePath: goal.filePath,
+          });
+        } catch (err) {
+          jsonError((err as Error).message);
+        }
+      });
+    },
+  );
+
+// ── zam bridge embedding-status / embedding-enable ───────────────────────────
+
+bridgeCommand
+  .command("embedding-status")
+  .description(
+    "Report the local semantic-search enhancement state (JSON): Ollama " +
+      "install/server, EmbeddingGemma presence, registry entry, usability " +
+      "(ADR 2026-07-24 §5a).",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      jsonOut(await getLocalEmbeddingStatus(db));
+    });
+  });
+
+bridgeCommand
+  .command("embedding-enable")
+  .description(
+    "Enable local semantic search (JSON): pull EmbeddingGemma into a running " +
+      "Ollama if missing and register it for the embedding role. Never " +
+      "installs Ollama itself (ADR 2026-07-24 §5a).",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      const result = await enableLocalEmbedding(db);
+      if (!result.ok) {
+        jsonOut({
+          ok: false,
+          error: result.error,
+          needsOllama: result.needsOllama === true,
+          status: result.status,
+        });
+        return;
+      }
+      jsonOut({
+        ok: true,
+        pulled: result.pulled === true,
+        status: result.status,
       });
     });
   });
@@ -3296,11 +3673,21 @@ bridgeCommand
   )
   .action(() => {
     const report = inspectConnectHarnesses();
+    // Hermes is the one harness with a runtime component (plan Phase 5): its
+    // messaging gateway must be running for chat-surface reviews. Probe it
+    // only when Hermes is installed, and surface the honest state on the row.
+    const hermesRow = report.harnesses.find((h) => h.harness === "hermes");
+    let hermesGateway: ReturnType<typeof inspectHermesGateway> | undefined;
+    if (hermesRow?.installed) {
+      hermesGateway = inspectHermesGateway();
+      hermesRow.note = hermesRow.note ?? hermesGateway.detail;
+    }
     jsonOut({
       success: true,
       zamOnPath: report.zamOnPath,
       connectAutoDone: getAgentConnectAutoDone(),
       harnesses: report.harnesses,
+      ...(hermesGateway ? { hermesGateway } : {}),
     });
   });
 

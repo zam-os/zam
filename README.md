@@ -59,6 +59,7 @@ your work, and guiding you step by step. ZAM connects to the agent apps you alre
 | **OpenCode** | `zam agent connect opencode` |
 | **GitHub Copilot** (CLI / app) | `zam agent connect copilot` |
 | **Goose** | `zam agent connect goose` |
+| **Hermes** | `zam agent connect hermes` |
 
 One command writes the MCP config (your agent may ask you to approve the server). For
 GitHub Copilot, it also installs user-scoped Studio, Recall, Graph, and Settings canvases;
@@ -69,6 +70,8 @@ say "let's do this together with ZAM" — and work normally.
 
 A native app (`zam ui`) for the things a chat window isn't good at:
 
+- **Guided setup** — the first start connects your AI model, agent, and workspace one
+  page at a time; everything stays editable in Settings later.
 - **Easier configuration** — pick your language and local AI model in a settings panel,
   not a config file.
 - **Import your own material** — paste notes, point ZAM at a source, or walk a structured
@@ -88,35 +91,43 @@ zam ui --build    # one-time: build a native installer (needs Rust)
 
 ## Quickstart
 
-**1. Get ZAM.** Grab an installer from [Releases](https://github.com/zam-os/zam/releases),
-or build from source:
+**1. Get ZAM.** One line installs the desktop app and the `zam` CLI:
 
 ```bash
-git clone https://github.com/zam-os/zam.git && cd zam
-npm install && npm run build
+# macOS · Linux
+curl -fsSL https://zam-os.org/install.sh | sh
 ```
 
-**2. Set up — one guided wizard:**
-
-```bash
-zam init
+```powershell
+# Windows · PowerShell
+irm https://zam-os.org/install.ps1 | iex
 ```
 
-`zam init` picks a workspace, detects your hardware, offers to install a local AI runner
-(Ollama or FastFlowLM), initializes your database, and wires the `/zam` skill.
+Or grab an installer from [Releases](https://github.com/zam-os/zam/releases), or build
+from source (`git clone` → `npm install && npm run build`).
 
-**3. Connect your agent:**
+**2. Open ZAM.** The first start walks you through setup, one page at a time: who you're
+learning as, your AI model (cloud or local), your agent, your workspace, and your first
+learning content — from a curriculum, your own sources, a project, or a goal you name.
+Every page can be skipped and finished later; the dashboard keeps the remaining steps as
+a checklist. No terminal required.
 
-```bash
-zam agent connect claude-code   # or codex · antigravity · opencode · copilot · goose
-```
-
-**4. Learn while you work.** Open your agent, start a real task, and type **`/zam`**. It
+**3. Learn while you work.** Open your agent, start a real task, and type **`/zam`**. It
 checks what's due, plans the concepts behind the task, hands you the work, watches how it
-goes, and updates your schedule.
+goes, and updates your schedule. Prefer a gentler start? Import material and do a review
+round right in the Studio.
 
-Prefer a gentler start? Run `zam ui`, import your training material, and do a review round
-in the Studio.
+Multi-device (a server database and mobile pairing) is an optional later upgrade in
+Settings — the first run stays fully local.
+
+### Prefer the terminal?
+
+The same setup runs as commands — `zam init` is the guided wizard, CLI-style:
+
+```bash
+zam init                        # workspace · AI model · database · /zam skill
+zam agent connect claude-code   # or codex · antigravity · opencode · copilot · goose · hermes
+```
 
 ---
 

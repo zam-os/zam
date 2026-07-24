@@ -230,7 +230,8 @@ export type ConnectHarnessId =
   | "vscode"
   | "opencode"
   | "goose"
-  | "copilot";
+  | "copilot"
+  | "hermes";
 
 export interface DetectConnectHarnessesOptions {
   home?: string;
@@ -315,6 +316,9 @@ export function detectInstalledConnectHarnesses(
   }
   if (hasCommandOrPath("goose", [join(home, ".config", "goose")])) {
     detected.push("goose");
+  }
+  if (hasCommandOrPath("hermes", [join(home, ".hermes")])) {
+    detected.push("hermes");
   }
   if (
     hasCommandOrPath("antigravity", [
@@ -653,6 +657,46 @@ approval_mode = "prompt"
       content = `${existingStr.trimEnd()}\nextensions:\n${zamExtension}\n`;
     } else {
       content = `extensions:\n${zamExtension}\n`;
+    }
+  } else if (harnessId === "hermes") {
+    // Hermes Agent (NousResearch) reads MCP servers from the top-level
+    // `mcp_servers:` map in ~/.hermes/config.yaml — the same file
+    // `hermes mcp add` writes (verified against the Hermes docs 2026-07-24).
+    // Secrets live in ~/.hermes/.env, which ZAM never touches.
+    targetPath = join(opts.home, ".hermes", "config.yaml");
+    hint =
+      "Run /reload-mcp in an active Hermes session (or restart Hermes) to load the 'zam' server. " +
+      "The messaging gateway is separate — start it yourself with `hermes gateway`; ZAM never starts it.";
+    const isJs = opts.zamPath.endsWith(".js");
+    const cmdStr = isJs ? process.execPath : opts.zamPath;
+    const argsLines = isJs
+      ? ["    args:", `      - ${opts.zamPath}`, "      - mcp"]
+      : ["    args:", "      - mcp"];
+    const zamServer = [`  zam:`, `    command: ${cmdStr}`, ...argsLines].join(
+      "\n",
+    );
+    let existingStr = "";
+    if (exists(targetPath)) {
+      existingStr = read(targetPath);
+    }
+    if (/^\s+zam:\s*$/m.test(existingStr) && existingStr.includes("- mcp")) {
+      // An indented `zam:` server wired to `zam mcp` is already present.
+      alreadyConfigured = true;
+      content = existingStr;
+    } else if (/^mcp_servers:[ \t]*$/m.test(existingStr)) {
+      // Insert as the first child of the existing `mcp_servers:` map —
+      // appending at end-of-file could land outside the map when other
+      // top-level keys (gateway, model, …) follow it (same reasoning as the
+      // goose writer above).
+      content = existingStr.replace(
+        /^mcp_servers:[ \t]*$/m,
+        (line) => `${line}\n${zamServer}`,
+      );
+    } else if (existingStr.trim()) {
+      // Config exists but has no `mcp_servers:` map yet — add one.
+      content = `${existingStr.trimEnd()}\nmcp_servers:\n${zamServer}\n`;
+    } else {
+      content = `mcp_servers:\n${zamServer}\n`;
     }
   } else if (harnessId === "copilot") {
     targetPath = join(

@@ -191,7 +191,7 @@ const connectCmd = new Command("connect")
   )
   .argument(
     "[harness]",
-    "Optional harness: claude-code | claude-desktop | antigravity | codex | vscode | opencode | goose | copilot",
+    "Optional harness: claude-code | claude-desktop | antigravity | codex | vscode | opencode | goose | copilot | hermes",
   )
   .option(
     "--print",

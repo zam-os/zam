@@ -35,6 +35,7 @@ import {
   resolveReviewContext,
   t,
 } from "../../kernel/index.js";
+import { OPENROUTER_PROVIDER } from "./cloud-providers.js";
 
 /** Single source of truth for connection defaults (easy to bump as models evolve). */
 export const DEFAULT_LLM_URL = "http://localhost:8000/v1";
@@ -128,7 +129,12 @@ export function getCloudModelRecommendation(
 ): CloudModelRecommendation | null {
   const lowercase = url.toLowerCase();
   if (lowercase.includes("openrouter.ai")) {
-    return { model: "openrouter/free", flavor: "chat-completions" };
+    // No `:free` variants: they route around the enforced `data_collection:
+    // "deny"` + `zdr: true` preferences (ADR 2026-07-24 §5).
+    return {
+      model: OPENROUTER_PROVIDER.defaultModel,
+      flavor: "chat-completions",
+    };
   }
   if (lowercase.includes("openai.com") || lowercase.includes("api.openai")) {
     return { model: "gpt-5-mini", flavor: "chat-completions" };
@@ -183,6 +189,62 @@ export function inferApiFlavor(url: string): ApiFlavor {
       : "chat-completions";
   } catch {
     return "chat-completions";
+  }
+}
+
+// ── OpenRouter privacy enforcement (ADR 2026-07-24 §5) ──────────────────────
+
+/**
+ * Provider routing preferences sent on EVERY OpenRouter chat-completions
+ * request: `data_collection: "deny"` restricts routing to endpoints that do
+ * not store prompts, `zdr: true` to zero-data-retention endpoints. "My data is
+ * not trained on and not kept" is a guarantee ZAM enforces per request, not a
+ * promise about the user's OpenRouter dashboard settings.
+ */
+export const OPENROUTER_ROUTING_PREFERENCES = Object.freeze({
+  data_collection: "deny" as const,
+  zdr: true as const,
+});
+
+export function isOpenRouterUrl(url: string): boolean {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return host === "openrouter.ai" || host.endsWith(".openrouter.ai");
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Inject the routing preferences into a serialized chat-completions body when
+ * (and only when) the request targets openrouter.ai. Applied centrally in
+ * {@link fetchWithInteractiveTimeout} so no call site — present or future —
+ * can forget the enforcement. The preferences are merged last, so they win
+ * over any `provider` object a caller might have set.
+ */
+export function enforceOpenRouterPrivacy(
+  url: string,
+  body: BodyInit | null | undefined,
+): BodyInit | null | undefined {
+  if (typeof body !== "string" || !isOpenRouterUrl(url)) return body;
+  try {
+    if (!new URL(url).pathname.endsWith("/chat/completions")) return body;
+    const payload = JSON.parse(body) as Record<string, unknown>;
+    if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+      return body;
+    }
+    const provider =
+      payload.provider && typeof payload.provider === "object"
+        ? (payload.provider as Record<string, unknown>)
+        : {};
+    return JSON.stringify({
+      ...payload,
+      provider: { ...provider, ...OPENROUTER_ROUTING_PREFERENCES },
+    });
+  } catch {
+    // A body this function cannot parse would not be a valid request either;
+    // pass it through untouched rather than corrupting it.
+    return body;
   }
 }
 
@@ -1064,6 +1126,121 @@ JSON Array Output:`;
  * hard failure into a series of safe requests without silently discarding the
  * latter part of the authoritative curriculum.
  */
+// ── Goal-driven decomposition (ADR 2026-07-24 §3, plan Phase 7) ──────────────
+
+export interface GoalDecompositionOption {
+  label: string;
+  description: string;
+}
+
+/** Exported for unit tests; tolerant of prose/markdown around the array. */
+export function parseGoalDecompositionArray(
+  responseText: string,
+): GoalDecompositionOption[] {
+  const startIdx = responseText.indexOf("[");
+  const endIdx = responseText.lastIndexOf("]");
+  if (startIdx === -1 || endIdx === -1 || startIdx > endIdx) {
+    throw new Error(
+      "Invalid goal decomposition response: JSON array brackets not found",
+    );
+  }
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(responseText.substring(startIdx, endIdx + 1));
+  } catch {
+    throw new Error("Invalid goal decomposition response: malformed JSON");
+  }
+  if (!Array.isArray(parsed) || parsed.length < 2 || parsed.length > 8) {
+    throw new Error(
+      "Invalid goal decomposition response: expected 2-8 sub-topics",
+    );
+  }
+  return parsed.map((value, index) => {
+    if (!value || typeof value !== "object" || Array.isArray(value)) {
+      throw new Error(
+        `Invalid goal decomposition item at index ${index}: expected an object`,
+      );
+    }
+    const item = value as Record<string, unknown>;
+    for (const field of ["label", "description"] as const) {
+      if (typeof item[field] !== "string" || item[field].trim().length === 0) {
+        throw new Error(
+          `Invalid goal decomposition item at index ${index}: ${field} must be a non-empty string`,
+        );
+      }
+    }
+    return {
+      label: (item.label as string).trim(),
+      description: (item.description as string).trim(),
+    };
+  });
+}
+
+/**
+ * Propose the NEXT decomposition level of a personal learning goal
+ * (`Lernziel`, ADR 2026-07-24 §3). Unlike the curriculum import there is no
+ * external taxonomy: the LLM generates one level at a time and the user
+ * confirms, edits, or rejects it before the next level is generated — never
+ * "generate 200 cards and hope". Depth is user-driven: callers keep asking
+ * for the next level under a chosen node until the user stops.
+ */
+export async function generateGoalDecompositionViaLLM(
+  db: Database,
+  input: { title: string; description: string; path: string[] },
+): Promise<GoalDecompositionOption[]> {
+  const cfg = await getProviderForRole(db, "text");
+  const endpoint = await resolveUsableTextEndpoint(db);
+  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+
+  const focus =
+    input.path.length > 0
+      ? `The learner has drilled into this sub-topic path: ${input.path.join(" → ")}. Decompose the LAST element of that path.`
+      : "Decompose the goal itself.";
+
+  const systemPrompt = `You are ZAM, a precise learning-path planner.
+A learner states a personal learning goal. Propose the NEXT decomposition level only: 3 to 6 concrete sub-topics of the node in focus, in ${langName}.
+
+Rules:
+- Sub-topics must be learnable units, ordered from foundational to advanced.
+- Each needs a short "label" (2-6 words) and a one-sentence "description" of what mastering it means.
+- Do NOT generate flashcards or questions — only the topic structure.
+- Output ONLY a raw JSON array of objects with keys "label" and "description". No markdown, no commentary.`;
+
+  const userPrompt = `Learning goal: ${input.title}
+${input.description ? `Why it matters to the learner: ${input.description}\n` : ""}${focus}
+
+JSON Array Output:`;
+
+  const res = await fetchWithInteractiveTimeout(
+    `${endpoint.url}/chat/completions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.3,
+        max_tokens: 1500,
+      }),
+      locale: cfg.locale,
+    },
+  );
+  if (!res.ok) {
+    throw new Error(`Goal decomposition failed: ${res.statusText}`);
+  }
+  const data = (await res.json()) as {
+    choices?: Array<{ message?: { content?: string } }>;
+  };
+  const content = data.choices?.[0]?.message?.content ?? "";
+  return parseGoalDecompositionArray(content);
+}
+
 export async function importCurriculumViaLLM(
   db: Database,
   text: string,
@@ -2247,6 +2424,7 @@ export async function fetchWithInteractiveTimeout(
   const controller = new AbortController();
   const fetchPromise = fetch(url, {
     ...fetchOptions,
+    body: enforceOpenRouterPrivacy(url, fetchOptions.body),
     signal: controller.signal,
   });
 

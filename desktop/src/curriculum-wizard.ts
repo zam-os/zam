@@ -181,6 +181,18 @@ let selection: {
   track?: string;
 } = {};
 
+/**
+ * Injected by main.ts at startup: reopen the first-run flow at the model
+ * page (plan Phase 9). The wizard cannot import main.ts, so the link-back
+ * action arrives through this setter; while unset, errors render without
+ * the link (message-only, the pre-Phase-9 behavior).
+ */
+let openModelSetup: (() => void) | null = null;
+
+export function setCurriculumWizardModelSetup(action: () => void): void {
+  openModelSetup = action;
+}
+
 export function initCurriculumWizard(): void {
   overlay = document.getElementById("curriculum-wizard-modal-overlay")!;
   breadcrumbEl = document.getElementById("curriculum-wizard-breadcrumb")!;
@@ -762,13 +774,34 @@ function showLoading(show: boolean): void {
 }
 
 function showStepError(message: string): void {
-  errorEl.textContent = message;
+  const text = document.createElement("span");
+  text.textContent = message;
+  errorEl.replaceChildren(text);
+  // A missing text LLM is a setup gap, not a dead end: offer the way back to
+  // the onboarding model page instead of stopping at the error (ADR
+  // 2026-07-24 §7). Both shapes of the failure land here — the raw
+  // assertTextLlmReady message and the formatImportError'd localized one.
+  if (
+    openModelSetup &&
+    (isTextLlmOfflineError(message) ||
+      message.includes(t("wizard_import_text_llm_offline")))
+  ) {
+    const link = document.createElement("button");
+    link.type = "button";
+    link.className = "btn secondary-btn btn-sm wizard-error-model-link";
+    link.textContent = t("wizard_connect_model_link");
+    link.addEventListener("click", () => {
+      hideCurriculumWizard();
+      openModelSetup?.();
+    });
+    errorEl.appendChild(link);
+  }
   errorEl.classList.remove("hidden");
 }
 
 function hideStepError(): void {
   errorEl.classList.add("hidden");
-  errorEl.textContent = "";
+  errorEl.replaceChildren();
 }
 
 function describeError(err: unknown): string {
