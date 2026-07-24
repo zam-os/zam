@@ -25,6 +25,7 @@ import {
   openDatabaseWithSync,
   prepareLocalModel,
   setActiveWorkspaceId,
+  setOnboardingDone,
   setSetting,
   upsertConfiguredWorkspace,
 } from "../../kernel/index.js";
@@ -263,6 +264,11 @@ export const initCommand = new Command("init")
         "  Start monitoring with zam-monitor-session <id> (bash/zsh) or Start-ZamMonitor <id> (PowerShell).",
       );
     }
+
+    // Shared first-run gate (ADR 2026-07-24): finishing the CLI onboarding
+    // marks this machine as onboarded, so the desktop app does not re-show its
+    // guided first-run flow to someone who already set up from the terminal.
+    setOnboardingDone(true);
 
     printLine();
     console.log(

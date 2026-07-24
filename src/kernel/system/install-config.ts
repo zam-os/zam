@@ -43,6 +43,8 @@ export interface InstallConfig {
    * `user.id` default used by unrelated CLI or harness sessions.
    */
   companion?: MachineCompanionConfig;
+  /** Machine-local first-run onboarding state (ADR 2026-07-24). */
+  onboarding?: MachineOnboardingConfig;
   /** Machine-local paths to existing personal/team/community workspaces. */
   workspaces?: WorkspaceConfig[];
   /** Machine-local id of the workspace currently active in this install. */
@@ -54,6 +56,17 @@ export interface InstallConfig {
 export interface MachineAgentConfig {
   /** True once first-run agent auto-connect ran on THIS machine (`--auto-once`). */
   connectAutoDone?: boolean;
+}
+
+/**
+ * Machine-local first-run onboarding state (ADR 2026-07-24). Whether the
+ * guided first-run flow has completed is per-install, not per-learner: a
+ * paired phone or a second machine runs its own first-run. Deliberately never
+ * the (Turso-shareable) database.
+ */
+export interface MachineOnboardingConfig {
+  /** True once the first-run flow reached its final page on THIS machine. */
+  done?: boolean;
 }
 
 /**
@@ -490,6 +503,30 @@ export function setAgentConnectAutoDone(
     config.agent = { ...(config.agent ?? {}), connectAutoDone: true };
   } else if (config.agent) {
     delete config.agent.connectAutoDone;
+  }
+  saveInstallConfig(config, path);
+}
+
+/**
+ * Whether the guided first-run onboarding flow has completed on THIS machine
+ * (ADR 2026-07-24). Machine-local, following the `agentConnectAutoDone`
+ * precedent: the learning database can be shared across machines, but whether
+ * a given install has been walked through first-run is a property of the
+ * install, so the marker must not travel.
+ */
+export function getOnboardingDone(path = defaultConfigPath()): boolean {
+  return loadInstallConfig(path).onboarding?.done === true;
+}
+
+export function setOnboardingDone(
+  done: boolean,
+  path = defaultConfigPath(),
+): void {
+  const config = loadInstallConfig(path);
+  if (done) {
+    config.onboarding = { ...(config.onboarding ?? {}), done: true };
+  } else if (config.onboarding) {
+    delete config.onboarding.done;
   }
   saveInstallConfig(config, path);
 }

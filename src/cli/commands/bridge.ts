@@ -59,6 +59,7 @@ import {
   getDisplayTitle,
   getKnowledgeContextByName,
   getMachineAiModels,
+  getOnboardingDone,
   getProviderApiKey,
   getSetting,
   getSystemProfile,
@@ -87,6 +88,7 @@ import {
   saveMachineAiModels,
   setActiveWorkspaceContext,
   setAgentConnectAutoDone,
+  setOnboardingDone,
   setProviderApiKey,
   setSetting,
   setTursoCredentials,
@@ -3238,8 +3240,28 @@ bridgeCommand
         workspaceDir,
         skillLinks,
         cli,
+        // First-run gate (ADR 2026-07-24): the desktop routes to the guided
+        // onboarding flow instead of the dashboard while this is false.
+        onboardingDone: getOnboardingDone(),
       });
     });
+  });
+
+// ── zam bridge onboarding-complete ───────────────────────────────────────────
+
+bridgeCommand
+  .command("onboarding-complete")
+  .description(
+    "Mark this machine's first-run onboarding as complete (JSON). Machine-local; " +
+      "never written to the shared database (ADR 2026-07-24).",
+  )
+  .action(() => {
+    try {
+      setOnboardingDone(true);
+      jsonOut({ onboardingDone: true });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
   });
 
 bridgeCommand

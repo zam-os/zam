@@ -135,6 +135,38 @@
         </div>
       </section>
 
+      <!-- FIRST-RUN ONBOARDING (ADR 2026-07-24) -->
+      <section id="onboarding-view" class="view">
+        <div class="onboarding-shell frosted">
+          <div class="onboarding-head">
+            <p class="eyebrow" id="onboarding-kicker">Welcome to ZAM</p>
+            <p class="onboarding-progress" id="onboarding-progress">Step 1 of 2</p>
+            <div
+              class="onboarding-progress-track"
+              role="progressbar"
+              aria-valuemin="1"
+              aria-valuenow="1"
+              aria-valuemax="2"
+              id="onboarding-progress-track"
+            >
+              <div class="onboarding-progress-fill" id="onboarding-progress-fill"></div>
+            </div>
+          </div>
+          <div class="onboarding-body" id="onboarding-step-body">
+            <!-- Step content is rendered by desktop/src/onboarding.ts -->
+          </div>
+          <div class="onboarding-actions">
+            <button id="onboarding-back" class="btn secondary-btn" type="button">Back</button>
+            <span class="onboarding-actions-spacer"></span>
+            <button id="onboarding-finish-later" class="btn ghost-btn" type="button">
+              Finish later
+            </button>
+            <button id="onboarding-skip" class="btn secondary-btn" type="button">Skip</button>
+            <button id="onboarding-next" class="btn primary-btn" type="button">Next</button>
+          </div>
+        </div>
+      </section>
+
       <!-- VIEW 5: LEARNING CONTENT STUDIO -->
       <section id="learning-content-view" class="view">
         <div class="dashboard-hero frosted">
@@ -284,6 +316,9 @@
               </button>
               <button id="btn-open-releases" class="btn secondary-btn btn-sm" type="button">
                 Releases
+              </button>
+              <button id="btn-run-onboarding" class="btn secondary-btn btn-sm" type="button">
+                Run setup again
               </button>
             </div>
             <p id="update-status" class="sub-label" aria-live="polite"></p>

@@ -2925,3 +2925,79 @@ textarea::placeholder {
   cursor: not-allowed;
   opacity: 0.42;
 }
+
+/* ── FIRST-RUN ONBOARDING (ADR 2026-07-24, Phase 0) ─────────────────────── */
+#onboarding-view.view.active {
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+.onboarding-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+  max-width: 640px;
+  padding: 40px;
+  margin: auto;
+}
+
+.onboarding-head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.onboarding-progress {
+  color: var(--clr-text-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.onboarding-progress-track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border-soft);
+  overflow: hidden;
+}
+
+.onboarding-progress-fill {
+  height: 100%;
+  width: 50%;
+  border-radius: 999px;
+  background: var(--clr-accent-cyan);
+  transition: width 0.35s ease;
+}
+
+.onboarding-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 180px;
+}
+
+.onboarding-step-title {
+  color: var(--clr-text-primary);
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.onboarding-step-text {
+  color: var(--clr-text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.onboarding-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.onboarding-actions-spacer {
+  flex: 1;
+}

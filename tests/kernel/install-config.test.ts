@@ -24,6 +24,7 @@ import {
   getConfiguredWorkspaces,
   getInstallMode,
   getMachineAiConfig,
+  getOnboardingDone,
   loadInstallConfig,
   removeConfiguredWorkspace,
   saveInstallConfig,
@@ -38,6 +39,7 @@ import {
   setCompanionSelectedUserId,
   setCompanionSelectedVscodeModelId,
   setInstallMode,
+  setOnboardingDone,
   updateMachineCompanionConfig,
   upsertConfiguredWorkspace,
 } from "../../src/kernel/index.js";
@@ -103,6 +105,29 @@ describe("install config", () => {
 
     setAgentConnectAutoDone(false, path);
     expect(getAgentConnectAutoDone(path)).toBe(false);
+  });
+
+  it("round-trips the machine-local onboarding-done marker", () => {
+    const path = tempConfigPath();
+    expect(getOnboardingDone(path)).toBe(false);
+
+    setOnboardingDone(true, path);
+    expect(getOnboardingDone(path)).toBe(true);
+    // Per-machine, next to the agent marker — never in the shared database.
+    expect(loadInstallConfig(path).onboarding?.done).toBe(true);
+
+    setOnboardingDone(false, path);
+    expect(getOnboardingDone(path)).toBe(false);
+  });
+
+  it("keeps the onboarding marker independent of unrelated keys", () => {
+    const path = tempConfigPath();
+    setAgentConnectAutoDone(true, path);
+    setOnboardingDone(true, path);
+    // Toggling onboarding off must not disturb the agent marker.
+    setOnboardingDone(false, path);
+    expect(getAgentConnectAutoDone(path)).toBe(true);
+    expect(getOnboardingDone(path)).toBe(false);
   });
 
   it("strips deprecated text bindings from machine-local AI config", () => {

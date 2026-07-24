@@ -4400,6 +4400,24 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     settings_section_recall: "Recall",
     settings_section_backup: "Backup",
     settings_section_update: "Update",
+    // First-run onboarding (ADR 2026-07-24, Phase 0).
+    btn_run_onboarding: "Run setup again",
+    onboarding_progress: "Step {step} of {total}",
+    onboarding_back: "Back",
+    onboarding_skip: "Skip",
+    onboarding_next: "Next",
+    onboarding_finish: "Finish",
+    onboarding_finish_later: "Finish later",
+    onboarding_welcome_kicker: "Welcome to ZAM",
+    onboarding_welcome_title: "Learn deliberately — and keep it.",
+    onboarding_welcome_body:
+      "ZAM turns what you study into active-recall cards and schedules them with spaced repetition, so your knowledge sticks instead of fading. A few quick steps set it up to work fully.",
+    onboarding_welcome_hint:
+      "You can leave at any time with “Finish later” and pick up where you left off.",
+    onboarding_done_kicker: "You're set up",
+    onboarding_done_title: "That's the essentials.",
+    onboarding_done_body:
+      "You can revisit this setup any time from Settings → “Run setup again”. Head to your dashboard to start learning.",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -5143,6 +5161,24 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     settings_section_recall: "Recall",
     settings_section_backup: "Backup",
     settings_section_update: "Update",
+    // First-run onboarding (ADR 2026-07-24, Phase 0).
+    btn_run_onboarding: "Einrichtung erneut starten",
+    onboarding_progress: "Schritt {step} von {total}",
+    onboarding_back: "Zurück",
+    onboarding_skip: "Überspringen",
+    onboarding_next: "Weiter",
+    onboarding_finish: "Fertig",
+    onboarding_finish_later: "Später fortsetzen",
+    onboarding_welcome_kicker: "Willkommen bei ZAM",
+    onboarding_welcome_title: "Bewusst lernen – und behalten.",
+    onboarding_welcome_body:
+      "ZAM verwandelt deinen Lernstoff in Active-Recall-Karten und plant sie mit Spaced Repetition, damit dein Wissen bleibt statt zu verblassen. Ein paar kurze Schritte richten alles vollständig ein.",
+    onboarding_welcome_hint:
+      "Du kannst jederzeit mit „Später fortsetzen“ aussteigen und dort weitermachen, wo du aufgehört hast.",
+    onboarding_done_kicker: "Alles eingerichtet",
+    onboarding_done_title: "Das war das Wichtigste.",
+    onboarding_done_body:
+      "Du kannst diese Einrichtung jederzeit über Einstellungen → „Einrichtung erneut starten“ öffnen. Geh zu deinem Dashboard und leg los.",
   },
   // es, fr, pt, zh, ja packs come from TRANSLATION_PACKS above; en/de stay inline here as the reference locales.
   ...TRANSLATION_PACKS,

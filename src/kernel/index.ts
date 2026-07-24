@@ -412,6 +412,7 @@ export type {
   MachineAiConfig,
   MachineCompanionConfig,
   MachineCompanionConfigUpdate,
+  MachineOnboardingConfig,
   MachineProviderRecord,
   MachineRoleBinding,
   ModelCapability,
@@ -444,6 +445,7 @@ export {
   getMachineAiConfig,
   getMachineAiModels,
   getMachineCompanionConfig,
+  getOnboardingDone,
   loadInstallConfig,
   migrateMachineRolesToModels,
   removeConfiguredWorkspace,
@@ -465,6 +467,7 @@ export {
   setInstallChannel,
   setInstallMode,
   setLastRepairedVersion,
+  setOnboardingDone,
   updateMachineCompanionConfig,
   upsertConfiguredWorkspace,
 } from "./system/install-config.js";

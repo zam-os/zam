@@ -20,6 +20,7 @@ import {
 } from "./i18n.js";
 import { initCurriculumWizard } from "./curriculum-wizard.js";
 import { initMobilePairing } from "./mobile-pairing.js";
+import { initOnboarding, type OnboardingController } from "./onboarding.js";
 import { initServerDbWizard } from "./server-db.js";
 import {
   beginTurn,
@@ -90,7 +91,7 @@ const BLOOM_LEVEL_NAMES: Record<string, Record<number, string>> = {
 };
 
 // ── STATE MANAGEMENT ──────────────────────────────────────────────────────
-type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view" | "learning-content-view";
+type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view" | "learning-content-view" | "onboarding-view";
 type ThemePreference = "light" | "dark";
 
 let isLlmEnabled = false;
@@ -569,6 +570,8 @@ function initializeTranslations() {
   if (addProviderButton) addProviderButton.textContent = t("btn_add_model");
   document.getElementById("btn-check-updates")!.textContent = t("btn_check_updates");
   document.getElementById("btn-open-releases")!.textContent = t("btn_open_releases");
+  document.getElementById("btn-run-onboarding")!.textContent =
+    t("btn_run_onboarding");
   document.getElementById("graph-hint")!.textContent = t("graph_hint");
 
   // Knowledge Context settings and wizard
@@ -2786,6 +2789,17 @@ function refreshSettingsData(): void {
   if (aiConfigEditorOpen) void loadModelRegistry();
 }
 
+// First-run onboarding controller (ADR 2026-07-24). Created once in
+// DOMContentLoaded; `showOnboarding` reveals the flow both on the first-run
+// gate and from the Settings "Run setup again" action.
+let onboardingController: OnboardingController | null = null;
+
+function showOnboarding(): void {
+  if (!onboardingController) return;
+  switchView("onboarding-view");
+  onboardingController.start();
+}
+
 function switchView(
   viewId: AppView,
   options: { skipStudioLoad?: boolean } = {},
@@ -3659,14 +3673,22 @@ async function loadDashboard() {
       llm: { enabled: boolean };
       activeWorkspaceId?: string;
       workspaceDir?: string;
+      onboardingDone?: boolean;
     }>("desktop-bootstrap");
     desktopUserId = settings.userId;
     setCurrentLocale(settings.locale || "en");
     isLlmEnabled = settings.llm?.enabled || false;
     activeWorkspaceId = settings.activeWorkspaceId ?? activeWorkspaceId;
     activeWorkspaceDir = settings.workspaceDir ?? activeWorkspaceDir;
-    
+
     initializeTranslations();
+
+    // First-run gate (ADR 2026-07-24): a machine that has not completed the
+    // guided flow lands there instead of the empty dashboard. The rest of
+    // loadDashboard still runs so the dashboard is ready behind "finish later".
+    if (settings.onboardingDone === false) {
+      showOnboarding();
+    }
     void loadWorkspaceList();
     void loadProviderStatus();
     runAgentAutoConnectOnce();
@@ -4662,6 +4684,15 @@ window.addEventListener("DOMContentLoaded", () => {
   initCurriculumWizard();
   initServerDbWizard(() => void loadDatabaseStatus());
   initMobilePairing(() => void loadDatabaseStatus());
+  onboardingController = initOnboarding({
+    onLeave: (reason) => {
+      switchView("dashboard-view");
+      // After completion the machine is onboarded, so a reload is safe and
+      // refreshes AI/workspace status; after "finish later" the gate is still
+      // armed, so we show the already-loaded dashboard without reloading.
+      if (reason === "completed") void loadDashboard();
+    },
+  });
 
   // Load initial dashboard state
   loadDashboard();
@@ -4705,6 +4736,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("btn-settings-back")?.addEventListener("click", () => {
     switchView("dashboard-view");
+  });
+
+  document.getElementById("btn-run-onboarding")?.addEventListener("click", () => {
+    showOnboarding();
   });
 
   document.getElementById("theme-select")?.addEventListener("change", (event) => {
