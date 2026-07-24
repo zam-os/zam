@@ -43,6 +43,7 @@ import {
   confirmFoundations,
   confirmSourceImport,
   countUserCardsForCurriculumTopic,
+  createGoal,
   createToken,
   decidePostCapture,
   decidePreCapture,
@@ -189,6 +190,7 @@ import {
   ensureLlmReadyHeadless,
   evaluateAnswerViaLLM,
   generateFoundationsProposalsViaLLM,
+  generateGoalDecompositionViaLLM,
   generateSplitProposalsViaLLM,
   getAvailableModels,
   getCloudModelRecommendation,
@@ -3428,6 +3430,152 @@ bridgeCommand
       });
     });
   });
+
+// ── zam bridge goal-decompose / goal-create ──────────────────────────────────
+
+bridgeCommand
+  .command("goal-decompose")
+  .description(
+    "Propose the next decomposition level of a learning goal via the text " +
+      "LLM (JSON). One level at a time, user-confirmed — never bulk " +
+      "generation (ADR 2026-07-24 §3).",
+  )
+  .requiredOption("--title <title>", "Goal title")
+  .option("--description <text>", "Why the goal matters to the learner", "")
+  .option(
+    "--path <json>",
+    "JSON array of already-confirmed sub-topic labels (drill-down path)",
+    "[]",
+  )
+  .action(
+    async (opts: { title: string; description: string; path: string }) => {
+      await withDb(async (db) => {
+        let path: string[] = [];
+        try {
+          const parsed = JSON.parse(opts.path);
+          if (Array.isArray(parsed)) {
+            path = parsed.filter(
+              (item): item is string => typeof item === "string",
+            );
+          }
+        } catch {
+          jsonError("Invalid --path JSON");
+        }
+        try {
+          const options = await generateGoalDecompositionViaLLM(db, {
+            title: opts.title,
+            description: opts.description ?? "",
+            path,
+          });
+          jsonOut({
+            success: true,
+            options: options.map((option) => ({
+              id: slugify(option.label) || "topic",
+              ...option,
+            })),
+          });
+        } catch (err) {
+          jsonOut({ success: false, error: (err as Error).message });
+        }
+      });
+    },
+  );
+
+bridgeCommand
+  .command("goal-create")
+  .description(
+    "Create a goal markdown file (Lernziel) in the goals directory, with the " +
+      "user-confirmed breakdown recorded in its body (JSON). The file is the " +
+      "source_link every imported card cites (ADR 2026-07-24 §3).",
+  )
+  .requiredOption("--title <title>", "Goal title")
+  .option("--description <text>", "Why the goal matters to the learner", "")
+  .option(
+    "--path <json>",
+    "JSON array of confirmed drill-down labels above the outline",
+    "[]",
+  )
+  .option(
+    "--outline <json>",
+    "JSON array of {label, description} — the confirmed breakdown",
+    "[]",
+  )
+  .action(
+    async (opts: {
+      title: string;
+      description: string;
+      path: string;
+      outline: string;
+    }) => {
+      await withDb(async (db) => {
+        let path: string[] = [];
+        let outline: Array<{ label: string; description: string }> = [];
+        try {
+          const parsedPath = JSON.parse(opts.path);
+          if (Array.isArray(parsedPath)) {
+            path = parsedPath.filter(
+              (item): item is string => typeof item === "string",
+            );
+          }
+          const parsedOutline = JSON.parse(opts.outline);
+          if (Array.isArray(parsedOutline)) {
+            outline = parsedOutline.filter(
+              (item): item is { label: string; description: string } =>
+                Boolean(item) &&
+                typeof item === "object" &&
+                typeof item.label === "string" &&
+                typeof item.description === "string",
+            );
+          }
+        } catch {
+          jsonError("Invalid --path or --outline JSON");
+        }
+
+        // Same resolution as `zam goal`: the explicit setting wins, else the
+        // active workspace's goals/ directory (regenerable infrastructure).
+        const configuredDir = await getSetting(db, "personal.goals_dir");
+        const activeWorkspace = await ensureActiveWorkspace(db);
+        const goalsDir = configuredDir
+          ? resolve(configuredDir)
+          : join(activeWorkspace.path, "goals");
+        mkdirSync(goalsDir, { recursive: true });
+
+        const base = slugify(opts.title) || "goal";
+        let slug = base;
+        for (let n = 2; existsSync(join(goalsDir, `${slug}.md`)); n++) {
+          slug = `${base}-${n}`;
+        }
+
+        const breakdown =
+          outline.length > 0
+            ? [
+                "",
+                "### Breakdown",
+                ...(path.length > 0 ? [`Path: ${path.join(" → ")}`, ""] : []),
+                ...outline.map(
+                  (item) => `- **${item.label}** — ${item.description}`,
+                ),
+              ].join("\n")
+            : "";
+
+        try {
+          const goal = createGoal(goalsDir, {
+            slug,
+            title: opts.title,
+            description: `${opts.description ?? ""}${breakdown}`.trim(),
+          });
+          jsonOut({
+            success: true,
+            slug: goal.slug,
+            title: goal.title,
+            filePath: goal.filePath,
+          });
+        } catch (err) {
+          jsonError((err as Error).message);
+        }
+      });
+    },
+  );
 
 // ── zam bridge embedding-status / embedding-enable ───────────────────────────
 

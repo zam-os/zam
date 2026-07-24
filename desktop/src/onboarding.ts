@@ -167,9 +167,15 @@ let lastPersistedPersonaId: string | null = null;
  * and done. Kept as a builder (not a module constant) so each step reads live
  * state — locale, bootstrap data, prior choices — at construction time.
  */
+/** Actions the container provides to step renderers. */
+export interface OnboardingStepActions {
+  openExternal(url: string): void;
+  goToStep(id: string): void;
+}
+
 export function buildOnboardingSteps(
   ctx: OnboardingStepContext,
-  actions: { openExternal(url: string): void },
+  actions: OnboardingStepActions,
 ): OnboardingStep[] {
   // Selection survives Back/forward re-renders within one run of the flow;
   // each start() re-reads the persisted value (or the in-session memo).
@@ -182,6 +188,18 @@ export function buildOnboardingSteps(
   let embeddingStatus = ctx.embedding;
   // Workspace structure memo, refreshed from each workspace-repair response.
   let workspaceStructure = ctx.workspaceStructure;
+  // Goal-driven import state (Phase 7), kept across Back/forward re-renders
+  // so a half-decomposed goal survives navigating the flow.
+  const goalState: GoalImportState = {
+    title: "",
+    description: "",
+    path: [],
+    levels: [],
+    cards: null,
+    sourceId: null,
+    goalFile: null,
+    imported: null,
+  };
   // Agent page detection state, probed lazily on first render (detection
   // reads real config files, so it does not ride desktop-bootstrap) and kept
   // across Back/forward re-renders. `report: null` + `error: null` = probing.
@@ -369,6 +387,23 @@ export function buildOnboardingSteps(
         });
 
         container.append(controls, status);
+      },
+    },
+    {
+      id: "goal",
+      titleKey: "onboarding_goal_kicker",
+      // Skippable (ADR §7): goals are the one concept shared across all
+      // personas, but nobody is forced to define one on first run.
+      skippable: true,
+      render(container) {
+        container.append(
+          heading(t("onboarding_goal_title")),
+          paragraph(t("onboarding_goal_body")),
+        );
+        const root = document.createElement("div");
+        root.className = "onboarding-goal";
+        container.append(root);
+        renderGoalArea(root, actions, goalState);
       },
     },
     {
@@ -799,6 +834,412 @@ function renderExistingAgents(
   return card;
 }
 
+// ── Goal-driven import (ADR 2026-07-24 §3, plan Phase 7) ─────────────────────
+
+interface GoalLevelOption {
+  id: string;
+  label: string;
+  description: string;
+  checked: boolean;
+}
+
+interface GoalCardProposal {
+  concept: string;
+  question: string;
+  selected: boolean;
+  proposal: Record<string, unknown>;
+}
+
+interface GoalImportState {
+  title: string;
+  description: string;
+  /** Confirmed drill-down labels (user-driven depth: one level at a time). */
+  path: string[];
+  /** Cached level stack aligned with `path` — going up never regenerates. */
+  levels: GoalLevelOption[][];
+  cards: GoalCardProposal[] | null;
+  sourceId: string | null;
+  goalFile: { slug: string; filePath: string } | null;
+  imported: { created: number; ensured: number } | null;
+}
+
+/** The curriculum wizard's readiness gate, shared behavior (ADR §3). */
+async function goalTextLlmReady(): Promise<boolean> {
+  try {
+    const ensureRes = await runBridge<{ usable?: boolean }>("ensure-llm", [
+      "--timeout",
+      "45000",
+    ]);
+    if (!ensureRes.usable) return false;
+    const status = await runBridge<{ roles?: { text?: { usable?: boolean } } }>(
+      "provider-status",
+    );
+    return status.roles?.text?.usable === true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * The inline `Lernziel` flow: define a goal → LLM proposes one decomposition
+ * level at a time (confirm/drill/stop — user-driven depth, never "generate
+ * 200 cards and hope") → the confirmed breakdown is written into the goal
+ * file → the existing source-import pipeline turns it into card proposals →
+ * the user picks which become tokens+cards, each citing the goal file as
+ * `source_link`. Without a text LLM the page links back to the model page.
+ */
+function renderGoalArea(
+  root: HTMLElement,
+  actions: OnboardingStepActions,
+  state: GoalImportState,
+): void {
+  root.replaceChildren();
+
+  const status = document.createElement("p");
+  status.className = "onboarding-model-status";
+  status.setAttribute("aria-live", "polite");
+
+  const rerender = () => renderGoalArea(root, actions, state);
+
+  if (state.imported) {
+    status.classList.add("ok");
+    status.textContent = t("onboarding_goal_imported")
+      .replace("{count}", String(state.imported.created + state.imported.ensured))
+      .replace("{file}", `goals/${state.goalFile?.slug ?? "goal"}.md`);
+    root.append(status);
+    return;
+  }
+
+  if (state.cards) {
+    renderGoalCardPreview(root, status, state, rerender);
+    return;
+  }
+
+  if (state.levels.length > 0) {
+    renderGoalLevel(root, status, state, rerender);
+    return;
+  }
+
+  // Define phase: title + why, then the first decomposition level.
+  const titleInput = document.createElement("input");
+  titleInput.type = "text";
+  titleInput.id = "onboarding-goal-title";
+  titleInput.className = "onboarding-goal-input";
+  titleInput.placeholder = t("onboarding_goal_title_placeholder");
+  titleInput.value = state.title;
+  titleInput.addEventListener("input", () => {
+    state.title = titleInput.value;
+  });
+
+  const whyInput = document.createElement("textarea");
+  whyInput.id = "onboarding-goal-why";
+  whyInput.className = "onboarding-goal-input";
+  whyInput.rows = 2;
+  whyInput.placeholder = t("onboarding_goal_why_placeholder");
+  whyInput.value = state.description;
+  whyInput.addEventListener("input", () => {
+    state.description = whyInput.value;
+  });
+
+  const suggestBtn = document.createElement("button");
+  suggestBtn.type = "button";
+  suggestBtn.className = "btn primary-btn";
+  suggestBtn.textContent = t("onboarding_goal_suggest");
+  suggestBtn.addEventListener("click", () => {
+    void (async () => {
+      if (!state.title.trim()) {
+        status.textContent = t("onboarding_goal_title_missing");
+        return;
+      }
+      suggestBtn.disabled = true;
+      status.classList.remove("ok");
+      status.textContent = t("onboarding_goal_checking_llm");
+      if (!(await goalTextLlmReady())) {
+        status.textContent = t("onboarding_goal_llm_missing");
+        const backBtn = document.createElement("button");
+        backBtn.type = "button";
+        backBtn.className = "btn secondary-btn btn-sm";
+        backBtn.textContent = t("onboarding_goal_to_model_page");
+        backBtn.addEventListener("click", () => actions.goToStep("model"));
+        root.append(backBtn);
+        suggestBtn.disabled = false;
+        return;
+      }
+      status.textContent = t("onboarding_goal_generating");
+      const level = await fetchGoalLevel(state, status);
+      suggestBtn.disabled = false;
+      if (level) {
+        state.levels.push(level);
+        rerender();
+      }
+    })();
+  });
+
+  root.append(titleInput, whyInput, suggestBtn, status);
+}
+
+/** Fetch one decomposition level; returns null (with status set) on failure. */
+async function fetchGoalLevel(
+  state: GoalImportState,
+  status: HTMLElement,
+): Promise<GoalLevelOption[] | null> {
+  try {
+    const res = await runBridge<{
+      success: boolean;
+      error?: string;
+      options?: Array<{ id: string; label: string; description: string }>;
+    }>("goal-decompose", [
+      "--title",
+      state.title.trim(),
+      "--description",
+      state.description.trim(),
+      "--path",
+      JSON.stringify(state.path),
+    ]);
+    if (!res.success || !res.options) {
+      status.textContent = t("onboarding_goal_error").replace(
+        "{message}",
+        res.error ?? "unknown",
+      );
+      return null;
+    }
+    return res.options.map((option) => ({ ...option, checked: true }));
+  } catch (err) {
+    status.textContent = t("onboarding_goal_error").replace(
+      "{message}",
+      bridgeErrorMessage(err),
+    );
+    return null;
+  }
+}
+
+function renderGoalLevel(
+  root: HTMLElement,
+  status: HTMLElement,
+  state: GoalImportState,
+  rerender: () => void,
+): void {
+  const crumb = document.createElement("p");
+  crumb.className = "onboarding-goal-crumb";
+  crumb.textContent = [state.title, ...state.path].join(" → ");
+  root.append(crumb, paragraph(t("onboarding_goal_level_hint")));
+
+  const level = state.levels[state.levels.length - 1];
+  const list = document.createElement("div");
+  list.className = "onboarding-goal-level";
+  for (const option of level) {
+    const row = document.createElement("div");
+    row.className = "onboarding-goal-topic";
+    const label = document.createElement("label");
+    label.className = "onboarding-goal-topic-label";
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = option.checked;
+    checkbox.addEventListener("change", () => {
+      option.checked = checkbox.checked;
+    });
+    const text = document.createElement("span");
+    text.textContent = option.label;
+    label.append(checkbox, text);
+    const why = document.createElement("p");
+    why.className = "onboarding-model-line";
+    why.textContent = option.description;
+    const deeperBtn = document.createElement("button");
+    deeperBtn.type = "button";
+    deeperBtn.className = "btn ghost-btn btn-sm";
+    deeperBtn.textContent = t("onboarding_goal_deeper");
+    deeperBtn.addEventListener("click", () => {
+      void (async () => {
+        deeperBtn.disabled = true;
+        status.classList.remove("ok");
+        status.textContent = t("onboarding_goal_generating");
+        state.path.push(option.label);
+        const next = await fetchGoalLevel(state, status);
+        if (next) {
+          state.levels.push(next);
+          rerender();
+        } else {
+          state.path.pop();
+          deeperBtn.disabled = false;
+        }
+      })();
+    });
+    row.append(label, why, deeperBtn);
+    list.append(row);
+  }
+  root.append(list);
+
+  const controls = document.createElement("div");
+  controls.className = "onboarding-model-links";
+  if (state.path.length > 0) {
+    const upBtn = document.createElement("button");
+    upBtn.type = "button";
+    upBtn.className = "btn ghost-btn btn-sm";
+    upBtn.textContent = t("onboarding_goal_up");
+    upBtn.addEventListener("click", () => {
+      state.path.pop();
+      state.levels.pop();
+      rerender();
+    });
+    controls.append(upBtn);
+  }
+  const importBtn = document.createElement("button");
+  importBtn.type = "button";
+  importBtn.className = "btn primary-btn";
+  importBtn.textContent = t("onboarding_goal_import_topics");
+  importBtn.addEventListener("click", () => {
+    void (async () => {
+      const selected = level
+        .filter((option) => option.checked)
+        .map((option) => ({
+          label: option.label,
+          description: option.description,
+        }));
+      if (selected.length === 0) {
+        status.textContent = t("onboarding_goal_no_selection");
+        return;
+      }
+      importBtn.disabled = true;
+      status.classList.remove("ok");
+      try {
+        // 1. Write the goal file — the source_link every card will cite.
+        status.textContent = t("onboarding_goal_writing_file");
+        const goal = await runBridge<{
+          success: boolean;
+          slug: string;
+          filePath: string;
+        }>("goal-create", [
+          "--title",
+          state.title.trim(),
+          "--description",
+          state.description.trim(),
+          "--path",
+          JSON.stringify(state.path),
+          "--outline",
+          JSON.stringify(selected),
+        ]);
+        state.goalFile = { slug: goal.slug, filePath: goal.filePath };
+        // 2. Cache it as a source row (same pipeline as file/web imports).
+        const source = await runBridge<{ success: boolean; sourceId: string }>(
+          "personal-source-import",
+          ["--type", "file", "--uri", goal.filePath],
+        );
+        state.sourceId = source.sourceId;
+        // 3. LLM card proposals over the recorded breakdown — preview only.
+        status.textContent = t("onboarding_goal_generating_cards");
+        const preview = await runBridge<{
+          success: boolean;
+          proposals: Array<Record<string, unknown>>;
+        }>("personal-card-import-curriculum", [
+          "--sourceId",
+          source.sourceId,
+          "--domain",
+          state.title.trim(),
+          "--source",
+          goal.filePath,
+          "--preview",
+        ]);
+        state.cards = preview.proposals.map((proposal) => ({
+          concept: String(proposal.concept ?? ""),
+          question: String(proposal.question ?? ""),
+          selected: true,
+          proposal,
+        }));
+        status.textContent = "";
+        rerender();
+      } catch (err) {
+        status.textContent = t("onboarding_goal_error").replace(
+          "{message}",
+          bridgeErrorMessage(err),
+        );
+        importBtn.disabled = false;
+      }
+    })();
+  });
+  controls.append(importBtn);
+  root.append(controls, status);
+}
+
+function renderGoalCardPreview(
+  root: HTMLElement,
+  status: HTMLElement,
+  state: GoalImportState,
+  rerender: () => void,
+): void {
+  root.append(paragraph(t("onboarding_goal_cards_hint")));
+  const list = document.createElement("div");
+  list.className = "onboarding-goal-level";
+  for (const card of state.cards ?? []) {
+    const row = document.createElement("label");
+    row.className = "onboarding-goal-topic onboarding-goal-topic-label";
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = card.selected;
+    checkbox.addEventListener("change", () => {
+      card.selected = checkbox.checked;
+    });
+    const text = document.createElement("span");
+    text.textContent = card.question || card.concept;
+    row.append(checkbox, text);
+    list.append(row);
+  }
+  root.append(list);
+
+  const controls = document.createElement("div");
+  controls.className = "onboarding-model-links";
+  const backBtn = document.createElement("button");
+  backBtn.type = "button";
+  backBtn.className = "btn ghost-btn btn-sm";
+  backBtn.textContent = t("onboarding_goal_back_to_topics");
+  backBtn.addEventListener("click", () => {
+    state.cards = null;
+    rerender();
+  });
+  const confirmBtn = document.createElement("button");
+  confirmBtn.type = "button";
+  confirmBtn.className = "btn primary-btn";
+  confirmBtn.textContent = t("onboarding_goal_import_cards");
+  confirmBtn.addEventListener("click", () => {
+    void (async () => {
+      const selected = (state.cards ?? [])
+        .filter((card) => card.selected)
+        .map((card) => card.proposal);
+      if (selected.length === 0 || !state.sourceId) {
+        status.textContent = t("onboarding_goal_no_selection");
+        return;
+      }
+      confirmBtn.disabled = true;
+      status.classList.remove("ok");
+      status.textContent = t("onboarding_goal_importing");
+      try {
+        const result = await runBridge<{
+          success: boolean;
+          createdCount: number;
+          ensuredCount: number;
+        }>("personal-source-confirm-import", [
+          "--sourceId",
+          state.sourceId,
+          "--proposals",
+          JSON.stringify(selected),
+        ]);
+        state.imported = {
+          created: result.createdCount,
+          ensured: result.ensuredCount,
+        };
+        rerender();
+      } catch (err) {
+        status.textContent = t("onboarding_goal_error").replace(
+          "{message}",
+          bridgeErrorMessage(err),
+        );
+        confirmBtn.disabled = false;
+      }
+    })();
+  });
+  controls.append(backBtn, confirmBtn);
+  root.append(controls, status);
+}
+
 /** Unwrap the bridge's `{"error": …}` JSON when present; never echoes keys. */
 function bridgeErrorMessage(err: unknown): string {
   const raw = err instanceof Error ? err.message : String(err);
@@ -951,6 +1392,13 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
     start(): void {
       steps = buildOnboardingSteps(deps.getStepContext(), {
         openExternal: deps.openExternal,
+        // Degraded modes link back instead of erroring (ADR §7): e.g. the
+        // goal page sends the user to the model page when no text LLM is
+        // connected. Reads `steps` live, so it works for any built flow.
+        goToStep: (id) => {
+          const target = steps.findIndex((step) => step.id === id);
+          if (target >= 0) goTo(target);
+        },
       });
       index = 0;
       render();

@@ -49,7 +49,7 @@ Non-negotiables from the ADR:
   (`~/.hermes/config.yaml`, daemon detection).
 - [x] **Phase 6 — Workspace create/repair** — additive repair, missing-workspace
   state in Studio, shared with `zam init`.
-- [ ] **Phase 7 — Goal-driven import** — `Lernziel` as an import path reusing the
+- [x] **Phase 7 — Goal-driven import** — `Lernziel` as an import path reusing the
   curriculum wizard shell.
 - [ ] **Phase 8 — Persona content routing** — page 6 wires each persona to its
   default import path; all paths reachable for all personas.
@@ -271,20 +271,26 @@ non-destructive. `npm run test`.
 
 A `Lernziel` becomes an import path of its own, parallel to curriculum import.
 
-- [ ] Reuse the curriculum wizard **shell and confirmed-breadcrumb session**
-  (`desktop/src/curriculum-wizard.ts`, `curriculum-wizard-session.ts`,
-  `pushConfirmedStep`). Difference: no external taxonomy — the LLM **generates each
-  decomposition level page by page**, user confirms/edits/rejects before the next
-  page is generated. No "generate 200 cards and hope".
-- [ ] Output is the standard import result: tokens + cards + prerequisites, with
-  the goal file (`goals/…md`, `src/cli/commands/goal.ts`) as `source_link`.
-- [ ] **Hard dependency on a text LLM** — reuse the existing readiness check
-  (`assertTextLlmReady`); when absent, link back to Phase 2 rather than erroring.
-- [ ] Page 7 of the flow: define a goal; offer goal-driven import inline. All four
+- [x] Reuse the curriculum wizard **shell and confirmed-breadcrumb session**.
+  Difference: no external taxonomy — the LLM **generates each decomposition
+  level page by page** (`goal-decompose` on `generateGoalDecompositionViaLLM`),
+  user confirms/edits/rejects before the next page is generated. No "generate
+  200 cards and hope". *(Implemented as the inline page-7 flow with a level
+  stack + breadcrumb; the card preview/confirm rides the same
+  `personal-source-import → preview → personal-source-confirm-import` pipeline
+  as the curriculum wizard, untouched.)*
+- [x] Output is the standard import result via the shared pipeline, with the
+  goal file (`goals/…md`, written by the new `goal-create` bridge command with
+  the user-confirmed breakdown in its body) as `source_link`.
+- [x] **Hard dependency on a text LLM** — same readiness check as the curriculum
+  wizard (`ensure-llm` + `provider-status`); when absent, the page links back to
+  the model page rather than erroring.
+- [x] Page 7 of the flow: define a goal; offer goal-driven import inline. All four
   personas reach this page.
-- [ ] **Open question to pin before build:** goal-import depth — fixed, user-driven,
-  or LLM-decided (ADR open question 3). Decide with Thomas; default to user-driven
-  "propose next level until I stop".
+- [x] **Open question resolved: depth is user-driven** — "propose next level
+  until I stop" (the plan's default; per-topic "go deeper" / "up one level",
+  import happens at whatever level the user stops). Thomas can override later;
+  changing depth policy touches only the page's controls, not the pipeline.
 
 **Verification:** with a configured text LLM, a goal decomposes one confirmable
 page at a time and importing yields tokens+cards+prereqs citing the goal file;

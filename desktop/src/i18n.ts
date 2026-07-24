@@ -4538,6 +4538,36 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     workspace_structure_missing: "folder missing",
     workspace_structure_incomplete: "incomplete",
     workspace_repair_structure: "Repair workspace",
+    // Goal page (ADR 2026-07-24 §3, Phase 7).
+    onboarding_goal_kicker: "Your first goal",
+    onboarding_goal_title: "Name a goal — ZAM builds the path.",
+    onboarding_goal_body:
+      "A goal (Lernziel) is something you want to master, in your own words. ZAM proposes a breakdown one level at a time — you confirm, drill deeper, or stop — and only the cards you approve are imported, each citing your goal file.",
+    onboarding_goal_title_placeholder: "What do you want to master?",
+    onboarding_goal_why_placeholder: "Why does it matter to you? (optional)",
+    onboarding_goal_suggest: "Suggest a breakdown",
+    onboarding_goal_title_missing: "Name the goal first.",
+    onboarding_goal_checking_llm: "Checking your AI model…",
+    onboarding_goal_llm_missing:
+      "Goal breakdown needs an AI model. Connect one on the model page, then come back.",
+    onboarding_goal_to_model_page: "Go to the model page",
+    onboarding_goal_generating: "Proposing the next level…",
+    onboarding_goal_level_hint:
+      "Keep what fits, drill into a topic for more detail, or import the selection as cards.",
+    onboarding_goal_deeper: "↳ Go deeper",
+    onboarding_goal_up: "↑ Up one level",
+    onboarding_goal_import_topics: "Turn selection into cards",
+    onboarding_goal_no_selection: "Select at least one item first.",
+    onboarding_goal_writing_file: "Writing your goal file…",
+    onboarding_goal_generating_cards: "Drafting card proposals…",
+    onboarding_goal_cards_hint:
+      "These cards were drafted from your confirmed breakdown. Uncheck anything you don't want — nothing is saved until you import.",
+    onboarding_goal_back_to_topics: "↑ Back to topics",
+    onboarding_goal_import_cards: "Import selected cards",
+    onboarding_goal_importing: "Importing…",
+    onboarding_goal_imported:
+      "Done — {count} cards imported, each citing {file}.",
+    onboarding_goal_error: "Goal import failed: {message}",
   },
   de: {
     ai_status_offline: "KI offline",
@@ -5421,6 +5451,36 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     workspace_structure_missing: "Ordner fehlt",
     workspace_structure_incomplete: "unvollständig",
     workspace_repair_structure: "Arbeitsbereich reparieren",
+    // Goal page (ADR 2026-07-24 §3, Phase 7).
+    onboarding_goal_kicker: "Dein erstes Ziel",
+    onboarding_goal_title: "Nenn ein Ziel – ZAM baut den Weg.",
+    onboarding_goal_body:
+      "Ein Lernziel ist etwas, das du meistern willst – in deinen eigenen Worten. ZAM schlägt die Aufschlüsselung Ebene für Ebene vor: Du bestätigst, gehst tiefer oder stoppst – und nur die Karten, die du freigibst, werden importiert, jede mit Verweis auf deine Ziel-Datei.",
+    onboarding_goal_title_placeholder: "Was willst du meistern?",
+    onboarding_goal_why_placeholder: "Warum ist es dir wichtig? (optional)",
+    onboarding_goal_suggest: "Aufschlüsselung vorschlagen",
+    onboarding_goal_title_missing: "Benenne zuerst das Ziel.",
+    onboarding_goal_checking_llm: "Dein KI-Modell wird geprüft …",
+    onboarding_goal_llm_missing:
+      "Die Ziel-Aufschlüsselung braucht ein KI-Modell. Verbinde eines auf der Modell-Seite und komm dann zurück.",
+    onboarding_goal_to_model_page: "Zur Modell-Seite",
+    onboarding_goal_generating: "Nächste Ebene wird vorgeschlagen …",
+    onboarding_goal_level_hint:
+      "Behalte, was passt, geh bei einem Thema tiefer – oder importiere die Auswahl als Karten.",
+    onboarding_goal_deeper: "↳ Tiefer",
+    onboarding_goal_up: "↑ Eine Ebene hoch",
+    onboarding_goal_import_topics: "Auswahl in Karten verwandeln",
+    onboarding_goal_no_selection: "Wähle zuerst mindestens einen Eintrag.",
+    onboarding_goal_writing_file: "Deine Ziel-Datei wird geschrieben …",
+    onboarding_goal_generating_cards: "Kartenvorschläge werden entworfen …",
+    onboarding_goal_cards_hint:
+      "Diese Karten wurden aus deiner bestätigten Aufschlüsselung entworfen. Wähle ab, was du nicht willst – gespeichert wird erst beim Import.",
+    onboarding_goal_back_to_topics: "↑ Zurück zu den Themen",
+    onboarding_goal_import_cards: "Ausgewählte Karten importieren",
+    onboarding_goal_importing: "Wird importiert …",
+    onboarding_goal_imported:
+      "Fertig – {count} Karten importiert, jede mit Verweis auf {file}.",
+    onboarding_goal_error: "Ziel-Import fehlgeschlagen: {message}",
   },
   // es, fr, pt, zh, ja packs come from TRANSLATION_PACKS above; en/de stay inline here as the reference locales.
   ...TRANSLATION_PACKS,
