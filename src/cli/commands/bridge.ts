@@ -2848,28 +2848,39 @@ bridgeCommand
       if (!agentHarness) {
         jsonError("--agent-harness is required when --transport is agent");
       }
-      const { getAgentAdapter } = await import("../agent-llm/adapter.js");
+      const { getAgentAdapter, listAgentTextHarnessIds } = await import(
+        "../agent-llm/adapter.js"
+      );
       const adapter = getAgentAdapter(agentHarness);
       if (!adapter) {
         jsonError(
           `No agent-text adapter for harness "${agentHarness}". ` +
-            "Supported today: claude-code.",
+            `Supported today: ${listAgentTextHarnessIds().join(", ")}.`,
         );
       }
       const harnessMeta = getHarness(agentHarness);
       const probe = await adapter.probe();
       const now = new Date().toISOString();
+      const modalities = adapter.modalities ?? { text: true };
       const detected = emptyCapabilityFlags();
-      // Agent adapters are text-only today (curriculum + recall).
-      detected.text = probe.available;
+      // Probe gates readiness; modalities declare what the adapter can do.
+      detected.text = probe.available && modalities.text !== false;
+      detected.image = probe.available && modalities.image === true;
+      const defaultCaps = {
+        ...emptyCapabilityFlags(),
+        text: true,
+        // Multimodal agents default image on so vision OCR can use them.
+        image: modalities.image === true,
+      };
       const requested = opts.capabilities
         ? parseCapabilityFlags(opts.capabilities)
-        : (prev?.capabilities ?? { ...emptyCapabilityFlags(), text: true });
-      // User intent is text for an agent entry; resolveCapability still requires
-      // both capabilities and detectedCapabilities, so an offline harness is
-      // skipped until a successful re-probe. Non-text caps are never offered.
+        : (prev?.capabilities ?? defaultCaps);
+      // User intent for text/image; resolveCapability still requires both
+      // capabilities and detectedCapabilities for runtime selection.
       const capabilities = emptyCapabilityFlags();
       capabilities.text = requested.text !== false;
+      capabilities.image =
+        modalities.image === true && requested.image === true;
       const entry: ModelEntry = {
         id: opts.id ?? ulid(),
         label: opts.label ?? prev?.label ?? harnessMeta?.label ?? agentHarness,
@@ -2974,11 +2985,15 @@ bridgeCommand
         jsonError(`No agent-text adapter for harness "${entry.agentHarness}".`);
       }
       const probe = await adapter.probe();
+      const modalities = adapter.modalities ?? { text: true };
       const detected = emptyCapabilityFlags();
-      detected.text = probe.available;
-      // Preserve user intent for text; detection alone gates runtime selection.
+      detected.text = probe.available && modalities.text !== false;
+      detected.image = probe.available && modalities.image === true;
+      // Preserve user intent; detection alone gates runtime selection.
       const capabilities = emptyCapabilityFlags();
       capabilities.text = entry.capabilities.text === true;
+      capabilities.image =
+        entry.capabilities.image === true && modalities.image === true;
       const updated: ModelEntry = {
         ...entry,
         capabilities,

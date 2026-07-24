@@ -147,10 +147,10 @@ implementation time, **not** committed here):
 
 | Harness | Subscription | Likely headless surface | Priority |
 |---------|--------------|-------------------------|----------|
-| **Claude Code** | Claude Pro/Max | `claude -p … --output-format json` | shipped here |
+| **Claude Code** | Claude Pro/Max | `claude -p … --output-format json` | shipped (text) |
+| **Antigravity CLI** | Google AI Pro | `agy -p …` (the CLI, not the IDE); multimodal via workspace image files | shipped (text + image) |
 | **Codex** | ChatGPT Plus/Pro | `codex exec …` | next |
 | **GitHub Copilot** | Copilot seat | **surface TBD** — registered today only as an editor extension, not a text CLI; must be verified before an adapter | high, blocked on surface |
-| **Antigravity CLI** | Google AI Pro | `agy …` (the CLI, not the IDE) | after Codex |
 | **Grok** | SuperGrok | headless CLI not yet established | later |
 
 ### 5. Near-zero setup

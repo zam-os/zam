@@ -271,6 +271,42 @@ describe("bridge model-* registry commands", () => {
     expect(readConfig().ai?.models ?? []).toHaveLength(0);
   });
 
+  it("upserts an antigravity agent model with image capability when agy is present", async () => {
+    const res = (await runBridge([
+      "model-upsert",
+      "--transport",
+      "agent",
+      "--agent-harness",
+      "antigravity",
+      "--label",
+      "Antigravity",
+      "--capabilities",
+      JSON.stringify({ text: true, image: true }),
+    ])) as {
+      parsed: {
+        ok?: boolean;
+        error?: string;
+        model?: {
+          transport: string;
+          agentHarness: string;
+          capabilities: Record<string, boolean>;
+          detectedCapabilities: Record<string, boolean>;
+        };
+      };
+    };
+
+    expect(res.parsed.error).toBeUndefined();
+    expect(res.parsed.ok).toBe(true);
+    expect(res.parsed.model).toMatchObject({
+      transport: "agent",
+      agentHarness: "antigravity",
+      capabilities: expect.objectContaining({ text: true }),
+    });
+    // Image is offered only when the adapter declares it; detection follows
+    // whether `agy` is on PATH in this environment.
+    expect(res.parsed.model?.capabilities.image).toBe(true);
+  });
+
   it("migrates legacy providers/roles into ai.models on first model-list", async () => {
     // Seed a legacy machine config, then read the registry.
     const legacy: InstallConfig = {

@@ -390,6 +390,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_agent_badge: "Agente",
     model_agent_cap_hint:
       "Los modelos de agente usan el modelo y la suscripción del harness. Solo texto.",
+    model_agent_cap_hint_multimodal:
+      "Antigravity (Gemini) admite texto y visión (OCR/escaneos). Usa tu suscripción.",
     model_agent_cap_undetected:
       "Harness no detectado — vuelve a comprobar tras instalarlo",
     model_agent_harness_missing: "no detectado",
@@ -1141,6 +1143,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_agent_badge: "Agent",
     model_agent_cap_hint:
       "Les modèles agent utilisent le modèle et l'abonnement du harness. Texte uniquement.",
+    model_agent_cap_hint_multimodal:
+      "Antigravity (Gemini) gère texte et vision (OCR/scans). Utilise votre abonnement.",
     model_agent_cap_undetected:
       "Harness non détecté — revérifiez après l'installation",
     model_agent_harness_missing: "non détecté",
@@ -1892,6 +1896,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_agent_badge: "Agente",
     model_agent_cap_hint:
       "Modelos de agente usam o modelo e a assinatura do harness. Somente texto.",
+    model_agent_cap_hint_multimodal:
+      "Antigravity (Gemini) faz texto e visão (OCR/scans). Usa a sua assinatura.",
     model_agent_cap_undetected:
       "Harness não detectado — verifique de novo após instalar",
     model_agent_harness_missing: "não detectado",
@@ -2534,6 +2540,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_agent_meta: "通过 {harness}",
     model_agent_cap_undetected: "未检测到 Harness — 安装后请重新检查",
     model_agent_cap_hint: "代理模型使用 Harness 自带的模型与订阅。仅文本。",
+    model_agent_cap_hint_multimodal:
+      "Antigravity (Gemini) 支持文本与视觉（OCR/扫描）。使用你的订阅。",
     model_agent_hint:
       "使用已连接的代理 Harness（订阅 / OAuth）。无需 API 密钥或 URL。",
     model_agent_harness_missing: "未检测到",
@@ -3240,6 +3248,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_agent_cap_undetected: "Harness 未検出 — インストール後に再確認",
     model_agent_cap_hint:
       "エージェントモデルは Harness のモデルとサブスクリプションを使います。テキストのみ。",
+    model_agent_cap_hint_multimodal:
+      "Antigravity (Gemini) はテキストとビジョン（OCR/スキャン）に対応。サブスクリプションを使用します。",
     model_agent_hint:
       "接続済みのエージェント Harness（サブスク / OAuth）を使います。APIキーや URL は不要です。",
     model_agent_harness_missing: "未検出",
@@ -4044,6 +4054,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_agent_cap_undetected: "Harness not detected — re-check after install",
     model_agent_cap_hint:
       "Agent models use the harness's own model and subscription. Text only.",
+    model_agent_cap_hint_multimodal:
+      "Antigravity (Gemini) can do text and vision (OCR/scans). Uses your subscription.",
     model_agent_hint:
       "Uses the connected agent harness (subscription / OAuth). No API key or URL needed.",
     model_agent_harness_missing: "not detected",
@@ -5008,6 +5020,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Harness nicht erkannt — nach Installation neu prüfen",
     model_agent_cap_hint:
       "Agent-Modelle nutzen Modell und Abo des Harness. Nur Text.",
+    model_agent_cap_hint_multimodal:
+      "Antigravity (Gemini) kann Text und Vision (OCR/Scans). Nutzt dein Abo.",
     model_agent_hint:
       "Nutzt den verbundenen Agent-Harness (Abo / OAuth). Kein API-Schlüssel und keine URL nötig.",
     model_agent_harness_missing: "nicht erkannt",

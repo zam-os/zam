@@ -11,7 +11,15 @@
  */
 
 import type { AgentHarnessId } from "../agent-harness.js";
+import { AntigravityAdapter } from "./antigravity.js";
 import { ClaudeCodeAdapter } from "./claude-code.js";
+
+/** Modalities an adapter can serve (static; probe still gates readiness). */
+export interface AgentModalities {
+  text: boolean;
+  /** True when the harness can inspect local image files (e.g. Gemini via agy). */
+  image?: boolean;
+}
 
 /** One bounded generation request: system framing + user content → text. */
 export interface AgentGenerateRequest {
@@ -23,6 +31,17 @@ export interface AgentGenerateRequest {
   jsonSchemaHint?: string;
   /** Hard wall-clock budget; the adapter aborts the harness past it. */
   timeoutMs?: number;
+  /**
+   * Optional absolute paths to local images for multimodal harnesses.
+   * Text-only adapters ignore this. Antigravity reads files from the
+   * workspace via `--add-dir` rather than base64 payloads.
+   */
+  imagePaths?: string[];
+  /**
+   * Optional harness model id (e.g. `Gemini 3.6 Flash (Low)` for `agy --model`).
+   * When omitted the harness default applies.
+   */
+  model?: string;
 }
 
 export interface AgentGenerateResult {
@@ -45,6 +64,11 @@ export interface AgentProbeResult {
  */
 export interface AgentTextAdapter {
   readonly harness: AgentHarnessId;
+  /**
+   * Declared modalities. Defaults to text-only when omitted. Used by Settings
+   * / model-upsert to set `detectedCapabilities` for agent entries.
+   */
+  readonly modalities?: AgentModalities;
   /** Cheap readiness check for status chips; never runs a real generation. */
   probe(): Promise<AgentProbeResult>;
   /** Generate text, or throw {@link AgentError} on offline/malformed harness. */
@@ -70,10 +94,12 @@ export class AgentError extends Error {
 /**
  * Harnesses that currently ship an outbound-text adapter. The Settings UI only
  * offers these as Agent models; additional ids land here as adapters land
- * (Codex, Antigravity CLI, Grok, … — ADR 2026-07-12a).
+ * (Codex, Grok, … — ADR 2026-07-12a).
  */
 const AGENT_TEXT_ADAPTERS: Record<string, () => AgentTextAdapter> = {
   "claude-code": () => new ClaudeCodeAdapter(),
+  /** Antigravity CLI (`agy`), not the IDE app — multimodal (text + image). */
+  antigravity: () => new AntigravityAdapter(),
 };
 
 /** Harness ids that can back a `transport: "agent"` model entry today. */

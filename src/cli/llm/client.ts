@@ -1109,13 +1109,19 @@ function deduplicateGeneratedCards(
 
 /**
  * Run one bounded generation through the connected agent harness
- * (ADR 2026-07-12a). Shared by the `text` and `recall` callers whose resolved
- * endpoint uses the agent transport. Returns raw model text for the caller to
- * parse or format exactly as it would an HTTP chat-completions response.
+ * (ADR 2026-07-12a). Shared by the `text`, `recall`, and multimodal vision
+ * callers whose resolved endpoint uses the agent transport. Returns raw model
+ * text for the caller to parse or format exactly as it would an HTTP
+ * chat-completions response.
  */
 async function requestAgentCompletion(
-  endpoint: { agentHarness?: string },
-  messages: { system: string; user: string },
+  endpoint: { agentHarness?: string; model?: string },
+  messages: {
+    system: string;
+    user: string;
+    /** Local image paths for multimodal harnesses (e.g. Antigravity / Gemini). */
+    imagePaths?: string[];
+  },
 ): Promise<string> {
   if (!endpoint.agentHarness) {
     throw new Error("Agent transport endpoint is missing an agentHarness.");
@@ -1127,9 +1133,20 @@ async function requestAgentCompletion(
       `No agent adapter is available for harness "${endpoint.agentHarness}".`,
     );
   }
+  if (messages.imagePaths?.length && !adapter.modalities?.image) {
+    throw new Error(
+      `Harness "${endpoint.agentHarness}" does not support image input.`,
+    );
+  }
   const { text } = await adapter.generate({
     system: messages.system,
     user: messages.user,
+    imagePaths: messages.imagePaths,
+    // Only forward a non-agent model label (agy accepts display names).
+    model:
+      endpoint.model && !endpoint.model.startsWith("agent:")
+        ? endpoint.model
+        : undefined,
   });
   return text;
 }
@@ -1609,6 +1626,8 @@ JSON Array Output:`;
 
 /**
  * Extract plain text from an image/scan path using LLM vision.
+ * Supports the agent transport when the resolved vision model is harness-backed
+ * and the adapter declares image modality (Antigravity / Gemini).
  */
 export async function extractTextFromScanViaLLM(
   db: Database,
@@ -1645,14 +1664,26 @@ export async function extractTextFromScanViaLLM(
     throw new Error("Unsupported scan format; use PNG, JPEG, or WebP");
   }
 
+  const langName = LANGUAGE_NAMES[p.locale] || "English";
+  const systemPrompt =
+    "You are ZAM's OCR processor. Extract all visible text from the image exactly as written. Output only the extracted text without commentary, formatting, or prefixes.";
+  const userPrompt = `Extract all text from this scan in ${langName}:`;
+
+  // Agent transport (ADR 2026-07-12a): multimodal harnesses read local files.
+  if (p.transport === "agent") {
+    return (
+      await requestAgentCompletion(p, {
+        system: systemPrompt,
+        user: userPrompt,
+        imagePaths: [imagePath],
+      })
+    ).trim();
+  }
+
   const imageBytes = readFileSync(imagePath);
   const dataUrl = `data:${mime};base64,${imageBytes.toString("base64")}`;
 
   const visionEndpoint = await getVisionConfig(db);
-  const langName = LANGUAGE_NAMES[p.locale] || "English";
-
-  const systemPrompt =
-    "You are ZAM's OCR processor. Extract all visible text from the image exactly as written. Output only the extracted text without commentary, formatting, or prefixes.";
 
   const res = await fetchWithInteractiveTimeout(
     `${visionEndpoint.url}/chat/completions`,
@@ -1671,7 +1702,7 @@ export async function extractTextFromScanViaLLM(
             content: [
               {
                 type: "text",
-                text: `Extract all text from this scan in ${langName}:`,
+                text: userPrompt,
               },
               {
                 type: "image_url",

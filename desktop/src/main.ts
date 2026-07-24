@@ -1691,8 +1691,10 @@ function createModelRow(
   const caps = document.createElement("div");
   caps.className = "ai-model-caps";
   for (const cap of UI_CAPABILITIES) {
-    // Agent entries are text-only (curriculum + recall); hide other caps.
-    if (agent && cap !== "text") continue;
+    // Agent entries: text always; image only when the harness is multimodal
+    // (e.g. Antigravity/Gemini). Embedding is never agent-backed.
+    if (agent && cap === "embedding") continue;
+    if (agent && cap === "image" && !row.detectedCapabilities.image) continue;
     const label = document.createElement("label");
     label.className = "ai-model-cap";
     const box = document.createElement("input");
@@ -2019,22 +2021,31 @@ async function showModelForm(id?: string): Promise<void> {
     keyField.classList.toggle("hidden", isAgent || isLocal);
     harnessField.classList.toggle("hidden", !isAgent);
     agentHint.classList.toggle("hidden", !isAgent);
-    // Agent is text-only; hide embedding/vision checkboxes.
+    // Agent: text always; image only for multimodal harnesses (Antigravity).
+    // Embedding is never agent-backed.
+    const harnessId = harnessSelect.value;
+    const agentImageOk = isAgent && harnessId === "antigravity";
     for (const cap of UI_CAPABILITIES) {
       const label = capsWrap.querySelector(
         `label[data-cap="${cap}"]`,
       ) as HTMLLabelElement | null;
       if (!label) continue;
       if (isAgent) {
-        label.classList.toggle("hidden", cap !== "text");
+        const show = cap === "text" || (cap === "image" && agentImageOk);
+        label.classList.toggle("hidden", !show);
         const box = capBoxes.get(cap);
         if (box && cap === "text") box.checked = true;
+        if (box && cap === "image" && agentImageOk && !editingModelId) {
+          box.checked = true;
+        }
       } else {
         label.classList.remove("hidden");
       }
     }
     capHint.textContent = isAgent
-      ? t("model_agent_cap_hint")
+      ? agentImageOk
+        ? t("model_agent_cap_hint_multimodal")
+        : t("model_agent_cap_hint")
       : t("model_cap_hint");
     // Default label from harness when adding a new agent model.
     if (isAgent && !editingModelId && !labelInput.value.trim()) {
@@ -2053,6 +2064,7 @@ async function showModelForm(id?: string): Promise<void> {
         labelInput.placeholder = selected.label;
       }
     }
+    syncKindVisibility();
   });
   syncKindVisibility();
 
@@ -2066,7 +2078,13 @@ async function showModelForm(id?: string): Promise<void> {
     const kind = selectedKind();
     const capabilities: Record<string, boolean> = {};
     for (const [cap, box] of capBoxes) {
-      capabilities[cap] = kind === "agent" ? cap === "text" : box.checked;
+      if (kind === "agent") {
+        // Agent: text + optional image (multimodal harnesses); never embedding.
+        capabilities[cap] =
+          cap === "text" ? true : cap === "image" ? box.checked : false;
+      } else {
+        capabilities[cap] = box.checked;
+      }
     }
     void saveModelForm({
       id: editingModelId ?? undefined,
@@ -2121,7 +2139,10 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
       "--label",
       label,
       "--capabilities",
-      JSON.stringify({ text: true }),
+      JSON.stringify({
+        text: true,
+        image: data.capabilities.image === true,
+      }),
     ];
     if (data.id) args.push("--id", data.id);
     try {

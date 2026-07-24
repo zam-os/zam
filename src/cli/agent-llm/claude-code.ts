@@ -145,6 +145,8 @@ function defaultResolveExecutable(): string | null {
 
 export class ClaudeCodeAdapter implements AgentTextAdapter {
   readonly harness: AgentHarnessId = HARNESS;
+  /** Claude Code headless path is text-only today (no image stdin). */
+  readonly modalities = { text: true as const, image: false as const };
 
   constructor(
     private readonly resolveExecutable: () =>
