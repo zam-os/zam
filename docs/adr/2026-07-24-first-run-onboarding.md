@@ -1,6 +1,6 @@
 # First-Run Onboarding: Personas, Goal-Driven Import, Cloud LLM Connect, and Agent Choice
 
-**Status:** Proposed
+**Status:** Accepted
 **Date:** 2026-07-24
 **Deciders:** Thomas (project owner)
 **Related:**
@@ -172,10 +172,22 @@ lets a first-time user satisfy all three of ZAM's onboarding constraints at once
    **checkbox we actually enforce on every request**, not a promise about someone
    else's dashboard.
 2. **Free start.** `:free` model variants allow a zero-payment trial for users who
-   do not care about (1) — the two are a deliberate either/or, see Consequences.
+   do not care about (1) — the two are a deliberate either/or, see below and
+   Consequences.
 3. **Bounded cost.** Prepaid credits plus a per-key spend cap (`limit` +
    `limit_reset`) let a user cap themselves at ~€1/day, so a bad model choice
    cannot produce a surprise bill.
+
+**Privacy is the default; free is an opt-in with a warning (decided 2026-07-24).**
+Because "safe start" and "free start" are mutually exclusive at the routing layer
+(`data_collection: "deny"` + `zdr: true` routes around exactly the `:free`
+endpoints, which log in exchange for being free), the page does **not** present
+them as equal choices. It starts with **privacy enforcement on** and
+`xiaomi/mimo-v2.5` selected. Free models appear only as a **secondary, de-emphasised
+option** carrying an explicit warning — "your inputs are stored and may be used for
+training" — never pre-selected. This matches the target audience (a minor learner,
+a retiree) for whom the privacy default must be the one that requires no
+understanding of routing to be safe.
 
 **Default start model: `xiaomi/mimo-v2.5`** — multimodal (text, image, audio,
 video input) at $0.14 / $0.28 per million tokens (verified 2026-07-24), i.e. one
@@ -189,10 +201,18 @@ account and key **on openrouter.ai themselves** (ZAM deep-links to the key page
 and the privacy settings page; ZAM never creates accounts or keys) → paste key →
 probe (`capability-probe.ts`) → register `xiaomi/mimo-v2.5` → green AI status.
 
-The provider list is **extensible**; OpenRouter is first, not exclusive. Local
-runtimes (Ollama, FastFlowLM) remain first-class and stay the recommended path
-where the hardware supports it — the wizard offers "local" and "cloud" as peers,
-and the machine-local vs. DB storage split of ADR 2026-07-23 §4 is unchanged.
+The provider list is **extensible**; OpenRouter is first, not exclusive.
+
+**Cloud (OpenRouter) is the default offer on page 3; local is the equal-billing
+second card (decided 2026-07-24).** ZAM still profiles hardware, but the default no
+longer follows the profile: pasting one API key is reachable for the target
+audience, while a multi-GB model download plus a runtime install is not, and the
+outcome would differ per machine in a way that is hard to document and support. So
+page 3 leads with OpenRouter + `xiaomi/mimo-v2.5` (one entry covering `text` and
+`vision`), and presents local runtimes (Ollama, FastFlowLM) as a fully visible,
+first-class second card — recommended in copy where the profile found capable NPU /
+Apple-Silicon hardware, but not auto-selected. The machine-local vs. DB storage
+split of ADR 2026-07-23 §4 is unchanged.
 
 ### 6. Agent harness page: four offers, or "use what you already have"
 
@@ -209,15 +229,20 @@ runs idempotently. No installation is proposed to someone who already has one.
 | **Goose** | Open source, simple config, already a supported harness | Desktop/CLI, needs its own model config |
 | **OpenCode** | Open source, terminal-native, already supported | Terminal-centric; steeper for non-developers |
 | **GitHub Copilot** | Free monthly quota — cheapest real start; already supported | Account required; quota-limited; not open source |
-| **Hermes Agent** (NousResearch) | Open source, MCP-native, reachable from chat surfaces (Telegram/Signal/…), which fits reviews away from the desk | **Not yet a supported ZAM harness**; runs a gateway daemon; heaviest setup |
+| **Hermes Agent** (NousResearch) | Open source, MCP-native, reachable from chat surfaces (Telegram/Signal/…), which fits reviews away from the desk | **Net-new harness for ZAM** (built in this release); runs a gateway daemon; heaviest setup |
 
 - The page is **data-driven and extensible** — a fifth harness is a table row plus
   an adapter, not a redesign.
+- **All four ship in the first onboarding release (decided 2026-07-24)**, so the
+  choice page is complete from day one. Goose, OpenCode and Copilot are already in
+  `CONNECT_HARNESSES`; **Hermes is net-new** and blocks nothing else, so it is
+  built alongside the page rather than deferred to a follow-on.
 - **Hermes requires new work**: a `hermes` entry in `CONNECT_HARNESSES` writing
-  `~/.hermes/config.yaml` (YAML, unlike the JSON/TOML harnesses ZAM writes today).
-  It is the only one of the four that is not already wired, and its chat-surface
-  reach is genuinely differentiating for ZAM's non-developer audience — so it is
-  in scope, but sequenced last.
+  `~/.hermes/config.yaml` (YAML, unlike the JSON/TOML harnesses ZAM writes today),
+  plus gateway-daemon detection for which the repo has no precedent
+  (`hermes mcp add zam` / `hermes config path`). Its chat-surface reach
+  (Telegram/Signal/…) is genuinely differentiating for reviews away from the desk,
+  which is why it earns day-one inclusion despite the added config-writer.
 - ZAM **does not silently install** a harness. It links to the vendor's install
   instructions and verifies afterwards; unattended third-party installers stay out
   of the onboarding path.
@@ -280,20 +305,29 @@ Any skipped page leaves the app **usable and honest**:
 
 ---
 
+## Resolved (2026-07-24)
+
+- **Free vs. private start (§5).** Privacy enforcement is the default; free models
+  are a de-emphasised opt-in with an explicit logging/training warning, never
+  pre-selected.
+- **Retiree persona content path (§2, §3).** Goal-driven import — the retiree has
+  no external syllabus, so the LLM-generated `Lernziel` decomposition is their hero
+  path, not curriculum or a pre-existing source.
+- **Local vs. cloud on page 3 (§5).** Cloud (OpenRouter + `xiaomi/mimo-v2.5`) is
+  the default offer; local runtimes are the equal-billing, hardware-recommended
+  second card, not auto-selected by the hardware profile.
+- **Agent scope (§6).** All four harnesses ship in the first release; Hermes is
+  built net-new alongside the page.
+
 ## Open questions
 
-1. **Retiree persona content path.** Assumed above: goal-driven import (§3), since
-   this persona has no external syllabus. Not stated in the source discussion.
-2. **Persona persistence.** Assumed machine-local + seeded knowledge context.
+1. **Persona persistence.** Assumed machine-local + seeded knowledge context.
    Alternative: per-user in the DB, so a paired phone inherits it.
-3. **Student vs. apprentice.** Treated as one persona with a free-import default.
+2. **Student vs. apprentice.** Treated as one persona with a free-import default.
    An apprentice (`Auszubildender`) arguably sits between "student" and "work".
-4. **Goal-import depth.** How many pages deep does a goal decompose before the
+3. **Goal-import depth.** How many pages deep does a goal decompose before the
    wizard stops proposing, and who decides — fixed depth, user-driven, or LLM?
-5. **Default when the user skips the persona page.** Assumed "free learner".
-6. **Local-first vs. cloud-first on page 3.** ZAM currently profiles hardware and
-   recommends a local runner. Does OpenRouter become the default offer, or the
-   fallback when hardware profiling finds no capable local path?
+4. **Default when the user skips the persona page.** Assumed "free learner".
 
 ---
 
