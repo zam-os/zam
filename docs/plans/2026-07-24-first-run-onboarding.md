@@ -55,7 +55,7 @@ Non-negotiables from the ADR:
   default import path; all paths reachable for all personas.
 - [x] **Phase 9 — Degraded-mode surfacing** — dashboard onboarding checklist,
   AI-gated entry points link back to their page.
-- [ ] **Phase 10 — Landing page & README rewrite** — desktop-first start; move the
+- [x] **Phase 10 — Landing page & README rewrite** — desktop-first start; move the
   command-line narrative below the fold.
 
 ## Guiding constraints (apply to every phase)
@@ -361,18 +361,31 @@ only its row; wizard error link-back walked end-to-end.)*
 
 ## Phase 10 — Landing page & README rewrite
 
-- [ ] Rewrite `README.md` / `README.de.md` and the zam-os.org landing narrative
+- [x] Rewrite `README.md` / `README.de.md` and the zam-os.org landing narrative
   around the **desktop first start** (install → open → guided setup), moving the
   command-line story below the fold. Public docs show only what works today; no
-  Phase-2/vision/"coming soon" on the landing page.
-- [ ] Mention multi-device (server DB + mobile pairing) only as a later upgrade,
-  consistent with the flow's final page and ADR 2026-07-23.
-- [ ] Keep the landing site privacy-safe (no third-party fonts), per the existing
-  site constraints.
+  Phase-2/vision/"coming soon" on the landing page. *(README quickstart is now
+  install → open ZAM → work, with "Prefer the terminal?" carrying `zam init` +
+  `zam agent connect` below; Hermes joins the agent table. `README.de.md` was
+  still the old vision document — Phase-2 marketplace, "paradiesische
+  Zukunft" — and is fully rewritten as the German mirror of the English
+  README. Landing quickstart rewritten in all seven locale packs (site repo
+  PR zam-os/zam-os.github.io#2, to merge after this PR); the terminal figure
+  stays as the explicit CLI alternative.)*
+- [x] Mention multi-device (server DB + mobile pairing) only as a later upgrade,
+  consistent with the flow's final page and ADR 2026-07-23. *(One line at the
+  end of the README quickstart: "optional later upgrade in Settings — the
+  first run stays fully local." Not added to the landing page.)*
+- [x] Keep the landing site privacy-safe (no third-party fonts), per the existing
+  site constraints. *(No external font/CDN references introduced — verified by
+  grep; the page stays fully self-contained.)*
 
 **Verification:** links resolve; the install→open→setup path is the primary
 narrative; no unshipped features promised. Landing-site changes live in the
-separate site repo — coordinate, do not fold into this branch.
+separate site repo — coordinate, do not fold into this branch. *(All README
+link targets exist in-repo; locale packs verified key-identical (60 keys × 7)
+with every `data-i18n` key covered; page served locally — 3-step quickstart,
+terminal note, and de/ja switching render clean with zero console errors.)*
 
 ## Touchpoints (file map)
 
