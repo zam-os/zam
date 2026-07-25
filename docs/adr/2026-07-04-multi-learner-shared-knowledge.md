@@ -288,9 +288,29 @@ owner and the Azure resource, not the identity domain.
   Azure server administrator, can still read every row. RLS does not defend
   against them. In this deployment the learners and the administrators are
   colleagues at the same employer, and review logs are performance-adjacent
-  data about employees, so this residual exposure is a policy question for
-  DocuWare, not something the database can solve. It should be written down for
-  participants before the first real colleague joins — see Open Question 4.
+  data about employees.
+
+  **ZAM says so itself, in the app** (project owner, 2026-07-25). Connecting a
+  device to a company library shows a plain-language disclosure once, and the
+  same statement stays permanently visible in Settings:
+
+  > Your learning progress is stored in a database operated by your
+  > organisation. Other learners cannot see it. Database administrators
+  > technically can.
+  >
+  > **[Understood]  [Learn locally instead]**
+
+  Two things make this more than a notice. It is written in the language a
+  colleague actually thinks in, not as a legal clause — and it comes with a
+  **real alternative**, because Deployment A is right there and fully
+  supported. A disclosure with no way out is an announcement; a disclosure next
+  to a working local option is a choice.
+
+  Deliberately, this does not wait on a works-council agreement or a corporate
+  privacy review. Those may well follow and are DocuWare's to run, but the
+  honesty is part of the product and ships with it. ZAM is not blocked by a
+  process it does not control, and no colleague ends up in the company library
+  without having been told what that means.
 
 - **Consequence: Deployment B is online-first for reviews.** With state in the
   server, a review needs the network — the same trade the companion already
@@ -460,27 +480,22 @@ colleagues are ordinary tenant members and no B2B guest path is needed
 (Decision 3). A material change **re-tests rather than resets** — the card
 becomes due now and the next rating recalibrates FSRS (Decision 3). An
 assignment binds while it stands, and the cards outlive it under the learner's
-control (Decision 10).
+control (Decision 10). The residual superuser exposure is disclosed by ZAM
+itself, in-app and alongside a working local alternative (Decision 6).
 
-1. **Where does the residual-visibility policy get written down?** Decision 6
-   states that a superuser or Azure server administrator can read every row.
-   Participants should be told this in plain language before the first real
-   colleague joins, and someone at DocuWare — not this ADR — has to own that
-   statement. Blocking for real colleague data; not blocking for a pilot on
-   test identities.
-2. **Aggregate vocabulary.** Which opt-in metrics exist and at what
+1. **Aggregate vocabulary.** Which opt-in metrics exist and at what
    granularity — needs a concrete lead/coach story before freezing. At an
    employer this needs to be conservative by default.
-3. **Offline for Deployment B.** With learning state in the server, reviews
+2. **Offline for Deployment B.** With learning state in the server, reviews
    need the network. Deployment A stays the offline path, but if colleagues
    want offline reviews *and* cross-device progress, a local read-through
    cache with write-back is the answer — and it brings back exactly the sync
    and conflict work this ADR otherwise avoids. Defer until the pilot shows
    whether it actually hurts.
-4. **Conflict policy for concurrent curation.** Last-write-wins on
+3. **Conflict policy for concurrent curation.** Last-write-wins on
    `updated_at` plus a curation log is probably enough at this scale; verify
    against a real two-curator case before building merge UI.
-5. **Dialect cost, measured.** The 2026-07-04 draft assumed a Postgres provider
+4. **Dialect cost, measured.** The 2026-07-04 draft assumed a Postgres provider
    means "a dialect audit of every kernel query". A survey on 2026-07-25 found
    the actual surface small: `datetime('now')` ×21, `LIKE` ×16 (SQLite's is
    case-insensitive for ASCII, Postgres' is not — needs `ILIKE`),
