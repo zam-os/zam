@@ -31,8 +31,42 @@ export interface ServerDbController {
   isServerDb(): boolean;
 }
 
+/** Where a learner creates the database ZAM then connects to (issue #218). */
+const TURSO_SIGNUP_URL = "https://turso.tech/";
+const TURSO_DASHBOARD_URL = "https://app.turso.tech/";
+const SQLD_SELFHOST_URL = "https://github.com/tursodatabase/libsql";
+
+/**
+ * Map a raw connect failure onto a localized, actionable message. The bridge
+ * surfaces the driver's own English text; the three cases below are the ones a
+ * learner can actually act on (issue #218). Anything else keeps the raw detail
+ * rather than guessing.
+ */
+export function classifyServerDbError(message: string): string {
+  const m = message.toLowerCase();
+  if (
+    /enotfound|eai_again|econnrefused|etimedout|econnreset|fetch failed|network|dns/.test(
+      m,
+    )
+  ) {
+    return t("server_db_err_network");
+  }
+  if (
+    /401|403|unauthorized|forbidden|invalid token|authentication|auth failed|jwt/.test(
+      m,
+    )
+  ) {
+    return t("server_db_err_token");
+  }
+  if (/quota|429|too many requests|limit exceeded|free tier|storage limit/.test(m)) {
+    return t("server_db_err_quota");
+  }
+  return tf("server_db_error", { message });
+}
+
 export function initServerDbWizard(
   onServerDbReady: () => void,
+  actions: { openExternal(url: string): void },
 ): ServerDbController {
   const statusLine = requiredElement<HTMLElement>("server-db-status");
   const urlInput = requiredElement<HTMLInputElement>("server-db-url");
@@ -54,6 +88,31 @@ export function initServerDbWizard(
   connectButton.textContent = t("server_db_connect");
   urlInput.placeholder = t("server_db_url_ph");
   tokenInput.placeholder = t("server_db_token_ph");
+
+  // Create half of the wizard: ZAM deep-links to the host and the learner
+  // creates the account and database there — it never signs up on their behalf
+  // (same rule as the cloud-model card, ADR 2026-07-24 §5).
+  requiredElement("server-db-create-hint").textContent =
+    t("server_db_create_hint");
+  const linkRow = requiredElement<HTMLElement>("server-db-links");
+  linkRow.replaceChildren();
+  for (const [label, url] of [
+    [t("server_db_link_signup"), TURSO_SIGNUP_URL],
+    [t("server_db_link_dashboard"), TURSO_DASHBOARD_URL],
+    [t("server_db_link_selfhost"), SQLD_SELFHOST_URL],
+  ] as const) {
+    const link = document.createElement("button");
+    link.type = "button";
+    link.className = "btn secondary-btn btn-sm";
+    link.textContent = label;
+    link.addEventListener("click", () => actions.openExternal(url));
+    linkRow.appendChild(link);
+  }
+
+  const migrateHint = document.createElement("p");
+  migrateHint.className = "sub-label";
+  migrateHint.textContent = t("server_db_migrate_hint");
+  form.appendChild(migrateHint);
 
   const setStatus = (message: string, error = false): void => {
     statusLine.textContent = message;
@@ -90,9 +149,9 @@ export function initServerDbWizard(
       serverDb = false;
       applyGate();
       setStatus(
-        tf("server_db_error", {
-          message: error instanceof Error ? error.message : String(error),
-        }),
+        classifyServerDbError(
+          error instanceof Error ? error.message : String(error),
+        ),
         true,
       );
       return false;
@@ -125,9 +184,9 @@ export function initServerDbWizard(
       if (serverDb) onServerDbReady();
     } catch (error) {
       setStatus(
-        tf("server_db_error", {
-          message: error instanceof Error ? error.message : String(error),
-        }),
+        classifyServerDbError(
+          error instanceof Error ? error.message : String(error),
+        ),
         true,
       );
     } finally {

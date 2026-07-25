@@ -5399,7 +5399,10 @@ window.addEventListener("DOMContentLoaded", () => {
   // Text-LLM-offline in the wizard links back to the onboarding model page
   // instead of dead-ending in an error (ADR 2026-07-24 §7, plan Phase 9).
   setCurriculumWizardModelSetup(() => showOnboardingAt("model"));
-  initServerDbWizard(() => void loadDatabaseStatus());
+  initServerDbWizard(
+    () => void loadDatabaseStatus(),
+    { openExternal: (url: string) => void openUrl(url) },
+  );
   initMobilePairing(() => void loadDatabaseStatus());
   // Goal-driven import stays reachable outside first run (plan Phase 8):
   // Learning Content's "Goal import" reopens the flow at the goal page.

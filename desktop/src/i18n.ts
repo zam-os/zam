@@ -3992,6 +3992,19 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     server_db_fields_required: "URL and auth token are required.",
     server_db_error: "Server database: {message}",
     server_db_pair_blocked: "Connect a server database first (section above).",
+    server_db_create_hint:
+      "No database yet? Create a free one on Turso, then paste its URL and token here. ZAM never creates the account for you.",
+    server_db_link_signup: "Create a Turso account",
+    server_db_link_dashboard: "Create a database / copy token",
+    server_db_link_selfhost: "Self-host sqld instead",
+    server_db_migrate_hint:
+      "Already have cards in your local library? Back it up first, then follow the migration steps in docs/server-database.md.",
+    server_db_err_network:
+      "No connection to the database host. Check your network, then try again.",
+    server_db_err_token:
+      "The database rejected this token. Create a fresh token and paste it again.",
+    server_db_err_quota:
+      "The database host refused the request as over quota — check your plan's database and storage limits.",
     settings_mobile_title: "Mobile companion",
     settings_mobile_help:
       "Pair an Android device with this server database and one learner. Requires a connected server database first.",
@@ -4978,6 +4991,19 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     server_db_error: "Server-Datenbank: {message}",
     server_db_pair_blocked:
       "Zuerst eine Server-Datenbank verbinden (Abschnitt oben).",
+    server_db_create_hint:
+      "Noch keine Datenbank? Lege bei Turso eine kostenlose an und füge URL und Token hier ein. ZAM legt niemals ein Konto für dich an.",
+    server_db_link_signup: "Turso-Konto anlegen",
+    server_db_link_dashboard: "Datenbank anlegen / Token kopieren",
+    server_db_link_selfhost: "Stattdessen sqld selbst hosten",
+    server_db_migrate_hint:
+      "Schon Karten in der lokalen Bibliothek? Zuerst ein Backup anlegen, dann den Migrationsschritten in docs/server-database.md folgen.",
+    server_db_err_network:
+      "Keine Verbindung zum Datenbank-Host. Prüfe dein Netzwerk und versuche es erneut.",
+    server_db_err_token:
+      "Die Datenbank hat dieses Token abgelehnt. Erstelle ein neues Token und füge es erneut ein.",
+    server_db_err_quota:
+      "Der Datenbank-Host hat die Anfrage wegen überschrittener Kontingente abgelehnt — prüfe die Datenbank- und Speichergrenzen deines Tarifs.",
     settings_mobile_title: "Mobile Begleit-App",
     settings_mobile_help:
       "Ein Android-Gerät mit dieser Server-Datenbank und genau einem Lernenden koppeln.",
