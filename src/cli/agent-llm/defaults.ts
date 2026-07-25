@@ -21,13 +21,15 @@ export const DEFAULT_AGENT_MODELS: Readonly<Record<string, string>> = {
    * Verified: `agy --model "Gemini 3.5 Flash (Low)" -p …`.
    */
   antigravity: "Gemini 3.5 Flash (Low)",
-  /**
-   * Reserved for a future GitHub Copilot text adapter (user preference).
-   * Not registered in getAgentAdapter yet.
-   */
+  /** GitHub Copilot CLI — cheap default (seat/quota dependent). */
   copilot: "gpt-5-mini",
   /** Grok Build: currently the only / default model on SuperGrok. */
   grok: "grok-4.5",
+  /**
+   * OpenCode / Goose / Hermes: leave unset so the harness's own configured
+   * provider/model is used (often API-key based). Learners can still type an
+   * explicit id in Settings when the CLI accepts `-m` / `--model`.
+   */
 };
 
 /**

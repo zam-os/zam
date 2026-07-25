@@ -151,7 +151,10 @@ implementation time, **not** committed here):
 | **Antigravity CLI** | Google AI Pro | `agy -p …` (the CLI, not the IDE); multimodal via workspace image files | shipped (text + image) |
 | **Codex** | ChatGPT Plus/Pro | `codex exec --json …`; images via `-i` | shipped (text + image) |
 | **Grok** | SuperGrok | `grok -p … --output-format json`; images via `--prompt-json` base64 | shipped (text + image) |
-| **GitHub Copilot** | Copilot seat | **surface TBD** — registered today only as an editor extension, not a text CLI; must be verified before an adapter | high, blocked on surface |
+| **OpenCode** | API key / Zen | `opencode run --format json --auto`; files via `-f` | shipped (text + image) |
+| **Goose** | API key / local | `goose run -t … --system … --no-session` | shipped (text) |
+| **GitHub Copilot CLI** | Copilot seat | `copilot -p -s`; images via `--attachment` | shipped (text + image) |
+| **Hermes** | API key / portal | `hermes chat -q -Q`; images via `--image` | shipped (text + image) |
 
 ### 5. Near-zero setup
 

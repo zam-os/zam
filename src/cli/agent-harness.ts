@@ -32,7 +32,8 @@ export type AgentHarnessId =
   | "copilot"
   | "antigravity"
   | "goose"
-  | "grok";
+  | "grok"
+  | "hermes";
 
 export interface AgentHarness {
   id: AgentHarnessId;
@@ -81,7 +82,8 @@ export const AGENT_HARNESSES: AgentHarness[] = [
       darwin: ["/Applications/Cursor.app/Contents/MacOS/Cursor"],
     },
   },
-  { id: "copilot", label: "GitHub Copilot", kind: "app", command: "copilot" },
+  // Copilot CLI is the outbound-text surface; IDE extension remains separate.
+  { id: "copilot", label: "GitHub Copilot", kind: "cli", command: "copilot" },
   {
     id: "antigravity",
     label: "Antigravity",
@@ -111,6 +113,16 @@ export const AGENT_HARNESSES: AgentHarness[] = [
         join(homedir(), ".local", "bin", "grok"),
       ],
       win32: [join(homedir(), ".grok", "bin", "grok.exe")],
+    },
+  },
+  {
+    id: "hermes",
+    label: "Hermes",
+    kind: "cli",
+    command: "hermes",
+    candidatePaths: {
+      darwin: [join(homedir(), ".local", "bin", "hermes")],
+      linux: [join(homedir(), ".local", "bin", "hermes")],
     },
   },
 ];

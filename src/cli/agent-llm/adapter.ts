@@ -14,7 +14,11 @@ import type { AgentHarnessId } from "../agent-harness.js";
 import { AntigravityAdapter } from "./antigravity.js";
 import { ClaudeCodeAdapter } from "./claude-code.js";
 import { CodexAdapter } from "./codex.js";
+import { CopilotAdapter } from "./copilot.js";
+import { GooseAdapter } from "./goose.js";
 import { GrokAdapter } from "./grok.js";
+import { HermesAdapter } from "./hermes.js";
+import { OpenCodeAdapter } from "./opencode.js";
 
 /** Modalities an adapter can serve (static; probe still gates readiness). */
 export interface AgentModalities {
@@ -106,6 +110,14 @@ const AGENT_TEXT_ADAPTERS: Record<string, () => AgentTextAdapter> = {
   codex: () => new CodexAdapter(),
   /** xAI Grok Build CLI — `grok -p`, multimodal via `--prompt-json`. */
   grok: () => new GrokAdapter(),
+  /** OpenCode — `opencode run --format json`, files via `-f`. */
+  opencode: () => new OpenCodeAdapter(),
+  /** Block Goose — `goose run -t … --system …`. */
+  goose: () => new GooseAdapter(),
+  /** GitHub Copilot CLI — `copilot -p -s`, images via `--attachment`. */
+  copilot: () => new CopilotAdapter(),
+  /** Hermes Agent — `hermes chat -q -Q`, images via `--image`. */
+  hermes: () => new HermesAdapter(),
 };
 
 /** Harness ids that can back a `transport: "agent"` model entry today. */
