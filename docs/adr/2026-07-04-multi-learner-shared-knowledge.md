@@ -167,8 +167,16 @@ own-data display filter labeled as cosmetic, not a security boundary.
 
 ### 6. Deployment B — closed company group on Azure PostgreSQL with Microsoft Entra (new, parallel)
 
-For DocuWare colleagues, hosted on the project owner's Azure subscription.
-This is an **additional** path selected by configuration, never a replacement.
+For DocuWare colleagues. This is an **additional** path selected by
+configuration, never a replacement.
+
+**This deployment is a pilot.** During the development phase it runs on the
+project owner's Visual Studio Professional subscription and its monthly Azure
+credit. Once the company is ready to carry the cost, the data moves to a
+company-owned subscription (project owner, 2026-07-25). The pilot is therefore
+designed to be **left behind**: the schema, the data and the library model must
+survive that move, while the infrastructure and every role grant are expected
+to be recreated. Decision 7 makes that explicit.
 
 - **Store:** Azure Database for PostgreSQL Flexible Server, Burstable tier,
   32 GiB (the service's storage floor — ZAM's data is far smaller: 768-dim
@@ -201,13 +209,50 @@ This is an **additional** path selected by configuration, never a replacement.
   the subscription owner is close enough to one. What the company hosts is the
   *library*; what the employee keeps is their *learning*.
 
-### 7. The kernel stays single-learner
+### 7. Subscription and tenant portability is a requirement, not a later concern
+
+Because the pilot is known in advance to move, the design constraint is set now
+rather than discovered during the migration.
+
+- **Entra identifiers never become keys in ZAM's data.** A learner stays a ZAM
+  ULID `user_id`. A single deployment-scoped mapping table binds that ULID to
+  an Entra principal (object id + UPN). Everything else — cards, assignments,
+  provenance, curator attribution — references the ULID only.
+
+  This is the whole migration story in one rule. Entra object ids are
+  tenant-specific: the same colleague in a DocuWare-owned tenant is a different
+  principal with a different oid. If curator attribution or assignment rows
+  referenced Entra oids directly, moving tenants would corrupt authorship and
+  ownership across the entire library. With the indirection, the move rewrites
+  one small mapping table and nothing else.
+
+- **Role grants are deployment configuration, not data.** The
+  `pgaadauth_create_principal` mappings and the RLS grants are recreated from a
+  runbook in the target subscription. They are never expected to survive a
+  `pg_dump`.
+
+- **Nothing depends on subscription-specific features.** The store must stay
+  ordinary PostgreSQL plus `pgvector`, so the target can be another Azure
+  subscription, another tenant, or eventually a self-hosted server using
+  PostgreSQL 18's native OAuth.
+
+- **The migration is a documented drill, not a one-off.** `pg_dump`/`pg_restore`
+  of a database this small is minutes of work; the runbook covers the identity
+  re-mapping, which is the only genuinely fiddly part, and should be rehearsed
+  once during the pilot rather than first attempted under pressure.
+
+### 8. The kernel stays single-learner
 
 No RLS, no auth, no HTTP in the kernel. Multi-learner semantics live in the
 CLI/sync layer, exactly like LLM access does. The kernel's only multi-user
 awareness stays what it already has: `user_id` columns.
 
-## Cost (Deployment B)
+## Cost (Deployment B, pilot phase)
+
+The pilot's budget is the Visual Studio Professional subscription's monthly
+Azure credit (~$50). That is a **development-phase ceiling, not a sizing
+target**: production sizing is the company's decision once the data moves to a
+company subscription, and it is deliberately out of scope here.
 
 Indicative only — **verify in the Azure pricing calculator for the actual
 region before committing**, since tiers and prices move:
@@ -220,11 +265,15 @@ region before committing**, since tiers and prices move:
 | Backup (within storage size) | included |
 
 B1ms plus storage lands near $20/month and B2s near $35 — both inside the
-$50/month allowance. Flexible Server can be stopped when idle, which pauses
-compute billing. Two caveats worth checking early: Burstable instances have a
-low `max_connections` ceiling, and built-in connection pooling is not offered
-on every tier — a group of ~30 with desktop, CLI and mobile clients may need
-B2s or an external pooler.
+credit, with room for the pilot to stop and start the server when idle (which
+pauses compute billing). Two caveats worth checking early: Burstable instances
+have a low `max_connections` ceiling, and built-in connection pooling is not
+offered on every tier — a pilot group of ~30 with desktop, CLI and mobile
+clients may need B2s or an external pooler.
+
+Keeping comfortably inside the credit is itself a design goal for the pilot: an
+overrun on a personal subscription is a bad reason for a colleague's learning
+history to become unavailable.
 
 **Why Azure and not something cheaper.** Neon, Supabase or a €5 Hetzner VM all
 run Postgres with pgvector for less. None of them offer "an administrator
@@ -235,6 +284,20 @@ being true, PostgreSQL 18's native OAuth support is the portability exit: a
 self-hosted server can validate Entra tokens directly.
 
 ## Open questions
+
+0. **Which tenant do the pilot's colleagues authenticate against?** This is the
+   first thing to verify, because it can invalidate the pilot's shape rather
+   than just adjust it. Azure PostgreSQL validates Entra tokens against the
+   tenant behind the hosting subscription. On a Visual Studio Professional
+   subscription that is the owner's own tenant — not DocuWare's — so DocuWare
+   colleagues would have to be invited as **B2B guests** into it. Two things to
+   check before building anything: whether DocuWare's directory policy permits
+   its users to accept outbound guest invitations, and whether routing
+   colleagues' learning activity through a personally-owned tenant is
+   acceptable to the company at all, even for a pilot. If either answer is no,
+   the realistic options are a company-owned subscription earlier than planned,
+   or a pilot run with non-DocuWare test identities and no real colleague data.
+   Decision 7's identity indirection is what keeps that pivot cheap.
 
 1. **Where does curation actually happen?** ZAM already has an OKF knowledge
    base curated through git and pull requests. For a company library, the
@@ -276,9 +339,12 @@ self-hosted server can validate Entra tokens directly.
   and the cosmetic/material change classification with its FSRS consequence.
   This is the heart of the ADR and is **independent of any deployment** — it is
   worth doing on the existing paths first.
-- **Phase C — Deployment B:** the Postgres provider behind the existing async
-  `Database` contract, Entra token acquisition and refresh, RLS policies, and
-  the admin runbook for granting Entra groups access.
+- **Phase C — Deployment B pilot:** the Postgres provider behind the existing
+  async `Database` contract, Entra token acquisition and refresh, the ULID ↔
+  Entra principal mapping, RLS policies, and the admin runbook for granting
+  Entra groups access. Gated on Open Question 0.
+- **Phase C2 — rehearse the subscription move** once, while the pilot is small
+  and nobody depends on it, so the runbook is proven rather than hypothetical.
 - **Phase D — assignments**, then opt-in aggregates.
 
 ## Out of scope
