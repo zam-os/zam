@@ -76,7 +76,8 @@ the most valuable thing a curated group library can offer.
 
 1. **Editorial quality first** — the library exists so a few people can make
    content good for everyone.
-2. **Knowledge shared, learning state private by default**, aggregates opt-in.
+2. **Knowledge shared, learning state the learner's** — and no aggregates about
+   people at all (Decision 11).
 3. **Offline-first stays available** — Deployment A never blocks a review on a
    server. Deployment B trades this for cross-device progress, deliberately and
    with Deployment A still there for anyone who needs offline (Decision 6).
@@ -91,7 +92,7 @@ the most valuable thing a curated group library can offer.
 | **Knowledge** | tokens, prerequisites, sources, token_sources, token_embeddings, agent_skills (curated) | Shared library, versioned | Curators |
 | **Assignment** | *new:* assignments (who should learn what, by when) | Visible to assigner + learner | Curators/leads |
 | **Learning state** | cards, review_logs, sessions, session_steps, session_syntheses | **Private to the learner.** Deployment A: local. Deployment B: in the shared database, isolated by RLS | The learner only |
-| **Aggregates** | *derived:* coverage %, due counts | Opt-in, coarse, learner-controlled | Published explicitly |
+| **Aggregates** | *derived:* coverage %, due counts | **Not built** — nobody but the learner sees their numbers (Decision 11) | — |
 
 "Private to the learner" is the invariant; *where* the rows sit is a deployment
 choice. In Deployment A it holds because the data never leaves the machine; in
@@ -434,6 +435,47 @@ append-only from every direction except the person they belong to.
 Assignment provenance survives as context on the card ("assigned by … , March
 2026"), so a learner can still see why a card entered their queue.
 
+### 11. No aggregates — nobody but the learner sees their numbers
+
+The draft reserved room for opt-in aggregates (coverage %, due counts) that a
+guardian or coach could receive. **They are not built** (project owner,
+2026-07-25). A learner sees their own figures; no one else sees them at any
+granularity, opt-in or otherwise.
+
+Three reasons, and the third is the one that decides it:
+
+- **No demonstrated demand.** No concrete lead-or-coach story exists that needs
+  them. Designing a privacy-sensitive feature against an imagined user is how
+  you get a feature nobody asked for and everybody has to live with.
+- **High misuse potential at an employer.** "Coverage 40%" is one screenshot
+  away from being read as an appraisal. And "voluntary" sharing with one's own
+  manager is rarely as voluntary as the checkbox suggests.
+- **It would corrupt the data it reports on.** FSRS only works when people rate
+  themselves honestly — a rating of 1 has to be safe to give. A learner who
+  believes their failures are visible to a colleague will start rating
+  generously, and the scheduler immediately begins optimising against fiction:
+  intervals stretch, weak material stops coming back, and the tool quietly
+  becomes worse at the one thing it exists to do. Surveillance does not just
+  cost trust here; it costs accuracy.
+
+This is a ratchet, so it is easier not to start: aggregates can be added later
+if a real need appears, but a group that has once seen colleagues' numbers
+cannot unsee them. Curators who want to find weak *content* are served by
+Decision 12 instead, which never needs a person's identity.
+
+### 12. Content-level signals are allowed, because they are about cards
+
+Curators do need feedback to do their job — the point of the library is that
+someone improves it. That feedback can be entirely about the material:
+"this card is failed by most people who attempt it" is a content-quality
+signal, not a personnel signal.
+
+If and when this is built it must be **anonymous and thresholded** — reported
+only above a minimum number of distinct learners, so a small group cannot
+reverse it into "who failed it". Nothing here is in the pilot either; it is
+recorded so a later reader can see that "no aggregates" was a decision about
+*people*, not a refusal to help curators.
+
 ## Cost (Deployment B, pilot phase)
 
 The pilot's budget is the Visual Studio Professional subscription's monthly
@@ -482,20 +524,18 @@ becomes due now and the next rating recalibrates FSRS (Decision 3). An
 assignment binds while it stands, and the cards outlive it under the learner's
 control (Decision 10). The residual superuser exposure is disclosed by ZAM
 itself, in-app and alongside a working local alternative (Decision 6).
+Aggregates about people are not built at all (Decision 11).
 
-1. **Aggregate vocabulary.** Which opt-in metrics exist and at what
-   granularity — needs a concrete lead/coach story before freezing. At an
-   employer this needs to be conservative by default.
-2. **Offline for Deployment B.** With learning state in the server, reviews
+1. **Offline for Deployment B.** With learning state in the server, reviews
    need the network. Deployment A stays the offline path, but if colleagues
    want offline reviews *and* cross-device progress, a local read-through
    cache with write-back is the answer — and it brings back exactly the sync
    and conflict work this ADR otherwise avoids. Defer until the pilot shows
    whether it actually hurts.
-3. **Conflict policy for concurrent curation.** Last-write-wins on
+2. **Conflict policy for concurrent curation.** Last-write-wins on
    `updated_at` plus a curation log is probably enough at this scale; verify
    against a real two-curator case before building merge UI.
-4. **Dialect cost, measured.** The 2026-07-04 draft assumed a Postgres provider
+3. **Dialect cost, measured.** The 2026-07-04 draft assumed a Postgres provider
    means "a dialect audit of every kernel query". A survey on 2026-07-25 found
    the actual surface small: `datetime('now')` ×21, `LIKE` ×16 (SQLite's is
    case-insensitive for ASCII, Postgres' is not — needs `ILIKE`),
@@ -521,7 +561,8 @@ itself, in-app and alongside a working local alternative (Decision 6).
   runbook for granting Entra groups access.
 - **Phase C2 — rehearse the subscription move** once, while the pilot is small
   and nobody depends on it, so the runbook is proven rather than hypothetical.
-- **Phase D — assignments**, then opt-in aggregates.
+- **Phase D — assignments** (Decision 10). Aggregates are not part of the
+  plan (Decision 11).
 
 ## Out of scope
 
