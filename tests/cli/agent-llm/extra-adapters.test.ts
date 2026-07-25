@@ -64,14 +64,15 @@ OK
 });
 
 describe("copilotEffortForModel", () => {
-  it("defaults to medium for balanced one-shot latency", () => {
-    expect(copilotEffortForModel("gpt-5-mini")).toBe("medium");
-    expect(copilotEffortForModel(undefined)).toBe("medium");
+  it("uses high for gpt-5-mini and other small models", () => {
+    expect(copilotEffortForModel("gpt-5-mini")).toBe("high");
+    expect(copilotEffortForModel("gpt-4.1-mini")).toBe("high");
+    expect(copilotEffortForModel(undefined)).toBe("high");
   });
 
-  it("honors an explicit override (e.g. high for evaluation)", () => {
-    expect(copilotEffortForModel("gpt-5-mini", "high")).toBe("high");
-    expect(copilotEffortForModel("gpt-5.4", "low")).toBe("low");
+  it("uses medium for larger models unless overridden", () => {
+    expect(copilotEffortForModel("gpt-5.4")).toBe("medium");
+    expect(copilotEffortForModel("gpt-5.4", "high")).toBe("high");
   });
 });
 

@@ -12,10 +12,9 @@
  * - `--no-remote` so the CLI does not attach to / hold a VS Code remote session
  *   (GitHub issue: auto-connect to VS Code with no opt-out for a long while).
  * - Prefer `--context default` over interactive `long_context`.
- * - Set `--effort` explicitly (interactive default can be unset/wrong for -p).
- *   Default: medium (≈13s one-shot questions). Callers may pass high for
- *   evaluation quality (≈25s). Also skip auto-update and custom instructions
- *   so each cold start stays lean.
+ * - Always pass `--effort high` for gpt-5-mini-class models (required for
+ *   reliable -p completions; matches the model’s sweet spot).
+ * - Skip auto-update on cold start to avoid extra network.
  */
 
 import { homedir } from "node:os";
@@ -44,14 +43,19 @@ const DEFAULT_TIMEOUT_MS = 120_000;
 
 /**
  * Resolve Copilot `--effort` for a headless -p run. Always set explicitly —
- * an unset effort is flaky in -p mode. Default medium balances latency and
- * quality for gpt-5-mini (~13s one-shot vs ~25s at high).
+ * an unset effort is flaky in -p mode. gpt-5-mini (default) wants high;
+ * larger models stay at medium unless the caller overrides.
  */
 export function copilotEffortForModel(
-  _model?: string,
+  model?: string,
   override?: AgentGenerateRequest["effort"],
 ): NonNullable<AgentGenerateRequest["effort"]> {
-  return override ?? "medium";
+  if (override) return override;
+  const m = (model ?? "").toLowerCase();
+  if (!m || m.includes("mini") || m.includes("nano") || m.includes("haiku")) {
+    return "high";
+  }
+  return "medium";
 }
 
 /**
@@ -163,7 +167,6 @@ export class CopilotAdapter implements AgentTextAdapter {
       "--disable-mcp-server",
       "zam",
       "--no-auto-update",
-      "--no-custom-instructions",
       "--context",
       "default",
       "--effort",
