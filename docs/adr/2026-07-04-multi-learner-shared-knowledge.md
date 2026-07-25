@@ -154,15 +154,40 @@ learned against. When a curator publishes a change they classify it:
 - **Cosmetic** (typo, clearer phrasing, formatting): learners keep their FSRS
   state untouched. The card silently updates.
 - **Material** (the answer changed, the scope changed, it was simply wrong):
-  every learner who already learned the old version is **told**, and the card's
-  scheduling is reset — its stability no longer describes what they now need to
-  know.
+  the card becomes **due now**, and the learner sees what changed and who
+  changed it.
 
 Without this, quality control is cosmetic in the worst sense: a curator fixes a
 wrong card and everyone who already memorized the wrong answer stays
 confidently wrong on a comfortable review interval. Making a correction
 propagate into scheduling is what turns "someone checks the content" into a
 real guarantee.
+
+**A material change does not reset FSRS state directly — it re-tests**
+(project owner, 2026-07-25):
+
+```
+curator publishes (material)
+        │
+        ▼
+due_at = now, notice on the card:
+  "content changed by <curator>, <date>"  + what changed
+        │
+        ▼
+learner answers, rates 1–4
+        │
+        ▼
+FSRS recomputes stability from the real answer
+```
+
+This is the FSRS-native answer and it avoids inventing a number. A hard reset
+throws away history that the scheduler could have used and punishes people who
+already knew the correction; a "soft reset" needs a stability penalty that
+nobody can justify. Re-testing needs neither: the scheduler already knows how
+to tell "still knew it" from "did not", and the learner's actual rating is
+better evidence than any guess ZAM could make on their behalf. Someone who
+already knew the new answer rates it well once and is back on their previous
+rhythm; someone who held the outdated version lapses, which is exactly correct.
 
 **There is no default** (project owner, 2026-07-25). Publishing forces the
 curator to classify the change; ZAM never guesses materiality from a text diff
@@ -405,33 +430,30 @@ colleagues are ordinary tenant members and no B2B guest path is needed
 (Decision 6); curation is git for content plus a Studio release step
 (Decision 2); learning state lives in the shared database behind RLS
 (Decision 6); and materiality has no default — publishing forces the choice
-(Decision 3).
+(Decision 3). A material change **re-tests rather than resets** — the card
+becomes due now and the next rating recalibrates FSRS (Decision 3).
 
-1. **What does a learner see when a material change resets their card, and can
-   they push back?** The reset is correct but it is also someone else deciding
-   that your memory is now wrong. It needs an explanation naming the change and
-   the curator, and a decision on whether a learner may defer or dispute it.
-2. **Assignment ↔ card lifecycle.** Does deleting an assignment retire the
+1. **Assignment ↔ card lifecycle.** Does deleting an assignment retire the
    card, and does the learner keep the history?
-3. **Where does the residual-visibility policy get written down?** Decision 6
+2. **Where does the residual-visibility policy get written down?** Decision 6
    states that a superuser or Azure server administrator can read every row.
    Participants should be told this in plain language before the first real
    colleague joins, and someone at DocuWare — not this ADR — has to own that
    statement. Blocking for real colleague data; not blocking for a pilot on
    test identities.
-4. **Aggregate vocabulary.** Which opt-in metrics exist and at what
+3. **Aggregate vocabulary.** Which opt-in metrics exist and at what
    granularity — needs a concrete lead/coach story before freezing. At an
    employer this needs to be conservative by default.
-5. **Offline for Deployment B.** With learning state in the server, reviews
+4. **Offline for Deployment B.** With learning state in the server, reviews
    need the network. Deployment A stays the offline path, but if colleagues
    want offline reviews *and* cross-device progress, a local read-through
    cache with write-back is the answer — and it brings back exactly the sync
    and conflict work this ADR otherwise avoids. Defer until the pilot shows
    whether it actually hurts.
-6. **Conflict policy for concurrent curation.** Last-write-wins on
+5. **Conflict policy for concurrent curation.** Last-write-wins on
    `updated_at` plus a curation log is probably enough at this scale; verify
    against a real two-curator case before building merge UI.
-7. **Dialect cost, measured.** The 2026-07-04 draft assumed a Postgres provider
+6. **Dialect cost, measured.** The 2026-07-04 draft assumed a Postgres provider
    means "a dialect audit of every kernel query". A survey on 2026-07-25 found
    the actual surface small: `datetime('now')` ×21, `LIKE` ×16 (SQLite's is
    case-insensitive for ASCII, Postgres' is not — needs `ILIKE`),
