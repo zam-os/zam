@@ -85,6 +85,9 @@ interface ReviewCard {
   question?: string;
   sourceLink?: string | null;
   resolvedContext?: { content?: string } | null;
+  contentChanged?: boolean;
+  publishedBy?: string | null;
+  publishedAt?: string | null;
 }
 
 interface SubmitEvaluation {
@@ -437,6 +440,19 @@ function renderCard(): void {
     : t("recall_badge_smart");
   badges.appendChild(modeBadge);
   root.appendChild(badges);
+
+  if (card.contentChanged) {
+    const retestNotice = document.createElement("div");
+    retestNotice.className = "recall-notice recall-retest-notice";
+    const dateStr = card.publishedAt ? formatDue(card.publishedAt) : "";
+    retestNotice.textContent = card.publishedBy
+      ? tf("recall_retest_notice_author_date", {
+          author: card.publishedBy,
+          date: dateStr,
+        })
+      : tf("recall_retest_notice_date", { date: dateStr });
+    root.appendChild(retestNotice);
+  }
 
   const question = document.createElement("div");
   question.className = "recall-question";

@@ -4598,6 +4598,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     recall_sent_to_host:
       "Answer sent to the host conversation. Continue there.",
     recall_check_failed: "Answer check failed: {message}",
+    recall_retest_notice_date: "Content updated on {date}",
+    recall_retest_notice_author_date: "Content updated by {author} on {date}",
     settings_section_recall: "Recall",
     settings_section_backup: "Backup",
     settings_section_update: "Update",
@@ -5609,6 +5611,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     recall_sent_to_host:
       "Antwort an die Host-Konversation gesendet. Mach dort weiter.",
     recall_check_failed: "Antwortprüfung fehlgeschlagen: {message}",
+    recall_retest_notice_date: "Inhalt geändert am {date}",
+    recall_retest_notice_author_date: "Inhalt geändert von {author} am {date}",
     settings_section_recall: "Recall",
     settings_section_backup: "Backup",
     settings_section_update: "Update",

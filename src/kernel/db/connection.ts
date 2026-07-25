@@ -621,4 +621,13 @@ async function runMigrations(db: Database): Promise<void> {
       `ALTER TABLE cards ADD COLUMN learned_content_version INTEGER NOT NULL DEFAULT 1`,
     );
   }
+
+  // M016: provenance columns for published revisions (ADR 2026-07-04 Phase 1).
+  if (
+    tokenCols.length > 0 &&
+    !tokenCols.some((c) => c.name === "published_by")
+  ) {
+    await db.exec(`ALTER TABLE tokens ADD COLUMN published_by TEXT`);
+    await db.exec(`ALTER TABLE tokens ADD COLUMN published_at TEXT`);
+  }
 }

@@ -44,7 +44,10 @@ CREATE TABLE IF NOT EXISTS tokens (
   -- curator's material change bumps it; cosmetic edits (typo, phrasing) leave
   -- it alone so nobody is re-tested for a reworded question.
   content_version    INTEGER NOT NULL DEFAULT 1,
-  maintenance_reason TEXT
+  maintenance_reason TEXT,
+  -- Provenance for content revisions (ADR 2026-07-04 Phase 1).
+  published_by       TEXT,
+  published_at       TEXT
 );
 
 -- Prerequisite dependency graph: "to learn A, first know B"

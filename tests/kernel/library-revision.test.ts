@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
+  buildReviewQueue,
   createToken,
   type Database,
   ensureCard,
@@ -119,6 +120,28 @@ describe("publishTokenRevision", () => {
     const card = await getCard(db, token.id, "alice");
     expect(new Date(card!.due_at).getTime()).toBeLessThanOrEqual(Date.now());
     expect(await isAwaitingRetest(db, cardId)).toBe(true);
+  });
+
+  it("records revision provenance and surfaces contentChanged in review queue", async () => {
+    const token = await makeToken("provenance-token");
+    await learnedCard(token.id, "alice");
+
+    const result = await publishTokenRevision(db, {
+      tokenId: token.id,
+      materiality: "material",
+      publishedBy: "curator@example.com",
+      changes: { concept: "Updated concept with provenance" },
+    });
+
+    expect(result.publishedBy).toBe("curator@example.com");
+    expect(result.publishedAt).toBeDefined();
+
+    const queue = await buildReviewQueue(db, { userId: "alice" });
+    const item = queue.items.find((i) => i.tokenId === token.id);
+    expect(item).toBeDefined();
+    expect(item?.contentChanged).toBe(true);
+    expect(item?.publishedBy).toBe("curator@example.com");
+    expect(item?.publishedAt).toBe(result.publishedAt);
   });
 
   it("re-tests rather than resets: FSRS history survives the bump", async () => {

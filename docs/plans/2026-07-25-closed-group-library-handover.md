@@ -50,7 +50,7 @@ pre-M015 upgrade path). Full suite 1565 passing.
 
 ## Phases
 
-- [ ] **Phase 1 — explain the re-test on the card.** A card reappearing after a
+- [x] **Phase 1 — explain the re-test on the card.** A card reappearing after a
       material publish is correct but currently unexplained, which reads as a
       bug. Surface "content changed by …, <date>" plus what changed, on the
       recall surfaces (desktop `study-view` and `desktop/src/panel/recall.ts`).

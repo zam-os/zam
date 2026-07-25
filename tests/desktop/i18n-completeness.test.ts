@@ -418,6 +418,9 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "server_db_err_network",
   "server_db_err_token",
   "server_db_err_quota",
+  // Closed-group library Phase 1 re-test notice strings (en/de shipped)
+  "recall_retest_notice_date",
+  "recall_retest_notice_author_date",
 ]);
 
 /**

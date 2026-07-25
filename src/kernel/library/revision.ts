@@ -48,6 +48,8 @@ export interface PublishRevisionInput {
   /** Never defaulted — the caller must decide (ADR Decision 3). */
   materiality: RevisionMateriality;
   changes?: RevisionChanges;
+  /** Optional author/curator who published this revision. */
+  publishedBy?: string;
 }
 
 export interface PublishRevisionResult {
@@ -57,6 +59,8 @@ export interface PublishRevisionResult {
   contentVersion: number;
   /** Cards set due by this publish; 0 for a cosmetic change. */
   cardsRetested: number;
+  publishedBy?: string | null;
+  publishedAt?: string | null;
 }
 
 /** Map a change field to its column, keeping the SQL construction explicit. */
@@ -110,11 +114,19 @@ async function publishWithinTransaction(
     }
   }
 
+  if (input.publishedBy !== undefined) {
+    setClauses.push("published_by = ?");
+    params.push(input.publishedBy);
+  }
+
   const material = input.materiality === "material";
   const nextVersion = material
     ? token.content_version + 1
     : token.content_version;
   if (material) setClauses.push("content_version = content_version + 1");
+  const nowISO = new Date().toISOString();
+  setClauses.push("published_at = ?");
+  params.push(nowISO);
   setClauses.push("updated_at = datetime('now')");
 
   await db
@@ -127,6 +139,8 @@ async function publishWithinTransaction(
       materiality: input.materiality,
       contentVersion: nextVersion,
       cardsRetested: 0,
+      publishedBy: input.publishedBy ?? null,
+      publishedAt: nowISO,
     };
   }
 
@@ -150,6 +164,8 @@ async function publishWithinTransaction(
     materiality: input.materiality,
     contentVersion: nextVersion,
     cardsRetested: result.changes,
+    publishedBy: input.publishedBy ?? null,
+    publishedAt: nowISO,
   };
 }
 
