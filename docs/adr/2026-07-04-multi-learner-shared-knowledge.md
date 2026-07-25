@@ -570,11 +570,78 @@ server are free (billing is per server). Three reasons, the third decisive:
   move once Azure supports Entra on it (Decision 13). On a shared server that
   rehearsal is impossible by construction.
 
-**The Azure dev instance is ephemeral.** It exists to verify the identity path
-and to rehearse upgrades, not to be online. Azure bills compute hourly, so
-creating a B1ms, running the checks and deleting it costs cents per session —
-far less than keeping a second server idling, and with no seven-day
-auto-restart to automate around.
+**Entra sign-in cannot be reproduced locally — and does not need to be.** Stock
+PostgreSQL 17 has no OAuth; Azure's Entra support on 17 is an Azure-side
+extension that accepts the access token **in the password field**. Locally the
+client connects with an ordinary password over the *same code path*: only the
+origin of the string differs. Token acquisition and the refresh-before-expiry
+loop are therefore unit-testable with an injected provider and a fake clock,
+and nothing about them requires a cloud database.
+
+Running PostgreSQL 18 locally to get native OAUTHBEARER would be a trap: 18
+ships the framework but no validator, the Entra validators are not
+production-ready, and 18 is precisely the version where Azure's Entra auth does
+not work (Decision 13). It would test a path ZAM does not ship.
+
+What genuinely needs a real Azure server is a short list — that a live Entra
+token is accepted, that `pgaadauth_create_principal` grants behave like the
+local roles, and that reconnect-on-expiry works end to end. Decision 15 gives
+that a permanent home at no extra cost.
+
+### 15. ZAM is a co-tenant on a server DocuWare needs anyway
+
+The server is not being bought for ZAM (project owner, 2026-07-25). It is set
+up as the **prototype for migrating an existing Azure SQL resource to Azure
+PostgreSQL** for another service, hosting roughly five databases: three for the
+service being replaced, plus **`zam_test`** and **`zam_prod`**.
+
+ZAM's marginal cost is therefore **zero** — billing is per server, and two more
+databases on it are free. ZAM also earns its seat: it is a low-risk first
+tenant that exercises the migration prototype before the real service depends
+on it.
+
+Four consequences follow, and the first two are constraints on other people's
+work, so they need agreeing rather than assuming.
+
+- **The PostgreSQL major version is server-wide, and ZAM needs 17.** All
+  databases on a Flexible Server share one major version, and an in-place major
+  upgrade is server-wide and **irreversible**. ZAM requires 17 because Entra
+  sign-in is broken on 18 (Decision 13). If the Azure SQL migration targets 18,
+  the two cannot share a server. **This is the sharpest risk in the whole
+  arrangement and should be settled before the server is created.**
+
+- **PostgreSQL roles are cluster-wide — there are no per-database users.** This
+  is a real difference from Azure SQL, where *contained database users* live
+  inside a database and need no server login. Postgres has no equivalent: every
+  role, including every Entra principal created with
+  `pgaadauth_create_principal`, exists at server level and is visible in
+  `pg_roles` to every database on the server.
+
+  The isolation is still achievable, just built rather than inherited:
+  `REVOKE CONNECT ON DATABASE … FROM PUBLIC`, then `GRANT CONNECT` only to that
+  database's own roles, plus schema and table grants inside. The effect matches
+  contained users; the mechanism does not. Worth flagging to the migration
+  prototype too — it is exactly the kind of assumption that survives a schema
+  conversion and then surprises everyone.
+
+- **Point-in-time restore is per server, not per database.** ZAM cannot ask for
+  a server rollback without also rewinding the other service's three databases.
+  ZAM's recovery story is therefore **logical**: regular `pg_dump` of
+  `zam_prod`, restored into place. Server PITR belongs to the co-tenant, and
+  ZAM must never be the reason it is used.
+
+- **The set of people who can read everything grows.** Decision 6 already
+  states that a superuser or server administrator can read every row and has
+  ZAM disclose it in-app. On a shared server that group now includes whoever
+  operates the co-tenant service. The disclosure already says "database
+  administrators" without naming a team, so it stays accurate — but the fact
+  should be known rather than discovered.
+
+**`zam_test` replaces the ephemeral instance** from Decision 14. A permanent
+test database at no extra cost is strictly better: it gives the Entra identity
+path — real tokens, `pgaadauth_create_principal`, reconnect-on-expiry — a
+standing home to be verified against, while local Docker keeps serving the
+inner development loop.
 
 ## Cost (Deployment B)
 
@@ -608,21 +675,28 @@ Two levers, neither needed on day one:
 Storage is the floor, not a driver: ZAM would have to grow by two orders of
 magnitude before 32 GiB mattered.
 
-### What a development environment adds
+### What ZAM actually adds to the bill: nothing
 
-Billing is **per server, not per database**, so the answer depends entirely on
-which of these "two databases" means:
+The figures above describe a server bought for ZAM alone. That is not the plan
+(Decision 15): the server exists for the Azure SQL → PostgreSQL migration
+prototype, and ZAM adds `zam_test` and `zam_prod` to roughly five databases on
+it. Billing is **per server, not per database**, so:
 
-| Setup | Monthly | |
-|-------|---------|---|
-| Local Docker dev + one prod server | **~$16–19** | **Chosen** (Decision 14) — dev costs nothing |
-| Two databases inside the one server | ~$16–19 | Free, but rejected for dev/prod: shared restore, shared vCore, shared upgrades |
-| Prod + an *ephemeral* Azure dev server | ~$17–20 | A few hours of B1ms per verification session, billed hourly |
-| Two permanent servers | ~$32–38 (~$18–20 reserved) | Only if a always-on staging environment is ever genuinely needed |
+| | Monthly |
+|---|---|
+| ZAM's marginal cost on the shared server | **$0** |
+| Local Docker for development | **$0** |
+| A standalone server, if ZAM ever needed its own | ~$16–19 (~$9–10 reserved) |
 
-So a development environment is effectively **free**, and the answer to "what
-if we need two" is "not much" — as long as the second one is local, or exists
-only while it is being used.
+**Development stays local regardless** (project owner, 2026-07-25) — a test
+user with a password against Docker Postgres 17, which is the same client code
+path as an Entra token (Decision 14). Even a free database on the shared server
+would be a worse inner loop than a container that starts in a second and can be
+thrown away.
+
+The standalone figure is kept because it is the fallback if the version
+constraint in Decision 15 turns out to be irreconcilable, and because it is the
+honest answer to "what would this cost if it had to stand alone".
 
 ### Cheaper alternatives, and why they lose
 
@@ -685,7 +759,8 @@ remains is one engineering note rather than a decision:
   worth doing on the existing paths first.
 - **Phase C0 — local Postgres first:** the Postgres provider and its contract
   case, the dialect delta, `pgvector`, and the RLS isolation suite, all on
-  Docker Postgres 17 in CI (Decision 14). No Azure resource exists yet.
+  Docker Postgres 17 in CI with a test user and password (Decision 14). No
+  Azure resource exists yet, and none is needed to prove the privacy boundary.
 - **Phase C — Deployment B pilot:** the Postgres provider behind the existing
   async `Database` contract, Entra token acquisition and refresh, the ULID ↔
   Entra principal mapping, RLS policies **with an isolation test suite**, the
