@@ -138,12 +138,14 @@ import {
   analyzeMonitor as handleAnalyzeMonitor,
   backupCreate as handleBackupCreate,
   checkDue as handleCheckDue,
+  createAssignmentHandler as handleCreateAssignment,
   endSession as handleEndSession,
   findTokens as handleFindTokens,
   getMonitor as handleGetMonitor,
   getReview as handleGetReview,
   getReviewsBatch as handleGetReviewsBatch,
   importOkfTokens as handleImportOkfTokens,
+  listAssignmentsHandler as handleListAssignments,
   publishRevision as handlePublishRevision,
   reviewAction as handleReviewAction,
   revisionPreview as handleRevisionPreview,
@@ -152,6 +154,7 @@ import {
   submitReview as handleSubmitReview,
   suggestFoundations as handleSuggestFoundations,
   updateCheck as handleUpdateCheck,
+  withdrawAssignmentHandler as handleWithdrawAssignment,
   type ImportOkfTokenInput,
 } from "../bridge-handlers.js";
 import { installCliShim } from "../cli-install.js";
@@ -4680,6 +4683,73 @@ bridgeCommand
     await withDb(async (db) => {
       try {
         const result = await handleRevisionPreview(db, { slug: opts.slug });
+        jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge personal-card-create-assignment ──────────────────────────────
+
+bridgeCommand
+  .command("personal-card-create-assignment")
+  .description("Assign a knowledge token to a learner (JSON)")
+  .requiredOption("--slug <slug>", "Token slug to assign")
+  .requiredOption("--assigner <id>", "Assigner user ID")
+  .requiredOption("--assignee <id>", "Assignee user ID")
+  .option("--due-date <date>", "Target completion date (ISO string)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleCreateAssignment(db, {
+          slug: opts.slug,
+          assignerId: opts.assigner,
+          assigneeId: opts.assignee,
+          dueDate: opts.dueDate,
+        });
+        jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge personal-card-withdraw-assignment ────────────────────────────
+
+bridgeCommand
+  .command("personal-card-withdraw-assignment")
+  .description("Withdraw an active assignment (JSON)")
+  .requiredOption("--assignment-id <id>", "Assignment ID")
+  .option("--assigner <id>", "Assigner user ID")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleWithdrawAssignment(db, {
+          assignmentId: opts.assignmentId,
+          assignerId: opts.assigner,
+        });
+        jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge personal-card-list-assignments ───────────────────────────────
+
+bridgeCommand
+  .command("personal-card-list-assignments")
+  .description("List assignments by assignee or assigner (JSON)")
+  .option("--assignee <id>", "Assignee user ID")
+  .option("--assigner <id>", "Assigner user ID")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleListAssignments(db, {
+          assigneeId: opts.assignee,
+          assignerId: opts.assigner,
+        });
         jsonOut(result);
       } catch (err) {
         jsonError((err as Error).message);

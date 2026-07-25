@@ -103,6 +103,17 @@ export {
   listAgentSkills,
 } from "./models/agent-skill.js";
 export type {
+  Assignment,
+  CreateAssignmentInput,
+} from "./models/assignment.js";
+export {
+  createAssignment,
+  getAssignment,
+  listAssignmentsByAssigner,
+  listAssignmentsForLearner,
+  withdrawAssignment,
+} from "./models/assignment.js";
+export type {
   Card,
   CardDeletionImpact,
   CardState,

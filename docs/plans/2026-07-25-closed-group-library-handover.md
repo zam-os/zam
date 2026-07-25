@@ -96,7 +96,7 @@ pre-M015 upgrade path). Full suite 1565 passing.
       Entra token acquisition and refresh, the ULID ↔ Entra principal mapping,
       RLS policies applied for real, and the admin runbook.
 
-- [ ] **Phase D — assignments** (ADR Decision 10). Binding while active — the
+- [x] **Phase D — assignments** (ADR Decision 10). Binding while active — the
       learner cannot detach the card; once withdrawn, cards and full history
       stay with the learner to keep, detach ("not for me"), or delete. An
       assigner may withdraw an assignment but **never** delete another person's

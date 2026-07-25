@@ -78,6 +78,9 @@ CREATE TABLE IF NOT EXISTS cards (
   -- than the token's means a material change has landed since and the card is
   -- awaiting a re-test (ADR 2026-07-04 Decision 3).
   learned_content_version INTEGER NOT NULL DEFAULT 1,
+  -- Assignment binding provenance (ADR 2026-07-04 Decision 10).
+  assigned_by   TEXT,
+  assignment_id TEXT REFERENCES assignments(id) ON DELETE SET NULL,
   UNIQUE(token_id, user_id)
 );
 
@@ -194,6 +197,17 @@ CREATE TABLE IF NOT EXISTS token_contexts (
   token_id   TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
   context_id TEXT NOT NULL REFERENCES contexts(id) ON DELETE CASCADE,
   PRIMARY KEY (token_id, context_id)
+);
+
+-- Knowledge assignments (ADR 2026-07-04 Decision 10)
+CREATE TABLE IF NOT EXISTS assignments (
+  id           TEXT PRIMARY KEY,
+  token_id     TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  assigner_id  TEXT NOT NULL,
+  assignee_id  TEXT NOT NULL,
+  due_date     TEXT,
+  created_at   TEXT NOT NULL DEFAULT (datetime('now')),
+  withdrawn_at TEXT
 );
 
 -- Performance indexes

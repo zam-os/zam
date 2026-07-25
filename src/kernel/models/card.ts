@@ -26,6 +26,8 @@ export interface Card {
   due_at: string;
   last_review_at: string | null;
   blocked: number; // 0 or 1
+  assigned_by?: string | null;
+  assignment_id?: string | null;
 }
 
 export interface UpdateCardInput {
@@ -263,6 +265,17 @@ export async function deleteCardForUser(
   const card = await getCard(db, tokenId, userId);
   if (!card) {
     throw new Error(`Card not found for token ${tokenId} and user ${userId}`);
+  }
+
+  if (card.assignment_id) {
+    const assignment = (await db
+      .prepare("SELECT withdrawn_at FROM assignments WHERE id = ?")
+      .get(card.assignment_id)) as { withdrawn_at: string | null } | undefined;
+    if (assignment && assignment.withdrawn_at === null) {
+      throw new Error(
+        "Cannot detach card: card is bound by an active assignment.",
+      );
+    }
   }
 
   const impact = await getCardDeletionImpact(db, tokenId, userId);

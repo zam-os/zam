@@ -643,4 +643,24 @@ async function runMigrations(db: Database): Promise<void> {
       `UPDATE tokens SET editorial_state = 'deprecated' WHERE deprecated_at IS NOT NULL`,
     );
   }
+
+  // M018: knowledge assignments (ADR 2026-07-04 Decision 10).
+  if (cardCols.length > 0 && !cardCols.some((c) => c.name === "assigned_by")) {
+    await db.exec(`ALTER TABLE cards ADD COLUMN assigned_by TEXT`);
+    await db.exec(
+      `ALTER TABLE cards ADD COLUMN assignment_id TEXT REFERENCES assignments(id) ON DELETE SET NULL`,
+    );
+  }
+
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS assignments (
+      id           TEXT PRIMARY KEY,
+      token_id     TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+      assigner_id  TEXT NOT NULL,
+      assignee_id  TEXT NOT NULL,
+      due_date     TEXT,
+      created_at   TEXT NOT NULL DEFAULT (datetime('now')),
+      withdrawn_at TEXT
+    );
+  `);
 }
