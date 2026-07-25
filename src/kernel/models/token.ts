@@ -1131,25 +1131,37 @@ export async function importCurriculumCards(
       const token = tokenBySlug.get(tokenSlug);
       if (!token) continue;
 
-      let prereqSlugs: string[];
+      const prereqTokens: Token[] = [];
 
       if (card.prerequisites && card.prerequisites.length > 0) {
-        prereqSlugs = [
-          ...new Set(card.prerequisites.map((s) => s.trim()).filter(Boolean)),
-        ];
-      } else {
-        prereqSlugs = await inferPrerequisitesFromCards(
+        for (const ref of card.prerequisites) {
+          const target = await resolvePrerequisiteToken(
+            tx,
+            ref,
+            tokenBySlug,
+            cards,
+            slugByIndex,
+          );
+          if (target) prereqTokens.push(target);
+        }
+      }
+
+      // Auto-infer if no explicit prerequisites matched or were provided
+      if (prereqTokens.length === 0) {
+        const inferredSlugs = await inferPrerequisitesFromBatch(
           cards,
           i,
           tokenBySlug,
           tx,
         );
+        for (const slug of inferredSlugs) {
+          const target =
+            tokenBySlug.get(slug) ?? (await getTokenBySlug(tx, slug));
+          if (target) prereqTokens.push(target);
+        }
       }
 
-      for (const prereqSlug of prereqSlugs) {
-        const prereqToken =
-          tokenBySlug.get(prereqSlug) ?? (await getTokenBySlug(tx, prereqSlug));
-        if (!prereqToken) continue;
+      for (const prereqToken of prereqTokens) {
         if (prereqToken.id === token.id) continue;
 
         // Cycle check
@@ -1179,39 +1191,128 @@ export async function importCurriculumCards(
 }
 
 /**
- * Infer prerequisite slugs for a curriculum card based on bloom level and domain.
- * Same logic as inferPrerequisites in applySourceProposals.
+ * Resolve a prerequisite reference (slug, title, or concept) to a Token,
+ * checking the current import batch first, then the database.
  */
-async function inferPrerequisitesFromCards(
-  cards: CurriculumCardInput[],
+async function resolvePrerequisiteToken(
+  db: Database,
+  ref: string,
+  tokenBySlug: Map<string, Token>,
+  items: Array<{ title?: string; concept: string; domain: string }>,
+  slugByIndex: string[],
+): Promise<Token | null> {
+  const trimmed = ref.trim();
+  if (!trimmed) return null;
+
+  // 1. Direct slug match in current batch
+  const bySlug = tokenBySlug.get(trimmed);
+  if (bySlug) return bySlug;
+
+  const lowerRef = trimmed.toLowerCase();
+
+  // 2. Title or concept match in current batch
+  for (let idx = 0; idx < items.length; idx++) {
+    const item = items[idx];
+    const slug = slugByIndex[idx];
+    if (!slug) continue;
+    const token = tokenBySlug.get(slug);
+    if (!token) continue;
+
+    if (
+      (item.title && item.title.trim().toLowerCase() === lowerRef) ||
+      (token.title && token.title.trim().toLowerCase() === lowerRef) ||
+      item.concept.trim().toLowerCase() === lowerRef ||
+      token.concept.trim().toLowerCase() === lowerRef
+    ) {
+      return token;
+    }
+  }
+
+  // 3. Slugified ref match in current batch
+  const cleanRef = slugify(trimmed);
+  if (cleanRef) {
+    for (const token of tokenBySlug.values()) {
+      if (token.slug === cleanRef || token.slug.endsWith(`-${cleanRef}`)) {
+        return token;
+      }
+    }
+  }
+
+  // 4. Database lookup: exact slug
+  const dbToken = await getTokenBySlug(db, trimmed);
+  if (dbToken) return dbToken;
+
+  // 5. Database lookup: slugified ref
+  if (cleanRef && cleanRef !== trimmed) {
+    const dbTokenClean = await getTokenBySlug(db, cleanRef);
+    if (dbTokenClean) return dbTokenClean;
+  }
+
+  // 6. Database lookup: exact title or concept
+  try {
+    const match = (await db
+      .prepare(
+        `SELECT slug FROM tokens WHERE (LOWER(title) = ? OR LOWER(concept) = ?) AND maintenance_at IS NULL LIMIT 1`,
+      )
+      .get(lowerRef, lowerRef)) as { slug: string } | undefined;
+    if (match) {
+      return (await getTokenBySlug(db, match.slug)) ?? null;
+    }
+  } catch {
+    // best-effort
+  }
+
+  return null;
+}
+
+/**
+ * Infer prerequisite slugs for an imported item based on bloom level, domain, and batch sequence.
+ * Strategy:
+ * 1. Link to highest-bloom lower-bloom token in same domain earlier in batch.
+ * 2. If no lower-bloom token exists earlier in batch, fallback to preceding same-domain token in batch.
+ * 3. Fallback: query existing lower-bloom token in database for the same domain.
+ */
+async function inferPrerequisitesFromBatch<
+  T extends { domain: string; bloom_level?: number; concept: string },
+>(
+  items: T[],
   currentIndex: number,
   tokenBySlug: Map<string, Token>,
   db: Database,
 ): Promise<string[]> {
-  const card = cards[currentIndex];
-  const cardDomain = (card.domain || "").toLowerCase();
-  const cardBloom = card.bloom_level ?? 1;
+  const item = items[currentIndex];
+  const cardDomain = (item.domain || "").toLowerCase();
+  const cardBloom = item.bloom_level ?? 1;
 
-  // 1. Look earlier in the same batch for same-domain cards with lower bloom
   let bestBatchSlug: string | null = null;
   let bestBatchBloom = -1;
+  let prevSameDomainSlug: string | null = null;
+
   for (let j = 0; j < currentIndex; j++) {
-    const other = cards[j];
+    const other = items[j];
     if ((other.domain || "").toLowerCase() !== cardDomain) continue;
+
+    for (const t of tokenBySlug.values()) {
+      if (t.concept === other.concept && t.domain === other.domain) {
+        prevSameDomainSlug = t.slug;
+        break;
+      }
+    }
+
     const otherBloom = other.bloom_level ?? 1;
     if (otherBloom < cardBloom && otherBloom > bestBatchBloom) {
-      for (const t of tokenBySlug.values()) {
-        if (t.concept === other.concept && t.domain === other.domain) {
-          bestBatchSlug = t.slug;
-          bestBatchBloom = otherBloom;
-          break;
-        }
+      if (prevSameDomainSlug) {
+        bestBatchSlug = prevSameDomainSlug;
+        bestBatchBloom = otherBloom;
       }
     }
   }
   if (bestBatchSlug) return [bestBatchSlug];
 
-  // 2. Fallback: query existing tokens in the same domain with lower bloom
+  // If no lower bloom in batch, use preceding same-domain item in batch if available
+  if (prevSameDomainSlug) return [prevSameDomainSlug];
+
+  // Fallback: query existing lower-bloom token in database
   try {
     const existing = (await db
       .prepare(
@@ -1689,23 +1790,38 @@ export async function applySourceProposals(
     const token = tokenBySlug.get(tokenSlug);
     if (!token) continue;
 
-    let prereqSlugs: string[];
+    const prereqTokens: Token[] = [];
 
     if (card.prerequisites && card.prerequisites.length > 0) {
-      // Explicit prerequisites from the proposal
-      prereqSlugs = [
-        ...new Set(card.prerequisites.map((s) => s.trim()).filter(Boolean)),
-      ];
-    } else {
-      // Auto-infer: find the best prerequisite from same domain with lower bloom
-      prereqSlugs = await inferPrerequisites(proposals, i, tokenBySlug, db);
+      for (const ref of card.prerequisites) {
+        const target = await resolvePrerequisiteToken(
+          db,
+          ref,
+          tokenBySlug,
+          proposals,
+          slugByIndex,
+        );
+        if (target) prereqTokens.push(target);
+      }
     }
 
-    for (const prereqSlug of prereqSlugs) {
-      const prereqToken =
-        tokenBySlug.get(prereqSlug) ?? (await getTokenBySlug(db, prereqSlug));
-      if (!prereqToken) continue; // skip unknown slugs silently
-      if (prereqToken.id === token.id) continue; // skip self
+    // Auto-infer if no explicit prerequisites matched or were provided
+    if (prereqTokens.length === 0) {
+      const inferredSlugs = await inferPrerequisitesFromBatch(
+        proposals,
+        i,
+        tokenBySlug,
+        db,
+      );
+      for (const slug of inferredSlugs) {
+        const target =
+          tokenBySlug.get(slug) ?? (await getTokenBySlug(db, slug));
+        if (target) prereqTokens.push(target);
+      }
+    }
+
+    for (const prereqToken of prereqTokens) {
+      if (prereqToken.id === token.id) continue;
 
       // Cycle check via recursive CTE
       const cycleCheck = (await db
@@ -1719,7 +1835,7 @@ export async function applySourceProposals(
            SELECT COUNT(*) as n FROM dependents WHERE token_id = ?`,
         )
         .get(prereqToken.id, token.id)) as { n: number };
-      if (cycleCheck.n > 0) continue; // would create cycle, skip
+      if (cycleCheck.n > 0) continue;
 
       await db
         .prepare(
@@ -1730,58 +1846,6 @@ export async function applySourceProposals(
   }
 
   return { createdCount, linkedCount };
-}
-
-/**
- * Infer prerequisite slugs for a proposal based on bloom level and domain.
- * Strategy: link to the highest-bloom same-domain token that appears earlier
- * in the batch, or to existing same-domain tokens in the database with lower
- * bloom. Returns at most one slug (the most logical single prerequisite).
- */
-async function inferPrerequisites(
-  proposals: SourceProposalInput[],
-  currentIndex: number,
-  tokenBySlug: Map<string, Token>,
-  db: Database,
-): Promise<string[]> {
-  const card = proposals[currentIndex];
-  const cardDomain = (card.domain || "").toLowerCase();
-  const cardBloom = card.bloom_level ?? 1;
-
-  // 1. Look earlier in the same batch for same-domain tokens with lower bloom
-  let bestBatchSlug: string | null = null;
-  let bestBatchBloom = -1;
-  for (let j = 0; j < currentIndex; j++) {
-    const other = proposals[j];
-    if ((other.domain || "").toLowerCase() !== cardDomain) continue;
-    const otherBloom = other.bloom_level ?? 1;
-    if (otherBloom < cardBloom && otherBloom > bestBatchBloom) {
-      // Resolve the slug that was assigned to this proposal
-      for (const t of tokenBySlug.values()) {
-        if (t.concept === other.concept && t.domain === other.domain) {
-          bestBatchSlug = t.slug;
-          bestBatchBloom = otherBloom;
-          break;
-        }
-      }
-    }
-  }
-  if (bestBatchSlug) return [bestBatchSlug];
-
-  // 2. Fallback: query existing tokens in the same domain with lower bloom
-  //    (only when the batch has no earlier same-domain token)
-  try {
-    const existing = (await db
-      .prepare(
-        `SELECT slug FROM tokens WHERE LOWER(domain) = ? AND bloom_level < ? AND maintenance_at IS NULL ORDER BY bloom_level DESC LIMIT 1`,
-      )
-      .get(cardDomain, cardBloom)) as { slug: string } | undefined;
-    if (existing) return [existing.slug];
-  } catch {
-    // best-effort; ignore DB errors during inference
-  }
-
-  return [];
 }
 
 /**
