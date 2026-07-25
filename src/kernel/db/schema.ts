@@ -95,6 +95,15 @@ CREATE TABLE IF NOT EXISTS cards (
   UNIQUE(token_id, user_id)
 );
 
+-- Work+learning sessions
+CREATE TABLE IF NOT EXISTS sessions (
+  id            TEXT PRIMARY KEY,
+  user_id       TEXT NOT NULL,
+  task          TEXT NOT NULL,
+  started_at    TEXT NOT NULL DEFAULT (datetime('now')),
+  completed_at  TEXT
+);
+
 -- Immutable review log: every rating event
 CREATE TABLE IF NOT EXISTS review_logs (
   id              TEXT PRIMARY KEY,
@@ -106,15 +115,6 @@ CREATE TABLE IF NOT EXISTS review_logs (
   reviewed_at     TEXT NOT NULL DEFAULT (datetime('now')),
   scheduled_at    TEXT NOT NULL,
   session_id      TEXT REFERENCES sessions(id)
-);
-
--- Work+learning sessions
-CREATE TABLE IF NOT EXISTS sessions (
-  id            TEXT PRIMARY KEY,
-  user_id       TEXT NOT NULL,
-  task          TEXT NOT NULL,
-  started_at    TEXT NOT NULL DEFAULT (datetime('now')),
-  completed_at  TEXT
 );
 
 -- Steps within a session: who did what
