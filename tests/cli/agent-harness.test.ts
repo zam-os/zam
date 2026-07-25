@@ -28,6 +28,11 @@ describe("agent harness registry", () => {
         "cursor",
         "copilot",
         "antigravity",
+        "grok",
+        "hermes",
+        "opencode",
+        "goose",
+        "copilot",
       ]),
     );
   });

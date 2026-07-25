@@ -179,6 +179,19 @@ export interface ProviderConfig {
   maxFrames?: number;
   /** Optional next endpoint to try when the primary is unusable. */
   fallback?: ProviderConfig;
+  /**
+   * Transport for this endpoint (ADR 2026-07-12a). Absent means direct HTTP
+   * (local/cloud). "agent" delegates generation through the harness named by
+   * {@link agentHarness} instead of calling `url`.
+   */
+  transport?: "agent";
+  /** Harness id backing an `agent`-transport endpoint (e.g. "claude-code"). */
+  agentHarness?: string;
+  /**
+   * Optional reasoning effort from the model registry (e.g. Copilot `--effort`).
+   * When set, overrides adapter defaults derived from the model id.
+   */
+  effort?: "none" | "minimal" | "low" | "medium" | "high" | "xhigh" | "max";
 }
 
 /** Infer the wire protocol from the endpoint host (anthropic.com → Messages API). */
@@ -319,6 +332,11 @@ function materializeModelEntry(
   };
   if (entry.runner) cfg.runner = entry.runner;
   if (maxFrames !== undefined) cfg.maxFrames = maxFrames;
+  if (entry.transport === "agent") {
+    cfg.transport = "agent";
+    if (entry.agentHarness) cfg.agentHarness = entry.agentHarness;
+  }
+  if (entry.effort) cfg.effort = entry.effort;
   return cfg;
 }
 
@@ -665,7 +683,7 @@ export async function generateQuestionViaLLM(
   },
 ): Promise<LlmTextResult> {
   const cfg = await getProviderForRole(db, "recall");
-  const endpoint = await resolveUsableRecallEndpoint(db);
+  const endpoint = await resolveUsableRecallEndpoint(db, { allowAgent: true });
 
   const bloom = (
     input.bloomLevel >= 1 && input.bloomLevel <= 5 ? input.bloomLevel : 1
@@ -696,6 +714,20 @@ Context: ${input.context || "(none)"}
 ${existingQuestion ? `Canonical Question (vary, do not repeat verbatim): ${existingQuestion}\n` : ""}${input.sourceLinkContent ? `Source Reference:\n${input.sourceLinkContent}` : ""}
 
 Active-Recall Question:`;
+
+  // Agent transport (ADR 2026-07-12a): delegate question generation to the
+  // connected harness instead of an HTTP chat-completions call.
+  if (endpoint.transport === "agent") {
+    const text = await requestAgentCompletion(endpoint, {
+      system: systemPrompt,
+      user: userPrompt,
+    });
+    return {
+      text,
+      model: endpoint.model || `agent:${endpoint.agentHarness ?? "claude"}`,
+      providerName: endpoint.providerName,
+    };
+  }
 
   const res = await fetchWithInteractiveTimeout(
     `${endpoint.url}/chat/completions`,
@@ -744,7 +776,7 @@ export async function evaluateAnswerViaLLM(
   },
 ): Promise<LlmTextResult> {
   const cfg = await getProviderForRole(db, "recall");
-  const endpoint = await resolveUsableRecallEndpoint(db);
+  const endpoint = await resolveUsableRecallEndpoint(db, { allowAgent: true });
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
   const ratingPrefix =
     LOCALIZED_RATING_PREFIX[cfg.locale] || "Suggested rating";
@@ -776,6 +808,20 @@ Target Context: ${input.context || "(none)"}
 ${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}` : ""}
 
 Evaluation:`;
+
+  // Agent transport (ADR 2026-07-12a): delegate answer evaluation to the
+  // connected harness instead of an HTTP chat-completions call.
+  if (endpoint.transport === "agent") {
+    const text = await requestAgentCompletion(endpoint, {
+      system: systemPrompt,
+      user: userPrompt,
+    });
+    return {
+      text,
+      model: endpoint.model || `agent:${endpoint.agentHarness ?? "claude"}`,
+      providerName: endpoint.providerName,
+    };
+  }
 
   const res = await fetchWithInteractiveTimeout(
     `${endpoint.url}/chat/completions`,
@@ -833,7 +879,7 @@ export async function discussReviewViaLLM(
   },
 ): Promise<LlmTextResult> {
   const cfg = await getProviderForRole(db, "recall");
-  const endpoint = await resolveUsableRecallEndpoint(db);
+  const endpoint = await resolveUsableRecallEndpoint(db, { allowAgent: true });
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
 
   const systemPrompt = `You are ZAM, a warm, precise, and encouraging skills trainer in a follow-up discussion about one flashcard.
@@ -867,6 +913,35 @@ ${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}`
     messages.push({ role: turn.role, content: turn.content });
   }
   messages.push({ role: "user", content: input.message });
+
+  // Agent transport (ADR 2026-07-12a): the discussion is stateless — the full
+  // thread is resent on every call — so we flatten it into one transcript prompt
+  // for the single-shot harness instead of passing a messages array.
+  if (endpoint.transport === "agent") {
+    const transcript = [
+      cardFrame,
+      "",
+      "Discussion so far:",
+      ...(feedback ? [`ZAM: ${feedback}`] : []),
+      ...input.thread.map(
+        (turn) =>
+          `${turn.role === "assistant" ? "ZAM" : "Learner"}: ${turn.content}`,
+      ),
+      "",
+      `The learner now says: ${input.message}`,
+      "",
+      "Reply to the learner's latest message.",
+    ].join("\n");
+    const text = await requestAgentCompletion(endpoint, {
+      system: systemPrompt,
+      user: transcript,
+    });
+    return {
+      text,
+      model: endpoint.model || `agent:${endpoint.agentHarness ?? "claude"}`,
+      providerName: endpoint.providerName,
+    };
+  }
 
   const res = await fetchWithInteractiveTimeout(
     `${endpoint.url}/chat/completions`,
@@ -1038,8 +1113,83 @@ function deduplicateGeneratedCards(
   });
 }
 
+/**
+ * Run one bounded generation through the connected agent harness
+ * (ADR 2026-07-12a). Shared by the `text`, `recall`, and multimodal vision
+ * callers whose resolved endpoint uses the agent transport. Returns raw model
+ * text for the caller to parse or format exactly as it would an HTTP
+ * chat-completions response.
+ */
+async function requestAgentCompletion(
+  endpoint: {
+    agentHarness?: string;
+    model?: string;
+    effort?: ProviderConfig["effort"];
+  },
+  messages: {
+    system: string;
+    user: string;
+    /** Local image paths for multimodal harnesses (e.g. Antigravity / Gemini). */
+    imagePaths?: string[];
+    /** Per-call effort override; wins over registry entry effort. */
+    effort?: ProviderConfig["effort"];
+  },
+): Promise<string> {
+  if (!endpoint.agentHarness) {
+    throw new Error("Agent transport endpoint is missing an agentHarness.");
+  }
+  const { getAgentAdapter } = await import("../agent-llm/adapter.js");
+  const adapter = getAgentAdapter(endpoint.agentHarness);
+  if (!adapter) {
+    throw new Error(
+      `No agent adapter is available for harness "${endpoint.agentHarness}".`,
+    );
+  }
+  if (messages.imagePaths?.length && !adapter.modalities?.image) {
+    throw new Error(
+      `Harness "${endpoint.agentHarness}" does not support image input.`,
+    );
+  }
+  const { defaultAgentModel } = await import("../agent-llm/defaults.js");
+  // Prefer the registry model; fall back to the harness's cheap default when
+  // the entry still has a placeholder `agent:<harness>` from early builds.
+  const model =
+    endpoint.model && !endpoint.model.startsWith("agent:")
+      ? endpoint.model
+      : defaultAgentModel(endpoint.agentHarness);
+  // Call-site override > registry entry effort > adapter model heuristic.
+  const effort = messages.effort ?? endpoint.effort;
+  const { text } = await adapter.generate({
+    system: messages.system,
+    user: messages.user,
+    imagePaths: messages.imagePaths,
+    model,
+    effort,
+  });
+  return text;
+}
+
+/**
+ * Readiness probe for an agent-transport endpoint (ADR 2026-07-12a): the harness
+ * has no URL to health-check, so "ready" means its executable is present. Cheap
+ * — never runs a real generation.
+ */
+async function isAgentEndpointReady(agentHarness?: string): Promise<boolean> {
+  if (!agentHarness) return false;
+  const { getAgentAdapter } = await import("../agent-llm/adapter.js");
+  const adapter = getAgentAdapter(agentHarness);
+  if (!adapter) return false;
+  return (await adapter.probe()).available;
+}
+
 async function requestCurriculumCards(
-  endpoint: { url: string; model: string; apiKey?: string },
+  endpoint: {
+    url: string;
+    model: string;
+    apiKey?: string;
+    transport?: "agent";
+    agentHarness?: string;
+  },
   locale: SupportedLocale,
   langName: string,
   curriculumText: string,
@@ -1082,6 +1232,16 @@ Target Category: ${targetCategory}
 ${sourceUrl ? `Source Reference Link: ${sourceUrl}` : ""}
 
 JSON Array Output:`;
+
+  // Agent transport (ADR 2026-07-12a): delegate to the connected harness instead
+  // of an HTTP chat-completions call. The harness returns raw text that the
+  // caller parses exactly as it parses an HTTP response.
+  if (endpoint.transport === "agent") {
+    return requestAgentCompletion(endpoint, {
+      system: systemPrompt,
+      user: userPrompt,
+    });
+  }
 
   const hardTimeoutMs = isLocalEndpoint(endpoint.url)
     ? LOCAL_CURRICULUM_IMPORT_HARD_TIMEOUT_MS
@@ -1263,7 +1423,9 @@ export async function importCurriculumViaLLM(
     }
   }
 
-  const endpoint = await resolveUsableTextEndpoint(db);
+  // Curriculum import is the one text caller wired for the agent transport
+  // (ADR 2026-07-12a phase 1); other text callers reject it until wired.
+  const endpoint = await resolveUsableTextEndpoint(db, { allowAgent: true });
   const langName = LANGUAGE_NAMES[locale] || "English";
 
   let responseText: string;
@@ -1482,6 +1644,8 @@ JSON Array Output:`;
 
 /**
  * Extract plain text from an image/scan path using LLM vision.
+ * Supports the agent transport when the resolved vision model is harness-backed
+ * and the adapter declares image modality (Antigravity / Gemini).
  */
 export async function extractTextFromScanViaLLM(
   db: Database,
@@ -1518,14 +1682,26 @@ export async function extractTextFromScanViaLLM(
     throw new Error("Unsupported scan format; use PNG, JPEG, or WebP");
   }
 
+  const langName = LANGUAGE_NAMES[p.locale] || "English";
+  const systemPrompt =
+    "You are ZAM's OCR processor. Extract all visible text from the image exactly as written. Output only the extracted text without commentary, formatting, or prefixes.";
+  const userPrompt = `Extract all text from this scan in ${langName}:`;
+
+  // Agent transport (ADR 2026-07-12a): multimodal harnesses read local files.
+  if (p.transport === "agent") {
+    return (
+      await requestAgentCompletion(p, {
+        system: systemPrompt,
+        user: userPrompt,
+        imagePaths: [imagePath],
+      })
+    ).trim();
+  }
+
   const imageBytes = readFileSync(imagePath);
   const dataUrl = `data:${mime};base64,${imageBytes.toString("base64")}`;
 
   const visionEndpoint = await getVisionConfig(db);
-  const langName = LANGUAGE_NAMES[p.locale] || "English";
-
-  const systemPrompt =
-    "You are ZAM's OCR processor. Extract all visible text from the image exactly as written. Output only the extracted text without commentary, formatting, or prefixes.";
 
   const res = await fetchWithInteractiveTimeout(
     `${visionEndpoint.url}/chat/completions`,
@@ -1544,7 +1720,7 @@ export async function extractTextFromScanViaLLM(
             content: [
               {
                 type: "text",
-                text: `Extract all text from this scan in ${langName}:`,
+                text: userPrompt,
               },
               {
                 type: "image_url",
@@ -1752,6 +1928,7 @@ export interface QuestionResolution {
 
 export async function resolveUsableRecallEndpoint(
   db: Database,
+  opts: { allowAgent?: boolean } = {},
 ): Promise<ProviderConfig> {
   // Resolve the role config first (cheap, local reads) so configuration changes
   // are observed immediately. The cached value reuses only the *network* health
@@ -1760,6 +1937,17 @@ export async function resolveUsableRecallEndpoint(
   const cfg = await getProviderForRole(db, "recall");
   if (!cfg.enabled) {
     throw new Error("LLM integration is disabled in settings (llm.enabled)");
+  }
+  // Agent transport (ADR 2026-07-12a) has no URL to health-check; only recall
+  // callers wired for it (dynamic question, answer evaluation) may opt in.
+  if (cfg.transport === "agent") {
+    if (!opts.allowAgent) {
+      throw new Error(
+        `The active recall model uses the Agent transport (${cfg.agentHarness ?? "unknown harness"}), ` +
+          "which this operation does not support yet. Configure a Local or Cloud recall model for it.",
+      );
+    }
+    return cfg;
   }
   assertChatCompletions(cfg);
 
@@ -1820,12 +2008,25 @@ export async function sampleViaLocalLLM(
 
 async function resolveUsableTextEndpoint(
   db: Database,
+  opts: { allowAgent?: boolean } = {},
 ): Promise<ProviderConfig> {
   const cfg = await getProviderForRole(db, "text");
   if (!cfg.enabled) {
     throw new Error(
       "Text LLM integration is disabled in settings (llm.enabled)",
     );
+  }
+  // Agent transport (ADR 2026-07-12a) bypasses the HTTP online-chain: there is
+  // no URL to probe. Only callers that route through an agent adapter may opt in;
+  // every other text caller gets a clear error rather than a bogus HTTP attempt.
+  if (cfg.transport === "agent") {
+    if (!opts.allowAgent) {
+      throw new Error(
+        `The active text model uses the Agent transport (${cfg.agentHarness ?? "unknown harness"}), ` +
+          "which this operation does not support yet. Configure a Local or Cloud text model for it.",
+      );
+    }
+    return cfg;
   }
   assertChatCompletions(cfg);
 
@@ -1867,6 +2068,27 @@ async function prepareRecallChain(
   });
 
   if (!cfg.enabled) return fail("disabled");
+  // Agent transport (ADR 2026-07-12a): the harness has no URL to health-check,
+  // so readiness = executable present. Report it directly instead of walking the
+  // HTTP online-chain (which would treat the empty url as offline and fall
+  // through to the next model — the recall "jumped to Ollama" bug).
+  if (cfg.transport === "agent") {
+    const model = cfg.agentHarness
+      ? `agent:${cfg.agentHarness}`
+      : cfg.model || "agent";
+    const ready = await isAgentEndpointReady(cfg.agentHarness);
+    if (!ready) return fail("offline", { model });
+    return {
+      usable: true,
+      online: true,
+      model,
+      availableModels: [],
+      providerName: cfg.providerName,
+      label: cfg.label,
+      local: false,
+      activeTier: "primary",
+    };
+  }
   if (cfg.apiFlavor !== "chat-completions") return fail("unsupported-provider");
 
   const chain = providerChain(cfg);

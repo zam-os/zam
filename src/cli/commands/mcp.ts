@@ -59,9 +59,11 @@ const OKF_RESOURCE_URI = "ui://zam/okf";
 
 /**
  * Commands the ZAM Studio panel may run through `zam_studio_bridge`. A
- * closed allowlist: curation and admin reads/writes only. No provider/LLM,
- * observer, session/review, curriculum, or infrastructure commands — those
- * stay reachable only via `zam bridge` directly or the other MCP tools.
+ * closed allowlist: curation and admin reads/writes only. No generation
+ * (no evaluate/discuss/import), observer, session/review, curriculum, or
+ * infrastructure commands — those stay reachable only via `zam bridge`
+ * directly or the other MCP tools. The model registry commands configure
+ * which endpoint or agent harness is used; they never call an LLM.
  * Membership is checked before any command execution, so an unknown name is
  * rejected the same way as a real-but-forbidden one.
  */
@@ -83,6 +85,13 @@ const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
   "update-check",
   "get-settings",
   "setting-set",
+  // Machine-local AI model registry (Settings panel, ADR 2026-07-12a).
+  // Config only — never runs generation; keys stay out of this surface.
+  "model-list",
+  "model-upsert",
+  "model-remove",
+  "model-reprobe",
+  "agent-list",
 ]);
 
 /**

@@ -15,7 +15,7 @@
  */
 
 import { runBridge } from "./bridge-transport.js";
-import { t } from "./i18n.js";
+import { t, tf } from "./i18n.js";
 
 export interface OnboardingStep {
   /** Stable id for tests and later cross-step references. */
@@ -447,7 +447,11 @@ export function buildOnboardingSteps(
           heading(t("onboarding_model_title")),
           paragraph(t("onboarding_model_body")),
         );
-        for (const provider of ctx.cloudProviders) {
+        // Exclude OpenRouter from onboarding recommendations as requested
+        const cloudProviders = ctx.cloudProviders.filter(
+          (p) => p.id !== "openrouter",
+        );
+        for (const provider of cloudProviders) {
           container.append(
             renderCloudProviderCard(provider, actions, {
               connected: aiConnected,
@@ -458,6 +462,12 @@ export function buildOnboardingSteps(
           );
         }
         container.append(
+          renderAgentModelCard({
+            connected: aiConnected,
+            onConnected: () => {
+              aiConnected = true;
+            },
+          }),
           renderLocalAiCard(ctx.localAiCapable),
           renderEmbeddingBlock(actions, {
             get: () => embeddingStatus,
@@ -639,6 +649,167 @@ export function buildOnboardingSteps(
       },
     },
   ];
+}
+
+/**
+ * The guided Agent Model card (ADR 2026-07-12a): connect an outbound agent CLI
+ * harness (Claude Code, Antigravity, Copilot, Codex, Grok...) already on the system
+ * as ZAM's primary text/vision model without API keys or cloud top-ups.
+ */
+function renderAgentModelCard(state: {
+  connected: boolean;
+  onConnected(): void;
+}): HTMLElement {
+  const card = document.createElement("section");
+  card.className = "onboarding-model-card onboarding-model-agent-card";
+
+  const head = document.createElement("div");
+  head.className = "onboarding-model-card-head";
+  const title = document.createElement("h2");
+  title.className = "onboarding-model-card-title";
+  title.textContent = t("onboarding_model_agent_title");
+  const badge = document.createElement("span");
+  badge.className = "onboarding-model-badge";
+  badge.textContent = t("onboarding_model_agent_badge");
+  head.append(title, badge);
+
+  const body = cardLine(t("onboarding_model_agent_body"));
+
+  const form = document.createElement("div");
+  form.className = "onboarding-model-form";
+
+  const select = document.createElement("select");
+  select.className = "editor-select settings-select onboarding-agent-select";
+
+  const connectBtn = document.createElement("button");
+  connectBtn.type = "button";
+  connectBtn.className = "btn primary-btn";
+  connectBtn.textContent = t("onboarding_model_agent_connect").replace(
+    "{harness}",
+    "Agent",
+  );
+
+  form.append(select, connectBtn);
+
+  const status = document.createElement("p");
+  status.className = "onboarding-model-status";
+  status.setAttribute("aria-live", "polite");
+  if (state.connected) {
+    status.textContent = t("onboarding_model_already");
+    status.classList.add("ok");
+  }
+
+  let harnesses: Array<{
+    id: string;
+    label: string;
+    detected: boolean;
+    outboundText: boolean;
+    defaultModel?: string | null;
+  }> = [];
+
+  function updateButtonText(): void {
+    const selected = harnesses.find((h) => h.id === select.value);
+    const label = selected?.label ?? select.value ?? "Agent";
+    connectBtn.textContent = t("onboarding_model_agent_connect").replace(
+      "{harness}",
+      label,
+    );
+  }
+
+  select.addEventListener("change", updateButtonText);
+
+  void (async () => {
+    try {
+      const res = (await runBridge("agent-list")) as {
+        harnesses?: Array<{
+          id: string;
+          label: string;
+          detected: boolean;
+          outboundText: boolean;
+          defaultModel?: string | null;
+        }>;
+      };
+      harnesses = (res.harnesses ?? []).filter((h) => h.outboundText);
+    } catch {
+      harnesses = [
+        {
+          id: "claude-code",
+          label: "Claude Code",
+          detected: false,
+          outboundText: true,
+          defaultModel: "haiku",
+        },
+      ];
+    }
+
+    select.replaceChildren();
+    for (const h of harnesses) {
+      const opt = document.createElement("option");
+      opt.value = h.id;
+      opt.textContent = h.detected
+        ? `${h.label} (${t("onboarding_model_agent_detected_badge")})`
+        : h.label;
+      select.appendChild(opt);
+    }
+
+    if (harnesses.length === 0) {
+      const opt = document.createElement("option");
+      opt.value = "";
+      opt.textContent = t("onboarding_model_agent_none_detected");
+      select.appendChild(opt);
+      connectBtn.disabled = true;
+    } else {
+      const preferred = harnesses.find((h) => h.detected) ?? harnesses[0];
+      select.value = preferred.id;
+      updateButtonText();
+    }
+  })();
+
+  connectBtn.addEventListener("click", () => {
+    void (async () => {
+      const harnessId = select.value;
+      if (!harnessId) return;
+      const selected = harnesses.find((h) => h.id === harnessId);
+      const harnessLabel = selected?.label ?? harnessId;
+      connectBtn.disabled = true;
+      select.disabled = true;
+      status.classList.remove("ok");
+      status.textContent = t("onboarding_model_agent_connecting").replace(
+        "{harness}",
+        harnessLabel,
+      );
+      try {
+        const result = (await runBridge("model-upsert", [
+          "--transport",
+          "agent",
+          "--agent-harness",
+          harnessId,
+          "--label",
+          harnessLabel,
+          "--capabilities",
+          JSON.stringify({ text: true, image: true }),
+        ])) as { model?: { model?: string } };
+
+        status.textContent = tf("onboarding_model_agent_connected", {
+          harness: harnessLabel,
+          model: result.model?.model ?? selected?.defaultModel ?? "default",
+        });
+        status.classList.add("ok");
+        state.onConnected();
+      } catch (err) {
+        status.textContent = t("onboarding_model_error").replace(
+          "{message}",
+          bridgeErrorMessage(err),
+        );
+      } finally {
+        connectBtn.disabled = false;
+        select.disabled = false;
+      }
+    })();
+  });
+
+  card.append(head, body, form, status);
+  return card;
 }
 
 /**
@@ -1604,9 +1775,15 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
     }
   });
   finishLaterBtn.addEventListener("click", () => {
-    // "Finish later" leaves without marking the machine onboarded, so the flow
-    // is offered again next launch (and, from Phase 9, as a dashboard checklist).
-    deps.onLeave("later");
+    void (async () => {
+      try {
+        await runBridge("onboarding-complete");
+      } catch (err) {
+        console.error("onboarding-complete failed", err);
+      } finally {
+        deps.onLeave("completed");
+      }
+    })();
   });
 
   function rebuild(): void {

@@ -31,7 +31,9 @@ export type AgentHarnessId =
   | "cursor"
   | "copilot"
   | "antigravity"
-  | "goose";
+  | "goose"
+  | "grok"
+  | "hermes";
 
 export interface AgentHarness {
   id: AgentHarnessId;
@@ -80,7 +82,8 @@ export const AGENT_HARNESSES: AgentHarness[] = [
       darwin: ["/Applications/Cursor.app/Contents/MacOS/Cursor"],
     },
   },
-  { id: "copilot", label: "GitHub Copilot", kind: "app", command: "copilot" },
+  // Copilot CLI is the outbound-text surface; IDE extension remains separate.
+  { id: "copilot", label: "GitHub Copilot", kind: "cli", command: "copilot" },
   {
     id: "antigravity",
     label: "Antigravity",
@@ -94,6 +97,34 @@ export const AGENT_HARNESSES: AgentHarness[] = [
     },
   },
   { id: "goose", label: "goose", kind: "cli", command: "goose" },
+  {
+    id: "grok",
+    label: "Grok",
+    kind: "cli",
+    command: "grok",
+    candidatePaths: {
+      // Official install places the binary under ~/.grok/bin or ~/.local/bin.
+      darwin: [
+        join(homedir(), ".grok", "bin", "grok"),
+        join(homedir(), ".local", "bin", "grok"),
+      ],
+      linux: [
+        join(homedir(), ".grok", "bin", "grok"),
+        join(homedir(), ".local", "bin", "grok"),
+      ],
+      win32: [join(homedir(), ".grok", "bin", "grok.exe")],
+    },
+  },
+  {
+    id: "hermes",
+    label: "Hermes",
+    kind: "cli",
+    command: "hermes",
+    candidatePaths: {
+      darwin: [join(homedir(), ".local", "bin", "hermes")],
+      linux: [join(homedir(), ".local", "bin", "hermes")],
+    },
+  },
 ];
 
 export function getHarness(id: string): AgentHarness | undefined {
@@ -148,10 +179,10 @@ export function resolveHarnessExecutable(
     if (foundIde) return foundIde;
   }
 
-  if (harness.kind === "app") {
-    for (const candidate of harness.candidatePaths?.[platform] ?? []) {
-      if (exists(candidate)) return candidate;
-    }
+  // App harnesses and CLIs with known install locations (e.g. Grok under
+  // ~/.grok/bin even when not yet on PATH).
+  for (const candidate of harness.candidatePaths?.[platform] ?? []) {
+    if (exists(candidate)) return candidate;
   }
   return null;
 }

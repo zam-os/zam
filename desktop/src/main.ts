@@ -112,6 +112,24 @@ let modelRegistry: ModelRow[] = [];
 let editingModelId: string | null = null;
 let totalDue = 0;
 let cardsReviewedThisSession = 0;
+/** Ratings submitted this study session (for the end-of-session summary). */
+const sessionRatingTally: {
+  done: number;
+  ratings: Record<1 | 2 | 3 | 4, number>;
+} = {
+  done: 0,
+  ratings: { 1: 0, 2: 0, 3: 0, 4: 0 },
+};
+/** Due count when the current study session started (summary denominator). */
+let sessionStartedDue = 0;
+let sessionSummaryVisible = false;
+/**
+ * Snapshot of the #1 (fallback-order) model when Settings was opened. Leaving
+ * Settings re-runs ensure-llm when this fingerprint differs so the header AI
+ * badge reflects the newly primary model immediately — not only after the next
+ * learning session / dashboard load.
+ */
+let primaryModelFingerprintOnSettingsEnter: string | null = null;
 
 interface ProviderRoleStatus {
   enabled: boolean;
@@ -167,6 +185,35 @@ interface ModelRow {
   probedAt?: string;
   apiKeyRef?: string;
   keyState: "set" | "missing" | "none";
+  /** ADR 2026-07-12a — "http" (default) or "agent". */
+  transport?: "http" | "agent";
+  /** Harness id when transport is "agent" (e.g. "claude-code"). */
+  agentHarness?: string;
+  /**
+   * Optional reasoning effort for agent harnesses that support it
+   * (e.g. Copilot `--effort`). Unset = adapter picks from model id.
+   */
+  effort?:
+    | "none"
+    | "minimal"
+    | "low"
+    | "medium"
+    | "high"
+    | "xhigh"
+    | "max";
+}
+
+interface AgentHarnessListEntry {
+  id: string;
+  label: string;
+  kind: string;
+  detected: boolean;
+  /** True when this harness can back a `transport: "agent"` model. */
+  outboundText?: boolean;
+  /** True when the outbound adapter accepts local image files (vision/OCR). */
+  outboundImage?: boolean;
+  /** Recommended cheap default model id for this harness. */
+  defaultModel?: string | null;
 }
 
 interface WorkspaceConfig {
@@ -489,6 +536,10 @@ function initializeTranslations() {
   document.getElementById("lbl-reveal-title")!.textContent = t("lbl_reveal_title");
   document.getElementById("lbl-rating-instruction")!.textContent = t("lbl_rating_instruction");
   document.getElementById("btn-pause-session")!.textContent = t("btn_pause_session");
+  document.getElementById("session-summary-title")!.textContent =
+    t("lbl_recall_summary_title");
+  document.getElementById("btn-session-summary-done")!.textContent =
+    t("btn_back_to_dashboard");
   document.getElementById("btn-reveal-answer")!.textContent = t("btn_reveal_answer");
   document.getElementById("lbl-observer-title")!.textContent = t("observer_title");
   document.getElementById("observer-status")!.textContent = t("observer_idle");
@@ -1330,6 +1381,99 @@ function setAiStatus(label: string, dotClass: "green" | "amber" | "gray"): void 
   }
 }
 
+/**
+ * Bring the configured primary model online (or re-validate after Settings
+ * changes) and update the header badge. Non-blocking: shows "starting" first.
+ */
+function refreshAiStatus(): void {
+  setAiStatus(t("ai_status_starting"), "amber");
+  runBridge<{
+    usable: boolean;
+    online: boolean;
+    reason?: string;
+    model?: string;
+    label?: string;
+    local?: boolean;
+  }>("ensure-llm", ["--timeout", "45000"])
+    .then((llm) => {
+      // Prefer human label over raw model ids (esp. agent:harness).
+      const display = llm.label?.trim() || llm.model?.trim() || "cloud";
+      if (llm.usable) {
+        setAiStatus(
+          llm.local
+            ? t("ai_status_online")
+            : tf("ai_status_cloud_online", { model: display }),
+          "green",
+        );
+      } else if (llm.reason === "model-not-found") {
+        setAiStatus(t("ai_status_model_missing"), "gray");
+      } else if (llm.local === false && (llm.model || llm.label)) {
+        setAiStatus(
+          tf("ai_status_cloud_offline", { model: display }),
+          "gray",
+        );
+      } else {
+        setAiStatus(t("ai_status_offline"), "gray");
+      }
+    })
+    .catch(() => {
+      setAiStatus(t("ai_status_offline"), "gray");
+    });
+  void loadProviderStatus();
+}
+
+/** Stable identity of the first model in fallback order (#1 in Settings). */
+function primaryModelFingerprint(models: ModelRow[]): string {
+  const ordered = [...models].sort((a, b) => a.order - b.order);
+  const top = ordered[0];
+  if (!top) return "empty";
+  return [
+    top.id,
+    top.model,
+    top.url,
+    top.local ? "1" : "0",
+    top.apiFlavor,
+    top.keyState,
+    top.capabilities.text ? "t" : "-",
+    top.capabilities.embedding ? "e" : "-",
+    top.capabilities.image ? "i" : "-",
+  ].join("|");
+}
+
+async function capturePrimaryModelFingerprint(): Promise<void> {
+  try {
+    const response = await runBridge<{ models: ModelRow[] }>("model-list");
+    primaryModelFingerprintOnSettingsEnter = primaryModelFingerprint(
+      response.models ?? [],
+    );
+  } catch {
+    // Unknown baseline → re-init on leave so a failed snapshot never leaves a
+    // stale header badge after the user edited models.
+    primaryModelFingerprintOnSettingsEnter = "unknown";
+  }
+}
+
+/**
+ * If the #1 model changed while Settings was open, re-initialize the AI so the
+ * status badge matches the model already used for new requests.
+ */
+async function maybeReinitAiAfterSettings(): Promise<void> {
+  if (primaryModelFingerprintOnSettingsEnter === null) return;
+  const entered = primaryModelFingerprintOnSettingsEnter;
+  primaryModelFingerprintOnSettingsEnter = null;
+  try {
+    const response = await runBridge<{ models: ModelRow[] }>("model-list");
+    const current = primaryModelFingerprint(response.models ?? []);
+    if (current !== entered) {
+      refreshAiStatus();
+    }
+  } catch {
+    // Still re-check readiness if we cannot compare — better a refresh than a
+    // stale badge after the user edited models.
+    refreshAiStatus();
+  }
+}
+
 async function loadProviderStatus(): Promise<void> {
   const recallEl = document.getElementById("learning-model-status");
   const visionEl = document.getElementById("observer-model-status");
@@ -1635,6 +1779,10 @@ function textButton(label: string): HTMLButtonElement {
   return button;
 }
 
+function isAgentModel(row: ModelRow): boolean {
+  return row.transport === "agent";
+}
+
 function createModelRow(
   row: ModelRow,
   index: number,
@@ -1642,6 +1790,7 @@ function createModelRow(
 ): HTMLElement {
   const el = document.createElement("div");
   el.className = "ai-model-row";
+  const agent = isAgentModel(row);
 
   const header = document.createElement("div");
   header.className = "ai-model-row-head";
@@ -1649,19 +1798,44 @@ function createModelRow(
   title.className = "ai-model-label";
   title.textContent = row.label;
   const badge = document.createElement("span");
-  badge.className = row.local ? "ai-model-badge local" : "ai-model-badge cloud";
-  badge.textContent = row.local
-    ? t("model_local_badge")
-    : t("model_cloud_badge");
+  if (agent) {
+    badge.className = "ai-model-badge agent";
+    badge.textContent = t("model_agent_badge");
+  } else {
+    badge.className = row.local
+      ? "ai-model-badge local"
+      : "ai-model-badge cloud";
+    badge.textContent = row.local
+      ? t("model_local_badge")
+      : t("model_cloud_badge");
+  }
   header.append(title, badge);
 
   const meta = document.createElement("p");
   meta.className = "ai-provider-meta";
-  meta.textContent = `${row.model} · ${row.url}`;
+  if (agent) {
+    const modelId = row.model?.startsWith("agent:") ? "—" : row.model || "—";
+    meta.textContent = row.effort
+      ? tf("model_agent_meta_with_effort", {
+          harness: row.agentHarness || "—",
+          model: modelId,
+          effort: row.effort,
+        })
+      : tf("model_agent_meta_with_model", {
+          harness: row.agentHarness || "—",
+          model: modelId,
+        });
+  } else {
+    meta.textContent = `${row.model} · ${row.url}`;
+  }
 
   const caps = document.createElement("div");
   caps.className = "ai-model-caps";
   for (const cap of UI_CAPABILITIES) {
+    // Agent entries: text always; image only when the harness is multimodal
+    // (e.g. Antigravity/Gemini). Embedding is never agent-backed.
+    if (agent && cap === "embedding") continue;
+    if (agent && cap === "image" && !row.detectedCapabilities.image) continue;
     const label = document.createElement("label");
     label.className = "ai-model-cap";
     const box = document.createElement("input");
@@ -1675,13 +1849,26 @@ function createModelRow(
     const text = document.createElement("span");
     text.textContent = capabilityLabel(cap);
     label.append(box, text);
-    if (!row.detectedCapabilities[cap]) label.title = t("model_cap_undetected");
+    if (!row.detectedCapabilities[cap]) {
+      label.title = agent
+        ? t("model_agent_cap_undetected")
+        : t("model_cap_undetected");
+    }
     caps.append(label);
   }
 
   const statusChip = document.createElement("span");
   statusChip.className = "ai-model-status";
-  if (row.keyState === "missing") {
+  if (agent) {
+    if (row.detectedCapabilities.text) {
+      statusChip.textContent = t("model_agent_status_ready");
+    } else if (row.probedAt) {
+      statusChip.textContent = t("model_agent_status_offline");
+      statusChip.classList.add("warn");
+    } else {
+      statusChip.textContent = t("model_status_unprobed");
+    }
+  } else if (row.keyState === "missing") {
     statusChip.textContent = t("model_status_key_missing");
     statusChip.classList.add("warn");
   } else if (row.probedAt) {
@@ -1701,7 +1888,7 @@ function createModelRow(
   const reprobeButton = textButton(t("model_btn_reprobe"));
   reprobeButton.addEventListener("click", () => void reprobeModel(row.id));
   const editButton = textButton(t("model_btn_edit"));
-  editButton.addEventListener("click", () => showModelForm(row.id));
+  editButton.addEventListener("click", () => void showModelForm(row.id));
   const removeButton = textButton(t("model_btn_remove"));
   removeButton.classList.add("danger");
   removeButton.addEventListener("click", () => void removeModel(row));
@@ -1815,11 +2002,40 @@ function modelFieldLabel(
   return field;
 }
 
-function showModelForm(id?: string): void {
+type ModelFormKind = "local" | "cloud" | "agent";
+
+function existingModelKind(existing: ModelRow | undefined): ModelFormKind {
+  if (!existing) return "local";
+  if (isAgentModel(existing)) return "agent";
+  return existing.local ? "local" : "cloud";
+}
+
+async function loadOutboundAgentHarnesses(): Promise<AgentHarnessListEntry[]> {
+  try {
+    const res = await runBridge<{ harnesses: AgentHarnessListEntry[] }>(
+      "agent-list",
+    );
+    return (res.harnesses ?? []).filter((h) => h.outboundText);
+  } catch {
+    // Fallback when agent-list fails: still offer the shipped adapter.
+    return [
+      {
+        id: "claude-code",
+        label: "Claude Code",
+        kind: "cli",
+        detected: false,
+        outboundText: true,
+      },
+    ];
+  }
+}
+
+async function showModelForm(id?: string): Promise<void> {
   const form = document.getElementById("ai-provider-form");
   if (!form) return;
   editingModelId = id ?? null;
   const existing = id ? modelRegistry.find((m) => m.id === id) : undefined;
+  const initialKind = existingModelKind(existing);
 
   form.classList.remove("hidden");
   form.replaceChildren();
@@ -1833,27 +2049,27 @@ function showModelForm(id?: string): void {
   const kindWrap = document.createElement("div");
   kindWrap.className = "provider-kind-switch";
   kindWrap.setAttribute("role", "radiogroup");
-  const localLabel = document.createElement("label");
-  localLabel.className = "provider-kind-option";
-  const localRadio = document.createElement("input");
-  localRadio.type = "radio";
-  localRadio.name = "ai-model-kind";
-  localRadio.value = "local";
-  localRadio.checked = existing?.local ?? true;
-  const localText = document.createElement("span");
-  localText.textContent = t("model_kind_local");
-  localLabel.append(localRadio, localText);
-  const cloudLabel = document.createElement("label");
-  cloudLabel.className = "provider-kind-option";
-  const cloudRadio = document.createElement("input");
-  cloudRadio.type = "radio";
-  cloudRadio.name = "ai-model-kind";
-  cloudRadio.value = "cloud";
-  cloudRadio.checked = existing ? !existing.local : false;
-  const cloudText = document.createElement("span");
-  cloudText.textContent = t("model_kind_cloud");
-  cloudLabel.append(cloudRadio, cloudText);
-  kindWrap.append(localLabel, cloudLabel);
+
+  const radios = new Map<ModelFormKind, HTMLInputElement>();
+  for (const kind of ["local", "cloud", "agent"] as ModelFormKind[]) {
+    const label = document.createElement("label");
+    label.className = "provider-kind-option";
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "ai-model-kind";
+    radio.value = kind;
+    radio.checked = initialKind === kind;
+    const text = document.createElement("span");
+    text.textContent =
+      kind === "local"
+        ? t("model_kind_local")
+        : kind === "cloud"
+          ? t("model_kind_cloud")
+          : t("model_kind_agent");
+    label.append(radio, text);
+    kindWrap.append(label);
+    radios.set(kind, radio);
+  }
 
   const labelInput = document.createElement("input");
   labelInput.type = "text";
@@ -1863,20 +2079,84 @@ function showModelForm(id?: string): void {
   urlInput.value = existing?.url ?? "";
   const modelInput = document.createElement("input");
   modelInput.type = "text";
-  modelInput.value = existing?.model ?? "";
+  modelInput.value =
+    existing?.model && !existing.model.startsWith("agent:")
+      ? existing.model
+      : "";
   const keyInput = document.createElement("input");
   keyInput.type = "password";
   keyInput.autocomplete = "off";
   keyInput.placeholder =
     existing?.keyState === "set" ? t("model_key_set_placeholder") : "";
 
+  const harnessSelect = document.createElement("select");
+  harnessSelect.className = "settings-select";
+  const harnesses = await loadOutboundAgentHarnesses();
+  for (const h of harnesses) {
+    const opt = document.createElement("option");
+    opt.value = h.id;
+    const mark = h.detected ? "" : ` (${t("model_agent_harness_missing")})`;
+    opt.textContent = `${h.label}${mark}`;
+    harnessSelect.appendChild(opt);
+  }
+  if (existing?.agentHarness) {
+    harnessSelect.value = existing.agentHarness;
+  } else {
+    const preferred = harnesses.find((h) => h.detected) ?? harnesses[0];
+    if (preferred) harnessSelect.value = preferred.id;
+  }
+  if (harnesses.length === 0) {
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.textContent = t("model_agent_harness_none");
+    harnessSelect.appendChild(opt);
+  }
+
+  const labelField = modelFieldLabel(t("model_field_label"), labelInput);
+  const urlField = modelFieldLabel(t("model_field_url"), urlInput);
+  const modelField = modelFieldLabel(t("model_field_model"), modelInput);
   const keyField = modelFieldLabel(t("model_field_key"), keyInput);
-  const syncKeyVisibility = (): void => {
-    keyField.classList.toggle("hidden", localRadio.checked);
+  const harnessField = modelFieldLabel(
+    t("model_field_harness"),
+    harnessSelect,
+  );
+
+  // Effort is mainly for Copilot (and future harnesses that accept --effort).
+  // "auto" stores no value so the adapter picks from the model id.
+  const effortSelect = document.createElement("select");
+  effortSelect.className = "settings-select";
+  const effortLevels = [
+    "auto",
+    "low",
+    "medium",
+    "high",
+    "minimal",
+    "xhigh",
+    "max",
+    "none",
+  ] as const;
+  const effortLabels: Record<(typeof effortLevels)[number], string> = {
+    auto: t("model_effort_auto"),
+    low: t("model_effort_low"),
+    medium: t("model_effort_medium"),
+    high: t("model_effort_high"),
+    minimal: t("model_effort_minimal"),
+    xhigh: t("model_effort_xhigh"),
+    max: t("model_effort_max"),
+    none: t("model_effort_none"),
   };
-  localRadio.addEventListener("change", syncKeyVisibility);
-  cloudRadio.addEventListener("change", syncKeyVisibility);
-  syncKeyVisibility();
+  for (const level of effortLevels) {
+    const opt = document.createElement("option");
+    opt.value = level;
+    opt.textContent = effortLabels[level];
+    effortSelect.appendChild(opt);
+  }
+  effortSelect.value = existing?.effort ?? "auto";
+  const effortField = modelFieldLabel(t("model_field_effort"), effortSelect);
+
+  const agentHint = document.createElement("p");
+  agentHint.className = "ai-provider-hint";
+  agentHint.textContent = t("model_agent_hint");
 
   const capsWrap = document.createElement("div");
   capsWrap.className = "ai-model-caps";
@@ -1884,6 +2164,7 @@ function showModelForm(id?: string): void {
   for (const cap of UI_CAPABILITIES) {
     const label = document.createElement("label");
     label.className = "ai-model-cap";
+    label.dataset.cap = cap;
     const box = document.createElement("input");
     box.type = "checkbox";
     box.checked = existing?.capabilities[cap] ?? cap === "text";
@@ -1900,11 +2181,103 @@ function showModelForm(id?: string): void {
   const grid = document.createElement("div");
   grid.className = "ai-provider-form-grid";
   grid.append(
-    modelFieldLabel(t("model_field_label"), labelInput),
-    modelFieldLabel(t("model_field_url"), urlInput),
-    modelFieldLabel(t("model_field_model"), modelInput),
+    labelField,
+    urlField,
+    modelField,
     keyField,
+    harnessField,
+    effortField,
   );
+
+  const selectedKind = (): ModelFormKind => {
+    for (const [kind, radio] of radios) {
+      if (radio.checked) return kind;
+    }
+    return "local";
+  };
+
+  const syncAgentModelDefault = (force: boolean): void => {
+    const selected = harnesses.find((h) => h.id === harnessSelect.value);
+    const def = selected?.defaultModel ?? "";
+    modelInput.placeholder = def
+      ? tf("model_agent_model_placeholder", { model: def })
+      : t("model_field_model");
+    // Prefill when adding, or when the user clears the field / switches harness.
+    if (force || !modelInput.value.trim()) {
+      if (def) modelInput.value = def;
+    }
+  };
+
+  const syncKindVisibility = (): void => {
+    const kind = selectedKind();
+    const isAgent = kind === "agent";
+    const isLocal = kind === "local";
+    urlField.classList.toggle("hidden", isAgent);
+    // Model id stays visible for agent — it's the harness model to call.
+    modelField.classList.toggle("hidden", false);
+    keyField.classList.toggle("hidden", isAgent || isLocal);
+    harnessField.classList.toggle("hidden", !isAgent);
+    // Effort applies to agent harnesses that support it (e.g. Copilot).
+    effortField.classList.toggle("hidden", !isAgent);
+    agentHint.classList.toggle("hidden", !isAgent);
+    // Agent: text always; image when the selected harness adapter is multimodal.
+    // Embedding is never agent-backed.
+    const harnessMeta = harnesses.find((h) => h.id === harnessSelect.value);
+    const agentImageOk = isAgent && harnessMeta?.outboundImage === true;
+    for (const cap of UI_CAPABILITIES) {
+      const label = capsWrap.querySelector(
+        `label[data-cap="${cap}"]`,
+      ) as HTMLLabelElement | null;
+      if (!label) continue;
+      if (isAgent) {
+        const show = cap === "text" || (cap === "image" && agentImageOk);
+        label.classList.toggle("hidden", !show);
+        const box = capBoxes.get(cap);
+        if (box && cap === "text") box.checked = true;
+        if (box && cap === "image" && agentImageOk && !editingModelId) {
+          box.checked = true;
+        }
+      } else {
+        label.classList.remove("hidden");
+      }
+    }
+    capHint.textContent = isAgent
+      ? agentImageOk
+        ? t("model_agent_cap_hint_multimodal")
+        : t("model_agent_cap_hint")
+      : t("model_cap_hint");
+    // Default label / model from harness when adding a new agent model.
+    if (isAgent) {
+      const selected = harnesses.find((h) => h.id === harnessSelect.value);
+      if (selected && !editingModelId && !labelInput.value.trim()) {
+        labelInput.placeholder = selected.label;
+      }
+      syncAgentModelDefault(!editingModelId);
+    }
+  };
+
+  for (const radio of radios.values()) {
+    radio.addEventListener("change", syncKindVisibility);
+  }
+  harnessSelect.addEventListener("change", () => {
+    if (selectedKind() === "agent") {
+      const selected = harnesses.find((h) => h.id === harnessSelect.value);
+      if (selected && !editingModelId && !labelInput.value.trim()) {
+        labelInput.placeholder = selected.label;
+      }
+      // Switching harness always offers the new cheap default.
+      syncAgentModelDefault(true);
+    }
+    syncKindVisibility();
+  });
+  // Initial agent default when opening "add" form already on agent, or after
+  // selecting agent radio — applied inside syncKindVisibility.
+  if (!editingModelId && existingModelKind(existing) === "agent") {
+    syncAgentModelDefault(true);
+  } else if (!editingModelId && !existing) {
+    // Default kind is local; model field will be filled when Agent is chosen.
+  }
+  syncKindVisibility();
 
   const actions = document.createElement("div");
   actions.className = "settings-actions";
@@ -1913,14 +2286,25 @@ function showModelForm(id?: string): void {
   saveButton.className = "btn primary-btn btn-sm";
   saveButton.textContent = t("model_btn_save");
   saveButton.addEventListener("click", () => {
+    const kind = selectedKind();
     const capabilities: Record<string, boolean> = {};
-    for (const [cap, box] of capBoxes) capabilities[cap] = box.checked;
+    for (const [cap, box] of capBoxes) {
+      if (kind === "agent") {
+        // Agent: text + optional image (multimodal harnesses); never embedding.
+        capabilities[cap] =
+          cap === "text" ? true : cap === "image" ? box.checked : false;
+      } else {
+        capabilities[cap] = box.checked;
+      }
+    }
     void saveModelForm({
       id: editingModelId ?? undefined,
+      kind,
       label: labelInput.value.trim(),
       url: urlInput.value.trim(),
       model: modelInput.value.trim(),
-      local: localRadio.checked,
+      agentHarness: harnessSelect.value,
+      effort: effortSelect.value,
       key: keyInput.value.trim(),
       existingKeyRef: existing?.apiKeyRef,
       capabilities,
@@ -1933,15 +2317,18 @@ function showModelForm(id?: string): void {
   cancelButton.addEventListener("click", hideModelForm);
   actions.append(saveButton, cancelButton);
 
-  form.append(kindWrap, grid, capsWrap, capHint, actions);
+  form.append(kindWrap, grid, agentHint, capsWrap, capHint, actions);
 }
 
 interface ModelFormData {
   id?: string;
+  kind: ModelFormKind;
   label: string;
   url: string;
   model: string;
-  local: boolean;
+  agentHarness?: string;
+  /** "auto" | effort level — auto clears a stored override. */
+  effort?: string;
   key: string;
   existingKeyRef?: string;
   capabilities: Record<string, boolean>;
@@ -1949,14 +2336,61 @@ interface ModelFormData {
 
 async function saveModelForm(data: ModelFormData): Promise<void> {
   const status = aiConfigStatusEl();
+
+  if (data.kind === "agent") {
+    if (!data.agentHarness) {
+      if (status) status.textContent = t("model_agent_missing_harness");
+      return;
+    }
+    const harnesses = await loadOutboundAgentHarnesses();
+    const harnessMeta = harnesses.find((h) => h.id === data.agentHarness);
+    const label = data.label || harnessMeta?.label || data.agentHarness;
+    const args = [
+      "--transport",
+      "agent",
+      "--agent-harness",
+      data.agentHarness,
+      "--label",
+      label,
+      "--capabilities",
+      JSON.stringify({
+        text: true,
+        image: data.capabilities.image === true,
+      }),
+    ];
+    if (data.model) {
+      args.push("--model", data.model);
+    }
+    // Always send effort so "auto" can clear a previous override on edit.
+    if (data.effort) {
+      args.push("--effort", data.effort);
+    }
+    if (data.id) args.push("--id", data.id);
+    try {
+      await runBridge("model-upsert", args);
+      hideModelForm();
+      await loadModelRegistry();
+      await loadProviderStatus();
+      if (status) status.textContent = tf("model_saved", { label });
+    } catch (err) {
+      if (status) {
+        status.textContent = tf("model_save_failed", {
+          message: errorMessage(err),
+        });
+      }
+    }
+    return;
+  }
+
   if (!data.url || !data.model) {
     if (status) status.textContent = t("model_missing_fields");
     return;
   }
   const label = data.label || data.model;
+  const isLocal = data.kind === "local";
 
   let keyRef = data.existingKeyRef;
-  if (!data.local && data.key) {
+  if (!isLocal && data.key) {
     keyRef =
       keyRef ??
       `model-key-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -1973,6 +2407,8 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
   }
 
   const args = [
+    "--transport",
+    "http",
     "--label",
     label,
     "--url",
@@ -1981,10 +2417,10 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
     data.model,
     "--capabilities",
     JSON.stringify(data.capabilities),
-    ...(data.local ? ["--local"] : ["--no-local"]),
+    ...(isLocal ? ["--local"] : ["--no-local"]),
   ];
   if (data.id) args.push("--id", data.id);
-  if (!data.local && keyRef) args.push("--key-ref", keyRef);
+  if (!isLocal && keyRef) args.push("--key-ref", keyRef);
 
   try {
     await runBridge("model-upsert", args);
@@ -2984,6 +3420,10 @@ function switchView(
   viewId: AppView,
   options: { skipStudioLoad?: boolean } = {},
 ) {
+  const wasSettings =
+    document.getElementById("settings-view")?.classList.contains("active") ===
+    true;
+
   if (viewId !== "study-view" && studySessionActive) {
     evaluationRequestId++;
     if (revealInProgress) cancelActiveBridgeRequest();
@@ -2994,10 +3434,22 @@ function switchView(
     if (isStudyConfirmOpen()) hideStudyConfirm();
     activeCard = null;
     updateReviewControlState();
+    // Leaving study via nav abandons the in-progress card; still close the
+    // backend session so it does not linger. The summary path uses
+    // finishStudySession() and stays on study-view.
+    void closeUiLearningSession();
+  }
+  // Leaving the summary screen via nav restores the study shell for next time.
+  if (viewId !== "study-view" && sessionSummaryVisible) {
+    document.getElementById("session-summary")?.classList.add("hidden");
+    document.getElementById("study-active-card")?.classList.remove("hidden");
+    document.getElementById("study-footer")?.classList.remove("hidden");
+    sessionSummaryVisible = false;
+    resetSessionTally();
   }
   document.querySelectorAll(".view").forEach((el) => el.classList.remove("active"));
   document.getElementById(viewId)?.classList.add("active");
-  studySessionActive = viewId === "study-view";
+  studySessionActive = viewId === "study-view" && !sessionSummaryVisible;
   setActiveNav(viewId);
 
   const mainContainer = document.querySelector('main.container');
@@ -3012,6 +3464,9 @@ function switchView(
 
   if (viewId === "settings-view") {
     refreshSettingsData();
+    void capturePrimaryModelFingerprint();
+  } else if (wasSettings) {
+    void maybeReinitAiAfterSettings();
   }
   // openCardInEditor already loads + selects; skip the redundant fire-and-forget
   // load that would race with that path (ADR 2026-07-16b full-editor jump).
@@ -3945,42 +4400,8 @@ async function loadDashboard() {
     }
 
     // 3. Bring the local LLM online (auto-starts the server like `zam learn`)
-    //    and reflect status. Don't block the dashboard on model load — show a
-    //    "starting" state and update the badge once it resolves.
-    setAiStatus(t("ai_status_starting"), "amber");
-
-    runBridge<{
-      usable: boolean;
-      online: boolean;
-      reason?: string;
-      model?: string;
-      local?: boolean;
-    }>("ensure-llm", [
-      "--timeout",
-      "45000",
-    ])
-      .then((llm) => {
-        if (llm.usable) {
-          setAiStatus(
-            llm.local
-              ? t("ai_status_online")
-              : tf("ai_status_cloud_online", { model: llm.model ?? "cloud" }),
-            "green",
-          );
-        } else if (llm.reason === "model-not-found") {
-          setAiStatus(t("ai_status_model_missing"), "gray");
-        } else if (llm.local === false && llm.model) {
-          setAiStatus(
-            tf("ai_status_cloud_offline", { model: llm.model }),
-            "gray",
-          );
-        } else {
-          setAiStatus(t("ai_status_offline"), "gray");
-        }
-      })
-      .catch(() => {
-        setAiStatus(t("ai_status_offline"), "gray");
-      });
+    //    and reflect status. Don't block the dashboard on model load.
+    refreshAiStatus();
   } catch (err) {
     console.error("Failed to load dashboard:", err);
     showDashboardError(err);
@@ -4064,7 +4485,7 @@ async function loadNextCard(
     if (requestId !== questionRequestId) return;
     finishQuestionWait();
     if (!payload.hasReview || !payload.card || !payload.prompt) {
-      showCompletionState();
+      void finishStudySession();
       return;
     }
 
@@ -4073,10 +4494,15 @@ async function loadNextCard(
     resolvedContextContent = payload.resolvedContext?.content || null;
 
     cardsReviewedThisSession++;
-    
+
     // Set progress string
-    const totalSessionCards = totalDue + cardsReviewedThisSession - 1;
-    document.getElementById("card-progress")!.textContent = `${cardsReviewedThisSession} / ${totalSessionCards}`;
+    const totalSessionCards = Math.max(
+      sessionStartedDue,
+      sessionRatingTally.done + 1,
+      cardsReviewedThisSession,
+    );
+    document.getElementById("card-progress")!.textContent =
+      `${sessionRatingTally.done + 1} / ${totalSessionCards}`;
 
     // Set domain badge
     const domainBadge = document.getElementById("domain-badge")!;
@@ -4565,7 +4991,13 @@ async function submitRating(ratingVal: number) {
       "--card-id", cardId,
       "--rating", String(ratingVal)
     ]);
-    
+
+    if (ratingVal >= 1 && ratingVal <= 4) {
+      const r = ratingVal as 1 | 2 | 3 | 4;
+      sessionRatingTally.ratings[r] += 1;
+      sessionRatingTally.done += 1;
+    }
+
     // Load next card or finish
     if (studySessionActive) await loadNextCard();
   } catch (err) {
@@ -4847,33 +5279,100 @@ async function jumpToFullEditor(): Promise<void> {
   }
 }
 
-// ── SESSION COMPLETION SCREEN ────────────────────────────────────────────
-function showCompletionState() {
-  const studyView = document.getElementById("study-view")!;
-  studyView.textContent = "";
-  const card = document.createElement("div");
-  card.className = "study-card frosted completion-card";
+// ── SESSION COMPLETION / SUMMARY ─────────────────────────────────────────
+function resetSessionTally(): void {
+  sessionRatingTally.done = 0;
+  sessionRatingTally.ratings = { 1: 0, 2: 0, 3: 0, 4: 0 };
+  cardsReviewedThisSession = 0;
+  sessionStartedDue = totalDue;
+  sessionSummaryVisible = false;
+}
 
-  const mark = document.createElement("div");
-  mark.className = "completion-mark";
-  mark.textContent = "✓";
+function prepareStudyViewForSession(): void {
+  document.getElementById("session-summary")?.classList.add("hidden");
+  document.getElementById("study-active-card")?.classList.remove("hidden");
+  document.getElementById("study-footer")?.classList.remove("hidden");
+  resetSessionTally();
+}
 
-  const title = document.createElement("h2");
-  title.textContent = t("session_completed");
+function renderSessionSummary(): void {
+  const summary = document.getElementById("session-summary");
+  const titleEl = document.getElementById("session-summary-title");
+  const subEl = document.getElementById("session-summary-sub");
+  const spreadEl = document.getElementById("session-summary-spread");
+  const doneBtn = document.getElementById("btn-session-summary-done");
+  if (!summary || !titleEl || !subEl || !spreadEl || !doneBtn) return;
 
-  const subtitle = document.createElement("p");
-  subtitle.textContent = t("session_completed_sub");
+  const total = Math.max(sessionStartedDue, sessionRatingTally.done);
+  titleEl.textContent = t("lbl_recall_summary_title");
+  subEl.textContent =
+    sessionRatingTally.done > 0
+      ? tf("lbl_recall_summary", {
+          done: sessionRatingTally.done,
+          total,
+        })
+      : t("session_completed_sub");
 
-  const button = document.createElement("button");
-  button.id = "btn-back-to-dashboard";
-  button.className = "btn primary-btn btn-large glow-btn";
-  button.textContent = t("btn_back_to_dashboard");
-  button.addEventListener("click", () => {
-    window.location.reload();
-  });
+  spreadEl.replaceChildren();
+  if (sessionRatingTally.done > 0) {
+    for (const r of [1, 2, 3, 4] as const) {
+      const chip = document.createElement("span");
+      chip.className = "session-summary-chip";
+      chip.textContent = `${t(`lbl_rate_${r}`)}: ${sessionRatingTally.ratings[r]}`;
+      spreadEl.appendChild(chip);
+    }
+  }
 
-  card.append(mark, title, subtitle, button);
-  studyView.appendChild(card);
+  doneBtn.textContent = t("btn_back_to_dashboard");
+
+  document.getElementById("study-active-card")?.classList.add("hidden");
+  document.getElementById("study-footer")?.classList.add("hidden");
+  summary.classList.remove("hidden");
+}
+
+/**
+ * End the study session (button, Escape, or empty queue) and show the results
+ * summary. Pause vs end is intentionally the same path — one exit, one summary.
+ */
+async function finishStudySession(): Promise<void> {
+  if (sessionSummaryVisible) return;
+  sessionSummaryVisible = true;
+  studySessionActive = false;
+
+  evaluationRequestId++;
+  if (revealInProgress) cancelActiveBridgeRequest();
+  revealInProgress = false;
+  finishAiWait();
+  finishQuestionWait();
+  closeManageMenu();
+  closeInlineEditor();
+  if (isStudyConfirmOpen()) hideStudyConfirm();
+  resetDiscussionUi();
+  activeCard = null;
+  updateReviewControlState();
+
+  if (observerWatchRunning) {
+    await stopObserverWatch();
+  }
+  await closeUiLearningSession();
+
+  // Keep the study view visible so the summary can render in place.
+  document
+    .querySelectorAll(".view")
+    .forEach((el) => el.classList.remove("active"));
+  document.getElementById("study-view")?.classList.add("active");
+  setActiveNav("study-view");
+  renderSessionSummary();
+}
+
+function leaveSessionSummaryToDashboard(): void {
+  document.getElementById("session-summary")?.classList.add("hidden");
+  document.getElementById("study-active-card")?.classList.remove("hidden");
+  document.getElementById("study-footer")?.classList.remove("hidden");
+  sessionSummaryVisible = false;
+  resetSessionTally();
+  switchView("dashboard-view");
+  void loadDashboard();
 }
 
 // ── KEYBOARD SHORTCUTS & EVENT BINDINGS ──────────────────────────────────
@@ -4955,6 +5454,7 @@ window.addEventListener("DOMContentLoaded", () => {
   // Start Session Button
   document.getElementById("btn-start-session")!.addEventListener("click", () => {
     void (async () => {
+      prepareStudyViewForSession();
       await ensureUiLearningSession("Desktop learning session");
       switchView("study-view");
       loadNextCard();
@@ -5079,7 +5579,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("btn-add-ai-provider")?.addEventListener("click", () => {
-    showModelForm();
+    void showModelForm();
   });
 
   document.getElementById("btn-check-updates")?.addEventListener("click", () => {
@@ -5201,18 +5701,16 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Pause & Exit Session Button
+  // End session → summary (no separate pause path)
   document.getElementById("btn-pause-session")!.addEventListener("click", () => {
-    void (async () => {
-      if (observerWatchRunning) {
-        await stopObserverWatch();
-      }
-      resetDiscussionUi();
-      await closeUiLearningSession();
-      switchView("dashboard-view");
-      loadDashboard();
-    })();
+    void finishStudySession();
   });
+
+  document
+    .getElementById("btn-session-summary-done")
+    ?.addEventListener("click", () => {
+      leaveSessionSummaryToDashboard();
+    });
 
   // Submit Answer / Reveal Answer Button
   document.getElementById("btn-reveal-answer")!.addEventListener("click", () => {
@@ -5303,7 +5801,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Keyboard events
   window.addEventListener("keydown", (e: KeyboardEvent) => {
-    // 1. Esc key -> Pause and exit
+    // 1. Esc key → end session + summary (same as the footer button)
     if (e.key === "Escape" && studySessionActive) {
       if (reviewActionInProgress || cardLoadInProgress) return;
       if (isStudyConfirmOpen()) {
@@ -5314,9 +5812,7 @@ window.addEventListener("DOMContentLoaded", () => {
         closeInlineEditor();
         return;
       }
-      resetDiscussionUi();
-      switchView("dashboard-view");
-      loadDashboard();
+      void finishStudySession();
       return;
     }
 

@@ -1,7 +1,7 @@
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   clearRecallEndpointCache,
   ensureHighQualityQuestion,
@@ -24,26 +24,33 @@ import {
   setSetting,
 } from "../../src/kernel/index.js";
 
-function withIsolatedMachineConfig<T>(run: () => Promise<T>): Promise<T> {
-  const configDir = mkdtempSync(join(tmpdir(), "zam-llm-test-"));
-  const configPath = join(configDir, "config.json");
-  writeFileSync(
-    configPath,
-    JSON.stringify({ ai: { providers: {}, roles: {} } }),
-  );
-  const previousConfigPath = process.env.ZAM_CONFIG_PATH;
-  process.env.ZAM_CONFIG_PATH = configPath;
-  return run().finally(() => {
+describe("LLM client utilities (CLI layer)", () => {
+  let testConfigDir: string;
+  let previousConfigPath: string | undefined;
+
+  beforeEach(() => {
+    testConfigDir = mkdtempSync(join(tmpdir(), "zam-llm-test-"));
+    const configPath = join(testConfigDir, "config.json");
+    writeFileSync(
+      configPath,
+      JSON.stringify({ ai: { providers: {}, roles: {} } }),
+    );
+    previousConfigPath = process.env.ZAM_CONFIG_PATH;
+    process.env.ZAM_CONFIG_PATH = configPath;
+  });
+
+  afterEach(() => {
     if (previousConfigPath === undefined) {
       delete process.env.ZAM_CONFIG_PATH;
     } else {
       process.env.ZAM_CONFIG_PATH = previousConfigPath;
     }
-    rmSync(configDir, { recursive: true, force: true });
+    rmSync(testConfigDir, { recursive: true, force: true });
   });
-}
 
-describe("LLM client utilities (CLI layer)", () => {
+  function withIsolatedMachineConfig<T>(run: () => Promise<T>): Promise<T> {
+    return run();
+  }
   it("isLlmOnline returns false for invalid or unreachable URLs", async () => {
     const status = await isLlmOnline("http://localhost:9999/v1");
     expect(status).toBe(false);

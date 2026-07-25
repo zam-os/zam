@@ -390,11 +390,24 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "onboarding_content_title",
   "onboarding_content_body",
   "onboarding_content_recommended",
+  "onboarding_model_agent_title",
+  "onboarding_model_agent_badge",
+  "onboarding_model_agent_body",
+  "onboarding_model_agent_connect",
+  "onboarding_model_agent_detected_badge",
+  "onboarding_model_agent_none_detected",
+  "onboarding_model_agent_connecting",
+  "onboarding_model_agent_connected",
+  "onboarding_dont_show_again",
   "btn_content_goal_import",
   "onboarding_checklist_title",
   "onboarding_checklist_note",
   "dashboard_empty_no_cards",
   "wizard_connect_model_link",
+  // 0.20.0 agent-model effort selector — en/de shipped; es/fr/pt/zh/ja await
+  // native pack review (the model_effort_* option labels themselves already
+  // ship in every pack; only this tooltip is new).
+  "model_effort_thinking_hint",
 ]);
 
 /**

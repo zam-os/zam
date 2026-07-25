@@ -17,7 +17,7 @@
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
-import { setCurrentLocale, t } from "../i18n.js";
+import { setCurrentLocale, t, tf } from "../i18n.js";
 import {
   type CompanionContextBarState,
   type ContextBarHandle,
@@ -33,6 +33,7 @@ import {
 const contextBarRoot = document.getElementById("zam-contextbar-root");
 const noticeEl = document.getElementById("zam-connection-notice");
 const recallEl = document.getElementById("settings-recall");
+const aiEl = document.getElementById("settings-ai");
 const workspacesEl = document.getElementById("settings-workspaces");
 const kcEl = document.getElementById("settings-kc");
 const dbEl = document.getElementById("settings-db");
@@ -50,6 +51,7 @@ function applyStaticLocale(): void {
     "settings-section-recall-title",
     t("settings_section_recall"),
   );
+  setSectionTitle("settings-section-ai-title", t("settings_section_ai"));
   setSectionTitle(
     "settings-section-workspaces-title",
     t("settings_workspace_title"),
@@ -179,6 +181,7 @@ function bridgeCall(cmd: string, args: string[] = []): Promise<unknown> {
  */
 function reloadForContext(_newState: CompanionContextBarState): void {
   void loadRecallSettings();
+  void loadAiModels();
   void loadWorkspaces();
   void loadKnowledgeContext();
   void loadDatabaseStatus();
@@ -263,6 +266,393 @@ async function setRecallQuickMode(checkbox: HTMLInputElement): Promise<void> {
     renderInlineError(recallEl, errorMessage(error));
   } finally {
     checkbox.disabled = false;
+  }
+}
+
+// ── AI models (unified registry + Agent transport, ADR 2026-07-12a) ─────────
+
+interface SettingsModelRow {
+  id: string;
+  label: string;
+  url: string;
+  model: string;
+  local: boolean;
+  transport?: "http" | "agent";
+  agentHarness?: string;
+  order: number;
+  detectedCapabilities?: { text?: boolean };
+}
+
+interface SettingsAgentHarness {
+  id: string;
+  label: string;
+  detected: boolean;
+  outboundText?: boolean;
+  outboundImage?: boolean;
+  defaultModel?: string | null;
+}
+
+async function loadAiModels(): Promise<void> {
+  renderLoading(aiEl, t("model_loading"));
+  try {
+    const data = (await bridgeCall("model-list")) as {
+      models?: SettingsModelRow[];
+    };
+    renderAiModels(data.models ?? []);
+  } catch (error) {
+    clearEl(aiEl);
+    renderInlineError(aiEl, errorMessage(error));
+  }
+}
+
+function modelKindBadge(row: SettingsModelRow): {
+  className: string;
+  text: string;
+} {
+  if (row.transport === "agent") {
+    return { className: "agent", text: t("model_agent_badge") };
+  }
+  if (row.local) {
+    return { className: "local", text: t("model_local_badge") };
+  }
+  return { className: "cloud", text: t("model_cloud_badge") };
+}
+
+function renderAiModels(models: SettingsModelRow[]): void {
+  if (!aiEl) return;
+  clearEl(aiEl);
+
+  const hint = document.createElement("div");
+  hint.className = "settings-hint";
+  hint.textContent = t("model_agent_hint");
+  aiEl.appendChild(hint);
+
+  if (models.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "settings-empty";
+    empty.textContent = t("model_empty");
+    aiEl.appendChild(empty);
+  } else {
+    const ordered = [...models].sort((a, b) => a.order - b.order);
+    for (const row of ordered) {
+      aiEl.appendChild(renderAiModelRow(row));
+    }
+  }
+
+  const addBtn = document.createElement("button");
+  addBtn.type = "button";
+  addBtn.className = "btn secondary-btn btn-sm";
+  addBtn.textContent = t("btn_add_model");
+  addBtn.addEventListener("click", () => {
+    void showAgentModelForm();
+  });
+  aiEl.appendChild(addBtn);
+
+  const formHost = document.createElement("div");
+  formHost.id = "settings-ai-form";
+  formHost.className = "settings-ai-form hidden";
+  aiEl.appendChild(formHost);
+}
+
+function renderAiModelRow(row: SettingsModelRow): HTMLElement {
+  const el = document.createElement("div");
+  el.className = "settings-ai-row";
+
+  const head = document.createElement("div");
+  head.className = "settings-ai-row-head";
+  const label = document.createElement("span");
+  label.className = "settings-ai-label";
+  label.textContent = row.label;
+  const badge = document.createElement("span");
+  const kind = modelKindBadge(row);
+  badge.className = `settings-ai-badge ${kind.className}`;
+  badge.textContent = kind.text;
+  head.append(label, badge);
+
+  const meta = document.createElement("p");
+  meta.className = "settings-ai-meta";
+  meta.textContent =
+    row.transport === "agent"
+      ? tf("model_agent_meta_with_model", {
+          harness: row.agentHarness ?? "—",
+          model: row.model && !row.model.startsWith("agent:") ? row.model : "—",
+        })
+      : `${row.model} · ${row.url}`;
+
+  const actions = document.createElement("div");
+  actions.className = "settings-ai-actions";
+  if (row.transport === "agent") {
+    const recheck = document.createElement("button");
+    recheck.type = "button";
+    recheck.className = "btn secondary-btn btn-sm";
+    recheck.textContent = t("model_btn_reprobe");
+    recheck.addEventListener("click", () => {
+      void reprobeAiModel(row.id, recheck);
+    });
+    actions.appendChild(recheck);
+  }
+  const remove = document.createElement("button");
+  remove.type = "button";
+  remove.className = "btn secondary-btn btn-sm";
+  remove.textContent = t("model_btn_remove");
+  remove.addEventListener("click", () => {
+    void removeAiModel(row);
+  });
+  actions.appendChild(remove);
+
+  el.append(head, meta, actions);
+  return el;
+}
+
+async function reprobeAiModel(
+  id: string,
+  button: HTMLButtonElement,
+): Promise<void> {
+  button.disabled = true;
+  const original = button.textContent;
+  button.textContent = t("model_reprobing");
+  try {
+    await bridgeCall("model-reprobe", ["--id", id]);
+    await loadAiModels();
+  } catch (error) {
+    button.disabled = false;
+    button.textContent = original;
+    renderInlineError(aiEl, errorMessage(error));
+  }
+}
+
+async function removeAiModel(row: SettingsModelRow): Promise<void> {
+  if (!window.confirm(`${t("model_btn_remove")}: ${row.label}?`)) return;
+  try {
+    await bridgeCall("model-remove", ["--id", row.id]);
+    await loadAiModels();
+  } catch (error) {
+    renderInlineError(aiEl, errorMessage(error));
+  }
+}
+
+async function showAgentModelForm(): Promise<void> {
+  const formHost = document.getElementById("settings-ai-form");
+  if (!formHost) return;
+  formHost.classList.remove("hidden");
+  formHost.replaceChildren();
+
+  const title = document.createElement("strong");
+  title.textContent = t("model_form_add_title");
+
+  const kindNote = document.createElement("div");
+  kindNote.className = "settings-hint";
+  kindNote.textContent = `${t("model_kind_agent")} — ${t("model_agent_hint")}`;
+
+  let harnesses: SettingsAgentHarness[] = [];
+  try {
+    const res = (await bridgeCall("agent-list")) as {
+      harnesses?: SettingsAgentHarness[];
+    };
+    harnesses = (res.harnesses ?? []).filter((h) => h.outboundText);
+  } catch {
+    harnesses = [
+      {
+        id: "claude-code",
+        label: "Claude Code",
+        detected: false,
+        outboundText: true,
+      },
+    ];
+  }
+
+  const harnessSelect = document.createElement("select");
+  harnessSelect.className = "editor-select settings-select";
+  for (const h of harnesses) {
+    const opt = document.createElement("option");
+    opt.value = h.id;
+    opt.textContent = h.detected
+      ? h.label
+      : `${h.label} (${t("model_agent_harness_missing")})`;
+    harnessSelect.appendChild(opt);
+  }
+  if (harnesses.length === 0) {
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.textContent = t("model_agent_harness_none");
+    harnessSelect.appendChild(opt);
+  } else {
+    const preferred = harnesses.find((h) => h.detected) ?? harnesses[0];
+    harnessSelect.value = preferred.id;
+  }
+
+  const labelInput = document.createElement("input");
+  labelInput.type = "text";
+  labelInput.placeholder = t("model_field_label");
+  const preferredLabel =
+    harnesses.find((h) => h.id === harnessSelect.value)?.label ?? "";
+  labelInput.placeholder = preferredLabel || t("model_field_label");
+
+  const modelInput = document.createElement("input");
+  modelInput.type = "text";
+
+  const effortSelect = document.createElement("select");
+  effortSelect.className = "editor-select settings-select";
+  // Labels come from the i18n layer (all packs already carry model_effort_*).
+  // Spelled out as literal t() calls so the i18n completeness scan sees them.
+  const effortOptions: Array<[string, string]> = [
+    ["auto", t("model_effort_auto")],
+    ["low", t("model_effort_low")],
+    ["medium", t("model_effort_medium")],
+    ["high", t("model_effort_high")],
+    ["none", t("model_effort_none")],
+  ];
+  for (const [value, label] of effortOptions) {
+    const opt = document.createElement("option");
+    opt.value = value;
+    opt.textContent = label;
+    effortSelect.appendChild(opt);
+  }
+
+  const updateEffortVisibility = (): void => {
+    const modelVal = modelInput.value.trim().toLowerCase();
+    const isThinking = modelVal.includes("thinking");
+    if (isThinking) {
+      effortSelect.disabled = true;
+      effortSelect.title = t("model_effort_thinking_hint");
+    } else {
+      effortSelect.disabled = false;
+      effortSelect.title = "";
+    }
+  };
+
+  const applyDefaultModel = (): void => {
+    const h = harnesses.find((x) => x.id === harnessSelect.value);
+    const def = h?.defaultModel ?? "";
+    modelInput.placeholder = def
+      ? tf("model_agent_model_placeholder", { model: def })
+      : t("model_field_model");
+    if (def && !modelInput.value) modelInput.value = def;
+    updateEffortVisibility();
+
+    // Query models dynamically for the selected harness
+    if (harnessSelect.value) {
+      void (async () => {
+        try {
+          const res = (await bridgeCall("agent-models", [
+            "--harness",
+            harnessSelect.value,
+          ])) as { models?: string[] };
+          if (res.models && res.models.length > 0) {
+            // Provide suggestions if dynamic models are returned
+            let datalist = document.getElementById(
+              "agent-models-datalist",
+            ) as HTMLDataListElement | null;
+            if (!datalist) {
+              datalist = document.createElement("datalist");
+              datalist.id = "agent-models-datalist";
+              document.body.appendChild(datalist);
+            }
+            datalist.replaceChildren();
+            for (const m of res.models) {
+              const opt = document.createElement("option");
+              opt.value = m;
+              datalist.appendChild(opt);
+            }
+            modelInput.setAttribute("list", "agent-models-datalist");
+          }
+        } catch {
+          // Ignore model listing errors
+        }
+      })();
+    }
+  };
+
+  applyDefaultModel();
+  harnessSelect.addEventListener("change", applyDefaultModel);
+  modelInput.addEventListener("input", updateEffortVisibility);
+
+  const actions = document.createElement("div");
+  actions.className = "settings-ai-actions";
+  const save = document.createElement("button");
+  save.type = "button";
+  save.className = "btn primary-btn btn-sm";
+  save.textContent = t("model_btn_save");
+  const cancel = document.createElement("button");
+  cancel.type = "button";
+  cancel.className = "btn secondary-btn btn-sm";
+  cancel.textContent = t("model_btn_cancel");
+  cancel.addEventListener("click", () => {
+    formHost.classList.add("hidden");
+    formHost.replaceChildren();
+  });
+  save.addEventListener("click", () => {
+    void saveAgentModel(
+      harnessSelect,
+      labelInput,
+      modelInput,
+      effortSelect,
+      save,
+    );
+  });
+  actions.append(save, cancel);
+
+  const harnessLabel = document.createElement("label");
+  harnessLabel.className = "settings-hint";
+  harnessLabel.textContent = t("model_field_harness");
+  const modelLabel = document.createElement("label");
+  modelLabel.className = "settings-hint";
+  modelLabel.textContent = t("model_field_model");
+  const effortLabel = document.createElement("label");
+  effortLabel.className = "settings-hint";
+  effortLabel.textContent = t("model_field_effort");
+
+  formHost.append(
+    title,
+    kindNote,
+    harnessLabel,
+    harnessSelect,
+    modelLabel,
+    modelInput,
+    effortLabel,
+    effortSelect,
+    labelInput,
+    actions,
+  );
+}
+
+async function saveAgentModel(
+  harnessSelect: HTMLSelectElement,
+  labelInput: HTMLInputElement,
+  modelInput: HTMLInputElement,
+  effortSelect: HTMLSelectElement,
+  saveButton: HTMLButtonElement,
+): Promise<void> {
+  const harness = harnessSelect.value;
+  if (!harness) {
+    renderInlineError(aiEl, t("model_agent_missing_harness"));
+    return;
+  }
+  saveButton.disabled = true;
+  const label =
+    labelInput.value.trim() ||
+    harnessSelect.selectedOptions[0]?.textContent?.replace(/\s*\(.*\)$/, "") ||
+    harness;
+  const model = modelInput.value.trim();
+  const effort = effortSelect.disabled ? undefined : effortSelect.value;
+  try {
+    const args = [
+      "--transport",
+      "agent",
+      "--agent-harness",
+      harness,
+      "--label",
+      label,
+      "--capabilities",
+      JSON.stringify({ text: true, image: true }),
+    ];
+    if (model) args.push("--model", model);
+    if (effort && effort !== "auto") args.push("--effort", effort);
+    await bridgeCall("model-upsert", args);
+    await loadAiModels();
+  } catch (error) {
+    saveButton.disabled = false;
+    renderInlineError(aiEl, errorMessage(error));
   }
 }
 
@@ -560,6 +950,7 @@ function start(): void {
   // Each section loads independently — one section's failure (e.g. an
   // offline update check) must never block the others.
   void loadRecallSettings();
+  void loadAiModels();
   void loadWorkspaces();
   void loadKnowledgeContext();
   void loadDatabaseStatus();

@@ -838,6 +838,12 @@ textarea:focus-visible {
   color: var(--clr-accent-cyan);
 }
 
+.ai-model-badge.agent {
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.28);
+  color: #a855f7;
+}
+
 .ai-model-caps {
   display: flex;
   flex-wrap: wrap;
@@ -1845,6 +1851,8 @@ textarea::placeholder {
 }
 
 .completion-card {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 20px;
   justify-content: center;
@@ -1870,6 +1878,22 @@ textarea::placeholder {
   font-size: 60px;
   font-weight: 900;
   line-height: 1;
+}
+
+.session-summary-spread {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.session-summary-chip {
+  font-size: 0.78rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--hover, rgba(130, 125, 189, 0.1));
+  color: var(--clr-accent-purple, #827dbd);
+  font-weight: 600;
 }
 
 /* Util Helpers */
