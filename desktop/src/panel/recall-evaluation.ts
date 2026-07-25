@@ -94,3 +94,93 @@ Prior feedback: ${evaluation.feedback}
 Identified gaps: ${evaluation.gaps.join("; ") || "none"}
 Learner follow-up: ${followUp}`;
 }
+
+/** How the Recall card should evaluate a typed answer (issue #209). */
+export type RecallEvaluationRoute =
+  /** Call `zam_companion_sample` — ZAM's own recall model, in-card. */
+  | { kind: "zam-text-model" }
+  /** Host-provided MCP sampling (`createSamplingMessage`). */
+  | { kind: "host-sampling" }
+  /** `ui/message` detour into the host conversation. */
+  | { kind: "host-message" }
+  /** Nothing honest to route to; `reason` is shown in-card verbatim. */
+  | { kind: "unavailable"; reason: string };
+
+/** The subset of a companion evaluator route this decision needs. */
+export interface RecallEvaluatorRouteLike {
+  id: string;
+  routable: boolean;
+  reason?: string;
+}
+
+export interface RecallRouteInput {
+  selectedEvaluatorId?: string;
+  evaluators?: RecallEvaluatorRouteLike[];
+  /**
+   * Host capabilities as reported by `getHostCapabilities()`. The MCP-Apps
+   * shape carries objects (e.g. `sampling: { tools?: {} }`), so presence is
+   * read truthily rather than as a boolean.
+   */
+  capabilities?: { sampling?: unknown; message?: unknown } | null;
+}
+
+/**
+ * Decide how to evaluate an answer, honoring the Agent pill's selection before
+ * falling back to host capabilities (issue #209).
+ *
+ * Before this, the card routed purely on capabilities: an explicit, routable
+ * `zam-text-model` selection was ignored and the answer took the `ui/message`
+ * detour into the host chat. Selection now wins, and a selection that cannot
+ * be served on this surface produces an honest reason instead of silently
+ * falling through the ladder — the same principle
+ * `companion-dispatch.assertSamplingRoutableToVscodeLm` enforces extension-side.
+ *
+ * Only an absent selection or `native-mcp-host` uses the capability ladder.
+ */
+export function resolveRecallEvaluationRoute(
+  input: RecallRouteInput,
+): RecallEvaluationRoute {
+  const selected = input.selectedEvaluatorId;
+  const route = selected
+    ? input.evaluators?.find((candidate) => candidate.id === selected)
+    : undefined;
+
+  // Quick mode is model-free by design; the card short-circuits before ever
+  // asking for an evaluation, so reaching here means inconsistent state.
+  if (selected === "quick-mode") {
+    return {
+      kind: "unavailable",
+      reason:
+        "Quick mode is model-free by design and must never be asked to evaluate an answer.",
+    };
+  }
+
+  if (selected && selected !== "native-mcp-host") {
+    if (route && !route.routable) {
+      return {
+        kind: "unavailable",
+        reason:
+          route.reason ??
+          `Evaluator "${selected}" is not routable on this surface.`,
+      };
+    }
+    if (selected === "zam-text-model") return { kind: "zam-text-model" };
+    // Any other routable selection (e.g. `vscode-lm` inside the VS Code
+    // Companion, where the extension intercepts sampling) is served by the
+    // host's own sampling path.
+    if (input.capabilities?.sampling) return { kind: "host-sampling" };
+    return {
+      kind: "unavailable",
+      reason: `Evaluator "${selected}" needs host sampling, which this host does not provide.`,
+    };
+  }
+
+  if (input.capabilities?.sampling) return { kind: "host-sampling" };
+  if (input.capabilities?.message) return { kind: "host-message" };
+  return {
+    kind: "unavailable",
+    reason:
+      "This host provides neither sampling nor messages. Enable quick mode " +
+      "in Settings or use a host with model support.",
+  };
+}

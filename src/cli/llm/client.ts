@@ -1433,8 +1433,7 @@ export async function importCurriculumViaLLM(
     }
   }
 
-  // Agent transport (ADR 2026-07-12a) is wired for every generating text
-  // caller; only `sampleViaLocalLLM` stays deliberately local-only.
+  // Agent transport (ADR 2026-07-12a) is wired for every generating caller.
   const endpoint = await resolveUsableTextEndpoint(db, { allowAgent: true });
   const langName = LANGUAGE_NAMES[locale] || "English";
 
@@ -2023,7 +2022,36 @@ export async function sampleViaLocalLLM(
   messages: Array<{ role: string; content: string }>,
 ): Promise<LlmTextResult> {
   const cfg = await getProviderForRole(db, "recall");
-  const endpoint = await resolveUsableRecallEndpoint(db);
+  const endpoint = await resolveUsableRecallEndpoint(db, { allowAgent: true });
+
+  // Agent transport (ADR 2026-07-12a): this is the recall role like every other
+  // recall caller, so an agent-backed recall model must serve it too. It backs
+  // `zam_companion_sample`, which the Recall panel uses for an explicit
+  // "ZAM text model" selection (issue #209) — leaving it HTTP-only would break
+  // that path for anyone whose recall model is harness-backed.
+  if (endpoint.transport === "agent") {
+    const system = messages
+      .filter((m) => m.role === "system")
+      .map((m) => m.content)
+      .join("\n\n");
+    const transcript = messages
+      .filter((m) => m.role !== "system")
+      .map(
+        (m) => `${m.role === "assistant" ? "Assistant" : "User"}: ${m.content}`,
+      )
+      .join("\n\n");
+    const text = await requestAgentCompletion(endpoint, {
+      system:
+        system ||
+        "You are the intelligence behind ZAM active recall. Be grounded, concise, and pedagogically useful.",
+      user: transcript,
+    });
+    return {
+      text,
+      model: endpoint.model,
+      providerName: endpoint.providerName,
+    };
+  }
 
   const res = await fetchWithInteractiveTimeout(
     `${endpoint.url}/chat/completions`,
