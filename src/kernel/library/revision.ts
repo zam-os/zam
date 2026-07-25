@@ -188,3 +188,47 @@ export async function isAwaitingRetest(
     .get(cardId)) as { learned: number; current: number } | undefined;
   return row ? row.learned < row.current : false;
 }
+
+export interface RevisionImpact {
+  tokenId: string;
+  currentContentVersion: number;
+  totalCards: number;
+  affectedLearners: number;
+}
+
+/**
+ * Calculate the release impact of publishing a revision for a token.
+ * Shows how many existing cards/learners will be affected if a material
+ * change is published.
+ */
+export async function getRevisionImpact(
+  db: Database,
+  tokenId: string,
+): Promise<RevisionImpact> {
+  const token = (await db
+    .prepare("SELECT id, content_version FROM tokens WHERE id = ?")
+    .get(tokenId)) as { id: string; content_version: number } | undefined;
+
+  if (!token) throw new Error(`Token not found: ${tokenId}`);
+
+  const totalRow = (await db
+    .prepare("SELECT COUNT(*) as count FROM cards WHERE token_id = ?")
+    .get(tokenId)) as { count: number };
+
+  const affectedRow = (await db
+    .prepare(
+      `SELECT COUNT(*) as count
+         FROM cards
+        WHERE token_id = ?
+          AND learned_content_version <= ?
+          AND state <> 'new'`,
+    )
+    .get(tokenId, token.content_version)) as { count: number };
+
+  return {
+    tokenId: token.id,
+    currentContentVersion: token.content_version,
+    totalCards: totalRow ? totalRow.count : 0,
+    affectedLearners: affectedRow ? affectedRow.count : 0,
+  };
+}

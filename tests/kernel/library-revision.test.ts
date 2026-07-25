@@ -9,6 +9,7 @@ import {
   ensureCard,
   evaluateRating,
   getCard,
+  getRevisionImpact,
   isAwaitingRetest,
   openDatabase,
   publishTokenRevision,
@@ -317,5 +318,51 @@ describe("publishTokenRevision", () => {
     } finally {
       await legacyDb.close();
     }
+  });
+
+  describe("getRevisionImpact (Phase 2 Studio release step)", () => {
+    it("reports release impact accurately before publishing", async () => {
+      const token = await makeToken("impact-token");
+      await learnedCard(token.id, "alice");
+      await learnedCard(token.id, "bob");
+      await ensureCard(db, token.id, "charlie"); // brand new card
+
+      const impact = await getRevisionImpact(db, token.id);
+      expect(impact.tokenId).toBe(token.id);
+      expect(impact.currentContentVersion).toBe(1);
+      expect(impact.totalCards).toBe(3);
+      expect(impact.affectedLearners).toBe(2); // alice and bob (learned), charlie is new
+    });
+
+    it("updates affectedLearners count after material publish and re-test sync", async () => {
+      const token = await makeToken("impact-sync-token");
+      const aliceCard = await learnedCard(token.id, "alice");
+      const bobCard = await learnedCard(token.id, "bob");
+
+      await publishTokenRevision(db, {
+        tokenId: token.id,
+        materiality: "material",
+      });
+
+      expect(await isAwaitingRetest(db, aliceCard)).toBe(true);
+      expect(await isAwaitingRetest(db, bobCard)).toBe(true);
+
+      // Alice answers and re-tests
+      await evaluateRating(db, {
+        cardId: aliceCard,
+        tokenId: token.id,
+        userId: "alice",
+        rating: 3,
+      });
+
+      // Alice is in sync with v2; Bob is still awaiting re-test for v2
+      expect(await isAwaitingRetest(db, aliceCard)).toBe(false);
+      expect(await isAwaitingRetest(db, bobCard)).toBe(true);
+
+      const impact = await getRevisionImpact(db, token.id);
+      expect(impact.currentContentVersion).toBe(2);
+      expect(impact.totalCards).toBe(2);
+      expect(impact.affectedLearners).toBe(2);
+    });
   });
 });

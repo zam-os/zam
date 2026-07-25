@@ -144,7 +144,9 @@ import {
   getReview as handleGetReview,
   getReviewsBatch as handleGetReviewsBatch,
   importOkfTokens as handleImportOkfTokens,
+  publishRevision as handlePublishRevision,
   reviewAction as handleReviewAction,
+  revisionPreview as handleRevisionPreview,
   sessionOpen as handleSessionOpen,
   startSession as handleStartSession,
   submitReview as handleSubmitReview,
@@ -4614,6 +4616,74 @@ bridgeCommand
           updatedAt: token.updated_at,
         },
       });
+    });
+  });
+
+// ── zam bridge personal-card-publish-revision ────────────────────────────────
+
+bridgeCommand
+  .command("personal-card-publish-revision")
+  .description(
+    "Publish a token revision with forced cosmetic vs material classification (JSON)",
+  )
+  .requiredOption("--slug <slug>", "Token slug to publish revision for")
+  .requiredOption(
+    "--materiality <type>",
+    "cosmetic or material (forced classification)",
+  )
+  .option("--published-by <author>", "Author/curator name")
+  .option("--title <title>", "Updated title")
+  .option("--concept <concept>", "Updated concept text")
+  .option("--domain <domain>", "Updated domain")
+  .option("--bloom <level>", "Updated Bloom taxonomy level (1-5)")
+  .option("--context <context>", "Updated context")
+  .option("--source-link <link>", "Updated source link")
+  .option("--question <question>", "Updated question text")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const materiality = opts.materiality as "cosmetic" | "material";
+      if (materiality !== "cosmetic" && materiality !== "material") {
+        jsonError("materiality must be 'cosmetic' or 'material'");
+      }
+
+      const changes: Record<string, unknown> = {};
+      if (opts.title !== undefined) changes.title = opts.title;
+      if (opts.concept !== undefined) changes.concept = opts.concept;
+      if (opts.domain !== undefined) changes.domain = opts.domain;
+      if (opts.bloom !== undefined) changes.bloomLevel = Number(opts.bloom);
+      if (opts.context !== undefined) changes.context = opts.context;
+      if (opts.sourceLink !== undefined)
+        changes.sourceLink = opts.sourceLink === "" ? null : opts.sourceLink;
+      if (opts.question !== undefined) changes.question = opts.question;
+
+      try {
+        const result = await handlePublishRevision(db, {
+          slug: opts.slug,
+          materiality,
+          publishedBy: opts.publishedBy,
+          changes: Object.keys(changes).length > 0 ? changes : undefined,
+        });
+        jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge personal-card-revision-preview ────────────────────────────────
+
+bridgeCommand
+  .command("personal-card-revision-preview")
+  .description("Preview learner/card impact of a revision publish (JSON)")
+  .requiredOption("--slug <slug>", "Token slug to preview revision for")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleRevisionPreview(db, { slug: opts.slug });
+        jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
     });
   });
 

@@ -35,6 +35,7 @@ import {
   getDueCards,
   getInstallChannel,
   getPrerequisites,
+  getRevisionImpact,
   getSessionSummary,
   getSetting,
   getTokenById,
@@ -51,6 +52,7 @@ import {
   OBSERVER_POLICY_UNSET_HINT,
   pairCommands,
   prepareSessionSynthesis,
+  publishTokenRevision,
   readMonitorLog,
   removePrerequisite,
   resetCardsForToken,
@@ -1457,4 +1459,70 @@ export async function updateCheck(
     latestVersion: latest,
     channel,
   });
+}
+
+// 15. publishRevision & revisionPreview (Closed-Group Library Phase 2)
+export interface PublishRevisionParams {
+  tokenId?: string;
+  slug?: string;
+  materiality: "cosmetic" | "material";
+  publishedBy?: string;
+  changes?: {
+    title?: string;
+    question?: string;
+    concept?: string;
+    context?: string;
+    domain?: string;
+    bloomLevel?: number;
+    sourceLink?: string | null;
+  };
+}
+
+export async function publishRevision(
+  db: Database,
+  params: PublishRevisionParams,
+) {
+  let tokenId = params.tokenId;
+  if (!tokenId && params.slug) {
+    const token = await getTokenBySlug(db, params.slug);
+    if (!token) throw new Error(`Token not found for slug: ${params.slug}`);
+    tokenId = token.id;
+  }
+  if (!tokenId) throw new Error("tokenId or slug is required");
+
+  const result = await publishTokenRevision(db, {
+    tokenId,
+    materiality: params.materiality,
+    publishedBy: params.publishedBy,
+    changes: params.changes,
+  });
+
+  return {
+    success: true as const,
+    ...result,
+  };
+}
+
+export interface RevisionPreviewParams {
+  tokenId?: string;
+  slug?: string;
+}
+
+export async function revisionPreview(
+  db: Database,
+  params: RevisionPreviewParams,
+) {
+  let tokenId = params.tokenId;
+  if (!tokenId && params.slug) {
+    const token = await getTokenBySlug(db, params.slug);
+    if (!token) throw new Error(`Token not found for slug: ${params.slug}`);
+    tokenId = token.id;
+  }
+  if (!tokenId) throw new Error("tokenId or slug is required");
+
+  const impact = await getRevisionImpact(db, tokenId);
+  return {
+    success: true as const,
+    ...impact,
+  };
 }

@@ -82,9 +82,14 @@ export type {
   PublishRevisionInput,
   PublishRevisionResult,
   RevisionChanges,
+  RevisionImpact,
   RevisionMateriality,
 } from "./library/revision.js";
-export { isAwaitingRetest, publishTokenRevision } from "./library/revision.js";
+export {
+  getRevisionImpact,
+  isAwaitingRetest,
+  publishTokenRevision,
+} from "./library/revision.js";
 export type {
   AgentSkill,
   CreateAgentSkillInput,

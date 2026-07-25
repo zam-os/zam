@@ -634,6 +634,9 @@
                   >
                     Split
                   </button>
+                  <button id="btn-content-publish-revision" class="btn primary-btn btn-sm hidden" type="button">
+                    Release Revision
+                  </button>
                   <button id="btn-content-save-card" class="btn primary-btn btn-sm" type="button">
                     Save Card
                   </button>
@@ -643,6 +646,50 @@
           </div>
         </div>
       </section>
+
+      <!-- Release revision modal (personal-card-publish-revision & personal-card-revision-preview) -->
+      <div id="release-modal-overlay" class="modal-overlay">
+        <div class="modal-box">
+          <div class="modal-header">
+            <h3 id="lbl-release-modal-title">Release Token Revision</h3>
+          </div>
+          <div class="modal-body">
+            <p id="lbl-release-modal-desc">
+              Choose the classification for this revision release. This step determines how existing learners are affected.
+            </p>
+
+            <div id="release-impact-container" class="modal-impact-section">
+              <div class="modal-impact-title" id="lbl-release-impact-title">Impact on learners:</div>
+              <ul class="modal-impact-list" id="release-impact-list-el">
+                <!-- Dynamically populated impact list -->
+              </ul>
+            </div>
+
+            <div class="editor-form-group" style="margin-top: 12px">
+              <label style="font-weight: 600">Classification (no default, mandatory):</label>
+              <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px">
+                <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; font-size: 0.85rem">
+                  <input type="radio" name="release-materiality" value="cosmetic" style="margin-top: 2px" />
+                  <span id="lbl-release-cosmetic-desc">Cosmetic (typos, formatting, wording) — learner cards & FSRS state stay unchanged.</span>
+                </label>
+                <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; font-size: 0.85rem">
+                  <input type="radio" name="release-materiality" value="material" style="margin-top: 2px" />
+                  <span id="lbl-release-material-desc">Material (answer/concept changed) — learners with older versions will be re-tested immediately.</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="editor-form-group" style="margin-top: 12px">
+              <label for="release-field-author" id="lbl-release-author">Author / Curator (optional)</label>
+              <input type="text" id="release-field-author" class="editor-input" placeholder="e.g. Curator Name" />
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button id="btn-release-modal-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
+            <button id="btn-release-modal-submit" class="btn primary-btn btn-sm" type="button" disabled>Publish</button>
+          </div>
+        </div>
+      </div>
 
       <!-- Confirm removal / hard-delete modal (personal-card-remove and
            personal-card-delete are both allowlisted; fully reachable). -->

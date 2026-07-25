@@ -62,7 +62,7 @@ pre-M015 upgrade path). Full suite 1565 passing.
       *Open question the ADR left for a human: may a learner defer or dispute a
       reset? Do not invent an answer — ask the project owner.*
 
-- [ ] **Phase 2 — the Studio release step** (ADR Decision 2). Authoring and
+- [x] **Phase 2 — the Studio release step** (ADR Decision 2). Authoring and
       review happen in git (as OKF already works); the Studio owns **release**:
       show a curator what a merge would change for learners, force the
       cosmetic/material classification, then publish. Merging a PR must **not**
