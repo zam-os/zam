@@ -29,8 +29,8 @@ ALTER TABLE session_steps ENABLE ROW LEVEL SECURITY;
 ALTER TABLE session_steps FORCE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS learner_session_steps_policy ON session_steps;
 CREATE POLICY learner_session_steps_policy ON session_steps FOR ALL
-  USING (user_id = current_setting('app.current_user_id', true))
-  WITH CHECK (user_id = current_setting('app.current_user_id', true));
+  USING (session_id IN (SELECT id FROM sessions WHERE user_id = current_setting('app.current_user_id', true)))
+  WITH CHECK (session_id IN (SELECT id FROM sessions WHERE user_id = current_setting('app.current_user_id', true)));
 `;
 
 describe("PostgreSQL Row Level Security (RLS) Isolation Suite", () => {
