@@ -58,6 +58,12 @@ if (process.env.POSTGRES_URL) {
       },
     };
   });
+} else {
+  // Report the gap instead of registering nothing: a provider that silently
+  // is not contract-tested looks identical to one that passes.
+  describe.skip("PostgreSQL (pg) — needs POSTGRES_URL", () => {
+    it("runs the shared provider contract", () => {});
+  });
 }
 
 describe("remote provider transport behavior", () => {
