@@ -144,6 +144,15 @@ correct?" is a review question git answers well. "What should happen to the
 people who already learned the old version?" is a scheduling question only ZAM
 can answer, and it needs the curator in front of ZAM.
 
+**Corollary: concurrent curation needs no design of its own** (project owner,
+2026-07-25). Two curators editing the same token is a **merge conflict**,
+resolved by tools that have done exactly this for decades, with diff, history
+and blame included. The database only ever receives the *result* of a publish,
+so it has no competing writers for knowledge at all. No last-write-wins rule,
+no curation log, no merge UI — the draft's Open Question about conflict policy
+dissolves rather than being answered, which is the best outcome an open
+question can have.
+
 ### 3. Content changes classify as cosmetic or material — and material changes touch FSRS
 
 This is the part a plain shared database cannot do, and the reason curation is
@@ -518,26 +527,26 @@ self-hosted server can validate Entra tokens directly.
 
 ## Open questions
 
-Resolved on 2026-07-25 (project owner): the pilot tenant is `docuware.com`, so
-colleagues are ordinary tenant members and no B2B guest path is needed
-(Decision 6); curation is git for content plus a Studio release step
-(Decision 2); learning state lives in the shared database behind RLS
-(Decision 6); and materiality has no default — publishing forces the choice
-(Decision 3). A material change **re-tests rather than resets** — the card
-becomes due now and the next rating recalibrates FSRS (Decision 3). An
-assignment binds while it stands, and the cards outlive it under the learner's
-control (Decision 10). The residual superuser exposure is disclosed by ZAM
-itself, in-app and alongside a working local alternative (Decision 6).
-Aggregates about people are not built at all (Decision 11). Deployment B is
-online-only for reviews; whether an offline cache is worth its sync complexity
-is a question the pilot answers rather than a guess made up front (Decision 6).
-The deployment now starts in a company subscription in the `docuware.com`
-tenant, so the planned migration — and its rehearsal — is gone (Decision 6).
+All questions this ADR raised for the project owner were resolved on
+2026-07-25:
 
-1. **Conflict policy for concurrent curation.** Last-write-wins on
-   `updated_at` plus a curation log is probably enough at this scale; verify
-   against a real two-curator case before building merge UI.
-2. **Dialect cost, measured.** The 2026-07-04 draft assumed a Postgres provider
+| Question | Answer |
+|----------|--------|
+| Which tenant? | `docuware.com`, in a company subscription from day one — ordinary members, no B2B guests, no planned migration (Decision 6) |
+| Where does curation happen? | Content in git, release step in the Studio (Decision 2) |
+| Learning state in the shared database? | Yes, isolated by RLS — which makes RLS load-bearing and testable (Decision 6) |
+| Default for materiality? | None; publishing forces the curator to classify (Decision 3) |
+| What happens on a material change? | The card re-tests rather than resets: due now, next rating recalibrates FSRS (Decision 3) |
+| Assignment withdrawn? | Binding while it stands; cards and history then stay with the learner (Decision 10) |
+| Residual admin visibility? | ZAM discloses it in-app, beside a working local alternative (Decision 6) |
+| Aggregates about people? | Not built at all (Decision 11) |
+| Offline in Deployment B? | Online-only; the pilot measures whether a cache is worth its complexity (Decision 6) |
+| Concurrent curation? | A git merge conflict — the database never has competing writers (Decision 2) |
+
+Every question this ADR raised for the project owner is now answered. What
+remains is one engineering note rather than a decision:
+
+1. **Dialect cost, measured.** The 2026-07-04 draft assumed a Postgres provider
    means "a dialect audit of every kernel query". A survey on 2026-07-25 found
    the actual surface small: `datetime('now')` ×21, `LIKE` ×16 (SQLite's is
    case-insensitive for ASCII, Postgres' is not — needs `ILIKE`),
