@@ -62,6 +62,20 @@ describe("PostgreSQL Row Level Security (RLS) Isolation Suite", () => {
         await db.exec(SCHEMA);
         await db.exec(RLS_POLICIES_SQL);
 
+        // Create non-superuser role so PostgreSQL enforces RLS (superusers bypass RLS by design in PostgreSQL)
+        await db.exec(`
+          DO $$
+          BEGIN
+            IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'learner_role') THEN
+              CREATE ROLE learner_role NOSUPERUSER NOBYPASSRLS;
+            END IF;
+          END
+          $$;
+          GRANT ALL ON SCHEMA public TO learner_role;
+          GRANT ALL ON ALL TABLES IN SCHEMA public TO learner_role;
+          SET ROLE learner_role;
+        `);
+
         // Seed a shared published token
         await db
           .prepare(
@@ -113,7 +127,7 @@ describe("PostgreSQL Row Level Security (RLS) Isolation Suite", () => {
 
         // Bob attempts to update Alice's card -> 0 changes
         const updateRes = await db
-          .prepare("UPDATE cards SET stability = 10.0 WHERE id = 'card_alice'")
+          .prepare("UPDATE cards SET blocked = 1 WHERE id = 'card_alice'")
           .run();
         expect(updateRes.changes).toBe(0);
 
@@ -123,6 +137,7 @@ describe("PostgreSQL Row Level Security (RLS) Isolation Suite", () => {
           .run();
         expect(deleteRes.changes).toBe(0);
       } finally {
+        await db.exec("RESET ROLE;").catch(() => {});
         await db.close();
       }
     });
