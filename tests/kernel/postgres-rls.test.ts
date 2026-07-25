@@ -54,6 +54,7 @@ describe("PostgreSQL Row Level Security (RLS) Isolation Suite", () => {
           DROP TABLE IF EXISTS sessions CASCADE;
           DROP TABLE IF EXISTS review_logs CASCADE;
           DROP TABLE IF EXISTS cards CASCADE;
+          DROP TABLE IF EXISTS assignments CASCADE;
           DROP TABLE IF EXISTS prerequisites CASCADE;
           DROP TABLE IF EXISTS tokens CASCADE;
         `);

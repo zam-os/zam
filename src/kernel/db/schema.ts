@@ -59,6 +59,17 @@ CREATE TABLE IF NOT EXISTS prerequisites (
   PRIMARY KEY (token_id, requires_id)
 );
 
+-- Knowledge assignments (ADR 2026-07-04 Decision 10)
+CREATE TABLE IF NOT EXISTS assignments (
+  id           TEXT PRIMARY KEY,
+  token_id     TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  assigner_id  TEXT NOT NULL,
+  assignee_id  TEXT NOT NULL,
+  due_date     TEXT,
+  created_at   TEXT NOT NULL DEFAULT (datetime('now')),
+  withdrawn_at TEXT
+);
+
 -- Per-user scheduling state for each token (FSRS fields)
 CREATE TABLE IF NOT EXISTS cards (
   id            TEXT PRIMARY KEY,
@@ -197,17 +208,6 @@ CREATE TABLE IF NOT EXISTS token_contexts (
   token_id   TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
   context_id TEXT NOT NULL REFERENCES contexts(id) ON DELETE CASCADE,
   PRIMARY KEY (token_id, context_id)
-);
-
--- Knowledge assignments (ADR 2026-07-04 Decision 10)
-CREATE TABLE IF NOT EXISTS assignments (
-  id           TEXT PRIMARY KEY,
-  token_id     TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
-  assigner_id  TEXT NOT NULL,
-  assignee_id  TEXT NOT NULL,
-  due_date     TEXT,
-  created_at   TEXT NOT NULL DEFAULT (datetime('now')),
-  withdrawn_at TEXT
 );
 
 -- Performance indexes

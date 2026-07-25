@@ -62,6 +62,18 @@ export function translateSqlForPostgres(sql: string): string {
     .replace(/\bREAL\b/gi, "DOUBLE PRECISION");
 }
 
+function checkAndNormalizeParams(params: unknown[]): unknown[] {
+  for (const p of params) {
+    if (p === undefined) {
+      throw new Error("Cannot bind parameter undefined");
+    }
+    if (typeof p === "boolean") {
+      throw new Error("Cannot bind parameter boolean");
+    }
+  }
+  return params;
+}
+
 class PostgresStatement implements Statement {
   constructor(
     private client: Pool | PoolClient,
@@ -69,14 +81,19 @@ class PostgresStatement implements Statement {
   ) {}
 
   async run(...params: unknown[]): Promise<RunResult> {
-    const pgSql = translateSqlForPostgres(translatePlaceholders(this.sql));
-    const normalizedParams = params.map((p) => (p === undefined ? null : p));
+    const normalizedParams = checkAndNormalizeParams(params);
+    let pgSql = translateSqlForPostgres(translatePlaceholders(this.sql));
+    if (/^\s*INSERT\b/i.test(pgSql) && !/\bRETURNING\b/i.test(pgSql)) {
+      pgSql += " RETURNING *";
+    }
     const res = await this.client.query(pgSql, normalizedParams);
     let lastInsertRowid: number | bigint = 0;
     if (res.rows && res.rows.length > 0 && res.rows[0].id !== undefined) {
       const idVal = res.rows[0].id;
       if (typeof idVal === "number" || typeof idVal === "bigint") {
         lastInsertRowid = idVal;
+      } else if (typeof idVal === "string" && /^\d+$/.test(idVal)) {
+        lastInsertRowid = Number(idVal);
       }
     }
     return {
@@ -86,16 +103,16 @@ class PostgresStatement implements Statement {
   }
 
   async get(...params: unknown[]): Promise<unknown> {
+    const normalizedParams = checkAndNormalizeParams(params);
     const pgSql = translateSqlForPostgres(translatePlaceholders(this.sql));
-    const normalizedParams = params.map((p) => (p === undefined ? null : p));
     const res = await this.client.query(pgSql, normalizedParams);
     if (!res.rows || res.rows.length === 0) return undefined;
     return res.rows[0];
   }
 
   async all(...params: unknown[]): Promise<unknown[]> {
+    const normalizedParams = checkAndNormalizeParams(params);
     const pgSql = translateSqlForPostgres(translatePlaceholders(this.sql));
-    const normalizedParams = params.map((p) => (p === undefined ? null : p));
     const res = await this.client.query(pgSql, normalizedParams);
     return res.rows ?? [];
   }
@@ -111,6 +128,13 @@ export function openPostgresDatabase(
     try {
       const pgModule = await import("pg");
       const PoolClass = pgModule.default?.Pool ?? pgModule.Pool;
+      const pgTypes = pgModule.default?.types ?? pgModule.types;
+      if (pgTypes && typeof pgTypes.setTypeParser === "function") {
+        pgTypes.setTypeParser(20, (val: string) => {
+          const num = Number(val);
+          return Number.isSafeInteger(num) ? num : val;
+        });
+      }
       poolInstance = new PoolClass({
         connectionString: options.connectionString,
         host: options.host,
@@ -128,6 +152,7 @@ export function openPostgresDatabase(
   }
 
   let activeTxClient: PoolClient | null = null;
+  let txMutex: Promise<void> = Promise.resolve();
 
   async function getActiveClient(): Promise<Pool | PoolClient> {
     if (activeTxClient) return activeTxClient;
@@ -183,20 +208,32 @@ export function openPostgresDatabase(
         return fn(db);
       }
 
-      const pool = await getPool();
-      const client = await pool.connect();
+      const previousMutex = txMutex;
+      let releaseMutex: () => void = () => {};
+      txMutex = new Promise<void>((resolve) => {
+        releaseMutex = resolve;
+      });
+
+      await previousMutex;
+
       try {
-        activeTxClient = client;
-        await client.query("BEGIN");
-        const result = await fn(db);
-        await client.query("COMMIT");
-        return result;
-      } catch (err) {
-        await client.query("ROLLBACK").catch(() => {});
-        throw err;
+        const pool = await getPool();
+        const client = await pool.connect();
+        try {
+          activeTxClient = client;
+          await client.query("BEGIN");
+          const result = await fn(db);
+          await client.query("COMMIT");
+          return result;
+        } catch (err) {
+          await client.query("ROLLBACK").catch(() => {});
+          throw err;
+        } finally {
+          activeTxClient = null;
+          client.release();
+        }
       } finally {
-        activeTxClient = null;
-        client.release();
+        releaseMutex();
       }
     },
 
