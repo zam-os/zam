@@ -978,6 +978,8 @@ export interface GeneratedCardProposal {
   bloom_level: number;
   symbiosis_mode: "shadowing" | "copilot" | "autonomy";
   source_link: string | null;
+  /** Titles or concepts of cards in the same batch that this card depends on. */
+  prerequisites?: string[];
 }
 
 const MAX_IMPORT_TEXT_CHARS = 200_000;
@@ -1207,6 +1209,7 @@ For each extracted learning card, you MUST generate:
 5. "context": The exact sentence or short excerpt from the source text that this card is based on.
 6. "bloom_level": Initial Bloom cognitive level (1 = Remember, 2 = Understand, 3 = Apply, 4 = Analyze, 5 = Synthesize).
 7. "symbiosis_mode": ZAM agent symbiosis level: "shadowing" (reading/monitoring), "copilot" (interactive helper), or "autonomy" (autonomous tasks).
+8. "prerequisites": An array of "title" values from OTHER cards in this same batch that a learner must know BEFORE understanding this card. Leave empty [] if this card has no dependencies on other cards in the batch. Only reference cards that appear in the same output array. Order foundational concepts (definitions, facts) before their applications (formulas, analysis).
 
 Guidelines:
 - Break complex requirements into multiple separate, atomic cards.

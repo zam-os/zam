@@ -19,6 +19,7 @@ import { rahmenrichtlinienStProvider } from "../../src/cli/curriculum/providers/
 import type { CurriculumProvider } from "../../src/cli/curriculum/types.js";
 import { openDatabase } from "../../src/kernel/index.js";
 import { ensureCard } from "../../src/kernel/models/card.ts";
+import { getPrerequisites } from "../../src/kernel/models/prerequisite.ts";
 import {
   countUserCardsForCurriculumTopic,
   createToken,
@@ -348,6 +349,74 @@ describe("LehrplanPLUS Content Extraction & Stable Identity", () => {
         "realschule|5|mathematik#lb2",
       ),
     ).toBe(0);
+
+    await db.close();
+  });
+
+  it("wires prerequisite edges during curriculum import when explicit titles/concepts or bloom levels are supplied", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+
+    // 1. Explicit prerequisites by title
+    await importCurriculumCards(db, "user-123", [
+      {
+        question: "Was ist ein Vektor?",
+        concept: "Definition eines Vektors als Verschiebung",
+        title: "Definition Vektor",
+        domain: "Mathematik",
+        bloom_level: 1,
+      },
+      {
+        question: "Wie addiert man Vektoren?",
+        concept: "Vektoraddition durch kopf-an-fuss regel",
+        title: "Vektoraddition",
+        domain: "Mathematik",
+        bloom_level: 2,
+        prerequisites: ["Definition Vektor"],
+      },
+    ]);
+
+    const prereqToken = await getTokenBySlug(db, "mathematik-was-ist-ein-vektor");
+    const dependentToken = await getTokenBySlug(db, "mathematik-wie-addiert-man-vektoren");
+    expect(prereqToken).not.toBeNull();
+    expect(dependentToken).not.toBeNull();
+
+    const prereqs = await getPrerequisites(db, dependentToken!.id);
+    expect(prereqs.length).toBe(1);
+    expect(prereqs[0].requires_id).toBe(prereqToken!.id);
+
+    // 2. Auto-inference from bloom levels when prerequisites omitted
+    await importCurriculumCards(db, "user-123", [
+      {
+        question: "Was ist ein Winkel?",
+        concept: "Winkel als Drehungsmaß",
+        title: "Winkel Grundbegriff",
+        domain: "Geometrie",
+        bloom_level: 1,
+      },
+      {
+        question: "Wie berechnet man den Winkel zwischen zwei Geraden?",
+        concept: "Winkelberechnung via Skalarprodukt",
+        title: "Winkelberechnung",
+        domain: "Geometrie",
+        bloom_level: 3,
+      },
+    ]);
+
+    const geoPrereq = await getTokenBySlug(db, "geometrie-was-ist-ein-winkel");
+    const geoDep = await getTokenBySlug(
+      db,
+      "geometrie-wie-berechnet-man-den-winkel-zwischen-zwei-geraden",
+    );
+    expect(geoPrereq).not.toBeNull();
+    expect(geoDep).not.toBeNull();
+
+    const geoPrereqs = await getPrerequisites(db, geoDep!.id);
+    expect(geoPrereqs.length).toBe(1);
+    expect(geoPrereqs[0].requires_id).toBe(geoPrereq!.id);
 
     await db.close();
   });

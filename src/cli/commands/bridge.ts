@@ -5791,6 +5791,7 @@ bridgeCommand
         page_number: null,
         provider: provider.id,
         topic_id: item.topicId,
+        prerequisites: card.prerequisites,
       }));
 
       const result = await confirmSourceImport(
