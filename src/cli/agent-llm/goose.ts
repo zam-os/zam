@@ -29,7 +29,12 @@ import {
 const HARNESS: AgentHarnessId = "goose";
 const DEFAULT_TIMEOUT_MS = 120_000;
 
-/** Drop goose banner lines; return the last substantive non-empty line. */
+/**
+ * Drop goose banner lines and keep the full substantive reply. Multi-line is
+ * load-bearing: answer evaluation ends with a "Suggested rating: N" line, so
+ * returning only the last line would throw away the feedback prose above it
+ * (same reasoning as {@link parseCopilotStdout}).
+ */
 export function parseGooseStdout(stdout: string): string {
   const lines = stdout
     .split(/\r?\n/)
@@ -47,14 +52,14 @@ export function parseGooseStdout(stdout: string): string {
         !/goose is ready/i.test(l) &&
         !/new session/i.test(l),
     );
-  const last = lines[lines.length - 1];
-  if (!last) {
+  const text = lines.join("\n").trim();
+  if (!text) {
     throw new AgentError(
       HARNESS,
       `Goose returned no assistant text: ${truncateSnippet(stdout)}`,
     );
   }
-  return last;
+  return text;
 }
 
 export class GooseAdapter implements AgentTextAdapter {

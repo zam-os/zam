@@ -404,6 +404,10 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "onboarding_checklist_note",
   "dashboard_empty_no_cards",
   "wizard_connect_model_link",
+  // 0.20.0 agent-model effort selector — en/de shipped; es/fr/pt/zh/ja await
+  // native pack review (the model_effort_* option labels themselves already
+  // ship in every pack; only this tooltip is new).
+  "model_effort_thinking_hint",
 ]);
 
 /**

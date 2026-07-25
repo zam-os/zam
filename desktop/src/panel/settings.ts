@@ -493,17 +493,19 @@ async function showAgentModelForm(): Promise<void> {
 
   const effortSelect = document.createElement("select");
   effortSelect.className = "editor-select settings-select";
-  const effortOptions = [
-    { value: "auto", label: "Auto / Default" },
-    { value: "low", label: "Low" },
-    { value: "medium", label: "Medium" },
-    { value: "high", label: "High" },
-    { value: "none", label: "None" },
+  // Labels come from the i18n layer (all packs already carry model_effort_*).
+  // Spelled out as literal t() calls so the i18n completeness scan sees them.
+  const effortOptions: Array<[string, string]> = [
+    ["auto", t("model_effort_auto")],
+    ["low", t("model_effort_low")],
+    ["medium", t("model_effort_medium")],
+    ["high", t("model_effort_high")],
+    ["none", t("model_effort_none")],
   ];
-  for (const eff of effortOptions) {
+  for (const [value, label] of effortOptions) {
     const opt = document.createElement("option");
-    opt.value = eff.value;
-    opt.textContent = eff.label;
+    opt.value = value;
+    opt.textContent = label;
     effortSelect.appendChild(opt);
   }
 
@@ -512,7 +514,7 @@ async function showAgentModelForm(): Promise<void> {
     const isThinking = modelVal.includes("thinking");
     if (isThinking) {
       effortSelect.disabled = true;
-      effortSelect.title = "Thinking models do not accept reasoning effort settings";
+      effortSelect.title = t("model_effort_thinking_hint");
     } else {
       effortSelect.disabled = false;
       effortSelect.title = "";

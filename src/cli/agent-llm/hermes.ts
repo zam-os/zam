@@ -30,7 +30,12 @@ import {
 const HARNESS: AgentHarnessId = "hermes";
 const DEFAULT_TIMEOUT_MS = 120_000;
 
-/** Quiet mode prints session_id then the answer; take the last non-meta line. */
+/**
+ * Quiet mode prints session_id / warnings then the answer; drop the meta lines
+ * and keep the full reply. Multi-line is load-bearing: answer evaluation ends
+ * with a "Suggested rating: N" line, so returning only the last line would
+ * throw away the feedback prose above it (same as {@link parseCopilotStdout}).
+ */
 export function parseHermesStdout(stdout: string): string {
   const lines = stdout
     .split(/\r?\n/)
@@ -46,14 +51,14 @@ export function parseHermesStdout(stdout: string): string {
         !/^Warning:/i.test(l) &&
         !/^usage:/i.test(l),
     );
-  const last = lines[lines.length - 1];
-  if (!last) {
+  const text = lines.join("\n").trim();
+  if (!text) {
     throw new AgentError(
       HARNESS,
       `Hermes returned no assistant text: ${truncateSnippet(stdout)}`,
     );
   }
-  return last;
+  return text;
 }
 
 export class HermesAdapter implements AgentTextAdapter {

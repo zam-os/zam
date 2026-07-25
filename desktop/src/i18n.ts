@@ -4149,6 +4149,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_effort_xhigh: "Extra high",
     model_effort_max: "Max",
     model_effort_none: "None",
+    model_effort_thinking_hint:
+      "Thinking models choose their own reasoning effort.",
     model_agent_meta_with_effort: "Via {harness} · {model} · effort {effort}",
     model_key_set_placeholder: "•••• (leave blank to keep)",
     model_reprobing: "Re-checking…",
@@ -5140,6 +5142,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_effort_xhigh: "Sehr hoch",
     model_effort_max: "Maximum",
     model_effort_none: "Keiner",
+    model_effort_thinking_hint:
+      "Thinking-Modelle wählen ihren Reasoning-Effort selbst.",
     model_agent_meta_with_effort: "Über {harness} · {model} · Effort {effort}",
     model_key_set_placeholder: "•••• (leer lassen zum Beibehalten)",
     model_reprobing: "Wird neu geprüft…",

@@ -72,6 +72,19 @@ OK
 `;
     expect(parseGooseStdout(out)).toBe("OK");
   });
+
+  it("keeps multi-line evaluation including the trailing FSRS rating line", () => {
+    const out = `
+    __( O)>  ● new session · openrouter deepseek
+   \\____)    20260725_1
+     L L     goose is ready
+Gut gemacht, die Antwort trifft den Kern.
+Empfohlene Bewertung: 3
+`;
+    const text = parseGooseStdout(out);
+    expect(text).toContain("Gut gemacht");
+    expect(text).toMatch(/Empfohlene Bewertung:\s*3/);
+  });
 });
 
 describe("copilotEffortForModel", () => {
@@ -128,5 +141,13 @@ describe("parseHermesStdout", () => {
 
   it("throws on empty", () => {
     expect(() => parseHermesStdout("session_id: x\n")).toThrow(AgentError);
+  });
+
+  it("keeps multi-line evaluation including the trailing FSRS rating line", () => {
+    const text = parseHermesStdout(
+      "session_id: abc\nGut gemacht, die Antwort trifft den Kern.\nEmpfohlene Bewertung: 3\n",
+    );
+    expect(text).toContain("Gut gemacht");
+    expect(text).toMatch(/Empfohlene Bewertung:\s*3/);
   });
 });

@@ -15,7 +15,7 @@
  */
 
 import { runBridge } from "./bridge-transport.js";
-import { t } from "./i18n.js";
+import { t, tf } from "./i18n.js";
 
 export interface OnboardingStep {
   /** Stable id for tests and later cross-step references. */
