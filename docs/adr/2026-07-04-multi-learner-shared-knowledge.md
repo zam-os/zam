@@ -451,6 +451,10 @@ This does **not** promote context to an authorization boundary. It makes the
 boundary the thing that *selects* the context. Inside the company library,
 contexts remain ordinary slices.
 
+This is the pilot's rule rather than a general law: a later read-only
+curriculum library would be a content *source* without being a store, which
+separates the two again. See "Direction beyond the pilot".
+
 ### 10. An assignment binds while it stands; the learning outlives it
 
 An assignment ("learn these 12 tokens by March") creates ordinary cards in the
@@ -790,6 +794,50 @@ remains is one engineering note rather than a decision:
   runbook for granting Entra groups access.
 - **Phase D — assignments** (Decision 10). Aggregates are not part of the
   plan (Decision 11).
+- **Phase E — a broad curriculum library**, gated on real experience from the
+  closed group: read-only content, no learning state, little identity. See
+  "Direction beyond the pilot" below for the constraint it puts on Phase B.
+
+## Direction beyond the pilot: a content source is not a workspace
+
+Once the closed group has produced real experience, the natural next step is a
+much broader library — a **Bayern-Lehrplan database**, say (project owner,
+2026-07-25). Not built here, and deliberately gated on that experience, but
+recorded because it constrains what Phase B may assume.
+
+Its shape is different from Deployment B in one decisive way: **the learning
+data really stays with the learner.** A curriculum library is a *source of good
+content* — so that an agent grounds itself in reviewed material instead of
+inventing a curriculum on every device — and nothing more. It holds no cards,
+no review logs, no sessions, and needs no notion of who is learning from it.
+
+| | Deployment B (company) | Curriculum library (future) |
+|---|---|---|
+| Membership | closed group, Entra | broad or public |
+| Content flows | both ways (colleagues propose) | one way, read-only |
+| Learning state | in the database, RLS | **never — stays with the learner** |
+| Identity needed | yes | little or none |
+
+**The constraint this puts on Phase B:** the *library* and the *learner's
+store* must stay separately addressable. Deployment B happens to collapse them
+— the company database is both the library and where cards live — and it would
+be easy to bake that coincidence into the model. The curriculum case breaks it
+immediately: a learner keeps a local store on their own machine while consuming
+content from a remote library they can only read.
+
+So Decision 9's "the database selection carries the context" is the *pilot's*
+rule, not a law. The general form is one **store** per device (where my cards
+and my state live, exactly one) plus zero or more **content sources**
+(libraries I read from). Deployment A has a store and no source; Deployment B
+has a store that is also its source; the curriculum library is a source nobody
+stores into. Phase B should model a published token version as something that
+can *arrive from* a source rather than something that necessarily lives in the
+same database as the card pointing at it.
+
+This also closes the loop with ADR 2026-07-25's second motivation: a learner
+attaching to already-published curriculum tokens is a database operation
+measured in milliseconds, where device-side generation of the same material
+costs minutes per topic, per learner, every time.
 
 ## Out of scope
 
