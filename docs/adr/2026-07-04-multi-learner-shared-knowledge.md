@@ -531,6 +531,51 @@ costs nothing but a restart if the pilot proves it wrong. Two things would
 force B2s: the Burstable `max_connections` ceiling with many concurrent
 desktop/CLI/mobile clients, and `pgvector` index builds over a large library.
 
+### 14. Development and testing run on local Postgres, not on Azure
+
+Almost nothing about this work needs a cloud database.
+
+**Local: Docker PostgreSQL 17 + `pgvector`.** The kernel already runs its
+provider suite through `describeDatabaseContract(...)`
+(`tests/kernel/provider-contract.test.ts`), today against local SQLite and an
+Hrana stub. A Postgres provider joins as a third case, and CI gains a Postgres
+service container. That covers:
+
+- the whole dialect delta (`datetime('now')`, `ILIKE`, `ON CONFLICT DO
+  NOTHING`, `RETURNING`, `?`→`$n`) and the schema/migrations;
+- `pgvector` search;
+- the library model — editorial state, `content_version`, materiality and the
+  due-now consequence;
+- **the RLS isolation suite.** This matters most: RLS is the load-bearing
+  privacy boundary (Decision 6), and it is ordinary PostgreSQL. "Learner A
+  cannot read learner B's review logs" is fully testable locally and on every
+  CI run, against plain roles. The privacy boundary does not need Azure to be
+  proven.
+
+**Only the Azure-specific identity path needs Azure:**
+`pgaadauth_create_principal`, acquiring a real Entra token, presenting it as
+the password, and refreshing it before expiry. Even these are mostly seam-
+testable — the token provider is a function returning a string, so tests inject
+a fake one and drive the refresh loop with a fake clock. Locally the same code
+path connects with an ordinary password.
+
+**Dev and prod do not share one server**, even though extra databases on a
+server are free (billing is per server). Three reasons, the third decisive:
+
+- point-in-time restore is per *server*, so restoring prod would roll dev back
+  too;
+- one B1ms has a single vCore — a careless dev query is a prod outage;
+- maintenance and **major-version upgrades hit the whole server at once**. The
+  main reason to want a dev environment here is to rehearse the PostgreSQL 18
+  move once Azure supports Entra on it (Decision 13). On a shared server that
+  rehearsal is impossible by construction.
+
+**The Azure dev instance is ephemeral.** It exists to verify the identity path
+and to rehearse upgrades, not to be online. Azure bills compute hourly, so
+creating a B1ms, running the checks and deleting it costs cents per session —
+far less than keeping a second server idling, and with no seven-day
+auto-restart to automate around.
+
 ## Cost (Deployment B)
 
 The company subscription carries the bill (Decision 6), so the figures below
@@ -562,6 +607,22 @@ Two levers, neither needed on day one:
 
 Storage is the floor, not a driver: ZAM would have to grow by two orders of
 magnitude before 32 GiB mattered.
+
+### What a development environment adds
+
+Billing is **per server, not per database**, so the answer depends entirely on
+which of these "two databases" means:
+
+| Setup | Monthly | |
+|-------|---------|---|
+| Local Docker dev + one prod server | **~$16–19** | **Chosen** (Decision 14) — dev costs nothing |
+| Two databases inside the one server | ~$16–19 | Free, but rejected for dev/prod: shared restore, shared vCore, shared upgrades |
+| Prod + an *ephemeral* Azure dev server | ~$17–20 | A few hours of B1ms per verification session, billed hourly |
+| Two permanent servers | ~$32–38 (~$18–20 reserved) | Only if a always-on staging environment is ever genuinely needed |
+
+So a development environment is effectively **free**, and the answer to "what
+if we need two" is "not much" — as long as the second one is local, or exists
+only while it is being used.
 
 ### Cheaper alternatives, and why they lose
 
@@ -622,6 +683,9 @@ remains is one engineering note rather than a decision:
   and the cosmetic/material change classification with its FSRS consequence.
   This is the heart of the ADR and is **independent of any deployment** — it is
   worth doing on the existing paths first.
+- **Phase C0 — local Postgres first:** the Postgres provider and its contract
+  case, the dialect delta, `pgvector`, and the RLS isolation suite, all on
+  Docker Postgres 17 in CI (Decision 14). No Azure resource exists yet.
 - **Phase C — Deployment B pilot:** the Postgres provider behind the existing
   async `Database` contract, Entra token acquisition and refresh, the ULID ↔
   Entra principal mapping, RLS policies **with an isolation test suite**, the
