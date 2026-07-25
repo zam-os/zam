@@ -12,8 +12,10 @@
  * - `--no-remote` so the CLI does not attach to / hold a VS Code remote session
  *   (GitHub issue: auto-connect to VS Code with no opt-out for a long while).
  * - Prefer `--context default` over interactive `long_context`.
- * - Set `--effort` explicitly (interactive default can be unset/wrong for -p):
- *   `high` for gpt-5-mini and other small/fast models; `medium` for larger ones.
+ * - Set `--effort` explicitly (interactive default can be unset/wrong for -p).
+ *   Default: medium (≈13s one-shot questions). Callers may pass high for
+ *   evaluation quality (≈25s). Also skip auto-update and custom instructions
+ *   so each cold start stays lean.
  */
 
 import { homedir } from "node:os";
@@ -41,16 +43,15 @@ const HARNESS: AgentHarnessId = "copilot";
 const DEFAULT_TIMEOUT_MS = 120_000;
 
 /**
- * Reasoning effort for headless -p runs. Must be set explicitly: interactive
- * settings do not always carry over, and an unset effort can stall.
- * gpt-5-mini (default) works best at high; larger models stay at medium.
+ * Resolve Copilot `--effort` for a headless -p run. Always set explicitly —
+ * an unset effort is flaky in -p mode. Default medium balances latency and
+ * quality for gpt-5-mini (~13s one-shot vs ~25s at high).
  */
-export function copilotEffortForModel(model?: string): "high" | "medium" {
-  const m = (model ?? "").toLowerCase();
-  if (!m || m.includes("mini") || m.includes("nano") || m.includes("haiku")) {
-    return "high";
-  }
-  return "medium";
+export function copilotEffortForModel(
+  _model?: string,
+  override?: AgentGenerateRequest["effort"],
+): NonNullable<AgentGenerateRequest["effort"]> {
+  return override ?? "medium";
 }
 
 /**
@@ -150,8 +151,8 @@ export class CopilotAdapter implements AgentTextAdapter {
     const cwd = homedir();
     const images = req.imagePaths?.filter(Boolean) ?? [];
     // Lean headless argv: answer only, no IDE remote session, no MCP boot.
-    // Effort is required for reliable -p completions (esp. gpt-5-mini → high).
-    const effort = copilotEffortForModel(req.model);
+    // Effort is required for reliable -p completions.
+    const effort = copilotEffortForModel(req.model, req.effort);
     const args = [
       "-p",
       prompt,
@@ -161,6 +162,8 @@ export class CopilotAdapter implements AgentTextAdapter {
       "--disable-builtin-mcps",
       "--disable-mcp-server",
       "zam",
+      "--no-auto-update",
+      "--no-custom-instructions",
       "--context",
       "default",
       "--effort",

@@ -711,10 +711,12 @@ Active-Recall Question:`;
 
   // Agent transport (ADR 2026-07-12a): delegate question generation to the
   // connected harness instead of an HTTP chat-completions call.
+  // medium effort: card load is latency-sensitive (~13s vs ~25s at high).
   if (endpoint.transport === "agent") {
     const text = await requestAgentCompletion(endpoint, {
       system: systemPrompt,
       user: userPrompt,
+      effort: "medium",
     });
     return {
       text,
@@ -805,10 +807,12 @@ Evaluation:`;
 
   // Agent transport (ADR 2026-07-12a): delegate answer evaluation to the
   // connected harness instead of an HTTP chat-completions call.
+  // high effort for gpt-5-mini-class models: FSRS feedback quality over speed.
   if (endpoint.transport === "agent") {
     const text = await requestAgentCompletion(endpoint, {
       system: systemPrompt,
       user: userPrompt,
+      effort: "high",
     });
     return {
       text,
@@ -1121,6 +1125,15 @@ async function requestAgentCompletion(
     user: string;
     /** Local image paths for multimodal harnesses (e.g. Antigravity / Gemini). */
     imagePaths?: string[];
+    /** Optional effort override (Copilot `--effort`); task-dependent. */
+    effort?:
+      | "none"
+      | "minimal"
+      | "low"
+      | "medium"
+      | "high"
+      | "xhigh"
+      | "max";
   },
 ): Promise<string> {
   if (!endpoint.agentHarness) {
@@ -1150,6 +1163,7 @@ async function requestAgentCompletion(
     user: messages.user,
     imagePaths: messages.imagePaths,
     model,
+    effort: messages.effort,
   });
   return text;
 }

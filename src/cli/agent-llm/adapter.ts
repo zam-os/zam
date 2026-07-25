@@ -48,6 +48,12 @@ export interface AgentGenerateRequest {
    * When omitted the harness default applies.
    */
   model?: string;
+  /**
+   * Optional reasoning effort for harnesses that support it (e.g. Copilot
+   * `--effort`). Callers pick by task: medium for fast question rewrite,
+   * high for careful answer evaluation.
+   */
+  effort?: "none" | "minimal" | "low" | "medium" | "high" | "xhigh" | "max";
 }
 
 export interface AgentGenerateResult {
