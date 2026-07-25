@@ -822,6 +822,8 @@ bridgeCommand
             outboundText: outboundTextIds.has(h.id),
             /** True when the outbound adapter accepts local image files. */
             outboundImage: modalities.image === true,
+            /** True when the adapter forwards a reasoning-effort setting. */
+            outboundEffort: adapter?.supportsEffort === true,
             /** Recommended cheap default model id for this harness. */
             defaultModel: defaultAgentModel(h.id) ?? null,
           };

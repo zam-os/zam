@@ -153,6 +153,8 @@ export class CodexAdapter implements AgentTextAdapter {
   readonly harness: AgentHarnessId = HARNESS;
   /** Codex accepts `-i` images; models (incl. multimodal ChatGPT) can inspect them. */
   readonly modalities = { text: true as const, image: true as const };
+  /** Forwards `effort` to the CLI. */
+  readonly supportsEffort = true;
 
   constructor(
     private readonly resolveExecutable: () =>

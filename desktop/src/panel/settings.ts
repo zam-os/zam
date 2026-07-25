@@ -279,6 +279,8 @@ interface SettingsModelRow {
   local: boolean;
   transport?: "http" | "agent";
   agentHarness?: string;
+  /** Stored reasoning-effort override; absent means the adapter default. */
+  effort?: string;
   order: number;
   detectedCapabilities?: { text?: boolean };
 }
@@ -289,6 +291,8 @@ interface SettingsAgentHarness {
   detected: boolean;
   outboundText?: boolean;
   outboundImage?: boolean;
+  /** True when this harness's adapter forwards a reasoning-effort setting. */
+  outboundEffort?: boolean;
   defaultModel?: string | null;
 }
 
@@ -382,6 +386,15 @@ function renderAiModelRow(row: SettingsModelRow): HTMLElement {
   const actions = document.createElement("div");
   actions.className = "settings-ai-actions";
   if (row.transport === "agent") {
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.className = "btn secondary-btn btn-sm";
+    edit.textContent = t("model_btn_edit");
+    edit.addEventListener("click", () => {
+      void showAgentModelForm(row);
+    });
+    actions.appendChild(edit);
+
     const recheck = document.createElement("button");
     recheck.type = "button";
     recheck.className = "btn secondary-btn btn-sm";
@@ -431,14 +444,24 @@ async function removeAiModel(row: SettingsModelRow): Promise<void> {
   }
 }
 
-async function showAgentModelForm(): Promise<void> {
+/**
+ * Add or edit an agent-transport model. Passing `existing` turns the form into
+ * an edit of that registry row: `model-upsert` is then called with `--id`, so a
+ * changed model or effort updates the row in place instead of appending a
+ * duplicate that competes for the same fallback order.
+ */
+async function showAgentModelForm(
+  existing?: SettingsModelRow,
+): Promise<void> {
   const formHost = document.getElementById("settings-ai-form");
   if (!formHost) return;
   formHost.classList.remove("hidden");
   formHost.replaceChildren();
 
   const title = document.createElement("strong");
-  title.textContent = t("model_form_add_title");
+  title.textContent = existing
+    ? t("model_form_edit_title")
+    : t("model_form_add_title");
 
   const kindNote = document.createElement("div");
   kindNote.className = "settings-hint";
@@ -480,6 +503,17 @@ async function showAgentModelForm(): Promise<void> {
     const preferred = harnesses.find((h) => h.detected) ?? harnesses[0];
     harnessSelect.value = preferred.id;
   }
+  // Editing keeps the row on its own harness even when it is not detected
+  // right now (an offline CLI must not silently re-point the entry).
+  if (existing?.agentHarness) {
+    if (!harnesses.some((h) => h.id === existing.agentHarness)) {
+      const opt = document.createElement("option");
+      opt.value = existing.agentHarness;
+      opt.textContent = `${existing.agentHarness} (${t("model_agent_harness_missing")})`;
+      harnessSelect.appendChild(opt);
+    }
+    harnessSelect.value = existing.agentHarness;
+  }
 
   const labelInput = document.createElement("input");
   labelInput.type = "text";
@@ -487,9 +521,14 @@ async function showAgentModelForm(): Promise<void> {
   const preferredLabel =
     harnesses.find((h) => h.id === harnessSelect.value)?.label ?? "";
   labelInput.placeholder = preferredLabel || t("model_field_label");
+  if (existing) labelInput.value = existing.label;
 
   const modelInput = document.createElement("input");
   modelInput.type = "text";
+  // A placeholder `agent:<harness>` from an early build is not a real model id.
+  if (existing?.model && !existing.model.startsWith("agent:")) {
+    modelInput.value = existing.model;
+  }
 
   const effortSelect = document.createElement("select");
   effortSelect.className = "editor-select settings-select";
@@ -508,17 +547,30 @@ async function showAgentModelForm(): Promise<void> {
     opt.textContent = label;
     effortSelect.appendChild(opt);
   }
+  // An unset stored effort means "auto" (the adapter derives one from the id).
+  effortSelect.value = existing?.effort ?? "auto";
+
+  // Only Antigravity, Codex and Copilot forward effort today; for every other
+  // harness the adapter drops it, so offering the control would be a lie.
+  const effortLabel = document.createElement("label");
+  effortLabel.className = "settings-hint";
+  effortLabel.textContent = t("model_field_effort");
 
   const updateEffortVisibility = (): void => {
-    const modelVal = modelInput.value.trim().toLowerCase();
-    const isThinking = modelVal.includes("thinking");
-    if (isThinking) {
+    const harness = harnesses.find((x) => x.id === harnessSelect.value);
+    const supported = harness?.outboundEffort === true;
+    // Inline display: the panel has no generic `.hidden` rule to rely on.
+    effortLabel.style.display = supported ? "" : "none";
+    effortSelect.style.display = supported ? "" : "none";
+    if (!supported) {
       effortSelect.disabled = true;
-      effortSelect.title = t("model_effort_thinking_hint");
-    } else {
-      effortSelect.disabled = false;
       effortSelect.title = "";
+      return;
     }
+    // Thinking models pick their own effort, so the control does not apply.
+    const isThinking = modelInput.value.trim().toLowerCase().includes("thinking");
+    effortSelect.disabled = isThinking;
+    effortSelect.title = isThinking ? t("model_effort_thinking_hint") : "";
   };
 
   const applyDefaultModel = (): void => {
@@ -588,6 +640,7 @@ async function showAgentModelForm(): Promise<void> {
       modelInput,
       effortSelect,
       save,
+      existing?.id,
     );
   });
   actions.append(save, cancel);
@@ -598,9 +651,6 @@ async function showAgentModelForm(): Promise<void> {
   const modelLabel = document.createElement("label");
   modelLabel.className = "settings-hint";
   modelLabel.textContent = t("model_field_model");
-  const effortLabel = document.createElement("label");
-  effortLabel.className = "settings-hint";
-  effortLabel.textContent = t("model_field_effort");
 
   formHost.append(
     title,
@@ -622,6 +672,7 @@ async function saveAgentModel(
   modelInput: HTMLInputElement,
   effortSelect: HTMLSelectElement,
   saveButton: HTMLButtonElement,
+  existingId?: string,
 ): Promise<void> {
   const harness = harnessSelect.value;
   if (!harness) {
@@ -646,8 +697,13 @@ async function saveAgentModel(
       "--capabilities",
       JSON.stringify({ text: true, image: true }),
     ];
+    if (existingId) args.push("--id", existingId);
     if (model) args.push("--model", model);
-    if (effort && effort !== "auto") args.push("--effort", effort);
+    // On edit "auto" must be sent so the bridge clears a stored override;
+    // omitting it would keep the previous effort forever.
+    if (effort && (effort !== "auto" || existingId)) {
+      args.push("--effort", effort);
+    }
     await bridgeCall("model-upsert", args);
     await loadAiModels();
   } catch (error) {

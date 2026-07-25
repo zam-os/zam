@@ -1349,7 +1349,7 @@ export async function generateGoalDecompositionViaLLM(
   input: { title: string; description: string; path: string[] },
 ): Promise<GoalDecompositionOption[]> {
   const cfg = await getProviderForRole(db, "text");
-  const endpoint = await resolveUsableTextEndpoint(db);
+  const endpoint = await resolveUsableTextEndpoint(db, { allowAgent: true });
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
 
   const focus =
@@ -1370,6 +1370,16 @@ Rules:
 ${input.description ? `Why it matters to the learner: ${input.description}\n` : ""}${focus}
 
 JSON Array Output:`;
+
+  // Agent transport (ADR 2026-07-12a): onboarding's model page can connect an
+  // agent, so the goal step two pages later must accept one too.
+  if (endpoint.transport === "agent") {
+    const agentText = await requestAgentCompletion(endpoint, {
+      system: systemPrompt,
+      user: userPrompt,
+    });
+    return parseGoalDecompositionArray(agentText);
+  }
 
   const res = await fetchWithInteractiveTimeout(
     `${endpoint.url}/chat/completions`,
@@ -1423,8 +1433,8 @@ export async function importCurriculumViaLLM(
     }
   }
 
-  // Curriculum import is the one text caller wired for the agent transport
-  // (ADR 2026-07-12a phase 1); other text callers reject it until wired.
+  // Agent transport (ADR 2026-07-12a) is wired for every generating text
+  // caller; only `sampleViaLocalLLM` stays deliberately local-only.
   const endpoint = await resolveUsableTextEndpoint(db, { allowAgent: true });
   const langName = LANGUAGE_NAMES[locale] || "English";
 
@@ -1509,7 +1519,7 @@ export async function generateSplitProposalsViaLLM(
   },
 ): Promise<GeneratedCardProposal[]> {
   const cfg = await getProviderForRole(db, "text");
-  const endpoint = await resolveUsableTextEndpoint(db);
+  const endpoint = await resolveUsableTextEndpoint(db, { allowAgent: true });
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
 
   const systemPrompt = `You are ZAM, a highly precise agentic learning assistant.
@@ -1537,6 +1547,19 @@ Guidelines:
   const userPrompt = `Split the broad card details above into 2 to 4 atomic cards.
 
 JSON Array Output:`;
+
+  // Agent transport (ADR 2026-07-12a): the harness returns raw text that the
+  // caller parses exactly as it parses an HTTP chat-completions response.
+  if (endpoint.transport === "agent") {
+    const agentText = await requestAgentCompletion(endpoint, {
+      system: systemPrompt,
+      user: userPrompt,
+    });
+    return parseGeneratedCardArray(agentText, "card split", {
+      min: 2,
+      max: 4,
+    }).map((card) => ({ ...card, source_link: token.source_link || null }));
+  }
 
   const res = await fetchWithInteractiveTimeout(
     `${endpoint.url}/chat/completions`,
@@ -1581,7 +1604,7 @@ export async function generateFoundationsProposalsViaLLM(
   },
 ): Promise<GeneratedCardProposal[]> {
   const cfg = await getProviderForRole(db, "text");
-  const endpoint = await resolveUsableTextEndpoint(db);
+  const endpoint = await resolveUsableTextEndpoint(db, { allowAgent: true });
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
 
   const systemPrompt = `You are ZAM, a highly precise agentic learning assistant.
@@ -1609,6 +1632,19 @@ Guidelines:
   const userPrompt = `Suggest 2 to 4 foundational prerequisite cards for the card above.
 
 JSON Array Output:`;
+
+  // Agent transport (ADR 2026-07-12a): the harness returns raw text that the
+  // caller parses exactly as it parses an HTTP chat-completions response.
+  if (endpoint.transport === "agent") {
+    const agentText = await requestAgentCompletion(endpoint, {
+      system: systemPrompt,
+      user: userPrompt,
+    });
+    return parseGeneratedCardArray(agentText, "foundation proposal", {
+      min: 2,
+      max: 4,
+    }).map((card) => ({ ...card, source_link: token.source_link || null }));
+  }
 
   const res = await fetchWithInteractiveTimeout(
     `${endpoint.url}/chat/completions`,
@@ -1755,11 +1791,20 @@ export async function translateQuestionViaLLM(
   question: string,
 ): Promise<string> {
   const cfg = await getProviderForRole(db, "recall");
-  const endpoint = await resolveUsableRecallEndpoint(db);
+  const endpoint = await resolveUsableRecallEndpoint(db, { allowAgent: true });
   const targetLang = LANGUAGE_NAMES[cfg.locale] || "English";
 
   const systemPrompt = `You are a highly precise translator. Translate the given active-recall question into clear, natural ${targetLang}.
 Output ONLY the raw translation. Do not include any headers, preamble, quotes, or conversational filler.`;
+
+  // Agent transport (ADR 2026-07-12a): delegate the translation to the harness.
+  if (endpoint.transport === "agent") {
+    const text = await requestAgentCompletion(endpoint, {
+      system: systemPrompt,
+      user: question,
+    });
+    return text.trim();
+  }
 
   const res = await fetchWithInteractiveTimeout(
     `${endpoint.url}/chat/completions`,
@@ -2810,7 +2855,7 @@ export async function generateTitleViaLLM(
     }
   }
 
-  const endpoint = await resolveUsableTextEndpoint(db); // assume exists or use recall
+  const endpoint = await resolveUsableTextEndpoint(db, { allowAgent: true });
 
   const systemPrompt = `You are an expert at naming knowledge items for a personal knowledge graph.
 Your task: given a knowledge token's concept (the full reference answer), question, domain, and optional context, produce a short, descriptive, human-friendly TITLE.
@@ -2837,6 +2882,28 @@ Concept: ${input.concept}
 Context: ${input.context || "(none)"}
 
 Title:`;
+
+  // Agent transport (ADR 2026-07-12a): same contract as the HTTP path, including
+  // the heuristic fallback when the harness is unavailable.
+  if (endpoint.transport === "agent") {
+    try {
+      const text = await requestAgentCompletion(endpoint, {
+        system: systemPrompt,
+        user: userPrompt,
+      });
+      return {
+        text: text.trim(),
+        model: endpoint.model,
+        providerName: endpoint.providerName,
+      };
+    } catch {
+      return {
+        text: input.concept.split(/[.;]/)[0].trim().substring(0, 80),
+        model: "fallback",
+        providerName: "heuristic",
+      };
+    }
+  }
 
   // Use recall endpoint as fallback if text not available; many setups share.
   const url = `${endpoint.url}/chat/completions`;
@@ -2886,7 +2953,7 @@ export async function repairUmlautsViaLLM(
   opts: { timeoutMs?: number } = {},
 ): Promise<string> {
   const cfg = await getProviderForRole(db, "text");
-  const endpoint = await resolveUsableTextEndpoint(db);
+  const endpoint = await resolveUsableTextEndpoint(db, { allowAgent: true });
 
   const systemPrompt = `You are an expert editor specializing in German language orthography.
 Your task: given a text that may contain legacy ASCII-folded German umlauts (like 'ue' instead of 'ü', 'ae' instead of 'ä', 'oe' instead of 'ö', 'Ue' instead of 'Ü', etc.), repair them back to proper German umlauts (ä, ö, ü, Ä, Ö, Ü, ß) where appropriate.
@@ -2902,6 +2969,20 @@ ${input.text}
 """
 
 Repaired text:`;
+
+  // Agent transport (ADR 2026-07-12a): same contract as the HTTP path — the
+  // harness returns the repaired text, and a failure falls back to the input.
+  if (endpoint.transport === "agent") {
+    try {
+      const text = await requestAgentCompletion(endpoint, {
+        system: systemPrompt,
+        user: userPrompt,
+      });
+      return text.trim();
+    } catch {
+      return input.text;
+    }
+  }
 
   const url = `${endpoint.url}/chat/completions`;
   const apiKey = endpoint.apiKey;

@@ -157,7 +157,62 @@ describe("curriculum import via the agent transport", () => {
     ).rejects.toThrow(/claude code is offline/i);
   });
 
-  it("rejects the agent transport for text callers not yet wired for it", async () => {
+});
+
+// Issue #224: onboarding's model page can connect an agent, so the goal step
+// two pages later has to accept one. Before this was wired, picking Claude Code
+// during first run made goal decomposition fail with "does not support yet".
+describe("goal decomposition via the agent transport", () => {
+  const CANNED_TOPICS = JSON.stringify([
+    { label: "Limits", description: "Understand what a limit expresses." },
+    { label: "Derivatives", description: "Rate of change of a function." },
+    { label: "Integrals", description: "Accumulated area under a curve." },
+  ]);
+
+  it("parses decomposition options from the harness response", async () => {
+    vi.mocked(getAgentAdapter).mockReturnValue(
+      fakeAdapter(async () => ({ text: CANNED_TOPICS })),
+    );
+    const db = await seedDb();
+
+    const options = await generateGoalDecompositionViaLLM(db, {
+      title: "Learn calculus",
+      description: "To follow a physics course",
+      path: [],
+    });
+
+    expect(options).toHaveLength(3);
+    expect(options[0]).toMatchObject({ label: "Limits" });
+    expect(vi.mocked(getAgentAdapter)).toHaveBeenCalledWith("claude-code");
+  });
+
+  it("sends the goal and the focused path to the adapter", async () => {
+    let seen: { system: string; user: string } | undefined;
+    vi.mocked(getAgentAdapter).mockReturnValue(
+      fakeAdapter(async (req) => {
+        seen = { system: req.system, user: req.user };
+        return { text: CANNED_TOPICS };
+      }),
+    );
+    const db = await seedDb();
+
+    await generateGoalDecompositionViaLLM(db, {
+      title: "Learn calculus",
+      description: "To follow a physics course",
+      path: ["Derivatives"],
+    });
+
+    expect(seen?.system).toContain("learning-path planner");
+    expect(seen?.user).toContain("Learn calculus");
+    expect(seen?.user).toContain("Derivatives");
+  });
+
+  it("propagates a harness failure instead of silently falling back", async () => {
+    vi.mocked(getAgentAdapter).mockReturnValue(
+      fakeAdapter(async () => {
+        throw new Error("Claude Code is offline");
+      }),
+    );
     const db = await seedDb();
 
     await expect(
@@ -166,6 +221,6 @@ describe("curriculum import via the agent transport", () => {
         description: "",
         path: [],
       }),
-    ).rejects.toThrow(/agent transport/i);
+    ).rejects.toThrow(/claude code is offline/i);
   });
 });

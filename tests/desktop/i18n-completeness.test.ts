@@ -408,6 +408,16 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   // native pack review (the model_effort_* option labels themselves already
   // ship in every pack; only this tooltip is new).
   "model_effort_thinking_hint",
+  // 0.20.1 server-DB create guidance + actionable connect errors (issue #218)
+  // — en/de shipped; es/fr/pt/zh/ja await native pack review.
+  "server_db_create_hint",
+  "server_db_link_signup",
+  "server_db_link_dashboard",
+  "server_db_link_selfhost",
+  "server_db_migrate_hint",
+  "server_db_err_network",
+  "server_db_err_token",
+  "server_db_err_quota",
 ]);
 
 /**
