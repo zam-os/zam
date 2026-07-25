@@ -110,6 +110,10 @@ export class OpenCodeAdapter implements AgentTextAdapter {
     };
   }
 
+  async listModels(): Promise<string[]> {
+    return ["opencode-zen", "claude-3-5-sonnet", "gpt-4o"];
+  }
+
   async generate(req: AgentGenerateRequest): Promise<AgentGenerateResult> {
     const bin = this.resolveExecutable();
     if (!bin) {

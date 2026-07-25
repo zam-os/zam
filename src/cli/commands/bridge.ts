@@ -833,6 +833,21 @@ bridgeCommand
   });
 
 bridgeCommand
+  .command("agent-models")
+  .description("List available models for an agent harness (JSON)")
+  .requiredOption("--harness <id>", "Agent harness ID")
+  .action(async (opts) => {
+    try {
+      const { getAgentAdapter } = await import("../agent-llm/adapter.js");
+      const adapter = getAgentAdapter(opts.harness);
+      const models = adapter?.listModels ? await adapter.listModels() : [];
+      jsonOut({ harness: opts.harness, models });
+    } catch {
+      jsonOut({ harness: opts.harness, models: [] });
+    }
+  });
+
+bridgeCommand
   .command("agent-open")
   .description("Launch an agent harness in the workspace (JSON)")
   .option(

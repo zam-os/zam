@@ -162,4 +162,24 @@ describe("CodexAdapter", () => {
       adapter.generate({ system: "s", user: "u", timeoutMs: 5 }),
     ).rejects.toThrow(/timed out/i);
   });
+
+  it("passes --reasoning-effort when effort level is specified", async () => {
+    let seen: string[] = [];
+    const adapter = new CodexAdapter(
+      () => BIN,
+      async (input) => {
+        seen = input.args;
+        return {
+          code: 0,
+          stdout: agentMessage("ok"),
+          stderr: "",
+          timedOut: false,
+        };
+      },
+    );
+
+    await adapter.generate({ system: "s", user: "u", effort: "high" });
+    expect(seen).toContain("--reasoning-effort");
+    expect(seen).toContain("high");
+  });
 });

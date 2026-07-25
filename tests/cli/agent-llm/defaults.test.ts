@@ -9,8 +9,8 @@ describe("defaultAgentModel", () => {
   it("returns the cheap defaults Thomas asked for", () => {
     expect(defaultAgentModel("codex")).toBe("gpt-5.4-mini");
     expect(defaultAgentModel("claude-code")).toBe("haiku");
-    expect(defaultAgentModel("copilot")).toBe("gpt-5-mini");
-    expect(defaultAgentModel("antigravity")).toBe("Gemini 3.5 Flash (Low)");
+    expect(defaultAgentModel("copilot")).toBe("gpt-5.6-luna");
+    expect(defaultAgentModel("antigravity")).toBe("gemini-3.5-flash");
     expect(defaultAgentModel("grok")).toBe("grok-4.5");
   });
 

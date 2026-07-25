@@ -79,6 +79,14 @@ export class HermesAdapter implements AgentTextAdapter {
     };
   }
 
+  async listModels(): Promise<string[]> {
+    return [
+      "hermes-3-llama-3.1-405b",
+      "hermes-3-llama-3.1-70b",
+      "llama-3.3-70b",
+    ];
+  }
+
   async generate(req: AgentGenerateRequest): Promise<AgentGenerateResult> {
     const bin = this.resolveExecutable();
     if (!bin) {

@@ -142,6 +142,13 @@ function defaultResolveExecutable(): string | null {
   return harness ? resolveHarnessExecutable(harness) : null;
 }
 
+export const FALLBACK_CODEX_MODELS = [
+  "gpt-5.4-mini",
+  "gpt-5.4",
+  "o3-mini",
+  "o1",
+];
+
 export class CodexAdapter implements AgentTextAdapter {
   readonly harness: AgentHarnessId = HARNESS;
   /** Codex accepts `-i` images; models (incl. multimodal ChatGPT) can inspect them. */
@@ -163,6 +170,10 @@ export class CodexAdapter implements AgentTextAdapter {
         bin ??
         "Codex CLI (`codex`) not found on PATH. Install it and run `codex login`.",
     };
+  }
+
+  async listModels(): Promise<string[]> {
+    return FALLBACK_CODEX_MODELS;
   }
 
   async generate(req: AgentGenerateRequest): Promise<AgentGenerateResult> {
@@ -199,6 +210,15 @@ export class CodexAdapter implements AgentTextAdapter {
     }
     if (req.model) {
       args.push("-m", req.model);
+    }
+    if (req.effort && req.effort !== "none") {
+      const codexEffort =
+        req.effort === "minimal" || req.effort === "low"
+          ? "low"
+          : req.effort === "medium"
+            ? "medium"
+            : "high";
+      args.push("--reasoning-effort", codexEffort);
     }
     // Prompt last as positional argument (not stdin — avoids "Reading additional
     // input from stdin..." hang when the pipe is empty).

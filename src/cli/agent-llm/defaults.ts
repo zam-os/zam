@@ -14,13 +14,9 @@ export const DEFAULT_AGENT_MODELS: Readonly<Record<string, string>> = {
   /** Codex: small/fast GPT-5.4 mini (verified in local models_cache). */
   codex: "gpt-5.4-mini",
   /**
-   * Antigravity CLI: cheapest Gemini 3.5 Flash tier that `agy models` exposes
-   * today (`gemini-3.5-flash-low` / display "Gemini 3.5 Flash (Low)").
-   * Prefer this over 3.6 Flash for cost; Flash-Lite is not yet listed by
-   * `agy models` (API id `gemini-3.5-flash-lite` may land later).
-   * Verified: `agy --model "Gemini 3.5 Flash (Low)" -p …`.
+   * Antigravity CLI: Gemini 3.5 Flash (default reasoning effort managed via `--effort`).
    */
-  antigravity: "Gemini 3.5 Flash (Low)",
+  antigravity: "gemini-3.5-flash",
   /**
    * GitHub Copilot CLI — prefer Luna over gpt-5-mini: mini is very cheap but
    * slow/weak for one-shot recall. `gpt-5.6-luna` + effort low is ~4–6s and

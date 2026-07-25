@@ -83,6 +83,8 @@ export interface AgentTextAdapter {
   readonly modalities?: AgentModalities;
   /** Cheap readiness check for status chips; never runs a real generation. */
   probe(): Promise<AgentProbeResult>;
+  /** Optional model discovery for harnesses that support querying available models. */
+  listModels?(): Promise<string[]>;
   /** Generate text, or throw {@link AgentError} on offline/malformed harness. */
   generate(req: AgentGenerateRequest): Promise<AgentGenerateResult>;
 }

@@ -121,6 +121,12 @@ function defaultResolveExecutable(): string | null {
   return findExecutable(DEFAULT_COMMAND);
 }
 
+export const FALLBACK_ANTIGRAVITY_MODELS = [
+  "gemini-3.5-flash",
+  "gemini-3.5-pro",
+  "claude-4.6-sonnet",
+];
+
 export class AntigravityAdapter implements AgentTextAdapter {
   readonly harness: AgentHarnessId = HARNESS;
   /** Gemini models behind `agy` accept image files in the workspace. */
@@ -142,6 +148,35 @@ export class AntigravityAdapter implements AgentTextAdapter {
         bin ??
         "Antigravity CLI (`agy`) not found on PATH. Install it and run `agy` once to sign in.",
     };
+  }
+
+  async listModels(): Promise<string[]> {
+    const bin = this.resolveExecutable();
+    if (!bin) return FALLBACK_ANTIGRAVITY_MODELS;
+    try {
+      const res = await this.run({
+        command: bin,
+        args: ["models"],
+        timeoutMs: 5000,
+        cwd: tmpdir(),
+      });
+      if (res.code === 0 && res.stdout.trim()) {
+        const lines = res.stdout
+          .split("\n")
+          .map((l) => l.trim())
+          .filter(
+            (l) =>
+              l &&
+              !l.startsWith("E07") &&
+              !l.startsWith("Failed") &&
+              !l.startsWith("Usage"),
+          );
+        if (lines.length > 0) return lines;
+      }
+    } catch {
+      // Fallback on failure
+    }
+    return FALLBACK_ANTIGRAVITY_MODELS;
   }
 
   async generate(req: AgentGenerateRequest): Promise<AgentGenerateResult> {
@@ -173,6 +208,15 @@ export class AntigravityAdapter implements AgentTextAdapter {
     }
     if (req.model) {
       args.push("--model", req.model);
+    }
+    if (req.effort && req.effort !== "none") {
+      const agyEffort =
+        req.effort === "minimal" || req.effort === "low"
+          ? "low"
+          : req.effort === "medium"
+            ? "medium"
+            : "high";
+      args.push("--effort", agyEffort);
     }
 
     let result: AgyRunResult;

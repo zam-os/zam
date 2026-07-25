@@ -4632,6 +4632,19 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_model_title: "Give ZAM its AI.",
     onboarding_model_body:
       "ZAM uses an AI model to generate questions, evaluate your answers, and import learning content. Without one, manual cards and reviews still work — you can set this up later.",
+    onboarding_model_agent_title: "Agent CLI (Claude Code, Antigravity, Copilot...)",
+    onboarding_model_agent_badge: "Recommended",
+    onboarding_model_agent_body:
+      "Use a connected AI agent CLI tool already on your system (Claude Code, Antigravity, Copilot, Codex, Grok...) — no API key or cloud subscription top-up required.",
+    onboarding_model_agent_select_label: "Select agent harness",
+    onboarding_model_agent_detected_badge: "detected",
+    onboarding_model_agent_connect: "Use {harness} as AI model",
+    onboarding_model_agent_connecting: "Connecting {harness} as AI model...",
+    onboarding_model_agent_connected:
+      "Connected — {harness} ({model}) is ready as your AI model.",
+    onboarding_model_agent_none_detected:
+      "No agent CLI detected on PATH yet. Install Claude Code, Antigravity (agy), Copilot, or Codex.",
+    onboarding_dont_show_again: "Do not show on startup",
     onboarding_model_cloud_badge: "Recommended",
     onboarding_model_cloud_privacy:
       "Private by enforcement: every request forbids storing your data and training on it (data_collection: deny, zero data retention).",
@@ -5615,6 +5628,19 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_model_title: "Gib ZAM seine KI.",
     onboarding_model_body:
       "ZAM nutzt ein KI-Modell, um Fragen zu generieren, deine Antworten zu bewerten und Lerninhalte zu importieren. Auch ohne Modell funktionieren manuelle Karten und Reviews – du kannst das später einrichten.",
+    onboarding_model_agent_title: "Agent-CLI (Claude Code, Antigravity, Copilot...)",
+    onboarding_model_agent_badge: "Empfohlen",
+    onboarding_model_agent_body:
+      "Nutze ein verbundenes Agenten-CLI-Tool auf deinem System (Claude Code, Antigravity, Copilot, Codex, Grok...) – kein API-Schlüssel oder Guthaben-Aufladen erforderlich.",
+    onboarding_model_agent_select_label: "Agenten-Tool auswählen",
+    onboarding_model_agent_detected_badge: "erkannt",
+    onboarding_model_agent_connect: "{harness} als KI-Modell nutzen",
+    onboarding_model_agent_connecting: "{harness} wird als KI-Modell verbunden...",
+    onboarding_model_agent_connected:
+      "Verbunden – {harness} ({model}) ist bereit als dein KI-Modell.",
+    onboarding_model_agent_none_detected:
+      "Noch kein Agenten-CLI auf dem PATH erkannt. Installiere Claude Code, Antigravity (agy), Copilot oder Codex.",
+    onboarding_dont_show_again: "Beim Start nicht mehr anzeigen",
     onboarding_model_cloud_badge: "Empfohlen",
     onboarding_model_cloud_privacy:
       "Privat per Durchsetzung: Jede Anfrage verbietet das Speichern deiner Daten und das Trainieren damit (data_collection: deny, Zero Data Retention).",

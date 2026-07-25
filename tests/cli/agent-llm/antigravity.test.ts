@@ -175,4 +175,28 @@ describe("AntigravityAdapter", () => {
       /empty output/i,
     );
   });
+
+  it("passes --effort flag when effort level is specified", async () => {
+    let args: string[] = [];
+    const adapter = new AntigravityAdapter(
+      () => BIN,
+      async (input) => {
+        args = input.args;
+        return { code: 0, stdout: "ok", stderr: "", timedOut: false };
+      },
+    );
+
+    await adapter.generate({ system: "s", user: "u", effort: "medium" });
+    expect(args).toContain("--effort");
+    expect(args).toContain("medium");
+  });
+
+  it("listModels returns stdout models or fallback list", async () => {
+    const adapter = new AntigravityAdapter(
+      () => BIN,
+      fixedRunner({ code: 0, stdout: "gemini-3.5-flash\ngemini-3.5-pro\n" }),
+    );
+    const models = await adapter.listModels();
+    expect(models).toEqual(["gemini-3.5-flash", "gemini-3.5-pro"]);
+  });
 });

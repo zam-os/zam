@@ -159,6 +159,8 @@ export function buildClaudeUserPayload(req: AgentGenerateRequest): string {
   ].join("\n");
 }
 
+export const FALLBACK_CLAUDE_MODELS = ["haiku", "sonnet", "opus"];
+
 export class ClaudeCodeAdapter implements AgentTextAdapter {
   readonly harness: AgentHarnessId = HARNESS;
   /**
@@ -181,6 +183,10 @@ export class ClaudeCodeAdapter implements AgentTextAdapter {
       available: bin !== null,
       detail: bin ?? "Claude Code CLI (`claude`) not found on PATH",
     };
+  }
+
+  async listModels(): Promise<string[]> {
+    return FALLBACK_CLAUDE_MODELS;
   }
 
   async generate(req: AgentGenerateRequest): Promise<AgentGenerateResult> {

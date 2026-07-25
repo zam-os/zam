@@ -81,6 +81,10 @@ export class GooseAdapter implements AgentTextAdapter {
     };
   }
 
+  async listModels(): Promise<string[]> {
+    return ["claude-3-5-sonnet", "gpt-4o", "databricks-dbrx"];
+  }
+
   async generate(req: AgentGenerateRequest): Promise<AgentGenerateResult> {
     const bin = this.resolveExecutable();
     if (!bin) {

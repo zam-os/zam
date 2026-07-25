@@ -164,6 +164,8 @@ function defaultResolveExecutable(): string | null {
   return harness ? resolveHarnessExecutable(harness) : null;
 }
 
+export const FALLBACK_GROK_MODELS = ["grok-4.5", "grok-4-mini"];
+
 export class GrokAdapter implements AgentTextAdapter {
   readonly harness: AgentHarnessId = HARNESS;
   /** Grok Build accepts images via `--prompt-json` base64 content blocks. */
@@ -185,6 +187,10 @@ export class GrokAdapter implements AgentTextAdapter {
         bin ??
         "Grok Build CLI (`grok`) not found on PATH. Install from https://x.ai/cli/install.sh and run `grok login`.",
     };
+  }
+
+  async listModels(): Promise<string[]> {
+    return FALLBACK_GROK_MODELS;
   }
 
   async generate(req: AgentGenerateRequest): Promise<AgentGenerateResult> {

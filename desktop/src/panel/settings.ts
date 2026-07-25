@@ -490,16 +490,80 @@ async function showAgentModelForm(): Promise<void> {
 
   const modelInput = document.createElement("input");
   modelInput.type = "text";
+
+  const effortSelect = document.createElement("select");
+  effortSelect.className = "editor-select settings-select";
+  const effortOptions = [
+    { value: "auto", label: "Auto / Default" },
+    { value: "low", label: "Low" },
+    { value: "medium", label: "Medium" },
+    { value: "high", label: "High" },
+    { value: "none", label: "None" },
+  ];
+  for (const eff of effortOptions) {
+    const opt = document.createElement("option");
+    opt.value = eff.value;
+    opt.textContent = eff.label;
+    effortSelect.appendChild(opt);
+  }
+
+  const updateEffortVisibility = (): void => {
+    const modelVal = modelInput.value.trim().toLowerCase();
+    const isThinking = modelVal.includes("thinking");
+    if (isThinking) {
+      effortSelect.disabled = true;
+      effortSelect.title = "Thinking models do not accept reasoning effort settings";
+    } else {
+      effortSelect.disabled = false;
+      effortSelect.title = "";
+    }
+  };
+
   const applyDefaultModel = (): void => {
     const h = harnesses.find((x) => x.id === harnessSelect.value);
     const def = h?.defaultModel ?? "";
     modelInput.placeholder = def
       ? tf("model_agent_model_placeholder", { model: def })
       : t("model_field_model");
-    if (def) modelInput.value = def;
+    if (def && !modelInput.value) modelInput.value = def;
+    updateEffortVisibility();
+
+    // Query models dynamically for the selected harness
+    if (harnessSelect.value) {
+      void (async () => {
+        try {
+          const res = (await bridgeCall("agent-models", [
+            "--harness",
+            harnessSelect.value,
+          ])) as { models?: string[] };
+          if (res.models && res.models.length > 0) {
+            // Provide suggestions if dynamic models are returned
+            let datalist = document.getElementById(
+              "agent-models-datalist",
+            ) as HTMLDataListElement | null;
+            if (!datalist) {
+              datalist = document.createElement("datalist");
+              datalist.id = "agent-models-datalist";
+              document.body.appendChild(datalist);
+            }
+            datalist.replaceChildren();
+            for (const m of res.models) {
+              const opt = document.createElement("option");
+              opt.value = m;
+              datalist.appendChild(opt);
+            }
+            modelInput.setAttribute("list", "agent-models-datalist");
+          }
+        } catch {
+          // Ignore model listing errors
+        }
+      })();
+    }
   };
+
   applyDefaultModel();
   harnessSelect.addEventListener("change", applyDefaultModel);
+  modelInput.addEventListener("input", updateEffortVisibility);
 
   const actions = document.createElement("div");
   actions.className = "settings-ai-actions";
@@ -516,7 +580,13 @@ async function showAgentModelForm(): Promise<void> {
     formHost.replaceChildren();
   });
   save.addEventListener("click", () => {
-    void saveAgentModel(harnessSelect, labelInput, modelInput, save);
+    void saveAgentModel(
+      harnessSelect,
+      labelInput,
+      modelInput,
+      effortSelect,
+      save,
+    );
   });
   actions.append(save, cancel);
 
@@ -526,6 +596,10 @@ async function showAgentModelForm(): Promise<void> {
   const modelLabel = document.createElement("label");
   modelLabel.className = "settings-hint";
   modelLabel.textContent = t("model_field_model");
+  const effortLabel = document.createElement("label");
+  effortLabel.className = "settings-hint";
+  effortLabel.textContent = t("model_field_effort");
+
   formHost.append(
     title,
     kindNote,
@@ -533,6 +607,8 @@ async function showAgentModelForm(): Promise<void> {
     harnessSelect,
     modelLabel,
     modelInput,
+    effortLabel,
+    effortSelect,
     labelInput,
     actions,
   );
@@ -542,6 +618,7 @@ async function saveAgentModel(
   harnessSelect: HTMLSelectElement,
   labelInput: HTMLInputElement,
   modelInput: HTMLInputElement,
+  effortSelect: HTMLSelectElement,
   saveButton: HTMLButtonElement,
 ): Promise<void> {
   const harness = harnessSelect.value;
@@ -555,6 +632,7 @@ async function saveAgentModel(
     harnessSelect.selectedOptions[0]?.textContent?.replace(/\s*\(.*\)$/, "") ||
     harness;
   const model = modelInput.value.trim();
+  const effort = effortSelect.disabled ? undefined : effortSelect.value;
   try {
     const args = [
       "--transport",
@@ -567,6 +645,7 @@ async function saveAgentModel(
       JSON.stringify({ text: true, image: true }),
     ];
     if (model) args.push("--model", model);
+    if (effort && effort !== "auto") args.push("--effort", effort);
     await bridgeCall("model-upsert", args);
     await loadAiModels();
   } catch (error) {

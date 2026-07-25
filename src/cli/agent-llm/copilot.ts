@@ -121,6 +121,14 @@ export function parseCopilotStdout(stdout: string): string {
   return text;
 }
 
+export const FALLBACK_COPILOT_MODELS = [
+  "gpt-5.6-luna",
+  "gpt-5-mini",
+  "gpt-5.4",
+  "claude-3.5-sonnet",
+  "o3-mini",
+];
+
 export class CopilotAdapter implements AgentTextAdapter {
   readonly harness: AgentHarnessId = HARNESS;
   readonly modalities = { text: true as const, image: true as const };
@@ -142,6 +150,10 @@ export class CopilotAdapter implements AgentTextAdapter {
         bin ??
         "GitHub Copilot CLI (`copilot`) not found on PATH. Install from https://github.com/github/copilot-cli",
     };
+  }
+
+  async listModels(): Promise<string[]> {
+    return FALLBACK_COPILOT_MODELS;
   }
 
   async generate(req: AgentGenerateRequest): Promise<AgentGenerateResult> {
