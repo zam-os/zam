@@ -62,7 +62,9 @@ the most valuable thing a curated group library can offer.
   record what someone failed, how often, and when. In a company, that is
   performance data about an employee. Sharing *content* must never quietly mean
   sharing *performance*.
-- **Offline-first for reviews.** Reviews happen on trains and in meeting rooms.
+- **Offline matters for reviews.** Reviews happen on trains and in meeting
+  rooms. This pulls against cross-device progress, and the two deployments
+  below resolve the tension differently rather than pretending it away.
 - **The existing database paths must keep working** (project owner,
   2026-07-25): local SQLite, embedded libsql replica, and Turso/`sqld` remote
   stay supported and remain the default. Anything new is parallel and opt-in.
@@ -75,7 +77,9 @@ the most valuable thing a curated group library can offer.
 1. **Editorial quality first** — the library exists so a few people can make
    content good for everyone.
 2. **Knowledge shared, learning state private by default**, aggregates opt-in.
-3. **Offline-first** — a learner's reviews never block on a server.
+3. **Offline-first stays available** — Deployment A never blocks a review on a
+   server. Deployment B trades this for cross-device progress, deliberately and
+   with Deployment A still there for anyone who needs offline (Decision 6).
 4. **Additive** — existing single-learner and Turso/`sqld` paths keep working.
 5. **A fix must reach the people who learned the broken version.**
 6. **Smallest credible step** before new deployables.
@@ -86,8 +90,13 @@ the most valuable thing a curated group library can offer.
 |-------|--------|---------|---------|
 | **Knowledge** | tokens, prerequisites, sources, token_sources, token_embeddings, agent_skills (curated) | Shared library, versioned | Curators |
 | **Assignment** | *new:* assignments (who should learn what, by when) | Visible to assigner + learner | Curators/leads |
-| **Learning state** | cards, review_logs, sessions, session_steps, session_syntheses | **Private to the learner; local by default** | The learner only |
+| **Learning state** | cards, review_logs, sessions, session_steps, session_syntheses | **Private to the learner.** Deployment A: local. Deployment B: in the shared database, isolated by RLS | The learner only |
 | **Aggregates** | *derived:* coverage %, due counts | Opt-in, coarse, learner-controlled | Published explicitly |
+
+"Private to the learner" is the invariant; *where* the rows sit is a deployment
+choice. In Deployment A it holds because the data never leaves the machine; in
+Deployment B it holds because RLS says so — a weaker guarantee against a
+superuser, which Decision 6 states plainly rather than papering over.
 
 ## Decision
 
@@ -95,8 +104,9 @@ the most valuable thing a curated group library can offer.
 
 A group library is a set of tokens (plus prerequisites, sources, embeddings)
 that carry an editorial state and a content version. Learners consume
-**published** versions; they never see another learner's cards or review logs
-by construction, because those are a different data class that does not travel.
+**published** versions. What is shared is knowledge; a learner never sees
+another learner's cards or review logs — in Deployment A because that data
+never leaves the machine, in Deployment B because RLS forbids it (Decision 6).
 
 ### 2. An editorial workflow, because that is what quality control is
 
@@ -119,6 +129,20 @@ draft ──► in-review ──► published ──► deprecated
   follow (ADR 2026-07-17); an OKF article is the natural `source_link` target
   for a curated token.
 
+**Where the loop runs (project owner, 2026-07-25): content in git, release in
+the Studio.** Authoring and peer review happen as they already do for OKF —
+articles and token drafts in a repository, reviewed through pull requests,
+where diffs, history and reviewer identity are solved problems and no new UI is
+needed. What the Studio owns is the **release step**: a curator sees what a
+merge would change for learners, classifies each change (Decision 3), and
+publishes. Merging a pull request therefore does not by itself reach anybody's
+queue — publishing does.
+
+The split follows the two different questions being asked. "Is this text
+correct?" is a review question git answers well. "What should happen to the
+people who already learned the old version?" is a scheduling question only ZAM
+can answer, and it needs the curator in front of ZAM.
+
 ### 3. Content changes classify as cosmetic or material — and material changes touch FSRS
 
 This is the part a plain shared database cannot do, and the reason curation is
@@ -140,8 +164,14 @@ confidently wrong on a comfortable review interval. Making a correction
 propagate into scheduling is what turns "someone checks the content" into a
 real guarantee.
 
-Cosmetic is the default only when the curator says so; ZAM never guesses
-materiality from a text diff.
+**There is no default** (project owner, 2026-07-25). Publishing forces the
+curator to classify the change; ZAM never guesses materiality from a text diff
+and never picks the safe-looking option on the curator's behalf. Defaulting to
+cosmetic would let a real correction slip through and leave learners
+confidently wrong; defaulting to material would reset cards for typo fixes
+until people stopped trusting the library. The small friction per publish *is*
+the quality gate — it is the moment a curator has to think about the people who
+already learned it.
 
 ### 4. Roles
 
@@ -178,6 +208,13 @@ designed to be **left behind**: the schema, the data and the library model must
 survive that move, while the infrastructure and every role grant are expected
 to be recreated. Decision 7 makes that explicit.
 
+**Tenant: `docuware.com`** (project owner, 2026-07-25). The Visual Studio
+Professional subscription is associated with the corporate directory, so
+colleagues authenticate as ordinary tenant members — no B2B guest invitations,
+no personally-owned identity boundary, and offboarding follows the corporate
+directory automatically. What changes at the subscription move is the billing
+owner and the Azure resource, not the identity domain.
+
 - **Store:** Azure Database for PostgreSQL Flexible Server, Burstable tier,
   32 GiB (the service's storage floor — ZAM's data is far smaller: 768-dim
   embeddings are ≈3 KB per token, so 100k tokens ≈ 300 MB). `pgvector` provides
@@ -201,13 +238,41 @@ to be recreated. Decision 7 makes that explicit.
   security rather than by convention: published knowledge readable by every
   member, writable only by curators; assignments visible to their learner and
   author.
-- **Learning state stays local.** For this tier the recommendation is that
-  `cards`, `review_logs` and `sessions` do **not** go into the corporate
-  database at all. This keeps reviews offline-capable, and it removes the
-  awkward question of what an employer's database administrator can read —
-  because RLS does not protect data from a superuser, and on a managed service
-  the subscription owner is close enough to one. What the company hosts is the
-  *library*; what the employee keeps is their *learning*.
+- **Learning state lives in the shared database too** (project owner,
+  2026-07-25), so a colleague's progress follows them across machines instead
+  of being trapped on one laptop. `cards`, `review_logs`, `sessions`,
+  `session_steps` and `session_syntheses` are stored per learner and isolated
+  by RLS.
+
+  This makes RLS the **load-bearing privacy boundary**, not a convenience, and
+  that has to be built accordingly:
+
+  - Every learning-state table carries the learner's ULID and an RLS policy
+    keyed to the connected principal's mapped ULID (Decision 7). A learner's
+    role can read and write only their own rows; there is no group-wide
+    `SELECT` on these tables for anyone, including curators.
+  - `ALTER TABLE … FORCE ROW LEVEL SECURITY`, so the policy also applies to the
+    table owner. Without it, the owning role bypasses RLS silently.
+  - The schema owner is a **separate role from any human administrator**, and
+    no person logs in as it during normal operation.
+  - The policies are tested, not assumed: a test suite asserts that learner A
+    cannot read learner B's cards or review logs through any supported query
+    path. A privacy boundary nobody tests is a privacy claim, not a boundary.
+
+  **Stated honestly:** a PostgreSQL superuser, and anyone who can act as the
+  Azure server administrator, can still read every row. RLS does not defend
+  against them. In this deployment the learners and the administrators are
+  colleagues at the same employer, and review logs are performance-adjacent
+  data about employees, so this residual exposure is a policy question for
+  DocuWare, not something the database can solve. It should be written down for
+  participants before the first real colleague joins — see Open Question 4.
+
+- **Consequence: Deployment B is online-first for reviews.** With state in the
+  server, a review needs the network — the same trade the companion already
+  accepted (ADR 2026-07-23). Deployment A remains the offline-capable path and
+  the default for anyone who needs it. A local read-through cache with
+  write-back for Deployment B is deliberately *not* in scope for the pilot;
+  see Open Question 5.
 
 ### 7. Subscription and tenant portability is a requirement, not a later concern
 
@@ -247,6 +312,56 @@ No RLS, no auth, no HTTP in the kernel. Multi-learner semantics live in the
 CLI/sync layer, exactly like LLM access does. The kernel's only multi-user
 awareness stays what it already has: `user_id` columns.
 
+### 9. The database selection carries the knowledge context
+
+Choosing the database chooses the knowledge context (project owner,
+2026-07-25). Connecting to the company library *is* being at work; the private
+local database *is* private (and school). A learner does not pick the two
+independently.
+
+This puts two existing concepts in the right order. The knowledge-contexts ADR
+(2026-07-04) is explicit that a context is a **library slice and not an
+authorization boundary** — "tagging something `work` must never make it
+shareable by itself". The deployment is the real boundary. Deriving the context
+from the connection therefore removes a whole class of mistake: you cannot
+misfile a private card into the company library by picking the wrong entry in a
+dropdown, because the company library only ever offers its own contexts.
+
+**In practice the binding is per device, not a toggle** (project owner,
+2026-07-25): the phone at home is connected to the private database; the work
+PC is connected to the company database. That matches where the connection
+already lives — machine-local config in `~/.zam/config.json`, never in the
+shared database — so a device is set up once and simply *is* a work device or a
+private one. The mobile companion pairing (ADR 2026-07-23) is the private
+server database in exactly this picture.
+
+Concretely:
+
+- `contexts` rows live in the database they belong to, so each deployment
+  already carries its own set. The active context resolves to the connected
+  library's default; the context picker only offers what that database
+  contains.
+- Switching database is a context boundary in the same sense the companion
+  context bar already means it (ADR 2026-07-16): reset the local view, do not
+  carry a stale context across the switch.
+- Authoring language follows for free. The contexts ADR gave contexts a
+  `language` field precisely because the team area is English while private
+  content is German; connecting to the corporate library therefore switches the
+  authoring-language default without a separate setting.
+
+The honest consequence of a per-device binding is that **there is no single
+"everything I owe today" view across both worlds.** At work you see work cards;
+at home on the phone you see private ones. For work–life separation that is
+arguably the feature rather than the cost — and it is the same separation that
+keeps private learning out of an employer's database entirely. But it should be
+a stated choice, not a surprise: someone who wants one combined queue will not
+get it, and the fix would be a cross-library aggregation view that deliberately
+does not exist yet.
+
+This does **not** promote context to an authorization boundary. It makes the
+boundary the thing that *selects* the context. Inside the company library,
+contexts remain ordinary slices.
+
 ## Cost (Deployment B, pilot phase)
 
 The pilot's budget is the Visual Studio Professional subscription's monthly
@@ -285,38 +400,34 @@ self-hosted server can validate Entra tokens directly.
 
 ## Open questions
 
-0. **Which tenant do the pilot's colleagues authenticate against?** This is the
-   first thing to verify, because it can invalidate the pilot's shape rather
-   than just adjust it. Azure PostgreSQL validates Entra tokens against the
-   tenant behind the hosting subscription. On a Visual Studio Professional
-   subscription that is the owner's own tenant — not DocuWare's — so DocuWare
-   colleagues would have to be invited as **B2B guests** into it. Two things to
-   check before building anything: whether DocuWare's directory policy permits
-   its users to accept outbound guest invitations, and whether routing
-   colleagues' learning activity through a personally-owned tenant is
-   acceptable to the company at all, even for a pilot. If either answer is no,
-   the realistic options are a company-owned subscription earlier than planned,
-   or a pilot run with non-DocuWare test identities and no real colleague data.
-   Decision 7's identity indirection is what keeps that pivot cheap.
+Resolved on 2026-07-25 (project owner): the pilot tenant is `docuware.com`, so
+colleagues are ordinary tenant members and no B2B guest path is needed
+(Decision 6); curation is git for content plus a Studio release step
+(Decision 2); learning state lives in the shared database behind RLS
+(Decision 6); and materiality has no default — publishing forces the choice
+(Decision 3).
 
-1. **Where does curation actually happen?** ZAM already has an OKF knowledge
-   base curated through git and pull requests. For a company library, the
-   proposal→review→publish loop could reuse that (review content as OKF
-   articles in a repo, sync published tokens to the database) instead of
-   building review UI in the Studio. This is likely the smallest credible first
-   step and should be decided before any workflow code is written.
-2. **Materiality classification UX.** Curators must classify every published
-   change. What is the default, what does the learner see when a card resets,
-   and can a learner appeal a reset?
-3. **Assignment ↔ card lifecycle.** Does deleting an assignment retire the
+1. **What does a learner see when a material change resets their card, and can
+   they push back?** The reset is correct but it is also someone else deciding
+   that your memory is now wrong. It needs an explanation naming the change and
+   the curator, and a decision on whether a learner may defer or dispute it.
+2. **Assignment ↔ card lifecycle.** Does deleting an assignment retire the
    card, and does the learner keep the history?
+3. **Where does the residual-visibility policy get written down?** Decision 6
+   states that a superuser or Azure server administrator can read every row.
+   Participants should be told this in plain language before the first real
+   colleague joins, and someone at DocuWare — not this ADR — has to own that
+   statement. Blocking for real colleague data; not blocking for a pilot on
+   test identities.
 4. **Aggregate vocabulary.** Which opt-in metrics exist and at what
    granularity — needs a concrete lead/coach story before freezing. At an
    employer this needs to be conservative by default.
-5. **Does Deployment B ever need offline?** Decision 6 keeps learning state
-   local, so reviews stay offline-capable and only *library sync* needs
-   network. If the group later wants cross-device learning state, that
-   reopens both the offline question and the DBA-visibility question.
+5. **Offline for Deployment B.** With learning state in the server, reviews
+   need the network. Deployment A stays the offline path, but if colleagues
+   want offline reviews *and* cross-device progress, a local read-through
+   cache with write-back is the answer — and it brings back exactly the sync
+   and conflict work this ADR otherwise avoids. Defer until the pilot shows
+   whether it actually hurts.
 6. **Conflict policy for concurrent curation.** Last-write-wins on
    `updated_at` plus a curation log is probably enough at this scale; verify
    against a real two-curator case before building merge UI.
@@ -341,8 +452,9 @@ self-hosted server can validate Entra tokens directly.
   worth doing on the existing paths first.
 - **Phase C — Deployment B pilot:** the Postgres provider behind the existing
   async `Database` contract, Entra token acquisition and refresh, the ULID ↔
-  Entra principal mapping, RLS policies, and the admin runbook for granting
-  Entra groups access. Gated on Open Question 0.
+  Entra principal mapping, RLS policies **with an isolation test suite**, the
+  per-device database binding carrying the context (Decision 9), and the admin
+  runbook for granting Entra groups access.
 - **Phase C2 — rehearse the subscription move** once, while the pilot is small
   and nobody depends on it, so the runbook is proven rather than hypothetical.
 - **Phase D — assignments**, then opt-in aggregates.
@@ -360,9 +472,14 @@ self-hosted server can validate Entra tokens directly.
   accountable for, and corrections that actually reach the people holding the
   outdated version.
 - The privacy line — knowledge shared, learning state the learner's — becomes
-  an architectural invariant rather than a UI promise, and it holds *more*
-  strongly at an employer because learning state simply is not in the corporate
-  database.
+  an architectural invariant rather than a UI promise. In Deployment B it is
+  enforced by RLS and must be *tested* like any other security boundary; the
+  residual superuser exposure is written down rather than glossed over.
+- Private learning never reaches the employer's database at all, because the
+  device binding puts it in a different database entirely. That separation is
+  physical rather than a policy anyone has to honour.
+- The same binding costs a combined cross-world view of what is due. Work
+  cards live at work; private cards live at home.
 - Phase B pays off on every deployment, including single-learner, because
   versioned content with a materiality signal is useful even for one person
   correcting their own old cards.
