@@ -64,19 +64,21 @@ export function parseCopilotStdout(stdout: string): string {
     }
     if (last) return last;
   }
-  // Silent text: first non-empty line, strip footer noise
+  // Silent text: keep the full multi-line reply (evaluation + trailing
+  // "Suggested rating: N" / "Empfohlene Bewertung: N"), strip footer noise.
+  // Taking only the first line was wrong — the FSRS rating is always last.
   const lines = trimmed
     .split(/\r?\n/)
-    .map((l) => l.trim())
-    .filter(Boolean)
+    .map((l) => l.trimEnd())
+    .filter((l) => l.trim().length > 0)
     .filter(
       (l) =>
-        !/^Changes\s/i.test(l) &&
-        !/^AI Credits/i.test(l) &&
-        !/^Tokens\s/i.test(l) &&
-        !/^Resume\s/i.test(l),
+        !/^\s*Changes\s/i.test(l) &&
+        !/^\s*AI Credits/i.test(l) &&
+        !/^\s*Tokens\s/i.test(l) &&
+        !/^\s*Resume\s/i.test(l),
     );
-  const text = lines[0];
+  const text = lines.join("\n").trim();
   if (!text) {
     throw new AgentError(
       HARNESS,

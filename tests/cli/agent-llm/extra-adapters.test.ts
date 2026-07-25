@@ -65,6 +65,20 @@ describe("parseCopilotStdout", () => {
     expect(parseCopilotStdout("OK\n\nChanges    +0 -0\n")).toBe("OK");
   });
 
+  it("keeps multi-line evaluation including the trailing FSRS rating line", () => {
+    const raw = `Gut gemacht, die Antwort trifft den Kern.
+Empfohlene Bewertung: 3
+
+Changes    +0 -0
+AI Credits 1.2 (5s)
+Tokens     ↑ 1k • ↓ 20
+Resume     copilot --resume=abc
+`;
+    const text = parseCopilotStdout(raw);
+    expect(text).toContain("Gut gemacht");
+    expect(text).toMatch(/Empfohlene Bewertung:\s*3/);
+  });
+
   it("reads assistant.message JSONL", () => {
     const line = JSON.stringify({
       type: "assistant.message",
