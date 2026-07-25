@@ -32,6 +32,16 @@ describe("listAgentTextHarnessIds", () => {
     }
   });
 
+  // Issue #224: Settings only offers the effort control for harnesses whose
+  // adapter actually forwards it. Keep the declaration honest — an adapter that
+  // ignores `req.effort` must not advertise support.
+  it("declares supportsEffort only for adapters that forward effort", () => {
+    const withEffort = listAgentTextHarnessIds().filter(
+      (id) => getAgentAdapter(id)?.supportsEffort === true,
+    );
+    expect(withEffort.sort()).toEqual(["antigravity", "codex", "copilot"]);
+  });
+
   it("every registered agent text adapter implements listModels()", async () => {
     const ids = listAgentTextHarnessIds();
     for (const id of ids) {

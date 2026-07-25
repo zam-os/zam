@@ -131,6 +131,8 @@ export class AntigravityAdapter implements AgentTextAdapter {
   readonly harness: AgentHarnessId = HARNESS;
   /** Gemini models behind `agy` accept image files in the workspace. */
   readonly modalities = { text: true as const, image: true as const };
+  /** Forwards `effort` to the CLI. */
+  readonly supportsEffort = true;
 
   constructor(
     private readonly resolveExecutable: () =>

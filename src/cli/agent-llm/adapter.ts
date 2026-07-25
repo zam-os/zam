@@ -81,6 +81,12 @@ export interface AgentTextAdapter {
    * / model-upsert to set `detectedCapabilities` for agent entries.
    */
   readonly modalities?: AgentModalities;
+  /**
+   * True when `generate` actually forwards {@link AgentGenerateRequest.effort}
+   * to the CLI. Adapters that ignore it leave this unset so Settings does not
+   * offer an effort control that would silently do nothing.
+   */
+  readonly supportsEffort?: boolean;
   /** Cheap readiness check for status chips; never runs a real generation. */
   probe(): Promise<AgentProbeResult>;
   /** Optional model discovery for harnesses that support querying available models. */

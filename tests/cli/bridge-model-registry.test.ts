@@ -308,6 +308,66 @@ describe("bridge model-* registry commands", () => {
     expect(res.parsed.model?.capabilities.image).toBe(true);
   });
 
+  it("updates an agent model in place when --id is passed", async () => {
+    // Settings' agent form edits through --id (issue #224): changing the model
+    // or effort must update the row, not append a rival at the same order.
+    const created = (await runBridge([
+      "model-upsert",
+      "--transport",
+      "agent",
+      "--agent-harness",
+      "copilot",
+      "--label",
+      "Copilot",
+      "--effort",
+      "high",
+    ])) as { parsed: { model?: { id: string; effort?: string } } };
+    const id = created.parsed.model?.id;
+    expect(id).toBeTruthy();
+    expect(created.parsed.model?.effort).toBe("high");
+
+    const edited = (await runBridge([
+      "model-upsert",
+      "--id",
+      String(id),
+      "--transport",
+      "agent",
+      "--agent-harness",
+      "copilot",
+      "--label",
+      "Copilot",
+      "--model",
+      "gpt-5-mini",
+      "--effort",
+      "low",
+    ])) as {
+      parsed: { ok?: boolean; model?: { id: string; model: string; effort?: string } };
+    };
+    expect(edited.parsed.ok).toBe(true);
+    expect(edited.parsed.model?.id).toBe(id);
+    expect(edited.parsed.model?.model).toBe("gpt-5-mini");
+    expect(edited.parsed.model?.effort).toBe("low");
+    // Still one row — the edit replaced it rather than adding a duplicate.
+    expect(readConfig().ai?.models ?? []).toHaveLength(1);
+
+    // "auto" clears a stored override so the adapter heuristic applies again.
+    const cleared = (await runBridge([
+      "model-upsert",
+      "--id",
+      String(id),
+      "--transport",
+      "agent",
+      "--agent-harness",
+      "copilot",
+      "--effort",
+      "auto",
+    ])) as { parsed: { model?: { effort?: string } } };
+    expect(cleared.parsed.model?.effort).toBeUndefined();
+    expect(readConfig().ai?.models?.[0]?.effort).toBeUndefined();
+    // Clearing effort must not disturb the model id chosen in the edit above.
+    expect(readConfig().ai?.models?.[0]?.model).toBe("gpt-5-mini");
+  });
+
   it("migrates legacy providers/roles into ai.models on first model-list", async () => {
     // Seed a legacy machine config, then read the registry.
     const legacy: InstallConfig = {

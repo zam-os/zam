@@ -132,6 +132,8 @@ export const FALLBACK_COPILOT_MODELS = [
 export class CopilotAdapter implements AgentTextAdapter {
   readonly harness: AgentHarnessId = HARNESS;
   readonly modalities = { text: true as const, image: true as const };
+  /** Forwards `effort` to the CLI. */
+  readonly supportsEffort = true;
 
   constructor(
     private readonly resolveExecutable: () => string | null = () => {
