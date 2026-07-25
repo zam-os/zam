@@ -70,7 +70,7 @@ describe("PostgreSQL Row Level Security (RLS) Isolation Suite", () => {
           .run();
 
         // 1. Learner A inserts card and review log under app.current_user_id = 'alice'
-        await db.exec("SET LOCAL app.current_user_id = 'alice'");
+        await db.exec("SET app.current_user_id = 'alice'");
         await db
           .prepare(
             `INSERT INTO cards (id, token_id, user_id, due_at) VALUES ('card_alice', 'tok1', 'alice', CURRENT_TIMESTAMP)`,
@@ -96,7 +96,7 @@ describe("PostgreSQL Row Level Security (RLS) Isolation Suite", () => {
         expect(aliceLogs[0].id).toBe("log_alice");
 
         // 2. Switch context to Learner B (Bob) under app.current_user_id = 'bob'
-        await db.exec("SET LOCAL app.current_user_id = 'bob'");
+        await db.exec("SET app.current_user_id = 'bob'");
 
         // Bob queries cards and review logs -> gets 0 rows
         const bobCards = await db.prepare("SELECT * FROM cards").all();
