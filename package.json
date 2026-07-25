@@ -45,7 +45,10 @@
     "observer:check": "cargo check --manifest-path observer/Cargo.toml",
     "observer:test": "cargo test --manifest-path observer/Cargo.toml",
     "observer:build": "cargo build --manifest-path observer/Cargo.toml --release",
-    "observer:prepare": "node scripts/prepare-observer-sidecar.mjs"
+    "observer:prepare": "node scripts/prepare-observer-sidecar.mjs",
+    "pg:up": "node scripts/pg-dev.mjs up",
+    "pg:down": "node scripts/pg-dev.mjs down",
+    "pg:test": "POSTGRES_URL=$(node scripts/pg-dev.mjs url) vitest run tests/kernel/postgres-rls.test.ts tests/kernel/provider-contract.test.ts tests/kernel/postgres-provider.test.ts"
   },
   "repository": {
     "type": "git",
