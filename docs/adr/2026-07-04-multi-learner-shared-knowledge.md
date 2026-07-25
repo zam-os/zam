@@ -226,20 +226,26 @@ own-data display filter labeled as cosmetic, not a security boundary.
 For DocuWare colleagues. This is an **additional** path selected by
 configuration, never a replacement.
 
-**This deployment is a pilot.** During the development phase it runs on the
-project owner's Visual Studio Professional subscription and its monthly Azure
-credit. Once the company is ready to carry the cost, the data moves to a
-company-owned subscription (project owner, 2026-07-25). The pilot is therefore
-designed to be **left behind**: the schema, the data and the library model must
-survive that move, while the infrastructure and every role grant are expected
-to be recreated. Decision 7 makes that explicit.
+**Hosted in a company subscription in the `docuware.com` tenant from the
+start** (project owner, 2026-07-25). An earlier plan would have piloted on the
+project owner's Visual Studio Professional credit and migrated later; that
+subscription could not be activated, and going straight to a company-owned one
+turns out to be the simpler design anyway:
 
-**Tenant: `docuware.com`** (project owner, 2026-07-25). The Visual Studio
-Professional subscription is associated with the corporate directory, so
-colleagues authenticate as ordinary tenant members — no B2B guest invitations,
-no personally-owned identity boundary, and offboarding follows the corporate
-directory automatically. What changes at the subscription move is the billing
-owner and the Azure resource, not the identity domain.
+- Colleagues authenticate as **ordinary tenant members** — no B2B guest
+  invitations, no personally-owned identity boundary, and offboarding follows
+  the corporate directory automatically.
+- **There is no planned migration**, so the schema, the role grants and the
+  data all live in their final home from day one. The migration drill the
+  earlier draft required disappears with it.
+- Nobody's learning history depends on a personal subscription staying funded.
+
+The cost is a dependency: this needs DocuWare to provide a subscription and
+carry the (small) bill before the first colleague can use it. That is a
+conversation to have early, not a technical risk.
+
+This remains a **pilot in scope** — a small group, a deliberately limited
+library — just not a pilot in infrastructure.
 
 - **Store:** Azure Database for PostgreSQL Flexible Server, Burstable tier,
   32 GiB (the service's storage floor — ZAM's data is far smaller: 768-dim
@@ -313,44 +319,47 @@ owner and the Azure resource, not the identity domain.
   process it does not control, and no colleague ends up in the company library
   without having been told what that means.
 
-- **Consequence: Deployment B is online-first for reviews.** With state in the
-  server, a review needs the network — the same trade the companion already
-  accepted (ADR 2026-07-23). Deployment A remains the offline-capable path and
-  the default for anyone who needs it. A local read-through cache with
-  write-back for Deployment B is deliberately *not* in scope for the pilot;
-  see Open Question 5.
+- **Consequence: Deployment B is online-only for reviews** (project owner,
+  2026-07-25). With state in the server, a review needs the network — the same
+  trade the companion already accepted (ADR 2026-07-23). Deployment A remains
+  the offline-capable path for anyone who needs it.
 
-### 7. Subscription and tenant portability is a requirement, not a later concern
+  A local cache with write-back would fix this and is deliberately **not**
+  built: it brings back exactly the sync state machine, conflict policy and
+  online/offline test matrix that the write-asymmetry otherwise lets this ADR
+  avoid, and it would be built against a guess. The pilot answers the question
+  instead — how often does someone actually stand in front of ZAM with no
+  network? On a company PC that is rare; if the pilot shows otherwise, an
+  offline cache is a well-motivated follow-up with its own ADR.
 
-Because the pilot is known in advance to move, the design constraint is set now
-rather than discovered during the migration.
+### 7. ZAM's data never marries Entra
+
+The planned subscription migration is gone (Decision 6), but the constraint it
+implied is kept, because it is right for its own reasons.
 
 - **Entra identifiers never become keys in ZAM's data.** A learner stays a ZAM
   ULID `user_id`. A single deployment-scoped mapping table binds that ULID to
   an Entra principal (object id + UPN). Everything else — cards, assignments,
   provenance, curator attribution — references the ULID only.
 
-  This is the whole migration story in one rule. Entra object ids are
-  tenant-specific: the same colleague in a DocuWare-owned tenant is a different
-  principal with a different oid. If curator attribution or assignment rows
-  referenced Entra oids directly, moving tenants would corrupt authorship and
-  ownership across the entire library. With the indirection, the move rewrites
-  one small mapping table and nothing else.
+  The rule earns its place three times over. Deployment A has no Entra at all,
+  so the kernel cannot depend on one. Entra object ids are tenant-specific, so
+  any future move — a tenant reorganisation, an acquisition, a self-hosted
+  server on PostgreSQL 18 OAuth — would otherwise corrupt authorship and
+  ownership across the whole library. And a colleague who leaves and returns,
+  or whose account is recreated, keeps their learning history instead of
+  becoming a stranger to it.
 
 - **Role grants are deployment configuration, not data.** The
-  `pgaadauth_create_principal` mappings and the RLS grants are recreated from a
-  runbook in the target subscription. They are never expected to survive a
-  `pg_dump`.
+  `pgaadauth_create_principal` mappings and the RLS grants live in a runbook,
+  are applied to the server, and are never expected to survive a `pg_dump`.
+  Restoring a backup restores the library, not the permissions.
 
-- **Nothing depends on subscription-specific features.** The store must stay
-  ordinary PostgreSQL plus `pgvector`, so the target can be another Azure
-  subscription, another tenant, or eventually a self-hosted server using
-  PostgreSQL 18's native OAuth.
-
-- **The migration is a documented drill, not a one-off.** `pg_dump`/`pg_restore`
-  of a database this small is minutes of work; the runbook covers the identity
-  re-mapping, which is the only genuinely fiddly part, and should be rehearsed
-  once during the pilot rather than first attempted under pressure.
+- **Nothing depends on subscription-specific features.** The store stays
+  ordinary PostgreSQL plus `pgvector`, so an export is restorable anywhere —
+  another subscription, another tenant, or a self-hosted server using
+  PostgreSQL 18's native OAuth. This is now an insurance policy rather than a
+  scheduled task, which is the right amount of effort to spend on it.
 
 ### 8. The kernel stays single-learner
 
@@ -476,12 +485,12 @@ reverse it into "who failed it". Nothing here is in the pilot either; it is
 recorded so a later reader can see that "no aggregates" was a decision about
 *people*, not a refusal to help curators.
 
-## Cost (Deployment B, pilot phase)
+## Cost (Deployment B)
 
-The pilot's budget is the Visual Studio Professional subscription's monthly
-Azure credit (~$50). That is a **development-phase ceiling, not a sizing
-target**: production sizing is the company's decision once the data moves to a
-company subscription, and it is deliberately out of scope here.
+The company subscription carries the bill (Decision 6), so the figures below
+are not a budget ceiling — they exist so the ask is small and concrete when
+someone at DocuWare has to approve it. The honest version of that ask is
+"roughly the price of one lunch per month, and it can be switched off".
 
 Indicative only — **verify in the Azure pricing calculator for the actual
 region before committing**, since tiers and prices move:
@@ -493,16 +502,11 @@ region before committing**, since tiers and prices move:
 | 32 GiB storage | ~$4 |
 | Backup (within storage size) | included |
 
-B1ms plus storage lands near $20/month and B2s near $35 — both inside the
-credit, with room for the pilot to stop and start the server when idle (which
-pauses compute billing). Two caveats worth checking early: Burstable instances
-have a low `max_connections` ceiling, and built-in connection pooling is not
-offered on every tier — a pilot group of ~30 with desktop, CLI and mobile
-clients may need B2s or an external pooler.
-
-Keeping comfortably inside the credit is itself a design goal for the pilot: an
-overrun on a personal subscription is a bad reason for a colleague's learning
-history to become unavailable.
+B1ms plus storage lands near $20/month and B2s near $35. Flexible Server can be
+stopped when idle, which pauses compute billing. Two caveats worth checking
+early: Burstable instances have a low `max_connections` ceiling, and built-in
+connection pooling is not offered on every tier — a group of ~30 with desktop,
+CLI and mobile clients may need B2s or an external pooler.
 
 **Why Azure and not something cheaper.** Neon, Supabase or a €5 Hetzner VM all
 run Postgres with pgvector for less. None of them offer "an administrator
@@ -524,18 +528,16 @@ becomes due now and the next rating recalibrates FSRS (Decision 3). An
 assignment binds while it stands, and the cards outlive it under the learner's
 control (Decision 10). The residual superuser exposure is disclosed by ZAM
 itself, in-app and alongside a working local alternative (Decision 6).
-Aggregates about people are not built at all (Decision 11).
+Aggregates about people are not built at all (Decision 11). Deployment B is
+online-only for reviews; whether an offline cache is worth its sync complexity
+is a question the pilot answers rather than a guess made up front (Decision 6).
+The deployment now starts in a company subscription in the `docuware.com`
+tenant, so the planned migration — and its rehearsal — is gone (Decision 6).
 
-1. **Offline for Deployment B.** With learning state in the server, reviews
-   need the network. Deployment A stays the offline path, but if colleagues
-   want offline reviews *and* cross-device progress, a local read-through
-   cache with write-back is the answer — and it brings back exactly the sync
-   and conflict work this ADR otherwise avoids. Defer until the pilot shows
-   whether it actually hurts.
-2. **Conflict policy for concurrent curation.** Last-write-wins on
+1. **Conflict policy for concurrent curation.** Last-write-wins on
    `updated_at` plus a curation log is probably enough at this scale; verify
    against a real two-curator case before building merge UI.
-3. **Dialect cost, measured.** The 2026-07-04 draft assumed a Postgres provider
+2. **Dialect cost, measured.** The 2026-07-04 draft assumed a Postgres provider
    means "a dialect audit of every kernel query". A survey on 2026-07-25 found
    the actual surface small: `datetime('now')` ×21, `LIKE` ×16 (SQLite's is
    case-insensitive for ASCII, Postgres' is not — needs `ILIKE`),
@@ -559,8 +561,6 @@ Aggregates about people are not built at all (Decision 11).
   Entra principal mapping, RLS policies **with an isolation test suite**, the
   per-device database binding carrying the context (Decision 9), and the admin
   runbook for granting Entra groups access.
-- **Phase C2 — rehearse the subscription move** once, while the pilot is small
-  and nobody depends on it, so the runbook is proven rather than hypothetical.
 - **Phase D — assignments** (Decision 10). Aggregates are not part of the
   plan (Decision 11).
 
