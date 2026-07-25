@@ -96,9 +96,9 @@ describe("MCP stdio server tests", () => {
     });
   });
 
-  it("lists all 26 tools with correct annotations", async () => {
+  it("lists all 27 tools with correct annotations", async () => {
     const response = await client.listTools();
-    expect(response.tools).toHaveLength(26);
+    expect(response.tools).toHaveLength(27);
 
     const toolNames = response.tools.map((t) => t.name).sort();
     const expectedNames = [
@@ -109,6 +109,7 @@ describe("MCP stdio server tests", () => {
       "zam_submit_review",
       "zam_review_action",
       "zam_add_token",
+      "zam_publish_revision",
       "zam_find_tokens",
       "zam_suggest_foundations",
       "zam_link_prereq",

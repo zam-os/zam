@@ -30,6 +30,7 @@ import {
   getReviewsBatch as handleGetReviewsBatch,
   importOkfTokens as handleImportOkfTokens,
   linkPrereq as handleLinkPrereq,
+  publishRevision as handlePublishRevision,
   reviewAction as handleReviewAction,
   startSession as handleStartSession,
   submitReview as handleSubmitReview,
@@ -72,6 +73,11 @@ const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
   "personal-card-list",
   "personal-card-create",
   "personal-card-update",
+  "personal-card-publish-revision",
+  "personal-card-revision-preview",
+  "personal-card-create-assignment",
+  "personal-card-withdraw-assignment",
+  "personal-card-list-assignments",
   "personal-card-remove",
   "personal-card-delete",
   "get-neighborhood",
@@ -625,6 +631,54 @@ export function createMcpServer(db: Database): McpServer {
         question: params.question,
         knowledgeContexts: params.knowledgeContexts,
         prerequisites: params.prerequisites,
+      });
+    }),
+  );
+
+  // zam_publish_revision — Closed-Group Library Phase 2 (Studio release step)
+  server.registerTool(
+    "zam_publish_revision",
+    {
+      description:
+        "Publish a token content revision with forced cosmetic vs material classification (ADR Decision 2 & 3). " +
+        "Cosmetic changes update text silently; material changes re-test learners who learned earlier versions.",
+      inputSchema: {
+        tokenId: z.string().optional().describe("Token ULID"),
+        slug: z.string().optional().describe("Token slug"),
+        materiality: z
+          .enum(["cosmetic", "material"])
+          .describe(
+            "Forced classification: 'cosmetic' (typos, formatting) or 'material' (answer/scope changed, triggers re-test)",
+          ),
+        publishedBy: z
+          .string()
+          .optional()
+          .describe("Optional curator/author name for provenance"),
+        changes: z
+          .object({
+            title: z.string().optional(),
+            question: z.string().optional(),
+            concept: z.string().optional(),
+            context: z.string().optional(),
+            domain: z.string().optional(),
+            bloomLevel: z.number().int().min(1).max(5).optional(),
+            sourceLink: z.string().nullable().optional(),
+          })
+          .optional()
+          .describe("Updated token fields"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: false,
+      },
+    },
+    wrapHandler(async (params) => {
+      return await handlePublishRevision(db, {
+        tokenId: params.tokenId,
+        slug: params.slug,
+        materiality: params.materiality,
+        publishedBy: params.publishedBy,
+        changes: params.changes,
       });
     }),
   );

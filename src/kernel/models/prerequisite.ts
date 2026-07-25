@@ -111,7 +111,7 @@ export async function addPrerequisite(
 
   await db
     .prepare(
-      "INSERT OR IGNORE INTO prerequisites (token_id, requires_id) VALUES (?, ?)",
+      "INSERT INTO prerequisites (token_id, requires_id) VALUES (?, ?) ON CONFLICT DO NOTHING",
     )
     .run(tokenId, requiresId);
 }

@@ -4323,6 +4323,19 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_card_status_not_started: "Not Started",
     lbl_card_due: "Due",
     lbl_card_not_due: "Not Due",
+    btn_release_revision: "Release Revision",
+    lbl_release_modal_title: "Release Token Revision",
+    lbl_release_modal_desc:
+      "Choose the classification for this revision release. This step determines how existing learners are affected.",
+    lbl_release_impact_affected:
+      "{affected} of {total} learner(s) learned an older version and will be re-tested if material.",
+    lbl_release_cosmetic_desc:
+      "Cosmetic (typos, formatting, wording) — learner cards & FSRS state stay unchanged.",
+    lbl_release_material_desc:
+      "Material (answer/concept changed) — learners with older versions will be re-tested immediately.",
+    lbl_release_author: "Author / Curator (optional)",
+    lbl_release_published_toast:
+      "Token revision v{version} published ({materiality})",
     btn_import_curriculum: "Import Curriculum",
     lbl_import_modal_title: "Import Curriculum Standard",
     lbl_import_text: "Curriculum Text",
@@ -4598,6 +4611,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     recall_sent_to_host:
       "Answer sent to the host conversation. Continue there.",
     recall_check_failed: "Answer check failed: {message}",
+    recall_retest_notice_date: "Content updated on {date}",
+    recall_retest_notice_author_date: "Content updated by {author} on {date}",
     settings_section_recall: "Recall",
     settings_section_backup: "Backup",
     settings_section_update: "Update",
@@ -5331,6 +5346,19 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_card_status_not_started: "Nicht gestartet",
     lbl_card_due: "Fällig",
     lbl_card_not_due: "Nicht fällig",
+    btn_release_revision: "Revision veröffentlichen",
+    lbl_release_modal_title: "Token-Revision veröffentlichen",
+    lbl_release_modal_desc:
+      "Wähle die Klassifizierung für diese Veröffentlichung. Dieser Schritt entscheidet, wie mit bisherigen Lernenden verfahren wird.",
+    lbl_release_impact_affected:
+      "{affected} von {total} Lernende(n) haben eine ältere Version gelernt und werden bei einer materiellen Änderung neu getestet.",
+    lbl_release_cosmetic_desc:
+      "Kosmetisch (Tippfehler, Formatierung, Satzstellung) — Lernstatus/FSRS der Lernenden bleibt unverändert.",
+    lbl_release_material_desc:
+      "Materiell (Antwort/Konzept geändert oder Korrektur) — Lernende mit älterer Version werden sofort neu getestet.",
+    lbl_release_author: "Autor / Kurator (optional)",
+    lbl_release_published_toast:
+      "Token-Revision v{version} veröffentlicht ({materiality})",
     btn_import_curriculum: "Lehrplan importieren",
     lbl_import_modal_title: "Lehrplan-Standard importieren",
     lbl_import_text: "Lehrplantext",
@@ -5609,6 +5637,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     recall_sent_to_host:
       "Antwort an die Host-Konversation gesendet. Mach dort weiter.",
     recall_check_failed: "Antwortprüfung fehlgeschlagen: {message}",
+    recall_retest_notice_date: "Inhalt geändert am {date}",
+    recall_retest_notice_author_date: "Inhalt geändert von {author} am {date}",
     settings_section_recall: "Recall",
     settings_section_backup: "Backup",
     settings_section_update: "Update",

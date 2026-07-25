@@ -125,6 +125,7 @@ let fieldSlug: HTMLInputElement;
 let btnSave: HTMLButtonElement;
 let btnDelete: HTMLButtonElement;
 let btnCancel: HTMLButtonElement;
+let btnPublishRevision: HTMLButtonElement;
 let toggleAdvanced: HTMLElement;
 let advancedContent: HTMLElement;
 let toggleArrow: HTMLElement;
@@ -139,6 +140,14 @@ let modalDeleteChoice: HTMLElement;
 let btnModalCancel: HTMLButtonElement;
 let btnModalConfirm: HTMLButtonElement;
 let btnModalHardDelete: HTMLButtonElement;
+
+// Release Revision Modal
+let releaseModalOverlay: HTMLElement;
+let releaseImpactListEl: HTMLUListElement;
+let releaseFieldAuthor: HTMLInputElement;
+let btnReleaseCancel: HTMLButtonElement;
+let btnReleaseSubmit: HTMLButtonElement;
+let releaseRadios: NodeListOf<HTMLInputElement>;
 
 let pendingConfirmCallback: (() => void) | null = null;
 let pendingHardDeleteCallback: (() => void) | null = null;
@@ -236,6 +245,38 @@ export function initLearningContentStudio(): void {
   btnModalHardDelete = document.getElementById(
     "btn-modal-hard-delete",
   ) as HTMLButtonElement;
+
+  // Release Revision Modal bindings
+  btnPublishRevision = document.getElementById(
+    "btn-content-publish-revision",
+  ) as HTMLButtonElement;
+  releaseModalOverlay = document.getElementById("release-modal-overlay")!;
+  releaseImpactListEl = document.getElementById(
+    "release-impact-list-el",
+  ) as HTMLUListElement;
+  releaseFieldAuthor = document.getElementById(
+    "release-field-author",
+  ) as HTMLInputElement;
+  btnReleaseCancel = document.getElementById(
+    "btn-release-modal-cancel",
+  ) as HTMLButtonElement;
+  btnReleaseSubmit = document.getElementById(
+    "btn-release-modal-submit",
+  ) as HTMLButtonElement;
+
+  if (btnPublishRevision) {
+    btnPublishRevision.addEventListener("click", () => {
+      void showReleaseModal();
+    });
+  }
+  if (btnReleaseCancel) {
+    btnReleaseCancel.addEventListener("click", hideReleaseModal);
+  }
+  if (btnReleaseSubmit) {
+    btnReleaseSubmit.addEventListener("click", () => {
+      void submitReleaseRevision();
+    });
+  }
 
   // Import Modal bindings
   importBtn = document.getElementById(
@@ -629,11 +670,13 @@ function updateUIForSelection(): void {
 
     if (isCreatingNew) {
       btnDelete.classList.add("hidden");
+      btnPublishRevision?.classList.add("hidden");
       btnSplitCard?.classList.add("hidden");
       btnFoundationsCard?.classList.add("hidden");
       fieldSlug.value = t("lbl_slug_hint");
     } else {
       btnDelete.classList.remove("hidden");
+      btnPublishRevision?.classList.remove("hidden");
       btnSplitCard?.classList.remove("hidden");
       btnFoundationsCard?.classList.remove("hidden");
     }
@@ -641,8 +684,122 @@ function updateUIForSelection(): void {
     emptyStateEl.classList.remove("hidden");
     formContainer.classList.add("hidden");
     btnCancel.classList.add("hidden");
+    btnPublishRevision?.classList.add("hidden");
     btnSplitCard?.classList.add("hidden");
     btnFoundationsCard?.classList.add("hidden");
+  }
+}
+
+async function showReleaseModal(): Promise<void> {
+  if (!selectedCard) return;
+
+  releaseRadios = document.querySelectorAll(
+    'input[name="release-materiality"]',
+  ) as NodeListOf<HTMLInputElement>;
+  releaseRadios.forEach((r) => {
+    r.checked = false;
+    r.addEventListener("change", () => {
+      btnReleaseSubmit.disabled = false;
+    });
+  });
+  btnReleaseSubmit.disabled = true;
+
+  try {
+    const res = await runBridge<{
+      success: boolean;
+      currentContentVersion: number;
+      totalCards: number;
+      affectedLearners: number;
+    }>("personal-card-revision-preview", ["--slug", selectedCard.slug]);
+
+    if (res && res.success) {
+      releaseImpactListEl.innerHTML = `
+        <li>• ${tf("lbl_release_impact_affected", {
+          affected: res.affectedLearners,
+          total: res.totalCards,
+        })}</li>
+      `;
+    }
+  } catch (err) {
+    console.error("Failed to fetch revision preview", err);
+    releaseImpactListEl.innerHTML = `<li>• ${escapeHtml(t("lbl_error_loading"))}</li>`;
+  }
+
+  releaseModalOverlay.classList.add("active");
+}
+
+function hideReleaseModal(): void {
+  releaseModalOverlay.classList.remove("active");
+}
+
+async function submitReleaseRevision(): Promise<void> {
+  if (!selectedCard) return;
+
+  const checkedRadio = document.querySelector(
+    'input[name="release-materiality"]:checked',
+  ) as HTMLInputElement | null;
+
+  if (!checkedRadio) return;
+
+  const materiality = checkedRadio.value as "cosmetic" | "material";
+  const publishedBy = releaseFieldAuthor.value.trim() || undefined;
+
+  const concept = fieldConcept.value.trim();
+  const question = fieldQuestion.value.trim();
+  const title = fieldTitle.value.trim();
+  const domain = fieldDomain.value.trim();
+  const sourceLink = fieldSourceLink.value.trim();
+  const context = fieldContext.value.trim();
+  const bloom = Number(fieldBloom.value);
+
+  btnReleaseSubmit.disabled = true;
+
+  try {
+    const args: string[] = [
+      "--slug",
+      selectedCard.slug,
+      "--materiality",
+      materiality,
+    ];
+    if (publishedBy) args.push("--published-by", publishedBy);
+    if (title) args.push("--title", title);
+    if (concept) args.push("--concept", concept);
+    if (domain) args.push("--domain", domain);
+    if (bloom) args.push("--bloom", String(bloom));
+    if (context) args.push("--context", context);
+    if (question) args.push("--question", question);
+    if (sourceLink) args.push("--source-link", sourceLink);
+
+    const res = await runBridge<{
+      success: boolean;
+      contentVersion: number;
+      materiality: string;
+    }>("personal-card-publish-revision", args);
+
+    if (res && res.success) {
+      hideReleaseModal();
+      alert(
+        tf("lbl_release_published_toast", {
+          version: res.contentVersion,
+          materiality: res.materiality,
+        }),
+      );
+      const activeSlug = selectedCard.slug;
+      await loadStudioData();
+      const updatedCard = cardsList.find((c) => c.slug === activeSlug);
+      if (updatedCard) {
+        selectCard(updatedCard);
+      } else {
+        cancelEdit();
+      }
+    }
+  } catch (err) {
+    console.error("Failed to publish revision", err);
+    alert(
+      `${t("lbl_error_saving")}: ${err instanceof Error ? err.message : String(err)}`,
+    );
+  } finally {
+    btnReleaseSubmit.disabled = false;
   }
 }
 

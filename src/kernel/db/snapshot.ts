@@ -32,6 +32,7 @@ const MANIFEST_PREFIX = "-- zam-snapshot: ";
  */
 export const SNAPSHOT_TABLES = [
   "tokens",
+  "assignments",
   "sessions",
   "cards",
   "prerequisites",

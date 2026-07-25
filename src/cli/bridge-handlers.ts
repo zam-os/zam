@@ -20,6 +20,7 @@ import {
   assignTokenToContext,
   buildReviewQueue,
   clearTokenMaintenance,
+  createAssignment,
   createToken,
   decideUpdate,
   ensureCard,
@@ -35,6 +36,7 @@ import {
   getDueCards,
   getInstallChannel,
   getPrerequisites,
+  getRevisionImpact,
   getSessionSummary,
   getSetting,
   getTokenById,
@@ -46,11 +48,14 @@ import {
   endSession as kernelEndSession,
   startSession as kernelStartSession,
   suggestFoundations as kernelSuggestFoundations,
+  listAssignmentsByAssigner,
+  listAssignmentsForLearner,
   logStep,
   monitorLogExists,
   OBSERVER_POLICY_UNSET_HINT,
   pairCommands,
   prepareSessionSynthesis,
+  publishTokenRevision,
   readMonitorLog,
   removePrerequisite,
   resetCardsForToken,
@@ -60,6 +65,7 @@ import {
   updateCard,
   updateToken,
   verifySnapshot,
+  withdrawAssignment,
 } from "../kernel/index.js";
 import { resolveOperationKnowledgeContexts } from "./knowledge-contexts.js";
 import { ensureHighQualityQuestion } from "./llm/client.js";
@@ -1457,4 +1463,144 @@ export async function updateCheck(
     latestVersion: latest,
     channel,
   });
+}
+
+// 15. publishRevision & revisionPreview (Closed-Group Library Phase 2)
+export interface PublishRevisionParams {
+  tokenId?: string;
+  slug?: string;
+  materiality: "cosmetic" | "material";
+  publishedBy?: string;
+  changes?: {
+    title?: string;
+    question?: string;
+    concept?: string;
+    context?: string;
+    domain?: string;
+    bloomLevel?: number;
+    sourceLink?: string | null;
+  };
+}
+
+export async function publishRevision(
+  db: Database,
+  params: PublishRevisionParams,
+) {
+  let tokenId = params.tokenId;
+  if (!tokenId && params.slug) {
+    const token = await getTokenBySlug(db, params.slug);
+    if (!token) throw new Error(`Token not found for slug: ${params.slug}`);
+    tokenId = token.id;
+  }
+  if (!tokenId) throw new Error("tokenId or slug is required");
+
+  const result = await publishTokenRevision(db, {
+    tokenId,
+    materiality: params.materiality,
+    publishedBy: params.publishedBy,
+    changes: params.changes,
+  });
+
+  return {
+    success: true as const,
+    ...result,
+  };
+}
+
+export interface RevisionPreviewParams {
+  tokenId?: string;
+  slug?: string;
+}
+
+export async function revisionPreview(
+  db: Database,
+  params: RevisionPreviewParams,
+) {
+  let tokenId = params.tokenId;
+  if (!tokenId && params.slug) {
+    const token = await getTokenBySlug(db, params.slug);
+    if (!token) throw new Error(`Token not found for slug: ${params.slug}`);
+    tokenId = token.id;
+  }
+  if (!tokenId) throw new Error("tokenId or slug is required");
+
+  const impact = await getRevisionImpact(db, tokenId);
+  return {
+    success: true as const,
+    ...impact,
+  };
+}
+
+// 16. createAssignment, withdrawAssignment & listAssignments (Closed-Group Library Phase D)
+export interface CreateAssignmentParams {
+  tokenId?: string;
+  slug?: string;
+  assignerId: string;
+  assigneeId: string;
+  dueDate?: string | null;
+}
+
+export async function createAssignmentHandler(
+  db: Database,
+  params: CreateAssignmentParams,
+) {
+  let tokenId = params.tokenId;
+  if (!tokenId && params.slug) {
+    const token = await getTokenBySlug(db, params.slug);
+    if (!token) throw new Error(`Token not found for slug: ${params.slug}`);
+    tokenId = token.id;
+  }
+  if (!tokenId) throw new Error("tokenId or slug is required");
+
+  const assignment = await createAssignment(db, {
+    tokenId,
+    assignerId: params.assignerId,
+    assigneeId: params.assigneeId,
+    dueDate: params.dueDate,
+  });
+
+  return {
+    success: true as const,
+    assignment,
+  };
+}
+
+export interface WithdrawAssignmentParams {
+  assignmentId: string;
+  assignerId?: string;
+}
+
+export async function withdrawAssignmentHandler(
+  db: Database,
+  params: WithdrawAssignmentParams,
+) {
+  const assignment = await withdrawAssignment(
+    db,
+    params.assignmentId,
+    params.assignerId,
+  );
+  return {
+    success: true as const,
+    assignment,
+  };
+}
+
+export interface ListAssignmentsParams {
+  assigneeId?: string;
+  assignerId?: string;
+}
+
+export async function listAssignmentsHandler(
+  db: Database,
+  params: ListAssignmentsParams,
+) {
+  if (params.assigneeId) {
+    const assignments = await listAssignmentsForLearner(db, params.assigneeId);
+    return { success: true as const, assignments };
+  }
+  if (params.assignerId) {
+    const assignments = await listAssignmentsByAssigner(db, params.assignerId);
+    return { success: true as const, assignments };
+  }
+  throw new Error("assigneeId or assignerId must be provided");
 }

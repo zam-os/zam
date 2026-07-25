@@ -10,6 +10,21 @@ jobs:
   validate:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: zam
+          POSTGRES_PASSWORD: zam_password
+          POSTGRES_DB: zam_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -39,6 +54,8 @@ jobs:
         run: node dist/cli/index.js --version
 
       - name: Run tests
+        env:
+          POSTGRES_URL: postgres://zam:zam_password@localhost:5432/zam_test
         run: npm run test
 
       - name: Test observer core

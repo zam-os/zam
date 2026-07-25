@@ -77,3 +77,4 @@ observer/target/
 
 # Curriculum capture intermediates (re-run scripts/capture-*.ts)
 scripts/.cache/
+.pgdata/

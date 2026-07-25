@@ -592,4 +592,83 @@ async function runMigrations(db: Database): Promise<void> {
     await db.exec(`ALTER TABLE tokens ADD COLUMN maintenance_at TEXT`);
     await db.exec(`ALTER TABLE tokens ADD COLUMN maintenance_reason TEXT`);
   }
+
+  // M015: content versioning for curated libraries (ADR 2026-07-04 Decision 3).
+  // A token carries the version of its *substance*; a card records which
+  // version its owner actually learned. Only a curator's **material** change
+  // bumps the token, so `card.learned_content_version < token.content_version`
+  // means exactly "this learner has not been re-tested since the meaning
+  // changed" — the card is set due and the next rating recalibrates FSRS.
+  //
+  // Both default to 1, which is the backfill: existing tokens and cards are in
+  // sync on migration and nobody is re-tested for upgrading.
+  if (
+    tokenCols.length > 0 &&
+    !tokenCols.some((c) => c.name === "content_version")
+  ) {
+    await db.exec(
+      `ALTER TABLE tokens ADD COLUMN content_version INTEGER NOT NULL DEFAULT 1`,
+    );
+  }
+  const cardCols = (await db.pragma("table_info(cards)")) as Array<{
+    name: string;
+  }>;
+  if (
+    cardCols.length > 0 &&
+    !cardCols.some((c) => c.name === "learned_content_version")
+  ) {
+    await db.exec(
+      `ALTER TABLE cards ADD COLUMN learned_content_version INTEGER NOT NULL DEFAULT 1`,
+    );
+  }
+
+  // M016: provenance columns for published revisions (ADR 2026-07-04 Phase 1).
+  if (
+    tokenCols.length > 0 &&
+    !tokenCols.some((c) => c.name === "published_by")
+  ) {
+    await db.exec(`ALTER TABLE tokens ADD COLUMN published_by TEXT`);
+    await db.exec(`ALTER TABLE tokens ADD COLUMN published_at TEXT`);
+  }
+
+  // M017: editorial state for tokens (ADR 2026-07-04 Phase 3).
+  if (
+    tokenCols.length > 0 &&
+    !tokenCols.some((c) => c.name === "editorial_state")
+  ) {
+    await db.exec(
+      `ALTER TABLE tokens ADD COLUMN editorial_state TEXT NOT NULL DEFAULT 'published'`,
+    );
+    await db.exec(
+      `UPDATE tokens SET editorial_state = 'deprecated' WHERE deprecated_at IS NOT NULL`,
+    );
+  }
+
+  // M018: knowledge assignments (ADR 2026-07-04 Decision 10).
+  if (cardCols.length > 0 && !cardCols.some((c) => c.name === "assigned_by")) {
+    await db.exec(`ALTER TABLE cards ADD COLUMN assigned_by TEXT`);
+    await db.exec(
+      `ALTER TABLE cards ADD COLUMN assignment_id TEXT REFERENCES assignments(id) ON DELETE SET NULL`,
+    );
+  }
+
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS assignments (
+      id           TEXT PRIMARY KEY,
+      token_id     TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+      assigner_id  TEXT NOT NULL,
+      assignee_id  TEXT NOT NULL,
+      due_date     TEXT,
+      created_at   TEXT NOT NULL DEFAULT (datetime('now')),
+      withdrawn_at TEXT
+    );
+  `);
+
+  // M019: "not for me" (ADR 2026-07-04 Decision 10). Distinct from deleting:
+  // detaching stops scheduling but keeps the card and its review history, so
+  // a learner can decline shared content without destroying what they did.
+  // NULL = attached, which is the backfill for every existing card.
+  if (cardCols.length > 0 && !cardCols.some((c) => c.name === "detached_at")) {
+    await db.exec(`ALTER TABLE cards ADD COLUMN detached_at TEXT`);
+  }
 }

@@ -46,6 +46,8 @@ export {
   openDatabase,
   openDatabaseWithSync,
 } from "./db/connection.js";
+export type { PostgresDatabaseOptions } from "./db/postgres.js";
+export { openPostgresDatabase } from "./db/postgres.js";
 export type { RemoteDatabaseOptions } from "./db/remote/provider.js";
 export { openRemoteDatabase } from "./db/remote/provider.js";
 export type { ImportResult, SnapshotManifest } from "./db/snapshot.js";
@@ -79,6 +81,18 @@ export {
   serializeGoal,
 } from "./goals/parser.js";
 export type {
+  PublishRevisionInput,
+  PublishRevisionResult,
+  RevisionChanges,
+  RevisionImpact,
+  RevisionMateriality,
+} from "./library/revision.js";
+export {
+  getRevisionImpact,
+  isAwaitingRetest,
+  publishTokenRevision,
+} from "./library/revision.js";
+export type {
   AgentSkill,
   CreateAgentSkillInput,
   SkillSource,
@@ -89,6 +103,17 @@ export {
   listAgentSkills,
 } from "./models/agent-skill.js";
 export type {
+  Assignment,
+  CreateAssignmentInput,
+} from "./models/assignment.js";
+export {
+  createAssignment,
+  getAssignment,
+  listAssignmentsByAssigner,
+  listAssignmentsForLearner,
+  withdrawAssignment,
+} from "./models/assignment.js";
+export type {
   Card,
   CardDeletionImpact,
   CardState,
@@ -97,12 +122,14 @@ export type {
 } from "./models/card.js";
 export {
   deleteCardForUser,
+  detachCardForUser,
   ensureCard,
   getBlockedCards,
   getCard,
   getCardById,
   getCardDeletionImpact,
   getDueCards,
+  reattachCardForUser,
   resetCardsForToken,
   updateCard,
 } from "./models/card.js";
@@ -185,6 +212,7 @@ export type {
   CurriculumCardInput,
   CurriculumTopicCard,
   DeleteTokenResult,
+  EditorialState,
   FoundationProposalInput,
   ImportCurriculumResult,
   ListTokensOptions,

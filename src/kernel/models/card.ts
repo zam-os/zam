@@ -26,6 +26,10 @@ export interface Card {
   due_at: string;
   last_review_at: string | null;
   blocked: number; // 0 or 1
+  assigned_by?: string | null;
+  assignment_id?: string | null;
+  /** "Not for me": declined by the learner; kept, but not scheduled. */
+  detached_at?: string | null;
 }
 
 export interface UpdateCardInput {
@@ -253,6 +257,78 @@ export async function getCardDeletionImpact(
 }
 
 /**
+ * Refuse an action while an assignment still stands (ADR 2026-07-04
+ * Decision 10). The inability to opt out is what makes an assignment an
+ * assignment rather than a suggestion; once withdrawn, the learner regains
+ * full control of the card.
+ */
+async function assertNotBoundByAssignment(
+  db: Database,
+  card: Card,
+  action: string,
+): Promise<void> {
+  if (!card.assignment_id) return;
+  const assignment = (await db
+    .prepare("SELECT withdrawn_at FROM assignments WHERE id = ?")
+    .get(card.assignment_id)) as { withdrawn_at: string | null } | undefined;
+  if (assignment && assignment.withdrawn_at === null) {
+    throw new Error(`Cannot ${action} card: bound by an active assignment.`);
+  }
+}
+
+/**
+ * "Not for me" — decline a card without destroying anything
+ * (ADR 2026-07-04 Decision 10).
+ *
+ * Detaching stops scheduling but keeps the card row and every review log
+ * attached to it. That is the whole difference from {@link deleteCardForUser}:
+ * a learner who decides a piece of shared content is not for them should not
+ * have to erase the work they already did on it to say so, and should be able
+ * to change their mind ({@link reattachCardForUser}).
+ *
+ * Idempotent; refused while an assignment still binds the card.
+ */
+export async function detachCardForUser(
+  db: Database,
+  tokenId: string,
+  userId: string,
+): Promise<Card> {
+  const card = await getCard(db, tokenId, userId);
+  if (!card) {
+    throw new Error(`Card not found for token ${tokenId} and user ${userId}`);
+  }
+  await assertNotBoundByAssignment(db, card, "detach");
+
+  if (!card.detached_at) {
+    await db
+      .prepare("UPDATE cards SET detached_at = ? WHERE id = ?")
+      .run(new Date().toISOString(), card.id);
+  }
+  return (await getCard(db, tokenId, userId)) as Card;
+}
+
+/**
+ * Undo a detach. Scheduling state is untouched throughout, so a card picked
+ * back up resumes where it left off rather than starting over. Idempotent.
+ */
+export async function reattachCardForUser(
+  db: Database,
+  tokenId: string,
+  userId: string,
+): Promise<Card> {
+  const card = await getCard(db, tokenId, userId);
+  if (!card) {
+    throw new Error(`Card not found for token ${tokenId} and user ${userId}`);
+  }
+  if (card.detached_at) {
+    await db
+      .prepare("UPDATE cards SET detached_at = NULL WHERE id = ?")
+      .run(card.id);
+  }
+  return (await getCard(db, tokenId, userId)) as Card;
+}
+
+/**
  * Delete one user's card for a token. Review logs cascade via FK.
  */
 export async function deleteCardForUser(
@@ -264,6 +340,8 @@ export async function deleteCardForUser(
   if (!card) {
     throw new Error(`Card not found for token ${tokenId} and user ${userId}`);
   }
+
+  await assertNotBoundByAssignment(db, card, "delete");
 
   const impact = await getCardDeletionImpact(db, tokenId, userId);
   await db.prepare("DELETE FROM cards WHERE id = ?").run(card.id);
@@ -296,7 +374,8 @@ export async function getDueCards(
     FROM cards c
     JOIN tokens t ON t.id = c.token_id
     WHERE c.user_id = ? AND c.blocked = 0 AND c.due_at <= ?
-      AND t.maintenance_at IS NULL`;
+      AND t.maintenance_at IS NULL
+      AND c.detached_at IS NULL`;
   const params: unknown[] = [userId, cutoff];
 
   if (domain) {

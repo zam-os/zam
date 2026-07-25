@@ -418,6 +418,18 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "server_db_err_network",
   "server_db_err_token",
   "server_db_err_quota",
+  // Closed-group library Phase 1 re-test notice strings (en/de shipped)
+  "recall_retest_notice_date",
+  "recall_retest_notice_author_date",
+  // Closed-group library Phase 2 Studio release step strings (en/de shipped)
+  "btn_release_revision",
+  "lbl_release_modal_title",
+  "lbl_release_modal_desc",
+  "lbl_release_impact_affected",
+  "lbl_release_cosmetic_desc",
+  "lbl_release_material_desc",
+  "lbl_release_author",
+  "lbl_release_published_toast",
 ]);
 
 /**

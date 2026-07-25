@@ -45,7 +45,10 @@
     "observer:check": "cargo check --manifest-path observer/Cargo.toml",
     "observer:test": "cargo test --manifest-path observer/Cargo.toml",
     "observer:build": "cargo build --manifest-path observer/Cargo.toml --release",
-    "observer:prepare": "node scripts/prepare-observer-sidecar.mjs"
+    "observer:prepare": "node scripts/prepare-observer-sidecar.mjs",
+    "pg:up": "node scripts/pg-dev.mjs up",
+    "pg:down": "node scripts/pg-dev.mjs down",
+    "pg:test": "POSTGRES_URL=$(node scripts/pg-dev.mjs url) vitest run tests/kernel/postgres-rls.test.ts tests/kernel/provider-contract.test.ts tests/kernel/postgres-provider.test.ts"
   },
   "repository": {
     "type": "git",
@@ -74,7 +77,8 @@
     "zod": "^4.4.3"
   },
   "optionalDependencies": {
-    "libsql": "^0.5.29"
+    "libsql": "^0.5.29",
+    "pg": "^8.13.1"
   },
   "overrides": {
     "esbuild": "0.28.1"
@@ -83,6 +87,7 @@
     "@biomejs/biome": "2.5.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^25.5.0",
+    "@types/pg": "^8.11.10",
     "tsup": "^8.5.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",

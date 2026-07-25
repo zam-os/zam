@@ -32,6 +32,9 @@ export interface ReviewQueueItem {
   sourceLink: string | null;
   question: string | null;
   questionSource: string;
+  contentChanged?: boolean;
+  publishedBy?: string | null;
+  publishedAt?: string | null;
 }
 
 export interface ReviewQueue {
@@ -57,6 +60,11 @@ interface CardRow {
   source_link: string | null;
   question: string | null;
   question_source: string;
+  learned_content_version?: number;
+  token_content_version?: number;
+  published_by?: string | null;
+  published_at?: string | null;
+  updated_at?: string;
 }
 
 // ── Functions ────────────────────────────────────────────────────────────────
@@ -98,7 +106,12 @@ export async function buildReviewQueue(
          c.due_at   AS due_at,
          t.source_link AS source_link,
          t.question AS question,
-         t.question_source AS question_source
+         t.question_source AS question_source,
+         c.learned_content_version AS learned_content_version,
+         t.content_version AS token_content_version,
+         t.published_by AS published_by,
+         t.published_at AS published_at,
+         t.updated_at AS updated_at
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
@@ -106,7 +119,9 @@ export async function buildReviewQueue(
          AND c.due_at <= ?
          AND c.state IN ('review', 'relearning', 'learning')
          AND t.deprecated_at IS NULL
-         AND t.maintenance_at IS NULL`;
+         AND t.maintenance_at IS NULL
+         AND t.editorial_state = 'published'
+         AND c.detached_at IS NULL`;
 
   const dueParams: unknown[] = [options.userId, nowISO];
 
@@ -136,14 +151,21 @@ export async function buildReviewQueue(
          c.due_at   AS due_at,
          t.source_link AS source_link,
          t.question AS question,
-         t.question_source AS question_source
+         t.question_source AS question_source,
+         c.learned_content_version AS learned_content_version,
+         t.content_version AS token_content_version,
+         t.published_by AS published_by,
+         t.published_at AS published_at,
+         t.updated_at AS updated_at
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
          AND c.blocked = 0
          AND c.state = 'new'
          AND t.deprecated_at IS NULL
-         AND t.maintenance_at IS NULL`;
+         AND t.maintenance_at IS NULL
+         AND t.editorial_state = 'published'
+         AND c.detached_at IS NULL`;
 
   const newParams: unknown[] = [options.userId];
 
@@ -215,6 +237,11 @@ export async function buildReviewQueue(
 
 /** Convert a SQL row to a ReviewQueueItem. */
 function rowToItem(row: CardRow): ReviewQueueItem {
+  const contentChanged =
+    row.learned_content_version !== undefined &&
+    row.token_content_version !== undefined &&
+    row.learned_content_version < row.token_content_version;
+
   return {
     cardId: row.card_id,
     tokenId: row.token_id,
@@ -228,6 +255,9 @@ function rowToItem(row: CardRow): ReviewQueueItem {
     sourceLink: row.source_link,
     question: row.question,
     questionSource: row.question_source,
+    contentChanged,
+    publishedBy: row.published_by ?? null,
+    publishedAt: row.published_at ?? row.updated_at ?? null,
   };
 }
 

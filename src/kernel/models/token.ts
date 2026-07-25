@@ -16,6 +16,8 @@ export type BloomLevel = 1 | 2 | 3 | 4 | 5;
 
 export type SymbiosisMode = "shadowing" | "copilot" | "autonomy";
 
+export type EditorialState = "draft" | "in_review" | "published" | "deprecated";
+
 /**
  * Who authored a token's current recall question. LLM healing only
  * overwrites questions whose source is not 'manual'.
@@ -45,6 +47,8 @@ export interface Token {
    * preserved. NULL = healthy. */
   maintenance_at: string | null;
   maintenance_reason: string | null;
+  /** Editorial state (ADR 2026-07-04 Phase 3: 'draft' | 'in_review' | 'published' | 'deprecated'). */
+  editorial_state: EditorialState;
 }
 
 export interface CreateTokenInput {
@@ -60,6 +64,7 @@ export interface CreateTokenInput {
   question_source?: QuestionSource;
   provider?: string | null;
   topic_id?: string | null;
+  editorial_state?: EditorialState;
 }
 
 export interface UpdateTokenInput {
@@ -74,10 +79,12 @@ export interface UpdateTokenInput {
   question_source?: QuestionSource;
   provider?: string | null;
   topic_id?: string | null;
+  editorial_state?: EditorialState;
 }
 
 export interface ListTokensOptions {
   domain?: string;
+  editorialState?: EditorialState;
   /**
    * Filter by domain prefix using `/` as separator (e.g. "company-team").
    * Matches exact or startsWith(prefix + "/").
@@ -149,10 +156,21 @@ export async function createToken(
   const questionSource = input.question_source ?? "manual";
   validateQuestionSource(questionSource);
 
+  const editorialState = input.editorial_state ?? "published";
+  const validStates: EditorialState[] = [
+    "draft",
+    "in_review",
+    "published",
+    "deprecated",
+  ];
+  if (!validStates.includes(editorialState)) {
+    throw new Error(`Invalid editorial_state: ${editorialState}`);
+  }
+
   await db
     .prepare(`
-    INSERT INTO tokens (id, slug, title, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, question_source, provider, topic_id, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO tokens (id, slug, title, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, question_source, provider, topic_id, created_at, updated_at, editorial_state)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `)
     .run(
       id,
@@ -170,6 +188,7 @@ export async function createToken(
       input.topic_id ?? null,
       now,
       now,
+      editorialState,
     );
 
   return (await getTokenById(db, id)) as Token;
@@ -322,6 +341,19 @@ export async function updateToken(
     fields.push("topic_id = ?");
     values.push(updates.topic_id);
   }
+  if (updates.editorial_state !== undefined) {
+    const validStates: EditorialState[] = [
+      "draft",
+      "in_review",
+      "published",
+      "deprecated",
+    ];
+    if (!validStates.includes(updates.editorial_state)) {
+      throw new Error(`Invalid editorial_state: ${updates.editorial_state}`);
+    }
+    fields.push("editorial_state = ?");
+    values.push(updates.editorial_state);
+  }
 
   if (fields.length === 0) {
     throw new Error("updateToken called with no fields to update");
@@ -358,7 +390,7 @@ export async function deprecateToken(
   const now = new Date().toISOString();
   await db
     .prepare(
-      "UPDATE tokens SET deprecated_at = ?, updated_at = ? WHERE slug = ?",
+      "UPDATE tokens SET deprecated_at = ?, editorial_state = 'deprecated', updated_at = ? WHERE slug = ?",
     )
     .run(now, now, slug);
 
@@ -627,6 +659,11 @@ export async function listTokens(
 ): Promise<Token[]> {
   const whereClauses: string[] = ["deprecated_at IS NULL"];
   const params: unknown[] = [];
+
+  if (options?.editorialState) {
+    whereClauses.push("editorial_state = ?");
+    params.push(options.editorialState);
+  }
 
   if (options?.domain) {
     whereClauses.push("domain = ?");
@@ -1219,7 +1256,7 @@ export async function confirmCardSplit(
 
       // Link proposal tokens as prerequisites of original token
       const insertPrereqStmt = tx.prepare(
-        "INSERT OR IGNORE INTO prerequisites (token_id, requires_id) VALUES (?, ?)",
+        "INSERT INTO prerequisites (token_id, requires_id) VALUES (?, ?) ON CONFLICT DO NOTHING",
       );
       for (const propToken of proposalTokens) {
         await insertPrereqStmt.run(originalToken.id, propToken.id);
@@ -1403,7 +1440,7 @@ export async function confirmFoundations(
 
       await tx
         .prepare(
-          "INSERT OR IGNORE INTO prerequisites (token_id, requires_id) VALUES (?, ?)",
+          "INSERT INTO prerequisites (token_id, requires_id) VALUES (?, ?) ON CONFLICT DO NOTHING",
         )
         .run(originalToken.id, targetTokenId);
     }

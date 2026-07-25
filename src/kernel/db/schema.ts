@@ -40,7 +40,16 @@ CREATE TABLE IF NOT EXISTS tokens (
   -- or an ambiguous re-import). Cards of a token in maintenance are
   -- excluded from scheduling until repaired; learning state is preserved.
   maintenance_at     TEXT,
-  maintenance_reason TEXT
+  -- Version of the token's *substance* (ADR 2026-07-04 Decision 3). Only a
+  -- curator's material change bumps it; cosmetic edits (typo, phrasing) leave
+  -- it alone so nobody is re-tested for a reworded question.
+  content_version    INTEGER NOT NULL DEFAULT 1,
+  maintenance_reason TEXT,
+  -- Provenance for content revisions (ADR 2026-07-04 Phase 1).
+  published_by       TEXT,
+  published_at       TEXT,
+  -- Editorial state (ADR 2026-07-04 Phase 3: 'draft' | 'in_review' | 'published' | 'deprecated').
+  editorial_state    TEXT NOT NULL DEFAULT 'published'
 );
 
 -- Prerequisite dependency graph: "to learn A, first know B"
@@ -48,6 +57,17 @@ CREATE TABLE IF NOT EXISTS prerequisites (
   token_id    TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
   requires_id TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
   PRIMARY KEY (token_id, requires_id)
+);
+
+-- Knowledge assignments (ADR 2026-07-04 Decision 10)
+CREATE TABLE IF NOT EXISTS assignments (
+  id           TEXT PRIMARY KEY,
+  token_id     TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  assigner_id  TEXT NOT NULL,
+  assignee_id  TEXT NOT NULL,
+  due_date     TEXT,
+  created_at   TEXT NOT NULL DEFAULT (datetime('now')),
+  withdrawn_at TEXT
 );
 
 -- Per-user scheduling state for each token (FSRS fields)
@@ -65,7 +85,27 @@ CREATE TABLE IF NOT EXISTS cards (
   due_at        TEXT NOT NULL DEFAULT (datetime('now')),
   last_review_at TEXT,
   blocked       INTEGER NOT NULL DEFAULT 0,
+  -- Which content_version of the token this learner actually learned. Lower
+  -- than the token's means a material change has landed since and the card is
+  -- awaiting a re-test (ADR 2026-07-04 Decision 3).
+  learned_content_version INTEGER NOT NULL DEFAULT 1,
+  -- Assignment binding provenance (ADR 2026-07-04 Decision 10).
+  assigned_by   TEXT,
+  assignment_id TEXT REFERENCES assignments(id) ON DELETE SET NULL,
+  -- "Not for me" (ADR 2026-07-04 Decision 10): the learner declined this
+  -- shared content. Stops scheduling but keeps the card and its review
+  -- history — unlike deleting, which destroys both. NULL = attached.
+  detached_at   TEXT,
   UNIQUE(token_id, user_id)
+);
+
+-- Work+learning sessions
+CREATE TABLE IF NOT EXISTS sessions (
+  id            TEXT PRIMARY KEY,
+  user_id       TEXT NOT NULL,
+  task          TEXT NOT NULL,
+  started_at    TEXT NOT NULL DEFAULT (datetime('now')),
+  completed_at  TEXT
 );
 
 -- Immutable review log: every rating event
@@ -79,15 +119,6 @@ CREATE TABLE IF NOT EXISTS review_logs (
   reviewed_at     TEXT NOT NULL DEFAULT (datetime('now')),
   scheduled_at    TEXT NOT NULL,
   session_id      TEXT REFERENCES sessions(id)
-);
-
--- Work+learning sessions
-CREATE TABLE IF NOT EXISTS sessions (
-  id            TEXT PRIMARY KEY,
-  user_id       TEXT NOT NULL,
-  task          TEXT NOT NULL,
-  started_at    TEXT NOT NULL DEFAULT (datetime('now')),
-  completed_at  TEXT
 );
 
 -- Steps within a session: who did what
