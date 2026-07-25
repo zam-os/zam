@@ -5,10 +5,15 @@
  * Auth is the learner's Copilot login / seat. Multimodal: `--attachment` for
  * images (non-interactive only). Optional `--model` (e.g. gpt-5-mini).
  *
- * Do **not** pass `--allow-all-tools` for pure text generation: with MCP servers
- * enabled (e.g. the configured `zam` MCP), that path often stalls for minutes
- * while the agent explores tools. Text-only `-p -s` returns in ~10–20s.
- * Paths/tools are only enabled when attachments need filesystem access.
+ * Headless recall is intentionally "lean":
+ * - No `--allow-all-tools` for pure text (MCP tool exploration can stall).
+ * - Disable the configured `zam` MCP + built-in GitHub MCP (each spawn would
+ *   otherwise boot `zam mcp` + github-mcp-server).
+ * - `--no-remote` so the CLI does not attach to / hold a VS Code remote session
+ *   (GitHub issue: auto-connect to VS Code with no opt-out for a long while).
+ * - Prefer `--context default` and `--effort low` over the learner's interactive
+ *   defaults (`long_context` / `high`) — those make one-shot question gen slow.
+ * Measured ~3× faster for a short OK-prompt (≈6s lean vs ≈16s base).
  */
 
 import { homedir } from "node:os";
@@ -131,9 +136,23 @@ export class CopilotAdapter implements AgentTextAdapter {
     // can leave the model list empty.
     const cwd = homedir();
     const images = req.imagePaths?.filter(Boolean) ?? [];
-    // Silent text-only prompt. Tools/paths only when reading attachments —
-    // blanket --allow-all-tools with MCP servers (zam, github) stalls for ages.
-    const args = ["-p", prompt, "-s"];
+    // Lean headless argv: answer only, no IDE remote session, no MCP boot.
+    const args = [
+      "-p",
+      prompt,
+      "-s",
+      "--no-remote",
+      "--no-remote-export",
+      "--disable-builtin-mcps",
+      "--disable-mcp-server",
+      "zam",
+      "--context",
+      "default",
+      "--effort",
+      "low",
+    ];
+    // Tools/paths only when reading attachments — pure text must not open the
+    // tool-policy path that stalls with MCP/VS Code side channels.
     if (images.length > 0) {
       args.push("--allow-all-tools", "--allow-all-paths");
     }
