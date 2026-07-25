@@ -538,7 +538,7 @@
 
       <!-- VIEW 3: STUDY SESSION CARD -->
       <section id="study-view" class="view">
-        <div class="study-card frosted">
+        <div id="study-active-card" class="study-card frosted">
           <!-- CARD HEADER -->
           <div class="card-header">
             <span class="card-progress" id="card-progress">1/10</span>
@@ -689,10 +689,21 @@
           </div>
         </div>
 
-        <!-- PAUSE/EXIT BUTTON -->
-        <div class="study-footer">
+        <!-- END SESSION BUTTON -->
+        <div class="study-footer" id="study-footer">
           <button id="btn-pause-session" class="btn secondary-btn">
-            Pause & Exit Session
+            End session
+          </button>
+        </div>
+
+        <!-- SESSION SUMMARY (shown when ending or queue empty) -->
+        <div id="session-summary" class="study-card frosted completion-card hidden">
+          <div class="completion-mark" aria-hidden="true">✓</div>
+          <h2 id="session-summary-title">Session summary</h2>
+          <p id="session-summary-sub"></p>
+          <div id="session-summary-spread" class="session-summary-spread"></div>
+          <button id="btn-session-summary-done" class="btn primary-btn btn-large glow-btn" type="button">
+            Back to Dashboard
           </button>
         </div>
       </section>

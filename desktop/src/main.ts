@@ -112,6 +112,24 @@ let modelRegistry: ModelRow[] = [];
 let editingModelId: string | null = null;
 let totalDue = 0;
 let cardsReviewedThisSession = 0;
+/** Ratings submitted this study session (for the end-of-session summary). */
+const sessionRatingTally: {
+  done: number;
+  ratings: Record<1 | 2 | 3 | 4, number>;
+} = {
+  done: 0,
+  ratings: { 1: 0, 2: 0, 3: 0, 4: 0 },
+};
+/** Due count when the current study session started (summary denominator). */
+let sessionStartedDue = 0;
+let sessionSummaryVisible = false;
+/**
+ * Snapshot of the #1 (fallback-order) model when Settings was opened. Leaving
+ * Settings re-runs ensure-llm when this fingerprint differs so the header AI
+ * badge reflects the newly primary model immediately — not only after the next
+ * learning session / dashboard load.
+ */
+let primaryModelFingerprintOnSettingsEnter: string | null = null;
 
 interface ProviderRoleStatus {
   enabled: boolean;
@@ -506,6 +524,10 @@ function initializeTranslations() {
   document.getElementById("lbl-reveal-title")!.textContent = t("lbl_reveal_title");
   document.getElementById("lbl-rating-instruction")!.textContent = t("lbl_rating_instruction");
   document.getElementById("btn-pause-session")!.textContent = t("btn_pause_session");
+  document.getElementById("session-summary-title")!.textContent =
+    t("lbl_recall_summary_title");
+  document.getElementById("btn-session-summary-done")!.textContent =
+    t("btn_back_to_dashboard");
   document.getElementById("btn-reveal-answer")!.textContent = t("btn_reveal_answer");
   document.getElementById("lbl-observer-title")!.textContent = t("observer_title");
   document.getElementById("observer-status")!.textContent = t("observer_idle");
@@ -1344,6 +1366,99 @@ function setAiStatus(label: string, dotClass: "green" | "amber" | "gray"): void 
   if (pulseDot) {
     pulseDot.className = `pulse-dot ${dotClass}`;
     pulseDot.setAttribute("aria-label", label);
+  }
+}
+
+/**
+ * Bring the configured primary model online (or re-validate after Settings
+ * changes) and update the header badge. Non-blocking: shows "starting" first.
+ */
+function refreshAiStatus(): void {
+  setAiStatus(t("ai_status_starting"), "amber");
+  runBridge<{
+    usable: boolean;
+    online: boolean;
+    reason?: string;
+    model?: string;
+    label?: string;
+    local?: boolean;
+  }>("ensure-llm", ["--timeout", "45000"])
+    .then((llm) => {
+      // Prefer human label over raw model ids (esp. agent:harness).
+      const display = llm.label?.trim() || llm.model?.trim() || "cloud";
+      if (llm.usable) {
+        setAiStatus(
+          llm.local
+            ? t("ai_status_online")
+            : tf("ai_status_cloud_online", { model: display }),
+          "green",
+        );
+      } else if (llm.reason === "model-not-found") {
+        setAiStatus(t("ai_status_model_missing"), "gray");
+      } else if (llm.local === false && (llm.model || llm.label)) {
+        setAiStatus(
+          tf("ai_status_cloud_offline", { model: display }),
+          "gray",
+        );
+      } else {
+        setAiStatus(t("ai_status_offline"), "gray");
+      }
+    })
+    .catch(() => {
+      setAiStatus(t("ai_status_offline"), "gray");
+    });
+  void loadProviderStatus();
+}
+
+/** Stable identity of the first model in fallback order (#1 in Settings). */
+function primaryModelFingerprint(models: ModelRow[]): string {
+  const ordered = [...models].sort((a, b) => a.order - b.order);
+  const top = ordered[0];
+  if (!top) return "empty";
+  return [
+    top.id,
+    top.model,
+    top.url,
+    top.local ? "1" : "0",
+    top.apiFlavor,
+    top.keyState,
+    top.capabilities.text ? "t" : "-",
+    top.capabilities.embedding ? "e" : "-",
+    top.capabilities.image ? "i" : "-",
+  ].join("|");
+}
+
+async function capturePrimaryModelFingerprint(): Promise<void> {
+  try {
+    const response = await runBridge<{ models: ModelRow[] }>("model-list");
+    primaryModelFingerprintOnSettingsEnter = primaryModelFingerprint(
+      response.models ?? [],
+    );
+  } catch {
+    // Unknown baseline → re-init on leave so a failed snapshot never leaves a
+    // stale header badge after the user edited models.
+    primaryModelFingerprintOnSettingsEnter = "unknown";
+  }
+}
+
+/**
+ * If the #1 model changed while Settings was open, re-initialize the AI so the
+ * status badge matches the model already used for new requests.
+ */
+async function maybeReinitAiAfterSettings(): Promise<void> {
+  if (primaryModelFingerprintOnSettingsEnter === null) return;
+  const entered = primaryModelFingerprintOnSettingsEnter;
+  primaryModelFingerprintOnSettingsEnter = null;
+  try {
+    const response = await runBridge<{ models: ModelRow[] }>("model-list");
+    const current = primaryModelFingerprint(response.models ?? []);
+    if (current !== entered) {
+      refreshAiStatus();
+    }
+  } catch {
+    // Still re-check readiness if we cannot compare — better a refresh than a
+    // stale badge after the user edited models.
+    refreshAiStatus();
   }
 }
 
@@ -3237,6 +3352,10 @@ function switchView(
   viewId: AppView,
   options: { skipStudioLoad?: boolean } = {},
 ) {
+  const wasSettings =
+    document.getElementById("settings-view")?.classList.contains("active") ===
+    true;
+
   if (viewId !== "study-view" && studySessionActive) {
     evaluationRequestId++;
     if (revealInProgress) cancelActiveBridgeRequest();
@@ -3247,10 +3366,22 @@ function switchView(
     if (isStudyConfirmOpen()) hideStudyConfirm();
     activeCard = null;
     updateReviewControlState();
+    // Leaving study via nav abandons the in-progress card; still close the
+    // backend session so it does not linger. The summary path uses
+    // finishStudySession() and stays on study-view.
+    void closeUiLearningSession();
+  }
+  // Leaving the summary screen via nav restores the study shell for next time.
+  if (viewId !== "study-view" && sessionSummaryVisible) {
+    document.getElementById("session-summary")?.classList.add("hidden");
+    document.getElementById("study-active-card")?.classList.remove("hidden");
+    document.getElementById("study-footer")?.classList.remove("hidden");
+    sessionSummaryVisible = false;
+    resetSessionTally();
   }
   document.querySelectorAll(".view").forEach((el) => el.classList.remove("active"));
   document.getElementById(viewId)?.classList.add("active");
-  studySessionActive = viewId === "study-view";
+  studySessionActive = viewId === "study-view" && !sessionSummaryVisible;
   setActiveNav(viewId);
 
   const mainContainer = document.querySelector('main.container');
@@ -3265,6 +3396,9 @@ function switchView(
 
   if (viewId === "settings-view") {
     refreshSettingsData();
+    void capturePrimaryModelFingerprint();
+  } else if (wasSettings) {
+    void maybeReinitAiAfterSettings();
   }
   // openCardInEditor already loads + selects; skip the redundant fire-and-forget
   // load that would race with that path (ADR 2026-07-16b full-editor jump).
@@ -4198,42 +4332,8 @@ async function loadDashboard() {
     }
 
     // 3. Bring the local LLM online (auto-starts the server like `zam learn`)
-    //    and reflect status. Don't block the dashboard on model load — show a
-    //    "starting" state and update the badge once it resolves.
-    setAiStatus(t("ai_status_starting"), "amber");
-
-    runBridge<{
-      usable: boolean;
-      online: boolean;
-      reason?: string;
-      model?: string;
-      local?: boolean;
-    }>("ensure-llm", [
-      "--timeout",
-      "45000",
-    ])
-      .then((llm) => {
-        if (llm.usable) {
-          setAiStatus(
-            llm.local
-              ? t("ai_status_online")
-              : tf("ai_status_cloud_online", { model: llm.model ?? "cloud" }),
-            "green",
-          );
-        } else if (llm.reason === "model-not-found") {
-          setAiStatus(t("ai_status_model_missing"), "gray");
-        } else if (llm.local === false && llm.model) {
-          setAiStatus(
-            tf("ai_status_cloud_offline", { model: llm.model }),
-            "gray",
-          );
-        } else {
-          setAiStatus(t("ai_status_offline"), "gray");
-        }
-      })
-      .catch(() => {
-        setAiStatus(t("ai_status_offline"), "gray");
-      });
+    //    and reflect status. Don't block the dashboard on model load.
+    refreshAiStatus();
   } catch (err) {
     console.error("Failed to load dashboard:", err);
     showDashboardError(err);
@@ -4317,7 +4417,7 @@ async function loadNextCard(
     if (requestId !== questionRequestId) return;
     finishQuestionWait();
     if (!payload.hasReview || !payload.card || !payload.prompt) {
-      showCompletionState();
+      void finishStudySession();
       return;
     }
 
@@ -4326,10 +4426,15 @@ async function loadNextCard(
     resolvedContextContent = payload.resolvedContext?.content || null;
 
     cardsReviewedThisSession++;
-    
+
     // Set progress string
-    const totalSessionCards = totalDue + cardsReviewedThisSession - 1;
-    document.getElementById("card-progress")!.textContent = `${cardsReviewedThisSession} / ${totalSessionCards}`;
+    const totalSessionCards = Math.max(
+      sessionStartedDue,
+      sessionRatingTally.done + 1,
+      cardsReviewedThisSession,
+    );
+    document.getElementById("card-progress")!.textContent =
+      `${sessionRatingTally.done + 1} / ${totalSessionCards}`;
 
     // Set domain badge
     const domainBadge = document.getElementById("domain-badge")!;
@@ -4818,7 +4923,13 @@ async function submitRating(ratingVal: number) {
       "--card-id", cardId,
       "--rating", String(ratingVal)
     ]);
-    
+
+    if (ratingVal >= 1 && ratingVal <= 4) {
+      const r = ratingVal as 1 | 2 | 3 | 4;
+      sessionRatingTally.ratings[r] += 1;
+      sessionRatingTally.done += 1;
+    }
+
     // Load next card or finish
     if (studySessionActive) await loadNextCard();
   } catch (err) {
@@ -5100,33 +5211,100 @@ async function jumpToFullEditor(): Promise<void> {
   }
 }
 
-// ── SESSION COMPLETION SCREEN ────────────────────────────────────────────
-function showCompletionState() {
-  const studyView = document.getElementById("study-view")!;
-  studyView.textContent = "";
-  const card = document.createElement("div");
-  card.className = "study-card frosted completion-card";
+// ── SESSION COMPLETION / SUMMARY ─────────────────────────────────────────
+function resetSessionTally(): void {
+  sessionRatingTally.done = 0;
+  sessionRatingTally.ratings = { 1: 0, 2: 0, 3: 0, 4: 0 };
+  cardsReviewedThisSession = 0;
+  sessionStartedDue = totalDue;
+  sessionSummaryVisible = false;
+}
 
-  const mark = document.createElement("div");
-  mark.className = "completion-mark";
-  mark.textContent = "✓";
+function prepareStudyViewForSession(): void {
+  document.getElementById("session-summary")?.classList.add("hidden");
+  document.getElementById("study-active-card")?.classList.remove("hidden");
+  document.getElementById("study-footer")?.classList.remove("hidden");
+  resetSessionTally();
+}
 
-  const title = document.createElement("h2");
-  title.textContent = t("session_completed");
+function renderSessionSummary(): void {
+  const summary = document.getElementById("session-summary");
+  const titleEl = document.getElementById("session-summary-title");
+  const subEl = document.getElementById("session-summary-sub");
+  const spreadEl = document.getElementById("session-summary-spread");
+  const doneBtn = document.getElementById("btn-session-summary-done");
+  if (!summary || !titleEl || !subEl || !spreadEl || !doneBtn) return;
 
-  const subtitle = document.createElement("p");
-  subtitle.textContent = t("session_completed_sub");
+  const total = Math.max(sessionStartedDue, sessionRatingTally.done);
+  titleEl.textContent = t("lbl_recall_summary_title");
+  subEl.textContent =
+    sessionRatingTally.done > 0
+      ? tf("lbl_recall_summary", {
+          done: sessionRatingTally.done,
+          total,
+        })
+      : t("session_completed_sub");
 
-  const button = document.createElement("button");
-  button.id = "btn-back-to-dashboard";
-  button.className = "btn primary-btn btn-large glow-btn";
-  button.textContent = t("btn_back_to_dashboard");
-  button.addEventListener("click", () => {
-    window.location.reload();
-  });
+  spreadEl.replaceChildren();
+  if (sessionRatingTally.done > 0) {
+    for (const r of [1, 2, 3, 4] as const) {
+      const chip = document.createElement("span");
+      chip.className = "session-summary-chip";
+      chip.textContent = `${t(`lbl_rate_${r}`)}: ${sessionRatingTally.ratings[r]}`;
+      spreadEl.appendChild(chip);
+    }
+  }
 
-  card.append(mark, title, subtitle, button);
-  studyView.appendChild(card);
+  doneBtn.textContent = t("btn_back_to_dashboard");
+
+  document.getElementById("study-active-card")?.classList.add("hidden");
+  document.getElementById("study-footer")?.classList.add("hidden");
+  summary.classList.remove("hidden");
+}
+
+/**
+ * End the study session (button, Escape, or empty queue) and show the results
+ * summary. Pause vs end is intentionally the same path — one exit, one summary.
+ */
+async function finishStudySession(): Promise<void> {
+  if (sessionSummaryVisible) return;
+  sessionSummaryVisible = true;
+  studySessionActive = false;
+
+  evaluationRequestId++;
+  if (revealInProgress) cancelActiveBridgeRequest();
+  revealInProgress = false;
+  finishAiWait();
+  finishQuestionWait();
+  closeManageMenu();
+  closeInlineEditor();
+  if (isStudyConfirmOpen()) hideStudyConfirm();
+  resetDiscussionUi();
+  activeCard = null;
+  updateReviewControlState();
+
+  if (observerWatchRunning) {
+    await stopObserverWatch();
+  }
+  await closeUiLearningSession();
+
+  // Keep the study view visible so the summary can render in place.
+  document
+    .querySelectorAll(".view")
+    .forEach((el) => el.classList.remove("active"));
+  document.getElementById("study-view")?.classList.add("active");
+  setActiveNav("study-view");
+  renderSessionSummary();
+}
+
+function leaveSessionSummaryToDashboard(): void {
+  document.getElementById("session-summary")?.classList.add("hidden");
+  document.getElementById("study-active-card")?.classList.remove("hidden");
+  document.getElementById("study-footer")?.classList.remove("hidden");
+  sessionSummaryVisible = false;
+  resetSessionTally();
+  switchView("dashboard-view");
+  void loadDashboard();
 }
 
 // ── KEYBOARD SHORTCUTS & EVENT BINDINGS ──────────────────────────────────
@@ -5208,6 +5386,7 @@ window.addEventListener("DOMContentLoaded", () => {
   // Start Session Button
   document.getElementById("btn-start-session")!.addEventListener("click", () => {
     void (async () => {
+      prepareStudyViewForSession();
       await ensureUiLearningSession("Desktop learning session");
       switchView("study-view");
       loadNextCard();
@@ -5454,18 +5633,16 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Pause & Exit Session Button
+  // End session → summary (no separate pause path)
   document.getElementById("btn-pause-session")!.addEventListener("click", () => {
-    void (async () => {
-      if (observerWatchRunning) {
-        await stopObserverWatch();
-      }
-      resetDiscussionUi();
-      await closeUiLearningSession();
-      switchView("dashboard-view");
-      loadDashboard();
-    })();
+    void finishStudySession();
   });
+
+  document
+    .getElementById("btn-session-summary-done")
+    ?.addEventListener("click", () => {
+      leaveSessionSummaryToDashboard();
+    });
 
   // Submit Answer / Reveal Answer Button
   document.getElementById("btn-reveal-answer")!.addEventListener("click", () => {
@@ -5556,7 +5733,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Keyboard events
   window.addEventListener("keydown", (e: KeyboardEvent) => {
-    // 1. Esc key -> Pause and exit
+    // 1. Esc key → end session + summary (same as the footer button)
     if (e.key === "Escape" && studySessionActive) {
       if (reviewActionInProgress || cardLoadInProgress) return;
       if (isStudyConfirmOpen()) {
@@ -5567,9 +5744,7 @@ window.addEventListener("DOMContentLoaded", () => {
         closeInlineEditor();
         return;
       }
-      resetDiscussionUi();
-      switchView("dashboard-view");
-      loadDashboard();
+      void finishStudySession();
       return;
     }
 
