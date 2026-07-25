@@ -7,6 +7,7 @@ import {
   createToken,
   type Database,
   deleteCardForUser,
+  detachCardForUser,
   evaluateRating,
   getCard,
   listAssignmentsByAssigner,
@@ -70,10 +71,15 @@ describe("Phase D — Knowledge Assignments (ADR Decision 10)", () => {
       assigneeId: "learner_bob",
     });
 
-    // Learner attempts to detach/delete card while assignment is active
+    // Both ways out are refused while the assignment stands. Detach and
+    // delete are distinct actions now (ADR Decision 10: keep, detach, or
+    // delete), so the binding has to hold against each of them.
     await expect(
       deleteCardForUser(db, token.id, "learner_bob"),
-    ).rejects.toThrow("Cannot detach card: card is bound by an active assignment.");
+    ).rejects.toThrow(/active assignment/i);
+    await expect(
+      detachCardForUser(db, token.id, "learner_bob"),
+    ).rejects.toThrow(/active assignment/i);
   });
 
   it("allows card detachment after the assignment is withdrawn, preserving review history", async () => {

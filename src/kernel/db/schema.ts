@@ -92,6 +92,10 @@ CREATE TABLE IF NOT EXISTS cards (
   -- Assignment binding provenance (ADR 2026-07-04 Decision 10).
   assigned_by   TEXT,
   assignment_id TEXT REFERENCES assignments(id) ON DELETE SET NULL,
+  -- "Not for me" (ADR 2026-07-04 Decision 10): the learner declined this
+  -- shared content. Stops scheduling but keeps the card and its review
+  -- history — unlike deleting, which destroys both. NULL = attached.
+  detached_at   TEXT,
   UNIQUE(token_id, user_id)
 );
 

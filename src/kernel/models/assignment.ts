@@ -68,7 +68,10 @@ export async function createAssignment(
     const card = await ensureCard(tx, input.tokenId, input.assigneeId);
     await tx
       .prepare(
-        "UPDATE cards SET assigned_by = ?, assignment_id = ? WHERE id = ?",
+        // Clearing detached_at is deliberate: an assignment binds, so it
+        // overrides an earlier "not for me" (ADR Decision 10). The learner
+        // may decline again once the assignment is withdrawn.
+        "UPDATE cards SET assigned_by = ?, assignment_id = ?, detached_at = NULL WHERE id = ?",
       )
       .run(input.assignerId, id, card.id);
   });

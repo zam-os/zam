@@ -663,4 +663,12 @@ async function runMigrations(db: Database): Promise<void> {
       withdrawn_at TEXT
     );
   `);
+
+  // M019: "not for me" (ADR 2026-07-04 Decision 10). Distinct from deleting:
+  // detaching stops scheduling but keeps the card and its review history, so
+  // a learner can decline shared content without destroying what they did.
+  // NULL = attached, which is the backfill for every existing card.
+  if (cardCols.length > 0 && !cardCols.some((c) => c.name === "detached_at")) {
+    await db.exec(`ALTER TABLE cards ADD COLUMN detached_at TEXT`);
+  }
 }

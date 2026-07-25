@@ -122,12 +122,14 @@ export type {
 } from "./models/card.js";
 export {
   deleteCardForUser,
+  detachCardForUser,
   ensureCard,
   getBlockedCards,
   getCard,
   getCardById,
   getCardDeletionImpact,
   getDueCards,
+  reattachCardForUser,
   resetCardsForToken,
   updateCard,
 } from "./models/card.js";
