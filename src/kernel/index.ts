@@ -79,6 +79,13 @@ export {
   serializeGoal,
 } from "./goals/parser.js";
 export type {
+  PublishRevisionInput,
+  PublishRevisionResult,
+  RevisionChanges,
+  RevisionMateriality,
+} from "./library/revision.js";
+export { isAwaitingRetest, publishTokenRevision } from "./library/revision.js";
+export type {
   AgentSkill,
   CreateAgentSkillInput,
   SkillSource,

@@ -40,6 +40,10 @@ CREATE TABLE IF NOT EXISTS tokens (
   -- or an ambiguous re-import). Cards of a token in maintenance are
   -- excluded from scheduling until repaired; learning state is preserved.
   maintenance_at     TEXT,
+  -- Version of the token's *substance* (ADR 2026-07-04 Decision 3). Only a
+  -- curator's material change bumps it; cosmetic edits (typo, phrasing) leave
+  -- it alone so nobody is re-tested for a reworded question.
+  content_version    INTEGER NOT NULL DEFAULT 1,
   maintenance_reason TEXT
 );
 
@@ -65,6 +69,10 @@ CREATE TABLE IF NOT EXISTS cards (
   due_at        TEXT NOT NULL DEFAULT (datetime('now')),
   last_review_at TEXT,
   blocked       INTEGER NOT NULL DEFAULT 0,
+  -- Which content_version of the token this learner actually learned. Lower
+  -- than the token's means a material change has landed since and the card is
+  -- awaiting a re-test (ADR 2026-07-04 Decision 3).
+  learned_content_version INTEGER NOT NULL DEFAULT 1,
   UNIQUE(token_id, user_id)
 );
 

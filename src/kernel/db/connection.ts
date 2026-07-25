@@ -592,4 +592,33 @@ async function runMigrations(db: Database): Promise<void> {
     await db.exec(`ALTER TABLE tokens ADD COLUMN maintenance_at TEXT`);
     await db.exec(`ALTER TABLE tokens ADD COLUMN maintenance_reason TEXT`);
   }
+
+  // M015: content versioning for curated libraries (ADR 2026-07-04 Decision 3).
+  // A token carries the version of its *substance*; a card records which
+  // version its owner actually learned. Only a curator's **material** change
+  // bumps the token, so `card.learned_content_version < token.content_version`
+  // means exactly "this learner has not been re-tested since the meaning
+  // changed" — the card is set due and the next rating recalibrates FSRS.
+  //
+  // Both default to 1, which is the backfill: existing tokens and cards are in
+  // sync on migration and nobody is re-tested for upgrading.
+  if (
+    tokenCols.length > 0 &&
+    !tokenCols.some((c) => c.name === "content_version")
+  ) {
+    await db.exec(
+      `ALTER TABLE tokens ADD COLUMN content_version INTEGER NOT NULL DEFAULT 1`,
+    );
+  }
+  const cardCols = (await db.pragma("table_info(cards)")) as Array<{
+    name: string;
+  }>;
+  if (
+    cardCols.length > 0 &&
+    !cardCols.some((c) => c.name === "learned_content_version")
+  ) {
+    await db.exec(
+      `ALTER TABLE cards ADD COLUMN learned_content_version INTEGER NOT NULL DEFAULT 1`,
+    );
+  }
 }

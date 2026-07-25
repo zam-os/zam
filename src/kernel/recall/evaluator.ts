@@ -106,6 +106,19 @@ export async function evaluateRatingWithinTransaction(
     last_review_at: now.toISOString(),
   });
 
+  // The card has now been answered against whatever the token currently says,
+  // so it is back in sync (ADR 2026-07-04 Decision 3). Without this a card
+  // re-tested after a material change would stay marked as outdated and be
+  // pulled forward again on every publish.
+  await db
+    .prepare(
+      `UPDATE cards
+          SET learned_content_version =
+                (SELECT content_version FROM tokens WHERE id = cards.token_id)
+        WHERE id = ?`,
+    )
+    .run(input.cardId);
+
   // Log the review (immutable)
   const reviewLogId = input.reviewLogId ?? ulid();
   await db
