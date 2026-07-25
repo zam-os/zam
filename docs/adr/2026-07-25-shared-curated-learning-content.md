@@ -15,7 +15,11 @@
 [2026-07-12a-agent-backed-ai-provider.md](2026-07-12a-agent-backed-ai-provider.md)
 (personal AI for recall and assistance; not the path for canonical curricula) ·
 [2026-07-18-okf-learning-import.md](2026-07-18-okf-learning-import.md)
-(repo knowledge → personal tokens; different product surface)
+(repo knowledge → personal tokens; different product surface) ·
+[2026-07-04-multi-learner-shared-knowledge.md](2026-07-04-multi-learner-shared-knowledge.md)
+(**implements this principle for a closed group**: editorial workflow,
+content versioning, privacy and deployment — it supplies the "central
+library schema" this ADR lists as a non-goal)
 
 ---
 

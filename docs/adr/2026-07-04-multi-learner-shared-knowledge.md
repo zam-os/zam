@@ -1,9 +1,14 @@
-# Shared Curated Learning Content in a Closed Group
+# Closed-Group Learning Library: Curation, Privacy and Deployment
 
-**Status:** Proposed (rewritten 2026-07-25; supersedes the 2026-07-04 draft)
-**Date:** 2026-07-04, rewritten 2026-07-25
+**Status:** Accepted (2026-07-25; rewritten from and superseding the
+2026-07-04 draft)
+**Date:** 2026-07-04, rewritten and accepted 2026-07-25
 **Deciders:** Thomas (project owner)
 **Related:**
+[2026-07-25-shared-curated-learning-content.md](2026-07-25-shared-curated-learning-content.md)
+(**the product principle this ADR implements** — see below) ·
+[2026-07-04-knowledge-contexts.md](2026-07-04-knowledge-contexts.md)
+(Decision 9 binds context to the database) ·
 [2026-07-03-rag-semantic-token-search.md](2026-07-03-rag-semantic-token-search.md)
 (Decision 4 + Open Question 2) ·
 [2026-06-09-async-database-providers.md](2026-06-09-async-database-providers.md) ·
@@ -31,6 +36,23 @@ everything below follows from it.
 > been thought through yet (project owner, 2026-07-25). This rewrite starts
 > from content quality. The data-class privacy table survives from the draft
 > because it is load-bearing; the sync-service design does not.
+
+### Relationship to ADR 2026-07-25
+
+[2026-07-25 "Review Once, Serve Many"](2026-07-25-shared-curated-learning-content.md)
+establishes the **product principle**: curated learning content is a
+first-class shared asset, the expensive review step is paid once, tokens are
+shared while cards stay personal, and generation cost is amortised at publish
+time. It explicitly lists *"defining the schema of the central Lehrplan
+database"* among its non-goals.
+
+**This ADR supplies exactly that missing half** for one concrete setting — a
+closed group such as a company. Where 2026-07-25 says content should be
+reviewed once and served to many, this one specifies *how*: the editorial
+states and who may move between them, what a published version is, what happens
+to learners when content changes, where the data lives, who may read it, and
+how a member is identified. Read 2026-07-25 for **why**, this one for **how**;
+neither overrides the other.
 
 ### What "quality" actually means here
 

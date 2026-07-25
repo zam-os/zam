@@ -37,7 +37,7 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-03](2026-07-03-rag-semantic-token-search.md) | RAG / Semantic Token Search on a Self-Hosted, No-License-Cost Store | Partially implemented |
 | [2026-07-04](2026-07-04-human-friendly-titles-and-prefixed-domains.md) | Human-friendly Titles and Prefixed Domains for the Knowledge Graph | Implemented |
 | [2026-07-04](2026-07-04-knowledge-contexts.md) | Knowledge Contexts: Work, School, Private | Implemented |
-| [2026-07-04](2026-07-04-multi-learner-shared-knowledge.md) | Shared Curated Learning Content in a Closed Group | Proposed |
+| [2026-07-04](2026-07-04-multi-learner-shared-knowledge.md) | Closed-Group Learning Library: Curation, Privacy and Deployment | Accepted |
 | [2026-07-05](../plans/2026-07-05-titles-doctor-adaptation.md) | Human-friendly Titles + `zam doctor` adaptation plan (post Fable 5 review) | In progress |
 | [2026-07-06a](2026-07-06a-mcp-agent-transport-and-surfaces.md) | MCP as the Canonical Agent Transport (and the Surface Topology Around It) | Partially implemented |
 | [2026-07-06b](2026-07-06b-checkpointed-review-dialogue.md) | Checkpointed Review Dialogue | Implemented |
