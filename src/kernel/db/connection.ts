@@ -630,4 +630,17 @@ async function runMigrations(db: Database): Promise<void> {
     await db.exec(`ALTER TABLE tokens ADD COLUMN published_by TEXT`);
     await db.exec(`ALTER TABLE tokens ADD COLUMN published_at TEXT`);
   }
+
+  // M017: editorial state for tokens (ADR 2026-07-04 Phase 3).
+  if (
+    tokenCols.length > 0 &&
+    !tokenCols.some((c) => c.name === "editorial_state")
+  ) {
+    await db.exec(
+      `ALTER TABLE tokens ADD COLUMN editorial_state TEXT NOT NULL DEFAULT 'published'`,
+    );
+    await db.exec(
+      `UPDATE tokens SET editorial_state = 'deprecated' WHERE deprecated_at IS NOT NULL`,
+    );
+  }
 }

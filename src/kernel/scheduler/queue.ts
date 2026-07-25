@@ -119,7 +119,8 @@ export async function buildReviewQueue(
          AND c.due_at <= ?
          AND c.state IN ('review', 'relearning', 'learning')
          AND t.deprecated_at IS NULL
-         AND t.maintenance_at IS NULL`;
+         AND t.maintenance_at IS NULL
+         AND t.editorial_state = 'published'`;
 
   const dueParams: unknown[] = [options.userId, nowISO];
 
@@ -161,7 +162,8 @@ export async function buildReviewQueue(
          AND c.blocked = 0
          AND c.state = 'new'
          AND t.deprecated_at IS NULL
-         AND t.maintenance_at IS NULL`;
+         AND t.maintenance_at IS NULL
+         AND t.editorial_state = 'published'`;
 
   const newParams: unknown[] = [options.userId];
 

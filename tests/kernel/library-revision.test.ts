@@ -365,4 +365,55 @@ describe("publishTokenRevision", () => {
       expect(impact.affectedLearners).toBe(2);
     });
   });
+
+  describe("Phase 3 — editorial state", () => {
+    it("excludes draft and in_review tokens from review queues", async () => {
+      const draftToken = await createToken(db, {
+        slug: "draft-token",
+        concept: "Draft concept",
+        editorial_state: "draft",
+      });
+      await ensureCard(db, draftToken.id, "alice");
+
+      const inReviewToken = await createToken(db, {
+        slug: "review-token",
+        concept: "In-review concept",
+        editorial_state: "in_review",
+      });
+      await ensureCard(db, inReviewToken.id, "alice");
+
+      const publishedToken = await createToken(db, {
+        slug: "published-token",
+        concept: "Published concept",
+        editorial_state: "published",
+      });
+      await ensureCard(db, publishedToken.id, "alice");
+
+      const queue = await buildReviewQueue(db, { userId: "alice" });
+      const slugs = queue.items.map((i) => i.slug);
+      expect(slugs).toContain("published-token");
+      expect(slugs).not.toContain("draft-token");
+      expect(slugs).not.toContain("review-token");
+    });
+
+    it("transitions draft token to published upon revision release", async () => {
+      const token = await createToken(db, {
+        slug: "publish-transition",
+        concept: "Draft to be published",
+        editorial_state: "draft",
+      });
+      await ensureCard(db, token.id, "alice");
+
+      let queue = await buildReviewQueue(db, { userId: "alice" });
+      expect(queue.items.map((i) => i.slug)).not.toContain("publish-transition");
+
+      await publishTokenRevision(db, {
+        tokenId: token.id,
+        materiality: "cosmetic",
+      });
+
+      queue = await buildReviewQueue(db, { userId: "alice" });
+      expect(queue.items.map((i) => i.slug)).toContain("publish-transition");
+    });
+  });
 });

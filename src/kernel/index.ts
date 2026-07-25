@@ -197,6 +197,7 @@ export type {
   CurriculumCardInput,
   CurriculumTopicCard,
   DeleteTokenResult,
+  EditorialState,
   FoundationProposalInput,
   ImportCurriculumResult,
   ListTokensOptions,

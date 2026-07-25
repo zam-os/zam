@@ -47,7 +47,9 @@ CREATE TABLE IF NOT EXISTS tokens (
   maintenance_reason TEXT,
   -- Provenance for content revisions (ADR 2026-07-04 Phase 1).
   published_by       TEXT,
-  published_at       TEXT
+  published_at       TEXT,
+  -- Editorial state (ADR 2026-07-04 Phase 3: 'draft' | 'in_review' | 'published' | 'deprecated').
+  editorial_state    TEXT NOT NULL DEFAULT 'published'
 );
 
 -- Prerequisite dependency graph: "to learn A, first know B"

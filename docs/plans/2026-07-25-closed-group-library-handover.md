@@ -70,7 +70,7 @@ pre-M015 upgrade path). Full suite 1565 passing.
       cannot do, because "what happens to people who already learned the old
       version?" is a scheduling question.
 
-- [ ] **Phase 3 — editorial state.** `draft` / `in_review` / `published` /
+- [x] **Phase 3 — editorial state.** `draft` / `in_review` / `published` /
       `deprecated` on tokens, and learners only ever consume `published`.
       Deliberately deferred out of Phase B: the kernel does not need these
       states until Phase 2's surface exists. Note `tokens.deprecated_at` already

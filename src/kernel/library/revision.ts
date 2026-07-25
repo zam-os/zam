@@ -127,6 +127,7 @@ async function publishWithinTransaction(
   const nowISO = new Date().toISOString();
   setClauses.push("published_at = ?");
   params.push(nowISO);
+  setClauses.push("editorial_state = 'published'");
   setClauses.push("updated_at = datetime('now')");
 
   await db
