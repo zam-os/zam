@@ -44,6 +44,8 @@ import {
   buildRecallFollowUpPrompt,
   parseRecallEvaluation,
   type RecallEvaluation,
+  type RecallEvaluationRoute,
+  resolveRecallEvaluationRoute,
 } from "./recall-evaluation.js";
 
 const contextBarRoot = document.getElementById("zam-contextbar-root");
@@ -135,6 +137,13 @@ const tally = {
 
 const SURFACE = "recall";
 
+/**
+ * The last companion context this panel received. Kept whole (not just the
+ * derived `quickMode`) so answer evaluation can honor the Agent pill's
+ * selection instead of routing purely on host capabilities (issue #209).
+ */
+let companionContext: CompanionContextBarState | undefined;
+
 const callTool = createCallTool(app);
 const writeCompanionContext = createContextWriter(callTool, SURFACE);
 const readCompanionContext = createContextReader(callTool, SURFACE);
@@ -158,6 +167,7 @@ function hasUnsavedRecallState(): boolean {
  */
 function reloadForContext(newState: CompanionContextBarState): void {
   currentUser = newState.user.currentId ?? null;
+  companionContext = newState;
   quickMode = deriveQuickMode(newState, quickMode);
   started = false;
   finished = false;
@@ -308,9 +318,53 @@ function samplingText(content: unknown): string {
     .trim();
 }
 
+/** The evaluation route implied by the Agent pill plus this host (issue #209). */
+function currentEvaluationRoute(): RecallEvaluationRoute {
+  return resolveRecallEvaluationRoute({
+    selectedEvaluatorId: companionContext?.selectedEvaluatorId,
+    evaluators: companionContext?.evaluators,
+    capabilities: app.getHostCapabilities(),
+  });
+}
+
+/**
+ * Sample through ZAM's own recall model via `zam_companion_sample` — the path
+ * that makes an explicit "ZAM text model" selection real on hosts without
+ * bridge sampling (Claude Code). The VS Code extension already routes this id
+ * through the same tool.
+ */
+async function sampleViaZamTextModel(
+  messages: Array<{ role: "user" | "assistant"; text: string }>,
+): Promise<string> {
+  const result = (await callTool("zam_companion_sample", { messages })) as {
+    text?: unknown;
+  };
+  const text = typeof result?.text === "string" ? result.text.trim() : "";
+  if (!text) throw new Error("The ZAM text model returned no text");
+  return text;
+}
+
+/**
+ * Sample using the effective evaluator. Both the first evaluation and every
+ * follow-up turn go through here, so a discussion never silently changes
+ * model mid-thread.
+ */
 async function sampleRecall(
   messages: Array<{ role: "user" | "assistant"; text: string }>,
   maxTokens = 800,
+): Promise<string> {
+  const route = currentEvaluationRoute();
+  if (route.kind === "zam-text-model") return sampleViaZamTextModel(messages);
+  if (route.kind === "unavailable") throw new Error(route.reason);
+  if (route.kind !== "host-sampling") {
+    throw new Error("This evaluator cannot answer a follow-up in the card.");
+  }
+  return sampleViaHost(messages, maxTokens);
+}
+
+async function sampleViaHost(
+  messages: Array<{ role: "user" | "assistant"; text: string }>,
+  maxTokens: number,
 ): Promise<string> {
   const result = await app.createSamplingMessage({
     systemPrompt:
@@ -715,9 +769,12 @@ function renderCard(): void {
   }
 
   async function evaluateAnswer(learnerAnswer: string): Promise<void> {
-    const capabilities = app.getHostCapabilities();
+    // Selection first, capabilities second (issue #209): an explicit, routable
+    // "ZAM text model" must evaluate in-card instead of taking the ui/message
+    // detour just because the host happens to expose messaging.
+    const route = currentEvaluationRoute();
     pushContext(card, "evaluating");
-    if (capabilities?.sampling) {
+    if (route.kind === "zam-text-model" || route.kind === "host-sampling") {
       const prompt = buildRecallEvaluationPrompt(
         {
           ...card,
@@ -731,17 +788,14 @@ function renderCard(): void {
       pushContext(card, "answered");
       return;
     }
-    if (capabilities?.message) {
+    if (route.kind === "host-message") {
       await sendToHostConversation(learnerAnswer);
       showReveal(learnerAnswer);
       showNotice(t("recall_sent_to_host"));
       pushContext(card, "answered", { learnerAnswer });
       return;
     }
-    throw new Error(
-      "This host provides neither sampling nor messages. Enable quick mode " +
-        "in Settings or use a host with model support.",
-    );
+    throw new Error(route.reason);
   }
 
   actionBtn.addEventListener("click", () => {
@@ -808,6 +862,7 @@ app.ontoolresult = (params) => {
   const previousDomain = focusDomain;
   currentUser = structured.user ?? null;
   focusDomain = structured.domain ?? null;
+  companionContext = structured.companionContext ?? companionContext;
   quickMode = deriveQuickMode(
     structured.companionContext,
     structured.quickMode === true,

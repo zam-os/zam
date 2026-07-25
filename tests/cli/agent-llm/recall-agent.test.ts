@@ -157,12 +157,48 @@ describe("recall via the agent transport", () => {
     expect(seenUser).toContain("Richtig, München ist die Hauptstadt.");
   });
 
-  it("rejects the agent transport for recall callers not wired for it", async () => {
+  // Issue #209: `sampleViaLocalLLM` backs `zam_companion_sample`, which the
+  // Recall panel uses for an explicit "ZAM text model" selection. It resolves
+  // the recall role like every other recall caller, so an agent-backed recall
+  // model has to serve it too — it previously threw "does not support yet".
+  it("samples through the harness for an agent-backed recall model", async () => {
+    vi.mocked(getAgentAdapter).mockReturnValue(
+      fakeAdapter(async () => ({ text: "Munich is the capital of Bavaria." })),
+    );
     const db = await seedDb();
 
-    await expect(
-      sampleViaLocalLLM(db, [{ role: "user", content: "hi" }]),
-    ).rejects.toThrow(/agent transport/i);
+    const result = await sampleViaLocalLLM(db, [
+      { role: "system", content: "You are ZAM." },
+      { role: "user", content: "Which city is the capital of Bavaria?" },
+    ]);
+
+    expect(result.text).toContain("Munich");
+    expect(vi.mocked(getAgentAdapter)).toHaveBeenCalledWith("claude-code");
+  });
+
+  it("flattens the sampling turns into one harness prompt", async () => {
+    let seen: { system: string; user: string } | undefined;
+    vi.mocked(getAgentAdapter).mockReturnValue(
+      fakeAdapter(async (req) => {
+        seen = { system: req.system, user: req.user };
+        return { text: "ok" };
+      }),
+    );
+    const db = await seedDb();
+
+    await sampleViaLocalLLM(db, [
+      { role: "system", content: "Grade strictly." },
+      { role: "user", content: "Answer: Munich" },
+      { role: "assistant", content: "Correct." },
+      { role: "user", content: "Why?" },
+    ]);
+
+    // The system turn frames the request; the rest becomes one transcript.
+    expect(seen?.system).toContain("Grade strictly.");
+    expect(seen?.user).toContain("Answer: Munich");
+    expect(seen?.user).toContain("Correct.");
+    expect(seen?.user).toContain("Why?");
+    expect(seen?.user).not.toContain("Grade strictly.");
   });
 
   it("reports the agent as the ready recall model (no HTTP fall-through)", async () => {
