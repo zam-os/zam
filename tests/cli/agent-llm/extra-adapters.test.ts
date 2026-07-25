@@ -4,7 +4,10 @@ import {
   getAgentAdapter,
   listAgentTextHarnessIds,
 } from "../../../src/cli/agent-llm/adapter.js";
-import { parseCopilotStdout } from "../../../src/cli/agent-llm/copilot.js";
+import {
+  copilotEffortForModel,
+  parseCopilotStdout,
+} from "../../../src/cli/agent-llm/copilot.js";
 import { parseGooseStdout } from "../../../src/cli/agent-llm/goose.js";
 import { parseHermesStdout } from "../../../src/cli/agent-llm/hermes.js";
 import { parseOpenCodeJsonl } from "../../../src/cli/agent-llm/opencode.js";
@@ -57,6 +60,19 @@ describe("parseGooseStdout", () => {
 OK
 `;
     expect(parseGooseStdout(out)).toBe("OK");
+  });
+});
+
+describe("copilotEffortForModel", () => {
+  it("uses high for gpt-5-mini and other small models", () => {
+    expect(copilotEffortForModel("gpt-5-mini")).toBe("high");
+    expect(copilotEffortForModel("gpt-4.1-mini")).toBe("high");
+    expect(copilotEffortForModel(undefined)).toBe("high");
+  });
+
+  it("uses medium for larger models", () => {
+    expect(copilotEffortForModel("gpt-5.4")).toBe("medium");
+    expect(copilotEffortForModel("claude-sonnet-4")).toBe("medium");
   });
 });
 

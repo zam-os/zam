@@ -11,9 +11,9 @@
  *   otherwise boot `zam mcp` + github-mcp-server).
  * - `--no-remote` so the CLI does not attach to / hold a VS Code remote session
  *   (GitHub issue: auto-connect to VS Code with no opt-out for a long while).
- * - Prefer `--context default` and `--effort low` over the learner's interactive
- *   defaults (`long_context` / `high`) — those make one-shot question gen slow.
- * Measured ~3× faster for a short OK-prompt (≈6s lean vs ≈16s base).
+ * - Prefer `--context default` over interactive `long_context`.
+ * - Set `--effort` explicitly (interactive default can be unset/wrong for -p):
+ *   `high` for gpt-5-mini and other small/fast models; `medium` for larger ones.
  */
 
 import { homedir } from "node:os";
@@ -39,6 +39,19 @@ import {
 
 const HARNESS: AgentHarnessId = "copilot";
 const DEFAULT_TIMEOUT_MS = 120_000;
+
+/**
+ * Reasoning effort for headless -p runs. Must be set explicitly: interactive
+ * settings do not always carry over, and an unset effort can stall.
+ * gpt-5-mini (default) works best at high; larger models stay at medium.
+ */
+export function copilotEffortForModel(model?: string): "high" | "medium" {
+  const m = (model ?? "").toLowerCase();
+  if (!m || m.includes("mini") || m.includes("nano") || m.includes("haiku")) {
+    return "high";
+  }
+  return "medium";
+}
 
 /**
  * Prefer silent text output. If JSONL was requested/emitted, take the last
@@ -137,6 +150,8 @@ export class CopilotAdapter implements AgentTextAdapter {
     const cwd = homedir();
     const images = req.imagePaths?.filter(Boolean) ?? [];
     // Lean headless argv: answer only, no IDE remote session, no MCP boot.
+    // Effort is required for reliable -p completions (esp. gpt-5-mini → high).
+    const effort = copilotEffortForModel(req.model);
     const args = [
       "-p",
       prompt,
@@ -149,7 +164,7 @@ export class CopilotAdapter implements AgentTextAdapter {
       "--context",
       "default",
       "--effort",
-      "low",
+      effort,
     ];
     // Tools/paths only when reading attachments — pure text must not open the
     // tool-policy path that stalls with MCP/VS Code side channels.
