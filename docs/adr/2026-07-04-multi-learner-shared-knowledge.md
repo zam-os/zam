@@ -256,9 +256,11 @@ conversation to have early, not a technical risk.
 This remains a **pilot in scope** — a small group, a deliberately limited
 library — just not a pilot in infrastructure.
 
-- **Store:** Azure Database for PostgreSQL Flexible Server, Burstable tier,
-  32 GiB (the service's storage floor — ZAM's data is far smaller: 768-dim
-  embeddings are ≈3 KB per token, so 100k tokens ≈ 300 MB). `pgvector` provides
+- **Store:** Azure Database for PostgreSQL Flexible Server, Burstable **B1ms**,
+  32 GiB, **PostgreSQL 17** — the exact SKU and the reason for pinning 17 are
+  in Decision 13. (The storage figure is the service's floor; ZAM's data is far
+  smaller: 768-dim embeddings are ≈3 KB per token, so 100k tokens ≈ 300 MB.)
+  `pgvector` provides
   server-side vector search, which completes Phase 4 of the search ADR for this
   tier and answers its Open Question 2: **Postgres, but only for this tier, and
   only as a deployment choice — not as the kernel's dialect.**
@@ -354,10 +356,9 @@ implied is kept, because it is right for its own reasons.
   The rule earns its place three times over. Deployment A has no Entra at all,
   so the kernel cannot depend on one. Entra object ids are tenant-specific, so
   any future move — a tenant reorganisation, an acquisition, a self-hosted
-  server on PostgreSQL 18 OAuth — would otherwise corrupt authorship and
-  ownership across the whole library. And a colleague who leaves and returns,
-  or whose account is recreated, keeps their learning history instead of
-  becoming a stranger to it.
+  server — would otherwise corrupt authorship and ownership across the whole
+  library. And a colleague who leaves and returns, or whose account is
+  recreated, keeps their learning history instead of becoming a stranger to it.
 
 - **Role grants are deployment configuration, not data.** The
   `pgaadauth_create_principal` mappings and the RLS grants live in a runbook,
@@ -366,9 +367,11 @@ implied is kept, because it is right for its own reasons.
 
 - **Nothing depends on subscription-specific features.** The store stays
   ordinary PostgreSQL plus `pgvector`, so an export is restorable anywhere —
-  another subscription, another tenant, or a self-hosted server using
-  PostgreSQL 18's native OAuth. This is now an insurance policy rather than a
-  scheduled task, which is the right amount of effort to spend on it.
+  another subscription, another tenant, or a self-hosted server. What would
+  *not* travel is the passwordless sign-in: outside Azure there is no
+  production-ready way to authenticate Postgres against Entra today
+  (Decision 13). Portability here means the data and the schema, not the
+  identity integration — an insurance policy rather than a scheduled task.
 
 ### 8. The kernel stays single-learner
 
@@ -494,6 +497,40 @@ reverse it into "who failed it". Nothing here is in the pilot either; it is
 recorded so a later reader can see that "no aggregates" was a decision about
 *people*, not a refusal to help curators.
 
+### 13. The concrete database: Flexible Server B1ms, 32 GiB, **PostgreSQL 17**
+
+Named explicitly so nobody has to re-derive it:
+
+| | |
+|---|---|
+| Service | Azure Database for PostgreSQL **Flexible Server** |
+| Tier / SKU | **Burstable B1ms** (1 vCore, 2 GiB RAM) — the smallest offered |
+| Storage | **32 GiB** (the service floor; ZAM needs far less) |
+| Engine | **PostgreSQL 17** — *not* 18, see below |
+| Extensions | `pgvector` |
+| Auth | Microsoft Entra, token presented as the connection password |
+
+**Pin PostgreSQL 17.** PostgreSQL 18 replaced the authentication framework with
+native OAuth2/OAUTHBEARER, and Azure's Entra integration is still built on the
+older PG11–17 token model. Entra sign-in therefore **fails on PG18 today**, and
+the documented workaround is static passwords — which would throw away the one
+property this deployment exists for. PG17 is the supported version for Entra
+authentication and is what the pilot uses; PG18 is revisited only once Azure
+states that Entra works on it.
+
+That finding also retires a claim in an earlier draft of this ADR: PG18's native
+OAuth is *not* yet a portability exit to self-hosted Postgres. The community
+validator modules needed to make it work with Entra are explicitly not
+production-ready. Treat self-hosting as "possible for the data, unsolved for
+the identity" until that changes.
+
+**Sizing.** B1ms is chosen because ZAM's workload is genuinely tiny — a few
+dozen learners doing short review sessions, a library measured in hundreds of
+megabytes. Compute is an online scale-up operation, so starting at the floor
+costs nothing but a restart if the pilot proves it wrong. Two things would
+force B2s: the Burstable `max_connections` ceiling with many concurrent
+desktop/CLI/mobile clients, and `pgvector` index builds over a large library.
+
 ## Cost (Deployment B)
 
 The company subscription carries the bill (Decision 6), so the figures below
@@ -501,29 +538,49 @@ are not a budget ceiling — they exist so the ask is small and concrete when
 someone at DocuWare has to approve it. The honest version of that ask is
 "roughly the price of one lunch per month, and it can be switched off".
 
-Indicative only — **verify in the Azure pricing calculator for the actual
-region before committing**, since tiers and prices move:
+Figures checked July 2026; region-dependent, so **confirm in the Azure pricing
+calculator for the chosen region before committing**.
 
-| Item | Rough monthly |
-|------|---------------|
-| Burstable B1ms (1 vCore, 2 GiB) | ~$12–15 |
-| Burstable B2s (2 vCore, 4 GiB) | ~$25–30 |
-| 32 GiB storage | ~$4 |
-| Backup (within storage size) | included |
+### Minimal build-out
 
-B1ms plus storage lands near $20/month and B2s near $35. Flexible Server can be
-stopped when idle, which pauses compute billing. Two caveats worth checking
-early: Burstable instances have a low `max_connections` ceiling, and built-in
-connection pooling is not offered on every tier — a group of ~30 with desktop,
-CLI and mobile clients may need B2s or an external pooler.
+| Item | Monthly |
+|------|---------|
+| Burstable B1ms compute, always on | ~$12–15 |
+| 32 GiB storage (~$0.115/GiB) | ~$4 |
+| Backup within the provisioned size | included |
+| **Total, no optimisation** | **~$16–19** |
 
-**Why Azure and not something cheaper.** Neon, Supabase or a €5 Hetzner VM all
-run Postgres with pgvector for less. None of them offer "an administrator
-grants Microsoft Entra identities access in the database" as a supported
-feature — each would mean building and owning the identity bridge. The Entra
-requirement, not the database, is what selects Azure here. If that ever stops
-being true, PostgreSQL 18's native OAuth support is the portability exit: a
-self-hosted server can validate Entra tokens directly.
+Two levers, neither needed on day one:
+
+- **A one-year reservation** takes up to ~65% off compute, bringing the total
+  to roughly **$9–10**. Sensible once the pilot is known to continue; pointless
+  before that.
+- **Stopping the server when idle** pauses compute billing (storage still
+  bills). One caveat that matters for automation: a stopped Flexible Server
+  **restarts itself after seven days**, so "stop it over the holidays" needs a
+  scheduled job rather than a single click.
+
+Storage is the floor, not a driver: ZAM would have to grow by two orders of
+magnitude before 32 GiB mattered.
+
+### Cheaper alternatives, and why they lose
+
+The Entra requirement — an administrator grants **Microsoft Entra identities**
+access *in the database*, and ZAM signs in with no password — is what decides
+this, not the price.
+
+| Option | Cost | Verdict |
+|--------|------|---------|
+| **Neon Serverless Postgres (Azure Native)** | free tier 100 CU-h/month; then ~$0.106/CU-h + $0.35/GiB — plausibly **$0–10** with scale-to-zero after 5 min idle | Genuinely cheaper and a real Azure-native service billed through the subscription. But its Entra integration documents **provisioning, portal and billing** — not Entra identities as *database* logins. Fails the deciding requirement unless that turns out to be supported; worth a check if cost ever becomes the binding constraint. |
+| **Self-hosted Postgres on a small Azure VM** | ~$8–10 | Cheaper compute, but there is no production-ready way to authenticate Postgres against Entra: PG17 has no OAuth, and PG18's OAuth validators for Entra are explicitly not production-ready. Also hands us patching, backup and HA. |
+| **Supabase / Hetzner / any non-Azure Postgres** | €5–25 | Same failure, plus the data leaves the corporate tenant — a harder conversation at DocuWare than the $16 it saves. |
+| **Azure SQL Database serverless** | can auto-pause to near-zero | Excellent native Entra auth and now has vector types, but T-SQL moves the dialect distance from "tens of sites" (Open Question 1) to a rewrite. Not worth it to save ~$10. |
+
+**Conclusion: nothing cheaper currently satisfies the Entra requirement.** The
+managed service is being bought for the identity integration; Postgres and the
+hardware are almost incidental at this size. At ~$16–19/month — and under $10
+with a reservation — the difference to the cheapest theoretical option is small
+enough that operational simplicity wins.
 
 ## Open questions
 
