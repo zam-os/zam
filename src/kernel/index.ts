@@ -46,6 +46,8 @@ export {
   openDatabase,
   openDatabaseWithSync,
 } from "./db/connection.js";
+export type { PostgresDatabaseOptions } from "./db/postgres.js";
+export { openPostgresDatabase } from "./db/postgres.js";
 export type { RemoteDatabaseOptions } from "./db/remote/provider.js";
 export { openRemoteDatabase } from "./db/remote/provider.js";
 export type { ImportResult, SnapshotManifest } from "./db/snapshot.js";

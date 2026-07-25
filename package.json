@@ -74,7 +74,8 @@
     "zod": "^4.4.3"
   },
   "optionalDependencies": {
-    "libsql": "^0.5.29"
+    "libsql": "^0.5.29",
+    "pg": "^8.13.1"
   },
   "overrides": {
     "esbuild": "0.28.1"
@@ -83,6 +84,7 @@
     "@biomejs/biome": "2.5.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^25.5.0",
+    "@types/pg": "^8.11.10",
     "tsup": "^8.5.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",

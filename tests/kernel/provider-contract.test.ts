@@ -42,6 +42,24 @@ describeDatabaseContract("remote Turso over HTTP (hrana stub)", async () => {
   };
 });
 
+if (process.env.POSTGRES_URL) {
+  describeDatabaseContract("PostgreSQL (pg)", async () => {
+    const { openPostgresDatabase } = await import(
+      "../../src/kernel/db/postgres.js"
+    );
+    const db = openPostgresDatabase({
+      connectionString: process.env.POSTGRES_URL,
+    });
+    return {
+      db,
+      async cleanup() {
+        await db.exec("DROP TABLE IF EXISTS items; DROP TABLE IF EXISTS audit;");
+        await db.close();
+      },
+    };
+  });
+}
+
 describe("remote provider transport behavior", () => {
   it("authenticates with the configured bearer token", async () => {
     const stub = await startHranaStub({ authToken: "secret" });

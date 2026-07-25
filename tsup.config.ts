@@ -31,7 +31,7 @@ export default defineConfig([
     // between app.js and mcp.js is process-local and accepted.
     splitting: false,
     sourcemap: true,
-    external: ["./commands/mcp.js"],
+    external: ["./commands/mcp.js", "pg"],
   },
   {
     entry: { index: "src/index.ts" },
@@ -39,5 +39,6 @@ export default defineConfig([
     format: ["esm"],
     dts: true,
     sourcemap: true,
+    external: ["pg"],
   },
 ]);

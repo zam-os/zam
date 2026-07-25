@@ -77,7 +77,7 @@ pre-M015 upgrade path). Full suite 1565 passing.
       exists and `maintenance_at` is a working precedent for a token-level state
       that removes cards from scheduling.
 
-- [ ] **Phase C0 — Postgres provider on local Docker.** No Azure resource is
+- [x] **Phase C0 — Postgres provider on local Docker.** No Azure resource is
       needed and none should be created. Add a third case to
       `describeDatabaseContract(...)` in
       `tests/kernel/provider-contract.test.ts` (today: local SQLite + an Hrana

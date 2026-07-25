@@ -192,8 +192,9 @@ export async function assignTokenToContext(
 ): Promise<void> {
   await db
     .prepare(
-      `INSERT OR IGNORE INTO token_contexts (token_id, context_id)
-       VALUES (?, ?)`,
+      `INSERT INTO token_contexts (token_id, context_id)
+       VALUES (?, ?)
+       ON CONFLICT DO NOTHING`,
     )
     .run(tokenId, contextId);
 }

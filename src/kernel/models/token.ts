@@ -1256,7 +1256,7 @@ export async function confirmCardSplit(
 
       // Link proposal tokens as prerequisites of original token
       const insertPrereqStmt = tx.prepare(
-        "INSERT OR IGNORE INTO prerequisites (token_id, requires_id) VALUES (?, ?)",
+        "INSERT INTO prerequisites (token_id, requires_id) VALUES (?, ?) ON CONFLICT DO NOTHING",
       );
       for (const propToken of proposalTokens) {
         await insertPrereqStmt.run(originalToken.id, propToken.id);
@@ -1440,7 +1440,7 @@ export async function confirmFoundations(
 
       await tx
         .prepare(
-          "INSERT OR IGNORE INTO prerequisites (token_id, requires_id) VALUES (?, ?)",
+          "INSERT INTO prerequisites (token_id, requires_id) VALUES (?, ?) ON CONFLICT DO NOTHING",
         )
         .run(originalToken.id, targetTokenId);
     }
