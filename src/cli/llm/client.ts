@@ -191,14 +191,7 @@ export interface ProviderConfig {
    * Optional reasoning effort from the model registry (e.g. Copilot `--effort`).
    * When set, overrides adapter defaults derived from the model id.
    */
-  effort?:
-    | "none"
-    | "minimal"
-    | "low"
-    | "medium"
-    | "high"
-    | "xhigh"
-    | "max";
+  effort?: "none" | "minimal" | "low" | "medium" | "high" | "xhigh" | "max";
 }
 
 /** Infer the wire protocol from the endpoint host (anthropic.com → Messages API). */

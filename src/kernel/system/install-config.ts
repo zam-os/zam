@@ -214,14 +214,7 @@ export interface ModelEntry {
    * `--effort`). Pure config — interpreted by the CLI agent-llm adapters.
    * When absent, adapters pick a default from the model id.
    */
-  effort?:
-    | "none"
-    | "minimal"
-    | "low"
-    | "medium"
-    | "high"
-    | "xhigh"
-    | "max";
+  effort?: "none" | "minimal" | "low" | "medium" | "high" | "xhigh" | "max";
 }
 
 export interface MachineAiConfig {

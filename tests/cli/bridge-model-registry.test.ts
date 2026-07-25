@@ -264,9 +264,9 @@ describe("bridge model-* registry commands", () => {
       "--transport",
       "agent",
       "--agent-harness",
-      "opencode",
+      "unknown-harness",
       "--label",
-      "opencode",
+      "unknown-harness",
     ])) as { parsed: { error?: string } };
     expect(res.parsed.error).toMatch(/no agent-text adapter/i);
     expect(readConfig().ai?.models ?? []).toHaveLength(0);
