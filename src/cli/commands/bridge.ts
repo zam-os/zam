@@ -2730,6 +2730,8 @@ function modelRow(entry: ModelEntry): Record<string, unknown> {
     // Agent transport fields (ADR 2026-07-12a). Absent/"http" for HTTP rows.
     transport: entry.transport ?? "http",
     agentHarness: entry.agentHarness,
+    // Optional reasoning effort (e.g. Copilot --effort); unset = adapter default.
+    effort: entry.effort,
   };
 }
 
@@ -2826,6 +2828,10 @@ bridgeCommand
     "--agent-harness <id>",
     'Harness id for transport "agent" (e.g. claude-code)',
   )
+  .option(
+    "--effort <level>",
+    'Reasoning effort for agent harnesses that support it (auto|none|minimal|low|medium|high|xhigh|max). "auto" clears a stored value.',
+  )
   .action(async (opts, command) => {
     if (opts.flavor && !VALID_API_FLAVORS.includes(opts.flavor)) {
       jsonError(`Invalid --flavor: ${opts.flavor}.`);
@@ -2896,6 +2902,29 @@ bridgeCommand
       capabilities.text = requested.text !== false;
       capabilities.image =
         modalities.image === true && requested.image === true;
+      const VALID_EFFORTS = new Set([
+        "none",
+        "minimal",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max",
+      ]);
+      // --effort auto (or empty) clears a stored override; omit keeps previous.
+      let effort: ModelEntry["effort"] | undefined = prev?.effort;
+      if (opts.effort !== undefined) {
+        const raw = String(opts.effort).trim().toLowerCase();
+        if (raw === "" || raw === "auto") {
+          effort = undefined;
+        } else if (VALID_EFFORTS.has(raw)) {
+          effort = raw as NonNullable<ModelEntry["effort"]>;
+        } else {
+          jsonError(
+            `Invalid --effort: ${opts.effort}. Use auto|none|minimal|low|medium|high|xhigh|max.`,
+          );
+        }
+      }
       const entry: ModelEntry = {
         id: opts.id ?? ulid(),
         label: opts.label ?? prev?.label ?? harnessMeta?.label ?? agentHarness,
@@ -2910,6 +2939,7 @@ bridgeCommand
         probedAt: now,
         transport: "agent",
         agentHarness,
+        ...(effort ? { effort } : {}),
       };
       const next = [...models];
       if (existingIndex >= 0) next[existingIndex] = entry;

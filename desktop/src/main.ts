@@ -189,6 +189,18 @@ interface ModelRow {
   transport?: "http" | "agent";
   /** Harness id when transport is "agent" (e.g. "claude-code"). */
   agentHarness?: string;
+  /**
+   * Optional reasoning effort for agent harnesses that support it
+   * (e.g. Copilot `--effort`). Unset = adapter picks from model id.
+   */
+  effort?:
+    | "none"
+    | "minimal"
+    | "low"
+    | "medium"
+    | "high"
+    | "xhigh"
+    | "max";
 }
 
 interface AgentHarnessListEntry {
@@ -1801,14 +1813,21 @@ function createModelRow(
 
   const meta = document.createElement("p");
   meta.className = "ai-provider-meta";
-  meta.textContent = agent
-    ? tf("model_agent_meta_with_model", {
-        harness: row.agentHarness || "—",
-        model: row.model?.startsWith("agent:")
-          ? "—"
-          : row.model || "—",
-      })
-    : `${row.model} · ${row.url}`;
+  if (agent) {
+    const modelId = row.model?.startsWith("agent:") ? "—" : row.model || "—";
+    meta.textContent = row.effort
+      ? tf("model_agent_meta_with_effort", {
+          harness: row.agentHarness || "—",
+          model: modelId,
+          effort: row.effort,
+        })
+      : tf("model_agent_meta_with_model", {
+          harness: row.agentHarness || "—",
+          model: modelId,
+        });
+  } else {
+    meta.textContent = `${row.model} · ${row.url}`;
+  }
 
   const caps = document.createElement("div");
   caps.className = "ai-model-caps";
@@ -2102,6 +2121,39 @@ async function showModelForm(id?: string): Promise<void> {
     harnessSelect,
   );
 
+  // Effort is mainly for Copilot (and future harnesses that accept --effort).
+  // "auto" stores no value so the adapter picks from the model id.
+  const effortSelect = document.createElement("select");
+  effortSelect.className = "settings-select";
+  const effortLevels = [
+    "auto",
+    "low",
+    "medium",
+    "high",
+    "minimal",
+    "xhigh",
+    "max",
+    "none",
+  ] as const;
+  const effortLabels: Record<(typeof effortLevels)[number], string> = {
+    auto: t("model_effort_auto"),
+    low: t("model_effort_low"),
+    medium: t("model_effort_medium"),
+    high: t("model_effort_high"),
+    minimal: t("model_effort_minimal"),
+    xhigh: t("model_effort_xhigh"),
+    max: t("model_effort_max"),
+    none: t("model_effort_none"),
+  };
+  for (const level of effortLevels) {
+    const opt = document.createElement("option");
+    opt.value = level;
+    opt.textContent = effortLabels[level];
+    effortSelect.appendChild(opt);
+  }
+  effortSelect.value = existing?.effort ?? "auto";
+  const effortField = modelFieldLabel(t("model_field_effort"), effortSelect);
+
   const agentHint = document.createElement("p");
   agentHint.className = "ai-provider-hint";
   agentHint.textContent = t("model_agent_hint");
@@ -2128,7 +2180,14 @@ async function showModelForm(id?: string): Promise<void> {
 
   const grid = document.createElement("div");
   grid.className = "ai-provider-form-grid";
-  grid.append(labelField, urlField, modelField, keyField, harnessField);
+  grid.append(
+    labelField,
+    urlField,
+    modelField,
+    keyField,
+    harnessField,
+    effortField,
+  );
 
   const selectedKind = (): ModelFormKind => {
     for (const [kind, radio] of radios) {
@@ -2158,6 +2217,8 @@ async function showModelForm(id?: string): Promise<void> {
     modelField.classList.toggle("hidden", false);
     keyField.classList.toggle("hidden", isAgent || isLocal);
     harnessField.classList.toggle("hidden", !isAgent);
+    // Effort applies to agent harnesses that support it (e.g. Copilot).
+    effortField.classList.toggle("hidden", !isAgent);
     agentHint.classList.toggle("hidden", !isAgent);
     // Agent: text always; image when the selected harness adapter is multimodal.
     // Embedding is never agent-backed.
@@ -2243,6 +2304,7 @@ async function showModelForm(id?: string): Promise<void> {
       url: urlInput.value.trim(),
       model: modelInput.value.trim(),
       agentHarness: harnessSelect.value,
+      effort: effortSelect.value,
       key: keyInput.value.trim(),
       existingKeyRef: existing?.apiKeyRef,
       capabilities,
@@ -2265,6 +2327,8 @@ interface ModelFormData {
   url: string;
   model: string;
   agentHarness?: string;
+  /** "auto" | effort level — auto clears a stored override. */
+  effort?: string;
   key: string;
   existingKeyRef?: string;
   capabilities: Record<string, boolean>;
@@ -2296,6 +2360,10 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
     ];
     if (data.model) {
       args.push("--model", data.model);
+    }
+    // Always send effort so "auto" can clear a previous override on edit.
+    if (data.effort) {
+      args.push("--effort", data.effort);
     }
     if (data.id) args.push("--id", data.id);
     try {

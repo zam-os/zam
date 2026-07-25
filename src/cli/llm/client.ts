@@ -187,6 +187,18 @@ export interface ProviderConfig {
   transport?: "agent";
   /** Harness id backing an `agent`-transport endpoint (e.g. "claude-code"). */
   agentHarness?: string;
+  /**
+   * Optional reasoning effort from the model registry (e.g. Copilot `--effort`).
+   * When set, overrides adapter defaults derived from the model id.
+   */
+  effort?:
+    | "none"
+    | "minimal"
+    | "low"
+    | "medium"
+    | "high"
+    | "xhigh"
+    | "max";
 }
 
 /** Infer the wire protocol from the endpoint host (anthropic.com → Messages API). */
@@ -331,6 +343,7 @@ function materializeModelEntry(
     cfg.transport = "agent";
     if (entry.agentHarness) cfg.agentHarness = entry.agentHarness;
   }
+  if (entry.effort) cfg.effort = entry.effort;
   return cfg;
 }
 
@@ -1115,21 +1128,18 @@ function deduplicateGeneratedCards(
  * chat-completions response.
  */
 async function requestAgentCompletion(
-  endpoint: { agentHarness?: string; model?: string },
+  endpoint: {
+    agentHarness?: string;
+    model?: string;
+    effort?: ProviderConfig["effort"];
+  },
   messages: {
     system: string;
     user: string;
     /** Local image paths for multimodal harnesses (e.g. Antigravity / Gemini). */
     imagePaths?: string[];
-    /** Optional effort override (Copilot `--effort`); task-dependent. */
-    effort?:
-      | "none"
-      | "minimal"
-      | "low"
-      | "medium"
-      | "high"
-      | "xhigh"
-      | "max";
+    /** Per-call effort override; wins over registry entry effort. */
+    effort?: ProviderConfig["effort"];
   },
 ): Promise<string> {
   if (!endpoint.agentHarness) {
@@ -1154,12 +1164,14 @@ async function requestAgentCompletion(
     endpoint.model && !endpoint.model.startsWith("agent:")
       ? endpoint.model
       : defaultAgentModel(endpoint.agentHarness);
+  // Call-site override > registry entry effort > adapter model heuristic.
+  const effort = messages.effort ?? endpoint.effort;
   const { text } = await adapter.generate({
     system: messages.system,
     user: messages.user,
     imagePaths: messages.imagePaths,
     model,
-    effort: messages.effort,
+    effort,
   });
   return text;
 }

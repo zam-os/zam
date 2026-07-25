@@ -209,6 +209,19 @@ export interface ModelEntry {
    * the kernel stays harness-agnostic.
    */
   agentHarness?: string;
+  /**
+   * Optional reasoning effort for harnesses that accept it (e.g. Copilot
+   * `--effort`). Pure config — interpreted by the CLI agent-llm adapters.
+   * When absent, adapters pick a default from the model id.
+   */
+  effort?:
+    | "none"
+    | "minimal"
+    | "low"
+    | "medium"
+    | "high"
+    | "xhigh"
+    | "max";
 }
 
 export interface MachineAiConfig {
