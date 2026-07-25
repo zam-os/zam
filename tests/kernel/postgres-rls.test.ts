@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
-  RLS_POLICIES_SQL,
+  DEPLOYMENT_RLS_SQL,
+  grantsForLearnerRoleSql,
   RLS_PROTECTED_TABLES,
 } from "../../src/cli/deploy/rls-policies.js";
 import { openPostgresDatabase } from "../../src/kernel/db/postgres.js";
@@ -8,31 +9,38 @@ import { SCHEMA } from "../../src/kernel/db/schema.js";
 
 /**
  * RLS is the load-bearing privacy boundary of Deployment B (ADR 2026-07-04
- * Decision 6): in the shared database, only these policies keep one
+ * Decision 6): in the shared database only these policies keep one
  * colleague's review logs away from another's. A privacy boundary nobody
  * tests is a claim, not a boundary — so this exercises a **real** PostgreSQL
  * and the **shipped** policies (`src/cli/deploy/rls-policies.ts`), never a
  * copy pasted into the test.
  *
- * Set `POSTGRES_URL` to run it. CI always does (see `.github/workflows/ci.yml`,
- * `postgres:17-alpine` — 17 because Entra auth is broken on 18).
+ * Identity comes from `current_user` (Decision 7), so switching learner here
+ * means switching database role — exactly what a colleague's own Entra login
+ * does in production.
+ *
+ *   npm run pg:up && npm run pg:test
+ *
+ * CI always runs it (`postgres:17-alpine`; 17 because Entra auth is broken
+ * on 18).
  */
 const POSTGRES_URL = process.env.POSTGRES_URL;
 
 // A skipped security test that still reports "passed" is how a boundary
-// quietly stops being tested. Make the skip visible in the report instead.
+// quietly stops being tested. Make the gap visible in the report instead.
 const describeWithPostgres = POSTGRES_URL ? describe : describe.skip;
+
+const ALICE = "01JALICE0000000000000000";
+const BOB = "01JBOB000000000000000000";
 
 describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
   /**
-   * Everything runs inside one `transaction()` on purpose. `SET ROLE` and
-   * `set_config(...)` are **session** state, and outside a transaction this
-   * provider issues each query through the pool, which may hand back a
-   * different connection — the role and the current learner would silently
-   * not apply, and the test would be measuring nothing. A transaction pins
-   * one client for the whole scenario.
+   * `SET LOCAL ROLE` is transaction-scoped, so a transaction both pins one
+   * pooled client and guarantees the role resets afterwards. Outside a
+   * transaction this provider takes a fresh client per query and the role
+   * would silently not apply — the test would measure nothing.
    */
-  async function withPinnedSession<T>(
+  async function withSession<T>(
     fn: (tx: Awaited<ReturnType<typeof openPostgresDatabase>>) => Promise<T>,
   ): Promise<T> {
     const db = openPostgresDatabase({ connectionString: POSTGRES_URL });
@@ -43,177 +51,186 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
     }
   }
 
-  async function setLearner(
+  /** Fresh schema + deployment SQL + two mapped learner roles. */
+  async function seed(
     tx: Awaited<ReturnType<typeof openPostgresDatabase>>,
-    userId: string,
   ): Promise<void> {
-    await tx.exec(`SET LOCAL "app.current_user_id" = '${userId}'`);
-  }
+    await tx.exec(`
+      DROP TABLE IF EXISTS session_steps CASCADE;
+      DROP TABLE IF EXISTS sessions CASCADE;
+      DROP TABLE IF EXISTS review_logs CASCADE;
+      DROP TABLE IF EXISTS cards CASCADE;
+      DROP TABLE IF EXISTS assignments CASCADE;
+      DROP TABLE IF EXISTS prerequisites CASCADE;
+      DROP TABLE IF EXISTS tokens CASCADE;
+      DROP TABLE IF EXISTS learner_principals CASCADE;
+    `);
+    await tx.exec(SCHEMA);
+    await tx.exec(DEPLOYMENT_RLS_SQL);
 
-  it("keeps one learner's cards and review logs from another", async () => {
-    await withPinnedSession(async (tx) => {
-      await tx.exec(`
-        DROP TABLE IF EXISTS session_steps CASCADE;
-        DROP TABLE IF EXISTS sessions CASCADE;
-        DROP TABLE IF EXISTS review_logs CASCADE;
-        DROP TABLE IF EXISTS cards CASCADE;
-        DROP TABLE IF EXISTS assignments CASCADE;
-        DROP TABLE IF EXISTS prerequisites CASCADE;
-        DROP TABLE IF EXISTS tokens CASCADE;
-      `);
-      await tx.exec(SCHEMA);
-      await tx.exec(RLS_POLICIES_SQL);
-
-      // Superusers and BYPASSRLS roles ignore policies entirely, so testing as
-      // the owner would pass no matter what the policies said.
+    for (const role of ["alice_role", "bob_role", "unmapped_role"]) {
       await tx.exec(`
         DO $$
         BEGIN
-          IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'learner_role') THEN
-            CREATE ROLE learner_role NOSUPERUSER NOBYPASSRLS;
+          IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${role}') THEN
+            CREATE ROLE ${role} NOSUPERUSER NOBYPASSRLS;
           END IF;
         END
         $$;
-        GRANT ALL ON SCHEMA public TO learner_role;
-        GRANT ALL ON ALL TABLES IN SCHEMA public TO learner_role;
-        SET LOCAL ROLE learner_role;
       `);
+      await tx.exec(grantsForLearnerRoleSql(role));
+    }
 
-      // Guard the guard: if this role could bypass RLS the rest is theatre.
-      const who = (await tx
+    // Only alice and bob are mapped; unmapped_role deliberately is not.
+    await tx
+      .prepare(
+        `INSERT INTO learner_principals (zam_user_id, db_role, entra_upn)
+         VALUES (?, 'alice_role', 'alice@docuware.com'),
+                (?, 'bob_role', 'bob@docuware.com')`,
+      )
+      .run(ALICE, BOB);
+
+    await tx
+      .prepare(
+        `INSERT INTO tokens (id, slug, concept, editorial_state)
+         VALUES ('tok1', 'token-1', 'Concept 1', 'published')`,
+      )
+      .run();
+  }
+
+  const asRole = (
+    tx: Awaited<ReturnType<typeof openPostgresDatabase>>,
+    role: string,
+  ) => tx.exec(`SET LOCAL ROLE ${role}`);
+
+  it("resolves the learner from the connected role, with no variable to set", async () => {
+    await withSession(async (tx) => {
+      await seed(tx);
+
+      await asRole(tx, "alice_role");
+      let who = (await tx
+        .prepare("SELECT current_user AS role, current_learner_id() AS learner")
+        .get()) as { role: string; learner: string | null };
+      expect(who.role).toBe("alice_role");
+      expect(who.learner).toBe(ALICE);
+
+      await tx.exec("SET LOCAL ROLE NONE");
+      await asRole(tx, "bob_role");
+      who = (await tx
+        .prepare("SELECT current_user AS role, current_learner_id() AS learner")
+        .get()) as { role: string; learner: string | null };
+      expect(who.role).toBe("bob_role");
+      expect(who.learner).toBe(BOB);
+    });
+  });
+
+  it("keeps one learner's cards and review logs from another", async () => {
+    await withSession(async (tx) => {
+      await seed(tx);
+      await asRole(tx, "alice_role");
+
+      // Guard the guard: a superuser or BYPASSRLS role ignores policies, which
+      // would make every assertion below pass regardless of the policies.
+      const guard = (await tx
         .prepare(
           `SELECT current_user AS role,
                   (SELECT rolbypassrls FROM pg_roles WHERE rolname = current_user) AS bypass`,
         )
         .get()) as { role: string; bypass: boolean };
-      expect(who.role).toBe("learner_role");
-      expect(who.bypass).toBe(false);
+      expect(guard.role).toBe("alice_role");
+      expect(guard.bypass).toBe(false);
 
-      await tx
-        .prepare(
-          `INSERT INTO tokens (id, slug, concept, editorial_state)
-           VALUES ('tok1', 'token-1', 'Concept 1', 'published')`,
-        )
-        .run();
-
-      // ── Alice writes ──────────────────────────────────────────────────
-      await setLearner(tx, "alice");
       await tx
         .prepare(
           `INSERT INTO cards (id, token_id, user_id, due_at)
-           VALUES ('card_alice', 'tok1', 'alice', CURRENT_TIMESTAMP)`,
+           VALUES ('card_alice', 'tok1', ?, CURRENT_TIMESTAMP)`,
         )
-        .run();
+        .run(ALICE);
       await tx
         .prepare(
           `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, scheduled_at)
-           VALUES ('log_alice', 'card_alice', 'tok1', 'alice', 1, CURRENT_TIMESTAMP)`,
+           VALUES ('log_alice', 'card_alice', 'tok1', ?, 1, CURRENT_TIMESTAMP)`,
         )
-        .run();
+        .run(ALICE);
 
       expect(await tx.prepare("SELECT * FROM cards").all()).toHaveLength(1);
-      expect(await tx.prepare("SELECT * FROM review_logs").all()).toHaveLength(
-        1,
-      );
+      expect(await tx.prepare("SELECT * FROM review_logs").all()).toHaveLength(1);
 
-      // ── Bob must see and touch none of it ─────────────────────────────
-      await setLearner(tx, "bob");
+      // ── Bob sees and touches none of it ───────────────────────────────
+      await tx.exec("SET LOCAL ROLE NONE");
+      await asRole(tx, "bob_role");
 
       expect(await tx.prepare("SELECT * FROM cards").all()).toHaveLength(0);
-      expect(await tx.prepare("SELECT * FROM review_logs").all()).toHaveLength(
-        0,
-      );
+      expect(await tx.prepare("SELECT * FROM review_logs").all()).toHaveLength(0);
       expect(
         await tx.prepare("SELECT * FROM cards WHERE id = 'card_alice'").get(),
       ).toBeUndefined();
 
-      const updated = await tx
-        .prepare("UPDATE cards SET blocked = 1 WHERE id = 'card_alice'")
-        .run();
-      expect(updated.changes).toBe(0);
+      expect(
+        (await tx
+          .prepare("UPDATE cards SET blocked = 1 WHERE id = 'card_alice'")
+          .run()).changes,
+      ).toBe(0);
+      expect(
+        (await tx
+          .prepare("DELETE FROM cards WHERE id = 'card_alice'")
+          .run()).changes,
+      ).toBe(0);
 
-      const deleted = await tx
-        .prepare("DELETE FROM cards WHERE id = 'card_alice'")
-        .run();
-      expect(deleted.changes).toBe(0);
-
-      // Bob cannot forge a row in Alice's name either — that is the WITH
-      // CHECK half, which a USING-only policy would silently allow.
-      //
-      // Inside a savepoint: a rejected statement aborts the whole PostgreSQL
-      // transaction (25P02) and every later assertion would then fail for the
-      // wrong reason. The savepoint scopes the rollback to this one attempt so
-      // the pinned session survives.
-      await tx.exec("SAVEPOINT forge_attempt");
+      // Forging a row in Alice's name is the WITH CHECK half, which a
+      // USING-only policy would silently allow. A rejected statement aborts
+      // the transaction (25P02), so scope it to a savepoint.
+      await tx.exec("SAVEPOINT forge");
       await expect(
         tx
           .prepare(
             `INSERT INTO cards (id, token_id, user_id, due_at)
-             VALUES ('card_forged', 'tok1', 'alice', CURRENT_TIMESTAMP)`,
+             VALUES ('card_forged', 'tok1', ?, CURRENT_TIMESTAMP)`,
           )
-          .run(),
+          .run(ALICE),
       ).rejects.toThrow(/row-level security/i);
-      await tx.exec("ROLLBACK TO SAVEPOINT forge_attempt");
+      await tx.exec("ROLLBACK TO SAVEPOINT forge");
 
       // ── Alice still has exactly what she wrote ────────────────────────
-      await setLearner(tx, "alice");
-      const aliceCards = (await tx.prepare("SELECT * FROM cards").all()) as
-        Array<{ id: string; blocked: number }>;
-      expect(aliceCards).toHaveLength(1);
-      expect(aliceCards[0].id).toBe("card_alice");
-      expect(Number(aliceCards[0].blocked)).toBe(0);
+      await tx.exec("SET LOCAL ROLE NONE");
+      await asRole(tx, "alice_role");
+      const cards = (await tx.prepare("SELECT * FROM cards").all()) as Array<{
+        id: string;
+        blocked: number;
+      }>;
+      expect(cards).toHaveLength(1);
+      expect(cards[0].id).toBe("card_alice");
+      expect(Number(cards[0].blocked)).toBe(0);
     });
   });
 
-  it("leaves an unset learner with no learning state at all", async () => {
-    // A connection that forgot to bind a learner must fail closed, not open.
-    await withPinnedSession(async (tx) => {
-      await tx.exec(`
-        DROP TABLE IF EXISTS session_steps CASCADE;
-        DROP TABLE IF EXISTS sessions CASCADE;
-        DROP TABLE IF EXISTS review_logs CASCADE;
-        DROP TABLE IF EXISTS cards CASCADE;
-        DROP TABLE IF EXISTS assignments CASCADE;
-        DROP TABLE IF EXISTS prerequisites CASCADE;
-        DROP TABLE IF EXISTS tokens CASCADE;
-      `);
-      await tx.exec(SCHEMA);
-      await tx.exec(RLS_POLICIES_SQL);
-      await tx.exec(`
-        DO $$
-        BEGIN
-          IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'learner_role') THEN
-            CREATE ROLE learner_role NOSUPERUSER NOBYPASSRLS;
-          END IF;
-        END
-        $$;
-        GRANT ALL ON SCHEMA public TO learner_role;
-        GRANT ALL ON ALL TABLES IN SCHEMA public TO learner_role;
-      `);
-      await tx
-        .prepare(
-          `INSERT INTO tokens (id, slug, concept) VALUES ('tok1', 'token-1', 'C')`,
-        )
-        .run();
-      await setLearner(tx, "alice");
+  it("shows an unmapped role nothing at all", async () => {
+    // A role with no principal mapping must fail closed, not open — this is
+    // what makes a forgotten mapping a lockout rather than a data leak.
+    await withSession(async (tx) => {
+      await seed(tx);
+      await asRole(tx, "alice_role");
       await tx
         .prepare(
           `INSERT INTO cards (id, token_id, user_id, due_at)
-           VALUES ('card_alice', 'tok1', 'alice', CURRENT_TIMESTAMP)`,
+           VALUES ('card_alice', 'tok1', ?, CURRENT_TIMESTAMP)`,
         )
-        .run();
+        .run(ALICE);
 
-      await tx.exec("SET LOCAL ROLE learner_role");
-      await tx.exec(`RESET "app.current_user_id"`);
+      await tx.exec("SET LOCAL ROLE NONE");
+      await asRole(tx, "unmapped_role");
+      const learner = (await tx
+        .prepare("SELECT current_learner_id() AS learner")
+        .get()) as { learner: string | null };
+      expect(learner.learner).toBeNull();
       expect(await tx.prepare("SELECT * FROM cards").all()).toHaveLength(0);
     });
   });
 
   it("protects every learning-state table the deployment lists", async () => {
     // Guards against a table being added to the schema and forgotten here.
-    await withPinnedSession(async (tx) => {
-      await tx.exec(SCHEMA);
-      await tx.exec(RLS_POLICIES_SQL);
+    await withSession(async (tx) => {
+      await seed(tx);
       for (const table of RLS_PROTECTED_TABLES) {
         const row = (await tx
           .prepare(
