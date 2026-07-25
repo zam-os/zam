@@ -139,6 +139,12 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
 
       // Bob cannot forge a row in Alice's name either — that is the WITH
       // CHECK half, which a USING-only policy would silently allow.
+      //
+      // Inside a savepoint: a rejected statement aborts the whole PostgreSQL
+      // transaction (25P02) and every later assertion would then fail for the
+      // wrong reason. The savepoint scopes the rollback to this one attempt so
+      // the pinned session survives.
+      await tx.exec("SAVEPOINT forge_attempt");
       await expect(
         tx
           .prepare(
@@ -147,6 +153,7 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
           )
           .run(),
       ).rejects.toThrow(/row-level security/i);
+      await tx.exec("ROLLBACK TO SAVEPOINT forge_attempt");
 
       // ── Alice still has exactly what she wrote ────────────────────────
       await setLearner(tx, "alice");
