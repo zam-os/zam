@@ -1,12 +1,17 @@
 /**
  * GitHub Copilot CLI outbound adapter (ADR 2026-07-12a).
  *
- * `copilot -p <prompt> -s --allow-all-tools` — non-interactive scripting mode.
+ * `copilot -p <prompt> -s` — non-interactive scripting mode.
  * Auth is the learner's Copilot login / seat. Multimodal: `--attachment` for
  * images (non-interactive only). Optional `--model` (e.g. gpt-5-mini).
+ *
+ * Do **not** pass `--allow-all-tools` for pure text generation: with MCP servers
+ * enabled (e.g. the configured `zam` MCP), that path often stalls for minutes
+ * while the agent explores tools. Text-only `-p -s` returns in ~10–20s.
+ * Paths/tools are only enabled when attachments need filesystem access.
  */
 
-import { tmpdir } from "node:os";
+import { homedir } from "node:os";
 import {
   type AgentHarnessId,
   getHarness,
@@ -121,11 +126,19 @@ export class CopilotAdapter implements AgentTextAdapter {
     }
     const timeoutMs = req.timeoutMs ?? DEFAULT_TIMEOUT_MS;
     const prompt = combineSystemUser(req);
-    const cwd = tmpdir();
-    // -s silent text; allow-all-tools required for non-interactive tool policy.
-    const args = ["-p", prompt, "-s", "--allow-all-tools", "--allow-all-paths"];
+    // Prefer $HOME (trusted by default in Copilot config) over os.tmpdir():
+    // cwd=tmpdir surfaces "Allowed model policy requested without a cwd" and
+    // can leave the model list empty.
+    const cwd = homedir();
+    const images = req.imagePaths?.filter(Boolean) ?? [];
+    // Silent text-only prompt. Tools/paths only when reading attachments —
+    // blanket --allow-all-tools with MCP servers (zam, github) stalls for ages.
+    const args = ["-p", prompt, "-s"];
+    if (images.length > 0) {
+      args.push("--allow-all-tools", "--allow-all-paths");
+    }
     if (req.model) args.push("--model", req.model);
-    for (const image of req.imagePaths?.filter(Boolean) ?? []) {
+    for (const image of images) {
       args.push("--attachment", image);
     }
 
