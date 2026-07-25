@@ -21,8 +21,12 @@ export const DEFAULT_AGENT_MODELS: Readonly<Record<string, string>> = {
    * Verified: `agy --model "Gemini 3.5 Flash (Low)" -p …`.
    */
   antigravity: "Gemini 3.5 Flash (Low)",
-  /** GitHub Copilot CLI — cheap default (seat/quota dependent). */
-  copilot: "gpt-5-mini",
+  /**
+   * GitHub Copilot CLI — prefer Luna over gpt-5-mini: mini is very cheap but
+   * slow/weak for one-shot recall. `gpt-5.6-luna` + effort low is ~4–6s and
+   * better quality for question rewrite / evaluation (verified via `copilot -p`).
+   */
+  copilot: "gpt-5.6-luna",
   /** Grok Build: currently the only / default model on SuperGrok. */
   grok: "grok-4.5",
   /**

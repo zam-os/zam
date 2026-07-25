@@ -12,8 +12,8 @@
  * - `--no-remote` so the CLI does not attach to / hold a VS Code remote session
  *   (GitHub issue: auto-connect to VS Code with no opt-out for a long while).
  * - Prefer `--context default` over interactive `long_context`.
- * - Always pass `--effort high` for gpt-5-mini-class models (required for
- *   reliable -p completions; matches the model’s sweet spot).
+ * - Always pass `--effort` explicitly (unset is flaky in -p mode):
+ *   `low` for Luna, `high` for mini-class, `medium` otherwise.
  * - Skip auto-update on cold start to avoid extra network.
  */
 
@@ -43,8 +43,10 @@ const DEFAULT_TIMEOUT_MS = 120_000;
 
 /**
  * Resolve Copilot `--effort` for a headless -p run. Always set explicitly —
- * an unset effort is flaky in -p mode. gpt-5-mini (default) wants high;
- * larger models stay at medium unless the caller overrides.
+ * an unset effort is flaky in -p mode.
+ * - Luna: low (fast, strong enough for recall; ~5s one-shot)
+ * - mini/nano/haiku: high
+ * - larger models: medium
  */
 export function copilotEffortForModel(
   model?: string,
@@ -52,9 +54,12 @@ export function copilotEffortForModel(
 ): NonNullable<AgentGenerateRequest["effort"]> {
   if (override) return override;
   const m = (model ?? "").toLowerCase();
-  if (!m || m.includes("mini") || m.includes("nano") || m.includes("haiku")) {
+  if (m.includes("luna")) return "low";
+  if (m.includes("mini") || m.includes("nano") || m.includes("haiku")) {
     return "high";
   }
+  // Default harness model is Luna; treat unknown/empty as low.
+  if (!m) return "low";
   return "medium";
 }
 

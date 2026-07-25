@@ -64,10 +64,14 @@ OK
 });
 
 describe("copilotEffortForModel", () => {
-  it("uses high for gpt-5-mini and other small models", () => {
+  it("uses low for Luna (default experimental model)", () => {
+    expect(copilotEffortForModel("gpt-5.6-luna")).toBe("low");
+    expect(copilotEffortForModel(undefined)).toBe("low");
+  });
+
+  it("uses high for mini-class models", () => {
     expect(copilotEffortForModel("gpt-5-mini")).toBe("high");
     expect(copilotEffortForModel("gpt-4.1-mini")).toBe("high");
-    expect(copilotEffortForModel(undefined)).toBe("high");
   });
 
   it("uses medium for larger models unless overridden", () => {
