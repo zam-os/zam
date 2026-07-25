@@ -387,6 +387,33 @@ This does **not** promote context to an authorization boundary. It makes the
 boundary the thing that *selects* the context. Inside the company library,
 contexts remain ordinary slices.
 
+### 10. An assignment binds while it stands; the learning outlives it
+
+An assignment ("learn these 12 tokens by March") creates ordinary cards in the
+learner's queue. Two rules govern their life (project owner, 2026-07-25):
+
+- **While the assignment is active, the learner cannot detach the card.** The
+  "not for me" opt-out is unavailable. That unavailability is precisely what
+  makes it an assignment rather than a suggestion. It constrains the *queue*,
+  never the answer: ZAM still never compels a rating, and the learner's results
+  remain their own private data like any other.
+- **When the assignment is withdrawn or completed, the cards and their full
+  FSRS history stay with the learner.** What someone worked to learn belongs to
+  them, not to the task that prompted it — a lead changing their mind must not
+  erase a colleague's learning. The assignment was the occasion, not the owner.
+
+From that moment the card is ordinary personal content and the learner has full
+control: keep it (the default — it simply keeps scheduling), detach it with
+**"not for me"**, or delete it outright in the Studio. Both are one action.
+
+The asymmetry is deliberate. An assigner may withdraw an assignment; an
+assigner may never delete another person's cards or review history. Deletion of
+learning state is always the learner's own act — which also keeps `review_logs`
+append-only from every direction except the person they belong to.
+
+Assignment provenance survives as context on the card ("assigned by … , March
+2026"), so a learner can still see why a card entered their queue.
+
 ## Cost (Deployment B, pilot phase)
 
 The pilot's budget is the Visual Studio Professional subscription's monthly
@@ -431,29 +458,29 @@ colleagues are ordinary tenant members and no B2B guest path is needed
 (Decision 2); learning state lives in the shared database behind RLS
 (Decision 6); and materiality has no default — publishing forces the choice
 (Decision 3). A material change **re-tests rather than resets** — the card
-becomes due now and the next rating recalibrates FSRS (Decision 3).
+becomes due now and the next rating recalibrates FSRS (Decision 3). An
+assignment binds while it stands, and the cards outlive it under the learner's
+control (Decision 10).
 
-1. **Assignment ↔ card lifecycle.** Does deleting an assignment retire the
-   card, and does the learner keep the history?
-2. **Where does the residual-visibility policy get written down?** Decision 6
+1. **Where does the residual-visibility policy get written down?** Decision 6
    states that a superuser or Azure server administrator can read every row.
    Participants should be told this in plain language before the first real
    colleague joins, and someone at DocuWare — not this ADR — has to own that
    statement. Blocking for real colleague data; not blocking for a pilot on
    test identities.
-3. **Aggregate vocabulary.** Which opt-in metrics exist and at what
+2. **Aggregate vocabulary.** Which opt-in metrics exist and at what
    granularity — needs a concrete lead/coach story before freezing. At an
    employer this needs to be conservative by default.
-4. **Offline for Deployment B.** With learning state in the server, reviews
+3. **Offline for Deployment B.** With learning state in the server, reviews
    need the network. Deployment A stays the offline path, but if colleagues
    want offline reviews *and* cross-device progress, a local read-through
    cache with write-back is the answer — and it brings back exactly the sync
    and conflict work this ADR otherwise avoids. Defer until the pilot shows
    whether it actually hurts.
-5. **Conflict policy for concurrent curation.** Last-write-wins on
+4. **Conflict policy for concurrent curation.** Last-write-wins on
    `updated_at` plus a curation log is probably enough at this scale; verify
    against a real two-curator case before building merge UI.
-6. **Dialect cost, measured.** The 2026-07-04 draft assumed a Postgres provider
+5. **Dialect cost, measured.** The 2026-07-04 draft assumed a Postgres provider
    means "a dialect audit of every kernel query". A survey on 2026-07-25 found
    the actual surface small: `datetime('now')` ×21, `LIKE` ×16 (SQLite's is
    case-insensitive for ASCII, Postgres' is not — needs `ILIKE`),
