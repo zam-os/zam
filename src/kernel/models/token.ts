@@ -910,6 +910,8 @@ export interface CurriculumCardInput {
   symbiosis_mode?: string | null;
   provider?: string | null;
   topic_id?: string | null;
+  /** Explicit prerequisite slugs (in-batch or existing). If omitted, auto-inferred. */
+  prerequisites?: string[];
 }
 
 export interface ImportCurriculumResult {
@@ -1024,6 +1026,8 @@ export async function listUserCardsForCurriculumTopic(
 /**
  * Import curriculum cards in a single transaction.
  * Reuses existing tokens on slug match and ensures FSRS cards exist.
+ * Prerequisite edges are created from explicit `prerequisites` slugs or
+ * inferred from bloom level and domain when omitted.
  */
 export async function importCurriculumCards(
   db: Database,
@@ -1032,6 +1036,10 @@ export async function importCurriculumCards(
 ): Promise<ImportCurriculumResult> {
   let createdCount = 0;
   let ensuredCount = 0;
+
+  // ── Pass 1: create / link tokens ────────────────────────────────────────
+  const slugByIndex: string[] = [];
+  const tokenBySlug = new Map<string, Token>();
 
   await db.transaction(async (tx) => {
     for (const card of cards) {
@@ -1106,15 +1114,116 @@ export async function importCurriculumCards(
         }
       }
 
+      slugByIndex.push(token.slug);
+      tokenBySlug.set(token.slug, token);
+
       const existingCard = await getCard(tx, token.id, userId);
       if (!existingCard) {
         await ensureCard(tx, token.id, userId);
         ensuredCount++;
       }
     }
+
+    // ── Pass 2: wire prerequisite edges ─────────────────────────────────────
+    for (let i = 0; i < cards.length; i++) {
+      const card = cards[i];
+      const tokenSlug = slugByIndex[i];
+      const token = tokenBySlug.get(tokenSlug);
+      if (!token) continue;
+
+      let prereqSlugs: string[];
+
+      if (card.prerequisites && card.prerequisites.length > 0) {
+        prereqSlugs = [
+          ...new Set(card.prerequisites.map((s) => s.trim()).filter(Boolean)),
+        ];
+      } else {
+        prereqSlugs = await inferPrerequisitesFromCards(
+          cards,
+          i,
+          tokenBySlug,
+          tx,
+        );
+      }
+
+      for (const prereqSlug of prereqSlugs) {
+        const prereqToken =
+          tokenBySlug.get(prereqSlug) ?? (await getTokenBySlug(tx, prereqSlug));
+        if (!prereqToken) continue;
+        if (prereqToken.id === token.id) continue;
+
+        // Cycle check
+        const cycleCheck = (await tx
+          .prepare(
+            `WITH RECURSIVE dependents(token_id) AS (
+               SELECT token_id FROM prerequisites WHERE requires_id = ?
+               UNION
+               SELECT p.token_id FROM prerequisites p
+               JOIN dependents d ON p.requires_id = d.token_id
+             )
+             SELECT COUNT(*) as n FROM dependents WHERE token_id = ?`,
+          )
+          .get(prereqToken.id, token.id)) as { n: number };
+        if (cycleCheck.n > 0) continue;
+
+        await tx
+          .prepare(
+            "INSERT INTO prerequisites (token_id, requires_id) VALUES (?, ?) ON CONFLICT DO NOTHING",
+          )
+          .run(token.id, prereqToken.id);
+      }
+    }
   });
 
   return { createdCount, ensuredCount };
+}
+
+/**
+ * Infer prerequisite slugs for a curriculum card based on bloom level and domain.
+ * Same logic as inferPrerequisites in applySourceProposals.
+ */
+async function inferPrerequisitesFromCards(
+  cards: CurriculumCardInput[],
+  currentIndex: number,
+  tokenBySlug: Map<string, Token>,
+  db: Database,
+): Promise<string[]> {
+  const card = cards[currentIndex];
+  const cardDomain = (card.domain || "").toLowerCase();
+  const cardBloom = card.bloom_level ?? 1;
+
+  // 1. Look earlier in the same batch for same-domain cards with lower bloom
+  let bestBatchSlug: string | null = null;
+  let bestBatchBloom = -1;
+  for (let j = 0; j < currentIndex; j++) {
+    const other = cards[j];
+    if ((other.domain || "").toLowerCase() !== cardDomain) continue;
+    const otherBloom = other.bloom_level ?? 1;
+    if (otherBloom < cardBloom && otherBloom > bestBatchBloom) {
+      for (const t of tokenBySlug.values()) {
+        if (t.concept === other.concept && t.domain === other.domain) {
+          bestBatchSlug = t.slug;
+          bestBatchBloom = otherBloom;
+          break;
+        }
+      }
+    }
+  }
+  if (bestBatchSlug) return [bestBatchSlug];
+
+  // 2. Fallback: query existing tokens in the same domain with lower bloom
+  try {
+    const existing = (await db
+      .prepare(
+        `SELECT slug FROM tokens WHERE LOWER(domain) = ? AND bloom_level < ? AND maintenance_at IS NULL ORDER BY bloom_level DESC LIMIT 1`,
+      )
+      .get(cardDomain, cardBloom)) as { slug: string } | undefined;
+    if (existing) return [existing.slug];
+  } catch {
+    // best-effort
+  }
+
+  return [];
 }
 
 export interface SplitProposalInput {
@@ -1461,10 +1570,18 @@ export interface SourceProposalInput {
   provider?: string | null;
   topic_id?: string | null;
   source_id?: string | null;
+  /** Explicit prerequisite slugs (in-batch or existing). If omitted, auto-inferred. */
+  prerequisites?: string[];
 }
 
 /**
  * Apply source proposals on an open database handle (caller may wrap in a transaction).
+ *
+ * Creates tokens, ensures cards, and wires prerequisite edges. When a proposal
+ * carries explicit `prerequisites`, those slugs are used (in-batch or existing).
+ * Otherwise prerequisites are inferred from bloom level and domain: a token
+ * links to the highest-bloom same-domain token that precedes it in the batch,
+ * or to existing lower-bloom tokens in the same domain from the database.
  */
 export async function applySourceProposals(
   db: Database,
@@ -1474,6 +1591,10 @@ export async function applySourceProposals(
 ): Promise<ConfirmFoundationsResult> {
   let createdCount = 0;
   let linkedCount = 0;
+
+  // ── Pass 1: create / link tokens ────────────────────────────────────────
+  const slugByIndex: string[] = [];
+  const tokenBySlug = new Map<string, Token>();
 
   for (const card of proposals) {
     const cardSourceId = card.source_id || sourceId;
@@ -1537,6 +1658,9 @@ export async function applySourceProposals(
       }
     }
 
+    slugByIndex.push(token.slug);
+    tokenBySlug.set(token.slug, token);
+
     const existingCard = await getCard(db, token.id, userId);
     if (!existingCard) {
       await ensureCard(db, token.id, userId);
@@ -1558,7 +1682,106 @@ export async function applySourceProposals(
       );
   }
 
+  // ── Pass 2: wire prerequisite edges ─────────────────────────────────────
+  for (let i = 0; i < proposals.length; i++) {
+    const card = proposals[i];
+    const tokenSlug = slugByIndex[i];
+    const token = tokenBySlug.get(tokenSlug);
+    if (!token) continue;
+
+    let prereqSlugs: string[];
+
+    if (card.prerequisites && card.prerequisites.length > 0) {
+      // Explicit prerequisites from the proposal
+      prereqSlugs = [
+        ...new Set(card.prerequisites.map((s) => s.trim()).filter(Boolean)),
+      ];
+    } else {
+      // Auto-infer: find the best prerequisite from same domain with lower bloom
+      prereqSlugs = await inferPrerequisites(proposals, i, tokenBySlug, db);
+    }
+
+    for (const prereqSlug of prereqSlugs) {
+      const prereqToken =
+        tokenBySlug.get(prereqSlug) ?? (await getTokenBySlug(db, prereqSlug));
+      if (!prereqToken) continue; // skip unknown slugs silently
+      if (prereqToken.id === token.id) continue; // skip self
+
+      // Cycle check via recursive CTE
+      const cycleCheck = (await db
+        .prepare(
+          `WITH RECURSIVE dependents(token_id) AS (
+             SELECT token_id FROM prerequisites WHERE requires_id = ?
+             UNION
+             SELECT p.token_id FROM prerequisites p
+             JOIN dependents d ON p.requires_id = d.token_id
+           )
+           SELECT COUNT(*) as n FROM dependents WHERE token_id = ?`,
+        )
+        .get(prereqToken.id, token.id)) as { n: number };
+      if (cycleCheck.n > 0) continue; // would create cycle, skip
+
+      await db
+        .prepare(
+          "INSERT INTO prerequisites (token_id, requires_id) VALUES (?, ?) ON CONFLICT DO NOTHING",
+        )
+        .run(token.id, prereqToken.id);
+    }
+  }
+
   return { createdCount, linkedCount };
+}
+
+/**
+ * Infer prerequisite slugs for a proposal based on bloom level and domain.
+ * Strategy: link to the highest-bloom same-domain token that appears earlier
+ * in the batch, or to existing same-domain tokens in the database with lower
+ * bloom. Returns at most one slug (the most logical single prerequisite).
+ */
+async function inferPrerequisites(
+  proposals: SourceProposalInput[],
+  currentIndex: number,
+  tokenBySlug: Map<string, Token>,
+  db: Database,
+): Promise<string[]> {
+  const card = proposals[currentIndex];
+  const cardDomain = (card.domain || "").toLowerCase();
+  const cardBloom = card.bloom_level ?? 1;
+
+  // 1. Look earlier in the same batch for same-domain tokens with lower bloom
+  let bestBatchSlug: string | null = null;
+  let bestBatchBloom = -1;
+  for (let j = 0; j < currentIndex; j++) {
+    const other = proposals[j];
+    if ((other.domain || "").toLowerCase() !== cardDomain) continue;
+    const otherBloom = other.bloom_level ?? 1;
+    if (otherBloom < cardBloom && otherBloom > bestBatchBloom) {
+      // Resolve the slug that was assigned to this proposal
+      for (const t of tokenBySlug.values()) {
+        if (t.concept === other.concept && t.domain === other.domain) {
+          bestBatchSlug = t.slug;
+          bestBatchBloom = otherBloom;
+          break;
+        }
+      }
+    }
+  }
+  if (bestBatchSlug) return [bestBatchSlug];
+
+  // 2. Fallback: query existing tokens in the same domain with lower bloom
+  //    (only when the batch has no earlier same-domain token)
+  try {
+    const existing = (await db
+      .prepare(
+        `SELECT slug FROM tokens WHERE LOWER(domain) = ? AND bloom_level < ? AND maintenance_at IS NULL ORDER BY bloom_level DESC LIMIT 1`,
+      )
+      .get(cardDomain, cardBloom)) as { slug: string } | undefined;
+    if (existing) return [existing.slug];
+  } catch {
+    // best-effort; ignore DB errors during inference
+  }
+
+  return [];
 }
 
 /**
