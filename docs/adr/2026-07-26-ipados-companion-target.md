@@ -157,22 +157,23 @@ ZAM sits beside a textbook PDF.
   reflectively by class name at runtime, so compiling it into the APK is
   enough. iOS needs the symbol at **link** time.
 
-  The fix is to make the Swift a SwiftPM package that the Rust build links —
-  either via `swift_rs::SwiftLinker` from the app's `build.rs`, or by promoting
-  both plugins to real plugin crates with
-  `tauri_plugin::Builder::new(COMMANDS).ios_path("ios")`, which is what every
-  official plugin (e.g. `tauri-plugin-barcode-scanner`) does. The second is the
-  documented, known-correct path; the first is lighter. Both need the `Tauri`
-  Swift package resolved for the `Plugin`/`Invoke` types.
+  **Fixed** by moving the Swift into a SwiftPM package at
+  `mobile/src-tauri/ios/` that the Rust build links. `build.rs` reproduces what
+  `tauri_plugin::Builder::ios_path()` does for real plugin crates — stage the
+  Tauri Swift API from `DEP_TAURI_IOS_LIBRARY_PATH` into `.tauri/tauri-api`,
+  then call `tauri_utils::build::link_apple_library`. Promoting both plugins to
+  full plugin crates was the alternative; it was rejected because it would
+  namespace the commands and change the WebView contract, where this keeps
+  every command exactly where it was.
 
-  **Deliberately not attempted blind.** With no local Xcode each attempt is a
-  ~7-minute CI round trip with no way to iterate, so this waits for a machine
-  that can compile it. Everything else in the iOS target is green, including
-  `cargo check --target aarch64-apple-ios`.
+  Verified locally: host and `aarch64-linux-android` still compile, and the
+  `tauri-utils` `build-2` feature unifies with what `tauri-build` already
+  enables (one added lock line). **The Swift itself still needs CI to compile
+  it** — there is no Xcode on the authoring machine.
 - Apple Developer Program membership is an ongoing €99/yr cost, and TestFlight
   builds expire after 90 days, so a dormant field test needs periodic rebuilds.
 
 ## Citations
 
 - `docs/plans/2026-07-21-android-companion-app.md`
-- `mobile/src-tauri/gen/apple/Sources/zam-mobile/`
+- `mobile/src-tauri/ios/` (Swift plugin package) and `mobile/src-tauri/build.rs`

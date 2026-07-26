@@ -99,6 +99,12 @@ npm run ios:dev
 `tauri ios init` regenerates from `project.yml`. Put iOS settings in
 `project.yml` (it regenerates `Info.plist`), never in the Xcode UI.
 
+The Swift plugins live in the SwiftPM package at **`src-tauri/ios/`**, not in
+the Xcode app target — the Rust staticlib links before Swift compiles, so
+`@_cdecl` symbols in the app target are invisible to it. `build.rs` stages the
+Tauri Swift API into `src-tauri/.tauri/` (generated, ignored) and links the
+package via `tauri_utils::build::link_apple_library`.
+
 Deploying to a physical device needs a paid Apple Developer Program membership
 and `APPLE_DEVELOPMENT_TEAM` set to your team ID. Free personal-team
 provisioning expires after 7 days and is not a supported path here.

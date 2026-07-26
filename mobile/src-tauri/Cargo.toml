@@ -11,6 +11,11 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
+# Exposes tauri_utils::build::link_apple_library, which is behind the build-2
+# feature and backed by swift-rs. `build-2` (not `build`) is what tauri-build
+# already enables, so the features unify instead of pulling a second HTML stack.
+# swift-rs is itself macOS-host-gated inside tauri-utils, so this stays portable.
+tauri-utils = { version = "2", features = ["build-2"] }
 
 [dependencies]
 tauri = { version = "2", features = [] }

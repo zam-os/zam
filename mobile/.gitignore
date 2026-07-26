@@ -4,6 +4,12 @@ src-tauri/target/
 src-tauri/gen/*
 !src-tauri/gen/android/
 
+# Staged by build.rs from DEP_TAURI_IOS_LIBRARY_PATH so ios/Package.swift can
+# resolve the Tauri Swift API. Generated, never edited.
+src-tauri/.tauri/
+src-tauri/ios/.build/
+src-tauri/ios/Package.resolved
+
 # iOS: unlike gen/android — versioned wholesale because the API-37 Gradle
 # customizations live in generated files — every iOS customization lives in
 # project.yml (deployment target, Info.plist keys) or in hand-written Swift
