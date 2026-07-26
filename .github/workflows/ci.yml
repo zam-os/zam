@@ -223,12 +223,19 @@ jobs:
         # Simulator SDK + CODE_SIGNING_ALLOWED=NO compiles SecurePairingPlugin
         # and ReminderPlugin without needing the signing certificate, so this
         # gate works on pull requests from forks and without any secrets.
+        #
+        # Must be `release`, not `debug`: the generated "Build Rust Code" phase
+        # runs `tauri ios xcode-script`, which in debug expects the dev-server
+        # address file that only `tauri ios dev` writes, and panics with
+        # "failed to read missing addr file …-server-addr" when it is absent.
+        # Release builds against the bundled frontendDist instead, which the
+        # "Build mobile frontend" step above already produced.
         run: |
           set -euo pipefail
           xcodebuild build \
             -project zam-mobile.xcodeproj \
             -scheme zam-mobile_iOS \
-            -configuration debug \
+            -configuration release \
             -sdk iphonesimulator \
             -destination 'generic/platform=iOS Simulator' \
             CODE_SIGNING_ALLOWED=NO \
