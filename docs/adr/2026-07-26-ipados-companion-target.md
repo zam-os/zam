@@ -132,15 +132,32 @@ ZAM sits beside a textbook PDF.
 
 ## Risks
 
-- **MDM / supervised device (highest).** Bavarian Tablet-Klasse iPads are
-  typically enrolled in Apple School Manager and supervised. A supervised
-  device can have App Store and TestFlight installation blocked outright by
-  policy, in which case no amount of engineering puts ZAM on that iPad. The
-  school's parent letters and Infoabend do not state the policy publicly.
-  **Check `Settings → General → VPN & Device Management` on the actual device
-  before investing further.** Fallbacks if blocked: request distribution
-  through the school's Apple School Manager, or serve the WebView frontend as
-  a browser-based PWA needing no install.
+- **MDM / supervised device — largely retired 2026-07-26.** The concern was
+  that Bavarian Tablet-Klasse iPads are typically enrolled in Apple School
+  Manager and supervised, which can block App Store and TestFlight
+  installation outright by policy.
+
+  Inspected on the actual reference device (`iPad15,7`, iPadOS 26.5.2) over a
+  trusted USB connection: `IsSupervised` is unset, the lockdown dump contains
+  no supervision, MDM, cloud-configuration or organization keys, the
+  `com.apple.mobile.chaperone` domain is empty, and `ActivationState` is a
+  plain `Activated`. A supervised ASM-enrolled device would normally expose at
+  least one of these. The school's model therefore appears to be
+  parent-owned, unmanaged devices, consistent with the €350 subsidy going to
+  privately purchased hardware.
+
+  **Residual uncertainty:** lockdown does not expose *configuration* profiles,
+  so this is convergent evidence rather than proof. `Settings → General → VPN
+  & Device Management` on the device is the definitive check, and the device
+  may also simply have been unenrolled at the end of the school year — in
+  which case the question returns each September. Fallbacks if it is ever
+  blocked: distribution through the school's Apple School Manager, or serving
+  the WebView frontend as a PWA needing no install.
+
+- **Developer Mode is disabled** on the reference device
+  (`developerModeStatus: disabled`). Irrelevant for TestFlight, but a direct
+  Xcode install requires enabling it under Settings → Privacy & Security,
+  which forces a restart.
 - **App-local Swift plugins do not link — confirmed by CI, not yet fixed.**
   `SecurePairingPlugin.swift` and `ReminderPlugin.swift` were first written
   into `gen/apple/Sources/zam-mobile/`, which puts them in the Xcode app
