@@ -1,8 +1,9 @@
 # iPadOS Companion: Second Mobile Target on the Existing Tauri Shell
 
 **Status:** Accepted — scope and distribution decided (Thomas, 2026-07-26).
-Not yet validated on hardware: no build has run on a device, and the Swift
-plugins have never been compiled. **Supersedes the "iOS" and
+The iOS target builds: both Swift plugins compile and link, verified locally
+(Xcode 26.6) and in CI (Xcode 16.4). **Not yet validated on hardware** — no
+build has been installed on a device, and TestFlight distribution is untested. **Supersedes the "iOS" and
 "tablet/large-screen layouts" non-goals** in
 `docs/plans/2026-07-21-android-companion-app.md`.
 **Deciders:** Thomas (project owner)
@@ -166,10 +167,15 @@ ZAM sits beside a textbook PDF.
   namespace the commands and change the WebView contract, where this keeps
   every command exactly where it was.
 
-  Verified locally: host and `aarch64-linux-android` still compile, and the
-  `tauri-utils` `build-2` feature unifies with what `tauri-build` already
-  enables (one added lock line). **The Swift itself still needs CI to compile
-  it** — there is no Xcode on the authoring machine.
+  `tauri-utils` uses the `build-2` feature, matching what `tauri-build`
+  already enables, so features unify — one added lock line rather than 376.
+
+  **Verified.** Both plugins compile and link: locally under Xcode 26.6 /
+  Swift 6.3 against the iPadOS 26.5 simulator SDK, and in CI under Xcode 16.4.
+  Two toolchains three major versions apart both pass, so the package is not
+  relying on version-specific behaviour. `Package.swift` needs
+  `swift-tools-version:5.9` for `.iOS(.v17)` — the official plugin packages
+  declare 5.3 only because they target `.v13`.
 - Apple Developer Program membership is an ongoing €99/yr cost, and TestFlight
   builds expire after 90 days, so a dormant field test needs periodic rebuilds.
 
