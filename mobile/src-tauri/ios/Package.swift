@@ -26,7 +26,10 @@ let package = Package(
   targets: [
     .target(
       name: "zam-mobile",
-      dependencies: [.byName(name: "Tauri")],
+      // `.package(path:)` takes its identity from the directory name
+      // (tauri-api), not from the "Tauri" declared inside it, so the product
+      // has to be addressed explicitly rather than by name.
+      dependencies: [.product(name: "Tauri", package: "tauri-api")],
       path: "Sources")
   ]
 )
