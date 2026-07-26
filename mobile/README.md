@@ -1,9 +1,16 @@
-# ZAM Mobile (Android companion)
+# ZAM Mobile (Android + iOS companion)
 
-Tauri-2-Android companion defined in
+Tauri-2 mobile companion defined in
 [`docs/plans/2026-07-21-android-companion-app.md`](../docs/plans/2026-07-21-android-companion-app.md).
 The WebView runs the unmodified TypeScript learning kernel; Rust owns a
 libsql offline-writable synced database.
+
+Android is the mature target. **iPadOS was added 2026-07-26**
+([ADR](../docs/adr/2026-07-26-ipados-companion-target.md)) because the primary
+field-test learner's school runs a Tablet-Klasse on a school-issued iPad. The
+iOS target currently covers the Android Phase-0 set — pairing, sync, offline
+typed review, reminders, de/en — and deliberately omits voice mode, on-device
+evaluation, in-app update, and share-sheet capture.
 
 Phase 1 adds the real first-run path:
 
@@ -71,6 +78,45 @@ create the learner, explicitly show the QR code, and scan it in ZAM Mobile.
 The QR contains live secrets and automatically disappears after five minutes;
 avoid shoulder surfing and prefer a database-scoped token.
 
+## Run on iPad / iPhone
+
+Requires **full Xcode** (Command Line Tools alone is not enough — `xcrun
+--sdk iphoneos` must resolve) plus CocoaPods and xcodegen:
+
+```bash
+brew install cocoapods xcodegen
+```
+
+Then:
+
+```bash
+rustup target add aarch64-apple-ios aarch64-apple-ios-sim
+cd mobile && npm ci && npx tauri ios init
+npm run ios:dev
+```
+
+`src-tauri/gen/apple` is versioned **except** its `.xcodeproj`, which
+`tauri ios init` regenerates from `project.yml`. Put iOS settings in
+`project.yml` (it regenerates `Info.plist`), never in the Xcode UI.
+
+Deploying to a physical device needs a paid Apple Developer Program membership
+and `APPLE_DEVELOPMENT_TEAM` set to your team ID. Free personal-team
+provisioning expires after 7 days and is not a supported path here.
+
+`NSCameraUsageDescription` is required, not optional: QR pairing is the whole
+first-run path and iOS terminates the app on first camera access without it.
+
+### Platform differences from Android
+
+| Capability | Android | iOS |
+| --- | --- | --- |
+| Credential store | Keystore + AES-GCM envelope | Keychain (`SecurePairingPlugin.swift`) |
+| Daily reminder | WorkManager, count read at fire time | `UNCalendarNotificationTrigger`, count baked in at schedule time |
+| On-device evaluation | Gemini Nano (AICore) | none — iPad A16 / iPhone 14 A15 are below the Apple Intelligence floor |
+| Voice mode | foreground service | not ported |
+| Share-sheet capture | `ACTION_SEND` intent | not ported (needs a Share Extension) |
+| Updates | APK sideload + `mobile-latest.json` | TestFlight |
+
 ## Current boundary
 
 The companion supports pairing, offline review (typed + voice), import, sync
@@ -91,3 +137,10 @@ hardening, daily reminders, de/en UI, on-device evaluation (Gemini Nano), and a
    `ANDROID_KEY_PASSWORD`. Same key is required for in-place updates.
 
 Screenshot import is not in this build.
+
+On **iOS there is no sideload channel at all**: `publish-ios` in
+`release.yml` builds with `--export-method app-store-connect` and uploads to
+TestFlight via `altool`. It needs `IOS_CERTIFICATE`,
+`IOS_CERTIFICATE_PASSWORD`, `IOS_MOBILE_PROVISION`, `APPLE_DEVELOPMENT_TEAM`,
+`APPLE_API_KEY`, `APPLE_API_ISSUER`, and `APPLE_API_KEY_CONTENT`, and skips
+with a warning when they are absent.

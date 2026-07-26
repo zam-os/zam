@@ -174,7 +174,7 @@ pub fn voice_request_permissions() -> serde_json::Value {
 #[cfg(not(target_os = "android"))]
 #[tauri::command]
 pub fn voice_start(_locale: String) -> Result<(), String> {
-    Err("voice mode is only available on Android".to_string())
+    Err("voice mode is only available on Android in this build".to_string())
 }
 
 #[cfg(not(target_os = "android"))]
@@ -186,23 +186,23 @@ pub fn voice_stop() -> Result<(), String> {
 #[cfg(not(target_os = "android"))]
 #[tauri::command]
 pub fn voice_speak(_text: String, _locale: String) -> Result<(), String> {
-    Err("voice mode is only available on Android".to_string())
+    Err("voice mode is only available on Android in this build".to_string())
 }
 
 #[cfg(not(target_os = "android"))]
 #[tauri::command]
 pub fn voice_listen(_locale: String) -> Result<serde_json::Value, String> {
-    Err("voice mode is only available on Android".to_string())
+    Err("voice mode is only available on Android in this build".to_string())
 }
 
 #[cfg(not(target_os = "android"))]
 #[tauri::command]
 pub fn voice_install_data() -> Result<(), String> {
-    Err("voice mode is only available on Android".to_string())
+    Err("voice mode is only available on Android in this build".to_string())
 }
 
 #[cfg(not(target_os = "android"))]
 #[tauri::command]
 pub fn voice_open_app_settings() -> Result<(), String> {
-    Err("voice mode is only available on Android".to_string())
+    Err("voice mode is only available on Android in this build".to_string())
 }

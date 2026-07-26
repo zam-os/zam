@@ -95,5 +95,5 @@ pub async fn vision_request(
     _headers: Option<HashMap<String, String>>,
     _timeout_ms: Option<u64>,
 ) -> Result<String, String> {
-    Err("vision_request is only available on Android".to_string())
+    Err("vision_request is only available on Android in this build".to_string())
 }

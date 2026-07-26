@@ -172,6 +172,68 @@ jobs:
           export AR_aarch64_linux_android="$NDK_BIN/llvm-ar"
           cargo check --locked --target aarch64-linux-android
 
+  ios:
+    # The iOS toolchain only exists on macOS runners, and no contributor is
+    # required to have Xcode installed — so this job is the compile gate for
+    # everything under gen/apple, the same way the `mobile` job above is the
+    # gate for Android-only Rust.
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: lts/*
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            mobile/package-lock.json
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-ios,aarch64-apple-ios-sim
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install mobile dependencies
+        working-directory: mobile
+        run: npm ci
+
+      - name: Build mobile frontend
+        working-directory: mobile
+        run: npm run build
+
+      - name: Check iOS Tauri backend
+        working-directory: mobile/src-tauri
+        run: cargo check --locked --target aarch64-apple-ios
+
+      - name: Generate Xcode project
+        working-directory: mobile
+        # Regenerates gen/apple/*.xcodeproj (deliberately not versioned) and
+        # resolves the Tauri Swift package the plugins import.
+        run: npx tauri ios init
+
+      - name: Compile iOS app and Swift plugins
+        working-directory: mobile/src-tauri/gen/apple
+        # Simulator SDK + CODE_SIGNING_ALLOWED=NO compiles SecurePairingPlugin
+        # and ReminderPlugin without needing the signing certificate, so this
+        # gate works on pull requests from forks and without any secrets.
+        run: |
+          set -euo pipefail
+          xcodebuild build \
+            -project zam-mobile.xcodeproj \
+            -scheme zam-mobile_iOS \
+            -configuration debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO
+
   windows-x64-observer:
     runs-on: windows-latest
 

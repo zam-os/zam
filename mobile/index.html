@@ -460,6 +460,38 @@
       [hidden] {
         display: none !important;
       }
+      /* Tablet (iPad-Klasse device, and Android tablets by the same token).
+         The reading column stays deliberately narrow — long measure hurts
+         recall prompts — but the cramped phone padding and the 2x2 rating
+         grid both stop making sense once there is real width available. */
+      @media (min-width: 700px) {
+        body {
+          padding: 28px;
+          padding-top: calc(28px + env(safe-area-inset-top));
+          padding-left: calc(28px + env(safe-area-inset-left));
+          padding-right: calc(28px + env(safe-area-inset-right));
+          padding-bottom: calc(32px + env(safe-area-inset-bottom));
+        }
+        main {
+          max-width: 680px;
+        }
+        h1 {
+          font-size: 1.6rem;
+        }
+        h2 {
+          font-size: 1.15rem;
+        }
+        /* All four FSRS ratings on one row: no vertical scan, and the
+           thumb no longer has to cross the card to reach "Again". */
+        .ratings {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+      @media (min-width: 1000px) {
+        main {
+          max-width: 760px;
+        }
+      }
     </style>
   </head>
   <body>

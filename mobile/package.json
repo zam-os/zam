@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "android:dev": "tauri android dev --config src-tauri/tauri.native-api35.conf.json",
-    "android:build": "tauri android build --config src-tauri/tauri.native-api35.conf.json"
+    "android:build": "tauri android build --config src-tauri/tauri.native-api35.conf.json",
+    "ios:dev": "tauri ios dev",
+    "ios:build": "tauri ios build"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",

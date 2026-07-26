@@ -149,12 +149,13 @@ pub async fn db_open(
             } else {
                 url.clone()
             };
-            // Android: use packaged WebPKI roots (native CA store is empty to
-            // the Rust TLS stack — default connector fails with "no valid
-            // native root CA certificates"). Same pattern as the former
-            // synced-database path.
+            // Mobile: use packaged WebPKI roots. On Android the native CA store
+            // is empty to the Rust TLS stack (default connector fails with "no
+            // valid native root CA certificates"); on iOS the trust store sits
+            // behind Security.framework, which rustls does not read either.
+            // Packaging the roots keeps both platforms deterministic.
             let builder = libsql::Builder::new_remote(wire_url.clone(), auth_token);
-            #[cfg(target_os = "android")]
+            #[cfg(mobile)]
             let builder = builder.connector(
                 hyper_rustls::HttpsConnectorBuilder::new()
                     .with_webpki_roots()

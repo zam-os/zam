@@ -369,3 +369,89 @@ jobs:
           "
           gh release upload "$GITHUB_REF_NAME" "$APK" mobile-latest.json --clobber
           echo "Uploaded $APK and mobile-latest.json (versionCode=$VERSION_CODE)"
+
+  publish-ios:
+    name: 'Upload ZAM Mobile to TestFlight'
+    needs: publish-tauri
+    if: ${{ always() && needs.publish-tauri.result != 'cancelled' }}
+    runs-on: macos-15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-ios
+
+      - name: Guard tag/package version match
+        run: |
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
+            echo "::error::package.json version ($PKG_VERSION) does not match tag ($TAG_VERSION)"
+            exit 1
+          fi
+          echo "PKG_VERSION=$PKG_VERSION" >> "$GITHUB_ENV"
+
+      - name: Check for Apple signing secrets
+        id: apple
+        env:
+          IOS_CERTIFICATE: ${{ secrets.IOS_CERTIFICATE }}
+        run: |
+          # iOS has no sideload channel, so unlike the Android APK there is no
+          # useful unsigned artifact to fall back to. Skip cleanly instead of
+          # failing the release for repos without Apple credentials configured.
+          if [ -z "$IOS_CERTIFICATE" ]; then
+            echo "::warning::IOS_CERTIFICATE secret missing — skipping the TestFlight upload."
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install dependencies
+        if: steps.apple.outputs.configured == 'true'
+        run: |
+          npm ci
+          npm ci --prefix mobile
+
+      - name: Build and upload to TestFlight
+        if: steps.apple.outputs.configured == 'true'
+        working-directory: mobile
+        env:
+          # Signing identity: base64 .p12 plus its password, and the
+          # App Store distribution provisioning profile.
+          IOS_CERTIFICATE: ${{ secrets.IOS_CERTIFICATE }}
+          IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+          IOS_MOBILE_PROVISION: ${{ secrets.IOS_MOBILE_PROVISION }}
+          APPLE_DEVELOPMENT_TEAM: ${{ secrets.APPLE_DEVELOPMENT_TEAM }}
+          # App Store Connect API key, used by altool for the upload itself.
+          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
+          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+          APPLE_API_KEY_PATH: ${{ runner.temp }}/AuthKey.p8
+        run: |
+          set -euo pipefail
+          npm run ios:build -- --export-method app-store-connect
+          IPA="$(find src-tauri/gen/apple/build -type f -name '*.ipa' | head -n 1)"
+          if [ -z "$IPA" ]; then
+            echo "::error::No IPA produced by ios:build"
+            find src-tauri/gen/apple/build -type f -name '*.ipa' -o -name '*.xcarchive' | head -20
+            exit 1
+          fi
+          echo "${{ secrets.APPLE_API_KEY_CONTENT }}" | base64 -d > "$APPLE_API_KEY_PATH"
+          mkdir -p ~/.appstoreconnect/private_keys
+          cp "$APPLE_API_KEY_PATH" ~/.appstoreconnect/private_keys/"AuthKey_${APPLE_API_KEY}.p8"
+          # TestFlight is the only install path on iOS; there is no equivalent
+          # of the APK + mobile-latest.json sideload channel to publish here.
+          xcrun altool --upload-app \
+            --type ios \
+            --file "$IPA" \
+            --apiKey "$APPLE_API_KEY" \
+            --apiIssuer "$APPLE_API_ISSUER"
+          echo "Uploaded $IPA to TestFlight (build ${PKG_VERSION})"
