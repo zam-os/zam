@@ -1,4 +1,7 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.9
+// 5.9 is the floor for `.iOS(.v17)`; the official plugin packages declare 5.3
+// only because they target .v13. Keep this in step with the deployment target
+// in tauri.conf.json and gen/apple/project.yml.
 import PackageDescription
 
 // The iOS plugins must live in a SwiftPM package that the *Rust* build links,
@@ -16,7 +19,9 @@ let package = Package(
     .library(name: "zam-mobile", type: .static, targets: ["zam-mobile"])
   ],
   dependencies: [
-    .package(name: "Tauri", path: "../.tauri/tauri-api")
+    // The staged package declares itself as "Tauri"; `.package(path:)` infers
+    // that, avoiding the `.package(name:path:)` form deprecated since 5.6.
+    .package(path: "../.tauri/tauri-api")
   ],
   targets: [
     .target(
