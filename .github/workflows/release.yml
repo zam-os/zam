@@ -437,7 +437,7 @@ jobs:
           APPLE_API_KEY_PATH: ${{ runner.temp }}/AuthKey.p8
         run: |
           set -euo pipefail
-          npm run ios:build -- --export-method app-store-connect
+          npm run ios:build -- --export-method app-store-connect --ci
           IPA="$(find src-tauri/gen/apple/build -type f -name '*.ipa' | head -n 1)"
           if [ -z "$IPA" ]; then
             echo "::error::No IPA produced by ios:build"

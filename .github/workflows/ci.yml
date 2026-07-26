@@ -219,27 +219,19 @@ jobs:
         run: npx tauri ios init
 
       - name: Compile iOS app and Swift plugins
-        working-directory: mobile/src-tauri/gen/apple
-        # Simulator SDK + CODE_SIGNING_ALLOWED=NO compiles SecurePairingPlugin
-        # and ReminderPlugin without needing the signing certificate, so this
-        # gate works on pull requests from forks and without any secrets.
+        working-directory: mobile
+        # Let the Tauri CLI drive the build rather than calling xcodebuild
+        # directly. The generated "Build Rust Code" phase runs
+        # `tauri ios xcode-script`, which reads a server-address file that the
+        # CLI writes when *it* orchestrates the build; a bare `xcodebuild`
+        # never creates it and the phase panics with "failed to read missing
+        # addr file …-server-addr" before Swift is compiled at all. That is
+        # independent of debug vs release.
         #
-        # Must be `release`, not `debug`: the generated "Build Rust Code" phase
-        # runs `tauri ios xcode-script`, which in debug expects the dev-server
-        # address file that only `tauri ios dev` writes, and panics with
-        # "failed to read missing addr file …-server-addr" when it is absent.
-        # Release builds against the bundled frontendDist instead, which the
-        # "Build mobile frontend" step above already produced.
-        run: |
-          set -euo pipefail
-          xcodebuild build \
-            -project zam-mobile.xcodeproj \
-            -scheme zam-mobile_iOS \
-            -configuration release \
-            -sdk iphonesimulator \
-            -destination 'generic/platform=iOS Simulator' \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO
+        # --target aarch64-sim keeps this on the simulator and --no-sign skips
+        # code signing, so the gate needs no certificate and works on pull
+        # requests from forks.
+        run: npm run ios:build -- --target aarch64-sim --no-sign --ci
 
   windows-x64-observer:
     runs-on: windows-latest
