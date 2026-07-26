@@ -140,10 +140,35 @@ ZAM sits beside a textbook PDF.
   before investing further.** Fallbacks if blocked: request distribution
   through the school's Apple School Manager, or serve the WebView frontend as
   a browser-based PWA needing no install.
-- **Unverified Swift.** `SecurePairingPlugin.swift` and `ReminderPlugin.swift`
-  have never been compiled — no Xcode on the authoring machine. The bridge
-  contract they implement is exact, but the first CI run is expected to surface
-  build errors.
+- **App-local Swift plugins do not link — confirmed by CI, not yet fixed.**
+  `SecurePairingPlugin.swift` and `ReminderPlugin.swift` were first written
+  into `gen/apple/Sources/zam-mobile/`, which puts them in the Xcode app
+  target. That does not work: the Rust staticlib links *before* Swift is
+  compiled, so `ios_plugin_binding!`'s `extern "C"` declarations resolve to
+  nothing and the build fails with
+
+  ```
+  Undefined symbols for architecture arm64:
+    "_init_plugin_reminder"
+    "_init_plugin_secure_pairing"
+  ```
+
+  This is the iOS/Android asymmetry: Android loads `SecurePairingPlugin.kt`
+  reflectively by class name at runtime, so compiling it into the APK is
+  enough. iOS needs the symbol at **link** time.
+
+  The fix is to make the Swift a SwiftPM package that the Rust build links —
+  either via `swift_rs::SwiftLinker` from the app's `build.rs`, or by promoting
+  both plugins to real plugin crates with
+  `tauri_plugin::Builder::new(COMMANDS).ios_path("ios")`, which is what every
+  official plugin (e.g. `tauri-plugin-barcode-scanner`) does. The second is the
+  documented, known-correct path; the first is lighter. Both need the `Tauri`
+  Swift package resolved for the `Plugin`/`Invoke` types.
+
+  **Deliberately not attempted blind.** With no local Xcode each attempt is a
+  ~7-minute CI round trip with no way to iterate, so this waits for a machine
+  that can compile it. Everything else in the iOS target is green, including
+  `cargo check --target aarch64-apple-ios`.
 - Apple Developer Program membership is an ongoing €99/yr cost, and TestFlight
   builds expire after 90 days, so a dormant field test needs periodic rebuilds.
 
