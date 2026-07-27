@@ -445,8 +445,17 @@ jobs:
           APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
           APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
           APPLE_API_KEY_PATH: ${{ runner.temp }}/AuthKey.p8
+          APPLE_API_KEY_CONTENT: ${{ secrets.APPLE_API_KEY_CONTENT }}
         run: |
           set -euo pipefail
+          # Die .p8 muss VOR dem Build liegen: Tauri reicht APPLE_API_KEY_PATH
+          # als -authenticationKeyPath an xcodebuild durch, und xcodebuild
+          # bricht ab, wenn die Datei dann noch nicht existiert
+          # ("must be an absolute path to an existing file").
+          printf %s "$APPLE_API_KEY_CONTENT" | base64 -d > "$APPLE_API_KEY_PATH"
+          mkdir -p ~/.appstoreconnect/private_keys
+          cp "$APPLE_API_KEY_PATH" ~/.appstoreconnect/private_keys/"AuthKey_${APPLE_API_KEY}.p8"
+
           npm run ios:build -- --export-method app-store-connect --ci
           IPA="$(find src-tauri/gen/apple/build -type f -name '*.ipa' | head -n 1)"
           if [ -z "$IPA" ]; then
@@ -454,9 +463,6 @@ jobs:
             find src-tauri/gen/apple/build -type f -name '*.ipa' -o -name '*.xcarchive' | head -20
             exit 1
           fi
-          echo "${{ secrets.APPLE_API_KEY_CONTENT }}" | base64 -d > "$APPLE_API_KEY_PATH"
-          mkdir -p ~/.appstoreconnect/private_keys
-          cp "$APPLE_API_KEY_PATH" ~/.appstoreconnect/private_keys/"AuthKey_${APPLE_API_KEY}.p8"
           # TestFlight is the only install path on iOS; there is no equivalent
           # of the APK + mobile-latest.json sideload channel to publish here.
           xcrun altool --upload-app \
