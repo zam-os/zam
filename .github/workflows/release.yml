@@ -68,11 +68,12 @@ jobs:
       fail-fast: false
       matrix:
         # macOS (aarch64) ships updater artifacts signed with the same Tauri
-        # updater key already used for Linux/Windows — that is all the in-app
-        # update button needs. The app is NOT Apple-notarized, so manual
-        # first-time downloads still hit Gatekeeper (right-click -> Open);
-        # in-app auto-updates are unaffected. Add macos-15-intel
-        # (x86_64-apple-darwin) here too if Intel Macs need first-class support.
+        # updater key already used for Linux/Windows, and the .app itself is
+        # signed with the Developer ID certificate and notarized by Apple, so a
+        # first-time download opens with a plain double-click. Tauri staples
+        # the ticket before it bundles .app.tar.gz, so updater payloads are
+        # notarized too. Add macos-15-intel (x86_64-apple-darwin) here too if
+        # Intel Macs need first-class support.
         include:
           - platform: 'ubuntu-22.04'
             target: 'x86_64-unknown-linux-gnu'
@@ -159,6 +160,56 @@ jobs:
         working-directory: desktop
         run: npm ci
 
+      # The Developer ID identity has to be in the keychain search list before
+      # `tauri build` starts. scripts/sign-macos-resources.mjs runs as Tauri's
+      # beforeBundleCommand, which is earlier than the point where Tauri would
+      # import APPLE_CERTIFICATE into a keychain of its own — so we import it
+      # ourselves and let Tauri sign from the search list.
+      - name: Prepare macOS signing and notarization credentials
+        if: runner.os == 'macOS'
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_API_KEY_CONTENT: ${{ secrets.APPLE_API_KEY_CONTENT }}
+        run: |
+          if [ -z "$APPLE_CERTIFICATE" ] || [ -z "$APPLE_CERTIFICATE_PASSWORD" ] \
+            || [ -z "$APPLE_API_KEY_CONTENT" ]; then
+            echo "::error::macOS signing secrets missing. Set APPLE_CERTIFICATE," \
+              "APPLE_CERTIFICATE_PASSWORD and APPLE_SIGNING_IDENTITY —" \
+              "see docs/adr/2026-07-27-macos-notarization.md"
+            exit 1
+          fi
+
+          KEYCHAIN="$RUNNER_TEMP/zam-signing.keychain-db"
+          KEYCHAIN_PASSWORD="$(uuidgen)"
+          CERTIFICATE="$RUNNER_TEMP/developer_id.p12"
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security set-keychain-settings -lut 3600 "$KEYCHAIN"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+
+          printf %s "$APPLE_CERTIFICATE" | base64 -d > "$CERTIFICATE"
+          security import "$CERTIFICATE" -k "$KEYCHAIN" \
+            -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          rm -f "$CERTIFICATE"
+
+          # Without this codesign cannot reach the private key without a GUI
+          # prompt and fails with errSecInternalComponent.
+          security set-key-partition-list -S apple-tool:,apple:,codesign: \
+            -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN" > /dev/null
+
+          # -s replaces the search list wholesale, so carry the existing entries
+          # over or everything else on the runner loses its certificates.
+          EXISTING="$(security list-keychain -d user | tr -d '"' | tr '\n' ' ')"
+          # shellcheck disable=SC2086
+          security list-keychain -d user -s "$KEYCHAIN" $EXISTING
+
+          security find-identity -v -p codesigning "$KEYCHAIN"
+
+          # notarytool reads the key from disk, so it has to exist before the
+          # build starts — the same ordering trap that cost three iOS releases.
+          printf %s "$APPLE_API_KEY_CONTENT" | base64 -d > "$RUNNER_TEMP/AuthKey.p8"
+
       - name: Generate release notes
         id: notes
         uses: actions/github-script@v8
@@ -180,6 +231,15 @@ jobs:
           # contents of desktop/src-tauri/zam-signing.key as a repo secret.
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          # macOS code signing and notarization; ignored on Linux and Windows.
+          # Tauri signs the .app with this identity, zips it, submits it to the
+          # notary service and staples the ticket. The bundled Node runtime and
+          # the prebuilt .node modules are signed earlier, by the
+          # beforeBundleCommand hook — Tauri does not touch resources itself.
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
+          APPLE_API_KEY_PATH: ${{ runner.temp }}/AuthKey.p8
         with:
           tagName: ${{ github.ref_name }}
           releaseName: 'ZAM Desktop ${{ github.ref_name }}'
@@ -189,6 +249,17 @@ jobs:
           prerelease: false
           projectPath: './desktop'
           args: ${{ matrix.args }}
+
+      # A single ad-hoc signed Mach-O object anywhere in the bundle makes Apple
+      # reject the app, and a new dependency shipping a prebuilt binary is
+      # enough to reintroduce that. Fail the release here rather than ship an
+      # app that Gatekeeper blocks.
+      - name: Verify signature and notarization (macOS)
+        if: runner.os == 'macOS'
+        run: >-
+          node scripts/verify-macos-bundle.mjs
+          desktop/src-tauri/target/${{ matrix.target }}/release/bundle/macos/ZAM.app
+          --notarized
 
       # tauri-action uploads the updater artifacts (ZAM.app.tar.gz + .sig) and
       # adds the darwin-aarch64 entry to latest.json. This extra step also ships
