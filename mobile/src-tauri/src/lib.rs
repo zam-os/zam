@@ -11,12 +11,18 @@ pub fn run() {
     let builder = tauri::Builder::default();
     #[cfg(mobile)]
     let builder = builder.plugin(tauri_plugin_barcode_scanner::init());
-    #[cfg(target_os = "android")]
+    // Pairing storage and daily reminders exist on both mobile platforms.
+    #[cfg(mobile)]
     let builder = builder.plugin(secure_store::init());
+    #[cfg(mobile)]
+    let builder = builder.plugin(reminder::init());
+    // Android-only for now: the voice pipeline is a foreground service, the
+    // on-device evaluator is Gemini Nano via AICore, and the update channel
+    // sideloads an APK. None of the three has an iOS counterpart on the
+    // iPad (A16) baseline — see ADR 2026-07-26. Their `cfg(not(mobile))`-shaped
+    // stubs answer on iOS with an explicit "not available" instead.
     #[cfg(target_os = "android")]
     let builder = builder.plugin(voice::init());
-    #[cfg(target_os = "android")]
-    let builder = builder.plugin(reminder::init());
     #[cfg(target_os = "android")]
     let builder = builder.plugin(on_device_llm::init());
     #[cfg(target_os = "android")]

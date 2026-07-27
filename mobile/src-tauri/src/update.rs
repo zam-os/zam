@@ -120,13 +120,13 @@ pub fn update_get_version() -> Result<serde_json::Value, String> {
 pub async fn update_check(
     _manifest_url: Option<String>,
 ) -> Result<serde_json::Value, String> {
-    Err("updates are only available on Android".to_string())
+    Err("in-app updates are Android-only; iOS builds update through TestFlight".to_string())
 }
 
 #[cfg(not(target_os = "android"))]
 #[tauri::command]
 pub async fn update_install(_url: String) -> Result<serde_json::Value, String> {
-    Err("updates are only available on Android".to_string())
+    Err("in-app updates are Android-only; iOS builds update through TestFlight".to_string())
 }
 
 #[cfg(test)]
