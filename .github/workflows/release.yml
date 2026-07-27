@@ -421,6 +421,16 @@ jobs:
           npm ci
           npm ci --prefix mobile
 
+      - name: Generate Xcode project
+        if: steps.apple.outputs.configured == 'true'
+        working-directory: mobile
+        # gen/apple/*.xcodeproj ist bewusst nicht versioniert (reines
+        # xcodegen-Ergebnis, siehe mobile/.gitignore) und muss deshalb hier
+        # erzeugt werden. Ohne diesen Schritt bricht der Build mit
+        # "failed to locate xcodeproj ... No file found matching *.xcodeproj"
+        # ab. Der CI-Job `ios` in ci.yml hat denselben Schritt.
+        run: npx tauri ios init
+
       - name: Build and upload to TestFlight
         if: steps.apple.outputs.configured == 'true'
         working-directory: mobile
