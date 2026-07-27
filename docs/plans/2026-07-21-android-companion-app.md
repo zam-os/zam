@@ -29,13 +29,20 @@ desktop (ADR 2026-07-23).
 
 Two paired devices, two different learners:
 
-- **Primary learner: a ninth-grade Realschule student (Bavaria)** — planned
-  for the Pixel 6 if its optional compatibility run passes, otherwise on a
-  Pixel 9 — preparing the 2026/27 school year with the goal of a real grade
-  improvement. Previous success with an active-recall tool shows the method
-  fits; the app's job is to make it effortless and daily.
-- The project owner on a **Pixel 9** (Android 17), the validated reference
-  device and current minimum requirement.
+- **Primary learner: a ninth-grade Realschule student (Bavaria)** — preparing
+  the 2026/27 school year with the goal of a real grade improvement. Previous
+  success with an active-recall tool shows the method fits; the app's job is to
+  make it effortless and daily.
+  - **Primary device is a school-issued iPad (A16, 11th generation)**: the
+    school runs a Tablet-Klasse, already used for the whole of grade 8. This is
+    the device carried to every lesson, which makes iPadOS the platform that
+    decides whether ZAM is part of the school day or only the evening. See
+    [ADR 2026-07-26](../adr/2026-07-26-ipados-companion-target.md).
+  - Android remains available on the Pixel 6 if its optional compatibility run
+    passes, otherwise a Pixel 9.
+- The project owner on a **Pixel 9** (Android 17), the validated Android
+  reference device and current Android minimum requirement. A **Pixel 10** run
+  also passed (2026-07-26), so the Android range is validated at both ends.
 
 Consequences: German-first UX; curriculum content comes from the desktop's
 existing LehrplanPLUS import (`lehrplanplus-bayern` — Realschule grade 9 is
@@ -59,6 +66,25 @@ in-app streaks (no-gamification stance, FR-5).
 - Pixel 6 security support is scheduled to end around 2026-10. A successful
   compatibility run would therefore broaden the field test without changing
   the API-37 baseline.
+- **Pixel 10 validated 2026-07-26.** Ran well with no changes, so the Android
+  reference range is confirmed upward as well as downward.
+
+### iOS / iPadOS baseline
+
+Added 2026-07-26; see [ADR 2026-07-26](../adr/2026-07-26-ipados-companion-target.md).
+
+- **Deployment target iOS/iPadOS 17.0.** The iPad reference device ships 18.3
+  and cannot run lower; 17.0 is headroom for the iPhone compatibility target
+  and against MDM-deferred OS updates on a school-managed device.
+- **Reference device: iPad (A16, 11th generation)** — the Tablet-Klasse device.
+- **Minimum device: iPhone 14** (A15, 390pt wide — narrower than any validated
+  Android device). Not yet secured as a test device.
+- **No on-device evaluation on either.** Both are below the A17 Pro / M-series
+  floor for Apple Intelligence, so the Foundation Models framework is
+  unavailable and Gemini Nano has no counterpart. Cloud endpoint or self-rating.
+- **Distribution is TestFlight only** — iOS has no sideload channel. Blocked
+  outright if the school's MDM supervises the device and forbids installs;
+  verify on the physical iPad before investing further.
 
 ### Performance budgets (measured on the validated minimum device)
 
@@ -231,8 +257,13 @@ Repo layout (decided): `mobile/` folder in this repository, mirroring
 
 ## Non-goals (v1)
 
-iOS (stack choice keeps the door open) · Wear OS · tablet/large-screen
-layouts · home-screen widget · on-device embeddings/semantic search ·
+> **Superseded 2026-07-26:** "iOS (stack choice keeps the door open)" and
+> "tablet/large-screen layouts" are no longer non-goals. The primary learner's
+> school runs a Tablet-Klasse on a school-issued iPad, so iPadOS became a
+> required target — see
+> [ADR 2026-07-26](../adr/2026-07-26-ipados-companion-target.md).
+
+Wear OS · home-screen widget · on-device embeddings/semantic search ·
 OKF authoring (opening `source_link` articles read-only is fine) ·
 observer/monitoring features · Play Store publication · local-only setups
 and direct `zam.db` file adoption (configuration and sync assume the
