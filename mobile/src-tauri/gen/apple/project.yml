@@ -87,6 +87,14 @@ targets:
         # der bräuchte jedoch einen Admin-Key in den CI-Secrets, während für
         # den Upload sonst App-Manager genügt.
         # Simulatorbauten (CI-Job `ios`) bleiben unberührt und signaturfrei.
+        # DEVELOPMENT_TEAM muss hier stehen, auch wenn Tauri den Wert aus
+        # APPLE_DEVELOPMENT_TEAM setzt: Tauri fügt den Schlüssel sonst per
+        # Texteinfügung *hinter* die schließende Klammer von buildSettings ein,
+        # wo Xcode ihn ignoriert ("requires a development team"). Existiert der
+        # Schlüssel bereits, überschreibt Tauri sauber nur den Wert — so wie
+        # beim PROVISIONING_PROFILE_SPECIFIER darunter. Der Wert hier ist also
+        # nur der Vorgabewert; APPLE_DEVELOPMENT_TEAM sticht ihn.
+        DEVELOPMENT_TEAM: 3KZ69XA25D
         CODE_SIGN_STYLE[sdk=iphoneos*]: Manual
         CODE_SIGN_IDENTITY[sdk=iphoneos*]: Apple Distribution
         PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]: ZAM Mobile App Store
