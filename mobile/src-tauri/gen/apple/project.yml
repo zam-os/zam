@@ -76,7 +76,20 @@ targets:
       base:
         ENABLE_BITCODE: false
         ARCHS: [arm64]
-        VALID_ARCHS: arm64 
+        VALID_ARCHS: arm64
+        # Manuelles Signieren, bewusst nur für echte Geräte (`sdk=iphoneos*`).
+        # Ohne diese Angaben scheitert der Gerätebau mit "requires a
+        # provisioning profile": die Umgebungsvariablen IOS_CERTIFICATE /
+        # IOS_MOBILE_PROVISION installieren zwar Zertifikat und Profil und
+        # schalten auf manuelles Signieren um, sagen Xcode aber nicht, welches
+        # Profil es nehmen soll.
+        # Der Alternativweg wäre automatisches Signieren über APPLE_API_KEY —
+        # der bräuchte jedoch einen Admin-Key in den CI-Secrets, während für
+        # den Upload sonst App-Manager genügt.
+        # Simulatorbauten (CI-Job `ios`) bleiben unberührt und signaturfrei.
+        CODE_SIGN_STYLE[sdk=iphoneos*]: Manual
+        CODE_SIGN_IDENTITY[sdk=iphoneos*]: Apple Distribution
+        PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]: ZAM Mobile App Store
         LIBRARY_SEARCH_PATHS[arch=x86_64]: $(inherited) $(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)
         LIBRARY_SEARCH_PATHS[arch=arm64]: $(inherited) $(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)
         ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: true
