@@ -37,7 +37,7 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-03](2026-07-03-rag-semantic-token-search.md) | RAG / Semantic Token Search on a Self-Hosted, No-License-Cost Store | Partially implemented |
 | [2026-07-04](2026-07-04-human-friendly-titles-and-prefixed-domains.md) | Human-friendly Titles and Prefixed Domains for the Knowledge Graph | Implemented |
 | [2026-07-04](2026-07-04-knowledge-contexts.md) | Knowledge Contexts: Work, School, Private | Implemented |
-| [2026-07-04](2026-07-04-multi-learner-shared-knowledge.md) | Closed-Group Learning Library: Curation, Privacy and Deployment | Accepted |
+| [2026-07-04](2026-07-04-multi-learner-shared-knowledge.md) | Closed-Group Learning Library: Curation, Privacy and Deployment | Accepted — Phase E scope and ordering amended by 2026-07-26b |
 | [2026-07-05](../plans/2026-07-05-titles-doctor-adaptation.md) | Human-friendly Titles + `zam doctor` adaptation plan (post Fable 5 review) | In progress |
 | [2026-07-06a](2026-07-06a-mcp-agent-transport-and-surfaces.md) | MCP as the Canonical Agent Transport (and the Surface Topology Around It) | Partially implemented |
 | [2026-07-06b](2026-07-06b-checkpointed-review-dialogue.md) | Checkpointed Review Dialogue | Implemented |
@@ -58,4 +58,5 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-23](2026-07-23-online-only-server-db-and-mobile-gating.md) | Online-Only Server Database, Mobile Gating, and Cloud Config in the DB | Accepted |
 | [2026-07-24](2026-07-24-first-run-onboarding.md) | First-Run Onboarding: Personas, Goal-Driven Import, Cloud LLM Connect, and Agent Choice | Accepted |
 | [2026-07-25](2026-07-25-shared-curated-learning-content.md) | Shared Curated Learning Content — Review Once, Serve Many | Accepted |
-| [2026-07-26](2026-07-26-ipados-companion-target.md) | iPadOS Companion: Second Mobile Target on the Existing Tauri Shell | Accepted — not yet validated on hardware |
+| [2026-07-26](2026-07-26-ipados-companion-target.md) | iPadOS Companion: Second Mobile Target on the Existing Tauri Shell | Accepted — builds; not yet validated on hardware |
+| [2026-07-26b](2026-07-26b-central-curriculum-content-service.md) | Central Curriculum Content Service: Content Only, Pulled Forward | Accepted |
