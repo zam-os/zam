@@ -744,7 +744,7 @@
           <div class="card">
             <div id="review-progress"></div>
             <div id="review-meta"></div>
-            <div class="voice-controls">
+            <div id="voice-controls" class="voice-controls">
               <button id="toggle-voice" type="button" aria-pressed="false" data-i18n="voice_start">
                 Sprachmodus starten
               </button>
@@ -826,7 +826,10 @@
             <h2 data-i18n="update_heading">App-Update</h2>
             <p id="update-version" class="muted"></p>
             <p id="update-status" class="status-line" aria-live="polite"></p>
-            <div class="voice-controls">
+            <p id="update-unavailable" class="muted" hidden data-i18n="update_via_testflight">
+              Updates kommen über TestFlight.
+            </p>
+            <div id="update-controls" class="voice-controls">
               <button id="check-update" type="button" data-i18n="update_check">
                 Nach Update suchen
               </button>

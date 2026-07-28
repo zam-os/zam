@@ -161,14 +161,18 @@ pub fn voice_open_app_settings<R: Runtime>(app: AppHandle<R>) -> Result<(), Stri
 
 #[cfg(not(target_os = "android"))]
 #[tauri::command]
+/// Voice mode is Android-only. Reporting the microphone as `denied` sent iOS
+/// users looking for a permission they can never grant, so the stub now names
+/// the real reason. The UI hides the controls entirely (see
+/// `platform_features`); this is the answer for anything that still asks.
 pub fn voice_check_permissions() -> serde_json::Value {
-    serde_json::json!({ "microphone": "denied" })
+    serde_json::json!({ "microphone": "unavailable" })
 }
 
 #[cfg(not(target_os = "android"))]
 #[tauri::command]
 pub fn voice_request_permissions() -> serde_json::Value {
-    serde_json::json!({ "microphone": "denied" })
+    serde_json::json!({ "microphone": "unavailable" })
 }
 
 #[cfg(not(target_os = "android"))]

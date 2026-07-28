@@ -164,6 +164,39 @@ const updateVersion = element<HTMLElement>("update-version");
 const updateStatus = element<HTMLParagraphElement>("update-status");
 const checkUpdateButton = element<HTMLButtonElement>("check-update");
 const installUpdateButton = element<HTMLButtonElement>("install-update");
+const voiceControls = element<HTMLElement>("voice-controls");
+const updateControls = element<HTMLElement>("update-controls");
+const updateUnavailable = element<HTMLElement>("update-unavailable");
+
+interface PlatformFeatures {
+  voice: boolean;
+  inAppUpdate: boolean;
+  onDeviceEvaluation: boolean;
+}
+
+/**
+ * Voice, in-app update and on-device evaluation are Android-only, but their
+ * stubs answer on iOS too — an answering stub is not a feature. Offering them
+ * anyway is what made the iPad report a denied microphone permission for a
+ * subsystem that simply is not there. Defaults stay optimistic so an older
+ * shell without the command behaves as before.
+ */
+let platformFeatures: PlatformFeatures = {
+  voice: true,
+  inAppUpdate: true,
+  onDeviceEvaluation: true,
+};
+
+async function applyPlatformFeatures(): Promise<void> {
+  try {
+    platformFeatures = await invoke<PlatformFeatures>("platform_features");
+  } catch {
+    return;
+  }
+  voiceControls.hidden = !platformFeatures.voice;
+  updateControls.hidden = !platformFeatures.inAppUpdate;
+  updateUnavailable.hidden = platformFeatures.inAppUpdate;
+}
 
 let currentPairing: ZamPairPayloadV1 | null = null;
 let reminderConfig: ReminderConfig = parseReminderConfig(
@@ -1452,8 +1485,12 @@ installUpdateButton.addEventListener("click", async () => {
 applyLocale(navigator.language);
 renderReminderControls();
 void refreshInstalledVersion();
-// Quiet background check — surfaces install button only when an update exists.
-void checkForAppUpdate(true);
+// Hide what this platform does not have, then run the quiet update check only
+// where in-app updates exist — on iOS it fails by design and would surface a
+// misleading error.
+void applyPlatformFeatures().then(() => {
+  if (platformFeatures.inAppUpdate) void checkForAppUpdate(true);
+});
 if (reminderConfig.enabled) {
   // Re-arm the schedule from stored config on launch without a permission prompt.
   void applyReminder(false);

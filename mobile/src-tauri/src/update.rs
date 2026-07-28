@@ -106,11 +106,21 @@ pub async fn update_install<R: Runtime>(
         .map_err(|error| error.to_string())
 }
 
+/// The version the user sees in Settings on iOS.
+///
+/// This must come from the bundle, not from `CARGO_PKG_VERSION`: the crate
+/// version in `mobile/src-tauri/Cargo.toml` is not part of the release version
+/// bump, while the bundle version is taken from the repository root
+/// `package.json` via `tauri.conf.json`. Reading the crate version showed
+/// 0.19.0 in a 0.22.4 build. Android is unaffected — there the real plugin
+/// reports the Android `versionName`.
 #[cfg(not(target_os = "android"))]
 #[tauri::command]
-pub fn update_get_version() -> Result<serde_json::Value, String> {
+pub fn update_get_version<R: tauri::Runtime>(
+    app: tauri::AppHandle<R>,
+) -> Result<serde_json::Value, String> {
     Ok(serde_json::json!({
-        "versionName": env!("CARGO_PKG_VERSION"),
+        "versionName": app.package_info().version.to_string(),
         "versionCode": 0,
     }))
 }
