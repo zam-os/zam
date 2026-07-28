@@ -9,6 +9,7 @@
 import {
   buildRecallEvaluationPrompt,
   parseRecallEvaluation,
+  RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
   type RecallEvaluation,
   type RecallEvaluationCard,
 } from "../../desktop/src/panel/recall-evaluation.js";
@@ -102,9 +103,17 @@ async function defaultFetchText(
     );
   }
   const payload = (await response.json()) as {
-    choices?: Array<{ message?: { content?: string } }>;
+    choices?: Array<{ message?: { content?: string }; finish_reason?: string }>;
   };
-  const text = payload.choices?.[0]?.message?.content?.trim();
+  const choice = payload.choices?.[0];
+  const text = choice?.message?.content?.trim();
+  // A truncated answer and an absent one are different failures, and saying
+  // "empty content" for both hides the only one the user can act on.
+  if (choice?.finish_reason === "length") {
+    throw new Error(
+      "the model hit its output limit before finishing the evaluation",
+    );
+  }
   if (!text) throw new Error("evaluation endpoint returned empty content");
   return text;
 }
@@ -135,7 +144,7 @@ async function generateViaHttp(
       model: endpoint.model,
       messages: [{ role: "user", content: prompt }],
       temperature: 0.2,
-      max_tokens: 256,
+      max_tokens: RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
     }),
   });
 }

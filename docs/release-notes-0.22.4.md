@@ -9,7 +9,7 @@ declared, but the permission set was still restricted to Android, so iOS
 refused every scanner command. It is now allowed on both platforms.
 
 Found on the first hardware install of the iOS build — an iPad (9th
-generation) running 0.22.3 from TestFlight. No compile gate could have caught
+generation) running 0.22.2 from TestFlight. No compile gate could have caught
 it: the app builds, links and launches, and only fails the moment someone taps
 *Scan*.
 

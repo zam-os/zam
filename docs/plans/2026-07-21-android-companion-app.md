@@ -77,7 +77,7 @@ Added 2026-07-26; see [ADR 2026-07-26](../adr/2026-07-26-ipados-companion-target
   and cannot run lower; 17.0 is headroom for the iPhone compatibility target
   and against MDM-deferred OS updates on a school-managed device.
 - **Reference device: iPad (A16, 11th generation)** — the Tablet-Klasse device.
-- **Minimum device: iPhone 14** (A15, 390pt wide — narrower than any validated
+- **Minimum device: iPad (A13, 9th generation)** — see ADR 2026-07-26. (Formerly iPhone 14: A15, 390pt wide — narrower than any validated
   Android device). Not yet secured as a test device.
 - **No on-device evaluation on either.** Both are below the A17 Pro / M-series
   floor for Apple Intelligence, so the Foundation Models framework is

@@ -112,7 +112,7 @@ pub async fn on_device_llm_check_status() -> Result<serde_json::Value, String> {
 #[cfg(not(target_os = "android"))]
 #[tauri::command]
 pub async fn on_device_llm_ensure_ready() -> Result<serde_json::Value, String> {
-    Err("on-device evaluation needs Gemini Nano (Android); the iPad (A16) has no Apple Intelligence support, so use a cloud endpoint or self-rating".to_string())
+    Err("on-device evaluation needs Gemini Nano, which is Android-only; on iOS use a cloud endpoint or rate yourself".to_string())
 }
 
 #[cfg(not(target_os = "android"))]
@@ -122,5 +122,5 @@ pub async fn on_device_llm_generate(
     _max_output_tokens: Option<u32>,
     _temperature: Option<f32>,
 ) -> Result<serde_json::Value, String> {
-    Err("on-device evaluation needs Gemini Nano (Android); the iPad (A16) has no Apple Intelligence support, so use a cloud endpoint or self-rating".to_string())
+    Err("on-device evaluation needs Gemini Nano, which is Android-only; on iOS use a cloud endpoint or rate yourself".to_string())
 }

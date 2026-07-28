@@ -118,7 +118,7 @@ first-run path and iOS terminates the app on first camera access without it.
 | --- | --- | --- |
 | Credential store | Keystore + AES-GCM envelope | Keychain (`SecurePairingPlugin.swift`) |
 | Daily reminder | WorkManager, count read at fire time | `UNCalendarNotificationTrigger`, count baked in at schedule time |
-| On-device evaluation | Gemini Nano (AICore) | none — iPad A16 / iPhone 14 A15 are below the Apple Intelligence floor |
+| On-device evaluation | Gemini Nano (AICore) | none — no supported iPad or iPhone in the field-test range meets the Apple Intelligence floor |
 | Voice mode | foreground service | not ported |
 | Share-sheet capture | `ACTION_SEND` intent | not ported (needs a Share Extension) |
 | Updates | APK sideload + `mobile-latest.json` | TestFlight |

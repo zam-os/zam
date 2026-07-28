@@ -88,8 +88,17 @@ reason:
 
 - **Reference: iPad (A16, 11th generation)** — the Tablet-Klasse device, the
   one that has to work.
-- **Minimum: iPhone 14** — an A15 phone at 390pt, narrower than any Android
-  device the layout was validated on. *Not yet secured as a test device.*
+- **Minimum: iPad (A13, 9th generation)** — lowered from iPhone 14 on
+  2026-07-28, because a 9th-generation iPad turned out to be the device
+  actually at hand and it runs the app: installing, launching and QR pairing
+  all work on it. It is the weaker floor in every dimension that matters —
+  A13 against A15, and 3 GB of RAM against 6 — so it subsumes the iPhone 14
+  the earlier minimum was written around.
+
+  What this does **not** establish is a phone floor. An iPhone 11 carries the
+  same A13, but nothing has run there, and phones differ from this iPad in the
+  dimension the layout is most sensitive to: 390pt of width against 810pt.
+  Treat the iPhone side as untested rather than supported.
 - **Deployment target: iOS/iPadOS 17.0.** The iPad ships 18.3 and cannot go
   lower, so 17.0 is headroom for the iPhone, and hedges against a
   school-managed device having OS updates deferred by MDM.

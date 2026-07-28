@@ -6,6 +6,23 @@ mod update;
 mod vision;
 mod voice;
 
+/// Which Android-only subsystems this build actually has.
+///
+/// The iOS target compiles stubs for voice, in-app update and on-device
+/// evaluation, and a stub answers — it just cannot do the thing. Without this
+/// the UI offered all three on iPadOS: voice mode reported a denied microphone
+/// permission, and "check for updates" failed by design. The frontend asks
+/// here and hides what cannot work, rather than letting the user discover it.
+#[tauri::command]
+fn platform_features() -> serde_json::Value {
+    let android = cfg!(target_os = "android");
+    serde_json::json!({
+        "voice": android,
+        "inAppUpdate": android,
+        "onDeviceEvaluation": android,
+    })
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let builder = tauri::Builder::default();
@@ -16,11 +33,11 @@ pub fn run() {
     let builder = builder.plugin(secure_store::init());
     #[cfg(mobile)]
     let builder = builder.plugin(reminder::init());
-    // Android-only for now: the voice pipeline is a foreground service, the
-    // on-device evaluator is Gemini Nano via AICore, and the update channel
-    // sideloads an APK. None of the three has an iOS counterpart on the
-    // iPad (A16) baseline — see ADR 2026-07-26. Their `cfg(not(mobile))`-shaped
-    // stubs answer on iOS with an explicit "not available" instead.
+    // Android-only: the voice pipeline is a foreground service, the on-device
+    // evaluator is Gemini Nano via AICore, and the update channel sideloads an
+    // APK. None of the three has an iOS counterpart — see ADR 2026-07-26.
+    // Their stubs still answer on iOS, so the UI must ask `platform_features`
+    // and hide the controls; an answering stub is not the same as a feature.
     #[cfg(target_os = "android")]
     let builder = builder.plugin(voice::init());
     #[cfg(target_os = "android")]
@@ -31,6 +48,7 @@ pub fn run() {
     builder
         .manage(db::DbState::default())
         .invoke_handler(tauri::generate_handler![
+            platform_features,
             db::db_open,
             db::db_query,
             db::db_execute,

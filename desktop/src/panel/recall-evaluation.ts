@@ -1,3 +1,17 @@
+/**
+ * Output budget for the evaluation this module's prompt asks for.
+ *
+ * It lives next to the prompt because the prompt determines it: a verdict plus
+ * feedback, a reference answer and a list of gaps does not fit in a few hundred
+ * tokens, and a reasoning model spends part of the budget before writing any of
+ * it. Mobile shipped with 256 and every cloud evaluation came back truncated —
+ * reported as "empty content", because nothing looked at `finish_reason`.
+ *
+ * Kept in sync by hand with `RECALL_EVALUATION_MAX_OUTPUT_TOKENS` in
+ * `src/cli/llm/client.ts`; the CLI must not import from the desktop layer.
+ */
+export const RECALL_EVALUATION_MAX_OUTPUT_TOKENS = 1200;
+
 export interface RecallEvaluationCard {
   slug: string;
   question?: string;
