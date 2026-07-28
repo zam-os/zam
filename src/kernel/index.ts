@@ -530,6 +530,10 @@ export {
   prepareLocalModel,
   resolveOllamaCommand,
 } from "./system/installer.js";
+// Frontends import ./system/language-names.js directly rather than through this
+// barrel: it is deliberately free of runtime dependencies, while the barrel
+// reaches Node-only code a browser bundle cannot take.
+export { LANGUAGE_NAMES, languageName } from "./system/language-names.js";
 export type { SupportedLocale } from "./system/locale.js";
 export { detectSystemLocale, normalizeLocale } from "./system/locale.js";
 export type { SystemProfile } from "./system/profiler.js";

@@ -44,6 +44,12 @@ export interface EvaluationPorts {
 export interface EvaluateAnswerInput {
   card: RecallEvaluationCard;
   learnerAnswer: string;
+  /**
+   * Language the evaluation should be written in. The learner's setting from
+   * the database, not the UI locale: the UI ships de/en, while the model can
+   * answer in any supported language.
+   */
+  locale: string | null | undefined;
   /** Paired recall endpoint; used as optional cloud fallback. */
   endpoint?: ZamPairLlmEndpoint | null;
   ports: EvaluationPorts;
@@ -160,7 +166,7 @@ export async function evaluateMobileAnswer(
   const answer = input.learnerAnswer.trim();
   if (!answer) return null;
 
-  const prompt = buildRecallEvaluationPrompt(input.card, answer);
+  const prompt = buildRecallEvaluationPrompt(input.card, answer, input.locale);
   const errors: string[] = [];
 
   try {

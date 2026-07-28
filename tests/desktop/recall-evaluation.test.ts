@@ -17,12 +17,32 @@ describe("Recall smart evaluation", () => {
   };
 
   it("builds an explicit grounded evaluation contract", () => {
-    const prompt = buildRecallEvaluationPrompt(card, "Both call a model.");
+    const prompt = buildRecallEvaluationPrompt(card, "Both call a model.", "en");
     expect(prompt).toContain(card.question);
     expect(prompt).toContain(card.concept);
     expect(prompt).toContain(card.resolvedContext);
     expect(prompt).toContain("Both call a model.");
     expect(prompt).toContain('"suggestedRating"');
+  });
+
+  it("names the answer language, so a German learner is not answered in English", () => {
+    expect(buildRecallEvaluationPrompt(card, "x", "de")).toContain(
+      'Write "feedback", "referenceAnswer" and every entry of "gaps" in German',
+    );
+    // Region tags and the raw values a device or database can hand over.
+    expect(buildRecallEvaluationPrompt(card, "x", "de-DE")).toContain(
+      "in German",
+    );
+    expect(buildRecallEvaluationPrompt(card, "x", "ja")).toContain(
+      "in Japanese",
+    );
+    // Unknown or missing input must still produce a usable instruction.
+    expect(buildRecallEvaluationPrompt(card, "x", "kl")).toContain(
+      "in English",
+    );
+    expect(buildRecallEvaluationPrompt(card, "x", null)).toContain(
+      "in English",
+    );
   });
 
   it("parses fenced structured feedback", () => {

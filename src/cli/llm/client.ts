@@ -31,6 +31,7 @@ import {
   getSetting,
   getSystemProfile,
   hasCommand,
+  LANGUAGE_NAMES,
   normalizeLocale,
   resolveReviewContext,
   t,
@@ -588,16 +589,6 @@ export async function getVisionConfig(db: Database): Promise<LlmConfig> {
     maxFrames: p.maxFrames,
   };
 }
-
-const LANGUAGE_NAMES: Record<SupportedLocale, string> = {
-  en: "English",
-  de: "German",
-  es: "Spanish",
-  fr: "French",
-  pt: "Portuguese",
-  zh: "Chinese",
-  ja: "Japanese",
-};
 
 const LOCALIZED_RATING_PREFIX: Record<SupportedLocale, string> = {
   en: "Suggested rating",
