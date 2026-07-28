@@ -2,8 +2,10 @@
 
 **Status:** Accepted — scope and distribution decided (Thomas, 2026-07-26).
 The iOS target builds: both Swift plugins compile and link, verified locally
-(Xcode 26.6) and in CI (Xcode 16.4). **Not yet validated on hardware** — no
-build has been installed on a device, and TestFlight distribution is untested. **Supersedes the "iOS" and
+(Xcode 26.6) and in CI (Xcode 16.4). **First hardware install done 2026-07-28**
+(0.22.2 via TestFlight, iPad 9th generation): the app installs and launches,
+and QR pairing failed on an ACL gap that no compile gate could see — fixed in
+decision 2 below. Pairing end-to-end is still unproven on a device. **Supersedes the "iOS" and
 "tablet/large-screen layouts" non-goals** in
 `docs/plans/2026-07-21-android-companion-app.md`.
 **Deciders:** Thomas (project owner)
@@ -51,6 +53,14 @@ Tauri already injects a `mobile` cfg meaning android-or-iOS. `secure_store` and
 still serve desktop builds. Cargo target specifications cannot see Tauri's
 injected cfg, so `Cargo.toml` spells out
 `cfg(any(target_os = "android", target_os = "ios"))` for `hyper-rustls`.
+
+There is a third place that has to move with the cfg, and it is not Rust at
+all: the **capability files** in `src-tauri/capabilities/` carry their own
+`platforms` list. Registering a plugin for `cfg(mobile)` while its capability
+still says `["android"]` produces an app where the command exists and is
+refused — `Command plugin:… not allowed by ACL`, at runtime, on the device
+only. That is exactly what happened to the barcode scanner and it survived
+every compile gate we have.
 
 ### 3. Scope of the first increment: the Android Phase-0 set, no more
 
