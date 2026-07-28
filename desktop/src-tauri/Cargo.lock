@@ -5241,7 +5241,7 @@ dependencies = [
 
 [[package]]
 name = "zam-app"
-version = "0.22.3"
+version = "0.22.4"
 dependencies = [
  "qrcode",
  "serde",
