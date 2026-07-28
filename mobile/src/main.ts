@@ -45,6 +45,7 @@ import {
   createMultiDraftController,
   type MultiDraftController,
 } from "./multi-draft.js";
+import { getSetting } from "../../src/kernel/models/settings.js";
 import { createTauriDatabase } from "./provider.js";
 import {
   formatTimeInput,
@@ -321,6 +322,32 @@ function applyLocale(source: string | null | undefined): void {
   applyStaticTranslations();
 }
 
+/**
+ * Language the learner reads in, used for the UI and — the reason it has to be
+ * right — for the language the model writes its evaluation in.
+ *
+ * `system.locale` in the database is the authority: it is a learner setting
+ * that travels with the database and is edited on the desktop. The pairing
+ * payload carries a snapshot of it so the first paint is not blank, and the
+ * device locale is the last resort.
+ *
+ * Kept as the raw string, not the narrowed UI `Locale`: the interface ships
+ * de/en, while the model can answer in any supported language.
+ */
+let learnerLocale: string | null | undefined;
+
+async function refreshLearnerLocaleFromDb(): Promise<void> {
+  try {
+    const stored = await getSetting(db, "system.locale");
+    if (stored) {
+      learnerLocale = stored;
+      applyLocale(stored);
+    }
+  } catch {
+    // Database not open yet, or offline. The pairing snapshot stays in effect.
+  }
+}
+
 function setPairingStatus(text: string, isError = false): void {
   pairingStatus.textContent = text;
   pairingStatus.classList.toggle("error", isError);
@@ -340,7 +367,10 @@ function showPairing(canCancel: boolean): void {
 }
 
 function showApp(payload: ZamPairPayloadV1): void {
-  applyLocale(payload.settings?.locale ?? navigator.language);
+  // Paint from the pairing snapshot at once, then correct from the database.
+  learnerLocale = payload.settings?.locale ?? navigator.language;
+  applyLocale(learnerLocale);
+  void refreshLearnerLocaleFromDb();
   pairingView.hidden = true;
   appView.hidden = false;
   learner.textContent = payload.learner.userId;
@@ -733,6 +763,7 @@ async function runSmartEvaluation(): Promise<MobileEvaluationResult | null> {
         resolvedContext: null,
       },
       learnerAnswer: answer,
+      locale: learnerLocale ?? navigator.language,
       endpoint: currentPairing?.llm?.recall ?? null,
       ports: evaluationPorts,
     });

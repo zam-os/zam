@@ -26,7 +26,7 @@
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
-import { setCurrentLocale, t, tf } from "../i18n.js";
+import { currentLocale, setCurrentLocale, t, tf } from "../i18n.js";
 import {
   type CompanionContextBarState,
   type ContextBarHandle,
@@ -797,6 +797,9 @@ function renderCard(): void {
           resolvedContext: card.resolvedContext?.content ?? null,
         },
         learnerAnswer,
+        // The panel has no settings access; its locale comes from the host's
+        // browser language, resolved during connect().
+        currentLocale,
       );
       const raw = await sampleRecall([{ role: "user", text: prompt }]);
       const evaluation = parseRecallEvaluation(raw);

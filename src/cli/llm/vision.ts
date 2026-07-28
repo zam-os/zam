@@ -14,6 +14,7 @@ import type {
 } from "../../kernel/index.js";
 import {
   isUiObservationReport,
+  LANGUAGE_NAMES,
   UI_OBSERVATION_PROTOCOL_VERSION,
 } from "../../kernel/index.js";
 import {
@@ -23,16 +24,6 @@ import {
   fetchWithInteractiveTimeout,
   getProviderForRole,
 } from "./client.js";
-
-const LANGUAGE_NAMES: Record<SupportedLocale, string> = {
-  en: "English",
-  de: "German",
-  es: "Spanish",
-  fr: "French",
-  pt: "Portuguese",
-  zh: "Chinese",
-  ja: "Japanese",
-};
 
 const OBSERVATION_KINDS = new Set<UiObservationKind>([
   "progress",
