@@ -1,6 +1,6 @@
 {
   "name": "zam-core",
-  "version": "0.22.3",
+  "version": "0.22.4",
   "description": "The Symbiotic Learning Kernel: Elevating Human Intelligence through AI Collaboration.",
   "type": "module",
   "engines": {
