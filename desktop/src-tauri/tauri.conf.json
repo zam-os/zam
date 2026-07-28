@@ -15,8 +15,9 @@
     "windows": [
       {
         "title": "ZAM",
-        "width": 950,
-        "height": 720,
+        "maximized": true,
+        "width": 1280,
+        "height": 860,
         "minWidth": 720,
         "minHeight": 580,
         "theme": "Light"

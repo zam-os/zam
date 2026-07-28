@@ -135,12 +135,17 @@ body {
 /* ── CONTAINER & LAYOUT ──────────────────────────────────────────────────── */
 .container {
   width: 100%;
-  max-width: 950px;
+  /* The shell uses the window. The old 950px cap matched the old default
+     window width exactly, so a maximised window on a 1600px display left 650px
+     — 41% of it — as empty margin. Line length is protected where it actually
+     matters (see .question-text and .answer-box) rather than by squeezing
+     every dashboard, table and settings pane into a reading column. */
+  max-width: none;
   height: 100vh;
   max-height: 100vh;
   min-height: 0;
   overflow-y: auto;
-  padding: 22px 30px 30px;
+  padding: 22px clamp(30px, 3vw, 64px) 30px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -1324,6 +1329,10 @@ textarea:focus-visible {
   color: var(--clr-text-primary);
   overflow-wrap: anywhere;
   white-space: pre-wrap;
+  /* Reading measure. The window may be 2000px wide; a recall prompt read
+     across all of it is measurably worse to take in, which is why the shell
+     lost its width cap and this kept one. */
+  max-width: 70ch;
 }
 
 /* Answer Input capture */
@@ -1512,6 +1521,9 @@ textarea::placeholder {
   border: 1px solid var(--border-soft);
   border-radius: 12px;
   padding: 20px;
+  /* Same reading measure as .question-text: this is prose to be read, not a
+     surface to be filled. */
+  max-width: 80ch;
 }
 
 #lbl-reveal-title {
@@ -2509,6 +2521,8 @@ textarea::placeholder {
   display: none;
   justify-content: center;
   align-items: center;
+  /* Breathing room so a full-height dialog never touches the window edge. */
+  padding: 24px;
   z-index: 1000;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -2531,6 +2545,19 @@ textarea::placeholder {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  /* Never taller than the window it is centred in. A flex-centred box that
+     outgrows its container overflows in both directions, so the top scrolls
+     out of reach — which is what a 360px QR code plus the pairing form did in
+     a default-sized window. The body below takes the scrolling. */
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.modal-header,
+.modal-actions {
+  /* Title and buttons stay put; scrolling the whole box would carry Close
+     out of the window, which is the one control that must always be there. */
+  flex-shrink: 0;
 }
 
 .pairing-modal {
@@ -2580,6 +2607,11 @@ textarea::placeholder {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  /* min-height:0 is what actually lets this shrink: a flex item defaults to
+     min-height:auto and refuses to go below its content, so overflow-y alone
+     would do nothing here. */
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .modal-impact-section {
