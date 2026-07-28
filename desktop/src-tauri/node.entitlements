@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	  Entitlements for the bundled Node runtime (resources/zam-cli/runtime/node),
+	  applied by scripts/sign-macos-resources.mjs. NOT for the app bundle: the
+	  Rust binary runs JavaScript in WKWebView's own process, so it needs no
+	  entitlements of its own.
+
+	  This is a Developer ID (notarized) configuration, not a Mac App Store one.
+	  The App Sandbox is deliberately absent, because ZAM shares ~/.zam/zam.db
+	  with the CLI and the MCP transport and a sandboxed process cannot reach
+	  that path. A Mac App Store build would have to reopen that decision — an
+	  architectural question, not a signing one.
+	-->
+
+	<!--
+	  V8 compiles JavaScript to machine code at runtime, which the hardened
+	  runtime forbids by default. Without this the bridge process dies on start.
+
+	  The prebuilt native modules Node dlopen()s (@libsql, better-sqlite3) are
+	  signed with the same Team ID by the same script, so library validation is
+	  satisfied and disable-library-validation is not needed.
+	-->
+	<key>com.apple.security.cs.allow-jit</key>
+	<true/>
+</dict>
+</plist>

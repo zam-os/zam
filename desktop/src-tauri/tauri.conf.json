@@ -7,6 +7,7 @@
     "beforeDevCommand": "npm run dev:with-bridge",
     "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "npm run build:with-bridge",
+    "beforeBundleCommand": "node ../scripts/sign-macos-resources.mjs",
     "frontendDist": "../dist"
   },
   "app": {
@@ -32,6 +33,10 @@
     "resources": [
       "resources/**/*"
     ],
+    "macOS": {
+      "hardenedRuntime": true,
+      "minimumSystemVersion": "14.0"
+    },
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

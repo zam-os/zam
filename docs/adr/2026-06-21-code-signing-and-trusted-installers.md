@@ -1,6 +1,8 @@
 # Code Signing and Trusted Installers
 
-**Status:** Proposed
+**Status:** Partially implemented — the macOS half is decided and shipped by
+[2026-07-27-macos-notarization.md](2026-07-27-macos-notarization.md).
+Windows Authenticode signing is still open, as is the certificate choice below.
 **Deciders:** Thomas (project owner)
 
 ---

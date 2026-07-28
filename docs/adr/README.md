@@ -25,7 +25,7 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-06-13b](2026-06-13b-approachable-setup-and-self-update.md) | Approachable Setup and Self-Update | Partially implemented |
 | [2026-06-15](2026-06-15-kernel-polish-and-performance.md) | Kernel Polish and Performance | Implemented |
 | [2026-06-20](2026-06-20-observer-permission-model.md) | Configurable Observer permission model (`ObserverPolicy`) and two-layer consent | Accepted |
-| [2026-06-21](2026-06-21-code-signing-and-trusted-installers.md) | Code Signing and Trusted Installers | Proposed |
+| [2026-06-21](2026-06-21-code-signing-and-trusted-installers.md) | Code Signing and Trusted Installers | Partially implemented — macOS done, Windows open |
 | [2026-06-22](2026-06-22-screen-recording-observer.md) | Screen Recording Observer and Local/Cloud Vision Fallbacks | Proposed |
 | [2026-06-23](2026-06-23-pluggable-providers-and-agent-harnesses.md) | Pluggable AI Providers, Agent Harnesses, and Approachable UI Setup | Proposed |
 | [2026-06-25a](2026-06-25a-machine-local-llm-role-configuration.md) | Machine-local LLM Role Configuration | Superseded by 2026-07-12 |
@@ -60,3 +60,4 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-25](2026-07-25-shared-curated-learning-content.md) | Shared Curated Learning Content — Review Once, Serve Many | Accepted |
 | [2026-07-26](2026-07-26-ipados-companion-target.md) | iPadOS Companion: Second Mobile Target on the Existing Tauri Shell | Accepted — builds; not yet validated on hardware |
 | [2026-07-26b](2026-07-26b-central-curriculum-content-service.md) | Central Curriculum Content Service: Content Only, Pulled Forward | Accepted |
+| [2026-07-27](2026-07-27-macos-notarization.md) | macOS Distribution: Developer ID Notarization, Not the Mac App Store | Accepted — verified on a local notarized build |
