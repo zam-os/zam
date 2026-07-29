@@ -94,8 +94,13 @@ function errorMessage(error: unknown): string {
 
 type ViewMode = "reader" | "graph" | "log";
 
+function isViewMode(value: unknown): value is ViewMode {
+  return value === "reader" || value === "graph" || value === "log";
+}
+
 interface OpenOkfResult {
   bundleDir?: string | null;
+  view?: ViewMode;
   /** The OKF bundle-format version (index.md's `okf_version` frontmatter),
    * not the zam app/package version — see `zam_okf_visualize`'s `okfVersion`
    * field (src/cli/commands/mcp.ts). `null` when the bundle failed to load
@@ -1579,6 +1584,14 @@ document.addEventListener("keydown", (event) => {
 
 // ── Host lifecycle (mirrors graph.ts) ───────────────────────────────────
 
+app.ontoolinput = (params) => {
+  const input = (params.arguments ?? {}) as { view?: unknown };
+  if (!isViewMode(input.view)) return;
+  viewMode = input.view;
+  updateViewToggleActiveState();
+  if (catalogLoaded) renderAll();
+};
+
 app.ontoolresult = (params) => {
   const structured = (params.structuredContent ?? {}) as OpenOkfResult;
   panelVersion = structured.version;
@@ -1591,6 +1604,7 @@ app.ontoolresult = (params) => {
   const previousBundleDir = bundleDir;
   currentUser = structured.user ?? null;
   if (structured.bundleDir !== undefined) bundleDir = structured.bundleDir;
+  if (isViewMode(structured.view)) viewMode = structured.view;
   if (structured.okfVersion !== undefined)
     bundleOkfVersion = structured.okfVersion;
   if (structured.catalog) {
@@ -1638,6 +1652,14 @@ app.ontoolresult = (params) => {
     },
   );
   start();
+  if (
+    structured.freshness === undefined &&
+    structured.bundleDir !== undefined
+  ) {
+    // Newer servers keep Git inspection off the opening tool's critical
+    // path. Older results may still carry freshness and skip this request.
+    void loadFreshness(bundleDir).then(renderAll);
+  }
 };
 
 // Mount the bar immediately — before any tool result — so the title and an

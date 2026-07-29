@@ -7,6 +7,7 @@ import {
   fallbackContextBarState,
   formatAgentLabel,
   PendingConfirmGate,
+  surfaceUsesEvaluator,
   userPillTitle,
   userPillValue,
 } from "../../desktop/src/panel/context-bar.js";
@@ -55,6 +56,15 @@ describe("formatAgentLabel", () => {
     // point, and a UI must degrade rather than crash on unexpected data.
     expect(() => formatAgentLabel({ provider: "Claude" })).not.toThrow();
     expect(formatAgentLabel({ provider: "Claude" })).toBe("Claude");
+  });
+});
+
+describe("surfaceUsesEvaluator", () => {
+  it("hides evaluator controls on both read-only graph surfaces", () => {
+    expect(surfaceUsesEvaluator("graph")).toBe(false);
+    expect(surfaceUsesEvaluator("okf")).toBe(false);
+    expect(surfaceUsesEvaluator("recall")).toBe(true);
+    expect(surfaceUsesEvaluator("studio")).toBe(true);
   });
 });
 

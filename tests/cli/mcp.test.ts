@@ -96,6 +96,13 @@ describe("MCP stdio server tests", () => {
     });
   });
 
+  it("publishes unambiguous routing instructions for both knowledge surfaces", () => {
+    expect(client.getInstructions()).toContain("zam_show_graph");
+    expect(client.getInstructions()).toContain("learning tokens");
+    expect(client.getInstructions()).toContain("zam_okf_visualize");
+    expect(client.getInstructions()).toContain('view: "graph"');
+  });
+
   it("lists all 28 tools with correct annotations", async () => {
     const response = await client.listTools();
     expect(response.tools).toHaveLength(28);
@@ -1306,7 +1313,7 @@ describe("MCP stdio server tests", () => {
       expect(content.text).toContain("zam-okf-panel");
     });
 
-    it("links zam_okf_visualize to the okf panel resource and eagerly returns the bundle catalog/log", async () => {
+    it("links zam_okf_visualize to the okf panel resource and initializes the requested view", async () => {
       const response = await client.listTools();
       const tool = response.tools.find((t) => t.name === "zam_okf_visualize");
       expect(tool).toBeDefined();
@@ -1319,16 +1326,18 @@ describe("MCP stdio server tests", () => {
         readOnlyHint: true,
       });
 
-      // inputSchema accepts only an optional bundle_dir.
+      // Both the bundle and initial reader/graph/log view are optional.
       const schema = tool?.inputSchema as
         | { properties?: Record<string, unknown>; required?: string[] }
         | undefined;
       expect(schema?.properties).toHaveProperty("bundle_dir");
+      expect(schema?.properties).toHaveProperty("view");
       expect(schema?.required ?? []).not.toContain("bundle_dir");
+      expect(schema?.required ?? []).not.toContain("view");
 
       const res = await client.callTool({
         name: "zam_okf_visualize",
-        arguments: { bundle_dir: bundleDir },
+        arguments: { bundle_dir: bundleDir, view: "graph" },
       });
       expect(res.isError).toBeUndefined();
       const structured = (res as any).structuredContent as {
@@ -1337,16 +1346,10 @@ describe("MCP stdio server tests", () => {
         user?: string | null;
         bundleDir?: string;
         okfVersion?: string | null;
+        view?: string;
         catalog?: Array<{ file: string }>;
         log?: string;
         problems?: string[];
-        freshness?: {
-          summary?: {
-            current?: number;
-            reviewRecommended?: number;
-            unknown?: number;
-          };
-        };
         companionContext?: { surface?: string };
       };
       expect(structured.okf).toBe("zam");
@@ -1357,6 +1360,7 @@ describe("MCP stdio server tests", () => {
       // okf_version comes from the bundle's own index.md frontmatter
       // (renderIndex's default), not the zam package version.
       expect(structured.okfVersion).toBe("0.1");
+      expect(structured.view).toBe("graph");
       expect(structured.catalog?.map((e) => e.file)).toEqual([
         "fsrs-scheduling.md",
       ]);
@@ -1364,11 +1368,9 @@ describe("MCP stdio server tests", () => {
       // log.md was written by upsertArticle in beforeEach — returned eagerly,
       // with no separate zam_okf_catalog round-trip required.
       expect(structured.log).toContain("FSRS Scheduling");
-      expect(structured.freshness?.summary).toEqual({
-        current: 0,
-        reviewRecommended: 0,
-        unknown: 1,
-      });
+      // Git inspection is fetched asynchronously by the panel through
+      // zam_okf_audit so opening never waits for repository history.
+      expect(structured).not.toHaveProperty("freshness");
       expect(structured.companionContext?.surface).toBe("okf");
     });
 
@@ -1384,13 +1386,14 @@ describe("MCP stdio server tests", () => {
         problems?: string[];
         okfVersion?: string | null;
         bundleDir?: string;
-        freshness?: unknown;
+        view?: string;
       };
       expect(structured.catalog).toEqual([]);
       expect(structured.problems?.length).toBeGreaterThan(0);
       expect(structured.okfVersion).toBeNull();
       expect(structured.bundleDir).toBe(missingDir);
-      expect(structured.freshness).toBeNull();
+      expect(structured.view).toBe("reader");
+      expect(structured).not.toHaveProperty("freshness");
     });
   });
 });

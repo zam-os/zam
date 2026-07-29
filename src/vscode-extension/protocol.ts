@@ -48,7 +48,7 @@ export const COMPANION_APPS: Record<CompanionApp, CompanionAppConfig> = {
     ]),
   },
   graph: {
-    title: "ZAM Graph",
+    title: "ZAM Learning Graph",
     toolName: "zam_show_graph",
     allowedTools: new Set(["zam_studio_bridge", "zam_companion_context"]),
   },
@@ -177,15 +177,15 @@ export function buildOpeningArguments(
   app: CompanionApp,
   input: Record<string, string>,
 ): Record<string, string> {
-  // `okf` deliberately omits `user`: `zam_okf_visualize` is repo-scoped and
-  // its input schema has no user parameter (unlike the learner-scoped apps).
+  // `okf` deliberately omits `user`: `zam_okf_visualize` is repo-scoped
+  // (unlike the learner-scoped apps), but forwards the requested initial view.
   const allowed =
     app === "recall"
       ? ["user", "domain"]
       : app === "graph"
         ? ["user", "focus"]
         : app === "okf"
-          ? ["bundle_dir"]
+          ? ["bundle_dir", "view"]
           : ["user"];
   return Object.fromEntries(
     allowed.flatMap((key) =>

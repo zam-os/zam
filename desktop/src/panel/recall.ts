@@ -39,6 +39,7 @@ import {
   fallbackContextBarState,
   showConnectionNotice as showConnectionNoticeShared,
 } from "./context-bar.js";
+import { preferredRecallDisplayMode } from "./display-mode.js";
 import {
   buildRecallEvaluationPrompt,
   buildRecallFollowUpPrompt,
@@ -953,6 +954,12 @@ app
   .then(() => {
     clearTimeout(noHostTimer);
     connected = true;
+    const preferredMode = preferredRecallDisplayMode(app.getHostContext());
+    if (preferredMode) {
+      // Placement remains host-owned. This is a capability-gated request,
+      // and rejection must never prevent a review session from opening.
+      void app.requestDisplayMode({ mode: preferredMode }).catch(() => {});
+    }
     if (navigator.language.startsWith("de")) {
       setCurrentLocale("de");
     }

@@ -3,6 +3,7 @@
 ## 2026-07-29
 
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 - **Update** — [Prerequisite Graph and Blocking](prerequisite-blocking.md)
 - **Update** — [Token and Card Model](token-card-model.md)
 - **Update** — [FSRS-5 Scheduling](fsrs-scheduling.md)

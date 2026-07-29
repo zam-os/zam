@@ -7,7 +7,7 @@ tags:
   - agents
   - surfaces
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-07-29T21:12:00Z
+timestamp: 2026-07-29T21:58:00Z
 ---
 
 `zam mcp` starts a stdio **Model Context Protocol** server
@@ -25,9 +25,16 @@ review actions, token search and registration, prerequisite linking,
 companion context and sampling, and the OKF knowledge-base tools
 `zam_okf_catalog` / `zam_okf_read` / `zam_okf_audit` /
 `zam_okf_upsert` / `zam_okf_read_citation` / `zam_okf_import` /
-`zam_okf_focused`). The
-authoritative tool list with annotations is pinned by
+`zam_okf_focused`). The authoritative tool list with annotations is pinned by
 `tests/cli/mcp.test.ts`.
+
+The server publishes MCP-wide intent guidance as well as per-tool
+descriptions. “Knowledge graph”, “learning graph”, and “Wissensgraph”
+mean the learning-token surface (`zam_show_graph`). “Knowledge articles”,
+“Wissensartikel”, “OKFs”, and “ADRs” mean the repo-knowledge surface
+(`zam_okf_visualize` with `view: "graph"`). This distinction is also in
+the shipped ZAM skill so hosts with only one inline app choose the right
+tool.
 
 The `zam_okf_*` tools resolve their default bundle directory as
 `docs/okf` under the MCP client's workspace root (MCP `roots/list`),
@@ -85,18 +92,27 @@ flight may finish, then the latest requested panel mounts last and owns
 the final iframe. This makes rapid toolbar or command switches
 deterministic.
 
+Native hosts own MCP App placement. Recall requests the standard `pip`
+display mode only when the negotiated host context advertises it; an
+inline-only host remains inline, and ZAM cannot force a host-specific
+right sidebar. The shared context bar hides the evaluator/model control
+on the two read-only graph surfaces because no model participates in
+rendering stored learning tokens, OKF articles, or citations.
+
 `zam_okf_visualize` opens the OKF panel on any OKF bundle (default
-resolved like the other `zam_okf_*` tools — see above): articles
-grouped by type with search, a markdown reader that expands cited ADRs
-and other citation targets inline via `zam_okf_read_citation`, a link
-graph (articles as nodes, inter-article links as edges, citations as
-visually distinct nodes), and the `log.md` history. The panel always
+resolved like the other `zam_okf_*` tools — see above). Its optional
+`view` argument initializes `reader`, `graph`, or `log`; `graph` shows
+the requested OKF articles and cited ADRs immediately. The argument is
+forwarded through the VS Code UI intent and Copilot canvas adapters.
+The panel groups articles by type with search, expands cited ADRs and
+other citation targets inline via `zam_okf_read_citation`, and always
 opens — a missing or invalid bundle surfaces as `problems` in the panel
 instead of a tool error.
 
-The visualizer receives the freshness audit with its opening result and
-can refresh it through `zam_okf_audit` when it loads or retargets a
-bundle. Only `review-recommended` articles get an amber sidebar dot;
+The visualizer paints its catalog and log first, then requests freshness
+asynchronously through `zam_okf_audit`; retargeting a bundle does the
+same. Git inspection therefore cannot delay opening on a large or slow
+checkout. Only `review-recommended` articles get an amber sidebar dot;
 the reader meta strip labels all three states and its tooltip names the
 changed code paths. Audit failure degrades to neutral `unknown` and does
 not block reading, importing, the graph, or the log.
@@ -146,8 +162,10 @@ to `~/.zam/okf-focus.json`), so a request like "import this okf" or
 `zam_okf_focused` tool. The agent does the thinking either way, then
 records via `zam_okf_import`.
 
-The knowledge-graph card (`zam_show_graph`, `ui://zam/graph`) centers
-on a focus token's direct prerequisites and dependents. Opened without
+The explicitly named learning-token graph (`zam_show_graph`,
+`ui://zam/graph`, displayed as **ZAM Learning Graph**) centers on a focus
+token's direct prerequisites and dependents. It never renders OKF article
+or ADR nodes; those belong to `zam_okf_visualize`'s graph view. Opened without
 a focus it does not dead-end: it shows scope selectors (desktop-app
 style — scope pills, domains with `/`-prefix groups, and a clickable
 token list) and defaults to the tokens anchored in the workspace's OKF
@@ -160,6 +178,7 @@ available directly.
 # Citations
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
+- [ADR 2026-07-11 — Codex and VS Code Companion Surfaces](../adr/2026-07-11-codex-and-vscode-companion-surfaces.md)
 - [ADR 2026-07-16 — Companion Context Bar and Harness Affinity](../adr/2026-07-16-companion-context-and-harness-affinity.md)
 - [ADR 2026-07-17 — OKF Knowledge Base](../adr/2026-07-17-okf-knowledge-base.md)
 - [ADR 2026-07-17b — OKF Visualizer Panel](../adr/2026-07-17b-okf-visualizer-panel.md)
@@ -167,4 +186,4 @@ available directly.
 - [ADR 2026-07-18b — Learning Graph Scope Selectors and the Repo Scope](../adr/2026-07-18b-graph-repo-scope.md)
 - [ADR 2026-07-18c — OKF Import Handoff](../adr/2026-07-18c-okf-import-handoff.md)
 - [ADR 2026-07-29b — OKF Freshness Radar](../adr/2026-07-29b-okf-freshness-radar.md)
-- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-panel.html`
+- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-panel.html`

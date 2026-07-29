@@ -51,7 +51,9 @@ a watcher, or learning-state coupling.
    marks only articles that merit review. The reader meta strip labels all
    three states and names the changed paths in the review tooltip. Missing Git
    or incomplete citations degrade to a neutral `unknown` badge and never
-   prevent the panel from opening.
+   prevent the panel from opening. The opening tool returns the catalog and log
+   first; the panel requests the Git-backed audit asynchronously so repository
+   history inspection cannot delay first paint or trip a slow host timeout.
 6. **This remains CLI-layer repository tooling.** No kernel API, database
    migration, background watcher, network call, or dependency is added.
 

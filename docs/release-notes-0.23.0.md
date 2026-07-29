@@ -11,7 +11,23 @@ cited code is visible immediately.
 The OKF visualizer shows the same signal without turning the article list into
 a dashboard: only a review recommendation gets a small amber dot in the
 sidebar, while the open article carries a labeled status and an explanatory
-tooltip.
+tooltip. Git inspection now follows the first paint asynchronously, so opening
+the app stays responsive even on slower Windows hosts and larger repositories.
+
+## Clear knowledge surfaces in every agent host
+
+ZAM now distinguishes its two graphs explicitly:
+
+- “knowledge graph”, “learning graph”, or “Wissensgraph” opens the renamed
+  **ZAM Learning Graph** with learning tokens and prerequisite relations;
+- “knowledge articles”, “Wissensartikel”, “OKFs”, or “ADRs” opens the OKF
+  visualizer with `view: "graph"`, showing articles and their cited ADRs.
+
+`zam_okf_visualize` accepts `view: "reader" | "graph" | "log"` and forwards it
+through the VS Code and Copilot companions. Read-only graph surfaces no longer
+show an irrelevant evaluator/model selector. Recall asks for the standard MCP
+Apps picture-in-picture mode when a host advertises it; hosts retain control of
+the actual placement, so inline-only clients continue to work unchanged.
 
 ## For developer teams
 

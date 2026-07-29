@@ -94,9 +94,13 @@ describe("VS Code companion protocol", () => {
       buildOpeningArguments("okf", {
         user: "thomas",
         bundle_dir: "C:/src/dw/Cops.AI/docs/okf",
+        view: "graph",
         focus: "ignore-me",
       }),
-    ).toEqual({ bundle_dir: "C:/src/dw/Cops.AI/docs/okf" });
+    ).toEqual({
+      bundle_dir: "C:/src/dw/Cops.AI/docs/okf",
+      view: "graph",
+    });
     expect(COMPANION_APPS.okf.toolName).toBe("zam_okf_visualize");
     // The reader records its focused article so chat agents can resolve
     // "import this okf", while the panel can refresh its read-only freshness

@@ -42,7 +42,6 @@ import {
   writeCompanionContext,
 } from "../companion-context-server.js";
 import type { CatalogEntry } from "../okf/bundle.js";
-import type { OkfFreshnessAudit } from "../okf/freshness.js";
 import { publishUiIntent } from "../ui-intent.js";
 import { executeBridgeCommandJson } from "./bridge.js";
 
@@ -58,6 +57,14 @@ const RECALL_RESOURCE_URI = "ui://zam/recall";
 const GRAPH_RESOURCE_URI = "ui://zam/graph";
 const SETTINGS_RESOURCE_URI = "ui://zam/settings";
 const OKF_RESOURCE_URI = "ui://zam/okf";
+
+const MCP_SERVER_INSTRUCTIONS =
+  "ZAM has two distinct knowledge surfaces. For “Wissensgraph”, “knowledge " +
+  "graph”, or learning-graph requests, call zam_show_graph: it shows learning " +
+  "tokens and prerequisite relations. For “Wissensartikel”, “OKFs”, knowledge " +
+  'articles, or ADRs, call zam_okf_visualize with view: "graph": it shows OKF ' +
+  'articles and cited ADRs. Use view: "reader" to read articles and ' +
+  "zam_open_recall for review sessions. App placement is controlled by the host.";
 
 /**
  * Commands the ZAM Studio panel may run through `zam_studio_bridge`. A
@@ -212,10 +219,13 @@ async function resolveOpeningCompanionContextSafely(
  * Creates and configures the McpServer instance with all tools mapped.
  */
 export function createMcpServer(db: Database): McpServer {
-  const server = new McpServer({
-    name: "zam",
-    version: pkg.version,
-  });
+  const server = new McpServer(
+    {
+      name: "zam",
+      version: pkg.version,
+    },
+    { instructions: MCP_SERVER_INSTRUCTIONS },
+  );
 
   async function getUserId(paramUser: string | undefined) {
     if (paramUser) return paramUser;
@@ -987,7 +997,7 @@ export function createMcpServer(db: Database): McpServer {
     }),
   );
 
-  // zam_show_graph — the 2D knowledge-graph card (MCP Apps). Read-only from
+  // zam_show_graph — the 2D learning-token graph card (MCP Apps). Read-only from
   // the model's side: it opens a panel that fetches its own data through
   // zam_studio_bridge (get-neighborhood). `focus` seeds the initial node;
   // the model usually supplies it from conversation context (e.g. the token
@@ -996,13 +1006,14 @@ export function createMcpServer(db: Database): McpServer {
     server,
     "zam_show_graph",
     {
-      title: "Open ZAM knowledge graph",
+      title: "Open ZAM learning graph",
       description:
-        "Open the ZAM 2D knowledge-graph card, centered on a token's direct " +
-        "prerequisites and dependents. Pass `focus` (a token slug) when the " +
-        "conversation already names one; without it the card offers scope " +
-        "selectors and defaults to tokens anchored in the current repo's " +
-        "OKF knowledge base.",
+        "Open the ZAM learning-token graph for requests such as “knowledge " +
+        "graph” or “Wissensgraph”, centered on a token's direct prerequisites " +
+        "and dependents. This graph shows learning tokens, not OKF articles or " +
+        'ADRs; use `zam_okf_visualize` with `view: "graph"` for those. Pass ' +
+        "`focus` when the conversation names a token; without it the card " +
+        "offers scope selectors.",
       inputSchema: {
         focus: z
           .string()
@@ -1073,7 +1084,7 @@ export function createMcpServer(db: Database): McpServer {
         {
           uri: GRAPH_RESOURCE_URI,
           mimeType: RESOURCE_MIME_TYPE,
-          text: loadPanelHtml("graph-panel.html", "ZAM Graph"),
+          text: loadPanelHtml("graph-panel.html", "ZAM Learning Graph"),
         },
       ],
     }),
@@ -1311,6 +1322,12 @@ export function createMcpServer(db: Database): McpServer {
     .optional()
     .describe(
       "Bundle directory (default: docs/okf under the client's workspace root, falling back to the server cwd)",
+    );
+  const okfViewSchema = z
+    .enum(["reader", "graph", "log"])
+    .optional()
+    .describe(
+      "Initial panel view: graph shows OKF articles and cited ADRs; reader opens articles; log shows bundle history (default: reader)",
     );
 
   /**
@@ -1669,22 +1686,26 @@ export function createMcpServer(db: Database): McpServer {
   // 2026-07-17b). Mirrors zam_show_graph's open-tool pattern, but the
   // catalog and log.md are loaded eagerly (unlike graph's data, which the
   // panel always pulls itself via zam_studio_bridge) so the panel paints its
-  // sidebar and log view without a first round-trip; article bodies, the
-  // link graph, and citation reads stay on-demand through the existing
-  // zam_okf_* tools. A missing or invalid bundle is not an error: the result
-  // carries an empty catalog plus `problems` and still opens the panel.
+  // sidebar and log view without a first round-trip. The Git-backed freshness
+  // audit is deliberately loaded by the panel after first paint so a large
+  // repository cannot delay opening. Article bodies, the link graph, citation
+  // reads, and freshness stay on-demand through the existing zam_okf_* tools.
+  // A missing or invalid bundle is not an error: the result carries an empty
+  // catalog plus `problems` and still opens the panel.
   registerAppTool(
     server,
     "zam_okf_visualize",
     {
       title: "Open ZAM OKF visualizer",
       description:
-        "Open the ZAM OKF knowledge-base visualizer: articles by type with " +
-        "search, a markdown reader with inline-expandable cited ADRs, a " +
-        "link graph, and the log. Pass `bundle_dir` to browse a bundle " +
-        "other than the default (docs/okf under the server cwd).",
+        "Open ZAM's knowledge articles (OKFs and their cited ADRs). Set " +
+        '`view: "graph"` for requests such as “show my knowledge articles”, ' +
+        '“OKFs”, or “ADRs”; use `view: "reader"` to read articles and ' +
+        '`view: "log"` for bundle history. Pass `bundle_dir` to browse a ' +
+        "bundle other than the workspace default.",
       inputSchema: {
         bundle_dir: okfBundleDirSchema,
+        view: okfViewSchema,
       },
       annotations: {
         ...commonAnnotations,
@@ -1694,83 +1715,87 @@ export function createMcpServer(db: Database): McpServer {
         ui: { resourceUri: OKF_RESOURCE_URI },
       },
     },
-    wrapHandler(async ({ bundle_dir }: { bundle_dir?: string }) => {
-      // Mirror zam_open_recall/zam_show_graph/zam_open_settings: never fails
-      // to open the panel — any companion-context resolution failure
-      // degrades to a minimal fallback context instead of rejecting the
-      // call. This tool takes no `user` argument (the bundle is
-      // repo-scoped, not per-learner), so there is no invocation override.
-      const opening = await resolveOpeningCompanionContextSafely(
-        db,
-        "okf",
-        undefined,
-        getNativeClientInfo(),
-        { clientSamplingCapable: getClientSamplingCapable() },
-      );
-      const { loadBundle } = await import("../okf/io.js");
-      const { resolve } = await import("node:path");
-      const requestedDir = await resolveOkfBundleDir(bundle_dir);
-      let resolvedBundleDir = resolve(requestedDir);
-      // Publish the RESOLVED absolute dir, not the raw argument: the VS Code
-      // Companion's own zam server runs with a different cwd, so a relative
-      // (or defaulted) dir would resolve to a different bundle over there
-      // (0.13.0 live finding: the Companion opened an empty bundle).
-      await publishUiIntent("okf", { bundle_dir: resolvedBundleDir });
-      let catalog: CatalogEntry[] = [];
-      let problems: string[] = [];
-      let log = "";
-      let okfVersion: string | null = null;
-      let freshness: OkfFreshnessAudit | null = null;
-      let freshnessProblem: string | null = null;
-      try {
-        const bundle = loadBundle(requestedDir);
-        resolvedBundleDir = bundle.dir;
-        catalog = bundle.catalog;
-        problems = bundle.problems;
+    wrapHandler(
+      async ({
+        bundle_dir,
+        view,
+      }: {
+        bundle_dir?: string;
+        view?: "reader" | "graph" | "log";
+      }) => {
+        // Mirror zam_open_recall/zam_show_graph/zam_open_settings: never fails
+        // to open the panel — any companion-context resolution failure
+        // degrades to a minimal fallback context instead of rejecting the
+        // call. This tool takes no `user` argument (the bundle is
+        // repo-scoped, not per-learner), so there is no invocation override.
+        const opening = await resolveOpeningCompanionContextSafely(
+          db,
+          "okf",
+          undefined,
+          getNativeClientInfo(),
+          { clientSamplingCapable: getClientSamplingCapable() },
+        );
+        const { loadBundle } = await import("../okf/io.js");
+        const { resolve } = await import("node:path");
+        const requestedDir = await resolveOkfBundleDir(bundle_dir);
+        let resolvedBundleDir = resolve(requestedDir);
+        // Publish the RESOLVED absolute dir, not the raw argument: the VS Code
+        // Companion's own zam server runs with a different cwd, so a relative
+        // (or defaulted) dir would resolve to a different bundle over there
+        // (0.13.0 live finding: the Companion opened an empty bundle).
+        const initialView = view ?? "reader";
+        await publishUiIntent("okf", {
+          bundle_dir: resolvedBundleDir,
+          view: initialView,
+        });
+        let catalog: CatalogEntry[] = [];
+        let problems: string[] = [];
+        let log = "";
+        let okfVersion: string | null = null;
         try {
-          const { auditOkfFreshness } = await import("../okf/freshness.js");
-          freshness = auditOkfFreshness(bundle.dir);
+          const bundle = loadBundle(requestedDir);
+          resolvedBundleDir = bundle.dir;
+          catalog = bundle.catalog;
+          problems = bundle.problems;
+          const { readFileSync } = await import("node:fs");
+          try {
+            log = readFileSync(join(bundle.dir, "log.md"), "utf8");
+          } catch {
+            log = "";
+          }
+          try {
+            const { parseFrontmatter } = await import("../okf/bundle.js");
+            const indexRaw = readFileSync(join(bundle.dir, "index.md"), "utf8");
+            const { fields } = parseFrontmatter(indexRaw);
+            okfVersion =
+              typeof fields.okf_version === "string"
+                ? fields.okf_version
+                : null;
+          } catch {
+            okfVersion = null;
+          }
         } catch (error) {
-          freshnessProblem =
-            error instanceof Error ? error.message : String(error);
+          // Missing/invalid bundle directory (loadBundle throws only when the
+          // directory itself cannot be read) — report it as `problems`, not a
+          // tool error, so the panel still opens and shows the empty state.
+          problems = [error instanceof Error ? error.message : String(error)];
         }
-        const { readFileSync } = await import("node:fs");
-        try {
-          log = readFileSync(join(bundle.dir, "log.md"), "utf8");
-        } catch {
-          log = "";
-        }
-        try {
-          const { parseFrontmatter } = await import("../okf/bundle.js");
-          const indexRaw = readFileSync(join(bundle.dir, "index.md"), "utf8");
-          const { fields } = parseFrontmatter(indexRaw);
-          okfVersion =
-            typeof fields.okf_version === "string" ? fields.okf_version : null;
-        } catch {
-          okfVersion = null;
-        }
-      } catch (error) {
-        // Missing/invalid bundle directory (loadBundle throws only when the
-        // directory itself cannot be read) — report it as `problems`, not a
-        // tool error, so the panel still opens and shows the empty state.
-        problems = [error instanceof Error ? error.message : String(error)];
-      }
 
-      return {
-        okf: "zam",
-        version: pkg.version,
-        user: opening.context.user.currentId ?? null,
-        bundleDir: resolvedBundleDir,
-        okfVersion,
-        catalog,
-        problems,
-        log,
-        freshness,
-        ...(freshnessProblem ? { freshnessProblem } : {}),
-        companionContext: opening.context,
-        ...(opening.degraded ? { companionContextDegraded: true } : {}),
-      };
-    }),
+        return {
+          okf: "zam",
+          version: pkg.version,
+          user: opening.context.user.currentId ?? null,
+          bundleDir: resolvedBundleDir,
+          okfVersion,
+          view: initialView,
+          catalog,
+          problems,
+          log,
+          companionContext: opening.context,
+          ...(opening.degraded ? { companionContextDegraded: true } : {}),
+        };
+      },
+    ),
   );
 
   registerAppResource(

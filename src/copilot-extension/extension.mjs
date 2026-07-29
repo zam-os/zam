@@ -27,7 +27,7 @@ const APP_CONFIG = {
     allowedTools: new Set(["zam_get_reviews", "zam_submit_review"]),
   },
   graph: {
-    title: "ZAM Graph",
+    title: "ZAM Learning Graph",
     toolName: "zam_show_graph",
     allowedTools: new Set(["zam_studio_bridge"]),
   },
@@ -91,9 +91,12 @@ function compactObject(value) {
 
 function buildToolArguments(kind, input) {
   // `okf` takes no `user`: `zam_okf_visualize` is repo-scoped and its input
-  // schema only knows `bundle_dir`.
+  // schema accepts the bundle plus its requested initial view.
   if (kind === "okf") {
-    return compactObject({ bundle_dir: input?.bundle_dir });
+    return compactObject({
+      bundle_dir: input?.bundle_dir,
+      view: input?.view,
+    });
   }
   const common = { user: input?.user };
   if (kind === "recall") {
@@ -489,9 +492,9 @@ await joinSession({
     }),
     createCanvas({
       id: "zam-graph",
-      displayName: "ZAM Graph",
+      displayName: "ZAM Learning Graph",
       description:
-        "Open the original interactive ZAM knowledge-graph MCP App in a hosted Copilot canvas.",
+        "Open the interactive ZAM learning-token graph MCP App in a hosted Copilot canvas.",
       inputSchema: {
         type: "object",
         properties: {
@@ -519,6 +522,12 @@ await joinSession({
             type: "string",
             description:
               "Bundle directory (default docs/okf under the zam server cwd).",
+          },
+          view: {
+            type: "string",
+            enum: ["reader", "graph", "log"],
+            description:
+              "Initial view: graph for OKFs and cited ADRs, reader for articles, or log for history.",
           },
         },
         additionalProperties: false,

@@ -126,7 +126,7 @@ interface Neighborhood {
   dependents: GraphNode[];
 }
 
-const app = new App({ name: "ZAM Graph", version: "0.1.0" });
+const app = new App({ name: "ZAM Learning Graph", version: "0.1.0" });
 
 let currentUser: string | null = null;
 let connected = false;
@@ -728,7 +728,7 @@ app.ontoolresult = (params) => {
   contextBar = ensureContextBar(
     contextBar,
     contextBarRoot,
-    "ZAM Graph",
+    "ZAM Learning Graph",
     panelVersion,
     contextState,
     {
@@ -748,7 +748,7 @@ app.ontoolresult = (params) => {
 contextBar = ensureContextBar(
   contextBar,
   contextBarRoot,
-  "ZAM Graph",
+  "ZAM Learning Graph",
   panelVersion,
   fallbackContextBarState(SURFACE, currentUser),
   {
@@ -786,5 +786,7 @@ app
   })
   .catch((error: unknown) => {
     clearTimeout(noHostTimer);
-    showConnectionNotice(`ZAM Graph failed to start: ${errorMessage(error)}`);
+    showConnectionNotice(
+      `ZAM Learning Graph failed to start: ${errorMessage(error)}`,
+    );
   });
