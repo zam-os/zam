@@ -61,3 +61,4 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-26](2026-07-26-ipados-companion-target.md) | iPadOS Companion: Second Mobile Target on the Existing Tauri Shell | Accepted — installs on hardware; pairing not yet proven on a device |
 | [2026-07-26b](2026-07-26b-central-curriculum-content-service.md) | Central Curriculum Content Service: Content Only, Pulled Forward | Accepted |
 | [2026-07-27](2026-07-27-macos-notarization.md) | macOS Distribution: Developer ID Notarization, Not the Mac App Store | Accepted — verified on a local notarized build |
+| [2026-07-29](2026-07-29-native-host-answering-route.md) | Name and Show the Surrounding Host as an Answering Route | Proposed |
