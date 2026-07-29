@@ -169,7 +169,7 @@ class GitInspector {
     const result = runGit(this.repoRoot, [
       "log",
       "-1",
-      "--format=%H%n%cI",
+      "--format=%H%x09%cI",
       "--",
       path,
     ]);
@@ -177,9 +177,9 @@ class GitInspector {
       this.commits.set(path, null);
       return null;
     }
-    // Newline-delimited fields survive Git-for-Windows/Node process pipes
-    // consistently; a NUL separator was observed to truncate on Windows ARM.
-    const [commit, rawChangedAt] = result.stdout.trim().split(/\r?\n/, 2);
+    // A tab survives Git-for-Windows/Node process pipes without the NUL
+    // truncation seen on Windows ARM or platform-specific newline handling.
+    const [commit, rawChangedAt] = result.stdout.trim().split("\t", 2);
     const changedAtMs = Date.parse(rawChangedAt ?? "");
     const value =
       commit && Number.isFinite(changedAtMs)
