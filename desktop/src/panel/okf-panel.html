@@ -446,6 +446,29 @@
         max-height: 74vh;
         display: block;
       }
+      .okf-graph-hint {
+        margin-left: auto;
+        font-size: 0.72rem;
+        opacity: 0.85;
+      }
+      .okf-graph-focus-exit {
+        font: inherit;
+        font-size: 0.72rem;
+        padding: 2px 9px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: var(--card);
+        color: var(--fg);
+        cursor: pointer;
+      }
+      .okf-graph-focus-exit:hover {
+        background: var(--hover);
+      }
+      .okf-graph-focus-label {
+        font-size: 0.76rem;
+        color: var(--fg);
+        font-weight: 600;
+      }
       .okf-graph-edge {
         fill: none;
         stroke: var(--border);
@@ -464,9 +487,36 @@
       .okf-graph-edge.okf-edge-dim {
         opacity: 0.1;
       }
+      /* Focused mode: edges at the center read strongest, edges among the
+         direct neighbors stay legible, the rest recede without vanishing —
+         the surrounding knowledge base must remain visible. */
+      .okf-graph-edge.okf-edge-ring-focus {
+        stroke: var(--accent);
+        stroke-width: 2;
+        opacity: 0.95;
+      }
+      .okf-graph-edge.okf-edge-ring-neighbor {
+        opacity: 0.5;
+      }
+      .okf-graph-edge.okf-edge-ring-background {
+        opacity: 0.18;
+      }
       .okf-graph-node-article,
       .okf-graph-node-citation {
         transition: opacity 0.15s ease;
+      }
+      .okf-ring-background {
+        opacity: 0.42;
+      }
+      .okf-ring-focus .okf-graph-node-label {
+        font-weight: 700;
+      }
+      .okf-ring-focus rect,
+      .okf-ring-neighbor rect {
+        stroke-width: 2;
+      }
+      .okf-ring-focus rect {
+        filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.28));
       }
       .okf-node-dim {
         opacity: 0.25;
@@ -480,6 +530,12 @@
       .okf-graph-node-article rect {
         stroke-width: 1.6;
         transition: filter 0.15s ease;
+      }
+      /* Opaque plate under the translucent type tint, so edges passing
+         behind a pill never show through it. */
+      .okf-graph-pill-backing {
+        fill: var(--card);
+        stroke: none;
       }
       .okf-graph-node-article:hover rect {
         filter: brightness(1.12);

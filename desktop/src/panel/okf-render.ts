@@ -44,6 +44,16 @@ export interface PositionedNode extends GraphNode {
   y: number;
 }
 
+/**
+ * Prominence band in the focused graph layout: the centered node, its direct
+ * neighbors (one hop, either direction), everything else.
+ */
+export type FocusRing = "focus" | "neighbor" | "background";
+
+export interface FocusPositionedNode extends PositionedNode {
+  ring: FocusRing;
+}
+
 // -- HTML escaping ---------------------------------------------------------
 
 function escapeHtml(text: string): string {
@@ -508,6 +518,46 @@ function sortArticles(nodes: GraphNode[]): GraphNode[] {
   });
 }
 
+interface AngularSlot {
+  node: GraphNode;
+  angle: number;
+}
+
+/**
+ * Order slots by angle and push them apart to at least `minSeparation`, so
+ * nodes placed at a *desired* angle (next to what they relate to) still keep
+ * their labels readable. If the separation pass fans the ring past a full
+ * turn, proximity is hopeless anyway -- fall back to an even spread instead
+ * of overlapping the first nodes.
+ *
+ * Returns fresh slot objects; neither the array nor its items are mutated.
+ */
+function spreadAngles(
+  slots: AngularSlot[],
+  minSeparation: number,
+): AngularSlot[] {
+  const ordered = slots
+    .map((slot) => ({ ...slot }))
+    .sort(
+      (a, b) =>
+        a.angle - b.angle || sortKey(a.node).localeCompare(sortKey(b.node)),
+    );
+  for (let i = 1; i < ordered.length; i++) {
+    const minAngle = ordered[i - 1].angle + minSeparation;
+    if (ordered[i].angle < minAngle) ordered[i].angle = minAngle;
+  }
+  if (
+    ordered.length > 1 &&
+    ordered[ordered.length - 1].angle - ordered[0].angle >
+      2 * Math.PI - minSeparation
+  ) {
+    for (let i = 0; i < ordered.length; i++) {
+      ordered[i].angle = (2 * Math.PI * i) / ordered.length - Math.PI / 2;
+    }
+  }
+  return ordered;
+}
+
 /**
  * Deterministic two-ring ellipse layout. Articles sit on an inner ellipse
  * ordered by (type, file) -- same-type articles are angular neighbors, so
@@ -548,43 +598,26 @@ export function layoutGraph(
     };
   });
 
-  const desired = citations.map((node, index) => {
-    const citerAngles = edges
-      .filter((edge) => edge.to === node.id)
-      .map((edge) => articleAngle.get(edge.from))
-      .filter((angle): angle is number => angle !== undefined);
-    if (citerAngles.length === 0) {
-      // Unreachable from buildFullGraph (citation nodes exist because an
-      // article links them), but a hand-built graph stays well-defined.
-      return {
-        node,
-        angle: (2 * Math.PI * index) / citations.length - Math.PI / 2,
-      };
-    }
-    const sumSin = citerAngles.reduce((sum, a) => sum + Math.sin(a), 0);
-    const sumCos = citerAngles.reduce((sum, a) => sum + Math.cos(a), 0);
-    return { node, angle: Math.atan2(sumSin, sumCos) };
-  });
-  desired.sort(
-    (a, b) =>
-      a.angle - b.angle || sortKey(a.node).localeCompare(sortKey(b.node)),
+  const desired = spreadAngles(
+    citations.map((node, index) => {
+      const citerAngles = edges
+        .filter((edge) => edge.to === node.id)
+        .map((edge) => articleAngle.get(edge.from))
+        .filter((angle): angle is number => angle !== undefined);
+      if (citerAngles.length === 0) {
+        // Unreachable from buildFullGraph (citation nodes exist because an
+        // article links them), but a hand-built graph stays well-defined.
+        return {
+          node,
+          angle: (2 * Math.PI * index) / citations.length - Math.PI / 2,
+        };
+      }
+      const sumSin = citerAngles.reduce((sum, a) => sum + Math.sin(a), 0);
+      const sumCos = citerAngles.reduce((sum, a) => sum + Math.cos(a), 0);
+      return { node, angle: Math.atan2(sumSin, sumCos) };
+    }),
+    MIN_CITATION_SEPARATION,
   );
-  for (let i = 1; i < desired.length; i++) {
-    const minAngle = desired[i - 1].angle + MIN_CITATION_SEPARATION;
-    if (desired[i].angle < minAngle) desired[i].angle = minAngle;
-  }
-  // If the separation pass pushed the fan past a full turn, proximity is
-  // hopeless anyway -- fall back to an even spread instead of overlapping
-  // the first nodes.
-  if (
-    desired.length > 1 &&
-    desired[desired.length - 1].angle - desired[0].angle >
-      2 * Math.PI - MIN_CITATION_SEPARATION
-  ) {
-    for (let i = 0; i < desired.length; i++) {
-      desired[i].angle = (2 * Math.PI * i) / desired.length - Math.PI / 2;
-    }
-  }
 
   const positionedCitations = desired.map(({ node, angle }) => ({
     ...node,
@@ -593,4 +626,146 @@ export function layoutGraph(
   }));
 
   return [...positionedArticles, ...positionedCitations];
+}
+
+// -- Edge geometry ------------------------------------------------------------
+
+/** A node's drawn footprint on the canvas, centered on (x, y). */
+export interface NodeBox {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface Point {
+  x: number;
+  y: number;
+}
+
+/**
+ * Where an edge should meet a node: the point at which the ray from the
+ * node's center toward `toward` leaves the node's box, pushed out by `gap`.
+ * Edges drawn between two such anchors stop at the shapes instead of running
+ * across them (a line crossing a pill reads as a mistake, and the pill's
+ * translucent fill does not hide it).
+ *
+ * Pure geometry -- the caller supplies the boxes, so the same helper serves
+ * the overview and the focused layout, whatever their node scales.
+ */
+export function edgeAnchor(box: NodeBox, toward: Point, gap = 5): Point {
+  const dx = toward.x - box.x;
+  const dy = toward.y - box.y;
+  if (dx === 0 && dy === 0) return { x: box.x, y: box.y };
+
+  const halfWidth = box.width / 2 + gap;
+  const halfHeight = box.height / 2 + gap;
+  // Scale the direction vector until it hits whichever side it reaches first.
+  const scale =
+    1 / Math.max(Math.abs(dx) / halfWidth, Math.abs(dy) / halfHeight);
+  return { x: box.x + dx * scale, y: box.y + dy * scale };
+}
+
+// -- Focused (centered) graph layout ------------------------------------------
+
+/** Neighbor ring size relative to the outer (background) ring. */
+const NEIGHBOR_RING_FRACTION = 0.56;
+/**
+ * Minimum angular gap between neighbor nodes (radians). Wider than the
+ * citation ring's: these carry enlarged labels, and near the top and bottom
+ * of the ellipse adjacent nodes separate mostly horizontally, which is the
+ * direction a label needs room in.
+ */
+const MIN_NEIGHBOR_SEPARATION = 0.52;
+/** Minimum angular gap between background nodes (radians) -- smaller nodes, tighter rim. */
+const MIN_BACKGROUND_SEPARATION = 0.15;
+
+/** Every node one hop from `id`, in either edge direction (excluding `id`). */
+export function neighborIdsOf(edges: GraphEdge[], id: string): Set<string> {
+  const ids = new Set<string>();
+  for (const edge of edges) {
+    if (edge.from === id) ids.add(edge.to);
+    else if (edge.to === id) ids.add(edge.from);
+  }
+  ids.delete(id);
+  return ids;
+}
+
+/**
+ * Focused counterpart to `layoutGraph`: the node the user centered sits at
+ * the canvas center, its direct neighbors form a readable inner ring, and
+ * every other node recedes to a rim ring (drawn small and faint by the
+ * panel, deliberately still visible -- the wider knowledge base must not
+ * vanish just because one article is in focus).
+ *
+ * Ring angles come from each node's position in the *overview* layout, so a
+ * node keeps the direction it already had when the user switches modes and
+ * the two views stay mentally superimposable. Angles are read
+ * aspect-normalized (against the layout's own ellipse radii), so the wide
+ * canvas doesn't skew the ordering.
+ *
+ * An unknown `focusId` is well-defined rather than an error: every node
+ * keeps its overview position and the `"neighbor"` ring, i.e. a plain
+ * overview with nothing centered and nothing pushed back.
+ *
+ * Pure function of its inputs -- no randomness, no input mutation.
+ */
+export function layoutFocusGraph(
+  nodes: GraphNode[],
+  edges: GraphEdge[],
+  focusId: string,
+  width: number,
+  height: number,
+): FocusPositionedNode[] {
+  const base = layoutGraph(nodes, edges, width, height);
+  const focused = base.find((node) => node.id === focusId);
+  if (!focused) {
+    return base.map((node) => ({ ...node, ring: "neighbor" as const }));
+  }
+
+  const centerX = width / 2;
+  const centerY = height / 2;
+  const rxOuter = width / 2 - width * MARGIN_X_FRACTION;
+  const ryOuter = height / 2 - height * MARGIN_Y_FRACTION;
+  const rxNeighbor = rxOuter * NEIGHBOR_RING_FRACTION;
+  const ryNeighbor = ryOuter * NEIGHBOR_RING_FRACTION;
+
+  const neighborIds = neighborIdsOf(edges, focusId);
+  const baseAngle = (node: PositionedNode): number =>
+    Math.atan2((node.y - centerY) / ryOuter, (node.x - centerX) / rxOuter);
+
+  const onRing = (
+    ring: FocusRing,
+    members: PositionedNode[],
+    minSeparation: number,
+    rx: number,
+    ry: number,
+  ): FocusPositionedNode[] =>
+    spreadAngles(
+      members.map((node) => ({ node, angle: baseAngle(node) })),
+      minSeparation,
+    ).map(({ node, angle }) => ({
+      ...(node as PositionedNode),
+      ring,
+      x: centerX + rx * Math.cos(angle),
+      y: centerY + ry * Math.sin(angle),
+    }));
+
+  return [
+    { ...focused, ring: "focus", x: centerX, y: centerY },
+    ...onRing(
+      "neighbor",
+      base.filter((node) => neighborIds.has(node.id)),
+      MIN_NEIGHBOR_SEPARATION,
+      rxNeighbor,
+      ryNeighbor,
+    ),
+    ...onRing(
+      "background",
+      base.filter((node) => node.id !== focusId && !neighborIds.has(node.id)),
+      MIN_BACKGROUND_SEPARATION,
+      rxOuter,
+      ryOuter,
+    ),
+  ];
 }

@@ -421,6 +421,13 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   // Closed-group library Phase 1 re-test notice strings (en/de shipped)
   "recall_retest_notice_date",
   "recall_retest_notice_author_date",
+  // OKF graph focus mode (right-click centers a node) — en/de shipped;
+  // es/fr/pt/zh/ja await native pack review.
+  "okf_graph_aria_focused",
+  "okf_graph_hint_overview",
+  "okf_graph_hint_focused",
+  "okf_graph_focus_exit",
+  "okf_graph_focus_on",
   // Closed-group library Phase 2 Studio release step strings (en/de shipped)
   "btn_release_revision",
   "lbl_release_modal_title",

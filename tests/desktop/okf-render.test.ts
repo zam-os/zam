@@ -1,12 +1,15 @@
 import { describe, expect, it } from "vitest";
 import {
   type CatalogEntry,
+  edgeAnchor,
   extractLinks,
   filterCatalog,
   type GraphEdge,
   type GraphNode,
   groupCatalog,
+  layoutFocusGraph,
   layoutGraph,
+  neighborIdsOf,
   renderMarkdown,
   stripFrontmatter,
 } from "../../desktop/src/panel/okf-render.js";
@@ -493,5 +496,183 @@ describe("layoutGraph", () => {
 
   it("handles an empty graph without dividing by zero", () => {
     expect(layoutGraph([], [], 200, 200)).toEqual([]);
+  });
+});
+
+describe("neighborIdsOf", () => {
+  const edges: GraphEdge[] = [
+    { from: "a.md", to: "b.md" },
+    { from: "c.md", to: "a.md" },
+    { from: "b.md", to: "d.md" },
+    { from: "a.md", to: "a.md" },
+  ];
+
+  it("collects one-hop neighbors in both edge directions", () => {
+    expect([...neighborIdsOf(edges, "a.md")].sort()).toEqual(["b.md", "c.md"]);
+  });
+
+  it("never reports a node as its own neighbor, even with a self-edge", () => {
+    expect(neighborIdsOf(edges, "a.md").has("a.md")).toBe(false);
+  });
+
+  it("returns an empty set for an unconnected id", () => {
+    expect([...neighborIdsOf(edges, "zzz.md")]).toEqual([]);
+  });
+});
+
+describe("layoutFocusGraph", () => {
+  const width = 960;
+  const height = 620;
+  const nodes: GraphNode[] = [
+    { id: "a.md", kind: "article", type: "algorithm", file: "a.md" },
+    { id: "b.md", kind: "article", type: "guide", file: "b.md" },
+    { id: "c.md", kind: "article", type: "guide", file: "c.md" },
+    { id: "d.md", kind: "article", type: "reference", file: "d.md" },
+    { id: "../adr/x.md", kind: "citation", file: "../adr/x.md" },
+  ];
+  const edges: GraphEdge[] = [
+    { from: "a.md", to: "b.md" },
+    { from: "a.md", to: "../adr/x.md" },
+    { from: "c.md", to: "d.md" },
+  ];
+
+  // Aspect-normalized radial distance, so the wide canvas doesn't make
+  // "further out" depend on which side of the ellipse a node sits.
+  const radial = (n: { x: number; y: number }) =>
+    Math.hypot((n.x - width / 2) / width, (n.y - height / 2) / height);
+
+  it("centers the focused node and bands the rest by hop distance", () => {
+    const positioned = layoutFocusGraph(nodes, edges, "a.md", width, height);
+    const byId = new Map(positioned.map((n) => [n.id, n]));
+
+    expect(byId.get("a.md")).toMatchObject({
+      ring: "focus",
+      x: width / 2,
+      y: height / 2,
+    });
+    expect(byId.get("b.md")?.ring).toBe("neighbor");
+    expect(byId.get("../adr/x.md")?.ring).toBe("neighbor");
+    expect(byId.get("c.md")?.ring).toBe("background");
+    expect(byId.get("d.md")?.ring).toBe("background");
+    expect(positioned).toHaveLength(nodes.length);
+  });
+
+  it("keeps neighbors nearer the center than every background node", () => {
+    const positioned = layoutFocusGraph(nodes, edges, "a.md", width, height);
+    const neighbors = positioned.filter((n) => n.ring === "neighbor");
+    const background = positioned.filter((n) => n.ring === "background");
+
+    expect(neighbors).not.toHaveLength(0);
+    expect(background).not.toHaveLength(0);
+    for (const near of neighbors) {
+      for (const far of background) {
+        expect(radial(near)).toBeLessThan(radial(far));
+      }
+    }
+  });
+
+  it("keeps every node inside the label margins", () => {
+    for (const node of layoutFocusGraph(nodes, edges, "a.md", width, height)) {
+      expect(node.x).toBeGreaterThanOrEqual(width * 0.1);
+      expect(node.x).toBeLessThanOrEqual(width * 0.9);
+      expect(node.y).toBeGreaterThanOrEqual(height * 0.05);
+      expect(node.y).toBeLessThanOrEqual(height * 0.95);
+    }
+  });
+
+  it("keeps each node roughly in the direction it had in the overview", () => {
+    const overview = layoutGraph(nodes, edges, width, height);
+    const focused = layoutFocusGraph(nodes, edges, "a.md", width, height);
+    const angleOf = (n: { x: number; y: number }) =>
+      Math.atan2((n.y - height / 2) / height, (n.x - width / 2) / width);
+
+    for (const node of focused) {
+      if (node.ring === "focus") continue;
+      const before = overview.find((n) => n.id === node.id);
+      if (!before) throw new Error(`${node.id} missing from the overview`);
+      const diff = Math.abs(angleOf(before) - angleOf(node));
+      expect(Math.min(diff, 2 * Math.PI - diff)).toBeLessThan(0.5);
+    }
+  });
+
+  it("falls back to the overview layout for an unknown focus id", () => {
+    const overview = layoutGraph(nodes, edges, width, height);
+    const focused = layoutFocusGraph(nodes, edges, "gone.md", width, height);
+
+    expect(focused).toEqual(
+      overview.map((node) => ({ ...node, ring: "neighbor" })),
+    );
+  });
+
+  it("places an isolated focus node alone at the center", () => {
+    const positioned = layoutFocusGraph(nodes, edges, "d.md", width, height);
+    expect(
+      positioned.filter((n) => n.ring === "neighbor").map((n) => n.id),
+    ).toEqual(["c.md"]);
+    expect(positioned.find((n) => n.id === "d.md")).toMatchObject({
+      ring: "focus",
+      x: width / 2,
+      y: height / 2,
+    });
+  });
+
+  it("is deterministic and does not mutate its input", () => {
+    const inputNodes = nodes.map((n) => ({ ...n }));
+    const inputEdges = edges.map((e) => ({ ...e }));
+    const first = layoutFocusGraph(
+      inputNodes,
+      inputEdges,
+      "a.md",
+      width,
+      height,
+    );
+    const second = layoutFocusGraph(
+      inputNodes,
+      inputEdges,
+      "a.md",
+      width,
+      height,
+    );
+
+    expect(second).toEqual(first);
+    expect(inputNodes).toEqual(nodes);
+    expect(inputEdges).toEqual(edges);
+  });
+});
+
+describe("edgeAnchor", () => {
+  const box = { x: 100, y: 100, width: 80, height: 20 };
+
+  it("meets the box on the side the target lies toward, plus the gap", () => {
+    // Straight to the right: leaves through the right edge.
+    expect(edgeAnchor(box, { x: 500, y: 100 }, 5)).toEqual({ x: 145, y: 100 });
+    // Straight down: leaves through the bottom edge.
+    expect(edgeAnchor(box, { x: 100, y: 500 }, 5)).toEqual({ x: 100, y: 115 });
+  });
+
+  it("never returns a point inside the box, in any direction", () => {
+    for (let angle = 0; angle < 2 * Math.PI; angle += Math.PI / 12) {
+      const anchor = edgeAnchor(
+        box,
+        { x: box.x + 400 * Math.cos(angle), y: box.y + 400 * Math.sin(angle) },
+        4,
+      );
+      const outsideX = Math.abs(anchor.x - box.x) >= box.width / 2;
+      const outsideY = Math.abs(anchor.y - box.y) >= box.height / 2;
+      expect(outsideX || outsideY).toBe(true);
+    }
+  });
+
+  it("stays on the segment toward the target", () => {
+    const target = { x: 400, y: 300 };
+    const anchor = edgeAnchor(box, target, 5);
+    const cross =
+      (anchor.x - box.x) * (target.y - box.y) -
+      (anchor.y - box.y) * (target.x - box.x);
+    expect(Math.abs(cross)).toBeLessThan(1e-9);
+  });
+
+  it("returns the center when the target is the center (no direction to leave in)", () => {
+    expect(edgeAnchor(box, { x: 100, y: 100 }, 5)).toEqual({ x: 100, y: 100 });
   });
 });
