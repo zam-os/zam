@@ -421,6 +421,14 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   // Closed-group library Phase 1 re-test notice strings (en/de shipped)
   "recall_retest_notice_date",
   "recall_retest_notice_author_date",
+  // Agent-transport explainer card under the AI model list (replaces the
+  // section subtitle that read as a claim about the listed models) — en/de
+  // shipped; es/fr/pt/zh/ja await native pack review.
+  "model_agent_card_title",
+  "model_agent_card_body",
+  "model_agent_card_no_key",
+  "model_agent_card_active",
+  "model_agent_card_available",
   // Closed-group library Phase 2 Studio release step strings (en/de shipped)
   "btn_release_revision",
   "lbl_release_modal_title",

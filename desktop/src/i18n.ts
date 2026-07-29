@@ -4133,6 +4133,13 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "This agent can do text and vision (OCR/scans) via your subscription.",
     model_agent_hint:
       "Uses the connected agent harness (subscription / OAuth). No API key or URL needed.",
+    model_agent_card_title: "Agent harness as a model source",
+    model_agent_card_body:
+      "Besides an HTTP endpoint, ZAM can reach a model through a connected agent harness — the harness runs the request on its own login.",
+    model_agent_card_no_key: "No API key and no endpoint URL needed.",
+    model_agent_card_active: "In use here: {harnesses}",
+    model_agent_card_available:
+      "Available on this machine: {harnesses} — set one up via “{action}”.",
     model_agent_harness_missing: "not detected",
     model_agent_harness_none: "No agent-text harness available yet",
     model_agent_missing_harness: "Choose an agent harness.",
@@ -5154,6 +5161,13 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Dieser Agent kann Text und Vision (OCR/Scans) über dein Abo.",
     model_agent_hint:
       "Nutzt den verbundenen Agent-Harness (Abo / OAuth). Kein API-Schlüssel und keine URL nötig.",
+    model_agent_card_title: "Agent-Harness als Modellquelle",
+    model_agent_card_body:
+      "ZAM erreicht ein Modell nicht nur über einen HTTP-Endpunkt, sondern auch über einen verbundenen Agent-Harness — der Harness führt die Anfrage mit seiner eigenen Anmeldung aus.",
+    model_agent_card_no_key: "Kein API-Schlüssel und keine Endpunkt-URL nötig.",
+    model_agent_card_active: "Hier im Einsatz: {harnesses}",
+    model_agent_card_available:
+      "Auf diesem Rechner verfügbar: {harnesses} — per „{action}“ einrichten.",
     model_agent_harness_missing: "nicht erkannt",
     model_agent_harness_none: "Noch kein Agent-Text-Harness verfügbar",
     model_agent_missing_harness: "Agent-Harness wählen.",

@@ -302,10 +302,26 @@ async function loadAiModels(): Promise<void> {
     const data = (await bridgeCall("model-list")) as {
       models?: SettingsModelRow[];
     };
-    renderAiModels(data.models ?? []);
+    renderAiModels(data.models ?? [], await loadAgentHarnesses());
   } catch (error) {
     clearEl(aiEl);
     renderInlineError(aiEl, errorMessage(error));
+  }
+}
+
+/**
+ * Outbound-text harnesses, for the agent-transport card below the list.
+ * Never fatal: without them the card still explains the option and falls
+ * back to what the configured rows say.
+ */
+async function loadAgentHarnesses(): Promise<SettingsAgentHarness[]> {
+  try {
+    const res = (await bridgeCall("agent-list")) as {
+      harnesses?: SettingsAgentHarness[];
+    };
+    return (res.harnesses ?? []).filter((h) => h.outboundText);
+  } catch {
+    return [];
   }
 }
 
@@ -322,14 +338,12 @@ function modelKindBadge(row: SettingsModelRow): {
   return { className: "cloud", text: t("model_cloud_badge") };
 }
 
-function renderAiModels(models: SettingsModelRow[]): void {
+function renderAiModels(
+  models: SettingsModelRow[],
+  harnesses: SettingsAgentHarness[] = [],
+): void {
   if (!aiEl) return;
   clearEl(aiEl);
-
-  const hint = document.createElement("div");
-  hint.className = "settings-hint";
-  hint.textContent = t("model_agent_hint");
-  aiEl.appendChild(hint);
 
   if (models.length === 0) {
     const empty = document.createElement("div");
@@ -356,6 +370,69 @@ function renderAiModels(models: SettingsModelRow[]): void {
   formHost.id = "settings-ai-form";
   formHost.className = "settings-ai-form hidden";
   aiEl.appendChild(formHost);
+
+  // The agent-transport explanation used to sit above the list as a bare
+  // subtitle, where it read as a claim about the models listed under it --
+  // confusing next to plain cloud/local entries. It is its own card now, in
+  // the same visual language as the rows, and it comes last.
+  aiEl.appendChild(buildAgentTransportCard(models, harnesses));
+}
+
+/**
+ * Explains the agent transport (ADR 2026-07-12a) as a card rather than a
+ * section subtitle: what it is, why it needs no key or URL, and which
+ * harness is actually in use or available on this machine.
+ */
+function buildAgentTransportCard(
+  models: SettingsModelRow[],
+  harnesses: SettingsAgentHarness[],
+): HTMLElement {
+  const card = document.createElement("div");
+  card.className = "settings-ai-row settings-ai-note";
+
+  const head = document.createElement("div");
+  head.className = "settings-ai-row-head";
+  const title = document.createElement("span");
+  title.className = "settings-ai-label";
+  title.textContent = t("model_agent_card_title");
+  const badge = document.createElement("span");
+  badge.className = "settings-ai-badge agent";
+  badge.textContent = t("model_agent_badge");
+  head.append(title, badge);
+
+  const body = document.createElement("p");
+  body.className = "settings-ai-meta";
+  body.textContent = `${t("model_agent_card_body")} ${t("model_agent_card_no_key")}`;
+
+  const labelOf = (id: string): string =>
+    harnesses.find((h) => h.id === id)?.label ?? id;
+  const inUse = [
+    ...new Set(
+      models
+        .filter((m) => m.transport === "agent")
+        .map((m) => m.agentHarness)
+        .filter((id): id is string => Boolean(id)),
+    ),
+  ];
+  const detected = harnesses.filter((h) => h.detected);
+
+  const status = document.createElement("p");
+  status.className = "settings-ai-meta settings-ai-note-status";
+  if (inUse.length > 0) {
+    status.textContent = tf("model_agent_card_active", {
+      harnesses: inUse.map(labelOf).join(", "),
+    });
+  } else if (detected.length > 0) {
+    status.textContent = tf("model_agent_card_available", {
+      harnesses: detected.map((h) => h.label).join(", "),
+      action: t("btn_add_model"),
+    });
+  } else {
+    status.textContent = t("model_agent_harness_none");
+  }
+
+  card.append(head, body, status);
+  return card;
 }
 
 function renderAiModelRow(row: SettingsModelRow): HTMLElement {
