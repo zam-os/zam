@@ -4553,6 +4553,15 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     okf_bundle_valid_but_empty:
       "The folder is a valid bundle but contains no articles.",
     okf_resource_link: "Source ↗",
+    okf_freshness_current: "Knowledge current",
+    okf_freshness_review: "Review recommended",
+    okf_freshness_unknown: "Freshness unknown",
+    okf_freshness_current_title: "No cited code changed after this article.",
+    okf_freshness_review_title:
+      "Cited code changed after this article; review the article when convenient.",
+    okf_freshness_review_paths: "Code changed after this article: {paths}",
+    okf_freshness_unknown_title:
+      "Git history or code citations were insufficient to determine freshness.",
     okf_copy: "📋 Copy",
     okf_copied: "✓ Copied",
     okf_copy_failed: "⚠️ Copy failed",
@@ -5596,6 +5605,17 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     okf_bundle_valid_but_empty:
       "Der Ordner ist ein gültiges Bundle, enthält aber keine Artikel.",
     okf_resource_link: "Quelle ↗",
+    okf_freshness_current: "Wissen aktuell",
+    okf_freshness_review: "Prüfung empfohlen",
+    okf_freshness_unknown: "Aktualität unbekannt",
+    okf_freshness_current_title:
+      "Seit diesem Artikel wurde kein zitierter Code geändert.",
+    okf_freshness_review_title:
+      "Zitierter Code wurde nach diesem Artikel geändert; prüfe den Artikel bei Gelegenheit.",
+    okf_freshness_review_paths:
+      "Code wurde nach diesem Artikel geändert: {paths}",
+    okf_freshness_unknown_title:
+      "Git-Historie oder Code-Zitate reichen nicht aus, um die Aktualität zu bestimmen.",
     okf_copy: "📋 Kopieren",
     okf_copied: "✓ Kopiert",
     okf_copy_failed: "⚠️ Kopieren fehlgeschlagen",

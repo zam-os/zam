@@ -96,9 +96,9 @@ describe("MCP stdio server tests", () => {
     });
   });
 
-  it("lists all 27 tools with correct annotations", async () => {
+  it("lists all 28 tools with correct annotations", async () => {
     const response = await client.listTools();
-    expect(response.tools).toHaveLength(27);
+    expect(response.tools).toHaveLength(28);
 
     const toolNames = response.tools.map((t) => t.name).sort();
     const expectedNames = [
@@ -123,6 +123,7 @@ describe("MCP stdio server tests", () => {
       "zam_companion_sample",
       "zam_okf_catalog",
       "zam_okf_read",
+      "zam_okf_audit",
       "zam_okf_upsert",
       "zam_okf_read_citation",
       "zam_okf_visualize",
@@ -1149,6 +1150,36 @@ describe("MCP stdio server tests", () => {
       expect(data.log).toBeUndefined();
     });
 
+    it("exposes zam_okf_audit as a read-only freshness hint", async () => {
+      const tools = await client.listTools();
+      const tool = tools.tools.find((entry) => entry.name === "zam_okf_audit");
+      expect((tool as any).annotations).toEqual({
+        openWorldHint: false,
+        readOnlyHint: true,
+      });
+
+      const res = await client.callTool({
+        name: "zam_okf_audit",
+        arguments: { bundle_dir: bundleDir },
+      });
+      expect(res.isError).toBeUndefined();
+      const data = JSON.parse(res.content[0].text);
+      expect(data.dir).toBe(bundleDir);
+      expect(data.gitAvailable).toBe(false);
+      expect(data.summary).toEqual({
+        current: 0,
+        reviewRecommended: 0,
+        unknown: 1,
+      });
+      expect(data.articles[0]).toEqual(
+        expect.objectContaining({
+          file: "fsrs-scheduling.md",
+          status: "unknown",
+          reason: "no-code-citations",
+        }),
+      );
+    });
+
     it("returns an empty log string when log.md does not exist yet", async () => {
       const emptyBundleDir = join(repoRoot, "docs", "empty-okf");
       mkdirSync(emptyBundleDir, { recursive: true });
@@ -1309,6 +1340,13 @@ describe("MCP stdio server tests", () => {
         catalog?: Array<{ file: string }>;
         log?: string;
         problems?: string[];
+        freshness?: {
+          summary?: {
+            current?: number;
+            reviewRecommended?: number;
+            unknown?: number;
+          };
+        };
         companionContext?: { surface?: string };
       };
       expect(structured.okf).toBe("zam");
@@ -1326,6 +1364,11 @@ describe("MCP stdio server tests", () => {
       // log.md was written by upsertArticle in beforeEach — returned eagerly,
       // with no separate zam_okf_catalog round-trip required.
       expect(structured.log).toContain("FSRS Scheduling");
+      expect(structured.freshness?.summary).toEqual({
+        current: 0,
+        reviewRecommended: 0,
+        unknown: 1,
+      });
       expect(structured.companionContext?.surface).toBe("okf");
     });
 
@@ -1341,11 +1384,13 @@ describe("MCP stdio server tests", () => {
         problems?: string[];
         okfVersion?: string | null;
         bundleDir?: string;
+        freshness?: unknown;
       };
       expect(structured.catalog).toEqual([]);
       expect(structured.problems?.length).toBeGreaterThan(0);
       expect(structured.okfVersion).toBeNull();
       expect(structured.bundleDir).toBe(missingDir);
+      expect(structured.freshness).toBeNull();
     });
   });
 });

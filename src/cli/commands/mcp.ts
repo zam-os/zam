@@ -42,6 +42,7 @@ import {
   writeCompanionContext,
 } from "../companion-context-server.js";
 import type { CatalogEntry } from "../okf/bundle.js";
+import type { OkfFreshnessAudit } from "../okf/freshness.js";
 import { publishUiIntent } from "../ui-intent.js";
 import { executeBridgeCommandJson } from "./bridge.js";
 
@@ -1302,7 +1303,7 @@ export function createMcpServer(db: Database): McpServer {
     ),
   );
 
-  // 19.–22. zam_okf_* — the OKF knowledge-base surface (ADR 2026-07-17).
+  // 19.–23. zam_okf_* — the OKF knowledge-base surface (ADR 2026-07-17).
   // Operates on any OKF bundle directory; docs/okf of the current workspace
   // by default. Upsert is the ONLY sanctioned write path into a bundle.
   const okfBundleDirSchema = z
@@ -1404,6 +1405,25 @@ export function createMcpServer(db: Database): McpServer {
       const markdown = readFileSync(path, "utf8");
       const { fields } = parseFrontmatter(markdown);
       return { file: params.file, frontmatter: fields, markdown };
+    }),
+  );
+
+  server.registerTool(
+    "zam_okf_audit",
+    {
+      description:
+        "Audit OKF article freshness against repo-relative code paths declared under '# Citations'. Returns conservative current, review-recommended, or unknown hints from Git history and working-tree state. Read-only: never changes articles, tokens, cards, or FSRS state.",
+      inputSchema: {
+        bundle_dir: okfBundleDirSchema,
+      },
+      annotations: {
+        ...commonAnnotations,
+        readOnlyHint: true,
+      },
+    },
+    wrapHandler(async (params: { bundle_dir?: string }) => {
+      const { auditOkfFreshness } = await import("../okf/freshness.js");
+      return auditOkfFreshness(await resolveOkfBundleDir(params.bundle_dir));
     }),
   );
 
@@ -1645,7 +1665,7 @@ export function createMcpServer(db: Database): McpServer {
     }),
   );
 
-  // 23. zam_okf_visualize — the OKF visualizer panel (MCP Apps; ADR
+  // 24. zam_okf_visualize — the OKF visualizer panel (MCP Apps; ADR
   // 2026-07-17b). Mirrors zam_show_graph's open-tool pattern, but the
   // catalog and log.md are loaded eagerly (unlike graph's data, which the
   // panel always pulls itself via zam_studio_bridge) so the panel paints its
@@ -1700,11 +1720,20 @@ export function createMcpServer(db: Database): McpServer {
       let problems: string[] = [];
       let log = "";
       let okfVersion: string | null = null;
+      let freshness: OkfFreshnessAudit | null = null;
+      let freshnessProblem: string | null = null;
       try {
         const bundle = loadBundle(requestedDir);
         resolvedBundleDir = bundle.dir;
         catalog = bundle.catalog;
         problems = bundle.problems;
+        try {
+          const { auditOkfFreshness } = await import("../okf/freshness.js");
+          freshness = auditOkfFreshness(bundle.dir);
+        } catch (error) {
+          freshnessProblem =
+            error instanceof Error ? error.message : String(error);
+        }
         const { readFileSync } = await import("node:fs");
         try {
           log = readFileSync(join(bundle.dir, "log.md"), "utf8");
@@ -1736,6 +1765,8 @@ export function createMcpServer(db: Database): McpServer {
         catalog,
         problems,
         log,
+        freshness,
+        ...(freshnessProblem ? { freshnessProblem } : {}),
         companionContext: opening.context,
         ...(opening.degraded ? { companionContextDegraded: true } : {}),
       };

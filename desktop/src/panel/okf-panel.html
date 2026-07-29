@@ -19,6 +19,8 @@
         --hover: rgba(130, 125, 189, 0.1);
         --ok: #2fbf71;
         --ok-bg: rgba(47, 191, 113, 0.12);
+        --warning: #9a6700;
+        --warning-bg: rgba(237, 161, 0, 0.16);
 
         /* OKF article-type palette — dataviz skill's validated 8-hue
            categorical order, first 4 slots only (the "all-pairs" safe
@@ -62,6 +64,8 @@
           --hover: rgba(130, 125, 189, 0.18);
           --ok: #34d399;
           --ok-bg: rgba(52, 211, 153, 0.16);
+          --warning: #f0b429;
+          --warning-bg: rgba(240, 180, 41, 0.16);
 
           --okf-type-1: #3987e5;
           --okf-type-1-bg: rgba(57, 135, 229, 0.18);
@@ -201,7 +205,9 @@
         flex-shrink: 0;
       }
       .okf-catalog-item {
-        display: block;
+        display: flex;
+        align-items: center;
+        gap: 7px;
         width: 100%;
         text-align: left;
         font: inherit;
@@ -212,6 +218,18 @@
         background: transparent;
         color: var(--fg);
         cursor: pointer;
+      }
+      .okf-catalog-item-label {
+        flex: 1;
+        min-width: 0;
+      }
+      .okf-freshness-dot {
+        width: 7px;
+        height: 7px;
+        flex: 0 0 7px;
+        border-radius: 50%;
+        background: var(--warning);
+        box-shadow: 0 0 0 3px var(--warning-bg);
       }
       .okf-catalog-item:hover {
         background: var(--hover);
@@ -261,6 +279,27 @@
       .okf-resource-link {
         color: var(--accent);
         text-decoration: underline;
+      }
+      .okf-freshness-badge {
+        display: inline-flex;
+        align-items: center;
+        margin-left: auto;
+        border-radius: 999px;
+        padding: 3px 9px;
+        font-size: 0.7rem;
+        font-weight: 650;
+      }
+      .okf-freshness-badge.current {
+        color: var(--ok);
+        background: var(--ok-bg);
+      }
+      .okf-freshness-badge.review-recommended {
+        color: var(--warning);
+        background: var(--warning-bg);
+      }
+      .okf-freshness-badge.unknown {
+        color: var(--muted);
+        background: var(--hover);
       }
 
       /* Typography for renderMarkdown's plain semantic HTML — shared by the
@@ -670,6 +709,9 @@
           flex-direction: column;
         }
         .okf-sidebar {
+          width: 100%;
+        }
+        .okf-content {
           width: 100%;
         }
         .okf-catalog-groups {

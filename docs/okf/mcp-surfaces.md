@@ -7,7 +7,7 @@ tags:
   - agents
   - surfaces
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-07-29T19:30:00Z
+timestamp: 2026-07-29T21:12:00Z
 ---
 
 `zam mcp` starts a stdio **Model Context Protocol** server
@@ -23,8 +23,9 @@ installed harnesses.
 The server exposes ZAM's tool surface (session start/end, queue and
 review actions, token search and registration, prerequisite linking,
 companion context and sampling, and the OKF knowledge-base tools
-`zam_okf_catalog` / `zam_okf_read` / `zam_okf_upsert` /
-`zam_okf_read_citation` / `zam_okf_import` / `zam_okf_focused`). The
+`zam_okf_catalog` / `zam_okf_read` / `zam_okf_audit` /
+`zam_okf_upsert` / `zam_okf_read_citation` / `zam_okf_import` /
+`zam_okf_focused`). The
 authoritative tool list with annotations is pinned by
 `tests/cli/mcp.test.ts`.
 
@@ -42,6 +43,18 @@ to — an ADR, for example — read-only and restricted to `.md` files that
 resolve inside the repository root; the target may be outside the
 bundle (that's its purpose) but never outside the repo
 (`resolveCitationPath` / `findRepoRoot` in `src/cli/okf/io.ts`).
+
+`zam_okf_audit` is the read-only freshness radar. For each article it
+reads repo-contained path-shaped values enclosed in backticks on `- Code:`
+rows under `# Citations`, then compares their Git history with the
+article's latest commit. Code at or before that article commit is
+`current`; a later descendant commit or an uncommitted change is
+`review-recommended`; unavailable or unrelated history is `unknown`.
+A valid frontmatter timestamp is only the fallback for an untracked
+article. A missing path-shaped citation recommends review, while a
+descriptive identifier without path syntax is ignored. The audit reports
+evidence and summary counts but never writes an article or changes tokens,
+cards, or FSRS state.
 
 `zam_okf_import` records an agent's finished decomposition of one
 article as learning tokens plus cards for the importing user, in one
@@ -80,6 +93,13 @@ graph (articles as nodes, inter-article links as edges, citations as
 visually distinct nodes), and the `log.md` history. The panel always
 opens — a missing or invalid bundle surfaces as `problems` in the panel
 instead of a tool error.
+
+The visualizer receives the freshness audit with its opening result and
+can refresh it through `zam_okf_audit` when it loads or retargets a
+bundle. Only `review-recommended` articles get an amber sidebar dot;
+the reader meta strip labels all three states and its tooltip names the
+changed code paths. Audit failure degrades to neutral `unknown` and does
+not block reading, importing, the graph, or the log.
 
 # OKF link graph: overview and focused mode
 
@@ -146,4 +166,5 @@ available directly.
 - [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
 - [ADR 2026-07-18b — Learning Graph Scope Selectors and the Repo Scope](../adr/2026-07-18b-graph-repo-scope.md)
 - [ADR 2026-07-18c — OKF Import Handoff](../adr/2026-07-18c-okf-import-handoff.md)
-- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf-focus.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/host.ts`, `src/vscode-extension/latest-task-queue.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`
+- [ADR 2026-07-29b — OKF Freshness Radar](../adr/2026-07-29b-okf-freshness-radar.md)
+- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-panel.html`

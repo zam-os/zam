@@ -8,10 +8,12 @@ import {
   type GraphEdge,
   type GraphNode,
   groupCatalog,
+  indexFreshnessByFile,
   layoutFocusGraph,
   layoutGraph,
   neighborIdsOf,
   renderMarkdown,
+  reviewRecommendedPaths,
   stripFrontmatter,
 } from "../../desktop/src/panel/okf-render.js";
 
@@ -68,6 +70,32 @@ const FSRS_BODY = [
   "- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/evaluator.ts`",
   "- Algorithm reference: <https://github.com/open-spaced-repetition/fsrs4anki/wiki/The-Algorithm>",
 ].join("\n");
+
+describe("freshness audit indexing", () => {
+  it("indexes articles and exposes only review-recommended code paths", () => {
+    const byFile = indexFreshnessByFile({
+      articles: [
+        {
+          file: "mcp-surfaces.md",
+          status: "review-recommended",
+          codeReferences: [
+            {
+              path: "src/cli/commands/mcp.ts",
+              status: "review-recommended",
+            },
+            { path: "src/cli/okf/io.ts", status: "current" },
+          ],
+        },
+      ],
+    });
+
+    expect([...byFile.keys()]).toEqual(["mcp-surfaces.md"]);
+    expect(reviewRecommendedPaths(byFile.get("mcp-surfaces.md"))).toEqual([
+      "src/cli/commands/mcp.ts",
+    ]);
+    expect(indexFreshnessByFile(null).size).toBe(0);
+  });
+});
 
 describe("renderMarkdown", () => {
   it("escapes HTML first so an embedded script can never survive", () => {

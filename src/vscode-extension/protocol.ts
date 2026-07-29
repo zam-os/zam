@@ -58,6 +58,7 @@ export const COMPANION_APPS: Record<CompanionApp, CompanionAppConfig> = {
     allowedTools: new Set([
       "zam_okf_catalog",
       "zam_okf_read",
+      "zam_okf_audit",
       "zam_okf_read_citation",
       "zam_okf_focus",
       "zam_companion_context",
