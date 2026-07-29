@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  articlePillSize,
   type CatalogEntry,
   edgeAnchor,
   extractLinks,
@@ -674,5 +675,29 @@ describe("edgeAnchor", () => {
 
   it("returns the center when the target is the center (no direction to leave in)", () => {
     expect(edgeAnchor(box, { x: 100, y: 100 }, 5)).toEqual({ x: 100, y: 100 });
+  });
+});
+
+describe("articlePillSize", () => {
+  it("grows with the longest line, not the line count, in width", () => {
+    const one = articlePillSize(["MCP Transport and Surfaces"]);
+    const two = articlePillSize(["MCP Transport", "and Surfaces"]);
+    expect(two.width).toBeLessThan(one.width);
+  });
+
+  it("adds one line height per wrapped line", () => {
+    const one = articlePillSize(["Token and Card Model"]);
+    const two = articlePillSize(["Token and", "Card Model"]);
+    expect(two.height - one.height).toBe(14);
+  });
+
+  it("keeps a floor so a short label still reads as a pill", () => {
+    expect(articlePillSize(["A"]).width).toBe(64);
+  });
+
+  it("honours the wider cap the centered node gets", () => {
+    const long = ["x".repeat(60)];
+    expect(articlePillSize(long).width).toBe(200);
+    expect(articlePillSize(long, 280).width).toBe(280);
   });
 });

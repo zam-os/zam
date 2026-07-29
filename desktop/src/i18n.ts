@@ -4577,8 +4577,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     okf_legend_citation: "Citation (ADR)",
     okf_graph_aria: "OKF knowledge graph",
     okf_graph_aria_focused: "OKF knowledge graph, centered on {title}",
+    okf_back_to_graph: "← Back to the graph",
     okf_graph_hint_overview:
-      "Left-click opens the article · right-click centers it",
+      "Left-click opens the article or ADR · right-click centers it",
     okf_graph_hint_focused:
       "Right-click another node to re-center · Esc for the overview",
     okf_graph_focus_exit: "← Overview",
@@ -5618,8 +5619,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     okf_legend_citation: "Zitat (ADR)",
     okf_graph_aria: "OKF Wissensgraph",
     okf_graph_aria_focused: "OKF Wissensgraph, zentriert auf {title}",
+    okf_back_to_graph: "← Zurück zum Graph",
     okf_graph_hint_overview:
-      "Linksklick öffnet den Artikel · Rechtsklick zentriert ihn",
+      "Linksklick öffnet Artikel oder ADR · Rechtsklick zentriert",
     okf_graph_hint_focused:
       "Rechtsklick auf einen anderen Knoten zentriert neu · Esc zur Übersicht",
     okf_graph_focus_exit: "← Übersicht",
