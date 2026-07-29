@@ -7,7 +7,7 @@ tags:
   - scheduling
   - prerequisites
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/prerequisite-blocking.md"
-timestamp: 2026-07-22T04:24:00Z
+timestamp: 2026-07-29T21:09:01Z
 ---
 
 Tokens are connected by a **directed prerequisite graph** (table

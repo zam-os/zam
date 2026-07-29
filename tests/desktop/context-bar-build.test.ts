@@ -23,6 +23,7 @@ const PANEL_FILES = [
   "recall-panel.html",
   "graph-panel.html",
   "settings-panel.html",
+  "okf-panel.html",
 ] as const;
 
 const distUi = (file: string) => join(process.cwd(), "dist", "ui", file);
@@ -68,6 +69,10 @@ describeIfBuilt("shared context bar — built MCP Apps panels", () => {
         expect(html()).toContain("User");
       });
 
+      it("keeps conditionally irrelevant pills visually hidden", () => {
+        expect(html()).toContain(".zam-pill[hidden]");
+      });
+
       it("bundles the honest quick-mode fallback label, never a bare host name", () => {
         expect(html()).toContain("Quick mode");
         // ADR 2026-07-16 §Decision 2/5: never a bare "VS Code" or bare
@@ -79,7 +84,7 @@ describeIfBuilt("shared context bar — built MCP Apps panels", () => {
 });
 
 describe("shared context bar build coverage", () => {
-  it("built all four panels for the assertions above (build first if this fails)", () => {
+  it("built all five panels for the assertions above (build first if this fails)", () => {
     expect(builtPanels).toEqual(PANEL_FILES);
   });
 });

@@ -2,8 +2,8 @@
  * Shared compact Companion context bar (ADR 2026-07-16 §Decision 1–4,
  * 0.11.0 Phase 4).
  *
- * One framework-free DOM component mounted by all four panel entries
- * (recall.ts, graph.ts, settings.ts, panel.ts) in place of the old
+ * One framework-free DOM component mounted by all five panel entries
+ * (recall.ts, graph.ts, okf.ts, settings.ts, panel.ts) in place of the old
  * `.zam-header` + permanent "Connected to zam mcp" status row. Layout:
  * collapse/expand affordance + app title on the left, an **Agent** pill and
  * a **User** pill (both native `<select>` elements styled as pills, so
@@ -91,6 +91,16 @@ export interface CompanionContextBarState {
 export interface CompanionContextWriteResult {
   read: CompanionContextBarState;
   reloadRequired: boolean;
+}
+
+/**
+ * Evaluator choice affects generation/evaluation surfaces, but neither
+ * read-only graph: the learning graph renders stored tokens and the OKF graph
+ * renders repo articles/citations. Hiding the control there avoids presenting
+ * a host model as if it influenced the result.
+ */
+export function surfaceUsesEvaluator(surface: CompanionSurface): boolean {
+  return surface !== "graph" && surface !== "okf";
 }
 
 function errorMessage(error: unknown): string {
@@ -545,6 +555,9 @@ const CONTEXT_BAR_CSS = `
   color: var(--muted);
   max-width: 220px;
 }
+.zam-pill[hidden] {
+  display: none;
+}
 .zam-pill-label {
   font-weight: 700;
   text-transform: uppercase;
@@ -778,6 +791,7 @@ export function mountContextBar(
     );
     titleEl.title = version ? `${title} · v${version} · zam mcp` : title;
 
+    agentPill.wrapper.hidden = !surfaceUsesEvaluator(state.surface);
     applyOptions(agentPill.select, buildEvaluatorOptions(state));
     const agent = agentPillSummary(state);
     agentPill.select.classList.toggle(

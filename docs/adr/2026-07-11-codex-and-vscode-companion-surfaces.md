@@ -5,7 +5,9 @@
 **Deciders:** Thomas (project owner)
 **Related:**
 [2026-07-06a-mcp-agent-transport-and-surfaces.md](2026-07-06a-mcp-agent-transport-and-surfaces.md) ·
-[2026-06-30-learning-content-studio.md](2026-06-30-learning-content-studio.md)
+[2026-06-30-learning-content-studio.md](2026-06-30-learning-content-studio.md) ·
+[2026-07-17b-okf-visualizer-panel.md](2026-07-17b-okf-visualizer-panel.md) ·
+[2026-07-18b-graph-repo-scope.md](2026-07-18b-graph-repo-scope.md)
 
 ---
 
@@ -46,6 +48,29 @@ bus for answers. Recall answers, reveal, and ratings remain inside the Recall
 card. Short or complex follow-up questions remain in the user's chosen agent
 chat. One-off requests such as “visualize this” may still render an inline MCP
 App when the host supports it.
+
+### 0.23 portable-host clarification
+
+MCP Apps hosts do not share VS Code's navigation icons or panel topology, so
+the server exposes intent rather than assuming a particular mount:
+
+- `zam_show_graph` is explicitly the **learning-token graph**. Requests for a
+  knowledge graph, learning graph, or *Wissensgraph* route here.
+- `zam_okf_visualize` is the **repo-knowledge surface**. Requests for knowledge
+  articles, *Wissensartikel*, OKFs, or ADRs route here with the new
+  `view: "graph"` opening argument. `reader` and `log` remain addressable
+  initial views, and the argument passes through the VS Code intent and
+  Copilot canvas adapters.
+- Server-wide MCP instructions and the shipped ZAM skill repeat that mapping
+  so hosts can choose the correct tool even when they offer only one inline
+  app at a time.
+- Evaluator/model controls are hidden on both read-only graph surfaces because
+  no model participates in rendering stored tokens, articles, or citations.
+  The learner control remains meaningful on the learning graph.
+- Recall asks for the standard MCP Apps `pip` display mode only when the host
+  advertises it. The host owns the actual placement; ZAM cannot force a
+  Codex-, Claude-, or ChatGPT-specific right sidebar. Hosts that advertise
+  only inline mode keep their native rendering.
 
 There is one ZAM Companion extension, not separate Codex, Copilot, or Claude
 variants. Users normally run one agent harness at a time. Concurrent ownership

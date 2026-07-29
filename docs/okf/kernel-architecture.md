@@ -7,7 +7,7 @@ tags:
   - cli
   - boundaries
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/kernel-architecture.md"
-timestamp: 2026-07-17T00:00:00Z
+timestamp: 2026-07-29T21:04:29Z
 ---
 
 ZAM has exactly two code layers with a hard boundary between them.
@@ -32,17 +32,23 @@ CLI commands; new HTTP goes in the CLI layer, never in the kernel.
 
 # Persistence
 
-The database is SQLite at `~/.zam/zam.db` (WAL mode, foreign keys on). All
-access goes through the async `Database` contract in
+Without cloud credentials the default is local SQLite at `~/.zam/zam.db`
+(WAL mode, foreign keys on). `openDatabase` can instead select Turso through
+the native libSQL driver (a remote URL or an embedded replica) or ZAM's
+binding-free HTTP provider. An explicit PostgreSQL provider implements the
+same contract for server deployments.
+
+All access goes through the async `Database` contract in
 `src/kernel/db/types.ts`; concrete drivers are imported only inside
 `src/kernel/db/`. IDs are ULIDs throughout. Schema changes require both
 `src/kernel/db/schema.ts` and an idempotent numbered migration.
-Machine-local state (config, selections) lives in `~/.zam/config.json`,
-never in the shareable database.
+Machine-local state (config, selections and credentials) stays under
+`~/.zam/`, never in the shareable database.
 
 # Citations
 
 - [ADR 2026-03-23 — Kernel and Shell Observation](../adr/2026-03-23-kernel-and-shell-observation.md)
 - [ADR 2026-06-09 — Async Database Providers](../adr/2026-06-09-async-database-providers.md)
 - [ADR 2026-07-07 — Resilient Self-Update and Dependency-Failure Isolation](../adr/2026-07-07-resilient-self-update-and-dependency-isolation.md)
-- Code: `src/kernel/index.ts`, `src/kernel/db/types.ts`, `src/cli/index.ts`
+- [ADR 2026-07-23 — Online-Only Server Database and Mobile Gating](../adr/2026-07-23-online-only-server-db-and-mobile-gating.md)
+- Code: `src/kernel/index.ts`, `src/kernel/db/types.ts`, `src/kernel/db/connection.ts`, `src/kernel/db/postgres.ts`, `src/cli/index.ts`

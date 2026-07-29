@@ -46,6 +46,9 @@ import {
   type GraphEdge,
   type GraphNode,
   type NodeBox,
+  type OkfArticleFreshness,
+  type OkfFreshnessAudit,
+  type OkfFreshnessStatus,
   type PositionedNode,
   LABEL_LINE_HEIGHT,
   PILL_HEIGHT,
@@ -54,10 +57,12 @@ import {
   extractLinks,
   filterCatalog,
   groupCatalog,
+  indexFreshnessByFile,
   layoutFocusGraph,
   layoutGraph,
   neighborIdsOf,
   renderMarkdown,
+  reviewRecommendedPaths,
   stripFrontmatter,
 } from "./okf-render.js";
 
@@ -89,8 +94,13 @@ function errorMessage(error: unknown): string {
 
 type ViewMode = "reader" | "graph" | "log";
 
+function isViewMode(value: unknown): value is ViewMode {
+  return value === "reader" || value === "graph" || value === "log";
+}
+
 interface OpenOkfResult {
   bundleDir?: string | null;
+  view?: ViewMode;
   /** The OKF bundle-format version (index.md's `okf_version` frontmatter),
    * not the zam app/package version — see `zam_okf_visualize`'s `okfVersion`
    * field (src/cli/commands/mcp.ts). `null` when the bundle failed to load
@@ -98,6 +108,7 @@ interface OpenOkfResult {
   okfVersion?: string | null;
   catalog?: CatalogEntry[];
   log?: string;
+  freshness?: OkfFreshnessAudit | null;
   version?: string;
   user?: string | null;
   companionContext?: CompanionContextBarState;
@@ -134,6 +145,7 @@ let bundleDir: string | null = null;
  * doesn't return it. */
 let bundleOkfVersion: string | null = null;
 let catalog: CatalogEntry[] = [];
+let freshnessByFile = indexFreshnessByFile(null);
 /** First-seen `type` order across the full (unfiltered) catalog, fixed once
  * per catalog load — the categorical-color assignment must never reshuffle
  * while the user types in the search box (dataviz skill: fixed order, never
@@ -179,6 +191,23 @@ function reloadForContext(newState: CompanionContextBarState): void {
 function setCatalog(next: CatalogEntry[]): void {
   catalog = next;
   typeOrder = [...groupCatalog(catalog).keys()];
+}
+
+function setFreshness(next: OkfFreshnessAudit | null | undefined): void {
+  freshnessByFile = indexFreshnessByFile(next);
+}
+
+async function loadFreshness(bundle: string | null): Promise<void> {
+  try {
+    const result = (await callTool("zam_okf_audit", {
+      bundle_dir: bundle ?? undefined,
+    })) as OkfFreshnessAudit;
+    if (bundle === bundleDir) setFreshness(result);
+  } catch {
+    // Freshness is an advisory layer. Older hosts or unavailable Git must
+    // not block the catalog; the reader renders an honest "unknown" badge.
+    if (bundle === bundleDir) setFreshness(null);
+  }
 }
 
 /**
@@ -229,8 +258,13 @@ async function loadCatalogFallback(): Promise<void> {
     bundleDir = result.dir;
     setCatalog(result.articles);
     logText = result.log ?? "";
+    setFreshness(null);
     catalogLoaded = true;
     renderAll();
+    // Advisory only: paint the catalog immediately and let Git inspection
+    // arrive independently. A slow/older host must never hold the reader
+    // behind the freshness layer.
+    void loadFreshness(bundleDir).then(renderAll);
   } catch (error) {
     renderTopLevelError(errorMessage(error));
   }
@@ -288,7 +322,9 @@ function updateViewToggleActiveState(): void {
 
 function viewButtons(): HTMLButtonElement[] {
   return viewToggleEl
-    ? Array.from(viewToggleEl.querySelectorAll<HTMLButtonElement>(".okf-view-btn"))
+    ? Array.from(
+        viewToggleEl.querySelectorAll<HTMLButtonElement>(".okf-view-btn"),
+      )
     : [];
 }
 
@@ -321,6 +357,27 @@ function renderTopLevelError(message: string): void {
   }
 }
 
+function freshnessLabel(status: OkfFreshnessStatus): string {
+  switch (status) {
+    case "current":
+      return t("okf_freshness_current");
+    case "review-recommended":
+      return t("okf_freshness_review");
+    default:
+      return t("okf_freshness_unknown");
+  }
+}
+
+function freshnessTitle(article: OkfArticleFreshness | undefined): string {
+  const status = article?.status ?? "unknown";
+  if (status === "current") return t("okf_freshness_current_title");
+  if (status === "unknown") return t("okf_freshness_unknown_title");
+  const paths = reviewRecommendedPaths(article);
+  return paths.length > 0
+    ? tf("okf_freshness_review_paths", { paths: paths.join(", ") })
+    : t("okf_freshness_review_title");
+}
+
 function renderSidebar(): void {
   if (!catalogGroupsEl) return;
   catalogGroupsEl.replaceChildren();
@@ -328,7 +385,9 @@ function renderSidebar(): void {
   if (filtered.length === 0) {
     const empty = document.createElement("div");
     empty.className = "okf-catalog-empty";
-    empty.textContent = searchQuery ? t("okf_no_matches") : t("okf_no_articles");
+    empty.textContent = searchQuery
+      ? t("okf_no_matches")
+      : t("okf_no_articles");
     catalogGroupsEl.appendChild(empty);
     return;
   }
@@ -347,11 +406,37 @@ function renderSidebar(): void {
       const item = document.createElement("button");
       item.type = "button";
       item.className = "okf-catalog-item";
-      if (viewMode === "reader" && !citationView && currentFile === entry.file) {
+      if (
+        viewMode === "reader" &&
+        !citationView &&
+        currentFile === entry.file
+      ) {
         item.classList.add("active");
       }
-      item.textContent = entry.title;
-      item.title = entry.description;
+      const label = document.createElement("span");
+      label.className = "okf-catalog-item-label";
+      label.textContent = entry.title;
+      item.appendChild(label);
+      const articleFreshness = freshnessByFile.get(entry.file);
+      if (articleFreshness?.status === "review-recommended") {
+        const marker = document.createElement("span");
+        marker.className = "okf-freshness-dot";
+        marker.title = freshnessTitle(articleFreshness);
+        marker.setAttribute("aria-hidden", "true");
+        item.appendChild(marker);
+        item.setAttribute(
+          "aria-label",
+          `${entry.title} — ${freshnessLabel(articleFreshness.status)}`,
+        );
+      }
+      item.title = [
+        entry.description,
+        ...(articleFreshness?.status === "review-recommended"
+          ? [freshnessTitle(articleFreshness)]
+          : []),
+      ]
+        .filter(Boolean)
+        .join("\n");
       item.addEventListener("click", () => {
         viewMode = "reader";
         void openArticle(entry.file);
@@ -403,6 +488,7 @@ async function retargetBundle(dir: string): Promise<string | null> {
     bundleOkfVersion = null;
     setCatalog(result.articles);
     logText = result.log ?? "";
+    setFreshness(null);
     catalogLoaded = true;
     bodyCache.clear();
     readErrors.clear();
@@ -411,6 +497,8 @@ async function retargetBundle(dir: string): Promise<string | null> {
     currentFile = null;
     citationView = null;
     graphFocusId = null;
+    renderAll();
+    void loadFreshness(bundleDir).then(renderAll);
     return null;
   } catch (error) {
     return errorMessage(error);
@@ -548,6 +636,15 @@ function buildMetaStrip(entry: CatalogEntry | undefined): HTMLElement {
       strip.appendChild(link);
     }
   }
+  if (entry) {
+    const articleFreshness = freshnessByFile.get(entry.file);
+    const status = articleFreshness?.status ?? "unknown";
+    const freshness = document.createElement("span");
+    freshness.className = `okf-freshness-badge ${status}`;
+    freshness.textContent = freshnessLabel(status);
+    freshness.title = freshnessTitle(articleFreshness);
+    strip.appendChild(freshness);
+  }
   return strip;
 }
 
@@ -682,7 +779,9 @@ function renderReaderBody(container: HTMLElement): void {
     return;
   }
   container.replaceChildren();
-  container.appendChild(buildMetaStrip(catalog.find((e) => e.file === currentFile)));
+  container.appendChild(
+    buildMetaStrip(catalog.find((e) => e.file === currentFile)),
+  );
   container.appendChild(buildImportAction(currentFile));
   const bodyEl = document.createElement("div");
   bodyEl.className = "okf-article-body zam-card";
@@ -694,7 +793,10 @@ function renderReaderBody(container: HTMLElement): void {
   container.appendChild(bodyEl);
 }
 
-function renderCitationFullView(container: HTMLElement, view: CitationView): void {
+function renderCitationFullView(
+  container: HTMLElement,
+  view: CitationView,
+): void {
   container.replaceChildren();
   const back = document.createElement("button");
   back.type = "button";
@@ -901,7 +1003,9 @@ function buildCitationBox(
   });
   const contentBodyEl = document.createElement("div");
   contentBodyEl.className = "okf-article-body";
-  contentBodyEl.innerHTML = renderMarkdown(stripFrontmatter(state.content ?? ""));
+  contentBodyEl.innerHTML = renderMarkdown(
+    stripFrontmatter(state.content ?? ""),
+  );
   attachContentClickDelegation(contentBodyEl);
   decorateCitationLinks(contentBodyEl, new Set([...ancestors, target]));
   box.append(badge, pathEl, openBtn, contentBodyEl);
@@ -930,7 +1034,9 @@ async function ensureAllBodiesLoaded(): Promise<void> {
 }
 
 function buildFullGraph(): { nodes: GraphNode[]; edges: GraphEdge[] } {
-  const byFile = new Map(catalog.map((e): [string, CatalogEntry] => [e.file, e]));
+  const byFile = new Map(
+    catalog.map((e): [string, CatalogEntry] => [e.file, e]),
+  );
   const nodes: GraphNode[] = [];
   const edges: GraphEdge[] = [];
   const seen = new Set<string>();
@@ -1478,6 +1584,14 @@ document.addEventListener("keydown", (event) => {
 
 // ── Host lifecycle (mirrors graph.ts) ───────────────────────────────────
 
+app.ontoolinput = (params) => {
+  const input = (params.arguments ?? {}) as { view?: unknown };
+  if (!isViewMode(input.view)) return;
+  viewMode = input.view;
+  updateViewToggleActiveState();
+  if (catalogLoaded) renderAll();
+};
+
 app.ontoolresult = (params) => {
   const structured = (params.structuredContent ?? {}) as OpenOkfResult;
   panelVersion = structured.version;
@@ -1490,13 +1604,26 @@ app.ontoolresult = (params) => {
   const previousBundleDir = bundleDir;
   currentUser = structured.user ?? null;
   if (structured.bundleDir !== undefined) bundleDir = structured.bundleDir;
-  if (structured.okfVersion !== undefined) bundleOkfVersion = structured.okfVersion;
+  if (isViewMode(structured.view)) viewMode = structured.view;
+  if (structured.okfVersion !== undefined)
+    bundleOkfVersion = structured.okfVersion;
   if (structured.catalog) {
     setCatalog(structured.catalog);
     catalogLoaded = true;
   }
   if (structured.log !== undefined) logText = structured.log;
-  if (started && (previousUser !== currentUser || previousBundleDir !== bundleDir)) {
+  if (structured.freshness !== undefined) {
+    setFreshness(structured.freshness);
+  } else if (
+    structured.bundleDir !== undefined &&
+    previousBundleDir !== bundleDir
+  ) {
+    setFreshness(null);
+  }
+  if (
+    started &&
+    (previousUser !== currentUser || previousBundleDir !== bundleDir)
+  ) {
     started = false;
     bodyCache.clear();
     readErrors.clear();
@@ -1509,7 +1636,8 @@ app.ontoolresult = (params) => {
   clearConnectionNotice();
 
   const contextState =
-    structured.companionContext ?? fallbackContextBarState(SURFACE, currentUser);
+    structured.companionContext ??
+    fallbackContextBarState(SURFACE, currentUser);
   contextBar = ensureContextBar(
     contextBar,
     contextBarRoot,
@@ -1524,6 +1652,14 @@ app.ontoolresult = (params) => {
     },
   );
   start();
+  if (
+    structured.freshness === undefined &&
+    structured.bundleDir !== undefined
+  ) {
+    // Newer servers keep Git inspection off the opening tool's critical
+    // path. Older results may still carry freshness and skip this request.
+    void loadFreshness(bundleDir).then(renderAll);
+  }
 };
 
 // Mount the bar immediately — before any tool result — so the title and an
@@ -1550,7 +1686,10 @@ contextBar = ensureContextBar(
 const NO_HOST_NOTICE =
   "Kein MCP-Apps-Host — diese Karte braucht einen Host mit ui/initialize " +
   "(z. B. basic-host oder Copilot-Panel).";
-const noHostTimer = setTimeout(() => showConnectionNotice(NO_HOST_NOTICE), 4000);
+const noHostTimer = setTimeout(
+  () => showConnectionNotice(NO_HOST_NOTICE),
+  4000,
+);
 
 app
   .connect()

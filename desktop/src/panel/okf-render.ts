@@ -23,6 +23,46 @@ export interface CatalogEntry {
   timestamp?: string;
 }
 
+/** Mirrors the read-only `zam_okf_audit` wire shape. */
+export type OkfFreshnessStatus = "current" | "review-recommended" | "unknown";
+
+export interface OkfCodeReferenceFreshness {
+  path: string;
+  status: OkfFreshnessStatus;
+  reason?: string;
+}
+
+export interface OkfArticleFreshness {
+  file: string;
+  status: OkfFreshnessStatus;
+  codeReferences: OkfCodeReferenceFreshness[];
+  reason?: string;
+}
+
+export interface OkfFreshnessAudit {
+  articles: OkfArticleFreshness[];
+}
+
+/** Index an audit snapshot once so sidebar and reader lookups stay cheap. */
+export function indexFreshnessByFile(
+  audit: OkfFreshnessAudit | null | undefined,
+): Map<string, OkfArticleFreshness> {
+  return new Map(
+    (audit?.articles ?? []).map((article) => [article.file, article]),
+  );
+}
+
+/** Code paths that make an article's freshness badge actionable. */
+export function reviewRecommendedPaths(
+  article: OkfArticleFreshness | undefined,
+): string[] {
+  return (
+    article?.codeReferences
+      .filter((reference) => reference.status === "review-recommended")
+      .map((reference) => reference.path) ?? []
+  );
+}
+
 export interface GraphNode {
   id: string;
   kind: "article" | "citation";

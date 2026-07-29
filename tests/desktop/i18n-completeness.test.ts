@@ -437,6 +437,15 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "okf_graph_hint_focused",
   "okf_graph_focus_exit",
   "okf_graph_focus_on",
+  // OKF Freshness Radar (0.23.0) — en/de shipped; es/fr/pt/zh/ja await
+  // native pack review.
+  "okf_freshness_current",
+  "okf_freshness_review",
+  "okf_freshness_unknown",
+  "okf_freshness_current_title",
+  "okf_freshness_review_title",
+  "okf_freshness_review_paths",
+  "okf_freshness_unknown_title",
   // Closed-group library Phase 2 Studio release step strings (en/de shipped)
   "btn_release_revision",
   "lbl_release_modal_title",

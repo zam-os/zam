@@ -36,7 +36,8 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 | `zam_suggest_foundations` | Suggest existing prerequisite tokens for a newly failed or registered token. |
 | `zam_monitor` | Read or analyze shell-monitor evidence for a session. |
 | `zam_open_recall` | Open the spoiler-free Recall app; answering, reveal, and rating stay inside the card. |
-| `zam_show_graph` | Open the focused knowledge-graph app, usually with a token slug from the conversation. |
+| `zam_show_graph` | Open the learning-token graph, usually with a token slug from the conversation. |
+| `zam_okf_visualize` | Open repo knowledge articles (OKFs and cited ADRs) in reader, graph, or log view. |
 | `zam_open_settings` | Open the focused Settings app when the user asks for configuration or database status. |
 
 ---
@@ -58,7 +59,9 @@ When the user invokes `/zam` without a task or mode, do not choose a workflow on
 ### Purpose-built visual surfaces
 
 - After the user chooses Recall or a topic, call `zam_open_recall`, passing the selected domain when applicable. Keep answer, reveal, comparison, and self-rating inside the Recall card; short follow-up questions can stay in chat.
-- When the user asks to visualize knowledge, call `zam_show_graph` with the most relevant known token slug as `focus`. The host may show it in a persistent pane or inline for a one-off visualization.
+- When the user asks for the **knowledge graph**, **learning graph**, or **Wissensgraph**, call `zam_show_graph` with the most relevant known token slug as `focus`. This surface shows learning tokens and prerequisite relations.
+- When the user asks for **knowledge articles**, **Wissensartikel**, **OKFs**, or **ADRs**, call `zam_okf_visualize` with `view: "graph"`. Use `view: "reader"` when they ask to read an article and `view: "log"` for bundle history.
+- A host may place an MCP App in a persistent pane or inline. Recall requests standard picture-in-picture only when the host advertises it; never claim control over a host-specific right sidebar.
 - Call `zam_open_settings` only for relevant setup, workspace, backup, or database-status work.
 - Never call `zam_open_studio` as part of an agent-harness ZAM menu or ordinary ZAM workflow.
 

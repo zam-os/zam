@@ -62,3 +62,4 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-26b](2026-07-26b-central-curriculum-content-service.md) | Central Curriculum Content Service: Content Only, Pulled Forward | Accepted |
 | [2026-07-27](2026-07-27-macos-notarization.md) | macOS Distribution: Developer ID Notarization, Not the Mac App Store | Accepted — verified on a local notarized build |
 | [2026-07-29](2026-07-29-native-host-answering-route.md) | Name and Show the Surrounding Host as an Answering Route | Proposed |
+| [2026-07-29b](2026-07-29b-okf-freshness-radar.md) | OKF Freshness Radar | Implemented |

@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-07-22T05:35:00Z
+timestamp: 2026-07-29T21:08:14Z
 ---
 
 ZAM's spaced repetition uses **FSRS-5** (Free Spaced Repetition Scheduler,
@@ -33,11 +33,24 @@ row references that session and a matching user `session_steps` row is written
 with the rating. A failure in any of those writes rolls back the card update,
 review log, blocking changes, and session step together.
 
+Published learning content has a substance version. A curator classifies
+each revision as `cosmetic` or `material`: cosmetic publication leaves
+scheduling untouched; material publication increments the token's
+`content_version` and makes cards learned against an older version due
+now. Stability, difficulty, repetitions, and lapses are deliberately kept
+so the next real answer re-tests the change instead of resetting history.
+After that answer, `evaluateRating()` synchronizes the card's
+`learned_content_version`; queue items expose the change and publisher
+provenance so the recall surface can explain why the card returned.
+
 # Review queue
 
-`src/kernel/scheduler/queue.ts` builds each session's queue from due cards
-plus new cards: it interleaves cards by domain (so one topic doesn't
-monopolize a session) and inserts new cards at every 5th position.
+`src/kernel/scheduler/queue.ts` builds each session's queue from eligible
+due cards plus new cards. It excludes blocked or learner-detached cards and
+tokens that are deprecated, in maintenance, or not in the `published`
+editorial state; an active knowledge context can narrow the set further.
+The remaining cards are interleaved by domain (so one topic doesn't
+monopolize a session), with a new card inserted at every 5th position.
 
 # Android voice review
 
@@ -73,7 +86,8 @@ await executeReviewAction(db, {
 # Citations
 
 - [ADR 2026-05-30a — Standalone Learning Session](../adr/2026-05-30a-standalone-learning-session.md)
+- [ADR 2026-07-04 — Multi-Learner Shared Knowledge](../adr/2026-07-04-multi-learner-shared-knowledge.md)
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
-- Tests as source of truth for scheduling semantics: `tests/kernel/fsrs.test.ts`
-- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `mobile/src/voice.ts`, `mobile/src/review-session.ts`, `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/VoicePlugin.kt`
+- Tests as source of truth for scheduling semantics: `tests/kernel/fsrs.test.ts`, `tests/kernel/library-revision.test.ts`, `tests/kernel/card-detach.test.ts`
+- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/library/revision.ts`, `src/kernel/models/card.ts`, `mobile/src/voice.ts`, `mobile/src/review-session.ts`, `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/VoicePlugin.kt`
 - Algorithm reference: <https://github.com/open-spaced-repetition/fsrs4anki/wiki/The-Algorithm>

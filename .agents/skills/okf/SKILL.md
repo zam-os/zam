@@ -21,8 +21,9 @@ release-level care. Contract: ADR 2026-07-17.
 path is the `zam_okf_upsert` MCP tool (server: `zam mcp`): it validates
 the frontmatter contract, regenerates `index.md`, and appends the `log.md`
 entry. `zam_okf_catalog` lists articles plus conformance problems;
-`zam_okf_read` returns one article. CI enforces bundle conformance
-(`tests/cli/okf-conformance.test.ts`).
+`zam_okf_read` returns one article; `zam_okf_audit` reports conservative
+freshness hints from declared code citations and Git history. CI enforces
+bundle conformance (`tests/cli/okf-conformance.test.ts`).
 
 ## ADR vs OKF
 
@@ -54,8 +55,12 @@ one.
 
 If a PR changes behavior that an OKF article describes, update the
 article via `zam_okf_upsert` **in the same PR**. Check
-`zam_okf_catalog` when touching kernel scheduling, the token/card model,
-prerequisite blocking, the bridge protocol, or MCP surfaces.
+`zam_okf_catalog` and run `zam_okf_audit` when touching kernel
+scheduling, the token/card model, prerequisite blocking, the bridge
+protocol, or MCP surfaces. Treat `review-recommended` as a prompt to read
+the code and article, not permission to rewrite automatically; `current`
+means only that no declared code citation is newer, and `unknown` is an
+honest request for manual inspection.
 
 ## Articles as learning sources
 
