@@ -431,6 +431,7 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "model_agent_card_available",
   // OKF graph focus mode (right-click centers a node) — en/de shipped;
   // es/fr/pt/zh/ja await native pack review.
+  "okf_back_to_graph",
   "okf_graph_aria_focused",
   "okf_graph_hint_overview",
   "okf_graph_hint_focused",

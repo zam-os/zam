@@ -114,6 +114,10 @@ interface CitationView {
   target: string;
   path: string;
   content: string;
+  /** Set while the read is still in flight — the graph opens the view on
+   * click, before the content can possibly have arrived. */
+  loading?: boolean;
+  error?: string;
 }
 
 let contextBar: ContextBarHandle | undefined;
@@ -143,6 +147,13 @@ let viewMode: ViewMode = "reader";
 let graphFocusId: string | null = null;
 let currentFile: string | null = null;
 let citationView: CitationView | null = null;
+/** Where the citation full view was opened from, so its back button returns
+ * there: the graph's citation nodes open it from outside the reader. */
+let citationOrigin: ViewMode = "reader";
+/** target -> citation content, for citations opened from the graph. Separate
+ * from `openCitations`, which doubles as the reader's "expanded inline" set —
+ * opening an ADR from the graph must not silently expand it in the article. */
+const citationCache = new Map<string, { path: string; content: string }>();
 let searchQuery = "";
 /** file -> markdown body, populated by the reader and by the graph view's
  * prefetch; shared by both so navigating never re-fetches. */
@@ -396,6 +407,7 @@ async function retargetBundle(dir: string): Promise<string | null> {
     bodyCache.clear();
     readErrors.clear();
     openCitations.clear();
+    citationCache.clear();
     currentFile = null;
     citationView = null;
     graphFocusId = null;
@@ -687,9 +699,13 @@ function renderCitationFullView(container: HTMLElement, view: CitationView): voi
   const back = document.createElement("button");
   back.type = "button";
   back.className = "okf-citation-view-back";
-  back.textContent = t("okf_back_to_article");
+  back.textContent =
+    citationOrigin === "graph"
+      ? t("okf_back_to_graph")
+      : t("okf_back_to_article");
   back.addEventListener("click", () => {
     citationView = null;
+    viewMode = citationOrigin;
     renderAll();
   });
   container.appendChild(back);
@@ -706,12 +722,67 @@ function renderCitationFullView(container: HTMLElement, view: CitationView): voi
   strip.append(badge, pathEl);
   container.appendChild(strip);
 
+  if (view.loading || view.error) {
+    const note = document.createElement("div");
+    note.className = view.error ? "okf-citation-error" : "okf-citation-inline";
+    note.textContent = view.error
+      ? tf("okf_citation_unavailable", { message: view.error })
+      : t("okf_citation_loading");
+    container.appendChild(note);
+    return;
+  }
+
   const bodyEl = document.createElement("div");
   bodyEl.className = "okf-article-body zam-card";
   bodyEl.innerHTML = renderMarkdown(stripFrontmatter(view.content));
   attachContentClickDelegation(bodyEl);
   decorateCitationLinks(bodyEl, new Set());
   container.appendChild(bodyEl);
+}
+
+/**
+ * Open a citation target — an ADR, typically — in the reader's full view,
+ * from wherever the user clicked it. The graph's citation nodes are the
+ * caller that matters: they sit outside the reader, so the view opens in a
+ * loading state and the back button returns to the graph (with its focused
+ * layout intact) instead of to an article the user may never have opened.
+ */
+async function openCitationFullView(target: string): Promise<void> {
+  citationOrigin = viewMode;
+  viewMode = "reader";
+
+  const inline = openCitations.get(target);
+  const cached =
+    inline?.status === "ok"
+      ? { path: inline.path ?? target, content: inline.content ?? "" }
+      : citationCache.get(target);
+  if (cached) {
+    citationView = { target, ...cached };
+    renderAll();
+    return;
+  }
+
+  citationView = { target, path: target, content: "", loading: true };
+  renderAll();
+  try {
+    const result = (await callTool("zam_okf_read_citation", {
+      bundle_dir: bundleDir ?? undefined,
+      target,
+    })) as { target: string; path: string; content: string };
+    citationCache.set(target, { path: result.path, content: result.content });
+    // The user may have navigated on while the read was in flight.
+    if (citationView?.target !== target) return;
+    citationView = { target, path: result.path, content: result.content };
+  } catch (error) {
+    if (citationView?.target !== target) return;
+    citationView = {
+      target,
+      path: target,
+      content: "",
+      error: errorMessage(error),
+    };
+  }
+  renderAll();
 }
 
 /** Click delegation for the two link kinds okf-render.ts's renderMarkdown
@@ -820,6 +891,7 @@ function buildCitationBox(
   openBtn.textContent = t("okf_citation_open_full");
   openBtn.addEventListener("click", (event) => {
     event.preventDefault();
+    citationOrigin = "reader";
     citationView = {
       target,
       path: state.path ?? target,
@@ -1056,6 +1128,12 @@ function buildGraphNodeEl(node: RenderNode): SVGGElement {
     const circle = document.createElementNS(SVG_NS, "circle");
     circle.setAttribute("r", String(NODE_R * 0.45));
     g.appendChild(circle);
+    g.style.cursor = "pointer";
+    g.addEventListener("click", (event) => {
+      // Same ctrl+click caveat as the article pills above.
+      if (event.ctrlKey) return;
+      void openCitationFullView(node.file ?? node.id);
+    });
   }
 
   const label = document.createElementNS(SVG_NS, "text");
@@ -1423,6 +1501,7 @@ app.ontoolresult = (params) => {
     bodyCache.clear();
     readErrors.clear();
     openCitations.clear();
+    citationCache.clear();
     currentFile = null;
     citationView = null;
     graphFocusId = null;

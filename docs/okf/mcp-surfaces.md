@@ -7,7 +7,7 @@ tags:
   - agents
   - surfaces
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-07-29T18:35:00Z
+timestamp: 2026-07-29T19:30:00Z
 ---
 
 `zam mcp` starts a stdio **Model Context Protocol** server
@@ -93,13 +93,25 @@ and still hoverable, because the surrounding knowledge base is context,
 not noise. Ring angles are carried over from the overview, so a node
 keeps its direction across the switch.
 
-Left-click keeps its meaning in both modes: it opens the article in the
-reader. Right-clicking the centered node again, right-clicking empty
-canvas, `Esc`, or the toolbar's overview button returns to the
-overview; right-clicking a different node re-centers on it. Hovering
-any node still lights its edges and neighbors and dims the rest, in
-both modes. Edges are drawn between node borders rather than centers,
-so no line crosses a node box.
+Left-click opens what the node stands for, in both modes: an article
+node opens the article in the reader, a citation node opens its target
+— usually an ADR — in the reader's full citation view, read through
+`zam_okf_read_citation`. That view's back button returns to the graph
+(focused layout intact) when the graph is where it was opened from, and
+to the article otherwise.
+
+Right-clicking the centered node again, right-clicking empty canvas,
+`Esc`, or the toolbar's overview button returns to the overview;
+right-clicking a different node re-centers on it. Hovering any node
+still lights its edges and neighbors and dims the rest, in both modes.
+Edges are drawn between node borders rather than centers, so no line
+crosses a node box.
+
+Labels are sized by band: the centered node may wrap onto a second line
+and run widest — it is the one title meant to be read in full — its
+neighbors wrap on a tighter line, and the rim stays on a single, harder
+clipped line so it does not compete for reading attention. The overview
+keeps one line per node.
 
 The reader's "import as learning content" action hands the
 decomposition request to a chat in host order of capability: hosts
