@@ -2286,6 +2286,10 @@ async function showModelForm(id?: string): Promise<void> {
   saveButton.className = "btn primary-btn btn-sm";
   saveButton.textContent = t("model_btn_save");
   saveButton.addEventListener("click", () => {
+    // One submit at a time: the agent probe can take seconds, and a second
+    // click used to fire a second model-upsert that appended another row.
+    if (saveButton.disabled) return;
+    saveButton.disabled = true;
     const kind = selectedKind();
     const capabilities: Record<string, boolean> = {};
     for (const [cap, box] of capBoxes) {
@@ -2308,6 +2312,10 @@ async function showModelForm(id?: string): Promise<void> {
       key: keyInput.value.trim(),
       existingKeyRef: existing?.apiKeyRef,
       capabilities,
+    }).finally(() => {
+      // The form is torn down on success; re-enabling only matters when it
+      // stayed open because the save failed or a field was rejected.
+      saveButton.disabled = false;
     });
   });
   const cancelButton = document.createElement("button");

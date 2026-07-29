@@ -258,6 +258,74 @@ describe("bridge model-* registry commands", () => {
     });
   });
 
+  it("updates the same agent entry instead of appending a duplicate", async () => {
+    // The add forms have no id to send, so a re-click (or a retry while the
+    // probe was still running) used to append another identical row -- one
+    // add attempt left three "Claude Code · haiku" entries in the registry.
+    const args = [
+      "model-upsert",
+      "--transport",
+      "agent",
+      "--agent-harness",
+      "claude-code",
+      "--label",
+      "Claude Code",
+      "--capabilities",
+      JSON.stringify({ text: true }),
+    ];
+    const first = (await runBridge(args)) as {
+      parsed: { ok?: boolean; created?: boolean; model?: { id: string } };
+    };
+    const second = (await runBridge(args)) as {
+      parsed: { ok?: boolean; created?: boolean; model?: { id: string } };
+    };
+    const third = (await runBridge([...args, "--label", "Renamed"])) as {
+      parsed: { ok?: boolean; model?: { id: string; label: string } };
+    };
+
+    expect(first.parsed.created).toBe(true);
+    expect(second.parsed.created).toBe(false);
+    // Same registry row throughout, and a later label edits it in place.
+    expect(second.parsed.model?.id).toBe(first.parsed.model?.id);
+    expect(third.parsed.model?.id).toBe(first.parsed.model?.id);
+    expect(third.parsed.model?.label).toBe("Renamed");
+
+    const models = readConfig().ai?.models ?? [];
+    expect(models).toHaveLength(1);
+    expect(models[0]).toMatchObject({
+      transport: "agent",
+      agentHarness: "claude-code",
+      model: "haiku",
+      order: 0,
+    });
+  });
+
+  it("keeps a second model on the same harness as its own entry", async () => {
+    // Deduplication is per (harness, model id) -- two models from one harness
+    // are two genuine registry rows, not a duplicate.
+    const base = [
+      "model-upsert",
+      "--transport",
+      "agent",
+      "--agent-harness",
+      "claude-code",
+      "--capabilities",
+      JSON.stringify({ text: true }),
+    ];
+    await runBridge([...base, "--label", "Claude Code", "--model", "haiku"]);
+    await runBridge([
+      ...base,
+      "--label",
+      "Claude Code Opus",
+      "--model",
+      "opus",
+    ]);
+
+    const models = readConfig().ai?.models ?? [];
+    expect(models.map((m) => m.model)).toEqual(["haiku", "opus"]);
+    expect(models.map((m) => m.order)).toEqual([0, 1]);
+  });
+
   it("rejects agent upsert for a harness without an outbound adapter", async () => {
     const res = (await runBridge([
       "model-upsert",

@@ -296,6 +296,19 @@
         font-size: 12px;
         margin: 0 0 8px;
       }
+      /* The agent-transport explainer shares the row layout but must never
+         be mistaken for a configured model: dashed border, no actions. */
+      .settings-ai-note {
+        border-style: dashed;
+        background: rgba(168, 85, 247, 0.04);
+        margin-top: 12px;
+      }
+      .settings-ai-note .settings-ai-meta:last-child {
+        margin-bottom: 0;
+      }
+      .settings-ai-note-status {
+        font-weight: 600;
+      }
       .settings-ai-actions {
         display: flex;
         flex-wrap: wrap;
