@@ -39,6 +39,7 @@ import {
   fallbackContextBarState,
   showConnectionNotice as showConnectionNoticeShared,
 } from "./context-bar.js";
+import { wrapGraphLabel } from "./graph-layout.js";
 import {
   type CatalogEntry,
   type FocusRing,
@@ -46,6 +47,9 @@ import {
   type GraphNode,
   type NodeBox,
   type PositionedNode,
+  LABEL_LINE_HEIGHT,
+  PILL_HEIGHT,
+  articlePillSize,
   edgeAnchor,
   extractLinks,
   filterCatalog,
@@ -931,26 +935,57 @@ const RING_SCALE: Record<FocusRing, number> = {
   background: 0.72,
 };
 
-const PILL_H = 26;
+/**
+ * Label room per prominence band. The centered node may wrap onto a second
+ * line and run widest — it is the one title meant to be read in full. Its
+ * neighbors wrap too, but on a tighter line so they stay visibly smaller
+ * than the center. Everything else keeps a single line: the rim must not
+ * compete for reading attention, and the overview stays as it was.
+ */
+const LABEL_BUDGET: Record<FocusRing, { maxChars: number; maxWidth: number }> =
+  {
+    focus: { maxChars: 22, maxWidth: 280 },
+    neighbor: { maxChars: 18, maxWidth: 210 },
+    background: { maxChars: 16, maxWidth: 200 },
+  };
+const WRAPPED_RINGS = new Set<FocusRing>(["focus", "neighbor"]);
 
 function ringScale(node: RenderNode): number {
   return node.ring ? RING_SCALE[node.ring] : 1;
 }
 
-function nodeLabelText(node: RenderNode): string {
+function nodeLabelLines(node: RenderNode): string[] {
   const raw = node.label ?? node.file ?? node.id;
-  // The focused mode's rim carries many labels at once and must not compete
-  // with the neighbors for reading attention — clip it harder.
-  const max = node.ring === "background" ? 16 : undefined;
-  return node.kind === "article"
-    ? truncateLabel(raw, "head", max)
-    : truncateLabel(raw, "tail", max);
+  if (node.ring && WRAPPED_RINGS.has(node.ring)) {
+    // wrapGraphLabel is the 2D graph panel's pure label helper: it balances
+    // the two lines and ellipsizes whatever still does not fit.
+    return wrapGraphLabel(
+      raw.replace(/\.md$/, ""),
+      LABEL_BUDGET[node.ring].maxChars,
+      2,
+    );
+  }
+  const max = node.ring ? LABEL_BUDGET[node.ring].maxChars : undefined;
+  return [
+    node.kind === "article"
+      ? truncateLabel(raw, "head", max)
+      : truncateLabel(raw, "tail", max),
+  ];
 }
 
-/** Pill sized to its label (11px font ≈ 6.2px/char) so titles sit inside the
- * shape instead of overflowing a fixed-width box. */
-function pillWidth(labelText: string): number {
-  return Math.min(Math.max(labelText.length * 6.2 + 20, 64), 200);
+/** Label lines plus the footprint they need, in unscaled canvas units. */
+function nodeShape(node: RenderNode): {
+  lines: string[];
+  width: number;
+  height: number;
+} {
+  const lines = nodeLabelLines(node);
+  if (node.kind !== "article") {
+    // Citation labels sit beside the glyph, so only the glyph is a footprint.
+    return { lines, width: NODE_R * 0.9, height: NODE_R * 0.9 };
+  }
+  const maxWidth = node.ring ? LABEL_BUDGET[node.ring].maxWidth : 200;
+  return { lines, ...articlePillSize(lines, maxWidth) };
 }
 
 /**
@@ -959,15 +994,12 @@ function pillWidth(labelText: string): number {
  */
 function nodeBox(node: RenderNode): NodeBox {
   const scale = ringScale(node);
-  const size =
-    node.kind === "article"
-      ? { width: pillWidth(nodeLabelText(node)), height: PILL_H }
-      : { width: NODE_R * 0.9, height: NODE_R * 0.9 };
+  const shape = nodeShape(node);
   return {
     x: node.x,
     y: node.y,
-    width: size.width * scale,
-    height: size.height * scale,
+    width: shape.width * scale,
+    height: shape.height * scale,
   };
 }
 
@@ -988,17 +1020,18 @@ function buildGraphNodeEl(node: RenderNode): SVGGElement {
   title.textContent = node.file ?? node.id;
   g.appendChild(title);
 
-  const labelText = nodeLabelText(node);
+  const { lines, width: pillW, height: pillH } = nodeShape(node);
 
   if (node.kind === "article") {
-    const pillW = pillWidth(labelText);
     const pill = (): SVGRectElement => {
       const rect = document.createElementNS(SVG_NS, "rect");
       rect.setAttribute("x", String(-pillW / 2));
-      rect.setAttribute("y", String(-PILL_H / 2));
+      rect.setAttribute("y", String(-pillH / 2));
       rect.setAttribute("width", String(pillW));
-      rect.setAttribute("height", String(PILL_H));
-      rect.setAttribute("rx", String(PILL_H / 2));
+      rect.setAttribute("height", String(pillH));
+      // Stadium ends for a one-line pill; a wrapped one keeps the same
+      // corner radius instead of turning into a lozenge.
+      rect.setAttribute("rx", String(Math.min(PILL_HEIGHT / 2, pillH / 2)));
       return rect;
     };
     // The type tint is translucent, so an unrelated edge passing behind the
@@ -1028,9 +1061,12 @@ function buildGraphNodeEl(node: RenderNode): SVGGElement {
   const label = document.createElementNS(SVG_NS, "text");
   label.setAttribute("class", "okf-graph-node-label");
   label.setAttribute("dominant-baseline", "central");
+  // Wrapped labels are centered on the node: the first line starts half a
+  // block above the middle, each following line steps down one line height.
+  const firstLineY = (-(lines.length - 1) * LABEL_LINE_HEIGHT) / 2;
+  let labelX = "0";
   if (node.kind === "article") {
     label.setAttribute("text-anchor", "middle");
-    label.setAttribute("y", "0");
   } else {
     // Citation labels grow away from the crowded side of their ring: on an
     // outer ring inward (so text never runs past the viewBox edge), on the
@@ -1043,10 +1079,17 @@ function buildGraphNodeEl(node: RenderNode): SVGGElement {
     const toTheRight = outward ? onRightHalf : !onRightHalf;
     const gap = 14 / scale;
     label.setAttribute("text-anchor", toTheRight ? "start" : "end");
-    label.setAttribute("x", String(toTheRight ? gap : -gap));
-    label.setAttribute("y", "0");
+    labelX = String(toTheRight ? gap : -gap);
   }
-  label.textContent = labelText;
+  label.setAttribute("x", labelX);
+  label.setAttribute("y", String(firstLineY));
+  for (const [index, line] of lines.entries()) {
+    const tspan = document.createElementNS(SVG_NS, "tspan");
+    tspan.setAttribute("x", labelX);
+    if (index > 0) tspan.setAttribute("dy", String(LABEL_LINE_HEIGHT));
+    tspan.textContent = line;
+    label.appendChild(tspan);
+  }
   g.appendChild(label);
 
   return g;

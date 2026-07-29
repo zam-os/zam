@@ -666,6 +666,31 @@ export function edgeAnchor(box: NodeBox, toward: Point, gap = 5): Point {
   return { x: box.x + dx * scale, y: box.y + dy * scale };
 }
 
+// -- Node geometry -----------------------------------------------------------
+
+/** Article pill height for a single-line label, in unscaled canvas units. */
+export const PILL_HEIGHT = 26;
+/** Vertical step between wrapped label lines, in unscaled canvas units. */
+export const LABEL_LINE_HEIGHT = 14;
+
+/**
+ * Pill geometry for an article node, in unscaled canvas units: 11px labels
+ * measure ~6.2px per character, so the pill grows with its longest line and
+ * by one line height per extra line. `maxWidth` lets the focused mode's
+ * center run wider than the nodes on its rings -- it is the one label the
+ * reader is meant to take in fully.
+ */
+export function articlePillSize(
+  lines: string[],
+  maxWidth = 200,
+): { width: number; height: number } {
+  const longest = lines.reduce((n, line) => Math.max(n, line.length), 0);
+  return {
+    width: Math.min(Math.max(longest * 6.2 + 20, 64), maxWidth),
+    height: PILL_HEIGHT + Math.max(0, lines.length - 1) * LABEL_LINE_HEIGHT,
+  };
+}
+
 // -- Focused (centered) graph layout ------------------------------------------
 
 /** Neighbor ring size relative to the outer (background) ring. */
