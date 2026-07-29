@@ -179,8 +179,8 @@ class GitInspector {
       return null;
     }
 
-    // Keep each Git response to one plain ASCII field. Combined pretty-format
-    // output proved unreliable through Node process pipes on Windows ARM.
+    // Keep each Git response to one plain ASCII field, avoiding
+    // platform-specific field separation and ISO date parsing.
     const timestampResult = runGit(this.repoRoot, [
       "show",
       "-s",
@@ -412,10 +412,7 @@ export function auditOkfFreshness(bundleDir: string): OkfFreshnessAudit {
         // Bundle conformance problems already describe malformed frontmatter.
       }
     }
-    const articlePath = relative(
-      repoRoot,
-      realpathSync(resolve(bundle.dir, file)),
-    )
+    const articlePath = relative(candidateRoot, resolve(bundle.dir, file))
       .split(sep)
       .join("/");
     const baseline = articleBaseline(inspector, articlePath, timestamp);
