@@ -429,6 +429,13 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "model_agent_card_no_key",
   "model_agent_card_active",
   "model_agent_card_available",
+  // OKF graph focus mode (right-click centers a node) — en/de shipped;
+  // es/fr/pt/zh/ja await native pack review.
+  "okf_graph_aria_focused",
+  "okf_graph_hint_overview",
+  "okf_graph_hint_focused",
+  "okf_graph_focus_exit",
+  "okf_graph_focus_on",
   // Closed-group library Phase 2 Studio release step strings (en/de shipped)
   "btn_release_revision",
   "lbl_release_modal_title",

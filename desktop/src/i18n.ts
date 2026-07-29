@@ -4576,6 +4576,13 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     okf_legend_article: "Article",
     okf_legend_citation: "Citation (ADR)",
     okf_graph_aria: "OKF knowledge graph",
+    okf_graph_aria_focused: "OKF knowledge graph, centered on {title}",
+    okf_graph_hint_overview:
+      "Left-click opens the article · right-click centers it",
+    okf_graph_hint_focused:
+      "Right-click another node to re-center · Esc for the overview",
+    okf_graph_focus_exit: "← Overview",
+    okf_graph_focus_on: "Centered: {title}",
     okf_log_empty_title: "No log yet",
     okf_log_empty_sub:
       "No log.md has been written for this knowledge base yet.",
@@ -5610,6 +5617,13 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     okf_legend_article: "Artikel",
     okf_legend_citation: "Zitat (ADR)",
     okf_graph_aria: "OKF Wissensgraph",
+    okf_graph_aria_focused: "OKF Wissensgraph, zentriert auf {title}",
+    okf_graph_hint_overview:
+      "Linksklick öffnet den Artikel · Rechtsklick zentriert ihn",
+    okf_graph_hint_focused:
+      "Rechtsklick auf einen anderen Knoten zentriert neu · Esc zur Übersicht",
+    okf_graph_focus_exit: "← Übersicht",
+    okf_graph_focus_on: "Zentriert: {title}",
     okf_log_empty_title: "Kein Log vorhanden",
     okf_log_empty_sub:
       "Für diese Wissensbasis wurde noch kein log.md geschrieben.",

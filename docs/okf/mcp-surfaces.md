@@ -7,7 +7,7 @@ tags:
   - agents
   - surfaces
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-07-19T08:50:00Z
+timestamp: 2026-07-29T18:35:00Z
 ---
 
 `zam mcp` starts a stdio **Model Context Protocol** server
@@ -81,6 +81,26 @@ visually distinct nodes), and the `log.md` history. The panel always
 opens — a missing or invalid bundle surfaces as `problems` in the panel
 instead of a tool error.
 
+# OKF link graph: overview and focused mode
+
+The graph view has two modes over the same nodes and edges. The
+**overview** places every article on a type-clustered inner ellipse and
+every citation on an outer one. Right-clicking a node switches to the
+**focused** mode: that node moves to the canvas center, its direct
+neighbors (one hop, either edge direction) form an enlarged inner ring,
+and every remaining node recedes to a small, faint rim — still visible
+and still hoverable, because the surrounding knowledge base is context,
+not noise. Ring angles are carried over from the overview, so a node
+keeps its direction across the switch.
+
+Left-click keeps its meaning in both modes: it opens the article in the
+reader. Right-clicking the centered node again, right-clicking empty
+canvas, `Esc`, or the toolbar's overview button returns to the
+overview; right-clicking a different node re-centers on it. Hovering
+any node still lights its edges and neighbors and dims the rest, in
+both modes. Edges are drawn between node borders rather than centers,
+so no line crosses a node box.
+
 The reader's "import as learning content" action hands the
 decomposition request to a chat in host order of capability: hosts
 advertising the MCP Apps `message` capability get it via `ui/message`
@@ -114,4 +134,4 @@ available directly.
 - [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
 - [ADR 2026-07-18b — Learning Graph Scope Selectors and the Repo Scope](../adr/2026-07-18b-graph-repo-scope.md)
 - [ADR 2026-07-18c — OKF Import Handoff](../adr/2026-07-18c-okf-import-handoff.md)
-- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf-focus.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/host.ts`, `src/vscode-extension/latest-task-queue.ts`
+- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf-focus.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/host.ts`, `src/vscode-extension/latest-task-queue.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`

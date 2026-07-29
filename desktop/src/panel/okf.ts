@@ -41,13 +41,18 @@ import {
 } from "./context-bar.js";
 import {
   type CatalogEntry,
+  type FocusRing,
   type GraphEdge,
   type GraphNode,
+  type NodeBox,
   type PositionedNode,
+  edgeAnchor,
   extractLinks,
   filterCatalog,
   groupCatalog,
+  layoutFocusGraph,
   layoutGraph,
+  neighborIdsOf,
   renderMarkdown,
   stripFrontmatter,
 } from "./okf-render.js";
@@ -128,6 +133,10 @@ let catalog: CatalogEntry[] = [];
 let typeOrder: string[] = [];
 let logText = "";
 let viewMode: ViewMode = "reader";
+/** Graph view: the node the focused layout centers on; null = overview mode.
+ * Set by right-clicking a node, cleared by right-clicking it again, the
+ * canvas background, the toolbar's exit button, or Escape. */
+let graphFocusId: string | null = null;
 let currentFile: string | null = null;
 let citationView: CitationView | null = null;
 let searchQuery = "";
@@ -385,6 +394,7 @@ async function retargetBundle(dir: string): Promise<string | null> {
     openCitations.clear();
     currentFile = null;
     citationView = null;
+    graphFocusId = null;
     return null;
   } catch (error) {
     return errorMessage(error);
@@ -907,37 +917,105 @@ function truncateLabel(text: string, keep: "head" | "tail", max = 26): string {
     : `…${base.slice(-(max - 1))}`;
 }
 
-function buildGraphNodeEl(node: PositionedNode): SVGGElement {
+/**
+ * A node as the SVG builder wants it: overview nodes carry `ring: null`
+ * (uniform prominence), focused-mode nodes carry the band layoutFocusGraph
+ * assigned them.
+ */
+type RenderNode = PositionedNode & { ring: FocusRing | null };
+
+/** Node scale per prominence band — 1 is the overview's uniform size. */
+const RING_SCALE: Record<FocusRing, number> = {
+  focus: 1.3,
+  neighbor: 1.12,
+  background: 0.72,
+};
+
+const PILL_H = 26;
+
+function ringScale(node: RenderNode): number {
+  return node.ring ? RING_SCALE[node.ring] : 1;
+}
+
+function nodeLabelText(node: RenderNode): string {
+  const raw = node.label ?? node.file ?? node.id;
+  // The focused mode's rim carries many labels at once and must not compete
+  // with the neighbors for reading attention — clip it harder.
+  const max = node.ring === "background" ? 16 : undefined;
+  return node.kind === "article"
+    ? truncateLabel(raw, "head", max)
+    : truncateLabel(raw, "tail", max);
+}
+
+/** Pill sized to its label (11px font ≈ 6.2px/char) so titles sit inside the
+ * shape instead of overflowing a fixed-width box. */
+function pillWidth(labelText: string): number {
+  return Math.min(Math.max(labelText.length * 6.2 + 20, 64), 200);
+}
+
+/**
+ * The node's drawn footprint in canvas coordinates (ring scale applied), so
+ * edges can be clipped to it — see okf-render.ts's edgeAnchor.
+ */
+function nodeBox(node: RenderNode): NodeBox {
+  const scale = ringScale(node);
+  const size =
+    node.kind === "article"
+      ? { width: pillWidth(nodeLabelText(node)), height: PILL_H }
+      : { width: NODE_R * 0.9, height: NODE_R * 0.9 };
+  return {
+    x: node.x,
+    y: node.y,
+    width: size.width * scale,
+    height: size.height * scale,
+  };
+}
+
+function buildGraphNodeEl(node: RenderNode): SVGGElement {
+  const scale = ringScale(node);
   const g = document.createElementNS(SVG_NS, "g") as SVGGElement;
-  g.setAttribute("transform", `translate(${node.x}, ${node.y})`);
-  g.setAttribute("class", `okf-graph-node-${node.kind}`);
+  g.setAttribute(
+    "transform",
+    `translate(${node.x}, ${node.y})${scale === 1 ? "" : ` scale(${scale})`}`,
+  );
+  g.setAttribute(
+    "class",
+    `okf-graph-node-${node.kind}${node.ring ? ` okf-ring-${node.ring}` : ""}`,
+  );
   g.setAttribute("data-node-id", node.id);
 
   const title = document.createElementNS(SVG_NS, "title");
   title.textContent = node.file ?? node.id;
   g.appendChild(title);
 
-  const labelText =
-    node.kind === "article"
-      ? truncateLabel(node.label ?? node.file ?? node.id, "head")
-      : truncateLabel(node.label ?? node.file ?? node.id, "tail");
+  const labelText = nodeLabelText(node);
 
   if (node.kind === "article") {
-    // Pill sized to its label (11px font ≈ 6.2px/char) so titles sit inside
-    // the shape instead of overflowing a fixed-width box.
-    const pillW = Math.min(Math.max(labelText.length * 6.2 + 20, 64), 200);
-    const pillH = 26;
-    const rect = document.createElementNS(SVG_NS, "rect");
-    rect.setAttribute("x", String(-pillW / 2));
-    rect.setAttribute("y", String(-pillH / 2));
-    rect.setAttribute("width", String(pillW));
-    rect.setAttribute("height", String(pillH));
-    rect.setAttribute("rx", String(pillH / 2));
+    const pillW = pillWidth(labelText);
+    const pill = (): SVGRectElement => {
+      const rect = document.createElementNS(SVG_NS, "rect");
+      rect.setAttribute("x", String(-pillW / 2));
+      rect.setAttribute("y", String(-PILL_H / 2));
+      rect.setAttribute("width", String(pillW));
+      rect.setAttribute("height", String(PILL_H));
+      rect.setAttribute("rx", String(PILL_H / 2));
+      return rect;
+    };
+    // The type tint is translucent, so an unrelated edge passing behind the
+    // pill would show through it. An opaque backing plate in the panel's
+    // surface color keeps every pill reading as a solid object.
+    const backing = pill();
+    backing.setAttribute("class", "okf-graph-pill-backing");
+    g.appendChild(backing);
+    const rect = pill();
     rect.style.fill = typeColorVar(node.type ?? "", "-bg");
     rect.style.stroke = typeColorVar(node.type ?? "");
     g.appendChild(rect);
     g.style.cursor = "pointer";
-    g.addEventListener("click", () => {
+    g.addEventListener("click", (event) => {
+      // macOS fires a click alongside ctrl+click's contextmenu — that
+      // gesture means "center this node", not "open the article".
+      if (event.ctrlKey) return;
       viewMode = "reader";
       void openArticle(node.file ?? node.id);
     });
@@ -954,11 +1032,18 @@ function buildGraphNodeEl(node: PositionedNode): SVGGElement {
     label.setAttribute("text-anchor", "middle");
     label.setAttribute("y", "0");
   } else {
-    // Citations sit on the outer ring: grow their labels inward (toward the
-    // center) so text never runs past the viewBox edge.
+    // Citation labels grow away from the crowded side of their ring: on an
+    // outer ring inward (so text never runs past the viewBox edge), on the
+    // focused mode's inner neighbor ring outward — growing inward there
+    // would lay every neighbor's label across the centered node and its
+    // edges. The offset is in the node's own (possibly scaled) coordinates,
+    // hence divided by the scale.
     const onRightHalf = node.x > GRAPH_W / 2;
-    label.setAttribute("text-anchor", onRightHalf ? "end" : "start");
-    label.setAttribute("x", onRightHalf ? "-14" : "14");
+    const outward = node.ring === "neighbor";
+    const toTheRight = outward ? onRightHalf : !onRightHalf;
+    const gap = 14 / scale;
+    label.setAttribute("text-anchor", toTheRight ? "start" : "end");
+    label.setAttribute("x", String(toTheRight ? gap : -gap));
     label.setAttribute("y", "0");
   }
   label.textContent = labelText;
@@ -967,31 +1052,33 @@ function buildGraphNodeEl(node: PositionedNode): SVGGElement {
   return g;
 }
 
-async function renderGraphView(): Promise<void> {
-  if (!contentEl) return;
-  contentEl.replaceChildren();
-  const loading = document.createElement("div");
-  loading.className = "okf-empty";
-  loading.textContent = t("okf_graph_loading");
-  contentEl.appendChild(loading);
+/**
+ * Enter (or leave, with `null`) the focused layout and repaint. Bodies are
+ * already cached by the time a node exists to right-click, so this repaints
+ * synchronously — no loading flash between modes.
+ */
+function setGraphFocus(id: string | null): void {
+  if (graphFocusId === id) return;
+  graphFocusId = id;
+  if (viewMode === "graph" && contentEl) paintGraphInto(contentEl);
+}
 
-  await ensureAllBodiesLoaded();
-  if (viewMode !== "graph" || !contentEl) return; // user switched away while loading
+/** Prominence band of an edge in the focused layout, mirroring RenderNode's. */
+function edgeRing(
+  edge: GraphEdge,
+  focusId: string | null,
+  neighbors: Set<string>,
+): FocusRing | null {
+  if (focusId === null) return null;
+  if (edge.from === focusId || edge.to === focusId) return "focus";
+  if (neighbors.has(edge.from) || neighbors.has(edge.to)) return "neighbor";
+  return "background";
+}
 
-  const { nodes, edges } = buildFullGraph();
-  contentEl.replaceChildren();
-  if (nodes.length === 0) {
-    renderEmptyInto(
-      contentEl,
-      "🕸️",
-      t("okf_graph_empty_title"),
-      t("okf_graph_empty_sub"),
-    );
-    return;
-  }
+function buildGraphToolbar(focused: GraphNode | undefined): HTMLElement {
+  const bar = document.createElement("div");
+  bar.className = "okf-graph-legend";
 
-  const legend = document.createElement("div");
-  legend.className = "okf-graph-legend";
   const legendItem = (markClass: string, label: string): HTMLElement => {
     const item = document.createElement("span");
     item.className = "okf-graph-legend-item";
@@ -1000,14 +1087,81 @@ async function renderGraphView(): Promise<void> {
     item.append(mark, label);
     return item;
   };
-  legend.append(
+  bar.append(
     legendItem("article", t("okf_legend_article")),
     legendItem("citation", t("okf_legend_citation")),
   );
-  contentEl.appendChild(legend);
 
-  const positioned = layoutGraph(nodes, edges, GRAPH_W, GRAPH_H);
-  const byId = new Map(positioned.map((n): [string, PositionedNode] => [n.id, n]));
+  if (focused) {
+    const back = document.createElement("button");
+    back.type = "button";
+    back.className = "okf-graph-focus-exit";
+    back.textContent = t("okf_graph_focus_exit");
+    back.addEventListener("click", () => setGraphFocus(null));
+    const label = document.createElement("span");
+    label.className = "okf-graph-focus-label";
+    label.textContent = tf("okf_graph_focus_on", {
+      title: focused.label ?? focused.file ?? focused.id,
+    });
+    bar.append(back, label);
+  }
+
+  const hint = document.createElement("span");
+  hint.className = "okf-graph-hint";
+  hint.textContent = focused
+    ? t("okf_graph_hint_focused")
+    : t("okf_graph_hint_overview");
+  bar.appendChild(hint);
+  return bar;
+}
+
+/**
+ * Paint the graph from already-loaded bodies, in whichever of the two modes
+ * is active: the overview (every node on the type-clustered rings) or the
+ * focused layout centered on `graphFocusId`. Both modes share node building,
+ * edge drawing and hover emphasis; only positions, prominence bands and the
+ * toolbar differ.
+ */
+function paintGraphInto(container: HTMLElement): void {
+  const { nodes, edges } = buildFullGraph();
+  container.replaceChildren();
+  if (nodes.length === 0) {
+    graphFocusId = null;
+    renderEmptyInto(
+      container,
+      "🕸️",
+      t("okf_graph_empty_title"),
+      t("okf_graph_empty_sub"),
+    );
+    return;
+  }
+
+  // A focus id can outlive its node (the bundle was re-targeted while the
+  // graph was focused) — fall back to the overview rather than centering on
+  // something that is no longer there.
+  const focusId =
+    graphFocusId !== null && nodes.some((n) => n.id === graphFocusId)
+      ? graphFocusId
+      : null;
+  graphFocusId = focusId;
+  const focusNeighbors =
+    focusId === null ? new Set<string>() : neighborIdsOf(edges, focusId);
+
+  const positioned: RenderNode[] =
+    focusId === null
+      ? layoutGraph(nodes, edges, GRAPH_W, GRAPH_H).map((node) => ({
+          ...node,
+          ring: null,
+        }))
+      : layoutFocusGraph(nodes, edges, focusId, GRAPH_W, GRAPH_H);
+  const byId = new Map(positioned.map((n): [string, RenderNode] => [n.id, n]));
+  const boxes = new Map(
+    positioned.map((n): [string, NodeBox] => [n.id, nodeBox(n)]),
+  );
+
+  container.appendChild(
+    buildGraphToolbar(focusId === null ? undefined : byId.get(focusId)),
+  );
 
   const wrap = document.createElement("div");
   wrap.className = "graph-canvas-wrap";
@@ -1015,7 +1169,20 @@ async function renderGraphView(): Promise<void> {
   svg.setAttribute("viewBox", `0 0 ${GRAPH_W} ${GRAPH_H}`);
   svg.setAttribute("class", "okf-graph-svg");
   svg.setAttribute("role", "img");
-  svg.setAttribute("aria-label", t("okf_graph_aria"));
+  svg.setAttribute(
+    "aria-label",
+    focusId === null
+      ? t("okf_graph_aria")
+      : tf("okf_graph_aria_focused", {
+          title: byId.get(focusId)?.label ?? focusId,
+        }),
+  );
+  // Right-clicking empty canvas leaves the focused mode; without this the
+  // host's own context menu would open over the graph instead.
+  svg.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+    setGraphFocus(null);
+  });
   wrap.appendChild(svg);
 
   const edgesGroup = document.createElementNS(SVG_NS, "g") as SVGGElement;
@@ -1028,14 +1195,23 @@ async function renderGraphView(): Promise<void> {
     // center: edges bow gently inward instead of slicing straight across.
     const midX = (from.x + to.x) / 2;
     const midY = (from.y + to.y) / 2;
-    const ctrlX = midX + (GRAPH_W / 2 - midX) * 0.22;
-    const ctrlY = midY + (GRAPH_H / 2 - midY) * 0.22;
+    const ctrl = {
+      x: midX + (GRAPH_W / 2 - midX) * 0.22,
+      y: midY + (GRAPH_H / 2 - midY) * 0.22,
+    };
+    // Meet the shapes at their borders, along the curve's own direction —
+    // an edge must never run across a node box.
+    const start = edgeAnchor(boxes.get(edge.from) ?? nodeBox(from), ctrl);
+    const end = edgeAnchor(boxes.get(edge.to) ?? nodeBox(to), ctrl);
     const path = document.createElementNS(SVG_NS, "path");
     path.setAttribute(
       "d",
-      `M ${from.x} ${from.y} Q ${ctrlX} ${ctrlY} ${to.x} ${to.y}`,
+      `M ${start.x} ${start.y} Q ${ctrl.x} ${ctrl.y} ${end.x} ${end.y}`,
     );
-    path.setAttribute("class", "okf-graph-edge");
+    const ring = edgeRing(edge, focusId, focusNeighbors);
+    const baseClass = `okf-graph-edge${ring ? ` okf-edge-ring-${ring}` : ""}`;
+    path.setAttribute("class", baseClass);
+    path.dataset.baseClass = baseClass;
     path.setAttribute("data-from", edge.from);
     path.setAttribute("data-to", edge.to);
     path.setAttribute("aria-hidden", "true");
@@ -1046,16 +1222,19 @@ async function renderGraphView(): Promise<void> {
   svg.appendChild(nodesGroup);
 
   // Hovering a node lights up its edges and neighbors and dims the rest;
-  // hover-out restores the neutral state.
+  // hover-out restores the neutral state. Both modes keep this — in the
+  // focused layout it is how the receded rim stays explorable.
   const emphasize = (id: string | null): void => {
     const neighbors = new Set<string>();
-    for (const el of Array.from(edgesGroup.children)) {
+    for (const el of Array.from(edgesGroup.children) as SVGPathElement[]) {
       const from = el.getAttribute("data-from");
       const to = el.getAttribute("data-to");
       const hot = id !== null && (from === id || to === id);
       el.setAttribute(
         "class",
-        `okf-graph-edge${hot ? " okf-edge-hot" : id !== null ? " okf-edge-dim" : ""}`,
+        `${el.dataset.baseClass ?? "okf-graph-edge"}${
+          hot ? " okf-edge-hot" : id !== null ? " okf-edge-dim" : ""
+        }`,
       );
       if (hot) {
         if (from) neighbors.add(from);
@@ -1064,8 +1243,7 @@ async function renderGraphView(): Promise<void> {
     }
     for (const el of Array.from(nodesGroup.children)) {
       const nodeId = el.getAttribute("data-node-id");
-      const dim =
-        id !== null && nodeId !== id && !neighbors.has(nodeId ?? "");
+      const dim = id !== null && nodeId !== id && !neighbors.has(nodeId ?? "");
       el.classList.toggle("okf-node-dim", dim);
     }
   };
@@ -1073,10 +1251,36 @@ async function renderGraphView(): Promise<void> {
     const el = buildGraphNodeEl(node);
     el.addEventListener("mouseenter", () => emphasize(node.id));
     el.addEventListener("mouseleave", () => emphasize(null));
+    // Right-click centers this node (and re-centers from within the focused
+    // mode); right-clicking the centered node again returns to the overview.
+    el.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      setGraphFocus(focusId === node.id ? null : node.id);
+    });
     nodesGroup.appendChild(el);
   }
 
-  contentEl.appendChild(wrap);
+  container.appendChild(wrap);
+}
+
+async function renderGraphView(): Promise<void> {
+  if (!contentEl) return;
+  const pending = catalog.some(
+    (entry) => !bodyCache.has(entry.file) && !readErrors.has(entry.file),
+  );
+  if (pending) {
+    contentEl.replaceChildren();
+    const loading = document.createElement("div");
+    loading.className = "okf-empty";
+    loading.textContent = t("okf_graph_loading");
+    contentEl.appendChild(loading);
+
+    await ensureAllBodiesLoaded();
+    if (viewMode !== "graph" || !contentEl) return; // user switched away while loading
+  }
+
+  paintGraphInto(contentEl);
 }
 
 // ── Log view ─────────────────────────────────────────────────────────────
@@ -1141,6 +1345,16 @@ searchInputEl?.addEventListener("input", () => {
   renderSidebar();
 });
 
+// Keyboard counterpart to right-clicking the canvas: leave the focused
+// graph. Registered once for the panel's lifetime (the graph is repainted,
+// never re-listened), and a no-op outside the focused graph.
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape" || viewMode !== "graph" || graphFocusId === null)
+    return;
+  event.preventDefault();
+  setGraphFocus(null);
+});
+
 // ── Host lifecycle (mirrors graph.ts) ───────────────────────────────────
 
 app.ontoolresult = (params) => {
@@ -1168,6 +1382,7 @@ app.ontoolresult = (params) => {
     openCitations.clear();
     currentFile = null;
     citationView = null;
+    graphFocusId = null;
   }
   clearConnectionNotice();
 
