@@ -2902,6 +2902,22 @@ bridgeCommand
         opts.model as string | undefined,
         prev?.model,
       );
+      // An agent entry is identified by (harness, model id): the same pair
+      // twice is one registry row, not two. Without --id -- which the add
+      // forms have nothing to send -- every submit used to append, so a
+      // re-click while the probe below was still running left the user with
+      // duplicate rows competing for the same fallback order (issue: three
+      // identical "Claude Code · haiku" entries from one add attempt).
+      const targetIndex =
+        existingIndex >= 0
+          ? existingIndex
+          : models.findIndex(
+              (m) =>
+                m.transport === "agent" &&
+                m.agentHarness === agentHarness &&
+                m.model === modelId,
+            );
+      const target = targetIndex >= 0 ? models[targetIndex] : undefined;
       const probe = await adapter.probe();
       const now = new Date().toISOString();
       const modalities = adapter.modalities ?? { text: true };
@@ -2917,7 +2933,7 @@ bridgeCommand
       };
       const requested = opts.capabilities
         ? parseCapabilityFlags(opts.capabilities)
-        : (prev?.capabilities ?? defaultCaps);
+        : (target?.capabilities ?? defaultCaps);
       // User intent for text/image; resolveCapability still requires both
       // capabilities and detectedCapabilities for runtime selection.
       const capabilities = emptyCapabilityFlags();
@@ -2934,7 +2950,7 @@ bridgeCommand
         "max",
       ]);
       // --effort auto (or empty) clears a stored override; omit keeps previous.
-      let effort: ModelEntry["effort"] | undefined = prev?.effort;
+      let effort: ModelEntry["effort"] | undefined = target?.effort;
       if (opts.effort !== undefined) {
         const raw = String(opts.effort).trim().toLowerCase();
         if (raw === "" || raw === "auto") {
@@ -2948,14 +2964,16 @@ bridgeCommand
         }
       }
       const entry: ModelEntry = {
-        id: opts.id ?? ulid(),
-        label: opts.label ?? prev?.label ?? harnessMeta?.label ?? agentHarness,
+        id: opts.id ?? target?.id ?? ulid(),
+        label:
+          opts.label ?? target?.label ?? harnessMeta?.label ?? agentHarness,
         url: "",
         // Real harness model id (e.g. haiku, gpt-5.4-mini) — not a placeholder.
         model: modelId,
         local: false,
         apiFlavor: "chat-completions",
-        order,
+        // Keep the matched row's slot; only a genuinely new entry lands last.
+        order: opts.order !== undefined ? order : (target?.order ?? order),
         capabilities,
         detectedCapabilities: detected,
         probedAt: now,
@@ -2964,11 +2982,12 @@ bridgeCommand
         ...(effort ? { effort } : {}),
       };
       const next = [...models];
-      if (existingIndex >= 0) next[existingIndex] = entry;
+      if (targetIndex >= 0) next[targetIndex] = entry;
       else next.push(entry);
       saveMachineAiModels(next);
       jsonOut({
         ok: true,
+        created: targetIndex < 0,
         model: modelRow(entry),
         probe: {
           reachable: probe.available,
