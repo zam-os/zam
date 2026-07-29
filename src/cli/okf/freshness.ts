@@ -166,24 +166,37 @@ class GitInspector {
     const cached = this.commits.get(path);
     if (cached !== undefined) return cached;
 
-    const result = runGit(this.repoRoot, [
-      "log",
+    const commitResult = runGit(this.repoRoot, [
+      "rev-list",
       "-1",
-      "--format=%H%x09%cI",
+      "HEAD",
       "--",
       path,
     ]);
-    if (result.status !== 0 || result.stdout.trim() === "") {
+    const commit = commitResult.stdout.trim();
+    if (commitResult.status !== 0 || commit === "") {
       this.commits.set(path, null);
       return null;
     }
-    // A tab survives Git-for-Windows/Node process pipes without the NUL
-    // truncation seen on Windows ARM or platform-specific newline handling.
-    const [commit, rawChangedAt] = result.stdout.trim().split("\t", 2);
-    const changedAtMs = Date.parse(rawChangedAt ?? "");
+
+    // Keep each Git response to one plain ASCII field. Combined pretty-format
+    // output proved unreliable through Node process pipes on Windows ARM.
+    const timestampResult = runGit(this.repoRoot, [
+      "show",
+      "-s",
+      "--format=%ct",
+      commit,
+    ]);
+    const rawChangedAtSeconds = timestampResult.stdout.trim();
+    const changedAtSeconds = Number(rawChangedAtSeconds);
     const value =
-      commit && Number.isFinite(changedAtMs)
-        ? { commit, changedAt: new Date(changedAtMs).toISOString() }
+      timestampResult.status === 0 &&
+      rawChangedAtSeconds !== "" &&
+      Number.isFinite(changedAtSeconds)
+        ? {
+            commit,
+            changedAt: new Date(changedAtSeconds * 1_000).toISOString(),
+          }
         : null;
     this.commits.set(path, value);
     return value;
