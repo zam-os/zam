@@ -7,7 +7,7 @@ tags:
   - agents
   - surfaces
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-07-30T05:47:59Z
+timestamp: 2026-07-30T07:03:54Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -128,15 +128,18 @@ instead of failing the opening tool.
 - Article links stay inside the reader.
 - Citation links expand inline and can open a full citation view through
   `zam_okf_read_citation`.
-- External and canonical source links use MCP Apps `ui/open-link`; a normal
-  click is sufficient.
+- External and canonical source links use MCP Apps `ui/open-link` wherever the
+  negotiated host advertises the `openLinks` capability; a normal click is
+  sufficient. Without that capability the panel leaves the plain HTTPS anchor
+  to navigate on its own, so a click is never swallowed.
 - The VS Code Companion opens a matching canonical GitHub `blob/main` source
   as a local file in an open workspace. If no safe matching file exists, it
   opens the HTTPS URL externally.
 - Fenced `mermaid` blocks render locally as non-interactive SVG with strict
   security and HTML labels disabled. No diagram source leaves the panel.
-- Invalid Mermaid syntax keeps the escaped source block visible and adds a
-  localized error notice.
+- Invalid or empty Mermaid source keeps the escaped source block visible and
+  adds a localized error notice; one failing diagram never stops the ones
+  after it.
 
 ## Freshness radar
 

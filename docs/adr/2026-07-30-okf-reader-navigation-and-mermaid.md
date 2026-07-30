@@ -28,9 +28,10 @@ diagram source as SVG introduces an additional untrusted-markup boundary.
 ## Decision
 
 1. **External reader links use MCP Apps `ui/open-link`.** A normal click is
-   enough. The original HTTPS anchor remains as a no-host fallback, but a
-   connected panel prevents direct navigation and delegates the URL to its
-   host.
+   enough. A panel connected to a host that advertises the `openLinks`
+   capability prevents direct navigation and delegates the URL to that host.
+   The original HTTPS anchor stays in the markup and remains the fallback
+   wherever that capability is absent, so a click is never swallowed.
 2. **The VS Code Companion prefers a matching local file.** For a canonical,
    safely decoded GitHub `blob/main` URL it checks each open workspace folder
    for the repository-relative path. An existing file opens through

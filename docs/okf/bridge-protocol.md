@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-07-29T21:07:20Z
+timestamp: 2026-07-30T07:05:30Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -30,6 +30,10 @@ The hard contract:
 - **`src/bridge/protocol.ts` types are the stable contract.** Agents,
   desktop panels, and the Android companion's additive import program
   against these shapes; breaking them breaks external callers.
+
+Outbound HTTP that the bridge performs on a learner's behalf identifies
+itself with the release-versioned `ZAM-Content-Studio/<version>`
+User-Agent, which every release bumps in step with the package version.
 
 Representative commands: `next` (pull the next queue card), `submit`
 (apply a rating), `add-token` (register a token *and* create the calling

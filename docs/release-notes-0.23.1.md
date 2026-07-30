@@ -7,7 +7,8 @@ External links in an OKF article use the standard MCP Apps link action, so a
 normal click works in hosts that sandbox embedded apps. In the VS Code
 Companion, a canonical GitHub `blob/main` source link is resolved against the
 open workspace first: when the file exists locally, it opens directly in the
-editor. Other hosts and unmatched links retain the portable HTTPS fallback.
+editor. Other hosts and unmatched links retain the portable HTTPS fallback,
+which is also what a host that does not offer link opening falls back to.
 
 ## Mermaid diagrams, rendered locally
 
@@ -24,7 +25,10 @@ Fenced `mermaid` blocks now become diagrams inside the OKF reader.
 
 The embedded Mermaid runtime increases only the OKF panel artifact. Its
 generated parser tables are escaped during the build so the final single-file
-MCP App remains parseable by strict hosts.
+MCP App remains parseable by strict hosts. Mermaid is a build-time dependency
+only — it is inlined into the panel during the build and never installed
+alongside the CLI, so `npm install zam-core` pulls the same dependency set as
+0.23.0.
 
 ## A reference article that reads like reference material
 
