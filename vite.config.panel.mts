@@ -1,6 +1,60 @@
 import { resolve } from "node:path";
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import { viteSingleFile } from "vite-plugin-singlefile";
+
+function isHtmlInvalidCodePoint(value: string): boolean {
+  const codePoint = value.codePointAt(0);
+  if (codePoint === undefined) return false;
+  return (
+    codePoint <= 0x08 ||
+    (codePoint >= 0x0b && codePoint <= 0x0c) ||
+    (codePoint >= 0x0e && codePoint <= 0x1f) ||
+    (codePoint >= 0x7f && codePoint <= 0x9f) ||
+    (codePoint >= 0xfdd0 && codePoint <= 0xfdef) ||
+    (codePoint >= 0xfffe && (codePoint & 0xffff) >= 0xfffe)
+  );
+}
+
+function escapeAsJavaScriptCodeUnits(value: string): string {
+  let escaped = "";
+  for (let index = 0; index < value.length; index += 1) {
+    escaped += `\\u${value.charCodeAt(index).toString(16).padStart(4, "0")}`;
+  }
+  return escaped;
+}
+
+function escapeInvalidJavaScriptCodePoints(source: string): string {
+  let escaped = "";
+  for (const value of source) {
+    escaped += isHtmlInvalidCodePoint(value)
+      ? escapeAsJavaScriptCodeUnits(value)
+      : value;
+  }
+  return escaped;
+}
+
+/**
+ * Mermaid's generated parser tables contain a few literal control and
+ * noncharacter code points. Browsers tolerate them in inline scripts, but
+ * strict MCP hosts can reject the resulting HTML resource. Escaping the
+ * literals in the JavaScript chunk preserves their runtime value while
+ * keeping the self-contained panel valid HTML.
+ *
+ * This plugin must run immediately before viteSingleFile so it can still see
+ * the generated JavaScript chunk before that chunk is embedded in the HTML.
+ */
+function escapeInvalidInlineScriptCodePoints(): Plugin {
+  return {
+    name: "zam:escape-invalid-inline-script-code-points",
+    enforce: "post",
+    generateBundle(_options, bundle) {
+      for (const output of Object.values(bundle)) {
+        if (output.type !== "chunk") continue;
+        output.code = escapeInvalidJavaScriptCodePoints(output.code);
+      }
+    },
+  };
+}
 
 /**
  * Builds one MCP Apps panel into a single self-contained HTML file under
@@ -26,7 +80,7 @@ export default defineConfig(({ mode }) => {
   const isDefaultEntry = input === "studio-panel.html";
   return {
     root: resolve(import.meta.dirname, "desktop/src/panel"),
-    plugins: [viteSingleFile()],
+    plugins: [escapeInvalidInlineScriptCodePoints(), viteSingleFile()],
     build: {
       outDir: resolve(import.meta.dirname, "dist/ui"),
       // Only the first (default) entry clears dist/ui; later entries append.

@@ -40,27 +40,28 @@ import {
   showConnectionNotice as showConnectionNoticeShared,
 } from "./context-bar.js";
 import { wrapGraphLabel } from "./graph-layout.js";
+import { queueMermaidRender } from "./okf-mermaid.js";
 import {
+  articlePillSize,
   type CatalogEntry,
+  edgeAnchor,
+  extractLinks,
   type FocusRing,
+  filterCatalog,
   type GraphEdge,
   type GraphNode,
+  groupCatalog,
+  indexFreshnessByFile,
+  LABEL_LINE_HEIGHT,
+  layoutFocusGraph,
+  layoutGraph,
   type NodeBox,
+  neighborIdsOf,
   type OkfArticleFreshness,
   type OkfFreshnessAudit,
   type OkfFreshnessStatus,
-  type PositionedNode,
-  LABEL_LINE_HEIGHT,
   PILL_HEIGHT,
-  articlePillSize,
-  edgeAnchor,
-  extractLinks,
-  filterCatalog,
-  groupCatalog,
-  indexFreshnessByFile,
-  layoutFocusGraph,
-  layoutGraph,
-  neighborIdsOf,
+  type PositionedNode,
   renderMarkdown,
   reviewRecommendedPaths,
   stripFrontmatter,
@@ -244,6 +245,27 @@ function safeExternalHref(url: string): string | null {
   return /^https?:\/\//i.test(trimmed) ? trimmed : null;
 }
 
+/**
+ * Only intercept a link when the negotiated host actually opens links for us
+ * (ADR 2026-07-30). Without the capability, preventing the anchor's own
+ * navigation would leave the click doing nothing at all, so the plain HTTPS
+ * href stays the fallback it is meant to be.
+ */
+function hostOpensLinks(): boolean {
+  return Boolean(app.getHostCapabilities()?.openLinks);
+}
+
+async function openExternalLink(url: string): Promise<void> {
+  try {
+    const result = await app.openLink({ url });
+    if (result.isError) {
+      showConnectionNotice(tf("okf_link_open_failed", { url }));
+    }
+  } catch (error) {
+    showConnectionNotice(errorMessage(error));
+  }
+}
+
 async function loadCatalogFallback(): Promise<void> {
   try {
     const result = (await callTool("zam_okf_catalog", {
@@ -287,6 +309,16 @@ function renderAll(): void {
   updateViewToggleActiveState();
   renderSidebar();
   renderContent();
+  if (contentEl) {
+    void queueMermaidRender(contentEl, {
+      theme: app.getHostContext()?.theme === "dark" ? "dark" : "default",
+      diagramLabel: t("okf_mermaid_diagram"),
+      failureMessage: (message) =>
+        tf("okf_mermaid_failed", {
+          message,
+        }),
+    });
+  }
 }
 
 function renderHeader(): void {
@@ -630,6 +662,7 @@ function buildMetaStrip(entry: CatalogEntry | undefined): HTMLElement {
       const link = document.createElement("a");
       link.className = "okf-resource-link";
       link.href = href;
+      link.dataset.okfExternal = href;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
       link.textContent = t("okf_resource_link");
@@ -645,6 +678,7 @@ function buildMetaStrip(entry: CatalogEntry | undefined): HTMLElement {
     freshness.title = freshnessTitle(articleFreshness);
     strip.appendChild(freshness);
   }
+  attachContentClickDelegation(strip);
   return strip;
 }
 
@@ -887,14 +921,26 @@ async function openCitationFullView(target: string): Promise<void> {
   renderAll();
 }
 
-/** Click delegation for the two link kinds okf-render.ts's renderMarkdown
- * classifies as in-panel (article/citation) rather than a plain href — see
- * classifyLink in okf-render.ts. External links carry a real href and need
- * no handler here. */
+/** Click delegation for the link kinds okf-render.ts's renderMarkdown
+ * classifies — see classifyLink there. Article and citation links are
+ * in-panel. External links keep a real href as the no-host fallback, but a
+ * connected panel intercepts the click and delegates the URL to the host
+ * through MCP Apps `ui/open-link` (ADR 2026-07-30). */
 function attachContentClickDelegation(container: HTMLElement): void {
   container.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof Element)) return;
+    const externalLink = target.closest("[data-okf-external]");
+    if (externalLink && connected && hostOpensLinks()) {
+      const href = safeExternalHref(
+        externalLink.getAttribute("data-okf-external") ?? "",
+      );
+      if (href) {
+        event.preventDefault();
+        void openExternalLink(href);
+      }
+      return;
+    }
     const articleLink = target.closest("[data-okf-article]");
     if (articleLink) {
       event.preventDefault();
@@ -1583,6 +1629,10 @@ document.addEventListener("keydown", (event) => {
 });
 
 // ── Host lifecycle (mirrors graph.ts) ───────────────────────────────────
+
+app.onhostcontextchanged = (params) => {
+  if (params.theme && catalogLoaded) renderAll();
+};
 
 app.ontoolinput = (params) => {
   const input = (params.arguments ?? {}) as { view?: unknown };

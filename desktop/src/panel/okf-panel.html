@@ -354,6 +354,37 @@
         background: none;
         padding: 0;
       }
+      .okf-mermaid-diagram {
+        margin: 0.9em 0;
+        padding: 14px;
+        overflow-x: auto;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--card);
+      }
+      .okf-mermaid-diagram svg {
+        display: block;
+        width: auto;
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto;
+      }
+      .okf-mermaid-error {
+        margin: 0.7em 0 0;
+        padding: 7px 10px;
+        color: var(--danger);
+        background: var(--danger-bg);
+        border: 1px solid var(--danger);
+        border-radius: 7px 7px 0 0;
+        font-size: 0.8rem;
+      }
+      .okf-article-body pre.okf-mermaid-source-error,
+      .okf-log-body pre.okf-mermaid-source-error {
+        margin-top: 0;
+        border: 1px solid var(--danger);
+        border-top: 0;
+        border-radius: 0 0 7px 7px;
+      }
       .okf-article-body :is(ul, ol),
       .okf-log-body :is(ul, ol) {
         margin: 0.5em 0;

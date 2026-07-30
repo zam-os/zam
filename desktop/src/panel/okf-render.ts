@@ -179,7 +179,7 @@ export function stripFrontmatter(source: string): string {
 function renderLink(label: string, target: string): string {
   const kind = classifyLink(target);
   if (kind === "external") {
-    return `<a href="${target}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+    return `<a href="${target}" data-okf-external="${target}" target="_blank" rel="noopener noreferrer">${label}</a>`;
   }
   if (kind === "article") {
     return `<a href="#" data-okf-article="${target}">${label}</a>`;
@@ -362,7 +362,16 @@ export function renderMarkdown(source: string): string {
         i++;
       }
       i++; // skip the closing fence (or end of input)
-      const classAttr = lang ? ` class="language-${lang}"` : "";
+      const normalizedLang = lang.toLowerCase();
+      const classAttr = normalizedLang
+        ? ` class="language-${normalizedLang}"`
+        : "";
+      if (normalizedLang === "mermaid") {
+        blocks.push(
+          `<pre class="okf-mermaid-source" data-okf-mermaid><code${classAttr}>${codeLines.join("\n")}</code></pre>`,
+        );
+        continue;
+      }
       blocks.push(
         `<pre><code${classAttr}>${codeLines.join("\n")}</code></pre>`,
       );

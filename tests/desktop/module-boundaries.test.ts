@@ -130,22 +130,24 @@ describe("desktop module boundaries", () => {
   });
 
   // OKF visualizer panel (Task 4, docs/plans/2026-07-17-okf-visualizer-panel-plan.md).
-  it("okf.ts stays Tauri-free, Three-free, and does not import ./main, ./panel, or ./recall", () => {
-    const specifiers = importSpecifiers(read("panel/okf.ts"));
-    for (const specifier of specifiers) {
-      expect(
-        specifier.startsWith("@tauri-apps"),
-        `okf.ts must not import Tauri APIs (found "${specifier}")`,
-      ).toBe(false);
-      expect(
-        specifier === "three" || specifier.startsWith("three/"),
-        `okf.ts must not import Three.js (found "${specifier}")`,
-      ).toBe(false);
-      for (const forbidden of ["./main", "../main", "./panel", "./recall"]) {
+  it("OKF panel modules stay Tauri-free, Three-free, and do not import ./main, ./panel, or ./recall", () => {
+    for (const file of ["panel/okf.ts", "panel/okf-mermaid.ts"]) {
+      const specifiers = importSpecifiers(read(file));
+      for (const specifier of specifiers) {
         expect(
-          specifier.startsWith(forbidden),
-          `okf.ts must not import ${forbidden}.js (found "${specifier}")`,
+          specifier.startsWith("@tauri-apps"),
+          `${file} must not import Tauri APIs (found "${specifier}")`,
         ).toBe(false);
+        expect(
+          specifier === "three" || specifier.startsWith("three/"),
+          `${file} must not import Three.js (found "${specifier}")`,
+        ).toBe(false);
+        for (const forbidden of ["./main", "../main", "./panel", "./recall"]) {
+          expect(
+            specifier.startsWith(forbidden),
+            `${file} must not import ${forbidden}.js (found "${specifier}")`,
+          ).toBe(false);
+        }
       }
     }
   });

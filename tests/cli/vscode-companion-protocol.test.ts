@@ -12,6 +12,7 @@ import {
   COMPANION_APPS,
   createSamplingResult,
   describeServerVersionDrift,
+  githubMainBlobPath,
   normalizeSamplingRequest,
   parseCompanionIntent,
   toolUiResourceUri,
@@ -226,6 +227,35 @@ describe("VS Code companion protocol", () => {
       content: { type: "text", text: "model reply" },
       stopReason: "endTurn",
     });
+  });
+});
+
+describe("githubMainBlobPath", () => {
+  it("extracts the repository path from a canonical OKF resource URL", () => {
+    expect(
+      githubMainBlobPath(
+        "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md",
+      ),
+    ).toEqual(["docs", "okf", "mcp-surfaces.md"]);
+  });
+
+  it("decodes safe path segments and ignores query or line fragments", () => {
+    expect(
+      githubMainBlobPath(
+        "https://github.com/acme/repo/blob/main/docs/My%20Article.md?plain=1#L8",
+      ),
+    ).toEqual(["docs", "My Article.md"]);
+  });
+
+  it.each([
+    "http://github.com/zam-os/zam/blob/main/docs/okf/a.md",
+    "https://example.com/zam-os/zam/blob/main/docs/okf/a.md",
+    "https://github.com/zam-os/zam/blob/dev/docs/okf/a.md",
+    "https://github.com/zam-os/zam/blob/main/docs/%2e%2e/secrets.md",
+    "https://github.com/zam-os/zam/blob/main/docs%2fsecrets.md",
+    "not a URL",
+  ])("rejects a non-canonical or unsafe URL: %s", (url) => {
+    expect(githubMainBlobPath(url)).toBeUndefined();
   });
 });
 

@@ -1,7 +1,8 @@
 import { unwatchFile, watchFile } from "node:fs";
-import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rename, stat, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
+import { pathToFileURL } from "node:url";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import type { CallToolResult, Tool } from "@modelcontextprotocol/sdk/types.js";
@@ -38,6 +39,7 @@ import {
   type CompanionAppConfig,
   createSamplingResult,
   describeServerVersionDrift,
+  githubMainBlobPath,
   normalizeSamplingRequest,
   parseCompanionIntent,
   toolUiResourceUri,
@@ -605,8 +607,30 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
     if (uri.scheme !== "https" && uri.scheme !== "http") {
       throw new Error(`Blocked link scheme: ${uri.scheme}`);
     }
+
+    const localPath = githubMainBlobPath(url);
+    if (localPath) {
+      for (const folder of vscode.workspace.workspaceFolders ?? []) {
+        const candidate = join(folder.uri.fsPath, ...localPath);
+        try {
+          if (!(await stat(candidate)).isFile()) continue;
+          await vscode.commands.executeCommand(
+            "vscode.open",
+            vscode.Uri.parse(pathToFileURL(candidate).href, true),
+          );
+          this.output.appendLine(
+            `[${new Date().toISOString()}] opened source in editor: ${candidate}`,
+          );
+          return { destination: "editor" };
+        } catch {
+          // This workspace does not contain the linked repository path. Try
+          // another workspace folder, then fall back to the canonical URL.
+        }
+      }
+    }
+
     const opened = await vscode.env.openExternal(uri);
-    return opened ? {} : { isError: true };
+    return opened ? { destination: "external" } : { isError: true };
   }
 
   private sendBootstrap(): void {
