@@ -17,7 +17,7 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 ## architecture
 
 - [Kernel and CLI Architecture](kernel-architecture.md) — ZAM is split into an AI-agnostic learning kernel and a thin CLI orchestration layer; all learning logic lives in the kernel, all LLM/HTTP code in the CLI.
-- [MCP Transport and Surfaces](mcp-surfaces.md) — zam mcp is the preferred agent transport - a stdio MCP server exposing ZAM tools and MCP Apps panels; zam agent connect configures supported harnesses.
+- [MCP Transport and Surfaces](mcp-surfaces.md) — zam mcp is the preferred agent transport - a stdio MCP server exposing focused ZAM tools and host-rendered MCP Apps panels.
 
 ## data-model
 

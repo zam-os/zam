@@ -137,6 +137,25 @@ describe("renderMarkdown", () => {
     expect(html).toBe("<pre><code>plain</code></pre>");
   });
 
+  it("marks Mermaid fences for the runtime diagram renderer", () => {
+    const html = renderMarkdown(
+      "```mermaid\nflowchart LR\n  A[Article] --> B[Reader]\n```",
+    );
+    expect(html).toBe(
+      '<pre class="okf-mermaid-source" data-okf-mermaid><code class="language-mermaid">flowchart LR\n  A[Article] --&gt; B[Reader]</code></pre>',
+    );
+  });
+
+  it("keeps Mermaid source escaped before the runtime renderer sees it", () => {
+    const html = renderMarkdown(
+      "```MERMAID\nflowchart LR\n  A[<script>alert(1)</script>]\n```",
+    );
+    expect(html.toLowerCase()).not.toContain("<script>");
+    expect(html).toContain(
+      '<code class="language-mermaid">flowchart LR\n  A[&lt;script&gt;alert(1)&lt;/script&gt;]</code>',
+    );
+  });
+
   it("renders an unordered list", () => {
     const html = renderMarkdown("- One\n- Two\n- Three");
     expect(html).toBe("<ul><li>One</li><li>Two</li><li>Three</li></ul>");
@@ -211,7 +230,7 @@ describe("renderMarkdown", () => {
   it("opens external http(s) links safely in a new tab", () => {
     const html = renderMarkdown("Read the [spec](https://example.com/spec).");
     expect(html).toBe(
-      '<p>Read the <a href="https://example.com/spec" target="_blank" rel="noopener noreferrer">spec</a>.</p>',
+      '<p>Read the <a href="https://example.com/spec" data-okf-external="https://example.com/spec" target="_blank" rel="noopener noreferrer">spec</a>.</p>',
     );
   });
 
@@ -250,7 +269,7 @@ describe("renderMarkdown", () => {
         "See [spec](https://example.com/spec) and [prereqs](prerequisite-blocking.md) and [adr](../adr/2026-01-01-x.md).",
       );
       expect(html).toBe(
-        '<p>See <a href="https://example.com/spec" target="_blank" rel="noopener noreferrer">spec</a>' +
+        '<p>See <a href="https://example.com/spec" data-okf-external="https://example.com/spec" target="_blank" rel="noopener noreferrer">spec</a>' +
           ' and <a href="#" data-okf-article="prerequisite-blocking.md">prereqs</a>' +
           ' and <a href="#" data-okf-citation="../adr/2026-01-01-x.md">adr</a>.</p>',
       );
@@ -293,7 +312,7 @@ describe("renderMarkdown", () => {
       );
       expect(html).toBe(
         '<p><a href="mailto:a@b.com">email me</a> and visit ' +
-          '<a href="https://x.example" target="_blank" rel="noopener noreferrer">site</a>.</p>',
+          '<a href="https://x.example" data-okf-external="https://x.example" target="_blank" rel="noopener noreferrer">site</a>.</p>',
       );
     });
   });

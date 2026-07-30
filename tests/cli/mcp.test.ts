@@ -1311,6 +1311,23 @@ describe("MCP stdio server tests", () => {
       // instead of this id, so this assertion only passes against a real
       // dist/ui/okf-panel.html build (CI builds before running tests).
       expect(content.text).toContain("zam-okf-panel");
+      let invalidHtmlCodePoint: number | undefined;
+      for (const value of content.text) {
+        const codePoint = value.codePointAt(0);
+        if (
+          codePoint !== undefined &&
+          (codePoint <= 0x08 ||
+            (codePoint >= 0x0b && codePoint <= 0x0c) ||
+            (codePoint >= 0x0e && codePoint <= 0x1f) ||
+            (codePoint >= 0x7f && codePoint <= 0x9f) ||
+            (codePoint >= 0xfdd0 && codePoint <= 0xfdef) ||
+            (codePoint >= 0xfffe && (codePoint & 0xffff) >= 0xfffe))
+        ) {
+          invalidHtmlCodePoint = codePoint;
+          break;
+        }
+      }
+      expect(invalidHtmlCodePoint).toBeUndefined();
     });
 
     it("links zam_okf_visualize to the okf panel resource and initializes the requested view", async () => {

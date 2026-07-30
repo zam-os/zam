@@ -716,6 +716,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     okf_bundle_valid_but_empty:
       "La carpeta es un bundle válido, pero no contiene artículos.",
     okf_resource_link: "Fuente ↗",
+    okf_link_open_failed: "No se pudo abrir el enlace: {url}",
+    okf_mermaid_diagram: "Diagrama Mermaid",
+    okf_mermaid_failed:
+      "No se pudo renderizar el diagrama Mermaid: {message}",
     okf_copy: "📋 Copiar",
     okf_copied: "✓ Copiado",
     okf_copy_failed: "⚠️ Error al copiar",
@@ -1483,6 +1487,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     okf_bundle_valid_but_empty:
       "Le dossier est un bundle valide mais ne contient aucun article.",
     okf_resource_link: "Source ↗",
+    okf_link_open_failed: "Impossible d'ouvrir le lien : {url}",
+    okf_mermaid_diagram: "Diagramme Mermaid",
+    okf_mermaid_failed:
+      "Impossible d'afficher le diagramme Mermaid : {message}",
     okf_copy: "📋 Copier",
     okf_copied: "✓ Copié",
     okf_copy_failed: "⚠️ Échec de la copie",
@@ -2241,6 +2249,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     okf_bundle_valid_but_empty:
       "A pasta é um bundle válido, mas não contém artigos.",
     okf_resource_link: "Fonte ↗",
+    okf_link_open_failed: "Não foi possível abrir o link: {url}",
+    okf_mermaid_diagram: "Diagrama Mermaid",
+    okf_mermaid_failed:
+      "Não foi possível renderizar o diagrama Mermaid: {message}",
     okf_copy: "📋 Copiar",
     okf_copied: "✓ Copiado",
     okf_copy_failed: "⚠️ Falha ao copiar",
@@ -2948,6 +2960,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     okf_bundle_open: "打开",
     okf_bundle_valid_but_empty: "该文件夹是有效的 bundle，但不包含任何文章。",
     okf_resource_link: "来源 ↗",
+    okf_link_open_failed: "无法打开链接：{url}",
+    okf_mermaid_diagram: "Mermaid 图表",
+    okf_mermaid_failed: "无法渲染 Mermaid 图表：{message}",
     okf_copy: "📋 复制",
     okf_copied: "✓ 已复制",
     okf_copy_failed: "⚠️ 复制失败",
@@ -3688,6 +3703,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     okf_bundle_valid_but_empty:
       "このフォルダーは有効なバンドルですが、記事が含まれていません。",
     okf_resource_link: "出典 ↗",
+    okf_link_open_failed: "リンクを開けませんでした: {url}",
+    okf_mermaid_diagram: "Mermaid ダイアグラム",
+    okf_mermaid_failed:
+      "Mermaid ダイアグラムを表示できませんでした: {message}",
     okf_copy: "📋 コピー",
     okf_copied: "✓ コピーしました",
     okf_copy_failed: "⚠️ コピーに失敗しました",
@@ -4553,6 +4572,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     okf_bundle_valid_but_empty:
       "The folder is a valid bundle but contains no articles.",
     okf_resource_link: "Source ↗",
+    okf_link_open_failed: "Could not open the link: {url}",
+    okf_mermaid_diagram: "Mermaid diagram",
+    okf_mermaid_failed: "Could not render the Mermaid diagram: {message}",
     okf_freshness_current: "Knowledge current",
     okf_freshness_review: "Review recommended",
     okf_freshness_unknown: "Freshness unknown",
@@ -5605,6 +5627,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     okf_bundle_valid_but_empty:
       "Der Ordner ist ein gültiges Bundle, enthält aber keine Artikel.",
     okf_resource_link: "Quelle ↗",
+    okf_link_open_failed: "Link konnte nicht geöffnet werden: {url}",
+    okf_mermaid_diagram: "Mermaid-Diagramm",
+    okf_mermaid_failed:
+      "Mermaid-Diagramm konnte nicht dargestellt werden: {message}",
     okf_freshness_current: "Wissen aktuell",
     okf_freshness_review: "Prüfung empfohlen",
     okf_freshness_unknown: "Aktualität unbekannt",

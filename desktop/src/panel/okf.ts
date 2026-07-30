@@ -40,27 +40,28 @@ import {
   showConnectionNotice as showConnectionNoticeShared,
 } from "./context-bar.js";
 import { wrapGraphLabel } from "./graph-layout.js";
+import { queueMermaidRender } from "./okf-mermaid.js";
 import {
+  articlePillSize,
   type CatalogEntry,
+  edgeAnchor,
+  extractLinks,
   type FocusRing,
+  filterCatalog,
   type GraphEdge,
   type GraphNode,
+  groupCatalog,
+  indexFreshnessByFile,
+  LABEL_LINE_HEIGHT,
+  layoutFocusGraph,
+  layoutGraph,
   type NodeBox,
+  neighborIdsOf,
   type OkfArticleFreshness,
   type OkfFreshnessAudit,
   type OkfFreshnessStatus,
-  type PositionedNode,
-  LABEL_LINE_HEIGHT,
   PILL_HEIGHT,
-  articlePillSize,
-  edgeAnchor,
-  extractLinks,
-  filterCatalog,
-  groupCatalog,
-  indexFreshnessByFile,
-  layoutFocusGraph,
-  layoutGraph,
-  neighborIdsOf,
+  type PositionedNode,
   renderMarkdown,
   reviewRecommendedPaths,
   stripFrontmatter,
@@ -244,6 +245,17 @@ function safeExternalHref(url: string): string | null {
   return /^https?:\/\//i.test(trimmed) ? trimmed : null;
 }
 
+async function openExternalLink(url: string): Promise<void> {
+  try {
+    const result = await app.openLink({ url });
+    if (result.isError) {
+      showConnectionNotice(tf("okf_link_open_failed", { url }));
+    }
+  } catch (error) {
+    showConnectionNotice(errorMessage(error));
+  }
+}
+
 async function loadCatalogFallback(): Promise<void> {
   try {
     const result = (await callTool("zam_okf_catalog", {
@@ -287,6 +299,16 @@ function renderAll(): void {
   updateViewToggleActiveState();
   renderSidebar();
   renderContent();
+  if (contentEl) {
+    void queueMermaidRender(contentEl, {
+      theme: app.getHostContext()?.theme === "dark" ? "dark" : "default",
+      diagramLabel: t("okf_mermaid_diagram"),
+      failureMessage: (message) =>
+        tf("okf_mermaid_failed", {
+          message,
+        }),
+    });
+  }
 }
 
 function renderHeader(): void {
@@ -630,6 +652,7 @@ function buildMetaStrip(entry: CatalogEntry | undefined): HTMLElement {
       const link = document.createElement("a");
       link.className = "okf-resource-link";
       link.href = href;
+      link.dataset.okfExternal = href;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
       link.textContent = t("okf_resource_link");
@@ -645,6 +668,7 @@ function buildMetaStrip(entry: CatalogEntry | undefined): HTMLElement {
     freshness.title = freshnessTitle(articleFreshness);
     strip.appendChild(freshness);
   }
+  attachContentClickDelegation(strip);
   return strip;
 }
 
@@ -895,6 +919,17 @@ function attachContentClickDelegation(container: HTMLElement): void {
   container.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof Element)) return;
+    const externalLink = target.closest("[data-okf-external]");
+    if (externalLink && connected) {
+      const href = safeExternalHref(
+        externalLink.getAttribute("data-okf-external") ?? "",
+      );
+      if (href) {
+        event.preventDefault();
+        void openExternalLink(href);
+      }
+      return;
+    }
     const articleLink = target.closest("[data-okf-article]");
     if (articleLink) {
       event.preventDefault();
@@ -1583,6 +1618,10 @@ document.addEventListener("keydown", (event) => {
 });
 
 // ── Host lifecycle (mirrors graph.ts) ───────────────────────────────────
+
+app.onhostcontextchanged = (params) => {
+  if (params.theme && catalogLoaded) renderAll();
+};
 
 app.ontoolinput = (params) => {
   const input = (params.arguments ?? {}) as { view?: unknown };

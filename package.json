@@ -1,6 +1,6 @@
 {
   "name": "zam-core",
-  "version": "0.23.0",
+  "version": "0.23.1",
   "description": "The Symbiotic Learning Kernel: Elevating Human Intelligence through AI Collaboration.",
   "type": "module",
   "engines": {
@@ -73,6 +73,7 @@
     "@modelcontextprotocol/sdk": "^1.29.0",
     "better-sqlite3": "^13.0.1",
     "commander": "^14.0.3",
+    "mermaid": "^11.16.0",
     "ulid": "^3.0.2",
     "zod": "^4.4.3"
   },

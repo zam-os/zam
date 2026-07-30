@@ -210,6 +210,72 @@ export function toolUiResourceUri(tool: Tool): string | undefined {
       : undefined;
 }
 
+/**
+ * Resolve the repository-relative part of a canonical GitHub blob URL.
+ *
+ * OKF article `resource` links use
+ * `https://github.com/<owner>/<repo>/blob/main/<repo-path>`. The VS Code
+ * Companion can use the returned, individually validated path segments to
+ * prefer the matching local workspace file over opening the browser. Other
+ * hosts still receive the original HTTPS URL through MCP Apps `ui/open-link`.
+ */
+export function githubMainBlobPath(url: string): string[] | undefined {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return undefined;
+  }
+  if (
+    parsed.protocol !== "https:" ||
+    parsed.hostname.toLowerCase() !== "github.com" ||
+    parsed.username !== "" ||
+    parsed.password !== ""
+  ) {
+    return undefined;
+  }
+
+  // URL.pathname normalizes encoded dot segments before returning them. Read
+  // the original escaped path so `%2e%2e` is rejected instead of silently
+  // turning into a different, still workspace-contained local file.
+  const rawPath =
+    /^[a-z][a-z0-9+.-]*:\/\/[^/?#]+([^?#]*)/i.exec(url.trim())?.[1] ?? "";
+  const rawSegments = rawPath.split("/").slice(1);
+  if (
+    rawSegments.length < 5 ||
+    rawSegments[0] === "" ||
+    rawSegments[1] === "" ||
+    rawSegments[2] !== "blob" ||
+    rawSegments[3] !== "main"
+  ) {
+    return undefined;
+  }
+
+  const path: string[] = [];
+  for (const raw of rawSegments.slice(4)) {
+    let segment: string;
+    try {
+      segment = decodeURIComponent(raw);
+    } catch {
+      return undefined;
+    }
+    // biome-ignore lint/suspicious/noControlCharactersInRegex: local editor paths must reject every ASCII control character
+    const containsControlCharacter = /[\u0000-\u001f]/.test(segment);
+    if (
+      segment === "" ||
+      segment === "." ||
+      segment === ".." ||
+      segment.includes("/") ||
+      segment.includes("\\") ||
+      containsControlCharacter
+    ) {
+      return undefined;
+    }
+    path.push(segment);
+  }
+  return path.length > 0 ? path : undefined;
+}
+
 // ── Companion / CLI version-drift guard ────────────────────────────────────
 
 /**
