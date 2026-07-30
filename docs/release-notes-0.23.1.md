@@ -39,6 +39,15 @@ sections, tables, lists, and short operational flows. It now separates:
 The article was updated through `zam_okf_upsert`, so its permanent resource URL,
 catalog entry, and change log stay consistent.
 
+## Dependency hygiene
+
+The active Root, Desktop, and Mobile JavaScript projects have received all
+compatible registry updates. This includes MCP SDK 1.30, the patched Hono, URI,
+and PostCSS paths, Vite 8, and the current Three.js release. Desktop and Mobile
+use TypeScript 7; the Root build stays on TypeScript 6.0.3 until `tsup`'s
+declaration bundler supports TypeScript 7. All three lockfiles pass `npm audit`
+without a reported vulnerability.
+
 ## Host boundaries remain explicit
 
 MCP Apps hosts still decide whether an app appears inline, in picture-in-picture,

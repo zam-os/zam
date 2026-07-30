@@ -4,6 +4,7 @@
 
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 
 ## 2026-07-29
 

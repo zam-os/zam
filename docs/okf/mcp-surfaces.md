@@ -7,7 +7,7 @@ tags:
   - agents
   - surfaces
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-07-30T05:25:02Z
+timestamp: 2026-07-30T05:47:59Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -238,4 +238,4 @@ The same operation is available through `zam bridge okf-import`.
 - [ADR 2026-07-18c — OKF Import Handoff](../adr/2026-07-18c-okf-import-handoff.md)
 - [ADR 2026-07-29b — OKF Freshness Radar](../adr/2026-07-29b-okf-freshness-radar.md)
 - [ADR 2026-07-30 — OKF Reader Navigation and Mermaid Rendering](../adr/2026-07-30-okf-reader-navigation-and-mermaid.md)
-- Code: `package.json`, `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/extension.ts`, `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-mermaid.ts`, `desktop/src/panel/okf-panel.html`, `vite.config.panel.mts`
+- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/extension.ts`, `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-mermaid.ts`, `desktop/src/panel/okf-panel.html`, `vite.config.panel.mts`
