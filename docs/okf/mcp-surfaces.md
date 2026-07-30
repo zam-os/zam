@@ -7,7 +7,7 @@ tags:
   - agents
   - surfaces
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-07-30T07:03:54Z
+timestamp: 2026-07-30T08:20:05Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -147,10 +147,18 @@ instead of failing the opening tool.
 on `- Code:` rows under `# Citations`. For each article it compares the latest
 article commit with the latest commit for every cited code path:
 
-- `current`: cited code is at the article commit or one of its ancestors;
+- `current`: cited code is at the article commit or one of its ancestors, or
+  its only change since then was to version literals;
 - `review-recommended`: cited code has a later descendant commit, an
   uncommitted change, or a missing path-shaped target;
 - `unknown`: Git history, tracking, or ancestry is insufficient.
+
+A change that touches nothing but version strings — the `ZAM-Content-Studio`
+User-Agent every release bumps, for example — stays `current` and reports the
+reason `version-only-change`, so a release never manufactures review work. The
+test is strict: removed and added lines must pair up one-to-one and match once
+semver literals are masked, so a behavior change riding along with a bump still
+recommends review.
 
 A valid frontmatter timestamp is only the fallback for an untracked article.
 Descriptive identifiers without path syntax are ignored. The audit never

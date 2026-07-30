@@ -172,6 +172,91 @@ describe("OKF freshness audit", () => {
     );
   });
 
+  it("keeps an article current when cited code only changed version strings", () => {
+    const root = scratchRepo();
+    const bundleDir = join(root, "docs", "okf");
+    mkdirSync(join(root, "src"), { recursive: true });
+    mkdirSync(bundleDir, { recursive: true });
+    const userAgent = (version: string) =>
+      [
+        "export async function fetchPage(url: string) {",
+        `  const agent = "ZAM-Content-Studio/${version}";`,
+        '  return fetch(url, { headers: { "User-Agent": agent }, redirect });',
+        "}",
+        "",
+      ].join("\n");
+    writeFileSync(join(root, "src", "bridge.ts"), userAgent("0.23.0"));
+    commit(root, "add bridge", "2026-07-01T10:00:00Z");
+
+    writeFileSync(
+      join(bundleDir, "bridge.md"),
+      article({ timestamp: "2026-07-02T10:00:00Z", code: ["src/bridge.ts"] }),
+    );
+    commit(root, "document bridge", "2026-07-02T10:00:00Z");
+
+    // The release bump every version performs on this file.
+    writeFileSync(join(root, "src", "bridge.ts"), userAgent("0.23.1"));
+    const dirty = auditOkfFreshness(bundleDir);
+    expect(dirty.articles[0].codeReferences[0]).toEqual(
+      expect.objectContaining({
+        status: "current",
+        workingTreeChanged: true,
+        reason: "version-only-change",
+      }),
+    );
+    expect(dirty.summary.reviewRecommended).toBe(0);
+
+    commit(root, "chore: release 0.23.1", "2026-07-03T10:00:00Z");
+    const released = auditOkfFreshness(bundleDir);
+    expect(released.summary).toEqual({
+      current: 1,
+      reviewRecommended: 0,
+      unknown: 0,
+    });
+    expect(released.articles[0].codeReferences[0]).toEqual(
+      expect.objectContaining({
+        status: "current",
+        reason: "version-only-change",
+      }),
+    );
+
+    // A behavior change in the same file still recommends review, even when
+    // it rides along with another version bump.
+    writeFileSync(
+      join(root, "src", "bridge.ts"),
+      userAgent("0.24.0").replace("redirect", '"manual"'),
+    );
+    commit(root, "change request shape", "2026-07-04T10:00:00Z");
+    const changed = auditOkfFreshness(bundleDir);
+    expect(changed.articles[0].status).toBe("review-recommended");
+  });
+
+  it("treats added or removed cited-code lines as a review signal", () => {
+    const root = scratchRepo();
+    const bundleDir = join(root, "docs", "okf");
+    mkdirSync(join(root, "src"), { recursive: true });
+    mkdirSync(bundleDir, { recursive: true });
+    writeFileSync(
+      join(root, "src", "engine.ts"),
+      'export const agent = "ZAM/1.0.0";\n',
+    );
+    commit(root, "add engine", "2026-07-01T10:00:00Z");
+    writeFileSync(
+      join(bundleDir, "engine.md"),
+      article({ timestamp: "2026-07-02T10:00:00Z", code: ["src/engine.ts"] }),
+    );
+    commit(root, "document engine", "2026-07-02T10:00:00Z");
+
+    writeFileSync(
+      join(root, "src", "engine.ts"),
+      'export const agent = "ZAM/1.0.1";\nexport const retries = 3;\n',
+    );
+    commit(root, "bump and add retries", "2026-07-03T10:00:00Z");
+
+    const audit = auditOkfFreshness(bundleDir);
+    expect(audit.articles[0].status).toBe("review-recommended");
+  });
+
   it("reports unknown when an article declares no auditable code", () => {
     const root = scratchRepo();
     const bundleDir = join(root, "docs", "okf");
