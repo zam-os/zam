@@ -54,9 +54,13 @@ async function renderMermaidBlocks(
 
   for (const block of blocks) {
     block.dataset.okfMermaidState = "rendering";
-    const source =
-      block.querySelector("code")?.textContent ?? block.textContent;
+    const source = (
+      block.querySelector("code")?.textContent ??
+      block.textContent ??
+      ""
+    ).trim();
     try {
+      if (!source) throw new Error("Empty Mermaid diagram");
       const parsed = await mermaid.parse(source, { suppressErrors: true });
       if (!parsed) throw new Error("Invalid Mermaid syntax");
       const { svg } = await mermaid.render(
@@ -91,11 +95,17 @@ async function renderMermaidBlocks(
  * individual render() calls, while this outer queue keeps theme
  * initialization and DOM replacement deterministic when navigation changes
  * quickly.
+ *
+ * The chain absorbs its own failures: a rejected link would otherwise be
+ * inherited by every later paint, and one unexpected error would silently
+ * stop diagram rendering for the rest of the session.
  */
 export function queueMermaidRender(
   root: ParentNode,
   options: OkfMermaidRenderOptions,
 ): Promise<void> {
-  renderQueue = renderQueue.then(() => renderMermaidBlocks(root, options));
+  renderQueue = renderQueue
+    .then(() => renderMermaidBlocks(root, options))
+    .catch(() => {});
   return renderQueue;
 }

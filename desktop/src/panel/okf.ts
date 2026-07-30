@@ -245,6 +245,16 @@ function safeExternalHref(url: string): string | null {
   return /^https?:\/\//i.test(trimmed) ? trimmed : null;
 }
 
+/**
+ * Only intercept a link when the negotiated host actually opens links for us
+ * (ADR 2026-07-30). Without the capability, preventing the anchor's own
+ * navigation would leave the click doing nothing at all, so the plain HTTPS
+ * href stays the fallback it is meant to be.
+ */
+function hostOpensLinks(): boolean {
+  return Boolean(app.getHostCapabilities()?.openLinks);
+}
+
 async function openExternalLink(url: string): Promise<void> {
   try {
     const result = await app.openLink({ url });
@@ -911,16 +921,17 @@ async function openCitationFullView(target: string): Promise<void> {
   renderAll();
 }
 
-/** Click delegation for the two link kinds okf-render.ts's renderMarkdown
- * classifies as in-panel (article/citation) rather than a plain href — see
- * classifyLink in okf-render.ts. External links carry a real href and need
- * no handler here. */
+/** Click delegation for the link kinds okf-render.ts's renderMarkdown
+ * classifies — see classifyLink there. Article and citation links are
+ * in-panel. External links keep a real href as the no-host fallback, but a
+ * connected panel intercepts the click and delegates the URL to the host
+ * through MCP Apps `ui/open-link` (ADR 2026-07-30). */
 function attachContentClickDelegation(container: HTMLElement): void {
   container.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof Element)) return;
     const externalLink = target.closest("[data-okf-external]");
-    if (externalLink && connected) {
+    if (externalLink && connected && hostOpensLinks()) {
       const href = safeExternalHref(
         externalLink.getAttribute("data-okf-external") ?? "",
       );
