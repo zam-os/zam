@@ -57,3 +57,49 @@ describe("Android voice-mode wiring", () => {
     expect(html).toContain('id="toggle-voice"');
   });
 });
+
+describe("iOS voice-mode wiring", () => {
+  it("declares both usage descriptions iOS terminates the app without", () => {
+    const project = read("mobile/src-tauri/gen/apple/project.yml");
+    expect(project).toContain("NSMicrophoneUsageDescription");
+    expect(project).toContain("NSSpeechRecognitionUsageDescription");
+  });
+
+  it("pins recognition on-device and never crosses languages", () => {
+    const plugin = read("mobile/src-tauri/ios/Sources/VoicePlugin.swift");
+    expect(plugin).toContain("requiresOnDeviceRecognition = true");
+    expect(plugin).toContain("supportsOnDeviceRecognition");
+    // A recognizer for one language must never serve another: fed the wrong
+    // language it returns fluent nonsense rather than failing.
+    expect(plugin).not.toContain("SFSpeechRecognizer()");
+  });
+
+  it("registers the plugin on both mobile platforms", () => {
+    const voice = read("mobile/src-tauri/src/voice.rs");
+    expect(voice).toContain("register_ios_plugin(init_plugin_voice)");
+    expect(voice).toContain('register_android_plugin(PLUGIN_IDENTIFIER, "VoicePlugin")');
+    const lib = read("mobile/src-tauri/src/lib.rs");
+    expect(lib).toContain("#[cfg(mobile)]\n    let builder = builder.plugin(voice::init());");
+  });
+
+  it("reports voice on both platforms but backgrounding only on Android", () => {
+    // iOS hands the microphone back when the app leaves the foreground, so a
+    // session there must end rather than wait for audio that cannot arrive.
+    const lib = read("mobile/src-tauri/src/lib.rs");
+    expect(lib).toContain('"voice": cfg!(mobile)');
+    expect(lib).toContain('"voiceSurvivesBackground": android');
+
+    const main = read("mobile/src/main.ts");
+    expect(main).toContain(
+      "!platformFeatures.voiceSurvivesBackground && voiceController.active",
+    );
+  });
+
+  it("guards the iOS 17 permission API so the pre-17 path still builds", () => {
+    // The Swift package is compiled with a lower deployment target than its
+    // manifest declares; without the guard the whole iOS build fails.
+    const plugin = read("mobile/src-tauri/ios/Sources/VoicePlugin.swift");
+    expect(plugin).toContain("if #available(iOS 17.0, *)");
+    expect(plugin).toContain("AVAudioSession.sharedInstance().recordPermission");
+  });
+});

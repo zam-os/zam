@@ -217,7 +217,16 @@ learner's behalf, particularly with minors in the field test.
       with the machine's online speech recognition turned off. The answer
       decides whether Windows local STT may be offered under `device-only`
       (see the Windows caveat above).
+- [x] iOS engine implemented and compiled. `cargo check --target
+      aarch64-apple-ios` builds the Swift package, which caught that it targets
+      a lower deployment version than its manifest declares — the iOS 17
+      `AVAudioApplication` API needed an availability guard with the pre-17 path
+      kept. `tauri ios init` was confirmed to leave the versioned `project.yml`
+      alone, so the usage descriptions reach the generated Info.plist.
 - [ ] iOS end-to-end voice loop via TestFlight on the field-test iPad.
+      Blocked until now by a second thing: the bundle version had drifted to
+      0.21.0 and App Store Connect rejects an upload that does not increase it.
+      The release workflow now stamps it from `package.json`.
 - [x] Cloud tier implemented over the registry and covered by
       `tests/cli/speech.test.ts`: endpoint selection refuses Anthropic-flavour
       and agent-transport entries, the recording is deleted as soon as it has

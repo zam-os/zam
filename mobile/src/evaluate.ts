@@ -1,9 +1,10 @@
 /**
- * Intelligent answer evaluation for the Android companion.
+ * Intelligent answer evaluation for the mobile companions.
  *
- * Always prefer on-device Gemini Nano (AICore → Tensor NPU). Non-local paired
- * endpoints are a secondary HTTP fallback. When neither path is usable the
- * caller falls back to self-rating.
+ * Android prefers on-device Gemini Nano (AICore → Tensor NPU) and treats a
+ * reachable paired endpoint as the secondary HTTP path. iOS has no on-device
+ * evaluator, so the paired cloud endpoint is its only path. When neither is
+ * usable the caller falls back to self-rating.
  */
 
 import {
@@ -50,8 +51,15 @@ export interface EvaluateAnswerInput {
    * answer in any supported language.
    */
   locale: string | null | undefined;
-  /** Paired recall endpoint; used as optional cloud fallback. */
+  /** Paired recall endpoint; its fallback chain is walked for a cloud target. */
   endpoint?: ZamPairLlmEndpoint | null;
+  /**
+   * Whether this platform has an on-device evaluator at all. iOS does not
+   * (`platform_features.onDeviceEvaluation`), so attempting it there only
+   * buys a guaranteed rejection and an error message that blames the wrong
+   * thing. Defaults to true, which is Android's answer.
+   */
+  onDeviceAvailable?: boolean;
   ports: EvaluationPorts;
 }
 
@@ -81,19 +89,54 @@ export function isCloudHttpEndpoint(
   );
 }
 
+/** Depth cap so a malformed paired payload cannot loop the walk forever. */
+const MAX_FALLBACK_DEPTH = 8;
+
+/**
+ * First cloud-usable endpoint in the paired chain, head included.
+ *
+ * The desktop projects its whole fallback chain into the pairing payload
+ * (`src/cli/mobile-pairing.ts`), but only the head was ever inspected. A phone
+ * or tablet cannot reach the desktop's localhost model, so when the learner's
+ * primary recall model is local the head is unusable *by construction* — and
+ * the cloud model sitting right behind it was ignored. On Android that stayed
+ * invisible because Gemini Nano answers first; on iOS, which has no on-device
+ * evaluator, it meant no evaluation at all (reported on an iPad 9, 2026-07-31).
+ */
+export function selectCloudHttpEndpoints(
+  endpoint: ZamPairLlmEndpoint | null | undefined,
+): ZamPairLlmEndpoint[] {
+  const usable: ZamPairLlmEndpoint[] = [];
+  let candidate = endpoint ?? null;
+  for (let depth = 0; candidate && depth < MAX_FALLBACK_DEPTH; depth++) {
+    if (isCloudHttpEndpoint(candidate)) usable.push(candidate);
+    candidate = candidate.fallback ?? null;
+  }
+  return usable;
+}
+
+/** First cloud-usable endpoint in the chain, or null. */
+export function selectCloudHttpEndpoint(
+  endpoint: ZamPairLlmEndpoint | null | undefined,
+): ZamPairLlmEndpoint | null {
+  return selectCloudHttpEndpoints(endpoint)[0] ?? null;
+}
+
 /**
  * Preferred backend label for UI/tests.
- * On-device is always preferred; cloud HTTP only when no Nano path is intended.
+ *
+ * Android keeps the NPU-first stance, so it reports on-device for every paired
+ * configuration. Where the platform has no on-device evaluator the honest
+ * answer is what will actually run: the cloud endpoint, or nothing.
  */
 export function resolveEvaluationBackend(
   endpoint: ZamPairLlmEndpoint | null | undefined,
+  onDeviceAvailable = true,
 ): EvaluationBackend {
-  // Mobile field-test stance: NPU first. Cloud is fallback only.
-  if (!endpoint?.enabled || endpoint.local || isLoopbackUrl(endpoint.url)) {
-    return "on-device";
+  if (!onDeviceAvailable) {
+    return selectCloudHttpEndpoint(endpoint) ? "http" : "none";
   }
-  // Cloud-configured: still report on-device as primary; evaluateMobileAnswer
-  // tries Nano first and only then HTTP.
+  // Mobile field-test stance: NPU first. Cloud is fallback only.
   return "on-device";
 }
 
@@ -169,36 +212,48 @@ export async function evaluateMobileAnswer(
   const prompt = buildRecallEvaluationPrompt(input.card, answer, input.locale);
   const errors: string[] = [];
 
-  try {
-    const generated = await input.ports.generateOnDevice(prompt);
-    return {
-      evaluation: parseRecallEvaluation(generated.text),
-      backend: "on-device",
-      modelLabel: "Gemini Nano (on-device)",
-    };
-  } catch (error) {
-    errors.push(
-      `on-device: ${error instanceof Error ? error.message : String(error)}`,
-    );
-  }
-
-  if (isCloudHttpEndpoint(input.endpoint) && input.endpoint) {
+  if (input.onDeviceAvailable !== false) {
     try {
-      const text = await generateViaHttp(
-        input.endpoint,
-        prompt,
-        input.ports.fetchText,
-      );
+      const generated = await input.ports.generateOnDevice(prompt);
       return {
-        evaluation: parseRecallEvaluation(text),
-        backend: "http",
-        modelLabel: input.endpoint.label || input.endpoint.model,
+        evaluation: parseRecallEvaluation(generated.text),
+        backend: "on-device",
+        modelLabel: "Gemini Nano (on-device)",
       };
     } catch (error) {
       errors.push(
-        `http: ${error instanceof Error ? error.message : String(error)}`,
+        `on-device: ${error instanceof Error ? error.message : String(error)}`,
       );
     }
+  }
+
+  // Try every reachable endpoint in the chain, not just the first. A paired
+  // payload can advertise an endpoint that cannot actually serve the request —
+  // an agent-transport entry projected before that was fixed at the source
+  // carries a defaulted URL and looks like an ordinary cloud target. Falling
+  // through to the next one repairs an already-paired device without asking
+  // the learner to pair again.
+  const cloudEndpoints = selectCloudHttpEndpoints(input.endpoint);
+  for (const cloud of cloudEndpoints) {
+    try {
+      const text = await generateViaHttp(cloud, prompt, input.ports.fetchText);
+      return {
+        evaluation: parseRecallEvaluation(text),
+        backend: "http",
+        modelLabel: cloud.label || cloud.model,
+      };
+    } catch (error) {
+      errors.push(
+        `http (${cloud.label || cloud.model}): ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+  }
+  if (cloudEndpoints.length === 0 && input.endpoint) {
+    // Distinguish "your models are unreachable from here" from "nothing was
+    // paired at all" — only the first is something the learner can fix.
+    errors.push(
+      "no cloud model: the paired models are all local to the desktop and cannot be reached from this device",
+    );
   }
 
   throw new Error(errors.join("; ") || "no evaluation backend available");

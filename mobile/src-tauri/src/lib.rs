@@ -17,7 +17,15 @@ mod voice;
 fn platform_features() -> serde_json::Value {
     let android = cfg!(target_os = "android");
     serde_json::json!({
-        "voice": android,
+        // Voice review runs on both mobile platforms (ADR 2026-07-31): Android
+        // through a foreground service, iOS only while ZAM is frontmost.
+        "voice": cfg!(mobile),
+        // Android holds the session through a foreground service and a partial
+        // wake lock, so review continues with the screen off — that is the
+        // point of hands-free. iOS hands the microphone back the moment the app
+        // leaves the foreground, so the WebView must end the session instead of
+        // leaving it waiting for audio that can never arrive.
+        "voiceSurvivesBackground": android,
         "inAppUpdate": android,
         "onDeviceEvaluation": android,
     })
@@ -33,13 +41,14 @@ pub fn run() {
     let builder = builder.plugin(secure_store::init());
     #[cfg(mobile)]
     let builder = builder.plugin(reminder::init());
-    // Android-only: the voice pipeline is a foreground service, the on-device
-    // evaluator is Gemini Nano via AICore, and the update channel sideloads an
-    // APK. None of the three has an iOS counterpart — see ADR 2026-07-26.
-    // Their stubs still answer on iOS, so the UI must ask `platform_features`
-    // and hide the controls; an answering stub is not the same as a feature.
-    #[cfg(target_os = "android")]
+    // Voice review exists on both mobile platforms (ADR 2026-07-31).
+    #[cfg(mobile)]
     let builder = builder.plugin(voice::init());
+    // Android-only: the on-device evaluator is Gemini Nano via AICore, and the
+    // update channel sideloads an APK. Neither has an iOS counterpart — see
+    // ADR 2026-07-26. Their stubs still answer on iOS, so the UI must ask
+    // `platform_features` and hide the controls; an answering stub is not the
+    // same as a feature.
     #[cfg(target_os = "android")]
     let builder = builder.plugin(on_device_llm::init());
     #[cfg(target_os = "android")]

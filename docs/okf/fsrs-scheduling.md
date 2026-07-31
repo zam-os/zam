@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-07-31T08:10:00Z
+timestamp: 2026-07-31T19:35:00Z
 ---
 
 ZAM's spaced repetition uses **FSRS-5** (Free Spaced Repetition Scheduler,
@@ -54,23 +54,24 @@ monopolize a session), with a new card inserted at every 5th position.
 
 # Voice review
 
-The Android companion and the macOS/Windows desktop app can operate the same
-review session hands-free. One shared controller speaks the existing template
-question, captures a spoken answer, speaks the expected answer or an
-evaluation, and maps German or English rating words to ratings 1-4. The
-transcript is persisted as the current session draft; the selected rating still
-enters the shared kernel through the same review-session controller and
-`executeReviewAction()`. Typing and tap/click ratings remain available
-throughout.
+Every ZAM surface can operate the same review session hands-free — the Android
+and iOS companions and the macOS/Windows desktop app. One shared controller
+speaks the existing template question, captures a spoken answer, speaks the
+expected answer or an evaluation, and maps German or English rating words to
+ratings 1-4. The transcript is persisted as the current session draft; the
+selected rating still enters the shared kernel through the same review-session
+controller and `executeReviewAction()`. Typing and tap/click ratings remain
+available throughout.
 
 Whether the speech itself stays on the device depends on the learner's
-preference and on what the device can do. On Android it is always on-device:
-recognition uses the on-device recognizer and synthesis selects only installed
-voices that need no network connection. A microphone/media-playback foreground
-service, partial wake lock, and audio-focus handling keep an explicitly started
-voice session usable with the screen off and pause it across transient focus
-loss. See [voice-mode.md](voice-mode.md) for the engine tiering and the
-per-platform detail.
+preference and on what the device can do. On Android and iOS it is always
+on-device: recognition is pinned to the on-device recognizer, and Android
+synthesis selects only installed voices that need no network connection.
+Android additionally holds the session through a microphone/media-playback
+foreground service and a partial wake lock so review continues with the screen
+off; iOS ends the session when the app leaves the foreground, because the
+system takes the microphone back. See [voice-mode.md](voice-mode.md) for the
+engine tiering and the per-platform detail.
 
 # Examples
 
