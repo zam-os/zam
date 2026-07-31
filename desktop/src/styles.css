@@ -3369,3 +3369,31 @@ textarea::placeholder {
 .wizard-error span {
   white-space: pre-line;
 }
+
+/* ── HANDS-FREE VOICE MODE (ADR 2026-07-31) ──────────────────────────────── */
+
+.voice-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.voice-status {
+  font-size: 0.85rem;
+  color: var(--clr-text-muted, #8b8b95);
+  /* The status changes on every step of the loop; reserving a line keeps the
+     rating buttons from jumping under the cursor mid-review. */
+  min-height: 1.2em;
+}
+
+.voice-status.is-error {
+  color: var(--clr-accent-red, #e05561);
+}
+
+.voice-unavailable {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--clr-text-muted, #8b8b95);
+}

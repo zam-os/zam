@@ -56,6 +56,33 @@ const VISION_MODEL_HINTS = [
   "mimo",
 ];
 
+/**
+ * Model-name fragments that mark a speech-to-text model (ADR 2026-07-31).
+ * Deliberately narrow: a false positive here would offer the learner a cloud
+ * transcription path that 400s on the first spoken answer.
+ */
+const STT_MODEL_HINTS = [
+  "whisper",
+  "transcribe",
+  "-stt",
+  "stt-",
+  "speech-to-text",
+  "parakeet",
+  "distil-whisper",
+];
+
+/** Model-name fragments that mark a text-to-speech model (ADR 2026-07-31). */
+const TTS_MODEL_HINTS = [
+  "-tts",
+  "tts-",
+  "text-to-speech",
+  "speecht5",
+  "kokoro",
+  "piper",
+  "xtts",
+  "bark",
+];
+
 function matchesAny(id: string, hints: string[]): boolean {
   const lower = id.toLowerCase();
   return hints.some((hint) => lower.includes(hint));
@@ -102,12 +129,21 @@ export function classifyCapabilities(
   const looksVision = matchesAny(entry.model, VISION_MODEL_HINTS);
   const inCatalog = catalogHasModel(catalog, entry.model);
 
+  const looksStt = matchesAny(entry.model, STT_MODEL_HINTS);
+  const looksTts = matchesAny(entry.model, TTS_MODEL_HINTS);
+
   detected.embedding = looksEmbedding || dimProbeEmbedding;
   detected.image = looksVision;
-  // A chat-completions endpoint serves text unless the model is embedding-only.
-  // When the catalog is silent (single-model local server) we cannot disprove
-  // text, so we trust the chat-completions flavor.
-  detected.text = !detected.embedding && (inCatalog || !catalogKnown);
+  detected.stt = looksStt;
+  detected.tts = looksTts;
+  // A chat-completions endpoint serves text unless it is a single-purpose
+  // embedding or audio model. Audio models answer on /audio/*, not /chat, so
+  // offering them for text would break recall coaching.
+  detected.text =
+    !detected.embedding &&
+    !looksStt &&
+    !looksTts &&
+    (inCatalog || !catalogKnown);
   return detected;
 }
 

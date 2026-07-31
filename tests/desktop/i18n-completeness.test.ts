@@ -276,6 +276,21 @@ const REQUIRED_KEYS = [
 // passed over, so the exhaustive scan below doesn't mask *new* regressions
 // while still not churning unrelated strings.
 const PRE_EXISTING_FALLBACK_KEYS = new Set([
+  // 0.24.0 desktop voice mode (ADR 2026-07-31) — en/de shipped; es/fr/pt/zh/ja
+  // await native pack review before translation (see i18n pack backlog).
+  "settings_voice_title",
+  "settings_voice_help",
+  "settings_voice_preference",
+  "voice_pref_device_only",
+  "voice_pref_device_first",
+  "voice_pref_quality_first",
+  "voice_detail_on_device",
+  "voice_detail_uses_cloud",
+  "voice_start",
+  "voice_pause",
+  "voice_paused_msg",
+  "voice_unavailable",
+  "voice_unavailable_device_only",
   // 0.15.6 track-step explainer — en/de shipped; es/fr/pt/zh/ja await
   // native pack review before translation (see i18n pack backlog).
   "wizard_track_note",

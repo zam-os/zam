@@ -423,6 +423,23 @@
             </label>
           </article>
 
+          <!-- VOICE MODE (ADR 2026-07-31). The preference is machine-local:
+               which tier is right depends on the hardware in front of the
+               learner, so it is never synchronized through the database. -->
+          <article class="card frosted settings-card">
+            <h2 id="lbl-settings-voice-title">Voice mode</h2>
+            <p id="lbl-settings-voice-help" class="settings-card-help"></p>
+            <label class="settings-field" for="voice-preference-select">
+              <span id="lbl-settings-voice-preference">Speech is handled by</span>
+              <select id="voice-preference-select">
+                <option value="device-only" id="voice-pref-device-only-option">This device only</option>
+                <option value="device-first" id="voice-pref-device-first-option">This device, cloud if needed</option>
+                <option value="quality-first" id="voice-pref-quality-first-option">Best quality</option>
+              </select>
+            </label>
+            <p id="voice-preference-detail" class="settings-card-help" aria-live="polite"></p>
+          </article>
+
           <article class="card frosted settings-card">
             <h2 id="lbl-settings-data-title">Data</h2>
             <div class="settings-row">
@@ -603,6 +620,17 @@
                 </button>
               </div>
             </div>
+
+            <!-- HANDS-FREE VOICE MODE (ADR 2026-07-31). Hidden until the
+                 capability probe says this device can actually run it; when it
+                 cannot, the reason is shown instead of a dead button. -->
+            <div class="voice-controls hidden" id="voice-controls">
+              <button id="btn-toggle-voice" class="btn secondary-btn btn-sm" type="button" aria-pressed="false">
+                Start voice mode
+              </button>
+              <span id="voice-status" class="voice-status" role="status" aria-live="polite"></span>
+            </div>
+            <p id="voice-unavailable" class="voice-unavailable hidden"></p>
 
             <!-- GENERATING STATE SPINNER -->
             <div id="npu-loading" class="npu-loader-box hidden">
