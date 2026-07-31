@@ -492,6 +492,30 @@ jobs:
           npm ci
           npm ci --prefix mobile
 
+      # project.yml is versioned and `tauri ios init` deliberately leaves it
+      # alone, so its version would otherwise stay at whatever was last written
+      # by hand — it had drifted to 0.21.0 by 0.24.1. App Store Connect rejects
+      # an upload whose build number is not higher than the previous one, so a
+      # stale value does not just mislabel the build, it blocks the upload.
+      - name: Stamp the iOS bundle version
+        if: steps.apple.outputs.configured == 'true'
+        run: |
+          set -euo pipefail
+          python3 - "$PKG_VERSION" <<'PY'
+          import re, sys, pathlib
+          version = sys.argv[1]
+          path = pathlib.Path("mobile/src-tauri/gen/apple/project.yml")
+          text = path.read_text()
+          text = re.sub(
+              r"(CFBundleShortVersionString: ).*", rf"\g<1>{version}", text, count=1
+          )
+          text = re.sub(
+              r'(CFBundleVersion: ").*(")', rf"\g<1>{version}\g<2>", text, count=1
+          )
+          path.write_text(text)
+          print(f"stamped iOS bundle version {version}")
+          PY
+
       - name: Generate Xcode project
         if: steps.apple.outputs.configured == 'true'
         working-directory: mobile

@@ -8,13 +8,13 @@ tags:
   - desktop
   - mobile
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/voice-mode.md"
-timestamp: 2026-07-31T16:20:00Z
+timestamp: 2026-07-31T21:00:00Z
 ---
 
 Voice mode reads a due card aloud, listens for the spoken answer, and maps a
 spoken word to an FSRS rating — so a review session works on a walk, during
-housework, or at the gym. It shipped on Android in 0.22.x and reached the
-macOS/Windows desktop in 0.24.0.
+housework, or at the gym. It shipped on Android in 0.22.x, reached the
+macOS/Windows desktop in 0.24.0, and the iPad/iPhone companion after that.
 
 # One loop, many engines
 
@@ -43,6 +43,7 @@ Each surface supplies its own adapter and port:
 | --- | --- |
 | Desktop | `desktop/src/voice.ts` → Tauri commands in `desktop/src-tauri/src/voice.rs` |
 | Android | `mobile/src/main.ts` → `VoicePlugin.kt` |
+| iOS | `mobile/src/main.ts` → `VoicePlugin.swift` |
 
 # Two tiers, resolved per capability
 
@@ -56,6 +57,7 @@ the capability model registry with the `stt` or `tts` flag set.
 | Windows | WinRT `SpeechRecognizer` | WinRT `SpeechSynthesizer` |
 | Linux | none | `speech-dispatcher` |
 | Android | `SpeechRecognizer`, on-device | `TextToSpeech`, embedded voices |
+| iOS | `SFSpeechRecognizer`, on-device required | `AVSpeechSynthesizer` |
 
 Speech-to-text and text-to-speech resolve **independently**. Linux has local
 synthesis but no local recognizer, so it reads cards aloud locally while
@@ -135,6 +137,14 @@ runtime, the `com.apple.security.device.audio-input` entitlement. Consent is
 therefore only obtainable from the signed app bundle, never from a bare test
 binary.
 
+iOS needs the same two usage descriptions, declared in
+`mobile/src-tauri/gen/apple/project.yml` under `info.properties`. That file is
+versioned and `tauri ios init` regenerates only the `.xcodeproj` from it, so
+edits there survive CI. Its `CFBundleShortVersionString` is stamped from
+`package.json` by the release workflow: App Store Connect rejects an upload
+whose build number is not higher than the previous one, so a stale value blocks
+the upload rather than merely mislabelling it.
+
 Windows serves free-form dictation from the installed speech language pack, and
 additionally requires the user to have accepted the **speech privacy policy**
 (Settings › Privacy & security › Speech › "Online speech recognition"). Unlike
@@ -161,6 +171,19 @@ This is the one place where the module reads the registry rather than asking an
 API, and it is worth the exception: the alternative is 0.24.1's behaviour, where
 the button appeared, the learner spoke, and the session died on a bare HRESULT.
 
+# Sessions and backgrounding
+
+Android holds a voice session through a microphone/media-playback foreground
+service and a partial wake lock, so review continues with the screen off —
+that is the point of hands-free. iOS hands the microphone back the moment the
+app leaves the foreground, and a session left running would wait for audio that
+cannot arrive.
+
+The difference is modelled rather than assumed: `platform_features` reports
+`voiceSurvivesBackground`, and the WebView ends the session on
+`visibilitychange` only where that flag is false. Treating every platform like
+iOS would silently remove Android's headline behaviour.
+
 # Availability is per device *and per language*
 
 Voice mode is the first ZAM feature whose availability legitimately differs per
@@ -184,7 +207,7 @@ On Windows the installed set comes from `SupportedTopicLanguages()` and
 `SpeechSynthesizer::AllVoices()`. `Language::CreateLanguage` must not be used
 for this: it validates the *shape* of a BCP-47 tag and accepts `de-DE` on a
 machine with no German speech at all, deferring the failure to
-`SpeechRecognizer::Create` as a bare `0x800455BC`. On macOS the check is
+`SpeechRecognizer::Create` as a bare `0x800455BC`. On macOS and iOS the check is
 `initWithLocale` plus `supportsOnDeviceRecognition` for that one locale.
 
 Reasons are ordered from the most fundamental cause outwards — missing language
@@ -198,6 +221,7 @@ re-probes when the app language changes.
 
 - [ADR 2026-07-31 — Cross-Platform Voice Mode](../adr/2026-07-31-cross-platform-voice-mode.md)
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
+- [ADR 2026-07-26 — iPadOS Companion Target](../adr/2026-07-26-ipados-companion-target.md)
 - [ADR 2026-07-12 — Unified Capability Model Registry](../adr/2026-07-12-unified-capability-model-registry.md)
 - Tests: `tests/kernel/voice-review.test.ts`, `tests/desktop/voice.test.ts`, `tests/cli/speech.test.ts`, `tests/mobile/voice.test.ts`, `tests/mobile/voice-wiring.test.ts`
-- Code: `src/kernel/recall/voice-review.ts`, `src/cli/llm/speech.ts`, `src/cli/llm/capability-probe.ts`, `desktop/src/voice.ts`, `desktop/src-tauri/src/voice.rs`, `mobile/src/voice.ts`, `src/kernel/system/install-config.ts`
+- Code: `src/kernel/recall/voice-review.ts`, `src/cli/llm/speech.ts`, `src/cli/llm/capability-probe.ts`, `desktop/src/voice.ts`, `desktop/src-tauri/src/voice.rs`, `mobile/src/voice.ts`, `mobile/src-tauri/src/voice.rs`, `mobile/src-tauri/ios/Sources/VoicePlugin.swift`, `src/kernel/system/install-config.ts`

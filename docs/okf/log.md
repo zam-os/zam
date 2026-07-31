@@ -2,6 +2,8 @@
 
 ## 2026-07-31
 
+- **Update** — [FSRS-5 Scheduling](fsrs-scheduling.md)
+- **Update** — [Hands-Free Voice Mode](voice-mode.md)
 - **Update** — [Hands-Free Voice Mode](voice-mode.md)
 - **Update** — [Hands-Free Voice Mode](voice-mode.md)
 - **Update** — [FSRS-5 Scheduling](fsrs-scheduling.md)
