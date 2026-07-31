@@ -765,6 +765,7 @@ async function runSmartEvaluation(): Promise<MobileEvaluationResult | null> {
       learnerAnswer: answer,
       locale: learnerLocale ?? navigator.language,
       endpoint: currentPairing?.llm?.recall ?? null,
+      onDeviceAvailable: platformFeatures.onDeviceEvaluation,
       ports: evaluationPorts,
     });
     if (isStaleEvaluation(item.cardId)) return null;
