@@ -84,3 +84,26 @@ a watcher, or learning-state coupling.
   remain visible with `unknown` freshness.
 - Accurate results depend on maintainers keeping each article's `- Code:`
   citations representative of the behavior it explains.
+
+## Amendment 2026-07-30 — version-string churn is not a review signal
+
+The first releases after the radar shipped exposed a systematic false positive.
+Every release rewrites the `ZAM-Content-Studio/x.y.z` User-Agent in
+`src/cli/commands/bridge.ts` and `src/cli/adapters/source-reader.ts`, so every
+article citing one of those files was told to review a version number on each
+release. A recurring signal nobody can act on trains people to ignore the
+radar, which costs more than the drift it was built to catch.
+
+Decision 3 is therefore refined: before a descendant commit or an uncommitted
+change under a cited path recommends review, the audit reads that path's
+accumulated diff and asks whether it changed nothing but version literals. If
+so the reference stays `current` and carries the reason
+`version-only-change`, so the evidence still says a change happened.
+
+The test is deliberately strict, because a false `current` is the more
+expensive error: removed and added lines must pair up one-to-one and be
+identical once semver literals are masked. Any added line, removed line, or
+other edit — including a behavior change riding along with a version bump —
+still recommends review. An empty diff never qualifies, which keeps untracked
+files on the review side. The untracked-article frontmatter fallback has no
+baseline commit to diff against and is unchanged.
