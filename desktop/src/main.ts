@@ -35,6 +35,19 @@ import {
 } from "./onboarding.js";
 import { initServerDbWizard } from "./server-db.js";
 import {
+  buildAvailability,
+  createVoiceController,
+  createVoicePort,
+  isVoiceModeUsable,
+  type NativeVoiceCapabilities,
+  probeNativeCapabilities,
+  readStoredPreference,
+  resolveVoiceEnginePlan,
+  resolveVoiceLocale,
+  unavailableReasonKey,
+  type VoiceEnginePreference,
+} from "./voice.js";
+import {
   beginTurn,
   buildDiscussReviewArgs,
   completeTurn,
@@ -3433,6 +3446,8 @@ function switchView(
     true;
 
   if (viewId !== "study-view" && studySessionActive) {
+    // Navigating away must silence the microphone and the speaker.
+    void pauseVoiceMode();
     evaluationRequestId++;
     if (revealInProgress) cancelActiveBridgeRequest();
     revealInProgress = false;
@@ -3458,6 +3473,7 @@ function switchView(
   document.querySelectorAll(".view").forEach((el) => el.classList.remove("active"));
   document.getElementById(viewId)?.classList.add("active");
   studySessionActive = viewId === "study-view" && !sessionSummaryVisible;
+  if (studySessionActive) void refreshVoiceAvailability();
   setActiveNav(viewId);
 
   const mainContainer = document.querySelector('main.container');
@@ -4931,6 +4947,138 @@ const REVIEW_ACTION_TRIGGER_IDS = [
   "btn-study-open-editor",
 ] as const;
 
+// ── HANDS-FREE VOICE MODE (ADR 2026-07-31) ──────────────────────────────────
+
+/** Machine-local preference; loaded from ~/.zam/config.json on first probe. */
+let voicePreference: VoiceEnginePreference = readStoredPreference(undefined);
+let voiceCapabilities: NativeVoiceCapabilities | null = null;
+let voiceProbePending = false;
+
+/** Tauri's `invoke` narrowed to the shape desktop/src/voice.ts expects. */
+const voiceInvoke = (<T>(command: string, args?: unknown): Promise<T> =>
+  invoke<T>(command, args as Record<string, unknown> | undefined));
+
+const voiceController = createVoiceController(
+  {
+  currentCard: () => {
+    if (!activeCard) return null;
+    const textarea = document.getElementById(
+      "user-answer-input",
+    ) as HTMLTextAreaElement | null;
+    return {
+      question: activePromptQuestion,
+      // The card's concept is what the reveal box shows as the reference
+      // answer; mobile reads the same field (mobile/src/main.ts).
+      expectedAnswer: activeCard.concept,
+      revealed: !document
+        .getElementById("revealed-box")!
+        .classList.contains("hidden"),
+      draftAnswer: textarea?.value ?? "",
+    };
+  },
+  captureAnswer: (transcript) => {
+    const textarea = document.getElementById(
+      "user-answer-input",
+    ) as HTMLTextAreaElement | null;
+    if (textarea) textarea.value = transcript;
+    activeUserAnswer = transcript;
+  },
+  revealAnswer: () => submitAndReveal(),
+  rate: async (rating) => {
+    await submitRating(rating);
+    // Stop the loop when the session ended or no card followed.
+    return studySessionActive && activeCard !== null;
+  },
+    setStatus: (message, isError) => setVoiceStatus(message, isError),
+    locale: () => currentLocale,
+  },
+  createVoicePort(voiceInvoke),
+);
+
+function setVoiceStatus(message: string, isError = false): void {
+  const status = document.getElementById("voice-status");
+  if (!status) return;
+  status.textContent = message;
+  status.classList.toggle("is-error", isError);
+}
+
+function updateVoiceButton(): void {
+  const button = document.getElementById(
+    "btn-toggle-voice",
+  ) as HTMLButtonElement | null;
+  if (!button) return;
+  button.textContent = voiceController.active
+    ? t("voice_pause")
+    : t("voice_start");
+  button.setAttribute("aria-pressed", voiceController.active ? "true" : "false");
+}
+
+/**
+ * Probe the device once per app run and show or explain the control.
+ *
+ * The cloud tier is not wired yet, so cloud availability is reported as false:
+ * every preference therefore resolves to the device, which is the honest
+ * answer today rather than a promise the build cannot keep.
+ */
+async function refreshVoiceAvailability(): Promise<void> {
+  if (voiceProbePending) return;
+  voiceProbePending = true;
+  try {
+    if (!voiceCapabilities) {
+      try {
+        const stored = await runBridge("voice-preference-get", []);
+        voicePreference = readStoredPreference(stored?.preference);
+      } catch (error) {
+        console.warn("Falling back to the default voice preference", error);
+      }
+      voiceCapabilities = await probeNativeCapabilities(voiceInvoke);
+    }
+    const plan = resolveVoiceEnginePlan(
+      voicePreference,
+      buildAvailability(voiceCapabilities, { stt: false, tts: false }),
+    );
+    const controls = document.getElementById("voice-controls");
+    const notice = document.getElementById("voice-unavailable");
+    const usable = isVoiceModeUsable(plan);
+    controls?.classList.toggle("hidden", !usable);
+    if (notice) {
+      notice.classList.toggle("hidden", usable);
+      if (!usable) {
+        const key = unavailableReasonKey(plan) ?? "voice_unavailable";
+        const detail =
+          voiceCapabilities.sttDetail ?? voiceCapabilities.ttsDetail ?? "";
+        notice.textContent = detail ? `${t(key)} ${detail}` : t(key);
+      }
+    }
+    if (usable) updateVoiceButton();
+  } catch (error) {
+    console.warn("Voice capability probe failed", error);
+    document.getElementById("voice-controls")?.classList.add("hidden");
+  } finally {
+    voiceProbePending = false;
+  }
+}
+
+async function pauseVoiceMode(): Promise<void> {
+  if (!voiceController.active) return;
+  await voiceController.pause();
+  setVoiceStatus("");
+  updateVoiceButton();
+}
+
+function startVoiceMode(): void {
+  const locale = resolveVoiceLocale(currentLocale);
+  updateVoiceButton();
+  void voiceController
+    .start(locale)
+    .catch((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      setVoiceStatus(tf("voice_paused_msg", { message }), true);
+    })
+    .finally(updateVoiceButton);
+  updateVoiceButton();
+}
+
 function updateReviewControlState(): void {
   const disabled = reviewActionInProgress || cardLoadInProgress || !activeCard;
   const stateBlocked =
@@ -5346,6 +5494,7 @@ async function finishStudySession(): Promise<void> {
   if (sessionSummaryVisible) return;
   sessionSummaryVisible = true;
   studySessionActive = false;
+  void pauseVoiceMode();
 
   evaluationRequestId++;
   if (revealInProgress) cancelActiveBridgeRequest();
@@ -5726,6 +5875,14 @@ window.addEventListener("DOMContentLoaded", () => {
   // Submit Answer / Reveal Answer Button
   document.getElementById("btn-reveal-answer")!.addEventListener("click", () => {
     submitAndReveal();
+  });
+
+  document.getElementById("btn-toggle-voice")?.addEventListener("click", () => {
+    if (voiceController.active) {
+      void pauseVoiceMode();
+    } else {
+      startVoiceMode();
+    }
   });
 
   // Keep Waiting Button in Timeout dialog

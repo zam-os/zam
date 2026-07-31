@@ -45,6 +45,7 @@ import {
   countUserCardsForCurriculumTopic,
   createGoal,
   createToken,
+  DEFAULT_VOICE_ENGINE_PREFERENCE,
   decidePostCapture,
   decidePreCapture,
   deleteCardForUser,
@@ -66,6 +67,7 @@ import {
   getDisplayTitle,
   getKnowledgeContextByName,
   getMachineAiModels,
+  getMachineVoicePreference,
   getOnboardingDone,
   getOnboardingPersona,
   getProviderApiKey,
@@ -79,6 +81,7 @@ import {
   importCurriculumCards,
   isOllamaInstalled,
   isPersonaId,
+  isVoiceEnginePreference,
   listAgentSkills,
   listKnowledgeContexts,
   listPersonalCards,
@@ -99,6 +102,7 @@ import {
   seedPersonaKnowledgeContext,
   setActiveWorkspaceContext,
   setAgentConnectAutoDone,
+  setMachineVoicePreference,
   setOnboardingDone,
   setOnboardingPersona,
   setProviderApiKey,
@@ -109,6 +113,7 @@ import {
   uiObservationLogExists,
   unassignTokenFromContext,
   updateToken,
+  VOICE_ENGINE_PREFERENCES,
   type WorkspaceConfig,
   type WorkspaceKind,
 } from "../../kernel/index.js";
@@ -3268,6 +3273,46 @@ bridgeCommand
       await setSetting(db, opts.key, opts.value);
       jsonOut({ ok: true, key: opts.key, value: opts.value });
     });
+  });
+
+// ── zam bridge voice-preference-get / -set ────────────────────────────────
+
+// Voice mode's engine preference is machine-local, not a DB setting
+// (ADR 2026-07-31): whether on-device speech is the right choice depends on
+// the hardware in front of the learner, so a phone's answer must not be pushed
+// onto their desktop through a shared database. That is why these are their own
+// commands rather than two more keys in `setting-set`.
+
+bridgeCommand
+  .command("voice-preference-get")
+  .description("Read this machine's voice-mode engine preference (JSON)")
+  .action(() => {
+    const stored = getMachineVoicePreference();
+    jsonOut({
+      preference: isVoiceEnginePreference(stored)
+        ? stored
+        : DEFAULT_VOICE_ENGINE_PREFERENCE,
+      // Tell the caller whether it is looking at a real choice or the default,
+      // so Settings can show "not chosen yet" instead of implying consent.
+      explicit: isVoiceEnginePreference(stored),
+    });
+  });
+
+bridgeCommand
+  .command("voice-preference-set")
+  .description("Set this machine's voice-mode engine preference (JSON)")
+  .requiredOption(
+    "--preference <preference>",
+    `One of: ${VOICE_ENGINE_PREFERENCES.join(", ")}`,
+  )
+  .action((opts) => {
+    if (!isVoiceEnginePreference(opts.preference)) {
+      jsonError(
+        `Unknown voice preference "${opts.preference}". Allowed: ${VOICE_ENGINE_PREFERENCES.join(", ")}.`,
+      );
+    }
+    setMachineVoicePreference(opts.preference);
+    jsonOut({ ok: true, preference: opts.preference });
   });
 
 // ── zam bridge check-vision ────────────────────────────────────────────────

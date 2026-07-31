@@ -50,6 +50,13 @@ export interface InstallConfig {
   companion?: MachineCompanionConfig;
   /** Machine-local first-run onboarding state (ADR 2026-07-24). */
   onboarding?: MachineOnboardingConfig;
+  /**
+   * Machine-local voice-mode preferences (ADR 2026-07-31). Never the
+   * Turso-shared database: whether on-device speech is the right choice
+   * depends on the hardware in front of the learner, so a phone's answer must
+   * not be pushed onto their desktop.
+   */
+  voice?: MachineVoiceConfig;
   /** Machine-local paths to existing personal/team/community workspaces. */
   workspaces?: WorkspaceConfig[];
   /** Machine-local id of the workspace currently active in this install. */
@@ -114,6 +121,15 @@ export interface MachineCompanionConfig {
   selectedAntigravityModelId?: string;
   /** Collapsed state for the shared context bar, keyed by surface name. */
   collapsed?: Record<string, boolean>;
+}
+
+export interface MachineVoiceConfig {
+  /**
+   * Which speech tier voice mode prefers on this machine. Values are the
+   * `VoiceEnginePreference` union from `recall/voice-review.ts`; stored as a
+   * plain string so this module stays free of recall imports.
+   */
+  enginePreference?: string;
 }
 
 export type MachineAiRole = "vision" | "recall" | "text" | "embedding";
@@ -638,6 +654,39 @@ export function saveMachineCompanionConfig(
 ): void {
   const config = loadInstallConfig(path);
   config.companion = companion;
+  saveInstallConfig(config, path);
+}
+
+/**
+ * Read this machine's voice-mode preference (ADR 2026-07-31).
+ *
+ * Returns `undefined` rather than a default when nothing is stored, so the
+ * caller decides what the default is — the kernel's
+ * `DEFAULT_VOICE_ENGINE_PREFERENCE` owns that, not the config file.
+ */
+export function getMachineVoicePreference(
+  path = defaultConfigPath(),
+): string | undefined {
+  const raw = loadInstallConfig(path).voice;
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return undefined;
+  return typeof raw.enginePreference === "string"
+    ? raw.enginePreference
+    : undefined;
+}
+
+/** Persist the voice-mode preference, preserving other top-level config keys. */
+export function setMachineVoicePreference(
+  preference: string | undefined,
+  path = defaultConfigPath(),
+): void {
+  const config = loadInstallConfig(path);
+  const voice: MachineVoiceConfig = { ...(config.voice ?? {}) };
+  if (preference === undefined) {
+    delete voice.enginePreference;
+  } else {
+    voice.enginePreference = preference;
+  }
+  config.voice = voice;
   saveInstallConfig(config, path);
 }
 

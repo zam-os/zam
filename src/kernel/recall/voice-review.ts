@@ -39,7 +39,12 @@ export interface VoiceEvaluationSpeech {
 export interface VoiceReviewAdapter {
   currentCard(): VoiceReviewCard | null;
   captureAnswer(transcript: string): void;
-  revealAnswer(): void;
+  /**
+   * May be asynchronous: the desktop reveal runs an LLM evaluation and
+   * repaints the card, and speaking before it settles would read a stale one.
+   * The loop awaits this before re-reading {@link currentCard}.
+   */
+  revealAnswer(): void | Promise<void>;
   /**
    * Optional intelligent evaluation after reveal. Return null to fall back
    * to reading the expected answer and self-rating.
@@ -312,7 +317,8 @@ export class HandsFreeReviewController {
           if (!transcript)
             throw new Error("Speech recognition returned no answer");
           this.adapter.captureAnswer(transcript);
-          this.adapter.revealAnswer();
+          await this.adapter.revealAnswer();
+          if (!this.isCurrent(generation)) break;
           card = this.adapter.currentCard();
           if (!card) break;
         }

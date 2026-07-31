@@ -111,6 +111,27 @@ describe("desktop module boundaries", () => {
     }
   });
 
+  // Voice mode (ADR 2026-07-31): main.ts injects `invoke` into
+  // createVoicePort/probeNativeCapabilities rather than voice.ts importing it,
+  // so the review-loop wiring stays unit-testable without a WebView.
+  it("voice.ts stays Tauri-free and Three-free", () => {
+    const specifiers = importSpecifiers(read("voice.ts"));
+    for (const specifier of specifiers) {
+      expect(
+        specifier.startsWith("@tauri-apps"),
+        `voice.ts must not import Tauri APIs (found "${specifier}")`,
+      ).toBe(false);
+      expect(
+        specifier === "three" || specifier.startsWith("three/"),
+        `voice.ts must not import Three.js (found "${specifier}")`,
+      ).toBe(false);
+      expect(
+        specifier.startsWith("./main") || specifier.startsWith("../main"),
+        `voice.ts must not import main.js (found "${specifier}")`,
+      ).toBe(false);
+    }
+  });
+
   it("settings.ts stays Tauri-free and Three-free", () => {
     const specifiers = importSpecifiers(read("panel/settings.ts"));
     for (const specifier of specifiers) {

@@ -4884,6 +4884,13 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Your deck is empty. Pick an import path — curriculum, your own sources, a project, or a goal.",
     dashboard_empty_no_cards:
       "No cards yet — the setup checklist has the import paths.",
+    voice_start: "Start voice mode",
+    voice_pause: "Pause voice mode",
+    voice_paused_msg: "Voice mode paused: {message}",
+    voice_unavailable:
+      "Voice mode is not available on this device.",
+    voice_unavailable_device_only:
+      "Voice mode is set to stay on this device, and this device cannot do it.",
     wizard_connect_model_link: "Connect an AI model",
   },
   de: {
@@ -5943,6 +5950,13 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Dein Stapel ist leer. Wähle einen Import-Weg – Lehrplan, eigene Quellen, ein Projekt oder ein Ziel.",
     dashboard_empty_no_cards:
       "Noch keine Karten – die Einrichtungsliste führt zu den Import-Wegen.",
+    voice_start: "Sprachmodus starten",
+    voice_pause: "Sprachmodus pausieren",
+    voice_paused_msg: "Sprachmodus pausiert: {message}",
+    voice_unavailable:
+      "Der Sprachmodus ist auf diesem Gerät nicht verfügbar.",
+    voice_unavailable_device_only:
+      "Der Sprachmodus soll dieses Gerät nicht verlassen, und dieses Gerät kann es nicht.",
     wizard_connect_model_link: "KI-Modell verbinden",
   },
   // es, fr, pt, zh, ja packs come from TRANSLATION_PACKS above; en/de stay inline here as the reference locales.
