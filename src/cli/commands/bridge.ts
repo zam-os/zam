@@ -3258,6 +3258,10 @@ bridgeCommand
 // must go through their dedicated commands, never this escape hatch.
 const UI_WRITABLE_SETTINGS = new Set([
   "llm.enabled",
+  // Default on. Disabling it serves the stored question verbatim and skips one
+  // model round-trip per card (ADR 2026-06-15) — the setting existed from the
+  // start but had no way to reach it short of writing the row by hand.
+  "llm.dynamic_questions",
   "llm.vision.enabled",
   "recall.quick_mode",
   "system.locale",
@@ -3980,6 +3984,9 @@ bridgeCommand
         },
         recall: {
           quickMode: (await getSetting(db, "recall.quick_mode")) === "true",
+          // Absent means on, matching ensureHighQualityQuestion's `!== "false"`.
+          dynamicQuestions:
+            (await getSetting(db, "llm.dynamic_questions")) !== "false",
         },
       });
     });

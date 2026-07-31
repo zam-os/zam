@@ -4902,6 +4902,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Voice mode is not available on this device.",
     voice_unavailable_device_only:
       "Voice mode is set to stay on this device, and this device cannot do it.",
+    lbl_dynamic_questions: "Reword questions each review",
+    lbl_dynamic_questions_help:
+      "ZAM rephrases each card's question every time it comes up, so you learn the concept rather than the wording. It asks the model once per card, which is what makes the first card of a session slow. Turn it off to get your stored question straight away.",
+    dynamic_questions_on: "Questions will be reworded each review.",
+    dynamic_questions_off: "Your stored question is used as written — reviews start faster.",
+    dynamic_questions_error: "The setting could not be saved.",
     wizard_connect_model_link: "Connect an AI model",
   },
   de: {
@@ -5979,6 +5985,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Der Sprachmodus ist auf diesem Gerät nicht verfügbar.",
     voice_unavailable_device_only:
       "Der Sprachmodus soll dieses Gerät nicht verlassen, und dieses Gerät kann es nicht.",
+    lbl_dynamic_questions: "Fragen jedes Mal neu formulieren",
+    lbl_dynamic_questions_help:
+      "ZAM formuliert die Frage einer Karte bei jeder Wiederholung neu, damit du den Inhalt lernst und nicht den Wortlaut. Dafür wird pro Karte einmal das Modell gefragt — genau das macht die erste Karte einer Sitzung langsam. Ausschalten heißt: deine gespeicherte Frage erscheint sofort.",
+    dynamic_questions_on: "Fragen werden bei jeder Wiederholung neu formuliert.",
+    dynamic_questions_off: "Deine gespeicherte Frage wird unverändert genutzt — die Abfrage startet schneller.",
+    dynamic_questions_error: "Die Einstellung konnte nicht gespeichert werden.",
     wizard_connect_model_link: "KI-Modell verbinden",
   },
   // es, fr, pt, zh, ja packs come from TRANSLATION_PACKS above; en/de stay inline here as the reference locales.

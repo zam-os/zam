@@ -660,6 +660,10 @@ function initializeTranslations() {
     t("lbl_learning_model");
   document.getElementById("lbl-observer-model")!.textContent =
     t("lbl_observer_model");
+  document.getElementById("lbl-dynamic-questions")!.textContent =
+    t("lbl_dynamic_questions");
+  document.getElementById("lbl-dynamic-questions-help")!.textContent =
+    t("lbl_dynamic_questions_help");
   const aiConfigButton = document.getElementById("btn-toggle-ai-config");
   if (aiConfigButton) {
     aiConfigButton.textContent = aiConfigEditorOpen
@@ -1518,6 +1522,59 @@ async function loadProviderStatus(): Promise<void> {
   } catch {
     recallEl.textContent = t("provider_unknown");
     visionEl.textContent = t("provider_unknown");
+  }
+}
+
+/**
+ * Dynamic questions (ADR 2026-06-15).
+ *
+ * ZAM normally rewrites a card's question for every review so the wording
+ * cannot be memorised. That costs one model round-trip before the card can be
+ * shown, which is exactly what makes the first card of a session feel slow on
+ * a modest or cold model. The setting has existed since 0.x but had no way to
+ * reach it short of writing the database row by hand.
+ */
+async function loadDynamicQuestionSetting(): Promise<void> {
+  const toggle = document.getElementById(
+    "toggle-dynamic-questions",
+  ) as HTMLInputElement | null;
+  if (!toggle) return;
+  try {
+    const settings = await runBridge<{
+      recall?: { dynamicQuestions?: boolean };
+    }>("get-settings");
+    // Absent means on, matching the kernel-side `!== "false"` default.
+    toggle.checked = settings?.recall?.dynamicQuestions !== false;
+  } catch {
+    // Leave the checkbox at its markup default rather than claiming a state
+    // we could not read.
+  }
+}
+
+async function setDynamicQuestions(enabled: boolean): Promise<void> {
+  const status = document.getElementById("dynamic-questions-status");
+  const toggle = document.getElementById(
+    "toggle-dynamic-questions",
+  ) as HTMLInputElement | null;
+  if (status) status.textContent = "";
+  try {
+    await runBridge("setting-set", [
+      "--key",
+      "llm.dynamic_questions",
+      "--value",
+      enabled ? "true" : "false",
+    ]);
+    if (status) {
+      status.textContent = enabled
+        ? t("dynamic_questions_on")
+        : t("dynamic_questions_off");
+    }
+  } catch (error) {
+    console.error("Failed to persist the dynamic-question setting", error);
+    // Put the checkbox back where it was: a toggle that silently did nothing
+    // is worse than one that says it failed.
+    if (toggle) toggle.checked = !enabled;
+    if (status) status.textContent = t("dynamic_questions_error");
   }
 }
 
@@ -3345,6 +3402,7 @@ function refreshSettingsData(): void {
   void loadDatabaseStatus();
   void loadSettingsKnowledgeContext();
   void loadAgentHarnessStatus();
+  void loadDynamicQuestionSetting();
   if (aiConfigEditorOpen) void loadModelRegistry();
 }
 
@@ -6019,6 +6077,12 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
   // Submit Answer / Reveal Answer Button
+  document
+    .getElementById("toggle-dynamic-questions")
+    ?.addEventListener("change", (event) => {
+      void setDynamicQuestions((event.target as HTMLInputElement).checked);
+    });
+
   document.getElementById("btn-reveal-answer")!.addEventListener("click", () => {
     submitAndReveal();
   });

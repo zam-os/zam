@@ -350,6 +350,17 @@
               <span id="lbl-observer-model">Observer model</span>
               <code id="observer-model-status">—</code>
             </div>
+            <!-- Dynamic questions (ADR 2026-06-15). On by default; the toggle
+                 exists because the per-card model round-trip is what makes the
+                 start of a session slow on a modest model. -->
+            <label class="settings-toggle" for="toggle-dynamic-questions">
+              <input type="checkbox" id="toggle-dynamic-questions" checked />
+              <span>
+                <span id="lbl-dynamic-questions">Reword questions each review</span>
+                <span id="lbl-dynamic-questions-help" class="settings-card-help"></span>
+              </span>
+            </label>
+            <p id="dynamic-questions-status" class="sub-label settings-status-row" aria-live="polite"></p>
             <div id="ai-config-editor" class="ai-config-editor hidden" aria-live="polite">
               <p id="ai-config-status" class="sub-label settings-status-row"></p>
               <div id="ai-provider-list" class="ai-provider-list"></div>
