@@ -63,6 +63,16 @@ targets:
         NSCameraUsageDescription: >-
           ZAM scannt den QR-Code aus ZAM Desktop, um dieses Gerät einmalig mit
           deiner Lernkartei zu verbinden.
+        # Voice review (ADR 2026-07-31). Both keys are mandatory, not
+        # advisory: iOS terminates the process rather than prompting when a
+        # usage description is missing. Recognition is pinned on-device, so the
+        # wording promises exactly that and nothing more.
+        NSMicrophoneUsageDescription: >-
+          ZAM nutzt das Mikrofon nur im Sprachmodus, damit du deine Karten laut
+          beantworten kannst.
+        NSSpeechRecognitionUsageDescription: >-
+          ZAM wandelt deine gesprochene Antwort auf diesem Gerät in Text um, um
+          sie mit der erwarteten Antwort zu vergleichen.
         # ZAM only uses HTTPS/TLS via the OS, which is exempt. Declaring this
         # up front stops TestFlight asking for export compliance on every build.
         ITSAppUsesNonExemptEncryption: false

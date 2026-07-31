@@ -171,6 +171,8 @@ const updateUnavailable = element<HTMLElement>("update-unavailable");
 
 interface PlatformFeatures {
   voice: boolean;
+  /** Whether a started voice session outlives the app leaving the foreground. */
+  voiceSurvivesBackground: boolean;
   inAppUpdate: boolean;
   onDeviceEvaluation: boolean;
 }
@@ -184,6 +186,7 @@ interface PlatformFeatures {
  */
 let platformFeatures: PlatformFeatures = {
   voice: true,
+  voiceSurvivesBackground: true,
   inAppUpdate: true,
   onDeviceEvaluation: true,
 };
@@ -1364,6 +1367,15 @@ window.addEventListener("focus", () => {
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") {
     window.setTimeout(() => void takeSharedImport(), 150);
+    return;
+  }
+  // Where a session cannot outlive backgrounding (iOS), end it explicitly:
+  // the OS takes the microphone back regardless, and a session left "running"
+  // would sit waiting for audio that can never arrive. Android deliberately
+  // keeps going here — reviewing with the screen off is the whole point of
+  // hands-free (ADR 2026-07-31).
+  if (!platformFeatures.voiceSurvivesBackground && voiceController.active) {
+    void pauseVoiceMode();
   }
 });
 
