@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	  Merged into the generated app Info.plist by Tauri.
+
+	  Voice mode (ADR 2026-07-31) is the only reason ZAM touches the microphone.
+	  Both keys are mandatory, not advisory: macOS terminates the process
+	  outright when SFSpeechRecognizer.requestAuthorization or AVAudioRecorder
+	  runs in a bundle that lacks the matching usage description. That is also
+	  why the device tier cannot be exercised from a bare `cargo test` binary —
+	  only from the signed bundle.
+
+	  The wording is what the learner reads in the consent sheet, so it names
+	  what actually happens rather than the API being called.
+	-->
+	<key>NSMicrophoneUsageDescription</key>
+	<string>ZAM uses the microphone only while voice mode is running, so you can answer your review cards out loud.</string>
+
+	<!--
+	  With the "device only" and "device first" preferences, recognition runs
+	  entirely on this Mac and no audio is sent anywhere. Choosing "best
+	  quality" in ZAM's settings sends the recording to the transcription model
+	  you configured there.
+	-->
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>ZAM turns your spoken answers into text so it can compare them with the expected answer. This happens on your Mac unless you choose a cloud model in ZAM's settings.</string>
+</dict>
+</plist>

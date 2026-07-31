@@ -83,13 +83,26 @@ Not a bundled model. Whisper-class local models were considered and rejected for
 |---|---|---|
 | macOS | `SFSpeechRecognizer`, `requiresOnDeviceRecognition` | `AVSpeechSynthesizer` |
 | iOS / iPadOS | same | same |
-| Windows | WinRT `SpeechRecognizer` (installed language pack) | WinRT `SpeechSynthesizer` |
+| Windows | WinRT `SpeechRecognizer` (installed language pack) — see caveat | WinRT `SpeechSynthesizer` |
 | Linux | *none* — falls back per §1 | `speech-dispatcher` |
 | Android | `SpeechRecognizer` on-device (shipped 0.22.x) | `TextToSpeech`, embedded voices only |
 
 These are free, need no download management, are already tuned to the user's
 locale, and — critically — are covered by the OS privacy model the user already
 consented to, rather than by a new one ZAM invents.
+
+**Windows caveat, recorded honestly rather than assumed away.** macOS exposes an
+explicit on-device switch (`requiresOnDeviceRecognition`), so "this stays on the
+machine" is a guarantee we can make and enforce. Windows has no equivalent flag:
+`Windows.Media.SpeechRecognition` serves free-form dictation from the installed
+speech language pack, but Microsoft has historically documented the predefined
+dictation grammar as requiring a connection, and the behaviour varies with the
+machine's online-speech setting. ZAM therefore treats Windows local STT as
+*available only if the recognizer compiles its constraints on that machine*, and
+does not claim it is provably offline. If verification (see Validation) shows it
+reaches Microsoft, the honest fix is to report Windows local STT as unavailable
+under `device-only` and let the tiering route those users to a tier they
+explicitly chose — not to keep a guarantee we cannot keep.
 
 ### 4. Capture once, transcribe twice
 
@@ -188,11 +201,22 @@ learner's behalf, particularly with minors in the field test.
       macOS engine needs: on-device recognition (`setRequiresOnDeviceRecognition`),
       file-based requests (`SFSpeechURLRecognitionRequest`), synthesis, and
       metered recording.
-- [ ] macOS end-to-end voice loop inside the signed app bundle. Microphone and
-      speech-recognition consent on macOS is granted to a bundled app with the
-      usage descriptions present, so this cannot be verified from a bare binary.
+- [x] macOS device tier compiles against the real frameworks and probes safely
+      without consent. On the development Mac (macOS 26.5) the probe reports
+      on-device recognition **supported** and system voices **present**, with
+      authorization `prompt` — i.e. the tier is genuinely available and only
+      consent is outstanding.
+- [ ] macOS end-to-end voice loop inside the signed app bundle. Consent is
+      granted to a bundle carrying `NSMicrophoneUsageDescription` and
+      `NSSpeechRecognitionUsageDescription`, and the hardened runtime
+      additionally needs `com.apple.security.device.audio-input`; a bare
+      `cargo test` binary is terminated by the OS instead of prompting, so this
+      step cannot be short-circuited.
 - [ ] Windows end-to-end voice loop, including behaviour when the locale's
-      speech language pack is not installed.
+      speech language pack is not installed, **and** whether recognition works
+      with the machine's online speech recognition turned off. The answer
+      decides whether Windows local STT may be offered under `device-only`
+      (see the Windows caveat above).
 - [ ] iOS end-to-end voice loop via TestFlight on the field-test iPad.
 - [ ] Cloud tier verified against at least one hosted `stt` and one hosted `tts`
       endpoint, with the cost per review session recorded in the release notes.

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	  Entitlements for the ZAM app bundle itself (see node.entitlements for the
+	  separate, differently-signed bundled Node runtime).
+
+	  Before voice mode the app needed none: it renders in WKWebView and runs
+	  JavaScript out of process. The hardened runtime, which this build enables,
+	  denies microphone access unless the binary carries this entitlement — the
+	  Info.plist usage description alone is not enough under Developer ID
+	  signing (ADR 2026-07-31).
+
+	  Still no App Sandbox, for the reason recorded in node.entitlements: ZAM
+	  shares ~/.zam/zam.db with the CLI and the MCP transport.
+	-->
+	<key>com.apple.security.device.audio-input</key>
+	<true/>
+</dict>
+</plist>

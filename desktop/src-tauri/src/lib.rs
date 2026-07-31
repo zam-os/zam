@@ -1433,6 +1433,8 @@ fn open_terminal_in_dir(dir: String) -> Result<(), String> {
     }
 }
 
+mod voice;
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let builder = tauri::Builder::default();
@@ -1477,7 +1479,15 @@ pub fn run() {
             open_terminal_in_dir,
             current_os,
             restart_app,
-            render_pairing_qr
+            render_pairing_qr,
+            voice::voice_capabilities,
+            voice::voice_check_permissions,
+            voice::voice_request_permissions,
+            voice::voice_start,
+            voice::voice_stop,
+            voice::voice_speak,
+            voice::voice_listen,
+            voice::voice_capture
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
