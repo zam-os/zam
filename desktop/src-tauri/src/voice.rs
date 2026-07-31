@@ -488,7 +488,7 @@ mod platform {
         };
         match SpeechRecognizer::Create(&language) {
             Ok(recognizer) => match recognizer.CompileConstraintsAsync() {
-                Ok(operation) => match operation.get() {
+                Ok(operation) => match operation.join() {
                     Ok(result) => match result.Status() {
                         Ok(SpeechRecognitionResultStatus::Success) => (true, None),
                         Ok(status) => (
@@ -545,7 +545,7 @@ mod platform {
         }
         let stream = synthesizer
             .SynthesizeTextToStreamAsync(&HSTRING::from(text))
-            .and_then(|operation| operation.get())
+            .and_then(|operation| operation.join())
             .map_err(|error| format!("Windows could not synthesize speech: {error}"))?;
         let content_type = stream.ContentType().unwrap_or_default();
         let source = MediaSource::CreateFromStream(&stream, &content_type)
@@ -559,19 +559,25 @@ mod platform {
             .Play()
             .map_err(|error| format!("Windows audio playback failed: {error}"))?;
 
+        // MediaPlayer reports Paused both before playback starts and after the
+        // media ends, so "Paused" only means finished once we have seen it
+        // running. Without that latch the first poll can end the utterance
+        // immediately and the next one talks over it — the same start race the
+        // macOS path guards with its isSpeaking grace period.
         let deadline = std::time::Instant::now() + Duration::from_secs_f64(MAX_OPERATION_SECS);
+        let mut started = false;
         loop {
             std::thread::sleep(Duration::from_millis(50));
             let state = player
                 .PlaybackSession()
                 .and_then(|session| session.PlaybackState())
                 .unwrap_or(MediaPlaybackState::None);
-            if matches!(state, MediaPlaybackState::Paused | MediaPlaybackState::None)
-                && std::time::Instant::now() > deadline
+            if state == MediaPlaybackState::Playing
+                || state == MediaPlaybackState::Buffering
+                || state == MediaPlaybackState::Opening
             {
-                break;
-            }
-            if matches!(state, MediaPlaybackState::Paused) {
+                started = true;
+            } else if started && state == MediaPlaybackState::Paused {
                 break;
             }
             if std::time::Instant::now() >= deadline {
@@ -595,11 +601,11 @@ mod platform {
             .map_err(|error| format!("Windows could not create a speech recognizer: {error}"))?;
         recognizer
             .CompileConstraintsAsync()
-            .and_then(|operation| operation.get())
+            .and_then(|operation| operation.join())
             .map_err(|error| format!("Windows speech recognition is not ready: {error}"))?;
         let result = recognizer
             .RecognizeAsync()
-            .and_then(|operation| operation.get())
+            .and_then(|operation| operation.join())
             .map_err(|error| format!("Windows speech recognition failed: {error}"))?;
         match result.Status() {
             Ok(SpeechRecognitionResultStatus::Success) => {}
