@@ -391,3 +391,95 @@ describe("a dead endpoint does not end the chain", () => {
     ).rejects.toThrow(/Grok \(CLI\).*Cloud recall/s);
   });
 });
+
+// Reported from the iPad: "Automatische Beurteilung nicht möglich (http (Mimo):
+// the model hit its output limit before finishing the evaluation)" — with 95%
+// of the prepaid budget still unused, so a quota was never the issue. MiMo is a
+// reasoning model and spent the whole 1200-token allowance thinking.
+describe("a reasoning model that thinks past its budget", () => {
+  const truncated = {
+    choices: [{ message: { content: "" }, finish_reason: "length" }],
+  };
+
+  function portsFor(fetchText: EvaluationPorts["fetchText"]): EvaluationPorts {
+    return {
+      checkOnDeviceStatus: async () => ({
+        status: "unavailable",
+        available: false,
+        downloadable: false,
+      }),
+      generateOnDevice: async (): Promise<never> => {
+        throw new Error("not on iOS");
+      },
+      fetchText,
+    };
+  }
+
+  it("retries once with real room and keeps the answer", async () => {
+    const budgets: number[] = [];
+    const fetchText = vi.fn(async (_url: string, init: RequestInit) => {
+      const body = JSON.parse(init.body as string);
+      budgets.push(body.max_tokens);
+      if (budgets.length === 1) {
+        // Mirror defaultFetchText's own truncation detection.
+        const choice = truncated.choices[0];
+        if (choice.finish_reason === "length") {
+          const { EvaluationTruncatedError } = await import(
+            "../../mobile/src/evaluate.js"
+          );
+          throw new EvaluationTruncatedError();
+        }
+      }
+      return goodJson;
+    });
+
+    const result = await evaluateMobileAnswer({
+      card,
+      learnerAnswer: "F = m · a",
+      locale: "de",
+      endpoint: cloudEndpoint(),
+      onDeviceAvailable: false,
+      ports: portsFor(fetchText),
+    });
+
+    expect(result?.backend).toBe("http");
+    expect(budgets).toEqual([1200, 4000]);
+  });
+
+  it("does not retry a failure that is not a truncation", async () => {
+    const fetchText = vi.fn(async () => {
+      throw new Error("HTTP 401");
+    });
+    await expect(
+      evaluateMobileAnswer({
+        card,
+        learnerAnswer: "F = m · a",
+        locale: "de",
+        endpoint: cloudEndpoint(),
+        onDeviceAvailable: false,
+        ports: portsFor(fetchText),
+      }),
+    ).rejects.toThrow(/401/);
+    expect(fetchText).toHaveBeenCalledTimes(1);
+  });
+
+  it("names the real cause when even the larger budget is not enough", async () => {
+    const fetchText = vi.fn(async () => {
+      const { EvaluationTruncatedError } = await import(
+        "../../mobile/src/evaluate.js"
+      );
+      throw new EvaluationTruncatedError();
+    });
+    await expect(
+      evaluateMobileAnswer({
+        card,
+        learnerAnswer: "F = m · a",
+        locale: "de",
+        endpoint: cloudEndpoint(),
+        onDeviceAvailable: false,
+        ports: portsFor(fetchText),
+      }),
+    ).rejects.toThrow(/reasoning model may be a poor fit/);
+    expect(fetchText).toHaveBeenCalledTimes(2);
+  });
+});

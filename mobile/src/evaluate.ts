@@ -11,6 +11,7 @@ import {
   buildRecallEvaluationPrompt,
   parseRecallEvaluation,
   RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
+  RECALL_EVALUATION_RETRY_OUTPUT_TOKENS,
   type RecallEvaluation,
   type RecallEvaluationCard,
 } from "../../desktop/src/panel/recall-evaluation.js";
@@ -140,6 +141,18 @@ export function resolveEvaluationBackend(
   return "on-device";
 }
 
+/**
+ * The model ran out of output budget before finishing. Typed so the caller can
+ * retry with more room instead of giving up — for a reasoning model the whole
+ * budget can disappear into thinking before a single visible token.
+ */
+export class EvaluationTruncatedError extends Error {
+  constructor() {
+    super("the model hit its output limit before finishing the evaluation");
+    this.name = "EvaluationTruncatedError";
+  }
+}
+
 async function defaultFetchText(
   url: string,
   init: RequestInit,
@@ -159,9 +172,7 @@ async function defaultFetchText(
   // A truncated answer and an absent one are different failures, and saying
   // "empty content" for both hides the only one the user can act on.
   if (choice?.finish_reason === "length") {
-    throw new Error(
-      "the model hit its output limit before finishing the evaluation",
-    );
+    throw new EvaluationTruncatedError();
   }
   if (!text) throw new Error("evaluation endpoint returned empty content");
   return text;
@@ -171,6 +182,7 @@ async function generateViaHttp(
   endpoint: ZamPairLlmEndpoint,
   prompt: string,
   fetchText: EvaluationPorts["fetchText"],
+  maxTokens: number = RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
 ): Promise<string> {
   if (endpoint.apiFlavor !== "chat-completions") {
     throw new Error(
@@ -193,7 +205,7 @@ async function generateViaHttp(
       model: endpoint.model,
       messages: [{ role: "user", content: prompt }],
       temperature: 0.2,
-      max_tokens: RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
+      max_tokens: maxTokens,
     }),
   });
 }
@@ -236,16 +248,33 @@ export async function evaluateMobileAnswer(
   const cloudEndpoints = selectCloudHttpEndpoints(input.endpoint);
   for (const cloud of cloudEndpoints) {
     try {
-      const text = await generateViaHttp(cloud, prompt, input.ports.fetchText);
+      let text: string;
+      try {
+        text = await generateViaHttp(cloud, prompt, input.ports.fetchText);
+      } catch (error) {
+        if (!(error instanceof EvaluationTruncatedError)) throw error;
+        // One retry with real room. A model that thinks its way past even that
+        // is the wrong model for this job, and the error below says so.
+        text = await generateViaHttp(
+          cloud,
+          prompt,
+          input.ports.fetchText,
+          RECALL_EVALUATION_RETRY_OUTPUT_TOKENS,
+        );
+      }
       return {
         evaluation: parseRecallEvaluation(text),
         backend: "http",
         modelLabel: cloud.label || cloud.model,
       };
     } catch (error) {
-      errors.push(
-        `http (${cloud.label || cloud.model}): ${error instanceof Error ? error.message : String(error)}`,
-      );
+      const detail =
+        error instanceof EvaluationTruncatedError
+          ? `spent its whole output budget before answering, even at ${RECALL_EVALUATION_RETRY_OUTPUT_TOKENS} tokens — a reasoning model may be a poor fit for card evaluation`
+          : error instanceof Error
+            ? error.message
+            : String(error);
+      errors.push(`http (${cloud.label || cloud.model}): ${detail}`);
     }
   }
   if (cloudEndpoints.length === 0 && input.endpoint) {
