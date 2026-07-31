@@ -103,15 +103,23 @@ const MAX_FALLBACK_DEPTH = 8;
  * invisible because Gemini Nano answers first; on iOS, which has no on-device
  * evaluator, it meant no evaluation at all (reported on an iPad 9, 2026-07-31).
  */
+export function selectCloudHttpEndpoints(
+  endpoint: ZamPairLlmEndpoint | null | undefined,
+): ZamPairLlmEndpoint[] {
+  const usable: ZamPairLlmEndpoint[] = [];
+  let candidate = endpoint ?? null;
+  for (let depth = 0; candidate && depth < MAX_FALLBACK_DEPTH; depth++) {
+    if (isCloudHttpEndpoint(candidate)) usable.push(candidate);
+    candidate = candidate.fallback ?? null;
+  }
+  return usable;
+}
+
+/** First cloud-usable endpoint in the chain, or null. */
 export function selectCloudHttpEndpoint(
   endpoint: ZamPairLlmEndpoint | null | undefined,
 ): ZamPairLlmEndpoint | null {
-  let candidate = endpoint ?? null;
-  for (let depth = 0; candidate && depth < MAX_FALLBACK_DEPTH; depth++) {
-    if (isCloudHttpEndpoint(candidate)) return candidate;
-    candidate = candidate.fallback ?? null;
-  }
-  return null;
+  return selectCloudHttpEndpoints(endpoint)[0] ?? null;
 }
 
 /**
@@ -219,8 +227,14 @@ export async function evaluateMobileAnswer(
     }
   }
 
-  const cloud = selectCloudHttpEndpoint(input.endpoint);
-  if (cloud) {
+  // Try every reachable endpoint in the chain, not just the first. A paired
+  // payload can advertise an endpoint that cannot actually serve the request —
+  // an agent-transport entry projected before that was fixed at the source
+  // carries a defaulted URL and looks like an ordinary cloud target. Falling
+  // through to the next one repairs an already-paired device without asking
+  // the learner to pair again.
+  const cloudEndpoints = selectCloudHttpEndpoints(input.endpoint);
+  for (const cloud of cloudEndpoints) {
     try {
       const text = await generateViaHttp(cloud, prompt, input.ports.fetchText);
       return {
@@ -230,10 +244,11 @@ export async function evaluateMobileAnswer(
       };
     } catch (error) {
       errors.push(
-        `http: ${error instanceof Error ? error.message : String(error)}`,
+        `http (${cloud.label || cloud.model}): ${error instanceof Error ? error.message : String(error)}`,
       );
     }
-  } else if (input.endpoint) {
+  }
+  if (cloudEndpoints.length === 0 && input.endpoint) {
     // Distinguish "your models are unreachable from here" from "nothing was
     // paired at all" — only the first is something the learner can fix.
     errors.push(

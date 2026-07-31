@@ -321,3 +321,73 @@ describe("evaluation on a platform without an on-device evaluator", () => {
     expect(resolveEvaluationBackend(localEndpoint())).toBe("on-device");
   });
 });
+
+// An already-paired device still carries whatever the desktop projected before
+// the agent-transport fix — an endpoint that looks like a normal cloud target
+// and answers nothing. Falling through repairs it without re-pairing.
+describe("a dead endpoint does not end the chain", () => {
+  it("falls through to the next reachable model", async () => {
+    const chain = cloudEndpoint2({
+      label: "Grok (CLI)",
+      model: "grok-4",
+      url: "https://harness.invalid/v1",
+      fallback: cloudEndpoint(),
+    });
+
+    const fetchText = vi
+      .fn()
+      .mockRejectedValueOnce(new Error("HTTP 404: no such model"))
+      .mockResolvedValueOnce(goodJson);
+
+    const result = await evaluateMobileAnswer({
+      card,
+      learnerAnswer: "F = m · a",
+      locale: "de",
+      endpoint: chain,
+      onDeviceAvailable: false,
+      ports: {
+        checkOnDeviceStatus: async () => ({
+          status: "unavailable",
+          available: false,
+          downloadable: false,
+        }),
+        generateOnDevice: async (): Promise<never> => {
+          throw new Error("not on iOS");
+        },
+        fetchText,
+      },
+    });
+
+    expect(fetchText).toHaveBeenCalledTimes(2);
+    expect(result?.modelLabel).toBe("Cloud recall");
+  });
+
+  it("names each model that failed, so the log points somewhere", async () => {
+    const chain = cloudEndpoint2({
+      label: "Grok (CLI)",
+      fallback: cloudEndpoint(),
+    });
+    await expect(
+      evaluateMobileAnswer({
+        card,
+        learnerAnswer: "F = m · a",
+        locale: "de",
+        endpoint: chain,
+        onDeviceAvailable: false,
+        ports: {
+          checkOnDeviceStatus: async () => ({
+            status: "unavailable",
+            available: false,
+            downloadable: false,
+          }),
+          generateOnDevice: async (): Promise<never> => {
+            throw new Error("not on iOS");
+          },
+          fetchText: async () => {
+            throw new Error("HTTP 401");
+          },
+        },
+      }),
+    ).rejects.toThrow(/Grok \(CLI\).*Cloud recall/s);
+  });
+});
