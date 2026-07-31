@@ -1,11 +1,18 @@
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   auditOkfFreshness,
   extractOkfCodeReferences,
+  isVersionOnlyDiff,
 } from "../../src/cli/okf/freshness.js";
 
 const scratchDirs: string[] = [];
@@ -298,5 +305,70 @@ describe("OKF freshness audit", () => {
         reason: "code-path-missing",
       },
     ]);
+  });
+});
+
+describe("isVersionOnlyDiff", () => {
+  const diff = (removed: string[], added: string[]): string =>
+    [
+      "--- a/src/cli/commands/bridge.ts",
+      "+++ b/src/cli/commands/bridge.ts",
+      ...removed.map((line) => `-${line}`),
+      ...added.map((line) => `+${line}`),
+    ].join("\n");
+
+  it("suppresses a release User-Agent bump", () => {
+    expect(
+      diff(
+        ['        "User-Agent": "ZAM-Content-Studio/0.23.1",'],
+        ['        "User-Agent": "ZAM-Content-Studio/0.24.1",'],
+      ),
+    ).toSatisfy(isVersionOnlyDiff);
+  });
+
+  it("suppresses several version bumps at once, including prereleases", () => {
+    expect(
+      diff(["a 1.0.0", "b 2.3.4-beta.1"], ["a 1.0.1", "b 2.3.4-beta.2"]),
+    ).toSatisfy(isVersionOnlyDiff);
+  });
+
+  it("keeps review when a real edit rides along with the bump", () => {
+    // Line counts differ, so the one-to-one pairing fails outright.
+    expect(
+      isVersionOnlyDiff(
+        diff(['"x/0.23.1",'], ['"x/0.24.1",', '  .command("voice-availability")']),
+      ),
+    ).toBe(false);
+    // Same line count, but the text changed alongside the version.
+    expect(isVersionOnlyDiff(diff(["a 1.0.0 foo"], ["a 1.0.1 bar"]))).toBe(false);
+  });
+
+  it("does not treat an unchanged or empty diff as version churn", () => {
+    expect(isVersionOnlyDiff("")).toBe(false);
+    expect(isVersionOnlyDiff(diff(["a 1.0.0"], ["a 1.0.0"]))).toBe(false);
+  });
+
+  /**
+   * Versions are masked with a sentinel that source code cannot contain, so a
+   * line merely *resembling* the mask must not be able to pass as one. The
+   * spaced form below is the closest a real file could get.
+   */
+  it("cannot be spoofed by a line that looks like the mask", () => {
+    expect(
+      isVersionOnlyDiff(
+        diff(['const a = " version ";'], ['const a = "1.2.3";']),
+      ),
+    ).toBe(false);
+  });
+
+  /**
+   * The sentinel is a NUL character, which must be written as an escape. Raw
+   * 0x00 bytes in the source make Git classify the file as binary — killing
+   * `git diff`, `git blame` and `git grep` on it — which is exactly what
+   * happened between #257 and 0.24.1.
+   */
+  it("is implemented without raw NUL bytes in the source file", () => {
+    const source = readFileSync("src/cli/okf/freshness.ts");
+    expect(source.filter((byte) => byte === 0)).toHaveLength(0);
   });
 });
