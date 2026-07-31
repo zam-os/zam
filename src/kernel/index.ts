@@ -408,6 +408,34 @@ export {
   resolveReference,
   resolveReviewContext,
 } from "./recall/reference-resolver.js";
+export type {
+  VoiceAvailability,
+  VoiceCapability,
+  VoiceEngineDecision,
+  VoiceEnginePlan,
+  VoiceEnginePreference,
+  VoiceEngineReason,
+  VoiceEngineTier,
+  VoiceEvaluationSpeech,
+  VoiceLocale,
+  VoicePort,
+  VoiceReviewAdapter,
+  VoiceReviewCard,
+  VoiceTierAvailability,
+} from "./recall/voice-review.js";
+// Hands-free voice review (ADR 2026-07-31). Platform-free: the surfaces inject
+// a VoicePort backed by native OS speech or a cloud stt/tts model entry.
+export {
+  DEFAULT_VOICE_ENGINE_PREFERENCE,
+  HandsFreeReviewController,
+  isVoiceEnginePreference,
+  isVoiceModeUsable,
+  parseSpokenRating,
+  planLeavesDevice,
+  resolveVoiceEnginePlan,
+  resolveVoiceLocale,
+  VOICE_ENGINE_PREFERENCES,
+} from "./recall/voice-review.js";
 export type { CascadeBlockResult, UnblockResult } from "./scheduler/blocker.js";
 export { cascadeBlock, unblockReady } from "./scheduler/blocker.js";
 export type {
