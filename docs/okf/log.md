@@ -1,5 +1,10 @@
 # Log
 
+## 2026-07-31
+
+- **Update** — [FSRS-5 Scheduling](fsrs-scheduling.md)
+- **Creation** — [Hands-Free Voice Mode](voice-mode.md)
+
 ## 2026-07-30
 
 - **Update** — [Bridge CLI Protocol](bridge-protocol.md)

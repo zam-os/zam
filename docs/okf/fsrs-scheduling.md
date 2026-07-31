@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-07-29T21:08:14Z
+timestamp: 2026-07-31T08:10:00Z
 ---
 
 ZAM's spaced repetition uses **FSRS-5** (Free Spaced Repetition Scheduler,
@@ -52,21 +52,25 @@ editorial state; an active knowledge context can narrow the set further.
 The remaining cards are interleaved by domain (so one topic doesn't
 monopolize a session), with a new card inserted at every 5th position.
 
-# Android voice review
+# Voice review
 
-The Android companion can operate the same review session hands-free. Its
-controller speaks the existing template question, captures an answer with
-Android's on-device speech recognizer, speaks the expected answer, and maps
-German or English rating words to ratings 1–4. The transcript is persisted as
-the current session draft; the selected rating still enters the shared kernel
-through the same review-session controller and `executeReviewAction()`.
-Tap-to-reveal and tap ratings remain available.
+The Android companion and the macOS/Windows desktop app can operate the same
+review session hands-free. One shared controller speaks the existing template
+question, captures a spoken answer, speaks the expected answer or an
+evaluation, and maps German or English rating words to ratings 1-4. The
+transcript is persisted as the current session draft; the selected rating still
+enters the shared kernel through the same review-session controller and
+`executeReviewAction()`. Typing and tap/click ratings remain available
+throughout.
 
-Speech audio stays on the device. Recognition uses the on-device recognizer,
-and synthesis selects only installed voices that do not require a network
-connection. A microphone/media-playback foreground service, partial wake lock,
-and audio-focus handling keep an explicitly started voice session usable with
-the screen off and pause it across transient focus loss.
+Whether the speech itself stays on the device depends on the learner's
+preference and on what the device can do. On Android it is always on-device:
+recognition uses the on-device recognizer and synthesis selects only installed
+voices that need no network connection. A microphone/media-playback foreground
+service, partial wake lock, and audio-focus handling keep an explicitly started
+voice session usable with the screen off and pause it across transient focus
+loss. See [voice-mode.md](voice-mode.md) for the engine tiering and the
+per-platform detail.
 
 # Examples
 
@@ -88,6 +92,7 @@ await executeReviewAction(db, {
 - [ADR 2026-05-30a — Standalone Learning Session](../adr/2026-05-30a-standalone-learning-session.md)
 - [ADR 2026-07-04 — Multi-Learner Shared Knowledge](../adr/2026-07-04-multi-learner-shared-knowledge.md)
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
+- [ADR 2026-07-31 — Cross-Platform Voice Mode](../adr/2026-07-31-cross-platform-voice-mode.md)
 - Tests as source of truth for scheduling semantics: `tests/kernel/fsrs.test.ts`, `tests/kernel/library-revision.test.ts`, `tests/kernel/card-detach.test.ts`
-- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/library/revision.ts`, `src/kernel/models/card.ts`, `mobile/src/voice.ts`, `mobile/src/review-session.ts`, `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/VoicePlugin.kt`
+- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/kernel/library/revision.ts`, `src/kernel/models/card.ts`, `mobile/src/review-session.ts`, `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/VoicePlugin.kt`
 - Algorithm reference: <https://github.com/open-spaced-repetition/fsrs4anki/wiki/The-Algorithm>
