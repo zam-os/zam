@@ -1,14 +1,14 @@
 ---
 type: architecture
 title: Hands-Free Voice Mode
-description: Voice review runs one shared kernel loop over a device tier of native OS speech and a cloud tier from the capability registry, resolved per capability from a machine-local user preference.
+description: Voice review runs one shared kernel loop over a device tier of native OS speech and a cloud tier from the capability registry, resolved per capability and per language from a machine-local user preference.
 tags:
   - voice
   - recall
   - desktop
   - mobile
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/voice-mode.md"
-timestamp: 2026-07-31T08:00:00Z
+timestamp: 2026-07-31T09:40:00Z
 ---
 
 Voice mode reads a due card aloud, listens for the spoken answer, and maps a
@@ -61,6 +61,12 @@ Speech-to-text and text-to-speech resolve **independently**. Linux has local
 synthesis but no local recognizer, so it reads cards aloud locally while
 transcribing through the cloud; a learner with no cloud model configured still
 gets local reading-aloud.
+
+The cloud tier is reachable only through a registry entry whose `stt` or `tts`
+flag is set, and `validateModelSave` stores the *intersection* of what the
+learner ticked and what the probe detected. Both flags are therefore offered as
+checkboxes in Settings (`UI_CAPABILITIES`): a capability the editor does not
+offer can never be stored, however well the probe detects it.
 
 `resolveVoiceEnginePlan(preference, availability)` returns a tier plus a
 *reason* per capability, so a surface can always state why. `isVoiceModeUsable`
@@ -134,12 +140,34 @@ Unlike macOS it exposes no on-device flag, so ZAM treats Windows local
 recognition as available only when the recognizer compiles its constraints on
 that machine, and does not claim it is provably offline.
 
-# Availability is per device
+# Availability is per device *and per language*
 
 Voice mode is the first ZAM feature whose availability legitimately differs per
-machine. `voice_capabilities` reports each local capability plus a human
-readable reason when it is missing, and surfaces render that reason instead of
-a dead button.
+machine. `voice_capabilities(locale)` reports each local capability for **one
+review language**, plus a human readable reason when it is missing, and
+surfaces render that reason instead of a dead button.
+
+The locale is not decoration. Windows serves recognition from a per-language
+speech pack and macOS from a per-language on-device model, so a machine can be
+fully capable in English and have nothing at all for German. Two rules follow:
+
+- **Ask about the language being reviewed.** A recognizer for some *other*
+  language is not an answer — the session would fail on the first spoken word.
+- **Never let one language stand in for another.** Recognizing German speech
+  with an English engine returns confident nonsense, and the default synthesis
+  voice reads German cards aloud in an English one while reporting success.
+  Falling back *within* a language is fine: a machine carrying only `en-GB`
+  serves an `en-US` session, and refusing that would be pedantry.
+
+On Windows the installed set comes from `SupportedTopicLanguages()` and
+`SpeechSynthesizer::AllVoices()`. `Language::CreateLanguage` must not be used
+for this: it validates the *shape* of a BCP-47 tag and accepts `de-DE` on a
+machine with no German speech at all, deferring the failure to
+`SpeechRecognizer::Create` as a bare `0x800455BC`. On macOS the check is
+`initWithLocale` plus `supportsOnDeviceRecognition` for that one locale.
+
+Because the answer is per-language, the desktop caches the probe per locale and
+re-probes when the app language changes.
 
 # Citations
 

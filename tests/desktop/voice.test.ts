@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import {
   buildAvailability,
@@ -50,9 +52,26 @@ describe("desktop voice port", () => {
 
   it("probes capabilities through voice_capabilities", async () => {
     const invoke = (async <T,>(): Promise<T> => native(true, true) as T) as TauriInvoke;
-    await expect(probeNativeCapabilities(invoke)).resolves.toEqual(
+    await expect(probeNativeCapabilities(invoke, "de-DE")).resolves.toEqual(
       native(true, true),
     );
+  });
+
+  // Device speech availability is per-language — Windows serves recognition
+  // from a per-language speech pack, macOS from a per-language on-device model
+  // — so the probe that omitted the locale could only ever answer about some
+  // other language than the one being reviewed.
+  it("asks about the locale being reviewed", async () => {
+    const calls: unknown[] = [];
+    const invoke = (async <T,>(_command: string, args?: unknown): Promise<T> => {
+      calls.push(args);
+      return native(true, true) as T;
+    }) as TauriInvoke;
+
+    await probeNativeCapabilities(invoke, "de-DE");
+    await probeNativeCapabilities(invoke, "en-US");
+
+    expect(calls).toEqual([{ locale: "de-DE" }, { locale: "en-US" }]);
   });
 });
 
@@ -100,6 +119,35 @@ describe("desktop voice availability", () => {
     expect(readStoredPreference("quality-first")).toBe("quality-first");
     for (const stored of [undefined, null, "", "local", 7, {}]) {
       expect(readStoredPreference(stored)).toBe("device-first");
+    }
+  });
+
+  /**
+   * The cloud tier is reachable only through `capabilities.stt`/`.tts` on a
+   * registry entry, and `validateModelSave` intersects what the learner ticked
+   * with what the probe detected. A capability the Settings editor never offers
+   * can therefore never be stored — 0.24.0 shipped with stt/tts detected but
+   * unofferable, so every cloud speech model was saved with both flags false
+   * and the tier was dead on arrival. Asserted against the source because
+   * main.ts owns the DOM and cannot be imported here.
+   */
+  it("offers every voice capability the cloud tier reads", () => {
+    const source = readFileSync(
+      join(process.cwd(), "desktop", "src", "main.ts"),
+      "utf-8",
+    );
+    const declaration = source.match(
+      /const UI_CAPABILITIES: ModelCapability\[\] = \[([^\]]*)\]/,
+    );
+    expect(declaration, "UI_CAPABILITIES must exist in main.ts").not.toBeNull();
+    const offered = [...declaration![1].matchAll(/"([a-z]+)"/g)].map(
+      (match) => match[1],
+    );
+    for (const capability of ["stt", "tts"]) {
+      expect(
+        offered,
+        `Settings must let a model be marked ${capability}`,
+      ).toContain(capability);
     }
   });
 });
