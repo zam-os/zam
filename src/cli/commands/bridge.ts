@@ -219,6 +219,11 @@ import {
   enableLocalEmbedding,
   getLocalEmbeddingStatus,
 } from "../llm/local-embedding.js";
+import {
+  getCloudSpeechAvailability,
+  synthesizeSpeech,
+  transcribeAudio,
+} from "../llm/speech.js";
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
 import { createMobilePairingPayload } from "../mobile-pairing.js";
 import {
@@ -3313,6 +3318,74 @@ bridgeCommand
     }
     setMachineVoicePreference(opts.preference);
     jsonOut({ ok: true, preference: opts.preference });
+  });
+
+// ── zam bridge voice-availability / -transcribe / -synthesize ─────────────
+
+bridgeCommand
+  .command("voice-availability")
+  .description("Report which cloud speech capabilities are configured (JSON)")
+  .action(async () => {
+    await withDb(async (db) => {
+      jsonOut(await getCloudSpeechAvailability(db));
+    });
+  });
+
+// Audio comes in as a file path, not base64: even a few seconds of speech
+// overflows the process argument limit once encoded. The recording is deleted
+// as soon as it has been read, whether or not transcription succeeds — a
+// spoken answer should not outlive the request that carried it.
+bridgeCommand
+  .command("voice-transcribe")
+  .description("Transcribe a recorded answer via the cloud stt model (JSON)")
+  .requiredOption("--audio-file <path>", "Path to the recording")
+  .option("--mime <mime>", "MIME type of the recording", "audio/wav")
+  .option("--locale <locale>", "BCP-47 locale hint", "de-DE")
+  .action(async (opts) => {
+    let audioBase64: string;
+    try {
+      audioBase64 = readFileSync(opts.audioFile).toString("base64");
+    } catch (error) {
+      jsonError(
+        `Could not read the recording at ${opts.audioFile}: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    } finally {
+      try {
+        rmSync(opts.audioFile, { force: true });
+      } catch {
+        // Best effort; the OS reclaims the temp directory regardless.
+      }
+    }
+    await withDb(async (db) => {
+      jsonOut(
+        await transcribeAudio(db, {
+          audioBase64,
+          mime: opts.mime,
+          locale: opts.locale,
+        }),
+      );
+    });
+  });
+
+// The reverse asymmetry: the input is short enough for an argument, and the
+// audio comes back base64 in stdout, where size is not constrained. The
+// WebView plays it from a blob, so no asset-protocol exposure is needed.
+bridgeCommand
+  .command("voice-synthesize")
+  .description("Synthesize speech via the cloud tts model (JSON)")
+  .requiredOption("--text <text>", "Text to read aloud")
+  .option("--locale <locale>", "BCP-47 locale hint", "de-DE")
+  .option("--voice <voice>", "Endpoint-specific voice id")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      jsonOut(
+        await synthesizeSpeech(db, {
+          text: opts.text,
+          locale: opts.locale,
+          voice: opts.voice,
+        }),
+      );
+    });
   });
 
 // ── zam bridge check-vision ────────────────────────────────────────────────

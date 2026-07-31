@@ -4884,6 +4884,17 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Your deck is empty. Pick an import path — curriculum, your own sources, a project, or a goal.",
     dashboard_empty_no_cards:
       "No cards yet — the setup checklist has the import paths.",
+    settings_voice_title: "Voice mode",
+    settings_voice_help:
+      "Review out loud, hands free — on a walk, during housework, at the gym. Your device handles speech for free and without anyone else involved, but it can be less accurate; a cloud model usually understands you better and sounds more natural, at a small cost per session.",
+    settings_voice_preference: "Speech is handled by",
+    voice_pref_device_only: "This device only",
+    voice_pref_device_first: "This device, cloud if needed",
+    voice_pref_quality_first: "Best quality (cloud)",
+    voice_detail_on_device:
+      "Everything stays on this device. Nothing is sent anywhere.",
+    voice_detail_uses_cloud:
+      "Your recordings are sent to the speech model you configured.",
     voice_start: "Start voice mode",
     voice_pause: "Pause voice mode",
     voice_paused_msg: "Voice mode paused: {message}",
@@ -5950,6 +5961,17 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Dein Stapel ist leer. Wähle einen Import-Weg – Lehrplan, eigene Quellen, ein Projekt oder ein Ziel.",
     dashboard_empty_no_cards:
       "Noch keine Karten – die Einrichtungsliste führt zu den Import-Wegen.",
+    settings_voice_title: "Sprachmodus",
+    settings_voice_help:
+      "Laut wiederholen, ohne Hände — beim Spazieren, bei der Hausarbeit, beim Sport. Dein Gerät übernimmt die Sprache kostenlos und ohne Dritte, versteht dich aber vielleicht schlechter; ein Cloud-Modell erkennt meist besser und klingt natürlicher, für ein paar Cent pro Sitzung.",
+    settings_voice_preference: "Sprache übernimmt",
+    voice_pref_device_only: "Nur dieses Gerät",
+    voice_pref_device_first: "Dieses Gerät, Cloud wenn nötig",
+    voice_pref_quality_first: "Beste Qualität (Cloud)",
+    voice_detail_on_device:
+      "Alles bleibt auf diesem Gerät. Es wird nichts verschickt.",
+    voice_detail_uses_cloud:
+      "Deine Aufnahmen gehen an das Sprachmodell, das du eingerichtet hast.",
     voice_start: "Sprachmodus starten",
     voice_pause: "Sprachmodus pausieren",
     voice_paused_msg: "Sprachmodus pausiert: {message}",

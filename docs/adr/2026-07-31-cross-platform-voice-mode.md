@@ -218,8 +218,16 @@ learner's behalf, particularly with minors in the field test.
       decides whether Windows local STT may be offered under `device-only`
       (see the Windows caveat above).
 - [ ] iOS end-to-end voice loop via TestFlight on the field-test iPad.
+- [x] Cloud tier implemented over the registry and covered by
+      `tests/cli/speech.test.ts`: endpoint selection refuses Anthropic-flavour
+      and agent-transport entries, the recording is deleted as soon as it has
+      been read, and an empty transcription is an error rather than a blank
+      answer. Speech models are detected by the capability probe without being
+      offered for `text`, so an audio endpoint cannot be selected for recall
+      coaching.
 - [ ] Cloud tier verified against at least one hosted `stt` and one hosted `tts`
       endpoint, with the cost per review session recorded in the release notes.
+      Only stubbed endpoints have been exercised so far.
 
 ## Evidence
 

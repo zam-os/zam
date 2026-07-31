@@ -1487,7 +1487,8 @@ pub fn run() {
             voice::voice_stop,
             voice::voice_speak,
             voice::voice_listen,
-            voice::voice_capture
+            voice::voice_capture,
+            voice::voice_discard_capture
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

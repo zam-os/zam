@@ -36,15 +36,17 @@ import {
 import { initServerDbWizard } from "./server-db.js";
 import {
   buildAvailability,
+  createTieredVoicePort,
   createVoiceController,
-  createVoicePort,
   isVoiceModeUsable,
   type NativeVoiceCapabilities,
   probeNativeCapabilities,
   readStoredPreference,
   resolveVoiceEnginePlan,
   resolveVoiceLocale,
+  planLeavesDevice,
   unavailableReasonKey,
+  type VoiceEnginePlan,
   type VoiceEnginePreference,
 } from "./voice.js";
 import {
@@ -621,6 +623,19 @@ function initializeTranslations() {
     t("workspaces_help");
   document.getElementById("lbl-settings-appearance-title")!.textContent =
     t("settings_appearance_title");
+  document.getElementById("lbl-settings-voice-title")!.textContent =
+    t("settings_voice_title");
+  document.getElementById("lbl-settings-voice-help")!.textContent =
+    t("settings_voice_help");
+  document.getElementById("lbl-settings-voice-preference")!.textContent =
+    t("settings_voice_preference");
+  document.getElementById("voice-pref-device-only-option")!.textContent =
+    t("voice_pref_device_only");
+  document.getElementById("voice-pref-device-first-option")!.textContent =
+    t("voice_pref_device_first");
+  document.getElementById("voice-pref-quality-first-option")!.textContent =
+    t("voice_pref_quality_first");
+  renderVoicePreferenceDetail();
   document.getElementById("lbl-settings-data-title")!.textContent =
     t("settings_data_title");
   document.getElementById("lbl-settings-database")!.textContent =
@@ -4952,7 +4967,44 @@ const REVIEW_ACTION_TRIGGER_IDS = [
 /** Machine-local preference; loaded from ~/.zam/config.json on first probe. */
 let voicePreference: VoiceEnginePreference = readStoredPreference(undefined);
 let voiceCapabilities: NativeVoiceCapabilities | null = null;
+let voiceCloudAvailability = { stt: false, tts: false };
 let voiceProbePending = false;
+
+/**
+ * The tier plan in force right now. Recomputed on every probe and read by the
+ * port on each utterance, so changing the preference in Settings takes effect
+ * without restarting the session.
+ */
+function currentVoicePlan(): VoiceEnginePlan {
+  return resolveVoiceEnginePlan(
+    voicePreference,
+    buildAvailability(
+      voiceCapabilities ?? {
+        sttLocal: false,
+        ttsLocal: false,
+        sttDetail: null,
+        ttsDetail: null,
+      },
+      voiceCloudAvailability,
+    ),
+  );
+}
+
+/** Play cloud-synthesized audio in the page; resolves when playback ends. */
+async function playVoiceAudio(audioBase64: string, mime: string): Promise<void> {
+  const bytes = Uint8Array.from(atob(audioBase64), (char) => char.charCodeAt(0));
+  const url = URL.createObjectURL(new Blob([bytes], { type: mime }));
+  try {
+    const audio = new Audio(url);
+    await new Promise<void>((resolve, reject) => {
+      audio.onended = () => resolve();
+      audio.onerror = () => reject(new Error("Could not play the spoken answer"));
+      void audio.play().catch(reject);
+    });
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
 
 /** Tauri's `invoke` narrowed to the shape desktop/src/voice.ts expects. */
 const voiceInvoke = (<T>(command: string, args?: unknown): Promise<T> =>
@@ -4992,7 +5044,27 @@ const voiceController = createVoiceController(
     setStatus: (message, isError) => setVoiceStatus(message, isError),
     locale: () => currentLocale,
   },
-  createVoicePort(voiceInvoke),
+  createTieredVoicePort(currentVoicePlan, voiceInvoke, {
+    transcribe: async (audioFile, mime, locale) => {
+      const result = await runBridge("voice-transcribe", [
+        "--audio-file", audioFile,
+        "--mime", mime,
+        "--locale", locale,
+      ]);
+      return String(result?.text ?? "");
+    },
+    synthesize: async (text, locale) => {
+      const result = await runBridge("voice-synthesize", [
+        "--text", text,
+        "--locale", locale,
+      ]);
+      return {
+        audioBase64: String(result?.audioBase64 ?? ""),
+        mime: String(result?.mime ?? "audio/wav"),
+      };
+    },
+    play: playVoiceAudio,
+  }),
 );
 
 function setVoiceStatus(message: string, isError = false): void {
@@ -5033,10 +5105,17 @@ async function refreshVoiceAvailability(): Promise<void> {
       }
       voiceCapabilities = await probeNativeCapabilities(voiceInvoke);
     }
-    const plan = resolveVoiceEnginePlan(
-      voicePreference,
-      buildAvailability(voiceCapabilities, { stt: false, tts: false }),
-    );
+    try {
+      const cloud = await runBridge("voice-availability", []);
+      voiceCloudAvailability = {
+        stt: cloud?.stt === true,
+        tts: cloud?.tts === true,
+      };
+    } catch {
+      // No configured speech model is a normal state, not an error.
+      voiceCloudAvailability = { stt: false, tts: false };
+    }
+    const plan = currentVoicePlan();
     const controls = document.getElementById("voice-controls");
     const notice = document.getElementById("voice-unavailable");
     const usable = isVoiceModeUsable(plan);
@@ -5051,6 +5130,11 @@ async function refreshVoiceAvailability(): Promise<void> {
       }
     }
     if (usable) updateVoiceButton();
+    const select = document.getElementById(
+      "voice-preference-select",
+    ) as HTMLSelectElement | null;
+    if (select) select.value = voicePreference;
+    renderVoicePreferenceDetail();
   } catch (error) {
     console.warn("Voice capability probe failed", error);
     document.getElementById("voice-controls")?.classList.add("hidden");
@@ -5077,6 +5161,43 @@ function startVoiceMode(): void {
     })
     .finally(updateVoiceButton);
   updateVoiceButton();
+}
+
+/**
+ * Explain what the current choice means on *this* machine.
+ *
+ * A preference alone is not informative — "best quality" on a machine with no
+ * cloud model configured still runs on the device, and the learner deserves to
+ * know that rather than assume otherwise.
+ */
+function renderVoicePreferenceDetail(): void {
+  const detail = document.getElementById("voice-preference-detail");
+  if (!detail) return;
+  if (!voiceCapabilities) {
+    detail.textContent = "";
+    return;
+  }
+  const plan = currentVoicePlan();
+  if (!isVoiceModeUsable(plan)) {
+    const key = unavailableReasonKey(plan) ?? "voice_unavailable";
+    const reason =
+      voiceCapabilities.sttDetail ?? voiceCapabilities.ttsDetail ?? "";
+    detail.textContent = reason ? `${t(key)} ${reason}` : t(key);
+    return;
+  }
+  detail.textContent = planLeavesDevice(plan)
+    ? t("voice_detail_uses_cloud")
+    : t("voice_detail_on_device");
+}
+
+async function applyVoicePreference(next: VoiceEnginePreference): Promise<void> {
+  voicePreference = next;
+  renderVoicePreferenceDetail();
+  try {
+    await runBridge("voice-preference-set", ["--preference", next]);
+  } catch (error) {
+    console.warn("Could not persist the voice preference", error);
+  }
 }
 
 function updateReviewControlState(): void {
@@ -5876,6 +5997,13 @@ window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-reveal-answer")!.addEventListener("click", () => {
     submitAndReveal();
   });
+
+  document
+    .getElementById("voice-preference-select")
+    ?.addEventListener("change", (event) => {
+      const value = (event.target as HTMLSelectElement).value;
+      void applyVoicePreference(readStoredPreference(value));
+    });
 
   document.getElementById("btn-toggle-voice")?.addEventListener("click", () => {
     if (voiceController.active) {

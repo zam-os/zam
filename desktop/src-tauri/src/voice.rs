@@ -64,9 +64,14 @@ pub struct VoiceRecognitionResult {
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct VoiceCaptureResult {
-    /// Base64-encoded audio for the cloud transcription tier.
-    pub audio_base64: String,
-    /// MIME type of `audio_base64`, e.g. `audio/wav`.
+    /// Path to the recorded answer on disk.
+    ///
+    /// A path rather than the audio itself: the cloud tier is reached through
+    /// the bridge CLI, and even a few seconds of speech overflows the argument
+    /// limit as base64. The bridge deletes the file once it has read it;
+    /// `voice_discard_capture` cleans up when the call never happens.
+    pub path: String,
+    /// MIME type of the recording, e.g. `audio/wav`.
     pub mime: String,
 }
 
@@ -103,31 +108,6 @@ where
     tauri::async_runtime::spawn_blocking(operation)
         .await
         .map_err(|error| format!("voice operation did not complete: {error}"))?
-}
-
-fn encode_base64(bytes: &[u8]) -> String {
-    const ALPHABET: &[u8; 64] =
-        b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    let mut out = String::with_capacity(bytes.len().div_ceil(3) * 4);
-    for chunk in bytes.chunks(3) {
-        let b0 = chunk[0] as u32;
-        let b1 = *chunk.get(1).unwrap_or(&0) as u32;
-        let b2 = *chunk.get(2).unwrap_or(&0) as u32;
-        let triple = (b0 << 16) | (b1 << 8) | b2;
-        out.push(ALPHABET[(triple >> 18) as usize & 0x3f] as char);
-        out.push(ALPHABET[(triple >> 12) as usize & 0x3f] as char);
-        out.push(if chunk.len() > 1 {
-            ALPHABET[(triple >> 6) as usize & 0x3f] as char
-        } else {
-            '='
-        });
-        out.push(if chunk.len() > 2 {
-            ALPHABET[triple as usize & 0x3f] as char
-        } else {
-            '='
-        });
-    }
-    out
 }
 
 /* -------------------------------------------------------------------------- */
@@ -793,15 +773,31 @@ pub async fn voice_capture(locale: String) -> Result<VoiceCaptureResult, String>
     let locale = normalize_locale(&locale);
     blocking(move || {
         let path = platform::capture(locale)?;
-        let bytes = std::fs::read(&path)
-            .map_err(|error| format!("could not read the recorded answer: {error}"));
-        let _ = std::fs::remove_file(&path);
         Ok(VoiceCaptureResult {
-            audio_base64: encode_base64(&bytes?),
+            path: path.to_string_lossy().into_owned(),
             mime: "audio/wav".to_string(),
         })
     })
     .await
+}
+
+/// Delete a recording the cloud tier never got to read.
+///
+/// Scoped to this process's temp directory and to ZAM's own capture names, so
+/// a compromised WebView cannot turn it into an arbitrary-file delete.
+#[tauri::command]
+pub fn voice_discard_capture(path: String) -> Result<(), String> {
+    let candidate = std::path::PathBuf::from(&path);
+    let in_temp_dir = candidate.parent() == Some(std::env::temp_dir().as_path());
+    let is_capture = candidate
+        .file_name()
+        .and_then(|name| name.to_str())
+        .is_some_and(|name| name.starts_with("zam-voice-") && name.ends_with(".wav"));
+    if !in_temp_dir || !is_capture {
+        return Err("refusing to delete a file outside ZAM's own recordings".to_string());
+    }
+    let _ = std::fs::remove_file(candidate);
+    Ok(())
 }
 
 #[cfg(test)]
@@ -827,13 +823,26 @@ mod tests {
     }
 
     #[test]
-    fn encodes_base64_with_padding() {
-        assert_eq!(encode_base64(b""), "");
-        assert_eq!(encode_base64(b"f"), "Zg==");
-        assert_eq!(encode_base64(b"fo"), "Zm8=");
-        assert_eq!(encode_base64(b"foo"), "Zm9v");
-        assert_eq!(encode_base64(b"foob"), "Zm9vYg==");
-        assert_eq!(encode_base64(&[0xff, 0xfe, 0xfd]), "//79");
+    fn discard_only_touches_zams_own_recordings() {
+        let outside = std::env::temp_dir().join("not-a-zam-file.wav");
+        std::fs::write(&outside, b"keep me").unwrap();
+        assert!(voice_discard_capture(outside.to_string_lossy().into_owned()).is_err());
+        assert!(outside.exists(), "a non-ZAM file must survive");
+        std::fs::remove_file(&outside).unwrap();
+
+        // Right name, wrong directory.
+        let nested = std::env::temp_dir().join("nested");
+        std::fs::create_dir_all(&nested).unwrap();
+        let wrong_dir = nested.join("zam-voice-1.wav");
+        std::fs::write(&wrong_dir, b"keep me").unwrap();
+        assert!(voice_discard_capture(wrong_dir.to_string_lossy().into_owned()).is_err());
+        assert!(wrong_dir.exists());
+        std::fs::remove_file(&wrong_dir).unwrap();
+
+        let ours = std::env::temp_dir().join("zam-voice-test.wav");
+        std::fs::write(&ours, b"recording").unwrap();
+        assert!(voice_discard_capture(ours.to_string_lossy().into_owned()).is_ok());
+        assert!(!ours.exists(), "our own recording must be deleted");
     }
 
     #[test]
