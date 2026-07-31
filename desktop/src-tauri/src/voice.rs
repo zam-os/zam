@@ -152,23 +152,33 @@ mod platform {
         NSRunLoop::currentRunLoop().runUntilDate(&deadline);
     }
 
-    pub fn tts_available() -> (bool, Option<String>) {
-        // A macOS install always has at least one system voice; the interesting
-        // failure is a locale with no installed voice, which `speak` reports.
-        {
-            let voices = unsafe { AVSpeechSynthesisVoice::speechVoices() };
-            if voices.count() == 0 {
-                (
+    pub fn tts_available(locale: &str) -> (bool, Option<String>) {
+        unsafe {
+            if AVSpeechSynthesisVoice::speechVoices().count() == 0 {
+                return (
                     false,
                     Some("macOS reports no installed system voices".to_string()),
-                )
-            } else {
-                (true, None)
+                );
             }
+            // Per-locale, because that is what `speak` needs: a Mac with voices
+            // but none for the review language cannot read a card aloud.
+            if AVSpeechSynthesisVoice::voiceWithLanguage(Some(&NSString::from_str(locale)))
+                .is_none()
+            {
+                return (
+                    false,
+                    Some(format!(
+                        "macOS has no {locale} system voice installed \
+                         (System Settings › Accessibility › Spoken Content › \
+                         System Voice › Manage Voices)"
+                    )),
+                );
+            }
+            (true, None)
         }
     }
 
-    pub fn stt_available() -> (bool, Option<String>) {
+    pub fn stt_available(locale: &str) -> (bool, Option<String>) {
         unsafe {
             match SFSpeechRecognizer::authorizationStatus() {
                 SFSpeechRecognizerAuthorizationStatus::Denied => {
@@ -188,24 +198,31 @@ mod platform {
                 }
                 _ => {}
             }
-            for tag in ["de-DE", "en-US"] {
-                let locale = NSLocale::localeWithLocaleIdentifier(&NSString::from_str(tag));
-                if let Some(recognizer) = SFSpeechRecognizer::initWithLocale(
-                    SFSpeechRecognizer::alloc(),
-                    &locale,
-                ) {
-                    if recognizer.supportsOnDeviceRecognition() {
-                        return (true, None);
-                    }
+            // Only the review language: `transcribe_local` asks for that exact
+            // locale, so a recognizer for some *other* language is not an
+            // answer. Reporting one available was the old bug — the session
+            // then failed on the first spoken answer.
+            let nslocale = NSLocale::localeWithLocaleIdentifier(&NSString::from_str(locale));
+            if let Some(recognizer) =
+                SFSpeechRecognizer::initWithLocale(SFSpeechRecognizer::alloc(), &nslocale)
+            {
+                if recognizer.supportsOnDeviceRecognition() {
+                    return (true, None);
                 }
+                return (
+                    false,
+                    Some(format!(
+                        "macOS has no on-device speech model for {locale}; \
+                         download it in System Settings › Keyboard › Dictation"
+                    )),
+                );
             }
             (
                 false,
-                Some(
-                    "no on-device speech model is installed for German or English \
+                Some(format!(
+                    "macOS has no speech recognizer for {locale} \
                      (System Settings › Keyboard › Dictation)"
-                        .to_string(),
-                ),
+                )),
             )
         }
     }
@@ -462,28 +479,134 @@ mod platform {
             .map_err(|error| format!("unsupported speech language {locale}: {error}"))
     }
 
-    pub fn tts_available() -> (bool, Option<String>) {
-        match SpeechSynthesizer::AllVoices() {
-            Ok(voices) => match voices.Size() {
-                Ok(count) if count > 0 => (true, None),
-                _ => (
-                    false,
-                    Some("Windows reports no installed speech voices".to_string()),
-                ),
-            },
-            Err(error) => (false, Some(format!("Windows speech synthesis failed: {error}"))),
+    /// The primary subtag of a BCP-47 tag: `de-DE` → `de`.
+    fn primary_subtag(tag: &str) -> String {
+        tag.split('-').next().unwrap_or(tag).to_ascii_lowercase()
+    }
+
+    /// Pick the installed tag that can serve `locale`: the exact tag when it is
+    /// present, otherwise any tag for the same language.
+    ///
+    /// The same-language fallback is deliberate and narrow. Recognizing German
+    /// speech with an `en-US` engine returns confident nonsense, so we never
+    /// cross languages; but a machine carrying only `en-GB` serves an `en-US`
+    /// session perfectly well, and refusing it would be pedantry.
+    pub(super) fn resolve_tag(locale: &str, installed: &[String]) -> Option<String> {
+        if let Some(exact) = installed
+            .iter()
+            .find(|tag| tag.eq_ignore_ascii_case(locale))
+        {
+            return Some(exact.clone());
+        }
+        let wanted = primary_subtag(locale);
+        installed
+            .iter()
+            .find(|tag| primary_subtag(tag) == wanted)
+            .cloned()
+    }
+
+    fn describe_installed(installed: &[String]) -> String {
+        if installed.is_empty() {
+            "none are installed".to_string()
+        } else {
+            format!("this machine has {}", installed.join(", "))
+        }
+    }
+
+    /// Language tags Windows can synthesize, from the installed voices.
+    fn installed_voice_tags() -> Vec<String> {
+        let Ok(voices) = SpeechSynthesizer::AllVoices() else {
+            return Vec::new();
+        };
+        let mut tags: Vec<String> = Vec::new();
+        for index in 0..voices.Size().unwrap_or(0) {
+            let Ok(voice) = voices.GetAt(index) else {
+                continue;
+            };
+            let Ok(tag) = voice.Language() else { continue };
+            let tag = tag.to_string_lossy();
+            if !tags.iter().any(|seen| seen.eq_ignore_ascii_case(&tag)) {
+                tags.push(tag);
+            }
+        }
+        tags
+    }
+
+    /// Language tags Windows can transcribe free-form speech in.
+    ///
+    /// This — not `Language::CreateLanguage` — is what says whether a speech
+    /// pack is installed. `CreateLanguage` validates the *shape* of a BCP-47
+    /// tag and happily returns `de-DE` on a machine with no German speech
+    /// support at all; the failure only surfaces later, in
+    /// `SpeechRecognizer::Create`, as `0x800455BC`.
+    fn installed_recognizer_tags() -> Vec<String> {
+        let Ok(languages) = SpeechRecognizer::SupportedTopicLanguages() else {
+            return Vec::new();
+        };
+        let mut tags: Vec<String> = Vec::new();
+        for index in 0..languages.Size().unwrap_or(0) {
+            let Ok(language) = languages.GetAt(index) else {
+                continue;
+            };
+            let Ok(tag) = language.LanguageTag() else {
+                continue;
+            };
+            tags.push(tag.to_string_lossy());
+        }
+        tags
+    }
+
+    /// The voice Windows should use for `locale`, or `None` when the machine
+    /// has no voice for that language.
+    ///
+    /// Returning `None` rather than falling through to the default voice is the
+    /// point: the default is whatever the *system* language is, so a silent
+    /// fallback reads German cards aloud in an English voice and reports
+    /// success.
+    pub fn tts_available(locale: &str) -> (bool, Option<String>) {
+        let installed = installed_voice_tags();
+        if installed.is_empty() {
+            return (
+                false,
+                Some("Windows reports no installed speech voices".to_string()),
+            );
+        }
+        match resolve_tag(locale, &installed) {
+            Some(_) => (true, None),
+            None => (
+                false,
+                Some(format!(
+                    "Windows has no {locale} speech voice installed ({}). \
+                     Add the language's text-to-speech feature in Settings › \
+                     Time & language › Language & region.",
+                    describe_installed(&installed)
+                )),
+            ),
         }
     }
 
     /// Windows free-form dictation is served by the installed speech language
-    /// pack. Constructing a recognizer for the locale and compiling its default
-    /// constraints is the only honest availability test — a machine without the
-    /// pack fails at compile time, not at construction.
-    pub fn stt_available() -> (bool, Option<String>) {
-        let Ok(language) = language("de-DE").or_else(|_| language("en-US")) else {
+    /// pack, and availability is **per language**: the answer for `de-DE` says
+    /// nothing about `en-US`. Compiling the recognizer's default constraints is
+    /// the final check — a language can be listed and still fail to compile.
+    pub fn stt_available(locale: &str) -> (bool, Option<String>) {
+        let installed = installed_recognizer_tags();
+        let Some(tag) = resolve_tag(locale, &installed) else {
             return (
                 false,
-                Some("no supported speech recognition language".to_string()),
+                Some(format!(
+                    "Windows has no {locale} speech recognition installed ({}). \
+                     Add the language's speech feature in Settings › Time & \
+                     language › Language & region, or switch ZAM to a language \
+                     this machine supports.",
+                    describe_installed(&installed)
+                )),
+            );
+        };
+        let Ok(language) = language(&tag) else {
+            return (
+                false,
+                Some(format!("Windows rejected the speech language tag {tag}")),
             );
         };
         match SpeechRecognizer::Create(&language) {
@@ -494,8 +617,9 @@ mod platform {
                         Ok(status) => (
                             false,
                             Some(format!(
-                                "Windows speech recognition is not ready ({status:?}); \
-                                 install the speech language pack in Settings › Time & Language"
+                                "Windows speech recognition for {tag} is not ready \
+                                 ({status:?}); reinstall the speech language pack in \
+                                 Settings › Time & language › Language & region"
                             )),
                         ),
                         Err(error) => (false, Some(format!("{error}"))),
@@ -507,7 +631,7 @@ mod platform {
             Err(error) => (
                 false,
                 Some(format!(
-                    "Windows could not create a speech recognizer: {error}"
+                    "Windows could not create a {tag} speech recognizer: {error}"
                 )),
             ),
         }
@@ -515,10 +639,15 @@ mod platform {
 
     /// Windows prompts for microphone access through its own privacy settings
     /// rather than an in-process API, so there is nothing to request here.
+    ///
+    /// Deliberately not locale-aware: microphone consent is a machine-wide
+    /// setting, and reporting "prompt" merely because the learner's language
+    /// pack is missing would send them to the wrong Settings page.
     pub fn authorization_state() -> String {
-        match stt_available() {
-            (true, _) => "granted".to_string(),
-            (false, _) => "prompt".to_string(),
+        if installed_recognizer_tags().is_empty() {
+            "prompt".to_string()
+        } else {
+            "granted".to_string()
         }
     }
 
@@ -529,17 +658,28 @@ mod platform {
     pub fn speak(text: &str, locale: &str) -> Result<(), String> {
         let synthesizer = SpeechSynthesizer::new()
             .map_err(|error| format!("Windows speech synthesis failed: {error}"))?;
-        if let Ok(language) = language(locale) {
-            if let Ok(voices) = SpeechSynthesizer::AllVoices() {
-                let tag = language.LanguageTag().unwrap_or_default();
-                for index in 0..voices.Size().unwrap_or(0) {
-                    let Ok(voice) = voices.GetAt(index) else {
-                        continue;
-                    };
-                    if voice.Language().map(|l| l == tag).unwrap_or(false) {
-                        let _ = synthesizer.SetVoice(&voice);
-                        break;
-                    }
+        // Refuse rather than read the card in the wrong language. `tts_available`
+        // gates this in normal operation; the check here is what makes the
+        // failure legible if anything ever calls past it.
+        let installed = installed_voice_tags();
+        let Some(tag) = resolve_tag(locale, &installed) else {
+            return Err(format!(
+                "Windows has no {locale} speech voice installed ({})",
+                describe_installed(&installed)
+            ));
+        };
+        if let Ok(voices) = SpeechSynthesizer::AllVoices() {
+            for index in 0..voices.Size().unwrap_or(0) {
+                let Ok(voice) = voices.GetAt(index) else {
+                    continue;
+                };
+                let matches = voice
+                    .Language()
+                    .map(|l| l.to_string_lossy().eq_ignore_ascii_case(&tag))
+                    .unwrap_or(false);
+                if matches {
+                    let _ = synthesizer.SetVoice(&voice);
+                    break;
                 }
             }
         }
@@ -596,9 +736,21 @@ mod platform {
     }
 
     pub fn listen(locale: &str) -> Result<String, String> {
-        let language = language(locale)?;
-        let recognizer = SpeechRecognizer::Create(&language)
-            .map_err(|error| format!("Windows could not create a speech recognizer: {error}"))?;
+        // Resolve against what is installed before constructing anything: a
+        // valid tag is not an installed language, and `Create` would otherwise
+        // fail with a bare `0x800455BC` that names neither the language nor the
+        // fix (see `installed_recognizer_tags`).
+        let installed = installed_recognizer_tags();
+        let tag = resolve_tag(locale, &installed).ok_or_else(|| {
+            format!(
+                "Windows has no {locale} speech recognition installed ({})",
+                describe_installed(&installed)
+            )
+        })?;
+        let language = language(&tag)?;
+        let recognizer = SpeechRecognizer::Create(&language).map_err(|error| {
+            format!("Windows could not create a {tag} speech recognizer: {error}")
+        })?;
         recognizer
             .CompileConstraintsAsync()
             .and_then(|operation| operation.join())
@@ -633,7 +785,9 @@ mod platform {
     use std::path::PathBuf;
     use std::process::Command;
 
-    pub fn tts_available() -> (bool, Option<String>) {
+    /// `spd-say` resolves the voice from `--language` at speak time and falls
+    /// back to its default, so availability here is not per-locale.
+    pub fn tts_available(_locale: &str) -> (bool, Option<String>) {
         match Command::new("spd-say").arg("--version").output() {
             Ok(output) if output.status.success() => (true, None),
             _ => (
@@ -646,7 +800,7 @@ mod platform {
     /// No desktop Linux distribution ships a general-purpose offline recognizer
     /// ZAM can rely on. Voice mode on Linux therefore needs either the cloud
     /// tier or a self-hosted transcription endpoint (ADR 2026-07-31).
-    pub fn stt_available() -> (bool, Option<String>) {
+    pub fn stt_available(_locale: &str) -> (bool, Option<String>) {
         (
             false,
             Some(
@@ -695,10 +849,22 @@ mod platform {
 /* Commands                                                                   */
 /* -------------------------------------------------------------------------- */
 
+/// Report what this device can do locally **for one review language**.
+///
+/// Availability is per-locale, not per-machine: Windows serves recognition
+/// from a per-language speech pack and macOS from a per-language on-device
+/// model, so a machine can be fully capable in English and have nothing at all
+/// for German. Answering machine-wide was the 0.24.0 bug — a locale the learner
+/// never uses could report the feature available, and the session then failed
+/// on the first spoken word.
+///
+/// `locale` is optional so the command stays callable from a probe that has no
+/// UI locale yet; it falls back to the same default as `normalize_locale`.
 #[tauri::command]
-pub fn voice_capabilities() -> VoiceCapabilities {
-    let (tts_local, tts_detail) = platform::tts_available();
-    let (stt_local, stt_detail) = platform::stt_available();
+pub fn voice_capabilities(locale: Option<String>) -> VoiceCapabilities {
+    let locale = normalize_locale(locale.as_deref().unwrap_or_default());
+    let (tts_local, tts_detail) = platform::tts_available(locale);
+    let (stt_local, stt_detail) = platform::stt_available(locale);
     VoiceCapabilities {
         stt_local,
         tts_local,
@@ -855,12 +1021,50 @@ mod tests {
     fn reports_capabilities_without_panicking() {
         // Availability differs per machine; the contract is that probing is
         // always safe to call, including with no microphone and no consent.
-        let capabilities = voice_capabilities();
-        assert_eq!(
-            capabilities.stt_local,
-            capabilities.stt_detail.is_none(),
-            "a missing capability must always explain itself"
-        );
-        assert_eq!(capabilities.tts_local, capabilities.tts_detail.is_none());
+        for locale in [None, Some("de".to_string()), Some("en-GB".to_string())] {
+            let capabilities = voice_capabilities(locale);
+            assert_eq!(
+                capabilities.stt_local,
+                capabilities.stt_detail.is_none(),
+                "a missing capability must always explain itself"
+            );
+            assert_eq!(capabilities.tts_local, capabilities.tts_detail.is_none());
+        }
+    }
+
+    #[cfg(target_os = "windows")]
+    mod windows_tags {
+        use super::super::platform;
+
+        #[test]
+        fn resolves_the_exact_tag_before_the_language() {
+            let installed = vec!["en-GB".to_string(), "en-US".to_string()];
+            assert_eq!(
+                platform::resolve_tag("en-US", &installed).as_deref(),
+                Some("en-US")
+            );
+        }
+
+        /// A machine carrying only en-GB should still serve an en-US session:
+        /// same language, and refusing it would be pedantry.
+        #[test]
+        fn falls_back_within_the_same_language() {
+            let installed = vec!["en-GB".to_string()];
+            assert_eq!(
+                platform::resolve_tag("en-US", &installed).as_deref(),
+                Some("en-GB")
+            );
+        }
+
+        /// The regression that shipped in 0.24.0: `Language::CreateLanguage`
+        /// accepts `de-DE` on a machine with only English speech, so ZAM
+        /// believed it had a German recognizer and `Create` failed with
+        /// 0x800455BC. Languages must never substitute for one another.
+        #[test]
+        fn never_crosses_languages() {
+            let installed = vec!["en-GB".to_string(), "en-US".to_string()];
+            assert_eq!(platform::resolve_tag("de-DE", &installed), None);
+            assert_eq!(platform::resolve_tag("de-DE", &[]), None);
+        }
     }
 }

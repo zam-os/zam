@@ -18,7 +18,7 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 
 - [Kernel and CLI Architecture](kernel-architecture.md) — ZAM is split into an AI-agnostic learning kernel and a thin CLI orchestration layer; all learning logic lives in the kernel, all LLM/HTTP code in the CLI.
 - [MCP Transport and Surfaces](mcp-surfaces.md) — zam mcp is the preferred agent transport - a stdio MCP server exposing focused ZAM tools and host-rendered MCP Apps panels.
-- [Hands-Free Voice Mode](voice-mode.md) — Voice review runs one shared kernel loop over a device tier of native OS speech and a cloud tier from the capability registry, resolved per capability from a machine-local user preference.
+- [Hands-Free Voice Mode](voice-mode.md) — Voice review runs one shared kernel loop over a device tier of native OS speech and a cloud tier from the capability registry, resolved per capability and per language from a machine-local user preference.
 
 ## data-model
 

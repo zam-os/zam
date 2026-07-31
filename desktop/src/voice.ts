@@ -108,10 +108,19 @@ export function createVoicePort(invoke: TauriInvoke): VoicePort {
   };
 }
 
+/**
+ * Ask the device what it can do locally **for one review language**.
+ *
+ * The locale is required, not incidental: Windows serves recognition from a
+ * per-language speech pack and macOS from a per-language on-device model, so a
+ * machine can be fully capable in English and have nothing for German. Callers
+ * must re-probe when the app language changes — see `refreshVoiceAvailability`.
+ */
 export function probeNativeCapabilities(
   invoke: TauriInvoke,
+  locale: VoiceLocale,
 ): Promise<NativeVoiceCapabilities> {
-  return invoke<NativeVoiceCapabilities>("voice_capabilities");
+  return invoke<NativeVoiceCapabilities>("voice_capabilities", { locale });
 }
 
 /** What the tiered port needs from the bridge and the page to reach the cloud. */

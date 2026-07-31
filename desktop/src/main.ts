@@ -48,6 +48,7 @@ import {
   unavailableReasonKey,
   type VoiceEnginePlan,
   type VoiceEnginePreference,
+  type VoiceLocale,
 } from "./voice.js";
 import {
   beginTurn,
@@ -1004,6 +1005,9 @@ async function setLocale(locale: Locale): Promise<void> {
   initializeTranslations();
   void loadWorkspaceList();
   void loadProviderStatus();
+  // Device speech availability is per-language: a machine with an English
+  // speech pack and no German one gains or loses voice mode on this switch.
+  void refreshVoiceAvailability();
 }
 
 function isActiveWorkspace(workspace: WorkspaceConfig): boolean {
@@ -1745,9 +1749,19 @@ function capabilityLabel(cap: ModelCapability): string {
   }
 }
 
-// Capabilities exposed in the Settings UI today; the data model also carries
-// video/stt/tts for forward-compatibility (ADR 2026-07-12).
-const UI_CAPABILITIES: ModelCapability[] = ["text", "embedding", "image"];
+// Capabilities exposed in the Settings UI. stt/tts joined the list in 0.24.0:
+// voice mode's cloud tier reads `capabilities.stt`/`.tts`, and `validateModelSave`
+// intersects what the learner ticked with what the probe detected — so a
+// capability the editor never offers can never be stored, and a correctly
+// detected Whisper endpoint would sit there permanently unusable. `video` stays
+// out until something consumes it (ADR 2026-07-12, ADR 2026-07-31).
+const UI_CAPABILITIES: ModelCapability[] = [
+  "text",
+  "embedding",
+  "image",
+  "stt",
+  "tts",
+];
 
 async function loadModelRegistry(): Promise<void> {
   const status = aiConfigStatusEl();
@@ -4967,6 +4981,14 @@ const REVIEW_ACTION_TRIGGER_IDS = [
 /** Machine-local preference; loaded from ~/.zam/config.json on first probe. */
 let voicePreference: VoiceEnginePreference = readStoredPreference(undefined);
 let voiceCapabilities: NativeVoiceCapabilities | null = null;
+/**
+ * The review locale `voiceCapabilities` was probed for.
+ *
+ * Device speech availability is per-language, so the cached answer is only
+ * valid for the language it was asked about; switching the app language must
+ * re-probe rather than reuse a verdict about a different one.
+ */
+let voiceCapabilitiesLocale: VoiceLocale | null = null;
 let voiceCloudAvailability = { stt: false, tts: false };
 let voiceProbePending = false;
 
@@ -5086,24 +5108,27 @@ function updateVoiceButton(): void {
 }
 
 /**
- * Probe the device once per app run and show or explain the control.
+ * Probe the device for the current review language and show or explain the
+ * control.
  *
- * The cloud tier is not wired yet, so cloud availability is reported as false:
- * every preference therefore resolves to the device, which is the honest
- * answer today rather than a promise the build cannot keep.
+ * The probe is cached per locale rather than per app run: device speech
+ * availability differs by language, so switching the app language invalidates
+ * the previous answer and must ask again.
  */
 async function refreshVoiceAvailability(): Promise<void> {
   if (voiceProbePending) return;
   voiceProbePending = true;
   try {
-    if (!voiceCapabilities) {
+    const locale = resolveVoiceLocale(currentLocale);
+    if (!voiceCapabilities || voiceCapabilitiesLocale !== locale) {
       try {
         const stored = await runBridge("voice-preference-get", []);
         voicePreference = readStoredPreference(stored?.preference);
       } catch (error) {
         console.warn("Falling back to the default voice preference", error);
       }
-      voiceCapabilities = await probeNativeCapabilities(voiceInvoke);
+      voiceCapabilities = await probeNativeCapabilities(voiceInvoke, locale);
+      voiceCapabilitiesLocale = locale;
     }
     try {
       const cloud = await runBridge("voice-availability", []);
