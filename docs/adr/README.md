@@ -63,3 +63,5 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-27](2026-07-27-macos-notarization.md) | macOS Distribution: Developer ID Notarization, Not the Mac App Store | Accepted — verified on a local notarized build |
 | [2026-07-29](2026-07-29-native-host-answering-route.md) | Name and Show the Surrounding Host as an Answering Route | Proposed |
 | [2026-07-29b](2026-07-29b-okf-freshness-radar.md) | OKF Freshness Radar | Implemented |
+| [2026-07-30](2026-07-30-okf-reader-navigation-and-mermaid.md) | OKF Reader Navigation and Mermaid Rendering | Implemented |
+| [2026-07-31](2026-07-31-cross-platform-voice-mode.md) | Cross-Platform Voice Mode: Device-First Speech with a Costed Cloud Tier | Accepted — macOS engine validated; Windows and iOS await device verification |
