@@ -40,4 +40,7 @@ objc2-avf-audio = { version = "0.3", features = ["AVAudioRecorder", "AVSpeechSyn
 objc2-speech = { version = "0.3", features = ["SFSpeechRecognizer", "SFSpeechRecognitionRequest", "SFSpeechRecognitionResult", "SFSpeechRecognitionTask", "SFTranscription", "block2"] }
 
 [target.'cfg(target_os = "windows")'.dependencies]
-windows = { version = "0.62", features = ["Foundation", "Foundation_Collections", "Globalization", "Media_Core", "Media_Playback", "Media_SpeechRecognition", "Media_SpeechSynthesis", "Storage_Streams"] }
+# Win32_System_Registry is needed to read the speech privacy-policy flag:
+# dictation refuses to run without it and only says so at recognition time, so
+# there is no WinRT API to ask up front (see voice.rs::speech_privacy_accepted).
+windows = { version = "0.62", features = ["Foundation", "Foundation_Collections", "Globalization", "Media_Core", "Media_Playback", "Media_SpeechRecognition", "Media_SpeechSynthesis", "Storage_Streams", "Win32_System_Registry"] }

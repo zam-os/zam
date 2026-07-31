@@ -8,7 +8,7 @@ tags:
   - desktop
   - mobile
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/voice-mode.md"
-timestamp: 2026-07-31T09:40:00Z
+timestamp: 2026-07-31T16:20:00Z
 ---
 
 Voice mode reads a due card aloud, listens for the spoken answer, and maps a
@@ -135,10 +135,31 @@ runtime, the `com.apple.security.device.audio-input` entitlement. Consent is
 therefore only obtainable from the signed app bundle, never from a bare test
 binary.
 
-Windows serves free-form dictation from the installed speech language pack.
-Unlike macOS it exposes no on-device flag, so ZAM treats Windows local
-recognition as available only when the recognizer compiles its constraints on
-that machine, and does not claim it is provably offline.
+Windows serves free-form dictation from the installed speech language pack, and
+additionally requires the user to have accepted the **speech privacy policy**
+(Settings › Privacy & security › Speech › "Online speech recognition"). Unlike
+macOS it exposes no on-device flag, so ZAM treats Windows local recognition as
+available only when the language is installed, consent is on record, and the
+recognizer compiles its constraints on that machine — and does not claim it is
+provably offline. The setting's name is a standing reason for that caution:
+whether the dictation topic constraint is served locally or by Microsoft has
+not been established, so `device-only` on Windows is the weakest of ZAM's
+on-device claims.
+
+## Consent cannot be probed through the recognizer
+
+`CompileConstraintsAsync` reports success whether or not the privacy policy has
+been accepted; the refusal surfaces only from `RecognizeAsync`, as
+`SPERR_SPEECH_PRIVACY_POLICY_NOT_ACCEPTED` (`0x80045509`) — after the learner
+has opened a session and spoken. There is no WinRT API to ask in advance, so
+`speech_privacy_accepted()` reads `HasAccepted` under
+`HKCU\Software\Microsoft\Speech_OneCore\Settings\OnlineSpeechPrivacy`, treating
+an absent key as never-accepted. `recognition_error_message` additionally maps
+the HRESULT, so the refusal is legible even if that flag ever moves.
+
+This is the one place where the module reads the registry rather than asking an
+API, and it is worth the exception: the alternative is 0.24.1's behaviour, where
+the button appeared, the learner spoke, and the session died on a bare HRESULT.
 
 # Availability is per device *and per language*
 
@@ -165,6 +186,10 @@ for this: it validates the *shape* of a BCP-47 tag and accepts `de-DE` on a
 machine with no German speech at all, deferring the failure to
 `SpeechRecognizer::Create` as a bare `0x800455BC`. On macOS the check is
 `initWithLocale` plus `supportsOnDeviceRecognition` for that one locale.
+
+Reasons are ordered from the most fundamental cause outwards — missing language
+before missing consent — so the learner is told the first thing they have to fix
+rather than the last thing that failed.
 
 Because the answer is per-language, the desktop caches the probe per locale and
 re-probes when the app language changes.

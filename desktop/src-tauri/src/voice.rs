@@ -465,14 +465,93 @@ mod platform {
 
     use windows::core::HSTRING;
     use windows::Globalization::Language;
-    use windows::Media::Playback::{MediaPlayer, MediaPlaybackState};
+    use windows::Media::Core::MediaSource;
+    use windows::Media::Playback::{MediaPlaybackState, MediaPlayer};
     use windows::Media::SpeechRecognition::{
         SpeechRecognitionResultStatus, SpeechRecognizer, SpeechRecognizerState,
     };
     use windows::Media::SpeechSynthesis::SpeechSynthesizer;
-    use windows::Media::Core::MediaSource;
+    use windows::Win32::System::Registry::{
+        RegCloseKey, RegOpenKeyExW, RegQueryValueExW, HKEY, HKEY_CURRENT_USER, KEY_READ, REG_DWORD,
+    };
 
     use super::MAX_OPERATION_SECS;
+
+    /// `SPERR_SPEECH_PRIVACY_POLICY_NOT_ACCEPTED` — what `RecognizeAsync` raises
+    /// when Windows' speech privacy policy has not been accepted.
+    pub(super) const SPEECH_PRIVACY_NOT_ACCEPTED: i32 = 0x8004_5509_u32 as i32;
+
+    /// Where the Speech privacy setting records consent.
+    const PRIVACY_KEY: &str = "Software\\Microsoft\\Speech_OneCore\\Settings\\OnlineSpeechPrivacy";
+
+    /// Shared so the up-front capability answer and a mid-session failure say the
+    /// same thing, and so neither can drift into a bare HRESULT.
+    const PRIVACY_REASON: &str = "Windows has not been given permission for speech recognition. \
+         Turn on Settings › Privacy & security › Speech › \"Online speech recognition\" — \
+         free-form dictation refuses to run until that policy is accepted.";
+
+    /// Whether the user has accepted Windows' speech privacy policy.
+    ///
+    /// This has to be read from the registry because the recognizer will not
+    /// tell us: `CompileConstraintsAsync` reports success either way, and the
+    /// refusal only surfaces from `RecognizeAsync` — i.e. after the learner has
+    /// already started a session and spoken. There is no WinRT API to ask.
+    ///
+    /// A missing key means never-accepted, which is the state of a machine that
+    /// has not visited the Speech privacy page.
+    pub(super) fn speech_privacy_accepted() -> bool {
+        let mut key = HKEY::default();
+        let path: Vec<u16> = PRIVACY_KEY
+            .encode_utf16()
+            .chain(std::iter::once(0))
+            .collect();
+        let opened = unsafe {
+            RegOpenKeyExW(
+                HKEY_CURRENT_USER,
+                windows::core::PCWSTR(path.as_ptr()),
+                None,
+                KEY_READ,
+                &mut key,
+            )
+        };
+        if opened.is_err() {
+            return false;
+        }
+        let name: Vec<u16> = "HasAccepted"
+            .encode_utf16()
+            .chain(std::iter::once(0))
+            .collect();
+        let mut value: u32 = 0;
+        let mut size = std::mem::size_of::<u32>() as u32;
+        let mut kind = REG_DWORD;
+        let read = unsafe {
+            RegQueryValueExW(
+                key,
+                windows::core::PCWSTR(name.as_ptr()),
+                None,
+                Some(&mut kind),
+                Some(&mut value as *mut u32 as *mut u8),
+                Some(&mut size),
+            )
+        };
+        unsafe {
+            let _ = RegCloseKey(key);
+        }
+        read.is_ok() && kind == REG_DWORD && value == 1
+    }
+
+    /// Turn a recognition failure into something the learner can act on.
+    ///
+    /// Pure so the privacy mapping is testable without a microphone: the one
+    /// code that must never reach the UI raw is the privacy refusal, because its
+    /// text (`0x80045509`) names neither the cause nor the setting that fixes it.
+    pub(super) fn recognition_error_message(code: i32, detail: &str) -> String {
+        if code == SPEECH_PRIVACY_NOT_ACCEPTED {
+            PRIVACY_REASON.to_string()
+        } else {
+            format!("Windows speech recognition failed: {detail}")
+        }
+    }
 
     fn language(locale: &str) -> Result<Language, String> {
         Language::CreateLanguage(&HSTRING::from(locale))
@@ -609,6 +688,13 @@ mod platform {
                 Some(format!("Windows rejected the speech language tag {tag}")),
             );
         };
+        // Before exercising the recognizer: a machine that has not accepted the
+        // speech privacy policy compiles constraints happily and then refuses
+        // the first spoken word, which is exactly the dead button this module
+        // exists to avoid.
+        if !speech_privacy_accepted() {
+            return (false, Some(PRIVACY_REASON.to_string()));
+        }
         match SpeechRecognizer::Create(&language) {
             Ok(recognizer) => match recognizer.CompileConstraintsAsync() {
                 Ok(operation) => match operation.join() {
@@ -758,7 +844,7 @@ mod platform {
         let result = recognizer
             .RecognizeAsync()
             .and_then(|operation| operation.join())
-            .map_err(|error| format!("Windows speech recognition failed: {error}"))?;
+            .map_err(|error| recognition_error_message(error.code().0, &error.message()))?;
         match result.Status() {
             Ok(SpeechRecognitionResultStatus::Success) => {}
             Ok(status) => return Err(format!("Windows speech recognition failed ({status:?})")),
@@ -1065,6 +1151,42 @@ mod tests {
             let installed = vec!["en-GB".to_string(), "en-US".to_string()];
             assert_eq!(platform::resolve_tag("de-DE", &installed), None);
             assert_eq!(platform::resolve_tag("de-DE", &[]), None);
+        }
+
+        /// 0.24.1 shipped this dead button: the recognizer compiles fine without
+        /// the speech privacy policy and only refuses at `RecognizeAsync`, so
+        /// the learner met a bare `0x80045509` after speaking. The privacy
+        /// refusal must always be translated into the setting that fixes it.
+        #[test]
+        fn privacy_refusal_names_the_setting_to_change() {
+            let message = platform::recognition_error_message(
+                platform::SPEECH_PRIVACY_NOT_ACCEPTED,
+                "The speech privacy policy was not accepted prior to attempting a speech recognition.",
+            );
+            assert!(
+                message.contains("Online speech recognition"),
+                "should name the setting: {message}"
+            );
+            assert!(
+                !message.contains("0x80045509"),
+                "should not leak the raw code: {message}"
+            );
+        }
+
+        /// Everything else keeps its original text — this mapping exists to
+        /// explain one specific refusal, not to swallow unrelated failures.
+        #[test]
+        fn other_failures_keep_their_detail() {
+            let message =
+                platform::recognition_error_message(0x8000_4005_u32 as i32, "Unspecified error");
+            assert!(message.contains("Unspecified error"), "{message}");
+        }
+
+        /// Probing consent must be safe on any machine, including one that has
+        /// never opened the Speech privacy page (the key is absent there).
+        #[test]
+        fn privacy_probe_is_always_safe_to_call() {
+            let _ = platform::speech_privacy_accepted();
         }
     }
 }
