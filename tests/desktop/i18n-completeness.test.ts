@@ -276,6 +276,13 @@ const REQUIRED_KEYS = [
 // passed over, so the exhaustive scan below doesn't mask *new* regressions
 // while still not churning unrelated strings.
 const PRE_EXISTING_FALLBACK_KEYS = new Set([
+  // Dynamic-question toggle — en/de shipped; es/fr/pt/zh/ja await native pack
+  // review before translation (see i18n pack backlog).
+  "lbl_dynamic_questions",
+  "lbl_dynamic_questions_help",
+  "dynamic_questions_on",
+  "dynamic_questions_off",
+  "dynamic_questions_error",
   // 0.24.0 desktop voice mode (ADR 2026-07-31) — en/de shipped; es/fr/pt/zh/ja
   // await native pack review before translation (see i18n pack backlog).
   "settings_voice_title",

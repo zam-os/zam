@@ -614,6 +614,29 @@ textarea:focus-visible {
   padding: 11px 0;
 }
 
+/* Checkbox row inside a settings card: the label wraps the control so the
+   whole row is clickable, and the help text sits under the label rather than
+   beside it, which keeps long explanations readable at narrow widths. */
+.settings-toggle {
+  align-items: flex-start;
+  border-top: 1px solid var(--border-soft);
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  padding: 11px 0;
+}
+
+.settings-toggle input {
+  /* Nudge the box onto the first line of the label text. */
+  margin-top: 2px;
+}
+
+.settings-toggle > span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .settings-row:first-of-type {
   border-top: 0;
   padding-top: 0;

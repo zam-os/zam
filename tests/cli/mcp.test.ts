@@ -895,7 +895,29 @@ describe("MCP stdio server tests", () => {
         });
         expect(readRes.isError).toBeUndefined();
         const data = JSON.parse(readRes.content[0].text);
-        expect(data.recall).toEqual({ quickMode: true });
+        // `dynamicQuestions` joined the block when the desktop gained a control
+        // for it; absent storage reads as on. Kept as an exact match so a
+        // further addition to the recall block is a deliberate contract change.
+        expect(data.recall).toEqual({ quickMode: true, dynamicQuestions: true });
+      }, 15_000);
+
+      it("reads and writes the dynamic-question setting", async () => {
+        const writeRes = await studioClient.callTool({
+          name: "zam_studio_bridge",
+          arguments: {
+            cmd: "setting-set",
+            args: ["--key", "llm.dynamic_questions", "--value", "false"],
+          },
+        });
+        expect(writeRes.isError).toBeUndefined();
+
+        const readRes = await studioClient.callTool({
+          name: "zam_studio_bridge",
+          arguments: { cmd: "get-settings", args: [] },
+        });
+        expect(readRes.isError).toBeUndefined();
+        const data = JSON.parse(readRes.content[0].text);
+        expect(data.recall.dynamicQuestions).toBe(false);
       }, 15_000);
 
       it("serializes concurrent calls without corrupting either response", async () => {
