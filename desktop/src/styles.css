@@ -639,12 +639,13 @@ textarea:focus-visible {
 
 /* Alpha marker for opt-in features that are not finished yet — small enough
    not to shout, present enough that nobody mistakes them for settled. */
+/* Plain rgba rather than color-mix(): this stylesheet is minified by
+   lightningcss, which cannot parse color-mix and fails the whole build. */
 .settings-badge-alpha {
-  background: color-mix(in srgb, var(--clr-warn, #d97706) 16%, transparent);
-  border: 1px solid
-    color-mix(in srgb, var(--clr-warn, #d97706) 42%, transparent);
+  background: rgba(217, 119, 6, 0.16);
+  border: 1px solid rgba(217, 119, 6, 0.42);
   border-radius: 999px;
-  color: var(--clr-warn, #b45309);
+  color: #b45309;
   font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 0.6px;
@@ -655,9 +656,14 @@ textarea:focus-visible {
 }
 
 .settings-alpha-note {
-  border-left: 2px solid
-    color-mix(in srgb, var(--clr-warn, #d97706) 45%, transparent);
+  border-left: 2px solid rgba(217, 119, 6, 0.45);
   padding-left: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .settings-badge-alpha {
+    color: #fbbf24;
+  }
 }
 
 .settings-row:first-of-type {
@@ -3244,105 +3250,6 @@ textarea::placeholder {
 
 .onboarding-model-status.ok {
   color: var(--clr-accent-cyan);
-}
-
-/* Optional multi-machine secrets page — compact for first-run shell height */
-.onboarding-secrets-card {
-  border-style: dashed;
-  gap: 12px;
-}
-
-.onboarding-secrets-badge {
-  background: rgba(100, 116, 139, 0.12);
-  color: var(--clr-text-secondary);
-}
-
-.onboarding-secrets-skip-hint {
-  font-weight: 600;
-  font-size: 13px;
-  color: var(--clr-text-primary);
-  margin: 0;
-}
-
-.onboarding-secrets-region {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 2px;
-}
-
-.onboarding-secrets-region-title {
-  font-weight: 600;
-  font-size: 14px;
-  color: var(--clr-text-primary);
-  margin: 0;
-}
-
-.onboarding-secrets-region .onboarding-model-line {
-  font-size: 13px;
-  line-height: 1.45;
-}
-
-.onboarding-secrets-region-options {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-@media (max-width: 560px) {
-  .onboarding-secrets-region-options {
-    grid-template-columns: 1fr;
-  }
-}
-
-.onboarding-secrets-region-option {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  padding: 12px 14px;
-  border: 1px solid var(--border-soft);
-  border-radius: 10px;
-  background: var(--bg-field);
-  color: var(--clr-text-primary);
-  text-align: left;
-  cursor: pointer;
-}
-
-.onboarding-secrets-region-option:hover {
-  border-color: var(--clr-accent-cyan);
-}
-
-.onboarding-secrets-region-option.selected {
-  border-color: var(--clr-accent-cyan);
-  box-shadow: 0 0 0 1px var(--clr-accent-cyan);
-}
-
-.onboarding-secrets-region-label {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.onboarding-secrets-region-rec {
-  padding: 1px 8px;
-  border-radius: 999px;
-  background: rgba(8, 145, 178, 0.12);
-  color: var(--clr-accent-cyan);
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: lowercase;
-}
-
-.onboarding-secrets-region-detail {
-  font-size: 12px;
-  color: var(--clr-text-secondary);
-  line-height: 1.4;
-}
-  font-weight: 600;
 }
 
 /* Semantic-search enhancement block (ADR 2026-07-24 §5a, Phase 3) */
