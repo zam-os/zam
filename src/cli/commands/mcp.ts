@@ -10,7 +10,11 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import type { Database, Rating, ReviewActionType } from "../../kernel/index.js";
-import { getSetting, openDatabase } from "../../kernel/index.js";
+import {
+  getReviewActivity,
+  getSetting,
+  openDatabase,
+} from "../../kernel/index.js";
 import {
   COMPANION_SURFACES,
   type CompanionContextReadResult,
@@ -330,7 +334,54 @@ export function createMcpServer(db: Database): McpServer {
     }),
   );
 
-  // 2. zam_session_start
+  // 2. zam_progress_stats
+  server.registerTool(
+    "zam_progress_stats",
+    {
+      description:
+        "Review activity series: cards worked per day/week/month with study time (ADR 2026-08-01)",
+      inputSchema: {
+        user: z.string().optional().describe("User ID to query activity for"),
+        period: z
+          .enum(["day", "week", "month"])
+          .optional()
+          .describe("Bucketing period (default: day)"),
+        days: z
+          .number()
+          .int()
+          .min(1)
+          .optional()
+          .describe(
+            "Window in buckets (default: 30 days / 12 weeks / 6 months)",
+          ),
+      },
+      annotations: {
+        ...commonAnnotations,
+        readOnlyHint: true,
+      },
+    },
+    wrapHandler(async (params) => {
+      const userId = await getUserId(params.user);
+      const period = params.period ?? "day";
+      const windowBuckets =
+        params.days ?? (period === "month" ? 6 : period === "week" ? 12 : 30);
+      const since = new Date(
+        Date.now() -
+          (period === "month"
+            ? windowBuckets * 31
+            : period === "week"
+              ? windowBuckets * 7
+              : windowBuckets) *
+            86_400_000,
+      )
+        .toISOString()
+        .slice(0, 10);
+      const result = await getReviewActivity(db, userId, { period, since });
+      return { userId, window: windowBuckets, ...result };
+    }),
+  );
+
+  // 3. zam_session_start
   server.registerTool(
     "zam_session_start",
     {

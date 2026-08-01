@@ -119,7 +119,7 @@ const BLOOM_LEVEL_NAMES: Record<string, Record<number, string>> = {
 };
 
 // ── STATE MANAGEMENT ──────────────────────────────────────────────────────
-type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view" | "learning-content-view" | "onboarding-view";
+type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view" | "learning-content-view" | "onboarding-view" | "stats-view";
 type ThemePreference = "light" | "dark";
 
 let isLlmEnabled = false;
@@ -517,6 +517,20 @@ function saveThemePreference(theme: ThemePreference): void {
 function initializeTranslations() {
   document.getElementById("nav-dashboard")!.textContent = t("nav_dashboard");
   document.getElementById("nav-settings")!.textContent = t("nav_settings");
+  document.getElementById("nav-stats")!.textContent = t("nav_stats");
+  document.getElementById("lbl-stats-kicker")!.textContent = t("stats_kicker");
+  document.getElementById("lbl-stats-title")!.textContent = t("stats_title");
+  document.getElementById("lbl-stats-subtitle")!.textContent =
+    t("stats_subtitle");
+  document.getElementById("btn-stats-back")!.textContent = t("btn_stats_back");
+  document.getElementById("stats-period-day")!.textContent =
+    t("stats_period_day");
+  document.getElementById("stats-period-week")!.textContent =
+    t("stats_period_week");
+  document.getElementById("stats-period-month")!.textContent =
+    t("stats_period_month");
+  document.getElementById("lbl-stats-activity-title")!.textContent =
+    t("stats_activity_title");
   document.getElementById("lbl-dashboard-kicker")!.textContent =
     t("dashboard_kicker");
   document.getElementById("lbl-dashboard-title")!.textContent =
@@ -3309,12 +3323,131 @@ function setActiveNav(viewId: AppView): void {
   const navByView: Partial<Record<AppView, string>> = {
     "dashboard-view": "nav-dashboard",
     "settings-view": "nav-settings",
+    "stats-view": "nav-stats",
     "learning-content-view": "nav-content",
   };
   for (const button of document.querySelectorAll<HTMLButtonElement>(".nav-btn")) {
     const active = button.id === navByView[viewId];
     button.classList.toggle("active", active);
     button.setAttribute("aria-current", active ? "page" : "false");
+  }
+}
+
+// ── STATS VIEW ────────────────────────────────────────────────────────────
+type StatsPeriod = "day" | "week" | "month";
+
+interface StatsActivityBucket {
+  bucket: string;
+  reviewedCards: number;
+  studyTimeMs: number;
+}
+
+interface StatsActivityResponse {
+  userId: string;
+  window: number;
+  period: StatsPeriod;
+  buckets: StatsActivityBucket[];
+}
+
+let statsPeriod: StatsPeriod = "day";
+
+function formatStatsTime(ms: number): string {
+  if (ms < 60_000) return `${Math.max(1, Math.round(ms / 1000))}s`;
+  const minutes = Math.floor(ms / 60_000);
+  const seconds = Math.round((ms % 60_000) / 1000);
+  return seconds > 0 ? `${minutes}m ${seconds}s` : `${minutes}m`;
+}
+
+function setStatsPeriod(period: StatsPeriod): void {
+  statsPeriod = period;
+  for (const candidate of ["day", "week", "month"] as const) {
+    document
+      .getElementById(`stats-period-${candidate}`)
+      ?.classList.toggle("active", candidate === period);
+  }
+  void loadStatsView();
+}
+
+async function loadStatsView(): Promise<void> {
+  const container = document.getElementById("stats-activity");
+  const summary = document.getElementById("stats-summary");
+  if (!container || !summary) return;
+
+  container.innerHTML = "";
+  const loading = document.createElement("p");
+  loading.className = "stats-loading";
+  loading.textContent = "…";
+  container.appendChild(loading);
+  summary.classList.add("hidden");
+
+  let response: StatsActivityResponse;
+  try {
+    response = await runBridge<StatsActivityResponse>("stats-activity", [
+      "--period",
+      statsPeriod,
+    ]);
+  } catch (err) {
+    container.innerHTML = "";
+    const error = document.createElement("p");
+    error.className = "stats-error";
+    error.textContent = errorMessage(err);
+    container.appendChild(error);
+    return;
+  }
+
+  const totalCards = response.buckets.reduce(
+    (sum, b) => sum + b.reviewedCards,
+    0,
+  );
+  const totalMs = response.buckets.reduce((sum, b) => sum + b.studyTimeMs, 0);
+  summary.classList.remove("hidden");
+  summary.innerHTML = "";
+  const cards = document.createElement("span");
+  cards.className = "stats-summary-item";
+  cards.textContent = tf("stats_total_cards", { n: totalCards });
+  const time = document.createElement("span");
+  time.className = "stats-summary-item";
+  time.textContent = tf("stats_total_time", { time: formatStatsTime(totalMs) });
+  summary.append(cards, time);
+
+  container.innerHTML = "";
+  if (response.buckets.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "stats-empty";
+    empty.textContent = t("stats_empty");
+    container.appendChild(empty);
+    return;
+  }
+
+  const maxCards = Math.max(
+    ...response.buckets.map((b) => b.reviewedCards),
+    1,
+  );
+  for (const bucket of response.buckets) {
+    const row = document.createElement("div");
+    row.className = "stats-row";
+
+    const label = document.createElement("span");
+    label.className = "stats-row-label";
+    label.textContent = bucket.bucket;
+
+    const bar = document.createElement("span");
+    bar.className = "stats-row-bar";
+    const fill = document.createElement("span");
+    fill.className = "stats-row-fill";
+    fill.style.width = `${Math.max(2, Math.round((bucket.reviewedCards / maxCards) * 100))}%`;
+    bar.appendChild(fill);
+
+    const count = document.createElement("span");
+    count.className = "stats-row-count";
+    count.textContent = String(bucket.reviewedCards);
+
+    const timeMs = document.createElement("span");
+    timeMs.className = "stats-row-time";
+    timeMs.textContent = formatStatsTime(bucket.studyTimeMs);
+
+    row.append(label, bar, count, timeMs);
+    container.appendChild(row);
   }
 }
 
@@ -3620,6 +3753,9 @@ function switchView(
     void capturePrimaryModelFingerprint();
   } else if (wasSettings) {
     void maybeReinitAiAfterSettings();
+  }
+  if (viewId === "stats-view") {
+    void loadStatsView();
   }
   // openCardInEditor already loads + selects; skip the redundant fire-and-forget
   // load that would race with that path (ADR 2026-07-16b full-editor jump).
@@ -5889,6 +6025,24 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("nav-settings")?.addEventListener("click", () => {
     switchView("settings-view");
+  });
+
+  document.getElementById("nav-stats")?.addEventListener("click", () => {
+    switchView("stats-view");
+  });
+
+  document.getElementById("btn-stats-back")?.addEventListener("click", () => {
+    switchView("dashboard-view");
+  });
+
+  document.getElementById("stats-period-day")?.addEventListener("click", () => {
+    setStatsPeriod("day");
+  });
+  document.getElementById("stats-period-week")?.addEventListener("click", () => {
+    setStatsPeriod("week");
+  });
+  document.getElementById("stats-period-month")?.addEventListener("click", () => {
+    setStatsPeriod("month");
   });
 
   document.getElementById("btn-open-settings")?.addEventListener("click", () => {

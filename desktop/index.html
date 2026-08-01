@@ -27,6 +27,7 @@
         <nav class="top-nav" aria-label="Main navigation">
           <button id="nav-dashboard" class="nav-btn active" type="button">Dashboard</button>
           <button id="nav-content" class="nav-btn" type="button">Learning Content</button>
+          <button id="nav-stats" class="nav-btn" type="button">Statistics</button>
           <button id="nav-settings" class="nav-btn" type="button">Settings</button>
         </nav>
         <div class="status-area" id="system-status">
@@ -296,6 +297,37 @@
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- VIEW: STATISTICS -->
+      <section id="stats-view" class="view">
+        <div class="settings-hero frosted">
+          <div>
+            <p id="lbl-stats-kicker" class="eyebrow">Review activity</p>
+            <h1 id="lbl-stats-title">Learning Statistics</h1>
+            <p id="lbl-stats-subtitle" class="settings-subtitle">
+              Cards reviewed per day, week, or month — and the study time they took.
+            </p>
+          </div>
+          <button id="btn-stats-back" class="btn secondary-btn btn-sm" type="button">Back to dashboard</button>
+        </div>
+
+        <div class="stats-body">
+          <div class="stats-period-row" role="tablist" aria-label="Period">
+            <button id="stats-period-day" class="btn secondary-btn btn-sm stats-period-btn active" type="button" role="tab">Day</button>
+            <button id="stats-period-week" class="btn secondary-btn btn-sm stats-period-btn" type="button" role="tab">Week</button>
+            <button id="stats-period-month" class="btn secondary-btn btn-sm stats-period-btn" type="button" role="tab">Month</button>
+          </div>
+
+          <div id="stats-summary" class="stats-summary hidden"></div>
+
+          <article class="card frosted stats-card">
+            <h2 id="lbl-stats-activity-title">Activity</h2>
+            <div id="stats-activity" class="stats-activity">
+              <p class="stats-loading">Loading…</p>
+            </div>
+          </article>
         </div>
       </section>
 
