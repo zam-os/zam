@@ -218,6 +218,28 @@ design below avoids it.
     days). A master-password box inside another application has to earn its
     trust, and saying nothing does not earn it.
 
+12. **The CLI is located explicitly on Windows, never through a shell
+    (added 2026-08-01).** `execFile("bw", …)` goes through CreateProcess,
+    which does not apply PATHEXT, so a `bw.cmd` on PATH was never found and
+    the vault reported "not installed" — to every Windows learner who had
+    installed the CLI the ordinary way, since the npm package `@bitwarden/cli`
+    installs exactly such a shim. Node additionally refuses to spawn `.cmd`
+    and `.bat` at all without a shell (CVE-2024-27980).
+
+    `shell: true` would fix both and is ruled out by Decision 11: a
+    password-bearing command line through cmd.exe puts back exactly what that
+    decision removed, with quoting hazards on top. Instead
+    `src/kernel/secrets/bw-executable.ts` walks PATH, prefers a real
+    `bw.exe`, and for an npm shim reads the wrapped script path out of it and
+    runs that with this process's own Node. Both paths spawn a real binary
+    with an argument array. When nothing is found it falls back to the plain
+    name, so a genuinely missing CLI still surfaces as before.
+
+    The resolver is unit-tested with an explicit `platform`, so the Windows
+    branch is covered on every runner; the end-to-end suite — whose fake `bw`
+    is a `.cmd` shim on Windows — no longer skips there, which makes the
+    windows CI job the real proof.
+
 ## Options considered
 
 **Vault references with a pluggable backend, Bitwarden first — chosen.** Solves

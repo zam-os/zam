@@ -13,6 +13,7 @@
 
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
+import { resolveBwCommand } from "../bw-executable.js";
 import {
   invalidateBwSession,
   restoreBwSessionToEnv,
@@ -172,12 +173,19 @@ async function defaultRunBw(
     session && !args.includes("--session")
       ? [...args, "--session", session]
       : args;
-  const { stdout, stderr } = await execFileAsync("bw", finalArgs, {
-    encoding: "utf8",
-    timeout: BW_TIMEOUT_MS,
-    maxBuffer: 2 * 1024 * 1024,
-    env: process.env,
-  });
+  // Windows needs the executable resolved explicitly; never a shell — see
+  // bw-executable.ts and ADR 2026-07-30b Decision 11.
+  const { file, prefixArgs } = resolveBwCommand();
+  const { stdout, stderr } = await execFileAsync(
+    file,
+    [...prefixArgs, ...finalArgs],
+    {
+      encoding: "utf8",
+      timeout: BW_TIMEOUT_MS,
+      maxBuffer: 2 * 1024 * 1024,
+      env: process.env,
+    },
+  );
   return {
     stdout: typeof stdout === "string" ? stdout : String(stdout),
     stderr: typeof stderr === "string" ? stderr : String(stderr),

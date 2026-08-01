@@ -22,6 +22,7 @@ import {
   setProviderApiKey,
   setTursoCredentials,
 } from "../kernel/credentials.js";
+import { resolveBwCommand } from "../kernel/secrets/bw-executable.js";
 import {
   invalidateBwSession,
   isSecretRef,
@@ -123,12 +124,20 @@ async function runBw(
   args: string[],
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<{ stdout: string; stderr: string }> {
-  const { stdout, stderr } = await execFileAsync("bw", withSessionArgs(args), {
-    encoding: "utf8",
-    timeout: BW_TIMEOUT_MS,
-    maxBuffer: 2 * 1024 * 1024,
-    env: { ...env, BW_SESSION: process.env.BW_SESSION ?? env.BW_SESSION },
-  });
+  // Never `shell: true` — the master password reaches the CLI through
+  // BW_PASSWORD, and a shell would put the whole command line back where
+  // other processes can read it (ADR 2026-07-30b Decision 11).
+  const { file, prefixArgs } = resolveBwCommand({ env });
+  const { stdout, stderr } = await execFileAsync(
+    file,
+    [...prefixArgs, ...withSessionArgs(args)],
+    {
+      encoding: "utf8",
+      timeout: BW_TIMEOUT_MS,
+      maxBuffer: 2 * 1024 * 1024,
+      env: { ...env, BW_SESSION: process.env.BW_SESSION ?? env.BW_SESSION },
+    },
+  );
   return {
     stdout: typeof stdout === "string" ? stdout : String(stdout),
     stderr: typeof stderr === "string" ? stderr : String(stderr),
