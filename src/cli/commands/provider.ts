@@ -16,6 +16,8 @@ import {
   clearProviderApiKey,
   getProviderApiKey,
   listProviderApiKeyRefs,
+  resolveCredentials,
+  secretRefFromUri,
   setProviderApiKey,
 } from "../../kernel/index.js";
 import { type ApiFlavor, inferApiFlavor } from "../llm/client.js";
@@ -308,8 +310,33 @@ providerCommand
     "--key <value>",
     "The API key (omit to enter it interactively, hidden)",
   )
+  .option(
+    "--key-from <secret-ref>",
+    "Optional later: vault reference instead of --key (e.g. bw://zam-openrouter/apiKey). Paste with --key remains the default.",
+  )
   .action(async (ref, opts) => {
     try {
+      if (opts.key && opts.keyFrom) {
+        console.error("Use either --key or --key-from, not both.");
+        process.exit(1);
+      }
+
+      if (opts.keyFrom) {
+        const secretRef = secretRefFromUri(opts.keyFrom);
+        setProviderApiKey(ref, secretRef);
+        await resolveCredentials();
+        if (getProviderApiKey(ref) === null) {
+          console.error(
+            `Could not resolve key reference "${opts.keyFrom}". Fix the vault item or run: zam credentials check`,
+          );
+          process.exit(1);
+        }
+        console.log(
+          `Stored vault reference for "${ref}" (${opts.keyFrom}) and verified it resolves.`,
+        );
+        return;
+      }
+
       const key: string =
         opts.key ?? (await password({ message: `API key for "${ref}":` }));
       if (!key || key.trim().length === 0) {
@@ -317,6 +344,8 @@ providerCommand
         process.exit(1);
       }
       setProviderApiKey(ref, key.trim());
+      // Keep the in-memory snapshot coherent for the rest of this process.
+      await resolveCredentials();
       console.log(`Stored API key for "${ref}" (${maskSecret(key.trim())}).`);
     } catch (err) {
       if ((err as Error).name === "ExitPromptError") {

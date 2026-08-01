@@ -553,6 +553,66 @@
             </div>
           </article>
 
+          <!-- Alpha, opt-in (ADR 2026-07-30b, revised): off by default and out
+               of onboarding entirely. Ticking the box reveals the body; until
+               then this card is one checkbox and one sentence. -->
+          <article class="card frosted settings-card" id="secrets-vault-card">
+            <div class="settings-card-header">
+              <div>
+                <h2 id="lbl-settings-secrets-title">
+                  Multi-machine secrets
+                  <span id="lbl-settings-secrets-alpha" class="settings-badge-alpha">Alpha</span>
+                </h2>
+                <p id="lbl-settings-secrets-help" class="settings-card-help">
+                  Optional: sync the server-database token to Bitwarden so every
+                  computer can use it. Cloud model keys usually live in the
+                  database already. One unlock, one sync — no re-paste.
+                </p>
+              </div>
+            </div>
+            <label class="settings-toggle" for="toggle-secrets-vault">
+              <input type="checkbox" id="toggle-secrets-vault" />
+              <span>
+                <span id="lbl-secrets-vault-toggle">Enable the Bitwarden vault (alpha)</span>
+                <span id="lbl-secrets-vault-toggle-help" class="settings-card-help"></span>
+              </span>
+            </label>
+            <div class="settings-stack" id="secrets-vault-body" hidden>
+              <p id="lbl-secrets-vault-alpha-note" class="settings-card-help settings-alpha-note"></p>
+              <p id="secrets-vault-status" class="sub-label" aria-live="polite"></p>
+              <p id="secrets-vault-detail" class="settings-card-help" aria-live="polite"></p>
+              <div id="secrets-vault-unlock-row" class="settings-stack">
+                <label class="settings-field" for="secrets-vault-password">
+                  <span id="lbl-secrets-unlock">Unlock Bitwarden for this session</span>
+                  <input
+                    id="secrets-vault-password"
+                    class="settings-input"
+                    type="password"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+                  <span id="lbl-secrets-password-note" class="settings-card-help"></span>
+                </label>
+                <div class="settings-card-actions">
+                  <button id="btn-secrets-unlock" class="btn secondary-btn btn-sm" type="button">
+                    Unlock
+                  </button>
+                </div>
+              </div>
+              <div class="settings-card-actions">
+                <button id="btn-secrets-sync" class="btn primary-btn btn-sm" type="button">
+                  Sync with Bitwarden
+                </button>
+                <button id="btn-secrets-open-vault" class="btn secondary-btn btn-sm" type="button">
+                  Open Bitwarden
+                </button>
+                <button id="btn-secrets-disconnect" class="btn secondary-btn btn-sm" type="button">
+                  Disconnect Bitwarden
+                </button>
+              </div>
+            </div>
+          </article>
+
           <article class="card frosted settings-card">
             <div class="settings-card-header">
               <div>
@@ -573,6 +633,83 @@
           </div>
         </div>
       </section>
+
+      <!-- Bitwarden assure gate: login/unlock before vault-backed secrets -->
+      <div
+        id="bitwarden-assure-overlay"
+        class="modal-overlay"
+        aria-hidden="true"
+      >
+        <div
+          class="modal-box"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="bitwarden-assure-title"
+        >
+          <div class="modal-header">
+            <h3 id="bitwarden-assure-title">Bitwarden</h3>
+          </div>
+          <div class="modal-body settings-stack">
+            <p id="bitwarden-assure-body" class="settings-card-help"></p>
+            <p id="bitwarden-assure-status" class="sub-label" aria-live="polite"></p>
+            <label
+              class="settings-field"
+              id="bitwarden-assure-email-row"
+              for="bitwarden-assure-email"
+            >
+              <span>Email</span>
+              <input
+                id="bitwarden-assure-email"
+                class="settings-input"
+                type="email"
+                autocomplete="username"
+                spellcheck="false"
+              />
+            </label>
+            <label class="settings-field" for="bitwarden-assure-password">
+              <span id="lbl-bitwarden-assure-password">Master password</span>
+              <input
+                id="bitwarden-assure-password"
+                class="settings-input"
+                type="password"
+                autocomplete="current-password"
+                spellcheck="false"
+              />
+              <!-- Say plainly what happens to it. A master password prompt
+                   inside another app has to earn its trust. -->
+              <span id="bitwarden-assure-password-note" class="settings-card-help"></span>
+            </label>
+            <label
+              class="settings-field"
+              id="bitwarden-assure-code-row"
+              for="bitwarden-assure-code"
+              hidden
+            >
+              <span>Authenticator code</span>
+              <input
+                id="bitwarden-assure-code"
+                class="settings-input"
+                type="text"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                spellcheck="false"
+              />
+            </label>
+          </div>
+          <div class="modal-actions">
+            <button id="bitwarden-assure-open" class="btn secondary-btn" type="button">
+              Open Bitwarden
+            </button>
+            <span class="onboarding-actions-spacer"></span>
+            <button id="bitwarden-assure-cancel" class="btn ghost-btn" type="button">
+              Cancel
+            </button>
+            <button id="bitwarden-assure-submit" class="btn primary-btn" type="button">
+              Unlock
+            </button>
+          </div>
+        </div>
+      </div>
 
       <div id="mobile-pairing-overlay" class="modal-overlay">
         <div class="modal-box pairing-modal" role="dialog" aria-modal="true" aria-labelledby="lbl-pairing-title">

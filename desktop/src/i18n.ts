@@ -4116,6 +4116,86 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "The database rejected this token. Create a fresh token and paste it again.",
     server_db_err_quota:
       "The database host refused the request as over quota — check your plan's database and storage limits.",
+    server_db_err_bitwarden:
+      "Your server database is linked via Bitwarden. Unlock once — you stay signed in for up to 30 days.",
+    server_db_unlock_bitwarden: "Unlock Bitwarden",
+    server_db_unlocking_bw: "Unlocking Bitwarden…",
+    // Multi-machine vault secrets (Bitwarden) — one unlock + one sync
+    secrets_vault_title: "Multi-machine secrets",
+    secrets_vault_alpha: "Alpha",
+    secrets_vault_toggle: "Enable the Bitwarden vault (alpha)",
+    secrets_vault_toggle_help:
+      "Off by default. Only useful if you use ZAM on several computers and want the server-database token to travel with you. One computer needs none of this.",
+    secrets_vault_alpha_note:
+      "Alpha: this is new and rough at the edges. It needs the Bitwarden CLI (bw) installed. Switching it off later leaves your data alone — use Disconnect to turn vault references back into stored values first.",
+    secrets_vault_password_note:
+      "Handed straight to the Bitwarden CLI to unlock it, never stored and never written to a log. What ZAM keeps afterwards is the CLI's session key, in ~/.zam (readable only by you), for 30 days.",
+    secrets_vault_help:
+      "Optional. The important secret on this machine is the server-database token — cloud model keys usually already live in the database. Connect Bitwarden once; ZAM syncs what it already knows. No re-paste.",
+    secrets_vault_region_badge_eu: "EU",
+    secrets_vault_region_badge_us: "US",
+    secrets_vault_checking: "Checking Bitwarden…",
+    secrets_vault_status_connected: "Connected ({region}){email}",
+    secrets_vault_status_unlocked: "Unlocked ({region}){email}",
+    secrets_vault_status_locked: "Locked ({region}){email}",
+    secrets_vault_status_logged_out: "Not logged in to Bitwarden on this machine.",
+    secrets_vault_status_missing:
+      "Bitwarden optional and not installed — paste still works for single-machine use.",
+    secrets_vault_detail_synced:
+      "Server-database credentials are in your vault. Changes sync while unlocked.",
+    secrets_vault_detail_pending:
+      "{count} machine secret(s) not yet in Bitwarden — press Sync.",
+    secrets_vault_detail_ready: "Press Sync to connect Bitwarden for this machine.",
+    secrets_vault_detail_locked: "Unlock to sync or resume connection.",
+    secrets_vault_detail_login:
+      "Log in to Bitwarden once on this Mac, then unlock here.",
+    secrets_vault_detail_optional:
+      "Only needed for multi-machine. Single-computer setups can ignore this.",
+    secrets_vault_unlock_label: "Master password (not stored)",
+    secrets_vault_password_ph: "Bitwarden master password",
+    secrets_vault_password_required: "Enter your master password.",
+    secrets_vault_unlock: "Unlock",
+    secrets_vault_unlocking: "Unlocking…",
+    secrets_vault_sync: "Sync with Bitwarden",
+    secrets_vault_sync_again: "Sync now",
+    secrets_vault_syncing: "Syncing…",
+    secrets_vault_sync_ok: "Synced {count} secret(s) into Bitwarden. Auto-sync is on.",
+    secrets_vault_sync_ok_none:
+      "Already in sync. Auto-sync is on for future changes.",
+    secrets_vault_open: "Open Bitwarden",
+    secrets_vault_disconnect: "Disconnect Bitwarden",
+    secrets_vault_disconnect_confirm:
+      "Copy secrets from Bitwarden back into this computer’s config and stop using Bitwarden for ZAM?\n\nVault items in Bitwarden are not deleted. You can remove them there yourself.",
+    secrets_vault_disconnecting: "Restoring local secrets…",
+    secrets_vault_disconnect_need_unlock:
+      "Unlock Bitwarden once so ZAM can copy secrets back into the local config.",
+    secrets_vault_disconnect_ok:
+      "Disconnected. Restored {count} secret(s) as local values. Bitwarden is no longer used by ZAM on this machine.",
+    // Bitwarden assure gate (before any vault-backed secret use)
+    bw_assure_title: "Bitwarden required",
+    bw_assure_body_login:
+      "Your server database token is stored in Bitwarden. Log in once here — ZAM keeps the session for up to 30 days on this computer. Use an authenticator code if prompted (FIDO2 is not available in this login).",
+    bw_assure_body_unlock:
+      "Your server database token is stored in Bitwarden. Unlock once — you stay signed in for up to 30 days on this computer (password is not stored).",
+    bw_assure_email_ph: "Email",
+    bw_assure_password_ph: "Master password",
+    bw_assure_password_label: "Master password",
+    bw_assure_password_note:
+      "Handed straight to the Bitwarden CLI to unlock it, never stored and never written to a log. ZAM keeps only the CLI session key afterwards.",
+    bw_assure_code_ph: "6-digit authenticator code",
+    bw_assure_email_required: "Enter your Bitwarden email.",
+    bw_assure_password_required: "Enter your master password.",
+    bw_assure_login: "Log in",
+    bw_assure_unlock: "Unlock",
+    bw_assure_cancel: "Cancel",
+    bw_assure_open_vault: "Open Bitwarden website",
+    bw_assure_logging_in: "Logging in…",
+    bw_assure_unlocking: "Unlocking…",
+    bw_assure_needs_2fa:
+      "Enter the code from your authenticator app, then log in again.",
+    bw_assure_login_failed: "Login failed.",
+    bw_assure_cancelled:
+      "Bitwarden was not unlocked — your cloud library cannot load yet.",
     settings_mobile_title: "Mobile companion",
     settings_mobile_help:
       "Pair an Android device with this server database and one learner. Requires a connected server database first.",
@@ -4774,7 +4854,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_done_kicker: "You're set up",
     onboarding_done_title: "That's the essentials.",
     onboarding_done_body:
-      "You can revisit this setup any time from Settings → “Run setup again”. Head to your dashboard to start learning.",
+      "You can revisit this setup any time from Settings → “Run setup again”. Multi-machine vault secrets stay optional — paste is enough for one computer. Head to your dashboard to start learning.",
+    // Optional multi-machine secrets (ADR 2026-07-30b) — skippable; not a
+    // first-run requirement. Paste remains the default path.
     // Persona page (ADR 2026-07-24 §2, Phase 1).
     onboarding_persona_kicker: "Who are you learning as?",
     onboarding_persona_title: "Pick your starting point.",
@@ -5204,6 +5286,88 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Die Datenbank hat dieses Token abgelehnt. Erstelle ein neues Token und füge es erneut ein.",
     server_db_err_quota:
       "Der Datenbank-Host hat die Anfrage wegen überschrittener Kontingente abgelehnt — prüfe die Datenbank- und Speichergrenzen deines Tarifs.",
+    server_db_err_bitwarden:
+      "Deine Server-Datenbank hängt an Bitwarden. Einmal entsperren — du bleibst bis zu 30 Tage angemeldet.",
+    server_db_unlock_bitwarden: "Bitwarden entsperren",
+    server_db_unlocking_bw: "Bitwarden wird entsperrt…",
+    // Multi-Maschinen-Vault — ein Entsperren, ein Sync
+    secrets_vault_title: "Secrets für mehrere Rechner",
+    secrets_vault_alpha: "Alpha",
+    secrets_vault_toggle: "Bitwarden-Tresor aktivieren (Alpha)",
+    secrets_vault_toggle_help:
+      "Standardmäßig aus. Nur sinnvoll, wenn du ZAM auf mehreren Rechnern nutzt und das Server-Datenbank-Token mitnehmen willst. Für einen Rechner brauchst du das nicht.",
+    secrets_vault_alpha_note:
+      "Alpha: neu und noch nicht rund. Braucht die installierte Bitwarden-CLI (bw). Späteres Ausschalten lässt deine Daten unangetastet — mit „Bitwarden trennen“ werden Tresor-Verweise vorher wieder zu gespeicherten Werten.",
+    secrets_vault_password_note:
+      "Geht direkt an die Bitwarden-CLI zum Entsperren, wird nicht gespeichert und in kein Protokoll geschrieben. ZAM behält danach nur den Sitzungsschlüssel der CLI, in ~/.zam (nur für dich lesbar), 30 Tage lang.",
+    secrets_vault_help:
+      "Optional. Wichtig auf dem Rechner ist vor allem das Server-Datenbank-Token — Cloud-Model-Keys liegen meist schon in der Datenbank. Bitwarden einmal verbinden; ZAM synchronisiert, was es schon kennt. Kein erneutes Einfügen.",
+    secrets_vault_region_badge_eu: "EU",
+    secrets_vault_region_badge_us: "US",
+    secrets_vault_checking: "Bitwarden wird geprüft…",
+    secrets_vault_status_connected: "Verbunden ({region}){email}",
+    secrets_vault_status_unlocked: "Entsperrt ({region}){email}",
+    secrets_vault_status_locked: "Gesperrt ({region}){email}",
+    secrets_vault_status_logged_out: "Auf diesem Rechner nicht bei Bitwarden angemeldet.",
+    secrets_vault_status_missing:
+      "Bitwarden optional und nicht installiert — Einfügen funktioniert weiter für einen Rechner.",
+    secrets_vault_detail_synced:
+      "Server-Datenbank-Zugangsdaten sind im Vault. Änderungen synchronisieren, solange entsperrt.",
+    secrets_vault_detail_pending:
+      "{count} Maschinen-Secret(s) noch nicht in Bitwarden — Sync drücken.",
+    secrets_vault_detail_ready:
+      "Sync drücken, um Bitwarden für diesen Rechner zu verbinden.",
+    secrets_vault_detail_locked: "Entsperren, um zu synchronisieren oder fortzusetzen.",
+    secrets_vault_detail_login:
+      "Einmal bei Bitwarden auf diesem Mac anmelden, dann hier entsperren.",
+    secrets_vault_detail_optional:
+      "Nur für mehrere Rechner nötig. Ein Computer kann das ignorieren.",
+    secrets_vault_unlock_label: "Master-Passwort (wird nicht gespeichert)",
+    secrets_vault_password_ph: "Bitwarden-Master-Passwort",
+    secrets_vault_password_required: "Master-Passwort eingeben.",
+    secrets_vault_unlock: "Entsperren",
+    secrets_vault_unlocking: "Wird entsperrt…",
+    secrets_vault_sync: "Mit Bitwarden synchronisieren",
+    secrets_vault_sync_again: "Jetzt synchronisieren",
+    secrets_vault_syncing: "Wird synchronisiert…",
+    secrets_vault_sync_ok:
+      "{count} Secret(s) in Bitwarden übernommen. Auto-Sync ist an.",
+    secrets_vault_sync_ok_none:
+      "Bereits synchron. Auto-Sync ist für künftige Änderungen an.",
+    secrets_vault_open: "Bitwarden öffnen",
+    secrets_vault_disconnect: "Bitwarden trennen",
+    secrets_vault_disconnect_confirm:
+      "Secrets aus Bitwarden zurück in die Konfiguration dieses Rechners holen und Bitwarden für ZAM beenden?\n\nVault-Items in Bitwarden werden nicht gelöscht — das kannst du dort selbst machen.",
+    secrets_vault_disconnecting: "Lokale Secrets werden wiederhergestellt…",
+    secrets_vault_disconnect_need_unlock:
+      "Bitwarden einmal entsperren, damit ZAM die Secrets zurück in die lokale Config schreiben kann.",
+    secrets_vault_disconnect_ok:
+      "Getrennt. {count} Secret(s) wieder lokal gespeichert. ZAM nutzt Bitwarden auf diesem Rechner nicht mehr.",
+    // Bitwarden-Gate vor jedem Vault-Secret
+    bw_assure_title: "Bitwarden erforderlich",
+    bw_assure_body_login:
+      "Dein Server-Datenbank-Token liegt in Bitwarden. Einmal hier anmelden — die Session bleibt bis zu 30 Tage auf diesem Rechner. Bei Bedarf Authenticator-Code (FIDO2 geht in diesem Login nicht).",
+    bw_assure_body_unlock:
+      "Dein Server-Datenbank-Token liegt in Bitwarden. Einmal entsperren — du bleibst bis zu 30 Tage angemeldet (Passwort wird nicht gespeichert).",
+    bw_assure_email_ph: "E-Mail",
+    bw_assure_password_ph: "Master-Passwort",
+    bw_assure_password_label: "Master-Passwort",
+    bw_assure_password_note:
+      "Geht direkt an die Bitwarden-CLI zum Entsperren, wird nicht gespeichert und in kein Protokoll geschrieben. ZAM behält danach nur den Sitzungsschlüssel der CLI.",
+    bw_assure_code_ph: "6-stelliger Authenticator-Code",
+    bw_assure_email_required: "Bitwarden-E-Mail eingeben.",
+    bw_assure_password_required: "Master-Passwort eingeben.",
+    bw_assure_login: "Anmelden",
+    bw_assure_unlock: "Entsperren",
+    bw_assure_cancel: "Abbrechen",
+    bw_assure_open_vault: "Bitwarden-Website öffnen",
+    bw_assure_logging_in: "Anmeldung…",
+    bw_assure_unlocking: "Wird entsperrt…",
+    bw_assure_needs_2fa:
+      "Code aus der Authenticator-App eingeben, dann erneut anmelden.",
+    bw_assure_login_failed: "Anmeldung fehlgeschlagen.",
+    bw_assure_cancelled:
+      "Bitwarden wurde nicht entsperrt — die Cloud-Bibliothek kann noch nicht geladen werden.",
     settings_mobile_title: "Mobile Begleit-App",
     settings_mobile_help:
       "Ein Android-Gerät mit dieser Server-Datenbank und genau einem Lernenden koppeln.",
@@ -5878,7 +6042,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_done_kicker: "Alles eingerichtet",
     onboarding_done_title: "Das war das Wichtigste.",
     onboarding_done_body:
-      "Du kannst diese Einrichtung jederzeit über Einstellungen → „Einrichtung erneut starten“ öffnen. Geh zu deinem Dashboard und leg los.",
+      "Du kannst diese Einrichtung jederzeit über Einstellungen → „Einrichtung erneut starten“ öffnen. Vault-Secrets für mehrere Rechner bleiben optional — Einfügen reicht für einen Computer. Geh zu deinem Dashboard und leg los.",
+    // Optionale Multi-Maschinen-Secrets (ADR 2026-07-30b) — überspringbar;
+    // kein First-Run-Zwang. Paste bleibt der Standardweg.
     // Persona page (ADR 2026-07-24 §2, Phase 1).
     onboarding_persona_kicker: "Als wer lernst du?",
     onboarding_persona_title: "Wähle deinen Startpunkt.",

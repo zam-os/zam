@@ -637,6 +637,11 @@ export function buildOnboardingSteps(
         renderGoalArea(root, actions, goalState);
       },
     },
+    // No multi-machine vault step here (ADR 2026-07-30b, revised): the vault
+    // is an alpha feature most learners never need, and a page about
+    // Bitwarden regions and master passwords in the middle of first run
+    // costs newcomers more than it helps. It now lives behind an opt-in
+    // checkbox in Settings.
     {
       id: "done",
       titleKey: "onboarding_done_kicker",
@@ -650,6 +655,7 @@ export function buildOnboardingSteps(
     },
   ];
 }
+
 
 /**
  * The guided Agent Model card (ADR 2026-07-12a): connect an outbound agent CLI

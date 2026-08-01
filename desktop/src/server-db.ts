@@ -1,8 +1,12 @@
 /**
  * Studio form to attach a Turso/sqld server database (issue #218).
  * Gates mobile pairing: local-only installs show this CTA instead of QR.
+ *
+ * When the token is vault-backed (Bitwarden), never push the learner to re-paste
+ * URL/token — unlock once (≤30 day session) and reconnect automatically.
  */
 
+import { assureBitwardenAccess } from "./bitwarden-assure.js";
 import { runBridge } from "./bridge-transport.js";
 import { t, tf } from "./i18n.js";
 
@@ -14,6 +18,9 @@ interface DatabaseTarget {
 interface DatabaseStatusResponse {
   success: boolean;
   connected: boolean;
+  bitwardenRequired?: boolean;
+  tursoUrl?: string | null;
+  error?: string;
   target: DatabaseTarget;
   userId: string | null;
   cardCount: number;
@@ -44,6 +51,9 @@ const SQLD_SELFHOST_URL = "https://github.com/tursodatabase/libsql";
  */
 export function classifyServerDbError(message: string): string {
   const m = message.toLowerCase();
+  if (m.includes("bitwarden_required") || m.includes("bitwarden")) {
+    return t("server_db_err_bitwarden");
+  }
   if (
     /enotfound|eai_again|econnrefused|etimedout|econnreset|fetch failed|network|dns/.test(
       m,
@@ -76,8 +86,14 @@ export function initServerDbWizard(
   );
   const form = requiredElement<HTMLElement>("server-db-form");
   const pairButton = requiredElement<HTMLButtonElement>("btn-pair-mobile");
+  const createHint = requiredElement<HTMLElement>("server-db-create-hint");
+  const links = requiredElement<HTMLElement>("server-db-links");
+  const urlField = urlInput.closest("label") as HTMLElement | null;
+  const tokenField = tokenInput.closest("label") as HTMLElement | null;
 
   let serverDb = false;
+  /** True when credentials point at cloud via Bitwarden (no re-paste needed). */
+  let vaultBacked = false;
 
   requiredElement("lbl-settings-server-db-title").textContent =
     t("server_db_title");
@@ -89,13 +105,9 @@ export function initServerDbWizard(
   urlInput.placeholder = t("server_db_url_ph");
   tokenInput.placeholder = t("server_db_token_ph");
 
-  // Create half of the wizard: ZAM deep-links to the host and the learner
-  // creates the account and database there — it never signs up on their behalf
-  // (same rule as the cloud-model card, ADR 2026-07-24 §5).
   requiredElement("server-db-create-hint").textContent =
     t("server_db_create_hint");
-  const linkRow = requiredElement<HTMLElement>("server-db-links");
-  linkRow.replaceChildren();
+  links.replaceChildren();
   for (const [label, url] of [
     [t("server_db_link_signup"), TURSO_SIGNUP_URL],
     [t("server_db_link_dashboard"), TURSO_DASHBOARD_URL],
@@ -106,7 +118,7 @@ export function initServerDbWizard(
     link.className = "btn secondary-btn btn-sm";
     link.textContent = label;
     link.addEventListener("click", () => actions.openExternal(url));
-    linkRow.appendChild(link);
+    links.appendChild(link);
   }
 
   const migrateHint = document.createElement("p");
@@ -125,13 +137,43 @@ export function initServerDbWizard(
     form.hidden = false;
   };
 
+  /** Show/hide the first-time paste form vs vault-backed state. */
+  const setFormMode = (mode: "paste" | "vault-locked" | "connected"): void => {
+    const showPaste = mode === "paste";
+    createHint.hidden = !showPaste;
+    links.hidden = !showPaste;
+    if (urlField) urlField.hidden = !showPaste;
+    if (tokenField) tokenField.hidden = !showPaste;
+    connectButton.hidden = mode === "connected";
+    if (mode === "vault-locked") {
+      connectButton.hidden = false;
+      connectButton.textContent = t("server_db_unlock_bitwarden");
+    } else if (mode === "paste") {
+      connectButton.textContent = t("server_db_connect");
+    }
+  };
+
   const refresh = async (): Promise<boolean> => {
     setStatus(t("server_db_checking"));
     try {
       const status = await runBridge<DatabaseStatusResponse>("database-status");
-      serverDb = status.target.kind !== "local";
+
+      if (status.bitwardenRequired) {
+        vaultBacked = true;
+        serverDb = false;
+        applyGate();
+        if (status.tursoUrl) urlInput.value = status.tursoUrl;
+        setFormMode("vault-locked");
+        setStatus(t("server_db_err_bitwarden"), false);
+        statusLine.classList.remove("error-banner");
+        return false;
+      }
+
+      serverDb = status.success && status.target.kind !== "local";
       applyGate();
       if (serverDb) {
+        vaultBacked = true;
+        setFormMode("connected");
         setStatus(
           tf("server_db_active", {
             kind: status.target.kind,
@@ -142,23 +184,52 @@ export function initServerDbWizard(
           urlInput.value = status.target.location;
         }
       } else {
+        vaultBacked = false;
+        setFormMode("paste");
         setStatus(t("server_db_local_only"));
       }
       return serverDb;
     } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      if (msg.includes("BITWARDEN_REQUIRED") || /bitwarden/i.test(msg)) {
+        vaultBacked = true;
+        serverDb = false;
+        applyGate();
+        setFormMode("vault-locked");
+        setStatus(t("server_db_err_bitwarden"), false);
+        return false;
+      }
       serverDb = false;
       applyGate();
-      setStatus(
-        classifyServerDbError(
-          error instanceof Error ? error.message : String(error),
-        ),
-        true,
-      );
+      setFormMode("paste");
+      setStatus(classifyServerDbError(msg), true);
       return false;
     }
   };
 
+  const unlockAndRefresh = async (): Promise<void> => {
+    connectButton.disabled = true;
+    setStatus(t("server_db_unlocking_bw"));
+    try {
+      const ok = await assureBitwardenAccess();
+      if (!ok) {
+        setStatus(t("bw_assure_cancelled"), true);
+        return;
+      }
+      const connected = await refresh();
+      if (connected) onServerDbReady();
+    } finally {
+      connectButton.disabled = false;
+    }
+  };
+
   const connect = async (): Promise<void> => {
+    // Vault-backed path: only unlock, never re-paste.
+    if (vaultBacked || connectButton.textContent === t("server_db_unlock_bitwarden")) {
+      await unlockAndRefresh();
+      return;
+    }
+
     const url = urlInput.value.trim();
     const token = tokenInput.value.trim();
     if (!url || !token) {
@@ -175,6 +246,7 @@ export function initServerDbWizard(
       serverDb = result.target.kind !== "local";
       applyGate();
       tokenInput.value = "";
+      setFormMode(serverDb ? "connected" : "paste");
       setStatus(
         tf("server_db_connected", {
           kind: result.target.kind,
