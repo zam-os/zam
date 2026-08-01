@@ -373,6 +373,9 @@ export function buildOnboardingSteps(
     error: string | null;
     notice: { text: string; ok: boolean } | null;
   } = { report: null, error: null, notice: null };
+  // Explicit Bitwarden cloud region when auto-detect is ambiguous; survives
+  // Back/forward within one flow run. null = unanswered.
+  let secretsRegionChoice: BitwardenCloudRegion | null = null;
 
   return [
     {
@@ -638,6 +641,30 @@ export function buildOnboardingSteps(
       },
     },
     {
+      // Multi-machine vault refs (ADR 2026-07-30b). Deliberately last before
+      // done, always skippable, and never a first-run requirement: paste stays
+      // the default; Bitwarden is an optional later upgrade for several PCs.
+      id: "secrets",
+      titleKey: "onboarding_secrets_kicker",
+      skippable: true,
+      render(container) {
+        const root = document.createElement("div");
+        root.className = "onboarding-secrets-root";
+        container.append(root);
+        const paint = (): void => {
+          root.replaceChildren();
+          renderSecretsPage(root, actions, {
+            choice: secretsRegionChoice,
+            onChoose(region) {
+              secretsRegionChoice = region;
+              paint();
+            },
+          });
+        };
+        paint();
+      },
+    },
+    {
       id: "done",
       titleKey: "onboarding_done_kicker",
       skippable: false,
@@ -649,6 +676,274 @@ export function buildOnboardingSteps(
       },
     },
   ];
+}
+
+/** Shared CLI/docs help (region-independent). */
+export const BITWARDEN_CLI_HELP_URL = "https://bitwarden.com/help/cli/";
+/**
+ * Desktop/mobile installers — useful when the web register form hangs on
+ * password strength / "exposed password" checks (needs network to
+ * api.pwnedpasswords.com). Same free account; pick EU/US inside the app.
+ */
+export const BITWARDEN_DOWNLOAD_URL = "https://bitwarden.com/download/";
+
+/** US cloud region (Bitwarden default). */
+export const BITWARDEN_US_SIGNUP_URL =
+  "https://vault.bitwarden.com/#/register";
+/** EU cloud region — data stays in the EU (bitwarden.com/help/server-geographies). */
+export const BITWARDEN_EU_SIGNUP_URL =
+  "https://vault.bitwarden.eu/#/register";
+/** CLI must target the same region the account was created in. */
+export const BITWARDEN_EU_SERVER_URL = "https://vault.bitwarden.eu";
+export const BITWARDEN_US_SERVER_URL = "https://vault.bitwarden.com";
+
+/**
+ * EU outermost / special IANA zones that are not under `Europe/*` but are EU
+ * territory (or equivalent for data-residency preference).
+ */
+const EU_NON_EUROPE_TIMEZONES = new Set([
+  "Atlantic/Canary",
+  "Atlantic/Madeira",
+  "Atlantic/Azores",
+  "Atlantic/Reykjavik", // EEA
+  "Arctic/Longyearbyen",
+]);
+
+export type BitwardenCloudRegion = "eu" | "us";
+
+export interface BitwardenRegionHints {
+  timeZone?: string;
+  /** UI or OS language code, e.g. `"de"`. */
+  language?: string;
+}
+
+function resolveTimeZone(opts?: BitwardenRegionHints): string {
+  if (opts?.timeZone !== undefined) return opts.timeZone;
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone ?? "";
+  } catch {
+    return "";
+  }
+}
+
+/**
+ * Prefer Bitwarden's EU vault for learners who look Europe-based.
+ *
+ * Primary signal: IANA timezone in Europe (or EU outermost regions). That
+ * catches German UI on a Berlin laptop *and* English UI on the same machine,
+ * without treating Brazilian Portuguese or LatAm Spanish as EU.
+ *
+ * Secondary: UI language `de` alone — German is almost always EU/EEA/CH for
+ * this product audience; fr/es/pt stay timezone-gated (Canada/Brazil/LATAM).
+ */
+export function preferBitwardenEuRegion(opts?: BitwardenRegionHints): boolean {
+  const timeZone = resolveTimeZone(opts);
+  if (timeZone.startsWith("Europe/")) return true;
+  if (EU_NON_EUROPE_TIMEZONES.has(timeZone)) return true;
+
+  const language = (opts?.language ?? "").toLowerCase().split(/[-_]/)[0];
+  if (language === "de") return true;
+  return false;
+}
+
+/**
+ * True when auto-detection is not confident enough — the setup page should
+ * ask EU vs US instead of guessing. Confident non-EU continents map to US
+ * without a question; Europe / German UI map to EU without a question.
+ */
+export function isAmbiguousBitwardenRegion(
+  opts?: BitwardenRegionHints,
+): boolean {
+  if (preferBitwardenEuRegion(opts)) return false;
+  const timeZone = resolveTimeZone(opts);
+  if (!timeZone || timeZone === "UTC" || timeZone.startsWith("Etc/")) {
+    return true;
+  }
+  // Clear non-European continents → US cloud without asking.
+  if (
+    /^(America|Pacific|Asia|Australia|Africa|Indian|Antarctica)\//.test(
+      timeZone,
+    )
+  ) {
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Resolved region: explicit learner choice wins; otherwise auto-detect.
+ * When still ambiguous and unanswered, returns null (page must ask).
+ */
+export function resolveBitwardenCloudRegion(
+  opts?: BitwardenRegionHints & { choice?: BitwardenCloudRegion | null },
+): BitwardenCloudRegion | null {
+  if (opts?.choice === "eu" || opts?.choice === "us") return opts.choice;
+  if (preferBitwardenEuRegion(opts)) return "eu";
+  if (isAmbiguousBitwardenRegion(opts)) return null;
+  return "us";
+}
+
+/** Registration URL for a concrete cloud region. */
+export function bitwardenSignupUrlForRegion(
+  region: BitwardenCloudRegion,
+): string {
+  return region === "eu" ? BITWARDEN_EU_SIGNUP_URL : BITWARDEN_US_SIGNUP_URL;
+}
+
+/** Registration URL from hints + optional explicit choice. */
+export function bitwardenSignupUrl(
+  opts?: BitwardenRegionHints & { choice?: BitwardenCloudRegion | null },
+): string {
+  const region = resolveBitwardenCloudRegion(opts) ?? "us";
+  return bitwardenSignupUrlForRegion(region);
+}
+
+/** `bw config server` base URL for a concrete region. */
+export function bitwardenServerConfigUrlForRegion(
+  region: BitwardenCloudRegion,
+): string {
+  return region === "eu" ? BITWARDEN_EU_SERVER_URL : BITWARDEN_US_SERVER_URL;
+}
+
+/** `bw config server` base URL from hints + optional choice. */
+export function bitwardenServerConfigUrl(
+  opts?: BitwardenRegionHints & { choice?: BitwardenCloudRegion | null },
+): string {
+  const region = resolveBitwardenCloudRegion(opts) ?? "us";
+  return bitwardenServerConfigUrlForRegion(region);
+}
+
+/**
+ * Optional multi-machine secrets page — intentionally short for first run.
+ * Full transfer UI lives in Settings. Skip has no side effect (ADR §7 + 2026-07-30b).
+ */
+function renderSecretsPage(
+  container: HTMLElement,
+  actions: OnboardingStepActions,
+  state: {
+    choice: BitwardenCloudRegion | null;
+    onChoose(region: BitwardenCloudRegion): void;
+  },
+): void {
+  const regionOpts: BitwardenRegionHints = {
+    language: document.documentElement.lang || undefined,
+  };
+  const suggested = resolveBitwardenCloudRegion(regionOpts);
+  const region =
+    state.choice ?? (suggested !== null ? suggested : null);
+
+  container.append(
+    heading(t("onboarding_secrets_title")),
+    paragraph(t("onboarding_secrets_body")),
+  );
+
+  const card = document.createElement("section");
+  card.className = "onboarding-model-card onboarding-secrets-card";
+
+  const head = document.createElement("div");
+  head.className = "onboarding-model-card-head";
+  const cardTitle = document.createElement("h2");
+  cardTitle.className = "onboarding-model-card-title";
+  cardTitle.textContent = t("onboarding_secrets_card_title");
+  const badge = document.createElement("span");
+  badge.className = "onboarding-model-badge onboarding-secrets-badge";
+  badge.textContent = t("onboarding_secrets_badge");
+  head.append(cardTitle, badge);
+  card.append(head, cardLine(t("onboarding_secrets_when_short")));
+
+  // Compact EU / US picker — details belong in Settings, not first run.
+  card.append(
+    renderBitwardenRegionQuestionCompact({
+      selected: region,
+      suggested,
+      onChoose: state.onChoose,
+    }),
+  );
+
+  const links = document.createElement("div");
+  links.className = "onboarding-model-links";
+
+  const accountBtn = document.createElement("button");
+  accountBtn.type = "button";
+  accountBtn.className = "btn secondary-btn btn-sm";
+  if (region === null) {
+    accountBtn.textContent = t("onboarding_secrets_link_account_choose");
+    accountBtn.disabled = true;
+  } else {
+    accountBtn.textContent =
+      region === "eu"
+        ? t("onboarding_secrets_link_account_eu")
+        : t("onboarding_secrets_link_account");
+    const signupUrl = bitwardenSignupUrlForRegion(region);
+    accountBtn.addEventListener("click", () => actions.openExternal(signupUrl));
+  }
+  links.append(accountBtn);
+
+  const settingsHint = document.createElement("p");
+  settingsHint.className = "onboarding-model-line onboarding-secrets-skip-hint";
+  settingsHint.textContent = t("onboarding_secrets_skip_hint");
+
+  card.append(links, settingsHint);
+  container.append(card);
+}
+
+/** Two compact region cards — title + one-line host, no CLI walls of text. */
+function renderBitwardenRegionQuestionCompact(opts: {
+  selected: BitwardenCloudRegion | null;
+  suggested: BitwardenCloudRegion | null;
+  onChoose: (region: BitwardenCloudRegion) => void;
+}): HTMLElement {
+  const wrap = document.createElement("div");
+  wrap.className = "onboarding-secrets-region";
+  wrap.setAttribute("role", "radiogroup");
+  wrap.setAttribute("aria-label", t("onboarding_secrets_region_title"));
+
+  const title = document.createElement("p");
+  title.className = "onboarding-model-line onboarding-secrets-region-title";
+  title.textContent = t("onboarding_secrets_region_title");
+  const why = document.createElement("p");
+  why.className = "onboarding-model-line";
+  why.textContent = t("onboarding_secrets_region_body_short");
+  wrap.append(title, why);
+
+  const options = document.createElement("div");
+  options.className = "onboarding-secrets-region-options";
+
+  for (const region of ["eu", "us"] as const) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "onboarding-secrets-region-option";
+    btn.setAttribute("role", "radio");
+    const selected = opts.selected === region;
+    btn.classList.toggle("selected", selected);
+    btn.setAttribute("aria-checked", String(selected));
+    btn.dataset.region = region;
+
+    const label = document.createElement("span");
+    label.className = "onboarding-secrets-region-label";
+    label.textContent =
+      region === "eu"
+        ? t("onboarding_secrets_region_eu")
+        : t("onboarding_secrets_region_us");
+    if (opts.suggested === region) {
+      const rec = document.createElement("span");
+      rec.className = "onboarding-secrets-region-rec";
+      rec.textContent = t("onboarding_secrets_region_recommended");
+      label.append(" ", rec);
+    }
+    const detail = document.createElement("span");
+    detail.className = "onboarding-secrets-region-detail";
+    detail.textContent =
+      region === "eu"
+        ? t("onboarding_secrets_region_eu_detail_short")
+        : t("onboarding_secrets_region_us_detail_short");
+    btn.append(label, detail);
+    btn.addEventListener("click", () => opts.onChoose(region));
+    options.append(btn);
+  }
+
+  wrap.append(options);
+  return wrap;
 }
 
 /**

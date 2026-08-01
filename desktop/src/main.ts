@@ -33,6 +33,11 @@ import {
   type OnboardingPersona,
   type OnboardingWorkspaceStructure,
 } from "./onboarding.js";
+import {
+  assureBitwardenAccess,
+  assureBitwardenAccessAfterError,
+} from "./bitwarden-assure.js";
+import { initSecretsVault } from "./secrets-vault.js";
 import { initServerDbWizard } from "./server-db.js";
 import {
   buildAvailability,
@@ -89,14 +94,33 @@ setBridgeTransport(async (cmd, args) => {
     return {};
   }
   try {
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw) as { error?: string };
+    // Long-lived bridge may still return { error } without throwing at invoke.
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      typeof parsed.error === "string" &&
+      parsed.error.length > 0
+    ) {
+      throw new Error(parsed.error);
+    }
+    return parsed;
   } catch (err) {
+    if (err instanceof Error && !err.message.startsWith("Invalid bridge JSON")) {
+      throw err;
+    }
     const preview = raw.length > 240 ? `${raw.slice(0, 240)}…` : raw;
     throw new Error(
       `Invalid bridge JSON for ${cmd}: ${preview} (${(err as Error).message})`,
     );
   }
 });
+
+// Bitwarden assure modal "Open vault" uses the same opener as the rest of Studio.
+(window as Window & { __zamOpenExternal?: (u: string) => void }).__zamOpenExternal =
+  (url: string) => {
+    void openUrl(url);
+  };
 
 const ZAM_RELEASES_URL = "https://github.com/zam-os/zam/releases";
 
@@ -3532,15 +3556,27 @@ function renderOnboardingChecklist(): void {
     row.className = "onboarding-checklist-item";
     row.dataset.checklistId = item.id;
 
+    // Title row: label left, chevron right — avoids "Titel→" crammed on one
+    // line and keeps long notes free to wrap full width below.
+    const head = document.createElement("span");
+    head.className = "onboarding-checklist-item-head";
+
     const title = document.createElement("span");
     title.className = "onboarding-checklist-item-title";
     title.textContent = t(item.titleKey);
+
+    const chevron = document.createElement("span");
+    chevron.className = "onboarding-checklist-item-chevron";
+    chevron.setAttribute("aria-hidden", "true");
+    chevron.textContent = "→";
+
+    head.append(title, chevron);
 
     const note = document.createElement("span");
     note.className = "onboarding-checklist-item-note";
     note.textContent = t(item.noteKey);
 
-    row.append(title, note);
+    row.append(head, note);
     row.addEventListener("click", () => showOnboardingAt(item.step));
     itemsEl.appendChild(row);
   }
@@ -4501,12 +4537,38 @@ async function loadDashboard() {
     void loadProviderStatus();
     runAgentAutoConnectOnce();
 
-    // 2. Check due cards count and active domains
-    const dueInfo = await runBridge<{
+    // 2. Vault-backed secrets (e.g. Turso token in Bitwarden) must resolve
+    // before any DB read — otherwise we silently hit an empty local file.
+    clearDashboardError();
+    const vaultOk = await assureBitwardenAccess();
+    if (!vaultOk) {
+      showDashboardError(
+        new Error(t("bw_assure_cancelled")),
+      );
+      return;
+    }
+
+    // 3. Check due cards count and active domains
+    let dueInfo: {
       dueCount: number;
       domains: string[];
       stats?: { cardsInDeck?: number };
-    }>("check-due");
+    };
+    try {
+      dueInfo = await runBridge<{
+        dueCount: number;
+        domains: string[];
+        stats?: { cardsInDeck?: number };
+      }>("check-due");
+    } catch (err) {
+      const retried = await assureBitwardenAccessAfterError(err);
+      if (!retried) throw err;
+      dueInfo = await runBridge<{
+        dueCount: number;
+        domains: string[];
+        stats?: { cardsInDeck?: number };
+      }>("check-due");
+    }
     totalDue = dueInfo.dueCount;
     deckCardCount = dueInfo.stats?.cardsInDeck ?? null;
 
@@ -4552,11 +4614,22 @@ async function loadDashboard() {
       domainsContainer.appendChild(span);
     }
 
-    // 3. Bring the local LLM online (auto-starts the server like `zam learn`)
+    // 4. Bring the local LLM online (auto-starts the server like `zam learn`)
     //    and reflect status. Don't block the dashboard on model load.
     refreshAiStatus();
   } catch (err) {
     console.error("Failed to load dashboard:", err);
+    const retried = await assureBitwardenAccessAfterError(err);
+    if (retried) {
+      try {
+        // One automatic retry after successful vault access.
+        await loadDashboard();
+        return;
+      } catch (err2) {
+        showDashboardError(err2);
+        return;
+      }
+    }
     showDashboardError(err);
   }
 }
@@ -5818,6 +5891,7 @@ window.addEventListener("DOMContentLoaded", () => {
     () => void loadDatabaseStatus(),
     { openExternal: (url: string) => void openUrl(url) },
   );
+  initSecretsVault({ openExternal: (url: string) => void openUrl(url) });
   initMobilePairing(() => void loadDatabaseStatus());
   // Goal-driven import stays reachable outside first run (plan Phase 8):
   // Learning Content's "Goal import" reopens the flow at the goal page.

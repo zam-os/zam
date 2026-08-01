@@ -2,10 +2,12 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Command } from "commander";
+import { resolveCredentials } from "../kernel/credentials.js";
 import { agentCommand } from "./commands/agent.js";
 import { bridgeCommand } from "./commands/bridge.js";
 import { cardCommand } from "./commands/card.js";
 import { connectorCommand } from "./commands/connector.js";
+import { credentialsCommand } from "./commands/credentials.js";
 import { doctorCommand } from "./commands/doctor.js";
 import { gitSyncCommand } from "./commands/git-sync.js";
 import { goalCommand } from "./commands/goal.js";
@@ -28,6 +30,11 @@ import { uiCommand } from "./commands/ui.js";
 import { updateCommand } from "./commands/update.js";
 import { whoamiCommand } from "./commands/whoami.js";
 import { workspaceCommand } from "./commands/workspace.js";
+
+// Resolve vault references into the process-lifetime snapshot before any
+// command (or the persistent desktop bridge) reads credentials synchronously.
+// Literals need no backend; failures degrade to null accessors (ADR 2026-07-30b).
+await resolveCredentials();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(
@@ -72,6 +79,7 @@ program.addCommand(observerCommand);
 program.addCommand(settingsCommand);
 program.addCommand(whoamiCommand);
 program.addCommand(connectorCommand);
+program.addCommand(credentialsCommand);
 program.addCommand(providerCommand);
 program.addCommand(snapshotCommand);
 program.addCommand(profileCommand);

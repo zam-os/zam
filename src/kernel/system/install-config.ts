@@ -52,6 +52,13 @@ export interface InstallConfig {
   /** Machine-local first-run onboarding state (ADR 2026-07-24). */
   onboarding?: MachineOnboardingConfig;
   /**
+   * Machine-local Bitwarden secret sync (ADR 2026-07-30b). Opt-in: when
+   * `autoSync` is true, ZAM pushes machine-local secrets (mainly the server
+   * DB token) into the learner's vault after unlock. Never the shared DB —
+   * vault login is per machine / per install.
+   */
+  bitwarden?: MachineBitwardenConfig;
+  /**
    * Machine-local voice-mode preferences (ADR 2026-07-31). Never the
    * Turso-shared database: whether on-device speech is the right choice
    * depends on the hardware in front of the learner, so a phone's answer must
@@ -69,6 +76,16 @@ export interface InstallConfig {
 export interface MachineAgentConfig {
   /** True once first-run agent auto-connect ran on THIS machine (`--auto-once`). */
   connectAutoDone?: boolean;
+}
+
+/** Bitwarden vault sync preferences for this install (ADR 2026-07-30b). */
+export interface MachineBitwardenConfig {
+  /** After a successful sync, keep pushing secret changes while unlocked. */
+  autoSync?: boolean;
+  /** Preferred cloud region for CLI config (eu | us). */
+  region?: "eu" | "us";
+  /** ISO timestamp of the last successful vault seed/sync. */
+  lastSyncAt?: string;
 }
 
 /**
@@ -683,6 +700,46 @@ export function setOnboardingDone(
     } else if (config.onboarding) {
       delete config.onboarding.done;
     }
+  }, path);
+}
+
+export function getBitwardenSyncConfig(
+  path = defaultConfigPath(),
+): MachineBitwardenConfig {
+  return { ...(loadInstallConfig(path).bitwarden ?? {}) };
+}
+
+export function setBitwardenSyncConfig(
+  patch: MachineBitwardenConfig,
+  path = defaultConfigPath(),
+): void {
+  updateInstallConfig((config) => {
+    config.bitwarden = { ...(config.bitwarden ?? {}), ...patch };
+  }, path);
+}
+
+/** Enable auto-sync after a successful first transfer, or turn it off. */
+export function setBitwardenAutoSync(
+  enabled: boolean,
+  path = defaultConfigPath(),
+): void {
+  updateInstallConfig((config) => {
+    if (enabled) {
+      config.bitwarden = {
+        ...(config.bitwarden ?? {}),
+        autoSync: true,
+        lastSyncAt: new Date().toISOString(),
+      };
+    } else if (config.bitwarden) {
+      config.bitwarden = { ...config.bitwarden, autoSync: false };
+    }
+  }, path);
+}
+
+/** Clear Bitwarden linkage for this install (offboarding). */
+export function clearBitwardenSyncConfig(path = defaultConfigPath()): void {
+  updateInstallConfig((config) => {
+    delete config.bitwarden;
   }, path);
 }
 

@@ -2,7 +2,10 @@ import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import { createRequire } from "node:module";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
-import { getTursoCredentials } from "../credentials.js";
+import {
+  getTursoCredentials,
+  tursoVaultAccessPending,
+} from "../credentials.js";
 import { openRemoteDatabase } from "./remote/provider.js";
 import { SCHEMA } from "./schema.js";
 import { wrapSyncDatabase } from "./sync-adapter.js";
@@ -102,6 +105,20 @@ function resolveDatabaseTarget(
     options.useConfiguredCloud !== false && !options.dbPath && !options.syncUrl
       ? getTursoCredentials()
       : null;
+
+  // Vault-backed Turso token configured but not resolved: never silently fall
+  // back to an empty local DB — the UI must assure Bitwarden login/unlock first.
+  if (
+    !configuredCloud &&
+    options.useConfiguredCloud !== false &&
+    !options.dbPath &&
+    !options.syncUrl &&
+    tursoVaultAccessPending()
+  ) {
+    throw new Error(
+      "BITWARDEN_REQUIRED: Server database token is in Bitwarden. Unlock or log in to Bitwarden to continue.",
+    );
+  }
 
   if (
     cwdRequiresTursoCredentials() &&
@@ -241,9 +258,10 @@ export async function openDatabase(
       url,
       authToken: configuredCloud?.token ?? options.authToken,
     });
-    if (options.initialize) {
-      await db.exec(SCHEMA);
-    }
+    // Always apply base SCHEMA (CREATE IF NOT EXISTS). A fresh Turso/sqld
+    // database has no tables; openDatabase() is used without initialize by
+    // withDb/check-due, which otherwise surfaces "no such table: tokens".
+    await db.exec(SCHEMA);
     await runMigrations(db);
     return db;
   };
@@ -354,7 +372,11 @@ export async function openDatabase(
       await db.sync?.();
     }
 
-    if (shouldInitialize) {
+    // Local brand-new files need SCHEMA; remote empties do too. SCHEMA is
+    // entirely IF NOT EXISTS, so re-running on a full library is a no-op.
+    // Previously remote opens skipped SCHEMA unless initialize:true, which
+    // left empty cloud DBs broken for the dashboard (no such table: tokens).
+    if (shouldInitialize || isRemote || isEmbeddedReplica) {
       await db.exec(SCHEMA);
     }
 

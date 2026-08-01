@@ -3010,22 +3010,31 @@ textarea::placeholder {
   align-items: center;
   justify-content: center;
   min-height: 0;
+  /* Keep the shell inside the viewport so long steps scroll inside the card */
+  padding: 16px;
+  box-sizing: border-box;
 }
 
 .onboarding-shell {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 16px;
   width: 100%;
   max-width: 640px;
-  padding: 40px;
-  margin: auto;
+  /* Cap height: head + actions stay put; body scrolls */
+  max-height: min(92vh, 820px);
+  min-height: 0;
+  padding: 28px 32px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .onboarding-head {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  flex: 0 0 auto;
 }
 
 .onboarding-progress {
@@ -3052,13 +3061,19 @@ textarea::placeholder {
 .onboarding-body {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  min-height: 180px;
+  gap: 14px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 4px; /* room for scrollbar so text isn't clipped */
+  -webkit-overflow-scrolling: touch;
 }
 
 .onboarding-step-title {
   color: var(--clr-text-primary);
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 800;
   line-height: 1.2;
   margin: 0;
@@ -3067,14 +3082,18 @@ textarea::placeholder {
 .onboarding-step-text {
   color: var(--clr-text-secondary);
   font-size: 15px;
-  line-height: 1.6;
+  line-height: 1.55;
   margin: 0;
 }
 
 .onboarding-actions {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
+  flex: 0 0 auto;
+  padding-top: 4px;
+  border-top: 1px solid var(--border-soft);
 }
 
 .onboarding-actions-spacer {
@@ -3202,6 +3221,104 @@ textarea::placeholder {
 
 .onboarding-model-status.ok {
   color: var(--clr-accent-cyan);
+}
+
+/* Optional multi-machine secrets page — compact for first-run shell height */
+.onboarding-secrets-card {
+  border-style: dashed;
+  gap: 12px;
+}
+
+.onboarding-secrets-badge {
+  background: rgba(100, 116, 139, 0.12);
+  color: var(--clr-text-secondary);
+}
+
+.onboarding-secrets-skip-hint {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--clr-text-primary);
+  margin: 0;
+}
+
+.onboarding-secrets-region {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.onboarding-secrets-region-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--clr-text-primary);
+  margin: 0;
+}
+
+.onboarding-secrets-region .onboarding-model-line {
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.onboarding-secrets-region-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+@media (max-width: 560px) {
+  .onboarding-secrets-region-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+.onboarding-secrets-region-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  background: var(--bg-field);
+  color: var(--clr-text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.onboarding-secrets-region-option:hover {
+  border-color: var(--clr-accent-cyan);
+}
+
+.onboarding-secrets-region-option.selected {
+  border-color: var(--clr-accent-cyan);
+  box-shadow: 0 0 0 1px var(--clr-accent-cyan);
+}
+
+.onboarding-secrets-region-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.onboarding-secrets-region-rec {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: rgba(8, 145, 178, 0.12);
+  color: var(--clr-accent-cyan);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.onboarding-secrets-region-detail {
+  font-size: 12px;
+  color: var(--clr-text-secondary);
+  line-height: 1.4;
+}
   font-weight: 600;
 }
 
@@ -3335,52 +3452,102 @@ textarea::placeholder {
 /* Dashboard onboarding checklist (ADR 2026-07-24 §7, plan Phase 9) */
 .onboarding-checklist {
   margin-bottom: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.onboarding-checklist > h2 {
+  margin: 0 0 6px;
+  font-size: 1.15rem;
+  line-height: 1.3;
 }
 
 .onboarding-checklist .sub-label {
-  margin-top: 4px;
+  margin: 0;
+  line-height: 1.45;
+  max-width: 42rem;
 }
 
 .onboarding-checklist-items {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 14px;
+  gap: 10px;
+  margin-top: 16px;
+  width: 100%;
 }
 
 .onboarding-checklist-item {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  padding: 10px 14px;
+  align-items: stretch;
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 14px 16px;
   border: 1px solid var(--border-soft);
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--bg-field);
   color: var(--clr-text-primary);
   font-family: inherit;
+  font-size: inherit;
+  line-height: 1.4;
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
 }
 
 .onboarding-checklist-item:hover {
   border-color: var(--clr-accent-cyan);
 }
 
-.onboarding-checklist-item-title {
-  font-size: 14px;
-  font-weight: 600;
+.onboarding-checklist-item:focus-visible {
+  outline: 2px solid var(--clr-accent-cyan);
+  outline-offset: 2px;
 }
 
-.onboarding-checklist-item-title::after {
-  content: " →";
+/* Title left, chevron right — full-width head so the arrow never glues to text */
+.onboarding-checklist-item-head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+
+.onboarding-checklist-item-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.onboarding-checklist-item-chevron {
+  flex: 0 0 auto;
   color: var(--clr-accent-cyan);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .onboarding-checklist-item-note {
-  font-size: 12.5px;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding-right: 1.5rem; /* keep text clear of the chevron column above */
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
   color: var(--clr-text-secondary);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 /* Text-LLM-offline link-back inside the curriculum wizard error (Phase 9) */
