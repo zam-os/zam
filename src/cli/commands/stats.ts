@@ -4,6 +4,7 @@
 
 import { Command } from "commander";
 import {
+  DEFAULT_ACTIVITY_WINDOWS,
   getDomainCompetence,
   getReviewActivity,
   getUserStats,
@@ -11,17 +12,6 @@ import {
 } from "../../kernel/index.js";
 import { resolveUser } from "../users/identity.js";
 import { withDb } from "./shared/db.js";
-
-const DEFAULT_WINDOW_DAYS: Record<ActivityPeriod, number> = {
-  day: 30,
-  week: 12,
-  month: 6,
-};
-
-/** UTC date "YYYY-MM-DD" `days` days ago — lower bound for the activity series. */
-function sinceDaysAgo(days: number): string {
-  return new Date(Date.now() - days * 86_400_000).toISOString().slice(0, 10);
-}
 
 function formatStudyTime(ms: number): string {
   if (ms < 60_000) return `${Math.round(ms / 1000)}s`;
@@ -55,18 +45,15 @@ export const statsCommand = new Command("stats")
       }
       const windowBuckets = opts.days
         ? Number(opts.days)
-        : DEFAULT_WINDOW_DAYS[period];
+        : DEFAULT_ACTIVITY_WINDOWS[period];
+      if (!Number.isInteger(windowBuckets) || windowBuckets < 1) {
+        throw new Error(`--days must be a positive integer`);
+      }
       const activity = await getReviewActivity(db, userId, {
         period,
-        since: sinceDaysAgo(
-          period === "month"
-            ? windowBuckets * 31
-            : period === "week"
-              ? windowBuckets * 7
-              : windowBuckets,
-        ),
+        window: windowBuckets,
       });
-
+      const shownBuckets = activity.buckets.slice(-activity.window);
       if (opts.json) {
         console.log(JSON.stringify({ stats, domains, activity }, null, 2));
         return;
@@ -99,23 +86,20 @@ export const statsCommand = new Command("stats")
 
       if (activity.buckets.length > 0) {
         console.log(
-          `\nReview Activity (per ${period}, last ${windowBuckets}):`,
+          `\nReview Activity (per ${period}, last ${activity.window}):`,
         );
         console.log("─".repeat(50));
         console.log("  Bucket            Cards  Study time");
-        for (const b of activity.buckets.slice(-windowBuckets)) {
+        for (const b of shownBuckets) {
           console.log(
             `  ${b.bucket.padEnd(18)} ${String(b.reviewedCards).padEnd(6)} ${formatStudyTime(b.studyTimeMs)}`,
           );
         }
-        const totalCards = activity.buckets.reduce(
+        const totalCards = shownBuckets.reduce(
           (s, b) => s + b.reviewedCards,
           0,
         );
-        const totalTime = activity.buckets.reduce(
-          (s, b) => s + b.studyTimeMs,
-          0,
-        );
+        const totalTime = shownBuckets.reduce((s, b) => s + b.studyTimeMs, 0);
         console.log("─".repeat(50));
         console.log(
           `  Total             ${String(totalCards).padEnd(6)} ${formatStudyTime(totalTime)}`,

@@ -17,10 +17,12 @@ focused commit per completed phase.
       kernel; desktop recall card measures card-shown → rating; CLI `zam
       review` measures prompt → rating. Tests for accept + persist.
 - [x] **Phase 2 — Kernel analytics.** `src/kernel/analytics/progress.ts`
-      exports `getReviewActivity(db, userId, { period, since? })` returning
-      per-bucket `{ bucket, reviewedCards, studyTimeMs }`, aggregated in SQL
-      over `idx_review_logs_user` with `localtime` bucketing; re-exported from
-      `src/kernel/index.ts`; tests.
+      exports `getReviewActivity(db, userId, { period, window?, since? })`
+      returning per-bucket `{ bucket, reviewedCards, studyTimeMs }`, aggregated
+      in SQL over `idx_review_logs_user` with `localtime` bucketing, ISO
+      week-year labels (`%G-W%V`), and an exact local-calendar `window` bound
+      (review fixes: totals and windows now agree on every surface);
+      re-exported from `src/kernel/index.ts`; tests.
 - [x] **Phase 3 — CLI.** `zam stats --period day|week|month` (text + `--json`)
       and `zam bridge stats-activity` (JSON only via `jsonOut`).
 - [x] **Phase 4 — MCP tool + desktop panel.** MCP tool `zam_progress_stats`;
@@ -60,11 +62,10 @@ focused commit per completed phase.
 ### Phase 2 — kernel
 
 - `src/kernel/analytics/progress.ts`:
-  `getReviewActivity(db, userId, { period: "day" | "week" | "month", since? })`
-  → `{ period, buckets: [{ bucket: string, reviewedCards, studyTimeMs }] }`.
-  SQL `GROUP BY` with `date(reviewed_at, 'localtime')` /
-  `strftime('%Y-%W', ...)` / `strftime('%Y-%m', ...)`; `studyTimeMs` sums
-  `response_time_ms` (NULL → 0).
+  `getReviewActivity(db, userId, { period: "day" | "week" | "month", window?,
+  since? })` — `window` cuts the N most recent local periods (default
+  30/12/6 per period from `DEFAULT_ACTIVITY_WINDOWS`); `since` is a documented
+  UTC-date escape hatch. `DEFAULT_ACTIVITY_WINDOWS` is re-exported.
 - Re-export from `src/kernel/index.ts`; kernel tests with seeded logs.
 
 ### Phase 3 — CLI

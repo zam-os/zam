@@ -531,6 +531,8 @@ function initializeTranslations() {
     t("stats_period_month");
   document.getElementById("lbl-stats-activity-title")!.textContent =
     t("stats_activity_title");
+  document.getElementById("stats-loading-label")!.textContent =
+    t("stats_loading");
   document.getElementById("lbl-dashboard-kicker")!.textContent =
     t("dashboard_kicker");
   document.getElementById("lbl-dashboard-title")!.textContent =
@@ -3352,7 +3354,8 @@ interface StatsActivityResponse {
 let statsPeriod: StatsPeriod = "day";
 
 function formatStatsTime(ms: number): string {
-  if (ms < 60_000) return `${Math.max(1, Math.round(ms / 1000))}s`;
+  if (ms <= 0) return "0s";
+  if (ms < 60_000) return `${Math.round(ms / 1000)}s`;
   const minutes = Math.floor(ms / 60_000);
   const seconds = Math.round((ms % 60_000) / 1000);
   return seconds > 0 ? `${minutes}m ${seconds}s` : `${minutes}m`;
@@ -3376,7 +3379,7 @@ async function loadStatsView(): Promise<void> {
   container.innerHTML = "";
   const loading = document.createElement("p");
   loading.className = "stats-loading";
-  loading.textContent = "…";
+  loading.textContent = t("stats_loading");
   container.appendChild(loading);
   summary.classList.add("hidden");
 
@@ -3395,11 +3398,12 @@ async function loadStatsView(): Promise<void> {
     return;
   }
 
-  const totalCards = response.buckets.reduce(
+  const shownBuckets = response.buckets.slice(-response.window);
+  const totalCards = shownBuckets.reduce(
     (sum, b) => sum + b.reviewedCards,
     0,
   );
-  const totalMs = response.buckets.reduce((sum, b) => sum + b.studyTimeMs, 0);
+  const totalMs = shownBuckets.reduce((sum, b) => sum + b.studyTimeMs, 0);
   summary.classList.remove("hidden");
   summary.innerHTML = "";
   const cards = document.createElement("span");
@@ -3411,7 +3415,7 @@ async function loadStatsView(): Promise<void> {
   summary.append(cards, time);
 
   container.innerHTML = "";
-  if (response.buckets.length === 0) {
+  if (shownBuckets.length === 0) {
     const empty = document.createElement("p");
     empty.className = "stats-empty";
     empty.textContent = t("stats_empty");
@@ -3419,11 +3423,8 @@ async function loadStatsView(): Promise<void> {
     return;
   }
 
-  const maxCards = Math.max(
-    ...response.buckets.map((b) => b.reviewedCards),
-    1,
-  );
-  for (const bucket of response.buckets) {
+  const maxCards = Math.max(...shownBuckets.map((b) => b.reviewedCards), 1);
+  for (const bucket of shownBuckets) {
     const row = document.createElement("div");
     row.className = "stats-row";
 

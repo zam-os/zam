@@ -63,12 +63,18 @@ that can drift. If a future client needs unbounded history, an incremental
 `daily_stats` table can be added behind the same kernel API; the ADR-to-code
 boundary (a single `getReviewActivity` query) makes that a local change.
 
-### 4. Stored UTC, bucketed in the learner's local time; weeks start on Monday
+### 4. Stored UTC, bucketed in the learner's local time; weeks are ISO weeks
 
 `reviewed_at` stays UTC. "Per day/week/month" is bucketed with SQLite
-`date(reviewed_at, 'localtime')` / `strftime('%Y-%W', ...)`, so a Monday-evening
-review lands on the right day for the learner. ISO weeks (Monday start) are the
-week definition. Buckets are reported as local-time bucket starts.
+`date(reviewed_at, 'localtime')` for days, `strftime('%G-W%V', ...)` for weeks,
+and `strftime('%Y-%m', ...)` for months. `%G-W%V` is the ISO 8601 week-year/week
+pair: weeks start on Monday, week 1 is the week containing the year's first
+Thursday, and early-January days label with the previous ISO year
+(2027-01-01 → `2026-W53`, 2025-12-29 → `2026-W01`). Buckets are reported as
+local-time bucket starts. The optional `window` bound is cut on the same local
+calendar (`date(reviewed_at, 'localtime')` against the current local period
+start), so "last N buckets" means exactly N local periods — never an
+approximation derived from UTC day spans.
 
 ### 5. Every surface measures response time the same way: card shown → rating submitted
 
@@ -87,7 +93,7 @@ and the row simply does not contribute to study time.
 
 ### 6. One kernel API, three surfaces, ready for more
 
-`getReviewActivity(db, userId, { period, since? })` lives in
+`getReviewActivity(db, userId, { period, window?, since? })` lives in
 `src/kernel/analytics/` and is re-exported from `src/kernel/index.ts`. It is
 exposed as:
 

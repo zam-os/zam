@@ -273,6 +273,7 @@ describe("MCP stdio server tests", () => {
     const data = JSON.parse(res.content[0].text);
     expect(data.userId).toBe("thomas");
     expect(data.period).toBe("month");
+    expect(data.window).toBe(6);
     const totalCards = data.buckets.reduce(
       (s: number, b: { reviewedCards: number }) => s + b.reviewedCards,
       0,

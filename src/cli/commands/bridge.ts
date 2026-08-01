@@ -38,6 +38,7 @@ import {
   assignTokenToContext,
   BUILT_IN_SENSITIVE_MATCHERS,
   type CapabilityFlags,
+  DEFAULT_ACTIVITY_WINDOWS,
   getReviewActivity,
   clearProviderApiKey,
   confirmCardSplit,
@@ -1015,6 +1016,18 @@ bridgeCommand
     await withDb(async (db) => {
       try {
         const userId = await resolveUser(opts, db, { json: true });
+        const responseTimeMs =
+          opts.responseTimeMs !== undefined
+            ? Number(opts.responseTimeMs)
+            : undefined;
+        if (
+          responseTimeMs !== undefined &&
+          (!Number.isFinite(responseTimeMs) ||
+            !Number.isInteger(responseTimeMs) ||
+            responseTimeMs < 0)
+        ) {
+          throw new Error("--response-time-ms must be a non-negative integer");
+        }
         const result = await handleSubmitReview(db, {
           user: userId,
           cardId: opts.cardId,
@@ -1024,10 +1037,7 @@ bridgeCommand
               : undefined,
           sessionId: opts.session,
           doneBy: opts.doneBy as "user" | "agent",
-          responseTimeMs:
-            opts.responseTimeMs !== undefined
-              ? Number(opts.responseTimeMs)
-              : undefined,
+          responseTimeMs,
         });
         jsonOut(result);
       } catch (err) {
@@ -1059,27 +1069,17 @@ bridgeCommand
         }
         const windowBuckets = opts.days
           ? Number(opts.days)
-          : period === "month"
-            ? 6
-            : period === "week"
-              ? 12
-              : 30;
-        const since = new Date(
-          Date.now() -
-            (period === "month"
-              ? windowBuckets * 31
-              : period === "week"
-                ? windowBuckets * 7
-                : windowBuckets) *
-              86_400_000,
-        )
-          .toISOString()
-          .slice(0, 10);
+          : DEFAULT_ACTIVITY_WINDOWS[
+              period as keyof typeof DEFAULT_ACTIVITY_WINDOWS
+            ];
+        if (!Number.isInteger(windowBuckets) || windowBuckets < 1) {
+          throw new Error(`--days must be a positive integer`);
+        }
         const result = await getReviewActivity(db, userId, {
           period,
-          since,
+          window: windowBuckets,
         });
-        jsonOut({ userId, window: windowBuckets, ...result });
+        jsonOut({ userId, ...result });
       } catch (err) {
         jsonError((err as Error).message);
       }

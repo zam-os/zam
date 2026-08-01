@@ -363,21 +363,11 @@ export function createMcpServer(db: Database): McpServer {
     wrapHandler(async (params) => {
       const userId = await getUserId(params.user);
       const period = params.period ?? "day";
-      const windowBuckets =
-        params.days ?? (period === "month" ? 6 : period === "week" ? 12 : 30);
-      const since = new Date(
-        Date.now() -
-          (period === "month"
-            ? windowBuckets * 31
-            : period === "week"
-              ? windowBuckets * 7
-              : windowBuckets) *
-            86_400_000,
-      )
-        .toISOString()
-        .slice(0, 10);
-      const result = await getReviewActivity(db, userId, { period, since });
-      return { userId, window: windowBuckets, ...result };
+      const result = await getReviewActivity(db, userId, {
+        period,
+        window: params.days,
+      });
+      return { userId, ...result };
     }),
   );
 

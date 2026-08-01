@@ -152,6 +152,11 @@ export const learnCommand = new Command("learn")
 
         console.log(`\n  ${prompt.question}`);
 
+        // Study time starts when the question is shown (ADR 2026-08-01
+        // Decision 5) — the answer input, LLM evaluation, and reveal are all
+        // part of the learner's work on this card.
+        const cardStartedAt = Date.now();
+
         // Capture the learner's answer FIRST — nothing is revealed yet.
         // Typing a stop word (or Ctrl+C) ends the session gracefully.
         let answer: string;
@@ -233,7 +238,7 @@ export const learnCommand = new Command("learn")
             userId,
             item,
             mode: "review",
-            startedAt: Date.now(),
+            startedAt: cardStartedAt,
           });
         } catch (err) {
           if (isExitPrompt(err)) {

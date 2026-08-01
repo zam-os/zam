@@ -13,7 +13,10 @@ export type {
 } from "./analytics/progress.js";
 export type { DomainCompetence, UserStats } from "./analytics/stats.js";
 // Analytics
-export { getReviewActivity } from "./analytics/progress.js";
+export {
+  DEFAULT_ACTIVITY_WINDOWS,
+  getReviewActivity,
+} from "./analytics/progress.js";
 export { getDomainCompetence, getUserStats } from "./analytics/stats.js";
 export type { ADOConfig, WorkItem } from "./connectors/azure-devops.js";
 // Connectors

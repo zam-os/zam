@@ -49,6 +49,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     stats_empty:
       "Aún no hay actividad en este período. Repasa algunas tarjetas y vuelve a consultar.",
     stats_activity_title: "Actividad",
+    stats_loading: "Cargando…",
     dashboard_kicker: "Hoy en ZAM",
     dashboard_title: "Aprende con intención.",
     dashboard_subtitle:
@@ -828,6 +829,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     stats_empty:
       "Aucune activité dans cette période pour l'instant. Révisez quelques cartes et revenez voir.",
     stats_activity_title: "Activité",
+    stats_loading: "Chargement…",
     dashboard_kicker: "Aujourd'hui dans ZAM",
     dashboard_title: "Apprenez délibérément.",
     dashboard_subtitle:
@@ -1615,6 +1617,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     stats_empty:
       "Ainda não há atividade neste período. Revise alguns cartões e volte a consultar.",
     stats_activity_title: "Atividade",
+    stats_loading: "Carregando…",
     dashboard_kicker: "Hoje no ZAM",
     dashboard_title: "Aprenda com intenção.",
     dashboard_subtitle:
@@ -2387,6 +2390,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     stats_total_time: "学习时间 {time}",
     stats_empty: "该时间段内暂无活动。复习一些卡片后再来看看。",
     stats_activity_title: "活动",
+    stats_loading: "加载中…",
     dashboard_kicker: "今日 ZAM",
     dashboard_title: "有意识地学习。",
     dashboard_subtitle:
@@ -3102,6 +3106,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     stats_total_time: "学習時間 {time}",
     stats_empty: "この期間にはまだアクティビティがありません。カードを復習してから確認してください。",
     stats_activity_title: "アクティビティ",
+    stats_loading: "読み込み中…",
     nav_settings: "設定",
     dashboard_kicker: "今日の ZAM",
     dashboard_title: "意識的に学ぶ。",
@@ -3941,6 +3946,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     stats_empty:
       "No review activity in this window yet. Review some cards and check back.",
     stats_activity_title: "Activity",
+    stats_loading: "Loading…",
     dashboard_kicker: "Today in ZAM",
     dashboard_title: "Learn deliberately.",
     dashboard_subtitle:
@@ -5022,6 +5028,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     stats_empty:
       "In diesem Zeitraum gibt es noch keine Aktivität. Wiederhole ein paar Karten und schau erneut vorbei.",
     stats_activity_title: "Aktivität",
+    stats_loading: "Wird geladen…",
     dashboard_kicker: "Heute in ZAM",
     dashboard_title: "Bewusst lernen.",
     dashboard_subtitle:

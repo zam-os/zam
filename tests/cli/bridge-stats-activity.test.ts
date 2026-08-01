@@ -112,14 +112,36 @@ describe("zam bridge stats-activity", () => {
     expect(res.period).toBe("day");
     expect(res.window).toBe(30);
 
+    // Window 2 = today + yesterday (local calendar); the event from 3 days
+    // ago must fall out, so the total matches exactly two buckets.
     const narrow = runBridge([
       "stats-activity",
       "--period",
       "day",
       "--days",
       "2",
-    ]) as { window: number; buckets: unknown[] };
+    ]) as {
+      window: number;
+      buckets: Array<{ reviewedCards: number; studyTimeMs: number }>;
+    };
     expect(narrow.window).toBe(2);
+    expect(narrow.buckets).toHaveLength(2);
+    const totalCards = narrow.buckets.reduce(
+      (s, b) => s + b.reviewedCards,
+      0,
+    );
+    expect(totalCards).toBe(2);
+  });
+
+  it("rejects a non-positive window with a JSON error", () => {
+    const res = runBridge([
+      "stats-activity",
+      "--period",
+      "day",
+      "--days",
+      "0",
+    ]) as { error?: string };
+    expect(res.error).toContain("--days must be a positive integer");
   });
 
   it("aggregates the same events into a single month bucket", () => {
