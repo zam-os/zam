@@ -17,6 +17,7 @@ import {
   mkdirSync,
   readFileSync,
   renameSync,
+  statSync,
   unlinkSync,
   writeFileSync,
 } from "node:fs";
@@ -319,6 +320,108 @@ export function saveInstallConfig(
   }
 }
 
+/** How long to wait for another process to finish its read-modify-write. */
+const CONFIG_LOCK_TIMEOUT_MS = 2_000;
+/** A lock older than this belonged to a process that died holding it. */
+const CONFIG_LOCK_STALE_MS = 5_000;
+const CONFIG_LOCK_POLL_MS = 15;
+
+type LockAttempt = "acquired" | "busy" | "unavailable";
+
+/** Block this thread without spinning; the lock is held for microseconds. */
+function sleepSync(ms: number): void {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
+function tryAcquireLock(lockPath: string): LockAttempt {
+  try {
+    // "wx" fails when the file exists, which makes creation the atomic
+    // test-and-set every platform agrees on.
+    writeFileSync(lockPath, `${process.pid}\n`, {
+      encoding: "utf-8",
+      flag: "wx",
+    });
+    return "acquired";
+  } catch (error) {
+    return (error as NodeJS.ErrnoException).code === "EEXIST"
+      ? "busy"
+      : "unavailable";
+  }
+}
+
+/**
+ * Serialize one read-modify-write cycle against `path` across processes.
+ *
+ * `saveInstallConfig` replaces the file atomically, so a reader never sees a
+ * torn file — but every setter loads, mutates, and saves the *whole* config,
+ * and two processes interleaving those steps silently drop one of the two
+ * changes. With several editor windows each running their own `zam mcp`,
+ * that lost update is a Companion setting that reverts by itself.
+ *
+ * Returns `undefined` when no lock could be taken. Failing to lock must never
+ * stop ZAM from saving its own config, so the caller then proceeds unlocked —
+ * back to the pre-lock behavior rather than an error.
+ */
+function acquireInstallConfigLock(path: string): (() => void) | undefined {
+  const lockPath = `${path}.lock`;
+  const dir = dirname(path);
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+  const release = () => {
+    try {
+      unlinkSync(lockPath);
+    } catch {
+      // Already released, or broken by a waiter that timed us out.
+    }
+  };
+
+  const deadline = Date.now() + CONFIG_LOCK_TIMEOUT_MS;
+  for (;;) {
+    const attempt = tryAcquireLock(lockPath);
+    if (attempt === "acquired") return release;
+    if (attempt === "unavailable") return undefined;
+    let heldForMs: number;
+    try {
+      heldForMs = Date.now() - statSync(lockPath).mtimeMs;
+    } catch {
+      // The holder released it between the two calls — retry immediately.
+      continue;
+    }
+    if (heldForMs > CONFIG_LOCK_STALE_MS || Date.now() >= deadline) break;
+    sleepSync(CONFIG_LOCK_POLL_MS);
+  }
+
+  // Break a stale or pathologically slow lock exactly once. Looping here
+  // instead would let two waiters break each other's lock indefinitely.
+  try {
+    unlinkSync(lockPath);
+  } catch {
+    // Another waiter broke it first; the acquire below still decides.
+  }
+  return tryAcquireLock(lockPath) === "acquired" ? release : undefined;
+}
+
+/**
+ * Load, mutate, and save the config as one cross-process-atomic step.
+ *
+ * Every setter in this module goes through here: the load happens *inside*
+ * the lock, so a concurrent writer's change is read back rather than
+ * overwritten. Returns whatever `mutate` returns.
+ */
+export function updateInstallConfig<T>(
+  mutate: (config: InstallConfig) => T,
+  path = defaultConfigPath(),
+): T {
+  const release = acquireInstallConfigLock(path);
+  try {
+    const config = loadInstallConfig(path);
+    const result = mutate(config);
+    saveInstallConfig(config, path);
+    return result;
+  } finally {
+    release?.();
+  }
+}
+
 /**
  * This machine's install mode. Defaults to "developer" — the only historical
  * mode — so existing source/CLI installs keep their behavior. A packaged
@@ -332,9 +435,9 @@ export function setInstallMode(
   mode: InstallMode,
   path = defaultConfigPath(),
 ): void {
-  const config = loadInstallConfig(path);
-  config.mode = mode;
-  saveInstallConfig(config, path);
+  updateInstallConfig((config) => {
+    config.mode = mode;
+  }, path);
 }
 
 /**
@@ -352,9 +455,9 @@ export function setInstallChannel(
   channel: InstallChannel,
   path = defaultConfigPath(),
 ): void {
-  const config = loadInstallConfig(path);
-  config.channel = channel;
-  saveInstallConfig(config, path);
+  updateInstallConfig((config) => {
+    config.channel = channel;
+  }, path);
 }
 
 export function getMachineAiConfig(
@@ -367,9 +470,9 @@ export function saveMachineAiConfig(
   ai: MachineAiConfig,
   path = defaultConfigPath(),
 ): void {
-  const config = loadInstallConfig(path);
-  config.ai = ai;
-  saveInstallConfig(config, path);
+  updateInstallConfig((config) => {
+    config.ai = ai;
+  }, path);
 }
 
 const sanitizedMachineRolePaths = new Set<string>();
@@ -381,12 +484,12 @@ export function ensureMachineProviderRolesSanitized(
   if (sanitizedMachineRolePaths.has(path)) return;
   sanitizedMachineRolePaths.add(path);
 
-  const ai = getMachineAiConfig(path);
-  if (!ai.roles?.text) return;
-
-  const roles = { ...ai.roles };
-  delete roles.text;
-  saveMachineAiConfig({ ...ai, roles }, path);
+  updateInstallConfig((config) => {
+    if (!config.ai?.roles?.text) return;
+    const roles = { ...config.ai.roles };
+    delete roles.text;
+    config.ai = { ...config.ai, roles };
+  }, path);
 }
 
 // ── Unified capability-based model registry (ADR 2026-07-12) ─────────────────
@@ -401,8 +504,9 @@ export function saveMachineAiModels(
   models: ModelEntry[],
   path = defaultConfigPath(),
 ): void {
-  const ai = getMachineAiConfig(path);
-  saveMachineAiConfig({ ...ai, models }, path);
+  updateInstallConfig((config) => {
+    config.ai = { ...(config.ai ?? {}), models };
+  }, path);
 }
 
 function isAnthropicUrl(url: string): boolean {
@@ -521,15 +625,19 @@ const migratedModelConfigPaths = new Set<string>();
 export function ensureMachineAiModelsMigrated(
   path = defaultConfigPath(),
 ): ModelEntry[] {
-  const ai = getMachineAiConfig(path);
-  if (ai.models && ai.models.length > 0) return ai.models;
-  if (migratedModelConfigPaths.has(path)) return ai.models ?? [];
+  const existing = getMachineAiConfig(path);
+  if (existing.models && existing.models.length > 0) return existing.models;
+  if (migratedModelConfigPaths.has(path)) return existing.models ?? [];
   migratedModelConfigPaths.add(path);
 
-  const models = migrateMachineRolesToModels(ai);
-  if (!models) return [];
-  saveMachineAiConfig({ ...ai, models }, path);
-  return models;
+  return updateInstallConfig((config) => {
+    const ai = config.ai ?? {};
+    if (ai.models && ai.models.length > 0) return ai.models;
+    const models = migrateMachineRolesToModels(ai);
+    if (!models) return [];
+    config.ai = { ...ai, models };
+    return models;
+  }, path);
 }
 
 /**
@@ -545,13 +653,13 @@ export function setAgentConnectAutoDone(
   done: boolean,
   path = defaultConfigPath(),
 ): void {
-  const config = loadInstallConfig(path);
-  if (done) {
-    config.agent = { ...(config.agent ?? {}), connectAutoDone: true };
-  } else if (config.agent) {
-    delete config.agent.connectAutoDone;
-  }
-  saveInstallConfig(config, path);
+  updateInstallConfig((config) => {
+    if (done) {
+      config.agent = { ...(config.agent ?? {}), connectAutoDone: true };
+    } else if (config.agent) {
+      delete config.agent.connectAutoDone;
+    }
+  }, path);
 }
 
 /**
@@ -569,13 +677,13 @@ export function setOnboardingDone(
   done: boolean,
   path = defaultConfigPath(),
 ): void {
-  const config = loadInstallConfig(path);
-  if (done) {
-    config.onboarding = { ...(config.onboarding ?? {}), done: true };
-  } else if (config.onboarding) {
-    delete config.onboarding.done;
-  }
-  saveInstallConfig(config, path);
+  updateInstallConfig((config) => {
+    if (done) {
+      config.onboarding = { ...(config.onboarding ?? {}), done: true };
+    } else if (config.onboarding) {
+      delete config.onboarding.done;
+    }
+  }, path);
 }
 
 /**
@@ -593,13 +701,13 @@ export function setOnboardingPersona(
   persona: PersonaId | undefined,
   path = defaultConfigPath(),
 ): void {
-  const config = loadInstallConfig(path);
-  if (persona) {
-    config.onboarding = { ...(config.onboarding ?? {}), persona };
-  } else if (config.onboarding) {
-    delete config.onboarding.persona;
-  }
-  saveInstallConfig(config, path);
+  updateInstallConfig((config) => {
+    if (persona) {
+      config.onboarding = { ...(config.onboarding ?? {}), persona };
+    } else if (config.onboarding) {
+      delete config.onboarding.persona;
+    }
+  }, path);
 }
 
 /**
@@ -612,7 +720,12 @@ export function setOnboardingPersona(
 export function getMachineCompanionConfig(
   path = defaultConfigPath(),
 ): MachineCompanionConfig {
-  const raw = loadInstallConfig(path).companion;
+  return normalizeCompanionConfig(loadInstallConfig(path).companion);
+}
+
+function normalizeCompanionConfig(
+  raw: MachineCompanionConfig | undefined,
+): MachineCompanionConfig {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return {};
   const result: MachineCompanionConfig = {};
   if (typeof raw.selectedUserId === "string") {
@@ -652,9 +765,29 @@ export function saveMachineCompanionConfig(
   companion: MachineCompanionConfig,
   path = defaultConfigPath(),
 ): void {
-  const config = loadInstallConfig(path);
-  config.companion = companion;
-  saveInstallConfig(config, path);
+  updateInstallConfig((config) => {
+    config.companion = companion;
+  }, path);
+}
+
+/**
+ * Change the Companion section under the config lock, re-reading it inside
+ * the lock. The individual setters below must not `getMachineCompanionConfig`
+ * first and save the result afterwards: with an editor window per workspace,
+ * two `zam mcp` processes doing that concurrently drop one of the two
+ * selections, which the learner sees as a model or evaluator choice reverting
+ * on its own.
+ */
+function updateCompanionConfig(
+  mutate: (companion: MachineCompanionConfig) => void,
+  path = defaultConfigPath(),
+): MachineCompanionConfig {
+  return updateInstallConfig((config) => {
+    const companion = normalizeCompanionConfig(config.companion);
+    mutate(companion);
+    config.companion = companion;
+    return companion;
+  }, path);
 }
 
 /**
@@ -679,15 +812,15 @@ export function setMachineVoicePreference(
   preference: string | undefined,
   path = defaultConfigPath(),
 ): void {
-  const config = loadInstallConfig(path);
-  const voice: MachineVoiceConfig = { ...(config.voice ?? {}) };
-  if (preference === undefined) {
-    delete voice.enginePreference;
-  } else {
-    voice.enginePreference = preference;
-  }
-  config.voice = voice;
-  saveInstallConfig(config, path);
+  updateInstallConfig((config) => {
+    const voice: MachineVoiceConfig = { ...(config.voice ?? {}) };
+    if (preference === undefined) {
+      delete voice.enginePreference;
+    } else {
+      voice.enginePreference = preference;
+    }
+    config.voice = voice;
+  }, path);
 }
 
 /**
@@ -721,7 +854,15 @@ export function updateMachineCompanionConfig(
   update: MachineCompanionConfigUpdate,
   path = defaultConfigPath(),
 ): MachineCompanionConfig {
-  const companion = getMachineCompanionConfig(path);
+  return updateCompanionConfig((companion) => {
+    applyCompanionUpdate(companion, update);
+  }, path);
+}
+
+function applyCompanionUpdate(
+  companion: MachineCompanionConfig,
+  update: MachineCompanionConfigUpdate,
+): void {
   if ("selectedUserId" in update) {
     if (update.selectedUserId) {
       companion.selectedUserId = update.selectedUserId;
@@ -771,8 +912,6 @@ export function updateMachineCompanionConfig(
       [update.collapsed.surface]: update.collapsed.value,
     };
   }
-  saveMachineCompanionConfig(companion, path);
-  return companion;
 }
 
 /** The persisted Companion learner, independent of the shared `user.id`. */
@@ -786,13 +925,13 @@ export function setCompanionSelectedUserId(
   userId: string | undefined,
   path = defaultConfigPath(),
 ): void {
-  const companion = getMachineCompanionConfig(path);
-  if (userId) {
-    companion.selectedUserId = userId;
-  } else {
-    delete companion.selectedUserId;
-  }
-  saveMachineCompanionConfig(companion, path);
+  updateCompanionConfig((companion) => {
+    if (userId) {
+      companion.selectedUserId = userId;
+    } else {
+      delete companion.selectedUserId;
+    }
+  }, path);
 }
 
 /** The persisted Companion evaluator id (validated against `EvaluatorId` by callers). */
@@ -806,13 +945,13 @@ export function setCompanionSelectedEvaluatorId(
   evaluatorId: string | undefined,
   path = defaultConfigPath(),
 ): void {
-  const companion = getMachineCompanionConfig(path);
-  if (evaluatorId) {
-    companion.selectedEvaluatorId = evaluatorId;
-  } else {
-    delete companion.selectedEvaluatorId;
-  }
-  saveMachineCompanionConfig(companion, path);
+  updateCompanionConfig((companion) => {
+    if (evaluatorId) {
+      companion.selectedEvaluatorId = evaluatorId;
+    } else {
+      delete companion.selectedEvaluatorId;
+    }
+  }, path);
 }
 
 export function getCompanionSelectedVscodeEvaluatorId(
@@ -825,13 +964,13 @@ export function setCompanionSelectedVscodeEvaluatorId(
   evaluatorId: string | undefined,
   path = defaultConfigPath(),
 ): void {
-  const companion = getMachineCompanionConfig(path);
-  if (evaluatorId) {
-    companion.selectedVscodeEvaluatorId = evaluatorId;
-  } else {
-    delete companion.selectedVscodeEvaluatorId;
-  }
-  saveMachineCompanionConfig(companion, path);
+  updateCompanionConfig((companion) => {
+    if (evaluatorId) {
+      companion.selectedVscodeEvaluatorId = evaluatorId;
+    } else {
+      delete companion.selectedVscodeEvaluatorId;
+    }
+  }, path);
 }
 
 export function getCompanionSelectedAntigravityEvaluatorId(
@@ -844,13 +983,13 @@ export function setCompanionSelectedAntigravityEvaluatorId(
   evaluatorId: string | undefined,
   path = defaultConfigPath(),
 ): void {
-  const companion = getMachineCompanionConfig(path);
-  if (evaluatorId) {
-    companion.selectedAntigravityEvaluatorId = evaluatorId;
-  } else {
-    delete companion.selectedAntigravityEvaluatorId;
-  }
-  saveMachineCompanionConfig(companion, path);
+  updateCompanionConfig((companion) => {
+    if (evaluatorId) {
+      companion.selectedAntigravityEvaluatorId = evaluatorId;
+    } else {
+      delete companion.selectedAntigravityEvaluatorId;
+    }
+  }, path);
 }
 
 /** The persisted explicit VS Code model choice for the `vscode-lm` adapter. */
@@ -864,13 +1003,13 @@ export function setCompanionSelectedVscodeModelId(
   modelId: string | undefined,
   path = defaultConfigPath(),
 ): void {
-  const companion = getMachineCompanionConfig(path);
-  if (modelId) {
-    companion.selectedVscodeModelId = modelId;
-  } else {
-    delete companion.selectedVscodeModelId;
-  }
-  saveMachineCompanionConfig(companion, path);
+  updateCompanionConfig((companion) => {
+    if (modelId) {
+      companion.selectedVscodeModelId = modelId;
+    } else {
+      delete companion.selectedVscodeModelId;
+    }
+  }, path);
 }
 
 /** The persisted explicit Antigravity model choice for the `vscode-lm` adapter. */
@@ -884,13 +1023,13 @@ export function setCompanionSelectedAntigravityModelId(
   modelId: string | undefined,
   path = defaultConfigPath(),
 ): void {
-  const companion = getMachineCompanionConfig(path);
-  if (modelId) {
-    companion.selectedAntigravityModelId = modelId;
-  } else {
-    delete companion.selectedAntigravityModelId;
-  }
-  saveMachineCompanionConfig(companion, path);
+  updateCompanionConfig((companion) => {
+    if (modelId) {
+      companion.selectedAntigravityModelId = modelId;
+    } else {
+      delete companion.selectedAntigravityModelId;
+    }
+  }, path);
 }
 
 /** Collapsed state for every surface that has been explicitly set. */
@@ -905,12 +1044,12 @@ export function setCompanionCollapsed(
   collapsed: boolean,
   path = defaultConfigPath(),
 ): void {
-  const companion = getMachineCompanionConfig(path);
-  companion.collapsed = {
-    ...(companion.collapsed ?? {}),
-    [surface]: collapsed,
-  };
-  saveMachineCompanionConfig(companion, path);
+  updateCompanionConfig((companion) => {
+    companion.collapsed = {
+      ...(companion.collapsed ?? {}),
+      [surface]: collapsed,
+    };
+  }, path);
 }
 
 /**
@@ -928,9 +1067,9 @@ export function setLastRepairedVersion(
   version: string,
   path = defaultConfigPath(),
 ): void {
-  const config = loadInstallConfig(path);
-  config.lastRepairedVersion = version;
-  saveInstallConfig(config, path);
+  updateInstallConfig((config) => {
+    config.lastRepairedVersion = version;
+  }, path);
 }
 
 export function getConfiguredWorkspaces(
@@ -943,15 +1082,15 @@ export function saveConfiguredWorkspaces(
   workspaces: WorkspaceConfig[],
   path = defaultConfigPath(),
 ): void {
-  const config = loadInstallConfig(path);
-  config.workspaces = workspaces;
-  if (
-    config.activeWorkspaceId &&
-    !workspaces.some((workspace) => workspace.id === config.activeWorkspaceId)
-  ) {
-    config.activeWorkspaceId = workspaces[0]?.id;
-  }
-  saveInstallConfig(config, path);
+  updateInstallConfig((config) => {
+    config.workspaces = workspaces;
+    if (
+      config.activeWorkspaceId &&
+      !workspaces.some((workspace) => workspace.id === config.activeWorkspaceId)
+    ) {
+      config.activeWorkspaceId = workspaces[0]?.id;
+    }
+  }, path);
 }
 
 export function getActiveWorkspaceId(
@@ -964,13 +1103,13 @@ export function setActiveWorkspaceId(
   id: string | undefined,
   path = defaultConfigPath(),
 ): void {
-  const config = loadInstallConfig(path);
-  if (id) {
-    config.activeWorkspaceId = id;
-  } else {
-    delete config.activeWorkspaceId;
-  }
-  saveInstallConfig(config, path);
+  updateInstallConfig((config) => {
+    if (id) {
+      config.activeWorkspaceId = id;
+    } else {
+      delete config.activeWorkspaceId;
+    }
+  }, path);
 }
 
 export function getActiveWorkspace(
@@ -987,31 +1126,32 @@ export function upsertConfiguredWorkspace(
   workspace: WorkspaceConfig,
   path = defaultConfigPath(),
 ): WorkspaceConfig[] {
-  const config = loadInstallConfig(path);
-  const current = config.workspaces ?? [];
-  const next = [
-    ...current.filter((candidate) => candidate.id !== workspace.id),
-    workspace,
-  ];
-  config.workspaces = next;
-  saveInstallConfig(config, path);
-  return next;
+  return updateInstallConfig((config) => {
+    const next = [
+      ...(config.workspaces ?? []).filter(
+        (candidate) => candidate.id !== workspace.id,
+      ),
+      workspace,
+    ];
+    config.workspaces = next;
+    return next;
+  }, path);
 }
 
 export function removeConfiguredWorkspace(
   id: string,
   path = defaultConfigPath(),
 ): WorkspaceConfig[] {
-  const config = loadInstallConfig(path);
-  const next = (config.workspaces ?? []).filter(
-    (workspace) => workspace.id !== id,
-  );
-  config.workspaces = next;
-  if (config.activeWorkspaceId === id) {
-    config.activeWorkspaceId = next[0]?.id;
-  }
-  saveInstallConfig(config, path);
-  return next;
+  return updateInstallConfig((config) => {
+    const next = (config.workspaces ?? []).filter(
+      (workspace) => workspace.id !== id,
+    );
+    config.workspaces = next;
+    if (config.activeWorkspaceId === id) {
+      config.activeWorkspaceId = next[0]?.id;
+    }
+    return next;
+  }, path);
 }
 
 /**
@@ -1047,19 +1187,17 @@ export function setActiveWorkspaceContext(
   contextName: string | undefined,
   path = defaultConfigPath(),
 ): boolean {
-  const config = loadInstallConfig(path);
-  const activeId = config.activeWorkspaceId;
-  if (activeId && config.workspaces) {
-    const workspace = config.workspaces.find((w) => w.id === activeId);
-    if (workspace) {
-      if (contextName) {
-        workspace.activeKnowledgeContext = contextName;
-      } else {
-        delete workspace.activeKnowledgeContext;
-      }
-      saveInstallConfig(config, path);
-      return true;
+  return updateInstallConfig((config) => {
+    const activeId = config.activeWorkspaceId;
+    const workspace = activeId
+      ? config.workspaces?.find((w) => w.id === activeId)
+      : undefined;
+    if (!workspace) return false;
+    if (contextName) {
+      workspace.activeKnowledgeContext = contextName;
+    } else {
+      delete workspace.activeKnowledgeContext;
     }
-  }
-  return false;
+    return true;
+  }, path);
 }
