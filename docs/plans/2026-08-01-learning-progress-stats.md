@@ -12,25 +12,33 @@ focused commit per completed phase.
 - [x] **Phase 0 — Setup & docs.** Worktree `../zam-learning-stats` from `main`,
       branch `feat/learning-stats`; ADR
       `docs/adr/2026-08-01-learning-progress-stats.md`; this plan.
-- [ ] **Phase 1 — Close the logging gap.** `responseTimeMs` accepted by MCP
+- [x] **Phase 1 — Close the logging gap.** `responseTimeMs` accepted by MCP
       `zam_submit_review` and `zam bridge submit` and passed through to the
       kernel; desktop recall card measures card-shown → rating; CLI `zam
       review` measures prompt → rating. Tests for accept + persist.
-- [ ] **Phase 2 — Kernel analytics.** `src/kernel/analytics/progress.ts`
+- [x] **Phase 2 — Kernel analytics.** `src/kernel/analytics/progress.ts`
       exports `getReviewActivity(db, userId, { period, since? })` returning
       per-bucket `{ bucket, reviewedCards, studyTimeMs }`, aggregated in SQL
       over `idx_review_logs_user` with `localtime` bucketing; re-exported from
       `src/kernel/index.ts`; tests.
-- [ ] **Phase 3 — CLI.** `zam stats --period day|week|month` (text + `--json`)
+- [x] **Phase 3 — CLI.** `zam stats --period day|week|month` (text + `--json`)
       and `zam bridge stats-activity` (JSON only via `jsonOut`).
-- [ ] **Phase 4 — MCP tool + desktop panel.** MCP tool `zam_progress_stats`;
+- [x] **Phase 4 — MCP tool + desktop panel.** MCP tool `zam_progress_stats`;
       desktop stats view (`desktop/index.html` + `main.ts`) rendering
       `desktop/src/panel/stats-panel.html` + `stats.ts` from
       `stats-activity`; i18n keys; tests (`tests/desktop/i18n-completeness`).
-- [ ] **Phase 5 — OKF + verification.** Covering OKF article updated via
+- [x] **Phase 5 — OKF + verification.** Covering OKF article updated via
       `zam_okf_upsert` if one describes review logging/statistics; full
       `npm run format && lint && typecheck && test && build`; one commit per
       phase.
+
+> Phase 4 deviation (reported per AGENTS.md): the desktop stats UI ships as a
+> native Tauri view in `desktop/index.html`/`main.ts` (nav entry
+> `nav-stats`), not as an MCP Apps panel bundle — the desktop app renders its
+> own views, and the MCP Apps panels are for external hosts. The data channel
+> (`zam bridge stats-activity`) is identical either way, and the MCP tool
+> `zam_progress_stats` covers all other clients. No `stats-panel.html` was
+> added; no panel-bundle change was needed.
 
 ## Phase details
 

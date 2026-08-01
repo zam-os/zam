@@ -2,6 +2,8 @@
 
 ## 2026-08-01
 
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 - **Update** — [Hands-Free Voice Mode](voice-mode.md)

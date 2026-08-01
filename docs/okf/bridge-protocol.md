@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-07-30T07:05:30Z
+timestamp: 2026-08-01T20:05:00Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -36,7 +36,10 @@ itself with the release-versioned `ZAM-Content-Studio/<version>`
 User-Agent, which every release bumps in step with the package version.
 
 Representative commands: `next` (pull the next queue card), `submit`
-(apply a rating), `add-token` (register a token *and* create the calling
+(apply a rating; accepts `--response-time-ms` so a rating contributes its
+study time — ADR 2026-08-01), `stats-activity` (review activity series:
+cards per day/week/month with summed study time, bucketed in the learner's
+local time), `add-token` (register a token *and* create the calling
 user's card — see [token-card-model.md](token-card-model.md)),
 `personal-card-update` (partial update by slug), and
 `personal-card-publish-revision` (publish with an explicit `cosmetic` or
@@ -66,5 +69,6 @@ is not configured.
 # Citations
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
+- [ADR 2026-08-01 — Learning Progress Statistics](../adr/2026-08-01-learning-progress-stats.md)
 - [Android companion plan](../plans/2026-07-21-android-companion-app.md)
-- Code: `src/cli/app.ts`, `src/cli/commands/bridge.ts`, `src/bridge/protocol.ts`, `mobile/src/import.ts`, `mobile/src/main.ts`, `mobile/src/vl-import.ts`, `mobile/src/vision-config.ts`, `mobile/src-tauri/src/vision.rs`
+- Code: `src/cli/app.ts`, `src/cli/commands/bridge.ts`, `src/bridge/protocol.ts`, `src/kernel/analytics/progress.ts`, `mobile/src/import.ts`, `mobile/src/main.ts`, `mobile/src/vl-import.ts`, `mobile/src/vision-config.ts`, `mobile/src-tauri/src/vision.rs`
