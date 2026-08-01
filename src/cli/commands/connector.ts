@@ -10,6 +10,9 @@ import {
   clearTursoCredentials,
   getADOCredentials,
   getTursoCredentials,
+  resolveCredentials,
+  type StoredSecret,
+  secretRefFromUri,
   setADOCredentials,
   setTursoCredentials,
 } from "../../kernel/credentials.js";
@@ -29,6 +32,10 @@ connectorCommand
   .option("--url <url>", "Turso database URL (non-interactive)")
   .option("--token <token>", "Turso auth token (non-interactive)")
   .option(
+    "--token-from <ref>",
+    "Optional later: vault reference instead of --token (e.g. bw://zam-turso/token). Paste with --token remains the default.",
+  )
+  .option(
     "--mode <mode>",
     "Turso access mode: native (libsql driver) | remote (HTTP, works on Windows ARM64)",
   )
@@ -38,7 +45,11 @@ connectorCommand
         console.error(`Invalid --mode: ${opts.mode}. Use native or remote.`);
         process.exit(1);
       }
-      return setupTurso(opts.url, opts.token, opts.mode);
+      if (opts.token && opts.tokenFrom) {
+        console.error("Use either --token or --token-from, not both.");
+        process.exit(1);
+      }
+      return setupTurso(opts.url, opts.token, opts.mode, opts.tokenFrom);
     }
     if (type !== "ado") {
       console.error(`Unknown connector type: ${type}. Supported: ado, turso`);
@@ -173,6 +184,7 @@ async function setupTurso(
   urlArg?: string,
   tokenArg?: string,
   mode?: "native" | "remote",
+  tokenFrom?: string,
 ): Promise<void> {
   let db: Database | undefined;
 
@@ -195,19 +207,36 @@ async function setupTurso(
       (await input({
         message: "Turso database URL (e.g. libsql://my-db-user.turso.io):",
       }));
-    const token =
-      tokenArg ??
-      (await password({
+
+    let token: StoredSecret | undefined;
+    if (tokenFrom) {
+      token = secretRefFromUri(tokenFrom);
+    } else if (tokenArg) {
+      token = tokenArg;
+    } else {
+      token = await password({
         message: "Auth token:",
-      }));
+      });
+    }
 
     if (!url || !token) {
       console.error("Both URL and token are required.");
       process.exit(1);
     }
 
-    // Store credentials outside the db so they survive db deletion
+    // Store credentials outside the db so they survive db deletion.
+    // Vault references are stored as-is; resolved plaintext never hits disk.
     setTursoCredentials(url, token, undefined, effectiveMode);
+    await resolveCredentials();
+
+    if (!getTursoCredentials()) {
+      console.error(
+        tokenFrom
+          ? `Could not resolve token reference "${tokenFrom}". Fix the vault item or run: zam credentials check`
+          : "Turso credentials incomplete after setup.",
+      );
+      process.exit(1);
+    }
 
     // Verify by opening the configured cloud database.
     db = await openDatabaseWithSync({ initialize: true });
@@ -216,7 +245,8 @@ async function setupTurso(
 
     console.log(
       `Turso cloud database configured and verified: ${url}` +
-        (effectiveMode ? ` (mode: ${effectiveMode})` : ""),
+        (effectiveMode ? ` (mode: ${effectiveMode})` : "") +
+        (tokenFrom ? ` (token from ${tokenFrom})` : ""),
     );
   } catch (err) {
     await db?.close();

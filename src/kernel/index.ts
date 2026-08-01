@@ -31,23 +31,34 @@ export {
 } from "./connectors/azure-devops.js";
 export type {
   ADOCredentials,
+  CredentialCheckEntry,
   Credentials,
+  StoredCredentials,
   TursoCredentials,
 } from "./credentials.js";
 // Credentials (stored in ~/.zam/credentials.json, survives db deletion)
 export {
+  checkCredentials,
   clearADOCredentials,
   clearProviderApiKey,
   clearTursoCredentials,
+  credentialsNeedVaultAccess,
   getADOCredentials,
   getProviderApiKey,
   getTursoCredentials,
+  invalidateCredentialsSnapshot,
   listProviderApiKeyRefs,
   loadCredentials,
+  loadStoredCredentials,
+  looksLikeSecretUri,
+  resetCredentialsResolutionState,
+  resolveCredentials,
   saveCredentials,
+  secretRefFromUri,
   setADOCredentials,
   setProviderApiKey,
   setTursoCredentials,
+  tursoVaultAccessPending,
 } from "./credentials.js";
 // Database
 export type {
@@ -481,6 +492,26 @@ export type {
   SuggestFoundationsOptions,
 } from "./search/suggestions.js";
 export { suggestFoundations } from "./search/suggestions.js";
+export type {
+  SecretBackend,
+  SecretRef,
+  SecretResolutionReason,
+  StoredSecret,
+} from "./secrets/index.js";
+// Secret backends (vault references in credentials.json — ADR 2026-07-30b)
+export {
+  clearSecretBackends,
+  createBitwardenBackend,
+  ensureDefaultSecretBackends,
+  getSecretBackend,
+  isSecretRef,
+  listSecretBackends,
+  parseSecretUri,
+  registerSecretBackend,
+  resolveSecretUri,
+  SecretResolutionError,
+  unregisterSecretBackend,
+} from "./secrets/index.js";
 export {
   distributeGlobalSkills,
   getPackageSkillPath,
@@ -508,6 +539,7 @@ export type {
 } from "./system/install-config.js";
 export {
   ALL_CAPABILITIES,
+  clearBitwardenSyncConfig,
   detectSyncProvider,
   emptyCapabilityFlags,
   ensureMachineAiModelsMigrated,
@@ -516,6 +548,7 @@ export {
   getActiveWorkspaceContext,
   getActiveWorkspaceId,
   getAgentConnectAutoDone,
+  getBitwardenSyncConfig,
   getCompanionCollapsed,
   getCompanionSelectedAntigravityEvaluatorId,
   getCompanionSelectedAntigravityModelId,
@@ -533,6 +566,7 @@ export {
   getMachineVoicePreference,
   getOnboardingDone,
   getOnboardingPersona,
+  isBitwardenVaultEnabled,
   loadInstallConfig,
   migrateMachineRolesToModels,
   removeConfiguredWorkspace,
@@ -544,6 +578,9 @@ export {
   setActiveWorkspaceContext,
   setActiveWorkspaceId,
   setAgentConnectAutoDone,
+  setBitwardenAutoSync,
+  setBitwardenSyncConfig,
+  setBitwardenVaultEnabled,
   setCompanionCollapsed,
   setCompanionSelectedAntigravityEvaluatorId,
   setCompanionSelectedAntigravityModelId,

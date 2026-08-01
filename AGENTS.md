@@ -14,6 +14,28 @@ the DB, call kernel functions, render output. Everything that talks to an
 LLM/embedding endpoint lives in `src/cli/llm/`. New learning logic goes in
 the kernel; new HTTP goes in the CLI layer.
 
+## Product principle: simplicity of use
+
+**Ease of use is a first-class requirement**, not a polish pass after the
+feature works for power users. ZAM’s audience includes learners who will not
+open a terminal.
+
+- **Studio-first for learner-facing setup.** Prefer Desktop/Settings UI over
+  CLI-only paths. CLI and `zam bridge` stay for automation and agents; they
+  must not be the only way to complete a normal setup step.
+- **First run stays light.** Optional upgrades (multi-machine vault secrets,
+  server DB, advanced 2FA tooling) must not block or complicate onboarding.
+  Paste/defaults remain the default path; power features are skippable and
+  “later”.
+- **One clear action per step.** Short copy, sensible defaults, no manual
+  third-party bookkeeping when ZAM can do it (e.g. create Bitwarden items
+  instead of asking the learner to craft vault entries by hand).
+- **Degrade gracefully.** Missing optional tools (CLI not installed, vault
+  locked) → clear in-app guidance and a working fallback (usually paste),
+  never a dead end.
+- When a design tradeoff is “elegant for operators” vs “simple for learners”,
+  **choose simple for learners** unless an ADR explicitly says otherwise.
+
 ## Hard rules
 
 - **Kernel stays AI-agnostic.** No fetch/LLM/embedding calls under

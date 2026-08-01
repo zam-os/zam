@@ -98,4 +98,21 @@ describe("dashboard onboarding checklist", () => {
       expect(stepIds.has(item.step)).toBe(true);
     }
   });
+
+  it("keeps the Bitwarden vault out of first run entirely", () => {
+    // ADR 2026-07-30b, revised: the vault is alpha, and most learners use one
+    // computer. A page about cloud regions and master passwords in the middle
+    // of first run costs a newcomer more than it can give them — and it is not
+    // a gap worth nagging about later either. It lives behind an opt-in
+    // checkbox in Settings instead.
+    const steps = buildOnboardingSteps(FLOW_CONTEXT, {
+      openExternal() {},
+      goToStep() {},
+      openContentEntry() {},
+    });
+    expect(steps.map((step) => step.id)).not.toContain("secrets");
+    expect(ONBOARDING_CHECKLIST_ITEMS.map((item) => item.id)).not.toContain(
+      "secrets",
+    );
+  });
 });

@@ -38,6 +38,7 @@ import {
   assignTokenToContext,
   BUILT_IN_SENSITIVE_MATCHERS,
   type CapabilityFlags,
+  checkCredentials,
   clearProviderApiKey,
   confirmCardSplit,
   confirmFoundations,
@@ -45,6 +46,7 @@ import {
   countUserCardsForCurriculumTopic,
   createGoal,
   createToken,
+  credentialsNeedVaultAccess,
   DEFAULT_VOICE_ENGINE_PREFERENCE,
   decidePostCapture,
   decidePreCapture,
@@ -79,6 +81,7 @@ import {
   getTursoCredentials,
   hasCommand,
   importCurriculumCards,
+  isBitwardenVaultEnabled,
   isOllamaInstalled,
   isPersonaId,
   isVoiceEnginePreference,
@@ -88,6 +91,7 @@ import {
   listProviderApiKeyRefs,
   listTokens,
   listUserCardsForCurriculumTopic,
+  loadStoredCredentials,
   type ModelCapability,
   type ModelEntry,
   openDatabase,
@@ -96,11 +100,14 @@ import {
   pairCommands,
   readMonitorLog,
   readUiObservationLog,
+  resolveCredentials,
   resolveObserverPolicy,
   resolveReviewContext,
+  secretRefFromUri,
   seedPersonaKnowledgeContext,
   setActiveWorkspaceContext,
   setAgentConnectAutoDone,
+  setBitwardenVaultEnabled,
   setMachineVoicePreference,
   setOnboardingDone,
   setOnboardingPersona,
@@ -109,6 +116,7 @@ import {
   setTursoCredentials,
   slugify,
   syncObserverSidecarPolicy,
+  tursoVaultAccessPending,
   uiObservationLogExists,
   unassignTokenFromContext,
   updateToken,
@@ -260,6 +268,17 @@ import {
   summarizeSkillLinkHealth,
   wireSkills,
 } from "../provisioning/index.js";
+import {
+  configureBitwardenServer,
+  disconnectBitwardenToLocalSecrets,
+  getBitwardenCliStatus,
+  loginBitwardenForProcess,
+  maybeAutoSyncSecrets,
+  seedProviderKeyIntoBitwarden,
+  seedTursoIntoBitwarden,
+  syncSecretsWithBitwarden,
+  unlockBitwardenForProcess,
+} from "../secrets-bridge.js";
 import { normalizeShell } from "../terminal-open.js";
 import { ensureDefaultUser, resolveUser } from "../users/identity.js";
 import {
@@ -2763,12 +2782,46 @@ bridgeCommand
   .command("provider-set-key")
   .description("Store an API key for a provider reference (JSON)")
   .requiredOption("--ref <ref>", "Credential reference name")
-  .requiredOption("--key <value>", "API key value (write-only)")
-  .action((opts) => {
-    const key = opts.key.trim();
-    if (!key) jsonError("No key provided.");
+  .option("--key <value>", "API key value (write-only)")
+  .option(
+    "--key-from <secret-ref>",
+    "Vault reference instead of --key (e.g. bw://item/apiKey)",
+  )
+  .action(async (opts) => {
+    if (opts.key && opts.keyFrom) {
+      jsonError("Use either --key or --key-from, not both.");
+    }
+    if (opts.keyFrom) {
+      try {
+        setProviderApiKey(opts.ref, secretRefFromUri(String(opts.keyFrom)));
+      } catch (err) {
+        jsonError(err instanceof Error ? err.message : String(err));
+      }
+      await resolveCredentials();
+      if (getProviderApiKey(opts.ref) === null) {
+        jsonError(
+          `Could not resolve key reference "${opts.keyFrom}". Unlock Bitwarden in Settings or run credentials-check.`,
+        );
+      }
+      jsonOut({
+        ok: true,
+        ref: opts.ref,
+        kind: "reference",
+        secretRef: opts.keyFrom,
+      });
+      return;
+    }
+    const key = String(opts.key ?? "").trim();
+    if (!key) jsonError("Provide --key or --key-from.");
     setProviderApiKey(opts.ref, key);
-    jsonOut({ ok: true, ref: opts.ref, masked: maskSecret(key) });
+    await resolveCredentials();
+    await maybeAutoSyncSecrets();
+    jsonOut({
+      ok: true,
+      ref: opts.ref,
+      kind: "literal",
+      masked: maskSecret(key),
+    });
   });
 
 // The endpoint's own answer to "which models do you have" — better than any
@@ -4225,6 +4278,27 @@ bridgeCommand
   .command("database-status")
   .description("Show the active database target and learning profiles (JSON)")
   .action(async () => {
+    // Restore ≤30-day session and resolve vault refs before opening the DB.
+    await resolveCredentials();
+    if (tursoVaultAccessPending()) {
+      const stored = loadStoredCredentials();
+      jsonOut({
+        success: false,
+        connected: false,
+        bitwardenRequired: true,
+        target: {
+          kind: "local",
+          location: stored.turso?.url ?? "vault-locked",
+        },
+        tursoUrl: stored.turso?.url ?? null,
+        userId: null,
+        cardCount: 0,
+        users: [],
+        error:
+          "BITWARDEN_REQUIRED: Server database token is in Bitwarden. Unlock once to continue (session lasts up to 30 days).",
+      });
+      return;
+    }
     const target = getDatabaseTargetInfo();
     await withDb(async (db) => {
       const userId = (await getSetting(db, "user.id")) ?? null;
@@ -4232,6 +4306,7 @@ bridgeCommand
       jsonOut({
         success: true,
         connected: true,
+        bitwardenRequired: false,
         target,
         userId,
         cardCount: users.find((user) => user.id === userId)?.cardCount ?? 0,
@@ -4251,13 +4326,21 @@ bridgeCommand
     "Store and verify Turso/sqld credentials for the server database (JSON)",
   )
   .requiredOption("--url <url>", "libsql/https database URL")
-  .requiredOption("--token <token>", "Auth token")
+  .option("--token <token>", "Auth token (literal)")
+  .option(
+    "--token-from <secret-ref>",
+    "Vault reference instead of --token (e.g. bw://zam-turso/token)",
+  )
   .option("--mode <mode>", "Access mode: remote | native")
   .action(async (opts) => {
     const url = String(opts.url ?? "").trim();
-    const token = String(opts.token ?? "").trim();
-    if (!url || !token) {
-      jsonError("Both --url and --token are required.");
+    const tokenLiteral = String(opts.token ?? "").trim();
+    const tokenFrom = String(opts.tokenFrom ?? "").trim();
+    if (tokenLiteral && tokenFrom) {
+      jsonError("Use either --token or --token-from, not both.");
+    }
+    if (!url || (!tokenLiteral && !tokenFrom)) {
+      jsonError("Provide --url and either --token or --token-from.");
     }
     try {
       // eslint-disable-next-line no-new -- validate absolute URL
@@ -4275,7 +4358,24 @@ bridgeCommand
       mode = raw;
     }
 
-    setTursoCredentials(url, token, undefined, mode);
+    if (tokenFrom) {
+      try {
+        setTursoCredentials(url, secretRefFromUri(tokenFrom), undefined, mode);
+      } catch (err) {
+        jsonError(err instanceof Error ? err.message : String(err));
+      }
+      await resolveCredentials();
+      if (!getTursoCredentials()) {
+        jsonError(
+          `Could not resolve token reference "${tokenFrom}". Unlock Bitwarden in Settings or fix the vault item.`,
+        );
+      }
+    } else {
+      setTursoCredentials(url, tokenLiteral, undefined, mode);
+      await resolveCredentials();
+      // If Bitwarden auto-sync is on, push the new token without re-asking.
+      await maybeAutoSyncSecrets();
+    }
 
     let db: Awaited<ReturnType<typeof openDatabaseWithSync>> | undefined;
     try {
@@ -4306,6 +4406,275 @@ bridgeCommand
     } finally {
       await db?.close().catch(() => undefined);
     }
+  });
+
+// ── Vault secrets (Bitwarden) for Studio — ADR 2026-07-30b ─────────────────
+
+bridgeCommand
+  .command("secrets-feature")
+  .description(
+    "Read or set the alpha Bitwarden vault opt-in for this machine (JSON)",
+  )
+  .option("--enable", "Switch the vault feature on")
+  .option("--disable", "Switch it off (also stops auto-sync)")
+  .action((opts) => {
+    // Deliberately cheap: no `bw` call. Studio asks this on every Settings
+    // paint to decide whether to show the feature at all, so it must not cost
+    // a process spawn for the learners who never switch it on.
+    if (opts.enable && opts.disable) {
+      jsonError("Pass either --enable or --disable, not both.");
+      return;
+    }
+    if (opts.enable || opts.disable) {
+      setBitwardenVaultEnabled(Boolean(opts.enable));
+    }
+    jsonOut({ success: true, enabled: isBitwardenVaultEnabled() });
+  });
+
+bridgeCommand
+  .command("secrets-status")
+  .description("Bitwarden CLI status for Studio vault setup (JSON, no secrets)")
+  .action(async () => {
+    const status = await getBitwardenCliStatus();
+    jsonOut({ success: true, ...status });
+  });
+
+bridgeCommand
+  .command("secrets-configure-region")
+  .description("Point Bitwarden CLI at EU or US cloud (JSON)")
+  .requiredOption("--region <region>", "eu | us")
+  .action(async (opts) => {
+    const region = String(opts.region ?? "")
+      .trim()
+      .toLowerCase();
+    if (region !== "eu" && region !== "us") {
+      jsonError("region must be eu or us");
+    }
+    try {
+      await configureBitwardenServer(region);
+    } catch (err) {
+      jsonError(
+        err instanceof Error
+          ? err.message
+          : "Could not configure Bitwarden server region.",
+      );
+    }
+    const status = await getBitwardenCliStatus();
+    jsonOut({ success: true, ...status });
+  });
+
+bridgeCommand
+  .command("secrets-require")
+  .description(
+    "Whether vault access is required and if Bitwarden is ready (JSON)",
+  )
+  .action(async () => {
+    const needed = credentialsNeedVaultAccess();
+    if (!needed) {
+      // Nothing is stored as a `{$secret}` reference, so nothing can be
+      // waiting on a vault. Answer without spawning `bw`: this runs on every
+      // dashboard load, and a learner who never switched the alpha vault on
+      // must never pay for it — let alone see a master-password prompt.
+      jsonOut({
+        success: true,
+        needed: false,
+        ready: true,
+        kind: "unlocked",
+        serverUrl: null,
+        userEmail: null,
+        region: "unknown",
+        sessionInProcess: false,
+        autoSync: false,
+        lastSyncAt: null,
+        pendingLiteralCount: 0,
+        message: "",
+      });
+      return;
+    }
+    // References exist, so they must resolve even if the feature switch was
+    // turned off afterwards — otherwise unticking a checkbox would lock the
+    // learner out of their own database.
+    // getBitwardenCliStatus restores a still-valid 30-day session into env.
+    const status = await getBitwardenCliStatus();
+    if (status.kind === "unlocked" && process.env.BW_SESSION?.trim()) {
+      await resolveCredentials();
+    }
+    const ready = status.kind === "unlocked" && process.env.BW_SESSION?.trim();
+    jsonOut({
+      success: true,
+      needed,
+      ready: Boolean(ready),
+      ...status,
+    });
+  });
+
+bridgeCommand
+  .command("secrets-login")
+  .description(
+    "Log in to Bitwarden CLI for this bridge process (JSON; password not stored)",
+  )
+  .requiredOption("--email <email>", "Bitwarden account email")
+  .requiredOption("--password <password>", "Master password (not persisted)")
+  .option("--code <code>", "Authenticator TOTP when 2FA is required")
+  .action(async (opts) => {
+    const result = await loginBitwardenForProcess({
+      email: String(opts.email ?? ""),
+      password: String(opts.password ?? ""),
+      code: opts.code ? String(opts.code) : undefined,
+    });
+    if (!result.ok) {
+      // Do not process.exit — desktop uses a long-lived bridge serve process.
+      jsonOut({
+        success: false,
+        needs2fa: result.needs2fa === true,
+        error: result.message,
+      });
+      return;
+    }
+    await resolveCredentials();
+    await maybeAutoSyncSecrets();
+    const status = await getBitwardenCliStatus();
+    jsonOut({ success: true, loggedIn: true, ...status });
+  });
+
+bridgeCommand
+  .command("secrets-unlock")
+  .description(
+    "Unlock Bitwarden for this bridge process only (JSON; password not stored)",
+  )
+  .requiredOption("--password <password>", "Master password (not persisted)")
+  .action(async (opts) => {
+    const result = await unlockBitwardenForProcess(String(opts.password ?? ""));
+    // Clear from argv residual as much as possible — process title still may
+    // show briefly; Desktop should prefer env-based handoff later if needed.
+    if (!result.ok) jsonError(result.message);
+    await resolveCredentials();
+    // Resume auto-sync if the learner already connected Bitwarden earlier.
+    await maybeAutoSyncSecrets();
+    const status = await getBitwardenCliStatus();
+    jsonOut({ success: true, unlocked: true, ...status });
+  });
+
+bridgeCommand
+  .command("credentials-check")
+  .description(
+    "Report configured secrets as literal/reference ok/failed (JSON, no values)",
+  )
+  .action(async () => {
+    await resolveCredentials();
+    const entries = checkCredentials();
+    jsonOut({
+      success: true,
+      credentials: entries,
+      ok: entries.every((e) => e.ok || e.kind === "missing"),
+    });
+  });
+
+/**
+ * One-button connect: push secrets ZAM already knows (server DB token, any
+ * machine-local API keys) into Bitwarden and enable auto-sync. No re-paste.
+ */
+bridgeCommand
+  .command("secrets-sync")
+  .description(
+    "Sync known machine-local secrets into Bitwarden and enable auto-sync (JSON)",
+  )
+  .action(async () => {
+    const result = await syncSecretsWithBitwarden();
+    if (!result.ok) jsonError(result.message);
+    const status = await getBitwardenCliStatus();
+    jsonOut({
+      success: true,
+      ...status,
+      autoSync: true,
+      entries: result.entries.map((e) => ({
+        field: e.field,
+        secretRef: e.secretRef,
+        itemName: e.itemName,
+        seeded: e.seeded,
+        skipped: e.skipped,
+      })),
+    });
+  });
+
+/**
+ * Offboard: pull vault-backed secrets back into credentials.json as literals
+ * and stop using Bitwarden on this machine. Vault items are left in place.
+ */
+bridgeCommand
+  .command("secrets-disconnect")
+  .description(
+    "Restore vault secrets as local literals and disconnect Bitwarden (JSON)",
+  )
+  .action(async () => {
+    const result = await disconnectBitwardenToLocalSecrets();
+    if (!result.ok) jsonError(result.message);
+    const status = await getBitwardenCliStatus();
+    jsonOut({
+      success: true,
+      ...status,
+      disconnected: true,
+      autoSync: false,
+      entries: result.entries.map((e) => ({
+        field: e.field,
+        restored: e.restored,
+        skipped: e.skipped,
+      })),
+    });
+  });
+
+// Keep seed helpers for power users / tests (not shown in Studio UI).
+bridgeCommand
+  .command("secrets-seed-turso")
+  .description(
+    "Create zam-turso in Bitwarden and store a vault reference (JSON)",
+  )
+  .requiredOption("--url <url>", "libsql/https database URL")
+  .requiredOption("--token <token>", "Auth token (written only to the vault)")
+  .option("--mode <mode>", "Access mode: remote | native")
+  .action(async (opts) => {
+    let mode: "remote" | "native" | undefined;
+    if (opts.mode !== undefined) {
+      const raw = String(opts.mode).trim().toLowerCase();
+      if (raw !== "remote" && raw !== "native") {
+        jsonError("mode must be remote or native");
+      }
+      mode = raw;
+    }
+    const result = await seedTursoIntoBitwarden({
+      url: String(opts.url ?? ""),
+      token: String(opts.token ?? ""),
+      mode,
+    });
+    if (!result.ok) jsonError(result.message);
+    jsonOut({
+      success: true,
+      secretRef: result.secretRef,
+      itemName: result.itemName,
+      field: "token",
+    });
+  });
+
+bridgeCommand
+  .command("secrets-seed-provider-key")
+  .description(
+    "Create a zam-<ref> item in Bitwarden and store a vault reference (JSON)",
+  )
+  .requiredOption("--ref <ref>", "Provider apiKeyRef name")
+  .requiredOption("--key <value>", "API key (written only to the vault)")
+  .action(async (opts) => {
+    const result = await seedProviderKeyIntoBitwarden({
+      ref: String(opts.ref ?? ""),
+      apiKey: String(opts.key ?? ""),
+    });
+    if (!result.ok) jsonError(result.message);
+    jsonOut({
+      success: true,
+      ref: result.ref,
+      secretRef: result.secretRef,
+      itemName: result.itemName,
+      field: "apiKey",
+    });
   });
 
 bridgeCommand

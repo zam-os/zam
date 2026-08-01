@@ -48,6 +48,16 @@ ZAM supports two transport protocols for external agents:
 
 Bridge responses are always JSON, including errors. Treat `protocol.ts` types as the stable contract.
 
+## Product principle: simplicity of use
+
+**Ease of use is a first-class requirement**, not polish after a power-user path works. Many learners never open a terminal.
+
+- **Studio-first for learner-facing setup.** Prefer Desktop/Settings UI over CLI-only flows. CLI/`zam bridge` stay for agents and automation; they must not be the only way through normal setup.
+- **First run stays light.** Optional upgrades (multi-machine vault secrets, server DB, advanced tooling) must not block onboarding. Paste and sensible defaults remain the default; power features are skippable and “later”.
+- **One clear action per step.** Short copy, good defaults, no manual third-party bookkeeping when ZAM can do it (e.g. create Bitwarden vault items instead of asking the learner to craft them by hand).
+- **Degrade gracefully.** Missing optional tools → in-app guidance plus a working fallback (usually paste), never a dead end.
+- Tradeoff rule: **simple for learners** over “elegant for operators”, unless an ADR says otherwise.
+
 ## Key conventions
 
 - **Agent transport**: MCP transport (`zam mcp`) is the preferred agent connection method; `zam agent connect <harness>` handles configuration. `zam bridge` remains the fallback.
