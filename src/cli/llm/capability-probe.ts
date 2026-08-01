@@ -134,8 +134,14 @@ export function classifyCapabilities(
 
   detected.embedding = looksEmbedding || dimProbeEmbedding;
   detected.image = looksVision;
-  detected.stt = looksStt;
-  detected.tts = looksTts;
+  // Speech is claimed from the model *name*, so it must be checked against the
+  // provider's own catalog exactly as text is. Without that gate a name that
+  // merely looks like a speech model — `mimo-v2.5-tts`, which Xiaomi does not
+  // serve — was accepted, and the misconfiguration only surfaced mid-review as
+  // a 404 from the gateway (reported 2026-08-01). An endpoint that publishes no
+  // catalog is trusted, as everywhere else.
+  detected.stt = looksStt && (inCatalog || !catalogKnown);
+  detected.tts = looksTts && (inCatalog || !catalogKnown);
   // A chat-completions endpoint serves text unless it is a single-purpose
   // embedding or audio model. Audio models answer on /audio/*, not /chat, so
   // offering them for text would break recall coaching.
@@ -248,6 +254,28 @@ export function validateModelSave(
       ok: false,
       error:
         "Endpoint is unreachable — cannot verify capabilities. Bring it online and retry.",
+    };
+  }
+  // The provider published a catalog and this id is not in it. Saving anyway
+  // stores a row that can only fail later, at the worst moment: a mistyped
+  // `mimo-v2.5-tts` looked like a speech model, passed every check, and ended
+  // a review session with a 404 from the gateway. When the endpoint says which
+  // models it has, that answer beats any name heuristic.
+  //
+  // Hosted endpoints only. A local runner's catalog is a moving target the
+  // learner controls — `enableLocalEmbedding` pulls a model and saves it in one
+  // step, and the catalog it read beforehand cannot list what it just fetched.
+  if (
+    !entry.local &&
+    probe.catalog.length > 0 &&
+    !catalogHasModel(probe.catalog, entry.model)
+  ) {
+    const shown = probe.catalog.slice(0, 8).join(", ");
+    const more =
+      probe.catalog.length > 8 ? ` (+${probe.catalog.length - 8} more)` : "";
+    return {
+      ok: false,
+      error: `The endpoint does not offer a model called "${entry.model}". It lists: ${shown}${more}.`,
     };
   }
   return {

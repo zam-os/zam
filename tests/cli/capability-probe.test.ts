@@ -146,3 +146,120 @@ describe("validateModelSave", () => {
     expect(result.entry?.probedAt).toBe("2026-07-12T00:00:00Z");
   });
 });
+
+// Reported 2026-08-01: `mimo-v2.5-tts` was configured against Xiaomi's
+// endpoint, which serves no such model and no /audio/speech route at all. The
+// name matched a TTS hint, the capability was stored, and the misconfiguration
+// only surfaced mid-review as a 404 from the gateway.
+describe("speech capabilities are checked against the provider's catalog", () => {
+  const catalog = ["mimo-v2.5", "mimo-v2.5-vl"];
+
+  it("does not claim speech for a model the endpoint does not list", () => {
+    const detected = classifyCapabilities(
+      { model: "mimo-v2.5-tts", apiFlavor: "chat-completions" },
+      catalog,
+      true,
+    );
+
+    expect(detected.tts).toBe(false);
+  });
+
+  it("still claims speech for a listed speech model", () => {
+    const detected = classifyCapabilities(
+      { model: "tts-1-hd", apiFlavor: "chat-completions" },
+      ["tts-1-hd", "whisper-1"],
+      true,
+    );
+
+    expect(detected.tts).toBe(true);
+    expect(
+      classifyCapabilities(
+        { model: "whisper-1", apiFlavor: "chat-completions" },
+        ["tts-1-hd", "whisper-1"],
+        true,
+      ).stt,
+    ).toBe(true);
+  });
+
+  it("trusts an endpoint that publishes no catalog", () => {
+    // Most single-model local runners serve no /v1/models; refusing them would
+    // break the self-hosted path the ADR keeps for `device-only`.
+    const detected = classifyCapabilities(
+      { model: "kokoro", apiFlavor: "chat-completions" },
+      [],
+      false,
+    );
+
+    expect(detected.tts).toBe(true);
+  });
+
+  it("refuses to save a model the endpoint does not offer, and says what it has", () => {
+    const result = validateModelSave(
+      {
+        id: "x",
+        label: "Mimo TTS",
+        url: "https://token-plan.example/v1",
+        model: "mimo-v2.5-tts",
+        local: false,
+        apiFlavor: "chat-completions",
+        order: 0,
+        capabilities: { ...emptyCapabilityFlags(), tts: true },
+        detectedCapabilities: emptyCapabilityFlags(),
+      },
+      { reachable: true, catalog, detected: emptyCapabilityFlags() },
+    );
+
+    expect(result.ok).toBe(false);
+    expect(result.error).toContain("mimo-v2.5-tts");
+    expect(result.error).toContain("mimo-v2.5");
+  });
+
+  it("leaves a local runner alone, whose catalog lags what it just pulled", () => {
+    // enableLocalEmbedding pulls a model and saves it in one step; the catalog
+    // it read beforehand cannot list what it has just fetched.
+    const result = validateModelSave(
+      {
+        id: "x",
+        label: "Ollama - Embedding",
+        url: "http://localhost:11434/v1",
+        model: "embeddinggemma:300m",
+        local: true,
+        apiFlavor: "chat-completions",
+        order: 0,
+        capabilities: { ...emptyCapabilityFlags(), embedding: true },
+        detectedCapabilities: emptyCapabilityFlags(),
+      },
+      {
+        reachable: true,
+        catalog: ["qwen3.5:4b"],
+        detected: { ...emptyCapabilityFlags(), embedding: true },
+      },
+    );
+
+    expect(result.ok).toBe(true);
+  });
+
+  it("saves a listed model unchanged", () => {
+    const result = validateModelSave(
+      {
+        id: "x",
+        label: "Mimo",
+        url: "https://token-plan.example/v1",
+        model: "mimo-v2.5",
+        local: false,
+        apiFlavor: "chat-completions",
+        order: 0,
+        capabilities: { ...emptyCapabilityFlags(), text: true },
+        detectedCapabilities: emptyCapabilityFlags(),
+      },
+      {
+        reachable: true,
+        catalog,
+        detected: { ...emptyCapabilityFlags(), text: true },
+      },
+    );
+
+    expect(result.ok).toBe(true);
+    expect(result.entry?.capabilities.text).toBe(true);
+  });
+});

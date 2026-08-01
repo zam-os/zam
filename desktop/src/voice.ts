@@ -153,18 +153,46 @@ export function createTieredVoicePort(
   plan: () => VoiceEnginePlan,
   invoke: TauriInvoke,
   cloud: CloudSpeechDeps,
+  onDegraded: (capability: "stt" | "tts", message: string) => void = () => {},
 ): VoicePort {
   const native = createVoicePort(invoke);
+  // Capabilities whose cloud endpoint failed in this session. A misconfigured
+  // endpoint fails identically on every utterance, so retrying it each time
+  // would only add a delay before the same message.
+  const degraded = new Set<"stt" | "tts">();
+  const useCloud = (capability: "stt" | "tts"): boolean =>
+    plan()[capability].tier === "cloud" && !degraded.has(capability);
+
+  /**
+   * A cloud speech call failed. Continue on the device rather than ending the
+   * session: the whole point of voice mode is that the review happens, and
+   * falling back *to the device* is the direction that costs the learner
+   * nothing — it is the same `fell-back-to-local` outcome the plan already
+   * allows, just decided at call time instead of at resolution time.
+   */
+  const degrade = (capability: "stt" | "tts", error: unknown): void => {
+    degraded.add(capability);
+    onDegraded(
+      capability,
+      error instanceof Error ? error.message : String(error),
+    );
+  };
+
   return {
     start: native.start,
     stop: native.stop,
     async speak(text: string, locale: VoiceLocale): Promise<void> {
-      if (plan().tts.tier === "local") return native.speak(text, locale);
-      const audio = await cloud.synthesize(text, locale);
-      await cloud.play(audio.audioBase64, audio.mime);
+      if (!useCloud("tts")) return native.speak(text, locale);
+      try {
+        const audio = await cloud.synthesize(text, locale);
+        await cloud.play(audio.audioBase64, audio.mime);
+      } catch (error) {
+        degrade("tts", error);
+        await native.speak(text, locale);
+      }
     },
     async listen(locale: VoiceLocale): Promise<string> {
-      if (plan().stt.tier === "local") return native.listen(locale);
+      if (!useCloud("stt")) return native.listen(locale);
       const capture = await invoke<{ path: string; mime: string }>(
         "voice_capture",
         { locale },
@@ -177,7 +205,10 @@ export function createTieredVoicePort(
         await invoke("voice_discard_capture", { path: capture.path }).catch(
           () => undefined,
         );
-        throw error;
+        degrade("stt", error);
+        // The recording is gone with the failed call, so the learner is asked
+        // once more — better than losing the session over a bad endpoint.
+        return native.listen(locale);
       }
     },
   };

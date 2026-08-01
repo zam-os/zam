@@ -159,6 +159,10 @@ const DE: Messages = {
     "Kein Cloud-Sprachmodell eingerichtet. Aktiviere auf dem Desktop bei einem Cloud-Modell die Fähigkeit stt oder tts — es erscheint hier nach der nächsten Synchronisierung. Bis dahin bleibt der Sprachmodus auf dem Gerät.",
   voice_cloud_notice:
     "Sprachmodus nutzt ein Cloud-Modell. Das Gesprochene verlässt dieses Gerät.",
+  voice_cloud_tts_failed:
+    "Cloud-Sprachausgabe nicht erreichbar ({message}). Weiter mit der Stimme des Geräts.",
+  voice_cloud_stt_failed:
+    "Cloud-Spracherkennung nicht erreichbar ({message}). Weiter mit der Erkennung des Geräts — bitte noch einmal sprechen.",
   voice_no_cloud_stt:
     "Kein Cloud-Modell für Spracherkennung eingerichtet. Aktiviere auf dem Desktop die Fähigkeit stt bei einem Cloud-Modell.",
   voice_no_cloud_tts:
@@ -359,6 +363,10 @@ const EN: Messages = {
     "No cloud speech model is set up. Enable the stt or tts capability on a cloud model on the desktop — it appears here after the next sync. Until then voice mode stays on the device.",
   voice_cloud_notice:
     "Voice mode is using a cloud model. What you say leaves this device.",
+  voice_cloud_tts_failed:
+    "Cloud speech unavailable ({message}). Continuing with the device voice.",
+  voice_cloud_stt_failed:
+    "Cloud recognition unavailable ({message}). Continuing with the device — please say that again.",
   voice_no_cloud_stt:
     "No cloud speech-to-text model is set up. Enable the stt capability on a cloud model on the desktop.",
   voice_no_cloud_tts:

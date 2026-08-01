@@ -352,6 +352,17 @@ const voicePort: VoicePort = createMobileTieredVoicePort(
       return synthesizeViaCloud(endpoint, { text, locale });
     },
   },
+  (capability, message) => {
+    setReviewStatus(
+      tf(
+        capability === "tts"
+          ? "voice_cloud_tts_failed"
+          : "voice_cloud_stt_failed",
+        { message },
+      ),
+      true,
+    );
+  },
 );
 
 const voiceController = new HandsFreeReviewController(voicePort, {
