@@ -152,7 +152,46 @@ user who wants strict locality.
 
 `voice.enginePreference` lives in `~/.zam/config.json`, not in the database. The
 right answer depends on the hardware in front of the learner — a Turso-shared DB
-must not push a phone's preference onto a desktop.
+must not push a phone's preference onto a desktop. The companion keeps the same
+setting in `localStorage` under `zam.voice-engine.v1`, for the same reason: it
+describes the device, not the learner.
+
+### 8. A companion gets its speech endpoints through the pairing code
+
+*Added 2026-08-01, when the cloud tier was extended to iOS and Android.*
+
+The desktop resolves speech endpoints from the machine-local model registry
+(`getMachineAiModels`). A paired phone has no access to it — the registry is
+config on the desktop, deliberately not in the Turso-shared database (it holds
+credentials, and it describes one machine's models). Nor does a companion have a
+bridge process to ask. So the `stt` and `tts` endpoints are projected into the
+pairing payload alongside `recall`, under the same reachability rule 0.25.0
+established for recall: harness-backed (`transport: "agent"`) entries are never
+projected, because a device cannot drive a CLI on the desktop. Speech adds one
+constraint — audio routes exist only in the OpenAI shape, so an
+`anthropic-messages` entry flagged `stt` is a misconfiguration and is skipped
+rather than paired as a certain failure.
+
+Three consequences follow, and all three are deliberate:
+
+- **`llm.recall`, `llm.stt` and `llm.tts` are independent and all optional.** A
+  learner can have a pairable speech model and no pairable recall model. Tying
+  them together would cost voice mode for no reason.
+- **Speech endpoints are projected head-only, without their fallback chain.**
+  The QR code has a hard budget (`ZAM_PAIR_MAX_BYTES`, 2000 bytes at the
+  error-correction level used). When the payload does not fit, `tts` is dropped
+  first, then `stt`, and `recall` never. Every device has a serviceable built-in
+  voice, so losing the cloud *voice* costs little; on-device **recognition** is
+  the half that is genuinely behind, which is what the cloud tier is for.
+- **Cloud speech on a companion needs re-pairing.** A device paired before this
+  shipped carries no speech endpoints, and there is no way to push them to it.
+  It keeps working on the device tier, and `quality-first` reports honestly that
+  no speech model is paired rather than failing at the first spoken word.
+
+Rejected alternative: putting the speech registry in the synced database so
+companions inherit it. That would move API keys into the Turso-shared database —
+the one place [the machine-local rule](2026-07-12-unified-capability-model-registry.md)
+exists to keep them out of.
 
 ## Alternatives considered
 
@@ -237,6 +276,24 @@ learner's behalf, particularly with minors in the field test.
 - [ ] Cloud tier verified against at least one hosted `stt` and one hosted `tts`
       endpoint, with the cost per review session recorded in the release notes.
       Only stubbed endpoints have been exercised so far.
+- [x] Cloud tier extended to the companions (decision 8). The pairing projection
+      and its budget degradation are covered by `tests/cli/mobile-pairing.test.ts`,
+      the wire contract by `tests/bridge/mobile-pairing.test.ts`, the HTTP calls
+      by `tests/mobile/speech.test.ts`, and the routing property that matters —
+      a capability reaches the network only when the plan says `cloud` — by
+      `tests/mobile/voice.test.ts`. The native surface each shell must provide is
+      pinned in `tests/mobile/voice-wiring.test.ts`, because a missing plugin
+      command otherwise surfaces as an opaque error at the first spoken word.
+- [x] iOS Swift package compiles with the capture and playback commands
+      (`xcodebuild -scheme zam-mobile -destination generic/platform=iOS`).
+      Android Kotlin type-checks against the real SDK; note that CI does **not**
+      compile Kotlin — only the release workflow's APK build does, so Android
+      plugin changes need a local `:app:compileUniversalDebugKotlin`.
+- [ ] Companion cloud tier exercised on hardware: `quality-first` on the
+      field-test iPad against a hosted recognizer, confirming both that the
+      capture heuristics end an answer at the right moment on a phone microphone
+      and that the recognition is in fact better than Apple's on-device model.
+      That comparison is the entire justification for the tier on iOS.
 
 ## Evidence
 
@@ -245,5 +302,9 @@ learner's behalf, particularly with minors in the field test.
 - iOS engine: `mobile/src-tauri/ios/Sources/VoicePlugin.swift`
 - Android engine (prior art):
   `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/VoicePlugin.kt`
-- Cloud tier: `src/cli/llm/speech.ts`
-- Tests: `tests/kernel/voice-review.test.ts`, `tests/mobile/voice.test.ts`
+- Cloud tier: `src/cli/llm/speech.ts` (desktop), `mobile/src/speech.ts` (companions)
+- Companion tiering and preference: `mobile/src/voice.ts`
+- Pairing projection: `src/cli/mobile-pairing.ts`, contract in
+  `src/bridge/mobile-pairing.ts`
+- Tests: `tests/kernel/voice-review.test.ts`, `tests/mobile/voice.test.ts`,
+  `tests/mobile/speech.test.ts`, `tests/cli/mobile-pairing.test.ts`

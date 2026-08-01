@@ -221,6 +221,7 @@ import {
 } from "../llm/local-embedding.js";
 import {
   getCloudSpeechAvailability,
+  resolveSpeechEndpoint,
   synthesizeSpeech,
   transcribeAudio,
 } from "../llm/speech.js";
@@ -4275,11 +4276,20 @@ bridgeCommand
       }
 
       const recallProvider = await getProviderForRole(db, "recall");
+      // Voice mode's cloud tier on the companion. The registry these come from
+      // is machine-local config, which the synced database never carries, so
+      // pairing is the only path a phone has to them.
+      const [sttProvider, ttsProvider] = await Promise.all([
+        resolveSpeechEndpoint(db, "stt"),
+        resolveSpeechEndpoint(db, "tts"),
+      ]);
       const payload = createMobilePairingPayload({
         databaseUrl: credentials.url,
         databaseToken: credentials.token,
         userId,
         recallProvider,
+        sttProvider,
+        ttsProvider,
       });
       jsonOut({
         success: true,
@@ -4287,7 +4297,13 @@ bridgeCommand
         userId,
         cardCount: users.find((user) => user.id === userId)?.cardCount ?? 0,
         createdUser: !exists,
-        hasLlm: Boolean(payload.llm?.recall.enabled),
+        hasLlm: Boolean(payload.llm?.recall?.enabled),
+        // Surfaces tell the learner what the code actually carries; a speech
+        // model that silently did not fit is worse than one reported missing.
+        hasSpeech: {
+          stt: Boolean(payload.llm?.stt),
+          tts: Boolean(payload.llm?.tts),
+        },
       });
     });
   });

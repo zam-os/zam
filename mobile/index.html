@@ -822,6 +822,20 @@
             </label>
             <p id="reminder-status" class="status-line" aria-live="polite"></p>
 
+            <div id="voice-settings">
+              <div class="divider"></div>
+              <h2 data-i18n="voice_engine_heading">Sprachmodus</h2>
+              <label class="field-row">
+                <span data-i18n="voice_engine_label">Sprach-Engine</span>
+                <select id="voice-engine">
+                  <option value="device-only">Nur auf dem Gerät</option>
+                  <option value="device-first">Gerät bevorzugen</option>
+                  <option value="quality-first">Qualität bevorzugen</option>
+                </select>
+              </label>
+              <p id="voice-engine-status" class="muted" aria-live="polite"></p>
+            </div>
+
             <div class="divider"></div>
             <h2 data-i18n="update_heading">App-Update</h2>
             <p id="update-version" class="muted"></p>

@@ -4045,9 +4045,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     pairing_user_required: "Enter a learner ID.",
     pairing_generating: "Creating protected pairing code…",
     pairing_qr_alt: "Pairing QR code for {profile}",
-    pairing_ready: "{profile} · {count} cards · {llm}",
+    pairing_ready: "{profile} · {count} cards · {llm} · {speech}",
     pairing_llm_yes: "Recall AI included",
     pairing_llm_no: "No Recall AI configured",
+    pairing_speech_yes: "voice mode: cloud speech included",
+    pairing_speech_stt_only: "voice mode: cloud recognition only (no room for the voice)",
+    pairing_speech_no: "voice mode: on the device only",
     pairing_scan_now:
       "Scan now with ZAM Mobile. The code is hidden automatically after five minutes.",
     pairing_expired:
@@ -5111,9 +5114,13 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     pairing_user_required: "Bitte eine Lernenden-ID eingeben.",
     pairing_generating: "Geschützten Kopplungscode erzeugen…",
     pairing_qr_alt: "Kopplungs-QR-Code für {profile}",
-    pairing_ready: "{profile} · {count} Karten · {llm}",
+    pairing_ready: "{profile} · {count} Karten · {llm} · {speech}",
     pairing_llm_yes: "Recall-KI enthalten",
     pairing_llm_no: "Keine Recall-KI konfiguriert",
+    pairing_speech_yes: "Sprachmodus: Cloud-Sprache enthalten",
+    pairing_speech_stt_only:
+      "Sprachmodus: nur Cloud-Erkennung (für die Stimme war kein Platz)",
+    pairing_speech_no: "Sprachmodus: nur auf dem Gerät",
     pairing_scan_now:
       "Jetzt mit ZAM Mobile scannen. Der Code wird nach fünf Minuten automatisch ausgeblendet.",
     pairing_expired:

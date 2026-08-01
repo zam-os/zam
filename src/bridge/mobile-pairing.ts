@@ -30,8 +30,20 @@ export interface ZamPairPayloadV1 {
   learner: {
     userId: string;
   };
+  /**
+   * Endpoints the device can call itself.
+   *
+   * Every member is optional and they are independent: a learner can have a
+   * pairable recall model and no speech model, or the reverse. The speech
+   * entries (`stt`/`tts`) carry the cloud tier of voice mode to the companion —
+   * the model registry they come from is machine-local config on the desktop
+   * (`getMachineAiModels`), which no synced database ever carries, so the
+   * pairing payload is the only way a phone learns about them.
+   */
   llm?: {
-    recall: ZamPairLlmEndpoint;
+    recall?: ZamPairLlmEndpoint;
+    stt?: ZamPairLlmEndpoint;
+    tts?: ZamPairLlmEndpoint;
   };
   settings?: {
     locale?: string;
@@ -77,35 +89,56 @@ function validateDatabaseUrl(value: unknown): string {
   return url;
 }
 
-function parseLlmEndpoint(value: unknown, depth = 0): ZamPairLlmEndpoint {
+function parseLlmEndpoint(
+  value: unknown,
+  path: string,
+  depth = 0,
+): ZamPairLlmEndpoint {
   if (depth > 4) throw new Error("llm fallback chain is too deep");
-  const source = record(value, "llm.recall");
-  const apiFlavor = requiredString(source.apiFlavor, "llm.recall.apiFlavor");
+  const source = record(value, path);
+  const apiFlavor = requiredString(source.apiFlavor, `${path}.apiFlavor`);
   if (apiFlavor !== "chat-completions" && apiFlavor !== "anthropic-messages") {
-    throw new Error("llm.recall.apiFlavor is unsupported");
+    throw new Error(`${path}.apiFlavor is unsupported`);
   }
   if (
     typeof source.enabled !== "boolean" ||
     typeof source.local !== "boolean"
   ) {
-    throw new Error("llm.recall enabled/local flags must be booleans");
+    throw new Error(`${path} enabled/local flags must be booleans`);
   }
 
-  const apiKey = optionalString(source.apiKey, "llm.recall.apiKey");
-  const label = optionalString(source.label, "llm.recall.label");
+  const apiKey = optionalString(source.apiKey, `${path}.apiKey`);
+  const label = optionalString(source.label, `${path}.label`);
 
   return {
     enabled: source.enabled,
-    url: validateUrl(source.url, "llm.recall.url"),
-    model: requiredString(source.model, "llm.recall.model"),
+    url: validateUrl(source.url, `${path}.url`),
+    model: requiredString(source.model, `${path}.model`),
     apiFlavor,
     ...(apiKey ? { apiKey } : {}),
     local: source.local,
     ...(label ? { label } : {}),
     ...(source.fallback
-      ? { fallback: parseLlmEndpoint(source.fallback, depth + 1) }
+      ? { fallback: parseLlmEndpoint(source.fallback, path, depth + 1) }
       : {}),
   };
+}
+
+/** Parse the `llm` block, keeping each capability independent of the others. */
+function parseLlmBlock(
+  source: Record<string, unknown>,
+): ZamPairPayloadV1["llm"] {
+  const parsed = {
+    ...(source.recall
+      ? { recall: parseLlmEndpoint(source.recall, "llm.recall") }
+      : {}),
+    ...(source.stt ? { stt: parseLlmEndpoint(source.stt, "llm.stt") } : {}),
+    ...(source.tts ? { tts: parseLlmEndpoint(source.tts, "llm.tts") } : {}),
+  };
+  // An `llm` block that carries nothing is indistinguishable from no block at
+  // all, and keeping it would make `payload.llm` truthy while every member is
+  // missing — the exact shape callers use to decide "something was paired".
+  return Object.keys(parsed).length > 0 ? parsed : undefined;
 }
 
 /** Parse and validate untrusted QR/manual input before any credential is used. */
@@ -152,7 +185,10 @@ export function parseZamPairPayload(input: string | unknown): ZamPairPayloadV1 {
     learner: {
       userId: requiredString(learner.userId, "learner.userId"),
     },
-    ...(llm ? { llm: { recall: parseLlmEndpoint(llm.recall) } } : {}),
+    ...(() => {
+      const parsed = llm ? parseLlmBlock(llm) : undefined;
+      return parsed ? { llm: parsed } : {};
+    })(),
     ...(settings
       ? {
           settings: {

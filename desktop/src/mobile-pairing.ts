@@ -15,6 +15,19 @@ interface PairingPayloadResponse {
   cardCount: number;
   createdUser: boolean;
   hasLlm: boolean;
+  /**
+   * Which speech capabilities the code actually carries. Reported rather than
+   * assumed: the QR budget can force `tts` out of an otherwise complete
+   * payload, and a learner who configured both models would otherwise have no
+   * way to know why only half of it reached the device.
+   */
+  hasSpeech?: { stt: boolean; tts: boolean };
+}
+
+function speechSummaryKey(speech: PairingPayloadResponse["hasSpeech"]): string {
+  if (speech?.stt && speech.tts) return "pairing_speech_yes";
+  if (speech?.stt) return "pairing_speech_stt_only";
+  return "pairing_speech_no";
 }
 
 function requiredElement<T extends HTMLElement>(id: string): T {
@@ -159,6 +172,7 @@ export function initMobilePairing(onProfileCreated: () => void): void {
         profile: result.userId,
         count: result.cardCount,
         llm: result.hasLlm ? t("pairing_llm_yes") : t("pairing_llm_no"),
+        speech: t(speechSummaryKey(result.hasSpeech)),
       });
       qrPanel.classList.remove("hidden");
       setStatus(t("pairing_scan_now"));

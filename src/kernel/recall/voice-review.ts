@@ -112,6 +112,23 @@ export interface VoiceTierAvailability {
 export type VoiceAvailability = Record<VoiceCapability, VoiceTierAvailability>;
 
 /**
+ * Compose the availability matrix from the two sources every surface has: what
+ * the device reports for the review language, and what the configuration
+ * offers. Shared because getting the pairing wrong — reading device recognition
+ * against cloud synthesis — produces a plan that looks valid and fails on the
+ * first utterance.
+ */
+export function buildVoiceAvailability(
+  device: { stt: boolean; tts: boolean },
+  cloud: { stt: boolean; tts: boolean },
+): VoiceAvailability {
+  return {
+    stt: { local: device.stt, cloud: cloud.stt },
+    tts: { local: device.tts, cloud: cloud.tts },
+  };
+}
+
+/**
  * Why a capability ended up where it did. Surfaces turn this into copy so a
  * learner is never silently switched to a paid, third-party path — the one
  * failure mode that would make the preference dishonest.

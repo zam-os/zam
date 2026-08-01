@@ -36,9 +36,41 @@ pub struct VoicePermissionState {
 }
 
 #[cfg(mobile)]
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+struct VoicePlayPayload<'a> {
+    audio_base64: &'a str,
+    mime: &'a str,
+}
+
+#[cfg(mobile)]
 #[derive(Deserialize, Serialize)]
 pub struct VoiceRecognitionResult {
     transcript: String,
+}
+
+/// One recorded answer, handed to the WebView so it can post it to the paired
+/// speech endpoint. The desktop passes a file path here instead, because its
+/// bridge process can read the file; a companion has no such process, so the
+/// audio itself crosses the IPC boundary.
+#[cfg(mobile)]
+#[derive(Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct VoiceCaptureResult {
+    audio_base64: String,
+    mime: String,
+}
+
+/// What this device can do locally **for one review language** — the mobile
+/// counterpart of the desktop's `voice_capabilities`. Recognition and voices
+/// are per-language on both platforms, so a device fully equipped for English
+/// can have nothing for German.
+#[cfg(mobile)]
+#[derive(Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct VoiceCapabilities {
+    stt_local: bool,
+    tts_local: bool,
 }
 
 #[cfg(mobile)]
@@ -148,6 +180,68 @@ pub async fn voice_listen<R: Runtime>(
         .map_err(|error| error.to_string())
 }
 
+/// Record one answer and hand back the audio instead of a transcript.
+///
+/// This is what makes "capture once, transcribe twice" work on mobile: the
+/// microphone path is written once per platform, and the learner's preference
+/// only decides who turns the audio into text. Only called when the resolved
+/// plan says `cloud` for speech-to-text.
+#[cfg(mobile)]
+#[tauri::command]
+pub async fn voice_capture<R: Runtime>(
+    app: AppHandle<R>,
+    locale: String,
+) -> Result<VoiceCaptureResult, String> {
+    app.state::<Voice<R>>()
+        .0
+        .run_mobile_plugin_async("capture", VoiceLocalePayload { locale: &locale })
+        .await
+        .map_err(|error| error.to_string())
+}
+
+/// Play synthesized audio through the session's own audio route.
+///
+/// Not an `<audio>` element in the WebView: the answer has to come out of the
+/// route the session configured (ducking other audio, speaker rather than
+/// earpiece) and has to stop when the learner pauses voice mode.
+#[cfg(mobile)]
+#[tauri::command]
+pub async fn voice_play<R: Runtime>(
+    app: AppHandle<R>,
+    audio_base64: String,
+    mime: String,
+) -> Result<(), String> {
+    if audio_base64.is_empty() {
+        return Err("there is no audio to play".to_string());
+    }
+    app.state::<Voice<R>>()
+        .0
+        .run_mobile_plugin_async::<serde_json::Value>(
+            "playAudio",
+            VoicePlayPayload {
+                audio_base64: &audio_base64,
+                mime: &mime,
+            },
+        )
+        .await
+        .map(|_| ())
+        .map_err(|error| error.to_string())
+}
+
+/// What the device can serve locally for one review language.
+#[cfg(mobile)]
+#[tauri::command]
+pub async fn voice_capabilities<R: Runtime>(
+    app: AppHandle<R>,
+    locale: String,
+) -> Result<VoiceCapabilities, String> {
+    app.state::<Voice<R>>()
+        .0
+        .run_mobile_plugin_async("capabilities", VoiceLocalePayload { locale: &locale })
+        .await
+        .map_err(|error| error.to_string())
+}
+
 /// Quality of the voice a session would use, so the UI can point the learner
 /// at the one-time download when only a compact voice is installed
 /// (ADR 2026-07-31). iOS-only today; Android picks its own installed voice.
@@ -227,6 +321,24 @@ pub fn voice_listen(_locale: String) -> Result<serde_json::Value, String> {
 #[tauri::command]
 pub fn voice_quality(_locale: String) -> Result<serde_json::Value, String> {
     Err("voice mode is not available in this build".to_string())
+}
+
+#[cfg(not(mobile))]
+#[tauri::command]
+pub fn voice_capture(_locale: String) -> Result<serde_json::Value, String> {
+    Err("voice mode is not available in this build".to_string())
+}
+
+#[cfg(not(mobile))]
+#[tauri::command]
+pub fn voice_play(_audio_base64: String, _mime: String) -> Result<(), String> {
+    Err("voice mode is not available in this build".to_string())
+}
+
+#[cfg(not(mobile))]
+#[tauri::command]
+pub fn voice_capabilities(_locale: String) -> serde_json::Value {
+    serde_json::json!({ "sttLocal": false, "ttsLocal": false })
 }
 
 #[cfg(not(mobile))]

@@ -1,20 +1,22 @@
 ---
 type: architecture
 title: Hands-Free Voice Mode
-description: Voice review runs one shared kernel loop over a device tier of native OS speech and a cloud tier from the capability registry, resolved per capability and per language from a machine-local user preference.
+description: Voice review runs one shared kernel loop over a device tier of native OS speech and a cloud tier from the capability registry, resolved per capability and per language from a machine-local user preference; companions reach the cloud tier through endpoints carried in the pairing code.
 tags:
   - voice
   - recall
   - desktop
   - mobile
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/voice-mode.md"
-timestamp: 2026-07-31T21:00:00Z
+timestamp: 2026-08-01T09:00:00Z
 ---
 
 Voice mode reads a due card aloud, listens for the spoken answer, and maps a
 spoken word to an FSRS rating — so a review session works on a walk, during
 housework, or at the gym. It shipped on Android in 0.22.x, reached the
-macOS/Windows desktop in 0.24.0, and the iPad/iPhone companion after that.
+macOS/Windows desktop in 0.24.0, and the iPad/iPhone companion after that. The
+companions gained the cloud tier in 0.26.0, which is what makes `quality-first`
+selectable on a phone or tablet.
 
 # One loop, many engines
 
@@ -42,8 +44,19 @@ Each surface supplies its own adapter and port:
 | Surface | Port implementation |
 | --- | --- |
 | Desktop | `desktop/src/voice.ts` → Tauri commands in `desktop/src-tauri/src/voice.rs` |
-| Android | `mobile/src/main.ts` → `VoicePlugin.kt` |
-| iOS | `mobile/src/main.ts` → `VoicePlugin.swift` |
+| Android | `mobile/src/voice.ts` → `VoicePlugin.kt` |
+| iOS | `mobile/src/voice.ts` → `VoicePlugin.swift` |
+
+Both surfaces wrap their native port in a **tiered** one
+(`createTieredVoicePort`, `createMobileTieredVoicePort`) that reads the resolved
+plan per utterance and sends each capability to the tier it names. The plan is
+read through a getter rather than captured, so changing the preference in
+Settings takes effect on the next sentence instead of needing the session
+restarted.
+
+Session lifecycle always goes to the native engine, even on a fully cloud plan:
+the microphone belongs to the app shell regardless of who transcribes, and on
+iOS it is what holds — and releases — the audio session.
 
 # Two tiers, resolved per capability
 
@@ -80,7 +93,9 @@ Stored machine-locally as `voice.enginePreference` in `~/.zam/config.json`, read
 and written through `zam bridge voice-preference-get` / `voice-preference-set`.
 It is deliberately **not** a database setting: the right answer depends on the
 hardware in front of the learner, and a Turso-shared database would push a
-phone's answer onto their desktop.
+phone's answer onto their desktop. The companions keep the same setting in
+`localStorage` under `zam.voice-engine.v1`, for exactly that reason — an iPad
+and a desktop hold different answers because they are different machines.
 
 | Preference | Behaviour |
 | --- | --- |
@@ -112,6 +127,27 @@ Windows is the exception to the shared capture path — `RecognizeAsync` owns th
 microphone and returns text directly, so `voice_capture` reports unsupported
 there.
 
+## The same idea on a companion, with different plumbing
+
+A phone has no bridge process, so there is nothing that could read a file the
+plugin wrote. `voice_capture` there returns the audio itself — 16 kHz mono WAV
+as base64 — and the WebView posts it. A recorded answer is a few hundred
+kilobytes, which crosses Tauri's IPC without trouble, and nothing is left in a
+temp directory for a bridge to forget to delete.
+
+`voice_play` is the other direction, and it is a native command rather than an
+`<audio>` element on purpose: synthesized speech has to come out of the route
+the session configured (ducking other audio, speaker rather than earpiece) and
+has to stop when the learner pauses voice mode. A WebView element would do
+neither, and on iOS would additionally be subject to autoplay policy.
+
+The capture heuristics are identical on all three shells — the same −35 dBFS
+floor, the same 8-second onset window, the same 1.2-second trailing silence, the
+same 30-second cap. The learner's preference decides who turns audio into text;
+nothing else about the interaction changes with it. A test pins the three
+constants together, because drifting apart would make the two tiers *feel*
+different for no reason a learner could name.
+
 # Cloud endpoints
 
 `src/cli/llm/speech.ts` calls OpenAI-shaped `/audio/transcriptions` and
@@ -127,6 +163,35 @@ Refused rather than called and failed:
 
 The capability probe recognizes speech models by name and does **not** classify
 them as `text`, so an audio endpoint can never be selected for recall coaching.
+
+# How a companion reaches those endpoints
+
+The registry is machine-local config on the desktop. It is deliberately not in
+the Turso-shared database — it holds credentials, and it describes one machine's
+models. A paired phone therefore cannot resolve a speech endpoint itself, and
+has no bridge to ask. The endpoints travel in the **pairing code**, projected
+next to `recall` by `src/cli/mobile-pairing.ts` and called by
+`mobile/src/speech.ts`.
+
+`llm.recall`, `llm.stt` and `llm.tts` are independent and all optional: a
+learner can have a pairable speech model and no pairable recall model. The same
+reachability rules apply as for recall — an `agent`-transport entry is never
+projected, because a device cannot drive a CLI on the desktop, and a `local` or
+loopback endpoint is unreachable from a phone by construction.
+
+Two consequences are worth stating plainly:
+
+- **The QR code has a hard budget** (`ZAM_PAIR_MAX_BYTES`, 2000 bytes). Speech
+  endpoints are projected head-only, without their fallback chains, and when the
+  payload still does not fit, `tts` is dropped first, then `stt`, and `recall`
+  never. Every device has a serviceable built-in voice; on-device
+  **recognition** is the half that is genuinely behind, which is the reason the
+  cloud tier exists at all.
+- **Cloud speech on a companion needs re-pairing.** A device paired before
+  0.26.0 carries no speech endpoints and there is no way to push them to it. It
+  keeps working on the device tier, and `quality-first` says so — "no speech
+  model is paired, pair this device again" — rather than failing at the first
+  spoken word.
 
 # Platform requirements
 
@@ -215,7 +280,11 @@ before missing consent — so the learner is told the first thing they have to f
 rather than the last thing that failed.
 
 Because the answer is per-language, the desktop caches the probe per locale and
-re-probes when the app language changes.
+re-probes when the app language changes. The companions do the same through
+their own `voice_capabilities(locale)` command: `SFSpeechRecognizer` plus an
+installed voice on iOS, `isOnDeviceRecognitionAvailable` plus an **embedded**
+(non-network) voice on Android. A shell too old to answer keeps the optimistic
+default, which is how the companion behaved before the cloud tier existed.
 
 # Citations
 
@@ -223,5 +292,5 @@ re-probes when the app language changes.
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
 - [ADR 2026-07-26 — iPadOS Companion Target](../adr/2026-07-26-ipados-companion-target.md)
 - [ADR 2026-07-12 — Unified Capability Model Registry](../adr/2026-07-12-unified-capability-model-registry.md)
-- Tests: `tests/kernel/voice-review.test.ts`, `tests/desktop/voice.test.ts`, `tests/cli/speech.test.ts`, `tests/mobile/voice.test.ts`, `tests/mobile/voice-wiring.test.ts`
-- Code: `src/kernel/recall/voice-review.ts`, `src/cli/llm/speech.ts`, `src/cli/llm/capability-probe.ts`, `desktop/src/voice.ts`, `desktop/src-tauri/src/voice.rs`, `mobile/src/voice.ts`, `mobile/src-tauri/src/voice.rs`, `mobile/src-tauri/ios/Sources/VoicePlugin.swift`, `src/kernel/system/install-config.ts`
+- Tests: `tests/kernel/voice-review.test.ts`, `tests/desktop/voice.test.ts`, `tests/cli/speech.test.ts`, `tests/cli/mobile-pairing.test.ts`, `tests/bridge/mobile-pairing.test.ts`, `tests/mobile/voice.test.ts`, `tests/mobile/speech.test.ts`, `tests/mobile/voice-wiring.test.ts`
+- Code: `src/kernel/recall/voice-review.ts`, `src/cli/llm/speech.ts`, `src/cli/llm/capability-probe.ts`, `src/cli/mobile-pairing.ts`, `src/bridge/mobile-pairing.ts`, `desktop/src/voice.ts`, `desktop/src-tauri/src/voice.rs`, `mobile/src/voice.ts`, `mobile/src/speech.ts`, `mobile/src-tauri/src/voice.rs`, `mobile/src-tauri/ios/Sources/VoicePlugin.swift`, `src/kernel/system/install-config.ts`
