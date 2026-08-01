@@ -88,6 +88,8 @@ async function showAssureModal(
   const submitBtn = el<HTMLButtonElement>("bitwarden-assure-submit");
   const cancelBtn = el<HTMLButtonElement>("bitwarden-assure-cancel");
   const openBtn = el<HTMLButtonElement>("bitwarden-assure-open");
+  const passwordLabel = el<HTMLElement>("lbl-bitwarden-assure-password");
+  const passwordNote = el<HTMLElement>("bitwarden-assure-password-note");
 
   let mode: "login" | "unlock" =
     initial.kind === "unauthenticated" || initial.kind === "not-installed"
@@ -106,6 +108,10 @@ async function showAssureModal(
     cancelBtn.textContent = t("bw_assure_cancel");
     openBtn.textContent = t("bw_assure_open_vault");
     passwordInput.placeholder = t("bw_assure_password_ph");
+    passwordLabel.textContent = t("bw_assure_password_label");
+    // A master-password box inside a third-party app has to earn its trust:
+    // say where the password goes and what is kept.
+    passwordNote.textContent = t("bw_assure_password_note");
     emailInput.placeholder = t("bw_assure_email_ph");
     codeInput.placeholder = t("bw_assure_code_ph");
     if (initial.userEmail && !emailInput.value) {

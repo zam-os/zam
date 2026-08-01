@@ -263,14 +263,23 @@ export async function loginBitwardenForProcess(opts: {
     return { ok: false, message: "Email and master password are required." };
   }
 
-  const args = ["login", email, password, "--raw"];
+  // The master password goes through an environment variable, never argv:
+  // argv is readable by any other process running as this user (`ps`, and
+  // world-readable /proc/<pid>/cmdline on Linux), so `bw login <email>
+  // <password>` would expose it for the lifetime of the call. `--passwordenv`
+  // is the same mechanism unlock below already uses.
+  const env = { ...process.env, BW_PASSWORD: password };
+
+  const args = ["login", email, "--passwordenv", "BW_PASSWORD", "--raw"];
   if (opts.code?.trim()) {
     // 0 = Authenticator (CLI-friendly); FIDO2 is not supported by bw CLI.
+    // The CLI has no env form for the code; a TOTP is single-use and expires
+    // in ~30 seconds, so argv exposure here is not equivalent to the password.
     args.push("--method", "0", "--code", opts.code.trim());
   }
 
   try {
-    const { stdout } = await runBw(args);
+    const { stdout } = await runBw(args, env);
     const session = stdout.trim();
     if (!session) {
       return { ok: false, message: "Login returned an empty session." };

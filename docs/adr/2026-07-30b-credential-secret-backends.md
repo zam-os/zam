@@ -177,6 +177,47 @@ design below avoids it.
    are opt-in. A learner on a single machine never encounters this feature, and
    nothing in first-run onboarding changes.
 
+10. **Alpha, and switched off until asked for (revised 2026-08-01).** The first
+    implementation put a page in the first-run wizard. That was wrong: it asked
+    newcomers to decide about Bitwarden cloud regions and master passwords
+    before they had reviewed a single card, and it gave an alpha feature the
+    same weight as the essentials. There is no vault page in onboarding at all
+    now.
+
+    Settings shows one checkbox instead — off by default, marked **Alpha** —
+    and the rest of the card appears only once it is ticked
+    (`bitwarden.enabled` in `~/.zam/config.json`, machine-local like every
+    other install setting). While it is off, nothing vault-related runs:
+    `zam bridge secrets-require` answers from the credential store without
+    spawning `bw`, so a learner who never asked for this never pays for it and
+    never meets a master-password prompt.
+
+    Turning it off again does **not** touch stored `{$secret}` references —
+    those are the learner's data, and `zam credentials disconnect` is the
+    deliberate way to resolve them back to literals. Existing references also
+    keep resolving regardless of the switch, so unticking a box can never lock
+    a learner out of their own database.
+
+11. **A master password never goes through argv (revised 2026-08-01).** `ps`
+    shows the full command line of every process running as the same user, and
+    `/proc/<pid>/cmdline` is world-readable on Linux. `bw login <email>
+    <password>` therefore published the learner's master password to anything
+    else on the machine for the duration of the call. Both login and unlock
+    now hand it to the CLI through `--passwordenv BW_PASSWORD`, set on the
+    child's environment only, never on ZAM's own. The Studio path was already
+    safe by accident — the desktop app talks to a persistent bridge over
+    stdin, not argv — but the CLI path was not, and a security property should
+    not depend on which caller happens to be used.
+
+    The 2FA code still travels in argv: the Bitwarden CLI offers no
+    environment form for it, and a TOTP is single-use and expires in about
+    thirty seconds, which is not equivalent to a reusable master password.
+
+    Both password prompts now say plainly where the password goes and what is
+    kept afterwards (the CLI session key, in `~/.zam` with mode 0600, for 30
+    days). A master-password box inside another application has to earn its
+    trust, and saying nothing does not earn it.
+
 ## Options considered
 
 **Vault references with a pluggable backend, Bitwarden first — chosen.** Solves

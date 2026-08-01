@@ -80,6 +80,14 @@ export interface MachineAgentConfig {
 
 /** Bitwarden vault sync preferences for this install (ADR 2026-07-30b). */
 export interface MachineBitwardenConfig {
+  /**
+   * Master switch for the whole alpha vault feature. Absent or false means
+   * off: Settings shows only the opt-in checkbox, and no vault code runs on
+   * any path — in particular the dashboard never probes the vault or asks
+   * for a master password. A learner who has not asked for this must never
+   * meet it.
+   */
+  enabled?: boolean;
   /** After a successful sync, keep pushing secret changes while unlocked. */
   autoSync?: boolean;
   /** Preferred cloud region for CLI config (eu | us). */
@@ -715,6 +723,42 @@ export function setBitwardenSyncConfig(
 ): void {
   updateInstallConfig((config) => {
     config.bitwarden = { ...(config.bitwarden ?? {}), ...patch };
+  }, path);
+}
+
+/**
+ * Is the alpha vault feature switched on for this install? Off by default —
+ * the learner has to tick the box in Settings first.
+ */
+export function isBitwardenVaultEnabled(path = defaultConfigPath()): boolean {
+  return loadInstallConfig(path).bitwarden?.enabled === true;
+}
+
+/**
+ * Turn the alpha vault feature on or off.
+ *
+ * Switching it off also stops auto-sync, so an unlocked session cannot keep
+ * pushing secrets after the learner has said no. Existing `{$secret}`
+ * references are left untouched: they are the learner's data, and
+ * `zam credentials disconnect` is the deliberate way to resolve them back to
+ * literals.
+ */
+export function setBitwardenVaultEnabled(
+  enabled: boolean,
+  path = defaultConfigPath(),
+): void {
+  updateInstallConfig((config) => {
+    if (enabled) {
+      config.bitwarden = { ...(config.bitwarden ?? {}), enabled: true };
+      return;
+    }
+    if (config.bitwarden) {
+      config.bitwarden = {
+        ...config.bitwarden,
+        enabled: false,
+        autoSync: false,
+      };
+    }
   }, path);
 }
 

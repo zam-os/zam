@@ -76,17 +76,25 @@ pairing QR containing the database URL, an auth token and the learner id. The
 QR encodes a live token — show it only when someone is meant to scan it, and
 re-pair to rotate credentials.
 
-## 5. Multi-machine credentials (optional later)
+## 5. Multi-machine credentials (alpha, off by default)
 
-**Bitwarden is not part of first setup.** First run, Studio onboarding, and
-Settings → Server database stay exactly as in sections 1–4: create the
-database, **paste** URL + token, done. A single-machine learner never needs a
-password manager, a CLI install, or vault references
+**Bitwarden is not part of first setup, and not part of onboarding at all.**
+First run and Settings → Server database stay exactly as in sections 1–4:
+create the database, **paste** URL + token, done. A single-machine learner
+never needs a password manager, a CLI install, or vault references
 ([ADR 2026-07-30b](adr/2026-07-30b-credential-secret-backends.md)).
+
+The feature is **alpha** and ships switched off. To try it, open
+**Settings → Multi-machine secrets** and tick *Enable the Bitwarden vault
+(alpha)*; the rest of the card appears only then. Until you do, ZAM never
+starts the `bw` CLI and never asks for a master password. Switching it back
+off leaves any references you already created untouched — use *Disconnect
+Bitwarden* (or `zam credentials disconnect`) to turn those back into stored
+values.
 
 Only when the same secrets must stay coherent on **several machines** (or you
 rotate a Turso token and would otherwise re-paste into every copy of ZAM) is
-there an optional upgrade path. Until then, ignore this section.
+this worth switching on. Until then, ignore this section.
 
 ### Default path (always available)
 

@@ -521,10 +521,16 @@
             </div>
           </article>
 
+          <!-- Alpha, opt-in (ADR 2026-07-30b, revised): off by default and out
+               of onboarding entirely. Ticking the box reveals the body; until
+               then this card is one checkbox and one sentence. -->
           <article class="card frosted settings-card" id="secrets-vault-card">
             <div class="settings-card-header">
               <div>
-                <h2 id="lbl-settings-secrets-title">Multi-machine secrets</h2>
+                <h2 id="lbl-settings-secrets-title">
+                  Multi-machine secrets
+                  <span id="lbl-settings-secrets-alpha" class="settings-badge-alpha">Alpha</span>
+                </h2>
                 <p id="lbl-settings-secrets-help" class="settings-card-help">
                   Optional: sync the server-database token to Bitwarden so every
                   computer can use it. Cloud model keys usually live in the
@@ -532,7 +538,15 @@
                 </p>
               </div>
             </div>
-            <div class="settings-stack">
+            <label class="settings-toggle" for="toggle-secrets-vault">
+              <input type="checkbox" id="toggle-secrets-vault" />
+              <span>
+                <span id="lbl-secrets-vault-toggle">Enable the Bitwarden vault (alpha)</span>
+                <span id="lbl-secrets-vault-toggle-help" class="settings-card-help"></span>
+              </span>
+            </label>
+            <div class="settings-stack" id="secrets-vault-body" hidden>
+              <p id="lbl-secrets-vault-alpha-note" class="settings-card-help settings-alpha-note"></p>
               <p id="secrets-vault-status" class="sub-label" aria-live="polite"></p>
               <p id="secrets-vault-detail" class="settings-card-help" aria-live="polite"></p>
               <div id="secrets-vault-unlock-row" class="settings-stack">
@@ -545,6 +559,7 @@
                     autocomplete="off"
                     spellcheck="false"
                   />
+                  <span id="lbl-secrets-password-note" class="settings-card-help"></span>
                 </label>
                 <div class="settings-card-actions">
                   <button id="btn-secrets-unlock" class="btn secondary-btn btn-sm" type="button">
@@ -620,7 +635,7 @@
               />
             </label>
             <label class="settings-field" for="bitwarden-assure-password">
-              <span>Master password</span>
+              <span id="lbl-bitwarden-assure-password">Master password</span>
               <input
                 id="bitwarden-assure-password"
                 class="settings-input"
@@ -628,6 +643,9 @@
                 autocomplete="current-password"
                 spellcheck="false"
               />
+              <!-- Say plainly what happens to it. A master password prompt
+                   inside another app has to earn its trust. -->
+              <span id="bitwarden-assure-password-note" class="settings-card-help"></span>
             </label>
             <label
               class="settings-field"

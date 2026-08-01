@@ -637,6 +637,29 @@ textarea:focus-visible {
   gap: 4px;
 }
 
+/* Alpha marker for opt-in features that are not finished yet — small enough
+   not to shout, present enough that nobody mistakes them for settled. */
+.settings-badge-alpha {
+  background: color-mix(in srgb, var(--clr-warn, #d97706) 16%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--clr-warn, #d97706) 42%, transparent);
+  border-radius: 999px;
+  color: var(--clr-warn, #b45309);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  margin-left: 8px;
+  padding: 2px 8px;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.settings-alpha-note {
+  border-left: 2px solid
+    color-mix(in srgb, var(--clr-warn, #d97706) 45%, transparent);
+  padding-left: 10px;
+}
+
 .settings-row:first-of-type {
   border-top: 0;
   padding-top: 0;

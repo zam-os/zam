@@ -80,6 +80,7 @@ import {
   getTursoCredentials,
   hasCommand,
   importCurriculumCards,
+  isBitwardenVaultEnabled,
   isOllamaInstalled,
   isPersonaId,
   isVoiceEnginePreference,
@@ -105,6 +106,7 @@ import {
   seedPersonaKnowledgeContext,
   setActiveWorkspaceContext,
   setAgentConnectAutoDone,
+  setBitwardenVaultEnabled,
   setMachineVoicePreference,
   setOnboardingDone,
   setOnboardingPersona,
@@ -267,12 +269,12 @@ import {
 } from "../provisioning/index.js";
 import {
   configureBitwardenServer,
+  disconnectBitwardenToLocalSecrets,
   getBitwardenCliStatus,
   loginBitwardenForProcess,
   maybeAutoSyncSecrets,
   seedProviderKeyIntoBitwarden,
   seedTursoIntoBitwarden,
-  disconnectBitwardenToLocalSecrets,
   syncSecretsWithBitwarden,
   unlockBitwardenForProcess,
 } from "../secrets-bridge.js";
@@ -4358,6 +4360,27 @@ bridgeCommand
 // ── Vault secrets (Bitwarden) for Studio — ADR 2026-07-30b ─────────────────
 
 bridgeCommand
+  .command("secrets-feature")
+  .description(
+    "Read or set the alpha Bitwarden vault opt-in for this machine (JSON)",
+  )
+  .option("--enable", "Switch the vault feature on")
+  .option("--disable", "Switch it off (also stops auto-sync)")
+  .action((opts) => {
+    // Deliberately cheap: no `bw` call. Studio asks this on every Settings
+    // paint to decide whether to show the feature at all, so it must not cost
+    // a process spawn for the learners who never switch it on.
+    if (opts.enable && opts.disable) {
+      jsonError("Pass either --enable or --disable, not both.");
+      return;
+    }
+    if (opts.enable || opts.disable) {
+      setBitwardenVaultEnabled(Boolean(opts.enable));
+    }
+    jsonOut({ success: true, enabled: isBitwardenVaultEnabled() });
+  });
+
+bridgeCommand
   .command("secrets-status")
   .description("Bitwarden CLI status for Studio vault setup (JSON, no secrets)")
   .action(async () => {
@@ -4395,14 +4418,37 @@ bridgeCommand
     "Whether vault access is required and if Bitwarden is ready (JSON)",
   )
   .action(async () => {
-    // getBitwardenCliStatus restores a still-valid 30-day session into env.
     const needed = credentialsNeedVaultAccess();
+    if (!needed) {
+      // Nothing is stored as a `{$secret}` reference, so nothing can be
+      // waiting on a vault. Answer without spawning `bw`: this runs on every
+      // dashboard load, and a learner who never switched the alpha vault on
+      // must never pay for it — let alone see a master-password prompt.
+      jsonOut({
+        success: true,
+        needed: false,
+        ready: true,
+        kind: "unlocked",
+        serverUrl: null,
+        userEmail: null,
+        region: "unknown",
+        sessionInProcess: false,
+        autoSync: false,
+        lastSyncAt: null,
+        pendingLiteralCount: 0,
+        message: "",
+      });
+      return;
+    }
+    // References exist, so they must resolve even if the feature switch was
+    // turned off afterwards — otherwise unticking a checkbox would lock the
+    // learner out of their own database.
+    // getBitwardenCliStatus restores a still-valid 30-day session into env.
     const status = await getBitwardenCliStatus();
     if (status.kind === "unlocked" && process.env.BW_SESSION?.trim()) {
       await resolveCredentials();
     }
-    const ready =
-      !needed || (status.kind === "unlocked" && process.env.BW_SESSION?.trim());
+    const ready = status.kind === "unlocked" && process.env.BW_SESSION?.trim();
     jsonOut({
       success: true,
       needed,

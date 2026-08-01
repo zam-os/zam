@@ -524,6 +524,7 @@ export type {
 } from "./system/install-config.js";
 export {
   ALL_CAPABILITIES,
+  clearBitwardenSyncConfig,
   detectSyncProvider,
   emptyCapabilityFlags,
   ensureMachineAiModelsMigrated,
@@ -550,6 +551,7 @@ export {
   getMachineVoicePreference,
   getOnboardingDone,
   getOnboardingPersona,
+  isBitwardenVaultEnabled,
   loadInstallConfig,
   migrateMachineRolesToModels,
   removeConfiguredWorkspace,
@@ -561,9 +563,9 @@ export {
   setActiveWorkspaceContext,
   setActiveWorkspaceId,
   setAgentConnectAutoDone,
-  clearBitwardenSyncConfig,
   setBitwardenAutoSync,
   setBitwardenSyncConfig,
+  setBitwardenVaultEnabled,
   setCompanionCollapsed,
   setCompanionSelectedAntigravityEvaluatorId,
   setCompanionSelectedAntigravityModelId,

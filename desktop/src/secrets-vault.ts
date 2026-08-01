@@ -5,6 +5,12 @@
  * in ZAM (server DB token; cloud model keys are usually in the shared DB).
  * No re-paste forms. After the first successful sync, auto-sync stays on while
  * the vault is unlocked for this session.
+ *
+ * **Alpha, opt-in, off by default.** Until the learner ticks the box, this card
+ * is a checkbox and one sentence: nothing is probed, no `bw` process is
+ * spawned, and no master password is ever asked for. Most learners use one
+ * computer and never need any of this — it used to be a page in first-run
+ * onboarding, which only confused newcomers.
  */
 
 import { runBridge } from "./bridge-transport.js";
@@ -60,8 +66,13 @@ export function initSecretsVault(
   const disconnectBtn = requiredElement<HTMLButtonElement>(
     "btn-secrets-disconnect",
   );
+  const enableToggle = requiredElement<HTMLInputElement>(
+    "toggle-secrets-vault",
+  );
+  const vaultBody = requiredElement<HTMLElement>("secrets-vault-body");
 
   let lastStatus: SecretsStatusResponse | null = null;
+  let enabled = false;
 
   const applyLabels = (): void => {
     requiredElement("lbl-settings-secrets-title").textContent = t(
@@ -78,6 +89,20 @@ export function initSecretsVault(
     openVaultBtn.textContent = t("secrets_vault_open");
     disconnectBtn.textContent = t("secrets_vault_disconnect");
     passwordInput.placeholder = t("secrets_vault_password_ph");
+    requiredElement("lbl-settings-secrets-alpha").textContent =
+      t("secrets_vault_alpha");
+    requiredElement("lbl-secrets-vault-toggle").textContent = t(
+      "secrets_vault_toggle",
+    );
+    requiredElement("lbl-secrets-vault-toggle-help").textContent = t(
+      "secrets_vault_toggle_help",
+    );
+    requiredElement("lbl-secrets-vault-alpha-note").textContent = t(
+      "secrets_vault_alpha_note",
+    );
+    requiredElement("lbl-secrets-password-note").textContent = t(
+      "secrets_vault_password_note",
+    );
   };
 
   const setStatus = (message: string, error = false): void => {
@@ -91,6 +116,25 @@ export function initSecretsVault(
 
   const refresh = async (): Promise<void> => {
     applyLabels();
+
+    // Read the opt-in first. `secrets-feature` is a config read with no `bw`
+    // spawn, so the common case — a learner who never enabled this — costs
+    // nothing and shows nothing but the checkbox.
+    try {
+      const feature = await runBridge<{ enabled?: boolean }>("secrets-feature");
+      enabled = feature.enabled === true;
+    } catch {
+      // An older bridge has no such command: treat the alpha feature as off.
+      enabled = false;
+    }
+    enableToggle.checked = enabled;
+    vaultBody.hidden = !enabled;
+    if (!enabled) {
+      setStatus("");
+      setDetail("");
+      return;
+    }
+
     setStatus(t("secrets_vault_checking"));
     setDetail("");
     try {
@@ -253,6 +297,24 @@ export function initSecretsVault(
     }
   };
 
+  const setEnabled = async (next: boolean): Promise<void> => {
+    enableToggle.disabled = true;
+    try {
+      await runBridge("secrets-feature", [next ? "--enable" : "--disable"]);
+      // Never leave a typed master password behind in a card being closed.
+      if (!next) passwordInput.value = "";
+      await refresh();
+    } catch (err) {
+      enableToggle.checked = !next;
+      setStatus(err instanceof Error ? err.message : String(err), true);
+    } finally {
+      enableToggle.disabled = false;
+    }
+  };
+
+  enableToggle.addEventListener("change", () => {
+    void setEnabled(enableToggle.checked);
+  });
   unlockBtn.addEventListener("click", () => void unlock());
   syncBtn.addEventListener("click", () => void sync());
   openVaultBtn.addEventListener("click", () => openVault());

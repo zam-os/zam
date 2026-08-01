@@ -4030,6 +4030,14 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     server_db_unlocking_bw: "Unlocking Bitwarden…",
     // Multi-machine vault secrets (Bitwarden) — one unlock + one sync
     secrets_vault_title: "Multi-machine secrets",
+    secrets_vault_alpha: "Alpha",
+    secrets_vault_toggle: "Enable the Bitwarden vault (alpha)",
+    secrets_vault_toggle_help:
+      "Off by default. Only useful if you use ZAM on several computers and want the server-database token to travel with you. One computer needs none of this.",
+    secrets_vault_alpha_note:
+      "Alpha: this is new and rough at the edges. It needs the Bitwarden CLI (bw) installed. Switching it off later leaves your data alone — use Disconnect to turn vault references back into stored values first.",
+    secrets_vault_password_note:
+      "Handed straight to the Bitwarden CLI to unlock it, never stored and never written to a log. What ZAM keeps afterwards is the CLI's session key, in ~/.zam (readable only by you), for 30 days.",
     secrets_vault_help:
       "Optional. The important secret on this machine is the server-database token — cloud model keys usually already live in the database. Connect Bitwarden once; ZAM syncs what it already knows. No re-paste.",
     secrets_vault_region_badge_eu: "EU",
@@ -4079,6 +4087,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Your server database token is stored in Bitwarden. Unlock once — you stay signed in for up to 30 days on this computer (password is not stored).",
     bw_assure_email_ph: "Email",
     bw_assure_password_ph: "Master password",
+    bw_assure_password_label: "Master password",
+    bw_assure_password_note:
+      "Handed straight to the Bitwarden CLI to unlock it, never stored and never written to a log. ZAM keeps only the CLI session key afterwards.",
     bw_assure_code_ph: "6-digit authenticator code",
     bw_assure_email_required: "Enter your Bitwarden email.",
     bw_assure_password_required: "Enter your master password.",
@@ -4754,28 +4765,6 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "You can revisit this setup any time from Settings → “Run setup again”. Multi-machine vault secrets stay optional — paste is enough for one computer. Head to your dashboard to start learning.",
     // Optional multi-machine secrets (ADR 2026-07-30b) — skippable; not a
     // first-run requirement. Paste remains the default path.
-    onboarding_secrets_kicker: "Several computers? (optional)",
-    onboarding_secrets_title: "One machine is enough for now.",
-    onboarding_secrets_body:
-      "Paste tokens and keys as usual. A password manager is optional — only useful later if you run ZAM on several computers.",
-    onboarding_secrets_card_title: "Optional: Bitwarden later",
-    onboarding_secrets_badge: "Optional",
-    onboarding_secrets_when_short:
-      "On several machines, a shared vault means you update a secret once. Full setup is under Settings → Multi-machine secrets.",
-    onboarding_secrets_link_account: "Create free Bitwarden account",
-    onboarding_secrets_link_account_eu: "Create free Bitwarden account (EU)",
-    onboarding_secrets_link_account_choose: "Choose a region first…",
-    onboarding_secrets_region_title: "Vault data location",
-    onboarding_secrets_region_body_short:
-      "EU and US are separate clouds (same features). Anyone may pick EU. You cannot move an account later.",
-    onboarding_secrets_region_recommended: "suggested",
-    onboarding_secrets_region_eu: "European Union (EU)",
-    onboarding_secrets_region_eu_detail_short: "Data in the EU · vault.bitwarden.eu",
-    onboarding_secrets_region_us: "United States / other",
-    onboarding_secrets_region_us_detail_short:
-      "Default cloud · vault.bitwarden.com",
-    onboarding_secrets_skip_hint:
-      "Recommended now: Skip. Finish vault setup anytime in Settings.",
     // Persona page (ADR 2026-07-24 §2, Phase 1).
     onboarding_persona_kicker: "Who are you learning as?",
     onboarding_persona_title: "Pick your starting point.",
@@ -5195,6 +5184,14 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     server_db_unlocking_bw: "Bitwarden wird entsperrt…",
     // Multi-Maschinen-Vault — ein Entsperren, ein Sync
     secrets_vault_title: "Secrets für mehrere Rechner",
+    secrets_vault_alpha: "Alpha",
+    secrets_vault_toggle: "Bitwarden-Tresor aktivieren (Alpha)",
+    secrets_vault_toggle_help:
+      "Standardmäßig aus. Nur sinnvoll, wenn du ZAM auf mehreren Rechnern nutzt und das Server-Datenbank-Token mitnehmen willst. Für einen Rechner brauchst du das nicht.",
+    secrets_vault_alpha_note:
+      "Alpha: neu und noch nicht rund. Braucht die installierte Bitwarden-CLI (bw). Späteres Ausschalten lässt deine Daten unangetastet — mit „Bitwarden trennen“ werden Tresor-Verweise vorher wieder zu gespeicherten Werten.",
+    secrets_vault_password_note:
+      "Geht direkt an die Bitwarden-CLI zum Entsperren, wird nicht gespeichert und in kein Protokoll geschrieben. ZAM behält danach nur den Sitzungsschlüssel der CLI, in ~/.zam (nur für dich lesbar), 30 Tage lang.",
     secrets_vault_help:
       "Optional. Wichtig auf dem Rechner ist vor allem das Server-Datenbank-Token — Cloud-Model-Keys liegen meist schon in der Datenbank. Bitwarden einmal verbinden; ZAM synchronisiert, was es schon kennt. Kein erneutes Einfügen.",
     secrets_vault_region_badge_eu: "EU",
@@ -5246,6 +5243,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Dein Server-Datenbank-Token liegt in Bitwarden. Einmal entsperren — du bleibst bis zu 30 Tage angemeldet (Passwort wird nicht gespeichert).",
     bw_assure_email_ph: "E-Mail",
     bw_assure_password_ph: "Master-Passwort",
+    bw_assure_password_label: "Master-Passwort",
+    bw_assure_password_note:
+      "Geht direkt an die Bitwarden-CLI zum Entsperren, wird nicht gespeichert und in kein Protokoll geschrieben. ZAM behält danach nur den Sitzungsschlüssel der CLI.",
     bw_assure_code_ph: "6-stelliger Authenticator-Code",
     bw_assure_email_required: "Bitwarden-E-Mail eingeben.",
     bw_assure_password_required: "Master-Passwort eingeben.",
@@ -5937,30 +5937,6 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Du kannst diese Einrichtung jederzeit über Einstellungen → „Einrichtung erneut starten“ öffnen. Vault-Secrets für mehrere Rechner bleiben optional — Einfügen reicht für einen Computer. Geh zu deinem Dashboard und leg los.",
     // Optionale Multi-Maschinen-Secrets (ADR 2026-07-30b) — überspringbar;
     // kein First-Run-Zwang. Paste bleibt der Standardweg.
-    onboarding_secrets_kicker: "Mehrere Rechner? (optional)",
-    onboarding_secrets_title: "Ein Rechner reicht für den Start.",
-    onboarding_secrets_body:
-      "Tokens und Keys wie gewohnt einfügen. Ein Passwort-Manager ist optional — sinnvoll erst, wenn du ZAM auf mehreren Rechnern nutzt.",
-    onboarding_secrets_card_title: "Optional: Bitwarden später",
-    onboarding_secrets_badge: "Optional",
-    onboarding_secrets_when_short:
-      "Auf mehreren Rechnern reicht ein Vault-Update für alle. Die komplette Einrichtung findest du unter Einstellungen → Secrets für mehrere Rechner.",
-    onboarding_secrets_link_account: "Kostenloses Bitwarden-Konto anlegen",
-    onboarding_secrets_link_account_eu:
-      "Kostenloses Bitwarden-Konto anlegen (EU)",
-    onboarding_secrets_link_account_choose: "Zuerst Region wählen…",
-    onboarding_secrets_region_title: "Speicherort der Vault-Daten",
-    onboarding_secrets_region_body_short:
-      "EU und USA sind getrennte Clouds (gleiche Funktionen). EU darf jeder wählen. Später nicht umziehbar.",
-    onboarding_secrets_region_recommended: "Vorschlag",
-    onboarding_secrets_region_eu: "Europäische Union (EU)",
-    onboarding_secrets_region_eu_detail_short:
-      "Daten in der EU · vault.bitwarden.eu",
-    onboarding_secrets_region_us: "USA / andere Regionen",
-    onboarding_secrets_region_us_detail_short:
-      "Standard-Cloud · vault.bitwarden.com",
-    onboarding_secrets_skip_hint:
-      "Empfehlung jetzt: Überspringen. Vault-Setup jederzeit in den Einstellungen.",
     // Persona page (ADR 2026-07-24 §2, Phase 1).
     onboarding_persona_kicker: "Als wer lernst du?",
     onboarding_persona_title: "Wähle deinen Startpunkt.",
