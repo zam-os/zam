@@ -233,6 +233,7 @@ export const learnCommand = new Command("learn")
             userId,
             item,
             mode: "review",
+            startedAt: Date.now(),
           });
         } catch (err) {
           if (isExitPrompt(err)) {

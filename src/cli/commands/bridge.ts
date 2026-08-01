@@ -1006,6 +1006,10 @@ bridgeCommand
     "Done by user or agent (default: user)",
     "user",
   )
+  .option(
+    "--response-time-ms <n>",
+    "Milliseconds between showing the card and this rating (study-time stats)",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
@@ -1019,6 +1023,10 @@ bridgeCommand
               : undefined,
           sessionId: opts.session,
           doneBy: opts.doneBy as "user" | "agent",
+          responseTimeMs:
+            opts.responseTimeMs !== undefined
+              ? Number(opts.responseTimeMs)
+              : undefined,
         });
         jsonOut(result);
       } catch (err) {

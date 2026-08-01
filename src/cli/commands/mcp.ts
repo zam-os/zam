@@ -473,6 +473,14 @@ export function createMcpServer(db: Database): McpServer {
           .enum(["user", "agent"])
           .optional()
           .describe("Who performed the review step"),
+        responseTimeMs: z
+          .number()
+          .int()
+          .min(0)
+          .optional()
+          .describe(
+            "Milliseconds between showing the card and this rating (study-time stats)",
+          ),
       },
       annotations: {
         ...commonAnnotations,
@@ -489,6 +497,7 @@ export function createMcpServer(db: Database): McpServer {
         rating: params.rating as Rating | undefined,
         sessionId: params.sessionId,
         doneBy: params.doneBy,
+        responseTimeMs: params.responseTimeMs,
       });
     }),
   );

@@ -225,6 +225,7 @@ describe("MCP stdio server tests", () => {
         user: "thomas",
         cardId: card.id,
         rating: 3,
+        responseTimeMs: 1_750,
       },
     });
 
@@ -233,9 +234,13 @@ describe("MCP stdio server tests", () => {
     expect(reviewData.success).toBe(true);
     expect(reviewData.rating).toBe(3);
 
-    // Verify card was reviewed and scheduled
+    // Verify card was reviewed and scheduled and the response time was logged
     const updatedCard = await getCard(db, token.id, "thomas");
     expect(updatedCard!.reps).toBe(1);
+    const log = await db
+      .prepare("SELECT response_time_ms FROM review_logs WHERE card_id = ?")
+      .get(card.id);
+    expect(log.response_time_ms).toBe(1_750);
   });
 
   it("creates prerequisite edges through zam_add_token", async () => {

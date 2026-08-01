@@ -383,6 +383,8 @@ export interface SubmitReviewParams {
   rating?: Rating;
   sessionId?: string;
   doneBy?: "user" | "agent";
+  /** Milliseconds between showing the card and submitting the rating (ADR 2026-08-01 Decision 5). */
+  responseTimeMs?: number;
 }
 
 export async function submitReview(db: Database, params: SubmitReviewParams) {
@@ -446,6 +448,7 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
     cardId,
     userId,
     rating: params.rating,
+    responseTimeMs: params.responseTimeMs,
   });
 
   let stepError: string | undefined;

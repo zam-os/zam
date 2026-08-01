@@ -123,6 +123,7 @@ export const reviewCommand = new Command("review")
           userId,
           item,
           mode: "review",
+          startedAt: Date.now(),
         });
 
         if (action.action === "stop") {

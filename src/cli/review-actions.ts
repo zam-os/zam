@@ -44,6 +44,8 @@ export interface RunInteractiveReviewActionInput {
   userId: string;
   item: ReviewQueueItem;
   mode: "review" | "session";
+  /** When the question was shown (Date.now()); study time for the rating (ADR 2026-08-01 Decision 5). */
+  startedAt?: number;
 }
 
 export interface RunInteractiveReviewActionResult {
@@ -86,6 +88,10 @@ export async function runInteractiveReviewAction(
         cardId: currentItem.cardId,
         userId: inputData.userId,
         rating: choice,
+        responseTimeMs:
+          inputData.startedAt !== undefined
+            ? Math.max(0, Date.now() - inputData.startedAt)
+            : undefined,
       });
 
       const ratingLabels: Record<number, string> = {

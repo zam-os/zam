@@ -122,6 +122,7 @@ describe("bridge-handlers unit tests", () => {
       user: "thomas",
       cardId: card.id,
       rating: 3,
+      responseTimeMs: 2_500,
     });
     expect(res1.success).toBe(true);
     expect(res1.rating).toBe(3);
@@ -131,6 +132,7 @@ describe("bridge-handlers unit tests", () => {
     const logs = await getReviewsForCard(db, card.id);
     expect(logs).toHaveLength(1);
     expect(logs[0].rating).toBe(3);
+    expect(logs[0].response_time_ms).toBe(2_500);
 
     // Submit review with invalid sessionId (causes step write failure, should return stepError)
     const res2 = await submitReview(db, {
