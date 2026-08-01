@@ -2241,7 +2241,7 @@ async function showModelForm(id?: string): Promise<void> {
   const loadModelCatalog = async (): Promise<void> => {
     const url = urlInput.value.trim();
     const key = keyInput.value.trim();
-    const signature = `${url} ${key} ${existing?.apiKeyRef ?? ""}`;
+    const signature = `${url}\0${key}\0${existing?.apiKeyRef ?? ""}`;
     if (!url || signature === catalogKey) return;
     catalogKey = signature;
     modelCatalog.replaceChildren();
