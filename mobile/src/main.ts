@@ -60,6 +60,12 @@ import {
   MobileReviewSession,
   type MobileReviewSummary,
 } from "./review-session.js";
+import {
+  loadStatsView,
+  type StatsFormatters,
+  type StatsPeriod,
+  type StatsView,
+} from "./stats.js";
 import { SyncError, syncWithRetry } from "./sync.js";
 import {
   DEFAULT_MOBILE_UPDATE_MANIFEST,
@@ -120,6 +126,11 @@ const summary = element<HTMLElement>("summary");
 const queueList = element<HTMLOListElement>("queue");
 const startReviewButton = element<HTMLButtonElement>("start-review");
 const openImportButton = element<HTMLButtonElement>("open-import");
+const openStatsButton = element<HTMLButtonElement>("open-stats");
+const statsView = element<HTMLElement>("stats-view");
+const statsSummary = element<HTMLParagraphElement>("stats-summary");
+const statsRows = element<HTMLElement>("stats-rows");
+const closeStatsButton = element<HTMLButtonElement>("close-stats");
 const importView = element<HTMLElement>("import-view");
 const importFile = element<HTMLInputElement>("import-file");
 const importInput = element<HTMLTextAreaElement>("import-input");
@@ -497,49 +508,51 @@ function showApp(payload: ZamPairPayloadV1): void {
   learner.textContent = payload.learner.userId;
 }
 
+/**
+ * Exactly one section is visible at a time. Listing them in one place means a
+ * new view cannot be forgotten in one of the switchers.
+ */
+function showOnly(visible: HTMLElement): void {
+  for (const view of [
+    dashboardView,
+    importView,
+    statsView,
+    reviewView,
+    sessionSummaryView,
+    settingsView,
+  ]) {
+    view.hidden = view !== visible;
+  }
+}
+
 function showDashboard(): void {
-  dashboardView.hidden = false;
-  importView.hidden = true;
-  reviewView.hidden = true;
-  sessionSummaryView.hidden = true;
-  settingsView.hidden = true;
+  showOnly(dashboardView);
   openSettingsButton.disabled = false;
 }
 
 function showReview(): void {
-  dashboardView.hidden = true;
-  importView.hidden = true;
-  reviewView.hidden = false;
-  sessionSummaryView.hidden = true;
-  settingsView.hidden = true;
+  showOnly(reviewView);
   // No jumping to settings mid-review; the gear returns after the session.
   openSettingsButton.disabled = true;
 }
 
 function showSessionSummary(): void {
-  dashboardView.hidden = true;
-  importView.hidden = true;
-  reviewView.hidden = true;
-  sessionSummaryView.hidden = false;
-  settingsView.hidden = true;
+  showOnly(sessionSummaryView);
   openSettingsButton.disabled = false;
 }
 
 function showImport(): void {
-  dashboardView.hidden = true;
-  importView.hidden = false;
-  reviewView.hidden = true;
-  sessionSummaryView.hidden = true;
-  settingsView.hidden = true;
+  showOnly(importView);
+  openSettingsButton.disabled = false;
+}
+
+function showStats(): void {
+  showOnly(statsView);
   openSettingsButton.disabled = false;
 }
 
 function showSettings(): void {
-  dashboardView.hidden = true;
-  importView.hidden = true;
-  reviewView.hidden = true;
-  sessionSummaryView.hidden = true;
-  settingsView.hidden = false;
+  showOnly(settingsView);
   renderReminderControls();
   renderVoiceSettings();
 }
@@ -768,6 +781,120 @@ function parseDate(value: string): Date {
 function formatDateTime(value: string): string {
   const date = parseDate(value);
   return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
+}
+
+// ── Statistics (ADR 2026-08-01) ────────────────────────────────────────────
+let statsPeriod: StatsPeriod = "day";
+
+/** "45 s" / "3 min" / "3 min 20 s" — units come from the translation table. */
+function formatStudyDuration(ms: number): string {
+  if (ms < 60_000) return tf("duration_seconds", { n: Math.round(ms / 1000) });
+  const minutes = Math.floor(ms / 60_000);
+  const seconds = Math.round((ms % 60_000) / 1000);
+  return seconds > 0
+    ? tf("duration_minutes_seconds", { m: minutes, s: seconds })
+    : tf("duration_minutes", { n: minutes });
+}
+
+function statsFormatters(): StatsFormatters {
+  return {
+    locale: learnerLocale ?? navigator.language,
+    weekLabel: (week) => tf("stats_week_label", { week }),
+    duration: formatStudyDuration,
+  };
+}
+
+function setStatsPeriod(period: StatsPeriod): void {
+  statsPeriod = period;
+  for (const candidate of ["day", "week", "month"] as const) {
+    const button = document.getElementById(`stats-period-${candidate}`);
+    const active = candidate === period;
+    button?.classList.toggle("active", active);
+    button?.setAttribute("aria-selected", String(active));
+  }
+}
+
+function renderStats(view: StatsView): void {
+  statsSummary.textContent = view.rows.length
+    ? [
+        tf("stats_total_cards", {
+          n: view.totalCards,
+          cards: cardWord(view.totalCards),
+        }),
+        view.totalStudyTime
+          ? tf("stats_total_time", { time: view.totalStudyTime })
+          : t("stats_total_time_none"),
+      ].join(" · ")
+    : "";
+
+  statsRows.replaceChildren();
+  if (view.rows.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "stats-note";
+    empty.textContent = t("stats_empty");
+    statsRows.appendChild(empty);
+    return;
+  }
+
+  for (const row of view.rows) {
+    const entry = document.createElement("div");
+    entry.className = "stats-row";
+
+    const label = document.createElement("span");
+    label.className = "stats-row-label";
+    label.textContent = row.label;
+    // The raw bucket key stays reachable for anyone comparing with the CLI.
+    label.title = row.bucket;
+
+    const bar = document.createElement("span");
+    bar.className = "stats-row-bar";
+    bar.setAttribute(
+      "aria-label",
+      tf("stats_row_aria", {
+        label: row.label,
+        n: row.reviewedCards,
+        cards: cardWord(row.reviewedCards),
+      }),
+    );
+    const fill = document.createElement("span");
+    fill.className = "stats-row-fill";
+    fill.style.width = `${row.barPercent}%`;
+    bar.appendChild(fill);
+
+    const count = document.createElement("span");
+    count.className = "stats-row-count";
+    count.textContent = String(row.reviewedCards);
+
+    const time = document.createElement("span");
+    time.className = "stats-row-time";
+    time.textContent = row.studyTime ?? t("stats_time_none");
+
+    entry.append(label, bar, count, time);
+    statsRows.appendChild(entry);
+  }
+}
+
+/** Load and paint the series; the kernel read is local, so this works offline. */
+async function refreshStats(): Promise<void> {
+  if (!currentPairing) return;
+  statsSummary.textContent = t("stats_loading");
+  statsRows.replaceChildren();
+  try {
+    const view = await loadStatsView(
+      db,
+      currentPairing.learner.userId,
+      statsPeriod,
+      statsFormatters(),
+    );
+    renderStats(view);
+  } catch (err) {
+    statsSummary.textContent = "";
+    statsRows.replaceChildren();
+    const failed = document.createElement("p");
+    failed.className = "stats-note error";
+    failed.textContent = tf("stats_failed", { error: errorMessage(err) });
+    statsRows.appendChild(failed);
+  }
 }
 
 function externalSourceUrl(value: string | null | undefined): string | null {
@@ -1281,6 +1408,22 @@ openImportButton.addEventListener("click", () => {
   showImport();
   importInput.focus();
 });
+
+openStatsButton.addEventListener("click", () => {
+  showStats();
+  void refreshStats();
+});
+
+closeStatsButton.addEventListener("click", () => showDashboard());
+
+for (const period of ["day", "week", "month"] as const) {
+  document
+    .getElementById(`stats-period-${period}`)
+    ?.addEventListener("click", () => {
+      setStatsPeriod(period);
+      void refreshStats();
+    });
+}
 
 importFile.addEventListener("change", async () => {
   const file = importFile.files?.[0];
