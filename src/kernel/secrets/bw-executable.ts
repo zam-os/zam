@@ -64,14 +64,16 @@ function isFile(candidate: string): boolean {
  * Shims end with a line like:
  *   … "%_prog%"  "%dp0%\node_modules\@bitwarden\cli\build\bw.js" %*
  * The exact preamble differs between npm versions, so this looks for any
- * quoted `.js` path rather than matching a whole template, and resolves it
- * against the shim's own directory the way `%dp0%` would.
+ * quoted script path rather than matching a whole template, and resolves it
+ * against the shim's own directory the way `%dp0%` would. `.mjs` and `.cjs`
+ * count: a package's bin may be any of the three, and being strict about the
+ * extension is how this first shipped broken.
  */
 export function scriptFromWindowsShim(
   shimContents: string,
   shimDir: string,
 ): string | null {
-  const matches = shimContents.matchAll(/"([^"]*?\.js)"/gi);
+  const matches = shimContents.matchAll(/"([^"]*?\.[cm]?js)"/gi);
   for (const match of matches) {
     const raw = match[1]
       .replace(/%~?dp0%?[\\/]?/gi, "")

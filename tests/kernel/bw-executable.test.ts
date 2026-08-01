@@ -1,6 +1,14 @@
-import { chmodSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { execFile } from "node:child_process";
+import {
+  chmodSync,
+  mkdirSync,
+  mkdtempSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
+import { promisify } from "node:util";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   resetBwExecutableCache,
@@ -75,6 +83,41 @@ describe("resolveBwCommand", () => {
     expect(resolved.prefixArgs).toEqual([join(scriptDir, "bw.js")]);
   });
 
+  it("resolves the exact shim shape the e2e suite writes", () => {
+    // Kept in step with tests/integration/credential-secret-backends-e2e.ts:
+    // that suite's Windows stub is `node "%~dp0bw.mjs" %*`, and this resolver
+    // failed on precisely that shape once already.
+    writeFileSync(join(dir, "bw.mjs"), "// fake bw");
+    writeFileSync(
+      join(dir, "bw.cmd"),
+      '@echo off\r\nnode "%~dp0bw.mjs" %*\r\n',
+    );
+    expect(win({ PATH: dir })).toEqual({
+      file: process.execPath,
+      prefixArgs: [join(dir, "bw.mjs")],
+    });
+  });
+
+  it("returns a command that actually runs", async () => {
+    // Shape assertions alone would not have caught the .mjs bug's real
+    // consequence; this spawns what the resolver returns, the way runBw does.
+    writeFileSync(
+      join(dir, "bw.mjs"),
+      'process.stdout.write("bw " + process.argv.slice(2).join(","));',
+    );
+    writeFileSync(
+      join(dir, "bw.cmd"),
+      '@echo off\r\nnode "%~dp0bw.mjs" %*\r\n',
+    );
+    const { file, prefixArgs } = win({ PATH: dir });
+
+    const execFileAsync = promisify(execFile);
+    const { stdout } = await execFileAsync(file, [...prefixArgs, "--version"], {
+      encoding: "utf8",
+    });
+    expect(stdout).toBe("bw --version");
+  });
+
   it("takes bw.exe over a shim when both are on PATH", () => {
     writeFileSync(join(dir, "bw.exe"), "MZ");
     writeFileSync(join(dir, "bw.cmd"), '"%dp0%\\whatever.js"');
@@ -124,9 +167,10 @@ describe("resolveBwCommand", () => {
     ).toBe(join(dir, "bw.exe"));
 
     resetBwExecutableCache();
-    expect(
-      resolveBwCommand({ platform: "win32", env: { PATH: "" } }),
-    ).toEqual({ file: "bw", prefixArgs: [] });
+    expect(resolveBwCommand({ platform: "win32", env: { PATH: "" } })).toEqual({
+      file: "bw",
+      prefixArgs: [],
+    });
   });
 
   it("does not cache a miss, so installing bw later is picked up", () => {
@@ -158,6 +202,26 @@ describe("scriptFromWindowsShim", () => {
     );
     expect(scriptFromWindowsShim('"%~dp0\\bw.js" %*', dir)).toBe(
       join(dir, "bw.js"),
+    );
+  });
+
+  it("accepts .mjs and .cjs entry points, not only .js", () => {
+    // Shipped broken the first time by matching `.js` alone: the shim the e2e
+    // suite writes points at `bw.mjs`, so the resolver silently fell back and
+    // Windows kept reporting "not installed". A package's bin may be any of
+    // the three.
+    for (const ext of ["js", "mjs", "cjs"]) {
+      writeFileSync(join(dir, `bw.${ext}`), "//");
+      expect(scriptFromWindowsShim(`node "%~dp0bw.${ext}" %*`, dir)).toBe(
+        join(dir, `bw.${ext}`),
+      );
+    }
+  });
+
+  it("handles a shim with no separator after %~dp0", () => {
+    writeFileSync(join(dir, "bw.mjs"), "//");
+    expect(scriptFromWindowsShim('node "%~dp0bw.mjs" %*', dir)).toBe(
+      join(dir, "bw.mjs"),
     );
   });
 
