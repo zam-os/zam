@@ -111,6 +111,25 @@ final iframe.
 - The read-only Learning Graph and OKF surfaces hide evaluator/model controls,
   because their stored data is rendered without a model.
 
+## Multi-window handoff
+
+An opening tool cannot render a panel itself, so it publishes a UI intent that
+a local Companion window picks up. Each editor window registers itself under
+`~/.zam/hosts/<hostId>.json` — heartbeat every 5 seconds, focus state, and the
+window's first workspace folder — and consumes only its own intent file under
+`~/.zam/intents/`.
+
+- `publishUiIntent` picks the window whose workspace contains the publishing
+  process's working directory; focus and heartbeat recency only break ties.
+- Registration continues while a window is unfocused, so a request published
+  while the user's focus sits elsewhere still reaches a window.
+- Entries older than 60 seconds are pruned, which cleans up after a window
+  that was killed rather than closed.
+- `~/.zam/vscode-host.json` and the shared `~/.zam/ui-intent.json` remain as a
+  single-slot fallback for a Companion or CLI older than 0.25. A window claims
+  the shared file only while focused, and records every id it sees so it never
+  replays another window's request on regaining focus.
+
 # OKF visualizer
 
 `zam_okf_visualize` accepts an optional initial `view`:
@@ -249,4 +268,4 @@ The same operation is available through `zam bridge okf-import`.
 - [ADR 2026-07-18c — OKF Import Handoff](../adr/2026-07-18c-okf-import-handoff.md)
 - [ADR 2026-07-29b — OKF Freshness Radar](../adr/2026-07-29b-okf-freshness-radar.md)
 - [ADR 2026-07-30 — OKF Reader Navigation and Mermaid Rendering](../adr/2026-07-30-okf-reader-navigation-and-mermaid.md)
-- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/extension.ts`, `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-mermaid.ts`, `desktop/src/panel/okf-panel.html`, `vite.config.panel.mts`
+- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/ui-intent.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/extension.ts`, `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-mermaid.ts`, `desktop/src/panel/okf-panel.html`, `vite.config.panel.mts`

@@ -1,5 +1,12 @@
 import { unwatchFile, watchFile } from "node:fs";
-import { mkdir, readFile, rename, stat, writeFile } from "node:fs/promises";
+import {
+  mkdir,
+  readFile,
+  rename,
+  stat,
+  unlink,
+  writeFile,
+} from "node:fs/promises";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -7,6 +14,12 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import type { CallToolResult, Tool } from "@modelcontextprotocol/sdk/types.js";
 import * as vscode from "vscode";
+import {
+  getUiHostIntentPath,
+  getUiHostsDirPath,
+  pruneUiHosts,
+  type UiHostEntry,
+} from "../cli/ui-intent.js";
 import {
   getCompanionSelectedAntigravityEvaluatorId,
   getCompanionSelectedAntigravityModelId,
@@ -702,39 +715,67 @@ class CompanionViewProvider implements vscode.WebviewViewProvider {
   }
 }
 
-async function writeHostRegistration(
+async function writeJsonAtomically(
+  path: string,
+  value: unknown,
+): Promise<void> {
+  const tempPath = join(dirname(path), `.vscode-host-${process.pid}.tmp`);
+  await mkdir(dirname(path), { recursive: true });
+  await writeFile(tempPath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+  await rename(tempPath, path);
+}
+
+/**
+ * Legacy single-slot registration (`~/.zam/vscode-host.json`), still written
+ * so a CLI older than 0.25 keeps finding a host. It points at the shared
+ * intent file, which every window also watches — ambiguous with several
+ * windows open, which is exactly why the per-window registry below exists.
+ */
+async function writeLegacyHostRegistration(
   registrationPath: string,
   intentPath: string,
 ): Promise<void> {
-  const tempPath = join(
-    dirname(registrationPath),
-    `.vscode-host-${process.pid}.tmp`,
-  );
-  await mkdir(dirname(registrationPath), { recursive: true });
-  await writeFile(
-    tempPath,
-    `${JSON.stringify(
-      {
-        version: 1,
-        intentPath,
-        updatedAt: new Date().toISOString(),
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
-  await rename(tempPath, registrationPath);
+  await writeJsonAtomically(registrationPath, {
+    version: 1,
+    intentPath,
+    updatedAt: new Date().toISOString(),
+  });
+}
+
+/**
+ * This window's entry in `~/.zam/hosts`. Written on every heartbeat whether
+ * or not the window is focused: a request published while the user's focus
+ * sits in a terminal (or in the agent's own chat) must still reach a window
+ * instead of being dropped for want of a fresh registration.
+ */
+async function writeHostEntry(
+  entryPath: string,
+  entry: UiHostEntry,
+): Promise<void> {
+  await writeJsonAtomically(entryPath, entry);
 }
 
 let activeMcpHost: ZamMcpHost | undefined;
+let releaseHostRegistration: (() => Promise<void>) | undefined;
 
 export async function activate(
   context: vscode.ExtensionContext,
 ): Promise<void> {
-  const zamDir = join(homedir(), ".zam");
-  const intentPath =
-    process.env.ZAM_UI_INTENT_PATH ?? join(zamDir, "ui-intent.json");
+  const home = homedir();
+  const zamDir = join(home, ".zam");
+  // One id per editor window: VS Code runs a separate extension host process
+  // per window, so its pid identifies the window for as long as it lives.
+  const hostId = `vscode-${process.pid}`;
+  const hostsDir = getUiHostsDirPath(home);
+  const hostEntryPath = join(hostsDir, `${hostId}.json`);
+  // The intent file only this window consumes. ZAM_UI_INTENT_PATH still wins
+  // so tests and single-window setups can pin one explicit path.
+  const ownIntentPath =
+    process.env.ZAM_UI_INTENT_PATH ?? getUiHostIntentPath(hostId, home);
+  // The pre-0.25 shared file, watched only so an older CLI still reaches us.
+  const legacyIntentPath = process.env.ZAM_UI_INTENT_PATH
+    ? undefined
+    : join(zamDir, "ui-intent.json");
   const registrationPath = join(zamDir, "vscode-host.json");
   const launchConfigPath = join(zamDir, "vscode-launch.json");
   const output = vscode.window.createOutputChannel("ZAM Companion", {
@@ -789,42 +830,87 @@ export async function activate(
     }),
   );
 
-  let lastIntentId: string | undefined;
-  const consumeIntent = async () => {
-    if (!vscode.window.state.focused) return;
+  const seenIntentIds = new Map<string, string | undefined>();
+  /**
+   * `requireFocus` separates the two handoff paths. This window's own intent
+   * file was addressed to it by name, so it opens whether or not the window
+   * happens to be focused. The legacy shared file is claimed by whichever
+   * window is focused — but its id is recorded either way, so an unfocused
+   * window never replays another window's request when it later gains focus.
+   */
+  const consumeIntent = async (path: string, requireFocus: boolean) => {
     try {
       const intent = parseCompanionIntent(
-        JSON.parse(await readFile(intentPath, "utf8")),
+        JSON.parse(await readFile(path, "utf8")),
       );
-      if (!intent || intent.id === lastIntentId) return;
-      lastIntentId = intent.id;
+      if (!intent || intent.id === seenIntentIds.get(path)) return;
+      seenIntentIds.set(path, intent.id);
+      if (requireFocus && !vscode.window.state.focused) return;
       await provider.open(intent.app, intent.input);
     } catch {
       // The handoff file is optional and may not exist before the first call.
     }
   };
-  const watchListener = () => void consumeIntent();
-  watchFile(intentPath, { interval: 300 }, watchListener);
-  context.subscriptions.push({
-    dispose: () => unwatchFile(intentPath, watchListener),
-  });
 
+  const watchIntentFile = (path: string, requireFocus: boolean) => {
+    const listener = () => void consumeIntent(path, requireFocus);
+    watchFile(path, { interval: 300 }, listener);
+    context.subscriptions.push({
+      dispose: () => unwatchFile(path, listener),
+    });
+  };
+  watchIntentFile(ownIntentPath, false);
+  if (legacyIntentPath) watchIntentFile(legacyIntentPath, true);
+
+  let focusedAt: string | undefined;
   const heartbeat = () => {
-    if (!vscode.window.state.focused) return;
-    void writeHostRegistration(registrationPath, intentPath).catch((error) => {
+    const focused = vscode.window.state.focused;
+    if (focused) focusedAt = new Date().toISOString();
+    void writeHostEntry(hostEntryPath, {
+      version: 2,
+      hostId,
+      intentPath: ownIntentPath,
+      ...(vscode.workspace.workspaceFolders?.[0]
+        ? { workspace: vscode.workspace.workspaceFolders[0].uri.fsPath }
+        : {}),
+      focused,
+      ...(focusedAt ? { focusedAt } : {}),
+      updatedAt: new Date().toISOString(),
+    }).catch((error) => {
       output.warn(
-        `Could not publish VS Code host registration: ${errorMessage(error)}`,
+        `Could not publish ZAM Companion host entry: ${errorMessage(error)}`,
       );
     });
+    // Entries of windows that were killed rather than deactivated cleanly
+    // would otherwise keep collecting intents nobody reads.
+    void pruneUiHosts(hostsDir).catch(() => {});
+    if (!focused || !legacyIntentPath) return;
+    void writeLegacyHostRegistration(registrationPath, legacyIntentPath).catch(
+      (error) => {
+        output.warn(
+          `Could not publish VS Code host registration: ${errorMessage(error)}`,
+        );
+      },
+    );
   };
   heartbeat();
   const heartbeatTimer = setInterval(heartbeat, 5_000);
+  releaseHostRegistration = async () => {
+    await unlink(hostEntryPath).catch(() => {});
+    await unlink(ownIntentPath).catch(() => {});
+  };
   context.subscriptions.push(
     { dispose: () => clearInterval(heartbeatTimer) },
+    {
+      dispose: () => {
+        void releaseHostRegistration?.();
+      },
+    },
     vscode.window.onDidChangeWindowState((state) => {
       if (state.focused) {
         heartbeat();
-        void consumeIntent();
+        void consumeIntent(ownIntentPath, false);
+        if (legacyIntentPath) void consumeIntent(legacyIntentPath, true);
       }
     }),
   );
@@ -833,4 +919,6 @@ export async function activate(
 export async function deactivate(): Promise<void> {
   await activeMcpHost?.close();
   activeMcpHost = undefined;
+  await releaseHostRegistration?.();
+  releaseHostRegistration = undefined;
 }
