@@ -103,13 +103,14 @@ describe("MCP stdio server tests", () => {
     expect(client.getInstructions()).toContain('view: "graph"');
   });
 
-  it("lists all 28 tools with correct annotations", async () => {
+  it("lists all 29 tools with correct annotations", async () => {
     const response = await client.listTools();
-    expect(response.tools).toHaveLength(28);
+    expect(response.tools).toHaveLength(29);
 
     const toolNames = response.tools.map((t) => t.name).sort();
     const expectedNames = [
       "zam_status",
+      "zam_progress_stats",
       "zam_session_start",
       "zam_session_end",
       "zam_get_reviews",
@@ -225,6 +226,7 @@ describe("MCP stdio server tests", () => {
         user: "thomas",
         cardId: card.id,
         rating: 3,
+        responseTimeMs: 1_750,
       },
     });
 
@@ -233,9 +235,55 @@ describe("MCP stdio server tests", () => {
     expect(reviewData.success).toBe(true);
     expect(reviewData.rating).toBe(3);
 
-    // Verify card was reviewed and scheduled
+    // Verify card was reviewed and scheduled and the response time was logged
     const updatedCard = await getCard(db, token.id, "thomas");
     expect(updatedCard!.reps).toBe(1);
+    const log = await db
+      .prepare("SELECT response_time_ms FROM review_logs WHERE card_id = ?")
+      .get(card.id);
+    expect(log.response_time_ms).toBe(1_750);
+  });
+
+  it("returns the review activity series from zam_progress_stats", async () => {
+    const token = await createToken(db, {
+      slug: "mcp-progress-token",
+      concept: "Progress concept",
+      domain: "science",
+      bloom_level: 1,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+    await db
+      .prepare(
+        `INSERT INTO review_logs
+           (id, card_id, token_id, user_id, rating, response_time_ms,
+            reviewed_at, scheduled_at, session_id)
+         VALUES (?, ?, ?, ?, 4, ?, ?, '2000-01-01 00:00:00', NULL)`,
+      )
+      .run("progress-log", card.id, token.id, "thomas", 900, new Date().toISOString());
+
+    const res = await client.callTool({
+      name: "zam_progress_stats",
+      arguments: {
+        user: "thomas",
+        period: "month",
+      },
+    });
+
+    expect(res.isError).toBeUndefined();
+    const data = JSON.parse(res.content[0].text);
+    expect(data.userId).toBe("thomas");
+    expect(data.period).toBe("month");
+    expect(data.window).toBe(6);
+    const totalCards = data.buckets.reduce(
+      (s: number, b: { reviewedCards: number }) => s + b.reviewedCards,
+      0,
+    );
+    const totalMs = data.buckets.reduce(
+      (s: number, b: { studyTimeMs: number }) => s + b.studyTimeMs,
+      0,
+    );
+    expect(totalCards).toBe(1);
+    expect(totalMs).toBe(900);
   });
 
   it("creates prerequisite edges through zam_add_token", async () => {

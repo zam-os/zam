@@ -131,6 +131,8 @@ let started = false;
 let finished = false;
 let cards: ReviewCard[] = [];
 let index = 0;
+/** When the current card was shown (Date.now()); sent as responseTimeMs with the rating (ADR 2026-08-01 Decision 5). */
+let cardStartedAt = 0;
 
 // Session-local tally for the finish/done summary. Never persisted; the card
 // owns no ZAM session, so this is pure UI state.
@@ -388,6 +390,7 @@ async function sampleViaHost(
 function renderCard(): void {
   if (!contentEl) return;
   const card = cards[index];
+  cardStartedAt = Date.now();
   // Spoiler discipline: `concept` stays in this closure and only reaches the
   // DOM inside showReveal(); it is never rendered before the user reveals.
   const concept = card.concept;
@@ -528,6 +531,7 @@ function renderCard(): void {
         cardId: card.cardId,
         rating,
         doneBy: "user",
+        responseTimeMs: Math.max(0, Date.now() - cardStartedAt),
       };
       if (currentUser) args.user = currentUser;
       const res = (await callTool("zam_submit_review", args)) as SubmitResult;

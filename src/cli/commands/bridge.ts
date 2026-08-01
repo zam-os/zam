@@ -72,6 +72,7 @@ import {
   getOnboardingDone,
   getOnboardingPersona,
   getProviderApiKey,
+  getReviewActivity,
   getSetting,
   getSystemProfile,
   getTokenBySlug,
@@ -288,6 +289,10 @@ import {
   removeWorkspaceAndResolveActive,
 } from "../workspaces/active.js";
 import { backupDatabaseTo } from "../workspaces/backup.js";
+import {
+  resolveActivityPeriod,
+  resolveActivityWindow,
+} from "./shared/activity.js";
 import {
   withDb as sharedWithDb,
   withOptionalDb as sharedWithOptionalDb,
@@ -1025,10 +1030,26 @@ bridgeCommand
     "Done by user or agent (default: user)",
     "user",
   )
+  .option(
+    "--response-time-ms <n>",
+    "Milliseconds between showing the card and this rating (study-time stats)",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
         const userId = await resolveUser(opts, db, { json: true });
+        const responseTimeMs =
+          opts.responseTimeMs !== undefined
+            ? Number(opts.responseTimeMs)
+            : undefined;
+        if (
+          responseTimeMs !== undefined &&
+          (!Number.isFinite(responseTimeMs) ||
+            !Number.isInteger(responseTimeMs) ||
+            responseTimeMs < 0)
+        ) {
+          throw new Error("--response-time-ms must be a non-negative integer");
+        }
         const result = await handleSubmitReview(db, {
           user: userId,
           cardId: opts.cardId,
@@ -1038,8 +1059,38 @@ bridgeCommand
               : undefined,
           sessionId: opts.session,
           doneBy: opts.doneBy as "user" | "agent",
+          responseTimeMs,
         });
         jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge stats-activity ───────────────────────────────────────────────
+
+bridgeCommand
+  .command("stats-activity")
+  .description(
+    "Review activity series per day/week/month with study time (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .option("--period <day|week|month>", "Activity period (default: day)", "day")
+  .option(
+    "--window <n>",
+    "How many periods to return (default: 30 days / 12 weeks / 6 months)",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        const period = resolveActivityPeriod(opts.period);
+        const result = await getReviewActivity(db, userId, {
+          period,
+          window: resolveActivityWindow(opts.window, period),
+        });
+        jsonOut({ userId, ...result });
       } catch (err) {
         jsonError((err as Error).message);
       }

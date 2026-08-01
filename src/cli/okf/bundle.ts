@@ -212,6 +212,11 @@ export function renderIndex(
 /**
  * Append a log entry, newest day first, merging into an existing entry
  * group when the date matches the current top group.
+ *
+ * An article revised several times in one day yields one line, not one per
+ * write: the log records what changed on a day, and a run of identical
+ * "Update — <article>" lines is noise that buries the other articles touched
+ * that day.
  */
 export function appendLog(
   existing: string,
@@ -229,6 +234,18 @@ export function appendLog(
   const lines = trimmed.split("\n");
   const firstHeaderIdx = lines.findIndex((l) => l.startsWith("## "));
   if (firstHeaderIdx !== -1 && lines[firstHeaderIdx].trim() === header) {
+    // Scope the duplicate check to today's group: the same article legitimately
+    // appears again under a later date.
+    const groupEnd = lines.findIndex(
+      (l, i) => i > firstHeaderIdx && l.startsWith("## "),
+    );
+    const todaysEntries = lines.slice(
+      firstHeaderIdx + 1,
+      groupEnd === -1 ? lines.length : groupEnd,
+    );
+    if (todaysEntries.some((l) => l.trim() === entry)) {
+      return `${lines.join("\n")}\n`;
+    }
     lines.splice(firstHeaderIdx + 2, 0, entry);
     return `${lines.join("\n")}\n`;
   }

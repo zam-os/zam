@@ -219,6 +219,7 @@ async function runRepetitionPhase(
       userId,
       item,
       mode: "session",
+      startedAt: Date.now(),
     });
 
     if (action.action === "stop") {
