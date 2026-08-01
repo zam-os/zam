@@ -144,19 +144,53 @@ export function createMobileTieredVoicePort(
   plan: () => VoiceEnginePlan,
   native: MobileVoiceNative,
   cloud: MobileCloudSpeech,
+  onDegraded: (capability: "stt" | "tts", message: string) => void = () => {},
 ): VoicePort {
+  // Capabilities whose cloud endpoint failed in this session. A misconfigured
+  // endpoint fails identically on every utterance, so retrying it per sentence
+  // would only add a delay before the same message.
+  const degraded = new Set<"stt" | "tts">();
+  const useCloud = (capability: "stt" | "tts"): boolean =>
+    plan()[capability].tier === "cloud" && !degraded.has(capability);
+
+  /**
+   * Continue on the device rather than ending the session. The point of voice
+   * mode is that the review happens, and falling back *to the device* costs
+   * the learner nothing — it is the `fell-back-to-local` outcome the plan
+   * already allows, decided at call time instead of at resolution time.
+   */
+  const degrade = (capability: "stt" | "tts", error: unknown): void => {
+    degraded.add(capability);
+    onDegraded(
+      capability,
+      error instanceof Error ? error.message : String(error),
+    );
+  };
+
   return {
     start: (locale) => native.start(locale),
     stop: () => native.stop(),
     async speak(text: string, locale: VoiceLocale): Promise<void> {
-      if (plan().tts.tier !== "cloud") return native.speak(text, locale);
-      const audio = await cloud.synthesize(text, locale);
-      await native.play(audio.audioBase64, audio.mime);
+      if (!useCloud("tts")) return native.speak(text, locale);
+      try {
+        const audio = await cloud.synthesize(text, locale);
+        await native.play(audio.audioBase64, audio.mime);
+      } catch (error) {
+        degrade("tts", error);
+        await native.speak(text, locale);
+      }
     },
     async listen(locale: VoiceLocale): Promise<string> {
-      if (plan().stt.tier !== "cloud") return native.listen(locale);
+      if (!useCloud("stt")) return native.listen(locale);
       const capture = await native.capture(locale);
-      return cloud.transcribe(capture.audioBase64, capture.mime, locale);
+      try {
+        return await cloud.transcribe(capture.audioBase64, capture.mime, locale);
+      } catch (error) {
+        degrade("stt", error);
+        // The recording went with the failed call, so the learner is asked once
+        // more — better than losing the session over a bad endpoint.
+        return native.listen(locale);
+      }
     },
   };
 }

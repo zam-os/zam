@@ -4898,6 +4898,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Everything stays on this device. Nothing is sent anywhere.",
     voice_detail_uses_cloud:
       "Your recordings are sent to the speech model you configured.",
+    voice_cloud_tts_failed:
+      "Cloud speech unavailable ({message}). Continuing with the device voice.",
+    voice_cloud_stt_failed:
+      "Cloud recognition unavailable ({message}). Continuing with the device — please say that again.",
     voice_start: "Start voice mode",
     voice_pause: "Pause voice mode",
     voice_paused_msg: "Voice mode paused: {message}",
@@ -5985,6 +5989,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Alles bleibt auf diesem Gerät. Es wird nichts verschickt.",
     voice_detail_uses_cloud:
       "Deine Aufnahmen gehen an das Sprachmodell, das du eingerichtet hast.",
+    voice_cloud_tts_failed:
+      "Cloud-Sprachausgabe nicht erreichbar ({message}). Weiter mit der Stimme des Geräts.",
+    voice_cloud_stt_failed:
+      "Cloud-Spracherkennung nicht erreichbar ({message}). Weiter mit der Erkennung des Geräts — bitte noch einmal sprechen.",
     voice_start: "Sprachmodus starten",
     voice_pause: "Sprachmodus pausieren",
     voice_paused_msg: "Sprachmodus pausiert: {message}",

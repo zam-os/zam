@@ -2211,9 +2211,51 @@ async function showModelForm(id?: string): Promise<void> {
     harnessSelect.appendChild(opt);
   }
 
+  // The endpoint's own list of models, offered as suggestions on the model
+  // field. A datalist rather than a dropdown: an endpoint that serves no
+  // catalog (most local runners) must still accept a typed id, and so must a
+  // model published after this build. Typing stays possible; guessing stops
+  // being necessary.
+  const modelCatalog = document.createElement("datalist");
+  modelCatalog.id = "model-catalog-options";
+  modelInput.setAttribute("list", modelCatalog.id);
+
+  let catalogKey = "";
+  const loadModelCatalog = async (): Promise<void> => {
+    const url = urlInput.value.trim();
+    const key = keyInput.value.trim();
+    const signature = `${url} ${key} ${existing?.apiKeyRef ?? ""}`;
+    if (!url || signature === catalogKey) return;
+    catalogKey = signature;
+    modelCatalog.replaceChildren();
+    try {
+      const args = ["--url", url];
+      if (key) args.push("--key", key);
+      else if (existing?.apiKeyRef) args.push("--key-ref", existing.apiKeyRef);
+      const result = await runBridge<{ models?: string[] }>(
+        "model-catalog",
+        args,
+      );
+      for (const id of result?.models ?? []) {
+        const option = document.createElement("option");
+        option.value = id;
+        modelCatalog.appendChild(option);
+      }
+    } catch {
+      // No catalog is a normal state, not an error — the field still accepts
+      // anything typed, exactly as before.
+      catalogKey = "";
+    }
+  };
+
+  urlInput.addEventListener("change", () => void loadModelCatalog());
+  keyInput.addEventListener("change", () => void loadModelCatalog());
+  modelInput.addEventListener("focus", () => void loadModelCatalog());
+
   const labelField = modelFieldLabel(t("model_field_label"), labelInput);
   const urlField = modelFieldLabel(t("model_field_url"), urlInput);
   const modelField = modelFieldLabel(t("model_field_model"), modelInput);
+  modelField.appendChild(modelCatalog);
   const keyField = modelFieldLabel(t("model_field_key"), keyInput);
   const harnessField = modelFieldLabel(
     t("model_field_harness"),
@@ -5144,6 +5186,18 @@ const voiceController = createVoiceController(
       };
     },
     play: playVoiceAudio,
+  },
+  (capability, message) => {
+    // Say it plainly and keep going. A misconfigured endpoint — a model the
+    // provider does not actually serve — otherwise ends the session with a raw
+    // gateway error, which is the worst possible moment to learn about it.
+    setVoiceStatus(
+      tf(
+        capability === "tts" ? "voice_cloud_tts_failed" : "voice_cloud_stt_failed",
+        { message },
+      ),
+      true,
+    );
   }),
 );
 

@@ -242,7 +242,10 @@ jobs:
           APPLE_API_KEY_PATH: ${{ runner.temp }}/AuthKey.p8
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: 'ZAM Desktop ${{ github.ref_name }}'
+          # Not "ZAM Desktop": one release carries the desktop apps, the
+          # Android APK, the editor companion and the npm package. A hand-written
+          # title replaces this before publishing; this is only the draft's name.
+          releaseName: 'ZAM ${{ github.ref_name }}'
           releaseBody: |
             ${{ steps.notes.outputs.body }}
           releaseDraft: true

@@ -364,3 +364,52 @@ describe("mobile voice availability", () => {
     expect(planLeavesDevice(plan)).toBe(true);
   });
 });
+
+describe("mobile cloud failures degrade to the device", () => {
+  const cloudPlan: VoiceEnginePlan = {
+    stt: { tier: "cloud", reason: "preferred" },
+    tts: { tier: "cloud", reason: "preferred" },
+  };
+
+  it("keeps the session alive on a failing cloud voice", async () => {
+    const calls: string[] = [];
+    const degraded: string[] = [];
+    const native: MobileVoiceNative = {
+      start: async () => {},
+      stop: async () => {},
+      speak: async (text) => {
+        calls.push(`native:speak:${text}`);
+      },
+      listen: async () => {
+        calls.push("native:listen");
+        return "device transcript";
+      },
+      capture: async () => ({ audioBase64: "AQID", mime: "audio/wav" }),
+      play: async () => {
+        calls.push("native:play");
+      },
+    };
+    const port = createMobileTieredVoicePort(
+      () => cloudPlan,
+      native,
+      {
+        transcribe: async () => {
+          throw new Error("Transcription failed (404 Not Found)");
+        },
+        synthesize: async () => {
+          throw new Error("Speech synthesis failed (404 Not Found)");
+        },
+      },
+      (capability) => degraded.push(capability),
+    );
+
+    await port.speak("Frage", "de-DE");
+    expect(await port.listen("de-DE")).toBe("device transcript");
+
+    expect(calls).toEqual([
+      "native:speak:Frage",
+      "native:listen",
+    ]);
+    expect(degraded).toEqual(["tts", "stt"]);
+  });
+});

@@ -2720,6 +2720,24 @@ bridgeCommand
     jsonOut({ ok: true, ref: opts.ref, masked: maskSecret(key) });
   });
 
+// The endpoint's own answer to "which models do you have" — better than any
+// name heuristic, and the only thing that catches a typo before it becomes a
+// 404 in the middle of a review (reported 2026-08-01 for `mimo-v2.5-tts`).
+bridgeCommand
+  .command("model-catalog")
+  .description("List the models an endpoint advertises (JSON)")
+  .requiredOption("--url <url>", "Endpoint base URL")
+  .option("--key-ref <ref>", "Stored credential reference")
+  .option("--key <value>", "API key for an endpoint not yet saved")
+  .action(async (opts) => {
+    const apiKey =
+      (opts.key as string | undefined)?.trim() ||
+      (opts.keyRef ? (getProviderApiKey(opts.keyRef) ?? undefined) : undefined);
+    // An endpoint that serves no catalog is a normal state, not an error: many
+    // local runners have none, and the caller falls back to free typing.
+    jsonOut({ models: await getAvailableModels(opts.url, apiKey) });
+  });
+
 bridgeCommand
   .command("provider-clear-key")
   .description("Remove a stored provider API key (JSON)")

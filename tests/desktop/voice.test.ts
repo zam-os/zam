@@ -3,6 +3,8 @@ import { join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import {
   buildAvailability,
+  type CloudSpeechDeps,
+  createTieredVoicePort,
   createVoiceController,
   createVoicePort,
   type DesktopVoiceHost,
@@ -13,7 +15,11 @@ import {
   type TauriInvoke,
   unavailableReasonKey,
 } from "../../desktop/src/voice.js";
-import type { VoiceLocale, VoicePort } from "../../src/kernel/index.js";
+import type {
+  VoiceEnginePlan,
+  VoiceLocale,
+  VoicePort,
+} from "../../src/kernel/index.js";
 
 const native = (
   sttLocal: boolean,
@@ -259,5 +265,91 @@ describe("desktop voice controller", () => {
 
     await createVoiceController(host, port).start("de-DE");
     expect(rate).toHaveBeenCalledTimes(1);
+  });
+});
+
+// Reported 2026-08-01: cloud TTS 404'd mid-session and voice mode stopped.
+// A misconfigured endpoint must cost the utterance, not the review.
+describe("a failing cloud endpoint degrades to the device", () => {
+  const cloudPlan: VoiceEnginePlan = {
+    stt: { tier: "cloud", reason: "preferred" },
+    tts: { tier: "cloud", reason: "preferred" },
+  };
+
+  function harness(cloud: Partial<CloudSpeechDeps>) {
+    const calls: string[] = [];
+    const degraded: Array<[string, string]> = [];
+    const invoke = (async (command: string) => {
+      calls.push(command);
+      if (command === "voice_listen") return { transcript: "device transcript" };
+      if (command === "voice_capture") return { path: "/tmp/a.wav", mime: "audio/wav" };
+      return undefined;
+    }) as TauriInvoke;
+    const port = createTieredVoicePort(
+      () => cloudPlan,
+      invoke,
+      {
+        transcribe: async () => "cloud transcript",
+        synthesize: async () => ({ audioBase64: "AAA", mime: "audio/wav" }),
+        play: async () => {},
+        ...cloud,
+      },
+      (capability, message) => degraded.push([capability, message]),
+    );
+    return { calls, degraded, port };
+  }
+
+  it("reads the card with the device voice when synthesis fails", async () => {
+    const { calls, degraded, port } = harness({
+      synthesize: async () => {
+        throw new Error("Speech synthesis failed (404 Not Found)");
+      },
+    });
+
+    await port.speak("Frage", "de-DE");
+
+    expect(calls).toContain("voice_speak");
+    expect(degraded[0][0]).toBe("tts");
+    expect(degraded[0][1]).toContain("404");
+  });
+
+  it("stops retrying the broken endpoint for the rest of the session", async () => {
+    // The same misconfiguration fails identically every time; retrying it per
+    // sentence would only add a delay before the same message.
+    let attempts = 0;
+    const { degraded, port } = harness({
+      synthesize: async () => {
+        attempts++;
+        throw new Error("404");
+      },
+    });
+
+    await port.speak("eins", "de-DE");
+    await port.speak("zwei", "de-DE");
+
+    expect(attempts).toBe(1);
+    expect(degraded).toHaveLength(1);
+  });
+
+  it("falls back to device recognition and discards the recording", async () => {
+    const { calls, degraded, port } = harness({
+      transcribe: async () => {
+        throw new Error("Transcription failed (404 Not Found)");
+      },
+    });
+
+    expect(await port.listen("de-DE")).toBe("device transcript");
+    // The spoken answer must not be left lying in the temp directory.
+    expect(calls).toContain("voice_discard_capture");
+    expect(degraded[0][0]).toBe("stt");
+  });
+
+  it("leaves a working cloud endpoint alone", async () => {
+    const { calls, degraded, port } = harness({});
+
+    await port.speak("Frage", "de-DE");
+
+    expect(calls).not.toContain("voice_speak");
+    expect(degraded).toHaveLength(0);
   });
 });
