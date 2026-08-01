@@ -38,8 +38,6 @@ import {
   assignTokenToContext,
   BUILT_IN_SENSITIVE_MATCHERS,
   type CapabilityFlags,
-  DEFAULT_ACTIVITY_WINDOWS,
-  getReviewActivity,
   clearProviderApiKey,
   confirmCardSplit,
   confirmFoundations,
@@ -72,6 +70,7 @@ import {
   getOnboardingDone,
   getOnboardingPersona,
   getProviderApiKey,
+  getReviewActivity,
   getSetting,
   getSystemProfile,
   getTokenBySlug,
@@ -271,6 +270,10 @@ import {
   removeWorkspaceAndResolveActive,
 } from "../workspaces/active.js";
 import { backupDatabaseTo } from "../workspaces/backup.js";
+import {
+  resolveActivityPeriod,
+  resolveActivityWindow,
+} from "./shared/activity.js";
 import {
   withDb as sharedWithDb,
   withOptionalDb as sharedWithOptionalDb,
@@ -1056,28 +1059,17 @@ bridgeCommand
   .option("--user <id>", "User ID (default: whoami)")
   .option("--period <day|week|month>", "Activity period (default: day)", "day")
   .option(
-    "--days <n>",
-    "Activity window in buckets (default: 30 days / 12 weeks / 6 months)",
+    "--window <n>",
+    "How many periods to return (default: 30 days / 12 weeks / 6 months)",
   )
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
         const userId = await resolveUser(opts, db, { json: true });
-        const period = opts.period;
-        if (!["day", "week", "month"].includes(period)) {
-          throw new Error(`Invalid period: ${period}`);
-        }
-        const windowBuckets = opts.days
-          ? Number(opts.days)
-          : DEFAULT_ACTIVITY_WINDOWS[
-              period as keyof typeof DEFAULT_ACTIVITY_WINDOWS
-            ];
-        if (!Number.isInteger(windowBuckets) || windowBuckets < 1) {
-          throw new Error(`--days must be a positive integer`);
-        }
+        const period = resolveActivityPeriod(opts.period);
         const result = await getReviewActivity(db, userId, {
           period,
-          window: windowBuckets,
+          window: resolveActivityWindow(opts.window, period),
         });
         jsonOut({ userId, ...result });
       } catch (err) {

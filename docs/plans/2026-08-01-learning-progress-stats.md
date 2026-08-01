@@ -33,6 +33,17 @@ focused commit per completed phase.
       `zam_okf_upsert` if one describes review logging/statistics; full
       `npm run format && lint && typecheck && test && build`; one commit per
       phase.
+- [x] **Phase 6 — Review fixes and the mobile clients.** Red CI fixed (Biome
+      import order; the local-day test no longer sets `process.env.TZ`, which
+      SQLite ignores on Windows). Per-rating study time capped at read time
+      (ADR Decision 7). `--days` renamed to `--window` on CLI, bridge and MCP,
+      since it counts periods, not days — parsing centralized in
+      `src/cli/commands/shared/activity.ts`. Localized bucket labels via
+      `formatActivityBucketLabel`, shared by both GUIs. Statistics view in the
+      mobile companion (Android + iOS): `mobile/src/stats.ts` (pure view model,
+      unit-tested) plus a `stats-view` section wired into
+      `mobile/index.html`/`main.ts`, reading the kernel directly so it works
+      offline.
 
 > Phase 4 deviation (reported per AGENTS.md): the desktop stats UI ships as a
 > native Tauri view in `desktop/index.html`/`main.ts` (nav entry
@@ -71,14 +82,14 @@ focused commit per completed phase.
 ### Phase 3 — CLI
 
 - `src/cli/commands/stats.ts`: `--period day|week|month` (default `day`),
-  `--days <n>` window (default 30/12/6 by period), text table + `--json`.
+  `--window <n>` (default 30/12/6 by period), text table + `--json`.
 - `src/cli/commands/bridge.ts`: new `stats-activity` subcommand (JSON only,
-  `jsonOut`/`jsonError`), forwarding `--user`, `--period`, `--days`.
+  `jsonOut`/`jsonError`), forwarding `--user`, `--period`, `--window`.
 
 ### Phase 4 — MCP + desktop
 
 - `src/cli/commands/mcp.ts`: register `zam_progress_stats` (user, period,
-  days), wrapping `getReviewActivity` + `resolveHandlerUser`; instructions
+  window), wrapping `getReviewActivity` + `resolveHandlerUser`; instructions
   mention it next to `zam_status`.
 - Desktop: new `stats-view` in `desktop/index.html` and `desktop/src/main.ts`
   (nav entry, i18n, bridge transport via `runBridge("stats-activity", ...)`),

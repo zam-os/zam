@@ -44,6 +44,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     stats_period_day: "Día",
     stats_period_week: "Semana",
     stats_period_month: "Mes",
+    stats_week_label: "Sem. {week}",
     stats_total_cards: "{n} tarjetas trabajadas",
     stats_total_time: "{time} de tiempo de estudio",
     stats_empty:
@@ -824,6 +825,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     stats_period_day: "Jour",
     stats_period_week: "Semaine",
     stats_period_month: "Mois",
+    stats_week_label: "Sem. {week}",
     stats_total_cards: "{n} cartes travaillées",
     stats_total_time: "{time} de temps d'étude",
     stats_empty:
@@ -1612,6 +1614,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     stats_period_day: "Dia",
     stats_period_week: "Semana",
     stats_period_month: "Mês",
+    stats_week_label: "Sem. {week}",
     stats_total_cards: "{n} cartões trabalhados",
     stats_total_time: "{time} de tempo de estudo",
     stats_empty:
@@ -2386,6 +2389,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     stats_period_day: "天",
     stats_period_week: "周",
     stats_period_month: "月",
+    stats_week_label: "第 {week} 周",
     stats_total_cards: "已复习 {n} 张卡片",
     stats_total_time: "学习时间 {time}",
     stats_empty: "该时间段内暂无活动。复习一些卡片后再来看看。",
@@ -3102,6 +3106,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     stats_period_day: "日",
     stats_period_week: "週",
     stats_period_month: "月",
+    stats_week_label: "第 {week} 週",
     stats_total_cards: "{n} 枚のカードを復習",
     stats_total_time: "学習時間 {time}",
     stats_empty: "この期間にはまだアクティビティがありません。カードを復習してから確認してください。",
@@ -3941,6 +3946,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     stats_period_day: "Day",
     stats_period_week: "Week",
     stats_period_month: "Month",
+    stats_week_label: "Week {week}",
     stats_total_cards: "{n} cards reviewed",
     stats_total_time: "{time} of study time",
     stats_empty:
@@ -5023,6 +5029,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     stats_period_day: "Tag",
     stats_period_week: "Woche",
     stats_period_month: "Monat",
+    stats_week_label: "KW {week}",
     stats_total_cards: "{n} Karten bearbeitet",
     stats_total_time: "{time} Lernzeit",
     stats_empty:

@@ -6,17 +6,22 @@
  */
 
 export type {
+  ActivityBucketLabelOptions,
   ActivityPeriod,
   GetReviewActivityOptions,
+  ParsedActivityBucket,
   ReviewActivity,
   ReviewActivityBucket,
 } from "./analytics/progress.js";
-export type { DomainCompetence, UserStats } from "./analytics/stats.js";
 // Analytics
 export {
   DEFAULT_ACTIVITY_WINDOWS,
+  formatActivityBucketLabel,
   getReviewActivity,
+  parseActivityBucket,
+  STUDY_TIME_CAP_MS,
 } from "./analytics/progress.js";
+export type { DomainCompetence, UserStats } from "./analytics/stats.js";
 export { getDomainCompetence, getUserStats } from "./analytics/stats.js";
 export type { ADOConfig, WorkItem } from "./connectors/azure-devops.js";
 // Connectors

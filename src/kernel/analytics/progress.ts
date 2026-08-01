@@ -22,6 +22,21 @@ export const DEFAULT_ACTIVITY_WINDOWS: Record<ActivityPeriod, number> = {
   month: 6,
 };
 
+/**
+ * Upper bound a single rating may contribute to study time (ADR 2026-08-01
+ * Decision 7).
+ *
+ * Every surface measures "card shown → rating submitted" in wall-clock time,
+ * so a card left open — a locked phone, a backgrounded app resuming its
+ * persisted session, a terminal abandoned mid-prompt — books hours of "study
+ * time" for one card and swamps the statistic. The review log keeps the raw
+ * measurement (it is an immutable audit trail); the interpretation is capped
+ * here, at read time, so the cap also repairs rows written before it existed.
+ * Ten minutes is well past any honest single-card answer, including a slow
+ * cloud evaluation and a spoken answer.
+ */
+export const STUDY_TIME_CAP_MS = 10 * 60_000;
+
 export interface ReviewActivityBucket {
   /**
    * Local-time bucket start:
@@ -32,7 +47,10 @@ export interface ReviewActivityBucket {
   bucket: string;
   /** Number of rating events — one rating equals one card worked. */
   reviewedCards: number;
-  /** Sum of response_time_ms over those ratings (NULL counts as 0). */
+  /**
+   * Sum of response_time_ms over those ratings, each capped at
+   * `STUDY_TIME_CAP_MS`. NULL (never measured) contributes 0.
+   */
   studyTimeMs: number;
 }
 
@@ -111,7 +129,7 @@ function windowCondition(period: ActivityPeriod, window: number): string {
  * Buckets with no reviews are omitted; a chart can fill gaps itself. Study
  * time only exists from the release that started logging response times on
  * every surface (ADR 2026-08-01 Decision 2); older rows contribute counts
- * but no time.
+ * but no time. Each rating contributes at most `STUDY_TIME_CAP_MS`.
  */
 export async function getReviewActivity(
   db: Database,
@@ -133,10 +151,15 @@ export async function getReviewActivity(
     );
   }
 
+  // MIN/MAX are SQLite's scalar two-argument forms here, not the aggregates:
+  // they clamp each row into [0, cap] before SUM adds it up.
   const sql = `
     SELECT ${BUCKET_EXPRESSIONS[period]} AS bucket,
            COUNT(*) AS reviewed,
-           COALESCE(SUM(response_time_ms), 0) AS study_time_ms
+           COALESCE(
+             SUM(MIN(MAX(response_time_ms, 0), ${STUDY_TIME_CAP_MS})),
+             0
+           ) AS study_time_ms
     FROM review_logs
     WHERE ${conditions.join(" AND ")}
     GROUP BY bucket
@@ -157,4 +180,88 @@ export async function getReviewActivity(
       studyTimeMs: row.study_time_ms,
     })),
   };
+}
+
+/**
+ * A bucket key taken apart for display.
+ *
+ * The keys are stable and machine-facing (`zam stats --json`, the bridge and
+ * the MCP tool all emit them verbatim); turning one into "Fri, Jul 31" or
+ * "KW 31" is each client's job. Parsing them is not, so the desktop app and
+ * the mobile companion share this instead of each re-deriving the shapes.
+ */
+export type ParsedActivityBucket =
+  | { period: "day"; date: Date }
+  | { period: "week"; isoYear: number; isoWeek: number }
+  | { period: "month"; date: Date };
+
+const DAY_KEY = /^(\d{4})-(\d{2})-(\d{2})$/;
+const WEEK_KEY = /^(\d{4})-W(\d{2})$/;
+const MONTH_KEY = /^(\d{4})-(\d{2})$/;
+
+/**
+ * Parse a bucket key produced by `getReviewActivity`, or return `null` when it
+ * does not match the period's shape — a caller can then fall back to showing
+ * the raw key rather than a wrong date.
+ *
+ * Dates are built in local time, matching how the buckets were formed.
+ */
+export function parseActivityBucket(
+  bucket: string,
+  period: ActivityPeriod,
+): ParsedActivityBucket | null {
+  if (period === "day") {
+    const match = DAY_KEY.exec(bucket);
+    if (!match) return null;
+    return {
+      period,
+      date: new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3])),
+    };
+  }
+  if (period === "week") {
+    const match = WEEK_KEY.exec(bucket);
+    if (!match) return null;
+    return { period, isoYear: Number(match[1]), isoWeek: Number(match[2]) };
+  }
+  const match = MONTH_KEY.exec(bucket);
+  if (!match) return null;
+  return { period, date: new Date(Number(match[1]), Number(match[2]) - 1, 1) };
+}
+
+export interface ActivityBucketLabelOptions {
+  /** BCP-47 tag the learner reads in, e.g. "de" or "en". */
+  locale: string;
+  /**
+   * Week wording, supplied by the caller's translation layer — "KW 31" in
+   * German, "Week 31" in English. `Intl` has no format for ISO week numbers.
+   */
+  weekLabel: (isoWeek: number) => string;
+}
+
+/**
+ * Render a bucket key as a chart label in the learner's language.
+ *
+ * Shared by the desktop app and the mobile companion so a bar reads the same
+ * on every device. Unparseable keys fall back to the raw key rather than to a
+ * wrong date. The CLI deliberately keeps the raw keys — they are stable and
+ * greppable, which is what a terminal surface wants.
+ */
+export function formatActivityBucketLabel(
+  bucket: string,
+  period: ActivityPeriod,
+  options: ActivityBucketLabelOptions,
+): string {
+  const parsed = parseActivityBucket(bucket, period);
+  if (!parsed) return bucket;
+  if (parsed.period === "week") return options.weekLabel(parsed.isoWeek);
+  const format: Intl.DateTimeFormatOptions =
+    parsed.period === "day"
+      ? { weekday: "short", day: "numeric", month: "short" }
+      : { month: "short", year: "numeric" };
+  try {
+    return new Intl.DateTimeFormat(options.locale, format).format(parsed.date);
+  } catch {
+    // An unknown locale tag must not blank out the chart.
+    return bucket;
+  }
 }

@@ -7,7 +7,7 @@ tags:
   - agents
   - surfaces
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-08-01T20:00:00Z
+timestamp: 2026-08-01T18:52:00Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -60,7 +60,9 @@ The model-visible learning tools cover:
   feeds the study-time statistic (ADR 2026-08-01 Decision 5);
 - review progress: `zam_progress_stats` returns the activity series — cards
   reviewed per day/week/month with summed study time, aggregated in SQL over
-  the immutable review log;
+  the immutable review log. `window` counts **periods, not days**, and each
+  rating contributes at most ten minutes of study time so an abandoned card
+  cannot swamp the series (ADR 2026-08-01 Decision 7);
 - token search, registration, and prerequisite linking;
 - companion learner/model context;
 - monitored practice and sampling;

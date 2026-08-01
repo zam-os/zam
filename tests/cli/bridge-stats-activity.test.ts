@@ -118,7 +118,7 @@ describe("zam bridge stats-activity", () => {
       "stats-activity",
       "--period",
       "day",
-      "--days",
+      "--window",
       "2",
     ]) as {
       window: number;
@@ -138,10 +138,10 @@ describe("zam bridge stats-activity", () => {
       "stats-activity",
       "--period",
       "day",
-      "--days",
+      "--window",
       "0",
     ]) as { error?: string };
-    expect(res.error).toContain("--days must be a positive integer");
+    expect(res.error).toContain("--window must be a positive integer");
   });
 
   it("aggregates the same events into a single month bucket", () => {

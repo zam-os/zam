@@ -6,6 +6,7 @@ import { open as openFolderDialog } from "@tauri-apps/plugin-dialog";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { check as checkForUpdate } from "@tauri-apps/plugin-updater";
 import * as THREE from "three";
+import { formatActivityBucketLabel } from "../../src/kernel/analytics/progress.js";
 import { runBridge, setBridgeTransport } from "./bridge-transport.js";
 import {
   BLOOM_PACKS,
@@ -3353,12 +3354,25 @@ interface StatsActivityResponse {
 
 let statsPeriod: StatsPeriod = "day";
 
+/**
+ * Zero means the reviews in this bucket predate response-time logging
+ * (ADR 2026-08-01 Decision 2) — an em dash says "not measured", where "0s"
+ * would claim the learner spent no time on them.
+ */
 function formatStatsTime(ms: number): string {
-  if (ms <= 0) return "0s";
+  if (ms <= 0) return "—";
   if (ms < 60_000) return `${Math.round(ms / 1000)}s`;
   const minutes = Math.floor(ms / 60_000);
   const seconds = Math.round((ms % 60_000) / 1000);
   return seconds > 0 ? `${minutes}m ${seconds}s` : `${minutes}m`;
+}
+
+/** "Fr., 31. Juli" / "KW 31" / "Juli 2026" instead of the raw bucket key. */
+function formatStatsBucket(bucket: string, period: StatsPeriod): string {
+  return formatActivityBucketLabel(bucket, period, {
+    locale: currentLocale,
+    weekLabel: (isoWeek) => tf("stats_week_label", { week: isoWeek }),
+  });
 }
 
 function setStatsPeriod(period: StatsPeriod): void {
@@ -3398,12 +3412,21 @@ async function loadStatsView(): Promise<void> {
     return;
   }
 
-  const shownBuckets = response.buckets.slice(-response.window);
-  const totalCards = shownBuckets.reduce(
-    (sum, b) => sum + b.reviewedCards,
-    0,
-  );
-  const totalMs = shownBuckets.reduce((sum, b) => sum + b.studyTimeMs, 0);
+  // The kernel already cut the series to `window` local periods; the totals
+  // are simply the sum over what is drawn.
+  const buckets = response.buckets;
+  container.innerHTML = "";
+  if (buckets.length === 0) {
+    summary.classList.add("hidden");
+    const empty = document.createElement("p");
+    empty.className = "stats-empty";
+    empty.textContent = t("stats_empty");
+    container.appendChild(empty);
+    return;
+  }
+
+  const totalCards = buckets.reduce((sum, b) => sum + b.reviewedCards, 0);
+  const totalMs = buckets.reduce((sum, b) => sum + b.studyTimeMs, 0);
   summary.classList.remove("hidden");
   summary.innerHTML = "";
   const cards = document.createElement("span");
@@ -3414,23 +3437,15 @@ async function loadStatsView(): Promise<void> {
   time.textContent = tf("stats_total_time", { time: formatStatsTime(totalMs) });
   summary.append(cards, time);
 
-  container.innerHTML = "";
-  if (shownBuckets.length === 0) {
-    const empty = document.createElement("p");
-    empty.className = "stats-empty";
-    empty.textContent = t("stats_empty");
-    container.appendChild(empty);
-    return;
-  }
-
-  const maxCards = Math.max(...shownBuckets.map((b) => b.reviewedCards), 1);
-  for (const bucket of shownBuckets) {
+  const maxCards = Math.max(...buckets.map((b) => b.reviewedCards), 1);
+  for (const bucket of buckets) {
     const row = document.createElement("div");
     row.className = "stats-row";
 
     const label = document.createElement("span");
     label.className = "stats-row-label";
-    label.textContent = bucket.bucket;
+    label.textContent = formatStatsBucket(bucket.bucket, response.period);
+    label.title = bucket.bucket;
 
     const bar = document.createElement("span");
     bar.className = "stats-row-bar";

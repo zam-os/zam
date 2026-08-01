@@ -156,6 +156,25 @@ describe("okf/bundle index and log rendering", () => {
     );
   });
 
+  it("records a repeated same-day update once, but again on a later day", () => {
+    // Revising an article several times in one sitting must not bury the
+    // other articles touched that day under identical lines.
+    const line = "**Update** — [A](a.md)";
+    let log = appendLog("", "2026-08-01", line);
+    log = appendLog(log, "2026-08-01", line);
+    log = appendLog(log, "2026-08-01", line);
+    expect(log.split(line).length - 1).toBe(1);
+
+    log = appendLog(log, "2026-08-01", "**Update** — [B](b.md)");
+    log = appendLog(log, "2026-08-02", line);
+    expect(log.split(line).length - 1).toBe(2);
+    const secondDay = log.slice(
+      log.indexOf("## 2026-08-02"),
+      log.indexOf("## 2026-08-01"),
+    );
+    expect(secondDay).toContain(line);
+  });
+
   it("merges into a CRLF log and emits LF-normalized output", () => {
     const crlfLog = "# Log\r\n\r\n## 2026-07-18\r\n\r\n- old entry\r\n";
     const next = appendLog(crlfLog, "2026-07-18", "new entry");

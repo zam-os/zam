@@ -290,6 +290,79 @@
         gap: 9px;
         margin-bottom: 14px;
       }
+      /* Statistics (ADR 2026-08-01) */
+      .stats-periods {
+        display: flex;
+        gap: 8px;
+        margin: 14px 0 10px;
+      }
+      .stats-periods .stats-period {
+        flex: 1;
+        min-height: 40px;
+        padding: 8px 10px;
+        font-size: 0.86rem;
+      }
+      .stats-periods .stats-period.active {
+        border-color: transparent;
+        color: #fff;
+        background: var(--glow);
+      }
+      .stats-summary {
+        color: var(--text-2);
+        font-size: 0.86rem;
+        font-weight: 600;
+        margin: 0 0 12px;
+        min-height: 1.2em;
+      }
+      .stats-rows {
+        display: grid;
+        gap: 7px;
+      }
+      .stats-row {
+        align-items: center;
+        display: grid;
+        /* Narrow screens: the label column stays readable, the bar takes the
+           rest, and the count/time stay pinned right. */
+        grid-template-columns: 5.4rem 1fr 2rem;
+        gap: 8px;
+      }
+      .stats-row-label {
+        color: var(--muted);
+        font-size: 0.78rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .stats-row-bar {
+        background: var(--card-soft);
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        display: block;
+        height: 16px;
+        overflow: hidden;
+      }
+      .stats-row-fill {
+        background: var(--glow);
+        border-radius: 6px;
+        display: block;
+        height: 100%;
+      }
+      .stats-row-count {
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-align: right;
+      }
+      .stats-row-time {
+        color: var(--muted);
+        font-size: 0.72rem;
+        grid-column: 2 / span 2;
+        text-align: right;
+      }
+      .stats-note {
+        color: var(--muted);
+        font-size: 0.85rem;
+        margin: 0;
+      }
       /* Queue */
       ol#queue {
         list-style: none;
@@ -611,8 +684,61 @@
             <button id="open-import" type="button" data-i18n="add_content">
               Lerninhalt hinzufügen
             </button>
+            <button id="open-stats" type="button" data-i18n="open_stats">
+              Lernstatistik
+            </button>
           </div>
           <ol id="queue"></ol>
+        </section>
+
+        <section id="stats-view" hidden>
+          <div class="card">
+            <p class="eyebrow" data-i18n="stats_kicker">Wiederholungs-Aktivität</p>
+            <h2 data-i18n="stats_title">Lernstatistik</h2>
+            <p class="muted" data-i18n="stats_desc">
+              Bearbeitete Karten pro Tag, Woche oder Monat — und die dafür
+              aufgewendete Lernzeit.
+            </p>
+            <div class="stats-periods" role="tablist" aria-label="Zeitraum">
+              <button
+                id="stats-period-day"
+                class="stats-period active"
+                type="button"
+                role="tab"
+                aria-selected="true"
+                data-i18n="stats_period_day"
+              >
+                Tag
+              </button>
+              <button
+                id="stats-period-week"
+                class="stats-period"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                data-i18n="stats_period_week"
+              >
+                Woche
+              </button>
+              <button
+                id="stats-period-month"
+                class="stats-period"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                data-i18n="stats_period_month"
+              >
+                Monat
+              </button>
+            </div>
+            <p id="stats-summary" class="stats-summary" aria-live="polite"></p>
+            <div id="stats-rows" class="stats-rows"></div>
+          </div>
+          <div class="buttons">
+            <button id="close-stats" type="button" data-i18n="to_queue">
+              Zur Queue
+            </button>
+          </div>
         </section>
 
         <section id="import-view" hidden>

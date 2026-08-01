@@ -346,13 +346,13 @@ export function createMcpServer(db: Database): McpServer {
           .enum(["day", "week", "month"])
           .optional()
           .describe("Bucketing period (default: day)"),
-        days: z
+        window: z
           .number()
           .int()
           .min(1)
           .optional()
           .describe(
-            "Window in buckets (default: 30 days / 12 weeks / 6 months)",
+            "How many periods to return — periods, not days (default: 30 days / 12 weeks / 6 months)",
           ),
       },
       annotations: {
@@ -365,7 +365,7 @@ export function createMcpServer(db: Database): McpServer {
       const period = params.period ?? "day";
       const result = await getReviewActivity(db, userId, {
         period,
-        window: params.days,
+        window: params.window,
       });
       return { userId, ...result };
     }),

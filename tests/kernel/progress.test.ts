@@ -6,8 +6,11 @@ import {
   createToken,
   type Database,
   ensureCard,
+  formatActivityBucketLabel,
   getReviewActivity,
   openDatabase,
+  parseActivityBucket,
+  STUDY_TIME_CAP_MS,
 } from "../../src/kernel/index.js";
 
 /**
@@ -17,6 +20,12 @@ import {
  * periods. Tests on fixed historical dates pass `window: 0` so they stay
  * deterministic regardless of when the suite runs; the `window` mechanics
  * themselves are pinned in the dedicated bounds test.
+ *
+ * Expected buckets are written out literally rather than re-queried from the
+ * implementation's own SQL. Fixture events are stamped at 12:00 UTC, which
+ * lands on the same calendar day in every timezone the suite runs in (CI is
+ * UTC, this project's machines are Europe/Berlin), so the labels hold without
+ * pinning a zone — see the local-day test for the bucketing shift itself.
  */
 describe("getReviewActivity", () => {
   let db: Database;
@@ -69,36 +78,20 @@ describe("getReviewActivity", () => {
     await logEvent("2026-08-10 12:00:00", 3_000);
     await logEvent("2026-08-11 12:00:00", null);
 
-    const dayExpr = "date(reviewed_at, 'localtime')";
-    const expected = (await db
-      .prepare(
-        `SELECT ${dayExpr} AS bucket, COUNT(*) AS n,
-                COALESCE(SUM(response_time_ms), 0) AS ms
-         FROM review_logs WHERE user_id = ?
-         GROUP BY bucket ORDER BY bucket ASC`,
-      )
-      .all(userId)) as Array<{ bucket: string; n: number; ms: number }>;
-
     const activity = await getReviewActivity(db, userId, {
       period: "day",
       window: 0,
     });
 
     expect(activity.period).toBe("day");
-    expect(activity.buckets).toHaveLength(expected.length);
-    activity.buckets.forEach((bucket, i) => {
-      expect(bucket.bucket).toBe(expected[i].bucket);
-      expect(bucket.reviewedCards).toBe(expected[i].n);
-      expect(bucket.studyTimeMs).toBe(expected[i].ms);
-    });
-
-    const totalCards = activity.buckets.reduce(
-      (sum, b) => sum + b.reviewedCards,
-      0,
-    );
-    const totalMs = activity.buckets.reduce((sum, b) => sum + b.studyTimeMs, 0);
-    expect(totalCards).toBe(5);
-    expect(totalMs).toBe(6_500);
+    expect(activity.buckets).toEqual([
+      { bucket: "2026-07-15", reviewedCards: 2, studyTimeMs: 3_000 },
+      { bucket: "2026-07-16", reviewedCards: 1, studyTimeMs: 500 },
+      { bucket: "2026-08-10", reviewedCards: 1, studyTimeMs: 3_000 },
+      // No response time was ever logged for this rating: it counts as a
+      // worked card and contributes no study time.
+      { bucket: "2026-08-11", reviewedCards: 1, studyTimeMs: 0 },
+    ]);
   });
 
   it("buckets by ISO week (Monday start, %G-W%V) and by month", async () => {
@@ -106,24 +99,16 @@ describe("getReviewActivity", () => {
     await logEvent("2026-07-16 12:00:00", 500);
     await logEvent("2026-08-10 12:00:00", 3_000);
 
-    const weekExpr = "strftime('%G-W%V', reviewed_at, 'localtime')";
-    const weekBuckets = (await db
-      .prepare(
-        `SELECT ${weekExpr} AS bucket, COUNT(*) AS n
-         FROM review_logs WHERE user_id = ? GROUP BY bucket ORDER BY bucket`,
-      )
-      .all(userId)) as Array<{ bucket: string; n: number }>;
-
+    // 2026-07-15 (Wed) and 2026-07-16 (Thu) share ISO week 29; 2026-08-10 is
+    // a Monday and opens week 33.
     const weekly = await getReviewActivity(db, userId, {
       period: "week",
       window: 0,
     });
-    expect(weekly.buckets.map((b) => b.bucket)).toEqual(
-      weekBuckets.map((b) => b.bucket),
-    );
-    expect(weekly.buckets.map((b) => b.reviewedCards)).toEqual(
-      weekBuckets.map((b) => b.n),
-    );
+    expect(weekly.buckets).toEqual([
+      { bucket: "2026-W29", reviewedCards: 2, studyTimeMs: 1_500 },
+      { bucket: "2026-W33", reviewedCards: 1, studyTimeMs: 3_000 },
+    ]);
 
     const monthly = await getReviewActivity(db, userId, {
       period: "month",
@@ -226,30 +211,151 @@ describe("getReviewActivity", () => {
     expect(scoped.buckets).toHaveLength(2);
   });
 
-  it("buckets a late-UTC review on the learner's local day", async () => {
-    // 2026-07-15 23:30 UTC is 2026-07-16 01:30 in Europe/Berlin (UTC+2 in
-    // July): the local-day bucket must be the 16th, not the UTC day 15th.
-    const originalTz = process.env.TZ;
-    try {
-      process.env.TZ = "Europe/Berlin";
-      await logEvent("2026-07-15 23:30:00", 1_000);
+  it("buckets a review on the learner's local day, not the UTC day", async () => {
+    // The zone cannot be pinned from inside the test: SQLite's 'localtime'
+    // resolves against the C runtime's timezone, which Windows fixes at
+    // process start and does not re-read when process.env.TZ is assigned —
+    // an earlier version of this test set TZ here and passed only on machines
+    // that already ran in a non-UTC zone. So the case is built from the
+    // runtime's own offset instead, and holds in UTC CI and in Europe/Berlin.
+    const offsetMinutes = -new Date(
+      Date.UTC(2026, 6, 15, 12),
+    ).getTimezoneOffset();
+    // Ahead of UTC: a late-evening UTC review already belongs to the next
+    // local day. Behind UTC: an early-morning one still belongs to the
+    // previous one. In UTC itself no shift exists and the UTC day is correct.
+    const utcHour = offsetMinutes > 0 ? 23 : 0;
+    const instantUtcMs = Date.UTC(2026, 6, 15, utcHour, 30);
+    await logEvent(
+      new Date(instantUtcMs).toISOString().slice(0, 19).replace("T", " "),
+      1_000,
+    );
 
-      const activity = await getReviewActivity(db, userId, {
-        period: "day",
-        window: 0,
-      });
-      expect(activity.buckets.map((b) => b.bucket)).toEqual(["2026-07-16"]);
-    } finally {
-      if (originalTz === undefined) {
-        delete process.env.TZ;
-      } else {
-        process.env.TZ = originalTz;
-      }
+    const local = new Date(instantUtcMs);
+    const expected = [
+      local.getFullYear(),
+      String(local.getMonth() + 1).padStart(2, "0"),
+      String(local.getDate()).padStart(2, "0"),
+    ].join("-");
+
+    const activity = await getReviewActivity(db, userId, {
+      period: "day",
+      window: 0,
+    });
+    expect(activity.buckets.map((b) => b.bucket)).toEqual([expected]);
+
+    // Outside UTC the bucket must have moved off the stored UTC date — that
+    // is the regression this test exists for.
+    if (offsetMinutes !== 0) {
+      expect(expected).not.toBe("2026-07-15");
     }
+  });
+
+  it("caps what a single rating may contribute to study time", async () => {
+    // A card left open — locked phone, backgrounded companion resuming its
+    // persisted session, terminal abandoned mid-prompt — measures hours for
+    // one card. The log keeps the raw number; the statistic must not.
+    const abandoned = 6 * 60 * 60_000;
+    await logEvent("2026-07-15 12:00:00", abandoned);
+    await logEvent("2026-07-15 12:30:00", 4_000);
+
+    const activity = await getReviewActivity(db, userId, {
+      period: "day",
+      window: 0,
+    });
+    expect(activity.buckets).toEqual([
+      {
+        bucket: "2026-07-15",
+        reviewedCards: 2,
+        studyTimeMs: STUDY_TIME_CAP_MS + 4_000,
+      },
+    ]);
+
+    // The raw measurement survives in the audit trail.
+    const raw = (await db
+      .prepare(
+        "SELECT MAX(response_time_ms) AS ms FROM review_logs WHERE user_id = ?",
+      )
+      .get(userId)) as { ms: number };
+    expect(raw.ms).toBe(abandoned);
   });
 
   it("returns an empty series for a user without reviews", async () => {
     const empty = await getReviewActivity(db, "nobody", { period: "day" });
     expect(empty.buckets).toEqual([]);
+  });
+});
+
+/**
+ * Bucket keys are the stable machine-facing contract; the GUIs turn them into
+ * chart labels. Desktop and mobile share this so a bar reads the same on every
+ * device (ADR 2026-08-01 Decision 6).
+ */
+describe("parseActivityBucket / formatActivityBucketLabel", () => {
+  const weekLabel = (week: number) => `KW ${week}`;
+
+  it("parses each period's key shape into local dates and ISO weeks", () => {
+    expect(parseActivityBucket("2026-07-15", "day")).toEqual({
+      period: "day",
+      date: new Date(2026, 6, 15),
+    });
+    expect(parseActivityBucket("2026-W29", "week")).toEqual({
+      period: "week",
+      isoYear: 2026,
+      isoWeek: 29,
+    });
+    expect(parseActivityBucket("2026-07", "month")).toEqual({
+      period: "month",
+      date: new Date(2026, 6, 1),
+    });
+  });
+
+  it("rejects a key that does not match the period", () => {
+    expect(parseActivityBucket("2026-07", "day")).toBeNull();
+    expect(parseActivityBucket("2026-07-15", "week")).toBeNull();
+    expect(parseActivityBucket("nonsense", "month")).toBeNull();
+  });
+
+  it("renders labels in the learner's language", () => {
+    const de = formatActivityBucketLabel("2026-07-15", "day", {
+      locale: "de-DE",
+      weekLabel,
+    });
+    const en = formatActivityBucketLabel("2026-07-15", "day", {
+      locale: "en-US",
+      weekLabel,
+    });
+    expect(de).toContain("15");
+    expect(en).toContain("15");
+    expect(de).not.toBe(en);
+
+    expect(
+      formatActivityBucketLabel("2026-W29", "week", {
+        locale: "de-DE",
+        weekLabel,
+      }),
+    ).toBe("KW 29");
+    expect(
+      formatActivityBucketLabel("2026-07", "month", {
+        locale: "en-US",
+        weekLabel,
+      }),
+    ).toBe("Jul 2026");
+  });
+
+  it("falls back to the raw key instead of showing a wrong date", () => {
+    // A malformed key or an unusable locale tag must not blank out the chart.
+    expect(
+      formatActivityBucketLabel("not-a-date", "day", {
+        locale: "de-DE",
+        weekLabel,
+      }),
+    ).toBe("not-a-date");
+    expect(
+      formatActivityBucketLabel("2026-07-15", "day", {
+        locale: "!!invalid!!",
+        weekLabel,
+      }),
+    ).toBe("2026-07-15");
   });
 });

@@ -53,6 +53,9 @@ and it does not depend on session bookkeeping. Session wall-clock duration stays
 a separate, secondary signal owned by the sessions feature and is not folded
 into this statistic.
 
+Response time is wall-clock, so a card left open measures the pause, not the
+work — see Decision 7 for the cap that keeps this honest.
+
 ### 3. Aggregation on-the-fly, in SQL, over the existing index
 
 Buckets are computed with `GROUP BY` over `idx_review_logs_user (user_id,
@@ -91,7 +94,7 @@ approximation derived from UTC day spans.
 Measurement is best-effort: a client that cannot produce a time sends `null`
 and the row simply does not contribute to study time.
 
-### 6. One kernel API, three surfaces, ready for more
+### 6. One kernel API, every client
 
 `getReviewActivity(db, userId, { period, window?, since? })` lives in
 `src/kernel/analytics/` and is re-exported from `src/kernel/index.ts`. It is
@@ -99,20 +102,50 @@ exposed as:
 
 - `zam stats --period day|week|month` (text and `--json`),
 - `zam bridge stats-activity` (JSON, for the desktop app and automation),
-- the MCP tool `zam_progress_stats` (any connected client).
+- the MCP tool `zam_progress_stats` (any connected client),
+- the desktop app's Statistics view (over the bridge), and
+- the mobile companion's Statistics view on Android and iOS, which calls the
+  kernel function directly and therefore also works offline.
 
-Because the data lives in the shared database, any other client (mobile, a
-future web UI) can render the same numbers once it has a UI — this is the
-feature's "other clients later" guarantee.
+The window counts **periods, not days** — `--period week --window 12` is the
+current ISO week plus the eleven before it — so the option is named `window`
+on every surface rather than `days`.
+
+Bucket keys (`2026-08-01`, `2026-W31`, `2026-08`) are the machine-facing
+contract and stay verbatim in the CLI and every JSON payload. The GUIs render
+them in the learner's language via `formatActivityBucketLabel`, shared by
+desktop and mobile so a bar reads the same on every device.
+
+### 7. Study time is capped per rating at read time
+
+A rating's response time is wall-clock between "card shown" and "rating
+submitted". A locked phone, a companion resuming its persisted session the next
+morning, or a terminal abandoned mid-prompt therefore books hours against a
+single card and swamps the number the learner came to see.
+
+`review_logs` keeps the raw measurement — it is an immutable audit trail, and
+the raw value is the only thing that could ever support a different analysis.
+The **interpretation** is capped: `getReviewActivity` clamps each rating into
+`[0, STUDY_TIME_CAP_MS]` (ten minutes) before summing. Capping at read time
+rather than at write time also repairs rows written before the cap existed,
+including the mobile rows that already carry resumed-session outliers.
+
+Ten minutes is well past an honest single-card answer, including a slow cloud
+evaluation and a spoken response. If real work is ever clipped by it, the fix
+is a per-surface idle timeout on the measurement, not a larger cap.
 
 ## Consequences
 
 - `response_time_ms` becomes meaningful on all surfaces; the existing column
   needs no schema change and no migration.
 - Historical study time before this release is NULL and excluded; counts are
-  unaffected.
-- The desktop app gains a dedicated stats view (panel) rendered from
-  `zam bridge stats-activity`; no new npm or native dependencies.
+  unaffected. Surfaces render an unmeasured bucket as "—", never as "0s".
+- The desktop app gains a dedicated Statistics view rendered from
+  `zam bridge stats-activity`; the mobile companion gains the same view over a
+  direct kernel call. No new npm or native dependencies on either.
+- Study time is a floor, not an exact total: capped outliers and unlogged
+  history both pull it down. It answers "am I putting the hours in", not
+  billing.
 - Non-decisions for now: distinct-card counts (vs. events), an aggregate
   table, session wall-clock time as a primary metric, and export — all can be
   layered on the same API without revisiting this ADR's choices.
@@ -121,4 +154,6 @@ feature's "other clients later" guarantee.
 
 - Kernel statistics: `src/kernel/analytics/stats.ts` (`getUserStats`).
 - Review log schema: `src/kernel/db/schema.ts` (`review_logs`).
+- Activity series and the cap: `src/kernel/analytics/progress.ts`.
 - Mobile response-time logging: `mobile/src/review-session.ts`.
+- Mobile statistics view: `mobile/src/stats.ts`.
