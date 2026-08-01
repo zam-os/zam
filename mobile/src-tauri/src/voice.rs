@@ -148,6 +148,22 @@ pub async fn voice_listen<R: Runtime>(
         .map_err(|error| error.to_string())
 }
 
+/// Quality of the voice a session would use, so the UI can point the learner
+/// at the one-time download when only a compact voice is installed
+/// (ADR 2026-07-31). iOS-only today; Android picks its own installed voice.
+#[cfg(mobile)]
+#[tauri::command]
+pub async fn voice_quality<R: Runtime>(
+    app: AppHandle<R>,
+    locale: String,
+) -> Result<serde_json::Value, String> {
+    app.state::<Voice<R>>()
+        .0
+        .run_mobile_plugin_async("voiceQuality", VoiceLocalePayload { locale: &locale })
+        .await
+        .map_err(|error| error.to_string())
+}
+
 #[cfg(mobile)]
 #[tauri::command]
 pub fn voice_install_data<R: Runtime>(app: AppHandle<R>) -> Result<(), String> {
@@ -204,6 +220,12 @@ pub fn voice_speak(_text: String, _locale: String) -> Result<(), String> {
 #[cfg(not(mobile))]
 #[tauri::command]
 pub fn voice_listen(_locale: String) -> Result<serde_json::Value, String> {
+    Err("voice mode is not available in this build".to_string())
+}
+
+#[cfg(not(mobile))]
+#[tauri::command]
+pub fn voice_quality(_locale: String) -> Result<serde_json::Value, String> {
     Err("voice mode is not available in this build".to_string())
 }
 

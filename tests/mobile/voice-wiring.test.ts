@@ -103,3 +103,41 @@ describe("iOS voice-mode wiring", () => {
     expect(plugin).toContain("AVAudioSession.sharedInstance().recordPermission");
   });
 });
+
+describe("voice locale and voice quality", () => {
+  const main = read("mobile/src/main.ts");
+
+  it("speaks in the learner's current language, not the pairing snapshot", () => {
+    // system.locale defaults to "en", and the pairing payload freezes whatever
+    // it was at pairing time. A device paired before the language was stored
+    // otherwise keeps speaking English while the UI and evaluation follow the
+    // database (reported on an iPad running entirely in German).
+    expect(main).toContain(
+      "learnerLocale ?? currentPairing?.settings?.locale ?? navigator.language",
+    );
+  });
+
+  it("ranks voices by quality, with the system's own pick breaking ties", () => {
+    const plugin = read("mobile/src-tauri/ios/Sources/VoicePlugin.swift");
+    expect(plugin).toContain("case .premium: tier = 3");
+    expect(plugin).toContain("case .enhanced: tier = 2");
+    // Ranking on quality alone breaks ties arbitrarily and reaches novelty
+    // voices; verified on macOS, where it chose "Zarvox" over "Samantha".
+    expect(plugin).toContain("AVSpeechSynthesisVoice(language: wanted)?.identifier");
+    expect(plugin).toContain("isSystemDefault");
+
+    const desktop = read("desktop/src-tauri/src/voice.rs");
+    expect(desktop).toContain("AVSpeechSynthesisVoiceQuality::Premium");
+    expect(desktop).toContain("is_system_default");
+    // voiceWithLanguage alone returns the compact voice; it is now only the
+    // tie-break, not the selection.
+    expect(desktop).toContain("fn best_voice(");
+  });
+
+  it("tells the learner where better voices come from", () => {
+    expect(main).toContain('invoke<{ quality?: string }>("voice_quality"');
+    expect(main).toContain('t("voice_compact_voice_hint")');
+    const i18n = read("mobile/src/i18n.ts");
+    expect(i18n.match(/voice_compact_voice_hint/g)?.length).toBe(2);
+  });
+});

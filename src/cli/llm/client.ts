@@ -51,6 +51,13 @@ const CLOUD_CURRICULUM_IMPORT_HARD_TIMEOUT_MS = 180_000;
 /** Tight output caps for recall — short questions/evaluations, faster round-trips. */
 export const RECALL_QUESTION_MAX_OUTPUT_TOKENS = 400;
 export const RECALL_EVALUATION_MAX_OUTPUT_TOKENS = 1200;
+/**
+ * Budget for the single retry after a truncated evaluation. Kept in sync by
+ * hand with `RECALL_EVALUATION_RETRY_OUTPUT_TOKENS` in
+ * `desktop/src/panel/recall-evaluation.ts`; the CLI must not import from the
+ * desktop layer.
+ */
+export const RECALL_EVALUATION_RETRY_OUTPUT_TOKENS = 4000;
 export const RECALL_DISCUSSION_MAX_OUTPUT_TOKENS = 1200;
 
 const RECALL_ENDPOINT_CACHE_MS = 60_000;
@@ -814,28 +821,40 @@ Evaluation:`;
     };
   }
 
-  const res = await fetchWithInteractiveTimeout(
-    `${endpoint.url}/chat/completions`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${endpoint.apiKey}`,
+  const requestEvaluation = async (maxTokens: number): Promise<string> => {
+    const res = await fetchWithInteractiveTimeout(
+      `${endpoint.url}/chat/completions`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${endpoint.apiKey}`,
+        },
+        body: JSON.stringify({
+          model: endpoint.model,
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userPrompt },
+          ],
+          temperature: 0.2,
+          max_tokens: maxTokens,
+        }),
+        locale: cfg.locale,
       },
-      body: JSON.stringify({
-        model: endpoint.model,
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt },
-        ],
-        temperature: 0.2,
-        max_tokens: RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
-      }),
-      locale: cfg.locale,
-    },
-  );
+    );
+    return readChatContent(res, "LLM evaluation");
+  };
 
-  const text = await readChatContent(res, "LLM evaluation");
+  // A reasoning model can spend the whole allowance thinking before writing a
+  // visible token, so no single budget is right for every model. The first
+  // attempt stays cheap; only a truncated one is retried with real room.
+  let text: string;
+  try {
+    text = await requestEvaluation(RECALL_EVALUATION_MAX_OUTPUT_TOKENS);
+  } catch (error) {
+    if (!(error instanceof LlmResponseTruncatedError)) throw error;
+    text = await requestEvaluation(RECALL_EVALUATION_RETRY_OUTPUT_TOKENS);
+  }
   return {
     text,
     model: endpoint.model,

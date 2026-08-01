@@ -137,6 +137,8 @@ const DE: Messages = {
   voice_answer_recognized:
     "Antwort erkannt. Erwartete Antwort wird vorgelesen.",
   voice_paused_msg: "Sprachmodus pausiert: {message}",
+  voice_compact_voice_hint:
+    "Tipp: Unter Einstellungen › Bedienungshilfen › Gesprochene Inhalte › Stimmen gibt es natürlicher klingende Stimmen zum Laden.",
   voice_paused_typing: "Sprachmodus pausiert. Tippen bleibt verfügbar.",
   voice_pause_failed: "Sprachmodus konnte nicht pausiert werden: {error}",
   voice_data_opened:
@@ -312,6 +314,8 @@ const EN: Messages = {
   no_domain: "No domain",
   voice_answer_recognized: "Answer recognised. Reading the expected answer.",
   voice_paused_msg: "Voice mode paused: {message}",
+  voice_compact_voice_hint:
+    "Tip: Settings › Accessibility › Spoken Content › Voices offers more natural voices to download.",
   voice_paused_typing: "Voice mode paused. Typing stays available.",
   voice_pause_failed: "Could not pause voice mode: {error}",
   voice_data_opened:

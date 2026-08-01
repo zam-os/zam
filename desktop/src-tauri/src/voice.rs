@@ -123,8 +123,10 @@ mod platform {
     use block2::RcBlock;
     use objc2::runtime::AnyObject;
     use objc2::AllocAnyThread;
+    use objc2::rc::Retained;
     use objc2_avf_audio::{
-        AVAudioRecorder, AVSpeechSynthesisVoice, AVSpeechSynthesizer, AVSpeechUtterance,
+        AVAudioRecorder, AVSpeechSynthesisVoice, AVSpeechSynthesisVoiceQuality,
+        AVSpeechSynthesizer, AVSpeechUtterance,
     };
     use objc2_foundation::{
         NSDate, NSDictionary, NSLocale, NSNumber, NSRunLoop, NSString, NSURL,
@@ -268,10 +270,63 @@ mod platform {
         }
     }
 
+    /// Rank a voice: quality, then the system's own pick, then exact region.
+    ///
+    /// macOS ships a small `Default` (compact) voice per language and
+    /// downloads `Enhanced`/`Premium` ones only on request (System Settings ›
+    /// Accessibility › Spoken Content › System Voice › Manage Voices).
+    /// `voiceWithLanguage` returns the system *default* for the language,
+    /// which is normally the compact one — so read-aloud sounded a decade old
+    /// even where a good voice was installed. An accent difference is far
+    /// smaller than a synthesis-generation difference, so quality outranks
+    /// region.
+    fn voice_rank(
+        voice: &AVSpeechSynthesisVoice,
+        wanted: &str,
+        system_default: Option<&str>,
+    ) -> (i32, i32, i32) {
+        let quality = unsafe { voice.quality() };
+        let tier = if quality == AVSpeechSynthesisVoiceQuality::Premium {
+            3
+        } else if quality == AVSpeechSynthesisVoiceQuality::Enhanced {
+            2
+        } else {
+            1
+        };
+        // Equal quality must not be broken arbitrarily: speechVoices() also
+        // contains novelty voices (Zarvox, Bells, …), and picking the max of an
+        // unordered list happily returned those over Anna and Samantha. The
+        // voice the system itself nominates for the language is the sane peer
+        // among equals.
+        let identifier = unsafe { voice.identifier() }.to_string();
+        let is_system_default =
+            i32::from(system_default.is_some_and(|id| id == identifier));
+        let language = unsafe { voice.language() }.to_string();
+        let exact = i32::from(language.eq_ignore_ascii_case(wanted));
+        (tier, is_system_default, exact)
+    }
+
+    /// Best installed voice for `locale`, or `None` when the language has none.
+    pub fn best_voice(locale: &str) -> Option<Retained<AVSpeechSynthesisVoice>> {
+        let prefix = locale.split('-').next().unwrap_or(locale).to_ascii_lowercase();
+        let system_default = unsafe {
+            AVSpeechSynthesisVoice::voiceWithLanguage(Some(&NSString::from_str(locale)))
+        }
+        .map(|voice| unsafe { voice.identifier() }.to_string());
+        unsafe { AVSpeechSynthesisVoice::speechVoices() }
+            .into_iter()
+            .filter(|voice| {
+                unsafe { voice.language() }
+                    .to_string()
+                    .to_ascii_lowercase()
+                    .starts_with(&prefix)
+            })
+            .max_by_key(|voice| voice_rank(voice, locale, system_default.as_deref()))
+    }
+
     pub fn speak(text: &str, locale: &str) -> Result<(), String> {
         unsafe {
-            let voice =
-                AVSpeechSynthesisVoice::voiceWithLanguage(Some(&NSString::from_str(locale)));
+            let voice = best_voice(locale);
             if voice.is_none() {
                 return Err(format!("no installed macOS system voice for {locale}"));
             }
@@ -1061,6 +1116,39 @@ pub fn voice_discard_capture(path: String) -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// Regression guard: ranking by quality alone broke ties arbitrarily and
+    /// picked novelty voices — on this machine it chose "Zarvox" for en-US
+    /// over "Samantha". Where no better-quality voice is installed, the
+    /// selection must land on exactly what the system nominates.
+    #[cfg(target_os = "macos")]
+    #[test]
+    fn never_downgrades_to_a_novelty_voice() {
+        for tag in ["de-DE", "en-US"] {
+            let system_default = unsafe {
+                objc2_avf_audio::AVSpeechSynthesisVoice::voiceWithLanguage(Some(
+                    &objc2_foundation::NSString::from_str(tag),
+                ))
+            };
+            let Some(system_default) = system_default else {
+                continue; // no voice for this language on this machine
+            };
+            let chosen = platform::best_voice(tag).expect("a voice was available");
+            let default_tier = unsafe { system_default.quality() };
+            let chosen_tier = unsafe { chosen.quality() };
+            assert!(
+                chosen_tier.0 >= default_tier.0,
+                "{tag}: chose a lower-quality voice than the system default",
+            );
+            if chosen_tier == default_tier {
+                assert_eq!(
+                    unsafe { chosen.identifier() }.to_string(),
+                    unsafe { system_default.identifier() }.to_string(),
+                    "{tag}: equal quality must resolve to the system's own pick",
+                );
+            }
+        }
+    }
 
     #[test]
     fn normalizes_locales_like_the_kernel() {

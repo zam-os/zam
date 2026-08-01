@@ -80,15 +80,65 @@ class VoicePlugin: Plugin, AVSpeechSynthesizerDelegate {
     return recognizer
   }
 
-  /// An installed voice for the language, preferring an exact region match.
+  /// The best installed voice for the language.
+  ///
+  /// Quality is ranked before region. iOS ships every language with a small
+  /// `.default` (compact) voice and downloads `.enhanced` / `.premium` ones
+  /// only when the user asks for them in Settings › Accessibility › Spoken
+  /// Content › Voices. Taking the first match therefore reliably picked the
+  /// *worst* installed voice, which is what made the read-aloud sound a
+  /// decade old even on devices that had a good voice available.
+  ///
+  /// Among voices of equal quality the system's own pick for the language
+  /// wins, then an exact region match — a premium de-AT voice still beats a
+  /// compact de-DE one, because an accent is a far smaller difference than a
+  /// synthesis generation.
   private static func voice(for tag: String) -> AVSpeechSynthesisVoice? {
     let wanted = normalized(tag)
     let language = String(wanted.prefix(2))
+    // The voice the system itself nominates for the language. Equal quality
+    // must not be broken arbitrarily — speechVoices() also carries novelty
+    // voices, and taking an arbitrary maximum picked those over the sensible
+    // default (verified on macOS, where it chose "Zarvox" over "Samantha").
+    let systemDefault = AVSpeechSynthesisVoice(language: wanted)?.identifier
     let installed = AVSpeechSynthesisVoice.speechVoices().filter {
       $0.language.lowercased().hasPrefix(language)
     }
-    return installed.first { $0.language.caseInsensitiveCompare(wanted) == .orderedSame }
-      ?? installed.first
+    return installed.max { left, right in
+      rank(left, wanted, systemDefault) < rank(right, wanted, systemDefault)
+    }
+  }
+
+  private static func rank(
+    _ voice: AVSpeechSynthesisVoice, _ wanted: String, _ systemDefault: String?
+  ) -> (Int, Int, Int) {
+    let tier: Int
+    switch voice.quality {
+    case .premium: tier = 3
+    case .enhanced: tier = 2
+    default: tier = 1
+    }
+    let isSystemDefault = voice.identifier == systemDefault ? 1 : 0
+    let exactRegion = voice.language.caseInsensitiveCompare(wanted) == .orderedSame ? 1 : 0
+    return (tier, isSystemDefault, exactRegion)
+  }
+
+  /// Quality of the voice a session would actually use, for the UI hint.
+  /// `"default"` means only a compact voice is installed and the learner can
+  /// get a much better one with a one-time download.
+  @objc public func voiceQuality(_ invoke: Invoke) throws {
+    let args = try invoke.parseArgs(VoiceLocaleArgs.self)
+    guard let voice = Self.voice(for: args.locale) else {
+      invoke.resolve(["quality": "none"])
+      return
+    }
+    let quality: String
+    switch voice.quality {
+    case .premium: quality = "premium"
+    case .enhanced: quality = "enhanced"
+    default: quality = "default"
+    }
+    invoke.resolve(["quality": quality, "voice": voice.name])
   }
 
   // MARK: - Permissions

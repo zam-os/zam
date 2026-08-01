@@ -14,6 +14,17 @@ import { languageName } from "../../../src/kernel/system/language-names.js";
  */
 export const RECALL_EVALUATION_MAX_OUTPUT_TOKENS = 1200;
 
+/**
+ * Budget for the single retry after a truncated evaluation.
+ *
+ * A reasoning model's chain of thought is unbounded in principle, so no fixed
+ * first budget is correct for every model: 256 was too small for all of them,
+ * 1200 covers most, and MiMo still spent it thinking before writing a word.
+ * Rather than making every model pay for the worst case, the first attempt
+ * stays cheap and only a truncated one is retried with real room.
+ */
+export const RECALL_EVALUATION_RETRY_OUTPUT_TOKENS = 4000;
+
 export interface RecallEvaluationCard {
   slug: string;
   question?: string;

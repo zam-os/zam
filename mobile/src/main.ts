@@ -822,11 +822,18 @@ async function pauseVoiceMode(): Promise<void> {
 }
 
 function startVoiceMode(): void {
+  // `learnerLocale` first, exactly as the evaluation path does. The pairing
+  // payload's locale is a snapshot taken once, when the device was paired, and
+  // `system.locale` defaults to "en" — so a device paired before the learner's
+  // language was stored keeps speaking English forever, while the UI and the
+  // evaluation have long since followed the database. And because "en" is a
+  // real value, `??` never falls through to the device language either.
   const locale = resolveVoiceLocale(
-    currentPairing?.settings?.locale ?? navigator.language,
+    learnerLocale ?? currentPairing?.settings?.locale ?? navigator.language,
   );
   installVoiceDataButton.hidden = true;
   updateVoiceButton();
+  void hintWhenOnlyCompactVoice(locale);
   void voiceController
     .start(locale)
     .catch((error) => {
@@ -838,6 +845,29 @@ function startVoiceMode(): void {
     })
     .finally(updateVoiceButton);
   updateVoiceButton();
+}
+
+/**
+ * Point at the one-time download when only a compact voice is installed.
+ *
+ * Every iOS language ships a small `default`-quality voice; the natural
+ * sounding ones are downloaded on request. Without this the learner has no way
+ * to know the flat read-aloud is a missing download rather than what ZAM
+ * sounds like.
+ */
+async function hintWhenOnlyCompactVoice(locale: VoiceLocale): Promise<void> {
+  if (!platformFeatures.voice) return;
+  try {
+    const result = await invoke<{ quality?: string }>("voice_quality", {
+      locale,
+    });
+    if (result?.quality === "default") {
+      setReviewStatus(t("voice_compact_voice_hint"));
+    }
+  } catch {
+    // Android has no such command, and a missing hint must never stop a
+    // session from starting.
+  }
 }
 
 function renderCurrentReview(message = ""): void {
