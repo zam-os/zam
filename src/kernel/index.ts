@@ -5,8 +5,15 @@
  * It is pure learning science logic.
  */
 
+export type {
+  ActivityPeriod,
+  GetReviewActivityOptions,
+  ReviewActivity,
+  ReviewActivityBucket,
+} from "./analytics/progress.js";
 export type { DomainCompetence, UserStats } from "./analytics/stats.js";
 // Analytics
+export { getReviewActivity } from "./analytics/progress.js";
 export { getDomainCompetence, getUserStats } from "./analytics/stats.js";
 export type { ADOConfig, WorkItem } from "./connectors/azure-devops.js";
 // Connectors
