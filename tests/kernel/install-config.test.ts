@@ -1,12 +1,16 @@
+import { spawn } from "node:child_process";
 import {
+  existsSync,
   mkdtempSync,
   readdirSync,
   readFileSync,
   rmSync,
+  utimesSync,
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, dirname, join } from "node:path";
+import { pathToFileURL } from "node:url";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   detectSyncProvider,
@@ -15,11 +19,11 @@ import {
   getActiveWorkspaceId,
   getAgentConnectAutoDone,
   getCompanionCollapsed,
-  getCompanionSelectedAntigravityModelId,
   getCompanionSelectedAntigravityEvaluatorId,
-  getCompanionSelectedVscodeEvaluatorId,
+  getCompanionSelectedAntigravityModelId,
   getCompanionSelectedEvaluatorId,
   getCompanionSelectedUserId,
+  getCompanionSelectedVscodeEvaluatorId,
   getCompanionSelectedVscodeModelId,
   getConfiguredWorkspaces,
   getInstallMode,
@@ -33,11 +37,11 @@ import {
   setActiveWorkspaceId,
   setAgentConnectAutoDone,
   setCompanionCollapsed,
-  setCompanionSelectedAntigravityModelId,
   setCompanionSelectedAntigravityEvaluatorId,
-  setCompanionSelectedVscodeEvaluatorId,
+  setCompanionSelectedAntigravityModelId,
   setCompanionSelectedEvaluatorId,
   setCompanionSelectedUserId,
+  setCompanionSelectedVscodeEvaluatorId,
   setCompanionSelectedVscodeModelId,
   setInstallMode,
   setOnboardingDone,
@@ -150,10 +154,7 @@ describe("install config", () => {
 
   it("falls back to the default persona for an unknown on-disk value", () => {
     const path = tempConfigPath();
-    saveInstallConfig(
-      { onboarding: { persona: "astronaut" } } as never,
-      path,
-    );
+    saveInstallConfig({ onboarding: { persona: "astronaut" } } as never, path);
     expect(getOnboardingPersona(path)).toBe("private");
   });
 
@@ -357,8 +358,12 @@ describe("install config", () => {
 
     setCompanionSelectedAntigravityModelId("google:gemini-3.5-flash", path);
 
-    expect(getCompanionSelectedAntigravityModelId(path)).toBe("google:gemini-3.5-flash");
-    expect(loadInstallConfig(path).companion?.selectedAntigravityModelId).toBe("google:gemini-3.5-flash");
+    expect(getCompanionSelectedAntigravityModelId(path)).toBe(
+      "google:gemini-3.5-flash",
+    );
+    expect(loadInstallConfig(path).companion?.selectedAntigravityModelId).toBe(
+      "google:gemini-3.5-flash",
+    );
 
     setCompanionSelectedAntigravityModelId(undefined, path);
     expect(getCompanionSelectedAntigravityModelId(path)).toBeUndefined();
@@ -374,8 +379,12 @@ describe("install config", () => {
 
     expect(getCompanionSelectedVscodeEvaluatorId(path)).toBe("vscode-lm");
     expect(getCompanionSelectedAntigravityEvaluatorId(path)).toBe("quick-mode");
-    expect(loadInstallConfig(path).companion?.selectedVscodeEvaluatorId).toBe("vscode-lm");
-    expect(loadInstallConfig(path).companion?.selectedAntigravityEvaluatorId).toBe("quick-mode");
+    expect(loadInstallConfig(path).companion?.selectedVscodeEvaluatorId).toBe(
+      "vscode-lm",
+    );
+    expect(
+      loadInstallConfig(path).companion?.selectedAntigravityEvaluatorId,
+    ).toBe("quick-mode");
 
     setCompanionSelectedVscodeEvaluatorId(undefined, path);
     expect(getCompanionSelectedVscodeEvaluatorId(path)).toBeUndefined();
@@ -544,5 +553,107 @@ describe("install config", () => {
       ),
     ).toBe("iCloud Drive");
     expect(detectSyncProvider("/Users/x/Documents/zam")).toBeNull();
+  });
+});
+
+describe("cross-process config writes", () => {
+  const tempDirs: string[] = [];
+
+  afterEach(() => {
+    for (const dir of tempDirs.splice(0)) {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  function tempConfigPath(): string {
+    const dir = mkdtempSync(join(tmpdir(), "zam-config-lock-"));
+    tempDirs.push(dir);
+    return join(dir, "config.json");
+  }
+
+  /**
+   * Append `rounds` distinct keys to the Companion section from a separate OS
+   * process, so several writers' load-mutate-save cycles really interleave.
+   * `saveInstallConfig` replaces the file atomically, so a torn read is not
+   * what this exercises — the question is whether one writer's snapshot of the
+   * *whole* config silently drops another writer's concurrent change.
+   */
+  function writerProcess(
+    path: string,
+    writer: string,
+    rounds: number,
+  ): ReturnType<typeof spawn> {
+    // The writers wait on a barrier file before starting: without it, Node's
+    // startup cost staggers them so far apart that their read-modify-write
+    // windows never overlap and the race under test cannot occur.
+    const script = `
+      const { existsSync } = await import("node:fs");
+      const { setCompanionCollapsed } = await import(${JSON.stringify(
+        pathToFileURL(join(process.cwd(), "dist", "index.js")).href,
+      )});
+      const idle = new Int32Array(new SharedArrayBuffer(4));
+      while (!existsSync(${JSON.stringify(`${path}.start`)})) {
+        Atomics.wait(idle, 0, 0, 5);
+      }
+      for (let i = 0; i < ${rounds}; i += 1) {
+        setCompanionCollapsed(
+          ${JSON.stringify(writer)} + "-" + i,
+          true,
+          ${JSON.stringify(path)},
+        );
+      }
+    `;
+    return spawn(process.execPath, ["--input-type=module", "-e", script], {
+      stdio: "ignore",
+    });
+  }
+
+  it("keeps concurrent Companion writes from overwriting each other", async () => {
+    const path = tempConfigPath();
+    const writers = ["alpha", "beta", "gamma", "delta"];
+    const rounds = 150;
+
+    const running = writers.map(
+      (writer) =>
+        new Promise<void>((resolve, reject) => {
+          const child = writerProcess(path, writer, rounds);
+          child.on("error", reject);
+          child.on("exit", (code) =>
+            code === 0
+              ? resolve()
+              : reject(new Error(`writer exited with ${code}`)),
+          );
+        }),
+    );
+    // Give every writer time to boot, then release them at once.
+    await new Promise((resolve) => setTimeout(resolve, 1_500));
+    writeFileSync(`${path}.start`, "", "utf8");
+    await Promise.all(running);
+
+    // Every single write must have survived. With the load and the save
+    // unsynchronized, a writer's snapshot drops whatever another writer
+    // committed in between — the Companion setting that reverts by itself.
+    const stored = getCompanionCollapsed(path);
+    const missing = writers.flatMap((writer) =>
+      Array.from({ length: rounds }, (_, i) => `${writer}-${i}`).filter(
+        (key) => stored[key] !== true,
+      ),
+    );
+    expect(missing).toEqual([]);
+    // And no lock file is left behind to block the next write.
+    expect(existsSync(`${path}.lock`)).toBe(false);
+  }, 60_000);
+
+  it("breaks a lock left behind by a process that died holding it", () => {
+    const path = tempConfigPath();
+    const lockPath = `${path}.lock`;
+    writeFileSync(lockPath, "999999\n", "utf8");
+    const stale = Date.now() - 60_000;
+    utimesSync(lockPath, new Date(stale), new Date(stale));
+
+    setCompanionCollapsed("recall", true, path);
+
+    expect(getCompanionCollapsed(path)).toEqual({ recall: true });
+    expect(existsSync(lockPath)).toBe(false);
   });
 });

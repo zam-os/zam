@@ -15,6 +15,7 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import type { CallToolResult, Tool } from "@modelcontextprotocol/sdk/types.js";
 import * as vscode from "vscode";
 import {
+  getUiHostFocusPath,
   getUiHostIntentPath,
   getUiHostsDirPath,
   pruneUiHosts,
@@ -150,7 +151,7 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
-function childEnvironment(): Record<string, string> {
+function childEnvironment(hostId: string): Record<string, string> {
   return {
     ...Object.fromEntries(
       Object.entries(process.env).filter(
@@ -158,6 +159,10 @@ function childEnvironment(): Record<string, string> {
       ),
     ),
     ZAM_DISABLE_UI_INTENT: "1",
+    // Lets the panel's own `zam mcp` record the focused OKF article against
+    // this window rather than into the machine-wide snapshot every window
+    // shares (src/cli/okf-focus.ts).
+    ZAM_COMPANION_HOST_ID: hostId,
   };
 }
 
@@ -188,6 +193,7 @@ class ZamMcpHost {
   public constructor(
     private readonly launchConfigPath: string,
     private readonly output: vscode.OutputChannel,
+    private readonly hostId: string,
   ) {}
 
   /**
@@ -233,7 +239,7 @@ class ZamMcpHost {
         const transport = new StdioClientTransport({
           command: launch.command,
           args: launch.args,
-          env: childEnvironment(),
+          env: childEnvironment(this.hostId),
           stderr: "pipe",
           ...(workspace ? { cwd: workspace } : {}),
         });
@@ -781,7 +787,7 @@ export async function activate(
   const output = vscode.window.createOutputChannel("ZAM Companion", {
     log: true,
   });
-  const mcp = new ZamMcpHost(launchConfigPath, output);
+  const mcp = new ZamMcpHost(launchConfigPath, output, hostId);
   activeMcpHost = mcp;
   const provider = new CompanionViewProvider(context.extensionUri, mcp, output);
 
@@ -898,6 +904,7 @@ export async function activate(
   releaseHostRegistration = async () => {
     await unlink(hostEntryPath).catch(() => {});
     await unlink(ownIntentPath).catch(() => {});
+    await unlink(getUiHostFocusPath(hostId, home)).catch(() => {});
   };
   context.subscriptions.push(
     { dispose: () => clearInterval(heartbeatTimer) },

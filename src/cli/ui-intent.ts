@@ -91,6 +91,20 @@ export function getUiHostIntentPath(
   return join(home, ".zam", "intents", `${hostId}.json`);
 }
 
+/**
+ * The OKF article one window's reader currently shows. Scoped per host for
+ * the same reason intents are: two windows each browsing the knowledge base
+ * would otherwise overwrite one another's "focused article", and
+ * `zam_okf_focused` would resolve "import the open article" to whichever
+ * window last painted (see `src/cli/okf-focus.ts`).
+ */
+export function getUiHostFocusPath(
+  hostId: string,
+  home: string = homedir(),
+): string {
+  return join(home, ".zam", "focus", `${hostId}.json`);
+}
+
 function compactStringInput(
   input: Record<string, string | undefined>,
 ): Record<string, string> {
@@ -197,10 +211,14 @@ export async function pruneUiHosts(
 ): Promise<void> {
   const now = opts.now ?? Date.now();
   const maxAgeMs = opts.maxAgeMs ?? 60_000;
+  // `dir` is `<home>/.zam/hosts`, so the sibling per-host directories hang off
+  // its parent — the same derivation the path helpers above encode.
+  const zamDir = dirname(dir);
   for (const entry of await readUiHosts(dir)) {
     if (heartbeatAge(entry, now) <= maxAgeMs) continue;
     await unlink(join(dir, `${entry.hostId}.json`)).catch(() => {});
     await unlink(entry.intentPath).catch(() => {});
+    await unlink(join(zamDir, "focus", `${entry.hostId}.json`)).catch(() => {});
   }
 }
 

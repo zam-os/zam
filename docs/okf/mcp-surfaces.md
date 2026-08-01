@@ -130,6 +130,24 @@ window's first workspace folder — and consumes only its own intent file under
   the shared file only while focused, and records every id it sees so it never
   replays another window's request on regaining focus.
 
+## Machine-local settings under concurrency
+
+`~/.zam/config.json` holds every machine-local setting — install mode, model
+registry, workspaces, and the Companion's learner, evaluator, and model
+selections. Each window runs its own `zam mcp`, so several processes write it
+at once.
+
+- `saveInstallConfig` replaces the file through a temp file and a rename, so no
+  reader ever sees a torn file.
+- Every setter goes through `updateInstallConfig`, which loads, mutates, and
+  saves under an exclusive `config.json.lock`. The load happens *inside* the
+  lock: without it two processes interleave and one silently drops the other's
+  change, which the learner sees as a setting reverting by itself.
+- The lock is best-effort by design. A lock held longer than 2 seconds, or left
+  behind by a process that died, is broken once and then taken; a location
+  where no lock can be created falls back to writing unlocked. Failing to lock
+  must never stop ZAM from saving its own settings.
+
 # OKF visualizer
 
 `zam_okf_visualize` accepts an optional initial `view`:
@@ -218,7 +236,8 @@ wrapping so the focused title remains the primary readable label.
 The reader's **import as learning content** action starts an agent-guided flow:
 
 1. The reader records its focused article through the app-only `zam_okf_focus`
-   tool in `~/.zam/okf-focus.json`.
+   tool, in `~/.zam/focus/<hostId>.json` for its own window and in
+   `~/.zam/okf-focus.json` unscoped.
 2. A host advertising MCP Apps `message` receives the decomposition request via
    `ui/message`; the VS Code Companion routes it to the editor Chat view.
 3. A host without chat shows the same instruction as copyable text.
@@ -229,6 +248,15 @@ The reader's **import as learning content** action starts an agent-guided flow:
 A typed request such as “import this OKF” in Claude Code, Copilot, Codex, or
 another connected harness resolves the same machine-local focus through the
 model-visible `zam_okf_focused` tool.
+
+The focus is scoped per window like the UI intents above. The writing panel
+learns its window from `ZAM_COMPANION_HOST_ID`, which the extension injects
+into the `zam mcp` child it spawns; the reader resolves the window from its own
+working directory through the host registry. A window's article wins over the
+unscoped file even when the unscoped one is newer — the agent asking is working
+inside one window, and that window's reader is the one it means. Surfaces
+outside an editor window, such as the desktop app, write and read the unscoped
+file alone.
 
 `zam_okf_import` writes tokens, prerequisite edges, and per-user cards in one
 transaction:
@@ -268,4 +296,4 @@ The same operation is available through `zam bridge okf-import`.
 - [ADR 2026-07-18c — OKF Import Handoff](../adr/2026-07-18c-okf-import-handoff.md)
 - [ADR 2026-07-29b — OKF Freshness Radar](../adr/2026-07-29b-okf-freshness-radar.md)
 - [ADR 2026-07-30 — OKF Reader Navigation and Mermaid Rendering](../adr/2026-07-30-okf-reader-navigation-and-mermaid.md)
-- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/ui-intent.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/extension.ts`, `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-mermaid.ts`, `desktop/src/panel/okf-panel.html`, `vite.config.panel.mts`
+- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/ui-intent.ts`, `src/kernel/system/install-config.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/extension.ts`, `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-mermaid.ts`, `desktop/src/panel/okf-panel.html`, `vite.config.panel.mts`

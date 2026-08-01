@@ -542,6 +542,7 @@ export {
   setMachineVoicePreference,
   setOnboardingDone,
   setOnboardingPersona,
+  updateInstallConfig,
   updateMachineCompanionConfig,
   upsertConfiguredWorkspace,
 } from "./system/install-config.js";
