@@ -13,6 +13,7 @@ import {
   serializeZamPairPayload,
   ZAM_PAIR_TYPE,
   ZAM_PAIR_VERSION,
+  type ZamPairLlmEndpoint,
   type ZamPairPayloadV1,
 } from "../../src/bridge/mobile-pairing.js";
 import {
@@ -69,6 +70,7 @@ import {
   visionImportUnavailableReason,
 } from "./vision-config.js";
 import { decomposeImageViaVision } from "./vl-import.js";
+import { resolveMobileCloudChain } from "./model-registry.js";
 import { synthesizeViaCloud, transcribeViaCloud } from "./speech.js";
 import {
   buildMobileAvailability,
@@ -330,7 +332,7 @@ function currentVoicePlan(): VoiceEnginePlan {
     voicePreference,
     buildMobileAvailability(
       voiceDeviceCapabilities ?? { sttLocal: true, ttsLocal: true },
-      cloudSpeechAvailability(currentPairing?.llm),
+      cloudSpeechAvailability(cloudEndpoints),
     ),
   );
 }
@@ -340,12 +342,12 @@ const voicePort: VoicePort = createMobileTieredVoicePort(
   voiceNative,
   {
     transcribe: (audioBase64, mime, locale) => {
-      const endpoint = currentPairing?.llm?.stt;
+      const endpoint = cloudEndpoints.stt;
       if (!endpoint) throw new Error(t("voice_no_cloud_stt"));
       return transcribeViaCloud(endpoint, { audioBase64, mime, locale });
     },
     synthesize: (text, locale) => {
-      const endpoint = currentPairing?.llm?.tts;
+      const endpoint = cloudEndpoints.tts;
       if (!endpoint) throw new Error(t("voice_no_cloud_tts"));
       return synthesizeViaCloud(endpoint, { text, locale });
     },
@@ -419,6 +421,42 @@ async function refreshLearnerLocaleFromDb(): Promise<void> {
   }
 }
 
+/**
+ * Cloud models this device can call, loaded from the learner database
+ * (ADR 2026-07-23). Refreshed whenever the database is, so a model changed on
+ * the desktop reaches the phone without re-pairing.
+ */
+let cloudEndpoints: Record<
+  "text" | "stt" | "tts",
+  ZamPairLlmEndpoint | null
+> = { text: null, stt: null, tts: null };
+
+async function refreshCloudEndpointsFromDb(): Promise<void> {
+  try {
+    const [text, stt, tts] = await Promise.all([
+      resolveMobileCloudChain(db, "text"),
+      resolveMobileCloudChain(db, "stt"),
+      resolveMobileCloudChain(db, "tts"),
+    ]);
+    cloudEndpoints = { text, stt, tts };
+  } catch {
+    // Offline or not yet paired. Whatever was resolved last stays in effect;
+    // the evaluation path falls back to self-rating on its own.
+  }
+}
+
+/**
+ * The recall endpoint chain.
+ *
+ * The database is the source. A payload from 0.24–0.25 still carries an
+ * embedded recall endpoint, and it is honoured while the paired desktop has not
+ * been upgraded yet — otherwise upgrading the phone first would silently take
+ * evaluation away.
+ */
+function recallEndpoint(): ZamPairLlmEndpoint | null {
+  return cloudEndpoints.text ?? currentPairing?.llm?.recall ?? null;
+}
+
 function setPairingStatus(text: string, isError = false): void {
   pairingStatus.textContent = text;
   pairingStatus.classList.toggle("error", isError);
@@ -442,6 +480,7 @@ function showApp(payload: ZamPairPayloadV1): void {
   learnerLocale = payload.settings?.locale ?? navigator.language;
   applyLocale(learnerLocale);
   void refreshLearnerLocaleFromDb();
+  void refreshCloudEndpointsFromDb();
   pairingView.hidden = true;
   appView.hidden = false;
   learner.textContent = payload.learner.userId;
@@ -836,7 +875,7 @@ async function runSmartEvaluation(): Promise<MobileEvaluationResult | null> {
       },
       learnerAnswer: answer,
       locale: learnerLocale ?? navigator.language,
-      endpoint: currentPairing?.llm?.recall ?? null,
+      endpoint: recallEndpoint(),
       onDeviceAvailable: platformFeatures.onDeviceEvaluation,
       ports: evaluationPorts,
     });
@@ -964,7 +1003,7 @@ function renderVoiceSettings(): void {
   for (const option of voiceEngineSelect.options) {
     option.textContent = t(`voice_engine_${option.value.replace(/-/g, "_")}`);
   }
-  const cloud = cloudSpeechAvailability(currentPairing?.llm);
+  const cloud = cloudSpeechAvailability(cloudEndpoints);
   if (voicePreference === "quality-first" && !cloud.stt && !cloud.tts) {
     // The endpoints live in machine-local config on the desktop, so they only
     // reach a device through a pairing code made after one was configured.

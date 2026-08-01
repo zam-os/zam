@@ -66,20 +66,25 @@ export interface MobileVoiceCapabilities {
 }
 
 /**
- * Which speech capabilities the *paired* configuration can serve.
+ * Which speech capabilities the learner's configuration can serve on this
+ * device.
  *
- * Absent endpoints are the normal state for a device paired before 0.26.0:
- * the model registry is machine-local config on the desktop, so speech
- * endpoints only reach a phone through a pairing code generated after one was
- * configured. That is why the unavailable-cloud copy says to pair again rather
- * than to check the network.
+ * The endpoints come from the synced database (ADR 2026-07-23), so "none" means
+ * no cloud speech model is set up for this learner — not that this device was
+ * paired too early. A model added on the desktop shows up here after the next
+ * sync, without re-pairing.
  */
 export function cloudSpeechAvailability(
-  llm: { stt?: ZamPairLlmEndpoint; tts?: ZamPairLlmEndpoint } | undefined,
+  endpoints:
+    | {
+        stt?: ZamPairLlmEndpoint | null;
+        tts?: ZamPairLlmEndpoint | null;
+      }
+    | undefined,
 ): { stt: boolean; tts: boolean } {
   return {
-    stt: isUsableSpeechEndpoint(llm?.stt),
-    tts: isUsableSpeechEndpoint(llm?.tts),
+    stt: isUsableSpeechEndpoint(endpoints?.stt),
+    tts: isUsableSpeechEndpoint(endpoints?.tts),
   };
 }
 

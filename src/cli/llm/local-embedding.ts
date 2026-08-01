@@ -21,11 +21,9 @@ import { ulid } from "ulid";
 import {
   type Database,
   emptyCapabilityFlags,
-  getMachineAiModels,
   isOllamaInstalled,
   type ModelEntry,
   resolveOllamaCommand,
-  saveMachineAiModels,
   setSetting,
 } from "../../kernel/index.js";
 import {
@@ -37,6 +35,7 @@ import {
   DEFAULT_EMBEDDING_MODEL,
   resolveUsableEmbeddingEndpoint,
 } from "./embedder.js";
+import { loadModelRegistry, saveModelRegistry } from "./model-registry.js";
 
 export const OLLAMA_BASE_URL = "http://localhost:11434/v1";
 export const OLLAMA_DOWNLOAD_URL = "https://ollama.com/download";
@@ -96,7 +95,7 @@ export async function getLocalEmbeddingStatus(
   const modelPresent =
     serverOnline &&
     (await deps.listModels(OLLAMA_BASE_URL)).some(isEmbeddingGemmaTag);
-  const registered = getMachineAiModels().some(
+  const registered = (await loadModelRegistry(db)).some(
     (entry) => entry.url === OLLAMA_BASE_URL && entry.capabilities.embedding,
   );
   const usable = (await resolveUsableEmbeddingEndpoint(db)) !== null;
@@ -164,7 +163,7 @@ export async function enableLocalEmbedding(
   const wireModel =
     available.find(isEmbeddingGemmaTag) ?? DEFAULT_EMBEDDING_MODEL;
 
-  const models = getMachineAiModels();
+  const models = await loadModelRegistry(db);
   const existing = models.find(
     (entry) =>
       entry.url === OLLAMA_BASE_URL && isEmbeddingGemmaTag(entry.model),
@@ -199,7 +198,7 @@ export async function enableLocalEmbedding(
   const next = existing
     ? models.map((entry) => (entry.id === existing.id ? saved : entry))
     : [...models, saved];
-  saveMachineAiModels(next);
+  await saveModelRegistry(db, next);
 
   // The embedding role resolution is gated on llm.enabled like recall/text
   // (client.ts resolveCapability); without this, a registered embedder would

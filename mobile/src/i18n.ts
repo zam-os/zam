@@ -152,17 +152,17 @@ const DE: Messages = {
   voice_engine_device_only_desc:
     "Nichts verlässt das Gerät. Fehlt für deine Sprache ein Modell, bleibt der Sprachmodus aus.",
   voice_engine_device_first_desc:
-    "Das Gerät zuerst, kostenlos und privat. Kann es deine Sprache nicht, wird ein gekoppeltes Cloud-Modell genutzt.",
+    "Das Gerät zuerst, kostenlos und privat. Kann es deine Sprache nicht, wird ein Cloud-Modell genutzt.",
   voice_engine_quality_first_desc:
-    "Gekoppeltes Cloud-Modell zuerst: bessere Erkennung, dafür Kosten pro Nutzung und ein Dritter, der mithört.",
+    "Cloud-Modell zuerst: bessere Erkennung, dafür Kosten pro Nutzung und ein Dritter, der mithört.",
   voice_cloud_unpaired:
-    "Kein Sprachmodell gekoppelt. Richte auf dem Desktop ein Modell mit stt- oder tts-Fähigkeit ein und koppele dieses Gerät neu — bis dahin bleibt der Sprachmodus auf dem Gerät.",
+    "Kein Cloud-Sprachmodell eingerichtet. Aktiviere auf dem Desktop bei einem Cloud-Modell die Fähigkeit stt oder tts — es erscheint hier nach der nächsten Synchronisierung. Bis dahin bleibt der Sprachmodus auf dem Gerät.",
   voice_cloud_notice:
     "Sprachmodus nutzt ein Cloud-Modell. Das Gesprochene verlässt dieses Gerät.",
   voice_no_cloud_stt:
-    "Kein Spracherkennungs-Modell gekoppelt. Koppele dieses Gerät neu, nachdem du auf dem Desktop eins eingerichtet hast.",
+    "Kein Cloud-Modell für Spracherkennung eingerichtet. Aktiviere auf dem Desktop die Fähigkeit stt bei einem Cloud-Modell.",
   voice_no_cloud_tts:
-    "Kein Sprachausgabe-Modell gekoppelt. Koppele dieses Gerät neu, nachdem du auf dem Desktop eins eingerichtet hast.",
+    "Kein Cloud-Modell für Sprachausgabe eingerichtet. Aktiviere auf dem Desktop die Fähigkeit tts bei einem Cloud-Modell.",
   voice_unavailable:
     "Sprachmodus ist für deine Lernsprache nicht verfügbar — weder auf dem Gerät noch über ein gekoppeltes Modell.",
   voice_unavailable_device_only:
@@ -352,17 +352,17 @@ const EN: Messages = {
   voice_engine_device_only_desc:
     "Nothing leaves the device. If your language has no model here, voice mode stays off.",
   voice_engine_device_first_desc:
-    "The device first — free and private. If it cannot serve your language, a paired cloud model steps in.",
+    "The device first — free and private. If it cannot serve your language, a cloud model steps in.",
   voice_engine_quality_first_desc:
-    "Paired cloud model first: better recognition, at a cost per use and with a third party listening.",
+    "Cloud model first: better recognition, at a cost per use and with a third party listening.",
   voice_cloud_unpaired:
-    "No speech model is paired. Set up a model with the stt or tts capability on the desktop and pair this device again — until then voice mode stays on the device.",
+    "No cloud speech model is set up. Enable the stt or tts capability on a cloud model on the desktop — it appears here after the next sync. Until then voice mode stays on the device.",
   voice_cloud_notice:
     "Voice mode is using a cloud model. What you say leaves this device.",
   voice_no_cloud_stt:
-    "No speech-to-text model is paired. Pair this device again after setting one up on the desktop.",
+    "No cloud speech-to-text model is set up. Enable the stt capability on a cloud model on the desktop.",
   voice_no_cloud_tts:
-    "No text-to-speech model is paired. Pair this device again after setting one up on the desktop.",
+    "No cloud text-to-speech model is set up. Enable the tts capability on a cloud model on the desktop.",
   voice_unavailable:
     "Voice mode is not available for your review language — neither on this device nor through a paired model.",
   voice_unavailable_device_only:

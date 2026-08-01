@@ -4048,8 +4048,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     pairing_ready: "{profile} · {count} cards · {llm} · {speech}",
     pairing_llm_yes: "Recall AI included",
     pairing_llm_no: "No Recall AI configured",
-    pairing_speech_yes: "voice mode: cloud speech included",
-    pairing_speech_stt_only: "voice mode: cloud recognition only (no room for the voice)",
+    pairing_speech_yes: "voice mode: cloud speech configured",
+    pairing_speech_stt_only: "voice mode: cloud recognition configured, no cloud voice",
     pairing_speech_no: "voice mode: on the device only",
     pairing_scan_now:
       "Scan now with ZAM Mobile. The code is hidden automatically after five minutes.",
@@ -5117,9 +5117,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     pairing_ready: "{profile} · {count} Karten · {llm} · {speech}",
     pairing_llm_yes: "Recall-KI enthalten",
     pairing_llm_no: "Keine Recall-KI konfiguriert",
-    pairing_speech_yes: "Sprachmodus: Cloud-Sprache enthalten",
+    pairing_speech_yes: "Sprachmodus: Cloud-Sprache eingerichtet",
     pairing_speech_stt_only:
-      "Sprachmodus: nur Cloud-Erkennung (für die Stimme war kein Platz)",
+      "Sprachmodus: Cloud-Erkennung eingerichtet, keine Cloud-Stimme",
     pairing_speech_no: "Sprachmodus: nur auf dem Gerät",
     pairing_scan_now:
       "Jetzt mit ZAM Mobile scannen. Der Code wird nach fünf Minuten automatisch ausgeblendet.",

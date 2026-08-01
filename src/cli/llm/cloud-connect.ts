@@ -14,9 +14,7 @@ import { ulid } from "ulid";
 import {
   type Database,
   emptyCapabilityFlags,
-  getMachineAiModels,
   type ModelEntry,
-  saveMachineAiModels,
   setProviderApiKey,
   setSetting,
 } from "../../kernel/index.js";
@@ -29,6 +27,11 @@ import {
   type CloudProviderDescriptor,
   getCloudProvider,
 } from "./cloud-providers.js";
+import {
+  loadModelRegistry,
+  type ResolvedModelEntry,
+  saveModelRegistry,
+} from "./model-registry.js";
 
 export interface CloudKeyCheck {
   valid: boolean;
@@ -110,7 +113,7 @@ export async function connectCloudProvider(
   }
   deps.storeKey(descriptor.apiKeyRef, key);
 
-  const models = getMachineAiModels();
+  const models = await loadModelRegistry(db);
   const existing = models.find(
     (entry) =>
       entry.url === descriptor.baseUrl &&
@@ -145,10 +148,16 @@ export async function connectCloudProvider(
     };
   }
 
+  // The row goes to the database (it is a hosted endpoint), and carries the key
+  // with it so every client of this learner can call it — an `apiKeyRef` points
+  // into a credentials file on this machine and means nothing to a phone
+  // (ADR 2026-07-23). The ref is kept as well, so the desktop still resolves if
+  // the shared row is ever cleared.
+  const shared: ResolvedModelEntry = { ...saved, apiKey: key };
   const next = existing
-    ? models.map((entry) => (entry.id === existing.id ? saved : entry))
-    : [...models, saved];
-  saveMachineAiModels(next);
+    ? models.map((entry) => (entry.id === existing.id ? shared : entry))
+    : [...models, shared];
+  await saveModelRegistry(db, next);
 
   // The registry path is gated on llm.enabled for recall/text (client.ts);
   // connecting a working cloud model is exactly the moment to open that gate.

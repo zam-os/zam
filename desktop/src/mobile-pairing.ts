@@ -16,10 +16,12 @@ interface PairingPayloadResponse {
   createdUser: boolean;
   hasLlm: boolean;
   /**
-   * Which speech capabilities the code actually carries. Reported rather than
-   * assumed: the QR budget can force `tts` out of an otherwise complete
-   * payload, and a learner who configured both models would otherwise have no
-   * way to know why only half of it reached the device.
+   * Which speech capabilities the device will find once it is online.
+   *
+   * Not a property of the code — the payload carries no models (ADR
+   * 2026-07-23). It answers the question a learner actually has at this moment:
+   * will voice mode be able to use the cloud on that device, or only what the
+   * device itself can do.
    */
   hasSpeech?: { stt: boolean; tts: boolean };
 }

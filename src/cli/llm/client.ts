@@ -18,7 +18,6 @@ import type { DiscussionTurn } from "../../bridge/protocol.js";
 import type {
   Database,
   ModelCapability,
-  ModelEntry,
   SupportedLocale,
 } from "../../kernel/index.js";
 import {
@@ -26,7 +25,6 @@ import {
   getActiveWorkspaceContext,
   getKnowledgeContextByName,
   getMachineAiConfig,
-  getMachineAiModels,
   getProviderApiKey,
   getSetting,
   getSystemProfile,
@@ -37,6 +35,10 @@ import {
   t,
 } from "../../kernel/index.js";
 import { OPENROUTER_PROVIDER } from "./cloud-providers.js";
+import {
+  loadModelRegistry,
+  type ResolvedModelEntry,
+} from "./model-registry.js";
 
 /** Single source of truth for connection defaults (easy to bump as models evolve). */
 export const DEFAULT_LLM_URL = "http://localhost:8000/v1";
@@ -318,7 +320,7 @@ const ROLE_TO_CAPABILITY: Record<LlmRole, ModelCapability> = {
 
 /** Project one registry entry into a resolved {@link ProviderConfig}. */
 function materializeModelEntry(
-  entry: ModelEntry,
+  entry: ResolvedModelEntry,
   base: LlmConfig,
   enabled: boolean,
   maxFrames: number | undefined,
@@ -328,9 +330,14 @@ function materializeModelEntry(
     enabled,
     url,
     model: entry.model || base.model,
-    apiKey: entry.apiKeyRef
-      ? (getProviderApiKey(entry.apiKeyRef) ?? DEFAULT_LLM_API_KEY)
-      : DEFAULT_LLM_API_KEY,
+    // A database row carries its key inline: an `apiKeyRef` points into a
+    // credentials file on one machine and means nothing to another client
+    // (ADR 2026-07-23). Machine rows keep the reference.
+    apiKey:
+      entry.apiKey ||
+      (entry.apiKeyRef
+        ? (getProviderApiKey(entry.apiKeyRef) ?? DEFAULT_LLM_API_KEY)
+        : DEFAULT_LLM_API_KEY),
     apiFlavor: entry.apiFlavor || inferApiFlavor(url),
     locale: base.locale,
     providerName: entry.id,
@@ -364,7 +371,10 @@ export async function resolveCapability(
   db: Database,
   capability: ModelCapability,
 ): Promise<ProviderConfig | null> {
-  const models = getMachineAiModels();
+  // Machine rows and the learner's shared cloud rows, in one ordered list
+  // (ADR 2026-07-23). This is also where a freshly upgraded install moves its
+  // cloud entries out of config.json, once.
+  const models = await loadModelRegistry(db);
   if (models.length === 0) return null;
 
   const isVisual = capability === "image" || capability === "video";
