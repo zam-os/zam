@@ -38,6 +38,7 @@ import {
   assignTokenToContext,
   BUILT_IN_SENSITIVE_MATCHERS,
   type CapabilityFlags,
+  getReviewActivity,
   clearProviderApiKey,
   confirmCardSplit,
   confirmFoundations,
@@ -1029,6 +1030,56 @@ bridgeCommand
               : undefined,
         });
         jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge stats-activity ───────────────────────────────────────────────
+
+bridgeCommand
+  .command("stats-activity")
+  .description(
+    "Review activity series per day/week/month with study time (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .option("--period <day|week|month>", "Activity period (default: day)", "day")
+  .option(
+    "--days <n>",
+    "Activity window in buckets (default: 30 days / 12 weeks / 6 months)",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        const period = opts.period;
+        if (!["day", "week", "month"].includes(period)) {
+          throw new Error(`Invalid period: ${period}`);
+        }
+        const windowBuckets = opts.days
+          ? Number(opts.days)
+          : period === "month"
+            ? 6
+            : period === "week"
+              ? 12
+              : 30;
+        const since = new Date(
+          Date.now() -
+            (period === "month"
+              ? windowBuckets * 31
+              : period === "week"
+                ? windowBuckets * 7
+                : windowBuckets) *
+              86_400_000,
+        )
+          .toISOString()
+          .slice(0, 10);
+        const result = await getReviewActivity(db, userId, {
+          period,
+          since,
+        });
+        jsonOut({ userId, window: windowBuckets, ...result });
       } catch (err) {
         jsonError((err as Error).message);
       }
