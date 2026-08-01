@@ -9,6 +9,7 @@
  */
 
 import {
+  buildVoiceAvailability,
   DEFAULT_VOICE_ENGINE_PREFERENCE,
   HandsFreeReviewController,
   isVoiceEnginePreference,
@@ -56,10 +57,10 @@ export function buildAvailability(
   native: NativeVoiceCapabilities,
   cloud: { stt: boolean; tts: boolean },
 ): VoiceAvailability {
-  return {
-    stt: { local: native.sttLocal, cloud: cloud.stt },
-    tts: { local: native.ttsLocal, cloud: cloud.tts },
-  };
+  return buildVoiceAvailability(
+    { stt: native.sttLocal, tts: native.ttsLocal },
+    cloud,
+  );
 }
 
 /**

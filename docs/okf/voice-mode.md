@@ -1,20 +1,22 @@
 ---
 type: architecture
 title: Hands-Free Voice Mode
-description: Voice review runs one shared kernel loop over a device tier of native OS speech and a cloud tier from the capability registry, resolved per capability and per language from a machine-local user preference.
+description: Voice review runs one shared kernel loop over a device tier of native OS speech and a cloud tier from the capability registry, resolved per capability and per language from a machine-local user preference; companions read the same cloud models from the synced learner database.
 tags:
   - voice
   - recall
   - desktop
   - mobile
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/voice-mode.md"
-timestamp: 2026-07-31T21:00:00Z
+timestamp: 2026-08-01T15:30:00Z
 ---
 
 Voice mode reads a due card aloud, listens for the spoken answer, and maps a
 spoken word to an FSRS rating — so a review session works on a walk, during
 housework, or at the gym. It shipped on Android in 0.22.x, reached the
-macOS/Windows desktop in 0.24.0, and the iPad/iPhone companion after that.
+macOS/Windows desktop in 0.24.0, and the iPad/iPhone companion after that. The
+companions gained the cloud tier in 0.26.0, which is what makes `quality-first`
+selectable on a phone or tablet.
 
 # One loop, many engines
 
@@ -42,8 +44,19 @@ Each surface supplies its own adapter and port:
 | Surface | Port implementation |
 | --- | --- |
 | Desktop | `desktop/src/voice.ts` → Tauri commands in `desktop/src-tauri/src/voice.rs` |
-| Android | `mobile/src/main.ts` → `VoicePlugin.kt` |
-| iOS | `mobile/src/main.ts` → `VoicePlugin.swift` |
+| Android | `mobile/src/voice.ts` → `VoicePlugin.kt` |
+| iOS | `mobile/src/voice.ts` → `VoicePlugin.swift` |
+
+Both surfaces wrap their native port in a **tiered** one
+(`createTieredVoicePort`, `createMobileTieredVoicePort`) that reads the resolved
+plan per utterance and sends each capability to the tier it names. The plan is
+read through a getter rather than captured, so changing the preference in
+Settings takes effect on the next sentence instead of needing the session
+restarted.
+
+Session lifecycle always goes to the native engine, even on a fully cloud plan:
+the microphone belongs to the app shell regardless of who transcribes, and on
+iOS it is what holds — and releases — the audio session.
 
 # Two tiers, resolved per capability
 
@@ -80,7 +93,9 @@ Stored machine-locally as `voice.enginePreference` in `~/.zam/config.json`, read
 and written through `zam bridge voice-preference-get` / `voice-preference-set`.
 It is deliberately **not** a database setting: the right answer depends on the
 hardware in front of the learner, and a Turso-shared database would push a
-phone's answer onto their desktop.
+phone's answer onto their desktop. The companions keep the same setting in
+`localStorage` under `zam.voice-engine.v1`, for exactly that reason — an iPad
+and a desktop hold different answers because they are different machines.
 
 | Preference | Behaviour |
 | --- | --- |
@@ -112,6 +127,27 @@ Windows is the exception to the shared capture path — `RecognizeAsync` owns th
 microphone and returns text directly, so `voice_capture` reports unsupported
 there.
 
+## The same idea on a companion, with different plumbing
+
+A phone has no bridge process, so there is nothing that could read a file the
+plugin wrote. `voice_capture` there returns the audio itself — 16 kHz mono WAV
+as base64 — and the WebView posts it. A recorded answer is a few hundred
+kilobytes, which crosses Tauri's IPC without trouble, and nothing is left in a
+temp directory for a bridge to forget to delete.
+
+`voice_play` is the other direction, and it is a native command rather than an
+`<audio>` element on purpose: synthesized speech has to come out of the route
+the session configured (ducking other audio, speaker rather than earpiece) and
+has to stop when the learner pauses voice mode. A WebView element would do
+neither, and on iOS would additionally be subject to autoplay policy.
+
+The capture heuristics are identical on all three shells — the same −35 dBFS
+floor, the same 8-second onset window, the same 1.2-second trailing silence, the
+same 30-second cap. The learner's preference decides who turns audio into text;
+nothing else about the interaction changes with it. A test pins the three
+constants together, because drifting apart would make the two tiers *feel*
+different for no reason a learner could name.
+
 # Cloud endpoints
 
 `src/cli/llm/speech.ts` calls OpenAI-shaped `/audio/transcriptions` and
@@ -127,6 +163,47 @@ Refused rather than called and failed:
 
 The capability probe recognizes speech models by name and does **not** classify
 them as `text`, so an audio endpoint can never be selected for recall coaching.
+
+# How a companion reaches those endpoints
+
+Through the **synced learner database**, the same way cloud vision already does
+(ADR 2026-07-23) — not through the pairing code.
+
+The registry is split by **reachability**. Cloud rows live in the database under
+`ai.models.cloud`; local endpoints and `agent`-transport entries stay in
+`~/.zam/config.json`, because another device can reach neither a loopback URL
+nor a CLI process on one machine. `resolveCapability` merges the two halves by
+`order`, so the desktop sees one ordered list and the Settings table does not
+need to know which half a row lives in.
+
+Cloud rows carry their API key inline. `apiKeyRef` remains the rule for
+`config.json`, but a reference into a credentials file on one machine means
+nothing to a phone; the key travels in the learner's own database, reached with
+the token from the pairing code — the same trade `llm.vision.api_key` has always
+made.
+
+The companion reads the rows with `mobile/src/model-registry.ts` and applies the
+same two-sided filter the desktop does: a capability must be both chosen by the
+learner **and** confirmed by a probe. Rows it could never call are skipped even
+if present — local, loopback, `agent`, or a non-OpenAI flavour.
+
+The reader is duplicated rather than shared because the desktop's reaches
+`config.json` through Node's `fs`, which a WebView does not have. A test pins the
+settings key and the selection rules across the two.
+
+What follows from this:
+
+- **The pairing code carries no models.** Server database URL, token, learner
+  id, locale — that is all. 0.24–0.25 embedded the recall endpoint and its key
+  as a workaround while the registry was still machine-local; that pressed the
+  payload against `ZAM_PAIR_MAX_BYTES` and put an API key into something a
+  bystander can photograph. Old payloads still parse, and the companion still
+  reads one, so upgrading a phone before its desktop does not remove evaluation.
+- **A model changed on the desktop reaches the phone on the next sync**, with no
+  re-pairing.
+- **A second machine on the same database inherits the cloud models** and keeps
+  its own local ones. The one-time migration out of `config.json` runs only
+  while the database holds no cloud rows.
 
 # Platform requirements
 
@@ -215,7 +292,11 @@ before missing consent — so the learner is told the first thing they have to f
 rather than the last thing that failed.
 
 Because the answer is per-language, the desktop caches the probe per locale and
-re-probes when the app language changes.
+re-probes when the app language changes. The companions do the same through
+their own `voice_capabilities(locale)` command: `SFSpeechRecognizer` plus an
+installed voice on iOS, `isOnDeviceRecognitionAvailable` plus an **embedded**
+(non-network) voice on Android. A shell too old to answer keeps the optimistic
+default, which is how the companion behaved before the cloud tier existed.
 
 # Citations
 
@@ -223,5 +304,6 @@ re-probes when the app language changes.
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
 - [ADR 2026-07-26 — iPadOS Companion Target](../adr/2026-07-26-ipados-companion-target.md)
 - [ADR 2026-07-12 — Unified Capability Model Registry](../adr/2026-07-12-unified-capability-model-registry.md)
-- Tests: `tests/kernel/voice-review.test.ts`, `tests/desktop/voice.test.ts`, `tests/cli/speech.test.ts`, `tests/mobile/voice.test.ts`, `tests/mobile/voice-wiring.test.ts`
-- Code: `src/kernel/recall/voice-review.ts`, `src/cli/llm/speech.ts`, `src/cli/llm/capability-probe.ts`, `desktop/src/voice.ts`, `desktop/src-tauri/src/voice.rs`, `mobile/src/voice.ts`, `mobile/src-tauri/src/voice.rs`, `mobile/src-tauri/ios/Sources/VoicePlugin.swift`, `src/kernel/system/install-config.ts`
+- [ADR 2026-07-23 — Online-Only Server DB, Mobile Gating, Cloud Config in the DB](../adr/2026-07-23-online-only-server-db-and-mobile-gating.md)
+- Tests: `tests/kernel/voice-review.test.ts`, `tests/desktop/voice.test.ts`, `tests/cli/speech.test.ts`, `tests/cli/model-registry.test.ts`, `tests/mobile/model-registry.test.ts`, `tests/cli/mobile-pairing.test.ts`, `tests/bridge/mobile-pairing.test.ts`, `tests/mobile/voice.test.ts`, `tests/mobile/speech.test.ts`, `tests/mobile/voice-wiring.test.ts`
+- Code: `src/kernel/recall/voice-review.ts`, `src/cli/llm/speech.ts`, `src/cli/llm/capability-probe.ts`, `src/cli/llm/model-registry.ts`, `mobile/src/model-registry.ts`, `src/cli/mobile-pairing.ts`, `src/bridge/mobile-pairing.ts`, `desktop/src/voice.ts`, `desktop/src-tauri/src/voice.rs`, `mobile/src/voice.ts`, `mobile/src/speech.ts`, `mobile/src-tauri/src/voice.rs`, `mobile/src-tauri/ios/Sources/VoicePlugin.swift`, `src/kernel/system/install-config.ts`

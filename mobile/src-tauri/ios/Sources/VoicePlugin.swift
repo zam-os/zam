@@ -29,6 +29,11 @@ struct VoiceSpeakArgs: Decodable {
   let locale: String
 }
 
+struct VoicePlayArgs: Decodable {
+  let audioBase64: String
+  let mime: String
+}
+
 /// Silence after speech has started that ends the answer. Matches the desktop
 /// recorder's trailing-silence window so the two feel the same.
 private let trailingSilence: TimeInterval = 1.2
@@ -37,8 +42,13 @@ private let speechOnsetTimeout: TimeInterval = 8.0
 /// Hard cap on any single operation, so a stuck recognizer cannot hold the
 /// microphone for the rest of the session.
 private let maxOperationSeconds: TimeInterval = 30.0
+/// Average power below which the microphone is considered quiet. Matches the
+/// desktop recorder so a captured answer ends at the same point on both.
+private let speechThresholdDb: Float = -35.0
+/// How often the capture loop looks at the meter.
+private let meterInterval: TimeInterval = 0.05
 
-class VoicePlugin: Plugin, AVSpeechSynthesizerDelegate {
+class VoicePlugin: Plugin, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate {
   private let synthesizer = AVSpeechSynthesizer()
   private let audioEngine = AVAudioEngine()
 
@@ -47,15 +57,35 @@ class VoicePlugin: Plugin, AVSpeechSynthesizerDelegate {
   private var silenceTimer: Timer?
   private var deadlineTimer: Timer?
 
+  private var recorder: AVAudioRecorder?
+  private var captureURL: URL?
+  private var meterTimer: Timer?
+  private var captureStarted = false
+  private var captureSilenceSince: Date?
+  private var captureDeadline = Date.distantFuture
+  private var captureOnsetDeadline = Date.distantFuture
+
+  private var player: AVAudioPlayer?
+
   private var active = false
   private var pendingSpeak: Invoke?
   private var pendingListen: Invoke?
+  private var pendingCapture: Invoke?
+  private var pendingPlay: Invoke?
   private var transcript = ""
   private var heardSpeech = false
 
   override init() {
     super.init()
     synthesizer.delegate = self
+  }
+
+  /// True while any speech operation owns the microphone or the speaker. Every
+  /// entry point checks this: two overlapping operations would fight over the
+  /// same audio session and the second one's promise would never settle.
+  private var busy: Bool {
+    pendingSpeak != nil || pendingListen != nil || pendingCapture != nil
+      || pendingPlay != nil
   }
 
   // MARK: - Locale
@@ -271,14 +301,33 @@ class VoicePlugin: Plugin, AVSpeechSynthesizerDelegate {
     active = false
     synthesizer.stopSpeaking(at: .immediate)
     teardownRecognition()
+    teardownCapture(deleteFile: true)
+    player?.stop()
+    player = nil
 
     pendingSpeak?.reject(message)
     pendingSpeak = nil
     pendingListen?.reject(message)
     pendingListen = nil
+    pendingCapture?.reject(message)
+    pendingCapture = nil
+    pendingPlay?.reject(message)
+    pendingPlay = nil
 
     try? AVAudioSession.sharedInstance().setActive(
       false, options: [.notifyOthersOnDeactivation])
+  }
+
+  // MARK: - Capabilities
+
+  /// What this device can serve locally for one review language, so the surface
+  /// can resolve the learner's engine preference without guessing.
+  @objc public func capabilities(_ invoke: Invoke) throws {
+    let args = try invoke.parseArgs(VoiceLocaleArgs.self)
+    invoke.resolve([
+      "sttLocal": Self.recognizer(for: args.locale) != nil,
+      "ttsLocal": Self.voice(for: args.locale) != nil,
+    ])
   }
 
   // MARK: - Speaking
@@ -290,7 +339,7 @@ class VoicePlugin: Plugin, AVSpeechSynthesizerDelegate {
         invoke.reject("Sprachmodus ist nicht aktiv")
         return
       }
-      guard self.pendingSpeak == nil, self.pendingListen == nil else {
+      guard !self.busy else {
         invoke.reject("Eine Sprachoperation läuft bereits")
         return
       }
@@ -340,7 +389,7 @@ class VoicePlugin: Plugin, AVSpeechSynthesizerDelegate {
         invoke.reject("Sprachmodus ist nicht aktiv")
         return
       }
-      guard self.pendingSpeak == nil, self.pendingListen == nil else {
+      guard !self.busy else {
         invoke.reject("Eine Sprachoperation läuft bereits")
         return
       }
@@ -453,6 +502,181 @@ class VoicePlugin: Plugin, AVSpeechSynthesizerDelegate {
     pendingListen = nil
     teardownRecognition()
     invoke?.reject(message)
+  }
+
+  // MARK: - Capture (cloud speech-to-text)
+
+  /// Record one answer and hand back the audio rather than a transcript.
+  ///
+  /// Deliberately the same microphone contract as `listen`: same onset window,
+  /// same trailing silence, same hard deadline. The learner's preference decides
+  /// who turns the audio into text, and nothing else about the interaction
+  /// should change with it.
+  ///
+  /// 16 kHz mono PCM is what Apple's own recognizer consumes and the smallest
+  /// upload a hosted recognizer can work from without losing anything.
+  @objc public func capture(_ invoke: Invoke) throws {
+    _ = try invoke.parseArgs(VoiceLocaleArgs.self)
+    DispatchQueue.main.async {
+      guard self.active else {
+        invoke.reject("Sprachmodus ist nicht aktiv")
+        return
+      }
+      guard !self.busy else {
+        invoke.reject("Eine Sprachoperation läuft bereits")
+        return
+      }
+      let url = FileManager.default.temporaryDirectory.appendingPathComponent(
+        "zam-voice-\(UUID().uuidString).wav")
+      let settings: [String: Any] = [
+        AVFormatIDKey: Int(kAudioFormatLinearPCM),
+        AVSampleRateKey: 16000.0,
+        AVNumberOfChannelsKey: 1,
+        AVLinearPCMBitDepthKey: 16,
+        AVLinearPCMIsFloatKey: false,
+        AVLinearPCMIsBigEndianKey: false,
+      ]
+      do {
+        let recorder = try AVAudioRecorder(url: url, settings: settings)
+        recorder.isMeteringEnabled = true
+        guard recorder.record() else {
+          invoke.reject("Die Aufnahme konnte nicht gestartet werden")
+          return
+        }
+        self.recorder = recorder
+        self.captureURL = url
+        self.pendingCapture = invoke
+        self.captureStarted = false
+        self.captureSilenceSince = nil
+        self.captureOnsetDeadline = Date().addingTimeInterval(speechOnsetTimeout)
+        self.captureDeadline = Date().addingTimeInterval(maxOperationSeconds)
+        self.meterTimer = Timer.scheduledTimer(
+          withTimeInterval: meterInterval, repeats: true
+        ) { [weak self] _ in
+          self?.pollCapture()
+        }
+      } catch {
+        invoke.reject("Mikrofon konnte nicht geöffnet werden: \(error.localizedDescription)")
+      }
+    }
+  }
+
+  private func pollCapture() {
+    guard let recorder else { return }
+    recorder.updateMeters()
+    let level = recorder.averagePower(forChannel: 0)
+
+    if level > speechThresholdDb {
+      captureStarted = true
+      captureSilenceSince = nil
+    } else if captureStarted {
+      let since = captureSilenceSince ?? Date()
+      captureSilenceSince = since
+      if Date().timeIntervalSince(since) >= trailingSilence {
+        finishCapture()
+        return
+      }
+    }
+
+    if !captureStarted, Date() >= captureOnsetDeadline {
+      failCapture("Keine Sprache erkannt")
+      return
+    }
+    if Date() >= captureDeadline {
+      // Whatever was said before the cap is still worth transcribing.
+      captureStarted ? finishCapture() : failCapture("Aufnahme hat zu lange gedauert")
+    }
+  }
+
+  private func finishCapture() {
+    let invoke = pendingCapture
+    pendingCapture = nil
+    let url = captureURL
+    teardownCapture(deleteFile: false)
+
+    guard let url, let data = try? Data(contentsOf: url), !data.isEmpty else {
+      if let url { try? FileManager.default.removeItem(at: url) }
+      invoke?.reject("Die Aufnahme war leer")
+      return
+    }
+    try? FileManager.default.removeItem(at: url)
+    invoke?.resolve(["audioBase64": data.base64EncodedString(), "mime": "audio/wav"])
+  }
+
+  private func failCapture(_ message: String) {
+    let invoke = pendingCapture
+    pendingCapture = nil
+    teardownCapture(deleteFile: true)
+    invoke?.reject(message)
+  }
+
+  /// Stops the recorder and clears capture state. The recording is deleted
+  /// unless the caller is about to read it — a spoken answer must never be left
+  /// lying in the temp directory.
+  private func teardownCapture(deleteFile: Bool) {
+    meterTimer?.invalidate()
+    meterTimer = nil
+    recorder?.stop()
+    recorder = nil
+    captureStarted = false
+    captureSilenceSince = nil
+    captureOnsetDeadline = Date.distantFuture
+    captureDeadline = Date.distantFuture
+    if deleteFile, let url = captureURL {
+      try? FileManager.default.removeItem(at: url)
+    }
+    captureURL = nil
+  }
+
+  // MARK: - Playback (cloud text-to-speech)
+
+  /// Play synthesized audio through the session's own route.
+  @objc public func playAudio(_ invoke: Invoke) throws {
+    let args = try invoke.parseArgs(VoicePlayArgs.self)
+    DispatchQueue.main.async {
+      guard self.active else {
+        invoke.reject("Sprachmodus ist nicht aktiv")
+        return
+      }
+      guard !self.busy else {
+        invoke.reject("Eine Sprachoperation läuft bereits")
+        return
+      }
+      guard let data = Data(base64Encoded: args.audioBase64), !data.isEmpty else {
+        invoke.reject("Die Sprachausgabe war leer")
+        return
+      }
+      do {
+        let player = try AVAudioPlayer(data: data)
+        player.delegate = self
+        guard player.play() else {
+          invoke.reject("Die Sprachausgabe konnte nicht abgespielt werden")
+          return
+        }
+        self.player = player
+        self.pendingPlay = invoke
+      } catch {
+        invoke.reject("Die Sprachausgabe konnte nicht gelesen werden: \(error.localizedDescription)")
+      }
+    }
+  }
+
+  func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+    DispatchQueue.main.async {
+      let invoke = self.pendingPlay
+      self.pendingPlay = nil
+      self.player = nil
+      flag ? invoke?.resolve() : invoke?.reject("Die Sprachausgabe wurde unterbrochen")
+    }
+  }
+
+  func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+    DispatchQueue.main.async {
+      let invoke = self.pendingPlay
+      self.pendingPlay = nil
+      self.player = nil
+      invoke?.reject("Die Sprachausgabe war beschädigt")
+    }
   }
 
   private func teardownRecognition() {

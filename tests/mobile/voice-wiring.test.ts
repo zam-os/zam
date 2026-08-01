@@ -141,3 +141,68 @@ describe("voice locale and voice quality", () => {
     expect(i18n.match(/voice_compact_voice_hint/g)?.length).toBe(2);
   });
 });
+
+// The cloud tier needs one more thing from each shell than the device tier
+// did: a way to record without transcribing, a way to play audio it did not
+// synthesize, and an honest per-language answer about what the device can do.
+// A missing command surfaces as an opaque plugin error at the first spoken
+// word, so the surface is pinned here rather than discovered on a device.
+describe("mobile cloud speech tier wiring", () => {
+  const commands = ["capture", "playAudio", "capabilities"];
+
+  it("registers the commands the tiered port calls", () => {
+    const rust = read("mobile/src-tauri/src/voice.rs");
+    for (const command of ["voice_capture", "voice_play", "voice_capabilities"]) {
+      expect(rust).toContain(`pub async fn ${command}`);
+      expect(read("mobile/src-tauri/src/lib.rs")).toContain(`voice::${command}`);
+    }
+    // The non-mobile build answers rather than 404s, as the rest of the
+    // command surface already does.
+    for (const command of ["voice_capture", "voice_play", "voice_capabilities"]) {
+      expect(rust).toContain(`pub fn ${command}`);
+    }
+  });
+
+  it("implements them on iOS", () => {
+    const plugin = read("mobile/src-tauri/ios/Sources/VoicePlugin.swift");
+    for (const command of commands) {
+      expect(plugin).toContain(`func ${command}(_ invoke: Invoke)`);
+    }
+    // 16 kHz mono PCM: what a hosted recognizer wants, and the smallest
+    // upload that loses nothing.
+    expect(plugin).toContain("AVSampleRateKey: 16000.0");
+    expect(plugin).toContain("AVNumberOfChannelsKey: 1");
+    // The recording must never be left in the temp directory.
+    expect(plugin).toContain("FileManager.default.removeItem(at: url)");
+  });
+
+  it("implements them on Android", () => {
+    const plugin = read(
+      "mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/VoicePlugin.kt",
+    );
+    for (const command of commands) {
+      expect(plugin).toContain(`fun ${command}(invoke: Invoke)`);
+    }
+    expect(plugin).toContain("CAPTURE_SAMPLE_RATE = 16_000");
+    expect(plugin).toContain("AudioFormat.ENCODING_PCM_16BIT");
+    // Raw PCM needs the container the endpoints expect.
+    expect(plugin).toContain("RIFF");
+  });
+
+  it("keeps the capture heuristics identical across the three shells", () => {
+    // Same onset window, same trailing silence, same loudness floor: the
+    // learner's engine preference decides who transcribes, and nothing else
+    // about the interaction should change with it.
+    expect(read("desktop/src-tauri/src/voice.rs")).toContain(
+      "SPEECH_THRESHOLD_DB: f32 = -35.0",
+    );
+    expect(read("mobile/src-tauri/ios/Sources/VoicePlugin.swift")).toContain(
+      "speechThresholdDb: Float = -35.0",
+    );
+    expect(
+      read(
+        "mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/VoicePlugin.kt",
+      ),
+    ).toContain("CAPTURE_THRESHOLD_DB = -35.0");
+  });
+});

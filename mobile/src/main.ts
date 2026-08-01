@@ -13,6 +13,7 @@ import {
   serializeZamPairPayload,
   ZAM_PAIR_TYPE,
   ZAM_PAIR_VERSION,
+  type ZamPairLlmEndpoint,
   type ZamPairPayloadV1,
 } from "../../src/bridge/mobile-pairing.js";
 import {
@@ -69,11 +70,27 @@ import {
   visionImportUnavailableReason,
 } from "./vision-config.js";
 import { decomposeImageViaVision } from "./vl-import.js";
+import { resolveMobileCloudChain } from "./model-registry.js";
+import { synthesizeViaCloud, transcribeViaCloud } from "./speech.js";
 import {
+  buildMobileAvailability,
+  cloudSpeechAvailability,
+  createMobileTieredVoicePort,
   HandsFreeReviewController,
+  isVoiceModeUsable,
+  type MobileVoiceCapabilities,
+  type MobileVoiceNative,
+  planLeavesDevice,
+  readStoredVoicePreference,
+  resolveVoiceEnginePlan,
   resolveVoiceLocale,
+  VOICE_ENGINE_PREFERENCES,
+  VOICE_PREFERENCE_STORAGE_KEY,
+  type VoiceEnginePlan,
+  type VoiceEnginePreference,
   type VoiceLocale,
   type VoicePort,
+  voiceUnavailableKey,
 } from "./voice.js";
 
 const db = createTauriDatabase((command, args) => invoke(command, args));
@@ -166,6 +183,9 @@ const updateStatus = element<HTMLParagraphElement>("update-status");
 const checkUpdateButton = element<HTMLButtonElement>("check-update");
 const installUpdateButton = element<HTMLButtonElement>("install-update");
 const voiceControls = element<HTMLElement>("voice-controls");
+const voiceSettings = element<HTMLElement>("voice-settings");
+const voiceEngineSelect = element<HTMLSelectElement>("voice-engine");
+const voiceEngineStatus = element<HTMLParagraphElement>("voice-engine-status");
 const updateControls = element<HTMLElement>("update-controls");
 const updateUnavailable = element<HTMLElement>("update-unavailable");
 
@@ -198,6 +218,7 @@ async function applyPlatformFeatures(): Promise<void> {
     return;
   }
   voiceControls.hidden = !platformFeatures.voice;
+  voiceSettings.hidden = !platformFeatures.voice;
   updateControls.hidden = !platformFeatures.inAppUpdate;
   updateUnavailable.hidden = platformFeatures.inAppUpdate;
 }
@@ -265,7 +286,7 @@ async function ensureMicrophonePermission(): Promise<void> {
   }
 }
 
-const voicePort: VoicePort = {
+const voiceNative: MobileVoiceNative = {
   async start(locale: VoiceLocale): Promise<void> {
     await ensureMicrophonePermission();
     await invoke("voice_start", { locale });
@@ -282,7 +303,56 @@ const voicePort: VoicePort = {
     });
     return result.transcript;
   },
+  capture: (locale: VoiceLocale) =>
+    invoke<{ audioBase64: string; mime: string }>("voice_capture", { locale }),
+  play: async (audioBase64: string, mime: string): Promise<void> => {
+    await invoke("voice_play", { audioBase64, mime });
+  },
 };
+
+/** The learner's engine preference; machine-local, like every device setting. */
+let voicePreference: VoiceEnginePreference = readStoredVoicePreference(
+  localStorage.getItem(VOICE_PREFERENCE_STORAGE_KEY),
+);
+/** What the device reports for the language last probed, and for which one. */
+let voiceDeviceCapabilities: MobileVoiceCapabilities | null = null;
+let voiceCapabilitiesLocale: VoiceLocale | null = null;
+
+/**
+ * Resolve the preference against what this device and this pairing can serve.
+ *
+ * Read fresh on every utterance rather than captured once: changing the
+ * preference in Settings then takes effect on the next sentence instead of
+ * needing the session restarted. Until the device has been probed, both local
+ * tiers are assumed present — the optimistic default the companion has always
+ * used, so an older shell without the command behaves as before.
+ */
+function currentVoicePlan(): VoiceEnginePlan {
+  return resolveVoiceEnginePlan(
+    voicePreference,
+    buildMobileAvailability(
+      voiceDeviceCapabilities ?? { sttLocal: true, ttsLocal: true },
+      cloudSpeechAvailability(cloudEndpoints),
+    ),
+  );
+}
+
+const voicePort: VoicePort = createMobileTieredVoicePort(
+  currentVoicePlan,
+  voiceNative,
+  {
+    transcribe: (audioBase64, mime, locale) => {
+      const endpoint = cloudEndpoints.stt;
+      if (!endpoint) throw new Error(t("voice_no_cloud_stt"));
+      return transcribeViaCloud(endpoint, { audioBase64, mime, locale });
+    },
+    synthesize: (text, locale) => {
+      const endpoint = cloudEndpoints.tts;
+      if (!endpoint) throw new Error(t("voice_no_cloud_tts"));
+      return synthesizeViaCloud(endpoint, { text, locale });
+    },
+  },
+);
 
 const voiceController = new HandsFreeReviewController(voicePort, {
   currentCard: () => {
@@ -351,6 +421,42 @@ async function refreshLearnerLocaleFromDb(): Promise<void> {
   }
 }
 
+/**
+ * Cloud models this device can call, loaded from the learner database
+ * (ADR 2026-07-23). Refreshed whenever the database is, so a model changed on
+ * the desktop reaches the phone without re-pairing.
+ */
+let cloudEndpoints: Record<
+  "text" | "stt" | "tts",
+  ZamPairLlmEndpoint | null
+> = { text: null, stt: null, tts: null };
+
+async function refreshCloudEndpointsFromDb(): Promise<void> {
+  try {
+    const [text, stt, tts] = await Promise.all([
+      resolveMobileCloudChain(db, "text"),
+      resolveMobileCloudChain(db, "stt"),
+      resolveMobileCloudChain(db, "tts"),
+    ]);
+    cloudEndpoints = { text, stt, tts };
+  } catch {
+    // Offline or not yet paired. Whatever was resolved last stays in effect;
+    // the evaluation path falls back to self-rating on its own.
+  }
+}
+
+/**
+ * The recall endpoint chain.
+ *
+ * The database is the source. A payload from 0.24–0.25 still carries an
+ * embedded recall endpoint, and it is honoured while the paired desktop has not
+ * been upgraded yet — otherwise upgrading the phone first would silently take
+ * evaluation away.
+ */
+function recallEndpoint(): ZamPairLlmEndpoint | null {
+  return cloudEndpoints.text ?? currentPairing?.llm?.recall ?? null;
+}
+
 function setPairingStatus(text: string, isError = false): void {
   pairingStatus.textContent = text;
   pairingStatus.classList.toggle("error", isError);
@@ -374,6 +480,7 @@ function showApp(payload: ZamPairPayloadV1): void {
   learnerLocale = payload.settings?.locale ?? navigator.language;
   applyLocale(learnerLocale);
   void refreshLearnerLocaleFromDb();
+  void refreshCloudEndpointsFromDb();
   pairingView.hidden = true;
   appView.hidden = false;
   learner.textContent = payload.learner.userId;
@@ -423,6 +530,7 @@ function showSettings(): void {
   sessionSummaryView.hidden = true;
   settingsView.hidden = false;
   renderReminderControls();
+  renderVoiceSettings();
 }
 
 function setImportStatus(text: string, isError = false): void {
@@ -767,7 +875,7 @@ async function runSmartEvaluation(): Promise<MobileEvaluationResult | null> {
       },
       learnerAnswer: answer,
       locale: learnerLocale ?? navigator.language,
-      endpoint: currentPairing?.llm?.recall ?? null,
+      endpoint: recallEndpoint(),
       onDeviceAvailable: platformFeatures.onDeviceEvaluation,
       ports: evaluationPorts,
     });
@@ -833,18 +941,78 @@ function startVoiceMode(): void {
   );
   installVoiceDataButton.hidden = true;
   updateVoiceButton();
-  void hintWhenOnlyCompactVoice(locale);
-  void voiceController
-    .start(locale)
-    .catch((error) => {
+  void (async () => {
+    await refreshVoiceCapabilities(locale);
+    const plan = currentVoicePlan();
+    if (!isVoiceModeUsable(plan)) {
+      setReviewStatus(t(voiceUnavailableKey(plan) ?? "voice_unavailable"), true);
+      updateVoiceButton();
+      return;
+    }
+    // Only meaningful while the device is doing the reading; pointing at an iOS
+    // voice download would be nonsense when a cloud voice is speaking.
+    if (plan.tts.tier === "local") void hintWhenOnlyCompactVoice(locale);
+    // Never let a session leave the device without saying so. A learner who
+    // chose quality-first knew the trade; one who fell back to the cloud
+    // because the device could not serve the language did not.
+    if (planLeavesDevice(plan)) setReviewStatus(t("voice_cloud_notice"));
+    try {
+      await voiceController.start(locale);
+    } catch (error) {
       const message = errorMessage(error);
       installVoiceDataButton.hidden = !/(TTS|Sprachdaten|TTS-Stimme)/i.test(
         message,
       );
       setReviewStatus(tf("voice_paused_msg", { message }), true);
-    })
-    .finally(updateVoiceButton);
+    } finally {
+      updateVoiceButton();
+    }
+  })();
   updateVoiceButton();
+}
+
+/**
+ * Ask the device what it can do locally **for one review language**.
+ *
+ * Cached per locale, not per app run: recognition and voices are per-language
+ * on both platforms, so switching the review language invalidates the previous
+ * answer. A shell without the command keeps the optimistic default, which is
+ * how the companion behaved before the cloud tier existed.
+ */
+async function refreshVoiceCapabilities(locale: VoiceLocale): Promise<void> {
+  if (voiceDeviceCapabilities && voiceCapabilitiesLocale === locale) return;
+  try {
+    voiceDeviceCapabilities = await invoke<MobileVoiceCapabilities>(
+      "voice_capabilities",
+      { locale },
+    );
+    voiceCapabilitiesLocale = locale;
+  } catch {
+    voiceDeviceCapabilities = null;
+    voiceCapabilitiesLocale = null;
+  }
+}
+
+/**
+ * Render the engine selector and say what the current choice would actually
+ * do, so "quality first" cannot silently mean "device anyway" on a device with
+ * no speech model paired.
+ */
+function renderVoiceSettings(): void {
+  voiceEngineSelect.value = voicePreference;
+  for (const option of voiceEngineSelect.options) {
+    option.textContent = t(`voice_engine_${option.value.replace(/-/g, "_")}`);
+  }
+  const cloud = cloudSpeechAvailability(cloudEndpoints);
+  if (voicePreference === "quality-first" && !cloud.stt && !cloud.tts) {
+    // The endpoints live in machine-local config on the desktop, so they only
+    // reach a device through a pairing code made after one was configured.
+    voiceEngineStatus.textContent = t("voice_cloud_unpaired");
+    return;
+  }
+  voiceEngineStatus.textContent = t(
+    `voice_engine_${voicePreference.replace(/-/g, "_")}_desc`,
+  );
 }
 
 /**
@@ -1535,6 +1703,14 @@ async function checkForAppUpdate(quiet = false): Promise<void> {
     checkUpdateButton.disabled = false;
   }
 }
+
+voiceEngineSelect.addEventListener("change", () => {
+  const chosen = voiceEngineSelect.value as VoiceEnginePreference;
+  if (!VOICE_ENGINE_PREFERENCES.includes(chosen)) return;
+  voicePreference = chosen;
+  localStorage.setItem(VOICE_PREFERENCE_STORAGE_KEY, chosen);
+  renderVoiceSettings();
+});
 
 checkUpdateButton.addEventListener("click", () => {
   void checkForAppUpdate(false);

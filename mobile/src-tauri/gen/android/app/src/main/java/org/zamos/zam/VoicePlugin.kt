@@ -7,12 +7,17 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.AudioFocusRequest
+import android.media.AudioFormat
 import android.media.AudioManager
+import android.media.AudioRecord
+import android.media.MediaPlayer
+import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import android.util.Base64
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
@@ -30,7 +35,25 @@ import app.tauri.annotation.TauriPlugin
 import app.tauri.plugin.Invoke
 import app.tauri.plugin.JSObject
 import app.tauri.plugin.Plugin
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import java.util.Locale
+import kotlin.math.log10
+import kotlin.math.sqrt
+
+/**
+ * Capture parameters for the cloud speech tier. 16 kHz mono PCM is what hosted
+ * recognizers want and the smallest upload that loses nothing; the timings
+ * mirror the desktop and iOS recorders so an answer ends at the same point on
+ * every platform.
+ */
+private const val CAPTURE_SAMPLE_RATE = 16_000
+private const val CAPTURE_THRESHOLD_DB = -35.0
+private const val CAPTURE_TRAILING_SILENCE_MS = 1_200L
+private const val CAPTURE_ONSET_TIMEOUT_MS = 8_000L
+private const val CAPTURE_MAX_MS = 30_000L
 
 @InvokeArg
 class VoiceLocaleArgs {
@@ -41,6 +64,12 @@ class VoiceLocaleArgs {
 class VoiceSpeakArgs {
   lateinit var text: String
   lateinit var locale: String
+}
+
+@InvokeArg
+class VoicePlayArgs {
+  lateinit var audioBase64: String
+  lateinit var mime: String
 }
 
 @TauriPlugin(
@@ -82,6 +111,20 @@ class VoicePlugin(private val activity: Activity) : Plugin(activity) {
   private var pendingSpeakLocale: String? = null
   private var pendingListen: Invoke? = null
   private var pendingListenLocale: String? = null
+  private var pendingCapture: Invoke? = null
+  private var captureThread: Thread? = null
+  @Volatile private var captureCancelled = false
+  private var mediaPlayer: MediaPlayer? = null
+  private var pendingPlay: Invoke? = null
+
+  /**
+   * True while any speech operation owns the microphone or the speaker. Two
+   * overlapping operations would fight over the same audio focus, and the
+   * second one's promise would never settle.
+   */
+  private val busy: Boolean
+    get() = pendingSpeak != null || pendingListen != null ||
+      pendingCapture != null || pendingPlay != null
 
   override fun load(webView: WebView) {
     super.load(webView)
@@ -387,6 +430,8 @@ class VoicePlugin(private val activity: Activity) : Plugin(activity) {
     pendingListen?.reject(message)
     pendingListen = null
     pendingListenLocale = null
+    cancelCapture(message)
+    stopPlayback(message)
     audioManager.abandonAudioFocusRequest(focusRequest)
     activity.stopService(Intent(activity, VoiceSessionService::class.java))
   }
@@ -487,7 +532,7 @@ class VoicePlugin(private val activity: Activity) : Plugin(activity) {
         invoke.reject("Sprachmodus ist nicht aktiv")
         return@runOnUiThread
       }
-      if (pendingSpeak != null || pendingListen != null) {
+      if (busy) {
         invoke.reject("Eine Sprachoperation läuft bereits")
         return@runOnUiThread
       }
@@ -510,7 +555,7 @@ class VoicePlugin(private val activity: Activity) : Plugin(activity) {
         invoke.reject("Sprachmodus ist nicht aktiv")
         return@runOnUiThread
       }
-      if (pendingSpeak != null || pendingListen != null) {
+      if (busy) {
         invoke.reject("Eine Sprachoperation läuft bereits")
         return@runOnUiThread
       }
@@ -518,6 +563,284 @@ class VoicePlugin(private val activity: Activity) : Plugin(activity) {
       pendingListenLocale = args.locale
       startPendingOperation()
     }
+  }
+
+  /**
+   * What this device can serve locally for one review language, so the surface
+   * can resolve the learner's engine preference without guessing.
+   *
+   * Text-to-speech is answered by asking for an *embedded* voice: a
+   * network-only voice would make the device tier's promise false.
+   */
+  @Command
+  fun capabilities(invoke: Invoke) {
+    val args = invoke.parseArgs(VoiceLocaleArgs::class.java)
+    activity.runOnUiThread {
+      val requested = locale(args.locale)
+      val ttsLocal = textToSpeech?.voices.orEmpty().any {
+        !it.isNetworkConnectionRequired &&
+          !it.features.contains(TextToSpeech.Engine.KEY_FEATURE_NOT_INSTALLED) &&
+          it.locale.language == requested.language
+      }
+      val payload = JSObject()
+      payload.put("sttLocal", SpeechRecognizer.isOnDeviceRecognitionAvailable(activity))
+      payload.put("ttsLocal", ttsLocal)
+      invoke.resolve(payload)
+    }
+  }
+
+  /**
+   * Record one answer and hand back the audio rather than a transcript, for a
+   * paired cloud recognizer.
+   *
+   * Deliberately the same microphone contract as `listen`: same onset window,
+   * same trailing silence, same hard cap. The learner's preference decides who
+   * turns the audio into text, and nothing else about the interaction changes
+   * with it.
+   *
+   * `AudioRecord` rather than `MediaRecorder`: the loop needs the raw samples
+   * both to measure loudness and to emit 16 kHz mono PCM, which is what a
+   * hosted recognizer wants and the smallest upload that loses nothing.
+   */
+  @Command
+  fun capture(invoke: Invoke) {
+    invoke.parseArgs(VoiceLocaleArgs::class.java)
+    activity.runOnUiThread {
+      if (!active) {
+        invoke.reject("Sprachmodus ist nicht aktiv")
+        return@runOnUiThread
+      }
+      if (busy) {
+        invoke.reject("Eine Sprachoperation läuft bereits")
+        return@runOnUiThread
+      }
+      if (!hasRecordAudioPermission()) {
+        invoke.reject("Mikrofonberechtigung fehlt")
+        return@runOnUiThread
+      }
+      pendingCapture = invoke
+      captureCancelled = false
+      val thread = Thread { runCapture() }
+      captureThread = thread
+      thread.start()
+    }
+  }
+
+  /** Runs off the UI thread: reading from AudioRecord blocks by design. */
+  private fun runCapture() {
+    val minBuffer = AudioRecord.getMinBufferSize(
+      CAPTURE_SAMPLE_RATE,
+      AudioFormat.CHANNEL_IN_MONO,
+      AudioFormat.ENCODING_PCM_16BIT,
+    )
+    if (minBuffer <= 0) {
+      finishCapture(null, "Das Mikrofon konnte nicht geöffnet werden")
+      return
+    }
+    val record = try {
+      AudioRecord(
+        MediaRecorder.AudioSource.VOICE_RECOGNITION,
+        CAPTURE_SAMPLE_RATE,
+        AudioFormat.CHANNEL_IN_MONO,
+        AudioFormat.ENCODING_PCM_16BIT,
+        minBuffer * 2,
+      )
+    } catch (error: SecurityException) {
+      finishCapture(null, error.message ?: "Mikrofonberechtigung fehlt")
+      return
+    }
+    if (record.state != AudioRecord.STATE_INITIALIZED) {
+      record.release()
+      finishCapture(null, "Das Mikrofon konnte nicht geöffnet werden")
+      return
+    }
+
+    val samples = ByteArrayOutputStream()
+    val buffer = ShortArray(minBuffer / 2)
+    var started = false
+    var silenceSince = 0L
+    val begin = System.currentTimeMillis()
+    try {
+      record.startRecording()
+      while (!captureCancelled) {
+        val read = record.read(buffer, 0, buffer.size)
+        if (read <= 0) break
+        val now = System.currentTimeMillis()
+        if (loudnessDb(buffer, read) > CAPTURE_THRESHOLD_DB) {
+          started = true
+          silenceSince = 0L
+        } else if (started) {
+          if (silenceSince == 0L) silenceSince = now
+          if (now - silenceSince >= CAPTURE_TRAILING_SILENCE_MS) break
+        }
+        // Everything up to the cut-off is still worth transcribing, so the
+        // samples are kept before the loop decides whether to stop.
+        for (i in 0 until read) {
+          samples.write(buffer[i].toInt() and 0xff)
+          samples.write((buffer[i].toInt() shr 8) and 0xff)
+        }
+        if (!started && now - begin >= CAPTURE_ONSET_TIMEOUT_MS) {
+          finishCaptureAfter(record, null, "Keine Sprache erkannt")
+          return
+        }
+        if (now - begin >= CAPTURE_MAX_MS) break
+      }
+    } catch (error: IllegalStateException) {
+      finishCaptureAfter(record, null, error.message ?: "Aufnahme fehlgeschlagen")
+      return
+    }
+
+    if (captureCancelled) {
+      finishCaptureAfter(record, null, null)
+      return
+    }
+    val pcm = samples.toByteArray()
+    if (!started || pcm.isEmpty()) {
+      finishCaptureAfter(record, null, "Keine Sprache erkannt")
+      return
+    }
+    finishCaptureAfter(record, wavContainer(pcm), null)
+  }
+
+  private fun finishCaptureAfter(record: AudioRecord, wav: ByteArray?, error: String?) {
+    try {
+      if (record.recordingState == AudioRecord.RECORDSTATE_RECORDING) record.stop()
+    } catch (_: IllegalStateException) {
+      // Already stopped; the release below is what matters.
+    }
+    record.release()
+    finishCapture(wav, error)
+  }
+
+  private fun finishCapture(wav: ByteArray?, error: String?) {
+    mainHandler.post {
+      val invoke = pendingCapture ?: return@post
+      pendingCapture = null
+      captureThread = null
+      when {
+        // A cancelled capture was already rejected by whoever cancelled it.
+        wav == null && error == null -> Unit
+        wav == null -> invoke.reject(error ?: "Aufnahme fehlgeschlagen")
+        else -> {
+          val payload = JSObject()
+          payload.put("audioBase64", Base64.encodeToString(wav, Base64.NO_WRAP))
+          payload.put("mime", "audio/wav")
+          invoke.resolve(payload)
+        }
+      }
+    }
+  }
+
+  private fun cancelCapture(message: String) {
+    captureCancelled = true
+    captureThread = null
+    val invoke = pendingCapture
+    pendingCapture = null
+    invoke?.reject(message)
+  }
+
+  /**
+   * RMS of one buffer in dBFS, on the same scale as the desktop and iOS
+   * recorders' meters so the three end an answer at the same loudness.
+   */
+  private fun loudnessDb(buffer: ShortArray, read: Int): Double {
+    if (read <= 0) return -160.0
+    var sum = 0.0
+    for (i in 0 until read) {
+      val sample = buffer[i].toDouble() / Short.MAX_VALUE
+      sum += sample * sample
+    }
+    val rms = sqrt(sum / read)
+    return if (rms <= 0.0) -160.0 else 20.0 * log10(rms)
+  }
+
+  /** Wrap raw PCM in the 44-byte canonical WAV header the endpoints expect. */
+  private fun wavContainer(pcm: ByteArray): ByteArray {
+    val header = ByteBuffer.allocate(44).order(ByteOrder.LITTLE_ENDIAN)
+    val byteRate = CAPTURE_SAMPLE_RATE * 2
+    header.put("RIFF".toByteArray(Charsets.US_ASCII))
+    header.putInt(36 + pcm.size)
+    header.put("WAVE".toByteArray(Charsets.US_ASCII))
+    header.put("fmt ".toByteArray(Charsets.US_ASCII))
+    header.putInt(16)
+    header.putShort(1) // PCM
+    header.putShort(1) // mono
+    header.putInt(CAPTURE_SAMPLE_RATE)
+    header.putInt(byteRate)
+    header.putShort(2) // block align
+    header.putShort(16) // bits per sample
+    header.put("data".toByteArray(Charsets.US_ASCII))
+    header.putInt(pcm.size)
+    return header.array() + pcm
+  }
+
+  /**
+   * Play synthesized audio through the session's own audio focus, so it ducks
+   * other audio like the local voice does and stops when the learner pauses.
+   */
+  @Command
+  fun playAudio(invoke: Invoke) {
+    val args = invoke.parseArgs(VoicePlayArgs::class.java)
+    activity.runOnUiThread {
+      if (!active) {
+        invoke.reject("Sprachmodus ist nicht aktiv")
+        return@runOnUiThread
+      }
+      if (busy) {
+        invoke.reject("Eine Sprachoperation läuft bereits")
+        return@runOnUiThread
+      }
+      val audio = try {
+        Base64.decode(args.audioBase64, Base64.DEFAULT)
+      } catch (error: IllegalArgumentException) {
+        invoke.reject("Die Sprachausgabe war beschädigt")
+        return@runOnUiThread
+      }
+      if (audio.isEmpty()) {
+        invoke.reject("Die Sprachausgabe war leer")
+        return@runOnUiThread
+      }
+      val file = File.createTempFile("zam-voice-", ".wav", activity.cacheDir)
+      try {
+        file.writeBytes(audio)
+        val player = MediaPlayer()
+        player.setAudioAttributes(audioAttributes)
+        player.setDataSource(file.absolutePath)
+        player.setOnCompletionListener {
+          mainHandler.post { completePlayback(null) }
+        }
+        player.setOnErrorListener { _, _, _ ->
+          mainHandler.post { completePlayback("Die Sprachausgabe wurde unterbrochen") }
+          true
+        }
+        player.prepare()
+        player.start()
+        mediaPlayer = player
+        pendingPlay = invoke
+      } catch (error: Exception) {
+        invoke.reject(error.message ?: "Die Sprachausgabe konnte nicht abgespielt werden")
+      } finally {
+        // MediaPlayer holds its own descriptor; the spoken answer must not be
+        // left in the cache directory either way.
+        file.delete()
+      }
+    }
+  }
+
+  private fun completePlayback(error: String?) {
+    val invoke = pendingPlay
+    pendingPlay = null
+    mediaPlayer?.release()
+    mediaPlayer = null
+    if (error == null) invoke?.resolve() else invoke?.reject(error)
+  }
+
+  private fun stopPlayback(message: String) {
+    val invoke = pendingPlay
+    pendingPlay = null
+    mediaPlayer?.release()
+    mediaPlayer = null
+    invoke?.reject(message)
   }
 
   @Command

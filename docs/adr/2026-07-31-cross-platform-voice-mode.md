@@ -152,7 +152,52 @@ user who wants strict locality.
 
 `voice.enginePreference` lives in `~/.zam/config.json`, not in the database. The
 right answer depends on the hardware in front of the learner — a Turso-shared DB
-must not push a phone's preference onto a desktop.
+must not push a phone's preference onto a desktop. The companion keeps the same
+setting in `localStorage` under `zam.voice-engine.v1`, for the same reason: it
+describes the device, not the learner.
+
+### 8. A companion reads speech endpoints from the database, not the QR code
+
+*Added 2026-08-01, when the cloud tier was extended to iOS and Android.*
+
+Speech endpoints reach a companion the same way cloud vision already does: from
+the synced learner database. This is not a new decision — it is
+[ADR 2026-07-23](2026-07-23-online-only-server-db-and-mobile-gating.md)
+decisions 4 and 5 ("cloud model configuration lives in the server database";
+"pairing payload stays thin") finally implemented for the model registry.
+
+Implementing it required the split that ADR's sketch had left open: cloud rows
+move to the database (`ai.models.cloud`), local endpoints and `agent`-transport
+entries stay in `~/.zam/config.json`, and `resolveCapability` merges the two by
+`order`. The split is by **reachability**, not by taste — another device can
+call a hosted endpoint and can call neither a loopback one nor a CLI process on
+this machine, so sharing those would be a lie.
+
+Cloud rows carry their API key inline. `apiKeyRef` remains the rule for
+`config.json` (ADR 2026-07-12: "never inline"), but a reference into a
+credentials file on one machine is meaningless to a phone; the key travels in
+the learner's own database, reached with the token the pairing code carries.
+That is the same trade `llm.vision.api_key` has always made.
+
+What follows:
+
+- **The pairing payload no longer carries models at all.** 0.24–0.25 embedded
+  the recall endpoint and its key — a workaround for the registry still being
+  machine-local, and the reason the payload pressed against
+  `ZAM_PAIR_MAX_BYTES`. It also meant re-pairing after every model change, and
+  an API key inside something a bystander can photograph. Old payloads still
+  parse and the companion still reads one, so upgrading the phone before the
+  desktop does not take evaluation away.
+- **A model changed on the desktop reaches the phone on the next sync.** No
+  re-pairing, and no per-capability budget to degrade against.
+- **A second machine on the same database inherits the cloud models** and keeps
+  its own local ones. The migration only runs while the database holds no cloud
+  rows, so attaching a second desktop does not re-upload a registry.
+
+Rejected alternative: projecting `stt`/`tts` into the pairing code next to
+`recall`. It was built first and was wrong — it contradicted an accepted ADR,
+forced a priority rule for which capability to drop when the QR overflowed, and
+made every model change a re-pairing event.
 
 ## Alternatives considered
 
@@ -237,6 +282,27 @@ learner's behalf, particularly with minors in the field test.
 - [ ] Cloud tier verified against at least one hosted `stt` and one hosted `tts`
       endpoint, with the cost per review session recorded in the release notes.
       Only stubbed endpoints have been exercised so far.
+- [x] Cloud tier extended to the companions (decision 8). The registry split and
+      its one-time migration are covered by `tests/cli/model-registry.test.ts`,
+      the companion's reader by `tests/mobile/model-registry.test.ts` (which also
+      pins the settings key against the desktop's, since the two readers are
+      necessarily separate), the thin payload by `tests/cli/mobile-pairing.test.ts`,
+      the HTTP calls by `tests/mobile/speech.test.ts`, and the routing property
+      that matters — a capability reaches the network only when the plan says
+      `cloud` — by `tests/mobile/voice.test.ts`. The native surface each shell
+      must provide is pinned in `tests/mobile/voice-wiring.test.ts`, because a
+      missing plugin command otherwise surfaces as an opaque error at the first
+      spoken word.
+- [x] iOS Swift package compiles with the capture and playback commands
+      (`xcodebuild -scheme zam-mobile -destination generic/platform=iOS`).
+      Android Kotlin type-checks against the real SDK; note that CI does **not**
+      compile Kotlin — only the release workflow's APK build does, so Android
+      plugin changes need a local `:app:compileUniversalDebugKotlin`.
+- [ ] Companion cloud tier exercised on hardware: `quality-first` on the
+      field-test iPad against a hosted recognizer, confirming both that the
+      capture heuristics end an answer at the right moment on a phone microphone
+      and that the recognition is in fact better than Apple's on-device model.
+      That comparison is the entire justification for the tier on iOS.
 
 ## Evidence
 
@@ -245,5 +311,9 @@ learner's behalf, particularly with minors in the field test.
 - iOS engine: `mobile/src-tauri/ios/Sources/VoicePlugin.swift`
 - Android engine (prior art):
   `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/VoicePlugin.kt`
-- Cloud tier: `src/cli/llm/speech.ts`
-- Tests: `tests/kernel/voice-review.test.ts`, `tests/mobile/voice.test.ts`
+- Cloud tier: `src/cli/llm/speech.ts` (desktop), `mobile/src/speech.ts` (companions)
+- Companion tiering and preference: `mobile/src/voice.ts`
+- Pairing projection: `src/cli/mobile-pairing.ts`, contract in
+  `src/bridge/mobile-pairing.ts`
+- Tests: `tests/kernel/voice-review.test.ts`, `tests/mobile/voice.test.ts`,
+  `tests/mobile/speech.test.ts`, `tests/cli/mobile-pairing.test.ts`

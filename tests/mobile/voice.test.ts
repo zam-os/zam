@@ -1,10 +1,19 @@
 import { describe, expect, it } from "vitest";
 import {
+  buildMobileAvailability,
+  cloudSpeechAvailability,
+  createMobileTieredVoicePort,
   HandsFreeReviewController,
+  isVoiceModeUsable,
+  type MobileVoiceNative,
   parseSpokenRating,
+  planLeavesDevice,
+  resolveVoiceEnginePlan,
   resolveVoiceLocale,
+  type VoiceEnginePlan,
   type VoicePort,
   type VoiceReviewCard,
+  voiceUnavailableKey,
 } from "../../mobile/src/voice.js";
 
 describe("Android hands-free voice review", () => {
@@ -170,5 +179,188 @@ describe("Android hands-free voice review", () => {
     expect(spoken.some((text) => text.includes("did not recognize"))).toBe(
       true,
     );
+  });
+});
+
+// The cloud tier on a companion (ADR 2026-07-31). Routing is the whole safety
+// property here: a capability must reach the network only when the resolved
+// plan says so, because that is the one place a spoken answer leaves the phone.
+describe("mobile tiered voice port", () => {
+  const deviceOnlyPlan: VoiceEnginePlan = {
+    stt: { tier: "local", reason: "preferred" },
+    tts: { tier: "local", reason: "preferred" },
+  };
+  const cloudPlan: VoiceEnginePlan = {
+    stt: { tier: "cloud", reason: "preferred" },
+    tts: { tier: "cloud", reason: "preferred" },
+  };
+
+  function harness(plan: () => VoiceEnginePlan) {
+    const calls: string[] = [];
+    const native: MobileVoiceNative = {
+      async start() {
+        calls.push("native:start");
+      },
+      async stop() {
+        calls.push("native:stop");
+      },
+      async speak(text) {
+        calls.push(`native:speak:${text}`);
+      },
+      async listen() {
+        calls.push("native:listen");
+        return "device transcript";
+      },
+      async capture() {
+        calls.push("native:capture");
+        return { audioBase64: "AQID", mime: "audio/wav" };
+      },
+      async play(audioBase64) {
+        calls.push(`native:play:${audioBase64}`);
+      },
+    };
+    const cloud = {
+      async transcribe(audioBase64: string) {
+        calls.push(`cloud:transcribe:${audioBase64}`);
+        return "cloud transcript";
+      },
+      async synthesize(text: string) {
+        calls.push(`cloud:synthesize:${text}`);
+        return { audioBase64: "SPOKEN", mime: "audio/wav" };
+      },
+    };
+    return { calls, port: createMobileTieredVoicePort(plan, native, cloud) };
+  }
+
+  it("keeps everything on the device when the plan says local", async () => {
+    const { calls, port } = harness(() => deviceOnlyPlan);
+
+    await port.speak("Frage", "de-DE");
+    expect(await port.listen("de-DE")).toBe("device transcript");
+
+    expect(calls).toEqual(["native:speak:Frage", "native:listen"]);
+  });
+
+  it("captures locally and transcribes in the cloud when the plan says cloud", async () => {
+    const { calls, port } = harness(() => cloudPlan);
+
+    expect(await port.listen("de-DE")).toBe("cloud transcript");
+    await port.speak("Antwort", "de-DE");
+
+    expect(calls).toEqual([
+      // The microphone stays the app shell's, whoever turns audio into text.
+      "native:capture",
+      "cloud:transcribe:AQID",
+      "cloud:synthesize:Antwort",
+      // Played through the session's own route, not an <audio> element.
+      "native:play:SPOKEN",
+    ]);
+  });
+
+  it("routes the halves independently", async () => {
+    const { calls, port } = harness(() => ({
+      stt: { tier: "cloud", reason: "preferred" },
+      tts: { tier: "local", reason: "fell-back-to-local" },
+    }));
+
+    await port.listen("de-DE");
+    await port.speak("Antwort", "de-DE");
+
+    expect(calls).toEqual([
+      "native:capture",
+      "cloud:transcribe:AQID",
+      "native:speak:Antwort",
+    ]);
+  });
+
+  it("follows a preference changed mid-session on the next utterance", async () => {
+    // The plan is a getter, not a captured value: switching in Settings must
+    // not require restarting the session.
+    let plan = deviceOnlyPlan;
+    const { calls, port } = harness(() => plan);
+
+    await port.speak("erste", "de-DE");
+    plan = cloudPlan;
+    await port.speak("zweite", "de-DE");
+
+    expect(calls).toEqual([
+      "native:speak:erste",
+      "cloud:synthesize:zweite",
+      "native:play:SPOKEN",
+    ]);
+  });
+
+  it("always ends the session through the native shell", async () => {
+    // On iOS this is what releases the microphone; a cloud plan must not
+    // change who owns it.
+    const { calls, port } = harness(() => cloudPlan);
+
+    await port.start("de-DE");
+    await port.stop();
+
+    expect(calls).toEqual(["native:start", "native:stop"]);
+  });
+});
+
+describe("mobile voice availability", () => {
+  const paired = {
+    enabled: true,
+    url: "https://speech.example/v1",
+    model: "whisper",
+    apiFlavor: "chat-completions" as const,
+    local: false,
+  };
+
+  it("reads cloud availability per capability from the pairing", () => {
+    expect(cloudSpeechAvailability({ stt: paired })).toEqual({
+      stt: true,
+      tts: false,
+    });
+    expect(cloudSpeechAvailability(undefined)).toEqual({
+      stt: false,
+      tts: false,
+    });
+  });
+
+  it("leaves quality-first on the device when nothing speech-capable is paired", () => {
+    // A device paired before speech endpoints existed carries none, and the
+    // honest outcome is the device tier — not a failure on the first word.
+    const plan = resolveVoiceEnginePlan(
+      "quality-first",
+      buildMobileAvailability(
+        { sttLocal: true, ttsLocal: true },
+        cloudSpeechAvailability(undefined),
+      ),
+    );
+
+    expect(plan.stt).toEqual({ tier: "local", reason: "fell-back-to-local" });
+    expect(isVoiceModeUsable(plan)).toBe(true);
+  });
+
+  it("refuses to leave the device under device-only, even with a paired model", () => {
+    const plan = resolveVoiceEnginePlan(
+      "device-only",
+      buildMobileAvailability(
+        { sttLocal: false, ttsLocal: true },
+        { stt: true, tts: true },
+      ),
+    );
+
+    expect(plan.stt.tier).toBeNull();
+    expect(voiceUnavailableKey(plan)).toBe("voice_unavailable_device_only");
+  });
+
+  it("uses the cloud when the device has no model for the review language", () => {
+    const plan = resolveVoiceEnginePlan(
+      "device-first",
+      buildMobileAvailability(
+        { sttLocal: false, ttsLocal: true },
+        { stt: true, tts: true },
+      ),
+    );
+
+    expect(plan.stt).toEqual({ tier: "cloud", reason: "fell-back-to-cloud" });
+    expect(plan.tts.tier).toBe("local");
+    expect(planLeavesDevice(plan)).toBe(true);
   });
 });

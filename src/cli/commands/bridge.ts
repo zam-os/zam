@@ -66,7 +66,6 @@ import {
   getDatabaseTargetInfo,
   getDisplayTitle,
   getKnowledgeContextByName,
-  getMachineAiModels,
   getMachineVoicePreference,
   getOnboardingDone,
   getOnboardingPersona,
@@ -98,7 +97,6 @@ import {
   readUiObservationLog,
   resolveObserverPolicy,
   resolveReviewContext,
-  saveMachineAiModels,
   seedPersonaKnowledgeContext,
   setActiveWorkspaceContext,
   setAgentConnectAutoDone,
@@ -220,7 +218,14 @@ import {
   getLocalEmbeddingStatus,
 } from "../llm/local-embedding.js";
 import {
+  isMachineLocalEntry,
+  loadModelRegistry,
+  type ResolvedModelEntry,
+  saveModelRegistry,
+} from "../llm/model-registry.js";
+import {
   getCloudSpeechAvailability,
+  resolveSpeechEndpoint,
   synthesizeSpeech,
   transcribeAudio,
 } from "../llm/speech.js";
@@ -2790,15 +2795,39 @@ function urlLooksLocal(url: string): boolean {
   return /localhost|127\.0\.0\.1|\[::1\]|::1/.test(url);
 }
 
+/**
+ * Registry access for the `model-*` commands.
+ *
+ * They used to be purely machine-local. Half the registry now lives in the
+ * learner database (ADR 2026-07-23), so they need a connection — but the
+ * editing logic below is unchanged and still works on one merged list, which
+ * is why this is two helpers rather than a `withDb` wrapper around each body.
+ */
+async function readRegistry(): Promise<ResolvedModelEntry[]> {
+  let models: ResolvedModelEntry[] = [];
+  await withDb(async (db) => {
+    models = await loadModelRegistry(db);
+  });
+  return models;
+}
+
+async function writeRegistry(entries: ResolvedModelEntry[]): Promise<void> {
+  await withDb(async (db) => {
+    await saveModelRegistry(db, entries);
+  });
+}
+
 bridgeCommand
   .command("model-list")
-  .description("List the machine-local capability model registry (JSON)")
-  .action(() => {
+  .description("List the capability model registry, machine + cloud (JSON)")
+  .action(async () => {
     // Reading the registry is where a freshly upgraded install first migrates
-    // legacy providers/roles into ai.models (one-time, idempotent).
+    // legacy providers/roles into ai.models (one-time, idempotent) and then
+    // moves its cloud rows into the database (ADR 2026-07-23).
     ensureMachineAiModelsMigrated();
-    const models = [...getMachineAiModels()].sort((a, b) => a.order - b.order);
-    jsonOut({ models: models.map(modelRow) });
+    await withDb(async (db) => {
+      jsonOut({ models: (await loadModelRegistry(db)).map(modelRow) });
+    });
   });
 
 bridgeCommand
@@ -2868,7 +2897,7 @@ bridgeCommand
     if (opts.flavor && !VALID_API_FLAVORS.includes(opts.flavor)) {
       jsonError(`Invalid --flavor: ${opts.flavor}.`);
     }
-    const models = getMachineAiModels();
+    const models = await readRegistry();
     const existingIndex = opts.id
       ? models.findIndex((m) => m.id === opts.id)
       : -1;
@@ -2994,7 +3023,7 @@ bridgeCommand
       const next = [...models];
       if (targetIndex >= 0) next[targetIndex] = entry;
       else next.push(entry);
-      saveMachineAiModels(next);
+      await writeRegistry(next);
       jsonOut({
         ok: true,
         created: targetIndex < 0,
@@ -3052,7 +3081,7 @@ bridgeCommand
     const next = [...models];
     if (existingIndex >= 0) next[existingIndex] = validation.entry;
     else next.push(validation.entry);
-    saveMachineAiModels(next);
+    await writeRegistry(next);
 
     jsonOut({
       ok: true,
@@ -3066,7 +3095,7 @@ bridgeCommand
   .description("Re-run capability detection for an entry; may widen (JSON)")
   .requiredOption("--id <id>", "Registry entry id")
   .action(async (opts) => {
-    const models = getMachineAiModels();
+    const models = await readRegistry();
     const index = models.findIndex((m) => m.id === opts.id);
     if (index < 0) jsonError(`No such model: ${opts.id}`);
     const entry = models[index];
@@ -3099,7 +3128,7 @@ bridgeCommand
       };
       const next = [...models];
       next[index] = updated;
-      saveMachineAiModels(next);
+      await writeRegistry(next);
       jsonOut({
         ok: true,
         model: modelRow(updated),
@@ -3122,7 +3151,7 @@ bridgeCommand
 
     const next = [...models];
     next[index] = validation.entry;
-    saveMachineAiModels(next);
+    await writeRegistry(next);
     jsonOut({
       ok: true,
       model: modelRow(validation.entry),
@@ -3134,8 +3163,8 @@ bridgeCommand
   .command("model-remove")
   .description("Remove a registry entry (JSON)")
   .requiredOption("--id <id>", "Registry entry id")
-  .action((opts) => {
-    const models = getMachineAiModels();
+  .action(async (opts) => {
+    const models = await readRegistry();
     const next = models.filter((m) => m.id !== opts.id);
     if (next.length === models.length) jsonError(`No such model: ${opts.id}`);
     // Keep order contiguous after removal.
@@ -3144,7 +3173,7 @@ bridgeCommand
       .forEach((m, i) => {
         m.order = i;
       });
-    saveMachineAiModels(next);
+    await writeRegistry(next);
     jsonOut({ ok: true, id: opts.id, models: next.map(modelRow) });
   });
 
@@ -3152,7 +3181,7 @@ bridgeCommand
   .command("model-reorder")
   .description("Set registry order from an ordered id list (JSON)")
   .requiredOption("--ids <json>", "JSON array of entry ids in desired order")
-  .action((opts) => {
+  .action(async (opts) => {
     let ids: string[];
     try {
       ids = JSON.parse(opts.ids);
@@ -3161,7 +3190,7 @@ bridgeCommand
       return;
     }
     if (!Array.isArray(ids)) jsonError("--ids must be a JSON array");
-    const models = getMachineAiModels();
+    const models = await readRegistry();
     const rank = new Map(ids.map((id, i) => [id, i]));
     // Ids not listed keep their relative order after the listed ones.
     const next = [...models].sort((a, b) => {
@@ -3172,7 +3201,7 @@ bridgeCommand
     next.forEach((m, i) => {
       m.order = i;
     });
-    saveMachineAiModels(next);
+    await writeRegistry(next);
     jsonOut({ ok: true, models: next.map(modelRow) });
   });
 
@@ -3186,8 +3215,8 @@ bridgeCommand
     "--capabilities <json>",
     "JSON object of desired capabilities",
   )
-  .action((opts) => {
-    const models = getMachineAiModels();
+  .action(async (opts) => {
+    const models = await readRegistry();
     const index = models.findIndex((m) => m.id === opts.id);
     if (index < 0) jsonError(`No such model: ${opts.id}`);
     const requested = parseCapabilityFlags(opts.capabilities);
@@ -3199,7 +3228,7 @@ bridgeCommand
     }
     const next = [...models];
     next[index] = { ...models[index], capabilities };
-    saveMachineAiModels(next);
+    await writeRegistry(next);
     jsonOut({ ok: true, model: modelRow(next[index]) });
   });
 
@@ -4274,20 +4303,34 @@ bridgeCommand
         await setSetting(db, "user.id", userId);
       }
 
-      const recallProvider = await getProviderForRole(db, "recall");
       const payload = createMobilePairingPayload({
         databaseUrl: credentials.url,
         databaseToken: credentials.token,
         userId,
-        recallProvider,
+        locale: (await getSetting(db, "system.locale")) ?? undefined,
       });
+      // What the phone will find once it is online. Reported from the shared
+      // registry rather than from the payload, because the payload no longer
+      // carries models (ADR 2026-07-23) — the honest question is now "is
+      // anything set up for this learner", not "did it fit in the code".
+      const cloudModels = (await loadModelRegistry(db)).filter(
+        (entry) => !isMachineLocalEntry(entry),
+      );
+      const [stt, tts] = await Promise.all([
+        resolveSpeechEndpoint(db, "stt"),
+        resolveSpeechEndpoint(db, "tts"),
+      ]);
       jsonOut({
         success: true,
         payload: serializeZamPairPayload(payload),
         userId,
         cardCount: users.find((user) => user.id === userId)?.cardCount ?? 0,
         createdUser: !exists,
-        hasLlm: Boolean(payload.llm?.recall.enabled),
+        hasLlm: cloudModels.some((entry) => entry.capabilities.text === true),
+        hasSpeech: {
+          stt: stt !== null && !stt.local,
+          tts: tts !== null && !tts.local,
+        },
       });
     });
   });

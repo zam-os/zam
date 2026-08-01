@@ -17,6 +17,7 @@ import {
   type CloudConnectDeps,
   connectCloudProvider,
 } from "../../src/cli/llm/cloud-connect.js";
+import { loadModelRegistry } from "../../src/cli/llm/model-registry.js";
 import {
   CLOUD_PROVIDERS,
   OPENROUTER_PROVIDER,
@@ -198,8 +199,13 @@ describe("connectCloudProvider", () => {
     expect(storedKeys).toEqual([
       { ref: OPENROUTER_PROVIDER.apiKeyRef, apiKey: "sk-or-good" },
     ]);
-    const models = getMachineAiModels();
+    const models = await loadModelRegistry(db);
     expect(models).toHaveLength(1);
+    // A hosted endpoint belongs to the learner, not to this machine: it goes
+    // to the database so every client sees it (ADR 2026-07-23), and it takes
+    // its key with it because an apiKeyRef means nothing to a phone.
+    expect(getMachineAiModels()).toHaveLength(0);
+    expect(models[0].apiKey).toBe("sk-or-good");
     expect(models[0].url).toBe(OPENROUTER_PROVIDER.baseUrl);
     expect(models[0].model).toBe(OPENROUTER_PROVIDER.defaultModel);
     expect(models[0].local).toBe(false);
@@ -211,15 +217,16 @@ describe("connectCloudProvider", () => {
 
   it("is idempotent: reconnecting updates the entry in place", async () => {
     await connectCloudProvider(db, "openrouter", "sk-or-1", deps());
-    const [first] = getMachineAiModels();
+    const [first] = await loadModelRegistry(db);
 
     const again = await connectCloudProvider(db, "openrouter", "sk-or-2", deps());
     expect(again.ok).toBe(true);
     expect(again.created).toBe(false);
 
-    const models = getMachineAiModels();
+    const models = await loadModelRegistry(db);
     expect(models).toHaveLength(1);
     expect(models[0].id).toBe(first.id);
+    expect(models[0].apiKey).toBe("sk-or-2");
     expect(models[0].order).toBe(first.order);
     expect(storedKeys.map((k) => k.apiKey)).toEqual(["sk-or-1", "sk-or-2"]);
   });

@@ -15,6 +15,21 @@ interface PairingPayloadResponse {
   cardCount: number;
   createdUser: boolean;
   hasLlm: boolean;
+  /**
+   * Which speech capabilities the device will find once it is online.
+   *
+   * Not a property of the code — the payload carries no models (ADR
+   * 2026-07-23). It answers the question a learner actually has at this moment:
+   * will voice mode be able to use the cloud on that device, or only what the
+   * device itself can do.
+   */
+  hasSpeech?: { stt: boolean; tts: boolean };
+}
+
+function speechSummaryKey(speech: PairingPayloadResponse["hasSpeech"]): string {
+  if (speech?.stt && speech.tts) return "pairing_speech_yes";
+  if (speech?.stt) return "pairing_speech_stt_only";
+  return "pairing_speech_no";
 }
 
 function requiredElement<T extends HTMLElement>(id: string): T {
@@ -159,6 +174,7 @@ export function initMobilePairing(onProfileCreated: () => void): void {
         profile: result.userId,
         count: result.cardCount,
         llm: result.hasLlm ? t("pairing_llm_yes") : t("pairing_llm_no"),
+        speech: t(speechSummaryKey(result.hasSpeech)),
       });
       qrPanel.classList.remove("hidden");
       setStatus(t("pairing_scan_now"));

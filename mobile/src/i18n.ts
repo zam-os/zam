@@ -144,6 +144,29 @@ const DE: Messages = {
   voice_data_opened:
     "Android-Sprachdaten geöffnet. Deutsch oder Englisch lokal herunterladen und danach den Sprachmodus erneut starten.",
   voice_data_failed: "Sprachdaten konnten nicht geöffnet werden: {error}",
+  voice_engine_heading: "Sprachmodus",
+  voice_engine_label: "Sprach-Engine",
+  voice_engine_device_only: "Nur auf dem Gerät",
+  voice_engine_device_first: "Gerät bevorzugen",
+  voice_engine_quality_first: "Qualität bevorzugen",
+  voice_engine_device_only_desc:
+    "Nichts verlässt das Gerät. Fehlt für deine Sprache ein Modell, bleibt der Sprachmodus aus.",
+  voice_engine_device_first_desc:
+    "Das Gerät zuerst, kostenlos und privat. Kann es deine Sprache nicht, wird ein Cloud-Modell genutzt.",
+  voice_engine_quality_first_desc:
+    "Cloud-Modell zuerst: bessere Erkennung, dafür Kosten pro Nutzung und ein Dritter, der mithört.",
+  voice_cloud_unpaired:
+    "Kein Cloud-Sprachmodell eingerichtet. Aktiviere auf dem Desktop bei einem Cloud-Modell die Fähigkeit stt oder tts — es erscheint hier nach der nächsten Synchronisierung. Bis dahin bleibt der Sprachmodus auf dem Gerät.",
+  voice_cloud_notice:
+    "Sprachmodus nutzt ein Cloud-Modell. Das Gesprochene verlässt dieses Gerät.",
+  voice_no_cloud_stt:
+    "Kein Cloud-Modell für Spracherkennung eingerichtet. Aktiviere auf dem Desktop die Fähigkeit stt bei einem Cloud-Modell.",
+  voice_no_cloud_tts:
+    "Kein Cloud-Modell für Sprachausgabe eingerichtet. Aktiviere auf dem Desktop die Fähigkeit tts bei einem Cloud-Modell.",
+  voice_unavailable:
+    "Sprachmodus ist für deine Lernsprache nicht verfügbar — weder auf dem Gerät noch über ein gekoppeltes Modell.",
+  voice_unavailable_device_only:
+    "Für deine Lernsprache fehlt auf diesem Gerät das Sprachmodell. Lade es in den Systemeinstellungen oder erlaube in den Einstellungen ein Cloud-Modell.",
   mic_denied:
     "Mikrofonzugriff fehlt. Bitte in den App-Einstellungen „Mikrofon“ erlauben und Sprachmodus erneut starten.",
   compare_and_rate: "Antwort vergleichen und ehrlich bewerten.",
@@ -321,6 +344,29 @@ const EN: Messages = {
   voice_data_opened:
     "Android voice data opened. Download German or English locally, then start voice mode again.",
   voice_data_failed: "Could not open voice data: {error}",
+  voice_engine_heading: "Voice mode",
+  voice_engine_label: "Speech engine",
+  voice_engine_device_only: "On this device only",
+  voice_engine_device_first: "Prefer this device",
+  voice_engine_quality_first: "Prefer quality",
+  voice_engine_device_only_desc:
+    "Nothing leaves the device. If your language has no model here, voice mode stays off.",
+  voice_engine_device_first_desc:
+    "The device first — free and private. If it cannot serve your language, a cloud model steps in.",
+  voice_engine_quality_first_desc:
+    "Cloud model first: better recognition, at a cost per use and with a third party listening.",
+  voice_cloud_unpaired:
+    "No cloud speech model is set up. Enable the stt or tts capability on a cloud model on the desktop — it appears here after the next sync. Until then voice mode stays on the device.",
+  voice_cloud_notice:
+    "Voice mode is using a cloud model. What you say leaves this device.",
+  voice_no_cloud_stt:
+    "No cloud speech-to-text model is set up. Enable the stt capability on a cloud model on the desktop.",
+  voice_no_cloud_tts:
+    "No cloud text-to-speech model is set up. Enable the tts capability on a cloud model on the desktop.",
+  voice_unavailable:
+    "Voice mode is not available for your review language — neither on this device nor through a paired model.",
+  voice_unavailable_device_only:
+    "This device has no speech model for your review language. Download it in the system settings, or allow a cloud model in Settings.",
   mic_denied:
     "Microphone access is missing. Allow “Microphone” in the app settings, then start voice mode again.",
   compare_and_rate: "Compare and rate yourself honestly.",
