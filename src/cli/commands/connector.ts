@@ -10,6 +10,7 @@ import {
   clearTursoCredentials,
   getADOCredentials,
   getTursoCredentials,
+  loadStoredCredentials,
   resolveCredentials,
   type StoredSecret,
   secretRefFromUri,
@@ -151,6 +152,31 @@ connectorCommand
     console.log("Azure DevOps connector removed.");
   });
 
+// ── zam connector token ─────────────────────────────────────────────────────
+
+connectorCommand
+  .command("token")
+  .description(
+    "Replace a connector's token, keeping the rest of its configuration",
+  )
+  .argument("<type>", "Connector type (turso)")
+  .option("--token <token>", "New auth token (non-interactive)")
+  .option(
+    "--token-from <ref>",
+    "Vault reference instead of --token (e.g. bw://zam-turso/token)",
+  )
+  .action(async (type, opts) => {
+    if (type !== "turso") {
+      console.error(`Unknown connector type: ${type}. Supported: turso`);
+      process.exit(1);
+    }
+    if (opts.token && opts.tokenFrom) {
+      console.error("Use either --token or --token-from, not both.");
+      process.exit(1);
+    }
+    return refreshTursoToken(opts.token, opts.tokenFrom);
+  });
+
 // ── zam connector sync ──────────────────────────────────────────────────────
 
 connectorCommand
@@ -178,7 +204,94 @@ connectorCommand
     }
   });
 
-// ── Turso setup helper ──────────────────────────────────────────────────────
+// ── Turso setup helpers ─────────────────────────────────────────────────────
+
+/**
+ * The Turso URL and mode already on disk, read from the *stored* document
+ * rather than the resolved view: a token that a vault can no longer resolve
+ * still leaves a perfectly good URL behind, and that is exactly the case where
+ * someone needs it back.
+ */
+function storedTursoConfig(): { url?: string; mode?: "native" | "remote" } {
+  const stored = loadStoredCredentials().turso;
+  return { url: stored?.url, mode: stored?.mode };
+}
+
+/**
+ * Replace only the auth token, keeping the configured URL and access mode.
+ *
+ * Turso tokens expire; the database they point at does not. Sending a learner
+ * back through the full `setup turso` flow to re-paste a URL they never
+ * changed is the kind of friction that turns a 30-second repair into a
+ * postponed one — and the URL is the part that is easy to get subtly wrong.
+ */
+async function refreshTursoToken(
+  tokenArg?: string,
+  tokenFrom?: string,
+): Promise<void> {
+  const { url, mode } = storedTursoConfig();
+  if (!url) {
+    console.error(
+      "No Turso database is configured yet, so there is no token to refresh.\n" +
+        "  Set one up first: zam connector setup turso",
+    );
+    process.exit(1);
+  }
+
+  let db: Database | undefined;
+  try {
+    let token: StoredSecret | undefined;
+    if (tokenFrom) {
+      token = secretRefFromUri(tokenFrom);
+    } else if (tokenArg) {
+      token = tokenArg;
+    } else {
+      console.log(`Refreshing the token for ${url}`);
+      token = await password({ message: "New auth token:" });
+    }
+    if (!token) {
+      console.error("A token is required.");
+      process.exit(1);
+    }
+
+    setTursoCredentials(url, token, undefined, mode);
+    await resolveCredentials();
+
+    if (!getTursoCredentials()) {
+      console.error(
+        tokenFrom
+          ? `Could not resolve token reference "${tokenFrom}". Fix the vault item or run: zam credentials check`
+          : "Turso credentials incomplete after the refresh.",
+      );
+      process.exit(1);
+    }
+
+    db = await openDatabaseWithSync({ initialize: true });
+    await db.prepare("SELECT 1").get();
+    await db.close();
+
+    console.log(
+      `Turso token refreshed and verified: ${url}` +
+        (mode ? ` (mode: ${mode})` : "") +
+        (tokenFrom ? ` (token from ${tokenFrom})` : ""),
+    );
+  } catch (err) {
+    await db?.close();
+    if ((err as Error).name === "ExitPromptError") {
+      console.log("\nCancelled.");
+      process.exit(0);
+    }
+    // The new token is kept rather than rolled back: the old one is normally
+    // the expired one being replaced, so restoring it would only re-break a
+    // config the learner just deliberately changed. Say plainly that it was
+    // stored but not proven.
+    console.error(
+      `Stored the new token, but could not verify it against ${url}:\n` +
+        `  ${(err as Error).message}`,
+    );
+    process.exit(1);
+  }
+}
 
 async function setupTurso(
   urlArg?: string,
@@ -202,11 +315,21 @@ async function setupTurso(
   }
 
   try {
+    // Re-running setup to replace an expired token is the common case, so the
+    // URL already on disk is offered rather than demanded: `--token` alone is
+    // enough non-interactively, and the prompt just needs Enter.
+    const storedUrl = storedTursoConfig().url;
     const url =
       urlArg ??
-      (await input({
-        message: "Turso database URL (e.g. libsql://my-db-user.turso.io):",
-      }));
+      (tokenArg || tokenFrom
+        ? (storedUrl ??
+          (await input({
+            message: "Turso database URL (e.g. libsql://my-db-user.turso.io):",
+          })))
+        : await input({
+            message: "Turso database URL (e.g. libsql://my-db-user.turso.io):",
+            ...(storedUrl ? { default: storedUrl } : {}),
+          }));
 
     let token: StoredSecret | undefined;
     if (tokenFrom) {

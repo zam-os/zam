@@ -211,7 +211,9 @@ export class HranaTransport {
     if (response.status === 401 || response.status === 403) {
       throw new HranaResponseError(
         `Turso rejected the configured credentials (HTTP ${response.status}). ` +
-          "Refresh the token with: zam connector setup turso",
+          // Token-only: the database URL has not changed, and asking for it
+          // again is what makes this repair feel bigger than it is.
+          "Refresh the token with: zam connector token turso",
       );
     }
     if (!response.ok) {
