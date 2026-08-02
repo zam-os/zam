@@ -20,6 +20,23 @@ import {
   tf,
 } from "./i18n.js";
 import {
+  BOOT_STEP_IDS,
+  BOOT_STEP_LABEL_KEYS,
+  type BootState,
+  type BootStepId,
+  completeStep,
+  createBootState,
+  currentStepLabelKey,
+  elapsedSeconds,
+  failStep,
+  finishBoot,
+  isOverlayVisible,
+  isSlow,
+  restartBoot,
+  startStep,
+  stepToBlame,
+} from "./boot-progress.js";
+import {
   initCurriculumWizard,
   setCurriculumWizardModelSetup,
 } from "./curriculum-wizard.js";
@@ -501,6 +518,31 @@ function loadThemePreference(): ThemePreference {
     return localStorage.getItem("zam:theme") === "dark" ? "dark" : "light";
   } catch {
     return "light";
+  }
+}
+
+/**
+ * Last locale the bridge reported, cached like the theme preference.
+ *
+ * The bridge owns the real setting, but it cannot answer before the window
+ * paints — and `currentLocale` starts at "en". Without this the first seconds
+ * of every start were in English regardless of the learner's language, which
+ * is most visible exactly when a start is slow enough to be worth reading.
+ */
+function loadRememberedLocale(): string | undefined {
+  try {
+    return localStorage.getItem("zam:locale") ?? undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function rememberLocale(locale: string | undefined): void {
+  if (!locale) return;
+  try {
+    localStorage.setItem("zam:locale", locale);
+  } catch {
+    // A cached hint is optional; the bridge value still applies this session.
   }
 }
 
@@ -1033,6 +1075,7 @@ function setupLocaleSwitcher(): void {
 async function setLocale(locale: Locale): Promise<void> {
   if (locale === currentLocale) return;
   setCurrentLocale(locale);
+  rememberLocale(locale);
 
   // Persist as an OS-default override; read back by desktop-bootstrap on launch.
   try {
@@ -4643,6 +4686,7 @@ async function loadDashboard() {
   try {
     clearDashboardError();
     // 1. Initialize first-run state, then apply settings and translations.
+    beginBootStep("settings");
     const settings = await runBridge<{
       userId: string;
       locale: string;
@@ -4674,8 +4718,14 @@ async function loadDashboard() {
     onboardingWorkspaceStructure =
       settings.workspaceStructure ?? onboardingWorkspaceStructure;
     dashboardSignalsLoaded = true;
+    completeBootStep("settings");
 
+    // Remember the locale for the *next* start: the overlay paints before the
+    // bridge can answer, and defaulting it to English made the first seconds
+    // of every start lie about the language.
+    rememberLocale(settings.locale);
     initializeTranslations();
+    renderBootOverlay();
 
     // First-run gate (ADR 2026-07-24): a machine that has not completed the
     // guided flow lands there instead of the empty dashboard. The rest of
@@ -4692,13 +4742,15 @@ async function loadDashboard() {
     // 2. Vault-backed secrets (e.g. Turso token in Bitwarden) must resolve
     // before any DB read — otherwise we silently hit an empty local file.
     clearDashboardError();
+    beginBootStep("vault");
     const vaultOk = await assureBitwardenAccess();
     if (!vaultOk) {
-      showDashboardError(
-        new Error(t("bw_assure_cancelled")),
-      );
+      const cancelled = new Error(t("bw_assure_cancelled"));
+      failBootStep("vault", cancelled);
+      showDashboardError(cancelled);
       return;
     }
+    completeBootStep("vault");
 
     // 3. Check due cards count and active domains
     let dueInfo: {
@@ -4706,6 +4758,7 @@ async function loadDashboard() {
       domains: string[];
       stats?: { cardsInDeck?: number };
     };
+    beginBootStep("cards");
     try {
       dueInfo = await runBridge<{
         dueCount: number;
@@ -4723,6 +4776,7 @@ async function loadDashboard() {
     }
     totalDue = dueInfo.dueCount;
     deckCardCount = dueInfo.stats?.cardsInDeck ?? null;
+    completeBootStep("cards");
 
     const dueCountEl = document.getElementById("due-count")!;
     dueCountEl.textContent = String(totalDue);
@@ -4766,6 +4820,11 @@ async function loadDashboard() {
       domainsContainer.appendChild(span);
     }
 
+    // The dashboard now shows measured values rather than markup defaults, so
+    // the startup overlay has nothing left to explain.
+    finishBootOverlay();
+    reportFailedPanels();
+
     // 4. Bring the local LLM online (auto-starts the server like `zam learn`)
     //    and reflect status. Don't block the dashboard on model load.
     refreshAiStatus();
@@ -4778,12 +4837,205 @@ async function loadDashboard() {
         await loadDashboard();
         return;
       } catch (err2) {
+        failBootStep(currentBootStep(), err2);
         showDashboardError(err2);
         return;
       }
     }
+    // Leave the overlay up naming the step that broke: behind it the dashboard
+    // still shows placeholders, which is exactly what must not read as data.
+    failBootStep(currentBootStep(), err);
     showDashboardError(err);
   }
+}
+
+// ── STARTUP OVERLAY ───────────────────────────────────────────────────────
+// The dashboard's markup is placeholder chrome until loadDashboard() answers.
+// This overlay covers it, names the step in progress, and — when a start hangs
+// or fails — says which step it stopped on instead of leaving a plausible but
+// invented dashboard on screen. State machine: desktop/src/boot-progress.ts.
+
+let bootState: BootState = createBootState(Date.now());
+let bootTicker: ReturnType<typeof setInterval> | undefined;
+
+function renderBootOverlay(): void {
+  const overlay = document.getElementById("boot-overlay");
+  if (!overlay) return;
+
+  if (!isOverlayVisible(bootState)) {
+    overlay.classList.add("hidden");
+    if (bootTicker) {
+      clearInterval(bootTicker);
+      bootTicker = undefined;
+    }
+    return;
+  }
+  overlay.classList.remove("hidden");
+
+  const title = document.getElementById("boot-title");
+  if (title) title.textContent = t("boot_title");
+  const retryBtn = document.getElementById("btn-boot-retry");
+  if (retryBtn) retryBtn.textContent = t("boot_retry");
+  const continueBtn = document.getElementById("btn-boot-continue");
+  if (continueBtn) continueBtn.textContent = t("boot_continue");
+
+  const stepKey = currentStepLabelKey(bootState);
+  const current = document.getElementById("boot-current");
+  if (current) current.textContent = stepKey ? t(stepKey) : "";
+
+  const list = document.getElementById("boot-steps");
+  if (list) {
+    list.replaceChildren();
+    for (const step of BOOT_STEP_IDS) {
+      const status = bootState.statuses[step];
+      const item = document.createElement("li");
+      item.className = "boot-step";
+      item.dataset.status = status;
+      const marker = document.createElement("span");
+      marker.className = "boot-step-marker";
+      marker.setAttribute("aria-hidden", "true");
+      marker.textContent =
+        status === "done"
+          ? "✓"
+          : status === "failed"
+            ? "✕"
+            : status === "running"
+              ? "›"
+              : "·";
+      const label = document.createElement("span");
+      label.textContent = t(BOOT_STEP_LABEL_KEYS[step]);
+      item.append(marker, label);
+      list.appendChild(item);
+    }
+  }
+
+  const note = document.getElementById("boot-note");
+  const actions = document.getElementById("boot-actions");
+  if (bootState.failure) {
+    if (note) {
+      const stepLabel = t(BOOT_STEP_LABEL_KEYS[bootState.failure.step]);
+      note.textContent = `${tf("boot_failed_at", { step: stepLabel })} ${
+        bootState.failure.message
+      }`;
+      note.classList.remove("hidden");
+      note.classList.add("boot-note-error");
+    }
+    actions?.classList.remove("hidden");
+  } else if (isSlow(bootState, Date.now())) {
+    if (note) {
+      note.textContent = tf("boot_slow_note", {
+        seconds: String(elapsedSeconds(bootState, Date.now())),
+      });
+      note.classList.remove("hidden");
+      note.classList.remove("boot-note-error");
+    }
+    // A slow start is still a start: offer the escape hatch, not a retry that
+    // would abandon work already in flight.
+    actions?.classList.add("hidden");
+  } else {
+    note?.classList.add("hidden");
+    actions?.classList.add("hidden");
+  }
+}
+
+/** Keep the elapsed readout moving while a start is still running. */
+function startBootTicker(): void {
+  if (bootTicker) return;
+  bootTicker = setInterval(() => {
+    if (!isOverlayVisible(bootState)) return;
+    renderBootOverlay();
+  }, 1_000);
+}
+
+function beginBootStep(step: BootStepId): void {
+  bootState = startStep(bootState, step);
+  renderBootOverlay();
+}
+
+function completeBootStep(step: BootStepId): void {
+  bootState = completeStep(bootState, step);
+  renderBootOverlay();
+}
+
+function currentBootStep(): BootStepId {
+  return stepToBlame(bootState);
+}
+
+function failBootStep(step: BootStepId, err: unknown): void {
+  bootState = failStep(
+    bootState,
+    step,
+    err instanceof Error ? err.message : String(err),
+  );
+  renderBootOverlay();
+}
+
+function finishBootOverlay(): void {
+  bootState = finishBoot(bootState);
+  renderBootOverlay();
+}
+
+/** Dismiss the overlay without a retry — the dashboard may be incomplete. */
+function dismissBootOverlay(): void {
+  bootState = { ...bootState, finished: true };
+  renderBootOverlay();
+}
+
+/**
+ * Names of settings widgets whose startup wiring threw, shown once the
+ * dashboard is up.
+ */
+const failedPanels: string[] = [];
+
+/**
+ * Wire one optional settings widget without letting it take the app down.
+ *
+ * These are all initialized from the single DOMContentLoaded handler that also
+ * kicks off `loadDashboard()`, so an exception in any one of them used to
+ * abort the whole handler — the dashboard never loaded, and because its markup
+ * is a fully rendered placeholder, that looked like a finished app stuck on
+ * "0 due" rather than a crash. (`initSecretsVault` did exactly this: it
+ * deleted the Alpha badge it then required.) The learner may lose a settings
+ * card; they must not lose the dashboard.
+ */
+function initPanel(name: string, init: () => void): void {
+  try {
+    init();
+  } catch (err) {
+    console.error(`Startup: ${name} failed to initialize`, err);
+    failedPanels.push(name);
+  }
+}
+
+/** Show a non-blocking notice naming any widget that failed to wire up. */
+function reportFailedPanels(): void {
+  if (failedPanels.length === 0) return;
+  const view = document.getElementById("dashboard-view");
+  if (!view) return;
+  let banner = document.getElementById("dashboard-panel-warning");
+  if (!banner) {
+    banner = document.createElement("div");
+    banner.id = "dashboard-panel-warning";
+    banner.className = "error-banner";
+    view.prepend(banner);
+  }
+  banner.textContent = `⚠ ${tf("boot_panel_failed", {
+    panels: failedPanels.join(", "),
+  })}`;
+  banner.classList.remove("hidden");
+}
+
+function initBootOverlay(): void {
+  document.getElementById("btn-boot-retry")?.addEventListener("click", () => {
+    bootState = restartBoot(bootState);
+    renderBootOverlay();
+    void loadDashboard();
+  });
+  document
+    .getElementById("btn-boot-continue")
+    ?.addEventListener("click", () => dismissBootOverlay());
+  renderBootOverlay();
+  startBootTicker();
 }
 
 /**
@@ -6032,25 +6284,40 @@ function devObserverEnabled(): boolean {
 
 window.addEventListener("DOMContentLoaded", () => {
   applyTheme(loadThemePreference());
+  // Apply the remembered locale before the first render, so the startup
+  // overlay and the chrome behind it speak the learner's language from the
+  // outset rather than switching once the bridge answers.
+  const remembered = loadRememberedLocale();
+  if (remembered) setCurrentLocale(remembered);
+  initBootOverlay();
   initializeTranslations();
   setupLocaleSwitcher();
-  initLearningContentStudio();
-  initCurriculumWizard();
-  // Text-LLM-offline in the wizard links back to the onboarding model page
-  // instead of dead-ending in an error (ADR 2026-07-24 §7, plan Phase 9).
-  setCurriculumWizardModelSetup(() => showOnboardingAt("model"));
-  initServerDbWizard(
-    () => void loadDatabaseStatus(),
-    { openExternal: (url: string) => void openUrl(url) },
+  initPanel("learning-content", () => initLearningContentStudio());
+  initPanel("curriculum-wizard", () => {
+    initCurriculumWizard();
+    // Text-LLM-offline in the wizard links back to the onboarding model page
+    // instead of dead-ending in an error (ADR 2026-07-24 §7, plan Phase 9).
+    setCurriculumWizardModelSetup(() => showOnboardingAt("model"));
+  });
+  initPanel("server-db", () =>
+    initServerDbWizard(
+      () => void loadDatabaseStatus(),
+      { openExternal: (url: string) => void openUrl(url) },
+    ),
   );
-  initSecretsVault({ openExternal: (url: string) => void openUrl(url) });
-  initMobilePairing(() => void loadDatabaseStatus());
+  initPanel("secrets-vault", () =>
+    initSecretsVault({ openExternal: (url: string) => void openUrl(url) }),
+  );
+  initPanel("mobile-pairing", () =>
+    initMobilePairing(() => void loadDatabaseStatus()),
+  );
   // Goal-driven import stays reachable outside first run (plan Phase 8):
   // Learning Content's "Goal import" reopens the flow at the goal page.
   document
     .getElementById("btn-content-goal-import")
     ?.addEventListener("click", () => showOnboardingAt("goal"));
-  onboardingController = initOnboarding({
+  initPanel("onboarding", () => {
+    onboardingController = initOnboarding({
     getStepContext: () => ({
       personas: onboardingPersonas,
       selectedPersonaId: onboardingPersonaId,
@@ -6082,6 +6349,7 @@ window.addEventListener("DOMContentLoaded", () => {
       if (reason === "later") onboardingDeferredThisSession = true;
       void loadDashboard();
     },
+    });
   });
 
   // Load initial dashboard state
