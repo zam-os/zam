@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-08-01T18:50:00Z
+timestamp: 2026-08-02T20:20:00Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -58,6 +58,29 @@ carries `reviewedCards` and `studyTimeMs`. Study time sums
 series. Ratings logged before response-time measurement existed count as
 worked cards and contribute no time.
 
+# Local AI setup commands
+
+`foundry-local-status` / `foundry-local-setup`, `local-vision-status` /
+`local-vision-setup`, and `embedding-status` / `embedding-enable` back the three
+Settings cards for machine-local models (see
+[local-ai-runtimes.md](local-ai-runtimes.md)). They are the transport, not the
+intended learner path — setup is a Settings button.
+
+Each pair separates **inspect** from **act**, and the inspect half is
+side-effect free: it never starts a service and never downloads a model, so a
+surface may poll it. Status is returned as independent facts (`accelerated`,
+`ollamaInstalled`, `serverOnline`, `modelPresent`, `registered`, `usable`)
+rather than one verdict, so a caller can name the first thing to fix instead of
+the last thing that failed.
+
+The setup halves for text and image are **gated on accelerated hardware** and
+return `ok: false` with a reason on a CPU-only machine; `embedding-enable` is
+not gated. `foundry-local-status` and `local-llm-hints` additionally report
+`hardware`, `acceleration`, and `accelerated` from the system profile so a
+surface can disable an action with the reason rather than let it fail.
+
+# Mobile companion import
+
 The mobile companion accepts one `AddTokenRequest`-shaped bridge-token
 object from a selected JSON file or an Android share intent. It also accepts
 the CLI's snake-case compatibility spellings, always shows an editable
@@ -79,5 +102,6 @@ is not configured.
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-08-01 — Learning Progress Statistics](../adr/2026-08-01-learning-progress-stats.md)
+- [ADR 2026-08-02 — Local Generation Only on Accelerated Hardware](../adr/2026-08-02-foundry-local-and-hardware-classification.md)
 - [Android companion plan](../plans/2026-07-21-android-companion-app.md)
 - Code: `src/cli/app.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/shared/activity.ts`, `src/bridge/protocol.ts`, `src/kernel/analytics/progress.ts`, `mobile/src/import.ts`, `mobile/src/main.ts`, `mobile/src/vl-import.ts`, `mobile/src/vision-config.ts`, `mobile/src-tauri/src/vision.rs`
