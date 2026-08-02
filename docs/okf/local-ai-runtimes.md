@@ -8,7 +8,7 @@ tags:
   - setup
   - windows
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/local-ai-runtimes.md"
-timestamp: 2026-08-02T20:15:00Z
+timestamp: 2026-08-02T20:55:00Z
 ---
 
 ZAM can serve its `text`, `image`, and `embedding` roles from the learner's own
@@ -83,6 +83,12 @@ list, so a machine that gains an accelerated build picks it up without a code
 change. **A catalog holding only CPU builds yields no recommendation** — that is
 the honest answer, not a defect.
 
+How thin the accelerated slice actually is, measured on a Snapdragon X machine
+against Foundry Local 0.10.2: **43 catalog entries, of which 42 are CPU builds
+and exactly one is NPU** (`phi-3.5-mini`). All three preferred aliases exist
+there, but `qwen3.5-2b-text` and `qwen3.5-0.8b` are CPU builds — so the device
+filter, not the alias order, is what does the work.
+
 There is **no second attempt on a CPU build**. If the accelerated candidate's
 execution provider is unavailable — the common Qualcomm case, where QNN is
 missing or the driver is wrong — Foundry's load failure is reported as-is and
@@ -91,23 +97,42 @@ while producing the experience that stops the learner reviewing.
 
 Catalog ids carry a variant suffix (`phi-3.5-mini-instruct-qnn-npu:2`) that the
 HTTP service does not accept. `foundryHttpModelId` strips the trailing `:<n>`;
-the stripped form is what lands in the registry.
+the stripped form is what lands in the registry, and it matches what the running
+service advertises on `/v1/models`.
 
 Installation is guided on Windows only, through winget
 (`Microsoft.FoundryLocal`). Other platforms say so rather than pretending. A
 freshly installed `foundry` not yet on the process PATH produces an explicit
 "restart ZAM, then retry".
 
-# Starting the service: lazily, and never downloading
+# No implicit downloads — but inspection does start the daemon
 
 Two entry points, separated by who is asking:
 
-- **`getFoundryLocalStatus`** inspects only. It never starts the service and
-  never downloads, so opening a settings page cannot spin up a service or
-  consume bandwidth.
+- **`getFoundryLocalStatus`** inspects. It **never downloads**, so opening a
+  settings page cannot consume bandwidth.
 - **`prepareFoundryEndpoint`** starts the service and loads an
   already-downloaded model. It runs only on a call about to *use* the model —
   recall, text, and vision resolution — never on passive status checks.
+
+Inspection is **not** free of side effects, despite reading like it should be.
+Measured against Foundry Local 0.10.2:
+
+| Command | Starts `foundrylocald` |
+| --- | --- |
+| `foundry server status` | no |
+| `foundry model list` | **yes** |
+| `foundry cache list` | **yes** |
+
+Every `model` and `cache` subcommand starts the daemon, and the catalog is what
+the recommendation needs — so there is no daemon-free route to it through
+Foundry's CLI. Opening Settings starts a local background service. Stopping it
+is `foundry server stop`.
+
+A visible artefact of this: `getFoundryLocalStatus` runs `server status` and
+`model list` concurrently, so the *first* call after a cold start typically
+reports `running: false` while itself causing the daemon to come up; a second
+call reports `running: true`.
 
 `ensureFoundryModelLoaded` refuses a model that is not cached rather than
 fetching it, so a review cannot unexpectedly consume several gigabytes.
@@ -147,9 +172,10 @@ and saying so sends the learner somewhere that works.
 **Integrated graphics do not count.** The GPU allowlist matches discrete parts
 only — `nvidia`, `geforce`, `rtx`, `gtx`, `quadro`, `tesla`,
 `radeon rx|pro|vii`, Intel Arc — and deliberately does not match
-`Intel UHD Graphics`, `Iris Xe`, or the bare `AMD Radeon(TM) Graphics` name an
-integrated part reports. An iGPU shares memory and bandwidth with the CPU and
-lands in the same too-slow band.
+`Intel UHD Graphics`, `Iris Xe`, the bare `AMD Radeon(TM) Graphics` name an
+integrated part reports, or the `Qualcomm(R) Adreno(TM) X1-45 GPU` a Snapdragon
+X laptop carries. An iGPU shares memory and bandwidth with the CPU and lands in
+the same too-slow band.
 
 NPU classifications take precedence over a discrete GPU, so a machine with both
 keeps its pre-GPU-detection behaviour. Whether that ordering is right is an open

@@ -141,13 +141,35 @@ A registry entry left by the preview-era "Foundry Local Vision" setup has its
 `image` capability cleared when the Ollama path is chosen. An image transport
 known not to work must not survive as a silent fallback.
 
-### 5. Foundry is started lazily, and never downloads implicitly
+### 5. Nothing is downloaded implicitly — but inspection does start the daemon
 
-- `getFoundryLocalStatus` inspects. It never starts the service and never
-  downloads, so Settings polling cannot spin up a service or consume bandwidth.
+- `getFoundryLocalStatus` inspects and **never downloads**, so Settings polling
+  cannot consume bandwidth.
 - `prepareFoundryEndpoint` starts the service and loads an **already-downloaded**
   model, and runs only on a call about to use the model — recall, text, and
   vision resolution, not passive status checks.
+
+This decision originally also claimed that inspection never starts the Foundry
+service. **That claim was wrong, and hardware testing caught it.** Measured
+against Foundry Local 0.10.2 on a Snapdragon X machine:
+
+| Command | Starts the daemon |
+|---|---|
+| `foundry server status` | no |
+| `foundry model list` | **yes** |
+| `foundry cache list` | **yes** |
+
+Every `model` and `cache` subcommand starts `foundrylocald`, so there is no
+daemon-free route to the catalog through Foundry's CLI — and the catalog is what
+the recommendation needs. Opening Settings therefore starts a local background
+service the learner did not ask for.
+
+The separation that survives is the one that costs the learner something real:
+**no implicit downloads.** Starting a local daemon holds memory and a port and
+is reversible with `foundry server stop`; pulling several gigabytes is neither.
+Gating the catalog call on an already-running service was considered and is
+recorded under Alternatives — it would make the stronger property true at the
+cost of hiding the recommended model until the learner acts.
 
 `ensureFoundryModelLoaded` refuses a model that is not cached rather than
 fetching it; a review that silently pulls several gigabytes is not an acceptable
@@ -193,6 +215,15 @@ truthful.
 
 **Include integrated GPUs in the allowlist.** Rejected: an iGPU is a CPU-class
 result for this workload, so including it would restore the failure §1 removes.
+Confirmed concretely on the Snapdragon X test machine, whose Adreno X1-45
+classifies as `unsupported` when the NPU branch is taken out of the picture.
+
+**Read the catalog only when the daemon already runs**, to keep the
+"inspection has no side effects" property of §5 literally true. Not taken for
+now: it would leave the Settings card unable to name the recommended model
+until the learner starts Foundry or runs setup, trading a visible capability
+for a background process that `foundry server stop` undoes. Worth revisiting if
+the daemon turns out to be expensive to leave running.
 
 ## Consequences
 
@@ -236,11 +267,29 @@ result for this workload, so including it would restore the failure §1 removes.
       model is pulled.
 - [x] Settings chrome localization covered by
       `tests/desktop/i18n-completeness.test.ts`.
-- [ ] End-to-end Foundry setup on a Snapdragon X device: winget install, service
-      start, NPU model load, and one real recall answer.
+- [x] Classification verified on a real Snapdragon X (X126100, Oryon CPU,
+      Hexagon NPU, Adreno X1-45 GPU): `getSystemProfile()` returns
+      `snapdragon-x` / `npu` / runner `generic` /
+      `phi-3.5-mini-instruct-qnn-npu`. The same machine's Adreno classifies as
+      `unsupported` once the NPU branch is excluded, so the iGPU exclusion holds
+      against a real device name rather than only a fixture.
+- [x] Recommendation verified against the real catalog on that machine: 43
+      entries, of which **42 are CPU builds and exactly one is NPU**
+      (`phi-3.5-mini`). The recommendation selects it, and a pre-change
+      fallback would have landed on the CPU build `qwen3.5-0.8b` — the concrete
+      case §2 exists to prevent.
+- [x] `foundryHttpModelId` suffix stripping verified against the live service:
+      the catalog id is `phi-3.5-mini-instruct-qnn-npu:2` and `/v1/models`
+      serves `phi-3.5-mini-instruct-qnn-npu`, which is what the registry stores.
+- [x] `local-vision-status` and `embedding-status` report `usable: true` on that
+      machine with Ollama installed and Qwen3-VL 4B present, including the new
+      `accelerated` field.
+- [ ] End-to-end Foundry **setup and one real recall answer** on Snapdragon X:
+      winget install, NPU model download and load, then a review. Inspection and
+      selection are now proven on hardware; the load-and-answer path is not.
 - [ ] Discrete-GPU path exercised end to end on an NVIDIA machine. Detection is
-      unit-covered; that Ollama actually reaches the GPU there is assumed, not
-      shown.
+      unit-covered and the classifier agrees on a synthetic RTX 4070 name; that
+      Ollama actually reaches the GPU there is assumed, not shown.
 - [ ] Qwen3-VL 4B observation quality against a real screenshot, compared with
       the cloud vision path. The transport is proven; the output is not.
 - [ ] The NPU-over-GPU precedence in §3 revisited on a machine with both.
