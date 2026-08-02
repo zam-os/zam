@@ -371,6 +371,13 @@ const CONFIG_LOCK_STALE_MS = 30_000;
  * the lost update this lock exists to prevent. A path that is permanently
  * unusable (a read-only directory, a stray directory named `config.json.lock`)
  * gives up after this instead of stalling every config write.
+ *
+ * Measured from the *first* consecutive refusal, never from the start of the
+ * acquire: time spent legitimately queueing behind a busy lock says nothing
+ * about whether this path is permanently unusable. Sharing one budget with the
+ * wait meant that under real contention — several writers, one of them slow —
+ * the budget was already spent by the time a transient EPERM arrived, so the
+ * very first blip dropped straight through to an unlocked write.
  */
 const CONFIG_LOCK_RETRY_MS = 500;
 const CONFIG_LOCK_POLL_MS = 15;
@@ -499,18 +506,26 @@ function acquireInstallConfigLock(path: string): (() => void) | undefined {
   };
 
   const started = Date.now();
+  /** When the current run of non-EEXIST refusals began; reset once one lands. */
+  let refusedSince: number | undefined;
   for (;;) {
     const attempt = tryAcquireLock(lockPath, token);
     if (attempt === "acquired") return acquired();
-    const waitedMs = Date.now() - started;
+    const now = Date.now();
+    const waitedMs = now - started;
 
     if (attempt === "unavailable") {
       // Not "someone holds the lock" but "the lock path refused us" — on
-      // Windows usually a transient unlink still in flight. Retry briefly.
-      if (waitedMs >= CONFIG_LOCK_RETRY_MS) return undefined;
+      // Windows usually a transient unlink still in flight. Retry briefly,
+      // timed from this run of refusals rather than from the whole acquire:
+      // a writer that has queued behind a slow holder for a second has learned
+      // nothing about whether the path itself is usable.
+      refusedSince ??= now;
+      if (now - refusedSince >= CONFIG_LOCK_RETRY_MS) return undefined;
       sleepSync(CONFIG_LOCK_POLL_MS);
       continue;
     }
+    refusedSince = undefined;
 
     const heldForMs = lockAgeMs(lockPath);
     if (heldForMs === undefined) {

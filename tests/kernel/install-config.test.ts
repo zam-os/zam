@@ -5,6 +5,7 @@ import {
   mkdtempSync,
   readdirSync,
   readFileSync,
+  renameSync,
   rmSync,
   utimesSync,
   writeFileSync,
@@ -731,6 +732,102 @@ describe("cross-process config writes", () => {
     expect(getCompanionCollapsed(path)).toEqual({ recall: true });
     expect(Date.now() - started).toBeLessThan(4_000);
   });
+
+  /**
+   * Rename that tolerates Windows briefly refusing a directory another process
+   * has just touched. The waiter polls the lock path every few milliseconds,
+   * so an unlucky overlap is EPERM/EBUSY rather than a real failure.
+   */
+  function renameWithRetry(from: string, to: string): void {
+    for (let attempt = 0; ; attempt += 1) {
+      try {
+        renameSync(from, to);
+        return;
+      } catch (error) {
+        if (attempt >= 20) throw error;
+        const until = Date.now() + 20;
+        while (Date.now() < until) {
+          // Busy-wait: this runs between two timed steps of the scenario.
+        }
+      }
+    }
+  }
+
+  /**
+   * A writer that announces itself before queueing for the lock, so the test
+   * can time the rest of the scenario from "this process is now waiting".
+   */
+  function waitingWriterProcess(
+    path: string,
+    writer: string,
+  ): ReturnType<typeof spawn> {
+    const script = `
+      const { writeFileSync } = await import("node:fs");
+      const { setCompanionCollapsed } = await import(${JSON.stringify(
+        pathToFileURL(join(process.cwd(), "dist", "index.js")).href,
+      )});
+      writeFileSync(${JSON.stringify(`${path}.waiting`)}, "", "utf8");
+      setCompanionCollapsed(
+        ${JSON.stringify(writer)},
+        true,
+        ${JSON.stringify(path)},
+      );
+    `;
+    return spawn(process.execPath, ["--input-type=module", "-e", script], {
+      stdio: "ignore",
+    });
+  }
+
+  it("does not skip the lock when the path refuses it after a long wait", async () => {
+    const path = tempConfigPath();
+    const lockPath = `${path}.lock`;
+    // This process is the holder: a live pid, so a waiter has to queue rather
+    // than decide the lock is abandoned.
+    writeFileSync(lockPath, `${process.pid}\nholder-token\n`, "utf8");
+
+    const child = waitingWriterProcess(path, "waiter");
+    const exited = new Promise<void>((resolve, reject) => {
+      child.on("error", reject);
+      child.on("exit", (code) =>
+        code === 0 ? resolve() : reject(new Error(`waiter exited with ${code}`)),
+      );
+    });
+    while (!existsSync(`${path}.waiting`)) {
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+
+    // Queue the waiter for longer than the transient-refusal retry budget…
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    // …then make the create fail with something other than EEXIST, the way
+    // Windows does with EPERM/EBUSY while the previous holder's unlink is
+    // still in flight. Moving the directory aside is the portable stand-in:
+    // ENOENT everywhere, and atomic — deleting it instead would take the lock
+    // file with it and hand the waiter the lock for real. A waiter that counts
+    // its time queueing against the retry budget gives up on this first
+    // refusal and writes unsynchronized, dropping what the holder commits next.
+    const dir = dirname(path);
+    const asideDir = `${dir}-aside`;
+    renameWithRetry(dir, asideDir);
+    await new Promise((resolve) => setTimeout(resolve, 150));
+    // Commit the holder's write where the directory is about to reappear, so
+    // it is already on disk the moment the path becomes usable again.
+    saveInstallConfig({ companion: { collapsed: { "slow-holder": true } } },
+      join(asideDir, basename(path)),
+    );
+    // A waiter that already gave up has recreated the directory for its
+    // unsynchronized write; drop it so the real one can come back.
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 20 });
+    renameWithRetry(asideDir, dir);
+    await exited;
+
+    // Both writes must survive: the waiter has to have taken the lock once the
+    // path recovered and re-read what the holder committed.
+    expect(getCompanionCollapsed(path)).toEqual({
+      "slow-holder": true,
+      waiter: true,
+    });
+    expect(existsSync(lockPath)).toBe(false);
+  }, 30_000);
 
   it("breaks a lock left behind by a process that died holding it", () => {
     const path = tempConfigPath();

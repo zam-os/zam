@@ -1,6 +1,11 @@
 # Handover — verify the config-lock fix on Windows ARM
 
-**Status:** fix implemented and committed, **not yet verified on Windows ARM**.
+> **2026-08-02 — verified on Windows ARM64 (Snapdragon X / Qualcomm Oryon,
+> Windows 11 26200, Node 26.4.0 arm64).** The baseline reproduces, the fix
+> holds under the plain load, and a **fourth defect** the macOS work could not
+> see was found and fixed. See "Windows ARM results" at the end.
+
+**Status:** verified on Windows ARM; one further defect found there and fixed.
 **Branch:** `claude/sharp-chaplygin-ae2159`, one commit on top of `v0.27.0`
 (`b1cf71a`, "fix: decide config-lock staleness by holder liveness, not elapsed
 time").
@@ -156,3 +161,88 @@ otherwise.
   path a reader could observe a missing `config.json` and save `{}` over
   everything. Not observed, not addressed here, but it is the next thing to
   look at if a *wholesale* config reset is ever reported on Windows.
+
+## Windows ARM results (2026-08-02)
+
+Machine: Snapdragon X (Qualcomm Oryon), Windows 11 build 26200, Node 26.4.0
+arm64. `better-sqlite3@13` needs no compiler here — it ships an N-API
+`prebuilds/win32-arm64.node`, so `npm ci --ignore-scripts` is enough when
+node-gyp has no Python (the automatic `node-gyp rebuild` npm runs because a
+`binding.gyp` exists is not actually required).
+
+**The baseline reproduces on real hardware**, so a green run on the fix means
+something. 4 writers × 150 rounds = 600 writes per run, the same shape as the
+vitest test:
+
+| | lost-write runs | keys lost | mean |
+| --- | --- | --- | --- |
+| v0.27.0, 20 runs | **14 / 20** | 34 / 12 000 | 1962 ms |
+| fix, 20 runs | **0 / 20** | 0 / 12 000 | **1214 ms** |
+
+The vitest test named in the open question above behaves the same way: on
+v0.27.0 it failed **4 of 10** runs, with exactly the CI signature
+(`expected [ 'delta-83' ] to deeply equal []`); on the branch it passed 10/10,
+and the whole file passed 15/15 afterwards.
+
+The fix is also ~38 % *faster* under contention — waiters no longer break live
+locks and redo work.
+
+### Defect 4 — the retry budget was measured from the wrong instant
+
+The slow-critical-section variant (3 % of rounds holding 300 ms) still lost
+writes **with the fix applied**: 2 of 3 runs, 4 keys of 1800. macOS could not
+show this, because it needs a real Windows transient error to trigger.
+
+Instrumenting `acquireInstallConfigLock` as this handover suggested pinned it
+exactly — the counters line up 1:1 with the lost keys:
+
+```
+run 2: unavailable:EPERM=3  gaveUp:unavailableBudget=3  write:UNLOCKED=3  → LOST 3
+runs 1 & 4: unavailable:EPERM=1  retry:unavailable=1  (recovered)         → LOST 0
+```
+
+So defect 3's diagnosis was right — a transient `EPERM` on the `wx` create is
+real and does happen on this filesystem — but the retry that was supposed to
+absorb it did not, because `waitedMs` counts from the *start of the acquire*
+and is shared with the busy-wait path:
+
+```ts
+if (attempt === "unavailable") {
+  if (waitedMs >= CONFIG_LOCK_RETRY_MS) return undefined;  // ← already spent
+```
+
+Under contention a writer has usually queued behind a live holder for well over
+500 ms before any blip arrives, so the budget was exhausted before the first
+refusal and the very next `EPERM` dropped straight through to an unlocked
+write. The intent ("retry a transient refusal for 500 ms") only matched the
+code when the lock happened to be uncontended.
+
+Fixed by timing the budget from the first refusal in the current run of
+refusals, reset whenever an attempt gets as far as `EEXIST`:
+
+```ts
+refusedSince ??= now;
+if (now - refusedSince >= CONFIG_LOCK_RETRY_MS) return undefined;
+```
+
+A permanently unusable lock path still gives up after 500 ms, so the property
+that motivated the budget is unchanged.
+
+Regression test: `does not skip the lock when the path refuses it after a long
+wait`. It queues a real second process behind a held lock for longer than the
+retry budget, then makes the create fail with something other than `EEXIST` by
+moving the config directory aside (`ENOENT`, atomic and portable — *deleting*
+it is not a valid stand-in, because that removes the lock file too and hands
+the waiter the lock for real). Fails against the pre-fix branch with the lost
+write, passes with it; 15/15 stable locally.
+
+### Still open
+
+- `npm run lint` cannot run on this machine: Biome 2.5.6's `win32-arm64` binary
+  exits with an access violation (`0xC0000005`) on an untouched `v0.27.0`
+  checkout too, so it is environmental, not a code problem. CI's Ubuntu
+  `validate` job remains the lint gate.
+- The unexplained macOS failure noted above did not recur here (15 consecutive
+  clean runs of the file, plus the full suite). One flake seen mid-session was
+  the new regression test's own first draft, which deleted the config directory
+  and raced the waiter; the rename-aside version above has no such window.
