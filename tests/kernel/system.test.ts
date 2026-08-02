@@ -9,6 +9,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  classifyLocalAiHardware,
   distributeGlobalSkills,
   getPackageSkillPath,
   getSystemProfile,
@@ -41,6 +42,45 @@ describe("System Profiling & Tool Detections", () => {
 
       const validRunner = ["fastflowlm", "ollama", "generic"];
       expect(validRunner).toContain(profile.recommendedRunner);
+    });
+    it("recognizes only the explicitly supported accelerated hardware", () => {
+      const cases = [
+        [
+          {
+            platform: "win32" as const,
+            arch: "arm64",
+            processorName: "Snapdragon(R) X - X126100 - Qualcomm(R) Oryon(TM) CPU",
+            acceleratorNames: "Snapdragon(R) X - X126100 - Qualcomm(R) Hexagon(TM) NPU",
+          },
+          "snapdragon-x",
+        ],
+        [
+          {
+            platform: "win32" as const,
+            arch: "x64",
+            processorName: "AMD Ryzen AI 9 HX 370",
+            acceleratorNames: "AMD IPU Device",
+          },
+          "ryzen-ai",
+        ],
+        [
+          { platform: "darwin" as const, arch: "arm64", processorName: "Apple M4" },
+          "apple-silicon",
+        ],
+        [
+          {
+            platform: "win32" as const,
+            arch: "x64",
+            processorName: "Intel Core Ultra",
+            acceleratorNames: "Intel AI Boost NPU",
+          },
+          "unsupported",
+        ],
+      ] as const;
+
+      for (const [fingerprint, expected] of cases) {
+        expect(classifyLocalAiHardware(fingerprint)).toBe(expected);
+      }
     });
   });
 

@@ -421,6 +421,64 @@
               </span>
             </label>
             <p id="dynamic-questions-status" class="sub-label settings-status-row" aria-live="polite"></p>
+            <div id="foundry-local-setup" class="settings-stack">
+              <div class="settings-card-header">
+                <div>
+                  <h3 id="lbl-foundry-local-title">Foundry Local</h3>
+                  <p id="lbl-foundry-local-help" class="settings-card-help">
+                    Run the recommended text model privately on this computer.
+                  </p>
+                </div>
+              </div>
+              <div class="settings-row">
+                <span id="lbl-foundry-local-text">Recommended text model</span>
+                <code id="foundry-local-text-model">Checking…</code>
+              </div>
+              <div class="settings-actions">
+                <button id="btn-foundry-local-text" class="btn secondary-btn btn-sm" type="button">
+                  Set up text model
+                </button>
+              </div>
+              <p id="foundry-local-status" class="sub-label settings-status-row" aria-live="polite"></p>
+            </div>
+            <div id="local-vision-setup" class="settings-stack">
+              <div class="settings-card-header">
+                <div>
+                  <h3 id="lbl-local-vision-title">Local visual analysis</h3>
+                  <p id="lbl-local-vision-help" class="settings-card-help">
+                    Understand screenshots privately with Qwen3-VL 4B through Ollama.
+                  </p>
+                </div>
+              </div>
+              <div class="settings-actions">
+                <button id="btn-local-vision-enable" class="btn secondary-btn btn-sm" type="button">
+                  Set up Qwen3-VL 4B
+                </button>
+                <button id="btn-local-vision-get-ollama" class="btn secondary-btn btn-sm" type="button">
+                  Install Ollama
+                </button>
+              </div>
+              <p id="local-vision-status" class="sub-label settings-status-row" aria-live="polite"></p>
+            </div>
+            <div id="local-embedding-setup" class="settings-stack">
+              <div class="settings-card-header">
+                <div>
+                  <h3 id="lbl-local-embedding-title">Semantic search</h3>
+                  <p id="lbl-local-embedding-help" class="settings-card-help">
+                    Keep semantic search on this computer with embeddinggemma:300m.
+                  </p>
+                </div>
+              </div>
+              <div class="settings-actions">
+                <button id="btn-local-embedding-enable" class="btn secondary-btn btn-sm" type="button">
+                  Enable EmbeddingGemma:300m
+                </button>
+                <button id="btn-local-embedding-get-ollama" class="btn secondary-btn btn-sm" type="button">
+                  Install Ollama
+                </button>
+              </div>
+              <p id="local-embedding-status" class="sub-label settings-status-row" aria-live="polite"></p>
+            </div>
             <div id="ai-config-editor" class="ai-config-editor hidden" aria-live="polite">
               <p id="ai-config-status" class="sub-label settings-status-row"></p>
               <div id="ai-provider-list" class="ai-provider-list"></div>

@@ -676,8 +676,8 @@ describe("findPossibleDuplicates", () => {
 });
 
 describe("DEFAULT_EMBEDDING_MODEL", () => {
-  it("is embeddinggemma", () => {
-    expect(DEFAULT_EMBEDDING_MODEL).toBe("embeddinggemma");
+  it("selects the explicit EmbeddingGemma 300M Ollama tag", () => {
+    expect(DEFAULT_EMBEDDING_MODEL).toBe("embeddinggemma:300m");
   });
 });
 

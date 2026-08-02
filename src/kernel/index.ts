@@ -620,9 +620,14 @@ export {
 export { LANGUAGE_NAMES, languageName } from "./system/language-names.js";
 export type { SupportedLocale } from "./system/locale.js";
 export { detectSystemLocale, normalizeLocale } from "./system/locale.js";
-export type { SystemProfile } from "./system/profiler.js";
+export type {
+  LocalAiAcceleration,
+  LocalAiHardware,
+  LocalAiHardwareFingerprint,
+  SystemProfile,
+} from "./system/profiler.js";
 // System Profiling & Onboarding
-export { getSystemProfile } from "./system/profiler.js";
+export { classifyLocalAiHardware, getSystemProfile } from "./system/profiler.js";
 export type { RepoPaths } from "./system/repos.js";
 export {
   getRepoPaths,

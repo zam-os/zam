@@ -39,8 +39,6 @@ export interface FoundryRecommendation {
 
 export interface FoundryRecommendations {
   text?: FoundryRecommendation;
-  /** A small CPU model that still works if the preferred NPU runtime fails. */
-  textFallback?: FoundryRecommendation;
 }
 
 export interface FoundryLocalStatus {
@@ -54,8 +52,6 @@ export interface FoundryLocalStatus {
 
 export interface FoundryPreparedModel extends FoundryRecommendation {
   role: FoundrySetupRole;
-  /** The preferred accelerated candidate failed, so ZAM selected this fallback. */
-  fallbackUsed: boolean;
   downloaded: boolean;
 }
 

@@ -23,6 +23,7 @@ import {
   DEFAULT_LLM_MAX_TOKENS,
   fetchWithInteractiveTimeout,
   getProviderForRole,
+  prepareFoundryEndpoint,
 } from "./client.js";
 
 const OBSERVATION_KINDS = new Set<UiObservationKind>([
@@ -69,6 +70,14 @@ export interface UiSnapshotObservationInput {
   maxTokens?: number;
   hardTimeoutMs?: number;
 }
+interface VisionImage {
+  bytes: Buffer;
+  mime: string;
+}
+
+function toDataUrl(image: VisionImage): string {
+  return `data:${image.mime};base64,${image.bytes.toString("base64")}`;
+}
 
 export async function observeUiSnapshotViaLLM(
   db: Database,
@@ -81,8 +90,8 @@ export async function observeUiSnapshotViaLLM(
     );
   }
 
-  const imageUrls: string[] = [];
   const isVideo = /\.(mp4|mov|m4v|avi|mkv|webm)$/i.test(input.imagePath);
+  const images: VisionImage[] = [];
 
   if (isVideo) {
     const { mkdirSync, readdirSync, rmSync } = await import("node:fs");
@@ -130,7 +139,7 @@ export async function observeUiSnapshotViaLLM(
 
       for (const file of sampledFiles) {
         const bytes = readFileSync(join(tempDir, file));
-        imageUrls.push(`data:image/png;base64,${bytes.toString("base64")}`);
+        images.push({ bytes, mime: "image/png" });
       }
     } finally {
       try {
@@ -141,24 +150,27 @@ export async function observeUiSnapshotViaLLM(
     const imageBytes = readFileSync(input.imagePath);
     const ext = input.imagePath.split(".").pop()?.toLowerCase();
     const mime = ext === "jpg" || ext === "jpeg" ? "image/jpeg" : "image/png";
-    imageUrls.push(`data:${mime};base64,${imageBytes.toString("base64")}`);
+    images.push({ bytes: imageBytes, mime });
   }
 
-  if (imageUrls.length === 0) {
+  if (images.length === 0) {
     throw new Error("No image data available for vision analysis");
   }
 
   // Try the role's primary endpoint, then its configured fallback. The
-  // frame-sampled `imageUrls` are shared across endpoints; only the endpoint
+  // frame-sampled images are materialized for each endpoint; only the endpoint
   // (url/key/model/flavor) changes. `input.model` overrides the primary only.
-  const endpoints: Array<
-    Pick<VisionRequestArgs, "url" | "apiKey" | "model" | "apiFlavor">
-  > = [
+  type VisionEndpoint = Pick<
+    VisionRequestArgs,
+    "url" | "apiKey" | "model" | "apiFlavor"
+  > & { runner?: string };
+  const endpoints: VisionEndpoint[] = [
     {
       url: cfg.url,
       apiKey: cfg.apiKey || DEFAULT_LLM_API_KEY,
       model: input.model ?? cfg.model,
       apiFlavor: cfg.apiFlavor,
+      runner: cfg.runner,
     },
   ];
   if (cfg.fallback) {
@@ -167,6 +179,7 @@ export async function observeUiSnapshotViaLLM(
       apiKey: cfg.fallback.apiKey || DEFAULT_LLM_API_KEY,
       model: cfg.fallback.model,
       apiFlavor: cfg.fallback.apiFlavor,
+      runner: cfg.fallback.runner,
     });
   }
 
@@ -177,10 +190,11 @@ export async function observeUiSnapshotViaLLM(
   for (const endpoint of endpoints) {
     let content: string;
     try {
+      const preparedEndpoint = await prepareFoundryEndpoint(endpoint);
       content = await requestVisionDraft({
-        ...endpoint,
+        ...preparedEndpoint,
         locale: cfg.locale,
-        imageUrls,
+        images,
         input,
       });
     } catch (err) {
@@ -227,8 +241,9 @@ type VisionRequestArgs = {
   model: string;
   apiFlavor: ApiFlavor;
   locale: SupportedLocale;
-  imageUrls: string[];
+  images: VisionImage[];
   input: UiSnapshotObservationInput;
+  runner?: string;
 };
 
 const VISION_SYSTEM_PROMPT =
@@ -246,7 +261,7 @@ function visionSchema(language: string): string {
 
 function visionUserText(args: VisionRequestArgs, language: string): string {
   const intro =
-    args.imageUrls.length > 1
+    args.images.length > 1
       ? "Observe this sequence of Windows/macOS application snapshots showing a task performed over time."
       : "Observe this Windows/macOS application snapshot for a learning session.";
   return `${intro}
@@ -257,8 +272,20 @@ Return this JSON draft only:
 ${visionSchema(language)}`;
 }
 
+function isOllamaVisionEndpoint(args: VisionRequestArgs): boolean {
+  if (args.runner?.trim().toLowerCase() === "ollama") return true;
+  try {
+    return new URL(args.url).port === "11434";
+  } catch {
+    return false;
+  }
+}
+
 /** Dispatch to the configured wire protocol for the vision endpoint. */
 async function requestVisionDraft(args: VisionRequestArgs): Promise<string> {
+  if (isOllamaVisionEndpoint(args)) {
+    return requestOllamaVisionDraft(args);
+  }
   if (args.apiFlavor === "anthropic-messages") {
     return requestAnthropicVisionDraft(args);
   }
@@ -286,7 +313,7 @@ async function requestChatCompletionsVisionDraft(
             role: "user",
             content: [
               { type: "text", text: visionUserText(args, language) },
-              ...args.imageUrls.map((url) => ({
+              ...args.images.map(toDataUrl).map((url) => ({
                 type: "image_url",
                 image_url: { url },
               })),
@@ -396,7 +423,7 @@ async function requestAnthropicVisionDraft(
           role: "user",
           content: [
             { type: "text", text: visionUserText(args, language) },
-            ...args.imageUrls.map(dataUrlToAnthropicImage),
+            ...args.images.map(toDataUrl).map(dataUrlToAnthropicImage),
           ],
         },
       ],
@@ -563,4 +590,139 @@ function formatModelError(error: unknown): string {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+interface OllamaChatResponse {
+  message?: { content?: unknown };
+  error?: unknown;
+}
+
+const OLLAMA_VISION_CONTEXT_TOKENS = 8192;
+const OLLAMA_VISION_TIMEOUT_MS = 600000;
+
+async function readOllamaVisionResponse(
+  response: Response,
+  hardTimeoutMs: number,
+): Promise<OllamaChatResponse> {
+  const reader = response.body?.getReader();
+  if (!reader) {
+    throw new Error("Ollama vision response has no readable body.");
+  }
+
+  const decoder = new TextDecoder();
+  const content: string[] = [];
+  let pending = "";
+  let modelError: unknown;
+  const readLine = (line: string): void => {
+    if (!line.trim()) return;
+    let chunk: OllamaChatResponse;
+    try {
+      chunk = JSON.parse(line) as OllamaChatResponse;
+    } catch {
+      throw new Error("Ollama vision model returned invalid streamed JSON.");
+    }
+    if (chunk.error !== undefined) {
+      modelError = chunk.error;
+      return;
+    }
+    const fragment = chunk.message?.content;
+    if (typeof fragment === "string") content.push(fragment);
+  };
+
+  let timeoutId: NodeJS.Timeout | undefined;
+  try {
+    await Promise.race([
+      (async () => {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          pending += decoder.decode(value, { stream: true });
+          const lines = pending.split(/\r?\n/);
+          pending = lines.pop() ?? "";
+          for (const line of lines) readLine(line);
+        }
+        pending += decoder.decode();
+        if (pending.trim()) readLine(pending);
+      })(),
+      new Promise<never>((_resolve, reject) => {
+        timeoutId = setTimeout(() => {
+          void reader.cancel();
+          reject(
+            new Error(
+              `Ollama vision request timed out after ${hardTimeoutMs}ms`,
+            ),
+          );
+        }, hardTimeoutMs);
+      }),
+    ]);
+  } finally {
+    clearTimeout(timeoutId);
+    await reader.cancel().catch(() => undefined);
+    reader.releaseLock();
+  }
+
+  return modelError === undefined
+    ? { message: { content: content.join("") } }
+    : { error: modelError };
+}
+
+/**
+ * Ollama's native chat endpoint accepts image bytes directly and honours
+ * `think: false` for Qwen3-VL. Its OpenAI-compatible endpoint can otherwise
+ * spend the response budget in a private reasoning field and leave `content`
+ * empty, which is unsafe for an observer that requires structured output.
+ */
+async function requestOllamaVisionDraft(
+  args: VisionRequestArgs,
+): Promise<string> {
+  const language = LANGUAGE_NAMES[args.locale] ?? "English";
+  const base = args.url.replace(/\/+$/, "").replace(/\/v1$/, "");
+  const hardTimeoutMs =
+    args.input.hardTimeoutMs ?? OLLAMA_VISION_TIMEOUT_MS;
+  const res = await fetchWithInteractiveTimeout(
+    `${base}/api/chat`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: args.model,
+        stream: true,
+        think: false,
+        messages: [
+          { role: "system", content: VISION_SYSTEM_PROMPT },
+          {
+            role: "user",
+            content: visionUserText(args, language),
+            images: args.images.map((image) => image.bytes.toString("base64")),
+          },
+        ],
+        options: {
+          temperature: 0,
+          num_ctx: OLLAMA_VISION_CONTEXT_TOKENS,
+          num_predict: args.input.maxTokens ?? DEFAULT_LLM_MAX_TOKENS,
+        },
+      }),
+      locale: args.locale,
+      hardTimeoutMs,
+    },
+  );
+
+  if (!res.ok) {
+    const errorText = await res.text().catch(() => "");
+    throw new Error(
+      `Ollama vision request failed: ${res.statusText} (${res.status}) - ${errorText}`,
+    );
+  }
+
+  const data = await readOllamaVisionResponse(res, hardTimeoutMs);
+  if (data.error !== undefined) {
+    throw new Error(`Ollama vision model failed: ${formatModelError(data.error)}`);
+  }
+  const content = data.message?.content;
+  if (!content || typeof content !== "string") {
+    throw new Error(
+      "Ollama vision model returned no visible answer. Try Qwen3-VL 4B again.",
+    );
+  }
+  return content.trim();
 }

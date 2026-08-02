@@ -1,10 +1,18 @@
 import { execSync } from "node:child_process";
 
+export type LocalAiHardware = "ryzen-ai" | "snapdragon-x" | "apple-silicon" | "unsupported";
+export type LocalAiAcceleration = "npu" | "gpu" | "none";
+
 export interface SystemProfile {
   os: "windows" | "macos" | "linux" | "unknown";
   arch: "x64" | "arm64" | "unknown";
+  /** Backward-compatible AMD-specific detection; never true for Intel NPUs. */
   hasRyzenNPU: boolean;
+  hasSnapdragonX: boolean;
   hasAppleSilicon: boolean;
+  /** Only hardware with an explicitly supported accelerated inference route. */
+  localAiHardware: LocalAiHardware;
+  localAiAcceleration: LocalAiAcceleration;
   recommendedRunner: "fastflowlm" | "ollama" | "generic";
   recommendedModel: string;
 }
@@ -21,15 +29,40 @@ function runCommand(cmd: string): string {
   }
 }
 
-function detectWindowsNPU(): boolean {
-  if (process.platform !== "win32") return false;
+const WINDOWS_PROCESSOR_QUERY =
+  'powershell -NoProfile -Command "Get-CimInstance Win32_Processor | Select-Object -ExpandProperty Name"';
+const WINDOWS_ACCELERATOR_QUERY =
+  'powershell -NoProfile -Command "Get-CimInstance Win32_PnPEntity | Where-Object { $_.PNPClass -eq \'ComputeAccelerator\' -or $_.Name -like \'*AMD IPU*\' -or $_.Name -like \'*AMD NPU*\' -or $_.Name -like \'*Ryzen AI*\' -or $_.Name -like \'*Qualcomm*NPU*\' -or $_.Name -like \'*Hexagon*NPU*\' } | Select-Object -ExpandProperty Name"';
 
-  // Query for devices belonging to ComputeAccelerator class (standard for modern NPUs/IPUs under MCDM)
-  // or names matching known NPU/IPU vendor terms (AMD IPU/NPU, Qualcomm Hexagon NPU, Intel AI Boost NPU).
-  const cmd = `powershell -NoProfile -Command "Get-CimInstance Win32_PnPEntity | Where-Object { $_.PNPClass -eq 'ComputeAccelerator' -or $_.Name -like '*AMD IPU*' -or $_.Name -like '*AMD NPU*' -or $_.Name -like '*Qualcomm*NPU*' -or $_.Name -like '*Hexagon*NPU*' -or $_.Name -like '*Intel*AI Boost*' -or $_.Name -like '*NPU Compute*' -or $_.Name -like '*Ryzen AI*' } | Select-Object -First 1 -ExpandProperty Name"`;
-  const output = runCommand(cmd);
+export interface LocalAiHardwareFingerprint {
+  platform: NodeJS.Platform;
+  arch: string;
+  processorName?: string;
+  acceleratorNames?: string;
+}
 
-  return Boolean(output && output.length > 0);
+/** Recognize only platforms with an explicit accelerated local-AI policy. */
+export function classifyLocalAiHardware(
+  fingerprint: LocalAiHardwareFingerprint,
+): LocalAiHardware {
+  if (fingerprint.platform === "darwin" && fingerprint.arch === "arm64") {
+    return "apple-silicon";
+  }
+  if (fingerprint.platform !== "win32") return "unsupported";
+
+  const hardware = `${fingerprint.processorName ?? ""} ${fingerprint.acceleratorNames ?? ""}`.toLowerCase();
+  const isSnapdragon =
+    fingerprint.arch === "arm64" &&
+    (/snapdragon\s*(?:\(r\))?\s*x\b/.test(hardware) ||
+      (hardware.includes("qualcomm") && hardware.includes("hexagon npu")));
+  if (isSnapdragon) return "snapdragon-x";
+
+  const isRyzen =
+    /amd\s+ryzen\s+ai/.test(hardware) ||
+    (hardware.includes("amd") &&
+      (hardware.includes("amd ipu") || hardware.includes("amd npu")));
+  if (isRyzen) return "ryzen-ai";
+  return "unsupported";
 }
 
 /**
@@ -48,39 +81,45 @@ export function getSystemProfile(): SystemProfile {
   if (archStr === "x64") arch = "x64";
   else if (archStr === "arm64") arch = "arm64";
 
-  const hasNpu = os === "windows" && detectWindowsNPU();
-  const hasAppleSilicon = os === "macos" && arch === "arm64";
+  const localAiHardware = classifyLocalAiHardware({
+    platform,
+    arch: archStr,
+    processorName:
+      os === "windows" ? runCommand(WINDOWS_PROCESSOR_QUERY) : undefined,
+    acceleratorNames:
+      os === "windows" ? runCommand(WINDOWS_ACCELERATOR_QUERY) : undefined,
+  });
+  const localAiAcceleration: LocalAiAcceleration =
+    localAiHardware === "apple-silicon"
+      ? "gpu"
+      : localAiHardware === "unsupported"
+        ? "none"
+        : "npu";
+  const hasRyzenNPU = localAiHardware === "ryzen-ai";
+  const hasSnapdragonX = localAiHardware === "snapdragon-x";
+  const hasAppleSilicon = localAiHardware === "apple-silicon";
 
   let recommendedRunner: "fastflowlm" | "ollama" | "generic" = "generic";
   let recommendedModel = "qwen3.5:4b";
 
-  if (hasNpu) {
-    const isQualcomm =
-      runCommand(
-        `powershell -NoProfile -Command "Get-CimInstance Win32_PnPEntity | Where-Object { $_.Name -like '*Qualcomm*' } | Select-Object -First 1"`,
-      ).length > 0;
-    if (isQualcomm) {
-      // Snapdragon NPU PC runs Microsoft Foundry Local (generic/external service)
-      recommendedRunner = "generic";
-      recommendedModel = "qwen3.5-4b";
-    } else {
-      recommendedRunner = "fastflowlm";
-      recommendedModel = "qwen3.5:4b";
-    }
+  if (hasSnapdragonX) {
+    recommendedRunner = "generic";
+    recommendedModel = "phi-3.5-mini-instruct-qnn-npu";
+  } else if (hasRyzenNPU) {
+    recommendedRunner = "fastflowlm";
   } else if (hasAppleSilicon) {
     recommendedRunner = "ollama";
-    recommendedModel = "llama3.2:3b";
-  } else if (os === "macos" || os === "linux" || os === "windows") {
-    // Standard PC / generic Mac
-    recommendedRunner = "ollama";
-    recommendedModel = "llama3.2:3b";
+    recommendedModel = "qwen3.5:4b";
   }
 
   return {
     os,
     arch,
-    hasRyzenNPU: hasNpu && !archStr.includes("arm64"), // backwards compatibility flag
+    hasRyzenNPU,
+    hasSnapdragonX,
     hasAppleSilicon,
+    localAiHardware,
+    localAiAcceleration,
     recommendedRunner,
     recommendedModel,
   };

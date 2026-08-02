@@ -738,6 +738,68 @@ function initializeTranslations() {
   document.getElementById("btn-backup-db")!.textContent = t("btn_backup_db");
   document.getElementById("btn-refresh-database-status")!.textContent =
     t("database_refresh");
+
+  // These settings cards also have dedicated controllers. Translating their
+  // visible chrome here makes the selected language reliable even if an
+  // optional controller is still checking a service or failed to initialize.
+  document.getElementById("lbl-settings-server-db-title")!.textContent =
+    t("server_db_title");
+  document.getElementById("lbl-settings-server-db-help")!.textContent =
+    t("server_db_help");
+  document.getElementById("server-db-create-hint")!.textContent =
+    t("server_db_create_hint");
+  document.getElementById("lbl-server-db-url")!.textContent =
+    t("server_db_url");
+  document.getElementById("lbl-server-db-token")!.textContent =
+    t("server_db_token");
+  (document.getElementById("server-db-url") as HTMLInputElement).placeholder =
+    t("server_db_url_ph");
+  (document.getElementById("server-db-token") as HTMLInputElement).placeholder =
+    t("server_db_token_ph");
+  document.getElementById("btn-server-db-connect")!.textContent =
+    t("server_db_connect");
+
+  document.getElementById("lbl-settings-secrets-title-text")!.textContent =
+    t("secrets_vault_title");
+  document.getElementById("lbl-settings-secrets-alpha")!.textContent =
+    t("secrets_vault_alpha");
+  document.getElementById("lbl-settings-secrets-help")!.textContent =
+    t("secrets_vault_help");
+  document.getElementById("lbl-secrets-vault-toggle")!.textContent =
+    t("secrets_vault_toggle");
+  document.getElementById("lbl-secrets-vault-toggle-help")!.textContent =
+    t("secrets_vault_toggle_help");
+
+  document.getElementById("lbl-settings-mobile-title")!.textContent =
+    t("settings_mobile_title");
+  document.getElementById("lbl-settings-mobile-help")!.textContent =
+    t("settings_mobile_help");
+  document.getElementById("btn-pair-mobile")!.textContent = t("pairing_open");
+
+  document.getElementById("lbl-foundry-local-title")!.textContent =
+    t("foundry_local_title");
+  document.getElementById("lbl-foundry-local-help")!.textContent =
+    t("foundry_local_help");
+  document.getElementById("lbl-foundry-local-text")!.textContent =
+    t("foundry_local_text");
+  document.getElementById("btn-foundry-local-text")!.textContent =
+    t("foundry_local_setup_text");
+  document.getElementById("lbl-local-vision-title")!.textContent =
+    t("local_vision_title");
+  document.getElementById("lbl-local-vision-help")!.textContent =
+    t("local_vision_help");
+  document.getElementById("btn-local-vision-enable")!.textContent =
+    t("local_vision_enable");
+  document.getElementById("btn-local-vision-get-ollama")!.textContent =
+    t("local_vision_get_ollama");
+  document.getElementById("lbl-local-embedding-title")!.textContent =
+    t("local_embedding_title");
+  document.getElementById("lbl-local-embedding-help")!.textContent =
+    t("local_embedding_help");
+  document.getElementById("btn-local-embedding-enable")!.textContent =
+    t("local_embedding_enable");
+  document.getElementById("btn-local-embedding-get-ollama")!.textContent =
+    t("local_embedding_get_ollama");
   document.getElementById("btn-choose-workspace")!.textContent =
     t("btn_choose_workspace");
   document.getElementById("btn-open-terminal")!.textContent =
@@ -1095,8 +1157,7 @@ async function setLocale(locale: Locale): Promise<void> {
 
   // Re-render static chrome plus the localized dynamic panels currently shown.
   initializeTranslations();
-  void loadWorkspaceList();
-  void loadProviderStatus();
+  void refreshSettingsData();
   // Device speech availability is per-language: a machine with an English
   // speech pack and no German one gains or loses voice mode on this switch.
   void refreshVoiceAvailability();
@@ -1595,6 +1656,257 @@ async function maybeReinitAiAfterSettings(): Promise<void> {
     // Still re-check readiness if we cannot compare — better a refresh than a
     // stale badge after the user edited models.
     refreshAiStatus();
+  }
+}
+
+interface FoundryLocalModelInfo {
+  alias: string;
+  model: string;
+  device?: string;
+  fileSizeMb?: number;
+}
+
+interface FoundryLocalStatusResponse {
+  installed: boolean;
+  running: boolean;
+  endpoint?: string;
+  recommendations: {
+    text?: FoundryLocalModelInfo;
+  };
+  error?: string;
+}
+
+interface FoundrySetupResponse {
+  ok: boolean;
+  error?: string;
+  prepared?: FoundryLocalModelInfo & { fallbackUsed: boolean };
+}
+
+interface LocalEmbeddingSettingsStatus {
+  ollamaInstalled: boolean;
+  serverOnline: boolean;
+  modelPresent: boolean;
+  registered: boolean;
+  usable: boolean;
+}
+
+interface LocalVisionSettingsStatus {
+  ollamaInstalled: boolean;
+  serverOnline: boolean;
+  modelPresent: boolean;
+  registered: boolean;
+  usable: boolean;
+}
+
+function foundryModelLabel(model: FoundryLocalModelInfo | undefined): string {
+  if (!model) return t("foundry_local_model_unavailable");
+  const detail = [
+    model.device?.toUpperCase(),
+    model.fileSizeMb ? `${model.fileSizeMb} MB` : undefined,
+  ].filter((value): value is string => Boolean(value));
+  return [model.alias, ...detail].join(" · ");
+}
+
+async function loadFoundryLocalStatus(): Promise<void> {
+  const textModel = document.getElementById("foundry-local-text-model");
+  const statusLine = document.getElementById("foundry-local-status");
+  if (!textModel || !statusLine) return;
+
+  statusLine.textContent = t("foundry_local_checking");
+  try {
+    const status = await runBridge<FoundryLocalStatusResponse>(
+      "foundry-local-status",
+    );
+    textModel.textContent = foundryModelLabel(status.recommendations.text);
+    if (!status.installed) {
+      statusLine.textContent = t("foundry_local_not_installed");
+    } else if (status.running && status.endpoint) {
+      statusLine.textContent = tf("foundry_local_ready", {
+        endpoint: status.endpoint,
+      });
+    } else if (status.error) {
+      statusLine.textContent = tf("foundry_local_status_error", {
+        message: status.error,
+      });
+    } else {
+      statusLine.textContent = t("foundry_local_installed");
+    }
+  } catch (error) {
+    textModel.textContent = t("foundry_local_model_unavailable");
+    statusLine.textContent = tf("foundry_local_status_error", {
+      message: errorMessage(error),
+    });
+  }
+}
+
+function foundrySetupButtonLabel(): string {
+  return t("foundry_local_setup_text");
+}
+
+async function setupFoundryLocalInSettings(): Promise<void> {
+  const button = document.getElementById(
+    "btn-foundry-local-text",
+  ) as HTMLButtonElement | null;
+  const statusLine = document.getElementById("foundry-local-status");
+  if (!button || !statusLine) return;
+
+  button.disabled = true;
+  button.textContent = t("foundry_local_setup_working");
+  statusLine.textContent = t("foundry_local_setup_working");
+  try {
+    const result = await runBridge<FoundrySetupResponse>(
+      "foundry-local-setup",
+      ["--role", "text"],
+    );
+    if (!result.ok || !result.prepared) {
+      statusLine.textContent = tf("foundry_local_setup_failed", {
+        message: result.error ?? t("foundry_local_model_unavailable"),
+      });
+      return;
+    }
+
+    const roleLabel = t("foundry_local_text");
+    const model = foundryModelLabel(result.prepared);
+    const messages = [
+      tf("foundry_local_setup_done", { role: roleLabel, model }),
+    ];
+    if (result.prepared.fallbackUsed) {
+      messages.push(tf("foundry_local_setup_fallback", { model }));
+    }
+    statusLine.textContent = messages.join(" ");
+    await Promise.all([loadFoundryLocalStatus(), loadProviderStatus()]);
+    if (aiConfigEditorOpen) await loadModelRegistry();
+  } catch (error) {
+    statusLine.textContent = tf("foundry_local_setup_failed", {
+      message: errorMessage(error),
+    });
+  } finally {
+    button.disabled = false;
+    button.textContent = foundrySetupButtonLabel();
+  }
+}
+
+async function loadLocalVisionStatus(): Promise<void> {
+  const statusLine = document.getElementById("local-vision-status");
+  if (!statusLine) return;
+
+  statusLine.textContent = t("local_vision_checking");
+  try {
+    const status = await runBridge<LocalVisionSettingsStatus>(
+      "local-vision-status",
+    );
+    if (status.usable) {
+      statusLine.textContent = t("local_vision_ready");
+    } else if (!status.ollamaInstalled) {
+      statusLine.textContent = t("local_vision_needs_ollama");
+    } else if (!status.serverOnline) {
+      statusLine.textContent = t("local_vision_start_ollama");
+    } else if (!status.modelPresent) {
+      statusLine.textContent = t("local_vision_model_missing");
+    } else {
+      statusLine.textContent = t("local_vision_not_enabled");
+    }
+  } catch (error) {
+    statusLine.textContent = tf("local_vision_error", {
+      message: errorMessage(error),
+    });
+  }
+}
+
+async function enableLocalVisionInSettings(): Promise<void> {
+  const button = document.getElementById(
+    "btn-local-vision-enable",
+  ) as HTMLButtonElement | null;
+  const statusLine = document.getElementById("local-vision-status");
+  if (!button || !statusLine) return;
+
+  button.disabled = true;
+  button.textContent = t("local_vision_working");
+  statusLine.textContent = t("local_vision_working");
+  try {
+    const result = await runBridge<{
+      ok: boolean;
+      error?: string;
+      status?: LocalVisionSettingsStatus;
+    }>("local-vision-setup");
+    if (!result.ok) {
+      statusLine.textContent = tf("local_vision_error", {
+        message: result.error ?? t("local_vision_not_enabled"),
+      });
+      return;
+    }
+    statusLine.textContent = t("local_vision_enabled");
+    await Promise.all([loadLocalVisionStatus(), loadProviderStatus()]);
+    if (aiConfigEditorOpen) await loadModelRegistry();
+  } catch (error) {
+    statusLine.textContent = tf("local_vision_error", {
+      message: errorMessage(error),
+    });
+  } finally {
+    button.disabled = false;
+    button.textContent = t("local_vision_enable");
+  }
+}
+
+async function loadLocalEmbeddingStatus(): Promise<void> {
+  const statusLine = document.getElementById("local-embedding-status");
+  if (!statusLine) return;
+
+  statusLine.textContent = t("local_embedding_checking");
+  try {
+    const status = await runBridge<LocalEmbeddingSettingsStatus>(
+      "embedding-status",
+    );
+    if (status.usable) {
+      statusLine.textContent = t("local_embedding_ready");
+    } else if (!status.ollamaInstalled) {
+      statusLine.textContent = t("local_embedding_needs_ollama");
+    } else if (!status.serverOnline) {
+      statusLine.textContent = t("local_embedding_start_ollama");
+    } else if (!status.modelPresent) {
+      statusLine.textContent = t("local_embedding_model_missing");
+    } else {
+      statusLine.textContent = t("local_embedding_not_enabled");
+    }
+  } catch (error) {
+    statusLine.textContent = tf("local_embedding_error", {
+      message: errorMessage(error),
+    });
+  }
+}
+
+async function enableLocalEmbeddingInSettings(): Promise<void> {
+  const button = document.getElementById(
+    "btn-local-embedding-enable",
+  ) as HTMLButtonElement | null;
+  const statusLine = document.getElementById("local-embedding-status");
+  if (!button || !statusLine) return;
+
+  button.disabled = true;
+  button.textContent = t("local_embedding_working");
+  statusLine.textContent = t("local_embedding_working");
+  try {
+    const result = await runBridge<{
+      ok: boolean;
+      error?: string;
+      status?: LocalEmbeddingSettingsStatus;
+    }>("embedding-enable");
+    if (!result.ok) {
+      statusLine.textContent = tf("local_embedding_error", {
+        message: result.error ?? t("local_embedding_not_enabled"),
+      });
+      return;
+    }
+    statusLine.textContent = t("local_embedding_enabled");
+    await Promise.all([loadLocalEmbeddingStatus(), loadProviderStatus()]);
+    if (aiConfigEditorOpen) await loadModelRegistry();
+  } catch (error) {
+    statusLine.textContent = tf("local_embedding_error", {
+      message: errorMessage(error),
+    });
+  } finally {
+    button.disabled = false;
+    button.textContent = t("local_embedding_enable");
   }
 }
 
@@ -3661,6 +3973,9 @@ function refreshSettingsData(): void {
   void loadAppVersion();
   void loadWorkspaceList();
   void loadProviderStatus();
+  void loadFoundryLocalStatus();
+  void loadLocalVisionStatus();
+  void loadLocalEmbeddingStatus();
   void loadDatabaseStatus();
   void loadSettingsKnowledgeContext();
   void loadAgentHarnessStatus();
@@ -6536,6 +6851,32 @@ window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-toggle-ai-config")?.addEventListener("click", () => {
     toggleAiConfigEditor();
   });
+
+  document
+    .getElementById("btn-foundry-local-text")
+    ?.addEventListener("click", () => {
+      void setupFoundryLocalInSettings();
+    });
+  document
+    .getElementById("btn-local-vision-enable")
+    ?.addEventListener("click", () => {
+      void enableLocalVisionInSettings();
+    });
+  document
+    .getElementById("btn-local-vision-get-ollama")
+    ?.addEventListener("click", () => {
+      void openUrl("https://ollama.com/download");
+    });
+  document
+    .getElementById("btn-local-embedding-enable")
+    ?.addEventListener("click", () => {
+      void enableLocalEmbeddingInSettings();
+    });
+  document
+    .getElementById("btn-local-embedding-get-ollama")
+    ?.addEventListener("click", () => {
+      void openUrl("https://ollama.com/download");
+    });
 
   document.getElementById("btn-add-ai-provider")?.addEventListener("click", () => {
     void showModelForm();

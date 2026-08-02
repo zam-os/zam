@@ -52,6 +52,9 @@ const VISION_MODEL_HINTS = [
   "moondream",
   "llama-3.2",
   "llama3.2",
+  // Foundry Local labels its newer multimodal Qwen family `qwen3.5-*`; the
+  // text-only sibling is explicitly suffixed `-text` and is excluded below.
+  "qwen3.5-",
   // Xiaomi MiMo(-VL) is multimodal; the plain "mimo-v*" tag carries no "-vl".
   "mimo",
 ];
@@ -126,7 +129,9 @@ export function classifyCapabilities(
   }
 
   const looksEmbedding = matchesAny(entry.model, EMBEDDING_MODEL_HINTS);
-  const looksVision = matchesAny(entry.model, VISION_MODEL_HINTS);
+  const looksVision =
+    matchesAny(entry.model, VISION_MODEL_HINTS) &&
+    !entry.model.toLowerCase().includes("-text");
   const inCatalog = catalogHasModel(catalog, entry.model);
 
   const looksStt = matchesAny(entry.model, STT_MODEL_HINTS);

@@ -39,6 +39,10 @@ import {
   loadModelRegistry,
   type ResolvedModelEntry,
 } from "./model-registry.js";
+import {
+  ensureFoundryModelLoaded,
+  FOUNDRY_DEFAULT_PORT,
+} from "./foundry-local.js";
 
 /** Single source of truth for connection defaults (easy to bump as models evolve). */
 export const DEFAULT_LLM_URL = "http://localhost:8000/v1";
@@ -1930,13 +1934,60 @@ function isLocalEndpoint(url: string): boolean {
   );
 }
 
+function isFoundryRunner(runner: string | undefined): boolean {
+  const normalized = runner?.trim().toLowerCase();
+  return normalized === "foundry" || normalized === "foundry-local";
+}
+
+/**
+ * Start the Foundry service and load a previously downloaded model only when a
+ * caller is about to use it. Passive Settings status checks stay side-effect
+ * free, while an actual learning or vision request survives a service restart.
+ */
+export async function prepareFoundryEndpoint<
+  T extends Pick<ProviderConfig, "url" | "model"> & { runner?: string },
+>(
+  endpoint: T,
+): Promise<T> {
+  if (!isFoundryRunner(endpoint.runner)) return endpoint;
+  const loaded = await ensureFoundryModelLoaded(endpoint.model);
+  if (!loaded.ok) {
+    throw new Error(
+      loaded.error ??
+        `Foundry Local could not load model "${endpoint.model}".`,
+    );
+  }
+  return loaded.endpoint ? { ...endpoint, url: loaded.endpoint } : endpoint;
+}
+
+interface ProviderCheckOptions {
+  /** True only for a call that is about to use the model, never passive UI status. */
+  prepareFoundry?: boolean;
+}
+
 async function checkProviderEndpoint(
   endpoint: ProviderConfig,
+  options: ProviderCheckOptions = {},
 ): Promise<ProviderEndpointReadiness> {
-  const online = await isLlmOnline(endpoint.url);
+  let resolved = endpoint;
+  if (options.prepareFoundry) {
+    try {
+      resolved = await prepareFoundryEndpoint(endpoint);
+    } catch {
+      // The next configured fallback still has a chance to serve the request.
+      return {
+        endpoint,
+        online: false,
+        availableModels: [],
+        modelAvailable: false,
+      };
+    }
+  }
+
+  const online = await isLlmOnline(resolved.url);
   if (!online) {
     return {
-      endpoint,
+      endpoint: resolved,
       online: false,
       availableModels: [],
       modelAvailable: false,
@@ -1944,16 +1995,22 @@ async function checkProviderEndpoint(
   }
 
   const availableModels = await getAvailableModels(
-    endpoint.url,
-    endpoint.apiKey,
+    resolved.url,
+    resolved.apiKey,
   );
   const modelAvailable =
     availableModels.length === 0 ||
     availableModels.some(
-      (candidate) => candidate.toLowerCase() === endpoint.model.toLowerCase(),
+      (candidate) =>
+        candidate.toLowerCase() === resolved.model.toLowerCase(),
     );
 
-  return { endpoint, online, availableModels, modelAvailable };
+  return {
+    endpoint: resolved,
+    online,
+    availableModels,
+    modelAvailable,
+  };
 }
 
 function isEndpointUsable(readiness: ProviderEndpointReadiness): boolean {
@@ -1964,13 +2021,16 @@ function providerChain(primary: ProviderConfig): ProviderConfig[] {
   return [primary, ...(primary.fallback ? [primary.fallback] : [])];
 }
 
-async function checkProviderChain(primary: ProviderConfig): Promise<{
+async function checkProviderChain(
+  primary: ProviderConfig,
+  options: ProviderCheckOptions = {},
+): Promise<{
   primary: ProviderEndpointReadiness;
   firstUsable?: ProviderEndpointReadiness;
 }> {
   let first: ProviderEndpointReadiness | undefined;
   for (const endpoint of providerChain(primary)) {
-    const readiness = await checkProviderEndpoint(endpoint);
+    const readiness = await checkProviderEndpoint(endpoint, options);
     first ??= readiness;
     if (isEndpointUsable(readiness)) {
       return { primary: first, firstUsable: readiness };
@@ -2027,7 +2087,9 @@ export async function resolveUsableRecallEndpoint(
     return cachedRecallEndpoint.endpoint;
   }
 
-  const chain = await checkProviderChain(cfg);
+  const chain = await checkProviderChain(cfg, {
+    prepareFoundry: true,
+  });
   const selected = chain.firstUsable;
   if (!selected || !isEndpointUsable(selected)) {
     throw new Error("No recall LLM endpoint is online");
@@ -2126,7 +2188,9 @@ async function resolveUsableTextEndpoint(
   }
   assertChatCompletions(cfg);
 
-  const chain = await checkProviderChain(cfg);
+  const chain = await checkProviderChain(cfg, {
+    prepareFoundry: true,
+  });
   const selected = chain.firstUsable;
   if (!selected || !isEndpointUsable(selected)) {
     const primary = chain.primary.endpoint;
@@ -2195,7 +2259,7 @@ async function prepareRecallChain(
   let lastAvailable: string[] = [];
 
   for (let index = 0; index < chain.length; index++) {
-    const endpoint = chain[index];
+    let endpoint = chain[index];
     let online = await isLlmOnline(endpoint.url);
 
     if (!online && (endpoint.local ?? isLocalEndpoint(endpoint.url))) {
@@ -2215,6 +2279,15 @@ async function prepareRecallChain(
             break;
           }
         }
+      }
+    }
+
+    if (online && isFoundryRunner(endpoint.runner)) {
+      try {
+        endpoint = await prepareFoundryEndpoint(endpoint);
+        online = await isLlmOnline(endpoint.url);
+      } catch {
+        online = false;
       }
     }
 
@@ -2457,7 +2530,12 @@ export interface LlmReadiness {
   reason?: "disabled" | "offline" | "model-not-found" | "unsupported-provider";
 }
 
-type RunnerKind = "fastflowlm" | "ollama" | "generic" | "unknown";
+type RunnerKind =
+  | "fastflowlm"
+  | "ollama"
+  | "foundry"
+  | "generic"
+  | "unknown";
 
 function runnerKindFromHint(hint?: string): RunnerKind | undefined {
   if (!hint) return undefined;
@@ -2466,13 +2544,10 @@ function runnerKindFromHint(hint?: string): RunnerKind | undefined {
     return "fastflowlm";
   }
   if (normalized === "ollama") return "ollama";
-  if (
-    normalized === "foundry-local" ||
-    normalized === "foundry" ||
-    normalized === "generic"
-  ) {
-    return "generic";
+  if (normalized === "foundry-local" || normalized === "foundry") {
+    return "foundry";
   }
+  if (normalized === "generic") return "generic";
   return undefined;
 }
 
@@ -2482,10 +2557,13 @@ function defaultPortForRunner(runner: RunnerKind, url: string): string {
     const explicit = urlObj.port;
     if (explicit) return explicit;
     if (runner === "ollama") return "11434";
+    if (runner === "foundry") return String(FOUNDRY_DEFAULT_PORT);
     if (urlObj.protocol === "https:") return "443";
     return "80";
   } catch {
-    return runner === "ollama" ? "11434" : "8000";
+    if (runner === "ollama") return "11434";
+    if (runner === "foundry") return String(FOUNDRY_DEFAULT_PORT);
+    return "8000";
   }
 }
 
@@ -2505,7 +2583,9 @@ function detectRunner(
   try {
     const urlObj = new URL(url);
     port = urlObj.port || (urlObj.protocol === "https:" ? "443" : "80");
-    if (
+    if (port === String(FOUNDRY_DEFAULT_PORT)) {
+      runner = "foundry";
+    } else if (
       port === "8000" ||
       port === "8080" ||
       model.includes("qwen") ||
@@ -2534,6 +2614,13 @@ function spawnLocalRunner(url: string, model: string, hint?: string): void {
         : "flm";
       if (!hasCommand("flm") && flmExe === "flm") return;
       spawn(flmExe, ["serve", model, "--port", port], {
+        detached: true,
+        stdio: "ignore",
+        windowsHide: true,
+      }).unref();
+    } else if (runner === "foundry") {
+      if (!hasCommand("foundry")) return;
+      spawn("foundry", ["server", "start"], {
         detached: true,
         stdio: "ignore",
         windowsHide: true,
@@ -2587,6 +2674,27 @@ async function startLocalRunner(
     } catch (err) {
       console.error(
         `\x1b[31m✗ Failed to launch FastFlowLM process: ${(err as Error).message}\x1b[0m`,
+      );
+      return false;
+    }
+  } else if (runner === "foundry") {
+    if (!hasCommand("foundry")) {
+      console.warn(
+        "\x1b[31m✗ Foundry Local is configured but the 'foundry' command is not available in PATH.\x1b[0m",
+      );
+      console.warn("Install Foundry Local, then retry.");
+      return false;
+    }
+    console.log("\x1b[36mStarting Foundry Local service...\x1b[0m");
+    try {
+      spawn("foundry", ["server", "start"], {
+        detached: true,
+        stdio: "ignore",
+        windowsHide: true,
+      }).unref();
+    } catch (err) {
+      console.error(
+        `\x1b[31m✗ Failed to launch Foundry Local: ${(err as Error).message}\x1b[0m`,
       );
       return false;
     }

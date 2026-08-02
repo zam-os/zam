@@ -4449,6 +4449,60 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     ai_vision_cloud_confirm:
       "Screenshots will be sent to {endpoint}. Enable vision observation and bind this cloud provider?",
     ai_provider_referenced: "Still used by: {roles}",
+    foundry_local_title: "Foundry Local",
+    foundry_local_help:
+      "Run the recommended text model privately on this computer. Set up local visual analysis with Ollama below.",
+    foundry_local_text: "Recommended text model",
+    foundry_local_vision: "Recommended vision model",
+    foundry_local_setup_text: "Set up text model",
+    foundry_local_setup_vision: "Set up vision model",
+    foundry_local_setup_working: "Setting up local AI…",
+    foundry_local_setup_done: "{role}: {model} is ready.",
+    foundry_local_setup_fallback:
+      "{model} was selected as a suitable fallback on this computer.",
+    foundry_local_setup_failed: "Setup failed: {message}",
+    foundry_local_checking: "Checking Foundry Local…",
+    foundry_local_not_installed:
+      "Foundry Local is not installed yet. Set it up here with one click.",
+    foundry_local_installed:
+      "Foundry Local is installed and starts when you set up a model.",
+    foundry_local_ready: "Ready at {endpoint}",
+    foundry_local_status_error: "Could not check Foundry Local: {message}",
+    foundry_local_model_unavailable: "Not available on this computer",
+    local_vision_title: "Local visual analysis",
+    local_vision_help:
+      "Understand screenshots privately with Qwen3-VL 4B through Ollama.",
+    local_vision_enable: "Set up Qwen3-VL 4B",
+    local_vision_get_ollama: "Install Ollama",
+    local_vision_checking: "Checking local visual analysis…",
+    local_vision_ready: "Local visual analysis is ready.",
+    local_vision_needs_ollama:
+      "Install Ollama first, then set up Qwen3-VL 4B.",
+    local_vision_start_ollama:
+      "Start Ollama, then set up Qwen3-VL 4B.",
+    local_vision_model_missing: "Qwen3-VL 4B is not downloaded yet.",
+    local_vision_not_enabled:
+      "Qwen3-VL 4B is available but not enabled.",
+    local_vision_working: "Setting up local visual analysis…",
+    local_vision_enabled: "Local visual analysis is ready.",
+    local_vision_error: "Local visual-analysis setup failed: {message}",
+    local_embedding_title: "Semantic search",
+    local_embedding_help:
+      "Keep semantic search on this computer with embeddinggemma:300m.",
+    local_embedding_enable: "Enable EmbeddingGemma:300m",
+    local_embedding_get_ollama: "Install Ollama",
+    local_embedding_checking: "Checking semantic search…",
+    local_embedding_ready: "Semantic search is ready locally.",
+    local_embedding_needs_ollama:
+      "Install Ollama first, then enable EmbeddingGemma:300m.",
+    local_embedding_start_ollama:
+      "Start Ollama, then enable EmbeddingGemma:300m.",
+    local_embedding_model_missing:
+      "EmbeddingGemma:300m is not downloaded yet.",
+    local_embedding_not_enabled: "EmbeddingGemma:300m is available but not enabled.",
+    local_embedding_working: "Setting up semantic search…",
+    local_embedding_enabled: "Semantic search is ready.",
+    local_embedding_error: "Semantic-search setup failed: {message}",
     btn_check_updates: "Check for updates",
     btn_open_releases: "Releases",
     version_unknown: "unknown",
@@ -5645,6 +5699,65 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     ai_vision_cloud_confirm:
       "Screenshots werden an {endpoint} gesendet. Vision-Beobachtung aktivieren und diesen Cloud-Provider zuordnen?",
     ai_provider_referenced: "Noch verwendet von: {roles}",
+    foundry_local_title: "Foundry Local",
+    foundry_local_help:
+      "Empfohlenes Textmodell privat auf diesem Rechner ausführen. Die lokale Bildanalyse unten über Ollama einrichten.",
+    foundry_local_text: "Empfohlenes Textmodell",
+    foundry_local_vision: "Empfohlenes Bildmodell",
+    foundry_local_setup_text: "Textmodell einrichten",
+    foundry_local_setup_vision: "Bildmodell einrichten",
+    foundry_local_setup_working: "Lokale KI wird eingerichtet…",
+    foundry_local_setup_done: "{role}: {model} ist bereit.",
+    foundry_local_setup_fallback:
+      "Als passende Alternative auf diesem Rechner wurde {model} gewählt.",
+    foundry_local_setup_failed: "Einrichtung fehlgeschlagen: {message}",
+    foundry_local_checking: "Foundry Local wird geprüft…",
+    foundry_local_not_installed:
+      "Foundry Local ist noch nicht installiert. Hier mit einem Klick einrichten.",
+    foundry_local_installed:
+      "Foundry Local ist installiert und startet beim Einrichten eines Modells.",
+    foundry_local_ready: "Bereit unter {endpoint}",
+    foundry_local_status_error:
+      "Foundry Local konnte nicht geprüft werden: {message}",
+    foundry_local_model_unavailable: "Auf diesem Rechner nicht verfügbar",
+    local_vision_title: "Lokale Bildanalyse",
+    local_vision_help:
+      "Bildschirmaufnahmen mit Qwen3-VL 4B über Ollama privat verstehen.",
+    local_vision_enable: "Qwen3-VL 4B einrichten",
+    local_vision_get_ollama: "Ollama installieren",
+    local_vision_checking: "Lokale Bildanalyse wird geprüft…",
+    local_vision_ready: "Lokale Bildanalyse ist bereit.",
+    local_vision_needs_ollama:
+      "Zuerst Ollama installieren, dann Qwen3-VL 4B einrichten.",
+    local_vision_start_ollama:
+      "Ollama starten, dann Qwen3-VL 4B einrichten.",
+    local_vision_model_missing:
+      "Qwen3-VL 4B ist noch nicht heruntergeladen.",
+    local_vision_not_enabled:
+      "Qwen3-VL 4B ist verfügbar, aber noch nicht aktiviert.",
+    local_vision_working: "Lokale Bildanalyse wird eingerichtet…",
+    local_vision_enabled: "Lokale Bildanalyse ist bereit.",
+    local_vision_error:
+      "Einrichtung der lokalen Bildanalyse fehlgeschlagen: {message}",
+    local_embedding_title: "Semantische Suche",
+    local_embedding_help:
+      "Semantische Suche mit embeddinggemma:300m auf diesem Rechner behalten.",
+    local_embedding_enable: "EmbeddingGemma:300m aktivieren",
+    local_embedding_get_ollama: "Ollama installieren",
+    local_embedding_checking: "Semantische Suche wird geprüft…",
+    local_embedding_ready: "Semantische Suche ist lokal bereit.",
+    local_embedding_needs_ollama:
+      "Zuerst Ollama installieren, dann EmbeddingGemma:300m aktivieren.",
+    local_embedding_start_ollama:
+      "Ollama starten, dann EmbeddingGemma:300m aktivieren.",
+    local_embedding_model_missing:
+      "EmbeddingGemma:300m ist noch nicht heruntergeladen.",
+    local_embedding_not_enabled:
+      "EmbeddingGemma:300m ist verfügbar, aber noch nicht aktiviert.",
+    local_embedding_working: "Semantische Suche wird eingerichtet…",
+    local_embedding_enabled: "Semantische Suche ist bereit.",
+    local_embedding_error:
+      "Einrichtung der semantischen Suche fehlgeschlagen: {message}",
     btn_check_updates: "Nach Updates suchen",
     btn_open_releases: "Releases",
     version_unknown: "unbekannt",

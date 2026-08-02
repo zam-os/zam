@@ -28,8 +28,13 @@ import {
   type ProviderConfig,
 } from "./client.js";
 
-/** Single source of truth for the default embedding model (see canonicalEmbeddingModelId). */
-export const DEFAULT_EMBEDDING_MODEL = "embeddinggemma";
+/**
+ * Single source of truth for the default embedding model (see
+ * canonicalEmbeddingModelId). The explicit Ollama tag makes the requested
+ * 300M variant visible in setup while remaining compatible with the
+ * server-advertised `embeddinggemma:latest` alias.
+ */
+export const DEFAULT_EMBEDDING_MODEL = "embeddinggemma:300m";
 
 /** Canonical model id every stored vector and kernel call uses. */
 const CANONICAL_EMBEDDING_MODEL_ID = "embeddinggemma-300m";

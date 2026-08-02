@@ -371,3 +371,61 @@ describe("vision UI observer adapter", () => {
     }
   });
 });
+
+  it("uses Ollama's native chat API for a local Qwen3-VL snapshot", async () => {
+    const db = await openConfiguredDb();
+    const imagePath = makeSnapshot();
+    await setSetting(db, "llm.vision.url", "http://localhost:11434/v1");
+    await setSetting(db, "llm.vision.model", "qwen3-vl:4b");
+
+    const originalFetch = global.fetch;
+    let requestedBody: Record<string, unknown> | undefined;
+    global.fetch = (async (url, init) => {
+      expect(String(url)).toBe("http://localhost:11434/api/chat");
+      requestedBody = JSON.parse(String(init?.body));
+      return new Response(
+        JSON.stringify({
+          message: {
+            content: JSON.stringify({
+              kind: "progress",
+              summary: "Lokale Bildanalyse ist bereit.",
+              actions: [],
+              candidateTokens: [],
+              confidence: 0.91,
+            }),
+          },
+        }),
+      );
+    }) as typeof fetch;
+
+    try {
+      const report = await observeUiSnapshotViaLLM(db, {
+        sessionId: "ollama-session",
+        sequence: 1,
+        observedFrom: "2026-08-02T12:00:00.000Z",
+        observedTo: "2026-08-02T12:00:01.000Z",
+        imagePath,
+        application: { processName: "ZAM.exe" },
+      });
+
+      expect(report).toMatchObject({
+        kind: "progress",
+        summary: "Lokale Bildanalyse ist bereit.",
+        confidence: 0.91,
+      });
+      expect(requestedBody).toMatchObject({
+        model: "qwen3-vl:4b",
+        stream: true,
+        think: false,
+      });
+      expect(requestedBody?.options).toMatchObject({ num_ctx: 8192 });
+      const messages = requestedBody?.messages as Array<{
+        role: string;
+        images?: string[];
+      }>;
+      expect(messages[1].images).toEqual([PNG_BYTES.toString("base64")]);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });

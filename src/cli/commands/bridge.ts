@@ -227,6 +227,16 @@ import {
   getLocalEmbeddingStatus,
 } from "../llm/local-embedding.js";
 import {
+  enableLocalVision,
+  getLocalVisionStatus,
+} from "../llm/local-vision.js";
+import {
+  FOUNDRY_DEFAULT_URL,
+  getFoundryLocalStatus,
+  type FoundrySetupRole,
+} from "../llm/foundry-local.js";
+import { setupFoundryLocalForZam } from "../llm/foundry-local-setup.js";
+import {
   isMachineLocalEntry,
   loadModelRegistry,
   type ResolvedModelEntry,
@@ -3363,10 +3373,37 @@ bridgeCommand
   });
 
 bridgeCommand
+  .command("foundry-local-status")
+  .description(
+    "Inspect Microsoft Foundry Local and its recommended local models (JSON)",
+  )
+  .action(async () => {
+    jsonOut(await getFoundryLocalStatus());
+  });
+
+bridgeCommand
+  .command("foundry-local-setup")
+  .description(
+    "Install/start Foundry Local, prepare its recommended text model, and register it for ZAM (JSON)",
+  )
+  .requiredOption("--role <role>", "Only: text")
+  .action(async (opts) => {
+    if (opts.role !== "text") {
+      jsonError('Invalid --role. Use "text".');
+    }
+    await withDb(async (db) => {
+      jsonOut(
+        await setupFoundryLocalForZam(db, opts.role as FoundrySetupRole),
+      );
+    });
+  });
+
+bridgeCommand
   .command("local-llm-hints")
   .description("Detect installed local LLM servers and suggest defaults (JSON)")
-  .action(() => {
+  .action(async () => {
     const profile = getSystemProfile();
+    const foundry = await getFoundryLocalStatus();
     const flmInstalled =
       hasCommand("flm") || existsSync("C:\\Program Files\\flm\\flm.exe");
     const ollamaInstalled = isOllamaInstalled();
@@ -3376,12 +3413,14 @@ bridgeCommand
       {
         id: "foundry-local",
         label: "Foundry Local",
-        installed: false,
+        installed: foundry.installed,
       },
     ];
 
     let recommended = "ollama";
-    if (profile.recommendedRunner === "fastflowlm" && flmInstalled) {
+    if (foundry.installed && profile.recommendedRunner === "generic") {
+      recommended = "foundry-local";
+    } else if (profile.recommendedRunner === "fastflowlm" && flmInstalled) {
       recommended = "flm";
     } else if (profile.recommendedRunner === "ollama" && ollamaInstalled) {
       recommended = "ollama";
@@ -3394,13 +3433,24 @@ bridgeCommand
     }
 
     const defaultUrl =
-      recommended === "ollama" ? "http://localhost:11434/v1" : DEFAULT_LLM_URL;
+      recommended === "foundry-local"
+        ? (foundry.endpoint ?? FOUNDRY_DEFAULT_URL)
+        : recommended === "ollama"
+          ? "http://localhost:11434/v1"
+          : DEFAULT_LLM_URL;
+    const defaultModel =
+      recommended === "foundry-local"
+        ? (foundry.recommendations.text?.model ??
+          profile.recommendedModel ??
+          DEFAULT_LLM_MODEL)
+        : profile.recommendedModel || DEFAULT_LLM_MODEL;
 
     jsonOut({
       runners,
       recommended,
       defaultUrl,
-      defaultModel: profile.recommendedModel || DEFAULT_LLM_MODEL,
+      defaultModel,
+      foundry,
     });
   });
 
@@ -7336,5 +7386,45 @@ bridgeCommand
             // best-effort only
           }
         });
+    });
+  });
+
+// ── zam bridge local-vision-status / local-vision-setup ─────────────────────
+
+bridgeCommand
+  .command("local-vision-status")
+  .description(
+    "Report local image-analysis readiness (JSON): Ollama install/server, " +
+      "Qwen3-VL 4B presence, registry entry, and usability.",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      jsonOut(await getLocalVisionStatus(db));
+    });
+  });
+
+bridgeCommand
+  .command("local-vision-setup")
+  .description(
+    "Enable local image analysis (JSON): pull Qwen3-VL 4B into a running " +
+      "Ollama if needed and register it for ZAM's image role.",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      const result = await enableLocalVision(db);
+      if (!result.ok) {
+        jsonOut({
+          ok: false,
+          error: result.error,
+          needsOllama: result.needsOllama === true,
+          status: result.status,
+        });
+        return;
+      }
+      jsonOut({
+        ok: true,
+        pulled: result.pulled === true,
+        status: result.status,
+      });
     });
   });

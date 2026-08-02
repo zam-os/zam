@@ -145,3 +145,17 @@ export async function saveModelRegistry(
     entries.filter((entry) => !isMachineLocalEntry(entry)),
   );
 }
+
+/**
+ * Move an explicitly chosen machine model to the front while keeping the
+ * remaining entries as deterministic fallbacks.
+ */
+export function promoteModelToPrimary<
+  T extends { id: string; order: number },
+>(models: readonly T[], modelId: string): T[] {
+  const selected = models.find((entry) => entry.id === modelId);
+  if (!selected) return [...models];
+  return [selected, ...models.filter((entry) => entry.id !== modelId)].map(
+    (entry, order) => ({ ...entry, order }),
+  );
+}

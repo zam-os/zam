@@ -277,6 +277,50 @@ const REQUIRED_KEYS = [
 // while still not churning unrelated strings.
 const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "boot_fix_db",
+  // Foundry Local setup ships English/German in this change; the remaining
+  // locale packs deliberately fall back to English until native review.
+  "foundry_local_title",
+  "foundry_local_help",
+  "foundry_local_text",
+  "foundry_local_vision",
+  "foundry_local_setup_text",
+  "foundry_local_setup_vision",
+  "foundry_local_setup_working",
+  "foundry_local_setup_done",
+  "foundry_local_setup_fallback",
+  "foundry_local_setup_failed",
+  "foundry_local_checking",
+  "foundry_local_not_installed",
+  "foundry_local_installed",
+  "foundry_local_ready",
+  "foundry_local_status_error",
+  "foundry_local_model_unavailable",
+  "local_vision_title",
+  "local_vision_help",
+  "local_vision_enable",
+  "local_vision_get_ollama",
+  "local_vision_checking",
+  "local_vision_ready",
+  "local_vision_needs_ollama",
+  "local_vision_start_ollama",
+  "local_vision_model_missing",
+  "local_vision_not_enabled",
+  "local_vision_working",
+  "local_vision_enabled",
+  "local_vision_error",
+  "local_embedding_title",
+  "local_embedding_help",
+  "local_embedding_enable",
+  "local_embedding_get_ollama",
+  "local_embedding_checking",
+  "local_embedding_ready",
+  "local_embedding_needs_ollama",
+  "local_embedding_start_ollama",
+  "local_embedding_model_missing",
+  "local_embedding_not_enabled",
+  "local_embedding_working",
+  "local_embedding_enabled",
+  "local_embedding_error",
   // Dynamic-question toggle — en/de shipped; es/fr/pt/zh/ja await native pack
   // review before translation (see i18n pack backlog).
   "lbl_dynamic_questions",
@@ -763,6 +807,46 @@ describe("desktop locale completeness", () => {
     }
   });
 
+  it("localizes the screenshot settings chrome and refreshes dynamic state", () => {
+    const source = readFileSync(
+      join(process.cwd(), "desktop", "src", "main.ts"),
+      "utf8",
+    );
+    const initializerStart = source.indexOf("function initializeTranslations()");
+    const initializer = source.slice(
+      initializerStart,
+      source.indexOf("function isSupportedLocale", initializerStart),
+    );
+    for (const [id, key] of [
+      ["lbl-settings-server-db-title", "server_db_title"],
+      ["lbl-settings-server-db-help", "server_db_help"],
+      ["lbl-settings-secrets-title-text", "secrets_vault_title"],
+      ["lbl-settings-secrets-help", "secrets_vault_help"],
+      ["lbl-settings-mobile-title", "settings_mobile_title"],
+      ["lbl-settings-mobile-help", "settings_mobile_help"],
+      ["btn-pair-mobile", "pairing_open"],
+      ["lbl-local-vision-title", "local_vision_title"],
+      ["lbl-local-vision-help", "local_vision_help"],
+      ["btn-local-vision-enable", "local_vision_enable"],
+      ["btn-local-vision-get-ollama", "local_vision_get_ollama"],
+    ] as const) {
+      expect(initializer).toContain(`document.getElementById("${id}")`);
+      expect(initializer).toContain(`t("${key}")`);
+    }
+
+    const localeStart = source.indexOf("async function setLocale");
+    const localeSection = source.slice(
+      localeStart,
+      source.indexOf("function isActiveWorkspace", localeStart),
+    );
+    expect(localeSection).toContain("void refreshSettingsData();");
+    const i18nSource = readFileSync(
+      join(process.cwd(), "desktop", "src", "i18n.ts"),
+      "utf8",
+    );
+    const german = i18nSource.slice(i18nSource.indexOf("  de: {"));
+    expect(german).toContain('database_status_turso: "Turso · verbunden"');
+  });
   it("routes static settings section titles through the i18n layer", () => {
     const panelDir = join(process.cwd(), "desktop", "src", "panel");
     const settingsHtml = readFileSync(
