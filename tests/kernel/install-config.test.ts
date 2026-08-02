@@ -1,6 +1,7 @@
 import { spawn } from "node:child_process";
 import {
   existsSync,
+  mkdirSync,
   mkdtempSync,
   readdirSync,
   readFileSync,
@@ -46,6 +47,7 @@ import {
   setInstallMode,
   setOnboardingDone,
   setOnboardingPersona,
+  updateInstallConfig,
   updateMachineCompanionConfig,
   upsertConfiguredWorkspace,
 } from "../../src/kernel/index.js";
@@ -643,6 +645,92 @@ describe("cross-process config writes", () => {
     // And no lock file is left behind to block the next write.
     expect(existsSync(`${path}.lock`)).toBe(false);
   }, 60_000);
+
+  /**
+   * Hold the config lock in a separate process for `holdMs` — a stand-in for
+   * one read-modify-write on a filesystem slow enough that the critical
+   * section outlives any fixed patience budget (a Windows ARM runner with a
+   * scanner between every create and rename). The holder writes its own key
+   * from inside the lock, so a waiter that gives up and takes the lock away
+   * destroys a real write rather than just racing an empty one.
+   */
+  function slowHolderProcess(
+    path: string,
+    holdMs: number,
+  ): ReturnType<typeof spawn> {
+    const script = `
+      const { writeFileSync } = await import("node:fs");
+      const { updateInstallConfig } = await import(${JSON.stringify(
+        pathToFileURL(join(process.cwd(), "dist", "index.js")).href,
+      )});
+      updateInstallConfig((config) => {
+        writeFileSync(${JSON.stringify(`${path}.held`)}, "", "utf8");
+        Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ${holdMs});
+        config.companion = { collapsed: { "slow-holder": true } };
+      }, ${JSON.stringify(path)});
+    `;
+    return spawn(process.execPath, ["--input-type=module", "-e", script], {
+      stdio: "ignore",
+    });
+  }
+
+  it("waits for a live holder instead of taking a slow lock away", async () => {
+    const path = tempConfigPath();
+    // Comfortably past the 2s budget this lock used to give up after.
+    const child = slowHolderProcess(path, 3_000);
+    const exited = new Promise<void>((resolve, reject) => {
+      child.on("error", reject);
+      child.on("exit", (code) =>
+        code === 0 ? resolve() : reject(new Error(`holder exited with ${code}`)),
+      );
+    });
+
+    // Only start competing once the holder is provably inside its lock.
+    while (!existsSync(`${path}.held`)) {
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+    setCompanionCollapsed("waiter", true, path);
+    await exited;
+
+    // Neither write may be lost: the waiter must have queued behind the slow
+    // holder and re-read its committed value, not overwritten it.
+    expect(getCompanionCollapsed(path)).toEqual({
+      "slow-holder": true,
+      waiter: true,
+    });
+    expect(existsSync(`${path}.lock`)).toBe(false);
+  }, 30_000);
+
+  it("does not remove a lock another writer has taken over", () => {
+    const path = tempConfigPath();
+    const lockPath = `${path}.lock`;
+
+    updateInstallConfig((config) => {
+      // A waiter that gave up broke our lock and took it for itself: same
+      // path, same pid on this machine, different owner.
+      writeFileSync(lockPath, `${process.pid}\nsomeone-else\n`, "utf8");
+      config.companion = { collapsed: { held: true } };
+    }, path);
+
+    // Releasing ours must leave the new owner's lock in place — otherwise one
+    // stolen lock cascades into a run of unprotected writes.
+    expect(existsSync(lockPath)).toBe(true);
+    expect(readFileSync(lockPath, "utf8")).toContain("someone-else");
+  });
+
+  it("does not wedge behind a lock no holder can be read from", () => {
+    const path = tempConfigPath();
+    // A directory where the lock file belongs: it can never be acquired, read,
+    // or removed. Waiting on a live holder is right; waiting on this is not,
+    // so the write must still land promptly rather than after the full budget.
+    mkdirSync(`${path}.lock`);
+
+    const started = Date.now();
+    setCompanionCollapsed("recall", true, path);
+
+    expect(getCompanionCollapsed(path)).toEqual({ recall: true });
+    expect(Date.now() - started).toBeLessThan(4_000);
+  });
 
   it("breaks a lock left behind by a process that died holding it", () => {
     const path = tempConfigPath();

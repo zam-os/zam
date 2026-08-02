@@ -345,24 +345,62 @@ export function saveInstallConfig(
   }
 }
 
-/** How long to wait for another process to finish its read-modify-write. */
-const CONFIG_LOCK_TIMEOUT_MS = 2_000;
-/** A lock older than this belonged to a process that died holding it. */
-const CONFIG_LOCK_STALE_MS = 5_000;
+/**
+ * How long to wait for a lock whose owner is still running.
+ *
+ * Deliberately far longer than one read-modify-write of a small JSON file
+ * needs: a holder that is alive *will* finish, so waiting only costs a stall,
+ * while taking the lock away from it costs a lost setting. The old 2-second
+ * budget was tight enough that a slow filesystem (a Windows ARM CI runner with
+ * a virus scanner between every create and rename) could push a legitimate
+ * critical section past it, at which point a waiter stole a live lock and one
+ * write was silently dropped.
+ */
+const CONFIG_LOCK_WAIT_MS = 10_000;
+/**
+ * Age at which a lock is broken even though its owner still looks alive — the
+ * backstop for a holder that is suspended, or for a dead holder whose pid has
+ * been recycled by an unrelated process.
+ */
+const CONFIG_LOCK_STALE_MS = 30_000;
+/**
+ * How long to keep retrying an acquire that fails with something other than
+ * EEXIST. On Windows a create can transiently fail with EPERM/EBUSY while the
+ * previous holder's unlink is still pending or a scanner holds the file open;
+ * treating that as "no lock available" and writing unsynchronized is exactly
+ * the lost update this lock exists to prevent. A path that is permanently
+ * unusable (a read-only directory, a stray directory named `config.json.lock`)
+ * gives up after this instead of stalling every config write.
+ */
+const CONFIG_LOCK_RETRY_MS = 500;
 const CONFIG_LOCK_POLL_MS = 15;
 
 type LockAttempt = "acquired" | "busy" | "unavailable";
 
-/** Block this thread without spinning; the lock is held for microseconds. */
+interface LockOwner {
+  pid?: number;
+  token?: string;
+}
+
+/**
+ * Lock paths this process already holds. A `mutate` callback that reaches back
+ * into another setter would otherwise wait `CONFIG_LOCK_WAIT_MS` on its own
+ * lock before breaking it.
+ */
+const heldConfigLocks = new Set<string>();
+
+/** Block this thread without spinning while another process holds the lock. */
 function sleepSync(ms: number): void {
   Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
 }
 
-function tryAcquireLock(lockPath: string): LockAttempt {
+function tryAcquireLock(lockPath: string, token: string): LockAttempt {
   try {
     // "wx" fails when the file exists, which makes creation the atomic
-    // test-and-set every platform agrees on.
-    writeFileSync(lockPath, `${process.pid}\n`, {
+    // test-and-set every platform agrees on. The body names the owner: the pid
+    // so waiters can tell "still working" from "died holding it", the token so
+    // a release only ever removes its *own* lock.
+    writeFileSync(lockPath, `${process.pid}\n${token}\n`, {
       encoding: "utf-8",
       flag: "wx",
     });
@@ -371,6 +409,42 @@ function tryAcquireLock(lockPath: string): LockAttempt {
     return (error as NodeJS.ErrnoException).code === "EEXIST"
       ? "busy"
       : "unavailable";
+  }
+}
+
+/** Who holds the lock, or `undefined` when it is gone or unreadable. */
+function readLockOwner(lockPath: string): LockOwner | undefined {
+  try {
+    const [pidLine = "", tokenLine = ""] = readFileSync(
+      lockPath,
+      "utf-8",
+    ).split("\n");
+    const pid = Number.parseInt(pidLine.trim(), 10);
+    return {
+      pid: Number.isInteger(pid) && pid > 0 ? pid : undefined,
+      token: tokenLine.trim() || undefined,
+    };
+  } catch {
+    return undefined;
+  }
+}
+
+/** Whether the recorded lock holder is still running. */
+function isProcessAlive(pid: number): boolean {
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (error) {
+    // EPERM means the process exists but belongs to another user.
+    return (error as NodeJS.ErrnoException).code === "EPERM";
+  }
+}
+
+function lockAgeMs(lockPath: string): number | undefined {
+  try {
+    return Date.now() - statSync(lockPath).mtimeMs;
+  } catch {
+    return undefined;
   }
 }
 
@@ -383,6 +457,11 @@ function tryAcquireLock(lockPath: string): LockAttempt {
  * changes. With several editor windows each running their own `zam mcp`,
  * that lost update is a Companion setting that reverts by itself.
  *
+ * Whether a lock may be taken away from its holder is decided by whether that
+ * holder is still *running*, not by how long the work has taken: a live holder
+ * finishes on any filesystem, so the elapsed-time thresholds are only a
+ * backstop against a suspended process or a recycled pid.
+ *
  * Returns `undefined` when no lock could be taken. Failing to lock must never
  * stop ZAM from saving its own config, so the caller then proceeds unlocked —
  * back to the pre-lock behavior rather than an error.
@@ -391,27 +470,72 @@ function acquireInstallConfigLock(path: string): (() => void) | undefined {
   const lockPath = `${path}.lock`;
   const dir = dirname(path);
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+  // Already inside our own critical section: nothing to wait for.
+  if (heldConfigLocks.has(lockPath)) return () => {};
+
+  const token = ulid();
   const release = () => {
-    try {
-      unlinkSync(lockPath);
-    } catch {
-      // Already released, or broken by a waiter that timed us out.
+    heldConfigLocks.delete(lockPath);
+    const owner = readLockOwner(lockPath);
+    // A waiter that gave up on us has since taken the lock for itself. Removing
+    // it here would put that waiter and the next one in the file together, so
+    // one stolen lock would cascade into a run of lost writes.
+    if (owner?.token && owner.token !== token) return;
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      try {
+        unlinkSync(lockPath);
+        return;
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code === "ENOENT") return;
+        // Windows lets a scanner hold the file open for a moment. Leaking the
+        // lock stalls the next writer for the full wait budget, so retry.
+        sleepSync(CONFIG_LOCK_POLL_MS);
+      }
     }
   };
+  const acquired = () => {
+    heldConfigLocks.add(lockPath);
+    return release;
+  };
 
-  const deadline = Date.now() + CONFIG_LOCK_TIMEOUT_MS;
+  const started = Date.now();
   for (;;) {
-    const attempt = tryAcquireLock(lockPath);
-    if (attempt === "acquired") return release;
-    if (attempt === "unavailable") return undefined;
-    let heldForMs: number;
-    try {
-      heldForMs = Date.now() - statSync(lockPath).mtimeMs;
-    } catch {
-      // The holder released it between the two calls — retry immediately.
+    const attempt = tryAcquireLock(lockPath, token);
+    if (attempt === "acquired") return acquired();
+    const waitedMs = Date.now() - started;
+
+    if (attempt === "unavailable") {
+      // Not "someone holds the lock" but "the lock path refused us" — on
+      // Windows usually a transient unlink still in flight. Retry briefly.
+      if (waitedMs >= CONFIG_LOCK_RETRY_MS) return undefined;
+      sleepSync(CONFIG_LOCK_POLL_MS);
       continue;
     }
-    if (heldForMs > CONFIG_LOCK_STALE_MS || Date.now() >= deadline) break;
+
+    const heldForMs = lockAgeMs(lockPath);
+    if (heldForMs === undefined) {
+      // Released between the two calls — retry the acquire straight away. If
+      // the file is still there the stat failed transiently, so back off
+      // rather than spin on it.
+      if (waitedMs >= CONFIG_LOCK_WAIT_MS) break;
+      if (existsSync(lockPath)) sleepSync(CONFIG_LOCK_POLL_MS);
+      continue;
+    }
+    // A holder that is still running finishes on its own, however slow the
+    // filesystem; only a dead or wedged one is worth taking the lock from.
+    const owner = readLockOwner(lockPath);
+    if (owner?.pid === undefined) {
+      // Nobody identifiable holds it. A lock caught between its create and its
+      // write reads back empty for microseconds, so allow for that — but a
+      // lock file that can never be attributed (hand-made, a stray directory)
+      // must not wedge every config write behind it.
+      if (heldForMs > CONFIG_LOCK_RETRY_MS) break;
+    } else if (!isProcessAlive(owner.pid)) {
+      break;
+    }
+    if (heldForMs > CONFIG_LOCK_STALE_MS || waitedMs >= CONFIG_LOCK_WAIT_MS) {
+      break;
+    }
     sleepSync(CONFIG_LOCK_POLL_MS);
   }
 
@@ -422,7 +546,9 @@ function acquireInstallConfigLock(path: string): (() => void) | undefined {
   } catch {
     // Another waiter broke it first; the acquire below still decides.
   }
-  return tryAcquireLock(lockPath) === "acquired" ? release : undefined;
+  return tryAcquireLock(lockPath, token) === "acquired"
+    ? acquired()
+    : undefined;
 }
 
 /**
