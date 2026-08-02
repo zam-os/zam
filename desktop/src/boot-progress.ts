@@ -41,6 +41,7 @@ export const BOOT_SLOW_AFTER_MS = 6_000;
 export interface BootFailure {
   step: BootStepId;
   message: string;
+  isDbError?: boolean;
 }
 
 export interface BootState {
@@ -100,10 +101,11 @@ export function failStep(
   state: BootState,
   step: BootStepId,
   message: string,
+  isDbError?: boolean,
 ): BootState {
   return {
     ...withStatus(state, step, "failed"),
-    failure: { step, message },
+    failure: { step, message, isDbError },
     finished: false,
   };
 }

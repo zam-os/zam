@@ -166,7 +166,10 @@ at once.
   holder deletes its successor's lock on the way out, and a run of writes lands
   unprotected.
 - An acquire that fails with anything other than "already exists" is retried
-  for half a second before giving up. On Windows a create transiently fails
+  for half a second measured from the first refusal before giving up. Measuring from
+  the first refusal (rather than the start of the overall acquire) ensures a
+  writer queued behind a live holder still gets its retry budget when the lock
+  releases. On Windows a create transiently fails
   while the previous holder's unlink is still in flight or a scanner holds the
   file, and treating that as "no lock available" writes unsynchronized — the
   exact lost update the lock exists to prevent.

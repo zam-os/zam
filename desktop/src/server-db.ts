@@ -74,6 +74,14 @@ export function classifyServerDbError(message: string): string {
   return tf("server_db_error", { message });
 }
 
+export function isServerDbError(message: string): boolean {
+  const m = message.toLowerCase();
+  return /bitwarden|enotfound|eai_again|econnrefused|etimedout|econnreset|fetch failed|network|dns|401|403|unauthorized|forbidden|invalid token|authentication|auth failed|jwt|quota|429|too many requests|limit exceeded|free tier|storage limit|turso|sqld|database/.test(
+    m,
+  );
+}
+
+
 export function initServerDbWizard(
   onServerDbReady: () => void,
   actions: { openExternal(url: string): void },

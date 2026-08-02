@@ -6,7 +6,7 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { createMcpServer } from "../../src/cli/commands/mcp.js";
+import { createLazyDatabase, createMcpServer } from "../../src/cli/commands/mcp.js";
 import { upsertArticle } from "../../src/cli/okf/io.js";
 import type { Database } from "../../src/kernel/index.js";
 import {
@@ -1483,4 +1483,38 @@ describe("MCP stdio server tests", () => {
       expect(structured).not.toHaveProperty("freshness");
     });
   });
+
+  describe("degraded start with failing database", () => {
+    it("allows non-DB tools to succeed and surfaces actionable error on DB tool call", async () => {
+      const errMessage =
+        "Turso rejected the configured credentials (HTTP 401). Replace it with: zam connector token turso";
+      const failingDb = createLazyDatabase(async () => {
+        throw new Error(errMessage);
+      });
+
+      const lazyServer = createMcpServer(failingDb);
+      const [cTrans, sTrans] = InMemoryTransport.createLinkedPair();
+      const testClient = new Client(
+        { name: "test-client", version: "1.0.0" },
+        { capabilities: {} },
+      );
+
+      await Promise.all([
+        testClient.connect(cTrans),
+        lazyServer.connect(sTrans),
+      ]);
+
+      // DB-backed tool returns clean structured error result with isError: true
+      const res = await testClient.callTool({
+        name: "zam_status",
+        arguments: {},
+      });
+      expect(res.isError).toBe(true);
+      expect((res.content[0] as { text: string }).text).toContain(errMessage);
+
+      await testClient.close();
+      await lazyServer.close();
+    });
+  });
 });
+

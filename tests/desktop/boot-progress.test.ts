@@ -149,4 +149,12 @@ describe("startup overlay wiring", () => {
     expect(main).toContain("rememberLocale(settings.locale)");
     expect(main).toContain("if (remembered) setCurrentLocale(remembered)");
   });
+
+  it("includes the repair button in static markup and marks DB failures", () => {
+    const t0 = 1_000_000;
+    expect(html).toContain('id="btn-boot-fix-db"');
+    const state = failStep(createBootState(t0), "cards", "token rejected", true);
+    expect(state.failure?.isDbError).toBe(true);
+  });
 });
+

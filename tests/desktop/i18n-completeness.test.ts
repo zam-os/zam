@@ -276,6 +276,7 @@ const REQUIRED_KEYS = [
 // passed over, so the exhaustive scan below doesn't mask *new* regressions
 // while still not churning unrelated strings.
 const PRE_EXISTING_FALLBACK_KEYS = new Set([
+  "boot_fix_db",
   // Dynamic-question toggle — en/de shipped; es/fr/pt/zh/ja await native pack
   // review before translation (see i18n pack backlog).
   "lbl_dynamic_questions",

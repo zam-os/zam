@@ -3968,6 +3968,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "This is taking longer than usual ({seconds}s). ZAM is still working — the step above is the one it is waiting on.",
     boot_failed_at: "Startup stopped at “{step}”.",
     boot_retry: "Try again",
+    boot_fix_db: "Fix database credential",
     boot_continue: "Continue anyway",
     boot_continue_note:
       "The dashboard may show incomplete numbers until this succeeds.",
@@ -5146,6 +5147,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Das dauert länger als üblich ({seconds}s). ZAM arbeitet noch — der Schritt oben ist der, auf den gewartet wird.",
     boot_failed_at: "Der Start ist bei „{step}“ stehen geblieben.",
     boot_retry: "Erneut versuchen",
+    boot_fix_db: "Zugangsdaten korrigieren",
     boot_continue: "Trotzdem fortfahren",
     boot_continue_note:
       "Bis das klappt, können die Zahlen im Dashboard unvollständig sein.",

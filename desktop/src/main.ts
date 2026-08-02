@@ -56,7 +56,11 @@ import {
   assureBitwardenAccessAfterError,
 } from "./bitwarden-assure.js";
 import { initSecretsVault } from "./secrets-vault.js";
-import { initServerDbWizard } from "./server-db.js";
+import {
+  classifyServerDbError,
+  initServerDbWizard,
+  isServerDbError,
+} from "./server-db.js";
 import {
   buildAvailability,
   createTieredVoicePort,
@@ -4878,6 +4882,23 @@ function renderBootOverlay(): void {
   if (retryBtn) retryBtn.textContent = t("boot_retry");
   const continueBtn = document.getElementById("btn-boot-continue");
   if (continueBtn) continueBtn.textContent = t("boot_continue");
+  const fixDbBtn = document.getElementById("btn-boot-fix-db");
+  if (fixDbBtn) {
+    fixDbBtn.textContent = t("boot_fix_db");
+    if (bootState.failure?.isDbError) {
+      fixDbBtn.classList.remove("hidden");
+      fixDbBtn.onclick = () => {
+        switchView("settings-view");
+        const tokenInput = document.getElementById("server-db-token");
+        if (tokenInput) {
+          tokenInput.focus();
+          tokenInput.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      };
+    } else {
+      fixDbBtn.classList.add("hidden");
+    }
+  }
 
   const stepKey = currentStepLabelKey(bootState);
   const current = document.getElementById("boot-current");
@@ -4962,11 +4983,10 @@ function currentBootStep(): BootStepId {
 }
 
 function failBootStep(step: BootStepId, err: unknown): void {
-  bootState = failStep(
-    bootState,
-    step,
-    err instanceof Error ? err.message : String(err),
-  );
+  const rawMsg = err instanceof Error ? err.message : String(err);
+  const isDbErr = isServerDbError(rawMsg);
+  const msg = classifyServerDbError(rawMsg);
+  bootState = failStep(bootState, step, msg, isDbErr);
   renderBootOverlay();
 }
 
@@ -6301,7 +6321,12 @@ window.addEventListener("DOMContentLoaded", () => {
   });
   initPanel("server-db", () =>
     initServerDbWizard(
-      () => void loadDatabaseStatus(),
+      () => {
+        void loadDatabaseStatus();
+        bootState = restartBoot(bootState);
+        renderBootOverlay();
+        void loadDashboard();
+      },
       { openExternal: (url: string) => void openUrl(url) },
     ),
   );
