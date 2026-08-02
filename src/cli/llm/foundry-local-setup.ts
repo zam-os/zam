@@ -8,19 +8,21 @@
 
 import { ulid } from "ulid";
 import {
-  emptyCapabilityFlags,
   type Database,
+  emptyCapabilityFlags,
+  getSystemProfile,
   type ModelEntry,
   setSetting,
+  supportsLocalGeneration,
 } from "../../kernel/index.js";
 import {
   probeModelCapabilities,
   validateModelSave,
 } from "./capability-probe.js";
 import {
-  setupFoundryLocal,
   type FoundrySetupResult,
   type FoundrySetupRole,
+  setupFoundryLocal,
 } from "./foundry-local.js";
 import {
   loadModelRegistry,
@@ -41,6 +43,21 @@ export async function setupFoundryLocalForZam(
   db: Database,
   role: FoundrySetupRole,
 ): Promise<FoundryZamSetupResult> {
+  const profile = getSystemProfile();
+  if (!supportsLocalGeneration(profile.localAiAcceleration)) {
+    return {
+      ok: false,
+      status: {
+        installed: false,
+        running: false,
+        models: [],
+        recommendations: {},
+      },
+      error:
+        "This computer has no supported NPU or discrete GPU, so a local text model would be too slow to review with. Connect a cloud model instead.",
+    };
+  }
+
   const setup = await setupFoundryLocal(role);
   if (!setup.ok || !setup.prepared) return setup;
 

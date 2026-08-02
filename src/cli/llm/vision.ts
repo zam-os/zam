@@ -677,35 +677,31 @@ async function requestOllamaVisionDraft(
 ): Promise<string> {
   const language = LANGUAGE_NAMES[args.locale] ?? "English";
   const base = args.url.replace(/\/+$/, "").replace(/\/v1$/, "");
-  const hardTimeoutMs =
-    args.input.hardTimeoutMs ?? OLLAMA_VISION_TIMEOUT_MS;
-  const res = await fetchWithInteractiveTimeout(
-    `${base}/api/chat`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: args.model,
-        stream: true,
-        think: false,
-        messages: [
-          { role: "system", content: VISION_SYSTEM_PROMPT },
-          {
-            role: "user",
-            content: visionUserText(args, language),
-            images: args.images.map((image) => image.bytes.toString("base64")),
-          },
-        ],
-        options: {
-          temperature: 0,
-          num_ctx: OLLAMA_VISION_CONTEXT_TOKENS,
-          num_predict: args.input.maxTokens ?? DEFAULT_LLM_MAX_TOKENS,
+  const hardTimeoutMs = args.input.hardTimeoutMs ?? OLLAMA_VISION_TIMEOUT_MS;
+  const res = await fetchWithInteractiveTimeout(`${base}/api/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: args.model,
+      stream: true,
+      think: false,
+      messages: [
+        { role: "system", content: VISION_SYSTEM_PROMPT },
+        {
+          role: "user",
+          content: visionUserText(args, language),
+          images: args.images.map((image) => image.bytes.toString("base64")),
         },
-      }),
-      locale: args.locale,
-      hardTimeoutMs,
-    },
-  );
+      ],
+      options: {
+        temperature: 0,
+        num_ctx: OLLAMA_VISION_CONTEXT_TOKENS,
+        num_predict: args.input.maxTokens ?? DEFAULT_LLM_MAX_TOKENS,
+      },
+    }),
+    locale: args.locale,
+    hardTimeoutMs,
+  });
 
   if (!res.ok) {
     const errorText = await res.text().catch(() => "");
@@ -716,7 +712,9 @@ async function requestOllamaVisionDraft(
 
   const data = await readOllamaVisionResponse(res, hardTimeoutMs);
   if (data.error !== undefined) {
-    throw new Error(`Ollama vision model failed: ${formatModelError(data.error)}`);
+    throw new Error(
+      `Ollama vision model failed: ${formatModelError(data.error)}`,
+    );
   }
   const content = data.message?.content;
   if (!content || typeof content !== "string") {

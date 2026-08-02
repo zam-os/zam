@@ -1670,6 +1670,8 @@ interface FoundryLocalStatusResponse {
   installed: boolean;
   running: boolean;
   endpoint?: string;
+  /** False when the machine has no supported NPU or discrete GPU. */
+  accelerated: boolean;
   recommendations: {
     text?: FoundryLocalModelInfo;
   };
@@ -1679,7 +1681,7 @@ interface FoundryLocalStatusResponse {
 interface FoundrySetupResponse {
   ok: boolean;
   error?: string;
-  prepared?: FoundryLocalModelInfo & { fallbackUsed: boolean };
+  prepared?: FoundryLocalModelInfo;
 }
 
 interface LocalEmbeddingSettingsStatus {
@@ -1695,6 +1697,8 @@ interface LocalVisionSettingsStatus {
   serverOnline: boolean;
   modelPresent: boolean;
   registered: boolean;
+  /** False when the machine has no supported NPU or discrete GPU. */
+  accelerated: boolean;
   usable: boolean;
 }
 
@@ -1710,6 +1714,9 @@ function foundryModelLabel(model: FoundryLocalModelInfo | undefined): string {
 async function loadFoundryLocalStatus(): Promise<void> {
   const textModel = document.getElementById("foundry-local-text-model");
   const statusLine = document.getElementById("foundry-local-status");
+  const setupButton = document.getElementById(
+    "btn-foundry-local-text",
+  ) as HTMLButtonElement | null;
   if (!textModel || !statusLine) return;
 
   statusLine.textContent = t("foundry_local_checking");
@@ -1718,7 +1725,12 @@ async function loadFoundryLocalStatus(): Promise<void> {
       "foundry-local-status",
     );
     textModel.textContent = foundryModelLabel(status.recommendations.text);
-    if (!status.installed) {
+    // A CPU-only machine gets the reason instead of a button that would set up
+    // a model too slow to review with.
+    if (setupButton) setupButton.disabled = status.accelerated === false;
+    if (status.accelerated === false) {
+      statusLine.textContent = t("local_ai_no_accelerator");
+    } else if (!status.installed) {
       statusLine.textContent = t("foundry_local_not_installed");
     } else if (status.running && status.endpoint) {
       statusLine.textContent = tf("foundry_local_ready", {
@@ -1767,13 +1779,10 @@ async function setupFoundryLocalInSettings(): Promise<void> {
 
     const roleLabel = t("foundry_local_text");
     const model = foundryModelLabel(result.prepared);
-    const messages = [
-      tf("foundry_local_setup_done", { role: roleLabel, model }),
-    ];
-    if (result.prepared.fallbackUsed) {
-      messages.push(tf("foundry_local_setup_fallback", { model }));
-    }
-    statusLine.textContent = messages.join(" ");
+    statusLine.textContent = tf("foundry_local_setup_done", {
+      role: roleLabel,
+      model,
+    });
     await Promise.all([loadFoundryLocalStatus(), loadProviderStatus()]);
     if (aiConfigEditorOpen) await loadModelRegistry();
   } catch (error) {
@@ -1788,6 +1797,9 @@ async function setupFoundryLocalInSettings(): Promise<void> {
 
 async function loadLocalVisionStatus(): Promise<void> {
   const statusLine = document.getElementById("local-vision-status");
+  const enableButton = document.getElementById(
+    "btn-local-vision-enable",
+  ) as HTMLButtonElement | null;
   if (!statusLine) return;
 
   statusLine.textContent = t("local_vision_checking");
@@ -1795,7 +1807,10 @@ async function loadLocalVisionStatus(): Promise<void> {
     const status = await runBridge<LocalVisionSettingsStatus>(
       "local-vision-status",
     );
-    if (status.usable) {
+    if (enableButton) enableButton.disabled = status.accelerated === false;
+    if (status.accelerated === false) {
+      statusLine.textContent = t("local_ai_no_accelerator");
+    } else if (status.usable) {
       statusLine.textContent = t("local_vision_ready");
     } else if (!status.ollamaInstalled) {
       statusLine.textContent = t("local_vision_needs_ollama");

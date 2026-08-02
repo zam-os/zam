@@ -59,6 +59,7 @@ describe("local vision enhancement", () => {
       isInstalled: () => true,
       isOnline: async () => true,
       listModels: async () => [DEFAULT_LOCAL_VISION_MODEL],
+      isAccelerated: () => true,
       pullModel: (model) => {
         pulls.push(model);
       },
@@ -87,6 +88,19 @@ describe("local vision enhancement", () => {
     expect(result.ok).toBe(false);
     expect(result.needsOllama).toBe(true);
     expect(result.error).toContain("ollama.com");
+    expect(pulls).toHaveLength(0);
+    expect(getMachineAiModels()).toHaveLength(0);
+  });
+
+  it("refuses on a machine with no NPU or discrete GPU", async () => {
+    const result = await enableLocalVision(
+      db,
+      deps({ isAccelerated: () => false }),
+    );
+
+    expect(result.ok).toBe(false);
+    expect(result.error).toContain("too slow");
+    expect(result.status.accelerated).toBe(false);
     expect(pulls).toHaveLength(0);
     expect(getMachineAiModels()).toHaveLength(0);
   });

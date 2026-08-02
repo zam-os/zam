@@ -66,3 +66,5 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-30](2026-07-30-okf-reader-navigation-and-mermaid.md) | OKF Reader Navigation and Mermaid Rendering | Implemented |
 | [2026-07-30b](2026-07-30b-credential-secret-backends.md) | Credential Secret Backends — Vault References, Bitwarden First | Implemented |
 | [2026-07-31](2026-07-31-cross-platform-voice-mode.md) | Cross-Platform Voice Mode: Device-First Speech with a Costed Cloud Tier | Accepted — macOS engine validated; Windows and iOS await device verification |
+| [2026-08-01](2026-08-01-learning-progress-stats.md) | Learning Progress Statistics | Accepted |
+| [2026-08-02](2026-08-02-foundry-local-and-hardware-classification.md) | Local Generation Only on Accelerated Hardware: Foundry for Text, Ollama for Images | Accepted — NPU and discrete-GPU paths await hardware verification |

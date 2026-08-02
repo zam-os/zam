@@ -12,10 +12,12 @@ import { ulid } from "ulid";
 import {
   type Database,
   emptyCapabilityFlags,
+  getSystemProfile,
   isOllamaInstalled,
   type ModelEntry,
   resolveOllamaCommand,
   setSetting,
+  supportsLocalGeneration,
 } from "../../kernel/index.js";
 import {
   probeModelCapabilities,
@@ -26,10 +28,7 @@ import {
   isLlmOnline,
   resolveCapability,
 } from "./client.js";
-import {
-  OLLAMA_BASE_URL,
-  OLLAMA_DOWNLOAD_URL,
-} from "./local-embedding.js";
+import { OLLAMA_BASE_URL, OLLAMA_DOWNLOAD_URL } from "./local-embedding.js";
 import {
   loadModelRegistry,
   promoteModelToPrimary,
@@ -50,6 +49,8 @@ export interface LocalVisionStatus {
   modelPresent: boolean;
   /** A Qwen3-VL 4B Ollama entry exists in the machine-local registry. */
   registered: boolean;
+  /** This machine has an NPU or discrete GPU, so local vision is worth offering. */
+  accelerated: boolean;
   /** The enabled image role resolves to that live local endpoint. */
   usable: boolean;
 }
@@ -59,6 +60,7 @@ export interface LocalVisionDeps {
   isOnline: (url: string) => Promise<boolean>;
   listModels: (url: string) => Promise<string[]>;
   pullModel: (model: string) => void;
+  isAccelerated: () => boolean;
   probe: typeof probeModelCapabilities;
 }
 
@@ -77,6 +79,8 @@ function defaultDeps(): LocalVisionDeps {
       // Keep bridge stdout pure JSON while Ollama renders download progress.
       execFileSync(command, ["pull", model], { stdio: "pipe" });
     },
+    isAccelerated: () =>
+      supportsLocalGeneration(getSystemProfile().localAiAcceleration),
     probe: probeModelCapabilities,
   };
 }
@@ -98,6 +102,7 @@ export async function getLocalVisionStatus(
       entry.capabilities.image &&
       isRecommendedVisionTag(entry.model),
   );
+  const accelerated = deps.isAccelerated();
   const primary = await resolveCapability(db, "image");
   const usable =
     serverOnline &&
@@ -105,7 +110,14 @@ export async function getLocalVisionStatus(
     primary?.enabled === true &&
     primary.runner === "ollama" &&
     isRecommendedVisionTag(primary.model);
-  return { ollamaInstalled, serverOnline, modelPresent, registered, usable };
+  return {
+    ollamaInstalled,
+    serverOnline,
+    modelPresent,
+    registered,
+    accelerated,
+    usable,
+  };
 }
 
 export interface EnableLocalVisionResult {
@@ -142,6 +154,14 @@ export async function enableLocalVision(
   db: Database,
   deps: LocalVisionDeps = defaultDeps(),
 ): Promise<EnableLocalVisionResult> {
+  if (!deps.isAccelerated()) {
+    return {
+      ok: false,
+      error:
+        "This computer has no supported NPU or discrete GPU, so local image analysis would be too slow to be useful. Use a cloud vision model instead.",
+      status: await getLocalVisionStatus(db, deps),
+    };
+  }
   if (!deps.isInstalled()) {
     return {
       ok: false,

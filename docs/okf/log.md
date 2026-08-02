@@ -2,6 +2,9 @@
 
 ## 2026-08-02
 
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+- **Update** — [Local AI Runtimes](local-ai-runtimes.md)
+- **Creation** — [Local AI Runtimes](local-ai-runtimes.md)
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 
 ## 2026-08-01
