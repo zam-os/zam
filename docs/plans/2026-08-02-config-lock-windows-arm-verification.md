@@ -145,9 +145,12 @@ otherwise.
   it were all clean, as were 15 dense stress iterations. It could not be
   reproduced, so it is unknown whether it was one of the new tests or something
   pre-existing. Worth watching in the first CI runs on this branch.
-- **No CI run exists for this branch yet.** Pushing it triggers the full matrix
-  including `windows-arm64`, which is the cheapest real verification available
-  and should probably happen before the manual loop above.
+- **No CI run exists for this branch yet.** The branch is pushed, but
+  `.github/workflows/ci.yml` triggers only on pushes to `main` and on pull
+  requests targeting `main` — a branch push alone runs nothing. **Opening a PR
+  is what starts `windows-arm64`**, and that is the cheapest real verification
+  available; it is worth doing before the manual loop above, since CI reproduces
+  the exact runner the failure was observed on.
 - `saveInstallConfig`'s Windows rename fallback unlinks the destination before
   retrying the rename. Under the lock that is safe; on the unlocked fallback
   path a reader could observe a missing `config.json` and save `{}` over
