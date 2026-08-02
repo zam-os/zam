@@ -627,7 +627,11 @@ export type {
   SystemProfile,
 } from "./system/profiler.js";
 // System Profiling & Onboarding
-export { classifyLocalAiHardware, getSystemProfile } from "./system/profiler.js";
+export {
+  classifyLocalAiHardware,
+  getSystemProfile,
+  supportsLocalGeneration,
+} from "./system/profiler.js";
 export type { RepoPaths } from "./system/repos.js";
 export {
   getRepoPaths,

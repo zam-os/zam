@@ -17,6 +17,7 @@ import {
   injectShellHooks,
   isOllamaInstalled,
   resolveOllamaCommand,
+  supportsLocalGeneration,
 } from "../../src/kernel/index.js";
 
 describe("System Profiling & Tool Detections", () => {
@@ -76,11 +77,66 @@ describe("System Profiling & Tool Detections", () => {
           },
           "unsupported",
         ],
+        [
+          {
+            platform: "win32" as const,
+            arch: "x64",
+            processorName: "Intel Core i7-13700K",
+            gpuNames: "NVIDIA GeForce RTX 4070",
+          },
+          "discrete-gpu",
+        ],
+        [
+          {
+            platform: "linux" as const,
+            arch: "x64",
+            processorName: "AMD Ryzen 9 7950X",
+            gpuNames: "NVIDIA GeForce RTX 3090",
+          },
+          "discrete-gpu",
+        ],
+        [
+          {
+            platform: "win32" as const,
+            arch: "x64",
+            processorName: "AMD Ryzen 7 5800H",
+            gpuNames: "AMD Radeon RX 6700 XT",
+          },
+          "discrete-gpu",
+        ],
       ] as const;
 
       for (const [fingerprint, expected] of cases) {
         expect(classifyLocalAiHardware(fingerprint)).toBe(expected);
       }
+    });
+
+    it("does not mistake integrated graphics for a usable accelerator", () => {
+      // An iGPU shares memory and bandwidth with the CPU, so it belongs in the
+      // same "too slow to review with" band the allowlist exists to exclude.
+      const integrated = [
+        "Intel(R) UHD Graphics 770",
+        "Intel(R) Iris(R) Xe Graphics",
+        "AMD Radeon(TM) Graphics",
+        "Microsoft Basic Display Adapter",
+      ];
+
+      for (const gpuNames of integrated) {
+        expect(
+          classifyLocalAiHardware({
+            platform: "win32",
+            arch: "x64",
+            processorName: "Intel Core i5-1235U",
+            gpuNames,
+          }),
+        ).toBe("unsupported");
+      }
+    });
+
+    it("withholds the guided local setup only when nothing is accelerated", () => {
+      expect(supportsLocalGeneration("npu")).toBe(true);
+      expect(supportsLocalGeneration("gpu")).toBe(true);
+      expect(supportsLocalGeneration("none")).toBe(false);
     });
   });
 

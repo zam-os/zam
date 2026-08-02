@@ -115,6 +115,7 @@ import {
   setSetting,
   setTursoCredentials,
   slugify,
+  supportsLocalGeneration,
   syncObserverSidecarPolicy,
   tursoVaultAccessPending,
   uiObservationLogExists,
@@ -223,6 +224,12 @@ import {
 import { connectCloudProvider } from "../llm/cloud-connect.js";
 import { CLOUD_PROVIDERS } from "../llm/cloud-providers.js";
 import {
+  FOUNDRY_DEFAULT_URL,
+  type FoundrySetupRole,
+  getFoundryLocalStatus,
+} from "../llm/foundry-local.js";
+import { setupFoundryLocalForZam } from "../llm/foundry-local-setup.js";
+import {
   enableLocalEmbedding,
   getLocalEmbeddingStatus,
 } from "../llm/local-embedding.js";
@@ -230,12 +237,6 @@ import {
   enableLocalVision,
   getLocalVisionStatus,
 } from "../llm/local-vision.js";
-import {
-  FOUNDRY_DEFAULT_URL,
-  getFoundryLocalStatus,
-  type FoundrySetupRole,
-} from "../llm/foundry-local.js";
-import { setupFoundryLocalForZam } from "../llm/foundry-local-setup.js";
 import {
   isMachineLocalEntry,
   loadModelRegistry,
@@ -3378,7 +3379,13 @@ bridgeCommand
     "Inspect Microsoft Foundry Local and its recommended local models (JSON)",
   )
   .action(async () => {
-    jsonOut(await getFoundryLocalStatus());
+    const profile = getSystemProfile();
+    jsonOut({
+      ...(await getFoundryLocalStatus()),
+      hardware: profile.localAiHardware,
+      acceleration: profile.localAiAcceleration,
+      accelerated: supportsLocalGeneration(profile.localAiAcceleration),
+    });
   });
 
 bridgeCommand
@@ -3392,9 +3399,7 @@ bridgeCommand
       jsonError('Invalid --role. Use "text".');
     }
     await withDb(async (db) => {
-      jsonOut(
-        await setupFoundryLocalForZam(db, opts.role as FoundrySetupRole),
-      );
+      jsonOut(await setupFoundryLocalForZam(db, opts.role as FoundrySetupRole));
     });
   });
 
@@ -3417,8 +3422,14 @@ bridgeCommand
       },
     ];
 
+    const accelerated = supportsLocalGeneration(profile.localAiAcceleration);
+
     let recommended = "ollama";
-    if (foundry.installed && profile.recommendedRunner === "generic") {
+    if (
+      accelerated &&
+      foundry.installed &&
+      profile.recommendedRunner === "generic"
+    ) {
       recommended = "foundry-local";
     } else if (profile.recommendedRunner === "fastflowlm" && flmInstalled) {
       recommended = "flm";
@@ -3451,6 +3462,9 @@ bridgeCommand
       defaultUrl,
       defaultModel,
       foundry,
+      hardware: profile.localAiHardware,
+      acceleration: profile.localAiAcceleration,
+      accelerated,
     });
   });
 

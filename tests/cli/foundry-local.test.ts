@@ -68,11 +68,21 @@ describe("Foundry Local setup", () => {
     );
   });
 
-  it("offers the accelerated text model and a working fallback", () => {
-    expect(chooseFoundryRecommendations(MODELS)).toMatchObject({
-      text: { alias: "phi-3.5-mini", device: "Npu" },
-      textFallback: { alias: "qwen3.5-0.8b", fileSizeMb: 904 },
+  it("offers the accelerated text model and never a CPU build", () => {
+    expect(chooseFoundryRecommendations(MODELS)).toEqual({
+      text: {
+        alias: "phi-3.5-mini",
+        model: "phi-3.5-mini-instruct-qnn-npu",
+        device: "Npu",
+        fileSizeMb: 2844,
+      },
     });
+  });
+
+  it("offers nothing when the catalog holds only CPU builds", () => {
+    const cpuOnly = MODELS.filter((model) => model.device === "Cpu");
+
+    expect(chooseFoundryRecommendations(cpuOnly)).toEqual({});
   });
 
   it("makes an explicitly set-up local model the primary candidate", () => {
@@ -106,7 +116,7 @@ describe("Foundry Local setup", () => {
     });
   });
 
-  it("falls back from an unavailable Qualcomm runtime to a compact CPU model", async () => {
+  it("reports an unavailable Qualcomm runtime instead of downgrading to CPU", async () => {
     const calls: string[][] = [];
     const result = await setupFoundryLocal(
       "text",
@@ -129,18 +139,34 @@ describe("Foundry Local setup", () => {
         ) {
           throw new Error("QNNExecutionProvider is not available");
         }
-        if (
-          args[0] === "model" &&
-          args[1] === "download" &&
-          args[2] === "qwen3.5-0.8b"
-        ) {
-          return json({ success: true });
+        throw new Error(`unexpected args: ${args.join(" ")}`);
+      }),
+    );
+
+    expect(result.ok).toBe(false);
+    expect(result.prepared).toBeUndefined();
+    expect(result.error).toContain("QNNExecutionProvider is not available");
+    // A CPU build must never be downloaded as a consolation prize.
+    const downloads = calls.filter(
+      (call) => call[1] === "model" && call[2] === "download",
+    );
+    expect(downloads).toEqual([]);
+  });
+
+  it("loads the cached accelerated model without downloading it again", async () => {
+    const calls: string[][] = [];
+    const result = await setupFoundryLocal(
+      "text",
+      deps(async (command, args) => {
+        calls.push([command, ...args]);
+        if (command !== "foundry") throw new Error("unexpected command");
+        if (args[0] === "server") {
+          return json({ running: true, webUrls: ["http://127.0.0.1:5273"] });
         }
-        if (
-          args[0] === "model" &&
-          args[1] === "load" &&
-          args[2] === "qwen3.5-0.8b"
-        ) {
+        if (args[0] === "model" && args[1] === "list") {
+          return json({ models: MODELS });
+        }
+        if (args[0] === "model" && args[1] === "load") {
           return json({ success: true });
         }
         throw new Error(`unexpected args: ${args.join(" ")}`);
@@ -148,20 +174,16 @@ describe("Foundry Local setup", () => {
     );
 
     expect(result.ok).toBe(true);
-    expect(result.prepared).toMatchObject({
-      alias: "qwen3.5-0.8b",
-      model: "qwen3.5-0.8b-generic-cpu",
+    expect(result.prepared).toEqual({
+      alias: "phi-3.5-mini",
+      model: "phi-3.5-mini-instruct-qnn-npu",
+      device: "Npu",
+      fileSizeMb: 2844,
       role: "text",
-      fallbackUsed: true,
-      downloaded: true,
+      downloaded: false,
     });
-    expect(calls).toContainEqual([
-      "foundry",
-      "model",
-      "download",
-      "qwen3.5-0.8b",
-      "--output",
-      "json",
-    ]);
+    expect(
+      calls.some((call) => call[1] === "model" && call[2] === "download"),
+    ).toBe(false);
   });
 });

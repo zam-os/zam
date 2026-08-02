@@ -36,13 +36,13 @@ import {
 } from "../../kernel/index.js";
 import { OPENROUTER_PROVIDER } from "./cloud-providers.js";
 import {
-  loadModelRegistry,
-  type ResolvedModelEntry,
-} from "./model-registry.js";
-import {
   ensureFoundryModelLoaded,
   FOUNDRY_DEFAULT_PORT,
 } from "./foundry-local.js";
+import {
+  loadModelRegistry,
+  type ResolvedModelEntry,
+} from "./model-registry.js";
 
 /** Single source of truth for connection defaults (easy to bump as models evolve). */
 export const DEFAULT_LLM_URL = "http://localhost:8000/v1";
@@ -1946,15 +1946,12 @@ function isFoundryRunner(runner: string | undefined): boolean {
  */
 export async function prepareFoundryEndpoint<
   T extends Pick<ProviderConfig, "url" | "model"> & { runner?: string },
->(
-  endpoint: T,
-): Promise<T> {
+>(endpoint: T): Promise<T> {
   if (!isFoundryRunner(endpoint.runner)) return endpoint;
   const loaded = await ensureFoundryModelLoaded(endpoint.model);
   if (!loaded.ok) {
     throw new Error(
-      loaded.error ??
-        `Foundry Local could not load model "${endpoint.model}".`,
+      loaded.error ?? `Foundry Local could not load model "${endpoint.model}".`,
     );
   }
   return loaded.endpoint ? { ...endpoint, url: loaded.endpoint } : endpoint;
@@ -2001,8 +1998,7 @@ async function checkProviderEndpoint(
   const modelAvailable =
     availableModels.length === 0 ||
     availableModels.some(
-      (candidate) =>
-        candidate.toLowerCase() === resolved.model.toLowerCase(),
+      (candidate) => candidate.toLowerCase() === resolved.model.toLowerCase(),
     );
 
   return {
@@ -2530,12 +2526,7 @@ export interface LlmReadiness {
   reason?: "disabled" | "offline" | "model-not-found" | "unsupported-provider";
 }
 
-type RunnerKind =
-  | "fastflowlm"
-  | "ollama"
-  | "foundry"
-  | "generic"
-  | "unknown";
+type RunnerKind = "fastflowlm" | "ollama" | "foundry" | "generic" | "unknown";
 
 function runnerKindFromHint(hint?: string): RunnerKind | undefined {
   if (!hint) return undefined;

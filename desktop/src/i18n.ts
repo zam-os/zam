@@ -4453,14 +4453,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     foundry_local_help:
       "Run the recommended text model privately on this computer. Set up local visual analysis with Ollama below.",
     foundry_local_text: "Recommended text model",
-    foundry_local_vision: "Recommended vision model",
     foundry_local_setup_text: "Set up text model",
-    foundry_local_setup_vision: "Set up vision model",
     foundry_local_setup_working: "Setting up local AI…",
     foundry_local_setup_done: "{role}: {model} is ready.",
-    foundry_local_setup_fallback:
-      "{model} was selected as a suitable fallback on this computer.",
     foundry_local_setup_failed: "Setup failed: {message}",
+    local_ai_no_accelerator:
+      "This computer has no supported NPU or discrete GPU. A local model would be too slow to learn with — connect a cloud model instead.",
     foundry_local_checking: "Checking Foundry Local…",
     foundry_local_not_installed:
       "Foundry Local is not installed yet. Set it up here with one click.",
@@ -5703,14 +5701,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     foundry_local_help:
       "Empfohlenes Textmodell privat auf diesem Rechner ausführen. Die lokale Bildanalyse unten über Ollama einrichten.",
     foundry_local_text: "Empfohlenes Textmodell",
-    foundry_local_vision: "Empfohlenes Bildmodell",
     foundry_local_setup_text: "Textmodell einrichten",
-    foundry_local_setup_vision: "Bildmodell einrichten",
     foundry_local_setup_working: "Lokale KI wird eingerichtet…",
     foundry_local_setup_done: "{role}: {model} ist bereit.",
-    foundry_local_setup_fallback:
-      "Als passende Alternative auf diesem Rechner wurde {model} gewählt.",
     foundry_local_setup_failed: "Einrichtung fehlgeschlagen: {message}",
+    local_ai_no_accelerator:
+      "Dieser Rechner hat keine unterstützte NPU und keine dedizierte GPU. Ein lokales Modell wäre zum Lernen zu langsam — stattdessen ein Cloud-Modell verbinden.",
     foundry_local_checking: "Foundry Local wird geprüft…",
     foundry_local_not_installed:
       "Foundry Local ist noch nicht installiert. Hier mit einem Klick einrichten.",

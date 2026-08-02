@@ -146,26 +146,32 @@ function findAlias(
   return undefined;
 }
 
+/** Foundry reports the device a catalog build targets, e.g. `Npu` or `Cpu`. */
+function isAcceleratedBuild(model: FoundryCatalogModel): boolean {
+  const device = model.device?.trim().toLowerCase();
+  return device === "npu" || device === "gpu";
+}
+
 /**
- * Choose conservative text defaults from the catalog actually available on
- * the machine so learners never have to guess model ids.
+ * Choose a text default from the catalog actually available on the machine, so
+ * learners never have to guess model ids.
+ *
+ * Only accelerated builds are offered. A CPU build of a chat model is fast
+ * enough to finish and too slow to review with, and a recall session that
+ * stalls is one that does not happen — so no recommendation is the honest
+ * answer where no accelerated build exists, and the learner is pointed at a
+ * cloud model instead.
  */
 export function chooseFoundryRecommendations(
   models: FoundryCatalogModel[],
 ): FoundryRecommendations {
-  const text = findAlias(models, [
+  const accelerated = models.filter(isAcceleratedBuild);
+  const preferred = findAlias(accelerated, [
     "phi-3.5-mini",
     "qwen3.5-2b-text",
     "qwen3.5-0.8b",
   ]);
-  const textFallback = findAlias(models, [
-    "qwen3.5-0.8b",
-    "qwen2.5-0.5b",
-  ]);
-  return {
-    text: toRecommendation(text),
-    textFallback: toRecommendation(textFallback),
-  };
+  return { text: toRecommendation(preferred ?? accelerated[0]) };
 }
 
 interface ServerStatusJson {
@@ -272,7 +278,9 @@ async function installFoundryLocal(deps: FoundryLocalDeps): Promise<void> {
     );
   }
   if (!deps.hasWinget()) {
-    throw new Error("winget is required to install Foundry Local automatically.");
+    throw new Error(
+      "winget is required to install Foundry Local automatically.",
+    );
   }
   await deps.run("winget", [
     "install",
@@ -296,21 +304,6 @@ async function startFoundryLocal(deps: FoundryLocalDeps): Promise<string> {
   if (endpoint) return endpoint;
   const status = await getServerStatus(deps);
   return endpointFromStatus(status) ?? FOUNDRY_DEFAULT_URL;
-}
-
-function candidateModels(
-  _role: FoundrySetupRole,
-  recommendations: FoundryRecommendations,
-): FoundryRecommendation[] {
-  const candidates = [recommendations.text, recommendations.textFallback];
-  const seen = new Set<string>();
-  return candidates.filter(
-    (candidate): candidate is FoundryRecommendation => {
-      if (!candidate || seen.has(candidate.alias)) return false;
-      seen.add(candidate.alias);
-      return true;
-    },
-  );
 }
 
 async function downloadAndLoad(
@@ -338,11 +331,13 @@ async function downloadAndLoad(
 }
 
 /**
- * Install (when necessary), start, download, and load one recommended model.
+ * Install (when necessary), start, download, and load the recommended model.
  *
- * A Qualcomm NPU candidate is deliberately attempted first. If its execution
- * provider is unavailable, Foundry reports a clear load failure and ZAM falls
- * back to a compact CPU model instead of leaving setup in a broken state.
+ * There is deliberately no second attempt on a CPU build. If the accelerated
+ * candidate's execution provider is unavailable, Foundry's load failure is
+ * reported as-is: a compact CPU model would make setup *look* successful while
+ * producing a recall experience slow enough that the learner stops reviewing,
+ * and a plain failure that points at a cloud model is the more useful answer.
  */
 export async function setupFoundryLocal(
   role: FoundrySetupRole,
@@ -352,48 +347,37 @@ export async function setupFoundryLocal(
     await installFoundryLocal(deps);
     const endpoint = await startFoundryLocal(deps);
     const status = await getFoundryLocalStatus(deps);
-    const models = status.models;
-    const candidates = candidateModels(role, status.recommendations);
-    if (candidates.length === 0) {
+    const candidate = status.recommendations.text;
+    if (!candidate) {
       return {
         ok: false,
         status: { ...status, endpoint },
-        error: "Foundry Local did not offer a suitable text model.",
+        error:
+          "Foundry Local offers no accelerated text model on this computer. Connect a cloud model instead.",
       };
     }
 
-    const failures: string[] = [];
-    for (let index = 0; index < candidates.length; index++) {
-      const candidate = candidates[index];
-      const catalogModel = models.find(
-        (model) => model.alias.toLowerCase() === candidate.alias.toLowerCase(),
+    const catalogModel = status.models.find(
+      (model) => model.alias.toLowerCase() === candidate.alias.toLowerCase(),
+    );
+    try {
+      const downloaded = await downloadAndLoad(
+        deps,
+        candidate,
+        catalogModel?.cached === true,
       );
-      try {
-        const downloaded = await downloadAndLoad(
-          deps,
-          candidate,
-          catalogModel?.cached === true,
-        );
-        return {
-          ok: true,
-          status: { ...status, endpoint },
-          prepared: {
-            ...candidate,
-            role,
-            downloaded,
-            fallbackUsed: index > 0,
-          },
-        };
-      } catch (error) {
-        failures.push(`${candidate.alias}: ${(error as Error).message}`);
-      }
+      return {
+        ok: true,
+        status: { ...status, endpoint },
+        prepared: { ...candidate, role, downloaded },
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        status: { ...status, endpoint },
+        error: `${candidate.alias}: ${(error as Error).message}`,
+      };
     }
-
-    return {
-      ok: false,
-      status: { ...status, endpoint },
-      error: failures.join("\n"),
-    };
   } catch (error) {
     const status = await getFoundryLocalStatus(deps);
     return { ok: false, status, error: (error as Error).message };
