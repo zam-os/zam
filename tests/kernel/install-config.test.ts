@@ -1,9 +1,11 @@
 import { spawn } from "node:child_process";
 import {
   existsSync,
+  mkdirSync,
   mkdtempSync,
   readdirSync,
   readFileSync,
+  renameSync,
   rmSync,
   utimesSync,
   writeFileSync,
@@ -46,6 +48,7 @@ import {
   setInstallMode,
   setOnboardingDone,
   setOnboardingPersona,
+  updateInstallConfig,
   updateMachineCompanionConfig,
   upsertConfiguredWorkspace,
 } from "../../src/kernel/index.js";
@@ -643,6 +646,204 @@ describe("cross-process config writes", () => {
     // And no lock file is left behind to block the next write.
     expect(existsSync(`${path}.lock`)).toBe(false);
   }, 60_000);
+
+  /**
+   * Hold the config lock in a separate process for `holdMs` — a stand-in for
+   * one read-modify-write on a filesystem slow enough that the critical
+   * section outlives any fixed patience budget (a Windows ARM runner with a
+   * scanner between every create and rename). The holder writes its own key
+   * from inside the lock, so a waiter that gives up and takes the lock away
+   * destroys a real write rather than just racing an empty one.
+   */
+  function slowHolderProcess(
+    path: string,
+    holdMs: number,
+  ): ReturnType<typeof spawn> {
+    const script = `
+      const { writeFileSync } = await import("node:fs");
+      const { updateInstallConfig } = await import(${JSON.stringify(
+        pathToFileURL(join(process.cwd(), "dist", "index.js")).href,
+      )});
+      updateInstallConfig((config) => {
+        writeFileSync(${JSON.stringify(`${path}.held`)}, "", "utf8");
+        Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ${holdMs});
+        config.companion = { collapsed: { "slow-holder": true } };
+      }, ${JSON.stringify(path)});
+    `;
+    return spawn(process.execPath, ["--input-type=module", "-e", script], {
+      stdio: "ignore",
+    });
+  }
+
+  it("waits for a live holder instead of taking a slow lock away", async () => {
+    const path = tempConfigPath();
+    // Comfortably past the 2s budget this lock used to give up after.
+    const child = slowHolderProcess(path, 3_000);
+    const exited = new Promise<void>((resolve, reject) => {
+      child.on("error", reject);
+      child.on("exit", (code) =>
+        code === 0 ? resolve() : reject(new Error(`holder exited with ${code}`)),
+      );
+    });
+
+    // Only start competing once the holder is provably inside its lock.
+    while (!existsSync(`${path}.held`)) {
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+    setCompanionCollapsed("waiter", true, path);
+    await exited;
+
+    // Neither write may be lost: the waiter must have queued behind the slow
+    // holder and re-read its committed value, not overwritten it.
+    expect(getCompanionCollapsed(path)).toEqual({
+      "slow-holder": true,
+      waiter: true,
+    });
+    expect(existsSync(`${path}.lock`)).toBe(false);
+  }, 30_000);
+
+  it("does not remove a lock another writer has taken over", () => {
+    const path = tempConfigPath();
+    const lockPath = `${path}.lock`;
+
+    updateInstallConfig((config) => {
+      // A waiter that gave up broke our lock and took it for itself: same
+      // path, same pid on this machine, different owner.
+      writeFileSync(lockPath, `${process.pid}\nsomeone-else\n`, "utf8");
+      config.companion = { collapsed: { held: true } };
+    }, path);
+
+    // Releasing ours must leave the new owner's lock in place — otherwise one
+    // stolen lock cascades into a run of unprotected writes.
+    expect(existsSync(lockPath)).toBe(true);
+    expect(readFileSync(lockPath, "utf8")).toContain("someone-else");
+  });
+
+  it("does not remove a lock whose owner token cannot be verified", () => {
+    const path = tempConfigPath();
+    const lockPath = `${path}.lock`;
+
+    updateInstallConfig((config) => {
+      // A replacement lock without a token could be from a pre-token writer
+      // or a concurrent writer whose contents cannot be read yet. In neither
+      // case may this process assume it still owns the path and delete it.
+      writeFileSync(lockPath, `${process.pid}\n`, "utf8");
+      config.companion = { collapsed: { held: true } };
+    }, path);
+
+    expect(existsSync(lockPath)).toBe(true);
+    expect(readFileSync(lockPath, "utf8")).toBe(`${process.pid}\n`);
+  });
+
+  it("does not wedge behind a lock no holder can be read from", () => {
+    const path = tempConfigPath();
+    // A directory where the lock file belongs: it can never be acquired, read,
+    // or removed. Waiting on a live holder is right; waiting on this is not,
+    // so the write must still land promptly rather than after the full budget.
+    mkdirSync(`${path}.lock`);
+
+    const started = Date.now();
+    setCompanionCollapsed("recall", true, path);
+
+    expect(getCompanionCollapsed(path)).toEqual({ recall: true });
+    expect(Date.now() - started).toBeLessThan(4_000);
+  });
+
+  /**
+   * Rename that tolerates Windows briefly refusing a directory another process
+   * has just touched. The waiter polls the lock path every few milliseconds,
+   * so an unlucky overlap is EPERM/EBUSY rather than a real failure.
+   */
+  function renameWithRetry(from: string, to: string): void {
+    for (let attempt = 0; ; attempt += 1) {
+      try {
+        renameSync(from, to);
+        return;
+      } catch (error) {
+        if (attempt >= 20) throw error;
+        const until = Date.now() + 20;
+        while (Date.now() < until) {
+          // Busy-wait: this runs between two timed steps of the scenario.
+        }
+      }
+    }
+  }
+
+  /**
+   * A writer that announces itself before queueing for the lock, so the test
+   * can time the rest of the scenario from "this process is now waiting".
+   */
+  function waitingWriterProcess(
+    path: string,
+    writer: string,
+  ): ReturnType<typeof spawn> {
+    const script = `
+      const { writeFileSync } = await import("node:fs");
+      const { setCompanionCollapsed } = await import(${JSON.stringify(
+        pathToFileURL(join(process.cwd(), "dist", "index.js")).href,
+      )});
+      writeFileSync(${JSON.stringify(`${path}.waiting`)}, "", "utf8");
+      setCompanionCollapsed(
+        ${JSON.stringify(writer)},
+        true,
+        ${JSON.stringify(path)},
+      );
+    `;
+    return spawn(process.execPath, ["--input-type=module", "-e", script], {
+      stdio: "ignore",
+    });
+  }
+
+  it("does not skip the lock when the path refuses it after a long wait", async () => {
+    const path = tempConfigPath();
+    const lockPath = `${path}.lock`;
+    // This process is the holder: a live pid, so a waiter has to queue rather
+    // than decide the lock is abandoned.
+    writeFileSync(lockPath, `${process.pid}\nholder-token\n`, "utf8");
+
+    const child = waitingWriterProcess(path, "waiter");
+    const exited = new Promise<void>((resolve, reject) => {
+      child.on("error", reject);
+      child.on("exit", (code) =>
+        code === 0 ? resolve() : reject(new Error(`waiter exited with ${code}`)),
+      );
+    });
+    while (!existsSync(`${path}.waiting`)) {
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+
+    // Queue the waiter for longer than the transient-refusal retry budget…
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    // …then make the create fail with something other than EEXIST, the way
+    // Windows does with EPERM/EBUSY while the previous holder's unlink is
+    // still in flight. Moving the directory aside is the portable stand-in:
+    // ENOENT everywhere, and atomic — deleting it instead would take the lock
+    // file with it and hand the waiter the lock for real. A waiter that counts
+    // its time queueing against the retry budget gives up on this first
+    // refusal and writes unsynchronized, dropping what the holder commits next.
+    const dir = dirname(path);
+    const asideDir = `${dir}-aside`;
+    renameWithRetry(dir, asideDir);
+    await new Promise((resolve) => setTimeout(resolve, 150));
+    // Commit the holder's write where the directory is about to reappear, so
+    // it is already on disk the moment the path becomes usable again.
+    saveInstallConfig({ companion: { collapsed: { "slow-holder": true } } },
+      join(asideDir, basename(path)),
+    );
+    // A waiter that already gave up has recreated the directory for its
+    // unsynchronized write; drop it so the real one can come back.
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 20 });
+    renameWithRetry(asideDir, dir);
+    await exited;
+
+    // Both writes must survive: the waiter has to have taken the lock once the
+    // path recovered and re-read what the holder committed.
+    expect(getCompanionCollapsed(path)).toEqual({
+      "slow-holder": true,
+      waiter: true,
+    });
+    expect(existsSync(lockPath)).toBe(false);
+  }, 30_000);
 
   it("breaks a lock left behind by a process that died holding it", () => {
     const path = tempConfigPath();

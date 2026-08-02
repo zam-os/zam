@@ -81,8 +81,11 @@ describe("remote provider transport behavior", () => {
     const stub = await startHranaStub({ authToken: "secret" });
     try {
       const db = openRemoteDatabase({ url: stub.url, authToken: "wrong" });
+      // Token-only: a rejected token says nothing about the URL, and sending
+      // someone through the full setup flow to re-paste one they never changed
+      // is what makes this repair feel bigger than it is.
       await expect(db.prepare("SELECT 1").get()).rejects.toThrow(
-        /zam connector setup turso/,
+        /zam connector token turso/,
       );
     } finally {
       await stub.close();

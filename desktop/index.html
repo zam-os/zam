@@ -17,6 +17,29 @@
     <div class="blur-glow glow-1"></div>
     <div class="blur-glow glow-2"></div>
 
+    <!-- STARTUP OVERLAY
+         Present in the static markup (not created by main.ts) so it is on
+         screen from the first paint. Everything behind it is placeholder
+         chrome until loadDashboard() answers: the due count, the language
+         badge and the AI pill would otherwise read as facts while the app is
+         still starting. main.ts hides it once the dashboard holds real data. -->
+    <div id="boot-overlay" class="boot-overlay" role="status" aria-live="polite">
+      <div class="boot-box">
+        <div class="boot-heading">
+          <span class="boot-spinner" aria-hidden="true"></span>
+          <h2 id="boot-title">Starting ZAM…</h2>
+        </div>
+        <p id="boot-current" class="boot-current">Loading settings and profile…</p>
+        <ol id="boot-steps" class="boot-steps"></ol>
+        <p id="boot-note" class="boot-note hidden"></p>
+        <div id="boot-actions" class="boot-actions hidden">
+          <button id="btn-boot-fix-db" class="btn primary-btn btn-sm hidden" type="button">Fix database credential</button>
+          <button id="btn-boot-retry" class="btn primary-btn btn-sm" type="button">Try again</button>
+          <button id="btn-boot-continue" class="btn secondary-btn btn-sm" type="button">Continue anyway</button>
+        </div>
+      </div>
+    </div>
+
     <main class="container">
       <!-- HEADER BAR -->
       <header class="app-header">
@@ -32,8 +55,10 @@
         </nav>
         <div class="status-area" id="system-status">
           <div class="status-indicator">
-            <span class="pulse-dot gray" role="img" aria-label="Local AI Offline"></span>
-            <span class="status-text" id="ai-status-label">Local AI Offline</span>
+            <!-- "Offline" was a claim the app had not checked yet; start in
+                 the checking state the probe itself uses. -->
+            <span class="pulse-dot amber" role="img" aria-label="Checking AI"></span>
+            <span class="status-text" id="ai-status-label">Checking AI...</span>
           </div>
           <span class="locale-badge" id="locale-badge">EN</span>
         </div>
@@ -69,8 +94,11 @@
         <div class="dashboard-grid">
           <div class="card stat-card frosted">
             <h2 id="lbl-due-reviews">Due Reviews</h2>
-            <div class="large-number" id="due-count">0</div>
-            <p id="lbl-caught-up" class="sub-label" aria-live="polite">You're all caught up!</p>
+            <!-- Placeholder, not a reading: a literal "0" here was
+                 indistinguishable from a real empty queue while the bridge
+                 was still starting. loadDashboard() fills both in. -->
+            <div class="large-number" id="due-count">—</div>
+            <p id="lbl-caught-up" class="sub-label hidden" aria-live="polite">You're all caught up!</p>
           </div>
 
           <div class="card stat-card frosted">
@@ -559,8 +587,11 @@
           <article class="card frosted settings-card" id="secrets-vault-card">
             <div class="settings-card-header">
               <div>
+                <!-- The title text has its own span: applyLabels() writes
+                     textContent per element, and writing it on the <h2> would
+                     delete the Alpha badge nested inside it. -->
                 <h2 id="lbl-settings-secrets-title">
-                  Multi-machine secrets
+                  <span id="lbl-settings-secrets-title-text">Multi-machine secrets</span>
                   <span id="lbl-settings-secrets-alpha" class="settings-badge-alpha">Alpha</span>
                 </h2>
                 <p id="lbl-settings-secrets-help" class="settings-card-help">

@@ -2074,6 +2074,143 @@ textarea::placeholder {
   display: none !important;
 }
 
+/* ── STARTUP OVERLAY ───────────────────────────────────────────────────────
+   Covers the placeholder chrome until the dashboard holds real data. Lives in
+   index.html so it is painted before main.ts runs; main.ts adds .hidden once
+   loadDashboard() succeeds, or leaves it up with the failing step named. */
+.boot-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  /* Opaque, unlike .modal-overlay: what is behind it is not yet true. */
+  background: var(--bg-deep-space);
+  background-image: var(--bg-page-wash);
+  color: var(--clr-text-primary);
+}
+
+.boot-box {
+  width: min(440px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 26px;
+  border-radius: 16px;
+  background: var(--bg-card-frosted);
+  border: 1px solid var(--border-card-frosted);
+  box-shadow: var(--shadow-card);
+}
+
+.boot-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.boot-heading h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.boot-spinner {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  border-radius: 50%;
+  border: 2px solid var(--border-card-frosted);
+  border-top-color: var(--clr-accent-purple);
+  animation: bootSpin 0.9s linear infinite;
+}
+
+@keyframes bootSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* A learner who has turned motion down still gets the step list and the
+   elapsed readout, which is where the actual information is. */
+@media (prefers-reduced-motion: reduce) {
+  .boot-spinner {
+    animation: none;
+  }
+}
+
+.boot-current {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--clr-text-secondary);
+  word-break: break-word;
+}
+
+.boot-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.boot-step {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 13px;
+  opacity: 0.55;
+}
+
+.boot-step[data-status="running"],
+.boot-step[data-status="failed"] {
+  opacity: 1;
+  font-weight: 500;
+}
+
+.boot-step[data-status="done"] {
+  opacity: 0.8;
+}
+
+.boot-step-marker {
+  flex: none;
+  width: 1.1em;
+  text-align: center;
+}
+
+.boot-step[data-status="failed"] {
+  color: #b91c1c;
+}
+
+:root[data-theme="dark"] .boot-step[data-status="failed"] {
+  color: #fecaca;
+}
+
+.boot-note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--clr-text-muted);
+  word-break: break-word;
+}
+
+.boot-note.boot-note-error {
+  color: #b91c1c;
+}
+
+:root[data-theme="dark"] .boot-note.boot-note-error {
+  color: #fecaca;
+}
+
+.boot-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 /* Visible error banner (e.g. bridge/data failures) */
 .error-banner {
   background: rgba(239, 68, 68, 0.1);

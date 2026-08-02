@@ -75,7 +75,13 @@ export function initSecretsVault(
   let enabled = false;
 
   const applyLabels = (): void => {
-    requiredElement("lbl-settings-secrets-title").textContent = t(
+    // The inner text span, never the <h2> itself: the heading also holds the
+    // Alpha badge, and assigning textContent to a container deletes its
+    // children — which used to remove #lbl-settings-secrets-alpha a few lines
+    // before this same function demands it, throwing out of initSecretsVault()
+    // and taking the whole DOMContentLoaded handler (including the dashboard
+    // load) down with it.
+    requiredElement("lbl-settings-secrets-title-text").textContent = t(
       "secrets_vault_title",
     );
     requiredElement("lbl-settings-secrets-help").textContent = t(

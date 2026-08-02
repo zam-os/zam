@@ -9,7 +9,12 @@ import {
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import type { Database, Rating, ReviewActionType } from "../../kernel/index.js";
+import type {
+  Database,
+  Rating,
+  ReviewActionType,
+  Statement,
+} from "../../kernel/index.js";
 import {
   getReviewActivity,
   getSetting,
@@ -1867,11 +1872,71 @@ export function createMcpServer(db: Database): McpServer {
   return server;
 }
 
+export function createLazyDatabase(openFn: () => Promise<Database>): Database {
+  let dbPromise: Promise<Database> | null = null;
+
+  async function getDb(): Promise<Database> {
+    if (!dbPromise) {
+      dbPromise = openFn().catch((err) => {
+        dbPromise = null;
+        throw err;
+      });
+    }
+    return dbPromise;
+  }
+
+  return {
+    prepare(sql: string): Statement {
+      return {
+        async run(...params: unknown[]) {
+          const db = await getDb();
+          return db.prepare(sql).run(...params);
+        },
+        async get(...params: unknown[]) {
+          const db = await getDb();
+          return db.prepare(sql).get(...params);
+        },
+        async all(...params: unknown[]) {
+          const db = await getDb();
+          return db.prepare(sql).all(...params);
+        },
+      };
+    },
+    async exec(sql: string): Promise<void> {
+      const db = await getDb();
+      return db.exec(sql);
+    },
+    async pragma(source: string): Promise<unknown> {
+      const db = await getDb();
+      return db.pragma(source);
+    },
+    async transaction<T>(fn: (db: Database) => Promise<T>): Promise<T> {
+      const db = await getDb();
+      return db.transaction(fn);
+    },
+    async sync(): Promise<void> {
+      const db = await getDb();
+      if (db.sync) {
+        await db.sync();
+      }
+    },
+    async close(): Promise<void> {
+      if (!dbPromise) return;
+      try {
+        const db = await dbPromise;
+        await db.close();
+      } catch {
+        // Silently swallow errors closing a database that failed to open
+      }
+    },
+  };
+}
+
 export async function runMcpServer(): Promise<void> {
   // Rebind console.log to console.error immediately to prevent stdio transport corruption
   console.log = console.error;
 
-  const db = await openDatabase();
+  const db = createLazyDatabase(openDatabase);
   const server = createMcpServer(db);
 
   let dbClosed = false;

@@ -276,6 +276,7 @@ const REQUIRED_KEYS = [
 // passed over, so the exhaustive scan below doesn't mask *new* regressions
 // while still not churning unrelated strings.
 const PRE_EXISTING_FALLBACK_KEYS = new Set([
+  "boot_fix_db",
   // Dynamic-question toggle — en/de shipped; es/fr/pt/zh/ja await native pack
   // review before translation (see i18n pack backlog).
   "lbl_dynamic_questions",
@@ -546,6 +547,19 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "lbl_release_material_desc",
   "lbl_release_author",
   "lbl_release_published_toast",
+  // Startup overlay (desktop/src/boot-progress.ts) — the Studio used to paint
+  // placeholder numbers while the bridge was still starting. en/de shipped;
+  // es/fr/pt/zh/ja await native pack review.
+  "boot_title",
+  "boot_step_settings",
+  "boot_step_vault",
+  "boot_step_cards",
+  "boot_slow_note",
+  "boot_failed_at",
+  "boot_retry",
+  "boot_continue",
+  "boot_continue_note",
+  "boot_panel_failed",
 ]);
 
 /**

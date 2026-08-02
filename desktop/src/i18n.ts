@@ -3960,6 +3960,20 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_due_reviews: "Due Reviews",
     lbl_caught_up: "You're all caught up!",
     dashboard_error: "Could not load your data",
+    boot_title: "Starting ZAM…",
+    boot_step_settings: "Loading settings and profile",
+    boot_step_vault: "Unlocking stored credentials",
+    boot_step_cards: "Checking your due cards",
+    boot_slow_note:
+      "This is taking longer than usual ({seconds}s). ZAM is still working — the step above is the one it is waiting on.",
+    boot_failed_at: "Startup stopped at “{step}”.",
+    boot_retry: "Try again",
+    boot_fix_db: "Fix database credential",
+    boot_continue: "Continue anyway",
+    boot_continue_note:
+      "The dashboard may show incomplete numbers until this succeeds.",
+    boot_panel_failed:
+      "Some settings cards could not be set up ({panels}). The rest of ZAM works; see the log for details.",
     lbl_domains: "Active Domains",
     btn_start_session: "Start Learning Session",
     lbl_translating: "Translating dynamically...",
@@ -5125,6 +5139,20 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_due_reviews: "Anstehende Wiederholungen",
     lbl_caught_up: "Du bist voll auf dem Laufenden!",
     dashboard_error: "Deine Daten konnten nicht geladen werden",
+    boot_title: "ZAM wird gestartet…",
+    boot_step_settings: "Einstellungen und Profil werden geladen",
+    boot_step_vault: "Gespeicherte Zugangsdaten werden entsperrt",
+    boot_step_cards: "Fällige Karten werden geprüft",
+    boot_slow_note:
+      "Das dauert länger als üblich ({seconds}s). ZAM arbeitet noch — der Schritt oben ist der, auf den gewartet wird.",
+    boot_failed_at: "Der Start ist bei „{step}“ stehen geblieben.",
+    boot_retry: "Erneut versuchen",
+    boot_fix_db: "Zugangsdaten korrigieren",
+    boot_continue: "Trotzdem fortfahren",
+    boot_continue_note:
+      "Bis das klappt, können die Zahlen im Dashboard unvollständig sein.",
+    boot_panel_failed:
+      "Einige Einstellungs-Karten konnten nicht eingerichtet werden ({panels}). Der Rest von ZAM funktioniert; Details stehen im Log.",
     lbl_domains: "Aktive Wissensbereiche",
     btn_start_session: "Lernsitzung starten",
     lbl_translating: "Übersetze dynamisch...",

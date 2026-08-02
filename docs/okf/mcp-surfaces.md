@@ -7,7 +7,7 @@ tags:
   - agents
   - surfaces
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-08-01T18:52:00Z
+timestamp: 2026-08-02T08:40:00Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -150,10 +150,34 @@ at once.
   saves under an exclusive `config.json.lock`. The load happens *inside* the
   lock: without it two processes interleave and one silently drops the other's
   change, which the learner sees as a setting reverting by itself.
-- The lock is best-effort by design. A lock held longer than 2 seconds, or left
-  behind by a process that died, is broken once and then taken; a location
-  where no lock can be created falls back to writing unlocked. Failing to lock
-  must never stop ZAM from saving its own settings.
+- Whether a lock may be taken away from its holder depends on whether that
+  holder is still **running**, not on how long its work has taken. A holder
+  that is alive finishes on any filesystem, so waiting costs a stall while
+  taking the lock from it costs a setting. The lock file records the holder's
+  pid for exactly this check.
+- A lock whose owner has exited is broken immediately. A live owner is waited
+  out for 10 seconds, and any lock is broken after 30 — a backstop for a
+  suspended process or a recycled pid, not the normal path. Elapsed-time
+  thresholds this generous are what keep a slow filesystem, such as a Windows
+  ARM runner with a scanner between every create and rename, from looking like
+  a crashed process.
+- Releasing removes a lock only when its token can still be read and matches
+  the process's own token. A missing or different token leaves the path
+  untouched. Otherwise a single broken lock cascades: the original holder
+  deletes its successor's lock on the way out, and a run of writes lands
+  unprotected.
+- An acquire that fails with anything other than "already exists" is retried
+  for half a second measured from the first refusal before giving up. Measuring from
+  the first refusal (rather than the start of the overall acquire) ensures a
+  writer queued behind a live holder still gets its retry budget when the lock
+  releases. On Windows a create transiently fails
+  while the previous holder's unlink is still in flight or a scanner holds the
+  file, and treating that as "no lock available" writes unsynchronized — the
+  exact lost update the lock exists to prevent.
+- The lock stays best-effort. A lock file no owner can be read from is broken
+  after half a second instead of waited on, and a location where no lock can be
+  created at all writes unlocked. Failing to lock must never stop ZAM from
+  saving its own settings.
 
 # OKF visualizer
 
