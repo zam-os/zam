@@ -7,7 +7,7 @@ tags:
   - agents
   - surfaces
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-08-02T05:07:48Z
+timestamp: 2026-08-02T08:40:00Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -161,9 +161,10 @@ at once.
   thresholds this generous are what keep a slow filesystem, such as a Windows
   ARM runner with a scanner between every create and rename, from looking like
   a crashed process.
-- Releasing removes only the lock this process itself took, matched by a token
-  in the lock file. Otherwise a single broken lock cascades: the original
-  holder deletes its successor's lock on the way out, and a run of writes lands
+- Releasing removes a lock only when its token can still be read and matches
+  the process's own token. A missing or different token leaves the path
+  untouched. Otherwise a single broken lock cascades: the original holder
+  deletes its successor's lock on the way out, and a run of writes lands
   unprotected.
 - An acquire that fails with anything other than "already exists" is retried
   for half a second measured from the first refusal before giving up. Measuring from

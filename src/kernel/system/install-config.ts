@@ -483,11 +483,20 @@ function acquireInstallConfigLock(path: string): (() => void) | undefined {
   const token = ulid();
   const release = () => {
     heldConfigLocks.delete(lockPath);
-    const owner = readLockOwner(lockPath);
+    let owner = readLockOwner(lockPath);
+    // A scanner can briefly make a just-written lock unreadable on Windows.
+    // Retry the ownership read, but never turn uncertainty into permission to
+    // unlink: deleting a successor's lock would reopen the lost-write race.
+    for (let attempt = 0; !owner?.token && attempt < 2; attempt += 1) {
+      sleepSync(CONFIG_LOCK_POLL_MS);
+      owner = readLockOwner(lockPath);
+    }
     // A waiter that gave up on us has since taken the lock for itself. Removing
     // it here would put that waiter and the next one in the file together, so
-    // one stolen lock would cascade into a run of lost writes.
-    if (owner?.token && owner.token !== token) return;
+    // one stolen lock would cascade into a run of lost writes. A missing token
+    // is also not proof of ownership (for example, a replacement lock from an
+    // older process), so leave it intact rather than guessing.
+    if (owner?.token !== token) return;
     for (let attempt = 0; attempt < 3; attempt += 1) {
       try {
         unlinkSync(lockPath);

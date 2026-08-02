@@ -156,5 +156,13 @@ describe("startup overlay wiring", () => {
     const state = failStep(createBootState(t0), "cards", "token rejected", true);
     expect(state.failure?.isDbError).toBe(true);
   });
+  it("dismisses the overlay before exposing the credential form", () => {
+    const fixHandler = main.slice(
+      main.indexOf("fixDbBtn.onclick"),
+      main.indexOf("const stepKey"),
+    );
+    expect(fixHandler).toContain(
+      'dismissBootOverlay();\n        switchView("settings-view");',
+    );
+  });
 });
-

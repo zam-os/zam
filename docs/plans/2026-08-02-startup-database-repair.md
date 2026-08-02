@@ -1,7 +1,7 @@
 # Handover — make a rejected database credential repairable during startup
 
-**Status:** not started. The two fixes below are independent; either can be
-picked up alone.
+**Status:** complete. The branch now starts `zam mcp` in degraded mode and
+routes Desktop credential failures to the token field in Settings.
 **Branch:** `claude/sharp-chaplygin-ae2159`, on top of `92cec02`.
 **Trigger:** a Turso auth token expires. The database URL is still correct and
 the learner's data is fine — only the token needs replacing.

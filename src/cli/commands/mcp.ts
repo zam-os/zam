@@ -1962,4 +1962,3 @@ export async function runMcpServer(): Promise<void> {
 
   await server.connect(transport);
 }
-

@@ -719,6 +719,22 @@ describe("cross-process config writes", () => {
     expect(readFileSync(lockPath, "utf8")).toContain("someone-else");
   });
 
+  it("does not remove a lock whose owner token cannot be verified", () => {
+    const path = tempConfigPath();
+    const lockPath = `${path}.lock`;
+
+    updateInstallConfig((config) => {
+      // A replacement lock without a token could be from a pre-token writer
+      // or a concurrent writer whose contents cannot be read yet. In neither
+      // case may this process assume it still owns the path and delete it.
+      writeFileSync(lockPath, `${process.pid}\n`, "utf8");
+      config.companion = { collapsed: { held: true } };
+    }, path);
+
+    expect(existsSync(lockPath)).toBe(true);
+    expect(readFileSync(lockPath, "utf8")).toBe(`${process.pid}\n`);
+  });
+
   it("does not wedge behind a lock no holder can be read from", () => {
     const path = tempConfigPath();
     // A directory where the lock file belongs: it can never be acquired, read,

@@ -1504,6 +1504,12 @@ describe("MCP stdio server tests", () => {
         lazyServer.connect(sTrans),
       ]);
 
+      const nonDbRes = await testClient.callTool({
+        name: "zam_okf_focused",
+        arguments: {},
+      });
+      expect(nonDbRes.isError).toBeUndefined();
+
       // DB-backed tool returns clean structured error result with isError: true
       const res = await testClient.callTool({
         name: "zam_status",
@@ -1517,4 +1523,3 @@ describe("MCP stdio server tests", () => {
     });
   });
 });
-

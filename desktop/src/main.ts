@@ -4888,6 +4888,10 @@ function renderBootOverlay(): void {
     if (bootState.failure?.isDbError) {
       fixDbBtn.classList.remove("hidden");
       fixDbBtn.onclick = () => {
+        // The credential form is behind this modal overlay. Dismiss it before
+        // moving focus or the learner lands on Settings but cannot edit the
+        // token field that repairs the failed start.
+        dismissBootOverlay();
         switchView("settings-view");
         const tokenInput = document.getElementById("server-db-token");
         if (tokenInput) {
