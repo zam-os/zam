@@ -5,7 +5,10 @@
 > holds under the plain load, and a **fourth defect** the macOS work could not
 > see was found and fixed. See "Windows ARM results" at the end.
 
-**Status:** verified on Windows ARM; one further defect found there and fixed.
+**Status:** **complete.** Verified on Windows ARM; one further defect found
+there and fixed (`eb1beca`). Nothing outstanding except the OKF note under
+"Still open". Work that *followed* from this session, and is still open, moved
+to [`2026-08-02-startup-database-repair.md`](2026-08-02-startup-database-repair.md).
 **Branch:** `claude/sharp-chaplygin-ae2159`, one commit on top of `v0.27.0`
 (`b1cf71a`, "fix: decide config-lock staleness by holder liveness, not elapsed
 time").
