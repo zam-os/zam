@@ -118,9 +118,34 @@ describe("publishTokenRevision", () => {
     expect(result.cardsRetested).toBe(1);
     expect(result.contentVersion).toBe(2);
 
+    // Compare against the *database's* clock, not Date.now(). due_at is written
+    // as datetime('now'), which truncates to the second — so it is never in the
+    // future by SQLite's own reckoning. Node's clock is a different source and
+    // can read several milliseconds behind SQLite's, which made a Date.now()
+    // comparison fail whenever the write landed just past a second boundary.
     const card = await getCard(db, token.id, "alice");
-    expect(new Date(card!.due_at).getTime()).toBeLessThanOrEqual(Date.now());
+    const dbNow = (await db
+      .prepare("SELECT datetime('now') AS now")
+      .get()) as { now: string };
+    expect(card!.due_at <= dbNow.now).toBe(true);
     expect(await isAwaitingRetest(db, cardId)).toBe(true);
+  });
+
+  it("leaves the retested card immediately selectable by the queue", async () => {
+    const token = await makeToken("due-now-token");
+    await learnedCard(token.id, "alice");
+
+    await publishTokenRevision(db, {
+      tokenId: token.id,
+      materiality: "material",
+      changes: { concept: "Munich — corrected again" },
+    });
+
+    // The property that actually matters, pinned in the terms the scheduler
+    // uses: "due now" means the queue picks the card up on the very next build,
+    // with no wait for a clock to catch up.
+    const queue = await buildReviewQueue(db, { userId: "alice" });
+    expect(queue.items.map((item) => item.tokenId)).toContain(token.id);
   });
 
   it("records revision provenance and surfaces contentChanged in review queue", async () => {
