@@ -89,7 +89,20 @@ async function scenario(options: { seedRemote?: boolean } = {}) {
   };
 }
 
-describe("upgradeToServerDatabase", () => {
+/**
+ * Slower than the default 5s allows on an emulated runner.
+ *
+ * Every test here provisions one or two complete databases — the schema plus
+ * the whole migration chain, through the IPC stub — and the snapshot tests
+ * then export and re-import a library on top. Locally the file runs in well
+ * under a second; on the emulated windows-arm64 runner it is roughly a
+ * hundred times slower, which put it over the limit intermittently rather
+ * than reliably. A generous ceiling here keeps the 5s default meaningful for
+ * everything that has no business taking that long.
+ */
+const PROVISIONING_TIMEOUT = 60_000;
+
+describe("upgradeToServerDatabase", { timeout: PROVISIONING_TIMEOUT }, () => {
   it("copies the whole library onto an empty server database", async () => {
     const { io } = await scenario();
     const stages: string[] = [];

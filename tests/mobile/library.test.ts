@@ -55,7 +55,20 @@ async function library(): Promise<Database> {
   return db;
 }
 
-describe("listLibrary", () => {
+/**
+ * Slower than the default 5s allows on an emulated runner.
+ *
+ * Every test here provisions one or two complete databases — the schema plus
+ * the whole migration chain, through the IPC stub — and the snapshot tests
+ * then export and re-import a library on top. Locally the file runs in well
+ * under a second; on the emulated windows-arm64 runner it is roughly a
+ * hundred times slower, which put it over the limit intermittently rather
+ * than reliably. A generous ceiling here keeps the 5s default meaningful for
+ * everything that has no business taking that long.
+ */
+const PROVISIONING_TIMEOUT = 60_000;
+
+describe("listLibrary", { timeout: PROVISIONING_TIMEOUT }, () => {
   it("lists the learner's cards with their subjects", async () => {
     const db = await library();
     const entries = await listLibrary(db, LOCAL_USER_ID);
@@ -71,7 +84,7 @@ describe("listLibrary", () => {
   });
 });
 
-describe("searchLibrary", () => {
+describe("searchLibrary", { timeout: PROVISIONING_TIMEOUT }, () => {
   it("falls back to full text when no embedding model is connected", async () => {
     const db = await library();
     const fetchImpl = vi.fn();
@@ -164,7 +177,7 @@ describe("searchLibrary", () => {
   });
 });
 
-describe("saveCardEdit", () => {
+describe("saveCardEdit", { timeout: PROVISIONING_TIMEOUT }, () => {
   it("marks an edited question as human-authored", async () => {
     // Otherwise the dynamic rewriter is free to replace it later — the whole
     // point of the provenance column.
@@ -191,7 +204,7 @@ describe("saveCardEdit", () => {
   });
 });
 
-describe("pause / resume / remove", () => {
+describe("pause / resume / remove", { timeout: PROVISIONING_TIMEOUT }, () => {
   it("takes a paused card out of the queue but keeps it in the library", async () => {
     const db = await library();
     const token = await getTokenBySlug(db, "zam/aktives-erinnern");
