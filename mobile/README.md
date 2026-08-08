@@ -1,29 +1,35 @@
-# ZAM Mobile (Android + iOS companion)
+# ZAM Mobile (iOS + Android)
 
-Tauri-2 mobile companion defined in
-[`docs/plans/2026-07-21-android-companion-app.md`](../docs/plans/2026-07-21-android-companion-app.md).
-The WebView runs the unmodified TypeScript learning kernel; Rust owns a
-libsql offline-writable synced database.
+Tauri-2 shell whose WebView runs the unmodified TypeScript learning kernel.
+Rust owns the database connection.
 
-Android is the mature target. **iPadOS was added 2026-07-26**
-([ADR](../docs/adr/2026-07-26-ipados-companion-target.md)) because the primary
-field-test learner's school runs a Tablet-Klasse on a school-issued iPad. The
-iOS target currently covers the Android Phase-0 set — pairing, sync, offline
-typed review, reminders, de/en — and deliberately omits voice mode, on-device
-evaluation, in-app update, and share-sheet capture.
+**On iPadOS this is a standalone app**, not a companion
+([ADR 2026-08-08](../docs/adr/2026-08-08-ios-standalone-app.md)): first run
+provisions a device-local SQLite library — no account, no network, no desktop —
+and a server database is an upgrade the learner chooses later. QR pairing
+survives as a *takeover* path ("I already use ZAM on a computer"), not as the
+entrance.
 
-Phase 1 adds the real first-run path:
+Android still starts from pairing; the standalone first run is wired for both
+platforms but has only been exercised on iOS.
 
-- ZAM Desktop creates a versioned `zam-pair` QR code from the configured
-  server database, selected learner, and enabled Recall-LLM endpoint.
-- Android scans the code with the official Tauri barcode-scanner plugin.
-- The complete payload is AES-GCM encrypted with a key held by Android
-  Keystore; plaintext credentials are never written to `localStorage`.
-- The first sync must succeed before a new pairing is stored. Later starts
-  open the local replica first and remain useful offline.
-- Queue construction is bound to the learner in the pairing payload; the
-  Phase-0 "most cards wins" heuristic is gone.
-- Manual server URL/token/learner entry remains available as a fallback.
+## What a learner can do on the device
+
+- **First run**: language, what they are learning for, done. Three starter
+  cards explain active recall, spaced repetition and honest rating, and are
+  learned like any other card.
+- **Review**: typed or spoken, full-screen, with FSRS scheduling.
+- **Library**: search (full text always, by meaning when an AI model is
+  connected), edit, pause, delete.
+- **AI**: one field, one button. An OpenRouter key covers answer feedback,
+  photo import *and* embeddings — the provider serves all three from the same
+  key.
+- **Multiple devices**: move the whole library onto a Turso database from
+  Settings. The local copy stays as a backup.
+- **Statistics**, daily reminders, de/en.
+
+Not on the device: the OKF reader, the Observer, agent connect, workspaces,
+the knowledge graph and the LehrplanPLUS wizard. Those stay desktop.
 
 ## Layout
 
@@ -31,9 +37,19 @@ Phase 1 adds the real first-run path:
   encoding (blobs as `{"$blob": base64}`, errors as strings) is mirrored
   by `src-tauri/src/db.rs` and `tests/helpers/tauri-invoke-stub.ts`; change
   all three together.
-- `src/main.ts` — first-run pairing, sync status, and learner-bound due queue.
-- `src-tauri/src/db.rs` — libsql connection and sync commands. A stable hash
-  of the server URL gives every server database a separate local replica.
+- `src/main.ts` — screen wiring. Still large; navigation, first run and the
+  design system are extracted (`src/ui/`, `src/setup/`), the functional blocks
+  are not (see ADR 2026-08-08b).
+- `src/ui/` — design system and navigation. `tokens.css` carries the palette,
+  the type scale and Dynamic Type; `nav.ts` owns the two navigation levels.
+- `src/setup/` — first run (`first-run.ts`, `wizard.ts`) and the move to a
+  server database (`upgrade.ts`).
+- `src/ai/` — cloud model connect and embeddings.
+- `src/library.ts` — the learner's own cards: search, edit, pause, delete.
+- `src-tauri/src/db.rs` — libsql connection. Opens a device-local file by
+  default, or an online-only remote when credentials are given; `db_describe`
+  tells the WebView which, because the two are not interchangeable to a
+  learner.
 - `src-tauri/src/secure_store.rs` and `SecurePairingPlugin.kt` — Tauri bridge
   to AES-GCM credential storage backed by Android Keystore.
 
