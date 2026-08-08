@@ -6,8 +6,8 @@
  * CLI layer (`src/cli/llm/embedder.ts`) generates vectors and calls in here.
  */
 
-import { createHash } from "node:crypto";
 import type { Database } from "../db/types.js";
+import { sha256Hex } from "../util/sha256.js";
 import type { Token } from "./token.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -60,7 +60,7 @@ export function embeddingContentForToken(
 }
 
 export function computeContentHash(text: string): string {
-  return createHash("sha256").update(text, "utf8").digest("hex");
+  return sha256Hex(text);
 }
 
 // ── BLOB encode/decode ───────────────────────────────────────────────────────
