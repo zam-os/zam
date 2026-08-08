@@ -92,4 +92,33 @@ describe("index.html / TypeScript element contract", () => {
       new Set(["learn", "library", "progress", "settings"]),
     );
   });
+
+  /**
+   * The tab bar is a flex row, so every *direct child* has to claim its share
+   * — including a wrapper that only exists to position the badge. One that
+   * does not sizes to its content and pushes the rest out of line, which is
+   * how "Lernen" ended up flush against the left edge in 0.29.1 while a tap
+   * meant for it selected the neighbouring tab.
+   */
+  it("gives every direct child of the tab bar an equal share", () => {
+    const html = read("mobile/index.html");
+    const css = read("mobile/src/ui/components.css");
+    const bar = html.slice(
+      html.indexOf('<nav class="tabbar"'),
+      html.indexOf("</nav>"),
+    );
+    // Direct children only: the markup indents them one level deeper than the
+    // <nav>, and anything inside a wrapper deeper still.
+    const children = [
+      ...bar.matchAll(/^ {8}<\w+ class="([a-z-]+)"/gm),
+    ].map((match) => match[1] as string);
+    expect(new Set(children)).toEqual(new Set(["tab-wrap", "tab"]));
+    for (const cls of new Set(children)) {
+      const rule = css.slice(css.indexOf(`\n.${cls} {`));
+      const body = rule.slice(0, rule.indexOf("}"));
+      expect(body, `.${cls} is a tab bar child without flex: 1`).toMatch(
+        /flex:\s*1\b/,
+      );
+    }
+  });
 });

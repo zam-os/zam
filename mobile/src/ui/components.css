@@ -136,9 +136,18 @@
   text-align: center;
 }
 
+/*
+ * The badge needs a positioning context, so the first tab is wrapped — and a
+ * wrapper is what the tab bar then lays out, not the `.tab` inside it. Without
+ * `flex: 1` here the wrapper sizes to its content while its three siblings
+ * share what is left: "Lernen" ends up flush against the left edge and the
+ * other three sit a third of the bar apart. Verified on the iPad (A16)
+ * simulator, where a tap at 21 % of the width selected the *second* tab.
+ */
 .tab-wrap {
   position: relative;
   display: flex;
+  flex: 1;
 }
 
 /* ── Inset grouped list ────────────────────────────────────────────────── */

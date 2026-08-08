@@ -167,6 +167,22 @@ export class EvaluationTruncatedError extends Error {
   }
 }
 
+/**
+ * Nothing to evaluate *with* — no on-device model, no reachable cloud model,
+ * and nothing that failed either.
+ *
+ * This is not a fault: it is a fresh install before anyone has pasted a key,
+ * and rating yourself is how ZAM works without AI. Kept apart from the errors
+ * above so the review screen can say "compare and rate" instead of showing a
+ * red failure on every card a learner without a key ever opens.
+ */
+export class NoEvaluationBackendError extends Error {
+  constructor() {
+    super("no evaluation backend available");
+    this.name = "NoEvaluationBackendError";
+  }
+}
+
 async function defaultFetchText(
   url: string,
   init: RequestInit,
@@ -309,7 +325,8 @@ export async function evaluateMobileAnswer(
     );
   }
 
-  throw new Error(errors.join("; ") || "no evaluation backend available");
+  if (errors.length === 0) throw new NoEvaluationBackendError();
+  throw new Error(errors.join("; "));
 }
 
 export function ratingLabel(

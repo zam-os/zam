@@ -4,6 +4,7 @@ import {
   evaluateMobileAnswer,
   evaluationSpeech,
   isCloudHttpEndpoint,
+  NoEvaluationBackendError,
   resolveEvaluationBackend,
   selectCloudHttpEndpoint,
 } from "../../mobile/src/evaluate.js";
@@ -487,5 +488,52 @@ describe("a reasoning model that thinks past its budget", () => {
       }),
     ).rejects.toThrow(/reasoning model may be a poor fit/);
     expect(fetchText).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("no backend at all", () => {
+  /**
+   * An iPad with no key pasted: no on-device model, no endpoint, and nothing
+   * that failed. The review screen tells these apart by type, so that a fresh
+   * install asks for a self-rating instead of showing a red failure on every
+   * card — see the catch in `runSmartEvaluation`.
+   */
+  it("is its own error type, not a generic failure", async () => {
+    const ports: EvaluationPorts = {
+      checkOnDeviceStatus: vi.fn(),
+      generateOnDevice: vi.fn(async (): Promise<never> => {
+        throw new Error("should not be called");
+      }),
+    };
+    const attempt = evaluateMobileAnswer({
+      card,
+      learnerAnswer: "F = m · a",
+      locale: "de",
+      endpoint: null,
+      onDeviceAvailable: false,
+      ports,
+    });
+    await expect(attempt).rejects.toBeInstanceOf(NoEvaluationBackendError);
+    expect(ports.generateOnDevice).not.toHaveBeenCalled();
+  });
+
+  it("still reports a configured backend that failed", async () => {
+    // The distinction only earns its keep if a real failure keeps saying so.
+    const attempt = evaluateMobileAnswer({
+      card,
+      learnerAnswer: "F = m · a",
+      locale: "de",
+      endpoint: cloudEndpoint(),
+      onDeviceAvailable: false,
+      ports: {
+        checkOnDeviceStatus: vi.fn(),
+        generateOnDevice: vi.fn(),
+        fetchText: async (): Promise<never> => {
+          throw new Error("HTTP 401");
+        },
+      },
+    });
+    await expect(attempt).rejects.not.toBeInstanceOf(NoEvaluationBackendError);
+    await expect(attempt).rejects.toThrow(/401/);
   });
 });

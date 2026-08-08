@@ -185,7 +185,7 @@ export async function connectCloudModel(
   // verified key on a provider whose catalogue we know is the probe here —
   // there is no per-capability endpoint to ask.
   //
-  // **Two rows, not one with an embedding override.** A registry row is an
+  // **One row per model, not one row with overrides.** A registry row is an
   // endpoint, and an endpoint is a URL *and a model*: `resolveCapability` on
   // the desktop reads `row.model` and knows nothing else. A single row
   // carrying the chat model plus an `embeddingModel` field worked on the
