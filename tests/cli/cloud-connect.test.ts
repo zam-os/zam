@@ -203,8 +203,8 @@ describe("connectCloudProvider", () => {
       { ref: OPENROUTER_PROVIDER.apiKeyRef, apiKey: "sk-or-good" },
     ]);
     const models = await loadModelRegistry(db);
-    // Chat + embedding: one OpenRouter key serves both (parity with mobile).
-    expect(models).toHaveLength(2);
+    // Chat + embedding + STT: one OpenRouter key serves all three (mobile parity).
+    expect(models).toHaveLength(3);
     // A hosted endpoint belongs to the learner, not to this machine: it goes
     // to the database so every client sees it (ADR 2026-07-23), and it takes
     // its key with it because an apiKeyRef means nothing to a phone.
@@ -213,14 +213,17 @@ describe("connectCloudProvider", () => {
       (m) => m.model === OPENROUTER_PROVIDER.defaultModel,
     );
     const embed = models.find((m) => m.capabilities?.embedding);
+    const stt = models.find((m) => m.capabilities?.stt);
     expect(chat?.apiKey).toBe("sk-or-good");
     expect(chat?.url).toBe(OPENROUTER_PROVIDER.baseUrl);
     expect(chat?.local).toBe(false);
     expect(chat?.capabilities.text).toBe(true);
     expect(chat?.capabilities.image).toBe(true);
     expect(chat?.detectedCapabilities.text).toBe(true);
-    expect(embed?.model).toBe("qwen/qwen3-embedding-4b");
+    expect(embed?.model).toBe("qwen/qwen3-embedding-8b");
     expect(embed?.apiKey).toBe("sk-or-good");
+    expect(stt?.model).toBe("openai/gpt-transcribe");
+    expect(stt?.apiKey).toBe("sk-or-good");
     expect(await getSetting(db, "llm.enabled")).toBe("true");
   });
 
@@ -240,7 +243,7 @@ describe("connectCloudProvider", () => {
     expect(again.created).toBe(false);
 
     const models = await loadModelRegistry(db);
-    expect(models).toHaveLength(2);
+    expect(models).toHaveLength(3);
     const chat = models.find(
       (m) => m.model === OPENROUTER_PROVIDER.defaultModel,
     );

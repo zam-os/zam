@@ -20,6 +20,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   CLOUD_EMBEDDING_MODEL,
   CLOUD_EMBEDDING_MODEL_ID,
+  CLOUD_STT_MODEL,
   connectCloudModel,
   connectedCloudLabel,
   disconnectCloudModel,
@@ -91,7 +92,7 @@ describe("verifyKey", () => {
 });
 
 describe("connectCloudModel", () => {
-  it("registers the descriptor's model for text, image and embeddings", async () => {
+  it("registers the descriptor's model for text, image, embeddings and STT", async () => {
     const db = await library();
     const result = await connectCloudModel(db, "sk-or-key", {
       verify: accept,
@@ -100,15 +101,24 @@ describe("connectCloudModel", () => {
 
     const rows = JSON.parse(
       (await getSetting(db, "ai.models.cloud")) as string,
-    );
+    ) as Array<{
+      url: string;
+      model: string;
+      label: string;
+      capabilities: Record<string, boolean>;
+      detectedCapabilities: Record<string, boolean>;
+    }>;
     // Built from the shared descriptor, not from literals copied into mobile.
-    expect(rows[0].url).toBe(OPENROUTER_PROVIDER.baseUrl);
-    expect(rows[0].model).toBe(OPENROUTER_PROVIDER.defaultModel);
-    expect(rows[0].label).toBe(OPENROUTER_PROVIDER.label);
-    expect(rows[0].capabilities).toMatchObject({ text: true, image: true });
+    expect(rows).toHaveLength(3);
+    const chat = rows.find((row) => row.model === OPENROUTER_PROVIDER.defaultModel);
+    expect(chat?.url).toBe(OPENROUTER_PROVIDER.baseUrl);
+    expect(chat?.label).toBe(OPENROUTER_PROVIDER.label);
+    expect(chat?.capabilities).toMatchObject({ text: true, image: true });
     // resolveMobileCloudChain needs both sides; a capability the learner
     // ticked but nothing confirmed is a wish, not an endpoint.
-    expect(rows[0].detectedCapabilities).toEqual(rows[0].capabilities);
+    expect(chat?.detectedCapabilities).toEqual(chat?.capabilities);
+    expect(rows.some((row) => row.model === CLOUD_EMBEDDING_MODEL)).toBe(true);
+    expect(rows.some((row) => row.model === CLOUD_STT_MODEL)).toBe(true);
   });
 
   it("refuses to store a key the provider rejected", async () => {
@@ -129,7 +139,7 @@ describe("connectCloudModel", () => {
     const rows = JSON.parse(
       (await getSetting(db, "ai.models.cloud")) as string,
     ) as Array<{ apiKey: string }>;
-    expect(rows).toHaveLength(2);
+    expect(rows).toHaveLength(3);
     expect(rows.every((row) => row.apiKey === "second")).toBe(true);
   });
 
@@ -146,16 +156,20 @@ describe("connectCloudModel", () => {
     expect(await connectedCloudLabel(db)).toBeNull();
   });
 
-  it("serves the embedding capability from the embedding model, not the chat one", async () => {
+  it("serves embedding and STT from dedicated models, not the chat one", async () => {
     const db = await library();
     await connectCloudModel(db, "key", { verify: accept });
 
     const text = await resolveMobileCloudChain(db, "text");
     const embedding = await resolveMobileCloudChain(db, "embedding");
+    const stt = await resolveMobileCloudChain(db, "stt");
     expect(text?.model).toBe(OPENROUTER_PROVIDER.defaultModel);
     expect(embedding?.model).toBe(CLOUD_EMBEDDING_MODEL);
+    expect(stt?.model).toBe(CLOUD_STT_MODEL);
     expect(embedding?.url).toBe(text?.url);
+    expect(stt?.url).toBe(text?.url);
     expect(embedding?.apiKey).toBe("key");
+    expect(stt?.apiKey).toBe("key");
   });
 
   it("accepts an explicit chat model and replaces the former ZAM default", async () => {
@@ -269,12 +283,67 @@ describe("connectCloudModel", () => {
     expect(embedding?.model).toBe(CLOUD_EMBEDDING_MODEL);
   });
 
-  it("writes two rows, so a desktop on the same database resolves the same models", async () => {
+  it("retires the 4B embedding row 0.29.1 wrote, leaving exactly one", async () => {
+    // 4B was a one-provider model on OpenRouter, which is the shape of outage
+    // that took 0.6B away mid-field-test. A leftover row would sit in the
+    // fallback chain and answer with 2560-dimension vectors the library can
+    // no longer compare.
+    const db = await library();
+    await setSetting(
+      db,
+      "ai.models.cloud",
+      JSON.stringify([
+        {
+          id: "01EMB4B",
+          label: "OpenRouter",
+          url: OPENROUTER_PROVIDER.baseUrl,
+          model: "qwen/qwen3-embedding-4b",
+          local: false,
+          apiFlavor: "chat-completions",
+          apiKey: "key",
+          order: 1,
+          capabilities: {
+            text: false,
+            image: false,
+            embedding: true,
+            video: false,
+            stt: false,
+            tts: false,
+          },
+          detectedCapabilities: {
+            text: false,
+            image: false,
+            embedding: true,
+            video: false,
+            stt: false,
+            tts: false,
+          },
+        },
+      ]),
+    );
+
+    await connectCloudModel(db, "key", { verify: accept });
+
+    const rows = JSON.parse(
+      (await getSetting(db, "ai.models.cloud")) as string,
+    ) as Array<{ model: string; capabilities: Record<string, boolean> }>;
+    const embedRows = rows.filter((row) => row.capabilities.embedding);
+    expect(embedRows).toHaveLength(1);
+    expect(embedRows[0]?.model).toBe(CLOUD_EMBEDDING_MODEL);
+    // And no fallback hiding behind it.
+    let chain = await resolveMobileCloudChain(db, "embedding");
+    while (chain) {
+      expect(chain.model).toBe(CLOUD_EMBEDDING_MODEL);
+      chain = chain.fallback ?? null;
+    }
+  });
+
+  it("writes three rows, so a desktop on the same database resolves the same models", async () => {
     // A registry row is an endpoint, and an endpoint carries *one* model.
     // Encoding the embedding model as an extra field on the chat row worked on
     // the device and left the desktop resolving the embedding role to a chat
     // model — 4xx on every request, and every vector the device wrote counted
-    // as stale because the ids disagreed.
+    // as stale because the ids disagreed. The same applies to STT.
     const db = await library();
     await connectCloudModel(db, "key", { verify: accept });
 
@@ -285,16 +354,20 @@ describe("connectCloudModel", () => {
       capabilities: Record<string, boolean>;
       detectedCapabilities: Record<string, boolean>;
     }>;
-    expect(rows).toHaveLength(2);
+    expect(rows).toHaveLength(3);
 
     const chat = rows.find(
       (row) => row.model === OPENROUTER_PROVIDER.defaultModel,
     );
     const embed = rows.find((row) => row.model === CLOUD_EMBEDDING_MODEL);
+    const stt = rows.find((row) => row.model === CLOUD_STT_MODEL);
     expect(chat?.capabilities.text).toBe(true);
     expect(chat?.capabilities.embedding).toBe(false);
+    expect(chat?.capabilities.stt).toBe(false);
     expect(embed?.capabilities.embedding).toBe(true);
     expect(embed?.capabilities.text).toBe(false);
+    expect(stt?.capabilities.stt).toBe(true);
+    expect(stt?.capabilities.text).toBe(false);
 
     // What the desktop reads: `row.model` and the capability flags, nothing
     // else. Resolving `embedding` the way it does must land on the embedding
@@ -307,12 +380,79 @@ describe("connectCloudModel", () => {
       CLOUD_EMBEDDING_MODEL_ID,
     );
   });
+
+  it("adds the STT row on migrate when an OpenRouter key already exists", async () => {
+    const db = await library();
+    await setSetting(
+      db,
+      "ai.models.cloud",
+      JSON.stringify([
+        {
+          id: "01CHAT",
+          label: "OpenRouter",
+          url: OPENROUTER_PROVIDER.baseUrl,
+          model: OPENROUTER_PROVIDER.defaultModel,
+          local: false,
+          apiFlavor: "chat-completions",
+          apiKey: "key",
+          order: 0,
+          capabilities: {
+            text: true,
+            image: true,
+            embedding: false,
+            video: false,
+            stt: false,
+            tts: false,
+          },
+          detectedCapabilities: {
+            text: true,
+            image: true,
+            embedding: false,
+            video: false,
+            stt: false,
+            tts: false,
+          },
+        },
+        {
+          id: "01EMB",
+          label: "OpenRouter",
+          url: OPENROUTER_PROVIDER.baseUrl,
+          model: CLOUD_EMBEDDING_MODEL,
+          local: false,
+          apiFlavor: "chat-completions",
+          apiKey: "key",
+          order: 1,
+          capabilities: {
+            text: false,
+            image: false,
+            embedding: true,
+            video: false,
+            stt: false,
+            tts: false,
+          },
+          detectedCapabilities: {
+            text: false,
+            image: false,
+            embedding: true,
+            video: false,
+            stt: false,
+            tts: false,
+          },
+        },
+      ]),
+    );
+
+    expect(await migrateStaleCloudDefaults(db)).toBe(true);
+    const stt = await resolveMobileCloudChain(db, "stt");
+    expect(stt?.model).toBe(CLOUD_STT_MODEL);
+    expect(stt?.apiKey).toBe("key");
+  });
 });
 
 describe("canonical embedding id", () => {
   it("agrees with the desktop for both the wire name and the stored id", () => {
     // The interesting one is the *wire* name. OpenRouter serves the model as
-    // `qwen/qwen3-embedding-4b`; a desktop configured against the same
+    // `qwen/qwen3-embedding-8b`; a desktop configured against the same
     // provider must tag its vectors with the same id the device uses, or a
     // shared library re-embeds itself — at cost — on the next search.
     expect(canonicalEmbeddingModelId(CLOUD_EMBEDDING_MODEL)).toBe(
@@ -321,7 +461,7 @@ describe("canonical embedding id", () => {
     expect(canonicalEmbeddingModelId(CLOUD_EMBEDDING_MODEL_ID)).toBe(
       CLOUD_EMBEDDING_MODEL_ID,
     );
-    expect(canonicalEmbeddingModelId("Qwen/Qwen3-Embedding-4B")).toBe(
+    expect(canonicalEmbeddingModelId("Qwen/Qwen3-Embedding-8B")).toBe(
       CLOUD_EMBEDDING_MODEL_ID,
     );
   });

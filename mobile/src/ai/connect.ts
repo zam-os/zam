@@ -2,9 +2,9 @@
  * Connecting a cloud model from the device (ADR 2026-07-24 §5).
  *
  * One field, one button. The learner pastes a key, ZAM verifies it against the
- * provider's own key endpoint and writes a registry row; text, image and
- * embeddings all come from that single row, because OpenRouter serves all
- * three from the same key.
+ * provider's own key endpoint and writes registry rows; text/image, embeddings
+ * and speech-to-text all come from that same key, because OpenRouter serves
+ * chat, embeddings and `/audio/transcriptions` under one account.
  *
  * **Why the key lands in the database.** `apiKeyRef` into a credentials file
  * is the rule for `~/.zam/config.json`, and it is meaningless on a device that
@@ -35,11 +35,18 @@ import { CLOUD_MODELS_SETTING } from "../model-registry.js";
 /**
  * Model requested for the `embedding` capability of the connected provider.
  *
- * OpenRouter's catalogue no longer lists `qwen/qwen3-embedding-0.6b` (HTTP 404
- * on `/embeddings`, verified 2026-08-08). The 4B sibling is the smallest Qwen3
- * embedding model still available and keeps the same multilingual family.
+ * **Chosen for how many places serve it, not for its size.** ZAM has now been
+ * broken once by a single-provider embedding model: OpenRouter dropped
+ * `qwen3-embedding-0.6b` from its catalogue on 2026-08-08 and every
+ * `/embeddings` call in the field test answered 404. The 4B that replaced it
+ * had the same exposure — one provider. The 8B is served by three (Nebius,
+ * DeepInfra, SiliconFlow) and costs half as much per token besides.
+ *
+ * Semantic search is the one capability that cannot fall back: an evaluation
+ * can be self-rated, a photo can be typed in, but a library embedded against
+ * a model that disappears has to be embedded again.
  */
-export const CLOUD_EMBEDDING_MODEL = "qwen/qwen3-embedding-4b";
+export const CLOUD_EMBEDDING_MODEL = "qwen/qwen3-embedding-8b";
 
 /**
  * Canonical id every stored vector is tagged with, mirroring
@@ -47,13 +54,32 @@ export const CLOUD_EMBEDDING_MODEL = "qwen/qwen3-embedding-4b";
  * on a shared database: a device that tags its vectors differently re-embeds
  * the whole library the first time anyone searches.
  */
-export const CLOUD_EMBEDDING_MODEL_ID = "qwen3-embedding-4b";
+export const CLOUD_EMBEDDING_MODEL_ID = "qwen3-embedding-8b";
 
-/** Former embedding wire names ZAM wrote; migrate in place when still present. */
+/**
+ * Former embedding wire names ZAM wrote; migrate in place when still present.
+ *
+ * Their vectors are not convertible — 0.6B is 1024 dimensions, 4B is 2560, 8B
+ * is 4096 — so this list exists to retire the rows, not to keep them working.
+ * The kernel re-embeds on its own: `token_embeddings` stores `dims`, and a
+ * changed model id or width is already a staleness reason.
+ */
 export const CLOUD_EMBEDDING_LEGACY_MODELS = [
   "qwen/qwen3-embedding-0.6b",
   "qwen/qwen3-embedding-0.6b:free",
+  "qwen/qwen3-embedding-4b",
+  "qwen/qwen3-embedding-4b:free",
 ] as const;
+
+/**
+ * Cloud speech-to-text model for voice mode (OpenRouter audio catalogue).
+ *
+ * Dedicated STT — not a chat model. Registered as its own registry row with
+ * only the `stt` flag so `resolveMobileCloudChain(db, "stt")` never picks the
+ * Luna/chat endpoint. Mobile already POSTs to `/audio/transcriptions`
+ * (`speech.ts`); this is the model id that path sends.
+ */
+export const CLOUD_STT_MODEL = "openai/gpt-transcribe";
 
 export interface CloudKeyCheck {
   valid: boolean;
@@ -175,7 +201,7 @@ export async function connectCloudModel(
   // verified key on a provider whose catalogue we know is the probe here —
   // there is no per-capability endpoint to ask.
   //
-  // **Two rows, not one with an embedding override.** A registry row is an
+  // **One row per model, not one row with overrides.** A registry row is an
   // endpoint, and an endpoint is a URL *and a model*: `resolveCapability` on
   // the desktop reads `row.model` and knows nothing else. A single row
   // carrying the chat model plus an `embeddingModel` field worked on the
@@ -199,6 +225,14 @@ export async function connectCloudModel(
     stt: false,
     tts: false,
   };
+  const sttFlags = {
+    text: false,
+    image: false,
+    embedding: false,
+    video: false,
+    stt: true,
+    tts: false,
+  };
 
   // Drop superseded ZAM defaults for this provider so they cannot sit ahead of
   // the working row and burn the evaluation budget (or 404 on embeddings).
@@ -218,10 +252,12 @@ export async function connectCloudModel(
     if (legacyChat.has(row.model) && !row.capabilities?.embedding) return false;
     if (legacyEmbed.has(row.model) && row.capabilities?.embedding) return false;
     // One chat model per provider from this connect path: switching replaces
-    // the previous chat row so dead fallbacks do not pile up.
+    // the previous chat row so dead fallbacks do not pile up. Leave embedding
+    // and stt rows alone — they are separate endpoints.
     if (
       row.capabilities?.text &&
       !row.capabilities?.embedding &&
+      !row.capabilities?.stt &&
       row.model !== chatModel
     ) {
       return false;
@@ -232,6 +268,7 @@ export async function connectCloudModel(
   const wanted: Array<{ model: string; flags: typeof chatFlags }> = [
     { model: chatModel, flags: chatFlags },
     { model: CLOUD_EMBEDDING_MODEL, flags: embeddingFlags },
+    { model: CLOUD_STT_MODEL, flags: sttFlags },
   ];
 
   let created = false;
@@ -341,6 +378,49 @@ export async function migrateStaleCloudDefaults(
       row.probedAt = now;
       changed = true;
     }
+  }
+
+  // OpenRouter key already present, but no STT row yet (connect before
+  // gpt-transcribe was wired): add it so voice mode can use cloud recognition
+  // without asking the learner to reconnect.
+  const openrouterKey = rows.find(
+    (row) => row.url === descriptor.baseUrl && row.apiKey,
+  )?.apiKey;
+  const hasStt = rows.some(
+    (row) =>
+      row.url === descriptor.baseUrl &&
+      row.capabilities?.stt &&
+      row.detectedCapabilities?.stt,
+  );
+  if (openrouterKey && !hasStt) {
+    rows.push({
+      id: ulid(),
+      label: descriptor.label,
+      url: descriptor.baseUrl,
+      model: CLOUD_STT_MODEL,
+      local: false,
+      apiFlavor: "chat-completions",
+      apiKey: openrouterKey,
+      order: rows.length,
+      capabilities: {
+        text: false,
+        image: false,
+        embedding: false,
+        video: false,
+        stt: true,
+        tts: false,
+      },
+      detectedCapabilities: {
+        text: false,
+        image: false,
+        embedding: false,
+        video: false,
+        stt: true,
+        tts: false,
+      },
+      probedAt: now,
+    });
+    changed = true;
   }
 
   if (changed) await writeRows(db, rows);

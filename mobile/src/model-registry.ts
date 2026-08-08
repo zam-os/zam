@@ -27,7 +27,8 @@ export const CLOUD_MODELS_SETTING = "ai.models.cloud";
  * `embedding` joined the list when the app became standalone: semantic search
  * needs vectors, and on a device there is no Ollama to produce them. It is
  * served by the same provider and the same key as text and image — only the
- * model differs, which is what `embeddingModel` on the row carries.
+ * model differs, and a model is what a row *is*, so connecting writes one row
+ * per capability rather than one row with overrides (see `ai/connect.ts`).
  */
 export type MobileModelCapability =
   | "text"

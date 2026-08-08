@@ -60,42 +60,36 @@ const EMBEDDINGGEMMA_ALIASES = new Set([
 ]);
 
 /**
- * Cloud embedding models the mobile app connects (ADR 2026-08-08, updated
- * 2026-08-08 when OpenRouter dropped `qwen3-embedding-0.6b` from the catalogue
- * — `/embeddings` returned HTTP 404). The 4B sibling is the smallest Qwen3
- * embedding model still listed. Wire names and bare ids must land on one tag,
- * or a shared library re-embeds itself — at cost — whenever the other device
- * searches.
+ * Cloud embedding model the mobile app connects (ADR 2026-08-08).
+ *
+ * The same folding job as EmbeddingGemma above, for a different reason: the
+ * phone reaches this model through OpenRouter (`qwen/qwen3-embedding-8b`) and
+ * a desktop reaches the same weights through Ollama (`qwen3-embedding:8b`).
+ * Both spellings have to land on one id, or a shared Turso library re-embeds
+ * itself — at cost — the first time the other device searches.
+ *
+ * Superseded sizes are deliberately *not* listed. Vectors from 0.6B (1024
+ * dimensions) and 4B (2560) cannot be compared with 8B's 4096 anyway, so
+ * folding their spellings onto anything would only hide that they must be
+ * recomputed. Unknown ids pass through lowercased, which is exactly the
+ * "stale, re-embed me" signal the kernel wants.
  */
-const QWEN3_EMBEDDING_4B_ALIASES = new Set([
-  "qwen3-embedding-4b",
-  "qwen3-embedding:4b",
-  "qwen/qwen3-embedding-4b",
-  "qwen/qwen3-embedding-4b:free",
+const QWEN3_EMBEDDING_ALIASES = new Set([
+  "qwen3-embedding-8b",
+  "qwen3-embedding:8b",
+  "qwen/qwen3-embedding-8b",
+  "qwen/qwen3-embedding-8b:free",
 ]);
 
-const CANONICAL_QWEN3_EMBEDDING_4B_MODEL_ID = "qwen3-embedding-4b";
-
-/** Retired 0.6B spelling — still recognised so old rows do not invent a third id. */
-const QWEN3_EMBEDDING_0_6B_ALIASES = new Set([
-  "qwen3-embedding-0.6b",
-  "qwen3-embedding:0.6b",
-  "qwen/qwen3-embedding-0.6b",
-  "qwen/qwen3-embedding-0.6b:free",
-]);
-
-const CANONICAL_QWEN3_EMBEDDING_0_6B_MODEL_ID = "qwen3-embedding-0.6b";
+const CANONICAL_QWEN3_EMBEDDING_MODEL_ID = "qwen3-embedding-8b";
 
 export function canonicalEmbeddingModelId(model: string): string {
   const lowered = model.trim().toLowerCase();
   if (EMBEDDINGGEMMA_ALIASES.has(lowered)) {
     return CANONICAL_EMBEDDING_MODEL_ID;
   }
-  if (QWEN3_EMBEDDING_4B_ALIASES.has(lowered)) {
-    return CANONICAL_QWEN3_EMBEDDING_4B_MODEL_ID;
-  }
-  if (QWEN3_EMBEDDING_0_6B_ALIASES.has(lowered)) {
-    return CANONICAL_QWEN3_EMBEDDING_0_6B_MODEL_ID;
+  if (QWEN3_EMBEDDING_ALIASES.has(lowered)) {
+    return CANONICAL_QWEN3_EMBEDDING_MODEL_ID;
   }
   return lowered;
 }

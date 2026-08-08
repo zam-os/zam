@@ -3385,6 +3385,11 @@ bridgeCommand
       hardware: profile.localAiHardware,
       acceleration: profile.localAiAcceleration,
       accelerated: supportsLocalGeneration(profile.localAiAcceleration),
+      // Foundry Local is a Windows product and `installFoundryLocal` refuses
+      // anywhere else. The settings UI needs to know that *before* it draws a
+      // section, or it offers a Mac an installer that cannot run.
+      os: profile.os,
+      snapdragonX: profile.hasSnapdragonX,
     });
   });
 

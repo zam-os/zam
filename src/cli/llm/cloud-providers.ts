@@ -60,11 +60,12 @@ export const OPENROUTER_RECOMMENDED_MODELS = [
     label: "GPT-5.6 Luna",
   },
   {
-    // Cheapest current Gemini Flash Lite that is still strong enough for
-    // evaluation + photo import — the 3.x Flash Lite tiers are several times
-    // more expensive per token and not competitive as a ZAM default.
-    id: "google/gemini-2.5-flash-lite",
-    label: "Gemini 2.5 Flash Lite",
+    // Multimodal (text+image), ~$0.10/$0.34 per M — same input ballpark as
+    // Luna, cheaper output than Gemini 2.5 Flash Lite, and typically stronger
+    // on general intelligence than that Flash Lite tier. 256K context is
+    // plenty for card evaluation and photo import.
+    id: "google/gemma-4-31b-it",
+    label: "Gemma 4 31B",
   },
   {
     id: "qwen/qwen3.7-flash",

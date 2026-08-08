@@ -8,14 +8,16 @@ tags:
   - setup
   - windows
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/local-ai-runtimes.md"
-timestamp: 2026-08-02T20:55:00Z
+timestamp: 2026-08-08T20:20:00Z
 ---
 
 ZAM can serve its `text`, `image`, and `embedding` roles from the learner's own
 machine — but only where that is actually usable. The setup lives in Settings as
-three cards, each showing its state and offering one action; the learner never
-types a model identifier. The bridge commands behind those cards exist for
-agents and the desktop shell, not as the normal way through setup.
+up to three cards, each showing its state and offering one action; the learner
+never types a model identifier. How many cards appear depends on the machine —
+the Foundry card is drawn only where Foundry Local can be installed at all. The
+bridge commands behind those cards exist for agents and the desktop shell, not
+as the normal way through setup.
 
 # The governing rule: accelerated, or not offered
 
@@ -101,8 +103,9 @@ the stripped form is what lands in the registry, and it matches what the running
 service advertises on `/v1/models`.
 
 Installation is guided on Windows only, through winget
-(`Microsoft.FoundryLocal`). Other platforms say so rather than pretending. A
-freshly installed `foundry` not yet on the process PATH produces an explicit
+(`Microsoft.FoundryLocal`); `installFoundryLocal` throws on every other
+platform, and the settings card is not drawn there at all — see *Setup surface*.
+A freshly installed `foundry` not yet on the process PATH produces an explicit
 "restart ZAM, then retry".
 
 # No implicit downloads — but inspection does start the daemon
@@ -204,7 +207,7 @@ name-based hint alone never grants a capability.
 
 | Command | Effect |
 | --- | --- |
-| `foundry-local-status` | inspect; adds `hardware`, `acceleration`, `accelerated` |
+| `foundry-local-status` | inspect; adds `hardware`, `acceleration`, `accelerated`, `os`, `snapdragonX` |
 | `foundry-local-setup --role text` | gated; install/start/download/load, then register |
 | `local-vision-status` | Ollama install, server, model, registry, acceleration, usability |
 | `local-vision-setup` | gated; pull `qwen3-vl:4b` if needed and register it |
@@ -221,6 +224,23 @@ first thing the learner has to fix rather than the last thing that failed.
 Neither vision nor embedding setup installs or starts Ollama; the card offers
 the download link first, then the one-click setup once the service runs.
 
+## The Foundry card exists only on Windows on ARM
+
+Being unable to install something and being told about it anyway are different
+failures. Foundry Local is a Microsoft product installed through winget, and
+`installFoundryLocal` refuses everywhere else — but Settings drew its card on
+every platform regardless, so a Mac was shown a heading, an explanation,
+*not available on this computer*, and a **Set up text model** button in the same
+breath. That panel exists to answer one question, *which model is ZAM using*,
+and three lines of Windows-only product noise sat in front of it.
+
+The card now ships hidden and is revealed only when `foundry-local-status`
+reports `os: windows` together with `snapdragonX: true` — which is why the
+command carries those two fields, both read straight off the system profile. A
+status call that fails leaves the card hidden rather than guessing at the
+machine. The two Ollama cards are unaffected: they are cross-platform and stay
+where they were.
+
 Settings copy ships in English and German; further locale packs fall back to
 English until native review.
 
@@ -230,5 +250,5 @@ English until native review.
 - [ADR 2026-07-12 — Unified Capability Model Registry](../adr/2026-07-12-unified-capability-model-registry.md)
 - [ADR 2026-05-30b — Hardware Setup and Agent Distribution](../adr/2026-05-30b-hardware-setup-and-agent-distribution.md)
 - [bridge-protocol.md](bridge-protocol.md)
-- Tests: `tests/cli/foundry-local.test.ts`, `tests/cli/local-vision.test.ts`, `tests/cli/llm-vision.test.ts`, `tests/cli/embedder.test.ts`, `tests/kernel/system.test.ts`, `tests/desktop/i18n-completeness.test.ts`
+- Tests: `tests/cli/foundry-local.test.ts`, `tests/cli/local-vision.test.ts`, `tests/cli/llm-vision.test.ts`, `tests/cli/embedder.test.ts`, `tests/kernel/system.test.ts`, `tests/desktop/i18n-completeness.test.ts`, `tests/desktop/foundry-local-visibility.test.ts`
 - Code: `src/cli/llm/foundry-local.ts`, `src/cli/llm/foundry-local-setup.ts`, `src/cli/llm/local-vision.ts`, `src/cli/llm/local-embedding.ts`, `src/cli/llm/vision.ts`, `src/cli/llm/client.ts`, `src/cli/llm/capability-probe.ts`, `src/cli/llm/model-registry.ts`, `src/kernel/system/profiler.ts`, `src/cli/commands/bridge.ts`, `desktop/src/main.ts`

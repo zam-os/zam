@@ -1,5 +1,8 @@
 # Dependencies
-node_modules/
+# No trailing slash: that form matches directories only, and a `node_modules`
+# *symlink* (what a linked worktree ends up with) slipped past it straight
+# into a release commit.
+node_modules
 __pycache__/
 *.py[cod]
 .venv/

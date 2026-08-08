@@ -39,6 +39,7 @@ import {
   evaluateMobileAnswer,
   evaluationSpeech,
   type MobileEvaluationResult,
+  NoEvaluationBackendError,
   type OnDeviceLlmGenerateResult,
   type OnDeviceLlmStatus,
 } from "./evaluate.js";
@@ -1199,6 +1200,13 @@ async function runSmartEvaluation(): Promise<MobileEvaluationResult | null> {
   } catch (error) {
     if (isStaleEvaluation(item.cardId)) return null;
     clearEvaluationUi();
+    if (error instanceof NoEvaluationBackendError) {
+      // No key connected — the ordinary state of a fresh install. Ask for a
+      // self-rating the same way an unanswered card does, rather than showing
+      // a red failure the learner cannot act on and did not cause.
+      setReviewStatus(t("compare_and_rate"));
+      return null;
+    }
     setReviewStatus(
       tf("evaluation_failed_self_rate", { error: errorMessage(error) }),
       true,
