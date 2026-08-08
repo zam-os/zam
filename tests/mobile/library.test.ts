@@ -98,6 +98,44 @@ describe("searchLibrary", () => {
     expect(hits.map((hit) => hit.title)).toEqual(["Verteiltes Wiederholen"]);
   });
 
+  it("never returns fewer hits than plain text matching would", async () => {
+    // The hybrid ranking is capped globally and only then narrowed to this
+    // learner. On a shared library full of unassigned tokens it can fill its
+    // whole budget with cards this learner does not have — and return nothing
+    // where the lexical list would have found theirs.
+    const db = await library();
+    await connectCloudModel(db, "key", {
+      verify: async () => ({ valid: true }) as const,
+    });
+    for (let i = 0; i < 40; i++) {
+      await db
+        .prepare(
+          `INSERT INTO tokens (id, slug, title, concept, domain, bloom_level, created_at, updated_at)
+           VALUES (?, ?, 'Fremd', 'Abstand im fremden Fach', 'fremd', 1,
+                   datetime('now'), datetime('now'))`,
+        )
+        .run(`other-${i}`, `fremd/abstand-${i}`);
+    }
+
+    const fetchImpl = vi.fn(
+      async () =>
+        new Response(JSON.stringify({ data: [{ embedding: [1, 0, 0] }] }), {
+          status: 200,
+        }),
+    );
+    const hits = await searchLibrary(db, LOCAL_USER_ID, "Abstand", {
+      fetchImpl: fetchImpl as never,
+    });
+
+    const lexical = await listLibrary(db, LOCAL_USER_ID, { query: "Abstand" });
+    expect(lexical.length).toBeGreaterThan(0);
+    for (const card of lexical) {
+      expect(hits.map((hit) => hit.tokenId)).toContain(card.tokenId);
+    }
+    // Still only this learner's cards.
+    expect(hits.every((hit) => hit.domain === "Erste Schritte")).toBe(true);
+  });
+
   it("returns only cards this learner actually has", async () => {
     const db = await library();
     await connectCloudModel(db, "key", {

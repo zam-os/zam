@@ -21,6 +21,7 @@ import { applySchemaAndMigrations } from "../../../src/kernel/db/provision.js";
 import {
   exportSnapshot,
   importSnapshot,
+  SNAPSHOT_TABLES,
 } from "../../../src/kernel/db/snapshot.js";
 import type { Database } from "../../../src/kernel/db/types.js";
 import { readLocalSetup } from "./first-run.js";
@@ -105,10 +106,21 @@ export async function upgradeToServerDatabase(
     // an older ZAM may predate a migration — both are handled here.
     await applySchemaAndMigrations(remote);
 
-    const existing = (await remote
-      .prepare("SELECT COUNT(*) AS n FROM cards")
-      .get()) as { n: number };
-    if (Number(existing.n) > 0 && !options.replaceRemote) {
+    // Must ask the same question `importSnapshot` asks, which is "does any
+    // snapshot table hold a row" — not "are there cards". A server database
+    // that a desktop merely connected to already carries `user_config` rows
+    // (locale, llm.enabled, the model registry) and possibly shared tokens,
+    // with no card in sight. Gating on cards let that pass, and the importer
+    // then refused with a raw English message and no way forward, because the
+    // caller only offers "replace" for `remote_not_empty`.
+    let existing = 0;
+    for (const table of SNAPSHOT_TABLES) {
+      const row = (await remote
+        .prepare(`SELECT COUNT(*) AS n FROM ${table}`)
+        .get()) as { n: number };
+      existing += Number(row.n);
+    }
+    if (existing > 0 && !options.replaceRemote) {
       return {
         ok: false,
         error: REMOTE_NOT_EMPTY,

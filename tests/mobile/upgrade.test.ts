@@ -164,6 +164,48 @@ describe("upgradeToServerDatabase", () => {
     expect(rows).toHaveLength(3);
   });
 
+  it("refuses a server database that holds rows but no cards", async () => {
+    // The shape a desktop leaves behind after merely connecting: settings
+    // rows, no cards. Gating on `cards` let this through, and importSnapshot
+    // then refused with a raw English message while the caller kept the
+    // "replace" button hidden — an unusable dead end.
+    const { io, remotePath, reopenLocal } = await scenario();
+    const seeded = open(remotePath);
+    await applySchemaAndMigrations(seeded);
+    await seeded
+      .prepare(`INSERT INTO user_config (key, value) VALUES ('system.locale', 'de')`)
+      .run();
+
+    const result = await upgradeToServerDatabase(io, {
+      url: "libsql://example.turso.io",
+      authToken: "token",
+    });
+
+    expect(result.ok).toBe(false);
+    expect(result.error).toBe(REMOTE_NOT_EMPTY);
+    expect(reopenLocal).toHaveBeenCalled();
+    const queue = await buildReviewQueue(result.db, { userId: LOCAL_USER_ID });
+    expect(queue.items).toHaveLength(3);
+  });
+
+  it("replaces a database holding only settings when asked", async () => {
+    const { io, remotePath } = await scenario();
+    const seeded = open(remotePath);
+    await applySchemaAndMigrations(seeded);
+    await seeded
+      .prepare(`INSERT INTO user_config (key, value) VALUES ('system.locale', 'en')`)
+      .run();
+
+    const result = await upgradeToServerDatabase(io, {
+      url: "libsql://example.turso.io",
+      authToken: "token",
+      replaceRemote: true,
+    });
+    expect(result.ok).toBe(true);
+    const queue = await buildReviewQueue(result.db, { userId: LOCAL_USER_ID });
+    expect(queue.items).toHaveLength(3);
+  });
+
   it("keeps the learner on their device when the server cannot be reached", async () => {
     const { io, reopenLocal } = await scenario();
     io.openRemote = vi.fn(async () => {

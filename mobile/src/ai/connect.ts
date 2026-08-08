@@ -66,8 +66,6 @@ interface CloudRow {
   order: number;
   capabilities: Record<string, boolean>;
   detectedCapabilities: Record<string, boolean>;
-  /** Model used for the embedding capability, when it differs from `model`. */
-  embeddingModel?: string;
   probedAt?: string;
 }
 
@@ -142,49 +140,72 @@ export async function connectCloudModel(
   if (!check.valid) return { ok: false, error: check.reason ?? "rejected" };
 
   const rows = await readRows(db);
-  const existing = rows.find(
-    (row) => row.url === descriptor.baseUrl && row.model === descriptor.defaultModel,
-  );
 
   // `capabilities` is what the learner asked for and `detectedCapabilities`
   // what a probe confirmed; `resolveMobileCloudChain` requires both. A
   // verified key on a provider whose catalogue we know is the probe here —
   // there is no per-capability endpoint to ask.
-  const flags = {
+  //
+  // **Two rows, not one with an embedding override.** A registry row is an
+  // endpoint, and an endpoint is a URL *and a model*: `resolveCapability` on
+  // the desktop reads `row.model` and knows nothing else. A single row
+  // carrying the chat model plus an `embeddingModel` field worked on the
+  // device and left a desktop sharing the same server database resolving the
+  // `embedding` role to a chat model — 4xx on every request, and every vector
+  // the iPad wrote counted as stale because the model ids disagreed.
+  const now = new Date().toISOString();
+  const chatFlags = {
     text: true,
     image: descriptor.capabilities.includes("image"),
+    embedding: false,
+    video: false,
+    stt: false,
+    tts: false,
+  };
+  const embeddingFlags = {
+    text: false,
+    image: false,
     embedding: true,
     video: false,
     stt: false,
     tts: false,
   };
 
-  if (existing) {
-    existing.apiKey = key;
-    existing.capabilities = { ...flags };
-    existing.detectedCapabilities = { ...flags };
-    existing.embeddingModel = CLOUD_EMBEDDING_MODEL;
-    existing.probedAt = new Date().toISOString();
-    await writeRows(db, rows);
-    return { ok: true, created: false };
+  const wanted: Array<{ model: string; flags: typeof chatFlags }> = [
+    { model: descriptor.defaultModel, flags: chatFlags },
+    { model: CLOUD_EMBEDDING_MODEL, flags: embeddingFlags },
+  ];
+
+  let created = false;
+  for (const [index, entry] of wanted.entries()) {
+    const existing = rows.find(
+      (row) => row.url === descriptor.baseUrl && row.model === entry.model,
+    );
+    if (existing) {
+      existing.apiKey = key;
+      existing.capabilities = { ...entry.flags };
+      existing.detectedCapabilities = { ...entry.flags };
+      existing.probedAt = now;
+      continue;
+    }
+    created = true;
+    rows.push({
+      id: ulid(),
+      label: descriptor.label,
+      url: descriptor.baseUrl,
+      model: entry.model,
+      local: false,
+      apiFlavor: "chat-completions",
+      apiKey: key,
+      order: rows.length + index,
+      capabilities: { ...entry.flags },
+      detectedCapabilities: { ...entry.flags },
+      probedAt: now,
+    });
   }
 
-  rows.push({
-    id: ulid(),
-    label: descriptor.label,
-    url: descriptor.baseUrl,
-    model: descriptor.defaultModel,
-    local: false,
-    apiFlavor: "chat-completions",
-    apiKey: key,
-    order: rows.length,
-    capabilities: { ...flags },
-    detectedCapabilities: { ...flags },
-    embeddingModel: CLOUD_EMBEDDING_MODEL,
-    probedAt: new Date().toISOString(),
-  });
   await writeRows(db, rows);
-  return { ok: true, created: true };
+  return { ok: true, created };
 }
 
 /** Whether a usable cloud model is registered, for the settings screen. */

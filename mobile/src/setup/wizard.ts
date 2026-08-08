@@ -16,8 +16,18 @@
  * one is data.
  */
 
-import { applyStaticTranslations, type Locale, setLocale, t, tf } from "../i18n.js";
-import { DEFAULT_PERSONA_ID, isPersonaId, type PersonaId } from "../../../src/kernel/models/persona.js";
+import {
+  applyStaticTranslations,
+  type Locale,
+  setLocale,
+  t,
+  tf,
+} from "../i18n.js";
+import {
+  DEFAULT_PERSONA_ID,
+  isPersonaId,
+  type PersonaId,
+} from "../../../src/kernel/models/persona.js";
 
 function byId<T extends HTMLElement>(id: string): T {
   const node = document.getElementById(id);
@@ -68,8 +78,9 @@ export function initSetupWizard(options: SetupWizardOptions): SetupWizard {
 
   // Pre-selected from the system language, so a German learner never has to
   // touch this page at all.
-  let locale: Locale =
-    navigator.language.toLowerCase().startsWith("en") ? "en" : "de";
+  let locale: Locale = navigator.language.toLowerCase().startsWith("en")
+    ? "en"
+    : "de";
   let persona: PersonaId = DEFAULT_PERSONA_ID;
   let index = 0;
 
@@ -128,19 +139,28 @@ export function initSetupWizard(options: SetupWizardOptions): SetupWizard {
     paintPersona();
   });
 
-  byId<HTMLButtonElement>("setup-next-welcome").addEventListener("click", () => {
-    index = 1;
-    paint();
-  });
+  byId<HTMLButtonElement>("setup-next-welcome").addEventListener(
+    "click",
+    () => {
+      index = 1;
+      paint();
+    },
+  );
 
-  byId<HTMLButtonElement>("setup-next-persona").addEventListener("click", () => {
-    index = 2;
-    paint();
-  });
+  byId<HTMLButtonElement>("setup-next-persona").addEventListener(
+    "click",
+    () => {
+      index = 2;
+      paint();
+    },
+  );
 
-  byId<HTMLButtonElement>("setup-open-pairing").addEventListener("click", () => {
-    options.openPairing();
-  });
+  byId<HTMLButtonElement>("setup-open-pairing").addEventListener(
+    "click",
+    () => {
+      options.openPairing();
+    },
+  );
 
   finishButton.addEventListener("click", async () => {
     finishButton.disabled = true;

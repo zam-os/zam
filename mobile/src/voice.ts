@@ -184,7 +184,11 @@ export function createMobileTieredVoicePort(
       if (!useCloud("stt")) return native.listen(locale);
       const capture = await native.capture(locale);
       try {
-        return await cloud.transcribe(capture.audioBase64, capture.mime, locale);
+        return await cloud.transcribe(
+          capture.audioBase64,
+          capture.mime,
+          locale,
+        );
       } catch (error) {
         degrade("stt", error);
         // The recording went with the failed call, so the learner is asked once

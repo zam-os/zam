@@ -67,10 +67,7 @@ import {
   searchLibrary,
 } from "./library.js";
 import { createTauriDatabase } from "./provider.js";
-import {
-  REMOTE_NOT_EMPTY,
-  upgradeToServerDatabase,
-} from "./setup/upgrade.js";
+import { REMOTE_NOT_EMPTY, upgradeToServerDatabase } from "./setup/upgrade.js";
 import {
   completeFirstRun,
   type LocalSetup,
@@ -541,10 +538,8 @@ async function refreshLearnerLocaleFromDb(): Promise<void> {
  * (ADR 2026-07-23). Refreshed whenever the database is, so a model changed on
  * the desktop reaches the phone without re-pairing.
  */
-let cloudEndpoints: Record<
-  "text" | "stt" | "tts",
-  ZamPairLlmEndpoint | null
-> = { text: null, stt: null, tts: null };
+let cloudEndpoints: Record<"text" | "stt" | "tts", ZamPairLlmEndpoint | null> =
+  { text: null, stt: null, tts: null };
 
 async function refreshCloudEndpointsFromDb(): Promise<void> {
   try {
@@ -1188,7 +1183,10 @@ function startVoiceMode(): void {
     await refreshVoiceCapabilities(locale);
     const plan = currentVoicePlan();
     if (!isVoiceModeUsable(plan)) {
-      setReviewStatus(t(voiceUnavailableKey(plan) ?? "voice_unavailable"), true);
+      setReviewStatus(
+        t(voiceUnavailableKey(plan) ?? "voice_unavailable"),
+        true,
+      );
       updateVoiceButton();
       return;
     }
@@ -1450,6 +1448,7 @@ async function connect(
 async function applyPairing(input: string | unknown): Promise<void> {
   const payload = parseZamPairPayload(input);
   const previousPairing = currentPairing;
+  const previousUserId = currentUserId;
   setPairingStatus(t("pairing_checking"));
   scanButton.disabled = true;
   try {
@@ -1461,8 +1460,22 @@ async function applyPairing(input: string | unknown): Promise<void> {
       } catch {
         // Keep the re-pair screen usable even if the previous replica is unavailable.
       }
+    } else if (previousUserId) {
+      // No previous pairing, but a learner *was* loaded — so this session came
+      // from a device-local library, and `connect` has already closed it in
+      // order to open the remote. A bad token or an unreachable host then
+      // leaves no database open at all: every screen renders "database is not
+      // open" and only a force-quit recovers. Put the local library back.
+      try {
+        await invoke("db_close");
+        await invoke("db_open", {});
+        const setup = await prepareLocalLibrary(db);
+        if (setup) await openLocalLibrary(setup);
+      } catch {
+        // Nothing further to try; the message below is still shown.
+      }
     }
-    showPairing(Boolean(previousPairing));
+    showPairing(Boolean(previousPairing) || Boolean(previousUserId));
     setPairingStatus(
       tf("pairing_failed", { error: errorMessage(error) }),
       true,
@@ -1550,7 +1563,6 @@ openImportButton.addEventListener("click", () => {
   importInput.focus();
 });
 
-
 for (const period of ["day", "week", "month"] as const) {
   document
     .getElementById(`stats-period-${period}`)
@@ -1619,11 +1631,7 @@ importDraftForm.addEventListener("submit", async (event) => {
   skipImportDraftButton.disabled = true;
   try {
     const draft = draftFromForm();
-    const result = await confirmMobileImport(
-      db,
-      currentUserId,
-      draft,
-    );
+    const result = await confirmMobileImport(db, currentUserId, draft);
 
     if (multiDraftController) {
       const hasMore = multiDraftController.saveAndNext();
@@ -1898,10 +1906,7 @@ function renderLibrary(entries: LibraryEntry[]): void {
     chevron.setAttribute("class", "row-chevron");
     chevron.setAttribute("viewBox", "0 0 8 14");
     chevron.setAttribute("aria-hidden", "true");
-    const path = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "path",
-    );
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", "M1 1l6 6-6 6");
     chevron.append(path);
 
@@ -2048,9 +2053,7 @@ async function refreshAiSection(): Promise<void> {
   } catch {
     label = null;
   }
-  aiState.textContent = label
-    ? tf("ai_connected", { label })
-    : t("ai_none");
+  aiState.textContent = label ? tf("ai_connected", { label }) : t("ai_none");
   aiDisconnectButton.hidden = !label;
   aiKeyInput.value = "";
   aiKeyInput.placeholder = label ? "••••••••" : "sk-or-…";
@@ -2173,7 +2176,11 @@ async function runUpgrade(replaceRemote: boolean): Promise<void> {
         url,
         authToken: token,
         replaceRemote,
-        onProgress: ({ stage }) => setUpgradeStatus(t(`upgrade_${stage}`)),
+        // `upgrade_done` is a `tf` template with an {n}; the count only exists
+        // after the call returns, so the final message is set below.
+        onProgress: ({ stage }) => {
+          if (stage !== "done") setUpgradeStatus(t(`upgrade_${stage}`));
+        },
       },
     );
 
@@ -2193,25 +2200,49 @@ async function runUpgrade(replaceRemote: boolean): Promise<void> {
     // Store the pairing only now: it is what makes the switch survive a
     // restart, and storing it before the transfer worked would strand the
     // learner on an empty server database.
-    await invoke("pairing_save", {
-      payload: serializeZamPairPayload({
-        type: ZAM_PAIR_TYPE,
-        version: ZAM_PAIR_VERSION,
-        createdAt: new Date().toISOString(),
-        database: { url, token },
-        learner: { userId: result.userId ?? currentUserId ?? "me" },
-        settings: { locale: learnerLocale ?? navigator.language },
-      }),
-    });
+    const userId = result.userId ?? currentUserId ?? "me";
+    const payload: ZamPairPayloadV1 = {
+      type: ZAM_PAIR_TYPE,
+      version: ZAM_PAIR_VERSION,
+      createdAt: new Date().toISOString(),
+      database: { url, token },
+      learner: { userId },
+      settings: { locale: learnerLocale ?? navigator.language },
+    };
 
+    let pairingStored = true;
+    try {
+      await invoke("pairing_save", {
+        payload: serializeZamPairPayload(payload),
+      });
+    } catch {
+      // The transfer already succeeded and this session is on the server
+      // database, so reporting "the move failed" would be the opposite of the
+      // truth. What is missing is only the *persistence* of the switch — and
+      // the keychain is known to refuse on unsigned builds (OSStatus -34018),
+      // so say precisely that instead.
+      pairingStored = false;
+    }
+
+    // Without these the session still believes it is device-local: the
+    // "already on a server database" guard stays dead, and a second run would
+    // snapshot the remote into itself.
+    currentPairing = payload;
+    currentUserId = userId;
     upgradeReplaceButton.hidden = true;
     upgradeUrl.value = "";
     upgradeToken.value = "";
-    setUpgradeStatus(tf("upgrade_done", { n: result.transferred ?? 0 }));
+    setUpgradeStatus(
+      pairingStored
+        ? tf("upgrade_done", { n: result.transferred ?? 0 })
+        : tf("upgrade_done_unsaved", { n: result.transferred ?? 0 }),
+      !pairingStored,
+    );
     resyncButton.hidden = false;
     learner.hidden = false;
+    learner.textContent = userId;
     connection.textContent = t("synced");
-    if (currentUserId) await refresh(currentUserId);
+    await refresh(userId);
     void refreshStorageRow();
   } catch (error) {
     setUpgradeStatus(

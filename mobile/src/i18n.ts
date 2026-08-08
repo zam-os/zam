@@ -29,7 +29,8 @@ const DE: Messages = {
   library_resume: "Karte fortsetzen",
   library_paused_note: "Pausiert — wird nicht abgefragt",
   library_delete: "Karte löschen",
-  library_delete_confirm: "Wirklich löschen? Der Lernverlauf dieser Karte geht mit.",
+  library_delete_confirm:
+    "Wirklich löschen? Der Lernverlauf dieser Karte geht mit.",
   library_deleted: "Karte gelöscht.",
   library_failed: "Hat nicht geklappt: {error}",
   // Multi-device upgrade (ADR 2026-08-08)
@@ -42,10 +43,14 @@ const DE: Messages = {
   upgrade_connecting: "Verbinde mit der Server-Datenbank…",
   upgrade_provisioning: "Datenbank wird eingerichtet…",
   upgrade_transferring: "Karten werden übertragen…",
-  upgrade_done: "{n} Einträge übertragen. Du lernst jetzt auf der Server-Datenbank.",
+  upgrade_done:
+    "{n} Einträge übertragen. Du lernst jetzt auf der Server-Datenbank.",
+  upgrade_done_unsaved:
+    "{n} Einträge übertragen — du lernst jetzt auf der Server-Datenbank. Die Zugangsdaten ließen sich aber nicht sichern, deshalb startet die App beim nächsten Mal wieder auf diesem Gerät.",
   upgrade_not_empty:
     "In dieser Datenbank liegen schon Karten. Entweder eine leere nehmen — oder die vorhandenen ersetzen.",
-  upgrade_failed: "Umzug fehlgeschlagen: {error}. Du lernst weiter auf diesem Gerät.",
+  upgrade_failed:
+    "Umzug fehlgeschlagen: {error}. Du lernst weiter auf diesem Gerät.",
   upgrade_already: "Du lernst bereits auf einer Server-Datenbank.",
   // AI connect (ADR 2026-07-24 §5)
   ai_heading: "KI",
@@ -376,10 +381,14 @@ const EN: Messages = {
   upgrade_connecting: "Connecting to the server database…",
   upgrade_provisioning: "Setting the database up…",
   upgrade_transferring: "Transferring cards…",
-  upgrade_done: "{n} rows transferred. You are now learning on the server database.",
+  upgrade_done:
+    "{n} rows transferred. You are now learning on the server database.",
+  upgrade_done_unsaved:
+    "{n} rows transferred — you are now on the server database. The credentials could not be stored, so the app will start on this device again next time.",
   upgrade_not_empty:
     "That database already holds cards. Use an empty one — or replace what is there.",
-  upgrade_failed: "The move failed: {error}. You are still learning on this device.",
+  upgrade_failed:
+    "The move failed: {error}. You are still learning on this device.",
   upgrade_already: "You are already learning on a server database.",
   ai_heading: "AI",
   ai_desc:

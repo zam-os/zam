@@ -74,6 +74,13 @@ export {
 } from "./db/connection.js";
 export type { PostgresDatabaseOptions } from "./db/postgres.js";
 export { openPostgresDatabase } from "./db/postgres.js";
+// Provisioning is deliberately also importable directly from
+// `db/provision.js`: the mobile WebView cannot load this barrel, which reaches
+// Node through the driver layer. Both entrances lead to the same code.
+export {
+  applySchemaAndMigrations,
+  runMigrations,
+} from "./db/provision.js";
 export type { RemoteDatabaseOptions } from "./db/remote/provider.js";
 export { openRemoteDatabase } from "./db/remote/provider.js";
 export type { ImportResult, SnapshotManifest } from "./db/snapshot.js";
@@ -653,3 +660,4 @@ export {
   planUpdate,
   WINGET_PACKAGE_ID,
 } from "./system/update-check.js";
+export { sha256Hex, sha256HexBytes } from "./util/sha256.js";

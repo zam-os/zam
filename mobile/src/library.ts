@@ -120,11 +120,26 @@ export async function searchLibrary(
     (await listPersonalCards(db, userId)).map((card) => [card.tokenId, card]),
   );
   const hits: LibraryEntry[] = [];
+  const seen = new Set<string>();
   for (const token of ranked) {
     const card = mine.get(token.id);
-    if (card) hits.push(toEntry(card));
+    if (!card) continue;
+    hits.push(toEntry(card));
+    seen.add(card.tokenId);
   }
-  return hits;
+
+  // The hybrid ranking is capped *globally* and only then narrowed to this
+  // learner, so on a shared library with many unassigned tokens it can rank 30
+  // hits of which none are theirs — and return less than plain text matching
+  // would have. Adding the lexical matches makes semantic search strictly
+  // additive, which is the only version of it worth having.
+  for (const card of await listPersonalCards(db, userId, { query: trimmed })) {
+    if (seen.has(card.tokenId)) continue;
+    hits.push(toEntry(card));
+    seen.add(card.tokenId);
+  }
+
+  return options.limit ? hits.slice(0, options.limit) : hits;
 }
 
 export interface CardEdit {

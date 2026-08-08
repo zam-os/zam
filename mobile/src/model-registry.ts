@@ -48,8 +48,6 @@ interface CloudModelRow {
   capabilities?: Record<string, boolean>;
   detectedCapabilities?: Record<string, boolean>;
   transport?: string;
-  /** Model to request for `embedding`, when the provider serves a different one. */
-  embeddingModel?: string;
 }
 
 function isLoopbackUrl(url: string): boolean {
@@ -108,16 +106,11 @@ function selectRows(
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 }
 
-function toEndpoint(
-  row: CloudModelRow,
-  capability: MobileModelCapability,
-): ZamPairLlmEndpoint {
+function toEndpoint(row: CloudModelRow): ZamPairLlmEndpoint {
   return {
     enabled: true,
     url: row.url as string,
-    model: (capability === "embedding" && row.embeddingModel
-      ? row.embeddingModel
-      : row.model) as string,
+    model: row.model as string,
     apiFlavor: "chat-completions",
     ...(row.apiKey ? { apiKey: row.apiKey } : {}),
     local: false,
@@ -151,7 +144,7 @@ export async function resolveMobileCloudChain(
   if (rows.length === 0) return null;
   let chain: ZamPairLlmEndpoint | undefined;
   for (const row of [...rows].reverse()) {
-    const endpoint = toEndpoint(row, capability);
+    const endpoint = toEndpoint(row);
     if (chain) endpoint.fallback = chain;
     chain = endpoint;
   }
