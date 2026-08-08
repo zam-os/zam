@@ -1,5 +1,9 @@
 # Log
 
+## 2026-08-08
+
+- **Update** — [Local AI Runtimes](local-ai-runtimes.md)
+
 ## 2026-08-02
 
 - **Update** — [Bridge CLI Protocol](bridge-protocol.md)

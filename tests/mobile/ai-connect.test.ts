@@ -283,6 +283,61 @@ describe("connectCloudModel", () => {
     expect(embedding?.model).toBe(CLOUD_EMBEDDING_MODEL);
   });
 
+  it("retires the 4B embedding row 0.29.1 wrote, leaving exactly one", async () => {
+    // 4B was a one-provider model on OpenRouter, which is the shape of outage
+    // that took 0.6B away mid-field-test. A leftover row would sit in the
+    // fallback chain and answer with 2560-dimension vectors the library can
+    // no longer compare.
+    const db = await library();
+    await setSetting(
+      db,
+      "ai.models.cloud",
+      JSON.stringify([
+        {
+          id: "01EMB4B",
+          label: "OpenRouter",
+          url: OPENROUTER_PROVIDER.baseUrl,
+          model: "qwen/qwen3-embedding-4b",
+          local: false,
+          apiFlavor: "chat-completions",
+          apiKey: "key",
+          order: 1,
+          capabilities: {
+            text: false,
+            image: false,
+            embedding: true,
+            video: false,
+            stt: false,
+            tts: false,
+          },
+          detectedCapabilities: {
+            text: false,
+            image: false,
+            embedding: true,
+            video: false,
+            stt: false,
+            tts: false,
+          },
+        },
+      ]),
+    );
+
+    await connectCloudModel(db, "key", { verify: accept });
+
+    const rows = JSON.parse(
+      (await getSetting(db, "ai.models.cloud")) as string,
+    ) as Array<{ model: string; capabilities: Record<string, boolean> }>;
+    const embedRows = rows.filter((row) => row.capabilities.embedding);
+    expect(embedRows).toHaveLength(1);
+    expect(embedRows[0]?.model).toBe(CLOUD_EMBEDDING_MODEL);
+    // And no fallback hiding behind it.
+    let chain = await resolveMobileCloudChain(db, "embedding");
+    while (chain) {
+      expect(chain.model).toBe(CLOUD_EMBEDDING_MODEL);
+      chain = chain.fallback ?? null;
+    }
+  });
+
   it("writes three rows, so a desktop on the same database resolves the same models", async () => {
     // A registry row is an endpoint, and an endpoint carries *one* model.
     // Encoding the embedding model as an extra field on the chat row worked on
@@ -397,7 +452,7 @@ describe("connectCloudModel", () => {
 describe("canonical embedding id", () => {
   it("agrees with the desktop for both the wire name and the stored id", () => {
     // The interesting one is the *wire* name. OpenRouter serves the model as
-    // `qwen/qwen3-embedding-4b`; a desktop configured against the same
+    // `qwen/qwen3-embedding-8b`; a desktop configured against the same
     // provider must tag its vectors with the same id the device uses, or a
     // shared library re-embeds itself — at cost — on the next search.
     expect(canonicalEmbeddingModelId(CLOUD_EMBEDDING_MODEL)).toBe(
@@ -406,7 +461,7 @@ describe("canonical embedding id", () => {
     expect(canonicalEmbeddingModelId(CLOUD_EMBEDDING_MODEL_ID)).toBe(
       CLOUD_EMBEDDING_MODEL_ID,
     );
-    expect(canonicalEmbeddingModelId("Qwen/Qwen3-Embedding-4B")).toBe(
+    expect(canonicalEmbeddingModelId("Qwen/Qwen3-Embedding-8B")).toBe(
       CLOUD_EMBEDDING_MODEL_ID,
     );
   });

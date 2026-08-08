@@ -220,7 +220,7 @@ describe("connectCloudProvider", () => {
     expect(chat?.capabilities.text).toBe(true);
     expect(chat?.capabilities.image).toBe(true);
     expect(chat?.detectedCapabilities.text).toBe(true);
-    expect(embed?.model).toBe("qwen/qwen3-embedding-4b");
+    expect(embed?.model).toBe("qwen/qwen3-embedding-8b");
     expect(embed?.apiKey).toBe("sk-or-good");
     expect(stt?.model).toBe("openai/gpt-transcribe");
     expect(stt?.apiKey).toBe("sk-or-good");

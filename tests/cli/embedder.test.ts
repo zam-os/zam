@@ -244,18 +244,28 @@ describe("canonicalEmbeddingModelId", () => {
     }
   });
 
-  it("canonicalises the cloud Qwen3 embedding family and passes others through", () => {
+  it("folds every spelling of the cloud model onto one id", () => {
+    // OpenRouter's `qwen/…` and Ollama's `…:8b` are the same weights reached
+    // two ways; a shared library must not re-embed when the other device
+    // searches.
+    for (const alias of [
+      "qwen/qwen3-embedding-8b",
+      "qwen3-embedding-8b",
+      "qwen3-embedding:8b",
+      "Qwen/Qwen3-Embedding-8B",
+    ]) {
+      expect(canonicalEmbeddingModelId(alias)).toBe("qwen3-embedding-8b");
+    }
+  });
+
+  it("leaves superseded sizes as their own ids, so their vectors read as stale", () => {
+    // 0.6B is 1024 dimensions, 4B is 2560, 8B is 4096. Folding an older size
+    // onto the current id would claim vectors are comparable when they cannot
+    // be; passing through keeps them distinct and the kernel re-embeds.
     expect(canonicalEmbeddingModelId("qwen/qwen3-embedding-4b")).toBe(
-      "qwen3-embedding-4b",
+      "qwen/qwen3-embedding-4b",
     );
-    expect(canonicalEmbeddingModelId("qwen3-embedding-4b")).toBe(
-      "qwen3-embedding-4b",
-    );
-    // Retired 0.6B spelling — still one id so old rows do not invent a third.
     expect(canonicalEmbeddingModelId("qwen3-embedding-0.6b")).toBe(
-      "qwen3-embedding-0.6b",
-    );
-    expect(canonicalEmbeddingModelId("Qwen3-Embedding-0.6B")).toBe(
       "qwen3-embedding-0.6b",
     );
     expect(canonicalEmbeddingModelId("Some-Other-Model")).toBe(

@@ -117,8 +117,20 @@ ADR 2026-07-23 §4 already contemplated.
 
 ### 5. The canonical cloud embedding model id is fixed
 
-Vectors are tagged **`qwen3-embedding-0.6b`**, and `canonicalEmbeddingModelId`
-folds OpenRouter's `qwen/qwen3-embedding-0.6b` spelling onto it.
+Vectors are tagged **`qwen3-embedding-8b`**, and `canonicalEmbeddingModelId`
+folds OpenRouter's `qwen/qwen3-embedding-8b` and Ollama's `qwen3-embedding:8b`
+spellings onto it.
+
+> **Amended 2026-08-08.** The decision — one fixed canonical id — stands; the
+> model behind it has moved twice. It was `qwen3-embedding-0.6b` when this ADR
+> was written; OpenRouter removed that model from its catalogue the same day
+> and every `/embeddings` call answered 404 (0.29.1 → `qwen3-embedding-4b`).
+> The 4B had the same weakness that caused the outage — a single provider —
+> so the default is now the 8B, which three providers serve and which costs
+> half as much per token. Superseded sizes are deliberately absent from the
+> alias set: 1024, 2560 and 4096 dimensions are not comparable, so their rows
+> must read as stale rather than be folded onto the current id. Nothing was
+> migrated, because ZAM has no users outside the field test yet.
 
 Without this the device and a desktop configured against the same provider
 tag the same vectors differently, and on a shared Turso library each would

@@ -37,9 +37,12 @@ import {
 /**
  * OpenRouter embedding model registered alongside the chat default so every
  * client of a shared database (desktop + mobile) resolves the same vectors.
- * Must stay aligned with `CLOUD_EMBEDDING_MODEL` in `mobile/src/ai/connect.ts`.
+ * Must stay aligned with `CLOUD_EMBEDDING_MODEL` in `mobile/src/ai/connect.ts`,
+ * which carries the reasoning for picking the 8B: three providers serve it
+ * where the 4B had one, and a withdrawn embedding model is the one outage a
+ * library cannot shrug off.
  */
-export const OPENROUTER_EMBEDDING_MODEL = "qwen/qwen3-embedding-4b";
+export const OPENROUTER_EMBEDDING_MODEL = "qwen/qwen3-embedding-8b";
 
 /**
  * OpenRouter speech-to-text model for voice mode. Aligned with
@@ -47,9 +50,13 @@ export const OPENROUTER_EMBEDDING_MODEL = "qwen/qwen3-embedding-4b";
  */
 export const OPENROUTER_STT_MODEL = "openai/gpt-transcribe";
 
+/** Superseded embedding rows to retire on connect; their vectors are a
+ * different width and are re-embedded, not converted. */
 const OPENROUTER_EMBEDDING_LEGACY_MODELS = [
   "qwen/qwen3-embedding-0.6b",
   "qwen/qwen3-embedding-0.6b:free",
+  "qwen/qwen3-embedding-4b",
+  "qwen/qwen3-embedding-4b:free",
 ] as const;
 
 export interface CloudKeyCheck {

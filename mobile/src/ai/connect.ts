@@ -35,11 +35,18 @@ import { CLOUD_MODELS_SETTING } from "../model-registry.js";
 /**
  * Model requested for the `embedding` capability of the connected provider.
  *
- * OpenRouter's catalogue no longer lists `qwen/qwen3-embedding-0.6b` (HTTP 404
- * on `/embeddings`, verified 2026-08-08). The 4B sibling is the smallest Qwen3
- * embedding model still available and keeps the same multilingual family.
+ * **Chosen for how many places serve it, not for its size.** ZAM has now been
+ * broken once by a single-provider embedding model: OpenRouter dropped
+ * `qwen3-embedding-0.6b` from its catalogue on 2026-08-08 and every
+ * `/embeddings` call in the field test answered 404. The 4B that replaced it
+ * had the same exposure — one provider. The 8B is served by three (Nebius,
+ * DeepInfra, SiliconFlow) and costs half as much per token besides.
+ *
+ * Semantic search is the one capability that cannot fall back: an evaluation
+ * can be self-rated, a photo can be typed in, but a library embedded against
+ * a model that disappears has to be embedded again.
  */
-export const CLOUD_EMBEDDING_MODEL = "qwen/qwen3-embedding-4b";
+export const CLOUD_EMBEDDING_MODEL = "qwen/qwen3-embedding-8b";
 
 /**
  * Canonical id every stored vector is tagged with, mirroring
@@ -47,12 +54,21 @@ export const CLOUD_EMBEDDING_MODEL = "qwen/qwen3-embedding-4b";
  * on a shared database: a device that tags its vectors differently re-embeds
  * the whole library the first time anyone searches.
  */
-export const CLOUD_EMBEDDING_MODEL_ID = "qwen3-embedding-4b";
+export const CLOUD_EMBEDDING_MODEL_ID = "qwen3-embedding-8b";
 
-/** Former embedding wire names ZAM wrote; migrate in place when still present. */
+/**
+ * Former embedding wire names ZAM wrote; migrate in place when still present.
+ *
+ * Their vectors are not convertible — 0.6B is 1024 dimensions, 4B is 2560, 8B
+ * is 4096 — so this list exists to retire the rows, not to keep them working.
+ * The kernel re-embeds on its own: `token_embeddings` stores `dims`, and a
+ * changed model id or width is already a staleness reason.
+ */
 export const CLOUD_EMBEDDING_LEGACY_MODELS = [
   "qwen/qwen3-embedding-0.6b",
   "qwen/qwen3-embedding-0.6b:free",
+  "qwen/qwen3-embedding-4b",
+  "qwen/qwen3-embedding-4b:free",
 ] as const;
 
 /**
