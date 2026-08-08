@@ -16,6 +16,27 @@ export function resolveLocale(value: string | null | undefined): Locale {
 type Messages = Record<string, string>;
 
 const DE: Messages = {
+  // AI connect (ADR 2026-07-24 §5)
+  ai_heading: "KI",
+  ai_desc:
+    "Mit einem OpenRouter-Schlüssel bewertet ZAM deine Antworten, liest Fotos aus und findet Karten nach Bedeutung. Ohne Schlüssel bewertest du selbst — alles andere bleibt gleich.",
+  ai_key_label: "API-Schlüssel",
+  ai_connect: "Verbinden",
+  ai_get_key: "Schlüssel bei OpenRouter holen",
+  ai_disconnect: "Verbindung trennen",
+  ai_none: "Keine KI verbunden",
+  ai_connected: "Verbunden · {label}",
+  ai_checking: "Schlüssel wird geprüft…",
+  ai_connected_msg: "Verbunden. Guthaben ab {min} $ bei OpenRouter aufladen.",
+  ai_err_empty: "Bitte zuerst den Schlüssel einfügen.",
+  ai_err_rejected:
+    "OpenRouter hat den Schlüssel abgelehnt. Bitte genau so einfügen, wie er erstellt wurde.",
+  ai_err_unreachable:
+    "OpenRouter ist nicht erreichbar. Verbindung prüfen und erneut versuchen.",
+  ai_err_other: "OpenRouter hat mit einem Fehler geantwortet ({code}).",
+  ai_embed_running: "Karten werden für die Suche vorbereitet…",
+  ai_embed_done: "{n} Karten für die Suche vorbereitet.",
+  ai_embed_failed: "Suche konnte nicht vorbereitet werden: {error}",
   // Tabs
   tab_learn: "Lernen",
   tab_library: "Inhalte",
@@ -300,6 +321,26 @@ const DE: Messages = {
 };
 
 const EN: Messages = {
+  ai_heading: "AI",
+  ai_desc:
+    "With an OpenRouter key ZAM marks your answers, reads photos, and finds cards by meaning. Without one you rate yourself — everything else works the same.",
+  ai_key_label: "API key",
+  ai_connect: "Connect",
+  ai_get_key: "Get a key from OpenRouter",
+  ai_disconnect: "Disconnect",
+  ai_none: "No AI connected",
+  ai_connected: "Connected · {label}",
+  ai_checking: "Checking the key…",
+  ai_connected_msg: "Connected. Top up from ${min} at OpenRouter.",
+  ai_err_empty: "Paste the key first.",
+  ai_err_rejected:
+    "OpenRouter rejected the key. Paste it exactly as it was created.",
+  ai_err_unreachable:
+    "OpenRouter is unreachable. Check your connection and try again.",
+  ai_err_other: "OpenRouter answered with an error ({code}).",
+  ai_embed_running: "Preparing cards for search…",
+  ai_embed_done: "{n} cards prepared for search.",
+  ai_embed_failed: "Could not prepare search: {error}",
   tab_learn: "Learn",
   tab_library: "Library",
   tab_progress: "Progress",

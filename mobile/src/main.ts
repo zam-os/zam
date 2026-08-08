@@ -50,6 +50,13 @@ import {
   type MultiDraftController,
 } from "./multi-draft.js";
 import { getSetting } from "../../src/kernel/models/settings.js";
+import { OPENROUTER_PROVIDER } from "../../src/cli/llm/cloud-providers.js";
+import {
+  connectCloudModel,
+  connectedCloudLabel,
+  disconnectCloudModel,
+} from "./ai/connect.js";
+import { embedInBackground } from "./ai/embedder.js";
 import { createTauriDatabase } from "./provider.js";
 import {
   completeFirstRun,
@@ -200,6 +207,12 @@ const importKnowledgeContexts = element<HTMLInputElement>(
 const importSymbiosisMode = element<HTMLSelectElement>("import-symbiosis-mode");
 const confirmImportButton = element<HTMLButtonElement>("confirm-import");
 const skipImportDraftButton = element<HTMLButtonElement>("skip-import-draft");
+const aiState = element<HTMLElement>("ai-state");
+const aiKeyInput = element<HTMLInputElement>("ai-key");
+const aiConnectButton = element<HTMLButtonElement>("ai-connect");
+const aiGetKeyButton = element<HTMLButtonElement>("ai-get-key");
+const aiDisconnectButton = element<HTMLButtonElement>("ai-disconnect");
+const aiStatus = element<HTMLParagraphElement>("ai-status");
 const reviewProgress = element<HTMLElement>("review-progress");
 const reviewProgressFill = element<HTMLElement>("review-progress-fill");
 const reviewMeta = element<HTMLElement>("review-meta");
@@ -1488,6 +1501,7 @@ nav.onTabChange((tab) => {
     renderReminderControls();
     renderVoiceSettings();
     void refreshStorageRow();
+    void refreshAiSection();
   }
 });
 
@@ -1597,6 +1611,9 @@ importDraftForm.addEventListener("submit", async (event) => {
     setStatus(
       tf("token_saved", { title: result.token.title || result.token.slug }),
     );
+    // New cards are searchable by text immediately and by meaning shortly
+    // after; nothing waits on the round trip.
+    void runEmbeddingPass(false);
   } catch (error) {
     setImportStatus(tf("import_failed", { error: errorMessage(error) }), true);
   } finally {
@@ -1795,6 +1812,96 @@ async function openLocalLibrary(setup: LocalSetup): Promise<void> {
   await restoreReviewSession(setup.userId);
   nav.showTab("learn");
 }
+
+function setAiStatus(text: string, isError = false): void {
+  aiStatus.textContent = text;
+  aiStatus.classList.toggle("error", isError);
+}
+
+/** Paint the AI section from what is actually registered in the database. */
+async function refreshAiSection(): Promise<void> {
+  let label: string | null = null;
+  try {
+    label = await connectedCloudLabel(db);
+  } catch {
+    label = null;
+  }
+  aiState.textContent = label
+    ? tf("ai_connected", { label })
+    : t("ai_none");
+  aiDisconnectButton.hidden = !label;
+  aiKeyInput.value = "";
+  aiKeyInput.placeholder = label ? "••••••••" : "sk-or-…";
+}
+
+/**
+ * Embed whatever is outstanding, without ever getting in the way.
+ *
+ * Search works without this — full text always does — so a failure here is a
+ * line in Settings, never a dialog and never a blocked import.
+ */
+async function runEmbeddingPass(report: boolean): Promise<void> {
+  if (report) setAiStatus(t("ai_embed_running"));
+  try {
+    const result = await embedInBackground(db);
+    if (!report) return;
+    if (result.error) {
+      setAiStatus(tf("ai_embed_failed", { error: result.error }), true);
+    } else if (result.embedded > 0) {
+      setAiStatus(tf("ai_embed_done", { n: result.embedded }));
+    } else {
+      setAiStatus("");
+    }
+  } catch (error) {
+    if (report) {
+      setAiStatus(tf("ai_embed_failed", { error: errorMessage(error) }), true);
+    }
+  }
+}
+
+/** Translate a connect failure into something the learner can act on. */
+function aiErrorMessage(code: string): string {
+  if (code === "empty") return t("ai_err_empty");
+  if (code === "rejected") return t("ai_err_rejected");
+  if (code === "unreachable") return t("ai_err_unreachable");
+  return tf("ai_err_other", { code });
+}
+
+aiConnectButton.addEventListener("click", async () => {
+  aiConnectButton.disabled = true;
+  setAiStatus(t("ai_checking"));
+  try {
+    const result = await connectCloudModel(db, aiKeyInput.value);
+    if (!result.ok) {
+      setAiStatus(aiErrorMessage(result.error ?? "rejected"), true);
+      return;
+    }
+    await refreshAiSection();
+    await refreshCloudEndpointsFromDb();
+    setAiStatus(
+      tf("ai_connected_msg", { min: OPENROUTER_PROVIDER.minTopUpUsd }),
+    );
+    // Cards that existed before the key did are the ones a learner will
+    // search for first, so start on them straight away.
+    void runEmbeddingPass(true);
+  } catch (error) {
+    setAiStatus(errorMessage(error), true);
+  } finally {
+    aiConnectButton.disabled = false;
+  }
+});
+
+aiDisconnectButton.addEventListener("click", async () => {
+  await disconnectCloudModel(db);
+  await refreshAiSection();
+  await refreshCloudEndpointsFromDb();
+  setAiStatus("");
+});
+
+aiGetKeyButton.addEventListener("click", () => {
+  // ZAM never creates the account or the key — it only points at the page.
+  window.open(OPENROUTER_PROVIDER.keysUrl, "_blank");
+});
 
 /** Run the first run the wizard collected, then open what it produced. */
 async function startOnThisDevice(choices: SetupChoices): Promise<void> {

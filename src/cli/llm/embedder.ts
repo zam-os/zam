@@ -59,10 +59,29 @@ const EMBEDDINGGEMMA_ALIASES = new Set([
   "google/embeddinggemma-300m",
 ]);
 
+/**
+ * The same reasoning for the cloud embedding model the mobile app connects
+ * (ADR 2026-08-08). OpenRouter serves it as `qwen/qwen3-embedding-0.6b`;
+ * anything routing directly to the model drops the vendor prefix. Both must
+ * land on one id, or a shared library re-embeds itself — at cost — whenever
+ * the other device searches.
+ */
+const QWEN3_EMBEDDING_ALIASES = new Set([
+  "qwen3-embedding-0.6b",
+  "qwen3-embedding:0.6b",
+  "qwen/qwen3-embedding-0.6b",
+  "qwen/qwen3-embedding-0.6b:free",
+]);
+
+const CANONICAL_QWEN3_EMBEDDING_MODEL_ID = "qwen3-embedding-0.6b";
+
 export function canonicalEmbeddingModelId(model: string): string {
   const lowered = model.trim().toLowerCase();
   if (EMBEDDINGGEMMA_ALIASES.has(lowered)) {
     return CANONICAL_EMBEDDING_MODEL_ID;
+  }
+  if (QWEN3_EMBEDDING_ALIASES.has(lowered)) {
+    return CANONICAL_QWEN3_EMBEDDING_MODEL_ID;
   }
   return lowered;
 }

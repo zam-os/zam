@@ -468,7 +468,59 @@
               <h1 class="t-large-title" data-i18n="tab_settings">Einstellungen</h1>
             </header>
 
-            <p class="group-title" data-i18n="reminder_heading">Erinnerung</p>
+            <!-- One field, one button. Everything the learner gets out of it
+                 — feedback on answers, photo import, semantic search — comes
+                 from the same key. -->
+            <p class="group-title" data-i18n="ai_heading">KI</p>
+            <div class="card">
+              <p id="ai-state" class="t-headline"></p>
+              <p class="t-secondary" data-i18n="ai_desc">
+                Mit einem OpenRouter-Schlüssel bewertet ZAM deine Antworten,
+                liest Fotos aus und findet Karten nach Bedeutung. Ohne
+                Schlüssel bewertest du selbst — alles andere bleibt gleich.
+              </p>
+              <label class="field">
+                <span data-i18n="ai_key_label">API-Schlüssel</span>
+                <input
+                  id="ai-key"
+                  type="password"
+                  autocomplete="off"
+                  autocapitalize="none"
+                  spellcheck="false"
+                  placeholder="sk-or-…"
+                />
+              </label>
+              <button
+                id="ai-connect"
+                class="btn primary"
+                type="button"
+                data-i18n="ai_connect"
+              >
+                Verbinden
+              </button>
+              <button
+                id="ai-get-key"
+                class="btn plain"
+                type="button"
+                data-i18n="ai_get_key"
+              >
+                Schlüssel bei OpenRouter holen
+              </button>
+              <button
+                id="ai-disconnect"
+                class="btn plain destructive"
+                type="button"
+                hidden
+                data-i18n="ai_disconnect"
+              >
+                Verbindung trennen
+              </button>
+              <p id="ai-status" class="status" aria-live="polite"></p>
+            </div>
+
+            <p class="group-title" style="margin-top: var(--gap-5)" data-i18n="reminder_heading">
+              Erinnerung
+            </p>
             <ul class="list">
               <li class="row static">
                 <span class="row-text" data-i18n="reminder_toggle">

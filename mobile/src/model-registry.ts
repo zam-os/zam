@@ -21,8 +21,20 @@ import { getSetting } from "../../src/kernel/models/settings.js";
 /** Must equal `CLOUD_MODELS_SETTING` in src/cli/llm/model-registry.ts. */
 export const CLOUD_MODELS_SETTING = "ai.models.cloud";
 
-/** The capabilities a companion can actually use a cloud model for. */
-export type MobileModelCapability = "text" | "stt" | "tts" | "image";
+/**
+ * The capabilities a companion can actually use a cloud model for.
+ *
+ * `embedding` joined the list when the app became standalone: semantic search
+ * needs vectors, and on a device there is no Ollama to produce them. It is
+ * served by the same provider and the same key as text and image — only the
+ * model differs, which is what `embeddingModel` on the row carries.
+ */
+export type MobileModelCapability =
+  | "text"
+  | "stt"
+  | "tts"
+  | "image"
+  | "embedding";
 
 interface CloudModelRow {
   id?: string;
@@ -36,6 +48,8 @@ interface CloudModelRow {
   capabilities?: Record<string, boolean>;
   detectedCapabilities?: Record<string, boolean>;
   transport?: string;
+  /** Model to request for `embedding`, when the provider serves a different one. */
+  embeddingModel?: string;
 }
 
 function isLoopbackUrl(url: string): boolean {
@@ -94,11 +108,16 @@ function selectRows(
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 }
 
-function toEndpoint(row: CloudModelRow): ZamPairLlmEndpoint {
+function toEndpoint(
+  row: CloudModelRow,
+  capability: MobileModelCapability,
+): ZamPairLlmEndpoint {
   return {
     enabled: true,
     url: row.url as string,
-    model: row.model as string,
+    model: (capability === "embedding" && row.embeddingModel
+      ? row.embeddingModel
+      : row.model) as string,
     apiFlavor: "chat-completions",
     ...(row.apiKey ? { apiKey: row.apiKey } : {}),
     local: false,
@@ -132,7 +151,7 @@ export async function resolveMobileCloudChain(
   if (rows.length === 0) return null;
   let chain: ZamPairLlmEndpoint | undefined;
   for (const row of [...rows].reverse()) {
-    const endpoint = toEndpoint(row);
+    const endpoint = toEndpoint(row, capability);
     if (chain) endpoint.fallback = chain;
     chain = endpoint;
   }
