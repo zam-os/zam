@@ -59,6 +59,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             platform_features,
             db::db_open,
+            db::db_describe,
             db::db_query,
             db::db_execute,
             db::db_execute_batch,

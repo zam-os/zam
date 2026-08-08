@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Privacy manifest (App Store submission requirement).
+
+  ZAM collects nothing. The learner's cards live in a database they own — on
+  this device, or on a server database they attached themselves — and ZAM has
+  no backend of its own to send anything to. When a learner connects an AI
+  model, their answers go to the provider *they* chose with the key *they*
+  pasted; that is a third party they configured, not data ZAM collects, so
+  NSPrivacyCollectedDataTypes stays empty.
+
+  The API declarations below are the "required reason" APIs the app actually
+  reaches, directly or through WKWebView, libsql and the Rust standard
+  library. Each carries the narrowest reason code that is true:
+
+  - UserDefaults (CA92.1): WKWebView backs localStorage with the app's own
+    defaults. Only this app's data is read or written.
+  - File timestamp (C617.1): file metadata inside the app container —
+    `db_describe` reports the library's size in Settings, and SQLite stamps
+    its own files.
+  - Disk space (E174.1): SQLite checks free space before writing, so a full
+    device fails cleanly instead of corrupting a library.
+
+  Keep this in step with what the app does. An unused declaration is noise;
+  a missing one is a rejected build.
+-->
+<plist version="1.0">
+<dict>
+  <key>NSPrivacyTracking</key>
+  <false/>
+  <key>NSPrivacyTrackingDomains</key>
+  <array/>
+  <key>NSPrivacyCollectedDataTypes</key>
+  <array/>
+  <key>NSPrivacyAccessedAPITypes</key>
+  <array>
+    <dict>
+      <key>NSPrivacyAccessedAPIType</key>
+      <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+      <key>NSPrivacyAccessedAPITypeReasons</key>
+      <array>
+        <string>CA92.1</string>
+      </array>
+    </dict>
+    <dict>
+      <key>NSPrivacyAccessedAPIType</key>
+      <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+      <key>NSPrivacyAccessedAPITypeReasons</key>
+      <array>
+        <string>C617.1</string>
+      </array>
+    </dict>
+    <dict>
+      <key>NSPrivacyAccessedAPIType</key>
+      <string>NSPrivacyAccessedAPICategoryDiskSpace</string>
+      <key>NSPrivacyAccessedAPITypeReasons</key>
+      <array>
+        <string>E174.1</string>
+      </array>
+    </dict>
+  </array>
+</dict>
+</plist>

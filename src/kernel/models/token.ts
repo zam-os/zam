@@ -725,6 +725,13 @@ export interface PersonalCard {
   cardId: string | null;
   state: CardState | null;
   dueAt: string | null;
+  /**
+   * When the learner set this card aside (ADR 2026-07-04 Decision 10), or null
+   * while it is scheduled. The row is returned either way — a detached card
+   * keeps its history and can be picked up again — so a caller that does not
+   * read this cannot tell the two apart.
+   */
+  detachedAt: string | null;
   stability: number | null;
   difficulty: number | null;
   reps: number | null;
@@ -851,7 +858,8 @@ export async function listPersonalCards(
       c.lapses,
       c.elapsed_days AS elapsedDays,
       c.scheduled_days AS scheduledDays,
-      c.blocked
+      c.blocked,
+      c.detached_at AS detachedAt
     FROM tokens t
     INNER JOIN cards c ON c.token_id = t.id AND c.user_id = ?
     WHERE t.deprecated_at IS NULL

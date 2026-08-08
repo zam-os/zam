@@ -1,4 +1,7 @@
-/** Android companion: pairing, offline recall/import/voice, and resilient sync. */
+/**
+ * ZAM mobile: standalone first run, recall/import/voice, and — once a learner
+ * attaches a server database — pairing and its sync status.
+ */
 
 import { invoke } from "@tauri-apps/api/core";
 import {
@@ -47,7 +50,32 @@ import {
   type MultiDraftController,
 } from "./multi-draft.js";
 import { getSetting } from "../../src/kernel/models/settings.js";
+import { OPENROUTER_PROVIDER } from "../../src/cli/llm/cloud-providers.js";
+import {
+  connectCloudModel,
+  connectedCloudLabel,
+  disconnectCloudModel,
+} from "./ai/connect.js";
+import { embedInBackground } from "./ai/embedder.js";
+import {
+  type LibraryEntry,
+  listLibrary,
+  pauseCard,
+  removeCard,
+  resumeCard,
+  saveCardEdit,
+  searchLibrary,
+} from "./library.js";
 import { createTauriDatabase } from "./provider.js";
+import { REMOTE_NOT_EMPTY, upgradeToServerDatabase } from "./setup/upgrade.js";
+import {
+  completeFirstRun,
+  type LocalSetup,
+  prepareLocalLibrary,
+} from "./setup/first-run.js";
+import { starterCards } from "./setup/starter-content.js";
+import { initSetupWizard, type SetupChoices } from "./setup/wizard.js";
+import { createNav } from "./ui/nav.js";
 import {
   formatTimeInput,
   millisUntilNext,
@@ -100,6 +128,44 @@ import {
 } from "./voice.js";
 
 const db = createTauriDatabase((command, args) => invoke(command, args));
+const nav = createNav();
+
+interface DatabaseDescription {
+  mode: "local" | "remote" | "closed";
+  location?: string;
+  sizeBytes?: number;
+}
+
+/**
+ * Settings says where the library lives, in the learner's terms. On a
+ * device-local library that line is the whole answer to "where is my
+ * learning, and what would I lose" — which is why it carries the size rather
+ * than a file path nobody can act on.
+ */
+async function refreshStorageRow(): Promise<void> {
+  const row = document.getElementById("settings-storage");
+  if (!row) return;
+  try {
+    const info = await invoke<DatabaseDescription>("db_describe");
+    if (info.mode === "remote") {
+      row.textContent = t("storage_server");
+      return;
+    }
+    const megabytes = (info.sizeBytes ?? 0) / 1_000_000;
+    row.textContent = tf("storage_local", {
+      // toFixed would print "0.2" in German, where the separator is a comma.
+      size:
+        megabytes < 0.1
+          ? "< 0,1"
+          : megabytes.toLocaleString(undefined, {
+              maximumFractionDigits: 1,
+            }),
+    });
+  } catch {
+    // A settings row is never worth an error dialog.
+    row.textContent = "—";
+  }
+}
 const reviewSession = new MobileReviewSession(db, localStorage);
 
 function element<T extends HTMLElement>(id: string): T {
@@ -108,8 +174,6 @@ function element<T extends HTMLElement>(id: string): T {
   return node as T;
 }
 
-const pairingView = element<HTMLElement>("pairing-view");
-const appView = element<HTMLElement>("app-view");
 const scanButton = element<HTMLButtonElement>("scan-pairing-code");
 const cameraSettingsButton = element<HTMLButtonElement>("camera-settings");
 const cancelPairingButton = element<HTMLButtonElement>("cancel-pairing");
@@ -121,17 +185,12 @@ const pairingStatus = element<HTMLParagraphElement>("pairing-status");
 const learner = element<HTMLElement>("learner");
 const connection = element<HTMLElement>("connection");
 const statusLine = element<HTMLParagraphElement>("status");
-const dashboardView = element<HTMLElement>("dashboard-view");
 const summary = element<HTMLElement>("summary");
 const queueList = element<HTMLOListElement>("queue");
 const startReviewButton = element<HTMLButtonElement>("start-review");
 const openImportButton = element<HTMLButtonElement>("open-import");
-const openStatsButton = element<HTMLButtonElement>("open-stats");
-const statsView = element<HTMLElement>("stats-view");
 const statsSummary = element<HTMLParagraphElement>("stats-summary");
 const statsRows = element<HTMLElement>("stats-rows");
-const closeStatsButton = element<HTMLButtonElement>("close-stats");
-const importView = element<HTMLElement>("import-view");
 const importFile = element<HTMLInputElement>("import-file");
 const importInput = element<HTMLTextAreaElement>("import-input");
 const importImage = element<HTMLInputElement>("import-image");
@@ -158,8 +217,37 @@ const importKnowledgeContexts = element<HTMLInputElement>(
 const importSymbiosisMode = element<HTMLSelectElement>("import-symbiosis-mode");
 const confirmImportButton = element<HTMLButtonElement>("confirm-import");
 const skipImportDraftButton = element<HTMLButtonElement>("skip-import-draft");
-const reviewView = element<HTMLElement>("review-view");
+const libraryBrowse = element<HTMLElement>("library-browse");
+const libraryDetail = element<HTMLElement>("library-detail");
+const librarySearch = element<HTMLInputElement>("library-search");
+const libraryList = element<HTMLUListElement>("library-list");
+const libraryCount = element<HTMLElement>("library-count");
+const libraryEmpty = element<HTMLElement>("library-empty");
+const libraryAddButton = element<HTMLButtonElement>("library-add");
+const libraryBackButton = element<HTMLButtonElement>("library-back");
+const detailTitle = element<HTMLInputElement>("detail-title");
+const detailQuestion = element<HTMLTextAreaElement>("detail-question");
+const detailConcept = element<HTMLTextAreaElement>("detail-concept");
+const detailDomain = element<HTMLInputElement>("detail-domain");
+const detailSaveButton = element<HTMLButtonElement>("detail-save");
+const detailPauseButton = element<HTMLButtonElement>("detail-pause");
+const detailDeleteButton = element<HTMLButtonElement>("detail-delete");
+const detailStatus = element<HTMLParagraphElement>("detail-status");
+const importDescText = element<HTMLElement>("import-desc-text");
+const importEntry = element<HTMLElement>("import-entry");
+const upgradeUrl = element<HTMLInputElement>("upgrade-url");
+const upgradeToken = element<HTMLInputElement>("upgrade-token");
+const upgradeStartButton = element<HTMLButtonElement>("upgrade-start");
+const upgradeReplaceButton = element<HTMLButtonElement>("upgrade-replace");
+const upgradeStatus = element<HTMLParagraphElement>("upgrade-status");
+const aiState = element<HTMLElement>("ai-state");
+const aiKeyInput = element<HTMLInputElement>("ai-key");
+const aiConnectButton = element<HTMLButtonElement>("ai-connect");
+const aiGetKeyButton = element<HTMLButtonElement>("ai-get-key");
+const aiDisconnectButton = element<HTMLButtonElement>("ai-disconnect");
+const aiStatus = element<HTMLParagraphElement>("ai-status");
 const reviewProgress = element<HTMLElement>("review-progress");
+const reviewProgressFill = element<HTMLElement>("review-progress-fill");
 const reviewMeta = element<HTMLElement>("review-meta");
 const toggleVoiceButton = element<HTMLButtonElement>("toggle-voice");
 const installVoiceDataButton = element<HTMLButtonElement>("install-voice-data");
@@ -178,7 +266,6 @@ const ratingButtons = Array.from(
 );
 const stopReviewButton = element<HTMLButtonElement>("stop-review");
 const reviewStatus = element<HTMLParagraphElement>("review-status");
-const sessionSummaryView = element<HTMLElement>("session-summary-view");
 const sessionSummaryText = element<HTMLElement>("session-summary-text");
 const backToQueueButton = element<HTMLButtonElement>("back-to-queue");
 const resyncButton = element<HTMLButtonElement>("resync");
@@ -186,9 +273,6 @@ const repairButton = element<HTMLButtonElement>("repair");
 const reminderEnabled = element<HTMLInputElement>("reminder-enabled");
 const reminderTime = element<HTMLInputElement>("reminder-time");
 const reminderStatus = element<HTMLParagraphElement>("reminder-status");
-const settingsView = element<HTMLElement>("settings-view");
-const openSettingsButton = element<HTMLButtonElement>("open-settings");
-const closeSettingsButton = element<HTMLButtonElement>("close-settings");
 const updateVersion = element<HTMLElement>("update-version");
 const updateStatus = element<HTMLParagraphElement>("update-status");
 const checkUpdateButton = element<HTMLButtonElement>("check-update");
@@ -235,6 +319,12 @@ async function applyPlatformFeatures(): Promise<void> {
 }
 
 let currentPairing: ZamPairPayloadV1 | null = null;
+/**
+ * The learner this session belongs to, in both device modes: taken from the
+ * pairing payload when paired, and from the local library's `user.id` when
+ * the app runs on its own (ADR 2026-08-08). Null means nothing is loaded.
+ */
+let currentUserId: string | null = null;
 let reminderConfig: ReminderConfig = parseReminderConfig(
   localStorage.getItem(REMINDER_STORAGE_KEY),
 );
@@ -448,10 +538,8 @@ async function refreshLearnerLocaleFromDb(): Promise<void> {
  * (ADR 2026-07-23). Refreshed whenever the database is, so a model changed on
  * the desktop reaches the phone without re-pairing.
  */
-let cloudEndpoints: Record<
-  "text" | "stt" | "tts",
-  ZamPairLlmEndpoint | null
-> = { text: null, stt: null, tts: null };
+let cloudEndpoints: Record<"text" | "stt" | "tts", ZamPairLlmEndpoint | null> =
+  { text: null, stt: null, tts: null };
 
 async function refreshCloudEndpointsFromDb(): Promise<void> {
   try {
@@ -490,11 +578,13 @@ function setStatus(text: string, isError = false): void {
 }
 
 function showPairing(canCancel: boolean): void {
-  pairingView.hidden = false;
-  appView.hidden = true;
+  nav.showRoot("pairing");
   cancelPairingButton.hidden = !canCancel;
   cameraSettingsButton.hidden = true;
-  setPairingStatus(t(canCancel ? "pairing_hint_keep" : "pairing_hint_scan"));
+  // Re-pairing gets an instruction; a first run does not. Arriving here from
+  // the welcome screen, a line telling a learner to go find a QR code would
+  // contradict the choice they just made.
+  setPairingStatus(canCancel ? t("pairing_hint_keep") : "");
 }
 
 function showApp(payload: ZamPairPayloadV1): void {
@@ -503,58 +593,39 @@ function showApp(payload: ZamPairPayloadV1): void {
   applyLocale(learnerLocale);
   void refreshLearnerLocaleFromDb();
   void refreshCloudEndpointsFromDb();
-  pairingView.hidden = true;
-  appView.hidden = false;
+  resyncButton.hidden = false;
+  learner.hidden = false;
   learner.textContent = payload.learner.userId;
-}
-
-/**
- * Exactly one section is visible at a time. Listing them in one place means a
- * new view cannot be forgotten in one of the switchers.
- */
-function showOnly(visible: HTMLElement): void {
-  for (const view of [
-    dashboardView,
-    importView,
-    statsView,
-    reviewView,
-    sessionSummaryView,
-    settingsView,
-  ]) {
-    view.hidden = view !== visible;
-  }
+  nav.showTab("learn");
 }
 
 function showDashboard(): void {
-  showOnly(dashboardView);
-  openSettingsButton.disabled = false;
+  nav.showTab("learn");
 }
 
+/**
+ * Review takes the whole screen and drops the tab bar: nothing should invite
+ * the learner away mid-card, and the four ratings want the space the bar
+ * would otherwise occupy.
+ */
 function showReview(): void {
-  showOnly(reviewView);
-  // No jumping to settings mid-review; the gear returns after the session.
-  openSettingsButton.disabled = true;
+  nav.showRoot("review");
 }
 
 function showSessionSummary(): void {
-  showOnly(sessionSummaryView);
-  openSettingsButton.disabled = false;
+  nav.showSummary();
 }
 
 function showImport(): void {
-  showOnly(importView);
-  openSettingsButton.disabled = false;
+  nav.showTab("library");
 }
 
 function showStats(): void {
-  showOnly(statsView);
-  openSettingsButton.disabled = false;
+  nav.showTab("progress");
 }
 
 function showSettings(): void {
-  showOnly(settingsView);
-  renderReminderControls();
-  renderVoiceSettings();
+  nav.showTab("settings");
 }
 
 function setImportStatus(text: string, isError = false): void {
@@ -684,7 +755,7 @@ async function runImageDecompose(): Promise<void> {
     setImportStatus(t("import_image_hint"), true);
     return;
   }
-  if (!currentPairing) return;
+  if (!currentUserId) return;
 
   decomposeImageButton.disabled = true;
   prepareImportButton.disabled = true;
@@ -757,9 +828,9 @@ async function takeSharedImport(): Promise<void> {
     );
     if (!payload?.content) return;
     queueSharedImport(payload);
-    if (currentPairing) openPendingImport();
+    if (currentUserId) openPendingImport();
   } catch (error) {
-    if (currentPairing && !reviewSession.active) {
+    if (currentUserId && !reviewSession.active) {
       showImport();
       setImportStatus(
         tf("shared_read_failed", { error: errorMessage(error) }),
@@ -781,6 +852,27 @@ function parseDate(value: string): Date {
 function formatDateTime(value: string): string {
   const date = parseDate(value);
   return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
+}
+
+/**
+ * When a card is next up, in the terms a learner thinks in. A due date is
+ * either "now-ish" or "some day" — the second and the year in
+ * `8.8.2026, 07:34:53` were noise on every single row.
+ */
+function formatDueDay(value: string): string {
+  const date = parseDate(value);
+  if (Number.isNaN(date.getTime())) return value;
+  const startOfDay = (d: Date) =>
+    new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const days = Math.round(
+    (startOfDay(date) - startOfDay(new Date())) / 86_400_000,
+  );
+  if (days <= 0) return t("due_today");
+  if (days === 1) return t("due_tomorrow");
+  return date.toLocaleDateString(undefined, {
+    day: "numeric",
+    month: "short",
+  });
 }
 
 // ── Statistics (ADR 2026-08-01) ────────────────────────────────────────────
@@ -876,13 +968,13 @@ function renderStats(view: StatsView): void {
 
 /** Load and paint the series; the kernel read is local, so this works offline. */
 async function refreshStats(): Promise<void> {
-  if (!currentPairing) return;
+  if (!currentUserId) return;
   statsSummary.textContent = t("stats_loading");
   statsRows.replaceChildren();
   try {
     const view = await loadStatsView(
       db,
-      currentPairing.learner.userId,
+      currentUserId,
       statsPeriod,
       statsFormatters(),
     );
@@ -913,11 +1005,21 @@ function renderQueue(queue: ReviewQueue): void {
   summary.textContent = tf("queue_summary", {
     count: queue.items.length,
     cards: cardWord(queue.items.length),
-    due: queue.reviewCount,
-    new: queue.newCount,
-    relearn: queue.relearnCount,
-    domains: queue.totalDomains.join(", ") || "–",
   });
+  // The breakdown only names the buckets that are actually populated. Listing
+  // "0 due, 0 again" every day taught the learner to stop reading the line.
+  const parts: string[] = [];
+  if (queue.reviewCount > 0) {
+    parts.push(tf("queue_breakdown_due", { n: queue.reviewCount }));
+  }
+  if (queue.relearnCount > 0) {
+    parts.push(tf("queue_breakdown_relearn", { n: queue.relearnCount }));
+  }
+  if (queue.newCount > 0) {
+    parts.push(tf("queue_breakdown_new", { n: queue.newCount }));
+  }
+  setStatus(parts.join(" · "));
+  nav.setDueBadge(queue.reviewCount + queue.relearnCount);
   queueList.replaceChildren();
   for (const item of queue.items) {
     const entry = document.createElement("li");
@@ -927,10 +1029,8 @@ function renderQueue(queue: ReviewQueue): void {
     const meta = document.createElement("div");
     meta.className = "meta";
     meta.textContent = tf("queue_item_meta", {
-      domain: item.domain,
-      bloom: item.bloomLevel,
-      state: item.state,
-      due: formatDateTime(item.dueAt),
+      domain: item.domain || t("no_domain"),
+      due: formatDueDay(item.dueAt),
     });
     entry.append(title, meta);
     queueList.append(entry);
@@ -1083,7 +1183,10 @@ function startVoiceMode(): void {
     await refreshVoiceCapabilities(locale);
     const plan = currentVoicePlan();
     if (!isVoiceModeUsable(plan)) {
-      setReviewStatus(t(voiceUnavailableKey(plan) ?? "voice_unavailable"), true);
+      setReviewStatus(
+        t(voiceUnavailableKey(plan) ?? "voice_unavailable"),
+        true,
+      );
       updateVoiceButton();
       return;
     }
@@ -1187,10 +1290,14 @@ function renderCurrentReview(message = ""): void {
     current: progress.current,
     total: progress.total,
   });
+  // A bar as well as the count: "3 of 12" is precise, but how much is left is
+  // read faster from a length than from arithmetic.
+  reviewProgressFill.style.width = `${
+    progress.total > 0 ? ((progress.current - 1) / progress.total) * 100 : 0
+  }%`;
   reviewMeta.textContent = tf("review_meta", {
     title: item.title,
     domain: item.domain || t("no_domain"),
-    bloom: item.bloomLevel,
   });
   reviewQuestion.textContent = prompt.question;
   reviewAnswer.value = reviewSession.draftAnswer;
@@ -1231,21 +1338,26 @@ async function refresh(userId: string): Promise<void> {
     .get(userId)) as { card_count: number } | undefined;
   const cardCount = Number(user?.card_count ?? 0);
   if (cardCount === 0) {
-    setStatus(tf("paired_no_cards", { user: userId }));
-    summary.textContent = "";
+    summary.textContent = t("library_empty");
+    setStatus("");
     queueList.replaceChildren();
     startReviewButton.disabled = true;
+    nav.setDueBadge(0);
     await updateReminderDue(0);
     return;
   }
   const queue = await buildReviewQueue(db, { userId });
-  setStatus(
-    tf("queue_for", {
-      user: userId,
-      count: cardCount,
-      cards: cardWord(cardCount),
-    }),
-  );
+  if (queue.items.length === 0) {
+    // A library with cards but nothing scheduled is a good day, not an empty
+    // screen — say so rather than showing "0".
+    summary.textContent = t("queue_nothing_due");
+    setStatus("");
+    queueList.replaceChildren();
+    startReviewButton.disabled = true;
+    nav.setDueBadge(0);
+    await updateReminderDue(0);
+    return;
+  }
   renderQueue(queue);
   await updateReminderDue(queue.reviewCount + queue.relearnCount);
 }
@@ -1312,6 +1424,7 @@ async function connect(
     if (requireInitialSync) throw error;
   }
 
+  currentUserId = payload.learner.userId;
   await refresh(payload.learner.userId);
   if (requireInitialSync) {
     await invoke("pairing_save", {
@@ -1335,6 +1448,7 @@ async function connect(
 async function applyPairing(input: string | unknown): Promise<void> {
   const payload = parseZamPairPayload(input);
   const previousPairing = currentPairing;
+  const previousUserId = currentUserId;
   setPairingStatus(t("pairing_checking"));
   scanButton.disabled = true;
   try {
@@ -1346,8 +1460,22 @@ async function applyPairing(input: string | unknown): Promise<void> {
       } catch {
         // Keep the re-pair screen usable even if the previous replica is unavailable.
       }
+    } else if (previousUserId) {
+      // No previous pairing, but a learner *was* loaded — so this session came
+      // from a device-local library, and `connect` has already closed it in
+      // order to open the remote. A bad token or an unreachable host then
+      // leaves no database open at all: every screen renders "database is not
+      // open" and only a force-quit recovers. Put the local library back.
+      try {
+        await invoke("db_close");
+        await invoke("db_open", {});
+        const setup = await prepareLocalLibrary(db);
+        if (setup) await openLocalLibrary(setup);
+      } catch {
+        // Nothing further to try; the message below is still shown.
+      }
     }
-    showPairing(Boolean(previousPairing));
+    showPairing(Boolean(previousPairing) || Boolean(previousUserId));
     setPairingStatus(
       tf("pairing_failed", { error: errorMessage(error) }),
       true,
@@ -1400,21 +1528,40 @@ cancelPairingButton.addEventListener("click", () => {
 
 repairButton.addEventListener("click", () => showPairing(true));
 
-openSettingsButton.addEventListener("click", () => showSettings());
-closeSettingsButton.addEventListener("click", () => showDashboard());
+element<HTMLButtonElement>("pairing-back").addEventListener("click", () => {
+  if (currentUserId) showDashboard();
+  else nav.showRoot("setup");
+});
+
+/**
+ * A tab is reachable at any moment, so each one refreshes what it shows on
+ * arrival rather than relying on whoever navigated there to have done it.
+ */
+nav.onTabChange((tab) => {
+  if (tab === "library") {
+    openCard = null;
+    showLibraryMode("browse");
+    void refreshLibrary();
+    return;
+  }
+  if (tab === "progress") {
+    void refreshStats();
+    return;
+  }
+  if (tab === "settings") {
+    renderReminderControls();
+    renderVoiceSettings();
+    void refreshStorageRow();
+    void refreshAiSection();
+  }
+});
 
 openImportButton.addEventListener("click", () => {
-  resetImport();
   showImport();
+  resetImport();
+  showLibraryMode("add");
   importInput.focus();
 });
-
-openStatsButton.addEventListener("click", () => {
-  showStats();
-  void refreshStats();
-});
-
-closeStatsButton.addEventListener("click", () => showDashboard());
 
 for (const period of ["day", "week", "month"] as const) {
   document
@@ -1461,11 +1608,11 @@ cancelImportButton.addEventListener("click", () => {
 });
 
 skipImportDraftButton.addEventListener("click", () => {
-  if (!multiDraftController || !currentPairing) return;
+  if (!multiDraftController || !currentUserId) return;
   const hasMore = multiDraftController.skip();
   if (!hasMore) {
     const { saved, skipped } = multiDraftController.state();
-    const userId = currentPairing.learner.userId;
+    const userId = currentUserId;
     resetImport();
     void refresh(userId).then(() => {
       showDashboard();
@@ -1479,16 +1626,12 @@ skipImportDraftButton.addEventListener("click", () => {
 
 importDraftForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  if (!currentPairing) return;
+  if (!currentUserId) return;
   confirmImportButton.disabled = true;
   skipImportDraftButton.disabled = true;
   try {
     const draft = draftFromForm();
-    const result = await confirmMobileImport(
-      db,
-      currentPairing.learner.userId,
-      draft,
-    );
+    const result = await confirmMobileImport(db, currentUserId, draft);
 
     if (multiDraftController) {
       const hasMore = multiDraftController.saveAndNext();
@@ -1504,18 +1647,21 @@ importDraftForm.addEventListener("submit", async (event) => {
       }
       const { saved, skipped } = multiDraftController.state();
       resetImport();
-      await refresh(currentPairing.learner.userId);
+      await refresh(currentUserId);
       showDashboard();
       setStatus(tf("import_batch_done", { saved, skipped }));
       return;
     }
 
     resetImport();
-    await refresh(currentPairing.learner.userId);
+    await refresh(currentUserId);
     showDashboard();
     setStatus(
       tf("token_saved", { title: result.token.title || result.token.slug }),
     );
+    // New cards are searchable by text immediately and by meaning shortly
+    // after; nothing waits on the round trip.
+    void runEmbeddingPass(false);
   } catch (error) {
     setImportStatus(tf("import_failed", { error: errorMessage(error) }), true);
   } finally {
@@ -1556,13 +1702,13 @@ async function rateCurrentReview(rating: 1 | 2 | 3 | 4): Promise<boolean> {
 }
 
 startReviewButton.addEventListener("click", async () => {
-  if (!currentPairing) return;
+  if (!currentUserId) return;
   startReviewButton.disabled = true;
   try {
-    const started = await reviewSession.start(currentPairing.learner.userId);
+    const started = await reviewSession.start(currentUserId);
     if (!started) {
       setStatus(t("no_due_cards"));
-      await refresh(currentPairing.learner.userId);
+      await refresh(currentUserId);
       return;
     }
     renderCurrentReview();
@@ -1655,10 +1801,10 @@ stopReviewButton.addEventListener("click", async () => {
 });
 
 backToQueueButton.addEventListener("click", async () => {
-  if (!currentPairing) return;
+  if (!currentUserId) return;
   backToQueueButton.disabled = true;
   try {
-    await refresh(currentPairing.learner.userId);
+    await refresh(currentUserId);
     showDashboard();
     openPendingImport();
   } catch (error) {
@@ -1669,12 +1815,12 @@ backToQueueButton.addEventListener("click", async () => {
 });
 
 resyncButton.addEventListener("click", async () => {
-  if (!currentPairing) return;
+  if (!currentUserId) return;
   resyncButton.disabled = true;
   try {
     setStatus(t("syncing"));
     await synchronize((message) => setStatus(message, true));
-    await refresh(currentPairing.learner.userId);
+    await refresh(currentUserId);
     connection.textContent = t("synced");
     connection.classList.remove("offline");
   } catch (error) {
@@ -1690,24 +1836,497 @@ resyncButton.addEventListener("click", async () => {
   }
 });
 
+/**
+ * Open the device-local library and show the app (ADR 2026-08-08).
+ *
+ * There is no upstream here, so nothing synchronizes and the connection chip
+ * says where the library lives rather than claiming a sync state it cannot
+ * have. `db_sync` refuses on a local database for exactly that reason.
+ */
+async function openLocalLibrary(setup: LocalSetup): Promise<void> {
+  currentUserId = setup.userId;
+  currentPairing = null;
+  learnerLocale = setup.locale;
+  applyLocale(setup.locale);
+  void refreshCloudEndpointsFromDb();
+  // One learner owns a device-local library, so naming them says nothing.
+  learner.hidden = true;
+  // Nothing to synchronize with: offering the button would only produce
+  // "database is local-only; nothing to sync" from the Rust side.
+  resyncButton.hidden = true;
+  connection.textContent = t("on_this_device");
+  connection.classList.remove("offline");
+  await refresh(setup.userId);
+  await restoreReviewSession(setup.userId);
+  nav.showTab("learn");
+}
+
+// ── Library ────────────────────────────────────────────────────────────────
+
+/** The card whose detail view is open, or null while browsing. */
+let openCard: LibraryEntry | null = null;
+/** Debounce handle for the search field. */
+let librarySearchTimer: number | undefined;
+/** Total cards, so the result count can say "8 of 240". */
+let libraryTotal = 0;
+
+type LibraryMode = "browse" | "detail" | "add";
+
+function showLibraryMode(mode: LibraryMode): void {
+  libraryBrowse.hidden = mode !== "browse";
+  libraryDetail.hidden = mode !== "detail";
+  importDescText.hidden = mode !== "add";
+  importEntry.hidden = mode !== "add";
+  if (mode !== "add") importDraftForm.hidden = true;
+}
+
+function renderLibrary(entries: LibraryEntry[]): void {
+  libraryList.replaceChildren();
+  for (const entry of entries) {
+    const item = document.createElement("li");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "row";
+
+    const text = document.createElement("span");
+    text.className = "row-text";
+    const title = document.createElement("span");
+    title.textContent = entry.title || entry.slug;
+    const meta = document.createElement("span");
+    meta.className = "t-footnote";
+    meta.textContent = entry.paused
+      ? t("library_paused_note")
+      : entry.domain || t("no_domain");
+    text.append(title, meta);
+
+    const chevron = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "svg",
+    );
+    chevron.setAttribute("class", "row-chevron");
+    chevron.setAttribute("viewBox", "0 0 8 14");
+    chevron.setAttribute("aria-hidden", "true");
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", "M1 1l6 6-6 6");
+    chevron.append(path);
+
+    button.append(text, chevron);
+    button.addEventListener("click", () => openLibraryDetail(entry));
+    item.append(button);
+    libraryList.append(item);
+  }
+
+  libraryList.hidden = entries.length === 0;
+  libraryEmpty.hidden = entries.length > 0;
+  libraryEmpty.textContent =
+    libraryTotal === 0 ? t("library_none_yet") : t("library_no_hits");
+  libraryCount.textContent =
+    entries.length > 0
+      ? tf("library_count", { n: entries.length, total: libraryTotal })
+      : "";
+}
+
+async function refreshLibrary(): Promise<void> {
+  if (!currentUserId) return;
+  const query = librarySearch.value.trim();
+  try {
+    libraryTotal = (await listLibrary(db, currentUserId)).length;
+    const entries = query
+      ? await searchLibrary(db, currentUserId, query)
+      : await listLibrary(db, currentUserId);
+    renderLibrary(entries);
+  } catch (error) {
+    libraryList.replaceChildren();
+    libraryEmpty.hidden = false;
+    libraryEmpty.textContent = tf("library_failed", {
+      error: errorMessage(error),
+    });
+  }
+}
+
+function openLibraryDetail(entry: LibraryEntry): void {
+  openCard = entry;
+  detailTitle.value = entry.title || "";
+  detailQuestion.value = entry.question ?? "";
+  detailConcept.value = entry.concept;
+  detailDomain.value = entry.domain;
+  detailPauseButton.textContent = entry.paused
+    ? t("library_resume")
+    : t("library_pause");
+  detailStatus.textContent = "";
+  detailStatus.classList.remove("error");
+  showLibraryMode("detail");
+}
+
+function setDetailStatus(text: string, isError = false): void {
+  detailStatus.textContent = text;
+  detailStatus.classList.toggle("error", isError);
+}
+
+librarySearch.addEventListener("input", () => {
+  // Debounced because a keystroke can cost an embedding request.
+  window.clearTimeout(librarySearchTimer);
+  librarySearchTimer = window.setTimeout(() => void refreshLibrary(), 250);
+});
+
+libraryAddButton.addEventListener("click", () => {
+  resetImport();
+  showLibraryMode("add");
+  importInput.focus();
+});
+
+libraryBackButton.addEventListener("click", () => {
+  openCard = null;
+  showLibraryMode("browse");
+  void refreshLibrary();
+});
+
+detailSaveButton.addEventListener("click", async () => {
+  if (!openCard) return;
+  detailSaveButton.disabled = true;
+  try {
+    await saveCardEdit(db, openCard.tokenId, {
+      title: detailTitle.value.trim(),
+      question: detailQuestion.value.trim() || null,
+      concept: detailConcept.value.trim(),
+      domain: detailDomain.value.trim(),
+    });
+    setDetailStatus(t("library_saved"));
+    // The wording changed, so the stored vector no longer describes it.
+    void runEmbeddingPass(false);
+    if (currentUserId) await refresh(currentUserId);
+  } catch (error) {
+    setDetailStatus(tf("library_failed", { error: errorMessage(error) }), true);
+  } finally {
+    detailSaveButton.disabled = false;
+  }
+});
+
+detailPauseButton.addEventListener("click", async () => {
+  if (!openCard || !currentUserId) return;
+  detailPauseButton.disabled = true;
+  try {
+    if (openCard.paused) {
+      await resumeCard(db, openCard.tokenId, currentUserId);
+    } else {
+      await pauseCard(db, openCard.tokenId, currentUserId);
+    }
+    openCard = { ...openCard, paused: !openCard.paused };
+    detailPauseButton.textContent = openCard.paused
+      ? t("library_resume")
+      : t("library_pause");
+    await refresh(currentUserId);
+    setDetailStatus("");
+  } catch (error) {
+    setDetailStatus(tf("library_failed", { error: errorMessage(error) }), true);
+  } finally {
+    detailPauseButton.disabled = false;
+  }
+});
+
+detailDeleteButton.addEventListener("click", async () => {
+  if (!openCard || !currentUserId) return;
+  // Deleting takes the review history with it, so it is worth one question.
+  if (!window.confirm(t("library_delete_confirm"))) return;
+  try {
+    await removeCard(db, openCard.tokenId, currentUserId);
+    openCard = null;
+    showLibraryMode("browse");
+    await refreshLibrary();
+    await refresh(currentUserId);
+    setStatus(t("library_deleted"));
+  } catch (error) {
+    setDetailStatus(tf("library_failed", { error: errorMessage(error) }), true);
+  }
+});
+
+function setAiStatus(text: string, isError = false): void {
+  aiStatus.textContent = text;
+  aiStatus.classList.toggle("error", isError);
+}
+
+/** Paint the AI section from what is actually registered in the database. */
+async function refreshAiSection(): Promise<void> {
+  let label: string | null = null;
+  try {
+    label = await connectedCloudLabel(db);
+  } catch {
+    label = null;
+  }
+  aiState.textContent = label ? tf("ai_connected", { label }) : t("ai_none");
+  aiDisconnectButton.hidden = !label;
+  aiKeyInput.value = "";
+  aiKeyInput.placeholder = label ? "••••••••" : "sk-or-…";
+}
+
+/**
+ * Embed whatever is outstanding, without ever getting in the way.
+ *
+ * Search works without this — full text always does — so a failure here is a
+ * line in Settings, never a dialog and never a blocked import.
+ */
+async function runEmbeddingPass(report: boolean): Promise<void> {
+  if (report) setAiStatus(t("ai_embed_running"));
+  try {
+    const result = await embedInBackground(db);
+    if (!report) return;
+    if (result.error) {
+      setAiStatus(tf("ai_embed_failed", { error: result.error }), true);
+    } else if (result.embedded > 0) {
+      setAiStatus(tf("ai_embed_done", { n: result.embedded }));
+    } else {
+      setAiStatus("");
+    }
+  } catch (error) {
+    if (report) {
+      setAiStatus(tf("ai_embed_failed", { error: errorMessage(error) }), true);
+    }
+  }
+}
+
+/** Translate a connect failure into something the learner can act on. */
+function aiErrorMessage(code: string): string {
+  if (code === "empty") return t("ai_err_empty");
+  if (code === "rejected") return t("ai_err_rejected");
+  if (code === "unreachable") return t("ai_err_unreachable");
+  return tf("ai_err_other", { code });
+}
+
+aiConnectButton.addEventListener("click", async () => {
+  aiConnectButton.disabled = true;
+  setAiStatus(t("ai_checking"));
+  try {
+    const result = await connectCloudModel(db, aiKeyInput.value);
+    if (!result.ok) {
+      setAiStatus(aiErrorMessage(result.error ?? "rejected"), true);
+      return;
+    }
+    await refreshAiSection();
+    await refreshCloudEndpointsFromDb();
+    setAiStatus(
+      tf("ai_connected_msg", { min: OPENROUTER_PROVIDER.minTopUpUsd }),
+    );
+    // Cards that existed before the key did are the ones a learner will
+    // search for first, so start on them straight away.
+    void runEmbeddingPass(true);
+  } catch (error) {
+    setAiStatus(errorMessage(error), true);
+  } finally {
+    aiConnectButton.disabled = false;
+  }
+});
+
+aiDisconnectButton.addEventListener("click", async () => {
+  await disconnectCloudModel(db);
+  await refreshAiSection();
+  await refreshCloudEndpointsFromDb();
+  setAiStatus("");
+});
+
+aiGetKeyButton.addEventListener("click", () => {
+  // ZAM never creates the account or the key — it only points at the page.
+  window.open(OPENROUTER_PROVIDER.keysUrl, "_blank");
+});
+
+// ── Multi-device upgrade ───────────────────────────────────────────────────
+
+function setUpgradeStatus(text: string, isError = false): void {
+  upgradeStatus.textContent = text;
+  upgradeStatus.classList.toggle("error", isError);
+}
+
+/**
+ * Move this device's library onto a server database.
+ *
+ * The Rust shell owns exactly one connection, so switching means closing the
+ * local one and opening the remote — and on any failure, opening the local
+ * one again. `upgradeToServerDatabase` owns that ordering; this function only
+ * supplies the two open calls and translates the outcome.
+ */
+async function runUpgrade(replaceRemote: boolean): Promise<void> {
+  if (currentPairing) {
+    setUpgradeStatus(t("upgrade_already"), true);
+    return;
+  }
+  const url = upgradeUrl.value.trim();
+  const token = upgradeToken.value.trim();
+  if (!url || !token) {
+    setUpgradeStatus(t("ai_err_empty"), true);
+    return;
+  }
+
+  upgradeStartButton.disabled = true;
+  upgradeReplaceButton.disabled = true;
+  try {
+    const result = await upgradeToServerDatabase(
+      {
+        local: db,
+        async openRemote(remoteUrl, authToken) {
+          await invoke("db_close");
+          await invoke("db_open", { syncUrl: remoteUrl, authToken });
+          return db;
+        },
+        async reopenLocal() {
+          await invoke("db_close");
+          await invoke("db_open", {});
+          return db;
+        },
+      },
+      {
+        url,
+        authToken: token,
+        replaceRemote,
+        // `upgrade_done` is a `tf` template with an {n}; the count only exists
+        // after the call returns, so the final message is set below.
+        onProgress: ({ stage }) => {
+          if (stage !== "done") setUpgradeStatus(t(`upgrade_${stage}`));
+        },
+      },
+    );
+
+    if (!result.ok) {
+      if (result.error === REMOTE_NOT_EMPTY) {
+        setUpgradeStatus(t("upgrade_not_empty"), true);
+        upgradeReplaceButton.hidden = false;
+      } else {
+        setUpgradeStatus(
+          tf("upgrade_failed", { error: result.error ?? "" }),
+          true,
+        );
+      }
+      return;
+    }
+
+    // Store the pairing only now: it is what makes the switch survive a
+    // restart, and storing it before the transfer worked would strand the
+    // learner on an empty server database.
+    const userId = result.userId ?? currentUserId ?? "me";
+    const payload: ZamPairPayloadV1 = {
+      type: ZAM_PAIR_TYPE,
+      version: ZAM_PAIR_VERSION,
+      createdAt: new Date().toISOString(),
+      database: { url, token },
+      learner: { userId },
+      settings: { locale: learnerLocale ?? navigator.language },
+    };
+
+    let pairingStored = true;
+    try {
+      await invoke("pairing_save", {
+        payload: serializeZamPairPayload(payload),
+      });
+    } catch {
+      // The transfer already succeeded and this session is on the server
+      // database, so reporting "the move failed" would be the opposite of the
+      // truth. What is missing is only the *persistence* of the switch — and
+      // the keychain is known to refuse on unsigned builds (OSStatus -34018),
+      // so say precisely that instead.
+      pairingStored = false;
+    }
+
+    // Without these the session still believes it is device-local: the
+    // "already on a server database" guard stays dead, and a second run would
+    // snapshot the remote into itself.
+    currentPairing = payload;
+    currentUserId = userId;
+    upgradeReplaceButton.hidden = true;
+    upgradeUrl.value = "";
+    upgradeToken.value = "";
+    setUpgradeStatus(
+      pairingStored
+        ? tf("upgrade_done", { n: result.transferred ?? 0 })
+        : tf("upgrade_done_unsaved", { n: result.transferred ?? 0 }),
+      !pairingStored,
+    );
+    resyncButton.hidden = false;
+    learner.hidden = false;
+    learner.textContent = userId;
+    connection.textContent = t("synced");
+    await refresh(userId);
+    void refreshStorageRow();
+  } catch (error) {
+    setUpgradeStatus(
+      tf("upgrade_failed", { error: errorMessage(error) }),
+      true,
+    );
+  } finally {
+    upgradeStartButton.disabled = false;
+    upgradeReplaceButton.disabled = false;
+  }
+}
+
+upgradeStartButton.addEventListener("click", () => void runUpgrade(false));
+upgradeReplaceButton.addEventListener("click", () => void runUpgrade(true));
+
+/** Run the first run the wizard collected, then open what it produced. */
+async function startOnThisDevice(choices: SetupChoices): Promise<void> {
+  await invoke("db_close");
+  await invoke("db_open", {});
+  const setup = await completeFirstRun(db, {
+    locale: choices.locale,
+    persona: choices.persona,
+    personaContextLabel: choices.personaContextLabel,
+    starterCards: starterCards(choices.locale),
+  });
+  await openLocalLibrary(setup);
+}
+
+const setupWizard = initSetupWizard({
+  complete: startOnThisDevice,
+  openPairing: () => showPairing(false),
+});
+
 async function start(): Promise<void> {
   // Remove the Phase-0 test shortcut if an upgraded installation still has it.
   localStorage.removeItem("zam.syncUrl");
   localStorage.removeItem("zam.authToken");
+
+  // A pairing store that cannot be *read* is not the same as no pairing, and
+  // neither is a reason to give up: the device-local library is still there.
+  // An unsigned simulator build has no keychain entitlement and fails here
+  // with OSStatus -34018 — a learner opening the app for the first time must
+  // not be met with that.
+  let stored: string | null = null;
   try {
-    const stored = await invoke<string | null>("pairing_load");
-    if (!stored) {
+    stored = await invoke<string | null>("pairing_load");
+  } catch {
+    stored = null;
+  }
+
+  if (stored) {
+    try {
+      const payload = parseZamPairPayload(stored);
+      currentPairing = payload;
+      currentUserId = payload.learner.userId;
+      showApp(payload);
+      await connect(payload, false);
+      return;
+    } catch (error) {
       showPairing(false);
+      setPairingStatus(
+        tf("stored_pairing_failed", { error: errorMessage(error) }),
+        true,
+      );
       return;
     }
-    const payload = parseZamPairPayload(stored);
-    currentPairing = payload;
-    showApp(payload);
-    await connect(payload, false);
+  }
+
+  // No pairing: either a device-local library from an earlier run, or a fresh
+  // install that has never been set up.
+  try {
+    await invoke("db_open", {});
+    const setup = await prepareLocalLibrary(db);
+    if (setup) {
+      await openLocalLibrary(setup);
+      return;
+    }
+    setupWizard.restart();
+    nav.showRoot("setup");
   } catch (error) {
-    showPairing(false);
-    setPairingStatus(
-      tf("stored_pairing_failed", { error: errorMessage(error) }),
+    setupWizard.restart();
+    nav.showRoot("setup");
+    setupWizard.setStatus(
+      tf("local_open_failed", { error: errorMessage(error) }),
       true,
     );
   }

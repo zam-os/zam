@@ -68,3 +68,5 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-07-31](2026-07-31-cross-platform-voice-mode.md) | Cross-Platform Voice Mode: Device-First Speech with a Costed Cloud Tier | Accepted — macOS engine validated; Windows and iOS await device verification |
 | [2026-08-01](2026-08-01-learning-progress-stats.md) | Learning Progress Statistics | Accepted |
 | [2026-08-02](2026-08-02-foundry-local-and-hardware-classification.md) | Local Generation Only on Accelerated Hardware: Foundry for Text, Ollama for Images | Accepted — NPU and discrete-GPU paths await hardware verification |
+| [2026-08-08](2026-08-08-ios-standalone-app.md) | ZAM on iPadOS Is a Standalone App, Not a Companion | Accepted — first run, library and AI connect verified on simulator; server-database upgrade awaits a live Turso test |
+| [2026-08-08b](2026-08-08b-ios-information-architecture.md) | iOS Information Architecture and Design System | Accepted |

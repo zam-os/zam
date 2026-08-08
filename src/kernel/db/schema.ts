@@ -9,7 +9,13 @@
  * - Immutable review log
  */
 
-export const SCHEMA = `
+/**
+ * Table definitions only. Split from the indexes because some indexes cover
+ * columns that migrations add (`idx_tokens_title` needs M010's `tokens.title`),
+ * so provisioning an older database has to run: tables → migrations → indexes.
+ * See `applySchemaAndMigrations` in provision.ts.
+ */
+export const SCHEMA_TABLES = `
 -- PRAGMAs (WAL, foreign_keys) are set programmatically in connection.ts,
 -- not here, because libsql embedded replicas manage their own WAL.
 
@@ -214,7 +220,10 @@ CREATE TABLE IF NOT EXISTS token_contexts (
   PRIMARY KEY (token_id, context_id)
 );
 
--- Performance indexes
+`;
+
+/** Performance indexes. Applied after migrations — see `SCHEMA_TABLES`. */
+export const SCHEMA_INDEXES = `
 CREATE INDEX IF NOT EXISTS idx_tokens_domain ON tokens(domain);
 CREATE INDEX IF NOT EXISTS idx_tokens_slug ON tokens(slug);
 CREATE INDEX IF NOT EXISTS idx_prereqs_token ON prerequisites(token_id);
@@ -227,3 +236,10 @@ CREATE INDEX IF NOT EXISTS idx_session_steps_session ON session_steps(session_id
 CREATE INDEX IF NOT EXISTS idx_tokens_title ON tokens(title);
 CREATE INDEX IF NOT EXISTS idx_token_contexts_context ON token_contexts(context_id);
 `;
+
+/**
+ * The full schema, tables then indexes. Safe on a database that is already
+ * current (every statement is `IF NOT EXISTS`); on one that predates a
+ * column-adding migration, use `applySchemaAndMigrations` instead.
+ */
+export const SCHEMA = `${SCHEMA_TABLES}${SCHEMA_INDEXES}`;

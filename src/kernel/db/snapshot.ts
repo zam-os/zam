@@ -14,7 +14,7 @@
  * later-added column never breaks an older snapshot.
  */
 
-import { createHash } from "node:crypto";
+import { sha256Hex } from "../util/sha256.js";
 import type { Database } from "./types.js";
 
 export const SNAPSHOT_FORMAT = "zam-snapshot";
@@ -130,7 +130,7 @@ export async function exportSnapshot(
   }
 
   const body = sections.length > 0 ? `${sections.join("\n\n")}\n` : "";
-  const checksum = createHash("sha256").update(body).digest("hex");
+  const checksum = sha256Hex(body);
   const manifest: SnapshotManifest = {
     format: SNAPSHOT_FORMAT,
     version: SNAPSHOT_VERSION,
@@ -180,7 +180,7 @@ export function parseSnapshot(snapshot: string): {
 /** Parse a snapshot and verify its body checksum. Returns the manifest. */
 export function verifySnapshot(snapshot: string): SnapshotManifest {
   const { manifest, body } = parseSnapshot(snapshot);
-  const actual = createHash("sha256").update(body).digest("hex");
+  const actual = sha256Hex(body);
   if (actual !== manifest.checksum) {
     throw new Error("Snapshot is corrupted: checksum mismatch.");
   }
@@ -199,7 +199,7 @@ export async function importSnapshot(
   options: { force?: boolean } = {},
 ): Promise<ImportResult> {
   const { manifest, body } = parseSnapshot(snapshot);
-  const actual = createHash("sha256").update(body).digest("hex");
+  const actual = sha256Hex(body);
   if (actual !== manifest.checksum) {
     throw new Error("Snapshot is corrupted: checksum mismatch.");
   }

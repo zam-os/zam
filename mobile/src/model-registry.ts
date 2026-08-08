@@ -21,8 +21,20 @@ import { getSetting } from "../../src/kernel/models/settings.js";
 /** Must equal `CLOUD_MODELS_SETTING` in src/cli/llm/model-registry.ts. */
 export const CLOUD_MODELS_SETTING = "ai.models.cloud";
 
-/** The capabilities a companion can actually use a cloud model for. */
-export type MobileModelCapability = "text" | "stt" | "tts" | "image";
+/**
+ * The capabilities a companion can actually use a cloud model for.
+ *
+ * `embedding` joined the list when the app became standalone: semantic search
+ * needs vectors, and on a device there is no Ollama to produce them. It is
+ * served by the same provider and the same key as text and image — only the
+ * model differs, which is what `embeddingModel` on the row carries.
+ */
+export type MobileModelCapability =
+  | "text"
+  | "stt"
+  | "tts"
+  | "image"
+  | "embedding";
 
 interface CloudModelRow {
   id?: string;

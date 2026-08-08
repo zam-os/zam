@@ -1,8 +1,15 @@
 //! libsql-backed database commands.
 //!
-//! The Rust shell owns the database — a plain local file (dev only) or an
-//! **online-only remote** connection to the server primary (ADR 2026-07-23) —
-//! and the WebView reaches it through these commands. The wire encoding
+//! The Rust shell owns the database — a **device-local file**, which is what a
+//! standalone install runs on (ADR 2026-08-08), or an **online-only remote**
+//! connection to a server primary once the learner attaches one (ADR
+//! 2026-07-23) — and the WebView reaches it through these commands.
+//!
+//! The local file stopped being a development shortcut when iOS became an app
+//! in its own right: it is the first-run default, and the remote connection is
+//! the upgrade a learner chooses when a second device appears.
+//!
+//! The wire encoding
 //! (blobs as `{"$blob": base64}`, everything else as JSON primitives) is
 //! documented in `mobile/src/provider.ts` and mirrored by the test stub in
 //! `tests/helpers/tauri-invoke-stub.ts`; the three must stay in sync.
@@ -24,6 +31,8 @@ struct OpenDatabase {
     connection: libsql::Connection,
     /// True when the connection is online-only against a remote primary.
     remote: bool,
+    /// Local file path, or `remote:<url>` — what `db_describe` reports.
+    location: String,
 }
 
 #[derive(Debug, PartialEq)]
@@ -130,7 +139,9 @@ fn convert_params(params: &[Json]) -> Result<Vec<libsql::Value>, String> {
 ///
 /// With both `sync_url` and `auth_token` present this opens an **online-only
 /// remote** connection to the server primary (ADR 2026-07-23). Without
-/// credentials it opens a plain local file for development only.
+/// credentials it opens the device-local file every standalone install starts
+/// on (ADR 2026-08-08). The WebView provisions the schema either way — see
+/// `src/kernel/db/provision.ts`.
 #[tauri::command]
 pub async fn db_open(
     app: AppHandle,
@@ -192,8 +203,42 @@ pub async fn db_open(
         database,
         connection,
         remote,
+        location: location.clone(),
     });
     Ok(location)
+}
+
+/// What the app is actually connected to.
+///
+/// The learner-facing difference is not cosmetic: on a device-local library
+/// there is no upstream, so the app must not offer to synchronize or claim it
+/// is in sync — `db_sync` rightly refuses there. Settings also shows the file
+/// size, because on a local library that number is the learner's whole
+/// history and the thing a backup has to cover.
+#[tauri::command]
+pub async fn db_describe(state: State<'_, DbState>) -> Result<Json, String> {
+    let guard = state.0.lock().await;
+    let Some(open) = guard.as_ref() else {
+        return Ok(json!({ "mode": "closed" }));
+    };
+
+    if open.remote {
+        return Ok(json!({
+            "mode": "remote",
+            "location": open.location.trim_start_matches("remote:"),
+        }));
+    }
+
+    // Size is best-effort: a freshly created database may not be on disk yet,
+    // and a missing file is not worth failing a settings screen over.
+    let size = std::fs::metadata(&open.location)
+        .map(|meta| meta.len())
+        .unwrap_or(0);
+    Ok(json!({
+        "mode": "local",
+        "location": open.location,
+        "sizeBytes": size,
+    }))
 }
 
 #[tauri::command]
