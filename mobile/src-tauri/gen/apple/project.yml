@@ -34,7 +34,18 @@ targets:
     sources:
       - path: Sources
       - path: Assets.xcassets
+      # Listed so the Rust staticlib is visible in Xcode, but part of no build
+      # phase. xcodegen's default phase for a file type it does not recognise
+      # is `resources`, and `Externals/<arch>/<config>/libapp.a` is exactly
+      # that — which put a 79 MB static archive into the shipped bundle beside
+      # an 11 MB executable, in the release IPA as well as the simulator app.
+      #
+      # `embed: false` on the framework dependency below was never the problem:
+      # that entry links the archive and does not copy it. This entry copied
+      # it. Linking still works through the dependency plus
+      # LIBRARY_SEARCH_PATHS, both untouched.
       - path: Externals
+        buildPhase: none
       - path: zam-mobile_iOS
       # PrivacyInfo.xcprivacy lives in this directory and is picked up with
       # it; Info.plist is regenerated and gitignored.
