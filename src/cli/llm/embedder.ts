@@ -60,28 +60,42 @@ const EMBEDDINGGEMMA_ALIASES = new Set([
 ]);
 
 /**
- * The same reasoning for the cloud embedding model the mobile app connects
- * (ADR 2026-08-08). OpenRouter serves it as `qwen/qwen3-embedding-0.6b`;
- * anything routing directly to the model drops the vendor prefix. Both must
- * land on one id, or a shared library re-embeds itself — at cost — whenever
- * the other device searches.
+ * Cloud embedding models the mobile app connects (ADR 2026-08-08, updated
+ * 2026-08-08 when OpenRouter dropped `qwen3-embedding-0.6b` from the catalogue
+ * — `/embeddings` returned HTTP 404). The 4B sibling is the smallest Qwen3
+ * embedding model still listed. Wire names and bare ids must land on one tag,
+ * or a shared library re-embeds itself — at cost — whenever the other device
+ * searches.
  */
-const QWEN3_EMBEDDING_ALIASES = new Set([
+const QWEN3_EMBEDDING_4B_ALIASES = new Set([
+  "qwen3-embedding-4b",
+  "qwen3-embedding:4b",
+  "qwen/qwen3-embedding-4b",
+  "qwen/qwen3-embedding-4b:free",
+]);
+
+const CANONICAL_QWEN3_EMBEDDING_4B_MODEL_ID = "qwen3-embedding-4b";
+
+/** Retired 0.6B spelling — still recognised so old rows do not invent a third id. */
+const QWEN3_EMBEDDING_0_6B_ALIASES = new Set([
   "qwen3-embedding-0.6b",
   "qwen3-embedding:0.6b",
   "qwen/qwen3-embedding-0.6b",
   "qwen/qwen3-embedding-0.6b:free",
 ]);
 
-const CANONICAL_QWEN3_EMBEDDING_MODEL_ID = "qwen3-embedding-0.6b";
+const CANONICAL_QWEN3_EMBEDDING_0_6B_MODEL_ID = "qwen3-embedding-0.6b";
 
 export function canonicalEmbeddingModelId(model: string): string {
   const lowered = model.trim().toLowerCase();
   if (EMBEDDINGGEMMA_ALIASES.has(lowered)) {
     return CANONICAL_EMBEDDING_MODEL_ID;
   }
-  if (QWEN3_EMBEDDING_ALIASES.has(lowered)) {
-    return CANONICAL_QWEN3_EMBEDDING_MODEL_ID;
+  if (QWEN3_EMBEDDING_4B_ALIASES.has(lowered)) {
+    return CANONICAL_QWEN3_EMBEDDING_4B_MODEL_ID;
+  }
+  if (QWEN3_EMBEDDING_0_6B_ALIASES.has(lowered)) {
+    return CANONICAL_QWEN3_EMBEDDING_0_6B_MODEL_ID;
   }
   return lowered;
 }

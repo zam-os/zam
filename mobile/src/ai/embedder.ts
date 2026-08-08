@@ -69,7 +69,16 @@ export async function requestEmbeddings(
   });
 
   if (!response.ok) {
-    throw new Error(`embeddings request failed (HTTP ${response.status})`);
+    // Surface the provider's body when present: OpenRouter uses 404 for "this
+    // model is not an embedding model / not in the catalogue", which is the
+    // only signal a learner (or a developer reading Settings) can act on.
+    const detail = await response.text().catch(() => "");
+    const snippet = detail.trim().slice(0, 180);
+    throw new Error(
+      snippet
+        ? `embeddings request failed (HTTP ${response.status}): ${snippet}`
+        : `embeddings request failed (HTTP ${response.status})`,
+    );
   }
 
   const body = (await response.json()) as EmbeddingsResponse;

@@ -34,7 +34,10 @@ import {
   resolveReviewContext,
   t,
 } from "../../kernel/index.js";
-import { OPENROUTER_PROVIDER } from "./cloud-providers.js";
+import {
+  OPENROUTER_EVALUATION_REASONING_EFFORT,
+  OPENROUTER_PROVIDER,
+} from "./cloud-providers.js";
 import {
   ensureFoundryModelLoaded,
   FOUNDRY_DEFAULT_PORT,
@@ -836,6 +839,25 @@ Evaluation:`;
   }
 
   const requestEvaluation = async (maxTokens: number): Promise<string> => {
+    // Evaluation wants short JSON, not a multi-page chain of thought.
+    // Reasoning models (notably MiMo V2.5) otherwise burn the whole budget
+    // thinking and return `finish_reason: length` with empty content.
+    // `low` is the product default for GPT-5.6 Luna. Privacy injection still
+    // runs on the body via fetchWithInteractiveTimeout.
+    const body: Record<string, unknown> = {
+      model: endpoint.model,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      temperature: 0.2,
+      max_tokens: maxTokens,
+    };
+    if (isOpenRouterUrl(endpoint.url)) {
+      body.reasoning = {
+        effort: OPENROUTER_EVALUATION_REASONING_EFFORT,
+      };
+    }
     const res = await fetchWithInteractiveTimeout(
       `${endpoint.url}/chat/completions`,
       {
@@ -844,15 +866,7 @@ Evaluation:`;
           "Content-Type": "application/json",
           Authorization: `Bearer ${endpoint.apiKey}`,
         },
-        body: JSON.stringify({
-          model: endpoint.model,
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: userPrompt },
-          ],
-          temperature: 0.2,
-          max_tokens: maxTokens,
-        }),
+        body: JSON.stringify(body),
         locale: cfg.locale,
       },
     );

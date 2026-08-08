@@ -20,9 +20,21 @@ import {
   type ZamPairPayloadV1,
 } from "../../src/bridge/mobile-pairing.js";
 import {
+  OPENROUTER_PROVIDER,
+  OPENROUTER_RECOMMENDED_MODELS,
+} from "../../src/cli/llm/cloud-providers.js";
+import { getSetting } from "../../src/kernel/models/settings.js";
+import {
   buildReviewQueue,
   type ReviewQueue,
 } from "../../src/kernel/scheduler/queue.js";
+import {
+  connectCloudModel,
+  connectedCloudLabel,
+  disconnectCloudModel,
+  migrateStaleCloudDefaults,
+} from "./ai/connect.js";
+import { embedInBackground } from "./ai/embedder.js";
 import {
   evaluateMobileAnswer,
   evaluationSpeech,
@@ -46,18 +58,6 @@ import {
   parseMobileImport,
 } from "./import.js";
 import {
-  createMultiDraftController,
-  type MultiDraftController,
-} from "./multi-draft.js";
-import { getSetting } from "../../src/kernel/models/settings.js";
-import { OPENROUTER_PROVIDER } from "../../src/cli/llm/cloud-providers.js";
-import {
-  connectCloudModel,
-  connectedCloudLabel,
-  disconnectCloudModel,
-} from "./ai/connect.js";
-import { embedInBackground } from "./ai/embedder.js";
-import {
   type LibraryEntry,
   listLibrary,
   pauseCard,
@@ -66,16 +66,12 @@ import {
   saveCardEdit,
   searchLibrary,
 } from "./library.js";
-import { createTauriDatabase } from "./provider.js";
-import { REMOTE_NOT_EMPTY, upgradeToServerDatabase } from "./setup/upgrade.js";
+import { resolveMobileCloudChain } from "./model-registry.js";
 import {
-  completeFirstRun,
-  type LocalSetup,
-  prepareLocalLibrary,
-} from "./setup/first-run.js";
-import { starterCards } from "./setup/starter-content.js";
-import { initSetupWizard, type SetupChoices } from "./setup/wizard.js";
-import { createNav } from "./ui/nav.js";
+  createMultiDraftController,
+  type MultiDraftController,
+} from "./multi-draft.js";
+import { createTauriDatabase } from "./provider.js";
 import {
   formatTimeInput,
   millisUntilNext,
@@ -89,12 +85,22 @@ import {
   type MobileReviewSummary,
 } from "./review-session.js";
 import {
+  completeFirstRun,
+  type LocalSetup,
+  prepareLocalLibrary,
+} from "./setup/first-run.js";
+import { starterCards } from "./setup/starter-content.js";
+import { REMOTE_NOT_EMPTY, upgradeToServerDatabase } from "./setup/upgrade.js";
+import { initSetupWizard, type SetupChoices } from "./setup/wizard.js";
+import { synthesizeViaCloud, transcribeViaCloud } from "./speech.js";
+import {
   loadStatsView,
   type StatsFormatters,
   type StatsPeriod,
   type StatsView,
 } from "./stats.js";
 import { SyncError, syncWithRetry } from "./sync.js";
+import { createNav } from "./ui/nav.js";
 import {
   DEFAULT_MOBILE_UPDATE_MANIFEST,
   type MobileUpdateInfo,
@@ -104,8 +110,6 @@ import {
   visionImportUnavailableReason,
 } from "./vision-config.js";
 import { decomposeImageViaVision } from "./vl-import.js";
-import { resolveMobileCloudChain } from "./model-registry.js";
-import { synthesizeViaCloud, transcribeViaCloud } from "./speech.js";
 import {
   buildMobileAvailability,
   cloudSpeechAvailability,
@@ -242,10 +246,68 @@ const upgradeReplaceButton = element<HTMLButtonElement>("upgrade-replace");
 const upgradeStatus = element<HTMLParagraphElement>("upgrade-status");
 const aiState = element<HTMLElement>("ai-state");
 const aiKeyInput = element<HTMLInputElement>("ai-key");
+const aiModelSelect = element<HTMLSelectElement>("ai-model");
+const aiModelCustomField = element<HTMLElement>("ai-model-custom-field");
+const aiModelCustomInput = element<HTMLInputElement>("ai-model-custom");
 const aiConnectButton = element<HTMLButtonElement>("ai-connect");
 const aiGetKeyButton = element<HTMLButtonElement>("ai-get-key");
 const aiDisconnectButton = element<HTMLButtonElement>("ai-disconnect");
 const aiStatus = element<HTMLParagraphElement>("ai-status");
+
+/** Sentinel value for free-form OpenRouter model ids outside the short list. */
+const AI_MODEL_CUSTOM = "__custom__";
+
+/** Whether a cloud key is already registered (button label / empty-key path). */
+let aiConnected = false;
+
+/** Fill the model select; free-form ids land on "Other model…". */
+function ensureAiModelOptions(selected?: string | null): void {
+  const current = selected ?? selectedModelId();
+  aiModelSelect.replaceChildren();
+  for (const model of OPENROUTER_RECOMMENDED_MODELS) {
+    const option = document.createElement("option");
+    option.value = model.id;
+    option.textContent = model.label;
+    aiModelSelect.appendChild(option);
+  }
+  const customOption = document.createElement("option");
+  customOption.value = AI_MODEL_CUSTOM;
+  customOption.textContent = t("ai_model_custom");
+  aiModelSelect.appendChild(customOption);
+
+  const onList =
+    current &&
+    OPENROUTER_RECOMMENDED_MODELS.some((model) => model.id === current);
+  if (current && !onList) {
+    aiModelSelect.value = AI_MODEL_CUSTOM;
+    aiModelCustomInput.value = current;
+  } else {
+    aiModelSelect.value = current || OPENROUTER_PROVIDER.defaultModel;
+    if (onList) aiModelCustomInput.value = "";
+  }
+  syncAiModelCustomVisibility();
+}
+
+function syncAiModelCustomVisibility(): void {
+  const custom = aiModelSelect.value === AI_MODEL_CUSTOM;
+  aiModelCustomField.hidden = !custom;
+}
+
+/** Resolved model id from the select and optional free-form field. */
+function selectedModelId(): string {
+  if (aiModelSelect.value === AI_MODEL_CUSTOM) {
+    return aiModelCustomInput.value.trim();
+  }
+  return (aiModelSelect.value || OPENROUTER_PROVIDER.defaultModel).trim();
+}
+
+ensureAiModelOptions();
+aiModelSelect.addEventListener("change", () => {
+  syncAiModelCustomVisibility();
+  if (aiModelSelect.value === AI_MODEL_CUSTOM) {
+    aiModelCustomInput.focus();
+  }
+});
 const reviewProgress = element<HTMLElement>("review-progress");
 const reviewProgressFill = element<HTMLElement>("review-progress-fill");
 const reviewMeta = element<HTMLElement>("review-meta");
@@ -543,6 +605,10 @@ let cloudEndpoints: Record<"text" | "stt" | "tts", ZamPairLlmEndpoint | null> =
 
 async function refreshCloudEndpointsFromDb(): Promise<void> {
   try {
+    // Quiet upgrade of ZAM defaults that no longer work (MiMo as default chat,
+    // the retired qwen3-embedding-0.6b). Only rewrites models ZAM itself once
+    // chose — never a hand-picked model.
+    await migrateStaleCloudDefaults(db);
     const [text, stt, tts] = await Promise.all([
       resolveMobileCloudChain(db, "text"),
       resolveMobileCloudChain(db, "stt"),
@@ -929,18 +995,19 @@ function renderStats(view: StatsView): void {
   }
 
   for (const row of view.rows) {
-    const entry = document.createElement("div");
-    entry.className = "stats-row";
+    // Mobile CSS styles `.bars li` / `.track` / `.fill` (components.css).
+    // Desktop class names (`stats-row*`) never had rules here, so iPad showed
+    // only text while Android WebView sometimes still painted a bare width.
+    const entry = document.createElement("li");
 
     const label = document.createElement("span");
-    label.className = "stats-row-label";
     label.textContent = row.label;
     // The raw bucket key stays reachable for anyone comparing with the CLI.
     label.title = row.bucket;
 
-    const bar = document.createElement("span");
-    bar.className = "stats-row-bar";
-    bar.setAttribute(
+    const track = document.createElement("span");
+    track.className = "track";
+    track.setAttribute(
       "aria-label",
       tf("stats_row_aria", {
         label: row.label,
@@ -949,19 +1016,19 @@ function renderStats(view: StatsView): void {
       }),
     );
     const fill = document.createElement("span");
-    fill.className = "stats-row-fill";
+    fill.className = "fill";
     fill.style.width = `${row.barPercent}%`;
-    bar.appendChild(fill);
+    track.appendChild(fill);
 
     const count = document.createElement("span");
-    count.className = "stats-row-count";
+    count.className = "count";
     count.textContent = String(row.reviewedCards);
 
     const time = document.createElement("span");
-    time.className = "stats-row-time";
+    time.className = "time";
     time.textContent = row.studyTime ?? t("stats_time_none");
 
-    entry.append(label, bar, count, time);
+    entry.append(label, track, count, time);
     statsRows.appendChild(entry);
   }
 }
@@ -2048,15 +2115,24 @@ function setAiStatus(text: string, isError = false): void {
 /** Paint the AI section from what is actually registered in the database. */
 async function refreshAiSection(): Promise<void> {
   let label: string | null = null;
+  let model: string | null = null;
   try {
+    // Prefer the live chain model so the select matches what evaluation uses.
+    const chain = await resolveMobileCloudChain(db, "text");
+    model = chain?.model ?? null;
     label = await connectedCloudLabel(db);
   } catch {
     label = null;
   }
+  aiConnected = Boolean(label);
+  ensureAiModelOptions(model);
   aiState.textContent = label ? tf("ai_connected", { label }) : t("ai_none");
   aiDisconnectButton.hidden = !label;
   aiKeyInput.value = "";
   aiKeyInput.placeholder = label ? "••••••••" : "sk-or-…";
+  // Connected: the button mostly switches models (key optional). First time:
+  // it must paste a key.
+  aiConnectButton.textContent = label ? t("ai_apply") : t("ai_connect");
 }
 
 /**
@@ -2087,6 +2163,7 @@ async function runEmbeddingPass(report: boolean): Promise<void> {
 /** Translate a connect failure into something the learner can act on. */
 function aiErrorMessage(code: string): string {
   if (code === "empty") return t("ai_err_empty");
+  if (code === "empty_model") return t("ai_err_empty_model");
   if (code === "rejected") return t("ai_err_rejected");
   if (code === "unreachable") return t("ai_err_unreachable");
   return tf("ai_err_other", { code });
@@ -2094,21 +2171,29 @@ function aiErrorMessage(code: string): string {
 
 aiConnectButton.addEventListener("click", async () => {
   aiConnectButton.disabled = true;
+  const model = selectedModelId();
+  const wasConnected = aiConnected;
   setAiStatus(t("ai_checking"));
   try {
-    const result = await connectCloudModel(db, aiKeyInput.value);
+    // Empty key is fine when already connected: connectCloudModel reuses the
+    // stored key so switching models is one tap, not a re-paste.
+    const result = await connectCloudModel(db, aiKeyInput.value, { model });
     if (!result.ok) {
       setAiStatus(aiErrorMessage(result.error ?? "rejected"), true);
       return;
     }
     await refreshAiSection();
     await refreshCloudEndpointsFromDb();
-    setAiStatus(
-      tf("ai_connected_msg", { min: OPENROUTER_PROVIDER.minTopUpUsd }),
-    );
-    // Cards that existed before the key did are the ones a learner will
-    // search for first, so start on them straight away.
-    void runEmbeddingPass(true);
+    if (wasConnected) {
+      setAiStatus(tf("ai_model_updated", { model }));
+    } else {
+      setAiStatus(
+        tf("ai_connected_msg", { min: OPENROUTER_PROVIDER.minTopUpUsd }),
+      );
+      // Cards that existed before the key did are the ones a learner will
+      // search for first, so start on them straight away.
+      void runEmbeddingPass(true);
+    }
   } catch (error) {
     setAiStatus(errorMessage(error), true);
   } finally {

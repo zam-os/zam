@@ -23,6 +23,7 @@ import {
   connectCloudModel,
   connectedCloudLabel,
   disconnectCloudModel,
+  migrateStaleCloudDefaults,
   verifyKey,
 } from "../../mobile/src/ai/connect.js";
 import { embedPendingTokens } from "../../mobile/src/ai/embedder.js";
@@ -33,7 +34,7 @@ import { starterCards } from "../../mobile/src/setup/starter-content.js";
 import { OPENROUTER_PROVIDER } from "../../src/cli/llm/cloud-providers.js";
 import { canonicalEmbeddingModelId } from "../../src/cli/llm/embedder.js";
 import type { Database } from "../../src/kernel/db/types.js";
-import { getSetting } from "../../src/kernel/models/settings.js";
+import { getSetting, setSetting } from "../../src/kernel/models/settings.js";
 import { createTauriInvokeStub } from "../helpers/tauri-invoke-stub.js";
 
 const cleanups: Array<() => void> = [];
@@ -157,6 +158,117 @@ describe("connectCloudModel", () => {
     expect(embedding?.apiKey).toBe("key");
   });
 
+  it("accepts an explicit chat model and replaces the former ZAM default", async () => {
+    const db = await library();
+    await connectCloudModel(db, "key", {
+      verify: accept,
+      model: "xiaomi/mimo-v2.5",
+    });
+    await connectCloudModel(db, "key", {
+      verify: accept,
+      model: "openai/gpt-5.6-luna",
+    });
+
+    const rows = JSON.parse(
+      (await getSetting(db, "ai.models.cloud")) as string,
+    ) as Array<{ model: string; capabilities: Record<string, boolean> }>;
+    expect(rows.some((row) => row.model === "xiaomi/mimo-v2.5")).toBe(false);
+    expect(
+      rows.some(
+        (row) => row.model === "openai/gpt-5.6-luna" && row.capabilities.text,
+      ),
+    ).toBe(true);
+  });
+
+  it("switches the model without re-pasting the key", async () => {
+    const db = await library();
+    await connectCloudModel(db, "sk-or-first", {
+      verify: accept,
+      model: "openai/gpt-5.6-luna",
+    });
+    // Empty key: reuse the stored one. Verify must not be called.
+    const verify = vi.fn(async () => ({ valid: true }) as const);
+    const result = await connectCloudModel(db, "", {
+      verify,
+      model: "qwen/qwen3.7-flash",
+    });
+    expect(result.ok).toBe(true);
+    expect(verify).not.toHaveBeenCalled();
+
+    const text = await resolveMobileCloudChain(db, "text");
+    expect(text?.model).toBe("qwen/qwen3.7-flash");
+    expect(text?.apiKey).toBe("sk-or-first");
+  });
+
+  it("migrates the retired embedding model and the slow MiMo default in place", async () => {
+    const db = await library();
+    // Simulate a 0.29.0 connect that wrote the models we are retiring.
+    await setSetting(
+      db,
+      "ai.models.cloud",
+      JSON.stringify([
+        {
+          id: "01CHAT",
+          label: "OpenRouter",
+          url: OPENROUTER_PROVIDER.baseUrl,
+          model: "xiaomi/mimo-v2.5",
+          local: false,
+          apiFlavor: "chat-completions",
+          apiKey: "key",
+          order: 0,
+          capabilities: {
+            text: true,
+            image: true,
+            embedding: false,
+            video: false,
+            stt: false,
+            tts: false,
+          },
+          detectedCapabilities: {
+            text: true,
+            image: true,
+            embedding: false,
+            video: false,
+            stt: false,
+            tts: false,
+          },
+        },
+        {
+          id: "01EMB",
+          label: "OpenRouter",
+          url: OPENROUTER_PROVIDER.baseUrl,
+          model: "qwen/qwen3-embedding-0.6b",
+          local: false,
+          apiFlavor: "chat-completions",
+          apiKey: "key",
+          order: 1,
+          capabilities: {
+            text: false,
+            image: false,
+            embedding: true,
+            video: false,
+            stt: false,
+            tts: false,
+          },
+          detectedCapabilities: {
+            text: false,
+            image: false,
+            embedding: true,
+            video: false,
+            stt: false,
+            tts: false,
+          },
+        },
+      ]),
+    );
+
+    expect(await migrateStaleCloudDefaults(db)).toBe(true);
+    const text = await resolveMobileCloudChain(db, "text");
+    const embedding = await resolveMobileCloudChain(db, "embedding");
+    expect(text?.model).toBe(OPENROUTER_PROVIDER.defaultModel);
+    expect(embedding?.model).toBe(CLOUD_EMBEDDING_MODEL);
+  });
+
   it("writes two rows, so a desktop on the same database resolves the same models", async () => {
     // A registry row is an endpoint, and an endpoint carries *one* model.
     // Encoding the embedding model as an extra field on the chat row worked on
@@ -175,7 +287,9 @@ describe("connectCloudModel", () => {
     }>;
     expect(rows).toHaveLength(2);
 
-    const chat = rows.find((row) => row.model === OPENROUTER_PROVIDER.defaultModel);
+    const chat = rows.find(
+      (row) => row.model === OPENROUTER_PROVIDER.defaultModel,
+    );
     const embed = rows.find((row) => row.model === CLOUD_EMBEDDING_MODEL);
     expect(chat?.capabilities.text).toBe(true);
     expect(chat?.capabilities.embedding).toBe(false);
@@ -198,7 +312,7 @@ describe("connectCloudModel", () => {
 describe("canonical embedding id", () => {
   it("agrees with the desktop for both the wire name and the stored id", () => {
     // The interesting one is the *wire* name. OpenRouter serves the model as
-    // `qwen/qwen3-embedding-0.6b`; a desktop configured against the same
+    // `qwen/qwen3-embedding-4b`; a desktop configured against the same
     // provider must tag its vectors with the same id the device uses, or a
     // shared library re-embeds itself — at cost — on the next search.
     expect(canonicalEmbeddingModelId(CLOUD_EMBEDDING_MODEL)).toBe(
@@ -207,7 +321,7 @@ describe("canonical embedding id", () => {
     expect(canonicalEmbeddingModelId(CLOUD_EMBEDDING_MODEL_ID)).toBe(
       CLOUD_EMBEDDING_MODEL_ID,
     );
-    expect(canonicalEmbeddingModelId("Qwen/Qwen3-Embedding-0.6B")).toBe(
+    expect(canonicalEmbeddingModelId("Qwen/Qwen3-Embedding-4B")).toBe(
       CLOUD_EMBEDDING_MODEL_ID,
     );
   });

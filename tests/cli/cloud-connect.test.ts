@@ -3,12 +3,6 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
-  type Database,
-  getMachineAiModels,
-  getSetting,
-  openDatabase,
-} from "../../src/kernel/index.js";
-import {
   enforceOpenRouterPrivacy,
   isOpenRouterUrl,
   OPENROUTER_ROUTING_PREFERENCES,
@@ -17,11 +11,17 @@ import {
   type CloudConnectDeps,
   connectCloudProvider,
 } from "../../src/cli/llm/cloud-connect.js";
-import { loadModelRegistry } from "../../src/cli/llm/model-registry.js";
 import {
   CLOUD_PROVIDERS,
   OPENROUTER_PROVIDER,
 } from "../../src/cli/llm/cloud-providers.js";
+import { loadModelRegistry } from "../../src/cli/llm/model-registry.js";
+import {
+  type Database,
+  getMachineAiModels,
+  getSetting,
+  openDatabase,
+} from "../../src/kernel/index.js";
 
 const OPENROUTER_CHAT = "https://openrouter.ai/api/v1/chat/completions";
 
@@ -35,12 +35,15 @@ describe("OpenRouter privacy enforcement (ADR 2026-07-24 §5)", () => {
   });
 
   it("injects deny + zdr into every OpenRouter chat-completions body", () => {
-    const body = JSON.stringify({ model: "xiaomi/mimo-v2.5", messages: [] });
+    const body = JSON.stringify({
+      model: OPENROUTER_PROVIDER.defaultModel,
+      messages: [],
+    });
     const result = JSON.parse(
       enforceOpenRouterPrivacy(OPENROUTER_CHAT, body) as string,
     );
     expect(result.provider).toEqual({ data_collection: "deny", zdr: true });
-    expect(result.model).toBe("xiaomi/mimo-v2.5");
+    expect(result.model).toBe(OPENROUTER_PROVIDER.defaultModel);
   });
 
   it("wins over a caller-supplied provider object", () => {
@@ -97,6 +100,8 @@ describe("cloud provider descriptors", () => {
     expect(isOpenRouterUrl(OPENROUTER_PROVIDER.baseUrl)).toBe(true);
     // No :free variant — it would route around the enforced privacy prefs.
     expect(OPENROUTER_PROVIDER.defaultModel).not.toContain(":free");
+    // Current default: GPT-5.6 Luna (fast multimodal OpenAI tier).
+    expect(OPENROUTER_PROVIDER.defaultModel).toBe("openai/gpt-5.6-luna");
   });
 });
 
@@ -137,9 +142,7 @@ describe("connectCloudProvider", () => {
     }
   });
 
-  function deps(
-    overrides: Partial<CloudConnectDeps> = {},
-  ): CloudConnectDeps {
+  function deps(overrides: Partial<CloudConnectDeps> = {}): CloudConnectDeps {
     return {
       probe: async () => ({
         reachable: true,
@@ -200,34 +203,50 @@ describe("connectCloudProvider", () => {
       { ref: OPENROUTER_PROVIDER.apiKeyRef, apiKey: "sk-or-good" },
     ]);
     const models = await loadModelRegistry(db);
-    expect(models).toHaveLength(1);
+    // Chat + embedding: one OpenRouter key serves both (parity with mobile).
+    expect(models).toHaveLength(2);
     // A hosted endpoint belongs to the learner, not to this machine: it goes
     // to the database so every client sees it (ADR 2026-07-23), and it takes
     // its key with it because an apiKeyRef means nothing to a phone.
     expect(getMachineAiModels()).toHaveLength(0);
-    expect(models[0].apiKey).toBe("sk-or-good");
-    expect(models[0].url).toBe(OPENROUTER_PROVIDER.baseUrl);
-    expect(models[0].model).toBe(OPENROUTER_PROVIDER.defaultModel);
-    expect(models[0].local).toBe(false);
-    expect(models[0].capabilities.text).toBe(true);
-    expect(models[0].capabilities.image).toBe(true);
-    expect(models[0].detectedCapabilities.text).toBe(true);
+    const chat = models.find(
+      (m) => m.model === OPENROUTER_PROVIDER.defaultModel,
+    );
+    const embed = models.find((m) => m.capabilities?.embedding);
+    expect(chat?.apiKey).toBe("sk-or-good");
+    expect(chat?.url).toBe(OPENROUTER_PROVIDER.baseUrl);
+    expect(chat?.local).toBe(false);
+    expect(chat?.capabilities.text).toBe(true);
+    expect(chat?.capabilities.image).toBe(true);
+    expect(chat?.detectedCapabilities.text).toBe(true);
+    expect(embed?.model).toBe("qwen/qwen3-embedding-4b");
+    expect(embed?.apiKey).toBe("sk-or-good");
     expect(await getSetting(db, "llm.enabled")).toBe("true");
   });
 
   it("is idempotent: reconnecting updates the entry in place", async () => {
     await connectCloudProvider(db, "openrouter", "sk-or-1", deps());
-    const [first] = await loadModelRegistry(db);
+    const first = (await loadModelRegistry(db)).find(
+      (m) => m.model === OPENROUTER_PROVIDER.defaultModel,
+    );
 
-    const again = await connectCloudProvider(db, "openrouter", "sk-or-2", deps());
+    const again = await connectCloudProvider(
+      db,
+      "openrouter",
+      "sk-or-2",
+      deps(),
+    );
     expect(again.ok).toBe(true);
     expect(again.created).toBe(false);
 
     const models = await loadModelRegistry(db);
-    expect(models).toHaveLength(1);
-    expect(models[0].id).toBe(first.id);
-    expect(models[0].apiKey).toBe("sk-or-2");
-    expect(models[0].order).toBe(first.order);
+    expect(models).toHaveLength(2);
+    const chat = models.find(
+      (m) => m.model === OPENROUTER_PROVIDER.defaultModel,
+    );
+    expect(chat?.id).toBe(first?.id);
+    expect(chat?.apiKey).toBe("sk-or-2");
+    expect(chat?.order).toBe(first?.order);
     expect(storedKeys.map((k) => k.apiKey)).toEqual(["sk-or-1", "sk-or-2"]);
   });
 

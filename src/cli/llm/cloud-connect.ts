@@ -26,12 +26,25 @@ import {
 import {
   type CloudProviderDescriptor,
   getCloudProvider,
+  OPENROUTER_LEGACY_DEFAULT_MODELS,
 } from "./cloud-providers.js";
 import {
   loadModelRegistry,
   type ResolvedModelEntry,
   saveModelRegistry,
 } from "./model-registry.js";
+
+/**
+ * OpenRouter embedding model registered alongside the chat default so every
+ * client of a shared database (desktop + mobile) resolves the same vectors.
+ * Must stay aligned with `CLOUD_EMBEDDING_MODEL` in `mobile/src/ai/connect.ts`.
+ */
+export const OPENROUTER_EMBEDDING_MODEL = "qwen/qwen3-embedding-4b";
+
+const OPENROUTER_EMBEDDING_LEGACY_MODELS = [
+  "qwen/qwen3-embedding-0.6b",
+  "qwen/qwen3-embedding-0.6b:free",
+] as const;
 
 export interface CloudKeyCheck {
   valid: boolean;
@@ -113,7 +126,25 @@ export async function connectCloudProvider(
   }
   deps.storeKey(descriptor.apiKeyRef, key);
 
-  const models = await loadModelRegistry(db);
+  let models = await loadModelRegistry(db);
+
+  // Drop former ZAM defaults for this provider so they cannot sit ahead of the
+  // working row (slow reasoning models, retired embedding catalogue entries).
+  if (descriptor.id === "openrouter") {
+    const dropChat = new Set<string>(OPENROUTER_LEGACY_DEFAULT_MODELS);
+    dropChat.delete(descriptor.defaultModel);
+    const dropEmbed = new Set<string>(OPENROUTER_EMBEDDING_LEGACY_MODELS);
+    dropEmbed.delete(OPENROUTER_EMBEDDING_MODEL);
+    models = models.filter((entry) => {
+      if (entry.url !== descriptor.baseUrl) return true;
+      if (dropChat.has(entry.model) && entry.capabilities?.text) return false;
+      if (dropEmbed.has(entry.model) && entry.capabilities?.embedding) {
+        return false;
+      }
+      return true;
+    });
+  }
+
   const existing = models.find(
     (entry) =>
       entry.url === descriptor.baseUrl &&
@@ -132,7 +163,7 @@ export async function connectCloudProvider(
     local: false,
     apiFlavor: "chat-completions",
     apiKeyRef: descriptor.apiKeyRef,
-    order: existing?.order ?? models.length,
+    order: 0,
     capabilities,
     detectedCapabilities:
       existing?.detectedCapabilities ?? emptyCapabilityFlags(),
@@ -153,10 +184,56 @@ export async function connectCloudProvider(
   // into a credentials file on this machine and means nothing to a phone
   // (ADR 2026-07-23). The ref is kept as well, so the desktop still resolves if
   // the shared row is ever cleared.
-  const shared: ResolvedModelEntry = { ...saved, apiKey: key };
-  const next = existing
+  const shared: ResolvedModelEntry = { ...saved, apiKey: key, order: 0 };
+  let next = existing
     ? models.map((entry) => (entry.id === existing.id ? shared : entry))
     : [...models, shared];
+
+  // Same OpenRouter key serves embeddings; register a second row so desktop and
+  // mobile resolve `embedding` to a real embedding model, not the chat model.
+  if (descriptor.id === "openrouter") {
+    const embedExisting = next.find(
+      (entry) =>
+        entry.url === descriptor.baseUrl &&
+        entry.model === OPENROUTER_EMBEDDING_MODEL,
+    );
+    const embedFlags = emptyCapabilityFlags();
+    embedFlags.embedding = true;
+    const embedRow: ResolvedModelEntry = {
+      id: embedExisting?.id ?? ulid(),
+      label: descriptor.label,
+      url: descriptor.baseUrl,
+      model: OPENROUTER_EMBEDDING_MODEL,
+      local: false,
+      apiFlavor: "chat-completions",
+      apiKeyRef: descriptor.apiKeyRef,
+      apiKey: key,
+      order: 1,
+      capabilities: embedFlags,
+      // Confirmed by catalogue membership, not a chat probe: probing an
+      // embedding model through chat-completions would report no text and
+      // wipe the flag we need.
+      detectedCapabilities: { ...embedFlags },
+      probedAt: new Date().toISOString(),
+    };
+    next = embedExisting
+      ? next.map((entry) => (entry.id === embedExisting.id ? embedRow : entry))
+      : [...next, embedRow];
+  }
+
+  // Keep the freshly connected models first without scrambling foreign rows.
+  let order = 2;
+  next = next.map((entry) => {
+    if (
+      entry.url === descriptor.baseUrl &&
+      (entry.model === descriptor.defaultModel ||
+        entry.model === OPENROUTER_EMBEDDING_MODEL)
+    ) {
+      return entry;
+    }
+    return { ...entry, order: order++ };
+  });
+
   await saveModelRegistry(db, next);
 
   // The registry path is gated on llm.enabled for recall/text (client.ts);

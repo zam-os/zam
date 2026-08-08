@@ -309,6 +309,9 @@ describe("mobile voice availability", () => {
     model: "whisper",
     apiFlavor: "chat-completions" as const,
     local: false,
+    // Cloud speech without a key is unreachable; the shared cloud-endpoint
+    // gate requires one so orphan registry rows do not look usable.
+    apiKey: "test-key",
   };
 
   it("reads cloud availability per capability from the pairing", () => {

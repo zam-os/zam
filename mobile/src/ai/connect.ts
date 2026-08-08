@@ -23,16 +23,23 @@
  */
 
 import { ulid } from "ulid";
-import type { Database } from "../../../src/kernel/db/types.js";
-import { getSetting, setSetting } from "../../../src/kernel/models/settings.js";
 import {
   type CloudProviderDescriptor,
+  OPENROUTER_LEGACY_DEFAULT_MODELS,
   OPENROUTER_PROVIDER,
 } from "../../../src/cli/llm/cloud-providers.js";
+import type { Database } from "../../../src/kernel/db/types.js";
+import { getSetting, setSetting } from "../../../src/kernel/models/settings.js";
 import { CLOUD_MODELS_SETTING } from "../model-registry.js";
 
-/** Model requested for the `embedding` capability of the connected provider. */
-export const CLOUD_EMBEDDING_MODEL = "qwen/qwen3-embedding-0.6b";
+/**
+ * Model requested for the `embedding` capability of the connected provider.
+ *
+ * OpenRouter's catalogue no longer lists `qwen/qwen3-embedding-0.6b` (HTTP 404
+ * on `/embeddings`, verified 2026-08-08). The 4B sibling is the smallest Qwen3
+ * embedding model still available and keeps the same multilingual family.
+ */
+export const CLOUD_EMBEDDING_MODEL = "qwen/qwen3-embedding-4b";
 
 /**
  * Canonical id every stored vector is tagged with, mirroring
@@ -40,7 +47,13 @@ export const CLOUD_EMBEDDING_MODEL = "qwen/qwen3-embedding-0.6b";
  * on a shared database: a device that tags its vectors differently re-embeds
  * the whole library the first time anyone searches.
  */
-export const CLOUD_EMBEDDING_MODEL_ID = "qwen3-embedding-0.6b";
+export const CLOUD_EMBEDDING_MODEL_ID = "qwen3-embedding-4b";
+
+/** Former embedding wire names ZAM wrote; migrate in place when still present. */
+export const CLOUD_EMBEDDING_LEGACY_MODELS = [
+  "qwen/qwen3-embedding-0.6b",
+  "qwen/qwen3-embedding-0.6b:free",
+] as const;
 
 export interface CloudKeyCheck {
   valid: boolean;
@@ -118,28 +131,44 @@ async function writeRows(db: Database, rows: CloudRow[]): Promise<void> {
 }
 
 /**
- * Verify the key, then register the provider's default model for text, image
+ * Verify the key, then register the chosen (or default) model for text, image
  * and embeddings. Idempotent: reconnecting with a new key updates the existing
- * row rather than stacking a second one.
+ * row rather than stacking a second one. Former ZAM defaults on the same
+ * provider URL are replaced in place so a reconnect upgrades a broken model
+ * without leaving a dead fallback in the chain.
  */
 export async function connectCloudModel(
   db: Database,
   apiKey: string,
   options: {
     descriptor?: CloudProviderDescriptor;
+    /** Chat model id; defaults to the provider descriptor's default. */
+    model?: string;
     verify?: typeof verifyKey;
   } = {},
 ): Promise<ConnectResult> {
   const descriptor = options.descriptor ?? OPENROUTER_PROVIDER;
   const verify = options.verify ?? verifyKey;
+  const chatModel = (options.model?.trim() || descriptor.defaultModel).trim();
+  if (!chatModel) return { ok: false, error: "empty_model" };
 
-  const key = apiKey.trim();
+  // Changing the model after a first connect must not force the learner to
+  // re-paste the key: reuse the one already stored for this provider.
+  const pasted = apiKey.trim();
+  const rows = await readRows(db);
+  const storedKey =
+    pasted ||
+    rows.find((row) => row.url === descriptor.baseUrl && row.apiKey)?.apiKey ||
+    "";
+  const key = storedKey.trim();
   if (!key) return { ok: false, error: "empty" };
 
-  const check = await verify(key, descriptor);
-  if (!check.valid) return { ok: false, error: check.reason ?? "rejected" };
-
-  const rows = await readRows(db);
+  // Only hit the network when the learner typed a key. A model-only switch
+  // reuses a key we already accepted.
+  if (pasted) {
+    const check = await verify(key, descriptor);
+    if (!check.valid) return { ok: false, error: check.reason ?? "rejected" };
+  }
 
   // `capabilities` is what the learner asked for and `detectedCapabilities`
   // what a probe confirmed; `resolveMobileCloudChain` requires both. A
@@ -171,25 +200,58 @@ export async function connectCloudModel(
     tts: false,
   };
 
+  // Drop superseded ZAM defaults for this provider so they cannot sit ahead of
+  // the working row and burn the evaluation budget (or 404 on embeddings).
+  const legacyChat = new Set<string>(OPENROUTER_LEGACY_DEFAULT_MODELS);
+  if (chatModel !== descriptor.defaultModel) {
+    // The learner explicitly picked something else; the previous default is
+    // also legacy for this reconnect.
+    legacyChat.add(descriptor.defaultModel);
+  }
+  legacyChat.delete(chatModel);
+
+  const legacyEmbed = new Set<string>(CLOUD_EMBEDDING_LEGACY_MODELS);
+  legacyEmbed.delete(CLOUD_EMBEDDING_MODEL);
+
+  const kept = rows.filter((row) => {
+    if (row.url !== descriptor.baseUrl) return true;
+    if (legacyChat.has(row.model) && !row.capabilities?.embedding) return false;
+    if (legacyEmbed.has(row.model) && row.capabilities?.embedding) return false;
+    // One chat model per provider from this connect path: switching replaces
+    // the previous chat row so dead fallbacks do not pile up.
+    if (
+      row.capabilities?.text &&
+      !row.capabilities?.embedding &&
+      row.model !== chatModel
+    ) {
+      return false;
+    }
+    return true;
+  });
+
   const wanted: Array<{ model: string; flags: typeof chatFlags }> = [
-    { model: descriptor.defaultModel, flags: chatFlags },
+    { model: chatModel, flags: chatFlags },
     { model: CLOUD_EMBEDDING_MODEL, flags: embeddingFlags },
   ];
 
   let created = false;
   for (const [index, entry] of wanted.entries()) {
-    const existing = rows.find(
+    const existing = kept.find(
       (row) => row.url === descriptor.baseUrl && row.model === entry.model,
     );
     if (existing) {
       existing.apiKey = key;
+      existing.label = descriptor.label;
       existing.capabilities = { ...entry.flags };
       existing.detectedCapabilities = { ...entry.flags };
       existing.probedAt = now;
+      // Prefer the models this connect just verified over any older cloud rows
+      // that may still sit in the shared database (desktop multi-model setup).
+      existing.order = index;
       continue;
     }
     created = true;
-    rows.push({
+    kept.push({
       id: ulid(),
       label: descriptor.label,
       url: descriptor.baseUrl,
@@ -197,15 +259,92 @@ export async function connectCloudModel(
       local: false,
       apiFlavor: "chat-completions",
       apiKey: key,
-      order: rows.length + index,
+      order: index,
       capabilities: { ...entry.flags },
       detectedCapabilities: { ...entry.flags },
       probedAt: now,
     });
   }
 
-  await writeRows(db, rows);
+  // Bump every other reachable row so the freshly connected models stay first
+  // without rewriting foreign providers' relative order.
+  let nextOrder = wanted.length;
+  for (const row of kept) {
+    if (
+      row.url === descriptor.baseUrl &&
+      wanted.some((entry) => entry.model === row.model)
+    ) {
+      continue;
+    }
+    row.order = nextOrder++;
+  }
+
+  await writeRows(db, kept);
   return { ok: true, created };
+}
+
+/**
+ * Upgrade known-stale ZAM defaults that already carry a key, without asking
+ * the learner to reconnect. Only rewrites models ZAM itself once chose as the
+ * default — never a model the learner picked by hand.
+ *
+ * Returns true when anything changed.
+ */
+export async function migrateStaleCloudDefaults(
+  db: Database,
+  descriptor: CloudProviderDescriptor = OPENROUTER_PROVIDER,
+): Promise<boolean> {
+  const rows = await readRows(db);
+  let changed = false;
+  const now = new Date().toISOString();
+
+  for (const row of rows) {
+    if (row.url !== descriptor.baseUrl || !row.apiKey) continue;
+
+    if (
+      row.capabilities?.text &&
+      (OPENROUTER_LEGACY_DEFAULT_MODELS as readonly string[]).includes(
+        row.model,
+      )
+    ) {
+      row.model = descriptor.defaultModel;
+      row.label = descriptor.label;
+      row.capabilities = {
+        text: true,
+        image: descriptor.capabilities.includes("image"),
+        embedding: false,
+        video: false,
+        stt: false,
+        tts: false,
+      };
+      row.detectedCapabilities = { ...row.capabilities };
+      row.probedAt = now;
+      changed = true;
+      continue;
+    }
+
+    if (
+      row.capabilities?.embedding &&
+      (CLOUD_EMBEDDING_LEGACY_MODELS as readonly string[]).includes(row.model)
+    ) {
+      row.model = CLOUD_EMBEDDING_MODEL;
+      row.label = descriptor.label;
+      row.capabilities = {
+        text: false,
+        image: false,
+        embedding: true,
+        video: false,
+        stt: false,
+        tts: false,
+      };
+      row.detectedCapabilities = { ...row.capabilities };
+      row.probedAt = now;
+      changed = true;
+    }
+  }
+
+  if (changed) await writeRows(db, rows);
+  return changed;
 }
 
 /** Whether a usable cloud model is registered, for the settings screen. */
