@@ -2,9 +2,9 @@
  * Connecting a cloud model from the device (ADR 2026-07-24 §5).
  *
  * One field, one button. The learner pastes a key, ZAM verifies it against the
- * provider's own key endpoint and writes a registry row; text, image and
- * embeddings all come from that single row, because OpenRouter serves all
- * three from the same key.
+ * provider's own key endpoint and writes registry rows; text/image, embeddings
+ * and speech-to-text all come from that same key, because OpenRouter serves
+ * chat, embeddings and `/audio/transcriptions` under one account.
  *
  * **Why the key lands in the database.** `apiKeyRef` into a credentials file
  * is the rule for `~/.zam/config.json`, and it is meaningless on a device that
@@ -54,6 +54,16 @@ export const CLOUD_EMBEDDING_LEGACY_MODELS = [
   "qwen/qwen3-embedding-0.6b",
   "qwen/qwen3-embedding-0.6b:free",
 ] as const;
+
+/**
+ * Cloud speech-to-text model for voice mode (OpenRouter audio catalogue).
+ *
+ * Dedicated STT — not a chat model. Registered as its own registry row with
+ * only the `stt` flag so `resolveMobileCloudChain(db, "stt")` never picks the
+ * Luna/chat endpoint. Mobile already POSTs to `/audio/transcriptions`
+ * (`speech.ts`); this is the model id that path sends.
+ */
+export const CLOUD_STT_MODEL = "openai/gpt-transcribe";
 
 export interface CloudKeyCheck {
   valid: boolean;
@@ -199,6 +209,14 @@ export async function connectCloudModel(
     stt: false,
     tts: false,
   };
+  const sttFlags = {
+    text: false,
+    image: false,
+    embedding: false,
+    video: false,
+    stt: true,
+    tts: false,
+  };
 
   // Drop superseded ZAM defaults for this provider so they cannot sit ahead of
   // the working row and burn the evaluation budget (or 404 on embeddings).
@@ -218,10 +236,12 @@ export async function connectCloudModel(
     if (legacyChat.has(row.model) && !row.capabilities?.embedding) return false;
     if (legacyEmbed.has(row.model) && row.capabilities?.embedding) return false;
     // One chat model per provider from this connect path: switching replaces
-    // the previous chat row so dead fallbacks do not pile up.
+    // the previous chat row so dead fallbacks do not pile up. Leave embedding
+    // and stt rows alone — they are separate endpoints.
     if (
       row.capabilities?.text &&
       !row.capabilities?.embedding &&
+      !row.capabilities?.stt &&
       row.model !== chatModel
     ) {
       return false;
@@ -232,6 +252,7 @@ export async function connectCloudModel(
   const wanted: Array<{ model: string; flags: typeof chatFlags }> = [
     { model: chatModel, flags: chatFlags },
     { model: CLOUD_EMBEDDING_MODEL, flags: embeddingFlags },
+    { model: CLOUD_STT_MODEL, flags: sttFlags },
   ];
 
   let created = false;
@@ -341,6 +362,49 @@ export async function migrateStaleCloudDefaults(
       row.probedAt = now;
       changed = true;
     }
+  }
+
+  // OpenRouter key already present, but no STT row yet (connect before
+  // gpt-transcribe was wired): add it so voice mode can use cloud recognition
+  // without asking the learner to reconnect.
+  const openrouterKey = rows.find(
+    (row) => row.url === descriptor.baseUrl && row.apiKey,
+  )?.apiKey;
+  const hasStt = rows.some(
+    (row) =>
+      row.url === descriptor.baseUrl &&
+      row.capabilities?.stt &&
+      row.detectedCapabilities?.stt,
+  );
+  if (openrouterKey && !hasStt) {
+    rows.push({
+      id: ulid(),
+      label: descriptor.label,
+      url: descriptor.baseUrl,
+      model: CLOUD_STT_MODEL,
+      local: false,
+      apiFlavor: "chat-completions",
+      apiKey: openrouterKey,
+      order: rows.length,
+      capabilities: {
+        text: false,
+        image: false,
+        embedding: false,
+        video: false,
+        stt: true,
+        tts: false,
+      },
+      detectedCapabilities: {
+        text: false,
+        image: false,
+        embedding: false,
+        video: false,
+        stt: true,
+        tts: false,
+      },
+      probedAt: now,
+    });
+    changed = true;
   }
 
   if (changed) await writeRows(db, rows);

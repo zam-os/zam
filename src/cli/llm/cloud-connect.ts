@@ -41,6 +41,12 @@ import {
  */
 export const OPENROUTER_EMBEDDING_MODEL = "qwen/qwen3-embedding-4b";
 
+/**
+ * OpenRouter speech-to-text model for voice mode. Aligned with
+ * `CLOUD_STT_MODEL` in `mobile/src/ai/connect.ts`.
+ */
+export const OPENROUTER_STT_MODEL = "openai/gpt-transcribe";
+
 const OPENROUTER_EMBEDDING_LEGACY_MODELS = [
   "qwen/qwen3-embedding-0.6b",
   "qwen/qwen3-embedding-0.6b:free",
@@ -189,9 +195,10 @@ export async function connectCloudProvider(
     ? models.map((entry) => (entry.id === existing.id ? shared : entry))
     : [...models, shared];
 
-  // Same OpenRouter key serves embeddings; register a second row so desktop and
-  // mobile resolve `embedding` to a real embedding model, not the chat model.
+  // Same OpenRouter key serves embeddings and STT; register dedicated rows so
+  // desktop and mobile resolve those capabilities to the right model, not chat.
   if (descriptor.id === "openrouter") {
+    const now = new Date().toISOString();
     const embedExisting = next.find(
       (entry) =>
         entry.url === descriptor.baseUrl &&
@@ -214,20 +221,49 @@ export async function connectCloudProvider(
       // embedding model through chat-completions would report no text and
       // wipe the flag we need.
       detectedCapabilities: { ...embedFlags },
-      probedAt: new Date().toISOString(),
+      probedAt: now,
     };
     next = embedExisting
       ? next.map((entry) => (entry.id === embedExisting.id ? embedRow : entry))
       : [...next, embedRow];
+
+    const sttExisting = next.find(
+      (entry) =>
+        entry.url === descriptor.baseUrl &&
+        entry.model === OPENROUTER_STT_MODEL,
+    );
+    const sttFlags = emptyCapabilityFlags();
+    sttFlags.stt = true;
+    const sttRow: ResolvedModelEntry = {
+      id: sttExisting?.id ?? ulid(),
+      label: descriptor.label,
+      url: descriptor.baseUrl,
+      model: OPENROUTER_STT_MODEL,
+      local: false,
+      apiFlavor: "chat-completions",
+      apiKeyRef: descriptor.apiKeyRef,
+      apiKey: key,
+      order: 2,
+      capabilities: sttFlags,
+      // Name-fragment STT detection in capability-probe would also work; set
+      // both flags explicitly so resolveCapability does not depend on a probe
+      // of a non-chat catalogue.
+      detectedCapabilities: { ...sttFlags },
+      probedAt: now,
+    };
+    next = sttExisting
+      ? next.map((entry) => (entry.id === sttExisting.id ? sttRow : entry))
+      : [...next, sttRow];
   }
 
   // Keep the freshly connected models first without scrambling foreign rows.
-  let order = 2;
+  let order = 3;
   next = next.map((entry) => {
     if (
       entry.url === descriptor.baseUrl &&
       (entry.model === descriptor.defaultModel ||
-        entry.model === OPENROUTER_EMBEDDING_MODEL)
+        entry.model === OPENROUTER_EMBEDDING_MODEL ||
+        entry.model === OPENROUTER_STT_MODEL)
     ) {
       return entry;
     }
