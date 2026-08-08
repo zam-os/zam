@@ -1672,6 +1672,9 @@ interface FoundryLocalStatusResponse {
   endpoint?: string;
   /** False when the machine has no supported NPU or discrete GPU. */
   accelerated: boolean;
+  os: "windows" | "macos" | "linux" | "unknown";
+  /** The Windows-on-ARM machines Foundry Local exists for. */
+  snapdragonX: boolean;
   recommendations: {
     text?: FoundryLocalModelInfo;
   };
@@ -1711,7 +1714,24 @@ function foundryModelLabel(model: FoundryLocalModelInfo | undefined): string {
   return [model.alias, ...detail].join(" · ");
 }
 
+/**
+ * Foundry Local is Microsoft's, it installs through winget, and
+ * `installFoundryLocal` refuses on anything but Windows. Showing the section
+ * everywhere gave a Mac a heading, an explanation, "not available on this
+ * computer" and a Set-up button in the same breath — three lines of noise in
+ * the one panel a learner opens to answer "which model is ZAM using?".
+ *
+ * So the section stays `hidden` in the markup and is only revealed for the
+ * machines it is for: Windows on ARM, which today means a Snapdragon X.
+ * Everything else never sees it, and never learns a product name it has no
+ * use for.
+ */
+function foundryLocalApplies(status: FoundryLocalStatusResponse): boolean {
+  return status.os === "windows" && status.snapdragonX;
+}
+
 async function loadFoundryLocalStatus(): Promise<void> {
+  const section = document.getElementById("foundry-local-setup");
   const textModel = document.getElementById("foundry-local-text-model");
   const statusLine = document.getElementById("foundry-local-status");
   const setupButton = document.getElementById(
@@ -1724,6 +1744,11 @@ async function loadFoundryLocalStatus(): Promise<void> {
     const status = await runBridge<FoundryLocalStatusResponse>(
       "foundry-local-status",
     );
+    if (!foundryLocalApplies(status)) {
+      section?.classList.add("hidden");
+      return;
+    }
+    section?.classList.remove("hidden");
     textModel.textContent = foundryModelLabel(status.recommendations.text);
     // A CPU-only machine gets the reason instead of a button that would set up
     // a model too slow to review with.
@@ -1744,6 +1769,10 @@ async function loadFoundryLocalStatus(): Promise<void> {
       statusLine.textContent = t("foundry_local_installed");
     }
   } catch (error) {
+    // The status call is also how we learn which machine this is, so a failure
+    // leaves the section hidden rather than guessing. The message is written
+    // anyway, for the case where the section is already open and a later
+    // refresh fails.
     textModel.textContent = t("foundry_local_model_unavailable");
     statusLine.textContent = tf("foundry_local_status_error", {
       message: errorMessage(error),

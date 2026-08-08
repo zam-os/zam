@@ -421,7 +421,11 @@
               </span>
             </label>
             <p id="dynamic-questions-status" class="sub-label settings-status-row" aria-live="polite"></p>
-            <div id="foundry-local-setup" class="settings-stack">
+            <!-- Windows-on-ARM only, and hidden until the status call says so.
+                 Foundry Local cannot be installed anywhere else, so on every
+                 other machine this section was a heading, an explanation and a
+                 button for something that could never happen. -->
+            <div id="foundry-local-setup" class="settings-stack hidden">
               <div class="settings-card-header">
                 <div>
                   <h3 id="lbl-foundry-local-title">Foundry Local</h3>
