@@ -560,23 +560,41 @@ textarea:focus {
 
 .bars li {
   display: grid;
-  grid-template-columns: 4.5em 1fr auto;
+  /* label | bar | count | study time — four columns so both numbers stay
+     readable on a phone without wrapping under the bar. */
+  grid-template-columns: minmax(5em, 7.5em) 1fr 2.75em 4.25em;
   align-items: center;
-  gap: var(--gap-3);
+  gap: var(--gap-2) var(--gap-3);
   font-size: 0.9em;
 }
 
 .bars .track {
-  height: 10px;
-  border-radius: 5px;
+  height: 12px;
+  border-radius: 6px;
   background: var(--fill-quaternary);
   overflow: hidden;
+  min-width: 0;
 }
 
 .bars .fill {
+  display: block;
   height: 100%;
-  border-radius: 5px;
+  min-width: 2px;
+  border-radius: 6px;
   background: linear-gradient(90deg, var(--brand-start), var(--brand-end));
+}
+
+.bars .count {
+  font-weight: 700;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.bars .time {
+  color: var(--label-secondary);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 /* ── Segmented control ─────────────────────────────────────────────────── */

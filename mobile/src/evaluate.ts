@@ -16,6 +16,7 @@ import {
   type RecallEvaluationCard,
 } from "../../desktop/src/panel/recall-evaluation.js";
 import type { ZamPairLlmEndpoint } from "../../src/bridge/mobile-pairing.js";
+import { OPENROUTER_EVALUATION_REASONING_EFFORT } from "../../src/cli/llm/cloud-providers.js";
 
 export type EvaluationBackend = "on-device" | "http" | "none";
 
@@ -86,8 +87,21 @@ export function isCloudHttpEndpoint(
     endpoint?.enabled &&
       !endpoint.local &&
       !isLoopbackUrl(endpoint.url) &&
-      endpoint.apiFlavor === "chat-completions",
+      endpoint.apiFlavor === "chat-completions" &&
+      // Without a key every cloud host answers 401; trying it only pollutes the
+      // "automatic evaluation failed" message with dead fallbacks (MiMo direct,
+      // DeepSeek, …) that were never configured on this device.
+      Boolean(endpoint.apiKey),
   );
+}
+
+function isOpenRouterEndpoint(endpoint: ZamPairLlmEndpoint): boolean {
+  try {
+    const host = new URL(endpoint.url).hostname.toLowerCase();
+    return host === "openrouter.ai" || host.endsWith(".openrouter.ai");
+  } catch {
+    return false;
+  }
 }
 
 /** Depth cap so a malformed paired payload cannot loop the walk forever. */
@@ -198,15 +212,25 @@ async function generateViaHttp(
   };
   if (endpoint.apiKey) headers.Authorization = `Bearer ${endpoint.apiKey}`;
 
+  // Evaluation wants a short JSON object, not a multi-page chain of thought.
+  // Reasoning models (MiMo V2.5 especially) otherwise spend the whole output
+  // budget thinking and return `finish_reason: length` with empty content.
+  // `low` is the product default for GPT-5.6 Luna: enough for honest grading,
+  // cheap and fast enough for a review loop. Non-OpenRouter hosts omit the key.
+  const body: Record<string, unknown> = {
+    model: endpoint.model,
+    messages: [{ role: "user", content: prompt }],
+    temperature: 0.2,
+    max_tokens: maxTokens,
+  };
+  if (isOpenRouterEndpoint(endpoint)) {
+    body.reasoning = { effort: OPENROUTER_EVALUATION_REASONING_EFFORT };
+  }
+
   return (fetchText ?? defaultFetchText)(url, {
     method: "POST",
     headers,
-    body: JSON.stringify({
-      model: endpoint.model,
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.2,
-      max_tokens: maxTokens,
-    }),
+    body: JSON.stringify(body),
   });
 }
 

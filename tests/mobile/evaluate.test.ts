@@ -70,6 +70,9 @@ describe("resolveEvaluationBackend", () => {
     expect(isCloudHttpEndpoint(cloudEndpoint())).toBe(true);
     expect(isCloudHttpEndpoint(localEndpoint())).toBe(false);
     expect(isCloudHttpEndpoint(null)).toBe(false);
+    // A cloud row without a key only produces 401 noise in the error message.
+    const { apiKey: _drop, ...noKey } = cloudEndpoint();
+    expect(isCloudHttpEndpoint(noKey as never)).toBe(false);
   });
 });
 
@@ -315,7 +318,10 @@ describe("evaluation on a platform without an on-device evaluator", () => {
     expect(resolveEvaluationBackend(cloudEndpoint(), false)).toBe("http");
     expect(resolveEvaluationBackend(localEndpoint(), false)).toBe("none");
     expect(
-      resolveEvaluationBackend(localEndpoint({ fallback: cloudEndpoint() }), false),
+      resolveEvaluationBackend(
+        localEndpoint({ fallback: cloudEndpoint() }),
+        false,
+      ),
     ).toBe("http");
     // Android is unchanged.
     expect(resolveEvaluationBackend(localEndpoint())).toBe("on-device");

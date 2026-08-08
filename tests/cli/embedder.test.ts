@@ -6,10 +6,10 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   canonicalEmbeddingModelId,
   DEFAULT_EMBEDDING_MODEL,
-  embedQuery,
-  embedTexts,
   embeddingTextForQuery,
   embeddingTextForToken,
+  embedQuery,
+  embedTexts,
   ensureTokenEmbeddings,
   findPossibleDuplicates,
 } from "../../src/cli/llm/embedder.js";
@@ -244,12 +244,22 @@ describe("canonicalEmbeddingModelId", () => {
     }
   });
 
-  it("passes unknown model ids through, lowercased", () => {
+  it("canonicalises the cloud Qwen3 embedding family and passes others through", () => {
+    expect(canonicalEmbeddingModelId("qwen/qwen3-embedding-4b")).toBe(
+      "qwen3-embedding-4b",
+    );
+    expect(canonicalEmbeddingModelId("qwen3-embedding-4b")).toBe(
+      "qwen3-embedding-4b",
+    );
+    // Retired 0.6B spelling — still one id so old rows do not invent a third.
     expect(canonicalEmbeddingModelId("qwen3-embedding-0.6b")).toBe(
       "qwen3-embedding-0.6b",
     );
     expect(canonicalEmbeddingModelId("Qwen3-Embedding-0.6B")).toBe(
       "qwen3-embedding-0.6b",
+    );
+    expect(canonicalEmbeddingModelId("Some-Other-Model")).toBe(
+      "some-other-model",
     );
   });
 });
@@ -493,7 +503,10 @@ describe("embedQuery", () => {
     });
     try {
       await enableEmbeddingRole(stub.url, "embeddinggemma");
-      const result = await embedQuery(db, "one application instance per tenant");
+      const result = await embedQuery(
+        db,
+        "one application instance per tenant",
+      );
       expect(result).not.toBeNull();
       expect(result!.model).toBe("embeddinggemma-300m");
       expect(result!.vector.length).toBe(5);
@@ -697,9 +710,9 @@ describe("prompt formatting", () => {
     expect(embeddingTextForToken(token, "google/embeddinggemma-300m")).toBe(
       "title: none | text: A prompted concept\nHow is it recalled?\nprompting\nA prompted concept",
     );
-    expect(embeddingTextForQuery("find prompted concepts", "embeddinggemma")).toBe(
-      "task: search result | query: find prompted concepts",
-    );
+    expect(
+      embeddingTextForQuery("find prompted concepts", "embeddinggemma"),
+    ).toBe("task: search result | query: find prompted concepts");
 
     // Test with non-Gemma model
     expect(embeddingTextForToken(token, "other-model")).toBe(
