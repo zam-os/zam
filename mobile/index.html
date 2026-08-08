@@ -6,608 +6,211 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <title>ZAM Mobile</title>
-    <style>
-      :root {
-        color-scheme: light dark;
-        --font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Helvetica, Arial, sans-serif;
-        --wash: radial-gradient(
-            circle at 12% -12%,
-            rgba(91, 95, 239, 0.15),
-            transparent 34%
-          ),
-          radial-gradient(circle at 92% 8%, rgba(8, 145, 178, 0.13), transparent 32%),
-          linear-gradient(180deg, #fbfcff 0%, #f2f6fb 100%);
-        --card: rgba(255, 255, 255, 0.82);
-        --card-soft: rgba(248, 250, 252, 0.7);
-        --field: rgba(255, 255, 255, 0.85);
-        --border: rgba(15, 23, 42, 0.1);
-        --border-strong: rgba(15, 23, 42, 0.16);
-        --shadow: 0 18px 44px rgba(15, 23, 42, 0.1);
-        --text: #111827;
-        --text-2: #334155;
-        --muted: #64748b;
-        --accent: hsl(246, 83%, 60%);
-        --cyan: hsl(190, 84%, 34%);
-        --glow: linear-gradient(135deg, hsl(246, 83%, 60%), hsl(190, 84%, 40%));
-        --again: hsl(355, 80%, 55%);
-        --hard: hsl(35, 92%, 45%);
-        --good: hsl(145, 70%, 38%);
-        --easy: hsl(195, 85%, 42%);
-        --warn: #b45309;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --wash: radial-gradient(
-              circle at 10% -10%,
-              rgba(139, 92, 246, 0.16),
-              transparent 38%
-            ),
-            radial-gradient(circle at 94% 8%, rgba(6, 182, 212, 0.1), transparent 34%),
-            linear-gradient(180deg, #080a12 0%, #090f14 100%);
-          --card: rgba(20, 25, 37, 0.66);
-          --card-soft: rgba(255, 255, 255, 0.04);
-          --field: rgba(0, 0, 0, 0.24);
-          --border: rgba(255, 255, 255, 0.09);
-          --border-strong: rgba(255, 255, 255, 0.16);
-          --shadow: 0 20px 48px rgba(0, 0, 0, 0.44);
-          --text: #f1f5f9;
-          --text-2: #cbd5e1;
-          --muted: #94a3b8;
-          --accent: hsl(265, 90%, 72%);
-          --cyan: hsl(190, 95%, 60%);
-          --glow: linear-gradient(135deg, hsl(265, 90%, 66%), hsl(190, 95%, 52%));
-          --again: hsl(355, 85%, 68%);
-          --hard: hsl(35, 95%, 62%);
-          --good: hsl(145, 72%, 58%);
-          --easy: hsl(195, 90%, 62%);
-          --warn: #fbbf24;
-        }
-      }
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        font-family: var(--font);
-        color: var(--text);
-        background: var(--wash) fixed;
-        min-height: 100dvh;
-        padding: 14px;
-        padding-top: calc(14px + env(safe-area-inset-top));
-        padding-left: calc(14px + env(safe-area-inset-left));
-        padding-right: calc(14px + env(safe-area-inset-right));
-        padding-bottom: calc(20px + env(safe-area-inset-bottom));
-        -webkit-font-smoothing: antialiased;
-      }
-      main {
-        max-width: 560px;
-        margin: 0 auto;
-      }
-      h1 {
-        font-size: 1.35rem;
-        letter-spacing: -0.01em;
-        margin: 0 0 2px;
-      }
-      h2 {
-        font-size: 1.05rem;
-        letter-spacing: -0.01em;
-        margin: 0 0 8px;
-      }
-      p {
-        margin: 0 0 10px;
-      }
-      .eyebrow {
-        color: var(--cyan);
-        font-size: 0.68rem;
-        font-weight: 800;
-        letter-spacing: 1.4px;
-        text-transform: uppercase;
-        margin: 0 0 6px;
-      }
-      .subtitle,
-      .muted {
-        color: var(--muted);
-        font-size: 0.85rem;
-      }
-      /* Header */
-      .topbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 14px;
-      }
-      .brand-mark {
-        font-weight: 800;
-        font-size: 1.15rem;
-        letter-spacing: 0.02em;
-        background: var(--glow);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-      }
-      .topbar-actions {
-        display: flex;
-        gap: 8px;
-      }
-      .icon-btn {
-        width: 42px;
-        height: 42px;
-        min-height: 42px;
-        padding: 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 12px;
-        border: 1px solid var(--border);
-        background: var(--card);
-        color: var(--text-2);
-        box-shadow: var(--shadow);
-      }
-      .icon-btn:active {
-        transform: scale(0.96);
-      }
-      .icon-btn svg {
-        width: 21px;
-        height: 21px;
-      }
-      /* Status */
-      .statusbar {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-bottom: 8px;
-      }
-      .chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
-        border-radius: 999px;
-        background: var(--card-soft);
-        border: 1px solid var(--border);
-        font-size: 0.82rem;
-        color: var(--text-2);
-      }
-      .chip .chip-key {
-        color: var(--muted);
-      }
-      .chip.connection::before {
-        content: "";
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--good);
-      }
-      .chip.connection.offline {
-        color: var(--warn);
-      }
-      .chip.connection.offline::before {
-        background: var(--warn);
-      }
-      .status-line {
-        min-height: 1.2em;
-        font-size: 0.86rem;
-        color: var(--muted);
-      }
-      .status-line.error,
-      .error {
-        color: var(--warn);
-      }
-      /* Cards */
-      .card {
-        background: var(--card);
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
-        border: 1px solid var(--border);
-        border-radius: 18px;
-        box-shadow: var(--shadow);
-        padding: 16px;
-        margin-bottom: 14px;
-      }
-      .summary {
-        color: var(--muted);
-        font-size: 0.86rem;
-        margin: 4px 2px 12px;
-      }
-      /* Forms */
-      form {
-        display: grid;
-        gap: 11px;
-      }
-      label {
-        display: grid;
-        gap: 5px;
-        font-size: 0.82rem;
-        color: var(--text-2);
-      }
-      input,
-      textarea,
-      select,
-      button {
-        font: inherit;
-      }
-      input,
-      textarea,
-      select {
-        padding: 11px 13px;
-        border: 1px solid var(--border-strong);
-        border-radius: 11px;
-        background: var(--field);
-        color: var(--text);
-      }
-      input:focus,
-      textarea:focus,
-      select:focus {
-        outline: none;
-        border-color: var(--accent);
-        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
-      }
-      textarea {
-        width: 100%;
-        min-height: 108px;
-        resize: vertical;
-        line-height: 1.45;
-      }
-      /* Buttons */
-      button {
-        min-height: 46px;
-        padding: 12px 18px;
-        border-radius: 12px;
-        border: 1px solid var(--border-strong);
-        background: var(--card-soft);
-        color: var(--text);
-        font-weight: 600;
-        cursor: pointer;
-        transition: transform 0.12s ease, box-shadow 0.2s ease;
-      }
-      button:active:not(:disabled) {
-        transform: translateY(1px);
-      }
-      button.primary {
-        width: 100%;
-        border: none;
-        color: #fff;
-        background: var(--glow);
-        box-shadow: 0 10px 24px color-mix(in srgb, var(--accent) 32%, transparent);
-      }
-      button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-      .buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      .buttons button {
-        flex: 1;
-        min-width: 130px;
-      }
-      .capture-actions {
-        display: grid;
-        gap: 9px;
-        margin-bottom: 14px;
-      }
-      /* Statistics (ADR 2026-08-01) */
-      .stats-periods {
-        display: flex;
-        gap: 8px;
-        margin: 14px 0 10px;
-      }
-      .stats-periods .stats-period {
-        flex: 1;
-        min-height: 40px;
-        padding: 8px 10px;
-        font-size: 0.86rem;
-      }
-      .stats-periods .stats-period.active {
-        border-color: transparent;
-        color: #fff;
-        background: var(--glow);
-      }
-      .stats-summary {
-        color: var(--text-2);
-        font-size: 0.86rem;
-        font-weight: 600;
-        margin: 0 0 12px;
-        min-height: 1.2em;
-      }
-      .stats-rows {
-        display: grid;
-        gap: 7px;
-      }
-      .stats-row {
-        align-items: center;
-        display: grid;
-        /* Narrow screens: the label column stays readable, the bar takes the
-           rest, and the count/time stay pinned right. */
-        grid-template-columns: 5.4rem 1fr 2rem;
-        gap: 8px;
-      }
-      .stats-row-label {
-        color: var(--muted);
-        font-size: 0.78rem;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .stats-row-bar {
-        background: var(--card-soft);
-        border: 1px solid var(--border);
-        border-radius: 7px;
-        display: block;
-        height: 16px;
-        overflow: hidden;
-      }
-      .stats-row-fill {
-        background: var(--glow);
-        border-radius: 6px;
-        display: block;
-        height: 100%;
-      }
-      .stats-row-count {
-        font-size: 0.8rem;
-        font-weight: 700;
-        text-align: right;
-      }
-      .stats-row-time {
-        color: var(--muted);
-        font-size: 0.72rem;
-        grid-column: 2 / span 2;
-        text-align: right;
-      }
-      .stats-note {
-        color: var(--muted);
-        font-size: 0.85rem;
-        margin: 0;
-      }
-      /* Queue */
-      ol#queue {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: grid;
-        gap: 9px;
-      }
-      #queue li {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        box-shadow: var(--shadow);
-        padding: 12px 14px;
-        border-left: 3px solid var(--accent);
-      }
-      #queue .title {
-        font-weight: 650;
-        letter-spacing: -0.01em;
-      }
-      #queue .meta {
-        font-size: 0.78rem;
-        color: var(--muted);
-        margin-top: 3px;
-      }
-      /* Review */
-      #review-progress {
-        font-weight: 700;
-        font-size: 0.9rem;
-      }
-      #review-meta {
-        font-size: 0.8rem;
-        color: var(--muted);
-        margin-top: 2px;
-      }
-      #review-question {
-        font-size: 1.35rem;
-        line-height: 1.35;
-        letter-spacing: -0.01em;
-        margin: 16px 0;
-      }
-      #revealed-answer {
-        margin-top: 14px;
-      }
-      #expected-answer {
-        white-space: pre-wrap;
-        line-height: 1.5;
-        padding: 13px;
-        border-radius: 12px;
-        background: var(--card-soft);
-        border: 1px solid var(--border);
-      }
-      #review-source {
-        display: inline-block;
-        margin: 8px 0;
-        color: var(--cyan);
-        font-size: 0.85rem;
-      }
-      #evaluation-panel {
-        margin: 12px 0;
-        padding: 12px 13px;
-        border-radius: 12px;
-        border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
-        background: color-mix(in srgb, var(--accent) 8%, var(--card-soft));
-      }
-      #evaluation-panel[hidden] {
-        display: none;
-      }
-      #evaluation-verdict {
-        font-weight: 700;
-        font-size: 0.95rem;
-        margin: 4px 0 6px;
-      }
-      #evaluation-feedback {
-        white-space: pre-wrap;
-        line-height: 1.45;
-        margin: 0 0 8px;
-      }
-      #evaluation-meta {
-        font-size: 0.78rem;
-        color: var(--muted);
-        margin: 0;
-      }
-      .ratings {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 9px;
-        margin-top: 6px;
-      }
-      .ratings button {
-        border-width: 1.5px;
-        font-weight: 650;
-      }
-      .ratings button[data-rating="1"] {
-        color: var(--again);
-        border-color: color-mix(in srgb, var(--again) 55%, transparent);
-        background: color-mix(in srgb, var(--again) 12%, transparent);
-      }
-      .ratings button[data-rating="2"] {
-        color: var(--hard);
-        border-color: color-mix(in srgb, var(--hard) 55%, transparent);
-        background: color-mix(in srgb, var(--hard) 12%, transparent);
-      }
-      .ratings button[data-rating="3"] {
-        color: var(--good);
-        border-color: color-mix(in srgb, var(--good) 55%, transparent);
-        background: color-mix(in srgb, var(--good) 12%, transparent);
-      }
-      .ratings button[data-rating="4"] {
-        color: var(--easy);
-        border-color: color-mix(in srgb, var(--easy) 55%, transparent);
-        background: color-mix(in srgb, var(--easy) 12%, transparent);
-      }
-      .ratings button.suggested {
-        outline: 2px solid var(--accent);
-        outline-offset: 1px;
-        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
-      }
-      .voice-controls {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin: 12px 0 4px;
-      }
-      .voice-controls button {
-        flex: 1;
-        min-width: 150px;
-      }
-      #toggle-voice[aria-pressed="true"] {
-        border-color: var(--accent);
-        color: var(--accent);
-      }
-      /* Settings */
-      .switch-row {
-        grid-template-columns: auto 1fr;
-        align-items: center;
-        gap: 12px;
-        font-size: 0.92rem;
-        color: var(--text);
-        margin-bottom: 12px;
-      }
-      .switch-row input {
-        width: 20px;
-        height: 20px;
-        accent-color: var(--accent);
-      }
-      .field-row {
-        grid-template-columns: 1fr auto;
-        align-items: center;
-      }
-      .field-row input {
-        width: auto;
-      }
-      .divider {
-        height: 1px;
-        background: var(--border);
-        margin: 16px 0;
-      }
-      details summary {
-        cursor: pointer;
-        font-weight: 600;
-        color: var(--text-2);
-        font-size: 0.9rem;
-      }
-      details[open] summary {
-        margin-bottom: 10px;
-      }
-      [hidden] {
-        display: none !important;
-      }
-      /* Tablet (iPad-Klasse device, and Android tablets by the same token).
-         The reading column stays deliberately narrow — long measure hurts
-         recall prompts — but the cramped phone padding and the 2x2 rating
-         grid both stop making sense once there is real width available. */
-      @media (min-width: 700px) {
-        body {
-          padding: 28px;
-          padding-top: calc(28px + env(safe-area-inset-top));
-          padding-left: calc(28px + env(safe-area-inset-left));
-          padding-right: calc(28px + env(safe-area-inset-right));
-          padding-bottom: calc(32px + env(safe-area-inset-bottom));
-        }
-        main {
-          max-width: 680px;
-        }
-        h1 {
-          font-size: 1.6rem;
-        }
-        h2 {
-          font-size: 1.15rem;
-        }
-        /* All four FSRS ratings on one row: no vertical scan, and the
-           thumb no longer has to cross the card to reach "Again". */
-        .ratings {
-          grid-template-columns: repeat(4, 1fr);
-        }
-      }
-      @media (min-width: 1000px) {
-        main {
-          max-width: 760px;
-        }
-      }
-    </style>
+    <meta name="color-scheme" content="light dark" />
+    <title>ZAM</title>
   </head>
   <body>
-    <main>
-      <section id="pairing-view" hidden>
-        <div class="topbar">
-          <span class="brand-mark">ZAM</span>
+    <!-- ═══ First run ═══════════════════════════════════════════════════ -->
+    <!--
+      Three pages, one decision each. The learner reaches a usable library
+      without an account, a network or a desktop (ADR 2026-08-08).
+    -->
+    <section id="setup-view" class="frame" hidden>
+      <div class="screen">
+        <div class="column setup">
+          <div id="setup-page-welcome">
+            <p class="wordmark">ZAM</p>
+            <h1 class="t-large-title" data-i18n="welcome_title">
+              Lernen, das hängen bleibt
+            </h1>
+            <p class="t-body" data-i18n="welcome_desc">
+              ZAM fragt dich ab, statt dich lesen zu lassen, und legt jede
+              Karte kurz vor dem Vergessen wieder vor.
+            </p>
+            <div class="stack" style="margin-top: var(--gap-5)">
+              <p class="group-title" data-i18n="setup_language">Sprache</p>
+              <div class="segmented" id="setup-language" role="group">
+                <button type="button" data-locale="de" class="active">
+                  Deutsch
+                </button>
+                <button type="button" data-locale="en">English</button>
+              </div>
+              <button
+                id="setup-next-welcome"
+                class="btn primary"
+                type="button"
+                data-i18n="setup_continue"
+              >
+                Weiter
+              </button>
+              <button
+                id="setup-open-pairing"
+                class="btn plain"
+                type="button"
+                data-i18n="setup_have_desktop"
+              >
+                Ich nutze ZAM schon am Rechner
+              </button>
+            </div>
+          </div>
+
+          <div id="setup-page-persona" hidden>
+            <h1 class="t-title" data-i18n="setup_persona_title">
+              Was lernst du gerade?
+            </h1>
+            <p class="t-secondary" data-i18n="setup_persona_desc">
+              Das legt nur fest, womit ZAM dir Inhalte vorschlägt. Ändern
+              kannst du es jederzeit.
+            </p>
+            <div class="stack" id="setup-personas" style="margin-top: var(--gap-4)">
+              <button
+                class="choice"
+                type="button"
+                data-persona="school"
+                aria-pressed="false"
+              >
+                <span class="choice-text">
+                  <span class="t-headline" data-i18n="persona_school">
+                    Für die Schule
+                  </span>
+                  <span class="t-secondary" data-i18n="persona_school_why">
+                    Lehrplan, feste Fächer, Prüfungstermine
+                  </span>
+                </span>
+              </button>
+              <button
+                class="choice"
+                type="button"
+                data-persona="study"
+                aria-pressed="false"
+              >
+                <span class="choice-text">
+                  <span class="t-headline" data-i18n="persona_study">
+                    Studium oder Ausbildung
+                  </span>
+                  <span class="t-secondary" data-i18n="persona_study_why">
+                    Skripte, ein Kapitel, eine Quelle im Netz
+                  </span>
+                </span>
+              </button>
+              <button
+                class="choice"
+                type="button"
+                data-persona="work"
+                aria-pressed="false"
+              >
+                <span class="choice-text">
+                  <span class="t-headline" data-i18n="persona_work">
+                    Für die Arbeit
+                  </span>
+                  <span class="t-secondary" data-i18n="persona_work_why">
+                    Wissen, das im Projekt nicht verfallen darf
+                  </span>
+                </span>
+              </button>
+              <button
+                class="choice"
+                type="button"
+                data-persona="private"
+                aria-pressed="false"
+              >
+                <span class="choice-text">
+                  <span class="t-headline" data-i18n="persona_private">
+                    Aus eigenem Interesse
+                  </span>
+                  <span class="t-secondary" data-i18n="persona_private_why">
+                    Selbst gewählte Themen, kein Termin
+                  </span>
+                </span>
+              </button>
+            </div>
+            <button
+              id="setup-next-persona"
+              class="btn primary"
+              type="button"
+              style="margin-top: var(--gap-4)"
+              data-i18n="setup_continue"
+            >
+              Weiter
+            </button>
+          </div>
+
+          <div id="setup-page-done" hidden>
+            <h1 class="t-title" data-i18n="setup_done_title">
+              Fertig — drei Karten warten
+            </h1>
+            <p class="t-body" data-i18n="setup_done_desc">
+              Sie erklären, wie Lernen mit ZAM funktioniert. Danach füllst du
+              deinen Lernbereich mit eigenen Inhalten.
+            </p>
+            <button
+              id="setup-finish"
+              class="btn primary"
+              type="button"
+              style="margin-top: var(--gap-4)"
+              data-i18n="setup_start_learning"
+            >
+              Loslegen
+            </button>
+          </div>
+
+          <!-- Shared across the pages: a library that will not open must be
+               visible wherever the learner happens to be. -->
+          <p id="setup-status" class="status" aria-live="polite"></p>
+
+          <div class="setup-dots" aria-hidden="true">
+            <span id="setup-dot-1" class="active"></span>
+            <span id="setup-dot-2"></span>
+            <span id="setup-dot-3"></span>
+          </div>
         </div>
-        <div class="card">
-          <p class="eyebrow" data-i18n="welcome_kicker">Willkommen</p>
-          <h2 data-i18n="welcome_title">Lernen, das hängen bleibt</h2>
-          <p class="muted" data-i18n="welcome_desc">
-            ZAM fragt dich ab, statt dich lesen zu lassen, und legt jede Karte
-            kurz vor dem Vergessen wieder vor. Ohne Konto, ohne Internet.
+      </div>
+    </section>
+
+    <!-- ═══ Take over an existing library ═══════════════════════════════ -->
+    <section id="pairing-view" class="frame" hidden>
+      <div class="screen">
+        <div class="column">
+          <h1 class="t-title" data-i18n="pairing_title">
+            Mit ZAM Desktop koppeln
+          </h1>
+          <p class="t-secondary" data-i18n="pairing_desc">
+            In ZAM Desktop unter Einstellungen → Mobile Begleit-App einen
+            QR-Code anzeigen.
           </p>
           <button
-            id="start-on-this-device"
-            class="primary"
+            id="scan-pairing-code"
+            class="btn primary"
             type="button"
-            data-i18n="start_on_this_device"
+            data-i18n="scan_qr"
           >
-            Auf diesem Gerät starten
-          </button>
-          <p id="pairing-status" class="status-line" aria-live="polite"></p>
-
-          <div class="divider"></div>
-          <p class="muted" data-i18n="takeover_desc">
-            Du nutzt ZAM schon am Rechner? Dann übernimm deine Lerninhalte.
-          </p>
-          <button id="scan-pairing-code" type="button" data-i18n="scan_qr">
             QR-Code scannen
           </button>
-          <button id="camera-settings" type="button" hidden data-i18n="open_app_settings">
+          <button
+            id="camera-settings"
+            class="btn"
+            type="button"
+            hidden
+            data-i18n="open_app_settings"
+          >
             App-Einstellungen öffnen
           </button>
-          <button id="cancel-pairing" type="button" hidden data-i18n="cancel">
+          <p id="pairing-status" class="status" aria-live="polite"></p>
+          <button
+            id="cancel-pairing"
+            class="btn plain"
+            type="button"
+            hidden
+            data-i18n="cancel"
+          >
             Abbrechen
           </button>
 
+          <hr class="divider" />
           <details>
             <summary data-i18n="manual_entry">Manuelle Eingabe</summary>
-            <form id="manual-pairing-form">
-              <label>
+            <form id="manual-pairing-form" class="stack">
+              <label class="field">
                 <span data-i18n="server_db">Server-Datenbank</span>
                 <input
                   id="manual-sync-url"
@@ -617,7 +220,7 @@
                   required
                 />
               </label>
-              <label>
+              <label class="field">
                 <span data-i18n="db_token">Datenbank-Token</span>
                 <input
                   id="manual-auth-token"
@@ -626,7 +229,7 @@
                   required
                 />
               </label>
-              <label>
+              <label class="field">
                 <span data-i18n="learner_id">Lernenden-ID</span>
                 <input
                   id="manual-user-id"
@@ -636,195 +239,146 @@
                   required
                 />
               </label>
-              <button class="primary" type="submit" data-i18n="pair_manually">
+              <button class="btn primary" type="submit" data-i18n="pair_manually">
                 Manuell koppeln
               </button>
             </form>
           </details>
-        </div>
-      </section>
-
-      <section id="app-view" hidden>
-        <header class="topbar">
-          <span class="brand-mark">ZAM</span>
-          <div class="topbar-actions">
-            <button
-              id="resync"
-              class="icon-btn"
-              type="button"
-              title="Jetzt synchronisieren"
-              aria-label="Jetzt synchronisieren"
-              data-i18n-aria="resync_aria"
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M23 4v6h-6" />
-                <path d="M1 20v-6h6" />
-                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
-              </svg>
-            </button>
-            <button
-              id="open-settings"
-              class="icon-btn"
-              type="button"
-              title="Einstellungen"
-              aria-label="Einstellungen"
-              data-i18n-aria="settings_aria"
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="3" />
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
-              </svg>
-            </button>
-          </div>
-        </header>
-
-        <div class="statusbar">
-          <span class="chip"
-            ><span class="chip-key" data-i18n="learner_label">Lernender</span
-            ><strong id="learner">—</strong></span
+          <button
+            id="pairing-back"
+            class="btn plain"
+            type="button"
+            data-i18n="setup_back"
           >
-          <span class="chip connection" id="connection">—</span>
+            Zurück
+          </button>
         </div>
-        <p id="status" class="status-line" aria-live="polite"></p>
+      </div>
+    </section>
 
-        <section id="dashboard-view">
-          <p id="summary" class="summary"></p>
-          <div class="capture-actions">
-            <button id="start-review" class="primary" type="button" data-i18n="start_review">
-              Wiederholung starten
-            </button>
-            <button id="open-import" type="button" data-i18n="add_content">
+    <!-- ═══ App ═════════════════════════════════════════════════════════ -->
+    <section id="app-view" class="frame" hidden>
+      <div class="screen">
+        <div class="column">
+          <!-- ── Tab: Lernen ─────────────────────────────────────────── -->
+          <section id="dashboard-view">
+            <header class="screen-head">
+              <h1 class="t-large-title" data-i18n="tab_learn">Lernen</h1>
+              <button
+                id="resync"
+                class="icon-btn"
+                type="button"
+                data-i18n-aria="resync_aria"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M21 12a9 9 0 1 1-2.6-6.4" />
+                  <path d="M21 3v6h-6" />
+                </svg>
+              </button>
+            </header>
+            <p class="t-secondary" style="margin-bottom: var(--gap-4)">
+              <span class="chip connection" id="connection"></span>
+              <span class="chip" id="learner"></span>
+            </p>
+
+            <div class="card">
+              <p id="summary" class="t-headline"></p>
+              <p id="status" class="status" aria-live="polite"></p>
+              <button
+                id="start-review"
+                class="btn primary"
+                type="button"
+                data-i18n="start_review"
+              >
+                Wiederholung starten
+              </button>
+            </div>
+
+            <p class="group-title" style="margin-top: var(--gap-5)"
+               data-i18n="up_next">Als Nächstes</p>
+            <ul id="queue" class="queue"></ul>
+
+            <button
+              id="open-import"
+              class="btn"
+              type="button"
+              style="margin-top: var(--gap-4)"
+              data-i18n="add_content"
+            >
               Lerninhalt hinzufügen
             </button>
-            <button id="open-stats" type="button" data-i18n="open_stats">
-              Lernstatistik
-            </button>
-          </div>
-          <ol id="queue"></ol>
-        </section>
+          </section>
 
-        <section id="stats-view" hidden>
-          <div class="card">
-            <p class="eyebrow" data-i18n="stats_kicker">Wiederholungs-Aktivität</p>
-            <h2 data-i18n="stats_title">Lernstatistik</h2>
-            <p class="muted" data-i18n="stats_desc">
-              Bearbeitete Karten pro Tag, Woche oder Monat — und die dafür
-              aufgewendete Lernzeit.
+          <!-- ── Tab: Inhalte ────────────────────────────────────────── -->
+          <section id="import-view" hidden>
+            <header class="screen-head">
+              <h1 class="t-large-title" data-i18n="tab_library">Inhalte</h1>
+            </header>
+            <p class="t-secondary" data-i18n="import_desc">
+              Text, Link oder Foto. Vor dem Speichern siehst du immer einen
+              Entwurf, den du ändern kannst.
             </p>
-            <div class="stats-periods" role="tablist" aria-label="Zeitraum">
-              <button
-                id="stats-period-day"
-                class="stats-period active"
-                type="button"
-                role="tab"
-                aria-selected="true"
-                data-i18n="stats_period_day"
-              >
-                Tag
-              </button>
-              <button
-                id="stats-period-week"
-                class="stats-period"
-                type="button"
-                role="tab"
-                aria-selected="false"
-                data-i18n="stats_period_week"
-              >
-                Woche
-              </button>
-              <button
-                id="stats-period-month"
-                class="stats-period"
-                type="button"
-                role="tab"
-                aria-selected="false"
-                data-i18n="stats_period_month"
-              >
-                Monat
-              </button>
-            </div>
-            <p id="stats-summary" class="stats-summary" aria-live="polite"></p>
-            <div id="stats-rows" class="stats-rows"></div>
-          </div>
-          <div class="buttons">
-            <button id="close-stats" type="button" data-i18n="to_queue">
-              Zur Queue
-            </button>
-          </div>
-        </section>
 
-        <section id="import-view" hidden>
-          <div class="card">
-            <p class="eyebrow" data-i18n="import_kicker">Import</p>
-            <h2 data-i18n="add_content">Lerninhalt hinzufügen</h2>
-            <p class="muted" data-i18n="import_desc">
-              Bridge-JSON, Text/URL oder Foto/Screenshot. Vor dem Speichern
-              wird immer ein bearbeitbarer Entwurf gezeigt. Bildimport braucht
-              Cloud-Vision in der Bibliothek und Internet.
-            </p>
-            <label>
-              <span data-i18n="import_file_label">Bridge-JSON-Datei</span>
-              <input
-                id="import-file"
-                type="file"
-                accept="application/json,text/json,text/plain,.json"
-              />
-            </label>
-            <label>
-              <span data-i18n="import_text_label">Text, URL oder Bridge-JSON</span>
-              <textarea
-                id="import-input"
-                placeholder="Text/URL einfügen oder JSON-Datei auswählen …"
-                data-i18n-placeholder="import_text_ph"
-              ></textarea>
-            </label>
-            <label>
-              <span data-i18n="import_image_label">Foto oder Screenshot</span>
-              <input
-                id="import-image"
-                type="file"
-                accept="image/*"
-                capture="environment"
-              />
-              <span class="muted" data-i18n="import_image_hint"
-                >Kamera oder Galerie — Online, Cloud-Vision</span
+            <div id="import-entry" class="stack" style="margin-top: var(--gap-4)">
+              <label class="field">
+                <span data-i18n="import_text_label">Text, Link oder Bridge-JSON</span>
+                <textarea
+                  id="import-input"
+                  rows="4"
+                  data-i18n-placeholder="import_text_ph"
+                ></textarea>
+              </label>
+              <label class="field">
+                <span data-i18n="import_file_label">Bridge-JSON-Datei</span>
+                <input id="import-file" type="file" accept="application/json,.json" />
+              </label>
+              <label class="field">
+                <span data-i18n="import_image_label">Foto oder Screenshot</span>
+                <input id="import-image" type="file" accept="image/*" />
+                <span class="t-footnote" data-i18n="import_image_hint">
+                  Kamera oder Galerie — braucht KI und Internet
+                </span>
+              </label>
+              <button
+                id="prepare-import"
+                class="btn primary"
+                type="button"
+                data-i18n="create_draft"
               >
-            </label>
-            <div class="buttons">
-              <button id="prepare-import" class="primary" type="button" data-i18n="create_draft">
                 Entwurf erstellen
               </button>
-              <button id="decompose-image" type="button" data-i18n="import_image_decompose">
+              <button
+                id="decompose-image"
+                class="btn"
+                type="button"
+                data-i18n="import_image_decompose"
+              >
                 Bild zerlegen
               </button>
-              <button id="cancel-import" type="button" data-i18n="cancel">
-                Abbrechen
-              </button>
+              <p id="import-status" class="status" aria-live="polite"></p>
             </div>
-            <p id="import-status" class="status-line" aria-live="polite"></p>
 
-            <form id="import-draft-form" hidden>
-              <div class="divider"></div>
-              <p id="import-draft-progress" class="muted" hidden></p>
-              <h2 data-i18n="confirm_draft">Entwurf bestätigen</h2>
-              <label>
-                <span data-i18n="slug">Slug</span>
-                <input id="import-slug" type="text" required />
-              </label>
-              <label>
+            <form id="import-draft-form" class="stack" hidden style="margin-top: var(--gap-4)">
+              <h2 class="t-title" data-i18n="confirm_draft">Entwurf bestätigen</h2>
+              <p id="import-draft-progress" class="t-footnote" hidden></p>
+              <label class="field">
                 <span data-i18n="title">Titel</span>
                 <input id="import-title" type="text" />
               </label>
-              <label>
+              <label class="field">
                 <span data-i18n="content">Lerninhalt</span>
-                <textarea id="import-concept" required></textarea>
+                <textarea id="import-concept" rows="4" required></textarea>
               </label>
-              <label>
-                <span data-i18n="domain">Domäne</span>
+              <label class="field">
+                <span data-i18n="question_opt">Frage (optional)</span>
+                <textarea id="import-question" rows="2"></textarea>
+              </label>
+              <label class="field">
+                <span data-i18n="domain">Fach</span>
                 <input id="import-domain" type="text" />
               </label>
-              <label>
-                <span data-i18n="bloom_level">Bloom-Stufe</span>
+              <label class="field">
+                <span data-i18n="bloom_level">Anspruch</span>
                 <select id="import-bloom">
                   <option value="1" data-i18n="bloom_1">1 · Erinnern</option>
                   <option value="2" data-i18n="bloom_2">2 · Verstehen</option>
@@ -833,178 +387,303 @@
                   <option value="5" data-i18n="bloom_5">5 · Erschaffen</option>
                 </select>
               </label>
-              <label>
-                <span data-i18n="question_opt">Frage (optional)</span>
-                <textarea id="import-question"></textarea>
-              </label>
-              <label>
-                <span data-i18n="context_opt">Kontext/Notiz (optional)</span>
-                <textarea id="import-context"></textarea>
-              </label>
-              <label>
-                <span data-i18n="source_opt">Quelle (optional)</span>
-                <input id="import-source-link" type="text" />
-              </label>
-              <label>
-                <span data-i18n="prereqs_label"
-                  >Voraussetzungen (Slugs, kommagetrennt)</span
-                >
-                <input id="import-prerequisites" type="text" />
-              </label>
-              <label>
-                <span data-i18n="knowledge_contexts_label"
-                  >Wissenskontexte (Namen, kommagetrennt)</span
-                >
-                <input id="import-knowledge-contexts" type="text" />
-              </label>
-              <label>
-                <span data-i18n="symbiosis_mode">Symbiosemodus</span>
-                <select id="import-symbiosis-mode">
-                  <option value="" data-i18n="symbiosis_none">Keiner</option>
-                  <option value="shadowing">Shadowing</option>
-                  <option value="copilot">Copilot</option>
-                  <option value="autonomy">Autonomy</option>
-                </select>
-              </label>
-              <div class="buttons">
-                <button id="confirm-import" class="primary" type="submit" data-i18n="save_token">
-                  Token und Karte speichern
-                </button>
-                <button id="skip-import-draft" type="button" hidden data-i18n="import_skip_draft">
-                  Überspringen
-                </button>
-              </div>
-            </form>
-          </div>
-        </section>
-
-        <section id="review-view" hidden>
-          <div class="card">
-            <div id="review-progress"></div>
-            <div id="review-meta"></div>
-            <div id="voice-controls" class="voice-controls">
-              <button id="toggle-voice" type="button" aria-pressed="false" data-i18n="voice_start">
-                Sprachmodus starten
+              <details>
+                <summary data-i18n="import_more">Weitere Angaben</summary>
+                <div class="stack" style="margin-top: var(--gap-3)">
+                  <label class="field">
+                    <span data-i18n="slug">Slug</span>
+                    <input id="import-slug" type="text" required />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="context_opt">Notiz (optional)</span>
+                    <input id="import-context" type="text" />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="source_opt">Quelle (optional)</span>
+                    <input id="import-source-link" type="text" />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="prereqs_label">Voraussetzungen</span>
+                    <input id="import-prerequisites" type="text" />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="knowledge_contexts_label">Wissenskontexte</span>
+                    <input id="import-knowledge-contexts" type="text" />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="symbiosis_mode">Symbiosemodus</span>
+                    <select id="import-symbiosis-mode">
+                      <option value="" data-i18n="symbiosis_none">Keiner</option>
+                      <option value="shadowing">shadowing</option>
+                      <option value="copilot">copilot</option>
+                      <option value="autonomy">autonomy</option>
+                    </select>
+                  </label>
+                </div>
+              </details>
+              <button id="confirm-import" class="btn primary" type="submit" data-i18n="save_token">
+                Karte speichern
               </button>
-              <button id="install-voice-data" type="button" hidden data-i18n="install_voice_data">
-                Lokale Sprachdaten installieren
-              </button>
-            </div>
-            <h2 id="review-question"></h2>
-            <label>
-              <span data-i18n="your_answer">Deine Antwort</span>
-              <textarea
-                id="review-answer"
-                autocomplete="off"
-                placeholder="Antwort aus dem Gedächtnis formulieren …"
-                data-i18n-placeholder="answer_ph"
-              ></textarea>
-            </label>
-            <button id="reveal-answer" class="primary" type="button" data-i18n="reveal_answer">
-              Antwort aufdecken
-            </button>
-
-            <div id="revealed-answer" hidden>
-              <div class="divider"></div>
-              <p class="eyebrow" data-i18n="expected_answer_kicker">Erwartete Antwort</p>
-              <p id="expected-answer"></p>
-              <a id="review-source" target="_blank" rel="noreferrer" hidden data-i18n="open_source">
-                Quelle öffnen
-              </a>
-              <div id="evaluation-panel" hidden>
-                <p class="eyebrow" data-i18n="evaluation_kicker">Einschätzung</p>
-                <p id="evaluation-verdict"></p>
-                <p id="evaluation-feedback"></p>
-                <p id="evaluation-meta" class="muted"></p>
-              </div>
-              <p class="muted" data-i18n="how_well">Wie gut konntest du dich erinnern?</p>
-              <div class="ratings">
-                <button type="button" data-rating="1" data-i18n="rating_again">Nochmal</button>
-                <button type="button" data-rating="2" data-i18n="rating_hard">Schwer</button>
-                <button type="button" data-rating="3" data-i18n="rating_good">Gut</button>
-                <button type="button" data-rating="4" data-i18n="rating_easy">Leicht</button>
-              </div>
-            </div>
-            <p id="review-status" class="status-line" aria-live="polite"></p>
-            <div class="divider"></div>
-            <button id="stop-review" type="button" data-i18n="stop_session">
-              Sitzung beenden
-            </button>
-          </div>
-        </section>
-
-        <section id="session-summary-view" hidden>
-          <div class="card">
-            <p class="eyebrow" data-i18n="summary_kicker">Fertig</p>
-            <h2 data-i18n="summary_title">Sitzungsübersicht</h2>
-            <p id="session-summary-text"></p>
-            <button id="back-to-queue" class="primary" type="button" data-i18n="to_queue">
-              Zur Queue
-            </button>
-          </div>
-        </section>
-
-        <section id="settings-view" hidden>
-          <div class="card">
-            <p class="eyebrow" data-i18n="settings_kicker">Einstellungen</p>
-            <h2 data-i18n="reminder_heading">Erinnerung</h2>
-            <label class="switch-row">
-              <input id="reminder-enabled" type="checkbox" />
-              <span data-i18n="reminder_toggle"
-                >Tägliche Erinnerung an fällige Karten</span
+              <button
+                id="skip-import-draft"
+                class="btn"
+                type="button"
+                hidden
+                data-i18n="import_skip_draft"
               >
-            </label>
-            <label class="field-row">
-              <span data-i18n="reminder_time_label">Uhrzeit</span>
-              <input id="reminder-time" type="time" />
-            </label>
-            <p id="reminder-status" class="status-line" aria-live="polite"></p>
-
-            <div id="voice-settings">
-              <div class="divider"></div>
-              <h2 data-i18n="voice_engine_heading">Sprachmodus</h2>
-              <label class="field-row">
-                <span data-i18n="voice_engine_label">Sprach-Engine</span>
-                <select id="voice-engine">
-                  <option value="device-only">Nur auf dem Gerät</option>
-                  <option value="device-first">Gerät bevorzugen</option>
-                  <option value="quality-first">Qualität bevorzugen</option>
-                </select>
-              </label>
-              <p id="voice-engine-status" class="muted" aria-live="polite"></p>
-            </div>
-
-            <div class="divider"></div>
-            <h2 data-i18n="update_heading">App-Update</h2>
-            <p id="update-version" class="muted"></p>
-            <p id="update-status" class="status-line" aria-live="polite"></p>
-            <p id="update-unavailable" class="muted" hidden data-i18n="update_via_testflight">
-              Updates kommen über TestFlight.
-            </p>
-            <div id="update-controls" class="voice-controls">
-              <button id="check-update" type="button" data-i18n="update_check">
-                Nach Update suchen
+                Überspringen
               </button>
-              <button id="install-update" class="primary" type="button" hidden data-i18n="update_install">
-                Update installieren
+              <button id="cancel-import" class="btn plain" type="button" data-i18n="cancel">
+                Abbrechen
+              </button>
+            </form>
+          </section>
+
+          <!-- ── Tab: Fortschritt ────────────────────────────────────── -->
+          <section id="stats-view" hidden>
+            <header class="screen-head">
+              <h1 class="t-large-title" data-i18n="tab_progress">Fortschritt</h1>
+            </header>
+            <div class="segmented" role="group" style="margin-bottom: var(--gap-4)">
+              <button id="stats-period-day" type="button" class="active" data-i18n="stats_period_day">
+                Tag
+              </button>
+              <button id="stats-period-week" type="button" data-i18n="stats_period_week">
+                Woche
+              </button>
+              <button id="stats-period-month" type="button" data-i18n="stats_period_month">
+                Monat
               </button>
             </div>
+            <p id="stats-summary" class="t-headline"></p>
+            <ul id="stats-rows" class="bars" style="margin-top: var(--gap-4)"></ul>
+            <button id="close-stats" class="btn plain" type="button" hidden data-i18n="to_queue">
+              Zurück
+            </button>
+          </section>
 
-            <div class="divider"></div>
-            <h2 data-i18n="device_heading">Gerät</h2>
-            <p class="muted" data-i18n="device_desc">
-              Mit einer anderen Server-Datenbank oder einem anderen Lernenden
-              koppeln.
+          <!-- ── Tab: Einstellungen ──────────────────────────────────── -->
+          <section id="settings-view" hidden>
+            <header class="screen-head">
+              <h1 class="t-large-title" data-i18n="tab_settings">Einstellungen</h1>
+            </header>
+
+            <p class="group-title" data-i18n="reminder_heading">Erinnerung</p>
+            <ul class="list">
+              <li class="row static">
+                <span class="row-text" data-i18n="reminder_toggle">
+                  Tägliche Erinnerung
+                </span>
+                <input id="reminder-enabled" class="switch" type="checkbox" />
+              </li>
+              <li class="row static">
+                <span class="row-text" data-i18n="reminder_time_label">Uhrzeit</span>
+                <input id="reminder-time" type="time" style="width: auto" />
+              </li>
+            </ul>
+            <p id="reminder-status" class="status"></p>
+
+            <div id="voice-settings" hidden>
+              <p class="group-title" data-i18n="voice_engine_heading">Sprachmodus</p>
+              <ul class="list">
+                <li class="row static">
+                  <span class="row-text" data-i18n="voice_engine_label">Verarbeitung</span>
+                  <select id="voice-engine" style="width: auto"></select>
+                </li>
+              </ul>
+              <p id="voice-engine-status" class="status"></p>
+            </div>
+
+            <div id="update-controls" hidden>
+              <p class="group-title" data-i18n="update_heading">App-Update</p>
+              <ul class="list">
+                <li class="row static">
+                  <span class="row-text" data-i18n="update_version_label">Version</span>
+                  <span id="update-version" class="row-value"></span>
+                </li>
+                <li>
+                  <button id="check-update" class="row" type="button">
+                    <span class="row-text" data-i18n="update_check">Nach Updates suchen</span>
+                  </button>
+                </li>
+                <li>
+                  <button id="install-update" class="row" type="button" hidden>
+                    <span class="row-text" data-i18n="update_install">Update installieren</span>
+                  </button>
+                </li>
+              </ul>
+              <p id="update-status" class="status"></p>
+            </div>
+            <p id="update-unavailable" class="t-footnote" style="margin-top: var(--gap-3)" hidden data-i18n="update_unavailable">
+              Updates kommen über den App Store.
             </p>
-            <button id="repair" type="button" data-i18n="repair">Neu koppeln</button>
-            <div class="divider"></div>
-            <button id="close-settings" class="primary" type="button" data-i18n="done">
+
+            <p class="group-title" style="margin-top: var(--gap-5)" data-i18n="device_heading">
+              Gerät
+            </p>
+            <ul class="list">
+              <li class="row static">
+                <span class="row-text" data-i18n="settings_storage">Lernbereich</span>
+                <span id="settings-storage" class="row-value"></span>
+              </li>
+              <li>
+                <button id="repair" class="row" type="button">
+                  <span class="row-text" data-i18n="settings_take_over">Mit ZAM Desktop koppeln</span>
+                  <svg class="row-chevron" viewBox="0 0 8 14" aria-hidden="true">
+                    <path d="M1 1l6 6-6 6" />
+                  </svg>
+                </button>
+              </li>
+            </ul>
+            <button id="close-settings" class="btn plain" type="button" hidden data-i18n="done">
               Fertig
             </button>
+          </section>
+
+          <!-- ── After a session ─────────────────────────────────────── -->
+          <section id="session-summary-view" hidden>
+            <header class="screen-head">
+              <h1 class="t-title" data-i18n="summary_title">Sitzungsübersicht</h1>
+            </header>
+            <div class="card">
+              <p id="session-summary-text" class="t-body"></p>
+              <button id="back-to-queue" class="btn primary" type="button" data-i18n="to_queue">
+                Zurück
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <nav class="tabbar" role="tablist" aria-label="ZAM">
+        <span class="tab-wrap">
+          <button class="tab" type="button" role="tab" data-tab="learn" aria-selected="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="6" width="18" height="13" rx="2.5" />
+              <path d="M6.5 3.5h11" />
+            </svg>
+            <span data-i18n="tab_learn">Lernen</span>
+            <span id="tab-badge" class="badge" hidden></span>
+          </button>
+        </span>
+        <button class="tab" type="button" role="tab" data-tab="library" aria-selected="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 5.5h10" />
+            <path d="M4 12h10" />
+            <path d="M4 18.5h16" />
+            <path d="M17.5 4v9" />
+            <path d="M21 8.5h-7" />
+          </svg>
+          <span data-i18n="tab_library">Inhalte</span>
+        </button>
+        <button class="tab" type="button" role="tab" data-tab="progress" aria-selected="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 19.5V13" />
+            <path d="M10 19.5V6" />
+            <path d="M16 19.5V10" />
+            <path d="M21 19.5H3" />
+          </svg>
+          <span data-i18n="tab_progress">Fortschritt</span>
+        </button>
+        <button class="tab" type="button" role="tab" data-tab="settings" aria-selected="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="3.2" />
+            <path
+              d="M19.4 14.5a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.11-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.88 1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.56-1.11 1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.88.34H9.5a1.7 1.7 0 0 0 1.03-1.56V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.88v.09a1.7 1.7 0 0 0 1.56 1.03H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1.03z"
+            />
+          </svg>
+          <span data-i18n="tab_settings">Einstellungen</span>
+        </button>
+      </nav>
+    </section>
+
+    <!-- ═══ Review — fills the screen, no tab bar ═══════════════════════ -->
+    <section id="review-view" class="frame" hidden>
+      <div class="screen review-screen">
+        <div class="column">
+          <div class="progress-track" aria-hidden="true">
+            <div id="review-progress-fill" class="progress-fill" style="width: 0%"></div>
           </div>
-        </section>
-      </section>
-    </main>
-    <script type="module" src="/src/main.ts"></script>
+          <p id="review-progress" class="t-footnote"></p>
+
+          <h2 id="review-question" class="prompt"></h2>
+          <p id="review-meta" class="t-footnote"></p>
+
+          <!-- Hidden wholesale where the platform has no voice support, so a
+               control that can never work is never offered. -->
+          <div id="voice-controls" class="stack">
+            <button
+              id="toggle-voice"
+              class="btn"
+              type="button"
+              aria-pressed="false"
+              data-i18n="voice_start"
+            >
+              Sprachmodus starten
+            </button>
+            <button
+              id="install-voice-data"
+              class="btn"
+              type="button"
+              hidden
+              data-i18n="install_voice_data"
+            >
+              Lokale Sprachdaten installieren
+            </button>
+          </div>
+
+          <label class="field">
+            <span data-i18n="your_answer">Deine Antwort</span>
+            <textarea
+              id="review-answer"
+              rows="4"
+              data-i18n-placeholder="answer_ph"
+            ></textarea>
+          </label>
+          <button id="reveal-answer" class="btn primary" type="button" data-i18n="reveal_answer">
+            Antwort aufdecken
+          </button>
+
+          <div id="revealed-answer" hidden class="stack">
+            <div id="evaluation-panel" hidden class="card">
+              <p id="evaluation-verdict" class="verdict"></p>
+              <p id="evaluation-feedback" class="t-body"></p>
+              <p id="evaluation-meta" class="t-footnote"></p>
+            </div>
+
+            <p class="group-title" data-i18n="expected_answer_kicker">Erwartete Antwort</p>
+            <div id="expected-answer" class="answer-box"></div>
+            <a id="review-source" href="#" hidden target="_blank" rel="noreferrer"
+               data-i18n="open_source">Quelle öffnen</a>
+
+            <p class="t-secondary" data-i18n="how_well">
+              Wie gut konntest du dich erinnern?
+            </p>
+            <div class="ratings">
+              <button class="rating again" type="button" data-rating="1" data-i18n="rating_again">
+                Nochmal
+              </button>
+              <button class="rating hard" type="button" data-rating="2" data-i18n="rating_hard">
+                Schwer
+              </button>
+              <button class="rating good" type="button" data-rating="3" data-i18n="rating_good">
+                Gut
+              </button>
+              <button class="rating easy" type="button" data-rating="4" data-i18n="rating_easy">
+                Leicht
+              </button>
+            </div>
+          </div>
+
+          <p id="review-status" class="status" aria-live="polite"></p>
+          <hr class="divider" />
+          <button id="stop-review" class="btn plain" type="button" data-i18n="stop_session">
+            Sitzung beenden
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <script type="module" src="/src/boot.ts"></script>
   </body>
 </html>

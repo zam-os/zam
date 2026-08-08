@@ -1,0 +1,215 @@
+/*
+ * Design tokens (ADR 2026-08-08b).
+ *
+ * The old look was a dark "premium" surface: purple/cyan ambient glows,
+ * glassmorphism, fixed pixel type. It reads as an app that wants to be
+ * noticed. A learning app is used every day for a few minutes, often tired,
+ * often in a hurry — what it needs is to disappear behind the content.
+ *
+ * So the palette is Apple's system palette, the type scale is Apple's, and
+ * the brand appears in exactly two places: the wordmark and the primary
+ * action. Everything else is label, background and separator.
+ *
+ * ## Dynamic Type
+ *
+ * `font: -apple-system-body` on the body resolves to the user's chosen
+ * content size, which WKWebView honours. Every other size is a multiple of
+ * that in `em`, so the whole interface scales with the system setting instead
+ * of ignoring it — a learner who needs large text is exactly the learner who
+ * cannot work around a fixed 13px label.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  /* iOS system palette, light. */
+  --accent: #0a63d4;
+  --accent-pressed: #0850ac;
+  --brand-start: #4f46e5;
+  --brand-end: #0891b2;
+
+  --bg: #f2f2f7;
+  --bg-elevated: #ffffff;
+  --bg-grouped-row-active: #e5e5ea;
+  --fill-quaternary: rgba(116, 116, 128, 0.08);
+
+  --label: #1c1c1e;
+  --label-secondary: #3c3c4399;
+  --label-tertiary: #3c3c434d;
+  --separator: #3c3c432e;
+
+  --red: #c9252d;
+  --orange: #a05a00;
+  --green: #1c7a3e;
+  --blue: #0a63d4;
+
+  /* FSRS ratings. Hue carries the meaning; the label carries it too, because
+     colour alone never does (WCAG 1.4.1). */
+  --again: var(--red);
+  --hard: var(--orange);
+  --good: var(--green);
+  --easy: var(--blue);
+
+  --radius-row: 12px;
+  --radius-control: 12px;
+  --radius-sheet: 20px;
+
+  /* 44pt is Apple's minimum hit target and is not negotiable on a device
+     used by a fifteen-year-old on a bus. */
+  --tap: 44px;
+
+  --gap-1: 4px;
+  --gap-2: 8px;
+  --gap-3: 12px;
+  --gap-4: 16px;
+  --gap-5: 24px;
+  --gap-6: 32px;
+
+  --duration: 220ms;
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent: #4b9bff;
+    --accent-pressed: #3d84dd;
+    --brand-start: #8b5cf6;
+    --brand-end: #22d3ee;
+
+    --bg: #000000;
+    --bg-elevated: #1c1c1e;
+    --bg-grouped-row-active: #2c2c2e;
+    --fill-quaternary: rgba(118, 118, 128, 0.24);
+
+    --label: #ffffff;
+    --label-secondary: #ebebf599;
+    --label-tertiary: #ebebf54d;
+    --separator: #54545865;
+
+    --red: #ff6961;
+    --orange: #ffb340;
+    --green: #30db5b;
+    --blue: #64d2ff;
+  }
+}
+
+/* Honour the system setting rather than animating regardless. Vestibular
+   sensitivity is a real accessibility need, not a preference. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration: 0.01ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  /* Resolves to the user's Dynamic Type body size. */
+  font: -apple-system-body;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  color: var(--label);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  /* The learner never drags the page itself; scrolling belongs to the
+     screens, so the whole app cannot rubber-band away from under a review. */
+  overscroll-behavior: none;
+}
+
+/* Type scale, relative to Dynamic Type body. */
+.t-large-title {
+  font-size: 2.05em;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0;
+}
+.t-title {
+  font-size: 1.45em;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  margin: 0;
+}
+.t-headline {
+  font-size: 1.06em;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0;
+}
+.t-body {
+  font-size: 1em;
+  line-height: 1.45;
+  margin: 0;
+}
+.t-secondary {
+  font-size: 0.94em;
+  line-height: 1.4;
+  color: var(--label-secondary);
+  margin: 0;
+}
+.t-footnote {
+  font-size: 0.84em;
+  line-height: 1.35;
+  color: var(--label-secondary);
+  margin: 0;
+}
+
+/* A group header above an inset list, as in Settings. */
+.group-title {
+  font-size: 0.8em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--label-secondary);
+  margin: 0 0 var(--gap-2) var(--gap-4);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-3);
+}
+
+.hidden,
+[hidden] {
+  display: none !important;
+}
+
+/* Visible only to assistive technology. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Keyboard and VoiceOver focus must be visible; iOS hides it by default for
+   touch, which is fine, but an external keyboard on an iPad is common. */
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}

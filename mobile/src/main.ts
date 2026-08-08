@@ -49,7 +49,6 @@ import {
   createMultiDraftController,
   type MultiDraftController,
 } from "./multi-draft.js";
-import { DEFAULT_PERSONA_ID } from "../../src/kernel/models/persona.js";
 import { getSetting } from "../../src/kernel/models/settings.js";
 import { createTauriDatabase } from "./provider.js";
 import {
@@ -58,6 +57,8 @@ import {
   prepareLocalLibrary,
 } from "./setup/first-run.js";
 import { starterCards } from "./setup/starter-content.js";
+import { initSetupWizard, type SetupChoices } from "./setup/wizard.js";
+import { createNav } from "./ui/nav.js";
 import {
   formatTimeInput,
   millisUntilNext,
@@ -110,6 +111,44 @@ import {
 } from "./voice.js";
 
 const db = createTauriDatabase((command, args) => invoke(command, args));
+const nav = createNav();
+
+interface DatabaseDescription {
+  mode: "local" | "remote" | "closed";
+  location?: string;
+  sizeBytes?: number;
+}
+
+/**
+ * Settings says where the library lives, in the learner's terms. On a
+ * device-local library that line is the whole answer to "where is my
+ * learning, and what would I lose" — which is why it carries the size rather
+ * than a file path nobody can act on.
+ */
+async function refreshStorageRow(): Promise<void> {
+  const row = document.getElementById("settings-storage");
+  if (!row) return;
+  try {
+    const info = await invoke<DatabaseDescription>("db_describe");
+    if (info.mode === "remote") {
+      row.textContent = t("storage_server");
+      return;
+    }
+    const megabytes = (info.sizeBytes ?? 0) / 1_000_000;
+    row.textContent = tf("storage_local", {
+      // toFixed would print "0.2" in German, where the separator is a comma.
+      size:
+        megabytes < 0.1
+          ? "< 0,1"
+          : megabytes.toLocaleString(undefined, {
+              maximumFractionDigits: 1,
+            }),
+    });
+  } catch {
+    // A settings row is never worth an error dialog.
+    row.textContent = "—";
+  }
+}
 const reviewSession = new MobileReviewSession(db, localStorage);
 
 function element<T extends HTMLElement>(id: string): T {
@@ -118,9 +157,6 @@ function element<T extends HTMLElement>(id: string): T {
   return node as T;
 }
 
-const pairingView = element<HTMLElement>("pairing-view");
-const appView = element<HTMLElement>("app-view");
-const startLocalButton = element<HTMLButtonElement>("start-on-this-device");
 const scanButton = element<HTMLButtonElement>("scan-pairing-code");
 const cameraSettingsButton = element<HTMLButtonElement>("camera-settings");
 const cancelPairingButton = element<HTMLButtonElement>("cancel-pairing");
@@ -132,17 +168,12 @@ const pairingStatus = element<HTMLParagraphElement>("pairing-status");
 const learner = element<HTMLElement>("learner");
 const connection = element<HTMLElement>("connection");
 const statusLine = element<HTMLParagraphElement>("status");
-const dashboardView = element<HTMLElement>("dashboard-view");
 const summary = element<HTMLElement>("summary");
 const queueList = element<HTMLOListElement>("queue");
 const startReviewButton = element<HTMLButtonElement>("start-review");
 const openImportButton = element<HTMLButtonElement>("open-import");
-const openStatsButton = element<HTMLButtonElement>("open-stats");
-const statsView = element<HTMLElement>("stats-view");
 const statsSummary = element<HTMLParagraphElement>("stats-summary");
 const statsRows = element<HTMLElement>("stats-rows");
-const closeStatsButton = element<HTMLButtonElement>("close-stats");
-const importView = element<HTMLElement>("import-view");
 const importFile = element<HTMLInputElement>("import-file");
 const importInput = element<HTMLTextAreaElement>("import-input");
 const importImage = element<HTMLInputElement>("import-image");
@@ -169,8 +200,8 @@ const importKnowledgeContexts = element<HTMLInputElement>(
 const importSymbiosisMode = element<HTMLSelectElement>("import-symbiosis-mode");
 const confirmImportButton = element<HTMLButtonElement>("confirm-import");
 const skipImportDraftButton = element<HTMLButtonElement>("skip-import-draft");
-const reviewView = element<HTMLElement>("review-view");
 const reviewProgress = element<HTMLElement>("review-progress");
+const reviewProgressFill = element<HTMLElement>("review-progress-fill");
 const reviewMeta = element<HTMLElement>("review-meta");
 const toggleVoiceButton = element<HTMLButtonElement>("toggle-voice");
 const installVoiceDataButton = element<HTMLButtonElement>("install-voice-data");
@@ -189,7 +220,6 @@ const ratingButtons = Array.from(
 );
 const stopReviewButton = element<HTMLButtonElement>("stop-review");
 const reviewStatus = element<HTMLParagraphElement>("review-status");
-const sessionSummaryView = element<HTMLElement>("session-summary-view");
 const sessionSummaryText = element<HTMLElement>("session-summary-text");
 const backToQueueButton = element<HTMLButtonElement>("back-to-queue");
 const resyncButton = element<HTMLButtonElement>("resync");
@@ -197,9 +227,6 @@ const repairButton = element<HTMLButtonElement>("repair");
 const reminderEnabled = element<HTMLInputElement>("reminder-enabled");
 const reminderTime = element<HTMLInputElement>("reminder-time");
 const reminderStatus = element<HTMLParagraphElement>("reminder-status");
-const settingsView = element<HTMLElement>("settings-view");
-const openSettingsButton = element<HTMLButtonElement>("open-settings");
-const closeSettingsButton = element<HTMLButtonElement>("close-settings");
 const updateVersion = element<HTMLElement>("update-version");
 const updateStatus = element<HTMLParagraphElement>("update-status");
 const checkUpdateButton = element<HTMLButtonElement>("check-update");
@@ -507,13 +534,12 @@ function setStatus(text: string, isError = false): void {
 }
 
 function showPairing(canCancel: boolean): void {
-  pairingView.hidden = false;
-  appView.hidden = true;
+  nav.showRoot("pairing");
   cancelPairingButton.hidden = !canCancel;
   cameraSettingsButton.hidden = true;
-  // Re-pairing gets an instruction; a first run does not. This screen is a
-  // welcome now, and a status line telling a new learner to go find a QR code
-  // would contradict the button right above it.
+  // Re-pairing gets an instruction; a first run does not. Arriving here from
+  // the welcome screen, a line telling a learner to go find a QR code would
+  // contradict the choice they just made.
   setPairingStatus(canCancel ? t("pairing_hint_keep") : "");
 }
 
@@ -523,59 +549,39 @@ function showApp(payload: ZamPairPayloadV1): void {
   applyLocale(learnerLocale);
   void refreshLearnerLocaleFromDb();
   void refreshCloudEndpointsFromDb();
-  pairingView.hidden = true;
-  appView.hidden = false;
   resyncButton.hidden = false;
+  learner.hidden = false;
   learner.textContent = payload.learner.userId;
-}
-
-/**
- * Exactly one section is visible at a time. Listing them in one place means a
- * new view cannot be forgotten in one of the switchers.
- */
-function showOnly(visible: HTMLElement): void {
-  for (const view of [
-    dashboardView,
-    importView,
-    statsView,
-    reviewView,
-    sessionSummaryView,
-    settingsView,
-  ]) {
-    view.hidden = view !== visible;
-  }
+  nav.showTab("learn");
 }
 
 function showDashboard(): void {
-  showOnly(dashboardView);
-  openSettingsButton.disabled = false;
+  nav.showTab("learn");
 }
 
+/**
+ * Review takes the whole screen and drops the tab bar: nothing should invite
+ * the learner away mid-card, and the four ratings want the space the bar
+ * would otherwise occupy.
+ */
 function showReview(): void {
-  showOnly(reviewView);
-  // No jumping to settings mid-review; the gear returns after the session.
-  openSettingsButton.disabled = true;
+  nav.showRoot("review");
 }
 
 function showSessionSummary(): void {
-  showOnly(sessionSummaryView);
-  openSettingsButton.disabled = false;
+  nav.showSummary();
 }
 
 function showImport(): void {
-  showOnly(importView);
-  openSettingsButton.disabled = false;
+  nav.showTab("library");
 }
 
 function showStats(): void {
-  showOnly(statsView);
-  openSettingsButton.disabled = false;
+  nav.showTab("progress");
 }
 
 function showSettings(): void {
-  showOnly(settingsView);
-  renderReminderControls();
-  renderVoiceSettings();
+  nav.showTab("settings");
 }
 
 function setImportStatus(text: string, isError = false): void {
@@ -804,6 +810,27 @@ function formatDateTime(value: string): string {
   return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
 }
 
+/**
+ * When a card is next up, in the terms a learner thinks in. A due date is
+ * either "now-ish" or "some day" — the second and the year in
+ * `8.8.2026, 07:34:53` were noise on every single row.
+ */
+function formatDueDay(value: string): string {
+  const date = parseDate(value);
+  if (Number.isNaN(date.getTime())) return value;
+  const startOfDay = (d: Date) =>
+    new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const days = Math.round(
+    (startOfDay(date) - startOfDay(new Date())) / 86_400_000,
+  );
+  if (days <= 0) return t("due_today");
+  if (days === 1) return t("due_tomorrow");
+  return date.toLocaleDateString(undefined, {
+    day: "numeric",
+    month: "short",
+  });
+}
+
 // ── Statistics (ADR 2026-08-01) ────────────────────────────────────────────
 let statsPeriod: StatsPeriod = "day";
 
@@ -934,11 +961,21 @@ function renderQueue(queue: ReviewQueue): void {
   summary.textContent = tf("queue_summary", {
     count: queue.items.length,
     cards: cardWord(queue.items.length),
-    due: queue.reviewCount,
-    new: queue.newCount,
-    relearn: queue.relearnCount,
-    domains: queue.totalDomains.join(", ") || "–",
   });
+  // The breakdown only names the buckets that are actually populated. Listing
+  // "0 due, 0 again" every day taught the learner to stop reading the line.
+  const parts: string[] = [];
+  if (queue.reviewCount > 0) {
+    parts.push(tf("queue_breakdown_due", { n: queue.reviewCount }));
+  }
+  if (queue.relearnCount > 0) {
+    parts.push(tf("queue_breakdown_relearn", { n: queue.relearnCount }));
+  }
+  if (queue.newCount > 0) {
+    parts.push(tf("queue_breakdown_new", { n: queue.newCount }));
+  }
+  setStatus(parts.join(" · "));
+  nav.setDueBadge(queue.reviewCount + queue.relearnCount);
   queueList.replaceChildren();
   for (const item of queue.items) {
     const entry = document.createElement("li");
@@ -948,10 +985,8 @@ function renderQueue(queue: ReviewQueue): void {
     const meta = document.createElement("div");
     meta.className = "meta";
     meta.textContent = tf("queue_item_meta", {
-      domain: item.domain,
-      bloom: item.bloomLevel,
-      state: item.state,
-      due: formatDateTime(item.dueAt),
+      domain: item.domain || t("no_domain"),
+      due: formatDueDay(item.dueAt),
     });
     entry.append(title, meta);
     queueList.append(entry);
@@ -1208,10 +1243,14 @@ function renderCurrentReview(message = ""): void {
     current: progress.current,
     total: progress.total,
   });
+  // A bar as well as the count: "3 of 12" is precise, but how much is left is
+  // read faster from a length than from arithmetic.
+  reviewProgressFill.style.width = `${
+    progress.total > 0 ? ((progress.current - 1) / progress.total) * 100 : 0
+  }%`;
   reviewMeta.textContent = tf("review_meta", {
     title: item.title,
     domain: item.domain || t("no_domain"),
-    bloom: item.bloomLevel,
   });
   reviewQuestion.textContent = prompt.question;
   reviewAnswer.value = reviewSession.draftAnswer;
@@ -1252,21 +1291,26 @@ async function refresh(userId: string): Promise<void> {
     .get(userId)) as { card_count: number } | undefined;
   const cardCount = Number(user?.card_count ?? 0);
   if (cardCount === 0) {
-    setStatus(tf("paired_no_cards", { user: userId }));
-    summary.textContent = "";
+    summary.textContent = t("library_empty");
+    setStatus("");
     queueList.replaceChildren();
     startReviewButton.disabled = true;
+    nav.setDueBadge(0);
     await updateReminderDue(0);
     return;
   }
   const queue = await buildReviewQueue(db, { userId });
-  setStatus(
-    tf("queue_for", {
-      user: userId,
-      count: cardCount,
-      cards: cardWord(cardCount),
-    }),
-  );
+  if (queue.items.length === 0) {
+    // A library with cards but nothing scheduled is a good day, not an empty
+    // screen — say so rather than showing "0".
+    summary.textContent = t("queue_nothing_due");
+    setStatus("");
+    queueList.replaceChildren();
+    startReviewButton.disabled = true;
+    nav.setDueBadge(0);
+    await updateReminderDue(0);
+    return;
+  }
   renderQueue(queue);
   await updateReminderDue(queue.reviewCount + queue.relearnCount);
 }
@@ -1420,25 +1464,38 @@ cancelPairingButton.addEventListener("click", () => {
   if (currentPairing) showApp(currentPairing);
 });
 
-startLocalButton.addEventListener("click", () => void startOnThisDevice());
-
 repairButton.addEventListener("click", () => showPairing(true));
 
-openSettingsButton.addEventListener("click", () => showSettings());
-closeSettingsButton.addEventListener("click", () => showDashboard());
+element<HTMLButtonElement>("pairing-back").addEventListener("click", () => {
+  if (currentUserId) showDashboard();
+  else nav.showRoot("setup");
+});
+
+/**
+ * A tab is reachable at any moment, so each one refreshes what it shows on
+ * arrival rather than relying on whoever navigated there to have done it.
+ */
+nav.onTabChange((tab) => {
+  if (tab === "library") {
+    resetImport();
+    return;
+  }
+  if (tab === "progress") {
+    void refreshStats();
+    return;
+  }
+  if (tab === "settings") {
+    renderReminderControls();
+    renderVoiceSettings();
+    void refreshStorageRow();
+  }
+});
 
 openImportButton.addEventListener("click", () => {
-  resetImport();
   showImport();
   importInput.focus();
 });
 
-openStatsButton.addEventListener("click", () => {
-  showStats();
-  void refreshStats();
-});
-
-closeStatsButton.addEventListener("click", () => showDashboard());
 
 for (const period of ["day", "week", "month"] as const) {
   document
@@ -1727,9 +1784,8 @@ async function openLocalLibrary(setup: LocalSetup): Promise<void> {
   learnerLocale = setup.locale;
   applyLocale(setup.locale);
   void refreshCloudEndpointsFromDb();
-  pairingView.hidden = true;
-  appView.hidden = false;
-  learner.textContent = setup.userId;
+  // One learner owns a device-local library, so naming them says nothing.
+  learner.hidden = true;
   // Nothing to synchronize with: offering the button would only produce
   // "database is local-only; nothing to sync" from the Rust side.
   resyncButton.hidden = true;
@@ -1737,34 +1793,26 @@ async function openLocalLibrary(setup: LocalSetup): Promise<void> {
   connection.classList.remove("offline");
   await refresh(setup.userId);
   await restoreReviewSession(setup.userId);
-  showDashboard();
+  nav.showTab("learn");
 }
 
-/** Run the standalone first run, then open what it produced. */
-async function startOnThisDevice(): Promise<void> {
-  startLocalButton.disabled = true;
-  setPairingStatus(t("local_setup_working"));
-  try {
-    await invoke("db_close");
-    await invoke("db_open", {});
-    const locale = resolveLocale(navigator.language);
-    const setup = await completeFirstRun(db, {
-      locale,
-      // Phase 2 asks; until then every learner gets the neutral persona the
-      // desktop also falls back to when onboarding is skipped.
-      persona: DEFAULT_PERSONA_ID,
-      starterCards: starterCards(locale),
-    });
-    await openLocalLibrary(setup);
-  } catch (error) {
-    setPairingStatus(
-      tf("local_setup_failed", { error: errorMessage(error) }),
-      true,
-    );
-  } finally {
-    startLocalButton.disabled = false;
-  }
+/** Run the first run the wizard collected, then open what it produced. */
+async function startOnThisDevice(choices: SetupChoices): Promise<void> {
+  await invoke("db_close");
+  await invoke("db_open", {});
+  const setup = await completeFirstRun(db, {
+    locale: choices.locale,
+    persona: choices.persona,
+    personaContextLabel: choices.personaContextLabel,
+    starterCards: starterCards(choices.locale),
+  });
+  await openLocalLibrary(setup);
 }
+
+const setupWizard = initSetupWizard({
+  complete: startOnThisDevice,
+  openPairing: () => showPairing(false),
+});
 
 async function start(): Promise<void> {
   // Remove the Phase-0 test shortcut if an upgraded installation still has it.
@@ -1810,10 +1858,12 @@ async function start(): Promise<void> {
       await openLocalLibrary(setup);
       return;
     }
-    showPairing(false);
+    setupWizard.restart();
+    nav.showRoot("setup");
   } catch (error) {
-    showPairing(false);
-    setPairingStatus(
+    setupWizard.restart();
+    nav.showRoot("setup");
+    setupWizard.setStatus(
       tf("local_open_failed", { error: errorMessage(error) }),
       true,
     );

@@ -27,7 +27,7 @@ const DE: MobileTokenDraft[] = [
       "Wissen bleibt hängen, wenn du es aus dem Gedächtnis holst — nicht, wenn du es noch einmal liest. Der Abruf selbst ist der Lernvorgang. Deshalb fragt ZAM zuerst und zeigt die Antwort erst danach.",
     question:
       "Warum bringt der Versuch, eine Antwort selbst zu geben, mehr als den Text noch einmal zu lesen?",
-    domain: "zam",
+    domain: "Erste Schritte",
     bloomLevel: 2,
   },
   {
@@ -38,7 +38,7 @@ const DE: MobileTokenDraft[] = [
       "ZAM legt jede Karte kurz vor dem Punkt wieder vor, an dem du sie vergessen würdest. Sitzt sie, wächst der Abstand bis zum nächsten Mal deutlich; sitzt sie nicht, schrumpft er. Wiederholen kostet dadurch mit der Zeit immer weniger Zeit.",
     question:
       "Wann legt ZAM eine Karte wieder vor, und was passiert mit dem Abstand, wenn du sie konntest?",
-    domain: "zam",
+    domain: "Erste Schritte",
     bloomLevel: 2,
   },
   {
@@ -49,7 +49,7 @@ const DE: MobileTokenDraft[] = [
       "Deine Einschätzung nach jeder Karte steuert den ganzen Plan. Wer sich besser bewertet, als er war, bekommt zu große Abstände und vergisst genau die Karten, die er eigentlich üben müsste. Eine ehrliche Vier ist wertvoller als eine geschmeichelte.",
     question:
       "Was passiert mit deinem Lernplan, wenn du dich regelmäßig besser bewertest, als du warst?",
-    domain: "zam",
+    domain: "Erste Schritte",
     bloomLevel: 3,
   },
 ];
@@ -63,7 +63,7 @@ const EN: MobileTokenDraft[] = [
       "Knowledge sticks when you pull it out of memory, not when you read it again. The retrieval is the learning. That is why ZAM asks first and only then shows the answer.",
     question:
       "Why does attempting an answer yourself beat re-reading the material?",
-    domain: "zam",
+    domain: "Getting started",
     bloomLevel: 2,
   },
   {
@@ -74,7 +74,7 @@ const EN: MobileTokenDraft[] = [
       "ZAM brings a card back just before the point where you would forget it. Get it right and the gap to the next time grows sharply; get it wrong and it shrinks. Reviewing therefore costs less and less time as you go.",
     question:
       "When does ZAM bring a card back, and what happens to the gap when you knew it?",
-    domain: "zam",
+    domain: "Getting started",
     bloomLevel: 2,
   },
   {
@@ -85,7 +85,7 @@ const EN: MobileTokenDraft[] = [
       "Your rating after each card drives the whole schedule. Rate yourself better than you were and the gaps grow too wide, so you forget exactly the cards you most needed to practise. An honest low rating is worth more than a flattering one.",
     question:
       "What happens to your schedule if you routinely rate yourself better than you were?",
-    domain: "zam",
+    domain: "Getting started",
     bloomLevel: 3,
   },
 ];

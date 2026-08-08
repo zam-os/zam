@@ -39,8 +39,8 @@ describe("t / setLocale", () => {
 describe("tf", () => {
   it("interpolates named params and leaves unknown ones intact", () => {
     setLocale("en");
-    expect(tf("queue_for", { user: "klara", count: 3, cards: "cards" })).toBe(
-      "Queue for klara (3 cards).",
+    expect(tf("queue_summary", { count: 3, cards: "cards" })).toBe(
+      "3 cards waiting",
     );
     expect(tf("sync_retry", { attempt: 2 })).toBe(
       "Sync retried (attempt 2): {error}",
