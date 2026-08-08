@@ -1,4 +1,7 @@
-/** Android companion: pairing, offline recall/import/voice, and resilient sync. */
+/**
+ * ZAM mobile: standalone first run, recall/import/voice, and — once a learner
+ * attaches a server database — pairing and its sync status.
+ */
 
 import { invoke } from "@tauri-apps/api/core";
 import {
@@ -46,8 +49,15 @@ import {
   createMultiDraftController,
   type MultiDraftController,
 } from "./multi-draft.js";
+import { DEFAULT_PERSONA_ID } from "../../src/kernel/models/persona.js";
 import { getSetting } from "../../src/kernel/models/settings.js";
 import { createTauriDatabase } from "./provider.js";
+import {
+  completeFirstRun,
+  type LocalSetup,
+  prepareLocalLibrary,
+} from "./setup/first-run.js";
+import { starterCards } from "./setup/starter-content.js";
 import {
   formatTimeInput,
   millisUntilNext,
@@ -110,6 +120,7 @@ function element<T extends HTMLElement>(id: string): T {
 
 const pairingView = element<HTMLElement>("pairing-view");
 const appView = element<HTMLElement>("app-view");
+const startLocalButton = element<HTMLButtonElement>("start-on-this-device");
 const scanButton = element<HTMLButtonElement>("scan-pairing-code");
 const cameraSettingsButton = element<HTMLButtonElement>("camera-settings");
 const cancelPairingButton = element<HTMLButtonElement>("cancel-pairing");
@@ -235,6 +246,12 @@ async function applyPlatformFeatures(): Promise<void> {
 }
 
 let currentPairing: ZamPairPayloadV1 | null = null;
+/**
+ * The learner this session belongs to, in both device modes: taken from the
+ * pairing payload when paired, and from the local library's `user.id` when
+ * the app runs on its own (ADR 2026-08-08). Null means nothing is loaded.
+ */
+let currentUserId: string | null = null;
 let reminderConfig: ReminderConfig = parseReminderConfig(
   localStorage.getItem(REMINDER_STORAGE_KEY),
 );
@@ -494,7 +511,10 @@ function showPairing(canCancel: boolean): void {
   appView.hidden = true;
   cancelPairingButton.hidden = !canCancel;
   cameraSettingsButton.hidden = true;
-  setPairingStatus(t(canCancel ? "pairing_hint_keep" : "pairing_hint_scan"));
+  // Re-pairing gets an instruction; a first run does not. This screen is a
+  // welcome now, and a status line telling a new learner to go find a QR code
+  // would contradict the button right above it.
+  setPairingStatus(canCancel ? t("pairing_hint_keep") : "");
 }
 
 function showApp(payload: ZamPairPayloadV1): void {
@@ -505,6 +525,7 @@ function showApp(payload: ZamPairPayloadV1): void {
   void refreshCloudEndpointsFromDb();
   pairingView.hidden = true;
   appView.hidden = false;
+  resyncButton.hidden = false;
   learner.textContent = payload.learner.userId;
 }
 
@@ -684,7 +705,7 @@ async function runImageDecompose(): Promise<void> {
     setImportStatus(t("import_image_hint"), true);
     return;
   }
-  if (!currentPairing) return;
+  if (!currentUserId) return;
 
   decomposeImageButton.disabled = true;
   prepareImportButton.disabled = true;
@@ -757,9 +778,9 @@ async function takeSharedImport(): Promise<void> {
     );
     if (!payload?.content) return;
     queueSharedImport(payload);
-    if (currentPairing) openPendingImport();
+    if (currentUserId) openPendingImport();
   } catch (error) {
-    if (currentPairing && !reviewSession.active) {
+    if (currentUserId && !reviewSession.active) {
       showImport();
       setImportStatus(
         tf("shared_read_failed", { error: errorMessage(error) }),
@@ -876,13 +897,13 @@ function renderStats(view: StatsView): void {
 
 /** Load and paint the series; the kernel read is local, so this works offline. */
 async function refreshStats(): Promise<void> {
-  if (!currentPairing) return;
+  if (!currentUserId) return;
   statsSummary.textContent = t("stats_loading");
   statsRows.replaceChildren();
   try {
     const view = await loadStatsView(
       db,
-      currentPairing.learner.userId,
+      currentUserId,
       statsPeriod,
       statsFormatters(),
     );
@@ -1312,6 +1333,7 @@ async function connect(
     if (requireInitialSync) throw error;
   }
 
+  currentUserId = payload.learner.userId;
   await refresh(payload.learner.userId);
   if (requireInitialSync) {
     await invoke("pairing_save", {
@@ -1398,6 +1420,8 @@ cancelPairingButton.addEventListener("click", () => {
   if (currentPairing) showApp(currentPairing);
 });
 
+startLocalButton.addEventListener("click", () => void startOnThisDevice());
+
 repairButton.addEventListener("click", () => showPairing(true));
 
 openSettingsButton.addEventListener("click", () => showSettings());
@@ -1461,11 +1485,11 @@ cancelImportButton.addEventListener("click", () => {
 });
 
 skipImportDraftButton.addEventListener("click", () => {
-  if (!multiDraftController || !currentPairing) return;
+  if (!multiDraftController || !currentUserId) return;
   const hasMore = multiDraftController.skip();
   if (!hasMore) {
     const { saved, skipped } = multiDraftController.state();
-    const userId = currentPairing.learner.userId;
+    const userId = currentUserId;
     resetImport();
     void refresh(userId).then(() => {
       showDashboard();
@@ -1479,14 +1503,14 @@ skipImportDraftButton.addEventListener("click", () => {
 
 importDraftForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  if (!currentPairing) return;
+  if (!currentUserId) return;
   confirmImportButton.disabled = true;
   skipImportDraftButton.disabled = true;
   try {
     const draft = draftFromForm();
     const result = await confirmMobileImport(
       db,
-      currentPairing.learner.userId,
+      currentUserId,
       draft,
     );
 
@@ -1504,14 +1528,14 @@ importDraftForm.addEventListener("submit", async (event) => {
       }
       const { saved, skipped } = multiDraftController.state();
       resetImport();
-      await refresh(currentPairing.learner.userId);
+      await refresh(currentUserId);
       showDashboard();
       setStatus(tf("import_batch_done", { saved, skipped }));
       return;
     }
 
     resetImport();
-    await refresh(currentPairing.learner.userId);
+    await refresh(currentUserId);
     showDashboard();
     setStatus(
       tf("token_saved", { title: result.token.title || result.token.slug }),
@@ -1556,13 +1580,13 @@ async function rateCurrentReview(rating: 1 | 2 | 3 | 4): Promise<boolean> {
 }
 
 startReviewButton.addEventListener("click", async () => {
-  if (!currentPairing) return;
+  if (!currentUserId) return;
   startReviewButton.disabled = true;
   try {
-    const started = await reviewSession.start(currentPairing.learner.userId);
+    const started = await reviewSession.start(currentUserId);
     if (!started) {
       setStatus(t("no_due_cards"));
-      await refresh(currentPairing.learner.userId);
+      await refresh(currentUserId);
       return;
     }
     renderCurrentReview();
@@ -1655,10 +1679,10 @@ stopReviewButton.addEventListener("click", async () => {
 });
 
 backToQueueButton.addEventListener("click", async () => {
-  if (!currentPairing) return;
+  if (!currentUserId) return;
   backToQueueButton.disabled = true;
   try {
-    await refresh(currentPairing.learner.userId);
+    await refresh(currentUserId);
     showDashboard();
     openPendingImport();
   } catch (error) {
@@ -1669,12 +1693,12 @@ backToQueueButton.addEventListener("click", async () => {
 });
 
 resyncButton.addEventListener("click", async () => {
-  if (!currentPairing) return;
+  if (!currentUserId) return;
   resyncButton.disabled = true;
   try {
     setStatus(t("syncing"));
     await synchronize((message) => setStatus(message, true));
-    await refresh(currentPairing.learner.userId);
+    await refresh(currentUserId);
     connection.textContent = t("synced");
     connection.classList.remove("offline");
   } catch (error) {
@@ -1690,24 +1714,107 @@ resyncButton.addEventListener("click", async () => {
   }
 });
 
+/**
+ * Open the device-local library and show the app (ADR 2026-08-08).
+ *
+ * There is no upstream here, so nothing synchronizes and the connection chip
+ * says where the library lives rather than claiming a sync state it cannot
+ * have. `db_sync` refuses on a local database for exactly that reason.
+ */
+async function openLocalLibrary(setup: LocalSetup): Promise<void> {
+  currentUserId = setup.userId;
+  currentPairing = null;
+  learnerLocale = setup.locale;
+  applyLocale(setup.locale);
+  void refreshCloudEndpointsFromDb();
+  pairingView.hidden = true;
+  appView.hidden = false;
+  learner.textContent = setup.userId;
+  // Nothing to synchronize with: offering the button would only produce
+  // "database is local-only; nothing to sync" from the Rust side.
+  resyncButton.hidden = true;
+  connection.textContent = t("on_this_device");
+  connection.classList.remove("offline");
+  await refresh(setup.userId);
+  await restoreReviewSession(setup.userId);
+  showDashboard();
+}
+
+/** Run the standalone first run, then open what it produced. */
+async function startOnThisDevice(): Promise<void> {
+  startLocalButton.disabled = true;
+  setPairingStatus(t("local_setup_working"));
+  try {
+    await invoke("db_close");
+    await invoke("db_open", {});
+    const locale = resolveLocale(navigator.language);
+    const setup = await completeFirstRun(db, {
+      locale,
+      // Phase 2 asks; until then every learner gets the neutral persona the
+      // desktop also falls back to when onboarding is skipped.
+      persona: DEFAULT_PERSONA_ID,
+      starterCards: starterCards(locale),
+    });
+    await openLocalLibrary(setup);
+  } catch (error) {
+    setPairingStatus(
+      tf("local_setup_failed", { error: errorMessage(error) }),
+      true,
+    );
+  } finally {
+    startLocalButton.disabled = false;
+  }
+}
+
 async function start(): Promise<void> {
   // Remove the Phase-0 test shortcut if an upgraded installation still has it.
   localStorage.removeItem("zam.syncUrl");
   localStorage.removeItem("zam.authToken");
+
+  // A pairing store that cannot be *read* is not the same as no pairing, and
+  // neither is a reason to give up: the device-local library is still there.
+  // An unsigned simulator build has no keychain entitlement and fails here
+  // with OSStatus -34018 — a learner opening the app for the first time must
+  // not be met with that.
+  let stored: string | null = null;
   try {
-    const stored = await invoke<string | null>("pairing_load");
-    if (!stored) {
+    stored = await invoke<string | null>("pairing_load");
+  } catch {
+    stored = null;
+  }
+
+  if (stored) {
+    try {
+      const payload = parseZamPairPayload(stored);
+      currentPairing = payload;
+      currentUserId = payload.learner.userId;
+      showApp(payload);
+      await connect(payload, false);
+      return;
+    } catch (error) {
       showPairing(false);
+      setPairingStatus(
+        tf("stored_pairing_failed", { error: errorMessage(error) }),
+        true,
+      );
       return;
     }
-    const payload = parseZamPairPayload(stored);
-    currentPairing = payload;
-    showApp(payload);
-    await connect(payload, false);
+  }
+
+  // No pairing: either a device-local library from an earlier run, or a fresh
+  // install that has never been set up.
+  try {
+    await invoke("db_open", {});
+    const setup = await prepareLocalLibrary(db);
+    if (setup) {
+      await openLocalLibrary(setup);
+      return;
+    }
+    showPairing(false);
   } catch (error) {
     showPairing(false);
     setPairingStatus(
-      tf("stored_pairing_failed", { error: errorMessage(error) }),
+      tf("local_open_failed", { error: errorMessage(error) }),
       true,
     );
   }

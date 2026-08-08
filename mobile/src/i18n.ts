@@ -16,6 +16,18 @@ export function resolveLocale(value: string | null | undefined): Locale {
 type Messages = Record<string, string>;
 
 const DE: Messages = {
+  // Welcome / first run (ADR 2026-08-08)
+  welcome_kicker: "Willkommen",
+  welcome_title: "Lernen, das hängen bleibt",
+  welcome_desc:
+    "ZAM fragt dich ab, statt dich lesen zu lassen, und legt jede Karte kurz vor dem Vergessen wieder vor. Ohne Konto, ohne Internet.",
+  start_on_this_device: "Auf diesem Gerät starten",
+  takeover_desc:
+    "Du nutzt ZAM schon am Rechner? Dann übernimm deine Lerninhalte.",
+  local_setup_working: "Lernbereich wird eingerichtet…",
+  local_setup_failed: "Einrichtung fehlgeschlagen: {error}",
+  local_open_failed: "Lernbereich konnte nicht geöffnet werden: {error}",
+  on_this_device: "Auf diesem Gerät",
   // Pairing view
   pairing_kicker: "Kopplung",
   pairing_title: "Mit ZAM Desktop koppeln",
@@ -253,6 +265,17 @@ const DE: Messages = {
 };
 
 const EN: Messages = {
+  welcome_kicker: "Welcome",
+  welcome_title: "Learning that sticks",
+  welcome_desc:
+    "ZAM asks you instead of letting you re-read, and brings each card back just before you would forget it. No account, no internet.",
+  start_on_this_device: "Start on this device",
+  takeover_desc:
+    "Already using ZAM on a computer? Bring your learning content across.",
+  local_setup_working: "Setting up your library…",
+  local_setup_failed: "Setup failed: {error}",
+  local_open_failed: "Could not open your library: {error}",
+  on_this_device: "On this device",
   pairing_kicker: "Pairing",
   pairing_title: "Pair with ZAM Desktop",
   pairing_desc:

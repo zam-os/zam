@@ -84,6 +84,11 @@ export function createTauriInvokeStub(path: string): TauriInvokeStub {
           return null;
         case "db_sync":
           return null;
+        case "db_describe":
+          // The stub is always a local file, which is what a standalone
+          // install runs on. `db_sync` refusing on a local database is the
+          // Rust side's behaviour, not the stub's — nothing here calls it.
+          return { mode: "local", location: path, sizeBytes: 0 };
         case "db_close":
           if (db.open) {
             db.close();

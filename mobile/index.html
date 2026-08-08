@@ -574,24 +574,36 @@
           <span class="brand-mark">ZAM</span>
         </div>
         <div class="card">
-          <p class="eyebrow" data-i18n="pairing_kicker">Kopplung</p>
-          <h2 data-i18n="pairing_title">Mit ZAM Desktop koppeln</h2>
-          <p class="muted" data-i18n="pairing_desc">
-            In ZAM Desktop unter Einstellungen → Mobile Begleit-App einen
-            QR-Code anzeigen.
+          <p class="eyebrow" data-i18n="welcome_kicker">Willkommen</p>
+          <h2 data-i18n="welcome_title">Lernen, das hängen bleibt</h2>
+          <p class="muted" data-i18n="welcome_desc">
+            ZAM fragt dich ab, statt dich lesen zu lassen, und legt jede Karte
+            kurz vor dem Vergessen wieder vor. Ohne Konto, ohne Internet.
           </p>
-          <button id="scan-pairing-code" class="primary" type="button" data-i18n="scan_qr">
+          <button
+            id="start-on-this-device"
+            class="primary"
+            type="button"
+            data-i18n="start_on_this_device"
+          >
+            Auf diesem Gerät starten
+          </button>
+          <p id="pairing-status" class="status-line" aria-live="polite"></p>
+
+          <div class="divider"></div>
+          <p class="muted" data-i18n="takeover_desc">
+            Du nutzt ZAM schon am Rechner? Dann übernimm deine Lerninhalte.
+          </p>
+          <button id="scan-pairing-code" type="button" data-i18n="scan_qr">
             QR-Code scannen
           </button>
           <button id="camera-settings" type="button" hidden data-i18n="open_app_settings">
             App-Einstellungen öffnen
           </button>
-          <p id="pairing-status" class="status-line" aria-live="polite"></p>
           <button id="cancel-pairing" type="button" hidden data-i18n="cancel">
             Abbrechen
           </button>
 
-          <div class="divider"></div>
           <details>
             <summary data-i18n="manual_entry">Manuelle Eingabe</summary>
             <form id="manual-pairing-form">
