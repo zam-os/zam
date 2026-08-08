@@ -16,6 +16,37 @@ export function resolveLocale(value: string | null | undefined): Locale {
 type Messages = Record<string, string>;
 
 const DE: Messages = {
+  // Library (browse / edit)
+  library_search_ph: "Karten durchsuchen",
+  library_add: "Neue Karte",
+  library_count: "{n} von {total} Karten",
+  library_no_hits: "Keine Karte gefunden.",
+  library_none_yet: "Noch keine Karten. Leg deine erste an.",
+  library_back: "Zurück zur Übersicht",
+  library_save: "Änderungen sichern",
+  library_saved: "Gesichert.",
+  library_pause: "Karte pausieren",
+  library_resume: "Karte fortsetzen",
+  library_paused_note: "Pausiert — wird nicht abgefragt",
+  library_delete: "Karte löschen",
+  library_delete_confirm: "Wirklich löschen? Der Lernverlauf dieser Karte geht mit.",
+  library_deleted: "Karte gelöscht.",
+  library_failed: "Hat nicht geklappt: {error}",
+  // Multi-device upgrade (ADR 2026-08-08)
+  upgrade_heading: "Mehrere Geräte",
+  upgrade_desc:
+    "Lege bei Turso eine Datenbank an und trage sie hier ein. Deine bisherigen Karten ziehen mit um; die Kopie auf dem Gerät bleibt als Sicherung liegen.",
+  upgrade_start: "Umziehen",
+  upgrade_replace: "Vorhandene Karten dort ersetzen",
+  upgrade_reading: "Lernbereich wird gelesen…",
+  upgrade_connecting: "Verbinde mit der Server-Datenbank…",
+  upgrade_provisioning: "Datenbank wird eingerichtet…",
+  upgrade_transferring: "Karten werden übertragen…",
+  upgrade_done: "{n} Einträge übertragen. Du lernst jetzt auf der Server-Datenbank.",
+  upgrade_not_empty:
+    "In dieser Datenbank liegen schon Karten. Entweder eine leere nehmen — oder die vorhandenen ersetzen.",
+  upgrade_failed: "Umzug fehlgeschlagen: {error}. Du lernst weiter auf diesem Gerät.",
+  upgrade_already: "Du lernst bereits auf einer Server-Datenbank.",
   // AI connect (ADR 2026-07-24 §5)
   ai_heading: "KI",
   ai_desc:
@@ -179,7 +210,7 @@ const DE: Messages = {
   slug: "Slug",
   title: "Titel",
   content: "Lerninhalt",
-  domain: "Domäne",
+  domain: "Fach",
   bloom_level: "Bloom-Stufe",
   bloom_1: "1 · Erinnern",
   bloom_2: "2 · Verstehen",
@@ -223,7 +254,7 @@ const DE: Messages = {
   stop_session: "Sitzung beenden",
   review_progress: "Karte {current} von {total}",
   review_meta: "{title} · {domain}",
-  no_domain: "Ohne Domäne",
+  no_domain: "Ohne Fach",
   voice_answer_recognized:
     "Antwort erkannt. Erwartete Antwort wird vorgelesen.",
   voice_paused_msg: "Sprachmodus pausiert: {message}",
@@ -321,6 +352,35 @@ const DE: Messages = {
 };
 
 const EN: Messages = {
+  library_search_ph: "Search your cards",
+  library_add: "New card",
+  library_count: "{n} of {total} cards",
+  library_no_hits: "No card found.",
+  library_none_yet: "No cards yet. Add your first one.",
+  library_back: "Back to the list",
+  library_save: "Save changes",
+  library_saved: "Saved.",
+  library_pause: "Pause card",
+  library_resume: "Resume card",
+  library_paused_note: "Paused — not scheduled",
+  library_delete: "Delete card",
+  library_delete_confirm: "Delete it? This card's review history goes too.",
+  library_deleted: "Card deleted.",
+  library_failed: "That did not work: {error}",
+  upgrade_heading: "Multiple devices",
+  upgrade_desc:
+    "Create a database at Turso and enter it here. Your existing cards move across; the copy on this device stays as a backup.",
+  upgrade_start: "Move across",
+  upgrade_replace: "Replace the cards already there",
+  upgrade_reading: "Reading your library…",
+  upgrade_connecting: "Connecting to the server database…",
+  upgrade_provisioning: "Setting the database up…",
+  upgrade_transferring: "Transferring cards…",
+  upgrade_done: "{n} rows transferred. You are now learning on the server database.",
+  upgrade_not_empty:
+    "That database already holds cards. Use an empty one — or replace what is there.",
+  upgrade_failed: "The move failed: {error}. You are still learning on this device.",
+  upgrade_already: "You are already learning on a server database.",
   ai_heading: "AI",
   ai_desc:
     "With an OpenRouter key ZAM marks your answers, reads photos, and finds cards by meaning. Without one you rate yourself — everything else works the same.",
@@ -470,7 +530,7 @@ const EN: Messages = {
   slug: "Slug",
   title: "Title",
   content: "Learning content",
-  domain: "Domain",
+  domain: "Subject",
   bloom_level: "Bloom level",
   bloom_1: "1 · Remember",
   bloom_2: "2 · Understand",
@@ -513,7 +573,7 @@ const EN: Messages = {
   stop_session: "End session",
   review_progress: "Card {current} of {total}",
   review_meta: "{title} · {domain}",
-  no_domain: "No domain",
+  no_domain: "No subject",
   voice_answer_recognized: "Answer recognised. Reading the expected answer.",
   voice_paused_msg: "Voice mode paused: {message}",
   voice_compact_voice_hint:

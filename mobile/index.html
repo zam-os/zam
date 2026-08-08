@@ -314,12 +314,88 @@
             <header class="screen-head">
               <h1 class="t-large-title" data-i18n="tab_library">Inhalte</h1>
             </header>
-            <p class="t-secondary" data-i18n="import_desc">
+            <!-- Browse: the default face of the tab. Adding is one tap away,
+                 but finding and fixing what you already have is the thing a
+                 learner does far more often. -->
+            <div id="library-browse" class="stack">
+              <input
+                id="library-search"
+                type="text"
+                inputmode="search"
+                autocapitalize="none"
+                spellcheck="false"
+                data-i18n-placeholder="library_search_ph"
+              />
+              <button
+                id="library-add"
+                class="btn primary"
+                type="button"
+                data-i18n="library_add"
+              >
+                Neue Karte
+              </button>
+              <p id="library-count" class="t-footnote"></p>
+              <ul id="library-list" class="list"></ul>
+              <p id="library-empty" class="t-secondary" hidden data-i18n="library_no_hits">
+                Keine Karte gefunden.
+              </p>
+            </div>
+
+            <!-- Detail: one card, editable, with the two things a learner
+                 wants to do to it. -->
+            <div id="library-detail" class="stack" hidden>
+              <button
+                id="library-back"
+                class="btn plain"
+                type="button"
+                data-i18n="library_back"
+              >
+                Zurück zur Übersicht
+              </button>
+              <label class="field">
+                <span data-i18n="title">Titel</span>
+                <input id="detail-title" type="text" />
+              </label>
+              <label class="field">
+                <span data-i18n="question_opt">Frage</span>
+                <textarea id="detail-question" rows="2"></textarea>
+              </label>
+              <label class="field">
+                <span data-i18n="content">Lerninhalt</span>
+                <textarea id="detail-concept" rows="5"></textarea>
+              </label>
+              <label class="field">
+                <span data-i18n="domain">Fach</span>
+                <input id="detail-domain" type="text" />
+              </label>
+              <button
+                id="detail-save"
+                class="btn primary"
+                type="button"
+                data-i18n="library_save"
+              >
+                Änderungen sichern
+              </button>
+              <button id="detail-pause" class="btn" type="button" data-i18n="library_pause">
+                Karte pausieren
+              </button>
+              <button
+                id="detail-delete"
+                class="btn plain destructive"
+                type="button"
+                data-i18n="library_delete"
+              >
+                Karte löschen
+              </button>
+              <p id="detail-status" class="status" aria-live="polite"></p>
+            </div>
+
+            <p class="t-secondary" id="import-desc-text" hidden data-i18n="import_desc">
               Text, Link oder Foto. Vor dem Speichern siehst du immer einen
               Entwurf, den du ändern kannst.
             </p>
 
-            <div id="import-entry" class="stack" style="margin-top: var(--gap-4)">
+            <div id="import-entry" class="stack" hidden style="margin-top: var(--gap-4)">
               <label class="field">
                 <span data-i18n="import_text_label">Text, Link oder Bridge-JSON</span>
                 <textarea
@@ -569,6 +645,53 @@
             <p id="update-unavailable" class="t-footnote" style="margin-top: var(--gap-3)" hidden data-i18n="update_unavailable">
               Updates kommen über den App Store.
             </p>
+
+            <!-- The step that turns "my iPad" into "my devices". Everything
+                 already on the device comes along; the local copy stays as a
+                 backup. -->
+            <p class="group-title" style="margin-top: var(--gap-5)" data-i18n="upgrade_heading">
+              Mehrere Geräte
+            </p>
+            <div class="card" id="upgrade-card">
+              <p class="t-secondary" data-i18n="upgrade_desc">
+                Lege bei Turso eine Datenbank an und trage sie hier ein. Deine
+                bisherigen Karten ziehen mit um; die Kopie auf dem Gerät bleibt
+                als Sicherung liegen.
+              </p>
+              <label class="field">
+                <span data-i18n="server_db">Server-Datenbank</span>
+                <input
+                  id="upgrade-url"
+                  type="url"
+                  placeholder="libsql://…"
+                  autocomplete="off"
+                  autocapitalize="none"
+                  spellcheck="false"
+                />
+              </label>
+              <label class="field">
+                <span data-i18n="db_token">Datenbank-Token</span>
+                <input id="upgrade-token" type="password" autocomplete="off" />
+              </label>
+              <button
+                id="upgrade-start"
+                class="btn primary"
+                type="button"
+                data-i18n="upgrade_start"
+              >
+                Umziehen
+              </button>
+              <button
+                id="upgrade-replace"
+                class="btn destructive"
+                type="button"
+                hidden
+                data-i18n="upgrade_replace"
+              >
+                Vorhandene Karten dort ersetzen
+              </button>
+              <p id="upgrade-status" class="status" aria-live="polite"></p>
+            </div>
 
             <p class="group-title" style="margin-top: var(--gap-5)" data-i18n="device_heading">
               Gerät
