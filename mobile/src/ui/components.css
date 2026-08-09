@@ -534,6 +534,22 @@ textarea:focus {
   font-weight: 600;
 }
 
+/* The tappable part of an endpoint row: a button that has to look like the
+   two-line text it replaces, not like a button. */
+.endpoint-open {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.endpoint-open:active {
+  opacity: 0.6;
+}
+
 .answer-box {
   background: var(--fill-quaternary);
   border-radius: var(--radius-row);

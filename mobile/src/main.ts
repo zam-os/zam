@@ -36,6 +36,17 @@ import {
 } from "./ai/connect.js";
 import { embedInBackground } from "./ai/embedder.js";
 import {
+  checkEndpoint,
+  ENDPOINT_CAPABILITIES,
+  type EndpointCapability,
+  type EndpointError,
+  listEndpoints,
+  type ManagedEndpoint,
+  moveEndpoint,
+  removeEndpoint,
+  saveEndpoint,
+} from "./ai/endpoints.js";
+import {
   NoTranslationBackendError,
   TranslationFailedError,
   translateCard,
@@ -262,6 +273,27 @@ const aiChangeKeyButton = element<HTMLButtonElement>("ai-change-key");
 const aiGetKeyButton = element<HTMLButtonElement>("ai-get-key");
 const aiDisconnectButton = element<HTMLButtonElement>("ai-disconnect");
 const aiStatus = element<HTMLParagraphElement>("ai-status");
+const endpointsToggle = element<HTMLButtonElement>("endpoints-toggle");
+const endpointsPanel = element<HTMLElement>("endpoints-panel");
+const endpointsList = element<HTMLUListElement>("endpoints-list");
+const endpointsEmpty = element<HTMLElement>("endpoints-empty");
+const endpointsStatus = element<HTMLParagraphElement>("endpoints-status");
+const endpointAddButton = element<HTMLButtonElement>("endpoint-add");
+const endpointForm = element<HTMLElement>("endpoint-form");
+const endpointLabelInput = element<HTMLInputElement>("endpoint-label");
+const endpointUrlInput = element<HTMLInputElement>("endpoint-url");
+const endpointModelInput = element<HTMLInputElement>("endpoint-model");
+const endpointKeyInput = element<HTMLInputElement>("endpoint-key");
+const endpointCheckButton = element<HTMLButtonElement>("endpoint-check");
+const endpointSaveButton = element<HTMLButtonElement>("endpoint-save");
+const endpointCancelButton = element<HTMLButtonElement>("endpoint-cancel");
+const endpointDeleteButton = element<HTMLButtonElement>("endpoint-delete");
+const capabilityInputs: Record<EndpointCapability, HTMLInputElement> = {
+  text: element<HTMLInputElement>("cap-text"),
+  image: element<HTMLInputElement>("cap-image"),
+  embedding: element<HTMLInputElement>("cap-embedding"),
+  stt: element<HTMLInputElement>("cap-stt"),
+};
 
 /** Sentinel value for free-form OpenRouter model ids outside the short list. */
 const AI_MODEL_CUSTOM = "__custom__";
@@ -1438,6 +1470,7 @@ function renderCurrentReview(message = ""): void {
  */
 let disarmCardDelete: (() => void) | undefined;
 let disarmLibraryDelete: (() => void) | undefined;
+let disarmEndpointDelete: (() => void) | undefined;
 
 function armDestructive(
   button: HTMLButtonElement,
@@ -2361,6 +2394,205 @@ function setAiStatus(text: string, isError = false): void {
   aiStatus.textContent = text;
   aiStatus.classList.toggle("error", isError);
 }
+
+/* ── Managing cloud endpoints by hand ────────────────────────────────────── */
+
+/** The endpoint currently open in the form; null while adding a new one. */
+let editingEndpointId: string | null = null;
+
+function setEndpointsStatus(text: string, isError = false): void {
+  endpointsStatus.textContent = text;
+  endpointsStatus.classList.toggle("error", isError);
+}
+
+function endpointErrorMessage(code: EndpointError): string {
+  return t(`endpoint_err_${code}`);
+}
+
+/** Which capabilities a row claims, as a short human line. */
+function capabilitySummary(row: ManagedEndpoint): string {
+  const claimed = ENDPOINT_CAPABILITIES.filter(
+    (cap) => row.capabilities?.[cap],
+  ).map((cap) => t(`cap_${cap}_short`));
+  return claimed.length > 0 ? claimed.join(" · ") : t("endpoint_no_capability");
+}
+
+async function refreshEndpoints(): Promise<void> {
+  const rows = await listEndpoints(db);
+  endpointsList.replaceChildren();
+  endpointsEmpty.hidden = rows.length > 0;
+
+  rows.forEach((row, index) => {
+    const item = document.createElement("li");
+    item.className = "row";
+
+    const open = document.createElement("button");
+    open.type = "button";
+    open.className = "row-text endpoint-open";
+    const title = document.createElement("span");
+    title.className = "t-body";
+    title.textContent = `${row.label} · ${row.model}`;
+    const detail = document.createElement("span");
+    detail.className = "t-footnote";
+    detail.textContent = capabilitySummary(row);
+    open.append(title, detail);
+    open.addEventListener("click", () => {
+      openEndpointForm(row);
+    });
+
+    // Up and down rather than drag: a drag on a list row fights the scroll
+    // gesture, and the list is short enough that two taps win.
+    const up = document.createElement("button");
+    up.type = "button";
+    up.className = "btn icon";
+    up.textContent = "↑";
+    up.disabled = index === 0;
+    up.setAttribute("aria-label", t("endpoint_move_up"));
+    up.addEventListener("click", async () => {
+      await moveEndpoint(db, row.id, "up");
+      await refreshEndpoints();
+    });
+
+    const down = document.createElement("button");
+    down.type = "button";
+    down.className = "btn icon";
+    down.textContent = "↓";
+    down.disabled = index === rows.length - 1;
+    down.setAttribute("aria-label", t("endpoint_move_down"));
+    down.addEventListener("click", async () => {
+      await moveEndpoint(db, row.id, "down");
+      await refreshEndpoints();
+    });
+
+    item.append(open, up, down);
+    endpointsList.append(item);
+  });
+}
+
+function openEndpointForm(row?: ManagedEndpoint): void {
+  editingEndpointId = row?.id ?? null;
+  endpointLabelInput.value = row?.label ?? "";
+  endpointUrlInput.value = row?.url ?? "";
+  endpointModelInput.value = row?.model ?? "";
+  // Never echo a stored key back into the field; leaving it blank keeps the
+  // one already saved, the same bargain the OpenRouter card makes.
+  endpointKeyInput.value = "";
+  endpointKeyInput.placeholder = row?.apiKey ? "••••••••" : "";
+  for (const cap of ENDPOINT_CAPABILITIES) {
+    capabilityInputs[cap].checked = row
+      ? Boolean(row.capabilities?.[cap])
+      : cap === "text";
+  }
+  endpointDeleteButton.classList.toggle("hidden", !row);
+  endpointForm.classList.remove("hidden");
+  endpointAddButton.classList.add("hidden");
+  setEndpointsStatus("");
+  endpointLabelInput.focus();
+}
+
+function closeEndpointForm(): void {
+  editingEndpointId = null;
+  endpointForm.classList.add("hidden");
+  endpointAddButton.classList.remove("hidden");
+  disarmEndpointDelete?.();
+}
+
+function readCapabilityDraft(): Record<string, boolean> {
+  const capabilities: Record<string, boolean> = {};
+  for (const cap of ENDPOINT_CAPABILITIES) {
+    capabilities[cap] = capabilityInputs[cap].checked;
+  }
+  return capabilities;
+}
+
+/** The key a save should carry: what was typed, or the one already stored. */
+async function endpointKeyForSave(): Promise<string> {
+  const typed = endpointKeyInput.value.trim();
+  if (typed || !editingEndpointId) return typed;
+  const rows = await listEndpoints(db);
+  return rows.find((row) => row.id === editingEndpointId)?.apiKey ?? "";
+}
+
+endpointsToggle.addEventListener("click", async () => {
+  const open = !endpointsPanel.classList.contains("hidden");
+  endpointsPanel.classList.toggle("hidden", open);
+  endpointsToggle.setAttribute("aria-expanded", String(!open));
+  if (!open) await refreshEndpoints();
+});
+
+endpointAddButton.addEventListener("click", () => {
+  openEndpointForm();
+});
+
+endpointCancelButton.addEventListener("click", () => {
+  closeEndpointForm();
+});
+
+endpointCheckButton.addEventListener("click", async () => {
+  endpointCheckButton.disabled = true;
+  setEndpointsStatus(t("endpoint_checking"));
+  try {
+    const result = await checkEndpoint({
+      url: endpointUrlInput.value,
+      apiKey: await endpointKeyForSave(),
+    });
+    if (result.ok) {
+      setEndpointsStatus(t("endpoint_check_ok"));
+    } else if (result.status === 401 || result.status === 403) {
+      setEndpointsStatus(t("endpoint_check_rejected"), true);
+    } else if (result.status) {
+      setEndpointsStatus(
+        tf("endpoint_check_status", { status: result.status }),
+        true,
+      );
+    } else {
+      setEndpointsStatus(t("endpoint_check_unreachable"), true);
+    }
+  } finally {
+    endpointCheckButton.disabled = false;
+  }
+});
+
+endpointSaveButton.addEventListener("click", async () => {
+  endpointSaveButton.disabled = true;
+  try {
+    const result = await saveEndpoint(db, {
+      ...(editingEndpointId ? { id: editingEndpointId } : {}),
+      label: endpointLabelInput.value,
+      url: endpointUrlInput.value,
+      model: endpointModelInput.value,
+      apiKey: await endpointKeyForSave(),
+      capabilities: readCapabilityDraft(),
+    });
+    if (!result.ok) {
+      setEndpointsStatus(endpointErrorMessage(result.error ?? "empty_url"), true);
+      return;
+    }
+    closeEndpointForm();
+    await refreshEndpoints();
+    await refreshAiSection();
+    await refreshCloudEndpointsFromDb();
+    setEndpointsStatus(t("endpoint_saved"));
+  } catch (error) {
+    setEndpointsStatus(errorMessage(error), true);
+  } finally {
+    endpointSaveButton.disabled = false;
+  }
+});
+
+disarmEndpointDelete = armDestructive(
+  endpointDeleteButton,
+  t("endpoint_delete_confirm"),
+  async () => {
+    if (!editingEndpointId) return;
+    await removeEndpoint(db, editingEndpointId);
+    closeEndpointForm();
+    await refreshEndpoints();
+    await refreshAiSection();
+    await refreshCloudEndpointsFromDb();
+    setEndpointsStatus(t("endpoint_removed"));
+  },
+);
 
 /**
  * Paint the AI section from what is actually registered in the database.
