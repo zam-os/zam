@@ -539,7 +539,7 @@ describe("no backend at all", () => {
   });
 });
 
-describe("recall tier preference (ADR 2026-08-09b)", () => {
+describe("recall tier preference (ADR 2026-08-09c)", () => {
   const status = (
     value: Partial<{
       status: string;

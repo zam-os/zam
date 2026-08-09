@@ -1367,7 +1367,7 @@ function showEvaluationUi(result: MobileEvaluationResult): void {
     }),
     tf("evaluation_backend", { model: result.modelLabel }),
     // A tier the learner did not choose says so, right where the model is
-    // named (ADR 2026-08-09b §5). Null means they got what they asked for.
+    // named (ADR 2026-08-09c §5). Null means they got what they asked for.
     ...(result.fallbackReason
       ? [tf("evaluation_fallback", { reason: result.fallbackReason })]
       : []),

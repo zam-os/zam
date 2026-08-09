@@ -7,7 +7,7 @@ import {
 } from "../../mobile/src/ai/tier-preference.js";
 import { DEFAULT_AI_TIER_PREFERENCES } from "../../src/kernel/ai/tier-preference.js";
 
-describe("device-local AI tier preferences (ADR 2026-08-09b §3)", () => {
+describe("device-local AI tier preferences (ADR 2026-08-09c §3)", () => {
   it("keeps the choice out of the shared database", () => {
     // Two devices on one Turso library have different silicon, so "prefer
     // local" cannot mean the same thing on both.

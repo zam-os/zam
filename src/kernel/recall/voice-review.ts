@@ -149,7 +149,7 @@ export interface VoiceEngineDecision {
 export type VoiceEnginePlan = Record<VoiceCapability, VoiceEngineDecision>;
 
 /**
- * Speech resolves through the shared primitive (ADR 2026-08-09b), which was
+ * Speech resolves through the shared primitive (ADR 2026-08-09c), which was
  * lifted out of this function unchanged when the same tier model was extended
  * to recall, card text, image import and embeddings. Two copies of "which tier
  * serves this, and what do we tell the learner" is exactly the drift that

@@ -2,7 +2,7 @@
  * Intelligent answer evaluation for the mobile companions.
  *
  * Which tier answers is the learner's `recall` preference resolved against
- * what this device and configuration can actually serve (ADR 2026-08-09b).
+ * what this device and configuration can actually serve (ADR 2026-08-09c).
  * The default stays device-first, so Android still prefers on-device Gemini
  * Nano (AICore → Tensor NPU) — but the device is now *asked* before it is
  * used, `device-only` never reaches the cloud, and a cloud answer the learner
@@ -38,7 +38,7 @@ export interface MobileEvaluationResult {
    *
    * Null means the learner got what they asked for. Anything else is text the
    * surface must show: a cloud answer the learner did not choose is the one
-   * outcome that would make the preference dishonest (ADR 2026-08-09b §5,
+   * outcome that would make the preference dishonest (ADR 2026-08-09c §5,
    * inherited from ADR 2026-07-31).
    */
   fallbackReason: string | null;
@@ -89,7 +89,7 @@ export interface EvaluateAnswerInput {
    */
   onDeviceAvailable?: boolean;
   /**
-   * The learner's `recall` preference (ADR 2026-08-09b §1). Defaults to
+   * The learner's `recall` preference (ADR 2026-08-09c §1). Defaults to
    * `device-first`, which is what this function did unconditionally before.
    */
   preference?: AiTierPreference;

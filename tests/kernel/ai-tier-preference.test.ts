@@ -21,7 +21,7 @@ const cloudOnly = { local: false, cloud: true };
 const deviceOnly = { local: true, cloud: false };
 const neither = { local: false, cloud: false };
 
-describe("AI tier preference (ADR 2026-08-09b)", () => {
+describe("AI tier preference (ADR 2026-08-09c)", () => {
   it("defaults recall and voice to the device, content to a good cloud model", () => {
     // The load-bearing asymmetry: a weak evaluation costs one card the learner
     // sees and can overrule; a weak card is authored once and repeated for

@@ -1,6 +1,6 @@
 /**
  * On-device vs. cloud resolution for every generative capability
- * (ADR 2026-08-09b).
+ * (ADR 2026-08-09c).
  *
  * ADR 2026-07-31 gave speech a device tier, a three-way preference and a
  * *reason* attached to every decision, because a fallback the learner is not
@@ -46,7 +46,7 @@ export function isAiTierPreference(value: unknown): value is AiTierPreference {
 }
 
 /**
- * Defaults differ per capability because the risk does (ADR 2026-08-09b §2).
+ * Defaults differ per capability because the risk does (ADR 2026-08-09c §2).
  *
  * Recall and voice run many times a day, the learner sees the result and can
  * overrule it, and a weaker judgement costs one card — device-first. Card text
@@ -74,7 +74,7 @@ export type AiPlatform = "android" | "ios" | "desktop";
  * fact about today's APIs, not a runtime measurement.
  *
  * A `false` here means Settings states "not possible on this device" instead
- * of offering a choice that silently does nothing (ADR 2026-08-09b §4).
+ * of offering a choice that silently does nothing (ADR 2026-08-09c §4).
  *
  * - **Android**: ML Kit GenAI's Prompt API is text in, text out, so it serves
  *   recall and card text. Image *description* is a different feature and does

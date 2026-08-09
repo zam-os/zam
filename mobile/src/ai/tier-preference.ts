@@ -1,5 +1,5 @@
 /**
- * Per-capability AI tier preference on the device (ADR 2026-08-09b §3).
+ * Per-capability AI tier preference on the device (ADR 2026-08-09c §3).
  *
  * Device-local on purpose. A Pixel 9 with AICore and an A15 iPad can read the
  * same `ai.models.cloud` rows out of one shared Turso library, and a stored
