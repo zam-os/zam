@@ -552,14 +552,18 @@
             <p class="group-title" data-i18n="ai_heading">KI</p>
             <div class="card">
               <p id="ai-state" class="t-headline"></p>
-              <p class="t-secondary" data-i18n="ai_desc">
+              <p id="ai-desc" class="t-secondary" data-i18n="ai_desc">
                 Mit einem OpenRouter-Schlüssel bewertet ZAM deine Antworten,
                 liest Fotos aus und findet Karten nach Bedeutung. Ohne
                 Schlüssel bewertest du selbst — alles andere bleibt gleich.
                 OpenRouter ist der einfache Einstieg; Modell und Schlüssel
                 lassen sich jederzeit ändern.
               </p>
-              <label class="field">
+              <!-- A working key is not a question. While one is stored the
+                   field is gone entirely — an empty password box next to
+                   "Connected" reads as "your key is missing". `ai-change-key`
+                   brings it back for the rare case it has to change. -->
+              <label class="field hidden" id="ai-key-field">
                 <span data-i18n="ai_key_label">API-Schlüssel</span>
                 <input
                   id="ai-key"
@@ -597,6 +601,14 @@
                 Verbinden
               </button>
               <button
+                id="ai-change-key"
+                class="btn plain hidden"
+                type="button"
+                data-i18n="ai_change_key"
+              >
+                Schlüssel ändern
+              </button>
+              <button
                 id="ai-get-key"
                 class="btn plain"
                 type="button"
@@ -614,6 +626,110 @@
                 Verbindung trennen
               </button>
               <p id="ai-status" class="status" aria-live="polite"></p>
+            </div>
+
+            <!-- The one-paste flow above is the way in and stays the only
+                 thing a new learner sees. This is for someone who already
+                 pays a provider directly. Nothing in here is required to
+                 review, import or search (ADR 2026-08-09 §1). -->
+            <button
+              id="endpoints-toggle"
+              class="btn plain"
+              type="button"
+              aria-expanded="false"
+              aria-controls="endpoints-panel"
+              data-i18n="endpoints_toggle"
+            >
+              Erweitert: Modelle verwalten
+            </button>
+            <div id="endpoints-panel" class="card hidden">
+              <p class="t-secondary" data-i18n="endpoints_desc">
+                Eigene Endpunkte für Anbieter, bei denen du direkt ein
+                Guthaben hast. Die Reihenfolge entscheidet: ZAM nimmt den
+                ersten Endpunkt, der die gebrauchte Fähigkeit anbietet.
+              </p>
+              <ul id="endpoints-list" class="list"></ul>
+              <p id="endpoints-empty" class="t-secondary" hidden data-i18n="endpoints_empty">
+                Noch kein eigener Endpunkt. Lernen, Importieren und Suchen
+                gehen auch ohne.
+              </p>
+              <button id="endpoint-add" class="btn" type="button" data-i18n="endpoint_add">
+                Endpunkt hinzufügen
+              </button>
+
+              <div id="endpoint-form" class="stack hidden">
+                <label class="field">
+                  <span data-i18n="endpoint_label">Bezeichnung</span>
+                  <input id="endpoint-label" type="text" placeholder="Xiaomi" />
+                </label>
+                <label class="field">
+                  <span data-i18n="endpoint_url">Basis-URL</span>
+                  <input
+                    id="endpoint-url"
+                    type="url"
+                    autocapitalize="none"
+                    spellcheck="false"
+                    placeholder="https://…/v1"
+                  />
+                </label>
+                <label class="field">
+                  <span data-i18n="endpoint_model">Modell</span>
+                  <input
+                    id="endpoint-model"
+                    type="text"
+                    autocapitalize="none"
+                    spellcheck="false"
+                    placeholder="mimo-v2.5"
+                  />
+                </label>
+                <label class="field">
+                  <span data-i18n="endpoint_key">API-Schlüssel</span>
+                  <input
+                    id="endpoint-key"
+                    type="password"
+                    autocomplete="off"
+                    autocapitalize="none"
+                    spellcheck="false"
+                  />
+                </label>
+                <p class="group-title" data-i18n="endpoint_caps">Wofür</p>
+                <ul class="list">
+                  <li class="row static">
+                    <span class="row-text" data-i18n="cap_text">Antworten bewerten</span>
+                    <input id="cap-text" type="checkbox" checked />
+                  </li>
+                  <li class="row static">
+                    <span class="row-text" data-i18n="cap_image">Fotos auslesen</span>
+                    <input id="cap-image" type="checkbox" />
+                  </li>
+                  <li class="row static">
+                    <span class="row-text" data-i18n="cap_embedding">Suche nach Bedeutung</span>
+                    <input id="cap-embedding" type="checkbox" />
+                  </li>
+                  <li class="row static">
+                    <span class="row-text" data-i18n="cap_stt">Gesprochenes erkennen</span>
+                    <input id="cap-stt" type="checkbox" />
+                  </li>
+                </ul>
+                <button id="endpoint-check" class="btn" type="button" data-i18n="endpoint_check">
+                  Erreichbarkeit prüfen
+                </button>
+                <button id="endpoint-save" class="btn primary" type="button" data-i18n="endpoint_save">
+                  Endpunkt sichern
+                </button>
+                <button id="endpoint-cancel" class="btn plain" type="button" data-i18n="cancel">
+                  Abbrechen
+                </button>
+                <button
+                  id="endpoint-delete"
+                  class="btn plain destructive hidden"
+                  type="button"
+                  data-i18n="endpoint_delete"
+                >
+                  Endpunkt entfernen
+                </button>
+              </div>
+              <p id="endpoints-status" class="status" aria-live="polite"></p>
             </div>
 
             <p class="group-title" style="margin-top: var(--gap-5)" data-i18n="reminder_heading">
@@ -803,8 +919,51 @@
           </div>
           <p id="review-progress" class="t-footnote"></p>
 
-          <h2 id="review-question" class="prompt"></h2>
+          <!-- Fixing a card is a review-time job: a wrong-language or
+               nonsense question is almost always noticed while answering it,
+               and sending the learner to the Library tab to fix it means
+               losing the session. Mirrors the desktop's card-manage menu. -->
+          <div class="prompt-row">
+            <h2 id="review-question" class="prompt"></h2>
+            <button
+              id="card-manage"
+              class="btn icon"
+              type="button"
+              aria-haspopup="menu"
+              aria-controls="card-manage-menu"
+              aria-expanded="false"
+              data-i18n-aria="card_manage"
+            >
+              ⋯
+            </button>
+          </div>
+          <div id="card-manage-menu" class="menu hidden" role="menu">
+            <button id="card-edit" class="menu-item" type="button" role="menuitem"
+                    data-i18n="card_edit">Karte bearbeiten</button>
+            <button id="card-translate" class="menu-item" type="button" role="menuitem"
+                    data-i18n="card_translate">In diese Sprache übersetzen</button>
+            <button id="card-delete" class="menu-item destructive" type="button" role="menuitem"
+                    data-i18n="card_delete">Karte löschen</button>
+          </div>
           <p id="review-meta" class="t-footnote"></p>
+
+          <div id="card-edit-panel" class="stack hidden">
+            <label class="field">
+              <span data-i18n="question_opt">Frage</span>
+              <textarea id="card-edit-question" rows="3"></textarea>
+            </label>
+            <label class="field">
+              <span data-i18n="content">Lerninhalt</span>
+              <textarea id="card-edit-concept" rows="5"></textarea>
+            </label>
+            <button id="card-edit-save" class="btn primary" type="button" data-i18n="card_edit_save">
+              Änderungen sichern
+            </button>
+            <button id="card-edit-cancel" class="btn plain" type="button" data-i18n="cancel">
+              Abbrechen
+            </button>
+            <p id="card-edit-status" class="status" aria-live="polite"></p>
+          </div>
 
           <!-- Hidden wholesale where the platform has no voice support, so a
                control that can never work is never offered. -->

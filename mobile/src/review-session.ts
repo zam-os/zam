@@ -272,6 +272,46 @@ export class MobileReviewSession {
     return response;
   }
 
+  /**
+   * Take a corrected question or answer into the running session.
+   *
+   * The queue is a snapshot taken when the session started, so a card edited
+   * mid-session would otherwise keep asking the old wording until the next
+   * session — the learner would fix a card, see the mistake again on the very
+   * next screen, and reasonably conclude nothing was saved. The database write
+   * belongs to the caller; this keeps the in-memory copy honest.
+   */
+  applyCardEdit(edit: { question?: string; concept?: string }): void {
+    const snapshot = this.snapshot;
+    const item = this.currentItem;
+    if (!snapshot || !item) return;
+    if (edit.question !== undefined) item.question = edit.question;
+    if (edit.concept !== undefined) item.concept = edit.concept;
+    this.persist();
+  }
+
+  /**
+   * Drop the current card from the queue without rating it.
+   *
+   * A deleted card has no FSRS outcome to record — it is gone, not "again" —
+   * so it leaves the queue rather than being scored. Removing it (instead of
+   * skipping past it) keeps `progress.total` truthful: a session that started
+   * with eight cards and lost one is a session of seven.
+   *
+   * Returns the summary when that was the last card, mirroring `rate`.
+   */
+  async dropCurrent(): Promise<MobileReviewSummary | null> {
+    const snapshot = this.snapshot;
+    if (!snapshot || !this.currentItem) return null;
+    snapshot.items.splice(snapshot.currentIndex, 1);
+    snapshot.draftAnswer = "";
+    snapshot.revealed = false;
+    snapshot.cardStartedAt = this.now();
+    if (!this.currentItem) return await this.finish();
+    this.persist();
+    return null;
+  }
+
   async finish(): Promise<MobileReviewSummary> {
     const snapshot = this.snapshot;
     if (!snapshot) throw new Error("No active review session");

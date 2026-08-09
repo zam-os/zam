@@ -36,6 +36,22 @@ import {
 } from "./ai/connect.js";
 import { embedInBackground } from "./ai/embedder.js";
 import {
+  checkEndpoint,
+  ENDPOINT_CAPABILITIES,
+  type EndpointCapability,
+  type EndpointError,
+  listEndpoints,
+  type ManagedEndpoint,
+  moveEndpoint,
+  removeEndpoint,
+  saveEndpoint,
+} from "./ai/endpoints.js";
+import {
+  NoTranslationBackendError,
+  TranslationFailedError,
+  translateCard,
+} from "./ai/translate.js";
+import {
   evaluateMobileAnswer,
   evaluationSpeech,
   type MobileEvaluationResult,
@@ -246,14 +262,38 @@ const upgradeStartButton = element<HTMLButtonElement>("upgrade-start");
 const upgradeReplaceButton = element<HTMLButtonElement>("upgrade-replace");
 const upgradeStatus = element<HTMLParagraphElement>("upgrade-status");
 const aiState = element<HTMLElement>("ai-state");
+const aiDesc = element<HTMLElement>("ai-desc");
+const aiKeyField = element<HTMLElement>("ai-key-field");
 const aiKeyInput = element<HTMLInputElement>("ai-key");
 const aiModelSelect = element<HTMLSelectElement>("ai-model");
 const aiModelCustomField = element<HTMLElement>("ai-model-custom-field");
 const aiModelCustomInput = element<HTMLInputElement>("ai-model-custom");
 const aiConnectButton = element<HTMLButtonElement>("ai-connect");
+const aiChangeKeyButton = element<HTMLButtonElement>("ai-change-key");
 const aiGetKeyButton = element<HTMLButtonElement>("ai-get-key");
 const aiDisconnectButton = element<HTMLButtonElement>("ai-disconnect");
 const aiStatus = element<HTMLParagraphElement>("ai-status");
+const endpointsToggle = element<HTMLButtonElement>("endpoints-toggle");
+const endpointsPanel = element<HTMLElement>("endpoints-panel");
+const endpointsList = element<HTMLUListElement>("endpoints-list");
+const endpointsEmpty = element<HTMLElement>("endpoints-empty");
+const endpointsStatus = element<HTMLParagraphElement>("endpoints-status");
+const endpointAddButton = element<HTMLButtonElement>("endpoint-add");
+const endpointForm = element<HTMLElement>("endpoint-form");
+const endpointLabelInput = element<HTMLInputElement>("endpoint-label");
+const endpointUrlInput = element<HTMLInputElement>("endpoint-url");
+const endpointModelInput = element<HTMLInputElement>("endpoint-model");
+const endpointKeyInput = element<HTMLInputElement>("endpoint-key");
+const endpointCheckButton = element<HTMLButtonElement>("endpoint-check");
+const endpointSaveButton = element<HTMLButtonElement>("endpoint-save");
+const endpointCancelButton = element<HTMLButtonElement>("endpoint-cancel");
+const endpointDeleteButton = element<HTMLButtonElement>("endpoint-delete");
+const capabilityInputs: Record<EndpointCapability, HTMLInputElement> = {
+  text: element<HTMLInputElement>("cap-text"),
+  image: element<HTMLInputElement>("cap-image"),
+  embedding: element<HTMLInputElement>("cap-embedding"),
+  stt: element<HTMLInputElement>("cap-stt"),
+};
 
 /** Sentinel value for free-form OpenRouter model ids outside the short list. */
 const AI_MODEL_CUSTOM = "__custom__";
@@ -329,6 +369,17 @@ const ratingButtons = Array.from(
 );
 const stopReviewButton = element<HTMLButtonElement>("stop-review");
 const reviewStatus = element<HTMLParagraphElement>("review-status");
+const cardManageButton = element<HTMLButtonElement>("card-manage");
+const cardManageMenu = element<HTMLElement>("card-manage-menu");
+const cardEditItem = element<HTMLButtonElement>("card-edit");
+const cardTranslateItem = element<HTMLButtonElement>("card-translate");
+const cardDeleteItem = element<HTMLButtonElement>("card-delete");
+const cardEditPanel = element<HTMLElement>("card-edit-panel");
+const cardEditQuestion = element<HTMLTextAreaElement>("card-edit-question");
+const cardEditConcept = element<HTMLTextAreaElement>("card-edit-concept");
+const cardEditSaveButton = element<HTMLButtonElement>("card-edit-save");
+const cardEditCancelButton = element<HTMLButtonElement>("card-edit-cancel");
+const cardEditStatus = element<HTMLParagraphElement>("card-edit-status");
 const sessionSummaryText = element<HTMLElement>("session-summary-text");
 const backToQueueButton = element<HTMLButtonElement>("back-to-queue");
 const resyncButton = element<HTMLButtonElement>("resync");
@@ -1389,9 +1440,223 @@ function renderCurrentReview(message = ""): void {
     button.disabled = !reviewSession.revealed;
   }
   updateVoiceButton();
+  closeCardMenu();
+  hideCardEditPanel();
   setReviewStatus(message);
   if (!reviewSession.revealed && !voiceController.active) reviewAnswer.focus();
 }
+
+/* ── Confirming something destructive ────────────────────────────────────── */
+
+/**
+ * Two taps instead of a system dialog.
+ *
+ * `window.confirm` does nothing inside Tauri's WKWebView — no panel appears
+ * and it returns `false` immediately, so every call guarded by it was a button
+ * that quietly did nothing. That is how "Delete card" in the Library shipped
+ * from 0.29.0 to 0.29.2: it looked like a working control and never removed a
+ * card. Verified on the iPad (A16) simulator; the mobile shell has no dialog
+ * plugin, which is why the desktop's approach cannot simply be copied.
+ *
+ * Arming the button in place is better here than a modal anyway: the warning
+ * appears on the control the thumb is already on, and walking away — closing
+ * the menu, leaving the card — disarms it.
+ */
+/*
+ * Declared up here, assigned below: `closeCardMenu` and `showLibraryMode` both
+ * disarm, and both are defined before the buttons they disarm are wired. A
+ * `const` would put them in the temporal dead zone for anything that ran
+ * during module evaluation — optional chaining does not save you from that.
+ */
+let disarmCardDelete: (() => void) | undefined;
+let disarmLibraryDelete: (() => void) | undefined;
+let disarmEndpointDelete: (() => void) | undefined;
+
+function armDestructive(
+  button: HTMLButtonElement,
+  armedLabel: string,
+  onConfirm: () => void | Promise<void>,
+): () => void {
+  const restingLabel = button.textContent ?? "";
+  let armed = false;
+
+  const disarm = (): void => {
+    armed = false;
+    button.textContent = restingLabel;
+    button.classList.remove("armed");
+  };
+
+  button.addEventListener("click", async () => {
+    if (!armed) {
+      armed = true;
+      button.textContent = armedLabel;
+      button.classList.add("armed");
+      return;
+    }
+    disarm();
+    await onConfirm();
+  });
+
+  return disarm;
+}
+
+/* ── Fixing a card without leaving the session ───────────────────────────── */
+
+function closeCardMenu(): void {
+  cardManageMenu.classList.add("hidden");
+  cardManageButton.setAttribute("aria-expanded", "false");
+  // Walking away from the menu is a change of mind, not a pending deletion.
+  disarmCardDelete?.();
+}
+
+function hideCardEditPanel(): void {
+  cardEditPanel.classList.add("hidden");
+  cardEditStatus.textContent = "";
+  cardEditStatus.classList.remove("error");
+}
+
+function setCardEditStatus(text: string, isError = false): void {
+  cardEditStatus.textContent = text;
+  cardEditStatus.classList.toggle("error", isError);
+}
+
+/**
+ * Open the editor on the card being reviewed.
+ *
+ * The answer is shown here whether or not it has been revealed — you cannot
+ * correct a card you are not allowed to read, and someone who has opened the
+ * editor has already decided this card is wrong rather than hard.
+ */
+function openCardEditPanel(): void {
+  const prompt = reviewSession.currentPrompt;
+  if (!prompt) return;
+  cardEditQuestion.value = prompt.question;
+  cardEditConcept.value = prompt.concept;
+  cardEditPanel.classList.remove("hidden");
+  setCardEditStatus("");
+  cardEditQuestion.focus();
+}
+
+cardManageButton.addEventListener("click", () => {
+  if (!cardManageMenu.classList.contains("hidden")) {
+    closeCardMenu();
+    return;
+  }
+  cardManageMenu.classList.remove("hidden");
+  cardManageButton.setAttribute("aria-expanded", "true");
+});
+
+cardEditItem.addEventListener("click", () => {
+  closeCardMenu();
+  openCardEditPanel();
+});
+
+/*
+ * Translate stays tappable even with no model connected.
+ *
+ * A greyed-out row cannot explain itself on a touch screen — there is no
+ * hover, so `title` never appears and the learner is left with a dead entry
+ * and no reason. `translateCard` resolves the registry before it touches the
+ * network, so the "connect a model first" answer is immediate; a sentence in
+ * the panel beats silence.
+ */
+cardTranslateItem.addEventListener("click", async () => {
+  closeCardMenu();
+  const prompt = reviewSession.currentPrompt;
+  if (!prompt) return;
+  openCardEditPanel();
+  cardTranslateItem.disabled = true;
+  setCardEditStatus(t("card_translating"));
+  try {
+    const translated = await translateCard(
+      db,
+      { question: cardEditQuestion.value, concept: cardEditConcept.value },
+      learnerLocale ?? resolveLocale(navigator.language),
+    );
+    // Into the fields, not into the database: a model that mangles a term of
+    // art is ordinary, and overwriting the card with its guess is not
+    // recoverable. The learner reads it, fixes it, then saves.
+    cardEditQuestion.value = translated.question;
+    cardEditConcept.value = translated.concept;
+    setCardEditStatus(t("card_translated"));
+  } catch (error) {
+    setCardEditStatus(translationFailureMessage(error), true);
+  } finally {
+    cardTranslateItem.disabled = false;
+  }
+});
+
+/**
+ * Say what the learner can do about it, not what the endpoint said.
+ *
+ * The raw failure is a line of provider JSON — the same kind of untranslated
+ * internal text that made self-rating look like a crash. The two cases anyone
+ * can act on are a rejected key and a rate limit; everything else is "it did
+ * not work, try again", because nothing else is actionable from here.
+ */
+function translationFailureMessage(error: unknown): string {
+  if (error instanceof NoTranslationBackendError) {
+    return t("card_translate_needs_ai");
+  }
+  const status =
+    error instanceof TranslationFailedError ? error.status : undefined;
+  if (status === 401 || status === 403) return t("card_translate_bad_key");
+  if (status === 429) return t("card_translate_busy");
+  return tf("card_translate_failed", { error: errorMessage(error) });
+}
+
+cardEditSaveButton.addEventListener("click", async () => {
+  const item = reviewSession.currentItem;
+  if (!item) return;
+  const question = cardEditQuestion.value.trim();
+  const concept = cardEditConcept.value.trim();
+  if (!concept) {
+    setCardEditStatus(t("card_edit_needs_concept"), true);
+    return;
+  }
+  cardEditSaveButton.disabled = true;
+  setCardEditStatus(t("card_edit_saving"));
+  try {
+    await saveCardEdit(db, item.tokenId, { question, concept });
+    // The queue is a snapshot from when the session started, so the running
+    // session has to be told as well — otherwise the very next repaint shows
+    // the old wording back again and the save looks like it failed.
+    reviewSession.applyCardEdit({ question, concept });
+    renderCurrentReview(t("card_edit_saved"));
+  } catch (error) {
+    setCardEditStatus(errorMessage(error), true);
+  } finally {
+    cardEditSaveButton.disabled = false;
+  }
+});
+
+cardEditCancelButton.addEventListener("click", () => {
+  hideCardEditPanel();
+});
+
+disarmCardDelete = armDestructive(
+  cardDeleteItem,
+  t("card_delete_confirm"),
+  async () => {
+    closeCardMenu();
+    const item = reviewSession.currentItem;
+    if (!item || !currentUserId) return;
+    try {
+      await removeCard(db, item.tokenId, currentUserId);
+      // No rating: a deleted card has no FSRS outcome to record. It leaves the
+      // queue, and the session is one card shorter than it started.
+      const summary = await reviewSession.dropCurrent();
+      if (summary) {
+        renderSessionSummary(summary);
+        await refresh(currentUserId);
+      } else {
+        renderCurrentReview(t("card_deleted"));
+      }
+    } catch (error) {
+      setReviewStatus(errorMessage(error), true);
+    }
+  },
+);
 
 function renderSessionSummary(result: MobileReviewSummary): void {
   sessionSummaryText.textContent = tf("summary_text", {
@@ -1953,6 +2218,9 @@ function showLibraryMode(mode: LibraryMode): void {
   importDescText.hidden = mode !== "add";
   importEntry.hidden = mode !== "add";
   if (mode !== "add") importDraftForm.hidden = true;
+  // An armed delete belongs to the card that armed it; leaving the detail
+  // view must not leave it primed for whichever card is opened next.
+  disarmLibraryDelete?.();
 }
 
 function renderLibrary(entries: LibraryEntry[]): void {
@@ -2099,28 +2367,242 @@ detailPauseButton.addEventListener("click", async () => {
   }
 });
 
-detailDeleteButton.addEventListener("click", async () => {
-  if (!openCard || !currentUserId) return;
-  // Deleting takes the review history with it, so it is worth one question.
-  if (!window.confirm(t("library_delete_confirm"))) return;
-  try {
-    await removeCard(db, openCard.tokenId, currentUserId);
-    openCard = null;
-    showLibraryMode("browse");
-    await refreshLibrary();
-    await refresh(currentUserId);
-    setStatus(t("library_deleted"));
-  } catch (error) {
-    setDetailStatus(tf("library_failed", { error: errorMessage(error) }), true);
-  }
-});
+// Deleting takes the review history with it, so it is worth one question —
+// asked by arming the button, because `window.confirm` never appears here.
+disarmLibraryDelete = armDestructive(
+  detailDeleteButton,
+  t("library_delete_confirm"),
+  async () => {
+    if (!openCard || !currentUserId) return;
+    try {
+      await removeCard(db, openCard.tokenId, currentUserId);
+      openCard = null;
+      showLibraryMode("browse");
+      await refreshLibrary();
+      await refresh(currentUserId);
+      setStatus(t("library_deleted"));
+    } catch (error) {
+      setDetailStatus(
+        tf("library_failed", { error: errorMessage(error) }),
+        true,
+      );
+    }
+  },
+);
 
 function setAiStatus(text: string, isError = false): void {
   aiStatus.textContent = text;
   aiStatus.classList.toggle("error", isError);
 }
 
-/** Paint the AI section from what is actually registered in the database. */
+/* ── Managing cloud endpoints by hand ────────────────────────────────────── */
+
+/** The endpoint currently open in the form; null while adding a new one. */
+let editingEndpointId: string | null = null;
+
+function setEndpointsStatus(text: string, isError = false): void {
+  endpointsStatus.textContent = text;
+  endpointsStatus.classList.toggle("error", isError);
+}
+
+function endpointErrorMessage(code: EndpointError): string {
+  return t(`endpoint_err_${code}`);
+}
+
+/** Which capabilities a row claims, as a short human line. */
+function capabilitySummary(row: ManagedEndpoint): string {
+  const claimed = ENDPOINT_CAPABILITIES.filter(
+    (cap) => row.capabilities?.[cap],
+  ).map((cap) => t(`cap_${cap}_short`));
+  return claimed.length > 0 ? claimed.join(" · ") : t("endpoint_no_capability");
+}
+
+async function refreshEndpoints(): Promise<void> {
+  const rows = await listEndpoints(db);
+  endpointsList.replaceChildren();
+  endpointsEmpty.hidden = rows.length > 0;
+
+  rows.forEach((row, index) => {
+    const item = document.createElement("li");
+    item.className = "row";
+
+    const open = document.createElement("button");
+    open.type = "button";
+    open.className = "row-text endpoint-open";
+    const title = document.createElement("span");
+    title.className = "t-body";
+    title.textContent = `${row.label} · ${row.model}`;
+    const detail = document.createElement("span");
+    detail.className = "t-footnote";
+    detail.textContent = capabilitySummary(row);
+    open.append(title, detail);
+    open.addEventListener("click", () => {
+      openEndpointForm(row);
+    });
+
+    // Up and down rather than drag: a drag on a list row fights the scroll
+    // gesture, and the list is short enough that two taps win.
+    const up = document.createElement("button");
+    up.type = "button";
+    up.className = "btn icon";
+    up.textContent = "↑";
+    up.disabled = index === 0;
+    up.setAttribute("aria-label", t("endpoint_move_up"));
+    up.addEventListener("click", async () => {
+      await moveEndpoint(db, row.id, "up");
+      await refreshEndpoints();
+    });
+
+    const down = document.createElement("button");
+    down.type = "button";
+    down.className = "btn icon";
+    down.textContent = "↓";
+    down.disabled = index === rows.length - 1;
+    down.setAttribute("aria-label", t("endpoint_move_down"));
+    down.addEventListener("click", async () => {
+      await moveEndpoint(db, row.id, "down");
+      await refreshEndpoints();
+    });
+
+    item.append(open, up, down);
+    endpointsList.append(item);
+  });
+}
+
+function openEndpointForm(row?: ManagedEndpoint): void {
+  editingEndpointId = row?.id ?? null;
+  endpointLabelInput.value = row?.label ?? "";
+  endpointUrlInput.value = row?.url ?? "";
+  endpointModelInput.value = row?.model ?? "";
+  // Never echo a stored key back into the field; leaving it blank keeps the
+  // one already saved, the same bargain the OpenRouter card makes.
+  endpointKeyInput.value = "";
+  endpointKeyInput.placeholder = row?.apiKey ? "••••••••" : "";
+  for (const cap of ENDPOINT_CAPABILITIES) {
+    capabilityInputs[cap].checked = row
+      ? Boolean(row.capabilities?.[cap])
+      : cap === "text";
+  }
+  endpointDeleteButton.classList.toggle("hidden", !row);
+  endpointForm.classList.remove("hidden");
+  endpointAddButton.classList.add("hidden");
+  setEndpointsStatus("");
+  endpointLabelInput.focus();
+}
+
+function closeEndpointForm(): void {
+  editingEndpointId = null;
+  endpointForm.classList.add("hidden");
+  endpointAddButton.classList.remove("hidden");
+  disarmEndpointDelete?.();
+}
+
+function readCapabilityDraft(): Record<string, boolean> {
+  const capabilities: Record<string, boolean> = {};
+  for (const cap of ENDPOINT_CAPABILITIES) {
+    capabilities[cap] = capabilityInputs[cap].checked;
+  }
+  return capabilities;
+}
+
+/** The key a save should carry: what was typed, or the one already stored. */
+async function endpointKeyForSave(): Promise<string> {
+  const typed = endpointKeyInput.value.trim();
+  if (typed || !editingEndpointId) return typed;
+  const rows = await listEndpoints(db);
+  return rows.find((row) => row.id === editingEndpointId)?.apiKey ?? "";
+}
+
+endpointsToggle.addEventListener("click", async () => {
+  const open = !endpointsPanel.classList.contains("hidden");
+  endpointsPanel.classList.toggle("hidden", open);
+  endpointsToggle.setAttribute("aria-expanded", String(!open));
+  if (!open) await refreshEndpoints();
+});
+
+endpointAddButton.addEventListener("click", () => {
+  openEndpointForm();
+});
+
+endpointCancelButton.addEventListener("click", () => {
+  closeEndpointForm();
+});
+
+endpointCheckButton.addEventListener("click", async () => {
+  endpointCheckButton.disabled = true;
+  setEndpointsStatus(t("endpoint_checking"));
+  try {
+    const result = await checkEndpoint({
+      url: endpointUrlInput.value,
+      apiKey: await endpointKeyForSave(),
+    });
+    if (result.ok) {
+      setEndpointsStatus(t("endpoint_check_ok"));
+    } else if (result.status === 401 || result.status === 403) {
+      setEndpointsStatus(t("endpoint_check_rejected"), true);
+    } else if (result.status) {
+      setEndpointsStatus(
+        tf("endpoint_check_status", { status: result.status }),
+        true,
+      );
+    } else {
+      setEndpointsStatus(t("endpoint_check_unreachable"), true);
+    }
+  } finally {
+    endpointCheckButton.disabled = false;
+  }
+});
+
+endpointSaveButton.addEventListener("click", async () => {
+  endpointSaveButton.disabled = true;
+  try {
+    const result = await saveEndpoint(db, {
+      ...(editingEndpointId ? { id: editingEndpointId } : {}),
+      label: endpointLabelInput.value,
+      url: endpointUrlInput.value,
+      model: endpointModelInput.value,
+      apiKey: await endpointKeyForSave(),
+      capabilities: readCapabilityDraft(),
+    });
+    if (!result.ok) {
+      setEndpointsStatus(endpointErrorMessage(result.error ?? "empty_url"), true);
+      return;
+    }
+    closeEndpointForm();
+    await refreshEndpoints();
+    await refreshAiSection();
+    await refreshCloudEndpointsFromDb();
+    setEndpointsStatus(t("endpoint_saved"));
+  } catch (error) {
+    setEndpointsStatus(errorMessage(error), true);
+  } finally {
+    endpointSaveButton.disabled = false;
+  }
+});
+
+disarmEndpointDelete = armDestructive(
+  endpointDeleteButton,
+  t("endpoint_delete_confirm"),
+  async () => {
+    if (!editingEndpointId) return;
+    await removeEndpoint(db, editingEndpointId);
+    closeEndpointForm();
+    await refreshEndpoints();
+    await refreshAiSection();
+    await refreshCloudEndpointsFromDb();
+    setEndpointsStatus(t("endpoint_removed"));
+  },
+);
+
+/**
+ * Paint the AI section from what is actually registered in the database.
+ *
+ * A stored key is not a question worth asking again. While one is present the
+ * field is removed rather than blanked: an empty password box sitting under
+ * the word "Connected" reads as *your key is missing*, and the only thing a
+ * connected learner normally wants here is a different model. `ai-change-key`
+ * brings the field back for the one case that needs it.
+ */
 async function refreshAiSection(): Promise<void> {
   let label: string | null = null;
   let model: string | null = null;
@@ -2137,10 +2619,22 @@ async function refreshAiSection(): Promise<void> {
   aiState.textContent = label ? tf("ai_connected", { label }) : t("ai_none");
   aiDisconnectButton.hidden = !label;
   aiKeyInput.value = "";
-  aiKeyInput.placeholder = label ? "••••••••" : "sk-or-…";
+  aiKeyInput.placeholder = "sk-or-…";
+  showAiKeyField(!label);
+  aiChangeKeyButton.classList.toggle("hidden", !label);
+  // The paragraph explains what a key buys. Once there is one, it is answered
+  // copy taking up the space the model row wants.
+  aiDesc.classList.toggle("hidden", Boolean(label));
+  aiGetKeyButton.classList.toggle("hidden", Boolean(label));
   // Connected: the button mostly switches models (key optional). First time:
   // it must paste a key.
   aiConnectButton.textContent = label ? t("ai_apply") : t("ai_connect");
+}
+
+/** Show or hide the key field; hiding it also clears whatever was typed. */
+function showAiKeyField(visible: boolean): void {
+  aiKeyField.classList.toggle("hidden", !visible);
+  if (!visible) aiKeyInput.value = "";
 }
 
 /**
@@ -2214,6 +2708,16 @@ aiDisconnectButton.addEventListener("click", async () => {
   await refreshAiSection();
   await refreshCloudEndpointsFromDb();
   setAiStatus("");
+});
+
+aiChangeKeyButton.addEventListener("click", () => {
+  showAiKeyField(true);
+  aiChangeKeyButton.classList.add("hidden");
+  // The way back out is the "Get a key" link, which only makes sense again
+  // once someone is actually looking for a key.
+  aiGetKeyButton.classList.remove("hidden");
+  aiKeyInput.focus();
+  setAiStatus(t("ai_change_key_hint"));
 });
 
 aiGetKeyButton.addEventListener("click", () => {
