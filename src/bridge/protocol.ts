@@ -50,8 +50,28 @@ export interface GetReviewResponse {
   question: string;
   state: string;
   sourceLink?: string | null;
+  media?: ReviewMediaPayload[];
   /** Present when the token has a source_link and resolution was not disabled. */
   resolvedContext?: ResolvedReviewContext | null;
+}
+
+export interface ReviewMediaPayload {
+  assetHash: string;
+  side: "question" | "answer";
+  kind: "image" | "audio";
+  ordinal: number;
+  originalName: string;
+  altText: string | null;
+  mimeType: string;
+  byteSize: number;
+  dataBase64: string;
+  occlusions: Array<{
+    shape: "rect" | "ellipse";
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  }>;
 }
 
 // ── Submit Rating ───────────────────────────────────────────────────────────
@@ -68,6 +88,8 @@ export interface SubmitRatingResponse {
   stability: number;
   scheduledDays: number;
   state: string;
+  buriedSiblings?: number;
+  buriedUntil?: string | null;
   blocked?: {
     slug: string;
     prerequisites: Array<{ slug: string; concept: string; bloomLevel: number }>;
@@ -115,6 +137,8 @@ export interface ReviewActionResponse {
     state: string;
     reps: number;
     lapses: number;
+    buriedSiblings: number;
+    buriedUntil: string | null;
   } | null;
   blocked?: {
     blockedSlug: string;
@@ -170,6 +194,8 @@ export interface ReviewActionResponse {
       lapses: number;
       state: "new" | "learning" | "review" | "relearning";
       learning_step: number | null;
+      buried_until: string | null;
+      buried_reason: string | null;
       due_at: string;
       last_review_at: string | null;
       blocked: number;

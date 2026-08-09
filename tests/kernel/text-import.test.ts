@@ -6,6 +6,7 @@ import type { Database, TextImportDocument } from "../../src/kernel/index.js";
 import {
   commitTextImport,
   getCard,
+  getTokenMedia,
   openDatabase,
   previewTextImport,
   updateToken,
@@ -319,5 +320,105 @@ describe("deterministic text import", () => {
 
     const preview = await previewTextImport(db, "alice", duplicate);
     expect(preview.counts).toMatchObject({ conflict: 2, valid: 0 });
+  });
+
+  it("stores referenced media once by digest and restores presentation metadata", async () => {
+    const bytes = Uint8Array.from([0x89, 0x50, 0x4e, 0x47, 1, 2, 3]);
+    const input = document([
+      {
+        externalId: "anki:media-note:0",
+        noteGuid: "media-note",
+        cardOrdinal: 0,
+        question: "Name the highlighted structure.",
+        answer: "Mitochondrion",
+        media: [
+          {
+            assetName: "cell.png",
+            side: "question",
+            kind: "image",
+            altText: "Cell diagram",
+            occlusions: [
+              {
+                shape: "rect",
+                left: 0.2,
+                top: 0.3,
+                width: 0.1,
+                height: 0.15,
+              },
+            ],
+          },
+          {
+            assetName: "cell.png",
+            side: "answer",
+            kind: "image",
+          },
+        ],
+      },
+    ]);
+    input.assets = [
+      {
+        name: "cell.png",
+        mimeType: "image/png",
+        kind: "image",
+        data: bytes,
+      },
+    ];
+
+    const preview = await previewTextImport(db, "alice", input);
+    expect(preview.media).toEqual({
+      assets: 1,
+      references: 2,
+      totalBytes: bytes.byteLength,
+    });
+    await commitTextImport(db, "alice", input, preview.planHash);
+
+    const token = (await db.prepare("SELECT id FROM tokens").get()) as {
+      id: string;
+    };
+    const stored = await getTokenMedia(db, token.id);
+    expect(stored).toHaveLength(2);
+    expect(stored.map((item) => item.assetHash)).toEqual([
+      stored[0].assetHash,
+      stored[0].assetHash,
+    ]);
+    expect(stored.find((item) => item.side === "question")?.occlusions).toEqual(
+      [expect.objectContaining({ shape: "rect", left: 0.2 })],
+    );
+    const assetCount = (await db
+      .prepare("SELECT COUNT(*) AS n FROM media_assets")
+      .get()) as { n: number };
+    expect(assetCount.n).toBe(1);
+  });
+
+  it("rejects missing, oversized, and mismatched media before preview", async () => {
+    const missing = document([
+      {
+        externalId: "anki:missing-media:0",
+        question: "Question",
+        answer: "Answer",
+        media: [
+          {
+            assetName: "missing.png",
+            side: "question",
+            kind: "image",
+          },
+        ],
+      },
+    ]);
+    await expect(previewTextImport(db, "alice", missing)).rejects.toThrow(
+      /missing media asset/i,
+    );
+
+    missing.assets = [
+      {
+        name: "missing.png",
+        mimeType: "audio/mpeg",
+        kind: "audio",
+        data: Uint8Array.from([1]),
+      },
+    ];
+    await expect(previewTextImport(db, "alice", missing)).rejects.toThrow(
+      /mismatched media kind/i,
+    );
   });
 });

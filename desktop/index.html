@@ -393,6 +393,47 @@
             <p id="update-status" class="sub-label" aria-live="polite"></p>
           </article>
 
+          <article class="card frosted settings-card" id="study-workload-card">
+            <div class="settings-card-header">
+              <div>
+                <h2 id="lbl-study-workload-title">Study workload</h2>
+                <p id="lbl-study-workload-help" class="settings-card-help">
+                  Choose a calm daily mix, intensive exam coverage, or a smaller problem-card session.
+                </p>
+              </div>
+            </div>
+            <label class="settings-field" for="study-workload-preset">
+              <span id="lbl-study-workload-preset">Plan</span>
+              <select id="study-workload-preset">
+                <option id="study-preset-balanced" value="balanced">Balanced</option>
+                <option id="study-preset-exam" value="exam">Exam</option>
+                <option id="study-preset-problems" value="problems">Problem cards</option>
+                <option id="study-preset-custom" value="custom">Custom</option>
+              </select>
+            </label>
+            <label class="settings-field" for="study-max-new">
+              <span id="lbl-study-max-new">New cards per session</span>
+              <input id="study-max-new" type="number" min="0" max="1000" step="1" />
+            </label>
+            <label class="settings-field" for="study-max-reviews">
+              <span id="lbl-study-max-reviews">Total cards per session</span>
+              <input id="study-max-reviews" type="number" min="1" max="10000" step="1" />
+            </label>
+            <label class="settings-toggle" for="study-bury-new">
+              <input id="study-bury-new" type="checkbox" />
+              <span id="lbl-study-bury-new">Show only one new sibling per day</span>
+            </label>
+            <label class="settings-toggle" for="study-bury-review">
+              <input id="study-bury-review" type="checkbox" />
+              <span id="lbl-study-bury-review">Show only one review sibling per day</span>
+            </label>
+            <div class="settings-actions">
+              <button id="btn-study-workload-save" class="btn primary-btn btn-sm" type="button">Save study plan</button>
+              <button id="btn-study-unbury" class="btn secondary-btn btn-sm" type="button">Show buried cards now</button>
+            </div>
+            <p id="study-workload-status" class="sub-label settings-status-row" aria-live="polite"></p>
+          </article>
+
           <article class="card frosted settings-card">
             <div class="settings-card-header">
               <div>
@@ -859,6 +900,7 @@
               <p class="question-text" id="question-text">
                 What command initializes a new local Git repository?
               </p>
+              <div id="question-media" class="review-media" aria-live="polite"></div>
               <div id="question-wait-prompt" class="wait-confirm-box hidden">
                 <p id="lbl-question-wait-warn" class="wait-warning-text">⚠ Generating this question is taking longer than expected.</p>
                 <div class="wait-buttons">
@@ -950,6 +992,7 @@
                 <div class="reveal-content-list" id="reveal-content-list">
                   <!-- Generated dynamically: Token, Concept, Context, Source -->
                 </div>
+                <div id="answer-media" class="review-media"></div>
               </div>
 
               <!-- POST-REVEAL DISCUSSION THREAD (ADR 2026-07-06b) -->

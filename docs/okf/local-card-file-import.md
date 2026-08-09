@@ -1,70 +1,89 @@
 ---
 type: protocol
 title: Local Card File Import
-description: ZAM imports text cards from local APKG, CSV, and TSV files through a deterministic preview and one atomic, model-free commit.
+description: ZAM imports basic, Cloze, image-occlusion, image, and audio cards from local APKG files, plus text cards from CSV and TSV, through a deterministic preview and atomic model-free commit.
 tags:
   - import
   - anki
   - offline
   - studio
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/local-card-file-import.md"
-timestamp: 2026-08-09T06:54:25Z
+timestamp: 2026-08-09T08:18:20.711Z
 ---
 
 ZAM's model-free file path starts in the Learning Content Studio: choose a
-local file, inspect its preview, then confirm the import. The supported formats
-are classic text-capable Anki packages (`.apkg` containing
-`collection.anki2` or `collection.anki21`) and UTF-8 CSV/TSV tables. Neither
-preview nor commit calls an LLM or the network.
+local file, inspect its preview, then confirm the import. Supported formats are
+classic Anki packages (`.apkg` containing `collection.anki2` or
+`collection.anki21`) and UTF-8 CSV/TSV tables. Neither preview nor commit
+calls an LLM or the network.
 
 CSV and TSV need one question column (`question`, `front`, or `prompt`)
 and one answer column (`answer`, `back`, or `concept`). Optional columns
 include `id`, `deck`, `tags`, `source`, `author`, `license`, and
 `title`. An explicit `id` makes row identity stable across reordering.
 Without it, identity is based on the source filename and row position, and the
-preview warns that reordering can look like a content change.
+preview warns that reordering can look like a content change. CSV and TSV stay
+text-only and report media markup as unsupported.
 
-The APKG reader renders each basic Anki card direction separately. Its stable
-external identity is the note GUID plus card ordinal; the binding also keeps
-the deck path, sibling note GUID, tags, source, author, license, and content
-hash. Import is content-only: Anki due dates, ease, lapses, review history, and
-scheduler parameters are ignored. Each valid rendered card becomes one shared
-token and one card for the importing learner.
+The APKG reader preserves each Anki card's note GUID and card ordinal as its
+stable external identity. The note GUID is also retained as the sibling group.
+Scheduling data from Anki—due dates, ease, lapses, review history, and scheduler
+parameters—is intentionally ignored; each imported card receives native ZAM
+FSRS state for the importing learner.
 
-Packages and templates are untrusted input. The ZIP reader validates entry
-paths, encryption, compression methods, CRC checksums, entry count, compressed
-size, expanded size, compression ratio, and the collection database structure
-before reading cards. It never extracts archive paths and never executes
-template JavaScript. Rendered HTML becomes inert plain text; active HTML and
-remote resource references are removed and reported. Media is reported as
-omitted. Cloze, filtered or unknown template expressions, and cards that have
-no text after sanitizing are reported as unsupported rather than silently
-converted. Rich media and Cloze semantics are not part of the text importer.
+Basic front/back cards, native Cloze cards, and native image-occlusion cards
+with rectangular or elliptical masks are rendered without executing Anki
+templates. Cloze questions reveal only the active deletion as `[…]` or its
+hint; answers reveal that deletion. Image-occlusion questions draw the active
+mask over the packaged image and answers show the unmasked image. Unsupported
+template expressions, Cloze variants, occlusion shapes, or cards that become
+empty after sanitizing are reported explicitly.
 
-The preview groups decks and reports create, update, skip, conflict,
-unsupported, and new-personal-card counts. It carries a deterministic plan hash
-over the parsed content, metadata, warnings, and current library classification.
-Confirmation reparses the local file and recomputes the plan inside the write
-transaction; a changed file or library state invalidates the confirmation
-before the first write.
+APKG media is resolved through Anki's numeric ZIP-entry manifest. Referenced
+PNG, JPEG, GIF, and WebP images and MP3, Ogg, WAV, and M4A audio are
+signature-checked, bounded by archive, item, image-dimension, and decoded-pixel
+limits, hashed, and stored once in `media_assets`. `token_media` links an
+asset to the question or answer, records its presentation kind and original
+name, and stores normalized image-occlusion geometry. Remote URLs, active
+formats such as SVG, mismatched signatures, unsafe names, oversized media, and
+unreferenced package files never become review content.
 
-`imported_card_bindings` maps an external identity to its shared token and
-last imported hashes. An unchanged re-import skips shared content while still
-creating a missing personal card for another learner. A source content change
-uses the material content-revision path: token content changes and learned
-cards become due for a re-test, while stability, difficulty, review history,
-and other FSRS state remain intact. If both local content and the source differ
-from the last imported version, the preview reports a conflict and preserves
-the local token. All non-conflicting cards commit in one transaction or the
-library remains unchanged on failure.
+Packages and templates are untrusted input. The ZIP reader validates paths,
+encryption, compression methods, CRC checksums, entry counts, compressed and
+expanded sizes, compression ratios, the media manifest, and the collection
+database structure. It reads entries in memory without extracting archive paths
+and never runs HTML, JavaScript, template code, or remote fetches. Rendered
+text is reduced to inert plain text. Desktop and standalone mobile review
+surfaces reconstruct only bounded image/audio blobs from the trusted database
+bytes and render occlusion overlays themselves.
 
-The bridge exposes the same operation as
+The preview reports create, update, skip, conflict, unsupported, new-personal-
+card, media-item, and media-byte counts by deck. Its deterministic plan hash
+covers parsed text, metadata, media digests and presentation metadata, warnings,
+and the current library classification. Confirmation reparses the local file
+and recomputes the plan inside the write transaction; a changed file or library
+state invalidates confirmation before the first write.
+
+`imported_card_bindings` maps an external identity to its token and last
+imported hashes. Unchanged re-import skips shared content while still creating
+a missing personal card. Source changes update the token and media links through
+the material content-revision path, making learned cards due for a re-test while
+preserving FSRS history. If local content and the source both changed since the
+last import, preview reports a conflict and preserves the local token. All
+non-conflicting cards, media assets, links, and bindings commit together or the
+library remains unchanged.
+
+The bridge exposes the operation as
 `personal-card-import-file-preview --path <file>` followed by
 `personal-card-import-file-confirm --path <file> --plan-hash <hash>`.
-Imported bindings are included in portable database snapshots, so backup and
-restore retain safe re-import identity alongside content and learning state.
+Review payloads carry media bytes as base64 plus trusted MIME and presentation
+metadata. Portable snapshots include bindings, media assets, media links, and
+card state, so restore retains both safe re-import identity and rich reviews.
 
 # Citations
 
 - [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)
-- Code: `src/cli/import/text-file.ts`, `src/cli/import/delimited.ts`, `src/cli/import/apkg.ts`, `src/cli/import/safe-zip.ts`, `src/cli/import/text-sanitizer.ts`, `src/kernel/import/text-import.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `src/cli/commands/bridge.ts`, `desktop/src/learning-content.ts`, `desktop/src/main.ts`
+- [Anki Manual — Editing](https://docs.ankiweb.net/editing.html)
+- [Anki source — APKG importer](https://github.com/ankitects/anki/blob/main/pylib/anki/importing/apkg.py)
+- Code: `src/cli/import/text-file.ts`, `src/cli/import/delimited.ts`, `src/cli/import/apkg.ts`, `src/cli/import/safe-zip.ts`, `src/cli/import/text-sanitizer.ts`, `src/kernel/import/text-import.ts`, `src/kernel/models/media.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `src/cli/bridge-handlers.ts`, `src/cli/commands/bridge.ts`, `desktop/src/learning-content.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`
+- Tests: `tests/cli/text-file-import.test.ts`, `tests/kernel/text-import.test.ts`, `tests/kernel/snapshot.test.ts`

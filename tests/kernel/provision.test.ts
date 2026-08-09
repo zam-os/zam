@@ -211,4 +211,37 @@ describe("applySchemaAndMigrations", () => {
     );
     stub.close();
   });
+
+  it("adds rich import media and sibling-bury columns idempotently", async () => {
+    const stub = createTauriInvokeStub(join(tempDir(), "pre-rich-import.db"));
+    const db = createTauriDatabase(stub.invoke);
+    await applySchemaAndMigrations(db);
+
+    const tables = (await db
+      .prepare(
+        `SELECT name FROM sqlite_master
+          WHERE type = 'table' AND name IN ('media_assets', 'token_media')
+          ORDER BY name`,
+      )
+      .all()) as Array<{ name: string }>;
+    expect(tables.map((row) => row.name)).toEqual([
+      "media_assets",
+      "token_media",
+    ]);
+    const cardColumns = (await db.pragma("table_info(cards)")) as Array<{
+      name: string;
+    }>;
+    expect(cardColumns.map((column) => column.name)).toEqual(
+      expect.arrayContaining(["buried_until", "buried_reason"]),
+    );
+
+    await applySchemaAndMigrations(db);
+    const mediaIndexes = (await db.pragma("index_list(token_media)")) as Array<{
+      name: string;
+    }>;
+    expect(mediaIndexes.map((index) => index.name)).toContain(
+      "idx_token_media_asset",
+    );
+    stub.close();
+  });
 });

@@ -1,7 +1,8 @@
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { deflateRawSync, gunzipSync } from "node:zlib";
+import BetterSqlite3 from "better-sqlite3";
 import { afterEach, describe, expect, it } from "vitest";
 import { loadApkgDocument } from "../../src/cli/import/apkg.js";
 import {
@@ -34,6 +35,89 @@ function tempFile(name: string, data: Uint8Array): string {
   const path = join(directory, name);
   writeFileSync(path, data);
   return path;
+}
+
+function richAnkiCollection(): Buffer {
+  const directory = mkdtempSync(join(tmpdir(), "zam-rich-apkg-db-"));
+  tempDirs.push(directory);
+  const path = join(directory, "collection.anki2");
+  const sqlite = new BetterSqlite3(path);
+  sqlite.exec(`
+    CREATE TABLE col (models TEXT NOT NULL, decks TEXT NOT NULL);
+    CREATE TABLE notes (
+      id INTEGER PRIMARY KEY, guid TEXT NOT NULL, mid INTEGER NOT NULL,
+      tags TEXT NOT NULL, flds TEXT NOT NULL
+    );
+    CREATE TABLE cards (
+      id INTEGER PRIMARY KEY, nid INTEGER NOT NULL, did INTEGER NOT NULL,
+      ord INTEGER NOT NULL
+    );
+  `);
+  const models = {
+    200: {
+      name: "Media",
+      type: 0,
+      flds: [{ name: "Front" }, { name: "Back" }],
+      tmpls: [
+        {
+          name: "Card 1",
+          ord: 0,
+          qfmt: '<img src="{{Front}}" alt="Map">',
+          afmt: "{{Back}}[sound:answer.mp3]",
+        },
+      ],
+    },
+    201: {
+      name: "Image Occlusion",
+      type: 1,
+      flds: [
+        { name: "Image" },
+        { name: "Occlusion" },
+        { name: "Header" },
+        { name: "Back Extra" },
+      ],
+      tmpls: [
+        {
+          name: "Image Occlusion",
+          ord: 0,
+          qfmt: "{{cloze:Occlusion}}",
+          afmt: "{{Image}}",
+        },
+      ],
+    },
+  };
+  sqlite
+    .prepare("INSERT INTO col (models, decks) VALUES (?, ?)")
+    .run(JSON.stringify(models), JSON.stringify({ 1: { name: "Biology" } }));
+  sqlite
+    .prepare(
+      "INSERT INTO notes (id, guid, mid, tags, flds) VALUES (?, ?, ?, ?, ?)",
+    )
+    .run(1, "media-guid", 200, "media", "map.png\u001fBerlin");
+  sqlite
+    .prepare("INSERT INTO cards (id, nid, did, ord) VALUES (?, ?, ?, ?)")
+    .run(1, 1, 1, 0);
+  sqlite
+    .prepare(
+      "INSERT INTO notes (id, guid, mid, tags, flds) VALUES (?, ?, ?, ?, ?)",
+    )
+    .run(
+      2,
+      "occlusion-guid",
+      201,
+      "occlusion",
+      [
+        '<img src="cell.png" alt="Cell">',
+        "{{c1::image-occlusion:rect:left=.2:top=.3:width=.1:height=.15:oi=1}}",
+        "Cell anatomy",
+        "Mitochondrion",
+      ].join("\u001f"),
+    );
+  sqlite
+    .prepare("INSERT INTO cards (id, nid, did, ord) VALUES (?, ?, ?, ?)")
+    .run(2, 2, 1, 0);
+  sqlite.close();
+  return readFileSync(path);
 }
 
 function crc32(data: Uint8Array): number {
@@ -179,7 +263,7 @@ describe("CSV and TSV text import", () => {
 });
 
 describe("safe APKG text import", () => {
-  it("reads basic rendered cards, provenance, decks, and unsupported Cloze", async () => {
+  it("reads basic and Cloze cards with provenance and decks", async () => {
     const path = tempFile(
       "science.apkg",
       zip([
@@ -189,7 +273,7 @@ describe("safe APKG text import", () => {
     );
 
     const document = await loadApkgDocument(path);
-    expect(document.cards).toHaveLength(1);
+    expect(document.cards).toHaveLength(2);
     expect(document.cards[0]).toMatchObject({
       externalId: "anki:guid-basic:0",
       noteGuid: "guid-basic",
@@ -203,14 +287,17 @@ describe("safe APKG text import", () => {
       license: "CC BY 4.0",
     });
     expect(document.cards[0].warnings?.map((warning) => warning.code)).toEqual(
-      expect.arrayContaining(["unsafe-html-removed", "media-unsupported"]),
+      expect.arrayContaining([
+        "unsafe-html-removed",
+        "media-reference-blocked",
+      ]),
     );
-    expect(document.unsupported).toEqual([
-      expect.objectContaining({
-        code: "cloze-unsupported",
-        externalId: "anki:guid-cloze:0",
-      }),
-    ]);
+    expect(document.cards[1]).toMatchObject({
+      externalId: "anki:guid-cloze:0",
+      question: "The answer is […]",
+      answer: "The answer is four",
+    });
+    expect(document.unsupported).toEqual([]);
   });
 
   it("rejects path traversal before extracting the collection", () => {
@@ -242,6 +329,77 @@ describe("safe APKG text import", () => {
     await expect(loadApkgDocument(path)).rejects.toThrow(
       /malformed|integrity|not a database/i,
     );
+  });
+
+  it("imports packaged images, audio, and native image-occlusion geometry", async () => {
+    const png = Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=",
+      "base64",
+    );
+    const path = tempFile(
+      "rich.apkg",
+      zip([
+        {
+          name: "collection.anki2",
+          data: richAnkiCollection(),
+          deflate: true,
+        },
+        {
+          name: "media",
+          data: Buffer.from(
+            JSON.stringify({
+              0: "map.png",
+              1: "answer.mp3",
+              2: "cell.png",
+            }),
+          ),
+        },
+        { name: "0", data: png },
+        { name: "1", data: Buffer.from("ID3\u0004\u0000\u0000", "binary") },
+        { name: "2", data: png },
+      ]),
+    );
+
+    const document = await loadApkgDocument(path);
+    expect(document.assets).toHaveLength(3);
+    expect(document.cards).toHaveLength(2);
+    expect(document.cards[0]).toMatchObject({
+      externalId: "anki:media-guid:0",
+      question: "Identify the item shown.",
+      answer: "Berlin",
+    });
+    expect(document.cards[0].media).toEqual([
+      expect.objectContaining({
+        assetName: "map.png",
+        side: "question",
+        kind: "image",
+      }),
+      expect.objectContaining({
+        assetName: "answer.mp3",
+        side: "answer",
+        kind: "audio",
+      }),
+    ]);
+    expect(document.cards[1]).toMatchObject({
+      externalId: "anki:occlusion-guid:0",
+      question: "Cell anatomy\nName the hidden part.",
+      answer: "Compare your answer with the revealed image.\nMitochondrion",
+    });
+    expect(document.cards[1].media?.[0].occlusions).toEqual([
+      {
+        shape: "rect",
+        left: 0.2,
+        top: 0.3,
+        width: 0.1,
+        height: 0.15,
+      },
+    ]);
+    expect(document.cards[1].media?.[1]).toMatchObject({
+      assetName: "cell.png",
+      side: "answer",
+      occlusions: [],
+    });
+    expect(document.unsupported).toEqual([]);
   });
 });
 

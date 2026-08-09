@@ -25,9 +25,21 @@ import {
 } from "../../src/cli/llm/cloud-providers.js";
 import { getSetting } from "../../src/kernel/models/settings.js";
 import {
+  getTokenMedia,
+  type TokenMedia,
+} from "../../src/kernel/models/media.js";
+import {
   buildReviewQueue,
   type ReviewQueue,
 } from "../../src/kernel/scheduler/queue.js";
+import { unburySiblingCards } from "../../src/kernel/scheduler/siblings.js";
+import {
+  getStudyWorkloadSettings,
+  setStudyWorkloadSettings,
+  STUDY_WORKLOAD_PRESETS,
+  type StudyWorkloadPreset,
+  type StudyWorkloadSettings,
+} from "../../src/kernel/scheduler/study-settings.js";
 import {
   connectCloudModel,
   connectedCloudLabel,
@@ -356,10 +368,12 @@ const reviewMeta = element<HTMLElement>("review-meta");
 const toggleVoiceButton = element<HTMLButtonElement>("toggle-voice");
 const installVoiceDataButton = element<HTMLButtonElement>("install-voice-data");
 const reviewQuestion = element<HTMLElement>("review-question");
+const reviewQuestionMedia = element<HTMLElement>("review-question-media");
 const reviewAnswer = element<HTMLTextAreaElement>("review-answer");
 const revealAnswerButton = element<HTMLButtonElement>("reveal-answer");
 const revealedAnswer = element<HTMLElement>("revealed-answer");
 const expectedAnswer = element<HTMLElement>("expected-answer");
+const reviewAnswerMedia = element<HTMLElement>("review-answer-media");
 const reviewSource = element<HTMLAnchorElement>("review-source");
 const evaluationPanel = element<HTMLElement>("evaluation-panel");
 const evaluationVerdict = element<HTMLElement>("evaluation-verdict");
@@ -370,6 +384,83 @@ const ratingButtons = Array.from(
 );
 const stopReviewButton = element<HTMLButtonElement>("stop-review");
 const reviewStatus = element<HTMLParagraphElement>("review-status");
+
+const SAFE_REVIEW_MEDIA_TYPES = new Set([
+  "image/png",
+  "image/jpeg",
+  "image/gif",
+  "image/webp",
+  "audio/mpeg",
+  "audio/ogg",
+  "audio/wav",
+  "audio/mp4",
+]);
+let reviewMediaRequest = 0;
+let reviewMediaUrls: string[] = [];
+
+function clearReviewMedia(): void {
+  reviewQuestionMedia.replaceChildren();
+  reviewAnswerMedia.replaceChildren();
+  for (const url of reviewMediaUrls) URL.revokeObjectURL(url);
+  reviewMediaUrls = [];
+}
+
+function appendMobileMedia(container: HTMLElement, media: TokenMedia): void {
+  if (!SAFE_REVIEW_MEDIA_TYPES.has(media.mimeType)) return;
+  const bytes = new Uint8Array(media.data.byteLength);
+  bytes.set(media.data);
+  const url = URL.createObjectURL(
+    new Blob([bytes.buffer], { type: media.mimeType }),
+  );
+  reviewMediaUrls.push(url);
+  if (media.kind === "audio") {
+    const audio = document.createElement("audio");
+    audio.controls = true;
+    audio.preload = "metadata";
+    audio.src = url;
+    container.appendChild(audio);
+    return;
+  }
+  const frame = document.createElement("div");
+  frame.className = "review-media-frame";
+  const image = document.createElement("img");
+  image.src = url;
+  image.alt = media.altText || media.originalName;
+  frame.appendChild(image);
+  for (const shape of media.occlusions) {
+    const mask = document.createElement("span");
+    mask.className = "review-media-occlusion";
+    mask.style.left = `${shape.left * 100}%`;
+    mask.style.top = `${shape.top * 100}%`;
+    mask.style.width = `${shape.width * 100}%`;
+    mask.style.height = `${shape.height * 100}%`;
+    if (shape.shape === "ellipse") mask.style.borderRadius = "50%";
+    frame.appendChild(mask);
+  }
+  container.appendChild(frame);
+}
+
+async function renderMobileReviewMedia(tokenId: string): Promise<void> {
+  const request = ++reviewMediaRequest;
+  clearReviewMedia();
+  try {
+    const media = await getTokenMedia(db, tokenId);
+    if (
+      request !== reviewMediaRequest ||
+      reviewSession.currentItem?.tokenId !== tokenId
+    ) {
+      return;
+    }
+    for (const item of media) {
+      appendMobileMedia(
+        item.side === "question" ? reviewQuestionMedia : reviewAnswerMedia,
+        item,
+      );
+    }
+  } catch {
+    // Text remains a complete, offline fallback if a legacy media row is bad.
+  }
+}
 const cardManageButton = element<HTMLButtonElement>("card-manage");
 const cardManageMenu = element<HTMLElement>("card-manage-menu");
 const cardEditItem = element<HTMLButtonElement>("card-edit");
@@ -388,6 +479,16 @@ const repairButton = element<HTMLButtonElement>("repair");
 const reminderEnabled = element<HTMLInputElement>("reminder-enabled");
 const reminderTime = element<HTMLInputElement>("reminder-time");
 const reminderStatus = element<HTMLParagraphElement>("reminder-status");
+const studyWorkloadPreset = element<HTMLSelectElement>("study-workload-preset");
+const studyMaxNew = element<HTMLInputElement>("study-max-new");
+const studyMaxReviews = element<HTMLInputElement>("study-max-reviews");
+const studyBuryNew = element<HTMLInputElement>("study-bury-new");
+const studyBuryReview = element<HTMLInputElement>("study-bury-review");
+const studyWorkloadSave = element<HTMLButtonElement>("study-workload-save");
+const studyUnbury = element<HTMLButtonElement>("study-unbury");
+const studyWorkloadStatus = element<HTMLParagraphElement>(
+  "study-workload-status",
+);
 const updateVersion = element<HTMLElement>("update-version");
 const updateStatus = element<HTMLParagraphElement>("update-status");
 const checkUpdateButton = element<HTMLButtonElement>("check-update");
@@ -745,6 +846,56 @@ function showStats(): void {
 
 function showSettings(): void {
   nav.showTab("settings");
+}
+
+function renderStudyWorkload(settings: StudyWorkloadSettings): void {
+  studyWorkloadPreset.value = settings.preset;
+  studyMaxNew.value = String(settings.maxNew);
+  studyMaxReviews.value = String(settings.maxReviews);
+  studyBuryNew.checked = settings.buryNewSiblings;
+  studyBuryReview.checked = settings.buryReviewSiblings;
+}
+
+async function refreshStudyWorkload(): Promise<void> {
+  if (!currentUserId) return;
+  try {
+    renderStudyWorkload(await getStudyWorkloadSettings(db, currentUserId));
+  } catch (error) {
+    studyWorkloadStatus.textContent = tf("study_workload_failed", {
+      error: errorMessage(error),
+    });
+  }
+}
+
+async function saveStudyWorkload(): Promise<void> {
+  if (!currentUserId) return;
+  studyWorkloadSave.disabled = true;
+  studyWorkloadStatus.textContent = "";
+  try {
+    const preset = studyWorkloadPreset.value as StudyWorkloadPreset;
+    const settings = await setStudyWorkloadSettings(
+      db,
+      currentUserId,
+      preset === "custom"
+        ? {
+            preset,
+            maxNew: Number(studyMaxNew.value),
+            maxReviews: Number(studyMaxReviews.value),
+            buryNewSiblings: studyBuryNew.checked,
+            buryReviewSiblings: studyBuryReview.checked,
+          }
+        : { preset },
+    );
+    renderStudyWorkload(settings);
+    studyWorkloadStatus.textContent = t("study_workload_saved");
+    await refresh(currentUserId);
+  } catch (error) {
+    studyWorkloadStatus.textContent = tf("study_workload_failed", {
+      error: errorMessage(error),
+    });
+  } finally {
+    studyWorkloadSave.disabled = false;
+  }
 }
 
 function setImportStatus(text: string, isError = false): void {
@@ -1427,6 +1578,7 @@ function renderCurrentReview(message = ""): void {
     domain: item.domain || t("no_domain"),
   });
   reviewQuestion.textContent = prompt.question;
+  void renderMobileReviewMedia(item.tokenId);
   reviewAnswer.value = reviewSession.draftAnswer;
   reviewAnswer.disabled = reviewSession.revealed;
   revealAnswerButton.hidden = reviewSession.revealed;
@@ -1894,7 +2046,41 @@ nav.onTabChange((tab) => {
     renderVoiceSettings();
     void refreshStorageRow();
     void refreshAiSection();
+    void refreshStudyWorkload();
   }
+});
+
+studyWorkloadPreset.addEventListener("change", () => {
+  const preset = studyWorkloadPreset.value as StudyWorkloadPreset;
+  if (preset === "custom") return;
+  renderStudyWorkload(STUDY_WORKLOAD_PRESETS[preset]);
+});
+for (const input of [
+  studyMaxNew,
+  studyMaxReviews,
+  studyBuryNew,
+  studyBuryReview,
+]) {
+  input.addEventListener("change", () => {
+    studyWorkloadPreset.value = "custom";
+  });
+}
+studyWorkloadSave.addEventListener("click", () => void saveStudyWorkload());
+studyUnbury.addEventListener("click", () => {
+  void (async () => {
+    if (!currentUserId) return;
+    try {
+      const count = await unburySiblingCards(db, currentUserId);
+      studyWorkloadStatus.textContent = tf("study_workload_unburied", {
+        count,
+      });
+      await refresh(currentUserId);
+    } catch (error) {
+      studyWorkloadStatus.textContent = tf("study_workload_failed", {
+        error: errorMessage(error),
+      });
+    }
+  })();
 });
 
 openImportButton.addEventListener("click", () => {
@@ -2566,7 +2752,10 @@ endpointSaveButton.addEventListener("click", async () => {
       capabilities: readCapabilityDraft(),
     });
     if (!result.ok) {
-      setEndpointsStatus(endpointErrorMessage(result.error ?? "empty_url"), true);
+      setEndpointsStatus(
+        endpointErrorMessage(result.error ?? "empty_url"),
+        true,
+      );
       return;
     }
     closeEndpointForm();

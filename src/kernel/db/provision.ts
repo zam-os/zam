@@ -285,6 +285,48 @@ export async function runMigrations(db: Database): Promise<void> {
     `CREATE INDEX IF NOT EXISTS idx_imported_card_bindings_token
        ON imported_card_bindings(token_id)`,
   );
+
+  // M022: bounded, content-addressed Anki media plus temporary personal
+  // sibling burying (ADR 2026-08-09 phase 4). Existing cards remain visible.
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS media_assets (
+      hash          TEXT PRIMARY KEY,
+      mime_type     TEXT NOT NULL,
+      byte_size     INTEGER NOT NULL CHECK (byte_size >= 0),
+      data          BLOB NOT NULL,
+      created_at    TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  `);
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS token_media (
+      token_id       TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+      asset_hash     TEXT NOT NULL REFERENCES media_assets(hash) ON DELETE RESTRICT,
+      side           TEXT NOT NULL CHECK (side IN ('question', 'answer')),
+      kind           TEXT NOT NULL CHECK (kind IN ('image', 'audio')),
+      ordinal        INTEGER NOT NULL DEFAULT 0 CHECK (ordinal >= 0),
+      original_name  TEXT NOT NULL,
+      alt_text       TEXT,
+      occlusion_json TEXT,
+      PRIMARY KEY (token_id, side, ordinal)
+    );
+  `);
+  if (cardCols.length > 0 && !cardCols.includes("buried_until")) {
+    await db.exec(`ALTER TABLE cards ADD COLUMN buried_until TEXT`);
+  }
+  if (cardCols.length > 0 && !cardCols.includes("buried_reason")) {
+    await db.exec(`ALTER TABLE cards ADD COLUMN buried_reason TEXT`);
+  }
+  await db.exec(
+    `CREATE INDEX IF NOT EXISTS idx_imported_card_bindings_note
+       ON imported_card_bindings(note_guid)`,
+  );
+  await db.exec(
+    `CREATE INDEX IF NOT EXISTS idx_token_media_asset ON token_media(asset_hash)`,
+  );
+  await db.exec(
+    `CREATE INDEX IF NOT EXISTS idx_cards_user_buried
+       ON cards(user_id, buried_until)`,
+  );
 }
 
 /**

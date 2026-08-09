@@ -651,6 +651,43 @@ textarea:focus {
   color: var(--label-secondary);
 }
 
+.review-media {
+  display: grid;
+  gap: var(--gap-3);
+  margin-block: var(--gap-3);
+}
+
+.review-media:empty {
+  display: none;
+}
+
+.review-media-frame {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-row);
+}
+
+.review-media-frame img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 52vh;
+  object-fit: contain;
+}
+
+.review-media-occlusion {
+  position: absolute;
+  box-sizing: border-box;
+  background: var(--accent);
+  border: 2px solid var(--bg-elevated);
+}
+
+.review-media audio {
+  width: 100%;
+}
+
 /* ── Statistics bars ───────────────────────────────────────────────────── */
 
 .bars {

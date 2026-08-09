@@ -84,6 +84,7 @@ interface FileImportPreview {
     total: number;
   };
   decks: Array<{ path: string; cards: number }>;
+  media?: { assets: number; references: number; totalBytes: number };
   cards: Array<{
     question: string;
     answer: string;
@@ -1755,6 +1756,15 @@ function renderFileImportPreview(preview: FileImportPreview): void {
           .join(", ") || "—",
     }),
   );
+  if (preview.media && preview.media.assets > 0) {
+    appendImportPreviewLine(
+      tf("file_import_preview_media", {
+        assets: preview.media.assets,
+        references: preview.media.references,
+        size: (preview.media.totalBytes / (1024 * 1024)).toFixed(1),
+      }),
+    );
+  }
 
   const notices = [
     ...preview.warnings,

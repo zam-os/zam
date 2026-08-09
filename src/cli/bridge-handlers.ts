@@ -42,6 +42,7 @@ import {
   getTokenById,
   getTokenBySlug,
   getTokenDeleteImpact,
+  getTokenMedia,
   getTokensBySourceLinkBase,
   getUserStats,
   isObserverPolicyConfigured,
@@ -195,6 +196,22 @@ export async function getReview(db: Database, params: GetReviewParams) {
   }
 
   const item = queue.items[0];
+  const media = (await getTokenMedia(db, item.tokenId)).map((entry) => ({
+    assetHash: entry.assetHash,
+    side: entry.side,
+    kind: entry.kind,
+    ordinal: entry.ordinal,
+    originalName: entry.originalName,
+    altText: entry.altText,
+    mimeType: entry.mimeType,
+    byteSize: entry.byteSize,
+    dataBase64: Buffer.from(
+      entry.data.buffer,
+      entry.data.byteOffset,
+      entry.data.byteLength,
+    ).toString("base64"),
+    occlusions: entry.occlusions,
+  }));
   const isLlmEnabled = (await getSetting(db, "llm.enabled")) === "true";
 
   let resolvedQuestion = item.question;
@@ -250,7 +267,7 @@ export async function getReview(db: Database, params: GetReviewParams) {
   return {
     userId,
     hasReview: true,
-    card: item,
+    card: { ...item, media },
     prompt,
     questionSource,
     questionModel: questionModel ?? null,

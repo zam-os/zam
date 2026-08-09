@@ -79,6 +79,20 @@ startup path as iPadOS: an unpaired launch opens `zam-local.db`, provisions it
 through the kernel contract, and either restores its learner identity or shows
 the three-step local setup. QR pairing remains an explicit takeover action.
 
+The rich-semantics phase keeps the same safe rendering boundary. Classic APKG
+media is resolved through Anki's numeric media manifest, verified and bounded,
+then stored once by SHA-256 and attached declaratively to the question or
+answer. Cloze deletions become ordinary spoiler-free question/answer text;
+native rectangle and ellipse image occlusions become an image plus inert mask
+geometry. ZAM still executes no Anki HTML, CSS, JavaScript, or add-on code.
+
+Cards rendered from one Anki note use the retained note GUID as their sibling
+group. Enabled new/review siblings are held out of the same queue and buried
+until the next local day after a rating; active Learning/Relearning steps are
+never buried. Each learner can choose a balanced, exam, problem-card, or custom
+workload in Desktop or Mobile Settings. The same persisted limits and sibling
+switches drive the kernel queue used by Studio, mobile, CLI, and agents.
+
 ### 3. The first interoperability boundary is files, not AnkiWeb
 
 Version one accepts local `.apkg`, CSV, and TSV files. ZAM does not scrape,
@@ -165,8 +179,9 @@ malformed archives, unsafe HTML, and unsupported content reporting.
   preserves distinct recall directions and scheduling state.
 - Content-only import is safer and more predictable, but it does not immediately
   migrate an experienced Anki learner's history.
-- Rich decks will initially produce clear warnings rather than full-fidelity
-  media, Cloze, or image-occlusion cards.
+- Safe interoperability is semantic, not pixel-identical: unsupported media
+  codecs, template modifiers, and image-occlusion shapes produce clear
+  warnings instead of executing foreign rendering code.
 - A 1:1 visual rendering of arbitrary Anki templates is deliberately not a
   goal; safety and recall semantics take precedence.
 
@@ -196,4 +211,6 @@ malformed archives, unsafe HTML, and unsupported content reporting.
 - `mobile/src-tauri/src/db.rs`, `tests/mobile/first-run.test.ts`
 - `docs/plans/2026-07-25-closed-group-library-handover.md`
 - [Anki Manual: Packaged Decks](https://docs.ankiweb.net/importing/packaged-decks.html)
+- [Anki Manual: Editing — Cloze and Image Occlusion](https://docs.ankiweb.net/editing.html)
+- [Anki Manual: Deck Options — Limits and Sibling Burying](https://docs.ankiweb.net/deck-options.html)
 - [Anki shared decks](https://ankiweb.net/shared/decks)

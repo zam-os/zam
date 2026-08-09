@@ -38,6 +38,7 @@ export interface ExecuteReviewActionInput {
   sessionId?: string;
   responseTimeMs?: number;
   tokenUpdates?: UpdateTokenInput;
+  now?: Date;
 }
 
 export interface ReviewActionResult {
@@ -116,6 +117,7 @@ export async function executeReviewAction(
         rating,
         sessionId: input.sessionId,
         responseTimeMs: input.responseTimeMs,
+        now: input.now,
       });
 
       let blocked: CascadeBlockResult | undefined;

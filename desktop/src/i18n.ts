@@ -172,6 +172,24 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "Configura este equipo sin imponer las mismas decisiones a cada espacio de trabajo o dispositivo.",
     settings_back: "Volver al panel",
     settings_system_title: "Sistema",
+    study_workload_title: "Carga de estudio",
+    study_workload_help:
+      "Elige una mezcla diaria tranquila, una cobertura intensiva para exámenes o una sesión más corta de tarjetas de problemas.",
+    study_workload_preset: "Plan",
+    study_preset_balanced: "Equilibrado",
+    study_preset_exam: "Examen",
+    study_preset_problems: "Tarjetas de problemas",
+    study_preset_custom: "Personalizado",
+    study_max_new: "Tarjetas nuevas por sesión",
+    study_max_reviews: "Tarjetas totales por sesión",
+    study_bury_new: "Mostrar solo una tarjeta hermana nueva al día",
+    study_bury_review: "Mostrar solo una tarjeta hermana de repaso al día",
+    study_workload_save: "Guardar plan de estudio",
+    study_unbury: "Mostrar ahora las tarjetas pospuestas",
+    study_workload_saved: "Plan de estudio guardado.",
+    study_workload_unburied:
+      "{count} tarjeta(s) pospuesta(s) vuelven a estar visibles.",
+    study_workload_error: "No se pudo actualizar el plan de estudio: {message}",
     settings_ai_title: "Modelos de IA",
     settings_workspace_title: "Espacios de trabajo",
     workspaces_help:
@@ -553,6 +571,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     file_import_preview_counts:
       "{total} entradas · {create} nuevas · {update} actualizaciones · {skip} sin cambios · {conflict} conflictos · {unsupported} no compatibles · {cards} tarjetas personales nuevas",
     file_import_preview_decks: "Mazos: {decks}",
+    file_import_preview_media:
+      "Medios: {assets} archivo(s) local(es), {references} referencia(s) de tarjeta, {size} MiB",
     file_import_preview_notices: "Avisos y contenido no compatible",
     file_import_more_notices: "{count} avisos más",
     file_import_nothing_to_do: "No hay cambios válidos para importar.",
@@ -976,6 +996,25 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "Configurez cette machine sans imposer les mêmes choix à chaque espace de travail ou appareil.",
     settings_back: "Retour au tableau de bord",
     settings_system_title: "Système",
+    study_workload_title: "Charge d’étude",
+    study_workload_help:
+      "Choisissez un rythme quotidien calme, une préparation intensive à un examen ou une courte session de cartes-problèmes.",
+    study_workload_preset: "Programme",
+    study_preset_balanced: "Équilibré",
+    study_preset_exam: "Examen",
+    study_preset_problems: "Cartes-problèmes",
+    study_preset_custom: "Personnalisé",
+    study_max_new: "Nouvelles cartes par session",
+    study_max_reviews: "Total de cartes par session",
+    study_bury_new: "Afficher une seule nouvelle carte sœur par jour",
+    study_bury_review: "Afficher une seule carte sœur à réviser par jour",
+    study_workload_save: "Enregistrer le programme d’étude",
+    study_unbury: "Afficher maintenant les cartes différées",
+    study_workload_saved: "Programme d’étude enregistré.",
+    study_workload_unburied:
+      "{count} carte(s) différée(s) sont de nouveau visibles.",
+    study_workload_error:
+      "Impossible de mettre à jour le programme d’étude : {message}",
     settings_ai_title: "Modèles d'IA",
     settings_workspace_title: "Espaces de travail",
     workspaces_help:
@@ -1362,6 +1401,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     file_import_preview_counts:
       "{total} entrées · {create} nouvelles · {update} mises à jour · {skip} inchangées · {conflict} conflits · {unsupported} non prises en charge · {cards} nouvelles cartes personnelles",
     file_import_preview_decks: "Paquets : {decks}",
+    file_import_preview_media:
+      "Médias : {assets} fichier(s) local(aux), {references} référence(s) de carte, {size} Mio",
     file_import_preview_notices: "Avertissements et contenu non pris en charge",
     file_import_more_notices: "{count} avertissements supplémentaires",
     file_import_nothing_to_do: "Aucune modification valide à importer.",
@@ -1788,6 +1829,25 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "Configure esta máquina sem impor as mesmas escolhas a cada espaço de trabalho ou dispositivo.",
     settings_back: "Voltar ao painel",
     settings_system_title: "Sistema",
+    study_workload_title: "Carga de estudo",
+    study_workload_help:
+      "Escolha uma rotina diária tranquila, uma preparação intensiva para provas ou uma sessão menor de cartões de problemas.",
+    study_workload_preset: "Plano",
+    study_preset_balanced: "Equilibrado",
+    study_preset_exam: "Prova",
+    study_preset_problems: "Cartões de problemas",
+    study_preset_custom: "Personalizado",
+    study_max_new: "Novos cartões por sessão",
+    study_max_reviews: "Total de cartões por sessão",
+    study_bury_new: "Mostrar apenas um novo cartão irmão por dia",
+    study_bury_review: "Mostrar apenas um cartão irmão de revisão por dia",
+    study_workload_save: "Salvar plano de estudo",
+    study_unbury: "Mostrar agora os cartões adiados",
+    study_workload_saved: "Plano de estudo salvo.",
+    study_workload_unburied:
+      "{count} cartão(ões) adiado(s) estão visíveis novamente.",
+    study_workload_error:
+      "Não foi possível atualizar o plano de estudo: {message}",
     settings_ai_title: "Modelos de IA",
     settings_workspace_title: "Espaços de trabalho",
     workspaces_help:
@@ -2170,6 +2230,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     file_import_preview_counts:
       "{total} entradas · {create} novas · {update} atualizações · {skip} inalteradas · {conflict} conflitos · {unsupported} não compatíveis · {cards} novos cartões pessoais",
     file_import_preview_decks: "Baralhos: {decks}",
+    file_import_preview_media:
+      "Mídia: {assets} arquivo(s) local(is), {references} referência(s) de cartão, {size} MiB",
     file_import_preview_notices: "Avisos e conteúdo não compatível",
     file_import_more_notices: "Mais {count} avisos",
     file_import_nothing_to_do: "Não há alterações válidas para importar.",
@@ -2572,6 +2634,23 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "配置这台机器，而不会把相同的选择强加到每个工作区或设备上。",
     settings_back: "返回仪表板",
     settings_system_title: "系统",
+    study_workload_title: "学习量",
+    study_workload_help:
+      "选择轻松的每日组合、密集的考试复习，或较短的问题卡片学习时段。",
+    study_workload_preset: "计划",
+    study_preset_balanced: "均衡",
+    study_preset_exam: "考试",
+    study_preset_problems: "问题卡片",
+    study_preset_custom: "自定义",
+    study_max_new: "每次学习的新卡片数",
+    study_max_reviews: "每次学习的卡片总数",
+    study_bury_new: "每天仅显示一张同笔记的新卡片",
+    study_bury_review: "每天仅显示一张同笔记的复习卡片",
+    study_workload_save: "保存学习计划",
+    study_unbury: "立即显示已暂缓的卡片",
+    study_workload_saved: "学习计划已保存。",
+    study_workload_unburied: "{count} 张暂缓卡片已重新显示。",
+    study_workload_error: "无法更新学习计划：{message}",
     settings_ai_title: "AI 模型",
     settings_workspace_title: "工作区",
     workspaces_help: "为这台机器注册个人、团队、家庭或社区的工作目录。",
@@ -2907,6 +2986,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     file_import_preview_counts:
       "共 {total} 项 · 新建 {create} · 更新 {update} · 不变 {skip} · 冲突 {conflict} · 不支持 {unsupported} · 新建个人卡片 {cards}",
     file_import_preview_decks: "牌组：{decks}",
+    file_import_preview_media:
+      "媒体：{assets} 个本地文件，{references} 个卡片引用，{size} MiB",
     file_import_preview_notices: "警告和不支持的内容",
     file_import_more_notices: "另有 {count} 条提示",
     file_import_nothing_to_do: "没有可导入的有效更改。",
@@ -3318,6 +3399,24 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "すべてのワークスペースやデバイスに同じ選択を強制することなく、このマシンを構成します。",
     settings_back: "ダッシュボードに戻る",
     settings_system_title: "システム",
+    study_workload_title: "学習量",
+    study_workload_help:
+      "落ち着いた毎日の組み合わせ、集中的な試験対策、または短めの問題カード学習を選べます。",
+    study_workload_preset: "プラン",
+    study_preset_balanced: "バランス",
+    study_preset_exam: "試験",
+    study_preset_problems: "問題カード",
+    study_preset_custom: "カスタム",
+    study_max_new: "セッションごとの新規カード",
+    study_max_reviews: "セッションごとの合計カード",
+    study_bury_new: "同じノートの新規カードは1日1枚だけ表示",
+    study_bury_review: "同じノートの復習カードは1日1枚だけ表示",
+    study_workload_save: "学習プランを保存",
+    study_unbury: "延期したカードを今すぐ表示",
+    study_workload_saved: "学習プランを保存しました。",
+    study_workload_unburied:
+      "延期されていたカード {count} 枚を再表示しました。",
+    study_workload_error: "学習プランを更新できませんでした：{message}",
     settings_ai_title: "AI モデル",
     settings_workspace_title: "ワークスペース",
     workspaces_help:
@@ -3671,6 +3770,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     file_import_preview_counts:
       "全 {total} 件 · 新規 {create} · 更新 {update} · 変更なし {skip} · 競合 {conflict} · 未対応 {unsupported} · 新しい個人カード {cards}",
     file_import_preview_decks: "デッキ：{decks}",
+    file_import_preview_media:
+      "メディア：ローカルファイル {assets} 件、カード参照 {references} 件、{size} MiB",
     file_import_preview_notices: "警告と未対応コンテンツ",
     file_import_more_notices: "ほか {count} 件の通知",
     file_import_nothing_to_do: "インポートできる有効な変更はありません。",
@@ -4194,6 +4295,23 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Configure this machine without forcing the same choices onto every workspace or device.",
     settings_back: "Back to dashboard",
     settings_system_title: "System",
+    study_workload_title: "Study workload",
+    study_workload_help:
+      "Choose a calm daily mix, intensive exam coverage, or a smaller problem-card session.",
+    study_workload_preset: "Plan",
+    study_preset_balanced: "Balanced",
+    study_preset_exam: "Exam",
+    study_preset_problems: "Problem cards",
+    study_preset_custom: "Custom",
+    study_max_new: "New cards per session",
+    study_max_reviews: "Total cards per session",
+    study_bury_new: "Show only one new sibling per day",
+    study_bury_review: "Show only one review sibling per day",
+    study_workload_save: "Save study plan",
+    study_unbury: "Show buried cards now",
+    study_workload_saved: "Study plan saved.",
+    study_workload_unburied: "{count} buried card(s) are visible again.",
+    study_workload_error: "Could not update the study plan: {message}",
     settings_ai_title: "AI models",
     settings_workspace_title: "Workspaces",
     workspaces_help:
@@ -4730,6 +4848,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     file_import_preview_counts:
       "{total} entries · {create} create · {update} update · {skip} unchanged · {conflict} conflicts · {unsupported} unsupported · {cards} new personal cards",
     file_import_preview_decks: "Decks: {decks}",
+    file_import_preview_media:
+      "Media: {assets} local file(s), {references} card reference(s), {size} MiB",
     file_import_preview_notices: "Warnings and unsupported content",
     file_import_more_notices: "{count} more notices",
     file_import_nothing_to_do: "There are no valid changes to import.",
@@ -5452,6 +5572,25 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Konfiguriere diesen Rechner, ohne dieselben Entscheidungen auf jeden Arbeitsbereich oder jedes Gerät zu übertragen.",
     settings_back: "Zurück zur Übersicht",
     settings_system_title: "System",
+    study_workload_title: "Lernumfang",
+    study_workload_help:
+      "Wähle einen ruhigen Tagesmix, intensive Prüfungsvorbereitung oder eine kleinere Sitzung mit Aufgabenkarten.",
+    study_workload_preset: "Plan",
+    study_preset_balanced: "Ausgewogen",
+    study_preset_exam: "Prüfung",
+    study_preset_problems: "Aufgabenkarten",
+    study_preset_custom: "Eigene Werte",
+    study_max_new: "Neue Karten pro Sitzung",
+    study_max_reviews: "Karten insgesamt pro Sitzung",
+    study_bury_new: "Pro Tag nur eine neue Geschwisterkarte zeigen",
+    study_bury_review:
+      "Pro Tag nur eine fällige Geschwisterkarte zeigen",
+    study_workload_save: "Lernplan speichern",
+    study_unbury: "Zurückgestellte Karten jetzt zeigen",
+    study_workload_saved: "Lernplan gespeichert.",
+    study_workload_unburied:
+      "{count} zurückgestellte Karte(n) sind wieder sichtbar.",
+    study_workload_error: "Lernplan konnte nicht geändert werden: {message}",
     settings_ai_title: "KI-Modelle",
     settings_workspace_title: "Arbeitsbereiche",
     workspaces_help:
@@ -6007,6 +6146,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     file_import_preview_counts:
       "{total} Einträge · {create} neu · {update} aktualisieren · {skip} unverändert · {conflict} Konflikte · {unsupported} nicht unterstützt · {cards} neue persönliche Karten",
     file_import_preview_decks: "Stapel: {decks}",
+    file_import_preview_media:
+      "Medien: {assets} lokale Datei(en), {references} Kartenverweis(e), {size} MiB",
     file_import_preview_notices: "Hinweise und nicht unterstützte Inhalte",
     file_import_more_notices: "{count} weitere Hinweise",
     file_import_nothing_to_do:

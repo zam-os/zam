@@ -11,8 +11,13 @@ import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
 import { publishTokenRevisionInTransaction } from "../library/revision.js";
 import { ensureCard } from "../models/card.js";
+import type {
+  ImageOcclusionShape,
+  TokenMediaKind,
+  TokenMediaSide,
+} from "../models/media.js";
 import { createToken, generateTokenSlug } from "../models/token.js";
-import { sha256Hex } from "../util/sha256.js";
+import { sha256Hex, sha256HexBytes } from "../util/sha256.js";
 
 export type TextImportFormat = "apkg" | "csv" | "tsv";
 export type TextImportAction = "create" | "update" | "skip" | "conflict";
@@ -37,7 +42,23 @@ export interface TextImportCardInput {
   license?: string | null;
   noteGuid?: string | null;
   cardOrdinal?: number | null;
+  media?: TextImportMediaReference[];
   warnings?: TextImportNotice[];
+}
+
+export interface TextImportAssetInput {
+  name: string;
+  mimeType: string;
+  kind: TokenMediaKind;
+  data: Uint8Array;
+}
+
+export interface TextImportMediaReference {
+  assetName: string;
+  side: TokenMediaSide;
+  kind: TokenMediaKind;
+  altText?: string | null;
+  occlusions?: ImageOcclusionShape[];
 }
 
 export interface TextImportDocument {
@@ -45,6 +66,7 @@ export interface TextImportDocument {
   /** Display-only basename. Absolute local paths never enter shared storage. */
   sourceName: string;
   cards: TextImportCardInput[];
+  assets?: TextImportAssetInput[];
   warnings?: TextImportNotice[];
   unsupported?: TextImportNotice[];
 }
@@ -59,6 +81,7 @@ export interface TextImportPreviewCard {
   tokenId: string | null;
   cardAction: "create" | "keep" | "none";
   contentChanged: boolean;
+  mediaCount: number;
   warnings: TextImportNotice[];
 }
 
@@ -84,6 +107,7 @@ export interface TextImportPreview {
   planHash: string;
   counts: TextImportCounts;
   decks: TextImportDeckPreview[];
+  media: { assets: number; references: number; totalBytes: number };
   cards: TextImportPreviewCard[];
   warnings: TextImportNotice[];
   unsupported: TextImportNotice[];
@@ -108,8 +132,27 @@ interface NormalizedCard {
   noteGuid: string | null;
   cardOrdinal: number | null;
   warnings: TextImportNotice[];
+  media: NormalizedMediaReference[];
   contentHash: string;
   metadataHash: string;
+}
+
+interface NormalizedAsset {
+  name: string;
+  mimeType: string;
+  kind: TokenMediaKind;
+  data: Uint8Array;
+  hash: string;
+}
+
+interface NormalizedMediaReference {
+  assetName: string;
+  assetHash: string;
+  side: TokenMediaSide;
+  kind: TokenMediaKind;
+  ordinal: number;
+  altText: string | null;
+  occlusions: ImageOcclusionShape[];
 }
 
 interface ImportBindingRow {
@@ -121,11 +164,26 @@ interface ImportBindingRow {
   token_concept: string | null;
   deprecated_at: string | null;
   user_card_id: string | null;
+  local_media: NormalizedMediaReference[];
 }
 
 const MAX_IMPORT_CARDS = 50_000;
 const MAX_EXTERNAL_ID_LENGTH = 512;
 const MAX_TEXT_LENGTH = 65_536;
+const MAX_MEDIA_ASSETS = 10_000;
+const MAX_MEDIA_PER_CARD = 64;
+const MAX_MEDIA_ITEM_BYTES = 20 * 1024 * 1024;
+const MAX_MEDIA_TOTAL_BYTES = 200 * 1024 * 1024;
+const ALLOWED_MEDIA_MIME = new Map<string, TokenMediaKind>([
+  ["image/png", "image"],
+  ["image/jpeg", "image"],
+  ["image/gif", "image"],
+  ["image/webp", "image"],
+  ["audio/mpeg", "audio"],
+  ["audio/ogg", "audio"],
+  ["audio/wav", "audio"],
+  ["audio/mp4", "audio"],
+]);
 
 function normalizeText(value: string): string {
   return value.replace(/\r\n?/g, "\n").trim();
@@ -140,9 +198,33 @@ function normalizeTags(tags: string[] | undefined): string[] {
   return [...new Set((tags ?? []).map(normalizeText).filter(Boolean))].sort();
 }
 
-function contentHash(question: string | null, answer: string | null): string {
+function mediaHashShape(media: NormalizedMediaReference): unknown[] {
+  return [
+    media.side,
+    media.kind,
+    media.ordinal,
+    media.assetHash,
+    media.altText,
+    media.occlusions,
+  ];
+}
+
+function contentHash(
+  question: string | null,
+  answer: string | null,
+  media: NormalizedMediaReference[] = [],
+): string {
+  const text = `${normalizeText(question ?? "")}\n${normalizeText(answer ?? "")}`;
+  const canonicalMedia = [...media].sort(
+    (left, right) =>
+      left.side.localeCompare(right.side) || left.ordinal - right.ordinal,
+  );
+  // Retain the phase-2 digest for text-only cards so upgrading does not make
+  // every unchanged binding look like a source edit.
   return sha256Hex(
-    `${normalizeText(question ?? "")}\n${normalizeText(answer ?? "")}`,
+    media.length > 0
+      ? `${text}\n${JSON.stringify(canonicalMedia.map(mediaHashShape))}`
+      : text,
   );
 }
 
@@ -155,6 +237,7 @@ function metadataHash(card: {
   license: string | null;
   noteGuid: string | null;
   cardOrdinal: number | null;
+  media: NormalizedMediaReference[];
 }): string {
   return sha256Hex(
     JSON.stringify([
@@ -166,12 +249,19 @@ function metadataHash(card: {
       card.license,
       card.noteGuid,
       card.cardOrdinal,
+      [...card.media]
+        .sort(
+          (left, right) =>
+            left.side.localeCompare(right.side) || left.ordinal - right.ordinal,
+        )
+        .map((item) => item.assetName),
     ]),
   );
 }
 
 function normalizeDocument(document: TextImportDocument): {
   cards: NormalizedCard[];
+  assets: NormalizedAsset[];
   duplicateIds: Set<string>;
   warnings: TextImportNotice[];
   unsupported: TextImportNotice[];
@@ -185,6 +275,52 @@ function normalizeDocument(document: TextImportDocument): {
   }
   if (document.cards.length > MAX_IMPORT_CARDS) {
     throw new Error(`Import contains more than ${MAX_IMPORT_CARDS} cards`);
+  }
+
+  const assetInputs = document.assets ?? [];
+  if (assetInputs.length > MAX_MEDIA_ASSETS) {
+    throw new Error(
+      `Import contains more than ${MAX_MEDIA_ASSETS} media assets`,
+    );
+  }
+  const assetsByName = new Map<string, NormalizedAsset>();
+  let totalAssetBytes = 0;
+  for (const [index, input] of assetInputs.entries()) {
+    const name = normalizeText(input.name).replace(/\\/g, "/");
+    if (
+      !name ||
+      name.length > 255 ||
+      name.includes("\0") ||
+      name.startsWith("/") ||
+      /^[a-z]+:/i.test(name) ||
+      name.split("/").some((part) => part === "..")
+    ) {
+      throw new Error(`Media asset ${index + 1} has an unsafe name`);
+    }
+    if (assetsByName.has(name)) {
+      throw new Error(`Import contains duplicate media name: ${name}`);
+    }
+    if (!(input.data instanceof Uint8Array)) {
+      throw new Error(`Media asset ${name} is not binary data`);
+    }
+    if (input.data.byteLength > MAX_MEDIA_ITEM_BYTES) {
+      throw new Error(`Media asset exceeds the 20 MiB limit: ${name}`);
+    }
+    totalAssetBytes += input.data.byteLength;
+    if (totalAssetBytes > MAX_MEDIA_TOTAL_BYTES) {
+      throw new Error("Import media exceeds the 200 MiB total limit");
+    }
+    const expectedKind = ALLOWED_MEDIA_MIME.get(input.mimeType);
+    if (!expectedKind || expectedKind !== input.kind) {
+      throw new Error(`Media asset ${name} has an unsupported type`);
+    }
+    assetsByName.set(name, {
+      name,
+      mimeType: input.mimeType,
+      kind: input.kind,
+      data: Uint8Array.prototype.slice.call(input.data) as Uint8Array,
+      hash: sha256HexBytes(input.data),
+    });
   }
 
   const occurrences = new Map<string, number>();
@@ -210,6 +346,55 @@ function normalizeDocument(document: TextImportDocument): {
     }
     occurrences.set(externalId, (occurrences.get(externalId) ?? 0) + 1);
 
+    const inputMedia = input.media ?? [];
+    if (inputMedia.length > MAX_MEDIA_PER_CARD) {
+      throw new Error(
+        `Card ${externalId} contains more than ${MAX_MEDIA_PER_CARD} media references`,
+      );
+    }
+    const sideOrdinals: Record<TokenMediaSide, number> = {
+      question: 0,
+      answer: 0,
+    };
+    const media = inputMedia.map((reference): NormalizedMediaReference => {
+      const assetName = normalizeText(reference.assetName).replace(/\\/g, "/");
+      const asset = assetsByName.get(assetName);
+      if (!asset) {
+        throw new Error(
+          `Card ${externalId} references missing media asset: ${assetName}`,
+        );
+      }
+      if (!["question", "answer"].includes(reference.side)) {
+        throw new Error(`Card ${externalId} has an invalid media side`);
+      }
+      if (asset.kind !== reference.kind) {
+        throw new Error(`Card ${externalId} has a mismatched media kind`);
+      }
+      const occlusions = reference.occlusions ?? [];
+      if (occlusions.length > 100) {
+        throw new Error(`Card ${externalId} has too many image occlusions`);
+      }
+      for (const shape of occlusions) {
+        if (
+          !["rect", "ellipse"].includes(shape.shape) ||
+          ![shape.left, shape.top, shape.width, shape.height].every(
+            (value) => Number.isFinite(value) && value >= 0 && value <= 1,
+          )
+        ) {
+          throw new Error(`Card ${externalId} has invalid occlusion geometry`);
+        }
+      }
+      return {
+        assetName,
+        assetHash: asset.hash,
+        side: reference.side,
+        kind: reference.kind,
+        ordinal: sideOrdinals[reference.side]++,
+        altText: optionalText(reference.altText)?.slice(0, 1_000) ?? null,
+        occlusions,
+      };
+    });
+
     const card = {
       externalId,
       question,
@@ -223,16 +408,23 @@ function normalizeDocument(document: TextImportDocument): {
       noteGuid: optionalText(input.noteGuid),
       cardOrdinal,
       warnings: input.warnings ?? [],
+      media,
     };
     return {
       ...card,
-      contentHash: contentHash(card.question, card.answer),
+      contentHash: contentHash(card.question, card.answer, card.media),
       metadataHash: metadataHash(card),
     };
   });
 
+  const usedAssetHashes = new Set(
+    cards.flatMap((card) => card.media.map((item) => item.assetHash)),
+  );
   return {
     cards,
+    assets: [...assetsByName.values()].filter((asset) =>
+      usedAssetHashes.has(asset.hash),
+    ),
     duplicateIds: new Set(
       [...occurrences].filter(([, count]) => count > 1).map(([id]) => id),
     ),
@@ -270,6 +462,56 @@ async function loadBindings(
       .all(userId, ...chunk)) as ImportBindingRow[];
     for (const row of rows) bindings.set(row.external_id, row);
   }
+  const tokenIds = [
+    ...new Set([...bindings.values()].map((row) => row.token_id)),
+  ];
+  const mediaByToken = new Map<string, NormalizedMediaReference[]>();
+  for (let offset = 0; offset < tokenIds.length; offset += chunkSize) {
+    const chunk = tokenIds.slice(offset, offset + chunkSize);
+    const placeholders = chunk.map(() => "?").join(",");
+    const rows = (await db
+      .prepare(
+        `SELECT token_id, asset_hash, side, kind, ordinal, original_name,
+                alt_text, occlusion_json
+           FROM token_media
+          WHERE token_id IN (${placeholders})
+          ORDER BY token_id, side, ordinal`,
+      )
+      .all(...chunk)) as Array<{
+      token_id: string;
+      asset_hash: string;
+      side: TokenMediaSide;
+      kind: TokenMediaKind;
+      ordinal: number;
+      original_name: string;
+      alt_text: string | null;
+      occlusion_json: string | null;
+    }>;
+    for (const row of rows) {
+      let occlusions: ImageOcclusionShape[] = [];
+      try {
+        occlusions = row.occlusion_json
+          ? (JSON.parse(row.occlusion_json) as ImageOcclusionShape[])
+          : [];
+      } catch {
+        occlusions = [];
+      }
+      const list = mediaByToken.get(row.token_id) ?? [];
+      list.push({
+        assetName: row.original_name,
+        assetHash: row.asset_hash,
+        side: row.side,
+        kind: row.kind,
+        ordinal: Number(row.ordinal),
+        altText: row.alt_text,
+        occlusions,
+      });
+      mediaByToken.set(row.token_id, list);
+    }
+  }
+  for (const binding of bindings.values()) {
+    binding.local_media = mediaByToken.get(binding.token_id) ?? [];
+  }
   return bindings;
 }
 
@@ -290,6 +532,7 @@ function planHashFor(
         card.tokenId,
         card.cardAction,
         card.contentChanged,
+        card.mediaCount,
         normalizedCards[index]?.contentHash,
         normalizedCards[index]?.metadataHash,
         card.warnings.map((warning) => [warning.code, warning.message]),
@@ -344,6 +587,7 @@ export async function previewTextImport(
       const currentHash = contentHash(
         binding.token_question,
         binding.token_concept,
+        binding.local_media,
       );
       const sourceContentChanged =
         card.contentHash !== binding.binding_content_hash;
@@ -389,6 +633,7 @@ export async function previewTextImport(
       tokenId,
       cardAction,
       contentChanged,
+      mediaCount: card.media.length,
       warnings: card.warnings,
     };
   });
@@ -424,10 +669,75 @@ export async function previewTextImport(
     ),
     counts,
     decks,
+    media: {
+      assets: normalized.assets.length,
+      references: normalized.cards.reduce(
+        (sum, card) => sum + card.media.length,
+        0,
+      ),
+      totalBytes: normalized.assets.reduce(
+        (sum, asset) => sum + asset.data.byteLength,
+        0,
+      ),
+    },
     cards,
     warnings: normalized.warnings,
     unsupported: normalized.unsupported,
   };
+}
+
+async function replaceTokenMedia(
+  db: Database,
+  tokenId: string,
+  card: NormalizedCard,
+  assetsByHash: Map<string, NormalizedAsset>,
+): Promise<void> {
+  await db.prepare("DELETE FROM token_media WHERE token_id = ?").run(tokenId);
+  for (const media of card.media) {
+    const asset = assetsByHash.get(media.assetHash);
+    if (!asset) throw new Error(`Import media disappeared: ${media.assetName}`);
+    await db
+      .prepare(
+        `INSERT INTO media_assets (hash, mime_type, byte_size, data)
+         VALUES (?, ?, ?, ?)
+         ON CONFLICT(hash) DO NOTHING`,
+      )
+      .run(asset.hash, asset.mimeType, asset.data.byteLength, asset.data);
+    const stored = (await db
+      .prepare(
+        "SELECT mime_type, byte_size, data FROM media_assets WHERE hash = ?",
+      )
+      .get(asset.hash)) as
+      | { mime_type: string; byte_size: number | bigint; data: Uint8Array }
+      | undefined;
+    if (
+      !stored ||
+      stored.mime_type !== asset.mimeType ||
+      Number(stored.byte_size) !== asset.data.byteLength ||
+      sha256HexBytes(stored.data) !== asset.hash
+    ) {
+      throw new Error(
+        `Content-addressed media verification failed: ${asset.name}`,
+      );
+    }
+    await db
+      .prepare(
+        `INSERT INTO token_media
+          (token_id, asset_hash, side, kind, ordinal, original_name,
+           alt_text, occlusion_json)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .run(
+        tokenId,
+        media.assetHash,
+        media.side,
+        media.kind,
+        media.ordinal,
+        media.assetName,
+        media.altText,
+        media.occlusions.length > 0 ? JSON.stringify(media.occlusions) : null,
+      );
+  }
 }
 
 function titleFor(card: NormalizedCard): string {
@@ -528,6 +838,9 @@ export async function commitTextImport(
     const cardsByExternalId = new Map(
       normalized.cards.map((card) => [card.externalId, card]),
     );
+    const assetsByHash = new Map(
+      normalized.assets.map((asset) => [asset.hash, asset]),
+    );
     const now = new Date().toISOString();
     let cardsCreated = 0;
 
@@ -557,6 +870,7 @@ export async function commitTextImport(
         });
         tokenId = token.id;
         await insertBinding(tx, document, card, token.id, now);
+        await replaceTokenMedia(tx, token.id, card, assetsByHash);
       } else {
         if (!tokenId) {
           throw new Error(`Import binding disappeared: ${item.externalId}`);
@@ -571,6 +885,7 @@ export async function commitTextImport(
             },
             publishedBy: "file-import",
           });
+          await replaceTokenMedia(tx, tokenId, card, assetsByHash);
         }
         if (item.action === "update") {
           await updateBinding(tx, document, card, now);

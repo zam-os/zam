@@ -77,6 +77,19 @@ async function seed(db: Database): Promise<void> {
       "content-hash",
       "metadata-hash",
     );
+  await db
+    .prepare(
+      `INSERT INTO media_assets (hash, mime_type, byte_size, data)
+       VALUES (?, ?, ?, ?)`,
+    )
+    .run("asset-hash", "image/png", 4, Uint8Array.from([1, 2, 3, 4]));
+  await db
+    .prepare(
+      `INSERT INTO token_media
+        (token_id, asset_hash, side, kind, ordinal, original_name, alt_text)
+       VALUES (?, ?, 'question', 'image', 0, ?, ?)`,
+    )
+    .run(tricky.id, "asset-hash", "ohm.png", "Circuit diagram");
 
   const second = await createToken(db, {
     slug: "kirchhoff",
@@ -102,6 +115,8 @@ describe("database snapshots", () => {
     expect(manifest.tables.tokens).toBe(2);
     expect(manifest.tables.cards).toBe(2);
     expect(manifest.tables.imported_card_bindings).toBe(1);
+    expect(manifest.tables.media_assets).toBe(1);
+    expect(manifest.tables.token_media).toBe(1);
     expect(manifest.tables.user_config).toBe(1);
 
     const target = await freshDb();
@@ -109,6 +124,8 @@ describe("database snapshots", () => {
     expect(result.tables.tokens).toBe(2);
     expect(result.tables.cards).toBe(2);
     expect(result.tables.imported_card_bindings).toBe(1);
+    expect(result.tables.media_assets).toBe(1);
+    expect(result.tables.token_media).toBe(1);
 
     const token = (await target
       .prepare("SELECT concept FROM tokens WHERE slug = ?")
@@ -128,6 +145,14 @@ describe("database snapshots", () => {
       )
       .get("ohm's-law")) as { state: string; learning_step: number | null };
     expect(resumed).toEqual({ state: "learning", learning_step: 1 });
+    const media = (await target
+      .prepare(
+        `SELECT ma.data, tm.original_name
+           FROM token_media tm JOIN media_assets ma ON ma.hash = tm.asset_hash`,
+      )
+      .get()) as { data: Uint8Array; original_name: string };
+    expect(media.original_name).toBe("ohm.png");
+    expect([...media.data]).toEqual([1, 2, 3, 4]);
     await target.close();
   });
 

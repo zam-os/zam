@@ -75,6 +75,7 @@ import {
   getProviderApiKey,
   getReviewActivity,
   getSetting,
+  getStudyWorkloadSettings,
   getSystemProfile,
   getTokenBySlug,
   getTokenDeleteImpact,
@@ -85,6 +86,7 @@ import {
   isBitwardenVaultEnabled,
   isOllamaInstalled,
   isPersonaId,
+  isStudyWorkloadPreset,
   isVoiceEnginePreference,
   listAgentSkills,
   listKnowledgeContexts,
@@ -115,6 +117,7 @@ import {
   setOnboardingPersona,
   setProviderApiKey,
   setSetting,
+  setStudyWorkloadSettings,
   setTursoCredentials,
   slugify,
   supportsLocalGeneration,
@@ -122,6 +125,7 @@ import {
   tursoVaultAccessPending,
   uiObservationLogExists,
   unassignTokenFromContext,
+  unburySiblingCards,
   updateToken,
   VOICE_ENGINE_PREFERENCES,
   type WorkspaceConfig,
@@ -3885,6 +3889,7 @@ bridgeCommand
         userId,
         locale,
         llm: { enabled, url, model },
+        studyWorkload: await getStudyWorkloadSettings(db, userId),
         activeWorkspaceId,
         workspaceDir,
         skillLinks,
@@ -4211,6 +4216,73 @@ bridgeCommand
           dynamicQuestions:
             (await getSetting(db, "llm.dynamic_questions")) !== "false",
         },
+      });
+    });
+  });
+
+function workloadBoolean(value: unknown, label: string): boolean | undefined {
+  if (value === undefined) return undefined;
+  if (value === "true") return true;
+  if (value === "false") return false;
+  jsonError(`${label} must be true or false`);
+}
+
+bridgeCommand
+  .command("study-workload-get")
+  .description("Get persistent review workload controls for a learner (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      jsonOut({
+        success: true,
+        userId,
+        settings: await getStudyWorkloadSettings(db, userId),
+      });
+    });
+  });
+
+bridgeCommand
+  .command("study-workload-set")
+  .description("Save persistent review workload controls for a learner (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .option("--preset <name>", "balanced | exam | problems | custom")
+  .option("--max-new <n>", "Maximum new cards per session")
+  .option("--max-reviews <n>", "Maximum total cards per session")
+  .option("--bury-new <true|false>", "Bury new siblings until tomorrow")
+  .option("--bury-review <true|false>", "Bury review siblings until tomorrow")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      if (opts.preset !== undefined && !isStudyWorkloadPreset(opts.preset)) {
+        jsonError("preset must be balanced, exam, problems, or custom");
+      }
+      const maxNew =
+        opts.maxNew === undefined ? undefined : Number(opts.maxNew);
+      const maxReviews =
+        opts.maxReviews === undefined ? undefined : Number(opts.maxReviews);
+      const settings = await setStudyWorkloadSettings(db, userId, {
+        preset: opts.preset,
+        maxNew,
+        maxReviews,
+        buryNewSiblings: workloadBoolean(opts.buryNew, "bury-new"),
+        buryReviewSiblings: workloadBoolean(opts.buryReview, "bury-review"),
+      });
+      jsonOut({ success: true, userId, settings });
+    });
+  });
+
+bridgeCommand
+  .command("study-unbury")
+  .description("Make all sibling-buried cards visible for a learner (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      jsonOut({
+        success: true,
+        userId,
+        unburied: await unburySiblingCards(db, userId),
       });
     });
   });

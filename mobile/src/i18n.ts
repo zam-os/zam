@@ -52,6 +52,23 @@ const DE: Messages = {
     "Umzug fehlgeschlagen: {error}. Du lernst weiter auf diesem Gerät.",
   upgrade_already: "Du lernst bereits auf einer Server-Datenbank.",
   // AI connect (ADR 2026-07-24 §5)
+  study_workload_heading: "Lernumfang",
+  study_workload_desc:
+    "Wähle einen Tagesmix, Prüfungsvorbereitung oder eine kleinere Sitzung mit Aufgabenkarten.",
+  study_workload_preset: "Plan",
+  study_preset_balanced: "Ausgewogen",
+  study_preset_exam: "Prüfung",
+  study_preset_problems: "Aufgabenkarten",
+  study_preset_custom: "Eigene Werte",
+  study_max_new: "Neue Karten pro Sitzung",
+  study_max_reviews: "Karten insgesamt pro Sitzung",
+  study_bury_new: "Nur eine neue Geschwisterkarte pro Tag",
+  study_bury_review: "Nur eine fällige Geschwisterkarte pro Tag",
+  study_workload_save: "Lernplan speichern",
+  study_unbury: "Zurückgestellte Karten jetzt zeigen",
+  study_workload_saved: "Lernplan gespeichert.",
+  study_workload_unburied: "{count} Karte(n) sind wieder sichtbar.",
+  study_workload_failed: "Lernplan konnte nicht geändert werden: {error}",
   ai_heading: "KI",
   ai_desc:
     "Mit einem OpenRouter-Schlüssel bewertet ZAM deine Antworten, liest Fotos aus und findet Karten nach Bedeutung. Ohne Schlüssel bewertest du selbst — alles andere bleibt gleich. OpenRouter ist der einfache Einstieg; Modell und Schlüssel lassen sich jederzeit ändern.",
@@ -59,7 +76,8 @@ const DE: Messages = {
   ai_model_label: "Modell",
   ai_model_custom: "Anderes Modell…",
   ai_model_custom_label: "OpenRouter-Modell-ID",
-  ai_model_custom_hint: "z. B. openai/gpt-5.6-luna oder google/gemini-3.1-flash-lite",
+  ai_model_custom_hint:
+    "z. B. openai/gpt-5.6-luna oder google/gemini-3.1-flash-lite",
   endpoints_toggle: "Erweitert: Modelle verwalten",
   endpoints_desc:
     "Eigene Endpunkte für Anbieter, bei denen du direkt ein Guthaben hast. Die Reihenfolge entscheidet: ZAM nimmt den ersten Endpunkt, der die gebrauchte Fähigkeit anbietet.",
@@ -107,7 +125,8 @@ const DE: Messages = {
   card_translate_failed: "Übersetzen hat nicht geklappt: {error}",
   card_translate_bad_key:
     "Der Schlüssel wurde abgelehnt. In den Einstellungen prüfen.",
-  card_translate_busy: "Gerade zu viele Anfragen. Gleich noch einmal versuchen.",
+  card_translate_busy:
+    "Gerade zu viele Anfragen. Gleich noch einmal versuchen.",
   card_edit_save: "Änderungen sichern",
   card_edit_saving: "Wird gesichert …",
   card_edit_saved: "Karte gesichert.",
@@ -453,6 +472,23 @@ const EN: Messages = {
   upgrade_failed:
     "The move failed: {error}. You are still learning on this device.",
   upgrade_already: "You are already learning on a server database.",
+  study_workload_heading: "Study workload",
+  study_workload_desc:
+    "Choose a daily mix, exam preparation, or a smaller problem-card session.",
+  study_workload_preset: "Plan",
+  study_preset_balanced: "Balanced",
+  study_preset_exam: "Exam",
+  study_preset_problems: "Problem cards",
+  study_preset_custom: "Custom",
+  study_max_new: "New cards per session",
+  study_max_reviews: "Total cards per session",
+  study_bury_new: "Only one new sibling per day",
+  study_bury_review: "Only one review sibling per day",
+  study_workload_save: "Save study plan",
+  study_unbury: "Show buried cards now",
+  study_workload_saved: "Study plan saved.",
+  study_workload_unburied: "{count} card(s) are visible again.",
+  study_workload_failed: "Could not update the study plan: {error}",
   ai_heading: "AI",
   ai_desc:
     "With an OpenRouter key ZAM marks your answers, reads photos, and finds cards by meaning. Without one you rate yourself — everything else works the same. OpenRouter is the simple start; you can change the model and key any time.",
@@ -460,7 +496,8 @@ const EN: Messages = {
   ai_model_label: "Model",
   ai_model_custom: "Other model…",
   ai_model_custom_label: "OpenRouter model id",
-  ai_model_custom_hint: "e.g. openai/gpt-5.6-luna or google/gemini-3.1-flash-lite",
+  ai_model_custom_hint:
+    "e.g. openai/gpt-5.6-luna or google/gemini-3.1-flash-lite",
   endpoints_toggle: "Advanced: manage models",
   endpoints_desc:
     "Your own endpoints, for providers you already have credit with. Order decides: ZAM takes the first endpoint that offers the capability it needs.",

@@ -18,8 +18,8 @@ import { resolveUser } from "../users/identity.js";
 export const reviewCommand = new Command("review")
   .description("Start an interactive review session")
   .option("--user <id>", "User ID (default: whoami)")
-  .option("--max-new <n>", "Maximum new cards", "10")
-  .option("--max-reviews <n>", "Maximum review cards", "50")
+  .option("--max-new <n>", "Override the saved maximum new cards")
+  .option("--max-reviews <n>", "Override the saved session size")
   .option("--no-resolve", "Skip resolving source_link into inline context")
   .option(
     "--knowledge-context <context>",
@@ -50,8 +50,9 @@ export const reviewCommand = new Command("review")
 
       const queue = await buildReviewQueue(db, {
         userId,
-        maxNew: Number(opts.maxNew),
-        maxReviews: Number(opts.maxReviews),
+        maxNew: opts.maxNew === undefined ? undefined : Number(opts.maxNew),
+        maxReviews:
+          opts.maxReviews === undefined ? undefined : Number(opts.maxReviews),
         knowledgeContext: resolvedContext,
       });
 

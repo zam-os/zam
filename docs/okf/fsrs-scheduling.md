@@ -1,13 +1,13 @@
 ---
 type: algorithm
 title: FSRS-6 Scheduling
-description: ZAM schedules reviews with a deterministic FSRS-6 kernel, persisted same-day learning and relearning steps, and one shared rating path across every review surface.
+description: ZAM schedules reviews with a deterministic FSRS-6 kernel, persisted same-day learning steps, per-learner workload controls, and sibling-aware queues and burial.
 tags:
   - kernel
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-08-09T05:50:28Z
+timestamp: 2026-08-09T08:19:11.698Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -21,7 +21,8 @@ A review takes a **rating** on a four-point scale: `1` Again (forgot),
 **stability** (the interval in days at which recall reaches 90%),
 **difficulty** (1–10), elapsed/scheduled days, repetition and lapse counts, a
 state of `new`, `learning`, `review`, or `relearning`, a nullable
-zero-based `learning_step`, and its last-review and next-due timestamps.
+zero-based `learning_step`, its last-review and next-due timestamps, and
+optional temporary burial fields.
 
 # Parameters and memory updates
 
@@ -37,9 +38,9 @@ intervals are whole days. Reviews less than one day after the prior answer use
 the FSRS-6 short-term stability update through `w17`–`w19`. Short steps
 store fractional `scheduled_days` values and exact `due_at` timestamps, so
 they are not clamped to the one-day minimum used by long-term reviews.
-`tests/kernel/fsrs.test.ts` pins the default vector, the long-term and
-same-day formulas, difficulty damping and mean reversion, lapse bounds,
-interval caps, and state transitions.
+`tests/kernel/fsrs.test.ts` pins the default vector, long-term and same-day
+formulas, difficulty damping and mean reversion, lapse bounds, interval caps,
+and state transitions.
 
 # Learning and relearning steps
 
@@ -57,24 +58,24 @@ or Easy returns the card to Review.
 Migration M020 adds the nullable `cards.learning_step` cursor. Existing
 Learning or Relearning cards receive `NULL`; on their next successful answer
 they graduate instead of replaying a newly introduced step sequence. Portable
-database snapshots include the cursor automatically with the rest of each card,
-so an in-progress same-day sequence resumes after restart or restore.
+snapshots retain the cursor, so an in-progress same-day sequence resumes after
+restart or restore.
 
 # Rating transaction
 
 `evaluateRating()` in `src/kernel/recall/evaluator.ts` loads the persisted
-card and cursor, runs FSRS scheduling, updates the card, and appends an immutable
-row to `review_logs`. Rating is separate from prerequisite blocking:
-`evaluateRating()` does not block or unblock cards (see
-[prerequisite-blocking.md](prerequisite-blocking.md)).
+card and cursor, runs FSRS scheduling, updates the card, appends an immutable
+row to `review_logs`, and applies enabled sibling burial. Rating is separate
+from prerequisite blocking: `evaluateRating()` does not itself block or
+unblock cards (see [prerequisite-blocking.md](prerequisite-blocking.md)).
 
 Interactive surfaces normally call `executeReviewAction()` in
 `src/kernel/recall/actions.ts`. Its `rate` action owns one database
-transaction around FSRS evaluation, an optional rating-1 prerequisite cascade,
-and optional session auditing. When a `sessionId` is supplied, the review-log
-row references that session and a matching user `session_steps` row is written
-with the rating. A failure in any write rolls back the card update, review log,
-blocking changes, and session step together.
+transaction around FSRS evaluation, sibling burial, an optional rating-1
+prerequisite cascade, and optional session auditing. When a `sessionId` is
+supplied, the review-log row references that session and a matching user
+`session_steps` row is written with the rating. A failure in any write rolls
+back the card update, review log, burial, blocking changes, and session step.
 
 Published learning content has a substance version. A cosmetic publication
 leaves scheduling untouched. A material publication increments the token's
@@ -83,15 +84,38 @@ while preserving stability, difficulty, repetitions, lapses, and the active
 step cursor. After the answer, `evaluateRating()` synchronizes the card's
 `learned_content_version`.
 
-# Review queue
+# Review queue and workload
 
-`src/kernel/scheduler/queue.ts` builds each session's queue from eligible due
-cards plus new cards. Due Learning and Relearning cards enter through the same
-timestamp comparison as Review cards, including minute-level due times. The
-queue excludes blocked or learner-detached cards and tokens that are deprecated,
-in maintenance, or not in the `published` editorial state; an active
-knowledge context can narrow the set further. Remaining due cards are
-interleaved by domain, with a new card inserted at every fifth position.
+`src/kernel/scheduler/queue.ts` assembles eligible due and new cards, sorts
+overdue work by urgency, interleaves domains, and inserts new cards regularly.
+Due Learning and Relearning cards use the same timestamp comparison as Review
+cards, including minute-level due times. The queue excludes blocked, detached,
+actively buried, deprecated, maintenance, and unpublished cards; a knowledge
+context can narrow it further.
+
+Each learner has persisted workload settings. The balanced default allows 10
+new cards within 50 total cards and buries both new and review siblings. The
+exam preset raises those limits to 40 and 200 and keeps siblings visible. The
+problems preset uses 5 and 30 with both burial switches enabled. Learners can
+customize both bounded limits and each burial switch in Desktop or standalone
+Mobile settings; CLI and bridge sessions read the same values. Explicit kernel
+queue options remain available for automation. Limits are applied after
+sibling filtering, so a suppressed sibling does not consume a daily slot.
+
+# Sibling-aware study
+
+Cards imported from the same Anki note share its stable note GUID as a sibling
+group. When burial is enabled for a card's bucket, only the first eligible
+sibling is placed in a queue. After a rating, other eligible sibling cards for
+that learner are marked with `buried_reason = 'sibling'` until the next local
+calendar day. New- and Review-state burial can be controlled independently.
+
+Learning and Relearning siblings are never buried: an active short-step
+sequence must stay available on the same day. The just-rated card clears any
+old burial of its own. Learners can explicitly unbury all sibling cards from
+Desktop, Mobile, or the bridge `study-unbury` command. The
+`study-workload-get` and `study-workload-set` commands expose the same
+per-learner settings as JSON-only bridge operations.
 
 # Voice review
 
@@ -100,7 +124,7 @@ sessions. The shared controller speaks the question, captures an answer,
 presents or speaks the expected answer/evaluation, and maps German or English
 rating words to ratings 1–4. The selected rating still enters the shared kernel
 through `executeReviewAction()`, so voice, typing, tap, and click interactions
-all persist the same FSRS-6 and short-step state. See
+all persist the same FSRS-6, burial, and short-step state. See
 [voice-mode.md](voice-mode.md) for speech-engine and platform behavior.
 
 # Example
@@ -111,6 +135,7 @@ import { executeReviewAction } from "zam-core";
 await executeReviewAction(db, {
   action: "rate",
   cardId,
+  tokenId,
   userId,
   rating: 3,
   sessionId,
@@ -125,6 +150,8 @@ await executeReviewAction(db, {
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
 - [ADR 2026-07-31 — Cross-Platform Voice Mode](../adr/2026-07-31-cross-platform-voice-mode.md)
 - [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)
-- Tests as source of truth for scheduling semantics: `tests/kernel/fsrs.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/provision.test.ts`, `tests/kernel/snapshot.test.ts`, `tests/kernel/library-revision.test.ts`, `tests/kernel/card-detach.test.ts`
-- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/kernel/models/card.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `mobile/src/review-session.ts`
+- [Anki Manual — Deck Options](https://docs.ankiweb.net/deck-options.html)
+- [Anki Manual — Studying](https://docs.ankiweb.net/studying.html)
+- Tests: `tests/kernel/fsrs.test.ts`, `tests/kernel/rich-anki-scheduling.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/provision.test.ts`, `tests/kernel/snapshot.test.ts`
+- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/scheduler/siblings.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/kernel/models/card.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`
 - Algorithm reference: <https://github.com/open-spaced-repetition/awesome-fsrs/wiki/The-Algorithm>

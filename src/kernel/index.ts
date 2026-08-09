@@ -116,12 +116,14 @@ export {
 } from "./goals/parser.js";
 export type {
   TextImportAction,
+  TextImportAssetInput,
   TextImportCardInput,
   TextImportCommitResult,
   TextImportCounts,
   TextImportDeckPreview,
   TextImportDocument,
   TextImportFormat,
+  TextImportMediaReference,
   TextImportNotice,
   TextImportPreview,
   TextImportPreviewCard,
@@ -200,6 +202,13 @@ export {
   unassignTokenFromContext,
   updateKnowledgeContext,
 } from "./models/knowledge-context.js";
+export type {
+  ImageOcclusionShape,
+  TokenMedia,
+  TokenMediaKind,
+  TokenMediaSide,
+} from "./models/media.js";
+export { getTokenMedia } from "./models/media.js";
 export type {
   PersonaContextSeedResult,
   PersonaDescriptor,
@@ -503,6 +512,24 @@ export type {
   ReviewQueueOptions,
 } from "./scheduler/queue.js";
 export { buildReviewQueue } from "./scheduler/queue.js";
+export type { BurySiblingResult } from "./scheduler/siblings.js";
+export {
+  burySiblingCards,
+  nextLocalDay,
+  unburySiblingCards,
+} from "./scheduler/siblings.js";
+export type {
+  StudyWorkloadPreset,
+  StudyWorkloadSettings,
+  UpdateStudyWorkloadInput,
+} from "./scheduler/study-settings.js";
+export {
+  DEFAULT_STUDY_WORKLOAD,
+  getStudyWorkloadSettings,
+  isStudyWorkloadPreset,
+  STUDY_WORKLOAD_PRESETS,
+  setStudyWorkloadSettings,
+} from "./scheduler/study-settings.js";
 // Search
 export type {
   HybridScoredToken,

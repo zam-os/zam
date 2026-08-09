@@ -547,6 +547,43 @@
               <h1 class="t-large-title" data-i18n="tab_settings">Einstellungen</h1>
             </header>
 
+            <p class="group-title" data-i18n="study_workload_heading">Lernumfang</p>
+            <div class="card stack">
+              <p class="t-secondary" data-i18n="study_workload_desc">
+                Wähle einen Tagesmix, Prüfungsvorbereitung oder eine kleinere Sitzung mit Aufgabenkarten.
+              </p>
+              <label class="field">
+                <span data-i18n="study_workload_preset">Plan</span>
+                <select id="study-workload-preset">
+                  <option value="balanced" data-i18n="study_preset_balanced">Ausgewogen</option>
+                  <option value="exam" data-i18n="study_preset_exam">Prüfung</option>
+                  <option value="problems" data-i18n="study_preset_problems">Aufgabenkarten</option>
+                  <option value="custom" data-i18n="study_preset_custom">Eigene Werte</option>
+                </select>
+              </label>
+              <label class="field">
+                <span data-i18n="study_max_new">Neue Karten pro Sitzung</span>
+                <input id="study-max-new" type="number" min="0" max="1000" step="1" />
+              </label>
+              <label class="field">
+                <span data-i18n="study_max_reviews">Karten insgesamt pro Sitzung</span>
+                <input id="study-max-reviews" type="number" min="1" max="10000" step="1" />
+              </label>
+              <ul class="list">
+                <li class="row static">
+                  <span class="row-text" data-i18n="study_bury_new">Nur eine neue Geschwisterkarte pro Tag</span>
+                  <input id="study-bury-new" class="switch" type="checkbox" />
+                </li>
+                <li class="row static">
+                  <span class="row-text" data-i18n="study_bury_review">Nur eine fällige Geschwisterkarte pro Tag</span>
+                  <input id="study-bury-review" class="switch" type="checkbox" />
+                </li>
+              </ul>
+              <button id="study-workload-save" class="btn primary" type="button" data-i18n="study_workload_save">Lernplan speichern</button>
+              <button id="study-unbury" class="btn plain" type="button" data-i18n="study_unbury">Zurückgestellte Karten jetzt zeigen</button>
+              <p id="study-workload-status" class="status" aria-live="polite"></p>
+            </div>
+
             <!-- One field, one button. Everything the learner gets out of it
                  — feedback on answers, photo import, semantic search — comes
                  from the same key. -->
@@ -938,6 +975,7 @@
               ⋯
             </button>
           </div>
+          <div id="review-question-media" class="review-media"></div>
           <div id="card-manage-menu" class="menu hidden" role="menu">
             <button id="card-edit" class="menu-item" type="button" role="menuitem"
                     data-i18n="card_edit">Karte bearbeiten</button>
@@ -1010,6 +1048,7 @@
 
             <p class="group-title" data-i18n="expected_answer_kicker">Erwartete Antwort</p>
             <div id="expected-answer" class="answer-box"></div>
+            <div id="review-answer-media" class="review-media"></div>
             <a id="review-source" href="#" hidden target="_blank" rel="noreferrer"
                data-i18n="open_source">Quelle öffnen</a>
 

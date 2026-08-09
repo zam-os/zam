@@ -4,6 +4,9 @@ const MAX_ARCHIVE_BYTES = 256 * 1024 * 1024;
 const MAX_ENTRIES = 20_000;
 const MAX_TOTAL_UNCOMPRESSED_BYTES = 512 * 1024 * 1024;
 const MAX_ENTRY_BYTES = 256 * 1024 * 1024;
+const MAX_MEDIA_MANIFEST_BYTES = 2 * 1024 * 1024;
+const MAX_MEDIA_ENTRY_BYTES = 20 * 1024 * 1024;
+const MAX_MEDIA_TOTAL_BYTES = 200 * 1024 * 1024;
 
 interface ZipEntry {
   name: string;
@@ -20,6 +23,13 @@ export interface SafeZipSelection {
   data: Uint8Array;
   entryCount: number;
   totalUncompressedBytes: number;
+  media: SafeAnkiMediaEntry[];
+}
+
+export interface SafeAnkiMediaEntry {
+  archiveName: string;
+  originalName: string;
+  data: Uint8Array;
 }
 
 function assertRange(
@@ -236,6 +246,71 @@ function extract(buffer: Uint8Array, entry: ZipEntry): Uint8Array {
   return data;
 }
 
+function selectAnkiMedia(
+  buffer: Uint8Array,
+  entries: ZipEntry[],
+): SafeAnkiMediaEntry[] {
+  const manifest = entries.find((entry) => entry.name === "media");
+  if (!manifest) return [];
+  if (manifest.uncompressedSize > MAX_MEDIA_MANIFEST_BYTES) {
+    throw new Error("APKG media manifest exceeds the 2 MiB limit");
+  }
+
+  let parsed: unknown;
+  try {
+    const text = new TextDecoder("utf-8", { fatal: true }).decode(
+      extract(buffer, manifest),
+    );
+    parsed = JSON.parse(text);
+  } catch (error) {
+    const detail = error instanceof Error ? `: ${error.message}` : "";
+    throw new Error(`APKG media manifest is invalid${detail}`);
+  }
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    throw new Error("APKG media manifest must be a JSON object");
+  }
+
+  const byName = new Map(entries.map((entry) => [entry.name, entry]));
+  const originals = new Set<string>();
+  const selected: SafeAnkiMediaEntry[] = [];
+  let totalBytes = 0;
+  for (const [archiveName, originalValue] of Object.entries(parsed)) {
+    // Classic APKG packages address media through numeric ZIP entry names.
+    // Ignore newer manifest metadata here; collection.anki21b is rejected by
+    // the collection selector with its own actionable message.
+    if (!/^\d+$/.test(archiveName)) continue;
+    if (typeof originalValue !== "string") {
+      throw new Error(`APKG media entry ${archiveName} has no filename`);
+    }
+    const originalName = originalValue.replace(/\\/g, "/");
+    validatePath(originalName);
+    if (/^[a-z]+:/i.test(originalName)) {
+      throw new Error(`Unsafe APKG media filename: ${originalName}`);
+    }
+    const entry = byName.get(archiveName);
+    // An unreferenced stale manifest row is harmless. A card that actually
+    // uses it receives a precise missing-media warning in the parser.
+    if (!entry) continue;
+    if (originals.has(originalName)) {
+      throw new Error(`Duplicate APKG media filename: ${originalName}`);
+    }
+    originals.add(originalName);
+    if (entry.uncompressedSize > MAX_MEDIA_ENTRY_BYTES) {
+      throw new Error(`APKG media exceeds the 20 MiB limit: ${originalName}`);
+    }
+    totalBytes += entry.uncompressedSize;
+    if (totalBytes > MAX_MEDIA_TOTAL_BYTES) {
+      throw new Error("APKG media exceeds the 200 MiB total limit");
+    }
+    selected.push({
+      archiveName,
+      originalName,
+      data: extract(buffer, entry),
+    });
+  }
+  return selected;
+}
+
 /** Validate the whole archive, then extract only the requested collection DB. */
 export function selectAnkiCollectionDatabase(
   buffer: Uint8Array,
@@ -262,5 +337,6 @@ export function selectAnkiCollectionDatabase(
       (sum, candidate) => sum + candidate.uncompressedSize,
       0,
     ),
+    media: selectAnkiMedia(buffer, entries),
   };
 }
