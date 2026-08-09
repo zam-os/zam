@@ -105,6 +105,7 @@ import {
   completeFirstRun,
   type LocalSetup,
   prepareLocalLibrary,
+  prepareStandaloneLaunch,
 } from "./setup/first-run.js";
 import { starterCards } from "./setup/starter-content.js";
 import { REMOTE_NOT_EMPTY, upgradeToServerDatabase } from "./setup/upgrade.js";
@@ -2908,13 +2909,15 @@ async function start(): Promise<void> {
     }
   }
 
-  // No pairing: either a device-local library from an earlier run, or a fresh
-  // install that has never been set up.
+  // No pairing: Android and iOS both start from the device-local library. QR
+  // pairing is a voluntary takeover, never a prerequisite (ADRs 2026-08-08
+  // and 2026-08-09).
   try {
-    await invoke("db_open", {});
-    const setup = await prepareLocalLibrary(db);
-    if (setup) {
-      await openLocalLibrary(setup);
+    const launch = await prepareStandaloneLaunch(db, () =>
+      invoke("db_open", {}),
+    );
+    if (launch.kind === "library") {
+      await openLocalLibrary(launch.setup);
       return;
     }
     setupWizard.restart();

@@ -2,6 +2,7 @@
 
 ## 2026-08-09
 
+- **Creation** — [Standalone Mobile Libraries](mobile-standalone-libraries.md)
 - **Update** — [Kernel and CLI Architecture](kernel-architecture.md)
 - **Update** — [Token and Card Model](token-card-model.md)
 - **Update** — [Bridge CLI Protocol](bridge-protocol.md)

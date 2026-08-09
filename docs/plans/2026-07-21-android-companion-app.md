@@ -1,29 +1,29 @@
-# Android companion app — definition
+# Android app — definition
 
-Defines the ZAM Android companion app. Read `AGENTS.md` first and work on
-exactly the next unchecked phase. Multi-phase work stays on one branch
-(`feat/android-app`) and uses one focused commit per completed phase.
+Defines the ZAM Android app. The status list below records the original
+companion rollout and its remaining device-validation work. ADR 2026-08-09
+supersedes the original pairing-only entrance: Android now follows the newer
+standalone sequence, with one focused commit per completed ADR phase.
 
 ## Goal
 
-Run **active-recall sessions away from the desk** — including fully by voice —
-against the **same learning state** the CLI/desktop use, and **import learning
-content** on the phone. **Online-only against a server database** (ADR
-2026-07-23): the phone does not keep an offline-writable replica; without
-network, durable writes are unavailable and the app says so honestly. Local
-LLM/NPU evaluation remains optional and on-device.
+Run **active-recall sessions as a standalone learner app** — including fully
+by voice — and **import learning content** on the phone. First run creates a
+device-local library that remains fully usable offline. A learner who wants
+the same state on several devices may attach an online-only server database;
+that remote mode has no offline replica and says so honestly. Local LLM/NPU
+evaluation remains optional and on-device.
 
-The app is a *companion surface*, not a second product: all scheduling,
-rating, and blocking behavior comes from the existing TypeScript kernel
+The app is another surface over the same product: all scheduling, rating, and
+blocking behavior comes from the existing TypeScript kernel
 (`src/kernel/`). `tests/kernel/fsrs.test.ts` remains the source of truth for
 scheduling semantics.
 
-Setup: desktop **local SQLite is for fast single-machine setup only** and
-**does not offer QR pairing**. Mobile is unlocked after a **server DB
-(Turso/sqld) is attached** via a dedicated wizard (separate issue), then the
-phone is **configured by scanning a QR** from that server-DB desktop (FR-0).
-Cloud model config lives in the server DB; machine-local models stay on the
-desktop (ADR 2026-07-23).
+Setup: choose a language and learning context; Android provisions local SQLite
+and seeds three starter cards without an account, permission or network. QR
+pairing remains an optional takeover for an existing server-backed library.
+Cloud model configuration lives in the active library; machine-local desktop
+models remain on the desktop.
 
 ### Field-test users (2026)
 
@@ -98,24 +98,27 @@ Added 2026-07-26; see [ADR 2026-07-26](../adr/2026-07-26-ipados-companion-target
 
 ## Functional requirements
 
-### FR-0 Pairing & configuration via desktop QR code
+### FR-0 Standalone first run and optional pairing
 
-- **Prerequisite:** a server database is attached on the desktop (Turso Cloud
-  free tier for the field test, or compatible `sqld`). Attachment is done
-  through a **DB create/connect wizard** (tracked in a separate issue) — not
-  from a local-only install. While the desktop uses only a local `zam.db`,
-  the "pair mobile" surface is **hidden/disabled** with a clear CTA to run
-  the wizard first (ADR 2026-07-23).
+- **Default:** provision device-local SQLite, collect language and learning
+  context, seed three starter cards and land in the local queue. This path has
+  no account, desktop, network or permission prerequisite.
+- **Optional takeover:** a server database is attached on the desktop (Turso
+  Cloud free tier for the field test, or compatible `sqld`). Attachment is
+  done through a **DB create/connect wizard** (tracked in a separate issue) —
+  not from a local-only install. While the desktop uses only a local `zam.db`,
+  the "pair mobile" surface is **hidden/disabled** with a clear CTA to run the
+  wizard first (ADR 2026-07-23).
 - When a server DB is present, Studio shows "pair mobile device" and renders
   a QR from server credentials: a versioned `zam-pair` JSON payload with
   libsql/Turso URL, auth token, learner user id, and optional bootstrap
   settings (locale). **Cloud LLM/vision config is not packed into the QR** —
   it is read from the server DB once the phone is online. On-device recall
   evaluation (e.g. Nano) does not need keys in the QR.
-- First run on Android: scan the code (camera permission), validate the
-  payload version, store credentials in Keystore-backed storage, open the
-  **online** server DB, land in the due queue. Manual URL/token entry remains
-  a fallback.
+- When the learner chooses the takeover path, scan the code (camera
+  permission), validate the payload version, store credentials in
+  Keystore-backed storage, open the **online** server DB and land in its due
+  queue. Manual URL/token entry remains a fallback.
 - Security: the QR encodes a live DB token. Render only on explicit action
   with a shoulder-surfing note. Prefer database-scoped tokens long-term.
   Re-pairing replaces stored credentials; revoked/expired tokens force
@@ -178,11 +181,12 @@ Interpreted as **voice operation** of recall sessions (i18n is FR-6):
   phone; only the transcript reaches an LLM, and only when the user
   configured one.
 
-### FR-4 Server database (online-only; ADR 2026-07-23)
+### FR-4 Optional server database (online-only while attached)
 
 - The server database is the **shared learning state and cloud-config
-  backbone**. The companion **requires** network access to it for durable
-  reads/writes. Offline-capable local replicas are **out of scope**.
+  backbone** for multi-device use. Remote mode **requires** network access for
+  durable reads/writes. It is distinct from the fully local standalone mode;
+  an offline-capable replica of a remote primary remains **out of scope**.
 - Field test: **Turso Cloud (free tier)**; pairing payload stays host-agnostic
   so self-hosted `sqld` is a re-pair later.
 - On the device, open the remote primary (Hrana/libsql remote — no
@@ -208,10 +212,9 @@ No streaks, no gamification.
 
 ## Non-functional requirements
 
-- **Online against the server DB after pairing** (ADR 2026-07-23). Local
-  desktop SQLite remains the fastest single-machine setup; multi-device and
-  mobile require the Turso/sqld wizard first. No third-party account beyond
-  the user's own Turso/sqld endpoint; LLM stays opt-in.
+- **Local by default; online against a server DB after pairing** (ADRs
+  2026-08-09 and 2026-07-23). Multi-device use requires the Turso/sqld upgrade;
+  ordinary on-device learning does not. LLM stays opt-in.
 - **Privacy**: no telemetry; speech on-device (FR-3); LLM calls only to
   user-configured providers. Network peers: the paired server database and
   any user-configured cloud model endpoints.
@@ -265,11 +268,17 @@ Repo layout (decided): `mobile/` folder in this repository, mirroring
 
 Wear OS · home-screen widget · on-device embeddings/semantic search ·
 OKF authoring (opening `source_link` articles read-only is fine) ·
-observer/monitoring features · Play Store publication · local-only setups
-and direct `zam.db` file adoption (configuration and sync assume the
-server database, per FR-0).
+observer/monitoring features · Play Store publication · direct adoption of a
+desktop `zam.db` file (use the snapshot-based server upgrade or QR takeover).
 
 ## Status
+
+- [x] **2026-08-09 standalone amendment:** an unpaired Android launch opens or
+  provisions `zam-local.db`, shows the shared three-step first run, and keeps
+  QR pairing as an optional takeover. The cross-platform startup contract and
+  local provider path are automated, and an aarch64 Android debug APK builds
+  successfully. A physical Android first-run smoke test remains desirable but
+  does not gate the product path.
 
 - [x] **Phase 0 — stack spike + ADR**: Tauri 2 Android walking skeleton on
   the Pixel 9 — offline-writable sync of a test server database plus a new

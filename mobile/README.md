@@ -3,15 +3,13 @@
 Tauri-2 shell whose WebView runs the unmodified TypeScript learning kernel.
 Rust owns the database connection.
 
-**On iPadOS this is a standalone app**, not a companion
-([ADR 2026-08-08](../docs/adr/2026-08-08-ios-standalone-app.md)): first run
-provisions a device-local SQLite library — no account, no network, no desktop —
-and a server database is an upgrade the learner chooses later. QR pairing
-survives as a *takeover* path ("I already use ZAM on a computer"), not as the
-entrance.
-
-Android still starts from pairing; the standalone first run is wired for both
-platforms but has only been exercised on iOS.
+**On Android and iPadOS this is a standalone app**, not a companion
+([ADR 2026-08-08](../docs/adr/2026-08-08-ios-standalone-app.md),
+[ADR 2026-08-09](../docs/adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)):
+first run provisions a device-local SQLite library — no account, no network,
+no desktop — and a server database is an upgrade the learner chooses later.
+QR pairing survives as a *takeover* path ("I already use ZAM on a computer"),
+not as the entrance.
 
 ## What a learner can do on the device
 
@@ -89,10 +87,12 @@ With USB debugging enabled:
 npm run android:dev -- --target aarch64
 ```
 
-On first run, open ZAM Desktop → Settings → Mobile companion, select or
-create the learner, explicitly show the QR code, and scan it in ZAM Mobile.
-The QR contains live secrets and automatically disappears after five minutes;
-avoid shoulder surfing and prefer a database-scoped token.
+On first run, choose the language and learning context; ZAM creates the local
+library and three starter cards directly on the Android device. No permission,
+account or network is required. To take over an existing server-backed library
+instead, choose **I already use ZAM on a computer**, show its QR code in ZAM
+Desktop and scan it. The QR contains live secrets and automatically disappears
+after five minutes; avoid shoulder surfing and prefer a database-scoped token.
 
 ## Run on iPad / iPhone
 
@@ -125,8 +125,8 @@ Deploying to a physical device needs a paid Apple Developer Program membership
 and `APPLE_DEVELOPMENT_TEAM` set to your team ID. Free personal-team
 provisioning expires after 7 days and is not a supported path here.
 
-`NSCameraUsageDescription` is required, not optional: QR pairing is the whole
-first-run path and iOS terminates the app on first camera access without it.
+`NSCameraUsageDescription` is required for the optional QR takeover path: iOS
+terminates the app on first camera access without it.
 
 ### Platform differences from Android
 
@@ -141,9 +141,10 @@ first-run path and iOS terminates the app on first camera access without it.
 
 ## Current boundary
 
-The companion supports pairing, offline review (typed + voice), import, sync
-hardening, daily reminders, de/en UI, on-device evaluation (Gemini Nano), and a
-**GitHub Releases sideload update channel**.
+The mobile app supports standalone local libraries, optional pairing, offline
+review (typed + voice), import, sync hardening, daily reminders, de/en UI,
+on-device evaluation (Gemini Nano), and a **GitHub Releases sideload update
+channel**.
 
 ### Distribution / updates
 

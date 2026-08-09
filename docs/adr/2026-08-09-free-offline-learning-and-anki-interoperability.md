@@ -74,6 +74,11 @@ This sequence does not delay the curated curriculum service already accepted
 by ADR 2026-07-26b. The fifth item is the broader Anki-like discovery and
 sharing surface, not the existing reviewed curriculum pipeline.
 
+The Android standalone phase is implemented through the same node-free mobile
+startup path as iPadOS: an unpaired launch opens `zam-local.db`, provisions it
+through the kernel contract, and either restores its learner identity or shows
+the three-step local setup. QR pairing remains an explicit takeover action.
+
 ### 3. The first interoperability boundary is files, not AnkiWeb
 
 Version one accepts local `.apkg`, CSV, and TSV files. ZAM does not scrape,
@@ -187,7 +192,8 @@ malformed archives, unsafe HTML, and unsupported content reporting.
 - `src/kernel/scheduler/fsrs.ts`
 - `src/kernel/db/schema.ts`
 - `desktop/src/i18n.ts`
-- `mobile/README.md`
+- `mobile/README.md`, `mobile/src/main.ts`, `mobile/src/setup/first-run.ts`
+- `mobile/src-tauri/src/db.rs`, `tests/mobile/first-run.test.ts`
 - `docs/plans/2026-07-25-closed-group-library-handover.md`
 - [Anki Manual: Packaged Decks](https://docs.ankiweb.net/importing/packaged-decks.html)
 - [Anki shared decks](https://ankiweb.net/shared/decks)
