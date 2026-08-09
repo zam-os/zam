@@ -86,6 +86,29 @@ export interface BlockedCard extends Card {
  *
  * Ported from the PoC's ensureCard helper.
  */
+/**
+ * Create a learner's card for a token, without looking first or reading back.
+ *
+ * Only safe where the caller already knows no card exists — a bulk importer
+ * inside the transaction that just created the token, for instance. Everyone
+ * else wants `ensureCard`; this exists because its two extra statements are a
+ * network round trip each on a remote library.
+ */
+export async function insertCard(
+  db: Database,
+  tokenId: string,
+  userId: string,
+): Promise<string> {
+  const id = ulid();
+  await db
+    .prepare(
+      `INSERT INTO cards (id, token_id, user_id, due_at)
+     VALUES (?, ?, ?, ?)`,
+    )
+    .run(id, tokenId, userId, new Date().toISOString());
+  return id;
+}
+
 export async function ensureCard(
   db: Database,
   tokenId: string,

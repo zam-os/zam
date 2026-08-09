@@ -10,13 +10,13 @@
 import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
 import { publishTokenRevisionInTransaction } from "../library/revision.js";
-import { ensureCard } from "../models/card.js";
+import { ensureCard, insertCard } from "../models/card.js";
 import type {
   ImageOcclusionShape,
   TokenMediaKind,
   TokenMediaSide,
 } from "../models/media.js";
-import { createToken, generateTokenSlug } from "../models/token.js";
+import { buildTokenSlug, insertToken } from "../models/token.js";
 import { sha256Hex, sha256HexBytes } from "../util/sha256.js";
 
 export type TextImportFormat = "apkg" | "csv" | "tsv";
@@ -117,6 +117,22 @@ export interface TextImportCommitResult {
   planHash: string;
   counts: TextImportCounts;
   cardsCreated: number;
+}
+
+/** Emitted after each committed card so a surface can show real progress. */
+export interface TextImportProgress {
+  done: number;
+  total: number;
+  externalId: string;
+}
+
+export interface TextImportCommitOptions {
+  /**
+   * Called synchronously inside the write transaction. A large import against
+   * a remote library is minutes of silence otherwise — the learner reads a
+   * still spinner as a hang (field report, 2026-08-09, 440 cards over Turso).
+   */
+  onProgress?: (progress: TextImportProgress) => void;
 }
 
 interface NormalizedCard {
@@ -840,7 +856,9 @@ export async function commitTextImport(
   userId: string,
   document: TextImportDocument,
   expectedPlanHash: string,
+  options: TextImportCommitOptions = {},
 ): Promise<TextImportCommitResult> {
+  const onProgress = options.onProgress;
   if (!expectedPlanHash.trim()) {
     throw new Error("An import preview must be confirmed before committing");
   }
@@ -863,6 +881,18 @@ export async function commitTextImport(
     const now = new Date().toISOString();
     let cardsCreated = 0;
     let mediaRewritten = false;
+    let processed = 0;
+
+    // One query for every slug in the library beats one query per created
+    // card. On a remote library that is the difference between a single round
+    // trip and several hundred; locally it is a single indexed scan.
+    const takenSlugs = new Set<string>();
+    if (preview.counts.create > 0) {
+      const slugRows = (await tx
+        .prepare("SELECT slug FROM tokens")
+        .all()) as Array<{ slug: string }>;
+      for (const row of slugRows) takenSlugs.add(row.slug);
+    }
 
     for (const item of preview.cards) {
       if (item.action === "conflict") continue;
@@ -873,13 +903,14 @@ export async function commitTextImport(
 
       let tokenId = item.tokenId;
       if (item.action === "create") {
-        const slug = await generateTokenSlug(
-          tx,
+        const slug = buildTokenSlug(
           card.deckPath,
           card.answer,
           card.question,
+          (candidate) => takenSlugs.has(candidate),
         );
-        const token = await createToken(tx, {
+        takenSlugs.add(slug);
+        tokenId = await insertToken(tx, {
           slug,
           title: titleFor(card),
           question: card.question,
@@ -888,9 +919,13 @@ export async function commitTextImport(
           source_link: card.source,
           question_source: "template",
         });
-        tokenId = token.id;
-        await insertBinding(tx, document, card, token.id, now);
-        await replaceTokenMedia(tx, token.id, card, assetsByHash);
+        await insertBinding(tx, document, card, tokenId, now);
+        // A token created a moment ago cannot have media rows to replace, so
+        // the delete is skipped for a text-only card — one statement, but one
+        // network round trip per card on a remote library.
+        if (card.media.length > 0) {
+          await replaceTokenMedia(tx, tokenId, card, assetsByHash);
+        }
       } else {
         if (!tokenId) {
           throw new Error(`Import binding disappeared: ${item.externalId}`);
@@ -915,8 +950,21 @@ export async function commitTextImport(
 
       if (!tokenId)
         throw new Error(`Could not resolve token: ${item.externalId}`);
-      await ensureCard(tx, tokenId, userId);
-      if (item.cardAction === "create") cardsCreated++;
+      // The preview was recomputed inside this transaction a few lines above,
+      // so its cardAction is authoritative here: `create` means no row exists
+      // and `keep` means one does. Trusting it turns ensureCard's look-then-
+      // insert-then-read-back into a single insert, or into nothing at all.
+      if (item.cardAction === "create") {
+        await insertCard(tx, tokenId, userId);
+        cardsCreated++;
+      } else if (item.cardAction !== "keep") {
+        await ensureCard(tx, tokenId, userId);
+      }
+      onProgress?.({
+        done: ++processed,
+        total: preview.cards.length,
+        externalId: item.externalId,
+      });
     }
 
     if (mediaRewritten) await pruneOrphanedMediaAssets(tx);
