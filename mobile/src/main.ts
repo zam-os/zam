@@ -59,6 +59,11 @@ import {
   saveEndpoint,
 } from "./ai/endpoints.js";
 import {
+  AI_TIER_PREFERENCE_STORAGE_KEY,
+  parseStoredAiPreferences,
+  readAiPreference,
+} from "./ai/tier-preference.js";
+import {
   NoTranslationBackendError,
   TranslationFailedError,
   translateCard,
@@ -550,6 +555,13 @@ let takingSharedImport = false;
 let pendingUpdate: MobileUpdateInfo | null = null;
 let currentEvaluation: MobileEvaluationResult | null = null;
 const PENDING_IMPORT_STORAGE_KEY = "zam.mobile-pending-import.v1";
+
+/** Device-local, read on demand so a Settings change applies to the next card. */
+function storedAiPreferences() {
+  return parseStoredAiPreferences(
+    localStorage.getItem(AI_TIER_PREFERENCE_STORAGE_KEY),
+  );
+}
 
 const evaluationPorts = {
   checkOnDeviceStatus: () =>
@@ -1354,6 +1366,11 @@ function showEvaluationUi(result: MobileEvaluationResult): void {
       rating: t(ratingI18nKey(result.evaluation.suggestedRating)),
     }),
     tf("evaluation_backend", { model: result.modelLabel }),
+    // A tier the learner did not choose says so, right where the model is
+    // named (ADR 2026-08-09b §5). Null means they got what they asked for.
+    ...(result.fallbackReason
+      ? [tf("evaluation_fallback", { reason: result.fallbackReason })]
+      : []),
   ].join(" · ");
   for (const button of ratingButtons) {
     const rating = Number(button.dataset.rating);
@@ -1386,6 +1403,7 @@ async function runSmartEvaluation(): Promise<MobileEvaluationResult | null> {
       locale: learnerLocale ?? navigator.language,
       endpoint: recallEndpoint(),
       onDeviceAvailable: platformFeatures.onDeviceEvaluation,
+      preference: readAiPreference(storedAiPreferences(), "recall"),
       ports: evaluationPorts,
     });
     if (isStaleEvaluation(item.cardId)) return null;

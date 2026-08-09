@@ -386,6 +386,7 @@ const DE: Messages = {
   evaluation_kicker: "Einschätzung",
   evaluation_suggested: "Vorschlag: {rating}",
   evaluation_backend: "via {model}",
+  evaluation_fallback: "stattdessen, weil: {reason}",
   evaluation_failed_self_rate:
     "Automatische Beurteilung nicht möglich ({error}). Bitte selbst bewerten.",
   evaluation_verdict_correct: "Richtig",
@@ -789,6 +790,7 @@ const EN: Messages = {
   evaluation_kicker: "Assessment",
   evaluation_suggested: "Suggested: {rating}",
   evaluation_backend: "via {model}",
+  evaluation_fallback: "used instead because: {reason}",
   evaluation_failed_self_rate:
     "Automatic evaluation unavailable ({error}). Please rate yourself.",
   evaluation_verdict_correct: "Correct",
