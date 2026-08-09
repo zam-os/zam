@@ -154,6 +154,67 @@ export function setLearningContentFilePicker(
   pickLearningContentFile = picker;
 }
 
+export interface ImportProgressEvent {
+  type: string;
+  done: number;
+  total: number;
+}
+
+/**
+ * Subscribe to bridge progress; returns an unsubscribe function.
+ *
+ * Injected like the file picker, because only the native shell can hear it:
+ * the CLI writes NDJSON progress to stderr and the Tauri host forwards it as
+ * an event. A browser-hosted MCP panel has no such channel and simply never
+ * gets one — the import still works, it just cannot count.
+ */
+export type LearningContentProgressSource = (
+  listener: (event: ImportProgressEvent) => void,
+) => Promise<() => void>;
+
+let subscribeToImportProgress: LearningContentProgressSource | null = null;
+
+export function setLearningContentProgressSource(
+  source: LearningContentProgressSource,
+): void {
+  subscribeToImportProgress = source;
+}
+
+/**
+ * Watch import progress for the duration of one confirm call.
+ *
+ * A 440-card import over a remote library is minutes of work (field report,
+ * 2026-08-09), and a still spinner reads as a hang. Counting cards is the
+ * whole point, so a failure to subscribe must not fail the import: the
+ * unsubscribe is a no-op and the modal keeps its indeterminate copy.
+ */
+async function withImportProgress<T>(
+  run: () => Promise<T>,
+  onProgress: (event: ImportProgressEvent) => void,
+): Promise<T> {
+  let unsubscribe: (() => void) | null = null;
+  try {
+    unsubscribe = (await subscribeToImportProgress?.(onProgress)) ?? null;
+  } catch {
+    // No progress channel on this surface; the import itself is unaffected.
+  }
+  try {
+    return await run();
+  } finally {
+    unsubscribe?.();
+  }
+}
+
+function showImportProgressCount(event: ImportProgressEvent): void {
+  if (event.type !== "import-progress") return;
+  const detail = document.getElementById("lbl-import-progress-detail");
+  if (!detail) return;
+  detail.textContent = tf("file_import_progress_count", {
+    done: event.done,
+    total: event.total,
+  });
+}
+
 let btnSplitCard: HTMLButtonElement;
 let splitModalOverlay: HTMLElement;
 let splitOriginalQuestion: HTMLTextAreaElement;
@@ -1266,11 +1327,20 @@ async function submitImport(): Promise<void> {
     if (activeImportTab === "library") {
       const preview = selectedOpenContentPreview as OpenContentImportPreview;
       const id = selectedOpenContentId as string;
-      const res = await runBridge<{
-        success: boolean;
-        cardsCreated: number;
-        counts: FileImportPreview["counts"];
-      }>("open-content-confirm", ["--id", id, "--plan-hash", preview.planHash]);
+      const res = await withImportProgress(
+        () =>
+          runBridge<{
+            success: boolean;
+            cardsCreated: number;
+            counts: FileImportPreview["counts"];
+          }>("open-content-confirm", [
+            "--id",
+            id,
+            "--plan-hash",
+            preview.planHash,
+          ]),
+        showImportProgressCount,
+      );
 
       if (!res?.success) throw new Error(t("open_content_error"));
       hideImportModal();
@@ -1287,16 +1357,20 @@ async function submitImport(): Promise<void> {
     } else if (activeImportTab === "file") {
       const preview = selectedFilePreview as FileImportPreview;
       const path = selectedImportFilePath as string;
-      const res = await runBridge<{
-        success: boolean;
-        cardsCreated: number;
-        counts: FileImportPreview["counts"];
-      }>("personal-card-import-file-confirm", [
-        "--path",
-        path,
-        "--plan-hash",
-        preview.planHash,
-      ]);
+      const res = await withImportProgress(
+        () =>
+          runBridge<{
+            success: boolean;
+            cardsCreated: number;
+            counts: FileImportPreview["counts"];
+          }>("personal-card-import-file-confirm", [
+            "--path",
+            path,
+            "--plan-hash",
+            preview.planHash,
+          ]),
+        showImportProgressCount,
+      );
 
       if (!res?.success) throw new Error(t("lbl_error_file_import"));
       hideImportModal();

@@ -32,4 +32,29 @@ describe("Studio-first local card import wiring", () => {
     expect(main).toContain('extensions: ["apkg", "csv", "tsv"]');
     expect(studio).not.toContain("@tauri-apps/");
   });
+
+  it("counts cards during both confirms instead of showing a still spinner", () => {
+    // A remote library takes minutes for a few hundred cards, so an import
+    // that reports nothing reads as a hang (field report, 2026-08-09).
+    for (const command of [
+      '"open-content-confirm"',
+      '"personal-card-import-file-confirm"',
+    ]) {
+      const call = studio.indexOf(command);
+      expect(call).toBeGreaterThan(-1);
+      const preceding = studio.lastIndexOf("withImportProgress", call);
+      expect(preceding).toBeGreaterThan(-1);
+      // The wrapper must belong to this call, not to one far above it.
+      expect(call - preceding).toBeLessThan(400);
+    }
+    expect(studio).toContain("showImportProgressCount");
+    expect(studio).toContain("file_import_progress_count");
+  });
+
+  it("injects the progress channel from the shell, keeping the panel portable", () => {
+    expect(main).toContain("setLearningContentProgressSource(async");
+    expect(main).toContain('listen<ImportProgressEvent>(\n    "zam://bridge-progress"');
+    // Same rule as the picker: only the native shell may reach Tauri.
+    expect(studio).not.toContain("@tauri-apps/");
+  });
 });
