@@ -87,6 +87,50 @@ describe("rich Anki scheduling", () => {
     expect(custom.newCount).toBe(1);
   });
 
+  it("reads a bounded new-card window instead of the whole library", async () => {
+    const input: TextImportDocument = {
+      format: "apkg",
+      sourceName: "large.apkg",
+      cards: Array.from({ length: 90 }, (_value, index) => ({
+        externalId: `anki:note-${index}:0`,
+        noteGuid: `note-${index}`,
+        cardOrdinal: 0,
+        question: `Question ${index}?`,
+        answer: `Answer ${index}`,
+        deckPath: "Imported",
+      })),
+    };
+    const preview = await previewTextImport(db, "alice", input);
+    await commitTextImport(db, "alice", input, preview.planHash);
+
+    // An imported library can hold tens of thousands of new cards; a remote
+    // provider would ship every row on every queue build without the window.
+    const fetched: number[] = [];
+    const prepare = db.prepare.bind(db);
+    db.prepare = (sql: string) => {
+      const statement = prepare(sql);
+      if (!sql.includes("c.state = 'new'")) return statement;
+      const all = statement.all.bind(statement);
+      return Object.assign(statement, {
+        all: async (...params: unknown[]) => {
+          const rows = (await all(...params)) as unknown[];
+          fetched.push(rows.length);
+          return rows;
+        },
+      });
+    };
+
+    const queue = await buildReviewQueue(db, {
+      userId: "alice",
+      maxNew: 2,
+      maxReviews: 10,
+    });
+    db.prepare = prepare;
+
+    expect(queue.items).toHaveLength(2);
+    expect(fetched).toEqual([2 * 10 + 50]);
+  });
+
   it("buries only eligible siblings until the next local day and can unbury", async () => {
     const input = siblingDocument();
     const preview = await previewTextImport(db, "alice", input);

@@ -5747,8 +5747,12 @@ async function loadNextCard(
     // the loading state unexplained.
     // ADR Decision 4: the study queue stays unscoped (everything,
     // interleaved) — the device default never filters reviews.
+    // Studio renders the card, so it is the surface that asks for the media
+    // bytes; agents reading the same command keep a text-only payload.
     const reviewArgs =
-      options.dynamicQuestion === false ? ["--no-dynamic-question"] : [];
+      options.dynamicQuestion === false
+        ? ["--no-dynamic-question", "--media"]
+        : ["--media"];
     if (isLlmEnabled && options.dynamicQuestion !== false) {
       isWaitingForQuestion = true;
       startQuestionWaitTimer();

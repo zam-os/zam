@@ -390,6 +390,49 @@ describe("deterministic text import", () => {
     expect(assetCount.n).toBe(1);
   });
 
+  it("deletes superseded media payloads when a re-import replaces them", async () => {
+    const first = Uint8Array.from([0x89, 0x50, 0x4e, 0x47, 1, 2, 3]);
+    const second = Uint8Array.from([0x89, 0x50, 0x4e, 0x47, 9, 9, 9]);
+    const mediaDocument = (bytes: Uint8Array): TextImportDocument => {
+      const input = document([
+        {
+          externalId: "anki:media-note:0",
+          noteGuid: "media-note",
+          cardOrdinal: 0,
+          question: "Name the highlighted structure.",
+          answer: "Mitochondrion",
+          media: [{ assetName: "cell.png", side: "question", kind: "image" }],
+        },
+      ]);
+      input.assets = [
+        { name: "cell.png", mimeType: "image/png", kind: "image", data: bytes },
+      ];
+      return input;
+    };
+
+    const original = mediaDocument(first);
+    await commitTextImport(
+      db,
+      "alice",
+      original,
+      (await previewTextImport(db, "alice", original)).planHash,
+    );
+    const replacement = mediaDocument(second);
+    const preview = await previewTextImport(db, "alice", replacement);
+    expect(preview.counts).toMatchObject({ update: 1 });
+    await commitTextImport(db, "alice", replacement, preview.planHash);
+
+    const assets = (await db
+      .prepare("SELECT hash FROM media_assets")
+      .all()) as Array<{ hash: string }>;
+    const token = (await db.prepare("SELECT id FROM tokens").get()) as {
+      id: string;
+    };
+    const stored = await getTokenMedia(db, token.id);
+    expect(assets).toHaveLength(1);
+    expect(assets[0].hash).toBe(stored[0].assetHash);
+  });
+
   it("rejects missing, oversized, and mismatched media before preview", async () => {
     const missing = document([
       {

@@ -6,6 +6,7 @@ import {
   addToken,
   backupCreate,
   endSession,
+  getReview,
   getReviewsBatch,
   linkPrereq,
   startSession,
@@ -13,6 +14,7 @@ import {
   updateCheck,
 } from "../../src/cli/bridge-handlers.js";
 import {
+  commitTextImport,
   createToken,
   ensureCard,
   getCard,
@@ -20,6 +22,8 @@ import {
   getReviewsForCard,
   getTokenBySlug,
   openDatabase,
+  previewTextImport,
+  type TextImportDocument,
   verifySnapshot,
 } from "../../src/kernel/index.js";
 
@@ -106,6 +110,48 @@ describe("bridge-handlers unit tests", () => {
     expect(res2.cards[0].bloomVerb).toBe("Remember");
     expect(res2.cards[1].question).toBe("Explain 2.");
     expect(res2.cards[1].bloomVerb).toBe("Understand");
+  });
+
+  it("getReview inlines media bytes only for a rendering surface", async () => {
+    const bytes = Uint8Array.from([0x89, 0x50, 0x4e, 0x47, 4, 5, 6]);
+    const input: TextImportDocument = {
+      format: "apkg",
+      sourceName: "media.apkg",
+      cards: [
+        {
+          externalId: "anki:media-note:0",
+          noteGuid: "media-note",
+          cardOrdinal: 0,
+          question: "Name the highlighted structure.",
+          answer: "Mitochondrion",
+          media: [{ assetName: "cell.png", side: "question", kind: "image" }],
+        },
+      ],
+      assets: [
+        { name: "cell.png", mimeType: "image/png", kind: "image", data: bytes },
+      ],
+    };
+    const preview = await previewTextImport(db, "thomas", input);
+    await commitTextImport(db, "thomas", input, preview.planHash);
+
+    const lean = await getReview(db, {
+      user: "thomas",
+      noResolve: true,
+      noDynamicQuestion: true,
+    });
+    expect(lean.card?.hasQuestionMedia).toBe(true);
+    expect(lean.card?.media).toEqual([]);
+
+    const rendered = await getReview(db, {
+      user: "thomas",
+      noResolve: true,
+      noDynamicQuestion: true,
+      includeMedia: true,
+    });
+    expect(rendered.card?.media).toHaveLength(1);
+    expect(rendered.card?.media?.[0].dataBase64).toBe(
+      Buffer.from(bytes).toString("base64"),
+    );
   });
 
   it("submitReview logs steps and reviews and handles stepError on session step write failure", async () => {

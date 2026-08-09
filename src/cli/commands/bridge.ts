@@ -989,6 +989,10 @@ bridgeCommand
     "Use the stored question without generating a fresh LLM question",
   )
   .option("--knowledge-context <context>", "Filter cards by knowledge context")
+  .option(
+    "--media",
+    "Inline the card's media as base64 (rendering surfaces only)",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
@@ -998,6 +1002,7 @@ bridgeCommand
           noResolve: opts.resolve === false,
           noDynamicQuestion: opts.dynamicQuestion === false,
           knowledgeContext: opts.knowledgeContext,
+          includeMedia: opts.media === true,
         });
         jsonOut(result);
       } catch (err) {

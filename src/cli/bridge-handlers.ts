@@ -173,6 +173,13 @@ export interface GetReviewParams {
   noResolve?: boolean;
   noDynamicQuestion?: boolean;
   knowledgeContext?: string;
+  /**
+   * Inline the card's media as base64. Opt-in because a rendering surface
+   * (Studio) needs the bytes, while an agent reading this JSON would only get
+   * megabytes of unreadable payload — `hasQuestionMedia` / `hasAnswerMedia`
+   * already tell it that media exists.
+   */
+  includeMedia?: boolean;
 }
 
 export async function getReview(db: Database, params: GetReviewParams) {
@@ -196,22 +203,24 @@ export async function getReview(db: Database, params: GetReviewParams) {
   }
 
   const item = queue.items[0];
-  const media = (await getTokenMedia(db, item.tokenId)).map((entry) => ({
-    assetHash: entry.assetHash,
-    side: entry.side,
-    kind: entry.kind,
-    ordinal: entry.ordinal,
-    originalName: entry.originalName,
-    altText: entry.altText,
-    mimeType: entry.mimeType,
-    byteSize: entry.byteSize,
-    dataBase64: Buffer.from(
-      entry.data.buffer,
-      entry.data.byteOffset,
-      entry.data.byteLength,
-    ).toString("base64"),
-    occlusions: entry.occlusions,
-  }));
+  const media = !params.includeMedia
+    ? []
+    : (await getTokenMedia(db, item.tokenId)).map((entry) => ({
+        assetHash: entry.assetHash,
+        side: entry.side,
+        kind: entry.kind,
+        ordinal: entry.ordinal,
+        originalName: entry.originalName,
+        altText: entry.altText,
+        mimeType: entry.mimeType,
+        byteSize: entry.byteSize,
+        dataBase64: Buffer.from(
+          entry.data.buffer,
+          entry.data.byteOffset,
+          entry.data.byteLength,
+        ).toString("base64"),
+        occlusions: entry.occlusions,
+      }));
   const isLlmEnabled = (await getSetting(db, "llm.enabled")) === "true";
 
   let resolvedQuestion = item.question;

@@ -740,6 +740,25 @@ async function replaceTokenMedia(
   }
 }
 
+/**
+ * Drop content-addressed payloads no card points at any more.
+ *
+ * Re-importing an edited deck rewrites `token_media`, so without this the
+ * superseded blobs would stay in the database — and in every snapshot and
+ * Turso sync — forever. Assets that are still referenced are protected by the
+ * `token_media.asset_hash` foreign key.
+ */
+async function pruneOrphanedMediaAssets(db: Database): Promise<void> {
+  await db
+    .prepare(
+      `DELETE FROM media_assets
+        WHERE NOT EXISTS (
+          SELECT 1 FROM token_media tm WHERE tm.asset_hash = media_assets.hash
+        )`,
+    )
+    .run();
+}
+
 function titleFor(card: NormalizedCard): string {
   return (card.title ?? card.question).slice(0, 160);
 }
@@ -843,6 +862,7 @@ export async function commitTextImport(
     );
     const now = new Date().toISOString();
     let cardsCreated = 0;
+    let mediaRewritten = false;
 
     for (const item of preview.cards) {
       if (item.action === "conflict") continue;
@@ -886,6 +906,7 @@ export async function commitTextImport(
             publishedBy: "file-import",
           });
           await replaceTokenMedia(tx, tokenId, card, assetsByHash);
+          mediaRewritten = true;
         }
         if (item.action === "update") {
           await updateBinding(tx, document, card, now);
@@ -897,6 +918,8 @@ export async function commitTextImport(
       await ensureCard(tx, tokenId, userId);
       if (item.cardAction === "create") cardsCreated++;
     }
+
+    if (mediaRewritten) await pruneOrphanedMediaAssets(tx);
 
     return {
       planHash: preview.planHash,

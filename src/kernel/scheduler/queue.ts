@@ -211,7 +211,12 @@ export async function buildReviewQueue(
     newParams.push(options.knowledgeContext);
   }
 
-  newSql += ` ORDER BY t.bloom_level ASC, t.slug ASC`;
+  // Sibling suppression can discard candidates, so the window has to be wider
+  // than maxNew — but it must stay bounded: an imported library holds tens of
+  // thousands of new cards, and a remote (Turso/Postgres) provider would ship
+  // every one of them over the wire on every queue build.
+  newSql += ` ORDER BY t.bloom_level ASC, t.slug ASC LIMIT ?`;
+  newParams.push(maxNew * 10 + 50);
 
   const newRows = (await db.prepare(newSql).all(...newParams)) as CardRow[];
 

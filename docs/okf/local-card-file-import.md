@@ -8,7 +8,7 @@ tags:
   - offline
   - studio
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/local-card-file-import.md"
-timestamp: 2026-08-09T10:52:00Z
+timestamp: 2026-08-09T14:10:00Z
 ---
 
 ZAM's model-free file path starts in the Learning Content Studio: choose a
@@ -68,10 +68,11 @@ state invalidates confirmation before the first write.
 imported hashes. Unchanged re-import skips shared content while still creating
 a missing personal card. Source changes update the token and media links through
 the material content-revision path, making learned cards due for a re-test while
-preserving FSRS history. If local content and the source both changed since the
-last import, preview reports a conflict and preserves the local token. All
-non-conflicting cards, media assets, links, and bindings commit together or the
-library remains unchanged.
+preserving FSRS history, and superseded payloads that no card references any
+more are deleted from `media_assets` in the same transaction. If local content
+and the source both changed since the last import, preview reports a conflict
+and preserves the local token. All non-conflicting cards, media assets, links,
+and bindings commit together or the library remains unchanged.
 
 The [curated open-content library](open-content-library.md) is a separate
 network-assisted discovery surface in front of this same parser. It verifies a
@@ -81,9 +82,12 @@ a learner-owned local file remains completely network-free.
 The bridge exposes the operation as
 `personal-card-import-file-preview --path <file>` followed by
 `personal-card-import-file-confirm --path <file> --plan-hash <hash>`.
-Review payloads carry media bytes as base64 plus trusted MIME and presentation
-metadata. Portable snapshots include bindings, media assets, media links, and
-card state, so restore retains both safe re-import identity and rich reviews.
+`get-review` inlines media bytes as base64 plus trusted MIME and presentation
+metadata only for a rendering surface that passes `--media`; every other
+caller, including an agent, gets the queue's `hasQuestionMedia` and
+`hasAnswerMedia` flags instead of the payload. Portable snapshots include
+bindings, media assets, media links, and card state, so restore retains both
+safe re-import identity and rich reviews.
 
 # Citations
 
