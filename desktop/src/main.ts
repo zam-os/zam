@@ -690,8 +690,11 @@ function initializeTranslations() {
     t("stats_period_month");
   document.getElementById("lbl-stats-activity-title")!.textContent =
     t("stats_activity_title");
-  document.getElementById("stats-loading-label")!.textContent =
-    t("stats_loading");
+  // Transient: `loadStatsView()` replaces the whole #stats-activity container,
+  // so this placeholder is gone as soon as the stats view has been opened
+  // once. Asserting it here took the entire dashboard load down with it.
+  const statsLoading = document.getElementById("stats-loading-label");
+  if (statsLoading) statsLoading.textContent = t("stats_loading");
   document.getElementById("lbl-dashboard-kicker")!.textContent =
     t("dashboard_kicker");
   document.getElementById("lbl-dashboard-title")!.textContent =
@@ -734,7 +737,12 @@ function initializeTranslations() {
   document.getElementById("btn-reveal-answer")!.textContent = t("btn_reveal_answer");
   document.getElementById("lbl-observer-title")!.textContent = t("observer_title");
   document.getElementById("observer-status")!.textContent = t("observer_idle");
-  document.getElementById("observer-window-initial")!.textContent = t("observer_select_initial");
+  // Transient in the same way: refreshing the observer window list empties
+  // #observer-window-select, so this placeholder option is gone after the
+  // first refresh on Windows.
+  const observerInitial = document.getElementById("observer-window-initial");
+  if (observerInitial)
+    observerInitial.textContent = t("observer_select_initial");
   document.getElementById("btn-observer-refresh")!.textContent = t("observer_refresh");
   document.getElementById("btn-observer-analyze")!.textContent = t("observer_analyze");
   document.getElementById("btn-observer-cancel")!.textContent = t("observer_cancel");
@@ -4076,6 +4084,9 @@ async function loadStatsView(): Promise<void> {
   container.innerHTML = "";
   const loading = document.createElement("p");
   loading.className = "stats-loading";
+  // Same id the markup ships with, so a language switch while the placeholder
+  // is on screen still translates it.
+  loading.id = "stats-loading-label";
   loading.textContent = t("stats_loading");
   container.appendChild(loading);
   summary.classList.add("hidden");
