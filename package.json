@@ -16,10 +16,14 @@
   },
   "files": [
     "dist/",
+    "plugin.json",
+    "mcp.json",
+    "skills/zam/",
     ".claude/skills/zam/",
     ".agent/skills/zam/",
     ".agents/skills/zam/",
     "templates/personal/",
+    "docs/AGENT_PLUGIN.md",
     "README.md",
     "LICENSE"
   ],

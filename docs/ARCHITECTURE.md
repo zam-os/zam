@@ -64,8 +64,8 @@ ZAM is structured into four distinct execution layers:
 └──────────────────────────────────────────────────────────┘
 ```
 
-### 2.1 The AI Skill Layer (`.agents/skills/zam/SKILL.md`)
-The entry point for AI assistants. It exposes the ZAM playbook: how to discover knowledge cards, check for due reviews, evaluate the user's answers, and silently register work evidence. The skill layer translates native agent capabilities (like shell execution and screenshot vision) into ZAM bridge calls.
+### 2.1 The AI Skill Layer (`skills/zam/SKILL.md`)
+The portable Agent Plugin entry point for AI assistants. It exposes the ZAM playbook: how to discover knowledge cards, check for due reviews, evaluate the user's answers, and silently register work evidence. The skill layer translates native agent capabilities (like shell execution and screenshot vision) into ZAM MCP calls, with the bridge as fallback. Host-specific compatibility copies remain under `.claude/skills/zam/`, `.agent/skills/zam/`, and `.agents/skills/zam/`.
 
 ### 2.2 The CLI Layer (`src/cli/`)
 The interface for both humans and daemons. Human commands (`zam review`, `zam stats`, `zam token`) output colorized, localized terminal formatting. Machine commands (`zam bridge ...`) take arguments and output raw JSON, ensuring a structured contract with no terminal pollution.
