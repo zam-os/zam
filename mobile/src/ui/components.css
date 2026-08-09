@@ -455,6 +455,85 @@ textarea:focus {
   margin: 0;
 }
 
+/* The question owns the row; the manage button sits beside it without ever
+   stealing width from a long question. `start` alignment keeps the button on
+   the first line rather than floating to the middle of a three-line prompt. */
+.prompt-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap-2);
+}
+
+.prompt-row .prompt {
+  flex: 1;
+  min-width: 0;
+}
+
+.btn.icon {
+  flex: none;
+  width: var(--tap);
+  height: var(--tap);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--label-secondary);
+  font-size: 1.4em;
+  line-height: 1;
+  border-radius: var(--radius-row);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn.icon:active {
+  background: var(--fill-quaternary);
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-end;
+  min-width: 60%;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-row);
+  overflow: hidden;
+  box-shadow: 0 8px 28px rgb(0 0 0 / 18%);
+}
+
+.menu-item {
+  min-height: var(--tap);
+  padding: var(--gap-3) var(--gap-4);
+  border: 0;
+  border-bottom: 0.5px solid var(--separator);
+  background: none;
+  color: var(--label);
+  font: inherit;
+  text-align: start;
+}
+
+.menu-item:last-child {
+  border-bottom: 0;
+}
+
+.menu-item:active {
+  background: var(--fill-quaternary);
+}
+
+.menu-item.destructive {
+  color: var(--red);
+}
+
+.menu-item:disabled {
+  color: var(--label-tertiary);
+}
+
+/* An armed destructive control: the warning lives on the button the thumb is
+   already on, because `window.confirm` does not exist inside this WebView. */
+.menu-item.armed,
+.btn.armed {
+  background: var(--red);
+  color: #fff;
+  font-weight: 600;
+}
+
 .answer-box {
   background: var(--fill-quaternary);
   border-radius: var(--radius-row);

@@ -815,8 +815,51 @@
           </div>
           <p id="review-progress" class="t-footnote"></p>
 
-          <h2 id="review-question" class="prompt"></h2>
+          <!-- Fixing a card is a review-time job: a wrong-language or
+               nonsense question is almost always noticed while answering it,
+               and sending the learner to the Library tab to fix it means
+               losing the session. Mirrors the desktop's card-manage menu. -->
+          <div class="prompt-row">
+            <h2 id="review-question" class="prompt"></h2>
+            <button
+              id="card-manage"
+              class="btn icon"
+              type="button"
+              aria-haspopup="menu"
+              aria-controls="card-manage-menu"
+              aria-expanded="false"
+              data-i18n-aria="card_manage"
+            >
+              ⋯
+            </button>
+          </div>
+          <div id="card-manage-menu" class="menu hidden" role="menu">
+            <button id="card-edit" class="menu-item" type="button" role="menuitem"
+                    data-i18n="card_edit">Karte bearbeiten</button>
+            <button id="card-translate" class="menu-item" type="button" role="menuitem"
+                    data-i18n="card_translate">In diese Sprache übersetzen</button>
+            <button id="card-delete" class="menu-item destructive" type="button" role="menuitem"
+                    data-i18n="card_delete">Karte löschen</button>
+          </div>
           <p id="review-meta" class="t-footnote"></p>
+
+          <div id="card-edit-panel" class="stack hidden">
+            <label class="field">
+              <span data-i18n="question_opt">Frage</span>
+              <textarea id="card-edit-question" rows="3"></textarea>
+            </label>
+            <label class="field">
+              <span data-i18n="content">Lerninhalt</span>
+              <textarea id="card-edit-concept" rows="5"></textarea>
+            </label>
+            <button id="card-edit-save" class="btn primary" type="button" data-i18n="card_edit_save">
+              Änderungen sichern
+            </button>
+            <button id="card-edit-cancel" class="btn plain" type="button" data-i18n="cancel">
+              Abbrechen
+            </button>
+            <p id="card-edit-status" class="status" aria-live="polite"></p>
+          </div>
 
           <!-- Hidden wholesale where the platform has no voice support, so a
                control that can never work is never offered. -->

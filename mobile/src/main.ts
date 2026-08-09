@@ -36,6 +36,11 @@ import {
 } from "./ai/connect.js";
 import { embedInBackground } from "./ai/embedder.js";
 import {
+  NoTranslationBackendError,
+  TranslationFailedError,
+  translateCard,
+} from "./ai/translate.js";
+import {
   evaluateMobileAnswer,
   evaluationSpeech,
   type MobileEvaluationResult,
@@ -332,6 +337,17 @@ const ratingButtons = Array.from(
 );
 const stopReviewButton = element<HTMLButtonElement>("stop-review");
 const reviewStatus = element<HTMLParagraphElement>("review-status");
+const cardManageButton = element<HTMLButtonElement>("card-manage");
+const cardManageMenu = element<HTMLElement>("card-manage-menu");
+const cardEditItem = element<HTMLButtonElement>("card-edit");
+const cardTranslateItem = element<HTMLButtonElement>("card-translate");
+const cardDeleteItem = element<HTMLButtonElement>("card-delete");
+const cardEditPanel = element<HTMLElement>("card-edit-panel");
+const cardEditQuestion = element<HTMLTextAreaElement>("card-edit-question");
+const cardEditConcept = element<HTMLTextAreaElement>("card-edit-concept");
+const cardEditSaveButton = element<HTMLButtonElement>("card-edit-save");
+const cardEditCancelButton = element<HTMLButtonElement>("card-edit-cancel");
+const cardEditStatus = element<HTMLParagraphElement>("card-edit-status");
 const sessionSummaryText = element<HTMLElement>("session-summary-text");
 const backToQueueButton = element<HTMLButtonElement>("back-to-queue");
 const resyncButton = element<HTMLButtonElement>("resync");
@@ -1392,9 +1408,222 @@ function renderCurrentReview(message = ""): void {
     button.disabled = !reviewSession.revealed;
   }
   updateVoiceButton();
+  closeCardMenu();
+  hideCardEditPanel();
   setReviewStatus(message);
   if (!reviewSession.revealed && !voiceController.active) reviewAnswer.focus();
 }
+
+/* ── Confirming something destructive ────────────────────────────────────── */
+
+/**
+ * Two taps instead of a system dialog.
+ *
+ * `window.confirm` does nothing inside Tauri's WKWebView — no panel appears
+ * and it returns `false` immediately, so every call guarded by it was a button
+ * that quietly did nothing. That is how "Delete card" in the Library shipped
+ * from 0.29.0 to 0.29.2: it looked like a working control and never removed a
+ * card. Verified on the iPad (A16) simulator; the mobile shell has no dialog
+ * plugin, which is why the desktop's approach cannot simply be copied.
+ *
+ * Arming the button in place is better here than a modal anyway: the warning
+ * appears on the control the thumb is already on, and walking away — closing
+ * the menu, leaving the card — disarms it.
+ */
+/*
+ * Declared up here, assigned below: `closeCardMenu` and `showLibraryMode` both
+ * disarm, and both are defined before the buttons they disarm are wired. A
+ * `const` would put them in the temporal dead zone for anything that ran
+ * during module evaluation — optional chaining does not save you from that.
+ */
+let disarmCardDelete: (() => void) | undefined;
+let disarmLibraryDelete: (() => void) | undefined;
+
+function armDestructive(
+  button: HTMLButtonElement,
+  armedLabel: string,
+  onConfirm: () => void | Promise<void>,
+): () => void {
+  const restingLabel = button.textContent ?? "";
+  let armed = false;
+
+  const disarm = (): void => {
+    armed = false;
+    button.textContent = restingLabel;
+    button.classList.remove("armed");
+  };
+
+  button.addEventListener("click", async () => {
+    if (!armed) {
+      armed = true;
+      button.textContent = armedLabel;
+      button.classList.add("armed");
+      return;
+    }
+    disarm();
+    await onConfirm();
+  });
+
+  return disarm;
+}
+
+/* ── Fixing a card without leaving the session ───────────────────────────── */
+
+function closeCardMenu(): void {
+  cardManageMenu.classList.add("hidden");
+  cardManageButton.setAttribute("aria-expanded", "false");
+  // Walking away from the menu is a change of mind, not a pending deletion.
+  disarmCardDelete?.();
+}
+
+function hideCardEditPanel(): void {
+  cardEditPanel.classList.add("hidden");
+  cardEditStatus.textContent = "";
+  cardEditStatus.classList.remove("error");
+}
+
+function setCardEditStatus(text: string, isError = false): void {
+  cardEditStatus.textContent = text;
+  cardEditStatus.classList.toggle("error", isError);
+}
+
+/**
+ * Open the editor on the card being reviewed.
+ *
+ * The answer is shown here whether or not it has been revealed — you cannot
+ * correct a card you are not allowed to read, and someone who has opened the
+ * editor has already decided this card is wrong rather than hard.
+ */
+function openCardEditPanel(): void {
+  const prompt = reviewSession.currentPrompt;
+  if (!prompt) return;
+  cardEditQuestion.value = prompt.question;
+  cardEditConcept.value = prompt.concept;
+  cardEditPanel.classList.remove("hidden");
+  setCardEditStatus("");
+  cardEditQuestion.focus();
+}
+
+cardManageButton.addEventListener("click", () => {
+  if (!cardManageMenu.classList.contains("hidden")) {
+    closeCardMenu();
+    return;
+  }
+  cardManageMenu.classList.remove("hidden");
+  cardManageButton.setAttribute("aria-expanded", "true");
+});
+
+cardEditItem.addEventListener("click", () => {
+  closeCardMenu();
+  openCardEditPanel();
+});
+
+/*
+ * Translate stays tappable even with no model connected.
+ *
+ * A greyed-out row cannot explain itself on a touch screen — there is no
+ * hover, so `title` never appears and the learner is left with a dead entry
+ * and no reason. `translateCard` resolves the registry before it touches the
+ * network, so the "connect a model first" answer is immediate; a sentence in
+ * the panel beats silence.
+ */
+cardTranslateItem.addEventListener("click", async () => {
+  closeCardMenu();
+  const prompt = reviewSession.currentPrompt;
+  if (!prompt) return;
+  openCardEditPanel();
+  cardTranslateItem.disabled = true;
+  setCardEditStatus(t("card_translating"));
+  try {
+    const translated = await translateCard(
+      db,
+      { question: cardEditQuestion.value, concept: cardEditConcept.value },
+      learnerLocale ?? resolveLocale(navigator.language),
+    );
+    // Into the fields, not into the database: a model that mangles a term of
+    // art is ordinary, and overwriting the card with its guess is not
+    // recoverable. The learner reads it, fixes it, then saves.
+    cardEditQuestion.value = translated.question;
+    cardEditConcept.value = translated.concept;
+    setCardEditStatus(t("card_translated"));
+  } catch (error) {
+    setCardEditStatus(translationFailureMessage(error), true);
+  } finally {
+    cardTranslateItem.disabled = false;
+  }
+});
+
+/**
+ * Say what the learner can do about it, not what the endpoint said.
+ *
+ * The raw failure is a line of provider JSON — the same kind of untranslated
+ * internal text that made self-rating look like a crash. The two cases anyone
+ * can act on are a rejected key and a rate limit; everything else is "it did
+ * not work, try again", because nothing else is actionable from here.
+ */
+function translationFailureMessage(error: unknown): string {
+  if (error instanceof NoTranslationBackendError) {
+    return t("card_translate_needs_ai");
+  }
+  const status =
+    error instanceof TranslationFailedError ? error.status : undefined;
+  if (status === 401 || status === 403) return t("card_translate_bad_key");
+  if (status === 429) return t("card_translate_busy");
+  return tf("card_translate_failed", { error: errorMessage(error) });
+}
+
+cardEditSaveButton.addEventListener("click", async () => {
+  const item = reviewSession.currentItem;
+  if (!item) return;
+  const question = cardEditQuestion.value.trim();
+  const concept = cardEditConcept.value.trim();
+  if (!concept) {
+    setCardEditStatus(t("card_edit_needs_concept"), true);
+    return;
+  }
+  cardEditSaveButton.disabled = true;
+  setCardEditStatus(t("card_edit_saving"));
+  try {
+    await saveCardEdit(db, item.tokenId, { question, concept });
+    // The queue is a snapshot from when the session started, so the running
+    // session has to be told as well — otherwise the very next repaint shows
+    // the old wording back again and the save looks like it failed.
+    reviewSession.applyCardEdit({ question, concept });
+    renderCurrentReview(t("card_edit_saved"));
+  } catch (error) {
+    setCardEditStatus(errorMessage(error), true);
+  } finally {
+    cardEditSaveButton.disabled = false;
+  }
+});
+
+cardEditCancelButton.addEventListener("click", () => {
+  hideCardEditPanel();
+});
+
+disarmCardDelete = armDestructive(
+  cardDeleteItem,
+  t("card_delete_confirm"),
+  async () => {
+    closeCardMenu();
+    const item = reviewSession.currentItem;
+    if (!item || !currentUserId) return;
+    try {
+      await removeCard(db, item.tokenId, currentUserId);
+      // No rating: a deleted card has no FSRS outcome to record. It leaves the
+      // queue, and the session is one card shorter than it started.
+      const summary = await reviewSession.dropCurrent();
+      if (summary) {
+        renderSessionSummary(summary);
+        await refresh(currentUserId);
+      } else {
+        renderCurrentReview(t("card_deleted"));
+      }
+    } catch (error) {
+      setReviewStatus(errorMessage(error), true);
+    }
+  },
+);
 
 function renderSessionSummary(result: MobileReviewSummary): void {
   sessionSummaryText.textContent = tf("summary_text", {
@@ -1956,6 +2185,9 @@ function showLibraryMode(mode: LibraryMode): void {
   importDescText.hidden = mode !== "add";
   importEntry.hidden = mode !== "add";
   if (mode !== "add") importDraftForm.hidden = true;
+  // An armed delete belongs to the card that armed it; leaving the detail
+  // view must not leave it primed for whichever card is opened next.
+  disarmLibraryDelete?.();
 }
 
 function renderLibrary(entries: LibraryEntry[]): void {
@@ -2102,21 +2334,28 @@ detailPauseButton.addEventListener("click", async () => {
   }
 });
 
-detailDeleteButton.addEventListener("click", async () => {
-  if (!openCard || !currentUserId) return;
-  // Deleting takes the review history with it, so it is worth one question.
-  if (!window.confirm(t("library_delete_confirm"))) return;
-  try {
-    await removeCard(db, openCard.tokenId, currentUserId);
-    openCard = null;
-    showLibraryMode("browse");
-    await refreshLibrary();
-    await refresh(currentUserId);
-    setStatus(t("library_deleted"));
-  } catch (error) {
-    setDetailStatus(tf("library_failed", { error: errorMessage(error) }), true);
-  }
-});
+// Deleting takes the review history with it, so it is worth one question —
+// asked by arming the button, because `window.confirm` never appears here.
+disarmLibraryDelete = armDestructive(
+  detailDeleteButton,
+  t("library_delete_confirm"),
+  async () => {
+    if (!openCard || !currentUserId) return;
+    try {
+      await removeCard(db, openCard.tokenId, currentUserId);
+      openCard = null;
+      showLibraryMode("browse");
+      await refreshLibrary();
+      await refresh(currentUserId);
+      setStatus(t("library_deleted"));
+    } catch (error) {
+      setDetailStatus(
+        tf("library_failed", { error: errorMessage(error) }),
+        true,
+      );
+    }
+  },
+);
 
 function setAiStatus(text: string, isError = false): void {
   aiStatus.textContent = text;

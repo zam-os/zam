@@ -165,4 +165,91 @@ describe("mobile review session", () => {
     });
     expect(storage.getItem(MOBILE_REVIEW_STORAGE_KEY)).toBeNull();
   });
+
+  /**
+   * Repairing a card is a review-time job — a wrong-language or nonsense
+   * question is noticed while answering it, not while browsing the library.
+   * Both of these change the queue that is already running, which is the part
+   * that can go wrong quietly.
+   */
+  describe("fixing a card mid-session", () => {
+    async function twoCardSession(storage: MemoryStorage) {
+      const first = await createToken(db, {
+        slug: "a-first",
+        concept: "First concept",
+        domain: "test",
+        bloom_level: 1,
+        question: "Which problem did version 0.9.0 solve?",
+      });
+      const second = await createToken(db, {
+        slug: "z-second",
+        concept: "Second concept",
+        domain: "test",
+        bloom_level: 1,
+      });
+      await ensureCard(db, first.id, "student-9");
+      await ensureCard(db, second.id, "student-9");
+      const session = new MobileReviewSession(db, storage, () => 1_000);
+      expect(await session.start("student-9")).toBe(true);
+      return { session, first, second };
+    }
+
+    it("shows the corrected wording on the very next repaint", async () => {
+      // The queue is a snapshot from session start. Without this the learner
+      // fixes a card, sees the old question again immediately, and concludes
+      // the save did nothing.
+      const storage = new MemoryStorage();
+      const { session } = await twoCardSession(storage);
+      expect(session.currentPrompt?.question).toContain("0.9.0");
+
+      session.applyCardEdit({
+        question: "What does an MCP server offer over a plain skill?",
+        concept: "Tools a host can call, described once and discovered.",
+      });
+
+      expect(session.currentPrompt?.question).toBe(
+        "What does an MCP server offer over a plain skill?",
+      );
+      expect(session.currentPrompt?.concept).toContain("described once");
+      // And it survives the app being closed mid-session.
+      const restored = new MobileReviewSession(db, storage, () => 1_100);
+      await restored.restore("student-9");
+      expect(restored.currentPrompt?.question).toContain("MCP server");
+    });
+
+    it("drops a deleted card without rating it", async () => {
+      const storage = new MemoryStorage();
+      const { session, second } = await twoCardSession(storage);
+      expect(session.progress).toEqual({ current: 1, total: 2 });
+
+      expect(await session.dropCurrent()).toBeNull();
+
+      expect(session.currentItem?.tokenId).toBe(second.id);
+      // One card shorter than it started: a session that lost a card is a
+      // session of one, not "1 of 2" with a hole in it.
+      expect(session.progress).toEqual({ current: 1, total: 1 });
+      // No FSRS outcome was recorded — the card is gone, not "again".
+      expect(
+        await db.prepare("SELECT COUNT(*) AS n FROM review_logs").get(),
+      ).toEqual({ n: 0 });
+    });
+
+    it("ends the session when the deleted card was the last one", async () => {
+      const storage = new MemoryStorage();
+      const { session } = await twoCardSession(storage);
+      await session.dropCurrent();
+      const summary = await session.dropCurrent();
+      expect(summary).toMatchObject({ completedCount: 0, totalCount: 0 });
+      expect(session.active).toBe(false);
+      expect(storage.getItem(MOBILE_REVIEW_STORAGE_KEY)).toBeNull();
+    });
+
+    it("does nothing outside a session", async () => {
+      const idle = new MobileReviewSession(db, new MemoryStorage(), () => 1);
+      expect(await idle.dropCurrent()).toBeNull();
+      expect(() => {
+        idle.applyCardEdit({ question: "ignored" });
+      }).not.toThrow();
+    });
+  });
 });

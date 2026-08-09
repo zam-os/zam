@@ -208,7 +208,16 @@ async function defaultFetchText(
   return text;
 }
 
-async function generateViaHttp(
+/**
+ * One prompt to one chat endpoint, in the shape mobile supports.
+ *
+ * Exported because evaluation is no longer the only caller: translating a card
+ * mid-review (`ai/translate.ts`) needs the same endpoint handling — the
+ * flavour check, the `/chat/completions` suffix, the bearer header, and the
+ * reasoning-off setting that keeps a reasoning model from spending its whole
+ * budget before writing anything.
+ */
+export async function generateViaHttp(
   endpoint: ZamPairLlmEndpoint,
   prompt: string,
   fetchText: EvaluationPorts["fetchText"],
