@@ -90,10 +90,18 @@ export async function publishTokenRevision(
       `materiality must be "cosmetic" or "material", got: ${String(input.materiality)}`,
     );
   }
-  return db.transaction((tx) => publishWithinTransaction(tx, input));
+  return db.transaction((tx) => publishTokenRevisionInTransaction(tx, input));
 }
 
-async function publishWithinTransaction(
+/**
+ * Apply a revision when the caller already owns the surrounding transaction.
+ *
+ * The public import pipeline needs this form so a source binding, token
+ * revision, and personal card are committed or rolled back together. Callers
+ * that are not already inside `db.transaction()` must use
+ * `publishTokenRevision()` instead.
+ */
+export async function publishTokenRevisionInTransaction(
   db: Database,
   input: PublishRevisionInput,
 ): Promise<PublishRevisionResult> {

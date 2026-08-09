@@ -167,6 +167,7 @@ describe("resetCardsForToken (ADR 2026-07-18)", () => {
       expect(fresh.lapses).toBe(0);
       expect(fresh.stability).toBe(0);
       expect(fresh.difficulty).toBe(0.5);
+      expect(fresh.learning_step).toBeNull();
       expect(fresh.last_review_at).toBeNull();
     }
   });

@@ -183,20 +183,46 @@ export function getDatabaseTargetInfo(
   };
 }
 
-function openLocalSqlite(dbPath: string): SyncDatabase {
+function openLocalSqlite(
+  dbPath: string,
+  options?: Record<string, unknown>,
+): SyncDatabase {
   // Loaded lazily (not as a top-level import) so that remote/HTTP Turso users
   // never trigger the native better-sqlite3 binding. A failure to load that
   // binding inside the packaged desktop app would otherwise crash the whole
   // CLI at startup — before any provider selection or error handling runs.
-  const mod = require("better-sqlite3") as
-    | (new (
-        path: string,
-      ) => unknown)
-    | { default: new (path: string) => unknown };
-  const BetterSqlite3 = ("default" in mod ? mod.default : mod) as new (
+  type BetterSqlite3Constructor = new (
     path: string,
+    options?: Record<string, unknown>,
   ) => unknown;
-  return new BetterSqlite3(dbPath) as unknown as SyncDatabase;
+  const mod = require("better-sqlite3") as
+    | BetterSqlite3Constructor
+    | { default: BetterSqlite3Constructor };
+  const BetterSqlite3 = (
+    "default" in mod ? mod.default : mod
+  ) as BetterSqlite3Constructor;
+  return new BetterSqlite3(dbPath, options) as unknown as SyncDatabase;
+}
+
+/**
+ * Open an existing foreign SQLite file without provisioning or write access.
+ *
+ * This narrow driver boundary lets CLI importers inspect untrusted package
+ * databases while preserving the rule that concrete SQLite drivers never
+ * leak outside `src/kernel/db/`.
+ */
+export async function openReadOnlySqliteDatabase(
+  dbPath: string,
+): Promise<Database> {
+  if (!existsSync(dbPath) || isRemoteDatabasePath(dbPath)) {
+    throw new Error(`SQLite file does not exist: ${dbPath}`);
+  }
+  const driver = openLocalSqlite(dbPath, {
+    readonly: true,
+    fileMustExist: true,
+  });
+  driver.pragma("query_only = ON");
+  return wrapSyncDatabase(driver);
 }
 
 function loadLibsql(): LibsqlConstructor {

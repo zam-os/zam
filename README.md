@@ -32,8 +32,8 @@ compound into lasting skill.
 - **Watches you work.** Do a step well on your own and ZAM quietly marks it learned — no
   interruption. When no real task can show what you know, it asks a focused recall
   question. Both are active recall.
-- **Remembers what you're forgetting.** Every concept is scheduled with FSRS-5 spaced
-  repetition over a prerequisite graph, so ZAM resurfaces things right before they'd slip.
+- **Remembers what you're forgetting.** Every concept is scheduled with FSRS-6 spaced
+  repetition, including short learning and relearning steps, over a prerequisite graph.
 - **Stays on your machine.** One local SQLite database (`~/.zam/zam.db`), shared by the
   agent and the Desktop Studio. Review works offline; local LLMs (Ollama, FastFlowLM)
   are supported.
@@ -134,7 +134,7 @@ zam agent connect claude-code   # or codex · antigravity · opencode · copilot
 ## How it works
 
 - **Token** — one atomic concept worth remembering, tagged with a Bloom level (1 remember → 5 create).
-- **Card** — your personal spaced-repetition state for a token (FSRS-5).
+- **Card** — your personal spaced-repetition state for a token (FSRS-6).
 - **Prerequisites** — a graph of what must be understood first; ZAM won't quiz a concept
   whose foundations you've just forgotten.
 - **Sessions** — every work/learning episode is logged, so ratings come from real evidence.

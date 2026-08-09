@@ -54,7 +54,7 @@ ZAM is structured into four distinct execution layers:
 │  ─ Models: token, card, prerequisite, review, session,   │
 │            agent-skill                                   │
 │  ─ Observation: monitor analysis + confirmed synthesis   │
-│  ─ Scheduler: FSRS-5, queue builder, blocker,            │
+│  ─ Scheduler: FSRS-6, short steps, queue builder,        │
 │               interleaver                                │
 │  ─ Recall: Bloom-adapted prompter, rating evaluator      │
 │  ─ Analytics: user stats, domain competence              │
@@ -71,7 +71,7 @@ The entry point for AI assistants. It exposes the ZAM playbook: how to discover 
 The interface for both humans and daemons. Human commands (`zam review`, `zam stats`, `zam token`) output colorized, localized terminal formatting. Machine commands (`zam bridge ...`) take arguments and output raw JSON, ensuring a structured contract with no terminal pollution.
 
 ### 2.3 The Kernel Layer (`src/kernel/`)
-The engine room. It defines the core entity models, handles data validation, computes memory decay curves (FSRS-5), manages domain interleaving, resolves prerequisite dependency graphs, and processes raw observation inputs into synthesized learning tokens.
+The engine room. It defines the core entity models, handles data validation, computes memory decay curves (FSRS-6), manages domain interleaving, resolves prerequisite dependency graphs, and processes raw observation inputs into synthesized learning tokens.
 
 ### 2.4 The Persistence Layer (`src/kernel/db/`)
 The database adapter. It handles connection pooling, schema migrations, and provides promise-based wrappers for both local SQLite (`better-sqlite3`) and remote Turso cloud sync (`libsql` over Hrana v3).
@@ -113,7 +113,7 @@ ZAM's relational database schema is designed for absolute integrity. Primary key
 | Table | Column | Type | Role |
 | :--- | :--- | :--- | :--- |
 | **tokens** | `id`<br>`slug`<br>`concept`<br>`domain`<br>`bloom_level`<br>`question`<br>`question_source`<br>`source_link`<br>`symbiosis_mode`<br>`created_at`<br>`updated_at`<br>`deprecated_at` | TEXT (ULID) PK<br>TEXT UNIQUE<br>TEXT<br>TEXT<br>INTEGER (1–5)<br>TEXT NULL<br>TEXT NOT NULL<br>TEXT NULL<br>TEXT<br>TEXT<br>TEXT<br>TEXT NULL | Contains the atomic units of knowledge. Slugs are human-readable (e.g. `git-commit-amend`). `question_source` indicates origin (`manual`, `llm`, `template`). |
-| **cards** | `id`<br>`token_id`<br>`user_id`<br>`stability`<br>`difficulty`<br>`reps`<br>`lapses`<br>`state`<br>`due_at`<br>`last_reviewed_at`<br>`blocked` | TEXT (ULID) PK<br>TEXT FK<br>TEXT<br>REAL<br>REAL<br>INTEGER<br>INTEGER<br>INTEGER (0–3)<br>TEXT<br>TEXT NULL<br>INTEGER (0/1) | Tracks a specific user's memory scheduling parameters. `blocked=1` means active prerequisites must be cleared first. |
+| **cards** | `id`<br>`token_id`<br>`user_id`<br>`stability`<br>`difficulty`<br>`reps`<br>`lapses`<br>`state`<br>`learning_step`<br>`due_at`<br>`last_review_at`<br>`blocked` | TEXT (ULID) PK<br>TEXT FK<br>TEXT<br>REAL<br>REAL<br>INTEGER<br>INTEGER<br>TEXT<br>INTEGER NULL<br>TEXT<br>TEXT NULL<br>INTEGER (0/1) | Tracks a specific user's memory scheduling parameters. `learning_step` persists the zero-based short-step cursor; `blocked=1` means active prerequisites must be cleared first. |
 | **prerequisites** | `token_id`<br>`requires_id` | TEXT FK<br>TEXT FK | Directed links representing dependency constraints. Composite PK: `(token_id, requires_id)`. |
 | **review_logs** | `id`<br>`card_id`<br>`rating`<br>`state`<br>`stability`<br>`difficulty`<br>`elapsed_days`<br>`scheduled_days`<br>`reviewed_at`<br>`session_id` | TEXT (ULID) PK<br>TEXT FK<br>INTEGER (1–4)<br>INTEGER<br>REAL<br>REAL<br>REAL<br>INTEGER<br>TEXT<br>TEXT NULL | Immutable audit log of every study/observation transaction. Serves as raw training data for FSRS weight optimization. |
 | **sessions** | `id`<br>`user_id`<br>`task`<br>`execution_context`<br>`started_at`<br>`ended_at` | TEXT (ULID) PK<br>TEXT<br>TEXT<br>TEXT (shell/ui)<br>TEXT<br>TEXT NULL | Tracks work episodes where learning context is gathered. |
@@ -131,67 +131,47 @@ A **Card** is the individual learner's memory state regarding that token. It hol
 
 ---
 
-## 4. Scheduling Engine: FSRS-5
+## 4. Scheduling Engine: FSRS-6
 
-ZAM schedules cards using the **Free Spaced Repetition Scheduler, Version 5 (FSRS-5)**. The engine represents memory decay mathematically and calculates optimal intervals based on target retrievability.
+ZAM schedules cards with a deterministic, pure-function implementation of **Free Spaced Repetition Scheduler 6 (FSRS-6)**. The default model has 21 weights ($w_0$ to $w_{20}$), a target retention of 90%, learning steps at 1 and 10 minutes, one 10-minute relearning step, and a 36,500-day maximum review interval.
 
 ### 4.1 Spaced Repetition Mechanics
-Memory retrievability ($R$) decays over elapsed days ($t$) according to the power law:
+FSRS defines stability ($S$) as the interval at which retrievability reaches 90%. FSRS-6 makes the forgetting-curve decay trainable:
 
-$$R(t, S) = \left( 1 + \frac{t}{9 \cdot S} \right)^{-1}$$
+$$factor = 0.9^{-1 / w_{20}} - 1$$
 
-Where:
-- $R$ is the probability of successful recall (retrievability).
-- $S$ is the half-life of memory in days (stability).
-- $t$ is the number of days elapsed since the last review.
+$$R(t,S) = \left(1 + factor \cdot \frac{t}{S}\right)^{-w_{20}}$$
 
-Given a user's target retrievability ($R_{target}$, default = $0.90$ or $90\%$), the scheduled interval ($I$) in days is calculated by solving for $t$:
+For target retention $r$, the long-term interval is:
 
-$$I(S) = 9 \cdot S \cdot \left( \frac{1}{R_{target}} - 1 \right)$$
+$$I(r,S) = \frac{S}{factor} \cdot \left(r^{-1 / w_{20}} - 1\right)$$
 
-For $R_{target} = 0.90$, the formula simplifies to:
+At the default target $r=0.9$, $I$ equals $S$. Long-term intervals are rounded to whole days and clamped to 1–36,500 days. Same-day reviews use the FSRS-6 short-term update:
 
-$$I(S) = S \cdot 9 \cdot \left( \frac{1}{0.90} - 1 \right) = S \cdot 9 \cdot \left( \frac{10}{9} - 1 \right) = S$$
+$$S'(S,G) = S \cdot e^{w_{17}(G - 3 + w_{18})} \cdot S^{-w_{19}}$$
 
-Thus, at a target retrievability of 90%, the next review is scheduled exactly when $t = S$ (the elapsed time matches the current stability).
+For ratings Hard, Good, and Easy, the stability multiplier is clamped to at least one. Full formulas and defaults are pinned in `src/kernel/scheduler/fsrs.ts` and `tests/kernel/fsrs.test.ts` against the [official algorithm reference](https://github.com/open-spaced-repetition/awesome-fsrs/wiki/The-Algorithm).
 
 ### 4.2 Card State Transitions
-Each card transitions through four states:
+Each card uses one of four states and persists a nullable, zero-based `learning_step` cursor:
 
-```
-            ┌────────────┐
-            │   0: New   │
-            └──────┬─────┘
-                   │ First review (any rating)
-            ┌──────▼─────┐
-            │1: Learning │
-            └──────┬─────┘
-                   │ Rating ≥ 2 (Hard, Good, Easy)
-            ┌──────▼─────┐◄────── Rating ≥ 2 ──┐
-            │  2: Review │                      │
-            └──────┬─────┘               ┌──────┴──────┐
-                   │ Rating = 1 (Again)  │3: Relearning│
-                   └────────────────────►└─────────────┘
-```
+- **New:** never answered. Again schedules 1 minute, Hard 5.5 minutes, Good advances to the 10-minute step, and Easy graduates directly to Review.
+- **Learning:** Again returns to the first step, Hard repeats the current step, Good advances or graduates after the final step, and Easy graduates immediately.
+- **Review:** Hard, Good, and Easy schedule a long-term FSRS interval. Again starts Relearning at 10 minutes.
+- **Relearning:** Again restarts its first step, Hard repeats it at 15 minutes, and Good or Easy returns the card to Review.
 
-- **New:** Card has never been reviewed.
-- **Learning:** Card is in its initial learning loop (within the same session).
-- **Review:** Card has passed the learning phase and is scheduled across days.
-- **Relearning:** Card was forgotten during review (`rating = 1`) and must be re-memorized.
+Short steps use fractional `scheduled_days` values and exact `due_at` timestamps. Migration M020 adds `learning_step`; legacy Learning/Relearning cards retain `NULL` and graduate on their next successful answer instead of replaying a new sequence.
 
 ### 4.3 Parameter Matrix
-FSRS-5 utilizes a 19-weight matrix ($w_0$ to $w_{18}$) to compute memory dynamics:
-- **Initial Stability ($S_0$):** Determined by $w_0, w_1, w_2, w_3$ depending on the initial rating ($r \in \{1, 2, 3, 4\}$):
-  $$S_0(r) = w_{r-1}$$
-- **Initial Difficulty ($D_0$):** Determined by $w_4$ and the rating:
-  $$D_0(r) = w_4 - (r - 3) \cdot w_5$$
-  *Difficulty is bounded between 1.0 and 10.0.*
-- **Difficulty Update ($D$):** If the card is reviewed, its difficulty changes:
-  $$D_{new} = D_{old} \cdot (1 - w_6) + w_6 \cdot (w_7 - (r - 3) \cdot w_5)$$
-- **Stability Update (Success):** If $r \ge 2$, stability grows:
-  $$S_{new} = S_{old} \cdot \left( 1 + e^{w_8} \cdot (11 - D_{new}) \cdot S_{old}^{-w_9} \cdot (e^{(r-3) \cdot w_{10}} - 1) \cdot w_{11} \right)$$
-- **Stability Update (Failure):** If $r = 1$, stability decays:
-  $$S_{new} = w_{12} \cdot D_{new}^{-w_{13}} \cdot (S_{old} + 1)^{w_{14}} \cdot e^{(1 - R) \cdot w_{15}}$$
+The 21 FSRS-6 weights divide into these responsibilities:
+
+- $w_0$–$w_3$: initial stability for Again, Hard, Good, and Easy.
+- $w_4$–$w_7$: initial difficulty, linear damping, and mean reversion toward the initial Easy difficulty.
+- $w_8$–$w_{16}$: long-term stability after successful recall or forgetting, including Hard and Easy modifiers.
+- $w_{17}$–$w_{19}$: same-day stability updates.
+- $w_{20}$: trainable forgetting-curve decay.
+
+Parameter arrays, short-step sequences, retention, and the interval cap are validated and frozen when `createFSRS()` is constructed. Scheduling itself performs no database, network, AI, or random operations.
 
 ---
 
@@ -392,7 +372,7 @@ src/
 │   │   ├── session.ts           ← Session event schemas
 │   │   └── agent-skill.ts       ← Agent skill schemas
 │   ├── scheduler/
-│   │   ├── fsrs.ts              ← Mathematical implementation of FSRS-5
+│   │   ├── fsrs.ts              ← FSRS-6 math and short-step transitions
 │   │   ├── queue.ts             ← Interleaved due-queue builder
 │   │   ├── blocker.ts           ← Dependency block cascades
 │   │   └── interleaver.ts       ← Domain context balancer

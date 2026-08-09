@@ -1486,6 +1486,42 @@ textarea:focus-visible {
   max-width: 70ch;
 }
 
+.review-media {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.review-media:empty {
+  display: none;
+}
+
+.review-media-frame {
+  position: relative;
+  width: fit-content;
+  max-width: min(100%, 44rem);
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+
+.review-media-frame img {
+  display: block;
+  max-width: 100%;
+  max-height: 32rem;
+  object-fit: contain;
+}
+
+.review-media-occlusion {
+  position: absolute;
+  background: var(--accent, #6c63ff);
+  border: 2px solid color-mix(in srgb, white 70%, var(--accent, #6c63ff));
+  box-sizing: border-box;
+}
+
+.review-media audio {
+  width: min(100%, 32rem);
+}
+
 /* Answer Input capture */
 .answer-capture {
   display: flex;

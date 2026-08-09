@@ -52,7 +52,44 @@ async function seed(db: Database): Promise<void> {
     domain: "electronics",
     bloom_level: 2,
   });
-  await ensureCard(db, tricky.id, "alice");
+  const learningCard = await ensureCard(db, tricky.id, "alice");
+  await db
+    .prepare(
+      "UPDATE cards SET state = 'learning', learning_step = 1 WHERE id = ?",
+    )
+    .run(learningCard.id);
+  await db
+    .prepare(
+      `INSERT INTO imported_card_bindings
+        (id, external_id, token_id, format, source_name, note_guid,
+         card_ordinal, deck_path, content_hash, metadata_hash)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    )
+    .run(
+      "01K20IMPORTBINDING00000000",
+      "anki:ohms-law:0",
+      tricky.id,
+      "apkg",
+      "electronics.apkg",
+      "ohms-law",
+      0,
+      "Electronics",
+      "content-hash",
+      "metadata-hash",
+    );
+  await db
+    .prepare(
+      `INSERT INTO media_assets (hash, mime_type, byte_size, data)
+       VALUES (?, ?, ?, ?)`,
+    )
+    .run("asset-hash", "image/png", 4, Uint8Array.from([1, 2, 3, 4]));
+  await db
+    .prepare(
+      `INSERT INTO token_media
+        (token_id, asset_hash, side, kind, ordinal, original_name, alt_text)
+       VALUES (?, ?, 'question', 'image', 0, ?, ?)`,
+    )
+    .run(tricky.id, "asset-hash", "ohm.png", "Circuit diagram");
 
   const second = await createToken(db, {
     slug: "kirchhoff",
@@ -77,12 +114,18 @@ describe("database snapshots", () => {
     const manifest = verifySnapshot(snapshot);
     expect(manifest.tables.tokens).toBe(2);
     expect(manifest.tables.cards).toBe(2);
+    expect(manifest.tables.imported_card_bindings).toBe(1);
+    expect(manifest.tables.media_assets).toBe(1);
+    expect(manifest.tables.token_media).toBe(1);
     expect(manifest.tables.user_config).toBe(1);
 
     const target = await freshDb();
     const result = await importSnapshot(target, snapshot);
     expect(result.tables.tokens).toBe(2);
     expect(result.tables.cards).toBe(2);
+    expect(result.tables.imported_card_bindings).toBe(1);
+    expect(result.tables.media_assets).toBe(1);
+    expect(result.tables.token_media).toBe(1);
 
     const token = (await target
       .prepare("SELECT concept FROM tokens WHERE slug = ?")
@@ -93,6 +136,23 @@ describe("database snapshots", () => {
       .prepare("SELECT value FROM user_config WHERE key = ?")
       .get("system.locale")) as { value: string };
     expect(locale.value).toBe("de");
+
+    const resumed = (await target
+      .prepare(
+        `SELECT c.state, c.learning_step
+           FROM cards c JOIN tokens t ON t.id = c.token_id
+          WHERE t.slug = ?`,
+      )
+      .get("ohm's-law")) as { state: string; learning_step: number | null };
+    expect(resumed).toEqual({ state: "learning", learning_step: 1 });
+    const media = (await target
+      .prepare(
+        `SELECT ma.data, tm.original_name
+           FROM token_media tm JOIN media_assets ma ON ma.hash = tm.asset_hash`,
+      )
+      .get()) as { data: Uint8Array; original_name: string };
+    expect(media.original_name).toBe("ohm.png");
+    expect([...media.data]).toEqual([1, 2, 3, 4]);
     await target.close();
   });
 
@@ -190,7 +250,9 @@ describe("database snapshots", () => {
     await assignTokenToContext(source, token.id, context.id);
 
     await source
-      .prepare("INSERT INTO sources (id, type, uri, content) VALUES (?, ?, ?, ?)")
+      .prepare(
+        "INSERT INTO sources (id, type, uri, content) VALUES (?, ?, ?, ?)",
+      )
       .run("src-bio-book", "file", "file:///books/bio.pdf", "chapter text");
     await source
       .prepare(

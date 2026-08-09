@@ -55,8 +55,8 @@ export const learnCommand = new Command("learn")
     "Run a spoiler-free, in-process learning session (recall → reveal → self-rate)",
   )
   .option("--user <id>", "User ID (default: whoami)")
-  .option("--max-new <n>", "Maximum new cards", "10")
-  .option("--max-reviews <n>", "Maximum review cards", "50")
+  .option("--max-new <n>", "Override the saved maximum new cards")
+  .option("--max-reviews <n>", "Override the saved session size")
   .option("--no-resolve", "Skip resolving source_link into the revealed answer")
   .action(async (opts) => {
     let db: Database | undefined;
@@ -66,8 +66,9 @@ export const learnCommand = new Command("learn")
 
       const queue = await buildReviewQueue(db, {
         userId,
-        maxNew: Number(opts.maxNew),
-        maxReviews: Number(opts.maxReviews),
+        maxNew: opts.maxNew === undefined ? undefined : Number(opts.maxNew),
+        maxReviews:
+          opts.maxReviews === undefined ? undefined : Number(opts.maxReviews),
       });
 
       const locale = ((await getSetting(db, "system.locale")) ||

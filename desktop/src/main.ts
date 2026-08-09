@@ -91,6 +91,7 @@ import {
   initLearningContentStudio,
   loadStudioData,
   openCardInEditor,
+  setLearningContentFilePicker,
 } from "./learning-content.js";
 import {
   StudyEditError,
@@ -136,6 +137,21 @@ setBridgeTransport(async (cmd, args) => {
       `Invalid bridge JSON for ${cmd}: ${preview} (${(err as Error).message})`,
     );
   }
+});
+
+setLearningContentFilePicker(async () => {
+  const selected = await openFolderDialog({
+    directory: false,
+    multiple: false,
+    title: t("btn_file_import_choose"),
+    filters: [
+      {
+        name: "Anki / CSV / TSV",
+        extensions: ["apkg", "csv", "tsv"],
+      },
+    ],
+  });
+  return typeof selected === "string" ? selected : null;
 });
 
 // Bitwarden assure modal "Open vault" uses the same opener as the rest of Studio.
@@ -318,6 +334,26 @@ interface BridgeCard {
   dueAt: string;
   sourceLink?: string;
   context?: string;
+  media?: BridgeMedia[];
+}
+
+interface BridgeMedia {
+  assetHash: string;
+  side: "question" | "answer";
+  kind: "image" | "audio";
+  ordinal: number;
+  originalName: string;
+  altText: string | null;
+  mimeType: string;
+  byteSize: number;
+  dataBase64: string;
+  occlusions: Array<{
+    shape: "rect" | "ellipse";
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  }>;
 }
 
 interface ReviewPayload {
@@ -350,6 +386,58 @@ let evaluationRequestId = 0;
 let revealInProgress = false;
 let reviewActionInProgress = false;
 let cardLoadInProgress = false;
+
+const SAFE_REVIEW_MEDIA_TYPES = new Set([
+  "image/png",
+  "image/jpeg",
+  "image/gif",
+  "image/webp",
+  "audio/mpeg",
+  "audio/ogg",
+  "audio/wav",
+  "audio/mp4",
+]);
+
+function renderReviewMedia(
+  containerId: string,
+  media: BridgeMedia[] | undefined,
+  side: "question" | "answer",
+): void {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.replaceChildren();
+  for (const item of (media ?? [])
+    .filter((entry) => entry.side === side)
+    .sort((left, right) => left.ordinal - right.ordinal)) {
+    if (!SAFE_REVIEW_MEDIA_TYPES.has(item.mimeType)) continue;
+    const source = `data:${item.mimeType};base64,${item.dataBase64}`;
+    if (item.kind === "audio") {
+      const audio = document.createElement("audio");
+      audio.controls = true;
+      audio.preload = "metadata";
+      audio.src = source;
+      container.appendChild(audio);
+      continue;
+    }
+    const frame = document.createElement("div");
+    frame.className = "review-media-frame";
+    const image = document.createElement("img");
+    image.src = source;
+    image.alt = item.altText || item.originalName;
+    frame.appendChild(image);
+    for (const shape of item.occlusions) {
+      const mask = document.createElement("span");
+      mask.className = "review-media-occlusion";
+      mask.style.left = `${shape.left * 100}%`;
+      mask.style.top = `${shape.top * 100}%`;
+      mask.style.width = `${shape.width * 100}%`;
+      mask.style.height = `${shape.height * 100}%`;
+      if (shape.shape === "ellipse") mask.style.borderRadius = "50%";
+      frame.appendChild(mask);
+    }
+    container.appendChild(frame);
+  }
+}
 // Post-reveal discussion thread (ADR 2026-07-06b) — ephemeral, App-only.
 const discussion = createDiscussionState();
 let activeUserAnswer = "";
@@ -693,6 +781,19 @@ function initializeTranslations() {
     t("settings_back");
   document.getElementById("lbl-settings-system-title")!.textContent =
     t("settings_system_title");
+  document.getElementById("lbl-study-workload-title")!.textContent = t("study_workload_title");
+  document.getElementById("lbl-study-workload-help")!.textContent = t("study_workload_help");
+  document.getElementById("lbl-study-workload-preset")!.textContent = t("study_workload_preset");
+  document.getElementById("study-preset-balanced")!.textContent = t("study_preset_balanced");
+  document.getElementById("study-preset-exam")!.textContent = t("study_preset_exam");
+  document.getElementById("study-preset-problems")!.textContent = t("study_preset_problems");
+  document.getElementById("study-preset-custom")!.textContent = t("study_preset_custom");
+  document.getElementById("lbl-study-max-new")!.textContent = t("study_max_new");
+  document.getElementById("lbl-study-max-reviews")!.textContent = t("study_max_reviews");
+  document.getElementById("lbl-study-bury-new")!.textContent = t("study_bury_new");
+  document.getElementById("lbl-study-bury-review")!.textContent = t("study_bury_review");
+  document.getElementById("btn-study-workload-save")!.textContent = t("study_workload_save");
+  document.getElementById("btn-study-unbury")!.textContent = t("study_unbury");
   document.getElementById("lbl-settings-ai-title")!.textContent =
     t("settings_ai_title");
   document.getElementById("lbl-settings-agents-title")!.textContent =
@@ -933,9 +1034,27 @@ function initializeTranslations() {
 
   // Import Modal Translations
   const btnContentImport = document.getElementById("btn-content-import");
-  if (btnContentImport) btnContentImport.textContent = t("btn_import_curriculum");
+  if (btnContentImport) btnContentImport.textContent = t("btn_import_file");
   const lblImportModalTitle = document.getElementById("lbl-import-modal-title");
-  if (lblImportModalTitle) lblImportModalTitle.textContent = t("lbl_import_modal_title");
+  if (lblImportModalTitle) lblImportModalTitle.textContent = t("lbl_file_import_modal_title");
+  const btnImportTabLibrary = document.getElementById("btn-import-tab-library");
+  if (btnImportTabLibrary) btnImportTabLibrary.textContent = t("btn_import_tab_library");
+  const openContentIntro = document.getElementById("open-content-intro");
+  if (openContentIntro) openContentIntro.textContent = t("open_content_intro");
+  const openContentSearch = document.getElementById("open-content-search") as HTMLInputElement;
+  if (openContentSearch) openContentSearch.placeholder = t("open_content_search");
+  const openContentLanguage = document.getElementById("open-content-language") as HTMLSelectElement;
+  if (openContentLanguage?.options[0]) openContentLanguage.options[0].textContent = t("open_content_all_languages");
+  const openContentSubject = document.getElementById("open-content-subject") as HTMLSelectElement;
+  if (openContentSubject?.options[0]) openContentSubject.options[0].textContent = t("open_content_all_subjects");
+  const btnImportTabFile = document.getElementById("btn-import-tab-file");
+  if (btnImportTabFile) btnImportTabFile.textContent = t("btn_import_tab_file");
+  const fileImportIntro = document.getElementById("file-import-intro");
+  if (fileImportIntro) fileImportIntro.textContent = t("file_import_intro");
+  const btnImportFileChoose = document.getElementById("btn-import-file-choose");
+  if (btnImportFileChoose) btnImportFileChoose.textContent = t("btn_file_import_choose");
+  const importFileSelected = document.getElementById("import-file-selected");
+  if (importFileSelected) importFileSelected.textContent = t("file_import_no_file");
   const lblImportText = document.getElementById("lbl-import-text");
   if (lblImportText) lblImportText.textContent = t("lbl_import_text");
   const importFieldText = document.getElementById("import-field-text") as HTMLTextAreaElement;
@@ -2020,6 +2139,143 @@ async function setDynamicQuestions(enabled: boolean): Promise<void> {
     if (toggle) toggle.checked = !enabled;
     if (status) status.textContent = t("dynamic_questions_error");
   }
+}
+
+type StudyWorkloadPreset = "balanced" | "exam" | "problems" | "custom";
+
+interface StudyWorkloadSettings {
+  preset: StudyWorkloadPreset;
+  maxNew: number;
+  maxReviews: number;
+  buryNewSiblings: boolean;
+  buryReviewSiblings: boolean;
+}
+
+const STUDY_PRESET_VALUES: Record<
+  Exclude<StudyWorkloadPreset, "custom">,
+  Omit<StudyWorkloadSettings, "preset">
+> = {
+  balanced: {
+    maxNew: 10,
+    maxReviews: 50,
+    buryNewSiblings: true,
+    buryReviewSiblings: true,
+  },
+  exam: {
+    maxNew: 40,
+    maxReviews: 200,
+    buryNewSiblings: false,
+    buryReviewSiblings: false,
+  },
+  problems: {
+    maxNew: 5,
+    maxReviews: 30,
+    buryNewSiblings: true,
+    buryReviewSiblings: true,
+  },
+};
+
+function studyWorkloadElements() {
+  return {
+    preset: document.getElementById("study-workload-preset") as HTMLSelectElement,
+    maxNew: document.getElementById("study-max-new") as HTMLInputElement,
+    maxReviews: document.getElementById("study-max-reviews") as HTMLInputElement,
+    buryNew: document.getElementById("study-bury-new") as HTMLInputElement,
+    buryReview: document.getElementById("study-bury-review") as HTMLInputElement,
+    save: document.getElementById("btn-study-workload-save") as HTMLButtonElement,
+    unbury: document.getElementById("btn-study-unbury") as HTMLButtonElement,
+    status: document.getElementById("study-workload-status")!,
+  };
+}
+
+function renderStudyWorkload(settings: StudyWorkloadSettings): void {
+  const elements = studyWorkloadElements();
+  elements.preset.value = settings.preset;
+  elements.maxNew.value = String(settings.maxNew);
+  elements.maxReviews.value = String(settings.maxReviews);
+  elements.buryNew.checked = settings.buryNewSiblings;
+  elements.buryReview.checked = settings.buryReviewSiblings;
+}
+
+async function loadStudyWorkload(): Promise<void> {
+  try {
+    const result = await runBridge<{ settings: StudyWorkloadSettings }>("study-workload-get");
+    renderStudyWorkload(result.settings);
+  } catch (error) {
+    studyWorkloadElements().status.textContent = tf("study_workload_error", {
+      message: errorMessage(error),
+    });
+  }
+}
+
+async function saveStudyWorkload(): Promise<void> {
+  const elements = studyWorkloadElements();
+  elements.save.disabled = true;
+  elements.status.textContent = "";
+  try {
+    const args = ["--preset", elements.preset.value];
+    if (elements.preset.value === "custom") {
+      args.push(
+        "--max-new",
+        elements.maxNew.value,
+        "--max-reviews",
+        elements.maxReviews.value,
+        "--bury-new",
+        String(elements.buryNew.checked),
+        "--bury-review",
+        String(elements.buryReview.checked),
+      );
+    }
+    const result = await runBridge<{ settings: StudyWorkloadSettings }>(
+      "study-workload-set",
+      args,
+    );
+    renderStudyWorkload(result.settings);
+    elements.status.textContent = t("study_workload_saved");
+    await loadDashboard();
+  } catch (error) {
+    elements.status.textContent = tf("study_workload_error", {
+      message: errorMessage(error),
+    });
+  } finally {
+    elements.save.disabled = false;
+  }
+}
+
+function initStudyWorkloadControls(): void {
+  const elements = studyWorkloadElements();
+  elements.preset.addEventListener("change", () => {
+    const preset = elements.preset.value as StudyWorkloadPreset;
+    if (preset === "custom") return;
+    renderStudyWorkload({ preset, ...STUDY_PRESET_VALUES[preset] });
+  });
+  for (const control of [
+    elements.maxNew,
+    elements.maxReviews,
+    elements.buryNew,
+    elements.buryReview,
+  ]) {
+    control.addEventListener("change", () => {
+      elements.preset.value = "custom";
+    });
+  }
+  elements.save.addEventListener("click", () => void saveStudyWorkload());
+  elements.unbury.addEventListener("click", () => {
+    void (async () => {
+      try {
+        const result = await runBridge<{ unburied: number }>("study-unbury");
+        elements.status.textContent = tf("study_workload_unburied", {
+          count: result.unburied,
+        });
+        await loadDashboard();
+      } catch (error) {
+        elements.status.textContent = tf("study_workload_error", {
+          message: errorMessage(error),
+        });
+      }
+    })();
+  });
+  void loadStudyWorkload();
 }
 
 // ── SETTINGS: AGENT HARNESS CONNECTIONS (ADR 2026-07-11) ─────────────────
@@ -4024,6 +4280,7 @@ function refreshSettingsData(): void {
   void loadSettingsKnowledgeContext();
   void loadAgentHarnessStatus();
   void loadDynamicQuestionSetting();
+  void loadStudyWorkload();
   if (aiConfigEditorOpen) void loadModelRegistry();
 }
 
@@ -5477,6 +5734,8 @@ async function loadNextCard(
 
     // Set question text to a pulsing loading state so the user has immediate visual feedback
     const questionText = document.getElementById("question-text")!;
+    renderReviewMedia("question-media", [], "question");
+    renderReviewMedia("answer-media", [], "answer");
     questionText.innerHTML = "";
     const loadingText = document.createElement("span");
     loadingText.className = "loading-pulse";
@@ -5488,8 +5747,12 @@ async function loadNextCard(
     // the loading state unexplained.
     // ADR Decision 4: the study queue stays unscoped (everything,
     // interleaved) — the device default never filters reviews.
+    // Studio renders the card, so it is the surface that asks for the media
+    // bytes; agents reading the same command keep a text-only payload.
     const reviewArgs =
-      options.dynamicQuestion === false ? ["--no-dynamic-question"] : [];
+      options.dynamicQuestion === false
+        ? ["--no-dynamic-question", "--media"]
+        : ["--media"];
     if (isLlmEnabled && options.dynamicQuestion !== false) {
       isWaitingForQuestion = true;
       startQuestionWaitTimer();
@@ -5532,6 +5795,7 @@ async function loadNextCard(
 
     // Set question text and model attribution
     questionText.textContent = activePromptQuestion;
+    renderReviewMedia("question-media", activeCard.media, "question");
     setModelAttributionBadge(
       "question-model-badge",
       questionAttributionLabel(payload.questionSource, payload.questionModel),
@@ -5680,6 +5944,7 @@ function renderReveal(
 
   // 1. Concept Row
   addRevealRow("concept", activeCard.concept);
+  renderReviewMedia("answer-media", activeCard.media, "answer");
 
   // 2. Title Row (human friendly)
   addRevealRow("title", getDisplayTitle(activeCard));
@@ -5707,7 +5972,8 @@ function renderReveal(
   // Show/hide the static reference answer box based on whether local AI evaluation succeeded
   const answerBox = document.querySelector("#revealed-box .answer-box") as HTMLElement;
   if (answerBox) {
-    if (evaluationSuccessful) {
+    const hasAnswerMedia = activeCard.media?.some((item) => item.side === "answer");
+    if (evaluationSuccessful && !hasAnswerMedia) {
       answerBox.classList.add("hidden");
     } else {
       answerBox.classList.remove("hidden");
@@ -6699,6 +6965,7 @@ window.addEventListener("DOMContentLoaded", () => {
   initPanel("mobile-pairing", () =>
     initMobilePairing(() => void loadDatabaseStatus()),
   );
+  initPanel("study-workload", initStudyWorkloadControls);
   // Goal-driven import stays reachable outside first run (plan Phase 8):
   // Learning Content's "Goal import" reopens the flow at the goal page.
   document

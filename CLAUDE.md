@@ -37,7 +37,7 @@ Database lives at `~/.zam/zam.db` (SQLite, WAL mode, foreign keys enabled).
 
 1. `scheduler/queue.ts` — builds queue from due + new cards, interleaves by domain, inserts new cards every 5th slot
 2. `recall/prompter.ts` — generates template-based (not LLM) prompts adapted to Bloom level
-3. `recall/evaluator.ts` — runs FSRS-5 scheduling, updates card, appends to `review_logs`
+3. `recall/evaluator.ts` — runs FSRS-6 scheduling and short steps, updates card, appends to `review_logs`
 4. `scheduler/blocker.ts` — prerequisite blocking/unblocking (separate from rating evaluation)
 
 ### Bridge & MCP Protocols

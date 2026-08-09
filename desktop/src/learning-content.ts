@@ -49,18 +49,110 @@ let importProgressContainer: HTMLElement;
 let btnImportModalCancel: HTMLButtonElement;
 let btnImportModalSubmit: HTMLButtonElement;
 
-// Source Import DOM Cache
+// File + source import DOM cache
+let btnImportTabLibrary: HTMLButtonElement;
+let btnImportTabFile: HTMLButtonElement;
 let btnImportTabText: HTMLButtonElement;
 let btnImportTabSource: HTMLButtonElement;
+let importViewLibrary: HTMLElement;
+let importViewFile: HTMLElement;
 let importViewText: HTMLElement;
 let importViewSource: HTMLElement;
+let openContentSearch: HTMLInputElement;
+let openContentLanguage: HTMLSelectElement;
+let openContentSubject: HTMLSelectElement;
+let openContentStatus: HTMLElement;
+let openContentList: HTMLElement;
+let openContentPreview: HTMLElement;
+let btnImportFileChoose: HTMLButtonElement;
+let importFileSelected: HTMLElement;
+let importFilePreview: HTMLElement;
+let importLegacyMetadata: HTMLElement;
 let importSourceType: HTMLSelectElement;
 let importSourceUri: HTMLInputElement;
 let btnImportSourceAnalyze: HTMLButtonElement;
 let importSourcePreview: HTMLTextAreaElement;
 let importSourceId: HTMLInputElement;
 
-let activeImportTab: "text" | "source" = "text";
+type ImportTab = "library" | "file" | "text" | "source";
+
+interface OpenContentCatalogItem {
+  id: string;
+  title: string;
+  description: string;
+  author: { name: string; url: string };
+  attribution: string;
+  license: { id: string; name: string; url: string; sourceUrl: string };
+  projectUrl: string;
+  sourceUrl: string;
+  languages: string[];
+  subjects: string[];
+  tags: string[];
+  level: string;
+  artifact: {
+    format: "apkg";
+    expectedCards: number;
+    byteSize: number;
+    sha256: string;
+  };
+}
+
+interface OpenContentListing {
+  success: boolean;
+  items: OpenContentCatalogItem[];
+  filters: { languages: string[]; subjects: string[] };
+}
+
+interface FileImportPreview {
+  success: boolean;
+  format: "apkg" | "csv" | "tsv";
+  sourceName: string;
+  planHash: string;
+  counts: {
+    create: number;
+    update: number;
+    skip: number;
+    conflict: number;
+    unsupported: number;
+    cardsToCreate: number;
+    valid: number;
+    total: number;
+  };
+  decks: Array<{ path: string; cards: number }>;
+  media?: { assets: number; references: number; totalBytes: number };
+  cards: Array<{
+    question: string;
+    answer: string;
+    action: "create" | "update" | "skip" | "conflict";
+    reason: string;
+    deckPath: string;
+    warnings?: Array<{ code: string; message: string }>;
+  }>;
+  warnings: Array<{ code: string; message: string }>;
+  unsupported: Array<{ code: string; message: string }>;
+}
+
+interface OpenContentImportPreview extends FileImportPreview {
+  item: OpenContentCatalogItem;
+  artifact: { cached: boolean; sha256: string; byteSize: number };
+}
+
+export type LearningContentFilePicker = () => Promise<string | null>;
+
+let activeImportTab: ImportTab = "library";
+let pickLearningContentFile: LearningContentFilePicker | null = null;
+let selectedImportFilePath: string | null = null;
+let selectedFilePreview: FileImportPreview | null = null;
+let openContentItems: OpenContentCatalogItem[] = [];
+let selectedOpenContentId: string | null = null;
+let selectedOpenContentPreview: OpenContentImportPreview | null = null;
+
+/** Injected by the native desktop shell; the reusable MCP panel has no path access. */
+export function setLearningContentFilePicker(
+  picker: LearningContentFilePicker,
+): void {
+  pickLearningContentFile = picker;
+}
 
 let btnSplitCard: HTMLButtonElement;
 let splitModalOverlay: HTMLElement;
@@ -302,15 +394,41 @@ export function initLearningContentStudio(): void {
     "btn-import-modal-submit",
   ) as HTMLButtonElement;
 
-  // Source Import bindings
+  // File + source import bindings
+  btnImportTabLibrary = document.getElementById(
+    "btn-import-tab-library",
+  ) as HTMLButtonElement;
+  btnImportTabFile = document.getElementById(
+    "btn-import-tab-file",
+  ) as HTMLButtonElement;
   btnImportTabText = document.getElementById(
     "btn-import-tab-text",
   ) as HTMLButtonElement;
   btnImportTabSource = document.getElementById(
     "btn-import-tab-source",
   ) as HTMLButtonElement;
+  importViewLibrary = document.getElementById("import-view-library")!;
+  importViewFile = document.getElementById("import-view-file")!;
   importViewText = document.getElementById("import-view-text")!;
   importViewSource = document.getElementById("import-view-source")!;
+  openContentSearch = document.getElementById(
+    "open-content-search",
+  ) as HTMLInputElement;
+  openContentLanguage = document.getElementById(
+    "open-content-language",
+  ) as HTMLSelectElement;
+  openContentSubject = document.getElementById(
+    "open-content-subject",
+  ) as HTMLSelectElement;
+  openContentStatus = document.getElementById("open-content-status")!;
+  openContentList = document.getElementById("open-content-list")!;
+  openContentPreview = document.getElementById("open-content-preview")!;
+  btnImportFileChoose = document.getElementById(
+    "btn-import-file-choose",
+  ) as HTMLButtonElement;
+  importFileSelected = document.getElementById("import-file-selected")!;
+  importFilePreview = document.getElementById("import-file-preview")!;
+  importLegacyMetadata = document.getElementById("import-legacy-metadata")!;
   importSourceType = document.getElementById(
     "import-source-type",
   ) as HTMLSelectElement;
@@ -390,8 +508,18 @@ export function initLearningContentStudio(): void {
   btnImportModalSubmit.addEventListener("click", () => {
     void submitImport();
   });
+  btnImportTabLibrary.addEventListener("click", () =>
+    switchImportTab("library"),
+  );
+  btnImportTabFile.addEventListener("click", () => switchImportTab("file"));
   btnImportTabText.addEventListener("click", () => switchImportTab("text"));
   btnImportTabSource.addEventListener("click", () => switchImportTab("source"));
+  openContentSearch.addEventListener("input", renderOpenContentLibrary);
+  openContentLanguage.addEventListener("change", renderOpenContentLibrary);
+  openContentSubject.addEventListener("change", renderOpenContentLibrary);
+  btnImportFileChoose.addEventListener("click", () => {
+    void chooseImportFile();
+  });
   btnImportSourceAnalyze.addEventListener("click", () => {
     void analyzeImportSource();
   });
@@ -1056,14 +1184,29 @@ function showImportModal(): void {
   importSourceUri.value = "";
   importSourcePreview.value = "";
   importSourceId.value = "";
-  switchImportTab("text");
+  selectedImportFilePath = null;
+  selectedFilePreview = null;
+  openContentItems = [];
+  selectedOpenContentId = null;
+  selectedOpenContentPreview = null;
+  openContentSearch.value = "";
+  openContentLanguage.replaceChildren();
+  openContentSubject.replaceChildren();
+  openContentStatus.textContent = "";
+  openContentList.replaceChildren();
+  openContentPreview.replaceChildren();
+  importFileSelected.textContent = t("file_import_no_file");
+  importFilePreview.replaceChildren();
+  switchImportTab("library");
+  void loadOpenContentLibrary();
 
   importProgressContainer.classList.add("hidden");
-  btnImportModalSubmit.disabled = false;
   btnImportModalCancel.disabled = false;
   importFieldText.disabled = false;
   importFieldSource.disabled = false;
   importFieldCategory.disabled = false;
+  btnImportFileChoose.disabled = pickLearningContentFile === null;
+  updateImportSubmitState();
   importModalOverlay.classList.add("active");
 }
 
@@ -1075,20 +1218,100 @@ async function submitImport(): Promise<void> {
   const domain = importFieldCategory.value.trim();
   const source = importFieldSource.value.trim() || null;
 
-  if (!domain) {
+  if (activeImportTab !== "library" && activeImportTab !== "file" && !domain) {
     alert(t("lbl_err_category_required"));
+    return;
+  }
+  if (
+    activeImportTab === "library" &&
+    (!selectedOpenContentId || !selectedOpenContentPreview)
+  ) {
+    alert(t("open_content_preview_first"));
+    return;
+  }
+  if (
+    activeImportTab === "file" &&
+    (!selectedImportFilePath || !selectedFilePreview)
+  ) {
+    alert(t("file_import_preview_first"));
     return;
   }
 
   importProgressContainer.classList.remove("hidden");
+  if (activeImportTab === "library" || activeImportTab === "file") {
+    const status = document.getElementById("lbl-import-progress-status");
+    const detail = document.getElementById("lbl-import-progress-detail");
+    if (status) {
+      status.textContent =
+        activeImportTab === "library"
+          ? t("open_content_importing")
+          : t("file_import_previewing");
+    }
+    if (detail) {
+      detail.textContent =
+        activeImportTab === "library"
+          ? t("open_content_importing_detail")
+          : t("file_import_ready");
+    }
+  }
   btnImportModalSubmit.disabled = true;
   btnImportModalCancel.disabled = true;
   importFieldText.disabled = true;
   importFieldSource.disabled = true;
   importFieldCategory.disabled = true;
+  btnImportFileChoose.disabled = true;
+  setOpenContentControlsDisabled(true);
 
   try {
-    if (activeImportTab === "text") {
+    if (activeImportTab === "library") {
+      const preview = selectedOpenContentPreview as OpenContentImportPreview;
+      const id = selectedOpenContentId as string;
+      const res = await runBridge<{
+        success: boolean;
+        cardsCreated: number;
+        counts: FileImportPreview["counts"];
+      }>("open-content-confirm", ["--id", id, "--plan-hash", preview.planHash]);
+
+      if (!res?.success) throw new Error(t("open_content_error"));
+      hideImportModal();
+      alert(
+        tf("open_content_import_success", {
+          create: res.counts.create,
+          update: res.counts.update,
+          skip: res.counts.skip,
+          cards: res.cardsCreated,
+        }),
+      );
+      cancelEdit();
+      await loadStudioData();
+    } else if (activeImportTab === "file") {
+      const preview = selectedFilePreview as FileImportPreview;
+      const path = selectedImportFilePath as string;
+      const res = await runBridge<{
+        success: boolean;
+        cardsCreated: number;
+        counts: FileImportPreview["counts"];
+      }>("personal-card-import-file-confirm", [
+        "--path",
+        path,
+        "--plan-hash",
+        preview.planHash,
+      ]);
+
+      if (!res?.success) throw new Error(t("lbl_error_file_import"));
+      hideImportModal();
+      alert(
+        tf("toast_file_import_success", {
+          create: res.counts.create,
+          update: res.counts.update,
+          skip: res.counts.skip,
+          conflict: res.counts.conflict,
+          cards: res.cardsCreated,
+        }),
+      );
+      cancelEdit();
+      await loadStudioData();
+    } else if (activeImportTab === "text") {
       const text = importFieldText.value.trim();
       if (!text) {
         alert(t("lbl_err_import_context_required"));
@@ -1190,7 +1413,13 @@ async function submitImport(): Promise<void> {
       }
     }
   } catch (err: any) {
-    alert(t("lbl_error_importing") + ": " + (err.message || String(err)));
+    const messageKey =
+      activeImportTab === "library"
+        ? "open_content_error"
+        : activeImportTab === "file"
+          ? "lbl_error_file_import"
+          : "lbl_error_importing";
+    alert(t(messageKey) + ": " + (err.message || String(err)));
   } finally {
     importProgressContainer.classList.add("hidden");
     btnImportModalSubmit.disabled = false;
@@ -1198,6 +1427,9 @@ async function submitImport(): Promise<void> {
     importFieldText.disabled = false;
     importFieldSource.disabled = false;
     importFieldCategory.disabled = false;
+    btnImportFileChoose.disabled = pickLearningContentFile === null;
+    setOpenContentControlsDisabled(false);
+    updateImportSubmitState();
   }
 }
 
@@ -1577,22 +1809,389 @@ async function submitConfirmFoundations(): Promise<void> {
   }
 }
 
-function switchImportTab(tab: "text" | "source"): void {
+function switchImportTab(tab: ImportTab): void {
   activeImportTab = tab;
-  if (tab === "text") {
-    btnImportTabText.classList.add("primary-btn");
-    btnImportTabText.classList.remove("secondary-btn");
-    btnImportTabSource.classList.add("secondary-btn");
-    btnImportTabSource.classList.remove("primary-btn");
-    importViewText.classList.remove("hidden");
-    importViewSource.classList.add("hidden");
+  const tabs: Array<[ImportTab, HTMLButtonElement, HTMLElement]> = [
+    ["library", btnImportTabLibrary, importViewLibrary],
+    ["file", btnImportTabFile, importViewFile],
+    ["text", btnImportTabText, importViewText],
+    ["source", btnImportTabSource, importViewSource],
+  ];
+  for (const [name, button, view] of tabs) {
+    const selected = name === tab;
+    button.classList.toggle("primary-btn", selected);
+    button.classList.toggle("secondary-btn", !selected);
+    view.classList.toggle("hidden", !selected);
+  }
+  importLegacyMetadata.classList.toggle(
+    "hidden",
+    tab === "library" || tab === "file",
+  );
+  btnImportModalSubmit.textContent =
+    tab === "library"
+      ? t("open_content_confirm")
+      : tab === "file"
+        ? t("btn_file_import_confirm")
+        : t("btn_import_submit");
+  updateImportSubmitState();
+}
+
+function updateImportSubmitState(): void {
+  if (activeImportTab === "library") {
+    const counts = selectedOpenContentPreview?.counts;
+    btnImportModalSubmit.disabled =
+      !counts || counts.create + counts.update + counts.cardsToCreate === 0;
+    return;
+  }
+  if (activeImportTab !== "file") {
+    btnImportModalSubmit.disabled = false;
+    return;
+  }
+  const counts = selectedFilePreview?.counts;
+  btnImportModalSubmit.disabled =
+    !counts || counts.create + counts.update + counts.cardsToCreate === 0;
+}
+
+function appendImportPreviewLine(
+  container: HTMLElement,
+  text: string,
+  className?: string,
+): HTMLElement {
+  const line = document.createElement("div");
+  line.textContent = text;
+  if (className) line.className = className;
+  container.appendChild(line);
+  return line;
+}
+
+function renderFileImportPreview(
+  preview: FileImportPreview,
+  container: HTMLElement = importFilePreview,
+): void {
+  container.replaceChildren();
+  appendImportPreviewLine(
+    container,
+    `${preview.sourceName} · ${preview.format.toUpperCase()}`,
+    "modal-impact-title",
+  );
+  appendImportPreviewLine(
+    container,
+    tf("file_import_preview_counts", {
+      total: preview.counts.total,
+      create: preview.counts.create,
+      update: preview.counts.update,
+      skip: preview.counts.skip,
+      conflict: preview.counts.conflict,
+      unsupported: preview.counts.unsupported,
+      cards: preview.counts.cardsToCreate,
+    }),
+  );
+  appendImportPreviewLine(
+    container,
+    tf("file_import_preview_decks", {
+      decks:
+        preview.decks
+          .map((deck) => `${deck.path} (${deck.cards})`)
+          .join(", ") || "—",
+    }),
+  );
+  if (preview.media && preview.media.assets > 0) {
+    appendImportPreviewLine(
+      container,
+      tf("file_import_preview_media", {
+        assets: preview.media.assets,
+        references: preview.media.references,
+        size: (preview.media.totalBytes / (1024 * 1024)).toFixed(1),
+      }),
+    );
+  }
+
+  const notices = [
+    ...preview.warnings,
+    ...preview.unsupported,
+    ...preview.cards.flatMap((card) => card.warnings ?? []),
+    ...preview.cards
+      .filter((card) => card.action === "conflict")
+      .map((card) => ({ code: "conflict", message: card.reason })),
+  ];
+  const distinctNotices = notices.filter(
+    (notice, index) =>
+      notices.findIndex(
+        (candidate) =>
+          candidate.code === notice.code &&
+          candidate.message === notice.message,
+      ) === index,
+  );
+  if (distinctNotices.length > 0) {
+    appendImportPreviewLine(
+      container,
+      t("file_import_preview_notices"),
+      "modal-impact-title",
+    );
+    const list = document.createElement("ul");
+    list.className = "modal-impact-list";
+    for (const notice of distinctNotices.slice(0, 10)) {
+      const item = document.createElement("li");
+      item.textContent = notice.message;
+      list.appendChild(item);
+    }
+    if (distinctNotices.length > 10) {
+      const item = document.createElement("li");
+      item.textContent = tf("file_import_more_notices", {
+        count: distinctNotices.length - 10,
+      });
+      list.appendChild(item);
+    }
+    container.appendChild(list);
+  }
+
+  if (
+    preview.counts.create +
+      preview.counts.update +
+      preview.counts.cardsToCreate ===
+    0
+  ) {
+    appendImportPreviewLine(container, t("file_import_nothing_to_do"));
   } else {
-    btnImportTabText.classList.add("secondary-btn");
-    btnImportTabText.classList.remove("primary-btn");
-    btnImportTabSource.classList.add("primary-btn");
-    btnImportTabSource.classList.remove("secondary-btn");
-    importViewText.classList.add("hidden");
-    importViewSource.classList.remove("hidden");
+    appendImportPreviewLine(container, t("file_import_ready"));
+  }
+}
+
+function setOpenContentControlsDisabled(disabled: boolean): void {
+  openContentSearch.disabled = disabled;
+  openContentLanguage.disabled = disabled;
+  openContentSubject.disabled = disabled;
+  for (const button of openContentList.querySelectorAll("button")) {
+    (button as HTMLButtonElement).disabled = disabled;
+  }
+}
+
+function populateOpenContentFilter(
+  select: HTMLSelectElement,
+  values: string[],
+  allLabel: string,
+): void {
+  const current = select.value;
+  const all = document.createElement("option");
+  all.value = "";
+  all.textContent = allLabel;
+  const options = values.map((value) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = value;
+    return option;
+  });
+  select.replaceChildren(all, ...options);
+  if (values.includes(current)) select.value = current;
+}
+
+function openTrustedCatalogUrl(value: string): void {
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:") throw new Error("HTTPS required");
+    const hostWindow = window as Window & {
+      __zamOpenExternal?: (url: string) => void;
+    };
+    if (typeof hostWindow.__zamOpenExternal === "function") {
+      hostWindow.__zamOpenExternal(url.toString());
+    } else {
+      window.open(url.toString(), "_blank", "noopener,noreferrer");
+    }
+  } catch {
+    alert(t("open_content_link_error"));
+  }
+}
+
+function normalizeOpenContentSearch(value: string): string {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase()
+    .replace(/[^\p{Letter}\p{Number}]+/gu, " ")
+    .trim();
+}
+
+function renderOpenContentLibrary(): void {
+  const query = normalizeOpenContentSearch(openContentSearch.value);
+  const language = openContentLanguage.value;
+  const subject = openContentSubject.value;
+  const visible = openContentItems.filter((item) => {
+    if (language && !item.languages.includes(language)) return false;
+    if (subject && !item.subjects.includes(subject)) return false;
+    if (!query) return true;
+    return normalizeOpenContentSearch(
+      [
+        item.title,
+        item.description,
+        item.author.name,
+        ...item.subjects,
+        ...item.tags,
+      ].join(" "),
+    ).includes(query);
+  });
+
+  openContentList.replaceChildren();
+  openContentStatus.textContent =
+    visible.length === 0
+      ? t("open_content_empty")
+      : tf("open_content_count", { count: visible.length });
+  for (const item of visible) {
+    const card = document.createElement("article");
+    card.className = "modal-impact-section";
+    if (item.id === selectedOpenContentId) {
+      card.style.borderColor = "var(--clr-accent-purple)";
+    }
+
+    const title = document.createElement("div");
+    title.className = "modal-impact-title";
+    title.style.color = "var(--clr-text-primary)";
+    title.textContent = item.title;
+    const description = document.createElement("div");
+    description.textContent = item.description;
+    const metadata = document.createElement("div");
+    metadata.style.fontSize = "0.8rem";
+    metadata.textContent = tf("open_content_item_meta", {
+      cards: item.artifact.expectedCards,
+      languages: item.languages.join(", ").toUpperCase(),
+      subjects: item.subjects.join(", "),
+    });
+    const attribution = document.createElement("div");
+    attribution.style.fontSize = "0.78rem";
+    attribution.textContent = item.attribution;
+
+    const actions = document.createElement("div");
+    actions.style.display = "flex";
+    actions.style.gap = "8px";
+    actions.style.flexWrap = "wrap";
+    const preview = document.createElement("button");
+    preview.className = "btn primary-btn btn-sm";
+    preview.type = "button";
+    preview.textContent =
+      item.id === selectedOpenContentId && selectedOpenContentPreview
+        ? t("open_content_selected")
+        : t("open_content_preview");
+    preview.addEventListener("click", () => {
+      void previewOpenContentItem(item.id);
+    });
+    const source = document.createElement("button");
+    source.className = "btn secondary-btn btn-sm";
+    source.type = "button";
+    source.textContent = t("open_content_source");
+    source.addEventListener("click", () =>
+      openTrustedCatalogUrl(item.sourceUrl),
+    );
+    const license = document.createElement("button");
+    license.className = "btn secondary-btn btn-sm";
+    license.type = "button";
+    license.textContent = item.license.id;
+    license.addEventListener("click", () =>
+      openTrustedCatalogUrl(item.license.sourceUrl),
+    );
+    actions.append(preview, source, license);
+    card.append(title, description, metadata, attribution, actions);
+    openContentList.appendChild(card);
+  }
+}
+
+async function loadOpenContentLibrary(): Promise<void> {
+  openContentStatus.textContent = t("open_content_loading");
+  openContentList.replaceChildren();
+  setOpenContentControlsDisabled(true);
+  try {
+    const listing = await runBridge<OpenContentListing>("open-content-list");
+    if (!listing?.success) throw new Error(t("open_content_error"));
+    openContentItems = listing.items;
+    populateOpenContentFilter(
+      openContentLanguage,
+      listing.filters.languages,
+      t("open_content_all_languages"),
+    );
+    populateOpenContentFilter(
+      openContentSubject,
+      listing.filters.subjects,
+      t("open_content_all_subjects"),
+    );
+    renderOpenContentLibrary();
+  } catch (err: any) {
+    openContentItems = [];
+    openContentStatus.textContent =
+      t("open_content_error") + ": " + (err.message || String(err));
+  } finally {
+    setOpenContentControlsDisabled(false);
+  }
+}
+
+async function previewOpenContentItem(id: string): Promise<void> {
+  selectedOpenContentId = id;
+  selectedOpenContentPreview = null;
+  openContentPreview.replaceChildren();
+  appendImportPreviewLine(
+    openContentPreview,
+    t("open_content_downloading"),
+    "modal-impact-title",
+  );
+  setOpenContentControlsDisabled(true);
+  updateImportSubmitState();
+  renderOpenContentLibrary();
+  setOpenContentControlsDisabled(true);
+  try {
+    const preview = await runBridge<OpenContentImportPreview>(
+      "open-content-preview",
+      ["--id", id],
+    );
+    if (!preview?.success) throw new Error(t("open_content_error"));
+    selectedOpenContentPreview = preview;
+    renderFileImportPreview(preview, openContentPreview);
+    openContentStatus.textContent = t("open_content_preview_ready");
+  } catch (err: any) {
+    selectedOpenContentId = null;
+    selectedOpenContentPreview = null;
+    openContentPreview.replaceChildren();
+    appendImportPreviewLine(
+      openContentPreview,
+      t("open_content_error") + ": " + (err.message || String(err)),
+    );
+  } finally {
+    renderOpenContentLibrary();
+    if (selectedOpenContentPreview) {
+      openContentStatus.textContent = t("open_content_preview_ready");
+    }
+    setOpenContentControlsDisabled(false);
+    updateImportSubmitState();
+  }
+}
+
+async function chooseImportFile(): Promise<void> {
+  if (!pickLearningContentFile) {
+    alert(t("file_import_picker_unavailable"));
+    return;
+  }
+  try {
+    const path = await pickLearningContentFile();
+    if (!path) return;
+    selectedImportFilePath = path;
+    selectedFilePreview = null;
+    importFileSelected.textContent = t("file_import_previewing");
+    importFilePreview.replaceChildren();
+    btnImportFileChoose.disabled = true;
+    updateImportSubmitState();
+
+    const preview = await runBridge<FileImportPreview>(
+      "personal-card-import-file-preview",
+      ["--path", path],
+    );
+    if (!preview?.success) throw new Error(t("lbl_error_file_import"));
+    selectedFilePreview = preview;
+    importFileSelected.textContent = preview.sourceName;
+    renderFileImportPreview(preview);
+  } catch (err: any) {
+    selectedImportFilePath = null;
+    selectedFilePreview = null;
+    importFileSelected.textContent = t("file_import_no_file");
+    alert(t("lbl_error_file_import") + ": " + (err.message || String(err)));
+  } finally {
+    btnImportFileChoose.disabled = pickLearningContentFile === null;
+    updateImportSubmitState();
   }
 }
 

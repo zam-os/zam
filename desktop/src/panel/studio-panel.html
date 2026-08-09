@@ -457,11 +457,10 @@
 
         <div class="content-studio-toolbar">
           <!--
-            Import Curriculum drives personal-source-import /
-            personal-card-import-curriculum, which zam_studio_bridge does not
-            allowlist. The button must still exist: initLearningContentStudio()
-            binds it and wires the whole import modal unconditionally, and a
-            missing element there throws and takes down the whole panel.
+            Browser-hosted MCP panels cannot hand a native local path to the
+            CLI. The desktop Studio owns the file picker; this hidden button
+            and modal remain because initLearningContentStudio() binds their
+            shared fields unconditionally.
           -->
           <button
             id="btn-content-import"
@@ -729,13 +728,36 @@
           </div>
           <div class="modal-body">
             <div style="display: flex; gap: 8px; margin-bottom: 4px">
-              <button id="btn-import-tab-text" class="btn btn-xs primary-btn" type="button">Direct Text</button>
+              <button id="btn-import-tab-library" class="btn btn-xs primary-btn" type="button">Open Library</button>
+              <button id="btn-import-tab-file" class="btn btn-xs secondary-btn" type="button">APKG / CSV / TSV</button>
+              <button id="btn-import-tab-text" class="btn btn-xs secondary-btn" type="button">Direct Text</button>
               <button id="btn-import-tab-source" class="btn btn-xs secondary-btn" type="button">
                 File / Link / Scan
               </button>
             </div>
 
-            <div id="import-view-text">
+            <div id="import-view-library">
+              <p id="open-content-intro">Discover reviewed, open-licensed decks.</p>
+              <input id="open-content-search" class="editor-input" type="search" placeholder="Search open decks" />
+              <select id="open-content-language" class="editor-select" aria-label="Content language">
+                <option value="">All languages</option>
+              </select>
+              <select id="open-content-subject" class="editor-select" aria-label="Content subject">
+                <option value="">All subjects</option>
+              </select>
+              <div id="open-content-status" role="status" aria-live="polite"></div>
+              <div id="open-content-list"></div>
+              <div id="open-content-preview" class="modal-impact-section" role="status" aria-live="polite"></div>
+            </div>
+
+            <div id="import-view-file" class="hidden">
+              <p id="file-import-intro">Local file import is available in the ZAM desktop Studio.</p>
+              <button id="btn-import-file-choose" class="btn primary-btn btn-sm" type="button">Choose file</button>
+              <span id="import-file-selected">No file selected</span>
+              <div id="import-file-preview" class="modal-impact-section" role="status" aria-live="polite"></div>
+            </div>
+
+            <div id="import-view-text" class="hidden">
               <div class="editor-form-group">
                 <label for="import-field-text">Curriculum Text</label>
                 <textarea
@@ -782,7 +804,7 @@
               <input type="hidden" id="import-source-id" />
             </div>
 
-            <div class="editor-form-row">
+            <div id="import-legacy-metadata" class="editor-form-row hidden">
               <div class="editor-form-group">
                 <label for="import-field-source">Source URL / Reference</label>
                 <input

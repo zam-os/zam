@@ -71,6 +71,7 @@ export {
   getDefaultDbPath,
   openDatabase,
   openDatabaseWithSync,
+  openReadOnlySqliteDatabase,
 } from "./db/connection.js";
 export type { PostgresDatabaseOptions } from "./db/postgres.js";
 export { openPostgresDatabase } from "./db/postgres.js";
@@ -114,6 +115,24 @@ export {
   serializeGoal,
 } from "./goals/parser.js";
 export type {
+  TextImportAction,
+  TextImportAssetInput,
+  TextImportCardInput,
+  TextImportCommitResult,
+  TextImportCounts,
+  TextImportDeckPreview,
+  TextImportDocument,
+  TextImportFormat,
+  TextImportMediaReference,
+  TextImportNotice,
+  TextImportPreview,
+  TextImportPreviewCard,
+} from "./import/text-import.js";
+export {
+  commitTextImport,
+  previewTextImport,
+} from "./import/text-import.js";
+export type {
   PublishRevisionInput,
   PublishRevisionResult,
   RevisionChanges,
@@ -124,6 +143,7 @@ export {
   getRevisionImpact,
   isAwaitingRetest,
   publishTokenRevision,
+  publishTokenRevisionInTransaction,
 } from "./library/revision.js";
 export type {
   AgentSkill,
@@ -182,6 +202,13 @@ export {
   unassignTokenFromContext,
   updateKnowledgeContext,
 } from "./models/knowledge-context.js";
+export type {
+  ImageOcclusionShape,
+  TokenMedia,
+  TokenMediaKind,
+  TokenMediaSide,
+} from "./models/media.js";
+export { getTokenMedia } from "./models/media.js";
 export type {
   PersonaContextSeedResult,
   PersonaDescriptor,
@@ -485,6 +512,24 @@ export type {
   ReviewQueueOptions,
 } from "./scheduler/queue.js";
 export { buildReviewQueue } from "./scheduler/queue.js";
+export type { BurySiblingResult } from "./scheduler/siblings.js";
+export {
+  burySiblingCards,
+  nextLocalDay,
+  unburySiblingCards,
+} from "./scheduler/siblings.js";
+export type {
+  StudyWorkloadPreset,
+  StudyWorkloadSettings,
+  UpdateStudyWorkloadInput,
+} from "./scheduler/study-settings.js";
+export {
+  DEFAULT_STUDY_WORKLOAD,
+  getStudyWorkloadSettings,
+  isStudyWorkloadPreset,
+  STUDY_WORKLOAD_PRESETS,
+  setStudyWorkloadSettings,
+} from "./scheduler/study-settings.js";
 // Search
 export type {
   HybridScoredToken,

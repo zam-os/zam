@@ -23,6 +23,9 @@ export interface Card {
   reps: number;
   lapses: number;
   state: CardState;
+  learning_step: number | null;
+  buried_until: string | null;
+  buried_reason: string | null;
   due_at: string;
   last_review_at: string | null;
   blocked: number; // 0 or 1
@@ -40,6 +43,9 @@ export interface UpdateCardInput {
   reps?: number;
   lapses?: number;
   state?: CardState;
+  learning_step?: number | null;
+  buried_until?: string | null;
+  buried_reason?: string | null;
   due_at?: string;
   last_review_at?: string | null;
   blocked?: number;
@@ -171,6 +177,18 @@ export async function updateCard(
     fields.push("state = ?");
     values.push(updates.state);
   }
+  if (updates.learning_step !== undefined) {
+    fields.push("learning_step = ?");
+    values.push(updates.learning_step);
+  }
+  if (updates.buried_until !== undefined) {
+    fields.push("buried_until = ?");
+    values.push(updates.buried_until);
+  }
+  if (updates.buried_reason !== undefined) {
+    fields.push("buried_reason = ?");
+    values.push(updates.buried_reason);
+  }
   if (updates.due_at !== undefined) {
     fields.push("due_at = ?");
     values.push(updates.due_at);
@@ -231,6 +249,9 @@ export async function resetCardsForToken(
          reps = 0,
          lapses = 0,
          state = 'new',
+         learning_step = NULL,
+         buried_until = NULL,
+         buried_reason = NULL,
          due_at = ?,
          last_review_at = NULL
        WHERE token_id = ?`,
@@ -352,7 +373,7 @@ export async function deleteCardForUser(
 /**
  * Get all cards that are due for review.
  *
- * A card is due when it is not blocked and due_at <= now.
+ * A card is due when it is not blocked/buried and due_at <= now.
  * Results are ordered by bloom_level ascending (fundamentals first),
  * then by due_at ascending (oldest first).
  *
@@ -374,9 +395,10 @@ export async function getDueCards(
     FROM cards c
     JOIN tokens t ON t.id = c.token_id
     WHERE c.user_id = ? AND c.blocked = 0 AND c.due_at <= ?
+      AND (c.buried_until IS NULL OR c.buried_until <= ?)
       AND t.maintenance_at IS NULL
       AND c.detached_at IS NULL`;
-  const params: unknown[] = [userId, cutoff];
+  const params: unknown[] = [userId, cutoff, cutoff];
 
   if (domain) {
     sql += " AND t.domain = ?";

@@ -33,8 +33,8 @@ function hrefValues(html: string): string[] {
 // used to pin extractLinks against genuine OKF prose rather than a synthetic
 // stand-in, per the Task 3 brief.
 const FSRS_BODY = [
-  "ZAM's spaced repetition uses **FSRS-5** (Free Spaced Repetition Scheduler,",
-  "v5), implemented as pure functions in `src/kernel/scheduler/fsrs.ts`.",
+  "ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,",
+  "v6), implemented as pure functions in `src/kernel/scheduler/fsrs.ts`.",
   "",
   "A review takes a **rating** on a four-point scale: `1` Again (forgot),",
   "`2` Hard, `3` Good, `4` Easy. Each card carries FSRS state per user:",
@@ -345,7 +345,7 @@ describe("filterCatalog", () => {
     {
       file: "fsrs-scheduling.md",
       type: "algorithm",
-      title: "FSRS-5 Scheduling",
+      title: "FSRS-6 Scheduling",
       description: "Pure-function scheduler",
       tags: ["kernel", "fsrs"],
     },
@@ -359,7 +359,7 @@ describe("filterCatalog", () => {
   ];
 
   it("matches case-insensitively on title", () => {
-    expect(filterCatalog(catalog, "fsrs-5")).toEqual([catalog[0]]);
+    expect(filterCatalog(catalog, "fsrs-6")).toEqual([catalog[0]]);
   });
 
   it("matches case-insensitively on description", () => {

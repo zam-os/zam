@@ -40,6 +40,7 @@ import {
   type CapabilityFlags,
   checkCredentials,
   clearProviderApiKey,
+  commitTextImport,
   confirmCardSplit,
   confirmFoundations,
   confirmSourceImport,
@@ -74,6 +75,7 @@ import {
   getProviderApiKey,
   getReviewActivity,
   getSetting,
+  getStudyWorkloadSettings,
   getSystemProfile,
   getTokenBySlug,
   getTokenDeleteImpact,
@@ -84,6 +86,7 @@ import {
   isBitwardenVaultEnabled,
   isOllamaInstalled,
   isPersonaId,
+  isStudyWorkloadPreset,
   isVoiceEnginePreference,
   listAgentSkills,
   listKnowledgeContexts,
@@ -98,6 +101,7 @@ import {
   openDatabaseWithSync,
   PERSONA_DESCRIPTORS,
   pairCommands,
+  previewTextImport,
   readMonitorLog,
   readUiObservationLog,
   resolveCredentials,
@@ -113,6 +117,7 @@ import {
   setOnboardingPersona,
   setProviderApiKey,
   setSetting,
+  setStudyWorkloadSettings,
   setTursoCredentials,
   slugify,
   supportsLocalGeneration,
@@ -120,6 +125,7 @@ import {
   tursoVaultAccessPending,
   uiObservationLogExists,
   unassignTokenFromContext,
+  unburySiblingCards,
   updateToken,
   VOICE_ENGINE_PREFERENCES,
   type WorkspaceConfig,
@@ -193,6 +199,7 @@ import {
   isPdfUrl,
   plainTextToExtractableHtml,
 } from "../curriculum/pdf-text.js";
+import { readTextImportFile } from "../import/text-file.js";
 import { performInstallRepair } from "../install-repair.js";
 import { resolveOperationKnowledgeContexts } from "../knowledge-contexts.js";
 import {
@@ -251,6 +258,11 @@ import {
 } from "../llm/speech.js";
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
 import { createMobilePairingPayload } from "../mobile-pairing.js";
+import { listOpenContentCatalog } from "../open-content/catalog.js";
+import {
+  confirmOpenContentImport,
+  previewOpenContentImport,
+} from "../open-content/service.js";
 import {
   bindRoleProviders,
   buildProviderListing,
@@ -977,6 +989,10 @@ bridgeCommand
     "Use the stored question without generating a fresh LLM question",
   )
   .option("--knowledge-context <context>", "Filter cards by knowledge context")
+  .option(
+    "--media",
+    "Inline the card's media as base64 (rendering surfaces only)",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
@@ -986,6 +1002,7 @@ bridgeCommand
           noResolve: opts.resolve === false,
           noDynamicQuestion: opts.dynamicQuestion === false,
           knowledgeContext: opts.knowledgeContext,
+          includeMedia: opts.media === true,
         });
         jsonOut(result);
       } catch (err) {
@@ -3882,6 +3899,7 @@ bridgeCommand
         userId,
         locale,
         llm: { enabled, url, model },
+        studyWorkload: await getStudyWorkloadSettings(db, userId),
         activeWorkspaceId,
         workspaceDir,
         skillLinks,
@@ -4208,6 +4226,73 @@ bridgeCommand
           dynamicQuestions:
             (await getSetting(db, "llm.dynamic_questions")) !== "false",
         },
+      });
+    });
+  });
+
+function workloadBoolean(value: unknown, label: string): boolean | undefined {
+  if (value === undefined) return undefined;
+  if (value === "true") return true;
+  if (value === "false") return false;
+  jsonError(`${label} must be true or false`);
+}
+
+bridgeCommand
+  .command("study-workload-get")
+  .description("Get persistent review workload controls for a learner (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      jsonOut({
+        success: true,
+        userId,
+        settings: await getStudyWorkloadSettings(db, userId),
+      });
+    });
+  });
+
+bridgeCommand
+  .command("study-workload-set")
+  .description("Save persistent review workload controls for a learner (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .option("--preset <name>", "balanced | exam | problems | custom")
+  .option("--max-new <n>", "Maximum new cards per session")
+  .option("--max-reviews <n>", "Maximum total cards per session")
+  .option("--bury-new <true|false>", "Bury new siblings until tomorrow")
+  .option("--bury-review <true|false>", "Bury review siblings until tomorrow")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      if (opts.preset !== undefined && !isStudyWorkloadPreset(opts.preset)) {
+        jsonError("preset must be balanced, exam, problems, or custom");
+      }
+      const maxNew =
+        opts.maxNew === undefined ? undefined : Number(opts.maxNew);
+      const maxReviews =
+        opts.maxReviews === undefined ? undefined : Number(opts.maxReviews);
+      const settings = await setStudyWorkloadSettings(db, userId, {
+        preset: opts.preset,
+        maxNew,
+        maxReviews,
+        buryNewSiblings: workloadBoolean(opts.buryNew, "bury-new"),
+        buryReviewSiblings: workloadBoolean(opts.buryReview, "bury-review"),
+      });
+      jsonOut({ success: true, userId, settings });
+    });
+  });
+
+bridgeCommand
+  .command("study-unbury")
+  .description("Make all sibling-buried cards visible for a learner (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      jsonOut({
+        success: true,
+        userId,
+        unburied: await unburySiblingCards(db, userId),
       });
     });
   });
@@ -5792,6 +5877,105 @@ bridgeCommand
         createdCount: result.createdCount,
         linkedCount: result.linkedCount,
       });
+    });
+  });
+
+// ── zam bridge personal-card-import-file-* ─────────────────────────────────
+
+bridgeCommand
+  .command("open-content-list")
+  .description("List curated, open-licensed learning decks (JSON)")
+  .option("--query <text>", "Search titles, subjects, authors, and tags")
+  .option("--language <code>", "Filter by content language")
+  .option("--subject <subject>", "Filter by subject")
+  .action((opts) => {
+    const listing = listOpenContentCatalog({
+      query: opts.query,
+      language: opts.language,
+      subject: opts.subject,
+    });
+    jsonOut({
+      success: true,
+      ...listing,
+      policy: {
+        curated: true,
+        explicitLicenseRequired: true,
+        ankiWebAutomated: false,
+      },
+    });
+  });
+
+bridgeCommand
+  .command("open-content-preview")
+  .description(
+    "Download, verify, and preview a curated open-content deck (JSON)",
+  )
+  .requiredOption("--id <id>", "Curated catalog item ID")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const preview = await previewOpenContentImport(db, userId, opts.id);
+      jsonOut({ success: true, ...preview });
+    });
+  });
+
+bridgeCommand
+  .command("open-content-confirm")
+  .description(
+    "Confirm a verified curated deck using its exact preview plan (JSON)",
+  )
+  .requiredOption("--id <id>", "Curated catalog item ID")
+  .requiredOption("--plan-hash <hash>", "Plan hash returned by preview")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const result = await confirmOpenContentImport(
+        db,
+        userId,
+        opts.id,
+        opts.planHash,
+      );
+      jsonOut({ success: true, ...result });
+    });
+  });
+
+bridgeCommand
+  .command("personal-card-import-file-preview")
+  .description(
+    "Preview a local APKG, CSV, or TSV card import without network or AI (JSON)",
+  )
+  .requiredOption("--path <path>", "Local .apkg, .csv, or .tsv file")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const document = await readTextImportFile(opts.path);
+      const preview = await previewTextImport(db, userId, document);
+      jsonOut({ success: true, ...preview });
+    });
+  });
+
+bridgeCommand
+  .command("personal-card-import-file-confirm")
+  .description(
+    "Atomically confirm a previously previewed local card import (JSON)",
+  )
+  .requiredOption("--path <path>", "Local .apkg, .csv, or .tsv file")
+  .requiredOption("--plan-hash <hash>", "Plan hash returned by preview")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const document = await readTextImportFile(opts.path);
+      const result = await commitTextImport(
+        db,
+        userId,
+        document,
+        opts.planHash,
+      );
+      jsonOut({ success: true, ...result });
     });
   });
 

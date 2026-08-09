@@ -158,4 +158,4 @@ Before building from scratch, ZAM can leverage or align with several existing in
 
 1. **Verification of AI-generated inputs:** How do we filter out low-quality AI token proposals when users try to upstream their local lecture notes? (e.g., automated linter checks, community consensus upvotes, or mandatory educator review?)
 2. **Licensing of Central Content:** Should the GCR be licensed under Creative Commons (CC-BY-SA) or Public Domain (CC0) to prevent proprietary lock-in?
-3. **FSRS-5 Weight Tuning per Curriculum:** Should different registry packages bundle their own FSRS-5 default weights (e.g., languages might decay faster than conceptual mathematics)?
+3. **FSRS-6 Weight Tuning per Curriculum:** Should different registry packages bundle their own FSRS-6 default weights (e.g., languages might decay faster than conceptual mathematics)?

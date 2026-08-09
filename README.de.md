@@ -33,9 +33,8 @@ wachsen willst, während du automatisierst. Wenn du ohnehin mit Claude, Codex, C
 - **Sieht dir bei der Arbeit zu.** Machst du einen Schritt selbst gut, wird er still als
   gelernt markiert — ohne Unterbrechung. Wenn keine echte Aufgabe zeigen kann, was du
   weißt, stellt ZAM eine gezielte Erinnerungsfrage. Beides ist aktives Erinnern.
-- **Merkt sich, was du vergisst.** Jedes Konzept wird mit FSRS-5-Spaced-Repetition über
-  einen Voraussetzungsgraphen geplant — ZAM holt Dinge genau dann zurück, bevor sie
-  entgleiten würden.
+- **Merkt sich, was du vergisst.** Jedes Konzept wird mit FSRS-6-Spaced-Repetition samt
+  kurzen Lern- und Wiederlernschritten über einen Voraussetzungsgraphen geplant.
 - **Bleibt auf deinem Rechner.** Eine lokale SQLite-Datenbank (`~/.zam/zam.db`), geteilt
   von Agent und Desktop Studio. Wiederholen geht offline; lokale LLMs (Ollama,
   FastFlowLM) werden unterstützt.
@@ -142,7 +141,7 @@ zam agent connect claude-code   # oder codex · antigravity · opencode · copil
 
 - **Token** — ein atomares Konzept, das es sich zu merken lohnt, mit Bloom-Stufe
   (1 erinnern → 5 erschaffen).
-- **Card** — dein persönlicher Spaced-Repetition-Zustand für ein Token (FSRS-5).
+- **Card** — dein persönlicher Spaced-Repetition-Zustand für ein Token (FSRS-6).
 - **Voraussetzungen** — ein Graph dessen, was zuerst verstanden sein muss; ZAM fragt kein
   Konzept ab, dessen Grundlagen dir gerade entglitten sind.
 - **Sessions** — jede Arbeits- und Lernepisode wird protokolliert, damit Bewertungen aus

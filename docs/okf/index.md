@@ -12,13 +12,14 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 
 ## algorithm
 
-- [FSRS-5 Scheduling](fsrs-scheduling.md) — ZAM schedules reviews with a pure-function FSRS-5 implementation; ratings 1-4 update stability and difficulty, and the FSRS test suite is the source of truth for scheduling behavior.
+- [FSRS-6 Scheduling](fsrs-scheduling.md) — ZAM schedules reviews with a deterministic FSRS-6 kernel, persisted same-day learning steps, per-learner workload controls, and sibling-aware queues and burial.
 
 ## architecture
 
 - [Kernel and CLI Architecture](kernel-architecture.md) — ZAM is split into an AI-agnostic learning kernel and a thin CLI orchestration layer; all learning logic lives in the kernel, all LLM/HTTP code in the CLI.
 - [Local AI Runtimes](local-ai-runtimes.md) — Local text and image generation is offered only on accelerated hardware - Foundry Local for text, Ollama for images - because CPU generation is too slow to review with; embeddings are the exception and run on any machine.
 - [MCP Transport and Surfaces](mcp-surfaces.md) — zam mcp is the preferred agent transport - a stdio MCP server exposing focused ZAM tools and host-rendered MCP Apps panels.
+- [Standalone Mobile Libraries](mobile-standalone-libraries.md) — ZAM Mobile starts from a device-local library on Android and iOS; pairing and a server database are optional multi-device upgrades.
 - [Hands-Free Voice Mode](voice-mode.md) — Voice review runs one shared kernel loop over a device tier of native OS speech and a cloud tier from the capability registry, resolved per capability and per language from a machine-local user preference; companions read the same cloud models from the synced learner database.
 
 ## data-model
@@ -29,3 +30,5 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 ## protocol
 
 - [Bridge CLI Protocol](bridge-protocol.md) — zam bridge is the machine-facing JSON fallback transport for agents; responses are always JSON, and the protocol types are the stable contract.
+- [Local Card File Import](local-card-file-import.md) — ZAM imports basic, Cloze, image-occlusion, image, and audio cards from local APKG files, plus text cards from CSV and TSV, through a deterministic preview and atomic model-free commit.
+- [Curated Open-Content Library](open-content-library.md) — ZAM exposes a Studio-first catalog of reviewed open-licensed decks whose pinned artifacts are downloaded, integrity-checked, previewed, and imported through the normal safe card-import contract.

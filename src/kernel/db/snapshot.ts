@@ -32,6 +32,9 @@ const MANIFEST_PREFIX = "-- zam-snapshot: ";
  */
 export const SNAPSHOT_TABLES = [
   "tokens",
+  "imported_card_bindings",
+  "media_assets",
+  "token_media",
   "assignments",
   "sessions",
   "cards",

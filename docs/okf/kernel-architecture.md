@@ -7,7 +7,7 @@ tags:
   - cli
   - boundaries
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/kernel-architecture.md"
-timestamp: 2026-07-29T21:04:29Z
+timestamp: 2026-08-09T06:56:15Z
 ---
 
 ZAM has exactly two code layers with a hard boundary between them.
@@ -30,6 +30,15 @@ bootstrap registers stub commands that `await import()` the implementation.
 Two placement rules follow: new learning logic goes in the kernel, never in
 CLI commands; new HTTP goes in the CLI layer, never in the kernel.
 
+Local file interoperability follows the same boundary. CLI adapters under
+`src/cli/import/` read untrusted archives, foreign SQLite collections, and
+delimited text, then emit sanitized plain card candidates. The kernel import
+API classifies stable identities, detects re-import conflicts, applies content
+revisions, creates personal cards, and owns the atomic transaction. Foreign
+Anki SQLite is opened through a read-only adapter inside `src/kernel/db/`, so
+the CLI never imports a concrete driver. The detailed contract is
+[local-card-file-import.md](local-card-file-import.md).
+
 # Persistence
 
 Without cloud credentials the default is local SQLite at `~/.zam/zam.db`
@@ -51,4 +60,5 @@ Machine-local state (config, selections and credentials) stays under
 - [ADR 2026-06-09 — Async Database Providers](../adr/2026-06-09-async-database-providers.md)
 - [ADR 2026-07-07 — Resilient Self-Update and Dependency-Failure Isolation](../adr/2026-07-07-resilient-self-update-and-dependency-isolation.md)
 - [ADR 2026-07-23 — Online-Only Server Database and Mobile Gating](../adr/2026-07-23-online-only-server-db-and-mobile-gating.md)
-- Code: `src/kernel/index.ts`, `src/kernel/db/types.ts`, `src/kernel/db/connection.ts`, `src/kernel/db/postgres.ts`, `src/cli/index.ts`
+- [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)
+- Code: `src/kernel/index.ts`, `src/kernel/db/types.ts`, `src/kernel/db/connection.ts`, `src/kernel/db/postgres.ts`, `src/kernel/import/text-import.ts`, `src/cli/import/text-file.ts`, `src/cli/index.ts`

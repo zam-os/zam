@@ -342,6 +342,55 @@ describe("integration: token → card → review flow", () => {
       expect(queue.items.length).toBeGreaterThanOrEqual(0);
     });
 
+    it("persists and resumes a same-day learning step across a restart", async () => {
+      const token = await createToken(db, {
+        slug: "same-day-learning",
+        concept: "Learning steps survive process restarts",
+        domain: "testing",
+        bloom_level: 2,
+      });
+      const card = await ensureCard(db, token.id, "thomas");
+      const before = Date.now();
+
+      const first = await evaluateRating(db, {
+        cardId: card.id,
+        tokenId: token.id,
+        userId: "thomas",
+        rating: 3,
+      });
+      const after = Date.now();
+
+      expect(first.state).toBe("learning");
+      expect(first.learningStep).toBe(1);
+      expect(first.scheduledDays).toBeCloseTo(10 / (24 * 60), 10);
+      expect(new Date(first.nextDueAt).getTime()).toBeGreaterThanOrEqual(
+        before + 10 * 60_000,
+      );
+      expect(new Date(first.nextDueAt).getTime()).toBeLessThanOrEqual(
+        after + 10 * 60_000,
+      );
+
+      await db.close();
+      db = await openDatabase({
+        dbPath: join(tempDir, "zam-test.db"),
+        initialize: true,
+      });
+
+      const resumed = await getCard(db, token.id, "thomas");
+      expect(resumed?.state).toBe("learning");
+      expect(resumed?.learning_step).toBe(1);
+
+      const completed = await evaluateRating(db, {
+        cardId: card.id,
+        tokenId: token.id,
+        userId: "thomas",
+        rating: 3,
+      });
+      expect(completed.state).toBe("review");
+      expect(completed.learningStep).toBeNull();
+      expect((await getCard(db, token.id, "thomas"))?.learning_step).toBeNull();
+    });
+
     it("rolls back the card update when immutable review logging fails", async () => {
       const token = await createToken(db, {
         slug: "review-log-rollback",

@@ -58,6 +58,51 @@ CREATE TABLE IF NOT EXISTS tokens (
   editorial_state    TEXT NOT NULL DEFAULT 'published'
 );
 
+-- Stable provenance for deterministic local-file imports (ADR 2026-08-09).
+-- The imported content is shared; personal scheduling remains in cards.
+CREATE TABLE IF NOT EXISTS imported_card_bindings (
+  id            TEXT PRIMARY KEY,
+  external_id   TEXT NOT NULL UNIQUE,
+  token_id      TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  format        TEXT NOT NULL CHECK (format IN ('apkg', 'csv', 'tsv')),
+  source_name   TEXT NOT NULL,
+  note_guid     TEXT,
+  card_ordinal  INTEGER,
+  deck_path     TEXT NOT NULL DEFAULT '',
+  tags_json     TEXT NOT NULL DEFAULT '[]',
+  source        TEXT,
+  author        TEXT,
+  license       TEXT,
+  content_hash  TEXT NOT NULL,
+  metadata_hash TEXT NOT NULL,
+  imported_at   TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at    TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Untrusted package media is stored by digest, never by an archive path.
+-- Multiple imported cards can therefore share one bounded, verified payload.
+CREATE TABLE IF NOT EXISTS media_assets (
+  hash          TEXT PRIMARY KEY,
+  mime_type     TEXT NOT NULL,
+  byte_size     INTEGER NOT NULL CHECK (byte_size >= 0),
+  data          BLOB NOT NULL,
+  created_at    TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Presentation-safe media attached to one side of a token. Image-occlusion
+-- geometry is declarative JSON; no Anki template code is retained or run.
+CREATE TABLE IF NOT EXISTS token_media (
+  token_id       TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  asset_hash     TEXT NOT NULL REFERENCES media_assets(hash) ON DELETE RESTRICT,
+  side           TEXT NOT NULL CHECK (side IN ('question', 'answer')),
+  kind           TEXT NOT NULL CHECK (kind IN ('image', 'audio')),
+  ordinal        INTEGER NOT NULL DEFAULT 0 CHECK (ordinal >= 0),
+  original_name  TEXT NOT NULL,
+  alt_text       TEXT,
+  occlusion_json TEXT,
+  PRIMARY KEY (token_id, side, ordinal)
+);
+
 -- Prerequisite dependency graph: "to learn A, first know B"
 CREATE TABLE IF NOT EXISTS prerequisites (
   token_id    TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
@@ -88,6 +133,13 @@ CREATE TABLE IF NOT EXISTS cards (
   reps          INTEGER NOT NULL DEFAULT 0,
   lapses        INTEGER NOT NULL DEFAULT 0,
   state         TEXT NOT NULL DEFAULT 'new' CHECK (state IN ('new', 'learning', 'review', 'relearning')),
+  -- Zero-based position in the active learning/relearning step sequence.
+  -- NULL for new/review cards and legacy cards awaiting their next answer.
+  learning_step INTEGER,
+  -- Temporary, personal queue suppression. Sibling burying expires at the
+  -- learner's next local day and never changes FSRS state.
+  buried_until  TEXT,
+  buried_reason TEXT,
   due_at        TEXT NOT NULL DEFAULT (datetime('now')),
   last_review_at TEXT,
   blocked       INTEGER NOT NULL DEFAULT 0,
@@ -225,10 +277,14 @@ CREATE TABLE IF NOT EXISTS token_contexts (
 /** Performance indexes. Applied after migrations — see `SCHEMA_TABLES`. */
 export const SCHEMA_INDEXES = `
 CREATE INDEX IF NOT EXISTS idx_tokens_domain ON tokens(domain);
+CREATE INDEX IF NOT EXISTS idx_imported_card_bindings_token ON imported_card_bindings(token_id);
+CREATE INDEX IF NOT EXISTS idx_imported_card_bindings_note ON imported_card_bindings(note_guid);
+CREATE INDEX IF NOT EXISTS idx_token_media_asset ON token_media(asset_hash);
 CREATE INDEX IF NOT EXISTS idx_tokens_slug ON tokens(slug);
 CREATE INDEX IF NOT EXISTS idx_prereqs_token ON prerequisites(token_id);
 CREATE INDEX IF NOT EXISTS idx_prereqs_requires ON prerequisites(requires_id);
 CREATE INDEX IF NOT EXISTS idx_cards_user_due ON cards(user_id, blocked, due_at);
+CREATE INDEX IF NOT EXISTS idx_cards_user_buried ON cards(user_id, buried_until);
 CREATE INDEX IF NOT EXISTS idx_cards_token_user ON cards(token_id, user_id);
 CREATE INDEX IF NOT EXISTS idx_review_logs_card ON review_logs(card_id);
 CREATE INDEX IF NOT EXISTS idx_review_logs_user ON review_logs(user_id, reviewed_at);

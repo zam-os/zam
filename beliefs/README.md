@@ -18,7 +18,7 @@ This folder captures the premises on which ZAM is built. They are beliefs, not p
 A belief may rest on work that already exists — established science, or other people's theories and written statements. We don't restate that work here; we **link** to it where it lives, or to a stable reference such as Wikipedia. This keeps the repo free of other people's ideas and focused on our own theses. The science ZAM builds on:
 
 - [Spaced repetition](https://en.wikipedia.org/wiki/Spaced_repetition) — reviewing at expanding intervals strengthens long-term retention
-- [FSRS-5](https://github.com/open-spaced-repetition/fsrs4anki) — the scheduling algorithm (replaces SM-2)
+- [FSRS-6](https://github.com/open-spaced-repetition/awesome-fsrs/wiki/The-Algorithm) — the scheduling algorithm (replaces SM-2)
 - [Bloom's taxonomy](https://en.wikipedia.org/wiki/Bloom%27s_taxonomy) — six levels of cognitive complexity
 - [Miller's law](https://en.wikipedia.org/wiki/Miller%27s_law) — human working memory holds 7 ± 2 chunks
 - [Interleaving effect](https://en.wikipedia.org/wiki/Interleaving_(learning)) — mixing topics during practice strengthens discrimination

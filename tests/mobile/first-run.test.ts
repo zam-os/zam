@@ -1,11 +1,11 @@
 /**
- * Standalone first run (ADR 2026-08-08).
+ * Standalone first run (ADRs 2026-08-08 and 2026-08-09).
  *
  * The claim under test is the product claim: a learner with nothing but an
- * iPad — no desktop, no account, no network — ends the first run with a
- * database they own and something to review. Everything runs through the
- * mobile provider and the invoke stub, so it exercises the same IPC path the
- * device does.
+ * Android device or iPad — no desktop, no account, no network — ends the first
+ * run with a database they own and something to review. Everything runs
+ * through the mobile provider and the invoke stub, so it exercises the same
+ * IPC path the device does.
  */
 
 import { mkdtempSync, rmSync } from "node:fs";
@@ -17,6 +17,7 @@ import {
   completeFirstRun,
   LOCAL_USER_ID,
   prepareLocalLibrary,
+  prepareStandaloneLaunch,
   readLocalSetup,
 } from "../../mobile/src/setup/first-run.js";
 import { starterCards } from "../../mobile/src/setup/starter-content.js";
@@ -140,6 +141,32 @@ describe("completeFirstRun", () => {
       persona: "private",
     });
     expect(second.userId).toBe("klara");
+  });
+});
+
+describe("prepareStandaloneLaunch", () => {
+  it("routes an unpaired fresh install to local first run", async () => {
+    const db = open();
+    let opened = 0;
+
+    const launch = await prepareStandaloneLaunch(db, async () => {
+      opened += 1;
+    });
+
+    expect(opened).toBe(1);
+    expect(launch).toEqual({ kind: "first-run" });
+  });
+
+  it("reopens an existing local library without pairing", async () => {
+    const db = open();
+    await completeFirstRun(db, { locale: "de", persona: "private" });
+
+    const launch = await prepareStandaloneLaunch(db, async () => {});
+
+    expect(launch).toEqual({
+      kind: "library",
+      setup: { userId: LOCAL_USER_ID, locale: "de" },
+    });
   });
 });
 

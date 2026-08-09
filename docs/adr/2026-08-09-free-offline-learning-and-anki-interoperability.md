@@ -2,6 +2,7 @@
 
 **Status:** Accepted — decided by Thomas, 2026-08-09.
 **Deciders:** Thomas (project owner)
+**Implementation:** Phases 1–5 completed on 2026-08-09.
 **Related:**
 [2026-06-30-learning-content-studio.md](2026-06-30-learning-content-studio.md) ·
 [2026-07-10-recall-card-ux.md](2026-07-10-recall-card-ux.md) ·
@@ -73,6 +74,43 @@ The product sequence for this zero-cost learning path is:
 This sequence does not delay the curated curriculum service already accepted
 by ADR 2026-07-26b. The fifth item is the broader Anki-like discovery and
 sharing surface, not the existing reviewed curriculum pipeline.
+
+The Android standalone phase is implemented through the same node-free mobile
+startup path as iPadOS: an unpaired launch opens `zam-local.db`, provisions it
+through the kernel contract, and either restores its learner identity or shows
+the three-step local setup. QR pairing remains an explicit takeover action.
+
+The rich-semantics phase keeps the same safe rendering boundary. Classic APKG
+media is resolved through Anki's numeric media manifest, verified and bounded,
+then stored once by SHA-256 and attached declaratively to the question or
+answer. Cloze deletions become ordinary spoiler-free question/answer text;
+native rectangle and ellipse image occlusions become an image plus inert mask
+geometry. ZAM still executes no Anki HTML, CSS, JavaScript, or add-on code.
+
+Cards rendered from one Anki note use the retained note GUID as their sibling
+group. Enabled new/review siblings are held out of the same queue and buried
+until the next local day after a rating; active Learning/Relearning steps are
+never buried. Each learner can choose a balanced, exam, problem-card, or custom
+workload in Desktop or Mobile Settings. The same persisted limits and sibling
+switches drive the kernel queue used by Studio, mobile, CLI, and agents.
+
+The open-content phase is a curated catalog bundled with each ZAM release, not
+a remotely populated marketplace. An entry is eligible only with explicit
+compatible licensing, visible attribution, an immutable upstream revision,
+expected byte and card counts, a SHA-256 digest, and an allowlisted HTTPS
+download host. Studio opens this library before the existing file and
+AI-assisted paths and exposes local search plus language and subject filters.
+
+Downloading begins only when the learner requests a preview. ZAM bounds the
+response while streaming it, validates the final redirect host, verifies size
+and digest, and keeps the artifact in a content-addressed local cache. Cache
+hits are re-hashed before use. The verified package then passes through the
+same untrusted APKG parser, sanitizer, deterministic preview, and atomic
+plan-hash confirmation as a learner-selected local file. Catalog provenance
+overrides optional package metadata so the pinned source, author, and license
+persist with every imported binding. The initial catalog contains the three
+CC-BY-4.0 System Design Primer APKG decks pinned to one reviewed upstream
+commit; adding entries remains a code-reviewed release change.
 
 ### 3. The first interoperability boundary is files, not AnkiWeb
 
@@ -160,8 +198,9 @@ malformed archives, unsafe HTML, and unsupported content reporting.
   preserves distinct recall directions and scheduling state.
 - Content-only import is safer and more predictable, but it does not immediately
   migrate an experienced Anki learner's history.
-- Rich decks will initially produce clear warnings rather than full-fidelity
-  media, Cloze, or image-occlusion cards.
+- Safe interoperability is semantic, not pixel-identical: unsupported media
+  codecs, template modifiers, and image-occlusion shapes produce clear
+  warnings instead of executing foreign rendering code.
 - A 1:1 visual rendering of arbitrary Anki templates is deliberately not a
   goal; safety and recall semantics take precedence.
 
@@ -186,8 +225,15 @@ malformed archives, unsafe HTML, and unsupported content reporting.
 
 - `src/kernel/scheduler/fsrs.ts`
 - `src/kernel/db/schema.ts`
+- `src/cli/open-content/catalog.ts`, `src/cli/open-content/download.ts`,
+  `src/cli/open-content/service.ts`
 - `desktop/src/i18n.ts`
-- `mobile/README.md`
+- `mobile/README.md`, `mobile/src/main.ts`, `mobile/src/setup/first-run.ts`
+- `mobile/src-tauri/src/db.rs`, `tests/mobile/first-run.test.ts`
 - `docs/plans/2026-07-25-closed-group-library-handover.md`
 - [Anki Manual: Packaged Decks](https://docs.ankiweb.net/importing/packaged-decks.html)
+- [Anki Manual: Editing — Cloze and Image Occlusion](https://docs.ankiweb.net/editing.html)
+- [Anki Manual: Deck Options — Limits and Sibling Burying](https://docs.ankiweb.net/deck-options.html)
 - [Anki shared decks](https://ankiweb.net/shared/decks)
+- [System Design Primer — project and Anki decks](https://github.com/donnemartin/system-design-primer)
+- [System Design Primer — CC BY 4.0 license](https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/LICENSE.txt)

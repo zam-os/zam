@@ -1,13 +1,15 @@
 //! libsql-backed database commands.
 //!
 //! The Rust shell owns the database — a **device-local file**, which is what a
-//! standalone install runs on (ADR 2026-08-08), or an **online-only remote**
-//! connection to a server primary once the learner attaches one (ADR
-//! 2026-07-23) — and the WebView reaches it through these commands.
+//! standalone install runs on (ADRs 2026-08-08 and 2026-08-09), or an
+//! **online-only remote** connection to a server primary once the learner
+//! attaches one (ADR 2026-07-23) — and the WebView reaches it through these
+//! commands.
 //!
-//! The local file stopped being a development shortcut when iOS became an app
-//! in its own right: it is the first-run default, and the remote connection is
-//! the upgrade a learner chooses when a second device appears.
+//! The local file stopped being a development shortcut when mobile became an
+//! app in its own right: it is the first-run default on iOS and Android, and
+//! the remote connection is the upgrade a learner chooses when a second
+//! device appears.
 //!
 //! The wire encoding
 //! (blobs as `{"$blob": base64}`, everything else as JSON primitives) is
@@ -140,8 +142,8 @@ fn convert_params(params: &[Json]) -> Result<Vec<libsql::Value>, String> {
 /// With both `sync_url` and `auth_token` present this opens an **online-only
 /// remote** connection to the server primary (ADR 2026-07-23). Without
 /// credentials it opens the device-local file every standalone install starts
-/// on (ADR 2026-08-08). The WebView provisions the schema either way — see
-/// `src/kernel/db/provision.ts`.
+/// on (ADRs 2026-08-08 and 2026-08-09). The WebView provisions the schema
+/// either way — see `src/kernel/db/provision.ts`.
 #[tauri::command]
 pub async fn db_open(
     app: AppHandle,

@@ -10,6 +10,7 @@ import type { Database } from "../db/types.js";
 import { updateCard } from "../models/card.js";
 import type { Rating, SchedulingCard } from "../scheduler/fsrs.js";
 import { createFSRS } from "../scheduler/fsrs.js";
+import { burySiblingCards } from "../scheduler/siblings.js";
 
 export interface EvaluateInput {
   cardId: string;
@@ -19,6 +20,7 @@ export interface EvaluateInput {
   sessionId?: string;
   responseTimeMs?: number;
   reviewLogId?: string;
+  now?: Date;
 }
 
 export interface EvaluateResult {
@@ -26,9 +28,12 @@ export interface EvaluateResult {
   stability: number;
   difficulty: number;
   state: string;
+  learningStep: number | null;
   scheduledDays: number;
   reps: number;
   lapses: number;
+  buriedSiblings: number;
+  buriedUntil: string | null;
 }
 
 /**
@@ -65,6 +70,7 @@ export async function evaluateRatingWithinTransaction(
         reps: number;
         lapses: number;
         state: string;
+        learning_step: number | null;
         due_at: string;
         last_review_at: string | null;
       }
@@ -74,7 +80,7 @@ export async function evaluateRatingWithinTransaction(
     throw new Error(`Card not found: ${input.cardId}`);
   }
 
-  const now = new Date();
+  const now = input.now ?? new Date();
   const fsrs = createFSRS();
 
   // Build scheduling card from DB state
@@ -86,6 +92,7 @@ export async function evaluateRatingWithinTransaction(
     reps: card.reps,
     lapses: card.lapses,
     state: card.state as SchedulingCard["state"],
+    learningStep: card.learning_step,
     dueAt: new Date(card.due_at),
     lastReviewAt: card.last_review_at ? new Date(card.last_review_at) : null,
   };
@@ -102,8 +109,11 @@ export async function evaluateRatingWithinTransaction(
     reps: updated.reps,
     lapses: updated.lapses,
     state: updated.state,
+    learning_step: updated.learningStep,
     due_at: updated.dueAt.toISOString(),
     last_review_at: now.toISOString(),
+    buried_until: null,
+    buried_reason: null,
   });
 
   // The card has now been answered against whatever the token currently says,
@@ -138,13 +148,23 @@ export async function evaluateRatingWithinTransaction(
       input.sessionId ?? null,
     );
 
+  const siblingBurial = await burySiblingCards(db, {
+    cardId: input.cardId,
+    tokenId: input.tokenId,
+    userId: input.userId,
+    now,
+  });
+
   return {
     nextDueAt: updated.dueAt.toISOString(),
     stability: updated.stability,
     difficulty: updated.difficulty,
     state: updated.state,
+    learningStep: updated.learningStep,
     scheduledDays: updated.scheduledDays,
     reps: updated.reps,
     lapses: updated.lapses,
+    buriedSiblings: siblingBurial.buried,
+    buriedUntil: siblingBurial.until,
   };
 }

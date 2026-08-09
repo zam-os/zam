@@ -1,12 +1,14 @@
 /**
  * First run on the device itself — the path that makes ZAM an app rather than
- * a companion (ADR 2026-08-08).
+ * a companion (ADRs 2026-08-08 and 2026-08-09).
  *
  * Until now the only way into the app was a QR code from ZAM Desktop: `start()`
  * loaded a stored pairing and showed the pairing screen when there was none.
  * A learner with nothing but an iPad had no way in at all. This module owns the
  * other entry: provision the local database, give the learner an identity, seed
- * the persona's knowledge context, and put something on the first screen.
+ * the persona's knowledge context, and put something on the first screen. The
+ * same path is the Android default as of ADR 2026-08-09; pairing is an optional
+ * takeover on both supported mobile platforms.
  *
  * **No outer transaction here, deliberately.** `seedPersonaKnowledgeContext`
  * and `confirmMobileImport` each open their own, and the mobile provider
@@ -43,6 +45,10 @@ export interface LocalSetup {
   locale: string;
 }
 
+export type StandaloneLaunch =
+  | { kind: "first-run" }
+  | { kind: "library"; setup: LocalSetup };
+
 export interface FirstRunOptions {
   /** Interface language, normally derived from the system language. */
   locale: string;
@@ -68,6 +74,23 @@ export async function prepareLocalLibrary(
 ): Promise<LocalSetup | null> {
   await applySchemaAndMigrations(db);
   return readLocalSetup(db);
+}
+
+/**
+ * Open the standalone database and decide the unpaired launch destination.
+ *
+ * Keeping this decision outside `main.ts` makes the Android product contract
+ * executable: no stored pairing means local setup/library on every platform,
+ * never an implicit detour to the QR screen. The native shell supplies the
+ * platform-specific file location; the WebView path is intentionally shared.
+ */
+export async function prepareStandaloneLaunch(
+  db: Database,
+  openLocal: () => Promise<void>,
+): Promise<StandaloneLaunch> {
+  await openLocal();
+  const setup = await prepareLocalLibrary(db);
+  return setup ? { kind: "library", setup } : { kind: "first-run" };
 }
 
 /**

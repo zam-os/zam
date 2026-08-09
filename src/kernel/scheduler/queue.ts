@@ -8,6 +8,7 @@
 import type { Database } from "../db/types.js";
 import { getDisplayTitle } from "../models/token.js";
 import { interleave } from "./interleaver.js";
+import { getStudyWorkloadSettings } from "./study-settings.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -15,6 +16,8 @@ export interface ReviewQueueOptions {
   userId: string;
   maxNew?: number; // default 10
   maxReviews?: number; // default 50
+  buryNewSiblings?: boolean;
+  buryReviewSiblings?: boolean;
   now?: Date;
   knowledgeContext?: string;
 }
@@ -32,6 +35,9 @@ export interface ReviewQueueItem {
   sourceLink: string | null;
   question: string | null;
   questionSource: string;
+  siblingGroup: string | null;
+  hasQuestionMedia: boolean;
+  hasAnswerMedia: boolean;
   contentChanged?: boolean;
   publishedBy?: string | null;
   publishedAt?: string | null;
@@ -65,6 +71,9 @@ interface CardRow {
   published_by?: string | null;
   published_at?: string | null;
   updated_at?: string;
+  sibling_group: string | null;
+  question_media_count: number | bigint;
+  answer_media_count: number | bigint;
 }
 
 // ── Functions ────────────────────────────────────────────────────────────────
@@ -74,11 +83,11 @@ interface CardRow {
  *
  * The queue is assembled in stages:
  * 1. Fetch all due cards (not blocked, due_at <= now, state in review/relearning/learning)
- * 2. Fetch new cards (state = 'new', not blocked) up to maxNew
+ * 2. Fetch new cards (state = 'new', not blocked)
  * 3. Sort overdue cards by urgency — most overdue first
  * 4. Apply cross-domain interleaving to prevent same-domain streaks
  * 5. Intersperse new cards at regular intervals (every 5th position)
- * 6. Cap total at maxReviews
+ * 6. Apply sibling controls and the learner's persisted workload limits
  *
  * @param db - Database connection
  * @param options - Queue building options
@@ -88,8 +97,18 @@ export async function buildReviewQueue(
   db: Database,
   options: ReviewQueueOptions,
 ): Promise<ReviewQueue> {
-  const maxNew = options.maxNew ?? 10;
-  const maxReviews = options.maxReviews ?? 50;
+  const workload = await getStudyWorkloadSettings(db, options.userId);
+  const maxNew = options.maxNew ?? workload.maxNew;
+  const maxReviews = options.maxReviews ?? workload.maxReviews;
+  const buryNewSiblings = options.buryNewSiblings ?? workload.buryNewSiblings;
+  const buryReviewSiblings =
+    options.buryReviewSiblings ?? workload.buryReviewSiblings;
+  if (!Number.isInteger(maxNew) || maxNew < 0) {
+    throw new Error("maxNew must be a non-negative integer");
+  }
+  if (!Number.isInteger(maxReviews) || maxReviews < 1) {
+    throw new Error("maxReviews must be a positive integer");
+  }
   const now = options.now ?? new Date();
   const nowISO = now.toISOString();
 
@@ -111,11 +130,18 @@ export async function buildReviewQueue(
          t.content_version AS token_content_version,
          t.published_by AS published_by,
          t.published_at AS published_at,
-         t.updated_at AS updated_at
+         t.updated_at AS updated_at,
+         (SELECT b.note_guid FROM imported_card_bindings b
+           WHERE b.token_id = t.id LIMIT 1) AS sibling_group,
+         (SELECT COUNT(*) FROM token_media tm
+           WHERE tm.token_id = t.id AND tm.side = 'question') AS question_media_count,
+         (SELECT COUNT(*) FROM token_media tm
+           WHERE tm.token_id = t.id AND tm.side = 'answer') AS answer_media_count
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
          AND c.blocked = 0
+         AND (c.buried_until IS NULL OR c.buried_until <= ?)
          AND c.due_at <= ?
          AND c.state IN ('review', 'relearning', 'learning')
          AND t.deprecated_at IS NULL
@@ -123,7 +149,7 @@ export async function buildReviewQueue(
          AND t.editorial_state = 'published'
          AND c.detached_at IS NULL`;
 
-  const dueParams: unknown[] = [options.userId, nowISO];
+  const dueParams: unknown[] = [options.userId, nowISO, nowISO];
 
   if (options.knowledgeContext) {
     dueSql += ` AND EXISTS (
@@ -156,18 +182,25 @@ export async function buildReviewQueue(
          t.content_version AS token_content_version,
          t.published_by AS published_by,
          t.published_at AS published_at,
-         t.updated_at AS updated_at
+         t.updated_at AS updated_at,
+         (SELECT b.note_guid FROM imported_card_bindings b
+           WHERE b.token_id = t.id LIMIT 1) AS sibling_group,
+         (SELECT COUNT(*) FROM token_media tm
+           WHERE tm.token_id = t.id AND tm.side = 'question') AS question_media_count,
+         (SELECT COUNT(*) FROM token_media tm
+           WHERE tm.token_id = t.id AND tm.side = 'answer') AS answer_media_count
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
          AND c.blocked = 0
+         AND (c.buried_until IS NULL OR c.buried_until <= ?)
          AND c.state = 'new'
          AND t.deprecated_at IS NULL
          AND t.maintenance_at IS NULL
          AND t.editorial_state = 'published'
          AND c.detached_at IS NULL`;
 
-  const newParams: unknown[] = [options.userId];
+  const newParams: unknown[] = [options.userId, nowISO];
 
   if (options.knowledgeContext) {
     newSql += ` AND EXISTS (
@@ -178,8 +211,12 @@ export async function buildReviewQueue(
     newParams.push(options.knowledgeContext);
   }
 
+  // Sibling suppression can discard candidates, so the window has to be wider
+  // than maxNew — but it must stay bounded: an imported library holds tens of
+  // thousands of new cards, and a remote (Turso/Postgres) provider would ship
+  // every one of them over the wire on every queue build.
   newSql += ` ORDER BY t.bloom_level ASC, t.slug ASC LIMIT ?`;
-  newParams.push(maxNew);
+  newParams.push(maxNew * 10 + 50);
 
   const newRows = (await db.prepare(newSql).all(...newParams)) as CardRow[];
 
@@ -200,8 +237,13 @@ export async function buildReviewQueue(
   const newItems = newRows.map(rowToItem);
   const merged = intersperseNew(interleavedDue, newItems, 5);
 
-  // ── Step 6: Cap total at maxReviews ────────────────────────────────────
-  const capped = merged.slice(0, maxReviews);
+  // ── Step 6: Keep one sibling per enabled bucket, then apply limits ─────
+  const capped = applyWorkloadLimits(merged, {
+    maxNew,
+    maxReviews,
+    buryNewSiblings,
+    buryReviewSiblings,
+  });
 
   // ── Compute metadata ──────────────────────────────────────────────────
   let newCount = 0;
@@ -255,10 +297,48 @@ function rowToItem(row: CardRow): ReviewQueueItem {
     sourceLink: row.source_link,
     question: row.question,
     questionSource: row.question_source,
+    siblingGroup: row.sibling_group,
+    hasQuestionMedia: Number(row.question_media_count) > 0,
+    hasAnswerMedia: Number(row.answer_media_count) > 0,
     contentChanged,
     publishedBy: row.published_by ?? null,
     publishedAt: row.published_at ?? row.updated_at ?? null,
   };
+}
+
+function applyWorkloadLimits(
+  items: ReviewQueueItem[],
+  options: {
+    maxNew: number;
+    maxReviews: number;
+    buryNewSiblings: boolean;
+    buryReviewSiblings: boolean;
+  },
+): ReviewQueueItem[] {
+  const selected: ReviewQueueItem[] = [];
+  const seenSiblingGroups = new Set<string>();
+  let selectedNew = 0;
+
+  for (const item of items) {
+    if (selected.length >= options.maxReviews) break;
+    if (item.state === "new" && selectedNew >= options.maxNew) continue;
+
+    const siblingAlreadySelected = Boolean(
+      item.siblingGroup && seenSiblingGroups.has(item.siblingGroup),
+    );
+    const buryThisBucket =
+      item.state === "new"
+        ? options.buryNewSiblings
+        : item.state === "review"
+          ? options.buryReviewSiblings
+          : false;
+    if (siblingAlreadySelected && buryThisBucket) continue;
+
+    selected.push(item);
+    if (item.state === "new") selectedNew++;
+    if (item.siblingGroup) seenSiblingGroups.add(item.siblingGroup);
+  }
+  return selected;
 }
 
 /**

@@ -172,6 +172,24 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "Configura este equipo sin imponer las mismas decisiones a cada espacio de trabajo o dispositivo.",
     settings_back: "Volver al panel",
     settings_system_title: "Sistema",
+    study_workload_title: "Carga de estudio",
+    study_workload_help:
+      "Elige una mezcla diaria tranquila, una cobertura intensiva para exámenes o una sesión más corta de tarjetas de problemas.",
+    study_workload_preset: "Plan",
+    study_preset_balanced: "Equilibrado",
+    study_preset_exam: "Examen",
+    study_preset_problems: "Tarjetas de problemas",
+    study_preset_custom: "Personalizado",
+    study_max_new: "Tarjetas nuevas por sesión",
+    study_max_reviews: "Tarjetas totales por sesión",
+    study_bury_new: "Mostrar solo una tarjeta hermana nueva al día",
+    study_bury_review: "Mostrar solo una tarjeta hermana de repaso al día",
+    study_workload_save: "Guardar plan de estudio",
+    study_unbury: "Mostrar ahora las tarjetas pospuestas",
+    study_workload_saved: "Plan de estudio guardado.",
+    study_workload_unburied:
+      "{count} tarjeta(s) pospuesta(s) vuelven a estar visibles.",
+    study_workload_error: "No se pudo actualizar el plan de estudio: {message}",
     settings_ai_title: "Modelos de IA",
     settings_workspace_title: "Espacios de trabajo",
     workspaces_help:
@@ -541,6 +559,57 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_card_due: "Vence",
     lbl_card_not_due: "No vence",
     btn_import_curriculum: "Importar currículo",
+    btn_import_file: "Importar archivo",
+    lbl_file_import_modal_title: "Importar contenido de aprendizaje",
+    btn_import_tab_library: "Biblioteca abierta",
+    open_content_intro:
+      "Descubre mazos revisados y con licencia abierta. ZAM verifica la descarga exacta antes de mostrar la vista previa de importación.",
+    open_content_search: "Buscar mazos abiertos",
+    open_content_all_languages: "Todos los idiomas",
+    open_content_all_subjects: "Todas las materias",
+    open_content_loading: "Cargando el catálogo seleccionado…",
+    open_content_empty: "Ningún mazo abierto coincide con estos filtros.",
+    open_content_count: "{count} mazo(s) abierto(s) revisado(s)",
+    open_content_item_meta: "{cards} tarjetas · {languages} · {subjects}",
+    open_content_preview: "Descargar y previsualizar",
+    open_content_selected: "Vista previa lista",
+    open_content_source: "Ver fuente",
+    open_content_link_error: "No se pudo abrir el enlace de origen revisado.",
+    open_content_downloading: "Descargando y verificando este mazo…",
+    open_content_preview_ready:
+      "La vista previa verificada está lista. Revísala antes de importar.",
+    open_content_preview_first:
+      "Primero descarga un mazo y revisa su vista previa.",
+    open_content_confirm: "Importar el mazo seleccionado",
+    open_content_importing: "Importando el mazo verificado…",
+    open_content_importing_detail:
+      "ZAM vuelve a comprobar el archivo en caché y confirma exactamente la vista previa.",
+    open_content_import_success:
+      "Mazo abierto importado: {create} nuevas, {update} actualizadas, {skip} sin cambios y {cards} tarjetas personales creadas.",
+    open_content_error: "Error al importar desde la biblioteca abierta",
+    btn_import_tab_file: "APKG / CSV / TSV",
+    file_import_intro:
+      "Elige un paquete de Anki local o una tabla de tarjetas UTF-8. La vista previa y la importación se ejecutan localmente, sin IA ni red.",
+    btn_file_import_choose: "Elegir archivo",
+    file_import_no_file: "Ningún archivo seleccionado",
+    file_import_preview_first: "Primero elige y revisa un archivo.",
+    file_import_previewing: "Revisando el archivo localmente…",
+    file_import_preview_counts:
+      "{total} entradas · {create} nuevas · {update} actualizaciones · {skip} sin cambios · {conflict} conflictos · {unsupported} no compatibles · {cards} tarjetas personales nuevas",
+    file_import_preview_decks: "Mazos: {decks}",
+    file_import_preview_media:
+      "Medios: {assets} archivo(s) local(es), {references} referencia(s) de tarjeta, {size} MiB",
+    file_import_preview_notices: "Avisos y contenido no compatible",
+    file_import_more_notices: "{count} avisos más",
+    file_import_nothing_to_do: "No hay cambios válidos para importar.",
+    file_import_ready:
+      "La confirmación importará todas las tarjetas válidas en una sola transacción.",
+    file_import_picker_unavailable:
+      "La selección de archivos está disponible en ZAM Desktop Studio.",
+    btn_file_import_confirm: "Confirmar importación",
+    toast_file_import_success:
+      "Importación terminada: {create} nuevas, {update} actualizadas, {skip} sin cambios, {conflict} conflictos y {cards} tarjetas personales creadas.",
+    lbl_error_file_import: "No se pudo importar el archivo",
     lbl_import_modal_title: "Importar estándar de currículo",
     lbl_import_text: "Texto del currículo",
     placeholder_import_text:
@@ -734,8 +803,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     okf_resource_link: "Fuente ↗",
     okf_link_open_failed: "No se pudo abrir el enlace: {url}",
     okf_mermaid_diagram: "Diagrama Mermaid",
-    okf_mermaid_failed:
-      "No se pudo renderizar el diagrama Mermaid: {message}",
+    okf_mermaid_failed: "No se pudo renderizar el diagrama Mermaid: {message}",
     okf_copy: "📋 Copiar",
     okf_copied: "✓ Copiado",
     okf_copy_failed: "⚠️ Error al copiar",
@@ -953,6 +1021,25 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "Configurez cette machine sans imposer les mêmes choix à chaque espace de travail ou appareil.",
     settings_back: "Retour au tableau de bord",
     settings_system_title: "Système",
+    study_workload_title: "Charge d’étude",
+    study_workload_help:
+      "Choisissez un rythme quotidien calme, une préparation intensive à un examen ou une courte session de cartes-problèmes.",
+    study_workload_preset: "Programme",
+    study_preset_balanced: "Équilibré",
+    study_preset_exam: "Examen",
+    study_preset_problems: "Cartes-problèmes",
+    study_preset_custom: "Personnalisé",
+    study_max_new: "Nouvelles cartes par session",
+    study_max_reviews: "Total de cartes par session",
+    study_bury_new: "Afficher une seule nouvelle carte sœur par jour",
+    study_bury_review: "Afficher une seule carte sœur à réviser par jour",
+    study_workload_save: "Enregistrer le programme d’étude",
+    study_unbury: "Afficher maintenant les cartes différées",
+    study_workload_saved: "Programme d’étude enregistré.",
+    study_workload_unburied:
+      "{count} carte(s) différée(s) sont de nouveau visibles.",
+    study_workload_error:
+      "Impossible de mettre à jour le programme d’étude : {message}",
     settings_ai_title: "Modèles d'IA",
     settings_workspace_title: "Espaces de travail",
     workspaces_help:
@@ -1326,6 +1413,58 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_card_due: "Dû",
     lbl_card_not_due: "Non dû",
     btn_import_curriculum: "Importer le programme",
+    btn_import_file: "Importer un fichier",
+    lbl_file_import_modal_title: "Importer du contenu pédagogique",
+    btn_import_tab_library: "Bibliothèque ouverte",
+    open_content_intro:
+      "Découvrez des paquets vérifiés sous licence ouverte. ZAM vérifie le téléchargement exact avant d’afficher l’aperçu d’import.",
+    open_content_search: "Rechercher des paquets ouverts",
+    open_content_all_languages: "Toutes les langues",
+    open_content_all_subjects: "Toutes les matières",
+    open_content_loading: "Chargement du catalogue sélectionné…",
+    open_content_empty: "Aucun paquet ouvert ne correspond à ces filtres.",
+    open_content_count: "{count} paquet(s) ouvert(s) vérifié(s)",
+    open_content_item_meta: "{cards} cartes · {languages} · {subjects}",
+    open_content_preview: "Télécharger et prévisualiser",
+    open_content_selected: "Aperçu prêt",
+    open_content_source: "Voir la source",
+    open_content_link_error: "Impossible d’ouvrir le lien source vérifié.",
+    open_content_downloading: "Téléchargement et vérification du paquet…",
+    open_content_preview_ready:
+      "L’aperçu vérifié est prêt. Examinez-le avant l’import.",
+    open_content_preview_first:
+      "Téléchargez d’abord un paquet et examinez son aperçu.",
+    open_content_confirm: "Importer le paquet sélectionné",
+    open_content_importing: "Import du paquet vérifié…",
+    open_content_importing_detail:
+      "ZAM revérifie l’artefact en cache et valide exactement l’aperçu.",
+    open_content_import_success:
+      "Paquet ouvert importé : {create} nouvelles, {update} mises à jour, {skip} inchangées et {cards} cartes personnelles créées.",
+    open_content_error: "Échec de l’import depuis la bibliothèque ouverte",
+    btn_import_tab_file: "APKG / CSV / TSV",
+    file_import_intro:
+      "Choisissez un paquet Anki local ou un tableau de cartes UTF-8. L’aperçu et l’import restent locaux, sans IA ni réseau.",
+    btn_file_import_choose: "Choisir un fichier",
+    file_import_no_file: "Aucun fichier sélectionné",
+    file_import_preview_first:
+      "Choisissez et prévisualisez d’abord un fichier.",
+    file_import_previewing: "Vérification locale du fichier…",
+    file_import_preview_counts:
+      "{total} entrées · {create} nouvelles · {update} mises à jour · {skip} inchangées · {conflict} conflits · {unsupported} non prises en charge · {cards} nouvelles cartes personnelles",
+    file_import_preview_decks: "Paquets : {decks}",
+    file_import_preview_media:
+      "Médias : {assets} fichier(s) local(aux), {references} référence(s) de carte, {size} Mio",
+    file_import_preview_notices: "Avertissements et contenu non pris en charge",
+    file_import_more_notices: "{count} avertissements supplémentaires",
+    file_import_nothing_to_do: "Aucune modification valide à importer.",
+    file_import_ready:
+      "La confirmation importera toutes les cartes valides dans une seule transaction.",
+    file_import_picker_unavailable:
+      "La sélection de fichiers est disponible dans ZAM Desktop Studio.",
+    btn_file_import_confirm: "Confirmer l’import",
+    toast_file_import_success:
+      "Import terminé : {create} nouvelles, {update} mises à jour, {skip} inchangées, {conflict} conflits et {cards} cartes personnelles créées.",
+    lbl_error_file_import: "Échec de l’import du fichier",
     lbl_import_modal_title: "Importer la norme de programme",
     lbl_import_text: "Texte du programme",
     placeholder_import_text:
@@ -1741,6 +1880,25 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "Configure esta máquina sem impor as mesmas escolhas a cada espaço de trabalho ou dispositivo.",
     settings_back: "Voltar ao painel",
     settings_system_title: "Sistema",
+    study_workload_title: "Carga de estudo",
+    study_workload_help:
+      "Escolha uma rotina diária tranquila, uma preparação intensiva para provas ou uma sessão menor de cartões de problemas.",
+    study_workload_preset: "Plano",
+    study_preset_balanced: "Equilibrado",
+    study_preset_exam: "Prova",
+    study_preset_problems: "Cartões de problemas",
+    study_preset_custom: "Personalizado",
+    study_max_new: "Novos cartões por sessão",
+    study_max_reviews: "Total de cartões por sessão",
+    study_bury_new: "Mostrar apenas um novo cartão irmão por dia",
+    study_bury_review: "Mostrar apenas um cartão irmão de revisão por dia",
+    study_workload_save: "Salvar plano de estudo",
+    study_unbury: "Mostrar agora os cartões adiados",
+    study_workload_saved: "Plano de estudo salvo.",
+    study_workload_unburied:
+      "{count} cartão(ões) adiado(s) estão visíveis novamente.",
+    study_workload_error:
+      "Não foi possível atualizar o plano de estudo: {message}",
     settings_ai_title: "Modelos de IA",
     settings_workspace_title: "Espaços de trabalho",
     workspaces_help:
@@ -2111,6 +2269,57 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_card_due: "Vence",
     lbl_card_not_due: "Não vence",
     btn_import_curriculum: "Importar currículo",
+    btn_import_file: "Importar arquivo",
+    lbl_file_import_modal_title: "Importar conteúdo de aprendizagem",
+    btn_import_tab_library: "Biblioteca aberta",
+    open_content_intro:
+      "Descubra baralhos revisados com licença aberta. O ZAM verifica o download exato antes de mostrar a prévia da importação.",
+    open_content_search: "Buscar baralhos abertos",
+    open_content_all_languages: "Todos os idiomas",
+    open_content_all_subjects: "Todos os assuntos",
+    open_content_loading: "Carregando o catálogo selecionado…",
+    open_content_empty: "Nenhum baralho aberto corresponde a estes filtros.",
+    open_content_count: "{count} baralho(s) aberto(s) revisado(s)",
+    open_content_item_meta: "{cards} cartões · {languages} · {subjects}",
+    open_content_preview: "Baixar e visualizar",
+    open_content_selected: "Prévia pronta",
+    open_content_source: "Ver fonte",
+    open_content_link_error:
+      "Não foi possível abrir o link de origem revisado.",
+    open_content_downloading: "Baixando e verificando este baralho…",
+    open_content_preview_ready:
+      "A prévia verificada está pronta. Revise-a antes de importar.",
+    open_content_preview_first: "Primeiro baixe um baralho e revise a prévia.",
+    open_content_confirm: "Importar o baralho selecionado",
+    open_content_importing: "Importando o baralho verificado…",
+    open_content_importing_detail:
+      "O ZAM verifica novamente o artefato em cache e confirma exatamente a prévia.",
+    open_content_import_success:
+      "Baralho aberto importado: {create} novos, {update} atualizados, {skip} inalterados e {cards} cartões pessoais criados.",
+    open_content_error: "Falha ao importar da biblioteca aberta",
+    btn_import_tab_file: "APKG / CSV / TSV",
+    file_import_intro:
+      "Escolha um pacote Anki local ou uma tabela de cartões UTF-8. A prévia e a importação são locais, sem IA ou rede.",
+    btn_file_import_choose: "Escolher arquivo",
+    file_import_no_file: "Nenhum arquivo selecionado",
+    file_import_preview_first: "Escolha e visualize um arquivo primeiro.",
+    file_import_previewing: "Verificando o arquivo localmente…",
+    file_import_preview_counts:
+      "{total} entradas · {create} novas · {update} atualizações · {skip} inalteradas · {conflict} conflitos · {unsupported} não compatíveis · {cards} novos cartões pessoais",
+    file_import_preview_decks: "Baralhos: {decks}",
+    file_import_preview_media:
+      "Mídia: {assets} arquivo(s) local(is), {references} referência(s) de cartão, {size} MiB",
+    file_import_preview_notices: "Avisos e conteúdo não compatível",
+    file_import_more_notices: "Mais {count} avisos",
+    file_import_nothing_to_do: "Não há alterações válidas para importar.",
+    file_import_ready:
+      "A confirmação importará todos os cartões válidos em uma única transação.",
+    file_import_picker_unavailable:
+      "A seleção de arquivos está disponível no ZAM Desktop Studio.",
+    btn_file_import_confirm: "Confirmar importação",
+    toast_file_import_success:
+      "Importação concluída: {create} novas, {update} atualizadas, {skip} inalteradas, {conflict} conflitos e {cards} cartões pessoais criados.",
+    lbl_error_file_import: "Falha ao importar o arquivo",
     lbl_import_modal_title: "Importar padrão de currículo",
     lbl_import_text: "Texto do currículo",
     placeholder_import_text:
@@ -2502,6 +2711,23 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "配置这台机器，而不会把相同的选择强加到每个工作区或设备上。",
     settings_back: "返回仪表板",
     settings_system_title: "系统",
+    study_workload_title: "学习量",
+    study_workload_help:
+      "选择轻松的每日组合、密集的考试复习，或较短的问题卡片学习时段。",
+    study_workload_preset: "计划",
+    study_preset_balanced: "均衡",
+    study_preset_exam: "考试",
+    study_preset_problems: "问题卡片",
+    study_preset_custom: "自定义",
+    study_max_new: "每次学习的新卡片数",
+    study_max_reviews: "每次学习的卡片总数",
+    study_bury_new: "每天仅显示一张同笔记的新卡片",
+    study_bury_review: "每天仅显示一张同笔记的复习卡片",
+    study_workload_save: "保存学习计划",
+    study_unbury: "立即显示已暂缓的卡片",
+    study_workload_saved: "学习计划已保存。",
+    study_workload_unburied: "{count} 张暂缓卡片已重新显示。",
+    study_workload_error: "无法更新学习计划：{message}",
     settings_ai_title: "AI 模型",
     settings_workspace_title: "工作区",
     workspaces_help: "为这台机器注册个人、团队、家庭或社区的工作目录。",
@@ -2825,6 +3051,53 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_card_due: "到期",
     lbl_card_not_due: "未到期",
     btn_import_curriculum: "导入课程大纲",
+    btn_import_file: "导入文件",
+    lbl_file_import_modal_title: "导入学习内容",
+    btn_import_tab_library: "开放内容库",
+    open_content_intro:
+      "发现经过审核且采用开放许可证的牌组。ZAM 会先验证准确的下载文件，再显示导入预览。",
+    open_content_search: "搜索开放牌组",
+    open_content_all_languages: "所有语言",
+    open_content_all_subjects: "所有主题",
+    open_content_loading: "正在加载精选目录…",
+    open_content_empty: "没有符合这些筛选条件的开放牌组。",
+    open_content_count: "{count} 个经审核的开放牌组",
+    open_content_item_meta: "{cards} 张卡片 · {languages} · {subjects}",
+    open_content_preview: "下载并预览",
+    open_content_selected: "预览已就绪",
+    open_content_source: "查看来源",
+    open_content_link_error: "无法打开经审核的来源链接。",
+    open_content_downloading: "正在下载并验证此牌组…",
+    open_content_preview_ready: "验证后的预览已就绪。请在导入前仔细检查。",
+    open_content_preview_first: "请先下载牌组并检查预览。",
+    open_content_confirm: "导入所选牌组",
+    open_content_importing: "正在导入已验证的牌组…",
+    open_content_importing_detail:
+      "ZAM 会再次检查缓存文件，并严格按预览结果提交。",
+    open_content_import_success:
+      "开放牌组导入完成：新建 {create}，更新 {update}，不变 {skip}，创建个人卡片 {cards}。",
+    open_content_error: "从开放内容库导入失败",
+    btn_import_tab_file: "APKG / CSV / TSV",
+    file_import_intro:
+      "选择本地 Anki 包或 UTF-8 卡片表。预览和导入均在本地完成，不使用 AI 或网络。",
+    btn_file_import_choose: "选择文件",
+    file_import_no_file: "尚未选择文件",
+    file_import_preview_first: "请先选择并预览文件。",
+    file_import_previewing: "正在本地检查文件…",
+    file_import_preview_counts:
+      "共 {total} 项 · 新建 {create} · 更新 {update} · 不变 {skip} · 冲突 {conflict} · 不支持 {unsupported} · 新建个人卡片 {cards}",
+    file_import_preview_decks: "牌组：{decks}",
+    file_import_preview_media:
+      "媒体：{assets} 个本地文件，{references} 个卡片引用，{size} MiB",
+    file_import_preview_notices: "警告和不支持的内容",
+    file_import_more_notices: "另有 {count} 条提示",
+    file_import_nothing_to_do: "没有可导入的有效更改。",
+    file_import_ready: "确认后将在一个事务中导入所有有效卡片。",
+    file_import_picker_unavailable: "文件选择仅在 ZAM Desktop Studio 中可用。",
+    btn_file_import_confirm: "确认导入",
+    toast_file_import_success:
+      "导入完成：新建 {create}，更新 {update}，不变 {skip}，冲突 {conflict}，创建个人卡片 {cards}。",
+    lbl_error_file_import: "文件导入失败",
     lbl_import_modal_title: "导入课程标准",
     lbl_import_text: "课程内容文本",
     placeholder_import_text: "在此粘贴课程大纲、教学要求或笔记要点...",
@@ -3109,7 +3382,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     stats_week_label: "第 {week} 週",
     stats_total_cards: "{n} 枚のカードを復習",
     stats_total_time: "学習時間 {time}",
-    stats_empty: "この期間にはまだアクティビティがありません。カードを復習してから確認してください。",
+    stats_empty:
+      "この期間にはまだアクティビティがありません。カードを復習してから確認してください。",
     stats_activity_title: "アクティビティ",
     stats_loading: "読み込み中…",
     nav_settings: "設定",
@@ -3227,6 +3501,24 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "すべてのワークスペースやデバイスに同じ選択を強制することなく、このマシンを構成します。",
     settings_back: "ダッシュボードに戻る",
     settings_system_title: "システム",
+    study_workload_title: "学習量",
+    study_workload_help:
+      "落ち着いた毎日の組み合わせ、集中的な試験対策、または短めの問題カード学習を選べます。",
+    study_workload_preset: "プラン",
+    study_preset_balanced: "バランス",
+    study_preset_exam: "試験",
+    study_preset_problems: "問題カード",
+    study_preset_custom: "カスタム",
+    study_max_new: "セッションごとの新規カード",
+    study_max_reviews: "セッションごとの合計カード",
+    study_bury_new: "同じノートの新規カードは1日1枚だけ表示",
+    study_bury_review: "同じノートの復習カードは1日1枚だけ表示",
+    study_workload_save: "学習プランを保存",
+    study_unbury: "延期したカードを今すぐ表示",
+    study_workload_saved: "学習プランを保存しました。",
+    study_workload_unburied:
+      "延期されていたカード {count} 枚を再表示しました。",
+    study_workload_error: "学習プランを更新できませんでした：{message}",
     settings_ai_title: "AI モデル",
     settings_workspace_title: "ワークスペース",
     workspaces_help:
@@ -3394,7 +3686,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_agent_hint:
       "接続済みのエージェント Harness（サブスク / OAuth）を使います。APIキーや URL は不要です。",
     model_agent_harness_missing: "未検出",
-    model_agent_harness_none: "利用可能なエージェントテキスト Harness がありません",
+    model_agent_harness_none:
+      "利用可能なエージェントテキスト Harness がありません",
     model_agent_missing_harness: "エージェント Harness を選んでください。",
     model_btn_up: "上へ",
     model_btn_down: "下へ",
@@ -3568,6 +3861,57 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_card_due: "期限",
     lbl_card_not_due: "期限前",
     btn_import_curriculum: "カリキュラムインポート",
+    btn_import_file: "ファイルをインポート",
+    lbl_file_import_modal_title: "学習コンテンツをインポート",
+    btn_import_tab_library: "オープンライブラリ",
+    open_content_intro:
+      "審査済みのオープンライセンス教材を探せます。ZAM は正確なダウンロードを検証してからインポートプレビューを表示します。",
+    open_content_search: "オープンデッキを検索",
+    open_content_all_languages: "すべての言語",
+    open_content_all_subjects: "すべての分野",
+    open_content_loading: "厳選カタログを読み込み中…",
+    open_content_empty: "この条件に一致するオープンデッキはありません。",
+    open_content_count: "審査済みオープンデッキ {count} 件",
+    open_content_item_meta: "{cards} 枚 · {languages} · {subjects}",
+    open_content_preview: "ダウンロードしてプレビュー",
+    open_content_selected: "プレビュー準備完了",
+    open_content_source: "出典を見る",
+    open_content_link_error: "審査済みの出典リンクを開けませんでした。",
+    open_content_downloading: "デッキをダウンロードして検証中…",
+    open_content_preview_ready:
+      "検証済みプレビューの準備ができました。インポート前に確認してください。",
+    open_content_preview_first:
+      "先にデッキをダウンロードしてプレビューしてください。",
+    open_content_confirm: "選択したデッキをインポート",
+    open_content_importing: "検証済みデッキをインポート中…",
+    open_content_importing_detail:
+      "ZAM はキャッシュ済みファイルを再検証し、プレビューどおりに保存します。",
+    open_content_import_success:
+      "オープンデッキをインポートしました：新規 {create}、更新 {update}、変更なし {skip}、個人カード作成 {cards}。",
+    open_content_error: "オープンライブラリからのインポートに失敗しました",
+    btn_import_tab_file: "APKG / CSV / TSV",
+    file_import_intro:
+      "ローカルの Anki パッケージまたは UTF-8 カード表を選択します。プレビューとインポートは AI やネットワークを使わずローカルで実行されます。",
+    btn_file_import_choose: "ファイルを選択",
+    file_import_no_file: "ファイルが選択されていません",
+    file_import_preview_first: "先にファイルを選択してプレビューしてください。",
+    file_import_previewing: "ファイルをローカルで確認中…",
+    file_import_preview_counts:
+      "全 {total} 件 · 新規 {create} · 更新 {update} · 変更なし {skip} · 競合 {conflict} · 未対応 {unsupported} · 新しい個人カード {cards}",
+    file_import_preview_decks: "デッキ：{decks}",
+    file_import_preview_media:
+      "メディア：ローカルファイル {assets} 件、カード参照 {references} 件、{size} MiB",
+    file_import_preview_notices: "警告と未対応コンテンツ",
+    file_import_more_notices: "ほか {count} 件の通知",
+    file_import_nothing_to_do: "インポートできる有効な変更はありません。",
+    file_import_ready:
+      "確認すると、すべての有効なカードを1つのトランザクションでインポートします。",
+    file_import_picker_unavailable:
+      "ファイル選択は ZAM Desktop Studio で利用できます。",
+    btn_file_import_confirm: "インポートを確認",
+    toast_file_import_success:
+      "インポート完了：新規 {create}、更新 {update}、変更なし {skip}、競合 {conflict}、個人カード作成 {cards}。",
+    lbl_error_file_import: "ファイルのインポートに失敗しました",
     lbl_import_modal_title: "カリキュラム標準のインポート",
     lbl_import_text: "カリキュラムテキスト",
     placeholder_import_text:
@@ -3781,8 +4125,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     okf_resource_link: "出典 ↗",
     okf_link_open_failed: "リンクを開けませんでした: {url}",
     okf_mermaid_diagram: "Mermaid ダイアグラム",
-    okf_mermaid_failed:
-      "Mermaid ダイアグラムを表示できませんでした: {message}",
+    okf_mermaid_failed: "Mermaid ダイアグラムを表示できませんでした: {message}",
     okf_copy: "📋 コピー",
     okf_copied: "✓ コピーしました",
     okf_copy_failed: "⚠️ コピーに失敗しました",
@@ -4080,6 +4423,23 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Configure this machine without forcing the same choices onto every workspace or device.",
     settings_back: "Back to dashboard",
     settings_system_title: "System",
+    study_workload_title: "Study workload",
+    study_workload_help:
+      "Choose a calm daily mix, intensive exam coverage, or a smaller problem-card session.",
+    study_workload_preset: "Plan",
+    study_preset_balanced: "Balanced",
+    study_preset_exam: "Exam",
+    study_preset_problems: "Problem cards",
+    study_preset_custom: "Custom",
+    study_max_new: "New cards per session",
+    study_max_reviews: "Total cards per session",
+    study_bury_new: "Show only one new sibling per day",
+    study_bury_review: "Show only one review sibling per day",
+    study_workload_save: "Save study plan",
+    study_unbury: "Show buried cards now",
+    study_workload_saved: "Study plan saved.",
+    study_workload_unburied: "{count} buried card(s) are visible again.",
+    study_workload_error: "Could not update the study plan: {message}",
     settings_ai_title: "AI models",
     settings_workspace_title: "Workspaces",
     workspaces_help:
@@ -4152,14 +4512,16 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     secrets_vault_status_connected: "Connected ({region}){email}",
     secrets_vault_status_unlocked: "Unlocked ({region}){email}",
     secrets_vault_status_locked: "Locked ({region}){email}",
-    secrets_vault_status_logged_out: "Not logged in to Bitwarden on this machine.",
+    secrets_vault_status_logged_out:
+      "Not logged in to Bitwarden on this machine.",
     secrets_vault_status_missing:
       "Bitwarden optional and not installed — paste still works for single-machine use.",
     secrets_vault_detail_synced:
       "Server-database credentials are in your vault. Changes sync while unlocked.",
     secrets_vault_detail_pending:
       "{count} machine secret(s) not yet in Bitwarden — press Sync.",
-    secrets_vault_detail_ready: "Press Sync to connect Bitwarden for this machine.",
+    secrets_vault_detail_ready:
+      "Press Sync to connect Bitwarden for this machine.",
     secrets_vault_detail_locked: "Unlock to sync or resume connection.",
     secrets_vault_detail_login:
       "Log in to Bitwarden once on this Mac, then unlock here.",
@@ -4173,7 +4535,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     secrets_vault_sync: "Sync with Bitwarden",
     secrets_vault_sync_again: "Sync now",
     secrets_vault_syncing: "Syncing…",
-    secrets_vault_sync_ok: "Synced {count} secret(s) into Bitwarden. Auto-sync is on.",
+    secrets_vault_sync_ok:
+      "Synced {count} secret(s) into Bitwarden. Auto-sync is on.",
     secrets_vault_sync_ok_none:
       "Already in sync. Auto-sync is on for future changes.",
     secrets_vault_open: "Open Bitwarden",
@@ -4235,7 +4598,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     pairing_llm_yes: "Recall AI included",
     pairing_llm_no: "No Recall AI configured",
     pairing_speech_yes: "voice mode: cloud speech configured",
-    pairing_speech_stt_only: "voice mode: cloud recognition configured, no cloud voice",
+    pairing_speech_stt_only:
+      "voice mode: cloud recognition configured, no cloud voice",
     pairing_speech_no: "voice mode: on the device only",
     pairing_scan_now:
       "Scan now with ZAM Mobile. The code is hidden automatically after five minutes.",
@@ -4474,13 +4838,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     local_vision_get_ollama: "Install Ollama",
     local_vision_checking: "Checking local visual analysis…",
     local_vision_ready: "Local visual analysis is ready.",
-    local_vision_needs_ollama:
-      "Install Ollama first, then set up Qwen3-VL 4B.",
-    local_vision_start_ollama:
-      "Start Ollama, then set up Qwen3-VL 4B.",
+    local_vision_needs_ollama: "Install Ollama first, then set up Qwen3-VL 4B.",
+    local_vision_start_ollama: "Start Ollama, then set up Qwen3-VL 4B.",
     local_vision_model_missing: "Qwen3-VL 4B is not downloaded yet.",
-    local_vision_not_enabled:
-      "Qwen3-VL 4B is available but not enabled.",
+    local_vision_not_enabled: "Qwen3-VL 4B is available but not enabled.",
     local_vision_working: "Setting up local visual analysis…",
     local_vision_enabled: "Local visual analysis is ready.",
     local_vision_error: "Local visual-analysis setup failed: {message}",
@@ -4495,9 +4856,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Install Ollama first, then enable EmbeddingGemma:300m.",
     local_embedding_start_ollama:
       "Start Ollama, then enable EmbeddingGemma:300m.",
-    local_embedding_model_missing:
-      "EmbeddingGemma:300m is not downloaded yet.",
-    local_embedding_not_enabled: "EmbeddingGemma:300m is available but not enabled.",
+    local_embedding_model_missing: "EmbeddingGemma:300m is not downloaded yet.",
+    local_embedding_not_enabled:
+      "EmbeddingGemma:300m is available but not enabled.",
     local_embedding_working: "Setting up semantic search…",
     local_embedding_enabled: "Semantic search is ready.",
     local_embedding_error: "Semantic-search setup failed: {message}",
@@ -4604,6 +4965,56 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_release_published_toast:
       "Token revision v{version} published ({materiality})",
     btn_import_curriculum: "Import Curriculum",
+    btn_import_file: "Import File",
+    lbl_file_import_modal_title: "Import Learning Content",
+    btn_import_tab_library: "Open Library",
+    open_content_intro:
+      "Discover reviewed, open-licensed decks. ZAM verifies the exact download before showing an import preview.",
+    open_content_search: "Search open decks",
+    open_content_all_languages: "All languages",
+    open_content_all_subjects: "All subjects",
+    open_content_loading: "Loading the curated catalog…",
+    open_content_empty: "No open decks match these filters.",
+    open_content_count: "{count} reviewed open deck(s)",
+    open_content_item_meta: "{cards} cards · {languages} · {subjects}",
+    open_content_preview: "Download & preview",
+    open_content_selected: "Preview ready",
+    open_content_source: "View source",
+    open_content_link_error: "The reviewed source link could not be opened.",
+    open_content_downloading: "Downloading and verifying this deck…",
+    open_content_preview_ready:
+      "The verified preview is ready. Review it below before importing.",
+    open_content_preview_first: "Download and preview a deck first.",
+    open_content_confirm: "Import selected deck",
+    open_content_importing: "Importing the verified deck…",
+    open_content_importing_detail:
+      "ZAM checks the cached artifact again and commits the exact preview.",
+    open_content_import_success:
+      "Open deck imported: {create} created, {update} updated, {skip} unchanged, and {cards} personal cards created.",
+    open_content_error: "Open-library import failed",
+    btn_import_tab_file: "APKG / CSV / TSV",
+    file_import_intro:
+      "Choose a local Anki package or UTF-8 card table. Preview and import run locally without AI or network access.",
+    btn_file_import_choose: "Choose file",
+    file_import_no_file: "No file selected",
+    file_import_preview_first: "Choose and preview a file first.",
+    file_import_previewing: "Checking the file locally…",
+    file_import_preview_counts:
+      "{total} entries · {create} create · {update} update · {skip} unchanged · {conflict} conflicts · {unsupported} unsupported · {cards} new personal cards",
+    file_import_preview_decks: "Decks: {decks}",
+    file_import_preview_media:
+      "Media: {assets} local file(s), {references} card reference(s), {size} MiB",
+    file_import_preview_notices: "Warnings and unsupported content",
+    file_import_more_notices: "{count} more notices",
+    file_import_nothing_to_do: "There are no valid changes to import.",
+    file_import_ready:
+      "Confirming imports every valid card in one transaction.",
+    file_import_picker_unavailable:
+      "File selection is available in ZAM Desktop Studio.",
+    btn_file_import_confirm: "Confirm Import",
+    toast_file_import_success:
+      "Import complete: {create} created, {update} updated, {skip} unchanged, {conflict} conflicts, and {cards} personal cards created.",
+    lbl_error_file_import: "Failed to import file",
     lbl_import_modal_title: "Import Curriculum Standard",
     lbl_import_text: "Curriculum Text",
     placeholder_import_text:
@@ -4951,7 +5362,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_model_title: "Give ZAM its AI.",
     onboarding_model_body:
       "ZAM uses an AI model to generate questions, evaluate your answers, and import learning content. Without one, manual cards and reviews still work — you can set this up later.",
-    onboarding_model_agent_title: "Agent CLI (Claude Code, Antigravity, Copilot...)",
+    onboarding_model_agent_title:
+      "Agent CLI (Claude Code, Antigravity, Copilot...)",
     onboarding_model_agent_badge: "Recommended",
     onboarding_model_agent_body:
       "Use a connected AI agent CLI tool already on your system (Claude Code, Antigravity, Copilot, Codex, Grok...) — no API key or cloud subscription top-up required.",
@@ -5145,15 +5557,15 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     voice_start: "Start voice mode",
     voice_pause: "Pause voice mode",
     voice_paused_msg: "Voice mode paused: {message}",
-    voice_unavailable:
-      "Voice mode is not available on this device.",
+    voice_unavailable: "Voice mode is not available on this device.",
     voice_unavailable_device_only:
       "Voice mode is set to stay on this device, and this device cannot do it.",
     lbl_dynamic_questions: "Reword questions each review",
     lbl_dynamic_questions_help:
       "ZAM rephrases each card's question every time it comes up, so you learn the concept rather than the wording. It asks the model once per card, which is what makes the first card of a session slow. Turn it off to get your stored question straight away.",
     dynamic_questions_on: "Questions will be reworded each review.",
-    dynamic_questions_off: "Your stored question is used as written — reviews start faster.",
+    dynamic_questions_off:
+      "Your stored question is used as written — reviews start faster.",
     dynamic_questions_error: "The setting could not be saved.",
     wizard_connect_model_link: "Connect an AI model",
   },
@@ -5315,6 +5727,24 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Konfiguriere diesen Rechner, ohne dieselben Entscheidungen auf jeden Arbeitsbereich oder jedes Gerät zu übertragen.",
     settings_back: "Zurück zur Übersicht",
     settings_system_title: "System",
+    study_workload_title: "Lernumfang",
+    study_workload_help:
+      "Wähle einen ruhigen Tagesmix, intensive Prüfungsvorbereitung oder eine kleinere Sitzung mit Aufgabenkarten.",
+    study_workload_preset: "Plan",
+    study_preset_balanced: "Ausgewogen",
+    study_preset_exam: "Prüfung",
+    study_preset_problems: "Aufgabenkarten",
+    study_preset_custom: "Eigene Werte",
+    study_max_new: "Neue Karten pro Sitzung",
+    study_max_reviews: "Karten insgesamt pro Sitzung",
+    study_bury_new: "Pro Tag nur eine neue Geschwisterkarte zeigen",
+    study_bury_review: "Pro Tag nur eine fällige Geschwisterkarte zeigen",
+    study_workload_save: "Lernplan speichern",
+    study_unbury: "Zurückgestellte Karten jetzt zeigen",
+    study_workload_saved: "Lernplan gespeichert.",
+    study_workload_unburied:
+      "{count} zurückgestellte Karte(n) sind wieder sichtbar.",
+    study_workload_error: "Lernplan konnte nicht geändert werden: {message}",
     settings_ai_title: "KI-Modelle",
     settings_workspace_title: "Arbeitsbereiche",
     workspaces_help:
@@ -5388,7 +5818,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     secrets_vault_status_connected: "Verbunden ({region}){email}",
     secrets_vault_status_unlocked: "Entsperrt ({region}){email}",
     secrets_vault_status_locked: "Gesperrt ({region}){email}",
-    secrets_vault_status_logged_out: "Auf diesem Rechner nicht bei Bitwarden angemeldet.",
+    secrets_vault_status_logged_out:
+      "Auf diesem Rechner nicht bei Bitwarden angemeldet.",
     secrets_vault_status_missing:
       "Bitwarden optional und nicht installiert — Einfügen funktioniert weiter für einen Rechner.",
     secrets_vault_detail_synced:
@@ -5397,7 +5828,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "{count} Maschinen-Secret(s) noch nicht in Bitwarden — Sync drücken.",
     secrets_vault_detail_ready:
       "Sync drücken, um Bitwarden für diesen Rechner zu verbinden.",
-    secrets_vault_detail_locked: "Entsperren, um zu synchronisieren oder fortzusetzen.",
+    secrets_vault_detail_locked:
+      "Entsperren, um zu synchronisieren oder fortzusetzen.",
     secrets_vault_detail_login:
       "Einmal bei Bitwarden auf diesem Mac anmelden, dann hier entsperren.",
     secrets_vault_detail_optional:
@@ -5725,10 +6157,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     local_vision_ready: "Lokale Bildanalyse ist bereit.",
     local_vision_needs_ollama:
       "Zuerst Ollama installieren, dann Qwen3-VL 4B einrichten.",
-    local_vision_start_ollama:
-      "Ollama starten, dann Qwen3-VL 4B einrichten.",
-    local_vision_model_missing:
-      "Qwen3-VL 4B ist noch nicht heruntergeladen.",
+    local_vision_start_ollama: "Ollama starten, dann Qwen3-VL 4B einrichten.",
+    local_vision_model_missing: "Qwen3-VL 4B ist noch nicht heruntergeladen.",
     local_vision_not_enabled:
       "Qwen3-VL 4B ist verfügbar, aber noch nicht aktiviert.",
     local_vision_working: "Lokale Bildanalyse wird eingerichtet…",
@@ -5857,6 +6287,60 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_release_published_toast:
       "Token-Revision v{version} veröffentlicht ({materiality})",
     btn_import_curriculum: "Lehrplan importieren",
+    btn_import_file: "Datei importieren",
+    lbl_file_import_modal_title: "Lerninhalte importieren",
+    btn_import_tab_library: "Offene Bibliothek",
+    open_content_intro:
+      "Entdecke geprüfte, offen lizenzierte Stapel. ZAM verifiziert den exakten Download, bevor die Importvorschau erscheint.",
+    open_content_search: "Offene Stapel durchsuchen",
+    open_content_all_languages: "Alle Sprachen",
+    open_content_all_subjects: "Alle Themen",
+    open_content_loading: "Der kuratierte Katalog wird geladen…",
+    open_content_empty: "Kein offener Stapel passt zu diesen Filtern.",
+    open_content_count: "{count} geprüfte offene Stapel",
+    open_content_item_meta: "{cards} Karten · {languages} · {subjects}",
+    open_content_preview: "Laden & Vorschau",
+    open_content_selected: "Vorschau bereit",
+    open_content_source: "Quelle ansehen",
+    open_content_link_error:
+      "Der geprüfte Quell-Link konnte nicht geöffnet werden.",
+    open_content_downloading: "Stapel wird geladen und verifiziert…",
+    open_content_preview_ready:
+      "Die verifizierte Vorschau ist bereit. Prüfe sie vor dem Import.",
+    open_content_preview_first:
+      "Bitte lade zuerst einen Stapel und prüfe die Vorschau.",
+    open_content_confirm: "Ausgewählten Stapel importieren",
+    open_content_importing: "Verifizierter Stapel wird importiert…",
+    open_content_importing_detail:
+      "ZAM prüft die zwischengespeicherte Datei erneut und übernimmt exakt die Vorschau.",
+    open_content_import_success:
+      "Offener Stapel importiert: {create} neu, {update} aktualisiert, {skip} unverändert und {cards} persönliche Karten angelegt.",
+    open_content_error: "Import aus der offenen Bibliothek fehlgeschlagen",
+    btn_import_tab_file: "APKG / CSV / TSV",
+    file_import_intro:
+      "Wähle ein lokales Anki-Paket oder eine UTF-8-Kartentabelle. Vorschau und Import laufen lokal ohne KI oder Netzwerkzugriff.",
+    btn_file_import_choose: "Datei auswählen",
+    file_import_no_file: "Keine Datei ausgewählt",
+    file_import_preview_first:
+      "Bitte wähle zuerst eine Datei und prüfe die Vorschau.",
+    file_import_previewing: "Datei wird lokal geprüft…",
+    file_import_preview_counts:
+      "{total} Einträge · {create} neu · {update} aktualisieren · {skip} unverändert · {conflict} Konflikte · {unsupported} nicht unterstützt · {cards} neue persönliche Karten",
+    file_import_preview_decks: "Stapel: {decks}",
+    file_import_preview_media:
+      "Medien: {assets} lokale Datei(en), {references} Kartenverweis(e), {size} MiB",
+    file_import_preview_notices: "Hinweise und nicht unterstützte Inhalte",
+    file_import_more_notices: "{count} weitere Hinweise",
+    file_import_nothing_to_do:
+      "Es gibt keine gültigen Änderungen zu importieren.",
+    file_import_ready:
+      "Beim Bestätigen werden alle gültigen Karten in einer Transaktion importiert.",
+    file_import_picker_unavailable:
+      "Die Dateiauswahl ist im ZAM Desktop Studio verfügbar.",
+    btn_file_import_confirm: "Import bestätigen",
+    toast_file_import_success:
+      "Import abgeschlossen: {create} neu, {update} aktualisiert, {skip} unverändert, {conflict} Konflikte und {cards} persönliche Karten angelegt.",
+    lbl_error_file_import: "Dateiimport fehlgeschlagen",
     lbl_import_modal_title: "Lehrplan-Standard importieren",
     lbl_import_text: "Lehrplantext",
     placeholder_import_text:
@@ -6210,14 +6694,16 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_model_title: "Gib ZAM seine KI.",
     onboarding_model_body:
       "ZAM nutzt ein KI-Modell, um Fragen zu generieren, deine Antworten zu bewerten und Lerninhalte zu importieren. Auch ohne Modell funktionieren manuelle Karten und Reviews – du kannst das später einrichten.",
-    onboarding_model_agent_title: "Agent-CLI (Claude Code, Antigravity, Copilot...)",
+    onboarding_model_agent_title:
+      "Agent-CLI (Claude Code, Antigravity, Copilot...)",
     onboarding_model_agent_badge: "Empfohlen",
     onboarding_model_agent_body:
       "Nutze ein verbundenes Agenten-CLI-Tool auf deinem System (Claude Code, Antigravity, Copilot, Codex, Grok...) – kein API-Schlüssel oder Guthaben-Aufladen erforderlich.",
     onboarding_model_agent_select_label: "Agenten-Tool auswählen",
     onboarding_model_agent_detected_badge: "erkannt",
     onboarding_model_agent_connect: "{harness} als KI-Modell nutzen",
-    onboarding_model_agent_connecting: "{harness} wird als KI-Modell verbunden...",
+    onboarding_model_agent_connecting:
+      "{harness} wird als KI-Modell verbunden...",
     onboarding_model_agent_connected:
       "Verbunden – {harness} ({model}) ist bereit als dein KI-Modell.",
     onboarding_model_agent_none_detected:
@@ -6407,15 +6893,16 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     voice_start: "Sprachmodus starten",
     voice_pause: "Sprachmodus pausieren",
     voice_paused_msg: "Sprachmodus pausiert: {message}",
-    voice_unavailable:
-      "Der Sprachmodus ist auf diesem Gerät nicht verfügbar.",
+    voice_unavailable: "Der Sprachmodus ist auf diesem Gerät nicht verfügbar.",
     voice_unavailable_device_only:
       "Der Sprachmodus soll dieses Gerät nicht verlassen, und dieses Gerät kann es nicht.",
     lbl_dynamic_questions: "Fragen jedes Mal neu formulieren",
     lbl_dynamic_questions_help:
       "ZAM formuliert die Frage einer Karte bei jeder Wiederholung neu, damit du den Inhalt lernst und nicht den Wortlaut. Dafür wird pro Karte einmal das Modell gefragt — genau das macht die erste Karte einer Sitzung langsam. Ausschalten heißt: deine gespeicherte Frage erscheint sofort.",
-    dynamic_questions_on: "Fragen werden bei jeder Wiederholung neu formuliert.",
-    dynamic_questions_off: "Deine gespeicherte Frage wird unverändert genutzt — die Abfrage startet schneller.",
+    dynamic_questions_on:
+      "Fragen werden bei jeder Wiederholung neu formuliert.",
+    dynamic_questions_off:
+      "Deine gespeicherte Frage wird unverändert genutzt — die Abfrage startet schneller.",
     dynamic_questions_error: "Die Einstellung konnte nicht gespeichert werden.",
     wizard_connect_model_link: "KI-Modell verbinden",
   },
