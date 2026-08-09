@@ -110,7 +110,9 @@ describe("connectCloudModel", () => {
     }>;
     // Built from the shared descriptor, not from literals copied into mobile.
     expect(rows).toHaveLength(3);
-    const chat = rows.find((row) => row.model === OPENROUTER_PROVIDER.defaultModel);
+    const chat = rows.find(
+      (row) => row.model === OPENROUTER_PROVIDER.defaultModel,
+    );
     expect(chat?.url).toBe(OPENROUTER_PROVIDER.baseUrl);
     expect(chat?.label).toBe(OPENROUTER_PROVIDER.label);
     expect(chat?.capabilities).toMatchObject({ text: true, image: true });

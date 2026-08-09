@@ -195,7 +195,9 @@ describe("saveCardEdit", { timeout: PROVISIONING_TIMEOUT }, () => {
   it("leaves untouched fields alone", async () => {
     const db = await library();
     const token = await getTokenBySlug(db, "zam/ehrlich-bewerten");
-    await saveCardEdit(db, token?.id as string, { title: "Ehrlich einschätzen" });
+    await saveCardEdit(db, token?.id as string, {
+      title: "Ehrlich einschätzen",
+    });
 
     const updated = await getTokenBySlug(db, "zam/ehrlich-bewerten");
     expect(updated?.title).toBe("Ehrlich einschätzen");
@@ -216,7 +218,9 @@ describe("pause / resume / remove", { timeout: PROVISIONING_TIMEOUT }, () => {
     );
 
     const entries = await listLibrary(db, LOCAL_USER_ID);
-    const paused = entries.find((entry) => entry.slug === "zam/aktives-erinnern");
+    const paused = entries.find(
+      (entry) => entry.slug === "zam/aktives-erinnern",
+    );
     expect(paused?.paused).toBe(true);
     expect(entries).toHaveLength(3);
   });

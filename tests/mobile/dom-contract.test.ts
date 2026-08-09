@@ -73,9 +73,9 @@ describe("index.html / TypeScript element contract", () => {
   it("keeps a section for every tab the navigation switches between", () => {
     const nav = read("mobile/src/ui/nav.ts");
     const present = markupIds();
-    const sections = [
-      ...nav.matchAll(/^\s+(\w+): "([a-z-]+)",$/gm),
-    ].map((match) => match[2] as string);
+    const sections = [...nav.matchAll(/^\s+(\w+): "([a-z-]+)",$/gm)].map(
+      (match) => match[2] as string,
+    );
     // The two id maps in nav.ts plus the summary constant.
     expect(sections.length).toBeGreaterThanOrEqual(8);
     for (const id of sections) {
@@ -109,9 +109,9 @@ describe("index.html / TypeScript element contract", () => {
     );
     // Direct children only: the markup indents them one level deeper than the
     // <nav>, and anything inside a wrapper deeper still.
-    const children = [
-      ...bar.matchAll(/^ {8}<\w+ class="([a-z-]+)"/gm),
-    ].map((match) => match[1] as string);
+    const children = [...bar.matchAll(/^ {8}<\w+ class="([a-z-]+)"/gm)].map(
+      (match) => match[1] as string,
+    );
     expect(new Set(children)).toEqual(new Set(["tab-wrap", "tab"]));
     for (const cls of new Set(children)) {
       const rule = css.slice(css.indexOf(`\n.${cls} {`));

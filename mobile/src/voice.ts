@@ -21,17 +21,6 @@ import {
 } from "../../src/kernel/recall/voice-review.js";
 import { isUsableSpeechEndpoint } from "./speech.js";
 
-export {
-  DEFAULT_VOICE_ENGINE_PREFERENCE,
-  HandsFreeReviewController,
-  isVoiceEnginePreference,
-  isVoiceModeUsable,
-  parseSpokenRating,
-  planLeavesDevice,
-  resolveVoiceEnginePlan,
-  resolveVoiceLocale,
-  VOICE_ENGINE_PREFERENCES,
-} from "../../src/kernel/recall/voice-review.js";
 export type {
   VoiceAvailability,
   VoiceCapability,
@@ -46,6 +35,17 @@ export type {
   VoiceReviewAdapter,
   VoiceReviewCard,
   VoiceTierAvailability,
+} from "../../src/kernel/recall/voice-review.js";
+export {
+  DEFAULT_VOICE_ENGINE_PREFERENCE,
+  HandsFreeReviewController,
+  isVoiceEnginePreference,
+  isVoiceModeUsable,
+  parseSpokenRating,
+  planLeavesDevice,
+  resolveVoiceEnginePlan,
+  resolveVoiceLocale,
+  VOICE_ENGINE_PREFERENCES,
 } from "../../src/kernel/recall/voice-review.js";
 
 /** Machine-local, like every other device-shaped setting the companion keeps. */

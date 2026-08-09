@@ -23,11 +23,11 @@ import {
   OPENROUTER_PROVIDER,
   OPENROUTER_RECOMMENDED_MODELS,
 } from "../../src/cli/llm/cloud-providers.js";
-import { getSetting } from "../../src/kernel/models/settings.js";
 import {
   getTokenMedia,
   type TokenMedia,
 } from "../../src/kernel/models/media.js";
+import { getSetting } from "../../src/kernel/models/settings.js";
 import {
   buildReviewQueue,
   type ReviewQueue,
@@ -35,10 +35,10 @@ import {
 import { unburySiblingCards } from "../../src/kernel/scheduler/siblings.js";
 import {
   getStudyWorkloadSettings,
-  setStudyWorkloadSettings,
   STUDY_WORKLOAD_PRESETS,
   type StudyWorkloadPreset,
   type StudyWorkloadSettings,
+  setStudyWorkloadSettings,
 } from "../../src/kernel/scheduler/study-settings.js";
 import {
   connectCloudModel,

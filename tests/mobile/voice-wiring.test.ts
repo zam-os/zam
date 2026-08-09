@@ -77,9 +77,13 @@ describe("iOS voice-mode wiring", () => {
   it("registers the plugin on both mobile platforms", () => {
     const voice = read("mobile/src-tauri/src/voice.rs");
     expect(voice).toContain("register_ios_plugin(init_plugin_voice)");
-    expect(voice).toContain('register_android_plugin(PLUGIN_IDENTIFIER, "VoicePlugin")');
+    expect(voice).toContain(
+      'register_android_plugin(PLUGIN_IDENTIFIER, "VoicePlugin")',
+    );
     const lib = read("mobile/src-tauri/src/lib.rs");
-    expect(lib).toContain("#[cfg(mobile)]\n    let builder = builder.plugin(voice::init());");
+    expect(lib).toContain(
+      "#[cfg(mobile)]\n    let builder = builder.plugin(voice::init());",
+    );
   });
 
   it("reports voice on both platforms but backgrounding only on Android", () => {
@@ -100,7 +104,9 @@ describe("iOS voice-mode wiring", () => {
     // manifest declares; without the guard the whole iOS build fails.
     const plugin = read("mobile/src-tauri/ios/Sources/VoicePlugin.swift");
     expect(plugin).toContain("if #available(iOS 17.0, *)");
-    expect(plugin).toContain("AVAudioSession.sharedInstance().recordPermission");
+    expect(plugin).toContain(
+      "AVAudioSession.sharedInstance().recordPermission",
+    );
   });
 });
 
@@ -123,7 +129,9 @@ describe("voice locale and voice quality", () => {
     expect(plugin).toContain("case .enhanced: tier = 2");
     // Ranking on quality alone breaks ties arbitrarily and reaches novelty
     // voices; verified on macOS, where it chose "Zarvox" over "Samantha".
-    expect(plugin).toContain("AVSpeechSynthesisVoice(language: wanted)?.identifier");
+    expect(plugin).toContain(
+      "AVSpeechSynthesisVoice(language: wanted)?.identifier",
+    );
     expect(plugin).toContain("isSystemDefault");
 
     const desktop = read("desktop/src-tauri/src/voice.rs");
@@ -152,13 +160,23 @@ describe("mobile cloud speech tier wiring", () => {
 
   it("registers the commands the tiered port calls", () => {
     const rust = read("mobile/src-tauri/src/voice.rs");
-    for (const command of ["voice_capture", "voice_play", "voice_capabilities"]) {
+    for (const command of [
+      "voice_capture",
+      "voice_play",
+      "voice_capabilities",
+    ]) {
       expect(rust).toContain(`pub async fn ${command}`);
-      expect(read("mobile/src-tauri/src/lib.rs")).toContain(`voice::${command}`);
+      expect(read("mobile/src-tauri/src/lib.rs")).toContain(
+        `voice::${command}`,
+      );
     }
     // The non-mobile build answers rather than 404s, as the rest of the
     // command surface already does.
-    for (const command of ["voice_capture", "voice_play", "voice_capabilities"]) {
+    for (const command of [
+      "voice_capture",
+      "voice_play",
+      "voice_capabilities",
+    ]) {
       expect(rust).toContain(`pub fn ${command}`);
     }
   });

@@ -4,8 +4,8 @@ import {
   NoTranslationBackendError,
   parseTranslation,
   statusFromFailures,
-  translateCard,
   TranslationFailedError,
+  translateCard,
 } from "../../mobile/src/ai/translate.js";
 import type { ZamPairLlmEndpoint } from "../../src/bridge/mobile-pairing.js";
 import type { Database } from "../../src/kernel/db/types.js";

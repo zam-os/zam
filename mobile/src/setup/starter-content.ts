@@ -15,8 +15,8 @@
  * the first sentences anyone reads in ZAM.
  */
 
-import type { MobileTokenDraft } from "../import.js";
 import type { Locale } from "../i18n.js";
+import type { MobileTokenDraft } from "../import.js";
 
 const DE: MobileTokenDraft[] = [
   {

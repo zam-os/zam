@@ -17,17 +17,17 @@
  */
 
 import {
+  DEFAULT_PERSONA_ID,
+  isPersonaId,
+  type PersonaId,
+} from "../../../src/kernel/models/persona.js";
+import {
   applyStaticTranslations,
   type Locale,
   setLocale,
   t,
   tf,
 } from "../i18n.js";
-import {
-  DEFAULT_PERSONA_ID,
-  isPersonaId,
-  type PersonaId,
-} from "../../../src/kernel/models/persona.js";
 
 function byId<T extends HTMLElement>(id: string): T {
   const node = document.getElementById(id);
