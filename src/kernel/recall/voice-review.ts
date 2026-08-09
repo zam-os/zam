@@ -11,6 +11,7 @@
  * voice mode in 0.24.0.
  */
 
+import { decideAiTier } from "../ai/tier-preference.js";
 import type { Rating } from "../scheduler/fsrs.js";
 
 export type VoiceLocale = "de-DE" | "en-US";
@@ -147,26 +148,14 @@ export interface VoiceEngineDecision {
 
 export type VoiceEnginePlan = Record<VoiceCapability, VoiceEngineDecision>;
 
-function decide(
-  preference: VoiceEnginePreference,
-  availability: VoiceTierAvailability,
-): VoiceEngineDecision {
-  if (preference === "device-only") {
-    return availability.local
-      ? { tier: "local", reason: "preferred" }
-      : { tier: null, reason: "unavailable-device-only" };
-  }
-  const [first, second]: VoiceEngineTier[] =
-    preference === "quality-first" ? ["cloud", "local"] : ["local", "cloud"];
-  if (availability[first]) return { tier: first, reason: "preferred" };
-  if (availability[second]) {
-    return {
-      tier: second,
-      reason: second === "cloud" ? "fell-back-to-cloud" : "fell-back-to-local",
-    };
-  }
-  return { tier: null, reason: "unavailable" };
-}
+/**
+ * Speech resolves through the shared primitive (ADR 2026-08-09b), which was
+ * lifted out of this function unchanged when the same tier model was extended
+ * to recall, card text, image import and embeddings. Two copies of "which tier
+ * serves this, and what do we tell the learner" is exactly the drift that
+ * would make one surface report a fallback the other performs silently.
+ */
+const decide = decideAiTier;
 
 /**
  * Resolve the user's preference against what this device and configuration can
