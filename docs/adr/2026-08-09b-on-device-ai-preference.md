@@ -79,12 +79,13 @@ generative work:
 
 - **`device-only`** — the device tier or nothing. The strict-privacy, zero-cost
   choice; accepts that a capability may be unavailable.
-- **`device-first`** (default) — prefer the device, use the cloud when the
-  device cannot serve, and **say so**.
+- **`device-first`** — prefer the device, use the cloud when the device cannot
+  serve, and **say so**.
 - **`quality-first`** — prefer the cloud, accepting per-use cost and a third
   party.
 
-It is chosen **per capability**, not once for the app, over five capabilities:
+Which one is the *default* is decided per capability in decision 2. It is
+chosen **per capability**, not once for the app, over five capabilities:
 
 | Capability | What it covers |
 | :--- | :--- |
@@ -104,7 +105,39 @@ inputs (the preference plus what each tier can actually serve right now), and
 returns a **tier plus a reason**. `voice` keeps its existing storage and
 semantics; this ADR generalises the type rather than re-deciding speech.
 
-### 2. The preference is per device and never enters the shared database
+### 2. The default follows what is at stake, and it is not the same everywhere
+
+A uniform `device-first` would be the wrong default, because the capabilities do
+not carry the same risk.
+
+**Recall and voice default to `device-first`.** They run many times a day, the
+learner sees the result immediately and can overrule it with their own rating,
+and a weaker judgement on one card costs one card. Free, private and offline is
+the right trade there, and it is the trade ADR 2026-07-31 already made.
+
+**Card text and image import default to `quality-first`, on Luna-class models.**
+Learning content is the most valuable thing in a ZAM library: a card is authored
+once and reviewed for years, a mistranslated term of art or a garbled extraction
+from a textbook photo is a defect that compounds every time the card comes back,
+and the learner has no way to notice it later. Import is also rare compared to
+review. Against material a learner will carry for years, the difference between
+a small on-device model and `openai/gpt-5.6-luna` at roughly $0.10/$0.60 per
+million tokens is not a saving; it is a false economy of exactly the kind ADR
+2026-07-31 rejected for speech.
+
+This is a deliberate exception to ZAM's cost-first stance on models, scoped to
+content: cheap where the work is repetitive and self-correcting, good where the
+output is permanent.
+
+**`embedding` has no default to argue about** while no platform offers an
+on-device embedding API — see decision 4.
+
+These defaults are a judgement about the models of 2026, not about locality in
+principle. On-device quality rises with each device generation, and the point of
+decisions 1 and 4 is that moving `text` to `device-first` later is a changed
+default and a changed matrix row, not a new mechanism and not another ADR.
+
+### 3. The preference is per device and never enters the shared database
 
 Two devices on one Turso library do not have the same silicon: a Pixel 9 with
 AICore and an A15 iPad both read the same `ai.models.cloud` rows, and a stored
@@ -117,7 +150,7 @@ This is the existing rule, not a new one: the shared database carries content
 and learning state; what only one machine can be true about stays on that
 machine.
 
-### 3. A capability with no on-device implementation says so instead of offering a choice
+### 4. A capability with no on-device implementation says so instead of offering a choice
 
 The preference is only shown where a device tier could exist. Where it cannot,
 Settings states the fact and why. As of this ADR:
@@ -140,7 +173,7 @@ licensed for Siri runs on Apple's Private Cloud Compute and is not an API an
 app can call; it changes nothing for ZAM. No device in the field-test range
 qualifies, so iOS keeps a reserved slot rather than an implementation.
 
-### 4. A tier that could not serve is reported, never swallowed
+### 5. A tier that could not serve is reported, never swallowed
 
 Every capability result carries the tier that produced it and, when the
 preferred tier was skipped, the reason. Surfaces show both: the evaluation panel
@@ -152,7 +185,7 @@ Under `device-first` the cloud may answer, but never anonymously. This is the
 decision that makes the other four worth anything: a preference nobody can
 verify is decoration.
 
-### 5. Device-model availability is checkable and preparable from Settings
+### 6. Device-model availability is checkable and preparable from Settings
 
 Each capability with a device tier shows its live state — *available*,
 *downloadable*, *downloading*, *unavailable on this device* — read through the
@@ -164,7 +197,7 @@ First-use download stays possible, because `device-first` should work without a
 trip to Settings. What ends is a multi-minute download starting invisibly inside
 a review and being discarded when the learner rates the card.
 
-### 6. A device with no usable model must be able to say why
+### 7. A device with no usable model must be able to say why
 
 Keys stay where they are. Inline storage in the `ai.models.cloud` row is what
 lets a second device work without a second paste once a shared database exists,
@@ -204,11 +237,16 @@ owns; it never displays a key.
 
 - Five capabilities × three preferences is more Settings surface than one
   switch, on the smallest screens ZAM runs on. Mitigated by hiding rows that
-  have no device tier at all (decision 3), which today leaves Android with three.
+  have no device tier at all (decision 4), which today leaves Android with three.
 - On-device quality is lower than a frontier cloud model. `device-first` will
-  sometimes produce a weaker evaluation than 0.30.0 does — a real regression in
-  output quality, deliberately traded for privacy, cost and offline capability,
-  and reversible per capability by the learner.
+  sometimes produce a weaker *evaluation* than 0.30.0 does — a real regression
+  in output quality, deliberately traded for privacy, cost and offline
+  capability, and reversible per capability by the learner. Content generation
+  is explicitly exempt (decision 2), so the trade never touches the cards
+  themselves.
+- Content work therefore still requires a cloud model, on a device where one may
+  not be configured. That is not a regression — it is today's behaviour — but
+  this ADR stops it from looking like a local option exists.
 - Nano's Prompt API caps output at 256 tokens; evaluation prompts already fit,
   card translation of a long card may not, and that boundary has to be measured
   per capability rather than assumed.
@@ -224,6 +262,10 @@ owns; it never displays a key.
 - **Keep resolving automatically, without a setting.** Rejected: it is the
   current behaviour, and it produced a learner who could not tell that his NPU
   was idle.
+- **Default every capability to `device-first`.** Rejected: it would apply the
+  cheapest model to the most permanent artefact ZAM has. Content is authored
+  once and reviewed for years; the models that write it should be the good ones
+  (decision 2).
 - **Put the preference in the shared database.** Rejected: heterogeneous devices
   on one library, and it contradicts the machine-local rule.
 - **Implement on-device embeddings now** (MediaPipe / LiteRT with a bundled
@@ -246,7 +288,8 @@ Not complete until, on a Pixel 9:
 4. `device-only` with the model unavailable produces a visible, actionable
    failure rather than a cloud call;
 5. `embedding` and `image` show "not possible on this device" rather than a
-   preference control;
+   preference control, and card authoring and photo import run on the
+   configured cloud model by default, naming it on the draft they produced;
 6. a paired device whose shared database offers only `local: true` rows says so,
    naming the rule that excluded them — the case observed on 2026-08-09.
 
@@ -257,7 +300,8 @@ Not complete until, on a Pixel 9:
 - `mobile/src-tauri/src/on_device_llm.rs`,
   `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/OnDeviceLlmPlugin.kt`
 - `mobile/src-tauri/gen/android/app/src/main/java/org/zamos/zam/VoicePlugin.kt`
-- `src/kernel/recall/voice-review.ts`, `src/kernel/system/install-config.ts`
+- `src/kernel/recall/voice-review.ts`, `src/kernel/system/install-config.ts`,
+  `src/cli/llm/cloud-providers.ts`
 - `src/cli/llm/model-registry.ts`, `src/cli/llm/cloud-connect.ts`,
   `src/cli/mobile-pairing.ts`, `mobile/src/model-registry.ts`,
   `mobile/src/ai/connect.ts`
