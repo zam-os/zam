@@ -71,3 +71,4 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-08-08](2026-08-08-ios-standalone-app.md) | ZAM on iPadOS Is a Standalone App, Not a Companion | Accepted — first run, library and AI connect verified on simulator; server-database upgrade awaits a live Turso test |
 | [2026-08-08b](2026-08-08b-ios-information-architecture.md) | iOS Information Architecture and Design System | Accepted |
 | [2026-08-09](2026-08-09-free-offline-learning-and-anki-interoperability.md) | Free Offline Learning and Anki Interoperability | Accepted |
+| [2026-08-09b](2026-08-09b-on-device-ai-preference.md) | On-Device AI Across Capabilities: One Preference, Honest Tiers | Proposed |
