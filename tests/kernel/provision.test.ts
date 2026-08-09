@@ -149,4 +149,34 @@ describe("applySchemaAndMigrations", () => {
     );
     stub.close();
   });
+
+  it("adds a nullable learning-step cursor without rewriting legacy card state", async () => {
+    const stub = createTauriInvokeStub(join(tempDir(), "pre-steps.db"));
+    const db = createTauriDatabase(stub.invoke);
+    await applySchemaAndMigrations(db);
+
+    const token = await createToken(db, {
+      slug: "legacy-learning-card",
+      concept: "A card scheduled before short steps existed",
+    });
+    const card = await ensureCard(db, token.id, "learner-1");
+    await db
+      .prepare("UPDATE cards SET state = 'learning' WHERE id = ?")
+      .run(card.id);
+    await db.exec("ALTER TABLE cards DROP COLUMN learning_step");
+
+    await applySchemaAndMigrations(db);
+
+    const columns = (await db.pragma("table_info(cards)")) as Array<{
+      name: string;
+    }>;
+    const migrated = (await db
+      .prepare("SELECT state, learning_step FROM cards WHERE id = ?")
+      .get(card.id)) as { state: string; learning_step: number | null };
+
+    expect(columns.map((column) => column.name)).toContain("learning_step");
+    expect(migrated).toEqual({ state: "learning", learning_step: null });
+
+    stub.close();
+  });
 });

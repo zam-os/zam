@@ -12,7 +12,7 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 
 ## algorithm
 
-- [FSRS-5 Scheduling](fsrs-scheduling.md) — ZAM schedules reviews with a pure-function FSRS-5 implementation; ratings 1-4 update stability and difficulty, and the FSRS test suite is the source of truth for scheduling behavior.
+- [FSRS-6 Scheduling](fsrs-scheduling.md) — ZAM schedules reviews with a deterministic FSRS-6 kernel, persisted same-day learning and relearning steps, and one shared rating path across every review surface.
 
 ## architecture
 

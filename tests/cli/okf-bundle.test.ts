@@ -39,7 +39,7 @@ const article = (over: Partial<Record<string, string>> = {}) =>
     "timestamp: 2026-07-17T00:00:00Z",
     "---",
     "",
-    over.body ?? "FSRS-5 drives the queue.",
+    over.body ?? "FSRS-6 drives the queue.",
     "",
   ].join("\n");
 
@@ -51,14 +51,14 @@ describe("okf/bundle parseFrontmatter", () => {
     expect(parsed.fields.resource).toBe(
       "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md",
     );
-    expect(parsed.body).toContain("FSRS-5 drives the queue.");
+    expect(parsed.body).toContain("FSRS-6 drives the queue.");
   });
 
   it("parses CRLF line endings (Windows checkouts with autocrlf)", () => {
     const parsed = parseFrontmatter(article().replace(/\n/g, "\r\n"));
     expect(parsed.fields.type).toBe("concept");
     expect(parsed.fields.tags).toEqual(["kernel", "fsrs"]);
-    expect(parsed.body).toContain("FSRS-5 drives the queue.");
+    expect(parsed.body).toContain("FSRS-6 drives the queue.");
     expect(parsed.body).not.toContain("\r");
   });
 
@@ -74,7 +74,7 @@ describe("okf/bundle parseFrontmatter", () => {
   it("strips a leading UTF-8 BOM (Windows editors) before the fence check", () => {
     const parsed = parseFrontmatter(`﻿${article().replace(/\n/g, "\r\n")}`);
     expect(parsed.fields.type).toBe("concept");
-    expect(parsed.body).toContain("FSRS-5 drives the queue.");
+    expect(parsed.body).toContain("FSRS-6 drives the queue.");
   });
 
   it("rejects a missing opening fence", () => {

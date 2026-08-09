@@ -23,6 +23,7 @@ export interface Card {
   reps: number;
   lapses: number;
   state: CardState;
+  learning_step: number | null;
   due_at: string;
   last_review_at: string | null;
   blocked: number; // 0 or 1
@@ -40,6 +41,7 @@ export interface UpdateCardInput {
   reps?: number;
   lapses?: number;
   state?: CardState;
+  learning_step?: number | null;
   due_at?: string;
   last_review_at?: string | null;
   blocked?: number;
@@ -171,6 +173,10 @@ export async function updateCard(
     fields.push("state = ?");
     values.push(updates.state);
   }
+  if (updates.learning_step !== undefined) {
+    fields.push("learning_step = ?");
+    values.push(updates.learning_step);
+  }
   if (updates.due_at !== undefined) {
     fields.push("due_at = ?");
     values.push(updates.due_at);
@@ -231,6 +237,7 @@ export async function resetCardsForToken(
          reps = 0,
          lapses = 0,
          state = 'new',
+         learning_step = NULL,
          due_at = ?,
          last_review_at = NULL
        WHERE token_id = ?`,

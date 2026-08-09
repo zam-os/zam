@@ -88,6 +88,9 @@ CREATE TABLE IF NOT EXISTS cards (
   reps          INTEGER NOT NULL DEFAULT 0,
   lapses        INTEGER NOT NULL DEFAULT 0,
   state         TEXT NOT NULL DEFAULT 'new' CHECK (state IN ('new', 'learning', 'review', 'relearning')),
+  -- Zero-based position in the active learning/relearning step sequence.
+  -- NULL for new/review cards and legacy cards awaiting their next answer.
+  learning_step INTEGER,
   due_at        TEXT NOT NULL DEFAULT (datetime('now')),
   last_review_at TEXT,
   blocked       INTEGER NOT NULL DEFAULT 0,

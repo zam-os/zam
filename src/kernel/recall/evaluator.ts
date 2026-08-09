@@ -26,6 +26,7 @@ export interface EvaluateResult {
   stability: number;
   difficulty: number;
   state: string;
+  learningStep: number | null;
   scheduledDays: number;
   reps: number;
   lapses: number;
@@ -65,6 +66,7 @@ export async function evaluateRatingWithinTransaction(
         reps: number;
         lapses: number;
         state: string;
+        learning_step: number | null;
         due_at: string;
         last_review_at: string | null;
       }
@@ -86,6 +88,7 @@ export async function evaluateRatingWithinTransaction(
     reps: card.reps,
     lapses: card.lapses,
     state: card.state as SchedulingCard["state"],
+    learningStep: card.learning_step,
     dueAt: new Date(card.due_at),
     lastReviewAt: card.last_review_at ? new Date(card.last_review_at) : null,
   };
@@ -102,6 +105,7 @@ export async function evaluateRatingWithinTransaction(
     reps: updated.reps,
     lapses: updated.lapses,
     state: updated.state,
+    learning_step: updated.learningStep,
     due_at: updated.dueAt.toISOString(),
     last_review_at: now.toISOString(),
   });
@@ -143,6 +147,7 @@ export async function evaluateRatingWithinTransaction(
     stability: updated.stability,
     difficulty: updated.difficulty,
     state: updated.state,
+    learningStep: updated.learningStep,
     scheduledDays: updated.scheduledDays,
     reps: updated.reps,
     lapses: updated.lapses,

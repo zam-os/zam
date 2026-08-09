@@ -6,427 +6,385 @@ import {
   type SchedulingCard,
 } from "../../src/kernel/scheduler/fsrs.js";
 
-// ── Helpers ─────────────────────────────────────────────────────────────────
+const DAY_MS = 24 * 60 * 60 * 1000;
+const MINUTE_MS = 60 * 1000;
 
-/** Build a Date shifted by `days` from `base`. */
 function addDays(base: Date, days: number): Date {
-  const d = new Date(base);
-  d.setDate(d.getDate() + days);
-  return d;
+  return new Date(base.getTime() + days * DAY_MS);
 }
 
-// ── Default FSRS-5 weights for reference in assertions ──────────────────────
+function addMinutes(base: Date, minutes: number): Date {
+  return new Date(base.getTime() + minutes * MINUTE_MS);
+}
 
+function minutesAsDays(minutes: number): number {
+  return minutes / (24 * 60);
+}
+
+// Official FSRS-6 defaults. Keep these in the tests so an accidental model
+// generation change cannot masquerade as an innocuous parameter update.
 const W = [
-  0.4072, 1.1829, 3.1262, 15.4722, 7.2102, 0.5316, 1.0651, 0.0092, 1.5988,
-  0.1176, 1.0014, 2.0032, 0.0266, 0.3077, 0.15, 0.0, 2.7849, 0.3477, 0.6831,
+  0.212, 1.2931, 2.3065, 8.2956, 6.4133, 0.8334, 3.0194, 0.001, 1.8722,
+  0.1666, 0.796, 1.4835, 0.0614, 0.2629, 1.6483, 0.6014, 1.8729, 0.5425,
+  0.0912, 0.0658, 0.1542,
 ];
 
-// ── Tests ───────────────────────────────────────────────────────────────────
+function reviewCard(overrides: Partial<SchedulingCard> = {}): SchedulingCard {
+  const now = new Date("2025-01-01T12:00:00Z");
+  return {
+    stability: 10,
+    difficulty: 5,
+    elapsedDays: 10,
+    scheduledDays: 10,
+    reps: 3,
+    lapses: 0,
+    state: "review",
+    learningStep: null,
+    dueAt: addDays(now, 10),
+    lastReviewAt: now,
+    ...overrides,
+  };
+}
 
-describe("FSRS-5 scheduler", () => {
+describe("FSRS-6 scheduler", () => {
   const fsrs = createFSRS();
   const now = new Date("2025-01-01T12:00:00Z");
 
-  // ── Factory ─────────────────────────────────────────────────────────────
-
-  describe("createEmptyCard", () => {
-    it("returns a new card with zeroed scheduling fields", () => {
+  describe("factory", () => {
+    it("creates an immediately due new card with no active learning step", () => {
       const card = createEmptyCard(now);
-      expect(card.state).toBe("new");
-      expect(card.stability).toBe(0);
-      expect(card.difficulty).toBe(0);
-      expect(card.reps).toBe(0);
-      expect(card.lapses).toBe(0);
-      expect(card.lastReviewAt).toBeNull();
-      expect(card.dueAt).toEqual(now);
-    });
-  });
 
-  describe("createFSRS", () => {
-    it("uses default parameters when none are provided", () => {
-      const f = createFSRS();
-      expect(f.params.w).toHaveLength(19);
-      expect(f.params.requestRetention).toBe(0.9);
+      expect(card).toMatchObject({
+        stability: 0,
+        difficulty: 0,
+        elapsedDays: 0,
+        scheduledDays: 0,
+        reps: 0,
+        lapses: 0,
+        state: "new",
+        learningStep: null,
+        dueAt: now,
+        lastReviewAt: null,
+      });
     });
 
-    it("allows partial parameter overrides", () => {
-      const f = createFSRS({ requestRetention: 0.85 });
-      expect(f.params.requestRetention).toBe(0.85);
-      expect(f.params.w).toHaveLength(19);
+    it("uses the official 21 FSRS-6 weights and useful short-step defaults", () => {
+      expect(fsrs.params.w).toEqual(W);
+      expect(fsrs.params.requestRetention).toBe(0.9);
+      expect(fsrs.params.learningStepsMinutes).toEqual([1, 10]);
+      expect(fsrs.params.relearningStepsMinutes).toEqual([10]);
+      expect(fsrs.params.maximumIntervalDays).toBe(36_500);
     });
 
-    it("freezes the params object", () => {
-      const f = createFSRS();
+    it("accepts partial overrides without sharing mutable arrays", () => {
+      const weights = [...W];
+      const learningStepsMinutes = [2, 20];
+      const custom = createFSRS({
+        w: weights,
+        requestRetention: 0.85,
+        learningStepsMinutes,
+      });
+
+      weights[0] = 99;
+      learningStepsMinutes[0] = 99;
+
+      expect(custom.params.w[0]).toBe(W[0]);
+      expect(custom.params.learningStepsMinutes).toEqual([2, 20]);
+      expect(custom.params.requestRetention).toBe(0.85);
+    });
+
+    it("rejects invalid FSRS parameters and step sequences", () => {
+      expect(() => createFSRS({ w: W.slice(0, 20) })).toThrow(/21/);
+      expect(() => createFSRS({ requestRetention: 1 })).toThrow(/retention/i);
+      expect(() =>
+        createFSRS({ learningStepsMinutes: [10, 1] }),
+      ).toThrow(/ascending/i);
+      expect(() =>
+        createFSRS({ relearningStepsMinutes: [0] }),
+      ).toThrow(/positive/i);
+    });
+
+    it("freezes the resolved parameters and their arrays", () => {
       expect(() => {
-        (f.params as any).requestRetention = 0.5;
+        (fsrs.params as { requestRetention: number }).requestRetention = 0.5;
+      }).toThrow();
+      expect(() => {
+        (fsrs.params.w as number[])[0] = 99;
       }).toThrow();
     });
   });
 
-  // ── New card ratings ────────────────────────────────────────────────────
+  describe("new-card learning steps", () => {
+    it("Again schedules the first learning step in one minute", () => {
+      const next = fsrs.schedule(createEmptyCard(now), 1, now);
 
-  describe("new card → first rating", () => {
-    it("rated Good → stability ≈ w2, state becomes learning", () => {
-      const card = createEmptyCard(now);
-      const next = fsrs.schedule(card, 3, now);
-
-      expect(next.stability).toBeCloseTo(W[2], 4); // 3.1262
+      expect(next.stability).toBeCloseTo(W[0], 6);
       expect(next.state).toBe("learning");
-      expect(next.reps).toBe(1);
-      expect(next.lapses).toBe(0);
-      expect(next.lastReviewAt).toEqual(now);
-      // Due in the future
-      expect(next.dueAt.getTime()).toBeGreaterThan(now.getTime());
-    });
-
-    it("rated Again → stability ≈ w0, short interval, lapses = 1", () => {
-      const card = createEmptyCard(now);
-      const next = fsrs.schedule(card, 1, now);
-
-      expect(next.stability).toBeCloseTo(W[0], 4); // 0.4072
-      expect(next.state).toBe("learning");
+      expect(next.learningStep).toBe(0);
+      expect(next.scheduledDays).toBeCloseTo(minutesAsDays(1), 10);
+      expect(next.dueAt).toEqual(addMinutes(now, 1));
       expect(next.reps).toBe(0);
       expect(next.lapses).toBe(1);
-      // With S ≈ 0.41, interval = round(9 * 0.4072 * (1/0.9 - 1)) ≈ round(0.407) = 1 day minimum
+    });
+
+    it("Hard stays on the first step and uses the midpoint to the next step", () => {
+      const next = fsrs.schedule(createEmptyCard(now), 2, now);
+
+      expect(next.stability).toBeCloseTo(W[1], 6);
+      expect(next.state).toBe("learning");
+      expect(next.learningStep).toBe(0);
+      expect(next.scheduledDays).toBeCloseTo(minutesAsDays(5.5), 10);
+      expect(next.dueAt).toEqual(addMinutes(now, 5.5));
+    });
+
+    it("Good advances to the ten-minute step", () => {
+      const next = fsrs.schedule(createEmptyCard(now), 3, now);
+
+      expect(next.stability).toBeCloseTo(W[2], 6);
+      expect(next.state).toBe("learning");
+      expect(next.learningStep).toBe(1);
+      expect(next.scheduledDays).toBeCloseTo(minutesAsDays(10), 10);
+      expect(next.dueAt).toEqual(addMinutes(now, 10));
+      expect(next.reps).toBe(1);
+    });
+
+    it("Easy skips the remaining steps and graduates to review", () => {
+      const next = fsrs.schedule(createEmptyCard(now), 4, now);
+
+      expect(next.stability).toBeCloseTo(W[3], 6);
+      expect(next.state).toBe("review");
+      expect(next.learningStep).toBeNull();
+      expect(next.scheduledDays).toBe(8);
+      expect(next.dueAt).toEqual(addDays(now, 8));
+    });
+
+    it("Good on the final learning step graduates using same-day stability", () => {
+      const first = fsrs.schedule(createEmptyCard(now), 3, now);
+      const reviewTime = addMinutes(now, 10);
+      const next = fsrs.schedule(first, 3, reviewTime);
+      const increase = Math.max(
+        Math.exp(W[17] * (3 - 3 + W[18])) * first.stability ** -W[19],
+        1,
+      );
+
+      expect(next.stability).toBeCloseTo(first.stability * increase, 10);
+      expect(next.state).toBe("review");
+      expect(next.learningStep).toBeNull();
       expect(next.scheduledDays).toBeGreaterThanOrEqual(1);
     });
 
-    it("rated Hard → stability ≈ w1", () => {
-      const card = createEmptyCard(now);
-      const next = fsrs.schedule(card, 2, now);
+    it("Again on a later learning step returns to the first step", () => {
+      const first = fsrs.schedule(createEmptyCard(now), 3, now);
+      const next = fsrs.schedule(first, 1, addMinutes(now, 10));
 
-      expect(next.stability).toBeCloseTo(W[1], 4); // 1.1829
-      expect(next.reps).toBe(1);
-      expect(next.lapses).toBe(0);
+      expect(next.state).toBe("learning");
+      expect(next.learningStep).toBe(0);
+      expect(next.dueAt).toEqual(addMinutes(now, 11));
     });
 
-    it("rated Easy → stability ≈ w3, longest interval", () => {
-      const card = createEmptyCard(now);
-      const next = fsrs.schedule(card, 4, now);
+    it("honours custom learning steps", () => {
+      const custom = createFSRS({ learningStepsMinutes: [2, 20] });
+      const next = custom.schedule(createEmptyCard(now), 3, now);
 
-      expect(next.stability).toBeCloseTo(W[3], 4); // 15.4722
-      expect(next.reps).toBe(1);
-      expect(next.lapses).toBe(0);
-      // Interval should be much larger for Easy
-      const goodNext = fsrs.schedule(card, 3, now);
-      expect(next.scheduledDays).toBeGreaterThan(goodNext.scheduledDays);
+      expect(next.learningStep).toBe(1);
+      expect(next.dueAt).toEqual(addMinutes(now, 20));
     });
+  });
 
-    it("initial stability values produce correct ordering: Again < Hard < Good < Easy", () => {
-      const card = createEmptyCard(now);
-      const results = ([1, 2, 3, 4] as Rating[]).map((r) =>
-        fsrs.schedule(card, r, now),
+  describe("FSRS-6 memory model", () => {
+    it("initial difficulty falls as the rating rises and stays in [1, 10]", () => {
+      const difficulties = ([1, 2, 3, 4] as Rating[]).map(
+        (rating) => fsrs.schedule(createEmptyCard(now), rating, now).difficulty,
       );
-      for (let i = 1; i < results.length; i++) {
-        expect(results[i].stability).toBeGreaterThan(results[i - 1].stability);
+
+      expect(difficulties[0]).toBeGreaterThan(difficulties[1]);
+      expect(difficulties[1]).toBeGreaterThan(difficulties[2]);
+      expect(difficulties[2]).toBeGreaterThan(difficulties[3]);
+      for (const difficulty of difficulties) {
+        expect(difficulty).toBeGreaterThanOrEqual(1);
+        expect(difficulty).toBeLessThanOrEqual(10);
       }
     });
-  });
 
-  // ── Initial difficulty ────────────────────────────────────────────────
+    it("uses the trainable FSRS-6 forgetting curve for long-term intervals", () => {
+      const next = fsrs.schedule(createEmptyCard(now), 4, now);
+      const decay = W[20];
+      const factor = 0.9 ** (-1 / decay) - 1;
+      const expected = Math.max(
+        1,
+        Math.min(
+          36_500,
+          Math.round(
+            (W[3] / factor) * (0.9 ** (-1 / decay) - 1),
+          ),
+        ),
+      );
 
-  describe("initial difficulty", () => {
-    it("difficulty decreases with higher ratings", () => {
-      const card = createEmptyCard(now);
-      const dAgain = fsrs.schedule(card, 1, now).difficulty;
-      const dHard = fsrs.schedule(card, 2, now).difficulty;
-      const dGood = fsrs.schedule(card, 3, now).difficulty;
-      const dEasy = fsrs.schedule(card, 4, now).difficulty;
-
-      expect(dAgain).toBeGreaterThan(dHard);
-      expect(dHard).toBeGreaterThan(dGood);
-      expect(dGood).toBeGreaterThan(dEasy);
+      expect(next.scheduledDays).toBe(expected);
     });
 
-    it("all difficulties are within [1, 10]", () => {
-      const card = createEmptyCard(now);
-      for (const r of [1, 2, 3, 4] as Rating[]) {
-        const d = fsrs.schedule(card, r, now).difficulty;
-        expect(d).toBeGreaterThanOrEqual(1);
-        expect(d).toBeLessThanOrEqual(10);
-      }
+    it("uses short-term stability for every same-day review", () => {
+      const card = reviewCard({ dueAt: addMinutes(now, 30) });
+      const reviewTime = addMinutes(now, 30);
+      const next = fsrs.schedule(card, 3, reviewTime);
+      const increase = Math.max(
+        Math.exp(W[17] * W[18]) * card.stability ** -W[19],
+        1,
+      );
+
+      expect(next.elapsedDays).toBeCloseTo(30 / (24 * 60), 10);
+      expect(next.stability).toBeCloseTo(card.stability * increase, 10);
     });
-  });
 
-  // ── Review card (learning/review state) ───────────────────────────────
+    it("uses the long-term recall formula after at least one day", () => {
+      const card = reviewCard();
+      const reviewTime = addDays(now, 10);
+      const decay = W[20];
+      const factor = 0.9 ** (-1 / decay) - 1;
+      const retrievability =
+        (1 + (factor * 10) / card.stability) ** -decay;
+      const expectedStability =
+        card.stability *
+        (1 +
+          Math.exp(W[8]) *
+            (11 - card.difficulty) *
+            card.stability ** -W[9] *
+            (Math.exp(W[10] * (1 - retrievability)) - 1));
 
-  describe("review card ratings", () => {
-    /** Helper: create a card in review state as if it was rated Good on a new card. */
-    function makeReviewCard(): SchedulingCard {
-      const newCard = createEmptyCard(now);
-      const afterFirst = fsrs.schedule(newCard, 3, now);
-      // Move to review state by simulating a second Good rating
-      const reviewTime = addDays(now, afterFirst.scheduledDays);
-      return fsrs.schedule(afterFirst, 3, reviewTime);
-    }
-
-    it("rated Good → stability increases, state is review", () => {
-      const card = makeReviewCard();
-      const reviewTime = addDays(card.lastReviewAt!, card.scheduledDays);
       const next = fsrs.schedule(card, 3, reviewTime);
 
-      expect(next.stability).toBeGreaterThan(card.stability);
+      expect(retrievability).toBeCloseTo(0.9, 10);
+      expect(next.stability).toBeCloseTo(expectedStability, 10);
       expect(next.state).toBe("review");
       expect(next.reps).toBe(card.reps + 1);
-      expect(next.lapses).toBe(card.lapses);
     });
 
-    it("rated Again → stability decreases, lapses increment, state becomes relearning", () => {
-      const card = makeReviewCard();
-      const reviewTime = addDays(card.lastReviewAt!, card.scheduledDays);
+    it("applies linear damping and Easy-target mean reversion to difficulty", () => {
+      const card = reviewCard({ difficulty: 8 });
+      const initialEasy = W[4] - Math.exp(W[5] * 3) + 1;
+      const delta = -W[6] * (4 - 3);
+      const damped = card.difficulty + ((10 - card.difficulty) * delta) / 9;
+      const expected = Math.min(
+        10,
+        Math.max(1, W[7] * initialEasy + (1 - W[7]) * damped),
+      );
+
+      const next = fsrs.schedule(card, 4, addDays(now, 10));
+
+      expect(next.difficulty).toBeCloseTo(expected, 10);
+    });
+
+    it("bounds post-lapse stability with the FSRS-6 short-term limit", () => {
+      const card = reviewCard({ stability: 100, difficulty: 5 });
+      const reviewTime = addDays(now, 100);
+      const decay = W[20];
+      const factor = 0.9 ** (-1 / decay) - 1;
+      const retrievability =
+        (1 + (factor * 100) / card.stability) ** -decay;
+      const longTerm =
+        W[11] *
+        card.difficulty ** -W[12] *
+        ((card.stability + 1) ** W[13] - 1) *
+        Math.exp(W[14] * (1 - retrievability));
+      const shortTermLimit = card.stability / Math.exp(W[17] * W[18]);
+
       const next = fsrs.schedule(card, 1, reviewTime);
 
-      expect(next.stability).toBeLessThan(card.stability);
+      expect(next.stability).toBeCloseTo(
+        Math.min(longTerm, shortTermLimit),
+        10,
+      );
+    });
+
+    it("caps long-term intervals at the configured maximum", () => {
+      const custom = createFSRS({ maximumIntervalDays: 30 });
+      const card = reviewCard({ stability: 10_000 });
+
+      const next = custom.schedule(card, 4, addDays(now, 10_000));
+
+      expect(next.scheduledDays).toBe(30);
+    });
+  });
+
+  describe("review and relearning steps", () => {
+    it("Again on a review card starts the ten-minute relearning step", () => {
+      const card = reviewCard();
+      const reviewTime = addDays(now, 10);
+      const next = fsrs.schedule(card, 1, reviewTime);
+
       expect(next.state).toBe("relearning");
+      expect(next.learningStep).toBe(0);
+      expect(next.dueAt).toEqual(addMinutes(reviewTime, 10));
       expect(next.reps).toBe(0);
       expect(next.lapses).toBe(card.lapses + 1);
     });
 
-    it("rated Easy → larger interval than Good (easy bonus)", () => {
-      const card = makeReviewCard();
-      const reviewTime = addDays(card.lastReviewAt!, card.scheduledDays);
-      const nextGood = fsrs.schedule(card, 3, reviewTime);
-      const nextEasy = fsrs.schedule(card, 4, reviewTime);
+    it("Hard repeats the sole relearning step after fifteen minutes", () => {
+      const lapsed = fsrs.schedule(reviewCard(), 1, addDays(now, 10));
+      const next = fsrs.schedule(lapsed, 2, lapsed.dueAt);
 
-      expect(nextEasy.scheduledDays).toBeGreaterThanOrEqual(
-        nextGood.scheduledDays,
-      );
-      expect(nextEasy.stability).toBeGreaterThan(nextGood.stability);
+      expect(next.state).toBe("relearning");
+      expect(next.learningStep).toBe(0);
+      expect(next.dueAt).toEqual(addMinutes(lapsed.dueAt, 15));
     });
 
-    it("rated Hard → smaller interval than Good (hard penalty)", () => {
-      // Note: with default w15 = 0, the hard penalty factor is 0, which makes
-      // the stability formula multiply by 0, resulting in S' = S * (0 + 1) = S.
-      // This is intentional in the default parameters — Hard preserves stability.
-      const card = makeReviewCard();
-      const reviewTime = addDays(card.lastReviewAt!, card.scheduledDays);
-      const nextHard = fsrs.schedule(card, 2, reviewTime);
-      const nextGood = fsrs.schedule(card, 3, reviewTime);
+    it("Good completes the sole relearning step", () => {
+      const lapsed = fsrs.schedule(reviewCard(), 1, addDays(now, 10));
+      const next = fsrs.schedule(lapsed, 3, lapsed.dueAt);
 
-      expect(nextHard.scheduledDays).toBeLessThanOrEqual(
-        nextGood.scheduledDays,
-      );
-    });
-  });
-
-  // ── Difficulty bounds ─────────────────────────────────────────────────
-
-  describe("difficulty clamping", () => {
-    it("repeated Again ratings do not push difficulty above 10", () => {
-      let card = createEmptyCard(now);
-      let time = now;
-
-      // 20 cycles of Again
-      for (let i = 0; i < 20; i++) {
-        card = fsrs.schedule(card, 1, time);
-        time = addDays(time, Math.max(1, card.scheduledDays));
-      }
-
-      expect(card.difficulty).toBeLessThanOrEqual(10);
-    });
-
-    it("repeated Easy ratings do not push difficulty below 1", () => {
-      let card = createEmptyCard(now);
-      let time = now;
-
-      for (let i = 0; i < 20; i++) {
-        card = fsrs.schedule(card, 4, time);
-        time = addDays(time, Math.max(1, card.scheduledDays));
-      }
-
-      expect(card.difficulty).toBeGreaterThanOrEqual(1);
-    });
-  });
-
-  // ── Sequential reviews — the core SRS property ────────────────────────
-
-  describe("sequential reviews with Good ratings", () => {
-    it("intervals grow over time (the core SRS property)", () => {
-      let card = createEmptyCard(now);
-      let time = now;
-      const intervals: number[] = [];
-
-      for (let i = 0; i < 8; i++) {
-        card = fsrs.schedule(card, 3, time);
-        intervals.push(card.scheduledDays);
-        time = addDays(time, card.scheduledDays);
-      }
-
-      // After the initial learning phase, intervals should generally increase
-      // Check that the last interval is larger than the second
-      expect(intervals[intervals.length - 1]).toBeGreaterThan(intervals[1]);
-
-      // Also check that stability is monotonically increasing for Good ratings
-      // (since R < 1 after elapsed time, the formula always increases S)
-    });
-
-    it("stability increases monotonically with consecutive Good ratings", () => {
-      let card = createEmptyCard(now);
-      let time = now;
-      const stabilities: number[] = [];
-
-      for (let i = 0; i < 6; i++) {
-        card = fsrs.schedule(card, 3, time);
-        stabilities.push(card.stability);
-        time = addDays(time, card.scheduledDays);
-      }
-
-      for (let i = 1; i < stabilities.length; i++) {
-        expect(stabilities[i]).toBeGreaterThan(stabilities[i - 1]);
-      }
-    });
-  });
-
-  // ── Retrievability ────────────────────────────────────────────────────
-
-  describe("retrievability decreases over time", () => {
-    it("a card reviewed on time has higher retrievability than one overdue", () => {
-      const card = createEmptyCard(now);
-      const after = fsrs.schedule(card, 3, now);
-
-      // Review right on schedule
-      const onTime = addDays(now, after.scheduledDays);
-      const reviewedOnTime = fsrs.schedule(after, 3, onTime);
-
-      // Review much later (double the interval)
-      const late = addDays(now, after.scheduledDays * 3);
-      const reviewedLate = fsrs.schedule(after, 3, late);
-
-      // The late review should produce higher stability increase because
-      // the retrievability is lower (more forgotten territory recovered).
-      // But the key point: the algorithm handles both cases.
-      expect(reviewedOnTime.stability).toBeGreaterThan(0);
-      expect(reviewedLate.stability).toBeGreaterThan(0);
-    });
-
-    it("retrievability at elapsed=0 is 1 (just reviewed)", () => {
-      // R = (1 + 0 / (9 * S))^(-1) = 1
-      const card = createEmptyCard(now);
-      const after = fsrs.schedule(card, 3, now);
-
-      // Immediately re-review — elapsed ≈ 0
-      const immediate = fsrs.schedule(after, 3, now);
-      // With R ≈ 1, the stability increase factor should be minimal
-      // S' = S * (exp(w8) * (11-D) * S^(-w9) * (exp(w10*(1-1)) - 1) + 1) = S * 1 = S
-      // Because exp(0) - 1 = 0, the inner term collapses.
-      expect(immediate.stability).toBeCloseTo(after.stability, 1);
-    });
-  });
-
-  // ── Interval calculation ──────────────────────────────────────────────
-
-  describe("interval calculation", () => {
-    it("interval is at least 1 day", () => {
-      const card = createEmptyCard(now);
-      const next = fsrs.schedule(card, 1, now); // Again → low stability
+      expect(next.state).toBe("review");
+      expect(next.learningStep).toBeNull();
       expect(next.scheduledDays).toBeGreaterThanOrEqual(1);
     });
 
-    it("higher retention target produces shorter intervals", () => {
-      const fsrsHigh = createFSRS({ requestRetention: 0.95 });
-      const fsrsLow = createFSRS({ requestRetention: 0.8 });
+    it("graduates legacy learning state with no persisted step on Good", () => {
+      const legacy = reviewCard({ state: "learning", learningStep: null });
+      const next = fsrs.schedule(legacy, 3, legacy.dueAt);
 
-      const card = createEmptyCard(now);
-      const highRet = fsrsHigh.schedule(card, 3, now);
-      const lowRet = fsrsLow.schedule(card, 3, now);
-
-      // I = 9 * S * (1/R - 1), higher R → smaller (1/R - 1) → shorter interval
-      expect(highRet.scheduledDays).toBeLessThanOrEqual(lowRet.scheduledDays);
-    });
-
-    it("interval formula: I = round(9 * S * (1/R - 1))", () => {
-      const card = createEmptyCard(now);
-      const next = fsrs.schedule(card, 3, now);
-
-      const expectedS = W[2]; // 3.1262
-      const expectedI = Math.max(1, Math.round(9 * expectedS * (1 / 0.9 - 1)));
-      expect(next.scheduledDays).toBe(expectedI);
+      expect(next.state).toBe("review");
+      expect(next.learningStep).toBeNull();
     });
   });
 
-  // ── Relearning cycle ──────────────────────────────────────────────────
-
-  describe("relearning cycle", () => {
-    it("a forgotten card can recover through relearning", () => {
+  describe("scheduler guarantees", () => {
+    it("grows intervals across successful reviews", () => {
       let card = createEmptyCard(now);
-      let time = now;
+      let reviewTime = now;
+      const reviewIntervals: number[] = [];
 
-      // Build up some reviews
-      for (let i = 0; i < 4; i++) {
-        card = fsrs.schedule(card, 3, time);
-        time = addDays(time, card.scheduledDays);
+      for (let i = 0; i < 8; i++) {
+        card = fsrs.schedule(card, 3, reviewTime);
+        reviewTime = card.dueAt;
+        if (card.state === "review") reviewIntervals.push(card.scheduledDays);
       }
 
-      const stableBefore = card.stability;
-      expect(card.state).toBe("review");
-
-      // Forget
-      card = fsrs.schedule(card, 1, time);
-      expect(card.state).toBe("relearning");
-      expect(card.stability).toBeLessThan(stableBefore);
-      expect(card.lapses).toBe(1);
-
-      // Recover through Good ratings
-      time = addDays(time, card.scheduledDays);
-      card = fsrs.schedule(card, 3, time);
-      expect(card.state).toBe("review");
-      expect(card.stability).toBeGreaterThan(0);
+      expect(reviewIntervals.length).toBeGreaterThan(2);
+      expect(reviewIntervals.at(-1)).toBeGreaterThan(reviewIntervals[0]);
     });
-  });
 
-  // ── Pure function guarantees ──────────────────────────────────────────
-
-  describe("purity", () => {
     it("does not mutate the input card", () => {
       const card = createEmptyCard(now);
-      const frozen = { ...card, dueAt: new Date(card.dueAt) };
+      const frozen = structuredClone(card);
 
       fsrs.schedule(card, 3, now);
 
-      expect(card.stability).toBe(frozen.stability);
-      expect(card.difficulty).toBe(frozen.difficulty);
-      expect(card.reps).toBe(frozen.reps);
-      expect(card.lapses).toBe(frozen.lapses);
-      expect(card.state).toBe(frozen.state);
-      expect(card.dueAt.getTime()).toBe(frozen.dueAt.getTime());
+      expect(card).toEqual(frozen);
     });
 
-    it("same inputs always produce the same output", () => {
+    it("is deterministic for the same inputs", () => {
       const card = createEmptyCard(now);
-      const a = fsrs.schedule(card, 3, now);
-      const b = fsrs.schedule(card, 3, now);
 
-      expect(a.stability).toBe(b.stability);
-      expect(a.difficulty).toBe(b.difficulty);
-      expect(a.scheduledDays).toBe(b.scheduledDays);
-      expect(a.reps).toBe(b.reps);
-      expect(a.lapses).toBe(b.lapses);
-      expect(a.state).toBe(b.state);
-    });
-  });
-
-  // ── Edge cases ────────────────────────────────────────────────────────
-
-  describe("edge cases", () => {
-    it("handles custom weight parameters", () => {
-      const customW = [...W];
-      customW[2] = 5.0; // Higher initial stability for Good
-      const custom = createFSRS({ w: customW });
-
-      const card = createEmptyCard(now);
-      const next = custom.schedule(card, 3, now);
-      expect(next.stability).toBeCloseTo(5.0, 4);
+      expect(fsrs.schedule(card, 3, now)).toEqual(fsrs.schedule(card, 3, now));
     });
 
-    it("now parameter defaults to current time when omitted", () => {
+    it("defaults the review time to the current time", () => {
       const card = createEmptyCard();
       const before = Date.now();
       const next = fsrs.schedule(card, 3);
       const after = Date.now();
 
-      expect(next.lastReviewAt!.getTime()).toBeGreaterThanOrEqual(before);
-      expect(next.lastReviewAt!.getTime()).toBeLessThanOrEqual(after);
+      expect(next.lastReviewAt?.getTime()).toBeGreaterThanOrEqual(before);
+      expect(next.lastReviewAt?.getTime()).toBeLessThanOrEqual(after);
     });
   });
 });

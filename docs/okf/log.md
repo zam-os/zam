@@ -1,5 +1,9 @@
 # Log
 
+## 2026-08-09
+
+- **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
+
 ## 2026-08-08
 
 - **Update** — [Local AI Runtimes](local-ai-runtimes.md)

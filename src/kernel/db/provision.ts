@@ -11,7 +11,7 @@
  *
  * `connection.ts` calls straight into here, so there is exactly one migration
  * path for every platform — a second copy would drift the day someone adds
- * M020 on one side only.
+ * M021 on one side only.
  */
 
 import { SCHEMA_INDEXES, SCHEMA_TABLES } from "./schema.js";
@@ -248,6 +248,14 @@ export async function runMigrations(db: Database): Promise<void> {
   // NULL = attached, which is the backfill for every existing card.
   if (cardCols.length > 0 && !cardCols.includes("detached_at")) {
     await db.exec(`ALTER TABLE cards ADD COLUMN detached_at TEXT`);
+  }
+
+  // M020: persist the zero-based cursor for short learning and relearning
+  // steps (ADR 2026-08-09). NULL is the compatibility backfill: legacy cards
+  // keep their state and graduate on their next successful answer rather than
+  // being forced through a newly introduced sequence from the beginning.
+  if (cardCols.length > 0 && !cardCols.includes("learning_step")) {
+    await db.exec(`ALTER TABLE cards ADD COLUMN learning_step INTEGER`);
   }
 }
 

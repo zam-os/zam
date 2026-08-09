@@ -52,7 +52,12 @@ async function seed(db: Database): Promise<void> {
     domain: "electronics",
     bloom_level: 2,
   });
-  await ensureCard(db, tricky.id, "alice");
+  const learningCard = await ensureCard(db, tricky.id, "alice");
+  await db
+    .prepare(
+      "UPDATE cards SET state = 'learning', learning_step = 1 WHERE id = ?",
+    )
+    .run(learningCard.id);
 
   const second = await createToken(db, {
     slug: "kirchhoff",
@@ -93,6 +98,15 @@ describe("database snapshots", () => {
       .prepare("SELECT value FROM user_config WHERE key = ?")
       .get("system.locale")) as { value: string };
     expect(locale.value).toBe("de");
+
+    const resumed = (await target
+      .prepare(
+        `SELECT c.state, c.learning_step
+           FROM cards c JOIN tokens t ON t.id = c.token_id
+          WHERE t.slug = ?`,
+      )
+      .get("ohm's-law")) as { state: string; learning_step: number | null };
+    expect(resumed).toEqual({ state: "learning", learning_step: 1 });
     await target.close();
   });
 

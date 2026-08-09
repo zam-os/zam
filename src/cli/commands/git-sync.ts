@@ -140,6 +140,7 @@ export const gitSyncCommand = new Command("git-sync")
             SET due_at = ?,
                 stability = ?,
                 state = CASE WHEN state = 'new' THEN 'new' ELSE 'review' END,
+                learning_step = NULL,
                 elapsed_days = 0.0,
                 scheduled_days = 0.0
             WHERE id = ?

@@ -169,6 +169,7 @@ export interface ReviewActionResponse {
       reps: number;
       lapses: number;
       state: "new" | "learning" | "review" | "relearning";
+      learning_step: number | null;
       due_at: string;
       last_review_at: string | null;
       blocked: number;
