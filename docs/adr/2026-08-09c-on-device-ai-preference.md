@@ -1,7 +1,7 @@
 # On-Device AI Across Capabilities: One Preference, Honest Tiers
 
-**Status:** Proposed — written at Thomas' direction after a Pixel 9 field
-observation on 2026-08-09; awaiting his decision.
+**Status:** Accepted — decided by Thomas, 2026-08-09, after a Pixel 9 field
+observation on 0.30.0.
 
 **Extends** [2026-07-31](2026-07-31-cross-platform-voice-mode.md), which
 established the device/cloud tier model and its preference vocabulary for
