@@ -2,6 +2,7 @@
 
 ## 2026-08-09
 
+- **Creation** — [Curated Open-Content Library](open-content-library.md)
 - **Update** — [Local Card File Import](local-card-file-import.md)
 - **Creation** — [Standalone Mobile Libraries](mobile-standalone-libraries.md)
 - **Update** — [Kernel and CLI Architecture](kernel-architecture.md)

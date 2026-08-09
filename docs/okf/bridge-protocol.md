@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-08-09T06:55:00Z
+timestamp: 2026-08-09T10:51:00Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -56,6 +56,15 @@ file and returns its deterministic decks, cards, warnings, action counts, and
 model-free and network-free. See
 [local-card-file-import.md](local-card-file-import.md) for formats, security,
 and re-import semantics.
+
+The curated library adds a second preview/confirm handshake:
+`open-content-list` returns the installed, explicitly licensed catalog and its
+filters; `open-content-preview --id <catalog-id>` downloads or reuses the
+pinned artifact, verifies its size and SHA-256 digest, and returns the normal
+import preview; `open-content-confirm --id <catalog-id> --plan-hash <hash>`
+re-verifies and atomically commits that exact plan. Listing is local. Preview
+may make one allowlisted HTTPS download, while confirmation works from the
+verified cache. See [open-content-library.md](open-content-library.md).
 
 `stats-activity` takes `--period day|week|month` and `--window <n>`. The
 window counts **periods, not days**: `--period week --window 12` returns the
@@ -114,4 +123,4 @@ is not configured.
 - [ADR 2026-08-02 — Local Generation Only on Accelerated Hardware](../adr/2026-08-02-foundry-local-and-hardware-classification.md)
 - [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)
 - [Android companion plan](../plans/2026-07-21-android-companion-app.md)
-- Code: `src/cli/app.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/shared/activity.ts`, `src/bridge/protocol.ts`, `src/kernel/analytics/progress.ts`, `src/cli/import/text-file.ts`, `src/kernel/import/text-import.ts`, `mobile/src/import.ts`, `mobile/src/main.ts`, `mobile/src/vl-import.ts`, `mobile/src/vision-config.ts`, `mobile/src-tauri/src/vision.rs`
+- Code: `src/cli/app.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/shared/activity.ts`, `src/bridge/protocol.ts`, `src/kernel/analytics/progress.ts`, `src/cli/import/text-file.ts`, `src/cli/open-content/catalog.ts`, `src/cli/open-content/download.ts`, `src/cli/open-content/service.ts`, `src/kernel/import/text-import.ts`, `mobile/src/import.ts`, `mobile/src/main.ts`, `mobile/src/vl-import.ts`, `mobile/src/vision-config.ts`, `mobile/src-tauri/src/vision.rs`

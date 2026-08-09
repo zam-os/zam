@@ -31,3 +31,4 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 
 - [Bridge CLI Protocol](bridge-protocol.md) — zam bridge is the machine-facing JSON fallback transport for agents; responses are always JSON, and the protocol types are the stable contract.
 - [Local Card File Import](local-card-file-import.md) — ZAM imports basic, Cloze, image-occlusion, image, and audio cards from local APKG files, plus text cards from CSV and TSV, through a deterministic preview and atomic model-free commit.
+- [Curated Open-Content Library](open-content-library.md) — ZAM exposes a Studio-first catalog of reviewed open-licensed decks whose pinned artifacts are downloaded, integrity-checked, previewed, and imported through the normal safe card-import contract.

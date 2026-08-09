@@ -8,7 +8,7 @@ tags:
   - offline
   - studio
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/local-card-file-import.md"
-timestamp: 2026-08-09T08:18:20.711Z
+timestamp: 2026-08-09T10:52:00Z
 ---
 
 ZAM's model-free file path starts in the Learning Content Studio: choose a
@@ -72,6 +72,11 @@ preserving FSRS history. If local content and the source both changed since the
 last import, preview reports a conflict and preserves the local token. All
 non-conflicting cards, media assets, links, and bindings commit together or the
 library remains unchanged.
+
+The [curated open-content library](open-content-library.md) is a separate
+network-assisted discovery surface in front of this same parser. It verifies a
+catalog-owned artifact before parsing and overlays reviewed provenance; choosing
+a learner-owned local file remains completely network-free.
 
 The bridge exposes the operation as
 `personal-card-import-file-preview --path <file>` followed by

@@ -258,6 +258,11 @@ import {
 } from "../llm/speech.js";
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
 import { createMobilePairingPayload } from "../mobile-pairing.js";
+import { listOpenContentCatalog } from "../open-content/catalog.js";
+import {
+  confirmOpenContentImport,
+  previewOpenContentImport,
+} from "../open-content/service.js";
 import {
   bindRoleProviders,
   buildProviderListing,
@@ -5871,6 +5876,65 @@ bridgeCommand
   });
 
 // ── zam bridge personal-card-import-file-* ─────────────────────────────────
+
+bridgeCommand
+  .command("open-content-list")
+  .description("List curated, open-licensed learning decks (JSON)")
+  .option("--query <text>", "Search titles, subjects, authors, and tags")
+  .option("--language <code>", "Filter by content language")
+  .option("--subject <subject>", "Filter by subject")
+  .action((opts) => {
+    const listing = listOpenContentCatalog({
+      query: opts.query,
+      language: opts.language,
+      subject: opts.subject,
+    });
+    jsonOut({
+      success: true,
+      ...listing,
+      policy: {
+        curated: true,
+        explicitLicenseRequired: true,
+        ankiWebAutomated: false,
+      },
+    });
+  });
+
+bridgeCommand
+  .command("open-content-preview")
+  .description(
+    "Download, verify, and preview a curated open-content deck (JSON)",
+  )
+  .requiredOption("--id <id>", "Curated catalog item ID")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const preview = await previewOpenContentImport(db, userId, opts.id);
+      jsonOut({ success: true, ...preview });
+    });
+  });
+
+bridgeCommand
+  .command("open-content-confirm")
+  .description(
+    "Confirm a verified curated deck using its exact preview plan (JSON)",
+  )
+  .requiredOption("--id <id>", "Curated catalog item ID")
+  .requiredOption("--plan-hash <hash>", "Plan hash returned by preview")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const result = await confirmOpenContentImport(
+        db,
+        userId,
+        opts.id,
+        opts.planHash,
+      );
+      jsonOut({ success: true, ...result });
+    });
+  });
 
 bridgeCommand
   .command("personal-card-import-file-preview")

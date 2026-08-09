@@ -1162,20 +1162,38 @@
 
       <!-- IMPORT CURRICULUM MODAL -->
       <div id="import-modal-overlay" class="modal-overlay">
-        <div class="modal-box" style="max-width: 600px;">
+        <div class="modal-box" style="max-width: 760px;">
           <div class="modal-header">
             <h3 id="lbl-import-modal-title">Import Learning Content</h3>
           </div>
           <div class="modal-body">
             <!-- Tabs -->
-            <div style="display: flex; gap: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--clr-border); padding-bottom: 8px;">
-              <button id="btn-import-tab-file" class="btn btn-xs primary-btn" type="button">APKG / CSV / TSV</button>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; border-bottom: 1px solid var(--clr-border); padding-bottom: 8px;">
+              <button id="btn-import-tab-library" class="btn btn-xs primary-btn" type="button">Open Library</button>
+              <button id="btn-import-tab-file" class="btn btn-xs secondary-btn" type="button">APKG / CSV / TSV</button>
               <button id="btn-import-tab-text" class="btn btn-xs secondary-btn" type="button">Direct Text</button>
               <button id="btn-import-tab-source" class="btn btn-xs secondary-btn" type="button">File / Link / Scan</button>
             </div>
 
-            <!-- Tab 1: deterministic local card file -->
-            <div id="import-view-file" style="display: flex; flex-direction: column; gap: 12px;">
+            <!-- Tab 1: curated open-content library -->
+            <div id="import-view-library" style="display: flex; flex-direction: column; gap: 12px;">
+              <p id="open-content-intro" style="margin: 0; color: var(--clr-text-secondary); font-size: 0.9rem;">Discover reviewed, open-licensed decks. ZAM verifies the exact download before showing an import preview.</p>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <input id="open-content-search" class="editor-input" type="search" placeholder="Search open decks" style="flex: 1 1 220px;" />
+                <select id="open-content-language" class="editor-input" aria-label="Content language" style="flex: 1 1 120px;">
+                  <option value="">All languages</option>
+                </select>
+                <select id="open-content-subject" class="editor-input" aria-label="Content subject" style="flex: 1 1 170px;">
+                  <option value="">All subjects</option>
+                </select>
+              </div>
+              <div id="open-content-status" role="status" aria-live="polite" style="font-size: 0.82rem;"></div>
+              <div id="open-content-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto;"></div>
+              <div id="open-content-preview" class="modal-impact-section" role="status" aria-live="polite"></div>
+            </div>
+
+            <!-- Tab 2: deterministic local card file -->
+            <div id="import-view-file" class="hidden" style="display: flex; flex-direction: column; gap: 12px;">
               <p id="file-import-intro" style="margin: 0; color: var(--clr-text-secondary); font-size: 0.9rem;">Choose a local Anki package or UTF-8 card table. Preview and import run locally without AI or network access.</p>
               <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                 <button id="btn-import-file-choose" class="btn primary-btn btn-sm" type="button">Choose file</button>
@@ -1184,7 +1202,7 @@
               <div id="import-file-preview" class="modal-impact-section" role="status" aria-live="polite"></div>
             </div>
 
-            <!-- Tab 2: Direct Text -->
+            <!-- Tab 3: Direct Text -->
             <div id="import-view-text" class="hidden">
               <div class="editor-form-group">
                 <label for="import-field-text" id="lbl-import-text">Curriculum Text</label>
@@ -1192,7 +1210,7 @@
               </div>
             </div>
 
-            <!-- Tab 3: File/Link/Scan -->
+            <!-- Tab 4: File/Link/Scan -->
             <div id="import-view-source" class="hidden" style="display: flex; flex-direction: column; gap: 12px;">
               <div style="display: flex; gap: 8px; align-items: flex-end;">
                 <div class="editor-form-group" style="flex: 1.2; margin: 0;">

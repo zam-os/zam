@@ -1037,6 +1037,16 @@ function initializeTranslations() {
   if (btnContentImport) btnContentImport.textContent = t("btn_import_file");
   const lblImportModalTitle = document.getElementById("lbl-import-modal-title");
   if (lblImportModalTitle) lblImportModalTitle.textContent = t("lbl_file_import_modal_title");
+  const btnImportTabLibrary = document.getElementById("btn-import-tab-library");
+  if (btnImportTabLibrary) btnImportTabLibrary.textContent = t("btn_import_tab_library");
+  const openContentIntro = document.getElementById("open-content-intro");
+  if (openContentIntro) openContentIntro.textContent = t("open_content_intro");
+  const openContentSearch = document.getElementById("open-content-search") as HTMLInputElement;
+  if (openContentSearch) openContentSearch.placeholder = t("open_content_search");
+  const openContentLanguage = document.getElementById("open-content-language") as HTMLSelectElement;
+  if (openContentLanguage?.options[0]) openContentLanguage.options[0].textContent = t("open_content_all_languages");
+  const openContentSubject = document.getElementById("open-content-subject") as HTMLSelectElement;
+  if (openContentSubject?.options[0]) openContentSubject.options[0].textContent = t("open_content_all_subjects");
   const btnImportTabFile = document.getElementById("btn-import-tab-file");
   if (btnImportTabFile) btnImportTabFile.textContent = t("btn_import_tab_file");
   const fileImportIntro = document.getElementById("file-import-intro");
