@@ -552,14 +552,18 @@
             <p class="group-title" data-i18n="ai_heading">KI</p>
             <div class="card">
               <p id="ai-state" class="t-headline"></p>
-              <p class="t-secondary" data-i18n="ai_desc">
+              <p id="ai-desc" class="t-secondary" data-i18n="ai_desc">
                 Mit einem OpenRouter-Schlüssel bewertet ZAM deine Antworten,
                 liest Fotos aus und findet Karten nach Bedeutung. Ohne
                 Schlüssel bewertest du selbst — alles andere bleibt gleich.
                 OpenRouter ist der einfache Einstieg; Modell und Schlüssel
                 lassen sich jederzeit ändern.
               </p>
-              <label class="field">
+              <!-- A working key is not a question. While one is stored the
+                   field is gone entirely — an empty password box next to
+                   "Connected" reads as "your key is missing". `ai-change-key`
+                   brings it back for the rare case it has to change. -->
+              <label class="field hidden" id="ai-key-field">
                 <span data-i18n="ai_key_label">API-Schlüssel</span>
                 <input
                   id="ai-key"
@@ -595,6 +599,14 @@
                 data-i18n="ai_connect"
               >
                 Verbinden
+              </button>
+              <button
+                id="ai-change-key"
+                class="btn plain hidden"
+                type="button"
+                data-i18n="ai_change_key"
+              >
+                Schlüssel ändern
               </button>
               <button
                 id="ai-get-key"

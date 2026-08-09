@@ -246,11 +246,14 @@ const upgradeStartButton = element<HTMLButtonElement>("upgrade-start");
 const upgradeReplaceButton = element<HTMLButtonElement>("upgrade-replace");
 const upgradeStatus = element<HTMLParagraphElement>("upgrade-status");
 const aiState = element<HTMLElement>("ai-state");
+const aiDesc = element<HTMLElement>("ai-desc");
+const aiKeyField = element<HTMLElement>("ai-key-field");
 const aiKeyInput = element<HTMLInputElement>("ai-key");
 const aiModelSelect = element<HTMLSelectElement>("ai-model");
 const aiModelCustomField = element<HTMLElement>("ai-model-custom-field");
 const aiModelCustomInput = element<HTMLInputElement>("ai-model-custom");
 const aiConnectButton = element<HTMLButtonElement>("ai-connect");
+const aiChangeKeyButton = element<HTMLButtonElement>("ai-change-key");
 const aiGetKeyButton = element<HTMLButtonElement>("ai-get-key");
 const aiDisconnectButton = element<HTMLButtonElement>("ai-disconnect");
 const aiStatus = element<HTMLParagraphElement>("ai-status");
@@ -2120,7 +2123,15 @@ function setAiStatus(text: string, isError = false): void {
   aiStatus.classList.toggle("error", isError);
 }
 
-/** Paint the AI section from what is actually registered in the database. */
+/**
+ * Paint the AI section from what is actually registered in the database.
+ *
+ * A stored key is not a question worth asking again. While one is present the
+ * field is removed rather than blanked: an empty password box sitting under
+ * the word "Connected" reads as *your key is missing*, and the only thing a
+ * connected learner normally wants here is a different model. `ai-change-key`
+ * brings the field back for the one case that needs it.
+ */
 async function refreshAiSection(): Promise<void> {
   let label: string | null = null;
   let model: string | null = null;
@@ -2137,10 +2148,22 @@ async function refreshAiSection(): Promise<void> {
   aiState.textContent = label ? tf("ai_connected", { label }) : t("ai_none");
   aiDisconnectButton.hidden = !label;
   aiKeyInput.value = "";
-  aiKeyInput.placeholder = label ? "••••••••" : "sk-or-…";
+  aiKeyInput.placeholder = "sk-or-…";
+  showAiKeyField(!label);
+  aiChangeKeyButton.classList.toggle("hidden", !label);
+  // The paragraph explains what a key buys. Once there is one, it is answered
+  // copy taking up the space the model row wants.
+  aiDesc.classList.toggle("hidden", Boolean(label));
+  aiGetKeyButton.classList.toggle("hidden", Boolean(label));
   // Connected: the button mostly switches models (key optional). First time:
   // it must paste a key.
   aiConnectButton.textContent = label ? t("ai_apply") : t("ai_connect");
+}
+
+/** Show or hide the key field; hiding it also clears whatever was typed. */
+function showAiKeyField(visible: boolean): void {
+  aiKeyField.classList.toggle("hidden", !visible);
+  if (!visible) aiKeyInput.value = "";
 }
 
 /**
@@ -2214,6 +2237,16 @@ aiDisconnectButton.addEventListener("click", async () => {
   await refreshAiSection();
   await refreshCloudEndpointsFromDb();
   setAiStatus("");
+});
+
+aiChangeKeyButton.addEventListener("click", () => {
+  showAiKeyField(true);
+  aiChangeKeyButton.classList.add("hidden");
+  // The way back out is the "Get a key" link, which only makes sense again
+  // once someone is actually looking for a key.
+  aiGetKeyButton.classList.remove("hidden");
+  aiKeyInput.focus();
+  setAiStatus(t("ai_change_key_hint"));
 });
 
 aiGetKeyButton.addEventListener("click", () => {
