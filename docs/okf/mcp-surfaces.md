@@ -1,13 +1,14 @@
 ---
 type: architecture
 title: MCP Transport and Surfaces
-description: zam mcp is the preferred agent transport - a stdio MCP server exposing focused ZAM tools and host-rendered MCP Apps panels.
+description: zam mcp is the preferred agent transport, and the Agent Plugins package ships it with ZAM's portable skill for compatible clients.
 tags:
   - mcp
   - agents
   - surfaces
+  - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-08-02T08:40:00Z
+timestamp: 2026-08-09T20:06:47.321Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -29,6 +30,26 @@ harness:
 
 With no target, the command detects installed harnesses. The MCP command itself
 is loaded lazily so the CLI bootstrap stays light.
+
+# Portable Agent Plugin package
+
+The repository root and the published `zam-core` npm artifact implement Agent
+Plugins v1.0.0. Compatible clients discover both portable components from fixed
+locations:
+
+- `plugin.json` declares the package identity and specification version;
+- `skills/zam/SKILL.md` carries host-neutral ZAM workflow instructions using
+  Agent Skills standard frontmatter;
+- `mcp.json` declares the `zam` stdio server and starts
+  `node ${PLUGIN_ROOT}/dist/cli/index.js mcp` from `${PLUGIN_ROOT}`.
+
+A source checkout needs a completed build before the MCP entrypoint exists.
+Published npm artifacts include `dist/cli/index.js` and every portable
+manifest/component through the package `files` allowlist. ZAM continues to use
+its configured learner database location, so the plugin, CLI, and Desktop
+Studio share the same profile. The existing `.claude/`, `.agent/`, and
+`.agents/` skills plus `zam agent connect` remain compatibility paths for
+clients that do not install the portable package directly.
 
 # Intent routing
 
@@ -328,4 +349,5 @@ The same operation is available through `zam bridge okf-import`.
 - [ADR 2026-07-29b — OKF Freshness Radar](../adr/2026-07-29b-okf-freshness-radar.md)
 - [ADR 2026-07-30 — OKF Reader Navigation and Mermaid Rendering](../adr/2026-07-30-okf-reader-navigation-and-mermaid.md)
 - [ADR 2026-08-01 — Learning Progress Statistics](../adr/2026-08-01-learning-progress-stats.md)
-- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/ui-intent.ts`, `src/kernel/system/install-config.ts`, `src/kernel/analytics/progress.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/extension.ts`, `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-mermaid.ts`, `desktop/src/panel/okf-panel.html`, `vite.config.panel.mts`
+- [ADR 2026-08-09b — Portable Agent Plugin Package](../adr/2026-08-09b-agent-plugin-package.md)
+- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/agent.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/ui-intent.ts`, `src/kernel/system/install-config.ts`, `src/kernel/analytics/progress.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/extension.ts`, `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-mermaid.ts`, `desktop/src/panel/okf-panel.html`, `vite.config.panel.mts`, `plugin.json`, `mcp.json`, `skills/zam/SKILL.md`, `package.json`, `tests/cli/agent-plugin.test.ts`, `docs/AGENT_PLUGIN.md`

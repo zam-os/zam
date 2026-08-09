@@ -66,6 +66,14 @@ GitHub Copilot, it also installs user-scoped Studio, Recall, Graph, and Settings
 restart Copilot or start a new session after connecting. Then just type **`/zam`** — or
 say "let's do this together with ZAM" — and work normally.
 
+#### Portable Agent Plugin
+
+The repository and published npm package also follow the vendor-neutral
+[Agent Plugins v1.0.0](https://agent-plugins.org/) format. Compatible clients can load
+the package root to discover the ZAM skill and stdio MCP server together. A source
+checkout needs `npm ci && npm run build` first; published packages already contain the
+runtime. See [ZAM Agent Plugin](docs/AGENT_PLUGIN.md) for the layout and validation.
+
 ### 2. ZAM Desktop Studio — *setup, content & graph*
 
 A native app (`zam ui`) for the things a chat window isn't good at:

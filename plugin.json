@@ -1,0 +1,20 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "zam",
+  "version": "0.30.0",
+  "description": "Turn real work with AI agents into active-recall practice and FSRS spaced repetition.",
+  "author": {
+    "name": "ZAM Contributors",
+    "url": "https://zam-os.org"
+  },
+  "homepage": "https://zam-os.org",
+  "repository": "https://github.com/zam-os/zam",
+  "license": "Apache-2.0",
+  "keywords": [
+    "learning",
+    "spaced-repetition",
+    "active-recall",
+    "agent-skill",
+    "mcp"
+  ]
+}

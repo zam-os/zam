@@ -81,6 +81,11 @@ After running the setup skill, `zam-core` distributes its own skill file:
 .agents/skills/zam/SKILL.md    ← from node_modules/zam-core/.agents/skills/zam/
 ```
 
+Agent Plugins v1 clients can instead load the installed `zam-core` package
+root. They discover the portable `skills/zam/SKILL.md` and the `zam` stdio
+server in `mcp.json` together; the host-specific copies above remain the
+fallback for clients using the setup/link flow.
+
 Claude-, Copilot-, and Gemini-compatible clients invoke their skills with
 `/setup` and `/zam`. Codex invokes repository skills with `$setup` and `$zam`,
 or selects them through `/skills`.
@@ -237,7 +242,7 @@ Skill files always travel with the package that defines them:
 
 | Package / repo | Owns skill group | Distributes via |
 |----------------|-----------------|-----------------|
-| `zam-core` | `.claude/skills/zam/` for Claude/Copilot, `.agent/skills/zam/`, `.agents/skills/zam/` for Codex | `zam setup` (copies from `node_modules/zam-core/`) |
+| `zam-core` | Portable `skills/zam/` plus host-specific `.claude/`, `.agent/`, and `.agents/` compatibility copies | Agent Plugin package root, or `zam setup` links from `node_modules/zam-core/` |
 | Personal/community template | `.claude/skills/setup/`, `.gemini/skills/setup/`, `.agents/skills/setup/` | Static in template (always present before setup runs) |
 | Future: `zam-devops` | Per-client `skills/devops/` | `devops setup` (copies from `node_modules/zam-devops/`) |
 
