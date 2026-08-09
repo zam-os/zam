@@ -40,6 +40,7 @@ import {
   type CapabilityFlags,
   checkCredentials,
   clearProviderApiKey,
+  commitTextImport,
   confirmCardSplit,
   confirmFoundations,
   confirmSourceImport,
@@ -98,6 +99,7 @@ import {
   openDatabaseWithSync,
   PERSONA_DESCRIPTORS,
   pairCommands,
+  previewTextImport,
   readMonitorLog,
   readUiObservationLog,
   resolveCredentials,
@@ -193,6 +195,7 @@ import {
   isPdfUrl,
   plainTextToExtractableHtml,
 } from "../curriculum/pdf-text.js";
+import { readTextImportFile } from "../import/text-file.js";
 import { performInstallRepair } from "../install-repair.js";
 import { resolveOperationKnowledgeContexts } from "../knowledge-contexts.js";
 import {
@@ -5792,6 +5795,46 @@ bridgeCommand
         createdCount: result.createdCount,
         linkedCount: result.linkedCount,
       });
+    });
+  });
+
+// ── zam bridge personal-card-import-file-* ─────────────────────────────────
+
+bridgeCommand
+  .command("personal-card-import-file-preview")
+  .description(
+    "Preview a local APKG, CSV, or TSV card import without network or AI (JSON)",
+  )
+  .requiredOption("--path <path>", "Local .apkg, .csv, or .tsv file")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const document = await readTextImportFile(opts.path);
+      const preview = await previewTextImport(db, userId, document);
+      jsonOut({ success: true, ...preview });
+    });
+  });
+
+bridgeCommand
+  .command("personal-card-import-file-confirm")
+  .description(
+    "Atomically confirm a previously previewed local card import (JSON)",
+  )
+  .requiredOption("--path <path>", "Local .apkg, .csv, or .tsv file")
+  .requiredOption("--plan-hash <hash>", "Plan hash returned by preview")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const document = await readTextImportFile(opts.path);
+      const result = await commitTextImport(
+        db,
+        userId,
+        document,
+        opts.planHash,
+      );
+      jsonOut({ success: true, ...result });
     });
   });
 

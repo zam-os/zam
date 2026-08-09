@@ -217,7 +217,7 @@
           <div style="display: flex; gap: 10px; align-items: center;">
             <button id="btn-content-curriculum-wizard" class="btn secondary-btn btn-sm" type="button">Curriculum Wizard</button>
             <button id="btn-content-goal-import" class="btn secondary-btn btn-sm" type="button">Goal Import</button>
-            <button id="btn-content-import" class="btn secondary-btn btn-sm" type="button">Import Curriculum</button>
+            <button id="btn-content-import" class="btn secondary-btn btn-sm" type="button">Import File</button>
             <button id="btn-content-new-card" class="btn primary-btn btn-sm" type="button">New Card</button>
           </div>
         </div>
@@ -1121,24 +1121,35 @@
       <div id="import-modal-overlay" class="modal-overlay">
         <div class="modal-box" style="max-width: 600px;">
           <div class="modal-header">
-            <h3 id="lbl-import-modal-title">Import Curriculum</h3>
+            <h3 id="lbl-import-modal-title">Import Learning Content</h3>
           </div>
           <div class="modal-body">
             <!-- Tabs -->
             <div style="display: flex; gap: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--clr-border); padding-bottom: 8px;">
-              <button id="btn-import-tab-text" class="btn btn-xs primary-btn" type="button">Direct Text</button>
+              <button id="btn-import-tab-file" class="btn btn-xs primary-btn" type="button">APKG / CSV / TSV</button>
+              <button id="btn-import-tab-text" class="btn btn-xs secondary-btn" type="button">Direct Text</button>
               <button id="btn-import-tab-source" class="btn btn-xs secondary-btn" type="button">File / Link / Scan</button>
             </div>
 
-            <!-- Tab 1: Direct Text -->
-            <div id="import-view-text">
+            <!-- Tab 1: deterministic local card file -->
+            <div id="import-view-file" style="display: flex; flex-direction: column; gap: 12px;">
+              <p id="file-import-intro" style="margin: 0; color: var(--clr-text-secondary); font-size: 0.9rem;">Choose a local Anki package or UTF-8 card table. Preview and import run locally without AI or network access.</p>
+              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <button id="btn-import-file-choose" class="btn primary-btn btn-sm" type="button">Choose file</button>
+                <span id="import-file-selected" style="font-size: 0.85rem; color: var(--clr-text-secondary);">No file selected</span>
+              </div>
+              <div id="import-file-preview" class="modal-impact-section" role="status" aria-live="polite"></div>
+            </div>
+
+            <!-- Tab 2: Direct Text -->
+            <div id="import-view-text" class="hidden">
               <div class="editor-form-group">
                 <label for="import-field-text" id="lbl-import-text">Curriculum Text</label>
                 <textarea id="import-field-text" class="editor-textarea" style="min-height: 180px;" placeholder="Paste curriculum text or syllabus bullets here..."></textarea>
               </div>
             </div>
 
-            <!-- Tab 2: File/Link/Scan -->
+            <!-- Tab 3: File/Link/Scan -->
             <div id="import-view-source" class="hidden" style="display: flex; flex-direction: column; gap: 12px;">
               <div style="display: flex; gap: 8px; align-items: flex-end;">
                 <div class="editor-form-group" style="flex: 1.2; margin: 0;">
@@ -1164,7 +1175,7 @@
               </div>
             </div>
 
-            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px;">
+            <div id="import-legacy-metadata" class="hidden" style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px;">
               <div class="editor-form-group" style="flex: 1.2; min-width: 150px; margin: 0;">
                 <label for="import-field-source" id="lbl-import-source">Source URL / Reference</label>
                 <input type="text" id="import-field-source" class="editor-input" placeholder="e.g. https://example.com/syllabus" />

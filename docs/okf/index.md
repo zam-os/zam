@@ -29,3 +29,4 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 ## protocol
 
 - [Bridge CLI Protocol](bridge-protocol.md) — zam bridge is the machine-facing JSON fallback transport for agents; responses are always JSON, and the protocol types are the stable contract.
+- [Local Card File Import](local-card-file-import.md) — ZAM imports text cards from local APKG, CSV, and TSV files through a deterministic preview and one atomic, model-free commit.

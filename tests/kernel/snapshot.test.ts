@@ -58,6 +58,25 @@ async function seed(db: Database): Promise<void> {
       "UPDATE cards SET state = 'learning', learning_step = 1 WHERE id = ?",
     )
     .run(learningCard.id);
+  await db
+    .prepare(
+      `INSERT INTO imported_card_bindings
+        (id, external_id, token_id, format, source_name, note_guid,
+         card_ordinal, deck_path, content_hash, metadata_hash)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    )
+    .run(
+      "01K20IMPORTBINDING00000000",
+      "anki:ohms-law:0",
+      tricky.id,
+      "apkg",
+      "electronics.apkg",
+      "ohms-law",
+      0,
+      "Electronics",
+      "content-hash",
+      "metadata-hash",
+    );
 
   const second = await createToken(db, {
     slug: "kirchhoff",
@@ -82,12 +101,14 @@ describe("database snapshots", () => {
     const manifest = verifySnapshot(snapshot);
     expect(manifest.tables.tokens).toBe(2);
     expect(manifest.tables.cards).toBe(2);
+    expect(manifest.tables.imported_card_bindings).toBe(1);
     expect(manifest.tables.user_config).toBe(1);
 
     const target = await freshDb();
     const result = await importSnapshot(target, snapshot);
     expect(result.tables.tokens).toBe(2);
     expect(result.tables.cards).toBe(2);
+    expect(result.tables.imported_card_bindings).toBe(1);
 
     const token = (await target
       .prepare("SELECT concept FROM tokens WHERE slug = ?")
@@ -204,7 +225,9 @@ describe("database snapshots", () => {
     await assignTokenToContext(source, token.id, context.id);
 
     await source
-      .prepare("INSERT INTO sources (id, type, uri, content) VALUES (?, ?, ?, ?)")
+      .prepare(
+        "INSERT INTO sources (id, type, uri, content) VALUES (?, ?, ?, ?)",
+      )
       .run("src-bio-book", "file", "file:///books/bio.pdf", "chapter text");
     await source
       .prepare(

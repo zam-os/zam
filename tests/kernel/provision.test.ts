@@ -19,7 +19,11 @@ import { afterEach, describe, expect, it } from "vitest";
 import { createTauriDatabase } from "../../mobile/src/provider.js";
 import { applySchemaAndMigrations } from "../../src/kernel/db/provision.js";
 import type { Database } from "../../src/kernel/db/types.js";
-import { createToken, ensureCard, openDatabase } from "../../src/kernel/index.js";
+import {
+  createToken,
+  ensureCard,
+  openDatabase,
+} from "../../src/kernel/index.js";
 import { createTauriInvokeStub } from "../helpers/tauri-invoke-stub.js";
 
 const tempDirs: string[] = [];
@@ -37,9 +41,7 @@ afterEach(() => {
 });
 
 /** Table name → column names, the comparable shape of a database. */
-async function describeSchema(
-  db: Database,
-): Promise<Record<string, string[]>> {
+async function describeSchema(db: Database): Promise<Record<string, string[]>> {
   const tables = (await db
     .prepare(
       `SELECT name FROM sqlite_master
@@ -177,6 +179,36 @@ describe("applySchemaAndMigrations", () => {
     expect(columns.map((column) => column.name)).toContain("learning_step");
     expect(migrated).toEqual({ state: "learning", learning_step: null });
 
+    stub.close();
+  });
+
+  it("adds stable file-import bindings idempotently", async () => {
+    const stub = createTauriInvokeStub(join(tempDir(), "pre-file-import.db"));
+    const db = createTauriDatabase(stub.invoke);
+    await applySchemaAndMigrations(db);
+
+    const columns = (await db.pragma(
+      "table_info(imported_card_bindings)",
+    )) as Array<{ name: string }>;
+    expect(columns.map((column) => column.name)).toEqual(
+      expect.arrayContaining([
+        "id",
+        "external_id",
+        "token_id",
+        "note_guid",
+        "card_ordinal",
+        "content_hash",
+        "metadata_hash",
+      ]),
+    );
+
+    await applySchemaAndMigrations(db);
+    const indexes = (await db.pragma(
+      "index_list(imported_card_bindings)",
+    )) as Array<{ name: string }>;
+    expect(indexes.map((index) => index.name)).toContain(
+      "idx_imported_card_bindings_token",
+    );
     stub.close();
   });
 });

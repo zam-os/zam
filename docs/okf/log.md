@@ -2,6 +2,10 @@
 
 ## 2026-08-09
 
+- **Update** — [Kernel and CLI Architecture](kernel-architecture.md)
+- **Update** — [Token and Card Model](token-card-model.md)
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+- **Creation** — [Local Card File Import](local-card-file-import.md)
 - **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
 
 ## 2026-08-08

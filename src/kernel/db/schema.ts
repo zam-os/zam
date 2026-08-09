@@ -58,6 +58,27 @@ CREATE TABLE IF NOT EXISTS tokens (
   editorial_state    TEXT NOT NULL DEFAULT 'published'
 );
 
+-- Stable provenance for deterministic local-file imports (ADR 2026-08-09).
+-- The imported content is shared; personal scheduling remains in cards.
+CREATE TABLE IF NOT EXISTS imported_card_bindings (
+  id            TEXT PRIMARY KEY,
+  external_id   TEXT NOT NULL UNIQUE,
+  token_id      TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  format        TEXT NOT NULL CHECK (format IN ('apkg', 'csv', 'tsv')),
+  source_name   TEXT NOT NULL,
+  note_guid     TEXT,
+  card_ordinal  INTEGER,
+  deck_path     TEXT NOT NULL DEFAULT '',
+  tags_json     TEXT NOT NULL DEFAULT '[]',
+  source        TEXT,
+  author        TEXT,
+  license       TEXT,
+  content_hash  TEXT NOT NULL,
+  metadata_hash TEXT NOT NULL,
+  imported_at   TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at    TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 -- Prerequisite dependency graph: "to learn A, first know B"
 CREATE TABLE IF NOT EXISTS prerequisites (
   token_id    TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
@@ -228,6 +249,7 @@ CREATE TABLE IF NOT EXISTS token_contexts (
 /** Performance indexes. Applied after migrations — see `SCHEMA_TABLES`. */
 export const SCHEMA_INDEXES = `
 CREATE INDEX IF NOT EXISTS idx_tokens_domain ON tokens(domain);
+CREATE INDEX IF NOT EXISTS idx_imported_card_bindings_token ON imported_card_bindings(token_id);
 CREATE INDEX IF NOT EXISTS idx_tokens_slug ON tokens(slug);
 CREATE INDEX IF NOT EXISTS idx_prereqs_token ON prerequisites(token_id);
 CREATE INDEX IF NOT EXISTS idx_prereqs_requires ON prerequisites(requires_id);

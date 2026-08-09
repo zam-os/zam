@@ -91,6 +91,7 @@ import {
   initLearningContentStudio,
   loadStudioData,
   openCardInEditor,
+  setLearningContentFilePicker,
 } from "./learning-content.js";
 import {
   StudyEditError,
@@ -136,6 +137,21 @@ setBridgeTransport(async (cmd, args) => {
       `Invalid bridge JSON for ${cmd}: ${preview} (${(err as Error).message})`,
     );
   }
+});
+
+setLearningContentFilePicker(async () => {
+  const selected = await openFolderDialog({
+    directory: false,
+    multiple: false,
+    title: t("btn_file_import_choose"),
+    filters: [
+      {
+        name: "Anki / CSV / TSV",
+        extensions: ["apkg", "csv", "tsv"],
+      },
+    ],
+  });
+  return typeof selected === "string" ? selected : null;
 });
 
 // Bitwarden assure modal "Open vault" uses the same opener as the rest of Studio.
@@ -933,9 +949,17 @@ function initializeTranslations() {
 
   // Import Modal Translations
   const btnContentImport = document.getElementById("btn-content-import");
-  if (btnContentImport) btnContentImport.textContent = t("btn_import_curriculum");
+  if (btnContentImport) btnContentImport.textContent = t("btn_import_file");
   const lblImportModalTitle = document.getElementById("lbl-import-modal-title");
-  if (lblImportModalTitle) lblImportModalTitle.textContent = t("lbl_import_modal_title");
+  if (lblImportModalTitle) lblImportModalTitle.textContent = t("lbl_file_import_modal_title");
+  const btnImportTabFile = document.getElementById("btn-import-tab-file");
+  if (btnImportTabFile) btnImportTabFile.textContent = t("btn_import_tab_file");
+  const fileImportIntro = document.getElementById("file-import-intro");
+  if (fileImportIntro) fileImportIntro.textContent = t("file_import_intro");
+  const btnImportFileChoose = document.getElementById("btn-import-file-choose");
+  if (btnImportFileChoose) btnImportFileChoose.textContent = t("btn_file_import_choose");
+  const importFileSelected = document.getElementById("import-file-selected");
+  if (importFileSelected) importFileSelected.textContent = t("file_import_no_file");
   const lblImportText = document.getElementById("lbl-import-text");
   if (lblImportText) lblImportText.textContent = t("lbl_import_text");
   const importFieldText = document.getElementById("import-field-text") as HTMLTextAreaElement;

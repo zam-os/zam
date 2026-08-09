@@ -49,18 +49,65 @@ let importProgressContainer: HTMLElement;
 let btnImportModalCancel: HTMLButtonElement;
 let btnImportModalSubmit: HTMLButtonElement;
 
-// Source Import DOM Cache
+// File + source import DOM cache
+let btnImportTabFile: HTMLButtonElement;
 let btnImportTabText: HTMLButtonElement;
 let btnImportTabSource: HTMLButtonElement;
+let importViewFile: HTMLElement;
 let importViewText: HTMLElement;
 let importViewSource: HTMLElement;
+let btnImportFileChoose: HTMLButtonElement;
+let importFileSelected: HTMLElement;
+let importFilePreview: HTMLElement;
+let importLegacyMetadata: HTMLElement;
 let importSourceType: HTMLSelectElement;
 let importSourceUri: HTMLInputElement;
 let btnImportSourceAnalyze: HTMLButtonElement;
 let importSourcePreview: HTMLTextAreaElement;
 let importSourceId: HTMLInputElement;
 
-let activeImportTab: "text" | "source" = "text";
+type ImportTab = "file" | "text" | "source";
+
+interface FileImportPreview {
+  success: boolean;
+  format: "apkg" | "csv" | "tsv";
+  sourceName: string;
+  planHash: string;
+  counts: {
+    create: number;
+    update: number;
+    skip: number;
+    conflict: number;
+    unsupported: number;
+    cardsToCreate: number;
+    valid: number;
+    total: number;
+  };
+  decks: Array<{ path: string; cards: number }>;
+  cards: Array<{
+    question: string;
+    answer: string;
+    action: "create" | "update" | "skip" | "conflict";
+    reason: string;
+    deckPath: string;
+  }>;
+  warnings: Array<{ code: string; message: string }>;
+  unsupported: Array<{ code: string; message: string }>;
+}
+
+export type LearningContentFilePicker = () => Promise<string | null>;
+
+let activeImportTab: ImportTab = "file";
+let pickLearningContentFile: LearningContentFilePicker | null = null;
+let selectedImportFilePath: string | null = null;
+let selectedFilePreview: FileImportPreview | null = null;
+
+/** Injected by the native desktop shell; the reusable MCP panel has no path access. */
+export function setLearningContentFilePicker(
+  picker: LearningContentFilePicker,
+): void {
+  pickLearningContentFile = picker;
+}
 
 let btnSplitCard: HTMLButtonElement;
 let splitModalOverlay: HTMLElement;
@@ -302,15 +349,25 @@ export function initLearningContentStudio(): void {
     "btn-import-modal-submit",
   ) as HTMLButtonElement;
 
-  // Source Import bindings
+  // File + source import bindings
+  btnImportTabFile = document.getElementById(
+    "btn-import-tab-file",
+  ) as HTMLButtonElement;
   btnImportTabText = document.getElementById(
     "btn-import-tab-text",
   ) as HTMLButtonElement;
   btnImportTabSource = document.getElementById(
     "btn-import-tab-source",
   ) as HTMLButtonElement;
+  importViewFile = document.getElementById("import-view-file")!;
   importViewText = document.getElementById("import-view-text")!;
   importViewSource = document.getElementById("import-view-source")!;
+  btnImportFileChoose = document.getElementById(
+    "btn-import-file-choose",
+  ) as HTMLButtonElement;
+  importFileSelected = document.getElementById("import-file-selected")!;
+  importFilePreview = document.getElementById("import-file-preview")!;
+  importLegacyMetadata = document.getElementById("import-legacy-metadata")!;
   importSourceType = document.getElementById(
     "import-source-type",
   ) as HTMLSelectElement;
@@ -390,8 +447,12 @@ export function initLearningContentStudio(): void {
   btnImportModalSubmit.addEventListener("click", () => {
     void submitImport();
   });
+  btnImportTabFile.addEventListener("click", () => switchImportTab("file"));
   btnImportTabText.addEventListener("click", () => switchImportTab("text"));
   btnImportTabSource.addEventListener("click", () => switchImportTab("source"));
+  btnImportFileChoose.addEventListener("click", () => {
+    void chooseImportFile();
+  });
   btnImportSourceAnalyze.addEventListener("click", () => {
     void analyzeImportSource();
   });
@@ -1056,14 +1117,19 @@ function showImportModal(): void {
   importSourceUri.value = "";
   importSourcePreview.value = "";
   importSourceId.value = "";
-  switchImportTab("text");
+  selectedImportFilePath = null;
+  selectedFilePreview = null;
+  importFileSelected.textContent = t("file_import_no_file");
+  importFilePreview.replaceChildren();
+  switchImportTab("file");
 
   importProgressContainer.classList.add("hidden");
-  btnImportModalSubmit.disabled = false;
   btnImportModalCancel.disabled = false;
   importFieldText.disabled = false;
   importFieldSource.disabled = false;
   importFieldCategory.disabled = false;
+  btnImportFileChoose.disabled = pickLearningContentFile === null;
+  updateImportSubmitState();
   importModalOverlay.classList.add("active");
 }
 
@@ -1075,20 +1141,61 @@ async function submitImport(): Promise<void> {
   const domain = importFieldCategory.value.trim();
   const source = importFieldSource.value.trim() || null;
 
-  if (!domain) {
+  if (activeImportTab !== "file" && !domain) {
     alert(t("lbl_err_category_required"));
+    return;
+  }
+  if (
+    activeImportTab === "file" &&
+    (!selectedImportFilePath || !selectedFilePreview)
+  ) {
+    alert(t("file_import_preview_first"));
     return;
   }
 
   importProgressContainer.classList.remove("hidden");
+  if (activeImportTab === "file") {
+    const status = document.getElementById("lbl-import-progress-status");
+    const detail = document.getElementById("lbl-import-progress-detail");
+    if (status) status.textContent = t("file_import_previewing");
+    if (detail) detail.textContent = t("file_import_ready");
+  }
   btnImportModalSubmit.disabled = true;
   btnImportModalCancel.disabled = true;
   importFieldText.disabled = true;
   importFieldSource.disabled = true;
   importFieldCategory.disabled = true;
+  btnImportFileChoose.disabled = true;
 
   try {
-    if (activeImportTab === "text") {
+    if (activeImportTab === "file") {
+      const preview = selectedFilePreview as FileImportPreview;
+      const path = selectedImportFilePath as string;
+      const res = await runBridge<{
+        success: boolean;
+        cardsCreated: number;
+        counts: FileImportPreview["counts"];
+      }>("personal-card-import-file-confirm", [
+        "--path",
+        path,
+        "--plan-hash",
+        preview.planHash,
+      ]);
+
+      if (!res?.success) throw new Error(t("lbl_error_file_import"));
+      hideImportModal();
+      alert(
+        tf("toast_file_import_success", {
+          create: res.counts.create,
+          update: res.counts.update,
+          skip: res.counts.skip,
+          conflict: res.counts.conflict,
+          cards: res.cardsCreated,
+        }),
+      );
+      cancelEdit();
+      await loadStudioData();
+    } else if (activeImportTab === "text") {
       const text = importFieldText.value.trim();
       if (!text) {
         alert(t("lbl_err_import_context_required"));
@@ -1190,7 +1297,11 @@ async function submitImport(): Promise<void> {
       }
     }
   } catch (err: any) {
-    alert(t("lbl_error_importing") + ": " + (err.message || String(err)));
+    const messageKey =
+      activeImportTab === "file"
+        ? "lbl_error_file_import"
+        : "lbl_error_importing";
+    alert(t(messageKey) + ": " + (err.message || String(err)));
   } finally {
     importProgressContainer.classList.add("hidden");
     btnImportModalSubmit.disabled = false;
@@ -1198,6 +1309,8 @@ async function submitImport(): Promise<void> {
     importFieldText.disabled = false;
     importFieldSource.disabled = false;
     importFieldCategory.disabled = false;
+    btnImportFileChoose.disabled = pickLearningContentFile === null;
+    updateImportSubmitState();
   }
 }
 
@@ -1577,22 +1690,144 @@ async function submitConfirmFoundations(): Promise<void> {
   }
 }
 
-function switchImportTab(tab: "text" | "source"): void {
+function switchImportTab(tab: ImportTab): void {
   activeImportTab = tab;
-  if (tab === "text") {
-    btnImportTabText.classList.add("primary-btn");
-    btnImportTabText.classList.remove("secondary-btn");
-    btnImportTabSource.classList.add("secondary-btn");
-    btnImportTabSource.classList.remove("primary-btn");
-    importViewText.classList.remove("hidden");
-    importViewSource.classList.add("hidden");
+  const tabs: Array<[ImportTab, HTMLButtonElement, HTMLElement]> = [
+    ["file", btnImportTabFile, importViewFile],
+    ["text", btnImportTabText, importViewText],
+    ["source", btnImportTabSource, importViewSource],
+  ];
+  for (const [name, button, view] of tabs) {
+    const selected = name === tab;
+    button.classList.toggle("primary-btn", selected);
+    button.classList.toggle("secondary-btn", !selected);
+    view.classList.toggle("hidden", !selected);
+  }
+  importLegacyMetadata.classList.toggle("hidden", tab === "file");
+  btnImportModalSubmit.textContent =
+    tab === "file" ? t("btn_file_import_confirm") : t("btn_import_submit");
+  updateImportSubmitState();
+}
+
+function updateImportSubmitState(): void {
+  if (activeImportTab !== "file") {
+    btnImportModalSubmit.disabled = false;
+    return;
+  }
+  const counts = selectedFilePreview?.counts;
+  btnImportModalSubmit.disabled =
+    !counts || counts.create + counts.update + counts.cardsToCreate === 0;
+}
+
+function appendImportPreviewLine(
+  text: string,
+  className?: string,
+): HTMLElement {
+  const line = document.createElement("div");
+  line.textContent = text;
+  if (className) line.className = className;
+  importFilePreview.appendChild(line);
+  return line;
+}
+
+function renderFileImportPreview(preview: FileImportPreview): void {
+  importFilePreview.replaceChildren();
+  appendImportPreviewLine(
+    `${preview.sourceName} · ${preview.format.toUpperCase()}`,
+    "modal-impact-title",
+  );
+  appendImportPreviewLine(
+    tf("file_import_preview_counts", {
+      total: preview.counts.total,
+      create: preview.counts.create,
+      update: preview.counts.update,
+      skip: preview.counts.skip,
+      conflict: preview.counts.conflict,
+      unsupported: preview.counts.unsupported,
+      cards: preview.counts.cardsToCreate,
+    }),
+  );
+  appendImportPreviewLine(
+    tf("file_import_preview_decks", {
+      decks:
+        preview.decks
+          .map((deck) => `${deck.path} (${deck.cards})`)
+          .join(", ") || "—",
+    }),
+  );
+
+  const notices = [
+    ...preview.warnings,
+    ...preview.unsupported,
+    ...preview.cards
+      .filter((card) => card.action === "conflict")
+      .map((card) => ({ code: "conflict", message: card.reason })),
+  ];
+  if (notices.length > 0) {
+    appendImportPreviewLine(
+      t("file_import_preview_notices"),
+      "modal-impact-title",
+    );
+    const list = document.createElement("ul");
+    list.className = "modal-impact-list";
+    for (const notice of notices.slice(0, 10)) {
+      const item = document.createElement("li");
+      item.textContent = notice.message;
+      list.appendChild(item);
+    }
+    if (notices.length > 10) {
+      const item = document.createElement("li");
+      item.textContent = tf("file_import_more_notices", {
+        count: notices.length - 10,
+      });
+      list.appendChild(item);
+    }
+    importFilePreview.appendChild(list);
+  }
+
+  if (
+    preview.counts.create +
+      preview.counts.update +
+      preview.counts.cardsToCreate ===
+    0
+  ) {
+    appendImportPreviewLine(t("file_import_nothing_to_do"));
   } else {
-    btnImportTabText.classList.add("secondary-btn");
-    btnImportTabText.classList.remove("primary-btn");
-    btnImportTabSource.classList.add("primary-btn");
-    btnImportTabSource.classList.remove("secondary-btn");
-    importViewText.classList.add("hidden");
-    importViewSource.classList.remove("hidden");
+    appendImportPreviewLine(t("file_import_ready"));
+  }
+}
+
+async function chooseImportFile(): Promise<void> {
+  if (!pickLearningContentFile) {
+    alert(t("file_import_picker_unavailable"));
+    return;
+  }
+  try {
+    const path = await pickLearningContentFile();
+    if (!path) return;
+    selectedImportFilePath = path;
+    selectedFilePreview = null;
+    importFileSelected.textContent = t("file_import_previewing");
+    importFilePreview.replaceChildren();
+    btnImportFileChoose.disabled = true;
+    updateImportSubmitState();
+
+    const preview = await runBridge<FileImportPreview>(
+      "personal-card-import-file-preview",
+      ["--path", path],
+    );
+    if (!preview?.success) throw new Error(t("lbl_error_file_import"));
+    selectedFilePreview = preview;
+    importFileSelected.textContent = preview.sourceName;
+    renderFileImportPreview(preview);
+  } catch (err: any) {
+    selectedImportFilePath = null;
+    selectedFilePreview = null;
+    importFileSelected.textContent = t("file_import_no_file");
+    alert(t("lbl_error_file_import") + ": " + (err.message || String(err)));
+  } finally {
+    btnImportFileChoose.disabled = pickLearningContentFile === null;
+    updateImportSubmitState();
   }
 }
 

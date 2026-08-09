@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-07-29T21:08:52Z
+timestamp: 2026-08-09T06:55:30Z
 ---
 
 The central distinction in ZAM's domain model:
@@ -61,6 +61,15 @@ preserves the same invariant: after explicit confirmation it atomically
 creates the token and the paired learner's card, together with requested
 prerequisite and knowledge-context links.
 
+Local APKG, CSV, and TSV imports preserve the same split. One valid external
+card direction maps to one shared token. The importer then ensures a separate
+personal card for the importing learner; importing unchanged content for a
+second learner reuses the token and creates only that learner's card.
+`imported_card_bindings` holds stable external identity and source metadata,
+not scheduling state. For Anki the identity is note GUID plus card ordinal, so
+siblings remain distinct directions with independent personal schedules. See
+[local-card-file-import.md](local-card-file-import.md).
+
 A learner can detach a card as "not for me": the card and review history
 remain, scheduling stops, and reattaching resumes the preserved state.
 An active assignment prevents detaching or deleting until it is withdrawn.
@@ -68,11 +77,12 @@ Removing a card (`personal-card-remove`) clears that user's learning state
 and history but leaves the shared token untouched; deleting a token
 (`personal-card-delete`) removes the concept for everyone.
 
-Supporting tables: `prerequisites` (directed dependency edges between
-tokens), `assignments` (curator-to-learner bindings), `review_logs`
-(immutable audit trail of review events), `session`/`session_step`
-(work+learning episodes with per-step ratings), and `token_embeddings`
-(semantic-search vectors, produced by the CLI layer, stored by the kernel).
+Supporting tables: `imported_card_bindings` (stable file-import identity and
+provenance), `prerequisites` (directed dependency edges between tokens),
+`assignments` (curator-to-learner bindings), `review_logs` (immutable audit
+trail of review events), `session`/`session_step` (work+learning episodes
+with per-step ratings), and `token_embeddings` (semantic-search vectors,
+produced by the CLI layer, stored by the kernel).
 
 # Citations
 
@@ -83,5 +93,6 @@ tokens), `assignments` (curator-to-learner bindings), `review_logs`
 - [ADR 2026-07-03 — RAG Semantic Token Search](../adr/2026-07-03-rag-semantic-token-search.md)
 - [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
 - [ADR 2026-07-18b — Learning Graph Scope Selectors and the Repo Scope](../adr/2026-07-18b-graph-repo-scope.md)
+- [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)
 - [Android companion plan](../plans/2026-07-21-android-companion-app.md)
-- Code: `src/kernel/models/token.ts`, `src/kernel/models/card.ts`, `src/kernel/models/assignment.ts`, `src/kernel/library/revision.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/prompter.ts`, `src/kernel/db/schema.ts`, `mobile/src/import.ts`
+- Code: `src/kernel/models/token.ts`, `src/kernel/models/card.ts`, `src/kernel/models/assignment.ts`, `src/kernel/library/revision.ts`, `src/kernel/import/text-import.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/prompter.ts`, `src/kernel/db/schema.ts`, `mobile/src/import.ts`

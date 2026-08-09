@@ -257,6 +257,34 @@ export async function runMigrations(db: Database): Promise<void> {
   if (cardCols.length > 0 && !cardCols.includes("learning_step")) {
     await db.exec(`ALTER TABLE cards ADD COLUMN learning_step INTEGER`);
   }
+
+  // M021: stable external identity and provenance for model-free APKG and
+  // delimited-text imports (ADR 2026-08-09). Content bindings are global;
+  // each learner still gets an independent row in cards.
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS imported_card_bindings (
+      id            TEXT PRIMARY KEY,
+      external_id   TEXT NOT NULL UNIQUE,
+      token_id      TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+      format        TEXT NOT NULL CHECK (format IN ('apkg', 'csv', 'tsv')),
+      source_name   TEXT NOT NULL,
+      note_guid     TEXT,
+      card_ordinal  INTEGER,
+      deck_path     TEXT NOT NULL DEFAULT '',
+      tags_json     TEXT NOT NULL DEFAULT '[]',
+      source        TEXT,
+      author        TEXT,
+      license       TEXT,
+      content_hash  TEXT NOT NULL,
+      metadata_hash TEXT NOT NULL,
+      imported_at   TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at    TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  `);
+  await db.exec(
+    `CREATE INDEX IF NOT EXISTS idx_imported_card_bindings_token
+       ON imported_card_bindings(token_id)`,
+  );
 }
 
 /**

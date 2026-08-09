@@ -71,6 +71,7 @@ export {
   getDefaultDbPath,
   openDatabase,
   openDatabaseWithSync,
+  openReadOnlySqliteDatabase,
 } from "./db/connection.js";
 export type { PostgresDatabaseOptions } from "./db/postgres.js";
 export { openPostgresDatabase } from "./db/postgres.js";
@@ -114,6 +115,22 @@ export {
   serializeGoal,
 } from "./goals/parser.js";
 export type {
+  TextImportAction,
+  TextImportCardInput,
+  TextImportCommitResult,
+  TextImportCounts,
+  TextImportDeckPreview,
+  TextImportDocument,
+  TextImportFormat,
+  TextImportNotice,
+  TextImportPreview,
+  TextImportPreviewCard,
+} from "./import/text-import.js";
+export {
+  commitTextImport,
+  previewTextImport,
+} from "./import/text-import.js";
+export type {
   PublishRevisionInput,
   PublishRevisionResult,
   RevisionChanges,
@@ -124,6 +141,7 @@ export {
   getRevisionImpact,
   isAwaitingRetest,
   publishTokenRevision,
+  publishTokenRevisionInTransaction,
 } from "./library/revision.js";
 export type {
   AgentSkill,

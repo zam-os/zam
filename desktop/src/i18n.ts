@@ -541,6 +541,29 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_card_due: "Vence",
     lbl_card_not_due: "No vence",
     btn_import_curriculum: "Importar currículo",
+    btn_import_file: "Importar archivo",
+    lbl_file_import_modal_title: "Importar contenido desde un archivo",
+    btn_import_tab_file: "APKG / CSV / TSV",
+    file_import_intro:
+      "Elige un paquete de Anki local o una tabla de tarjetas UTF-8. La vista previa y la importación se ejecutan localmente, sin IA ni red.",
+    btn_file_import_choose: "Elegir archivo",
+    file_import_no_file: "Ningún archivo seleccionado",
+    file_import_preview_first: "Primero elige y revisa un archivo.",
+    file_import_previewing: "Revisando el archivo localmente…",
+    file_import_preview_counts:
+      "{total} entradas · {create} nuevas · {update} actualizaciones · {skip} sin cambios · {conflict} conflictos · {unsupported} no compatibles · {cards} tarjetas personales nuevas",
+    file_import_preview_decks: "Mazos: {decks}",
+    file_import_preview_notices: "Avisos y contenido no compatible",
+    file_import_more_notices: "{count} avisos más",
+    file_import_nothing_to_do: "No hay cambios válidos para importar.",
+    file_import_ready:
+      "La confirmación importará todas las tarjetas válidas en una sola transacción.",
+    file_import_picker_unavailable:
+      "La selección de archivos está disponible en ZAM Desktop Studio.",
+    btn_file_import_confirm: "Confirmar importación",
+    toast_file_import_success:
+      "Importación terminada: {create} nuevas, {update} actualizadas, {skip} sin cambios, {conflict} conflictos y {cards} tarjetas personales creadas.",
+    lbl_error_file_import: "No se pudo importar el archivo",
     lbl_import_modal_title: "Importar estándar de currículo",
     lbl_import_text: "Texto del currículo",
     placeholder_import_text:
@@ -1326,6 +1349,30 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_card_due: "Dû",
     lbl_card_not_due: "Non dû",
     btn_import_curriculum: "Importer le programme",
+    btn_import_file: "Importer un fichier",
+    lbl_file_import_modal_title: "Importer du contenu depuis un fichier",
+    btn_import_tab_file: "APKG / CSV / TSV",
+    file_import_intro:
+      "Choisissez un paquet Anki local ou un tableau de cartes UTF-8. L’aperçu et l’import restent locaux, sans IA ni réseau.",
+    btn_file_import_choose: "Choisir un fichier",
+    file_import_no_file: "Aucun fichier sélectionné",
+    file_import_preview_first:
+      "Choisissez et prévisualisez d’abord un fichier.",
+    file_import_previewing: "Vérification locale du fichier…",
+    file_import_preview_counts:
+      "{total} entrées · {create} nouvelles · {update} mises à jour · {skip} inchangées · {conflict} conflits · {unsupported} non prises en charge · {cards} nouvelles cartes personnelles",
+    file_import_preview_decks: "Paquets : {decks}",
+    file_import_preview_notices: "Avertissements et contenu non pris en charge",
+    file_import_more_notices: "{count} avertissements supplémentaires",
+    file_import_nothing_to_do: "Aucune modification valide à importer.",
+    file_import_ready:
+      "La confirmation importera toutes les cartes valides dans une seule transaction.",
+    file_import_picker_unavailable:
+      "La sélection de fichiers est disponible dans ZAM Desktop Studio.",
+    btn_file_import_confirm: "Confirmer l’import",
+    toast_file_import_success:
+      "Import terminé : {create} nouvelles, {update} mises à jour, {skip} inchangées, {conflict} conflits et {cards} cartes personnelles créées.",
+    lbl_error_file_import: "Échec de l’import du fichier",
     lbl_import_modal_title: "Importer la norme de programme",
     lbl_import_text: "Texte du programme",
     placeholder_import_text:
@@ -2111,6 +2158,29 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_card_due: "Vence",
     lbl_card_not_due: "Não vence",
     btn_import_curriculum: "Importar currículo",
+    btn_import_file: "Importar arquivo",
+    lbl_file_import_modal_title: "Importar conteúdo de um arquivo",
+    btn_import_tab_file: "APKG / CSV / TSV",
+    file_import_intro:
+      "Escolha um pacote Anki local ou uma tabela de cartões UTF-8. A prévia e a importação são locais, sem IA ou rede.",
+    btn_file_import_choose: "Escolher arquivo",
+    file_import_no_file: "Nenhum arquivo selecionado",
+    file_import_preview_first: "Escolha e visualize um arquivo primeiro.",
+    file_import_previewing: "Verificando o arquivo localmente…",
+    file_import_preview_counts:
+      "{total} entradas · {create} novas · {update} atualizações · {skip} inalteradas · {conflict} conflitos · {unsupported} não compatíveis · {cards} novos cartões pessoais",
+    file_import_preview_decks: "Baralhos: {decks}",
+    file_import_preview_notices: "Avisos e conteúdo não compatível",
+    file_import_more_notices: "Mais {count} avisos",
+    file_import_nothing_to_do: "Não há alterações válidas para importar.",
+    file_import_ready:
+      "A confirmação importará todos os cartões válidos em uma única transação.",
+    file_import_picker_unavailable:
+      "A seleção de arquivos está disponível no ZAM Desktop Studio.",
+    btn_file_import_confirm: "Confirmar importação",
+    toast_file_import_success:
+      "Importação concluída: {create} novas, {update} atualizadas, {skip} inalteradas, {conflict} conflitos e {cards} cartões pessoais criados.",
+    lbl_error_file_import: "Falha ao importar o arquivo",
     lbl_import_modal_title: "Importar padrão de currículo",
     lbl_import_text: "Texto do currículo",
     placeholder_import_text:
@@ -2825,6 +2895,27 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_card_due: "到期",
     lbl_card_not_due: "未到期",
     btn_import_curriculum: "导入课程大纲",
+    btn_import_file: "导入文件",
+    lbl_file_import_modal_title: "从文件导入学习内容",
+    btn_import_tab_file: "APKG / CSV / TSV",
+    file_import_intro:
+      "选择本地 Anki 包或 UTF-8 卡片表。预览和导入均在本地完成，不使用 AI 或网络。",
+    btn_file_import_choose: "选择文件",
+    file_import_no_file: "尚未选择文件",
+    file_import_preview_first: "请先选择并预览文件。",
+    file_import_previewing: "正在本地检查文件…",
+    file_import_preview_counts:
+      "共 {total} 项 · 新建 {create} · 更新 {update} · 不变 {skip} · 冲突 {conflict} · 不支持 {unsupported} · 新建个人卡片 {cards}",
+    file_import_preview_decks: "牌组：{decks}",
+    file_import_preview_notices: "警告和不支持的内容",
+    file_import_more_notices: "另有 {count} 条提示",
+    file_import_nothing_to_do: "没有可导入的有效更改。",
+    file_import_ready: "确认后将在一个事务中导入所有有效卡片。",
+    file_import_picker_unavailable: "文件选择仅在 ZAM Desktop Studio 中可用。",
+    btn_file_import_confirm: "确认导入",
+    toast_file_import_success:
+      "导入完成：新建 {create}，更新 {update}，不变 {skip}，冲突 {conflict}，创建个人卡片 {cards}。",
+    lbl_error_file_import: "文件导入失败",
     lbl_import_modal_title: "导入课程标准",
     lbl_import_text: "课程内容文本",
     placeholder_import_text: "在此粘贴课程大纲、教学要求或笔记要点...",
@@ -3568,6 +3659,29 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_card_due: "期限",
     lbl_card_not_due: "期限前",
     btn_import_curriculum: "カリキュラムインポート",
+    btn_import_file: "ファイルをインポート",
+    lbl_file_import_modal_title: "ファイルから学習コンテンツをインポート",
+    btn_import_tab_file: "APKG / CSV / TSV",
+    file_import_intro:
+      "ローカルの Anki パッケージまたは UTF-8 カード表を選択します。プレビューとインポートは AI やネットワークを使わずローカルで実行されます。",
+    btn_file_import_choose: "ファイルを選択",
+    file_import_no_file: "ファイルが選択されていません",
+    file_import_preview_first: "先にファイルを選択してプレビューしてください。",
+    file_import_previewing: "ファイルをローカルで確認中…",
+    file_import_preview_counts:
+      "全 {total} 件 · 新規 {create} · 更新 {update} · 変更なし {skip} · 競合 {conflict} · 未対応 {unsupported} · 新しい個人カード {cards}",
+    file_import_preview_decks: "デッキ：{decks}",
+    file_import_preview_notices: "警告と未対応コンテンツ",
+    file_import_more_notices: "ほか {count} 件の通知",
+    file_import_nothing_to_do: "インポートできる有効な変更はありません。",
+    file_import_ready:
+      "確認すると、すべての有効なカードを1つのトランザクションでインポートします。",
+    file_import_picker_unavailable:
+      "ファイル選択は ZAM Desktop Studio で利用できます。",
+    btn_file_import_confirm: "インポートを確認",
+    toast_file_import_success:
+      "インポート完了：新規 {create}、更新 {update}、変更なし {skip}、競合 {conflict}、個人カード作成 {cards}。",
+    lbl_error_file_import: "ファイルのインポートに失敗しました",
     lbl_import_modal_title: "カリキュラム標準のインポート",
     lbl_import_text: "カリキュラムテキスト",
     placeholder_import_text:
@@ -4604,6 +4718,29 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_release_published_toast:
       "Token revision v{version} published ({materiality})",
     btn_import_curriculum: "Import Curriculum",
+    btn_import_file: "Import File",
+    lbl_file_import_modal_title: "Import Learning Content from a File",
+    btn_import_tab_file: "APKG / CSV / TSV",
+    file_import_intro:
+      "Choose a local Anki package or UTF-8 card table. Preview and import run locally without AI or network access.",
+    btn_file_import_choose: "Choose file",
+    file_import_no_file: "No file selected",
+    file_import_preview_first: "Choose and preview a file first.",
+    file_import_previewing: "Checking the file locally…",
+    file_import_preview_counts:
+      "{total} entries · {create} create · {update} update · {skip} unchanged · {conflict} conflicts · {unsupported} unsupported · {cards} new personal cards",
+    file_import_preview_decks: "Decks: {decks}",
+    file_import_preview_notices: "Warnings and unsupported content",
+    file_import_more_notices: "{count} more notices",
+    file_import_nothing_to_do: "There are no valid changes to import.",
+    file_import_ready:
+      "Confirming imports every valid card in one transaction.",
+    file_import_picker_unavailable:
+      "File selection is available in ZAM Desktop Studio.",
+    btn_file_import_confirm: "Confirm Import",
+    toast_file_import_success:
+      "Import complete: {create} created, {update} updated, {skip} unchanged, {conflict} conflicts, and {cards} personal cards created.",
+    lbl_error_file_import: "Failed to import file",
     lbl_import_modal_title: "Import Curriculum Standard",
     lbl_import_text: "Curriculum Text",
     placeholder_import_text:
@@ -5857,6 +5994,31 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_release_published_toast:
       "Token-Revision v{version} veröffentlicht ({materiality})",
     btn_import_curriculum: "Lehrplan importieren",
+    btn_import_file: "Datei importieren",
+    lbl_file_import_modal_title: "Lerninhalte aus Datei importieren",
+    btn_import_tab_file: "APKG / CSV / TSV",
+    file_import_intro:
+      "Wähle ein lokales Anki-Paket oder eine UTF-8-Kartentabelle. Vorschau und Import laufen lokal ohne KI oder Netzwerkzugriff.",
+    btn_file_import_choose: "Datei auswählen",
+    file_import_no_file: "Keine Datei ausgewählt",
+    file_import_preview_first:
+      "Bitte wähle zuerst eine Datei und prüfe die Vorschau.",
+    file_import_previewing: "Datei wird lokal geprüft…",
+    file_import_preview_counts:
+      "{total} Einträge · {create} neu · {update} aktualisieren · {skip} unverändert · {conflict} Konflikte · {unsupported} nicht unterstützt · {cards} neue persönliche Karten",
+    file_import_preview_decks: "Stapel: {decks}",
+    file_import_preview_notices: "Hinweise und nicht unterstützte Inhalte",
+    file_import_more_notices: "{count} weitere Hinweise",
+    file_import_nothing_to_do:
+      "Es gibt keine gültigen Änderungen zu importieren.",
+    file_import_ready:
+      "Beim Bestätigen werden alle gültigen Karten in einer Transaktion importiert.",
+    file_import_picker_unavailable:
+      "Die Dateiauswahl ist im ZAM Desktop Studio verfügbar.",
+    btn_file_import_confirm: "Import bestätigen",
+    toast_file_import_success:
+      "Import abgeschlossen: {create} neu, {update} aktualisiert, {skip} unverändert, {conflict} Konflikte und {cards} persönliche Karten angelegt.",
+    lbl_error_file_import: "Dateiimport fehlgeschlagen",
     lbl_import_modal_title: "Lehrplan-Standard importieren",
     lbl_import_text: "Lehrplantext",
     placeholder_import_text:
