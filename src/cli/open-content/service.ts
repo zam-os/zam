@@ -1,4 +1,8 @@
-import type { Database, TextImportDocument } from "../../kernel/index.js";
+import type {
+  Database,
+  TextImportCommitOptions,
+  TextImportDocument,
+} from "../../kernel/index.js";
 import { commitTextImport, previewTextImport } from "../../kernel/index.js";
 import { readTextImportFile } from "../import/text-file.js";
 import {
@@ -97,9 +101,16 @@ export async function confirmOpenContentImport(
   id: string,
   planHash: string,
   dependencies: OpenContentServiceDependencies = {},
+  options: TextImportCommitOptions = {},
 ) {
   const loaded = await loadCatalogDocument(id, dependencies);
-  const result = await commitTextImport(db, userId, loaded.document, planHash);
+  const result = await commitTextImport(
+    db,
+    userId,
+    loaded.document,
+    planHash,
+    options,
+  );
   return {
     item: loaded.item,
     artifact: {
