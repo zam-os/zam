@@ -109,7 +109,10 @@ import {
   saveCardEdit,
   searchLibrary,
 } from "./library.js";
-import { resolveMobileCloudChain } from "./model-registry.js";
+import {
+  diagnoseMobileCloudCapability,
+  resolveMobileCloudChain,
+} from "./model-registry.js";
 import {
   createMultiDraftController,
   type MultiDraftController,
@@ -496,6 +499,7 @@ const reminderStatus = element<HTMLParagraphElement>("reminder-status");
 const localAiRows = element<HTMLElement>("local-ai-rows");
 const localAiPrepare = element<HTMLButtonElement>("local-ai-prepare");
 const localAiStatus = element<HTMLParagraphElement>("local-ai-status");
+const localAiModels = element<HTMLElement>("local-ai-models");
 const studyWorkloadPreset = element<HTMLSelectElement>("study-workload-preset");
 const studyMaxNew = element<HTMLInputElement>("study-max-new");
 const studyMaxReviews = element<HTMLInputElement>("study-max-reviews");
@@ -975,6 +979,43 @@ async function refreshLocalAi(): Promise<void> {
     });
   }
   renderLocalAiRows();
+}
+
+/**
+ * Explain which stored models this device can use for evaluation, and why the
+ * others are out — the diagnosis a learner had to ask for by hand.
+ */
+async function renderLocalAiModels(): Promise<void> {
+  localAiModels.replaceChildren();
+  if (!currentUserId) return;
+  let diagnosis: Awaited<ReturnType<typeof diagnoseMobileCloudCapability>>;
+  try {
+    diagnosis = await diagnoseMobileCloudCapability(db, "text");
+  } catch {
+    return;
+  }
+
+  const heading = document.createElement("p");
+  heading.className = "t-secondary";
+  heading.textContent =
+    diagnosis.length === 0
+      ? t("local_ai_models_none")
+      : diagnosis.some((row) => row.usable)
+        ? t("local_ai_models_some")
+        : t("local_ai_models_unusable");
+  localAiModels.appendChild(heading);
+
+  for (const row of diagnosis) {
+    const line = document.createElement("p");
+    line.className = "status";
+    line.textContent = row.usable
+      ? tf("local_ai_model_usable", { model: row.label })
+      : tf("local_ai_model_excluded", {
+          model: row.label,
+          reason: t(`local_ai_exclusion_${row.exclusion?.replace(/-/g, "_")}`),
+        });
+    localAiModels.appendChild(line);
+  }
 }
 
 async function prepareLocalAi(): Promise<void> {

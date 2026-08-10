@@ -74,6 +74,21 @@ const DE: Messages = {
   local_ai_prepared: "Modell ist einsatzbereit.",
   local_ai_saved: "Gespeichert.",
   local_ai_status_failed: "Gerätemodell nicht abfragbar: {error}",
+  local_ai_models_none:
+    "In dieser Bibliothek ist kein Cloud-Modell hinterlegt.",
+  local_ai_models_some: "Cloud-Modelle in dieser Bibliothek:",
+  local_ai_models_unusable:
+    "Kein Cloud-Modell dieser Bibliothek ist von diesem Gerät aus nutzbar:",
+  local_ai_model_usable: "{model}: nutzbar",
+  local_ai_model_excluded: "{model}: {reason}",
+  local_ai_exclusion_runs_on_the_desktop:
+    "läuft auf dem Rechner und ist von hier nicht erreichbar",
+  local_ai_exclusion_no_key: "kein Schlüssel auf diesem Gerät hinterlegt",
+  local_ai_exclusion_unsupported_api: "nicht unterstützte Schnittstelle",
+  local_ai_exclusion_incomplete_row: "unvollständiger Eintrag",
+  local_ai_exclusion_capability_not_enabled:
+    "für diese Aufgabe nicht aktiviert",
+  local_ai_exclusion_capability_not_detected: "für diese Aufgabe nie bestätigt",
   study_workload_heading: "Lernumfang",
   study_workload_desc:
     "Wähle einen Tagesmix, Prüfungsvorbereitung oder eine kleinere Sitzung mit Aufgabenkarten.",
@@ -517,6 +532,19 @@ const EN: Messages = {
   local_ai_prepared: "The model is ready.",
   local_ai_saved: "Saved.",
   local_ai_status_failed: "Could not read the device model: {error}",
+  local_ai_models_none: "This library has no cloud model stored.",
+  local_ai_models_some: "Cloud models in this library:",
+  local_ai_models_unusable:
+    "No cloud model in this library can be used from this device:",
+  local_ai_model_usable: "{model}: usable",
+  local_ai_model_excluded: "{model}: {reason}",
+  local_ai_exclusion_runs_on_the_desktop:
+    "runs on the desktop and cannot be reached from here",
+  local_ai_exclusion_no_key: "no key stored on this device",
+  local_ai_exclusion_unsupported_api: "unsupported API shape",
+  local_ai_exclusion_incomplete_row: "incomplete entry",
+  local_ai_exclusion_capability_not_enabled: "not enabled for this task",
+  local_ai_exclusion_capability_not_detected: "never confirmed for this task",
   study_workload_heading: "Study workload",
   study_workload_desc:
     "Choose a daily mix, exam preparation, or a smaller problem-card session.",

@@ -48,3 +48,22 @@ describe("local AI settings wiring", () => {
     }
   });
 });
+
+describe("resolution view (ADR 2026-08-09c §7)", () => {
+  it("names why each stored model is or is not usable here", () => {
+    expect(html).toContain('id="local-ai-models"');
+    expect(main).toContain("diagnoseMobileCloudCapability(db,");
+    expect(main).toContain("local_ai_exclusion_");
+  });
+
+  it("never renders a key", () => {
+    // The view reads rows the learner already owns; the secret is not one of
+    // the things it is allowed to display.
+    const view = main.slice(
+      main.indexOf("async function renderLocalAiModels"),
+      main.indexOf("async function prepareLocalAi"),
+    );
+    expect(view.length).toBeGreaterThan(0);
+    expect(view).not.toContain("apiKey");
+  });
+});

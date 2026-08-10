@@ -560,6 +560,10 @@
                 Modell jetzt herunterladen
               </button>
               <p id="local-ai-status" class="status" aria-live="polite"></p>
+              <!-- Decision 7: when nothing here can serve a capability, name
+                   the rule that excluded each stored model rather than leaving
+                   the learner to guess. Never shows a key. -->
+              <div id="local-ai-models" class="stack"></div>
             </div>
 
             <p class="group-title" data-i18n="study_workload_heading">Lernumfang</p>
