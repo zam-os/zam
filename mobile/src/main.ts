@@ -24,6 +24,12 @@ import {
   OPENROUTER_RECOMMENDED_MODELS,
 } from "../../src/cli/llm/cloud-providers.js";
 import {
+  AI_TIER_PREFERENCES,
+  type AiCapability,
+  type AiPlatform,
+  type AiTierPreference,
+} from "../../src/kernel/ai/tier-preference.js";
+import {
   getTokenMedia,
   type TokenMedia,
 } from "../../src/kernel/models/media.js";
@@ -60,8 +66,11 @@ import {
 } from "./ai/endpoints.js";
 import {
   AI_TIER_PREFERENCE_STORAGE_KEY,
+  type AiSettingsRow,
+  buildAiSettingsRows,
   parseStoredAiPreferences,
   readAiPreference,
+  serializeAiPreferences,
 } from "./ai/tier-preference.js";
 import {
   NoTranslationBackendError,
@@ -484,6 +493,9 @@ const repairButton = element<HTMLButtonElement>("repair");
 const reminderEnabled = element<HTMLInputElement>("reminder-enabled");
 const reminderTime = element<HTMLInputElement>("reminder-time");
 const reminderStatus = element<HTMLParagraphElement>("reminder-status");
+const localAiRows = element<HTMLElement>("local-ai-rows");
+const localAiPrepare = element<HTMLButtonElement>("local-ai-prepare");
+const localAiStatus = element<HTMLParagraphElement>("local-ai-status");
 const studyWorkloadPreset = element<HTMLSelectElement>("study-workload-preset");
 const studyMaxNew = element<HTMLInputElement>("study-max-new");
 const studyMaxReviews = element<HTMLInputElement>("study-max-reviews");
@@ -858,6 +870,127 @@ function showStats(): void {
 
 function showSettings(): void {
   nav.showTab("settings");
+}
+
+/**
+ * The platform this build runs on, for the capability matrix.
+ *
+ * `onDeviceEvaluation` is the Rust shell's own android check, so it answers
+ * the same question without a second detection path that could disagree.
+ */
+function aiPlatform(): AiPlatform {
+  return platformFeatures.onDeviceEvaluation ? "android" : "ios";
+}
+
+let localAiDeviceStatus: string | null = null;
+
+function localAiStateText(row: AiSettingsRow): string {
+  return row.deviceState === "unsupported"
+    ? t("local_ai_state_unsupported")
+    : tf("local_ai_state", { state: t(`local_ai_status_${row.deviceState}`) });
+}
+
+function renderLocalAiRows(): void {
+  const rows = buildAiSettingsRows(
+    aiPlatform(),
+    storedAiPreferences(),
+    localAiDeviceStatus,
+  );
+  localAiRows.replaceChildren();
+  for (const row of rows) {
+    const label = document.createElement("label");
+    label.className = "field";
+    const name = document.createElement("span");
+    name.textContent = t(`local_ai_capability_${row.capability}`);
+    label.appendChild(name);
+
+    if (!row.configurable) {
+      // No control at all: a select that cannot change the outcome would be
+      // a promise this device cannot keep.
+      const state = document.createElement("span");
+      state.className = "t-secondary";
+      state.textContent = localAiStateText(row);
+      label.appendChild(state);
+      localAiRows.appendChild(label);
+      continue;
+    }
+
+    const select = document.createElement("select");
+    for (const preference of AI_TIER_PREFERENCES) {
+      const option = document.createElement("option");
+      option.value = preference;
+      option.textContent = t(`local_ai_pref_${preference.replace(/-/g, "_")}`);
+      select.appendChild(option);
+    }
+    select.value = row.preference;
+    select.addEventListener("change", () => {
+      void saveAiPreference(row.capability, select.value as AiTierPreference);
+    });
+    label.appendChild(select);
+    localAiRows.appendChild(label);
+
+    const state = document.createElement("p");
+    state.className = "status";
+    state.textContent = localAiStateText(row);
+    localAiRows.appendChild(state);
+  }
+  localAiPrepare.hidden = !rows.some((row) => row.canPrepare);
+}
+
+function saveAiPreference(
+  capability: AiCapability,
+  preference: AiTierPreference,
+): void {
+  const next = { ...storedAiPreferences(), [capability]: preference };
+  localStorage.setItem(
+    AI_TIER_PREFERENCE_STORAGE_KEY,
+    serializeAiPreferences(next),
+  );
+  localAiStatus.textContent = t("local_ai_saved");
+  renderLocalAiRows();
+}
+
+/**
+ * Read the device model's state for the Settings rows.
+ *
+ * This is the command that existed and was never called; asking here is what
+ * lets the section say "downloadable" instead of the learner discovering it
+ * mid-review.
+ */
+async function refreshLocalAi(): Promise<void> {
+  if (!platformFeatures.onDeviceEvaluation) {
+    localAiDeviceStatus = null;
+    renderLocalAiRows();
+    return;
+  }
+  try {
+    const status = await invoke<OnDeviceLlmStatus>(
+      "on_device_llm_check_status",
+    );
+    localAiDeviceStatus = status.status;
+  } catch (error) {
+    localAiDeviceStatus = null;
+    localAiStatus.textContent = tf("local_ai_status_failed", {
+      error: errorMessage(error),
+    });
+  }
+  renderLocalAiRows();
+}
+
+async function prepareLocalAi(): Promise<void> {
+  localAiPrepare.disabled = true;
+  localAiStatus.textContent = t("local_ai_preparing");
+  try {
+    await invoke("on_device_llm_ensure_ready");
+    localAiStatus.textContent = t("local_ai_prepared");
+  } catch (error) {
+    localAiStatus.textContent = tf("local_ai_status_failed", {
+      error: errorMessage(error),
+    });
+  } finally {
+    localAiPrepare.disabled = false;
+    await refreshLocalAi();
+  }
 }
 
 function renderStudyWorkload(settings: StudyWorkloadSettings): void {
@@ -2065,6 +2198,7 @@ nav.onTabChange((tab) => {
     void refreshStorageRow();
     void refreshAiSection();
     void refreshStudyWorkload();
+    void refreshLocalAi();
   }
 });
 
@@ -2083,6 +2217,7 @@ for (const input of [
     studyWorkloadPreset.value = "custom";
   });
 }
+localAiPrepare.addEventListener("click", () => void prepareLocalAi());
 studyWorkloadSave.addEventListener("click", () => void saveStudyWorkload());
 studyUnbury.addEventListener("click", () => {
   void (async () => {

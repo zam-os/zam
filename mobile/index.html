@@ -547,6 +547,21 @@
               <h1 class="t-large-title" data-i18n="tab_settings">Einstellungen</h1>
             </header>
 
+            <p class="group-title" data-i18n="local_ai_heading">Lokale KI</p>
+            <div class="card stack">
+              <p class="t-secondary" data-i18n="local_ai_desc">
+                Wähle pro Aufgabe, ob ZAM das Modell auf dem Gerät bevorzugt. Was dieses Gerät nicht kann, steht dabei.
+              </p>
+              <!-- Rows are built from the capability matrix, so a platform
+                   without an on-device implementation shows a statement
+                   instead of a control (ADR 2026-08-09c §4). -->
+              <div id="local-ai-rows" class="stack"></div>
+              <button id="local-ai-prepare" class="btn plain" type="button" hidden data-i18n="local_ai_prepare">
+                Modell jetzt herunterladen
+              </button>
+              <p id="local-ai-status" class="status" aria-live="polite"></p>
+            </div>
+
             <p class="group-title" data-i18n="study_workload_heading">Lernumfang</p>
             <div class="card stack">
               <p class="t-secondary" data-i18n="study_workload_desc">

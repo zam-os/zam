@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   AI_TIER_PREFERENCE_STORAGE_KEY,
+  buildAiSettingsRows,
   parseStoredAiPreferences,
   readAiPreference,
   serializeAiPreferences,
@@ -47,5 +48,62 @@ describe("device-local AI tier preferences (ADR 2026-08-09c §3)", () => {
       serializeAiPreferences({ recall: "quality-first" }),
     );
     expect(readAiPreference(stored, "recall")).toBe("quality-first");
+  });
+});
+
+describe("local AI settings rows (ADR 2026-08-09c §4, §6)", () => {
+  it("offers a choice only where the platform has a device tier", () => {
+    const rows = buildAiSettingsRows("android", {}, "available");
+    const byCapability = Object.fromEntries(
+      rows.map((row) => [row.capability, row]),
+    );
+    expect(byCapability.recall.configurable).toBe(true);
+    expect(byCapability.text.configurable).toBe(true);
+    // No ML Kit image-to-cards and no on-device embedding API: the row states
+    // the fact instead of pretending a choice exists.
+    expect(byCapability.image.configurable).toBe(false);
+    expect(byCapability.image.deviceState).toBe("unsupported");
+    expect(byCapability.embedding.deviceState).toBe("unsupported");
+  });
+
+  it("leaves voice to the control it already has", () => {
+    expect(
+      buildAiSettingsRows("android", {}, "available").map((r) => r.capability),
+    ).not.toContain("voice");
+  });
+
+  it("offers Prepare now only when a download would do something", () => {
+    const prepareable = (status: string) =>
+      buildAiSettingsRows("android", {}, status).find(
+        (row) => row.capability === "recall",
+      )?.canPrepare;
+    expect(prepareable("downloadable")).toBe(true);
+    expect(prepareable("available")).toBe(false);
+    expect(prepareable("downloading")).toBe(false);
+    expect(prepareable("unavailable")).toBe(false);
+  });
+
+  it("distinguishes a platform that cannot from a probe that did not answer", () => {
+    const unknown = buildAiSettingsRows("android", {}, null).find(
+      (row) => row.capability === "recall",
+    );
+    expect(unknown?.deviceState).toBe("unknown");
+    const ios = buildAiSettingsRows("ios", {}, "available").find(
+      (row) => row.capability === "recall",
+    );
+    expect(ios?.deviceState).toBe("unsupported");
+  });
+
+  it("carries the stored preference, defaulting per capability", () => {
+    const rows = buildAiSettingsRows(
+      "android",
+      { recall: "device-only" },
+      "available",
+    );
+    const byCapability = Object.fromEntries(
+      rows.map((row) => [row.capability, row]),
+    );
+    expect(byCapability.recall.preference).toBe("device-only");
+    expect(byCapability.text.preference).toBe(DEFAULT_AI_TIER_PREFERENCES.text);
   });
 });
