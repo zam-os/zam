@@ -3,7 +3,13 @@
 **Status:** Draft / Proposal  
 **Datum:** 2026-08-14  
 **Autoren:** ZAM Core & Agent Research Team  
-**Gegenlesen:** [central-learning-path-refinement.md](central-learning-path-refinement.md) · [central-learning-path-identity.md](central-learning-path-identity.md) · **Review:** [central-learning-path-architecture-review.md](central-learning-path-architecture-review.md).  
+**Gegenlesen:** [central-learning-path-refinement.md](central-learning-path-refinement.md) · [central-learning-path-identity.md](central-learning-path-identity.md) · **Reviews:** [Grok](central-learning-path-architecture-review.md) · [Codex](central-learning-path-codex-research-review.md) · [Opus](central-learning-path-opus-review.md).
+
+> **Achtung, Erdung:** Die Wikidata-IDs und der Lehrplanbezug in den Beispielen
+> unten sind nachweislich falsch (`Q202814` ist eine Zeitschrift, `Q165738`
+> existiert nicht, `Q11379` ist Energie, `PH9-LB2` ist Wärmelehre). Korrekturen
+> und Belege im [Opus-Review, Abschnitt 1](central-learning-path-opus-review.md).
+> Nicht zitieren, bevor sie berichtigt sind.  
 **Bezug zu bestehenden ADRs:**
 - [ADR 2026-07-26b: Central Curriculum Content Service: Content Only, Pulled Forward](../adr/2026-07-26b-central-curriculum-content-service.md)
 - [ADR 2026-07-25: Shared Curated Learning Content — Review Once, Serve Many](../adr/2026-07-25-shared-curated-learning-content.md)
