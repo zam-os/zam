@@ -1,81 +1,130 @@
-# Published Learning Atom Identity, 5-Object Model, and SKOS Alignments
+# Five-Object Learning Model and Reactive Scheduling
 
 **Status:** Accepted (2026-08-14)  
 **Date:** 2026-08-14  
 **Deciders:** Thomas (project owner)  
+**Split note:** This ADR originally also decided published atom identity and
+SKOS alignments. Those are unsettled and moved to
+[2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md) with status
+`Proposed`. What remains here is decided and implemented.  
 **Related:**
+[2026-08-14b-published-atom-identity-and-alignment.md](2026-08-14b-published-atom-identity-and-alignment.md) ·
 [2026-07-26b-central-curriculum-content-service.md](2026-07-26b-central-curriculum-content-service.md) ·
 [2026-07-25-shared-curated-learning-content.md](2026-07-25-shared-curated-learning-content.md) ·
 [2026-07-04-hierarchical-domain-ontology-and-token-identity.md](2026-07-04-hierarchical-domain-ontology-and-token-identity.md) ·
-[2026-07-04-multi-learner-shared-knowledge.md](2026-07-04-multi-learner-shared-knowledge.md) ·
 [2026-07-02-lehrplanplus-import-wizard.md](2026-07-02-lehrplanplus-import-wizard.md)
 
 ---
 
 ## Context
 
-ADR [2026-07-26b](2026-07-26b-central-curriculum-content-service.md) established that the central curriculum service delivers content only (anonymous, read-only, CDN-distributed), while all learning state stays on the learner's device.
+ADR [2026-07-26b](2026-07-26b-central-curriculum-content-service.md) established
+that the central curriculum service delivers content only — anonymous,
+read-only, CDN-distributed — while all learning state stays on the learner's
+device.
 
-Subsequent cross-agent design rounds (Gemini, Grok, Codex, Claude Opus) investigated how learning atoms must be identified, linked, and scheduled across diverse state curricula (e.g. LehrplanPLUS Bayern) and global knowledge ontologies (Wikidata, ConceptNet).
+Cross-agent design rounds (Gemini, Grok, Codex, Claude Opus) plus an owner
+round resolved two questions that do not depend on how a published atom is
+identified:
 
-Three core architectural challenges required formal resolution:
-1. **Published Atom Identity:** A naive composite key `(scheme, entity, reduction)` (PAID) failed because a single curriculum section often contains multiple distinct learning atoms at the same reduction level, producing false equalities.
-2. **5-Object Separation:** The existing `tokens` table in the kernel represents a concrete, language-specific practice exercise (question, Bloom level, single prompt), not a language-neutral conceptual learning objective.
-3. **Graph Entry & Gating:** Proactive entry gates (preventing a 9th grader from accessing physics until all 1st–8th grade prerequisites are verified) contradict the product principle of lightweight onboarding and frictionless daily practice.
-
----
+1. **What kinds of object exist**, so that an official curriculum section, a
+   language-neutral learning objective, a concrete recall task and a personal
+   scheduling record stop being conflated.
+2. **How a learner enters a large prerequisite graph** without either being
+   walled off behind hundreds of unproven foundations or having memory state
+   fabricated for them.
 
 ## Decision
 
-### 1. Opaque, Namespaced Atom IDs as Published Primary Keys
-A published learning atom is identified by an **opaque, namespaced Atom ID**:
-- Format: `atom:zam:<namespace>:<slug>` (e.g., `atom:zam:optik:brechung-qualitativ`).
-- `<namespace>` is a **subject partition** (`optik`, `bruchrechnung`), never a
-  region, school type, or publisher. Those live only on `CurriculumBinding`.
-- The Atom ID is immutable and serves as the published anchor across Knowledge Vector Tiles (KVT).
-- Didactic reduction levels (`qualitative`, `geometric`, `formal_formula`, `conceptual`, `computational`) are retained as **descriptive profile attributes**, not as parts of the primary key.
+### 1. The five-object model
 
-**Reuse.** A second curriculum **reuses the existing Atom ID** when the
-learning objective is substitutable (same reduction profile, same recall
-demand). It adds a `CurriculumBinding`. It mints a new atom only when the
-objectives are not substitutable, and may then add a SKOS alignment *between
-atoms*. ZAM is the only minter of `atom:zam:*`.
+| # | Object | What it is | Identity |
+|---|---|---|---|
+| 1 | **LearningAtom** | Language-neutral learning objective in the universal DAG. Carries prerequisites, reduction profile, typical minimum age. | see [2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md) — **open** |
+| 2 | **ConceptAlignment** | Typed link to an external vocabulary or another objective. | semantics **open**, see 2026-08-14b |
+| 3 | **CurriculumBinding** | n:m attachment to an official standard: provider, school type, grade, track, topic code, exam relevance. | `(atom, provider, topic_code, grade, track)` |
+| 4 | **PracticeItem / Token** | Concrete, language-specific recall task: question, reference answer, Bloom level, interaction tier. | ULID |
+| 5 | **PersonalCard** | Per-user FSRS-6 scheduling record, local to the device. | ULID |
 
-This is the leftover of the rejected PAID join: cross-curriculum equality is
-an editorial reuse of one ID, not a computed fingerprint.
+Two conflations are hereby rejected and must not return:
 
-### 2. The 5-Object Model
-To bridge canonical knowledge, multiple curricula, and personal scheduling, ZAM defines five distinct data entities:
-1. **LearningAtom (`atom:*`):** The conceptual, language-neutral learning objective in the universal DAG. Carries prerequisites, typical minimum age, and reduction profile.
-2. **ConceptAlignment:** Typed external links using W3C SKOS predicates (`skos:exactMatch`, `skos:closeMatch`, `skos:broadMatch`, `skos:narrowMatch`) to Wikidata Q-IDs or standard vocabularies.
-3. **CurriculumBinding:** n:m attachment to official educational standards (e.g. LehrplanPLUS provider, school type, grade, track, topic code, exam relevance flag).
-4. **PracticeItem / Token (ULID):** Concrete, language-specific active recall item (question, concept answer, Bloom level, interaction tier: Tier 1 fast check vs. Tier 2 synthesis).
-5. **PersonalCard (ULID):** Per-user FSRS-6 scheduling record stored locally in the learner's device database.
+- An official Lernbereich is **not** the smallest learning objective. One
+  section routinely decomposes into several atoms.
+- A learning objective is **not** the same thing as a concrete question, nor as
+  a personal review state. Today's `tokens` row is object 4, not object 2.
 
-### 3. Reactive Scheduling over Proactive Gates (Gate = OFF)
-- **No proactive blocking gate:** Unerfüllte Voraussetzungen sperren ein abhängiges Ziel-Token nicht.
-- **Precondition Self-Assessment:** Beim ersten Kontakt mit einem Thema kann der Lerner Voraussetzungen einschätzen. Dies setzt **ausschließlich `cards.buried_until`** (und lässt `stability`, `reps` und FSRS-Zustand unverfälscht auf Werkseinstellungen).
-- **Ordering Invariant:** Topologie und Fälligkeit steuern die Queue gemeinsam; Topologie wiegt schwerer.
-- **Empty Queue Invariant:** Wenn die Queue leerläuft und der Lerner weiterüben möchte, dürfen vergrabene (`buried`) Karten vorgezogen werden.
+`tokens.provider` / `tokens.topic_id` remain as a legacy 1:1 projection of
+object 3. They are written deterministically from the full stored binding set
+and are scheduled for replacement by binding-based queries.
 
-### 4. Diagnostic Triage is a knob, not a kernel invariant
-Today `cascadeBlock` still treats every `Again` as a missing foundation.
-Whether to insert a Tier-1 check of the direct prerequisite (pass → keep the
-foundation buried; fail → surface it) is a **behavior knob**. Default stays
-the current cascade until field `review_logs` show that "foundation intact,
-application failed" is common. The rule is cheap to change; it is not an
-identity or schema decision.
+### 2. Reactive scheduling; no proactive gate
 
----
+- **No admission gate.** An unmet prerequisite does not bar a dependent token.
+  The graph influences *selection and order*, never access.
+- **Preconditions are materialised on demand.** Cards are created for the direct
+  preconditions of tokens a learner actually encounters — never for the
+  transitive hull.
+- **Precondition self-assessment sets a date and nothing else.** It writes
+  `cards.buried_until` / `buried_reason` only. Never `stability`, `difficulty`,
+  `reps`, `state`, or a `review_logs` row. The card stays `new` and FSRS
+  cold-starts on first real contact.
+- **Every buried card is eventually asked.** The horizon expires, or the learner
+  empties the queue and asks for more. Both end in a genuine retrieval.
+- **Empty queue.** When the queue runs dry and the learner wants to continue,
+  buried precondition cards may be pulled forward.
+
+Rationale: an entry assumption does not need to be *correct*, only cheaply
+falsifiable. ZAM already owns the falsifier (`cascadeBlock`), so it can afford a
+generous assumption where a placement test would have to be right once.
+
+### 3. Content install never enrols
+
+Installing published content and enrolling a learner are separate operations.
+Installation writes atoms, bindings, edges and practice items and creates zero
+cards; materialisation is explicit and scoped. A tile may legitimately carry
+atoms outside a given learner's curriculum, and they must not become that
+learner's cards.
+
+### 4. Diagnostic triage is a knob, not a kernel invariant
+
+`cascadeBlock` currently treats every `Again` as a missing foundation. Whether
+to first check the direct prerequisite — pass, keep it buried; fail, surface it
+— is a behaviour knob. The default stays the current cascade until field
+`review_logs` show that "foundation intact, application failed" is common. The
+measurement is the share of failures where the surfaced foundation then passes
+first try.
 
 ## Consequences
 
-### Positive
-- **No False Equivalences:** Opaque Atom IDs prevent unintended cross-curriculum collisions.
-- **Curriculum Reuse:** A single canonical atom (e.g. *Optics - Refraction qualitative*) is cleanly bound to multiple grades/tracks (e.g., Realschule Bayern Grade 7 Track I and Grade 8 Track II/III).
-- **Zero FSRS Distortion:** Self-assessments merely schedule dates without corrupting memory stability mathematics.
-- **Frictionless Entry:** Learners can start in any grade instantly without forced 50-question entrance exams.
+- Learners start in any grade immediately, with no entrance exam and no wall of
+  known material.
+- A wrong entry assumption costs at most one late card and one detour. It can
+  never cost a fabricated memory estimate, because nothing below an observed
+  retrieval writes FSRS state.
+- One canonical atom binds cleanly to several grades and tracks — Optik is
+  required in Realschule Bayern grade 7 (Zweig I) and grade 8 (Zweig II/III),
+  which is the same objective at two grades and therefore proof that grade
+  belongs to the binding, not to the atom.
+- Curation must author practice items per atom. Whether **both** a Tier 1 and a
+  Tier 2 item are required per atom is **not decided here** — see 2026-08-14b,
+  open question 5.
+- Ordering (topology versus due date) is stated as a direction, not a
+  calibrated rule — see open question below.
 
-### Negative / Trade-offs
-- Requires compilers to manage Atom IDs and maintain SKOS alignments explicitly during curation.
-- Curation workflows must author both Tier 1 (fast checks) and Tier 2 (synthesis) items for each atom.
+## Open question carried by this ADR
+
+**Which topological direction, for which card state?** The owner decided that
+topology and due date jointly determine the queue, with topology weighing more.
+That is unambiguous for *acquisition*: foundations before dependents. It is not
+yet decided for *retention*, where the two plausible rules point in **opposite**
+directions:
+
+- foundations-first (same direction as acquisition), or
+- frontier-first — test the most advanced due node, and let success there defer
+  its due ancestors within the session (Grok's proposal, still an untested
+  hypothesis by Codex's assessment and mine).
+
+Deferring an overdue ancestor also trades against FSRS: every day past due
+costs retention. This should be settled by replaying existing `review_logs`
+rather than by argument, and until then the implementation should not hard-code
+one direction for both states.

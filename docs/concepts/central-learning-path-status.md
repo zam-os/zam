@@ -114,17 +114,31 @@ Diese betreffen das **Lernerverhalten** und sind getroffen:
 
 ## 6. Offen, nach Dringlichkeit
 
-**Lernerseite und veröffentlichtes Inhaltsmodell sind entschieden.**
-Was offen bleibt, ist Compiler-, Release- und Messarbeit — keine neue
-Identitätsdebatte.
+**Die Lernerseite und die Objekt-Trennung sind entschieden. Die veröffentlichte
+Identität ist es nicht** — sie wurde nach dem Codex-Folgereview aus dem ADR
+herausgelöst.
 
-### A. Veröffentlichte Identität — entschieden (ADR 2026-08-14)
+### A. Veröffentlichte Identität — **offen** (ADR 2026-08-14b, `Proposed`)
 
-Opake, namespaced Atom-IDs `atom:zam:<namespace>:<slug>`. `<namespace>` ist
-eine **Fachpartition** (`optik`), keine Region. PAID `(scheme, entity,
-reduction)` ist als Primärschlüssel abgelehnt; `reduction` bleibt Profilfeld.
-Wiederverwendung: ein zweites Curriculum hängt eine Binding an dasselbe Atom
-oder mintet nur dann neu, wenn die Ziele nicht substituierbar sind.
+PAID `(scheme, entity, reduction)` bleibt als Primärschlüssel abgelehnt;
+`reduction` bleibt Profilfeld. Was *nicht* entschieden ist: ob die veröffentlichte
+ID die semantische Form `atom:zam:<namespace>:<slug>` behält. Sie ist trotz des
+Namens nicht opak, legt eine Fachpartition in den Schlüssel und widerspricht
+sowohl der ULID-Regel aus `AGENTS.md` als auch der Begründung, mit der
+[ADR 2026-07-04](../adr/2026-07-04-hierarchical-domain-ontology-and-token-identity.md)
+genau dieses Muster eine Ebene tiefer verworfen hat.
+
+Empfehlung im ADR: ULID als Zeile, `urn:zam:atom:<ulid>` als veröffentlichte
+Identität, Namespace und Slug als änderbare Attribute. Gestützt auf CASE 1.1,
+das opake UUIDs plus auflösbare URI verwendet und Fachzuordnung in 1.1
+ausdrücklich als eigene `subject`/`subjectURI`-Attribute *neben* die ID gelegt
+hat.
+
+Ebenfalls offen: die Bedeutung von Alignments. SKOS-Mappingprädikate verbinden
+Konzepte zweier Concept Schemes und `exactMatch` ist transitiv — zwischen einem
+Lernziel und einer Wikidata-Entität ist das ein Kategorienfehler mit konkretem
+Schadensbild. Empfehlung: Dreiteilung in `about` (Weltanker), SKOS (nur
+Konzept-zu-Konzept) und Kompetenz-Alignment.
 
 ### B. Lernziel-Atom vs. Übungsitem — entschieden (ADR 2026-08-14)
 
@@ -173,10 +187,9 @@ ehrliche Antwort auf die falschen Anker.
 
 ## 7. Fortschritt dieser Runde (2026-08-14)
 
-1. **Identität & Datenmodell formalisiert:**
-   - [ADR 2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md) angenommen.
-   - Festschreibung von opaken, namespaced Atom-IDs (`atom:zam:<namespace>:<slug>`) und dem 5-Objekte-Modell.
-   - Typisierte SKOS-Alignments (`closeMatch`, `broadMatch`, `exactMatch`).
+1. **Datenmodell formalisiert, Identität wieder geöffnet:**
+   - [ADR 2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md) angenommen — 5-Objekte-Modell und reaktives Scheduling.
+   - [ADR 2026-08-14b](../adr/2026-08-14b-published-atom-identity-and-alignment.md) abgespalten und auf `Proposed` gesetzt: Atom-ID und Alignment-Semantik sind offen.
 2. **Kanonischer KVT-Referenz-Datensatz erstellt & verifiziert:**
    - Realschule Bayern Physik Optik als geerdete Kachel: [`tests/fixtures/curriculum/de-by-realschule-optik-kvt.json`](../../tests/fixtures/curriculum/de-by-realschule-optik-kvt.json).
    - Verifiziert Zweig-Überlappung (Zweig I Klasse 7 und Zweig II/III Klasse 8 auf denselben Lernziel-Atomen).
@@ -207,4 +220,7 @@ ehrliche Antwort auf die falschen Anker.
 | [codex-research-review](central-learning-path-codex-research-review.md) | Codex | Erdungsprüfung, Identitätskritik, Fünf-Objekte-Modell, Release/Trust. |
 | [opus-review](central-learning-path-opus-review.md) | Opus | Nachprüfung gegen Primärquellen und Code; Gate-Befund; Schiedssprüche. |
 | [entry-problem](central-learning-path-entry-problem.md) | Opus + Owner | Einstieg in die Mitte. **Enthält die verbindlichen Owner-Entscheidungen.** |
-| [ADR 2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md) | Thomas / Working Group | **Verbindlicher Standard:** Atom-ID, 5-Objekte-Modell, SKOS-Alignments, Gate=OFF. |
+| [codex-follow-up-review](central-learning-path-codex-follow-up-review.md) | Codex | Abnahmeblocker gegen Spike und ADR; 15 geforderte Vertragstests. |
+| [opus-arbitration](central-learning-path-opus-arbitration.md) | Opus | Schiedsspruch am Code nachgeprüft, plus Umsetzung der vier billigen Fixes. |
+| [ADR 2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md) | Thomas | **Accepted:** 5-Objekte-Modell, Gate=OFF, Selbsteinschätzung, leere Queue. |
+| [ADR 2026-08-14b](../adr/2026-08-14b-published-atom-identity-and-alignment.md) | Thomas | **Proposed, offen:** Atom-ID, Alignment-Semantik, Reduktionsvokabular, Release-Vertrag. |

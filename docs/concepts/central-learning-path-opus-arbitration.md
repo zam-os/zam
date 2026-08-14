@@ -14,6 +14,16 @@ durch Tests abgesichert (Abschnitt 4).
 [ADR 2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md) ·
 [`kvt-attach.ts`](../../src/kernel/library/kvt-attach.ts)
 
+> **Nachtrag 2026-08-14: Der ADR ist gespalten.** Codex' Forderung aus B1.3
+> („Fünf-Objekte-Modell und Gate-Entscheidung können angenommen bleiben; der
+> Identitätsabschnitt geht zurück auf `Proposed`“) ist umgesetzt.
+> [2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md) bleibt
+> `Accepted` und trägt nur noch das Modell und das Scheduling;
+> [2026-08-14b](../adr/2026-08-14b-published-atom-identity-and-alignment.md) ist
+> `Proposed` und sammelt Identität, Alignment-Semantik, Reduktionsvokabular,
+> Repräsentant, Tier-Invariante und den Release-Vertrag — mit externer Evidenz
+> aus CASE 1.1 und LRMI und vier benannten Forschungsaufgaben.
+
 ---
 
 ## 0. Ergebnis vorweg
