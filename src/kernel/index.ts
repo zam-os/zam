@@ -118,6 +118,7 @@ export type {
   TextImportAction,
   TextImportAssetInput,
   TextImportCardInput,
+  TextImportCommitOptions,
   TextImportCommitResult,
   TextImportCounts,
   TextImportDeckPreview,
@@ -127,6 +128,7 @@ export type {
   TextImportNotice,
   TextImportPreview,
   TextImportPreviewCard,
+  TextImportProgress,
 } from "./import/text-import.js";
 export {
   commitTextImport,
@@ -288,6 +290,7 @@ export type {
 // Models
 export {
   applySourceProposals,
+  buildTokenSlug,
   clearTokenMaintenance,
   confirmCardSplit,
   confirmFoundations,

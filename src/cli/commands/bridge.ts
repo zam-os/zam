@@ -328,6 +328,39 @@ function jsonOut(data: unknown): void {
   console.log(JSON.stringify(data, null, 2));
 }
 
+/**
+ * Progress for a long write, as one NDJSON object per line on **stderr**.
+ *
+ * stdout stays the JSON-only contract this CLI promises; stderr is where a
+ * host can watch a slow command without parsing anything it must not see. A
+ * 440-card import over a remote library takes minutes (field report,
+ * 2026-08-09) and used to produce no output at all until it finished.
+ */
+function progressOut(event: {
+  type: string;
+  done: number;
+  total: number;
+}): void {
+  process.stderr.write(`${JSON.stringify(event)}\n`);
+}
+
+/**
+ * Emit at most one progress line per 25 items, plus the last.
+ *
+ * A terminal reading stderr should not receive 50,000 lines, and a host
+ * repainting per card gains nothing over repainting per 25.
+ */
+function throttledProgress(
+  type: string,
+): (progress: { done: number; total: number }) => void {
+  const step = 25;
+  return ({ done, total }) => {
+    if (done === total || done % step === 0) {
+      progressOut({ type, done, total });
+    }
+  };
+}
+
 function jsonError(message: string): never {
   let msg = message;
   if (message.startsWith('{"error":')) {
@@ -5936,6 +5969,8 @@ bridgeCommand
         userId,
         opts.id,
         opts.planHash,
+        {},
+        { onProgress: throttledProgress("import-progress") },
       );
       jsonOut({ success: true, ...result });
     });
@@ -5974,6 +6009,7 @@ bridgeCommand
         userId,
         document,
         opts.planHash,
+        { onProgress: throttledProgress("import-progress") },
       );
       jsonOut({ success: true, ...result });
     });

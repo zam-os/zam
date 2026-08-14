@@ -390,6 +390,87 @@ describe("deterministic text import", () => {
     expect(assetCount.n).toBe(1);
   });
 
+  it("commits a large import within a bounded statement budget and reports progress", async () => {
+    // Every statement here is a network round trip on a remote (Turso)
+    // library: 440 cards at 8 statements each was ~3 minutes of silence in the
+    // field on 2026-08-09. The budget is the regression guard for that.
+    const cards = Array.from({ length: 200 }, (_value, index) => ({
+      externalId: `anki:bulk-${index}:0`,
+      noteGuid: `bulk-${index}`,
+      cardOrdinal: 0,
+      question: `Bulk question ${index}?`,
+      answer: `Bulk answer ${index}`,
+      deckPath: "Bulk::Deck",
+    }));
+    const input = document(cards);
+    const preview = await previewTextImport(db, "alice", input);
+
+    let statements = 0;
+    const prepare = db.prepare.bind(db);
+    db.prepare = (sql: string) => {
+      statements++;
+      return prepare(sql);
+    };
+    const progress: number[] = [];
+    const result = await commitTextImport(db, "alice", input, preview.planHash, {
+      onProgress: (event) => progress.push(event.done),
+    });
+    db.prepare = prepare;
+
+    expect(result.cardsCreated).toBe(cards.length);
+    // 3 writes per card (token, binding, card) plus the shared preview and
+    // slug preload. Anything above 4 per card means a per-card read crept back.
+    expect(statements).toBeLessThanOrEqual(cards.length * 4);
+    expect(progress).toHaveLength(cards.length);
+    expect(progress[progress.length - 1]).toBe(cards.length);
+  });
+
+  it("keeps slugs unique across a single bulk import and against the library", async () => {
+    const first = document([
+      {
+        externalId: "anki:dup-0:0",
+        question: "Same question?",
+        answer: "Same answer",
+        deckPath: "Dup",
+      },
+    ]);
+    await commitTextImport(
+      db,
+      "alice",
+      first,
+      (await previewTextImport(db, "alice", first)).planHash,
+    );
+
+    // Two more cards whose slug base collides with each other and with the
+    // token already stored: the in-memory set must behave like the query did.
+    const second = document([
+      {
+        externalId: "anki:dup-1:0",
+        question: "Same question?",
+        answer: "Same answer",
+        deckPath: "Dup",
+      },
+      {
+        externalId: "anki:dup-2:0",
+        question: "Same question?",
+        answer: "Same answer",
+        deckPath: "Dup",
+      },
+    ]);
+    await commitTextImport(
+      db,
+      "alice",
+      second,
+      (await previewTextImport(db, "alice", second)).planHash,
+    );
+
+    const slugs = (await db
+      .prepare("SELECT slug FROM tokens ORDER BY slug")
+      .all()) as Array<{ slug: string }>;
+    expect(slugs).toHaveLength(3);
+    expect(new Set(slugs.map((row) => row.slug)).size).toBe(3);
+  });
+
   it("deletes superseded media payloads when a re-import replaces them", async () => {
     const first = Uint8Array.from([0x89, 0x50, 0x4e, 0x47, 1, 2, 3]);
     const second = Uint8Array.from([0x89, 0x50, 0x4e, 0x47, 9, 9, 9]);

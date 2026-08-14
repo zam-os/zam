@@ -1,5 +1,6 @@
 import { getVersion } from "@tauri-apps/api/app";
 import { invoke } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
 import { appDataDir, join as joinPath } from "@tauri-apps/api/path";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { open as openFolderDialog } from "@tauri-apps/plugin-dialog";
@@ -88,10 +89,12 @@ import {
   resetDiscussion,
 } from "./discussion.js";
 import {
+  type ImportProgressEvent,
   initLearningContentStudio,
   loadStudioData,
   openCardInEditor,
   setLearningContentFilePicker,
+  setLearningContentProgressSource,
 } from "./learning-content.js";
 import {
   StudyEditError,
@@ -137,6 +140,17 @@ setBridgeTransport(async (cmd, args) => {
       `Invalid bridge JSON for ${cmd}: ${preview} (${(err as Error).message})`,
     );
   }
+});
+
+// The CLI writes NDJSON progress to stderr; the Tauri host forwards each line
+// as an event (see spawn_bridge_stderr_reader). Studio is the only surface
+// with that channel, so the subscription is injected rather than imported.
+setLearningContentProgressSource(async (onProgress) => {
+  const unlisten = await listen<ImportProgressEvent>(
+    "zam://bridge-progress",
+    (event) => onProgress(event.payload),
+  );
+  return unlisten;
 });
 
 setLearningContentFilePicker(async () => {

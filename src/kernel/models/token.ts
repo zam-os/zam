@@ -140,10 +140,17 @@ function validateQuestionSource(value: QuestionSource): void {
  * Create a new knowledge token.
  * Throws if a token with the same slug already exists.
  */
-export async function createToken(
+/**
+ * Insert a token and return its id, without reading the row back.
+ *
+ * The read-back in `createToken` is one extra statement — free on a local
+ * file, a full network round trip on a remote library. A bulk importer that
+ * only needs the id (to hang a binding and a card off it) uses this instead.
+ */
+export async function insertToken(
   db: Database,
   input: CreateTokenInput,
-): Promise<Token> {
+): Promise<string> {
   const id = ulid();
   const now = new Date().toISOString();
 
@@ -191,7 +198,14 @@ export async function createToken(
       editorialState,
     );
 
-  return (await getTokenById(db, id)) as Token;
+  return id;
+}
+
+export async function createToken(
+  db: Database,
+  input: CreateTokenInput,
+): Promise<Token> {
+  return (await getTokenById(db, await insertToken(db, input))) as Token;
 }
 
 function parseTokenFallback(token: Token | undefined): void {
@@ -785,12 +799,21 @@ export function getDisplayTitle(
   return getShortSlug(t.slug, activeDomainScope);
 }
 
-export async function generateTokenSlug(
-  db: Database,
+/**
+ * Slug derivation without a database, given a way to test for collisions.
+ *
+ * Split out so a bulk importer can resolve hundreds of slugs against one
+ * preloaded set instead of one query per card: on a remote (Turso) library
+ * every one of those queries is a network round trip. `generateTokenSlug` is
+ * this function with a database-backed predicate, so both paths can never
+ * disagree about the naming rules.
+ */
+export function buildTokenSlug(
   domain: string,
   concept: string,
-  question?: string | null,
-): Promise<string> {
+  question: string | null | undefined,
+  isTaken: (slug: string) => boolean,
+): string {
   const baseText = question && question.trim().length > 0 ? question : concept;
   const cleanDomain = slugify(domain || "");
   const cleanBase = slugify(baseText);
@@ -805,16 +828,33 @@ export async function generateTokenSlug(
 
   let slug = baseSlug;
   let counter = 1;
-  while (true) {
-    const existing = await db
-      .prepare("SELECT id FROM tokens WHERE slug = ?")
-      .get(slug);
-    if (!existing) {
-      return slug;
-    }
+  while (isTaken(slug)) {
     const suffix = `-${counter}`;
     slug = baseSlug.slice(0, 60 - suffix.length).replace(/-$/, "") + suffix;
     counter++;
+  }
+  return slug;
+}
+
+export async function generateTokenSlug(
+  db: Database,
+  domain: string,
+  concept: string,
+  question?: string | null,
+): Promise<string> {
+  // buildTokenSlug is synchronous, so its collision test cannot query. Ask it
+  // for a candidate, check that one, and feed a hit back as "taken" until a
+  // free name comes out — the same sequence the loop used to walk inline.
+  const taken = new Set<string>();
+  while (true) {
+    const slug = buildTokenSlug(domain, concept, question, (value) =>
+      taken.has(value),
+    );
+    const existing = await db
+      .prepare("SELECT id FROM tokens WHERE slug = ?")
+      .get(slug);
+    if (!existing) return slug;
+    taken.add(slug);
   }
 }
 

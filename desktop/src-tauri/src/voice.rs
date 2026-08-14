@@ -121,16 +121,14 @@ mod platform {
     use std::time::{Duration, Instant};
 
     use block2::RcBlock;
+    use objc2::rc::Retained;
     use objc2::runtime::AnyObject;
     use objc2::AllocAnyThread;
-    use objc2::rc::Retained;
     use objc2_avf_audio::{
         AVAudioRecorder, AVSpeechSynthesisVoice, AVSpeechSynthesisVoiceQuality,
         AVSpeechSynthesizer, AVSpeechUtterance,
     };
-    use objc2_foundation::{
-        NSDate, NSDictionary, NSLocale, NSNumber, NSRunLoop, NSString, NSURL,
-    };
+    use objc2_foundation::{NSDate, NSDictionary, NSLocale, NSNumber, NSRunLoop, NSString, NSURL};
     use objc2_speech::{
         SFSpeechRecognizer, SFSpeechRecognizerAuthorizationStatus, SFSpeechURLRecognitionRequest,
     };
@@ -299,8 +297,7 @@ mod platform {
         // voice the system itself nominates for the language is the sane peer
         // among equals.
         let identifier = unsafe { voice.identifier() }.to_string();
-        let is_system_default =
-            i32::from(system_default.is_some_and(|id| id == identifier));
+        let is_system_default = i32::from(system_default.is_some_and(|id| id == identifier));
         let language = unsafe { voice.language() }.to_string();
         let exact = i32::from(language.eq_ignore_ascii_case(wanted));
         (tier, is_system_default, exact)
@@ -308,11 +305,14 @@ mod platform {
 
     /// Best installed voice for `locale`, or `None` when the language has none.
     pub fn best_voice(locale: &str) -> Option<Retained<AVSpeechSynthesisVoice>> {
-        let prefix = locale.split('-').next().unwrap_or(locale).to_ascii_lowercase();
-        let system_default = unsafe {
-            AVSpeechSynthesisVoice::voiceWithLanguage(Some(&NSString::from_str(locale)))
-        }
-        .map(|voice| unsafe { voice.identifier() }.to_string());
+        let prefix = locale
+            .split('-')
+            .next()
+            .unwrap_or(locale)
+            .to_ascii_lowercase();
+        let system_default =
+            unsafe { AVSpeechSynthesisVoice::voiceWithLanguage(Some(&NSString::from_str(locale))) }
+                .map(|voice| unsafe { voice.identifier() }.to_string());
         unsafe { AVSpeechSynthesisVoice::speechVoices() }
             .into_iter()
             .filter(|voice| {
@@ -331,8 +331,7 @@ mod platform {
                 return Err(format!("no installed macOS system voice for {locale}"));
             }
             let synthesizer = AVSpeechSynthesizer::new();
-            let utterance =
-                AVSpeechUtterance::speechUtteranceWithString(&NSString::from_str(text));
+            let utterance = AVSpeechUtterance::speechUtteranceWithString(&NSString::from_str(text));
             utterance.setVoice(voice.as_deref());
             synthesizer.speakUtterance(&utterance);
 
@@ -345,9 +344,8 @@ mod platform {
             let end_deadline = Instant::now() + Duration::from_secs_f64(MAX_OPERATION_SECS);
             while synthesizer.isSpeaking() {
                 if Instant::now() >= end_deadline {
-                    synthesizer.stopSpeakingAtBoundary(
-                        objc2_avf_audio::AVSpeechBoundary::Immediate,
-                    );
+                    synthesizer
+                        .stopSpeakingAtBoundary(objc2_avf_audio::AVSpeechBoundary::Immediate);
                     return Err("speech synthesis exceeded its time limit".to_string());
                 }
                 pump_run_loop(0.05);
@@ -462,8 +460,10 @@ mod platform {
             }
 
             let url = NSURL::fileURLWithPath(&NSString::from_str(&path.to_string_lossy()));
-            let request =
-                SFSpeechURLRecognitionRequest::initWithURL(SFSpeechURLRecognitionRequest::alloc(), &url);
+            let request = SFSpeechURLRecognitionRequest::initWithURL(
+                SFSpeechURLRecognitionRequest::alloc(),
+                &url,
+            );
             // The whole point of the device tier: never let this reach Apple.
             request.setRequiresOnDeviceRecognition(true);
             request.setShouldReportPartialResults(false);

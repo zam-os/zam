@@ -9,7 +9,7 @@ use std::sync::atomic::{AtomicU32, AtomicU64, Ordering};
 use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::Duration;
-use tauri::Manager;
+use tauri::{Emitter, Manager};
 use tauri_plugin_opener::OpenerExt;
 
 #[cfg(target_os = "windows")]
@@ -1052,6 +1052,52 @@ fn spawn_observer_stdout_writer(
     });
 }
 
+/// Event name the WebView listens on for a bridge command's progress.
+const BRIDGE_PROGRESS_EVENT: &str = "zam://bridge-progress";
+
+/// Read the persistent bridge's stderr: log every line, forward progress.
+///
+/// The bridge writes one NDJSON object per line to stderr while a long write
+/// runs (`{"type":"import-progress","done":N,"total":M}`), because stdout is
+/// its JSON-only response channel. A 440-card import over a remote library
+/// takes minutes, and before this the WebView had no way to know it was
+/// advancing — the log file it used to be redirected into is not readable from
+/// the front end. Every line still reaches that file, so a bridge crash stays
+/// as diagnosable as it was.
+fn spawn_bridge_stderr_reader(app: tauri::AppHandle, stderr: ChildStderr) {
+    thread::spawn(move || {
+        let mut log = home_dir().and_then(|home| {
+            let dir = home.join(".zam");
+            let _ = fs::create_dir_all(&dir);
+            fs::File::create(dir.join("desktop-bridge.stderr.log")).ok()
+        });
+
+        let mut reader = BufReader::new(stderr);
+        let mut line = String::new();
+        loop {
+            line.clear();
+            match reader.read_line(&mut line) {
+                Ok(0) => break,
+                Ok(_) => {
+                    if let Some(file) = log.as_mut() {
+                        let _ = file.write_all(line.as_bytes());
+                        let _ = file.flush();
+                    }
+                    let trimmed = line.trim();
+                    if trimmed.starts_with('{') {
+                        if let Ok(value) = serde_json::from_str::<serde_json::Value>(trimmed) {
+                            if value.get("type").and_then(|t| t.as_str()).is_some() {
+                                let _ = app.emit(BRIDGE_PROGRESS_EVENT, value);
+                            }
+                        }
+                    }
+                }
+                Err(_) => break,
+            }
+        }
+    });
+}
+
 fn spawn_observer_stderr_writer(
     stderr: ChildStderr,
     mut file: fs::File,
@@ -1197,15 +1243,11 @@ fn execute_zam_bridge_blocking(
         command.stdout(std::process::Stdio::piped());
 
         // A windowed app discards the child's inherited stderr, so a node crash
-        // on startup would be invisible. Capture it to a log file so bridge
-        // failures that only happen under the GUI are diagnosable.
-        if let Some(home) = home_dir() {
-            let log_dir = home.join(".zam");
-            let _ = fs::create_dir_all(&log_dir);
-            if let Ok(file) = fs::File::create(log_dir.join("desktop-bridge.stderr.log")) {
-                command.stderr(std::process::Stdio::from(file));
-            }
-        }
+        // on startup would be invisible. Pipe it instead of redirecting it
+        // straight to the log file: the reader thread below still writes every
+        // line to the same file, and additionally forwards the bridge's NDJSON
+        // progress lines to the WebView.
+        command.stderr(std::process::Stdio::piped());
 
         let mut child = match command.spawn() {
             Ok(c) => {
@@ -1226,6 +1268,10 @@ fn execute_zam_bridge_blocking(
             .take()
             .ok_or_else(|| "Failed to open stdout".to_string())?;
         let stdout_reader = BufReader::new(stdout);
+
+        if let Some(stderr) = child.stderr.take() {
+            spawn_bridge_stderr_reader(app.clone(), stderr);
+        }
 
         *lock = Some(PersistentBridge {
             child,

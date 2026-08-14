@@ -604,6 +604,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     file_import_nothing_to_do: "No hay cambios válidos para importar.",
     file_import_ready:
       "La confirmación importará todas las tarjetas válidas en una sola transacción.",
+    file_import_progress_count: "Importadas {done} de {total} tarjetas…",
     file_import_picker_unavailable:
       "La selección de archivos está disponible en ZAM Desktop Studio.",
     btn_file_import_confirm: "Confirmar importación",
@@ -1459,6 +1460,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     file_import_nothing_to_do: "Aucune modification valide à importer.",
     file_import_ready:
       "La confirmation importera toutes les cartes valides dans une seule transaction.",
+    file_import_progress_count: "{done} sur {total} cartes importées…",
     file_import_picker_unavailable:
       "La sélection de fichiers est disponible dans ZAM Desktop Studio.",
     btn_file_import_confirm: "Confirmer l’import",
@@ -2314,6 +2316,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     file_import_nothing_to_do: "Não há alterações válidas para importar.",
     file_import_ready:
       "A confirmação importará todos os cartões válidos em uma única transação.",
+    file_import_progress_count: "{done} de {total} cartões importados…",
     file_import_picker_unavailable:
       "A seleção de arquivos está disponível no ZAM Desktop Studio.",
     btn_file_import_confirm: "Confirmar importação",
@@ -3093,6 +3096,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     file_import_more_notices: "另有 {count} 条提示",
     file_import_nothing_to_do: "没有可导入的有效更改。",
     file_import_ready: "确认后将在一个事务中导入所有有效卡片。",
+    file_import_progress_count: "已导入 {done} / {total} 张卡片…",
     file_import_picker_unavailable: "文件选择仅在 ZAM Desktop Studio 中可用。",
     btn_file_import_confirm: "确认导入",
     toast_file_import_success:
@@ -3906,6 +3910,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     file_import_nothing_to_do: "インポートできる有効な変更はありません。",
     file_import_ready:
       "確認すると、すべての有効なカードを1つのトランザクションでインポートします。",
+    file_import_progress_count: "{total}枚中{done}枚のカードを取り込みました…",
     file_import_picker_unavailable:
       "ファイル選択は ZAM Desktop Studio で利用できます。",
     btn_file_import_confirm: "インポートを確認",
@@ -5009,6 +5014,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     file_import_nothing_to_do: "There are no valid changes to import.",
     file_import_ready:
       "Confirming imports every valid card in one transaction.",
+    file_import_progress_count: "Imported {done} of {total} cards…",
     file_import_picker_unavailable:
       "File selection is available in ZAM Desktop Studio.",
     btn_file_import_confirm: "Confirm Import",
@@ -6335,6 +6341,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Es gibt keine gültigen Änderungen zu importieren.",
     file_import_ready:
       "Beim Bestätigen werden alle gültigen Karten in einer Transaktion importiert.",
+    file_import_progress_count: "{done} von {total} Karten importiert…",
     file_import_picker_unavailable:
       "Die Dateiauswahl ist im ZAM Desktop Studio verfügbar.",
     btn_file_import_confirm: "Import bestätigen",
