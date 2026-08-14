@@ -247,6 +247,41 @@ vorankommen muss, bekommt längere.
 Der letzte Punkt löst Abschnitt 3 meines Reviews auf: Es gibt keine Wand, weil
 nichts blockiert **und** weil die Hülle nie zu Karten wird.
 
+### 6.5 Leere Queue: die Vergrabung ist weich
+
+**Festgehalten vom Owner:** Läuft die Lernqueue vollständig leer und der Lerner
+*möchte weiterarbeiten*, dürfen die vergrabenen `new`-Karten vorgezogen werden.
+
+Die Queue erschöpft heute planmäßig: fällige Karten sind abgearbeitet und
+`maxNew` (Voreinstellung 10) ist ausgeschöpft
+([queue.ts](../../src/kernel/scheduler/queue.ts)). Genau in diesem Zustand — und
+nur auf ausdrücklichen Wunsch — wird die `buried_until`-Sperre für
+`buried_reason = 'precondition'` gelockert.
+
+Damit ist die Vergrabung keine Frist, sondern eine **Höflichkeitsregel**: Sie
+schützt davor, dass vier Vorbedingungen sich ungefragt vor das Fortschreiten
+schieben. Sie schützt nicht davor, dass jemand sie freiwillig zieht. Wer mehr
+will, bekommt mehr.
+
+Drei Folgen:
+
+1. **Die Zusicherung aus Abschnitt 6 bekommt einen zweiten, früheren Weg.** Eine
+   Vorbedingung wird echt abgefragt, wenn der Horizont abläuft *oder* wenn der
+   Lerner leerläuft. Beides endet bei einem ehrlichen Kaltstart.
+2. **Der Lerneifer braucht keine Einstellung.** Er misst sich daran, ob jemand
+   nach mehr fragt. Ein eifriger Lerner leert die Queue und zieht die
+   Fundamente nach vorn; ein knapp getakteter tut es nie und wird nicht
+   behelligt. Das erledigt die offene Frage nach dem Eifer-Signal (Abschnitt 12)
+   weitgehend, ohne einen Regler zu bauen.
+3. **Der Widerspruch ist nur scheinbar.** Vorbedingungen sollten nicht stören —
+   und werden hier zuerst angeboten. Das ist konsistent, weil der Lerner
+   gefragt hat. Ungefragtes Unterbrechen und angefragte Arbeit sind verschiedene
+   Dinge.
+
+Offen: in welcher Reihenfolge vorgezogen wird. Naheliegend ist Topologie
+(Abschnitt 7) plus Nähe zum aktuellen Stoff — zuerst die Fundamente derjenigen
+Token, an denen gerade gearbeitet wird, nicht irgendwelche aus dem Bestand.
+
 ---
 
 ## 7. Reihenfolge: Topologie vor Fälligkeit
@@ -359,6 +394,7 @@ keine Vorab-Kalibrierung, sondern Zählungen, die im Feldtest ohnehin anfallen:
 | Taugt „Hattet ihr das schon?“ | Übereinstimmung der Selbstauskunft mit dem späteren echten Abruf; unter r ≈ .29 wäre die Frageform schlechter als der Literaturdurchschnitt |
 | Ist die Unterscheidung aus 4.1 nötig? | Anteil der Fehlschläge, bei denen das Fundament anschließend auf Anhieb sitzt — das sind Fall-2-Fälle, die heute falsch behandelt werden |
 | Wie viele Fragen entstehen wirklich? | Vorbedingungs-Abfragen pro Woche. Wird es lästig, ist die Zahl der harten Kanten das Problem, nicht die Regel |
+| Wie oft läuft die Queue leer? | Häufigkeit von „leer und Lerner will weiter“ (Abschnitt 6.5). Häufig heißt: die Horizonte sind zu lang *oder* `maxNew` zu klein — und es heißt zugleich, dass der Eifer hoch ist |
 
 Alle fünf sind Zählungen über `cards` und `review_logs`, keine Studien.
 
@@ -366,12 +402,46 @@ Alle fünf sind Zählungen über `cards` und `review_logs`, keine Studien.
 
 ## 12. Was offen bleibt
 
-1. **Die Form der Unterscheidung aus 4.1** — Rückfrage, Mini-Check oder
-   Heuristik. Braucht eine UX-Entscheidung, keine Forschung.
+### Offene Frage 1: Woran erkennt ZAM, ob das Fundament fehlt oder nur die Anwendung?
+
+**Die Frage.** Klara bewertet C mit 1. Zwei Ursachen sind möglich (Abschnitt
+4.1): Die Vorbedingung sitzt nicht — oder sie sitzt, wurde aber nicht korrekt
+angewandt. Der Kernel behandelt heute ausnahmslos den ersten Fall: `cascadeBlock`
+sperrt C und holt *alle* direkten Vorgänger hoch
+([blocker.ts](../../src/kernel/scheduler/blocker.ts)).
+
+**Warum das zählt.** Im zweiten Fall ist die Reaktion doppelt falsch. Der Lerner
+wird an Stoff geschickt, den er beherrscht — die teuerste Sorte Umweg, weil sie
+sich wie eine Herabstufung anfühlt. Und das tatsächliche Defizit, die Anwendung,
+verschwindet aus der Queue, weil C gesperrt wird. Der Fehler ist also nicht
+neutral: Er behandelt genau das Falsche und verbirgt das Richtige.
+
+**Kandidaten, mit Kosten:**
+
+| Mechanismus | Wie | Kosten |
+|---|---|---|
+| **Rückfrage** | Nach dem Fehlschlag eine Frage: „Lag es am Fundament oder an der Rechnung?“ | Ein Klick mehr im Moment des Scheiterns — dem denkbar ungünstigsten. Selbstauskunft direkt nach Misserfolg ist zudem verzerrt. |
+| **Mini-Check** | Eine der Vorbedingungen sofort abfragen; besteht sie, war es Fall 2 | Ehrliche Evidenz, echter Abruf, FSRS-konform. Kostet eine zusätzliche Karte genau dann, wenn die Geduld am geringsten ist. |
+| **Rückgriff auf die Selbstauskunft** | Was der Lerner bei der Vorbedingungs-Abfrage (6) gesagt hat, gewichtet die Reaktion | Kostenlos, schon vorhanden — aber nur r ≈ .29 belastbar (Abschnitt 5) und womöglich Wochen alt. |
+| **Nichts tun** | Status quo: immer Fall 1 annehmen | Kostenlos, und laut Owner-Haltung vertretbar, solange die Messung nicht zeigt, dass Fall 2 häufig ist. |
+
+**Was die Frage entscheidet.** Der Anteil der Fehlschläge, bei denen das
+anschließend hochgeholte Fundament **auf Anhieb sitzt**. Das sind genau die
+Fall-2-Fälle, und die Zahl liegt nach dem Feldtest in den `review_logs`, ohne
+dass irgendetwas gebaut werden muss. Ist sie klein, bleibt „nichts tun“ richtig.
+
+**Haltung.** Nicht vorab entscheiden. Das ist eine UX- und Messfrage, keine
+Architekturfrage, und sie gehört zu den Verhaltensregeln, die laut Owner billig
+zu ändern sind. Sie ist hier festgehalten, damit die nächste Runde sie nicht für
+gelöst hält.
+
+### Weitere offene Punkte
+
 2. **Gewicht der Topologie gegen Fälligkeit** (Abschnitt 7) — replaybar gegen
    bestehende `review_logs`.
-3. **Lerneifer als Stellschraube** — woher kommt das Signal? Explizite
-   Einstellung, Sessionlänge, oder gar nicht.
+3. **Reihenfolge beim Vorziehen aus leerer Queue** (Abschnitt 6.5) — Topologie
+   plus Nähe zum aktuellen Stoff, ungeprüft. Das Eifer-Signal selbst ist durch
+   6.5 beantwortet: Es ist die Bitte um mehr, kein Regler.
 4. **Vorbedingungen ohne Anbieterstruktur.** Team- und Privatwissen hat keine
    Jahrgangsstruktur; dort gibt es nur die Selbsteinschätzung, nicht den Check
    aus Abschnitt 8.
