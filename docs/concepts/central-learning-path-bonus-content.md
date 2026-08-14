@@ -79,8 +79,8 @@ die motivational wirksame Stelle.
 ### 4.2 Sie bestimmt, was anzubieten sich lohnt
 
 „Manches Wissen könnte den Erwerb weiteren Wissens vereinfachen“ ist im Graphen
-**berechenbar**: Der Hebel eines Atoms ist die Zahl der späteren Atome, deren
-Voraussetzungsmenge es vervollständigt oder verkürzt.
+**berechenbar** — präzise als `unlockCount`, nicht als vages „Hebel“
+(Abschnitt 6.3).
 
 Ein Fundament, an dem dreißig spätere Lernziele hängen, ist ein anderes Angebot
 als eine Sackgasse mit einem Nachfolger. Dieser Unterschied ist sichtbar, sobald
@@ -121,7 +121,67 @@ besitzen.
 Punkt 3 ist nach Abschnitt 2 die harte Grenze: Sobald ein Zielwert entsteht, den
 jemand erreichen *soll*, ist die Completion-Kontingenz zurück.
 
-## 6. Was es kostet: zunächst nichts
+## 6. Die drei Definitionen
+
+Der Codex-Härtungsreview (R2) verlangte sie vor jeder Implementierung: Was heißt
+„gekonnt“, welche Alternativen erfüllen eine Voraussetzung, und was genau ist
+Hebel. Alle drei sind jetzt ausführbar in
+[`bonus.ts`](../../src/kernel/library/bonus.ts) — **abgeleitet, nie
+gespeichert**. Ein persistierter Beherrschungswert neben der Karte ist die
+zweite Wahrheitsquelle, die dieser Entwurf zweimal abgelehnt hat.
+
+### 6.1 `held` — wann gilt ein Atom als gekonnt?
+
+> Ein Atom gilt als gekonnt, wenn die Karte seines Repräsentanten
+> `reps ≥ 1` hat und nicht blockiert ist.
+
+Das ist **genau dasselbe Prädikat, das `unblockReady` für „Voraussetzung
+erfüllt“ verwendet**. Zwei verschiedene Bedeutungen von „das hast du“ wären der
+Anfang eines zweiten Kompetenzmodells.
+
+Drei Festlegungen, die je eine Wahl sind:
+
+| Frage | Antwort | Warum |
+|---|---|---|
+| Zählt eine per Selbsteinschätzung vergrabene Karte? | **Nein** (`reps = 0`) | Die Bonus-Oberfläche reitet nie auf einer Annahme, nur auf beobachtetem Abruf. |
+| Zählt eine Karte mit gesunkener Retrievability? | **Ja**, keine Schwelle | Eine Schwelle wäre ein zweiter, mit FSRS konkurrierender Beherrschungsbegriff. Die Karte wird ohnehin von selbst fällig. |
+| Alle Items des Atoms oder eines? | **Der Repräsentant** | „Alle“ würde ein Atom mit Tier-2-Aufsatz schwerer erreichbar machen als eines mit einem Tap — reichere Kuratierung bestrafen. |
+
+Die Retrievability-Entscheidung ist falsifizierbar: Boni, die auf einem
+verblassten Fundament angeboten wurden, müssten spürbar häufiger sofort
+scheitern.
+
+### 6.2 Welche Alternativen erfüllen eine Voraussetzung?
+
+Solange der Graph nur AND-Kanten kennt, gar keine — „für X genügt A **oder** B“
+ist nicht ausdrückbar (offene Frage 3 in ADR 2026-08-14b).
+
+**Für den Bonus ist das die sichere Richtung.** Ein Atom, das über einen nicht
+modellierten zweiten Weg erreichbar wäre, wird schlicht nicht angeboten. Zu
+wenig anzubieten kostet eine Option, die niemand sieht; zu viel anzubieten
+kostet eine Sackgasse, die jemand angenommen hat. Das ist nicht symmetrisch.
+
+Der Bonus-Mechanismus ist damit **nicht** von der AND/OR-Entscheidung blockiert —
+er ist nur konservativ, bis sie fällt.
+
+### 6.3 Hebel — zwei Größen, zwei Namen
+
+Die Dokumente benutzten „Hebel“ für zweierlei. Es sind verschiedene Größen:
+
+| Name | Formel | Eigenschaft |
+|---|---|---|
+| **`unlockCount`** | \|{ w : u ist harte Voraussetzung von w, und alle übrigen Voraussetzungen von w sind gekonnt }\| | lernerbezogen, eine Ebene tief, **das ist die Zahl, die ein Label nennen darf** |
+| **`reachabilityCount`** | \|{ w : es gibt einen Pfad u → w über harte Kanten }\| | global, statisch, nur Tiebreaker |
+
+Gerankt wird nach `unlockCount`, dann `reachabilityCount`, dann Atom-ID.
+
+Nur die erste Zahl ist eine Aussage über den nächsten Schritt dieses Lerners
+(„das öffnet dir vier weitere“). Die zweite ist exakt berechenbar und trotzdem
+**kein didaktischer Wert**: Sie wandert mit Atom-Granularität, Kuratierungstiefe,
+Zahl importierter Curricula und der Modellierung alternativer Wege, und sie sagt
+nichts über Schwierigkeit oder Bedeutung der Nachfolger.
+
+## 7. Was es kostet: zunächst nichts
 
 Der Bonus-Pool sind **bereits kuratierte Nachbarzellen**. Die vier
 Optik-Fixtures überlappen schon: Realschule Zweig I Klasse 7, Realschule
@@ -132,7 +192,7 @@ der Totalreflexion angeboten bekommen.
 Der Bonus ist also kein neues Content-Programm, sondern die **Ernte der
 Überlappung**, die der Zentralgraph ohnehin erzeugt.
 
-## 7. Derselbe Datensatz, umgekehrtes Urteil
+## 8. Derselbe Datensatz, umgekehrtes Urteil
 
 Codex' Befund B1.2 war, dass das Realschul-Tile ein Gymnasium-11-Atom zur
 Snellius-Formel enthält und der alte Attach dafür ungefragt eine Karte anlegte.
@@ -147,28 +207,86 @@ Das ist zugleich das beste Argument für die Trennung von Installation und
 Einschreibung: Sie ist nicht nur Schutz, sondern die Voraussetzung dafür, dass
 Überschussinhalt überhaupt etwas Gutes sein kann.
 
-## 8. Was zu messen wäre
+## 9. Der Goldfall, den das Fixture aufdeckt
 
-Alles aus Kartendaten, keine Studien:
+Codex prüfte, ob das Snellius-Beispiel die Anbietbarkeit wirklich belegt. Tut es
+nicht — und die Prüfung fördert etwas Größeres zutage. Am Fixture nachgesehen:
 
-| Frage | Messung |
-|---|---|
-| Will das jemand? | Annahmequote angebotener Boni |
-| Echtes Lernen oder Abhaken? | Retention der Bonus-Atome gegen die der Pflicht-Atome |
-| Verdrängt es die Pflicht? | Erledigungsgrad der fälligen Arbeit mit und ohne verfügbare Boni |
-| Trägt es die Lernfreude? | Weiternutzung über Wochen, nicht Aktivität an einem Tag |
-| Stimmt die Hebel-Heuristik? | Werden Atome mit hohem Hebel häufiger angenommen und besser behalten? |
+| Atom | Reduktion | Was das Item verlangt | Harte Voraussetzungen |
+|---|---|---|---|
+| `brechungsgesetz-snellius-formel` | `formal_formula` | „Wie lautet die Formel?“ — **nennen** | `brechung-qualitativ` |
+| `brechungsindex-bestimmen` | `formula` | `n = sin(50°)/sin(30°)` — **rechnen** | Snellius-Formel, Totalreflexion |
 
-Der zweite Punkt bleibt der ehrliche Test: Werden Boni deutlich schlechter
-behalten als Pflichtatome, ist trotz der verworfenen Rahmung Abhaken statt
-Verstehen entstanden.
+Das erste Atom ist so vertretbar: Eine Formel zu nennen braucht keine
+Trigonometrie. Das zweite **rechnet mit Sinus und hat keine trigonometrische
+Voraussetzung**. Der Graph würde es als anbietbar erklären, sobald die beiden
+Optik-Atome sitzen — pädagogisch liegt es dann nicht am sicheren Rand.
 
-## 9. Offen
+**Und es lässt sich derzeit nicht reparieren.** Der Spike verlangt, dass jedes
+Voraussetzungsatom im selben Tile liegt; ein Trigonometrie-Atom in ein
+Optik-Tile zu legen wäre falsch, und paketübergreifende Referenzen gibt es nicht
+(Codex B1.5). Die Tile-Lokalität verhindert also die Modellierung genau der
+einen fächerübergreifenden Voraussetzung, an der das Vorzeigebeispiel hängt.
 
-1. **Hebel-Berechnung.** Exakte Nachfahrenzahl ist im großen Graphen teuer; eine
-   Approximation (Ausgangsgrad plus zwei Ebenen) reicht vermutlich. Ungemessen.
-2. **Rand über Soft-Kanten?** Ein Atom eine Soft-Kante entfernt könnte das
-   bessere Angebot sein — „erleichtert“ ist genau das Kriterium.
+Das ist der beste vorliegende Beleg dafür, dass die Katalog/Overlay-Trennung
+kein Formalismus ist: Ohne sie kann der fächerübergreifende Graph seinen
+eigenen Zweck nicht abbilden.
+
+Nebenbefund fürs Vokabular: `formal_formula` und `formula` unterscheiden hier
+faktisch *nennen* von *anwenden*. Wenn das gemeint ist, muss das Vokabular es
+sagen; wenn nicht, ist eines von beiden falsch gesetzt (offene Frage 3 in
+2026-08-14b).
+
+## 10. Wie man das ehrlich prüft
+
+Die erste Fassung schrieb „alles aus Kartendaten, keine Studien“. Das ist nicht
+haltbar, und der Einwand ist berechtigt.
+
+**Was Kartendaten können:** ob ein Angebot angenommen wurde, ob die entstandene
+Karte später erinnert wurde, ob fällige Arbeit zeitlich verdrängt wurde.
+
+**Was sie nicht können:** zeigen, dass das Angebot das Lernen *verursacht* hat.
+Dafür braucht es ein Vergleichsdesign. Und **Weiternutzung ist kein Ersatz für
+Lernfreude** — sie misst Gewohnheit ebenso gut wie Freude.
+
+| Frage | Messung | Was sie trägt |
+|---|---|---|
+| Wird es angenommen? | Annahmequote | deskriptiv, belastbar |
+| Echtes Lernen oder Abhaken? | Retention der Bonus- gegen Pflicht-Atome | Korrelation; ein deutlicher Abstand ist trotzdem ein Warnsignal |
+| Verdrängt es die Pflicht? | Erledigungsgrad fälliger Arbeit mit/ohne verfügbare Boni | Korrelation |
+| Stimmt die Hebel-Heuristik? | Annahme und Retention nach `unlockCount` | Korrelation |
+| Fördert es die Lernfreude? | **nicht aus Kartendaten** | braucht Selbstauskunft |
+
+Für einen kausalen Nachweis wären nötig: ein gestufter oder randomisierter
+Rollout, vorab festgelegte Retentions- und Verdrängungsmetriken, eine sparsame
+freiwillige Selbstauskunft zu Interesse, Autonomie und Bevormundung, sowie
+Alters- und Fachsegmentierung.
+
+**Die unbequeme Einschränkung:** Der Feldtest hat *eine* Lernerin. Kein
+Rollout-Design ist bei n = 1 aussagekräftig. Für v1 gilt deshalb:
+
+- Die Zahlen oben sind **Leitplanken**, keine Evidenz — sie sollen auffallen,
+  wenn etwas kippt, nicht etwas beweisen.
+- Der eigentliche Erkenntnisweg ist **qualitativ**: beobachten und fragen, ob
+  ein Angebot als Anerkennung oder als Bevormundung ankommt.
+- Ein kausales Design wird erst geplant, wenn es genug Lernende gibt, um eines
+  zu tragen. Bis dahin ist „wir haben es gemessen“ die falsche Behauptung.
+
+Auch der Default „Bonus erst nach erledigter Pflicht“ ist selbst eine Hypothese.
+Eine jederzeit erreichbare Explore-Ansicht wäre autonomiefreundlicher, während
+die aktive Empfehlung weiterhin erst nach den fälligen Karten erscheint.
+
+## 11. Offen
+
+1. **Soft-Kanten im Rand?** Sie gaten nicht (Abschnitt 6.2), könnten aber die
+   Rangfolge anheben — „erleichtert“ ist genau das Kriterium. Ungeprüft.
+2. **Kosten von `reachabilityCount`** im großen Graphen. Heute eine memoisierte
+   Tiefensuche über die harten Kanten; für eine Zelle unkritisch, für den
+   Weltgraphen ungemessen. `unlockCount` bleibt billig, weil es eine Ebene
+   tief ist.
+3. **Repräsentant.** `held` hängt an „kleinste Item-ID“. Sobald ein explizites
+   RepresentativeItem existiert (2026-08-14b, Frage 4), ändert sich die
+   Bedeutung von „gekonnt“ mit.
 3. **Darstellung: pro Fach oder global?** Global zeigt die fächerübergreifende
    Nachbarschaft, die der eigentliche Reiz ist; fachweise ist übersichtlicher.
 4. **Altersangemessenheit.** Ob eine 15-Jährige ein Angebot als Anerkennung oder

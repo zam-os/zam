@@ -168,7 +168,7 @@ conflated them.
 | Self-assessment writes only `buried_until` | yes | **no** — no surface exists yet | no | no |
 | Empty-queue pull-forward | yes | **no** | no | no |
 | Due date orders retention | yes | partly — interleaver reorders within it | no | no |
-| Bonus offers | yes | **no** | no | no |
+| Bonus offers | yes | eligibility + ranking built; no surface | yes, for the derivation | no |
 | Diagnostic triage as a knob | yes | default only | n/a | no |
 
 Schema provisioning is now exercised against a real PostgreSQL as well as

@@ -201,7 +201,10 @@ Unter AND-Semantik folgenlos — geringe Schwere, aber richtigzustellen.
   bestehende `review_logs` replayen. Die billigste offene Frage.
 - **Fundament oder Anwendung** nach einem `Again`: Anteil der Fehlschläge, bei
   denen das hochgeholte Fundament auf Anhieb sitzt.
-- **Bonus-Retention** gegen Pflicht-Retention.
+- **Bonus-Retention** gegen Pflicht-Retention. Achtung: Kartendaten zeigen
+  Korrelation; Kausalität bräuchte ein Vergleichsdesign, und bei einer
+  Feldtest-Lernerin trägt keines. Die Zahlen sind Leitplanken, keine Evidenz
+  ([Bonus-Notiz §10](central-learning-path-bonus-content.md)).
 - **Größe der harten Hülle** einer echten Zelle.
 
 ### F. Inhaltliches
@@ -251,6 +254,12 @@ bleiben 5–9 und 14–15 — sie stehen auf Entscheidungen aus 6.A und 6.B.
 zählt auf, was fehlt: Manifest, Digests, Signatur, deklaratives Entfernen,
 paketübergreifende Referenzen. Keine Lernerfunktion darf darauf aufbauen, bevor
 A und B entschieden sind.
+
+**Bonus-Ableitung** ([`bonus.ts`](../../src/kernel/library/bonus.ts)):
+`heldAtomIds` und `bonusCandidates` beantworten Codex' R2 ausführbar —
+`held` = Repräsentant mit `reps ≥ 1` und unblockiert (dasselbe Prädikat wie
+`unblockReady`), Rangfolge nach `unlockCount` vor `reachabilityCount`. Rein
+ableitend, schreibt nichts. Eine Oberfläche gibt es nicht.
 
 **Vier geerdete Zellen** liegen als Fixtures vor: Realschule Zweig I 7,
 Realschule Zweig II/III 8, Gymnasium 8, BOS. Sie überlappen auf denselben
