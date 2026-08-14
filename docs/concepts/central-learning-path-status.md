@@ -1,6 +1,10 @@
 # Zentraler Lernpfad: Stand und Übergabe an die nächste Runde
 
-**Status:** Arbeitsstand nach sechs Modellrunden und drei Owner-Runden
+**Status:** Arbeitsstand nach sechs Modellrunden und vier Owner-Runden
+
+**Letzte Runde:** Codex-Härtungsreview H1/H2/H3 geschlossen, PostgreSQL-
+Provisionierung abgedeckt, Cognitive Foundations zur Hypothesenlandkarte
+zurückgestuft.
 
 **Datum:** 2026-08-14
 
@@ -37,8 +41,10 @@ Mitgearbeitet haben Gemini (Entwurf), Grok (Verfeinerung, Review), Codex/GPT-5.6
 5. [Opus-Schiedsspruch](central-learning-path-opus-arbitration.md) — dieselben
    Einwände am Code nachgeprüft, plus was daraufhin behoben wurde.
 6. [Codex-Härtungsreview](central-learning-path-codex-hardening-review.md) —
-   erneute Abnahme des reparierten Stands; zwei technische Gegenbeweise,
-   Quellenkorrekturen und der Arbeitsauftrag für die nächste Runde.
+   erneute Abnahme; zwei technische Gegenbeweise, Quellenkorrekturen und der
+   Arbeitsauftrag. **H1, H2 und H3 sind inzwischen behoben** (Abschnitt 7); die
+   Forschungs- und Vertragsforderungen R1/R2 und die Punkte 5–9, 14–15 der
+   Testliste stehen weiter.
 
 Der Rest nach Bedarf (Dokumentenkarte, Abschnitt 9).
 
@@ -85,6 +91,9 @@ ungeprüft markiert, nicht weggelassen.
 | **Installation ≠ Einschreibung** | Ein Release installieren erzeugt null Karten. |
 | **Bonus-Inhalte** | Atome außerhalb der eigenen Zelle dürfen am Rand des Gekonnten **angeboten** werden — nie eingeplant, nie gezählt. |
 | **Diagnose-Triage** | Stellschraube, kein Kernel-Gesetz. Default bleibt `cascadeBlock`. |
+| **PracticeItem-Substanz** | `language`, `tier` und `fast_check` **sind** Substanz — persistiert (M025), Änderung ist per Default materiell. |
+| **Tier 1 + Tier 2** | **Qualitätsrichtlinie**, keine Publish-Invariante. Ein Atom darf mit einem Item ausgeliefert werden. |
+| **Eingebettete Kopien** | Tragen mehrere Tiles dieselbe Item-ID, müssen die Kopien identisch sein (Codex B1.5). Eine Fixture-Wache hält das offen. |
 
 **Zurückgezogene Owner-Entscheidungen** (bewusst dokumentiert, damit sie nicht
 zurückkehren):
@@ -178,8 +187,11 @@ Unter AND-Semantik folgenlos — geringe Schwere, aber richtigzustellen.
   pro Kante.
 - **Reduktionsvokabular:** Ein Fixture nutzt `formula`, der ADR kennt nur
   `formal_formula`. Erst Vokabel entscheiden, dann `CHECK`.
-- **Explizites RepresentativeItem** — „kleinste Item-ID“ ist deterministisch,
-  aber keine didaktische Aussage.
+- **Explizites RepresentativeItem** — „kleinste Item-ID“ ist deterministisch
+  und reihenfolgestabil, aber keine didaktische Aussage. Solange sie gilt,
+  löscht die Rekonziliation Tokenkanten zwischen Items derselben zwei Atome,
+  die eine Kuratorin von Hand gesetzt hätte; wem eine Kante gehört, weiß erst
+  die Zeilen-Provenienz aus 6.B.
 - **Curriculum-Abfragen auf Bindings umstellen** (Codex' Test 12). Behoben ist
   die Reihenfolgeabhängigkeit der Legacy-Felder, nicht ihre Ablösung.
 
@@ -197,8 +209,6 @@ Unter AND-Semantik folgenlos — geringe Schwere, aber richtigzustellen.
 - Entity-Linking empirisch: zwei überlappende Zellen, Goldannotation, getrennte
   Metriken für Dekomposition, Kandidaten, `NIL` und Alignment.
 - Lizenzklassen des LehrplanPLUS-Ingests vor öffentlichem Release.
-- Ist Tier 1 **und** Tier 2 je Atom eine prüfbare Publish-Invariante oder eine
-  Qualitätsrichtlinie? Es muss eines von beidem sein.
 
 ## 7. Stand des Codes
 
@@ -210,27 +220,37 @@ Unter AND-Semantik folgenlos — geringe Schwere, aber richtigzustellen.
   Schritt.
 - Inhaltsänderungen an vorhandenen Items laufen über
   `publishTokenRevisionInTransaction`. Fehlende Klassifikation gilt als
-  `material`.
-- Für die aktuellen kompatiblen Fixtures deterministisch: Legacy-Projektion und
-  Prerequisite-Repräsentant werden aus dem gespeicherten Gesamtbestand
-  berechnet, nicht aus der Array-Position. Die allgemeine
-  Reihenfolgeunabhängigkeit ist durch einen Repräsentantenwechsel widerlegt;
-  siehe Codex-Härtungsreview H2.
-- M024 stellt lokal die Eindeutigkeit der Bindings über
-  `COALESCE(grade, -1)` her; der aktuelle Rebuild verletzt jedoch den gemeinsamen
-  Providervertrag und ist nach einem Abbruch nicht sicher wiederaufnehmbar.
-  Siehe Codex-Härtungsreview H1.
+  `material`. Ein abweichender Slug wird abgelehnt, nicht still ignoriert.
+- **Reihenfolgeunabhängig, und zwar eingelöst:** Legacy-Projektion *und*
+  abgeleitete Tokenkanten werden aus dem gespeicherten Gesamtbestand
+  **rekonziliert**. Wechselt der Repräsentant, weil ein späteres Release ein
+  Item mit kleinerer ID bringt, verschwindet die alte Kante. Alle **24**
+  Installationsreihenfolgen der vier Zellen ergeben denselben Snapshot.
+- **Grenze, ausdrücklich dokumentiert:** widersprüchliche skalare Aussagen über
+  dasselbe Objekt (Atomtitel, Alignment-Typ, Kanten-Rationale) bleiben
+  last-writer-wins. Das aufzulösen braucht den Release-Vertrag.
+- `language`, `tier`, `fast_check` sind persistiert (M025); ein Roundtrip-Test
+  sichert, dass ein Tile ohne Verlust installiert und wieder ausgelesen wird.
+- M024 stellt die Eindeutigkeit der Bindings über `COALESCE(grade, -1)` her —
+  **providerneutral** (kein `sqlite_master` mehr) und ohne Tabellen-Rebuild.
+  Widersprüchliche Duplikate scheitern laut, statt zu einer nie
+  veröffentlichten Zeile verschmolzen zu werden.
 
-**Testlage:** 2158 Tests grün, 5 übersprungen. Die konkreten Tests zu
-Idempotenz, Revision, Null-Karten-Installation, Slug-Kollision, NULL-Grade und
-gescopter Materialisierung tragen. Der als Codex-Test 1 geführte
-Reihenfolgetest deckt nur zwei Folgen der aktuellen Fixtures ab und beweist die
-allgemeine Invariante nicht. PostgreSQL-Schemaprovisionierung war im verifizierten
-Lauf nicht aktiv. Siehe Codex-Härtungsreview H1/H2.
+**Testlage:** 2166 Tests grün, 7 übersprungen — plus **46 gegen echtes
+PostgreSQL 17** (`npm run pg:up && npm run pg:test`; CI setzt `POSTGRES_URL`
+ohnehin). Verifiziert ist damit, dass `applySchemaAndMigrations` auf PostgreSQL
+durchläuft, dass der Ausdrucks-Unique-Index dort trägt und dass eine grade-lose
+Bindung auch dort idempotent bleibt.
+
+Von Codex' 15 Abnahmetests sind erfüllt: **1** (jetzt alle 24 Permutationen),
+**2**, **3**, **4**, **10**, **11**, **13**, gescopte Materialisierung, der
+Repräsentantenwechsel aus H2 und der PracticeItem-Roundtrip aus H3. Offen
+bleiben 5–9 und 14–15 — sie stehen auf Entscheidungen aus 6.A und 6.B.
 
 **Der Attach bleibt ein Spike.** Der Modulkommentar sagt das ausdrücklich und
-zählt auf, was fehlt. Keine Lernerfunktion darf darauf aufbauen, bevor A und B
-entschieden sind.
+zählt auf, was fehlt: Manifest, Digests, Signatur, deklaratives Entfernen,
+paketübergreifende Referenzen. Keine Lernerfunktion darf darauf aufbauen, bevor
+A und B entschieden sind.
 
 **Vier geerdete Zellen** liegen als Fixtures vor: Realschule Zweig I 7,
 Realschule Zweig II/III 8, Gymnasium 8, BOS. Sie überlappen auf denselben
@@ -238,20 +258,20 @@ Atomen — das ist der Wiederverwendungsbeweis und zugleich der Bonus-Pool.
 
 ## 8. Was die nächste Runde tun sollte
 
-1. **Die zwei technischen Gegenbeweise aus dem Codex-Härtungsreview schließen:**
-   M024 providerneutral/idempotent machen und den Reihenfolgevertrag
-   reconciliieren oder ehrlich begrenzen.
-2. **Die Cognitive Foundations zur Hypothesenlandkarte korrigieren:** Quellen
-   auflösen; Evidenz, ZAM-Inferenz, Entscheidung und Falsifikation trennen.
-3. **ADR 2026-08-14b entscheiden** (Identität, Alignments). Die Optionen sind
-   ausformuliert und extern belegt; es fehlt eine Entscheidung, keine weitere
-   Runde Argumente.
-4. **Release-/Provenienz-ADR schreiben** (Abschnitt 6.B), bevor weitere
-   Persistenz entsteht.
-5. **Die Replay-Messungen** aus 6.E laufen lassen — sie sind billig und
-   entscheiden mehrere offene Fragen empirisch statt argumentativ.
-6. **Schema-Hygiene und den verlustfreien PracticeItem-Vertrag** entscheiden,
-   sobald das Vokabular steht.
+Die technischen Gegenbeweise aus dem Härtungsreview (H1, H2, H3) sind
+geschlossen und durch Tests abgesichert. Was bleibt, sind **Entscheidungen**,
+keine Reparaturen.
+
+1. **ADR 2026-08-14b entscheiden** — Identität (Frage 1) und Alignment-Semantik
+   (Frage 2). Beide blockieren alles Veröffentlichte, beide sind ausformuliert
+   und extern belegt, beide kosten heute vier Fixtures und später jeden
+   Konsumenten. Es fehlt eine Entscheidung, keine weitere Runde Argumente.
+2. **Release-/Provenienz-ADR schreiben** (6.B), bevor weitere Persistenz
+   entsteht. Dort liegen auch die zwei fehlenden Objekte.
+3. **Die Replay-Messungen** aus 6.E laufen lassen — billig, und sie entscheiden
+   mehrere Streitfragen empirisch statt argumentativ. Die günstigste zuerst:
+   ordnet der Interleaver innerhalb der Fälligkeit sinnvoll um?
+4. **Schema-Hygiene** aus 6.D, sobald das Reduktionsvokabular steht.
 
 **Was nicht ansteht:** Scanner, weltweites CDN, Signatur-Infrastruktur,
 Tier-1-Objekte im Kernschema, ein drittes Editorfenster im Studio, endgültiges
@@ -276,16 +296,18 @@ Stellschrauben, keine Theorie im Voraus. Lernerfeedback entscheidet.
 | [opus-arbitration](central-learning-path-opus-arbitration.md) | Opus | Schiedsspruch am Code nachgeprüft, plus Umsetzung der vier billigen Fixes. |
 | [entry-problem](central-learning-path-entry-problem.md) | Opus + Owner | Einstieg in die Mitte; Selbsteinschätzung, leere Queue. |
 | [bonus-content](central-learning-path-bonus-content.md) | Opus + Owner | Bonus am Rand des Gekonnten, Hebel im Graphen; Besitzrahmung verworfen. |
-| [cognitive-foundations](central-learning-path-cognitive-foundations.md) | Gemini + Team | Kognitionswissenschaftliche Fundierung: Motivation, Knowledge Spaces, Interleaving, Scaffolding/Fading, Hebel-Mathematik. |
+| [cognitive-foundations](central-learning-path-cognitive-foundations.md) | Gemini + Team | **Hypothesenlandkarte**, nicht Herleitung: je Abschnitt Evidenz, ZAM-Inferenz, Entscheidung, Falsifikation. Vier Literaturfehler korrigiert. |
 
 **ADRs:**
 
 - [2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md) —
   **Accepted:** Fünf Objekte, reaktives Scheduling, Bonus als Angebot.
 - [2026-08-14b](../adr/2026-08-14b-published-atom-identity-and-alignment.md) —
-  **Proposed, offen:** Identität, Alignments, Reduktionsvokabular,
-  Repräsentant, Tier-Invariante, Release-Vertrag. Enthält vier
-  Forschungsaufgaben.
+  **Proposed, offen:** Identität (1), Alignments (2), Reduktionsvokabular (3),
+  Repräsentant (4), Release-Vertrag (6). Frage 5 (PracticeItem-Substanz) ist
+  entschieden und in den Accepted-ADR gewandert. Enthält vier
+  Forschungsaufgaben — darunter, ob `reduction` durch ein bestehendes
+  Vokabular (SOLO) ersetzt werden kann.
 - [2026-07-04 Hierarchical Domain Ontology](../adr/2026-07-04-hierarchical-domain-ontology-and-token-identity.md) —
   **Draft**, beantwortet die *lokale* Adresse.
 - [Learning Governance](https://github.com/zam-os/zam/blob/codex/learning-governance-adr-note/docs/adr/2026-07-05-learning-governance.md) —
