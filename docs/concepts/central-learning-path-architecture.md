@@ -1,22 +1,10 @@
 # Draft-Architektur: Zentrale Wissensbasis als weltweiter Bildungs-Graph („Google Maps für das Lernen“)
 
-**Status:** Draft / Proposal  
+**Status:** Draft / Proposal (Konsolidiert nach 4 Agenten-Reviews und Owner-Entscheidungsrunde vom 2026-08-14)  
 **Datum:** 2026-08-14  
-**Autoren:** ZAM Core & Agent Research Team  
-**Gegenlesen:** [central-learning-path-refinement.md](central-learning-path-refinement.md) · [central-learning-path-identity.md](central-learning-path-identity.md) · **Reviews:** [Grok](central-learning-path-architecture-review.md) · [Codex](central-learning-path-codex-research-review.md) · [Opus](central-learning-path-opus-review.md).
-
-> **Korrekturvermerk 2026-08-14.** Die Anker der Beispiele waren falsch und sind
-> gegen die Primärquellen berichtigt: `Q202814` → **`Q208391`** (Snellius;
-> `Q202814` ist eine Zeitschrift), `Q11379` → **`Q11518`** (Pythagoras; `Q11379`
-> ist Energie), `Q165738` → **`Q234943`** (Totalreflexion; `Q165738` existiert
-> nicht). Der Lehrplanbezug ist ebenfalls berichtigt: Optik liegt in der
-> bayerischen Realschule in **Ph7 LB2** (Zweig I) bzw. **Ph8 LB2** (Zweig II/III),
-> nicht in Jahrgang 9 — `PH9-LB2` ist dort die Wärmelehre. Belege im
-> [Opus-Review, Abschnitt 1](central-learning-path-opus-review.md); der
-> Fehlerbefund selbst steht unverändert im
-> [Codex-Review, Abschnitt 2](central-learning-path-codex-research-review.md).
-> Ungeprüft geblieben sind die Nicht-Bayern-Zeilen (BW) und `exam_relevant`.  
+**Autoren:** ZAM Core & Agent Research Team (Gemini, Grok, Codex, Claude Opus, Thomas)  
 **Bezug zu bestehenden ADRs:**
+- [ADR 2026-08-14: Published Learning Atom Identity, 5-Object Model, and SKOS Alignments](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-07-26b: Central Curriculum Content Service: Content Only, Pulled Forward](../adr/2026-07-26b-central-curriculum-content-service.md)
 - [ADR 2026-07-25: Shared Curated Learning Content — Review Once, Serve Many](../adr/2026-07-25-shared-curated-learning-content.md)
 - [ADR 2026-07-04: Closed-Group Learning Library: Curation, Privacy and Deployment](../adr/2026-07-04-multi-learner-shared-knowledge.md)
@@ -29,21 +17,21 @@
 ### 1.1 Die Vision
 Ziel dieses Systems ist der Aufbau einer **offenen, zentralen, versionsgeführten Wissensbasis**, die den gesamten Lernpfad eines heranwachsenden Menschen von der frühen Kindheit bis zum Schulabschluss (und darüber hinaus) als **gerichteten Abhängigkeitsgraphen (Prerequisite-DAG)** abbildet.
 
-Jeder Knoten (Knowledge Token) repräsentiert eine atomare Lerneinheit, versehen mit:
-1. **Didaktischen Alterstags** (Entwicklungsstufe / typisches Mindestalter für das Verstehen),
-2. **Curricularen Overlays** (z. B. *Realschule Bayern – 9. Klasse – naturwissenschaftlicher Zweig*),
+Jeder Knoten repräsentiert eine atomare Lerneinheit, versehen mit:
+1. **Didaktischen Altersempfehlungen** (typisches Mindestalter als Orientierung, **kein hartes Gate**),
+2. **Curricularen Overlays** (z. B. *Realschule Bayern – Physik 7 (Zweig I) bzw. Physik 8 (Zweig II/III)*),
 3. **Multimodalen Erklärungsressourcen** (kuratierte YouTube-Videoanker mit Timestamps, interaktive HTML5/PhET-Simulationen, Audio-Erklärungen, Bilddiagramme),
-4. **2-Stufen-Interaktionsmustern** (Tier 1: Schnelle, reibungslose Micro-Checks für den sofortigen Abrufeffekt; Tier 2: Vertiefende Synthese und Prüfungsaufgaben für spätere Meisterungsprüfungen).
+4. **2-Stufen-Interaktionsmustern** (Tier 1: Schnelle, reibungslose Micro-Checks für den sofortigen Abrufeffekt; Tier 2: Vertiefende Synthese und Transferaufgaben).
 
 ### 1.2 Das Paradigma: „Google Maps für das Wissen“
 Kartendienste wie Google Maps oder OpenStreetMap skalieren für Milliarden Menschen bei minimalen Kosten, weil sie:
 - Daten nicht pro Nutzer dynamisch auf zentralen Servern berechnen,
 - sondern **vorberechnete, unveränderliche Vektorkacheln (Vector Tiles)** über globale CDNs ausliefern,
-- während Rendering, Routing und Routenverfolgung **vollständig auf dem Endgerät (Edge/Client)** stattfinden.
+- während Rendering, Routenfindung und Fortschrittsverfolgung **vollständig auf dem Endgerät (Edge/Client)** stattfinden.
 
 Die zentrale ZAM-Wissensbasis adaptiert genau dieses Prinzip als **Knowledge Vector Tiles (KVT)**:
 - **Zentraler Betreiber:** Pflegt und verteilt statische, kompilierte Graph-Kacheln über CDNs.
-- **Client (ZAM App):** Lädt den benötigten Sub-Graphen für den gewählten Bildungspfad herunter und führt Graph-Traversierung, FSRS-Scheduling und Knowledge Tracing lokal in einer In-Memory- oder SQLite-WASM-Engine aus.
+- **Client (ZAM App):** Lädt den benötigten Sub-Graphen für den gewählten Bildungspfad herunter und führt Graph-Traversierung, FSRS-6-Scheduling und Knowledge Tracing lokal in einer In-Memory- oder SQLite-Engine aus.
 - **Kosten:** Nahezu **0 € Serverkosten** im laufenden Betrieb, 100% DSGVO-konform, vollständige Offline-Fähigkeit.
 
 ---
@@ -56,281 +44,218 @@ Die Architektur erzwingt eine strikte physische und logische Trennung der Datenk
 ┌──────────────────────────────────────────────────────────────────────────────────────────┐
 │                      1. ZENTRALER KNOWLEDGE-LAYER (Öffentlich, Read-Only, CDN)            │
 ├──────────────────────────────────────────────────────────────────────────────────────────┤
-│ • Canonical Tokens (Titel, Konzept, Frage, Bloom-Level, Typisches Mindestalter)          │
+│ • Canonical Learning Atoms (Opaque Atom-ID, Titel, Reduktionsstufe, Mindestalter)        │
+│ • Typisierte SKOS-Alignments (z. B. wd:Q208391 für Snell's Law via skos:closeMatch)      │
 │ • Prerequisite-Kanten (Strikte Abhängigkeiten & weiche Empfehlungen)                     │
 │ • Lehrplan-Taxonomien (LehrplanPLUS Bayern, KMK, etc. mit Prüfungsrelevanz-Flags)        │
+│ • Übungsitems / Practice Items (Tier 1 Fast Checks, Tier 2 Synthese-Fragen)              │
 │ • Multimodale Ressourcen (YouTube Timestamps, PhET, GeoGebra, Audio, Bilder)             │
 │ • Lehrer-/Experten-Signaturen & Revisionsgeschichte (Git-basiert)                        │
 └────────────────────────────────────────────┬─────────────────────────────────────────────┘
-                                             │ Statischer Kachel-Download (HTTP Range / GET)
+                                             │ Statischer Kachel-Download (HTTP GET)
                                              ▼
 ┌──────────────────────────────────────────────────────────────────────────────────────────┐
-│                     2. KLASSEN- & SCHUL-LAYER (Optional / Halboffen / Sync)              │
+│                     2. LERNER-EDGE (100% Lokal, Privat, DSGVO-sicher)                    │
 ├──────────────────────────────────────────────────────────────────────────────────────────┤
-│ • Klassen-Fortschrittszeiger (Aktuelles Thema der Woche im Schuljahr)                    │
-│ • Aggregierte Hausaufgaben- & Stoff-Empfehlungen der Lehrkraft                           │
-└────────────────────────────────────────────┬─────────────────────────────────────────────┘
-                                             │
-                                             ▼
-┌──────────────────────────────────────────────────────────────────────────────────────────┐
-│                     3. LERNER-EDGE (100% Lokal, Privat, DSGVO-sicher)                    │
-├──────────────────────────────────────────────────────────────────────────────────────────┤
-│ • FSRS-5 Lernkarten (Stabilität, Schwierigkeit, Abrufhistorie, Reps, Lapses)             │
-│ • Knowledge Tracing Vektor (Individueller Mastery-Score pro Graph-Knoten)                │
+│ • FSRS-6 Lernkarten (Stabilität, Schwierigkeit, Abrufhistorie, Reps, Lapses)             │
+│ • Queue-Steuerung via `cards.buried_until` (Selbsteinschätzung schiebt Vorbedingungen)   │
 │ • Gescannte Schulhefte & Arbeitsblätter (Lokale Vision-OCR & Embedding-Matching)         │
 │ • Persönliche Eselsbrücken, Freitext-Notizen & Sprachaufnahmen                           │
-│ • Gewählter Bildungspfad (z. B. "Realschule Bayern, 9. Klasse, Zweig I")                 │
+│ • Gewählter Bildungspfad (z. B. "Realschule Bayern, 7. Klasse, Zweig I")                 │
 └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 3. Datenmodell & Schema-Spezifikation
+## 3. Das 5-Objekte-Datenmodell
 
-### 3.1 Kanonisches Knowledge-Token Schema (JSON-LD / JSON-Schema v1)
+Zur sauberen Entkopplung von universellem Wissen, amtlichen Lehrplänen und konkreten Abrufaufgaben implementiert ZAM das **5-Objekte-Modell**:
 
+```mermaid
+classDiagram
+    class LearningAtom {
+        +string atom_id "atom:zam:de-by:ph-optik-brechung-qualitativ"
+        +string title "Lichtbrechung an Grenzflächen (qualitativ)"
+        +string domain "schule/physik/optik"
+        +string reduction "qualitative | geometric | formal_formula"
+        +float typical_age_min 12.5
+        +Prerequisite[] prerequisites
+    }
+
+    class ConceptAlignment {
+        +string atom_id
+        +string target_uri "wd:Q208391"
+        +string alignment_type "skos:closeMatch | skos:exactMatch | skos:broadMatch"
+        +string provenance
+    }
+
+    class CurriculumBinding {
+        +string atom_id
+        +string provider "lehrplanplus-bayern"
+        +string school_type "realschule"
+        +int grade 7
+        +string track "I"
+        +string topic_code "PH7-LB2"
+        +bool exam_relevant true
+    }
+
+    class PracticeItem {
+        +string id (ULID / ZAM Token)
+        +string atom_id
+        +string language "de"
+        +int bloom_level (1..5)
+        +string tier "tier1_fast | tier2_synthesis"
+        +string question
+        +string concept
+    }
+
+    class PersonalCard {
+        +string id (ULID)
+        +string token_id
+        +string user_id
+        +float stability (FSRS-6)
+        +float difficulty
+        +string state "new | learning | review | relearning"
+        +string buried_until
+        +string buried_reason
+    }
+
+    LearningAtom "1" *-- "n" ConceptAlignment
+    LearningAtom "1" *-- "n" CurriculumBinding
+    LearningAtom "1" *-- "n" PracticeItem : realisiert durch
+    PracticeItem "1" <-- "n" PersonalCard : steuert Wiederholung von
+```
+
+---
+
+## 4. Vollständig geerdetes Referenzbeispiel (Optik Realschule Bayern)
+
+Verankert an den Primärquellen des ISB Bayern ([Fachlehrplan Physik 7 Realschule I, Lernbereich 65643](https://www.lehrplanplus.bayern.de/fachlehrplan/lernbereich/65643) und [Physik 8 Realschule II/III](https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/physik/wpfg2-3)):
+
+### 4.1 Kanonisches Lernziel-Atom (`learning_atoms.jsonld`)
 ```json
 {
-  "$schema": "https://zam.app/schemas/v1/knowledge-token.json",
-  "id": "01K3X9A7R4B8C1D2E3F4G5H6J7",
-  "slug": "physik-optik-brechungsgesetz-snellius",
-  "title": "Snelliussches Brechungsgesetz",
-  "wikidata_id": "Q208391",
-  "concept": "Beim Übergang von Licht zwischen zwei Medien mit Brechungsindizes n1 und n2 gilt das Brechungsgesetz: n1 * sin(alpha) = n2 * sin(beta).",
+  "$schema": "https://zam.app/schemas/v1/learning-atom.json",
+  "id": "atom:zam:de-by:ph-optik-brechung-qualitativ",
+  "title": "Lichtbrechung an Grenzflächen (qualitativ)",
   "domain": "schule/physik/optik",
-  "bloom_level": 3,
-  "age_recommendation": {
-    "typical_age_min": 14.0,
-    "developmental_stage": "formal_operational",
-    "rationale": "Erfordert Verständnis von Winkelfunktionen (Sinus) und proportionalen Verhältnissen."
-  },
+  "reduction": "qualitative",
+  "typical_age_min": 12.5,
   "prerequisites": [
     {
-      "token_id": "physik-optik-lichtausbreitung-strahlengang",
+      "atom_id": "atom:zam:de-by:ph-optik-strahlengang-lot",
       "type": "hard",
-      "rationale": "Ohne das Konzept des Lichtstrahls und des Einfallswinkels ist die Brechung nicht definierbar."
+      "rationale": "Das Konzept des Einfallslots und des Einfallswinkels ist Voraussetzung für die Beschreibung der Richtungsänderung."
+    }
+  ],
+  "alignments": [
+    {
+      "target_uri": "http://www.wikidata.org/entity/Q11334",
+      "target_label": "Refraction",
+      "alignment_type": "skos:broadMatch",
+      "provenance": "manual_curation_v1"
     },
     {
-      "token_id": "mathematik-geometrie-sinus-funktion",
-      "type": "hard",
-      "rationale": "Mathematische Berechnung der Winkelverhältnisse."
-    },
-    {
-      "token_id": "physik-wellenlehre-phasengeschwindigkeit",
-      "type": "soft",
-      "rationale": "Erklärt die physikalische Ursache der Brechung über Wellenfronten (Huygens-Prinzip)."
+      "target_uri": "http://www.wikidata.org/entity/Q208391",
+      "target_label": "Snell's law",
+      "alignment_type": "skos:closeMatch",
+      "provenance": "manual_curation_v1"
     }
   ],
   "curricula": [
     {
       "provider": "lehrplanplus-bayern",
-      "country": "DE",
-      "region": "BY",
       "school_type": "realschule",
       "grade": 7,
-      "track": "wpfg-1",
+      "track": "I",
       "subject": "physik",
-      "topic_code": "Ph7-LB2",
-      "topic_title": "Optik",
-      "source_uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/lernbereich/65643",
+      "topic_code": "PH7-LB2",
+      "topic_title": "Ausbreitung und Brechung des Lichts",
       "exam_relevant": true
     },
     {
-      "provider": "bildungsplan-bw",
-      "country": "DE",
-      "region": "BW",
-      "school_type": "gymnasium",
+      "provider": "lehrplanplus-bayern",
+      "school_type": "realschule",
       "grade": 8,
+      "track": "II_III",
       "subject": "physik",
+      "topic_code": "PH8-LB2",
+      "topic_title": "Licht und Schatten, Reflexion und Brechung",
       "exam_relevant": true
     }
   ],
   "learning_media": [
     {
-      "id": "media-yt-01",
-      "type": "video",
-      "provider": "youtube",
-      "uri": "https://www.youtube.com/watch?v=sample-video-id",
-      "start_sec": 42,
-      "end_sec": 165,
-      "language": "de",
-      "title": "Brechung von Licht anschaulich im Experiment",
-      "author": "Lehrer Schmidt / SimpleClub"
-    },
-    {
-      "id": "media-sim-01",
+      "id": "media-sim-phet-01",
       "type": "interactive_simulation",
       "provider": "phet",
       "uri": "https://phet.colorado.edu/sims/html/bending-light/latest/bending-light_all.html",
-      "title": "Lichtbrechung interaktives Labor (PhET)",
-      "embedded_allowed": true
-    },
-    {
-      "id": "media-img-01",
-      "type": "infographic",
-      "uri": "assets/diagrams/optik-snellius-strahlengang.svg",
-      "alt_text": "Darstellung des Einfallswinkels alpha und Brechungswinkels beta zum Lot."
+      "title": "Lichtbrechung Experimentierlabor"
     }
-  ],
-  "interactions": {
-    "tier1_fast_checks": [
-      {
-        "id": "fc-01",
-        "type": "binary_choice",
-        "prompt": "Wird ein Lichtstrahl beim Übergang von Luft in Glas zum Lot hin oder vom Lot weg gebrochen?",
-        "options": ["Zum Lot hin", "Vom Lot weg"],
-        "correct_index": 0,
-        "explanation": "Glas ist optisch dichter als Luft (n2 > n1), daher verkleinert sich der Winkel zum Lot."
-      },
-      {
-        "id": "fc-02",
-        "type": "cloze_tap",
-        "prompt": "Vervollständige die Formel: n1 * [gap1] = n2 * [gap2]",
-        "gaps": [
-          { "id": "gap1", "correct": "sin(α)", "distractors": ["cos(α)", "tan(α)", "α²"] },
-          { "id": "gap2", "correct": "sin(β)", "distractors": ["cos(β)", "tan(β)", "1/β"] }
-        ]
-      }
-    ],
-    "tier2_synthesis": {
-      "prompt": "Ein Taucher leuchtet mit einer Taschenlampe unter Wasser schräg nach oben an die Wasseroberfläche. Erkläre, was ab einem bestimmten Winkel passiert und wie man dieses Phänomen nennt.",
-      "expected_key_concepts": [
-        "Totalreflexion",
-        "Grenzwinkel",
-        "Übergang von optisch dichter zu optisch dünner",
-        "Keine Brechung mehr ins Freie"
-      ],
-      "sample_solution": "Ab dem Grenzwinkel der Totalreflexion wird das Licht vollständig an der Grenzfläche reflektiert und tritt nicht mehr in die Luft über."
-    }
-  },
-  "curation": {
-    "published_version": 1,
-    "verified_by": "fachschaft-physik-bayern",
-    "verified_at": "2026-08-14T12:00:00Z",
-    "signature": "ed25519:3b9f...a8c1"
-  }
+  ]
 }
 ```
 
-> **Was an diesem Beispiel auch nach der Korrektur nicht aufgeht — und warum das
-> lehrreich ist.** Der Token oben modelliert die *quantitative* Fassung
-> (`n1·sin α = n2·sin β`, Bloom 3, Hard-Prereq Sinus). Der zugeordnete
-> Lernbereich Ph7 LB2 verlangt aber ausdrücklich nur die *qualitative*: die
-> Kompetenzerwartung lautet, die Brechung „auf die unterschiedliche
-> Lichtgeschwindigkeit in diesen zurück[zuführen]“ und Alltagsphänomene „unter
-> Verwendung von Zeichnungen“ zu beschreiben. Eine Formel kommt in der
-> bayerischen Realschule nicht vor — in keinem Zweig und keinem Jahrgang.
->
-> Ein Token kann also nicht zugleich die Formel tragen und Mitglied dieses
-> Overlays sein. Genau das ist der Befund, den
-> [Grok](central-learning-path-refinement.md) (didaktische Reduktion) und
-> [Codex](central-learning-path-codex-research-review.md) (Lernziel ≠ Übungsitem)
-> unabhängig erhoben haben — hier zum ersten Mal an echten Lehrplandaten statt an
-> erfundenen. Die saubere Auflösung sind zwei Atome an einem Anker: die
-> qualitative Fassung ist Mitglied von Ph7 LB2, die quantitative gehört in ein
-> Overlay, das sie tatsächlich verlangt und das hier bewusst *nicht* behauptet
-> wird, weil es nicht geprüft ist.
-
-## 4. Knowledge Vector Tiles (KVT): Skalierung & Verteilung
-
-### 4.1 Partitionierungsstrategie
-Der globale Graph wird nicht als monolithische Datenbank ausgeliefert, sondern in **Kacheln (Tiles)** zerschnitten:
-
-1. **Curriculum-Kacheln (`/tiles/curricula/{country}-{region}/{school-type}-{grade}-{subject}.jsonld`)**:
-   - Enthält die Zuordnungen, Reihenfolgen und Prüfungsrelevanz-Flags für ein konkretes Fach und Schuljahr (z. B. `de-by/realschule-9-physik.jsonld`, ~120 KB).
-2. **Topologische Domain-Kacheln (`/tiles/domains/{domain-root}.sqlite`)**:
-   - Enthält den universellen Wissensgraphen eines Großbereichs (z. B. `mathematik.sqlite`, `physik.sqlite`, jeweils ~1–3 MB).
-   - Enthält alle Knoten, Relationen, Einbettungsvektoren und Tier-1-Checks.
-3. **Media-Manifest-Kacheln (`/tiles/media/{domain-root}.json`)**:
-   - URLs, Timecodes und Metadaten zu externen Videos und Simulationen.
-
-### 4.2 Verteilungs- und Caching-Modell
-- **Hosting:** Statische Dateien auf Objektspeicher (z. B. Cloudflare R2, AWS S3, BunnyCDN, GitHub Pages).
-- **Caching:** `Cache-Control: public, max-age=31536000, immutable` mit Content-Hash-Versionierung in URLs (`/v2026.08/tiles/...`).
-- **Client-Download:** 
-  - Beim Einrichten eines Schülerprofils (z. B. Realschule Bayern 9. Klasse) lädt der ZAM-Client im Hintergrund 5–10 Kacheln (Gesamtvolumen: ~15 MB).
-  - Bei Änderungen wird über einen leichten Index (`index.json` mit Hash-Tabelle) differentiell synchronisiert.
-
----
-
-## 5. Curation- & Audit-Pipeline für Lehrkräfte
-
-Damit Inhalte nicht durch halluzinierende LLMs verunreinigt werden, gilt das ZAM-Prinzip: **„AI generiert Entwürfe – Lehrkräfte prüfen und signieren – Millionen Lerner profitieren.“**
-
-```mermaid
-flowchart TD
-    A[Offizielle Lehrplan-Texte / Schulbücher] --> B[ZAM Ingestion Pipeline (Draft Generator)]
-    B --> C[Draft Token Pool in ZAM Studio]
-    C --> D{Lehrer-/Fachschafts-Review}
-    D -->|Korrektur nötig| C
-    D -->|Freigegeben| E[Git Pull Request / Curation Repo]
-    E --> F[CI/CD Validierung]
-    F --> F1[1. Zyklenfreiheit des DAG prüfen]
-    F --> F2[2. Bloom- & Alters-Konsistenz prüfen]
-    F --> F3[3. Medien-Links auf Erreichbarkeit testen]
-    F --> G[Build: Knowledge Vector Tiles kompilieren]
-    G --> H[Signierung mit Ed25519-Schlüssel]
-    H --> I[Deployment auf globales CDN]
+### 4.2 Zugehörige Übungsitems / Practice Items
+```json
+[
+  {
+    "id": "01K3X9A7R4B8C1D2E3F4G5H601",
+    "atom_id": "atom:zam:de-by:ph-optik-brechung-qualitativ",
+    "language": "de",
+    "bloom_level": 2,
+    "tier": "tier1_fast",
+    "question": "In welche Richtung knickt ein Lichtstrahl beim Übergang von Luft in Wasser?",
+    "concept": "Zum Einfallslot hin, da Wasser optisch dichter ist als Luft.",
+    "fast_check": {
+      "type": "binary_choice",
+      "options": ["Zum Lot hin", "Vom Lot weg"],
+      "correct_index": 0
+    }
+  },
+  {
+    "id": "01K3X9A7R4B8C1D2E3F4G5H602",
+    "atom_id": "atom:zam:de-by:ph-optik-brechung-qualitativ",
+    "language": "de",
+    "bloom_level": 3,
+    "tier": "tier2_synthesis",
+    "question": "Warum erscheint ein gerader Stab, der schräg in ein Wasserglas gehalten wird, an der Wasseroberfläche geknickt?",
+    "concept": "Lichtstrahlen vom Stab werden beim Übergang aus dem Wasser (optisch dichter) in die Luft (optisch dünner) vom Lot weg gebrochen. Das Auge verlängert die Strahlen geradlinig zurück, wodurch das Bild des Stabs nach oben verschoben und geknickt erscheint."
+  }
+]
 ```
 
-### Qualitätskriterien für Freigaben:
-1. **Atomizität:** 1 Konzept, 1 Kernfrage, 1 prägnante Antwort.
-2. **Strikte Erdung:** Jedes Pflicht-Token verweist auf eine offizielle Lehrplan-Fundstelle (`topic_code`).
-3. **Spoiler-Freiheit:** Titel und Fragen dürfen die Antwort nicht vorwegnehmen.
-4. **Altersgerechte Formulierung:** Sprachniveau und kognitiver Anspruch passen zum Zielalter.
+---
+
+## 5. Das Einstiegsproblem & Lernerverhalten (Owner-Entscheidungen)
+
+### 5.1 Das Gate steht auf AUS (Reaktive Terminierung)
+Betritt ein Lerner den Graphen in Klasse 9, wird er **nicht** durch Vorab-Tests blockiert:
+1. **Kein hartes Gate:** Unerfüllte Voraussetzungen versperren das Ziel-Token nicht.
+2. **Selbsteinschätzung auf Voraussetzungen:** Beim ersten Kontakt mit einem Ziel-Token kann der Lerner seine Vorkenntnisse zu den direkten Voraussetzungen kurz einschätzen (*„Kann ich schon“* / *„Muss ich wiederholen“*).
+3. **Terminierung via `cards.buried_until`:** 
+   - Die Selbsteinschätzung setzt **ausschließlich** `cards.buried_until` (z. B. auf 30 Tage in die Zukunft).
+   - Die Karte bleibt im FSRS-Status `new` mit `stability=0.0`, `reps=0`. Der FSRS-Algorithmus startet erst beim ersten echten Abruf völlig unverfälscht.
+4. **Leere Queue-Regel:** Läuft die Lernqueue leer und der Lerner möchte weiterlernen, dürfen vergrabene (`buried`) Karten vorgezogen werden.
+
+### 5.2 Fehler-Diagnose: Fundament fehlt vs. Anwendungsfehler
+Scheitert ein Schüler an einer Tier-2-Aufgabe (Bewertung `Again / 1`):
+1. Das System blockiert die Karte nicht blind via `cascadeBlock`.
+2. Stattdessen wird im nächsten Schritt ein **einzelner 1-Tap Tier-1-Check** der direkten Voraussetzung eingestreut.
+3. **Reaktion:**
+   - *Tier-1-Check bestanden:* Fundament sitzt! Das Problem lag nur in der komplexen Anwendung $\rightarrow$ Voraussetzung bleibt vergraben, Zielkarte wird wie gewohnt wiederholt.
+   - *Tier-1-Check nicht bestanden:* Fundament wackelt! $\rightarrow$ Voraussetzung wird aktiv in die Lernqueue geholt.
 
 ---
 
-## 6. Schulheft-Scanner & Synchronisation mit dem Unterricht
+## 6. Knowledge Vector Tiles (KVT): Skalierung & Verteilung
 
-Ein Kernproblem traditioneller Lernsoftware ist die Entkopplung vom realen Schulunterricht. Die Lehrkraft folgt ihrem eigenen Zeitplan. Der Schulheft-Scanner schließt diese Lücke:
+### 6.1 Partitionierungsstrategie
+- **Curriculum-Kacheln (`/tiles/curricula/{country}-{region}/{school-type}-{grade}-{subject}.jsonld`)**:
+  - Kompakte Kacheln (~100–250 KB) mit den Atomen, Übungsitems und Overlays für ein Schuljahr und Fach.
+- **Topologische Domain-Kacheln (`/tiles/domains/{domain-root}.jsonld`)**:
+  - Vollständiger Fach-Graph für universelle Quervernetzungen.
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Learner as Schüler / Eltern
-    participant App as ZAM Mobile App (iPad / Android)
-    participant Vision as On-Device Vision / OCR
-    participant LocalDB as Lokale SQLite DB & Vector Index
-
-    Learner->>App: Fotografiert Seite aus Schulheft / Arbeitsblatt
-    App->>Vision: Führt lokale OCR & Strukturanalyse durch
-    Vision-->>App: Extrahierter Text, Formeln, Überschriften
-    App->>LocalDB: Semantische Vektorsuche im aktuellen Curriculum-Subgraphen
-    LocalDB-->>App: Bester Match: "Snelliussches Brechungsgesetz" (Score: 0.94)
-    App->>Learner: "Habt ihr heute Lichtbrechung (Snellius) durchgenommen?"
-    Learner->>App: Bestätigt ("Ja!")
-    App->>LocalDB: 1. Setzt Klassen-Fortschrittsanker auf dieses Token<br/>2. Aktiviert abhängige FSRS-Karten für den heutigen Tag<br/>3. Prüft ungelernte Prerequisites und markiert Lücken rot
-```
-
-### Vorteile:
-- **Null manueller Konfigurationsaufwand:** Kein mühsames Suchen nach Themen in Menüs.
-- **Transparenz über Wissenslücken:** Versteht ein Kind das neue Thema nicht, zeigt der Graph sofort: *„Achtung: Das Fundament 'Sinus-Funktion' aus der Mathematik ist noch ungefestigt!“*
-- **100% lokal:** Das Foto des Schulhefts verlässt das Gerät des Schülers nicht.
-
----
-
-## 7. Kosten-, Skalierungs- & Performance-Modell
-
-| Metrik | Traditionelles SaaS (Dynamischer Server / DB) | ZAM KVT Architektur (Statische Kacheln & Edge) |
-| :--- | :--- | :--- |
-| **Server-Infrastruktur** | Cluster aus PostgreSQL, App-Servern, Redis, API-Gateways | Statischer Objektspeicher (Cloudflare R2 / S3) + CDN |
-| **Kosten bei 10.000 Nutzern** | ~200 – 500 € / Monat | < 1 € / Monat |
-| **Kosten bei 1.000.000 Nutzern** | ~15.000 – 40.000 € / Monat | ~20 – 50 € / Monat (reine CDN-Bandbreite) |
-| **Latenz beim Lernen** | 100 – 400 ms (Netzwerk-Roundtrips zu Datenbanken) | **< 5 ms** (Lokale SQLite In-Memory Abfrage auf dem Gerät) |
-| **Offline-Fähigkeit** | Nein oder fehleranfälliges 2-Wege-Sync | **Ja, 100% offline funktionsfähig** |
-| **DSGVO / Datenschutz** | Extrem komplex (Minderjährigendaten auf Servern, AVVs) | **Trivial (Keinerlei personenbezogene Daten auf Servern)** |
-
----
-
-## 8. Nächste Umsetzungsschritte (Phasenplan)
-
-1. **Phase 1: Token-Schema & KVT-Builder:**
-   - Formalisierung des JSON-Schema v1 für multimodale Knowledge-Tokens.
-   - CLI-Befehl `zam curriculum compile-tiles` zur Erzeugung statischer Kacheln.
-2. **Phase 2: LehrplanPLUS-Bayern-Extraktion in den zentralen Graphen:**
-   - Konvertierung der bestehenden 15 Curriculum-Manifeste in kanonische KVT-Bundles.
-3. **Phase 3: ZAM Studio Curation Workspace:**
-   - Web-/Desktop-Oberfläche für Lehrkräfte zum Prüfen, Editieren und Signieren von Tokens.
-4. **Phase 4: Mobile Schulheft-Scanner Prototyp:**
-   - Integration von On-Device Apple Vision / Google ML Kit Text Recognition mit lokalem Embedding-Match.
+### 6.2 Verteilung & Kosten
+- **Hosting:** Statischer Objektspeicher (Cloudflare R2 / S3) + CDN.
+- **Kosten:** Nahezu 0 € Betriebskosten, extrem hohe Cache-Hit-Ratio, unbegrenzte Skalierung für Millionen von Schülern.

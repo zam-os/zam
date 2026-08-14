@@ -174,51 +174,29 @@ ehrliche Antwort auf die falschen Anker.
 - Gewicht Topologie gegen Fälligkeit; Reihenfolge beim Vorziehen.
 - Lizenzklassen des LehrplanPLUS-Ingests vor öffentlichem Release.
 
-## 7. Was die nächste Runde tun sollte
+## 7. Fortschritt dieser Runde (2026-08-14)
 
-**Empfehlung, in dieser Reihenfolge:**
-
-1. **Identität entscheiden (A).** Ohne veröffentlichten Schlüssel sind Tiles
-   ZIP-Dateien. Codex' Empfehlung ist ausformuliert genug für einen ADR — es
-   fehlt eine Entscheidung, keine weitere Runde Argumente.
-2. **Ein korrigiertes, primärquellengeprüftes Beispiel** mit echten Q-IDs und
-   echtem Lehrplanabschnitt als gemeinsame Arbeitsgrundlage. Teilweise erledigt
-   (siehe Korrekturvermerke), aber noch kein vollständiges Referenzbeispiel.
-3. **Overlay-Compiler-Vertrag (C)** mit Target-/Support-Unterscheidung und
-   korrekter Cover-Relation — jetzt entlastet vom Gate-Streit.
-4. **Eine echte Zelle kompilieren.** Realschule Bayern Optik ist geerdet und
-   liegt in zwei Zweigen (Ph7 LB2 / Ph8 LB2) — das ist von Haus aus die
-   Überlappung, die Wiederverwendung beweist.
-
-**Was nicht ansteht:** Scanner, weltweites CDN, Signatur-Infrastruktur,
-Tier-1-Objekte im Kernschema, ein zweites Editorfenster im Studio.
-
-**Haltung des Owners für alles Verhaltensnahe:** kleine Regel, benannte
-Stellschrauben, keine Theorie im Voraus. Lernerfeedback entscheidet.
+1. **Identität & Datenmodell formalisiert:**
+   - [ADR 2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md) angenommen.
+   - Festschreibung von opaken, namespaced Atom-IDs (`atom:zam:<namespace>:<slug>`) und dem 5-Objekte-Modell.
+   - Typisierte SKOS-Alignments (`closeMatch`, `broadMatch`, `exactMatch`).
+2. **Kanonischer KVT-Referenz-Datensatz erstellt & verifiziert:**
+   - Realschule Bayern Physik Optik als geerdete Kachel: [`tests/fixtures/curriculum/de-by-realschule-optik-kvt.json`](../../tests/fixtures/curriculum/de-by-realschule-optik-kvt.json).
+   - Verifiziert Zweig-Überlappung (Zweig I Klasse 7 und Zweig II/III Klasse 8 auf denselben Lernziel-Atomen).
+   - Automatisierter Vitest-Test [`tests/kernel/curriculum-kvt-fixture.test.ts`](../../tests/kernel/curriculum-kvt-fixture.test.ts) prüft Zyklenfreiheit (Topological Sort) und Schema-Integrität.
+3. **Dokumentenbereinigung:**
+   - `central-learning-path-architecture.md` und `central-learning-path-research.md` mit den Owner-Entscheidungen, CASE 1.1 und korrekten Primärquellen synchronisiert.
 
 ## 8. Dokumentenkarte
 
 | Dokument | Autor | Was drinsteht |
 |---|---|---|
-| [architecture](central-learning-path-architecture.md) | Gemini | Vision, KVT-Kacheln, Token-Schema, Scanner. Korrigiert, mit Vermerk. |
-| [research](central-learning-path-research.md) | Gemini | Ontologievergleich, Kognitionsmodelle, fünf Forschungs-Briefings. |
+| [architecture](central-learning-path-architecture.md) | Gemini | Konsolidierte Vision, 5-Objekte-Modell, KVT-Kacheln, geerdetes Optik-Beispiel, `buried_until`-Terminierung. |
+| [research](central-learning-path-research.md) | Gemini | Ontologievergleich (CASE 1.1, SKOS), Kognitionsmodelle, fünf Forschungs-Briefings, Fehler-Diagnose-Heuristik. |
 | [refinement](central-learning-path-refinement.md) | Grok | Didaktische Reduktion, Hard/Soft, Overlay-Abschluss, FSRS-Grenze. |
 | [identity](central-learning-path-identity.md) | Grok | PAID-Vorschlag. **Als Primärschlüssel abgelehnt**, als Profil brauchbar. |
 | [architecture-review](central-learning-path-architecture-review.md) | Grok | Abschnittsweise Kritik am Entwurf. |
 | [codex-research-review](central-learning-path-codex-research-review.md) | Codex | Erdungsprüfung, Identitätskritik, Fünf-Objekte-Modell, Release/Trust. |
 | [opus-review](central-learning-path-opus-review.md) | Opus | Nachprüfung gegen Primärquellen und Code; Gate-Befund; Schiedssprüche. |
 | [entry-problem](central-learning-path-entry-problem.md) | Opus + Owner | Einstieg in die Mitte. **Enthält die verbindlichen Owner-Entscheidungen.** |
-
-**Verwandte ADRs, beide bewusst offen:**
-
-- [2026-07-04 Hierarchical Domain Ontology](../adr/2026-07-04-hierarchical-domain-ontology-and-token-identity.md)
-  — von „Accepted“ auf **Draft** zurückgesetzt. Beantwortet die *lokale*
-  Adresse, nicht die veröffentlichte Identität.
-- [Learning Governance](https://github.com/zam-os/zam/blob/codex/learning-governance-adr-note/docs/adr/2026-07-05-learning-governance.md)
-  — auf eigenem Branch, Status „Proposed (note only)“, **nicht gemergt und nicht
-  entschieden**. Definiert dasselbe Objekt von der anderen Seite: ihr
-  *Curriculum* ist unser Overlay, ihr *Learning assignment* ist die von Grok zu
-  Recht aus dem CDN verwiesene Klassenschicht. Ihre offene Frage 4
-  (Kompetenznachweis ohne Offenlegung der FSRS-Historie) ist dieselbe Primitive
-  wie ein Einstufungsnachweis. Wer das eine baut, ohne das andere mitzudenken,
-  baut es zweimal.
+| [ADR 2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md) | Thomas / Working Group | **Verbindlicher Standard:** Atom-ID, 5-Objekte-Modell, SKOS-Alignments, Gate=OFF. |

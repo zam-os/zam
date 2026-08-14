@@ -1,0 +1,262 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-optik",
+  "version": "2026.08.1",
+  "title": "Optik und Lichtbrechung (Realschule Bayern)",
+  "description": "Geerdetes Referenz-KVT-Paket für Realschule Bayern Physik (Zweig I Klasse 7 und Zweig II/III Klasse 8)",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-14T18:00:00Z",
+  "signature": "ed25519:test_reference_signature_mock",
+  "atoms": [
+    {
+      "id": "atom:zam:de-by:ph-optik-strahlengang-lot",
+      "title": "Lichtstrahl und Einfallslot",
+      "domain": "schule/physik/optik",
+      "reduction": "geometric",
+      "typical_age_min": 12.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11334",
+          "target_label": "Refraction",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "PH7-LB2",
+          "topic_title": "Ausbreitung und Brechung des Lichts",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "PH8-LB2",
+          "topic_title": "Licht und Schatten, Reflexion und Brechung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H001",
+          "language": "de",
+          "bloom_level": 1,
+          "tier": "tier1_fast",
+          "question": "Wie steht das Einfallslot zur Grenzfläche zweier Medien?",
+          "concept": "Das Einfallslot steht genau senkrecht (im 90-Grad-Winkel) auf der Grenzfläche am Auftreffpunkt des Lichtstrahls.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Senkrecht (90°)", "Parallel (0°)"],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H002",
+          "language": "de",
+          "bloom_level": 2,
+          "tier": "tier2_synthesis",
+          "question": "Erkläre, zwischen welchen Linien der Einfallswinkel gemessen wird.",
+          "concept": "Der Einfallswinkel wird immer zwischen dem einfallenden Lichtstrahl und dem Einfallslot gemessen (nicht zur Grenzfläche).",
+          "sample_solution": "Der Einfallswinkel ist der Winkel zwischen dem einfallenden Strahl und dem Lot."
+        }
+      ]
+    },
+    {
+      "id": "atom:zam:de-by:ph-optik-brechung-qualitativ",
+      "title": "Lichtbrechung an Grenzflächen (qualitativ)",
+      "domain": "schule/physik/optik",
+      "reduction": "qualitative",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "atom:zam:de-by:ph-optik-strahlengang-lot",
+          "type": "hard",
+          "rationale": "Das Konzept des Einfallslots ist Voraussetzung für die Richtungsbeschreibung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11334",
+          "target_label": "Refraction",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        },
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q208391",
+          "target_label": "Snell's law",
+          "alignment_type": "skos:closeMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "PH7-LB2",
+          "topic_title": "Ausbreitung und Brechung des Lichts",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "PH8-LB2",
+          "topic_title": "Licht und Schatten, Reflexion und Brechung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H003",
+          "language": "de",
+          "bloom_level": 2,
+          "tier": "tier1_fast",
+          "question": "In welche Richtung knickt ein Lichtstrahl beim Übergang von Luft in Wasser?",
+          "concept": "Zum Einfallslot hin, da Wasser optisch dichter ist als Luft.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Zum Lot hin", "Vom Lot weg"],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H004",
+          "language": "de",
+          "bloom_level": 3,
+          "tier": "tier2_synthesis",
+          "question": "Warum erscheint ein gerader Stab, der schräg in ein Wasserglas gehalten wird, an der Wasseroberfläche geknickt?",
+          "concept": "Lichtstrahlen vom Stab werden beim Übergang aus dem Wasser in die Luft vom Lot weg gebrochen. Das Auge verlängert die Strahlen geradlinig zurück, wodurch der Stab nach oben verschoben und geknickt erscheint."
+        }
+      ]
+    },
+    {
+      "id": "atom:zam:de-by:ph-optik-totalreflexion-grenzwinkel",
+      "title": "Totalreflexion und Grenzwinkel",
+      "domain": "schule/physik/optik",
+      "reduction": "qualitative",
+      "typical_age_min": 13.0,
+      "prerequisites": [
+        {
+          "atom_id": "atom:zam:de-by:ph-optik-brechung-qualitativ",
+          "type": "hard",
+          "rationale": "Totalreflexion tritt nur auf, wenn Licht beim Übergang von optisch dichterem zu dünnerem Medium vom Lot weg gebrochen wird."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q234943",
+          "target_label": "Total internal reflection",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "PH7-LB2",
+          "topic_title": "Ausbreitung und Brechung des Lichts",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "PH8-LB2",
+          "topic_title": "Licht und Schatten, Reflexion und Brechung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H005",
+          "language": "de",
+          "bloom_level": 2,
+          "tier": "tier1_fast",
+          "question": "Kann Totalreflexion auftreten, wenn Licht von Luft in Glas übergeht?",
+          "concept": "Nein. Totalreflexion ist nur beim Übergang vom optisch dichteren ins optisch dünnere Medium möglich (z. B. Glas in Luft).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Nein (nur dichter zu dünner)", "Ja (immer)"],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H006",
+          "language": "de",
+          "bloom_level": 3,
+          "tier": "tier2_synthesis",
+          "question": "Erkläre das Funktionsprinzip eines Glasfaserkabels.",
+          "concept": "Lichtsignale treten an einem Ende in den Glasfaserkern ein. An den Außenwänden trifft das Licht im flachen Winkel auf die Grenzschicht, sodass vollständige Totalreflexion auftritt und das Licht verlustarm durch das Kabel geleitet wird."
+        }
+      ]
+    },
+    {
+      "id": "atom:zam:de-by:ph-optik-brechungsgesetz-snellius-formel",
+      "title": "Snelliussches Brechungsgesetz (quantitativ)",
+      "domain": "schule/physik/optik",
+      "reduction": "formal_formula",
+      "typical_age_min": 14.5,
+      "prerequisites": [
+        {
+          "atom_id": "atom:zam:de-by:ph-optik-brechung-qualitativ",
+          "type": "hard",
+          "rationale": "Das qualitative Verständnis der Brechung ist Voraussetzung für die quantitative Formel."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q208391",
+          "target_label": "Snell's law",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "physik",
+          "topic_code": "PH11-LB1",
+          "topic_title": "Wellenoptik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H007",
+          "language": "de",
+          "bloom_level": 3,
+          "tier": "tier1_fast",
+          "question": "Wie lautet die Formel des Snelliusschen Brechungsgesetzes?",
+          "concept": "n1 * sin(alpha) = n2 * sin(beta)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["n1 * sin(α) = n2 * sin(β)", "n1 * cos(α) = n2 * cos(β)"],
+            "correct_index": 0
+          }
+        }
+      ]
+    }
+  ]
+}
