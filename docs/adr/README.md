@@ -74,5 +74,5 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-08-09](2026-08-09-free-offline-learning-and-anki-interoperability.md) | Free Offline Learning and Anki Interoperability | Accepted |
 | [2026-08-09b](2026-08-09b-agent-plugin-package.md) | Portable Agent Plugin Package | Implemented |
 | [2026-08-09c](2026-08-09c-on-device-ai-preference.md) | On-Device AI Across Capabilities: One Preference, Honest Tiers | Accepted |
-| [2026-08-14](2026-08-14-central-learning-atoms-and-identity.md) | Five-Object Learning Model and Reactive Scheduling | Accepted — identity and alignment split out to 2026-08-14b |
-| [2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md) | Published Atom Identity and Alignment Semantics | Proposed — open |
+| [2026-08-14](2026-08-14-central-learning-atoms-and-identity.md) | Five-Object Learning Model and Reactive Scheduling | Accepted — finalised for field-test architecture |
+| [2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md) | Published Atom Identity and Alignment Semantics | Accepted — staged pilot and publication boundaries |

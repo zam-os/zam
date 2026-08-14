@@ -1,13 +1,14 @@
 # Zentraler Lernpfad: Stand und Übergabe an die nächste Runde
 
-**Status:** Arbeitsstand nach sechs Modellrunden und vier Owner-Runden
+**Status:** Finalisierte Architekturentscheidung vor dem Feldtest-Bau
 
-**Letzte Runde:** Codex-Härtungsreview H1/H2/H3 geschlossen, R2 (Bonus-
-Definitionen) beantwortet, PostgreSQL-Provisionierung abgedeckt, Cognitive
-Foundations zur Hypothesenlandkarte zurückgestuft.
+**Letzte Runde:** Beide zentralen ADRs finalisiert. Neue Owner-Entscheidung:
+Jeder Lernstand darf seine Kompatibilität zur gemeinsamen zentralen
+Wissensbasis neu aufbauen und auf deren späteres Datenmodell migrieren.
 
-**Richtung:** eine Konsolidierungsrunde, dann ein testbares Produkt bauen —
-siehe Abschnitt 0.
+**Richtung:** Die Architektur ist geschlossen. Als Nächstes: zwei bekannte
+Spike-Abweichungen bereinigen und den begrenzten Feldtest bauen — siehe
+Abschnitte 0 und 8.
 
 **Datum:** 2026-08-14
 
@@ -26,26 +27,29 @@ als Nächstes zu arbeiten wäre.
 > Blockaden bringen an dieser Stelle nichts. Nach der nächsten Runde wird der
 > Sack zugemacht und erst einmal etwas gebaut, das testbar ist.
 
-Das ordnet die offene Liste neu. Abschnitt 6 ist deshalb **nicht mehr nach
-Dringlichkeit sortiert, sondern danach, was etwas blockiert**: einen Feldtest,
-die öffentliche Verteilung, oder nichts von beidem.
+Die abschließende Owner-Entscheidung präzisiert, was dabei stabil sein muss:
 
-**Erledigt in dieser Runde:** Die Atom-Identität ist gezogen worden, solange sie
-vier Fixtures kostete — ULID als Zeile, opake `atom_uri`, `namespace`/`slug` als
-änderbare Adresse, Alias-Tabelle für frühere Adressen (M026). Damit ist die
-teuerste aufschiebbare Position weg.
+> **Alle Lernstände können die Kompatibilität zur gemeinsamen zentralen
+> Wissensbasis neu aufbauen und sich auf ein neues Datenmodell umstellen, sobald
+> es verfügbar wird.**
 
-**Der entscheidende Befund dazu, am Schema geprüft:** `cards` und `review_logs`
-referenzieren `tokens(id)` — die ULID —, **niemals `atom_id`**. Ein späteres
-Neuvergeben der Atom-Identität fasst `learning_atoms`, die drei Atom-Tabellen
-und `tokens.atom_id` an; Karten, FSRS-Zustand und Review-Historie bleiben
-unberührt. Die Identitätsfrage ist damit für einen Feldtest **aufschiebbar,
-ohne Lernerdaten zu riskieren** — unter einer Bedingung: **Übungsitem-ULIDs
-dürfen nicht neu vergeben werden**, denn daran hängen die Karten.
+Damit ist nicht die Pilotprojektion dauerhaft, sondern die **beobachtete
+Lernevidenz**: Review-Ereignisse, daraus entstandener Kartenstatus und
+Audit-Historie. Austauschbar sind Atome, zentrale Identitäten, Bindings,
+Alignments, abgeleitete Kanten und die Zuordnung eines lokalen Items zu einer
+Version der Wissensbasis.
 
-Das ist eine Reihenfolgeentscheidung, keine Absage an die Reviews. Was Codex
-fordert, bleibt vollständig stehen — nur als Tor vor der *Verteilung*, nicht vor
-dem *Bauen*.
+Eine Migration darf eindeutige Items neu anbinden und materiell geänderte Items
+über den Revisionsvertrag erneut fällig stellen. Bei Split, Merge oder unsicherer
+Zuordnung bleibt die Historie erhalten, aber Beherrschung wird nicht übertragen:
+Das neue Item wird echt abgefragt. Fragetext-, Slug- oder Embedding-Ähnlichkeit
+darf Kandidaten vorschlagen, nie still entscheiden.
+
+Die vier Fixtures sind damit vertrauenswürdige **Pilotdaten**, keine öffentliche
+Identitätszusage. M026s zufällige Umschreibung und die Fragetext-basierte
+Item-Freeze-Heuristik sind bekannte Spike-Abweichungen von der finalen
+Entscheidung. Sie werden zu Beginn der Bauphase entfernt oder klar zu
+unverbindlichem Duplicate-Lint zurückgestuft.
 
 ## 1. Worum es geht
 
@@ -66,21 +70,21 @@ Mitgearbeitet haben Gemini (Entwurf), Grok (Verfeinerung, Review), Codex/GPT-5.6
 2. [ADR 2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md) —
    was **entschieden** ist.
 3. [ADR 2026-08-14b](../adr/2026-08-14b-published-atom-identity-and-alignment.md) —
-   was **offen** ist, mit Optionen und externer Evidenz.
+   die **akzeptierte Stufenentscheidung** für Pilot und spätere Publikation.
 4. [Codex-Folgereview](central-learning-path-codex-follow-up-review.md) — die
    schärfsten Einwände gegen Implementierung und Schema.
 5. [Opus-Schiedsspruch](central-learning-path-opus-arbitration.md) — dieselben
    Einwände am Code nachgeprüft, plus was daraufhin behoben wurde.
 6. [Codex-Härtungsreview](central-learning-path-codex-hardening-review.md) —
    erneute Abnahme; zwei technische Gegenbeweise, Quellenkorrekturen und der
-   Arbeitsauftrag. **H1, H2 und H3 sind inzwischen behoben** (Abschnitt 7); die
-   Forschungs- und Vertragsforderungen R1/R2 und die Punkte 5–9, 14–15 der
-   Testliste stehen weiter.
+   Arbeitsauftrag. **H1, H2 und H3 sowie die ausführbaren Bonus-Definitionen
+   sind inzwischen behoben** (Abschnitt 7); die verteilungsbezogenen Tests und
+   Forschungsaufgaben werden an den Auslösern aus ADR 2026-08-14b fällig.
 
-Die Reviews sind vollständig gültig und **nicht** abgearbeitet — nach
-Abschnitt 0 sind ihre offenen Forderungen Tore vor der *Verteilung*, nicht vor
-dem Bauen. Wer sie liest, lese Abschnitt 6 dazu, sonst wirkt die Liste
-blockierender, als sie ist.
+Die Reviews bleiben als Befund und Begründung gültig. Wo die finalen ADRs eine
+spätere Stufe oder eine neue Owner-Entscheidung festhalten, haben die ADRs
+Vorrang. Abschnitt 6 nennt die Auslöser, damit historische Blocker nicht erneut
+als Feldtest-Blocker gelesen werden.
 
 Der Rest nach Bedarf (Dokumentenkarte, Abschnitt 9).
 
@@ -113,8 +117,12 @@ ungeprüft markiert, nicht weggelassen.
 7. Eine echte Zelle vor fünfzehn Manifesten; eine zweite, überlappende Zelle als
    Beweis der Wiederverwendung.
 8. Der Mensch entscheidet vor dem Publish.
+9. Persönliche Lernevidenz ist dauerhaft; die Kompatibilitätsprojektion zur
+   zentralen Wissensbasis ist neu aufbaubar.
+10. Pilot-IDs sind keine öffentlichen IDs. Stabilität beginnt erst an der
+    expliziten Release-Grenze.
 
-## 4. Entschieden (ADR 2026-08-14, `Accepted`)
+## 4. Entschieden (ADRs 2026-08-14 und 2026-08-14b, `Accepted`)
 
 | Thema | Entscheidung |
 |---|---|
@@ -130,6 +138,10 @@ ungeprüft markiert, nicht weggelassen.
 | **PracticeItem-Substanz** | `language`, `tier` und `fast_check` **sind** Substanz — persistiert (M025), Änderung ist per Default materiell. |
 | **Tier 1 + Tier 2** | **Qualitätsrichtlinie**, keine Publish-Invariante. Ein Atom darf mit einem Item ausgeliefert werden. |
 | **Eingebettete Kopien** | Tragen mehrere Tiles dieselbe Item-ID, müssen die Kopien identisch sein (Codex B1.5). Eine Fixture-Wache hält das offen. |
+| **Identität** | Die zentrale Identität ist opak und taxonomiefrei. IDs der gebündelten, unreleasten Pilot-Fixtures sind vorläufig und migrierbar. |
+| **Kompatibilitäts-Neuaufbau** | Ein späteres Wissensbasis-Modell darf Atome, Bindings, Kanten und Item-Zuordnungen ersetzen. Eindeutige Matches behalten Lernstand; unsichere Matches übernehmen keine Beherrschung. |
+| **Alignment** | Weltanker (`about`), Concept-Mapping (SKOS) und Kompetenz-Alignment sind verschiedene Aussagen. Keine erzeugt automatisch Atomgleichheit oder Lernstandstransfer. |
+| **Pilotquelle** | Lernerfunktionen dürfen auf gebündelten, commit-kontrollierten Repo-Fixtures aufbauen. Beliebige Datei-/Netzwerkimporte bleiben Publikationsarbeit. |
 
 **Zurückgezogene Owner-Entscheidungen** (bewusst dokumentiert, damit sie nicht
 zurückkehren):
@@ -157,42 +169,49 @@ zurückkehren):
 - Punkte, Streaks, Fortschrittsbalken gegen ein Ziel.
 - FSRS-5 — der Kernel ist FSRS-6.
 
-## 6. Offen — sortiert nach dem, was es blockiert
+## 6. Offene Arbeit — sortiert nach dem Auslöser
 
 Nach Abschnitt 0 ist die nützliche Frage nicht „wie dringend?“, sondern „was
 steht wem im Weg?“.
 
 ### I. Blockiert einen Feldtest — hier liegt die Arbeit
 
-Alles Sicherheitskritische ist erledigt: Installation schreibt keine fremden
-Karten, Inhaltsänderungen laufen über den Revisionsvertrag, FSRS wird nie ohne
-Abruf geschrieben, und die Erdung der Inhalte hat eine Arbeitsregel. Was fehlt,
-ist **Oberfläche**, kein Vertrag.
+Die Sicherheitsgrenze ist entschieden: Installation schreibt keine fremden
+Karten, FSRS wird nie ohne Abruf geschrieben, und eine unsichere
+Wissensbasis-Zuordnung überträgt keine Beherrschung. Vor der Oberfläche steht
+nur der kleine Codeabgleich aus Abschnitt 8, kein neuer Architekturvertrag.
 
 1. **Vorbedingungs-Selbsteinschätzung.** Entschieden, nicht gebaut. Ohne sie
    gibt es die Terminierung über `buried_until` nur auf dem Papier.
 2. **Vorziehen bei leerer Queue.** Entschieden, nicht gebaut.
 3. **Bonus-Oberfläche.** Die Ableitung steht (`bonusCandidates`); es gibt keinen
    Ort, an dem ein Lerner ein Angebot sieht, annimmt oder ignoriert.
-4. **Ein Weg, eine Zelle auf ein Gerät zu bekommen.** `installKvtTile` ist eine
-   Kernel-Funktion ohne CLI- oder Studio-Pfad. Für den Feldtest genügt ein
-   Import aus dem Repo — kein CDN, kein Manifest, keine Signatur.
+4. **Ein Weg, eine gebündelte Zelle auszuwählen.** `installKvtTile` ist eine
+   Kernel-Funktion ohne Studio-Pfad. Für den Feldtest genügt eine klar begrenzte
+   Auswahl commit-kontrollierter Repo-Fixtures — kein beliebiger Dateiimport,
+   kein CDN, kein Manifest und keine Signatur.
 5. **Kuratorisches Gate für den Inhalt selbst.** Die Optik-Zelle ist geerdet,
    aber ungeprüft im Sinne eines Fachreviews. Das ist die einzige Sorte Fehler,
    die eine Lernerin wirklich trifft.
+6. **Tier-Interaktion tatsächlich benutzen.** `tier` und `fast_check` werden
+   gespeichert, aber noch nicht gerendert; `materialiseKvtCards` materialisiert
+   derzeit Tier 1 und Tier 2 gemeinsam. Der Feldtest braucht mindestens eine
+   explizite, messbare Pilotregel für Darstellung und Progression.
 
 ### II. Blockiert die öffentliche Verteilung — nicht den Feldtest
 
-**Ausdrücklich vertagt am 2026-08-14**, mit Begründung und Auslöser je Punkt in
-[ADR 2026-08-14b, „Sequencing decision“](../adr/2026-08-14b-published-atom-identity-and-alignment.md).
-Nicht neu verhandeln — nachlesen, was den jeweiligen Punkt wieder fällig macht.
+**Als Stufenentscheidung akzeptiert am 2026-08-14**, mit verbindlicher
+Pilotregel und Auslöser je Punkt in
+[ADR 2026-08-14b, „Final staging decision“](../adr/2026-08-14b-published-atom-identity-and-alignment.md).
+Nicht neu verhandeln — beim Auslöser den dort geforderten Folge-ADR bauen.
 
 Vollständig gültig, nur später fällig. Ein lokal installiertes Tile aus dem
 eigenen Repo braucht weder Trust-Modell noch dauerhaft stabile Publik-IDs.
 
-- **Alignment-Semantik** (ADR 2026-08-14b, Frage 2). Dreiteilung `about` /
-  SKOS / Kompetenz-Alignment nach LRMI, ausformuliert und extern belegt.
-  *(Frage 1, die Identität, ist entschieden und umgesetzt — Decision 8.)*
+- **Persistierte Alignment-Semantik** (ADR 2026-08-14b, Frage 2). Die
+  Dreiteilung `about` / SKOS / Kompetenz-Alignment ist entschieden; Schema und
+  Provenienz werden vor dem ersten automatisierten oder externen Verbraucher
+  verbindlich.
 - **Release-, Provenienz- und Reconcile-Vertrag.** Manifest, Digests,
   Herausgeber-/Key-Identität, deklaratives Entfernen, Zeilen-Provenienz,
   Rollback. Eigener ADR. Hierher gehören auch die zwei fehlenden Objekte:
@@ -200,7 +219,8 @@ eigenen Repo braucht weder Trust-Modell noch dauerhaft stabile Publik-IDs.
 - **Paketübergreifende Referenzen.** Heute muss jedes Voraussetzungsatom im
   selben Tile liegen. Das ist kein Formalismus: Es verhindert nachweislich, die
   trigonometrische Voraussetzung von `brechungsindex-bestimmen` zu modellieren
-  ([Bonus-Notiz §9](central-learning-path-bonus-content.md)).
+  ([Bonus-Notiz §9](central-learning-path-bonus-content.md)). Der Pilot darf für
+  diese Zelle keine vollständige Voraussetzungshülle behaupten.
 - **Overlay-Compiler-Vertrag.** Grok projiziert, Codex will
   `S_target ∪ S_support`. Betrifft nur den Zulassungsschalter, und der steht
   auf *aus*. Codex hat formal recht (Dominator- statt Cover-Relation), die
@@ -261,15 +281,21 @@ ein benutzbares Produkt. Sie weiter zu diskutieren erzeugt keine Antwort.
   last-writer-wins. Das aufzulösen braucht den Release-Vertrag.
 - `language`, `tier`, `fast_check` sind persistiert (M025); ein Roundtrip-Test
   sichert, dass ein Tile ohne Verlust installiert und wieder ausgelesen wird.
-- Atom-Identität ist opak: ULID als Zeile, `urn:zam:atom:<ulid>` als
-  veröffentlichte Identität, `namespace`/`slug` als änderbare Adresse. M026
-  schreibt Alt-IDs um und hält sie über `atom_uri_aliases` auflösbar.
+- Die Pilotprojektion verwendet opake Atom-ULIDs und getrennte
+  `namespace`/`slug`-Adressen. **Bekannte Abweichung:** M026 schreibt Legacy-IDs
+  derzeit auf zufällige, gerätespezifische ULIDs um. Das ist nach Decision 9
+  kein akzeptierter Kompatibilitätsvertrag und wird entfernt oder nur mit einer
+  expliziten deterministischen Mapping-Tabelle behalten.
+- Der Installer lehnt derzeit „gleiches Atom + exakt gleiche Frage unter neuer
+  ID“ ab. Das ist höchstens Duplicate-Lint: Schon eine minimale Umformulierung
+  umgeht es, während zwei legitime gleiche Prompts kollidieren können. Es darf
+  nicht als Identity-Freeze beschrieben werden.
 - M024 stellt die Eindeutigkeit der Bindings über `COALESCE(grade, -1)` her —
   **providerneutral** (kein `sqlite_master` mehr) und ohne Tabellen-Rebuild.
   Widersprüchliche Duplikate scheitern laut, statt zu einer nie
   veröffentlichten Zeile verschmolzen zu werden.
 
-**Testlage:** 2175 Tests grün, 7 übersprungen — plus **46 gegen echtes
+**Testlage:** 2177 Tests grün, 7 übersprungen — plus **46 gegen echtes
 PostgreSQL 17** (`npm run pg:up && npm run pg:test`; CI setzt `POSTGRES_URL`
 ohnehin). Verifiziert ist damit, dass `applySchemaAndMigrations` auf PostgreSQL
 durchläuft, dass der Ausdrucks-Unique-Index dort trägt und dass eine grade-lose
@@ -278,12 +304,14 @@ Bindung auch dort idempotent bleibt.
 Von Codex' 15 Abnahmetests sind erfüllt: **1** (jetzt alle 24 Permutationen),
 **2**, **3**, **4**, **10**, **11**, **13**, gescopte Materialisierung, der
 Repräsentantenwechsel aus H2 und der PracticeItem-Roundtrip aus H3. Offen
-bleiben 5–9 und 14–15 — sie stehen auf Entscheidungen aus 6.A und 6.B.
+bleiben 5–9 und 14–15 — sie stehen auf den Publikationsauslösern aus 6.II.
 
-**Der Attach bleibt ein Spike.** Der Modulkommentar sagt das ausdrücklich und
-zählt auf, was fehlt: Manifest, Digests, Signatur, deklaratives Entfernen,
-paketübergreifende Referenzen. Keine Lernerfunktion darf darauf aufbauen, bevor
-A und B entschieden sind.
+**Der Attach bleibt ein Verteilungs-Spike, ist aber für gebündelte Pilotdaten
+freigegeben.** Lernerfunktionen dürfen auf commit-kontrollierten Repo-Fixtures
+aufbauen. Manifest, Digests, Signatur, deklaratives Entfernen,
+paketübergreifende Referenzen und beliebige Datei-/Netzwerkquellen bleiben an
+der Publikationsgrenze gesperrt. Der aktuelle Modulkommentar ist entsprechend
+noch nachzuziehen.
 
 **Bonus-Ableitung** ([`bonus.ts`](../../src/kernel/library/bonus.ts)):
 `heldAtomIds` und `bonusCandidates` beantworten Codex' R2 ausführbar —
@@ -295,27 +323,27 @@ ableitend, schreibt nichts. Eine Oberfläche gibt es nicht.
 Realschule Zweig II/III 8, Gymnasium 8, BOS. Sie überlappen auf denselben
 Atomen — das ist der Wiederverwendungsbeweis und zugleich der Bonus-Pool.
 
-## 8. Was die nächste Runde tun sollte
+## 8. Was als Nächstes gebaut wird
 
-**Eine Runde noch, dann bauen.** Die technischen Gegenbeweise sind geschlossen;
-die verbliebenen Verträge sind Tore vor der Verteilung, nicht vor dem Produkt.
+**Die Architektur ist finalisiert.** Keine weitere Modellrunde steht vor dem
+Feldtest. Der erste Bau-Commit gleicht nur den Spike an die beschlossenen ADRs
+an:
 
-Die letzte Konsolidierungsrunde sollte nur noch das tun, was später teuer wird:
+1. M026s zufällige Legacy-Umschreibung entfernen. Da M023 diesen Feature-Branch
+   nie verlassen hat, ist ein Neuaufbau der Pilotprojektion der Default. Nur bei
+   echtem Bedarf bekommt ein Zwischenstand eine explizite, atomare Mapping-
+   Migration.
+2. Die Fragetext-basierte Remint-Sperre entfernen oder als unverbindliches
+   Duplicate-Lint benennen; PracticeItem-IDs als ULIDs validieren.
+3. Modulkommentar und Fehlermeldungen auf die erlaubte Pilotquelle und die
+   spätere Publikationsgrenze korrigieren.
+4. Das echte NUL-Byte im M024-Gruppenschlüssel durch eine textuelle Escape-
+   Sequenz ersetzen, damit `provision.ts` wieder als Quelltext diffbar ist.
 
-1. ~~**Atom-Identität ziehen.**~~ **Erledigt** (Decision 8, M026).
-2. ~~**Übungsitem-ULIDs einfrieren.**~~ **Erledigt** — als Repo-Regel in
-   `CLAUDE.md`/`AGENTS.md` *und* im Installer durchgesetzt: eine erneut
-   veröffentlichte Frage unter neuer ID wird abgelehnt. Atom-IDs dürfen weiter
-   wandern; auf sie zeigt nichts Persönliches.
-3. ~~**Abschnitt II vertagen.**~~ **Erledigt** — je Punkt mit Begründung und
-   Auslöser in ADR 2026-08-14b.
-
-Damit ist die Konsolidierung abgeschlossen. **Als Nächstes wird gebaut.**
-
-**Danach: das Produkt.** Die kürzeste Strecke zu etwas Testbarem sind die fünf
-Punkte aus 6.I — Selbsteinschätzung, leere Queue, Bonus-Oberfläche, ein
-Import-Pfad, und ein Fachreview der Optik-Zelle. Nichts davon braucht ein CDN,
-ein Manifest oder eine Signatur.
+**Dann: der Feldtest-Slice.** Selbsteinschätzung, leere Queue,
+Tier-Interaktion, Bonus-Oberfläche, Auswahl einer gebündelten Zelle und
+Fachreview der Optik-Zelle. Nichts davon braucht ein CDN, ein Manifest oder
+eine Signatur.
 
 **Was nicht ansteht:** Scanner, weltweites CDN, Signatur-Infrastruktur,
 Tier-1-Objekte im Kernschema, ein drittes Editorfenster im Studio, endgültiges
@@ -345,13 +373,14 @@ Voraus. Erst etwas, das jemand benutzen kann — dann entscheidet Lernerfeedback
 **ADRs:**
 
 - [2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md) —
-  **Accepted:** Fünf Objekte, reaktives Scheduling, Bonus als Angebot.
+  **Accepted und finalisiert:** Fünf Objekte, reaktives Scheduling, Bonus als
+  Angebot und neu aufbaubare Wissensbasis-Kompatibilität bei dauerhafter
+  persönlicher Lernevidenz.
 - [2026-08-14b](../adr/2026-08-14b-published-atom-identity-and-alignment.md) —
-  **Proposed, offen:** Identität (1), Alignments (2), Reduktionsvokabular (3),
-  Repräsentant (4), Release-Vertrag (6). Frage 5 (PracticeItem-Substanz) ist
-  entschieden und in den Accepted-ADR gewandert. Enthält vier
-  Forschungsaufgaben — darunter, ob `reduction` durch ein bestehendes
-  Vokabular (SOLO) ersetzt werden kann.
+  **Accepted als Stufenentscheidung:** verbindliche Pilotregeln und klare
+  Auslöser für Alignment-Schema, Reduktionsvokabular, Repräsentant sowie
+  Release-/Trust-Vertrag. Enthält weiterführende Forschungsaufgaben, aber
+  keinen offenen Feldtest-Blocker.
 - [2026-07-04 Hierarchical Domain Ontology](../adr/2026-07-04-hierarchical-domain-ontology-and-token-identity.md) —
   **Draft**, beantwortet die *lokale* Adresse.
 - [Learning Governance](https://github.com/zam-os/zam/blob/codex/learning-governance-adr-note/docs/adr/2026-07-05-learning-governance.md) —

@@ -1,13 +1,15 @@
 # Five-Object Learning Model and Reactive Scheduling
 
-**Status:** Accepted (2026-08-14)  
+**Status:** Accepted — finalised for the field-test architecture (2026-08-14)\
 **Date:** 2026-08-14  
 **Deciders:** Thomas (project owner)  
-**Split note:** This ADR originally also decided published atom identity and
-SKOS alignments. Those are unsettled and moved to
-[2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md) with status
-`Proposed`. What remains here is **decided**; how far it is built varies by
-decision — see the delivery matrix below.  
+**Final owner amendment:** Every learning state may rebuild its compatibility
+with the shared central knowledge base and migrate to its eventual data model.
+Personal learning evidence is durable; the compatibility projection is not.\
+**Companion decision:**
+[2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md) is accepted
+with staged gates: its pilot rules bind now, while its distribution contracts
+become mandatory only when content leaves the repository.\
 **Related:**
 [2026-08-14b-published-atom-identity-and-alignment.md](2026-08-14b-published-atom-identity-and-alignment.md) ·
 [2026-07-26b-central-curriculum-content-service.md](2026-07-26b-central-curriculum-content-service.md) ·
@@ -35,16 +37,23 @@ identified:
    walled off behind hundreds of unproven foundations or having memory state
    fabricated for them.
 
+The final owner round resolved the remaining compatibility question. The
+current four fixtures and their database projection are **pilot data**, not a
+public identity contract. A later central knowledge-base model may replace
+their identifiers and relationships. Every local learning state may rebuild
+that compatibility, provided the migration preserves observed learning
+evidence and never invents mastery.
+
 ## Decision
 
 ### 1. The five-object model
 
 | # | Object | What it is | Identity |
 |---|---|---|---|
-| 1 | **LearningAtom** | Language-neutral learning objective in the universal DAG. Carries prerequisites, reduction profile, typical minimum age. | see [2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md) — **open** |
-| 2 | **ConceptAlignment** | Typed link to an external vocabulary or another objective. | semantics **open**, see 2026-08-14b |
+| 1 | **LearningAtom** | Language-neutral learning objective in the universal DAG. Carries prerequisites, reduction profile, typical minimum age. | opaque canonical identity once publicly released; pilot binding is rebuildable (Decisions 8–9) |
+| 2 | **ConceptAlignment** | Typed link to an external vocabulary or another objective. | typed advisory relation; never automatic equality, see 2026-08-14b |
 | 3 | **CurriculumBinding** | n:m attachment to an official standard: provider, school type, grade, track, topic code, exam relevance. | `(atom, provider, topic_code, grade, track)` |
-| 4 | **PracticeItem / Token** | Concrete, language-specific recall task: question, reference answer, Bloom level, interaction tier. | ULID |
+| 4 | **PracticeItem / Token** | Concrete, language-specific recall task: question, reference answer, Bloom level, interaction tier. | local ULID; compatibility with a canonical item may be remapped (Decision 9) |
 | 5 | **PersonalCard** | Per-user FSRS-6 scheduling record, local to the device. | ULID |
 
 Two conflations are hereby rejected and must not return:
@@ -154,21 +163,28 @@ Corollary for embedded copies: when several tiles carry the same item id, the
 copies must be identical. Partial copies made the resulting `content_version`
 depend on install order, which a fixture guard now prevents.
 
-### 8. Published atom identity is opaque
+### 8. Canonical identity is opaque; pilot identity is provisional
 
-**Decided 2026-08-14**, pulled forward from
-[2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md) question 1
-while it was still cheap: the corpus was four fixtures, and every later day adds
-consumers that stored the string.
+A central knowledge base needs identifiers that do not contain a mutable
+taxonomy. Once an identifier is released outside the repository under the
+release contract, it is stable and opaque. `namespace` and `slug` remain
+readable, mutable addresses beside it.
+
+The current fixtures have **not** crossed that publication boundary. Their
+atom and practice-item identifiers are provisional pilot data and may be
+replaced when the common central knowledge-base model is available. Code in
+this branch must therefore not turn migration between unreleased fixture
+versions into a permanent compatibility promise.
 
 | Field | Role |
 |---|---|
-| `learning_atoms.id` | ULID — row identity, what every foreign key points at |
-| `learning_atoms.atom_uri` | published identity, `urn:zam:atom:<ulid>` for ZAM-minted atoms; an imported atom keeps its publisher's URI |
+| `learning_atoms.id` | current local ULID row handle; replaceable as part of a compatibility rebuild |
+| `learning_atoms.atom_uri` | eventual canonical identity; `urn:zam:atom:<ulid>` for ZAM-minted atoms, or the publisher's URI for an imported atom |
 | `namespace`, `slug` | readable address, **mutable** — renaming breaks no reference |
-| `atom_uri_aliases` | every address the atom was published under before |
+| alias or migration mapping | explicit evidence that an old identity maps to a new one; never inferred from wording alone |
 
-`atom:zam:<namespace>:<slug>` is withdrawn. It called itself opaque while
+`atom:zam:<namespace>:<slug>` is withdrawn as a future canonical identity. It
+called itself opaque while
 putting a subject partition in the primary key, so re-filing an atom under a
 better taxonomy would have been an identity migration across every published
 tile — the pattern [ADR 2026-07-04](2026-07-04-hierarchical-domain-ontology-and-token-identity.md)
@@ -176,13 +192,47 @@ already rejected one level down for tokens. CASE 1.1 makes the same split:
 opaque UUID identifiers, a resolvable URI beside them, and subject coverage as
 its own `subject`/`subjectURI` attributes.
 
-M026 rewrites legacy rows in place, repoints the four referencing tables and
-keeps the old string as an alias, so anything that stored it still resolves.
+M026's current random rewrite is **not** the accepted migration design. The
+same legacy atom must never acquire unrelated identities on two devices. Since
+the legacy atom schema never left this feature branch, the preferred pilot
+transition is to rebuild the compatibility projection. If an intermediate
+database must be retained, it needs an explicit deterministic mapping and an
+atomic migration.
 
-**The standing rule this creates:** a published **practice-item ULID is never
-re-minted**. Cards and review logs hang on it, and it is the one identifier
-whose change would cost learner history. Atom identity, by contrast, may still
-move — nothing personal points at it.
+### 9. Learning-state compatibility is rebuildable
+
+The owner's final decision is:
+
+> Alle Lernstände können die Kompatibilität zur gemeinsamen zentralen
+> Wissensbasis neu aufbauen und sich auf ein neues Datenmodell umstellen, sobald
+> es verfügbar wird.
+
+This creates a boundary between two kinds of state:
+
+| Durable personal evidence | Rebuildable compatibility projection |
+|---|---|
+| review events and their timestamps/ratings | atoms and their canonical identifiers |
+| card scheduling state derived from real reviews | curriculum bindings and alignments |
+| observations and provenance of learner actions | atom and derived token prerequisite edges |
+| local history retained for audit | mappings from local items to a knowledge-base version |
+
+A compatibility migration may change identifiers, relationships and even the
+physical data model. It must classify every item mapping explicitly:
+
+| Mapping result | Required treatment |
+|---|---|
+| same practice item | rebind it and preserve its card and history |
+| materially revised item | rebind it through the content-revision contract and make it due for genuine re-evaluation |
+| split, merge or uncertain match | preserve the old history, but do not transfer mastery automatically; create or surface the new item for a real retrieval |
+| withdrawn item | retain audit history and remove it from active learning |
+
+Question equality, slug similarity or embedding proximity may propose a
+mapping; none may silently decide it. In particular, the current
+`installKvtTile` check for the same question under a new id is a temporary
+duplicate-content guard, **not** enforcement of identity continuity. The final
+model may keep a stable local learning-state handle beside a canonical item URI
+or may migrate references transactionally; this ADR fixes the safety semantics,
+not that storage choice.
 
 ## Delivery matrix
 
@@ -192,7 +242,8 @@ conflated them.
 | Decision | Decided | Built | Covered by tests | Empirically validated |
 |---|---|---|---|---|
 | Five object kinds | yes | yes — `PracticeItem` substance persisted (M025) | yes, round-trip | no |
-| Opaque atom identity | yes | yes (M026, alias table) | yes, migration + fixtures | no |
+| Opaque canonical identity | yes | pilot projection only; M026 rewrite is not accepted | fixtures only | no |
+| Rebuildable knowledge-base compatibility | yes | **no** — migration contract and mapping do not exist yet | no | no |
 | Install ≠ enrolment | yes | yes | yes | no |
 | No admission gate | yes | yes (never existed) | n/a | no |
 | Demand-driven materialisation | yes | yes | yes | no |
@@ -221,3 +272,10 @@ originally broke it.
   guideline (Decision 7), so a release with one item per atom is valid.
 - Whether the queue's cross-domain interleaver earns its place inside the
   due-date ordering is an open, replayable question (Decision 5).
+- A trusted, bundled repository fixture may support the field test before the
+  public release contract exists. It is pilot input, not a public package.
+- Changing the central knowledge model may rebuild compatibility state, but it
+  never licenses fabricated reviews, copied mastery across an uncertain match,
+  or loss of audit history (Decision 9).
+- General file/network import and external distribution still require the
+  staged contracts in ADR 2026-08-14b.

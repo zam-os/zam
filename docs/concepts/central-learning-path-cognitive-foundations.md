@@ -181,14 +181,12 @@ Nachfahren ist exakt *berechenbar*, aber kein exakter kausaler Lernwert; sie
 hängt an Atomgranularität, Kuratierungsstand, Zahl importierter Curricula,
 Modellierung alternativer Wege sowie Bedeutung und Schwierigkeit der Nachfolger.
 
-**Entscheidung.** Die Größe heißt `reachability_score` beziehungsweise
-**strukturelle Hebel-Heuristik** und sortiert Kandidaten. Sie wird nie als
+**Entscheidung.** Die zwei Größen sind getrennt. `unlockCount` ist
+lernendenbezogen und zählt die unmittelbar offerierbaren Ziele, deren übrige
+Voraussetzungen bereits gehalten werden; danach wird primär sortiert.
+`reachabilityCount` zählt statisch die transitiven Nachfolger im kuratierten
+Graphen und dient nur als Tiebreaker. Keine der beiden Größen wird als
 intrinsischer Wert eines Wissens dargestellt.
-
-Zu klären bleibt außerdem, welche der beiden in den Dokumenten kursierenden
-Bedeutungen gemeint ist — Zahl aller transitiven Nachfolger, oder Zahl der
-Ziele, deren Voraussetzungssatz das Atom vervollständigt. Das sind verschiedene
-Größen und brauchen verschiedene Namen.
 
 **Falsifikation.** Atome mit hohem Hebel führen nicht zu messbar kürzerer
 Lernzeit oder besserem Transfer bei ihren Nachfolgern.

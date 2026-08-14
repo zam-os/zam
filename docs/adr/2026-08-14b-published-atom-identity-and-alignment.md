@@ -1,11 +1,11 @@
 # Published Atom Identity and Alignment Semantics
 
-**Status:** Proposed — open, nothing here is binding, **except questions 1 and
-5, which are decided and moved to 2026-08-14**  
+**Status:** Accepted — staged pilot and publication boundaries (2026-08-14)\
 **Date:** 2026-08-14  
 **Deciders:** Thomas (project owner)  
 **Split from:** [2026-08-14](2026-08-14-central-learning-atoms-and-identity.md),
-whose decided parts (five-object model, reactive scheduling) remain `Accepted`.  
+whose five-object model, reactive scheduling and rebuildable-compatibility
+invariant remain `Accepted`.\
 **Reviews that drive this:**
 [Codex-Folgereview](../concepts/central-learning-path-codex-follow-up-review.md) ·
 [Opus-Schiedsspruch](../concepts/central-learning-path-opus-arbitration.md)
@@ -14,53 +14,61 @@ whose decided parts (five-object model, reactive scheduling) remain `Accepted`.
 
 ## Context
 
-The first version of ADR 2026-08-14 decided three things at once: the
-five-object model, reactive scheduling, and how a published learning atom is
-identified and linked to the outside world. The first two survived review. The
-third did not, and shipping it as `Accepted` would freeze open questions into
-long-lived published data.
+The first version of ADR 2026-08-14 conflated the field-test model with a public
+interchange contract. Review separated them. The owner has now fixed the
+boundary: every learning state may rebuild its compatibility with the eventual
+shared central knowledge base and migrate to its new data model.
 
-What is implemented today, and contested:
+Therefore the four repository fixtures are **trusted pilot input**, not public
+packages. Their identifiers and compatibility projection may change. The
+decisions below are final in two different senses:
 
-- `learning_atoms.id` is `atom:zam:<namespace>:<slug>`, e.g.
-  `atom:zam:optik:brechung-qualitativ`. The ADR called this opaque. It is not:
-  the installer validates its parts and the practice-item address is derived
-  from it.
-- `atom_alignments.alignment_type` holds SKOS mapping predicates
-  (`skos:exactMatch`, `skos:closeMatch`, …) pointing from a *learning objective*
-  to a *Wikidata entity*.
+- Pilot rules are binding now and permit a learner-facing field test from
+  bundled, commit-controlled fixtures.
+- Publication gates are binding before arbitrary file/network import, a second
+  publisher, or any tile leaving the repository.
 
-Both must be settled before any tile is published outside the repository,
-because both become other people's data the moment they are.
+This is a staged decision, not an open ADR. A trigger below may require a new
+ADR, but does not reopen the field-test architecture.
 
 ## Decision drivers
 
-1. **A published identifier is forever.** Local rows can be migrated; strings
-   that shipped in a CDN artefact and were joined against by a third party
-   cannot.
+1. **Publication starts at an explicit boundary.** Pilot rows may be rebuilt;
+   an identifier that leaves the repository under a release contract becomes
+   another party's data and must be stable.
 2. **Classification changes; identity must not.** Subject taxonomies get
-   refactored — that is their purpose.
+   refactored — canonical identity must not encode them.
 3. **A wrong equivalence is worse than a missed one.** A missed join costs a
-   duplicate card. A false join silently transfers learning state between
-   objectives that are not substitutable.
+   duplicate or a re-test. A false join can silently transfer learning state
+   between objectives that are not substitutable.
 4. **The repo rule.** `AGENTS.md`: *IDs are ULIDs, never UUIDs or numeric ids.*
 5. **External joinability.** Other publishers and standards should be able to
    point at ZAM atoms without adopting ZAM's taxonomy.
+6. **Observed learning evidence is durable.** A compatibility rebuild may
+   change catalog identifiers and relationships; it may not fabricate reviews
+   or copy mastery across an uncertain mapping.
 
 ---
 
-## Question 1 — What identifies a published atom? — **decided 2026-08-14**
+## Question 1 — What identifies an atom? — **decided**
 
-Resolved as recommended (Option B) and moved to
-[2026-08-14](2026-08-14-central-learning-atoms-and-identity.md), Decision 8:
-ULID row identity, opaque `atom_uri`, mutable `namespace`/`slug`, alias table
-for former addresses. Implemented in M026.
+The canonical central model uses an opaque identity separate from mutable
+`namespace`/`slug` classification. Once publicly released, that identity is
+stable. Before that boundary, repository-fixture IDs are provisional and every
+learning state may rebuild its compatibility to the new central model.
 
-Pulled forward rather than deferred because the cost only grows: four fixtures
-today, every consumer that stored the string later. The reasoning, the CASE 1.1
-evidence and the rejected options are preserved in Decision 8.
+This supersedes the claim that M026 already solved migration. Its random ULID
+rewrite is not a canonical mapping and is not required to preserve an
+unreleased intermediate schema. The pilot should rebuild that projection; any
+retained migration must be deterministic, explicit and atomic.
 
-## Question 2 — What does an alignment mean?
+Practice-item continuity follows the same boundary. The current same-question
+check may catch an accidental duplicate, but text equality cannot establish
+identity. A future release/migration manifest supplies the mapping. Its safety
+semantics are Decision 9 in
+[2026-08-14](2026-08-14-central-learning-atoms-and-identity.md).
+
+## Question 2 — What does an alignment mean? — **decided**
 
 ### The problem
 
@@ -89,7 +97,7 @@ identity debate was about.
   property expresses the relation.
 - `about` is the schema.org property for subject matter.
 
-### Recommendation (not a decision)
+### Decision
 
 Split `atom_alignments` three ways, by what the link actually claims:
 
@@ -99,33 +107,45 @@ Split `atom_alignments` three ways, by what the link actually claims:
 | **Concept mapping** | SKOS `exactMatch`/`closeMatch`/… | a concept in a concept scheme, both sides modelled as concepts | vocabulary interop only |
 | **Competency alignment** | CASE-style association / `teaches`, `assesses` | another objective or a framework node | curriculum coverage |
 
-**No kind may ever produce automatic atom equality or deduplication.** Reuse of
-an atom across curricula stays an editorial act with a named reviewer.
+**No kind may ever produce automatic atom equality, learning-state transfer or
+deduplication.** Reuse of an atom across curricula stays an editorial act with
+a named reviewer.
 
-Practical consequence: today's Wikidata links become `about` — which is what
-they always were.
+For the pilot, existing entity links are interpreted as `about`, regardless of
+the transitional storage spelling. Before any automated matching, external
+consumer or public package, storage must distinguish the three kinds above and
+carry provenance.
 
 ---
 
-## Question 3 — What is the reduction vocabulary?
+## Question 3 — What is the reduction vocabulary? — **decided for the pilot**
 
 `reduction` is a free-text column with no `CHECK`. The fixtures already use
 `qualitative`, `geometric`, `formal_formula` **and** `formula`; the accepted ADR
 listed only `formal_formula`. One fixture is already outside its own vocabulary
 and nothing catches it.
 
-Open: fix the vocabulary and add a `CHECK`, or model it as a controlled
-vocabulary table with its own provenance. See research task R1 — the vocabulary
-may not need to be invented.
+For the one-publisher pilot, `reduction` remains descriptive free text and must
+not gate scheduling, equality or compatibility. This avoids freezing an
+unresearched vocabulary into data behaviour.
+
+Before a second publisher or the first query that groups by reduction, adopt a
+cited controlled vocabulary or document why a ZAM-specific one is necessary,
+then validate it. That trigger requires a follow-up ADR; it does not block the
+field test.
 
 ---
 
-## Question 4 — Which item represents an atom in the token graph?
+## Question 4 — Which item represents an atom in the token graph? — **decided for the pilot**
 
-Hard atom edges are projected onto practice items. The representative is
-currently the lowest stored item id: deterministic, order-independent, and
-didactically meaningless. The model owes an explicit representative or
-diagnostic item, or a stated rule for why any item may stand for the atom.
+Hard atom edges are projected onto practice items. For the pilot, the lowest
+stored item id remains the deterministic representative. This is an
+implementation placeholder, not a didactic or mastery claim.
+
+The first atom for which that choice changes `held`, bonus eligibility or the
+desired prerequisite check ends the deferral. At that point the central model
+must name an explicit representative/diagnostic item or replace the projection
+rule. No UI may describe "lowest id" as pedagogical meaning.
 
 ---
 
@@ -137,7 +157,7 @@ language, interaction tier and the structured fast check **are** PracticeItem
 substance, and Tier 1 + Tier 2 per atom is a **quality guideline**, not a
 publish invariant. Implemented in M025 with a round-trip test.
 
-## Question 6 — The release and provenance contract
+## Question 6 — The release and provenance contract — **publication gate**
 
 Identity is necessary but not sufficient. Before any public tile, ZAM needs a
 release manifest, artefact digests, publisher and key identity, declarative
@@ -145,59 +165,72 @@ removal (a statement withdrawn in v2 must not linger locally), per-row release
 provenance, and rollback/rotation rules. The Codex follow-up review specifies
 this in detail and it is larger than this ADR.
 
-**This should become its own ADR.** The Update Framework's threat model —
+This becomes its own ADR before the first public package. The Update
+Framework's threat model —
 rollback, freeze, mix-and-match — is the right checklist, without committing to
 TUF as an implementation.
 
+Until then, the only allowed learner-facing source for this spike is bundled,
+commit-controlled repository content. A general file picker, arbitrary local
+JSON, a network catalog, a second publisher or a tile leaving the repository
+crosses the boundary and is blocked by this gate.
+
 ---
 
-## Sequencing decision (2026-08-14): deliberately deferred
+## Final staging decision
 
-**Everything still open in this ADR waits until distribution, by decision, not
-by neglect.** The owner's direction is a runnable product first: without
-something a learner can use there is no feedback, and without feedback no
-evolutionary development. These questions do not block building — they block
-publishing.
+There is no remaining architecture gate before building the bounded field
+test. The accepted stages are:
 
-Recorded here so the next round does not renegotiate what is deliberately
-waiting.
-
-| Open item | Why it can wait | What ends the deferral |
+| Concern | Binding pilot rule | Trigger for the next contract |
 |---|---|---|
-| Alignment semantics (Q2) | Links are advisory today; nothing dedupes atoms automatically, so a wrong `exactMatch` cannot yet move learning state | The first automated matching or dedup pass, or the first external consumer of the links |
-| Reduction vocabulary (Q3) | A free-text field with no `CHECK` costs nothing while one team writes the tiles | A second publisher, or the first query that groups by reduction |
-| Representative item (Q4) | "Lowest item id" is deterministic and order-stable; it is imprecise, not wrong | An atom whose items differ enough that the choice changes what "held" means |
-| Release, trust, provenance (Q6) | A tile installed from our own repo onto our own device needs no signature, manifest or rollback | The first tile that leaves the repository |
-| Cross-package references | Painful but visible: it blocks modelling one prerequisite in the reference cell, and everybody knows | A cell whose prerequisites genuinely span subjects and must ship |
-| Codex acceptance tests 5–9, 14–15 | All stand on the two contracts above | Those contracts |
+| Identity | Fixture IDs are provisional; compatibility may be rebuilt from an explicit mapping | first public package or external consumer |
+| Alignment | Existing entity links mean `about`; no automated equality, deduplication or state transfer | first automated matcher, deduplication pass or external consumer |
+| Reduction | Descriptive free text only; it drives no behaviour | second publisher or first grouped query |
+| Representative item | Lowest item id, explicitly a deterministic placeholder | first case where that choice changes learner-facing semantics |
+| Trust/provenance | Only bundled, commit-controlled fixtures | arbitrary file/network import, second publisher or content leaving the repository |
+| Cross-package references | Pilot cells may only claim the prerequisite closure they actually encode | first field-test cell that requires a cross-package edge to be pedagogically honest |
 
-**What makes the deferral safe rather than merely convenient**, checked against
-the schema: `cards` and `review_logs` reference `tokens(id)`, never `atom_id`.
-Learner history hangs on the practice-item ULID alone. Everything deferred here
-touches published *content* identity and shape — none of it can reach a
-learner's FSRS state.
+The field-test UI may therefore use `installKvtTile` for bundled repository
+fixtures. It must not expose the spike as a general import mechanism or imply
+that its identifiers are already the shared public catalog.
 
-The one identifier that would be expensive is therefore frozen, and enforced
-rather than merely written down: a published practice-item id is never
-re-minted (Decision 8; `installKvtTile` refuses a republished question under a
-new id).
+### Compatibility safety
 
-**What is not deferred:** content correctness. A wrong anchor or a wrong
-curriculum reference reaches the learner directly, and no contract above
-protects against it. The working rule stands — no anchor without resolution
-against its primary source.
+`cards` and `review_logs` currently reference local `tokens(id)`. The future
+central model may preserve that local handle or migrate it transactionally; the
+choice is deliberately deferred until the model exists. What is not deferred
+is the semantic rule:
 
-## Sequencing
+- exact mappings preserve card state and history;
+- material changes use the content-revision path and require a real re-test;
+- ambiguous split/merge mappings preserve history but transfer no mastery;
+- no question-, slug- or embedding-similarity heuristic decides silently.
 
-1. **Questions 1 and 2 first.** Everything published carries their consequences,
-   and both are cheap while the data is four fixtures.
-2. **Questions 3–5** can follow; they are schema hygiene once the vocabulary and
-   representative rules are named.
-3. **Question 6 as its own ADR**, required before anything leaves the
-   repository, not before further kernel work.
+This makes the deferral safe without pretending that today's identifiers are
+permanent.
 
-Until questions 1 and 2 are decided, `installKvtTile` stays a spike and no
-learner feature builds on it.
+### Not deferred
+
+Content correctness reaches the learner immediately. No anchor ships in the
+pilot without resolution against its primary source, and the selected cell
+needs a subject-matter review. A cell with a known missing prerequisite must be
+narrowed or labelled; the absence cannot be hidden behind the future release
+contract.
+
+### Required implementation follow-up
+
+The ADR is final; two pieces of spike code now lag behind it and belong at the
+front of the build work:
+
+1. Remove M026's random legacy-ID rewrite, or replace it only if an explicit,
+   deterministic and atomic mapping for intermediate branch databases is truly
+   needed.
+2. Remove or relabel the same-question check as duplicate-content lint. It is
+   not a published-item identity guarantee.
+
+The release/trust ADR remains mandatory at its trigger. That future work does
+not reopen the decisions above.
 
 ---
 

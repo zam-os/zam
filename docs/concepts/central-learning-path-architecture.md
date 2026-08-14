@@ -4,8 +4,8 @@
 **Datum:** 2026-08-14  
 **Autoren:** ZAM Core & Agent Research Team (Gemini, Grok, Codex, Claude Opus, Thomas)  
 **Bezug zu bestehenden ADRs:**
-- [ADR 2026-08-14: Five-Object Learning Model and Reactive Scheduling](../adr/2026-08-14-central-learning-atoms-and-identity.md) — **Accepted**
-- [ADR 2026-08-14b: Published Atom Identity and Alignment Semantics](../adr/2026-08-14b-published-atom-identity-and-alignment.md) — **Proposed, offen.** Atom-ID und SKOS-Semantik sind *nicht* entschieden; die Formen unten sind der Ist-Stand des Spikes, keine Festlegung.
+- [ADR 2026-08-14: Five-Object Learning Model and Reactive Scheduling](../adr/2026-08-14-central-learning-atoms-and-identity.md) — **Accepted und für den Feldtest finalisiert.** Persönliche Lernevidenz bleibt dauerhaft; die Kompatibilitätsprojektion zur späteren zentralen Wissensbasis ist neu aufbaubar.
+- [ADR 2026-08-14b: Published Atom Identity and Alignment Semantics](../adr/2026-08-14b-published-atom-identity-and-alignment.md) — **Accepted als Stufenentscheidung.** Gebündelte Repo-Fixtures sind Pilotdaten; öffentliche Identität, Trust und Provenienz werden erst an der ausdrücklich benannten Publikationsgrenze verbindlich. Bei Widerspruch haben die ADRs Vorrang vor den Spike-Formen weiter unten.
 - [ADR 2026-07-26b: Central Curriculum Content Service: Content Only, Pulled Forward](../adr/2026-07-26b-central-curriculum-content-service.md)
 - [ADR 2026-07-25: Shared Curated Learning Content — Review Once, Serve Many](../adr/2026-07-25-shared-curated-learning-content.md)
 - [ADR 2026-07-04: Closed-Group Learning Library: Curation, Privacy and Deployment](../adr/2026-07-04-multi-learner-shared-knowledge.md)

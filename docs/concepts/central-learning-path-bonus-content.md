@@ -154,7 +154,8 @@ scheitern.
 ### 6.2 Welche Alternativen erfüllen eine Voraussetzung?
 
 Solange der Graph nur AND-Kanten kennt, gar keine — „für X genügt A **oder** B“
-ist nicht ausdrückbar (offene Frage 3 in ADR 2026-08-14b).
+ist nicht ausdrückbar (bewusst begrenzte Pilotsemantik; siehe
+[Cognitive Foundations §3](central-learning-path-cognitive-foundations.md)).
 
 **Für den Bonus ist das die sichere Richtung.** Ein Atom, das über einen nicht
 modellierten zweiten Weg erreichbar wäre, wird schlicht nicht angeboten. Zu
@@ -234,8 +235,9 @@ eigenen Zweck nicht abbilden.
 
 Nebenbefund fürs Vokabular: `formal_formula` und `formula` unterscheiden hier
 faktisch *nennen* von *anwenden*. Wenn das gemeint ist, muss das Vokabular es
-sagen; wenn nicht, ist eines von beiden falsch gesetzt (offene Frage 3 in
-2026-08-14b).
+sagen; wenn nicht, ist eines von beiden falsch gesetzt. Für den Pilot bleibt es
+beschreibender Freitext; der Auslöser für ein kontrolliertes Vokabular steht in
+[ADR 2026-08-14b, Frage 3](../adr/2026-08-14b-published-atom-identity-and-alignment.md).
 
 ## 10. Wie man das ehrlich prüft
 
