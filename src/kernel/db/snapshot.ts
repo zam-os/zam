@@ -31,6 +31,10 @@ const MANIFEST_PREFIX = "-- zam-snapshot: ";
  * classification against the actual schema.
  */
 export const SNAPSHOT_TABLES = [
+  "learning_atoms",
+  "atom_alignments",
+  "atom_curriculum_bindings",
+  "atom_prerequisites",
   "tokens",
   "imported_card_bindings",
   "media_assets",

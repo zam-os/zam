@@ -55,7 +55,9 @@ CREATE TABLE IF NOT EXISTS tokens (
   published_by       TEXT,
   published_at       TEXT,
   -- Editorial state (ADR 2026-07-04 Phase 3: 'draft' | 'in_review' | 'published' | 'deprecated').
-  editorial_state    TEXT NOT NULL DEFAULT 'published'
+  editorial_state    TEXT NOT NULL DEFAULT 'published',
+  -- Published learning atom this practice item realises (ADR 2026-08-14).
+  atom_id            TEXT
 );
 
 -- Stable provenance for deterministic local-file imports (ADR 2026-08-09).
@@ -272,6 +274,47 @@ CREATE TABLE IF NOT EXISTS token_contexts (
   PRIMARY KEY (token_id, context_id)
 );
 
+-- Published learning atoms and their n:m facets (ADR 2026-08-14).
+CREATE TABLE IF NOT EXISTS learning_atoms (
+  id              TEXT PRIMARY KEY,
+  title           TEXT NOT NULL,
+  domain          TEXT NOT NULL DEFAULT '',
+  reduction       TEXT NOT NULL DEFAULT '',
+  typical_age_min REAL,
+  created_at      TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS atom_alignments (
+  atom_id         TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+  target_uri      TEXT NOT NULL,
+  target_label    TEXT,
+  alignment_type  TEXT NOT NULL,
+  provenance      TEXT,
+  PRIMARY KEY (atom_id, target_uri)
+);
+
+CREATE TABLE IF NOT EXISTS atom_curriculum_bindings (
+  atom_id         TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+  provider        TEXT NOT NULL,
+  school_type     TEXT NOT NULL DEFAULT '',
+  grade           INTEGER,
+  track           TEXT NOT NULL DEFAULT '',
+  subject         TEXT NOT NULL DEFAULT '',
+  topic_code      TEXT NOT NULL,
+  topic_title     TEXT,
+  exam_relevant   INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (atom_id, provider, topic_code, grade, track)
+);
+
+CREATE TABLE IF NOT EXISTS atom_prerequisites (
+  atom_id     TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+  requires_id TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+  kind        TEXT NOT NULL DEFAULT 'hard' CHECK (kind IN ('hard', 'soft')),
+  rationale   TEXT,
+  PRIMARY KEY (atom_id, requires_id)
+);
+
 `;
 
 /** Performance indexes. Applied after migrations — see `SCHEMA_TABLES`. */
@@ -291,6 +334,9 @@ CREATE INDEX IF NOT EXISTS idx_review_logs_user ON review_logs(user_id, reviewed
 CREATE INDEX IF NOT EXISTS idx_session_steps_session ON session_steps(session_id);
 CREATE INDEX IF NOT EXISTS idx_tokens_title ON tokens(title);
 CREATE INDEX IF NOT EXISTS idx_token_contexts_context ON token_contexts(context_id);
+CREATE INDEX IF NOT EXISTS idx_tokens_atom ON tokens(atom_id);
+CREATE INDEX IF NOT EXISTS idx_atom_bindings_provider
+  ON atom_curriculum_bindings(provider, topic_code);
 `;
 
 /**

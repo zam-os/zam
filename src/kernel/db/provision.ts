@@ -327,6 +327,63 @@ export async function runMigrations(db: Database): Promise<void> {
     `CREATE INDEX IF NOT EXISTS idx_cards_user_buried
        ON cards(user_id, buried_until)`,
   );
+
+  // M023: published learning atoms (ADR 2026-08-14). Practice items stay
+  // on tokens; atom_id is a nullable pointer, not a second FSRS key.
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS learning_atoms (
+      id              TEXT PRIMARY KEY,
+      title           TEXT NOT NULL,
+      domain          TEXT NOT NULL DEFAULT '',
+      reduction       TEXT NOT NULL DEFAULT '',
+      typical_age_min REAL,
+      created_at      TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  `);
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS atom_alignments (
+      atom_id         TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+      target_uri      TEXT NOT NULL,
+      target_label    TEXT,
+      alignment_type  TEXT NOT NULL,
+      provenance      TEXT,
+      PRIMARY KEY (atom_id, target_uri)
+    );
+  `);
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS atom_curriculum_bindings (
+      atom_id         TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+      provider        TEXT NOT NULL,
+      school_type     TEXT NOT NULL DEFAULT '',
+      grade           INTEGER,
+      track           TEXT NOT NULL DEFAULT '',
+      subject         TEXT NOT NULL DEFAULT '',
+      topic_code      TEXT NOT NULL,
+      topic_title     TEXT,
+      exam_relevant   INTEGER NOT NULL DEFAULT 0,
+      PRIMARY KEY (atom_id, provider, topic_code, grade, track)
+    );
+  `);
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS atom_prerequisites (
+      atom_id     TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+      requires_id TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+      kind        TEXT NOT NULL DEFAULT 'hard' CHECK (kind IN ('hard', 'soft')),
+      rationale   TEXT,
+      PRIMARY KEY (atom_id, requires_id)
+    );
+  `);
+  if (tokenCols.length > 0 && !tokenCols.includes("atom_id")) {
+    await db.exec(`ALTER TABLE tokens ADD COLUMN atom_id TEXT`);
+  }
+  await db.exec(
+    `CREATE INDEX IF NOT EXISTS idx_tokens_atom ON tokens(atom_id)`,
+  );
+  await db.exec(
+    `CREATE INDEX IF NOT EXISTS idx_atom_bindings_provider
+       ON atom_curriculum_bindings(provider, topic_code)`,
+  );
 }
 
 /**

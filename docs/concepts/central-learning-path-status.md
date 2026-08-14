@@ -114,30 +114,27 @@ Diese betreffen das **Lernerverhalten** und sind getroffen:
 
 ## 6. Offen, nach Dringlichkeit
 
-Der Schnitt verläuft sauber: **Die Lernerseite ist entschieden, die
-Inhaltsseite nicht.**
+**Lernerseite und veröffentlichtes Inhaltsmodell sind entschieden.**
+Was offen bleibt, ist Compiler-, Release- und Messarbeit — keine neue
+Identitätsdebatte.
 
-### A. Veröffentlichte Identität — blockiert alles Weitere
+### A. Veröffentlichte Identität — entschieden (ADR 2026-08-14)
 
-PAID ist von Codex mit belastbaren Gegenbeispielen zurückgewiesen worden (ein
-Lernbereich enthält mehrere Atome derselben Reduktionsstufe; gleicher Anker plus
-gleiche Stufe ≠ gleiche Kompetenz). Codex' Empfehlung: **opaque, namespaced
-Atom-ID plus typisierte, provenienztragende Alignments** (`exact`, `close`,
-`broad`, `narrow`, `translation`) statt einer Alias-Tabelle. Nicht entschieden.
+Opake, namespaced Atom-IDs `atom:zam:<namespace>:<slug>`. `<namespace>` ist
+eine **Fachpartition** (`optik`), keine Region. PAID `(scheme, entity,
+reduction)` ist als Primärschlüssel abgelehnt; `reduction` bleibt Profilfeld.
+Wiederverwendung: ein zweites Curriculum hängt eine Binding an dasselbe Atom
+oder mintet nur dann neu, wenn die Ziele nicht substituierbar sind.
 
-Groks `reduction`-Vokabular überlebt als **Profilfeld**, nicht als
-Schlüsselbestandteil. Das ist keine Niederlage, sondern der richtige Ort.
+### B. Lernziel-Atom vs. Übungsitem — entschieden (ADR 2026-08-14)
 
-### B. Lernziel-Atom vs. Übungsitem
+Fünf Objekte: Atom, Alignment, CurriculumBinding, PracticeItem/Token, Karte.
+Der heutige `tokens`-Datensatz ist das Übungsitem. `provider` / `topic_id` am
+Token bleiben ein 1:1-Überbleibsel; n:m lebt an `atom_curriculum_bindings`.
 
-Codex' Fünf-Objekte-Modell trennt sprachneutrales Lernziel und konkrete
-Abrufaufgabe. Der heutige `tokens`-Datensatz ist eindeutig ein **Übungsitem**
-(eine `question`, ein `bloom_level`, eine `content_version`). Spätestens vor
-Mehrsprachigkeit oder Tier-1/Tier-2 muss das entschieden sein.
-
-Nebenbefund, den niemand bestreitet: `tokens.provider` / `tokens.topic_id` sind
-Overlay-Mitgliedschaft am Atom — 1:1 statt n:m. Groks Kritik am Entwurf trifft
-also auch den Ist-Zustand.
+Fundament-vs-Anwendung nach einem `Again` ist eine **Stellschraube**, kein
+Kernel-Gesetz: Default bleibt `cascadeBlock`, bis Feldmessung Fall 2 häufig
+zeigt ([Einstiegsproblem §12](central-learning-path-entry-problem.md)).
 
 ### C. Overlay-Compiler-Vertrag
 
@@ -186,6 +183,17 @@ ehrliche Antwort auf die falschen Anker.
    - Automatisierter Vitest-Test [`tests/kernel/curriculum-kvt-fixture.test.ts`](../../tests/kernel/curriculum-kvt-fixture.test.ts) prüft Zyklenfreiheit (Topological Sort) und Schema-Integrität.
 3. **Dokumentenbereinigung:**
    - `central-learning-path-architecture.md` und `central-learning-path-research.md` mit den Owner-Entscheidungen, CASE 1.1 und korrekten Primärquellen synchronisiert.
+4. **Namensraum und erster Kernel-Attach:**
+   - Atom-IDs auf Fachpartition (`atom:zam:optik:…`) umgestellt.
+   - `attachKvtTile` schreibt Atome, Bindings, Alignments, Übungsitems als
+     Tokens und Karten; FSRS bleibt unberührt.
+5. **Drei angrenzende Zellen (Join-Beweis):**
+   - Gymnasium 8 Optik (215729) wiederverwendet Brechung/TIR, ergänzt
+     Reflexionsgesetz, Sammellinse, TIR-Anwendungen.
+   - Realschule-Erweiterung: dieselben neuen Atome plus Dispersion nur in 7 I
+     (in 8 II/III nicht im Lehrplan).
+   - BOS 10 (119285) wiederverwendet Formel + TIR und ergänzt das Messen von n.
+   - Attach *merged* Bindings; die zweite Kachel löscht die erste nicht.
 
 ## 8. Dokumentenkarte
 

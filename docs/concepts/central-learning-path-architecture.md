@@ -74,7 +74,7 @@ Zur sauberen Entkopplung von universellem Wissen, amtlichen Lehrplänen und konk
 ```mermaid
 classDiagram
     class LearningAtom {
-        +string atom_id "atom:zam:de-by:ph-optik-brechung-qualitativ"
+        +string atom_id "atom:zam:optik:brechung-qualitativ"
         +string title "Lichtbrechung an Grenzflächen (qualitativ)"
         +string domain "schule/physik/optik"
         +string reduction "qualitative | geometric | formal_formula"
@@ -136,14 +136,14 @@ Verankert an den Primärquellen des ISB Bayern ([Fachlehrplan Physik 7 Realschul
 ```json
 {
   "$schema": "https://zam.app/schemas/v1/learning-atom.json",
-  "id": "atom:zam:de-by:ph-optik-brechung-qualitativ",
+  "id": "atom:zam:optik:brechung-qualitativ",
   "title": "Lichtbrechung an Grenzflächen (qualitativ)",
   "domain": "schule/physik/optik",
   "reduction": "qualitative",
   "typical_age_min": 12.5,
   "prerequisites": [
     {
-      "atom_id": "atom:zam:de-by:ph-optik-strahlengang-lot",
+      "atom_id": "atom:zam:optik:strahlengang-lot",
       "type": "hard",
       "rationale": "Das Konzept des Einfallslots und des Einfallswinkels ist Voraussetzung für die Beschreibung der Richtungsänderung."
     }
@@ -201,7 +201,7 @@ Verankert an den Primärquellen des ISB Bayern ([Fachlehrplan Physik 7 Realschul
 [
   {
     "id": "01K3X9A7R4B8C1D2E3F4G5H601",
-    "atom_id": "atom:zam:de-by:ph-optik-brechung-qualitativ",
+    "atom_id": "atom:zam:optik:brechung-qualitativ",
     "language": "de",
     "bloom_level": 2,
     "tier": "tier1_fast",
@@ -215,7 +215,7 @@ Verankert an den Primärquellen des ISB Bayern ([Fachlehrplan Physik 7 Realschul
   },
   {
     "id": "01K3X9A7R4B8C1D2E3F4G5H602",
-    "atom_id": "atom:zam:de-by:ph-optik-brechung-qualitativ",
+    "atom_id": "atom:zam:optik:brechung-qualitativ",
     "language": "de",
     "bloom_level": 3,
     "tier": "tier2_synthesis",

@@ -49,9 +49,12 @@ export interface Token {
   maintenance_reason: string | null;
   /** Editorial state (ADR 2026-07-04 Phase 3: 'draft' | 'in_review' | 'published' | 'deprecated'). */
   editorial_state: EditorialState;
+  /** Published learning atom this practice item realises (ADR 2026-08-14). */
+  atom_id: string | null;
 }
 
 export interface CreateTokenInput {
+  id?: string;
   slug: string;
   title?: string;
   concept: string;
@@ -65,6 +68,7 @@ export interface CreateTokenInput {
   provider?: string | null;
   topic_id?: string | null;
   editorial_state?: EditorialState;
+  atom_id?: string | null;
 }
 
 export interface UpdateTokenInput {
@@ -151,7 +155,7 @@ export async function insertToken(
   db: Database,
   input: CreateTokenInput,
 ): Promise<string> {
-  const id = ulid();
+  const id = input.id ?? ulid();
   const now = new Date().toISOString();
 
   const bloom = input.bloom_level ?? 1;
@@ -176,8 +180,8 @@ export async function insertToken(
 
   await db
     .prepare(`
-    INSERT INTO tokens (id, slug, title, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, question_source, provider, topic_id, created_at, updated_at, editorial_state)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO tokens (id, slug, title, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, question_source, provider, topic_id, created_at, updated_at, editorial_state, atom_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `)
     .run(
       id,
@@ -196,6 +200,7 @@ export async function insertToken(
       now,
       now,
       editorialState,
+      input.atom_id ?? null,
     );
 
   return id;

@@ -159,6 +159,7 @@ describe("applySchemaAndMigrations", { timeout: 30_000 }, () => {
         "maintenance_at",
         "content_version",
         "editorial_state",
+        "atom_id",
       ]),
     );
     stub.close();

@@ -1,0 +1,212 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-optik-erweiterung",
+  "version": "2026.08.1",
+  "title": "Optik-Erweiterung (Realschule Bayern 7 I / 8 II-III)",
+  "description": "Angrenzende Zelle: Reflexion, Sammellinse und Dispersion. Wiederverwendet Lot und (nach Gym-Kachel) Reflexionsgesetz und Sammellinse. Dispersion nur in RS 7 I — in RS 8 II/III nicht genannt. Geerdet an 65643 und 65854.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-14T20:10:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/lernbereich/65643",
+      "checked": "2026-08-14",
+      "label": "Realschule Physik 7 (I), Lernbereich 2 Optik — inkl. Dispersion"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/physik/wpfg2-3",
+      "checked": "2026-08-14",
+      "label": "Realschule Physik 8 (II/III), Optik-Lernbereich 65854 — ohne Dispersion"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "atom:zam:optik:strahlengang-lot",
+      "title": "Lichtstrahl und Einfallslot",
+      "domain": "schule/physik/optik",
+      "reduction": "geometric",
+      "typical_age_min": 12.0,
+      "prerequisites": [],
+      "alignments": [],
+      "curricula": [],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H001",
+          "language": "de",
+          "bloom_level": 1,
+          "tier": "tier1_fast",
+          "question": "Wie steht das Einfallslot zur Grenzfläche zweier Medien?",
+          "concept": "Das Einfallslot steht genau senkrecht (im 90-Grad-Winkel) auf der Grenzfläche am Auftreffpunkt des Lichtstrahls."
+        }
+      ]
+    },
+    {
+      "id": "atom:zam:optik:reflexionsgesetz",
+      "title": "Reflexionsgesetz",
+      "domain": "schule/physik/optik",
+      "reduction": "geometric",
+      "typical_age_min": 12.0,
+      "prerequisites": [
+        {
+          "atom_id": "atom:zam:optik:strahlengang-lot",
+          "type": "hard",
+          "rationale": "Winkel werden zum Lot gemessen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q165939",
+          "target_label": "Reflection",
+          "alignment_type": "skos:closeMatch",
+          "provenance": "manual_curation_v1 checked 2026-08-14"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "65643",
+          "topic_title": "Optik",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "65854",
+          "topic_title": "Optik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H008",
+          "language": "de",
+          "bloom_level": 1,
+          "tier": "tier1_fast",
+          "question": "Wie hängen Einfallswinkel und Reflexionswinkel beim Spiegeln zusammen?",
+          "concept": "Sie sind gleich groß. Beide werden zwischen Strahl und Einfallslot gemessen."
+        }
+      ]
+    },
+    {
+      "id": "atom:zam:optik:sammellinse-abbildung",
+      "title": "Abbildung durch eine Sammellinse",
+      "domain": "schule/physik/optik",
+      "reduction": "geometric",
+      "typical_age_min": 13.0,
+      "prerequisites": [
+        {
+          "atom_id": "atom:zam:optik:brechung-qualitativ",
+          "type": "hard",
+          "rationale": "Eine Linse bricht an zwei Grenzflächen."
+        }
+      ],
+      "alignments": [],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "65643",
+          "topic_title": "Optik",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "65854",
+          "topic_title": "Optik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H00A",
+          "language": "de",
+          "bloom_level": 2,
+          "tier": "tier1_fast",
+          "question": "Wann entsteht hinter einer Sammellinse ein reelles Bild?",
+          "concept": "Wenn der Gegenstand außerhalb der Brennweite steht, schneiden sich die gebrochenen Strahlen hinter der Linse in einem reellen Bild."
+        }
+      ]
+    },
+    {
+      "id": "atom:zam:optik:brechung-qualitativ",
+      "title": "Lichtbrechung an Grenzflächen (qualitativ)",
+      "domain": "schule/physik/optik",
+      "reduction": "qualitative",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "atom:zam:optik:strahlengang-lot",
+          "type": "hard",
+          "rationale": "Lot ist Voraussetzung."
+        }
+      ],
+      "alignments": [],
+      "curricula": [],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H003",
+          "language": "de",
+          "bloom_level": 2,
+          "tier": "tier1_fast",
+          "question": "In welche Richtung knickt ein Lichtstrahl beim Übergang von Luft in Wasser?",
+          "concept": "Zum Einfallslot hin, da Wasser optisch dichter ist als Luft."
+        }
+      ]
+    },
+    {
+      "id": "atom:zam:optik:dispersion-spektrum",
+      "title": "Dispersion und kontinuierliches Spektrum",
+      "domain": "schule/physik/optik",
+      "reduction": "qualitative",
+      "typical_age_min": 13.0,
+      "prerequisites": [
+        {
+          "atom_id": "atom:zam:optik:brechung-qualitativ",
+          "type": "hard",
+          "rationale": "Dispersion ist wellenlängenabhängige Brechung."
+        }
+      ],
+      "alignments": [],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "65643",
+          "topic_title": "Optik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H00D",
+          "language": "de",
+          "bloom_level": 2,
+          "tier": "tier1_fast",
+          "question": "Warum zerlegt ein Prisma weißes Licht in Farben?",
+          "concept": "Verschiedene Wellenlängen werden verschieden stark gebrochen. Violett stärker als Rot, deshalb ein kontinuierliches Spektrum.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": ["Wellenlängenabhängige Brechung", "Das Prisma färbt das Licht"],
+            "correct_index": 0
+          }
+        }
+      ]
+    }
+  ]
+}

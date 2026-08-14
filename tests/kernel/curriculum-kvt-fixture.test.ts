@@ -43,13 +43,26 @@ interface KvtTile {
   atoms: LearningAtom[];
 }
 
-describe("Knowledge Vector Tile (KVT) Fixture Verification", () => {
-  const fixturePath = resolve(__dirname, "../fixtures/curriculum/de-by-realschule-optik-kvt.json");
-  const raw = readFileSync(fixturePath, "utf-8");
-  const tile: KvtTile = JSON.parse(raw);
+const TILE_FILES = [
+  "de-by-realschule-optik-kvt.json",
+  "de-by-gymnasium-8-optik-kvt.json",
+  "de-by-realschule-optik-erweiterung-kvt.json",
+  "de-by-bos-10-optik-kvt.json",
+] as const;
+
+function loadNamedTile(name: string): KvtTile {
+  const raw = readFileSync(
+    resolve(__dirname, "../fixtures/curriculum", name),
+    "utf-8",
+  );
+  return JSON.parse(raw) as KvtTile;
+}
+
+describe.each(TILE_FILES)("KVT fixture %s", (name) => {
+  const tile = loadNamedTile(name);
 
   it("loads and conforms to basic KVT metadata structure", () => {
-    expect(tile.tile_id).toBe("de-by:realschule-optik");
+    expect(tile.tile_id).toMatch(/^de-by:/);
     expect(tile.version).toBeDefined();
     expect(tile.atoms.length).toBeGreaterThanOrEqual(4);
   });
@@ -66,7 +79,7 @@ describe("Knowledge Vector Tile (KVT) Fixture Verification", () => {
   it("validates that all prerequisite references exist within the tile", () => {
     const atomIdSet = new Set(tile.atoms.map((a) => a.id));
     for (const atom of tile.atoms) {
-      for (const prereq of atom.prerequisites) {
+      for (const prereq of atom.prerequisites ?? []) {
         expect(atomIdSet.has(prereq.atom_id)).toBe(true);
       }
     }
@@ -82,7 +95,7 @@ describe("Knowledge Vector Tile (KVT) Fixture Verification", () => {
     }
 
     for (const atom of tile.atoms) {
-      for (const prereq of atom.prerequisites) {
+      for (const prereq of atom.prerequisites ?? []) {
         // Edge: prereq.atom_id -> atom.id
         adj.get(prereq.atom_id)?.push(atom.id);
         inDegree.set(atom.id, (inDegree.get(atom.id) ?? 0) + 1);
@@ -112,22 +125,6 @@ describe("Knowledge Vector Tile (KVT) Fixture Verification", () => {
     expect(visitedCount).toBe(tile.atoms.length);
   });
 
-  it("verifies multi-curriculum reuse across Realschule Zweig I (Grade 7) and Zweig II/III (Grade 8)", () => {
-    const qualitativeAtom = tile.atoms.find((a) => a.id === "atom:zam:de-by:ph-optik-brechung-qualitativ");
-    expect(qualitativeAtom).toBeDefined();
-
-    const curricula = qualitativeAtom?.curricula ?? [];
-    const hasGrade7Track1 = curricula.some(
-      (c) => c.grade === 7 && c.track === "I" && c.topic_code === "PH7-LB2",
-    );
-    const hasGrade8Track23 = curricula.some(
-      (c) => c.grade === 8 && c.track === "II_III" && c.topic_code === "PH8-LB2",
-    );
-
-    expect(hasGrade7Track1).toBe(true);
-    expect(hasGrade8Track23).toBe(true);
-  });
-
   it("verifies practice items follow Bloom levels and Tier-1/Tier-2 classification", () => {
     for (const atom of tile.atoms) {
       expect(atom.practice_items.length).toBeGreaterThanOrEqual(1);
@@ -139,5 +136,39 @@ describe("Knowledge Vector Tile (KVT) Fixture Verification", () => {
         expect(item.concept.length).toBeGreaterThan(5);
       }
     }
+  });
+});
+
+describe("KVT fixture catalog overlap", () => {
+  it("reuses the same qualitative-refraction atom across all four tiles", () => {
+    const ids = TILE_FILES.map((name) =>
+      loadNamedTile(name).atoms.map((atom) => atom.id),
+    );
+    for (const atomIds of ids) {
+      expect(atomIds).toContain("atom:zam:optik:brechung-qualitativ");
+    }
+  });
+
+  it("keeps dispersion only on Realschule 7 I, not on Gym 8 or BOS", () => {
+    const gym = loadNamedTile("de-by-gymnasium-8-optik-kvt.json");
+    const bos = loadNamedTile("de-by-bos-10-optik-kvt.json");
+    const extra = loadNamedTile("de-by-realschule-optik-erweiterung-kvt.json");
+    expect(gym.atoms.map((atom) => atom.id)).not.toContain(
+      "atom:zam:optik:dispersion-spektrum",
+    );
+    expect(bos.atoms.map((atom) => atom.id)).not.toContain(
+      "atom:zam:optik:dispersion-spektrum",
+    );
+    const dispersion = extra.atoms.find(
+      (atom) => atom.id === "atom:zam:optik:dispersion-spektrum",
+    );
+    expect(dispersion?.curricula).toEqual([
+      expect.objectContaining({
+        school_type: "realschule",
+        grade: 7,
+        track: "I",
+        topic_code: "65643",
+      }),
+    ]);
   });
 });

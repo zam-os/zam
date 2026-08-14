@@ -29,9 +29,20 @@ Three core architectural challenges required formal resolution:
 
 ### 1. Opaque, Namespaced Atom IDs as Published Primary Keys
 A published learning atom is identified by an **opaque, namespaced Atom ID**:
-- Format: `atom:zam:<namespace>:<slug>` (e.g., `atom:zam:de-by:ph-optik-brechung-qualitativ`).
+- Format: `atom:zam:<namespace>:<slug>` (e.g., `atom:zam:optik:brechung-qualitativ`).
+- `<namespace>` is a **subject partition** (`optik`, `bruchrechnung`), never a
+  region, school type, or publisher. Those live only on `CurriculumBinding`.
 - The Atom ID is immutable and serves as the published anchor across Knowledge Vector Tiles (KVT).
 - Didactic reduction levels (`qualitative`, `geometric`, `formal_formula`, `conceptual`, `computational`) are retained as **descriptive profile attributes**, not as parts of the primary key.
+
+**Reuse.** A second curriculum **reuses the existing Atom ID** when the
+learning objective is substitutable (same reduction profile, same recall
+demand). It adds a `CurriculumBinding`. It mints a new atom only when the
+objectives are not substitutable, and may then add a SKOS alignment *between
+atoms*. ZAM is the only minter of `atom:zam:*`.
+
+This is the leftover of the rejected PAID join: cross-curriculum equality is
+an editorial reuse of one ID, not a computed fingerprint.
 
 ### 2. The 5-Object Model
 To bridge canonical knowledge, multiple curricula, and personal scheduling, ZAM defines five distinct data entities:
@@ -47,10 +58,13 @@ To bridge canonical knowledge, multiple curricula, and personal scheduling, ZAM 
 - **Ordering Invariant:** Topologie und Fälligkeit steuern die Queue gemeinsam; Topologie wiegt schwerer.
 - **Empty Queue Invariant:** Wenn die Queue leerläuft und der Lerner weiterüben möchte, dürfen vergrabene (`buried`) Karten vorgezogen werden.
 
-### 4. Diagnostic Triage (Fundament vs. Application)
-Scheitert ein Schüler an einer komplexen Abrufaufgabe (`Again / 1`), wird nicht blind die gesamte Vorgängerkette blockiert (`cascadeBlock`). Stattdessen streut das System einen 1-Tap Tier-1-Check der direkten Voraussetzung ein:
-- Bestanden $\rightarrow$ Fundament intakt, nur die Anwendungsaufgabe wird wiederholt.
-- Nicht bestanden $\rightarrow$ Fundament wackelt, Voraussetzung wird aktiv in die Lernqueue geholt.
+### 4. Diagnostic Triage is a knob, not a kernel invariant
+Today `cascadeBlock` still treats every `Again` as a missing foundation.
+Whether to insert a Tier-1 check of the direct prerequisite (pass → keep the
+foundation buried; fail → surface it) is a **behavior knob**. Default stays
+the current cascade until field `review_logs` show that "foundation intact,
+application failed" is common. The rule is cheap to change; it is not an
+identity or schema decision.
 
 ---
 
