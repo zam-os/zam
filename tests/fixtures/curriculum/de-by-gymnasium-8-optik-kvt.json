@@ -47,7 +47,15 @@
           "bloom_level": 1,
           "tier": "tier1_fast",
           "question": "Wie steht das Einfallslot zur Grenzfläche zweier Medien?",
-          "concept": "Das Einfallslot steht genau senkrecht (im 90-Grad-Winkel) auf der Grenzfläche am Auftreffpunkt des Lichtstrahls."
+          "concept": "Das Einfallslot steht genau senkrecht (im 90-Grad-Winkel) auf der Grenzfläche am Auftreffpunkt des Lichtstrahls.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Senkrecht (90°)",
+              "Parallel (0°)"
+            ],
+            "correct_index": 0
+          }
         }
       ]
     },
@@ -90,7 +98,15 @@
           "bloom_level": 2,
           "tier": "tier1_fast",
           "question": "In welche Richtung knickt ein Lichtstrahl beim Übergang von Luft in Wasser?",
-          "concept": "Zum Einfallslot hin, da Wasser optisch dichter ist als Luft."
+          "concept": "Zum Einfallslot hin, da Wasser optisch dichter ist als Luft.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zum Lot hin",
+              "Vom Lot weg"
+            ],
+            "correct_index": 0
+          }
         }
       ]
     },
@@ -133,7 +149,15 @@
           "bloom_level": 2,
           "tier": "tier1_fast",
           "question": "Kann Totalreflexion auftreten, wenn Licht von Luft in Glas übergeht?",
-          "concept": "Nein. Totalreflexion ist nur beim Übergang vom optisch dichteren ins optisch dünnere Medium möglich (z. B. Glas in Luft)."
+          "concept": "Nein. Totalreflexion ist nur beim Übergang vom optisch dichteren ins optisch dünnere Medium möglich (z. B. Glas in Luft).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein (nur dichter zu dünner)",
+              "Ja (immer)"
+            ],
+            "correct_index": 0
+          }
         }
       ]
     },
@@ -179,7 +203,10 @@
           "concept": "Sie sind gleich groß. Beide werden zwischen Strahl und Einfallslot gemessen.",
           "fast_check": {
             "type": "binary_choice",
-            "options": ["Sie sind gleich groß", "Der Reflexionswinkel ist immer doppelt so groß"],
+            "options": [
+              "Sie sind gleich groß",
+              "Der Reflexionswinkel ist immer doppelt so groß"
+            ],
             "correct_index": 0
           }
         },
@@ -228,7 +255,10 @@
           "concept": "Wenn der Gegenstand außerhalb der Brennweite steht, schneiden sich die gebrochenen Strahlen hinter der Linse in einem reellen Bild.",
           "fast_check": {
             "type": "binary_choice",
-            "options": ["Gegenstand außerhalb der Brennweite", "Gegenstand zwischen Linse und Brennpunkt"],
+            "options": [
+              "Gegenstand außerhalb der Brennweite",
+              "Gegenstand zwischen Linse und Brennpunkt"
+            ],
             "correct_index": 0
           }
         },

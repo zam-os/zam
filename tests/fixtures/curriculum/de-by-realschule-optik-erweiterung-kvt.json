@@ -35,7 +35,15 @@
           "bloom_level": 1,
           "tier": "tier1_fast",
           "question": "Wie steht das Einfallslot zur Grenzfläche zweier Medien?",
-          "concept": "Das Einfallslot steht genau senkrecht (im 90-Grad-Winkel) auf der Grenzfläche am Auftreffpunkt des Lichtstrahls."
+          "concept": "Das Einfallslot steht genau senkrecht (im 90-Grad-Winkel) auf der Grenzfläche am Auftreffpunkt des Lichtstrahls.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Senkrecht (90°)",
+              "Parallel (0°)"
+            ],
+            "correct_index": 0
+          }
         }
       ]
     },
@@ -89,7 +97,15 @@
           "bloom_level": 1,
           "tier": "tier1_fast",
           "question": "Wie hängen Einfallswinkel und Reflexionswinkel beim Spiegeln zusammen?",
-          "concept": "Sie sind gleich groß. Beide werden zwischen Strahl und Einfallslot gemessen."
+          "concept": "Sie sind gleich groß. Beide werden zwischen Strahl und Einfallslot gemessen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie sind gleich groß",
+              "Der Reflexionswinkel ist immer doppelt so groß"
+            ],
+            "correct_index": 0
+          }
         }
       ]
     },
@@ -136,7 +152,15 @@
           "bloom_level": 2,
           "tier": "tier1_fast",
           "question": "Wann entsteht hinter einer Sammellinse ein reelles Bild?",
-          "concept": "Wenn der Gegenstand außerhalb der Brennweite steht, schneiden sich die gebrochenen Strahlen hinter der Linse in einem reellen Bild."
+          "concept": "Wenn der Gegenstand außerhalb der Brennweite steht, schneiden sich die gebrochenen Strahlen hinter der Linse in einem reellen Bild.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gegenstand außerhalb der Brennweite",
+              "Gegenstand zwischen Linse und Brennpunkt"
+            ],
+            "correct_index": 0
+          }
         }
       ]
     },
@@ -162,7 +186,15 @@
           "bloom_level": 2,
           "tier": "tier1_fast",
           "question": "In welche Richtung knickt ein Lichtstrahl beim Übergang von Luft in Wasser?",
-          "concept": "Zum Einfallslot hin, da Wasser optisch dichter ist als Luft."
+          "concept": "Zum Einfallslot hin, da Wasser optisch dichter ist als Luft.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zum Lot hin",
+              "Vom Lot weg"
+            ],
+            "correct_index": 0
+          }
         }
       ]
     },
@@ -202,7 +234,10 @@
           "concept": "Verschiedene Wellenlängen werden verschieden stark gebrochen. Violett stärker als Rot, deshalb ein kontinuierliches Spektrum.",
           "fast_check": {
             "type": "binary_choice",
-            "options": ["Wellenlängenabhängige Brechung", "Das Prisma färbt das Licht"],
+            "options": [
+              "Wellenlängenabhängige Brechung",
+              "Das Prisma färbt das Licht"
+            ],
             "correct_index": 0
           }
         }

@@ -51,6 +51,12 @@ export interface Token {
   editorial_state: EditorialState;
   /** Published learning atom this practice item realises (ADR 2026-08-14). */
   atom_id: string | null;
+  /** Language this item is asked in — PracticeItem substance. */
+  language: string | null;
+  /** Interaction tier ('tier1_fast' | 'tier2_synthesis') — substance. */
+  tier: string | null;
+  /** Structured fast-check payload as JSON — substance. */
+  fast_check: string | null;
 }
 
 export interface CreateTokenInput {
@@ -69,6 +75,9 @@ export interface CreateTokenInput {
   topic_id?: string | null;
   editorial_state?: EditorialState;
   atom_id?: string | null;
+  language?: string | null;
+  tier?: string | null;
+  fast_check?: string | null;
 }
 
 export interface UpdateTokenInput {
@@ -180,8 +189,8 @@ export async function insertToken(
 
   await db
     .prepare(`
-    INSERT INTO tokens (id, slug, title, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, question_source, provider, topic_id, created_at, updated_at, editorial_state, atom_id)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO tokens (id, slug, title, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, question_source, provider, topic_id, created_at, updated_at, editorial_state, atom_id, language, tier, fast_check)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `)
     .run(
       id,
@@ -201,6 +210,9 @@ export async function insertToken(
       now,
       editorialState,
       input.atom_id ?? null,
+      input.language ?? null,
+      input.tier ?? null,
+      input.fast_check ?? null,
     );
 
   return id;

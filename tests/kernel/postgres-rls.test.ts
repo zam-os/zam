@@ -234,8 +234,13 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
       for (const table of RLS_PROTECTED_TABLES) {
         const row = (await tx
           .prepare(
-            `SELECT relrowsecurity AS enabled, relforcerowsecurity AS forced
-               FROM pg_class WHERE relname = ?`,
+            // Schema-qualified: another schema in the same database holding
+            // a table of the same name would otherwise answer for it, and the
+            // suite would report on the wrong `cards`.
+            `SELECT c.relrowsecurity AS enabled, c.relforcerowsecurity AS forced
+               FROM pg_class c
+               JOIN pg_namespace n ON n.oid = c.relnamespace
+              WHERE c.relname = ? AND n.nspname = current_schema()`,
           )
           .get(table)) as { enabled: boolean; forced: boolean } | undefined;
         expect(row, `${table} missing`).toBeDefined();

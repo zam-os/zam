@@ -112,6 +112,60 @@ describe("installKvtTile", () => {
     expect(token?.question).toMatch(/Luft in Wasser/);
   });
 
+  // Codex hardening review H3, after the owner ruled language, tier and
+  // fast_check to be PracticeItem substance: a published item must survive the
+  // round trip. Previously the installer accepted all three and dropped them.
+  it("installs and reads back every practice item without loss", async () => {
+    const tile = loadTile();
+    await installKvtTile(db, tile);
+
+    for (const atom of tile.atoms) {
+      for (const item of atom.practice_items) {
+        const stored = (await db
+          .prepare(
+            `SELECT question, concept, bloom_level, language, tier, fast_check
+               FROM tokens WHERE id = ?`,
+          )
+          .get(item.id)) as {
+          question: string;
+          concept: string;
+          bloom_level: number;
+          language: string | null;
+          tier: string | null;
+          fast_check: string | null;
+        };
+
+        expect(stored.question).toBe(item.question);
+        expect(stored.concept).toBe(item.concept);
+        expect(stored.bloom_level).toBe(item.bloom_level);
+        expect(stored.language).toBe(item.language ?? null);
+        expect(stored.tier).toBe(item.tier ?? null);
+        expect(
+          stored.fast_check === null ? undefined : JSON.parse(stored.fast_check),
+        ).toEqual(item.fast_check);
+      }
+    }
+  });
+
+  it("treats a changed fast check as a material revision", async () => {
+    await installKvtTile(db, loadTile());
+    await materialiseKvtCards(db, "learner-a", REALSCHULE_ATOMS);
+    const tokenId = "01K3X9A7R4B8C1D2E3F4G5H003";
+
+    const tile = loadTile();
+    const item = tile.atoms
+      .find((a) => a.id === "atom:zam:optik:brechung-qualitativ")!
+      .practice_items.find((i) => i.id === tokenId) as {
+      fast_check: { options: string[] };
+    };
+    item.fast_check.options = ["Zum Lot hin", "Vom Lot weg (neu)"];
+
+    const result = await installKvtTile(db, tile);
+    expect(result.tokensRevised).toBe(1);
+    const token = await getTokenById(db, tokenId);
+    expect(token?.content_version).toBe(2);
+  });
+
   // Codex acceptance test 10.
   it("enrols nobody: installing a release creates zero cards", async () => {
     await installKvtTile(db, loadTile());

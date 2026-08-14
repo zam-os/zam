@@ -57,7 +57,15 @@ CREATE TABLE IF NOT EXISTS tokens (
   -- Editorial state (ADR 2026-07-04 Phase 3: 'draft' | 'in_review' | 'published' | 'deprecated').
   editorial_state    TEXT NOT NULL DEFAULT 'published',
   -- Published learning atom this practice item realises (ADR 2026-08-14).
-  atom_id            TEXT
+  atom_id            TEXT,
+  -- PracticeItem substance (ADR 2026-08-14, owner decision): the language it is
+  -- asked in, the interaction tier, and the structured fast-check payload.
+  -- Substance, not presentation — changing one is a material revision, because
+  -- a learner who mastered a German binary check has not mastered an English
+  -- free recall of the same objective.
+  language           TEXT,
+  tier               TEXT,
+  fast_check         TEXT
 );
 
 -- Stable provenance for deterministic local-file imports (ADR 2026-08-09).

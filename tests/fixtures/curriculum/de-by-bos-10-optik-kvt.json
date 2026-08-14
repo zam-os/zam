@@ -40,7 +40,15 @@
           "bloom_level": 2,
           "tier": "tier1_fast",
           "question": "In welche Richtung knickt ein Lichtstrahl beim Übergang von Luft in Wasser?",
-          "concept": "Zum Einfallslot hin, da Wasser optisch dichter ist als Luft."
+          "concept": "Zum Einfallslot hin, da Wasser optisch dichter ist als Luft.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zum Lot hin",
+              "Vom Lot weg"
+            ],
+            "correct_index": 0
+          }
         }
       ]
     },
@@ -76,7 +84,15 @@
           "bloom_level": 2,
           "tier": "tier1_fast",
           "question": "Kann Totalreflexion auftreten, wenn Licht von Luft in Glas übergeht?",
-          "concept": "Nein. Totalreflexion ist nur beim Übergang vom optisch dichteren ins optisch dünnere Medium möglich (z. B. Glas in Luft)."
+          "concept": "Nein. Totalreflexion ist nur beim Übergang vom optisch dichteren ins optisch dünnere Medium möglich (z. B. Glas in Luft).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein (nur dichter zu dünner)",
+              "Ja (immer)"
+            ],
+            "correct_index": 0
+          }
         }
       ]
     },
@@ -119,7 +135,15 @@
           "bloom_level": 3,
           "tier": "tier1_fast",
           "question": "Wie lautet die Formel des Snelliusschen Brechungsgesetzes?",
-          "concept": "n1 * sin(alpha) = n2 * sin(beta)"
+          "concept": "n1 * sin(alpha) = n2 * sin(beta)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "n1 * sin(α) = n2 * sin(β)",
+              "n1 * cos(α) = n2 * cos(β)"
+            ],
+            "correct_index": 0
+          }
         }
       ]
     },
@@ -163,7 +187,10 @@
           "concept": "n_glas = sin(50°)/sin(30°) nach n1 sin α = n2 sin β mit n_luft ≈ 1.",
           "fast_check": {
             "type": "binary_choice",
-            "options": ["sin(50°)/sin(30°)", "sin(30°)/sin(50°)"],
+            "options": [
+              "sin(50°)/sin(30°)",
+              "sin(30°)/sin(50°)"
+            ],
             "correct_index": 0
           }
         },

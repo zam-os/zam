@@ -76,9 +76,13 @@ export interface KvtPracticeItem {
   id: string;
   /** Published address. Immutable once installed; derived when absent. */
   slug?: string;
+  /** Language the item is asked in. Substance, persisted. */
   language?: string;
   bloom_level: number;
+  /** 'tier1_fast' | 'tier2_synthesis'. Substance, persisted. */
   tier?: string;
+  /** Structured fast-check payload. Substance, persisted verbatim as JSON. */
+  fast_check?: unknown;
   question: string;
   concept: string;
   /**
@@ -158,6 +162,21 @@ function slugForItem(atomId: string, item: KvtPracticeItem): string {
   const base = atomId.slice("atom:zam:".length).replace(/:/g, "-");
   const tier = (item.tier ?? "item").replace(/_/g, "-");
   return `${base}-${tier}-${item.id.slice(-6).toLowerCase()}`;
+}
+
+/**
+ * The fast check as stored: canonical JSON, or null.
+ *
+ * Kept verbatim rather than normalised into columns, so a tile can be installed
+ * and read back without loss while the interaction model is still open
+ * (ADR 2026-08-14b, question 5).
+ */
+function fastCheckOf(item: KvtPracticeItem): string | null {
+  if (item.fast_check === undefined || item.fast_check === null) return null;
+  if (typeof item.fast_check !== "object") {
+    throw new Error(`fast_check on ${item.id} must be an object`);
+  }
+  return JSON.stringify(item.fast_check);
 }
 
 function bloomOf(item: KvtPracticeItem): BloomLevel {
@@ -387,6 +406,9 @@ export async function installKvtTile(
             atom_id: atom.id,
             provider: projected?.provider ?? null,
             topic_id: projected?.topic_code ?? null,
+            language: item.language ?? null,
+            tier: item.tier ?? null,
+            fast_check: fastCheckOf(item),
           });
           tokensCreated += 1;
           continue;
@@ -415,7 +437,10 @@ export async function installKvtTile(
           existing.concept !== item.concept ||
           (existing.question ?? "") !== item.question ||
           existing.bloom_level !== bloomOf(item) ||
-          existing.domain !== (atom.domain ?? existing.domain);
+          existing.domain !== (atom.domain ?? existing.domain) ||
+          existing.language !== (item.language ?? null) ||
+          existing.tier !== (item.tier ?? null) ||
+          existing.fast_check !== fastCheckOf(item);
 
         if (substanceChanged) {
           // Absent materiality means material: a published wording change that
@@ -430,6 +455,9 @@ export async function installKvtTile(
               concept: item.concept,
               domain: atom.domain ?? existing.domain,
               bloomLevel: bloomOf(item),
+              language: item.language ?? null,
+              tier: item.tier ?? null,
+              fastCheck: fastCheckOf(item),
             },
             publishedBy: tile.publisher ?? tile.tile_id,
           });

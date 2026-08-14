@@ -1,5 +1,5 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { readdirSync, readFileSync } from "node:fs";
+import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
 interface Prerequisite {
@@ -170,5 +170,58 @@ describe("KVT fixture catalog overlap", () => {
         topic_code: "65643",
       }),
     ]);
+  });
+});
+
+/**
+ * A published item may appear in several tiles — that overlap is the whole
+ * reuse argument. Codex's hardening review (B1.5) requires those embedded
+ * copies to be identical: partial, independently overwritable definitions of
+ * the same object are not a cache, they are a race. Before this guard the
+ * Gymnasium tile republished item …H001 without its `fast_check`, so the final
+ * content_version depended on install order.
+ */
+const FIXTURE_DIR = resolve(__dirname, "../fixtures/curriculum");
+
+describe("embedded practice items are identical across tiles", () => {
+  const SUBSTANCE = [
+    "question",
+    "concept",
+    "bloom_level",
+    "language",
+    "tier",
+    "fast_check",
+  ] as const;
+
+  it("never contradicts itself about the same item id", () => {
+    const seen = new Map<string, { tile: string; body: string }>();
+    for (const file of readdirSync(FIXTURE_DIR).filter((n) =>
+      n.endsWith(".json"),
+    )) {
+      const tile = JSON.parse(
+        readFileSync(join(FIXTURE_DIR, file), "utf-8"),
+      ) as {
+        atoms: Array<{
+          practice_items: Array<Record<string, unknown>>;
+        }>;
+      };
+      for (const atom of tile.atoms) {
+        for (const item of atom.practice_items) {
+          const body = JSON.stringify(
+            Object.fromEntries(SUBSTANCE.map((key) => [key, item[key] ?? null])),
+          );
+          const first = seen.get(item.id as string);
+          if (first) {
+            expect(
+              body,
+              `${item.id} differs between ${first.tile} and ${file}`,
+            ).toBe(first.body);
+          } else {
+            seen.set(item.id as string, { tile: file, body });
+          }
+        }
+      }
+    }
+    expect(seen.size).toBeGreaterThan(0);
   });
 });

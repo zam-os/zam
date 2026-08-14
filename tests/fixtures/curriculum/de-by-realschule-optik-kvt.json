@@ -55,7 +55,10 @@
           "concept": "Das Einfallslot steht genau senkrecht (im 90-Grad-Winkel) auf der Grenzfläche am Auftreffpunkt des Lichtstrahls.",
           "fast_check": {
             "type": "binary_choice",
-            "options": ["Senkrecht (90°)", "Parallel (0°)"],
+            "options": [
+              "Senkrecht (90°)",
+              "Parallel (0°)"
+            ],
             "correct_index": 0
           }
         },
@@ -129,7 +132,10 @@
           "concept": "Zum Einfallslot hin, da Wasser optisch dichter ist als Luft.",
           "fast_check": {
             "type": "binary_choice",
-            "options": ["Zum Lot hin", "Vom Lot weg"],
+            "options": [
+              "Zum Lot hin",
+              "Vom Lot weg"
+            ],
             "correct_index": 0
           }
         },
@@ -196,7 +202,10 @@
           "concept": "Nein. Totalreflexion ist nur beim Übergang vom optisch dichteren ins optisch dünnere Medium möglich (z. B. Glas in Luft).",
           "fast_check": {
             "type": "binary_choice",
-            "options": ["Nein (nur dichter zu dünner)", "Ja (immer)"],
+            "options": [
+              "Nein (nur dichter zu dünner)",
+              "Ja (immer)"
+            ],
             "correct_index": 0
           }
         },
@@ -252,7 +261,10 @@
           "concept": "n1 * sin(alpha) = n2 * sin(beta)",
           "fast_check": {
             "type": "binary_choice",
-            "options": ["n1 * sin(α) = n2 * sin(β)", "n1 * cos(α) = n2 * cos(β)"],
+            "options": [
+              "n1 * sin(α) = n2 * sin(β)",
+              "n1 * cos(α) = n2 * cos(β)"
+            ],
             "correct_index": 0
           }
         }

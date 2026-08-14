@@ -95,46 +95,6 @@ to first check the direct prerequisite — pass, keep it buried; fail, surface i
 measurement is the share of failures where the surfaced foundation then passes
 first try.
 
-## Delivery matrix
-
-"Decided" and "built" are not the same claim, and the first version of this ADR
-conflated them.
-
-| Decision | Decided | Built | Covered by tests | Empirically validated |
-|---|---|---|---|---|
-| Five object kinds | yes | partly — `PracticeItem` loses `language`, `tier`, `fast_check` | partly | no |
-| Install ≠ enrolment | yes | yes | yes | no |
-| No admission gate | yes | yes (never existed) | n/a | no |
-| Demand-driven materialisation | yes | yes | yes | no |
-| Self-assessment writes only `buried_until` | yes | **no** — no surface exists yet | no | no |
-| Empty-queue pull-forward | yes | **no** | no | no |
-| Due date orders retention | yes | partly — interleaver reorders within it | no | no |
-| Bonus offers | yes | **no** | no | no |
-| Diagnostic triage as a knob | yes | default only | n/a | no |
-
-The `PracticeItem` gap is tracked as an open question in
-[2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md): the tiles
-carry `language`, `tier` and `fast_check`, the installer accepts and drops them,
-and `tokens` has nowhere to put them. Until that is decided, a fixture cannot be
-installed and read back without loss.
-
-## Consequences
-
-- Learners start in any grade immediately, with no entrance exam and no wall of
-  known material.
-- A wrong entry assumption costs at most one late card and one detour. It can
-  never cost a fabricated memory estimate, because nothing below an observed
-  retrieval writes FSRS state.
-- One canonical atom binds cleanly to several grades and tracks — Optik is
-  required in Realschule Bayern grade 7 (Zweig I) and grade 8 (Zweig II/III),
-  which is the same objective at two grades and therefore proof that grade
-  belongs to the binding, not to the atom.
-- Curation must author practice items per atom. Whether **both** a Tier 1 and a
-  Tier 2 item are required per atom is **not decided here** — see 2026-08-14b,
-  open question 5.
-- Ordering (topology versus due date) is stated as a direction, not a
-  calibrated rule — see open question below.
-
 ### 5. Topology orders exploration; due dates order retention
 
 The owner's earlier "topology weighs more than due date" was **withdrawn on
@@ -174,3 +134,59 @@ with the owner's values, and the evidence independently warns against it
 128 studies). A bonus offer therefore never carries a score, a streak, or a
 target to reach. It names what the atom connects to and what it eases. See
 [central-learning-path-bonus-content.md](../concepts/central-learning-path-bonus-content.md).
+
+### 7. What a PracticeItem is made of
+
+**Language, interaction tier and the structured fast check are substance**, not
+presentation. They are persisted (M025) and a change to any of them is a
+material revision by default, because a learner who mastered a German binary
+check has not thereby mastered an English free recall of the same objective.
+
+A tile is therefore installed and read back without loss; previously the
+installer accepted all three and dropped them, so a published item could not be
+reconstructed from the database.
+
+**Tier 1 plus Tier 2 per atom is a quality guideline, not a publish
+invariant.** An atom may ship with one item. Curation aims for both; nothing
+rejects a release that has one.
+
+Corollary for embedded copies: when several tiles carry the same item id, the
+copies must be identical. Partial copies made the resulting `content_version`
+depend on install order, which a fixture guard now prevents.
+
+## Delivery matrix
+
+"Decided" and "built" are not the same claim, and the first version of this ADR
+conflated them.
+
+| Decision | Decided | Built | Covered by tests | Empirically validated |
+|---|---|---|---|---|
+| Five object kinds | yes | yes — `PracticeItem` substance persisted (M025) | yes, round-trip | no |
+| Install ≠ enrolment | yes | yes | yes | no |
+| No admission gate | yes | yes (never existed) | n/a | no |
+| Demand-driven materialisation | yes | yes | yes | no |
+| Self-assessment writes only `buried_until` | yes | **no** — no surface exists yet | no | no |
+| Empty-queue pull-forward | yes | **no** | no | no |
+| Due date orders retention | yes | partly — interleaver reorders within it | no | no |
+| Bonus offers | yes | **no** | no | no |
+| Diagnostic triage as a knob | yes | default only | n/a | no |
+
+Schema provisioning is now exercised against a real PostgreSQL as well as
+SQLite, because `runMigrations` is one path shared by every provider and M024
+originally broke it.
+
+## Consequences
+
+- Learners start in any grade immediately, with no entrance exam and no wall of
+  known material.
+- A wrong entry assumption costs at most one late card and one detour. It can
+  never cost a fabricated memory estimate, because nothing below an observed
+  retrieval writes FSRS state.
+- One canonical atom binds cleanly to several grades and tracks — Optik is
+  required in Realschule Bayern grade 7 (Zweig I) and grade 8 (Zweig II/III),
+  which is the same objective at two grades and therefore proof that grade
+  belongs to the binding, not to the atom.
+- Curation must author practice items per atom. Both tiers are a quality
+  guideline (Decision 7), so a release with one item per atom is valid.
+- Whether the queue's cross-domain interleaver earns its place inside the
+  due-date ordering is an open, replayable question (Decision 5).
