@@ -308,6 +308,8 @@ Brauchbarkeit der Support-Hülle, sie ist im Feldtest sofort sichtbar, und sie
 ist der Punkt, an dem der Zentralgraph und die Governance-Linie dieselbe
 Primitive brauchen.
 
+**Ausgearbeitet:** [central-learning-path-entry-problem.md](central-learning-path-entry-problem.md).
+
 ---
 
 ## 8. Was ich jetzt entscheiden würde
