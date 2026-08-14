@@ -384,6 +384,57 @@ export async function runMigrations(db: Database): Promise<void> {
     `CREATE INDEX IF NOT EXISTS idx_atom_bindings_provider
        ON atom_curriculum_bindings(provider, topic_code)`,
   );
+
+  // M024: make a curriculum binding without a grade idempotent. M023 put the
+  // nullable `grade` into the primary key, and SQLite never treats NULL as
+  // equal to NULL — so `ON CONFLICT` never fired and every re-install appended
+  // another copy of the same binding. The key moves to a unique index over
+  // COALESCE(grade, -1); the column stays nullable, because "no grade" is a
+  // real statement about a Lernbereich, not a sentinel.
+  const bindingSql = (await db
+    .prepare(
+      `SELECT sql FROM sqlite_master
+        WHERE type = 'table' AND name = 'atom_curriculum_bindings'`,
+    )
+    .get()) as { sql: string } | undefined;
+  if (bindingSql?.sql.includes("PRIMARY KEY (atom_id, provider, topic_code")) {
+    await db.exec(`
+      CREATE TABLE atom_curriculum_bindings_m024 (
+        atom_id         TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+        provider        TEXT NOT NULL,
+        school_type     TEXT NOT NULL DEFAULT '',
+        grade           INTEGER,
+        track           TEXT NOT NULL DEFAULT '',
+        subject         TEXT NOT NULL DEFAULT '',
+        topic_code      TEXT NOT NULL,
+        topic_title     TEXT,
+        exam_relevant   INTEGER NOT NULL DEFAULT 0
+      );
+    `);
+    // Collapse the duplicates M023 allowed to accumulate.
+    await db.exec(`
+      INSERT INTO atom_curriculum_bindings_m024
+        (atom_id, provider, school_type, grade, track, subject,
+         topic_code, topic_title, exam_relevant)
+      SELECT atom_id, provider, MAX(school_type), grade, track, MAX(subject),
+             topic_code, MAX(topic_title), MAX(exam_relevant)
+        FROM atom_curriculum_bindings
+       GROUP BY atom_id, provider, topic_code, COALESCE(grade, -1), track;
+    `);
+    await db.exec(`DROP TABLE atom_curriculum_bindings`);
+    await db.exec(
+      `ALTER TABLE atom_curriculum_bindings_m024 RENAME TO atom_curriculum_bindings`,
+    );
+  }
+  await db.exec(
+    `CREATE UNIQUE INDEX IF NOT EXISTS ux_atom_binding
+       ON atom_curriculum_bindings(
+         atom_id, provider, topic_code, COALESCE(grade, -1), track)`,
+  );
+  await db.exec(
+    `CREATE INDEX IF NOT EXISTS idx_atom_bindings_provider
+       ON atom_curriculum_bindings(provider, topic_code)`,
+  );
 }
 
 /**

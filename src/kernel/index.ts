@@ -158,11 +158,17 @@ export {
   previewTextImport,
 } from "./import/text-import.js";
 export type {
-  AttachKvtResult,
+  InstallKvtResult,
   KvtAtom,
+  KvtPracticeItem,
   KvtTile,
+  MaterialiseKvtResult,
 } from "./library/kvt-attach.js";
-export { ATOM_ID_PATTERN, attachKvtTile } from "./library/kvt-attach.js";
+export {
+  ATOM_ID_PATTERN,
+  installKvtTile,
+  materialiseKvtCards,
+} from "./library/kvt-attach.js";
 export type {
   PublishRevisionInput,
   PublishRevisionResult,

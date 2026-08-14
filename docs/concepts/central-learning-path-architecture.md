@@ -32,7 +32,9 @@ Kartendienste wie Google Maps oder OpenStreetMap skalieren für Milliarden Mensc
 Die zentrale ZAM-Wissensbasis adaptiert genau dieses Prinzip als **Knowledge Vector Tiles (KVT)**:
 - **Zentraler Betreiber:** Pflegt und verteilt statische, kompilierte Graph-Kacheln über CDNs.
 - **Client (ZAM App):** Lädt den benötigten Sub-Graphen für den gewählten Bildungspfad herunter und führt Graph-Traversierung, FSRS-6-Scheduling und Knowledge Tracing lokal in einer In-Memory- oder SQLite-Engine aus.
-- **Kosten:** Nahezu **0 € Serverkosten** im laufenden Betrieb, 100% DSGVO-konform, vollständige Offline-Fähigkeit.
+- **Kosten:** Der laufende Betrieb ist reine CDN-Bandbreite statt Cluster — der teure Posten ist Curation, nicht Infrastruktur. Konkrete Eurobeträge gehören in einen messbaren Betriebsplan, nicht in die Architekturentscheidung.
+- **Datenschutz:** Der Content-Dienst führt strukturell keine personenbezogenen Daten. Das ist eine starke Aussage über *diese Schicht* — nicht „100 % DSGVO“: der Client verarbeitet Minderjährigendaten, und externe Medienaufrufe können Metadaten an Dritte senden.
+- **Offline:** vollständig, sobald eine Zelle geladen ist.
 
 ---
 
@@ -239,7 +241,12 @@ Betritt ein Lerner den Graphen in Klasse 9, wird er **nicht** durch Vorab-Tests 
 4. **Leere Queue-Regel:** Läuft die Lernqueue leer und der Lerner möchte weiterlernen, dürfen vergrabene (`buried`) Karten vorgezogen werden.
 
 ### 5.2 Fehler-Diagnose: Fundament fehlt vs. Anwendungsfehler
-Scheitert ein Schüler an einer Tier-2-Aufgabe (Bewertung `Again / 1`):
+
+> **Stellschraube, noch nicht gebaut** (ADR 2026-08-14, Abschnitt 4). Default
+> ist und bleibt `cascadeBlock`, bis die Feldmessung zeigt, dass „Fundament
+> intakt, Anwendung misslungen“ häufig ist.
+
+Denkbarer Ablauf, wenn ein Schüler an einer Tier-2-Aufgabe scheitert (Bewertung `Again / 1`):
 1. Das System blockiert die Karte nicht blind via `cascadeBlock`.
 2. Stattdessen wird im nächsten Schritt ein **einzelner 1-Tap Tier-1-Check** der direkten Voraussetzung eingestreut.
 3. **Reaktion:**

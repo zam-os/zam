@@ -1,6 +1,12 @@
 # Frage 0: Die veröffentlichte Identität eines pädagogischen Atoms
 
-**Status:** Working proposal  
+**Status:** **Superseded (2026-08-14)** — PAID ist als veröffentlichter
+Primärschlüssel abgelehnt. Maßgeblich ist
+[ADR 2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md).
+Was überlebt, ist `reduction` als beschreibendes Profilfeld; die Begründungen in
+Abschnitt 4 (warum ULID allein, `(domain, slug)`, ein blankes Q und ein
+Lehrplan-Code jeweils scheitern) bleiben gültig und lesenswert. Abschnitt 10
+bittet um eine Entscheidung, die inzwischen anders gefallen ist.  
 **Datum:** 2026-08-14  
 **Gehört zu:** [central-learning-path-research.md](central-learning-path-research.md), [central-learning-path-architecture.md](central-learning-path-architecture.md), [central-learning-path-refinement.md](central-learning-path-refinement.md)  
 **Gegenentwurf (offen):** [ADR 2026-07-04 Hierarchical Domain Ontology](../adr/2026-07-04-hierarchical-domain-ontology-and-token-identity.md) — Draft, nicht bindend.

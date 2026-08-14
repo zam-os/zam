@@ -1,7 +1,8 @@
 # Schiedsspruch: Codex-Folgereview, am Code nachgeprüft
 
-**Status:** Schiedsspruch — Antwort auf die sechs Fragen aus Abschnitt 7 des
-Codex-Folgereviews
+**Status:** Schiedsspruch **plus Umsetzung** — Antwort auf die sechs Fragen aus
+Abschnitt 7 des Codex-Folgereviews. Die vier billigen Blocker sind behoben und
+durch Tests abgesichert (Abschnitt 4).
 
 **Datum:** 2026-08-14
 
@@ -28,20 +29,21 @@ braucht ein Projekt. Die richtige Antwort ist weder Revert noch Vollausbau,
 sondern **den Anspruch der Implementierung auf ihren tatsächlichen Reifegrad
 zurückschneiden** (Abschnitt 4).
 
-| Befund | Nachprüfung | Schwere |
+| Befund | Nachprüfung | Stand jetzt |
 |---|---|---|
-| B0.1 Attach umgeht Revisionsvertrag | **bestätigt** | hoch, billig zu beheben |
-| B0.2 Kein Releasevertrag | **bestätigt** | hoch, teuer — aber erst vor Verteilung fällig |
-| B1.1 Attach-Reihenfolge bestimmt Ergebnis | **bestätigt** | hoch, mittel zu beheben |
-| B1.2 Installation = Einschreibung | **bestätigt**, Beleg im Fixture | hoch, billig zu beheben |
-| B1.3 Atom-ID nicht opak, ULID-Regel verletzt | **bestätigt** | mittel, jetzt billig / später teuer |
-| B1.4 SKOS-Missbrauch | **bestätigt** | mittel, jetzt billig |
-| B1.5 Tile-Grenze, kein Entfernen | **bestätigt** | hoch, braucht Entscheidung |
-| B1.6 Item-Projektion implizit | **bestätigt**, Kollision noch latent | mittel, billig |
-| B1.7 Schema trägt den Vertrag nicht | **bestätigt**, NULL-Bug *demonstriert* | gemischt |
+| B0.1 Attach umgeht Revisionsvertrag | **bestätigt** | **behoben**, Tests 3 + 4 |
+| B0.2 Kein Releasevertrag | **bestätigt** | offen — eigener ADR, vor Verteilung |
+| B1.1 Attach-Reihenfolge bestimmt Ergebnis | **bestätigt** | **behoben**, Test 1 |
+| B1.2 Installation = Einschreibung | **bestätigt**, Beleg im Fixture | **behoben**, Test 10 |
+| B1.3 Atom-ID nicht opak, ULID-Regel verletzt | **bestätigt** | offen — Entscheidung, Empfehlung in Frage 3 |
+| B1.4 SKOS-Missbrauch | **bestätigt** | offen — Entscheidung, Empfehlung in Frage 4 |
+| B1.5 Tile-Grenze, kein Entfernen | **bestätigt** | offen — braucht Zeilen-Provenienz |
+| B1.6 Item-Projektion implizit | **bestätigt**, Kollision war latent | **teilweise**: Slug-Kollision und Reihenfolge behoben (Tests 11, 1); explizites RepresentativeItem offen |
+| B1.7 Schema trägt den Vertrag nicht | **bestätigt**, NULL-Bug *demonstriert* | **NULL-Bug behoben** (M024, Test 13); FK, CHECK, Provenienz offen |
 
-Testlauf der beiden neuen Dateien: **30 grün**. Codex hat recht, dass es keine
-roten Tests sind, sondern fehlende Vertragstests.
+Testlauf vor der Umsetzung: 30 grün. Codex hat recht, dass es keine roten Tests
+waren, sondern fehlende Vertragstests. **Nach der Umsetzung: 2158 Tests grün**
+(vorher 2148), Lint und Typecheck sauber.
 
 ---
 
@@ -243,7 +245,7 @@ veröffentlichten Semantikversprechen.
 
 ### Frage 5 — Was rettet den Spike: Revert oder Vollausbau?
 
-**Weder noch.** Beides wäre falsch.
+**Weder noch.** Beides wäre falsch. *(Umgesetzt, Abschnitt 4.)*
 
 Ein Revert wirft einen Beweis weg, der trägt: Mehrere Lehrplanzellen können
 dieselben Atome referenzieren, und die Optik-Überlappung Realschule 7 I / 8 II/III
@@ -333,43 +335,106 @@ Q-ID-Runde selbst aufgestellt hat.
 
 ---
 
-## 4. Empfohlener kleinster Schnitt
+## 4. Umgesetzt
 
 Nicht reverten, nicht ausbauen — **den Anspruch auf den Reifegrad zurückschneiden
-und die vier billigen Fallen entschärfen.**
+und die billigen Fallen entschärfen.** Das ist geschehen.
 
-**Sofort, klein:**
+### 4.1 Code
 
-1. **Installation von Einschreibung trennen.** `attachKvtTile` installiert
-   Inhalt und erzeugt **null Karten**. Eine getrennte Operation materialisiert
-   Karten für einen gewählten Umfang. Behebt B1.2 und entfernt die
-   Gymnasium-11-Karte aus der Realschul-Queue.
-2. **Existing-Token-Pfad über den Revisionsvertrag führen**, mit expliziter
-   `materiality` aus dem Tile. Behebt B0.1; der Re-Test-Weg funktioniert dann
-   von selbst.
-3. **Legacy-Projektion entschärfen:** `provider`/`topic_id` beim Attach nicht
-   mehr überschreiben, oder deterministisch aus sortierten Bindings wählen statt
-   `[0]`. Behebt die Reihenfolgeabhängigkeit von B1.1; die Umstellung der
-   Curriculum-Abfragen auf Bindings folgt danach.
-4. **NULL-Grade normalisieren** (Sentinel statt NULL im Schlüssel) und
-   **Item-ID in den Slug** aufnehmen. Behebt den demonstrierten Idempotenzbug
-   und die latente Slug-Kollision.
+**1. Installation und Einschreibung getrennt.** `attachKvtTile` gibt es nicht
+mehr. `installKvtTile(db, tile)` schreibt Atome, Alignments, Bindings, Kanten und
+Items und erzeugt **null Karten**. `materialiseKvtCards(db, userId, atomIds)` ist
+der getrennte, ausdrückliche Schritt. Ein Realschul-Lerner bekommt damit keine
+Karte mehr für das Gymnasium-11-Formelatom, das im selben Tile liegt.
 
-**Sofort, nur Text:**
+**2. Inhaltsänderungen laufen über den Revisionsvertrag.** Ändert sich an einem
+vorhandenen Item Frage, Antwort, Titel, Bloom-Stufe oder Domäne, ruft der
+Installer `publishTokenRevisionInTransaction`. **Fehlt die Klassifikation, gilt
+`material`** — eine unklassifizierte Änderung darf nie stillschweigend unter der
+Stabilität eines Lerners durchrutschen. Das Tile kann `materiality: "cosmetic"`
+setzen, um das abzuwählen. Zusätzlich lehnt der Installer es ab, ein Item einem
+anderen Atom zuzuweisen, als es bereits realisiert.
 
-5. **ADR aufteilen.** Fünf-Objekte-Modell und Gate-Entscheidung bleiben
-   `Accepted` — beide sind gut begründet und von allen Runden getragen. Der
-   Identitätsabschnitt geht auf `Proposed` zurück, ebenso der SKOS-Teil. Die
-   Konsequenz „No False Equivalences“ wird auf das abgeschwächt, was sie leistet.
-6. **Dokumentwidersprüche auflösen:** `identity.md` auf `Superseded`, Absoluta
-   in `architecture.md` streichen, Tier-1-Check als Stellschraube kennzeichnen,
-   FSRS-Referenz durch die auffindbaren Arbeiten mit DOI ersetzen.
-7. **`kvt-attach.ts` als Spike kennzeichnen** — im Modulkommentar und im
-   Funktionsnamen, damit niemand darauf baut, bevor der Releasevertrag steht.
+**3. Reihenfolgeunabhängigkeit.** Die Legacy-Projektion auf
+`tokens.provider`/`topic_id` liest jetzt den **gesamten gespeicherten
+Bindungsbestand** und sortiert ihn (`provider, school_type, COALESCE(grade,-1),
+track, topic_code`), statt `curricula[0]` zu nehmen. Nach jedem Install wird für
+jedes berührte Atom neu projiziert. Ebenso ist der Prerequisite-Repräsentant
+nicht mehr „erstes Element im JSON-Array“, sondern die kleinste gespeicherte
+Item-ID.
 
-**Erst danach, als eigene Arbeit:** Zeilen-Release-Provenienz, Katalog/Overlay-
-Trennung, Release-Manifest und Trust. Das ist Codex' Abschnitt 4 und gehört in
-einen eigenen ADR — nicht in diesen Branch.
+**4a. NULL-Grade (M024).** `atom_curriculum_bindings` verliert den
+zusammengesetzten Primärschlüssel; Eindeutigkeit läuft über einen UNIQUE-Index
+auf `COALESCE(grade, -1)`. Die Spalte bleibt nullable, weil „dieser Lernbereich
+nennt kein Jahr“ eine echte Aussage ist und kein Sentinel. Die Migration faltet
+die Duplikate zusammen, die M023 auflaufen ließ.
+
+**4b. Slug-Kollision.** Ein Tile darf `slug` je Item selbst vergeben; sonst wird
+`atom-tier-<id-ende>` abgeleitet. Zwei Tier-1-Items desselben Atoms sind damit
+publizierbar. Doppelte Slugs innerhalb eines Tiles werden beim Install laut
+abgelehnt statt am `UNIQUE`-Index zu scheitern.
+
+**Kennzeichnung.** Der Modulkommentar sagt jetzt ausdrücklich **SPIKE** und
+zählt auf, was fehlt (Manifest, Digests, Signatur, deklaratives Entfernen,
+paketübergreifende Referenzen), damit niemand darauf baut.
+
+### 4.2 Tests
+
+Acht der von Codex geforderten Abnahmetests sind grün, benannt nach seiner
+Nummerierung — Datei [`kvt-attach.test.ts`](../../tests/kernel/kvt-attach.test.ts),
+18 Tests:
+
+| Codex # | Test |
+|---|---|
+| 1 | Alle vier Zellen in umgekehrter Reihenfolge ergeben denselben Snapshot |
+| 2 | Derselbe Release zweimal ändert keine Zeile, Version oder Fälligkeit |
+| 3 | Geänderte Antwort → `content_version` 2, Karte vorgezogen, `reps`/`stability` unangetastet |
+| 4 | Als `cosmetic` deklariert → keine Version, kein Re-Test, Fälligkeit unverändert |
+| 10 | Installation erzeugt null Karten |
+| 11 | Zwei Tier-1-Items eines Atoms bekommen verschiedene Adressen |
+| 13 | Bindung ohne Jahrgang bleibt über drei Installationen idempotent |
+| — | Materialisierung nur für die gewählten Atome; Fremdatom bleibt kartenlos |
+
+Der Permutationstest (1) vergleicht einen normalisierten Snapshot über Atome,
+Alignments, Bindings, Atomkanten, Tokens und Tokenkanten — ohne Zeitstempel.
+
+### 4.3 Dokumente
+
+- [`identity.md`](central-learning-path-identity.md) steht auf **Superseded**,
+  mit dem Hinweis, welche Teile weiter gelten (die Widerlegungen in Abschnitt 4)
+  und welche überholt sind (die Bitte in Abschnitt 10).
+- Die Absoluta in [`architecture.md`](central-learning-path-architecture.md)
+  sind ersetzt: Curation statt Bandbreite als Kostenposten, „der Content-Dienst
+  führt strukturell keine personenbezogenen Daten“ statt „100 % DSGVO“.
+- Der Tier-1-Triage-Check ist in Architektur *und* Forschung als
+  **Stellschraube** gekennzeichnet, mit dem Hinweis, dass `cascadeBlock` der
+  Default bleibt.
+- Die Phantomreferenz „Ye, J. et al. (2024)“ ist ersetzt durch die verifizierte
+  Arbeit dahinter: **Ye, Su & Cao (2022), KDD '22, 4381–4390,
+  <https://doi.org/10.1145/3534678.3539081>** — plus den Hinweis, dass FSRS
+  selbst Software und keine Publikation ist.
+
+### 4.4 Was ausdrücklich offen bleibt
+
+Nicht angefasst, weil es Entscheidungen statt Reparaturen sind:
+
+- **Atom-Identität auf ULID + opake URI** (B1.3) — Empfehlung in Frage 3, aber
+  das ändert die Repo-Regelauslegung und den ADR; das ist Owner-Sache.
+- **`about` vs. SKOS trennen** (B1.4) — Empfehlung in Frage 4.
+- **Release-Manifest, Digests, Trust, deklaratives Entfernen** (B0.2, B1.5) —
+  eigener ADR, vor Verteilung.
+- **Zeilen-Release-Provenienz und persönliche Einschreibung** — die zwei
+  fehlenden Objekte aus Frage 2.
+- **Curriculum-Abfragen auf Bindings umstellen** — Codex' Test 12. Behoben ist
+  die *Reihenfolgeabhängigkeit* der Legacy-Felder, nicht ihre Ablösung.
+- **Explizites RepresentativeItem** (B1.6) — „kleinste Item-ID“ ist
+  deterministisch, aber keine didaktische Aussage.
+- **FK auf `tokens.atom_id`, `CHECK` auf `alignment_type`, Kantenprovenienz,
+  Batch-DAG-Prüfung** (B1.7).
+- **`reduction`-Vokabular**: `de-by-bos-10-optik-kvt.json` verwendet weiterhin
+  `formula`, der ADR kennt nur `formal_formula`. Braucht eine Entscheidung über
+  das Vokabular, dann einen `CHECK`.
 
 ---
 

@@ -71,7 +71,13 @@ Das typische Mindestalter (`typical_age_min`) dient der Orientierung und UI-Filt
 - **Tier 2 (Deep Synthesis & Transfer, 30–90 Sek.):** Mündliche/schriftliche Erklärungen, komplexe Rechen- und Transferaufgaben.
 
 ### 3.3 Diagnostic Triage: Fundament fehlt vs. Anwendungsfehler
-Tritt bei einem fortgeschrittenen Token ein Abruffehler (`Again / 1`) auf, testet das System über einen kurzen 1-Tap Tier-1-Check sofort die direkte Voraussetzung:
+
+> **Stellschraube, nicht Ist-Zustand** (ADR 2026-08-14, Abschnitt 4). Heute
+> behandelt `cascadeBlock` jede Bewertung `Again` als Fundamentschwäche. Ob der
+> unten beschriebene Check eingeführt wird, entscheidet die Feldmessung — der
+> Anteil der Fehlschläge, bei denen das hochgeholte Fundament auf Anhieb sitzt.
+
+Denkbare Regel: Tritt bei einem fortgeschrittenen Token ein Abruffehler (`Again / 1`) auf, testet das System über einen kurzen 1-Tap Tier-1-Check die direkte Voraussetzung:
 $$\text{Fehlerursache} = \begin{cases} \text{Fundament-Defizit (Prereq hervorholen)}, & \text{wenn Tier-1-Prereq-Check fehlschlägt} \\ \text{Anwendungs-Fehler (Nur Zielkarte wiederholen)}, & \text{wenn Tier-1-Prereq-Check besteht} \end{cases}$$
 
 ---
@@ -119,7 +125,7 @@ Sei $G = (V, E, W)$ ein gewichteter, gerichteter Graph, wobei:
 1. **Sweller, J. (1988).** *Cognitive load during problem solving: Effects on learning.* Cognitive Science, 12(2), 257–285.
 2. **Paivio, A. (1986).** *Mental representations: A dual coding approach.* Oxford University Press.
 3. **Vygotsky, L. S. (1978).** *Mind in society: The development of higher psychological processes.* Harvard University Press.
-4. **Ye, J. et al. (2024).** *FSRS: Free Spaced Repetition Scheduler — Algorithm & Optimization.* Open Spaced Repetition Initiative.
+4. **Ye, J., Su, J., & Cao, Y. (2022).** *A Stochastic Shortest Path Algorithm for Optimizing Spaced Repetition Scheduling.* KDD '22, 4381–4390. <https://doi.org/10.1145/3534678.3539081> — die Arbeit hinter dem DSR-Modell, auf dem FSRS aufbaut. Der Algorithmus selbst ist Software, keine Publikation: <https://github.com/open-spaced-repetition/awesome-fsrs/wiki/The-Algorithm>
 5. **1EdTech Consortium (2022).** *Competency and Academic Standards Exchange (CASE) Service Specification v1.1.* <https://standards.1edtech.org/case/>
 6. **W3C (2009).** *SKOS Simple Knowledge Organization System Reference.* <https://www.w3.org/TR/skos-reference/>
 7. **Bayerisches Staatsministerium für Unterricht und Kultus (ISB).** *LehrplanPLUS Bayern: Fachlehrpläne Physik und Mathematik.* <https://www.lehrplanplus.bayern.de/>

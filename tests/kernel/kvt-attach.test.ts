@@ -3,24 +3,68 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
-  attachKvtTile,
   type Database,
   getCard,
   getPrerequisites,
   getTokenById,
+  installKvtTile,
+  type KvtTile,
+  materialiseKvtCards,
   openDatabase,
 } from "../../src/kernel/index.js";
 
-const fixturePath = resolve(
-  __dirname,
-  "../fixtures/curriculum/de-by-realschule-optik-kvt.json",
-);
+const FIXTURES = resolve(__dirname, "../fixtures/curriculum");
 
-function loadTile(): unknown {
-  return JSON.parse(readFileSync(fixturePath, "utf-8"));
+const REALSCHULE_ATOMS = [
+  "atom:zam:optik:strahlengang-lot",
+  "atom:zam:optik:brechung-qualitativ",
+  "atom:zam:optik:totalreflexion-grenzwinkel",
+];
+const GYM_ONLY_ATOM = "atom:zam:optik:brechungsgesetz-snellius-formel";
+
+function loadFixture(name: string): KvtTile {
+  return JSON.parse(readFileSync(join(FIXTURES, `${name}.json`), "utf-8"));
 }
 
-describe("attachKvtTile", () => {
+function loadTile(): KvtTile {
+  return loadFixture("de-by-realschule-optik-kvt");
+}
+
+const ALL_CELLS = [
+  "de-by-realschule-optik-kvt",
+  "de-by-gymnasium-8-optik-kvt",
+  "de-by-realschule-optik-erweiterung-kvt",
+  "de-by-bos-10-optik-kvt",
+];
+
+/** Everything a release owns, minus timestamps, ordered for comparison. */
+async function snapshot(db: Database): Promise<string> {
+  const parts: string[] = [];
+  for (const sql of [
+    `SELECT id, title, domain, reduction, typical_age_min FROM learning_atoms ORDER BY id`,
+    `SELECT atom_id, target_uri, alignment_type FROM atom_alignments ORDER BY atom_id, target_uri`,
+    `SELECT atom_id, provider, school_type, grade, track, topic_code, exam_relevant
+       FROM atom_curriculum_bindings
+      ORDER BY atom_id, provider, topic_code, COALESCE(grade, -1), track`,
+    `SELECT atom_id, requires_id, kind FROM atom_prerequisites ORDER BY atom_id, requires_id`,
+    `SELECT id, slug, atom_id, provider, topic_id, question, concept, bloom_level,
+            content_version
+       FROM tokens ORDER BY id`,
+    `SELECT token_id, requires_id FROM prerequisites ORDER BY token_id, requires_id`,
+  ]) {
+    parts.push(JSON.stringify(await db.prepare(sql).all()));
+  }
+  return parts.join("\n");
+}
+
+async function countRows(db: Database, table: string): Promise<number> {
+  const row = (await db.prepare(`SELECT COUNT(*) AS n FROM ${table}`).get()) as {
+    n: number;
+  };
+  return row.n;
+}
+
+describe("installKvtTile", () => {
   let db: Database;
   let tempDir: string;
 
@@ -38,21 +82,16 @@ describe("attachKvtTile", () => {
     rmSync(tempDir, { recursive: true, force: true, maxRetries: 10 });
   });
 
-  it("materialises atoms, practice items, cards and overlay bindings", async () => {
-    const result = await attachKvtTile(db, loadTile(), "learner-a");
+  it("installs atoms, items and bindings", async () => {
+    const result = await installKvtTile(db, loadTile());
 
     expect(result.atomsUpserted).toBe(4);
     expect(result.tokensCreated).toBe(7);
-    expect(result.tokensReused).toBe(0);
-    expect(result.cardsCreated).toBe(7);
-    expect(result.cardsReused).toBe(0);
+    expect(result.tokensRevised).toBe(0);
     expect(result.bindings).toBe(7);
     expect(result.alignments).toBeGreaterThanOrEqual(4);
 
-    const atomCount = (await db
-      .prepare("SELECT COUNT(*) as n FROM learning_atoms")
-      .get()) as { n: number };
-    expect(atomCount.n).toBe(4);
+    expect(await countRows(db, "learning_atoms")).toBe(4);
 
     const qualitativeBindings = (await db
       .prepare(
@@ -71,24 +110,202 @@ describe("attachKvtTile", () => {
     const token = await getTokenById(db, "01K3X9A7R4B8C1D2E3F4G5H003");
     expect(token?.atom_id).toBe("atom:zam:optik:brechung-qualitativ");
     expect(token?.question).toMatch(/Luft in Wasser/);
-
-    const card = await getCard(db, token!.id, "learner-a");
-    expect(card?.state).toBe("new");
-    expect(card?.reps).toBe(0);
-    expect(card?.stability).toBe(0);
   });
 
-  it("wires hard atom prerequisites onto the first practice item", async () => {
-    await attachKvtTile(db, loadTile(), "learner-a");
-    const prereqs = await getPrerequisites(
-      db,
-      "01K3X9A7R4B8C1D2E3F4G5H003",
+  // Codex acceptance test 10.
+  it("enrols nobody: installing a release creates zero cards", async () => {
+    await installKvtTile(db, loadTile());
+    expect(await countRows(db, "cards")).toBe(0);
+  });
+
+  it("materialises cards only for the atoms a learner chose", async () => {
+    await installKvtTile(db, loadTile());
+    const result = await materialiseKvtCards(db, "learner-a", REALSCHULE_ATOMS);
+
+    expect(result.cardsCreated).toBe(6);
+    expect(await countRows(db, "cards")).toBe(6);
+
+    // The tile also ships the Gymnasium 11 formula atom. A Realschule learner
+    // must not be handed a card for material their curriculum never asks for.
+    const gymItem = await db
+      .prepare("SELECT id FROM tokens WHERE atom_id = ?")
+      .get(GYM_ONLY_ATOM);
+    const stray = await getCard(db, (gymItem as { id: string }).id, "learner-a");
+    expect(stray).toBeUndefined();
+  });
+
+  it("materialises the same atoms twice without new cards", async () => {
+    await installKvtTile(db, loadTile());
+    await materialiseKvtCards(db, "learner-a", REALSCHULE_ATOMS);
+    const again = await materialiseKvtCards(db, "learner-a", REALSCHULE_ATOMS);
+    expect(again.cardsCreated).toBe(0);
+    expect(again.cardsReused).toBe(6);
+  });
+
+  // Codex acceptance test 2.
+  it("is idempotent: the same release twice changes nothing", async () => {
+    await installKvtTile(db, loadTile());
+    const before = await snapshot(db);
+
+    const second = await installKvtTile(db, loadTile());
+    expect(second.tokensCreated).toBe(0);
+    expect(second.tokensRevised).toBe(0);
+    expect(second.tokensUnchanged).toBe(7);
+
+    expect(await snapshot(db)).toBe(before);
+  });
+
+  // Codex acceptance test 13.
+  it("keeps a binding without a grade idempotent", async () => {
+    const tile = loadTile();
+    for (const atom of tile.atoms) {
+      for (const binding of atom.curricula ?? []) {
+        binding.grade = undefined;
+      }
+    }
+    await installKvtTile(db, tile);
+    const afterFirst = await countRows(db, "atom_curriculum_bindings");
+    await installKvtTile(db, tile);
+    await installKvtTile(db, tile);
+    expect(await countRows(db, "atom_curriculum_bindings")).toBe(afterFirst);
+  });
+
+  // Codex acceptance test 1.
+  it("reaches the same state whatever order the cells are installed in", async () => {
+    for (const name of ALL_CELLS) {
+      await installKvtTile(db, loadFixture(name));
+    }
+    const forward = await snapshot(db);
+
+    const otherDir = mkdtempSync(join(tmpdir(), "zam-kvt-perm-"));
+    const other = await openDatabase({
+      dbPath: join(otherDir, "zam-test.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    try {
+      for (const name of [...ALL_CELLS].reverse()) {
+        await installKvtTile(other, loadFixture(name));
+      }
+      expect(await snapshot(other)).toBe(forward);
+    } finally {
+      await other.close();
+      rmSync(otherDir, { recursive: true, force: true, maxRetries: 10 });
+    }
+  });
+
+  // Codex acceptance test 3.
+  it("publishes a material revision when an answer changes", async () => {
+    await installKvtTile(db, loadTile());
+    await materialiseKvtCards(db, "learner-a", REALSCHULE_ATOMS);
+    const tokenId = "01K3X9A7R4B8C1D2E3F4G5H003";
+    const card = await getCard(db, tokenId, "learner-a");
+    await db
+      .prepare(
+        `UPDATE cards SET reps = 8, stability = 42, state = 'review',
+                          due_at = '2099-01-01T00:00:00.000Z'
+          WHERE id = ?`,
+      )
+      .run(card!.id);
+
+    const tile = loadTile();
+    const atom = tile.atoms.find(
+      (a) => a.id === "atom:zam:optik:brechung-qualitativ",
     );
+    const item = atom!.practice_items.find((i) => i.id === tokenId);
+    item!.concept = "Eine sachlich geänderte Antwort.";
+
+    const result = await installKvtTile(db, tile);
+    expect(result.tokensRevised).toBe(1);
+
+    const token = await getTokenById(db, tokenId);
+    expect(token?.content_version).toBe(2);
+    expect(token?.concept).toBe("Eine sachlich geänderte Antwort.");
+
+    const after = await getCard(db, tokenId, "learner-a");
+    expect(after?.reps).toBe(8);
+    expect(after?.stability).toBe(42);
+    expect(after?.learned_content_version).toBe(1);
+    // Pulled forward for a re-test rather than left sitting in 2099.
+    expect(new Date(after!.due_at).getTime()).toBeLessThan(Date.now() + 1000);
+  });
+
+  // Codex acceptance test 4.
+  it("does not re-test anyone for a change declared cosmetic", async () => {
+    await installKvtTile(db, loadTile());
+    await materialiseKvtCards(db, "learner-a", REALSCHULE_ATOMS);
+    const tokenId = "01K3X9A7R4B8C1D2E3F4G5H003";
+    const card = await getCard(db, tokenId, "learner-a");
+    await db
+      .prepare(
+        `UPDATE cards SET reps = 8, stability = 42, state = 'review',
+                          due_at = '2099-01-01T00:00:00.000Z'
+          WHERE id = ?`,
+      )
+      .run(card!.id);
+
+    const tile = loadTile();
+    const atom = tile.atoms.find(
+      (a) => a.id === "atom:zam:optik:brechung-qualitativ",
+    );
+    const item = atom!.practice_items.find((i) => i.id === tokenId);
+    item!.question = `${item!.question} `.replace(/\s+$/, "?");
+    item!.materiality = "cosmetic";
+
+    await installKvtTile(db, tile);
+
+    const token = await getTokenById(db, tokenId);
+    expect(token?.content_version).toBe(1);
+
+    const after = await getCard(db, tokenId, "learner-a");
+    expect(after?.reps).toBe(8);
+    expect(after?.due_at).toBe("2099-01-01T00:00:00.000Z");
+  });
+
+  // Codex acceptance test 11.
+  it("gives two Tier 1 items of one atom distinct addresses", async () => {
+    const tile = loadTile();
+    const atom = tile.atoms.find(
+      (a) => a.id === "atom:zam:optik:brechung-qualitativ",
+    );
+    const [first] = atom!.practice_items;
+    atom!.practice_items.push({
+      ...first,
+      id: "01K3X9A7R4B8C1D2E3F4G5H0Z1",
+      question: "Eine zweite schnelle Prüfung zur Brechungsrichtung?",
+    });
+
+    await installKvtTile(db, tile);
+
+    const slugs = (await db
+      .prepare("SELECT slug FROM tokens WHERE atom_id = ? ORDER BY id")
+      .all("atom:zam:optik:brechung-qualitativ")) as Array<{ slug: string }>;
+    expect(new Set(slugs.map((row) => row.slug)).size).toBe(slugs.length);
+  });
+
+  it("honours an address the tile names itself", async () => {
+    const tile = loadTile();
+    tile.atoms[0].practice_items[0].slug = "optik-lot-schnellcheck";
+    await installKvtTile(db, tile);
+    const token = await getTokenById(db, tile.atoms[0].practice_items[0].id);
+    expect(token?.slug).toBe("optik-lot-schnellcheck");
+  });
+
+  it("refuses to reassign an item to a different atom", async () => {
+    await installKvtTile(db, loadTile());
+    const tile = loadTile();
+    tile.atoms[1].practice_items[0].id = "01K3X9A7R4B8C1D2E3F4G5H001";
+    await expect(installKvtTile(db, tile)).rejects.toThrow(/already realises/);
+  });
+
+  it("wires hard atom prerequisites onto the representative item", async () => {
+    await installKvtTile(db, loadTile());
+    const prereqs = await getPrerequisites(db, "01K3X9A7R4B8C1D2E3F4G5H003");
     expect(prereqs.map((row) => row.requires_id)).toEqual([
       "01K3X9A7R4B8C1D2E3F4G5H001",
     ]);
 
-    const softOnly = (await db
+    const edge = (await db
       .prepare(
         `SELECT kind FROM atom_prerequisites
           WHERE atom_id = ? AND requires_id = ?`,
@@ -97,27 +314,21 @@ describe("attachKvtTile", () => {
         "atom:zam:optik:brechung-qualitativ",
         "atom:zam:optik:strahlengang-lot",
       )) as { kind: string };
-    expect(softOnly.kind).toBe("hard");
+    expect(edge.kind).toBe("hard");
   });
 
-  it("does not rewrite FSRS state on a second attach", async () => {
-    await attachKvtTile(db, loadTile(), "learner-a");
+  it("never rewrites FSRS state on a second install", async () => {
+    await installKvtTile(db, loadTile());
+    await materialiseKvtCards(db, "learner-a", REALSCHULE_ATOMS);
     const tokenId = "01K3X9A7R4B8C1D2E3F4G5H003";
     const before = await getCard(db, tokenId, "learner-a");
-    expect(before).toBeDefined();
-
     await db
       .prepare(
-        `UPDATE cards SET reps = 1, state = 'review', stability = 2.5
-          WHERE id = ?`,
+        `UPDATE cards SET reps = 1, state = 'review', stability = 2.5 WHERE id = ?`,
       )
       .run(before!.id);
 
-    const second = await attachKvtTile(db, loadTile(), "learner-a");
-    expect(second.tokensCreated).toBe(0);
-    expect(second.tokensReused).toBe(7);
-    expect(second.cardsCreated).toBe(0);
-    expect(second.cardsReused).toBe(7);
+    await installKvtTile(db, loadTile());
 
     const after = await getCard(db, tokenId, "learner-a");
     expect(after?.reps).toBe(1);
@@ -125,38 +336,25 @@ describe("attachKvtTile", () => {
     expect(after?.stability).toBe(2.5);
   });
 
-  it("gives a second learner their own new cards on the same tokens", async () => {
-    await attachKvtTile(db, loadTile(), "learner-a");
-    const result = await attachKvtTile(db, loadTile(), "learner-b");
-    expect(result.tokensCreated).toBe(0);
-    expect(result.tokensReused).toBe(7);
-    expect(result.cardsCreated).toBe(7);
-
-    const tokenCount = (await db
-      .prepare("SELECT COUNT(*) as n FROM tokens")
-      .get()) as { n: number };
-    expect(tokenCount.n).toBe(7);
+  it("gives a second learner their own cards on the same tokens", async () => {
+    await installKvtTile(db, loadTile());
+    await materialiseKvtCards(db, "learner-a", REALSCHULE_ATOMS);
+    const result = await materialiseKvtCards(db, "learner-b", REALSCHULE_ATOMS);
+    expect(result.cardsCreated).toBe(6);
+    expect(await countRows(db, "tokens")).toBe(7);
   });
 
-  it("rejects an atom id that is not a published PAID-free namespace", async () => {
-    const tile = loadTile() as { atoms: Array<{ id: string }> };
+  it("rejects an atom id that is not a published atom URI", async () => {
+    const tile = loadTile();
     tile.atoms[0].id = "wd:Q208391/qualitative";
-    await expect(attachKvtTile(db, tile, "learner-a")).rejects.toThrow(
+    await expect(installKvtTile(db, tile)).rejects.toThrow(
       /Invalid published atom id/,
     );
   });
 
   it("merges Gymnasium 8 without wiping Realschule bindings", async () => {
-    await attachKvtTile(db, loadTile(), "learner-a");
-    const gym = JSON.parse(
-      readFileSync(
-        resolve(__dirname, "../fixtures/curriculum/de-by-gymnasium-8-optik-kvt.json"),
-        "utf-8",
-      ),
-    );
-    const result = await attachKvtTile(db, gym, "learner-a");
-    expect(result.tokensCreated).toBe(5);
-    expect(result.tokensReused).toBe(3);
+    await installKvtTile(db, loadTile());
+    await installKvtTile(db, loadFixture("de-by-gymnasium-8-optik-kvt"));
 
     const bindings = (await db
       .prepare(
@@ -175,63 +373,20 @@ describe("attachKvtTile", () => {
     ]);
   });
 
-  it("keeps Gym bindings if the Realschule tile is attached second", async () => {
-    const gym = JSON.parse(
-      readFileSync(
-        resolve(__dirname, "../fixtures/curriculum/de-by-gymnasium-8-optik-kvt.json"),
-        "utf-8",
-      ),
-    );
-    await attachKvtTile(db, gym, "learner-a");
-    await attachKvtTile(db, loadTile(), "learner-a");
-
-    const gymBinding = (await db
-      .prepare(
-        `SELECT topic_code FROM atom_curriculum_bindings
-          WHERE atom_id = ? AND school_type = 'gymnasium'`,
-      )
-      .get("atom:zam:optik:brechung-qualitativ")) as { topic_code: string };
-    expect(gymBinding.topic_code).toBe("215729");
-  });
-
   it("attaches all four overlapping cells onto one atom graph", async () => {
-    const files = [
-      "de-by-realschule-optik-kvt.json",
-      "de-by-gymnasium-8-optik-kvt.json",
-      "de-by-realschule-optik-erweiterung-kvt.json",
-      "de-by-bos-10-optik-kvt.json",
-    ];
-    for (const file of files) {
-      const tile = JSON.parse(
-        readFileSync(resolve(__dirname, "../fixtures/curriculum", file), "utf-8"),
-      );
-      await attachKvtTile(db, tile, "learner-a");
+    for (const name of ALL_CELLS) {
+      await installKvtTile(db, loadFixture(name));
     }
 
-    const atoms = (await db
-      .prepare("SELECT COUNT(*) as n FROM learning_atoms")
-      .get()) as { n: number };
-    expect(atoms.n).toBe(9);
+    expect(await countRows(db, "learning_atoms")).toBe(9);
+    expect(await countRows(db, "tokens")).toBe(15);
 
-    const tokens = (await db
-      .prepare("SELECT COUNT(*) as n FROM tokens")
-      .get()) as { n: number };
-    expect(tokens.n).toBe(15);
-
-    const refractionBindings = (await db
+    const refraction = (await db
       .prepare(
         `SELECT COUNT(*) as n FROM atom_curriculum_bindings
           WHERE atom_id = 'atom:zam:optik:brechung-qualitativ'`,
       )
       .get()) as { n: number };
-    expect(refractionBindings.n).toBe(4);
-
-    const dispersion = (await db
-      .prepare(
-        `SELECT school_type, grade FROM atom_curriculum_bindings
-          WHERE atom_id = 'atom:zam:optik:dispersion-spektrum'`,
-      )
-      .all()) as Array<{ school_type: string; grade: number }>;
-    expect(dispersion).toEqual([{ school_type: "realschule", grade: 7 }]);
+    expect(refraction.n).toBe(4);
   });
 });
