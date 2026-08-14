@@ -1,8 +1,16 @@
 # Hierarchical Domain Ontology and Composite Token Identity
 
-**Status:** Accepted (2026-07-04)
+**Status:** Draft (reverted from Accepted, 2026-08-14)
 **Date:** 2026-07-04
 **Deciders:** Thomas (project owner)
+
+> Reopened. This ADR answered how a personal or team graph stays
+> addressable when slugs grow long. The central learning-path work
+> asks a harder identity question — how two curricula and two
+> publishers recognize the same pedagogical atom — and that join key
+> is not settled. See
+> [central-learning-path-identity.md](../concepts/central-learning-path-identity.md).
+> Treat the decisions below as a candidate, not as a constraint.
 **Related:**
 [2026-07-04-human-friendly-titles-and-prefixed-domains.md](2026-07-04-human-friendly-titles-and-prefixed-domains.md)
 (Decision 4 `/` separator, Open Question 1) ·

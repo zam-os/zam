@@ -3,7 +3,8 @@
 **Status:** Research Paper & Collaborative Discussion Draft  
 **Datum:** 2026-08-14  
 **Autoren:** ZAM Scientific & AI Research Working Group  
-**Zweck:** Wissenschaftliche Fundierung, formaltheoretische Herleitung und strukturierte Forschungsfragen zur kollaborativen Bearbeitung durch spezialisierte KI-Agenten und Fachexperten.
+**Zweck:** Wissenschaftliche Fundierung, formaltheoretische Herleitung und strukturierte Forschungsfragen zur kollaborativen Bearbeitung durch spezialisierte KI-Agenten und Fachexperten.  
+**Gegenlesen:** [central-learning-path-refinement.md](central-learning-path-refinement.md) · [central-learning-path-identity.md](central-learning-path-identity.md) (Frage 0: PAID).
 
 ---
 
@@ -195,13 +196,15 @@ Die folgenden fünf Forschungs-Briefings sind so formuliert, dass sie direkt an 
 > **Forschungsfrage:**  
 > *Wie können wir bestehende Entitäts-Ontologien (Wikidata, ConceptNet, DBpedia) automatisiert und mit hoher Präzision mit den Kompetenzformulierungen amtlicher Lehrpläne (z. B. LehrplanPLUS Bayern) verknüpfen, ohne semantischen Drift oder fehlerhafte Zuordnungen zu erzeugen?*
 
+Die Abbildung ist zweistufig (siehe [Frage 0 / PAID](central-learning-path-identity.md)): Lehrplansatz → Welt-Entität, und derselbe Satz → Reduktionsstufe. Precision@1 auf der Entität allein ist die falsche Metrik — ein richtiger Q-Treffer bei falscher Stufe erzeugt die falsche Karte.
+
 #### Teilaufgaben für den Agenten:
 1. **Vergleich von Entity-Linking-Verfahren:**
    - Evaluation von Lexical Search (BM25) vs. Dense Bi-Encoder Embeddings (z. B. `text-embedding-3-large`, `e5-mistral`) vs. Cross-Encoder Rerankern.
 2. **Taxonomie-Abgleich:**
    - Wie werden zusammengesetzte schulische Lernbereiche (z. B. „PH9 2.1 Brechung und Totalreflexion an ebenen Grenzflächen“) auf atomare Wikidata-Items (Q202814 Snellius, Q165738 Totalreflexion) dekomponiert?
 3. **Qualitätsmetriken:**
-   - Definition von Precision@1, Recall@k und Halluzinations-Schwellenwerten für unüberwachtes Mapping vor dem Lehrer-Audit.
+   - Getrennt messen: Entitäts-Precision@1 *und* Reduktions-Genauigkeit. Ein richtiger Q-Treffer bei falscher Stufe ist ein Fehler. Dazu Recall@k und eine Ablehnungsrate für Sätze ohne vertretbares Q (`lp:`-Fallback).
 
 ---
 
