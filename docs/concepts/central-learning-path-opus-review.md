@@ -314,9 +314,16 @@ Primitive brauchen.
 
 ## 8. Was ich jetzt entscheiden würde
 
-1. **Gate-Frage explizit machen.** „Blockiert ZAM proaktiv oder repariert es
-   reaktiv?“ als eigene, benannte Entscheidung — nicht als Nebenwirkung des
-   Overlay-Compilers.
+1. ~~**Gate-Frage explizit machen.**~~ **Entschieden 2026-08-14.** Die Frage
+   zerfällt in drei Schalter — Materialisierung, Zulassung, Reihenfolge. Der
+   Owner hat entschieden: **kein hartes Gate** (Zulassung aus), Vorbedingungen
+   bekommen Karten, Reihenfolge nach Topologie *und* Fälligkeit mit Vorrang für
+   die Topologie. Die Karten werden nicht blockiert, sondern per
+   Selbsteinschätzung des Lerners terminiert — und laufen garantiert irgendwann
+   auf. Damit ist auch Abschnitt 3 dieses Reviews erledigt: Es gibt keine Wand,
+   weil nichts blockiert und die Support-Hülle nie zu Karten wird. Ausgearbeitet
+   in [central-learning-path-entry-problem.md](central-learning-path-entry-problem.md),
+   Abschnitte 3 und 6.
 2. **Anker-Auflösung als Compiler-Pflicht**, für `wd:` und für
    `provider`/`topic_id`. Kein Publish ohne aufgelöstes Label.
 3. **Opaque, namespaced Atom-ID; `reduction` als Profilfeld; typisierte
