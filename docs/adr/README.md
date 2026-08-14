@@ -35,6 +35,7 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-06-30](2026-06-30-learning-content-studio.md) | Learning Content Studio | Implemented |
 | [2026-07-02](2026-07-02-lehrplanplus-import-wizard.md) | LehrplanPLUS Curriculum Import Wizard | Partially implemented |
 | [2026-07-03](2026-07-03-rag-semantic-token-search.md) | RAG / Semantic Token Search on a Self-Hosted, No-License-Cost Store | Partially implemented |
+| [2026-07-04](2026-07-04-hierarchical-domain-ontology-and-token-identity.md) | Hierarchical Domain Ontology and Composite Token Identity | Accepted |
 | [2026-07-04](2026-07-04-human-friendly-titles-and-prefixed-domains.md) | Human-friendly Titles and Prefixed Domains for the Knowledge Graph | Implemented |
 | [2026-07-04](2026-07-04-knowledge-contexts.md) | Knowledge Contexts: Work, School, Private | Implemented |
 | [2026-07-04](2026-07-04-multi-learner-shared-knowledge.md) | Closed-Group Learning Library: Curation, Privacy and Deployment | Accepted — Phase E scope and ordering amended by 2026-07-26b |
