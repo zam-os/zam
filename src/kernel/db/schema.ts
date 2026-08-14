@@ -306,13 +306,6 @@ CREATE TABLE IF NOT EXISTS atom_curriculum_bindings (
   exam_relevant   INTEGER NOT NULL DEFAULT 0
 );
 
--- Uniqueness over COALESCE(grade, -1), not a plain composite key: grade is
--- nullable ("this Lernbereich names no year"), and SQLite never matches NULL
--- against NULL, so a composite PRIMARY KEY let the same binding re-insert on
--- every install (M024).
-CREATE UNIQUE INDEX IF NOT EXISTS ux_atom_binding
-  ON atom_curriculum_bindings(
-    atom_id, provider, topic_code, COALESCE(grade, -1), track);
 
 CREATE TABLE IF NOT EXISTS atom_prerequisites (
   atom_id     TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
@@ -344,6 +337,14 @@ CREATE INDEX IF NOT EXISTS idx_token_contexts_context ON token_contexts(context_
 CREATE INDEX IF NOT EXISTS idx_tokens_atom ON tokens(atom_id);
 CREATE INDEX IF NOT EXISTS idx_atom_bindings_provider
   ON atom_curriculum_bindings(provider, topic_code);
+-- Uniqueness over COALESCE(grade, -1) rather than a composite key: grade is
+-- nullable ("this Lernbereich names no year"), and NULL never equals NULL, so a
+-- composite PRIMARY KEY let the same binding re-insert on every install. M024
+-- repairs databases that already accumulated those duplicates, which is why
+-- this lives with the indexes — it must run after that migration, not before.
+CREATE UNIQUE INDEX IF NOT EXISTS ux_atom_binding
+  ON atom_curriculum_bindings(
+    atom_id, provider, topic_code, COALESCE(grade, -1), track);
 `;
 
 /**

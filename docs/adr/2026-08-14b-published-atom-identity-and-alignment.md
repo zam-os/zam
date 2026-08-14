@@ -176,11 +176,29 @@ diagnostic item, or a stated rule for why any item may stand for the atom.
 
 ---
 
-## Question 5 — Is Tier 1 + Tier 2 per atom an invariant or a guideline?
+## Question 5 — What is a PracticeItem, and is Tier 1 + Tier 2 an invariant?
 
-The original ADR listed authoring both as a consequence; code and fixtures
-frequently ship one. It must be one or the other: a checkable publish invariant,
-or a quality guideline. Not both.
+The accepted ADR describes a PracticeItem as a concrete, language-specific task
+with a Bloom level and an interaction tier. The fixtures supply `language`,
+`tier` and, for fast checks, a structured `fast_check`. The installer accepts
+`language` and `tier` and uses neither beyond the derived slug; `fast_check` is
+not even in the input type. `tokens` has no column for any of them.
+
+So the spike does not yet demonstrate the two-tier model's persistence, and a
+fixture cannot be installed and exported back without loss. To decide:
+
+1. Are language, interaction tier and structured answer options part of the
+   immutable PracticeItem substance?
+2. Does `fast_check` belong in a normalised interaction structure, or as
+   versioned JSON on the item?
+3. Does changing those fields move `content_version`, and is it material?
+4. Is Tier 1 **plus** Tier 2 a checkable publish invariant or a quality
+   guideline? It must be one or the other — the original ADR listed authoring
+   both as a consequence while code and fixtures frequently ship one.
+
+Until this is decided the documentation says "partly implemented"; after it, a
+round-trip test fixture → DB → canonical PracticeItem is the acceptance
+criterion.
 
 ---
 

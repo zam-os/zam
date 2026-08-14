@@ -170,28 +170,103 @@ describe("installKvtTile", () => {
     expect(await countRows(db, "atom_curriculum_bindings")).toBe(afterFirst);
   });
 
-  // Codex acceptance test 1.
-  it("reaches the same state whatever order the cells are installed in", async () => {
-    for (const name of ALL_CELLS) {
-      await installKvtTile(db, loadFixture(name));
-    }
-    const forward = await snapshot(db);
-
-    const otherDir = mkdtempSync(join(tmpdir(), "zam-kvt-perm-"));
+  /** Install `names` into a throwaway database and return its snapshot. */
+  async function snapshotOfOrder(names: string[]): Promise<string> {
+    const dir = mkdtempSync(join(tmpdir(), "zam-kvt-perm-"));
     const other = await openDatabase({
-      dbPath: join(otherDir, "zam-test.db"),
+      dbPath: join(dir, "zam-test.db"),
       initialize: true,
       useConfiguredCloud: false,
     });
     try {
-      for (const name of [...ALL_CELLS].reverse()) {
+      for (const name of names) {
         await installKvtTile(other, loadFixture(name));
       }
-      expect(await snapshot(other)).toBe(forward);
+      return await snapshot(other);
     } finally {
       await other.close();
-      rmSync(otherDir, { recursive: true, force: true, maxRetries: 10 });
+      rmSync(dir, { recursive: true, force: true, maxRetries: 10 });
     }
+  }
+
+  function permutations<T>(items: T[]): T[][] {
+    if (items.length <= 1) return [items];
+    return items.flatMap((item, index) =>
+      permutations([
+        ...items.slice(0, index),
+        ...items.slice(index + 1),
+      ]).map((rest) => [item, ...rest]),
+    );
+  }
+
+  // Codex acceptance test 1, in the form he asked for: all 24 orders, not two.
+  it("reaches the same state in all 24 install orders", async () => {
+    const orders = permutations(ALL_CELLS);
+    expect(orders).toHaveLength(24);
+
+    const expected = await snapshotOfOrder(ALL_CELLS);
+    for (const order of orders) {
+      expect(await snapshotOfOrder(order)).toBe(expected);
+    }
+  }, 60_000);
+
+  // Codex hardening review H2: the counterexample he reproduced.
+  it("drops the old edge when a later release changes the representative", async () => {
+    const parentAtom = "atom:zam:optik:strahlengang-lot";
+    const childAtom = "atom:zam:optik:brechung-qualitativ";
+
+    function tileWithParentItem(id: string, tileId: string): KvtTile {
+      const base = loadTile();
+      const parent = base.atoms.find((a) => a.id === parentAtom);
+      const child = base.atoms.find((a) => a.id === childAtom);
+      const [parentItem] = parent!.practice_items;
+      const [childItem] = child!.practice_items;
+      return {
+        tile_id: tileId,
+        version: "1",
+        atoms: [
+          { ...parent!, practice_items: [{ ...parentItem, id, slug: `p-${id}` }] },
+          {
+            ...child!,
+            practice_items: [{ ...childItem, slug: "c-fixed" }],
+            prerequisites: [{ atom_id: parentAtom, type: "hard" }],
+          },
+        ],
+      };
+    }
+
+    const high = tileWithParentItem("01K3X9A7R4B8C1D2E3F4G5HB02", "tile-a");
+    const low = tileWithParentItem("01K3X9A7R4B8C1D2E3F4G5HB01", "tile-b");
+    const childId = loadTile().atoms.find((a) => a.id === childAtom)!
+      .practice_items[0].id;
+
+    async function edgesAfter(order: KvtTile[]): Promise<string[]> {
+      const dir = mkdtempSync(join(tmpdir(), "zam-kvt-rep-"));
+      const other = await openDatabase({
+        dbPath: join(dir, "zam-test.db"),
+        initialize: true,
+        useConfiguredCloud: false,
+      });
+      try {
+        for (const tile of order) await installKvtTile(other, tile);
+        const rows = (await other
+          .prepare(
+            "SELECT requires_id FROM prerequisites WHERE token_id = ? ORDER BY requires_id",
+          )
+          .all(childId)) as Array<{ requires_id: string }>;
+        return rows.map((row) => row.requires_id);
+      } finally {
+        await other.close();
+        rmSync(dir, { recursive: true, force: true, maxRetries: 10 });
+      }
+    }
+
+    const highThenLow = await edgesAfter([high, low]);
+    const lowThenHigh = await edgesAfter([low, high]);
+
+    // Before the fix this was ["…B01", "…B02"] versus ["…B01"].
+    expect(highThenLow).toEqual(lowThenHigh);
+    expect(highThenLow).toEqual(["01K3X9A7R4B8C1D2E3F4G5HB01"]);
   });
 
   // Codex acceptance test 3.
@@ -289,6 +364,17 @@ describe("installKvtTile", () => {
     await installKvtTile(db, tile);
     const token = await getTokenById(db, tile.atoms[0].practice_items[0].id);
     expect(token?.slug).toBe("optik-lot-schnellcheck");
+  });
+
+  // Codex hardening review H2.3: silently ignoring the new value was the worst
+  // of the three options.
+  it("refuses to rename a published item address", async () => {
+    await installKvtTile(db, loadTile());
+    const tile = loadTile();
+    tile.atoms[0].practice_items[0].slug = "ein-anderer-name";
+    await expect(installKvtTile(db, tile)).rejects.toThrow(
+      /Slugs are immutable/,
+    );
   });
 
   it("refuses to reassign an item to a different atom", async () => {

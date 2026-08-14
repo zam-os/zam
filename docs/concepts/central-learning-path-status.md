@@ -1,6 +1,6 @@
 # Zentraler Lernpfad: Stand und Übergabe an die nächste Runde
 
-**Status:** Arbeitsstand nach fünf Modellrunden und drei Owner-Runden
+**Status:** Arbeitsstand nach sechs Modellrunden und drei Owner-Runden
 
 **Datum:** 2026-08-14
 
@@ -20,7 +20,7 @@ unveränderliche Artefakte anonym über ein CDN verteilt, Lernzustand
 ausschließlich auf dem Gerät des Lerners.
 
 Mitgearbeitet haben Gemini (Entwurf), Grok (Verfeinerung, Review), Codex/GPT-5.6
-(zwei Reviews), Opus (Nachprüfung, Schiedsspruch, Umsetzung) und Thomas
+(drei Reviews), Opus (Nachprüfung, Schiedsspruch, Umsetzung) und Thomas
 (Entscheidungen).
 
 ## 2. Leseregeln
@@ -36,8 +36,11 @@ Mitgearbeitet haben Gemini (Entwurf), Grok (Verfeinerung, Review), Codex/GPT-5.6
    schärfsten Einwände gegen Implementierung und Schema.
 5. [Opus-Schiedsspruch](central-learning-path-opus-arbitration.md) — dieselben
    Einwände am Code nachgeprüft, plus was daraufhin behoben wurde.
+6. [Codex-Härtungsreview](central-learning-path-codex-hardening-review.md) —
+   erneute Abnahme des reparierten Stands; zwei technische Gegenbeweise,
+   Quellenkorrekturen und der Arbeitsauftrag für die nächste Runde.
 
-Der Rest nach Bedarf (Dokumentenkarte, Abschnitt 8).
+Der Rest nach Bedarf (Dokumentenkarte, Abschnitt 9).
 
 ### Arbeitsregel, teuer gelernt
 
@@ -208,13 +211,22 @@ Unter AND-Semantik folgenlos — geringe Schwere, aber richtigzustellen.
 - Inhaltsänderungen an vorhandenen Items laufen über
   `publishTokenRevisionInTransaction`. Fehlende Klassifikation gilt als
   `material`.
-- Reihenfolgeunabhängig: Legacy-Projektion und Prerequisite-Repräsentant werden
-  aus dem gespeicherten Gesamtbestand berechnet, nicht aus der Array-Position.
-- M024: Eindeutigkeit der Bindings über `COALESCE(grade, -1)`.
+- Für die aktuellen kompatiblen Fixtures deterministisch: Legacy-Projektion und
+  Prerequisite-Repräsentant werden aus dem gespeicherten Gesamtbestand
+  berechnet, nicht aus der Array-Position. Die allgemeine
+  Reihenfolgeunabhängigkeit ist durch einen Repräsentantenwechsel widerlegt;
+  siehe Codex-Härtungsreview H2.
+- M024 stellt lokal die Eindeutigkeit der Bindings über
+  `COALESCE(grade, -1)` her; der aktuelle Rebuild verletzt jedoch den gemeinsamen
+  Providervertrag und ist nach einem Abbruch nicht sicher wiederaufnehmbar.
+  Siehe Codex-Härtungsreview H1.
 
-**Testlage:** 2158 Tests grün. Acht von Codex' 15 Abnahmetests sind erfüllt
-(1, 2, 3, 4, 10, 11, 13 plus gescopte Materialisierung). Die übrigen sieben
-stehen auf Entscheidungen aus Abschnitt 6.B.
+**Testlage:** 2158 Tests grün, 5 übersprungen. Die konkreten Tests zu
+Idempotenz, Revision, Null-Karten-Installation, Slug-Kollision, NULL-Grade und
+gescopter Materialisierung tragen. Der als Codex-Test 1 geführte
+Reihenfolgetest deckt nur zwei Folgen der aktuellen Fixtures ab und beweist die
+allgemeine Invariante nicht. PostgreSQL-Schemaprovisionierung war im verifizierten
+Lauf nicht aktiv. Siehe Codex-Härtungsreview H1/H2.
 
 **Der Attach bleibt ein Spike.** Der Modulkommentar sagt das ausdrücklich und
 zählt auf, was fehlt. Keine Lernerfunktion darf darauf aufbauen, bevor A und B
@@ -226,14 +238,20 @@ Atomen — das ist der Wiederverwendungsbeweis und zugleich der Bonus-Pool.
 
 ## 8. Was die nächste Runde tun sollte
 
-1. **ADR 2026-08-14b entscheiden** (Identität, Alignments). Die Optionen sind
+1. **Die zwei technischen Gegenbeweise aus dem Codex-Härtungsreview schließen:**
+   M024 providerneutral/idempotent machen und den Reihenfolgevertrag
+   reconciliieren oder ehrlich begrenzen.
+2. **Die Cognitive Foundations zur Hypothesenlandkarte korrigieren:** Quellen
+   auflösen; Evidenz, ZAM-Inferenz, Entscheidung und Falsifikation trennen.
+3. **ADR 2026-08-14b entscheiden** (Identität, Alignments). Die Optionen sind
    ausformuliert und extern belegt; es fehlt eine Entscheidung, keine weitere
    Runde Argumente.
-2. **Release-/Provenienz-ADR schreiben** (Abschnitt 6.B), bevor weitere
+4. **Release-/Provenienz-ADR schreiben** (Abschnitt 6.B), bevor weitere
    Persistenz entsteht.
-3. **Die Replay-Messungen** aus 6.E laufen lassen — sie sind billig und
+5. **Die Replay-Messungen** aus 6.E laufen lassen — sie sind billig und
    entscheiden mehrere offene Fragen empirisch statt argumentativ.
-4. **Schema-Hygiene** aus 6.D, sobald das Vokabular steht.
+6. **Schema-Hygiene und den verlustfreien PracticeItem-Vertrag** entscheiden,
+   sobald das Vokabular steht.
 
 **Was nicht ansteht:** Scanner, weltweites CDN, Signatur-Infrastruktur,
 Tier-1-Objekte im Kernschema, ein drittes Editorfenster im Studio, endgültiges
@@ -253,6 +271,7 @@ Stellschrauben, keine Theorie im Voraus. Lernerfeedback entscheidet.
 | [architecture-review](central-learning-path-architecture-review.md) | Grok | Abschnittsweise Kritik am Entwurf. |
 | [codex-research-review](central-learning-path-codex-research-review.md) | Codex | Erdungsprüfung, Identitätskritik, Fünf-Objekte-Modell, Release/Trust. |
 | [codex-follow-up-review](central-learning-path-codex-follow-up-review.md) | Codex | Abnahmeblocker gegen Spike und Schema; 15 geforderte Vertragstests. |
+| [codex-hardening-review](central-learning-path-codex-hardening-review.md) | Codex | Erneute Abnahme nach Opus: M024-Providerbruch, widerlegte Reihenfolgegarantie, PracticeItem-Datenverlust und quellenbezogene Prüfung der neuen Geistesblitze. |
 | [opus-review](central-learning-path-opus-review.md) | Opus | Nachprüfung gegen Primärquellen und Code; Gate-Befund; Schiedssprüche. |
 | [opus-arbitration](central-learning-path-opus-arbitration.md) | Opus | Schiedsspruch am Code nachgeprüft, plus Umsetzung der vier billigen Fixes. |
 | [entry-problem](central-learning-path-entry-problem.md) | Opus + Owner | Einstieg in die Mitte; Selbsteinschätzung, leere Queue. |

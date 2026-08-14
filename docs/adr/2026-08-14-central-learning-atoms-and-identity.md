@@ -6,7 +6,8 @@
 **Split note:** This ADR originally also decided published atom identity and
 SKOS alignments. Those are unsettled and moved to
 [2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md) with status
-`Proposed`. What remains here is decided and implemented.  
+`Proposed`. What remains here is **decided**; how far it is built varies by
+decision — see the delivery matrix below.  
 **Related:**
 [2026-08-14b-published-atom-identity-and-alignment.md](2026-08-14b-published-atom-identity-and-alignment.md) ·
 [2026-07-26b-central-curriculum-content-service.md](2026-07-26b-central-curriculum-content-service.md) ·
@@ -94,6 +95,29 @@ to first check the direct prerequisite — pass, keep it buried; fail, surface i
 measurement is the share of failures where the surfaced foundation then passes
 first try.
 
+## Delivery matrix
+
+"Decided" and "built" are not the same claim, and the first version of this ADR
+conflated them.
+
+| Decision | Decided | Built | Covered by tests | Empirically validated |
+|---|---|---|---|---|
+| Five object kinds | yes | partly — `PracticeItem` loses `language`, `tier`, `fast_check` | partly | no |
+| Install ≠ enrolment | yes | yes | yes | no |
+| No admission gate | yes | yes (never existed) | n/a | no |
+| Demand-driven materialisation | yes | yes | yes | no |
+| Self-assessment writes only `buried_until` | yes | **no** — no surface exists yet | no | no |
+| Empty-queue pull-forward | yes | **no** | no | no |
+| Due date orders retention | yes | partly — interleaver reorders within it | no | no |
+| Bonus offers | yes | **no** | no | no |
+| Diagnostic triage as a knob | yes | default only | n/a | no |
+
+The `PracticeItem` gap is tracked as an open question in
+[2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md): the tiles
+carry `language`, `tier` and `fast_check`, the installer accepts and drops them,
+and `tokens` has nowhere to put them. Until that is decided, a fixture cannot be
+installed and read back without loss.
+
 ## Consequences
 
 - Learners start in any grade immediately, with no entrance exam and no wall of
@@ -117,9 +141,12 @@ The owner's earlier "topology weighs more than due date" was **withdrawn on
 2026-08-14** once it became clear it collapsed two opposite orders into one. It
 applied to the exploration of new content, not to review.
 
-- **Retention (due cards).** The due date decides. Every day past due costs
-  retention, and securing what a learner already holds is a goal in its own
-  right. Topology does not reorder due reviews.
+- **Retention (due cards).** The due date decides **admission and base
+  urgency**, and topology never reorders due reviews. It is not a total order:
+  the queue applies cross-domain interleaving after sorting by `due_at`, so a
+  less overdue card can precede a more overdue one. Whether that interleaver
+  earns its place is an open question — the studies behind it tested
+  discrimination *within* a domain, not switching between subjects.
 - **Acquisition and exploration (new cards).** Topology decides: foundations
   before dependents, and — for optional content — reachability and leverage
   (see below).

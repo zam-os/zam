@@ -258,3 +258,118 @@ describe("applySchemaAndMigrations", { timeout: 30_000 }, () => {
     stub.close();
   });
 });
+
+/**
+ * M024 — the migration that repairs M023's nullable-grade key.
+ *
+ * The Codex hardening review rejected the first version for querying
+ * `sqlite_master` on a path shared with the PostgreSQL provider and for a
+ * four-step table rebuild that could not be resumed after a crash. What
+ * replaced it is a unique index over `COALESCE(grade, -1)` plus a repair that
+ * only runs when the index refuses to build, so these tests cover the three
+ * database states it can meet and the conflict it must not paper over.
+ */
+describe("M024 curriculum binding uniqueness", () => {
+  async function openFresh(): Promise<Database> {
+    return openDatabase({
+      dbPath: join(tempDir(), "zam-test.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+  }
+
+  /** Recreate the M023 table shape: nullable grade inside the primary key. */
+  async function downgradeToM023(db: Database): Promise<void> {
+    await db.exec("DROP INDEX IF EXISTS ux_atom_binding");
+    await db.exec("DROP TABLE IF EXISTS atom_curriculum_bindings");
+    await db.exec(`
+      CREATE TABLE atom_curriculum_bindings (
+        atom_id         TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+        provider        TEXT NOT NULL,
+        school_type     TEXT NOT NULL DEFAULT '',
+        grade           INTEGER,
+        track           TEXT NOT NULL DEFAULT '',
+        subject         TEXT NOT NULL DEFAULT '',
+        topic_code      TEXT NOT NULL,
+        topic_title     TEXT,
+        exam_relevant   INTEGER NOT NULL DEFAULT 0,
+        PRIMARY KEY (atom_id, provider, topic_code, grade, track)
+      );
+    `);
+  }
+
+  async function seedAtom(db: Database): Promise<void> {
+    await db
+      .prepare("INSERT INTO learning_atoms (id, title) VALUES (?, ?)")
+      .run("atom:zam:optik:test", "Test");
+  }
+
+  async function insertBinding(db: Database, title: string): Promise<void> {
+    await db
+      .prepare(
+        `INSERT INTO atom_curriculum_bindings
+           (atom_id, provider, school_type, grade, track, subject,
+            topic_code, topic_title, exam_relevant)
+         VALUES (?, 'lp', 'realschule', NULL, '', 'physik', 'T1', ?, 0)`,
+      )
+      .run("atom:zam:optik:test", title);
+  }
+
+  async function bindingCount(db: Database): Promise<number> {
+    const row = (await db
+      .prepare("SELECT COUNT(*) AS n FROM atom_curriculum_bindings")
+      .get()) as { n: number };
+    return row.n;
+  }
+
+  it("leaves a fresh database alone and is repeatable", async () => {
+    const db = await openFresh();
+    await applySchemaAndMigrations(db);
+    await applySchemaAndMigrations(db);
+    const indexes = (await db.pragma(
+      "index_list(atom_curriculum_bindings)",
+    )) as Array<{ name: string }>;
+    expect(indexes.map((index) => index.name)).toContain("ux_atom_binding");
+    await db.close();
+  });
+
+  it("collapses the duplicates an M023 database accumulated", async () => {
+    const db = await openFresh();
+    await downgradeToM023(db);
+    await seedAtom(db);
+    // The bug: NULL never equals NULL, so the old key permitted all three.
+    await insertBinding(db, "Optik");
+    await insertBinding(db, "Optik");
+    await insertBinding(db, "Optik");
+    expect(await bindingCount(db)).toBe(3);
+
+    await applySchemaAndMigrations(db);
+
+    expect(await bindingCount(db)).toBe(1);
+    const surviving = (await db
+      .prepare("SELECT topic_title FROM atom_curriculum_bindings")
+      .get()) as { topic_title: string };
+    expect(surviving.topic_title).toBe("Optik");
+
+    // Repeatable, and the repaired database now rejects a fourth copy.
+    await applySchemaAndMigrations(db);
+    expect(await bindingCount(db)).toBe(1);
+    await expect(insertBinding(db, "Optik")).rejects.toThrow();
+    await db.close();
+  });
+
+  it("refuses to merge duplicates that disagree", async () => {
+    const db = await openFresh();
+    await downgradeToM023(db);
+    await seedAtom(db);
+    await insertBinding(db, "Optik");
+    await insertBinding(db, "Etwas anderes");
+
+    // A column-wise MAX() would have invented a row no release published.
+    await expect(applySchemaAndMigrations(db)).rejects.toThrow(
+      /conflicting duplicate curriculum bindings/,
+    );
+    expect(await bindingCount(db)).toBe(2);
+    await db.close();
+  });
+});

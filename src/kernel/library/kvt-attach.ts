@@ -17,14 +17,24 @@
  *   answer on an existing item runs `publishTokenRevisionInTransaction`, so
  *   `content_version` moves and learners of the old wording are re-tested. FSRS
  *   state is never rewritten.
- * - **Order does not matter.** Legacy `provider`/`topic_id` projection and the
- *   prerequisite representative are computed from the full stored state, not
- *   from the position of an entry in the tile being installed.
+ * - **Order does not matter — for compatible releases.** The legacy
+ *   `provider`/`topic_id` projection and the derived token edges are computed
+ *   and *reconciled* from the full stored state, not from the position of an
+ *   entry in the tile being installed, so a later release that changes which
+ *   item represents an atom does not leave the previous edge behind.
+ *
+ *   The limit is explicit: releases that make **contradictory scalar claims**
+ *   about the same object — a different atom title, reduction, alignment type
+ *   or edge rationale for the same id — are still last-writer-wins, and their
+ *   result therefore does depend on install order. Resolving that needs the
+ *   release contract (per-row provenance and ownership), not another rule here.
+ *   Only a differing *slug* for an already-installed item is rejected outright,
+ *   because a published address must not change silently.
  */
 
 import type { Database } from "../db/types.js";
 import { ensureCard, getCard } from "../models/card.js";
-import { addPrerequisite } from "../models/prerequisite.js";
+import { addPrerequisite, removePrerequisite } from "../models/prerequisite.js";
 import { type BloomLevel, getTokenById, insertToken } from "../models/token.js";
 import { publishTokenRevisionInTransaction } from "./revision.js";
 
@@ -180,22 +190,50 @@ async function projectedBinding(
     .get(atomId)) as { provider: string; topic_code: string } | undefined;
 }
 
+/** Every practice item of an atom, lowest id first. */
+async function itemsOfAtom(tx: Database, atomId: string): Promise<string[]> {
+  const rows = (await tx
+    .prepare("SELECT id FROM tokens WHERE atom_id = ? ORDER BY id")
+    .all(atomId)) as Array<{ id: string }>;
+  return rows.map((row) => row.id);
+}
+
 /**
- * The item that carries this atom's hard edges in the token graph.
+ * Bring the token edges derived from one hard atom edge to their target state.
  *
- * Lowest stored item id, so every permutation of the same releases yields the
- * same edges. This is a deterministic placeholder: the model still owes an
- * explicit representative/diagnostic item (Codex B1.6), because "lowest id" is
- * not a didactic statement.
+ * The representative is the lowest stored item id of the prerequisite atom. It
+ * can therefore *change* when a later release adds an item with a lower id, and
+ * merely adding the new edge would leave the old one behind — which is how the
+ * result came to depend on install order.
+ *
+ * Scope of the delete: only edges from an item of `atomId` to a non-representative
+ * item of `requiresId`. That is exactly this projection's own output. A curator
+ * who hand-linked two items of these same atoms would be caught by it; naming
+ * the owner of an edge needs the release contract's per-row provenance, which
+ * does not exist yet.
  */
-async function representativeItem(
+async function reconcileDerivedEdges(
   tx: Database,
   atomId: string,
-): Promise<string | undefined> {
-  const row = (await tx
-    .prepare("SELECT id FROM tokens WHERE atom_id = ? ORDER BY id LIMIT 1")
-    .get(atomId)) as { id: string } | undefined;
-  return row?.id;
+  requiresId: string,
+): Promise<number> {
+  const children = await itemsOfAtom(tx, atomId);
+  const parents = await itemsOfAtom(tx, requiresId);
+  const [representative] = parents;
+  if (!representative) return 0;
+
+  let written = 0;
+  for (const child of children) {
+    if (child === representative) continue;
+    for (const parent of parents) {
+      if (parent !== representative) {
+        await removePrerequisite(tx, child, parent);
+      }
+    }
+    await addPrerequisite(tx, child, representative);
+    written += 1;
+  }
+  return written;
 }
 
 /**
@@ -361,6 +399,17 @@ export async function installKvtTile(
           );
         }
 
+        // A published address must not change under a learner. Silently
+        // ignoring the new value was the third way this could go: not applied,
+        // not refused, just gone.
+        if (item.slug?.trim() && item.slug.trim() !== existing.slug) {
+          throw new Error(
+            `Item ${item.id} is published as ${existing.slug}; ` +
+              `tile ${tile.tile_id} renames it to ${item.slug.trim()}. ` +
+              `Slugs are immutable — mint a new item or keep the address.`,
+          );
+        }
+
         const substanceChanged =
           existing.title !== atom.title ||
           existing.concept !== item.concept ||
@@ -433,20 +482,30 @@ export async function installKvtTile(
       }
     }
 
-    for (const atom of tile.atoms) {
-      const childIds = (await tx
-        .prepare("SELECT id FROM tokens WHERE atom_id = ? ORDER BY id")
-        .all(atom.id)) as Array<{ id: string }>;
-      for (const prereq of atom.prerequisites ?? []) {
-        if (prereq.type === "soft") continue;
-        const parentRep = await representativeItem(tx, prereq.atom_id);
-        if (!parentRep) continue;
-        for (const child of childIds) {
-          if (child.id === parentRep) continue;
-          await addPrerequisite(tx, child.id, parentRep);
-          tokenPrereqs += 1;
-        }
-      }
+    // Reconcile from the *stored* atom edges, not from the ones this tile
+    // happens to declare: a tile that only adds a practice item to an atom can
+    // still change which item represents it, and the edges derived from the
+    // previous representative have to go with it.
+    const touched = tile.atoms.map((atom) => atom.id);
+    const placeholders = touched.map(() => "?").join(",");
+    const affectedEdges = (await tx
+      .prepare(
+        `SELECT atom_id, requires_id FROM atom_prerequisites
+          WHERE kind = 'hard'
+            AND (atom_id IN (${placeholders}) OR requires_id IN (${placeholders}))
+          ORDER BY atom_id, requires_id`,
+      )
+      .all(...touched, ...touched)) as Array<{
+      atom_id: string;
+      requires_id: string;
+    }>;
+
+    for (const edge of affectedEdges) {
+      tokenPrereqs += await reconcileDerivedEdges(
+        tx,
+        edge.atom_id,
+        edge.requires_id,
+      );
     }
 
     return {
