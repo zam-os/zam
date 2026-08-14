@@ -60,7 +60,19 @@ async function describeSchema(db: Database): Promise<Record<string, string[]>> {
   return shape;
 }
 
-describe("applySchemaAndMigrations", () => {
+/**
+ * Provisioning runs the whole schema plus every migration through the mobile
+ * IPC stub, one statement at a time against a real file. That is milliseconds
+ * on a developer machine (12–26 ms as of M022) and seconds on the
+ * `windows-arm64` CI runner, where each SQLite write is orders of magnitude
+ * slower — it timed out at the 5 s default twice on 2026-08-09/10, in code
+ * neither change touched.
+ *
+ * The number protects the slowest supported runner, not the code: raising it
+ * hides nothing, because a provisioning path that genuinely regressed would
+ * blow past this too. If it starts failing again, measure before raising.
+ */
+describe("applySchemaAndMigrations", { timeout: 30_000 }, () => {
   it("produces the same schema as openDatabase, over IPC only", async () => {
     const stub = createTauriInvokeStub(join(tempDir(), "mobile.db"));
     const mobile = createTauriDatabase(stub.invoke);
