@@ -11,6 +11,17 @@ Dieses Dokument ist kein zweiter Architektur-Entwurf. Es ist die Meinung zu den 
 
 ---
 
+> **Korrekturvermerk 2026-08-14.** Die Wikidata-Anker dieses Dokuments waren
+> falsch und sind gegen die API berichtigt: `Q202814` → `Q208391` (Snellius),
+> `Q11379` → `Q11518` (Pythagoras), `Q165738` → `Q234943` (Totalreflexion;
+> `Q165738` existiert nicht). Der Lehrplanbezug ist auf **Ph7 LB2** (Realschule
+> Bayern, Zweig I) bzw. **Ph8 LB2** (Zweig II/III) berichtigt — Optik liegt dort
+> nicht in Jahrgang 9. Die Argumente und die Prosa sind unverändert; geändert
+> wurden nur die Faktenzellen. Belege im
+> [Opus-Review, Abschnitt 1](central-learning-path-opus-review.md), der
+> Fehlerbefund selbst im
+> [Codex-Review, Abschnitt 2](central-learning-path-codex-research-review.md).
+
 ## Gesamteindruck
 
 Der Draft trifft die Produktgestalt. Eine offene, versionsgeführte Wissensbasis, Curricula als Overlays, statische Kacheln, Lehrer als Qualitätsgate, Lernen vollständig auf dem Gerät — das ist die richtige Architektur für ZAM, und sie beantwortet die offene Hosting-Frage aus ADR 2026-07-26b besser als ein Datenbank-Endpoint.
@@ -109,7 +120,7 @@ ULID als `id` ist in Ordnung als Zeile. Prerequisites, die auf Slugs zeigen (`"t
 
 **Verbessern.** Im Schema werden die Checks zur zweiten Wahrheitsquelle neben `question` / `concept`. Dann driftet die Formulierung, und der Kernel-Prompter (Bloom 1–5) konkurriert mit einem eingebetteten Mini-LMS. Tier 1/2 sind *Darstellungen* desselben Atoms. Sie dürfen im Tile mitreisen, wenn eine Lehrkraft sie geprüft hat. Review muss ohne sie funktionieren. Freigabe über `S > 21 Tage` würde ich nicht bauen; das ist ein zweiter Scheduler.
 
-Die Tier-2-Frage im Beispiel prüft Totalreflexion, nicht Snellius. Das ist kein Schönheitsfehler: sie hängt ein zweites Atom in die Prüfung. Entweder gehört sie an `wd:Q165738/…`, oder sie ist bewusst ein Transfer über zwei Knoten — dann darf sie nicht im Snellius-Token wohnen, als wäre sie seine Synthese.
+Die Tier-2-Frage im Beispiel prüft Totalreflexion, nicht Snellius. Das ist kein Schönheitsfehler: sie hängt ein zweites Atom in die Prüfung. Entweder gehört sie an `wd:Q234943/…`, oder sie ist bewusst ein Transfer über zwei Knoten — dann darf sie nicht im Snellius-Token wohnen, als wäre sie seine Synthese.
 
 ### Curation-Block
 

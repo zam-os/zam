@@ -8,6 +8,17 @@
 
 ---
 
+> **Korrekturvermerk 2026-08-14.** Die Wikidata-Anker dieses Dokuments waren
+> falsch und sind gegen die API berichtigt: `Q202814` → `Q208391` (Snellius),
+> `Q11379` → `Q11518` (Pythagoras), `Q165738` → `Q234943` (Totalreflexion;
+> `Q165738` existiert nicht). Der Lehrplanbezug ist auf **Ph7 LB2** (Realschule
+> Bayern, Zweig I) bzw. **Ph8 LB2** (Zweig II/III) berichtigt — Optik liegt dort
+> nicht in Jahrgang 9. Die Argumente und die Prosa sind unverändert; geändert
+> wurden nur die Faktenzellen. Belege im
+> [Opus-Review, Abschnitt 1](central-learning-path-opus-review.md), der
+> Fehlerbefund selbst im
+> [Codex-Review, Abschnitt 2](central-learning-path-codex-research-review.md).
+
 ## 1. Abstract & Problemstellung
 
 Die Digitalisierung von Bildungsinhalten beschränkt sich heute weitgehend auf zwei isolierte Extreme:
@@ -56,7 +67,7 @@ Um das Rad nicht neu zu erfinden, schlagen wir eine klare Schichten-Architektur 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────────┐
 │ SCHICHT 1: UNIVERSAL ENTITY ANCHORS (Wikidata / DBpedia)                                │
-│ "Was ist das Ding an sich?" -> Q11379 (Satz des Pythagoras), Q202814 (Snellius-Gesetz) │
+│ "Was ist das Ding an sich?" -> Q11518 (Satz des Pythagoras), Q208391 (Snellius-Gesetz) │
 └────────────────────────────────────────────┬────────────────────────────────────────────┘
                                              │ 1:n Mapping (Ein Thema -> n Teil-Konzepte)
                                              ▼
@@ -202,7 +213,7 @@ Die Abbildung ist zweistufig (siehe [Frage 0 / PAID](central-learning-path-ident
 1. **Vergleich von Entity-Linking-Verfahren:**
    - Evaluation von Lexical Search (BM25) vs. Dense Bi-Encoder Embeddings (z. B. `text-embedding-3-large`, `e5-mistral`) vs. Cross-Encoder Rerankern.
 2. **Taxonomie-Abgleich:**
-   - Wie werden zusammengesetzte schulische Lernbereiche (z. B. „PH9 2.1 Brechung und Totalreflexion an ebenen Grenzflächen“) auf atomare Wikidata-Items (Q202814 Snellius, Q165738 Totalreflexion) dekomponiert?
+   - Wie werden zusammengesetzte schulische Lernbereiche auf atomare Wikidata-Items dekomponiert? Realer Fall: „Ph7 Lernbereich 2: Optik“ (Realschule Bayern, Zweig I) bündelt in *einer* Kompetenzerwartung Brechung, optische Hebung, Totalreflexion, Dispersion und Spektrum — also mindestens Q208391 (Snellius), Q234943 (Totalreflexion) und weitere. Ein Lernbereich ist regelmäßig kein Atom, sondern ein halbes Dutzend.
 3. **Qualitätsmetriken:**
    - Getrennt messen: Entitäts-Precision@1 *und* Reduktions-Genauigkeit. Ein richtiger Q-Treffer bei falscher Stufe ist ein Fehler. Dazu Recall@k und eine Ablehnungsrate für Sätze ohne vertretbares Q (`lp:`-Fallback).
 

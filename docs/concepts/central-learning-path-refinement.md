@@ -11,6 +11,17 @@
 
 ---
 
+> **Korrekturvermerk 2026-08-14.** Die Wikidata-Anker dieses Dokuments waren
+> falsch und sind gegen die API berichtigt: `Q202814` → `Q208391` (Snellius),
+> `Q11379` → `Q11518` (Pythagoras), `Q165738` → `Q234943` (Totalreflexion;
+> `Q165738` existiert nicht). Der Lehrplanbezug ist auf **Ph7 LB2** (Realschule
+> Bayern, Zweig I) bzw. **Ph8 LB2** (Zweig II/III) berichtigt — Optik liegt dort
+> nicht in Jahrgang 9. Die Argumente und die Prosa sind unverändert; geändert
+> wurden nur die Faktenzellen. Belege im
+> [Opus-Review, Abschnitt 1](central-learning-path-opus-review.md), der
+> Fehlerbefund selbst im
+> [Codex-Review, Abschnitt 2](central-learning-path-codex-research-review.md).
+
 ## 0. Haltung
 
 Die Gemini-Entwürfe treffen die Produktvision. Kacheln, Curricula als Overlays, Lehrer-Signatur statt LLM-Autorität, Schulheft als Brücke zum Unterricht — das sind die richtigen großen Linien.
@@ -58,7 +69,7 @@ Ein ULID, den *ein* ZAM-Verlag vergibt, ist ein schlechter Join-Schlüssel für 
 Vier Dinge, die ein weltweiter Graph auseinanderhalten muss — unabhängig davon, wie die Tabelle heißt:
 
 ```
-1. Welt-Entität           „Satz des Pythagoras“, Q11379
+1. Welt-Entität           „Satz des Pythagoras“, Q11518
 2. Pädagogisches Atom     eine konkret abrufbare Reduktion + ein Aspekt
 3. Overlay-Mitgliedschaft welches Curriculum sie in welcher Jahrgangsstufe verlangt
 4. Lernzustand            Karte, FSRS — nie im zentralen Artefakt
@@ -74,8 +85,8 @@ Knowledge Contexts (`work` / `school` / `private`) lösen ein Geräteproblem: ei
 |---|---|---|---|---|---|
 | **A. Nur ULID** | `01K3X9…` | ja | nur wenn jede Stufe eine ULID hat | nein, außer alle teilen eine Registry | ja |
 | **B. `(domain, slug)`** | `physik/optik:snellius` | nein | ja, per Slug | nur bei identischer Taxonomie | ja |
-| **C. Nur Wikidata** | `Q202814` | ja | **nein** | ja, wo ein Q existiert | nein |
-| **D. Lehrplan-Code** | `lehrplanplus:PH9-LB2` | ja, lokal | nein (ein LB, viele Atome) | nein, Codes sind regional | nein |
+| **C. Nur Wikidata** | `Q208391` | ja | **nein** | ja, wo ein Q existiert | nein |
+| **D. Lehrplan-Code** | `lehrplanplus:Ph7-LB2` | ja, lokal | nein (ein LB, viele Atome) | nein, Codes sind regional | nein |
 | **E. Pädagogisches Tupel** | `(anchor, reduction, aspect)` | ja | ja | ja, wo der Anker geteilt wird | über einen privaten Anker-Raum |
 
 **E** ist der einzige Kandidat, der die Join-Frage des Zentralgraphen und die Reduktionsfrage zugleich beantwortet.
@@ -83,10 +94,10 @@ Knowledge Contexts (`work` / `school` / `private`) lösen ein Geräteproblem: ei
 Beispiel:
 
 ```
-wd:Q202814 / reduction=qualitative / aspect=direction
-wd:Q202814 / reduction=formula    / aspect=compute
-wd:Q11379  / reduction=rearrange  / aspect=area
-wd:Q11379  / reduction=algebra    / aspect=equation
+wd:Q208391 / reduction=qualitative / aspect=direction
+wd:Q208391 / reduction=formula    / aspect=compute
+wd:Q11518  / reduction=rearrange  / aspect=area
+wd:Q11518  / reduction=algebra    / aspect=equation
 ```
 
 Unverankertes Wissen (Team, Idiosynkrasie, noch nicht gemappt) braucht einen zweiten Raum, nicht die Abwesenheit von Identität:
@@ -122,7 +133,7 @@ Pythagoras ist nicht ein Knoten:
 | `mathematik/geometrie:pythagoras-formel` | Algebraisch: \(a^2+b^2=c^2\) | RS 9 / Gym 8 | Potenzen, Gleichung umstellen, Stufe „legen“ |
 | `mathematik/vektoren:pythagoras-skalarprodukt` | Formal: \(\|u+v\|^2\) | Sek. II | Vektoren, Skalarprodukt, Stufe „Formel“ |
 
-Alle drei dürfen `wikidata_id = Q11379` tragen. Das Overlay wählt die Stufe. Die Hard-Kante läuft *zwischen den Stufen*, nicht von „Sinus 9. Klasse“ auf „das eine Pythagoras-Ding“.
+Alle drei dürfen `wikidata_id = Q11518` tragen. Das Overlay wählt die Stufe. Die Hard-Kante läuft *zwischen den Stufen*, nicht von „Sinus 9. Klasse“ auf „das eine Pythagoras-Ding“.
 
 Das löst drei Scheinprobleme der Entwürfe auf einmal:
 
@@ -177,7 +188,7 @@ Eine dritte Sorte braucht der Universalgraph, sonst entstehen Scheinzyklen:
 
 Die Entwürfe wollen \(A \to B \to C\) plus \(A \to C\) zu \(A \to B \to C\) kürzen. Auf einem *einzigen* Lehrpfad stimmt das. Auf einem universellen Graphen mit Overlays bricht es.
 
-Gegenbeispiel:
+Gegenbeispiel (**konstruiert**, nicht geerdet — die bayerische Realschule verlangt das quantitative Snellius in keinem Zweig; der graphentheoretische Punkt hängt nicht an der Zelle):
 
 - Universal: Sinus \(A\) → Trig-Identitäten \(B\) → quantitatives Snellius \(C\).
 - Overlay „Realschule Bayern 9 Physik“ enthält \(A\) und \(C\), nicht \(B\) (Identitäten liegen im Gymnasium).
@@ -322,7 +333,7 @@ Der Schulheft-Scanner bleibt trotzdem sinnvoll. Er schreibt den Fortschritt **lo
 
 Am Snellius-Beispiel aus dem Architektur-Draft:
 
-- Zwei pädagogische Atome, ein Welt-Anker `Q202814`: qualitativ („zum Lot hin“) und quantitativ (Formel mit Sinus). Das ist unabhängig von ULID vs. Tupel.
+- Zwei pädagogische Atome, ein Welt-Anker `Q208391`: qualitativ („zum Lot hin“) und quantitativ (Formel mit Sinus). Das ist unabhängig von ULID vs. Tupel.
 - `age_recommendation` wandert ins Overlay oder bleibt unverbindlicher Hinweis.
 - `curricula[]` ist Overlay-Mitgliedschaft, nicht Identität des Atoms.
 - `interactions.tier1_*` dürfen als geprüfte Darstellungshilfen mitreisen; Review muss ohne sie mit Frage und Konzept funktionieren.

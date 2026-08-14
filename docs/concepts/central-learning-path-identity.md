@@ -7,6 +7,17 @@
 
 ---
 
+> **Korrekturvermerk 2026-08-14.** Die Wikidata-Anker dieses Dokuments waren
+> falsch und sind gegen die API berichtigt: `Q202814` → `Q208391` (Snellius),
+> `Q11379` → `Q11518` (Pythagoras), `Q165738` → `Q234943` (Totalreflexion;
+> `Q165738` existiert nicht). Der Lehrplanbezug ist auf **Ph7 LB2** (Realschule
+> Bayern, Zweig I) bzw. **Ph8 LB2** (Zweig II/III) berichtigt — Optik liegt dort
+> nicht in Jahrgang 9. Die Argumente und die Prosa sind unverändert; geändert
+> wurden nur die Faktenzellen. Belege im
+> [Opus-Review, Abschnitt 1](central-learning-path-opus-review.md), der
+> Fehlerbefund selbst im
+> [Codex-Review, Abschnitt 2](central-learning-path-codex-research-review.md).
+
 ## 1. Die Frage
 
 Woran erkennen zwei Curricula, zwei Herausgeber und zwei Geräte **dasselbe lernbare Atom** — und woran erkennen sie, dass zwei Fassungen *nicht* dasselbe Atom sind?
@@ -21,7 +32,7 @@ Der Zentralgraph fragt härter. Ohne einen veröffentlichten Join-Schlüssel gib
 
 | # | Ding | Beispiel | Lebt wo |
 |---|---|---|---|
-| 1 | **Welt-Entität** | Satz des Pythagoras, Wikidata Q11379 | Crosswalk, nicht lernbar |
+| 1 | **Welt-Entität** | Satz des Pythagoras, Wikidata Q11518 | Crosswalk, nicht lernbar |
 | 2 | **Pädagogisches Atom** | Pythagoras als Flächenumlegung; Pythagoras als \(a^2+b^2=c^2\) | Zentralgraph, Tile, Overlay-Mitglied |
 | 3 | **Overlay-Mitgliedschaft** | „Realschule Bayern 9 Mathematik verlangt Atom X, exam-relevant“ | Curriculum-Tile |
 | 4 | **Lernzustand** | Stabilität, Schwierigkeit, `blocked`, `reps` | Nur Gerät / Karte |
@@ -63,13 +74,13 @@ Der Ontology-Entwurf will genau das als Adresse, und nach Phase D als Eindeutigk
 
 ### 4.3 Nur Wikidata-Q — bricht **R** und **U**
 
-Q202814 ist Snellius, die Welt-Entität. Qualitative Richtung („zum Lot hin“) und quantitative Formel teilen dieses Q. Ein Lerner, der die qualitative Fassung beherrscht, hätte damit die Formel „mitgelernt“, sobald ein Overlay wechselt oder ein Tile die beiden zusammenlegt. Das ist der härteste Fehlertyp: stiller, falscher Transfer.
+Q208391 ist Snellius, die Welt-Entität. Qualitative Richtung („zum Lot hin“) und quantitative Formel teilen dieses Q. Ein Lerner, der die qualitative Fassung beherrscht, hätte damit die Formel „mitgelernt“, sobald ein Overlay wechselt oder ein Tile die beiden zusammenlegt. Das ist der härteste Fehlertyp: stiller, falscher Transfer.
 
 Teamwissen und viele schulische Kleinstkompetenzen haben kein Q. Ein Pflicht-Q blockiert Publikation oder erzeugt Müll-Items.
 
 ### 4.4 Lehrplan-Code — bricht **J** und **R**
 
-`lehrplanplus:PH9-LB2` ist ein Lernbereich, kein Atom. Ein LB zerfällt in mehrere Atome. Derselbe Stoff heißt in BW anders. Der Code ist ein ausgezeichneter *Overlay-Zeiger* (Schicht 3), kein Atom-Schlüssel (Schicht 2).
+`lehrplanplus:Ph7-LB2` ist ein Lernbereich, kein Atom. Ein LB zerfällt in mehrere Atome. Derselbe Stoff heißt in BW anders. Der Code ist ein ausgezeichneter *Overlay-Zeiger* (Schicht 3), kein Atom-Schlüssel (Schicht 2).
 
 ---
 
@@ -97,12 +108,12 @@ aspect     := 1*( ALPHA / DIGIT / "-" )
 Beispiele:
 
 ```
-wd:Q202814/qualitative
-wd:Q202814/formula
-wd:Q11379/iconic
-wd:Q11379/formula
-wd:Q202814/formula:compute          # nur wenn "Formel nennen" ≠ "Formel anwenden" eigene Atome sein müssen
-lp:lehrplanplus-bayern:PH9-LB2/qualitative
+wd:Q208391/qualitative
+wd:Q208391/formula
+wd:Q11518/iconic
+wd:Q11518/formula
+wd:Q208391/formula:compute          # nur wenn "Formel nennen" ≠ "Formel anwenden" eigene Atome sein müssen
+lp:lehrplanplus-bayern:Ph7-LB2/qualitative
 zam:feldtest-by/snellius-qualitativ
 ```
 
@@ -113,7 +124,7 @@ JSON-Form (für Schema und Compiler):
 ```json
 {
   "scheme": "wd",
-  "entity": "Q202814",
+  "entity": "Q208391",
   "reduction": "formula",
   "aspect": null
 }
@@ -159,12 +170,12 @@ token_paid_aliases        (alias, token_id) ehemalige und parallele PAIDs
 
 Promotion, nie Umbenennung:
 
-1. Atom wird als `lp:lehrplanplus-bayern:PH9-LB2/qualitative` publiziert.
-2. Review hängt Q202814 an.
-3. Kanonisch wird `wd:Q202814/qualitative`. Der `lp:`-String bleibt Alias.
+1. Atom wird als `lp:lehrplanplus-bayern:Ph7-LB2/qualitative` publiziert.
+2. Review hängt Q208391 an.
+3. Kanonisch wird `wd:Q208391/qualitative`. Der `lp:`-String bleibt Alias.
 4. Karten, Logs, lokale Zeile bleiben auf der ULID. Nichts am Lernerzustand ändert sich.
 
-Zwei Tiles, die unabhängig `wd:Q202814/qualitative` publizieren, sind dasselbe Atom. Der Client dedupliziert beim Attach über den PAID, nicht über die ULID des Herausgebers.
+Zwei Tiles, die unabhängig `wd:Q208391/qualitative` publizieren, sind dasselbe Atom. Der Client dedupliziert beim Attach über den PAID, nicht über die ULID des Herausgebers.
 
 Konflikt: zwei Zeilen, gleicher kanonischer PAID, verschiedener Inhalt. Das ist ein Curation-Fehler, kein Sync-Problem. CI des Tile-Builders lehnt den zweiten Publish ab oder verlangt eine `aspect`-Unterscheidung bzw. eine andere Reduktion.
 
@@ -207,20 +218,20 @@ Der Ontology-Entwurf (jetzt Draft) bleibt ein Kandidat für die *lokale* Adresse
 
 ## 7. Durchgerechnetes Beispiel
 
-Lichtbrechung in drei Overlays, ein Welt-Anker Q202814, ein zweiter Q165738 (Totalreflexion):
+Lichtbrechung in mehreren Overlays, ein Welt-Anker Q208391, ein zweiter Q234943 (Totalreflexion). Die ersten beiden Zeilen sind gegen LehrplanPLUS geprüft (Abruf 2026-08-14), die letzten beiden ausdrücklich **nicht**:
 
-| Overlay | Was der Lehrplan verlangt | PAID |
-|---|---|---|
-| Realschule Bayern 9 Physik NW | Richtung der Brechung *und* Formel | `wd:Q202814/qualitative`, `wd:Q202814/formula` |
-| Gymnasium BW 8 Physik | Lichtbrechung, überwiegend qualitativ | `wd:Q202814/qualitative` |
-| Sek. II / Einstieg Uni | Herleitung aus Huygens | `wd:Q202814/derivation` |
-| Alle drei, wo Totalreflexion vorkommt | Phänomen + Grenzwinkel | `wd:Q165738/qualitative`, ggf. `/formula` |
+| Overlay | Was der Lehrplan verlangt | PAID | Quelle |
+|---|---|---|---|
+| Realschule BY, Zweig I, Physik **7** — Ph7 LB2 Optik | Brechung auf unterschiedliche Lichtgeschwindigkeit zurückführen, Alltagsphänomene *mit Zeichnungen*; Totalreflexion, Dispersion | `wd:Q208391/qualitative`, `wd:Q234943/qualitative` | [geprüft](https://www.lehrplanplus.bayern.de/fachlehrplan/lernbereich/65643) |
+| Realschule BY, Zweig II/III, Physik **8** — Ph8 LB2 Optik | dieselbe Kompetenzerwartung, ein Jahr später | *dieselben beiden PAIDs* | [geprüft](https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/physik/wpfg2-3) |
+| irgendein Overlay, das die Formel verlangt | Berechnung mit Sinus | `wd:Q208391/formula` | **nicht geprüft** — in der bayerischen Realschule kommt die Formel in *keinem* Zweig vor |
+| Sek. II / Einstieg Uni | Herleitung aus Huygens | `wd:Q208391/derivation` | **nicht geprüft** |
 
-Ein Kind, das in BW `wd:Q202814/qualitative` gelernt hat und nach Bayern wechselt, hängt die bestehende Karte an dasselbe Atom. Die Formel-Karte ist neu. Huygens bleibt Soft-Kante auf `/derivation`, nicht Hard-Gate auf `/formula`.
+Die beiden geprüften Zeilen tragen das Argument besser als das ursprünglich erfundene Beispiel: **dasselbe Atom, dieselbe Schulart, zwei Jahrgangsstufen.** Jahrgang und Alter können damit unmöglich Eigenschaften des Atoms sein — sie sind Eigenschaften der Mitgliedschaft. Wer von Zweig I nach Zweig II/III wechselt (in Bayern ein Schulwechsel innerhalb derselben Schule), hängt die bestehende Karte an dasselbe Atom; es entsteht nichts Neues.
 
-Gegenprobe ohne Reduktion im Schlüssel: alle drei Overlays zeigen auf `Q202814`. Der Bayern-Tile „entdeckt“ eine beherrschte Formel, die nie gelernt wurde.
+Gegenprobe ohne Reduktion im Schlüssel: alle Overlays zeigen auf `Q208391`. Sobald ein Tile die Formel-Fassung führt, „entdeckt“ ein Realschul-Overlay eine beherrschte Formel, die dort nie verlangt und nie gelernt wurde.
 
-Gegenprobe mit Lehrplan-Code als Schlüssel: der Umzug BW → BY erzeugt eine neue Karte für denselben qualitativen Satz, weil `bildungsplan-bw:…` ≠ `lehrplanplus:PH9-LB2`.
+Gegenprobe mit Lehrplan-Code als Schlüssel: schon der Wechsel *innerhalb Bayerns* zwischen den Zweigen erzeugt eine neue Karte für denselben qualitativen Satz, weil `…:Ph7-LB2` ≠ `…:Ph8-LB2`. Es braucht dafür nicht einmal eine Landesgrenze.
 
 ---
 
@@ -253,10 +264,10 @@ Overlay-Tile speichert Mitgliedschaften per PAID, nicht per Herausgeber-ULID:
 
 ```json
 {
-  "overlay": "lehrplanplus-bayern/realschule-9/physik",
+  "overlay": "lehrplanplus-bayern/realschule-wpfg1-7/physik",
   "members": [
-    { "paid": "wd:Q202814/qualitative", "exam_relevant": true, "grade": 9 },
-    { "paid": "wd:Q202814/formula",     "exam_relevant": true, "grade": 9 }
+    { "paid": "wd:Q208391/qualitative", "exam_relevant": true, "grade": 7 },
+    { "paid": "wd:Q234943/qualitative", "exam_relevant": true, "grade": 7 }
   ]
 }
 ```

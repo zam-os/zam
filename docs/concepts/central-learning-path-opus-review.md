@@ -321,7 +321,13 @@ Primitive brauchen.
    `provider`/`topic_id`. Kein Publish ohne aufgelöstes Label.
 3. **Opaque, namespaced Atom-ID; `reduction` als Profilfeld; typisierte
    Alignments** (Codex' Empfehlungen 1–3). PAID bleibt als Matching-Evidenz.
-4. **Beispiele korrigieren, bevor irgendwer sie zitiert.** Die falschen Q-IDs
-   stehen in vier Dokumenten und werden sonst weitergetragen.
+4. ~~**Beispiele korrigieren, bevor irgendwer sie zitiert.**~~ **Erledigt
+   2026-08-14.** Q-IDs in allen fünf betroffenen Dokumenten berichtigt
+   (`Q208391`, `Q11518`, `Q234943`), Lehrplanbezug auf die geprüften
+   Lernbereiche Ph7 LB2 / Ph8 LB2 umgestellt, Korrekturvermerke gesetzt. Die
+   Befundtabellen in diesem Review und im Codex-Review bleiben als Beleg
+   unverändert. Offen geblieben und als solches markiert: die BW-Zeilen, die
+   `formula`-Reduktion (in der bayerischen Realschule nirgends verlangt) und
+   Groks konstruiertes Overlay-Gegenbeispiel.
 5. **Die acht Punkte aus Abschnitt 5 als ADR festhalten**, damit die nächste
    Runde sie nicht erneut verhandelt.

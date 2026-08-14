@@ -5,11 +5,17 @@
 **Autoren:** ZAM Core & Agent Research Team  
 **Gegenlesen:** [central-learning-path-refinement.md](central-learning-path-refinement.md) · [central-learning-path-identity.md](central-learning-path-identity.md) · **Reviews:** [Grok](central-learning-path-architecture-review.md) · [Codex](central-learning-path-codex-research-review.md) · [Opus](central-learning-path-opus-review.md).
 
-> **Achtung, Erdung:** Die Wikidata-IDs und der Lehrplanbezug in den Beispielen
-> unten sind nachweislich falsch (`Q202814` ist eine Zeitschrift, `Q165738`
-> existiert nicht, `Q11379` ist Energie, `PH9-LB2` ist Wärmelehre). Korrekturen
-> und Belege im [Opus-Review, Abschnitt 1](central-learning-path-opus-review.md).
-> Nicht zitieren, bevor sie berichtigt sind.  
+> **Korrekturvermerk 2026-08-14.** Die Anker der Beispiele waren falsch und sind
+> gegen die Primärquellen berichtigt: `Q202814` → **`Q208391`** (Snellius;
+> `Q202814` ist eine Zeitschrift), `Q11379` → **`Q11518`** (Pythagoras; `Q11379`
+> ist Energie), `Q165738` → **`Q234943`** (Totalreflexion; `Q165738` existiert
+> nicht). Der Lehrplanbezug ist ebenfalls berichtigt: Optik liegt in der
+> bayerischen Realschule in **Ph7 LB2** (Zweig I) bzw. **Ph8 LB2** (Zweig II/III),
+> nicht in Jahrgang 9 — `PH9-LB2` ist dort die Wärmelehre. Belege im
+> [Opus-Review, Abschnitt 1](central-learning-path-opus-review.md); der
+> Fehlerbefund selbst steht unverändert im
+> [Codex-Review, Abschnitt 2](central-learning-path-codex-research-review.md).
+> Ungeprüft geblieben sind die Nicht-Bayern-Zeilen (BW) und `exam_relevant`.  
 **Bezug zu bestehenden ADRs:**
 - [ADR 2026-07-26b: Central Curriculum Content Service: Content Only, Pulled Forward](../adr/2026-07-26b-central-curriculum-content-service.md)
 - [ADR 2026-07-25: Shared Curated Learning Content — Review Once, Serve Many](../adr/2026-07-25-shared-curated-learning-content.md)
@@ -89,7 +95,7 @@ Die Architektur erzwingt eine strikte physische und logische Trennung der Datenk
   "id": "01K3X9A7R4B8C1D2E3F4G5H6J7",
   "slug": "physik-optik-brechungsgesetz-snellius",
   "title": "Snelliussches Brechungsgesetz",
-  "wikidata_id": "Q202814",
+  "wikidata_id": "Q208391",
   "concept": "Beim Übergang von Licht zwischen zwei Medien mit Brechungsindizes n1 und n2 gilt das Brechungsgesetz: n1 * sin(alpha) = n2 * sin(beta).",
   "domain": "schule/physik/optik",
   "bloom_level": 3,
@@ -121,11 +127,12 @@ Die Architektur erzwingt eine strikte physische und logische Trennung der Datenk
       "country": "DE",
       "region": "BY",
       "school_type": "realschule",
-      "grade": 9,
-      "track": "naturwissenschaftlich",
+      "grade": 7,
+      "track": "wpfg-1",
       "subject": "physik",
-      "topic_code": "PH9-LB2",
-      "topic_title": "Optik und Lichtbrechung",
+      "topic_code": "Ph7-LB2",
+      "topic_title": "Optik",
+      "source_uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/lernbereich/65643",
       "exam_relevant": true
     },
     {
@@ -205,7 +212,24 @@ Die Architektur erzwingt eine strikte physische und logische Trennung der Datenk
 }
 ```
 
----
+> **Was an diesem Beispiel auch nach der Korrektur nicht aufgeht — und warum das
+> lehrreich ist.** Der Token oben modelliert die *quantitative* Fassung
+> (`n1·sin α = n2·sin β`, Bloom 3, Hard-Prereq Sinus). Der zugeordnete
+> Lernbereich Ph7 LB2 verlangt aber ausdrücklich nur die *qualitative*: die
+> Kompetenzerwartung lautet, die Brechung „auf die unterschiedliche
+> Lichtgeschwindigkeit in diesen zurück[zuführen]“ und Alltagsphänomene „unter
+> Verwendung von Zeichnungen“ zu beschreiben. Eine Formel kommt in der
+> bayerischen Realschule nicht vor — in keinem Zweig und keinem Jahrgang.
+>
+> Ein Token kann also nicht zugleich die Formel tragen und Mitglied dieses
+> Overlays sein. Genau das ist der Befund, den
+> [Grok](central-learning-path-refinement.md) (didaktische Reduktion) und
+> [Codex](central-learning-path-codex-research-review.md) (Lernziel ≠ Übungsitem)
+> unabhängig erhoben haben — hier zum ersten Mal an echten Lehrplandaten statt an
+> erfundenen. Die saubere Auflösung sind zwei Atome an einem Anker: die
+> qualitative Fassung ist Mitglied von Ph7 LB2, die quantitative gehört in ein
+> Overlay, das sie tatsächlich verlangt und das hier bewusst *nicht* behauptet
+> wird, weil es nicht geprüft ist.
 
 ## 4. Knowledge Vector Tiles (KVT): Skalierung & Verteilung
 
