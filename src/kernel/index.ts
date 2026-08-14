@@ -6,6 +6,29 @@
  */
 
 export type {
+  AiCapability,
+  AiPlatform,
+  AiTier,
+  AiTierAvailability,
+  AiTierDecision,
+  AiTierPlan,
+  AiTierPreference,
+  AiTierReason,
+} from "./ai/tier-preference.js";
+export {
+  AI_CAPABILITIES,
+  AI_TIER_PREFERENCES,
+  DEFAULT_AI_TIER_PREFERENCES,
+  DEVICE_TIER_SUPPORT,
+  decideAiTier,
+  hasDeviceTier,
+  isAiPreferenceConfigurable,
+  isAiTierPreference,
+  resolveAiCapabilityTier,
+  resolveAiTierPlan,
+} from "./ai/tier-preference.js";
+
+export type {
   ActivityBucketLabelOptions,
   ActivityPeriod,
   GetReviewActivityOptions,

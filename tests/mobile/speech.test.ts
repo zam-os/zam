@@ -1,5 +1,4 @@
 import { describe, expect, it, vi } from "vitest";
-import type { ZamPairLlmEndpoint } from "../../src/bridge/mobile-pairing.js";
 import {
   decodeBase64,
   encodeBase64,
@@ -7,6 +6,7 @@ import {
   synthesizeViaCloud,
   transcribeViaCloud,
 } from "../../mobile/src/speech.js";
+import type { ZamPairLlmEndpoint } from "../../src/bridge/mobile-pairing.js";
 
 const endpoint: ZamPairLlmEndpoint = {
   enabled: true,
@@ -27,11 +27,17 @@ function jsonResponse(body: unknown): Response {
 
 describe("mobile cloud speech tier", () => {
   it("uploads the recording and returns the transcript", async () => {
-    const fetchFn = vi.fn(async () => jsonResponse({ text: "  Kraft ist Masse mal Beschleunigung " }));
+    const fetchFn = vi.fn(async () =>
+      jsonResponse({ text: "  Kraft ist Masse mal Beschleunigung " }),
+    );
 
     const text = await transcribeViaCloud(
       endpoint,
-      { audioBase64: encodeBase64(new Uint8Array([1, 2, 3, 4])), mime: "audio/wav", locale: "de-DE" },
+      {
+        audioBase64: encodeBase64(new Uint8Array([1, 2, 3, 4])),
+        mime: "audio/wav",
+        locale: "de-DE",
+      },
       fetchFn,
     );
 
@@ -53,7 +59,11 @@ describe("mobile cloud speech tier", () => {
 
     await transcribeViaCloud(
       { ...endpoint, url: "https://speech.example/v1/chat/completions" },
-      { audioBase64: encodeBase64(new Uint8Array([1])), mime: "audio/wav", locale: "en-US" },
+      {
+        audioBase64: encodeBase64(new Uint8Array([1])),
+        mime: "audio/wav",
+        locale: "en-US",
+      },
       fetchFn,
     );
 
@@ -70,7 +80,11 @@ describe("mobile cloud speech tier", () => {
     await expect(
       transcribeViaCloud(
         endpoint,
-        { audioBase64: encodeBase64(new Uint8Array([1])), mime: "audio/wav", locale: "de-DE" },
+        {
+          audioBase64: encodeBase64(new Uint8Array([1])),
+          mime: "audio/wav",
+          locale: "de-DE",
+        },
         fetchFn,
       ),
     ).rejects.toThrow(/Transcription failed \(404\).*model not found/s);
@@ -83,7 +97,11 @@ describe("mobile cloud speech tier", () => {
     await expect(
       transcribeViaCloud(
         endpoint,
-        { audioBase64: encodeBase64(new Uint8Array([1])), mime: "audio/wav", locale: "de-DE" },
+        {
+          audioBase64: encodeBase64(new Uint8Array([1])),
+          mime: "audio/wav",
+          locale: "de-DE",
+        },
         fetchFn,
       ),
     ).rejects.toThrow(/came back empty/);

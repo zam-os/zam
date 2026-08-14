@@ -77,9 +77,7 @@ describe("completeFirstRun", () => {
     expect(context?.label).toBe("Schule");
 
     const rows = (await db
-      .prepare(
-        `SELECT COUNT(*) AS n FROM token_contexts WHERE context_id = ?`,
-      )
+      .prepare(`SELECT COUNT(*) AS n FROM token_contexts WHERE context_id = ?`)
       .get(context?.id)) as { n: number };
     expect(Number(rows.n)).toBe(3);
   });

@@ -1,8 +1,12 @@
 /**
  * Intelligent answer evaluation for the mobile companions.
  *
- * Android prefers on-device Gemini Nano (AICore → Tensor NPU) and treats a
- * reachable paired endpoint as the secondary HTTP path. iOS has no on-device
+ * Which tier answers is the learner's `recall` preference resolved against
+ * what this device and configuration can actually serve (ADR 2026-08-09c).
+ * The default stays device-first, so Android still prefers on-device Gemini
+ * Nano (AICore → Tensor NPU) — but the device is now *asked* before it is
+ * used, `device-only` never reaches the cloud, and a cloud answer the learner
+ * did not choose carries the reason it happened. iOS has no on-device
  * evaluator, so the paired cloud endpoint is its only path. When neither is
  * usable the caller falls back to self-rating.
  */
@@ -17,6 +21,11 @@ import {
 } from "../../desktop/src/panel/recall-evaluation.js";
 import type { ZamPairLlmEndpoint } from "../../src/bridge/mobile-pairing.js";
 import { OPENROUTER_EVALUATION_REASONING_EFFORT } from "../../src/cli/llm/cloud-providers.js";
+import {
+  type AiTierPreference,
+  DEFAULT_AI_TIER_PREFERENCES,
+  resolveAiCapabilityTier,
+} from "../../src/kernel/ai/tier-preference.js";
 
 export type EvaluationBackend = "on-device" | "http" | "none";
 
@@ -24,6 +33,23 @@ export interface MobileEvaluationResult {
   evaluation: RecallEvaluation;
   backend: EvaluationBackend;
   modelLabel: string;
+  /**
+   * Why this backend answered, when it was not the preferred one.
+   *
+   * Null means the learner got what they asked for. Anything else is text the
+   * surface must show: a cloud answer the learner did not choose is the one
+   * outcome that would make the preference dishonest (ADR 2026-08-09c §5,
+   * inherited from ADR 2026-07-31).
+   */
+  fallbackReason: string | null;
+}
+
+/** Raised when `device-only` is set and the device cannot serve the request. */
+export class DeviceOnlyUnavailableError extends Error {
+  constructor(detail: string) {
+    super(detail);
+    this.name = "DeviceOnlyUnavailableError";
+  }
 }
 
 export interface OnDeviceLlmStatus {
@@ -62,6 +88,11 @@ export interface EvaluateAnswerInput {
    * thing. Defaults to true, which is Android's answer.
    */
   onDeviceAvailable?: boolean;
+  /**
+   * The learner's `recall` preference (ADR 2026-08-09c §1). Defaults to
+   * `device-first`, which is what this function did unconditionally before.
+   */
+  preference?: AiTierPreference;
   ports: EvaluationPorts;
 }
 
@@ -272,21 +303,90 @@ export async function evaluateMobileAnswer(
 
   const prompt = buildRecallEvaluationPrompt(input.card, answer, input.locale);
   const errors: string[] = [];
+  const preference = input.preference ?? DEFAULT_AI_TIER_PREFERENCES.recall;
+  const platformHasDeviceTier = input.onDeviceAvailable !== false;
+  const cloudEndpoints = selectCloudHttpEndpoints(input.endpoint);
 
-  if (input.onDeviceAvailable !== false) {
+  // Ask the device before using it, instead of discovering its state by
+  // failing. `checkStatus` was wired into the ports and called from nowhere,
+  // so a Nano that was merely still downloading looked exactly like a Nano
+  // that works — the cloud answered and nobody was told (field report,
+  // 2026-08-09).
+  let deviceStatus: OnDeviceLlmStatus | null = null;
+  if (platformHasDeviceTier) {
+    try {
+      deviceStatus = await input.ports.checkOnDeviceStatus();
+    } catch (error) {
+      errors.push(
+        `on-device status: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+  }
+  // `downloadable` counts as usable: generation downloads the model on first
+  // use. It is slow, not absent — and decision 6's "Prepare now" exists so
+  // that wait can be taken deliberately instead of inside a review.
+  //
+  // A status that could not be read is *unknown*, not negative: an older shell
+  // without the command, or a probe that throws, must not cost the learner
+  // their NPU. Only a status that positively says otherwise skips the attempt,
+  // and then it also explains itself below.
+  const deviceUsable = deviceStatus
+    ? deviceStatus.available || deviceStatus.downloadable
+    : true;
+
+  const decision = resolveAiCapabilityTier("android", "recall", preference, {
+    local: platformHasDeviceTier && deviceUsable,
+    cloud: cloudEndpoints.length > 0,
+  });
+
+  if (decision.tier === null) {
+    if (decision.reason === "unavailable-device-only") {
+      throw new DeviceOnlyUnavailableError(
+        deviceStatus
+          ? `on-device evaluation is ${deviceStatus.status}`
+          : (errors[0] ?? "this device has no on-device evaluator"),
+      );
+    }
+    if (cloudEndpoints.length === 0 && input.endpoint) {
+      // Distinguish "your models are unreachable from here" from "nothing was
+      // paired at all" — only the first is something the learner can fix.
+      errors.push(
+        "no cloud model: the paired models are all local to the desktop and cannot be reached from this device",
+      );
+    }
+    if (errors.length === 0) throw new NoEvaluationBackendError();
+    throw new Error(errors.join("; "));
+  }
+
+  if (decision.tier === "local") {
     try {
       const generated = await input.ports.generateOnDevice(prompt);
       return {
         evaluation: parseRecallEvaluation(generated.text),
         backend: "on-device",
         modelLabel: "Gemini Nano (on-device)",
+        fallbackReason:
+          decision.reason === "preferred"
+            ? null
+            : "no cloud model is configured on this device",
       };
     } catch (error) {
-      errors.push(
-        `on-device: ${error instanceof Error ? error.message : String(error)}`,
-      );
+      const detail = error instanceof Error ? error.message : String(error);
+      errors.push(`on-device: ${detail}`);
+      if (preference === "device-only") {
+        throw new DeviceOnlyUnavailableError(detail);
+      }
     }
   }
+
+  // Reaching the cloud after preferring the device is legitimate — staying
+  // quiet about it is not. Whatever answers below carries this sentence.
+  const fallbackReason =
+    decision.tier === "cloud" && decision.reason === "preferred"
+      ? null
+      : deviceStatus && !deviceStatus.available
+        ? `Gemini Nano is ${deviceStatus.status}`
+        : (errors[0] ?? "the on-device model could not answer");
 
   // Try every reachable endpoint in the chain, not just the first. A paired
   // payload can advertise an endpoint that cannot actually serve the request —
@@ -294,7 +394,6 @@ export async function evaluateMobileAnswer(
   // carries a defaulted URL and looks like an ordinary cloud target. Falling
   // through to the next one repairs an already-paired device without asking
   // the learner to pair again.
-  const cloudEndpoints = selectCloudHttpEndpoints(input.endpoint);
   for (const cloud of cloudEndpoints) {
     try {
       let text: string;
@@ -315,6 +414,7 @@ export async function evaluateMobileAnswer(
         evaluation: parseRecallEvaluation(text),
         backend: "http",
         modelLabel: cloud.label || cloud.model,
+        fallbackReason,
       };
     } catch (error) {
       const detail =

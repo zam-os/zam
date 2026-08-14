@@ -159,7 +159,8 @@ describe("checkEndpoint", () => {
   it("separates a rejected key from an unreachable host", async () => {
     const rejected = await checkEndpoint(
       { url: "https://api.example.com/v1", apiKey: "bad" },
-      (async () => new Response("", { status: 401 })) as unknown as typeof fetch,
+      (async () =>
+        new Response("", { status: 401 })) as unknown as typeof fetch,
     );
     expect(rejected).toMatchObject({ ok: false, status: 401 });
 

@@ -151,3 +151,70 @@ export async function resolveMobileCloudChain(
   }
   return chain ?? null;
 }
+
+/**
+ * Why a stored cloud row cannot serve a capability on *this* device
+ * (ADR 2026-08-09c §7).
+ *
+ * The rules are the ones `isReachable` and `selectRows` already apply; this
+ * only names them. It exists because on 2026-08-09 the honest answer to "why
+ * is there no AI on my paired phone" took a code read: the desktop's models
+ * were `local: true`, unreachable from a phone by construction, and nothing
+ * on the phone said so.
+ */
+export type CloudRowExclusion =
+  | "runs-on-the-desktop"
+  | "no-key"
+  | "unsupported-api"
+  | "incomplete-row"
+  | "capability-not-enabled"
+  | "capability-not-detected";
+
+export interface CloudRowDiagnosis {
+  label: string;
+  usable: boolean;
+  exclusion: CloudRowExclusion | null;
+}
+
+function diagnoseRow(
+  row: CloudModelRow,
+  capability: MobileModelCapability,
+): CloudRowDiagnosis {
+  const label = row.label || row.model || row.url || "unnamed model";
+  const exclusion = ((): CloudRowExclusion | null => {
+    if (!row.url || !row.model) return "incomplete-row";
+    if (row.local || row.transport === "agent" || isLoopbackUrl(row.url)) {
+      return "runs-on-the-desktop";
+    }
+    if (row.apiFlavor !== "chat-completions") return "unsupported-api";
+    if (row.capabilities?.[capability] !== true) {
+      return "capability-not-enabled";
+    }
+    if (row.detectedCapabilities?.[capability] !== true) {
+      return "capability-not-detected";
+    }
+    // A row that can serve the capability but carries no key answers 401 on
+    // every call, which reads as a broken model rather than a missing secret.
+    if (!row.apiKey) return "no-key";
+    return null;
+  })();
+  return { label, usable: exclusion === null, exclusion };
+}
+
+/** Diagnose every stored row for one capability, in priority order. */
+export function diagnoseMobileCloudRows(
+  rows: CloudModelRow[],
+  capability: MobileModelCapability,
+): CloudRowDiagnosis[] {
+  return [...rows]
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+    .map((row) => diagnoseRow(row, capability));
+}
+
+/** Read and diagnose the learner's stored rows for one capability. */
+export async function diagnoseMobileCloudCapability(
+  db: Database,
+  capability: MobileModelCapability,
+): Promise<CloudRowDiagnosis[]> {
+  return diagnoseMobileCloudRows(await readCloudRows(db), capability);
+}

@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
+  CLOUD_MODELS_SETTING,
+  resolveMobileCloudChain,
+} from "../../mobile/src/model-registry.js";
+import {
   CLOUD_MODELS_SETTING as DESKTOP_SETTING,
   type ResolvedModelEntry,
 } from "../../src/cli/llm/model-registry.js";
 import type { Database } from "../../src/kernel/db/types.js";
-import {
-  CLOUD_MODELS_SETTING,
-  resolveMobileCloudChain,
-} from "../../mobile/src/model-registry.js";
 
 /** Minimal stub: the reader only ever asks for one settings row. */
 function dbWith(rows: unknown): Database {
@@ -103,7 +103,9 @@ describe("mobile cloud registry", () => {
       row({ id: "harness", transport: "agent" }),
       row({ id: "anthropic", apiFlavor: "anthropic-messages" }),
     ]) {
-      expect(await resolveMobileCloudChain(dbWith([unusable]), "text")).toBeNull();
+      expect(
+        await resolveMobileCloudChain(dbWith([unusable]), "text"),
+      ).toBeNull();
     }
   });
 
@@ -118,6 +120,8 @@ describe("mobile cloud registry", () => {
 
   it("treats an absent or corrupt setting as no cloud models", async () => {
     expect(await resolveMobileCloudChain(dbWith([]), "text")).toBeNull();
-    expect(await resolveMobileCloudChain(dbWith("{not json"), "text")).toBeNull();
+    expect(
+      await resolveMobileCloudChain(dbWith("{not json"), "text"),
+    ).toBeNull();
   });
 });

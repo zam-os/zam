@@ -409,10 +409,7 @@ describe("mobile cloud failures degrade to the device", () => {
     await port.speak("Frage", "de-DE");
     expect(await port.listen("de-DE")).toBe("device transcript");
 
-    expect(calls).toEqual([
-      "native:speak:Frage",
-      "native:listen",
-    ]);
+    expect(calls).toEqual(["native:speak:Frage", "native:listen"]);
     expect(degraded).toEqual(["tts", "stt"]);
   });
 });

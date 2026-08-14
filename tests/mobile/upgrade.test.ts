@@ -186,7 +186,9 @@ describe("upgradeToServerDatabase", { timeout: PROVISIONING_TIMEOUT }, () => {
     const seeded = open(remotePath);
     await applySchemaAndMigrations(seeded);
     await seeded
-      .prepare(`INSERT INTO user_config (key, value) VALUES ('system.locale', 'de')`)
+      .prepare(
+        `INSERT INTO user_config (key, value) VALUES ('system.locale', 'de')`,
+      )
       .run();
 
     const result = await upgradeToServerDatabase(io, {
@@ -206,7 +208,9 @@ describe("upgradeToServerDatabase", { timeout: PROVISIONING_TIMEOUT }, () => {
     const seeded = open(remotePath);
     await applySchemaAndMigrations(seeded);
     await seeded
-      .prepare(`INSERT INTO user_config (key, value) VALUES ('system.locale', 'en')`)
+      .prepare(
+        `INSERT INTO user_config (key, value) VALUES ('system.locale', 'en')`,
+      )
       .run();
 
     const result = await upgradeToServerDatabase(io, {

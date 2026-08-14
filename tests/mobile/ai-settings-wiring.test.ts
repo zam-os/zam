@@ -3,8 +3,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { messageKeys } from "../../mobile/src/i18n.js";
 
-const file = (path: string) =>
-  readFileSync(join(process.cwd(), path), "utf-8");
+const file = (path: string) => readFileSync(join(process.cwd(), path), "utf-8");
 
 /**
  * A key that works is not a question worth asking again.

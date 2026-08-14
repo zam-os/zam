@@ -76,10 +76,7 @@ async function readRows(db: Database): Promise<ManagedEndpoint[]> {
   }
 }
 
-async function writeRows(
-  db: Database,
-  rows: ManagedEndpoint[],
-): Promise<void> {
+async function writeRows(db: Database, rows: ManagedEndpoint[]): Promise<void> {
   // Renumber on every write so `order` stays dense and comparable; a gap left
   // by a deletion would otherwise decide priority by accident.
   const ordered = rows.map((row, index) => ({ ...row, order: index }));
@@ -157,15 +154,14 @@ export async function saveEndpoint(
 
   await writeRows(
     db,
-    existing ? rows.map((entry) => (entry.id === id ? row : entry)) : [...rows, row],
+    existing
+      ? rows.map((entry) => (entry.id === id ? row : entry))
+      : [...rows, row],
   );
   return { ok: true, id };
 }
 
-export async function removeEndpoint(
-  db: Database,
-  id: string,
-): Promise<void> {
+export async function removeEndpoint(db: Database, id: string): Promise<void> {
   const rows = await readRows(db);
   await writeRows(
     db,

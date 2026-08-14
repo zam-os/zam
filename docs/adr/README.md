@@ -72,3 +72,4 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-08-08b](2026-08-08b-ios-information-architecture.md) | iOS Information Architecture and Design System | Accepted |
 | [2026-08-09](2026-08-09-free-offline-learning-and-anki-interoperability.md) | Free Offline Learning and Anki Interoperability | Accepted |
 | [2026-08-09b](2026-08-09b-agent-plugin-package.md) | Portable Agent Plugin Package | Implemented |
+| [2026-08-09c](2026-08-09c-on-device-ai-preference.md) | On-Device AI Across Capabilities: One Preference, Honest Tiers | Accepted |

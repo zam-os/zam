@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import {
+  DeviceOnlyUnavailableError,
   type EvaluationPorts,
   evaluateMobileAnswer,
   evaluationSpeech,
@@ -535,5 +536,115 @@ describe("no backend at all", () => {
     });
     await expect(attempt).rejects.not.toBeInstanceOf(NoEvaluationBackendError);
     await expect(attempt).rejects.toThrow(/401/);
+  });
+});
+
+describe("recall tier preference (ADR 2026-08-09c)", () => {
+  const status = (
+    value: Partial<{
+      status: string;
+      available: boolean;
+      downloadable: boolean;
+    }>,
+  ) => ({
+    status: "available",
+    available: true,
+    downloadable: false,
+    ...value,
+  });
+
+  function ports(overrides: Partial<EvaluationPorts> = {}): EvaluationPorts {
+    return {
+      checkOnDeviceStatus: vi.fn(async () => status({})),
+      generateOnDevice: vi.fn(async () => ({
+        text: goodJson,
+        backend: "gemini-nano",
+      })),
+      ...overrides,
+    } as EvaluationPorts;
+  }
+
+  it("device-only never reaches the cloud, even with a key configured", async () => {
+    const fetchText = vi.fn(async () => goodJson);
+    await expect(
+      evaluateMobileAnswer({
+        card,
+        learnerAnswer: "Kraft gleich Masse mal Beschleunigung",
+        locale: "de",
+        endpoint: cloudEndpoint(),
+        preference: "device-only",
+        ports: ports({
+          checkOnDeviceStatus: vi.fn(async () =>
+            status({ status: "unavailable", available: false }),
+          ),
+          fetchText,
+        }),
+      }),
+    ).rejects.toBeInstanceOf(DeviceOnlyUnavailableError);
+    expect(fetchText).not.toHaveBeenCalled();
+  });
+
+  it("names the reason when the cloud answers instead of the device", async () => {
+    const result = await evaluateMobileAnswer({
+      card,
+      learnerAnswer: "F = m · a",
+      locale: "de",
+      endpoint: cloudEndpoint(),
+      ports: ports({
+        checkOnDeviceStatus: vi.fn(async () =>
+          status({ status: "downloading", available: false }),
+        ),
+        fetchText: vi.fn(async () => goodJson),
+      }),
+    });
+    // The whole point: a cloud answer the learner did not choose says so.
+    expect(result.backend).toBe("http");
+    expect(result.fallbackReason).toMatch(/downloading/);
+  });
+
+  it("says nothing extra when the preferred tier answered", async () => {
+    const result = await evaluateMobileAnswer({
+      card,
+      learnerAnswer: "F = m · a",
+      locale: "de",
+      endpoint: cloudEndpoint(),
+      ports: ports(),
+    });
+    expect(result.backend).toBe("on-device");
+    expect(result.fallbackReason).toBeNull();
+  });
+
+  it("quality-first prefers the cloud without calling the device", async () => {
+    const generateOnDevice = vi.fn();
+    const result = await evaluateMobileAnswer({
+      card,
+      learnerAnswer: "F = m · a",
+      locale: "de",
+      endpoint: cloudEndpoint(),
+      preference: "quality-first",
+      ports: ports({
+        generateOnDevice,
+        fetchText: vi.fn(async () => goodJson),
+      }),
+    });
+    expect(result.backend).toBe("http");
+    expect(result.fallbackReason).toBeNull();
+    expect(generateOnDevice).not.toHaveBeenCalled();
+  });
+
+  it("treats an unreadable status as unknown and still tries the device", async () => {
+    // An older shell without the command must not cost the learner their NPU.
+    const result = await evaluateMobileAnswer({
+      card,
+      learnerAnswer: "F = m · a",
+      locale: "de",
+      endpoint: cloudEndpoint(),
+      ports: ports({
+        checkOnDeviceStatus: vi.fn(async () => {
+          throw new Error("command not found");
+        }),
+      }),
+    });
+    expect(result.backend).toBe("on-device");
   });
 });
