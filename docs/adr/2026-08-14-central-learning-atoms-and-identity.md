@@ -140,5 +140,10 @@ This is the constructive counterpart to the install/enrol split in Decision 3:
 the same out-of-curriculum atom that must never *silently* become a card is
 legitimate content the moment the learner chooses it.
 
-The motivational design is constrained, because it can backfire — see
-[central-learning-path-possession.md](../concepts/central-learning-path-possession.md).
+**Motivation is curiosity, not acquisition.** Framing knowledge as possession —
+a collection whose growth drives the learner — is **rejected**: it conflicts
+with the owner's values, and the evidence independently warns against it
+(completion-contingent rewards undermine intrinsic motivation, d = −0.36 across
+128 studies). A bonus offer therefore never carries a score, a streak, or a
+target to reach. It names what the atom connects to and what it eases. See
+[central-learning-path-bonus-content.md](../concepts/central-learning-path-bonus-content.md).

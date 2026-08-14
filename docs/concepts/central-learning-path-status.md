@@ -1,6 +1,6 @@
 # Zentraler Lernpfad: Stand und Übergabe an die nächste Runde
 
-**Status:** Arbeitsstand nach vier Modellrunden und einer Owner-Runde
+**Status:** Arbeitsstand nach fünf Modellrunden und drei Owner-Runden
 
 **Datum:** 2026-08-14
 
@@ -19,23 +19,23 @@ Prerequisite-DAG abbildet: Curricula als Overlays über geteilten Atomen,
 unveränderliche Artefakte anonym über ein CDN verteilt, Lernzustand
 ausschließlich auf dem Gerät des Lerners.
 
-Vier Modelle haben nacheinander daran gearbeitet — Gemini (Entwurf), Grok
-(Verfeinerung und Review), Codex/GPT-5.6 (Forschungsreview), Opus (Nachprüfung
-und Einstiegsfrage) — danach eine Entscheidungsrunde mit dem Owner.
+Mitgearbeitet haben Gemini (Entwurf), Grok (Verfeinerung, Review), Codex/GPT-5.6
+(zwei Reviews), Opus (Nachprüfung, Schiedsspruch, Umsetzung) und Thomas
+(Entscheidungen).
 
-## 2. Leseregeln, bevor du anfängst
+## 2. Leseregeln
 
 **Lies in dieser Reihenfolge:**
 
 1. Dieses Dokument.
-2. [Architektur-Entwurf](central-learning-path-architecture.md) — die Vision.
-   Enthält Fehler, die *bewusst stehen bleiben*, siehe Korrekturvermerk.
-3. [Codex-Review](central-learning-path-codex-research-review.md) — der
-   schärfste Einwand gegen den Identitätsvorschlag.
-4. [Opus-Review](central-learning-path-opus-review.md) — Nachprüfung der
-   Behauptungen gegen Primärquellen und Kernel-Code.
-5. [Einstiegsproblem](central-learning-path-entry-problem.md) — enthält die
-   **verbindlichen Owner-Entscheidungen** zum Lernerverhalten.
+2. [ADR 2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md) —
+   was **entschieden** ist.
+3. [ADR 2026-08-14b](../adr/2026-08-14b-published-atom-identity-and-alignment.md) —
+   was **offen** ist, mit Optionen und externer Evidenz.
+4. [Codex-Folgereview](central-learning-path-codex-follow-up-review.md) — die
+   schärfsten Einwände gegen Implementierung und Schema.
+5. [Opus-Schiedsspruch](central-learning-path-opus-arbitration.md) — dieselben
+   Einwände am Code nachgeprüft, plus was daraufhin behoben wurde.
 
 Der Rest nach Bedarf (Dokumentenkarte, Abschnitt 8).
 
@@ -45,20 +45,18 @@ Der Rest nach Bedarf (Dokumentenkarte, Abschnitt 8).
 
 Von drei Wikidata-IDs im ersten Entwurf waren **drei falsch** — eine bezeichnete
 eine Zeitschrift, eine die Energie, eine existierte gar nicht. Der Lehrplanbezug
-zeigte auf einen realen, aber falschen Lernbereich (Wärmelehre statt Optik), was
-schlimmer ist als ein toter Verweis: Ein `topic_id`-Import hätte die Karten
-stillschweigend falsch verhängt.
+zeigte auf einen realen, aber *falschen* Lernbereich (Wärmelehre statt Optik),
+was schlimmer ist als ein toter Verweis: Ein `topic_id`-Import hätte die Karten
+stillschweigend falsch verhängt. Eine Literaturangabe („Ye et al. 2024“) war
+eine verfälschte Fassung einer echten Arbeit.
 
-Das ist kein Einzelfall gewesen, sondern systematisch. Wer hier Anker,
-Lehrplanstellen oder Literatur einträgt, löst sie vorher auf und schreibt dazu,
-was geprüft ist und was nicht. Unbelegte Zellen werden als unbelegt markiert,
-nicht weggelassen.
+Wer hier Anker, Lehrplanstellen oder Literatur einträgt, löst sie vorher auf und
+schreibt dazu, was geprüft ist und was nicht. Ungeprüfte Zellen werden als
+ungeprüft markiert, nicht weggelassen.
 
 ---
 
 ## 3. Konsens — nicht mehr verhandeln
-
-Diese Punkte tragen vier unabhängige Runden und werden nicht erneut aufgemacht:
 
 1. Statische, anonyme, inhaltsadressierte Artefakte als Verteilungsform.
 2. Curricula sind Overlays über geteilten Atomen, n:m.
@@ -71,158 +69,207 @@ Diese Punkte tragen vier unabhängige Runden und werden nicht erneut aufgemacht:
    Beweis der Wiederverwendung.
 8. Der Mensch entscheidet vor dem Publish.
 
-## 4. Owner-Entscheidungen (2026-08-14) — verbindlich
-
-Diese betreffen das **Lernerverhalten** und sind getroffen:
+## 4. Entschieden (ADR 2026-08-14, `Accepted`)
 
 | Thema | Entscheidung |
 |---|---|
-| **Hartes Gate** | Nein. Eine unerfüllte Voraussetzung versperrt das abhängige Token nicht. |
-| **Materialisierung** | Vorbedingungen bekommen Karten — aber sie halten das Fortschreiten nicht auf. |
-| **Reihenfolge** | **Fälligkeit** ordnet das Behalten; **Topologie** ordnet Erwerb und Exploration. (Die frühere Fassung „Topologie wiegt schwerer“ ist am 2026-08-14 zurückgezogen — sie galt der Exploration und hätte fällige Wiederholungen verspätet.) |
-| **Bonus-Inhalte** | Atome außerhalb der aktuellen Zelle dürfen am Rand des Besitzes **angeboten** werden — nie eingeplant, nie gezählt. Siehe [Besitz-Notiz](central-learning-path-possession.md). |
-| **Terminierung** | Der Lerner schätzt die Vorbedingungen einer Frage selbst ein. Das setzt nur den ersten Termin. |
-| **Zusicherung** | Auch bei maximaler Selbsteinschätzung wird die Karte irgendwann wirklich abgefragt. |
-| **Leere Queue** | Läuft die Queue leer und der Lerner will weiter, dürfen vergrabene Karten vorgezogen werden. |
-| **Änderungskosten** | Diese Regeln sind billig zu ändern. Lernerfeedback steuert die Optimierung — keine Vorab-Kalibrierung. |
+| **Fünf Objekte** | Atom, Alignment, CurriculumBinding, PracticeItem/Token, PersonalCard. Ein Lernbereich ist kein Atom; ein Lernziel ist keine Frage; eine Frage ist kein Lernzustand. |
+| **Hartes Gate** | Nein. Eine unerfüllte Voraussetzung versperrt nichts. |
+| **Materialisierung** | Bedarfsgetrieben: nur direkte Vorbedingungen tatsächlich begegneter Token. Die Support-Hülle wird nie zu Karten. |
+| **Terminierung** | Selbsteinschätzung der Vorbedingungen setzt **ausschließlich** `cards.buried_until`. Nie `stability`, `reps`, `state` oder ein Review-Log. |
+| **Zusicherung** | Jede vergrabene Karte wird irgendwann echt abgefragt — durch Ablauf oder weil die Queue leerläuft. |
+| **Reihenfolge** | **Fälligkeit** ordnet das Behalten. **Topologie** ordnet Erwerb und Exploration. |
+| **Installation ≠ Einschreibung** | Ein Release installieren erzeugt null Karten. |
+| **Bonus-Inhalte** | Atome außerhalb der eigenen Zelle dürfen am Rand des Gekonnten **angeboten** werden — nie eingeplant, nie gezählt. |
+| **Diagnose-Triage** | Stellschraube, kein Kernel-Gesetz. Default bleibt `cascadeBlock`. |
 
-**Technisch folgt daraus** (geprüft am Code, Details in
-[Einstiegsproblem §6](central-learning-path-entry-problem.md)):
+**Zurückgezogene Owner-Entscheidungen** (bewusst dokumentiert, damit sie nicht
+zurückkehren):
 
-- Kein neues Schema. `cards.buried_until` / `buried_reason` existieren, werden
-  von der Neu-Karten-Abfrage respektiert, sind beim Aufräumen nach Grund
-  gefiltert, und der Schema-Kommentar sichert bereits *„never changes FSRS
-  state“* zu. Der Eingriff ist ein neuer `buried_reason` plus längerer Horizont.
-- Die Selbsteinschätzung setzt **ausschließlich** `buried_until`. Nicht
-  `stability`, `reps`, `state` oder `review_logs`. Die Karte bleibt `new`, FSRS
-  startet beim ersten echten Kontakt kalt.
-- Die Support-Hülle materialisiert nie als Karten: nur direkte Vorbedingungen
-  tatsächlich begegneter Token, bedarfsgetrieben.
+- *„Topologie wiegt schwerer als Fälligkeit“* — zurückgezogen. Sie galt der
+  Exploration und hätte fällige Wiederholungen verspätet, also ausgerechnet den
+  Bestand beschädigt, den sie schützen sollte.
+- *„Wissen als Besitz, Freude am Besitz als Treiber“* — verworfen. Widerspricht
+  christlichen Grundwerten (Habgier), und die Empirie warnt unabhängig davon:
+  completion-contingente Belohnungen untergraben die intrinsische Motivation
+  (d = −0,36, 128 Studien). Motivation ist **Neugier auf die Lücke**, nicht
+  Erwerb. Siehe [Bonus-Inhalte](central-learning-path-bonus-content.md).
 
 ## 5. Abgelehnt — nicht wieder einbauen
 
 - Piaget-Stufen als Schemafeld; die unkalibrierte Accessibility-Sigmoid-Formel.
-- FSRS-Stabilitätspropagierung entlang Kanten; ein zweiter Mastery-Vektor neben
-  der Karte.
+- FSRS-Stabilitätspropagierung entlang Kanten; ein zweiter Mastery-Vektor.
 - Eine Klassen-/Schul-Sync-Schicht am oder neben dem anonymen CDN.
 - Globales transitives Pruning auf dem Universalgraphen.
-- `(scheme, entity, reduction)` (PAID) als automatisch joinbarer Primärschlüssel;
-  ein kanonischer Q-Anker pro Atom; Alias-Promotion ohne Alignment-Typ.
-- Festes Format (SQLite-WASM / JSON-LD / Range-Requests / Merkle-Bäume) ohne
-  Pilotbenchmark.
+- PAID `(scheme, entity, reduction)` als joinbarer Primärschlüssel; ein
+  kanonischer Q-Anker pro Atom; Alias-Promotion ohne Alignment-Typ.
+- Festes Format ohne Pilotbenchmark (SQLite-WASM, JSON-LD, Range-Requests,
+  Merkle-Bäume).
 - Absolute Kosten- und Datenschutzversprechen („0 €“, „100 % DSGVO“).
+- Punkte, Streaks, Fortschrittsbalken gegen ein Ziel.
 - FSRS-5 — der Kernel ist FSRS-6.
 
 ## 6. Offen, nach Dringlichkeit
 
-**Die Lernerseite und die Objekt-Trennung sind entschieden. Die veröffentlichte
-Identität ist es nicht** — sie wurde nach dem Codex-Folgereview aus dem ADR
-herausgelöst.
+### A. Veröffentlichte Identität und Alignment-Semantik (ADR 2026-08-14b)
 
-### A. Veröffentlichte Identität — **offen** (ADR 2026-08-14b, `Proposed`)
+**Blockiert alles, was veröffentlicht wird.** Zwei Fragen:
 
-PAID `(scheme, entity, reduction)` bleibt als Primärschlüssel abgelehnt;
-`reduction` bleibt Profilfeld. Was *nicht* entschieden ist: ob die veröffentlichte
-ID die semantische Form `atom:zam:<namespace>:<slug>` behält. Sie ist trotz des
-Namens nicht opak, legt eine Fachpartition in den Schlüssel und widerspricht
-sowohl der ULID-Regel aus `AGENTS.md` als auch der Begründung, mit der
+**Identität.** `atom:zam:<namespace>:<slug>` ist trotz des Namens nicht opak: Der
+Installer validiert seine Bestandteile, und die Item-Adresse wird daraus
+abgeleitet. Damit liegt eine Fachpartition im Primärschlüssel — das Muster, das
 [ADR 2026-07-04](../adr/2026-07-04-hierarchical-domain-ontology-and-token-identity.md)
-genau dieses Muster eine Ebene tiefer verworfen hat.
+eine Ebene tiefer ausdrücklich verworfen hat, und ein Verstoß gegen die
+ULID-Regel in `AGENTS.md`.
 
-Empfehlung im ADR: ULID als Zeile, `urn:zam:atom:<ulid>` als veröffentlichte
-Identität, Namespace und Slug als änderbare Attribute. Gestützt auf CASE 1.1,
-das opake UUIDs plus auflösbare URI verwendet und Fachzuordnung in 1.1
-ausdrücklich als eigene `subject`/`subjectURI`-Attribute *neben* die ID gelegt
-hat.
+*Empfehlung:* ULID als Zeile, `urn:zam:atom:<ulid>` als veröffentlichte
+Identität, Namespace und Slug als änderbare Attribute plus Alias-Tabelle.
+Gestützt auf CASE 1.1: opake UUIDs plus auflösbare URI, und in 1.1 wurden
+`subject`/`subjectURI` ausdrücklich als eigene Attribute *neben* die ID gelegt.
 
-Ebenfalls offen: die Bedeutung von Alignments. SKOS-Mappingprädikate verbinden
-Konzepte zweier Concept Schemes und `exactMatch` ist transitiv — zwischen einem
-Lernziel und einer Wikidata-Entität ist das ein Kategorienfehler mit konkretem
-Schadensbild. Empfehlung: Dreiteilung in `about` (Weltanker), SKOS (nur
-Konzept-zu-Konzept) und Kompetenz-Alignment.
+**Alignments.** SKOS-Mappingprädikate verbinden Konzepte zweier Concept Schemes,
+und `exactMatch` ist transitiv. Zwischen einem Lernziel und einer
+Wikidata-Entität ist das ein Kategorienfehler, dessen Schaden konkret ist: Eine
+spätere Deduplizierung über einen `exactMatch` verschiebt Lernzustand zwischen
+nicht austauschbaren Zielen.
 
-### B. Lernziel-Atom vs. Übungsitem — entschieden (ADR 2026-08-14)
+*Empfehlung:* Dreiteilung in `about` (Weltanker), SKOS (nur Konzept-zu-Konzept)
+und Kompetenz-Alignment. Gestützt auf schema.org/LRMI, das `about` von
+`teaches`/`assesses` bereits trennt.
 
-Fünf Objekte: Atom, Alignment, CurriculumBinding, PracticeItem/Token, Karte.
-Der heutige `tokens`-Datensatz ist das Übungsitem. `provider` / `topic_id` am
-Token bleiben ein 1:1-Überbleibsel; n:m lebt an `atom_curriculum_bindings`.
+Beides kostet heute vier Fixtures. Nach der ersten öffentlichen Kachel kostet es
+jeden Konsumenten, der den String gespeichert hat.
 
-Fundament-vs-Anwendung nach einem `Again` ist eine **Stellschraube**, kein
-Kernel-Gesetz: Default bleibt `cascadeBlock`, bis Feldmessung Fall 2 häufig
-zeigt ([Einstiegsproblem §12](central-learning-path-entry-problem.md)).
+### B. Release-, Provenienz- und Reconcile-Vertrag
+
+Eigener ADR, nötig **vor** jeder Verteilung: Release-Manifest, Digests,
+Herausgeber-/Key-Identität, deklaratives Entfernen (eine in v2 zurückgezogene
+Aussage darf lokal nicht liegenbleiben), **Zeilen-Release-Provenienz** und
+Rollback/Rotation. TUFs Bedrohungsmodell ist die Checkliste, nicht die
+Implementierungsentscheidung.
+
+Hierher gehört auch das **sechste und siebte Objekt**, die im Fünf-Objekte-Modell
+fehlen: Zeilen-Provenienz (ohne sie ist deklaratives Entfernen unmöglich) und
+die **persönliche Einschreibung** („ich folge Overlay X“), ohne die die
+bedarfsgetriebene Materialisierung ihren Zielumfang nicht kennt.
 
 ### C. Overlay-Compiler-Vertrag
 
-Grok und Codex sind sich uneins:
-- Grok will die Kante auf Overlay-Mitglieder projizieren (`A → C`, wenn `B`
-  fehlt).
-- Codex hält dagegen, das überspringe eine notwendige Kompetenz, und will
-  `S_target ∪ S_support` mit eingeklappten, aber vorhandenen Stützknoten.
+Grok will die Kante auf Overlay-Mitglieder projizieren; Codex will
+`S_target ∪ S_support` mit eingeklappten, aber vorhandenen Stützknoten.
 
-Zur Einordnung: Der Streit betrifft ausschließlich den **Zulassungsschalter**,
-und der steht nach Abschnitt 4 auf *aus*. Die praktische Dringlichkeit ist damit
-gesunken; die Frage bleibt für Tile-Inhalt und Lückendiagnose relevant.
+Der Streit betrifft ausschließlich den **Zulassungsschalter**, und der steht auf
+*aus* — die Dringlichkeit ist damit gesunken. Für Tile-Inhalt und
+Lückendiagnose bleibt die Frage relevant.
 
 Formal korrekt ist Codex: Groks Formel („kein `w` liegt auf **jedem** Pfad“) ist
 die Dominator-, nicht die Cover-Relation und behält deshalb redundante Kanten.
-Unter AND-Semantik ist das folgenlos — geringe Schwere, aber richtigzustellen.
+Unter AND-Semantik folgenlos — geringe Schwere, aber richtigzustellen.
 
-### D. Tile-Format, Release-Manifest, Trust
+### D. Schema-Hygiene (Codex B1.6, B1.7)
 
-Offen: referenzielle Integrität über Paketgrenzen, ein atomarer signierter
-Release-Snapshot, Rollback und Schlüsselrotation, sowie ein Benchmark gegen eine
-echte Zelle *vor* der Formatbindung.
+- FK auf `tokens.atom_id`; `CHECK` auf `alignment_type`; Kantenprovenienz.
+- Batch-DAG-Prüfung für Atomkanten (heute gar keine; Zyklen werden nur
+  mittelbar über die Tokenprojektion erkannt). Der Benchmark gegen 100k Kanten
+  ist verfrüht, die Optimierung bekannt: Ancestor-Map einmal pro Release statt
+  pro Kante.
+- **Reduktionsvokabular:** Ein Fixture nutzt `formula`, der ADR kennt nur
+  `formal_formula`. Erst Vokabel entscheiden, dann `CHECK`.
+- **Explizites RepresentativeItem** — „kleinste Item-ID“ ist deterministisch,
+  aber keine didaktische Aussage.
+- **Curriculum-Abfragen auf Bindings umstellen** (Codex' Test 12). Behoben ist
+  die Reihenfolgeabhängigkeit der Legacy-Felder, nicht ihre Ablösung.
 
-### E. Entity-Linking empirisch
+### E. Messfragen — billig, gegen echte Daten
 
-Zwei überlappende Zellen, Goldannotation durch zwei Fachlehrkräfte, getrennte
-Metriken für Dekomposition, Kandidaten, `NIL` und Alignment. Teuer, aber die
-ehrliche Antwort auf die falschen Anker.
+- **Reihenfolge beim Behalten:** Frontier-first gegen reine Fälligkeit, gegen
+  bestehende `review_logs` replayen. Die billigste offene Frage.
+- **Fundament oder Anwendung** nach einem `Again`: Anteil der Fehlschläge, bei
+  denen das hochgeholte Fundament auf Anhieb sitzt.
+- **Bonus-Retention** gegen Pflicht-Retention.
+- **Größe der harten Hülle** einer echten Zelle.
 
-### F. Kleinere, messbare Fragen
+### F. Inhaltliches
 
-- Fundament fehlt oder nur falsch angewandt? (`cascadeBlock` nimmt heute immer
-  Ersteres an — [Einstiegsproblem §12](central-learning-path-entry-problem.md))
-- Gewicht Topologie gegen Fälligkeit; Reihenfolge beim Vorziehen.
+- Entity-Linking empirisch: zwei überlappende Zellen, Goldannotation, getrennte
+  Metriken für Dekomposition, Kandidaten, `NIL` und Alignment.
 - Lizenzklassen des LehrplanPLUS-Ingests vor öffentlichem Release.
+- Ist Tier 1 **und** Tier 2 je Atom eine prüfbare Publish-Invariante oder eine
+  Qualitätsrichtlinie? Es muss eines von beidem sein.
 
-## 7. Fortschritt dieser Runde (2026-08-14)
+## 7. Stand des Codes
 
-1. **Datenmodell formalisiert, Identität wieder geöffnet:**
-   - [ADR 2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md) angenommen — 5-Objekte-Modell und reaktives Scheduling.
-   - [ADR 2026-08-14b](../adr/2026-08-14b-published-atom-identity-and-alignment.md) abgespalten und auf `Proposed` gesetzt: Atom-ID und Alignment-Semantik sind offen.
-2. **Kanonischer KVT-Referenz-Datensatz erstellt & verifiziert:**
-   - Realschule Bayern Physik Optik als geerdete Kachel: [`tests/fixtures/curriculum/de-by-realschule-optik-kvt.json`](../../tests/fixtures/curriculum/de-by-realschule-optik-kvt.json).
-   - Verifiziert Zweig-Überlappung (Zweig I Klasse 7 und Zweig II/III Klasse 8 auf denselben Lernziel-Atomen).
-   - Automatisierter Vitest-Test [`tests/kernel/curriculum-kvt-fixture.test.ts`](../../tests/kernel/curriculum-kvt-fixture.test.ts) prüft Zyklenfreiheit (Topological Sort) und Schema-Integrität.
-3. **Dokumentenbereinigung:**
-   - `central-learning-path-architecture.md` und `central-learning-path-research.md` mit den Owner-Entscheidungen, CASE 1.1 und korrekten Primärquellen synchronisiert.
-4. **Namensraum und erster Kernel-Attach:**
-   - Atom-IDs auf Fachpartition (`atom:zam:optik:…`) umgestellt.
-   - `attachKvtTile` schreibt Atome, Bindings, Alignments, Übungsitems als
-     Tokens und Karten; FSRS bleibt unberührt.
-5. **Drei angrenzende Zellen (Join-Beweis):**
-   - Gymnasium 8 Optik (215729) wiederverwendet Brechung/TIR, ergänzt
-     Reflexionsgesetz, Sammellinse, TIR-Anwendungen.
-   - Realschule-Erweiterung: dieselben neuen Atome plus Dispersion nur in 7 I
-     (in 8 II/III nicht im Lehrplan).
-   - BOS 10 (119285) wiederverwendet Formel + TIR und ergänzt das Messen von n.
-   - Attach *merged* Bindings; die zweite Kachel löscht die erste nicht.
+**Implementiert und getestet** ([`kvt-attach.ts`](../../src/kernel/library/kvt-attach.ts)):
 
-## 8. Dokumentenkarte
+- `installKvtTile(db, tile)` — schreibt Atome, Alignments, Bindings, Atomkanten
+  und Übungsitems. **Erzeugt null Karten.**
+- `materialiseKvtCards(db, userId, atomIds)` — der getrennte, ausdrückliche
+  Schritt.
+- Inhaltsänderungen an vorhandenen Items laufen über
+  `publishTokenRevisionInTransaction`. Fehlende Klassifikation gilt als
+  `material`.
+- Reihenfolgeunabhängig: Legacy-Projektion und Prerequisite-Repräsentant werden
+  aus dem gespeicherten Gesamtbestand berechnet, nicht aus der Array-Position.
+- M024: Eindeutigkeit der Bindings über `COALESCE(grade, -1)`.
+
+**Testlage:** 2158 Tests grün. Acht von Codex' 15 Abnahmetests sind erfüllt
+(1, 2, 3, 4, 10, 11, 13 plus gescopte Materialisierung). Die übrigen sieben
+stehen auf Entscheidungen aus Abschnitt 6.B.
+
+**Der Attach bleibt ein Spike.** Der Modulkommentar sagt das ausdrücklich und
+zählt auf, was fehlt. Keine Lernerfunktion darf darauf aufbauen, bevor A und B
+entschieden sind.
+
+**Vier geerdete Zellen** liegen als Fixtures vor: Realschule Zweig I 7,
+Realschule Zweig II/III 8, Gymnasium 8, BOS. Sie überlappen auf denselben
+Atomen — das ist der Wiederverwendungsbeweis und zugleich der Bonus-Pool.
+
+## 8. Was die nächste Runde tun sollte
+
+1. **ADR 2026-08-14b entscheiden** (Identität, Alignments). Die Optionen sind
+   ausformuliert und extern belegt; es fehlt eine Entscheidung, keine weitere
+   Runde Argumente.
+2. **Release-/Provenienz-ADR schreiben** (Abschnitt 6.B), bevor weitere
+   Persistenz entsteht.
+3. **Die Replay-Messungen** aus 6.E laufen lassen — sie sind billig und
+   entscheiden mehrere offene Fragen empirisch statt argumentativ.
+4. **Schema-Hygiene** aus 6.D, sobald das Vokabular steht.
+
+**Was nicht ansteht:** Scanner, weltweites CDN, Signatur-Infrastruktur,
+Tier-1-Objekte im Kernschema, ein drittes Editorfenster im Studio, endgültiges
+Binärformat.
+
+**Haltung des Owners für alles Verhaltensnahe:** kleine Regel, benannte
+Stellschrauben, keine Theorie im Voraus. Lernerfeedback entscheidet.
+
+## 9. Dokumentenkarte
 
 | Dokument | Autor | Was drinsteht |
 |---|---|---|
-| [architecture](central-learning-path-architecture.md) | Gemini | Konsolidierte Vision, 5-Objekte-Modell, KVT-Kacheln, geerdetes Optik-Beispiel, `buried_until`-Terminierung. |
-| [research](central-learning-path-research.md) | Gemini | Ontologievergleich (CASE 1.1, SKOS), Kognitionsmodelle, fünf Forschungs-Briefings, Fehler-Diagnose-Heuristik. |
+| [architecture](central-learning-path-architecture.md) | Gemini | Vision, KVT-Kacheln, 5-Objekte-Modell, geerdetes Optik-Beispiel. Mit Korrekturvermerk. |
+| [research](central-learning-path-research.md) | Gemini | Ontologievergleich, Kognitionsmodelle, fünf Forschungs-Briefings. Mit Korrekturvermerk. |
 | [refinement](central-learning-path-refinement.md) | Grok | Didaktische Reduktion, Hard/Soft, Overlay-Abschluss, FSRS-Grenze. |
-| [identity](central-learning-path-identity.md) | Grok | PAID-Vorschlag. **Als Primärschlüssel abgelehnt**, als Profil brauchbar. |
+| [identity](central-learning-path-identity.md) | Grok | PAID-Vorschlag. **Superseded** — die Widerlegungen in Abschnitt 4 gelten weiter. |
 | [architecture-review](central-learning-path-architecture-review.md) | Grok | Abschnittsweise Kritik am Entwurf. |
 | [codex-research-review](central-learning-path-codex-research-review.md) | Codex | Erdungsprüfung, Identitätskritik, Fünf-Objekte-Modell, Release/Trust. |
+| [codex-follow-up-review](central-learning-path-codex-follow-up-review.md) | Codex | Abnahmeblocker gegen Spike und Schema; 15 geforderte Vertragstests. |
 | [opus-review](central-learning-path-opus-review.md) | Opus | Nachprüfung gegen Primärquellen und Code; Gate-Befund; Schiedssprüche. |
-| [entry-problem](central-learning-path-entry-problem.md) | Opus + Owner | Einstieg in die Mitte. **Enthält die verbindlichen Owner-Entscheidungen.** |
-| [possession](central-learning-path-possession.md) | Opus + Owner | Wissen als Besitz, Bonus-Inhalte, Hebel im Graphen — samt dem Motivationsbefund, der die naive Umsetzung kippt. |
-| [codex-follow-up-review](central-learning-path-codex-follow-up-review.md) | Codex | Abnahmeblocker gegen Spike und ADR; 15 geforderte Vertragstests. |
 | [opus-arbitration](central-learning-path-opus-arbitration.md) | Opus | Schiedsspruch am Code nachgeprüft, plus Umsetzung der vier billigen Fixes. |
-| [ADR 2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md) | Thomas | **Accepted:** 5-Objekte-Modell, Gate=OFF, Selbsteinschätzung, leere Queue. |
-| [ADR 2026-08-14b](../adr/2026-08-14b-published-atom-identity-and-alignment.md) | Thomas | **Proposed, offen:** Atom-ID, Alignment-Semantik, Reduktionsvokabular, Release-Vertrag. |
+| [entry-problem](central-learning-path-entry-problem.md) | Opus + Owner | Einstieg in die Mitte; Selbsteinschätzung, leere Queue. |
+| [bonus-content](central-learning-path-bonus-content.md) | Opus + Owner | Bonus am Rand des Gekonnten, Hebel im Graphen; Besitzrahmung verworfen. |
+
+**ADRs:**
+
+- [2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md) —
+  **Accepted:** Fünf Objekte, reaktives Scheduling, Bonus als Angebot.
+- [2026-08-14b](../adr/2026-08-14b-published-atom-identity-and-alignment.md) —
+  **Proposed, offen:** Identität, Alignments, Reduktionsvokabular,
+  Repräsentant, Tier-Invariante, Release-Vertrag. Enthält vier
+  Forschungsaufgaben.
+- [2026-07-04 Hierarchical Domain Ontology](../adr/2026-07-04-hierarchical-domain-ontology-and-token-identity.md) —
+  **Draft**, beantwortet die *lokale* Adresse.
+- [Learning Governance](https://github.com/zam-os/zam/blob/codex/learning-governance-adr-note/docs/adr/2026-07-05-learning-governance.md) —
+  eigener Branch, „Proposed (note only)“, **nicht gemergt**. Ihr *Curriculum*
+  ist unser Overlay, ihr *Learning assignment* die aus dem CDN verwiesene
+  Klassenschicht. Ihre offene Frage 4 (Kompetenznachweis ohne Offenlegung der
+  FSRS-Historie) ist dieselbe Primitive wie ein Einstufungsnachweis.
