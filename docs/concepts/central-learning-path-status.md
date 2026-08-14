@@ -257,6 +257,7 @@ Stellschrauben, keine Theorie im Voraus. Lernerfeedback entscheidet.
 | [opus-arbitration](central-learning-path-opus-arbitration.md) | Opus | Schiedsspruch am Code nachgeprüft, plus Umsetzung der vier billigen Fixes. |
 | [entry-problem](central-learning-path-entry-problem.md) | Opus + Owner | Einstieg in die Mitte; Selbsteinschätzung, leere Queue. |
 | [bonus-content](central-learning-path-bonus-content.md) | Opus + Owner | Bonus am Rand des Gekonnten, Hebel im Graphen; Besitzrahmung verworfen. |
+| [cognitive-foundations](central-learning-path-cognitive-foundations.md) | Gemini + Team | Kognitionswissenschaftliche Fundierung: Motivation, Knowledge Spaces, Interleaving, Scaffolding/Fading, Hebel-Mathematik. |
 
 **ADRs:**
 
