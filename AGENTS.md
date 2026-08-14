@@ -52,6 +52,10 @@ open a terminal.
 - **No new dependencies** (npm or native) without explicit approval from
   Thomas. `package.json` changes are a red flag in review.
 - **IDs are ULIDs** (`ulid()`), never UUIDs or numeric ids.
+- **A published practice-item ULID is frozen** (ADR 2026-08-14 Decision 8): a
+  shipped item id is never re-minted. Cards and `review_logs` reference it, so
+  a fresh id for the same question orphans learning history. Atom ids may still
+  move — nothing personal points at them.
 - **Schema changes** go in BOTH `src/kernel/db/schema.ts` and an idempotent
   numbered migration (M-series) in `runMigrations`
   (`src/kernel/db/connection.ts`).

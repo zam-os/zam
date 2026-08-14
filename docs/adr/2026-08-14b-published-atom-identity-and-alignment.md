@@ -151,6 +151,42 @@ TUF as an implementation.
 
 ---
 
+## Sequencing decision (2026-08-14): deliberately deferred
+
+**Everything still open in this ADR waits until distribution, by decision, not
+by neglect.** The owner's direction is a runnable product first: without
+something a learner can use there is no feedback, and without feedback no
+evolutionary development. These questions do not block building — they block
+publishing.
+
+Recorded here so the next round does not renegotiate what is deliberately
+waiting.
+
+| Open item | Why it can wait | What ends the deferral |
+|---|---|---|
+| Alignment semantics (Q2) | Links are advisory today; nothing dedupes atoms automatically, so a wrong `exactMatch` cannot yet move learning state | The first automated matching or dedup pass, or the first external consumer of the links |
+| Reduction vocabulary (Q3) | A free-text field with no `CHECK` costs nothing while one team writes the tiles | A second publisher, or the first query that groups by reduction |
+| Representative item (Q4) | "Lowest item id" is deterministic and order-stable; it is imprecise, not wrong | An atom whose items differ enough that the choice changes what "held" means |
+| Release, trust, provenance (Q6) | A tile installed from our own repo onto our own device needs no signature, manifest or rollback | The first tile that leaves the repository |
+| Cross-package references | Painful but visible: it blocks modelling one prerequisite in the reference cell, and everybody knows | A cell whose prerequisites genuinely span subjects and must ship |
+| Codex acceptance tests 5–9, 14–15 | All stand on the two contracts above | Those contracts |
+
+**What makes the deferral safe rather than merely convenient**, checked against
+the schema: `cards` and `review_logs` reference `tokens(id)`, never `atom_id`.
+Learner history hangs on the practice-item ULID alone. Everything deferred here
+touches published *content* identity and shape — none of it can reach a
+learner's FSRS state.
+
+The one identifier that would be expensive is therefore frozen, and enforced
+rather than merely written down: a published practice-item id is never
+re-minted (Decision 8; `installKvtTile` refuses a republished question under a
+new id).
+
+**What is not deferred:** content correctness. A wrong anchor or a wrong
+curriculum reference reaches the learner directly, and no contract above
+protects against it. The working rule stands — no anchor without resolution
+against its primary source.
+
 ## Sequencing
 
 1. **Questions 1 and 2 first.** Everything published carries their consequences,

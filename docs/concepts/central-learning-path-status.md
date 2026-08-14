@@ -183,6 +183,10 @@ ist **Oberfläche**, kein Vertrag.
 
 ### II. Blockiert die öffentliche Verteilung — nicht den Feldtest
 
+**Ausdrücklich vertagt am 2026-08-14**, mit Begründung und Auslöser je Punkt in
+[ADR 2026-08-14b, „Sequencing decision“](../adr/2026-08-14b-published-atom-identity-and-alignment.md).
+Nicht neu verhandeln — nachlesen, was den jeweiligen Punkt wieder fällig macht.
+
 Vollständig gültig, nur später fällig. Ein lokal installiertes Tile aus dem
 eigenen Repo braucht weder Trust-Modell noch dauerhaft stabile Publik-IDs.
 
@@ -299,11 +303,14 @@ die verbliebenen Verträge sind Tore vor der Verteilung, nicht vor dem Produkt.
 Die letzte Konsolidierungsrunde sollte nur noch das tun, was später teuer wird:
 
 1. ~~**Atom-Identität ziehen.**~~ **Erledigt** (Decision 8, M026).
-2. **Übungsitem-ULIDs einfrieren.** Die verbleibende Bedingung: Eine einmal
-   veröffentlichte Item-ID wird nie neu vergeben — daran hängen die Karten.
-   Atom-IDs dürfen dagegen weiter wandern; auf sie zeigt nichts Persönliches.
-3. **Den Rest von Abschnitt II ausdrücklich vertagen** — mit Begründung im ADR,
-   damit die übernächste Runde nicht neu verhandelt, was bewusst wartet.
+2. ~~**Übungsitem-ULIDs einfrieren.**~~ **Erledigt** — als Repo-Regel in
+   `CLAUDE.md`/`AGENTS.md` *und* im Installer durchgesetzt: eine erneut
+   veröffentlichte Frage unter neuer ID wird abgelehnt. Atom-IDs dürfen weiter
+   wandern; auf sie zeigt nichts Persönliches.
+3. ~~**Abschnitt II vertagen.**~~ **Erledigt** — je Punkt mit Begründung und
+   Auslöser in ADR 2026-08-14b.
+
+Damit ist die Konsolidierung abgeschlossen. **Als Nächstes wird gebaut.**
 
 **Danach: das Produkt.** Die kürzeste Strecke zu etwas Testbarem sind die fünf
 Punkte aus 6.I — Selbsteinschätzung, leere Queue, Bonus-Oberfläche, ein

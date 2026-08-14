@@ -30,6 +30,10 @@
  *   release contract (per-row provenance and ownership), not another rule here.
  *   Only a differing *slug* for an already-installed item is rejected outright,
  *   because a published address must not change silently.
+ * - **Published practice-item ids are frozen.** Re-minting an id for an address
+ *   that already exists is refused: cards and review logs hang on the item id,
+ *   so a fresh id for the same question would orphan a learner's history. Atom
+ *   ids may still move — nothing personal points at them.
  */
 
 import type { Database } from "../db/types.js";
@@ -419,9 +423,38 @@ export async function installKvtTile(
       for (const item of atom.practice_items) {
         const existing = await getTokenById(tx, item.id);
         if (!existing) {
+          // A published practice-item ULID is frozen (ADR 2026-08-14
+          // Decision 8). A re-mint orphans the learner's card, because cards
+          // and review_logs hang on the item id.
+          //
+          // Detection is by content, not by address: a derived slug carries the
+          // id's tail, so a re-minted item lands on a *different* address and an
+          // address check would never see it. Same atom and same question under
+          // a different id is a re-mint with near-certainty.
+          const slug = slugForItem(atom, item);
+          const twin = (await tx
+            .prepare("SELECT id FROM tokens WHERE atom_id = ? AND question = ?")
+            .get(atom.id, item.question)) as { id: string } | undefined;
+          if (twin) {
+            throw new Error(
+              `Practice item ${item.id} republishes the question already ` +
+                `published as ${twin.id}. A published item id is never ` +
+                `re-minted — reuse ${twin.id}, or the learner's card and ` +
+                `review history are orphaned.`,
+            );
+          }
+          const holder = (await tx
+            .prepare("SELECT id FROM tokens WHERE slug = ?")
+            .get(slug)) as { id: string } | undefined;
+          if (holder) {
+            throw new Error(
+              `Practice item ${item.id} claims address ${slug}, which ` +
+                `${holder.id} already holds. Addresses are immutable.`,
+            );
+          }
           await insertToken(tx, {
             id: item.id,
-            slug: slugForItem(atom, item),
+            slug,
             title: atom.title,
             concept: item.concept,
             question: item.question,

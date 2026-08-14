@@ -65,6 +65,10 @@ Bridge responses are always JSON, including errors. Treat `protocol.ts` types as
 - **Kernel vs. CLI boundary**: New learning logic goes in the kernel, not in CLI commands.
 - **Token vs. Card distinction**: `zam token register` creates only a token. `zam bridge add-token` also creates a user card. If a concept should appear in a user's queue, ensure a card is created.
 - **IDs are ULIDs** throughout — use `ulid()`, not UUIDs or numeric IDs.
+- **A published practice-item ULID is frozen** (ADR 2026-08-14 Decision 8): once
+  a tile ships an item id, it is never re-minted. Cards and `review_logs` hang
+  on it, so a new id for the same question orphans a learner's history. Atom
+  ids may still move — nothing personal points at them.
 - **Blocking is separate from rating**: `evaluateRating()` updates FSRS state; callers decide whether to invoke blocking after a rating of `1`.
 - **`zam bridge` must emit JSON only** (stricter than `--json` flag on other commands).
 - **Token metadata drives behavior**: Bloom levels drive prompt generation; `symbiosis_mode` is load-bearing.

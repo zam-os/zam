@@ -270,7 +270,13 @@ describe("installKvtTile", () => {
     const parentAtom = OPTIK.strahlengangLot;
     const childAtom = OPTIK.brechungQualitativ;
 
-    function tileWithParentItem(id: string, tileId: string): KvtTile {
+    // Two genuinely different items on the parent atom — not the same question
+    // under two ids, which the frozen-id rule now refuses outright.
+    function tileWithParentItem(
+      id: string,
+      question: string,
+      tileId: string,
+    ): KvtTile {
       const base = loadTile();
       const parent = base.atoms.find((a) => a.id === parentAtom);
       const child = base.atoms.find((a) => a.id === childAtom);
@@ -280,7 +286,10 @@ describe("installKvtTile", () => {
         tile_id: tileId,
         version: "1",
         atoms: [
-          { ...parent!, practice_items: [{ ...parentItem, id, slug: `p-${id}` }] },
+          {
+            ...parent!,
+            practice_items: [{ ...parentItem, id, question, slug: `p-${id}` }],
+          },
           {
             ...child!,
             practice_items: [{ ...childItem, slug: "c-fixed" }],
@@ -290,8 +299,16 @@ describe("installKvtTile", () => {
       };
     }
 
-    const high = tileWithParentItem("01K3X9A7R4B8C1D2E3F4G5HB02", "tile-a");
-    const low = tileWithParentItem("01K3X9A7R4B8C1D2E3F4G5HB01", "tile-b");
+    const high = tileWithParentItem(
+      "01K3X9A7R4B8C1D2E3F4G5HB02",
+      "Wo steht das Einfallslot?",
+      "tile-a",
+    );
+    const low = tileWithParentItem(
+      "01K3X9A7R4B8C1D2E3F4G5HB01",
+      "Woran misst man den Einfallswinkel?",
+      "tile-b",
+    );
     const childId = loadTile().atoms.find((a) => a.id === childAtom)!
       .practice_items[0].id;
 
@@ -430,6 +447,36 @@ describe("installKvtTile", () => {
     await expect(installKvtTile(db, tile)).rejects.toThrow(
       /Slugs are immutable/,
     );
+  });
+
+  // ADR 2026-08-14 Decision 8: the frozen practice-item id, enforced rather
+  // than only written down. A re-mint would orphan the learner's card.
+  it("refuses to re-mint a published practice item id", async () => {
+    await installKvtTile(db, loadTile());
+
+    const tile = loadTile();
+    const atom = tile.atoms.find((a) => a.id === OPTIK.brechungQualitativ);
+    // Same question, same address — but a freshly minted id.
+    atom!.practice_items[0].id = "01K3X9A7R4B8C1D2E3F4G5D001";
+
+    await expect(installKvtTile(db, tile)).rejects.toThrow(/never re-minted/);
+  });
+
+  it("keeps the learner's card when a release reuses the item id", async () => {
+    await installKvtTile(db, loadTile());
+    await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL);
+    const tokenId = "01K3X9A7R4B8C1D2E3F4G5H003";
+    const card = await getCard(db, tokenId, "learner-a");
+    await db
+      .prepare("UPDATE cards SET reps = 6, stability = 30 WHERE id = ?")
+      .run(card!.id);
+
+    await installKvtTile(db, loadTile());
+
+    const after = await getCard(db, tokenId, "learner-a");
+    expect(after?.id).toBe(card!.id);
+    expect(after?.reps).toBe(6);
+    expect(after?.stability).toBe(30);
   });
 
   it("refuses to reassign an item to a different atom", async () => {
