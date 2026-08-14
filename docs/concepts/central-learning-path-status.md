@@ -2,9 +2,12 @@
 
 **Status:** Arbeitsstand nach sechs Modellrunden und vier Owner-Runden
 
-**Letzte Runde:** Codex-Härtungsreview H1/H2/H3 geschlossen, PostgreSQL-
-Provisionierung abgedeckt, Cognitive Foundations zur Hypothesenlandkarte
-zurückgestuft.
+**Letzte Runde:** Codex-Härtungsreview H1/H2/H3 geschlossen, R2 (Bonus-
+Definitionen) beantwortet, PostgreSQL-Provisionierung abgedeckt, Cognitive
+Foundations zur Hypothesenlandkarte zurückgestuft.
+
+**Richtung:** eine Konsolidierungsrunde, dann ein testbares Produkt bauen —
+siehe Abschnitt 0.
 
 **Datum:** 2026-08-14
 
@@ -15,6 +18,29 @@ weiß danach, was entschieden ist, was verworfen wurde, was offen ist und woran
 als Nächstes zu arbeiten wäre.
 
 ---
+
+## 0. Richtung des Owners (2026-08-14)
+
+> **Erst ein lauffähiges Produkt.** Ohne etwas, das jemand testen kann, gibt es
+> kein Lernerfeedback — und ohne Feedback keine evolutionäre Weiterentwicklung.
+> Blockaden bringen an dieser Stelle nichts. Nach der nächsten Runde wird der
+> Sack zugemacht und erst einmal etwas gebaut, das testbar ist.
+
+Das ordnet die offene Liste neu. Abschnitt 6 ist deshalb **nicht mehr nach
+Dringlichkeit sortiert, sondern danach, was etwas blockiert**: einen Feldtest,
+die öffentliche Verteilung, oder nichts von beidem.
+
+**Der entscheidende Befund dazu, am Schema geprüft:** `cards` und `review_logs`
+referenzieren `tokens(id)` — die ULID —, **niemals `atom_id`**. Ein späteres
+Neuvergeben der Atom-Identität fasst `learning_atoms`, die drei Atom-Tabellen
+und `tokens.atom_id` an; Karten, FSRS-Zustand und Review-Historie bleiben
+unberührt. Die Identitätsfrage ist damit für einen Feldtest **aufschiebbar,
+ohne Lernerdaten zu riskieren** — unter einer Bedingung: **Übungsitem-ULIDs
+dürfen nicht neu vergeben werden**, denn daran hängen die Karten.
+
+Das ist eine Reihenfolgeentscheidung, keine Absage an die Reviews. Was Codex
+fordert, bleibt vollständig stehen — nur als Tor vor der *Verteilung*, nicht vor
+dem *Bauen*.
 
 ## 1. Worum es geht
 
@@ -45,6 +71,11 @@ Mitgearbeitet haben Gemini (Entwurf), Grok (Verfeinerung, Review), Codex/GPT-5.6
    Arbeitsauftrag. **H1, H2 und H3 sind inzwischen behoben** (Abschnitt 7); die
    Forschungs- und Vertragsforderungen R1/R2 und die Punkte 5–9, 14–15 der
    Testliste stehen weiter.
+
+Die Reviews sind vollständig gültig und **nicht** abgearbeitet — nach
+Abschnitt 0 sind ihre offenen Forderungen Tore vor der *Verteilung*, nicht vor
+dem Bauen. Wer sie liest, lese Abschnitt 6 dazu, sonst wirkt die Liste
+blockierender, als sie ist.
 
 Der Rest nach Bedarf (Dokumentenkarte, Abschnitt 9).
 
@@ -121,97 +152,86 @@ zurückkehren):
 - Punkte, Streaks, Fortschrittsbalken gegen ein Ziel.
 - FSRS-5 — der Kernel ist FSRS-6.
 
-## 6. Offen, nach Dringlichkeit
+## 6. Offen — sortiert nach dem, was es blockiert
 
-### A. Veröffentlichte Identität und Alignment-Semantik (ADR 2026-08-14b)
+Nach Abschnitt 0 ist die nützliche Frage nicht „wie dringend?“, sondern „was
+steht wem im Weg?“.
 
-**Blockiert alles, was veröffentlicht wird.** Zwei Fragen:
+### I. Blockiert einen Feldtest — hier liegt die Arbeit
 
-**Identität.** `atom:zam:<namespace>:<slug>` ist trotz des Namens nicht opak: Der
-Installer validiert seine Bestandteile, und die Item-Adresse wird daraus
-abgeleitet. Damit liegt eine Fachpartition im Primärschlüssel — das Muster, das
-[ADR 2026-07-04](../adr/2026-07-04-hierarchical-domain-ontology-and-token-identity.md)
-eine Ebene tiefer ausdrücklich verworfen hat, und ein Verstoß gegen die
-ULID-Regel in `AGENTS.md`.
+Alles Sicherheitskritische ist erledigt: Installation schreibt keine fremden
+Karten, Inhaltsänderungen laufen über den Revisionsvertrag, FSRS wird nie ohne
+Abruf geschrieben, und die Erdung der Inhalte hat eine Arbeitsregel. Was fehlt,
+ist **Oberfläche**, kein Vertrag.
 
-*Empfehlung:* ULID als Zeile, `urn:zam:atom:<ulid>` als veröffentlichte
-Identität, Namespace und Slug als änderbare Attribute plus Alias-Tabelle.
-Gestützt auf CASE 1.1: opake UUIDs plus auflösbare URI, und in 1.1 wurden
-`subject`/`subjectURI` ausdrücklich als eigene Attribute *neben* die ID gelegt.
+1. **Vorbedingungs-Selbsteinschätzung.** Entschieden, nicht gebaut. Ohne sie
+   gibt es die Terminierung über `buried_until` nur auf dem Papier.
+2. **Vorziehen bei leerer Queue.** Entschieden, nicht gebaut.
+3. **Bonus-Oberfläche.** Die Ableitung steht (`bonusCandidates`); es gibt keinen
+   Ort, an dem ein Lerner ein Angebot sieht, annimmt oder ignoriert.
+4. **Ein Weg, eine Zelle auf ein Gerät zu bekommen.** `installKvtTile` ist eine
+   Kernel-Funktion ohne CLI- oder Studio-Pfad. Für den Feldtest genügt ein
+   Import aus dem Repo — kein CDN, kein Manifest, keine Signatur.
+5. **Kuratorisches Gate für den Inhalt selbst.** Die Optik-Zelle ist geerdet,
+   aber ungeprüft im Sinne eines Fachreviews. Das ist die einzige Sorte Fehler,
+   die eine Lernerin wirklich trifft.
 
-**Alignments.** SKOS-Mappingprädikate verbinden Konzepte zweier Concept Schemes,
-und `exactMatch` ist transitiv. Zwischen einem Lernziel und einer
-Wikidata-Entität ist das ein Kategorienfehler, dessen Schaden konkret ist: Eine
-spätere Deduplizierung über einen `exactMatch` verschiebt Lernzustand zwischen
-nicht austauschbaren Zielen.
+### II. Blockiert die öffentliche Verteilung — nicht den Feldtest
 
-*Empfehlung:* Dreiteilung in `about` (Weltanker), SKOS (nur Konzept-zu-Konzept)
-und Kompetenz-Alignment. Gestützt auf schema.org/LRMI, das `about` von
-`teaches`/`assesses` bereits trennt.
+Vollständig gültig, nur später fällig. Ein lokal installiertes Tile aus dem
+eigenen Repo braucht weder Trust-Modell noch dauerhaft stabile Publik-IDs.
 
-Beides kostet heute vier Fixtures. Nach der ersten öffentlichen Kachel kostet es
-jeden Konsumenten, der den String gespeichert hat.
+- **Veröffentlichte Identität und Alignment-Semantik** (ADR 2026-08-14b,
+  Fragen 1 und 2). Empfehlungen stehen ausformuliert und extern belegt: ULID
+  plus opake URI nach dem Muster von CASE 1.1; Dreiteilung `about` / SKOS /
+  Kompetenz-Alignment nach LRMI. **Aufschiebbar, weil Lernzustand an
+  Token-ULIDs hängt** (Abschnitt 0) — solange Übungsitem-IDs stabil bleiben.
+- **Release-, Provenienz- und Reconcile-Vertrag.** Manifest, Digests,
+  Herausgeber-/Key-Identität, deklaratives Entfernen, Zeilen-Provenienz,
+  Rollback. Eigener ADR. Hierher gehören auch die zwei fehlenden Objekte:
+  Zeilen-Provenienz und persönliche Einschreibung.
+- **Paketübergreifende Referenzen.** Heute muss jedes Voraussetzungsatom im
+  selben Tile liegen. Das ist kein Formalismus: Es verhindert nachweislich, die
+  trigonometrische Voraussetzung von `brechungsindex-bestimmen` zu modellieren
+  ([Bonus-Notiz §9](central-learning-path-bonus-content.md)).
+- **Overlay-Compiler-Vertrag.** Grok projiziert, Codex will
+  `S_target ∪ S_support`. Betrifft nur den Zulassungsschalter, und der steht
+  auf *aus*. Codex hat formal recht (Dominator- statt Cover-Relation), die
+  Schwere ist unter AND-Semantik gering.
+- **Codex' Abnahmetests 5–9 und 14–15.** Fremde ID, Manipulation, Downgrade,
+  Entfernung, paketübergreifende Kante, Batch-DAG, Quellenevidenz. Alle stehen
+  auf den beiden Verträgen darüber.
+- **Lizenzklassen** des LehrplanPLUS-Ingests.
 
-### B. Release-, Provenienz- und Reconcile-Vertrag
+### III. Braucht erst den Feldtest — die Zirkularität, die Abschnitt 0 auflöst
 
-Eigener ADR, nötig **vor** jeder Verteilung: Release-Manifest, Digests,
-Herausgeber-/Key-Identität, deklaratives Entfernen (eine in v2 zurückgezogene
-Aussage darf lokal nicht liegenbleiben), **Zeilen-Release-Provenienz** und
-Rollback/Rotation. TUFs Bedrohungsmodell ist die Checkliste, nicht die
-Implementierungsentscheidung.
+Diese Fragen sind mit *Daten* zu entscheiden, und die Daten entstehen erst durch
+ein benutzbares Produkt. Sie weiter zu diskutieren erzeugt keine Antwort.
 
-Hierher gehört auch das **sechste und siebte Objekt**, die im Fünf-Objekte-Modell
-fehlen: Zeilen-Provenienz (ohne sie ist deklaratives Entfernen unmöglich) und
-die **persönliche Einschreibung** („ich folge Overlay X“), ohne die die
-bedarfsgetriebene Materialisierung ihren Zielumfang nicht kennt.
+- Ordnet der Interleaver innerhalb der Fälligkeit sinnvoll um? (Replay)
+- Fundament oder Anwendung nach einem `Again`? (Anteil der Fehlschläge, bei
+  denen das hochgeholte Fundament auf Anhieb sitzt)
+- Tragen die Vergrabungshorizonte?
+- Bonus- gegen Pflicht-Retention — als **Leitplanke**, nicht als Evidenz: bei
+  einer Feldtest-Lernerin trägt kein Vergleichsdesign
+  ([Bonus-Notiz §10](central-learning-path-bonus-content.md)).
 
-### C. Overlay-Compiler-Vertrag
-
-Grok will die Kante auf Overlay-Mitglieder projizieren; Codex will
-`S_target ∪ S_support` mit eingeklappten, aber vorhandenen Stützknoten.
-
-Der Streit betrifft ausschließlich den **Zulassungsschalter**, und der steht auf
-*aus* — die Dringlichkeit ist damit gesunken. Für Tile-Inhalt und
-Lückendiagnose bleibt die Frage relevant.
-
-Formal korrekt ist Codex: Groks Formel („kein `w` liegt auf **jedem** Pfad“) ist
-die Dominator-, nicht die Cover-Relation und behält deshalb redundante Kanten.
-Unter AND-Semantik folgenlos — geringe Schwere, aber richtigzustellen.
-
-### D. Schema-Hygiene (Codex B1.6, B1.7)
+### IV. Hygiene — jederzeit, blockiert nichts
 
 - FK auf `tokens.atom_id`; `CHECK` auf `alignment_type`; Kantenprovenienz.
-- Batch-DAG-Prüfung für Atomkanten (heute gar keine; Zyklen werden nur
-  mittelbar über die Tokenprojektion erkannt). Der Benchmark gegen 100k Kanten
-  ist verfrüht, die Optimierung bekannt: Ancestor-Map einmal pro Release statt
-  pro Kante.
-- **Reduktionsvokabular:** Ein Fixture nutzt `formula`, der ADR kennt nur
-  `formal_formula`. Erst Vokabel entscheiden, dann `CHECK`.
-- **Explizites RepresentativeItem** — „kleinste Item-ID“ ist deterministisch
-  und reihenfolgestabil, aber keine didaktische Aussage. Solange sie gilt,
-  löscht die Rekonziliation Tokenkanten zwischen Items derselben zwei Atome,
-  die eine Kuratorin von Hand gesetzt hätte; wem eine Kante gehört, weiß erst
-  die Zeilen-Provenienz aus 6.B.
-- **Curriculum-Abfragen auf Bindings umstellen** (Codex' Test 12). Behoben ist
-  die Reihenfolgeabhängigkeit der Legacy-Felder, nicht ihre Ablösung.
-
-### E. Messfragen — billig, gegen echte Daten
-
-- **Reihenfolge beim Behalten:** Frontier-first gegen reine Fälligkeit, gegen
-  bestehende `review_logs` replayen. Die billigste offene Frage.
-- **Fundament oder Anwendung** nach einem `Again`: Anteil der Fehlschläge, bei
-  denen das hochgeholte Fundament auf Anhieb sitzt.
-- **Bonus-Retention** gegen Pflicht-Retention. Achtung: Kartendaten zeigen
-  Korrelation; Kausalität bräuchte ein Vergleichsdesign, und bei einer
-  Feldtest-Lernerin trägt keines. Die Zahlen sind Leitplanken, keine Evidenz
-  ([Bonus-Notiz §10](central-learning-path-bonus-content.md)).
-- **Größe der harten Hülle** einer echten Zelle.
-
-### F. Inhaltliches
-
-- Entity-Linking empirisch: zwei überlappende Zellen, Goldannotation, getrennte
-  Metriken für Dekomposition, Kandidaten, `NIL` und Alignment.
-- Lizenzklassen des LehrplanPLUS-Ingests vor öffentlichem Release.
+- Batch-DAG-Prüfung für Atomkanten; der 100k-Benchmark ist verfrüht, die
+  Optimierung bekannt (Ancestor-Map einmal pro Release).
+- **Reduktionsvokabular:** `formal_formula` gegen `formula` unterscheidet im
+  Fixture faktisch *nennen* von *anwenden*. Entweder sagt das Vokabular das,
+  oder eines ist falsch gesetzt. Erst entscheiden, dann `CHECK`.
+- **Explizites RepresentativeItem.** „Kleinste Item-ID“ ist deterministisch und
+  reihenfolgestabil, aber keine didaktische Aussage — und `held` hängt daran.
+  Solange sie gilt, löscht die Rekonziliation Tokenkanten zwischen Items
+  derselben zwei Atome, die eine Kuratorin von Hand gesetzt hätte; wem eine
+  Kante gehört, weiß erst die Zeilen-Provenienz.
+- **Curriculum-Abfragen auf Bindings umstellen** (Codex' Test 12).
+- Entity-Linking empirisch (zwei Zellen, Goldannotation) — teuer, und ohne
+  Publikationsdruck nicht dringend.
 
 ## 7. Stand des Codes
 
@@ -267,27 +287,32 @@ Atomen — das ist der Wiederverwendungsbeweis und zugleich der Bonus-Pool.
 
 ## 8. Was die nächste Runde tun sollte
 
-Die technischen Gegenbeweise aus dem Härtungsreview (H1, H2, H3) sind
-geschlossen und durch Tests abgesichert. Was bleibt, sind **Entscheidungen**,
-keine Reparaturen.
+**Eine Runde noch, dann bauen.** Die technischen Gegenbeweise sind geschlossen;
+die verbliebenen Verträge sind Tore vor der Verteilung, nicht vor dem Produkt.
 
-1. **ADR 2026-08-14b entscheiden** — Identität (Frage 1) und Alignment-Semantik
-   (Frage 2). Beide blockieren alles Veröffentlichte, beide sind ausformuliert
-   und extern belegt, beide kosten heute vier Fixtures und später jeden
-   Konsumenten. Es fehlt eine Entscheidung, keine weitere Runde Argumente.
-2. **Release-/Provenienz-ADR schreiben** (6.B), bevor weitere Persistenz
-   entsteht. Dort liegen auch die zwei fehlenden Objekte.
-3. **Die Replay-Messungen** aus 6.E laufen lassen — billig, und sie entscheiden
-   mehrere Streitfragen empirisch statt argumentativ. Die günstigste zuerst:
-   ordnet der Interleaver innerhalb der Fälligkeit sinnvoll um?
-4. **Schema-Hygiene** aus 6.D, sobald das Reduktionsvokabular steht.
+Die letzte Konsolidierungsrunde sollte nur noch das tun, was später teuer wird:
+
+1. **Übungsitem-ULIDs einfrieren.** Die eine Bedingung, unter der die
+   Identitätsfrage aufschiebbar ist (Abschnitt 0). Ab jetzt gilt: eine einmal
+   veröffentlichte Item-ID wird nie neu vergeben.
+2. **Optional, wenn billig: Atom-Identität auf ULID + opake URI ziehen.** Die
+   Daten sind vier Fixtures; später ist es eine Migration über alles
+   Veröffentlichte. Nicht nötig für den Feldtest, aber nirgends billiger als
+   jetzt.
+3. **Den Rest von Abschnitt II ausdrücklich vertagen** — mit Begründung im ADR,
+   damit die übernächste Runde nicht neu verhandelt, was bewusst wartet.
+
+**Danach: das Produkt.** Die kürzeste Strecke zu etwas Testbarem sind die fünf
+Punkte aus 6.I — Selbsteinschätzung, leere Queue, Bonus-Oberfläche, ein
+Import-Pfad, und ein Fachreview der Optik-Zelle. Nichts davon braucht ein CDN,
+ein Manifest oder eine Signatur.
 
 **Was nicht ansteht:** Scanner, weltweites CDN, Signatur-Infrastruktur,
 Tier-1-Objekte im Kernschema, ein drittes Editorfenster im Studio, endgültiges
-Binärformat.
+Binärformat, Entity-Linking-Benchmarks.
 
-**Haltung des Owners für alles Verhaltensnahe:** kleine Regel, benannte
-Stellschrauben, keine Theorie im Voraus. Lernerfeedback entscheidet.
+**Haltung des Owners:** kleine Regel, benannte Stellschrauben, keine Theorie im
+Voraus. Erst etwas, das jemand benutzen kann — dann entscheidet Lernerfeedback.
 
 ## 9. Dokumentenkarte
 
