@@ -79,7 +79,8 @@ Diese betreffen das **Lernerverhalten** und sind getroffen:
 |---|---|
 | **Hartes Gate** | Nein. Eine unerfüllte Voraussetzung versperrt das abhängige Token nicht. |
 | **Materialisierung** | Vorbedingungen bekommen Karten — aber sie halten das Fortschreiten nicht auf. |
-| **Reihenfolge** | Topologie *und* Fälligkeit; Topologie wiegt schwerer. |
+| **Reihenfolge** | **Fälligkeit** ordnet das Behalten; **Topologie** ordnet Erwerb und Exploration. (Die frühere Fassung „Topologie wiegt schwerer“ ist am 2026-08-14 zurückgezogen — sie galt der Exploration und hätte fällige Wiederholungen verspätet.) |
+| **Bonus-Inhalte** | Atome außerhalb der aktuellen Zelle dürfen am Rand des Besitzes **angeboten** werden — nie eingeplant, nie gezählt. Siehe [Besitz-Notiz](central-learning-path-possession.md). |
 | **Terminierung** | Der Lerner schätzt die Vorbedingungen einer Frage selbst ein. Das setzt nur den ersten Termin. |
 | **Zusicherung** | Auch bei maximaler Selbsteinschätzung wird die Karte irgendwann wirklich abgefragt. |
 | **Leere Queue** | Läuft die Queue leer und der Lerner will weiter, dürfen vergrabene Karten vorgezogen werden. |
@@ -220,6 +221,7 @@ ehrliche Antwort auf die falschen Anker.
 | [codex-research-review](central-learning-path-codex-research-review.md) | Codex | Erdungsprüfung, Identitätskritik, Fünf-Objekte-Modell, Release/Trust. |
 | [opus-review](central-learning-path-opus-review.md) | Opus | Nachprüfung gegen Primärquellen und Code; Gate-Befund; Schiedssprüche. |
 | [entry-problem](central-learning-path-entry-problem.md) | Opus + Owner | Einstieg in die Mitte. **Enthält die verbindlichen Owner-Entscheidungen.** |
+| [possession](central-learning-path-possession.md) | Opus + Owner | Wissen als Besitz, Bonus-Inhalte, Hebel im Graphen — samt dem Motivationsbefund, der die naive Umsetzung kippt. |
 | [codex-follow-up-review](central-learning-path-codex-follow-up-review.md) | Codex | Abnahmeblocker gegen Spike und ADR; 15 geforderte Vertragstests. |
 | [opus-arbitration](central-learning-path-opus-arbitration.md) | Opus | Schiedsspruch am Code nachgeprüft, plus Umsetzung der vier billigen Fixes. |
 | [ADR 2026-08-14](../adr/2026-08-14-central-learning-atoms-and-identity.md) | Thomas | **Accepted:** 5-Objekte-Modell, Gate=OFF, Selbsteinschätzung, leere Queue. |

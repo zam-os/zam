@@ -111,20 +111,34 @@ first try.
 - Ordering (topology versus due date) is stated as a direction, not a
   calibrated rule — see open question below.
 
-## Open question carried by this ADR
+### 5. Topology orders exploration; due dates order retention
 
-**Which topological direction, for which card state?** The owner decided that
-topology and due date jointly determine the queue, with topology weighing more.
-That is unambiguous for *acquisition*: foundations before dependents. It is not
-yet decided for *retention*, where the two plausible rules point in **opposite**
-directions:
+The owner's earlier "topology weighs more than due date" was **withdrawn on
+2026-08-14** once it became clear it collapsed two opposite orders into one. It
+applied to the exploration of new content, not to review.
 
-- foundations-first (same direction as acquisition), or
-- frontier-first — test the most advanced due node, and let success there defer
-  its due ancestors within the session (Grok's proposal, still an untested
-  hypothesis by Codex's assessment and mine).
+- **Retention (due cards).** The due date decides. Every day past due costs
+  retention, and securing what a learner already holds is a goal in its own
+  right. Topology does not reorder due reviews.
+- **Acquisition and exploration (new cards).** Topology decides: foundations
+  before dependents, and — for optional content — reachability and leverage
+  (see below).
 
-Deferring an overdue ancestor also trades against FSRS: every day past due
-costs retention. This should be settled by replaying existing `review_logs`
-rather than by argument, and until then the implementation should not hard-code
-one direction for both states.
+Whether a *frontier-first* rule for due reviews (test the most advanced due
+node; on success defer its due ancestors within the session) beats plain
+due-order remains an untested hypothesis. It is to be settled by replaying
+existing `review_logs`, not by argument, and nothing may hard-code it first.
+
+### 6. Optional content may be offered as a bonus
+
+Atoms outside the learner's current curriculum cell — a neighbouring track, a
+later grade, another school type — may be **offered**, never scheduled. The
+graph decides what is offerable (its hard prerequisites are already held) and
+what is worth offering (how much it eases later acquisition).
+
+This is the constructive counterpart to the install/enrol split in Decision 3:
+the same out-of-curriculum atom that must never *silently* become a card is
+legitimate content the moment the learner chooses it.
+
+The motivational design is constrained, because it can backfire — see
+[central-learning-path-possession.md](../concepts/central-learning-path-possession.md).
