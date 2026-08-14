@@ -154,6 +154,36 @@ Corollary for embedded copies: when several tiles carry the same item id, the
 copies must be identical. Partial copies made the resulting `content_version`
 depend on install order, which a fixture guard now prevents.
 
+### 8. Published atom identity is opaque
+
+**Decided 2026-08-14**, pulled forward from
+[2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md) question 1
+while it was still cheap: the corpus was four fixtures, and every later day adds
+consumers that stored the string.
+
+| Field | Role |
+|---|---|
+| `learning_atoms.id` | ULID — row identity, what every foreign key points at |
+| `learning_atoms.atom_uri` | published identity, `urn:zam:atom:<ulid>` for ZAM-minted atoms; an imported atom keeps its publisher's URI |
+| `namespace`, `slug` | readable address, **mutable** — renaming breaks no reference |
+| `atom_uri_aliases` | every address the atom was published under before |
+
+`atom:zam:<namespace>:<slug>` is withdrawn. It called itself opaque while
+putting a subject partition in the primary key, so re-filing an atom under a
+better taxonomy would have been an identity migration across every published
+tile — the pattern [ADR 2026-07-04](2026-07-04-hierarchical-domain-ontology-and-token-identity.md)
+already rejected one level down for tokens. CASE 1.1 makes the same split:
+opaque UUID identifiers, a resolvable URI beside them, and subject coverage as
+its own `subject`/`subjectURI` attributes.
+
+M026 rewrites legacy rows in place, repoints the four referencing tables and
+keeps the old string as an alias, so anything that stored it still resolves.
+
+**The standing rule this creates:** a published **practice-item ULID is never
+re-minted**. Cards and review logs hang on it, and it is the one identifier
+whose change would cost learner history. Atom identity, by contrast, may still
+move — nothing personal points at it.
+
 ## Delivery matrix
 
 "Decided" and "built" are not the same claim, and the first version of this ADR
@@ -162,6 +192,7 @@ conflated them.
 | Decision | Decided | Built | Covered by tests | Empirically validated |
 |---|---|---|---|---|
 | Five object kinds | yes | yes — `PracticeItem` substance persisted (M025) | yes, round-trip | no |
+| Opaque atom identity | yes | yes (M026, alias table) | yes, migration + fixtures | no |
 | Install ≠ enrolment | yes | yes | yes | no |
 | No admission gate | yes | yes (never existed) | n/a | no |
 | Demand-driven materialisation | yes | yes | yes | no |

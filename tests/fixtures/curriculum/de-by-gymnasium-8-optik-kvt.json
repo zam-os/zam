@@ -15,7 +15,10 @@
   ],
   "atoms": [
     {
-      "id": "atom:zam:optik:strahlengang-lot",
+      "id": "01K3X9A7R4B8C1D2E3F4G5A001",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A001",
+      "namespace": "optik",
+      "slug": "strahlengang-lot",
       "title": "Lichtstrahl und Einfallslot",
       "domain": "schule/physik/optik",
       "reduction": "geometric",
@@ -60,14 +63,17 @@
       ]
     },
     {
-      "id": "atom:zam:optik:brechung-qualitativ",
+      "id": "01K3X9A7R4B8C1D2E3F4G5A002",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A002",
+      "namespace": "optik",
+      "slug": "brechung-qualitativ",
       "title": "Lichtbrechung an Grenzflächen (qualitativ)",
       "domain": "schule/physik/optik",
       "reduction": "qualitative",
       "typical_age_min": 12.5,
       "prerequisites": [
         {
-          "atom_id": "atom:zam:optik:strahlengang-lot",
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A001",
           "type": "hard",
           "rationale": "Ohne Lot ist die Richtung der Brechung nicht definierbar."
         }
@@ -111,14 +117,17 @@
       ]
     },
     {
-      "id": "atom:zam:optik:totalreflexion-grenzwinkel",
+      "id": "01K3X9A7R4B8C1D2E3F4G5A003",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A003",
+      "namespace": "optik",
+      "slug": "totalreflexion-grenzwinkel",
       "title": "Totalreflexion und Grenzwinkel",
       "domain": "schule/physik/optik",
       "reduction": "qualitative",
       "typical_age_min": 13.0,
       "prerequisites": [
         {
-          "atom_id": "atom:zam:optik:brechung-qualitativ",
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A002",
           "type": "hard",
           "rationale": "Totalreflexion setzt die Richtungsregel der Brechung voraus."
         }
@@ -162,14 +171,17 @@
       ]
     },
     {
-      "id": "atom:zam:optik:reflexionsgesetz",
+      "id": "01K3X9A7R4B8C1D2E3F4G5A005",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A005",
+      "namespace": "optik",
+      "slug": "reflexionsgesetz",
       "title": "Reflexionsgesetz",
       "domain": "schule/physik/optik",
       "reduction": "geometric",
       "typical_age_min": 12.0,
       "prerequisites": [
         {
-          "atom_id": "atom:zam:optik:strahlengang-lot",
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A001",
           "type": "hard",
           "rationale": "Einfalls- und Reflexionswinkel werden zum Lot gemessen."
         }
@@ -221,14 +233,17 @@
       ]
     },
     {
-      "id": "atom:zam:optik:sammellinse-abbildung",
+      "id": "01K3X9A7R4B8C1D2E3F4G5A006",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A006",
+      "namespace": "optik",
+      "slug": "sammellinse-abbildung",
       "title": "Abbildung durch eine Sammellinse",
       "domain": "schule/physik/optik",
       "reduction": "geometric",
       "typical_age_min": 13.0,
       "prerequisites": [
         {
-          "atom_id": "atom:zam:optik:brechung-qualitativ",
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A002",
           "type": "hard",
           "rationale": "Eine Linse bricht Licht an zwei Grenzflächen."
         }
@@ -273,14 +288,17 @@
       ]
     },
     {
-      "id": "atom:zam:optik:totalreflexion-anwendungen",
+      "id": "01K3X9A7R4B8C1D2E3F4G5A007",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A007",
+      "namespace": "optik",
+      "slug": "totalreflexion-anwendungen",
       "title": "Technische Anwendungen der Totalreflexion",
       "domain": "schule/physik/optik",
       "reduction": "qualitative",
       "typical_age_min": 13.5,
       "prerequisites": [
         {
-          "atom_id": "atom:zam:optik:totalreflexion-grenzwinkel",
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A003",
           "type": "hard",
           "rationale": "Ohne Grenzwinkel ist die Lichtleitung im Lichtleiter nicht erklärbar."
         }

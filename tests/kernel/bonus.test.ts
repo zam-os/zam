@@ -12,14 +12,9 @@ import {
   materialiseKvtCards,
   openDatabase,
 } from "../../src/kernel/index.js";
+import { OPTIK, REALSCHULE_CELL } from "../helpers/optik-atoms.js";
 
 const FIXTURES = resolve(__dirname, "../fixtures/curriculum");
-
-const REALSCHULE_CELL = [
-  "atom:zam:optik:strahlengang-lot",
-  "atom:zam:optik:brechung-qualitativ",
-  "atom:zam:optik:totalreflexion-grenzwinkel",
-];
 
 function loadFixture(name: string): KvtTile {
   return JSON.parse(readFileSync(join(FIXTURES, `${name}.json`), "utf-8"));
@@ -77,7 +72,7 @@ describe("bonus candidates", () => {
     await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL);
     const item = (await db
       .prepare("SELECT id FROM tokens WHERE atom_id = ? ORDER BY id LIMIT 1")
-      .get("atom:zam:optik:strahlengang-lot")) as { id: string };
+      .get(OPTIK.strahlengangLot)) as { id: string };
     const card = await getCard(db, item.id, "learner-a");
     // Exactly what precondition self-assessment does: a date, nothing else.
     await db
@@ -98,10 +93,10 @@ describe("bonus candidates", () => {
     const ids = candidates.map((c) => c.atomId);
 
     // Rests on brechung-qualitativ, which is held.
-    expect(ids).toContain("atom:zam:optik:brechungsgesetz-snellius-formel");
-    expect(ids).toContain("atom:zam:optik:sammellinse-abbildung");
+    expect(ids).toContain(OPTIK.snelliusFormel);
+    expect(ids).toContain(OPTIK.sammellinseAbbildung);
     // Rests on the Snellius formula, which is not held yet.
-    expect(ids).not.toContain("atom:zam:optik:brechungsindex-bestimmen");
+    expect(ids).not.toContain(OPTIK.brechungsindexBestimmen);
     // In the learner's own curriculum: not a bonus.
     for (const inScope of REALSCHULE_CELL) expect(ids).not.toContain(inScope);
   });
@@ -119,9 +114,9 @@ describe("bonus candidates", () => {
       inScopeAtomIds: REALSCHULE_CELL,
     });
     const formula = candidates.find(
-      (c) => c.atomId === "atom:zam:optik:brechungsgesetz-snellius-formel",
+      (c) => c.atomId === OPTIK.snelliusFormel,
     );
-    expect(formula?.restsOn).toEqual(["atom:zam:optik:brechung-qualitativ"]);
+    expect(formula?.restsOn).toEqual([OPTIK.brechungQualitativ]);
   });
 
   it("ranks by what an atom unlocks for this learner", async () => {
@@ -133,15 +128,15 @@ describe("bonus candidates", () => {
     // Snellius unlocks brechungsindex-bestimmen once totalreflexion is held —
     // and it is. A leaf like sammellinse-abbildung unlocks nothing.
     const formula = candidates.find(
-      (c) => c.atomId === "atom:zam:optik:brechungsgesetz-snellius-formel",
+      (c) => c.atomId === OPTIK.snelliusFormel,
     );
     const lens = candidates.find(
-      (c) => c.atomId === "atom:zam:optik:sammellinse-abbildung",
+      (c) => c.atomId === OPTIK.sammellinseAbbildung,
     );
     expect(formula?.unlockCount).toBe(1);
     expect(lens?.unlockCount).toBe(0);
     expect(candidates[0]?.atomId).toBe(
-      "atom:zam:optik:brechungsgesetz-snellius-formel",
+      OPTIK.snelliusFormel,
     );
 
     // Static reachability is the tiebreaker and a different quantity: the

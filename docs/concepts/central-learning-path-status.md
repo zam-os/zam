@@ -30,6 +30,11 @@ Das ordnet die offene Liste neu. Abschnitt 6 ist deshalb **nicht mehr nach
 Dringlichkeit sortiert, sondern danach, was etwas blockiert**: einen Feldtest,
 die öffentliche Verteilung, oder nichts von beidem.
 
+**Erledigt in dieser Runde:** Die Atom-Identität ist gezogen worden, solange sie
+vier Fixtures kostete — ULID als Zeile, opake `atom_uri`, `namespace`/`slug` als
+änderbare Adresse, Alias-Tabelle für frühere Adressen (M026). Damit ist die
+teuerste aufschiebbare Position weg.
+
 **Der entscheidende Befund dazu, am Schema geprüft:** `cards` und `review_logs`
 referenzieren `tokens(id)` — die ULID —, **niemals `atom_id`**. Ein späteres
 Neuvergeben der Atom-Identität fasst `learning_atoms`, die drei Atom-Tabellen
@@ -181,11 +186,9 @@ ist **Oberfläche**, kein Vertrag.
 Vollständig gültig, nur später fällig. Ein lokal installiertes Tile aus dem
 eigenen Repo braucht weder Trust-Modell noch dauerhaft stabile Publik-IDs.
 
-- **Veröffentlichte Identität und Alignment-Semantik** (ADR 2026-08-14b,
-  Fragen 1 und 2). Empfehlungen stehen ausformuliert und extern belegt: ULID
-  plus opake URI nach dem Muster von CASE 1.1; Dreiteilung `about` / SKOS /
-  Kompetenz-Alignment nach LRMI. **Aufschiebbar, weil Lernzustand an
-  Token-ULIDs hängt** (Abschnitt 0) — solange Übungsitem-IDs stabil bleiben.
+- **Alignment-Semantik** (ADR 2026-08-14b, Frage 2). Dreiteilung `about` /
+  SKOS / Kompetenz-Alignment nach LRMI, ausformuliert und extern belegt.
+  *(Frage 1, die Identität, ist entschieden und umgesetzt — Decision 8.)*
 - **Release-, Provenienz- und Reconcile-Vertrag.** Manifest, Digests,
   Herausgeber-/Key-Identität, deklaratives Entfernen, Zeilen-Provenienz,
   Rollback. Eigener ADR. Hierher gehören auch die zwei fehlenden Objekte:
@@ -254,12 +257,15 @@ ein benutzbares Produkt. Sie weiter zu diskutieren erzeugt keine Antwort.
   last-writer-wins. Das aufzulösen braucht den Release-Vertrag.
 - `language`, `tier`, `fast_check` sind persistiert (M025); ein Roundtrip-Test
   sichert, dass ein Tile ohne Verlust installiert und wieder ausgelesen wird.
+- Atom-Identität ist opak: ULID als Zeile, `urn:zam:atom:<ulid>` als
+  veröffentlichte Identität, `namespace`/`slug` als änderbare Adresse. M026
+  schreibt Alt-IDs um und hält sie über `atom_uri_aliases` auflösbar.
 - M024 stellt die Eindeutigkeit der Bindings über `COALESCE(grade, -1)` her —
   **providerneutral** (kein `sqlite_master` mehr) und ohne Tabellen-Rebuild.
   Widersprüchliche Duplikate scheitern laut, statt zu einer nie
   veröffentlichten Zeile verschmolzen zu werden.
 
-**Testlage:** 2166 Tests grün, 7 übersprungen — plus **46 gegen echtes
+**Testlage:** 2175 Tests grün, 7 übersprungen — plus **46 gegen echtes
 PostgreSQL 17** (`npm run pg:up && npm run pg:test`; CI setzt `POSTGRES_URL`
 ohnehin). Verifiziert ist damit, dass `applySchemaAndMigrations` auf PostgreSQL
 durchläuft, dass der Ausdrucks-Unique-Index dort trägt und dass eine grade-lose
@@ -292,13 +298,10 @@ die verbliebenen Verträge sind Tore vor der Verteilung, nicht vor dem Produkt.
 
 Die letzte Konsolidierungsrunde sollte nur noch das tun, was später teuer wird:
 
-1. **Übungsitem-ULIDs einfrieren.** Die eine Bedingung, unter der die
-   Identitätsfrage aufschiebbar ist (Abschnitt 0). Ab jetzt gilt: eine einmal
-   veröffentlichte Item-ID wird nie neu vergeben.
-2. **Optional, wenn billig: Atom-Identität auf ULID + opake URI ziehen.** Die
-   Daten sind vier Fixtures; später ist es eine Migration über alles
-   Veröffentlichte. Nicht nötig für den Feldtest, aber nirgends billiger als
-   jetzt.
+1. ~~**Atom-Identität ziehen.**~~ **Erledigt** (Decision 8, M026).
+2. **Übungsitem-ULIDs einfrieren.** Die verbleibende Bedingung: Eine einmal
+   veröffentlichte Item-ID wird nie neu vergeben — daran hängen die Karten.
+   Atom-IDs dürfen dagegen weiter wandern; auf sie zeigt nichts Persönliches.
 3. **Den Rest von Abschnitt II ausdrücklich vertagen** — mit Begründung im ADR,
    damit die übernächste Runde nicht neu verhandelt, was bewusst wartet.
 

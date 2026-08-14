@@ -9,7 +9,10 @@
   "signature": "ed25519:test_reference_signature_mock",
   "atoms": [
     {
-      "id": "atom:zam:optik:strahlengang-lot",
+      "id": "01K3X9A7R4B8C1D2E3F4G5A001",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A001",
+      "namespace": "optik",
+      "slug": "strahlengang-lot",
       "title": "Lichtstrahl und Einfallslot",
       "domain": "schule/physik/optik",
       "reduction": "geometric",
@@ -74,14 +77,17 @@
       ]
     },
     {
-      "id": "atom:zam:optik:brechung-qualitativ",
+      "id": "01K3X9A7R4B8C1D2E3F4G5A002",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A002",
+      "namespace": "optik",
+      "slug": "brechung-qualitativ",
       "title": "Lichtbrechung an Grenzflächen (qualitativ)",
       "domain": "schule/physik/optik",
       "reduction": "qualitative",
       "typical_age_min": 12.5,
       "prerequisites": [
         {
-          "atom_id": "atom:zam:optik:strahlengang-lot",
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A001",
           "type": "hard",
           "rationale": "Das Konzept des Einfallslots ist Voraussetzung für die Richtungsbeschreibung."
         }
@@ -150,14 +156,17 @@
       ]
     },
     {
-      "id": "atom:zam:optik:totalreflexion-grenzwinkel",
+      "id": "01K3X9A7R4B8C1D2E3F4G5A003",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A003",
+      "namespace": "optik",
+      "slug": "totalreflexion-grenzwinkel",
       "title": "Totalreflexion und Grenzwinkel",
       "domain": "schule/physik/optik",
       "reduction": "qualitative",
       "typical_age_min": 13.0,
       "prerequisites": [
         {
-          "atom_id": "atom:zam:optik:brechung-qualitativ",
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A002",
           "type": "hard",
           "rationale": "Totalreflexion tritt nur auf, wenn Licht beim Übergang von optisch dichterem zu dünnerem Medium vom Lot weg gebrochen wird."
         }
@@ -220,14 +229,17 @@
       ]
     },
     {
-      "id": "atom:zam:optik:brechungsgesetz-snellius-formel",
+      "id": "01K3X9A7R4B8C1D2E3F4G5A004",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A004",
+      "namespace": "optik",
+      "slug": "brechungsgesetz-snellius-formel",
       "title": "Snelliussches Brechungsgesetz (quantitativ)",
       "domain": "schule/physik/optik",
       "reduction": "formal_formula",
       "typical_age_min": 14.5,
       "prerequisites": [
         {
-          "atom_id": "atom:zam:optik:brechung-qualitativ",
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A002",
           "type": "hard",
           "rationale": "Das qualitative Verständnis der Brechung ist Voraussetzung für die quantitative Formel."
         }

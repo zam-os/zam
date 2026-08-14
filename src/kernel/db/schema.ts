@@ -284,13 +284,28 @@ CREATE TABLE IF NOT EXISTS token_contexts (
 
 -- Published learning atoms and their n:m facets (ADR 2026-08-14).
 CREATE TABLE IF NOT EXISTS learning_atoms (
+  -- Row identity is a ULID like everything else (AGENTS.md). The published
+  -- identity is atom_uri, opaque by construction; namespace and slug are the
+  -- readable address and may change without breaking a single reference
+  -- (ADR 2026-08-14, Decision 8).
   id              TEXT PRIMARY KEY,
+  atom_uri        TEXT UNIQUE,
+  namespace       TEXT NOT NULL DEFAULT '',
+  slug            TEXT NOT NULL DEFAULT '',
   title           TEXT NOT NULL,
   domain          TEXT NOT NULL DEFAULT '',
   reduction       TEXT NOT NULL DEFAULT '',
   typical_age_min REAL,
   created_at      TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Every address an atom was ever published under. A renamed namespace or a
+-- merged atom stays resolvable instead of becoming a dangling reference.
+CREATE TABLE IF NOT EXISTS atom_uri_aliases (
+  alias      TEXT PRIMARY KEY,
+  atom_id    TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+  noted_at   TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
 CREATE TABLE IF NOT EXISTS atom_alignments (

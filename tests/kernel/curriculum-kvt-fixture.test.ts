@@ -68,7 +68,7 @@ describe.each(TILE_FILES)("KVT fixture %s", (name) => {
   });
 
   it("ensures all Atom IDs conform to the opaque namespaced format", () => {
-    const atomIdPattern = /^atom:zam:[a-z0-9-]+:[a-z0-9-]+$/;
+    const atomIdPattern = /^[0-9A-HJKMNP-TV-Z]{26}$/;
     for (const atom of tile.atoms) {
       expect(atom.id).toMatch(atomIdPattern);
       expect(atom.title.length).toBeGreaterThan(3);
@@ -145,7 +145,7 @@ describe("KVT fixture catalog overlap", () => {
       loadNamedTile(name).atoms.map((atom) => atom.id),
     );
     for (const atomIds of ids) {
-      expect(atomIds).toContain("atom:zam:optik:brechung-qualitativ");
+      expect(atomIds).toContain("01K3X9A7R4B8C1D2E3F4G5A002");
     }
   });
 
@@ -154,13 +154,13 @@ describe("KVT fixture catalog overlap", () => {
     const bos = loadNamedTile("de-by-bos-10-optik-kvt.json");
     const extra = loadNamedTile("de-by-realschule-optik-erweiterung-kvt.json");
     expect(gym.atoms.map((atom) => atom.id)).not.toContain(
-      "atom:zam:optik:dispersion-spektrum",
+      "01K3X9A7R4B8C1D2E3F4G5A008",
     );
     expect(bos.atoms.map((atom) => atom.id)).not.toContain(
-      "atom:zam:optik:dispersion-spektrum",
+      "01K3X9A7R4B8C1D2E3F4G5A008",
     );
     const dispersion = extra.atoms.find(
-      (atom) => atom.id === "atom:zam:optik:dispersion-spektrum",
+      (atom) => atom.id === "01K3X9A7R4B8C1D2E3F4G5A008",
     );
     expect(dispersion?.curricula).toEqual([
       expect.objectContaining({

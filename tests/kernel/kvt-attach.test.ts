@@ -12,15 +12,16 @@ import {
   materialiseKvtCards,
   openDatabase,
 } from "../../src/kernel/index.js";
+import { OPTIK, REALSCHULE_CELL } from "../helpers/optik-atoms.js";
 
 const FIXTURES = resolve(__dirname, "../fixtures/curriculum");
 
-const REALSCHULE_ATOMS = [
-  "atom:zam:optik:strahlengang-lot",
-  "atom:zam:optik:brechung-qualitativ",
-  "atom:zam:optik:totalreflexion-grenzwinkel",
+const REALSCHULE_CELL = [
+  OPTIK.strahlengangLot,
+  OPTIK.brechungQualitativ,
+  OPTIK.totalreflexionGrenzwinkel,
 ];
-const GYM_ONLY_ATOM = "atom:zam:optik:brechungsgesetz-snellius-formel";
+const GYM_ONLY_ATOM = OPTIK.snelliusFormel;
 
 function loadFixture(name: string): KvtTile {
   return JSON.parse(readFileSync(join(FIXTURES, `${name}.json`), "utf-8"));
@@ -98,7 +99,7 @@ describe("installKvtTile", () => {
         `SELECT grade, track FROM atom_curriculum_bindings
           WHERE atom_id = ? ORDER BY grade`,
       )
-      .all("atom:zam:optik:brechung-qualitativ")) as Array<{
+      .all(OPTIK.brechungQualitativ)) as Array<{
       grade: number;
       track: string;
     }>;
@@ -108,7 +109,7 @@ describe("installKvtTile", () => {
     ]);
 
     const token = await getTokenById(db, "01K3X9A7R4B8C1D2E3F4G5H003");
-    expect(token?.atom_id).toBe("atom:zam:optik:brechung-qualitativ");
+    expect(token?.atom_id).toBe(OPTIK.brechungQualitativ);
     expect(token?.question).toMatch(/Luft in Wasser/);
   });
 
@@ -149,12 +150,12 @@ describe("installKvtTile", () => {
 
   it("treats a changed fast check as a material revision", async () => {
     await installKvtTile(db, loadTile());
-    await materialiseKvtCards(db, "learner-a", REALSCHULE_ATOMS);
+    await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL);
     const tokenId = "01K3X9A7R4B8C1D2E3F4G5H003";
 
     const tile = loadTile();
     const item = tile.atoms
-      .find((a) => a.id === "atom:zam:optik:brechung-qualitativ")!
+      .find((a) => a.id === OPTIK.brechungQualitativ)!
       .practice_items.find((i) => i.id === tokenId) as {
       fast_check: { options: string[] };
     };
@@ -174,7 +175,7 @@ describe("installKvtTile", () => {
 
   it("materialises cards only for the atoms a learner chose", async () => {
     await installKvtTile(db, loadTile());
-    const result = await materialiseKvtCards(db, "learner-a", REALSCHULE_ATOMS);
+    const result = await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL);
 
     expect(result.cardsCreated).toBe(6);
     expect(await countRows(db, "cards")).toBe(6);
@@ -190,8 +191,8 @@ describe("installKvtTile", () => {
 
   it("materialises the same atoms twice without new cards", async () => {
     await installKvtTile(db, loadTile());
-    await materialiseKvtCards(db, "learner-a", REALSCHULE_ATOMS);
-    const again = await materialiseKvtCards(db, "learner-a", REALSCHULE_ATOMS);
+    await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL);
+    const again = await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL);
     expect(again.cardsCreated).toBe(0);
     expect(again.cardsReused).toBe(6);
   });
@@ -266,8 +267,8 @@ describe("installKvtTile", () => {
 
   // Codex hardening review H2: the counterexample he reproduced.
   it("drops the old edge when a later release changes the representative", async () => {
-    const parentAtom = "atom:zam:optik:strahlengang-lot";
-    const childAtom = "atom:zam:optik:brechung-qualitativ";
+    const parentAtom = OPTIK.strahlengangLot;
+    const childAtom = OPTIK.brechungQualitativ;
 
     function tileWithParentItem(id: string, tileId: string): KvtTile {
       const base = loadTile();
@@ -326,7 +327,7 @@ describe("installKvtTile", () => {
   // Codex acceptance test 3.
   it("publishes a material revision when an answer changes", async () => {
     await installKvtTile(db, loadTile());
-    await materialiseKvtCards(db, "learner-a", REALSCHULE_ATOMS);
+    await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL);
     const tokenId = "01K3X9A7R4B8C1D2E3F4G5H003";
     const card = await getCard(db, tokenId, "learner-a");
     await db
@@ -339,7 +340,7 @@ describe("installKvtTile", () => {
 
     const tile = loadTile();
     const atom = tile.atoms.find(
-      (a) => a.id === "atom:zam:optik:brechung-qualitativ",
+      (a) => a.id === OPTIK.brechungQualitativ,
     );
     const item = atom!.practice_items.find((i) => i.id === tokenId);
     item!.concept = "Eine sachlich geänderte Antwort.";
@@ -362,7 +363,7 @@ describe("installKvtTile", () => {
   // Codex acceptance test 4.
   it("does not re-test anyone for a change declared cosmetic", async () => {
     await installKvtTile(db, loadTile());
-    await materialiseKvtCards(db, "learner-a", REALSCHULE_ATOMS);
+    await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL);
     const tokenId = "01K3X9A7R4B8C1D2E3F4G5H003";
     const card = await getCard(db, tokenId, "learner-a");
     await db
@@ -375,7 +376,7 @@ describe("installKvtTile", () => {
 
     const tile = loadTile();
     const atom = tile.atoms.find(
-      (a) => a.id === "atom:zam:optik:brechung-qualitativ",
+      (a) => a.id === OPTIK.brechungQualitativ,
     );
     const item = atom!.practice_items.find((i) => i.id === tokenId);
     item!.question = `${item!.question} `.replace(/\s+$/, "?");
@@ -395,7 +396,7 @@ describe("installKvtTile", () => {
   it("gives two Tier 1 items of one atom distinct addresses", async () => {
     const tile = loadTile();
     const atom = tile.atoms.find(
-      (a) => a.id === "atom:zam:optik:brechung-qualitativ",
+      (a) => a.id === OPTIK.brechungQualitativ,
     );
     const [first] = atom!.practice_items;
     atom!.practice_items.push({
@@ -408,7 +409,7 @@ describe("installKvtTile", () => {
 
     const slugs = (await db
       .prepare("SELECT slug FROM tokens WHERE atom_id = ? ORDER BY id")
-      .all("atom:zam:optik:brechung-qualitativ")) as Array<{ slug: string }>;
+      .all(OPTIK.brechungQualitativ)) as Array<{ slug: string }>;
     expect(new Set(slugs.map((row) => row.slug)).size).toBe(slugs.length);
   });
 
@@ -451,15 +452,15 @@ describe("installKvtTile", () => {
           WHERE atom_id = ? AND requires_id = ?`,
       )
       .get(
-        "atom:zam:optik:brechung-qualitativ",
-        "atom:zam:optik:strahlengang-lot",
+        OPTIK.brechungQualitativ,
+        OPTIK.strahlengangLot,
       )) as { kind: string };
     expect(edge.kind).toBe("hard");
   });
 
   it("never rewrites FSRS state on a second install", async () => {
     await installKvtTile(db, loadTile());
-    await materialiseKvtCards(db, "learner-a", REALSCHULE_ATOMS);
+    await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL);
     const tokenId = "01K3X9A7R4B8C1D2E3F4G5H003";
     const before = await getCard(db, tokenId, "learner-a");
     await db
@@ -478,8 +479,8 @@ describe("installKvtTile", () => {
 
   it("gives a second learner their own cards on the same tokens", async () => {
     await installKvtTile(db, loadTile());
-    await materialiseKvtCards(db, "learner-a", REALSCHULE_ATOMS);
-    const result = await materialiseKvtCards(db, "learner-b", REALSCHULE_ATOMS);
+    await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL);
+    const result = await materialiseKvtCards(db, "learner-b", REALSCHULE_CELL);
     expect(result.cardsCreated).toBe(6);
     expect(await countRows(db, "tokens")).toBe(7);
   });
@@ -501,7 +502,7 @@ describe("installKvtTile", () => {
         `SELECT school_type, grade, topic_code FROM atom_curriculum_bindings
           WHERE atom_id = ? ORDER BY school_type, grade`,
       )
-      .all("atom:zam:optik:brechung-qualitativ")) as Array<{
+      .all(OPTIK.brechungQualitativ)) as Array<{
       school_type: string;
       grade: number;
       topic_code: string;
@@ -524,7 +525,7 @@ describe("installKvtTile", () => {
     const refraction = (await db
       .prepare(
         `SELECT COUNT(*) as n FROM atom_curriculum_bindings
-          WHERE atom_id = 'atom:zam:optik:brechung-qualitativ'`,
+          WHERE atom_id = '01K3X9A7R4B8C1D2E3F4G5A002'`,
       )
       .get()) as { n: number };
     expect(refraction.n).toBe(4);

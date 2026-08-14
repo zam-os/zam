@@ -88,7 +88,7 @@ describeWithPostgres("PostgreSQL provisioning (needs POSTGRES_URL)", () => {
       await applySchemaAndMigrations(db);
       await db
         .prepare("INSERT INTO learning_atoms (id, title) VALUES (?, ?)")
-        .run("atom:zam:optik:pg", "PG");
+        .run("01K3X9A7R4B8C1D2E3F4G5B002", "PG");
 
       const insert = `INSERT INTO atom_curriculum_bindings
            (atom_id, provider, school_type, grade, track, subject,
@@ -98,7 +98,7 @@ describeWithPostgres("PostgreSQL provisioning (needs POSTGRES_URL)", () => {
          DO UPDATE SET topic_title = excluded.topic_title`;
 
       for (const title of ["Optik", "Optik", "Optik"]) {
-        await db.prepare(insert).run("atom:zam:optik:pg", title);
+        await db.prepare(insert).run("01K3X9A7R4B8C1D2E3F4G5B002", title);
       }
 
       const row = (await db

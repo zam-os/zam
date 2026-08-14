@@ -15,7 +15,10 @@
   ],
   "atoms": [
     {
-      "id": "atom:zam:optik:brechung-qualitativ",
+      "id": "01K3X9A7R4B8C1D2E3F4G5A002",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A002",
+      "namespace": "optik",
+      "slug": "brechung-qualitativ",
       "title": "Lichtbrechung an Grenzflächen (qualitativ)",
       "domain": "schule/physik/optik",
       "reduction": "qualitative",
@@ -53,14 +56,17 @@
       ]
     },
     {
-      "id": "atom:zam:optik:totalreflexion-grenzwinkel",
+      "id": "01K3X9A7R4B8C1D2E3F4G5A003",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A003",
+      "namespace": "optik",
+      "slug": "totalreflexion-grenzwinkel",
       "title": "Totalreflexion und Grenzwinkel",
       "domain": "schule/physik/optik",
       "reduction": "qualitative",
       "typical_age_min": 13.0,
       "prerequisites": [
         {
-          "atom_id": "atom:zam:optik:brechung-qualitativ",
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A002",
           "type": "hard",
           "rationale": "Grenzwinkel setzt Brechung voraus."
         }
@@ -97,14 +103,17 @@
       ]
     },
     {
-      "id": "atom:zam:optik:brechungsgesetz-snellius-formel",
+      "id": "01K3X9A7R4B8C1D2E3F4G5A004",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A004",
+      "namespace": "optik",
+      "slug": "brechungsgesetz-snellius-formel",
       "title": "Snelliussches Brechungsgesetz (quantitativ)",
       "domain": "schule/physik/optik",
       "reduction": "formal_formula",
       "typical_age_min": 14.5,
       "prerequisites": [
         {
-          "atom_id": "atom:zam:optik:brechung-qualitativ",
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A002",
           "type": "hard",
           "rationale": "Die Formel beschreibt die qualitative Richtungsregel quantitativ."
         }
@@ -148,19 +157,22 @@
       ]
     },
     {
-      "id": "atom:zam:optik:brechungsindex-bestimmen",
+      "id": "01K3X9A7R4B8C1D2E3F4G5A009",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A009",
+      "namespace": "optik",
+      "slug": "brechungsindex-bestimmen",
       "title": "Brechungsindex und Grenzwinkel messen",
       "domain": "schule/physik/optik",
       "reduction": "formula",
       "typical_age_min": 16.0,
       "prerequisites": [
         {
-          "atom_id": "atom:zam:optik:brechungsgesetz-snellius-formel",
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A004",
           "type": "hard",
           "rationale": "n wird aus gemessenen Winkeln über das Brechungsgesetz berechnet."
         },
         {
-          "atom_id": "atom:zam:optik:totalreflexion-grenzwinkel",
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A003",
           "type": "hard",
           "rationale": "Der Grenzwinkel ist die Messgröße für den Übergang zur Totalreflexion."
         }

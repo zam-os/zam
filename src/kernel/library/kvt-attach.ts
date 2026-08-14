@@ -38,7 +38,16 @@ import { addPrerequisite, removePrerequisite } from "../models/prerequisite.js";
 import { type BloomLevel, getTokenById, insertToken } from "../models/token.js";
 import { publishTokenRevisionInTransaction } from "./revision.js";
 
-export const ATOM_ID_PATTERN = /^atom:zam:[a-z0-9-]+:[a-z0-9-]+$/;
+/**
+ * A published atom id is a ULID (AGENTS.md), never a semantic string.
+ *
+ * The earlier `atom:zam:<namespace>:<slug>` form put a subject partition into
+ * the primary key, so renaming a partition would have been an identity
+ * migration across every published tile — the pattern ADR 2026-07-04 already
+ * rejected for tokens. Namespace and slug are now mutable attributes; the
+ * published identity is the opaque `atom_uri` (ADR 2026-08-14, Decision 8).
+ */
+export const ATOM_ID_PATTERN = /^[0-9A-HJKMNP-TV-Z]{26}$/;
 
 const ALIGNMENT_TYPES = new Set([
   "skos:exactMatch",
@@ -94,7 +103,13 @@ export interface KvtPracticeItem {
 }
 
 export interface KvtAtom {
+  /** ULID. Opaque on purpose — see {@link ATOM_ID_PATTERN}. */
   id: string;
+  /** Published identity; defaults to `urn:zam:atom:<id>` for ZAM-minted atoms. */
+  atom_uri?: string;
+  /** Readable address. Mutable: renaming these breaks no reference. */
+  namespace?: string;
+  slug?: string;
   title: string;
   domain?: string;
   reduction?: string;
@@ -146,7 +161,10 @@ function asTile(value: unknown): KvtTile {
 
 function assertAtomId(id: string): void {
   if (!ATOM_ID_PATTERN.test(id)) {
-    throw new Error(`Invalid published atom id: ${id}`);
+    throw new Error(
+      `Invalid published atom id: ${id} — expected a ULID. ` +
+        `Subject and slug belong in namespace/slug, not in the identity.`,
+    );
   }
 }
 
@@ -157,9 +175,9 @@ function assertAtomId(id: string): void {
  * of the same atom cannot collide on `UNIQUE(slug)` — deriving from atom and
  * tier alone made a second item of either tier unpublishable.
  */
-function slugForItem(atomId: string, item: KvtPracticeItem): string {
+function slugForItem(atom: KvtAtom, item: KvtPracticeItem): string {
   if (item.slug?.trim()) return item.slug.trim();
-  const base = atomId.slice("atom:zam:".length).replace(/:/g, "-");
+  const base = [atom.namespace, atom.slug].filter(Boolean).join("-") || "atom";
   const tier = (item.tier ?? "item").replace(/_/g, "-");
   return `${base}-${tier}-${item.id.slice(-6).toLowerCase()}`;
 }
@@ -278,7 +296,7 @@ export async function installKvtTile(
       throw new Error(`Atom ${atom.id} needs at least one practice item`);
     }
     for (const item of atom.practice_items) {
-      const slug = slugForItem(atom.id, item);
+      const slug = slugForItem(atom, item);
       const owner = seenSlugs.get(slug);
       if (owner && owner !== item.id) {
         throw new Error(
@@ -311,9 +329,13 @@ export async function installKvtTile(
       await tx
         .prepare(
           `INSERT INTO learning_atoms
-             (id, title, domain, reduction, typical_age_min, created_at, updated_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?)
+             (id, atom_uri, namespace, slug, title, domain, reduction,
+              typical_age_min, created_at, updated_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
            ON CONFLICT(id) DO UPDATE SET
+             atom_uri = excluded.atom_uri,
+             namespace = excluded.namespace,
+             slug = excluded.slug,
              title = excluded.title,
              domain = excluded.domain,
              reduction = excluded.reduction,
@@ -322,6 +344,9 @@ export async function installKvtTile(
         )
         .run(
           atom.id,
+          atom.atom_uri ?? `urn:zam:atom:${atom.id}`,
+          atom.namespace ?? "",
+          atom.slug ?? "",
           atom.title,
           atom.domain ?? "",
           atom.reduction ?? "",
@@ -396,7 +421,7 @@ export async function installKvtTile(
         if (!existing) {
           await insertToken(tx, {
             id: item.id,
-            slug: slugForItem(atom.id, item),
+            slug: slugForItem(atom, item),
             title: atom.title,
             concept: item.concept,
             question: item.question,

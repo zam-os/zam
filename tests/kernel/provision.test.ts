@@ -301,7 +301,7 @@ describe("M024 curriculum binding uniqueness", () => {
   async function seedAtom(db: Database): Promise<void> {
     await db
       .prepare("INSERT INTO learning_atoms (id, title) VALUES (?, ?)")
-      .run("atom:zam:optik:test", "Test");
+      .run("01K3X9A7R4B8C1D2E3F4G5B001", "Test");
   }
 
   async function insertBinding(db: Database, title: string): Promise<void> {
@@ -312,7 +312,7 @@ describe("M024 curriculum binding uniqueness", () => {
             topic_code, topic_title, exam_relevant)
          VALUES (?, 'lp', 'realschule', NULL, '', 'physik', 'T1', ?, 0)`,
       )
-      .run("atom:zam:optik:test", title);
+      .run("01K3X9A7R4B8C1D2E3F4G5B001", title);
   }
 
   async function bindingCount(db: Database): Promise<number> {
@@ -371,5 +371,85 @@ describe("M024 curriculum binding uniqueness", () => {
     );
     expect(await bindingCount(db)).toBe(2);
     await db.close();
+  });
+});
+
+/**
+ * M026 — opaque published atom identity.
+ *
+ * M023 minted `atom:zam:<namespace>:<slug>` and called it opaque. It was not: a
+ * subject partition sat in the primary key, so re-filing an atom under a better
+ * taxonomy would have been an identity migration across every published tile.
+ * The migration rewrites those rows to ULIDs, keeps the old string as an alias
+ * so nothing that stored it dangles, and moves namespace/slug to attributes.
+ */
+describe("M026 opaque atom identity", () => {
+  it("rewrites a legacy atom id and keeps it resolvable", async () => {
+    const db = await openDatabase({
+      dbPath: join(tempDir(), "zam-test.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    try {
+      const legacy = "atom:zam:optik:brechung-qualitativ";
+      await db
+        .prepare("INSERT INTO learning_atoms (id, title) VALUES (?, ?)")
+        .run(legacy, "Lichtbrechung");
+      await db
+        .prepare(
+          `INSERT INTO atom_curriculum_bindings
+             (atom_id, provider, topic_code) VALUES (?, 'lp', 'PH7-LB2')`,
+        )
+        .run(legacy);
+      await db
+        .prepare(
+          `INSERT INTO tokens (id, slug, concept, atom_id)
+           VALUES ('01K3X9A7R4B8C1D2E3F4G5C001', 'probe', 'c', ?)`,
+        )
+        .run(legacy);
+
+      await applySchemaAndMigrations(db);
+
+      const atom = (await db
+        .prepare(
+          "SELECT id, atom_uri, namespace, slug FROM learning_atoms WHERE title = ?",
+        )
+        .get("Lichtbrechung")) as {
+        id: string;
+        atom_uri: string;
+        namespace: string;
+        slug: string;
+      };
+      expect(atom.id).toMatch(/^[0-9A-HJKMNP-TV-Z]{26}$/);
+      expect(atom.atom_uri).toBe(`urn:zam:atom:${atom.id}`);
+      expect(atom.namespace).toBe("optik");
+      expect(atom.slug).toBe("brechung-qualitativ");
+
+      // The old address still resolves, and children moved with the row.
+      const alias = (await db
+        .prepare("SELECT atom_id FROM atom_uri_aliases WHERE alias = ?")
+        .get(legacy)) as { atom_id: string };
+      expect(alias.atom_id).toBe(atom.id);
+
+      const binding = (await db
+        .prepare("SELECT atom_id FROM atom_curriculum_bindings")
+        .get()) as { atom_id: string };
+      expect(binding.atom_id).toBe(atom.id);
+
+      const token = (await db
+        .prepare("SELECT atom_id FROM tokens WHERE slug = 'probe'")
+        .get()) as { atom_id: string };
+      expect(token.atom_id).toBe(atom.id);
+
+      // Repeatable: a second run finds nothing legacy left to do.
+      await applySchemaAndMigrations(db);
+      const count = (await db
+        .prepare("SELECT COUNT(*) AS n FROM learning_atoms")
+        .get()) as { n: number };
+      expect(count.n).toBe(1);
+      await db.close();
+    } finally {
+      // tempDir cleanup is handled by the shared afterEach.
+    }
   });
 });

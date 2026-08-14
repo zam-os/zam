@@ -32,6 +32,9 @@ const MANIFEST_PREFIX = "-- zam-snapshot: ";
  */
 export const SNAPSHOT_TABLES = [
   "learning_atoms",
+  // Former published addresses. Not derivable: once an atom is re-filed or
+  // merged, only this table still knows what the old identity pointed at.
+  "atom_uri_aliases",
   "atom_alignments",
   "atom_curriculum_bindings",
   "atom_prerequisites",

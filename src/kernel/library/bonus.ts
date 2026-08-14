@@ -114,7 +114,10 @@ async function hardEdges(db: Database): Promise<EdgeRow[]> {
  * both meanings used interchangeably in the design notes; they are different
  * quantities and only this one is a promise about the learner's next step.
  */
-function unlockCounts(edges: EdgeRow[], held: Set<string>): Map<string, number> {
+function unlockCounts(
+  edges: EdgeRow[],
+  held: Set<string>,
+): Map<string, number> {
   const requiredBy = new Map<string, string[]>();
   const requirements = new Map<string, string[]>();
   for (const edge of edges) {

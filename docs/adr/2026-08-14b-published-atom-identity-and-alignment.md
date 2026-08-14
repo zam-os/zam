@@ -1,6 +1,7 @@
 # Published Atom Identity and Alignment Semantics
 
-**Status:** Proposed — open, nothing here is binding  
+**Status:** Proposed — open, nothing here is binding, **except questions 1 and
+5, which are decided and moved to 2026-08-14**  
 **Date:** 2026-08-14  
 **Deciders:** Thomas (project owner)  
 **Split from:** [2026-08-14](2026-08-14-central-learning-atoms-and-identity.md),
@@ -48,64 +49,16 @@ because both become other people's data the moment they are.
 
 ---
 
-## Question 1 — What identifies a published atom?
+## Question 1 — What identifies a published atom? — **decided 2026-08-14**
 
-### Why the current form is contested
+Resolved as recommended (Option B) and moved to
+[2026-08-14](2026-08-14-central-learning-atoms-and-identity.md), Decision 8:
+ULID row identity, opaque `atom_uri`, mutable `namespace`/`slug`, alias table
+for former addresses. Implemented in M026.
 
-`atom:zam:optik:brechung-qualitativ` puts a subject partition (`optik`) and a
-human slug into the primary key. Moving the atom under a better taxonomy, or
-renaming the partition, becomes an identity migration across every published
-tile and every third party that stored the string.
-
-**This project already decided this exact question one level down.**
-[ADR 2026-07-04](2026-07-04-hierarchical-domain-ontology-and-token-identity.md)
-rejected `(domain, slug)` as token identity because it *"bakes classification
-into identity: every taxonomy refactor changes identities and breaks
-references"*, and chose ULID as identity with `(domain path, slug)` as the
-**address**. The atom ID reintroduces the rejected pattern at the atom level.
-
-### External evidence (verified 2026-08-14)
-
-[CASE 1.1](https://standards.1edtech.org/case/) is the closest established
-analogue — an interchange standard for competency and standards frameworks,
-already named in the research document as the right *adapter* format.
-
-- CFItem identifiers are **UUIDs** (8-4-4-4-12, lower case), i.e. opaque. The
-  best-practice guide pairs the opaque `identifier` with a separate resolvable
-  `uri` such as `https://case.example.edu/ims/case/v1p0/CFItems/{uuid}`.
-- CASE **1.1 added `subject` and `subjectURI` attributes to CFItem** so that
-  subject coverage can be annotated. Subject classification is therefore
-  explicitly metadata *beside* the identifier in the standard that has faced
-  this problem longest.
-
-*(Not verified and therefore not relied on here: the full `CFAssociationType`
-enumeration. The spec section exists; the list was not readable in the fetched
-document.)*
-
-### Options
-
-| Option | Identity | Verdict |
-|---|---|---|
-| **A. Status quo** — `atom:zam:<namespace>:<slug>` | semantic string | Legible in diffs, but classification is identity. Contradicts ADR 2026-07-04 and the repo ULID rule. |
-| **B. ULID row id + opaque published URI** | ULID; `urn:zam:atom:<ulid>` published | Satisfies the repo rule and CASE's pattern. Namespace and slug become mutable attributes, with an alias table for former addresses. Costs legibility in raw tiles. |
-| **C. Content hash** | digest of the atom profile | Self-verifying, but *any* correction mints a new identity — the opposite of what an atom ID is for. Rejected. |
-
-### Recommendation (not a decision)
-
-**Option B**, and now rather than later:
-
-```
-learning_atoms.id         ULID        row identity; FKs, edges, bindings
-learning_atoms.atom_uri   TEXT UNIQUE published identity, urn:zam:atom:<ulid>
-learning_atoms.namespace  TEXT        descriptive, mutable
-learning_atoms.slug       TEXT        human address, mutable
-atom_uri_aliases          (alias, id) former published identities
-```
-
-The cost today is four fixtures and one migration on a branch. The cost after
-the first public tile is every consumer that stored the string.
-
----
+Pulled forward rather than deferred because the cost only grows: four fixtures
+today, every consumer that stored the string later. The reasoning, the CASE 1.1
+evidence and the rejected options are preserved in Decision 8.
 
 ## Question 2 — What does an alignment mean?
 
