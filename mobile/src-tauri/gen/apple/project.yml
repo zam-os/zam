@@ -70,8 +70,8 @@ targets:
           - UIInterfaceOrientationLandscapeRight
         # Stamped from package.json by the release workflow; kept in step here
         # so a local build is not mislabelled either.
-        CFBundleShortVersionString: 0.30.0
-        CFBundleVersion: "0.30.0"
+        CFBundleShortVersionString: 0.31.0
+        CFBundleVersion: "0.31.0"
         # Two uses since the app became standalone (ADR 2026-08-08): scanning
         # a QR code to take over an existing library, and photographing a page
         # to turn it into cards. Neither is the first-run path any more, but
