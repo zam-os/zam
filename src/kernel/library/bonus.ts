@@ -13,6 +13,7 @@
  */
 
 import type { Database } from "../db/types.js";
+import { ensureCard } from "../models/card.js";
 
 export interface BonusCandidate {
   atomId: string;
@@ -246,4 +247,59 @@ export async function bonusCandidates(
   );
 
   return options.limit ? candidates.slice(0, options.limit) : candidates;
+}
+
+export interface EnrolBonusResult {
+  success: boolean;
+  atomId: string;
+  cardsCreated: number;
+  cardIds: string[];
+}
+
+/**
+ * Enrol a learner in a bonus atom by creating cards for its practice items.
+ */
+export async function enrolBonusAtom(
+  db: Database,
+  userId: string,
+  atomId: string,
+): Promise<EnrolBonusResult> {
+  if (!userId.trim()) {
+    throw new Error("userId is required to enrol in bonus atom");
+  }
+  if (!atomId.trim()) {
+    throw new Error("atomId is required to enrol in bonus atom");
+  }
+
+  const tokens = (await db
+    .prepare("SELECT id FROM tokens WHERE atom_id = ? ORDER BY id ASC")
+    .all(atomId)) as Array<{ id: string }>;
+
+  if (tokens.length === 0) {
+    throw new Error(`No tokens found for atom: ${atomId}`);
+  }
+
+  let cardsCreated = 0;
+  const cardIds: string[] = [];
+
+  for (const token of tokens) {
+    const existing = (await db
+      .prepare("SELECT id FROM cards WHERE token_id = ? AND user_id = ?")
+      .get(token.id, userId)) as { id: string } | undefined;
+
+    if (!existing) {
+      const card = await ensureCard(db, token.id, userId);
+      cardsCreated++;
+      cardIds.push(card.id);
+    } else {
+      cardIds.push(existing.id);
+    }
+  }
+
+  return {
+    success: true,
+    atomId,
+    cardsCreated,
+    cardIds,
+  };
 }

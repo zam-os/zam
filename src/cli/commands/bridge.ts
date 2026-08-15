@@ -160,6 +160,7 @@ import {
   checkDue as handleCheckDue,
   createAssignmentHandler as handleCreateAssignment,
   endSession as handleEndSession,
+  enrolBonusAtomHandler as handleEnrolBonusAtom,
   enrolBundledCellHandler as handleEnrolBundledCell,
   findTokens as handleFindTokens,
   getMonitor as handleGetMonitor,
@@ -169,6 +170,7 @@ import {
   getReviewsBatch as handleGetReviewsBatch,
   importOkfTokens as handleImportOkfTokens,
   listAssignmentsHandler as handleListAssignments,
+  listBonusCandidatesHandler as handleListBonusCandidates,
   listBundledCellsHandler as handleListBundledCells,
   publishRevision as handlePublishRevision,
   pullForwardCardsHandler as handlePullForwardCards,
@@ -7792,6 +7794,54 @@ bridgeCommand
         const cardIds: string[] = opts.cards ?? [];
         const result = await handlePullForwardCards(db, {
           cardIds,
+          user: opts.user,
+        });
+        jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+// ── zam bridge bonus-candidates-list / bonus-atom-enrol ─────────────────────
+
+bridgeCommand
+  .command("bonus-candidates-list")
+  .description(
+    "List bonus learning candidate atoms sitting at the edge of current mastery (JSON)",
+  )
+  .option(
+    "--cell <cellId>",
+    "Curriculum cell ID (to exclude its in-scope atoms)",
+  )
+  .option("--limit <count>", "Maximum candidates to return", parseInt)
+  .option("--user <userId>", "User ID to inspect")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleListBonusCandidates(db, {
+          cellId: opts.cell,
+          limit: opts.limit,
+          user: opts.user,
+        });
+        jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+bridgeCommand
+  .command("bonus-atom-enrol <atomId>")
+  .description(
+    "Accept and enrol in a bonus atom by creating practice cards (JSON)",
+  )
+  .option("--user <userId>", "User ID")
+  .action(async (atomId, opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleEnrolBonusAtom(db, {
+          atomId,
           user: opts.user,
         });
         jsonOut(result);

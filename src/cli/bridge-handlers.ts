@@ -19,17 +19,20 @@ import {
   analyzeObservation,
   assessPrecondition,
   assignTokenToContext,
+  bonusCandidates,
   buildReviewQueue,
   clearTokenMaintenance,
   createAssignment,
   createToken,
   decideUpdate,
+  enrolBonusAtom,
   enrolBundledCell,
   ensureCard,
   executeReviewAction,
   exportSnapshot,
   generateConceptFreeCue,
   generatePrompt,
+  getBundledCell,
   getBundledCellsWithStatus,
   getCard,
   getCardById,
@@ -1755,4 +1758,54 @@ export async function pullForwardCardsHandler(
     success: true as const,
     ...result,
   };
+}
+
+// 20. Bonus Candidates & Enrolment Surface (Phase 5)
+export interface ListBonusCandidatesParams {
+  cellId?: string;
+  inScopeAtomIds?: string[];
+  limit?: number;
+  user?: string;
+}
+
+export async function listBonusCandidatesHandler(
+  db: Database,
+  params: ListBonusCandidatesParams = {},
+) {
+  const userId = await resolveHandlerUser(db, params.user);
+
+  let inScopeAtomIds = params.inScopeAtomIds ?? [];
+  if (inScopeAtomIds.length === 0 && params.cellId) {
+    const cell = getBundledCell(params.cellId);
+    if (cell) {
+      inScopeAtomIds = cell.inScopeAtomIds;
+    }
+  }
+
+  const candidates = await bonusCandidates(db, userId, {
+    inScopeAtomIds,
+    limit: params.limit,
+  });
+
+  return {
+    success: true as const,
+    candidates,
+  };
+}
+
+export interface EnrolBonusAtomParams {
+  atomId: string;
+  user?: string;
+}
+
+export async function enrolBonusAtomHandler(
+  db: Database,
+  params: EnrolBonusAtomParams,
+) {
+  if (!params.atomId?.trim()) {
+    throw new Error("atomId is required");
+  }
+  const userId = await resolveHandlerUser(db, params.user);
+  const result = await enrolBonusAtom(db, userId, params.atomId.trim());
+  return result;
 }

@@ -157,8 +157,16 @@ export {
   commitTextImport,
   previewTextImport,
 } from "./import/text-import.js";
-export type { BonusCandidate, BonusOptions } from "./library/bonus.js";
-export { bonusCandidates, heldAtomIds } from "./library/bonus.js";
+export type {
+  BonusCandidate,
+  BonusOptions,
+  EnrolBonusResult,
+} from "./library/bonus.js";
+export {
+  bonusCandidates,
+  enrolBonusAtom,
+  heldAtomIds,
+} from "./library/bonus.js";
 export type {
   BundledCellEnrolResult,
   BundledCellInfo,

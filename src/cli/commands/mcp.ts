@@ -35,6 +35,7 @@ import {
   assessPreconditionHandler as handleAssessPrecondition,
   checkDue as handleCheckDue,
   endSession as handleEndSession,
+  enrolBonusAtomHandler as handleEnrolBonusAtom,
   enrolBundledCellHandler as handleEnrolBundledCell,
   findTokens as handleFindTokens,
   getMonitor as handleGetMonitor,
@@ -43,6 +44,7 @@ import {
   getReviewsBatch as handleGetReviewsBatch,
   importOkfTokens as handleImportOkfTokens,
   linkPrereq as handleLinkPrereq,
+  listBonusCandidatesHandler as handleListBonusCandidates,
   listBundledCellsHandler as handleListBundledCells,
   publishRevision as handlePublishRevision,
   pullForwardCardsHandler as handlePullForwardCards,
@@ -127,6 +129,8 @@ const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
   "precondition-assess",
   "pull-forward-candidates",
   "pull-forward-execute",
+  "bonus-candidates-list",
+  "bonus-atom-enrol",
 ]);
 
 /**
@@ -1025,6 +1029,64 @@ export function createMcpServer(db: Database): McpServer {
       const userId = await getUserId(params.user);
       return await handlePullForwardCards(db, {
         cardIds: params.cardIds,
+        user: userId,
+      });
+    }),
+  );
+
+  // 10h. zam_bonus_candidates_list
+  server.registerTool(
+    "zam_bonus_candidates_list",
+    {
+      description:
+        "List bonus learning candidate atoms that sit right at the frontier of the learner's current mastery",
+      inputSchema: {
+        cellId: z
+          .string()
+          .optional()
+          .describe("Curriculum cell ID to exclude its in-scope atoms"),
+        limit: z
+          .number()
+          .int()
+          .positive()
+          .optional()
+          .describe("Maximum candidates to return"),
+        user: z.string().optional().describe("User ID"),
+      },
+      annotations: {
+        ...externalAnnotations,
+        readOnlyHint: true,
+      },
+    },
+    wrapHandler(async (params) => {
+      const userId = await getUserId(params.user);
+      return await handleListBonusCandidates(db, {
+        cellId: params.cellId,
+        limit: params.limit,
+        user: userId,
+      });
+    }),
+  );
+
+  // 10i. zam_bonus_atom_enrol
+  server.registerTool(
+    "zam_bonus_atom_enrol",
+    {
+      description:
+        "Accept and enrol in a bonus atom by creating practice cards for its practice items",
+      inputSchema: {
+        atomId: z.string().describe("ID of the bonus atom to enrol in"),
+        user: z.string().optional().describe("User ID"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: false,
+      },
+    },
+    wrapHandler(async (params) => {
+      const userId = await getUserId(params.user);
+      return await handleEnrolBonusAtom(db, {
+        atomId: params.atomId,
         user: userId,
       });
     }),
