@@ -301,6 +301,10 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "lbl_bonus_body",
   "btn_bonus_accept",
   "btn_bonus_skip",
+  // Cell precedence offer inside the curriculum wizard (ADR 2026-08-14
+  // Decision 10). Same reason: en/de are the reference pair.
+  "wizard_cell_offer_title",
+  "wizard_cell_offer_body",
   // Foundry Local setup ships English/German in this change; the remaining
   // locale packs deliberately fall back to English until native review.
   "foundry_local_title",

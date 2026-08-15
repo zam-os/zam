@@ -193,11 +193,14 @@ guarantees the property.
 - [ ] The complete flow is run on a fresh database on the actual school-iPad
   delivery route: select cell → assess prerequisite → Tier-1/Tier-2 review →
   keep going → ignore/accept bonus.
-- [ ] **Import surfaces consult the cell first** (ADR 2026-08-14 Decision 10,
-  decided 2026-08-15). The lookup exists —
-  `findBundledCellsForScope` / `needsGenericCurriculumImport` — but Desktop and
-  Mobile still offer the curriculum wizard without asking it. Until they do,
-  precedence is a rule the code knows and the UI does not.
+- [x] **Import surfaces consult the cell first** (ADR 2026-08-14 Decision 10,
+  decided and wired 2026-08-15). The Desktop curriculum wizard asks
+  `bundled-cells-list` with the learner's position when it reaches the topic
+  step and offers the covering cell above its own topic list. It is the only
+  surface that needed it: Mobile, the MCP Studio panel and the MCP tools have
+  no generic curriculum import, and personal paste/photo import is not a
+  curriculum path. The offer never blocks the manual route — a cell can cover
+  a position without covering everything a learner wants.
 - [x] `npm run format`, lint, typecheck, full test and build verification are
   required immediately before hand-off (record the final result in the branch
   hand-off). Final result 2026-08-15 after the review pass:

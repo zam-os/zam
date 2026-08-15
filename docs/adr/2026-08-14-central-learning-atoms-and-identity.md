@@ -301,7 +301,7 @@ conflated them.
 | Five object kinds | yes | yes — `PracticeItem` substance persisted (M025) | yes, round-trip | no |
 | Opaque canonical identity | yes | pilot projection only; the M026 rewrite was removed, not replaced | fixtures only | no |
 | Rebuildable knowledge-base compatibility | yes | partly — declared succession (`replaces`) and per-review `content_version` are built; the migration contract itself is not | yes, for both built parts | no |
-| Cell precedence over generic import | yes | lookup built (`findBundledCellsForScope`); import surfaces still have to consult it | yes, for the lookup | no |
+| Cell precedence over generic import | yes | yes — lookup plus the Desktop wizard, the only surface with a generic curriculum path | yes | no |
 | Install ≠ enrolment | yes | yes | yes | no |
 | No admission gate | yes | yes (never existed) | n/a | no |
 | Demand-driven materialisation | yes | yes | yes | no |

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   areAllCurriculumPreviewItemsSelected,
   buildCurriculumCategoryPath,
+  coveringCellsFromResponse,
   CurriculumWizardSession,
   resetCurriculumWizardTransientUi,
   setCurriculumPreviewSelection,
@@ -93,5 +94,54 @@ describe("curriculum wizard transient UI", () => {
     setCurriculumPreviewSelection(items, false);
     expect(items.every((item) => !item.selected)).toBe(true);
     expect(areAllCurriculumPreviewItemsSelected(items)).toBe(false);
+  });
+});
+
+/**
+ * ADR 2026-08-14 Decision 10. The wizard suppresses its own topic list only on
+ * an explicit verdict — the failure modes all produce "no cells", and reading
+ * that as "no cell exists" would hand the learner the weaker import at exactly
+ * the moment a reviewed one was available.
+ */
+describe("cell precedence inside the wizard", () => {
+  const cell = {
+    id: "de-by:realschule-optik",
+    title: "Optik und Lichtbrechung (Realschule 8)",
+    gradeLabel: "Realschule Klasse 7/8 (Bayern)",
+    description: "…",
+    atomCount: 4,
+    enrolled: false,
+  };
+
+  it("offers the covering cells when the answer says so", () => {
+    expect(
+      coveringCellsFromResponse({ needsGenericImport: false, cells: [cell] }),
+    ).toEqual([cell]);
+  });
+
+  it("stays out of the way when no cell covers the position", () => {
+    expect(
+      coveringCellsFromResponse({ needsGenericImport: true, cells: [] }),
+    ).toEqual([]);
+  });
+
+  it("treats a missing verdict as no opinion, not as no cell", () => {
+    // An older CLI that ignores the scope flags answers the plain catalogue:
+    // four cells, no verdict. Offering those would suggest a cell covers a
+    // position nobody checked.
+    expect(
+      coveringCellsFromResponse({ scoped: false, cells: [cell] }),
+    ).toEqual([]);
+    expect(coveringCellsFromResponse(undefined)).toEqual([]);
+    expect(coveringCellsFromResponse({ error: "boom" })).toEqual([]);
+  });
+
+  it("drops malformed entries rather than rendering a blank offer", () => {
+    expect(
+      coveringCellsFromResponse({
+        needsGenericImport: false,
+        cells: [cell, null, { id: 42 }, { title: "no id" }],
+      }),
+    ).toEqual([cell]);
   });
 });

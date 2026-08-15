@@ -7691,10 +7691,33 @@ bridgeCommand
   .command("bundled-cells-list")
   .description("List bundled learning cells and enrolment status (JSON)")
   .option("--user <userId>", "User ID to check status for")
+  .option(
+    "--provider <providerId>",
+    "Curriculum provider — with a scope, answers whether a cell covers it",
+  )
+  .option("--school-type <schoolType>", "Curriculum school type")
+  .option("--grade <grade>", "Curriculum grade")
+  .option("--track <track>", "Curriculum track/Zweig")
+  .option("--subject <subject>", "Curriculum subject")
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
-        const result = await handleListBundledCells(db, { user: opts.user });
+        const grade =
+          opts.grade === undefined
+            ? undefined
+            : Number.parseInt(opts.grade, 10);
+        if (grade !== undefined && !Number.isInteger(grade)) {
+          jsonError(`--grade must be a whole number, got ${opts.grade}`);
+          return;
+        }
+        const result = await handleListBundledCells(db, {
+          user: opts.user,
+          provider: opts.provider,
+          schoolType: opts.schoolType,
+          grade,
+          track: opts.track,
+          subject: opts.subject,
+        });
         jsonOut(result);
       } catch (err: unknown) {
         jsonError((err as Error).message || String(err));

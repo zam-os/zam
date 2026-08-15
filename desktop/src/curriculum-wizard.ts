@@ -14,6 +14,8 @@ import { openUrl } from "@tauri-apps/plugin-opener";
 import {
   areAllCurriculumPreviewItemsSelected,
   buildCurriculumCategoryPath,
+  type BundledCellOffer,
+  coveringCellsFromResponse,
   CurriculumWizardSession,
   resetCurriculumWizardTransientUi,
   setCurriculumPreviewSelection,
@@ -494,10 +496,39 @@ function nextKeyAfter(key: StepKey | undefined): StepKey {
   return STEP_SEQUENCE[STEP_SEQUENCE.indexOf(key) + 1];
 }
 
+/**
+ * Cells covering the position the learner has walked to, best match first.
+ *
+ * ADR 2026-08-14 Decision 10: where a cell exists, it has precedence over this
+ * wizard. The check happens at the topic step because that is where the
+ * learner's position is finally known — and it is the last moment before the
+ * generic path starts extracting text that carries no sources, no
+ * prerequisites and no reviewed wording.
+ */
+let coveringCells: BundledCellOffer[] = [];
+
+async function loadCoveringCells(): Promise<void> {
+  coveringCells = [];
+  if (!selection.providerId) return;
+  const args = ["--provider", selection.providerId];
+  if (selection.schoolType) args.push("--school-type", selection.schoolType);
+  if (selection.grade) args.push("--grade", selection.grade);
+  if (selection.track) args.push("--track", selection.track);
+  if (selection.subject) args.push("--subject", selection.subject);
+  try {
+    coveringCells = coveringCellsFromResponse(
+      await runBridge<unknown>("bundled-cells-list", args),
+    );
+  } catch (err) {
+    console.error("Failed to check for covering cells", err);
+  }
+}
+
 async function advanceToNextStep(): Promise<void> {
   let key = nextKeyAfter(history[history.length - 1]?.key);
   for (;;) {
     const options = await optionsForStep(key, selection);
+    if (key === "topic") await loadCoveringCells();
     if (key === "track" && options.length === 0) {
       key = nextKeyAfter(key);
       continue;
@@ -673,12 +704,77 @@ function renderBreadcrumb(): void {
     .join("");
 }
 
+/**
+ * Offer the reviewed cell before the generic path.
+ *
+ * Not a block: the learner may still import topics by hand, because a cell can
+ * cover a position without covering everything the learner wants. But the cell
+ * is what gets named first and described, so the weaker path stops winning by
+ * being the one that was already on screen.
+ */
+function renderCellOffer(): void {
+  if (coveringCells.length === 0) return;
+
+  const box = document.createElement("div");
+  box.className = "wizard-cell-offer";
+
+  const heading = document.createElement("p");
+  heading.className = "wizard-cell-offer-title";
+  heading.textContent = t("wizard_cell_offer_title");
+  box.appendChild(heading);
+
+  const note = document.createElement("p");
+  note.className = "wizard-topic-note";
+  note.textContent = t("wizard_cell_offer_body");
+  box.appendChild(note);
+
+  for (const cell of coveringCells) {
+    const row = document.createElement("div");
+    row.className = "wizard-cell-offer-row";
+
+    const text = document.createElement("div");
+    const name = document.createElement("strong");
+    name.textContent = cell.title;
+    const detail = document.createElement("div");
+    detail.className = "wizard-cell-offer-detail";
+    detail.textContent = `${cell.gradeLabel} · ${tf("lbl_cell_atom_count", {
+      count: cell.atomCount,
+    })}`;
+    text.append(name, detail);
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "btn-primary";
+    button.textContent = cell.enrolled
+      ? t("lbl_cell_enrolled")
+      : t("btn_enrol_cell");
+    button.disabled = cell.enrolled;
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+      try {
+        await runBridge("bundled-cell-enrol", [cell.id]);
+        await loadStudioData();
+        hideCurriculumWizard();
+      } catch (err) {
+        button.disabled = false;
+        showStepError(describeError(err));
+      }
+    });
+
+    row.append(text, button);
+    box.appendChild(row);
+  }
+
+  stepBodyEl.appendChild(box);
+}
+
 function renderStepBody(step: WizardStep): void {
   stepBodyEl.innerHTML = "";
   if (step.key === "cardPreview") {
     renderCardPreviewBody(step);
     return;
   }
+  if (step.key === "topic") renderCellOffer();
   if (step.key === "subTopic" && step.topicOption) {
     const note = document.createElement("p");
     note.className = "wizard-topic-note";

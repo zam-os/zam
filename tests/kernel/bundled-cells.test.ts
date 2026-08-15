@@ -248,5 +248,61 @@ describe("Bundled learning cells (Phase 1)", () => {
         findBundledCellsForScope({ provider: "kernlehrplan-nrw", grade: 8 }),
       ).toEqual([]);
     });
+
+    /**
+     * The contract the curriculum wizard depends on. It must be able to tell
+     * "no cell here, carry on" from "the call failed" — an empty list alone
+     * would read as permission to run the generic import.
+     */
+    it("answers the precedence question over the bridge, with enrolment status", async () => {
+      const user = "scoped-learner";
+
+      const unscoped = await listBundledCellsHandler(db, { user });
+      expect(unscoped.scoped).toBe(false);
+      expect(unscoped.cells).toHaveLength(4);
+      expect("needsGenericImport" in unscoped).toBe(false);
+
+      const covered = await listBundledCellsHandler(db, {
+        user,
+        provider: "lehrplanplus-bayern",
+        schoolType: "realschule",
+        grade: 8,
+        track: "II_III",
+        subject: "physik",
+      });
+      expect(covered.scoped).toBe(true);
+      expect(covered.needsGenericImport).toBe(false);
+      expect(covered.cells.map((cell) => cell.id)).toContain(
+        "de-by:realschule-optik",
+      );
+      // Status travels with the offer, so the wizard can say "already active"
+      // instead of offering the same cell twice.
+      expect(covered.cells.every((cell) => "enrolled" in cell)).toBe(true);
+      expect(covered.cells[0]?.enrolled).toBe(false);
+
+      await enrolBundledCell(db, user, "de-by:realschule-optik");
+      const afterEnrol = await listBundledCellsHandler(db, {
+        user,
+        provider: "lehrplanplus-bayern",
+        schoolType: "realschule",
+        grade: 8,
+        track: "II_III",
+        subject: "physik",
+      });
+      expect(
+        afterEnrol.cells.find((cell) => cell.id === "de-by:realschule-optik")
+          ?.enrolled,
+      ).toBe(true);
+
+      const uncovered = await listBundledCellsHandler(db, {
+        user,
+        provider: "lehrplanplus-bayern",
+        schoolType: "realschule",
+        grade: 8,
+        subject: "deutsch",
+      });
+      expect(uncovered.needsGenericImport).toBe(true);
+      expect(uncovered.cells).toEqual([]);
+    });
   });
 });

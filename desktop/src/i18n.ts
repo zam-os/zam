@@ -5088,6 +5088,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_step_track: "Track",
     wizard_track_note:
       "This subject comes in several variants — for example depending on your school's branch, elective group, or course level. Pick the one that matches your class; if you are unsure, your timetable or your teacher can tell you which applies.",
+    wizard_cell_offer_title: "There is a reviewed cell for this",
+    wizard_cell_offer_body:
+      "It already carries checked sources, the order things build on each other, and questions someone went through. Importing topics by hand still works — this is just the shorter way.",
     wizard_step_topic: "Topics",
     wizard_step_sourceAlternative: "Alternative curriculum source",
     wizard_btn_back: "Back",
@@ -6441,6 +6444,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_step_track: "Ausprägung",
     wizard_track_note:
       "Dieses Fach gibt es in mehreren Varianten – zum Beispiel je nach Zweig, Wahlpflichtfächergruppe oder Niveau. Wähle die Variante, die zu deiner Klasse passt. Wenn du unsicher bist, hilft ein Blick in deinen Stundenplan oder du fragst deine Lehrkraft.",
+    wizard_cell_offer_title: "Dafür gibt es schon eine geprüfte Zelle",
+    wizard_cell_offer_body:
+      "Sie bringt geprüfte Quellen mit, die Reihenfolge, in der aufeinander aufgebaut wird, und Fragen, die jemand durchgesehen hat. Themen von Hand zu importieren geht weiterhin — das hier ist nur der kürzere Weg.",
     wizard_step_topic: "Themen",
     wizard_step_sourceAlternative: "Alternative Lehrplanquelle",
     wizard_btn_back: "Zurück",

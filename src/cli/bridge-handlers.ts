@@ -30,6 +30,7 @@ import {
   ensureCard,
   executeReviewAction,
   exportSnapshot,
+  findBundledCellsForScope,
   generateConceptFreeCue,
   generatePrompt,
   getBundledCell,
@@ -61,6 +62,7 @@ import {
   listAssignmentsForLearner,
   logStep,
   monitorLogExists,
+  needsGenericCurriculumImport,
   OBSERVER_POLICY_UNSET_HINT,
   pairCommands,
   parseReviewFastCheck,
@@ -1717,6 +1719,12 @@ export async function listAssignmentsHandler(
 // 17. Bundled learning cells (Central learning path onboarding)
 export interface ListBundledCellsParams {
   user?: string;
+  /** Curriculum position. Present means "answer the precedence question". */
+  provider?: string;
+  schoolType?: string;
+  grade?: number;
+  track?: string;
+  subject?: string;
 }
 
 export async function listBundledCellsHandler(
@@ -1725,9 +1733,31 @@ export async function listBundledCellsHandler(
 ) {
   const userId = await resolveHandlerUser(db, params.user);
   const cells = await getBundledCellsWithStatus(db, userId);
+
+  // Without a scope this is the plain catalogue. With one it answers the
+  // precedence question of ADR 2026-08-14 Decision 10: an import surface asks
+  // before offering the generic wizard, and gets both the covering cells and
+  // the verdict, so it cannot read the empty list as "no opinion".
+  if (!params.provider) {
+    return { success: true as const, cells, scoped: false as const };
+  }
+
+  const scope = {
+    provider: params.provider,
+    schoolType: params.schoolType,
+    grade: params.grade,
+    track: params.track,
+    subject: params.subject,
+  };
+  const covering = findBundledCellsForScope(scope);
+  const byId = new Map(cells.map((cell) => [cell.id, cell]));
+
   return {
     success: true as const,
-    cells,
+    scoped: true as const,
+    scope,
+    needsGenericImport: needsGenericCurriculumImport(scope),
+    cells: covering.map((cell) => byId.get(cell.id) ?? { ...cell }),
   };
 }
 
