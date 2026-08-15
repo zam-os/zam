@@ -11,9 +11,12 @@ import {
   buildReviewQueue,
   type Database,
   enrolBundledCell,
+  executeReviewAction,
+  getPreconditionCandidates,
   getPullForwardCandidates,
   openDatabase,
   PRECONDITION_BURIED_REASON,
+  PRECONDITION_READY_REASON,
   pullForwardCards,
 } from "../../src/kernel/index.js";
 
@@ -64,6 +67,52 @@ describe("Pull Forward on Empty Queue (Phase 4)", () => {
     expect(candidates[0]?.reason).toBe("new_in_scope");
   });
 
+  it("does not re-offer an expired precondition marker", async () => {
+    const user = "test-learner";
+    await enrolBundledCell(db, user, "de-by:realschule-optik");
+    const atomId = "01K3X9A7R4B8C1D2E3F4G5A001";
+    await assessPrecondition(db, { userId: user, atomId, decision: "known" });
+    await db
+      .prepare(
+        `UPDATE cards SET buried_until = '2000-01-01T00:00:00.000Z'
+          WHERE user_id = ? AND token_id IN (
+            SELECT id FROM tokens WHERE atom_id = ?
+          )`,
+      )
+      .run(user, atomId);
+
+    const candidates = await getPullForwardCandidates(db, user);
+    expect(
+      candidates.some(
+        (candidate) =>
+          candidate.atomId === atomId &&
+          candidate.reason === "precondition_buried",
+      ),
+    ).toBe(false);
+  });
+
+  it("treats unseen-card acceptance as a session budget, not a fake due-date write", async () => {
+    const user = "test-learner";
+    await enrolBundledCell(db, user, "de-by:realschule-optik");
+    const candidate = (
+      await getPullForwardCandidates(db, user, { includeFutureDue: false })
+    ).find((item) => item.reason === "new_in_scope")!;
+
+    expect((await buildReviewQueue(db, { userId: user, maxNew: 0 })).items).toHaveLength(0);
+    const result = await pullForwardCards(db, user, [candidate.cardId]);
+    expect(result).toEqual({ pulledCount: 1, cardIds: [candidate.cardId] });
+    expect((await buildReviewQueue(db, { userId: user, maxNew: 0 })).items).toHaveLength(0);
+    expect(
+      (await buildReviewQueue(db, { userId: user, maxNew: 1 })).newCount,
+    ).toBe(1);
+  });
+
+  it("rejects invalid candidate limits", async () => {
+    await expect(
+      getPullForwardCandidates(db, "test-learner", { limit: 0 }),
+    ).rejects.toThrow("between 1 and 1000");
+  });
+
   it("pulls forward buried precondition cards so they immediately appear in review queue", async () => {
     const user = "test-learner";
     await enrolBundledCell(db, user, "de-by:realschule-optik");
@@ -90,12 +139,41 @@ describe("Pull Forward on Empty Queue (Phase 4)", () => {
       .prepare("SELECT * FROM cards WHERE id = ?")
       .get(assessRes.cardId)) as any;
     expect(card.buried_until).toBeNull();
-    expect(card.buried_reason).toBeNull();
+    expect(card.buried_reason).toBe(PRECONDITION_READY_REASON);
 
     // Verify card now enters the active review queue!
     queue = await buildReviewQueue(db, { userId: user });
     inQueue = queue.items.some((i) => i.cardId === assessRes.cardId);
     expect(inQueue).toBe(true);
+
+    // The persisted ready marker prevents every surface from asking the same
+    // self-assessment question again after the explicit keep-going choice.
+    const preconditions = await getPreconditionCandidates(db, user);
+    expect(
+      preconditions.find((candidate) => candidate.atomId === atomId)
+        ?.assessmentState,
+    ).toBe("ready");
+    expect(
+      (await getPullForwardCandidates(db, user)).some(
+        (candidate) => candidate.cardId === assessRes.cardId,
+      ),
+    ).toBe(false);
+    expect(await pullForwardCards(db, user, [assessRes.cardId])).toEqual({
+      pulledCount: 0,
+      cardIds: [],
+    });
+
+    await executeReviewAction(db, {
+      action: "rate",
+      cardId: assessRes.cardId,
+      userId: user,
+      rating: 3,
+    });
+    expect(
+      await db
+        .prepare("SELECT buried_reason FROM cards WHERE id = ?")
+        .get(assessRes.cardId),
+    ).toEqual({ buried_reason: null });
   });
 
   it("handles future-due cards and brings due_at to now", async () => {

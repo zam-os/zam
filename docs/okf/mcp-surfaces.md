@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-08-09T20:06:47.321Z
+timestamp: 2026-08-15T08:54:42.759Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -336,7 +336,29 @@ The same operation is available through `zam bridge okf-import`.
 - The scoped listing is also available through repeatable
   `zam bridge list-tokens --source-link-base` arguments.
 
+# Central learning field-test tools and Recall
+
+MCP mirrors the bounded, commit-controlled learner workflow through
+`zam_bundled_cells_list`, `zam_bundled_cell_enrol`,
+`zam_preconditions_get`, `zam_precondition_assess`,
+`zam_pull_forward_candidates`, `zam_pull_forward_execute`,
+`zam_bonus_candidates_list`, and `zam_bonus_atom_enrol`. Content selection
+is available in Studio; no arbitrary package, URL, or manifest crosses the
+pilot publication boundary.
+
+The Recall panel calls `zam_get_reviews` with `respectWorkload: true`, so
+its snapshot observes the learner's total-card limit, new-card limit, sibling
+settings, and `tier1-first` ordering. A learner who explicitly chooses “keep
+going” supplies only the selected batch's additional-new count as a temporary
+override. Tier-1 binary checks render as one-tap choices and are compared
+locally rather than sent to a model. Precondition, keep-going, and bonus
+choices use the dedicated tools; none manufactures an FSRS rating.
+
 # Citations
+- [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
+- [Field-test slice plan](../plans/2026-08-15-central-learning-field-test-slice.md)
+- Tests: `tests/cli/mcp.test.ts`, `tests/cli/bridge-handlers.test.ts`, `tests/desktop/study-offers.test.ts`
+- Code: `src/cli/commands/mcp.ts`, `desktop/src/panel/recall.ts`, `desktop/src/learning-content.ts`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-07-11 — Codex and VS Code Companion Surfaces](../adr/2026-07-11-codex-and-vscode-companion-surfaces.md)

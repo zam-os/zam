@@ -16,12 +16,7 @@ import { OPTIK, REALSCHULE_CELL } from "../helpers/optik-atoms.js";
 
 const FIXTURES = resolve(__dirname, "../fixtures/curriculum");
 
-const REALSCHULE_CELL = [
-  OPTIK.strahlengangLot,
-  OPTIK.brechungQualitativ,
-  OPTIK.totalreflexionGrenzwinkel,
-];
-const GYM_ONLY_ATOM = OPTIK.snelliusFormel;
+const BONUS_ONLY_ATOM = OPTIK.snelliusFormel;
 
 function loadFixture(name: string): KvtTile {
   return JSON.parse(readFileSync(join(FIXTURES, `${name}.json`), "utf-8"));
@@ -180,11 +175,11 @@ describe("installKvtTile", () => {
     expect(result.cardsCreated).toBe(6);
     expect(await countRows(db, "cards")).toBe(6);
 
-    // The tile also ships the Gymnasium 11 formula atom. A Realschule learner
+    // The tile also ships the optional BOS formula atom. A Realschule learner
     // must not be handed a card for material their curriculum never asks for.
     const gymItem = await db
       .prepare("SELECT id FROM tokens WHERE atom_id = ?")
-      .get(GYM_ONLY_ATOM);
+      .get(BONUS_ONLY_ATOM);
     const stray = await getCard(db, (gymItem as { id: string }).id, "learner-a");
     expect(stray).toBeUndefined();
   });
@@ -678,8 +673,8 @@ describe("installKvtTile", () => {
     }>;
     expect(bindings).toEqual([
       { school_type: "gymnasium", grade: 8, topic_code: "215729" },
-      { school_type: "realschule", grade: 7, topic_code: "PH7-LB2" },
-      { school_type: "realschule", grade: 8, topic_code: "PH8-LB2" },
+      { school_type: "realschule", grade: 7, topic_code: "65643" },
+      { school_type: "realschule", grade: 8, topic_code: "65854" },
     ]);
   });
 

@@ -50,6 +50,13 @@ export interface GetReviewResponse {
   question: string;
   state: string;
   sourceLink?: string | null;
+  atomId?: string | null;
+  tier?: string | null;
+  fastCheck?: {
+    type: "binary_choice";
+    options: string[];
+    correctIndex: number;
+  } | null;
   media?: ReviewMediaPayload[];
   /** Present when the token has a source_link and resolution was not disabled. */
   resolvedContext?: ResolvedReviewContext | null;
@@ -466,6 +473,13 @@ export interface GetReviewsResponse {
     bloomVerb?: string;
     question?: string;
     sourceLink?: string | null;
+    atomId?: string | null;
+    tier?: string | null;
+    fastCheck?: {
+      type: "binary_choice";
+      options: string[];
+      correctIndex: number;
+    } | null;
     resolvedContext?: ResolvedReviewContext | null;
   }>;
 }

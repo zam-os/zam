@@ -83,9 +83,16 @@ export async function heldAtomIds(
           AND t.atom_id IS NOT NULL
           AND c.reps >= 1
           AND c.blocked = 0
+          AND c.detached_at IS NULL
+          AND t.deprecated_at IS NULL
+          AND t.maintenance_at IS NULL
+          AND t.editorial_state = 'published'
           AND t.id = (
             SELECT id FROM tokens r
              WHERE r.atom_id = t.atom_id
+               AND r.deprecated_at IS NULL
+               AND r.maintenance_at IS NULL
+               AND r.editorial_state = 'published'
              ORDER BY r.id LIMIT 1
           )`,
     )
@@ -208,6 +215,23 @@ export async function bonusCandidates(
   const held = await heldAtomIds(db, userId);
   const inScope = new Set(options.inScopeAtomIds);
   const edges = await hardEdges(db);
+  if (
+    options.limit !== undefined &&
+    (!Number.isInteger(options.limit) || options.limit < 1)
+  ) {
+    throw new Error("bonus candidate limit must be a positive integer");
+  }
+
+  const enrolledRows = (await db
+    .prepare(
+      `SELECT DISTINCT t.atom_id AS atom_id
+         FROM cards c
+         JOIN tokens t ON t.id = c.token_id
+        WHERE c.user_id = ?
+          AND t.atom_id IS NOT NULL`,
+    )
+    .all(userId)) as Array<{ atom_id: string }>;
+  const enrolled = new Set(enrolledRows.map((row) => row.atom_id));
 
   const requirements = new Map<string, string[]>();
   for (const edge of edges) {
@@ -220,13 +244,26 @@ export async function bonusCandidates(
   const reach = reachabilityCounts(edges);
 
   const atoms = (await db
-    .prepare("SELECT id, title FROM learning_atoms ORDER BY id")
+    .prepare(
+      `SELECT a.id, a.title
+         FROM learning_atoms a
+        WHERE EXISTS (
+          SELECT 1 FROM tokens t
+           WHERE t.atom_id = a.id
+             AND t.deprecated_at IS NULL
+             AND t.maintenance_at IS NULL
+             AND t.editorial_state = 'published'
+        )
+        ORDER BY a.id`,
+    )
     .all()) as Array<{ id: string; title: string }>;
   const titleById = new Map(atoms.map((atom) => [atom.id, atom.title]));
 
   const candidates: BonusCandidate[] = [];
   for (const atom of atoms) {
-    if (held.has(atom.id) || inScope.has(atom.id)) continue;
+    if (held.has(atom.id) || enrolled.has(atom.id) || inScope.has(atom.id)) {
+      continue;
+    }
     const needs = requirements.get(atom.id) ?? [];
     // An atom with no prerequisites has nothing to rest on; offering it is not
     // an edge-of-the-known suggestion, so it is left to explicit search.
@@ -283,53 +320,68 @@ export async function enrolBonusAtom(
     throw new Error("atomId is required to enrol in bonus atom");
   }
 
-  const needs = (await db
-    .prepare(
-      `SELECT requires_id FROM atom_prerequisites
-        WHERE atom_id = ? AND kind = 'hard' ORDER BY requires_id`,
-    )
-    .all(atomId)) as Array<{ requires_id: string }>;
-  const held = await heldAtomIds(db, userId);
-  const missing = needs
-    .map((row) => row.requires_id)
-    .filter((id) => !held.has(id));
-  if (missing.length > 0) {
-    throw new Error(
-      `Atom ${atomId} is not offerable to ${userId}: ` +
-        `${missing.join(", ")} ${missing.length === 1 ? "is" : "are"} not ` +
-        `held yet. A bonus never opens a door the learner cannot walk through.`,
-    );
-  }
-
-  const tokens = (await db
-    .prepare("SELECT id FROM tokens WHERE atom_id = ? ORDER BY id ASC")
-    .all(atomId)) as Array<{ id: string }>;
-
-  if (tokens.length === 0) {
-    throw new Error(`No tokens found for atom: ${atomId}`);
-  }
-
-  let cardsCreated = 0;
-  const cardIds: string[] = [];
-
-  for (const token of tokens) {
-    const existing = (await db
-      .prepare("SELECT id FROM cards WHERE token_id = ? AND user_id = ?")
-      .get(token.id, userId)) as { id: string } | undefined;
-
-    if (!existing) {
-      const card = await ensureCard(db, token.id, userId);
-      cardsCreated++;
-      cardIds.push(card.id);
-    } else {
-      cardIds.push(existing.id);
+  return db.transaction(async (tx) => {
+    const needs = (await tx
+      .prepare(
+        `SELECT requires_id FROM atom_prerequisites
+          WHERE atom_id = ? AND kind = 'hard' ORDER BY requires_id`,
+      )
+      .all(atomId)) as Array<{ requires_id: string }>;
+    if (needs.length === 0) {
+      throw new Error(
+        `Atom ${atomId} is not offerable as a bonus: it rests on no hard prerequisite`,
+      );
     }
-  }
 
-  return {
-    success: true,
-    atomId,
-    cardsCreated,
-    cardIds,
-  };
+    const held = await heldAtomIds(tx, userId);
+    const missing = needs
+      .map((row) => row.requires_id)
+      .filter((id) => !held.has(id));
+    if (missing.length > 0) {
+      throw new Error(
+        `Atom ${atomId} is not offerable to ${userId}: ` +
+          `${missing.join(", ")} ${missing.length === 1 ? "is" : "are"} not ` +
+          `held yet. A bonus never opens a door the learner cannot walk through.`,
+      );
+    }
+
+    const tokens = (await tx
+      .prepare(
+        `SELECT id FROM tokens
+          WHERE atom_id = ?
+            AND deprecated_at IS NULL
+            AND maintenance_at IS NULL
+            AND editorial_state = 'published'
+          ORDER BY id ASC`,
+      )
+      .all(atomId)) as Array<{ id: string }>;
+
+    if (tokens.length === 0) {
+      throw new Error(`No tokens found for atom: ${atomId}`);
+    }
+
+    let cardsCreated = 0;
+    const cardIds: string[] = [];
+
+    for (const token of tokens) {
+      const existing = (await tx
+        .prepare("SELECT id FROM cards WHERE token_id = ? AND user_id = ?")
+        .get(token.id, userId)) as { id: string } | undefined;
+
+      if (!existing) {
+        const card = await ensureCard(tx, token.id, userId);
+        cardsCreated++;
+        cardIds.push(card.id);
+      } else {
+        cardIds.push(existing.id);
+      }
+    }
+
+    return {
+      success: true,
+      atomId,
+      cardsCreated,
+      cardIds,
+    };
+  });
 }

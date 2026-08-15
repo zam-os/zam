@@ -206,6 +206,7 @@ export {
   liftPreconditionBury,
   PRECONDITION_BURIED_REASON,
   PRECONDITION_HORIZON_DAYS,
+  PRECONDITION_READY_REASON,
   PRECONDITION_STAGGER_DAYS,
   preconditionBuriedUntil,
 } from "./library/precondition-assessment.js";
@@ -594,11 +595,16 @@ export type {
 export { createFSRS } from "./scheduler/fsrs.js";
 export { interleave } from "./scheduler/interleaver.js";
 export type {
+  ReviewFastCheck,
   ReviewQueue,
   ReviewQueueItem,
   ReviewQueueOptions,
 } from "./scheduler/queue.js";
-export { buildReviewQueue, TIER1_FIRST_RULE } from "./scheduler/queue.js";
+export {
+  buildReviewQueue,
+  parseReviewFastCheck,
+  TIER1_FIRST_RULE,
+} from "./scheduler/queue.js";
 export type { BurySiblingResult } from "./scheduler/siblings.js";
 export {
   burySiblingCards,

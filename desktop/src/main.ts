@@ -357,12 +357,18 @@ interface BridgeCard {
   concept: string;
   domain: string;
   bloomLevel: number;
-  state: number;
+  state: string;
   dueAt: string;
   sourceLink?: string;
   context?: string;
   media?: BridgeMedia[];
   atomId?: string | null;
+  tier?: string | null;
+  fastCheck?: {
+    type: "binary_choice";
+    options: string[];
+    correctIndex: number;
+  } | null;
 }
 
 interface BridgeMedia {
@@ -418,6 +424,9 @@ let pendingReviewPayload: ReviewPayload | null = null;
 let preconditionCache: PreconditionOffer[] | null = null;
 const assessedAtomsThisSession = new Set<string>();
 let bonusIgnoredThisSession = false;
+let sessionNewRemaining = 0;
+let sessionExtraNewRemaining = 0;
+let sessionCardsRemaining = 0;
 
 const SAFE_REVIEW_MEDIA_TYPES = new Set([
   "image/png",
@@ -5749,6 +5758,10 @@ function clearDashboardError(): void {
 async function loadNextCard(
   options: { dynamicQuestion?: boolean } = {},
 ) {
+  if (sessionCardsRemaining <= 0) {
+    void finishStudySession();
+    return;
+  }
   const requestId = ++questionRequestId;
   cardLoadInProgress = true;
   activeCard = null;
@@ -5775,6 +5788,7 @@ async function loadNextCard(
     const textarea = document.getElementById("user-answer-input") as HTMLTextAreaElement;
     textarea.value = "";
     textarea.disabled = true;
+    resetFastCheckAnswer();
 
     setModelAttributionBadge("question-model-badge", null);
 
@@ -5795,10 +5809,14 @@ async function loadNextCard(
     // interleaved) — the device default never filters reviews.
     // Studio renders the card, so it is the surface that asks for the media
     // bytes; agents reading the same command keep a text-only payload.
-    const reviewArgs =
-      options.dynamicQuestion === false
-        ? ["--no-dynamic-question", "--media"]
-        : ["--media"];
+    const reviewArgs = [
+      "--media",
+      "--max-new",
+      sessionNewRemaining + sessionExtraNewRemaining > 0 ? "1" : "0",
+    ];
+    if (options.dynamicQuestion === false) {
+      reviewArgs.unshift("--no-dynamic-question");
+    }
     if (isLlmEnabled && options.dynamicQuestion !== false) {
       isWaitingForQuestion = true;
       startQuestionWaitTimer();
@@ -5850,7 +5868,7 @@ async function submitAndReveal() {
   let evaluationSuccessful = false;
 
   // Run LLM evaluation if enabled and user wrote an answer
-  if (isLlmEnabled && userAnswer.length > 0) {
+  if (isLlmEnabled && userAnswer.length > 0 && !activeCard.fastCheck) {
     document.getElementById("npu-loading")!.classList.remove("hidden");
     isWaitingForAi = true;
 
@@ -6908,6 +6926,11 @@ function presentFetchedCard(payload: ReviewPayload): void {
   activePromptQuestion = payload.prompt.question;
   resolvedContextContent = payload.resolvedContext?.content || null;
   cardsReviewedThisSession++;
+  sessionCardsRemaining = Math.max(0, sessionCardsRemaining - 1);
+  if (activeCard.state === "new") {
+    if (sessionNewRemaining > 0) sessionNewRemaining -= 1;
+    else if (sessionExtraNewRemaining > 0) sessionExtraNewRemaining -= 1;
+  }
 
   const totalSessionCards = Math.max(
     sessionStartedDue,
@@ -6919,6 +6942,15 @@ function presentFetchedCard(payload: ReviewPayload): void {
 
   const domainBadge = document.getElementById("domain-badge")!;
   domainBadge.textContent = activeCard.domain || "general";
+
+  const tierBadge = document.getElementById("tier-badge")!;
+  tierBadge.hidden = !activeCard.tier;
+  tierBadge.textContent =
+    activeCard.tier === "tier1_fast"
+      ? t("lbl_tier_fast")
+      : activeCard.tier === "tier2_synthesis"
+        ? t("lbl_tier_synthesis")
+        : activeCard.tier || "";
 
   const bloomBadge = document.getElementById("bloom-badge")!;
   const bloomVal = activeCard.bloomLevel || 1;
@@ -6939,7 +6971,57 @@ function presentFetchedCard(payload: ReviewPayload): void {
     "user-answer-input",
   ) as HTMLTextAreaElement;
   textarea.disabled = false;
-  textarea.focus();
+  renderFastCheckAnswer(activeCard.fastCheck ?? null);
+  if (!activeCard.fastCheck) textarea.focus();
+}
+
+function resetFastCheckAnswer(): void {
+  const textarea = document.getElementById(
+    "user-answer-input",
+  ) as HTMLTextAreaElement | null;
+  const options = document.getElementById("fast-check-options");
+  const reveal = document.getElementById("btn-reveal-answer");
+  if (textarea) textarea.hidden = false;
+  if (reveal) reveal.hidden = false;
+  if (options) {
+    options.replaceChildren();
+    options.hidden = true;
+  }
+  const tier = document.getElementById("tier-badge");
+  if (tier) tier.hidden = true;
+}
+
+function renderFastCheckAnswer(
+  fastCheck: BridgeCard["fastCheck"],
+): void {
+  if (!fastCheck) return;
+  const textarea = document.getElementById(
+    "user-answer-input",
+  ) as HTMLTextAreaElement;
+  const options = document.getElementById("fast-check-options")!;
+  const reveal = document.getElementById("btn-reveal-answer")!;
+  textarea.hidden = true;
+  reveal.hidden = true;
+  options.hidden = false;
+  options.replaceChildren();
+  for (const [index, label] of fastCheck.options.entries()) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "btn secondary-btn btn-large";
+    button.textContent = label;
+    button.dataset.fastCheckIndex = String(index);
+    button.addEventListener("click", () => {
+      if (revealInProgress) return;
+      textarea.value = label;
+      for (const option of options.querySelectorAll<HTMLButtonElement>(
+        "button",
+      )) {
+        option.disabled = true;
+      }
+      void submitAndReveal();
+    });
+    options.appendChild(button);
+  }
 }
 
 function showPreconditionOffer(precondition: PreconditionOffer): void {
@@ -6997,7 +7079,11 @@ async function offerEmptyQueueChoices(requestId: number): Promise<void> {
       }>;
     }>(...bridgeCall(pullForwardCandidatesCommand()));
     if (requestId !== questionRequestId) return;
-    const cardIds = keepGoingCardIds(listed.candidates ?? []);
+    const selectedCandidates = (listed.candidates ?? []).slice(0, 5);
+    const cardIds = keepGoingCardIds(selectedCandidates);
+    const extraNew = selectedCandidates.filter(
+      (candidate) => candidate.reason === "new_in_scope",
+    ).length;
     if (cardIds.length > 0) {
       showStudyOffer({
         title: t("lbl_keep_going_title"),
@@ -7013,7 +7099,7 @@ async function offerEmptyQueueChoices(requestId: number): Promise<void> {
             label: t("btn_keep_going"),
             primary: true,
             onClick: () => {
-              void acceptKeepGoing(cardIds);
+              void acceptKeepGoing(cardIds, extraNew);
             },
           },
         ],
@@ -7027,7 +7113,10 @@ async function offerEmptyQueueChoices(requestId: number): Promise<void> {
   }
 }
 
-async function acceptKeepGoing(cardIds: string[]): Promise<void> {
+async function acceptKeepGoing(
+  cardIds: string[],
+  extraNew: number,
+): Promise<void> {
   try {
     await runBridge(...bridgeCall(pullForwardExecuteCommand(cardIds)));
   } catch (err) {
@@ -7036,6 +7125,7 @@ async function acceptKeepGoing(cardIds: string[]): Promise<void> {
     );
     return;
   }
+  sessionExtraNewRemaining += extraNew;
   hideStudyOffer();
   document.getElementById("study-active-card")?.classList.remove("hidden");
   await loadNextCard();
@@ -7106,6 +7196,21 @@ function resetSessionTally(): void {
   cardsReviewedThisSession = 0;
   sessionStartedDue = totalDue;
   sessionSummaryVisible = false;
+}
+
+async function configureSessionWorkload(): Promise<void> {
+  try {
+    const result = await runBridge<{ settings: StudyWorkloadSettings }>(
+      "study-workload-get",
+    );
+    sessionNewRemaining = result.settings.maxNew;
+    sessionCardsRemaining = result.settings.maxReviews;
+  } catch (error) {
+    console.warn("Failed to load study workload for session:", error);
+    sessionNewRemaining = STUDY_PRESET_VALUES.balanced.maxNew;
+    sessionCardsRemaining = STUDY_PRESET_VALUES.balanced.maxReviews;
+  }
+  sessionExtraNewRemaining = 0;
 }
 
 function prepareStudyViewForSession(): void {
@@ -7309,9 +7414,10 @@ window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-start-session")!.addEventListener("click", () => {
     void (async () => {
       prepareStudyViewForSession();
+      await configureSessionWorkload();
       await ensureUiLearningSession("Desktop learning session");
       switchView("study-view");
-      loadNextCard();
+      await loadNextCard();
     })();
   });
 

@@ -63,6 +63,7 @@ import {
   monitorLogExists,
   OBSERVER_POLICY_UNSET_HINT,
   pairCommands,
+  parseReviewFastCheck,
   prepareSessionSynthesis,
   publishTokenRevision,
   pullForwardCards,
@@ -179,6 +180,8 @@ export async function checkDue(db: Database, params: CheckDueParams) {
 // 2. getReview
 export interface GetReviewParams {
   user?: string;
+  /** Session-local admission budget. Zero keeps unseen cards out. */
+  maxNew?: number;
   noResolve?: boolean;
   noDynamicQuestion?: boolean;
   knowledgeContext?: string;
@@ -196,7 +199,7 @@ export async function getReview(db: Database, params: GetReviewParams) {
   const queue = await buildReviewQueue(db, {
     userId,
     maxReviews: 1,
-    maxNew: 1,
+    maxNew: params.maxNew ?? 1,
     knowledgeContext: params.knowledgeContext || undefined,
   });
 
@@ -236,7 +239,11 @@ export async function getReview(db: Database, params: GetReviewParams) {
   let questionSource: "llm" | "original" = "original";
   let questionModel: string | undefined;
 
-  if (isLlmEnabled && params.noDynamicQuestion !== true) {
+  if (
+    isLlmEnabled &&
+    params.noDynamicQuestion !== true &&
+    item.fastCheck === null
+  ) {
     try {
       const healed = await ensureHighQualityQuestion(db, {
         id: item.tokenId,
@@ -279,6 +286,7 @@ export async function getReview(db: Database, params: GetReviewParams) {
 
   const fullQueue = await buildReviewQueue(db, {
     userId,
+    maxNew: params.maxNew,
     knowledgeContext: params.knowledgeContext || undefined,
   });
 
@@ -302,6 +310,10 @@ export interface GetReviewsBatchParams {
   includeQuestions?: boolean;
   noResolve?: boolean;
   noDynamicQuestion?: boolean;
+  /** Apply the same persisted workload and tier rules as learner sessions. */
+  respectWorkload?: boolean;
+  /** Optional session-local new-card override when workload rules are used. */
+  maxNew?: number;
 }
 
 export async function getReviewsBatch(
@@ -309,38 +321,81 @@ export async function getReviewsBatch(
   params: GetReviewsBatchParams,
 ) {
   const userId = await resolveHandlerUser(db, params.user);
-  const dueCards = await getDueCards(
-    db,
-    userId,
-    undefined,
-    params.domain,
-    params.knowledgeContext,
-  );
+  const sourceCards = params.respectWorkload
+    ? (
+        await buildReviewQueue(db, {
+          userId,
+          domain: params.domain,
+          knowledgeContext: params.knowledgeContext,
+          maxNew: params.maxNew,
+        })
+      ).items.map((item) => ({
+        cardId: item.cardId,
+        tokenId: item.tokenId,
+        slug: item.slug,
+        concept: item.concept,
+        domain: item.domain,
+        bloomLevel: item.bloomLevel,
+        state: item.state,
+        dueAt: item.dueAt,
+        atomId: item.atomId,
+        tier: item.tier,
+        fastCheck: item.fastCheck,
+      }))
+    : (
+        await getDueCards(
+          db,
+          userId,
+          undefined,
+          params.domain,
+          params.knowledgeContext,
+        )
+      ).map((card) => ({
+        cardId: card.id,
+        tokenId: card.token_id,
+        slug: card.slug,
+        concept: card.concept,
+        domain: card.domain,
+        bloomLevel: card.bloom_level,
+        state: card.state,
+        dueAt: card.due_at,
+        atomId: null,
+        tier: null,
+        fastCheck: null,
+      }));
 
   const isLlmEnabled = (await getSetting(db, "llm.enabled")) === "true";
 
   const cards = [];
-  for (const card of dueCards) {
+  for (const card of sourceCards) {
     if (params.includeQuestions) {
       const token = await getTokenBySlug(db, card.slug);
       if (!token) {
         // Degrade gracefully
         cards.push({
-          cardId: card.id,
-          tokenId: card.token_id,
+          cardId: card.cardId,
+          tokenId: card.tokenId,
           slug: card.slug,
           concept: card.concept,
           domain: card.domain,
-          bloomLevel: card.bloom_level,
+          bloomLevel: card.bloomLevel,
           state: card.state,
-          dueAt: card.due_at,
-          atomId: null,
+          dueAt: card.dueAt,
+          atomId: card.atomId,
+          tier: card.tier,
+          fastCheck: card.fastCheck,
         });
         continue;
       }
 
+      const fastCheck =
+        card.fastCheck ?? parseReviewFastCheck(token.fast_check);
       let resolvedQuestion = token.question;
-      if (isLlmEnabled && params.noDynamicQuestion !== true) {
+      if (
+        isLlmEnabled &&
+        params.noDynamicQuestion !== true &&
+        fastCheck === null
+      ) {
         try {
           const healed = await ensureHighQualityQuestion(db, {
             id: token.id,
@@ -381,31 +436,35 @@ export async function getReviewsBatch(
       ) as BloomLevel;
 
       cards.push({
-        cardId: card.id,
-        tokenId: card.token_id,
+        cardId: card.cardId,
+        tokenId: card.tokenId,
         slug: card.slug,
         concept: card.concept,
         domain: card.domain,
-        bloomLevel: card.bloom_level,
+        bloomLevel: card.bloomLevel,
         state: card.state,
-        dueAt: card.due_at,
+        dueAt: card.dueAt,
         bloomVerb: BLOOM_VERBS[bloom],
         question: finalQuestion,
         sourceLink: token.source_link ?? null,
         resolvedContext,
         atomId: token.atom_id ?? null,
+        tier: token.tier ?? null,
+        fastCheck,
       });
     } else {
       cards.push({
-        cardId: card.id,
-        tokenId: card.token_id,
+        cardId: card.cardId,
+        tokenId: card.tokenId,
         slug: card.slug,
         concept: card.concept,
         domain: card.domain,
-        bloomLevel: card.bloom_level,
+        bloomLevel: card.bloomLevel,
         state: card.state,
-        dueAt: card.due_at,
-        atomId: null,
+        dueAt: card.dueAt,
+        atomId: card.atomId,
+        tier: card.tier,
+        fastCheck: card.fastCheck,
       });
     }
   }

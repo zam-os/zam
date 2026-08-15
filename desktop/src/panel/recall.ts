@@ -97,6 +97,12 @@ interface ReviewCard {
   publishedBy?: string | null;
   publishedAt?: string | null;
   atomId?: string | null;
+  tier?: string | null;
+  fastCheck?: {
+    type: "binary_choice";
+    options: string[];
+    correctIndex: number;
+  } | null;
 }
 
 interface SubmitEvaluation {
@@ -142,6 +148,7 @@ let index = 0;
 let preconditionCache: PreconditionOffer[] = [];
 const assessedAtoms = new Set<string>();
 let bonusIgnoredThisSession = false;
+let nextMaxNewOverride: number | undefined;
 /** When the current card was shown (Date.now()); sent as responseTimeMs with the rating (ADR 2026-08-01 Decision 5). */
 let cardStartedAt = 0;
 
@@ -350,7 +357,11 @@ async function offerAfterQueue(mode: "empty" | "done"): Promise<void> {
         reason: "precondition_buried" | "future_due" | "new_in_scope";
       }>;
     };
-    const cardIds = keepGoingCardIds(pull.candidates ?? []);
+    const selectedCandidates = (pull.candidates ?? []).slice(0, 5);
+    const cardIds = keepGoingCardIds(selectedCandidates);
+    const extraNew = selectedCandidates.filter(
+      (candidate) => candidate.reason === "new_in_scope",
+    ).length;
     if (cardIds.length > 0) {
       renderChoiceOffer(t("lbl_keep_going_title"), t("lbl_keep_going_body"), [
         {
@@ -363,7 +374,7 @@ async function offerAfterQueue(mode: "empty" | "done"): Promise<void> {
           label: t("btn_keep_going"),
           primary: true,
           onClick: () => {
-            void acceptRecallKeepGoing(cardIds);
+            void acceptRecallKeepGoing(cardIds, extraNew);
           },
         },
       ]);
@@ -375,9 +386,13 @@ async function offerAfterQueue(mode: "empty" | "done"): Promise<void> {
   }
 }
 
-async function acceptRecallKeepGoing(cardIds: string[]): Promise<void> {
+async function acceptRecallKeepGoing(
+  cardIds: string[],
+  extraNew: number,
+): Promise<void> {
   try {
     await callTool("zam_pull_forward_execute", recallUserArgs({ cardIds }));
+    nextMaxNewOverride = extraNew;
     started = false;
     finished = false;
     void loadReviews();
@@ -684,6 +699,17 @@ function renderCard(): void {
     ? `Bloom ${card.bloomLevel} · ${card.bloomVerb}`
     : `Bloom ${card.bloomLevel}`;
   badges.appendChild(bloomBadge);
+  if (card.tier) {
+    const tierBadge = document.createElement("span");
+    tierBadge.className = "recall-badge";
+    tierBadge.textContent =
+      card.tier === "tier1_fast"
+        ? t("lbl_tier_fast")
+        : card.tier === "tier2_synthesis"
+          ? t("lbl_tier_synthesis")
+          : card.tier;
+    badges.appendChild(tierBadge);
+  }
   const modeBadge = document.createElement("span");
   modeBadge.className = "recall-badge";
   modeBadge.textContent = quickMode
@@ -715,16 +741,42 @@ function renderCard(): void {
   answer.placeholder = t("placeholder_recall_answer");
   root.appendChild(answer);
 
+  const fastOptions = document.createElement("div");
+  fastOptions.className = "study-offer-actions";
+  if (card.fastCheck) {
+    answer.hidden = true;
+    for (const [optionIndex, label] of card.fastCheck.options.entries()) {
+      const option = document.createElement("button");
+      option.type = "button";
+      option.className = "btn secondary-btn";
+      option.textContent = label;
+      option.dataset.fastCheckIndex = String(optionIndex);
+      fastOptions.appendChild(option);
+    }
+    root.appendChild(fastOptions);
+  }
+
   // Empty still reveals directly; a typed answer is either evaluated by the
   // host (smart mode) or compared locally (quick mode).
   const actions = document.createElement("div");
   actions.className = "recall-actions";
+  actions.hidden = Boolean(card.fastCheck);
   const actionBtn = document.createElement("button");
   actionBtn.className = "btn primary-btn";
   actionBtn.type = "button";
   actionBtn.textContent = t("btn_recall_reveal");
   actions.appendChild(actionBtn);
   root.appendChild(actions);
+
+  for (const option of fastOptions.querySelectorAll<HTMLButtonElement>(
+    "button",
+  )) {
+    option.addEventListener("click", () => {
+      if (committed) return;
+      answer.value = option.textContent ?? "";
+      actionBtn.click();
+    });
+  }
 
   answer.addEventListener("input", () => {
     actionBtn.textContent = answer.value.trim()
@@ -1078,7 +1130,7 @@ function renderCard(): void {
     if (!text) {
       showReveal();
       pushContext(card, "revealed");
-    } else if (quickMode) {
+    } else if (quickMode || card.fastCheck) {
       showReveal(text);
       pushContext(card, "answered");
     } else {
@@ -1097,13 +1149,20 @@ function renderCard(): void {
 
 async function loadReviews(): Promise<void> {
   try {
-    const args: Record<string, unknown> = { includeQuestions: true };
+    const args: Record<string, unknown> = {
+      includeQuestions: true,
+      respectWorkload: true,
+    };
+    if (nextMaxNewOverride !== undefined) {
+      args.maxNew = nextMaxNewOverride;
+    }
     if (currentUser) args.user = currentUser;
     if (focusDomain) args.domain = focusDomain;
     const data = (await callTool("zam_get_reviews", args)) as {
       cards?: ReviewCard[];
     };
     cards = data.cards ?? [];
+    nextMaxNewOverride = undefined;
     index = 0;
     await loadPreconditionCache();
     if (cards.length === 0) {
@@ -1151,6 +1210,7 @@ app.ontoolresult = (params) => {
     preconditionCache = [];
     assessedAtoms.clear();
     bonusIgnoredThisSession = false;
+    nextMaxNewOverride = undefined;
     tally.done = 0;
     tally.ratings = { 1: 0, 2: 0, 3: 0, 4: 0 };
   }

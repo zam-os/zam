@@ -1,29 +1,40 @@
 ---
 type: data-model
 title: Token and Card Model
-description: A token is a shared atomic knowledge concept; a card is one user's FSRS and participation state for it — scheduling requires both a card and eligible published content.
+description: ZAM separates learning objectives, alignments, curriculum bindings, shared practice items, and each learner's personal FSRS card state.
 tags:
   - kernel
   - data-model
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-08-09T06:55:30Z
+timestamp: 2026-08-15T08:54:42.759Z
 ---
 
-The central distinction in ZAM's domain model:
+ZAM's published central-learning model separates five objects:
 
-A **token** is an atomic knowledge concept, shared across all users. It
-carries a slug, title, concept text, domain, a **Bloom level** (1–5,
-driving how recall prompts are phrased), an optional learning context, an
-optional `source_link` (the URL of the knowledge source the concept was
-derived from — for repo knowledge, an OKF article), provenance fields
-(`provider`, `topic_id` for curriculum imports), and a
-**`symbiosis_mode`** of `shadowing`, `copilot`, or `autonomy` describing
-how much of the skill the human should own versus delegate to AI. Token
-metadata is load-bearing: Bloom levels drive prompt generation
-(`src/kernel/recall/prompter.ts`, template-based, not LLM), and
-`symbiosis_mode` drives coaching behavior.
+1. A **LearningAtom** is a language-neutral learning objective in the shared
+   prerequisite DAG.
+2. A **ConceptAlignment** is a typed advisory link from that objective to an
+   external vocabulary or another objective; it is not automatic identity.
+3. A **CurriculumBinding** says where an objective appears in a provider,
+   school type, grade, track, subject, and topic.
+4. A **PracticeItem** is learner-facing recall substance for an atom: wording,
+   reference answer, language, Bloom level, interaction tier, and optional
+   structured fast check.
+5. A **Card** is one learner's scheduling and participation state for one local
+   practice item.
+
+The database still names the shared local PracticeItem row **token**. A token
+therefore carries the item text and metadata plus an optional `atom_id`;
+legacy, imported, and repo-knowledge tokens may stand alone without an atom.
+It is not the canonical cross-language objective. Token fields include slug,
+title, concept, domain, Bloom level, context, `source_link`, editorial and
+revision provenance, `language`, `tier`, and serialized `fast_check`.
+Bloom drives prompt generation, while tier and fast-check metadata define the
+review interaction. `provider` and `topic_id` remain a legacy one-binding
+projection for curriculum imports; the n:m truth is stored in atom curriculum
+bindings.
 
 Tokens imported from OKF articles carry an **anchored source link**:
 `<article resource>#<anchor>` (or the bare resource URL without an
@@ -84,7 +95,27 @@ trail of review events), `session`/`session_step` (work+learning episodes
 with per-step ratings), and `token_embeddings` (semantic-search vectors,
 produced by the CLI layer, stored by the kernel).
 
+# Bundled cells: installation and enrolment
+
+A bundled cell is commit-controlled shared content plus an explicit list of
+in-scope atom ids. Installing it creates or reconciles atoms, alignments,
+curriculum bindings, prerequisite edges, and local PracticeItem/token rows; it
+creates **zero cards**. Enrolling a learner is a second operation that
+materializes cards for every practice item of the in-scope atoms. A concept
+appears in a learner's queue only after that card exists.
+
+Different cells may reuse the same atom and some of the same practice items.
+Installation status therefore checks every declared atom and item id, while
+enrolment status checks personal card coverage of every in-scope atom. Personal
+review evidence can later be rebound to a rebuilt central knowledge-base model;
+exact successor declarations may preserve it, while ambiguous or materially
+changed mappings require real re-retrieval.
+
 # Citations
+- [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
+- [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
+- Tests: `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`
+- Code: `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/scheduler/queue.ts`
 
 - [ADR 2026-03-26 — Personal Workflow Foundations](../adr/2026-03-26-personal-workflow-foundations.md)
 - [ADR 2026-07-04 — Knowledge Contexts](../adr/2026-07-04-knowledge-contexts.md)

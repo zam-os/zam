@@ -9,7 +9,7 @@ export type BridgeCall = { cmd: string; args: string[] };
 export interface PreconditionOffer {
   atomId: string;
   title: string;
-  assessmentState: "unassessed" | "buried_known" | "learning";
+  assessmentState: "unassessed" | "buried_known" | "ready" | "learning";
 }
 
 export interface PullForwardOffer {

@@ -476,6 +476,16 @@ export function createMcpServer(db: Database): McpServer {
           .boolean()
           .optional()
           .describe("Include question contents in response"),
+        respectWorkload: z
+          .boolean()
+          .optional()
+          .describe("Apply the learner's workload limits and tier ordering"),
+        maxNew: z.coerce
+          .number()
+          .int()
+          .min(0)
+          .optional()
+          .describe("Session-local new-card budget when workload is applied"),
         noResolve: z
           .boolean()
           .optional()
@@ -497,6 +507,8 @@ export function createMcpServer(db: Database): McpServer {
         domain: params.domain,
         knowledgeContext: params.knowledgeContext,
         includeQuestions: params.includeQuestions,
+        respectWorkload: params.respectWorkload,
+        maxNew: params.maxNew,
         noResolve: params.noResolve,
         noDynamicQuestion: true,
       });

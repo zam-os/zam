@@ -199,6 +199,15 @@ Codex' Befund B1.2 war, dass das Realschul-Tile ein Gymnasium-11-Atom zur
 Snellius-Formel enthält und der alte Attach dafür ungefragt eine Karte anlegte.
 Das war ein Abnahmeblocker.
 
+**Nachtrag 2026-08-15:** Nicht nur die automatische Einschreibung, auch diese
+Curriculumbindung war falsch: Ph11-LB1 ist im aktuellen LehrplanPLUS
+Kreisbewegung, nicht Wellenoptik. Das weiter nur installierte Bonusatom ist nun
+am einschlägigen
+[BOS-Vorklassen-Lernbereich 119285](https://www.lehrplanplus.bayern.de/fachlehrplan/lernbereich/119285)
+geerdet und bleibt außerhalb des Realschul-Einschreibungsumfangs. Der folgende
+Einwilligungspunkt bleibt dadurch erhalten, stützt sich aber nicht länger auf
+eine erfundene Zuordnung.
+
 Als **Angebot** ist dasselbe Atom richtig: Die qualitative Fassung ist gekonnt,
 die Formel grenzt daran, sie ist echt kuratiert, und die bayerische Realschule
 verlangt sie nicht — sie ist per Definition Bonus.

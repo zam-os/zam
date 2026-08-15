@@ -18,7 +18,7 @@ function loadFixture(file: string): KvtTile {
   ) as KvtTile;
 }
 
-describe("Subject-matter & didactical review of Optik cells (Phase 2)", () => {
+describe("Automated content guards for the Optik field-test cells", () => {
   const fixtureMap: Record<string, string> = {
     "de-by:realschule-optik": "de-by-realschule-optik-kvt.json",
     "de-by:gymnasium-8-optik": "de-by-gymnasium-8-optik-kvt.json",
@@ -101,17 +101,9 @@ describe("Subject-matter & didactical review of Optik cells (Phase 2)", () => {
    * resolution against its primary source" is checkable — so the block has to
    * stay there and stay dated.
    */
-  /**
-   * Open Phase 2 item, recorded here rather than in a comment nobody reads.
-   * `de-by:realschule-optik` is the cell the field-test plan names first, and
-   * it is the one cell with no primary source. A source cannot be inferred
-   * from a sibling tile or a topic code — that is what "no anchor without
-   * resolution against its primary source" forbids — so it stays listed until
-   * somebody resolves it against LehrplanPLUS and writes down the date.
-   */
-  const CELLS_AWAITING_PRIMARY_SOURCE = ["de-by-realschule-optik-kvt.json"];
+  const CELLS_AWAITING_PRIMARY_SOURCE: string[] = [];
 
-  it("keeps a dated primary source on every grounded bundled cell", () => {
+  it("keeps a dated primary source for every curriculum binding", () => {
     for (const fixtureFile of Object.values(fixtureMap)) {
       const raw = JSON.parse(
         readFileSync(resolve(FIXTURES_DIR, fixtureFile), "utf-8"),
@@ -119,6 +111,9 @@ describe("Subject-matter & didactical review of Optik cells (Phase 2)", () => {
         sources?: Array<{ uri: string; checked: string; label?: string }>;
         published_at?: string;
         signature?: string;
+        atoms: Array<{
+          curricula?: Array<{ provider: string; topic_code: string }>;
+        }>;
       };
       expect(
         raw.published_at,
@@ -141,19 +136,27 @@ describe("Subject-matter & didactical review of Optik cells (Phase 2)", () => {
         expect(source.uri).toMatch(/^https?:\/\//);
         expect(source.checked).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       }
+
+      const anchoredText = (raw.sources ?? [])
+        .map((source) => `${source.uri} ${source.label ?? ""}`)
+        .join("\n");
+      for (const binding of raw.atoms.flatMap(
+        (atom) => atom.curricula ?? [],
+      )) {
+        expect(binding.provider).toBe("lehrplanplus-bayern");
+        expect(
+          anchoredText,
+          `${fixtureFile} has no primary source for topic ${binding.topic_code}`,
+        ).toContain(binding.topic_code);
+      }
     }
   });
 
-  it("does not let the ungrounded-cell list grow", () => {
-    // One known gap, named above. A second entry means somebody added a cell
-    // without resolving its source, and that is the error class that reaches
-    // the learner directly.
-    expect(CELLS_AWAITING_PRIMARY_SOURCE).toEqual([
-      "de-by-realschule-optik-kvt.json",
-    ]);
+  it("does not ship an ungrounded field-test cell", () => {
+    expect(CELLS_AWAITING_PRIMARY_SOURCE).toEqual([]);
   });
 
-  it("verifies Physics correctness of all refraction, reflection and TIR concepts", () => {
+  it("guards the reviewed refraction, reflection and TIR reference statements", () => {
     const rsTile = getBundledCellTile("de-by:realschule-optik")!;
     const allItems = rsTile.atoms.flatMap((a) => a.practice_items);
 
@@ -202,7 +205,7 @@ describe("Subject-matter & didactical review of Optik cells (Phase 2)", () => {
     expect(snelliusItem.concept).toContain("n1 * sin(alpha) = n2 * sin(beta)");
   });
 
-  it("verifies Physics correctness of reflection, lens imaging and dispersion", () => {
+  it("guards the reviewed reflection, lens-imaging and dispersion statements", () => {
     const gymTile = getBundledCellTile("de-by:gymnasium-8-optik")!;
     const gymItems = gymTile.atoms.flatMap((a) => a.practice_items);
 

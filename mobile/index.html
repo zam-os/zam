@@ -327,6 +327,12 @@
                  but finding and fixing what you already have is the thing a
                  learner does far more often. -->
             <div id="library-browse" class="stack">
+              <div class="card stack">
+                <p class="group-title" data-i18n="learning_paths_heading">Kuratierte Lernpfade</p>
+                <p class="t-secondary" data-i18n="learning_paths_desc">Wähle einen Lernpfad und starte ohne Import.</p>
+                <div id="bundled-cells-list" class="stack"></div>
+                <p id="bundled-cells-status" class="status" aria-live="polite"></p>
+              </div>
               <input
                 id="library-search"
                 type="text"
@@ -1059,7 +1065,7 @@
             </button>
           </div>
 
-          <label class="field">
+          <label id="review-answer-field" class="field">
             <span data-i18n="your_answer">Deine Antwort</span>
             <textarea
               id="review-answer"
@@ -1067,6 +1073,7 @@
               data-i18n-placeholder="answer_ph"
             ></textarea>
           </label>
+          <div id="review-fast-check-options" class="stack" hidden></div>
           <button id="reveal-answer" class="btn primary" type="button" data-i18n="reveal_answer">
             Antwort aufdecken
           </button>

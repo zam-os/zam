@@ -708,7 +708,7 @@ export async function installKvtTile(
  * Give `userId` cards for the practice items of `atomIds`.
  *
  * The deliberate second step: installing a release must not enrol anyone, so
- * a Realschule learner does not receive the Gymnasium 11 formula item that
+ * a Realschule learner does not receive the optional BOS formula item that
  * ships in the same tile as their own atoms.
  */
 export async function materialiseKvtCards(

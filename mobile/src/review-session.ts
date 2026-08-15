@@ -167,8 +167,14 @@ export class MobileReviewSession {
     this.persist();
   }
 
-  async start(userId: string): Promise<boolean> {
-    const queue = await buildReviewQueue(this.db, { userId });
+  async start(
+    userId: string,
+    options: { maxNew?: number } = {},
+  ): Promise<boolean> {
+    const queue = await buildReviewQueue(this.db, {
+      userId,
+      maxNew: options.maxNew,
+    });
     if (queue.items.length === 0) return false;
 
     const session = await startSession(this.db, {

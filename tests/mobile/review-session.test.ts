@@ -50,6 +50,35 @@ describe("mobile review session", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
+  it("accepts an explicit keep-going new-card budget and preserves fast checks", async () => {
+    const token = await createToken(db, {
+      slug: "mobile-fast-check",
+      concept: "The normal is perpendicular.",
+      domain: "optik",
+      bloom_level: 1,
+      question: "How does the normal meet the surface?",
+      tier: "tier1_fast",
+      fast_check: JSON.stringify({
+        type: "binary_choice",
+        options: ["Perpendicular", "Parallel"],
+        correct_index: 0,
+      }),
+    });
+    await ensureCard(db, token.id, "student-9");
+
+    const closed = new MobileReviewSession(db, new MemoryStorage(), () => 1);
+    expect(await closed.start("student-9", { maxNew: 0 })).toBe(false);
+
+    const open = new MobileReviewSession(db, new MemoryStorage(), () => 1);
+    expect(await open.start("student-9", { maxNew: 1 })).toBe(true);
+    expect(open.progress).toEqual({ current: 1, total: 1 });
+    expect(open.currentItem?.fastCheck).toEqual({
+      type: "binary_choice",
+      options: ["Perpendicular", "Parallel"],
+      correctIndex: 0,
+    });
+  });
+
   it("restores the current answer, rates through FSRS, blocks, and summarizes", async () => {
     const prerequisite = await createToken(db, {
       slug: "prerequisite",
@@ -292,4 +321,3 @@ describe("mobile review session", () => {
     expect(session.currentItem?.tokenId).toBe(other.id);
   });
 });
-

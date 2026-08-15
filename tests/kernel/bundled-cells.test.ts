@@ -169,5 +169,16 @@ describe("Bundled learning cells (Phase 1)", () => {
     );
     expect(gymAfter.enrolled).toBe(true);
   });
-});
 
+  it("does not call a cell installed when only overlapping atoms are present", async () => {
+    await enrolBundledCell(db, "other-learner", "de-by:gymnasium-8-optik");
+    await enrolBundledCell(db, "other-learner", "de-by:bos-10-optik");
+
+    // Together those tiles contain every Realschule atom, but not its unique
+    // Tier-2 practice items. Atom-only detection used to produce a false
+    // installed badge and made enrolment look like an idempotent no-op.
+    expect(
+      await isBundledCellInstalled(db, "de-by:realschule-optik"),
+    ).toBe(false);
+  });
+});

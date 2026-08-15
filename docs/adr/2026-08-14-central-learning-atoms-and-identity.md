@@ -270,15 +270,22 @@ conflated them.
 | Install ≠ enrolment | yes | yes | yes | no |
 | No admission gate | yes | yes (never existed) | n/a | no |
 | Demand-driven materialisation | yes | yes | yes | no |
-| Self-assessment writes only `buried_until` | yes | **no** — no surface exists yet | no | no |
-| Empty-queue pull-forward | yes | **no** | no | no |
+| Self-assessment writes only `buried_until` | yes | yes — hard preconditions, finite horizon, Desktop/MCP/Mobile surfaces | yes | no |
+| Empty-queue pull-forward | yes | yes — explicit session-local new-card admission plus early review/precondition choices | yes | no |
 | Due date orders retention | yes | partly — interleaver reorders within it | no | no |
-| Bonus offers | yes | eligibility + ranking built; no surface | yes, for the derivation | no |
+| Tier-1 before Tier-2 pilot rule | yes | yes — structured fast checks rendered on all learner surfaces | yes | no |
+| Bonus offers | yes | yes — eligibility, ranking, accept/ignore surfaces; accepted atoms do not recur | yes | no |
 | Diagnostic triage as a knob | yes | default only | n/a | no |
 
 Schema provisioning is now exercised against a real PostgreSQL as well as
 SQLite, because `runMigrations` is one path shared by every provider and M024
 originally broke it.
+
+The field-test implementation does not make the final empirical column true.
+The selected Optik cell has completed the source-grounded multi-agent review
+accepted by the owner for initial content and is ready for a manual device
+pass. Teacher review remains a later improvement path, not a gate; see ADR
+2026-08-14b.
 
 ## Consequences
 

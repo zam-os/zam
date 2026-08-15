@@ -35,7 +35,11 @@ import {
 } from "../../src/kernel/models/media.js";
 import { getSetting } from "../../src/kernel/models/settings.js";
 import { bonusCandidates, enrolBonusAtom } from "../../src/kernel/library/bonus.js";
-import { getBundledCellsWithStatus } from "../../src/kernel/library/bundled-cells.js";
+import {
+  type BundledCellStatus,
+  enrolBundledCell,
+  getBundledCellsWithStatus,
+} from "../../src/kernel/library/bundled-cells.js";
 import {
   assessPrecondition,
   getPreconditionCandidates,
@@ -303,6 +307,10 @@ const librarySearch = element<HTMLInputElement>("library-search");
 const libraryList = element<HTMLUListElement>("library-list");
 const libraryCount = element<HTMLElement>("library-count");
 const libraryEmpty = element<HTMLElement>("library-empty");
+const bundledCellsList = element<HTMLElement>("bundled-cells-list");
+const bundledCellsStatus = element<HTMLParagraphElement>(
+  "bundled-cells-status",
+);
 const libraryAddButton = element<HTMLButtonElement>("library-add");
 const libraryBackButton = element<HTMLButtonElement>("library-back");
 const detailTitle = element<HTMLInputElement>("detail-title");
@@ -416,6 +424,10 @@ const installVoiceDataButton = element<HTMLButtonElement>("install-voice-data");
 const reviewQuestion = element<HTMLElement>("review-question");
 const reviewQuestionMedia = element<HTMLElement>("review-question-media");
 const reviewAnswer = element<HTMLTextAreaElement>("review-answer");
+const reviewAnswerField = element<HTMLElement>("review-answer-field");
+const reviewFastCheckOptions = element<HTMLElement>(
+  "review-fast-check-options",
+);
 const revealAnswerButton = element<HTMLButtonElement>("reveal-answer");
 const revealedAnswer = element<HTMLElement>("revealed-answer");
 const expectedAnswer = element<HTMLElement>("expected-answer");
@@ -1912,7 +1924,11 @@ async function offerAfterQueueFromReview(
     const candidates = await getPullForwardCandidates(db, currentUserId, {
       limit: 5,
     });
-    const cardIds = keepGoingCardIds(candidates);
+    const selectedCandidates = candidates.slice(0, 5);
+    const cardIds = keepGoingCardIds(selectedCandidates);
+    const extraNew = selectedCandidates.filter(
+      (candidate) => candidate.reason === "new_in_scope",
+    ).length;
     if (cardIds.length > 0) {
       showReviewOffer({
         title: t("keep_going_title"),
@@ -1928,7 +1944,7 @@ async function offerAfterQueueFromReview(
             label: t("keep_going_yes"),
             primary: true,
             onClick: () => {
-              void acceptKeepGoingFromReview(cardIds, summary);
+              void acceptKeepGoingFromReview(cardIds, extraNew, summary);
             },
           },
         ],
@@ -1944,12 +1960,15 @@ async function offerAfterQueueFromReview(
 
 async function acceptKeepGoingFromReview(
   cardIds: string[],
+  extraNew: number,
   summary: MobileReviewSummary,
 ): Promise<void> {
   if (!currentUserId) return;
   try {
     await pullForwardCards(db, currentUserId, cardIds);
-    const started = await reviewSession.start(currentUserId);
+    const started = await reviewSession.start(currentUserId, {
+      maxNew: extraNew,
+    });
     if (!started) {
       renderSessionSummary(summary);
       return;
@@ -2037,7 +2056,11 @@ async function renderDashboardOffers(userId: string): Promise<void> {
   hideQueueOffer();
   try {
     const candidates = await getPullForwardCandidates(db, userId, { limit: 5 });
-    const cardIds = keepGoingCardIds(candidates);
+    const selectedCandidates = candidates.slice(0, 5);
+    const cardIds = keepGoingCardIds(selectedCandidates);
+    const extraNew = selectedCandidates.filter(
+      (candidate) => candidate.reason === "new_in_scope",
+    ).length;
     if (cardIds.length > 0) {
       showQueueOffer({
         title: t("keep_going_title"),
@@ -2053,7 +2076,7 @@ async function renderDashboardOffers(userId: string): Promise<void> {
             label: t("keep_going_yes"),
             primary: true,
             onClick: () => {
-              void acceptKeepGoingFromDashboard(userId, cardIds);
+              void acceptKeepGoingFromDashboard(userId, cardIds, extraNew);
             },
           },
         ],
@@ -2106,11 +2129,12 @@ async function renderDashboardBonus(userId: string): Promise<void> {
 async function acceptKeepGoingFromDashboard(
   userId: string,
   cardIds: string[],
+  extraNew: number,
 ): Promise<void> {
   try {
     await pullForwardCards(db, userId, cardIds);
     hideQueueOffer();
-    const started = await reviewSession.start(userId);
+    const started = await reviewSession.start(userId, { maxNew: extraNew });
     if (!started) {
       await refresh(userId);
       return;
@@ -2169,17 +2193,48 @@ function renderCurrentReview(message = ""): void {
   // The title is free text, and for imported cards it is often the first
   // sentence of the answer — so before the reveal the meta line names only the
   // domain. A prompt that prints the answer underneath itself is not recall.
-  reviewMeta.textContent = reviewSession.revealed
+  const tierLabel =
+    item.tier === "tier1_fast"
+      ? t("tier_fast")
+      : item.tier === "tier2_synthesis"
+        ? t("tier_synthesis")
+        : item.tier;
+  const baseMeta = reviewSession.revealed
     ? tf("review_meta", {
         title: item.title,
         domain: item.domain || t("no_domain"),
       })
     : item.domain || t("no_domain");
+  reviewMeta.textContent = tierLabel ? `${baseMeta} · ${tierLabel}` : baseMeta;
   reviewQuestion.textContent = prompt.question;
   void renderMobileReviewMedia(item.tokenId);
   reviewAnswer.value = reviewSession.draftAnswer;
   reviewAnswer.disabled = reviewSession.revealed;
-  revealAnswerButton.hidden = reviewSession.revealed;
+  const fastCheck = item.fastCheck;
+  reviewAnswerField.hidden = Boolean(fastCheck);
+  revealAnswerButton.hidden = reviewSession.revealed || Boolean(fastCheck);
+  reviewFastCheckOptions.hidden = reviewSession.revealed || !fastCheck;
+  reviewFastCheckOptions.replaceChildren();
+  if (fastCheck && !reviewSession.revealed) {
+    for (const [optionIndex, label] of fastCheck.options.entries()) {
+      const option = document.createElement("button");
+      option.type = "button";
+      option.className = "btn";
+      option.textContent = label;
+      option.dataset.fastCheckIndex = String(optionIndex);
+      option.addEventListener("click", () => {
+        reviewAnswer.value = label;
+        reviewSession.updateDraftAnswer(label);
+        for (const button of reviewFastCheckOptions.querySelectorAll(
+          "button",
+        )) {
+          (button as HTMLButtonElement).disabled = true;
+        }
+        revealAnswerButton.click();
+      });
+      reviewFastCheckOptions.appendChild(option);
+    }
+  }
   revealedAnswer.hidden = !reviewSession.revealed;
   expectedAnswer.textContent = prompt.concept;
   const sourceUrl = externalSourceUrl(prompt.sourceLink);
@@ -2194,7 +2249,9 @@ function renderCurrentReview(message = ""): void {
   closeCardMenu();
   hideCardEditPanel();
   setReviewStatus(message);
-  if (!reviewSession.revealed && !voiceController.active) reviewAnswer.focus();
+  if (!reviewSession.revealed && !voiceController.active && !fastCheck) {
+    reviewAnswer.focus();
+  }
 }
 
 /* ── Confirming something destructive ────────────────────────────────────── */
@@ -2900,6 +2957,10 @@ revealAnswerButton.addEventListener("click", async () => {
     reviewSession.updateDraftAnswer(reviewAnswer.value);
     reviewSession.reveal();
     clearEvaluationUi();
+    if (reviewSession.currentItem?.fastCheck) {
+      renderCurrentReview();
+      return;
+    }
     renderCurrentReview(t("evaluating_answer"));
     revealAnswerButton.disabled = true;
     await runSmartEvaluation();
@@ -3072,8 +3133,76 @@ function renderLibrary(entries: LibraryEntry[]): void {
       : "";
 }
 
+function renderBundledCells(cells: BundledCellStatus[]): void {
+  bundledCellsList.replaceChildren();
+  for (const cell of cells) {
+    const card = document.createElement("div");
+    card.className = "card stack";
+
+    const title = document.createElement("p");
+    title.className = "t-headline";
+    title.textContent = cell.title;
+
+    const grade = document.createElement("p");
+    grade.className = "t-footnote";
+    grade.textContent = `${cell.gradeLabel} · ${tf("learning_path_atoms", {
+      n: cell.inScopeAtomIds.length,
+    })}`;
+
+    const description = document.createElement("p");
+    description.className = "t-secondary";
+    description.textContent = cell.description;
+
+    const action = document.createElement("button");
+    action.type = "button";
+    action.className = cell.enrolled ? "btn" : "btn primary";
+    action.disabled = cell.enrolled;
+    action.textContent = cell.enrolled
+      ? t("learning_path_active")
+      : t("learning_path_enrol");
+    action.addEventListener("click", async () => {
+      if (!currentUserId || cell.enrolled) return;
+      action.disabled = true;
+      bundledCellsStatus.textContent = "…";
+      bundledCellsStatus.classList.remove("error");
+      try {
+        const result = await enrolBundledCell(db, currentUserId, cell.id);
+        bundledCellsStatus.textContent = tf("learning_path_enrolled", {
+          title: cell.title,
+          n: result.cardsCreated,
+        });
+        await refreshBundledCells();
+        await refresh(currentUserId);
+      } catch (error) {
+        bundledCellsStatus.textContent = tf("library_failed", {
+          error: errorMessage(error),
+        });
+        bundledCellsStatus.classList.add("error");
+        action.disabled = false;
+      }
+    });
+
+    card.append(title, grade, description, action);
+    bundledCellsList.appendChild(card);
+  }
+}
+
+async function refreshBundledCells(): Promise<void> {
+  if (!currentUserId) return;
+  try {
+    renderBundledCells(await getBundledCellsWithStatus(db, currentUserId));
+  } catch (error) {
+    bundledCellsList.replaceChildren();
+    bundledCellsStatus.textContent = tf("library_failed", {
+      error: errorMessage(error),
+    });
+    bundledCellsStatus.classList.add("error");
+  }
+}
+
 async function refreshLibrary(): Promise<void> {
   if (!currentUserId) return;
+  await refreshBundledCells();
   const query = librarySearch.value.trim();
   try {
     libraryTotal = (await listLibrary(db, currentUserId)).length;

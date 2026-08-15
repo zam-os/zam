@@ -244,6 +244,11 @@
             <div id="editor-empty-state" class="content-studio-empty">
               <p id="lbl-empty-content-desc">Select a card from the list to edit, or create a new card to start.</p>
               <button id="btn-create-first-card" class="btn primary-btn btn-sm" type="button">Create First Card</button>
+              <div id="bundled-cells-container" class="bundled-cells-section" style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 16px; text-align: left; width: 100%;">
+                <h4 id="lbl-bundled-cells-title" style="margin: 0 0 4px; font-size: 0.95rem; font-weight: 600;">Curated Learning Paths</h4>
+                <p id="lbl-bundled-cells-desc" style="font-size: 0.8rem; color: var(--muted); margin: 0 0 12px;">Choose a curated learning cell to get started right away:</p>
+                <div id="bundled-cells-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+              </div>
             </div>
             
             <div id="editor-form-container" class="hidden" style="display: flex; flex-direction: column; height: 100%;">
@@ -880,6 +885,7 @@
             <div class="tag-row">
               <span class="badge bloom-badge" id="bloom-badge">Understand (Bloom 2)</span>
               <span class="badge domain-badge" id="domain-badge">git</span>
+              <span class="badge domain-badge" id="tier-badge" hidden></span>
               <div class="card-manage-wrap">
                 <button id="btn-card-manage" class="card-manage-btn" type="button" aria-haspopup="menu" aria-controls="study-manage-menu" aria-expanded="false">⋯</button>
                 <div id="study-manage-menu" class="card-manage-menu hidden" role="menu">
@@ -929,6 +935,7 @@
             <!-- ANSWER CAPTURE SCREEN -->
             <div class="answer-capture" id="answer-capture-box">
               <textarea id="user-answer-input" placeholder="Type your conceptual answer here... (Enter to submit)"></textarea>
+              <div id="fast-check-options" class="study-offer-actions" hidden></div>
               <div class="card-buttons">
                 <button id="btn-reveal-answer" class="btn primary-btn btn-block">
                   Submit & Reveal Answer

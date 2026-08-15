@@ -1024,6 +1024,7 @@ bridgeCommand
   .command("get-review")
   .description("Get next review card with prompt (JSON)")
   .option("--user <id>", "User ID (default: whoami)")
+  .option("--max-new <n>", "Session-local new-card budget")
   .option("--no-resolve", "Skip resolving the token's source_link into context")
   .option(
     "--no-dynamic-question",
@@ -1040,6 +1041,7 @@ bridgeCommand
         const userId = await resolveUser(opts, db, { json: true });
         const result = await handleGetReview(db, {
           user: userId,
+          maxNew: opts.maxNew === undefined ? undefined : Number(opts.maxNew),
           noResolve: opts.resolve === false,
           noDynamicQuestion: opts.dynamicQuestion === false,
           knowledgeContext: opts.knowledgeContext,
@@ -1061,6 +1063,11 @@ bridgeCommand
   .option("--domain <domain>", "Filter cards by domain prefix")
   .option("--knowledge-context <context>", "Filter cards by knowledge context")
   .option("--include-questions", "Include question content in response")
+  .option(
+    "--respect-workload",
+    "Apply learner workload limits and tier ordering",
+  )
+  .option("--max-new <n>", "Session-local new-card budget")
   .option("--no-resolve", "Skip resolving the token's source_link into context")
   .option(
     "--no-dynamic-question",
@@ -1075,6 +1082,8 @@ bridgeCommand
           domain: opts.domain,
           knowledgeContext: opts.knowledgeContext,
           includeQuestions: opts.includeQuestions,
+          respectWorkload: opts.respectWorkload === true,
+          maxNew: opts.maxNew === undefined ? undefined : Number(opts.maxNew),
           noResolve: opts.resolve === false,
           noDynamicQuestion: opts.dynamicQuestion === false,
         });

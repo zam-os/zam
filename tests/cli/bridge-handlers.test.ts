@@ -16,6 +16,7 @@ import {
 import {
   commitTextImport,
   createToken,
+  enrolBundledCell,
   ensureCard,
   getCard,
   getPrerequisites,
@@ -110,6 +111,56 @@ describe("bridge-handlers unit tests", () => {
     expect(res2.cards[0].bloomVerb).toBe("Remember");
     expect(res2.cards[1].question).toBe("Explain 2.");
     expect(res2.cards[1].bloomVerb).toBe("Understand");
+  });
+
+  it("applies session admission, tier ordering, and structured fast checks on learner surfaces", async () => {
+    await enrolBundledCell(db, "thomas", "de-by:realschule-optik");
+
+    const closed = await getReview(db, {
+      user: "thomas",
+      maxNew: 0,
+      noResolve: true,
+      noDynamicQuestion: true,
+    });
+    expect(closed.hasReview).toBe(false);
+
+    const next = await getReview(db, {
+      user: "thomas",
+      maxNew: 1,
+      noResolve: true,
+      noDynamicQuestion: true,
+    });
+    expect(next.card?.tier).toBe("tier1_fast");
+    expect(next.card?.fastCheck).toMatchObject({
+      type: "binary_choice",
+      correctIndex: 0,
+    });
+
+    const workloadBatch = await getReviewsBatch(db, {
+      user: "thomas",
+      includeQuestions: true,
+      noResolve: true,
+      noDynamicQuestion: true,
+      respectWorkload: true,
+      maxNew: 20,
+    });
+    expect(workloadBatch.cards).toHaveLength(3);
+    expect(
+      workloadBatch.cards.every((card) => card.tier === "tier1_fast"),
+    ).toBe(true);
+    expect(
+      workloadBatch.cards.every(
+        (card) => card.fastCheck?.type === "binary_choice",
+      ),
+    ).toBe(true);
+
+    const unboundedBatch = await getReviewsBatch(db, {
+      user: "thomas",
+      includeQuestions: true,
+      noResolve: true,
+      noDynamicQuestion: true,
+    });
+    expect(unboundedBatch.cards).toHaveLength(6);
   });
 
   it("getReview inlines media bytes only for a rendering surface", async () => {

@@ -49,7 +49,7 @@ export interface BundledCellStatus extends BundledCellInfo {
 export const BUNDLED_TILES: Record<string, KvtTile> = {
   "de-by:realschule-optik": {
     tile_id: "de-by:realschule-optik",
-    version: "2026.08.1",
+    version: "2026.08.2",
     title: "Optik und Lichtbrechung (Realschule Bayern)",
     publisher: "ZAM Curriculum Working Group",
     atoms: [
@@ -78,8 +78,8 @@ export const BUNDLED_TILES: Record<string, KvtTile> = {
             grade: 7,
             track: "I",
             subject: "physik",
-            topic_code: "PH7-LB2",
-            topic_title: "Ausbreitung und Brechung des Lichts",
+            topic_code: "65643",
+            topic_title: "Optik",
             exam_relevant: true,
           },
           {
@@ -88,8 +88,8 @@ export const BUNDLED_TILES: Record<string, KvtTile> = {
             grade: 8,
             track: "II_III",
             subject: "physik",
-            topic_code: "PH8-LB2",
-            topic_title: "Licht und Schatten, Reflexion und Brechung",
+            topic_code: "65854",
+            topic_title: "Optik",
             exam_relevant: true,
           },
         ],
@@ -159,8 +159,8 @@ export const BUNDLED_TILES: Record<string, KvtTile> = {
             grade: 7,
             track: "I",
             subject: "physik",
-            topic_code: "PH7-LB2",
-            topic_title: "Ausbreitung und Brechung des Lichts",
+            topic_code: "65643",
+            topic_title: "Optik",
             exam_relevant: true,
           },
           {
@@ -169,8 +169,8 @@ export const BUNDLED_TILES: Record<string, KvtTile> = {
             grade: 8,
             track: "II_III",
             subject: "physik",
-            topic_code: "PH8-LB2",
-            topic_title: "Licht und Schatten, Reflexion und Brechung",
+            topic_code: "65854",
+            topic_title: "Optik",
             exam_relevant: true,
           },
         ],
@@ -234,8 +234,8 @@ export const BUNDLED_TILES: Record<string, KvtTile> = {
             grade: 7,
             track: "I",
             subject: "physik",
-            topic_code: "PH7-LB2",
-            topic_title: "Ausbreitung und Brechung des Lichts",
+            topic_code: "65643",
+            topic_title: "Optik",
             exam_relevant: true,
           },
           {
@@ -244,8 +244,8 @@ export const BUNDLED_TILES: Record<string, KvtTile> = {
             grade: 8,
             track: "II_III",
             subject: "physik",
-            topic_code: "PH8-LB2",
-            topic_title: "Licht und Schatten, Reflexion und Brechung",
+            topic_code: "65854",
+            topic_title: "Optik",
             exam_relevant: true,
           },
         ],
@@ -304,11 +304,11 @@ export const BUNDLED_TILES: Record<string, KvtTile> = {
         curricula: [
           {
             provider: "lehrplanplus-bayern",
-            school_type: "gymnasium",
-            grade: 11,
+            school_type: "berufsoberschule",
+            grade: 10,
             subject: "physik",
-            topic_code: "PH11-LB1",
-            topic_title: "Wellenoptik",
+            topic_code: "119285",
+            topic_title: "Grundlagen der Optik",
             exam_relevant: true,
           },
         ],
@@ -1148,7 +1148,7 @@ export const BUNDLED_CELLS: BundledCellInfo[] = [
     description:
       "Lichtstrahl, Einfallslot, qualitative Brechung an Grenzflächen und Totalreflexion.",
     publisher: "ZAM Curriculum Working Group",
-    publishedAt: "2026-08-14T18:00:00Z",
+    publishedAt: "2026-08-15T10:45:00Z",
     atomCount: 4,
     inScopeAtomIds: [
       "01K3X9A7R4B8C1D2E3F4G5A001", // strahlengang-lot
@@ -1226,7 +1226,7 @@ export function getBundledCellTile(cellId: string): KvtTile | undefined {
   return BUNDLED_TILES[cellId];
 }
 
-/** Check if the atoms of a bundled cell are installed in the DB. */
+/** Check if every atom and practice item of a bundled cell is installed. */
 export async function isBundledCellInstalled(
   db: Database,
   cellId: string,
@@ -1240,7 +1240,18 @@ export async function isBundledCellInstalled(
       `SELECT COUNT(*) AS n FROM learning_atoms WHERE id IN (${placeholders})`,
     )
     .get(...ids)) as { n: number };
-  return row.n === ids.length;
+  if (row.n !== ids.length) return false;
+
+  const itemIds = tile.atoms.flatMap((atom) =>
+    atom.practice_items.map((item) => item.id),
+  );
+  const itemPlaceholders = itemIds.map(() => "?").join(",");
+  const itemRow = (await db
+    .prepare(
+      `SELECT COUNT(*) AS n FROM tokens WHERE id IN (${itemPlaceholders})`,
+    )
+    .get(...itemIds)) as { n: number };
+  return itemRow.n === itemIds.length;
 }
 
 /** Check if a learner has enrolled (holds cards) in a bundled cell. */

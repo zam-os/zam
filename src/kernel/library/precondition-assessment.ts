@@ -22,6 +22,15 @@ import { ensureCard } from "../models/card.js";
 import { getBundledCell } from "./bundled-cells.js";
 
 export const PRECONDITION_BURIED_REASON = "precondition";
+/**
+ * The learner explicitly pulled a deferred precondition into recall.
+ *
+ * The marker keeps that intent across a reload until the real review clears
+ * all bury metadata. Without it the now-unburied, still-new card is
+ * indistinguishable from an unassessed prerequisite and every surface asks the
+ * same entry question again instead of showing the requested recall.
+ */
+export const PRECONDITION_READY_REASON = "precondition_ready";
 
 /**
  * How long a self-assessed precondition waits before it is asked for real.
@@ -69,7 +78,7 @@ export interface PreconditionCandidate {
   title: string;
   slug: string;
   description?: string;
-  assessmentState: "unassessed" | "buried_known" | "learning";
+  assessmentState: "unassessed" | "buried_known" | "ready" | "learning";
   cardId?: string;
   tokenId?: string;
   buriedUntil?: string | null;
@@ -146,22 +155,47 @@ export async function getPreconditionCandidates(
     rows = (await db
       .prepare(
         `SELECT DISTINCT a.id AS atom_id, a.title, a.slug
-           FROM atom_prerequisites ap
-           JOIN learning_atoms a ON a.id = ap.requires_id
+          FROM atom_prerequisites ap
+          JOIN learning_atoms a ON a.id = ap.requires_id
           WHERE ap.atom_id IN (${placeholders})
+            AND ap.kind = 'hard'
+            AND EXISTS (
+              SELECT 1
+                FROM tokens target_t
+                JOIN cards target_c ON target_c.token_id = target_t.id
+               WHERE target_t.atom_id = ap.atom_id
+                 AND target_c.user_id = ?
+                 AND target_c.detached_at IS NULL
+                 AND target_t.deprecated_at IS NULL
+                 AND target_t.maintenance_at IS NULL
+                 AND target_t.editorial_state = 'published'
+            )
           ORDER BY a.title`,
       )
-      .all(...atomIds)) as AtomPrereqRow[];
+      .all(...atomIds, userId)) as AtomPrereqRow[];
   } else {
-    // If no specific cell, return all prerequisite atoms that gate other atoms
+    // If no cell is specified, return only prerequisites that gate this
+    // learner's live work. Globally installed content is not an enrolment.
     rows = (await db
       .prepare(
         `SELECT DISTINCT a.id AS atom_id, a.title, a.slug
-           FROM atom_prerequisites ap
-           JOIN learning_atoms a ON a.id = ap.requires_id
+          FROM atom_prerequisites ap
+          JOIN learning_atoms a ON a.id = ap.requires_id
+          WHERE ap.kind = 'hard'
+            AND EXISTS (
+              SELECT 1
+                FROM tokens target_t
+                JOIN cards target_c ON target_c.token_id = target_t.id
+               WHERE target_t.atom_id = ap.atom_id
+                 AND target_c.user_id = ?
+                 AND target_c.detached_at IS NULL
+                 AND target_t.deprecated_at IS NULL
+                 AND target_t.maintenance_at IS NULL
+                 AND target_t.editorial_state = 'published'
+            )
           ORDER BY a.title`,
       )
-      .all()) as AtomPrereqRow[];
+      .all(userId)) as AtomPrereqRow[];
   }
 
   const candidates: PreconditionCandidate[] = [];
@@ -172,6 +206,9 @@ export async function getPreconditionCandidates(
         `SELECT id, atom_id, slug, title
            FROM tokens
           WHERE atom_id = ?
+            AND deprecated_at IS NULL
+            AND maintenance_at IS NULL
+            AND editorial_state = 'published'
           ORDER BY id ASC
           LIMIT 1`,
       )
@@ -187,6 +224,9 @@ export async function getPreconditionCandidates(
           WHERE t.atom_id = ?
             AND c.user_id = ?
             AND c.detached_at IS NULL
+            AND t.deprecated_at IS NULL
+            AND t.maintenance_at IS NULL
+            AND t.editorial_state = 'published'
           ORDER BY c.id ASC`,
       )
       .all(row.atom_id, userId)) as CardStateRow[];
@@ -194,14 +234,20 @@ export async function getPreconditionCandidates(
     const representativeCard =
       cardRows.find((card) => card.token_id === tokenRow.id) ?? cardRows[0];
 
-    let assessmentState: "unassessed" | "buried_known" | "learning" =
+    let assessmentState: "unassessed" | "buried_known" | "ready" | "learning" =
       "unassessed";
-    if (
+    if (cardRows.some((card) => card.reps > 0)) {
+      assessmentState = "learning";
+    } else if (
+      cardRows.some((card) => card.buried_reason === PRECONDITION_READY_REASON)
+    ) {
+      assessmentState = "ready";
+    } else if (
       cardRows.some((card) => card.buried_reason === PRECONDITION_BURIED_REASON)
     ) {
+      // Keep an expired claim assessed: once its date arrives the card itself
+      // must be retrieved, not replaced by a second self-assessment prompt.
       assessmentState = "buried_known";
-    } else if (cardRows.some((card) => card.reps > 0)) {
-      assessmentState = "learning";
     }
 
     candidates.push({
@@ -234,72 +280,154 @@ export async function assessPrecondition(
   if (!atomId.trim()) {
     throw new Error("atomId is required to assess precondition");
   }
-
-  const tokenRows = (await db
-    .prepare(
-      `SELECT id FROM tokens
-        WHERE atom_id = ?
-        ORDER BY id ASC`,
-    )
-    .all(atomId)) as Array<{ id: string }>;
-
-  if (tokenRows.length === 0) {
-    throw new Error(`No token found for atom: ${atomId}`);
+  if (decision !== "known" && decision !== "learn") {
+    throw new Error(`Unknown precondition assessment decision: ${decision}`);
   }
 
-  const cards = [];
-  for (const tokenRow of tokenRows) {
-    cards.push(await ensureCard(db, tokenRow.id, userId));
-  }
-  const representative = cards[0]!;
-
-  if (decision === "known") {
-    // Count the atoms already deferred, not the cards: an atom with three
-    // practice items is one claim, and counting rows would push its own
-    // successors weeks away.
-    const deferred = (await db
+  return db.transaction(async (tx) => {
+    const hardReference = (await tx
       .prepare(
-        `SELECT COUNT(DISTINCT t.atom_id) AS n
-           FROM cards c
-           JOIN tokens t ON t.id = c.token_id
-          WHERE c.user_id = ?
-            AND c.buried_reason = ?
-            AND t.atom_id IS NOT NULL
-            AND t.atom_id <> ?`,
+        `SELECT 1 AS present
+           FROM atom_prerequisites ap
+          WHERE ap.requires_id = ?
+            AND ap.kind = 'hard'
+            AND EXISTS (
+              SELECT 1
+                FROM tokens target_t
+                JOIN cards target_c ON target_c.token_id = target_t.id
+               WHERE target_t.atom_id = ap.atom_id
+                 AND target_c.user_id = ?
+                 AND target_c.detached_at IS NULL
+                 AND target_t.deprecated_at IS NULL
+                 AND target_t.maintenance_at IS NULL
+                 AND target_t.editorial_state = 'published'
+            )
+          LIMIT 1`,
       )
-      .get(userId, PRECONDITION_BURIED_REASON, atomId)) as { n: number };
-
-    const buriedUntil = preconditionBuriedUntil(deferred.n);
-    const placeholders = tokenRows.map(() => "?").join(",");
-    await db
-      .prepare(
-        `UPDATE cards
-            SET buried_until = ?,
-                buried_reason = ?
-          WHERE user_id = ?
-            AND token_id IN (${placeholders})
-            AND detached_at IS NULL`,
-      )
-      .run(
-        buriedUntil,
-        PRECONDITION_BURIED_REASON,
-        userId,
-        ...tokenRows.map((row) => row.id),
+      .get(atomId, userId)) as { present: number } | undefined;
+    if (!hardReference) {
+      throw new Error(
+        `Atom is not a hard precondition of the learner's active work: ${atomId}`,
       );
+    }
 
-    return {
-      success: true,
-      atomId,
-      decision: "known",
-      cardId: representative.id,
-      buried: true,
-      buriedUntil,
-      buriedReason: PRECONDITION_BURIED_REASON,
-    };
-  }
+    const tokenRows = (await tx
+      .prepare(
+        `SELECT id FROM tokens
+          WHERE atom_id = ?
+            AND deprecated_at IS NULL
+            AND maintenance_at IS NULL
+            AND editorial_state = 'published'
+          ORDER BY id ASC`,
+      )
+      .all(atomId)) as Array<{ id: string }>;
 
-  if (decision === "learn") {
-    await liftPreconditionBury(db, userId, atomId);
+    if (tokenRows.length === 0) {
+      throw new Error(`No token found for atom: ${atomId}`);
+    }
+
+    const cards = [];
+    for (const tokenRow of tokenRows) {
+      cards.push(await ensureCard(tx, tokenRow.id, userId));
+    }
+    const liveCards = cards.filter((card) => !card.detached_at);
+    if (liveCards.length === 0) {
+      throw new Error(`No live card found for precondition atom: ${atomId}`);
+    }
+    const representative = liveCards[0]!;
+
+    if (decision === "known") {
+      if (liveCards.some((card) => card.reps > 0)) {
+        throw new Error(
+          `Atom ${atomId} already has retrieval evidence and cannot be self-assessed`,
+        );
+      }
+      if (
+        liveCards.some(
+          (card) => card.buried_reason === PRECONDITION_READY_REASON,
+        )
+      ) {
+        throw new Error(
+          `Precondition ${atomId} is already selected for retrieval`,
+        );
+      }
+
+      const now = new Date();
+      const previous = liveCards.find(
+        (card) => card.buried_reason === PRECONDITION_BURIED_REASON,
+      );
+      if (previous) {
+        if (
+          previous.buried_until &&
+          Date.parse(previous.buried_until) > now.getTime()
+        ) {
+          return {
+            success: true,
+            atomId,
+            decision: "known",
+            cardId: representative.id,
+            buried: true,
+            buriedUntil: previous.buried_until,
+            buriedReason: PRECONDITION_BURIED_REASON,
+          };
+        }
+        throw new Error(
+          `Precondition assessment for ${atomId} has expired; retrieve the card now`,
+        );
+      }
+
+      // Count active deferred atoms, not historical markers or cards: an atom
+      // with three practice items is one claim, and expired claims must not
+      // keep pushing every later return farther into the future.
+      const deferred = (await tx
+        .prepare(
+          `SELECT COUNT(DISTINCT t.atom_id) AS n
+             FROM cards c
+             JOIN tokens t ON t.id = c.token_id
+            WHERE c.user_id = ?
+              AND c.buried_reason = ?
+              AND c.buried_until > ?
+              AND c.reps = 0
+              AND t.atom_id IS NOT NULL
+              AND t.atom_id <> ?`,
+        )
+        .get(
+          userId,
+          PRECONDITION_BURIED_REASON,
+          now.toISOString(),
+          atomId,
+        )) as { n: number };
+
+      const buriedUntil = preconditionBuriedUntil(deferred.n, now);
+      const placeholders = tokenRows.map(() => "?").join(",");
+      await tx
+        .prepare(
+          `UPDATE cards
+              SET buried_until = ?,
+                  buried_reason = ?
+            WHERE user_id = ?
+              AND token_id IN (${placeholders})
+              AND detached_at IS NULL`,
+        )
+        .run(
+          buriedUntil,
+          PRECONDITION_BURIED_REASON,
+          userId,
+          ...tokenRows.map((row) => row.id),
+        );
+
+      return {
+        success: true,
+        atomId,
+        decision: "known",
+        cardId: representative.id,
+        buried: true,
+        buriedUntil,
+        buriedReason: PRECONDITION_BURIED_REASON,
+      };
+    }
+
+    await liftPreconditionBury(tx, userId, atomId);
 
     return {
       success: true,
@@ -310,9 +438,7 @@ export async function assessPrecondition(
       buriedUntil: null,
       buriedReason: null,
     };
-  }
-
-  throw new Error(`Unknown precondition assessment decision: ${decision}`);
+  });
 }
 
 /**
@@ -331,12 +457,12 @@ export async function liftPreconditionBury(
           SET buried_until = NULL,
               buried_reason = NULL
         WHERE user_id = ?
-          AND buried_reason = ?
+          AND buried_reason IN (?, ?)
           AND token_id IN (
             SELECT id FROM tokens WHERE atom_id = ?
           )`,
     )
-    .run(userId, PRECONDITION_BURIED_REASON, atomId);
+    .run(userId, PRECONDITION_BURIED_REASON, PRECONDITION_READY_REASON, atomId);
 
   return result.changes > 0;
 }

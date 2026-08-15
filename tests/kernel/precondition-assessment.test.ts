@@ -12,6 +12,7 @@ import {
   type Database,
   enrolBundledCell,
   getCard,
+  getBundledCellTile,
   getPreconditionCandidates,
   heldAtomIds,
   installKvtTile,
@@ -61,6 +62,30 @@ describe("Precondition Self-Assessment (Phase 3)", () => {
     await expect(
       getPreconditionCandidates(db, "test-learner", "de-by:does-not-exist"),
     ).rejects.toThrow("Bundled cell not found: de-by:does-not-exist");
+  });
+
+  it("accepts assessments only for atoms used as hard preconditions", async () => {
+    const user = "test-learner";
+    await enrolBundledCell(db, user, "de-by:realschule-optik");
+    await installKvtTile(db, getBundledCellTile("de-by:bos-10-optik")!);
+
+    // Snellius is now a hard prerequisite in the globally installed BOS graph,
+    // but the learner is not enrolled in the BOS target it gates. Installation
+    // alone cannot turn unrelated shared content into a self-certified card.
+    await expect(
+      assessPrecondition(db, {
+        userId: user,
+        atomId: "01K3X9A7R4B8C1D2E3F4G5A004",
+        decision: "known",
+      }),
+    ).rejects.toThrow("not a hard precondition of the learner's active work");
+
+    const listed = await getPreconditionCandidates(db, user);
+    expect(
+      listed.some(
+        (candidate) => candidate.atomId === "01K3X9A7R4B8C1D2E3F4G5A004",
+      ),
+    ).toBe(false);
   });
 
   it("handles 'known' decision by burying card without modifying FSRS state", async () => {
@@ -160,6 +185,46 @@ describe("Precondition Self-Assessment (Phase 3)", () => {
 
     const after = await buildReviewQueue(db, { userId: user, now: dayAfter });
     expect(after.items.some((item) => item.atomId === atomId)).toBe(true);
+  });
+
+  it("does not let a replay extend an expired claim or bury retrieved evidence", async () => {
+    const user = "test-learner";
+    await enrolBundledCell(db, user, "de-by:realschule-optik");
+    const atomId = "01K3X9A7R4B8C1D2E3F4G5A001";
+
+    const first = await assessPrecondition(db, {
+      userId: user,
+      atomId,
+      decision: "known",
+    });
+    const repeated = await assessPrecondition(db, {
+      userId: user,
+      atomId,
+      decision: "known",
+    });
+    expect(repeated.buriedUntil).toBe(first.buriedUntil);
+
+    await db
+      .prepare(
+        `UPDATE cards SET buried_until = '2000-01-01T00:00:00.000Z'
+          WHERE user_id = ? AND token_id IN (
+            SELECT id FROM tokens WHERE atom_id = ?
+          )`,
+      )
+      .run(user, atomId);
+    await expect(
+      assessPrecondition(db, { userId: user, atomId, decision: "known" }),
+    ).rejects.toThrow("has expired; retrieve the card now");
+
+    await db
+      .prepare(
+        `UPDATE cards SET reps = 1, state = 'review'
+          WHERE id = ?`,
+      )
+      .run(first.cardId);
+    await expect(
+      assessPrecondition(db, { userId: user, atomId, decision: "known" }),
+    ).rejects.toThrow("already has retrieval evidence");
   });
 
   it("staggers deferrals so they do not all return on the same day", async () => {

@@ -1,6 +1,7 @@
 # Handover — the first field-test slice of the central learning path
 
-**Status:** not started. The architecture round is closed; this is the build.
+**Status:** implementation and source-grounded content review complete on
+2026-08-15; the manual device trial remains the field-test gate.
 **Branch:** `feat/central-learning-field-test`, on top of `3edf7b3` — the
 squashed merge of the architecture work (PR #300).
 **Goal:** one learner, one bundled cell, a loop that works end to end — the
@@ -25,10 +26,10 @@ it. In particular the kernel primitives this slice needs all exist:
 
 | Needed | Exists as | State |
 |---|---|---|
-| install a cell | `installKvtTile` | built, no surface |
-| create cards on demand | `materialiseKvtCards` | built, no surface |
-| defer a card by date | `cards.buried_until` / `buried_reason`, honoured by the queue filter | built, nothing writes it for preconditions |
-| bonus eligibility + ranking | `bonusCandidates`, `heldAtomIds` | built, no surface |
+| install a cell | `installKvtTile` | built; bundled selection in Desktop, MCP Studio and Mobile |
+| create cards on demand | `materialiseKvtCards` | built; enrolment remains explicit behind the one learner action |
+| defer a card by date | `cards.buried_until` / `buried_reason`, honoured by the queue filter | built for hard preconditions with a finite, staggered horizon |
+| bonus eligibility + ranking | `bonusCandidates`, `heldAtomIds` | built; accept/ignore surfaces in Desktop, MCP Recall and Mobile |
 | item succession | `replaces`, `practice_item_replacements` | built |
 
 So this slice is **surface plus the two scheduling rules**, not new
@@ -47,7 +48,7 @@ route in parallel — a finished slice nobody can install is not a field test.
 Ordered so something is testable as early as possible. Phases 1 and 2 are
 independent and can run in parallel; 3–5 build on 1.
 
-### Phase 1 — get one bundled cell onto a device
+### [x] Phase 1 — get one bundled cell onto a device
 
 Without this there is nothing to learn and no other phase can be tried by hand.
 
@@ -65,10 +66,17 @@ Without this there is nothing to learn and no other phase can be tried by hand.
 **Done when** a learner picks "Optik — Realschule 8" on a fresh database and
 gets a queue.
 
-### Phase 2 — subject-matter review of the Optik cell
+Implemented and covered by kernel/handler tests. Both native Desktop and the
+shared mobile Library now expose the four commit-controlled cells; the MCP
+Studio already uses the same bridge contract. The final iPad installation path
+still needs the manual trial named above.
 
-Independent of all code and the only error class that reaches the learner
-directly. It needs a physics teacher's eyes, not an agent's.
+### [x] Phase 2 — source-grounded review of the Optik cell
+
+Independent of all code and the error class that reaches the learner directly.
+For the initial content build, the accepted quality threshold is careful agent
+review against existing primary sources. A physics teacher may improve the
+material later, but teacher sign-off is not a release or field-test gate.
 
 - Every anchor resolved against its primary source. The working rule stands:
   no anchor without resolution.
@@ -79,10 +87,22 @@ directly. It needs a physics teacher's eyes, not an agent's.
   Narrow the cell or label the gap — ADR 2026-08-14b forbids claiming a
   prerequisite closure the tile does not encode.
 
-**Done when** a subject-matter reviewer signs off, or the cell is narrowed to
-what they will sign off on.
+**Done when** every shipped scope claim is resolved against a named source,
+known gaps are excluded or stated, and automated guards keep the curriculum
+bindings and selected scope from silently drifting.
 
-### Phase 3 — precondition self-assessment
+Primary-source resolution is complete: the selected fixture records the
+official LehrplanPLUS learning areas 65643 (Physik 7, I) and 65854 (Physik 8,
+II/III), checked on 2026-08-15. The selected Realschule scope contains only
+atoms 001–003. Formula atom 004 is installed shared knowledge but not enrolled
+and is separately grounded in BOS learning area 119285; its earlier
+Gymnasium-11/Wellenoptik binding was incorrect. `brechungsindex-bestimmen` is
+not in this cell. Automated physics assertions are guards, **not** a teacher
+review. Together with the multi-agent review against the named sources, they
+meet the owner's initial quality threshold. Later teacher feedback enters as a
+content revision rather than retroactively blocking this slice.
+
+### [x] Phase 3 — precondition self-assessment
 
 Decided on 2026-08-14, never built. Today the deferral exists only on paper.
 
@@ -104,7 +124,12 @@ The point is that four preconditions must not all block progress at once.
 **Done when** a learner can decline four preconditions, keep working, and still
 meet all four later.
 
-### Phase 4 — pull forward on an empty queue
+Implemented on all three learner surfaces. Only hard prerequisites can be
+assessed; replay cannot extend an expired claim or bury real retrieval
+evidence; expired claims enter genuine recall and no longer pollute the
+stagger count.
+
+### [x] Phase 4 — pull forward on an empty queue
 
 Also decided, also unbuilt, and small.
 
@@ -115,7 +140,14 @@ Also decided, also unbuilt, and small.
 
 **Done when** a finished queue offers "keep going" and produces cards.
 
-### Phase 5 — tier interaction and the bonus offer
+Implemented as an explicit choice. New-card acceptance is a session-local
+`maxNew` allowance, not a fake due-date mutation; future reviews and active
+precondition deferrals are the only persisted pull-forward changes. A pulled
+precondition keeps a `precondition_ready` intent marker until its genuine
+review, so every surface resumes the requested card instead of repeating the
+self-assessment prompt after a restart.
+
+### [x] Phase 5 — tier interaction and the bonus offer
 
 The last two, deliberately: both are improvements to a loop that must first
 work.
@@ -134,6 +166,28 @@ work.
 
 **Done when** a learner sees an offer, ignores it once, accepts it once, and
 neither changes their due work.
+
+The named pilot rule is `tier1-first`: a new Tier-2 synthesis item stays out
+while the same atom still has an unseen Tier-1 item. Structured Tier-1 checks
+are rendered as one-tap choices in Desktop, MCP Recall and Mobile. Accepted
+bonus atoms are excluded from later offers even before their first review;
+root atoms and atoms with unheld hard prerequisites cannot be accepted through
+the enrolment endpoint.
+
+## Remaining acceptance gates
+
+- [x] Source-grounded agent review of the selected Realschule questions,
+  reference answers, reductions and prerequisite scope. The owner accepted
+  this as the initial quality threshold on 2026-08-15; teacher review is a
+  later improvement path.
+- [ ] The complete flow is run on a fresh database on the actual school-iPad
+  delivery route: select cell → assess prerequisite → Tier-1/Tier-2 review →
+  keep going → ignore/accept bonus.
+- [x] `npm run format`, lint, typecheck, full test and build verification are
+  required immediately before hand-off (record the final result in the branch
+  hand-off, not by weakening the remaining device gate). Final result 2026-08-15:
+  format, lint, typecheck and build clean; 231 test files passed, 2 skipped,
+  with 2235 tests passed and 7 skipped.
 
 ## Standing constraints for whoever picks this up
 

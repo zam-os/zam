@@ -19,7 +19,14 @@ export interface ReviewQueueOptions {
   buryNewSiblings?: boolean;
   buryReviewSiblings?: boolean;
   now?: Date;
+  domain?: string;
   knowledgeContext?: string;
+}
+
+export interface ReviewFastCheck {
+  type: "binary_choice";
+  options: string[];
+  correctIndex: number;
 }
 
 export interface ReviewQueueItem {
@@ -43,6 +50,7 @@ export interface ReviewQueueItem {
   publishedAt?: string | null;
   atomId: string | null;
   tier: string | null;
+  fastCheck: ReviewFastCheck | null;
 }
 
 /**
@@ -84,6 +92,7 @@ interface CardRow {
   answer_media_count: number | bigint;
   atom_id: string | null;
   tier: string | null;
+  fast_check: string | null;
 }
 
 // ── Functions ────────────────────────────────────────────────────────────────
@@ -148,7 +157,8 @@ export async function buildReviewQueue(
          (SELECT COUNT(*) FROM token_media tm
            WHERE tm.token_id = t.id AND tm.side = 'answer') AS answer_media_count,
          t.atom_id AS atom_id,
-         t.tier AS tier
+         t.tier AS tier,
+         t.fast_check AS fast_check
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
@@ -162,6 +172,11 @@ export async function buildReviewQueue(
          AND c.detached_at IS NULL`;
 
   const dueParams: unknown[] = [options.userId, nowISO, nowISO];
+
+  if (options.domain) {
+    dueSql += " AND t.domain = ?";
+    dueParams.push(options.domain);
+  }
 
   if (options.knowledgeContext) {
     dueSql += ` AND EXISTS (
@@ -202,7 +217,8 @@ export async function buildReviewQueue(
          (SELECT COUNT(*) FROM token_media tm
            WHERE tm.token_id = t.id AND tm.side = 'answer') AS answer_media_count,
          t.atom_id AS atom_id,
-         t.tier AS tier
+         t.tier AS tier,
+         t.fast_check AS fast_check
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
@@ -212,9 +228,32 @@ export async function buildReviewQueue(
          AND t.deprecated_at IS NULL
          AND t.maintenance_at IS NULL
          AND t.editorial_state = 'published'
-         AND c.detached_at IS NULL`;
+         AND c.detached_at IS NULL
+         AND NOT (
+           t.tier = 'tier2_synthesis'
+           AND t.atom_id IS NOT NULL
+           AND EXISTS (
+             SELECT 1
+               FROM cards tier1_card
+               JOIN tokens tier1_token ON tier1_token.id = tier1_card.token_id
+              WHERE tier1_card.user_id = c.user_id
+                AND tier1_token.atom_id = t.atom_id
+                AND tier1_token.tier = 'tier1_fast'
+                AND tier1_card.state = 'new'
+                AND tier1_card.blocked = 0
+                AND tier1_card.detached_at IS NULL
+                AND tier1_token.deprecated_at IS NULL
+                AND tier1_token.maintenance_at IS NULL
+                AND tier1_token.editorial_state = 'published'
+           )
+         )`;
 
   const newParams: unknown[] = [options.userId, nowISO];
+
+  if (options.domain) {
+    newSql += " AND t.domain = ?";
+    newParams.push(options.domain);
+  }
 
   if (options.knowledgeContext) {
     newSql += ` AND EXISTS (
@@ -321,6 +360,59 @@ function rowToItem(row: CardRow): ReviewQueueItem {
     publishedAt: row.published_at ?? row.updated_at ?? null,
     atomId: row.atom_id,
     tier: row.tier,
+    fastCheck: parseReviewFastCheck(row.fast_check),
+  };
+}
+
+/**
+ * Parse the persisted, editorial fast-check payload into the review contract.
+ *
+ * Malformed optional metadata must never make the whole queue unavailable.
+ * Installation validation can report bad content separately; a learner still
+ * gets the ordinary question/answer card as the graceful fallback.
+ */
+export function parseReviewFastCheck(raw: unknown): ReviewFastCheck | null {
+  if (raw === null || raw === undefined) return null;
+  let value: unknown = raw;
+  if (typeof raw === "string") {
+    try {
+      value = JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  }
+  if (!value || typeof value !== "object") return null;
+  const candidate = value as {
+    type?: unknown;
+    options?: unknown;
+    correct_index?: unknown;
+    correctIndex?: unknown;
+  };
+  if (candidate.type !== "binary_choice" || !Array.isArray(candidate.options)) {
+    return null;
+  }
+  const options = candidate.options;
+  if (
+    options.length < 2 ||
+    !options.every(
+      (option): option is string =>
+        typeof option === "string" && option.trim().length > 0,
+    )
+  ) {
+    return null;
+  }
+  const correctIndex = candidate.correct_index ?? candidate.correctIndex;
+  if (
+    !Number.isInteger(correctIndex) ||
+    (correctIndex as number) < 0 ||
+    (correctIndex as number) >= options.length
+  ) {
+    return null;
+  }
+  return {
+    type: "binary_choice",
+    options: [...options],
+    correctIndex: correctIndex as number,
   };
 }
 

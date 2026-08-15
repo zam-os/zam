@@ -156,6 +156,25 @@ describe("Tier Interaction & Bonus Offer Surface (Phase 5)", () => {
     // Re-enrolling is idempotent
     const secondResult = await enrolBonusAtom(db, user, atom005Id);
     expect(secondResult.cardsCreated).toBe(0);
+
+    const afterAcceptance = await bonusCandidates(db, user, {
+      inScopeAtomIds: [
+        "01K3X9A7R4B8C1D2E3F4G5A001",
+        "01K3X9A7R4B8C1D2E3F4G5A002",
+        "01K3X9A7R4B8C1D2E3F4G5A003",
+      ],
+    });
+    expect(afterAcceptance.some((candidate) => candidate.atomId === atom005Id)).toBe(
+      false,
+    );
+  });
+
+  it("refuses a root atom that has no foundation to justify a bonus offer", async () => {
+    const user = "root-bonus-replay";
+    await enrolBundledCell(db, user, "de-by:realschule-optik");
+    await expect(
+      enrolBonusAtom(db, user, "01K3X9A7R4B8C1D2E3F4G5A001"),
+    ).rejects.toThrow("rests on no hard prerequisite");
   });
 
   /**
@@ -230,5 +249,35 @@ describe("Tier Interaction & Bonus Offer Surface (Phase 5)", () => {
     );
     expect(newItems.some((item) => item.tier === "tier1_fast")).toBe(true);
     expect(newItems.every((item) => item.atomId)).toBe(true);
+    expect(
+      newItems
+        .filter((item) => item.tier === "tier1_fast")
+        .every((item) => item.fastCheck?.type === "binary_choice"),
+    ).toBe(true);
+  });
+
+  it("does not hide a due Tier 2 review merely because Tier 1 is still new", async () => {
+    const user = "tier-due-retention";
+    await enrolBundledCell(db, user, "de-by:realschule-optik");
+
+    const tier2 = (await db
+      .prepare(
+        `SELECT c.id
+           FROM cards c
+           JOIN tokens t ON t.id = c.token_id
+          WHERE c.user_id = ? AND t.tier = 'tier2_synthesis'
+          ORDER BY c.id LIMIT 1`,
+      )
+      .get(user)) as { id: string };
+    await db
+      .prepare(
+        `UPDATE cards
+            SET state = 'review', reps = 1, due_at = '2000-01-01T00:00:00.000Z'
+          WHERE id = ?`,
+      )
+      .run(tier2.id);
+
+    const queue = await buildReviewQueue(db, { userId: user, maxNew: 20 });
+    expect(queue.items.some((item) => item.cardId === tier2.id)).toBe(true);
   });
 });
